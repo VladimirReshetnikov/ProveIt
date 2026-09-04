@@ -2,6 +2,7 @@ import Mathlib.Order.WellQuasiOrder
 import Mathlib.Data.Set.MulAntidiagonal
 import Mathlib.Data.Finset.MulAntidiagonal
 import Mathlib.Algebra.Group.Pointwise.Set.Basic
+import Mathlib.Algebra.Order.Monoid.OrderDual
 
 /-!
 # Well-based supports: Dickson's lemma and Neumann's lemma
@@ -73,5 +74,28 @@ theorem neumann_finite_factorizations {A B : Set α} (hA : A.IsPWO) (hB : B.IsPW
   Set.MulAntidiagonal.finite_of_isPWO hA hB c
 
 end Multiplicative
+
+/-! ### The manuscript's reverse-order convention -/
+
+section MultiplicativeOrderDual
+
+variable {α : Type*} [CommMonoid α] [PartialOrder α] [IsOrderedCancelMonoid α]
+
+/-- **`q0:lem:neumann`, first half in the manuscript's convention.**  The
+product of two partially well-ordered sets in the dual order is again partially
+well-ordered in that order. -/
+theorem neumann_isPWO_orderDual {A B : Set (OrderDual α)}
+    (hA : A.IsPWO) (hB : B.IsPWO) : (A * B).IsPWO :=
+  neumann_isPWO (α := OrderDual α) hA hB
+
+/-- **`q0:lem:neumann`, second half in the manuscript's convention.**  Every
+element has finitely many factorizations through two sets that are partially
+well-ordered in the dual order. -/
+theorem neumann_finite_factorizations_orderDual {A B : Set (OrderDual α)}
+    (hA : A.IsPWO) (hB : B.IsPWO) (c : OrderDual α) :
+    (Set.mulAntidiagonal A B c).Finite :=
+  neumann_finite_factorizations (α := OrderDual α) hA hB c
+
+end MultiplicativeOrderDual
 
 end Fabius

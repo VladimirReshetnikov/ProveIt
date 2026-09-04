@@ -112,7 +112,7 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans 952 facade-reachable modules and 11,881 explicit public declarations.  It
+pass scans 952 facade-reachable modules and 11,884 explicit public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
@@ -151,9 +151,9 @@ together with the strengthened
 `ProbabilityLaplaceMoments.lean` surface,
 as well as the sixteenth theorem in `FinitePolynomialFunctional.lean`.
 Relative to the
-610/8,318 activation checkpoint, the current tree adds 342 modules and 3,563 declarations.
+610/8,318 activation checkpoint, the current tree adds 342 modules and 3,566 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 322 modules and 3,329 declarations.  The post-merge 675/8,909 inventory,
+adds 322 modules and 3,332 declarations.  The post-merge 675/8,909 inventory,
 the intervening 903/11,448 Lambert-series inventory, and the immediately
 preceding 914/11,555 scaled-geometric and 915/11,556 real-MGF-bridge
 checkpoints, together with the incoming branch's 906/11,461 complex-product
@@ -188,7 +188,10 @@ also generates two Neumann twins that the lexical audit intentionally does not
 count.  Together with six concurrent declarations elsewhere, this gave the
 historical 943/11,787 census.  The later nine-module transseries tranche adds
 90 declarations, and four integer-exponent theorems extend
-`TransseriesDifferentialBlock.lean`; the live census is therefore 952/11,881.
+`TransseriesDifferentialBlock.lean`; this gave the historical incoming
+952/11,881 checkpoint.  The two explicit OrderDual Neumann wrappers and the
+Wright-omega analyticity theorem subsequently bring the live census to
+952/11,884.
 On the earlier
 exterior-germ branch, the inner-complex 906/11,461 checkpoint was followed by
 the branch-local 907/11,464 checkpoint; its preceding real-MGF and algebraic
@@ -772,9 +775,10 @@ below give the historical 934/11,709 inventory.  The subsequent nine-module
 series/transseries tranche (72 explicit declarations), together with six
 concurrent declarations outside that tranche, gave the historical 943/11,787
 inventory.  The later nine-module/90-declaration transseries tranche and four
-new declarations in `TransseriesDifferentialBlock.lean` give the live
-952/11,881 inventory, again with no missing module header or public declaration
-comment.
+new declarations in `TransseriesDifferentialBlock.lean` gave the historical
+incoming 952/11,881 inventory.  The subsequent three-theorem exactness overlay
+gives the live 952/11,884 inventory, again with no missing module header or
+public declaration comment.
 
 `FinitePolynomialFunctional.lean` remains a zero-definition module and now has
 exactly sixteen public theorems:
@@ -858,8 +862,9 @@ checkpoint.  The incoming one-module/fourteen-declaration tranche gives the
 historical 934/11,709 inventory.  The first series/transseries tranche and six
 concurrent declarations then gave the
 historical 943/11,787 checkpoint.  The later nine-module transseries tranche
-and four integer-exponent differential-block declarations give the current
-952/11,881 inventory, with no documentation gaps.
+and four integer-exponent differential-block declarations gave the historical
+incoming 952/11,881 inventory; the three-theorem exactness overlay gives the
+current 952/11,884 inventory, with no documentation gaps.
 
 `HalfQBinomialRootSimplicity.lean` has no public definitions and exactly one
 public theorem, `halfQBinomial_sum_rootMultiplicity_two_pow`.  Over `ℚ`, for
@@ -1186,8 +1191,8 @@ not included in the 11,787 declaration count.  Six further declarations from
 concurrent merged work account for the rest of the change from the historical
 934/11,709 checkpoint.  This produced the now-historical 943-module/11,787-
 declaration checkpoint, with zero missing module headers and zero missing
-declaration comments.  The later overlay documented below establishes the
-authoritative current census of 952 modules and 11,881 explicit public
+declaration comments.  The later overlays documented below establish the
+authoritative current census of 952 modules and 11,884 explicit public
 declarations, again with zero documentation gaps.
 
 `UnitSeriesBellCoefficients.lean` has no public definitions and exactly sixteen
@@ -1213,14 +1218,18 @@ coefficient algebra over the indicated commutative rational algebras or
 fields.  No analytic convergence or analytic logarithm-branch assertion is
 made.
 
-`TransseriesWellBased.lean` has no public definitions and five explicitly
+`TransseriesWellBased.lean` has no public definitions and seven explicitly
 written public theorems: `dickson_isPWO`, `dickson_antichain_finite`,
 `dickson_isPWO_pi`, `neumann_isPWO`, and
-`neumann_finite_factorizations`.  Its attributes additionally generate
+`neumann_finite_factorizations`, together with
+`neumann_isPWO_orderDual` and `neumann_finite_factorizations_orderDual`.  Its
+attributes additionally generate
 `neumann_add_isPWO` and `neumann_finite_decompositions`.  Thus
-`q0:lem:dickson` and `q0:lem:neumann` are **Exact** after translating the
-manuscript's reverse-well-order/strict-growth convention to Lean's
-`Set.IsPWO` orientation (or, equivalently, passing to the order dual).  The
+`q0:lem:dickson` and `q0:lem:neumann` are **Exact**; the explicit wrappers
+state the latter directly in the dual order.  In a total order this matches the
+manuscript's reverse-well-order/no-strict-growth convention, while for a
+merely partial order the precise statement is `Set.IsPWO` on `OrderDual α`,
+not a greatest-element characterization.  The
 Neumann API works in an ordered cancel commutative monoid; it proves the
 well-based product and finite-factorization mechanism, not a new Hahn-series
 type.
@@ -1311,8 +1320,10 @@ definitions and seventy-five theorems, hence 90 lexically explicit public
 declarations.  Four further theorems extend the existing
 `TransseriesDifferentialBlock.lean` surface from 0+5 to 0+9.  Relative to the
 historical 943/11,787 checkpoint, the exact delta is therefore nine modules
-and 94 explicit declarations, giving the authoritative current census of 952
-modules and 11,881 explicit public declarations.  The audit reports zero
+and 94 explicit declarations, giving the historical incoming census of 952
+modules and 11,881 explicit public declarations.  The two OrderDual wrappers
+and Wright-omega analyticity theorem keep 952 modules and give the
+authoritative current census of 11,884 explicit public declarations.  The audit reports zero
 missing module headers and zero missing declaration comments.  The two
 `to_additive`-generated Neumann declarations remain usable API outside this
 lexical total, exactly as at the preceding checkpoint.
@@ -1418,16 +1429,17 @@ Stolz--Cesàro step and the leading conclusion `w_n / n → c₀` **Exact**.
 The larger `plt:lem:mot-harmonic` remains **Partial**: its logarithmic
 correction, limiting constant, and final `o(1)` remainder are not formalized.
 
-`WrightOmega.lean` has one public definition, `wrightOmega`, and twelve
-public theorems: `wrightOmega_pos`, `wrightOmega_add_log`,
+`WrightOmega.lean` has one public definition, `wrightOmega`, and thirteen
+public theorems: `analyticAt_wrightOmega`, `wrightOmega_pos`, `wrightOmega_add_log`,
 `principalLambertW_eq_wrightOmega_log`, `wrightOmega_leftInverse`,
 `wrightOmega_strictMono`, `wrightOmega_one`, `one_le_wrightOmega`,
 `wrightOmega_le_self`, `sub_log_le_wrightOmega`, `wrightOmega_envelope`,
 `add_one_div_two_le_wrightOmega`, and `tendsto_wrightOmega_atTop`.  These make
 the defining equation, inverse law, positivity, monotonicity, anchor,
 Lambert relation, envelope, and divergence clauses of
-`plt:prop:mot-omega-basic` **Exact** over the reals.  The complete proposition
-remains **Partial** solely because real analyticity is not formalized.
+`plt:prop:mot-omega-basic` **Exact** over the reals.  Its analyticity clause is
+the pointwise statement `AnalyticAt ℝ wrightOmega X` for every real `X`; no
+complex branch or complex-holomorphic Wright-omega claim is made.
 
 Finally, the four declarations added to `TransseriesDifferentialBlock.lean`
 are exactly `derivation_val_inv`, `derivation_pow_inv`,
@@ -2180,7 +2192,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 952/11,881
+historical 675/8,909 census and requires refresh against the live 952/11,884
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity

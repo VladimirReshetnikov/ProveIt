@@ -550,7 +550,7 @@ is non-increasing.  Then $b_i=c_i-a_i$ is strictly increasing, since $c_i$ is
 strictly increasing and $-a_i$ is non-decreasing --- again contradicting that
 $B$ is well-based.
 \end{proof}
-\emph{Lean status.}  The full mechanism is formal in
+\emph{Lean status.}  Exact in
 \lean{TransseriesWellBased.lean} in Mathlib's partially-well-ordered
 orientation, for an arbitrary commutative monoid that is partially ordered
 and order-cancellative.  The first half is
@@ -563,8 +563,12 @@ Hahn series a finite sum.  Both are bridges to Mathlib (\lean{Set.IsPWO.mul} and
 recording them is that the volume notes one of the two is asserted without proof in its
 sources, and here both are machine-checked.  Mathlib's \lean{Set.IsPWO}
 rules out decreasing chains and selects least elements; the manuscript's
-literal greatest-element/no-increasing convention is the order-dual
-specialization, as recorded precisely below.
+literal greatest-element/no-increasing convention is recorded by the public
+wrappers \lean{Fabius.neumann_isPWO_orderDual} and
+\lean{Fabius.neumann_finite_factorizations_orderDual}.  The manuscript's
+totally ordered abelian group is a specialization of their more general
+partially ordered, order-cancellative commutative-monoid setting.  This is an
+exact order-theoretic crosswalk; it does not construct a Hahn-series type.
 
 
 \begin{lemma}[Dickson's lemma]\label{q0:lem:dickson}
@@ -600,15 +604,16 @@ forms, the latter for an arbitrary finite coordinate type.
 
 The same module contains the full multiplicative Neumann mechanism in
 \lean{Fabius.neumann_isPWO} and
-\lean{Fabius.neumann_finite_factorizations}, together with the generated
+\lean{Fabius.neumann_finite_factorizations}, together with the literal
+reverse-order wrappers \lean{Fabius.neumann_isPWO_orderDual} and
+\lean{Fabius.neumann_finite_factorizations_orderDual} and the generated
 additive twins \lean{Fabius.neumann_add_isPWO} and
-\lean{Fabius.neumann_finite_decompositions}.  As a direct crosswalk,
-however, \cref{q0:lem:neumann} is only Partial: Mathlib's
-\texttt{Set.IsPWO} on the supplied order rules out descending chains and
-selects least elements, whereas this chapter's ``well-based'' convention
-rules out increasing chains and selects greatest elements.  Instantiating
-the Lean theorems on the order dual gives the manuscript orientation, but no
-public wrapper currently records that specialization.
+\lean{Fabius.neumann_finite_decompositions}.  Thus
+\cref{q0:lem:neumann} is Exact: \texttt{OrderDual} records precisely this
+chapter's greatest-element/no-increasing convention, and the printed total
+order is a specialization of the stronger partial-order hypotheses.  This
+status covers the support and finite-factorization assertions, not a
+construction of the ambient Hahn-series object.
 \end{remark}
 
 \begin{remark}[What these two are for]\label{q0:rem:why-lemmas}
@@ -1061,7 +1066,7 @@ therefore \(w\EulerE^{w}=z\).  Since \(v\mapsto v\EulerE^{v}\) is strictly
 increasing on \((-1,\infty)\) and \(w>0>-1\), the value \(w\) is the principal
 branch \(\LambertW_{0}(z)\).
 \end{proof}
-\emph{Lean status.}  Formal, with one clause excepted, in \lean{WrightOmega.lean}.
+\emph{Lean status.}  Exact over the reals in \lean{WrightOmega.lean}.
 Rather than construct the inverse of \(\Phi\) from scratch, \(\WrightOmega\) is
 \emph{defined} there by the last relation of the proposition,
 \lean{Fabius.wrightOmega}\ \(X=\LambertW_{0}(\EulerE^{X})\), which makes
@@ -1083,8 +1088,10 @@ the logarithm, with no appeal to the asymptotics of \(\LambertW\).  Divergence
 hypothesis-free linear minorant proved along the way,
 \lean{Fabius.add_one_div_two_le_wrightOmega}: since \(\log y\le y-1\), the defining equation
 gives \((X+1)/2\le\WrightOmega(X)\) for \emph{every} real \(X\).
-Real analyticity of \(\WrightOmega\) is the one clause not formalized; the corpus carries
-continuity and differentiability of \(\LambertW_{0}\) but not its analyticity.
+Finally \lean{Fabius.analyticAt_wrightOmega} proves real analyticity at every
+real \(X\), by composing the real-analytic principal Lambert branch with the real
+exponential.  This is exactly the real analyticity asserted here; it makes no
+complex holomorphy or branch-domain claim.
 
 
 The envelope \eqref{plt:eq:mot-envelope} already contains the message of this
@@ -1793,7 +1800,7 @@ exactly one on nonconstant polynomials.  Taking \(n=1\) in
 \(q\) with \(q'=p\).  The case \(p=1\), \(q=L\) is
 \(\int X^{-1}\Differential X=\log X\).
 \end{proof}
-\emph{Lean status.}  Partial.  The polynomial-operator core is formalized in
+\emph{Lean status.}  Partial overall.  The polynomial-operator core is formalized in
 \lean{TransseriesBlockAntiderivative.lean}.  Its complete three-definition,
 twelve-theorem surface is \lean{Fabius.blockOperator},
 \lean{Fabius.blockAntiderivative}, \lean{Fabius.resonantAntiderivative},
@@ -1810,14 +1817,19 @@ twelve-theorem surface is \lean{Fabius.blockOperator},
 \lean{Fabius.natDegree_resonantAntiderivative}.  Thus the nonresonant
 operator has an explicit finite-Neumann-series inverse and preserves
 \texttt{natDegree}; the chosen resonant primitive exists and raises
-\texttt{natDegree} by one for a nonzero input.  The manuscript lemma also
-asserts the kernel description, uniqueness modulo constants, degree drop for
-every nonconstant input, and the consequences inside
-\(\K[t,t^{-1}][L]\) for every integer block, including \(t\mapsto L\).  No
-public theorem in this leaf mentions those ambient generators or integer
-Laurent powers, so those clauses remain human-proved.  The nonresonant core
-needs only a field and \(c\ne0\); characteristic zero is needed for the
-resonant surjectivity statement.
+\texttt{natDegree} by one for a nonzero input.  In the companion module
+\lean{TransseriesDifferentialBlock.lean},
+\lean{Fabius.derivation_block_zpow} makes the displayed integer identity
+\eqref{plt:eq:mot-block-derivative} Exact in an abstract differential algebra
+when the power generator is a unit.  The compound lemma nevertheless also
+asserts consequences inside the concrete ring \(\K[t,t^{-1}][L]\), including
+faithful polynomial evaluation, ambient uniqueness modulo constants, and the
+kernel and degree conclusions for its primitives; that Laurent ambient and
+those uniqueness links are not packaged.  Thus the compound lemma remains
+Partial even though its displayed integer block equation is Exact.  The
+nonresonant operator core needs only a field and \(c\ne0\); characteristic
+zero is needed for resonant surjectivity and the printed resonant degree
+claims.
 
 
 \begin{lemma}[The discrete counterpart: a harmonic increment makes a logarithm]
@@ -8507,8 +8519,9 @@ is additive and commutes with summable sums, being continuous by
 
 \begin{remark}[Formal crosswalk]
 \label{plt:rem:dif-block-lean}
-\Cref{plt:prop:dif-block} is Partial in
-\lean{TransseriesDifferentialBlock.lean}.  Its nine-theorem surface is
+The displayed equation \eqref{plt:eq:dif-block} is Exact in
+\lean{TransseriesDifferentialBlock.lean}, while
+\cref{plt:prop:dif-block} is Partial overall.  The module's nine-theorem surface is
 \lean{Fabius.derivation_pow_t}, \lean{Fabius.derivation_block},
 \lean{Fabius.exists_block_primitive},
 \lean{Fabius.derivation_block_zero}, and
@@ -36255,8 +36268,10 @@ Result & Status & Lean surface and boundary \\
     \texttt{NeBot} for uniqueness. \\
 \cref{q0:lem:dickson} & Exact & \lean{TransseriesWellBased.lean}; finite
   antichains in \(\NaturalNumbers^k\). \\
-\cref{q0:lem:neumann} & Partial & The product/factorization theorems exist,
-  but the printed greatest-element convention requires \texttt{OrderDual}. \\
+\cref{q0:lem:neumann} & Exact &
+  \lean{TransseriesWellBased.lean}; the public \texttt{OrderDual} wrappers
+  encode the printed greatest-element convention, and the printed total order
+  specializes their stronger partial-order hypotheses. \\
 \cref{q0:prop:height} & Partial & Both displayed analytic little-\(o\) laws
   are exact; the general nested height/depth prose has no datatype. \\
 \cref{q0:def:flat,q0:prop:invisible} & Exact &
@@ -36266,18 +36281,21 @@ Result & Status & Lean surface and boundary \\
   \lean{TransseriesScaleDominance.lean} and
   \lean{TransseriesPolyLogScale.lean}; analytic real-exponent trichotomy and
   ordered sequence scales. \\
-\cref{plt:prop:mot-omega-basic} & Partial & \lean{WrightOmega.lean} proves the
-  defining equation, positivity, monotonicity, envelope, Lambert relation, and
-  divergence; real analyticity remains absent. \\
+\cref{plt:prop:mot-omega-basic} & Exact & \lean{WrightOmega.lean}; all clauses
+  including \lean{Fabius.analyticAt_wrightOmega}, over the reals only, with no
+  complex branch or holomorphy assertion. \\
 \cref{plt:thm:mot-smallest-differential-algebra} & Partial & The integer
   block law is exact in \lean{TransseriesDifferentialBlock.lean} when the
   power generator is a unit; the concrete Laurent ring, minimality, growth,
   and algebraic independence clauses remain absent. \\
+\cref{plt:eq:mot-block-derivative,plt:eq:dif-block} & Exact &
+  \lean{Fabius.derivation_block_zpow}; the integer block identity in an
+  abstract differential algebra with a unit power generator. \\
 \cref{plt:lem:mot-block-antiderivative,plt:prop:dif-block} & Partial &
   \lean{TransseriesBlockAntiderivative.lean} and
-  \lean{TransseriesDifferentialBlock.lean}; polynomial operator and integer
-  block identity, but not the full Laurent-series, uniqueness, and general
-  exponent apparatus. \\
+  \lean{TransseriesDifferentialBlock.lean}; polynomial operator and exact
+  integer equations, but not the concrete Laurent-series, faithful evaluation,
+  ambient uniqueness, and general-exponent apparatus of the compound claims. \\
 \cref{plt:lem:mot-harmonic} & Partial &
   \lean{TransseriesHarmonicIncrement.lean} proves the Stolz leading term;
   the logarithmic correction, constant, and little-\(o(1)\) term remain absent. \\
@@ -36312,18 +36330,18 @@ Result & Status & Lean surface and boundary \\
 \bottomrule
 \end{longtable}
 
-Together these eighteen modules expose \(166\) explicit public commands:
+Together these eighteen modules expose \(169\) explicit public commands:
 \lean{TransseriesScale.lean} \(5\),
 \lean{TransseriesScaleDominance.lean} \(8\),
 \lean{TransseriesPolyLogScale.lean} \(4\),
-\lean{TransseriesWellBased.lean} \(5\) written declarations,
+\lean{TransseriesWellBased.lean} \(7\) written declarations,
 \lean{TransseriesHeight.lean} \(3\),
 \lean{TransseriesBlockAntiderivative.lean} \(15\),
 \lean{TransseriesDifferentialBlock.lean} \(9\),
 \lean{UnitSeriesBellCoefficients.lean} \(16\), and
 \lean{QuadraticCoreCatalan.lean} \(11\),
 \lean{TransseriesFlat.lean} \(20\),
-\lean{WrightOmega.lean} \(13\),
+\lean{WrightOmega.lean} \(14\) (one definition and thirteen theorems),
 \lean{TransseriesHarmonicIncrement.lean} \(2\),
 \lean{OrdinaryPartialBell.lean} \(6\),
 \lean{LinLogCoreInversion.lean} \(22\),
@@ -36332,7 +36350,7 @@ Together these eighteen modules expose \(166\) explicit public commands:
 \lean{StaircaseInversion.lean} \(7\), and
 \lean{DerangementNearestInteger.lean} \(8\).  In addition, the named
 \texttt{to\_additive} attributes in \lean{TransseriesWellBased.lean} generate
-two public additive twins, for \(168\) named inventory/API entries under this
+two public additive twins, for \(171\) named inventory/API entries under this
 convention.  The corpus's
 lexical documentation census intentionally counts explicit commands only;
 automatically generated structure projections are outside both tallies.
@@ -36553,12 +36571,13 @@ convention.
 \section{Summary}
 
 The register now contains exact crosswalks for the sequence-scale
-coefficient/uniqueness laws, Dickson's lemma, the real power--log dominance
-trichotomy, the three unit-series Bell results, and the quadratic Catalan
-proposition.  It also records deliberately Partial crosswalks for Neumann's
-opposite-order presentation, the prose height hierarchy, the ambient
-integer-block differential and antiderivative statements, and the assembled
-quadratic core.  The real Lambert branch facts and the lower-branch
+coefficient/uniqueness laws, Dickson's and Neumann's lemmas, the real
+power--log dominance trichotomy, the real Wright-omega proposition, both
+displayed integer block equations, the three unit-series Bell results, and
+the quadratic Catalan proposition.  It also records deliberately Partial
+crosswalks for the prose height hierarchy, the compound ambient block
+antiderivative and differential propositions, and the assembled quadratic
+core.  The real Lambert branch facts and the lower-branch
 asymptotics remain crosswalked as described above.  What is still absent is
 the assembly of the finite and abstract ingredients into the
 two-generator Laurent-series calculus, its composition operation, and its

@@ -27,7 +27,7 @@ The canonical frontier artifacts are:
 > `3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980`)
 > source predates the later q-Pochhammer overlay and expanded ledger, so it is
 > a historical render and must not be cited as displaying the final source
-> union, including either series/transseries overlay or the live 952/11,881
+> union, including either series/transseries overlay or the live 952/11,884
 > census.
 
 The current source-only superconvergence overlay is also newer than every
@@ -230,8 +230,9 @@ six concurrent declarations elsewhere give the historical 943/11,787
 checkpoint. The next incoming series/transseries tranche adds nine
 facade-reachable modules with 90 explicit declarations and four
 integer-exponent theorems to `TransseriesDifferentialBlock.lean`, giving the
-live 952/11,881 census, with zero missing module headers and zero missing
-declaration comments.
+historical 952/11,881 checkpoint. The two written OrderDual Neumann wrappers
+and the real-analytic Wright omega theorem then give the live 952/11,884
+census, with zero missing module headers and zero missing declaration comments.
 
 The existing `FabiusFunction.ProbabilityLaplaceMoments` module then adds
 exactly two public theorems:
@@ -260,7 +261,7 @@ does not prove the larger support/smoothness/parity/Fourier--Bessel theorem
 `thm:leg-Lambda` or the matrix-projector corollary. It gives the historical
 925/11,619 census; the historical reciprocity census is 931/11,685 and the
 historical dyadic/finite-prefix census is 933/11,695. The current live census
-is 952/11,881, as recorded above, with zero missing module headers and zero
+is 952/11,884, as recorded above, with zero missing module headers and zero
 missing declaration comments.
 
 ### Series/transseries Lean overlays
@@ -269,7 +270,9 @@ The first overlay exhausts the public surfaces of nine modules that crosswalk
 the canonical `Transseries_And_Inversion` volume. The incoming overlay adds
 nine more modules (90 explicit public declarations) and four theorems to
 `TransseriesDifferentialBlock.lean`. Thus 943/11,787 is a historical
-pre-incoming checkpoint and 952/11,881/0 is the live
+pre-incoming checkpoint, while 952/11,881 is the historical post-incoming
+checkpoint. The two written OrderDual Neumann wrappers and the real-analytic
+Wright omega theorem add three declarations, so 952/11,884/0 is the live
 modules/declarations/missing-comments census. The retained PDFs predate the
 incoming source-only overlay and claim no render parity.
 
@@ -293,14 +296,19 @@ incoming source-only overlay and claim no render parity.
   power-series coefficient algebra.  They assert no analytic convergence or
   logarithm branch.
 
-- `TransseriesWellBased.lean` is 0+5 as written:
+- `TransseriesWellBased.lean` is 0+7 as written:
   `dickson_isPWO`, `dickson_antichain_finite`, `dickson_isPWO_pi`,
-  `neumann_isPWO`, and `neumann_finite_factorizations`; `to_additive`
-  generates `neumann_add_isPWO` and `neumann_finite_decompositions` outside
-  the lexical count.  `q0:lem:dickson` and `q0:lem:neumann` are **Exact** once
-  the manuscript's reverse-well-order/strict-growth convention is translated
-  to Lean's `Set.IsPWO` orientation, equivalently by using the order dual.
-  This proves the ordered-cancel-monoid mechanism, not a Hahn-series type.
+  `neumann_isPWO`, `neumann_finite_factorizations`,
+  `neumann_isPWO_orderDual`, and
+  `neumann_finite_factorizations_orderDual`; `to_additive` generates
+  `neumann_add_isPWO` and `neumann_finite_decompositions` outside the lexical
+  count. `q0:lem:dickson` remains **Exact**. `q0:lem:neumann` is **Exact** for
+  the manuscript's totally ordered commutative monomial group after its
+  reverse-well-order/strict-growth convention is represented by `Set.IsPWO`
+  on `OrderDual`; the two named wrappers state its product and finite-
+  factorization clauses. They work more generally for a partially ordered
+  cancel monoid. This proves the order-theoretic mechanism, not a Hahn-series
+  type.
 
 - `TransseriesHeight.lean` is 0+3:
   `isLittleO_log_pow_rpow`, `isLittleO_log_pow_id`, and
@@ -465,18 +473,21 @@ incoming source-only overlay and claim no render parity.
   lemma remains **Partial** because the logarithmic correction, constant,
   and `o(1)` remainder are absent.
 
-- `WrightOmega.lean` is 1+12: `Fabius.wrightOmega`,
-  `Fabius.wrightOmega_pos`, `Fabius.wrightOmega_add_log`,
+- `WrightOmega.lean` is 1+13: `Fabius.wrightOmega`,
+  `Fabius.analyticAt_wrightOmega`, `Fabius.wrightOmega_pos`,
+  `Fabius.wrightOmega_add_log`,
   `Fabius.principalLambertW_eq_wrightOmega_log`,
   `Fabius.wrightOmega_leftInverse`, `Fabius.wrightOmega_strictMono`,
   `Fabius.wrightOmega_one`, `Fabius.one_le_wrightOmega`,
   `Fabius.wrightOmega_le_self`, `Fabius.sub_log_le_wrightOmega`,
   `Fabius.wrightOmega_envelope`,
   `Fabius.add_one_div_two_le_wrightOmega`, and
-  `Fabius.tendsto_wrightOmega_atTop`. The equation, inverse, positivity,
-  strict monotonicity, Lambert bridge, envelope, and divergence clauses of
-  `plt:prop:mot-omega-basic` are **Exact**. The proposition is **Partial**
-  because real analyticity is not formalized.
+  `Fabius.tendsto_wrightOmega_atTop`. The complete real proposition
+  `plt:prop:mot-omega-basic` is **Exact**: its equation, inverse, positivity,
+  strict monotonicity, Lambert bridge, envelope, divergence, and real-
+  analyticity clauses are formalized. `Fabius.analyticAt_wrightOmega` states
+  `AnalyticAt ℝ` at every real input; it makes no complex holomorphic-
+  continuation or branch claim.
 
 The retained frontier, primary, walkthrough, geometric-q, and representation
 PDFs predate these source-only overlays and claim no render parity.
@@ -537,8 +548,9 @@ added to `DyadicBoundaryIdentity.lean`, and seven theorems added to
 union. The nine series/transseries modules and six concurrent declarations
 then give the historical 943/11,787 checkpoint. The subsequent nine-module,
 90-declaration incoming tranche and four new declarations in
-`TransseriesDifferentialBlock.lean` give the live 952/11,881 union, with zero
-documentation gaps.
+`TransseriesDifferentialBlock.lean` give the historical 952/11,881 checkpoint.
+The two written OrderDual Neumann wrappers and one real-analytic Wright omega
+theorem give the live 952/11,884 union, with zero documentation gaps.
 
 `FabiusFunction.RvachevLaurentLeading` has one definition and six theorems.
 Its manuscript-normalized punctured-neighborhood limit, together with the

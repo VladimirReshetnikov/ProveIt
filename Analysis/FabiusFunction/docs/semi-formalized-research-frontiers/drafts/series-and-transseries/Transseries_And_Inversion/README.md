@@ -2,10 +2,10 @@
 
 **Single consolidated volume for the whole `series-and-transseries` group.**
 `transseries_and_inversion.tex` is the canonical editable source. The retained
-702-page PDF was built on 4 September 2026 from the 55,005-line publication
-checkpoint. The current 55,300-line source includes later Lean-crosswalk edits;
-the retained artifact is therefore historical and no current source/render
-parity is claimed.
+702-page PDF was built on 4 September 2026 from the 55,005-line,
+3,111-label publication checkpoint. The current 55,319-line source has 3,118
+distinct labels and includes later Lean-crosswalk edits; the retained artifact
+is therefore historical and no current source/render parity is claimed.
 
 ## Status
 
@@ -26,10 +26,10 @@ absorbed each; the repair appendix lists every correction made.
 
 ## Lean formalization inventory
 
-The live corpus census is 952 modules and 11,881 explicit public declarations,
+The live corpus census is 952 modules and 11,884 explicit public declarations,
 with zero missing declaration comments and zero missing module headers. The
-eighteen directly relevant modules contain 166 explicit public commands; two
-named `to_additive` declarations bring this inventory to 168 named API entries.
+eighteen directly relevant modules contain 169 explicit public commands; two
+named `to_additive` declarations bring this inventory to 171 named API entries.
 Automatically generated structure projections are outside both tallies.
 
 - `TransseriesScale.lean` (one structure, one definition, three theorems):
@@ -48,11 +48,12 @@ Automatically generated structure projections are outside both tallies.
   `isLittleO_plMonomial`, `isAsymptoticScale_plMonomial`,
   `isAsymptoticScale_plMonomial_pow`, and
   `isAsymptoticScale_plMonomial_log`.
-- `TransseriesWellBased.lean` (five written theorems):
+- `TransseriesWellBased.lean` (seven written theorems):
   `dickson_isPWO`, `dickson_antichain_finite`, `dickson_isPWO_pi`,
-  `neumann_isPWO`, and `neumann_finite_factorizations`; `to_additive`
-  additionally generates `neumann_add_isPWO` and
-  `neumann_finite_decompositions`.
+  `neumann_isPWO`, `neumann_finite_factorizations`,
+  `neumann_isPWO_orderDual`, and
+  `neumann_finite_factorizations_orderDual`; `to_additive` additionally
+  generates `neumann_add_isPWO` and `neumann_finite_decompositions`.
 - `TransseriesHeight.lean` (three theorems):
   `isLittleO_log_pow_rpow`, `isLittleO_log_pow_id`, and
   `isLittleO_pow_mul_log_pow_exp`.
@@ -100,8 +101,8 @@ Automatically generated structure projections are outside both tallies.
   `isPoincareExpansion_zero_iff`, `powScale_eq_rpow`,
   `absorbsScale_of_isBigO_pow`, `isFlat_exp_neg`, and
   `isPoincareExpansion_add_exp_neg`.
-- `WrightOmega.lean` (one definition, twelve theorems): `wrightOmega`,
-  `wrightOmega_pos`, `wrightOmega_add_log`,
+- `WrightOmega.lean` (one definition, thirteen theorems): `wrightOmega`,
+  `analyticAt_wrightOmega`, `wrightOmega_pos`, `wrightOmega_add_log`,
   `principalLambertW_eq_wrightOmega_log`, `wrightOmega_leftInverse`,
   `wrightOmega_strictMono`, `wrightOmega_one`, `one_le_wrightOmega`,
   `wrightOmega_le_self`, `sub_log_le_wrightOmega`, `wrightOmega_envelope`,
@@ -149,19 +150,22 @@ The exact status map is deliberately narrower than the inventory:
 
 - Exact: `q0:def:scale`, `q0:eq:scale`, `q0:def:poincare`,
   `q0:eq:poincare`, `q0:eq:coefficients`, `q0:prop:uniqueness`,
-  `q0:def:flat`, `q0:prop:invisible`, `q0:lem:dickson`, the analytic
-  content of `plt:lem:mot-dominance`, the integer block-derivative identity
-  with a unit power generator, `plt:lem:bell-normalizations`, all three
+  `q0:def:flat`, `q0:prop:invisible`, `q0:lem:dickson`, `q0:lem:neumann`
+  through its literal `OrderDual` wrappers (the printed total order is a
+  specialization), the analytic content of `plt:lem:mot-dominance`,
+  `plt:prop:mot-omega-basic` over the reals only, and the displayed equations
+  `plt:eq:mot-block-derivative` and `plt:eq:dif-block` in the abstract unit
+  model, `plt:lem:bell-normalizations`, all three
   unit-series Bell results
   `p0:lem:bell-conversion`, `p0:lem:power-log`, and
   `p0:cor:exp-log-jets`, and `p6:prop:quadratic-core-catalan`.
-- Partial: `q0:lem:neumann` until the order-dual wrapper is exposed;
-  `q0:prop:height` beyond its two exact displayed estimates;
+- Partial: `q0:prop:height` beyond its two exact displayed estimates;
   `plt:def:mot-scale` beyond the ordered-sequence version;
-  `plt:prop:mot-omega-basic` only because real analyticity is absent;
   `plt:lem:mot-harmonic` beyond its leading Stolz limit;
-  `plt:lem:mot-block-antiderivative` and `plt:prop:dif-block` beyond the
-  integer block identity and polynomial coefficient operator;
+  the compound `plt:lem:mot-block-antiderivative` and `plt:prop:dif-block`
+  beyond their exact integer equations and polynomial coefficient operator,
+  since the concrete Laurent ambient, faithful evaluation, ambient uniqueness,
+  and general-exponent apparatus are absent;
   `p0:thm:lambert-core` beyond its real algebra and branch rules;
   `p0:thm:staircase` beyond its order-theoretic clauses;
   `p0:thm:remainder-transport` beyond the displacement bound;
@@ -238,6 +242,7 @@ a real-argument Fibonacci function); the reversal of `x + W(x)` in depth; the Be
 The former assembler cannot be rerun; the `.tex` header identifies the
 consolidated file as the canonical source and it is now edited in place. A
 future publication build would use three `pdflatex` passes, but none was run
-for this tranche. The current TeX has 3,118 distinct labels. The retained
-historical PDF has 702 A4 pages and was built from the preceding 55,005-line
-source checkpoint.
+for this tranche. The current TeX has 55,319 lines and 3,118 distinct labels.
+The retained historical PDF has 702 A4 pages and was built from the preceding
+55,005-line, 3,111-label source checkpoint; no current source/render parity is
+claimed.
