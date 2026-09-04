@@ -73,6 +73,7 @@ import FabiusFunction.BellDerivative
 import FabiusFunction.AssociatedStirling
 import FabiusFunction.RStirling
 import FabiusFunction.FallingFactorialSeries
+import FabiusFunction.PochhammerFalling
 import FabiusFunction.CauchyPolynomials
 import FabiusFunction.CoefficientRules
 import FabiusFunction.UnitSeriesPowerRecurrence
@@ -82,9 +83,9 @@ import FabiusFunction.IteratedLeibniz
 import FabiusFunction.NorlundDiagonal
 import FabiusFunction.ExponentialRescaling
 import FabiusFunction.BernoulliFormalLog
+import FabiusFunction.NorlundGeneralized
 import FabiusFunction.NarayanaNumbers
 import FabiusFunction.AssociahedronFaceNumbers
-import FabiusFunction.PochhammerFalling
 import FabiusFunction.StirlingFirstModH
 import FabiusFunction.StirlingSymmetricFunctions
 import FabiusFunction.LagrangeInversion

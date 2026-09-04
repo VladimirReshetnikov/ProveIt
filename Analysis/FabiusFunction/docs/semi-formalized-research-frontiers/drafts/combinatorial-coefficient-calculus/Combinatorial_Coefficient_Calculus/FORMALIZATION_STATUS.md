@@ -6,6 +6,28 @@ canonical claim register is the **Lean formalization register** section of
 Mathematical statements and proofs belong in the TeX/PDF pair. The register's
 status words are recorded correspondence claims, not a fresh compilation receipt.
 
+## Latest merge and validation checkpoint (2026-09-04)
+
+Main at `095be8f0b` is integrated. The current manuscript has 209 theorem-like
+items and 209 adjacent proofs, 712 labels, 951 references, 27 disposition rows,
+and six original-source inventory rows. Its 209-row register records 61 `Lean`,
+35 `partial`, and 113 `none`; inherited compiler receipts are not fresh replay.
+The source measures 11,155 lines and 546,097 UTF-8 bytes.
+
+The synchronized PDF has 211 A4 pages. Three serial strict pdfLaTeX passes and
+index generation succeeded; Libertinus text is present, with no Type 3 fonts,
+undefined references, overfull boxes, or rerun requests. Six focused pages
+covering the latest Nörlund additions, register, and index were visually checked;
+the preceding merge's Laplace, Lagrange, symmetric-function, and Newton additions
+were reviewed separately. No whole-volume visual or mathematical audit is claimed.
+
+The canonical structural/provenance validator and all eight crosswalk regression
+tests pass. All 3,458 cited Fabius names resolve in the source audit. The exact
+finite Stirling/Bell regressions pass. The facade reaches all 984 source modules;
+duplicate imports and the duplicate public reverse-row declaration were removed.
+These are source/finite/render checks, not Lean compilation. The merged proof
+extensions and new wrappers remain pending while other worktrees use the build slot.
+
 ## Inventory and evidence boundary
 
 The initial source snapshot contained 201 theorem-like environments: 150 theorems,
@@ -48,6 +70,17 @@ graph. Fresh merged-source counts, structural checks, and PDF verification are
 recorded separately by the publication owner. The second-kind recurrence and
 Riordan rows retain their partial classifications for the explicit semantic
 and inverse-construction gaps described below.
+
+The subsequent Nörlund synchronization incorporates main through
+`2ccc7f787becde416b234d40093876eac9f9c35e` and the source checkpoint
+`16975fdfd`. The regenerated register has 207 results: 60 `Lean`, 35 `partial`,
+and 112 `none`. `NorlundGeneralized` and the coefficient-base-change extension
+of `BernoulliFormalLog` have independent source/API reviews but still await
+compilation; no coverage upgrade is inferred from those reviews. Their human
+proofs now include normalization, zero-ring boundaries, and degree zero.
+The inherited PDF predates these latest source edits. PDF rebuilding remains
+skipped in this work at the user's request, without discarding the upstream
+render or claiming current render parity.
 
 `NewtonReciprocal.lean` passed focused compilation on 2026-09-04 using
 `lake env lean -o .lake/build/lib/lean/FabiusFunction/NewtonReciprocal.olean

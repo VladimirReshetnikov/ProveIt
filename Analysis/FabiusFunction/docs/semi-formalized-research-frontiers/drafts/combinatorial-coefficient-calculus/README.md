@@ -29,14 +29,14 @@ mode this package is now expected to pass.
 
 | Directory | Document |
 | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — evolving source; the 210-page A4 PDF is the preceding 2026-09-04 render checkpoint |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — synchronized 211-page A4 PDF rebuilt on 2026-09-04 after integrating main at `095be8f0b` |
 
-At that checkpoint the PDF was rebuilt using three strict
-pdfLaTeX passes and a generated index. Nine focused pages were visually
-reviewed; no whole-volume page-by-page review is claimed.
-The current merge requires a fresh render and validation; those historical
-counts do not assert parity with the merged source. The in-document register
-records Lean compilation separately.
+The current PDF was rebuilt using three strict pdfLaTeX passes and a generated
+index. Six focused pages from the final render were visually reviewed; no
+whole-volume page-by-page review is claimed. The source has 209 adjacent proofs
+and a 61 Lean / 35 partial / 113 none register. Full checkpoint measurements and
+the distinction between inherited compiler receipts and pending source proofs
+are recorded in `Combinatorial_Coefficient_Calculus/FORMALIZATION_STATUS.md`.
 Standalone checksum files are retired; provenance is kept in Git and the source
 inventory, and the validator does not maintain or require file digests.
 
@@ -232,7 +232,8 @@ proves the full EGF and binomial identity including degree zero. The new
 Bernoulli kernel using the existing recurrence-to-logarithm bridge. Its
 coefficient formula separates degree zero and preserves the distinction between
 the two degree-one Bernoulli conventions. These two modules and the affected
-Norlund, Lambert, and ThueMorse callers still await compilation; independent
+Norlund and Lambert callers still await compilation; the ThueMorse caller's
+direct check is recorded by the upstream checkpoint above. Independent
 source reviews are not compiler validation, and their register classifications
 have not been promoted on that basis.
 
@@ -240,16 +241,17 @@ The human moment-cumulant proof now states its normalization and positive-degree
 boundaries explicitly, with formal logarithm identities separated from the
 still-open set-partition interpretation. The Nörlund proof now derives the
 logarithmic coefficients without dividing by the nonunit formal variable.
-Arbitrary-order Nörlund polynomials and their analytic convergence remain open
-formalization work. At the preceding source/render checkpoint the register
-had 206 rows: 62 Lean, 32 partial, and 112 without a compiled counterpart.
-The source then had 10,852 lines, 528,604 UTF-8 bytes, 709 labels, and 206
-adjacent proofs. Final structural validation and all eight duplicate-crosswalk
-regression tests passed at that checkpoint.
-Its 210-page PDF contained Libertinus text and no Type 3 fonts; the final
-strict-pass log had no undefined references, overfull boxes, or rerun requests.
-The earlier counts above describe their named checkpoints only. The unused
-duplicate Stirling rearrangement was removed; its earlier theorem retains
-the necessary zeroth summand and already proves the full identity.
-Fresh merged-source metrics, structural validation, and render verification
-remain to be recorded by the publication owner.
+The new `NorlundGeneralized` source constructs actual polynomials at every
+scalar order over a commutative rational algebra. Its source-reviewed API
+includes the full EGF, Appell derivative, translation, convolution, natural-order
+polynomial compatibility, explicit cumulants, and the complete Bell formula.
+`BernoulliFormalLog` now transports the logarithm and its coefficients along
+arbitrary coefficient ring homomorphisms and shares the kernel normalization
+lemma. These extensions have not yet compiled, so no corresponding coverage
+promotion is claimed. General-order finite differences, the literal
+multiplicity-vector expansion, and analytic convergence remain separate
+formalization obligations.
+
+The human exposition gives the normalized complex logarithm construction on its
+disk separately from the formal algebra, states the coefficient-base-change
+lemma with proof, and includes the degree-zero multiplicity convention.
