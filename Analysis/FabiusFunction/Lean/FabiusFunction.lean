@@ -80,6 +80,7 @@ import FabiusFunction.NorlundDiagonal
 import FabiusFunction.NarayanaNumbers
 import FabiusFunction.StirlingFirstModH
 import FabiusFunction.LagrangeInversion
+import FabiusFunction.RaneyNumbers
 import FabiusFunction.LambertWSeries
 import FabiusFunction.FussCatalanSeries
 import FabiusFunction.InverseBellCoefficients
