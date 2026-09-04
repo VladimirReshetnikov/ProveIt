@@ -9185,6 +9185,17 @@ $F(1-t)$ into $1-F(t)$, and $X$ has a density, so
 $1-F(t)=\Probability(X>t)=\Probability(X\ge t)$.
 \end{proof}
 
+\emph{Lean status.}  Exact by composition in
+\path{ProbabilityLaplaceMoments.lean}.  The global identity
+\path{Fabius.rvachevUp_eq_fabiusReal_one_sub_abs} proves
+\eqref{eq:up-tail-reflection} without needing $\AbsoluteValue y\le1$;
+\path{Fabius.rvachevUp_eq_one_sub_fabiusReal_of_nonneg} gives
+$\RvachevUp(t)=1-F(t)$ on the whole nonnegative ray; and
+\path{Fabius.ProbabilityRepresentation.weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg}
+identifies the closed tail $\Probability(X\ge t)$ there.  The last theorem
+uses the existing atomlessness of the canonical weighted-sum law, so no
+strict-versus-closed endpoint convention remains implicit.
+
 % ---- merged block M02 ----
 \begin{corollary}[Tail form of the moments]\label{cor:up-moments}
 For every $n\ge1$,
@@ -9203,6 +9214,13 @@ $nt^{n-1}\IndicatorOf{\SetOf{t<X}}$ gives
 \]
 because $0\le X\le1$.  Now apply \eqref{eq:up-survival}.
 \end{proof}
+
+\emph{Lean status.}  Exactly
+\path{Fabius.ProbabilityRepresentation.integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp}
+in \path{ProbabilityLaplaceMoments.lean}.  It is stated for every natural
+$n\ge1$, with the expectation as a full-line integral against the canonical
+weighted-sum law, and derives the displayed normalization from the existing
+Banach-valued survival layer-cake theorem.
 
 % ---- merged block M03 ----
 % ed.: this block replaces the sibling lemma \texttt{lem:fabius-moment-dilation},
@@ -13682,7 +13700,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 178 are \statusexact, 81 are
+Of the 282 labelled forward results, 180 are \statusexact, 79 are
 \statuspartial, 15 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -14299,9 +14317,9 @@ Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 8 & 1 & 0 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 9 & 0 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 3 & 10 & 0 & 0\\
-Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 9 & 46 & 1 & 0\\
+Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 11 & 44 & 1 & 0\\
 \midrule
-\textbf{Forward total} & 178 & 81 & 15 & 8\\
+\textbf{Forward total} & 180 & 79 & 15 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -15806,14 +15824,18 @@ general-$q$ central-band formula and sharp supremum statement are absent}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Dyadic Gaussian--Thue--Morse structure and the values of $F$}\\
 \midrule
-\Cref{prop:up-tail} & \statuspartial &
-\texttt{weightedSumDistribution\_real\_Ioi\_eq\_rvachevUp}\newline
-{\footnotesize\texttt{ProbabilityLaplaceMoments}; Lean has the strict survival
-event, not the stated closed-tail equality}\\[2pt]
-\Cref{cor:up-moments} & \statuspartial &
-\texttt{intervalIntegral\_rvachevUp\_smul\_eq\_integral}\newline
-{\footnotesize\texttt{ProbabilityLaplaceMoments}; the integral bridge is
-formalized, but not the displayed tail-moment formula}\\[2pt]
+\Cref{prop:up-tail} & \statusexact &
+\texttt{rvachevUp\_eq\_fabiusReal\_one\_sub\_abs},
+\texttt{rvachevUp\_eq\_one\_sub\_fabiusReal\_of\_nonneg},
+\texttt{weightedSumDistribution\_real\_Ici\_eq\_rvachevUp\_of\_nonneg}\newline
+{\footnotesize\texttt{EffectiveFlatness}; \texttt{LaplaceTransform};
+\texttt{ProbabilityLaplaceMoments}; the first two identities hold on domains
+stronger than stated, and atomlessness converts the strict survival law to
+the manuscript's closed-tail convention}\\[2pt]
+\Cref{cor:up-moments} & \statusexact &
+\texttt{integral\_pow\_weightedSumDistribution\_eq\_mul\_intervalIntegral\_rvachevUp}\newline
+{\footnotesize\texttt{ProbabilityLaplaceMoments}; exact for every natural
+$n\ge1$, with the expectation represented by the full-line measure integral}\\[2pt]
 \Cref{thm:geometric-uniform-mgf} & \statuspartial &
 \texttt{complexMGF\_weightedSumDistribution\_eq\_complexGeneratingFunction},
 \texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}mgf\_\allowbreak{}taylorCoefficient},
@@ -16050,7 +16072,7 @@ parity-split degree is exact, including $n=0$ and $n=1$.  This is a purely
 algebraic polynomial theorem and adds no analytic or root-of-unity
 hypothesis.  Its zero-definition/three-theorem leaf raised the then-current
 corpus to the historical 921-module/11,575-declaration checkpoint; the live
-facade census is 923 modules and 11,610 public declarations}\\[2pt]
+facade census is 924 modules and 11,614 public declarations}\\[2pt]
 \Cref{cor:qF-halfbase-dictionary} & \statuspartial &
 \texttt{fabiusAtInverseTwoPow\_eq\_halfMoment},
 \texttt{halfQPochhammer\_eq\_mersenne\_div}\newline

@@ -166,7 +166,7 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 923 modules and 11,610 public declarations, with no
+audit now contains 924 modules and 11,614 public declarations, with no
 documentation gaps. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
@@ -265,11 +265,23 @@ pre-merge exterior-branch 907/11,464 counts remain historical checkpoints.
 The actual merged-main pre-local checkpoint is 919/11,569; the exterior leaf
 gives the next historical checkpoint 920/11,572 without a status move; and the
 sharp-degree leaf gives the historical 921/11,575 checkpoint. Subsequent
-Laurent and finite-prefix tranches give the historical 922/11,582 checkpoint
-and the live 923/11,610 census, respectively.  The forward ledger is
-178 Exact / 81 Partial / 15 None / 8 N/A, the relevant
-Dyadic Gaussian--Thue--Morse chapter is 9/46/1/0, and the source concordance
-is 91 Lean-proved / 387 human-proved frontier / 60 N/A / 9 conjectures.
+Laurent and finite-prefix tranches give the historical 922/11,582 and
+923/11,610 checkpoints, respectively.  The current facade census is
+924/11,614.  The forward ledger is
+180 Exact / 79 Partial / 15 None / 8 N/A, the relevant
+Dyadic Gaussian--Thue--Morse chapter is 11/44/1/0, and the source concordance
+is 93 Lean-proved / 385 human-proved frontier / 60 N/A / 9 conjectures.
+The existing `ProbabilityLaplaceMoments.lean` module now adds exactly the two
+theorems
+`weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
+`integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.
+The first combines the strict-Ioi survival law with atomlessness to identify
+the manuscript's closed tail `P(X >= t)` on the full nonnegative ray; the
+second gives `E[X^n] = n * integral_0^1 t^(n-1) up(t) dt` for every natural
+`n >= 1`, with the expectation taken over the full weighted-sum law. Together
+with `rvachevUp_eq_fabiusReal_one_sub_abs` and
+`rvachevUp_eq_one_sub_fabiusReal_of_nonneg`, these declarations make
+`prop:up-tail` and `cor:up-moments` Exact without changing any broader row.
 The zero-definition/one-theorem `HalfQBinomialRootSimplicity.lean` leaf exports
 `halfQBinomial_sum_rootMultiplicity_two_pow`; composed with
 `halfQBinomial_sum_eq_zero_iff` and
@@ -400,9 +412,9 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 178 Exact, 81 Partial, 15 None, and 8 interface rows; the
+status ledger is 180 Exact, 79 Partial, 15 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
-completed source concordance records 91 Lean-proved rows, 387 human-proved
+completed source concordance records 93 Lean-proved rows, 385 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.  Its
 immutable source inventory and editorial dispositions remain unchanged; the
 generator's current-status projection records the q-Chu, terminating-reversal,

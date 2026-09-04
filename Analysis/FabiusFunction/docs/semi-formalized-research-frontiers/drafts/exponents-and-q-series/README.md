@@ -63,7 +63,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 923 facade-reachable modules and 11,610 public declarations, with no
+contains 924 facade-reachable modules and 11,614 public declarations, with no
 missing module headers or declaration documentation.
 
 The sibling source-only `FabiusFunction.GeometricRichardsonGenerating` module
@@ -166,12 +166,19 @@ gives the historical 921/11,575 checkpoint.  The sibling
 922/11,582 and makes `is:p2:thm:Laurent-leading` Exact with the manuscript's
 centered-MGF normalization and a punctured Laurent limit.  The sibling
 `FinitePrefixAppellRecovery.lean` leaf (eleven definitions and seventeen
-theorems) gives the live 923/11,610 census and makes
+theorems) gives the historical 923/11,610 checkpoint and makes
 `is:p2:thm:finite-prefix-expansion` and `is:p2:thm:exact-recovery` Exact as
 finite rational identities; it adds no analytic-MGF convergence or universal
-fixed-evaluation-point degree claim.  The q ledger remains 178/81/15/8, its relevant
-Dyadic Gaussian--Thue--Morse chapter is 9/46/1/0, and the source projection
-is 91/387/60/9. The zero-definition/one-theorem
+fixed-evaluation-point degree claim.  The current facade census is
+924/11,614.  The q ledger is 180/79/15/8, its relevant
+Dyadic Gaussian--Thue--Morse chapter is 11/44/1/0, and the source projection
+is 93/385/60/9. The existing `ProbabilityLaplaceMoments.lean` module adds
+`weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
+`integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.
+Atomlessness identifies the strict and closed tails, and the second theorem
+is the exact full-law moment formula for every natural `n >= 1`; together
+with the existing global up/Fabius identities, these promote `prop:up-tail`
+and `cor:up-moments` to Exact. The zero-definition/one-theorem
 `HalfQBinomialRootSimplicity.lean` leaf exports
 `halfQBinomial_sum_rootMultiplicity_two_pow`; with the complete rational
 root classification `halfQBinomial_sum_eq_zero_iff`, it makes
@@ -289,8 +296,8 @@ Current packages and retained intake records:
   theorems), and `HalfQBinomialRootSimplicity.lean` (zero definitions and one
   theorem). The existing `FinitePolynomialFunctional.lean` module now has
   zero definitions and sixteen public theorems. The forward crosswalk is now
-  178 Exact, 81 Partial, 15 None, and 8 interface rows; the source ledger is
-  91 Lean-proved, 387 human-proved
+  180 Exact, 79 Partial, 15 None, and 8 interface rows; the source ledger is
+  93 Lean-proved, 385 human-proved
   frontier, 60 not
   applicable, and 9 conjectures. No PDF was generated locally while resolving
   this source-only merge, so the retained 389-page artifact does not render
@@ -1010,7 +1017,7 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 178 Exact, 81
+The latest validated forward formalization ledger has 282 rows: 180 Exact, 79
 Partial, 15 with no counterpart, and 8 interface-only. The basic
 geometric-uniform row is Exact: `GeometricUniformRealization.lean` proves that
 an `iIndepFun` process of unit-interval coordinates with uniform marginal laws

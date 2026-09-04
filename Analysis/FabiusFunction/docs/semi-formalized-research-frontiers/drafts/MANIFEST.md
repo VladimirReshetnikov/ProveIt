@@ -21,8 +21,8 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 923
-source modules and 11,610 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 924
+source modules and 11,614 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -181,7 +181,7 @@ compose to make `cor:scaled-geometric-moments` Exact over a field under finite
 power-node injectivity. The polynomial theorem allows arbitrary scale,
 including zero, so it subsumes the manuscript's nonzero-scale hypothesis. The
 forward status ledger covers 282 labelled results:
-178 Exact / 81 Partial / 15 None / 8 N/A interface rows. The
+180 Exact / 79 Partial / 15 None / 8 N/A interface rows. The
 zero-definition/one-theorem `HalfQBinomialRootSimplicity.lean` leaf exports
 `halfQBinomial_sum_rootMultiplicity_two_pow`.  Together with
 `halfQBinomial_sum_eq_zero_iff` and
@@ -202,7 +202,13 @@ rational zero classifier and Gaussian/half-q coefficient identification, it
 makes `cor:halfbase-root-locus` Exact under the rational-polynomial and
 rational-root convention. Injective scalar extension preserves the displayed
 multiplicities, but the leaf does not classify all roots over every extension
-field. The
+field. The existing `ProbabilityLaplaceMoments.lean` module now adds
+`weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
+`integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.
+Atomlessness converts the strict survival event to the manuscript's closed
+tail, while the second declaration is the exact full-law moment formula for
+every natural degree at least one. With the existing global up/Fabius
+identities, these make `prop:up-tail` and `cor:up-moments` Exact. The
 terminating-basic-hypergeometric closure is `TwoPhiOneReversal.lean` (2+12)
 and `QChuVandermonde.lean` (0+10): both q-Chu evaluations and the reversal
 lemma are Exact for the actual tsum, while the claimed full-domain derivation
@@ -510,7 +516,7 @@ then gives 922/11,582 and makes `is:p2:thm:Laurent-leading` Exact at the
 manuscript's centered-MGF normalization and punctured-limit boundary, without
 claiming lower Laurent coefficients or pole-shell asymptotics.  The
 eleven-definition/seventeen-theorem `FinitePrefixAppellRecovery.lean` leaf
-then gives the live 923/11,610 census and makes
+then gives the historical 923/11,610 checkpoint and makes
 `is:p2:thm:finite-prefix-expansion` and `is:p2:thm:exact-recovery` Exact as
 finite rational identities, without asserting analytic-MGF convergence or a
 universal fixed-evaluation-point degree.  In the current semantic union, the subsequent
@@ -522,10 +528,10 @@ by composition with the rational half-base extractor. The simple-root theorem
 in `HalfQBinomialRootSimplicity.lean`, composed with the complete rational
 root classification in `HalfQBinomial.lean`, makes
 `cor:halfbase-root-locus` Exact while leaving
-`cor:qbinom-inversion-law` Partial. The q forward totals are 178 Exact / 81
-Partial / 15 None / 8 N/A, the relevant
-Dyadic Gaussian--Thue--Morse chapter is 9/46/1/0, and the source concordance
-is 91 Lean-proved / 387 human-proved frontier / 60 N/A / 9 conjectures. The
+`cor:qbinom-inversion-law` Partial. The current facade census is 924/11,614.
+The q forward totals are 180 Exact / 79 Partial / 15 None / 8 N/A, the relevant
+Dyadic Gaussian--Thue--Morse chapter is 11/44/1/0, and the source concordance
+is 93 Lean-proved / 385 human-proved frontier / 60 N/A / 9 conjectures. The
 intermediate 915/11,556 Bridge census remains a historical checkpoint. The
 retained 389-page q-series PDF is a
 historical checkpoint and does not render this source-only crosswalk.
