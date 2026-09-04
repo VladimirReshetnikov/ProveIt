@@ -90,7 +90,10 @@ theorem natDegree_and_leadingCoeff_lambertNumerator {n : ℕ} (hn : n ≠ 0) (j 
       (lambertNumerator n j).leadingCoeff = (n : ℤ) * (-1) ^ j * (Nat.factorial j : ℤ) := by
   have hnz : (n : ℤ) ≠ 0 := by exact_mod_cast hn
   induction j with
-  | zero => refine ⟨by simp, by simp⟩
+  | zero =>
+      refine ⟨by simp, ?_⟩
+      rw [lambertNumerator_zero, leadingCoeff_C]
+      simp
   | succ j ih =>
       obtain ⟨hdeg, hlead⟩ := ih
       have hfac : ((Nat.factorial j : ℕ) : ℤ) ≠ 0 := by
@@ -158,7 +161,8 @@ theorem eval_zero_lambertNumerator (n j : ℕ) :
   | zero => simp
   | succ j ih =>
       have h1 : (X * (1 + X) * derivative (lambertNumerator n j)).eval 0 = 0 := by simp
-      rw [lambertNumerator_succ, eval_add, h1, zero_add, eval_mul, ih, prod_range_succ]
+      rw [lambertNumerator_succ, eval_add, h1, zero_add, eval_mul, ih]
+      conv_rhs => rw [prod_range_succ]
       unfold lambertMultiplier
       simp only [eval_add, eval_mul, eval_pow, eval_X, eval_C]
       push_cast
