@@ -119,6 +119,7 @@ import FabiusFunction.GeometricLagrangeWeights
 import FabiusFunction.GeometricLagrangeQBinomial
 import FabiusFunction.GeometricLagrangeQMoments
 import FabiusFunction.GeometricLagrangeCompleteHomogeneous
+import FabiusFunction.GeometricRichardsonGenerating
 import FabiusFunction.LambertPhaseLockedRichardson
 import FabiusFunction.LambertPhaseLockedBell
 import FabiusFunction.LambertReciprocalAsymptotics
@@ -773,6 +774,24 @@ filters are diagonalized coefficientwise on formal power series, with exact
 Gaussian residual multipliers for geometric rows; the recursive Gaussian
 coefficients themselves have functorial, symmetric, denominator-free ring
 laws.
+The geometric Richardson generating-function layer is the exact 3+7 public
+surface `geometricRichardsonKernel`, `qPochhammerNormalizedDataSeries`,
+`geometricRichardsonTransform`,
+`coeff_rescale_qPochhammerSeries_eq_geometricRichardsonKernel`,
+`coeff_qPochhammerNormalizedDataSeries`,
+`geometricRichardsonTransform_generating`,
+`geometricRichardsonTransform_eq_sum_lagrange`,
+`geometricLagrangeRichardson_generating`,
+`hasSum_geometricRichardsonTransform_mul_pow`, and
+`hasSum_geometricLagrangeRichardson_mul_pow`.  The formal convolution and
+factorization hold over every commutative ring using total `Ring.inverse`,
+without topology or q-regularity.  The canonical Lagrange-row identification,
+which makes the comb-interpolation claim `gq:thm:richardson-generating` Exact,
+holds over fields for `q ≠ 0`; roots of unity are allowed algebraically, but
+colliding nodes do not acquire interpolation exactness, and the repeated-node
+case `q = 0`, `n ≥ 2` is excluded.  The analytic `HasSum` pair assumes a
+complete normed field, `‖q‖ < 1`, and norm-summability of the normalized data,
+with `q ≠ 0` additionally required only for the Lagrange form.
 It also exposes the exact Fourier--Legendre expansion of Rvachev's up
 function, with absolute uniform convergence on `[-1,1]`, and its translated
 monomial representation of the signed global Fabius function on `[0,2]`.
@@ -933,7 +952,7 @@ nonvanishing-denominator hypotheses.
 
 Four root-of-unity and q-Catalan companions add one definition and twenty-five
 theorems: `CyclotomicDivisibility` 0+3, `PrimitiveRootBlock` 0+3,
-`QCatalan` 1+11, and `QLucas` 0+8.  They prove the cyclotomic carry criterion,
+`QCatalan` 1+11, and `QLucas` 0+7.  They prove the cyclotomic carry criterion,
 complete primitive-root blocks, the q-Lucas theorem over integral domains, and
 MacMahon's integral q-Catalan polynomial with its degree and value at one.
 The zeta–Lambert tail calculus of the Thue–Morse frontier results is
@@ -1030,6 +1049,38 @@ series.  `QPfaffSaalschutz` (0+3) proves the terminating balanced `₃φ₂`
 summation algebraically over a field.  The nonzero nome and parameters,
 strict-contraction bounds, and finite-product nonvanishing assumptions remain
 explicit; no boundary or limiting extension is asserted.
+
+The terminating basic-hypergeometric pair contributes two definitions and
+twenty-two theorems.  `TwoPhiOneReversal` (2+12) defines `twoPhiOneFinite` and
+`twoPhiOneReflection`; its exhaustive theorem inventory is
+`choose_two_add_succ_choose_two`, `finiteQPochhammerIn_sub_eq`,
+`finiteQPochhammerIn_reversal_ne_zero`,
+`finiteQPochhammerIn_inv_pow_self`, `twoPhiOneReflection_involutive`,
+`twoPhiOneFinite_reversal`, `twoPhiOneFinite_reversal_twice`,
+`twoPhiOneFinite_eq_sum_twoPhiOneTerm`,
+`twoPhiOne_eq_twoPhiOneFinite_inv_pow`, `twoPhiOne_reversal`,
+`twoPhiOne_reversal_twice`, and `twoPhiOne_one_eq_twoPhiOneFinite_zero`.
+The actual-tsum statement, finite-support bridge, involutive parameter
+reflection, and double application make the monograph's
+`lem:2phi1-reversal` coverage Exact.  The reversal retains `q,a,c,z ≠ 0` and
+nonvanishing of `(q;q)_n`, `(c;q)_n`, and `(q^{1-n}/a;q)_n`; the separate
+`n=0` bridge includes `q=0`.
+
+`QChuVandermonde` (0+10) has the exhaustive theorem inventory
+`two_mul_choose_two`, `mul_sub_one_eq_mul_sub_add`,
+`finiteQPochhammerIn_div_eq_sum_chu`, `q_chu_vandermonde_first`,
+`finiteQPochhammerIn_div_eq_sum_chu_second`,
+`twoPhiOneFinite_mul_finiteQPochhammerIn_eq_chu_second`,
+`q_chu_vandermonde_second`, `q_chu_vandermonde_second_by_reversal`,
+`twoPhiOne_q_chu_vandermonde_first`, and
+`twoPhiOne_q_chu_vandermonde_second`.  The two actual-tsum wrappers make
+`cor:q-chu` Exact on the full displayed rational domain `q ≠ 0`, `A ≠ 0`,
+`(q;q)_n ≠ 0`, `(C;q)_n ≠ 0`; the second formula needs neither `C ≠ 0` nor
+`(A;q)_n ≠ 0`.  The audit status of `prop:qchu2-by-reversal` is Partial:
+the named reversal proof additionally assumes `C ≠ 0` and `(A;q)_n ≠ 0`,
+whereas the stronger full-domain finite theorem and actual-tsum wrapper use a
+direct denominator-cleared q-Cauchy argument.  Rational continuation and the
+cleared commutative-ring extension remain outside the formal API.
 
 `QuantumMultinomial` adds no definitions and exactly five theorems.  It
 decomposes tuple antidiagonals, transports Gaussian symmetry to every

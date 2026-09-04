@@ -153,6 +153,10 @@ LEAN_PROOFS = {
         "FabiusFunction.PrimePowerBinomialValuation",
         "Fabius.twoPowChoose_padicValNat",
     ),
+    "gq:thm:richardson-generating": (
+        "FabiusFunction.GeometricRichardsonGenerating",
+        "Fabius.geometricLagrangeRichardson_generating",
+    ),
     "gq:thm:up-polynomial-synthesis": (
         "FabiusFunction.RvachevPolynomialSynthesis",
         "Fabius.normalized_sum_Ioo_"
@@ -180,6 +184,22 @@ LEAN_SUPPORT: dict[str, tuple[str, tuple[str, ...], str]] = {
         "Lean also proves the full generic-prime unit row p^m - 1, the exact "
         "generic-prime companion valuation in row p^m - 2 for 0 < j < p^m, "
         "and its dyadic specialization.",
+    ),
+    "gq:thm:richardson-generating": (
+        "FabiusFunction.GeometricRichardsonGenerating",
+        (
+            "Fabius.geometricRichardsonTransform_generating",
+            "Fabius.hasSum_geometricLagrangeRichardson_mul_pow",
+        ),
+        "The primary declaration is the exact formal-series identity over a "
+        "field for q != 0, with the infinite q-Pochhammer factor interpreted "
+        "by its Euler coefficients. No root-of-unity exclusion is needed for "
+        "that totalized algebraic equality, while genuine interpolation still "
+        "requires pairwise-distinct nodes. The analytic HasSum companion "
+        "assumes a complete normed field, norm(q) < 1, q != 0, and absolute "
+        "summability of the normalized data series. A separate explicit-"
+        "convolution theorem is unconditional over commutative rings, even "
+        "at q = 0, but does not supply Lagrange interpolation semantics there.",
     ),
     "gq:thm:gaussian-Appell-decoder": (
         "FabiusFunction.LagrangeRvachevSynthesis",

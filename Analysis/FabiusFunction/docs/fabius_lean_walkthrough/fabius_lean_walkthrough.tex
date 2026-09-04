@@ -2275,8 +2275,8 @@ domain, a primitive \(d\)-th root \(\zeta\) kills the interior coefficients
 \(\GaussianBinomial{d}{k}{\zeta}\); for \(d>0\), its top phase is \(-1\) and
 the complete block is \((y;\zeta)_d=1-y^d\).
 
-\nolinkurl{QLucas.lean} is 0+8:
-\nolinkurl{two_mul_choose_two}, \nolinkurl{add_mul_add_sub_one},
+\nolinkurl{QLucas.lean} is 0+7:
+\nolinkurl{add_mul_add_sub_one},
 \nolinkurl{choose_two_add}, \nolinkurl{coeff_finiteQPochhammerIn_neg_X},
 \nolinkurl{finiteQPochhammerIn_neg_X_block},
 \nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq}, and
@@ -2288,6 +2288,8 @@ coefficient, block, and phase identities prove
 \]
 when \(d>0\), \(\zeta\) is a primitive \(d\)-th root in a commutative integral
 domain, and \(b,s<d\).
+The identically named \nolinkurl{two_mul_choose_two} helper is private in this
+module; its public owner is \nolinkurl{QChuVandermonde.lean}.
 
 \nolinkurl{CyclotomicDivisibility.lean} is 0+3:
 \nolinkurl{cyclotomic_exponent_eq_one_iff},
@@ -5456,7 +5458,7 @@ Universal Gaussian-polynomial degree and palindromicity & \nolinkurl{natDegree_g
 Central squared-base Gaussian reduction & \nolinkurl{finiteQPochhammerIn_mul_neg}, \nolinkurl{finiteQPochhammerIn_two_mul}, \nolinkurl{finiteQPochhammerIn_map_ringHom}, \nolinkurl{central_gaussianBinomial_sq_mul_int}, \nolinkurl{central_gaussianBinomial_sq_mul}, \nolinkurl{central_gaussianBinomial_sq_div} & Exhaustive zero-definition/six-theorem surface of \nolinkurl{CentralQBinomialReduction.lean} \\
 Cyclotomic q-factorizations & \nolinkurl{div_add_div_le_div}, \nolinkurl{div_le_div_add_div_add_one}, \nolinkurl{mem_range_and_mem_divisors_iff}, \nolinkurl{finiteQPochhammerIn_X_eq_prod_cyclotomic}, \nolinkurl{finiteQPochhammerIn_X_eq_gaussianBinomial_mul}, \nolinkurl{prod_cyclotomic_pow_div_extend}, \nolinkurl{gaussianBinomial_X_eq_prod_cyclotomic} & Exhaustive zero-definition/seven-theorem surface of \nolinkurl{CyclotomicFactorization.lean} \\
 Primitive-root Gaussian block & \nolinkurl{gaussianBinomial_isPrimitiveRoot_eq_zero}, \nolinkurl{neg_one_pow_mul_pow_choose_two}, \nolinkurl{finiteQPochhammerIn_isPrimitiveRoot} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{PrimitiveRootBlock.lean}; interior vanishing, top phase, and complete block in a commutative integral domain \\
-The q-Lucas theorem & \nolinkurl{two_mul_choose_two}, \nolinkurl{add_mul_add_sub_one}, \nolinkurl{choose_two_add}, \nolinkurl{coeff_finiteQPochhammerIn_neg_X}, \nolinkurl{finiteQPochhammerIn_neg_X_block}, \nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq}, \nolinkurl{gaussianBinomial_q_lucas} & Exhaustive zero-definition/eight-theorem surface of \nolinkurl{QLucas.lean}; positive primitive-root order and residue bounds remain explicit \\
+The q-Lucas theorem & \nolinkurl{add_mul_add_sub_one}, \nolinkurl{choose_two_add}, \nolinkurl{coeff_finiteQPochhammerIn_neg_X}, \nolinkurl{finiteQPochhammerIn_neg_X_block}, \nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq}, \nolinkurl{gaussianBinomial_q_lucas} & Exhaustive zero-definition/seven-theorem surface of \nolinkurl{QLucas.lean}; positive primitive-root order and residue bounds remain explicit \\
 Cyclotomic carry criterion & \nolinkurl{cyclotomic_exponent_eq_one_iff}, \nolinkurl{cyclotomic_dvd_gaussianBinomial_iff}, \nolinkurl{gaussianBinomial_mul_isPrimitiveRoot} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{CyclotomicDivisibility.lean}; rational-polynomial divisibility and integral-domain primitive-root value \\
 MacMahon q-Catalan polynomial & \nolinkurl{qCatalan}; \nolinkurl{map_qInt}, \nolinkurl{qInt_X_monic}, \nolinkurl{qInt_X_natDegree}, \nolinkurl{X_sub_one_mul_qInt}, \nolinkurl{qInt_X_eq_prod_cyclotomic}, \nolinkurl{qInt_X_dvd_gaussianBinomial_rat}, \nolinkurl{qInt_X_dvd_gaussianBinomial_int}, \nolinkurl{qInt_X_mul_qCatalan}, \nolinkurl{qCatalan_natDegree}, \nolinkurl{qCatalan_eval_one_mul}, \nolinkurl{qCatalan_eval_one} & Exhaustive one-definition/eleven-theorem surface of \nolinkurl{QCatalan.lean}; integral quotient, degree \(n(n-1)\), and Catalan value at one \\
 Newton interpolation and geometric divided differences & \nolinkurl{newtonCoeff}, \nolinkurl{nodeNewtonPoly}, \nolinkurl{newtonInterpolant}; \nolinkurl{newtonCoeff_eq}, \nolinkurl{newtonCoeff_zero}, \nolinkurl{newtonCoeff_mul_prod}, \nolinkurl{nodeNewtonPoly_succ}, \nolinkurl{eval_nodeNewtonPoly}, \nolinkurl{degree_nodeNewtonPoly_lt}, \nolinkurl{nodeNewtonPoly_eq_interpolate}, \nolinkurl{eq_nodeNewtonPoly_of_eval_eq}, \nolinkurl{coeff_nodeNewtonPoly_self}, \nolinkurl{newtonCoeff_eq_sum}, \nolinkurl{nodal_range_pow}, \nolinkurl{prod_erase_pow_sub_pow}, \nolinkurl{newtonCoeff_pow_eq_sum}, \nolinkurl{newtonPoly_succ}, \nolinkurl{eval_newtonPoly}, \nolinkurl{degree_newtonPoly_lt}, \nolinkurl{newtonPoly_eq_interpolate}, \nolinkurl{eq_newtonPoly_of_eval_eq}, \nolinkurl{coeff_newtonPoly_self} & Exhaustive three-definition/nineteen-theorem field-valued surface of \nolinkurl{NewtonInterpolation.lean} \\
@@ -5623,7 +5625,7 @@ Module & Role in the development \\
 \nolinkurl{CentralQBinomialReduction.lean} & Exactly six theorems and no definitions: sign pairing, even--odd dissection, naturality, integral and commutative-ring division-free central reduction, and a field quotient under two nonvanishing hypotheses. \\
 \nolinkurl{CyclotomicFactorization.lean} & Exactly seven theorems and no definitions: quotient bounds, divisor reindexing, finite-product and factorial identities over commutative rings, interval-product extension, and Gaussian cyclotomic factorization over an integral domain. \\
 \nolinkurl{PrimitiveRootBlock.lean} & Exactly three theorems and no definitions: primitive-root interior Gaussian vanishing, the top phase, and the complete finite q-Pochhammer block. \\
-\nolinkurl{QLucas.lean} & Exactly eight theorems and no definitions: three natural quadratic identities, signed-product coefficient and block formulas, the primitive-root phase, and q-Lucas. \\
+\nolinkurl{QLucas.lean} & Exactly seven theorems and no definitions: two natural quadratic identities, signed-product coefficient and block formulas, the primitive-root phase, and q-Lucas; its duplicate arithmetic helper is private. \\
 \nolinkurl{CyclotomicDivisibility.lean} & Exactly three theorems and no definitions: the carry characterization of exponent one, the rational-polynomial divisibility iff, and the multiple-index primitive-root value. \\
 \nolinkurl{QCatalan.lean} & Exactly one definition and eleven theorems: q-integer naturality, degree and cyclotomic identities, rational and integral divisibility, and the integral q-Catalan quotient with its degree and value at one. \\
 \nolinkurl{NewtonInterpolation.lean} & Exactly three definitions and nineteen theorems: triangular Newton coefficients, the node polynomial, interpolation and uniqueness, divided differences, the geometric-power-grid formulas, and the definitionally identical \nolinkurl{newtonInterpolant} compatibility API over a field. \\
@@ -5735,6 +5737,7 @@ Module & Role in the development \\
 \nolinkurl{GeometricLagrangeWeights.lean} & Identification of the geometric Lagrange row with the Richardson coefficient polynomial and its complete-homogeneous all-order moments. \\
 \nolinkurl{GeometricLagrangeQBinomial.lean} & Field-valued q-Pochhammer weight formulas and report-facing rational q-binomial and quarter-base coefficient formulas. \\
 \nolinkurl{GeometricLagrangeQMoments.lean} & Closed forms for every rational geometric moment under nonzero-base and nonvanishing finite-denominator hypotheses, with exact residual sign and finite total variation for \(0<q<1\) and dedicated quarter-base corollaries. \\
+\nolinkurl{GeometricRichardsonGenerating.lean} & Exhaustive three-definition/seven-theorem surface.  The definitions are \nolinkurl{geometricRichardsonKernel}, \nolinkurl{qPochhammerNormalizedDataSeries}, and \nolinkurl{geometricRichardsonTransform}; the theorems are \nolinkurl{coeff_rescale_qPochhammerSeries_eq_geometricRichardsonKernel}, \nolinkurl{coeff_qPochhammerNormalizedDataSeries}, \nolinkurl{geometricRichardsonTransform_generating}, \nolinkurl{geometricRichardsonTransform_eq_sum_lagrange}, \nolinkurl{geometricLagrangeRichardson_generating}, \nolinkurl{hasSum_geometricRichardsonTransform_mul_pow}, and \nolinkurl{hasSum_geometricLagrangeRichardson_mul_pow}.  The first generating identity is formal over a commutative ring with totalized inverses; the exact geometric-Lagrange form assumes a field and nonzero nome; the two analytic \nolinkurl{HasSum} forms additionally require completeness, strict nome contraction, and absolute summability of the normalized data. \\
 \nolinkurl{LambertPhaseLockedRichardson.lean} & Exact lower-Lambert phase locking, reciprocal-grid Lagrange weights, cancellation, and every complete-homogeneous residual moment. \\
 \nolinkurl{LambertPhaseLockedBell.lean} & Generalized harmonic power sums and Bell input for the shifted reciprocal alphabet, together with exact complete-homogeneous and reciprocal-Lagrange moment rewrites in factorially normalized complete-Bell form over characteristic-zero fields (with the direct rewrite using the rational-algebra structure).  Total field inversion requires no positivity or nonvanishing hypothesis on the shift. \\
 \nolinkurl{FabiusLambertPhaseLockedPullback.lean} & Pullback of the arbitrary-order logarithmic Fabius expansion to every fixed phase-locked Lambert node, with the periodic correction and saddle coefficients frozen at the base phase. \\
@@ -5935,7 +5938,7 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The live current-tree audit scans
-901 modules and 11,418 public declarations, with no missing module headers or
+902 modules and 11,440 public declarations, with no missing module headers or
 declaration comments.  At the retained historical mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
@@ -5995,7 +5998,7 @@ q leaves contribute thirteen.  Two later linear-coefficient theorems enlarge
 \nolinkurl{EffectiveGapInverse.lean} contributes one module and eight
 declarations.  The one-definition/eight-theorem
 \nolinkurl{RvachevSuperconvergentSynthesis.lean} leaf contributes nine;
-the four root-of-unity/q-Catalan modules contribute twenty-six; the original
+the four root-of-unity/q-Catalan modules contribute twenty-five; the original
 q-beta/Newton pair contributes twenty-four; the integer/complex upper Gaussian
 and q-Pfaff--Saalsch\"utz tail contributes twenty; and the noncommutative
 q-multinomial leaf contributes five.  Finally,
@@ -6007,10 +6010,14 @@ intermediate census is therefore 672/8,875.  The subsequent
 \nolinkurl{TelescopingCertificate.lean} leaves add three modules and thirty-four
 declarations, giving the historical 675/8,909 checkpoint.  The subsequent
 source union, including the exact 0+7, 4+16, and 0+9 Lambert branch-pairing,
-gap-bijection, and symmetry surfaces, brings the live census to 901/11,418.
-No aggregate facade build is claimed for this current-tree census.  The retained
-PDF and the title-page pin remain historical receipts and do not claim parity
-with the merged source; no PDF was built for this source-only update.
+gap-bijection, and symmetry surfaces, together with twelve later terminating
+basic-hypergeometric declarations, brings the preceding checkpoint to
+901/11,430.  The later 3+7
+\nolinkurl{GeometricRichardsonGenerating.lean} module raises the live census to
+902/11,440.  No aggregate facade build is claimed for this current-tree census.
+The retained PDF and the title-page pin remain historical receipts and do not
+claim parity with the merged source; no PDF was built for this source-only
+Richardson update.
 
 Those six counts are \nolinkurl{QPochhammerInfiniteBounds.lean} (0+5),
 \nolinkurl{HeineTransformation.lean} (2+5),
@@ -6045,7 +6052,7 @@ The four root-of-unity and q-Catalan counts are
 \nolinkurl{CyclotomicDivisibility.lean} (0+3),
 \nolinkurl{PrimitiveRootBlock.lean} (0+3),
 \nolinkurl{QCatalan.lean} (1+11), and
-\nolinkurl{QLucas.lean} (0+8).  Their one definition and twenty-five theorems
+\nolinkurl{QLucas.lean} (0+7).  Their one definition and twenty-four theorems
 add the cyclotomic carry criterion, primitive-root blocks, q-Lucas, and the
 integral q-Catalan polynomial with exact degree and specialization at one.
 The newest two counts are
@@ -6082,6 +6089,19 @@ uniform bounds for \(0\le q<1\) and dimension-dominant bounds for \(Q>1\),
 with all index and order hypotheses explicit.  The proof reuses the stronger
 generic \nolinkurl{finiteQPochhammerIn_self_pos} theorem from
 \nolinkurl{GeneralQConditionNumber.lean} rather than exporting a duplicate.
+The final terminating-basic-hypergeometric pair is
+\nolinkurl{TwoPhiOneReversal.lean} (2+12) and
+\nolinkurl{QChuVandermonde.lean} (0+10).  The first connects the finite
+terminating sum to the actual \nolinkurl{twoPhiOne} tsum and proves that the
+parameter reflection and the full reversal are involutive.  The second proves
+both q-Chu--Vandermonde evaluations, their actual-tsum wrappers, a
+denominator-cleared second identity, and a separately named reversal route.
+Thus the two displayed q-Chu evaluations and the reversal lemma are exact.
+The claim that reversal alone yields the second identity over its full
+displayed domain remains partial: the compiled by-reversal theorem assumes
+\(C\ne0\) and \((A;q)_n\ne0\), while the unrestricted denominator-defined
+theorem is obtained directly from finite q-Cauchy.  Rational continuation and
+a commutative-ring cleared extension are not claimed.
 \end{remark}
 
 \section{Corrections and critical distinctions}\label{app:corrections}
