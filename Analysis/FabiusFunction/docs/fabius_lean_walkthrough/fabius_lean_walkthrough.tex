@@ -6045,6 +6045,107 @@ Periodic correction \(\Psi\) & \nolinkurl{negativeLaplacePsi} & \nolinkurl{Perio
 Even Legendre truncation & \nolinkurl{rvachevLegendrePartialSumPolynomial} & \nolinkurl{FabiusLegendreLeastSquares.lean} \\
 Total squared zero-row integer Wigner datum & \nolinkurl{legendreGauntAdmissible}, \nolinkurl{legendreWignerThreeJZeroSqRat}, \nolinkurl{legendreGauntRat_eq_two_mul_wignerThreeJZeroSqRat} & Exhaustive two-definition/twenty-five-theorem closed form, factorial formulas, sharp support, and positivity in \nolinkurl{LegendreGauntClosedForm.lean}; no signed phase, half-integer/nonzero magnetic indices, orthogonality, or recoupling \\
 Finite Rvachev/up-law Wigner-square Gram sums & \nolinkurl{rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat}, \nolinkurl{rvachevLegendreGramMatrixRat_apply_eq_two_mul_sum_wignerThreeJZeroSqRat}, \nolinkurl{upLegendreGramMatrix_apply_eq_two_mul_sum_wignerThreeJZeroSqRat} & Exact zero-definition/three-theorem rational-entry, rational-matrix, and real-matrix surface of \nolinkurl{FabiusLegendreGauntClosedForm.lean} \\
+Unit-series Bell conversion, powers/logarithms, and exponential jets &
+\nolinkurl{ordPartialBell_eq_factorialRatio_partialBell},
+\nolinkurl{factorial_mul_ordPartialBell_eq_factorial_mul_partialBell},
+\nolinkurl{coeff_fallingSeries_subst_eq_sum_ordPartialBell},
+\nolinkurl{coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos},
+\nolinkurl{coeff_fallingSeries_subst_eq_sum_partialBell},
+\nolinkurl{coeff_negBinomSeries_subst_eq_sum_ordPartialBell},
+\nolinkurl{coeff_negBinomSeries_subst_eq_sum_ordPartialBell_of_pos},
+\nolinkurl{coeff_logOf_eq_sum_ordPartialBell},
+\nolinkurl{egfA_factorialDenormalize_coeff_eq},
+\nolinkurl{bellWeightSeries_factorialDenormalize_coeff_eq},
+\nolinkurl{coeff_logOf_eq_sum_partialBell},
+\nolinkurl{coeff_exp_subst_eq_completeBell},
+\nolinkurl{coeff_exp_subst_eq_partitionExpSum},
+\nolinkurl{coeff_exp_subst_eq_sum_weightedPartitions},
+\nolinkurl{coeff_exp_subst_eq_sum_div_weightedPartitions},
+\nolinkurl{coeff_exp_subst_recurrence} & Exhaustive 0+16
+\nolinkurl{UnitSeriesBellCoefficients.lean} surface.  The labels
+\nolinkurl{p0:lem:bell-conversion}, \nolinkurl{p0:lem:power-log}, and
+\nolinkurl{p0:cor:exp-log-jets} are Exact as formal power-series coefficient
+algebra; no analytic convergence or logarithm branch is asserted. \\
+Dickson and Neumann well-basedness &
+\nolinkurl{dickson_isPWO}, \nolinkurl{dickson_antichain_finite},
+\nolinkurl{dickson_isPWO_pi}, \nolinkurl{neumann_isPWO},
+\nolinkurl{neumann_finite_factorizations}; generated
+\nolinkurl{neumann_add_isPWO}, \nolinkurl{neumann_finite_decompositions} &
+Exhaustive 0+5 written \nolinkurl{TransseriesWellBased.lean} surface, plus the
+two \nolinkurl{to_additive} names outside the lexical count.
+\nolinkurl{q0:lem:dickson} and \nolinkurl{q0:lem:neumann} are Exact after the
+manuscript's reverse-well-order/strict-growth convention is translated to
+Lean's \nolinkurl{Set.IsPWO} orientation (equivalently, the order dual). \\
+Elementary height comparison &
+\nolinkurl{isLittleO_log_pow_rpow}, \nolinkurl{isLittleO_log_pow_id},
+\nolinkurl{isLittleO_pow_mul_log_pow_exp} & Exhaustive 0+3
+\nolinkurl{TransseriesHeight.lean} surface.  The two printed real
+\nolinkurl{atTop} comparisons of \nolinkurl{q0:prop:height} are Exact; no
+recursive height/depth type for arbitrary nested transmonomials is defined. \\
+Sequence-indexed scale and coefficient uniqueness &
+\nolinkurl{IsAsymptoticScale}, \nolinkurl{IsPoincareExpansion},
+\nolinkurl{IsPoincareExpansion.isLittleO_succ_remainder},
+\nolinkurl{IsPoincareExpansion.tendsto_coeff},
+\nolinkurl{IsPoincareExpansion.coeff_unique} & Exhaustive one-structure,
+one-definition, three-theorem \nolinkurl{TransseriesScale.lean} surface.
+The sequence forms of \nolinkurl{q0:def:scale}, \nolinkurl{q0:def:poincare},
+and \nolinkurl{q0:prop:uniqueness} are Exact; uniqueness needs
+\nolinkurl{[l.NeBot]}, and no convergence, flat-remainder recovery,
+unordered-set, or maximal-scale claim is made. \\
+Power--logarithmic dominance &
+\nolinkurl{plMonomial}, \nolinkurl{tendsto_plMonomial_atTop_zero},
+\nolinkurl{plMonomial_div_eventuallyEq},
+\nolinkurl{tendsto_plMonomial_div_atTop_zero},
+\nolinkurl{tendsto_plMonomial_div_atTop_one}, \nolinkurl{plMonomial_pos},
+\nolinkurl{tendsto_plMonomial_div_atTop},
+\nolinkurl{plMonomial_generators_dominance} & Exhaustive 1+7
+\nolinkurl{TransseriesScaleDominance.lean} surface.  The analytic trichotomy
+and integer-generator rule of \nolinkurl{plt:lem:mot-dominance} are Exact;
+the full unordered set/maximal package is not claimed. \\
+Power--logarithmic scale sequences &
+\nolinkurl{isLittleO_plMonomial},
+\nolinkurl{isAsymptoticScale_plMonomial},
+\nolinkurl{isAsymptoticScale_plMonomial_pow},
+\nolinkurl{isAsymptoticScale_plMonomial_log} & Exhaustive 0+4
+\nolinkurl{TransseriesPolyLogScale.lean} surface.  Strictly decreasing exponent
+sequences and the two standard ladders are exact; the unordered-set and
+finite-maximal clauses of \nolinkurl{plt:def:mot-scale} remain outside it. \\
+Polynomial logarithmic-block antidifferentiation &
+\nolinkurl{blockOperator}, \nolinkurl{blockAntiderivative},
+\nolinkurl{resonantAntiderivative}; \nolinkurl{sum_sub_sum_shift},
+\nolinkurl{blockOperator_zero}, \nolinkurl{blockOperator_sub},
+\nolinkurl{blockOperator_blockAntiderivative},
+\nolinkurl{blockOperator_surjective},
+\nolinkurl{natDegree_C_mul_of_ne_zero},
+\nolinkurl{natDegree_blockOperator}, \nolinkurl{blockOperator_injective},
+\nolinkurl{blockOperator_bijective},
+\nolinkurl{derivative_resonantAntiderivative},
+\nolinkurl{derivative_surjective},
+\nolinkurl{natDegree_resonantAntiderivative} & Exhaustive 3+12
+\nolinkurl{TransseriesBlockAntiderivative.lean} surface.  The polynomial
+operator dichotomy of \nolinkurl{plt:lem:mot-block-antiderivative} is Exact:
+explicit degree-preserving nonresonant inverse and degree-raising resonant
+primitive.  It does not construct the full Laurent ring. \\
+Abstract differential-block bridge &
+\nolinkurl{derivation_pow_t}, \nolinkurl{derivation_block},
+\nolinkurl{exists_block_primitive}, \nolinkurl{derivation_block_zero},
+\nolinkurl{exists_block_primitive_resonant} & Exhaustive 0+5
+\nolinkurl{TransseriesDifferentialBlock.lean} surface.  It transports the
+polynomial calculation through any derivation with (d(t)=-t^2,d(L)=t) for
+natural exponents; it does not instantiate the manuscript's full
+integer-exponent Laurent ambient wrapper. \\
+Catalan quadratic core &
+\nolinkurl{quadHalf}, \nolinkurl{halfBinom}, \nolinkurl{quadCoef};
+\nolinkurl{catalan_two_step}, \nolinkurl{quadHalf_zero},
+\nolinkurl{quadHalf_antidiagonal}, \nolinkurl{halfBinom_step},
+\nolinkurl{quadHalf_rat}, \nolinkurl{quadCoef_rat},
+\nolinkurl{quadCoef_zero}, \nolinkurl{quadCoef_rec} & Exhaustive 3+8
+\nolinkurl{QuadraticCoreCatalan.lean} surface.
+\nolinkurl{p6:prop:quadratic-core-catalan} is Exact;
+\nolinkurl{p6:lem:quadratic-core} is Partial because only the coefficient
+family and coefficientwise recursion are proved; and
+\nolinkurl{p6:thm:deepest-pole} is Absent because no Gamma/Barnes
+identification is formalized. \\
 \bottomrule
 \end{longtable}
 
@@ -6528,9 +6629,10 @@ for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  A later historical current-tree
 audit scanned 925 modules and 11,619 public declarations, with no missing
-module headers or declaration comments.  The live current-tree audit now scans
-934 modules and 11,709 public declarations, with zero missing module headers
-and zero missing declaration comments; the Legendre-biorthogonality 925/11,619
+module headers or declaration comments.  The 934/11,709 source checkpoint is
+now historical.  The live current-tree audit scans 943 modules and 11,787
+explicit public declarations, with zero missing module headers and zero missing
+declaration comments; the Legendre-biorthogonality 925/11,619
 census remains an explicit historical checkpoint.  At the retained historical
 mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
@@ -6704,8 +6806,11 @@ checkpoint 933/11,695.  The incoming union adds one module and fourteen public
 declarations: the new zero-definition/six-theorem
 \nolinkurl{ProuhetBaseTwoBridge.lean} module, one theorem added to
 \nolinkurl{DyadicBoundaryIdentity.lean}, and seven theorems added to
-\nolinkurl{ThueMorseNewmanSelfSimilarity.lean}.  This gives the live
-934/11,709 census, with zero missing module headers and zero missing declaration
+\nolinkurl{ThueMorseNewmanSelfSimilarity.lean}.  This gives the historical
+934/11,709 census.  The subsequent nine series/transseries modules carry 72
+explicit public declarations, and two additional Neumann names are generated
+by \nolinkurl{to_additive}; six concurrent declarations elsewhere give the live
+943/11,787 census, with zero missing module headers and zero missing declaration
 comments.  Every module is reachable from the facade.  No aggregate facade
 build is claimed for this current-tree census.  The retained PDF and title-page pin
 remain historical receipts and do not claim parity with the merged source; no

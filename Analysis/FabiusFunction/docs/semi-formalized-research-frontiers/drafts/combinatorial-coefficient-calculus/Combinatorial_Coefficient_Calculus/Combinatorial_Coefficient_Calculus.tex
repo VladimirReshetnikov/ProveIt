@@ -3564,6 +3564,22 @@ $(i!)^{j_i}$ cancel, and multiplication by $k!/n!$ leaves exactly
 \eqref{eq:ordinary-bell-definition}.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; exact algebraic normalization only.
+The displayed conversion is
+\lean{Fabius.ordPartialBell_eq_factorialRatio_partialBell} in module
+\lean{UnitSeriesBellCoefficients}, over every commutative $\mathbb Q$-algebra
+and for all $n,k\geq0$; thus Lean also covers the automatically vanishing
+out-of-range cases.  Its denominator-cleared companion is
+\lean{Fabius.factorial_mul_ordPartialBell_eq_factorial_mul_partialBell}:
+$n!\OrdinaryPartialBellPolynomial nk(x)=k!\ExponentialPartialBellPolynomial
+nk(1!x_1,2!x_2,\ldots)$.  The Lean proof compares the ordinary coefficient of
+the $k$-th power of the factorially weighted Bell series with its exponential
+Bell coefficient.  These declarations prove the polynomial normalization;
+they do not formalize the labelled-set partition interpretation of
+\cref{thm:bell-poly-partitions}, whose register row remains \emph{none}.
+\end{remark}
+
 \section{Combinatorial interpretation}
 Give each block of size $i$ a weight $x_i$, and define the weight of a partition as
 the product of its block weights.
@@ -9356,6 +9372,18 @@ The coefficient on the left is $\OrdinaryPartialBellPolynomial nk(x)/k!$ in ordi
 Comparison proves the conversion.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; exact normalization dictionary.
+Equation~\eqref{eq:merged-bell-normalization} is exactly
+\lean{Fabius.ordPartialBell_eq_factorialRatio_partialBell}; the integral,
+denominator-cleared form is
+\lean{Fabius.factorial_mul_ordPartialBell_eq_factorial_mul_partialBell}, both
+in module \lean{UnitSeriesBellCoefficients}.  They hold for every pair
+$n,k\geq0$ over a commutative $\mathbb Q$-algebra and use precisely the
+factorially weighted input $(j!x_j)_{j\geq0}$.  This crosswalk certifies the
+algebraic normalization only, not the separate labelled-set interpretation.
+\end{remark}
+
 \begin{center}
 \renewcommand{\arraystretch}{1.18}
 \begin{tabularx}{\textwidth}{@{}>{\bfseries}l X X@{}}
@@ -9421,6 +9449,25 @@ If $C=A^\alpha$, then
 Compare coefficients in $A'=AL'$ to obtain the first two recurrences.  For
 powers, compare degree $n-1$ in $AC'=\alpha A'C$ and isolate $nc_n$.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; two recurrences exact, one open.
+The logarithmic recurrence \eqref{eq:merged-alg-log} is the positive-degree
+unfolding \lean{Fabius.SaddleExpansion.logCoeff_succ}, after reflecting its
+finite summation index; its output is identified with Mathlib's formal
+logarithm by \lean{Fabius.SaddleExpansion.logSeries_eq_logOf} (modules
+\lean{SaddleLogExpansionAlgebra} and \lean{SaddleLogExpansionPowerSeries}).
+The exponential recurrence \eqref{eq:merged-alg-exp} is
+\lean{Fabius.coeff_exp_subst_recurrence} in module
+\lean{UnitSeriesBellCoefficients}, stated in the denominator-cleared form
+$na_n=\sum_{j=1}^n j\ell_j a_{n-j}$ and valid also at $n=0$.
+The same module gives nonrecursive Bell-polynomial coefficient formulas for
+arbitrary formal powers in
+\lean{Fabius.coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos} and
+\lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}.  It does not prove
+the distinct recursive identity \eqref{eq:merged-alg-power}; that clause remains
+the precise missing obligation, so the algorithm is only \emph{partial}.
+\end{remark}
 
 \begin{algorithm}[Differentiation and integration]
 \label{alg:merged-differentiation-integration}
@@ -9951,7 +9998,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 56 Lean, 33 partial, 112 none, of 201 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 56 Lean, 34 partial, 111 none, of 201 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -10156,7 +10203,7 @@ corollary (unlabelled, no.~25) & Trigonometric outer functions & none &  \\
 \Cref{cor:merged-square-root-coefficients} & Universal coefficient signature & none &  \\
 \Cref{thm:merged-kepler} & Lagrange and Fourier--Bessel forms & none &  \\
 \Cref{alg:merged-product-quotient} & Product, reciprocal, and quotient & none &  \\
-\Cref{alg:merged-exp-log-power} & Logarithm, exponential, and powers & none &  \\
+\Cref{alg:merged-exp-log-power} & Logarithm, exponential, and powers & partial & \cref{eq:merged-alg-log} is the reflected-index form of \lean{Fabius.SaddleExpansion.logCoeff_succ}, with \lean{Fabius.SaddleExpansion.logSeries_eq_logOf} identifying that recurrence with the formal logarithm (\lean{SaddleLogExpansionAlgebra}, \lean{SaddleLogExpansionPowerSeries}); \cref{eq:merged-alg-exp} is \lean{Fabius.coeff_exp_subst_recurrence} (\lean{UnitSeriesBellCoefficients}) in the denominator-cleared form $na_n=\sum_{j=1}^n j\ell_j a_{n-j}$.  The same module proves closed Bell-polynomial formulas for arbitrary powers as \lean{Fabius.coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos} and \lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}, but the separate recurrence \cref{eq:merged-alg-power} is not formalized \\
 \Cref{alg:merged-differentiation-integration} & Differentiation and integration & none &  \\
 \Cref{alg:merged-composition} & Composition power table & none &  \\
 \Cref{alg:merged-lagrange-reversion} & Lagrange reversion & none &  \\

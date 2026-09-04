@@ -221,8 +221,11 @@ dyadic/finite-prefix checkpoint 933/11,695. The incoming union adds one module
 and fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This gives the live 934/11,709 census,
-with zero missing module headers and zero missing declaration comments.
+`ThueMorseNewmanSelfSimilarity.lean`. This gives the historical 934/11,709
+census. The following nine-module series/transseries overlay contributes 72
+explicit declarations; `to_additive` generates two further Neumann names, and
+six concurrent declarations elsewhere give the live 943/11,787 census, with
+zero missing module headers and zero missing declaration comments.
 
 The existing `FabiusFunction.ProbabilityLaplaceMoments` module then adds
 exactly two public theorems:
@@ -251,8 +254,103 @@ does not prove the larger support/smoothness/parity/Fourier--Bessel theorem
 `thm:leg-Lambda` or the matrix-projector corollary. It gives the historical
 925/11,619 census; the historical reciprocity census is 931/11,685 and the
 historical dyadic/finite-prefix census is 933/11,695. The current live census
-is 934/11,709, as recorded above, with zero missing module headers and zero
+is 943/11,787, as recorded above, with zero missing module headers and zero
 missing declaration comments.
+
+### Series/transseries Lean overlay
+
+The current overlay exhausts the public surfaces of the nine modules that now
+crosswalk the canonical `Transseries_And_Inversion` volume:
+
+- `UnitSeriesBellCoefficients.lean` is 0+16:
+  `ordPartialBell_eq_factorialRatio_partialBell`,
+  `factorial_mul_ordPartialBell_eq_factorial_mul_partialBell`,
+  `coeff_fallingSeries_subst_eq_sum_ordPartialBell`,
+  `coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos`,
+  `coeff_fallingSeries_subst_eq_sum_partialBell`,
+  `coeff_negBinomSeries_subst_eq_sum_ordPartialBell`,
+  `coeff_negBinomSeries_subst_eq_sum_ordPartialBell_of_pos`,
+  `coeff_logOf_eq_sum_ordPartialBell`,
+  `egfA_factorialDenormalize_coeff_eq`,
+  `bellWeightSeries_factorialDenormalize_coeff_eq`,
+  `coeff_logOf_eq_sum_partialBell`, `coeff_exp_subst_eq_completeBell`,
+  `coeff_exp_subst_eq_partitionExpSum`,
+  `coeff_exp_subst_eq_sum_weightedPartitions`,
+  `coeff_exp_subst_eq_sum_div_weightedPartitions`, and
+  `coeff_exp_subst_recurrence`.  These make `p0:lem:bell-conversion`,
+  `p0:lem:power-log`, and `p0:cor:exp-log-jets` **Exact** as formal
+  power-series coefficient algebra.  They assert no analytic convergence or
+  logarithm branch.
+
+- `TransseriesWellBased.lean` is 0+5 as written:
+  `dickson_isPWO`, `dickson_antichain_finite`, `dickson_isPWO_pi`,
+  `neumann_isPWO`, and `neumann_finite_factorizations`; `to_additive`
+  generates `neumann_add_isPWO` and `neumann_finite_decompositions` outside
+  the lexical count.  `q0:lem:dickson` and `q0:lem:neumann` are **Exact** once
+  the manuscript's reverse-well-order/strict-growth convention is translated
+  to Lean's `Set.IsPWO` orientation, equivalently by using the order dual.
+  This proves the ordered-cancel-monoid mechanism, not a Hahn-series type.
+
+- `TransseriesHeight.lean` is 0+3:
+  `isLittleO_log_pow_rpow`, `isLittleO_log_pow_id`, and
+  `isLittleO_pow_mul_log_pow_exp`.  The two printed real `atTop` comparisons
+  of `q0:prop:height` are **Exact**.  A recursive global height/depth order on
+  arbitrary nested transmonomials is not defined.
+
+- `TransseriesScale.lean` has one structure, one definition, and three
+  theorems: `IsAsymptoticScale`, `IsPoincareExpansion`,
+  `IsPoincareExpansion.isLittleO_succ_remainder`,
+  `IsPoincareExpansion.tendsto_coeff`, and
+  `IsPoincareExpansion.coeff_unique`.  The sequence-indexed content of
+  `q0:def:scale`, `q0:def:poincare`, and `q0:prop:uniqueness` is **Exact**.
+  Uniqueness assumes `[l.NeBot]`; the fixed first-omitted-term remainder
+  semantics neither assert convergence nor recover flat remainders and do not
+  package an unordered set or maximal scale.
+
+- `TransseriesScaleDominance.lean` is 1+7: `plMonomial`,
+  `tendsto_plMonomial_atTop_zero`, `plMonomial_div_eventuallyEq`,
+  `tendsto_plMonomial_div_atTop_zero`,
+  `tendsto_plMonomial_div_atTop_one`, `plMonomial_pos`,
+  `tendsto_plMonomial_div_atTop`, and
+  `plMonomial_generators_dominance`.  The analytic zero/one/`atTop`
+  trichotomy and integer-generator rule of `plt:lem:mot-dominance` are
+  **Exact**; the full unordered-set/maximal package is not.
+
+- `TransseriesPolyLogScale.lean` is 0+4: `isLittleO_plMonomial`,
+  `isAsymptoticScale_plMonomial`, `isAsymptoticScale_plMonomial_pow`, and
+  `isAsymptoticScale_plMonomial_log`.  It proves the exact sequence-indexed
+  scale consequence and the two standard ladders, not the unordered-set or
+  finite-maximal clauses of `plt:def:mot-scale`.
+
+- `TransseriesBlockAntiderivative.lean` is 3+12.  Its definitions are
+  `blockOperator`, `blockAntiderivative`, and `resonantAntiderivative`; its
+  theorems are `sum_sub_sum_shift`, `blockOperator_zero`, `blockOperator_sub`,
+  `blockOperator_blockAntiderivative`, `blockOperator_surjective`,
+  `natDegree_C_mul_of_ne_zero`, `natDegree_blockOperator`,
+  `blockOperator_injective`, `blockOperator_bijective`,
+  `derivative_resonantAntiderivative`, `derivative_surjective`, and
+  `natDegree_resonantAntiderivative`.  The polynomial-operator dichotomy in
+  `plt:lem:mot-block-antiderivative` is **Exact**: explicit
+  degree-preserving inverse off resonance and explicit degree-raising
+  primitive at resonance.  It does not construct the full Laurent ambient
+  ring.
+
+- `TransseriesDifferentialBlock.lean` is 0+5: `derivation_pow_t`,
+  `derivation_block`, `exists_block_primitive`, `derivation_block_zero`, and
+  `exists_block_primitive_resonant`.  It is the exact abstract bridge for
+  natural exponents in any commutative algebra with `d(t)=-t²` and `d(L)=t`;
+  it does not instantiate the manuscript's integer-exponent Laurent wrapper.
+
+- `QuadraticCoreCatalan.lean` is 3+8.  Its definitions are `quadHalf`,
+  `halfBinom`, and `quadCoef`; its theorems are `catalan_two_step`,
+  `quadHalf_zero`, `quadHalf_antidiagonal`, `halfBinom_step`, `quadHalf_rat`,
+  `quadCoef_rat`, `quadCoef_zero`, and `quadCoef_rec`.
+  `p6:prop:quadratic-core-catalan` is **Exact**.  The broader
+  `p6:lem:quadratic-core` is **Partial**—only the coefficient family and
+  coefficientwise recursion are proved, not packaged power-series
+  existence/uniqueness, a square-root identity, or the exact denominator
+  exponent.  `p6:thm:deepest-pole` is **Absent** because no Gamma/Barnes
+  identification is formalized.
 
 The retained frontier, primary, walkthrough, geometric-q, and representation
 PDFs predate these source-only overlays and claim no render parity.
@@ -309,8 +407,9 @@ declarations, giving the historical dyadic/finite-prefix 933/11,695 union.
 The incoming union adds one module and fourteen public declarations: the new
 zero-definition/six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem
 added to `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This gives the live 934/11,709 union,
-with zero documentation gaps.
+`ThueMorseNewmanSelfSimilarity.lean`. This gives the historical 934/11,709
+union. The nine series/transseries modules and six concurrent declarations
+then give the live 943/11,787 union, with zero documentation gaps.
 
 `FabiusFunction.RvachevLaurentLeading` has one definition and six theorems.
 Its manuscript-normalized punctured-neighborhood limit, together with the
@@ -832,9 +931,14 @@ asserted a result without one it was supplied, and where a source claimed
 analytic validity on the strength of formal algebra the claim was weakened to
 what the algebra establishes, each repair marked at the point of repair and
 collected in the volume's ledger.  Its formalization register records what the
-Lean corpus does and does not cover, distinguishing a formalized *neighbour* —
-the corpus proves Lagrange inversion and the Lambert series at the **origin**,
-while this volume works at **infinity** — from actual coverage.  The absorbed
+Lean corpus does and does not cover.  The current source overlay gives exact
+counterparts for the formal unit-series Bell identities, sequence-scale
+foundations, elementary power--logarithmic dominance and height comparisons,
+and polynomial block antidifferentiation, while keeping the unordered maximal
+scale, full Laurent wrapper, and deepest-pole identification outside the exact
+surface.  It still distinguishes those direct counterparts from a formalized
+*neighbour* — for example, the corpus proves Lagrange inversion and the Lambert
+series at the **origin**, while this volume works at **infinity**.  The absorbed
 directories were deleted after a residue audit.  By the same precedent, a
 standalone reference monograph on q-Pochhammer symbols and q-binomial
 coefficients — the machinery consumed by the exponents

@@ -27,6 +27,8 @@ DECL = re.compile(
     r'(?:private\s+|protected\s+|noncomputable\s+|partial\s+|unsafe\s+)*'
     r'(?:theorem|lemma|def|abbrev|instance|structure|inductive|class)\s+'
     r"([A-Za-z_][A-Za-z0-9_.']*)")
+TO_ADDITIVE_NAMED = re.compile(
+    r"^\s*@\[to_additive\s+([A-Za-z_][A-Za-z0-9_.']*)")
 NS_OPEN = re.compile(r"^\s*namespace\s+([A-Za-z_][A-Za-z0-9_.']*)")
 NS_END = re.compile(r"^\s*end\s+([A-Za-z_][A-Za-z0-9_.']*)\s*$")
 
@@ -56,6 +58,14 @@ for root, _dirs, files in os.walk(LEAN):
                     parts = m.group(1).split('.')
                     if stack[-len(parts):] == parts:
                         del stack[-len(parts):]
+                    continue
+                # Named `to_additive` attributes generate public declarations
+                # even though no second `theorem` command occurs in the file.
+                # Record those names so exhaustive crosswalks can cite the
+                # generated additive API without a false unresolved-name error.
+                m = TO_ADDITIVE_NAMED.match(line)
+                if m:
+                    defined.add('.'.join(stack + [m.group(1)]))
                     continue
                 m = DECL.match(line)
                 if m:

@@ -15,25 +15,29 @@ with the strongest correct hypotheses and one complete proof. A second proof
 survives only where it exposes a different mechanism.
 
 The consolidation boundary is recorded in
-[`PROVENANCE.md`](Combinatorial_Coefficient_Calculus/PROVENANCE.md), the live
-and historical hashes in
+[`PROVENANCE.md`](Combinatorial_Coefficient_Calculus/PROVENANCE.md), the
+historical publication and intake digests in
 [`SOURCE_CLOSURE.sha256`](Combinatorial_Coefficient_Calculus/SOURCE_CLOSURE.sha256),
 and the topic/claim decisions in
 [`SOURCE_DISPOSITION.csv`](Combinatorial_Coefficient_Calculus/SOURCE_DISPOSITION.csv).
 The standard-library
 [`validate_canonical.py`](Combinatorial_Coefficient_Calculus/validate_canonical.py)
 checks LaTeX structure, labels, references, citations, proof pairing, source
-coverage, and the one-publication layout; run it with `--final`, which is the
-mode this package is now expected to pass.
+coverage, the digest closure, and the one-publication layout.  Its `--final`
+mode passed at the last PDF publication checkpoint.  It is not a current-pass
+claim after the crosswalk-only TeX update, because the intentionally historical
+closure digest is expected to differ until the next PDF publication cycle.
 
 | Directory | Document |
 | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — 8,966-line, 390,732-byte source and the 174-page A4 PDF built from it |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical source:** *Combinatorial Coefficient Calculus* — 10,356-line, 499,570-byte live TeX; the retained 174-page A4 PDF is a historical, unrebuilt artifact |
 
-Unlike every earlier state of this package, the filed PDF renders the filed
-TeX: both come from the same three-pass `pdflatex` run, so the former
-"no render-parity claim" caveat no longer applies. That run reports no errors,
-no undefined references, and no multiply-defined labels.
+The retained PDF rendered the TeX at the package's last three-pass
+`pdflatex` publication checkpoint.  The live TeX has since acquired the
+2026-09-04 Lean crosswalk and regenerated formalization register, while the PDF
+was deliberately not rebuilt.  The PDF is therefore historical: **no render-
+parity claim applies to the current TeX/PDF pair**, and the TeX is the
+authoritative live source.
 
 ## What the final merge changed
 
@@ -71,6 +75,10 @@ section "Closure of the merge", carries the in-document record. In summary:
 ## What this package does not claim
 
 The manuscript is research-frontier mathematical writing. Its theorem and proof
-environments are human-readable mathematics, not evidence of Lean verification.
-The section "Lean formalization register" states, per result, what is formalized
-and what is not; it is maintained separately from this consolidation.
+environments are human-readable mathematics, not by themselves evidence of Lean
+verification.  The generated section "Lean formalization register" states, per
+result, what is formalized and what is not: its current 201 rows comprise 56
+Lean, 34 partial, and 111 none.  The 2026-09-04 crosswalk connects the Bell
+normalization and unit-series coefficient formulas to the 0-definition,
+16-theorem module `UnitSeriesBellCoefficients`; it expressly leaves the
+labelled-set partition interpretation unformalized.
