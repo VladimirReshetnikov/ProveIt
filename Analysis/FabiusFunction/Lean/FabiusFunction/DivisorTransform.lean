@@ -13,7 +13,8 @@ sequence `a`,
 The identity between the two forms of `ϱ_r` is pure `Finset` arithmetic — the
 divisors of `r` are its proper divisors together with `r` itself, and the term
 contributed by `r` is exactly `r a_r` — so it is proved here for an arbitrary
-commutative ring, with no reference to rooted trees.
+commutative ring in numerator form. The divided identities hold over any
+field, with no characteristic-zero assumption or reference to rooted trees.
 
 Two further clauses of the lemma get formal counterparts of their own.
 
@@ -68,7 +69,7 @@ theorem two_mul_le_of_mem_properDivisors {m d : ℕ} (h : d ∈ m.properDivisors
 
 /-! ### The disturbance coefficients -/
 
-variable {K : Type*} [Field K] [CharZero K]
+variable {K : Type*} [Field K]
 
 /-- **`p1:eq:varrho`.**  `ϱ_r = (1/r) ∑_{d ∣ r, d < r} d a_d`. -/
 def disturbanceCoeff (a : ℕ → K) (r : ℕ) : K :=
