@@ -112,7 +112,7 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans 914 facade-reachable modules and 11,554 public declarations.  It
+pass scans 914 facade-reachable modules and 11,555 public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
@@ -124,9 +124,9 @@ finds no missing module header or declaration comment, including throughout
 `RvachevAppellHasse.lean`, `GeometricUniformMomentPolynomial.lean`,
 `RvachevLagrangeNodesOnly.lean`, `GaussianBinomialGreaterOneAsymptotics.lean`,
 and `ThueMorseGammaTowerDifferential.lean` leaves.  Relative to the
-610/8,318 activation checkpoint, the current tree adds 304 modules and 3,236 declarations.
+610/8,318 activation checkpoint, the current tree adds 304 modules and 3,237 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 284 modules and 3,002 declarations.  The post-merge 675/8,909 inventory,
+adds 284 modules and 3,003 declarations.  The post-merge 675/8,909 inventory,
 the intervening 903/11,448 Lambert-series inventory, and the immediately
 preceding 910/11,525 Appell/fixed-column checkpoint remain historical, not
 descriptions of the live facade.
@@ -546,7 +546,18 @@ domain.  These theorems concern the chosen `thueMorseGammaLog` coordinate,
 not a proved branch or principal-`Complex.log` identity, and assert no
 nonpositive-parameter extension.
 
-The resulting live inventory is 914 modules and 11,554 public declarations,
+The strengthened `GeometricResidualMoments.lean` surface has no public
+definitions and exactly nine public theorems.  Its new
+`sum_geometricLagrangeWeight_mul_eval_scaled_geometric` theorem works over
+every field under exactly
+`Set.InjOn (fun k : ℕ ↦ q ^ k) (Finset.range (p + 1))`, and reproduces
+`P.eval 0` for every polynomial with `P.natDegree ≤ p` and every scale `c`,
+including zero.  Together with
+`sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos`, this makes
+`cor:scaled-geometric-moments` **Exact** by composition and strengthens the
+manuscript's `c ≠ 0` hypothesis.
+
+The resulting live inventory is 914 modules and 11,555 public declarations,
 with no missing module header or declaration comment.
 
 The one-definition/eight-theorem
@@ -1290,7 +1301,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 914/11,554
+historical 675/8,909 census and requires refresh against the live 914/11,555
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
