@@ -3817,7 +3817,7 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 903 modules and 11,447 public declarations.  The current TeX also
+census is 903 modules and 11,448 public declarations.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration fixed-depth effective-inverse tranche, the
@@ -3827,8 +3827,8 @@ central-reduction and cyclotomic-factorization modules contributing thirteen
 theorems, and the four-module root-of-unity, q-Lucas, cyclotomic-divisibility,
 and q-Catalan tranche contributing one definition and twenty-four theorems,
 and the four-module Lambert branch-pairing, gap-bijection, symmetric-identity,
-and Bernoulli-series tranche contributing four definitions and thirty-six
-theorems (forty public declarations), the
+and Bernoulli-series tranche contributing four definitions and thirty-seven
+theorems (forty-one public declarations), the
 three-definition/seven-theorem geometric Richardson generating-function
 module, and the three-theorem second-moment strengthening of the existing
 \path{GaussianBinomialCumulants.lean} module.
@@ -10435,10 +10435,11 @@ theorems:
 \lean{principalLambertW_mul_lowerLambertW_lt_one}, and
 \lean{principalLambertW_mul_lowerLambertW_mem_Ioo}.
 The final file \path{LambertWBranchGapBernoulli.lean} has zero definitions and
-exactly four theorems:
+exactly five theorems:
 \lean{summable_norm_bernoulli_mul_pow_div_factorial},
 \lean{summable_bernoulli_mul_pow_div_factorial_iff},
-\lean{hasSum_bernoulli_mul_pow_div_factorial}, and
+\lean{hasSum_bernoulli_mul_pow_div_factorial},
+\lean{hasSum_bernoulli_mul_pow_div_factorial_complex_iff}, and
 \lean{principalLambertW_lowerLambertW_eq_bernoulliSeries}.
 
 \begin{theorem}[Bernoulli exponential generating function in the gap coordinate]
@@ -10450,6 +10451,19 @@ For every \(w\in\ComplexNumbers\),
 \]
 In particular, the series diverges at every point on or outside
 \(\lvert w\rvert=2\pi\).
+Writing
+\[
+ E_{\exp}(w)=
+ \begin{cases}
+  (\exp(w)-1)/w,&w\ne0,\\
+  1,&w=0,
+ \end{cases}
+\]
+the series has the canonical removable value
+\[
+ \sum_{n=0}^{\infty}\frac{B_nw^n}{n!}=E_{\exp}(w)^{-1}
+ \qquad (\lvert w\rvert<2\pi).
+\]
 For every real \(z\) with \(\lvert z\rvert<2\pi\),
 \begin{equation}
  \sum_{n=0}^{\infty}
@@ -10510,7 +10524,8 @@ If \(\lvert w\rvert\ge2\pi\), these even-index term norms are at least \(2\),
 so the terms do not tend to zero and the series cannot converge.  This proves
 the exact complex convergence locus, including divergence on the boundary.
 
-For the value of the sum, write
+For the value of the sum away from the origin, the same argument works over
+\(\ComplexNumbers\).  Write
 \[
  f_n=\frac{B_nz^n}{n!},\qquad
  g_n=\frac{z^n}{n!}-\IndicatorOf{\{n=0\}}.
@@ -10532,17 +10547,23 @@ Absolute summability therefore justifies the analytic Cauchy product and gives
  \left(\sum_{n\ge0}f_n\right)(\exp(z)-1)
  =\sum_{n\ge0}\sum_{i+j=n}f_i g_j=z.
 \]
-When \(z\ne0\), injectivity of the real exponential makes
-\(\exp(z)-1\ne0\), so division proves \eqref{eq:bernoulli-egf}.  On the branch
+When \(z\ne0\), the product identity itself makes
+\(\exp(z)-1\ne0\): a zero denominator would force \(z=0\).  Division gives
+the complex quotient value.  At \(z=0\), the Bernoulli series has only its
+constant term and sums to \(1=E_{\exp}(0)^{-1}\).  Lean combines these cases
+with the exact convergence criterion in
+\lean{hasSum_bernoulli_mul_pow_div_factorial_complex_iff}; restricting to real
+nonzero \(z\) proves \eqref{eq:bernoulli-egf}.  On the branch
 domain, \(\delta>0\), hence the extra hypothesis gives
 \(\lvert\delta\rvert<2\pi\).  Substituting \eqref{eq:bernoulli-egf} into
 \(W_0=-\delta/(\exp\delta-1)\), and then using
 \(W_{-1}=W_0-\delta\), proves
 \eqref{eq:lambert-principal-bernoulli}--\eqref{eq:lambert-lower-bernoulli}.
-The four public declarations supporting these claims are respectively
+The five public declarations supporting these claims are respectively
 \lean{summable_norm_bernoulli_mul_pow_div_factorial},
 \lean{summable_bernoulli_mul_pow_div_factorial_iff},
-\lean{hasSum_bernoulli_mul_pow_div_factorial}, and
+\lean{hasSum_bernoulli_mul_pow_div_factorial},
+\lean{hasSum_bernoulli_mul_pow_div_factorial_complex_iff}, and
 \lean{principalLambertW_lowerLambertW_eq_bernoulliSeries}.
 \end{proof}
 
@@ -10559,11 +10580,14 @@ classical lower branch has a singular extended endpoint, so it too is
 excluded; no claim is made about the all-real totalization there.  The
 absolute-summability statement includes \(z=0\), but the quotient statement
 does not: its series has value \(B_0=1\) there, whereas Lean's totalized
-\(0/(\exp 0-1)\) is zero.  The complex summability theorem gives the exact
-radius and proves divergence at every point on and outside
-\(\lvert z\rvert=2\pi\).  The quotient evaluation remains only a real,
-nonzero-argument theorem; no complete complex evaluation or theorem packaging
-the removable value at zero is asserted.  Its Lambert specialization still
+\(0/(\exp 0-1)\) is zero.  The complex \lean{HasSum} equivalence gives the
+exact radius, proves divergence at every point on and outside
+\(\lvert z\rvert=2\pi\), and evaluates the series throughout the open disk as
+\(\lean{complexExpm1Div}(z)^{-1}\).  Thus the complex Bernoulli EGF is Exact
+under this canonical removable-origin convention, whose value at zero is
+one and which agrees with \(z/(\exp z-1)\) away from zero; it is not a claim
+about Lean's literal totalized quotient at zero, nor a holomorphy theorem for
+a named sum function.  Its Lambert specialization still
 excludes both branch endpoints and additionally requires \(\delta<2\pi\).
 It is a convergent series in the gap coordinate, not a higher-order or full
 Puiseux expansion in \(x+\EulerE^{-1}\), and it adds no logarithmic expansion

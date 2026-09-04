@@ -22,7 +22,7 @@ moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
 **Current artifact checkpoint (2026-09-04).** The live Lean audit scans 903
-source modules and 11,447 public declarations, with no missing module headers or
+source modules and 11,448 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -354,21 +354,28 @@ so the sum/product bounds become the equalities `-2` and `1`; at zero the
 lower real branch has no finite value.
 
 The subsequent `LambertWBranchGapBernoulli.lean` leaf has the exhaustive
-zero-definition/four-theorem surface
+zero-definition/five-theorem surface
 `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
-`hasSum_bernoulli_mul_pow_div_factorial`, and
+`hasSum_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial_complex_iff`, and
 `principalLambertW_lowerLambertW_eq_bernoulliSeries`.  It proves absolute
 summability on the real open disk `|z| < 2*pi`, the exact complex summability
 criterion `‖z‖ < 2*pi` and consequent boundary/exterior divergence, the
-actual all-index real Bernoulli sum for nonzero `z`, and the two paired
-branch-gap sums for a positive gap below `2*pi`.  Together with the finite
-branch-coordinate tranche, this gives four definitions and 36 theorems, 40
-declarations.  This is an exact crosswalk only for
-`eq:pair-Bernoulli-general`, together with the printed convergence-radius
-claim; no other label in the surrounding Guide corollary is promoted, and
-the full complex value identity remains Partial.  The retained 66-page Guide
-PDF predates this source-only crosswalk, and no render parity is claimed.
+complex `HasSum` value `(complexExpm1Div z)⁻¹` exactly on that disk, the actual
+all-index real Bernoulli quotient for nonzero `z`, and the two paired
+branch-gap sums for a positive gap below `2*pi`.  The complex target is `1`
+at `z = 0` and is the literal quotient `z / (exp z - 1)` away from zero; no
+claim equates the series to Lean's totalized quotient at zero.  Together with
+the finite branch-coordinate tranche, this gives four definitions and 37
+theorems, 41 declarations.  This is an exact crosswalk for
+`eq:pair-Bernoulli-general` and, under that explicit standard
+removable-origin convention, for the whole identity `eq:bernoulli-gen`.
+The Guide's nearest-nonzero-zero explanation is not formalized as the Lean
+proof route, and the Puiseux claims remain open.  The exact-radius four-theorem
+checkpoint had the census 903/11,447; the fifth theorem gives the live census
+903/11,448.  The retained 66-page Guide PDF predates this source-only
+crosswalk, and no render parity is claimed.
 
 No finite endpoint derivative is asserted.  An `O(z + exp(-1))` remainder
 after the signed leading term, a convergent signed
