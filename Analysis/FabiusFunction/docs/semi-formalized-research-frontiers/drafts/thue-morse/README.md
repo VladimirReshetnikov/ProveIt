@@ -74,8 +74,19 @@ At the same commit, the first eight public declarations of
 `ofReal_exp_mpLimit_eq_gammaTower_div`.  The two definitions are total for real
 `a`; the Mellin, integral, dyadic, and ratio theorems require positive
 parameters.  GammaLog is the chosen derivative coordinate, not a proved
-`Complex.log` identity.  Only the parameter-`a` differential and iterated
-differential ladder remains open in this tower tranche.
+`Complex.log` identity.  The source-only
+`ThueMorseGammaTowerDifferential.lean` leaf adds no definitions and exactly
+three theorems: `hasDerivAt_mellin_mellinKernel_parameter`,
+`hasDerivAt_thueMorseGammaLog_succ`, and
+`iteratedDeriv_thueMorseGammaLog`.  For every complex Mellin exponent and
+positive real damping parameter the first theorem proves differentiation
+under the integral with the exponent shift `s ↦ s + 1`; the other two give
+`L_(r+1)'(a) = (r+1)L_r(a)` and the full falling-factorial iterated law for
+`k ≤ r`.  Thus `p2:thm:gamma-tower` is Exact when its displayed logarithm is
+read, as above, as the chosen GammaLog coordinate.  Every differential theorem
+retains `0 < a`; no principal-`Complex.log` identity or nonpositive-parameter
+extension is asserted.  The retained 137-page PDF predates this source-only
+closure and is a historical render.
 
 `CentralBinomialValuation.lean` supplies the atlas's direct central-binomial
 crosswalk.  Its exhaustive public API is
