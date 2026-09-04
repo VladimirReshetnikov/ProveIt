@@ -840,6 +840,7 @@ import FabiusFunction.RemainderTransport
 import FabiusFunction.LeastTermIndex
 import FabiusFunction.BellSetPartitions
 import FabiusFunction.EulerianPermutohedron
+import FabiusFunction.InverseDerivativeRecursion
 
 set_option autoImplicit false
 

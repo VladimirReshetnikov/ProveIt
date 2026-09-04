@@ -6981,6 +6981,20 @@ $\ExponentialPartialBellPolynomial42=4x_1x_3+3x_2^2$, and
 $\ExponentialPartialBellPolynomial43=6x_1^2x_2$, then simplifying.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; formal power series; the analytic reading is not covered.
+Formal in \lean{InverseDerivativeRecursion} as a statement about formal power
+series: it is the $n$th coefficient of $f\circ g=\mathrm{id}$ under the
+corpus's formal Fa\`a di Bruno in partial-Bell form.
+\lean{Fabius.InverseDerivative.mul_eq_neg_sum} is the division-free form over any
+commutative $\RationalNumbers$-algebra, \lean{Fabius.InverseDerivative.eq_neg_mul_sum}
+the form solved for $g_n$ matching the display, and the four explicit low
+orders are \lean{Fabius.InverseDerivative.one_eq} through
+\lean{Fabius.InverseDerivative.four_eq}.  Not formal: the reading with
+$g^{(n)}$ as an iterated derivative of a real inverse function, which needs the
+analytic Fa\`a di Bruno formula in partial-Bell form.
+\end{remark}
+
 Recursion \eqref{eq:merged-inverse-derivative} expresses $g^{(n)}$ through the
 lower derivatives of $g$.  The following closed operator form expresses it
 through $f$ alone, with no reference to $g$ except in the final evaluation
@@ -7015,6 +7029,19 @@ $\Differential/\Differential y$ to both sides and use the displayed operator
 identity on the right; this prefixes one more factor
 $(1/f')\,\Differential/\Differential x$ and gives the case $n+1$.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; fully formal, and it is not about inverses.
+Fully formal in \lean{InverseDerivativeRecursion}, and the formalization
+exposed what the theorem is: not a statement about inverse functions at all,
+but the iterated-derivative formula for the autonomous equation
+$g'=\varphi\circ g$ with $\varphi=1/f'$, which the corpus already
+had in general.  \lean{Fabius.inverseDerivOp} is the operator,
+\lean{Fabius.inverseDerivOp_succ_eq_iterate} its form $((1/f')\,d/dx)^{n}(1/f')$,
+and \lean{Fabius.iteratedDeriv_eq_inverseDerivOp} the theorem, for a continuous
+local left inverse $g$ of a differentiable $f$ with $f'\ne0$; the first two
+orders are \lean{Fabius.deriv_eq_inv_deriv} and \lean{Fabius.iteratedDeriv_two_eq}.
+\end{remark}
 
 \begin{example}
 Applying \eqref{eq:merged-inverse-derivative-operator} twice reproduces the
@@ -10952,7 +10979,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 66 Lean, 36 partial, 106 none, of 208 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 67 Lean, 37 partial, 104 none, of 208 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -11092,8 +11119,8 @@ theorem (unlabelled, no.~77) &  & none &  \\
 \Cref{cor:merged-bell-convolution-inverse} & Convolution inverse of the Bell sequence & Lean & \lean{Fabius.sum_choose_bell_mul_complementaryBell} (\lean{ComplementaryBell}), from the addition law \lean{Bell.complete_add} of complete Bell polynomials at weights $\pm1$ \\
 \Cref{thm:merged-frechet-faa} & Coordinate-free Faà di Bruno & Lean & Mathlib's \lean{iteratedFDeriv_comp} (ContDiff/Comp.lean), unfolded with \lean{FormalMultilinearSeries.taylorComp} and \lean{FormalMultilinearSeries.compAlongOrderedFinpartition_apply}. The statement includes local $C^n$ hypotheses and explicitly uses \lean{OrderedFinpartition}'s increasing-maximum block order. No symmetry conversion is required; the separate partial-Bell regrouping remains open. \\
 corollary (unlabelled, no.~11) &  & none &  \\
-\Cref{thm:merged-inverse-derivative} & Inverse derivative recursion & none &  \\
-\Cref{thm:merged-inverse-derivative-operator} & Inverse-derivative operator & none &  \\
+\Cref{thm:merged-inverse-derivative} & Inverse derivative recursion & partial & formal-power-series form \lean{Fabius.InverseDerivative.eq_neg_mul_sum} and the explicit orders (\lean{InverseDerivativeRecursion}); the analytic iterated-derivative reading is not \\
+\Cref{thm:merged-inverse-derivative-operator} & Inverse-derivative operator & Lean & \lean{Fabius.iteratedDeriv_eq_inverseDerivOp} (\lean{InverseDerivativeRecursion}), via the corpus autonomous-ODE iterated derivative \\
 \Cref{lem:merged-multiresidue} & Multivariate residue substitution & none &  \\
 \Cref{thm:merged-good} & Lagrange--Good inversion & none &  \\
 \Cref{prop:merged-characteristic} & Characteristic determinant & none &  \\

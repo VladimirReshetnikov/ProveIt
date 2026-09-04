@@ -96,6 +96,12 @@ STATUS = {
  'thm:typeB-permutohedron-h-polynomial': ('Lean',
    r"\lean{Fabius.sum_typeBEulerian_mul_X_pow_eq_sum_typeBFaceNumber} via the sign-free "
    r"\lean{Fabius.typeB_newton} (\lean{EulerianPermutohedron})"),
+ 'thm:merged-inverse-derivative': ('partial',
+   r"formal-power-series form \lean{Fabius.InverseDerivative.eq_neg_mul_sum} and the explicit "
+   r"orders (\lean{InverseDerivativeRecursion}); the analytic iterated-derivative reading is not"),
+ 'thm:merged-inverse-derivative-operator': ('Lean',
+   r"\lean{Fabius.iteratedDeriv_eq_inverseDerivOp} (\lean{InverseDerivativeRecursion}), via the "
+   r"corpus autonomous-ODE iterated derivative"),
  'thm:bell-poly-partitions': ('Lean',
    r"\lean{Fabius.partialBell_eq_sum_setPartitions} and "
    r"\lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), "
