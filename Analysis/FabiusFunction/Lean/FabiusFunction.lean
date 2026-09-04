@@ -566,6 +566,7 @@ import FabiusFunction.TransseriesMonomialUniqueness
 import FabiusFunction.TransseriesWrightOmegaTerms
 import FabiusFunction.LambertCoefficientPolynomials
 import FabiusFunction.LambertPolynomialStirling
+import FabiusFunction.LambertPolynomialCoefficients
 import FabiusFunction.TransseriesPolyLogScale
 import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
