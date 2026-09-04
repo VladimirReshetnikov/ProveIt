@@ -62,7 +62,30 @@ This `README.md` is the permanent explanation of the directory and
 **must not be deleted** — it also keeps the directory present in git
 when no archives are waiting.
 
-Most recent processed batch (three archives, filed and removed on 2026-09-03,
+Most recent processed batch (five archives, filed and removed on 2026-09-03,
+after the Thue–Morse batch below): two independently written articles on the
+asymptotic transseries of the Bell numbers and three on the Fubini numbers,
+all to a new subgroup `../series-and-transseries/sequence-transseries/`
+(forward asymptotics of a sequence, not an inversion — hence not filed under
+`special-function-inversion/`).
+
+- `Bell_Number_Asymptotic_Transseries.zip` → `Bell_Number_Asymptotic_Transseries/`: 2,211-line source, 32-page A4 PDF.
+- `Bell_Number_Transseries_Article.zip` → `Bell_Number_Transseries_Article/`: 1,714-line source, 23-page A4 PDF.
+- `Fubini_Number_Full_Transseries.zip` → `Fubini_Number_Full_Transseries/`: 2,465-line source, 33-page A4 PDF.
+- `Fubini_Number_Transseries.zip` → `Fubini_Number_Transseries/`: 1,881-line source, 25-page A4 PDF.
+- `Fubini_Number_Transseries_Article.zip` → `Fubini_Number_Transseries_Article/`: 1,472-line source, 25-page Letter PDF.
+
+Every archive passed a CRC check with no absolute path, parent-directory
+traversal, or symlink entry; each held exactly one `.tex` and one `.pdf` with
+no wrapping directory, so the archive stems name the directories (two archives
+shipped the same inner file name, `Fubini_Number_Transseries.tex`). Longest
+filed path 252 characters. All sources LF with a final newline, filed
+byte-for-byte; git reported no line-ending normalization at staging. All PDFs
+readable, unencrypted, pdfTeX-1.40.26, every font embedded, no Type 3 rows.
+None loads `docs/fabius-notation.tex`. No checksum ledgers submitted or added.
+Comparison, deduplication, proof checking, and crosswalking deferred.
+
+Previous batch (three archives, filed and removed on 2026-09-03,
 later the same day than the Fibonacci batch below): three independently
 written articles on the diagonal polynomials of repeated signed Thue–Morse
 summation, all to `../thue-morse/` as separate members beside the

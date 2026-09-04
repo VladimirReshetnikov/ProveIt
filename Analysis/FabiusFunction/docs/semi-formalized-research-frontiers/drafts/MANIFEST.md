@@ -462,6 +462,28 @@ crosswalking are deferred; see
 
 ## spectra-and-arithmetic — `spectra-and-arithmetic/`
 
+A fifth subgroup, `sequence-transseries/`, was filed on 2026-09-03 from five
+ZIP arrivals. Its articles derive the complete asymptotic transseries of a
+classical integer sequence *forwards* from its exponential generating
+function — two on the Bell numbers (saddle-point transseries about
+`r = W_0(n)`) and three on the Fubini numbers (the vertical pole lattice of
+`1/(2 − e^z)`) — so they are not inversions and are kept apart from
+`special-function-inversion/`. Each archive held one `.tex` and one `.pdf`
+with no wrapping directory; two shipped the same inner file name, and the
+distinct archive stems name the directories. Longest filed path 252
+characters. All sources LF with a final newline; all PDFs fully embedded,
+Type-3-free, pdfTeX-1.40.26. None loads `docs/fabius-notation.tex`. Quick
+intake only; see
+[`series-and-transseries/sequence-transseries/README.md`](series-and-transseries/sequence-transseries/README.md).
+
+| Directory | Document | Previous path |
+| --- | --- | --- |
+| `sequence-transseries/Bell_Number_Asymptotic_Transseries/` | *The Full Asymptotic Transseries of the Bell Numbers* — 2,211-line/78,882-byte source, 32-page A4/724,026-byte PDF; 6 theorems, 2 propositions, 2 lemmas, 1 corollary, 2 definitions in 18 sections | `incoming/Bell_Number_Asymptotic_Transseries.zip` |
+| `sequence-transseries/Bell_Number_Transseries_Article/` | *The Full Saddle–Transseries Expansion of the Bell Numbers* — 1,714-line/60,076-byte source, 23-page A4/665,924-byte PDF; 7 theorems, 2 propositions, 2 lemmas, 2 corollaries in 17 sections | `incoming/Bell_Number_Transseries_Article.zip` |
+| `sequence-transseries/Fubini_Number_Full_Transseries/` | *The Full Asymptotic Transseries of the Fubini Numbers* — 2,465-line/86,507-byte source, 33-page A4/741,812-byte PDF; 17 theorems, 2 propositions, 5 corollaries, 1 definition in 18 sections | `incoming/Fubini_Number_Full_Transseries.zip` |
+| `sequence-transseries/Fubini_Number_Transseries/` | *The Complete Asymptotic Transseries of the Fubini Numbers* — 1,881-line/64,271-byte source, 25-page A4/699,100-byte PDF; 10 theorems, 2 propositions, 1 lemma, 3 corollaries in 16 sections | `incoming/Fubini_Number_Transseries.zip` |
+| `sequence-transseries/Fubini_Number_Transseries_Article/` | untitled in source (exact identity `F_n = Γ(N)/2 · Σ_k ρ_k^{−N}`) — 1,472-line/57,681-byte source, 25-page Letter/490,186-byte PDF; 8 theorems, 1 proposition, 1 definition in 14 sections | `incoming/Fubini_Number_Transseries_Article.zip` |
+
 Current source counts for unaffected rows still supersede their older intake
 figures below: Dyadic Radon Profiles has 2,050 lines and a 29-page main PDF;
 Fabius Pascal Frontiers has 1,926 lines and a 26-page main PDF; Carleman
