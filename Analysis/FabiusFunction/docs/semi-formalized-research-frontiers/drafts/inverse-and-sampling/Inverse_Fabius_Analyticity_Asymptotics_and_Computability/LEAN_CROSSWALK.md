@@ -6,7 +6,7 @@ This document records the source-level Lean correspondence for the 194 immutable
 
 The audit inspected the actual Lean source files below Analysis/FabiusFunction/Lean/FabiusFunction. It did not infer coverage from .olean files, declaration names alone, generated documentation, or historical commit messages.
 
-The inverse-computability tranches were checked by focused compilation of `EffectiveMonotoneInverse`, `EffectiveGapInverse`, `FabiusInverseComputable`, `FabiusInverseExactDyadicModulus`, and the facade before this source-only bookkeeping pass. The focused `RvachevLaurentLeading` target and its facade reachability also passed before the present documentation update. No Lean, Lake, or Git command was run during the bookkeeping update itself. Human-proved frontier result means that the canonical chapter contains a complete human-readable proof but the inspected Lean tree has only partial ingredients or no matching declaration.
+The inverse-computability tranches were checked by focused compilation of `EffectiveMonotoneInverse`, `EffectiveGapInverse`, `FabiusInverseComputable`, `FabiusInverseExactDyadicModulus`, and the facade before this source-only bookkeeping pass. The focused `RvachevLaurentLeading` target and its facade reachability also passed before the present documentation update. The focused `FinitePrefixAppellRecovery` target passed with its eleven definitions and seventeen theorems before this package-local crosswalk update. No Lean, Lake, or Git command was run during the bookkeeping update itself. Human-proved frontier result means that the canonical chapter contains a complete human-readable proof but the inspected Lean tree has only partial ingredients or no matching declaration.
 
 `FabiusInverseExactDyadicModulus` was inspected declaration-by-declaration in
 this source-only pass after its focused target compiled successfully.  Its two
@@ -30,12 +30,12 @@ The first ten columns of theorem_concordance.csv remain field-for-field identica
 
 | Source package | Rows | Lean-proved | Human-proved | Conjecture | Open problem | Not applicable |
 |---|---:|---:|---:|---:|---:|---:|
-| Inverse_and_Sampling_Frontiers | 83 | 11 | 49 | 2 | 10 | 11 |
+| Inverse_and_Sampling_Frontiers | 83 | 13 | 47 | 2 | 10 | 11 |
 | Inverse_Endpoint_All_Orders | 29 | 1 | 20 | 6 | 0 | 2 |
 | Inverse_Fabius_Computability_Report | 40 | 24 | 6 | 1 | 4 | 5 |
 | inverse_fabius_iterates_nowhere_analytic | 24 | 2 | 17 | 1 | 1 | 3 |
 | Non_Elementarity_of_the_Fabius_Function | 18 | 14 | 1 | 0 | 0 | 3 |
-| **Total** | **194** | **52** | **93** | **10** | **15** | **24** |
+| **Total** | **194** | **54** | **91** | **10** | **15** | **24** |
 
 The high human-proved count is intentional. In particular, a full forward asymptotic expansion composed with F inverse is not an explicit all-orders inverse reversion theorem, and a formal Catalan or Richardson identity is not an analytic asymptotic for the actual finite-prefix quantiles.
 
@@ -73,12 +73,14 @@ The four unlabelled source obligations are marked not applicable and point to th
 
 ## Exact declaration index
 
-The table below is generated from the 52 Lean-proved concordance rows. Declaration names are fully qualified.
+The table below is generated from the 54 Lean-proved concordance rows. Declaration names are fully qualified.
 
 | Source key | Canonical label | Lean module | Principal declaration |
 |---|---|---|---|
 | Inverse_and_Sampling_Frontiers:p1:lem:filter-moments | is:p1:lem:filter-moments | FabiusFunction.GeometricLagrangeQMoments | Fabius.quarterGeometricLagrangeQMoment_eq_residual_qBinomial |
 | Inverse_and_Sampling_Frontiers:p1:thm:quarter-exact | is:p1:thm:quarter-exact | FabiusFunction.QuarterQuantile | Fabius.quarterQuantile_eq |
+| Inverse_and_Sampling_Frontiers:p2:thm:finite-prefix-expansion | is:p2:thm:finite-prefix-expansion | FabiusFunction.FinitePrefixAppellRecovery | Fabius.centeredDyadicPrefixAppellPolynomialRat_eq_sum_even |
+| Inverse_and_Sampling_Frontiers:p2:thm:exact-recovery | is:p2:thm:exact-recovery | FabiusFunction.FinitePrefixAppellRecovery | Fabius.rvachevAppellPolynomialRat_eq_sum_prefix |
 | Inverse_and_Sampling_Frontiers:p2:thm:Laurent-leading | is:p2:thm:Laurent-leading | FabiusFunction.RvachevLaurentLeading | Fabius.tendsto_rvachevCenteredMGF_laurent_two_pow_mul_odd |
 | Inverse_and_Sampling_Frontiers:p3:thm:self-sampling | is:p3:thm:self-sampling | FabiusFunction.PolynomialCombExactness | Fabius.integral_polynomial_mul_rvachevUp_eq_dyadic_tsum |
 | Inverse_and_Sampling_Frontiers:p3:thm:Appell-deconvolution | is:p3:thm:Appell-deconvolution | FabiusFunction.RvachevMomentAppell | Fabius.integral_eval_rvachevAppellPolynomial_sub_mul_rvachev |
@@ -133,6 +135,7 @@ The table below is generated from the 52 Lean-proved concordance rows. Declarati
 Several paper rows contain multiple clauses. For those rows, the principal declaration above belongs to the following explicit finite family; the CSV repeats the exact family at the source-row level.
 
 - Quarter-scale filter moments: `Fabius.geometricLagrangeQMoment_zero`, `Fabius.quarterGeometricLagrangeQMoment_eq_zero`, and `Fabius.quarterGeometricLagrangeQMoment_eq_residual_qBinomial` prove normalization, the cancelled range, and every residual moment.
+- Finite-prefix Appell expansion and recovery: `Fabius.uncenteredDyadicPrefixAppellPolynomialRat_eq_sum` and `Fabius.centeredDyadicPrefixAppellPolynomialRat_eq_sum_even` give the two printed formulas for all `N,n : ℕ`, including `N = 0`, with `μ_r = halfMoment r`, `m_(2r) = moment r`, and scales `(1/2)^N` and `(1/4)^N`. The definitions `Fabius.uncenteredDyadicPrefixAppellScalePolynomialRat` and `Fabius.centeredDyadicPrefixAppellScalePolynomialRat`, the bridges `Fabius.uncenteredDyadicPrefixAppellPolynomialRat_eq_eval_scale` and `Fabius.centeredDyadicPrefixAppellPolynomialRat_eq_eval_scale`, and the degree theorems `Fabius.natDegree_uncenteredDyadicPrefixAppellScalePolynomialRat` and `Fabius.natDegree_centeredDyadicPrefixAppellScalePolynomialRat` prove exact outer degrees `n` and `n/2` in `Polynomial (Polynomial ℚ)`. The coefficient ring matters: a fixed-inner-`x` centered specialization can have smaller degree, for example when `n` is odd and `x = 0`. Finally `Fabius.kabayaIriAppellPolynomialRat_eq_sum_prefix` and `Fabius.rvachevAppellPolynomialRat_eq_sum_prefix` give exact recovery from `n+1` consecutive prefixes at base `1/2` and `n/2+1` consecutive prefixes at base `1/4`, respectively, for every starting depth and without a limit. The module's eleven definitions and seventeen theorems construct the prefix moments by finite binomial convolution; they do not supply a random-variable, `HasLaw`, or analytic-MGF realization theorem.
 - Leading Laurent coefficient: `Fabius.rvachevCenteredMGF` is the paper-normalized centered MGF. The six theorems `Fabius.rvachevCenteredMGF_eq_rvachevFourierProduct`, `Fabius.rvachevCenteredMGF_pi_mul_I_int`, `Fabius.rvachevCenteredMGF_pi_mul_I_int_ne_zero_of_odd`, `Fabius.tendsto_sub_pow_mul_inv_rvachevFourierProduct_int`, `Fabius.tendsto_rvachevCenteredMGF_laurent_int`, and `Fabius.tendsto_rvachevCenteredMGF_laurent_two_pow_mul_odd` supply the exact Fourier--Laplace coordinate, odd-core constant and nonvanishing, generic integer-zero cofactor limit, general centered-MGF pole limit, and the manuscript's `n = 2^v u` specialization with order `v + 1` and coefficient `-T_n^(v+1)/C_u`. All three limit declarations use punctured neighborhoods, exactly as a meromorphic limit must: Lean's inverse is totalized to zero at the pole. No lower Laurent coefficient, pole-shell sum, or Appell-coefficient asymptotic is inferred.
 - Density shape: `Fabius.strictMonoOn_deriv_fabiusReal_Icc`, `Fabius.strictAntiOn_deriv_fabiusReal_Icc`, and `Fabius.deriv_fabiusReal_one_sub` prove the two strict branches and reflection.
 - Inverse Fabius computability: `Fabius.fabiusInv_isComputableRealFunction` packages sequential computability of the totalized inverse together with the logarithmic-Delta effective-continuity witness. `Fabius.effectiveInversionOn_Icc` supplies the unit-interval realizer, while `Fabius.abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_deltaDenominator`, `Fabius.inverseFabiusLogarithmicOrder_isLeast`, and `Fabius.fabiusInv_effectivelyUniformContinuous_logarithmicDelta` supply the headline theorem's explicit dyadic and reciprocal-modulus clauses.
@@ -240,7 +243,7 @@ The dyadic singularity atlas `is:p2:prob:dyadic-singularity-atlas` is explicitly
 | Inverse computability | Forward computability, sharp inverse modulus, effective injectivity, explicit effective continuity, tolerant bisection, computable positive-rational gap encoding, derived reciprocal inverse modulus, restricted inverse sequential computability, subset effective uniform continuity, computable clamping, totalized `IsComputableRealFunction` theorems, exact fixed-dyadic endpoint-ceiling minimality, and primitive-recursive fixed and logarithmic exact denominators | Genuine leastness for the weaker `1/n` target and input-bit asymptotics |
 | Inverse iterates | Single-inverse nonanalyticity and exact PartitionDefect combinatorics | Every n > 1 iterate theorem, zero-radius transport, spine dominance, formal-reversion radius |
 | Dyadic inverse germs | Exact quarter quantile, analytic quarter germ, complete quarter inverse jet | General reduced-dyadic analytic shadow, nonzero flat remainder, all-dyadic inverse derivatives |
-| Appell and Bernoulli structure | Appell derivative/translation laws, moments, cumulants, continuous deconvolution, polynomial synthesis | Logistic dual, Barnes identifications, full finite-prefix collapse/recovery, some displayed Bernoulli recurrences |
+| Appell and Bernoulli structure | Appell derivative/translation laws, moments, cumulants, continuous deconvolution, polynomial synthesis, exact finite-prefix Appell expansion and finite Richardson recovery | Logistic dual, Barnes identifications and Thue--Morse prefix collapses, some displayed Bernoulli recurrences; no probabilistic realization of the algebraic prefix model |
 | Shifted self-sampling | Exact polynomial self-sampling, sharp mesh exactness, integer-zero factorization, leading reciprocal centered-MGF Laurent coefficient, half-integer sign, positive half-frequency bound | Lower Laurent coefficients and pole-shell asymptotics, entire master-alias convergence theorem, complete phase classification, positive-filter uniqueness, tensor/base-b quadrature |
 
 ## Conjecture and problem discipline
