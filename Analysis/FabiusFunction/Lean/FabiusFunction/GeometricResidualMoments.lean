@@ -33,6 +33,9 @@ shifted block `q^(start+k)` is its geometric specialization.
 * `sum_geometricLagrangeWeight_mul_pow_of_pos` and
   `sum_geometricLagrangeWeight_mul_shifted_pow_of_pos` are the Lagrange and
   shifted-grid forms.
+* `sum_geometricLagrangeWeight_mul_eval_scaled_geometric` says that the same
+  weights evaluate every polynomial of degree at most `p` at zero after an
+  arbitrary common dilation of the nodes.
 -/
 
 set_option autoImplicit false
@@ -280,6 +283,44 @@ theorem sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos
         cases d <;> simp
   exact sum_weight_mul_scaled_geometric_pow_of_pos c q p
     (geometricLagrangeWeight q p) hscaled m hm
+
+/-- **Polynomial exactness on a scaled geometric grid.**
+
+The geometric Lagrange weights for `1, q, ..., q ^ p` evaluate every
+polynomial of degree at most `p` at zero even when all sample points are
+multiplied by a common scale `c`.  The scale need not be nonzero: at `c = 0`
+the assertion reduces to the mass-one identity for the weights. -/
+theorem sum_geometricLagrangeWeight_mul_eval_scaled_geometric
+    {F : Type*} [Field F]
+    (c q : F) (p : ℕ)
+    (hnode : Set.InjOn (fun k : ℕ ↦ q ^ k)
+      (Finset.range (p + 1)))
+    (P : Polynomial F) (hP : P.natDegree ≤ p) :
+    (∑ k ∈ Finset.range (p + 1),
+      geometricLagrangeWeight q p k * P.eval (c * q ^ k)) = P.eval 0 := by
+  have hvanish : ∀ d, 0 < d → d ≤ p →
+      ∑ k ∈ Finset.range (p + 1),
+        geometricLagrangeWeight q p k * (c * q ^ k) ^ d = 0 := by
+    intro d hdpos hd
+    calc
+      (∑ k ∈ Finset.range (p + 1),
+          geometricLagrangeWeight q p k * (c * q ^ k) ^ d) =
+          c ^ d * ∑ k ∈ Finset.range (p + 1),
+            geometricLagrangeWeight q p k * (q ^ k) ^ d := by
+        rw [Finset.mul_sum]
+        apply Finset.sum_congr rfl
+        intro k _hk
+        rw [mul_pow]
+        ring
+      _ = c ^ d * 0 := by
+        rw [sum_geometricLagrangeWeight_mul_pow_eq_zero q p d hnode hdpos hd]
+      _ = 0 := mul_zero _
+  have hexact := sum_weight_mul_eval₂_eq_constantCoeff
+    (RingHom.id F) (Finset.range (p + 1))
+    (geometricLagrangeWeight q p) (fun k : ℕ ↦ c * q ^ k)
+    P p hP (sum_geometricLagrangeWeight q p hnode) hvanish
+  simpa only [Polynomial.eval₂_id, RingHom.id_apply,
+    Polynomial.coeff_zero_eq_eval_zero] using hexact
 
 /-- Shifted-block form of every positive geometric Lagrange moment.  The
 shift contributes exactly `q ^ (start * m)` and requires no additional

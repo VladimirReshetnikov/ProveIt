@@ -43,10 +43,12 @@ noncomputable def lambertShift (x : ℝ) : ℝ := x + principalLambertW x
 /-- `u e^u + u`, whose inverse on `[0,∞)` is the `r = 1` Lambert function. -/
 noncomputable def shiftedMulExp (u : ℝ) : ℝ := u * Real.exp u + u
 
+/-- Every nonnegative real lies weakly above the Lambert branch point `-e⁻¹`. -/
 theorem neg_exp_neg_one_le_of_nonneg {x : ℝ} (hx : 0 ≤ x) : -Real.exp (-1) ≤ x := by
   have := Real.exp_pos (-1)
   linarith
 
+/-- Every nonnegative real lies strictly above the Lambert branch point `-e⁻¹`. -/
 theorem neg_exp_neg_one_lt_of_nonneg {x : ℝ} (hx : 0 ≤ x) : -Real.exp (-1) < x := by
   have := Real.exp_pos (-1)
   linarith
@@ -59,10 +61,12 @@ theorem lambertShift_strictMonoOn : StrictMonoOn lambertShift (Ici 0) := by
     (mem_Ici.mpr (neg_exp_neg_one_le_of_nonneg hb)) hab
   linarith
 
+/-- The shifted Lambert map is continuous on the nonnegative half-line. -/
 theorem lambertShift_continuousOn : ContinuousOn lambertShift (Ici 0) :=
   continuousOn_id.add (principalLambertW_continuousOn_Ici.mono
     fun _ hx => mem_Ici.mpr (neg_exp_neg_one_le_of_nonneg hx))
 
+/-- The shifted Lambert map fixes zero. -/
 theorem lambertShift_zero : lambertShift 0 = 0 := by
   unfold lambertShift
   have h := principalLambertW_unique (z := 0) (w := 0) (neg_exp_neg_one_le_of_nonneg le_rfl)
@@ -70,11 +74,13 @@ theorem lambertShift_zero : lambertShift 0 = 0 := by
   rw [← h]
   simp
 
+/-- The shifted Lambert map is nonnegative on the nonnegative half-line. -/
 theorem lambertShift_nonneg {x : ℝ} (hx : 0 ≤ x) : 0 ≤ lambertShift x := by
   unfold lambertShift
   have := principalLambertW_nonneg hx
   linarith
 
+/-- On the nonnegative half-line, the shifted Lambert map is at most `2x`. -/
 theorem lambertShift_le_two_mul {x : ℝ} (hx : 0 ≤ x) : lambertShift x ≤ 2 * x := by
   unfold lambertShift
   have := principalLambertW_le_self hx
@@ -89,11 +95,14 @@ theorem shiftedMulExp_strictMonoOn : StrictMonoOn shiftedMulExp (Ici 0) := by
   simp only at this
   linarith
 
+/-- The map `u ↦ u e^u + u` is continuous. -/
 theorem shiftedMulExp_continuous : Continuous shiftedMulExp :=
   (continuous_id.mul Real.continuous_exp).add continuous_id
 
+/-- The map `u ↦ u e^u + u` sends zero to zero. -/
 theorem shiftedMulExp_zero : shiftedMulExp 0 = 0 := by simp [shiftedMulExp]
 
+/-- For nonnegative `u`, one has `u ≤ u e^u + u`. -/
 theorem le_shiftedMulExp {u : ℝ} (hu : 0 ≤ u) : u ≤ shiftedMulExp u := by
   unfold shiftedMulExp
   have := mul_nonneg hu (Real.exp_pos u).le
@@ -109,6 +118,7 @@ theorem exists_shiftedMulExp_eq {z : ℝ} (hz : 0 ≤ z) :
 noncomputable def shiftedLambertW (z : ℝ) : ℝ :=
   Function.invFunOn shiftedMulExp (Ici 0) z
 
+/-- The shifted Lambert function is nonnegative at every nonnegative argument. -/
 theorem shiftedLambertW_nonneg {z : ℝ} (hz : 0 ≤ z) : 0 ≤ shiftedLambertW z := by
   obtain ⟨u, hu, huz⟩ := exists_shiftedMulExp_eq hz
   exact mem_Ici.mp (Function.invFunOn_mem ⟨u, mem_Ici.mpr hu.1, huz⟩)
@@ -119,6 +129,7 @@ theorem shiftedMulExp_shiftedLambertW {z : ℝ} (hz : 0 ≤ z) :
   obtain ⟨u, hu, huz⟩ := exists_shiftedMulExp_eq hz
   exact Function.invFunOn_eq ⟨u, mem_Ici.mpr hu.1, huz⟩
 
+/-- Expanded form of the defining identity `u e^u + u = z`. -/
 theorem shiftedLambertW_mul_exp_add {z : ℝ} (hz : 0 ≤ z) :
     shiftedLambertW z * Real.exp (shiftedLambertW z) + shiftedLambertW z = z :=
   shiftedMulExp_shiftedLambertW hz
@@ -130,13 +141,16 @@ theorem shiftedLambertW_unique {z u : ℝ} (hz : 0 ≤ z) (hu : 0 ≤ u)
     (mem_Ici.mpr (shiftedLambertW_nonneg hz))
     (by rw [huz, shiftedMulExp_shiftedLambertW hz])
 
+/-- The shifted Lambert function sends zero to zero. -/
 theorem shiftedLambertW_zero : shiftedLambertW 0 = 0 :=
   (shiftedLambertW_unique le_rfl le_rfl shiftedMulExp_zero).symm
 
+/-- The shifted Lambert value at a nonnegative argument is at most that argument. -/
 theorem shiftedLambertW_le {z : ℝ} (hz : 0 ≤ z) : shiftedLambertW z ≤ z := by
   have := le_shiftedMulExp (shiftedLambertW_nonneg hz)
   rwa [shiftedMulExp_shiftedLambertW hz] at this
 
+/-- The shifted Lambert function is positive at every positive argument. -/
 theorem shiftedLambertW_pos {z : ℝ} (hz : 0 < z) : 0 < shiftedLambertW z := by
   rcases (shiftedLambertW_nonneg hz.le).lt_or_eq with h | h
   · exact h
@@ -160,6 +174,7 @@ theorem lambertShiftInv_eq_mul_exp {z : ℝ} (hz : 0 ≤ z) :
   have := shiftedLambertW_mul_exp_add hz
   linarith
 
+/-- The inverse shifted Lambert map is nonnegative at every nonnegative argument. -/
 theorem lambertShiftInv_nonneg {z : ℝ} (hz : 0 ≤ z) : 0 ≤ lambertShiftInv z := by
   rw [lambertShiftInv_eq_mul_exp hz]
   exact mul_nonneg (shiftedLambertW_nonneg hz) (Real.exp_pos _).le
@@ -215,6 +230,7 @@ theorem shiftedLambertW_lt_principalLambertW {z : ℝ} (hz : 0 < z) :
   exact (mul_exp_strictMonoOn.lt_iff_lt (mem_Ici.mpr (by linarith))
     (mem_Ici.mpr (by linarith))).mp hlt
 
+/-- Lower bracket for the inverse: `z - W(z) < g(z)` when `z > 0`. -/
 theorem sub_principalLambertW_lt_lambertShiftInv {z : ℝ} (hz : 0 < z) :
     z - principalLambertW z < lambertShiftInv z := by
   unfold lambertShiftInv
@@ -237,17 +253,20 @@ theorem inv_exp_mul_add_one_le_one {x : ℝ} (hx : 0 ≤ x) :
   have h2 : 1 ≤ principalLambertW x + 1 := by linarith
   exact inv_le_one_of_one_le₀ (one_le_mul_of_one_le_of_one_le h1 h2)
 
+/-- The derivative of the shifted Lambert map is at least one on `(0,∞)`. -/
 theorem one_le_deriv_lambertShift {x : ℝ} (hx : 0 < x) : 1 ≤ deriv lambertShift x := by
   rw [(lambertShift_hasDerivAt hx).deriv]
   have := inv_nonneg.mpr (mul_nonneg (Real.exp_pos (principalLambertW x)).le
     (by linarith [principalLambertW_nonneg hx.le] : (0 : ℝ) ≤ principalLambertW x + 1))
   linarith
 
+/-- The derivative of the shifted Lambert map is at most two on `(0,∞)`. -/
 theorem deriv_lambertShift_le_two {x : ℝ} (hx : 0 < x) : deriv lambertShift x ≤ 2 := by
   rw [(lambertShift_hasDerivAt hx).deriv]
   have := inv_exp_mul_add_one_le_one hx.le
   linarith
 
+/-- The shifted Lambert map is differentiable on the interior of `[0,∞)`. -/
 theorem lambertShift_differentiableOn : DifferentiableOn ℝ lambertShift (interior (Ici 0)) := by
   rw [interior_Ici]
   exact fun x hx => (lambertShift_hasDerivAt (mem_Ioi.mp hx)).differentiableAt.differentiableWithinAt
@@ -261,6 +280,7 @@ theorem sub_le_lambertShift_sub {x y : ℝ} (hx : 0 ≤ x) (hxy : x ≤ y) :
     x (mem_Ici.mpr hx) y (mem_Ici.mpr (hx.trans hxy)) hxy
   linarith
 
+/-- Ordered upper Lipschitz bound for the shifted Lambert map on `[0,∞)`. -/
 theorem lambertShift_sub_le_two_mul_sub {x y : ℝ} (hx : 0 ≤ x) (hxy : x ≤ y) :
     lambertShift y - lambertShift x ≤ 2 * (y - x) :=
   (convex_Ici (0 : ℝ)).image_sub_le_mul_sub_of_deriv_le lambertShift_continuousOn

@@ -59,10 +59,9 @@ in `../source_disposition.csv`.
   historical canonical-publication checks separately from the pending build of
   the current source union and the remaining reproducibility work.
 - [`COMPANION_PAYLOADS.csv`](COMPANION_PAYLOADS.csv) is the canonical retained-
-  payload provenance map, not a checksum manifest. The package root's
-  [`SHA256SUMS`](../SHA256SUMS) is the sole live checksum ledger. It verified
-  exhaustively at the recorded upstream checkpoint and is explicitly partial
-  pending the current union's rebuild. There is no separate `assets/SHA256SUMS`.
+  payload provenance map, not a checksum manifest. Package checksum manifests
+  are retired; the map's per-row digests remain provenance receipts rather than
+  a live whole-package gate.
   None of these current records should be confused with the historical
   per-package ledgers.
 

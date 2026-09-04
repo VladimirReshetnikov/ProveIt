@@ -23,33 +23,43 @@ applies the technique across different special functions.
 
 ## The consolidated volume
 
-The last four subjects were merged, together with the shared apparatus of all
-twelve articles, into
+All eight subjects were merged, together with the shared apparatus of all
+twenty-four articles, into
 
 > [`Sequence_Inversion_Transseries/`](Sequence_Inversion_Transseries/) ---
-> *Asymptotic Transseries and Inversion of Four Combinatorial Sequences*,
-> 150 A4 pages, 3 September 2026.
+> *Asymptotic Transseries and Inversion of Eight Sequences and Special
+> Functions*,
+> 205 A4 pages, 3 September 2026.
 
 Chapter~0 of that volume states once, with complete proofs, the apparatus that
-all twelve articles carry a copy of: the exponential--power model and an
+all twenty-four articles carry a copy of: the exponential--power model and an
 axiomatized dominant core, the Bell-polynomial coefficient calculus,
-Lagrange--Bürmann and the Lagrange fixed-point formula, the exact Lambert
+Lagrange--Bürmann, the Lagrange fixed-point formula and perturbed inversion
+around an exactly invertible core, the exact Lambert
 carrier with its branch rule, the all-orders reversion, the flattening into a
 polynomial--logarithmic transseries, the three inverse objects of a discrete
 sequence, backward error, remainder transport and optimal truncation.  Its
-Chapters~1--4 supply only the parameter dictionary and the subject-specific
-mathematics, citing Chapter~0 247 times.
+Chapters~1--8 supply only the parameter dictionary and the subject-specific
+mathematics, citing Chapter~0 266 times.  Chapters~5--6 add a second exactly
+invertible core, `a x^p (log x - beta)`; Chapter~7 borrows its carrier from
+Chapter~5 rather than rederiving it, as all three of its sources do; and
+Chapter~8 falls outside the frame entirely, with no Lambert core and a
+convergent expansion.
 
-Two facts the merge made visible: the partition numbers are the `alpha = 1/2`
+Facts the merge made visible: the partition numbers are the `alpha = 1/2`
 case of the same model and reduce to the others by `xi = sqrt(N)` (with the
-arithmetic shift taken first), and the double factorial is *not* an
+arithmetic shift taken first); the double factorial is *not* an
 exponential--power model at all --- its phase is `(s/2) log s` --- so the
-right common object is the core, not the model.  Corrections to the sources
-are boxed in the text and listed in the volume's Appendix~B; no source was
-found to contain an arithmetic error.
+right common object is the core, not the model; the slope-denominator bound
+of the power--logarithmic family is attained, with deepest pole
+`binom(1/2,n) 12^-n` for Gamma; four apparently unrelated square roots are
+one quadratic lemma seen through two different extractions; and the
+K-function's "accelerated coordinate" is the resummation of its own resonant
+subsector, a device that applies to Barnes `G` as well but which no Barnes
+source attempted.
 
-The twelve source packages below are **retained** for now; deleting them is a
-separate step, after a residue audit.
+The twenty-four source packages below are **retained** for now; deleting them
+is a separate step, after a residue audit.
 
 ## The eight subjects
 

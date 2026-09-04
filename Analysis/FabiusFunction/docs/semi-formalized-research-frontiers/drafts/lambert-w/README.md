@@ -20,8 +20,10 @@ Four independently written article packages arrived together on
 consolidated volume:
 
 Member: `Lambert_W_Guide/` — *The Lambert W Function: A Real-Variable
-Guide* (62 pp, consolidated edition).  The most complete of the four
-treatments forms the body; the unique layers of the other three (the
+Guide*.  Its retained PDF is a historical 66-page A4 artifact of 1,107,064
+bytes; the current source is newer, so no render parity is claimed.  The most
+complete of the four treatments forms the body; the unique layers of the
+other three (the
 complete power-tower convergence theorem, inverse-Taylor corrections,
 the branch-exchange involution, the transcendence theorem, a
 practitioner's toolkit, further applications, and the r-Lambert
@@ -67,6 +69,143 @@ monotonicity), the closed value `W₋₁(-2e⁻²) = -2`, and the **branch
 dichotomy**: every real solution of `w·e^w = z` is `W₀(z)` or `W₋₁(z)`
 (`Fabius.eq_principalLambertW_or_eq_lowerLambertW`) — the guide's
 two-branch inversion statement, kernel-verified.
+
+The guide's exact branch-pair parametrization and symmetric corollary now have
+a focused three-module crosswalk.  `LambertWBranchPairing.lean` has zero
+definitions and seven theorems, including both displayed formulas for W₋₁;
+`LambertWGapBijection.lean` has four definitions and sixteen theorems,
+including the inverse bijection and all three `t > 1` coordinate formulas;
+and `LambertWBranchSymmetry.lean` has zero definitions and nine theorems for
+the quotient, exponential-rational and hyperbolic sum/product forms, and the
+strict sum/product bounds.  The disjoint union is four definitions and 32
+theorems, hence 36 public declarations.  The forward pairing and symmetric
+laws use the sharp open input interval `(-exp(-1), 0)`.  In the converse
+module the four coordinate definitions are total, `gapLower_eq_mul_exp` is
+unconditional, the reconstruction results use a positive gap, and the three
+logarithmic-coordinate results assume `t > 1`; its inverse and bijection
+statements connect exactly the two open domains.  At the input interval's
+left endpoint both branches equal `-1`, so the sum is exactly `-2` and the
+product exactly `1`, while the lower branch has no finite value at zero.
+
+The source-only companion `LambertWBranchGapBernoulli.lean` has the exhaustive
+surface zero definitions and five theorems:
+`summable_norm_bernoulli_mul_pow_div_factorial`,
+`summable_bernoulli_mul_pow_div_factorial_iff`,
+`hasSum_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial_complex_iff`, and
+`principalLambertW_lowerLambertW_eq_bernoulliSeries`.  They prove absolute
+summability of the real Bernoulli exponential generating series for
+`|z| < 2*pi`; the exact complex criterion that the series is summable if and
+only if `‖z‖ < 2*pi`, so it diverges on the boundary and throughout the
+exterior; the complex `HasSum` value `(complexExpm1Div z)⁻¹` exactly on that
+disk; its actual all-index real sum `z / (exp z - 1)` for `z != 0`; and the
+paired compact branch-gap sums for a positive gap below `2*pi`.  At the origin
+the complex target has the standard removable value `1`; away from the origin
+it rewrites to the literal quotient.  No equality with Lean's totalized
+quotient at zero is claimed.  This exactly crosswalks Guide label
+`eq:pair-Bernoulli-general` and makes `eq:bernoulli-gen` wholly Exact under
+that explicit removable-origin convention.  The Guide's nearest-nonzero-zero
+argument is not the formal proof route.  With the three finite
+branch-coordinate modules, the four-module union is four definitions and 37
+theorems, 41 declarations.  The signed higher/convergent Puiseux program
+remains open.  The retained 66-page Guide PDF and the other affected retained
+PDFs predate this source-only overlay, so no render parity is claimed.  The
+exact-radius four-theorem checkpoint had census 903/11,447; the fifth theorem
+brought the next historical checkpoint to 903 modules and 11,448 public
+declarations.  The later sibling
+`FabiusFunction.GeometricUniformMomentPolynomial` module has one definition
+and eight theorems for its recursive polynomial, residual-product recurrence,
+degree bound, value at zero, and first four nonconstant cases.  That algebraic
+leaf produced the historical checkpoint 904 modules and 11,457 public
+declarations.  Its companion
+`FabiusFunction.GeometricUniformMomentPolynomialBridge` has the exhaustive
+surface zero definitions and one theorem,
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`.
+For every real `|q| < 1`, it supplies the actual-MGF normalization and makes
+external source label `p7:eq:Pn-def` Exact in that real regime.  It constructs
+no complex-q infinite product by itself.  At this bridge checkpoint the
+leading-coefficient and strict odd-degree clauses were still absent, so the
+compound `p7:thm:Pn` was then Partial; the later sharp-degree sibling below
+makes it Exact.  This bridge produced the historical checkpoint 905 modules
+and 11,458 public declarations.  The subsequent sibling
+`FabiusFunction.GeometricUniformComplexMomentProduct` has the exhaustive
+surface one public definition and two public theorems:
+`Fabius.geometricUniformComplexMomentProduct`,
+`Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct`, and
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
+For complex `‖q‖ < 1` it supplies the actual locally uniform product and its
+normalized Taylor-coefficient bridge.  This is an analytic analogue; it does
+not extend the probability-moment reading of `p7:eq:Pn-def` beyond real
+`|q| < 1`.  At this historical checkpoint the canonical q-monograph
+`thm:qF-moment-polynomial` remained Partial because the global `RatFunc`
+identification and its pole-clearing polynomial continuation at roots were
+absent.  This exhaustive `1+2` leaf produced the historical checkpoint 906
+modules and 11,461 public declarations.
+The zero-definition/one-theorem
+`FabiusFunction.HalfQBinomialRootSimplicity` sibling exposes
+`Fabius.halfQBinomial_sum_rootMultiplicity_two_pow`; composed with the
+existing rational root classifier, it makes `cor:halfbase-root-locus` Exact
+without an arbitrary-base or arbitrary-field claim.
+The subsequent sibling
+`FabiusFunction.GeometricUniformExteriorComplexMomentGerm` also has the
+exhaustive surface one public definition and two public theorems:
+`Fabius.geometricUniformExteriorComplexMomentGerm`,
+`Fabius.analyticAt_geometricUniformExteriorComplexMomentGerm`, and
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient`.
+For complex `1 < ‖q‖` it supplies the actual reciprocal germ, analyticity at
+the origin, and its normalized Taylor-coefficient bridge.  It makes no unit-
+circle or global rational-function claim.  The exhaustive zero-definition/
+three-theorem `FabiusFunction.GeometricUniformMomentPolynomialDegree` sibling
+consists of `Fabius.coeff_geometricUniformMomentPolynomial_choose_two`,
+`Fabius.coeff_geometricUniformMomentPolynomial_choose_two_sub_one`, and
+`Fabius.geometricUniformMomentPolynomial_natDegree_eq`.  It proves the exact
+top and subleading Bernoulli coefficients and the parity-sensitive degree,
+making `p7:thm:Pn` and `prop:qF-P-degree-sharp` Exact.  At that checkpoint
+`thm:qF-moment-polynomial` was still Partial at the global `RatFunc` boundary.
+
+The final `FabiusFunction.GeometricUniformMomentRatFunc` sibling has one
+public definition, `Fabius.geometricUniformMomentRatFunc`, and four public
+theorems: `Fabius.qFactorial_mul_geometricUniformMomentRatFunc`,
+`Fabius.eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient`,
+`Fabius.eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient`,
+and `Fabius.eval_geometricUniformMomentRatFunc_one`.  It packages one
+`RatFunc ℚ`, proves the global q-factorial clearing identity, identifies that
+same rational function with both strict off-unit-circle Taylor-coefficient
+regimes, and treats `q = 1` through `[n]₁! = n!`.  Together with the algebraic
+polynomial leaf, this makes `thm:qF-moment-polynomial` Exact.  It does not
+assign analytic values at genuine unit-root poles or prove their divisor or
+orders.
+
+The later germ-related addition
+`FabiusFunction.RvachevLaurentLeading` has one definition and six theorems and
+makes `is:p2:thm:Laurent-leading` exact through the manuscript-normalized
+punctured-neighborhood limit and its coordinate, odd-core, nonvanishing,
+cofactor, and general-pole companions.  Puncturing is essential because Lean
+totalizes inversion at a pole; no lower Laurent coefficient is claimed.  The
+eleven-definition/seventeen-theorem
+`FabiusFunction.FinitePrefixAppellRecovery` sibling makes
+`is:p2:thm:finite-prefix-expansion` and `is:p2:thm:exact-recovery` Exact for
+every starting depth, including zero, at bases `1/2` and `1/4`.  Its exact
+degrees are outer degrees in `Polynomial (Polynomial ℚ)` and may drop after a
+fixed-inner-variable specialization; its finite-convolution moments are not a
+random-variable or analytic-MGF realization.
+
+In the merged chronology the sharp leaf gave the historical 921/11,575
+checkpoint, `RvachevLaurentLeading` gave 922/11,582, and
+`FinitePrefixAppellRecovery` gave 923/11,610.  The RatFunc leaf gives the live
+historical 924/11,615 checkpoint.  Two later theorems in
+`ProbabilityLaplaceMoments` make `prop:up-tail` and `cor:up-moments` Exact,
+and the unrelated exhaustive 1+1
+`FabiusFunction.RvachevLegendreBiorthogonality` leaf gives the live
+925/11,619 census.  Its public declarations are
+`Fabius.rvachevLegendreAnalysisKernel` and
+`Fabius.rvachevLegendreBiorthogonality`; they close the normalized translated
+kernel definition and finite Legendre biorthogonality, but not the larger
+Fourier--Bessel or matrix-projector claims.  The q ledger is 181 Exact / 78
+Partial / 15 None / 8 interface, and the source concordance is 94 Lean-proved
+/ 384 human-proved frontier / 60 non-applicable / 9 conjectures.
+All of these sibling source-only additions are likewise absent
+from the retained historical PDFs.
 
 The exact raw second-order package is `LambertWCurvature.lean`.  Its
 principal API is `deriv_principalLambertW`,

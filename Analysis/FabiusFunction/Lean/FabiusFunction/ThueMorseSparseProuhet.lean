@@ -30,6 +30,10 @@ strictly more general than the atlas, whose steps are the powers of two.
   by transporting along the Boolean-cube kernel: the classical Prouhet
   cancellation `∑_{n<2^m} ε(n)(x + nh)^r = 0` for `r < m`, and the sharp
   first moment `(-1)^m m! 2^(m choose 2) h^m`, over any commutative ring.
+* `sum_thueMorseSign_mul_eq_sum_even_binaryWeight_sub_sum_odd_binaryWeight`
+  splits any finite signed sum into its even- and odd-binary-weight parts.
+  Its affine-power and raw-power corollaries give the Prouhet partition
+  equality below degree `m` over every commutative ring.
 * `sum_thueMorseSign_mul_affine_eval_eq_coeff_card` — the dyadic polynomial
   extractor: for degree at most `m`, the whole signed block sum is the
   degree-`m` coefficient times that sharp factor.
@@ -334,6 +338,42 @@ theorem sum_thueMorseSign_mul_eq_sum_powerset {R : Type*} [CommRing R]
   push_cast
   ring
 
+/-- **Generic even/odd Thue--Morse decomposition.**  On any finite set of
+natural numbers, a signed sum is the even-binary-weight part minus the
+odd-binary-weight part.  This bookkeeping identity is independent of the
+dyadic-block and polynomial hypotheses used by the Prouhet cancellation. -/
+theorem sum_thueMorseSign_mul_eq_sum_even_binaryWeight_sub_sum_odd_binaryWeight
+    {R : Type*} [CommRing R] (s : Finset ℕ) (g : ℕ → R) :
+    ∑ n ∈ s, ((thueMorseSign n : ℤ) : R) * g n =
+      (∑ n ∈ s.filter (fun n => Even (binaryWeight n)), g n) -
+        ∑ n ∈ s.filter (fun n => Odd (binaryWeight n)), g n := by
+  classical
+  rw [← Finset.sum_filter_add_sum_filter_not s
+    (fun n => Odd (binaryWeight n))]
+  have hodd : ∀ n ∈ s.filter (fun n => Odd (binaryWeight n)),
+      ((thueMorseSign n : ℤ) : R) * g n = -g n := by
+    intro n hn
+    have hnodd := (Finset.mem_filter.mp hn).2
+    rw [thueMorseSign, hnodd.neg_one_pow]
+    push_cast
+    ring
+  have heven : ∀ n ∈ s.filter (fun n => ¬ Odd (binaryWeight n)),
+      ((thueMorseSign n : ℤ) : R) * g n = g n := by
+    intro n hn
+    have hneven : Even (binaryWeight n) :=
+      Nat.not_odd_iff_even.mp (Finset.mem_filter.mp hn).2
+    rw [thueMorseSign, hneven.neg_one_pow]
+    push_cast
+    ring
+  rw [Finset.sum_congr rfl hodd, Finset.sum_congr rfl heven,
+    Finset.sum_neg_distrib]
+  have hfilter : s.filter (fun n => ¬ Odd (binaryWeight n)) =
+      s.filter (fun n => Even (binaryWeight n)) := by
+    ext n
+    simp [Nat.not_odd_iff_even]
+  rw [hfilter]
+  ring
+
 /-- **Dyadic polynomial coefficient extraction.**  For every polynomial of
 degree at most `m`, the affine Thue--Morse block functional extracts its
 degree-`m` coefficient:
@@ -409,6 +449,32 @@ theorem sum_thueMorseSign_mul_affine_pow_eq_zero {R : Type*} [CommRing R]
   simpa only [Polynomial.eval_pow, Polynomial.eval_X] using
     sum_thueMorseSign_mul_affine_eval_of_degree_lt
       m (Polynomial.X ^ r : R[X]) hdegree x h
+
+/-- **Prouhet's even/odd affine-power partition.**  Below degree `m`, the
+affine power sums over the indices of even and odd binary weight in the full
+dyadic block agree, over every commutative ring. -/
+theorem sum_even_binaryWeight_affine_pow_eq_sum_odd_binaryWeight_affine_pow
+    {R : Type*} [CommRing R] (m r : ℕ) (hr : r < m) (x h : R) :
+    (∑ n ∈ (range (2 ^ m)).filter (fun n => Even (binaryWeight n)),
+        (x + (n : R) * h) ^ r) =
+      ∑ n ∈ (range (2 ^ m)).filter (fun n => Odd (binaryWeight n)),
+        (x + (n : R) * h) ^ r := by
+  apply sub_eq_zero.mp
+  rw [← sum_thueMorseSign_mul_eq_sum_even_binaryWeight_sub_sum_odd_binaryWeight]
+  exact sum_thueMorseSign_mul_affine_pow_eq_zero m r hr x h
+
+/-- **Raw Prouhet power partition.**  For `r < m`, the `r`-th powers of
+the numbers below `2^m` with even binary weight sum to the corresponding
+odd-binary-weight power sum, in every commutative ring. -/
+theorem sum_even_binaryWeight_pow_eq_sum_odd_binaryWeight_pow
+    {R : Type*} [CommRing R] (m r : ℕ) (hr : r < m) :
+    (∑ n ∈ (range (2 ^ m)).filter (fun n => Even (binaryWeight n)),
+        (n : R) ^ r) =
+      ∑ n ∈ (range (2 ^ m)).filter (fun n => Odd (binaryWeight n)),
+        (n : R) ^ r := by
+  simpa using
+    (sum_even_binaryWeight_affine_pow_eq_sum_odd_binaryWeight_affine_pow
+      (R := R) m r hr 0 1)
 
 /-- **Sharp Prouhet moment over any commutative ring.**  At `r = m` the
 cancellation breaks with the exact value

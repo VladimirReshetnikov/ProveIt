@@ -23,8 +23,8 @@ computation.
 
 Its
 [`theorem_concordance.csv`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/theorem_concordance.csv)
-fully dispositions all 194 immutable source-result rows: 50 are Lean-proved,
-95 are human-proved frontier results, 10 are conjectures, 15 are open
+fully dispositions all 194 immutable source-result rows: 54 are Lean-proved,
+91 are human-proved frontier results, 10 are conjectures, 15 are open
 problems, and 24 are non-applicable source environments.
 [`LEAN_CROSSWALK.md`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/LEAN_CROSSWALK.md)
 records exact module/declaration matches and separately classifies five
@@ -33,13 +33,37 @@ post-snapshot additions without changing those source totals.
 accounts for all 88 source-subgroup files, and the live asset ledger covers 63
 retained, deduplicated payloads.
 
-The six newest exact source-row matches are abstract effective inversion,
+The ten newest exact source-row matches are abstract effective inversion,
 centered Appell deconvolution, positive-degree Appell mean-zero,
 arbitrary-phase polynomial deconvolution,
 `is:p3:cor:forced-superconvergence`, and
-`is:p3:thm:Appell-lattice-reproduction`. The last two are the newest
-promotions: the parity-selected degree-`N+1` quadrature and its explicit
-Rvachev--Appell lattice specialization now have exact compiled counterparts.
+`is:p3:thm:Appell-lattice-reproduction`, together with the exact-dyadic
+repository modulus, `is:p2:thm:Laurent-leading`,
+`is:p2:thm:finite-prefix-expansion`, and `is:p2:thm:exact-recovery`.
+The superconvergence pair is the parity-selected degree-`N+1` quadrature and
+its explicit Rvachev--Appell lattice specialization.
+
+`FabiusFunction.RvachevLaurentLeading` contributes one definition and six
+theorems. Its manuscript-normalized punctured-neighborhood limit makes
+`is:p2:thm:Laurent-leading` exact, together with the Fourier-product
+coordinate, odd-core evaluation and nonvanishing, generic cofactor limit, and
+general integer-pole companion. Puncturing is essential because Lean
+totalizes inversion at the pole; lower Laurent coefficients and downstream
+coefficient asymptotics remain outside this promotion. This first raised the
+inverse concordance to 52 Lean-proved rows.
+
+The eleven-definition/seventeen-theorem
+`FabiusFunction.FinitePrefixAppellRecovery` module then makes both
+finite-prefix rows exact. Its direct formulas hold for all `N,n`, including `N = 0`,
+with uncentered base `1/2` and centered base `1/4`; its recovery theorems use
+respectively `n+1` and `⌊n/2⌋+1` consecutive prefixes. Exact degrees `n` and
+`⌊n/2⌋` are degrees of the outer scale polynomials in
+`Polynomial (Polynomial ℚ)`. A fixed-inner-`x` centered specialization can
+drop degree, for example at odd `n` and `x = 0`. The prefix moments form an
+algebraic finite-convolution model; no random-variable, `HasLaw`, or
+analytic-MGF realization is claimed. These two promotions give the current
+inverse concordance totals: 54 Lean-proved and 91 human-proved frontier rows,
+with the other categories unchanged.
 
 The retained, fully reviewed publication checkpoint has 134 A4 pages and
 2,027,726 bytes, with SHA-256
@@ -68,8 +92,20 @@ It preserves the distinct modal, Mellin, regular-variation, spline,
 reciprocal-product, Euler--Maclaurin, Ruffa, Thue--Morse, and interpolation
 results while stating their common Gaussian--Pascal and Jackson--Newton spine
 once. Its 180-row source disposition and 151-row historical-ledger audit pass;
-the retained 158-page PDF is a historical checkpoint pending a fresh render of
-the current notation-normalized source.
+its 232-row theorem concordance records 7 Lean-proved, 159 human-proved
+frontier, 20 conjecture, 30 open-problem, and 16 non-applicable rows. It maps
+canonical label
+`gq:thm:richardson-generating` exactly to
+`Fabius.geometricLagrangeRichardson_generating` in the new three-definition,
+seven-theorem `FabiusFunction.GeometricRichardsonGenerating` module. The module
+also exposes `Fabius.hasSum_geometricLagrangeRichardson_mul_pow` as the analytic
+companion under its explicit convergence hypotheses. The one-definition,
+fourteen-theorem `FabiusFunction.RvachevAppellHasse` leaf additionally makes
+`gq:prop:q-Appell-falling` and `gq:thm:gaussian-Appell-decoder` exact by
+combining their explicit q-falling and geometric decoder formulas with the
+existing finite synthesis theorems. The retained 158-page PDF predates the
+notation normalization and all of these chapter-01 crosswalks, so it remains a
+historical checkpoint; no PDF was generated for the source-only updates.
 
 [`fabius_information_frontier/`](fabius_information_frontier/) remains an
 archival information-geometry intake. Its arrival and operational ledgers
@@ -89,12 +125,36 @@ wrapper yields a total computable real function.  The newer
 eight theorems: it packages the parity-selected phases, the extra-degree
 monomial and polynomial rules, generic-mesh physical quadrature, deconvolved
 polynomial synthesis, and the Rvachev--Appell specialization. These two latest
-row promotions bring the canonical concordance to 50 Lean-proved, 95
-human-proved frontier results, 10 conjectures, 15 open problems, and 24
-nonassertoric environments. The live Lean documentation census is 672 modules
-and 8,876 public declarations with no gaps. The retired source layouts remain
-immutable provenance only; the source is newer than the retained historical
-PDF.
+row promotions brought the canonical concordance to the historical
+51 Lean-proved / 94 human-proved checkpoint. The Laurent promotion then made
+that 52 / 93, and the finite-prefix pair gives the current 54 / 91, with 10
+conjectures, 15 open problems, and 24 nonassertoric environments. The
+zero-definition/one-theorem `FabiusFunction.HalfQBinomialRootSimplicity` leaf
+also completes the separate q-frontier label `cor:halfbase-root-locus` over
+the canonical rational polynomial: its simple-root theorem composes with the
+existing rational zero classifier and Gaussian/half-q coefficient identity.
+Injective scalar extension preserves the multiplicities, but this does not
+classify every root over every extension field.  The later exhaustive
+one-definition/four-theorem `FabiusFunction.GeometricUniformMomentRatFunc`
+leaf packages one rational moment coefficient, proves its global
+q-factorial clearing identity, identifies its safe inner and exterior
+specializations, and handles the removable `q = 1` value.  It makes the
+q-monograph label `thm:qF-moment-polynomial` Exact without assigning analytic
+values at genuine unit-root poles.  That RatFunc tranche produced the
+historical 924-module/11,615-declaration checkpoint.  The subsequent
+`ProbabilityLaplaceMoments` theorems
+`weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
+`integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`
+make q-frontier labels `prop:up-tail` and `cor:up-moments` Exact, including
+the closed-tail convention and every positive natural moment order.  The
+unrelated one-definition/one-theorem
+`FabiusFunction.RvachevLegendreBiorthogonality` leaf then gives the live
+925-module/11,619-declaration census.  Its exact finite Legendre pairing does
+not change this inverse-package ledger.  The q forward ledger is now 181
+Exact / 78 Partial / 15 None / 8 interface rows, and its source concordance
+is 94 Lean-proved / 384 human-proved frontier / 60 non-applicable / 9
+conjectures.  The preceding finite-prefix checkpoint was 923/11,610.  The retired source layouts remain immutable
+provenance only; the source is newer than the retained historical PDF.
 
 `QuarterCatalanGerm.lean` proves that the distinguished rational quarter germ
 becomes the Catalan inverse of `X + 4 X^2` under the exact `9/4` parameter
@@ -117,8 +177,10 @@ formula.
 `FabiusFunction.LagrangeRvachevSynthesis` supplies two definitions and seven
 theorems closing the generic finite-node decoder, cardinal biorthogonality,
 and exact interpolation loop. It does not by itself prove the geometric-node
-Gaussian closed forms, a bundled matrix/right-inverse wrapper, or an
-optimal/minimum-variation decoder theorem; the exhaustive public inventory is
+Gaussian closed forms, but the downstream `FabiusFunction.RvachevAppellHasse`
+leaf now proves their q-Pochhammer prefactor and elementary-symmetric formula.
+The Matrix leaf supplies the typed right inverse; no module proves an
+optimal/minimum-variation decoder theorem. The exhaustive public inventory is
 in the root [`Analysis/FabiusFunction/README.md`](../../../../README.md).
 
 The subgroup [`dyadic-up-extraction/`](dyadic-up-extraction/) holds one

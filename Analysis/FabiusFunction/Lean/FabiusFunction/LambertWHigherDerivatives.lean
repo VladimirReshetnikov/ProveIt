@@ -46,8 +46,10 @@ noncomputable def lambertDerivPoly : ℕ → ℝ[X]
       (1 + X) * derivative (lambertDerivPoly n) -
         ((n + 1 : ℝ[X]) * X + (3 * n + 2 : ℝ[X])) * lambertDerivPoly n
 
+/-- The zeroth Lambert derivative polynomial is one. -/
 @[simp] theorem lambertDerivPoly_zero : lambertDerivPoly 0 = 1 := rfl
 
+/-- The defining recurrence for the Lambert derivative polynomials. -/
 theorem lambertDerivPoly_succ (n : ℕ) :
     lambertDerivPoly (n + 1) =
       (1 + X) * derivative (lambertDerivPoly n) -

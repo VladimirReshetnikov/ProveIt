@@ -26,7 +26,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import hashlib
 import math
 from pathlib import Path
 from typing import Iterable, Sequence
@@ -707,18 +706,6 @@ The script uses the fixed seed `20260828`. All figures are written in PDF and PN
     (output / "README.md").write_text(readme, encoding="utf-8")
 
 
-def write_sha256(output: Path) -> None:
-    files = sorted(
-        p for p in output.rglob("*")
-        if p.is_file() and p.name not in {"SHA256SUMS", "patch_report.py"} and ".git" not in p.parts
-    )
-    lines = []
-    for p in files:
-        digest = hashlib.sha256(p.read_bytes()).hexdigest()
-        lines.append(f"{digest}  {p.relative_to(output).as_posix()}")
-    (output / "SHA256SUMS").write_text("\n".join(lines) + "\n", encoding="utf-8")
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=Path("."), help="report directory")
@@ -738,7 +725,6 @@ def main() -> None:
     generate_orthogonal_ladder(output)
     generate_autocorrelation_jet(output)
     write_requirements_and_readme(output)
-    write_sha256(output)
     print(f"Generated figures and audit tables in {output}")
 
 

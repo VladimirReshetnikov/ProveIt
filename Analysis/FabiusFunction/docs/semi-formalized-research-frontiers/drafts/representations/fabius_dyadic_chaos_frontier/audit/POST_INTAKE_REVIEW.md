@@ -107,12 +107,27 @@ public theorem declarations provide a centered additive-action API, the exact
 Boolean-cube expansion, sharp arbitrary-step polynomial extraction and
 cancellation, the centered dyadic Thue--Morse block, and both
 common-denominator and report-facing positive-order reindexings. The focused
-target completed with `LAKE_JOBS=1`, exit code zero, and no warnings. The
-crosswalk still classifies `thm:TM-corner` as near-complete rather than
-complete because the manuscript theorem also states the repeated-integral
-identity under `C^N` hypotheses. That analytic clause and a final
-report-shaped wrapper remain; the displayed decreasing-weight reindexing is
-no longer a gap.
+target completed with `LAKE_JOBS=1`, exit code zero, and no warnings.
+
+The later focused-built `FabiusFunction.ThueMorseCornerIntegral` leaf closes
+the analytic clause with one definition and four public theorems:
+`Fabius.centeredBoxIntegral`, `Fabius.centeredBoxIntegral_zero`,
+`Fabius.centeredBoxIntegral_succ`,
+`Fabius.symmetricMixedDifference_range_eq_centeredBoxIntegral`, and
+`Fabius.symmetricMixedDifference_univ_eq_centeredBoxIntegral`.  The range
+form assumes arbitrary nonnegative half-steps, `IsOpen I`, `OrdConnected I`,
+`ContDiffOn ℝ N g I`, and containment of the full closed symmetric segment
+in `I`.  It is therefore local rather than a global-`ContDiff` shortcut and
+subsumes the report's strictly positive half-steps and open-interval `C^N`
+hypothesis, while also covering zero steps and `N = 0`.  The proof keeps every
+translated interval inside `I`, applies the local interval FTC to each finite
+powerset corner, exchanges only a finite integrable sum with the integral,
+and inducts through `deriv`; the univ theorem is a `Fin.valEmbedding`
+reindexing.  Combined with the preceding algebraic and report-grid module,
+this makes `thm:TM-corner` Complete, exactly by composition.  The analytic
+leaf is real-valued and fixes one recursive nesting order; it does not prove
+the following Walsh conditional-expectation construction or its `2^(-N)`
+normalization.
 
 A subsequent integration completed and source-verified the seven-module
 activation tranche. `FabiusFunction.HyperbolicActivation` exposes four
@@ -173,10 +188,12 @@ does not claim a fresh aggregate `lake build +FabiusFunction`.  The report
 build, PDF preflight, full render inspection, and artifact-ledger verification
 are separate evidence recorded below.
 
-The report therefore includes six statement-exact results whose every clause
+The report therefore includes seven statement-exact results whose every clause
 is covered by compiler-validated declarations.  In particular,
 `lem:p-bounds` is now Complete through the three `ActivationTaylor` theorems
-listed above. The original `prop:mu-refinement` remains Partial because its
+listed above, and `thm:TM-corner` is Complete through the local corner-integral
+leaf and the existing symmetric-difference algebra. The original
+`prop:mu-refinement` remains Partial because its
 all-order Bernoulli power-series coefficients, full convergent series, radii,
 and active-count expectation bridge are absent. Under the new
 square-summability hypothesis, the activation sum is genuinely `Summable`; it

@@ -23,7 +23,7 @@ whose special case is formalized is not labelled Lean-proved unless the
 specialization and all of its hypotheses match exactly.
 
 In the current reviewed concordance, the resulting classification is
-\(49\) Lean-proved rows, \(96\) human-proved frontier
+\(54\) Lean-proved rows, \(91\) human-proved frontier
 rows, \(10\) conjectures, \(15\) open problems, and \(24\) nonassertoric
 rows, for \(194\) rows in all.  These are source-result counts, not counts of
 distinct canonical theorem environments: deduplication may send several
@@ -59,6 +59,31 @@ The exact dyadic phase dictionary is
 \path{Fabius.isRvachevSuperconvergentPhase_two_pow_iff}.  Existing positivity,
 strict-interior positivity, rational dyadic evaluation, and finite-support
 declarations complete the finite families recorded in the Lean crosswalk.
+
+The leading Laurent coefficient theorem
+\cref{is:p2:thm:Laurent-leading} is also Lean-proved by the one-definition,
+six-theorem module \path{FabiusFunction.RvachevLaurentLeading}.  Its principal
+manuscript-normalized declaration is
+\path{Fabius.tendsto_rvachevCenteredMGF_laurent_two_pow_mul_odd}; the crosswalk
+records the normalization, odd-core nonvanishing, generic cofactor limit, and
+general integer-pole companions.  The limits are deliberately punctured,
+because the inverse operation is totalized at the zero itself.  This exact row
+promotion does not extend to lower Laurent coefficients or the later
+pole-shell and Appell-coefficient asymptotics.
+
+Two further source rows are now Lean-proved by the eleven-definition,
+seventeen-theorem module
+\path{FabiusFunction.FinitePrefixAppellRecovery}.  Its direct uncentered and
+centered sum theorems give the finite-prefix expansions for every starting
+depth, including zero; the free-scale definitions, evaluation bridges, and
+degree theorems certify exact symbolic outer degrees \(n\) at base \(1/2\)
+and \(\Floor{n/2}\) at base \(1/4\).  The latter is an equality in
+\(\operatorname{Polynomial}(\mathbb Q[x])\): specializing the inner variable
+can lower the centered degree.  Its two direct recovery theorems use exactly
+\(n+1\) and \(\Floor{n/2}+1\) consecutive prefixes at those respective
+bases, for all \(N\), with no limit.  The formal prefix is an algebraic
+finite-convolution moment model; this classification does not assert a
+random-variable, \path{HasLaw}, or analytic-MGF realization theorem.
 
 Five canonical results were added after the immutable source snapshot and
 therefore do not alter the \(194\)-row totals.  Three are Lean-proved:
@@ -137,9 +162,14 @@ dependency graph.  The terminal exit code was zero, and the target module
 contains no placeholder proof.  This compiler evidence is narrower than an
 umbrella-library build but exact for the declaration used in the crosswalk.
 
+The focused command
+\path{lake build +FabiusFunction.FinitePrefixAppellRecovery} likewise
+completed its (2947)-job target successfully before this documentation pass.
+No Lean or Lake command was run while updating the package-local ledgers.
+
 At the same editorial checkpoint,
 \path{audit/validate_canonical.py} verified all nine chapter inputs,
-(748) distinct labels, (593) references, and all (194) immutable source
+(748) distinct labels, (596) references, and all (194) immutable source
 rows with no incomplete disposition.  The independent asset check verified
 all (88) source-file dispositions, all (63) deduplicated live payloads,
 and no duplicate canonical payload.  These checks establish structural and

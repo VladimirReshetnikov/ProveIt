@@ -4,9 +4,10 @@
 The source corpus is read from the exact Git commit recorded in
 ``audit/SOURCE_REVISION``; later edits or retirement of the source packages
 therefore cannot change this audit.  This program copies only reviewed, unique
-payloads, writes the exhaustive 88-row disposition ledger, and writes the live
-checksum ledger for the canonical ``assets`` tree.  ``--check`` is a strict
-read-only replay after the initial build.
+payloads and writes the exhaustive 88-row disposition ledger.  ``--check`` is
+a strict read-only replay after the initial build.  Package checksum manifests
+are intentionally outside this workflow under the repository-wide retirement
+policy.
 """
 
 from __future__ import annotations
@@ -30,7 +31,6 @@ SOURCE_ROOT = CANONICAL_ROOT.parent
 SOURCE_REVISION_FILE = CANONICAL_ROOT / "audit/SOURCE_REVISION"
 ASSET_ROOT = CANONICAL_ROOT / "assets"
 DISPOSITION_CSV = CANONICAL_ROOT / "ASSET_DISPOSITION.csv"
-LIVE_LEDGER = ASSET_ROOT / "SHA256SUMS"
 STURM_CERTIFICATE = ASSET_ROOT / "self-sampling/appell_a8_sturm_certificate.txt"
 SOURCE_GROUPS = (
     "inverse-asymptotics-and-computability",
@@ -312,10 +312,12 @@ omit(
     "Commands, dependencies, and status notes are consolidated into the asset README.",
     "assets/README.md",
 )
-retain(
+omit(
     f"{GERMS}/SHA256SUMS.txt",
-    "assets/provenance/sampling/inverse-frontier-SHA256SUMS.txt",
     "provenance_ledger",
+    "retired_historical_checksum_manifest",
+    "The pinned source digest remains recoverable from Git history; package checksum manifests "
+    "are not copied into the live canonical assets.",
 )
 retain(
     f"{GERMS}/verify_symbolic_fast.py",
@@ -345,10 +347,12 @@ for name in (
     )
 
 # Endpoint all-orders lane.
-retain(
+omit(
     f"{ENDPOINT}/assets/SHA256SUMS-absorbed.txt",
-    "assets/provenance/endpoint/SHA256SUMS-absorbed.txt",
     "provenance_ledger",
+    "retired_historical_checksum_manifest",
+    "The pinned digest remains recoverable from Git history; checksum manifests "
+    "are not copied into the live canonical assets.",
 )
 retain(
     f"{ALL_ORDERS}/inverse_fabius_asymptotics.py",
@@ -362,10 +366,12 @@ omit(
     "Commands and package layout are consolidated into the asset README.",
     "assets/README.md",
 )
-retain(
+omit(
     f"{ALL_ORDERS}/SHA256SUMS.txt",
-    "assets/provenance/endpoint/all-orders-SHA256SUMS.txt",
     "provenance_ledger",
+    "retired_historical_checksum_manifest",
+    "The pinned source digest remains recoverable from Git history; package checksum manifests "
+    "are not copied into the live canonical assets.",
 )
 retain(
     f"{ALL_ORDERS}/results/constants.txt",
@@ -419,10 +425,12 @@ omit(
     "The strongest supplied lower bounds are merged into one canonical requirement set.",
     "assets/requirements.txt",
 )
-retain(
+omit(
     f"{WRIGHT}/SHA256SUMS.txt",
-    "assets/provenance/endpoint/wright-omega-SHA256SUMS.txt",
     "provenance_ledger",
+    "retired_historical_checksum_manifest",
+    "The pinned source digest remains recoverable from Git history; package checksum manifests "
+    "are not copied into the live canonical assets.",
 )
 retain(
     f"{WRIGHT}/data/carrier_comparison.png",
@@ -509,10 +517,12 @@ omit(
     "The strongest supplied lower bounds are merged into one canonical requirement set.",
     "assets/requirements.txt",
 )
-retain(
+omit(
     f"{COMPLETION}/SHA256SUMS",
-    "assets/provenance/endpoint/dyadic-completion-SHA256SUMS.txt",
     "provenance_ledger",
+    "retired_historical_checksum_manifest",
+    "The pinned source digest remains recoverable from Git history; package checksum manifests "
+    "are not copied into the live canonical assets.",
 )
 retain(
     f"{COMPLETION}/verification_output.txt",
@@ -521,10 +531,12 @@ retain(
 )
 
 # Computability lane.
-retain(
+omit(
     f"{COMPUTABILITY}/ARRIVAL_SHA256SUMS.txt",
-    "assets/provenance/computability/ARRIVAL_SHA256SUMS.txt",
     "provenance_ledger",
+    "retired_historical_checksum_manifest",
+    "The pinned arrival digest remains recoverable from Git history; checksum manifests "
+    "are not copied into the live canonical assets.",
 )
 retain(
     f"{COMPUTABILITY}/inverse_fabius_computability_experiments.py",
@@ -547,14 +559,17 @@ omit(
     f"{COMPUTABILITY}/SHA256SUMS.txt",
     "operational_checksum_ledger",
     "not_retained_stale_operational_ledger",
-    "The TeX and README rows are stale; the canonical live ledger replaces it.",
+    "The TeX and README rows are stale, and repository policy no longer retains package "
+    "checksum manifests.",
 )
 
 # Non-elementarity provenance.
-retain(
+omit(
     f"{NON_ELEMENTARY}/SHA256SUMS",
-    "assets/provenance/non-elementarity/SHA256SUMS.txt",
     "provenance_ledger",
+    "retired_historical_checksum_manifest",
+    "The pinned source digest remains recoverable from Git history; package checksum manifests "
+    "are not copied into the live canonical assets.",
 )
 
 # Inverse-iterate lane.
@@ -587,16 +602,19 @@ omit(
     "The dependency names are merged into one canonical requirement set.",
     "assets/requirements.txt",
 )
-retain(
+omit(
     f"{ITERATES}/SHA256SUMS.arrival.txt",
-    "assets/provenance/inverse-iterates/SHA256SUMS.arrival.txt",
     "provenance_ledger",
+    "retired_historical_checksum_manifest",
+    "The pinned arrival digest remains recoverable from Git history; package checksum manifests "
+    "are not copied into the live canonical assets.",
 )
 omit(
     f"{ITERATES}/SHA256SUMS.txt",
     "operational_checksum_ledger",
     "not_retained_stale_operational_ledger",
-    "The source and README rows are stale; the canonical live ledger replaces it.",
+    "The source and README rows are stale, and repository policy no longer retains package "
+    "checksum manifests.",
 )
 for name in ("fabius_iterates.png", "spine_comparison.png", "spine_remainder.png"):
     omit(
@@ -1027,7 +1045,6 @@ def expected_asset_files() -> set[str]:
         "endpoint/dyadic-completion/figures/psi_periodic.png",
         "requirements.txt",
         "self-sampling/appell_a8_sturm_certificate.txt",
-        "SHA256SUMS",
     }
 
 
@@ -1051,23 +1068,10 @@ def write_or_check(path: Path, payload: bytes, check: bool) -> None:
         path.write_bytes(payload)
 
 
-def ledger_payload() -> bytes:
-    paths = sorted(
-        path
-        for path in ASSET_ROOT.rglob("*")
-        if path.is_file() and path != LIVE_LEDGER
-    )
-    lines = [
-        f"{sha256_file(path)}  {path.relative_to(ASSET_ROOT).as_posix()}\n"
-        for path in paths
-    ]
-    return "".join(lines).encode("ascii")
-
-
 def validate_no_duplicate_assets() -> None:
     groups: defaultdict[str, list[str]] = defaultdict(list)
     for path in ASSET_ROOT.rglob("*"):
-        if path.is_file() and path != LIVE_LEDGER:
+        if path.is_file():
             groups[sha256_file(path)].append(path.relative_to(ASSET_ROOT).as_posix())
     duplicates = {digest: names for digest, names in groups.items() if len(names) > 1}
     if duplicates:
@@ -1107,13 +1111,12 @@ def main() -> int:
         write_or_check(STURM_CERTIFICATE, sturm_certificate_payload(), args.check)
 
         expected = expected_asset_files()
-        actual_without_ledger = actual_asset_files() - {"SHA256SUMS"}
-        expected_without_ledger = expected - {"SHA256SUMS"}
-        if actual_without_ledger != expected_without_ledger:
+        actual = actual_asset_files()
+        if actual != expected:
             raise ValueError(
                 "canonical asset file set differs; "
-                f"missing={sorted(expected_without_ledger - actual_without_ledger)!r}; "
-                f"unexpected={sorted(actual_without_ledger - expected_without_ledger)!r}"
+                f"missing={sorted(expected - actual)!r}; "
+                f"unexpected={sorted(actual - expected)!r}"
             )
 
         # Verify source duplicates deliberately mapped to one retained payload.
@@ -1127,18 +1130,13 @@ def main() -> int:
         rows = disposition_rows(files)
         write_or_check(DISPOSITION_CSV, csv_payload(rows), args.check)
         validate_no_duplicate_assets()
-        write_or_check(LIVE_LEDGER, ledger_payload(), args.check)
-
-        # The ledger must become exact after its own write/check, while omitting itself.
-        if LIVE_LEDGER.read_bytes() != ledger_payload():
-            raise ValueError("live asset checksum ledger is stale")
 
         dispositions = Counter(row["disposition"] for row in rows)
-        asset_count = len(actual_asset_files() - {"SHA256SUMS"})
+        asset_count = len(actual_asset_files())
         mode = "verified" if args.check else "built"
         print(f"asset migration {mode}")
         print(f"source disposition rows: {len(rows)}")
-        print(f"canonical payloads in live ledger: {asset_count}")
+        print(f"canonical payloads: {asset_count}")
         print("dispositions:")
         for disposition, count in sorted(dispositions.items()):
             print(f"  {disposition:46s} {count:3d}")

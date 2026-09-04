@@ -56,10 +56,12 @@ theorem lambertMultiplier_eq (n j : ℕ) :
   simp only [C_sub, C_add, C_mul, C_neg, C_1, map_ofNat]
   ring
 
+/-- The recurrence multiplier is a quadratic polynomial. -/
 theorem natDegree_lambertMultiplier (n j : ℕ) :
     (lambertMultiplier n j).natDegree = 2 :=
   natDegree_quadratic (by simp; omega)
 
+/-- The leading coefficient of the recurrence multiplier is `-(j+1)`. -/
 theorem leadingCoeff_lambertMultiplier (n j : ℕ) :
     (lambertMultiplier n j).leadingCoeff = -((j : ℤ) + 1) :=
   leadingCoeff_quadratic (by simp; omega)
@@ -70,8 +72,10 @@ noncomputable def lambertNumerator (n : ℕ) : ℕ → ℤ[X]
   | (j + 1) => X * (1 + X) * derivative (lambertNumerator n j)
       + lambertMultiplier n j * lambertNumerator n j
 
+/-- The numerator family starts with the constant polynomial `n`. -/
 @[simp] theorem lambertNumerator_zero (n : ℕ) : lambertNumerator n 0 = C (n : ℤ) := rfl
 
+/-- The defining recursion for the Lambert numerator family. -/
 theorem lambertNumerator_succ (n j : ℕ) :
     lambertNumerator n (j + 1) = X * (1 + X) * derivative (lambertNumerator n j)
       + lambertMultiplier n j * lambertNumerator n j := rfl
@@ -146,10 +150,12 @@ theorem natDegree_and_leadingCoeff_lambertNumerator {n : ℕ} (hn : n ≠ 0) (j 
         push_cast
         ring
 
+/-- For `n ≠ 0`, the polynomial `R_{n,j+1}` has degree `2j`. -/
 theorem natDegree_lambertNumerator {n : ℕ} (hn : n ≠ 0) (j : ℕ) :
     (lambertNumerator n j).natDegree = 2 * j :=
   (natDegree_and_leadingCoeff_lambertNumerator hn j).1
 
+/-- For `n ≠ 0`, the leading coefficient of `R_{n,j+1}` is `n(-1)^j j!`. -/
 theorem leadingCoeff_lambertNumerator {n : ℕ} (hn : n ≠ 0) (j : ℕ) :
     (lambertNumerator n j).leadingCoeff = (n : ℤ) * (-1) ^ j * (Nat.factorial j : ℤ) :=
   (natDegree_and_leadingCoeff_lambertNumerator hn j).2
