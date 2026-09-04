@@ -76,7 +76,7 @@ theorem hasSum_regularCentralQBinomial
     rw [← Complex.cpow_natCast (q : ℂ) 2,
       ← Complex.cpow_add _ _ hq_ne]
     congr 1
-    ring
+    ring_nf
   have hshift_alpha :
       qPochhammerInfIn ((q : ℂ) ^ (alpha + 1)) ((q : ℂ) ^ 2) =
         (1 - (q : ℂ) ^ (alpha + 1)) *
@@ -100,7 +100,8 @@ theorem hasSum_regularCentralQBinomial
       qPochhammerInfIn (q : ℂ) ((q : ℂ) ^ 2) =
         (1 - (q : ℂ)) *
           qPochhammerInfIn ((q : ℂ) ^ 3) ((q : ℂ) ^ 2) := by
-    convert qPochhammerInfIn_succ_shift (q : ℂ) hQ using 1 <;> ring
+    convert qPochhammerInfIn_succ_shift (q : ℂ) hQ using 1
+    ring_nf
   have hq3Inf :
       qPochhammerInfIn ((q : ℂ) ^ 3) ((q : ℂ) ^ 2) ≠ 0 := by
     have h :
@@ -114,10 +115,15 @@ theorem hasSum_regularCentralQBinomial
       (q : ℂ) ^ (alpha + 3) / (q : ℂ) =
         (q : ℂ) ^ (alpha + 2) := by
     apply (div_eq_iff hq_ne).2
-    rw [← Complex.cpow_one (q : ℂ),
-      ← Complex.cpow_add _ _ hq_ne]
-    congr 1
-    ring
+    calc
+      (q : ℂ) ^ (alpha + 3) =
+          (q : ℂ) ^ ((alpha + 2) + 1) := by
+        congr 1
+        ring_nf
+      _ = (q : ℂ) ^ (alpha + 2) * (q : ℂ) ^ (1 : ℂ) :=
+        Complex.cpow_add _ _ hq_ne
+      _ = (q : ℂ) ^ (alpha + 2) * (q : ℂ) := by
+        rw [Complex.cpow_one]
   have hcb :
       (q : ℂ) ^ (alpha + 3) / (q : ℂ) ^ (alpha + 1) =
         (q : ℂ) ^ 2 := by
@@ -154,7 +160,6 @@ theorem hasSum_regularCentralQBinomial
     unfold qNumberC
     rw [hshift_q, hshift_alpha]
     field_simp [hone_sub_q, hone_sub_A, hC, hq3Inf]
-    ring
   rw [hproduct] at hscaled
 
   have hregular :
@@ -210,7 +215,7 @@ theorem hasSum_regularCentralQBinomial
             finiteQPochhammerIn ((q : ℂ) ^ (alpha + 3)) ((q : ℂ) ^ 2) k := by
       unfold qNumberC
       field_simp [hone_sub_q, hone_sub_A, hone_sub_Ak, hCk]
-      linear_combination (1 - (q : ℂ)) * htel
+      simpa only [Nat.mul_comm, mul_comm] using htel.symm
     have hcentral := central_gaussianBinomial_sq_div (q : ℂ) k hneg hQk
     calc
       regularCentralQBinomialTerm q alpha k =
@@ -289,7 +294,6 @@ theorem hasSum_regularCentralQBinomial
       rw [hpow_three_halves, hpow_alpha_one, hpow_alpha_two,
         ← hpow_cancel, hbase]
       field_simp [hQInf, hq3Inf, halpha, halpha_two, hbasePow]
-      ring
   rw [← hgamma]
   exact hregular
 

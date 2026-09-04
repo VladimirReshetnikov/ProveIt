@@ -1,4 +1,5 @@
 import FabiusFunction.GeometricUniformCDF
+import Mathlib.Probability.IdentDistrib
 
 /-!
 # Arbitrary-space realizations of geometric uniform laws
@@ -82,7 +83,7 @@ theorem weightedUniformSeries_hasLaw_of_iIndep_uniform
         uniformProduct := by
     refine ⟨(measurable_weightedUniformSeries hw).aemeasurable, ?_⟩
     rfl
-  simpa only [Function.comp_apply] using hcanonical.comp hcoordinates
+  simpa only [Function.comp_def] using hcanonical.comp hcoordinates
 
 /-- The geometric series formed from arbitrary independent uniform
 coordinates has the canonical geometric-uniform law. -/
@@ -95,8 +96,10 @@ theorem geometricUniformRealization_hasLaw
     (hInd : iIndepFun U P) :
     HasLaw (geometricUniformRealization q U)
       (geometricUniformDistribution q) P := by
-  simpa only [geometricUniformRealization, geometricUniformSeries,
-    geometricUniformDistribution] using
+  change HasLaw
+    (fun ω => weightedUniformSeries (geometricUniformWeight q) (fun n => U n ω))
+    (weightedUniformDistribution (geometricUniformWeight q)) P
+  exact
     weightedUniformSeries_hasLaw_of_iIndep_uniform
       (geometricUniformWeight q) U
       (summable_norm_geometricUniformWeight hq) hU hInd
@@ -173,7 +176,7 @@ theorem one_sub_geometricUniformRealization_hasLaw
       (geometricUniformDistribution q) (geometricUniformDistribution q) := by
     refine ⟨(by fun_prop), ?_⟩
     exact geometricUniformDistribution_reflection hq
-  simpa only [Function.comp_apply] using
+  simpa only [Function.comp_def] using
     hreflect.comp (geometricUniformRealization_hasLaw hq U hU hInd)
 
 /-- An arbitrary-space geometric realization and its reflection are
@@ -211,7 +214,7 @@ theorem affine_uniform_geometric_hasLaw
         (geometricUniformDistribution q)) := by
     refine ⟨(by fun_prop), ?_⟩
     exact (geometricUniformDistribution_selfSimilar hq).symm
-  simpa only [Function.comp_apply] using haffine.comp hpair
+  simpa only [Function.comp_def] using haffine.comp hpair
 
 /-- Splitting against a fresh independent copy gives the manuscript's
 affine fixed-point identity in distribution on an arbitrary sample space. -/

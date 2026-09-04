@@ -159,6 +159,7 @@ import FabiusFunction.GeometricUniformLaw
 import FabiusFunction.GeometricUniformMultisection
 import FabiusFunction.GeometricUniformUniqueness
 import FabiusFunction.GeometricUniformCDF
+import FabiusFunction.GeometricUniformRealization
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
@@ -709,6 +710,7 @@ import FabiusFunction.LambertSeriesLocallyUniform
 import FabiusFunction.QGaussFullDomain
 import FabiusFunction.RamanujanOnePsiOne
 import FabiusFunction.QGammaMeromorphic
+import FabiusFunction.RegularCentralQBinomialSum
 import FabiusFunction.BasicHypergeometricDivergence
 import FabiusFunction.GaussianIntegerPrimes
 import FabiusFunction.HessenbergDeterminant
