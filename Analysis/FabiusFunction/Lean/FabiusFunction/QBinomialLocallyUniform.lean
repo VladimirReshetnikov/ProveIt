@@ -1,4 +1,5 @@
 import FabiusFunction.QBinomialTheoremInfinite
+import FabiusFunction.QPochhammerInfiniteBounds
 import Mathlib.Analysis.Normed.Group.FunctionSeries
 
 /-!
@@ -25,8 +26,11 @@ namespace Fabius
 variable {𝕜 : Type*} [NormedField 𝕜] [CompleteSpace 𝕜]
 
 omit [CompleteSpace 𝕜] in
-/-- The uniform bound of the terms of the `q`-binomial series on `‖a‖ ≤ A`, `‖z‖ ≤ r`. -/
-theorem norm_qBinomial_term_le {q : 𝕜} (hq : ‖q‖ < 1) {A r : ℝ} (hA : 0 ≤ A) {a z : 𝕜}
+/-- The uniform bound of the terms of the `q`-binomial series on `‖a‖ ≤ A`, `‖z‖ ≤ r`.  The
+numerator is bounded by `‖(a;q)_n‖ ≤ (-‖a‖;‖q‖)_∞ ≤ (-A;‖q‖)_∞`
+(`norm_finiteQPochhammerIn_le`, `qPochhammerInfIn_neg_le_neg`); the hypothesis `0 ≤ A` is
+implied by `‖a‖ ≤ A` and is kept only for the signature. -/
+theorem norm_qBinomial_term_le {q : 𝕜} (hq : ‖q‖ < 1) {A r : ℝ} (_hA : 0 ≤ A) {a z : 𝕜}
     (ha : ‖a‖ ≤ A) (hz : ‖z‖ ≤ r) (n : ℕ) :
     ‖finiteQPochhammerIn a q n / finiteQPochhammerIn q q n * z ^ n‖ ≤
       qPochhammerInfIn (-A) ‖q‖ / qPochhammerInfIn ‖q‖ ‖q‖ * r ^ n := by
@@ -34,16 +38,10 @@ theorem norm_qBinomial_term_le {q : 𝕜} (hq : ‖q‖ < 1) {A r : ℝ} (hA : 0
   have hP : 0 < qPochhammerInfIn ‖q‖ ‖q‖ :=
     qPochhammerInfIn_pos_of_lt_one (norm_nonneg q) hq1 (norm_nonneg q) hq1
   have hr0 : 0 ≤ r := (norm_nonneg z).trans hz
-  -- the numerator: ‖(a;q)_n‖ ≤ (-A;‖q‖)_n ≤ (-A;‖q‖)_∞
-  have hnum : ‖finiteQPochhammerIn a q n‖ ≤ qPochhammerInfIn (-A) ‖q‖ := by
-    refine le_trans ?_ (finiteQPochhammerIn_neg_le_qPochhammerInfIn hA (norm_nonneg q) hq1 n)
-    unfold finiteQPochhammerIn
-    rw [norm_prod]
-    refine prod_le_prod (fun j _ => norm_nonneg _) fun j _ => ?_
-    calc ‖1 - a * q ^ j‖ ≤ ‖(1 : 𝕜)‖ + ‖a * q ^ j‖ := norm_sub_le _ _
-      _ = 1 + ‖a‖ * ‖q‖ ^ j := by rw [norm_one, norm_mul, norm_pow]
-      _ ≤ 1 + A * ‖q‖ ^ j := by gcongr
-      _ = 1 - -A * ‖q‖ ^ j := by ring
+  -- the numerator: ‖(a;q)_n‖ ≤ (-‖a‖;‖q‖)_∞ ≤ (-A;‖q‖)_∞
+  have hnum : ‖finiteQPochhammerIn a q n‖ ≤ qPochhammerInfIn (-A) ‖q‖ :=
+    (norm_finiteQPochhammerIn_le a hq n).trans
+      (qPochhammerInfIn_neg_le_neg (norm_nonneg a) ha (norm_nonneg q) hq1)
   have hden : qPochhammerInfIn ‖q‖ ‖q‖ ≤ ‖finiteQPochhammerIn q q n‖ :=
     qPochhammerInfIn_norm_le_norm_finiteQPochhammerIn q hq1.le hq n
   rw [norm_mul, norm_div, norm_pow]

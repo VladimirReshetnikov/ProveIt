@@ -1,4 +1,5 @@
 import FabiusFunction.LambertWElementaryBounds
+import FabiusFunction.MeanValueBracket
 
 /-!
 # The inverse of `x ↦ x + W(x)`
@@ -25,6 +26,8 @@ This module formalizes exactly that layer:
 * `lambertShiftInv_lt_self`, `sub_principalLambertW_lt_lambertShiftInv` are the
   bracket, and `abs_sub_lambertShiftInv_le_abs_residual`,
   `abs_residual_le_two_mul_abs_sub_lambertShiftInv` the residual certificate.
+  The two Lipschitz brackets behind that certificate are instances of the
+  general `MeanValueBracket` lemmas at `m = 1`, `M = 2`.
 * `lambertShiftInv_hasDerivAt` differentiates `g` by the inverse-function rule,
   and `deriv_lambertShiftInv_bounds` is `1/2 < g' < 1` on the open half-line.
 * `strictConvexOn_lambertShiftInv`: `g` is strictly convex on the open
@@ -291,28 +294,30 @@ theorem lambertShift_sub_le_two_mul_sub {x y : ℝ} (hx : 0 ≤ x) (hxy : x ≤ 
 /-- `|x - y| ≤ |f(x) - f(y)|` on `[0,∞)`. -/
 theorem abs_sub_le_abs_lambertShift_sub {x y : ℝ} (hx : 0 ≤ x) (hy : 0 ≤ y) :
     |x - y| ≤ |lambertShift x - lambertShift y| := by
-  rcases le_total x y with h | h
-  · have := sub_le_lambertShift_sub hx h
-    rw [abs_sub_comm x y, abs_sub_comm (lambertShift x), abs_of_nonneg (by linarith),
-      abs_of_nonneg (by linarith)]
-    exact this
-  · have := sub_le_lambertShift_sub hy h
-    rw [abs_of_nonneg (by linarith), abs_of_nonneg (by linarith)]
-    exact this
+  have hderiv : ∀ z ∈ interior (Ici (0 : ℝ)), (1 : ℝ) ≤ deriv lambertShift z := by
+    intro z hz
+    rw [interior_Ici] at hz
+    exact one_le_deriv_lambertShift (mem_Ioi.mp hz)
+  have h := mul_abs_sub_le_abs_sub_of_le_deriv (convex_Ici (0 : ℝ))
+    lambertShift_continuousOn lambertShift_differentiableOn hderiv
+    (mem_Ici.mpr hx) (mem_Ici.mpr hy)
+  simpa using h
 
-/-- `|f(x) - f(y)| ≤ 2 |x - y|` on `[0,∞)`. -/
+/-- `|f(x) - f(y)| ≤ 2 |x - y|` on `[0,∞)`, an instance of the general upper
+bracket at `m = 1`, `M = 2`. -/
 theorem abs_lambertShift_sub_le_two_mul {x y : ℝ} (hx : 0 ≤ x) (hy : 0 ≤ y) :
     |lambertShift x - lambertShift y| ≤ 2 * |x - y| := by
-  rcases le_total x y with h | h
-  · have := lambertShift_sub_le_two_mul_sub hx h
-    have h' := sub_le_lambertShift_sub hx h
-    rw [abs_sub_comm x y, abs_sub_comm (lambertShift x), abs_of_nonneg (by linarith),
-      abs_of_nonneg (by linarith)]
-    exact this
-  · have := lambertShift_sub_le_two_mul_sub hy h
-    have h' := sub_le_lambertShift_sub hy h
-    rw [abs_of_nonneg (by linarith), abs_of_nonneg (by linarith)]
-    exact this
+  have hupper : ∀ z ∈ interior (Ici (0 : ℝ)), deriv lambertShift z ≤ 2 := by
+    intro z hz
+    rw [interior_Ici] at hz
+    exact deriv_lambertShift_le_two (mem_Ioi.mp hz)
+  have hlower : ∀ z ∈ interior (Ici (0 : ℝ)), (1 : ℝ) ≤ deriv lambertShift z := by
+    intro z hz
+    rw [interior_Ici] at hz
+    exact one_le_deriv_lambertShift (mem_Ioi.mp hz)
+  exact abs_sub_le_of_le_deriv (convex_Ici (0 : ℝ)) lambertShift_continuousOn
+    lambertShift_differentiableOn hupper hlower zero_le_one
+    (mem_Ici.mpr hx) (mem_Ici.mpr hy)
 
 /-- **Residual certificate, upper half**: a candidate `x̃ ≥ 0` with residual
 `R = f(x̃) - z` is within `|R|` of the true inverse. -/

@@ -1,4 +1,5 @@
 import FabiusFunction.Basic
+import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseComplexHalfAngle
 import FabiusFunction.ThueMorseWalsh
@@ -33,26 +34,13 @@ namespace Fabius
 
 /-! ## Dyadic bookkeeping
 
-Two finite-product facts recur in every dyadic bridge: the geometric
-exponent sum `∑_{j<K} j = K choose 2` and its shifted form
-`∑_{k<m} (k+1) = (m+1) choose 2`, and the reflection
+The two triangular exponent sums `∏_{j<K} z^j = z^(K choose 2)` and
+`∏_{k<m} z^(k+1) = z^((m+1) choose 2)` now live in the Mathlib-only leaf
+`TriangularPowerProduct` (re-exported by this import, so the names are
+unchanged); what remains here is the reflection
 `2^j · x / 2^m = x / 2^((m-1-j)+1)` that reads a dyadic chain from the
 top scale down.  They are stated once here, in any commutative monoid
 where they make sense. -/
-
-/-- `∏_{j<K} z^j = z^(K choose 2)` in any commutative monoid. -/
-theorem prod_range_pow_eq_pow_choose_two {M : Type*} [CommMonoid M]
-    (z : M) (K : ℕ) :
-    ∏ j ∈ range K, z ^ j = z ^ K.choose 2 := by
-  rw [Finset.prod_pow_eq_pow_sum, Finset.sum_range_id,
-    Nat.choose_two_right]
-
-/-- The shifted exponent sum: `∏_{k<m} z^(k+1) = z^((m+1) choose 2)`. -/
-theorem prod_range_pow_succ_eq_pow_choose_two {M : Type*} [CommMonoid M]
-    (z : M) (m : ℕ) :
-    ∏ k ∈ range m, z ^ (k + 1) = z ^ (m + 1).choose 2 := by
-  rw [← prod_range_pow_eq_pow_choose_two, Finset.prod_range_succ',
-    pow_zero, mul_one]
 
 /-- Reading a dyadic chain from the top: for `j < m`,
 `2^j · x / 2^m = x / 2^((m-1-j)+1)`. -/

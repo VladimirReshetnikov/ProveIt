@@ -1,12 +1,14 @@
 import FabiusFunction.SincCanonicalProduct
 import FabiusFunction.FiniteQBinomialCore
 import FabiusFunction.GeometricReciprocalGamma
+import FabiusFunction.QPochhammerInfinite
 
 /-!
 # Complex q-Pochhammer factorization of geometric sinc products
 
-This module packages the complex infinite q-Pochhammer symbol and identifies
-every geometric sinc product with a spectral product of q-Pochhammer symbols.
+This module names the complex instance of the ring-generic infinite
+q-Pochhammer symbol `qPochhammerInfIn` and identifies every geometric
+sinc product with a spectral product of q-Pochhammer symbols.
 The main theorem works for an arbitrary strict complex contraction; the
 Rvachev identity is its dyadic specialization.  Absolute summability of the
 double Euler product justifies the exchange of scale and zero indices, so the
@@ -15,10 +17,13 @@ condition.
 
 ## Main results
 
-* `complexQPochhammerInf` is the complex infinite q-Pochhammer product.
+* `complexQPochhammerInf` is the complex infinite q-Pochhammer product,
+  an abbreviation of `qPochhammerInfIn` at `ℂ`.
 * `multipliable_one_sub_mul_pow_complex`,
   `hasProd_complexQPochhammerInf`, and
-  `tendsto_finiteQPochhammerIn_complex` give its convergence for `‖q‖ < 1`.
+  `tendsto_finiteQPochhammerIn_complex` give its convergence for
+  `‖q‖ < 1`, as complex instances of the `QPochhammerInfinite`
+  convergence theorems.
 * `geometricSincProduct_eq_tprod_complexQPochhammerInf` generalizes that
   factorization to every strict complex contraction and nome `q ^ 2`.
 * `rvachevFourierProduct_eq_tprod_complexQPochhammerInf` is the dyadic
@@ -40,9 +45,11 @@ noncomputable section
 -- theorems use the standard noncomputable complex field/C⋆-algebra hierarchy.
 attribute [-instance] Complex.commRing
 
-/-- The complex infinite q-Pochhammer symbol `(a;q)_∞`. -/
-noncomputable def complexQPochhammerInf (a q : ℂ) : ℂ :=
-  ∏' j : ℕ, (1 - a * q ^ j)
+/-- The complex infinite q-Pochhammer symbol `(a;q)_∞`: the complex
+instance of the ring-generic `qPochhammerInfIn`.  The name is kept as
+the entry point of the spectral factorizations below. -/
+noncomputable abbrev complexQPochhammerInf (a q : ℂ) : ℂ :=
+  qPochhammerInfIn a q
 
 /-- The defining infinite-product presentation of `complexQPochhammerInf`. -/
 theorem complexQPochhammerInf_eq_tprod (a q : ℂ) :
@@ -50,32 +57,30 @@ theorem complexQPochhammerInf_eq_tprod (a q : ℂ) :
       ∏' j : ℕ, (1 - a * q ^ j) := rfl
 
 /-- The complex q-Pochhammer factor family is multipliable whenever the nome
-has norm strictly below one. -/
+has norm strictly below one; the complex instance of
+`multipliable_one_sub_mul_pow_of_norm_lt_one`. -/
 theorem multipliable_one_sub_mul_pow_complex
     (a : ℂ) {q : ℂ} (hq : ‖q‖ < 1) :
-    Multipliable fun j : ℕ => 1 - a * q ^ j := by
-  have hsum : Summable fun j : ℕ => -a * q ^ j :=
-    (summable_geometric_of_norm_lt_one hq).mul_left (-a)
-  exact (multipliable_one_add_of_summable hsum.norm).congr fun j => by
-    ring
+    Multipliable fun j : ℕ => 1 - a * q ^ j :=
+  multipliable_one_sub_mul_pow_of_norm_lt_one a hq
 
 /-- The complex q-Pochhammer factors have product
-`complexQPochhammerInf a q` for every contracting nome. -/
+`complexQPochhammerInf a q` for every contracting nome; the complex
+instance of `hasProd_qPochhammerInfIn`. -/
 theorem hasProd_complexQPochhammerInf
     (a : ℂ) {q : ℂ} (hq : ‖q‖ < 1) :
     HasProd (fun j : ℕ => 1 - a * q ^ j)
-      (complexQPochhammerInf a q) := by
-  simpa only [complexQPochhammerInf] using
-    (multipliable_one_sub_mul_pow_complex a hq).hasProd
+      (complexQPochhammerInf a q) :=
+  hasProd_qPochhammerInfIn a hq
 
 /-- Finite complex q-Pochhammer products converge to the infinite symbol for
-every contracting nome. -/
+every contracting nome; the complex instance of
+`tendsto_finiteQPochhammerIn_qPochhammerInfIn`. -/
 theorem tendsto_finiteQPochhammerIn_complex
     (a : ℂ) {q : ℂ} (hq : ‖q‖ < 1) :
     Tendsto (fun n : ℕ => finiteQPochhammerIn a q n) atTop
-      (𝓝 (complexQPochhammerInf a q)) := by
-  simpa only [finiteQPochhammerIn, complexQPochhammerInf] using
-    (multipliable_one_sub_mul_pow_complex a hq).tendsto_prod_tprod_nat
+      (𝓝 (complexQPochhammerInf a q)) :=
+  tendsto_finiteQPochhammerIn_qPochhammerInfIn a hq
 
 /-- The double Euler perturbation for a geometric sinc product is absolutely
 summable whenever the scale is a strict complex contraction. -/

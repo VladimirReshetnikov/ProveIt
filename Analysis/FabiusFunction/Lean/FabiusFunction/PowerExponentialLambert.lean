@@ -28,6 +28,10 @@ probabilistic assumption is used.
 * `principalPowerExponentialPhase_solves` and
   `lowerPowerExponentialPhase_solves` prove the exact inverse equations on
   their natural domains, including the common finite branch point.
+* `powerExponentialTurningPoint_pos`, `powerExponentialInverseScale_pos`
+  and `powerExponentialScale_mul_turningPoint` are the three small facts
+  about the turning point `m / beta` and its inverse `beta / m` that
+  every domain and solve argument in this family repeats.
 -/
 
 set_option autoImplicit false
@@ -83,10 +87,34 @@ theorem powerExponentialPeak_eq
   rw [hexp]
   ring
 
+/-- The turning point `m / beta` of the profile is positive for a
+nonzero power and a positive rate. -/
+theorem powerExponentialTurningPoint_pos
+    {m : ℕ} (hm : m ≠ 0) {beta : ℝ} (hbeta : 0 < beta) :
+    0 < (m : ℝ) / beta :=
+  div_pos (Nat.cast_pos.mpr (Nat.pos_of_ne_zero hm)) hbeta
+
+/-- The inverse scale `beta / m`, the coefficient of the root in the
+normalized Lambert argument, is positive for a nonzero power and a
+positive rate. -/
+theorem powerExponentialInverseScale_pos
+    {m : ℕ} (hm : m ≠ 0) {beta : ℝ} (hbeta : 0 < beta) :
+    0 < beta / (m : ℝ) :=
+  div_pos hbeta (Nat.cast_pos.mpr (Nat.pos_of_ne_zero hm))
+
+/-- The inverse scale `beta / m` carries the peak base
+`(m / beta) * exp (-1)` to the branch-point magnitude `exp (-1)`. -/
+theorem powerExponentialScale_mul_turningPoint
+    {m : ℕ} (hm : m ≠ 0) {beta : ℝ} (hbeta : beta ≠ 0) :
+    beta / (m : ℝ) * (((m : ℝ) / beta) * Real.exp (-1)) =
+      Real.exp (-1) := by
+  have hmR : (m : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hm
+  field_simp [hmR, hbeta]
+
 private lemma powerExponentialBase_pos
     {m : ℕ} (hm : m ≠ 0) {beta : ℝ} (hbeta : 0 < beta) :
     0 < ((m : ℝ) / beta) * Real.exp (-1) := by
-  exact mul_pos (div_pos (Nat.cast_pos.mpr (Nat.pos_of_ne_zero hm)) hbeta)
+  exact mul_pos (powerExponentialTurningPoint_pos hm hbeta)
     (Real.exp_pos _)
 
 /-- The nonnegative-half-line profile peak is strictly positive under the
@@ -138,19 +166,15 @@ theorem powerExponentialLambertArgument_mem_Icc
     (hx : x ∈ Icc 0 (powerExponentialPeak m A beta)) :
     powerExponentialLambertArgument m A beta x ∈
       Icc (-Real.exp (-1)) 0 := by
-  have hmR : (m : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hm
   have hroot0 : 0 ≤ (x / A) ^ ((m : ℝ)⁻¹) :=
     Real.rpow_nonneg (div_nonneg hx.1 hA.le) _
   have hroot := powerExponentialRoot_le hm hA hbeta hx
   have hscale : 0 < beta / (m : ℝ) :=
-    div_pos hbeta (Nat.cast_pos.mpr (Nat.pos_of_ne_zero hm))
+    powerExponentialInverseScale_pos hm hbeta
   constructor
   · unfold powerExponentialLambertArgument
     have hmul := mul_le_mul_of_nonneg_left hroot hscale.le
-    have hsimp : beta / (m : ℝ) *
-        (((m : ℝ) / beta) * Real.exp (-1)) = Real.exp (-1) := by
-      field_simp [hmR, hbeta.ne']
-    rw [hsimp] at hmul
+    rw [powerExponentialScale_mul_turningPoint hm hbeta.ne'] at hmul
     linarith
   · unfold powerExponentialLambertArgument
     exact neg_nonpos.mpr (mul_nonneg hscale.le hroot0)
@@ -171,7 +195,7 @@ theorem powerExponentialLambertArgument_mem_Ico
   have hroot : 0 < (x / A) ^ ((m : ℝ)⁻¹) :=
     Real.rpow_pos_of_pos hratio _
   have hscale : 0 < beta / (m : ℝ) :=
-    div_pos hbeta (Nat.cast_pos.mpr (Nat.pos_of_ne_zero hm))
+    powerExponentialInverseScale_pos hm hbeta
   exact neg_lt_zero.mpr (mul_pos hscale hroot)
 
 /-- Inputs strictly between zero and the peak give the smooth common
@@ -182,7 +206,6 @@ theorem powerExponentialLambertArgument_mem_Ioo
     (hx : x ∈ Ioo 0 (powerExponentialPeak m A beta)) :
     powerExponentialLambertArgument m A beta x ∈
       Ioo (-Real.exp (-1)) 0 := by
-  have hmR : (m : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hm
   have hbase := powerExponentialBase_pos hm hbeta
   have hratio : x / A ∈ Ico 0
       ((((m : ℝ) / beta) * Real.exp (-1)) ^ m) := by
@@ -196,12 +219,9 @@ theorem powerExponentialLambertArgument_mem_Ioo
       ((m : ℝ) / beta) * Real.exp (-1) := by
     simpa only [Real.pow_rpow_inv_natCast hbase.le hm] using hroot
   have hscale : 0 < beta / (m : ℝ) :=
-    div_pos hbeta (Nat.cast_pos.mpr (Nat.pos_of_ne_zero hm))
+    powerExponentialInverseScale_pos hm hbeta
   have hmul := mul_lt_mul_of_pos_left hroot' hscale
-  have hsimp : beta / (m : ℝ) *
-      (((m : ℝ) / beta) * Real.exp (-1)) = Real.exp (-1) := by
-    field_simp [hmR, hbeta.ne']
-  rw [hsimp] at hmul
+  rw [powerExponentialScale_mul_turningPoint hm hbeta.ne'] at hmul
   refine ⟨?_, (powerExponentialLambertArgument_mem_Ico hm hA hbeta
     ⟨hx.1, hx.2.le⟩).2⟩
   unfold powerExponentialLambertArgument
@@ -276,15 +296,14 @@ common branch point `-exp (-1)`. -/
     (hA : 0 < A) (hbeta : 0 < beta) :
     powerExponentialLambertArgument m A beta
       (powerExponentialPeak m A beta) = -Real.exp (-1) := by
-  have hmR : (m : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hm
   have hbase := powerExponentialBase_pos hm hbeta
   have hratio : powerExponentialPeak m A beta / A =
       (((m : ℝ) / beta) * Real.exp (-1)) ^ m := by
     rw [powerExponentialPeak]
     field_simp [hA.ne']
   rw [powerExponentialLambertArgument, hratio,
-    Real.pow_rpow_inv_natCast hbase.le hm]
-  field_simp [hmR, hbeta.ne']
+    Real.pow_rpow_inv_natCast hbase.le hm,
+    powerExponentialScale_mul_turningPoint hm hbeta.ne']
 
 /-- Both real inverse branches meet at the turning point `m / beta`. -/
 @[simp] theorem principalPowerExponentialPhase_peak
