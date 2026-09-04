@@ -30,8 +30,9 @@ problems, and 24 are non-applicable source environments.
 records exact module/declaration matches and separately classifies five
 post-snapshot additions without changing those source totals.
 [`ASSET_DISPOSITION.csv`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/ASSET_DISPOSITION.csv)
-accounts for all 88 source-subgroup files, and the live asset ledger covers 63
-retained, deduplicated payloads.
+accounts for all 88 source-subgroup files, and the asset inventory covers 55
+retained files. Eight checksum-ledger rows from the former 63-payload checkpoint
+are retired.
 
 The six newest exact source-row matches are abstract effective inversion,
 centered Appell deconvolution, positive-degree Appell mean-zero,
@@ -45,7 +46,7 @@ The retained, fully reviewed publication checkpoint has 134 A4 pages and
 2,027,726 bytes, with SHA-256
 `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
 Its historical three-pass receipt and page/font/visual gates, together with the
-independently checked current 23-input source closure, are recorded in the
+current purpose-specific 23-input source closure, are recorded in the
 canonical package's
 [`VALIDATION.md`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/VALIDATION.md).
 The source changed after that render, so a fresh three-pass build remains
@@ -72,8 +73,9 @@ the retained 158-page PDF is a historical checkpoint pending a fresh render of
 the current notation-normalized source.
 
 [`fabius_information_frontier/`](fabius_information_frontier/) remains an
-archival information-geometry intake. Its arrival and operational ledgers
-distinguish the submitted PDF from later source changes; manuscript theorem
+archival information-geometry intake. Its retired arrival and operational
+ledger checkpoints remain recoverable from Git and distinguish the submitted
+PDF from later source changes; manuscript theorem
 labels do not by themselves establish current Lean verification.
 
 ## Formalization notes

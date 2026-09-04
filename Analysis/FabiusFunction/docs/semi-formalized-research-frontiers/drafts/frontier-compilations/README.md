@@ -8,7 +8,8 @@
 
 The Digital Spectral Geometry intake is registered once, in the
 [`spectra-and-arithmetic`](../spectra-and-arithmetic/) group.  That filing
-preserves the full verified arrival ledger, repairs the failed audit and
+records verification of the full arrival ledger, which is recoverable from
+Git history, repairs the failed audit and
 numerical generation, corrects the false curvature claim, and supplies the
 policy-conforming canonical build; the unrepaired duplicate formerly listed
 here has been removed.
@@ -21,8 +22,9 @@ package, *Frontier Directions for Fabius--Rvachev Analysis*, was filed on
 2026-08-30 from `fabius_frontier_report_bundle-D.zip` (1,508,514 bytes;
 SHA-256
 `39f3638f52f19955b88b7a865a60b76d9ce31154d98967d1400a6ad97396fa9a`).
-Its submitted 34-row ledger was verified and is preserved as
-`ARRIVAL_SHA256SUMS`; the normalized 36-row current ledger passes in full.
+Its submitted 34-row ledger was verified at intake and remains recoverable
+from Git history; a later normalized 36-row ledger also passed before
+checksum ledgers were retired.
 The 1,641-line report and 874-line deterministic experiment suite were
 replayed, audited, normalized to the shared A4/27 mm/Libertinus style, and
 rebuilt as a 30-page PDF with embedded/subset fonts and no Type 3.  Exact
@@ -44,7 +46,8 @@ audited packages, without wholesale textual duplication.
   delivery consists of one 1,656-line LF TeX manuscript: no PDF, README,
   external code, data, figures, captured output, checksum file, repository
   metadata, or archive was supplied.  Intake repaired three form-feed-corrupted
-  `\frac` tokens and added a repository-generated one-entry `SHA256SUMS`.  The
+  `\frac` tokens and added a repository-generated one-entry checksum ledger,
+  now retired but recoverable from Git history.  The
   package still has no PDF, and the source has not yet been shown to compile.
 
   Its q-deformed derivative formulas, Gaussian/Edgeworth layer,

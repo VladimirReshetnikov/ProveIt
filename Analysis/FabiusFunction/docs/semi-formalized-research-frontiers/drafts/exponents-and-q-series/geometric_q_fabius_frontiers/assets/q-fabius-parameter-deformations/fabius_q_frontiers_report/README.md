@@ -91,8 +91,9 @@ The current publication artifact was rebuilt on 31 August 2026 from the
 and no encryption. All 33 font rows are embedded and subset; five are
 Libertinus rows and eight are Type-3 rows inherited from the four included
 Matplotlib vector figures. The standalone figure PDFs contain the same eight
-Type-3 rows, so figure-font normalization remains outstanding. The active
-20-entry checksum ledger verifies the current package in full.
+Type-3 rows, so figure-font normalization remains outstanding. A 20-entry
+checksum ledger verified the package at that checkpoint; it has since been
+retired and remains recoverable from Git history.
 
 ## Numerical methodology
 

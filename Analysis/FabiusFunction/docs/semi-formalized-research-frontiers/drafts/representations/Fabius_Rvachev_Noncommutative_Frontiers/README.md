@@ -17,8 +17,9 @@ the original archive bytes remain recoverable from that commit.
 - `figures/` -- retained PDF originals and PNG companions for the generated
   figures.
 - `requirements.txt` -- Python dependency constraints.
-- `SHA256SUMS` -- exhaustive 21-entry live payload ledger for the normalized
-  source, generated evidence, and rebuilt PDF.
+- The former exhaustive 21-entry payload ledger recorded the normalized
+  source, generated evidence, and rebuilt PDF; it is now retired and
+  recoverable from Git history.
 
 ## Corpus and formalization boundary
 
@@ -89,8 +90,8 @@ pdflatex -interaction=nonstopmode -halt-on-error Fabius_Rvachev_Noncommutative_F
 pdflatex -interaction=nonstopmode -halt-on-error Fabius_Rvachev_Noncommutative_Frontiers.tex
 ```
 
-Use a TeX installation with the Libertinus Type 1 package. Before refreshing
-the ledger, verify A4 geometry, a positive Libertinus font count, embedded and
+Use a TeX installation with the Libertinus Type 1 package. After rebuilding,
+verify A4 geometry, a positive Libertinus font count, embedded and
 subset fonts, no Type 3 fonts, no unresolved references or rerun request, and
 no overfull boxes. Remove only TeX sidecars such as `.aux`, `.log`, `.out`, and
 `.toc`; the files under `results/` are reproducibility payloads.
@@ -111,6 +112,7 @@ embeds the retained PNG twins on pages 11 and 18. The final log has no
 LaTeX/package warning, overfull or underfull box, TeX error, unresolved
 reference/citation, duplicate destination, or rerun request. Pages 1, 11, 18,
 and 26 were inspected at full-page resolution and are unclipped and readable.
-All 21 live payload checksums verify after the synchronized source, PDF,
-README, and ledger refresh. The three retained one-page vector plot PDFs also
+All 21 payload checksums verified at the synchronized source, PDF, and README
+checkpoint. The former ledger is now retired and recoverable from Git history.
+The three retained one-page vector plot PDFs also
 have all fonts embedded and subset and contain no Type 3 fonts.

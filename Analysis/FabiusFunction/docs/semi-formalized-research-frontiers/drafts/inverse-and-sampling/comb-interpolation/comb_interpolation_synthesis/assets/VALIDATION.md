@@ -22,9 +22,10 @@ census recorded at the earlier merge checkpoint was 629 Lean modules and 8,546
 public declarations. The checked-in PDF was built from the earlier source graph
 and passed the complete publication gate recorded below. Later
 canonical-notation edits in chapters 01, 03, and 90 and in the driver require
-a fresh exact three-pass render. Package checksum manifests are retired and no
-longer participate in current validation. The retained PDF and current source
-remain distinct payloads.
+a fresh exact three-pass render. Live package-wide checksum ledgers are retired
+and no longer participate in current validation; their historical checkpoints
+remain recoverable from Git. The retained PDF and current source remain distinct
+payloads.
 
 ## Completed source and evidence checks
 
@@ -101,12 +102,12 @@ rewritten. They do not certify the current canonical payloads.
   This is an identifier-presence check, not a Lean build or theorem-type check.
 - The source validator passes the nine-file TeX graph, environment and proof
   discipline (213 result environments, 150 proof-required), 801 labels, 783
-  references, 62 bibliography keys, all disposition and evidence audits, the
-  concordance, and the exhaustive package ledger.
+  references, 62 bibliography keys, all disposition and evidence audits, and
+  the concordance.
 - No PDF was rebuilt.  The retained 158-page PDF remains the validated
   historical checkpoint with 2,456,105 bytes and SHA-256
   `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`;
-  the root ledger records it separately from the current source.
+  its historical receipt is recorded separately from the current source.
 
 ## Retained semantic-union publication checkpoint
 
@@ -159,7 +160,8 @@ rewritten. They do not certify the current canonical payloads.
   result environments (149 proof-required), 800 labels, 782 references, 62
   bibliography keys, source disposition, post-pin reconciliation, historical-
   ledger audit, companion-payload provenance, 232-row theorem concordance, and
-  canonical source/evidence checks. No package checksum manifest is required.
+  canonical source/evidence checks. No live package-wide checksum manifest is
+  required.
 
 ## Historical canonical publication checkpoints
 
@@ -237,10 +239,11 @@ rewritten. They do not certify the current canonical payloads.
   37, 38, 45, 149, 150, and 156 were additionally inspected at full size; no
   clipping, overlap, corrupt image, missing glyph, or unintended blank page
   was found.
-- The now-retired root checksum manifest exhaustively covered every other
-  permanent package file, including the complete evidence tree, without
-  duplicate or stale paths, and verified in full at this historical checkpoint. The eight historical source-package
-  ledgers summarized by the audit remain unchanged and are not live manifests.
+- At this historical checkpoint, the now-retired root checksum manifest
+  exhaustively covered every other permanent package file, including the
+  complete evidence tree, without duplicate or stale paths, and was verified in
+  full. The eight historical source-package ledgers summarized by the audit
+  remain unchanged and are not live manifests.
 
 ### Replayed-side pre-merge checkpoint
 
@@ -266,9 +269,8 @@ rewritten. They do not certify the current canonical payloads.
   79, and 157 were additionally inspected at full size; no clipping, overlap,
   corrupt image, or unintended blank page was found.
 - The then-existing checksum records verified against that pre-merge source
-  state. They are retained here only as historical receipt facts, do not
-  certify the current union, and do not define the current single-root-ledger
-  architecture.
+  state. They survive only as historical receipt facts in this record, do not
+  certify the current union, and do not define current package state.
 
 ### Pre-PrimePower semantic-union build (historical, incomplete gate)
 
@@ -368,6 +370,6 @@ Then inspect the final log for errors, unresolved references, rerun requests,
 and overfull boxes; inspect PDF metadata and fonts; render every page; and
 visually examine every rendered page. Record the new measurements here, update
 the README, refresh `COMPANION_PAYLOADS.csv` if the retained evidence inventory
-changed, and rerun the canonical validator without recreating a package
-checksum manifest. The current receipt above remains valid only while the
-publication-source, documentation, and PDF bytes are unchanged.
+changed, and rerun the canonical validator without creating or checking a live
+package-wide checksum ledger. The current receipt above remains valid only while
+the publication-source, documentation, and PDF bytes are unchanged.

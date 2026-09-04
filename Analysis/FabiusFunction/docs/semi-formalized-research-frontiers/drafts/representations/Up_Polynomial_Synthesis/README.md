@@ -37,7 +37,8 @@ normalization claims have been demoted to problems.
   113 selected companion payloads.
 - assets/companion-evidence/ — 104 migrated scripts, exact tables, captured
   outputs, requirements, and useful PNG diagnostics, grouped by source slug;
-  the provenance map also covers the two already-canonical root-geometry files.
+  the provenance map also covers two already-canonical root-geometry files and
+  seven retired checksum-ledger rows without live destinations.
 - assets/evidence/legendre/root-geometry/ — exact Q12 Sturm certificate,
   complete counts through degree twenty, and a focused verifier.
 - Package checksum manifests are retired; scoped hashes remain in the
@@ -100,17 +101,18 @@ root locations are diagnostics only.
 No two companion files among the ten later reports were byte-identical, even
 after line-ending normalization. Similar filenames often use different ranges,
 normalizations, or operators. The report prose and PDFs were therefore retired
-after consolidation, while 113 distinct evidence payloads received canonical
-destinations and live hashes.
+after consolidation. Of 113 disposition rows, 106 retained evidence payloads
+received canonical destinations; seven checksum-ledger rows were retired.
 
-Historical checksum ledgers are provenance. They are preserved without
-rewriting old hashes to fit new paths. The live companion and root ledgers hash
-canonical Git-tree bytes and do not target removed arrival files.
+Historical checksum ledgers are provenance recoverable from Git history; they
+are not retained or rewritten to fit new paths. Canonical Git-tree bytes are
+tracked directly rather than through live package-local ledgers.
 
-The ten source directories were retired on 31 August 2026 after all 113
-selected payloads received canonical destinations and hashes, every theorem
-label received an auditable crosswalk, the PDF and exact verifier passed, and a
-fresh checkout validated the live root ledger. Their exact pre-retirement bytes
+The ten source directories were retired on 31 August 2026 after 106 retained
+payloads received canonical destinations, seven checksum-ledger rows were
+retired, every theorem label received an auditable crosswalk, the PDF and exact
+verifier passed, and a fresh checkout validated the then-recorded root checkpoint. Their exact
+pre-retirement bytes
 remain recoverable at commit
 `443793e846934e7363e314ea01129b9f50197a58`; the completed gate is documented
 in `assets/provenance/ASSET_INVENTORY.md`.

@@ -38,8 +38,9 @@ immutable legacy sources for this audit; their full baseline hashes are recorded
 `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Up_Polynomial_Synthesis/assets/provenance/SOURCE_SNAPSHOTS.md`.
 The three earlier polynomial packages were absorbed before the later-report
 consolidation; their retained payloads and historical hashes are under the
-canonical package's `assets/` directory. The 113 selected payloads from L1--G4
-now have canonical destinations and live hashes in
+canonical package's `assets/` directory. The disposition table covers 113 rows:
+106 retained payloads from L1--G4 have canonical destinations, while seven
+checksum-ledger rows are explicitly retired in
 `assets/provenance/COMPANION_PAYLOADS.csv`.
 
 | Key | Historical package or live evidence source |

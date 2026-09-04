@@ -15,9 +15,9 @@ The migration accounts for exactly 113 selected payloads:
   `../evidence/legendre/root-geometry/`.
 
 The old-to-new path, hash, and disposition of all 113 historical selection
-rows are recorded one-to-one in `../provenance/COMPANION_PAYLOADS.csv`. Seven
-checksum-manifest rows are retained there as provenance only; the remaining
-106 destinations are live and validated directly.
+rows are recorded one-to-one in `../provenance/COMPANION_PAYLOADS.csv`. It maps
+106 live destinations and preserves seven retired checksum-ledger rows without
+live destinations.
 
 The absorbed report TeX, compiled PDFs, report-level READMEs, dated audit and
 snapshot files, and ten Type-3-bearing vector figures are intentionally not
@@ -27,6 +27,6 @@ available.  The v6 report arrived without the companion files named in its
 prose, and this migration does not invent them.
 
 Historical package checksum files describe arrival layouts and may encode
-pre-normalization line endings. They remain recoverable from the immutable
-pre-retirement commit, while package checksum manifests are retired from the
-live tree.
+pre-normalization line endings. They are retired from the current tree and
+remain recoverable from the immutable pre-retirement commit; the provenance
+map preserves their hashes.

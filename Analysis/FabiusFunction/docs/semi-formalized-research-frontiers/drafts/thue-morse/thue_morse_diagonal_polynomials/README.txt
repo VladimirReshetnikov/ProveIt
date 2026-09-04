@@ -56,8 +56,8 @@ Files
   row_profiles.png
       Vector and raster forms of the article's normalized-row figure.
 
-  SHA256SUMS
-      Checksums for the packaged files.
+  The former package checksum ledger is retired; its historical bytes remain
+      recoverable from Git.
 
 Wolfram Language use
 --------------------

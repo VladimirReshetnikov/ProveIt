@@ -6,7 +6,8 @@
 > When one or more reports arrive, perform a **quick archival intake only**:
 > fetch and merge `origin/main`; check archive safety and integrity; unpack each
 > report; move it to the appropriate thematic directory; normalize repository
-> line endings and refresh any affected checksum ledger; delete the ZIP; update
+> line endings; record intake provenance; retire submitted `SHA256SUMS` or
+> `SHA256SUMS.*` ledgers while preserving purpose-specific records; delete the ZIP; update
 > `MANIFEST.md` and the destination `README.md`; then commit and immediately
 > publish that intake commit to the feature branch and to `origin/main` by an
 > ff-only push. Verify the remote SHA.
@@ -152,9 +153,12 @@ third package, which git applied at commit. All three PDFs are readable,
 unencrypted, pdfTeX-1.40.26, A4;
 one is fully embedded and Type-3-free, the other two carry two or three Type-3
 rows inherited from a Matplotlib figure. Two carry Libertinus faces. None loads
-`docs/fabius-notation.tex`. Two archives ship a submitted `SHA256SUMS` and one a
-`MANIFEST.sha256`; they are kept as payload, and no repository ledger was
-added. Comparison, deduplication, canonical selection, proof checking,
+`docs/fabius-notation.tex`. Two archives shipped a submitted `SHA256SUMS` and
+one a `MANIFEST.sha256`; all three were verified at intake. The two prohibited
+package ledgers were retired, while the purpose-specific manifest remains in
+the filed package. Historical bytes remain recoverable from the filing revision
+in Git, and no replacement package ledger was added.
+Comparison, deduplication, canonical selection, proof checking,
 numerical reproduction and Lean crosswalking were all deferred.
 
 Previous batch (three archives, filed and removed on 2026-09-03): the three Fibonacci-inversion articles, all to
@@ -256,7 +260,8 @@ These six bare-directory arrivals landed together in direct-arrival commit
 `730e1763291099cd50ca1e20ed2c62c38d95ab4f`; none included an archive or
 checksum ledger.  All six sources were already LF with a final newline, so no
 normalization was needed.  They were filed byte-for-byte with a
-repository-added two-row checksum ledger and archival README in each package.
+repository-added two-row checksum ledger and archival README in each package;
+those derivative ledgers were later retired and remain recoverable from Git.
 All PDFs are readable,
 unencrypted, embedded/subset, and Type-3-free, but none uses Libertinus; two
 have a custom 522-by-738-point page, two are Letter, and two are A4.  Styling
@@ -294,7 +299,8 @@ All six became standalone archival packages under
 [`../combinatorial-coefficient-calculus/`](../combinatorial-coefficient-calculus/).
 Each safe flat archive contained exactly one TeX/PDF pair; all CRCs passed, the
 filed payloads are byte-identical to their archive members, and every package's
-two-row checksum ledger verifies.  Their similar titles and subjects were noted
+two-row checksum ledger verified at intake.  Those derivative ledgers were
+later retired and remain recoverable from Git. Their similar titles and subjects were noted
 without comparing or deduplicating them.  Claim review, canonical selection,
 LaTeX rewriting, PDF rebuilding, and Lean crosswalking remain deliberately
 deferred until this intake is published.

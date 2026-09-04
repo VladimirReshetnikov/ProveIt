@@ -86,9 +86,9 @@ It compares all coefficients through degree 100 using integer arithmetic:
 1,515 equalities in total. This is a transcription-quality gate, explicitly
 not an infinite proof of any recorded identity.
 
-Checksum ledgers have been abolished repository-wide; no checksum manifest is
+Package-local `SHA256SUMS` ledgers have been abolished; no such manifest is
 kept for this package or its assets, and no checksum gate is part of its
-validation state. Deleted checksum manifests must not be recreated. Historical
+validation state. Deleted package ledgers must not be recreated. Historical
 SHA-256 values recorded directly in this README and in `PROVENANCE.md` remain
 provenance receipts for the named artifacts.
 

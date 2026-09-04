@@ -40,7 +40,8 @@ and Meixner-Pollaczek orthogonality are cited in the report.
 - `generated/exact_summary.txt` — software versions, random seed, and check summary.
 - `SOURCE_AUDIT.md` — repository-reading and novelty-boundary notes.
 - `requirements.txt` — Python dependencies used for the supplied outputs.
-- `SHA256SUMS.txt` — SHA-256 checksums for every packaged file except itself.
+- The former package checksum ledger is retired and recoverable from Git
+  history.
 
 ## Build the PDF
 
@@ -87,11 +88,8 @@ NumPy is used for floating-point determinant and covariance checks.
 
 ## Verify the archive
 
-On systems with `sha256sum`:
-
-```bash
-sha256sum -c SHA256SUMS.txt
-```
+The former package checksum checkpoint verified the distributed files. Its
+ledger is now retired and recoverable from Git history.
 
 The final PDF was rendered page-by-page at 170 dpi and visually checked for
 clipped text, overlap, missing figures, black boxes, and broken glyphs.

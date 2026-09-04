@@ -91,7 +91,8 @@ See [Building Lean](#building-lean) for the full serialization recipe.
 > `docs/semi-formalized-research-frontiers/drafts/incoming/`, first perform a
 > **quick archival intake and nothing deeper**: merge current `origin/main`,
 > verify archive safety/integrity, unpack and file the report by theme, normalize
-> repository line endings and refresh affected ledgers, delete the ZIP, update
+> repository line endings, retire any submitted ledger whose basename matches
+> the `SHA256SUMS` policy above, preserve purpose-specific records, delete the ZIP, update
 > the manifest and destination README, commit, push the feature branch, push
 > ff-only to `origin/main`, and verify the remote SHA.
 >

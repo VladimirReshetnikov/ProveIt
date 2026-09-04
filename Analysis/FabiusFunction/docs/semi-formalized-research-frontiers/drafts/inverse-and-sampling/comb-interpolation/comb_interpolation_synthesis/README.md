@@ -108,9 +108,9 @@ The later canonical-notation edits in `chapters/01_geometric_core.tex`,
 `chapters/03_additive_dyadic.tex`, and `chapters/90_reference_appendices.tex`,
 together with the document-local geometric-Newton command in the driver, make
 that PDF a validated historical checkpoint rather than a rendering of the
-current source; a fresh exact three-pass build is pending. The root ledger
-verifies the current source and retained PDF as distinct payloads. The complete
-checkpoint receipt and the older historical receipts are recorded once in
+current source; a fresh exact three-pass build is pending. The current source
+and retained PDF are recorded as distinct receipt facts. The complete
+checkpoint receipt and older historical receipts are recorded once in
 [`assets/VALIDATION.md`](assets/VALIDATION.md).
 
 ## Reproduce the computational evidence
@@ -166,6 +166,8 @@ proof discipline (213 result environments, 150 proof-required), 801 labels,
 783 references, 62 bibliography keys,
 disposition, historical-ledger, companion-payload, 232-row
 theorem-concordance gates. Its narrow Lean identifier check is not a live
-theorem-type check. Package checksum manifests are retired and are not part of
-the current validator. A fresh-checkout reproduction and a full rerun of every
-retained numerical script remain separate reproducibility work.
+theorem-type check. No live package-wide checksum ledger is generated or checked
+by the current validator. The retired root checkpoint remains recoverable from
+Git, but does not certify current package state. A fresh-checkout reproduction
+and a full rerun of every retained numerical script remain separate
+reproducibility work.
