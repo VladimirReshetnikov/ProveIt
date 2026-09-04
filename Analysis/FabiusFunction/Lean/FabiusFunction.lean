@@ -5,7 +5,6 @@ import FabiusFunction.PeriodicOrbitGelfondBound
 import FabiusFunction.PascalParityPeriodic
 import FabiusFunction.RvachevHalfIntegerEnergy
 import FabiusFunction.LambertWElementaryBounds
-import FabiusFunction.CayleyTreeFunction
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.CompleteHomogeneousGenerating
 import FabiusFunction.CompleteHomogeneousBell
