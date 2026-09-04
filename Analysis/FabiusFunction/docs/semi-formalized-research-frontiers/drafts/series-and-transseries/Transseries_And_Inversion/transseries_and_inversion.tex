@@ -38732,6 +38732,40 @@ $|q_M|x^{-M}\ge k\,c_\beta\,c\,x^{-|\beta-1/2|}\e^{-Ax}$ for every
 $M\ge M_0$.  Taking logarithms of the two bounds gives
 \eqref{p0:eq:floor}.
 \end{proof}
+\begin{remark}[The least-term mechanism, formalized without Stirling]
+\label{p0:rem:least-term-lean}
+The three displayed conclusions of \cref{p0:thm:optimal-truncation} all rest on
+Stirling's formula, and none of them is formalized here.  What \emph{is}
+formalized, in \lean{LeastTermIndex.lean}, is the mechanism underneath them:
+why $M(x)=\lfloor Ax\rfloor$ is the right truncation index, and why there is
+no better one further out.  That part needs no asymptotics at all.
+
+Write $T(M)=\Gamma(M+\beta)/s^{M}$ with $s=Ax$, the profile of the
+coefficient bound in \eqref{p0:eq:gevrey-remainder}.  Then
+\begin{equation}\label{p0:eq:least-term-ratio}
+ \frac{T(M+1)}{T(M)}=\frac{M+\beta}{s},
+\end{equation}
+which is \lean{Fabius.gevreyTerm_succ} --- one application of
+$\Gamma(z+1)=z\Gamma(z)$.  Everything follows from it and the positivity of
+$\Gamma$ on $(0,\infty)$: the terms strictly decrease while $M+\beta<s$
+(\lean{Fabius.gevreyTerm_succ_lt}) and strictly increase once $M+\beta>s$
+(\lean{Fabius.gevreyTerm_lt_succ}), so the profile is unimodal with its
+minimum exactly where $M+\beta$ crosses $Ax$.  The two monotone stretches are
+\lean{Fabius.gevreyTerm_antitoneOn} and \lean{Fabius.gevreyTerm_monotoneOn}.
+
+Two things this makes precise.  First, the choice $M(x)=\lfloor Ax\rfloor$ is
+the crossing index up to the shift $\beta$, and it is optimal for an \emph{exact}
+reason, not an asymptotic one --- the ratio law is an identity.  Second,
+unimodality is what rules out a second, lower, minimum further out; without it
+``least term'' would name a local rather than a global choice, and the floor
+\eqref{p0:eq:floor} would not follow from a single truncation.  The volume
+uses both facts implicitly.
+
+Not formalized: the size of the least term --- the envelope
+\eqref{p0:eq:least-term}, the transported error \eqref{p0:eq:optimal-inverse},
+and the floor \eqref{p0:eq:floor}.  All three need Stirling asymptotics for
+$\Gamma(M+\beta)$, which is exactly the content this module does without.
+\end{remark}
 
 \begin{remark}[What may and may not be appended]\label{p0:rem:no-bare-exponential}
 \Cref{p0:thm:optimal-truncation} bounds the size of the optimal remainder; it

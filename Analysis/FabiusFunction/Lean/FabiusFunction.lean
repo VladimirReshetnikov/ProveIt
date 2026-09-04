@@ -800,6 +800,7 @@ import FabiusFunction.PowerLogCoreInversion
 import FabiusFunction.LinLogCoreInversion
 import FabiusFunction.StaircaseInversion
 import FabiusFunction.RemainderTransport
+import FabiusFunction.LeastTermIndex
 
 set_option autoImplicit false
 
