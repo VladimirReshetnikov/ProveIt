@@ -43,8 +43,6 @@ theorem strictConcaveOn_lambertShift :
   simp only [lambertShift, smul_eq_mul] at hW ⊢
   have hkey : a * (x + principalLambertW x) + b * (y + principalLambertW y) =
       a * x + b * y + (a * principalLambertW x + b * principalLambertW y) := by ring
-  have hkey' : a * x + b * y + principalLambertW (a * x + b * y) =
-      a * x + b * y + principalLambertW (a * x + b * y) := rfl
   rw [hkey]
   linarith
 

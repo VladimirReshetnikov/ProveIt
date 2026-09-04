@@ -294,6 +294,7 @@ import FabiusFunction.TransseriesWellBased
 import FabiusFunction.WrightOmega
 import FabiusFunction.LambertShiftInverse
 import FabiusFunction.LambertShiftConcavity
+import FabiusFunction.LambertCorrectionEquation
 import FabiusFunction.LambertInverseCoefficients
 import FabiusFunction.CyclicCharacterSums
 import FabiusFunction.AliasErrorBound
