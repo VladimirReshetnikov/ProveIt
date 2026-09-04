@@ -1466,8 +1466,13 @@ Ramanujan sum \eqref{p1:eq:Ramanujan-power-two} over the odd residues modulo \(2
 (\path{Fabius.ramanujanOddSum_eq}, with \path{Fabius.ramanujanOddSum} the sum
 parametrized as \(r=2s+1\), \(s\in\IntegerNumbers/N\IntegerNumbers\)).  The power-trace
 formula \eqref{p1:eq:Ramanujan-traces} itself --- the \(m\)-fold expansion of
-\(A_{n,r}^m\) and the resummation over the odd residues --- is not formalized; the
-universal trace \eqref{p1:eq:universal-trace} is formal in the form
+\(A_{n,r}^m\) and the resummation over the odd residues --- is not formalized for general
+\(m\).  Its first two cases are.  The case \(m=2\), which the theorem records as reducing to
+\eqref{p1:eq:discrete-energy}, is \path{Fabius.sum_odd_foldedCoefficient_sq} in
+\path{AliasDyadicBridge.lean}, for every even \(N\); it is proved there not by the \(m\)-fold
+expansion but by folding both sides of the Parseval identity onto the half range, which for
+\(m=2\) replaces the Ramanujan resummation entirely.  The universal trace
+\eqref{p1:eq:universal-trace} is formal in the form
 \(\sum_{s<N}A_{N,2s+1}=1\), for every \(N\ge1\)
 (\path{Fabius.sum_foldedCoefficient_odd}, in \path{HalfIntegerAliasIdentity.lean}): the
 inverse transform at \(j=0\) gives \(\sum_{r}A_{N,r}=2\)
