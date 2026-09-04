@@ -54,6 +54,7 @@ The current source incorporates exhaustive crosswalks for
 `GaussianBinomialCumulants` (two definitions and twenty-four theorems),
 `GaussianBinomialBounds` (zero definitions and six theorems),
 `GeometricPochhammerNormalConvergence` (zero definitions and three theorems),
+`GeometricResidualMoments` (zero definitions and nine theorems),
 and `GeometricUniformRealization` (one definition and seventeen theorems).
 It also inventories `QMultinomial` (one definition and nine
 theorems), `QuantumMultinomial` (zero definitions and five theorems),
@@ -97,7 +98,7 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 913 modules and 11,551 public declarations with no
+live facade audit contains 914 modules and 11,555 public declarations with no
 documentation gaps. Those corpus-wide totals include the q--Chu, Richardson,
 geometric-law barycenter, Lagrange--Rvachev matrix, arbitrary-space geometric
 realization, regular-central-sum, and Lambert branch-gap Bernoulli follow-ups;
@@ -173,14 +174,24 @@ the central equivalence `[2m,m]_q ~ q^(m*m) (q⁻¹;q⁻¹)_∞⁻¹`. Natural
 subtraction is total in the first statement, while reciprocity is needed only
 eventually when `k ≤ n`; together with `gaussianBinomial_inv`, these make
 `cor:qgreaterone` Exact without asserting a shifted-central or wider
-nome-domain result. The live census is 913/11,551.
+nome-domain result. The live census is 914/11,555.
+`GeometricResidualMoments.lean` now contains zero definitions and nine public
+theorems. The pair
+`sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos` and
+`sum_geometricLagrangeWeight_mul_eval_scaled_geometric` proves respectively
+the positive-degree moment formula and polynomial exactness at zero over an
+arbitrary field, under injectivity of `k |-> q^k` on the finite node range.
+The polynomial theorem accepts arbitrary `c`, so the manuscript's `c != 0`
+hypothesis is subsumed and the mass-one boundary `c = 0` is also covered.
+This exact-by-composition API promotes `cor:scaled-geometric-moments` without
+changing any other row.
 Neither this source-only addition nor the preceding Lambert addition changes
 the retained historical artifact, and no render parity is claimed. The
 forward status inventory covers 282 labelled results:
-174 Exact / 84 Partial / 16 None / 8 N/A; the 191-result pre-Fabius core is
+175 Exact / 83 Partial / 16 None / 8 N/A; the 191-result pre-Fabius core is
 36 / 29 / 123 / 3.
 The five-publication concordance
-has 87 Lean-proved, 391 human-proved frontier, 60 not-applicable, and 9
+has 88 Lean-proved, 390 human-proved frontier, 60 not-applicable, and 9
 conjecture rows. Both the retained `thm:fixed-column-limit` source row and the
 older `prop:fixed-k-limit` row redirected to it now inherit the exact canonical
 status. The `cor:positivity`, `thm:qbinom-structure`, and

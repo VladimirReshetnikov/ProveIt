@@ -7998,6 +7998,15 @@ In particular, these weights evaluate every polynomial of degree at most $n$ at 
 \begin{proof}
 Factor $c^d$ from the moment sum and apply \Cref{thm:complete-geometric-moments}.  Exactness on polynomials follows by linearity.
 \end{proof}
+\emph{Lean status.}  Exact by composition in
+\path{GeometricResidualMoments.lean}.  The displayed positive-degree formula is
+\path{Fabius.sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos}, and the
+polynomial-exactness clause is
+\path{Fabius.sum_geometricLagrangeWeight_mul_eval_scaled_geometric}.  Both work over
+an arbitrary field and retain the chapter's injectivity hypothesis on
+\(k\mapsto q^k\) over \(0\le k\le n\).  The latter theorem is stronger only in a
+harmless direction: its scale \(c\) is arbitrary, so it includes the manuscript's
+assumption \(c\ne0\) and also the mass-one boundary \(c=0\).
 
 \section{Formal coefficient filters}
 
@@ -13641,7 +13650,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 174 are \statusexact, 84 are
+Of the 282 labelled forward results, 175 are \statusexact, 83 are
 \statuspartial, 16 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -14255,12 +14264,12 @@ Central $q$-binomial sums and Lambert series & 3 & 0 & 4 & 0\\
 Asymptotic regimes and Bernoulli expansions & 5 & 1 & 2 & 0\\
 Exact limits, reciprocity, and research frontiers & 5 & 0 & 0 & 0\\
 Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
-Geometric interpolation and exact $q$-filters & 7 & 2 & 0 & 0\\
+Geometric interpolation and exact $q$-filters & 8 & 1 & 0 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 7 & 2 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 3 & 10 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 8 & 46 & 2 & 0\\
 \midrule
-\textbf{Forward total} & 174 & 84 & 16 & 8\\
+\textbf{Forward total} & 175 & 83 & 16 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -15641,7 +15650,13 @@ tests are formalized separately, but not the six-part falsification principle}\\
 \Cref{cor:geometric-lagrange-product} & \statusexact & \texttt{geometricLagrangeWeight\_\allowbreak{}eq\_\allowbreak{}product}\newline{\footnotesize\texttt{GeometricLagrangeWeights}}\\[2pt]
 \Cref{thm:universal-lagrange-residual} & \statusexact & \texttt{sum\_\allowbreak{}lagrangeEvalWeight\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}card\_\allowbreak{}add}\newline{\footnotesize\texttt{LagrangeResidualMoments}}\\[2pt]
 \Cref{thm:complete-geometric-moments} & \statusexact & \texttt{sum\_\allowbreak{}geometricLagrangeWeight\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}gaussianBinomial}\newline{\footnotesize\texttt{GeometricQBinomialLagrange}}\\[2pt]
-\Cref{cor:scaled-geometric-moments} & \statuspartial & \texttt{sum\_\allowbreak{}geometricLagrangeWeight\_\allowbreak{}mul\_\allowbreak{}scaled\_\allowbreak{}geometric\_\allowbreak{}pow\_\allowbreak{}of\_\allowbreak{}pos}\newline{\footnotesize\texttt{GeometricResidualMoments}}\\[2pt]
+\Cref{cor:scaled-geometric-moments} & \statusexact &
+\texttt{sum\_\allowbreak{}geometricLagrangeWeight\_\allowbreak{}mul\_\allowbreak{}scaled\_\allowbreak{}geometric\_\allowbreak{}pow\_\allowbreak{}of\_\allowbreak{}pos},
+\texttt{sum\_\allowbreak{}geometricLagrangeWeight\_\allowbreak{}mul\_\allowbreak{}eval\_\allowbreak{}scaled\_\allowbreak{}geometric}\newline
+{\footnotesize\texttt{GeometricResidualMoments}; exact by composition over an
+arbitrary field under injectivity of $k\mapsto q^k$ on the finite node range.
+The polynomial theorem permits arbitrary $c$, and therefore subsumes the
+manuscript's $c\ne0$ hypothesis, including the mass-one boundary $c=0$}\\[2pt]
 \Cref{thm:geometric-filter-diagonal} & \statusexact & \texttt{coeff\_\allowbreak{}geometricSeriesFilter}\newline{\footnotesize\texttt{GeometricPowerSeriesFilter}}\\[2pt]
 \Cref{cor:geometric-richardson} & \statuspartial & \texttt{geometricLagrangeAnalyticSeriesFilter\_\allowbreak{}eq\_\allowbreak{}constant\_\allowbreak{}add\_\allowbreak{}gaussian\_\allowbreak{}tsum}\newline{\footnotesize\texttt{AnalyticSeriesFilter}}\\[2pt]
 \Cref{thm:geometric-filter-bound} & \statusexact &

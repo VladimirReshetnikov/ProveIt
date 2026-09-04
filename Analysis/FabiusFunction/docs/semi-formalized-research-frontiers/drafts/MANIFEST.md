@@ -21,8 +21,8 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 913
-source modules and 11,551 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 914
+source modules and 11,555 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -175,8 +175,13 @@ reflection, and CDF clauses; its affine identity uses a fresh canonical-law
 copy independent of the head coordinate. The regular-central leaf proves the
 displayed sum under the exact infinite-product denominator condition, with the
 full complex zero lattice and field-totalized `qGammaC` pole behavior kept
-explicit. The forward status ledger covers 282 labelled results:
-174 Exact / 84 Partial / 16 None / 8 N/A interface rows. The
+explicit. `GeometricResidualMoments.lean` now has zero definitions and nine
+theorems; its scaled positive-moment and polynomial-evaluation declarations
+compose to make `cor:scaled-geometric-moments` Exact over a field under finite
+power-node injectivity. The polynomial theorem allows arbitrary scale,
+including zero, so it subsumes the manuscript's nonzero-scale hypothesis. The
+forward status ledger covers 282 labelled results:
+175 Exact / 83 Partial / 16 None / 8 N/A interface rows. The
 terminating-basic-hypergeometric closure is `TwoPhiOneReversal.lean` (2+12)
 and `QChuVandermonde.lean` (0+10): both q-Chu evaluations and the reversal
 lemma are Exact for the actual tsum, while the claimed full-domain derivation
@@ -440,9 +445,10 @@ with the normalized analytic coefficients `a_n(q)` or the underlying
 moment-generating product.  Therefore `thm:qF-moment-polynomial` moves from
 None to Partial, not Exact, while `prop:qF-P-degree-sharp` remains None.  This
 one-definition/eight-theorem addition is included in the live census
-913/11,551. The subsequent zero-definition/two-theorem greater-than-one leaf
-makes `cor:qgreaterone` Exact, so the q forward totals are 174 Exact / 84
-Partial / 16 None / 8 N/A and the source concordance is 87 Lean-proved / 391
+914/11,555. The subsequent zero-definition/two-theorem greater-than-one leaf
+makes `cor:qgreaterone` Exact, and the scaled-geometric polynomial theorem
+completes `cor:scaled-geometric-moments`, so the q forward totals are 175 Exact / 83
+Partial / 16 None / 8 N/A and the source concordance is 88 Lean-proved / 390
 human-proved frontier / 60 N/A / 9 conjectures. The retained 389-page q-series PDF is a
 historical checkpoint and does not render this source-only crosswalk.
 
