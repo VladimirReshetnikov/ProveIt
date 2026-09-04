@@ -857,8 +857,9 @@ bases `1/2` and `1/4`. The prefix module's exact degrees are symbolic outer
 degrees in `Polynomial (Polynomial ℚ)`; a fixed-inner-variable centered
 degree can drop, and its algebraic finite-convolution moments are not a
 random-variable or MGF realization. The Laurent leaf gives checkpoint
-922/11,582, and the finite-prefix leaf gives the live repository census 923
-modules and 11,610 public declarations. The census also includes the unrelated
+922/11,582, and the finite-prefix leaf gives the historical checkpoint 923
+modules and 11,610 public declarations. The later live repository census is
+924 modules and 11,614 public declarations. The census also includes the unrelated
 sibling source-only
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
@@ -1035,6 +1036,25 @@ evaluation of the existing even-mode synthesis, compact-support truncation,
 and parity pairing. It does not promote the Jacobi decoder, all-degree parity
 or rationality, reverse spectral closure, target-specific mesh minimality, or
 the larger Lagrange right-inverse.
+
+The subsequent source-only
+`FabiusFunction.RvachevLegendreBiorthogonality` leaf has the exhaustive public
+surface of one definition, `rvachevLegendreAnalysisKernel`, and one theorem,
+`rvachevLegendreBiorthogonality`. It makes only
+`thm:leg-biorthogonality` Exact/Complete, preserving `M != 0`,
+`l <= padicValNat 2 M`, the open block `|k| < 2M`, the factor `M^-1`, the
+`(2m+1)/2` analysis normalization, and the Kronecker value, including degree
+zero. The arbitrary `BoundedFabius`/`IsFabius` quantification is a harmless
+strengthening. This does not promote `thm:leg-Lambda`,
+`cor:leg-biorthogonal-matrices`, the full mode/reverse/Gram packages, or the
+Lagrange right inverse. Independently, existing
+`FabiusFunction.TwoAdic` theorems `moment_padicVal_two` and
+`moment_num_den_odd` make `thm:leg2-moment-units` Exact/Complete: Lean's
+`moment m` is `mu_(2m)`, and valuation zero plus odd reduced numerator and
+denominator gives exactly the printed rational two-adic unit and residue-one
+clauses, including `m = 0`. This is rational valuation/parity data rather than
+construction of a separate topological `ℚ_2` value. Neither promotion is
+rendered in the retained Representation PDFs.
 
 At compiled checkpoint `a3854643d`, the focused-build
 `FabiusLegendreTranslateSeries.lean` exports five public

@@ -812,6 +812,22 @@ congruent to
 Division by the odd unit $4^m-1$ preserves the congruence.
 \end{proof}
 
+\begin{statusbox}{Lean status: Exact/Complete}
+In the executable rational convention of \path{FabiusFunction.TwoAdic},
+\path{moment m} is precisely the manuscript moment $\mu_{2m}$.
+The theorem \path{moment_padicVal_two} proves
+$\TwoAdicValuation(\mu_{2m})=0$ for every $m\ge0$, while
+\path{moment_num_den_odd} proves that the reduced numerator and denominator
+of $\mu_{2m}$ are both odd.  Reduction of an odd-over-odd rational unit modulo
+two is one, so the latter is exactly the second clause of
+\eqref{eq:leg2-moment-units}; $m=0$ is included.  Thus
+\cref{thm:leg2-moment-units} is Exact/Complete by these two existing
+declarations.  The encoding uses \path{padicValRat} and reduced rational
+parity; it does not claim that Lean has constructed a separate topological
+$\RationalNumbers_2$ representative, and it changes no neighboring asymptotic,
+spectral, or matrix status.
+\end{statusbox}
+
 \subsection{Exterior anchors and one-sided ladder instability}
 
 Let $\rho_0=2+\sqrt3$, the exterior growth base of Legendre polynomials at
