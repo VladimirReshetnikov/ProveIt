@@ -101,6 +101,16 @@ so it permutes no derivative arguments. Completeness is unnecessary.
 The resulting register is 208 rows: 64 `Lean`, 35 `partial`, and 109 `none`.
 This Mathlib correspondence is not a fresh local compiler run.
 
+The present merge preserves the independently compiled Bell-normalization,
+Bell-support, Cauchy-polynomial, and second-kind reverse-row correspondences.
+Together with the upstream results above, the regenerated 207-row register is
+classified as 63 `Lean`, 36 `partial`, and 108 `none`. The compiled
+`StirlingSecondReverseRow.second_reverse_row` is the declaration used to close
+the manuscript's reverse-row identity. The separately merged
+`StirlingSecondReverseRowIdentity` source contains the collision-free alternate
+`second_reverse_row_commRing_of_le` plus the stronger `second_reverse_row_sum`;
+it remains pending validation and contributes no additional status upgrade.
+
 `NewtonReciprocal.lean` passed focused compilation on 2026-09-04 using
 `lake env lean -o .lake/build/lib/lean/FabiusFunction/NewtonReciprocal.olean
 Analysis/FabiusFunction/Lean/FabiusFunction/NewtonReciprocal.lean` (exit zero).
