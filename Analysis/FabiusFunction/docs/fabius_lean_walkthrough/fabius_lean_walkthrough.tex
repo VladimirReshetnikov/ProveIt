@@ -125,9 +125,9 @@ This document is a proof-oriented walkthrough of that codebase.  Its aim is not 
 A mathematically oriented reader should begin with Sections~\ref{ch:objects}, \ref{ch:existence}, \ref{ch:regularity}, \ref{ch:dyadic-bridge}, \ref{ch:fourier}, and \ref{ch:asymptotics}.  A Lean developer should read Sections~\ref{ch:build}, \ref{ch:architecture}, \ref{ch:arithmetic}, \ref{ch:engineering}, and \ref{ch:extending}.  Readers interested in the two source papers can use the theorem map in Appendix~\ref{app:paper-map}; readers trying to locate a particular implementation should use the annotated module guide in Appendix~\ref{app:modules}; and readers reproducing trust checks should use Appendix~\ref{app:reproduction}.
 \end{boxedremark}
 
-\begin{boxedremark}\textbf{Artifact status (3 September 2026).}\space
-The authoritative live lexical audit of the facade contains exactly 902
-source modules and 11,444 public declarations.  It finds no missing module
+\begin{boxedremark}\textbf{Artifact status (4 September 2026).}\space
+The authoritative live lexical audit of the facade contains exactly 903
+source modules and 11,447 public declarations.  It finds no missing module
 headers and no public declarations without doc comments; the checked baseline
 records this zero-gap state.  The historical 671/8,859 local
 checkpoint was the 649/8,698 checkpoint plus 22 modules and 161 declarations;
@@ -161,7 +161,9 @@ The live union additionally contains the exhaustive
 \nolinkurl{QChuVandermonde.lean} (0+10) surfaces and the
 \nolinkurl{GeometricRichardsonGenerating.lean} (3+7) generating-function
 surface, together with the three-theorem extension that brings
-\nolinkurl{GaussianBinomialCumulants.lean} from 2+21 to 2+24, while retaining the public
+\nolinkurl{GaussianBinomialCumulants.lean} from 2+21 to 2+24 and the
+zero-definition/three-theorem
+\nolinkurl{LambertWBranchGapBernoulli.lean} leaf, while retaining the public
 \nolinkurl{complexQPochhammerInf_eq_qPochhammerInfIn} bridge.
 The rigorous forward q-monograph ledger is 165 Exact, 91 Partial, 18 None,
 and 8 interface rows.  The new bound leaf changes
@@ -173,7 +175,7 @@ primitive-root identity, while the manuscript's polynomial congruence modulo
 \(\Phi_d\) still needs a minimal-polynomial lift.
 \nolinkurl{cor:babbage-derivative} also remains Partial because its value,
 but not its derivative, is formalized.  The retained PDF predates the
-Gaussian-cumulant source update and remains an explicitly historical render
+Lambert--Bernoulli source update and remains an explicitly historical render
 until the current TeX is rebuilt; it makes no parity claim.  Exact source and
 PDF validation receipts are kept externally in the repository documentation
 so that neither artifact embeds a self-invalidating fingerprint.  No
@@ -4677,9 +4679,77 @@ The openness of both intervals is substantive.  At the finite branch point
 the gap is zero, the rational formulas have a zero denominator, and their
 limiting sum and product are \(-2\) and \(1\), so the strict inequalities do
 not extend there.  At zero the classical lower branch is singular; the
-theorems make no assertion about its all-real totalization.  Nor do these
-three exact-identity modules prove the guide's Bernoulli expansion in
-\(\delta\), its convergence, or any higher Puiseux or logarithmic expansion.
+theorems make no assertion about its all-real totalization.
+
+The separate source-only leaf
+\nolinkurl{LambertWBranchGapBernoulli.lean} has no definitions and exactly
+three theorems:
+\nolinkurl{summable_norm_bernoulli_mul_pow_div_factorial},
+\nolinkurl{hasSum_bernoulli_mul_pow_div_factorial}, and
+\nolinkurl{principalLambertW_lowerLambertW_eq_bernoulliSeries}.
+They prove absolute summability of
+\(\sum_{n\geq0}B_nz^n/n!\) for real \(z\) with \(\lvert z\rvert<2\pi\), its
+actual \nolinkurl{HasSum} value \(z/(\exp z-1)\) when \(z\ne0\), and, on
+\(-e^{-1}<x<0\) with \(0<\delta<2\pi\),
+\[
+ W_0(x)=-\sum_{n\geq0}B_n\frac{\delta^n}{n!},\qquad
+ W_{-1}(x)=-\delta-\sum_{n\geq0}B_n\frac{\delta^n}{n!}.
+\]
+
+The analytic proof is explicit.  Put
+\[
+ q=\frac{\lvert z\rvert}{2\pi}<1,\qquad
+ c_r=\frac{B_{2(r+1)}}{2(r+1)(2(r+1))!}.
+\]
+The even-zeta majorant from \nolinkurl{BasicBernoulliLog.lean} gives
+\[
+ \lvert c_rz^{2(r+1)}\rvert
+ \le\frac{\pi^2}{6}q^{2(r+1)}.
+\]
+The odd Bernoulli numbers beyond \(B_1\) vanish, and an even EGF term is
+\(2(r+1)c_rz^{2(r+1)}\).  Hence, for every \(n\ge2\),
+\[
+ \left\lvert\frac{B_nz^n}{n!}\right\rvert
+ \le n\frac{\pi^2}{6}q^n.
+\]
+Comparison with the convergent series \(\sum n q^n\), plus the two initial
+terms, proves absolute summability.
+
+For evaluation set
+\[
+ f_n=\frac{B_nz^n}{n!},\qquad
+ g_n=\frac{z^n}{n!}-\IndicatorOf{\{n=0\}}.
+\]
+Both sequences are absolutely summable: this was just proved for \(f\), while
+for \(g\) it follows from absolute summability of the exponential series and
+the finite-support correction.  Its sum is \(\exp z-1\).  The formal identity
+\[
+ \left(\sum_{n\ge0}\frac{B_n}{n!}X^n\right)(\exp X-1)=X
+\]
+says, after multiplying the coefficient of degree \(n\) by \(z^n\), that
+\[
+ \sum_{i+j=n}f_i g_j=
+ \begin{cases}z,&n=1,\\0,&n\ne1.\end{cases}
+\]
+The absolutely convergent Cauchy-product theorem therefore yields
+\[
+ \left(\sum_{n\ge0}f_n\right)(\exp z-1)=z.
+\]
+If \(z\ne0\), injectivity of the real exponential makes
+\(\exp z-1\ne0\), and division proves the EGF evaluation.  For the branch
+wrapper, positivity of \(\delta\) turns \(\delta<2\pi\) into
+\(\lvert\delta\rvert<2\pi\); substituting the EGF in
+\(W_0=-\delta/(\exp\delta-1)\) and then using \(W_{-1}=W_0-\delta\) proves the
+paired series.
+
+The last theorem is the exact Lean crosswalk for the compact
+\nolinkurl{eq:pair-Bernoulli-general} in the retained Lambert guide.  No other
+label in the surrounding corollary is promoted: the endpoint
+\(\lvert z\rvert=2\pi\), maximality of that radius, and higher or convergent
+Puiseux/logarithmic expansions remain open.  At \(z=0\) the convergence
+theorem applies, but the quotient theorem deliberately excludes the removable
+value because the series equals one while Lean's totalized quotient equals
+zero.
 
 The next two raw-branch leaves resolve the formerly open branch-point
 geometry.  Write
@@ -5639,6 +5709,7 @@ Logarithmic profile & \nolinkurl{fabiusLogProfile} & \nolinkurl{FabiusLogScale.l
 Forward real Lambert branch pairing & \nolinkurl{principalLambertW_sub_lowerLambertW_pos}, \nolinkurl{principalLambertW_eq_neg_gap_div}, \nolinkurl{lowerLambertW_eq_neg_gap_mul_exp_div}, \nolinkurl{lowerLambertW_eq_neg_gap_div_one_sub_exp_neg}, \nolinkurl{eq_neg_gap_div_mul_exp} & Exhaustive zero-definition/seven-theorem surface of \nolinkurl{LambertWBranchPairing.lean}; exact \(\delta\)- and \(t=e^\delta\)-forms on \((-e^{-1},0)\) only \\
 Lambert branch-gap coordinate and inverse & \nolinkurl{gapPrincipal}, \nolinkurl{gapLower}, \nolinkurl{gapArg}, \nolinkurl{branchGap}, \nolinkurl{branchGap_invOn}, \nolinkurl{branchGap_bijOn}, \nolinkurl{gapArg_log} & Exhaustive four-definition/sixteen-theorem surface of \nolinkurl{LambertWGapBijection.lean}; explicit bijection \((-e^{-1},0)\leftrightarrow(0,\infty)\), with the \(t>1\) inverse formulas \\
 Symmetric real Lambert branch laws & \nolinkurl{lowerLambertW_div_principalLambertW_eq_exp_branchGap}, \nolinkurl{principalLambertW_add_lowerLambertW_eq_cosh_div_sinh_branchGap}, \nolinkurl{principalLambertW_mul_lowerLambertW_eq_sinh_sq_branchGap}, \nolinkurl{principalLambertW_add_lowerLambertW_lt_neg_two}, \nolinkurl{principalLambertW_mul_lowerLambertW_mem_Ioo} & Exhaustive zero-definition/nine-theorem surface of \nolinkurl{LambertWBranchSymmetry.lean}; ratio, sum, product, and strict open-domain bounds, with no endpoint or Bernoulli/higher-expansion claim \\
+Real Bernoulli branch-gap series, exactly \nolinkurl{eq:pair-Bernoulli-general} & \nolinkurl{summable_norm_bernoulli_mul_pow_div_factorial}, \nolinkurl{hasSum_bernoulli_mul_pow_div_factorial}, \nolinkurl{principalLambertW_lowerLambertW_eq_bernoulliSeries} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{LambertWBranchGapBernoulli.lean}; actual all-index sum for \(0<\delta<2\pi\), with \(z=0\) excluded only from the quotient evaluation and no \(\lvert z\rvert=2\pi\), exact-radius, or Puiseux claim \\
 Real Lambert-branch curvature & \nolinkurl{deriv_deriv_principalLambertW}, \nolinkurl{deriv_deriv_lowerLambertW}, the lower sign iff family, \nolinkurl{strictConcaveOn_principalLambertW}, \nolinkurl{strictConvexOn_lowerLambertW_left}, \nolinkurl{strictConcaveOn_lowerLambertW_right} & \nolinkurl{LambertWCurvature.lean}; exact regular-domain second derivatives, with shape theorems including the branch point and inflection while the lower domain stays open at zero \\
 Real Lambert branch-point vertical geometry & \nolinkurl{tendsto_deriv_principalLambertW_branchPoint_atTop}, \nolinkurl{tendsto_deriv_lowerLambertW_branchPoint_atBot}, the two \nolinkurl{secantSlope_branchPoint} limits, and the four \nolinkurl{not_differentiable} endpoint theorems & \nolinkurl{LambertWBranchPointGeometry.lean}; exactly eight theorems giving signed right-hand derivative/secant blow-up, failure of finite right derivatives, and failure of full differentiability \\
 Real Lambert leading branch-point asymptotics & \nolinkurl{lambertWBranchPointScale}, the two squared-ratio limits, the two squared equivalences, and \nolinkurl{principalLambertW_add_one_isEquivalent_branchPoint}, \nolinkurl{lowerLambertW_add_one_isEquivalent_branchPoint} & \nolinkurl{LambertWBranchPointAsymptotics.lean}; one definition and eight theorems, with signed \(+\sqrt{2e\Delta}\) and \(-\sqrt{2e\Delta}\) laws only \\
@@ -5978,6 +6049,7 @@ Module & Role in the development \\
 \nolinkurl{StirlingAsymptotics.lean} & Factorial and binomial asymptotics needed for the k-fold scale. \\
 \nolinkurl{LowerLambertW.lean} & Correctly defined lower Lambert branch, endpoint-inclusive continuity on \([-\exp(-1),0)\), smooth-interior calculus, divergence at zero, and intrinsic two-term small-argument expansion. \\
 \nolinkurl{PrincipalLambertW.lean} & Principal real branch, endpoint-inclusive continuity on \([-\exp(-1),\infty)\), smooth-interior calculus, unit derivative at zero, and \(W_0(z)\sim z\). \\
+\nolinkurl{LambertWBranchGapBernoulli.lean} & Exactly three theorems: absolute convergence of the real Bernoulli exponential generating series on \(\lvert z\rvert<2\pi\), its actual nonzero-argument sum, and the paired compact branch-gap series crosswalking only \nolinkurl{eq:pair-Bernoulli-general}; no endpoint-radius or Puiseux claim. \\
 \nolinkurl{LambertWCurvature.lean} & Nonsingular raw-branch second derivatives; principal strict concavity on its closed natural domain; and the lower branch's exact inflection, left strict convexity, and right strict concavity. \\
 \nolinkurl{LambertWBranchPointGeometry.lean} & Exactly eight theorems: signed right-hand derivative blow-up, signed endpoint-secant blow-up, failure of finite right differentiability, and failure of full differentiability for both totalized real branches. \\
 \nolinkurl{LambertWBranchPointAsymptotics.lean} & One noncomputable scale definition and eight theorems: positivity and square of \(\sqrt{2\exp(1)(z+\exp(-1))}\), two squared-ratio limits, two squared equivalences, and the signed principal/lower leading square-root equivalents. \\
@@ -6068,6 +6140,14 @@ non-differentiability, squared-ratio limits, and leading signed square-root
 equivalences.  They do not close \(O(\Delta)\) remainders, higher or
 convergent/full Puiseux expansions, generic/Fabius endpoint wrappers, or
 the generic \(m\mathbin{\pm}\sqrt m\) threshold and shape layer.
+The later source-only row
+\nolinkurl{LambertWBranchGapBernoulli.lean}, compiled in a focused build on
+4 September 2026, has the exhaustive zero-definition/three-theorem surface
+listed above.  It promotes only the Lambert guide's compact
+\nolinkurl{eq:pair-Bernoulli-general}; exact maximality of the radius
+\(2\pi\), its boundary, and all higher Puiseux claims remain open.  The
+retained walkthrough and Lambert-guide PDFs predate this source change, and
+no source/PDF parity is claimed.
 The \nolinkurl{FabiusInverseLogarithmicModulus.lean} row is a still later
 current-tree addition inspected declaration-by-declaration on 30 August 2026.
 Its three definitions and fifteen theorems close the least logarithmic scale
@@ -6104,11 +6184,11 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The merged live current-tree
-lexical audit scans 902 modules and 11,444 public declarations, with no missing
+lexical audit scans 903 modules and 11,447 public declarations, with no missing
 module headers and no missing declaration comments.  The origin-side census is
-11,443; the extra declaration is the retained unconditional public Pochhammer
-bridge.  The checked baseline records both zero-gap invariants.  At the retained
-historical mainline checkpoint before the latest
+903/11,446; the extra declaration is the retained unconditional public
+Pochhammer bridge.  The checked baseline records both zero-gap invariants.  At
+the retained historical mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
 four-theorem \nolinkurl{QPochhammerEntire.lean} tranche but before the generic
@@ -6179,31 +6259,34 @@ intermediate census was therefore 672/8,875.  The subsequent
 \nolinkurl{TelescopingCertificate.lean} leaves add three modules and thirty-four
 declarations, giving the historical 675/8,909 checkpoint.  The subsequent
 source union includes the exact 0+7, 4+16, and 0+9 Lambert branch-pairing,
-gap-bijection, and symmetry surfaces, the unconditional public Pochhammer
-bridge, and the two new
+gap-bijection, and symmetry surfaces, the two new
 \nolinkurl{iteratedDeriv_rvachevUp_eq_extendedFabius} and
-\nolinkurl{iteratedDeriv_rvachevUp_dyadic_below} theorems, and also incorporates
-the exhaustive 2+12 \nolinkurl{TwoPhiOneReversal.lean} and 0+10
-\nolinkurl{QChuVandermonde.lean} surfaces.  The origin-side checkpoint before
-Richardson was recorded as 901/11,430, and its 3+7
-\nolinkurl{GeometricRichardsonGenerating.lean} leaf raised that origin census
-to 902/11,440.  Three subsequent theorems expand the existing 2+21
+\nolinkurl{iteratedDeriv_rvachevUp_dyadic_below} theorems, and the exhaustive
+2+12 \nolinkurl{TwoPhiOneReversal.lean} and 0+10
+\nolinkurl{QChuVandermonde.lean} surfaces.  Those additions and the later
+terminating-basic-hypergeometric closure bring the preceding origin-side
+checkpoint to 901/11,430.  The 3+7
+\nolinkurl{GeometricRichardsonGenerating.lean} leaf raised that census to
+902/11,440.  Three subsequent theorems expand the existing 2+21
 \nolinkurl{GaussianBinomialCumulants.lean} surface to 2+24 and raise the
-origin-side census to 902/11,443.  Retaining the unconditional public
-\nolinkurl{complexQPochhammerInf_eq_qPochhammerInfIn} bridge yields the final
-merged live census 902/11,444.  The three Lambert modules contain 36
-declarations in their current exhaustive surfaces, 13 of them supplied by the
-upstream delta; \nolinkurl{DyadicDerivativeFiltration.lean} contains zero
-definitions and six theorems after its two-theorem extension.  The three new
-Gaussian declarations are
+origin-side census to 902/11,443.  They are
 \nolinkurl{eval_one_derivative_derivative_gaussianBinomial_X},
 \nolinkurl{twelve_mul_secondMoment_gaussianBinomial_eval_one}, and
 \nolinkurl{twelve_mul_varianceNumerator_gaussianBinomial_eval_one}; their exact
-hypotheses and totality boundaries are recorded below.  No aggregate facade
-build is claimed for this current-tree census.  The retained PDF and title-page
-pin remain historical and do not claim parity with the merged source; exact
-source and PDF receipts are kept externally so that no artifact embeds a
-mutable self-receipt.
+hypotheses and totality boundaries are recorded below.  The subsequent
+zero-definition/three-theorem
+\nolinkurl{LambertWBranchGapBernoulli.lean} leaf raises the origin-side live
+census to 903/11,446.  Retaining the unconditional public
+\nolinkurl{complexQPochhammerInf_eq_qPochhammerInfIn} bridge yields the final
+merged live census 903/11,447.  The first three Lambert modules contain 36
+declarations in their exhaustive surfaces, 13 of them supplied by the earlier
+upstream delta; the Bernoulli companion contributes three more.
+\nolinkurl{DyadicDerivativeFiltration.lean} contains zero definitions and six
+theorems after its two-theorem extension.  No aggregate facade build is
+claimed for this current-tree census.  The retained PDF and title-page pin
+remain historical and do not claim parity with the merged source; exact source
+and PDF receipts are kept externally so that no artifact embeds a mutable
+self-receipt.
 
 Those six counts are \nolinkurl{QPochhammerInfiniteBounds.lean} (0+5),
 \nolinkurl{HeineTransformation.lean} (2+5),

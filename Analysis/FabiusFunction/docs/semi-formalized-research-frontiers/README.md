@@ -28,7 +28,8 @@ The canonical frontier artifacts are:
 > the then-current 262-page, 1,885,642-byte A4 PDF with SHA-256
 > `7f7e1279e38c766a465e640638ea7e0079a942de0bc84a5c22be497af27c7bab`.
 > The recorded publication gates were clean apart from the expected underfull
-> box diagnostics.  The subsequent q-Chu/Richardson source union means this
+> box diagnostics.  The subsequent q-Chu/Richardson, Gaussian second-moment,
+> and Lambert branch-gap Bernoulli source union means this
 > PDF is historical and a final-source rebuild is pending.  No `SHA256SUMS*`
 > file exists or participates in validation.  Earlier renders remain
 > historical receipts for their own named
@@ -46,10 +47,12 @@ The canonical frontier artifacts are:
 > and a 257-page, 2,438,299-byte PDF (SHA-256
 > `3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980`).
 
-The authoritative live Lean audit now contains exactly 902 facade-reachable
-modules and 11,444 unique public declarations, with no missing module headers
+The authoritative live Lean audit now contains exactly 903 facade-reachable
+modules and 11,447 unique public declarations, with no missing module headers
 or declaration documentation.  The checked baseline records both zero-gap
-invariants.  The q-Pochhammer ownership remains
+invariants.  The corresponding origin inventory has 11,446 declarations
+because it lacks this tree's retained unconditional public
+`complexQPochhammerInf_eq_qPochhammerInfIn` bridge.  The q-Pochhammer ownership remains
 `RvachevPochhammerFactorization` 1+10, `QPochhammerEntire` 0+5, and
 `QPochhammerInfinite` 1+29;
 `complexQPochhammerInf_eq_qPochhammerInfIn` remains the unconditional public
@@ -68,8 +71,25 @@ The Lambert branch-coordinate surface is exhaustive:
 exact branch pairing, explicit gap inverse and bijection, the
 `t = exp(delta) > 1` coordinate, ratio/sum/product identities, and the strict
 bounds `W_0 + W_{-1} < -2` and `0 < W_0 W_{-1} < 1`.  They include neither
-endpoint and do not prove the Guide's Bernoulli gap series or higher branch
-expansions.
+endpoint.  These three finite modules do not themselves prove the Guide's
+Bernoulli gap series or higher branch expansions; the companion analytic leaf
+does prove the series statement below.
+
+`LambertWBranchGapBernoulli.lean` has the exhaustive surface 0 definitions +
+3 theorems:
+`summable_norm_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial`, and
+`principalLambertW_lowerLambertW_eq_bernoulliSeries`.  The first proves
+absolute summability of the real Bernoulli exponential generating series for
+`|z| < 2π`, including `z = 0`.  The second gives its actual all-index `HasSum`
+value `z/(exp z-1)` under the additional hypothesis `z ≠ 0`.  The third gives
+both paired branch sums when `x ∈ (-exp(-1),0)` and `branchGap x < 2π`.  It is
+an exact crosswalk only for `eq:pair-Bernoulli-general`.  The quotient
+evaluation excludes the removable origin, and the branch theorem excludes
+both real-branch endpoints; no theorem at `|z| = 2π`, exact or maximal-radius
+claim, remainder estimate, or higher/convergent Puiseux expansion is included.
+The retained frontier, primary, walkthrough, and Lambert Guide PDFs all predate
+this source overlay and remain historical pending parity rebuilds.
 
 The zero-definition/six-theorem `DyadicDerivativeFiltration.lean` surface is
 also complete.  In addition to support vanishing, above-depth vanishing, the
@@ -153,7 +173,8 @@ The latest pre-`9135bd7e` q-series receipt names the 16,834-line,
 `4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`)
 and its 395-page, 2,494,961-byte A4 PDF (SHA-256
 `89159b2635f489a42d4c972fac95332808b1d637dee7921085db1ed7d6e055af`).
-The present q-Chu/Richardson source union postdates that exact receipt.  Its
+The present q-Chu/Richardson and Gaussian second-moment source union postdates
+that exact receipt.  Its
 completed source concordance now records 86 Lean-proved, 392 human-proved,
 60 not-applicable, and 9 conjectural rows; the forward ledger is 165
 Exact / 91 Partial / 18 None / 8 interface.  No current source/PDF parity is

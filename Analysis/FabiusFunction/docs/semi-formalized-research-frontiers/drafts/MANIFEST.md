@@ -21,14 +21,14 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
-**Current artifact checkpoint (2026-09-03).** The live Lean audit scans exactly
-902 facade-reachable source modules and 11,444 unique public declarations, with
-no missing module headers and no missing documentation comments; the checked
-baseline records this zero-gap state.
-The q-Chu/Richardson/Gaussian-moment union changes the primary exposition,
-Lean walkthrough, canonical frontier, and canonical q-series sources after
-their latest renders; those four PDFs are therefore named historical
-checkpoints pending final-source rebuilds.  Other packages retain their own
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 903
+facade-reachable source modules and 11,447 unique public declarations, with no
+missing module headers and no missing documentation comments; the checked
+baseline records this zero-gap state. The q-Chu/Richardson/Gaussian-moment and
+Lambert branch-gap Bernoulli unions change the primary exposition, Lean
+walkthrough, canonical frontier, Lambert guide, and canonical q-series
+documentation after their latest renders. Those PDFs are therefore historical
+checkpoints pending final-source rebuilds; other packages retain their own
 explicit source/PDF status.
 
 Four pre-`9135bd7e` publication pairs have exact historical receipts.  The
@@ -52,7 +52,7 @@ The canonical forward/inverse q-series synthesis is a 16,834-line,
 `4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`)
 and a 395-page, 2,494,961-byte PDF (SHA-256
 `89159b2635f489a42d4c972fac95332808b1d637dee7921085db1ed7d6e055af`).
-Its guarded passes ran 386 -> 395 -> 395 pages.  The 166 Exact / 90 Partial /
+Its guarded passes ran 386 -> 395 -> 395 pages.  The 165 Exact / 91 Partial /
 18 None / 8 interface ledger and publication gates were current at that
 source checkpoint; the sole 32.5659 pt overfull diagnostic was harmless and
 readable.  The walkthrough likewise completed its exact three-pass cycle with
@@ -373,7 +373,26 @@ sum and product, and the sharp strict bounds `W₀+W₋₁ < -2` and
 so the sum/product bounds become the equalities `-2` and `1`; at zero the
 lower real branch has no finite value.
 
-No finite endpoint derivative is asserted.  An `O(z + exp(-1))` remainder after the signed leading term, a convergent signed Puiseux expansion and its higher coefficients, named generic/Fabius phase wrappers for the derivative, secant, and square-root endpoint laws, the generic square-root threshold/strict-shape corollaries, a cleaned `L = log(A/x)` normalization, and the full generic asymptotic series remain open.
+The subsequent `LambertWBranchGapBernoulli.lean` leaf has the exhaustive
+zero-definition/three-theorem surface
+`summable_norm_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial`, and
+`principalLambertW_lowerLambertW_eq_bernoulliSeries`.  It proves absolute
+summability on the real open disk `|z| < 2*pi`, the actual all-index
+Bernoulli sum for nonzero `z`, and the two paired branch-gap sums for a
+positive gap below `2*pi`.  This is an exact crosswalk only for
+`eq:pair-Bernoulli-general`; no other label in the surrounding Guide
+corollary is promoted.  The retained 66-page Guide PDF predates this
+source-only crosswalk, and no render parity is claimed.
+
+No finite endpoint derivative is asserted.  Exact maximality of the
+Bernoulli-series radius and its `|z| = 2*pi` boundary, an
+`O(z + exp(-1))` remainder after the signed leading term, a convergent signed
+Puiseux expansion and its higher coefficients, named generic/Fabius phase
+wrappers for the derivative, secant, and square-root endpoint laws, the
+generic square-root threshold/strict-shape corollaries, a cleaned
+`L = log(A/x)` normalization, and the full generic asymptotic series remain
+open.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |

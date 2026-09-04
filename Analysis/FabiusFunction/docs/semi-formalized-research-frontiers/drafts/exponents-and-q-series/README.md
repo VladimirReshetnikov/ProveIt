@@ -69,9 +69,9 @@ module tranches and the zero-definition, three-theorem
 `GeometricPochhammerNormalConvergence.lean` leaf, in its formalization
 crosswalk. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 902 facade-reachable modules and 11,444 public declarations, with zero
+contains 903 facade-reachable modules and 11,447 public declarations, with zero
 missing module headers and zero declaration-documentation gaps. The final
-declaration count is one above origin's 11,443 because this union retains the
+declaration count is one above origin's 11,446 because this union retains the
 public `Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
 
 The ten-declaration increase is the sibling source-only
@@ -89,13 +89,21 @@ That repository-wide census includes a sibling, source-only Lambert-W
 promotion rather than a new q-series result. Its exhaustive module counts are
 `LambertWBranchPairing.lean` (0 definitions + 7 theorems),
 `LambertWGapBijection.lean` (4 + 16), and
-`LambertWBranchSymmetry.lean` (0 + 9). Together they prove, only for the open
-two-branch domain `(-exp(-1), 0)`, the exact gap parametrization and its
+`LambertWBranchSymmetry.lean` (0 + 9), followed by
+`LambertWBranchGapBernoulli.lean` (0 + 3). The first three prove, only for the
+open two-branch domain `(-exp(-1), 0)`, the exact gap parametrization and its
 inverse bijection, the `t = exp(delta) > 1` formulas, and the exact
-ratio/sum/product laws with strict sum and product bounds. They do not include
-either endpoint, the Bernoulli-number expansion in the gap, its convergence,
-or any higher branch expansion. No retained PDF in this group renders that
-unrelated source-only promotion, and none was rebuilt for this update.
+ratio/sum/product laws with strict sum and product bounds. The last module's
+exhaustive public surface is
+`summable_norm_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial`, and
+`principalLambertW_lowerLambertW_eq_bernoulliSeries`: real absolute
+convergence for `|z| < 2*pi`, the quotient sum for nonzero `z`, and the paired
+branch series on the same strict x-domain when the positive gap is below
+`2*pi`. It proves neither the endpoint `|z| = 2*pi` nor maximality of that
+radius, and it adds no higher or full Puiseux/logarithmic branch expansion.
+No retained PDF in this group renders this unrelated source-only promotion,
+and none was rebuilt for this update.
 
 The sibling `DyadicDerivativeFiltration.lean` module has zero definitions and
 exactly six theorems. Its exhaustive surface consists of

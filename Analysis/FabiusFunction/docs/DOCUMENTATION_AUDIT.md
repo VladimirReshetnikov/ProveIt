@@ -109,10 +109,10 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live 2026-09-03 semantic union contains 902 modules and 11,444 lexically
+The live 2026-09-04 semantic union contains 903 modules and 11,447 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments; the checked JSON baseline records this clean state.  The
-corresponding origin inventory has 11,443 declarations because it lacks this
+corresponding origin inventory has 11,446 declarations because it lacks this
 tree's unique public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge.  The
 earlier 901/11,419 local semantic union remains a historical checkpoint, as
 does the post-merge 2026-09-01 inventory of 675 modules and 8,909 declarations.
@@ -201,9 +201,10 @@ arbitrary formal power series.
 #### Gaussian-binomial second-moment tranche
 
 The later strengthening of the existing `GaussianBinomialCumulants.lean`
-module leaves the module count at 902 and adds three public theorems, bringing
+module left the module count at 902 and added three public theorems, bringing
 the origin census to 11,443 public declarations and, with the retained public
-q-Pochhammer bridge, the authoritative local union to 11,444.  The module's exhaustive public
+q-Pochhammer bridge, that historical local checkpoint to 11,444.  The module's
+exhaustive public
 inventory is two definitions, `meanAtOne` and `varAtOne`, and twenty-four
 theorems: `meanAtOne_one`, `varAtOne_one`, `meanAtOne_mul`, `varAtOne_mul`,
 `meanAtOne_prod`, `varAtOne_prod`, `eval_one_derivative_X_pow`,
@@ -267,8 +268,31 @@ The nine symmetric theorems are
 `principalLambertW_mul_lowerLambertW_mem_Ioo`.  They record the exact branch
 ratio, both exponential and hyperbolic sum/product forms, and the strict
 interior inequalities `W₀+W₋₁<-2` and `0<W₀W₋₁<1`.  Their hypotheses exclude
-both the branch point and zero endpoint.  These modules make no
-Bernoulli-series, convergence, remainder, or endpoint-asymptotic claim.
+both the branch point and zero endpoint.  These three finite modules do not
+themselves prove a Bernoulli-number series or any branch-point or small-input
+asymptotic; the separate analytic series leaf is inventoried next.
+
+#### Exact Lambert branch-gap Bernoulli tranche
+
+`LambertWBranchGapBernoulli.lean` adds one source module and exactly three
+public theorems to the historical 902/11,443 checkpoint, giving the live
+origin census of 903/11,446 and the authoritative local union of 903/11,447.
+Its exhaustive public surface is
+`summable_norm_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial`, and
+`principalLambertW_lowerLambertW_eq_bernoulliSeries`; two private majorant and
+coefficient-transport helpers are excluded from the public count.
+
+The first theorem proves absolute convergence of the real Bernoulli
+exponential generating series for `|z| < 2π`.  The second gives its actual
+`HasSum` value `z/(exp z-1)` under the additional condition `z ≠ 0`.  The final
+theorem specializes this evaluation to `x ∈ (-exp(-1),0)` and
+`branchGap x < 2π`, returning both branch identities as one conjunction.  It
+makes only the Lambert Guide label `eq:pair-Bernoulli-general` **Exact**.  The
+quotient theorem deliberately excludes the removable point `z=0`, while the
+branch theorem excludes both endpoints.  No exact or maximal radius theorem,
+boundary convergence or divergence statement at `|z|=2π`, remainder estimate,
+or higher/convergent Puiseux expansion is included.
 
 #### Completed dyadic derivative filtration
 
@@ -1169,7 +1193,8 @@ extension boundary remains explicit.
 
 Four direct artifact receipts record the last synchronized pre-9135 source/PDF
 pairs and are now historical because the live sources include the new
-q-Chu/reversal and geometric-generating APIs.  The primary receipt is a
+q-Chu/reversal, geometric-generating, Gaussian second-moment, and Lambert
+branch-gap Bernoulli APIs.  The primary receipt is a
 14,037-line, 702,119-byte TeX source
 (SHA-256
 `6a20e02cf300c0b29ba8d175831b4f86e4b336601cc5bd5f5752d5c5889be69a`)
@@ -1194,17 +1219,19 @@ walkthrough logs and publication gates are clean; the frontier retains only
 expected underfull diagnostics, and the q-series master retains one harmless,
 readable 32.5659 pt overfull line.  All page, metadata, font, render, text,
 and representative-visual gates passed.  These receipts certify their named
-pre-9135 pairs, not parity with the 902/11,444 live union; all four publications
+pre-9135 pairs, not parity with the 903/11,447 live union; all four publications
 require new final-source rebuilds.
 
-The independently scoped Lambert and Sequence publications remain current.
-The Lambert guide's 4,829-line, 174,423-byte TeX has SHA-256
+The independently scoped Sequence publication remains current.  The Lambert
+guide's last synchronized receipt is a 4,829-line, 174,423-byte TeX with SHA-256
 `724dfe5b1effcda29325a5bdfb066ff970eb74ab460f650185339fefce40ebc1`;
 its 69-page, 952,929-byte PDF has SHA-256
 `0b5f28dbfe590658e74150e8ccff6f023ecd0b8fb4e3e978ec275d9ddd244de6`.
 Its successful page sequence was 67→69→69; machine and visual gates passed,
 with expected underfull diagnostics and one harmless readable 0.825 pt
-internal overfull line.  The Sequence inversion/transseries volume's
+internal overfull line.  The new Bernoulli-series source overlay makes that
+Lambert PDF historical pending a parity rebuild.  The Sequence
+inversion/transseries volume's
 16,705-line, 778,477-byte TeX has SHA-256
 `4aa038c10ddd931b7c1248095ddfdf0ce8769c69cc0df4f344f6365d0e45e8e1`;
 its 205-page, 2,198,655-byte PDF has SHA-256
@@ -1234,17 +1261,18 @@ additive-dyadic chapter, so a fresh parity build remains pending.  The rebuilt
 Integration-and-Transform master retains a historical 377-page PDF.  The canonical
 q-series synthesis is a validated 389-page historical receipt synchronized to
 the immediately preceding source checkpoint.  The current merged source adds
-the terminating q-Chu/reversal, geometric-generating, and Gaussian second-moment
-tranches, so final parity is again pending.  The retained 183-page primary,
-130-page walkthrough, 257-page canonical frontier, 301-page Representation
-Frontiers, 41-page New Frontiers, and 88-page notation-catalogue artifacts
-likewise predate their current merged sources.  Their package notices treat
-those PDFs as historical validation receipts, not parity claims, until fresh
-uninterrupted three-pass builds complete.  The inverse-computability receipt
-likewise still reflects the historical 675/8,909 census and requires refresh
-against the live 902/11,444 inventory.  Checksum ledgers remain abolished and
-hardened repository-wide; no `SHA256SUMS*` files exist or participate in
-validation.  The canonical inverse-theory publication retains a 134-page
+the terminating q-Chu/reversal, geometric-generating, Gaussian second-moment,
+and Lambert branch-gap Bernoulli tranches, so final parity is again pending.
+The retained 183-page primary, 130-page walkthrough, 257-page canonical
+frontier, 69-page Lambert Guide, 301-page Representation Frontiers, 41-page
+New Frontiers, and 88-page notation-catalogue artifacts likewise predate their
+current merged sources.  Their package notices treat those PDFs as historical
+validation receipts, not parity claims, until fresh uninterrupted three-pass
+builds complete.  The inverse-computability receipt likewise still reflects
+the historical 675/8,909 census and requires refresh against the live
+903/11,447 inventory.  Checksum ledgers remain abolished and hardened
+repository-wide; no `SHA256SUMS*` files exist or participate in validation.
+The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
 pending.
