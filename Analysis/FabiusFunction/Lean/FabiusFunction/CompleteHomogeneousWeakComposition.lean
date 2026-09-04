@@ -57,12 +57,16 @@ theorem completeHomogeneousEval_eq_sum_piAntidiag
   rw [← Finset.map_sym_eq_piAntidiag (Finset.univ : Finset ι) n,
     Finset.sum_map, Finset.sym_univ]
   unfold completeHomogeneousEval
-  refine Finset.sum_congr rfl fun m _ => ?_
-  simp only [Function.Embedding.coeFn_mk]
-  rw [Finset.prod_multiset_map_count]
-  refine Finset.prod_subset (Finset.subset_univ _) fun i _ hi => ?_
-  rw [Multiset.mem_toFinset] at hi
-  rw [Multiset.count_eq_zero_of_not_mem hi, pow_zero]
+  apply Finset.sum_congr
+  · apply Finset.ext
+    intro m
+    simp
+  · intro m _
+    simp only [Function.Embedding.coeFn_mk]
+    rw [Finset.prod_multiset_map_count]
+    refine Finset.prod_subset (Finset.subset_univ _) fun i _ hi => ?_
+    rw [Multiset.mem_toFinset] at hi
+    rw [Multiset.count_eq_zero_of_notMem hi, pow_zero]
 
 /-- **Weak-composition formula for a family indexed by a finset.**
 
