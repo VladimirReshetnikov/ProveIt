@@ -45,9 +45,9 @@ namespace Fabius
 /-- The coefficients of `(1+z)^m` are the binomial coefficients. -/
 theorem coeff_one_add_X_pow (m j : ℕ) :
     coeff j ((1 + X : ℚ⟦X⟧) ^ m) = (m.choose j : ℚ) := by
-  have h : ((1 : ℚ⟦X⟧) + X) ^ m = (((1 + Polynomial.X : ℚ[X]) ^ m : ℚ[X]) : ℚ⟦X⟧) := by
-    push_cast
-    ring
+  have h : ((1 : ℚ⟦X⟧) + X) ^ m
+      = ((((1 : Polynomial ℚ) + Polynomial.X) ^ m : Polynomial ℚ) : ℚ⟦X⟧) := by
+    rw [Polynomial.coe_pow, Polynomial.coe_add, Polynomial.coe_one, Polynomial.coe_X]
   rw [h, Polynomial.coeff_coe, Polynomial.coeff_one_add_X_pow]
 
 /-- The Lagrange weight `φ(w) = (1+w)^p` of the Raney equation. -/
@@ -71,9 +71,19 @@ noncomputable def raneyG (p : ℕ) : ℚ⟦X⟧ :=
 /-- **The Raney series** `T = 1 + g`, the solution of `T = 1 + z T^p`. -/
 noncomputable def raneyT (p : ℕ) : ℚ⟦X⟧ := 1 + raneyG p
 
+/-- The unfolding lemma for `raneyG`.  A definition taking an argument does not
+fold under `rw [← raneyG]`, so results obtained from the Lagrange API mention
+the unfolded `Lagrange.solution` term while goals mention `raneyG`. -/
+theorem raneyG_def (p : ℕ) :
+    raneyG p = Lagrange.solution (raneyPhi p) (raneyPsi p) (raneyPhi_mul_raneyPsi p) := rfl
+
 /-- `g` may be substituted into, having zero constant term. -/
 theorem hasSubst_raneyG (p : ℕ) : HasSubst (raneyG p) :=
   Lagrange.hasSubst_solution (raneyPhi p) (raneyPsi p) (raneyPhi_mul_raneyPsi p)
+
+/-- `g` has zero constant term. -/
+@[simp] theorem constantCoeff_raneyG (p : ℕ) : constantCoeff (raneyG p) = 0 := by
+  rw [raneyG, Lagrange.solution, constantCoeff_substInvOfIsUnit]
 
 /-- Substituting `g` into `(1+w)^m` gives `T^m`. -/
 theorem subst_one_add_X_pow_raneyG (p m : ℕ) :
@@ -85,16 +95,15 @@ theorem subst_one_add_X_pow_raneyG (p m : ℕ) :
 /-- **The functional equation** `T = 1 + z T^p`. -/
 theorem raneyT_eq (p : ℕ) : raneyT p = 1 + X * raneyT p ^ p := by
   have heq := Lagrange.solution_eq (raneyPhi p) (raneyPsi p) (raneyPhi_mul_raneyPsi p)
+  rw [← raneyG_def] at heq
   have hsub : (raneyPhi p).subst (raneyG p) = raneyT p ^ p := subst_one_add_X_pow_raneyG p p
+  rw [hsub] at heq
   rw [raneyT]
-  nth_rewrite 1 [show raneyG p = Lagrange.solution (raneyPhi p) (raneyPsi p)
-    (raneyPhi_mul_raneyPsi p) from rfl]
-  rw [heq, hsub]
+  exact congrArg (fun z => 1 + z) heq
 
 /-- `T` has constant term `1`. -/
 @[simp] theorem constantCoeff_raneyT (p : ℕ) : constantCoeff (raneyT p) = 1 := by
-  rw [raneyT, map_add, map_one, raneyG, Lagrange.hasSubst_solution]
-  · simp
+  rw [raneyT, map_add, map_one, constantCoeff_raneyG, add_zero]
 
 /-- **`thm:merged-raney`, division-free form.**
 `n · [z^n] T^r = r · C(pn + r - 1, n - 1)`. -/
@@ -104,7 +113,7 @@ theorem natCast_mul_coeff_raneyT_pow (p r n : ℕ) (hr : 1 ≤ r) (hn : 1 ≤ n)
     subst_one_add_X_pow_raneyG p r
   have hmain := Lagrange.coeff_solution_subst_derivative (raneyPhi p) (raneyPsi p)
     (raneyPhi_mul_raneyPsi p) ((1 + X : ℚ⟦X⟧) ^ r) n hn
-  rw [hH] at hmain
+  rw [← raneyG_def, hH] at hmain
   have hd : d⁄dX ℚ ((1 + X : ℚ⟦X⟧) ^ r) = (r : ℚ⟦X⟧) * (1 + X) ^ (r - 1) := by
     rw [derivative_pow, map_add, derivative_one, derivative_X, zero_add, mul_one]
   have hphi : raneyPhi p ^ n = (1 + X : ℚ⟦X⟧) ^ (p * n) := by
