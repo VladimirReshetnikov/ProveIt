@@ -869,8 +869,13 @@ historical pre-reciprocity checkpoint; subsequent source-only tranches give
 the historical reciprocity checkpoint of 931 modules and 11,685 public
 declarations. The subsequently merged upstream `DyadicBoundaryIdentity.lean`
 and `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
-declarations, making the live census 933 modules and 11,695 public
-declarations. The census also includes
+declarations, making the historical dyadic/finite-prefix census 933 modules
+and 11,695 public declarations. The incoming union adds one module and
+fourteen public declarations: the new zero-definition/six-theorem
+`ProuhetBaseTwoBridge.lean` module, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`. This makes the live census 934 modules
+and 11,709 public declarations. The census also includes
 the unrelated
 sibling source-only
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
@@ -998,8 +1003,12 @@ pointwise identity through genuine inner-product zeros is claimed.  Together
 with the other subsequent source-only tranches, it gives the historical
 reciprocity checkpoint 931/11,685.  The subsequently merged upstream
 `DyadicBoundaryIdentity.lean` and `FinitePrefixThueMorseCollapse.lean` modules
-add two modules and ten public declarations, making the live census
-933/11,695.
+add two modules and ten public declarations, making the historical
+dyadic/finite-prefix census 933/11,695.  The incoming union adds one module and
+fourteen public declarations: the new zero-definition/six-theorem
+`ProuhetBaseTwoBridge.lean` module, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`.  This makes the live census 934/11,709.
 
 The existing `FabiusFunction.ProbabilityLaplaceMoments` module adds exactly
 the two theorems

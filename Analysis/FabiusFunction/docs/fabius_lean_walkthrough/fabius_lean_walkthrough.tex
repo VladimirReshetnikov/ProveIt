@@ -6528,7 +6528,11 @@ for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  A later historical current-tree
 audit scanned 925 modules and 11,619 public declarations, with no missing
-module headers or declaration comments.  At the retained historical mainline checkpoint before the latest
+module headers or declaration comments.  The live current-tree audit now scans
+934 modules and 11,709 public declarations, with zero missing module headers
+and zero missing declaration comments; the Legendre-biorthogonality 925/11,619
+census remains an explicit historical checkpoint.  At the retained historical
+mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
 four-theorem \nolinkurl{QPochhammerEntire.lean} tranche but before the generic
@@ -6695,11 +6699,60 @@ the exhaustive one-definition/one-theorem
 reciprocity checkpoint 931/11,685.  The subsequently merged upstream
 \nolinkurl{DyadicBoundaryIdentity.lean} and
 \nolinkurl{FinitePrefixThueMorseCollapse.lean} modules add two facade modules
-and ten public declarations, giving the live 933/11,695 census.  Every module
-is reachable from the facade.  No aggregate facade build
-is claimed for this current-tree census.  The retained PDF and title-page pin
+and ten public declarations, giving the historical dyadic/finite-prefix
+checkpoint 933/11,695.  The incoming union adds one module and fourteen public
+declarations: the new zero-definition/six-theorem
+\nolinkurl{ProuhetBaseTwoBridge.lean} module, one theorem added to
+\nolinkurl{DyadicBoundaryIdentity.lean}, and seven theorems added to
+\nolinkurl{ThueMorseNewmanSelfSimilarity.lean}.  This gives the live
+934/11,709 census, with zero missing module headers and zero missing declaration
+comments.  Every module is reachable from the facade.  No aggregate facade
+build is claimed for this current-tree census.  The retained PDF and title-page pin
 remain historical receipts and do not claim parity with the merged source; no
 PDF was built for this source-only union.
+
+The exhaustive public surface of
+\nolinkurl{FinitePrefixThueMorseCollapse.lean} is zero definitions and eight
+theorems:
+\lean{Appell.sum_thueMorseSign_mul_eval_poly},
+\lean{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat},
+\lean{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_of_lt},
+\lean{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_self},
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat},
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_succ},
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_of_lt},
+and
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_self}.
+Writing \(A^{\mathrm{unc}}_{N,n}\) and \(A^{\mathrm{cen}}_{N,n}\) for the
+two rational prefix Appell polynomials and \(s_N=1-2^{-N}\), their complete
+signed responses are
+\[
+ \sum_{k<2^N}\varepsilon_k
+   A^{\mathrm{unc}}_{N,n}(x+k/2^N)
+ =(-1)^N2^{-\binom{N+1}{2}}n^{\underline{N}}x^{n-N}
+\]
+and
+\[
+ \sum_{k<2^N}\varepsilon_k
+   A^{\mathrm{cen}}_{N,n}(x+s_N-2k/2^N)
+ =2^{-\binom{N}{2}}n^{\underline{N}}x^{n-N}.
+\]
+Thus the uncentered response has the exact sign and
+\(2^{-\binom{N+1}{2}}\) normalization, while the centered response is
+sign-free with \(2^{-\binom{N}{2}}\).  For positive depth \(N=m+1\), the
+successor theorem uses the literal manuscript grid
+\(x+s_{m+1}-k/2^m\).  The two \texttt{of\_lt} theorems give cancellation
+below the block depth, and the two \texttt{self} theorems give the first
+nonzero constants.  These results make
+\nolinkurl{is:p2:thm:TM-uncentered},
+\nolinkurl{is:p2:cor:Prouhet-canonical}, and
+\nolinkurl{is:p2:thm:TM-centered} Exact by composition.  The total main
+theorems include \(N=0\), strengthening the positive-depth formulas.  The
+entire leaf is rational coefficient algebra: it introduces no random
+variable or \lean{HasLaw}, proves no analytic MGF, and makes no Barnes-function
+identification.  The three promotions move the 194-row inverse concordance to
+57 Lean-proved, 88 human-proved, 10 conjectural, 15 open, and 24
+nonassertoric rows.
 
 Those six counts are \nolinkurl{QPochhammerInfiniteBounds.lean} (0+5),
 \nolinkurl{HeineTransformation.lean} (2+5),

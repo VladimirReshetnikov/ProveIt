@@ -3994,7 +3994,13 @@ the exhaustive one-definition/five-theorem
 reciprocity checkpoint 931/11,685.  The subsequently merged upstream
 \path{DyadicBoundaryIdentity.lean} and
 \path{FinitePrefixThueMorseCollapse.lean} modules add two facade-reachable
-modules and ten public declarations, giving the live 933/11,695 census.
+modules and ten public declarations, giving the historical dyadic/finite-prefix
+checkpoint 933/11,695.  The incoming union adds one module and fourteen public
+declarations: the new zero-definition/six-theorem
+\path{ProuhetBaseTwoBridge.lean} module, one theorem added to
+\path{DyadicBoundaryIdentity.lean}, and seven theorems added to
+\path{ThueMorseNewmanSelfSimilarity.lean}.  This gives the live 934/11,709
+census, with zero missing module headers and zero missing declaration comments.
 The immediately preceding algebraic moment-polynomial checkpoint was
 904/11,457, and the complex Bernoulli value-completion checkpoint 903/11,448
 remains historical.  The merged chronology also records the scaled-geometric
@@ -4219,7 +4225,57 @@ differentiability theorem gives 930/11,679, and the reciprocity \((1+5)\) leaf
 gives the historical 931/11,685 checkpoint.  The subsequently merged upstream
 \path{DyadicBoundaryIdentity.lean} and
 \path{FinitePrefixThueMorseCollapse.lean} modules add two modules and ten
-public declarations, giving the live 933/11,695 census.
+public declarations, giving the historical dyadic/finite-prefix checkpoint
+933/11,695.  The incoming union adds one module and fourteen public
+declarations: the new zero-definition/six-theorem
+\path{ProuhetBaseTwoBridge.lean} module, one theorem added to
+\path{DyadicBoundaryIdentity.lean}, and seven theorems added to
+\path{ThueMorseNewmanSelfSimilarity.lean}.  This gives the live 934/11,709
+census, with zero missing module headers and zero missing declaration comments.
+
+The exhaustive public surface of
+\path{FinitePrefixThueMorseCollapse.lean} is zero definitions and eight
+theorems:
+\lean{Appell.sum_thueMorseSign_mul_eval_poly},
+\lean{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat},
+\lean{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_of_lt},
+\lean{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_self},
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat},
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_succ},
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_of_lt},
+and
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_self}.
+Writing \(A^{\mathrm{unc}}_{N,n}\) and \(A^{\mathrm{cen}}_{N,n}\) for the
+two rational prefix Appell polynomials and \(s_N=1-2^{-N}\), the two main
+responses are exactly
+\[
+ \sum_{k<2^N}\varepsilon_k
+   A^{\mathrm{unc}}_{N,n}(x+k/2^N)
+ =(-1)^N2^{-\binom{N+1}{2}}n^{\underline{N}}x^{n-N}
+\]
+and
+\[
+ \sum_{k<2^N}\varepsilon_k
+   A^{\mathrm{cen}}_{N,n}(x+s_N-2k/2^N)
+ =2^{-\binom{N}{2}}n^{\underline{N}}x^{n-N}.
+\]
+The first response has the manuscript's sign and
+\(2^{-\binom{N+1}{2}}\) normalization; the second is sign-free with
+\(2^{-\binom{N}{2}}\).  At positive depth \(N=m+1\), the successor theorem
+uses the literal printed grid \(x+s_{m+1}-k/2^m\).  The two \texttt{of\_lt}
+theorems give Prouhet cancellation below the block depth, and the two
+\texttt{self} theorems give the first nonzero constants.  The main
+uncentered theorem, its cancellation and first-response corollaries, and the
+successor-indexed centered theorem make
+\nolinkurl{is:p2:thm:TM-uncentered},
+\nolinkurl{is:p2:cor:Prouhet-canonical}, and
+\nolinkurl{is:p2:thm:TM-centered} Exact by composition.  The total main
+statements include \(N=0\), strengthening the positive-depth presentation.
+This is rational coefficient algebra only: it constructs no random variable
+or \lean{HasLaw}, asserts no analytic MGF, and supplies no Barnes-function
+identification.  These three promotions move the 194-row inverse concordance
+to 57 Lean-proved, 88 human-proved, 10 conjectural, 15 open, and 24
+nonassertoric rows.
 
 The final two module counts are
 \path{CentralQBinomialReduction.lean} (0+6) and

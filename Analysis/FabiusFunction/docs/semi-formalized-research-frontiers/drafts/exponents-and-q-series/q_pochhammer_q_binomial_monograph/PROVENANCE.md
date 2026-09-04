@@ -100,11 +100,17 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 933 modules and 11,695 public declarations with no
-documentation gaps. The merged upstream `DyadicBoundaryIdentity.lean` and
+historical dyadic/finite-prefix facade audit contains 933 modules and 11,695
+public declarations with no documentation gaps. The merged upstream
+`DyadicBoundaryIdentity.lean` and
 `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
-declarations beyond the historical reciprocity checkpoint 931/11,685. Those
-corpus-wide totals include the q--Chu, Richardson,
+declarations beyond the historical reciprocity checkpoint 931/11,685. The
+incoming union adds one module and fourteen public declarations: the new
+zero-definition/six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem
+added to `DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`. This makes the live facade audit 934
+modules and 11,709 public declarations. The historical 933/11,695 corpus-wide
+totals include the q--Chu, Richardson,
 geometric-law barycenter, Lagrange--Rvachev matrix, arbitrary-space geometric
 realization, regular-central-sum, Lambert branch-gap Bernoulli, affine
 Prouhet, and complex moment-product follow-ups; they do not make the retained
@@ -238,7 +244,12 @@ the historical census reached 925/11,619.  Subsequent source-only tranches,
 including the reciprocity leaf, give the historical reciprocity checkpoint
 931/11,685.  The subsequently merged upstream `DyadicBoundaryIdentity.lean`
 and `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten
-public declarations, making the live census 933/11,695.
+public declarations, making the historical dyadic/finite-prefix census
+933/11,695.  The incoming union adds one module and fourteen public
+declarations: the new zero-definition/six-theorem
+`ProuhetBaseTwoBridge.lean` module, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`.  This makes the live census 934/11,709.
 The facade also contains the zero-definition/two-theorem
 `GaussianBinomialGreaterOneAsymptotics.lean` leaf; its exhaustive declarations
 are `gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
@@ -278,8 +289,13 @@ classification over every extension field. The historical reciprocity
 checkpoint of the semantic union is 931/11,685.  The subsequently merged
 upstream `DyadicBoundaryIdentity.lean` and
 `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
-declarations, making the current semantic-union census 933/11,695.  The
-existing `ProbabilityLaplaceMoments.lean` module now also
+declarations, making the historical dyadic/finite-prefix semantic-union census
+933/11,695.  The incoming union adds one module and fourteen public
+declarations: the new zero-definition/six-theorem
+`ProuhetBaseTwoBridge.lean` module, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`.  This makes the current semantic-union
+census 934/11,709.  The existing `ProbabilityLaplaceMoments.lean` module now also
 contains exactly the two new declarations
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
 `integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.

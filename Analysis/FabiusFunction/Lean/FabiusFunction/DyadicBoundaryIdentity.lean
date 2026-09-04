@@ -1,5 +1,6 @@
 import FabiusFunction.IntegerZeroLocalFactorization
 import FabiusFunction.SincProductShells
+import FabiusFunction.CentralLobePeakAtZero
 
 /-!
 # The dyadic-boundary identity
@@ -89,9 +90,60 @@ theorem rvachevFourierProduct_dyadic_boundary (k : ℕ) (w : ℂ) :
           ((∏ h ∈ range (k + 1), complexSinc ((Real.pi : ℂ) * w / (2 : ℂ) ^ h)) *
             rvachevFourierProduct (w / (2 : ℂ) ^ (k + 1))) *
           rvachevFourierProduct (1 / 2 + w / (2 : ℂ) ^ (k + 1)) := by
-        push_cast
         ring
     _ = -w ^ (k + 1) * rvachevFourierProduct w *
           rvachevFourierProduct (1 / 2 + w / (2 : ℂ) ^ (k + 1)) := by rw [hprefix]
+
+/-! ### The volume's quotient form
+
+On the range `0 < z < N` of the lemma the two left factors are nonzero, so the
+division-free identity can be divided.  `Φ(z/(2N)) ≠ 0` because `|z/(2N)| < 1`,
+where the central lobe has no zero. -/
+
+/-- **`lem:dyadic-boundary` as printed.**  With `N = 2^k` and `0 < z < N`,
+
+`|Φ(N+z)| = |Φ(1/2 + z/(2N))| / |Φ(z/(2N))| · (z/(N+z))^(k+1) · |Φ(z)|`. -/
+theorem norm_rvachevFourierProduct_dyadic_boundary (k : ℕ) {z : ℝ}
+    (hz0 : 0 < z) (hzN : z < 2 ^ k) :
+    ‖rvachevFourierProduct (((2 : ℝ) ^ k + z : ℝ) : ℂ)‖
+      = ‖rvachevFourierProduct ((1 / 2 + z / 2 ^ (k + 1) : ℝ) : ℂ)‖ /
+          ‖rvachevFourierProduct ((z / 2 ^ (k + 1) : ℝ) : ℂ)‖ *
+        (z / ((2 : ℝ) ^ k + z)) ^ (k + 1) *
+        ‖rvachevFourierProduct ((z : ℝ) : ℂ)‖ := by
+  have h2k : (0 : ℝ) < 2 ^ k := by positivity
+  have hsum : (0 : ℝ) < 2 ^ k + z := by linarith
+  -- the inner argument sits in the central lobe
+  have hinner : |z / (2 : ℝ) ^ (k + 1)| < 1 := by
+    rw [abs_of_nonneg (by positivity)]
+    rw [div_lt_one (by positivity)]
+    calc z < 2 ^ k := hzN
+      _ ≤ 2 ^ (k + 1) := by
+          apply pow_le_pow_right₀ (by norm_num)
+          omega
+  have hne : ‖rvachevFourierProduct ((z / (2 : ℝ) ^ (k + 1) : ℝ) : ℂ)‖ ≠ 0 :=
+    ne_of_gt (norm_rvachevFourierProduct_pos hinner)
+  -- the division-free identity, at the real point `z`
+  have hid := rvachevFourierProduct_dyadic_boundary k ((z : ℝ) : ℂ)
+  have hcast1 : (((2 : ℂ) ^ k + (z : ℂ))) = (((2 : ℝ) ^ k + z : ℝ) : ℂ) := by
+    push_cast
+    ring
+  have hcast2 : ((z : ℂ) / (2 : ℂ) ^ (k + 1)) = ((z / (2 : ℝ) ^ (k + 1) : ℝ) : ℂ) := by
+    push_cast
+    ring
+  have hcast3 : ((1 : ℂ) / 2 + (((z / (2 : ℝ) ^ (k + 1) : ℝ)) : ℂ))
+      = ((1 / 2 + z / (2 : ℝ) ^ (k + 1) : ℝ) : ℂ) := by
+    push_cast
+    ring
+  rw [hcast1, hcast2, hcast3] at hid
+  -- take norms
+  have hnorm := congrArg (fun c : ℂ => ‖c‖) hid
+  simp only [norm_mul, norm_neg, norm_pow] at hnorm
+  rw [Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg hsum.le,
+    Real.norm_of_nonneg hz0.le] at hnorm
+  -- solve for the target
+  field_simp at hnorm ⊢
+  rw [div_pow]
+  field_simp
+  linear_combination hnorm
 
 end Fabius

@@ -393,8 +393,16 @@ theorem and the exhaustive one-definition/five-theorem
 gave the historical 931/11,685 census checkpoint.  The
 subsequently merged upstream \path{DyadicBoundaryIdentity.lean} and
 \path{FinitePrefixThueMorseCollapse.lean} modules add two facade-reachable
-modules and ten public declarations, so the live source census is 933/11,695
-modules/public declarations.
+modules and ten public declarations, giving the historical dyadic/finite-prefix
+checkpoint 933/11,695.  The incoming union adds one module and fourteen public
+declarations: the new zero-definition/six-theorem
+\path{ProuhetBaseTwoBridge.lean} module, one theorem added to
+\path{DyadicBoundaryIdentity.lean}, and seven theorems added to
+\path{ThueMorseNewmanSelfSimilarity.lean}.  Thus the live source census is
+934 facade-reachable modules and 11,709 public declarations, with zero missing
+module headers and zero missing declaration comments.  The
+Legendre-biorthogonality 925/11,619 census remains an explicit historical
+checkpoint.
 The sharp
 leaf makes \nolinkurl{prop:qF-P-degree-sharp} Exact and supplies the formerly
 missing leading/odd-degree clause, so the represented
@@ -422,7 +430,12 @@ differentiability gives 930/11,679, and the reciprocity leaf gives the
 historical 931/11,685 union.  The subsequently merged upstream
 \path{DyadicBoundaryIdentity.lean} and
 \path{FinitePrefixThueMorseCollapse.lean} modules add two modules and ten
-public declarations, giving the live 933/11,695 union.  The incoming-branch
+public declarations, giving the historical dyadic/finite-prefix 933/11,695
+union.  The incoming union adds one module and fourteen public declarations:
+the new zero-definition/six-theorem \path{ProuhetBaseTwoBridge.lean} module,
+one theorem added to \path{DyadicBoundaryIdentity.lean}, and seven theorems
+added to \path{ThueMorseNewmanSelfSimilarity.lean}.  This gives the live
+934/11,709 union with zero documentation gaps.  The incoming-branch
 906/11,461 and earlier exterior-branch 907/11,464 censuses remain explicitly
 historical.
 The retained
@@ -2782,7 +2795,13 @@ the \path{RvachevLegendreBiorthogonality.lean} (1+1) leaf gives the historical
 gives the historical 931/11,685 union.  The subsequently merged upstream
 \path{DyadicBoundaryIdentity.lean} and
 \path{FinitePrefixThueMorseCollapse.lean} modules add two modules and ten
-public declarations, giving the live 933/11,695 union.
+public declarations, giving the historical dyadic/finite-prefix 933/11,695
+union.  The incoming union adds one module and fourteen public declarations:
+the new zero-definition/six-theorem \path{ProuhetBaseTwoBridge.lean} module,
+one theorem added to \path{DyadicBoundaryIdentity.lean}, and seven theorems
+added to \path{ThueMorseNewmanSelfSimilarity.lean}.  This gives the live
+934/11,709 union, with zero missing module headers and zero missing declaration
+comments.
 
 The Laurent leaf makes \nolinkurl{is:p2:thm:Laurent-leading} Exact through
 the manuscript-normalized punctured-neighborhood limit and its Fourier
@@ -2799,8 +2818,51 @@ The finite-prefix leaf then makes
 \(\lean{Polynomial}\,(\lean{Polynomial}\,\RationalNumbers)\); a fixed-inner-\(x\)
 centered specialization can drop degree, for example for odd \(n\) at
 \(x=0\).  Its prefix moments are an algebraic finite-convolution model, not a
-random-variable, \lean{HasLaw}, or analytic-MGF realization.  The inverse
-package therefore has 54 Lean-proved and 91 human-proved frontier rows.
+random-variable, \lean{HasLaw}, or analytic-MGF realization.  At that
+checkpoint the inverse package had 54 Lean-proved and 91 human-proved
+frontier rows.
+
+The exhaustive public surface of
+\path{FinitePrefixThueMorseCollapse.lean} is zero definitions and eight
+theorems:
+\lean{Appell.sum_thueMorseSign_mul_eval_poly},
+\lean{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat},
+\lean{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_of_lt},
+\lean{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_self},
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat},
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_succ},
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_of_lt},
+and
+\lean{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_self}.
+Writing \(A^{\mathrm{unc}}_{N,n}\) and \(A^{\mathrm{cen}}_{N,n}\) for the
+two rational prefix Appell polynomials and \(s_N=1-2^{-N}\), their exact
+complete signed responses are
+\[
+ \sum_{k<2^N}\varepsilon_k
+   A^{\mathrm{unc}}_{N,n}(x+k/2^N)
+ =(-1)^N2^{-\binom{N+1}{2}}n^{\underline{N}}x^{n-N}
+\]
+and
+\[
+ \sum_{k<2^N}\varepsilon_k
+   A^{\mathrm{cen}}_{N,n}(x+s_N-2k/2^N)
+ =2^{-\binom{N}{2}}n^{\underline{N}}x^{n-N}.
+\]
+The uncentered formula has the manuscript's sign and
+\(2^{-\binom{N+1}{2}}\) factor, whereas the centered formula is sign-free
+with \(2^{-\binom{N}{2}}\).  When \(N=m+1\), the successor theorem uses the
+literal manuscript grid \(x+s_{m+1}-k/2^m\).  The two \texttt{of\_lt}
+theorems supply Prouhet cancellation below the block depth, and the two
+\texttt{self} theorems give the first nonzero constants.  Consequently
+\nolinkurl{is:p2:thm:TM-uncentered},
+\nolinkurl{is:p2:cor:Prouhet-canonical}, and
+\nolinkurl{is:p2:thm:TM-centered} are Exact by composition.  Both total main
+theorems include \(N=0\), strengthening the positive-depth statements.  The
+leaf is rational coefficient algebra only: it creates no random variable or
+\lean{HasLaw}, proves no analytic MGF, and supplies no Barnes-function
+identification.  These three promotions put the 194-row inverse concordance
+at 57 Lean-proved, 88 human-proved, 10 conjectural, 15 open, and 24
+nonassertoric rows.
 
 The existing \path{ProbabilityLaplaceMoments.lean} module adds exactly the
 two theorems
@@ -3072,7 +3134,12 @@ complex-product differentiability gives 930/11,679, and the reciprocity leaf
 gives the historical 931/11,685 census.  The subsequently merged upstream
 \path{DyadicBoundaryIdentity.lean} and
 \path{FinitePrefixThueMorseCollapse.lean} modules add two modules and ten
-public declarations, giving the live 933/11,695 census.
+public declarations, giving the historical dyadic/finite-prefix 933/11,695
+census.  The incoming union adds one module and fourteen public declarations:
+the new zero-definition/six-theorem \path{ProuhetBaseTwoBridge.lean} module,
+one theorem added to \path{DyadicBoundaryIdentity.lean}, and seven theorems
+added to \path{ThueMorseNewmanSelfSimilarity.lean}.  This gives the live
+934/11,709 census, with zero documentation gaps.
 The existing
 \path{GeometricResidualMoments.lean} module now has zero definitions and nine
 public theorems.  Its

@@ -225,8 +225,13 @@ Fourier--Bessel or matrix-projector claims.  Subsequent source-only tranches,
 including the reciprocity sibling, give the historical reciprocity checkpoint
 931/11,685.  The subsequently merged upstream `DyadicBoundaryIdentity.lean`
 and `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten
-public declarations, making the live census 933/11,695.  The q ledger is 182
-Exact / 78 Partial / 14 None / 8 interface, the relevant Dyadic
+public declarations, making the historical dyadic/finite-prefix census
+933/11,695.  The incoming union adds one module and fourteen public
+declarations: the new zero-definition/six-theorem
+`ProuhetBaseTwoBridge.lean` module, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`.  This makes the live census 934/11,709.
+The q ledger is 182 Exact / 78 Partial / 14 None / 8 interface, the relevant Dyadic
 Gaussian--Thue--Morse chapter is 13/43/0/0, and the source concordance is 95
 Lean-proved / 383 human-proved frontier / 60 non-applicable / 9 conjectures.
 All of these sibling source-only additions are likewise absent

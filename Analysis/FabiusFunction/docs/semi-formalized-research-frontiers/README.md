@@ -216,8 +216,13 @@ divisor. The later merged-main additions give the pre-reciprocity
 930/11,679, and the exhaustive reciprocity 1+5 leaf gives the historical
 931/11,685 reciprocity checkpoint. The subsequently merged upstream
 `DyadicBoundaryIdentity.lean` and `FinitePrefixThueMorseCollapse.lean` modules
-add two facade modules and ten public declarations, giving the live
-933/11,695 census.
+add two facade modules and ten public declarations, giving the historical
+dyadic/finite-prefix checkpoint 933/11,695. The incoming union adds one module
+and fourteen public declarations: the new zero-definition/six-theorem
+`ProuhetBaseTwoBridge.lean` module, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`. This gives the live 934/11,709 census,
+with zero missing module headers and zero missing declaration comments.
 
 The existing `FabiusFunction.ProbabilityLaplaceMoments` module then adds
 exactly two public theorems:
@@ -245,7 +250,9 @@ natural mesh `M`, every `l,m`, and `l <= padicValNat 2 M`. Thus
 does not prove the larger support/smoothness/parity/Fourier--Bessel theorem
 `thm:leg-Lambda` or the matrix-projector corollary. It gives the historical
 925/11,619 census; the historical reciprocity census is 931/11,685 and the
-current live census is 933/11,695, as recorded above.
+historical dyadic/finite-prefix census is 933/11,695. The current live census
+is 934/11,709, as recorded above, with zero missing module headers and zero
+missing declaration comments.
 
 The retained frontier, primary, walkthrough, geometric-q, and representation
 PDFs predate these source-only overlays and claim no render parity.
@@ -298,7 +305,12 @@ historical 925/11,619 union. The subsequent merged-main additions give
 theorem plus the reciprocity leaf give the historical 931/11,685 union. The
 subsequently merged upstream `DyadicBoundaryIdentity.lean` and
 `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
-declarations, giving the live 933/11,695 union.
+declarations, giving the historical dyadic/finite-prefix 933/11,695 union.
+The incoming union adds one module and fourteen public declarations: the new
+zero-definition/six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem
+added to `DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`. This gives the live 934/11,709 union,
+with zero documentation gaps.
 
 `FabiusFunction.RvachevLaurentLeading` has one definition and six theorems.
 Its manuscript-normalized punctured-neighborhood limit, together with the
@@ -319,7 +331,35 @@ degrees in `Polynomial (Polynomial ℚ)`: a fixed-inner-`x` centered
 specialization can drop degree, for example for odd `n` at `x = 0`. The
 prefix moments are an algebraic finite-convolution model, not a new
 random-variable, `HasLaw`, or analytic-MGF realization. These promotions give
-the inverse package's current 54 Lean-proved / 91 human-proved totals.
+the inverse package's historical 54 Lean-proved / 91 human-proved checkpoint.
+
+The zero-definition/eight-theorem
+`FabiusFunction.FinitePrefixThueMorseCollapse` leaf has the exhaustive public
+surface `Appell.sum_thueMorseSign_mul_eval_poly`,
+`Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat`,
+`Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_of_lt`,
+`Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_self`,
+`Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat`,
+`Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_succ`,
+`Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_of_lt`,
+and
+`Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_self`.
+Writing `s_N = 1 - 2^-N`, the uncentered theorem is exactly
+`Σ_{k<2^N} ε_k A^unc_{N,n}(x+k/2^N) =
+(-1)^N 2^-choose(N+1,2) n.descFactorial(N) x^(n-N)`. The centered theorem is
+the sign-free identity
+`Σ_{k<2^N} ε_k A^cen_{N,n}(x+s_N-2k/2^N) =
+2^-choose(N,2) n.descFactorial(N) x^(n-N)`; at positive depth `N=m+1`, its
+successor form uses the manuscript's literal grid `x+s_(m+1)-k/2^m`. The two
+`_of_lt` theorems give Prouhet cancellation, and the two `_self` theorems give
+the first nonzero constants. Hence `is:p2:thm:TM-uncentered`,
+`is:p2:cor:Prouhet-canonical`, and `is:p2:thm:TM-centered` are
+**Exact by composition**. The total main theorems include `N=0`, strengthening
+the positive-depth formulas. This is rational coefficient algebra only: it
+introduces no random variable or `HasLaw`, proves no analytic MGF, and makes
+no Barnes-function identification. These three promotions put the 194-row
+inverse concordance at 57 Lean-proved / 88 human-proved / 10 conjectural / 15
+open / 24 nonassertoric rows.
 
 The existing `FabiusFunction.ProbabilityLaplaceMoments` module now adds
 exactly two public theorems:
