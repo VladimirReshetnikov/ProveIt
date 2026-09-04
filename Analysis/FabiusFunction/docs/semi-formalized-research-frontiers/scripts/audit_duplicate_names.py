@@ -151,8 +151,21 @@ def main():
             print('  %-46s %s' % (name, ', '.join(sorted(dups[name]))))
         print()
         print('A collision usually means the lemma already exists.')
-        print('Prefer deleting the new copy and importing the old one')
-        print('over renaming.')
+        print('But a duplicate is not always a copy: check which of the two')
+        print('statements is MORE GENERAL before deciding which to remove.')
+        print()
+        print('  - older is more general  -> delete the newer, import the older;')
+        print('  - newer is more general  -> keep it.  Moving it down into the')
+        print('    older module rebuilds every importer of that module, which on')
+        print('    a one-kernel machine is expensive; renaming the newer with')
+        print("    Mathlib's primed convention (foo') is usually cheaper, and")
+        print('    its docstring should say what it generalises and why.')
+        print()
+        print('Either way, re-run audit_crosswalk_names.py afterwards: a rename')
+        print('or deletion can break a documentation citation of the old name.')
+        print()
+        print('Both directions occurred in the two collisions of 2026-09-04, so')
+        print('the blanket advice this text used to give was wrong half the time.')
         return 1
     return 0
 
