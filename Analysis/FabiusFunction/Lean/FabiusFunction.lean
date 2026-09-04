@@ -289,6 +289,7 @@ import FabiusFunction.MeanValueBracket
 import FabiusFunction.TransseriesHeight
 import FabiusFunction.TransseriesScale
 import FabiusFunction.TransseriesWellBased
+import FabiusFunction.WrightOmega
 import FabiusFunction.LambertShiftInverse
 import FabiusFunction.LambertInverseCoefficients
 import FabiusFunction.CyclicCharacterSums
