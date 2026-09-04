@@ -1,0 +1,1824 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{libertinus}
+\usepackage[final]{microtype}
+\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm,mathrsfs}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+
+\definecolor{deepolive}{RGB}{67,79,45}
+\definecolor{softolive}{RGB}{236,239,226}
+\definecolor{darkteal}{RGB}{31,83,84}
+\definecolor{warmgray}{RGB}{92,87,78}
+\definecolor{softcoral}{RGB}{246,225,219}
+\definecolor{softgray}{RGB}{247,247,247}
+\definecolor{linkblue}{RGB}{31,76,122}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=deepolive,
+  citecolor=darkteal,
+  urlcolor=linkblue,
+  pdftitle={The Full Asymptotic Transseries of the Swing Factorial and Its Inverse},
+  pdfauthor={Research note prepared for the ProveIt project},
+  pdfsubject={Swinging factorial, gamma ratios, Bernoulli and Bell coefficients, Borel summation, Lambert W, asymptotic inversion}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Swing factorial and its inverse}
+\fancyhead[R]{\small Asymptotic transseries}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.52em}
+\setlist{itemsep=2pt,topsep=4pt,parsep=1pt,leftmargin=2em}
+\allowdisplaybreaks[3]
+\numberwithin{equation}{section}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{identity}[theorem]{Identity}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newtcolorbox{mainresultbox}[1][]{
+  enhanced,breakable,colback=softolive,colframe=deepolive,
+  boxrule=0.8pt,arc=1.2mm,left=3mm,right=3mm,top=2.5mm,bottom=2.5mm,
+  title={#1},fonttitle=\bfseries
+}
+\newtcolorbox{methodbox}[1][]{
+  enhanced,breakable,colback=softgray,colframe=warmgray,
+  boxrule=0.5pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,#1
+}
+\newtcolorbox{cautionbox}[1][]{
+  enhanced,breakable,colback=softcoral,colframe=warmgray,
+  boxrule=0.6pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,#1
+}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  columns=fullflexible,
+  keepspaces=true,
+  frame=single,
+  framerule=0.4pt,
+  breaklines=true,
+  showstringspaces=false,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape,
+  xleftmargin=0.4em,
+  xrightmargin=0.4em
+}
+
+\newcommand{\e}{\mathrm e}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\Ord}{\mathcal O}
+\newcommand{\littleo}{\mathrm o}
+\newcommand{\coeff}[2]{[\,#1^{#2}\,]}
+\newcommand{\Coeff}[1]{[\,#1\,]}
+\newcommand{\Borel}{\mathcal B}
+\newcommand{\Laplace}{\mathcal L}
+\newcommand{\SF}{\operatorname{sf}}
+\newcommand{\Disc}{\operatorname{Disc}}
+\newcommand{\W}{W}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\BellY}{Y}
+\newcommand{\StirlingFirst}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+
+\title{\textbf{The Full Asymptotic Transseries of the Swing Factorial and Its Inverse}\\[0.35em]
+\Large Gamma-Ratio Normal Forms, Bernoulli--Bell Coefficient Calculus,\\
+Borel Geometry, and Lambert-Normalized Reversion}
+\author{Research note prepared for the ProveIt project}
+\date{3 September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The swinging factorial (or swing factorial)
+\[
+  \SF(n)=\frac{n!}{\lfloor n/2\rfloor!^2}
+\]
+is not governed by a single smooth asymptotic scale: its even and odd
+subsequences have different algebraic prefactors, and the complete sequence
+falls sharply after every sufficiently large odd term.  We therefore treat
+parity as a genuine two-component transseries sector.  With
+\(\sigma=-1\) for the even phase and \(\sigma=+1\) for the odd phase, the
+canonical analytic branches are
+\[
+ \mathcal S_\sigma(x)
+ =\frac{\Gamma(x+1)}{\Gamma\!\left(x/2+(3-\sigma)/4\right)^2}
+ =\frac{2^x}{\sqrt\pi}
+   \left(\frac{\Gamma(x/2+1)}{\Gamma(x/2+1/2)}\right)^\sigma.
+\]
+They admit the exact normal form
+\[
+ \mathcal S_\sigma(x)
+ =C_\sigma 2^x x^{\sigma/2}\exp\!\bigl(\sigma D(x)\bigr),
+ \qquad C_\sigma=\frac{2^{-\sigma/2}}{\sqrt\pi},
+\]
+where
+\[
+ D(x)=\frac12\int_0^\infty \e^{-xt}\frac{\tanh(t/2)}{t}\,\dd t.
+\]
+Thus the Borel transform is the elementary meromorphic function
+\(\widehat D(t)=\tanh(t/2)/(2t)\).  This gives, simultaneously, the
+all-orders logarithmic expansion, an exact signed remainder, its optimal
+truncation scale, and the complete Borel singularity lattice.
+
+The logarithmic coefficients are
+\[
+ d_{2r+1}=\frac{(2^{2r+2}-1)B_{2r+2}}{(2r+1)(2r+2)},\qquad d_{2r}=0.
+\]
+Exponentiation gives every coefficient of the swing factorial itself by a
+complete exponential Bell polynomial, an explicit partition sum, or a
+triangular recurrence.  For inversion, the dominant equation
+\(L=\lambda x+(\sigma/2)\log x\), \(\lambda=\log2\), is solved exactly by
+Lambert's \(W\)-function.  The real large branches require \(W_0\) in the
+odd sector but \(W_{-1}\) in the even sector.  Around that Lambert core the
+inverse has the constant-coefficient expansion
+\[
+ \mathcal I_\sigma(y)
+ \sim X_\sigma(y)+\sum_{n\ge1}\frac{c_n^{(\sigma)}}{X_\sigma(y)^n},
+\]
+and we give both a Lagrange--B\"urmann coefficient formula and an ordinary
+Bell-polynomial recurrence for arbitrary \(c_n^{(\sigma)}\).  A second,
+fully expanded power--logarithmic form
+\[
+ \mathcal I_\sigma(y)
+ \sim\frac1\lambda\left(
+ L_\sigma-\frac\sigma2H_\sigma+
+ \sum_{n\ge1}\frac{P_n^{(\sigma)}(H_\sigma)}{L_\sigma^n}
+ \right)
+\]
+is developed in parallel.  General formulae for the polynomials
+\(P_n^{(\sigma)}\) are expressed through coefficient extraction and ordinary
+Bell polynomials; their pure Lambert block is written explicitly with
+unsigned Stirling numbers of the first kind.  We finish with Borel--Stokes
+transport under inversion, rigorous residual error estimates, numerical
+validation, and symbolic-generation code.
+\end{abstract}
+
+\begin{center}
+\small\textbf{Keywords.}
+Swinging factorial; central binomial coefficient; gamma ratio; Bernoulli
+numbers; Bell polynomials; Stirling numbers; Borel summation; resurgent
+asymptotics; Lambert \(W\); Lagrange--B\"urmann inversion; power--logarithmic
+transseries.
+\end{center}
+
+\tableofcontents
+
+\section{Introduction and statement of the main results}
+
+The sequence OEIS A056040 begins
+\[
+ 1,1,2,6,6,30,20,140,70,630,252,2772,\ldots
+\]
+and is commonly called the \emph{swinging factorial}.  Its elementary
+formulae, generating functions, and arithmetic interpretations are recorded
+in OEIS and in Luschny's work on swinging factorials
+\cite{OEISA056040,LuschnySwing}.  The existing OEIS entry A219931 also
+records a finite portion of the asymptotic expansion of its logarithm
+\cite{OEISA219931}.  The purpose of this article is to put the problem into a
+complete coefficient-calculus and transseries framework, and then to carry
+out the substantially subtler inverse problem.
+
+Two features dictate the organization.
+
+\begin{enumerate}
+\item The even and odd subsequences are respectively
+\[
+ \SF(2m)=\binom{2m}{m},\qquad
+ \SF(2m+1)=(2m+1)\binom{2m}{m}.
+\]
+Their leading powers of the index are opposite: \(n^{-1/2}\) versus
+\(n^{+1/2}\).
+\item The full sequence is not eventually monotone.  Indeed
+\[
+ \frac{\SF(2m+1)}{\SF(2m)}=2m+1,
+ \qquad
+ \frac{\SF(2m+2)}{\SF(2m+1)}=\frac{2}{m+1}.
+\]
+Consequently there is no canonical one-valued inverse of the unsplit integer
+sequence.
+\end{enumerate}
+
+The correct asymptotic object is therefore a pair of monotone analytic
+branches.  Throughout,
+\[
+ \sigma=-1\quad\hbox{means even phase},\qquad
+ \sigma=+1\quad\hbox{means odd phase},
+ \qquad \lambda:=\log2.
+\]
+At an integer \(n\), its phase is
+\[
+ \sigma_n=(-1)^{n+1}=-(-1)^n.
+\]
+It is useful to regard calculations as taking place in the parity algebra
+\[
+ \mathscr R=\mathbb Q[\lambda,\lambda^{-1},\sigma]/(\sigma^2-1).
+\]
+This records both sectors in one formula without pretending that parity is a
+small perturbation.
+
+\begin{mainresultbox}[Forward transseries]
+For every fixed \(N\ge1\), uniformly in closed subsectors of \(\Re x>0\),
+\[
+ \mathcal S_\sigma(x)
+ =C_\sigma 2^x x^{\sigma/2}
+ \left(\sum_{n=0}^{N-1}\frac{\sigma^n A_n}{x^n}
+       +\Ord(x^{-N})\right),
+ \qquad C_\sigma=\frac{2^{-\sigma/2}}{\sqrt\pi},
+\]
+where
+\[
+ A_n=\frac1{n!}\BellY_n(1!d_1,2!d_2,\ldots,n!d_n)
+ =\sum_{\substack{k_1,k_2,\ldots\ge0\\
+                   \sum_{j\ge1}jk_j=n}}
+   \prod_{j\ge1}\frac{d_j^{k_j}}{k_j!},
+\]
+\[
+ d_{2r+1}=\frac{(2^{2r+2}-1)B_{2r+2}}{(2r+1)(2r+2)},
+ \qquad d_{2r}=0.
+\]
+Equivalently,
+\[
+ A_0=1,\qquad nA_n=\sum_{j=1}^n j d_jA_{n-j}.
+\]
+The logarithmic series is Borel summable to an exact elementary Laplace
+integral, and its remainder after \(N\) nonzero terms has the sign of the
+first omitted term and smaller magnitude.
+\end{mainresultbox}
+
+\begin{mainresultbox}[Lambert-normalized inverse transseries]
+Put
+\[
+ L_\sigma(y)=\log\frac{y}{C_\sigma}
+ =\log y+\frac12\log\pi+\frac\sigma2\log2.
+\]
+The exact inverse of the dominant block
+\(L_\sigma=\lambda x+(\sigma/2)\log x\) is
+\[
+ X_{\sigma,k}(y)
+ =\frac{\sigma}{2\lambda}
+  W_k\!\left(2\sigma\lambda\e^{2\sigma L_\sigma(y)}\right).
+\]
+For the large positive real inverse,
+\[
+ X_+(y)=\frac{W_0(4\pi\lambda y^2)}{2\lambda},\qquad
+ X_-(y)=-\frac{W_{-1}(-4\lambda/(\pi y^2))}{2\lambda}.
+\]
+Then
+\[
+ \mathcal I_\sigma(y)=\mathcal S_\sigma^{-1}(y)
+ \sim X_\sigma(y)+\sum_{n\ge1}c_n^{(\sigma)}X_\sigma(y)^{-n}.
+\]
+Define
+\[
+ Q_\sigma(t)=\sigma\sum_{j\ge1}d_jt^j,
+ \quad b=\frac\sigma2,
+ \quad
+ \Psi_\sigma(t,u)=-\frac1\lambda\left[
+ b\log(1+tu)+Q_\sigma\!\left(\frac{t}{1+tu}\right)
+ \right].
+\]
+The general coefficient is
+\[
+ c_n^{(\sigma)}
+ =\sum_{m=1}^n\frac1m
+   \Coeff{t^n u^{m-1}}\Psi_\sigma(t,u)^m,
+\]
+where the notation means ordinary coefficient extraction in both variables.
+A completely triangular Bell-polynomial recurrence is given in
+\cref{thm:lambert-centered}.
+\end{mainresultbox}
+
+\begin{mainresultbox}[Direct power--logarithmic inverse]
+Let
+\[
+ H_\sigma(y)=\log\frac{L_\sigma(y)}{\lambda}.
+\]
+Then
+\[
+ \mathcal I_\sigma(y)
+ \sim\frac1\lambda\left[
+ L_\sigma-\frac\sigma2H_\sigma+
+ \sum_{n\ge1}\frac{P_n^{(\sigma)}(H_\sigma)}{L_\sigma^n}
+ \right],
+\]
+where \(P_n^{(\sigma)}\) is a polynomial of degree at most \(n\), generated
+at arbitrary order by \cref{thm:direct-reversion}.  If the gamma-ratio
+correction is suppressed, the remaining pure Lambert polynomial has the
+closed form
+\[
+ P_n^{(0)}(H)=
+ \frac{b^{n+1}}{n!}
+ \sum_{m=1}^n(-1)^{m+1}(m-1)!
+ \StirlingFirst{n}{m}\binom{n}{m-1}H^{n-m+1},
+ \qquad b=\frac\sigma2.
+\]
+Thus the inverse coefficients sit exactly at the intersection of the
+Bernoulli, Bell, and Stirling coefficient calculi.
+\end{mainresultbox}
+
+\section{Elementary structure and the two analytic branches}
+
+\subsection{Equivalent definitions}
+
+\begin{definition}[Swing factorial]
+For \(n\in\mathbb N_0\), define
+\begin{equation}\label{eq:swing-def}
+ \SF(n):=\frac{n!}{\lfloor n/2\rfloor!^2}.
+\end{equation}
+\end{definition}
+
+Writing \(n=2m\) or \(2m+1\) immediately gives
+\begin{equation}\label{eq:evenodd-basic}
+ \SF(2m)=\binom{2m}{m},\qquad
+ \SF(2m+1)=(2m+1)\binom{2m}{m}.
+\end{equation}
+It also follows that
+\begin{equation}\label{eq:one-step-rec}
+ \SF(0)=1,\qquad
+ \SF(n)=
+ \begin{cases}
+   n\,\SF(n-1),&n\text{ odd},\\[1mm]
+   \dfrac4n\,\SF(n-1),&n\text{ even}.
+ \end{cases}
+\end{equation}
+The product form in the OEIS definition is recovered by iterating
+\cref{eq:one-step-rec}.
+
+\subsection{Generating functions}
+
+\begin{proposition}[Ordinary and exponential generating functions]
+The swing factorial has exponential generating function
+\begin{equation}\label{eq:egf}
+ \sum_{n\ge0}\SF(n)\frac{z^n}{n!}=(1+z)I_0(2z),
+\end{equation}
+and ordinary generating function
+\begin{equation}\label{eq:ogf}
+ \sum_{n\ge0}\SF(n)z^n
+ =\frac1{\sqrt{1-4z^2}}+\frac{z}{(1-4z^2)^{3/2}}
+ =\frac{1+z/(1-4z^2)}{\sqrt{1-4z^2}}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+From \cref{eq:evenodd-basic},
+\[
+ \sum_{m\ge0}\SF(2m)\frac{z^{2m}}{(2m)!}
+ =\sum_{m\ge0}\frac{z^{2m}}{(m!)^2}=I_0(2z),
+\]
+and the odd exponential series is \(zI_0(2z)\).  For the ordinary series,
+use
+\[
+ F(u):=\sum_{m\ge0}\binom{2m}{m}u^m=(1-4u)^{-1/2}.
+\]
+The odd part is
+\[
+ z\sum_{m\ge0}(2m+1)\binom{2m}{m}z^{2m}
+ =z\bigl(2uF'(u)+F(u)\bigr)\big|_{u=z^2}
+ =\frac{z}{(1-4z^2)^{3/2}}.
+\]
+\end{proof}
+
+The two singularities \(z=\pm1/2\) in \cref{eq:ogf} have the same modulus.
+That co-dominance is the generating-function origin of the parity sector:
+no single nonoscillatory singular expansion can represent the full sequence.
+Even/odd projection separates the two contributions exactly.
+
+\subsection{Canonical gamma continuations}
+
+\begin{definition}[Parity-resolved analytic branches]\label{def:branches}
+For \(\sigma\in\{-1,+1\}\), define
+\begin{equation}\label{eq:branch-gamma}
+ \mathcal S_\sigma(x)
+ :=\frac{\Gamma(x+1)}
+ {\Gamma\!\left(x/2+(3-\sigma)/4\right)^2}.
+\end{equation}
+Thus \(\mathcal S_-(2m)=\SF(2m)\) and
+\(\mathcal S_+(2m+1)=\SF(2m+1)\).
+\end{definition}
+
+The duplication formula gives the more symmetric identity
+\begin{equation}\label{eq:branch-ratio}
+ \mathcal S_\sigma(x)
+ =\frac{2^x}{\sqrt\pi}
+ \left(\frac{\Gamma(x/2+1)}{\Gamma(x/2+1/2)}\right)^\sigma.
+\end{equation}
+It follows directly from \cref{eq:branch-gamma} that
+\begin{equation}\label{eq:step-two}
+ \frac{\mathcal S_\sigma(x+2)}{\mathcal S_\sigma(x)}
+ =\frac{16(x+1)(x+2)}{(2x+3-\sigma)^2}
+ =\begin{cases}
+   \dfrac{4(x+1)}{x+2},&\sigma=-1,\\[2mm]
+   \dfrac{4(x+2)}{x+1},&\sigma=+1.
+  \end{cases}
+\end{equation}
+The recurrence makes the common exponential scale \(4\) per two steps
+transparent.
+
+\begin{proposition}[Monotonicity and real inverses]\label{prop:monotone}
+Both branches are strictly increasing for \(x>0\).  More precisely,
+\begin{equation}\label{eq:logder}
+ \frac{\dd}{\dd x}\log\mathcal S_\sigma(x)
+ =\lambda+\frac\sigma2
+ \left[\psi(x/2+1)-\psi(x/2+1/2)\right].
+\end{equation}
+The odd branch is strictly increasing on \([0,\infty)\); the even branch has
+zero derivative at \(0\) and positive derivative thereafter.  Consequently
+each has a unique large positive inverse, denoted \(\mathcal I_\sigma\).
+\end{proposition}
+
+\begin{proof}
+The digamma difference in brackets is positive because \(\psi\) is
+increasing.  Its derivative is
+\(\tfrac12[\psi_1(x/2+1)-\psi_1(x/2+1/2)]<0\), since the trigamma function is
+positive and decreasing.  At \(x=0\) the difference equals \(2\log2\).
+Thus the derivative in \cref{eq:logder} is positive for \(\sigma=+1\), and
+for \(\sigma=-1\) it is zero only at \(x=0\) and positive for \(x>0\).
+\end{proof}
+
+\begin{cautionbox}
+A global interpolation such as
+\[
+ \widetilde{\mathcal S}(x)=
+ \frac{1+\cos\pi x}{2}\mathcal S_-(x)
+ +\frac{1-\cos\pi x}{2}\mathcal S_+(x)
+\]
+matches every integer value, but is highly oscillatory and has no canonical
+one-valued large inverse.  The discontinuous interpolation obtained by
+retaining \(\lfloor x/2\rfloor\) is no better.  The phase-resolved pair
+\((\mathcal S_-,\mathcal S_+)\) is therefore not merely convenient; it is
+the asymptotically stable notion of continuation and inversion.
+\end{cautionbox}
+
+\section{Exact logarithmic normal form}
+
+\subsection{Separating the dominant scale}
+
+Set
+\begin{equation}\label{eq:D-def}
+ D(x):=
+ \log\frac{\Gamma(x/2+1)}{\Gamma(x/2+1/2)}
+ -\frac12\log\frac{x}{2}.
+\end{equation}
+Then \cref{eq:branch-ratio} becomes the exact factorization
+\begin{equation}\label{eq:exact-normal}
+ \boxed{\quad
+ \mathcal S_\sigma(x)=
+ C_\sigma\e^{\lambda x}x^{\sigma/2}\e^{\sigma D(x)},
+ \qquad
+ C_\sigma=\frac{2^{-\sigma/2}}{\sqrt\pi}.
+ \quad}
+\end{equation}
+At integer arguments this gives the exact parity form
+\begin{equation}\label{eq:integer-log-exact}
+ \log\SF(n)=n\lambda-\frac12\log\pi
+ +\sigma_n\left(\frac12\log\frac n2+D(n)\right),
+ \qquad \sigma_n=(-1)^{n+1}.
+\end{equation}
+The periodic multiplier is part of the leading transseries data, not an error
+term.
+
+\subsection{An exact Laplace representation}
+
+\begin{theorem}[Elementary Borel--Laplace representation]\label{thm:laplace-D}
+For \(\Re x>0\),
+\begin{equation}\label{eq:D-laplace}
+ D(x)=\frac12\int_0^\infty
+       \e^{-xt}\frac{\tanh(t/2)}{t}\,\dd t
+ =\int_0^\infty \e^{-xt}\widehat D(t)\,\dd t,
+ \qquad
+ \widehat D(t)=\frac{\tanh(t/2)}{2t}.
+\end{equation}
+The apparent singularity of \(\widehat D\) at \(t=0\) is removable, with
+\(\widehat D(0)=1/4\).
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+ h(z)=\log\Gamma(z+1)-\log\Gamma(z+1/2)-\frac12\log z,
+ \qquad z=x/2.
+\]
+Using the standard integral representation for a digamma difference and the
+identity \(1/(2z)=\int_0^\infty \e^{-2zu}\,\dd u\), one obtains
+\begin{align*}
+ h'(z)
+ &=\psi(z+1)-\psi(z+1/2)-\frac1{2z}\\
+ &=-\int_0^\infty \e^{-2zu}\tanh(u/2)\,\dd u.
+\end{align*}
+Both \(h(z)\) and the proposed integral tend to zero as
+\(\Re z\to+\infty\).  Integrating the derivative from infinity to \(z\),
+then replacing \(2z\) by \(x\), gives \cref{eq:D-laplace}.
+Alternatively, differentiation under the integral sign verifies the same
+differential equation and the same boundary condition.
+\end{proof}
+
+Several useful inequalities are immediate.  Since
+\(0<\tanh(t/2)<t/2\) for \(t>0\),
+\begin{equation}\label{eq:D-simple-bound}
+ 0<D(x)<\frac1{4x}\qquad(x>0).
+\end{equation}
+Moreover \(D'(x)<0\), and complete monotonicity follows:
+\begin{equation}\label{eq:D-complete-monotone}
+ (-1)^mD^{(m)}(x)>0\qquad(m=0,1,2,\ldots;\ x>0).
+\end{equation}
+
+\subsection{The complete Borel singularity lattice}
+
+The partial-fraction expansion of the hyperbolic tangent gives
+\begin{equation}\label{eq:Borel-partial-fraction}
+ \widehat D(t)
+ =2\sum_{k=0}^\infty
+   \frac1{t^2+\pi^2(2k+1)^2}.
+\end{equation}
+Indeed both sides are even meromorphic functions, have the same poles and
+residues, and agree at the origin.  Thus the Borel singularities are the
+simple poles
+\begin{equation}\label{eq:Borel-poles}
+ t=\pm\ii\pi(2k+1),\qquad k=0,1,2,\ldots,
+\end{equation}
+with residue \(1/t\) at each pole.  The nearest singularities are at
+\(\pm\ii\pi\), so the formal expansion is Gevrey--1 with singulant modulus
+\(\pi\).
+
+\begin{remark}[What ``full transseries'' means on the positive axis]
+The positive real Laplace ray meets no Borel singularity, so
+\cref{eq:D-laplace} is unambiguous and equals the exact function.  The
+quantity \(\e^{-\pi x}\) that appears in optimal truncation is the envelope
+set by the distance \(\pi\) of the nearest off-axis Borel poles.  It should
+not be confused with an additional ambiguous positive-axis sector.  Actual
+Stokes jumps arise only when the Laplace direction is rotated through the
+imaginary Borel rays; this is treated in \cref{sec:stokes}.
+\end{remark}
+
+\section{The logarithmic asymptotic series and exact remainder}
+
+\subsection{General coefficient formula}
+
+We use Bernoulli numbers with convention
+\begin{equation}\label{eq:Bernoulli-convention}
+ \frac{z}{\e^z-1}=\sum_{n\ge0}B_n\frac{z^n}{n!},
+ \qquad B_1=-\frac12.
+\end{equation}
+
+\begin{theorem}[All logarithmic coefficients]\label{thm:d-coefficients}
+As \(x\to\infty\) in any closed subsector of \(|\arg x|<\pi/2\),
+\begin{equation}\label{eq:D-asymptotic}
+ D(x)\sim\sum_{r=0}^\infty\frac{d_{2r+1}}{x^{2r+1}},
+ \qquad d_{2r}=0,
+\end{equation}
+where
+\begin{align}
+ d_{2r+1}
+ &=\frac{(2^{2r+2}-1)B_{2r+2}}
+        {(2r+1)(2r+2)}\label{eq:d-Bernoulli}\\
+ &=(-1)^r\frac{2(2r)!}{\pi^{2r+2}}
+       \left(1-2^{-2r-2}\right)\zeta(2r+2).
+       \label{eq:d-zeta}
+\end{align}
+Equivalently, the formal Borel transform is the Taylor expansion
+\begin{equation}\label{eq:Borel-Taylor}
+ \widehat D(t)=\sum_{r\ge0}d_{2r+1}\frac{t^{2r}}{(2r)!}
+ =\frac{\tanh(t/2)}{2t}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Expand each summand in \cref{eq:Borel-partial-fraction} at the origin:
+\[
+ \frac1{t^2+a^2}
+ =\sum_{r=0}^{N-1}\frac{(-1)^rt^{2r}}{a^{2r+2}}
+  +\frac{(-1)^Nt^{2N}}{a^{2N}(t^2+a^2)}.
+\]
+Termwise Laplace integration of the finite sum gives
+\[
+ d_{2r+1}=2(-1)^r(2r)!
+ \sum_{k=0}^\infty\frac1{\pi^{2r+2}(2k+1)^{2r+2}},
+\]
+which is \cref{eq:d-zeta}.  Euler's formula for \(\zeta(2r+2)\) yields
+\cref{eq:d-Bernoulli}.  The same calculation proves the asymptotic
+statement, while the unexpanded last term gives the exact remainder below.
+\end{proof}
+
+The beginning of the series is
+\begin{equation}\label{eq:D-first}
+ D(x)\sim
+ \frac1{4x}-\frac1{24x^3}+\frac1{20x^5}
+ -\frac{17}{112x^7}+\frac{31}{36x^9}
+ -\frac{691}{88x^{11}}+\frac{5461}{52x^{13}}-\cdots.
+\end{equation}
+Substitution in \cref{eq:integer-log-exact} recovers and extends the
+logarithmic expansion recorded in OEIS A219931.
+
+\subsection{A signed next-term remainder theorem}
+
+\begin{theorem}[Exact remainder and strict next-term bound]\label{thm:D-remainder}
+For \(x>0\) and \(N\ge0\), write
+\begin{equation}\label{eq:D-remainder-def}
+ D(x)=\sum_{r=0}^{N-1}\frac{d_{2r+1}}{x^{2r+1}}+R_N(x).
+\end{equation}
+Then, with \(a_k=\pi(2k+1)\),
+\begin{equation}\label{eq:D-remainder-integral}
+ R_N(x)=2(-1)^N\sum_{k=0}^\infty a_k^{-2N}
+ \int_0^\infty\frac{\e^{-xt}t^{2N}}{t^2+a_k^2}\,\dd t,
+\end{equation}
+and
+\begin{equation}\label{eq:D-next-term-bound}
+ 0<(-1)^NR_N(x)
+ <\frac{|d_{2N+1}|}{x^{2N+1}}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Insert the finite geometric decomposition used in the proof of
+\cref{thm:d-coefficients} into \cref{eq:Borel-partial-fraction}, then into
+the exact Laplace integral.  Every integral in
+\cref{eq:D-remainder-integral} is positive.  Replacing
+\((t^2+a_k^2)^{-1}\) by the strict upper bound \(a_k^{-2}\), and evaluating
+\(\int_0^\infty\e^{-xt}t^{2N}\dd t=(2N)!x^{-2N-1}\), gives exactly the
+magnitude of the next term.
+\end{proof}
+
+This theorem is stronger than a bare Poincar\'e estimate: every finite
+truncation brackets \(D(x)\) with its successor.  It also provides a simple
+certificate for all numerical calculations in later sections.
+
+\subsection{Large order and optimal truncation}
+
+From \cref{eq:d-zeta},
+\begin{equation}\label{eq:d-large-order}
+ d_{2r+1}\sim(-1)^r\frac{2(2r)!}{\pi^{2r+2}}.
+\end{equation}
+The ratio of successive nonzero term magnitudes is asymptotic to
+\((2r+2)(2r+1)/(\pi^2x^2)\).  Hence the least term occurs near
+\begin{equation}\label{eq:optimal-r}
+ r\sim\frac{\pi x}{2}.
+\end{equation}
+Stirling's formula then gives the least-term envelope
+\begin{equation}\label{eq:least-term-envelope}
+ \frac{2\sqrt2}{\pi\sqrt{x}}\e^{-\pi x}
+ \left(1+\Ord(x^{-1})\right).
+\end{equation}
+By \cref{thm:D-remainder}, truncation at or immediately before the least
+term attains an error of this scale without any hidden constant explosion.
+
+\section{Forward transseries and Bell-polynomial coefficients}
+
+\subsection{Exponential coefficient calculus}
+
+Let \(Y_n\) denote the complete exponential Bell polynomial, characterized
+by
+\begin{equation}\label{eq:Bell-egf}
+ \exp\left(\sum_{j\ge1}x_j\frac{t^j}{j!}\right)
+ =\sum_{n\ge0}Y_n(x_1,\ldots,x_n)\frac{t^n}{n!}.
+\end{equation}
+
+\begin{theorem}[All forward coefficients]\label{thm:forward-coeff}
+Define \(A_0=1\) and, for \(n\ge1\),
+\begin{align}
+ A_n
+ &=\coeff{t}{n}\exp\left(\sum_{j\ge1}d_jt^j\right)
+ \label{eq:A-coeff}\\
+ &=\frac1{n!}Y_n(1!d_1,2!d_2,\ldots,n!d_n)\label{eq:A-Bell}\\
+ &=\sum_{\substack{k_1,k_2,\ldots\ge0\\
+                    \sum_{j\ge1}jk_j=n}}
+    \prod_{j\ge1}\frac{d_j^{k_j}}{k_j!}.
+    \label{eq:A-partition}
+\end{align}
+Then
+\begin{equation}\label{eq:forward-asymptotic}
+ \mathcal S_\sigma(x)
+ \sim C_\sigma2^xx^{\sigma/2}
+      \sum_{n\ge0}\frac{\sigma^nA_n}{x^n}.
+\end{equation}
+The coefficients obey the triangular recurrence
+\begin{equation}\label{eq:A-recurrence}
+ A_0=1,\qquad
+ nA_n=\sum_{j=1}^n jd_jA_{n-j}
+     =\sum_{\substack{1\le j\le n\\j\text{ odd}}}jd_jA_{n-j}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Exponentiating \cref{eq:D-asymptotic} and using
+\cref{eq:Bell-egf} gives \cref{eq:A-Bell}; expanding the exponential into a
+product gives the partition sum.  Differentiating
+\(A(t)=\exp(\sum d_jt^j)\) yields
+\(A'(t)=(\sum jd_jt^{j-1})A(t)\), and coefficient comparison proves
+\cref{eq:A-recurrence}.  Finally, because \(D(t)\) is an odd formal series,
+\[
+ \exp(-D(t))=\exp(D(-t))=\sum_{n\ge0}(-1)^nA_nt^n.
+\]
+This explains the factor \(\sigma^n\) in \cref{eq:forward-asymptotic}.
+\end{proof}
+
+\begin{longtable}{r@{\qquad}l@{\qquad}r@{\qquad}l}
+\caption{Universal coefficients \(A_n\) in \(\exp D\).}\label{tab:A}\cr
+\toprule
+\(n\)&\(A_n\)&\(n\)&\(A_n\)\\
+\midrule
+\endfirsthead
+\toprule
+\(n\)&\(A_n\)&\(n\)&\(A_n\)\\
+\midrule
+\endhead
+0&\(1\)&7&\(-39325/262144\)\\
+1&\(1/4\)&8&\(-334477/8388608\)\\
+2&\(1/32\)&9&\(28717403/33554432\)\\
+3&\(-5/128\)&10&\(59697183/268435456\)\\
+4&\(-21/2048\)&11&\(-8400372435/1073741824\)\\
+5&\(399/8192\)&12&\(-34429291905/17179869184\)\\
+6&\(869/65536\)&13&\(7199255611995/68719476736\)\\
+\bottomrule
+\end{longtable}
+
+\subsection{The two explicit forward sectors}
+
+The even branch is
+\begin{align}\label{eq:even-forward}
+ \mathcal S_-(x)
+ &\sim\sqrt{\frac2\pi}\,2^xx^{-1/2}
+ \biggl(
+ 1-\frac1{4x}+\frac1{32x^2}+\frac5{128x^3}
+ -\frac{21}{2048x^4}-\frac{399}{8192x^5}\\[-1mm]
+ &\hspace{44mm}
+ +\frac{869}{65536x^6}+\frac{39325}{262144x^7}
+ -\frac{334477}{8388608x^8}+\cdots
+ \biggr).\notag
+\end{align}
+At \(x=2m\) this is exactly the classical central-binomial expansion in the
+variable \(2m\).
+
+The odd branch is
+\begin{align}\label{eq:odd-forward}
+ \mathcal S_+(x)
+ &\sim\frac{2^x x^{1/2}}{\sqrt{2\pi}}
+ \biggl(
+ 1+\frac1{4x}+\frac1{32x^2}-\frac5{128x^3}
+ -\frac{21}{2048x^4}+\frac{399}{8192x^5}\\[-1mm]
+ &\hspace{44mm}
+ +\frac{869}{65536x^6}-\frac{39325}{262144x^7}
+ -\frac{334477}{8388608x^8}+\cdots
+ \biggr).\notag
+\end{align}
+For the integer sequence, combine these as
+\begin{equation}\label{eq:integer-forward-unified}
+ \SF(n)\sim
+ \frac{2^n}{\sqrt\pi}\,2^{-\sigma_n/2}n^{\sigma_n/2}
+ \sum_{k\ge0}\frac{\sigma_n^kA_k}{n^k},
+ \qquad \sigma_n=(-1)^{n+1}.
+\end{equation}
+This is a periodic or two-phase transseries: the discrete transmonomial
+\(\sigma_n\) has magnitude one and must remain visible at every order.
+
+\subsection{Gevrey character and Borel summability}
+
+The exact Borel representation proves that the logarithmic series is
+1-summable in every direction that avoids the rays through
+\(\pm\ii\pi(2k+1)\).  Exponentiation preserves Gevrey--1 character and
+sectorial summability.  Therefore \cref{eq:forward-asymptotic} is not merely
+a formal manipulation of Stirling series: in the right half-plane it is the
+asymptotic expansion of the exact gamma-ratio branch
+\cref{eq:branch-gamma}.  For fixed \(N\),
+\begin{equation}\label{eq:forward-error-fixed}
+ \mathcal S_\sigma(x)=C_\sigma2^xx^{\sigma/2}
+ \left(\sum_{n=0}^{N-1}\frac{\sigma^nA_n}{x^n}
+ +\Ord_N(x^{-N})\right).
+\end{equation}
+After near-least-term truncation, the relative error has the same
+\(\e^{-\pi x}/\sqrt{x}\) envelope as the logarithmic correction, although
+its hyperasymptotic prefactor is modified by exponentiation.
+
+\section{A universal coefficient calculus for exponential--power inversion}
+\label{sec:universal-calculus}
+
+The inverse calculation is clearer if the swing factorial is placed inside a
+slightly more general class.  Let \(a>0\), \(b\) be fixed, and suppose
+\begin{equation}\label{eq:general-model}
+ F(x)=C\e^{ax}x^b\exp Q(x^{-1}),
+ \qquad Q(t)=\sum_{j\ge1}q_jt^j.
+\end{equation}
+At the formal level \(Q\) may be any series over a commutative
+\(\mathbb Q\)-algebra.  Analytically it may be a Gevrey asymptotic series
+with a chosen sectorial sum.  Taking logarithms gives
+\begin{equation}\label{eq:general-log-equation}
+ L:=\log(y/C)=ax+b\log x+Q(x^{-1}).
+\end{equation}
+The swing branches correspond to
+\begin{equation}\label{eq:swing-specialization}
+ a=\lambda,
+ \qquad b=\frac\sigma2,
+ \qquad q_j=\sigma d_j.
+\end{equation}
+
+\subsection{A parameterized Lagrange lemma}
+
+\begin{lemma}[Lagrange fixed-point formula]\label{lem:fixed-point-LB}
+Let \(R\) be a commutative \(\mathbb Q\)-algebra and
+\(\Psi(t,u)\in tR[[t,u]]\).  The equation
+\begin{equation}\label{eq:fixed-point}
+ U(t)=\Psi(t,U(t))
+\end{equation}
+has a unique solution \(U\in tR[[t]]\), and
+\begin{equation}\label{eq:fixed-point-coeff}
+ [t^n]U(t)=
+ \sum_{m=1}^n\frac1m[t^nu^{m-1}]\Psi(t,u)^m.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Introduce an auxiliary marker \(z\) and solve
+\(U=z\Psi(t,U)\) in \(R[[t,z]]\).  Ordinary Lagrange--B\"urmann inversion in
+\(z\) gives
+\[
+ U=\sum_{m\ge1}\frac{z^m}{m}[u^{m-1}]\Psi(t,u)^m.
+\]
+Because \(\Psi\) is divisible by \(t\), only \(m\le n\) contributes to
+\([t^n]\); hence setting \(z=1\) is coefficientwise legitimate and gives
+\cref{eq:fixed-point-coeff}.  Uniqueness also follows recursively in the
+\(t\)-adic topology.
+\end{proof}
+
+\subsection{Ordinary partial Bell polynomials}
+
+For a sequence \(\gamma=(\gamma_1,\gamma_2,\ldots)\), define
+\begin{equation}\label{eq:ordinary-Bell-def}
+ \widehat B_{n,k}(\gamma)
+ :=[t^n]\left(\sum_{r\ge1}\gamma_rt^r\right)^k.
+\end{equation}
+Thus \(\widehat B_{0,0}=1\), \(\widehat B_{n,0}=0\) for \(n>0\), and
+\begin{equation}\label{eq:ordinary-Bell-partition}
+ \widehat B_{n,k}(\gamma)
+ =\sum_{\substack{m_1,m_2,\ldots\ge0\\
+                   \sum m_r=k,\ \sum rm_r=n}}
+   \frac{k!}{\prod_rm_r!}\prod_r\gamma_r^{m_r}.
+\end{equation}
+These are ordinary, rather than exponential, partial Bell polynomials.  They
+are the natural bookkeeping device for powers of a correction series whose
+coefficients are not divided by factorials.
+
+\section{Lambert-normalized inverse transseries}
+\label{sec:lambert-inverse}
+
+\subsection{Exact inversion of the dominant block}
+
+Suppress \(Q\) in \cref{eq:general-log-equation}.  The equation
+\begin{equation}\label{eq:dominant-equation}
+ L=aX+b\log X
+\end{equation}
+has, when \(b\ne0\), the exact Lambert form
+\begin{equation}\label{eq:general-Lambert-core}
+ X_k(L)=\frac ba
+ W_k\!\left(\frac ab\e^{L/b}\right).
+\end{equation}
+For the swing parameters this becomes
+\begin{equation}\label{eq:swing-Lambert-general}
+ X_{\sigma,k}(y)=\frac{\sigma}{2\lambda}
+ W_k\!\left(2\sigma\lambda\e^{2\sigma L_\sigma(y)}\right),
+ \qquad
+ L_\sigma(y)=\log\frac{y}{C_\sigma}.
+\end{equation}
+The real large branches are
+\begin{equation}\label{eq:real-Lambert-cores}
+ \boxed{
+ X_+(y)=\frac{W_0(4\pi\lambda y^2)}{2\lambda},
+ \qquad
+ X_-(y)=-\frac{W_{-1}(-4\lambda/(\pi y^2))}{2\lambda}.}
+\end{equation}
+The appearance of \(W_{-1}\) in the even phase is essential.  Its argument
+approaches zero through negative values, and \(W_{-1}(z)\to-\infty\), which
+produces the large positive root.  The principal branch \(W_0\) would
+produce the small root of the simplified equation and is irrelevant to the
+large-index inverse.
+
+\subsection{All constant coefficients around the Lambert core}
+
+\begin{theorem}[Lambert-centered reversion]\label{thm:lambert-centered}
+Let \(X\) solve \cref{eq:dominant-equation}, let \(t=X^{-1}\), and seek the
+inverse of \cref{eq:general-log-equation} in the form
+\begin{equation}\label{eq:Lambert-centered-ansatz}
+ x=X+U(t),\qquad U(t)=\sum_{n\ge1}c_nt^n.
+\end{equation}
+Define
+\begin{equation}\label{eq:Psi-general}
+ \Psi(t,u):=-\frac1a\left[
+ b\log(1+tu)+Q\!\left(\frac{t}{1+tu}\right)
+ \right].
+\end{equation}
+Then \(U=\Psi(t,U)\), and for every \(n\ge1\),
+\begin{equation}\label{eq:c-Lagrange-general}
+ c_n=\sum_{m=1}^n\frac1m[t^nu^{m-1}]\Psi(t,u)^m.
+\end{equation}
+
+Equivalently, put \(\gamma_1=0\) and
+\(\gamma_r=c_{r-1}\) for \(r\ge2\).  Then the coefficients are generated
+triangularly by
+\begin{align}
+ c_n=-\frac1a\Bigg[&
+ b\sum_{k=1}^n\frac{(-1)^{k+1}}{k}
+       \widehat B_{n,k}(\gamma)\notag\\
+ &+\sum_{j=1}^nq_j
+   \sum_{k=0}^{n-j}(-1)^k\binom{j+k-1}{k}
+       \widehat B_{n-j,k}(\gamma)
+ \Bigg].\label{eq:c-Bell-recurrence}
+\end{align}
+Only \(c_1,\ldots,c_{n-1}\) occur on the right-hand side.
+\end{theorem}
+
+\begin{proof}
+Subtract \(aX+b\log X=L\) from
+\(a(X+U)+b\log(X+U)+Q((X+U)^{-1})=L\).  Since
+\(X+U=X(1+tU)\), the result is precisely \(U=\Psi(t,U)\).
+\Cref{eq:c-Lagrange-general} is
+\cref{lem:fixed-point-LB}.  To obtain \cref{eq:c-Bell-recurrence}, write
+\(w=tU=\sum_{r\ge1}\gamma_rt^r\), expand
+\[
+ \log(1+w)=\sum_{k\ge1}\frac{(-1)^{k+1}}{k}w^k,
+ \qquad
+ (1+w)^{-j}=\sum_{k\ge0}(-1)^k\binom{j+k-1}{k}w^k,
+\]
+and extract \([t^n]\).
+\end{proof}
+
+\begin{remark}
+The dominant logarithm has been resummed exactly into \(X\).  Therefore the
+remaining \(c_n\) are constants in the coefficient ring; no powers of
+\(\log L\) occur.  This is the principal practical advantage over direct
+power--logarithmic reversion.
+\end{remark}
+
+\subsection{Specialization to the swing factorial}
+
+For \cref{eq:swing-specialization}, define
+\begin{equation}\label{eq:Psi-swing}
+ \Psi_\sigma(t,u)=-\frac1\lambda\left[
+ \frac\sigma2\log(1+tu)
+ +\sigma\sum_{j\ge1}d_j
+       \left(\frac{t}{1+tu}\right)^j
+ \right].
+\end{equation}
+Then
+\begin{equation}\label{eq:c-swing-master}
+ c_n^{(\sigma)}=
+ \sum_{m=1}^n\frac1m[t^nu^{m-1}]\Psi_\sigma(t,u)^m.
+\end{equation}
+The first coefficients, reduced with \(\sigma^2=1\), are
+\begin{align}
+ c_1^{(\sigma)}&=-\frac{\sigma}{4\lambda},
+ &c_2^{(\sigma)}&=\frac1{8\lambda^2},\label{eq:c12}\\
+ c_3^{(\sigma)}&=
+ \frac{2\sigma\lambda^2-3\lambda-3\sigma}{48\lambda^3},
+ &c_4^{(\sigma)}&=
+ \frac{-4\lambda^2+15\sigma\lambda+6}{192\lambda^4},
+ \label{eq:c34}\\
+ c_5^{(\sigma)}&=-\frac{
+ 96\sigma\lambda^4-80\lambda^3+40\sigma\lambda^2
+ +135\lambda+30\sigma}{1920\lambda^5},\label{eq:c5}\\
+ c_6^{(\sigma)}&=\frac{
+ 96\lambda^4-180\sigma\lambda^3+215\lambda^2
+ +210\sigma\lambda+30}{3840\lambda^6}.
+ \label{eq:c6}
+\end{align}
+Thus the odd inverse begins
+\begin{align}\label{eq:odd-inverse-Lambert}
+ \mathcal I_+(y)\sim X_+
+ &-\frac{1}{4\lambda X_+}
+ +\frac{1}{8\lambda^2X_+^2}
+ +\frac{2\lambda^2-3\lambda-3}{48\lambda^3X_+^3}\\
+ &+\frac{-4\lambda^2+15\lambda+6}{192\lambda^4X_+^4}
+ +\cdots,\notag
+\end{align}
+and the even inverse begins
+\begin{align}\label{eq:even-inverse-Lambert}
+ \mathcal I_-(y)\sim X_-
+ &+\frac{1}{4\lambda X_-}
+ +\frac{1}{8\lambda^2X_-^2}
+ +\frac{-2\lambda^2-3\lambda+3}{48\lambda^3X_-^3}\\
+ &+\frac{-4\lambda^2-15\lambda+6}{192\lambda^4X_-^4}
+ +\cdots.\notag
+\end{align}
+The sign of the first correction follows already from \(D(x)>0\): the odd
+phase has \(+D\) in its logarithm and therefore reaches a fixed value at an
+index smaller than \(X_+\), while the even phase has \(-D\) and reaches it
+at an index larger than \(X_-\).
+
+\subsection{Complex inverse branches}
+
+Every Lambert branch in \cref{eq:swing-Lambert-general} that satisfies
+\(|X_{\sigma,k}|\to\infty\) in a sector supplies a formal complex inverse
+branch
+\begin{equation}\label{eq:complex-inverse-branches}
+ \mathcal I_{\sigma,k}(y)
+ \sim X_{\sigma,k}(y)+
+      \sum_{n\ge1}c_n^{(\sigma)}X_{\sigma,k}(y)^{-n}.
+\end{equation}
+The coefficient sequence is independent of \(k\); all branch dependence is
+carried by \(W_k\) and by the chosen logarithm in \(L_\sigma\).  Analytic
+validity requires that the path remain inside a sector avoiding poles of the
+gamma quotient and Stokes directions of its Borel transform.  The standard
+branch structure and large-argument expansion of \(W_k\) are described in
+\cite{CorlessLambertW,DLMFLambertW}.
+
+\section{Direct power--logarithmic inverse transseries}
+\label{sec:direct-inverse}
+
+Lambert normalization is compact and numerically efficient, but it hides the
+explicit polynomial--logarithmic scale.  We now expand it completely.  For
+the general model \cref{eq:general-model}, put
+\begin{equation}\label{eq:L-H-general}
+ L=\log(y/C),\qquad H=\log(L/a).
+\end{equation}
+We order monomials lexicographically by powers of \(L^{-1}\), with
+\(H=\Ord(\log L)\) treated as a slow variable.
+
+\subsection{Universal coefficient formula}
+
+\begin{theorem}[Direct reversion at infinity]\label{thm:direct-reversion}
+The formal inverse of \cref{eq:general-log-equation} has the unique form
+\begin{equation}\label{eq:direct-ansatz}
+ x\sim\frac1a\left[
+ L-bH+\sum_{n\ge1}\frac{P_n(H)}{L^n}
+ \right].
+\end{equation}
+Let
+\begin{equation}\label{eq:Phi-direct}
+ \Phi(t,u;H):=-b\log\bigl(1+t(u-bH)\bigr)
+ -Q\!\left(\frac{at}{1+t(u-bH)}\right).
+\end{equation}
+Then
+\begin{equation}\label{eq:P-Lagrange}
+ P_n(H)=\sum_{m=1}^n\frac1m
+ [t^nu^{m-1}]\Phi(t,u;H)^m.
+\end{equation}
+
+For a triangular Bell recurrence, set
+\begin{equation}\label{eq:gamma-direct}
+ \gamma_1=-bH,
+ \qquad \gamma_r=P_{r-1}(H)\quad(r\ge2).
+\end{equation}
+Then
+\begin{align}
+ P_n(H)={}&-b\sum_{k=1}^n\frac{(-1)^{k+1}}{k}
+             \widehat B_{n,k}(\gamma)\notag\\
+ &-\sum_{j=1}^nq_ja^j
+   \sum_{k=0}^{n-j}(-1)^k\binom{j+k-1}{k}
+             \widehat B_{n-j,k}(\gamma).
+ \label{eq:P-Bell-recurrence}
+\end{align}
+In particular \(P_n\) has degree at most \(n\).  If \(b\ne0\), its leading
+term is
+\begin{equation}\label{eq:P-leading}
+ P_n(H)=\frac{b^{n+1}}{n}H^n+\text{terms of degree at most }n-1.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Set \(t=L^{-1}\) and \(V(t)=\sum_{n\ge1}P_n(H)t^n\).  The ansatz gives
+\[
+ ax=t^{-1}-bH+V,
+ \qquad
+ x=\frac1{at}\bigl(1+t(V-bH)\bigr).
+\]
+Since \(\log(1/(at))=H\), substitution in
+\(t^{-1}=ax+b\log x+Q(x^{-1})\) cancels the two occurrences of \(bH\) and
+leaves
+\[
+ V=\Phi(t,V;H).
+\]
+\Cref{eq:P-Lagrange} follows from
+\cref{lem:fixed-point-LB}.  Writing
+\(w=t(V-bH)=\sum_{r\ge1}\gamma_rt^r\), then expanding
+\(\log(1+w)\) and \((1+w)^{-j}\), gives
+\cref{eq:P-Bell-recurrence}.  Induction proves the degree bound.  The
+highest power of \(H\) is unaffected by \(Q\); extracting it from the pure
+logarithmic equation gives \cref{eq:P-leading}, or follows immediately from
+\cref{thm:pure-Lambert-Stirling} below.
+\end{proof}
+
+\subsection{Closed Stirling formula for the pure Lambert block}
+
+Let \(\StirlingFirst{n}{m}\) denote the unsigned Stirling number of the first
+kind.
+
+\begin{theorem}[Pure Lambert coefficients]\label{thm:pure-Lambert-Stirling}
+When \(Q=0\), the polynomials in \cref{eq:direct-ansatz} are
+\begin{equation}\label{eq:pure-Lambert-P}
+ P_n^{(0)}(H)=
+ \frac{b^{n+1}}{n!}
+ \sum_{m=1}^n(-1)^{m+1}(m-1)!
+ \StirlingFirst{n}{m}\binom{n}{m-1}H^{n-m+1}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+With \(Q=0\), \cref{eq:P-Lagrange} becomes
+\[
+ P_n^{(0)}=
+ \sum_{m=1}^n\frac{(-b)^m}{m}
+ [t^nu^{m-1}]\log\bigl(1+t(u-bH)\bigr)^m.
+\]
+Use the signed Stirling expansion
+\[
+ \log(1+z)^m=m!\sum_{n\ge m}s(n,m)\frac{z^n}{n!},
+ \qquad s(n,m)=(-1)^{n-m}\StirlingFirst{n}{m}.
+\]
+The coefficient of \(t^nu^{m-1}\) is obtained from
+\((u-bH)^n\).  Simplifying the signs gives
+\cref{eq:pure-Lambert-P}.
+\end{proof}
+
+The first pure terms are
+\begin{align*}
+ P_1^{(0)}&=b^2H,\\
+ P_2^{(0)}&=\frac{b^3}{2}(H^2-2H),\\
+ P_3^{(0)}&=\frac{b^4}{6}(2H^3-9H^2+6H),\\
+ P_4^{(0)}&=\frac{b^5}{12}(3H^4-22H^3+36H^2-12H).
+\end{align*}
+Formula~\eqref{eq:pure-Lambert-P} is the precise bridge between Lambert
+asymptotics and the first-kind Stirling coefficient calculus.
+
+\subsection{Explicit swing inverse polynomials}
+
+For the swing factorial, let
+\begin{equation}\label{eq:L-H-swing}
+ L_\sigma=\log y+\frac12\log\pi+\frac\sigma2\lambda,
+ \qquad H_\sigma=\log\frac{L_\sigma}{\lambda}.
+\end{equation}
+Then
+\begin{equation}\label{eq:direct-swing-inverse}
+ \boxed{\quad
+ \mathcal I_\sigma(y)\sim\frac1\lambda\left[
+ L_\sigma-\frac\sigma2H_\sigma
+ +\sum_{n\ge1}\frac{P_n^{(\sigma)}(H_\sigma)}{L_\sigma^n}
+ \right].\quad}
+\end{equation}
+The first five coefficient polynomials are
+\begin{align}
+ P_1^{(\sigma)}(H)
+ &=\frac{H-\sigma\lambda}{4},\label{eq:P1-swing}\\
+ P_2^{(\sigma)}(H)
+ &=\frac{\sigma H^2-2(\lambda+\sigma)H+2\lambda}{16},
+ \label{eq:P2-swing}\\
+ P_3^{(\sigma)}(H)
+ &=\frac1{96}\Bigl[
+ 2H^3-(6\sigma\lambda+9)H^2+(18\sigma\lambda+6)H\notag\\
+ &\hspace{29mm}
+ +4\sigma\lambda^3-6\lambda^2-6\sigma\lambda
+ \Bigr],\label{eq:P3-swing}\\
+ P_4^{(\sigma)}(H)
+ &=\frac1{384}\Bigl[
+ 3\sigma H^4-(12\lambda+22\sigma)H^3
+ +(66\lambda+36\sigma)H^2\notag\\
+ &\hspace{15mm}
+ +(24\lambda^3-36\sigma\lambda^2-72\lambda-12\sigma)H\notag\\
+ &\hspace{29mm}
+ -8\lambda^3+30\sigma\lambda^2+12\lambda
+ \Bigr],\label{eq:P4-swing}\\
+ P_5^{(\sigma)}(H)
+ &=\frac1{3840}\Bigl[
+ 12H^5-(60\sigma\lambda+125)H^4
+ +(500\sigma\lambda+350)H^3\notag\\
+ &\hspace{13mm}
+ +(240\sigma\lambda^3-360\lambda^2-1050\sigma\lambda-300)H^2\notag\\
+ &\hspace{13mm}
+ +(-280\sigma\lambda^3+780\lambda^2+600\sigma\lambda+60)H\notag\\
+ &\hspace{13mm}
+ -192\sigma\lambda^5+160\lambda^4-80\sigma\lambda^3
+ -270\lambda^2-60\sigma\lambda
+ \Bigr].\label{eq:P5-swing}
+\end{align}
+Every coefficient is obtained by the single recurrence
+\cref{eq:P-Bell-recurrence} with \(b=\sigma/2\) and
+\(q_j=\sigma d_j\); no order-specific ansatz is needed.
+
+\subsection{Relation between the two inverse normalizations}
+
+The Lambert-centered expansion \cref{eq:Lambert-centered-ansatz} resums the
+entire pure block \cref{eq:pure-Lambert-P}.  Expanding \(W_0\) or
+\(W_{-1}\) in iterated logarithms and then expanding each power
+\(X^{-n}\) reproduces \cref{eq:direct-swing-inverse}.  Conversely, grouping
+in the direct series all terms generated solely by
+\((\sigma/2)\log x\) reconstructs \(X_\sigma\).
+
+Formally, the direct coefficients live in
+\[
+ \mathbb Q[\lambda,\lambda^{-1},\sigma,H]/(\sigma^2-1),
+\]
+whereas the Lambert-centered coefficients live in the smaller constant ring
+\[
+ \mathbb Q[\lambda,\lambda^{-1},\sigma]/(\sigma^2-1).
+\]
+This algebraic compression explains the substantially better numerical
+behavior observed in \cref{sec:numerics}.
+
+\section{Perturbative Lagrange operators and exact inverse transport}
+\label{sec:operator-inversion}
+
+There is a third all-orders description that is especially convenient for
+Borel and Stokes analysis.
+
+\begin{theorem}[Inverse perturbation operator]\label{thm:inverse-operator}
+Let \(F_0\) be locally invertible, let \(X=F_0^{-1}(L)\), and consider
+\begin{equation}\label{eq:perturbed-inverse-problem}
+ L=F_0(x)+\varepsilon R(x).
+\end{equation}
+Define the derivative with respect to the leading coordinate by
+\begin{equation}\label{eq:D0-operator}
+ \mathscr D_0:=\frac1{F_0'(X)}\frac{\dd}{\dd X}.
+\end{equation}
+Then, as a formal power series in \(\varepsilon\),
+\begin{equation}\label{eq:inverse-operator-formula}
+ x=X+\sum_{m\ge1}\frac{(-\varepsilon)^m}{m!}
+ \mathscr D_0^{m-1}
+ \left[\frac{R(X)^m}{F_0'(X)}\right].
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use \(u=F_0(x)\).  \Cref{eq:perturbed-inverse-problem} becomes
+\(L=u+\varepsilon r(u)\), where
+\(r(u)=R(F_0^{-1}(u))\).  Lagrange--B\"urmann inversion for the composite
+function \(F_0^{-1}(u)\) gives
+\[
+ F_0^{-1}(u(L))=F_0^{-1}(L)
+ +\sum_{m\ge1}\frac{(-\varepsilon)^m}{m!}
+ \left(\frac{\dd}{\dd L}\right)^{m-1}
+ \left[(F_0^{-1})'(L)r(L)^m\right].
+\]
+Now \((F_0^{-1})'(L)=1/F_0'(X)\) and
+\(\dd/\dd L=\mathscr D_0\).
+\end{proof}
+
+For the swing problem,
+\begin{equation}\label{eq:swing-F0-R}
+ F_{0,\sigma}(x)=\lambda x+\frac\sigma2\log x,
+ \qquad R_\sigma(x)=\sigma D(x),
+ \qquad F_{0,\sigma}'(x)=\lambda+\frac\sigma{2x}.
+\end{equation}
+Thus, with \(X=X_\sigma(y)\),
+\begin{equation}\label{eq:swing-operator-series}
+ \mathcal I_\sigma(y)
+ =X+\sum_{m\ge1}\frac{(-\sigma)^m}{m!}
+ \mathscr D_{0,\sigma}^{m-1}
+ \left[\frac{D(X)^m}{\lambda+\sigma/(2X)}\right],
+\end{equation}
+where \(D\) may be interpreted either as its formal asymptotic series or as
+the exact Borel sum \cref{eq:D-laplace}.  The first three perturbative layers
+are
+\begin{align}
+ \mathcal I_\sigma(y)=X
+ &-\sigma\frac{D(X)}{F_{0,\sigma}'(X)}
+ +\frac12\mathscr D_{0,\sigma}
+   \left[\frac{D(X)^2}{F_{0,\sigma}'(X)}\right]\notag\\
+ &-\frac\sigma6\mathscr D_{0,\sigma}^2
+   \left[\frac{D(X)^3}{F_{0,\sigma}'(X)}\right]+\cdots.
+ \label{eq:swing-operator-first}
+\end{align}
+Expanding \(D(X)\) in inverse powers of \(X\) reproduces exactly the
+coefficients \(c_n^{(\sigma)}\).
+
+\section{Borel singularities, Stokes jumps, and inverse transseries}
+\label{sec:stokes}
+
+For a direction \(\theta\), write
+\begin{equation}\label{eq:lateral-sums}
+ \mathcal S_{\theta^\pm}D(x)
+ :=\int_{0}^{\e^{\ii(\theta\pm0)}\infty}
+   \e^{-xt}\widehat D(t)\,\dd t.
+\end{equation}
+whenever the rotated Laplace integral converges.  Define the discontinuity
+by lower minus upper lateral summation.  The residue theorem and
+\cref{eq:Borel-poles} give the exact bridge equations
+\begin{align}
+ \Disc_{\pi/2}D(x)
+ &:=\mathcal S_{(\pi/2)^-}D-
+     \mathcal S_{(\pi/2)^+}D
+ =2\sum_{k\ge0}\frac{\e^{-\ii\pi(2k+1)x}}{2k+1},
+ \label{eq:upper-Stokes}\\
+ \Disc_{-\pi/2}D(x)
+ &:=\mathcal S_{(-\pi/2)^-}D-
+     \mathcal S_{(-\pi/2)^+}D
+ =-2\sum_{k\ge0}\frac{\e^{\ii\pi(2k+1)x}}{2k+1}.
+ \label{eq:lower-Stokes}
+\end{align}
+In their respective convergence half-planes these may be summed as
+\begin{equation}\label{eq:Stokes-artanh}
+ \Disc_{\pi/2}D=2\operatorname{artanh}(\e^{-\ii\pi x}),
+ \qquad
+ \Disc_{-\pi/2}D=-2\operatorname{artanh}(\e^{\ii\pi x}).
+\end{equation}
+The logarithm of the swing branch has jump
+\begin{equation}\label{eq:logS-jump}
+ \Disc_\theta\log\mathcal S_\sigma(x)
+ =\sigma\Disc_\theta D(x),
+\end{equation}
+so the function itself changes multiplicatively by the exponential of this
+quantity.
+
+\begin{proposition}[Transport of a Stokes jump through inversion]
+\label{prop:inverse-Stokes}
+Let \(F(x)\) be one lateral logarithmic branch and let the other be
+\(F(x)+\Delta(x)\).  If \(x=F^{-1}(L)\), the inverse on the second side has
+the formal expansion
+\begin{equation}\label{eq:inverse-Stokes-full}
+ x_{\mathrm{new}}=x+
+ \sum_{m\ge1}\frac{(-1)^m}{m!}
+ \left(\frac1{F'(x)}\frac{\dd}{\dd x}\right)^{m-1}
+ \left[\frac{\Delta(x)^m}{F'(x)}\right].
+\end{equation}
+In particular,
+\begin{equation}\label{eq:inverse-Stokes-leading}
+ x_{\mathrm{new}}-x
+ =-\frac{\Delta(x)}{F'(x)}+	ext{higher exponential sectors}.
+\end{equation}
+For the swing inverse, take
+\(\Delta=\sigma\Disc_\theta D\) and
+\(F'=\lambda+\sigma/(2x)+\sigma D'(x)\).
+\end{proposition}
+
+\begin{proof}
+Apply \cref{thm:inverse-operator} with \(F_0=F\),
+\(\varepsilon=1\), and \(R=\Delta\).
+\end{proof}
+
+Equations \cref{eq:upper-Stokes,eq:lower-Stokes,eq:inverse-Stokes-full}
+complete the resurgent transseries data: the Borel singularity locations,
+residues, all lateral jumps, and their nonlinear transport through the
+inverse are explicit.  Along the positive real axis the preferred sum is
+\cref{eq:D-laplace}; no lateral choice is necessary.
+
+\section{Error control, computation, and numerical validation}
+\label{sec:numerics}
+
+\subsection{Residual certification}
+
+Asymptotic inversion should be checked in the original equation, preferably
+in logarithmic form to avoid overflow.
+
+\begin{proposition}[Residual-to-index error bound]\label{prop:residual-bound}
+Let \(x_*\) approximate \(\mathcal I_\sigma(y)\), and define
+\begin{equation}\label{eq:residual}
+ r_*:=\log\mathcal S_\sigma(x_*)-\log y.
+\end{equation}
+If \((\log\mathcal S_\sigma)'(x)\ge m>0\) on the interval joining \(x_*\)
+and \(\mathcal I_\sigma(y)\), then
+\begin{equation}\label{eq:residual-bound}
+ |x_*-\mathcal I_\sigma(y)|\le\frac{|r_*|}{m}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Apply the mean-value theorem to \(\log\mathcal S_\sigma\).
+\end{proof}
+
+The exact Laplace representation gives
+\begin{equation}\label{eq:Dprime-bound}
+ 0<-D'(x)<\frac1{4x^2},
+\end{equation}
+so for \(x\ge1\),
+\begin{align}
+ (\log\mathcal S_+)'(x)
+ &>\lambda+\frac1{2x}-\frac1{4x^2}>\lambda,
+ \label{eq:odd-derivative-lower}\\
+ (\log\mathcal S_-)'(x)
+ &>\lambda-\frac1{2x}.
+ \label{eq:even-derivative-lower}
+\end{align}
+These elementary bounds are sufficient for certified large-index inversion;
+tighter bounds are available directly from the digamma expression
+\cref{eq:logder}.
+
+\subsection{Newton refinement}
+
+Starting from either asymptotic approximation, Newton's method applied to the
+logarithmic equation is
+\begin{equation}\label{eq:Newton}
+ x_{j+1}=x_j-
+ \frac{\log\mathcal S_\sigma(x_j)-\log y}
+ {\lambda+\dfrac\sigma2
+  [\psi(x_j/2+1)-\psi(x_j/2+1/2)]}.
+\end{equation}
+Evaluation through \(\log\Gamma\) and \(\psi\) is stable even when
+\(\mathcal S_\sigma(x)\) itself is far outside floating-point range.  Once
+the asymptotic seed is in its natural regime, one or two Newton steps usually
+recover full working precision.
+
+\subsection{Forward accuracy}
+
+Table \ref{tab:forward-errors} uses \(x=20\).  The truncation labeled \(N\)
+retains \(A_0,\ldots,A_{N-1}\) in \cref{eq:forward-asymptotic}.
+
+\begin{table}[htbp]
+\centering
+\caption{Relative errors of the forward expansion at \(x=20\).}
+\label{tab:forward-errors}
+\begin{tabular}{rcc}
+\toprule
+\(N\)&even branch \(\sigma=-1\)&odd branch \(\sigma=+1\)\\
+\midrule
+1  &\(1.2573193\times10^{-2}\)&\(1.2417071\times10^{-2}\)\\
+2  &\(8.3971506\times10^{-5}\)&\(7.2284564\times10^{-5}\)\\
+4  &\(7.9979454\times10^{-8}\)&\(4.8170528\times10^{-8}\)\\
+6  &\(3.2525110\times10^{-10}\)&\(8.8967744\times10^{-11}\)\\
+8  &\(3.2108180\times10^{-12}\)&\(9.7020566\times10^{-14}\)\\
+10 &\(5.8884939\times10^{-14}\)&\(1.5606307\times10^{-14}\)\\
+12 &\(1.7866041\times10^{-15}\)&\(6.7178815\times10^{-16}\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The decrease is far faster than a fixed-order theorem alone suggests because
+\(x=20\) is still well before the least-term index, which is near
+\(\pi x/2\approx31\) in the nonzero logarithmic series.
+
+\subsection{Inverse accuracy and the advantage of Lambert centering}
+
+For each phase, set \(y=\mathcal S_\sigma(50)\), so that the exact inverse is
+\(50\).  In Table \ref{tab:inverse-errors}, \(N=0\) denotes only the leading
+core: \((L_\sigma-\sigma H_\sigma/2)/\lambda\) in the direct column and
+\(X_\sigma\) in the Lambert column.  For \(N>0\), the first \(N\) correction
+terms are retained.
+
+\begin{table}[htbp]
+\centering
+\caption{Absolute inverse errors for an exact index \(x=50\).}
+\label{tab:inverse-errors}
+\begin{tabular}{rcccc}
+\toprule
+&\multicolumn{2}{c}{even phase \(\sigma=-1\)}
+&\multicolumn{2}{c}{odd phase \(\sigma=+1\)}\\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+\(N\)&direct&Lambert&direct&Lambert\\
+\midrule
+0  &\(4.92291\times10^{-2}\)&\(7.31859\times10^{-3}\)
+   &\(3.24899\times10^{-2}\)&\(7.11042\times10^{-3}\)\\
+1  &\(9.28054\times10^{-4}\)&\(1.04056\times10^{-4}\)
+   &\(2.43401\times10^{-4}\)&\(1.02029\times10^{-4}\)\\
+2  &\(8.18595\times10^{-6}\)&\(4.29703\times10^{-8}\)
+   &\(4.74681\times10^{-6}\)&\(2.00947\times10^{-6}\)\\
+3  &\(6.38122\times10^{-7}\)&\(2.27690\times10^{-8}\)
+   &\(2.67151\times10^{-7}\)&\(5.08233\times10^{-8}\)\\
+4  &\(4.81875\times10^{-8}\)&\(5.65588\times10^{-11}\)
+   &\(4.49650\times10^{-9}\)&\(1.40431\times10^{-9}\)\\
+6  &\(8.92594\times10^{-12}\)&\(2.85289\times10^{-13}\)
+   &\(9.28838\times10^{-12}\)&\(8.11044\times10^{-13}\)\\
+8  &\(2.71054\times10^{-13}\)&\(8.38506\times10^{-16}\)
+   &\(5.17449\times10^{-15}\)&\(1.18162\times10^{-15}\)\\
+10 &\(1.56412\times10^{-16}\)&\(3.13520\times10^{-18}\)
+   &\(1.42623\times10^{-17}\)&\(8.47275\times10^{-19}\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The nonmonotone error at a few low truncation orders is normal for an
+asymptotic series.  The overall comparison confirms the structural point:
+Lambert centering has already resummed the largest tower of
+\((\log L)^m/L^n\) terms.
+
+\subsection{Recovering integer indices}
+
+For an approximate equation \(\SF(n)\approx y\), compute both continuous
+inverse branches and project to their parity lattices:
+\begin{equation}\label{eq:nearest-parity}
+ n_-^{\mathrm{near}}=2\left\lfloor\frac{\mathcal I_-(y)}2+\frac12\right\rfloor,
+ \qquad
+ n_+^{\mathrm{near}}=2\left\lfloor
+       \frac{\mathcal I_+(y)-1}{2}+\frac12\right\rfloor+1.
+\end{equation}
+Evaluate \(\log\SF(n)\) at these candidates and their nearest same-parity
+neighbors, then choose according to the desired criterion.  For a threshold
+query, the greatest same-parity indices satisfying \(\SF(n)\le y\) are
+obtained from
+\begin{equation}\label{eq:floor-parity}
+ n_-^{\le}=2\left\lfloor\frac{\mathcal I_-(y)}2\right\rfloor,
+ \qquad
+ n_+^{\le}=2\left\lfloor\frac{\mathcal I_+(y)-1}{2}\right\rfloor+1,
+\end{equation}
+with a one-step exact correction if roundoff places an approximation across
+a boundary.
+
+\section{Further consequences of the two-phase inverse}
+
+\subsection{Separation of the two inverse branches}
+
+For a common value \(y\), define
+\begin{equation}\label{eq:Y-h-common}
+ Y:=\log(y\sqrt\pi),\qquad h:=\log(Y/\lambda).
+\end{equation}
+Then \(L_\sigma=Y+\sigma\lambda/2\).  Subtracting the first terms of
+\cref{eq:direct-swing-inverse} gives
+\begin{equation}\label{eq:branch-gap}
+ \boxed{\quad
+ \mathcal I_-(y)-\mathcal I_+(y)
+ =\frac{h}{\lambda}-1+\frac1{2Y}
+ +\Ord\!\left(\frac{h^2}{Y^2}\right).
+ \quad}
+\end{equation}
+In particular,
+\begin{equation}\label{eq:branch-gap-leading}
+ \mathcal I_-(y)-\mathcal I_+(y)
+ =\log_2\!\left(\frac{\log(y\sqrt\pi)}{\log2}\right)-1+o(1).
+\end{equation}
+Thus the even index producing a given large magnitude exceeds the odd index
+by a slowly growing \(\log\log y\) distance.  This is the inverse reflection
+of the factor of order \(x/2\) between the two forward branches at a common
+argument.
+
+\subsection{The counting function}
+
+Let
+\begin{equation}\label{eq:counting-def}
+ N(y):=\#\{n\in\mathbb N_0:\ \SF(n)\le y\}.
+\end{equation}
+Each parity subsequence is monotone, so
+\begin{equation}\label{eq:counting-inverses}
+ N(y)=\frac{\mathcal I_-(y)+\mathcal I_+(y)}2+\Ord(1).
+\end{equation}
+The \(\pm(1/2)\log x\) contributions cancel to leading order in the average,
+and therefore
+\begin{equation}\label{eq:counting-leading}
+ \boxed{\qquad
+ N(y)=\frac{\log(y\sqrt\pi)}{\log2}+\Ord(1)
+ =\log_2(y\sqrt\pi)+\Ord(1).
+ \qquad}
+\end{equation}
+A smooth version of the counting function can be expanded to arbitrary order
+by averaging the two polynomial families
+\(P_n^{(-)}\) and \(P_n^{(+)}\) after substituting
+\(L_\sigma=Y+\sigma\lambda/2\).
+
+\section{Symbolic coefficient generation}
+\label{sec:symbolic}
+
+The following SymPy program implements the formulae of the article.  It
+constructs \(d_j\), the forward Bell coefficients \(A_n\), the
+Lambert-centered coefficients \(c_n^{(\sigma)}\), and the direct
+polynomials \(P_n^{(\sigma)}(H)\).  Reduction modulo \(\sigma^2-1\) keeps
+the two parity phases in a single expression.
+
+\begin{lstlisting}[style=pythonstyle,caption={All-order coefficient generation.}]
+import sympy as sp
+
+N = 12
+t, u, H = sp.symbols("t u H")
+lam, sigma = sp.symbols("lambda sigma", nonzero=True)
+
+# Logarithmic coefficients d_j; absent even coefficients are zero.
+d = {
+    2*r + 1:
+        (2**(2*r + 2) - 1) * sp.bernoulli(2*r + 2)
+        / ((2*r + 1) * (2*r + 2))
+    for r in range(N)
+}
+
+D = sum(d.get(j, 0) * t**j for j in range(1, N + 1))
+E = sp.series(sp.exp(D), t, 0, N + 1).removeO().expand()
+A = [sp.factor(E.coeff(t, n)) for n in range(N + 1)]
+
+
+def parity_reduce(expr):
+    """Reduce a polynomial expression modulo sigma**2 - 1."""
+    poly = sp.Poly(sp.expand(expr), sigma)
+    ans = 0
+    for (power,), coefficient in poly.terms():
+        ans += coefficient * (sigma if power % 2 else 1)
+    return sp.factor(ans)
+
+
+# Lambert-centered inverse: U = Psi(t,U), U = sum c_n t^n.
+U = sp.Integer(0)
+c = []
+for n in range(1, N + 1):
+    Q_at_shift = sigma * sum(
+        d.get(j, 0) * (t / (1 + t*U))**j
+        for j in range(1, N + 1)
+    )
+    Psi = -(sigma*sp.log(1 + t*U)/2 + Q_at_shift) / lam
+    cn = sp.series(Psi, t, 0, n + 1).removeO().expand().coeff(t, n)
+    cn = parity_reduce(cn)
+    c.append(cn)
+    U += cn * t**n
+
+
+# Direct inverse: V = Phi(t,V;H), V = sum P_n(H)t^n.
+V = sp.Integer(0)
+P = []
+for n in range(1, N + 1):
+    w = t * (V - sigma*H/2)
+    Q_at_direct_shift = sigma * sum(
+        d.get(j, 0) * (lam*t / (1 + w))**j
+        for j in range(1, N + 1)
+    )
+    Phi = -sigma*sp.log(1 + w)/2 - Q_at_direct_shift
+    pn = sp.series(Phi, t, 0, n + 1).removeO().expand().coeff(t, n)
+    pn = parity_reduce(pn)
+    P.append(pn)
+    V += pn * t**n
+
+for n, value in enumerate(A):
+    print("A", n, "=", value)
+for n, value in enumerate(c, 1):
+    print("c", n, "=", value)
+for n, value in enumerate(P, 1):
+    print("P", n, "=", value)
+\end{lstlisting}
+
+The recurrence form is usually faster than direct multivariate coefficient
+extraction.  At order \(N\), truncated-series arithmetic gives a
+straightforward \(\widetilde{\Ord}(N^2)\) implementation; Newton iteration
+for formal power series can reduce this further when thousands of terms are
+required.
+
+\section{Conclusions}
+
+The swing factorial is a compact example in which several asymptotic
+structures that are often studied separately occur at once.
+
+\begin{enumerate}
+\item Its parity split is leading-order information.  The correct forward
+      object is a two-component periodic transseries, and the correct inverse
+      is a pair of monotone branches.
+\item Duplication reduces both branches to one gamma ratio.  After removal of
+      its square-root scale, the entire logarithmic correction has the exact
+      Borel transform \(\tanh(t/2)/(2t)\).
+\item Bernoulli numbers give the logarithmic coefficients; complete Bell
+      polynomials exponentiate them; ordinary Bell polynomials organize
+      nonlinear reversion; and unsigned first-kind Stirling numbers give the
+      pure Lambert inverse block in closed form.
+\item The odd real inverse is normalized by \(W_0\), whereas the even real
+      inverse is normalized by \(W_{-1}\).  Missing this branch distinction
+      selects the wrong root before any asymptotic correction is computed.
+\item The Borel pole lattice supplies exact remainder signs, optimal
+      truncation, lateral Stokes jumps, and, through the inverse perturbation
+      operator, the full exponential-sector transport of every inverse
+      branch.
+\end{enumerate}
+
+All coefficients in both forward and inverse expansions are therefore
+computable by explicit finite formulae at arbitrary order.  No unspecified
+``successive matching'' step remains: each layer is either a Bernoulli
+number, a Bell polynomial, a Stirling number, or a coefficient extraction
+from a stated formal fixed-point equation.
+
+\appendix
+
+\section{Additional Lambert-centered coefficients}
+
+For completeness, the next four coefficients after
+\cref{eq:c5,eq:c6} are
+\begin{align}
+ c_7^{(\sigma)}={}&\frac1{53760\lambda^7}\Bigl(
+ 8160\sigma\lambda^6-4312\lambda^5+1428\sigma\lambda^4
+ +1050\lambda^3\notag\\
+ &\hspace{33mm}
+ -4025\sigma\lambda^2-2100\lambda-210\sigma\Bigr),
+ \label{eq:c7}\\
+ c_8^{(\sigma)}={}&\frac1{645120\lambda^8}\Bigl(
+ -48960\lambda^6+56056\sigma\lambda^5-40908\lambda^4
+ +15015\sigma\lambda^3\notag\\
+ &\hspace{33mm}
+ +50610\lambda^2+17010\sigma\lambda+1260\Bigr),
+ \label{eq:c8}\\
+ c_9^{(\sigma)}={}&-\frac1{1290240\lambda^9}\Bigl(
+ 1111040\sigma\lambda^8-413184\lambda^7+79616\sigma\lambda^6
+ +43512\lambda^5\notag\\
+ &\hspace{20mm}
+ -83748\sigma\lambda^4+83475\lambda^3+92610\sigma\lambda^2
+ +22050\lambda+1260\sigma\Bigr),
+ \label{eq:c9}\\
+ c_{10}^{(\sigma)}={}&\frac1{5160960\lambda^{10}}\Bigl(
+ 2222080\lambda^8-1756032\sigma\lambda^7+779152\lambda^6
+ -203280\sigma\lambda^5\notag\\
+ &\hspace{17mm}
+ -162582\lambda^4+487305\sigma\lambda^3+309960\lambda^2
+ +55440\sigma\lambda+2520\Bigr).
+ \label{eq:c10}
+\end{align}
+
+\section{A compact derivation from the general gamma-ratio expansion}
+
+The classical Tricomi--Erd\'elyi expansion for a ratio of gamma functions
+\cite{TricomiErdelyi,DLMFGamma} implies
+\begin{equation}\label{eq:general-gamma-ratio-log}
+ \log\frac{\Gamma(z+a)}{\Gamma(z+b)}
+ \sim(a-b)\log z+
+ \sum_{n\ge1}\frac{(-1)^{n+1}}
+ {n(n+1)z^n}\bigl(B_{n+1}(a)-B_{n+1}(b)\bigr),
+\end{equation}
+where \(B_n(x)\) are Bernoulli polynomials.  Taking
+\(a=1\), \(b=1/2\), and \(z=x/2\), then using
+\[
+ B_m(1/2)=(2^{1-m}-1)B_m,
+ \qquad B_{2r+1}=0\quad(r\ge1),
+\]
+reduces \cref{eq:general-gamma-ratio-log} to
+\cref{eq:d-Bernoulli}.  The Laplace proof in the main text is stronger for
+this special ratio because it simultaneously supplies the exact Borel
+transform and remainder sign.
+
+\begin{thebibliography}{99}
+
+\bibitem{OEISA056040}
+The OEIS Foundation,
+\emph{A056040: Swinging factorial},
+\url{https://oeis.org/A056040}.
+
+\bibitem{OEISA219931}
+P. Luschny and contributors,
+\emph{A219931: Coefficients related to an asymptotic expansion of the
+logarithm of the central binomial},
+The On-Line Encyclopedia of Integer Sequences,
+\url{https://oeis.org/A219931}.
+
+\bibitem{LuschnySwing}
+P. Luschny,
+\emph{Die schwingende Fakult\"at und Orbitalsysteme}, 2011,
+\url{https://oeis.org/A180000/a180000.pdf}.
+
+\bibitem{TricomiErdelyi}
+F. G. Tricomi and A. Erd\'elyi,
+The asymptotic expansion of a ratio of gamma functions,
+\emph{Pacific Journal of Mathematics} \textbf{1} (1951), 133--142,
+\url{https://doi.org/10.2140/pjm.1951.1.133}.
+
+\bibitem{DLMFGamma}
+NIST Digital Library of Mathematical Functions,
+\S5.11, \emph{Asymptotic Expansions of the Gamma Function},
+\url{https://dlmf.nist.gov/5.11}.
+
+\bibitem{CorlessLambertW}
+R. M. Corless, G. H. Gonnet, D. E. G. Hare, D. J. Jeffrey, and D. E. Knuth,
+On the Lambert \(W\) function,
+\emph{Advances in Computational Mathematics} \textbf{5} (1996), 329--359,
+\url{https://doi.org/10.1007/BF02124750}.
+
+\bibitem{DLMFLambertW}
+NIST Digital Library of Mathematical Functions,
+\S4.13, \emph{Lambert \(W\)-Function},
+\url{https://dlmf.nist.gov/4.13}.
+
+\bibitem{Comtet}
+L. Comtet,
+\emph{Advanced Combinatorics},
+D. Reidel, Dordrecht, 1974.
+
+\bibitem{FlajoletSedgewick}
+P. Flajolet and R. Sedgewick,
+\emph{Analytic Combinatorics},
+Cambridge University Press, 2009.
+
+\bibitem{Olver}
+F. W. J. Olver,
+\emph{Asymptotics and Special Functions},
+A K Peters, 1997 reprint.
+
+\bibitem{ParisKaminski}
+R. B. Paris and D. Kaminski,
+\emph{Asymptotics and Mellin--Barnes Integrals},
+Cambridge University Press, 2001.
+
+\bibitem{DLMFLagrange}
+NIST Digital Library of Mathematical Functions,
+\S1.10(vii), \emph{Lagrange Inversion Theorem},
+\url{https://dlmf.nist.gov/1.10}.
+
+\bibitem{ProveItCoeff}
+V. Reshetnikov,
+\emph{Combinatorial Coefficient Calculus}, ProveIt research draft,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Combinatorial_Coefficient_Calculus}.
+
+\bibitem{ProveItTransseries}
+V. Reshetnikov,
+\emph{Series and Transseries Research Drafts}, ProveIt,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries}.
+
+\end{thebibliography}
+
+\end{document}

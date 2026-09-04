@@ -1,0 +1,2853 @@
+\documentclass[11pt,a4paper,oneside,openany]{book}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{libertinus}
+\usepackage{microtype}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm,mathrsfs}
+\usepackage{booktabs,longtable,array,tabularx,multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
+
+\definecolor{deepolive}{RGB}{67,79,45}
+\definecolor{softolive}{RGB}{236,239,226}
+\definecolor{darkteal}{RGB}{31,83,84}
+\definecolor{warmgray}{RGB}{92,87,78}
+\definecolor{softcoral}{RGB}{246,225,219}
+\definecolor{linkblue}{RGB}{31,76,122}
+\definecolor{codeback}{RGB}{247,247,243}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=deepolive,
+  citecolor=darkteal,
+  urlcolor=linkblue,
+  pdftitle={The Butcher-Tree Counting Transseries and Its Asymptotic Inverse},
+  pdfauthor={A self-contained derivation prepared for Vladimir Reshetnikov},
+  pdfsubject={A000081, Polya trees, rooted trees, Lambert W, Puiseux expansions, inverse transseries}
+}
+
+\setlist{itemsep=2pt,topsep=4pt,parsep=1pt}
+\allowdisplaybreaks[3]
+\raggedbottom
+\emergencystretch=2em
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyfoot[C]{\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+}
+
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{identity}[theorem]{Identity}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{historical}[theorem]{Historical note}
+
+\newtcolorbox{masterbox}[1][]{
+  enhanced,breakable,colback=softolive,colframe=deepolive,
+  boxrule=0.7pt,arc=1mm,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  title={Master formula},fonttitle=\bfseries,#1
+}
+\newtcolorbox{warningbox}[1][]{
+  enhanced,breakable,colback=softcoral,colframe=warmgray,
+  boxrule=0.6pt,arc=1mm,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  title={Important qualification},fonttitle=\bfseries,#1
+}
+\newtcolorbox{resultbox}[1][]{
+  enhanced,breakable,colback=white,colframe=darkteal,
+  boxrule=0.8pt,arc=1mm,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  title={Principal result},fonttitle=\bfseries,#1
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codeback},
+  frame=single,
+  rulecolor=\color{warmgray},
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  keywordstyle=\bfseries\color{darkteal},
+  commentstyle=\itshape\color{warmgray}
+}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Coeff}[3]{[ #1^{#2}]\,#3}
+\newcommand{\Res}{\operatorname*{Res}}
+\newcommand{\Bell}[1]{\mathcal B_{#1}}
+\newcommand{\pBell}[2]{\mathcal B_{#1,#2}}
+\newcommand{\falling}[2]{#1^{\underline{#2}}}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\asympseries}{\sim_{\!\mathrm{asy}}}
+\newcommand{\LambertW}{W}
+\newcommand{\Tree}{\mathcal T}
+\newcommand{\Action}{\mathfrak A}
+\newcommand{\Stokes}{\mathfrak S}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\sgn}{sgn}
+
+\title{\Huge\bfseries The Butcher-Tree Counting Transseries\\[3mm]
+\Large All-Order P\'olya-Tree Asymptotics,\\
+Lambert--$W$ Reversion, and the Asymptotic Inverse of A000081}
+\author{A self-contained derivation prepared for Vladimir Reshetnikov}
+\date{September 2026}
+
+\begin{document}
+\frontmatter
+\hypersetup{pageanchor=false}
+\maketitle
+\hypersetup{pageanchor=true}
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+Let $a_n$ be OEIS A000081, the number of unlabelled, non-plane rooted trees with
+$n$ vertices.  These are the rooted-tree shapes that index classical Butcher
+series and B-series.  Their ordinary generating function
+\[
+ T(z)=\sum_{n\ge1}a_nz^n
+\]
+satisfies P\'olya's implicit multiset equation
+\[
+ T(z)=z\exp\!\left(\sum_{k\ge1}\frac{T(z^k)}{k}\right).
+\]
+This article develops the complete coefficient calculus associated with that
+equation.  We factor the generating function through the Cayley tree function,
+\[
+ T(z)=-W_0\!\left(-z\exp\!\left(\sum_{k\ge2}\frac{T(z^k)}{k}\right)\right),
+\]
+and exploit the universal square-root singularity of $W_0$ at $-1/e$.
+
+The first principal result is an all-orders Puiseux expansion at the dominant
+singularity $\rho$.  Every coefficient is given explicitly by a finite formula
+in universal Lambert coefficients, complete and partial Bell polynomials, and
+the derivatives of the analytic P\'olya disturbance.  Exact singularity
+transfer then gives
+\[
+ a_n\sim \rho^{-n}n^{-3/2}\sum_{k\ge0}\frac{A_k}{n^k},
+\]
+where every $A_k$ has a closed finite formula involving Bernoulli polynomials
+and Bell polynomials.  Numerically,
+\begin{align*}
+ \rho&=0.33832185689920769519611262571701705318\ldots,\\
+ \rho^{-1}&=2.95576528565199497471481752412319\ldots .
+\end{align*}
+and
+\begin{align*}
+ a_n\sim{}&0.439924012571025304040903391434545\ldots\,
+       \rho^{-n}n^{-3/2}\\
+ &\times\left(1+\frac{0.10040348009640143476\ldots}{n}+\cdots\right).
+\end{align*}
+
+The second principal result is the full asymptotic inverse.  After normalizing
+$x$ by $X=(-\log\rho)x$, the inverse problem reduces to
+\[
+ Z=X-\frac32\log X+K(X^{-1}),
+\]
+where the coefficients of $K$ are explicit Bell-polynomial transforms of the
+forward coefficients.  The entire logarithmic skeleton is summed exactly by
+the real branch $W_{-1}$, and the remaining correction is an ordinary inverse
+power series with a Lagrange--B\"urmann coefficient formula.  An equivalent
+polynomial--logarithmic expansion is supplied with a closed recurrence for all
+coefficient polynomials.
+
+Finally, we distinguish the smooth asymptotic inverse from the integer
+staircase inverse, derive the unavoidable periodic rounding layer, and give a
+contour-resolved transseries over the recursively generated singularity atlas.
+The first inherited singularity at $-\sqrt\rho$ is worked out explicitly.  It
+produces an alternating forward sector of size $\rho^{-n/2}n^{-3/2}$ and, after
+inversion, a log-periodic sector of magnitude
+$y^{-1/2}(\log y)^{-3/4}$.  Thus both the perturbative logarithmic expansion and
+the beyond-all-orders exponential sectors are described by general coefficient
+formulae.
+
+\chapter*{How to read the word ``full''}
+\addcontentsline{toc}{chapter}{How to read the word ``full''}
+There are three nested senses in which an asymptotic description can be full.
+\begin{enumerate}
+\item The \emph{dominant Poincar\'e sector} contains every inverse power of $n$
+      multiplying $\rho^{-n}n^{-3/2}$.  In this article its coefficients are
+      explicit and unconditional.
+\item The \emph{smooth inverse sector} contains every polynomial in
+      $\log\log y$ divided by a power of $\log y$, or equivalently every inverse
+      power correction to an exact $W_{-1}$ core.  Its coefficients are also
+      explicit and unconditional as formal asymptotic coefficients.
+\item A \emph{global transseries} additionally resolves exponentially smaller
+      contributions from other singularities of analytic continuation.  Since
+      the P\'olya-tree generating function has many sheets and the unit circle
+      is a natural boundary, such sectors must be indexed by a chosen
+      continuation sheet and contour.  We give the complete recursive local
+      calculus and the corresponding contour-resolved coefficient formula;
+      Stokes/intersection multipliers are retained whenever they depend on that
+      global choice.
+\end{enumerate}
+This distinction prevents the common but serious error of calling a single
+finite numerical expansion a transseries, and also prevents a sheet-dependent
+analytic-continuation statement from being presented as globally canonical.
+
+\tableofcontents
+
+\mainmatter
+
+\part{Combinatorics and Coefficient Calculus}
+
+\chapter{Butcher trees and the sequence A000081}
+\label{ch:butcher}
+
+\section{The objects being counted}
+A \emph{rooted tree} is a finite connected acyclic graph with one distinguished
+vertex.  It is \emph{non-plane} when the children of a vertex carry no left-to-right
+order, and it is \emph{unlabelled} when two trees differing only by a relabelling of
+vertices are identified.  Let $a_n$ be the number of isomorphism classes of such
+trees on $n$ vertices.  We use
+\[
+ a_0=0,
+ \qquad
+ (a_n)_{n\ge1}=1,1,2,4,9,20,48,115,286,719,1842,\ldots .
+\]
+This is OEIS A000081 \cite{OEISA000081,Otter1948}.  The same tree shapes occur as the combinatorial indices of
+Butcher series \cite{Butcher1963,Butcher1972,Butcher2021,McLachlan2017}: removing the root decomposes a tree into an unordered multiset of
+rooted trees, while grafting the roots of a multiset of trees to a new vertex
+reconstructs the original tree.
+
+The adjective ``Butcher'' describes the role of these shapes in numerical analysis;
+it does not change the enumeration.  A B-series assigns a coefficient and an
+elementary differential to each non-plane rooted tree.  Consequently $a_n$ is the
+number of possible tree shapes of order $n$ before method-dependent weights,
+symmetry factors, and elementary differentials are attached.
+
+\section{The multiset specification}
+Let $\Tree$ denote the combinatorial class of unlabelled non-plane rooted trees and
+let $\mathcal Z$ denote one atom.  The root decomposition is
+\begin{equation}
+ \Tree=\mathcal Z\times\operatorname{MSET}(\Tree).
+ \label{eq:species}
+\end{equation}
+For unlabelled objects, the multiset construction is encoded by the cycle index of
+the symmetric groups \cite{Polya1937,BergeronLabelleLeroux1998}.  Therefore the ordinary generating function
+\begin{equation}
+ T(z)=\sum_{n\ge1}a_nz^n
+ \label{eq:Tdef}
+\end{equation}
+satisfies
+\begin{equation}
+ \boxed{
+ T(z)=z\exp\!\left(\sum_{k\ge1}\frac{T(z^k)}{k}\right).}
+ \label{eq:polya-functional}
+\end{equation}
+The identity holds formally in $\mathbb Z[[z]]$; no analytic convergence is needed
+for its coefficientwise interpretation.
+
+\begin{proof}[Direct derivation]
+A multiset containing $m_j$ copies of each tree shape $j$ contributes the monomial
+$z^{\sum_jm_j|j|}$.  For one available object of size $r$, arbitrary multiplicity
+contributes $(1-z^r)^{-1}$.  Since there are $a_r$ possible shapes of size $r$, the
+forest attached to the root has generating function
+\[
+ \prod_{r\ge1}(1-z^r)^{-a_r}.
+\]
+Multiplication by the root gives
+\begin{equation}
+ T(z)=z\prod_{r\ge1}(1-z^r)^{-a_r}.
+ \label{eq:euler-product}
+\end{equation}
+Taking a formal logarithm and using
+$-\log(1-z^r)=\sum_{k\ge1}z^{rk}/k$ yields
+\[
+ \log\frac{T(z)}z
+ =\sum_{r\ge1}a_r\sum_{k\ge1}\frac{z^{rk}}k
+ =\sum_{k\ge1}\frac1k\sum_{r\ge1}a_r(z^k)^r
+ =\sum_{k\ge1}\frac{T(z^k)}k,
+\]
+which is \cref{eq:polya-functional}.
+\end{proof}
+
+\section{An exact quadratic-time recurrence}
+Define the divisor transform
+\begin{equation}
+ b_m=\sum_{d\mid m}d\,a_d.
+ \label{eq:bdivisor}
+\end{equation}
+Then the sequence is generated exactly by the following recurrence.
+
+\begin{theorem}[Otter--P\'olya recurrence]
+\label{thm:exact-recurrence}
+For $n\ge2$,
+\begin{equation}
+ \boxed{
+ (n-1)a_n=\sum_{j=1}^{n-1}b_j a_{n-j},
+ \qquad b_j=\sum_{d\mid j}d\,a_d,}
+ \label{eq:exact-recurrence}
+\end{equation}
+with $a_1=1$.
+\end{theorem}
+
+\begin{proof}
+Set $F(z)=T(z)/z=\sum_{n\ge0}a_{n+1}z^n$.  From
+\cref{eq:euler-product},
+\[
+ \log F(z)=\sum_{m\ge1}\frac{b_m}{m}z^m.
+\]
+Logarithmic differentiation gives
+\[
+ F'(z)=F(z)\sum_{m\ge1}b_mz^{m-1}.
+\]
+The coefficient of $z^{n-1}$ is
+\[
+ n a_{n+1}=\sum_{j=1}^{n}b_j a_{n-j+1}.
+\]
+Replacing $n$ by $n-1$ proves \cref{eq:exact-recurrence}.
+\end{proof}
+
+\begin{remark}[Why the recurrence is genuinely triangular]
+Although $b_n$ contains $a_n$, the formula for $a_n$ uses only $b_j$ with
+$j<n$.  After computing $a_n$, one may add the contribution $n a_n$ to every
+$b_{kn}$.  This sieve implementation takes $O(N^2)$ integer arithmetic operations
+for $a_1,\ldots,a_N$, and it avoids expansion of large products.
+\end{remark}
+
+\chapter{Bell polynomials, powers, and reversion}
+\label{ch:calculus}
+
+\section{Exponential Bell polynomials}
+For integers $n\ge k\ge0$, the exponential partial Bell polynomial is
+\begin{equation}
+ \pBell nk(x_1,x_2,\ldots)
+ =n!\!\sum_{\substack{m_1,m_2,\ldots\ge0\\
+              \sum_jm_j=k,\ \sum_jjm_j=n}}
+   \prod_{j\ge1}\frac1{m_j!}\left(\frac{x_j}{j!}\right)^{m_j}.
+ \label{eq:partial-bell}
+\end{equation}
+The complete polynomial is
+$\Bell n=\sum_{k=0}^n\pBell nk$.  We shall repeatedly use the generating identities
+\begin{align}
+ \frac1{k!}\left(\sum_{j\ge1}x_j\frac{t^j}{j!}\right)^k
+ &=\sum_{n\ge k}\pBell nk(x_1,x_2,\ldots)\frac{t^n}{n!},
+ \label{eq:bell-partial-egf}\\
+ \exp\!\left(\sum_{j\ge1}x_j\frac{t^j}{j!}\right)
+ &=\sum_{n\ge0}\Bell n(x_1,\ldots,x_n)\frac{t^n}{n!}.
+ \label{eq:bell-complete-egf}
+\end{align}
+These are exactly the coefficient packages required by Fa\`a di Bruno composition,
+exponentiation, and logarithmic conversion \cite{Comtet1974,ReshetnikovCCC}.
+
+\section{A unit-series power formula}
+Let
+\[
+ U(X)=1+\sum_{j\ge1}u_jX^j.
+\]
+For arbitrary $\beta\in\C$, formal binomial expansion and
+\cref{eq:bell-partial-egf} give
+\begin{equation}
+ \boxed{
+ \Coeff XN{U(X)^\beta}
+ =\frac1{N!}\sum_{k=0}^N\falling\beta k\,
+   \pBell Nk(1!u_1,2!u_2,\ldots),}
+ \label{eq:unit-power-bell}
+\end{equation}
+where $\falling\beta k=\beta(\beta-1)\cdots(\beta-k+1)$.
+Every sum in this article involving a fractional power of a unit series can
+therefore be reduced to a finite Bell-polynomial expression.
+
+\section{Lagrange--B\"urmann inversion}
+We record the form of Lagrange inversion used below
+\cite{Comtet1974,FlajoletSedgewick2009,ReshetnikovCCC}.
+
+\begin{theorem}[Lagrange--B\"urmann]
+\label{thm:lagrange}
+Let $q=w\phi(w)$ with $\phi(0)\ne0$, and let $w=w(q)$ be the inverse germ with
+$w(0)=0$.  Then, for $m\ge1$,
+\begin{equation}
+ \Coeff qm{w(q)}=\frac1m\Coeff u{m-1}{\phi(u)^{-m}}.
+ \label{eq:lagrange-basic}
+\end{equation}
+More generally, for a formal equation $w=t\Phi(w)$,
+\begin{equation}
+ w(t)=\sum_{m\ge1}\frac{t^m}{m!}
+ \left.\frac{\dd^{m-1}}{\dd u^{m-1}}\Phi(u)^m\right|_{u=0}.
+ \label{eq:lagrange-derivative}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Formal residue substitution gives
+\[
+ \Coeff qm{w(q)}=\Res_{q=0}\frac{w(q)}{q^{m+1}}\dd q.
+\]
+Substitute $q=u\phi(u)$ and integrate the derivative term formally.  The result is
+$m^{-1}\Coeff u{m-1}\phi(u)^{-m}$.  Applying the same identity to
+$w=t\Phi(w)$ and Taylor-expanding the coefficient gives
+\cref{eq:lagrange-derivative}.
+\end{proof}
+
+\section{Logarithms as Bell transforms}
+If $F(t)=1+\sum_{j\ge1}f_jt^j$, then
+\begin{equation}
+ \Coeff tn{\log F(t)}
+ =\frac1{n!}\sum_{k=1}^n(-1)^{k-1}(k-1)!
+   \pBell nk(1!f_1,2!f_2,\ldots).
+ \label{eq:log-bell}
+\end{equation}
+This identity will convert the forward asymptotic coefficients into the additive
+phase coefficients needed for inversion.
+
+\begin{masterbox}
+The entire calculation uses only four coefficient operations:
+\begin{enumerate}
+\item exact divisor convolution for the coefficients $a_n$;
+\item complete Bell polynomials for exponentials and derivative jets;
+\item partial Bell polynomials for arbitrary powers and logarithms;
+\item Lagrange--B\"urmann inversion for the Lambert branch and for the inverse
+      counting law.
+\end{enumerate}
+No coefficient is defined by an unnamed remainder or an implicit numerical fit.
+\end{masterbox}
+
+\part{The Dominant Forward Transseries}
+
+\chapter{Cayley--Lambert factorization and the dominant singularity}
+\label{ch:factorization}
+
+\section{Separating the self-interaction}
+Write
+\begin{equation}
+ R(z)=\sum_{k\ge2}\frac{T(z^k)}k,
+ \qquad
+ \zeta(z)=z\e^{R(z)}.
+ \label{eq:R-zeta}
+\end{equation}
+Then \cref{eq:polya-functional} becomes
+\begin{equation}
+ T(z)=\zeta(z)\e^{T(z)}.
+ \label{eq:T-zeta}
+\end{equation}
+Let $C(u)$ be the Cayley tree function, characterized near $u=0$ by
+$C=u\e^C$.  Since $C(u)=-W_0(-u)$ \cite{Corless1996,Genitrini2016},
+\begin{equation}
+ \boxed{T(z)=C(\zeta(z))=-W_0(-\zeta(z)).}
+ \label{eq:Lambert-factorization}
+\end{equation}
+The nontrivial P\'olya symmetries are now confined to the analytic disturbance
+$R$; the singular mechanism itself is the universal Lambert branch point.
+
+\section{A useful coefficient representation of the disturbance}
+From the exact coefficients of $T$,
+\begin{align}
+ R(z)
+ &=\sum_{k\ge2}\sum_{m\ge1}\frac{a_m}{k}z^{km}
+   =\sum_{r\ge2}h_rz^r,\label{eq:R-coeff}\\
+ h_r
+ &=\frac1r\sum_{\substack{d\mid r\\d<r}}d\,a_d
+   =\frac{b_r-r a_r}{r}.
+ \label{eq:h-coeff}
+\end{align}
+Unlike $a_r$, the coefficient $h_r$ depends only on tree numbers with indices at
+most $r/2$.  This is analytically decisive: $R$ has radius of convergence
+$\sqrt\rho$, whereas $T$ has radius $\rho$.
+
+\section{Characterization of the Otter singularity}
+Let $\rho$ be the radius of convergence of $T$.  Positivity and aperiodicity of
+$(a_n)$ imply that the positive real point $\rho$ is the unique singularity of
+$T$ on $|z|=\rho$.  Since $R$ is analytic for $|z|<\sqrt\rho$, the first
+singularity in \cref{eq:Lambert-factorization} occurs when its argument reaches
+the Cayley critical value $1/e$.  Hence
+\begin{equation}
+ T(\rho)=1,
+ \qquad
+ \zeta(\rho)=\frac1e,
+ \qquad
+ \log\rho+1+R(\rho)=0.
+ \label{eq:rho-characterization}
+\end{equation}
+The last equation is especially convenient numerically because the coefficients
+$h_r$ decay geometrically after multiplication by $\rho^r$.
+
+\begin{theorem}[Dominant square-root singularity]
+\label{thm:dominant-singularity}
+There is a unique $\rho\in(0,1)$ satisfying
+\cref{eq:rho-characterization}.  In a dented neighbourhood of $\rho$, $T$ has a
+convergent Puiseux expansion in powers of $(1-z/\rho)^{1/2}$.  Its leading term is
+\begin{equation}
+ T(z)=1-\sqrt{2\ell_1}\left(1-\frac z\rho\right)^{1/2}
+      +O\!\left(1-\frac z\rho\right),
+ \qquad
+ \ell_1=1+\rho R'(\rho)>0.
+ \label{eq:leading-singular}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The classical P\'olya--Otter argument gives a finite positive radius and the
+critical equations above \cite{Polya1937,Otter1948,FlajoletSedgewick2009}.  Differentiating $\zeta=z\e^R$ gives
+$e\rho\zeta'(\rho)=1+\rho R'(\rho)=\ell_1>0$.  The local inverse of
+$u\mapsto u\e^{-u}$ at its nondegenerate maximum $u=1$ therefore has a
+square-root branch, equivalently $W_0$ has its standard square-root branch at
+$-1/e$.  Substitution of the nonzero linear term of $1-e\zeta(z)$ gives
+\cref{eq:leading-singular}.  Aperiodicity excludes another singularity of equal
+modulus.
+\end{proof}
+
+\section{High-precision constants}
+Using \cref{eq:exact-recurrence,eq:h-coeff,eq:rho-characterization} gives
+\begin{align}
+ \rho={}&0.3383218568992076951961126257170170531837746075329677955723038\ldots,
+ \label{eq:rho-numeric}\\
+ \alpha:=\rho^{-1}={}&2.9557652856519949747148175241231945883754923046635965953504725\ldots,
+ \label{eq:alpha-numeric}\\
+ \lambda:=\log\alpha={}&1.0837575972446246604827119808961742790496621242026722349144271\ldots,
+ \label{eq:lambda-numeric}\\
+ R(\rho)={}&0.0837575972446246604827119808961742790496621242026722349144271\ldots.
+ \label{eq:Rrho-numeric}
+\end{align}
+The equality $\lambda=1+R(\rho)$ is an immediate rearrangement of
+\cref{eq:rho-characterization}.
+
+\chapter{The universal Lambert branch coefficients}
+\label{ch:universal-lambert}
+
+\section{A canonical square-root coordinate}
+Set
+\begin{equation}
+ w=1-T,
+ \qquad
+ q=\sqrt{2(1-e\zeta)}.
+ \label{eq:wq-def}
+\end{equation}
+Because $e\zeta=T\e^{1-T}=(1-w)\e^w$,
+\begin{align}
+ q^2
+ &=2\bigl(1-(1-w)\e^w\bigr)\notag\\
+ &=w^2 h(w),
+ \qquad
+ h(w)=\sum_{j\ge0}\frac{2}{(j+2)j!}w^j
+      =1+\frac23w+\frac14w^2+\frac1{15}w^3+\cdots .
+ \label{eq:q-w-h}
+\end{align}
+We choose the branch for which $q/w\to1$.  Then $q=w\sqrt{h(w)}$ is an ordinary
+invertible power series.
+
+\begin{theorem}[Universal Lambert coefficients]
+\label{thm:omega}
+The inverse series has the form
+\begin{equation}
+ w(q)=\sum_{m\ge1}\omega_mq^m,
+ \qquad
+ \boxed{
+ \omega_m=\frac1m\Coeff u{m-1}{h(u)^{-m/2}}.}
+ \label{eq:omega-master}
+\end{equation}
+Consequently
+\begin{equation}
+ -W_0(-\zeta)=1-\sum_{m\ge1}\omega_m
+        \bigl(2(1-e\zeta)\bigr)^{m/2}.
+ \label{eq:W-universal-expansion}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply \cref{thm:lagrange} to $q=w\phi(w)$ with
+$\phi(w)=\sqrt{h(w)}$.  This gives
+$\omega_m=m^{-1}[u^{m-1}]\phi(u)^{-m}$, which is
+\cref{eq:omega-master}.  Since $T=1-w$, substitution proves
+\cref{eq:W-universal-expansion}.
+\end{proof}
+
+The first universal coefficients are
+\begin{align}
+ w(q)={}&q-\frac13q^2+\frac{11}{72}q^3-\frac{43}{540}q^4
+ +\frac{769}{17280}q^5-\frac{221}{8505}q^6\notag\\
+ &+\frac{680863}{43545600}q^7-\frac{1963}{204120}q^8
+ +\frac{226287557}{37623398400}q^9
+ -\frac{5776369}{1515591000}q^{10}+\cdots .
+ \label{eq:omega-first}
+\end{align}
+They are rational and independent of the tree class.  Every class satisfying
+$T=\zeta\e^T$ with analytic $\zeta$ uses exactly the same sequence
+$(\omega_m)$; only the expansion of $1-e\zeta(z)$ changes.
+
+\chapter{Complete Puiseux expansion at the dominant singularity}
+\label{ch:puiseux}
+
+\section{Scaled logarithmic jets}
+Put
+\begin{equation}
+ X=1-\frac z\rho,
+ \qquad
+ L(z)=\log\zeta(z)=\log z+R(z),
+ \label{eq:X-L}
+\end{equation}
+and define the scaled jets
+\begin{equation}
+ \ell_j=\rho^jL^{(j)}(\rho)
+ =(-1)^{j-1}(j-1)!+\rho^jR^{(j)}(\rho).
+ \label{eq:ell-jets}
+\end{equation}
+The derivatives of $R$ are themselves explicit convergent sums:
+\begin{equation}
+ \rho^jR^{(j)}(\rho)
+ =\sum_{m\ge j}h_m\falling mj\rho^m.
+ \label{eq:R-derivative-sum}
+\end{equation}
+Define
+\begin{equation}
+ S(X)=2\bigl(1-e\zeta(\rho(1-X))\bigr)
+     =\sum_{j\ge1}s_jX^j.
+ \label{eq:S-def}
+\end{equation}
+Since $e\zeta(\rho)=1$, complete Bell polynomials exponentiate the Taylor
+series of $L+1$.
+
+\begin{lemma}[Disturbance coefficients]
+\label{lem:sj}
+For $j\ge1$,
+\begin{equation}
+ \boxed{
+ s_j=\frac{2(-1)^{j+1}}{j!}
+ \Bell j(\ell_1,\ell_2,\ldots,\ell_j).}
+ \label{eq:sj-bell}
+\end{equation}
+In particular $s_1=2\ell_1=2(1+\rho R'(\rho))>0$.
+\end{lemma}
+
+\begin{proof}
+Taylor expansion at $z=\rho$ gives
+\[
+ 1+L(\rho(1-X))
+ =\sum_{j\ge1}(-1)^j\ell_j\frac{X^j}{j!}.
+\]
+Use \cref{eq:bell-complete-egf}.  Every monomial of
+$\Bell j$ has weighted degree $j$, so replacing $\ell_r$ by
+$(-1)^r\ell_r$ multiplies the polynomial by $(-1)^j$.  Since
+$S=2(1-\exp(1+L))$, the stated sign follows.
+\end{proof}
+
+\section{The all-order coefficient formula}
+Normalize
+\begin{equation}
+ U(X)=\frac{S(X)}{s_1X}
+ =1+\sum_{j\ge1}u_jX^j,
+ \qquad
+ u_j=\frac{s_{j+1}}{s_1}.
+ \label{eq:U-def}
+\end{equation}
+Then $q=S(X)^{1/2}=s_1^{1/2}X^{1/2}U(X)^{1/2}$.  Write
+\begin{equation}
+ T(z)=1+\sum_{r\ge1}t_rX^{r/2}.
+ \label{eq:puiseux-def}
+\end{equation}
+
+\begin{resultbox}[title={All Puiseux coefficients}]
+For every $r\ge1$,
+\begin{equation}
+ \boxed{
+ t_r=-\!\sum_{\substack{1\le m\le r\\m\equiv r\ (\mathrm{mod}\,2)}}
+ \omega_m s_1^{m/2}
+ \Coeff X{(r-m)/2}{U(X)^{m/2}}.}
+ \label{eq:tr-master}
+\end{equation}
+The remaining power coefficient is the finite Bell sum
+\begin{equation}
+ \Coeff XN{U(X)^{m/2}}
+ =\frac1{N!}\sum_{k=0}^N\falling{m/2}k
+ \pBell Nk(1!u_1,2!u_2,\ldots).
+ \label{eq:tr-power-bell}
+\end{equation}
+Thus $t_r$ is a finite expression in $\omega_1,\ldots,\omega_r$ and
+$\ell_1,\ldots,\ell_{(r+1)/2}$.
+\end{resultbox}
+
+\begin{proof}
+Substitute $q=s_1^{1/2}X^{1/2}U^{1/2}$ into
+$T=1-\sum_m\omega_mq^m$.  A term with index $m$ can contribute to
+$X^{r/2}$ only if $r-m$ is a nonnegative even integer.  Extracting that
+coefficient gives \cref{eq:tr-master}, and
+\cref{eq:unit-power-bell} gives \cref{eq:tr-power-bell}.
+\end{proof}
+
+The first few coefficients, useful for hand checks, are
+\begin{align}
+ t_1={}&-\sqrt{s_1},\label{eq:t1}\\
+ t_2={}&\frac{s_1}{3},\label{eq:t2}\\
+ t_3={}&-\frac{11s_1^2+36s_2}{72\sqrt{s_1}},\label{eq:t3}\\
+ t_4={}&\frac{43s_1^2+180s_2}{540},\label{eq:t4}\\
+ t_5={}&-\frac{769s_1^4+3960s_1^2s_2+8640s_1s_3-2160s_2^2}
+ {17280s_1^{3/2}},\label{eq:t5}\\
+ t_6={}&\frac{442s_1^3+2709s_1s_2+5670s_3}{17010}.
+ \label{eq:t6}
+\end{align}
+
+\section{Numerical Puiseux coefficients}
+The first coefficients generated from \cref{eq:tr-master} are shown in
+\cref{tab:puiseux}.  The displayed digits agree with the independent
+calculations of Genitrini and continue directly to arbitrary order.
+
+\begin{longtable}{r@{\qquad}r}
+\caption{Coefficients in $T(z)=1+\sum_{r\ge1}t_r(1-z/\rho)^{r/2}$.}
+\label{tab:puiseux}\\
+\toprule
+$r$ & $t_r$\\
+\midrule
+\endfirsthead
+\toprule
+$r$ & $t_r$\\
+\midrule
+\endhead
+1  & $-1.559490020374640885542207396$\\
+2  & $ \phantom{-}0.8106697078826992814381417462$\\
+3  & $-0.2854870216128456053038513708$\\
+4  & $ \phantom{-}0.1653723657120838934765135390$\\
+5  & $-0.3424599704021542010422002117$\\
+6  & $ \phantom{-}0.3174072259465285635680708874$\\
+7  & $-0.1077788002916310091822310895$\\
+8  & $ \phantom{-}0.06138495705583510468873149925$\\
+9  & $-0.1952123835975564636127698720$\\
+10 & $ \phantom{-}0.2059848312779074187361657348$\\
+11 & $-0.05272470849819056231533821627$\\
+12 & $ \phantom{-}0.01702656875495366944604539502$\\
+13 & $-0.1523706243663253962860946421$\\
+14 & $ \phantom{-}0.1737028832998504628939446698$\\
+15 & $-0.01447370373952704485673111250$\\
+16 & $-0.02189951761121556223267283747$\\
+17 & $-0.1445471935709097054769461137$\\
+18 & $ \phantom{-}0.1760771088850177790623322866$\\
+\bottomrule
+\end{longtable}
+
+\begin{remark}[Analytic versus singular terms]
+The even indices $t_{2j}X^j$ are analytic at $z=\rho$.  Any fixed analytic
+monomial contributes no Taylor coefficients once $n>j$; the algebraic
+coefficient asymptotics from the dominant point therefore depend only on the
+odd coefficients $t_{2j+1}$.  The analytic part is not discarded globally: its
+continuation participates in the exponentially smaller sectors studied in
+Part~IV.
+\end{remark}
+
+\chapter{From Puiseux coefficients to the full asymptotic sequence}
+\label{ch:transfer}
+
+\section{Exact coefficient extraction for a singular monomial}
+For $\beta\notin\N_0$,
+\begin{equation}
+ \Coeff zn{\left(1-\frac z\rho\right)^\beta}
+ =\rho^{-n}\frac{\Gamma(n-\beta)}{\Gamma(-\beta)\Gamma(n+1)}.
+ \label{eq:exact-binomial-transfer}
+\end{equation}
+The ratio of gamma functions has a complete inverse-power expansion.  Let
+$B_m(x)$ denote the Bernoulli polynomials, with
+$te^{xt}/(e^t-1)=\sum_{m\ge0}B_m(x)t^m/m!$.  Define
+\begin{equation}
+ d_m(\beta)=
+ \frac{(-1)^{m+1}}{m(m+1)}
+ \bigl(B_{m+1}(-\beta)-B_{m+1}(1)\bigr),
+ \qquad m\ge1,
+ \label{eq:d-beta}
+\end{equation}
+and let $g_r(\beta)$ be determined by
+\begin{equation}
+ \exp\!\left(\sum_{m\ge1}d_m(\beta)t^m\right)
+ =\sum_{r\ge0}g_r(\beta)t^r.
+ \label{eq:g-beta-def}
+\end{equation}
+Equivalently,
+\begin{align}
+ g_0(\beta)&=1,\label{eq:g0}\\
+ g_r(\beta)&=\frac1r\sum_{m=1}^r m\,d_m(\beta)g_{r-m}(\beta),
+ \label{eq:g-recurrence}\\
+ g_r(\beta)&=\frac1{r!}\Bell r(1!d_1(\beta),2!d_2(\beta),\ldots,r!d_r(\beta)).
+ \label{eq:g-bell}
+\end{align}
+
+\begin{theorem}[Gamma-ratio transfer coefficients]
+\label{thm:gamma-ratio}
+For fixed $\beta$ and $n\to\infty$ in a sector excluding the negative real axis,
+\begin{equation}
+ \frac{\Gamma(n-\beta)}{\Gamma(n+1)}
+ \sim n^{-\beta-1}\sum_{r\ge0}\frac{g_r(\beta)}{n^r}.
+ \label{eq:gamma-ratio-expansion}
+\end{equation}
+The coefficients are given by any of
+\cref{eq:g-beta-def,eq:g-recurrence,eq:g-bell}.
+\end{theorem}
+
+\begin{proof}
+The Bernoulli-polynomial form of Stirling's expansion gives
+\[
+ \log\frac{\Gamma(n-\beta)}{\Gamma(n+1)}
+ =-(\beta+1)\log n+
+ \sum_{m\ge1}\frac{d_m(\beta)}{n^m}.
+\]
+Exponentiating and using the complete Bell-polynomial identity proves the
+claim.  The recurrence follows by differentiating
+\cref{eq:g-beta-def} and comparing coefficients.
+\end{proof}
+
+For example,
+\begin{equation}
+ \bigl(g_r(1/2)\bigr)_{r\ge0}
+ =1,\frac38,\frac{25}{128},\frac{105}{1024},
+   \frac{1659}{32768},\frac{6237}{262144},\ldots .
+ \label{eq:g-half}
+\end{equation}
+
+\section{All forward coefficients}
+Combining the odd Puiseux terms with
+\cref{eq:exact-binomial-transfer,eq:gamma-ratio-expansion} yields the desired
+complete Poincar\'e sector.
+
+\begin{theorem}[Full dominant expansion of A000081]
+\label{thm:full-forward}
+For every fixed $K\ge0$,
+\begin{equation}
+ a_n=\rho^{-n}n^{-3/2}
+ \left(\sum_{k=0}^{K}\frac{A_k}{n^k}
+ +O(n^{-K-1})\right),
+ \qquad n\to\infty,
+ \label{eq:forward-A}
+\end{equation}
+where
+\begin{equation}
+ \boxed{
+ A_k=\sum_{j=0}^{k}
+ \frac{t_{2j+1}}{\Gamma(-j-1/2)}
+ g_{k-j}\!\left(j+\frac12\right).}
+ \label{eq:Ak-master}
+\end{equation}
+Equivalently, writing $\Theta_k=\sqrt\pi A_k$,
+\begin{equation}
+ \boxed{
+ \Theta_k=\sum_{j=0}^{k}
+ t_{2j+1}g_{k-j}\!\left(j+\frac12\right)
+ \frac{(2j+2)!}{(-4)^{j+1}(j+1)!}.}
+ \label{eq:Theta-master}
+\end{equation}
+Every coefficient is therefore a finite expression in rational universal
+constants, Bernoulli polynomials, Bell polynomials, and the disturbance jets
+$\ell_1,\ldots,\ell_{k+1}$.
+\end{theorem}
+
+\begin{proof}
+The term $t_{2j+1}X^{j+1/2}$ contributes
+\[
+ \rho^{-n}\frac{t_{2j+1}}{\Gamma(-j-1/2)}
+ n^{-j-3/2}\sum_{r\ge0}\frac{g_r(j+1/2)}{n^r}.
+\]
+To obtain the coefficient of $n^{-k-3/2}$, set $r=k-j$ and sum over
+$0\le j\le k$.  Finally use
+\[
+ \Gamma\!\left(-j-\frac12\right)
+ =\frac{(-4)^{j+1}(j+1)!\sqrt\pi}{(2j+2)!}
+\]
+to obtain \cref{eq:Theta-master}.  Standard singularity analysis in a
+$\Delta$-domain at the unique dominant singularity gives the stated remainder
+at every fixed order \cite{FlajoletOdlyzko1990,Genitrini2016}.
+\end{proof}
+
+The first normalized transfer identities are particularly simple:
+\begin{align}
+ \Theta_0={}&-\frac12t_1,\label{eq:Theta0-t}\\
+ \Theta_1={}&-\frac3{16}t_1+\frac34t_3,\label{eq:Theta1-t}\\
+ \Theta_2={}&-\frac{25}{256}t_1+\frac{45}{32}t_3-\frac{15}{8}t_5,
+ \label{eq:Theta2-t}\\
+ \Theta_3={}&-\frac{105}{2048}t_1+\frac{1155}{512}t_3
+              -\frac{525}{64}t_5+\frac{105}{16}t_7,
+ \label{eq:Theta3-t}\\
+ \Theta_4={}&-\frac{1659}{65536}t_1+\frac{14175}{4096}t_3
+              -\frac{26775}{1024}t_5+\frac{6615}{128}t_7
+              -\frac{945}{32}t_9.
+ \label{eq:Theta4-t}
+\end{align}
+
+\section{The leading Otter constant}
+Since $t_1=-\sqrt{2\ell_1}$,
+\begin{equation}
+ A_0=-\frac{t_1}{2\sqrt\pi}
+ =\sqrt{\frac{\ell_1}{2\pi}}
+ =\sqrt{\frac{1+\rho R'(\rho)}{2\pi}}.
+ \label{eq:Otter-constant-formula}
+\end{equation}
+Numerically,
+\begin{equation}
+ A_0=0.43992401257102530404090339143454476479808540794012\ldots .
+ \label{eq:A0-numeric}
+\end{equation}
+Thus the classical first-order form is
+\begin{equation}
+ a_n\sim
+ 0.4399240125710253040409\ldots\,
+ (2.9557652856519949747148\ldots)^n n^{-3/2}.
+ \label{eq:Otter-leading}
+\end{equation}
+
+\section{Numerical coefficient table}
+It is convenient to display $\Theta_k=\sqrt\pi A_k$, so that
+\begin{equation}
+ a_n\sim\frac{\rho^{-n}}{\sqrt{\pi n^3}}
+ \sum_{k\ge0}\frac{\Theta_k}{n^k}.
+ \label{eq:forward-Theta}
+\end{equation}
+
+\begin{longtable}{r@{\qquad}r}
+\caption{Forward coefficients in \cref{eq:forward-Theta}.}
+\label{tab:forward-coeff}\\
+\toprule
+$k$ & $\Theta_k$\\
+\midrule
+\endfirsthead
+\toprule
+$k$ & $\Theta_k$\\
+\midrule
+\endhead
+0  & $0.7797450101873204427711036979$\\
+1  & $0.07828911261061096206127535867$\\
+2  & $0.3929402676631860184743155979$\\
+3  & $1.537879315978838091102498124$\\
+4  & $8.200844090435596159219524856$\\
+5  & $57.29291473494343787739929540$\\
+6  & $503.0445050262735818247740217$\\
+7  & $5359.600933884326033403142719$\\
+8  & $67342.06920114653048340562550$\\
+9  & $975425.4970695924732213025531$\\
+10 & $15996932.49293173312960557140$\\
+11 & $292822531.3353392231145687742$\\
+12 & $5914523441.293932519117404924$\\
+\bottomrule
+\end{longtable}
+
+Factoring out $A_0$ gives
+\begin{equation}
+ a_n\sim A_0\alpha^n n^{-3/2}F(n^{-1}),
+ \qquad
+ F(u)=1+\sum_{k\ge1}c_ku^k,
+ \qquad c_k=\frac{A_k}{A_0}=\frac{\Theta_k}{\Theta_0}.
+ \label{eq:F-forward}
+\end{equation}
+The first relative coefficients are
+\begin{align}
+ c_1={}&0.1004034800964014347637283944\ldots,\notag\\
+ c_2={}&0.5039343151023035331021858170\ldots,\notag\\
+ c_3={}&1.972284908382278469205675365\ldots,\notag\\
+ c_4={}&10.51734090413157399273764936\ldots,\notag\\
+ c_5={}&73.47647498402047106416577934\ldots,\notag\\
+ c_6={}&645.1397552456612928153464923\ldots.
+ \label{eq:c-numeric}
+\end{align}
+
+\section{Numerical validation and optimal truncation}
+\Cref{tab:forward-errors} compares exact integers from
+\cref{eq:exact-recurrence} with truncations after $n^{-K}$.  The entries are
+signed relative errors $(a_n^{[K]}-a_n)/a_n$.
+
+\begin{table}[htbp]
+\centering
+\caption{Signed relative errors of the forward expansion.}
+\label{tab:forward-errors}
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{3.1pt}
+\begin{tabular}{r*{7}{r}}
+\toprule
+$n$ & $K=0$ & $K=1$ & $K=2$ & $K=4$ & $K=6$ & $K=8$ & $K=10$\\
+\midrule
+20  & $-6.58\,10^{-3}$ & $-1.59\,10^{-3}$ & $-3.42\,10^{-4}$ & $-3.18\,10^{-5}$ & $ 1.04\,10^{-6}$ & $ 9.73\,10^{-6}$ & $ 1.41\,10^{-5}$\\
+50  & $-2.22\,10^{-3}$ & $-2.19\,10^{-4}$ & $-1.77\,10^{-5}$ & $-2.88\,10^{-7}$ & $-1.20\,10^{-8}$ & $-9.84\,10^{-10}$& $-1.36\,10^{-10}$\\
+100 & $-1.06\,10^{-3}$ & $-5.24\,10^{-5}$ & $-2.08\,10^{-6}$ & $-8.06\,10^{-9}$ & $-7.88\,10^{-11}$& $-1.50\,10^{-12}$& $-4.73\,10^{-14}$\\
+200 & $-5.15\,10^{-4}$ & $-1.28\,10^{-5}$ & $-2.53\,10^{-7}$ & $-2.40\,10^{-10}$& $-5.73\,10^{-13}$& $-2.66\,10^{-15}$& $-2.04\,10^{-17}$\\
+500 & $-2.03\,10^{-4}$ & $-2.03\,10^{-6}$ & $-1.59\,10^{-8}$ & $-2.39\,10^{-12}$& $-9.02\,10^{-16}$& $-6.62\,10^{-19}$& $-8.01\,10^{-22}$\\
+\bottomrule
+\end{tabular}
+\endgroup
+\end{table}
+
+At fixed $n$ the expansion is asymptotic, not convergent: the improvement stops
+when the growing coefficients overcome the powers of $n$.  For example, at
+$n=20$ the sixth-order truncation is better than the eighth- or tenth-order
+truncation.  This late-term growth is the perturbative shadow of farther
+singularities, which are made explicit in Part~IV.
+
+\chapter{A reproducible coefficient pipeline}
+\label{ch:algorithm}
+
+\section{Dependency graph}
+The coefficient calculation is triangular in the following sense.
+\begin{center}
+\begin{tikzpicture}[
+ node distance=7mm and 10mm,
+ box/.style={draw=deepolive,rounded corners,fill=softolive,align=center,
+             minimum height=9mm,inner sep=2mm},
+ arr/.style={-{Latex[length=2mm]},thick,draw=darkteal}]
+\node[box] (a) {$a_1,\ldots,a_N$\\divisor recurrence};
+\node[box,right=of a] (h) {$h_m$ and $R(z)$\\\cref{eq:h-coeff}};
+\node[box,right=of h] (rho) {$\rho$ and jets $\ell_j$\\\cref{eq:rho-characterization,eq:ell-jets}};
+\node[box,below=of rho] (s) {$s_j,U(X)$\\complete Bell};
+\node[box,left=of s] (t) {$t_r$\\Lambert + partial Bell};
+\node[box,left=of t] (A) {$A_k,c_k$\\gamma transfer};
+\node[box,below=of A] (eta) {$\eta_k$\\logarithmic Bell transform};
+\node[box,right=of eta] (inv) {inverse coefficients\\$D_k$ or $P_k(L)$};
+\draw[arr] (a)--(h);
+\draw[arr] (h)--(rho);
+\draw[arr] (rho)--(s);
+\draw[arr] (s)--(t);
+\draw[arr] (t)--(A);
+\draw[arr] (A)--(eta);
+\draw[arr] (eta)--(inv);
+\end{tikzpicture}
+\end{center}
+No high-order nonlinear system is solved.  At every stage, the coefficient of
+order $r$ depends only on data of order at most $r$.
+
+\section{Exact integer stage}
+The following Python-like pseudocode realizes
+\cref{eq:exact-recurrence}.  The array $b$ is updated as a divisor sieve.
+
+\begin{lstlisting}[language=Python,caption={Exact generation of A000081.}]
+def rooted_tree_numbers(N):
+    a = [0] * (N + 1)
+    b = [0] * (N + 1)   # b[m] = sum_{d | m} d*a[d]
+
+    a[1] = 1
+    for m in range(1, N + 1):
+        b[m] += 1       # contribution of d = 1
+
+    for n in range(2, N + 1):
+        numerator = sum(b[j] * a[n-j] for j in range(1, n))
+        assert numerator % (n - 1) == 0
+        a[n] = numerator // (n - 1)
+
+        for m in range(n, N + 1, n):
+            b[m] += n * a[n]
+    return a, b
+\end{lstlisting}
+
+The coefficients of $R$ are then exactly
+\begin{equation}
+ h_m=\frac{b_m-ma_m}{m}.
+ \label{eq:algorithm-h}
+\end{equation}
+In fact $h_m$ is rational, though the defining proper-divisor sum often makes
+its denominator cancellation transparent.
+
+\section{Finding \texorpdfstring{$\rho$}{rho} and its jets}
+For a target precision of $P$ decimal digits, choose $N$ so that
+$(\sqrt\rho)^N$ is safely below $10^{-P}$, compute $a_1,\ldots,a_N$, and solve
+\begin{equation}
+ f(x)=\log x+1+\sum_{m=2}^{N}h_mx^m=0
+ \label{eq:rho-truncated-equation}
+\end{equation}
+by Newton or safeguarded secant iteration.  The omitted tail is geometrically
+small because $R$ is analytic in $|z|<\sqrt\rho$.  Once $\rho$ is known,
+\cref{eq:R-derivative-sum} evaluates all required jets by rapidly convergent
+sums.
+
+\section{Formal-series stage}
+For requested forward order $K$, it is enough to compute
+\begin{enumerate}
+\item $\ell_1,\ldots,\ell_{K+1}$;
+\item $s_1,\ldots,s_{K+1}$ by \cref{eq:sj-bell};
+\item $\omega_1,\ldots,\omega_{2K+1}$ by \cref{eq:omega-master};
+\item $t_1,t_3,\ldots,t_{2K+1}$ by \cref{eq:tr-master};
+\item $g_r(j+1/2)$ for $j+r\le K$ by \cref{eq:g-recurrence};
+\item $A_0,\ldots,A_K$ by \cref{eq:Ak-master}.
+\end{enumerate}
+Naive polynomial arithmetic costs $O(K^3)$ scalar operations.  Bell recurrences,
+FFT multiplication, and relaxed power-series methods reduce this when hundreds
+or thousands of coefficients are required.  For the orders normally useful in
+numerical asymptotics, the naive triangular implementation is simpler and more
+reliable.
+
+\begin{warningbox}[title={Precision discipline}]
+The asymptotic coefficients eventually grow rapidly.  A calculation of
+$A_K$ with $d$ reliable digits may require substantially more than $d$ working
+digits because \cref{eq:Ak-master} combines alternating contributions from
+several Puiseux coefficients.  The calculation underlying the tables used 90--120
+decimal working digits and exact rational arithmetic for the universal
+coefficients and gamma-ratio coefficients.
+\end{warningbox}
+
+\part{The Asymptotic Inverse}
+
+\chapter{What it means to invert a sequence}
+\label{ch:inverse-meaning}
+
+\section{Three inverse objects}
+A sequence is not literally a real-variable function, and A000081 begins with
+$a_1=a_2=1$.  The phrase ``inverse of the sequence'' can therefore denote three
+different objects.
+
+\begin{definition}[Smooth asymptotic inverse]
+Let
+\begin{equation}
+ \mathcal A(x)=A_0\alpha^x x^{-3/2}F(x^{-1})
+ \label{eq:smooth-interpolant}
+\end{equation}
+be the formal asymptotic interpolation obtained from
+\cref{eq:F-forward}.  Its asymptotic inverse $\nu(y)$ is the formal solution of
+$\mathcal A(\nu(y))=y$ with $\nu(y)\to+\infty$.
+\end{definition}
+
+\begin{definition}[Generalized integer inverse]
+For $y>1$, define
+\begin{equation}
+ N_*(y)=\min\{n\ge2:a_n\ge y\}.
+ \label{eq:integer-inverse}
+\end{equation}
+This is a right-continuous staircase.
+\end{definition}
+
+\begin{definition}[Exact interpolated inverse]
+Choose a monotone interpolation $\mathcal A_{\rm ex}(x)$ satisfying
+$\mathcal A_{\rm ex}(n)=a_n$; for example, interpolate $\log a_n$ linearly on
+each interval $[n,n+1]$.  Let $\nu_{\rm ex}$ be its ordinary inverse.
+\end{definition}
+
+The smooth inverse is canonical at the level of asymptotic series.  The exact
+interpolated inverse depends on the chosen interpolation between integers, and
+the generalized integer inverse retains an order-one rounding oscillation.
+These distinctions do not affect the coefficients derived below, but they do
+affect claims of pointwise accuracy smaller than one.
+
+\section{The unavoidable rounding layer}
+For nonintegral $x$,
+\begin{equation}
+ \lceil x\rceil
+ =x+\frac12+\frac1\pi\sum_{m\ge1}\frac{\sin(2\pi mx)}m,
+ \label{eq:ceiling-fourier}
+\end{equation}
+with the usual midpoint interpretation at integers.  Thus, once an exact
+monotone interpolation has been chosen,
+\begin{equation}
+ N_*(y)=\lceil\nu_{\rm ex}(y)\rceil.
+ \label{eq:integer-via-exact}
+\end{equation}
+The Fourier series in \cref{eq:ceiling-fourier} is not a small correction: it
+is an $O(1)$ periodic layer.  Consequently no smooth function can approximate
+$N_*(y)$ uniformly with error $o(1)$ for all real $y$.  At the special values
+$y=a_n$, however, the smooth inverse satisfies
+$\nu(a_n)=n+o(1)$, and successive asymptotic orders make this error arbitrarily
+small before the divergent late-term regime is reached.
+
+\begin{warningbox}
+An expansion such as $N_*(y)=\nu(y)+o(1)$ is false uniformly in $y$.  The correct
+statement is either about the smooth inverse $\nu$, about values $y=a_n$, or
+about a rounded exact interpolation.  The integer staircase and the analytic
+inverse must not be silently identified.
+\end{warningbox}
+
+\chapter{Normalization of the inverse problem}
+\label{ch:inverse-normalization}
+
+\section{Logarithmic phase}
+Set
+\begin{equation}
+ p=\frac32,
+ \qquad
+ C=A_0,
+ \qquad
+ \lambda=\log\alpha=-\log\rho.
+ \label{eq:p-C-lambda}
+\end{equation}
+Starting from
+$y=C\e^{\lambda x}x^{-p}F(x^{-1})$, introduce
+\begin{equation}
+ X=\lambda x,
+ \qquad
+ Z=\log\frac{y}{C\lambda^p}.
+ \label{eq:XZ}
+\end{equation}
+Then
+\begin{equation}
+ Z=X-p\log X+K(X^{-1}),
+ \label{eq:normalized-inverse-equation}
+\end{equation}
+where
+\begin{equation}
+ K(v)=\log F(\lambda v)=\sum_{k\ge1}\eta_kv^k.
+ \label{eq:K-eta}
+\end{equation}
+The logarithm is the key simplification: the multiplicative forward correction
+becomes an additive inverse-power phase.
+
+\section{General coefficient formula for the phase}
+By \cref{eq:log-bell},
+\begin{equation}
+ \boxed{
+ \eta_n=\frac1{n!}\sum_{k=1}^n(-1)^{k-1}(k-1)!
+ \pBell nk(1!c_1\lambda,2!c_2\lambda^2,\ldots).}
+ \label{eq:eta-master}
+\end{equation}
+In particular,
+\begin{align}
+ \eta_1&=\lambda c_1,\notag\\
+ \eta_2&=\lambda^2\left(c_2-\frac12c_1^2\right),\notag\\
+ \eta_3&=\lambda^3\left(c_3-c_1c_2+\frac13c_1^3\right),\notag\\
+ \eta_4&=\lambda^4\left(c_4-c_1c_3-\frac12c_2^2+c_1^2c_2-\frac14c_1^4\right).
+ \label{eq:eta-first-symbolic}
+\end{align}
+Numerically,
+\begin{align}
+ \eta_1={}&0.1088130343442745145167554784\ldots,\notag\\
+ \eta_2={}&0.5859660997717814776889432009\ldots,\notag\\
+ \eta_3={}&2.446558573456779649881479860\ldots,\notag\\
+ \eta_4={}&14.06753235112498242303023266\ldots,\notag\\
+ \eta_5={}&106.8546611534523691271119951\ldots,\notag\\
+ \eta_6={}&1022.176467223247872767588518\ldots.
+ \label{eq:eta-numeric}
+\end{align}
+Also
+\begin{equation}
+ C\lambda^p
+ =0.4963361416595997474727369464252249134814\ldots .
+ \label{eq:Clambdap}
+\end{equation}
+
+\chapter{\texorpdfstring{Lambert--$W$}{Lambert--W} core and an ordinary correction series}
+\label{ch:inverse-lambert}
+
+\section{Exact summation of the logarithmic skeleton}
+First omit $K$ and solve
+\begin{equation}
+ X_0-p\log X_0=Z.
+ \label{eq:Lambert-core-equation}
+\end{equation}
+The large positive solution is
+\begin{equation}
+ \boxed{
+ X_0=-pW_{-1}\!\left(-\frac1p\e^{-Z/p}\right).}
+ \label{eq:X0-W}
+\end{equation}
+Indeed, with $r=X_0/p$,
+$r\e^{-r}=\e^{-Z/p}/p$, and the large solution corresponds to the branch
+$W_{-1}$.  This single expression resums the complete tower
+$Z+p\log Z+p^2\log Z/Z+\cdots$ generated by the power-law prefactor
+$x^{-p}$.
+
+\section{Correction about the exact core}
+Write
+\begin{equation}
+ X=X_0+\delta.
+ \label{eq:X-delta}
+\end{equation}
+Subtracting \cref{eq:Lambert-core-equation} from
+\cref{eq:normalized-inverse-equation} gives
+\begin{equation}
+ \delta=p\log\left(1+\frac{\delta}{X_0}\right)
+ -K\!\left(\frac1{X_0+\delta}\right).
+ \label{eq:delta-fixed-point}
+\end{equation}
+Set $\varepsilon=X_0^{-1}$ and define
+\begin{equation}
+ \Phi_\varepsilon(u)
+ =p\log(1+\varepsilon u)
+  -K\!\left(\frac{\varepsilon}{1+\varepsilon u}\right).
+ \label{eq:Phi-epsilon}
+\end{equation}
+Then $\delta=\Phi_\varepsilon(\delta)$ and
+$\Phi_\varepsilon=O(\varepsilon)$.
+
+\begin{theorem}[All inverse corrections about the Lambert core]
+\label{thm:delta-Lagrange}
+As a formal series in $X_0^{-1}$,
+\begin{equation}
+ \boxed{
+ \delta=\sum_{m\ge1}\frac1{m!}
+ \left.\frac{\dd^{m-1}}{\dd u^{m-1}}
+ \Phi_\varepsilon(u)^m\right|_{u=0},
+ \qquad \varepsilon=X_0^{-1}.}
+ \label{eq:delta-Lagrange}
+\end{equation}
+Equivalently,
+\begin{equation}
+ \delta\sim\sum_{r\ge1}\frac{D_r}{X_0^r},
+ \label{eq:delta-D}
+\end{equation}
+where the completely explicit coefficient extractor is
+\begin{equation}
+ \boxed{
+ D_r=[\varepsilon^r]
+ \sum_{m=1}^{r}\frac1{m!}
+ \left.\frac{\dd^{m-1}}{\dd u^{m-1}}
+ \left[p\log(1+\varepsilon u)
+ -K\!\left(\frac{\varepsilon}{1+\varepsilon u}\right)\right]^m
+ \right|_{u=0}.}
+ \label{eq:Dr-master}
+\end{equation}
+Finally,
+\begin{equation}
+ \boxed{
+ \nu(y)\sim\frac1\lambda\left(
+ X_0+\sum_{r\ge1}\frac{D_r}{X_0^r}\right),
+ \quad
+ X_0=-pW_{-1}\!\left(-\frac1p
+ \left(\frac{C\lambda^p}{y}\right)^{1/p}\right).}
+ \label{eq:inverse-W-master}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Introduce an auxiliary marker $t$ and solve
+$\delta=t\Phi_\varepsilon(\delta)$.  Lagrange--B\"urmann gives
+\[
+ \delta(t)=\sum_{m\ge1}\frac{t^m}{m!}
+ \left.\frac{\dd^{m-1}}{\dd u^{m-1}}
+ \Phi_\varepsilon(u)^m\right|_{u=0}.
+\]
+Since $\Phi_\varepsilon=O(\varepsilon)$, the coefficient of
+$\varepsilon^r$ receives contributions only from $m\le r$, so setting $t=1$
+is formally legitimate and gives \cref{eq:Dr-master}.  Division by $\lambda$
+returns from $X$ to $x$.
+\end{proof}
+
+\section{First correction coefficients}
+The first $D_r$ are
+\begin{align}
+ D_1={}&-\eta_1,\label{eq:D1}\\
+ D_2={}&-p\eta_1-\eta_2,\label{eq:D2}\\
+ D_3={}&-p^2\eta_1-p\eta_2-\eta_1^2-\eta_3,\label{eq:D3}\\
+ D_4={}&-p^3\eta_1-p^2\eta_2-\frac52p\eta_1^2
+         -p\eta_3-3\eta_1\eta_2-\eta_4,\label{eq:D4}\\
+ D_5={}&-p^4\eta_1-p^3\eta_2-\frac92p^2\eta_1^2-p^2\eta_3
+         -7p\eta_1\eta_2-p\eta_4\notag\\
+      &\hspace{12mm}-2\eta_1^3-4\eta_1\eta_3-2\eta_2^2-\eta_5.
+ \label{eq:D5}
+\end{align}
+For A000081 these are
+\begin{align}
+ D_1={}&-0.1088130343442745145167554784\ldots,\notag\\
+ D_2={}&-0.7491856512881932494640764185\ldots,\notag\\
+ D_3={}&-3.582177326832277789103009844\ldots,\notag\\
+ D_4={}&-19.65872121138776003707556394\ldots,\notag\\
+ D_5={}&-138.5327478518560861313634930\ldots,\notag\\
+ D_6={}&-1248.979326371692854496506550\ldots,\notag\\
+ D_7={}&-13905.40884474814835419890912\ldots,\notag\\
+ D_8={}&-184719.1911265080904894459391\ldots.
+ \label{eq:D-numeric}
+\end{align}
+The coefficients grow, as expected for an asymptotic series; $W_{-1}$ has
+already removed the dominant logarithmic combinatorics, but it cannot remove
+the farther singularities encoded in the forward coefficients.
+
+\chapter{Polynomial--logarithmic inverse transseries}
+\label{ch:polylog-inverse}
+
+\section{Direct expansion without a special function}
+Some applications prefer an expansion involving only elementary logarithms.
+Let
+\begin{equation}
+ L=\log Z,
+ \qquad
+ X=Z+U,
+ \qquad
+ U=\sum_{n\ge0}P_n(L)Z^{-n}.
+ \label{eq:P-ansatz}
+\end{equation}
+With $\varepsilon=Z^{-1}$, substitution into
+\cref{eq:normalized-inverse-equation} gives a single generating equation for
+all coefficient polynomials:
+\begin{equation}
+ \boxed{
+ P(\varepsilon,L)=pL+p\log\bigl(1+\varepsilon P(\varepsilon,L)\bigr)
+ -K\!\left(\frac{\varepsilon}
+ {1+\varepsilon P(\varepsilon,L)}\right),}
+ \label{eq:P-functional}
+\end{equation}
+where
+$P(\varepsilon,L)=\sum_{n\ge0}P_n(L)\varepsilon^n$.
+
+\section{A closed triangular recurrence}
+Define convolution polynomials
+\begin{equation}
+ C_{m,r}(L)=[\varepsilon^m]P(\varepsilon,L)^r
+ =\sum_{j_1+\cdots+j_r=m}P_{j_1}(L)\cdots P_{j_r}(L),
+ \label{eq:Cmr}
+\end{equation}
+with $C_{0,0}=1$ and $C_{m,0}=0$ for $m>0$.  Expanding the logarithm and the
+negative powers in \cref{eq:P-functional} yields the following all-order
+recurrence.
+
+\begin{theorem}[Coefficient polynomials of the direct inverse]
+\label{thm:P-recurrence}
+One has $P_0(L)=pL$, and for $n\ge1$,
+\begin{equation}
+ \boxed{\begin{aligned}
+ P_n(L)={}&p\sum_{r=1}^{n}\frac{(-1)^{r+1}}r C_{n-r,r}(L)\\
+ &-\sum_{k=1}^{n}\eta_k
+   \sum_{r=0}^{n-k}(-1)^r\binom{k+r-1}{r}
+   C_{n-k-r,r}(L)
+ \end{aligned}}
+ \label{eq:Pn-master}
+\end{equation}
+Moreover $P_n$ is a polynomial of degree $n$ for $n\ge1$, and
+\begin{equation}
+ \boxed{
+ \nu(y)\sim\frac1\lambda\left[
+ Z+p\log Z+\sum_{n\ge1}\frac{P_n(\log Z)}{Z^n}\right],
+ \quad Z=\log\frac{y}{C\lambda^p}.}
+ \label{eq:inverse-polylog-master}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use
+\[
+ \log(1+\varepsilon P)
+ =\sum_{r\ge1}\frac{(-1)^{r+1}}r\varepsilon^rP^r
+\]
+and
+\[
+ K\!\left(\frac{\varepsilon}{1+\varepsilon P}\right)
+ =\sum_{k\ge1}\eta_k\varepsilon^k
+  \sum_{r\ge0}(-1)^r\binom{k+r-1}{r}\varepsilon^rP^r.
+\]
+Extracting $\varepsilon^n$ gives \cref{eq:Pn-master}.  The right side at
+order $n$ uses only $P_0,\ldots,P_{n-1}$, so the recurrence is triangular.
+Induction on $n$ proves the degree bound, and substitution establishes the
+asymptotic expansion.
+\end{proof}
+
+\section{First coefficient polynomials}
+The first five are
+\begin{align}
+ P_0(L)={}&pL,\label{eq:P0}\\
+ P_1(L)={}&p^2L-\eta_1,\label{eq:P1}\\
+ P_2(L)={}&-\frac12p^3L^2+(p^3+p\eta_1)L-p\eta_1-\eta_2,
+ \label{eq:P2}\\
+ P_3(L)={}&\frac13p^4L^3-
+ \left(\frac32p^4+p^2\eta_1\right)L^2\notag\\
+ &+\left(p^4+3p^2\eta_1+2p\eta_2\right)L
+ -p^2\eta_1-p\eta_2-\eta_1^2-\eta_3,
+ \label{eq:P3}\\
+ P_4(L)={}&-\frac14p^5L^4
+ +\left(\frac{11}{6}p^5+p^3\eta_1\right)L^3\notag\\
+ &-\left(3p^5+\frac{11}{2}p^3\eta_1+3p^2\eta_2\right)L^2\notag\\
+ &+\left(p^5+6p^3\eta_1+5p^2\eta_2
+          +3p\eta_1^2+3p\eta_3\right)L\notag\\
+ &-p^3\eta_1-p^2\eta_2-\frac52p\eta_1^2-p\eta_3
+   -3\eta_1\eta_2-\eta_4.
+ \label{eq:P4}
+\end{align}
+Notice that
+\begin{equation}
+ D_n=P_n(0).
+ \label{eq:D-P0}
+\end{equation}
+This is not accidental: the Lambert core sums exactly the part of the direct
+recurrence generated by $pL$; the remaining constants obey the same fixed-point
+calculus with $L=0$.
+
+For $p=3/2$ and the A000081 phase coefficients,
+\begin{align}
+ P_0(L)={}&1.5L,\notag\\
+ P_1(L)={}&2.25L-0.10881303434427451452\ldots,\notag\\
+ P_2(L)={}&-1.6875L^2+3.5382195515164117718\ldots L\notag\\
+          &\quad-0.74918565128819324946\ldots,\notag\\
+ P_3(L)={}&1.6875L^3-7.8385793272746176577\ldots L^2\notag\\
+          &\quad+7.5548862811391974061\ldots L
+            -3.5821773268322777891\ldots,\notag\\
+ P_4(L)={}&-1.8984375L^4+14.289118990911926486\ldots L^3\notag\\
+          &\quad-28.756363123475120650\ldots L^2\notag\\
+          &\quad+27.452127392454046160\ldots L
+            -19.658721211387760037\ldots .
+ \label{eq:P-numeric}
+\end{align}
+
+\section{Elementary leading form}
+Expanding only to constant accuracy in terms of $Y=\log y$ gives
+\begin{equation}
+ \nu(y)=\frac{\log y}{\lambda}
+ +\frac{p}{\lambda}\log\log y
+ -\frac1\lambda\log(C\lambda^p)+o(1).
+ \label{eq:inverse-leading-elementary}
+\end{equation}
+Numerically,
+\begin{align}
+ \nu(y)={}&0.92271556161860152480\ldots\log y\notag\\
+ &+1.38407334242790228720\ldots\log\log y\notag\\
+ &+0.64636398270020880729\ldots+o(1).
+ \label{eq:inverse-leading-numeric}
+\end{align}
+The constant in this coarser form depends on the exact normalization of $Z$;
+using \cref{eq:inverse-polylog-master} is preferable whenever more than the
+first two scales are needed.
+
+\chapter{Accuracy, implementation, and integer recovery}
+\label{ch:inverse-practical}
+
+\section{Comparison at exact sequence values}
+For $y=a_n$, define the order-$K$ Lambert-core approximation
+\begin{equation}
+ \nu^{[K]}(a_n)=\frac1\lambda
+ \left(X_0+\sum_{r=1}^{K}\frac{D_r}{X_0^r}\right).
+ \label{eq:inverse-truncation}
+\end{equation}
+\Cref{tab:inverse-errors} gives the signed index error
+$\nu^{[K]}(a_n)-n$.
+
+\begin{table}[htbp]
+\centering
+\caption{Signed error of the asymptotic inverse at $y=a_n$.}
+\label{tab:inverse-errors}
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{3.1pt}
+\begin{tabular}{r*{7}{r}}
+\toprule
+$n$ & $K=0$ & $K=1$ & $K=2$ & $K=4$ & $K=6$ & $K=8$ & $K=10$\\
+\midrule
+20  & $6.55\,10^{-3}$ & $1.91\,10^{-3}$ & $4.44\,10^{-4}$ & $3.76\,10^{-5}$ & $-2.02\,10^{-7}$ & $-9.39\,10^{-6}$ & $-1.39\,10^{-5}$\\
+50  & $2.11\,10^{-3}$ & $2.59\,10^{-4}$ & $2.32\,10^{-5}$ & $3.32\,10^{-7}$ & $1.26\,10^{-8}$ & $9.98\,10^{-10}$& $1.35\,10^{-10}$\\
+100 & $9.88\,10^{-4}$ & $6.16\,10^{-5}$ & $2.74\,10^{-6}$ & $9.34\,10^{-9}$ & $8.35\,10^{-11}$& $1.53\,10^{-12}$& $4.71\,10^{-14}$\\
+200 & $4.78\,10^{-4}$ & $1.50\,10^{-5}$ & $3.33\,10^{-7}$ & $2.79\,10^{-10}$& $6.09\,10^{-13}$& $2.71\,10^{-15}$& $2.03\,10^{-17}$\\
+500 & $1.88\,10^{-4}$ & $2.38\,10^{-6}$ & $2.10\,10^{-8}$ & $2.78\,10^{-12}$& $9.59\,10^{-16}$& $6.75\,10^{-19}$& $7.98\,10^{-22}$\\
+\bottomrule
+\end{tabular}
+\endgroup
+\end{table}
+
+The inverse error is essentially the forward relative error divided by the
+logarithmic slope $\lambda-p/n+O(n^{-2})$.  This explains the close numerical
+parallel between \cref{tab:forward-errors,tab:inverse-errors}.
+
+\section{A robust numerical procedure}
+For a large positive target $y$, a stable implementation is:
+\begin{algorithm}[Asymptotic inversion of A000081]
+\leavevmode
+\begin{enumerate}
+\item Compute $Z=\log(y/(C\lambda^{3/2}))$ using a logarithmic representation of
+      $y$ if $y$ is too large for ordinary floating point.
+\item Evaluate
+\[
+ X_0=-\frac32W_{-1}\!\left(-\frac23\e^{-2Z/3}\right).
+\]
+\item Choose a truncation order $K$ and form
+$X=X_0+\sum_{r=1}^{K}D_rX_0^{-r}$.
+\item Return $x=X/\lambda$.  If an integer index is desired, test the two or
+      three integers nearest to $x$ by exact recurrence values, arbitrary
+      precision logarithms, or a certified forward bound.
+\end{enumerate}
+\end{algorithm}
+
+A single Newton correction can be applied to a chosen smooth truncation:
+\begin{equation}
+ x_{\rm new}=x-
+ \frac{\log\mathcal A_K(x)-\log y}
+ {\lambda-p/x+\frac{\dd}{\dd x}\log F_K(x^{-1})}.
+ \label{eq:inverse-newton}
+\end{equation}
+Working with logarithms avoids overflow and loss of relative precision.
+
+\section{Rounding certification}
+Because $a_{n+1}/a_n\to\alpha>1$, adjacent sequence values eventually differ by
+a fixed multiplicative factor.  Hence an index estimate with absolute error
+less than $1/2$ identifies the nearest integer at targets $y=a_n$.  For a
+general target $y$, certification of $N_*(y)$ requires checking
+\begin{equation}
+ a_{m-1}<y\le a_m.
+ \label{eq:inverse-certification}
+\end{equation}
+The asymptotic inverse reduces this check to a constant-size neighbourhood of
+$m\approx\nu(y)$; it does not replace the endpoint convention in the definition
+of the staircase.
+
+\part{Beyond All Orders: The Singularity Transseries}
+
+\chapter{The recursive singularity atlas}
+\label{ch:atlas}
+
+\section{Why one exponential scale is not the whole story}
+The expansion in \cref{eq:forward-A} is complete in inverse powers of $n$ at
+the dominant exponential scale $\rho^{-n}$.  It does not contain terms such as
+$\sigma^{-n}$ with $|\sigma|>\rho$, because those are smaller than every power
+of $1/n$ relative to $\rho^{-n}$.  Such terms arise from farther singularities
+of analytic continuation.  For the P\'olya-tree equation there are infinitely
+many of them, and they accumulate at the unit circle, which is a natural
+boundary \cite{DrmotaGittenberger2010}.
+
+The functional equation exposes two mechanisms.
+\begin{enumerate}
+\item \textbf{Critical Lambert singularities.}  On a branch where $R$ is
+      analytic, a point $\sigma$ satisfying
+      $\zeta(\sigma)=1/e$ is a square-root singularity whenever
+      $\zeta'(\sigma)\ne0$.
+\item \textbf{Inherited singularities.}  If $T$ is singular at $\tau$ and
+      $\sigma^k=\tau$ for some $k\ge2$, then the term $T(z^k)/k$ can make
+      $R(z)$, hence $T(z)$, singular at $\sigma$.  Repeated root lifts produce
+      singularities whose moduli approach one and whose arguments become
+      dense.
+\end{enumerate}
+Different paths can reach different determinations of the inner functions and
+of the outer Lambert function.  The appropriate global object is therefore the
+Riemann surface of the germ $T$ at zero, not a single-valued function on the
+whole punctured unit disk.
+
+\section{Local closure of the Puiseux calculus}
+Fix a continuation sheet and a point $\sigma\ne0$.  Choose a local uniformizer
+$v$ such that
+\begin{equation}
+ z=\sigma(1-v^M)
+ \label{eq:local-uniformizer}
+\end{equation}
+for some positive integer $M$, and suppose all inner germs needed in $R(z)$
+have Puiseux expansions in $v$.  Algebraic addition, composition with $z^k$,
+exponentiation, and multiplication preserve the ring $\C[[v]]$.  Thus
+\begin{equation}
+ \zeta(v)=\zeta_0+\sum_{m\ge1}\zeta_mv^m.
+ \label{eq:zeta-local-v}
+\end{equation}
+There are two cases.
+
+\subsection{Regular outer composition}
+Let $C_b$ denote the branch of the Cayley function reached on the chosen sheet,
+and assume
+\begin{equation}
+ y_0=C_b(\zeta_0)\ne1.
+ \label{eq:regular-outer-condition}
+\end{equation}
+Then $C_b$ is analytic at $\zeta_0$, and
+\begin{equation}
+ T(v)=y_0+\sum_{m\ge1}y_mv^m,
+ \qquad
+ \boxed{
+ y_m=\frac1{m!}\sum_{k=1}^m C_b^{(k)}(\zeta_0)
+ \pBell mk(1!\zeta_1,2!\zeta_2,\ldots).}
+ \label{eq:regular-local-composition}
+\end{equation}
+The derivatives are explicit functions of $y_0$.  Since
+$u=y\e^{-y}$,
+\begin{equation}
+ C_b'(u)=\frac{\e^y}{1-y},
+ \qquad
+ C_b^{(k)}(u)=
+ \left[\left(\frac{\e^y}{1-y}\frac{\dd}{\dd y}\right)^{k-1}
+ \frac{\e^y}{1-y}\right]_{y=C_b(u)}.
+ \label{eq:C-derivative-operator}
+\end{equation}
+
+\subsection{Critical outer composition}
+If $\zeta_0=1/e$ and the reached branch has $y_0=1$, define
+\begin{equation}
+ Q(v)=\sqrt{2(1-e\zeta(v))}.
+ \label{eq:Q-local}
+\end{equation}
+Then the universal formula of \cref{thm:omega} gives
+\begin{equation}
+ \boxed{
+ T(v)=1-\sum_{m\ge1}\omega_m Q(v)^m.}
+ \label{eq:critical-local-composition}
+\end{equation}
+If $1-e\zeta(v)$ vanishes first at order $r$, then $Q$ begins with
+$v^{r/2}$; the ramification index doubles when $r$ is odd.  This is the only
+new ramification mechanism.  Consequently the complete singularity atlas can
+be generated recursively by ordinary formal power-series arithmetic and the
+same universal sequence $(\omega_m)$.
+
+\begin{theorem}[Recursive completeness of the local calculus]
+\label{thm:local-completeness}
+Starting from the dominant germ at $\rho$, every isolated singular germ reached
+by finitely many applications of the root-lift and critical mechanisms admits a
+computable Puiseux expansion.  At each fixed local order, its coefficients are
+finite expressions built from
+\begin{enumerate}
+\item previously computed local coefficients of inner germs;
+\item complete and partial Bell polynomials;
+\item the rational Lambert coefficients $\omega_m$;
+\item derivatives of a regular Cayley branch as in
+      \cref{eq:C-derivative-operator}.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Proceed by induction on the depth of the singularity in the root-lift graph.
+At depth zero, \cref{eq:tr-master} gives the dominant germ.  At the induction
+step, substitution $z\mapsto z^k$ converts every already known Puiseux germ to
+a Puiseux series in a common local uniformizer.  The sum defining $R$, its
+exponential, and multiplication by $z$ preserve that ring.  If the outer Cayley
+branch is regular, apply \cref{eq:regular-local-composition}; if it is critical,
+apply \cref{eq:critical-local-composition}.  Both formulae determine every
+coefficient at finite order.
+\end{proof}
+
+\section{Contour-resolved coefficient transseries}
+Let a chosen deformation of the Cauchy coefficient contour encounter isolated
+singularities $\sigma$ on specified sheets.  Suppose the local singular part is
+\begin{equation}
+ T_\sigma(z)\asympseries
+ \sum_{q\in E_\sigma}c_{\sigma,q}
+ \left(1-\frac z\sigma\right)^q,
+ \label{eq:local-singular-general}
+\end{equation}
+where $E_\sigma\subset\mathbb Q_{\ge0}$ and analytic exponents
+$q\in\N_0$ may be omitted from the local Hankel contribution.  Let
+$\Stokes_\sigma$ be the contour intersection or Stokes multiplier associated
+with that local branch.
+
+\begin{resultbox}[title={Full contour-resolved forward transseries}]
+Under the usual finite-radius continuation and remainder hypotheses for the
+chosen contour,
+\begin{align}
+ a_n\asympseries{}&
+ \sum_{\sigma}\Stokes_\sigma\,\sigma^{-n}
+ \sum_{q\in E_\sigma\setminus\N_0}
+ \frac{c_{\sigma,q}}{\Gamma(-q)}n^{-q-1}
+ \sum_{r\ge0}\frac{g_r(q)}{n^r}.
+ \label{eq:global-forward-transseries}
+\end{align}
+Relative to the dominant sector, define the action
+\begin{equation}
+ \Action_\sigma=\Log\frac{\sigma}{\rho}.
+ \label{eq:action}
+\end{equation}
+Then $\sigma^{-n}=\rho^{-n}\e^{-n\Action_\sigma}$, so
+\cref{eq:global-forward-transseries} is a genuine exponential transseries.
+Conjugate singularities combine into real oscillatory sectors.
+\end{resultbox}
+
+\begin{proof}[Coefficient-contour argument]
+Deform the Cauchy contour from a small circle to a finite union of local Hankel
+contours about the encountered singularities plus an outer remainder contour.
+Apply \cref{eq:exact-binomial-transfer} termwise to each truncated local
+Puiseux expansion and then use \cref{thm:gamma-ratio}.  The outer contour gives
+the radius-dependent exponential remainder.  Passing through a branch cut or
+to a different sheet changes the homology coefficients of the local Hankel
+cycles; these are precisely the multipliers $\Stokes_\sigma$.
+\end{proof}
+
+\begin{remark}[Projective meaning of the infinite sum]
+Because singularities accumulate at $|z|=1$, the sum over $\sigma$ is not meant
+as an absolutely convergent unordered numerical series.  For every fixed
+continuation radius $R<1$, only the singularities met before the $R$-contour are
+included, and the rest is absorbed into the outer remainder.  The global
+transseries is the compatible family of these finite-radius expansions as the
+contour is enlarged.  This is the natural notion of fullness in the presence of
+a natural boundary.
+\end{remark}
+
+\chapter{The first inherited sector at \texorpdfstring{$-\sqrt\rho$}{-sqrt(rho)}}
+\label{ch:negative-sector}
+
+\section{A singularity accessible along the negative axis}
+Let
+\begin{equation}
+ \sigma_-=-\sqrt\rho
+ =-0.5816544136333942538100577816448348312833\ldots .
+ \label{eq:sigma-minus}
+\end{equation}
+The germ at the origin can be continued along the negative real axis without
+meeting the dominant positive singularity.  At $z=\sigma_-$, the term
+$T(z^2)/2$ in $R(z)$ reaches $T(\rho)/2$ and inherits the dominant square-root
+branch.  All terms $T(z^k)$ with $k\ge3$ are evaluated strictly inside the
+original disk of convergence because $|\sigma_-|^k<\rho$.
+
+Choose
+\begin{equation}
+ z=\sigma_-(1-v^2),
+ \qquad v=\left(1-\frac z{\sigma_-}\right)^{1/2}.
+ \label{eq:v-minus}
+\end{equation}
+Then
+\[
+ z^2=\rho(1-v^2)^2,
+ \qquad
+ 1-\frac{z^2}{\rho}=v^2(2-v^2).
+\]
+Using the dominant coefficients $t_r$, the complete local disturbance is
+\begin{align}
+ R_-(v)={}&\frac12\left[
+ 1+\sum_{r\ge1}t_rv^r(2-v^2)^{r/2}\right]\notag\\
+ &+\sum_{k\ge3}\frac1k\sum_{n\ge1}
+ a_n\sigma_-^{kn}(1-v^2)^{kn}.
+ \label{eq:Rminus-exact}
+\end{align}
+Both lines are convergent as local Puiseux/power series near $v=0$.
+
+\section{General coefficients of the inherited disturbance}
+Write $R_-(v)=\sum_{m\ge0}r_m^-v^m$ and put $t_0=1$.  For
+$j=(m-r)/2$, direct coefficient extraction from
+\cref{eq:Rminus-exact} gives
+\begin{align}
+ r_m^-={}&\frac12
+ \sum_{\substack{0\le r\le m\\r\equiv m\ (\mathrm{mod}\,2)}}
+ t_r(-1)^j2^{r/2-j}\binom{r/2}{j}\notag\\
+ &+\mathbf 1_{2\mid m}(-1)^{m/2}
+ \sum_{k\ge3}\frac1k\sum_{n\ge1}a_n\sigma_-^{kn}
+ \binom{kn}{m/2}.
+ \label{eq:rminus-master}
+\end{align}
+This is an explicit all-order formula.  The double sum in the second line
+converges geometrically, already at $k=3$.
+
+Define
+\begin{equation}
+ \zeta_-(v)=\sigma_-(1-v^2)\e^{R_-(v)}
+ =\sum_{m\ge0}z_m^-v^m.
+ \label{eq:zetaminus-series}
+\end{equation}
+If
+\begin{equation}
+ E_m^-=\frac{\e^{r_0^-}}{m!}
+ \Bell m(1!r_1^-,2!r_2^-,\ldots,m!r_m^-),
+ \qquad E_m^-=0\quad(m<0),
+ \label{eq:Eminus}
+\end{equation}
+then
+\begin{equation}
+ z_m^-=\sigma_-(E_m^--E_{m-2}^-).
+ \label{eq:zminus-bell}
+\end{equation}
+Finally let
+\begin{equation}
+ y_-=C_0(z_0^-)=-W_0(-z_0^-),
+ \qquad
+ T(\sigma_-(1-v^2))=y_-+\sum_{m\ge1}b_m^-v^m.
+ \label{eq:bminus-def}
+\end{equation}
+The outer Cayley branch is regular because $y_-\ne1$, so
+\begin{equation}
+ \boxed{
+ b_m^-=\frac1{m!}\sum_{k=1}^m C_0^{(k)}(z_0^-)
+ \pBell mk(1!z_1^-,2!z_2^-,\ldots).}
+ \label{eq:bminus-master}
+\end{equation}
+Together,
+\cref{eq:rminus-master,eq:zminus-bell,eq:bminus-master} are the complete
+coefficient calculus for this first inherited sector.
+
+\section{Leading coefficient in closed form}
+The coefficient of $v$ in $R_-$ comes only from $T(z^2)/2$:
+\begin{equation}
+ r_1^-=\frac{t_1}{\sqrt2}.
+ \label{eq:rminus1}
+\end{equation}
+Since $z_1^-=z_0^-r_1^-$ and
+$C_0'(z_0^-)=y_-/[z_0^-(1-y_-)]$,
+\begin{equation}
+ \boxed{
+ b_1^-=\frac{y_-}{1-y_-}\frac{t_1}{\sqrt2}.}
+ \label{eq:bminus1-closed}
+\end{equation}
+Numerically,
+\begin{align}
+ r_0^-={}&0.4686366279248455480872026033545827113234\ldots,\notag\\
+ z_0^-={}&-0.9293757352012050888501367245727563226186\ldots,\notag\\
+ y_-={}&-0.5410329414204534926205030986636417164282\ldots,\notag\\
+ b_1^-={}&0.3871501110302429034772066937474883100349\ldots.
+ \label{eq:minus-leading-numeric}
+\end{align}
+The first local coefficients are
+\begin{align}
+ b_1^-&= \phantom{-}0.3871501110302429034772066937\ldots,\notag\\
+ b_2^-&=-0.03256491851564763414730981111\ldots,\notag\\
+ b_3^-&= \phantom{-}0.01720042160312209148300754229\ldots,\notag\\
+ b_4^-&= \phantom{-}0.1040770395183844385254896204\ldots,\notag\\
+ b_5^-&= \phantom{-}0.1619473607727023611895041812\ldots,\notag\\
+ b_6^-&=-0.06292599818799308689798687888\ldots,\notag\\
+ b_7^-&=-0.2440310392314213513546115758\ldots.
+ \label{eq:bminus-numeric}
+\end{align}
+
+\section{The alternating coefficient sector}
+Only odd $b_{2j+1}^-$ are singular in $z$ at $\sigma_-$.  The same gamma-ratio
+transfer as before gives
+\begin{equation}
+ a_n^{(-)}\asympseries
+ \Stokes_-\sigma_-^{-n}n^{-3/2}
+ \sum_{k\ge0}\frac{B_k^-}{n^k},
+ \label{eq:negative-sector-general}
+\end{equation}
+where
+\begin{equation}
+ \boxed{
+ B_k^-=\sum_{j=0}^{k}
+ \frac{b_{2j+1}^-}{\Gamma(-j-1/2)}
+ g_{k-j}\!\left(j+\frac12\right).}
+ \label{eq:Bminus-master}
+\end{equation}
+For the direct negative-axis continuation the local Hankel multiplier is one;
+we have retained $\Stokes_-$ in \cref{eq:negative-sector-general} to make the
+contour dependence explicit in a larger, multi-sheet deformation.
+
+Since $\sigma_-^{-n}=(-1)^n\rho^{-n/2}$, the numerical local sector is
+\begin{align}
+ a_n^{(-)}\asympseries{}&
+ \Stokes_-(-1)^n\rho^{-n/2}n^{-3/2}\notag\\
+ &\times\biggl(-0.1092130299563101757054885230\ldots\notag\\
+ &\qquad-\frac{0.03367666220778285336719302163\ldots}{n}\notag\\
+ &\qquad-\frac{0.1790009011730463163890152410\ldots}{n^2}\notag\\
+ &\qquad-\frac{1.642342004953279983002352205\ldots}{n^3}\notag\\
+ &\qquad-\frac{18.92664586329208396709681008\ldots}{n^4}
+ -\cdots\biggr).
+ \label{eq:negative-sector-numeric}
+\end{align}
+Relative to the leading dominant term, its first amplitude is
+\begin{equation}
+ \frac{B_0^-}{A_0}=-0.2482543049151649529915710045\ldots,
+ \qquad
+ \frac{a_n^{(-)}}{a_n^{(0)}}
+ \sim -0.2482543049\ldots\,(-\sqrt\rho)^n.
+ \label{eq:negative-relative}
+\end{equation}
+This is smaller than every power of $1/n$, and hence invisible to the complete
+series \cref{eq:forward-A}; it is the first explicit genuinely transseries
+correction.
+
+\begin{remark}[Other sectors of the same or greater modulus]
+The point $+\sqrt\rho$ lies behind the dominant branch point on real
+continuation and belongs to sheet-dependent continuations.  Complex critical
+points and overlapping root lifts may also occur farther out.  Their local
+coefficients are generated by \cref{thm:local-completeness}; their global
+multipliers depend on the selected contour.  Formula
+\cref{eq:negative-sector-numeric} is therefore an explicit sector, not an
+assertion that one term alone exhausts every continuation at modulus
+$\sqrt\rho$.
+\end{remark}
+
+\chapter{Transport of exponential sectors through inversion}
+\label{ch:inverse-sectors}
+
+\section{General transseries setup}
+Let the full forward interpolation be written as
+\begin{equation}
+ \mathcal A_{\rm full}(x)=\mathcal A_0(x)\bigl(1+\mathcal E(x)\bigr),
+ \label{eq:full-forward-interpolant}
+\end{equation}
+where $\mathcal A_0$ contains the complete dominant inverse-power sector and
+$\mathcal E$ is a well-ordered sum of exponentially small sectors,
+\begin{equation}
+ \mathcal E(x)=
+ \sum_{\omega\in\Omega\setminus\{0\}}
+ \e^{-\omega x}x^{\mu_\omega}
+ \sum_{r\ge0}e_{\omega,r}x^{-r}.
+ \label{eq:E-sectors}
+\end{equation}
+Here $\Omega$ is generated by the singular actions
+$\Action_\sigma=\Log(\sigma/\rho)$.  Taking a logarithm gives
+\begin{equation}
+ \mathcal R(x)=\log(1+\mathcal E(x))
+ =\sum_{m\ge1}\frac{(-1)^{m+1}}m\mathcal E(x)^m.
+ \label{eq:R-nonpert}
+\end{equation}
+Products add actions, so the inverse transseries is supported on the additive
+semigroup generated by $\Omega$.  Coefficients at any fixed action and inverse
+power are finite Cauchy products, equivalently multivariate Bell-polynomial
+expressions.
+
+Let
+\begin{equation}
+ f_0(x)=\log\mathcal A_0(x),
+ \qquad f_0(x_0)=\log y,
+ \label{eq:f0-x0}
+\end{equation}
+where $x_0$ is the complete perturbative inverse of Parts~III, either in the
+$W_{-1}$ form or the polynomial--logarithmic form.  Put $x=x_0+\Delta$ and
+\begin{equation}
+ A_{x_0}(u)=
+ \begin{cases}
+ \displaystyle\frac{f_0(x_0+u)-f_0(x_0)}{u},&u\ne0,\\[2mm]
+ f_0'(x_0),&u=0.
+ \end{cases}
+ \label{eq:A-x0}
+\end{equation}
+Then the exact formal inversion equation is
+\begin{equation}
+ \Delta=\Psi_{x_0}(\Delta),
+ \qquad
+ \Psi_{x_0}(u)=-\frac{\mathcal R(x_0+u)}{A_{x_0}(u)}.
+ \label{eq:Delta-fixed}
+\end{equation}
+
+\begin{theorem}[All-sector inverse Lagrange formula]
+\label{thm:all-sector-inverse}
+The beyond-all-orders correction to the inverse is
+\begin{equation}
+ \boxed{
+ \Delta=
+ \sum_{m\ge1}\frac1{m!}
+ \left.\frac{\dd^{m-1}}{\dd u^{m-1}}
+ \Psi_{x_0}(u)^m\right|_{u=0}.}
+ \label{eq:Delta-Lagrange}
+\end{equation}
+When \cref{eq:R-nonpert} and $A_{x_0}^{-1}$ are expanded formally, this formula
+generates every mixed action, every power of $x_0^{-1}$, and every polynomial
+factor arising from differentiation.
+\end{theorem}
+
+\begin{proof}
+Equation \cref{eq:Delta-fixed} is of the form required by the formal
+Lagrange--B\"urmann theorem.  Introduce an auxiliary marker $t$, solve
+$\Delta=t\Psi_{x_0}(\Delta)$, apply
+\cref{eq:lagrange-derivative}, and set $t=1$.  Well ordering of the action
+support ensures that each requested transmonomial receives only finitely many
+contributions.
+\end{proof}
+
+\section{First-order transport law}
+The first term of \cref{eq:Delta-Lagrange} is
+\begin{equation}
+ \Delta=-\frac{\mathcal R(x_0)}{f_0'(x_0)}+O(\mathcal R^2).
+ \label{eq:first-sector-transport}
+\end{equation}
+Since $f_0'(x_0)=\lambda-p/x_0+O(x_0^{-2})$, a relative forward sector
+\begin{equation}
+ \mathcal E_\omega(x)
+ \sim e_{\omega,0}\e^{-\omega x}x^{\mu_\omega}
+ \label{eq:E-one}
+\end{equation}
+produces
+\begin{equation}
+ \Delta_\omega(y)
+ \sim-\frac{e_{\omega,0}}{\lambda}
+ \e^{-\omega x_0}x_0^{\mu_\omega}.
+ \label{eq:Delta-one-x0}
+\end{equation}
+Using $y\sim C\e^{\lambda x_0}x_0^{-p}$,
+\begin{equation}
+ \boxed{
+ \Delta_\omega(y)
+ \sim-\frac{e_{\omega,0}}{\lambda}
+ C^{\omega/\lambda}y^{-\omega/\lambda}
+ x_0^{\mu_\omega-p\omega/\lambda}.}
+ \label{eq:Delta-one-y}
+\end{equation}
+Complex actions therefore become complex powers of $y$ and oscillations in
+$\log y$, with an additional $\log\log y$ phase modulation through $x_0$.
+
+\section{Inverse image of the \texorpdfstring{$-\sqrt\rho$}{-sqrt(rho)} sector}
+For the inherited negative sector,
+\begin{equation}
+ \omega_- =\Log\frac{\sigma_-}{\rho}
+ =\frac\lambda2+\ii\pi
+ \label{eq:omega-minus}
+\end{equation}
+(up to the lateral choice of $\pm\pi$), and
+$e_{-,0}=B_0^-/A_0=-0.2482543049\ldots$.  A real median interpolation of the
+integer alternation replaces $\e^{-\ii\pi x}$ by $\cos(\pi x)$, giving
+\begin{align}
+ \Delta_-(y)
+ &\sim-\frac{B_0^-}{\lambda A_0}
+ \e^{-\lambda x_0/2}\cos(\pi x_0)\notag\\
+ &=0.2290681103840319785656467154\ldots\,
+ \e^{-\lambda x_0/2}\cos(\pi x_0).
+ \label{eq:inverse-minus-x0}
+\end{align}
+Since
+$\e^{-\lambda x_0/2}\sim C^{1/2}y^{-1/2}x_0^{-3/4}$,
+\begin{equation}
+ \boxed{
+ \Delta_-(y)
+ \sim0.1519334736595309882627290391\ldots\,
+ y^{-1/2}x_0^{-3/4}\cos(\pi x_0).}
+ \label{eq:inverse-minus-y}
+\end{equation}
+The leading phase is
+\begin{equation}
+ \pi x_0=
+ \frac{\pi}{\lambda}\log y+
+ \frac{3\pi}{2\lambda}\log\log y+O(1),
+ \qquad
+ \frac\pi\lambda=2.898796429733978737710727372\ldots .
+ \label{eq:minus-phase}
+\end{equation}
+Thus the first nonperturbative inverse correction has magnitude
+$y^{-1/2}(\log y)^{-3/4}$ and a logarithmic oscillation whose phase contains a
+slower $\log\log y$ drift.
+
+\section{Higher corrections and mixed actions}
+The next orders follow mechanically from \cref{eq:Delta-Lagrange}:
+\begin{enumerate}
+\item inverse powers in the $\omega_-$ sector come from $B_1^-,B_2^-,\ldots$,
+      from the complete perturbative derivative $f_0'(x_0)$, and from
+      differentiation of $\e^{-\omega_-u}$;
+\item the two-instanton sector $2\omega_-$ is produced by the quadratic term in
+      $\log(1+\mathcal E)$ and by the $m=2$ Lagrange term;
+\item products with any other singularity action produce sectors
+      $r\omega_-+\omega_{\sigma_1}+\cdots+\omega_{\sigma_s}$;
+\item conjugate actions combine into real trigonometric polynomials in the
+      corresponding logarithmic phases.
+\end{enumerate}
+At each fixed action and inverse order the calculation is finite.  This is the
+precise sense in which \cref{eq:Delta-Lagrange} supplies general formulae for
+the coefficients of the full inverse transseries.
+
+\begin{warningbox}[title={Two distinct oscillatory phenomena}]
+The exponentially small oscillation in \cref{eq:inverse-minus-y} comes from a
+complex singular action and tends to zero.  The order-one sawtooth in
+\cref{eq:ceiling-fourier} comes from integer rounding and never tends to zero.
+They have different origins, different scales, and must not be conflated.
+\end{warningbox}
+
+\chapter{Summary of the main formulae}
+\label{ch:summary}
+
+For reference, the complete calculation may be compressed to the following
+chain.
+
+\begin{enumerate}
+\item Generate $a_n$ and $b_n$ exactly from
+\[
+ (n-1)a_n=\sum_{j=1}^{n-1}b_ja_{n-j},
+ \qquad b_j=\sum_{d\mid j}d a_d.
+\]
+\item Set
+\[
+ R(z)=\sum_{m\ge2}\frac{b_m-ma_m}{m}z^m,
+ \qquad \log\rho+1+R(\rho)=0.
+\]
+\item Form the scaled jets
+\[
+ \ell_j=(-1)^{j-1}(j-1)!+\sum_{m\ge j}
+ \frac{b_m-ma_m}{m}\falling mj\rho^m.
+\]
+\item Compute
+\[
+ s_j=\frac{2(-1)^{j+1}}{j!}\Bell j(\ell_1,\ldots,\ell_j),
+ \qquad U(X)=\frac{\sum_{j\ge1}s_jX^j}{s_1X}.
+\]
+\item Use the universal coefficients
+\[
+ \omega_m=\frac1m[u^{m-1}]
+ \left(\sum_{j\ge0}\frac{2u^j}{(j+2)j!}\right)^{-m/2}
+\]
+and
+\[
+ t_r=-\sum_{\substack{m\le r\\m\equiv r\ (2)}}
+ \omega_ms_1^{m/2}[X^{(r-m)/2}]U(X)^{m/2}.
+\]
+\item Transfer to sequence coefficients:
+\[
+ A_k=\sum_{j=0}^k
+ \frac{t_{2j+1}}{\Gamma(-j-1/2)}
+ g_{k-j}(j+1/2),
+\]
+where $g_r$ is generated from Bernoulli-polynomial coefficients
+\cref{eq:d-beta,eq:g-recurrence}.
+\item Normalize $c_k=A_k/A_0$ and compute
+\[
+ \eta_n=[v^n]\log\left(1+\sum_{k\ge1}c_k\lambda^kv^k\right)
+\]
+by \cref{eq:eta-master}.
+\item Invert with either
+\[
+ \nu(y)\asympseries\frac1\lambda\left(
+ X_0+\sum_{r\ge1}\frac{D_r}{X_0^r}\right),
+ \quad
+ X_0=-\frac32W_{-1}\!\left(-\frac23
+ \left(\frac{C\lambda^{3/2}}y\right)^{2/3}\right),
+\]
+where $D_r$ is given by \cref{eq:Dr-master}, or with the polynomial--logarithmic
+recurrence \cref{eq:Pn-master}.
+\item Generate all farther singular sectors recursively by
+\cref{eq:regular-local-composition,eq:critical-local-composition}, transfer each
+by \cref{eq:global-forward-transseries}, and invert all sectors by
+\cref{eq:Delta-Lagrange}.
+\end{enumerate}
+
+\begin{resultbox}[title={Final dominant pair}]
+The forward and inverse expansions, in their most useful normalized forms, are
+\begin{align*}
+ a_n&\asympseries
+ C\alpha^n n^{-3/2}\left(1+\sum_{k\ge1}\frac{c_k}{n^k}\right),\\
+ \nu(y)&\asympseries
+ \frac1\lambda\left[
+ Z+\frac32\log Z+
+ \sum_{n\ge1}\frac{P_n(\log Z)}{Z^n}\right],
+ \qquad Z=\log\frac{y}{C\lambda^{3/2}},
+\end{align*}
+with $C$, $\alpha$, $c_k$, and $P_n$ determined by finite coefficient formulae
+above.  The first nonperturbative sector is proportional to
+$(-1)^n\rho^{-n/2}n^{-3/2}$ forward and to
+$y^{-1/2}(\log y)^{-3/4}$ times a logarithmic oscillation after inversion.
+\end{resultbox}
+
+\appendix
+
+\chapter{Fully explicit finite coefficient formulae}
+\label{app:finite-formulas}
+
+The main text organizes the calculation by mathematical dependency.  This
+appendix removes the remaining shorthand and displays the coefficient
+operators as finite sums.  Its purpose is not to replace the more readable
+formulae in the body, but to make the phrase ``general formula for the
+coefficients'' completely literal.
+
+\section{Bell-polynomial recurrences}
+The partial exponential Bell polynomials satisfy
+\begin{equation}
+ \pBell nk(x_1,x_2,\ldots)
+ =\sum_{j=1}^{n-k+1}\binom{n-1}{j-1}x_j
+   \pBell{n-j}{k-1}(x_1,x_2,\ldots),
+ \label{eq:bell-triangular-recurrence}
+\end{equation}
+with $\pBell00=1$ and zero outside $0\le k\le n$.  Thus all Bell quantities in
+this article can be generated by a triangular array without enumerating
+partitions.  The complete polynomials obey
+\begin{equation}
+ \Bell n(x_1,\ldots,x_n)
+ =\sum_{j=1}^n\binom{n-1}{j-1}x_j
+   \Bell{n-j}(x_1,\ldots,x_{n-j}),
+ \qquad \Bell0=1.
+ \label{eq:complete-bell-recurrence}
+\end{equation}
+Both recurrences follow by distinguishing the block containing a fixed marked
+atom in the set-partition interpretation.
+
+For a unit series $U(X)=1+\sum_{j\ge1}u_jX^j$, introduce
+\begin{equation}
+ \mathfrak P_N(\beta;u_1,\ldots,u_N)
+ :=\frac1{N!}\sum_{k=0}^N\falling\beta k\,
+ \pBell Nk(1!u_1,2!u_2,\ldots,(N-k+1)!u_{N-k+1}).
+ \label{eq:Pfrak-definition}
+\end{equation}
+Then $\Coeff XN{U(X)^\beta}=\mathfrak P_N(\beta;u_1,\ldots,u_N)$.
+In particular, every fractional power used below is an explicitly finite
+polynomial in the input coefficients and in $\beta$.
+
+\section{Universal Lambert coefficients as a partition sum}
+Recall
+\begin{equation}
+ H(u)=\sum_{j\ge0}\frac{2u^j}{(j+2)j!}
+     =1+\sum_{j\ge1}h^{\mathrm L}_ju^j,
+ \qquad
+ h^{\mathrm L}_j=\frac{2}{(j+2)j!}.
+ \label{eq:HL-def}
+\end{equation}
+The superscript $\mathrm L$ distinguishes these universal Lambert coefficients
+from the P\'olya-disturbance coefficients $h_j$ in \cref{eq:h-coeff}.  Combining
+Lagrange inversion with \cref{eq:Pfrak-definition} gives
+\begin{equation}
+ \boxed{
+ \omega_m=\frac{1}{m(m-1)!}
+ \sum_{k=0}^{m-1}\falling{-m/2}{k}\,
+ \pBell{m-1}{k}
+ \bigl(1!h^{\mathrm L}_1,2!h^{\mathrm L}_2,\ldots\bigr).}
+ \label{eq:omega-partition-sum}
+\end{equation}
+This proves at once that $\omega_m\in\mathbb Q$ for every $m$.
+
+For convenient checking, the first eighteen values are
+\begingroup
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{rl@{\hspace{6mm}}rl}
+\caption{Exact universal coefficients in $1-T=\sum_{m\ge1}\omega_mq^m$.}
+\label{tab:omega-exact}\\
+\toprule
+$m$ & $\omega_m$ & $m$ & $\omega_m$\\
+\midrule
+\endfirsthead
+\toprule
+$m$ & $\omega_m$ & $m$ & $\omega_m$\\
+\midrule
+\endhead
+1  & $1$ &
+10 & $-5776369/1515591000$\\
+2  & $-1/3$ &
+11 & $169709463197/69528040243200$\\
+3  & $11/72$ &
+12 & $-1118511313/709296588000$\\
+4  & $-43/540$ &
+13 & $667874164916771/650782456676352000$\\
+5  & $769/17280$ &
+14 & $-500525573/744761417400$\\
+6  & $-221/8505$ &
+15 & $103663334225097487/234281684403486720000$\\
+7  & $680863/43545600$ &
+16 & $-466901817532379/1595278956070800000$\\
+8  & $-1963/204120$ &
+17 & $21235294185086305043/109242202556140093440000$\\
+9  & $226287557/37623398400$ &
+18 & $-106040742894306601/818378104464320400000$\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\section{One composite formula for every dominant forward coefficient}
+Let
+\begin{equation}
+ u_j=\frac{s_{j+1}}{s_1},
+ \qquad
+ \mathfrak P_N(\beta)=
+ \mathfrak P_N(\beta;u_1,\ldots,u_N).
+ \label{eq:u-composite}
+\end{equation}
+Then \cref{eq:tr-master,eq:Ak-master} combine to give
+\begin{align}
+ A_k={}&-
+ \sum_{j=0}^k\frac{g_{k-j}(j+1/2)}{\Gamma(-j-1/2)}
+ \sum_{r=0}^{j}
+ \omega_{2r+1}s_1^{r+1/2}
+ \mathfrak P_{j-r}(r+1/2).
+ \label{eq:Ak-composite}
+\end{align}
+No infinite formal sum occurs on the right: for fixed $k$ it contains finitely
+many rational operations after the analytic jets $s_1,\ldots,s_{k+1}$ have
+been supplied.  Those jets themselves are explicit convergent sums:
+\begin{align}
+ \ell_j
+ & =(-1)^{j-1}(j-1)!+
+ \sum_{m\ge j}\frac{b_m-ma_m}{m}\falling mj\rho^m,
+ \label{eq:ell-composite}\\
+ s_j
+ & =\frac{2(-1)^{j+1}}{j!}
+ \Bell j(\ell_1,\ldots,\ell_j).
+ \label{eq:s-composite}
+\end{align}
+Consequently \cref{eq:Ak-composite,eq:ell-composite,eq:s-composite}, together
+with the exact divisor recurrence \cref{eq:exact-recurrence}, are a complete
+formula for $A_k$ involving no fitted constants.
+
+\begin{remark}[Rational and analytic layers]
+The numbers $\omega_m$ and the polynomials $g_r(\beta)$ are universal and
+rational.  All dependence on the particular unlabelled-tree class enters
+through $\rho$ and the disturbance jets $\ell_j$.  This separation is useful
+both conceptually and computationally: the universal arrays may be precomputed
+once and reused for any tree class satisfying $T=\zeta e^T$ with analytic
+$\zeta$.
+\end{remark}
+
+\section{Completely expanded logarithmic phase coefficients}
+Writing $f_j=c_j\lambda^j$, the additive phase coefficients are
+\begin{equation}
+ \boxed{
+ \eta_n=\frac1{n!}\sum_{k=1}^n(-1)^{k-1}(k-1)!
+ \pBell nk(1!f_1,2!f_2,\ldots).}
+ \label{eq:eta-explicit-appendix}
+\end{equation}
+Equivalently, by expanding the Bell polynomial into multiplicities,
+\begin{equation}
+ \eta_n=
+ \sum_{k=1}^{n}\frac{(-1)^{k-1}}{k}
+ \sum_{\substack{m_1,m_2,\ldots\ge0\\
+                  \sum_jm_j=k,\ \sum_jjm_j=n}}
+ \frac{k!}{\prod_jm_j!}\prod_{j\ge1}(c_j\lambda^j)^{m_j}.
+ \label{eq:eta-multiplicity}
+\end{equation}
+This is the ordinary logarithm formula grouped by integer partitions of $n$.
+
+\section{A finite partition formula for the Lambert-core corrections}
+Let
+\begin{equation}
+ \Phi_\varepsilon(u)=
+ p\log(1+\varepsilon u)
+ -\sum_{k\ge1}\eta_k
+  \left(\frac{\varepsilon}{1+\varepsilon u}\right)^k,
+ \qquad p=\frac32.
+ \label{eq:Phi-eps-appendix}
+\end{equation}
+The coefficient $D_r$ in \cref{eq:Dr-master} may be written without derivatives
+as
+\begin{equation}
+ \boxed{
+ D_r=\sum_{m=1}^{r}\frac1m
+ [\varepsilon^ru^{m-1}]\,\Phi_\varepsilon(u)^m.}
+ \label{eq:Dr-bivariate}
+\end{equation}
+For each $r$, truncate $\Phi_\varepsilon$ at total $\varepsilon$-degree $r$;
+then the coefficient in \cref{eq:Dr-bivariate} is a finite multinomial sum.
+This is often the simplest exact implementation because bivariate truncated
+series multiplication automatically performs all Fa\`a di Bruno bookkeeping.
+
+\chapter{Gamma-ratio transfer to all orders}
+\label{app:gamma-transfer}
+
+\section{The exact singular-monomial coefficient}
+For $\beta\notin\N_0$ and $n\ge0$,
+\begin{equation}
+ [z^n]\left(1-\frac z\rho\right)^\beta
+ =\rho^{-n}(-1)^n\binom\beta n
+ =\rho^{-n}\frac{\Gamma(n-\beta)}
+ {\Gamma(-\beta)\Gamma(n+1)}.
+ \label{eq:exact-transfer-appendix}
+\end{equation}
+If $\beta\in\N_0$, the left side vanishes for $n>\beta$.  This explains why the
+integer powers $t_{2j}X^j$ in the local expansion do not contribute to the
+algebraic coefficient asymptotics: they are locally analytic and have no
+Hankel jump.
+
+\section{Bernoulli-polynomial derivation}
+For fixed $a,b\in\C$, Euler--Maclaurin expansion of $\log\Gamma$ gives
+\begin{equation}
+ \log\frac{\Gamma(n+a)}{\Gamma(n+b)n^{a-b}}
+ \asympseries
+ \sum_{m\ge1}\frac{(-1)^{m+1}}
+ {m(m+1)}\frac{B_{m+1}(a)-B_{m+1}(b)}{n^m},
+ \label{eq:log-gamma-ratio-general}
+\end{equation}
+where $B_m(x)$ denotes the Bernoulli polynomial.  Setting $a=-\beta$ and
+$b=1$ yields the coefficients $d_m(\beta)$ of \cref{eq:d-beta}.  Exponentiating
+then gives both
+\begin{equation}
+ g_r(\beta)=\frac1{r!}
+ \Bell r(1!d_1(\beta),2!d_2(\beta),\ldots,r!d_r(\beta))
+ \label{eq:g-bell-appendix}
+\end{equation}
+and the triangular recurrence \cref{eq:g-recurrence}.
+
+The first five polynomials are
+\begin{align}
+ g_0(\beta)={}&1,\notag\\
+ g_1(\beta)={}&\frac{\beta(\beta+1)}2,\notag\\
+ g_2(\beta)={}&
+ \frac{\beta(\beta+1)(\beta+2)(3\beta+1)}{24},\notag\\
+ g_3(\beta)={}&
+ \frac{\beta^2(\beta+1)^2(\beta+2)(\beta+3)}{48},\notag\\
+ g_4(\beta)={}&
+ \frac{\beta(\beta+1)(\beta+2)(\beta+3)(\beta+4)
+ (15\beta^3+30\beta^2+5\beta-2)}{5760}.
+ \label{eq:g-first-five}
+\end{align}
+In particular $g_r(\beta)$ is a polynomial of degree $2r$ with rational
+coefficients.
+
+\section{Remainder form of the transfer theorem}
+Let $M\ge0$ be fixed.  Suppose that, in a $\Delta$-domain at $\rho$,
+\begin{equation}
+ T(z)=H(z)+\sum_{j=0}^{M}t_{2j+1}
+ \left(1-\frac z\rho\right)^{j+1/2}
+ +\bigO\!\left(\left|1-\frac z\rho\right|^{M+3/2}\right),
+ \label{eq:transfer-remainder-hyp}
+\end{equation}
+where $H$ is analytic in a disk of radius strictly larger than $\rho$ after the
+local analytic terms are patched away.  Then
+\begin{equation}
+ a_n=\rho^{-n}n^{-3/2}
+ \left(\sum_{k=0}^{M}\frac{A_k}{n^k}
+ +\bigO(n^{-M-1})\right)
+ +\bigO(R^{-n})
+ \label{eq:transfer-remainder-conclusion}
+\end{equation}
+for some $R>\rho$ determined by the chosen continuation domain.  The first
+error is the algebraic truncation error at the dominant singularity; the
+second records all farther singularities not crossed by the contour.  This
+separation is precisely what is refined into the transseries of
+\cref{eq:global-forward-transseries}.
+
+\begin{proof}
+Apply the exact identity \cref{eq:exact-transfer-appendix} to each displayed
+singular monomial and truncate its gamma-ratio expansion
+\cref{eq:log-gamma-ratio-general}.  A Hankel-contour estimate gives
+$\rho^{-n}n^{-M-5/2}$ for the local remainder.  Cauchy's estimate on the
+remaining outer contour gives $O(R^{-n})$.  This is the standard transfer
+mechanism of singularity analysis \cite{FlajoletOdlyzko1990,FlajoletSedgewick2009}.
+\end{proof}
+
+\chapter{Structure and error theory of the inverse expansion}
+\label{app:inverse-structure}
+
+\section{Existence and uniqueness in the logarithmic scale}
+Consider the general phase
+\begin{equation}
+ Z=X-p\log X+K(X^{-1}),
+ \qquad
+ K(v)=\sum_{j\ge1}\eta_jv^j,
+ \qquad p>0.
+ \label{eq:general-inverse-phase-app}
+\end{equation}
+The derivative is
+\begin{equation}
+ \frac{\dd Z}{\dd X}
+ =1-\frac pX-\frac1{X^2}K'(X^{-1})=1+O(X^{-1}).
+ \label{eq:phase-derivative-app}
+\end{equation}
+Hence the map is strictly increasing for all sufficiently large positive $X$,
+and it has a unique inverse germ at $+
+ealsymbol$.
+
+\begin{theorem}[Formal uniqueness]
+There is a unique logarithmic transseries of the form
+\begin{equation}
+ X=Z+p\log Z+\sum_{n\ge1}P_n(\log Z)Z^{-n}
+ \label{eq:formal-unique-inverse}
+\end{equation}
+that solves \cref{eq:general-inverse-phase-app} coefficientwise.  Each $P_n$ is
+a polynomial with coefficients in
+$\mathbb Q[p,\eta_1,\ldots,\eta_n]$.
+\end{theorem}
+
+\begin{proof}
+Substitute \cref{eq:formal-unique-inverse}, expand
+$\log X=\log Z+\log(1+(X-Z)/Z)$ and expand $K(X^{-1})$ as a unit-series
+composition.  At order $Z^{-n}$ the unknown $P_n$ occurs linearly with
+coefficient one, while all other terms involve only $P_0,\ldots,P_{n-1}$.
+Thus the coefficients are determined triangularly.  The operations used are
+addition, multiplication, formal logarithm, and unit-series powers, so they
+preserve the stated coefficient ring.
+\end{proof}
+
+\section{Degree, leading term, and constant term}
+The triangular recurrence contains additional structure.
+
+\begin{proposition}[Shape of the inverse polynomials]
+For $n\ge1$,
+\begin{equation}
+ \deg P_n=n,
+ \qquad
+ [L^n]P_n(L)=\frac{(-1)^{n+1}p^{n+1}}{n},
+ \qquad
+ P_n(0)=D_n.
+ \label{eq:Pn-shape}
+\end{equation}
+Here $D_n$ is the Lambert-core coefficient from \cref{eq:Dr-master}.
+\end{proposition}
+
+\begin{proof}
+The highest power of $L$ is independent of $K$: every occurrence of an
+$\eta_j$ consumes at least one inverse power without increasing the maximum
+logarithmic degree.  Thus the leading term is the same as for
+$Z=X-p\log X$.  Expanding its exact inverse
+$X=-pW_{-1}(-e^{-Z/p}/p)$, or inducting directly in
+\cref{eq:Pn-master}, gives $(-1)^{n+1}p^{n+1}L^n/n$.
+
+For the constant term, set $L=0$ in the direct recurrence.  The resulting
+near-identity reversion is exactly the correction equation about the Lambert
+core with $X_0^{-1}$ as small parameter.  Formal uniqueness therefore identifies
+its order-$n$ coefficient with $D_n$.
+\end{proof}
+
+\section{Transport of a controlled forward remainder}
+Suppose a positive smooth interpolant has logarithm
+\begin{equation}
+ f(x)=\lambda x-p\log x+\log C+
+ \sum_{j=1}^{M}\kappa_jx^{-j}+O(x^{-M-1}),
+ \qquad \lambda>0.
+ \label{eq:forward-log-remainder}
+\end{equation}
+Let $x_M(y)$ be the inverse obtained by matching the displayed expansion through
+order $M$.  Since $f'(x)=\lambda+O(x^{-1})$, the mean-value theorem gives
+\begin{equation}
+ x_M(y)-f^{-1}(\log y)
+ =O\!\left((\log y)^{-M-1}\right).
+ \label{eq:inverse-remainder-transport}
+\end{equation}
+More precisely, the leading residual is divided by
+$f'(x_M)=\lambda-p/x_M+O(x_M^{-2})$.  This explains why forward relative errors
+and inverse absolute errors in \cref{tab:inverse-errors} have nearly the same
+asymptotic order, apart from the factor $1/\lambda$.
+
+\section{Staircase recovery and the best possible deterministic error}
+Let $\nu$ be any continuous asymptotic inverse agreeing with a monotone
+interpolation through the sequence values.  Then
+\begin{equation}
+ N_*(y)=\lceil \nu(y)+\epsilon(y)\rceil,
+ \qquad \epsilon(y)\to0,
+ \label{eq:staircase-general}
+\end{equation}
+provided $y$ stays away from the finitely many initial ties.  No continuous
+asymptotic series can determine the integer answer with an error tending to
+zero uniformly in $y$: arbitrarily small changes of $y$ across $a_n$ change
+$N_*(y)$ by one.  The Fourier sawtooth in \cref{eq:ceiling-fourier} is therefore
+not an optional refinement but the canonical order-one transseries layer of
+the generalized inverse.
+
+\chapter{Numerical audit and reusable constants}
+\label{app:numerical-audit}
+
+\section{Dominant singular constants}
+The constants used in the tables are
+\begin{align}
+ \rho={}&0.3383218568992076951961126257170170531837746075329677955723037763
+ \ldots,\notag\\
+ \alpha={}&2.955765285651994974714817524123194588375492304663596595350472479
+ \ldots,\notag\\
+ \lambda={}&1.083757597244624660482711980896174279049662124202672234914427065
+ \ldots,\notag\\
+ C=A_0={}&0.43992401257102530404090339143454476479808540794012\ldots,\notag\\
+ C\lambda^{3/2}={}&0.49633614165959974747273694642522491348\ldots .
+ \label{eq:numerical-audit-constants}
+\end{align}
+They satisfy the independent checks
+\begin{equation}
+ \lambda=-\log\rho=1+R(\rho),
+ \qquad
+ C^2=\frac{1+\rho R'(\rho)}{2\pi}.
+ \label{eq:constant-checks}
+\end{equation}
+
+\section{Local Puiseux coefficients}
+For $X=1-z/\rho$,
+$T(z)=1+\sum_{r\ge1}t_rX^{r/2}$ begins as follows.
+\begin{longtable}{r@{\qquad}r@{\qquad}r@{\qquad}r}
+\caption{Numerical dominant Puiseux coefficients.}
+\label{tab:t-audit}\\
+\toprule
+$r$ & $t_r$ & $r$ & $t_r$\\
+\midrule
+\endfirsthead
+\toprule
+$r$ & $t_r$ & $r$ & $t_r$\\
+\midrule
+\endhead
+1  & $-1.559490020374640885542207396$ &
+10 & $ 0.2059848312779074187361657348$\\
+2  & $ 0.8106697078826992814381417462$ &
+11 & $-0.05272470849819056231533821627$\\
+3  & $-0.2854870216128456053038513708$ &
+12 & $ 0.01702656875495366944604539502$\\
+4  & $ 0.1653723657120838934765135390$ &
+13 & $-0.1523706243663253962860946421$\\
+5  & $-0.3424599704021542010422002117$ &
+14 & $ 0.1737028832998504628939446698$\\
+6  & $ 0.3174072259465285635680708874$ &
+15 & $-0.01447370373952704485673111250$\\
+7  & $-0.1077788002916310091822310895$ &
+16 & $-0.02189951761121556223267283747$\\
+8  & $ 0.06138495705583510468873149925$ &
+17 & $-0.1445471935709097054769461137$\\
+9  & $-0.1952123835975564636127698720$ &
+18 & $ 0.1760771088850177790623322866$\\
+\bottomrule
+\end{longtable}
+The alternating, nonmonotone pattern is expected: these are local analytic
+coefficients, not the final coefficient-asymptotic constants, and even-indexed
+terms do not directly survive singularity transfer.
+
+\section{Inverse phase and Lambert-core coefficients}
+The first additive phase coefficients $\eta_j$ and correction coefficients
+$D_j$ are
+\begin{longtable}{r@{\quad}r@{\qquad}r}
+\caption{Coefficients in $K(v)=\sum\eta_jv^j$ and
+$\delta(X_0)=\sum D_jX_0^{-j}$.}
+\label{tab:eta-D-audit}\\
+\toprule
+$j$ & $\eta_j$ & $D_j$\\
+\midrule
+\endfirsthead
+\toprule
+$j$ & $\eta_j$ & $D_j$\\
+\midrule
+\endhead
+1 & $0.1088130343442745145167554784$ & $-0.1088130343442745145167554784$\\
+2 & $0.5859660997717814776889432009$ & $-0.7491856512881932494640764185$\\
+3 & $2.446558573456779649881479860$  & $-3.582177326832123\ldots$\\
+4 & $14.06753235112498242303023266$  & $-19.658721211387\ldots$\\
+5 & $106.8546611534523691271119951$  & $-138.532747851856\ldots$\\
+6 & $1022.176467223247872767588518$  & $-1248.97932637169\ldots$\\
+7 & $11859.388275\ldots$              & $-13905.4088447481\ldots$\\
+8 & $162087.382638\ldots$             & $-184719.191126508\ldots$\\
+\bottomrule
+\end{longtable}
+The growth visible here is one reason to retain the exact $W_{-1}$ core: it
+sums the entire logarithmic skeleton before the rapidly growing correction
+series is truncated.
+
+\section{Exact integer benchmarks}
+The divisor recurrence gives, without floating-point arithmetic,
+\begin{center}
+\begin{tabular}{r@{\qquad}r}
+\toprule
+$n$ & $a_n$\\
+\midrule
+1   & $1$\\
+10  & $719$\\
+20  & $12\,826\,228$\\
+30  & $354\,426\,847\,597$\\
+40  & $11\,703\,780\,079\,612\,453$\\
+50  & $425\,976\,989\,835\,141\,038\,353$\\
+75  & $135\,410\,903\,503\,191\,503\,503\,384\,705\,970\,501$\\
+100 & $51\,384\,328\,351\,659\,326\,880\,337\,136\,395\,054\,298\,255\,277\,970$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These values provide direct regression tests for any implementation of
+\cref{eq:exact-recurrence} and for the error tables in the main text.
+
+\chapter{Notation and scale map}
+\label{app:notation}
+
+Several variables deliberately carry similar letters because each normalizes a
+different stage.  The following table collects them in one place.
+\begin{longtable}{p{0.16\textwidth}p{0.72\textwidth}}
+\caption{Principal symbols and their roles.}
+\label{tab:notation}\\
+\toprule
+Symbol & Meaning\\
+\midrule
+\endfirsthead
+\toprule
+Symbol & Meaning\\
+\midrule
+\endhead
+$a_n$ & Number of unlabelled non-plane rooted trees on $n$ vertices; A000081.\\
+$T(z)$ & Ordinary generating function $\sum_{n\ge1}a_nz^n$.\\
+$b_m$ & Divisor transform $\sum_{d\mid m}d a_d$.\\
+$R(z)$ & Analytic disturbance $\sum_{k\ge2}T(z^k)/k$.\\
+$\zeta(z)$ & Cayley argument $z\exp R(z)$, so $T=-W_0(-\zeta)$.\\
+$\rho$ & Positive dominant singularity; $T(\rho)=1$.\\
+$\alpha,\lambda$ & $\alpha=\rho^{-1}$ and $\lambda=\log\alpha$.\\
+$X=1-z/\rho$ & Local forward singular coordinate.\\
+$q$ & Universal Lambert coordinate $\sqrt{2(1-e\zeta(z))}$.\\
+$\omega_m$ & Rational inverse coefficients in $1-T=\sum\omega_mq^m$.\\
+$t_r$ & Puiseux coefficients in $T=1+\sum t_rX^{r/2}$.\\
+$A_k,c_k$ & Absolute and relative dominant coefficient-asymptotic constants.\\
+$x$ & Continuous large index in the smooth interpolation $\mathcal A(x)$.\\
+$X=\lambda x$ & Dimensionless inverse index; context distinguishes it from the local forward $X$.\\
+$Z$ & Normalized logarithm $\log(y/(C\lambda^p))$.\\
+$L$ & Slow logarithm $\log Z$.\\
+$K(v)$ & Additive correction phase $\log F(\lambda v)$.\\
+$X_0$ & Exact Lambert core $-pW_{-1}(-e^{-Z/p}/p)$.\\
+$D_r$ & Ordinary inverse-power corrections about $X_0$.\\
+$P_r(L)$ & Polynomial--logarithmic coefficients in the direct inverse expansion.\\
+$\sigma,\Action_\sigma$ & A farther singularity and its action $\Log(\sigma/\rho)$.\\
+$\Stokes_\sigma$ & Contour intersection/Stokes multiplier for a chosen continuation sheet.\\
+\bottomrule
+\end{longtable}
+
+\backmatter
+
+\chapter*{Bibliographic note}
+\addcontentsline{toc}{chapter}{Bibliographic note}
+P\'olya's cycle-index method and Otter's analysis supply the classical rooted-tree
+foundation.  The Cayley-disturbance viewpoint and full dominant expansion are
+closest in spirit to Genitrini's treatment, while the explicit coefficient
+organization here follows the Bell-polynomial and reversion calculus developed
+in the linked ProveIt drafts.  The all-order inverse, the distinction between
+smooth and staircase inverses, the recursively contour-resolved farther
+singularity sectors, and the explicit transport of those sectors through the
+inverse are developed here as a unified extension of those ingredients.
+
+\begin{thebibliography}{99}
+
+\bibitem{BellBurrisYeats2006}
+J.~P. Bell, S.~N. Burris, and K.~A. Yeats,
+``Counting rooted trees: the universal law
+$t(n)\sim C\rho^{-n}n^{-3/2}$,''
+\emph{Electronic Journal of Combinatorics} \textbf{13} (2006), Research Paper
+R63.
+
+\bibitem{BergeronLabelleLeroux1998}
+F.~Bergeron, G.~Labelle, and P.~Leroux,
+\emph{Combinatorial Species and Tree-Like Structures},
+Encyclopedia of Mathematics and its Applications, vol.~67,
+Cambridge University Press, 1998.
+
+\bibitem{Butcher1963}
+J.~C. Butcher,
+``Coefficients for the study of Runge--Kutta integration processes,''
+\emph{Journal of the Australian Mathematical Society} \textbf{3} (1963),
+185--201.
+
+\bibitem{Butcher1972}
+J.~C. Butcher,
+``An algebraic theory of integration methods,''
+\emph{Mathematics of Computation} \textbf{26} (1972), 79--106.
+
+\bibitem{Butcher2021}
+J.~C. Butcher,
+\emph{B-Series: Algebraic Analysis of Numerical Methods},
+Springer Series in Computational Mathematics, vol.~55, Springer, 2021.
+
+\bibitem{Comtet1974}
+L.~Comtet,
+\emph{Advanced Combinatorics: The Art of Finite and Infinite Expansions},
+D. Reidel, 1974.
+
+\bibitem{Corless1996}
+R.~M. Corless, G.~H. Gonnet, D.~E.~G. Hare, D.~J. Jeffrey, and D.~E. Knuth,
+``On the Lambert $W$ function,''
+\emph{Advances in Computational Mathematics} \textbf{5} (1996), 329--359.
+
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions,
+Chapter~5, ``Gamma Function,'' especially the asymptotic-expansion sections,
+\url{https://dlmf.nist.gov/5}.
+
+\bibitem{Drmota2009}
+M.~Drmota,
+\emph{Random Trees: An Interplay between Combinatorics and Probability},
+Springer, 2009.
+
+\bibitem{DrmotaGittenberger2010}
+M.~Drmota and B.~Gittenberger,
+``The shape of unlabeled rooted random trees,''
+\emph{European Journal of Combinatorics} \textbf{31}(8) (2010), 2028--2063.
+
+\bibitem{FlajoletOdlyzko1990}
+P.~Flajolet and A.~Odlyzko,
+``Singularity analysis of generating functions,''
+\emph{SIAM Journal on Discrete Mathematics} \textbf{3}(2) (1990), 216--240.
+
+\bibitem{FlajoletSedgewick2009}
+P.~Flajolet and R.~Sedgewick,
+\emph{Analytic Combinatorics}, Cambridge University Press, 2009.
+
+\bibitem{Genitrini2016}
+A.~Genitrini,
+``Full asymptotic expansion for P\'olya structures,''
+Proceedings of the 27th International Meeting on Probabilistic,
+Combinatorial and Asymptotic Methods for the Analysis of Algorithms,
+Krakow, 2016; arXiv:1605.00837.
+
+\bibitem{McLachlan2017}
+R.~I. McLachlan, K.~Modin, H.~Munthe-Kaas, and O.~Verdier,
+``Butcher series: a story of rooted trees and numerical methods for evolution
+equations,'' \emph{Asia Pacific Mathematics Newsletter} \textbf{7}(1) (2017),
+1--11.
+
+\bibitem{OEISA000081}
+OEIS Foundation Inc.,
+``A000081: number of unlabeled rooted trees with $n$ nodes,''
+\url{https://oeis.org/A000081}, accessed September 2026.
+
+\bibitem{Olver1997}
+F.~W.~J. Olver,
+\emph{Asymptotics and Special Functions}, A K Peters, 1997 reprint.
+
+\bibitem{Otter1948}
+R.~Otter,
+``The number of trees,''
+\emph{Annals of Mathematics} \textbf{49}(3) (1948), 583--599.
+
+\bibitem{Polya1937}
+G.~P\'olya,
+``Kombinatorische Anzahlbestimmungen f\"ur Gruppen, Graphen und chemische
+Verbindungen,'' \emph{Acta Mathematica} \textbf{68} (1937), 145--254.
+
+\bibitem{ReshetnikovCCC}
+V.~Reshetnikov,
+\emph{Combinatorial Coefficient Calculus},
+ProveIt semi-formalized research-frontier draft, 2026,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Combinatorial_Coefficient_Calculus}.
+
+\bibitem{ReshetnikovSeries}
+V.~Reshetnikov,
+\emph{Series and Transseries},
+ProveIt semi-formalized research-frontier draft collection, 2026,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries}.
+
+\bibitem{TricomiErdelyi1951}
+F.~G. Tricomi and A.~Erd\'elyi,
+``The asymptotic expansion of a ratio of gamma functions,''
+\emph{Pacific Journal of Mathematics} \textbf{1}(1) (1951), 133--142.
+
+\end{thebibliography}
+
+\end{document}
