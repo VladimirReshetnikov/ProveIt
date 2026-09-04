@@ -3790,6 +3790,31 @@ The first cases, obtained by listing integer partitions of the excess, are
 Their coefficients are the corresponding block-size counts from
 \cref{thm:bell-poly-partitions}.
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; edge values only, deliberately.
+Two of the values displayed above are formal, and they are the two that are
+structural rather than computational.  The diagonal
+$\ExponentialPartialBellPolynomial nn=x_1^{n}$ is
+\lean{Fabius.partialBell_self} (module \lean{PartialBellPolynomials}), proved
+directly from the block recurrence \lean{Fabius.partialBell_succ_succ}; and the
+vanishing above the diagonal, $\ExponentialPartialBellPolynomial nk=0$ for
+$n<k$, is \lean{Fabius.partialBell_eq_zero_of_lt}.
+
+The remaining displayed cases --- \cref{eq:bell-edge-first} and the sub-diagonal
+rows through $\ExponentialPartialBellPolynomial n{n-4}$ --- are \emph{not}
+individually formal, and neither is the sentence above about their
+coefficients, which appeals to \cref{thm:bell-poly-partitions}.  They would follow
+from \cref{thm:bell-near-diagonal} once that theorem is formal, since each is
+one instance of it; formalizing them one at a time would be the wrong order of
+work.
+
+A caution for anyone extending this crosswalk: \lean{Fabius.partialBell_one} is
+\emph{not} the edge value $\ExponentialPartialBellPolynomial n1=x_n$.  It is
+the specialization at all weights equal to $1$, giving the Stirling numbers of
+the second kind, and Mathlib spells those \texttt{Nat.stirlingSecond}.  The name
+is short for ``all weights one'', not for ``second column''.
+\end{remark}
+
 \section{Partial derivatives}
 \begin{theorem}[Derivative identities]\label{thm:bell-poly-derivatives}
 For $i\ge1$,
