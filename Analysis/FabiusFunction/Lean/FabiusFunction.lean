@@ -296,6 +296,7 @@ import FabiusFunction.WordComplexity
 import FabiusFunction.ThueMorseNewman
 import FabiusFunction.ThueMorseNewmanQuantitative
 import FabiusFunction.ThueMorseNewmanResidues
+import FabiusFunction.ThueMorseNewmanSelfSimilarity
 import FabiusFunction.ThueMorseGelfond
 import FabiusFunction.ThueMorseGelfondSharpness
 import FabiusFunction.PeriodDoublingHankel
@@ -476,6 +477,7 @@ import FabiusFunction.ShellEnvelopeExplicit
 import FabiusFunction.RvachevFourierDecay
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
+import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
 import FabiusFunction.TransferPositivity
 import FabiusFunction.PerronRootExistence
@@ -612,10 +614,12 @@ import FabiusFunction.QMultinomial
 import FabiusFunction.QExponential
 import FabiusFunction.JacksonIntegral
 import FabiusFunction.QPochhammerLogDerivative
+import FabiusFunction.QPochhammerLambertForm
 import FabiusFunction.QPochhammerOrderDerivative
 import FabiusFunction.JacobiCubic
 import FabiusFunction.CyclotomicFactorization
 import FabiusFunction.CentralQBinomialReduction
+import FabiusFunction.CentralQVandermondeInfinite
 import FabiusFunction.PrimitiveRootBlock
 import FabiusFunction.QLucas
 import FabiusFunction.CyclotomicDivisibility

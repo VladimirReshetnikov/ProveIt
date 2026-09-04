@@ -4,10 +4,11 @@ import FabiusFunction.FabiusQBinomialTaylor
 # Scalar-valued arbitrary-dyadic q-binomial Fabius formulas
 
 This module upgrades the common translation in the arbitrary-numerator
-dyadic formula from `ℚ` to any field carrying an `ℚ`-algebra structure.
-The finite expression is first packaged as a polynomial over `ℚ`; rational
-translation invariance says that polynomial is constant, so evaluation works
-uniformly over `ℝ`, `ℂ`, and other characteristic-zero scalar fields.
+dyadic formula from `ℚ` to any commutative ring carrying an
+`ℚ`-algebra structure.  The finite expression is first packaged as a
+polynomial over `ℚ`; rational translation invariance says that
+polynomial is constant, so evaluation works uniformly over `ℝ`, `ℂ`,
+and every other `ℚ`-algebra.
 The constant-polynomial identity is exposed at every coefficient, retaining
 the exact arbitrary-dyadic normalization in degree zero and the cancellation
 of every positive translation coefficient.  Scalar evaluation also inherits
@@ -48,17 +49,17 @@ def thueMorseDyadicNumeratorTranslatedPowerSumPolynomial
   congr 1
   ring
 
-/-- Evaluation of one arbitrary-numerator translated inner sum in a scalar
-field over `ℚ`. -/
+/-- Evaluation of one arbitrary-numerator translated inner sum in a
+commutative ring over `ℚ`. -/
 def thueMorseDyadicNumeratorTranslatedPowerSumIn
-    {K : Type*} [Field K] [Algebra ℚ K]
+    {K : Type*} [CommRing K] [Algebra ℚ K]
     (q : K) (m k d : ℕ) : K :=
   Polynomial.eval₂ (algebraMap ℚ K) q
     (thueMorseDyadicNumeratorTranslatedPowerSumPolynomial m k d)
 
 /-- Literal finite-sum expansion of the scalar-valued inner sum. -/
 theorem thueMorseDyadicNumeratorTranslatedPowerSumIn_eq_sum
-    {K : Type*} [Field K] [Algebra ℚ K]
+    {K : Type*} [CommRing K] [Algebra ℚ K]
     (q : K) (m k d : ℕ) :
     thueMorseDyadicNumeratorTranslatedPowerSumIn q m k d =
       ∑ r ∈ Finset.range (m * 2 ^ k),
@@ -77,7 +78,7 @@ theorem thueMorseDyadicNumeratorTranslatedPowerSumIn_eq_sum
 
 /-- Rational casts agree with the original rational inner sum. -/
 theorem thueMorseDyadicNumeratorTranslatedPowerSumIn_ratCast
-    {K : Type*} [Field K] [Algebra ℚ K]
+    {K : Type*} [CommRing K] [Algebra ℚ K]
     (q : ℚ) (m k d : ℕ) :
     thueMorseDyadicNumeratorTranslatedPowerSumIn
         (algebraMap ℚ K q) m k d =
@@ -138,17 +139,17 @@ theorem qBinomialThueMorseDyadicTranslatedFormulaPolynomial_coeff
     rw [Polynomial.coeff_C_zero, if_pos rfl]
   · rw [Polynomial.coeff_C_of_ne_zero hj, if_neg hj]
 
-/-- Evaluation of the arbitrary-numerator translated formula in a scalar
-field over `ℚ`. -/
+/-- Evaluation of the arbitrary-numerator translated formula in a
+commutative ring over `ℚ`. -/
 def qBinomialThueMorseDyadicTranslatedFormulaIn
-    {K : Type*} [Field K] [Algebra ℚ K]
+    {K : Type*} [CommRing K] [Algebra ℚ K]
     (q : K) (m n : ℕ) : K :=
   Polynomial.eval₂ (algebraMap ℚ K) q
     (qBinomialThueMorseDyadicTranslatedFormulaPolynomial m n)
 
 /-- Scalar evaluation is independent of the common translation. -/
 theorem qBinomialThueMorseDyadicTranslatedFormulaIn_eq_centered
-    {K : Type*} [Field K] [Algebra ℚ K]
+    {K : Type*} [CommRing K] [Algebra ℚ K]
     (q : K) (m n : ℕ) :
     qBinomialThueMorseDyadicTranslatedFormulaIn q m n =
       algebraMap ℚ K (qBinomialThueMorseDyadicFormula m n) := by
@@ -158,7 +159,7 @@ theorem qBinomialThueMorseDyadicTranslatedFormulaIn_eq_centered
 
 /-- Pointwise independence of the scalar translation. -/
 theorem qBinomialThueMorseDyadicTranslatedFormulaIn_independent
-    {K : Type*} [Field K] [Algebra ℚ K]
+    {K : Type*} [CommRing K] [Algebra ℚ K]
     (q₁ q₂ : K) (m n : ℕ) :
     qBinomialThueMorseDyadicTranslatedFormulaIn q₁ m n =
       qBinomialThueMorseDyadicTranslatedFormulaIn q₂ m n := by
@@ -169,7 +170,7 @@ theorem qBinomialThueMorseDyadicTranslatedFormulaIn_independent
 denominator-exponent pairs represent the same rational number.  The two
 scalar translations may differ as well. -/
 theorem qBinomialThueMorseDyadicTranslatedFormulaIn_eq_of_rat_eq
-    {K : Type*} [Field K] [Algebra ℚ K]
+    {K : Type*} [CommRing K] [Algebra ℚ K]
     (q₁ q₂ : K) (n₁ n₂ m₁ m₂ : ℕ)
     (h : (m₁ : ℚ) / (2 : ℚ) ^ n₁ =
       (m₂ : ℚ) / (2 : ℚ) ^ n₂) :
@@ -182,7 +183,7 @@ theorem qBinomialThueMorseDyadicTranslatedFormulaIn_eq_of_rat_eq
 /-- One binary refinement of the represented dyadic leaves the scalar
 translated formula unchanged, even when its translation is changed. -/
 theorem qBinomialThueMorseDyadicTranslatedFormulaIn_refine
-    {K : Type*} [Field K] [Algebra ℚ K]
+    {K : Type*} [CommRing K] [Algebra ℚ K]
     (q₁ q₂ : K) (m n : ℕ) :
     qBinomialThueMorseDyadicTranslatedFormulaIn q₁ (2 * m) (n + 1) =
       qBinomialThueMorseDyadicTranslatedFormulaIn q₂ m n := by
@@ -192,7 +193,7 @@ theorem qBinomialThueMorseDyadicTranslatedFormulaIn_refine
 
 /-- Rational casts agree with the original rational formula. -/
 theorem qBinomialThueMorseDyadicTranslatedFormulaIn_ratCast
-    {K : Type*} [Field K] [Algebra ℚ K]
+    {K : Type*} [CommRing K] [Algebra ℚ K]
     (q : ℚ) (m n : ℕ) :
     qBinomialThueMorseDyadicTranslatedFormulaIn
         (algebraMap ℚ K q) m n =
@@ -202,7 +203,7 @@ theorem qBinomialThueMorseDyadicTranslatedFormulaIn_ratCast
 
 /-- Literal finite-sum expansion of the scalar-valued formula. -/
 theorem qBinomialThueMorseDyadicTranslatedFormulaIn_eq_sum
-    {K : Type*} [Field K] [Algebra ℚ K]
+    {K : Type*} [CommRing K] [Algebra ℚ K]
     (q : K) (m n : ℕ) :
     qBinomialThueMorseDyadicTranslatedFormulaIn q m n =
       algebraMap ℚ K
@@ -236,7 +237,7 @@ theorem qBinomialThueMorseDyadicTranslatedFormulaIn_eq_sum
 /-- Wolfram-style scalar expansion, with sign
 `(-1)^ThueMorse[r]` in the target field. -/
 theorem qBinomialThueMorseDyadicTranslatedFormulaIn_eq_wolfram_sum
-    {K : Type*} [Field K] [Algebra ℚ K]
+    {K : Type*} [CommRing K] [Algebra ℚ K]
     (q : K) (m n : ℕ) :
     qBinomialThueMorseDyadicTranslatedFormulaIn q m n =
       algebraMap ℚ K
@@ -261,9 +262,10 @@ theorem qBinomialThueMorseDyadicTranslatedFormulaIn_eq_wolfram_sum
   rw [← neg_one_pow_thueMorseBit]
   simp only [map_pow, map_neg, map_one]
 
-/-- Exact arbitrary-dyadic value over every scalar field over `ℚ`. -/
+/-- Exact arbitrary-dyadic value over every commutative ring
+over `ℚ`. -/
 theorem fabiusDyadic_algebraMap_eq_qBinomialThueMorseDyadicTranslatedFormulaIn
-    {K : Type*} [Field K] [Algebra ℚ K]
+    {K : Type*} [CommRing K] [Algebra ℚ K]
     (q : K) (m n : ℕ) :
     algebraMap ℚ K (fabiusDyadic n m) =
       qBinomialThueMorseDyadicTranslatedFormulaIn q m n := by
@@ -272,7 +274,7 @@ theorem fabiusDyadic_algebraMap_eq_qBinomialThueMorseDyadicTranslatedFormulaIn
 
 /-- Fully literal generic-scalar arbitrary-dyadic formula. -/
 theorem fabiusDyadic_algebraMap_eq_qBinomialThueMorseDyadic_translated_sum
-    {K : Type*} [Field K] [Algebra ℚ K]
+    {K : Type*} [CommRing K] [Algebra ℚ K]
     (q : K) (m n : ℕ) :
     algebraMap ℚ K (fabiusDyadic n m) =
       algebraMap ℚ K

@@ -14,6 +14,11 @@ The principal phase is strictly convex on the whole half-line ending at the
 peak, including negative inputs and zero.  The lower phase changes curvature
 once, at input `2 * exp (-2) / log 2`, where its value is `2 / log 2`; it is
 strictly convex before that point and strictly concave afterward.
+
+The sign analysis of the lower phase is done once: on the smooth
+interval its second derivative is a positive multiple of
+`log 2 * phase - 2` (`deriv_deriv_fabiusLambertPhase_eq_pos_mul`), and
+the two sign characterizations read off that factor.
 -/
 
 set_option autoImplicit false
@@ -35,15 +40,9 @@ theorem fabiusLambertInflectionInput_mem_Ioo :
     fabiusLambertInflectionInput ∈
       Ioo 0 (Real.exp (-1) / Real.log 2) := by
   have hlog : 0 < Real.log 2 := Real.log_pos (by norm_num)
-  have hexp : 2 * Real.exp (-2) < Real.exp (-1) := by
-    have htwo : (2 : ℝ) < Real.exp 1 := by
-      nlinarith [Real.add_one_lt_exp (by norm_num : (1 : ℝ) ≠ 0)]
-    have h := mul_lt_mul_of_pos_right htwo (Real.exp_pos (-2))
-    calc
-      2 * Real.exp (-2) < Real.exp 1 * Real.exp (-2) := h
-      _ = Real.exp (-1) := by rw [← Real.exp_add]; norm_num
   exact ⟨div_pos (mul_pos two_pos (Real.exp_pos _)) hlog,
-    (div_lt_div_iff_of_pos_right hlog).2 hexp⟩
+    (div_lt_div_iff_of_pos_right hlog).2
+      two_mul_exp_neg_two_lt_exp_neg_one⟩
 
 /-- At the lower-phase inflection input the Fabius Lambert phase equals
 `2 / log 2`. -/
@@ -83,11 +82,14 @@ theorem deriv_deriv_fabiusLambertPhase
   norm_num
   ring
 
-private theorem deriv_deriv_fabiusLambertPhase_pos_iff_phase
+/-- **The one sign analysis of the lower phase.**  On the smooth
+profile-value interval the second derivative is a positive multiple of
+`log 2 * phase - 2`. -/
+private theorem deriv_deriv_fabiusLambertPhase_eq_pos_mul
     {x : ℝ} (hx : x ∈ Ioo 0 (Real.exp (-1) / Real.log 2)) :
-    0 < deriv (deriv fabiusLambertPhase) x ↔
-      2 / Real.log 2 < fabiusLambertPhase x := by
-  rw [deriv_deriv_fabiusLambertPhase hx]
+    ∃ c : ℝ, 0 < c ∧
+      deriv (deriv fabiusLambertPhase) x =
+        c * (Real.log 2 * fabiusLambertPhase x - 2) := by
   have hlog : 0 < Real.log 2 := Real.log_pos (by norm_num)
   have hx2 : 0 < x ^ 2 := sq_pos_of_pos hx.1
   have hphase : 1 / Real.log 2 < fabiusLambertPhase x := by
@@ -108,18 +110,35 @@ private theorem deriv_deriv_fabiusLambertPhase_pos_iff_phase
     mul_neg_of_pos_of_neg hx2 ((show Odd 3 by decide).pow_neg hbase)
   have hlead : 0 < Real.log 2 * fabiusLambertPhase x ^ 2 :=
     mul_pos hlog (sq_pos_of_pos hphase0)
+  refine ⟨-(Real.log 2 * fabiusLambertPhase x ^ 2 /
+      (x ^ 2 * (1 - Real.log 2 * fabiusLambertPhase x) ^ 3)),
+    neg_pos.mpr (div_neg_of_pos_of_neg hlead hden), ?_⟩
+  rw [deriv_deriv_fabiusLambertPhase hx]
+  ring
+
+private theorem deriv_deriv_fabiusLambertPhase_pos_iff_phase
+    {x : ℝ} (hx : x ∈ Ioo 0 (Real.exp (-1) / Real.log 2)) :
+    0 < deriv (deriv fabiusLambertPhase) x ↔
+      2 / Real.log 2 < fabiusLambertPhase x := by
+  have hlog : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  obtain ⟨c, hc, hmul⟩ := deriv_deriv_fabiusLambertPhase_eq_pos_mul hx
+  rw [hmul, mul_pos_iff_of_pos_left hc, div_lt_iff₀ hlog]
+  constructor <;> intro h <;> linarith
+
+private theorem deriv_deriv_fabiusLambertPhase_neg_iff_phase
+    {x : ℝ} (hx : x ∈ Ioo 0 (Real.exp (-1) / Real.log 2)) :
+    deriv (deriv fabiusLambertPhase) x < 0 ↔
+      fabiusLambertPhase x < 2 / Real.log 2 := by
+  have hlog : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  obtain ⟨c, hc, hmul⟩ := deriv_deriv_fabiusLambertPhase_eq_pos_mul hx
+  rw [hmul, lt_div_iff₀ hlog]
   constructor
   · intro h
-    rcases (div_pos_iff.mp h) with hcase | hcase
-    · exact False.elim ((not_lt_of_ge hden.le) hcase.2)
-    · have htail : 2 - Real.log 2 * fabiusLambertPhase x < 0 := by
-        nlinarith [hcase.1]
-      exact (div_lt_iff₀ hlog).2 (by linarith)
+    rcases mul_neg_iff.mp h with hcase | hcase
+    · linarith [hcase.2]
+    · exact absurd hcase.1 (not_lt.mpr hc.le)
   · intro h
-    have htail : 2 - Real.log 2 * fabiusLambertPhase x < 0 := by
-      have := (div_lt_iff₀ hlog).1 h
-      linarith
-    exact div_pos_iff.mpr (Or.inr ⟨mul_neg_of_pos_of_neg hlead htail, hden⟩)
+    exact mul_neg_of_pos_of_neg hc (by linarith)
 
 /-- The lower Fabius phase has positive second derivative exactly before its
 inflection input. -/
@@ -149,48 +168,10 @@ theorem deriv_deriv_fabiusLambertPhase_neg_iff
     {x : ℝ} (hx : x ∈ Ioo 0 (Real.exp (-1) / Real.log 2)) :
     deriv (deriv fabiusLambertPhase) x < 0 ↔
       fabiusLambertInflectionInput < x := by
-  rw [deriv_deriv_fabiusLambertPhase hx]
-  have hlog : 0 < Real.log 2 := Real.log_pos (by norm_num)
-  have hx2 : 0 < x ^ 2 := sq_pos_of_pos hx.1
-  have hphase : 1 / Real.log 2 < fabiusLambertPhase x := by
-    have hx' : x ∈ Ioo 0
-        (powerExponentialPeak 1 1 (Real.log 2)) := by
-      rwa [powerExponentialPeak_one_one_log_two]
-    simpa only [Nat.cast_one, one_div,
-      lowerPowerExponentialPhase_one_one_log_two] using
-        (turningPoint_lt_lowerPowerExponentialPhase
-          (m := 1) one_ne_zero (A := 1) (beta := Real.log 2)
-          zero_lt_one hlog hx')
-  have hphase0 : 0 < fabiusLambertPhase x :=
-    lt_trans (div_pos zero_lt_one hlog) hphase
-  have hbase : 1 - Real.log 2 * fabiusLambertPhase x < 0 := by
-    have := (div_lt_iff₀ hlog).mp hphase
-    linarith
-  have hden : x ^ 2 * (1 - Real.log 2 * fabiusLambertPhase x) ^ 3 < 0 :=
-    mul_neg_of_pos_of_neg hx2 ((show Odd 3 by decide).pow_neg hbase)
-  have hlead : 0 < Real.log 2 * fabiusLambertPhase x ^ 2 :=
-    mul_pos hlog (sq_pos_of_pos hphase0)
-  have hsign :
-      Real.log 2 * fabiusLambertPhase x ^ 2 *
-            (2 - Real.log 2 * fabiusLambertPhase x) /
-          (x ^ 2 * (1 - Real.log 2 * fabiusLambertPhase x) ^ 3) < 0 ↔
-      fabiusLambertPhase x < 2 / Real.log 2 := by
-    constructor
-    · intro h
-      rcases (div_neg_iff.mp h) with hcase | hcase
-      · have htail : 0 < 2 - Real.log 2 * fabiusLambertPhase x := by
-          nlinarith [hcase.1]
-        exact (lt_div_iff₀ hlog).2 (by linarith)
-      · exact False.elim ((not_lt_of_ge hden.le) hcase.2)
-    · intro h
-      have htail : 0 < 2 - Real.log 2 * fabiusLambertPhase x := by
-        have := (lt_div_iff₀ hlog).1 h
-        linarith
-      exact div_neg_iff.mpr (Or.inl ⟨mul_pos hlead htail, hden⟩)
-  rw [hsign]
+  rw [deriv_deriv_fabiusLambertPhase_neg_iff_phase hx]
   have hanti := lowerPowerExponentialPhase_strictAntiOn
     (m := 1) one_ne_zero (A := 1) (beta := Real.log 2)
-    zero_lt_one hlog
+    zero_lt_one (Real.log_pos (by norm_num))
   have hx' : x ∈ Ioc 0 (powerExponentialPeak 1 1 (Real.log 2)) := by
     rw [powerExponentialPeak_one_one_log_two]
     exact ⟨hx.1, hx.2.le⟩

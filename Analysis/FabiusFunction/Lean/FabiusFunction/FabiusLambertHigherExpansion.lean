@@ -8,6 +8,13 @@ phase errors by one power of `t`.  The three-term expansion with remainder
 `O(1/t)` is therefore insufficient for the source's final `O(1/t)` formula.
 This module retains the next `(log t - (log t)^2/2) / ((log 2)^3 t^2)` term
 and proves that the remaining phase error is `O(1/t^2)`.
+
+Two generic inverse-power comparisons at infinity are stated here as
+well, since this is the lowest module of the Lambert-expansion layer
+that all its consumers share: `invPow_isBigO_invPow_atTop` (a higher
+inverse power is dominated by a lower one) and
+`log_pow_mul_invPow_isBigO_invPow_atTop` (any power of `log t` costs one
+inverse power).
 -/
 
 set_option autoImplicit false
@@ -43,50 +50,52 @@ private lemma secondRefined_eq {t : ℝ} (ht : 0 < t)
   field_simp [hL, ht.ne']
   ring
 
-private lemma inv_cube_isBigO_inv_sq :
-    (fun t : ℝ => t⁻¹ ^ 3) =O[atTop] (fun t : ℝ => t⁻¹ ^ 2) := by
+/-- A higher inverse power is dominated by a lower one at infinity:
+`t⁻¹ ^ k = O(t⁻¹ ^ q)` whenever `q ≤ k`.  With `q = 0` this says every
+fixed inverse power is bounded.  Shared by the Lambert-expansion
+modules. -/
+theorem invPow_isBigO_invPow_atTop {q k : ℕ} (h : q ≤ k) :
+    (fun t : ℝ => t⁻¹ ^ k) =O[atTop] (fun t : ℝ => t⁻¹ ^ q) := by
   apply IsBigO.of_bound 1
   filter_upwards [eventually_ge_atTop (1 : ℝ)] with t ht
+  have hi0 : 0 ≤ t⁻¹ := inv_nonneg.mpr (zero_le_one.trans ht)
   rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_pow, abs_pow,
-    abs_of_pos (inv_pos.mpr (lt_of_lt_of_le zero_lt_one ht)), one_mul]
-  have hi : t⁻¹ ≤ 1 := inv_le_one_of_one_le₀ ht
-  have hi0 : 0 ≤ t⁻¹ := (inv_pos.mpr (lt_of_lt_of_le zero_lt_one ht)).le
-  nlinarith [sq_nonneg (t⁻¹), mul_nonneg (sq_nonneg (t⁻¹)) hi0]
+    abs_of_nonneg hi0, one_mul]
+  exact pow_le_pow_of_le_one hi0 (inv_le_one_of_one_le₀ ht) h
+
+private lemma inv_cube_isBigO_inv_sq :
+    (fun t : ℝ => t⁻¹ ^ 3) =O[atTop] (fun t : ℝ => t⁻¹ ^ 2) :=
+  invPow_isBigO_invPow_atTop (by norm_num)
+
+/-- Logarithmic powers against inverse powers: for every `n` and `j`,
+`log t ^ n * t⁻¹ ^ (j + 1) = O(t⁻¹ ^ j)` at infinity, because
+`log t ^ n = o(t)`.  Stated with the exponent as `j + 1` rather than
+`k ≥ 1` so that instances unify by Nat-literal arithmetic. -/
+theorem log_pow_mul_invPow_isBigO_invPow_atTop (n j : ℕ) :
+    (fun t : ℝ => Real.log t ^ n * t⁻¹ ^ (j + 1)) =O[atTop]
+      (fun t : ℝ => t⁻¹ ^ j) := by
+  have h := (Real.isLittleO_pow_log_id_atTop (n := n)).isBigO.mul
+    (isBigO_refl (fun t : ℝ => t⁻¹ ^ (j + 1)) atTop)
+  refine h.congr' Filter.EventuallyEq.rfl ?_
+  filter_upwards [eventually_ne_atTop (0 : ℝ)] with t ht
+  simp only [id_eq, pow_succ]
+  rw [mul_comm, mul_assoc, inv_mul_cancel₀ ht, mul_one]
 
 private lemma log_sq_mul_inv_cube_isBigO_inv_sq :
     (fun t : ℝ => Real.log t ^ 2 * t⁻¹ ^ 3) =O[atTop]
-      (fun t : ℝ => t⁻¹ ^ 2) := by
-  have h := (Real.isLittleO_pow_log_id_atTop (n := 2)).isBigO.mul
-    (isBigO_refl (fun t : ℝ => t⁻¹ ^ 3) atTop)
-  apply h.congr'
-  · exact Filter.EventuallyEq.rfl
-  · filter_upwards [eventually_ne_atTop (0 : ℝ)] with t ht
-    simp only [id_eq]
-    field_simp
+      (fun t : ℝ => t⁻¹ ^ 2) :=
+  log_pow_mul_invPow_isBigO_invPow_atTop 2 2
 
 private lemma log_cube_mul_inv_cube_isBigO_inv_sq :
     (fun t : ℝ => Real.log t ^ 3 * t⁻¹ ^ 3) =O[atTop]
-      (fun t : ℝ => t⁻¹ ^ 2) := by
-  have h := (Real.isLittleO_pow_log_id_atTop (n := 3)).isBigO.mul
-    (isBigO_refl (fun t : ℝ => t⁻¹ ^ 3) atTop)
-  apply h.congr'
-  · exact Filter.EventuallyEq.rfl
-  · filter_upwards [eventually_ne_atTop (0 : ℝ)] with t ht
-    simp only [id_eq]
-    field_simp
+      (fun t : ℝ => t⁻¹ ^ 2) :=
+  log_pow_mul_invPow_isBigO_invPow_atTop 3 2
 
 private lemma log_sq_mul_inv_fourth_isBigO_inv_sq :
     (fun t : ℝ => Real.log t ^ 2 * t⁻¹ ^ 4) =O[atTop]
-      (fun t : ℝ => t⁻¹ ^ 2) := by
-  have h := (Real.isLittleO_pow_log_id_atTop (n := 2)).isBigO.mul
-    (isBigO_refl (fun t : ℝ => t⁻¹ ^ 4) atTop)
-  have h' : (fun t : ℝ => Real.log t ^ 2 * t⁻¹ ^ 4) =O[atTop]
-      (fun t : ℝ => t⁻¹ ^ 3) := by
-    apply h.congr' Filter.EventuallyEq.rfl
-    filter_upwards [eventually_ne_atTop (0 : ℝ)] with t ht
-    simp only [id_eq]
-    field_simp
-  exact h'.trans inv_cube_isBigO_inv_sq
+      (fun t : ℝ => t⁻¹ ^ 2) :=
+  (log_pow_mul_invPow_isBigO_invPow_atTop 2 3).trans
+    inv_cube_isBigO_inv_sq
 
 private lemma remainder_isBigO_log_div :
     dyadicLambertRemainder =O[atTop] (fun t : ℝ => Real.log t * t⁻¹) := by
