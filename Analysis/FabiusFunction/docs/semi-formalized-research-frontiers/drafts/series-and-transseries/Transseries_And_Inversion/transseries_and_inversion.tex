@@ -51838,6 +51838,51 @@ $0<C(x)<\int_0^{1}t^{x}\dd t=1/(x+1)$.  For $n\ge1$ this is at most
 $\tfrac12$, with equality impossible by strictness.
 \end{proof}
 
+\begin{remark}[The nearest-integer property needs no continuation]
+\label{p8:rem:nearest-integer-lean}
+\Cref{p8:cor:nearest-integer} is stated here as a corollary of
+\cref{p8:thm:branch-splitting}, that is, of continuing the incomplete gamma
+function along a ray through $\e^{\ii(2\kappa+1)\pi}$.  That route is
+convenient once the branch family is in hand, but it is not necessary, and it
+is worth recording the cheaper argument because it is the one that formalizes.
+
+Both sides of $D_n=n!/\e+(-1)^{n}C(n)$ satisfy the same first-order
+recursion.  On the right, integrating $\dd(t^{n+1}\e^{t-1})$ over $[0,1]$ gives
+\begin{equation}\label{p8:eq:C-recursion}
+ C(n+1)+(n+1)C(n)=1 ,
+\end{equation}
+which is one application of the fundamental theorem of calculus; on the left,
+$D_{n+1}=(n+1)D_n+(-1)^{n+1}$ is the classical recursion.  The two agree at
+$n=0$, where $D_0=1$ and $C(0)=1-1/\e$.  So the identity is an induction,
+and no complex analysis --- no continuation, no branch family, no incomplete
+gamma function --- enters at all.  What the branch-splitting theorem adds is
+the whole family $\mathcal{S}_\kappa$ and the interpolations built from it;
+for the nearest-integer property alone it is more than is needed.
+
+This cheaper route is machine-checked, in \path{DerangementNearestInteger.lean}.
+\path{Fabius.subfactorialDefect} is $C(n)$ as the interval integral
+$\int_0^{1}\e^{t-1}t^{n}\dd t$;
+\path{Fabius.subfactorialDefect_succ} is \eqref{p8:eq:C-recursion};
+\path{Fabius.numDerangements_sub_eq} is the identity
+$D_n-n!\e^{-1}=(-1)^{n}C(n)$;
+\path{Fabius.subfactorialDefect_pos} and \path{Fabius.subfactorialDefect_lt}
+are the two halves of \eqref{p8:eq:C-bound} at integer argument;
+\path{Fabius.abs_numDerangements_sub_lt_half} is the bound $|D_n-n!/\e|<\tfrac12$
+for $n\ge1$; and \path{Fabius.round_factorial_mul_exp_neg_one} is the
+nearest-integer property itself, $\operatorname{round}(n!/\e)=D_n$.  Mathlib
+knows the derangement numbers and that $D_n/n!\to\e^{-1}$, but carries no
+quantitative form of that limit and no nearest-integer statement, so this is
+new to the library as well as to the corpus.
+
+Two things in \cref{p8:cor:nearest-integer} are \emph{not} formalized.  The bound
+\eqref{p8:eq:C-bound} is proved only at integer argument, because the
+formalization uses the monoid power $t^{n}$ rather than $t^{x}$; the real-$x$
+statement needs the real power and is otherwise the same three lines.  And
+\cref{p8:thm:branch-splitting} itself, which produces $\mathcal{S}_\kappa$ and
+hence \cref{p8:def:interpolations}, is not formalized --- only the numerical
+consequence drawn from it here.
+\end{remark}
+
 \begin{definition}[Two real interpolations]\label{p8:def:interpolations}
 The branches $\kappa=0$ and $\kappa=-1$ are complex conjugate on the real
 axis; their mean is the \emph{median} (or symmetrized) interpolation

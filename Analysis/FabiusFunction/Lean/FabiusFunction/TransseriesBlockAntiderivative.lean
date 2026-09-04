@@ -61,6 +61,7 @@ noncomputable def blockOperator {R : Type*} [CommRing R] (c : R)
     (p : R[X]) : R[X] :=
   derivative p - Polynomial.C c * p
 
+/-- The block operator sends the zero polynomial to zero. -/
 @[simp] theorem blockOperator_zero {R : Type*} [CommRing R] (c : R) :
     blockOperator c 0 = 0 := by
   simp [blockOperator]
