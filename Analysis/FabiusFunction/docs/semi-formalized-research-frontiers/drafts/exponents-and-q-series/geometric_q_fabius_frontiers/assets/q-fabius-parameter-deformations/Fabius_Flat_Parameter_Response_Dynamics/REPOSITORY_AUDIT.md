@@ -14,11 +14,10 @@ normalized package, current Lean inputs, and paper-only frontier claims.
 - Archive structure: one wrapper directory; 18 entries comprising 14 files and four
   directories; 909,799 uncompressed bytes. No traversal path, symlink, encryption, duplicate
   name, or case-fold collision was present, and every CRC check passed.
-- The archive’s 13 payload checksums all verified. **ARRIVAL_SHA256SUMS.txt** preserves that
-  ledger verbatim. The first repository normalization changed only CRLF to LF in five CSV
-  files; its 13-row ledger also verified.
-- **SHA256SUMS.txt** is a separate exhaustive ledger for the current normalized package and
-  deliberately excludes itself.
+- The archive’s 13 payload checksums all verified. Its verbatim ledger remains
+  recoverable from Git history. The first repository normalization changed
+  only CRLF to LF in five CSV files; its 13-row ledger also verified before
+  checksum ledgers were retired.
 
 ## Hostile claim audit and disposition
 

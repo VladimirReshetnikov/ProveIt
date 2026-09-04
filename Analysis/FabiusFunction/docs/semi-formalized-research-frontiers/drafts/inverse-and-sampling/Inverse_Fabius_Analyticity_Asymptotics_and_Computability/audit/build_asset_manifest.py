@@ -5,9 +5,10 @@ The source corpus is read from the exact Git commit recorded in
 ``audit/SOURCE_REVISION``; later edits or retirement of the source packages
 therefore cannot change this audit.  This program copies only reviewed, unique
 payloads and writes the exhaustive 88-row disposition ledger.  ``--check`` is
-a strict read-only replay after the initial build.  Package checksum manifests
-are intentionally outside this workflow under the repository-wide retirement
-policy.
+a strict read-only replay after the initial build.  The retired root and asset
+``SHA256SUMS`` workflows are outside this audit.  Repository policy bans only
+the exact basenames ``SHA256SUMS`` and ``SHA256SUMS.*``; previously removed
+alternately named ledger records remain historical and are not regenerated.
 """
 
 from __future__ import annotations
@@ -80,6 +81,15 @@ DEFAULT_RATIONALE = {
     "claim_audit": "Source-corpus audit retained as historical provenance.",
     "run_metadata": "Unique numerical replay metadata retained.",
 }
+RETIRED_CHECKSUM_RATIONALE = (
+    "This formerly retained ledger had an alternately named canonical destination; "
+    "it is separately retired and is not regenerated. Its historical source path "
+    "and SHA-256 remain recorded in this disposition."
+)
+NOT_RETAINED_CHECKSUM_RATIONALE = (
+    "The historical checksum ledger remains recoverable from the pinned Git "
+    "revision; its SHA256SUMS/SHA256SUMS.* canonical basename is not retained."
+)
 
 
 def add(
@@ -315,9 +325,8 @@ omit(
 omit(
     f"{GERMS}/SHA256SUMS.txt",
     "provenance_ledger",
-    "retired_historical_checksum_manifest",
-    "The pinned source digest remains recoverable from Git history; package checksum manifests "
-    "are not copied into the live canonical assets.",
+    "retired_checksum_ledger",
+    RETIRED_CHECKSUM_RATIONALE,
 )
 retain(
     f"{GERMS}/verify_symbolic_fast.py",
@@ -350,9 +359,8 @@ for name in (
 omit(
     f"{ENDPOINT}/assets/SHA256SUMS-absorbed.txt",
     "provenance_ledger",
-    "retired_historical_checksum_manifest",
-    "The pinned digest remains recoverable from Git history; checksum manifests "
-    "are not copied into the live canonical assets.",
+    "retired_checksum_ledger",
+    RETIRED_CHECKSUM_RATIONALE,
 )
 retain(
     f"{ALL_ORDERS}/inverse_fabius_asymptotics.py",
@@ -369,9 +377,8 @@ omit(
 omit(
     f"{ALL_ORDERS}/SHA256SUMS.txt",
     "provenance_ledger",
-    "retired_historical_checksum_manifest",
-    "The pinned source digest remains recoverable from Git history; package checksum manifests "
-    "are not copied into the live canonical assets.",
+    "retired_checksum_ledger",
+    RETIRED_CHECKSUM_RATIONALE,
 )
 retain(
     f"{ALL_ORDERS}/results/constants.txt",
@@ -428,9 +435,8 @@ omit(
 omit(
     f"{WRIGHT}/SHA256SUMS.txt",
     "provenance_ledger",
-    "retired_historical_checksum_manifest",
-    "The pinned source digest remains recoverable from Git history; package checksum manifests "
-    "are not copied into the live canonical assets.",
+    "retired_checksum_ledger",
+    RETIRED_CHECKSUM_RATIONALE,
 )
 retain(
     f"{WRIGHT}/data/carrier_comparison.png",
@@ -520,9 +526,8 @@ omit(
 omit(
     f"{COMPLETION}/SHA256SUMS",
     "provenance_ledger",
-    "retired_historical_checksum_manifest",
-    "The pinned source digest remains recoverable from Git history; package checksum manifests "
-    "are not copied into the live canonical assets.",
+    "retired_checksum_ledger",
+    RETIRED_CHECKSUM_RATIONALE,
 )
 retain(
     f"{COMPLETION}/verification_output.txt",
@@ -534,9 +539,8 @@ retain(
 omit(
     f"{COMPUTABILITY}/ARRIVAL_SHA256SUMS.txt",
     "provenance_ledger",
-    "retired_historical_checksum_manifest",
-    "The pinned arrival digest remains recoverable from Git history; checksum manifests "
-    "are not copied into the live canonical assets.",
+    "retired_checksum_ledger",
+    RETIRED_CHECKSUM_RATIONALE,
 )
 retain(
     f"{COMPUTABILITY}/inverse_fabius_computability_experiments.py",
@@ -559,17 +563,16 @@ omit(
     f"{COMPUTABILITY}/SHA256SUMS.txt",
     "operational_checksum_ledger",
     "not_retained_stale_operational_ledger",
-    "The TeX and README rows are stale, and repository policy no longer retains package "
-    "checksum manifests.",
+    "The stale SHA256SUMS.* operational ledger is retired; no replacement checksum ledger is maintained.",
 )
 
-# Non-elementarity provenance.
+# Non-elementarity provenance remains recoverable from the pinned source
+# revision; the banned checksum-ledger payload is not copied into the live tree.
 omit(
     f"{NON_ELEMENTARY}/SHA256SUMS",
     "provenance_ledger",
-    "retired_historical_checksum_manifest",
-    "The pinned source digest remains recoverable from Git history; package checksum manifests "
-    "are not copied into the live canonical assets.",
+    "not_retained_historical_checksum_ledger",
+    NOT_RETAINED_CHECKSUM_RATIONALE,
 )
 
 # Inverse-iterate lane.
@@ -594,6 +597,8 @@ retain(
     f"{ITERATES}/REPOSITORY_AUDIT.md",
     "assets/provenance/inverse-iterates/REPOSITORY_AUDIT.md",
     "claim_audit",
+    disposition="retained_with_retired_ledger_note",
+    transform="retire_inverse_iterate_ledger_note",
 )
 omit(
     f"{ITERATES}/requirements.txt",
@@ -605,16 +610,14 @@ omit(
 omit(
     f"{ITERATES}/SHA256SUMS.arrival.txt",
     "provenance_ledger",
-    "retired_historical_checksum_manifest",
-    "The pinned arrival digest remains recoverable from Git history; package checksum manifests "
-    "are not copied into the live canonical assets.",
+    "not_retained_historical_checksum_ledger",
+    NOT_RETAINED_CHECKSUM_RATIONALE,
 )
 omit(
     f"{ITERATES}/SHA256SUMS.txt",
     "operational_checksum_ledger",
     "not_retained_stale_operational_ledger",
-    "The source and README rows are stale, and repository policy no longer retains package "
-    "checksum manifests.",
+    "The stale SHA256SUMS.* operational ledger is retired; no replacement checksum ledger is maintained.",
 )
 for name in ("fabius_iterates.png", "spine_comparison.png", "spine_remainder.png"):
     omit(
@@ -685,6 +688,28 @@ def portable_inverse_germ_output(payload: bytes) -> bytes:
 
 
 TRANSFORMS["portable_inverse_germ_output"] = portable_inverse_germ_output
+
+
+def retire_inverse_iterate_ledger_note(payload: bytes) -> bytes:
+    text = payload.decode("utf-8")
+    old = (
+        "all 13 listed payload entries verified before any normalization.  Its exact\n"
+        "bytes are preserved as `SHA256SUMS.arrival.txt`.  `MANIFEST.txt` remains the\n"
+        "unchanged submitted 13-file inventory.  The live `SHA256SUMS.txt` is the\n"
+        "post-review ledger and therefore intentionally differs from the arrival copy."
+    )
+    new = (
+        "all 13 listed payload entries verified before any normalization. Its exact\n"
+        "bytes remain recoverable from Git, and `MANIFEST.txt` remains the unchanged\n"
+        "submitted 13-file inventory. The former post-review `SHA256SUMS.txt` also\n"
+        "remains recoverable from Git; neither checksum ledger is live or required."
+    )
+    if text.count(old) != 1:
+        raise ValueError("inverse-iterate checksum-note anchor changed")
+    return text.replace(old, new).encode("utf-8")
+
+
+TRANSFORMS["retire_inverse_iterate_ledger_note"] = retire_inverse_iterate_ledger_note
 
 
 CSV_FIELDS = (
@@ -1086,7 +1111,7 @@ def main() -> int:
     parser.add_argument(
         "--check",
         action="store_true",
-        help="verify the existing migration and ledgers without writing",
+        help="verify the existing migration outputs without writing",
     )
     args = parser.parse_args()
     try:
@@ -1136,7 +1161,7 @@ def main() -> int:
         mode = "verified" if args.check else "built"
         print(f"asset migration {mode}")
         print(f"source disposition rows: {len(rows)}")
-        print(f"canonical payloads: {asset_count}")
+        print(f"canonical asset files: {asset_count}")
         print("dispositions:")
         for disposition, count in sorted(dispositions.items()):
             print(f"  {disposition:46s} {count:3d}")

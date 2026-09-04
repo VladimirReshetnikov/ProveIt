@@ -40,7 +40,6 @@ Supporting-asset contents
   experiment_output.txt             Human-readable diagnostics
   corpus_inventory.txt              Complete 57-file TeX corpus ledger
   requirements.txt                  Python dependencies
-  SHA256SUMS.txt                     Checksums for retained supporting files
 
 Reproducing the numerical outputs
 ---------------------------------

@@ -2,7 +2,7 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
@@ -1569,7 +1569,7 @@ $2.8811\times10^{-5}$.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.86\textwidth]{entropy_deficit.pdf}
+\includegraphics[width=0.86\textwidth]{entropy_deficit.png}
 \caption{The scaled entropy deficit approaches the predicted limit $3/100$.
 The orange line is the formal cubic correction.  Coarser $q$ values remain in the
 CSV but are omitted from the asymptotic comparison.}
@@ -1616,7 +1616,7 @@ $m$ & $h(S_m)$ & $h(\RvachevUp)-h(S_m)$ & $4^m[h(\RvachevUp)-h(S_m)]$ & exact MM
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.86\textwidth]{prefix_entropy_gap.pdf}
+\includegraphics[width=0.86\textwidth]{prefix_entropy_gap.png}
 \caption{The normalized finite-prefix entropy gap converges rapidly to the
 Fisher coefficient $\mathcal J(\RvachevUp)/18$.  Depths beyond eight are retained in the
 CSV, but their gaps approach the fixed-grid quadrature resolution.}
@@ -1651,7 +1651,7 @@ $m$ & centered mean & centered variance & two-sample KS distance\\
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.86\textwidth]{information_spectrum.pdf}
+\includegraphics[width=0.86\textwidth]{information_spectrum.png}
 \caption{Centered information densities at depths $2,4,8$ and the
 independent-surprisal limit.  The pronounced central cusp is a genuine
 non-Gaussian feature; convergence is not toward a normal information spectrum.}
@@ -2026,7 +2026,6 @@ Path & Purpose \\
 \path{data/symbolic_edgeworth.txt} & exact symbolic cumulant/Hermite check \\
 \path{figures/*.pdf, figures/*.png} & vector and raster numerical figures \\
 \path{numerical_summary.txt} & human-readable numerical constants \\
-\path{SHA256SUMS} & integrity hashes for the archive contents \\
 \bottomrule
 \end{longtable}
 

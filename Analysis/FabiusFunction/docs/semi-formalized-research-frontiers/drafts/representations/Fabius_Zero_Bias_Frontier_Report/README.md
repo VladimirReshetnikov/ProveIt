@@ -3,7 +3,9 @@
 This directory preserves and audits the report delivered in
 `Fabius_Zero_Bias_Frontier_Report.zip` on 30 August 2026. The archive SHA-256
 was `fb8bbf8e34a2f5eb4e5bbe7b06b22566502be7583696f01960a6e41d25b518ee`;
-all 21 payload hashes in `ARRIVAL_SHA256SUMS` verified before normalization.
+all 21 hashes in the submitted arrival ledger verified before normalization.
+That ledger, formerly filed as `ARRIVAL_SHA256SUMS`, is now retired and
+recoverable from Git history.
 The report's own repository-relative novelty audit remains pinned to commit
 `40fdea4cc0a728189f357389e3f114a2cb00e561`.
 
@@ -43,8 +45,8 @@ zero-bias transformations are classical.
 - `INTAKE_AUDIT.md` — immutable provenance, replay drift, mathematical-status,
   and 2026-08-31 synchronized-source/PDF validation record. That record
   predates the current source-only notation edit.
-- `ARRIVAL_SHA256SUMS` — immutable 21-entry delivered-payload ledger.
-- `SHA256SUMS` — validated normalized-package ledger (excluding itself).
+- The former 21-entry arrival and normalized-package ledgers are retired;
+  their validated checkpoint bytes remain recoverable from Git history.
 
 ## Numerical replay
 
@@ -91,5 +93,6 @@ font rows are embedded and subset, five are Libertinus, and neither the report
 nor its five vector figures contains Type 3 fonts. Title, author, subject, and
 keywords metadata are present. Physical pages 1, 13, 18--20, 22, and 26 were
 visually checked, including all five figures and the repaired running heads.
-The exhaustive mixed current-source/retained-artifact ledger passes in full;
-that verification does not assert source/PDF rendering parity.
+The former exhaustive mixed current-source/retained-artifact ledger passed in
+full at its recorded checkpoint; it is now retired and recoverable from Git
+history. That verification did not assert source/PDF rendering parity.

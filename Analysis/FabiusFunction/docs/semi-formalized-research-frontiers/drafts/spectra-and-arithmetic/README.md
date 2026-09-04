@@ -16,12 +16,13 @@ The exact current live-TeX snapshots are:
 | `Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex` | 8,183 | 349,076 | `683a560044772216980b05c4dd26957c6bbfb6c34019cc8d4cae815d9cff8df1` |
 
 These metrics and hashes describe the live TeX only. No PDFs were regenerated
-for this pass. Consequently, every page-count, font, visual-inspection, and
-three-pass-build statement below remains evidence about its earlier retained
-PDF checkpoint, not evidence of byte-level or rendered parity with the current
-source. Mutable live ledgers for the affected packages have been or are being
-refreshed to record the source-only checkpoint; immutable arrival ledgers and
-the historical build hashes recorded in package receipts remain unchanged.
+for that notation pass. Except for the later synchronized Dyadic Radon and
+Carleman receipts stated explicitly below, every page-count, font,
+visual-inspection, and three-pass-build statement remains evidence about its
+earlier retained PDF checkpoint, not evidence of byte-level or rendered parity
+with the current source. Package-local checksum ledgers are retired; their
+prior checkpoint bytes, arrival provenance, and historical build hashes remain
+recoverable from Git history and the package receipts.
 `Fabius_Pascal_Frontiers_Report` likewise retains its already documented mixed
 checkpoint: its reviewed PDF predates its current TeX.
 
@@ -30,10 +31,11 @@ checkpoint: its reviewed PDF predates its current TeX.
 Six tracked report directories arrived directly under `drafts/incoming/` in
 `origin/main`, without ZIP archives or outer archive hashes.  They were moved
 here in the quick intake phase and kept as separate manuscripts; the arrival
-commits remain their byte-level provenance.  Internal checksum ledgers were
+commits remain their byte-level provenance. Internal checksum ledgers were
 verified against the submitted bytes, then refreshed only where Git's
-repository policy had normalized CSV files from CRLF to LF.  Repository
-ledgers were added where the delivery was incomplete.  All delivered PDFs in
+repository policy had normalized CSV files from CRLF to LF; repository
+ledgers were added where the delivery was incomplete. Those ledgers are now
+retired and recoverable from Git history. All delivered PDFs in
 this batch passed a structural `pdfinfo` read and were unencrypted; this was
 not a visual review, experiment replay, TeX rebuild, mathematical audit, or
 Lean verification.
@@ -55,35 +57,45 @@ Lean verification.
   Type 3 fonts, while the vector-PDF plots remain reproducibility payloads. The
   corresponding exact three-pass render is a retained historical checkpoint,
   not a current source/PDF parity claim. No PDF was regenerated after the
-  notation-only TeX change, and the mutable live ledger is being refreshed for
-  that source-only checkpoint. Its
+  notation-only TeX change. The former ledger is retired and recoverable from
+  Git history. Its
   Thue--Morse scale partition, q-Mahler, Mellin, moment, plateau, and endpoint
   themes remain standalone pending claim and experiment review, comparison,
   and a Lean crosswalk.
 
 - [`Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/`](Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/)
-  contains *Dyadic Radon Profiles in the Fabius--Rvachev Web* (31
-  letter-paper pp, 2,064 source lines; with a 624-line program, ten data
+  contains *Dyadic Radon Profiles in the Fabius--Rvachev Web* (at arrival: 31
+  letter-paper pp and 2,064 source lines; with a 624-line program, ten data
   files, and four PDF/PNG figure pairs), from
-  `03b2f61889674f7d64ac86d3233236f5fa7ce660`. Its complete 26-entry ledger
-  now records the repository-normalized bytes; nine CSV entries changed only
-  by CRLF-to-LF normalization. The title and abstract concern spectral
+  `03b2f61889674f7d64ac86d3233236f5fa7ce660`. Its former complete 26-entry
+  ledger recorded the repository-normalized bytes; nine CSV entries changed
+  only by CRLF-to-LF normalization. The ledger is now retired and recoverable
+  from Git history. The title and abstract concern spectral
   reconstruction of dyadic projection profiles, zero multiplicities,
   q-sampled cumulants, automatic signs, Pascal factorizations, and exact
-  cubature.
+  cubature. The current 2,050-line, 74,839-byte source has SHA-256
+  `0ac7695620cb22896bb912598e2e91fd404e70dbd3c5d1e769ee76a6e92578d4`.
+  Three serial halt-on-error passes from absent auxiliaries produced
+  27 pages/984,841 bytes, 29 pages/998,017 bytes, and a final 29-page,
+  998,017-byte PDF with SHA-256
+  `39e76001f71c6628308ccdb8232251538674faee3c9102fa26e4cec00eb276c0`.
+  The final log, metadata, A4/rotation-zero, all-page render/text, and
+  representative visual gates passed; all 24 font rows are embedded/subset,
+  six are Libertinus, none is Type 3, and generated sidecars are absent.
 
 - [`Fabius_Pascal_Frontiers_Report/`](Fabius_Pascal_Frontiers_Report/)
   contains *Automatic Spectra, Exact Dyadic Cubature, and Probabilistic Duals
   in the Pascal--Rvachev Hierarchy* (26 A4 pp, 1,927 source lines; with a
   426-line program, four CSV tables, and a captured numerical summary), from
   `8a184546747082cbd92ad4675fb61981c6b8c3b6`. The nine-file delivery had no
-  checksum ledger or dependency lock, so the repository-generated
-  `SHA256SUMS` records the nine-payload scope.  The retained 26-page A4 PDF was
+  checksum ledger or dependency lock. A repository-generated ledger formerly
+  recorded the nine-payload scope; it is now retired and recoverable from Git
+  history. The retained 26-page A4 PDF was
   rebuilt in exactly three serial passes and has complete metadata,
   embedded/subset Type 1 fonts, six Libertinus rows, and no Type 3 font. The
   source changed after that receipt, so a new build is required before
-  synchronization is claimed; the refreshed live ledger intentionally records
-  the exact mixed checkpoint. Its higher-rank spectral
+  synchronization is claimed. The former ledger recorded that exact mixed
+  checkpoint and is now retired and recoverable from Git history. Its higher-rank spectral
   signs and Lambert series, dyadic cubature, Laguerre--Pólya/Pascal hierarchy,
   and probabilistic duals remain pending comparison.
 
@@ -99,20 +111,28 @@ Lean verification.
   26-entry ledger were refreshed for LF storage. At intake, all six delivered
   PDFs were readable and unencrypted (35 pages total). Those retained PDFs
   predate the current notation-only TeX; no PDF was regenerated, and the
-  mutable live ledger is being refreshed for the source-only checkpoint. The
+  former checksum ledger is retired and recoverable from Git history. The
   report concerns finite
   sinc-product differential rank, exact signed overlaps, dyadic
   Thue--Morse/frequency spectra, and non-D-finiteness/non-P-recursiveness.
 
 - [`Fabius_Rvachev_Carleman_Frontiers_2026-08-30/`](Fabius_Rvachev_Carleman_Frontiers_2026-08-30/)
   contains *Critical Ultradifferentiable Geometry of the Fabius--Rvachev
-  System* (24 A4 pp, 1,941 source lines; with a 544-line program, four CSV
-  tables, and five PDF/PNG figure pairs), from
+  System* (at arrival: 24 A4 pp and 1,941 source lines; with a 544-line program,
+  four CSV tables, and five PDF/PNG figure pairs), from
   `92c9909242ed6a2ab51d68ed816d1aa2a5339719`. Four CSV hashes in its complete
   21-entry ledger were refreshed for LF storage. Its derivative spectrum,
   Denjoy--Carleman scales, discrete Fourier duality, lattice corrections,
   Lambert-W saddles, and Bell-edge behavior remain pending comparison and
-  formalization.
+  formalization. The current 1,934-line, 71,224-byte source has SHA-256
+  `49dd91c71df292725e9dfe6de450ac014b47f3c3ba4a5bc8ec02e2d2e76d34e3`.
+  Three serial halt-on-error passes from absent auxiliaries produced
+  24 pages/952,942 bytes, 24 pages/973,424 bytes, and a final 24-page,
+  973,424-byte PDF with SHA-256
+  `13a7f35e23dc5a794d46b431059ce35c0b48c199f1996539b65dee9bc8c16047`.
+  The final log, metadata, A4/rotation-zero, all-page render/text, and
+  representative visual gates passed; all 22 font rows are embedded/subset,
+  four are Libertinus, none is Type 3, and generated sidecars are absent.
 
 - [`Dyadic_Spectral_Divisors_and_Gamma_Duality/`](Dyadic_Spectral_Divisors_and_Gamma_Duality/)
   is the title-derived filing of the generic incoming wrapper
@@ -120,9 +140,10 @@ Lean verification.
   `d4605275f58f648ebcdeb74bc2ef5e4983abb6f0`. *Dyadic Spectral Divisors and
   Gamma Duality* is 22 A4 pages and 1,301 source lines, with a 379-line
   program, seven generated outputs, and three PDF/PNG figure pairs. Its
-  submitted 3-entry ledger verifies those three payloads but is incomplete;
-  the repository-added full `ARRIVAL_SHA256SUMS` ledger records all 20
-  delivered files, including the submitted ledger. Its dyadic zero divisor,
+  submitted 3-entry ledger verified those three payloads but was incomplete;
+  a repository-added full arrival ledger recorded all 20 delivered files,
+  including the submitted ledger. Both are now retired and recoverable from
+  Git history. Its dyadic zero divisor,
   Laguerre--Pólya/non-holonomic structure, reciprocal-base counting, heat
   traces, Gamma/Thorin duality, and Lambert inversion remain separate pending
   semantic deduplication and a Lean crosswalk.
@@ -164,10 +185,10 @@ canonical A4 package, theorem, macro, boxed-environment, and listing-style
 block verbatim, apart from permitted metadata and running-head text, with only
 four required local notation commands appended. At its render checkpoint, the
 validated PDF used fully embedded, subset Libertinus fonts and no Type 3 fonts,
-and the then-current payload checksums, including the preserved ten-entry
-arrival ledger, passed completely (18/18). That retained PDF predates the
-current notation-only TeX; no PDF was regenerated. Its mutable current-live
-ledger is being refreshed, while the arrival ledger remains immutable.
+and the then-current payload checksums, including the ten-entry arrival
+ledger, passed completely (18/18). Those ledgers are now retired and
+recoverable from Git history. That retained PDF predates the current
+notation-only TeX; no PDF was regenerated.
 
 New standalone intake member:
 [`Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/`](Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/),
@@ -200,7 +221,8 @@ styling; three final `pdflatex` passes produced the retained 35-page PDF with
 all fonts embedded and subset, no Type 3 font, and no overfull box. Key pages and every
 figure were inspected at that checkpoint. The PDF predates the current
 notation-only TeX; no PDF was regenerated, no current source/PDF parity is
-claimed, and the mutable live ledger is being refreshed. A temp-isolated
+claimed. The former checksum ledger is retired and recoverable from Git
+history. A temp-isolated
 Python 3.12 replay regenerated every output: four
 CSVs were byte-identical, the text summary was EOL-equivalent, and the endpoint
 CSV had only 66 last-place differences (maximum `1.11e-16`).  All four PNGs
@@ -223,11 +245,12 @@ geometry, and geometric-scale deformation extend the arithmetic/spectral
 Fourier-product theme. The package shipped no checksum ledger, README,
 environment pin, or captured run output. The repository repair regenerated
 the four required figure/table inputs and four CSV evidence tables, normalized
-the source to A4/Libertinus, rebuilt the PDF in three passes, and added a live
-12-entry payload ledger; exact arrival hashes remain recorded in the global
-manifest. That retained PDF predates the current notation-only TeX; no PDF was
-regenerated, no current source/PDF parity is claimed, and the mutable live
-ledger is being refreshed. The current source crosswalks the exact finite
+the source to A4/Libertinus, rebuilt the PDF in three passes, and added a
+12-entry payload ledger for that checkpoint; exact arrival hashes remain
+recorded in the global manifest. The former ledger is now retired and
+recoverable from Git history. That retained PDF predates the current
+notation-only TeX; no PDF was regenerated and no current source/PDF parity is
+claimed. The current source crosswalks the exact finite
 general-base digit
 count in `BaseDigitMultiplicity.lean` without promoting the analytic zero or
 sign claims. Its novelty screen is already stale at its pinned
@@ -243,7 +266,8 @@ Its current live TeX has 8,183 lines and 349,076 bytes, with SHA-256
 `683a560044772216980b05c4dd26957c6bbfb6c34019cc8d4cae815d9cff8df1`.
 The retained PDF was not regenerated after the notation-only source change,
 so its earlier render validation is a historical checkpoint rather than a
-current source/PDF parity claim. The mutable live ledger is being refreshed.
+current source/PDF parity claim. The former checksum ledger is retired and
+recoverable from Git history.
 The consolidated volume comprises:
 
 - **Part I** — *Half-Integer Spectral Arithmetic*

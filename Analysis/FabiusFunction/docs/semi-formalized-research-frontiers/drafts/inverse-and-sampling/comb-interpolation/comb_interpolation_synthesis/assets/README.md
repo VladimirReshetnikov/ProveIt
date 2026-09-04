@@ -59,11 +59,11 @@ in `../source_disposition.csv`.
   historical canonical-publication checks separately from the pending build of
   the current source union and the remaining reproducibility work.
 - [`COMPANION_PAYLOADS.csv`](COMPANION_PAYLOADS.csv) is the canonical retained-
-  payload provenance map, not a checksum manifest. Package checksum manifests
-  are retired; the map's per-row digests remain provenance receipts rather than
-  a live whole-package gate.
-  None of these current records should be confused with the historical
-  per-package ledgers.
+  payload provenance map, not a live package-wide checksum manifest. Its per-row
+  digests remain purpose-specific provenance receipts. Live package-wide
+  checksum ledgers are retired; the former root checkpoint remains recoverable
+  from Git and is not a current validation requirement. None of these current
+  records should be confused with the historical per-package ledgers.
 
 The source pin is
 `73f0b373126ef22a3b5dccadfa7b99d61d445345`. Git history is the archive for

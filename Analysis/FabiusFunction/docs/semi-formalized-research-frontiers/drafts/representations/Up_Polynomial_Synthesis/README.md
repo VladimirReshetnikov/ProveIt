@@ -18,7 +18,9 @@ normalization claims have been demoted to problems.
 
 ## Canonical artifacts
 
-- Up_Polynomial_Synthesis.tex — report driver.
+- Up_Polynomial_Synthesis.tex — current 2,368-line, 98,609-byte report driver;
+  SHA-256
+  `95d293e34559e910cca2df4547e6e181a8d26bc8e8cf61c4445cf12c57ed8e0e`.
 - chapters/Lagrange_Cardinal_Loops.tex — exact cardinal synthesis, right
   inverses, projectors, ghosts, nested details, conditioning, q-binomial rows,
   Appell--Vandermonde growth, and denominator support.
@@ -29,7 +31,12 @@ normalization claims have been demoted to problems.
   conjugated operators, Gauss/Christoffel--Darboux synthesis, smoothed
   Legendre--Appell connections, parity, central q-determinants, asymptotics,
   exact Sturm evidence, and consolidated conjectures.
-- Up_Polynomial_Synthesis.pdf — rendered report.
+- The driver plus its three chapter sources form a four-file closure of 5,434
+  lines and 211,270 bytes, with digest
+  `62aa76428089cd164705b1d31e038d4e48545681eedc01cb491e6a94f07b0e41`.
+- Up_Polynomial_Synthesis.pdf — synchronized 62-page, 1,071,181-byte report;
+  SHA-256
+  `99c5d8256b983652755fe8e46ef015277e61b94941a4ca6c875bddaf0493b101`.
 - assets/provenance/THEOREM_CROSSWALK.md — one-to-one provenance and evidence
   ledger for all 80 theorem-like assertions.
 - assets/provenance/ — source snapshots, migration map, and asset policy.
@@ -37,7 +44,8 @@ normalization claims have been demoted to problems.
   113 selected companion payloads.
 - assets/companion-evidence/ — 104 migrated scripts, exact tables, captured
   outputs, requirements, and useful PNG diagnostics, grouped by source slug;
-  the provenance map also covers the two already-canonical root-geometry files.
+  the provenance map also covers two already-canonical root-geometry files and
+  seven retired checksum-ledger rows without live destinations.
 - assets/evidence/legendre/root-geometry/ — exact Q12 Sturm certificate,
   complete counts through degree twenty, and a focused verifier.
 - Package checksum manifests are retired; scoped hashes remain in the
@@ -67,6 +75,36 @@ Then inspect the log for undefined references, missing files, overfull boxes,
 and font substitution. Render all pages to images and inspect the full contact
 sheet plus representative pages at original resolution. The committed PDF
 must be A4, have embedded/subset fonts, and contain no Type 3 fonts.
+
+The preceding synchronized publication checkpoint was rebuilt from absent
+auxiliaries on 2026-09-04 by the exact procedure above. It is now historical.
+At that checkpoint the driver had 2,324 lines and 95,757 bytes (SHA-256
+`15f7c593895ed4a06b7f9d90c72d55078a193cd01f0818cb3b3cfa4f4d585a52`),
+the driver plus three chapters had 5,279 lines and 202,019 bytes, and the three
+successful halt-on-error passes produced
+59 pages/1,030,964 bytes, 60 pages/1,056,607 bytes, and finally 60
+pages/1,056,613 bytes. The final log has no TeX error, unresolved reference or
+citation, or rerun request; title, author, subject, and keywords metadata are
+present. Every page is A4 at rotation zero, rendered, and contains extractable
+text. All 27 font rows are embedded and subset, four are Libertinus, and none
+is Type 3. Representative title, chapter-opening, theorem, table, figure, and
+final pages passed visual inspection. Generated sidecars were removed, and no
+package-local checksum ledger is a live publication gate.
+
+The current synchronized `b899` checkpoint uses the source and closure identity
+listed under Canonical artifacts. Exactly three serial halt-on-error passes from
+absent sidecars ran 61 pages / 1,045,488 bytes → 62 / 1,071,179 → 62 /
+1,071,181. The final 62-page, 1,071,181-byte PDF has SHA-256
+`99c5d8256b983652755fe8e46ef015277e61b94941a4ca6c875bddaf0493b101`.
+Required final-log error, undefined-control, reference/citation, multiply-
+defined, duplicate-destination, missing-file, rerun, and box gates all close at
+zero. All 62 pages are A4 at rotation zero, render successfully, and contain
+nonblank text. All 27 font rows are embedded and subset, four are Libertinus,
+and none is Type 3. Metadata passed. Visual inspection of pages 1, 5, 6, 25,
+43, and 62 covered the title, split status box, changed Lagrange and Legendre
+material, and endpoint; every sample was clean. Generated sidecars and
+temporary audits were removed, and the forbidden-checksum-basename search
+passed.
 
 The focused exact Sturm verifier requires SymPy:
 
@@ -162,8 +200,8 @@ It is slightly stronger only in allowing any `BoundedFabius` satisfying
 `IsFabius`, and it includes `n = 0`. This promotion does not formalize the
 Jacobi closed form, all-degree parity or rationality in `thm:leg-mode-synthesis`,
 nor reverse closure, mesh minimality, or any larger Lagrange right-inverse
-claim. The retained package PDF predates these source-only status annotations
-and was not rebuilt.
+claim. The current 62-page `b899` package PDF renders these status annotations;
+the preceding 60-page PDF remains historical.
 
 The compiled source-only `FabiusFunction.RvachevLegendreBiorthogonality`
 module promotes only `thm:leg-biorthogonality` to Exact/Complete. Its
@@ -201,17 +239,18 @@ root locations are diagnostics only.
 No two companion files among the ten later reports were byte-identical, even
 after line-ending normalization. Similar filenames often use different ranges,
 normalizations, or operators. The report prose and PDFs were therefore retired
-after consolidation, while 113 distinct evidence payloads received canonical
-destinations and live hashes.
+after consolidation. Of 113 disposition rows, 106 retained evidence payloads
+received canonical destinations; seven checksum-ledger rows were retired.
 
-Historical checksum ledgers are provenance. They are preserved without
-rewriting old hashes to fit new paths. The live companion and root ledgers hash
-canonical Git-tree bytes and do not target removed arrival files.
+Historical checksum ledgers are provenance recoverable from Git history; they
+are not retained or rewritten to fit new paths. Canonical Git-tree bytes are
+tracked directly rather than through live package-local ledgers.
 
-The ten source directories were retired on 31 August 2026 after all 113
-selected payloads received canonical destinations and hashes, every theorem
-label received an auditable crosswalk, the PDF and exact verifier passed, and a
-fresh checkout validated the live root ledger. Their exact pre-retirement bytes
+The ten source directories were retired on 31 August 2026 after 106 retained
+payloads received canonical destinations, seven checksum-ledger rows were
+retired, every theorem label received an auditable crosswalk, the PDF and exact
+verifier passed, and a fresh checkout validated the then-recorded root checkpoint. Their exact
+pre-retirement bytes
 remain recoverable at commit
 `443793e846934e7363e314ea01129b9f50197a58`; the completed gate is documented
 in `assets/provenance/ASSET_INVENTORY.md`.

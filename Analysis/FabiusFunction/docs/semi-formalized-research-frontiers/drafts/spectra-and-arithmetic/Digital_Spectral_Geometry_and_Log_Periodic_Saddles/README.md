@@ -24,12 +24,11 @@ Main files:
 - `pdf_validation.txt` and `compile_transcript.txt` — the retained artifact
   validation and LaTeX build records, with a separate current-source boundary.
 - `ARRIVAL_MANIFEST.txt` — the delivered two-file size/hash manifest.
-- `ARRIVAL_SHA256SUMS` — the verified ten-entry checksum ledger for the full
-  archive payload, preserved byte-for-byte from the independent arrival
-  filing before that duplicate directory was removed (ledger SHA-256
+- The former ten-entry arrival ledger was verified against the full archive
+  payload before the duplicate filing was removed (ledger SHA-256
   `4c177281eec24f00edf6041ec11779444e24e455db965503207b32c301749629`).
-- `CHECKSUMS.sha256` — hashes of the current repository-normalized package
-  payload (excluding the ledger itself).
+  It and the later repository-normalized package ledger are now retired and
+  recoverable from Git history.
 
 The report now uses the current primary document's canonical A4,
 27 mm-margin preamble: its shared package, color, heading, theorem, macro,
@@ -46,8 +45,9 @@ Libertinus rows, and has no Type 3 fonts. All 24 pages rendered and contained
 extractable text.  The current 1,940-line, 61,049-byte TeX has SHA-256
 `92d98914722f98b37f84a19283536c8b3925584d0729920b6346a4f572c735b1`;
 it now uses `\TwoAdicValuation` for every genuine dyadic valuation and postdates
-that render.  The live 18-entry checksum ledger inventories current source and
-retained PDF as distinct payloads, not a synchronized publication pair.
+that render. The former 18-entry checksum ledger inventoried source and
+retained PDF as distinct payloads at its checkpoint, not a synchronized
+publication pair; it is now retired and recoverable from Git history.
 
 Rebuild from this directory:
 
