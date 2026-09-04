@@ -91,6 +91,20 @@ only its `UB = I` clause is formalized. Its negative-decoder theorem retains
 strictly positive row overlap as an explicit hypothesis. No retained frontier,
 primary, walkthrough, comb, or representation PDF renders this addition.
 
+The source-only addition
+`FabiusFunction.GeometricUniformMomentPolynomial`, with one definition and
+eight theorems. It defines the recursive rational polynomial family and proves
+its base case, residual-product recurrence, triangular degree bound,
+reciprocal-factorial value at zero, and the explicit cases `P1` through `P4`.
+Together with the zero theorem this is the complete displayed `P0`--`P4`
+algebraic surface. It does not identify the recursive family with the
+normalized analytic Taylor or moment coefficients, and it does not prove the
+leading-coefficient formula or the resulting strict odd-degree drop. Thus
+`p7:thm:Pn` remains **Partial**, with only its algebraic recurrence, degree
+bound, zero value, and small-case clauses supplied. The
+retained frontier, primary, walkthrough, and geometric-q PDFs predate this
+source-only overlay and claim no render parity.
+
 The preceding source-only addition is
 `FabiusFunction.GeometricRichardsonGenerating`, with three definitions and
 seven theorems. Its
@@ -108,8 +122,12 @@ law to arbitrary probability spaces carrying independent uniform coordinates;
 the two-definition/one-theorem `FabiusFunction.RegularCentralQBinomialSum`
 leaf proves `thm:regular-central-sum` under its exact product-nonvanishing
 hypothesis. Together with the Lambert--Bernoulli and fixed-column-rate leaves,
-they bring the live documentation census to 910 modules and 11,525 public
-declarations.
+they brought the preceding documentation checkpoint to 910 modules and 11,525
+public declarations. The subsequent zero-definition/two-theorem
+`GaussianBinomialGreaterOneAsymptotics`, one-definition/fourteen-theorem
+`RvachevLagrangeNodesOnly`, and one-definition/eight-theorem
+`GeometricUniformMomentPolynomial` leaves bring the current source census to
+913 modules and 11,551 public declarations.
 
 The final source-only `FabiusFunction.GaussianBinomialFixedColumnRate` leaf has
 no definitions and ten theorems:
@@ -189,7 +207,7 @@ the later Euler, q-binomial, Jacobi, quantum-binomial, Rogers--Szegő,
 cyclotomic-divisibility, q-Catalan, primitive-root-block, q-Lucas, Jackson
 q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
 q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result
-forward status totals are now 173 exact / 84 partial / 17 none / 8 interface.
+forward status totals are now 173 exact / 85 partial / 16 none / 8 interface.
 The partition-symmetry row is exact; the basic geometric-uniform row is now
 exact because `GeometricUniformRealization.lean` transfers the canonical law
 to an arbitrary ambient probability space carrying independent coordinates

@@ -358,8 +358,12 @@ Gaussian-binomial cumulant module; the one-definition/seventeen-theorem
 arbitrary-space geometric-uniform realization module; the two-definition/
 one-theorem regular central q-binomial sum leaf; the zero-definition/
 ten-theorem effective fixed-column Gaussian-rate leaf; and the one-definition/
-fourteen-theorem Rvachev--Appell Hasse leaf.  The live source census is 910
-facade-reachable modules and 11,525 public declarations.
+fourteen-theorem Rvachev--Appell Hasse leaf; the zero-definition/two-theorem
+greater-than-one Gaussian asymptotics leaf; the one-definition/fourteen-theorem
+nodes-only Rvachev amplitude leaf; and the one-definition/eight-theorem
+geometric-uniform moment-polynomial algebra leaf.  The live source census is
+913 facade-reachable modules and 11,551 public declarations; the moment-
+polynomial row remains Partial because its analytic normalization is absent.
 The retained
 257-page, 2,438,299-byte A4 PDF, SHA-256
 \nolinkurl{3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980},
@@ -2669,7 +2673,15 @@ semiring.  The later \path{LambertWBranchGapBernoulli.lean} (0+5),
 \path{RegularCentralQBinomialSum.lean} (2+1), and
 \path{GaussianBinomialFixedColumnRate.lean} (0+10), and
 \path{RvachevAppellHasse.lean} (1+14) leaves bring the live source census to
-910/11,525.  Within this source chronology, the initial zero-definition/
+the historical 910/11,525 checkpoint.  The later
+\path{GaussianBinomialGreaterOneAsymptotics.lean} (0+2),
+\path{RvachevLagrangeNodesOnly.lean} (1+14), and
+\path{GeometricUniformMomentPolynomial.lean} (1+8) leaves bring the current
+source census to 913/11,551.  The nodes-only leaf makes
+\nolinkurl{cor:lag-nodes-only} Exact/Complete by composition, with rationality
+only at rational evaluation points and a formal coefficient-level Bell
+identity; it does not promote the larger right-inverse row.  Within this
+source chronology, the initial zero-definition/
 four-theorem \path{LambertWBranchGapBernoulli.lean} tranche first brought the
 exact-radius checkpoint to 903/11,447, and its fifth theorem raised that
 historical checkpoint to 903/11,448.  The two new declarations are
@@ -2680,8 +2692,16 @@ complex \(\operatorname{HasSum}\) value
 \nolinkurl{eq:pair-Bernoulli-general} and, under the explicit standard
 removable-origin convention, the whole \nolinkurl{eq:bernoulli-gen}.  This
 does not claim the literal Lean quotient at zero or formalize the Guide's
-nearest-zero proof route; Puiseux claims remain open.  These additions are
-source-only, and the retained 257-page PDF
+nearest-zero proof route; Puiseux claims remain open.  The subsequent
+one-definition/eight-theorem
+\path{GeometricUniformMomentPolynomial.lean} leaf supplies the recursively defined rational polynomial,
+its residual-product recurrence, triangular degree bound, reciprocal-factorial
+value at zero, and the cases \(P_0,\ldots,P_4\).  It does not prove the
+analytic normalization identifying that family with the source moment
+coefficients, nor the leading-coefficient formula and consequent strict
+odd-degree drop.  Hence \nolinkurl{p7:thm:Pn} remains Partial rather than
+Exact.  The q forward ledger is 173 Exact / 85 Partial / 16 None / 8
+interface rows.  These additions are source-only, and the retained 257-page PDF
 remains explicitly historical; no PDF was built for this update.
 The newest six module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
@@ -9523,6 +9543,25 @@ analytic \path{HasSum} theorems additionally assume a complete normed field,
 strict nome contraction, and absolute summability of the normalized data
 series.  They do not provide convergence without those hypotheses or an
 analytic acceleration bound.
+
+\item \path{GeometricUniformMomentPolynomial.lean} has the one public
+definition \path{Fabius.geometricUniformMomentPolynomial} and exactly eight
+public theorems:
+\path{Fabius.geometricUniformMomentPolynomial_zero},
+\path{Fabius.geometricUniformMomentPolynomial_succ},
+\path{Fabius.geometricUniformMomentPolynomial_natDegree_le},
+\path{Fabius.geometricUniformMomentPolynomial_eval_zero},
+\path{Fabius.geometricUniformMomentPolynomial_one},
+\path{Fabius.geometricUniformMomentPolynomial_two},
+\path{Fabius.geometricUniformMomentPolynomial_three}, and
+\path{Fabius.geometricUniformMomentPolynomial_four}.  These declarations
+define the recursive family directly in \(\RationalNumbers[X]\), prove its
+division-free residual-product recurrence, triangular degree bound and value
+at zero, and calculate \(P_0,\ldots,P_4\).  They do not identify the family
+with the normalized analytic moment coefficients in
+\nolinkurl{p7:eq:Pn-def}, and they prove neither the leading-coefficient
+formula nor the strict degree drop for odd \(n>1\).  Therefore the compound
+frontier label \nolinkurl{p7:thm:Pn} is Partial, not Exact.
 
 \item The five theorems of \path{FinitePolynomialFilterExactness.lean} are
 \path{Fabius.polynomialFilter_response_eq},

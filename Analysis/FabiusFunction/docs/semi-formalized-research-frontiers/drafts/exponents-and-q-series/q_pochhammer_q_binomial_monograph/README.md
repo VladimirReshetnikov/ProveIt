@@ -164,7 +164,7 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 910 modules and 11,525 public declarations, with no
+audit now contains 913 modules and 11,551 public declarations, with no
 documentation gaps. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
@@ -174,7 +174,7 @@ other three are the explicit second-derivative, division-free raw-second-moment,
 and division-free variance-numerator theorems in
 `GaussianBinomialCumulants`; they strengthen the already-Exact
 `thm:qbinom-moments` row without changing its disposition.
-The final one-module/five-declaration increase is the unrelated sibling
+The subsequent one-module/five-declaration increase is the unrelated sibling
 `LambertWBranchGapBernoulli.lean` leaf. Its exhaustive zero-definition public
 surface is `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
@@ -192,9 +192,36 @@ clause, Guide label `eq:pair-Bernoulli-general`, and canonical-removable
 reading of `eq:bernoulli-gen` are Exact. Here `complexExpm1Div 0 = 1` and it
 equals `(exp z - 1) / z` away from zero; this is not the literal totalized
 quotient at zero and asserts no holomorphy. Higher/full Puiseux and logarithmic
-expansions remain open. This
-sibling promotion changes none of the forward-status or concordance totals
-below, and the retained historical PDF does not render it.
+expansions remain open. That sibling promotion produced the historical
+903/11,448 checkpoint and changed none of the q-series forward-status or
+source-concordance totals.
+
+The newest source-only q-series leaf is
+`GeometricUniformMomentPolynomial.lean`, with one definition,
+`geometricUniformMomentPolynomial`, and exactly eight theorems:
+`geometricUniformMomentPolynomial_zero`,
+`geometricUniformMomentPolynomial_succ`,
+`geometricUniformMomentPolynomial_natDegree_le`,
+`geometricUniformMomentPolynomial_eval_zero`,
+`geometricUniformMomentPolynomial_one`,
+`geometricUniformMomentPolynomial_two`,
+`geometricUniformMomentPolynomial_three`, and
+`geometricUniformMomentPolynomial_four`.  It formalizes the recursive
+rational polynomial family, the zeroth value and residual-product recurrence,
+the triangular degree bound, the specialization at zero, and all displayed
+cases through the fourth polynomial.  It deliberately does not identify that
+recursive family with the normalized coefficients `a_n(q)` of the analytic
+moment-generating product.  Consequently `thm:qF-moment-polynomial` moves
+from None to Partial, not Exact; `prop:qF-P-degree-sharp` remains None, and
+`cor:qF-halfbase-dictionary` remains Partial.  This one-definition,
+eight-theorem addition changes the forward ledger by exactly one
+None-to-Partial move. The same current census includes the facade-reachable
+zero-definition/two-theorem `GaussianBinomialGreaterOneAsymptotics.lean`
+leaf, whose `cor:qgreaterone` row remains Partial in this conflict-resolution
+pass: 913 modules and 11,551 public declarations. The source concordance
+is unchanged because its provenance disposition remains a human-proved
+frontier result.  The retained historical PDF renders neither this tranche
+nor the preceding Lambert tranche, and no source/PDF parity is claimed.
 
 The arbitrary-space realization leaf proves that an `iIndepFun` family of
 unit-interval coordinates, each with the uniform marginal law, has full joint
@@ -270,7 +297,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 173 Exact, 84 Partial, 17 None, and 8 interface rows; the
+status ledger is 173 Exact, 85 Partial, 16 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
 completed source concordance records 86 Lean-proved rows, 392 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.  Its

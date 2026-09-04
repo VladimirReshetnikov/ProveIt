@@ -21,8 +21,8 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 910
-source modules and 11,525 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 913
+source modules and 11,551 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -166,7 +166,7 @@ copy independent of the head coordinate. The regular-central leaf proves the
 displayed sum under the exact infinite-product denominator condition, with the
 full complex zero lattice and field-totalized `qGammaC` pole behavior kept
 explicit. The forward status ledger covers 282 labelled results:
-173 Exact / 84 Partial / 17 None / 8 N/A interface rows. The
+173 Exact / 85 Partial / 16 None / 8 N/A interface rows. The
 terminating-basic-hypergeometric closure is `TwoPhiOneReversal.lean` (2+12)
 and `QChuVandermonde.lean` (0+10): both q-Chu evaluations and the reversal
 lemma are Exact for the actual tsum, while the claimed full-domain derivation
@@ -412,6 +412,30 @@ checkpoint on the incoming Lambert branch had census 903/11,447; the fifth
 theorem gave that branch's historical 903/11,448 checkpoint.  The retained
 66-page Guide PDF predates this source-only
 crosswalk, and no render parity is claimed.
+
+The subsequent q-series leaf `GeometricUniformMomentPolynomial.lean` has one
+definition, `geometricUniformMomentPolynomial`, and exactly eight theorems:
+`geometricUniformMomentPolynomial_zero`,
+`geometricUniformMomentPolynomial_succ`,
+`geometricUniformMomentPolynomial_natDegree_le`,
+`geometricUniformMomentPolynomial_eval_zero`,
+`geometricUniformMomentPolynomial_one`,
+`geometricUniformMomentPolynomial_two`,
+`geometricUniformMomentPolynomial_three`, and
+`geometricUniformMomentPolynomial_four`.  This exhaustive API proves the
+recursive rational polynomial family, its zeroth value and residual-product
+recurrence, the triangular degree bound, its value at zero, and the displayed
+polynomials through index four.  It does not identify that recursive family
+with the normalized analytic coefficients `a_n(q)` or the underlying
+moment-generating product.  Therefore `thm:qF-moment-polynomial` moves from
+None to Partial, not Exact, while `prop:qF-P-degree-sharp` remains None.  This
+one-definition/eight-theorem addition is included in the live census
+913/11,551 and the q forward totals are 173 Exact / 85 Partial / 16 None /
+8 N/A.  The source
+concordance stays unchanged at 78 Lean-proved / 400 human-proved frontier /
+60 N/A / 9 conjectures because its historical-source disposition does not
+encode partial Lean coverage.  The retained 389-page q-series PDF is a
+historical checkpoint and does not render this source-only crosswalk.
 
 No finite endpoint derivative is asserted.  An `O(z + exp(-1))` remainder
 after the signed leading term, a convergent signed

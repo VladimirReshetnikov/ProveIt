@@ -96,7 +96,7 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 910 modules and 11,525 public declarations with no
+live facade audit contains 913 modules and 11,551 public declarations with no
 documentation gaps. Those corpus-wide totals include the q--Chu, Richardson,
 geometric-law barycenter, Lagrange--Rvachev matrix, arbitrary-space geometric
 realization, regular-central-sum, and Lambert branch-gap Bernoulli follow-ups;
@@ -143,9 +143,32 @@ Gaussian estimate, fixed and shifted nonasymptotic additive errors, the
 shifted `Tendsto`, and all four fixed/shifted relative/additive Big-O wrappers.
 It works over the stated generic multiplicative-norm ring or normed-field
 interfaces and includes `q = 0`; the older unshifted limit remains in
-`QBinomialTheoremInfinite.lean`. The
+`QBinomialTheoremInfinite.lean`.
+
+The current q-series increment is the one-definition/eight-theorem
+`GeometricUniformMomentPolynomial.lean` leaf. Its exhaustive public surface is
+`geometricUniformMomentPolynomial`,
+`geometricUniformMomentPolynomial_zero`,
+`geometricUniformMomentPolynomial_succ`,
+`geometricUniformMomentPolynomial_natDegree_le`,
+`geometricUniformMomentPolynomial_eval_zero`,
+`geometricUniformMomentPolynomial_one`,
+`geometricUniformMomentPolynomial_two`,
+`geometricUniformMomentPolynomial_three`, and
+`geometricUniformMomentPolynomial_four`.  The recursive rational polynomial,
+its zeroth value and residual-product recurrence, the triangular degree bound,
+the value at zero, and the first four nonconstant cases are exact.  The module
+does not identify this recursive family with the normalized analytic
+coefficients `a_n(q)` or with the geometric-uniform moment-generating product.
+Accordingly `thm:qF-moment-polynomial` moves from None to Partial, not Exact;
+the sharp-degree proposition stays None. The facade also contains the
+zero-definition/two-theorem `GaussianBinomialGreaterOneAsymptotics.lean` leaf;
+this conflict-resolution pass records that source without yet changing the
+Partial disposition of `cor:qgreaterone`. The live census is 913/11,551.
+Neither this source-only addition nor the preceding Lambert addition changes
+the retained historical artifact, and no render parity is claimed. The
 forward status inventory covers 282 labelled results:
-173 Exact / 84 Partial / 17 None / 8 N/A; the 191-result pre-Fabius core is
+173 Exact / 85 Partial / 16 None / 8 N/A; the 191-result pre-Fabius core is
 36 / 29 / 123 / 3.
 The five-publication concordance
 has 86 Lean-proved, 392 human-proved frontier, 60 not-applicable, and 9

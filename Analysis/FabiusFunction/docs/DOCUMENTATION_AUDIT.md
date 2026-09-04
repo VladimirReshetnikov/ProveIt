@@ -112,7 +112,7 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans 910 facade-reachable modules and 11,525 public declarations.  It
+pass scans 913 facade-reachable modules and 11,551 public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
@@ -121,12 +121,15 @@ finds no missing module header or declaration comment, including throughout
 `GaussianBinomialCumulants.lean` surface, and the new
 `GeometricUniformRealization.lean`, `RegularCentralQBinomialSum.lean`,
 `LambertWBranchGapBernoulli.lean`, `GaussianBinomialFixedColumnRate.lean`, and
-`RvachevAppellHasse.lean` leaves.  Relative to the 610/8,318 activation
-checkpoint, the current tree adds 300 modules and 3,207 declarations.
+`RvachevAppellHasse.lean`, `GeometricUniformMomentPolynomial.lean`,
+`RvachevLagrangeNodesOnly.lean`, and
+`GaussianBinomialGreaterOneAsymptotics.lean` leaves.  Relative to the
+610/8,318 activation checkpoint, the current tree adds 303 modules and 3,233 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 280 modules and 2,973 declarations.  The post-merge 675/8,909 inventory
-and the intervening 903/11,446 Lambert-series inventory remain historical
-checkpoints, not descriptions of the live facade.
+adds 283 modules and 2,999 declarations.  The post-merge 675/8,909 inventory,
+the intervening 903/11,448 Lambert-series inventory, and the immediately
+preceding 910/11,525 Appell/fixed-column checkpoint remain historical, not
+descriptions of the live facade.
 
 #### Terminating `₂φ₁` reversal and q-Chu--Vandermonde tranche
 
@@ -441,7 +444,41 @@ sequence; no convergence of an analytic reciprocal MGF is asserted.  Atom
 reconstruction remains owned by the separate synthesis API, and there is no
 new larger matrix right-inverse or decoder-optimality theorem.
 
-The resulting live inventory is 910 modules and 11,525 public declarations,
+The resulting Appell/fixed-column checkpoint was 910 modules and 11,525
+public declarations, with no missing module header or declaration comment.
+
+#### Algebraic geometric-uniform moment-polynomial tranche
+
+`GeometricUniformMomentPolynomial.lean` adds one source module and nine public
+declarations.  Concurrently, the one-definition/fourteen-theorem
+`RvachevLagrangeNodesOnly.lean` and zero-definition/two-theorem
+`GaussianBinomialGreaterOneAsymptotics.lean` leaves moved the 910/11,525
+checkpoint to 912/11,542; the moment-polynomial leaf brings the merged live
+census to 913/11,551.  Its exhaustive 1+8 surface is the definition
+`geometricUniformMomentPolynomial` and the theorems
+`geometricUniformMomentPolynomial_zero`,
+`geometricUniformMomentPolynomial_succ`,
+`geometricUniformMomentPolynomial_natDegree_le`,
+`geometricUniformMomentPolynomial_eval_zero`,
+`geometricUniformMomentPolynomial_one`,
+`geometricUniformMomentPolynomial_two`,
+`geometricUniformMomentPolynomial_three`, and
+`geometricUniformMomentPolynomial_four`.  Two documented residual-product
+helpers are private and therefore excluded from the public count.
+
+The recursive family is total over `ℚ[X]`.  Its zero and successor theorems
+give `P_0=1` and the residual finite q-Pochhammer recurrence; the degree theorem
+gives `natDegree P_n ≤ n.choose 2`; evaluation at zero gives
+`P_n(0)=1/(n+1)!`; and the four final theorems give the displayed values
+`P_1` through `P_4`.  These exactly close the algebraic clauses of monograph
+label `thm:qF-moment-polynomial`, including the `q=0` boundary.  The canonical
+label remains **Partial**, however, because the source defines its polynomial
+by the analytic normalization `((q;q)_n/(1-q)^n)a_n(q)` and no theorem yet
+identifies those analytic/MGF coefficients with the recursive Lean family.
+The leading and subleading coefficients and exact degree asserted by
+`prop:qF-P-degree-sharp` remain unformalized.
+
+The resulting live inventory is 913 modules and 11,551 public declarations,
 with no missing module header or declaration comment.
 
 The one-definition/eight-theorem
@@ -1186,6 +1223,7 @@ sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
 historical 675/8,909 census and requires refresh against the live 910/11,525
+historical 675/8,909 census and requires refresh against the live 913/11,551
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity

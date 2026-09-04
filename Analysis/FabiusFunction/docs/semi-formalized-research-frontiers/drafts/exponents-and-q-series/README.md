@@ -63,7 +63,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 910 facade-reachable modules and 11,525 public declarations, with no
+contains 913 facade-reachable modules and 11,551 public declarations, with no
 missing module headers or declaration documentation.
 
 The sibling source-only `FabiusFunction.GeometricRichardsonGenerating` module
@@ -105,7 +105,32 @@ canonical-removable reading of `eq:bernoulli-gen` are Exact. Here
 does not assert the literal totalized quotient at zero or holomorphy of a named
 sum function. Higher or full Puiseux/logarithmic branch expansions remain open.
 No retained PDF in this group renders this unrelated source-only promotion,
-and none was rebuilt for this update.
+and none was rebuilt for this update.  It is the historical 903/11,448
+checkpoint immediately preceding the current q-series leaf.
+
+The current leaf is `GeometricUniformMomentPolynomial.lean`, with the one
+definition `geometricUniformMomentPolynomial` and the eight theorems
+`geometricUniformMomentPolynomial_zero`,
+`geometricUniformMomentPolynomial_succ`,
+`geometricUniformMomentPolynomial_natDegree_le`,
+`geometricUniformMomentPolynomial_eval_zero`,
+`geometricUniformMomentPolynomial_one`,
+`geometricUniformMomentPolynomial_two`,
+`geometricUniformMomentPolynomial_three`, and
+`geometricUniformMomentPolynomial_four`.  This exhaustive API proves the
+recursive rational polynomial, zeroth value, residual-product recurrence,
+triangular degree bound, specialization at zero, and the first four
+nonconstant examples.  It does not prove that this recursive family is the
+normalized analytic coefficient family `a_n(q)` of the geometric-uniform
+moment-generating product.  Thus `thm:qF-moment-polynomial` is Partial, not
+Exact; all of its algebraic clauses are exact, while that analytic
+normalization bridge is missing.  The sharp-degree proposition remains None.
+Together with the facade-reachable zero-definition/two-theorem
+`GaussianBinomialGreaterOneAsymptotics.lean` leaf, the live census is
+913/11,551. This conflict-resolution pass leaves `cor:qgreaterone` Partial
+while moving only `thm:qF-moment-polynomial` from None to Partial. The
+source concordance remains unchanged, and no retained PDF renders the new
+source-only crosswalk.
 
 ## Detailed package record
 
@@ -199,9 +224,12 @@ Current packages and retained intake records:
   and Gaussian reciprocity/growth APIs, the three-theorem
   `GeometricPochhammerNormalConvergence.lean` outer-product API,
   `GeometricUniformRealization.lean` (one definition and seventeen theorems),
-  and `RegularCentralQBinomialSum.lean` (two definitions and one theorem). The
-  forward crosswalk is now 173 Exact, 84 Partial, 17 None, and 8 interface rows;
-  the source ledger is 86 Lean-proved, 392 human-proved frontier, 60 not
+  `RegularCentralQBinomialSum.lean` (two definitions and one theorem),
+  `GeometricUniformMomentPolynomial.lean` (one definition and eight theorems),
+  and `GaussianBinomialGreaterOneAsymptotics.lean` (zero definitions and two
+  theorems). The forward crosswalk is now 173 Exact, 85 Partial, 16 None, and
+  8 interface rows; the source ledger is 86 Lean-proved, 392 human-proved
+  frontier, 60 not
   applicable, and 9 conjectures. No PDF was generated locally while resolving
   this source-only merge, so the retained 389-page artifact does not render
   the current source. PDF files retained
@@ -896,8 +924,8 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 173 Exact, 84
-Partial, 17 with no counterpart, and 8 interface-only. The basic
+The latest validated forward formalization ledger has 282 rows: 173 Exact, 85
+Partial, 16 with no counterpart, and 8 interface-only. The basic
 geometric-uniform row is Exact: `GeometricUniformRealization.lean` proves that
 an `iIndepFun` process of unit-interval coordinates with uniform marginal laws
 has joint law `uniformProduct`, then transfers the canonical law to the actual

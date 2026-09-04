@@ -830,8 +830,8 @@ Thus `is:p3:cor:forced-superconvergence` and
 concordance. This source postdates the retained Representation and inverse
 PDFs, which remain historical artifacts rather than renders of the promotion.
 The corresponding historical documentation checkpoint was 671 modules and
-8,858 public declarations. The later live repository census is 910 modules
-and 11,525 public declarations. It includes the unrelated sibling source-only
+8,858 public declarations. The later live repository census is 913 modules
+and 11,551 public declarations. It includes the unrelated sibling source-only
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`. It also includes the
@@ -864,7 +864,14 @@ Rationality is not claimed at irrational evaluation points, the Bell identity
 does not supply analytic reciprocal-MGF convergence, and neither
 `thm:lag-cardinal` nor the compound `thm:lag-right-inverse` is promoted. This
 source-only addition is not rendered in the retained Representation PDFs.
-The newest three declarations
+The sibling
+`FabiusFunction.GeometricUniformMomentPolynomial` module (one definition and
+eight theorems). It supplies the recursive rational polynomial, residual-product
+recurrence, triangular degree bound, value at zero, and explicit cases `P0`
+through `P4`, but not the analytic moment-coefficient normalization or the
+leading-coefficient and strict odd-degree clauses; accordingly `p7:thm:Pn`
+remains Partial. This sibling source-only module is not rendered by the
+retained Representation or inverse PDFs. The three declarations
 strengthen the existing sibling `FabiusFunction.GaussianBinomialCumulants`
 module with second-derivative, raw-second-moment, and variance-numerator
 identities; they likewise do not change the Representation or inverse results.

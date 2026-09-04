@@ -16479,6 +16479,30 @@ primitive odd roots of unity --- must be controlled; the cancellation-order
 calculus of the two-nome partition function below is a candidate mechanism.
 \end{conjecture}
 
+\begin{statusbox}{Post-snapshot Lean status: Partial}
+The source-only module \path{GeometricUniformMomentPolynomial.lean} has one
+public definition, \lean{geometricUniformMomentPolynomial}, and exactly eight
+public theorems:
+\lean{geometricUniformMomentPolynomial_zero},
+\lean{geometricUniformMomentPolynomial_succ},
+\lean{geometricUniformMomentPolynomial_natDegree_le},
+\lean{geometricUniformMomentPolynomial_eval_zero}, and
+\lean{geometricUniformMomentPolynomial_one} through
+\lean{geometricUniformMomentPolynomial_four}.  It supplies the recursively
+defined rational polynomial, the residual-product recurrence
+\eqref{p7:eq:Pn-recurrence}, the triangular degree bound, the value at zero,
+and the displayed cases \(P_0,\ldots,P_4\).  It does not identify that family
+with the normalized analytic moment coefficients in
+\eqref{p7:eq:Pn-def}, nor does it prove the leading-coefficient formula and
+the consequent strict degree drop for odd \(n>1\).  Thus the compound theorem
+\cref{p7:thm:Pn} is Partial, not Exact: its algebraic
+recurrence/bound/zero/small-case clauses are supplied, while its analytic
+normalization and leading/odd-degree clause remain open.  This \(1+8\) leaf
+raises the live facade census from the historical 903/11,448 checkpoint to
+904 modules and 11,457 public declarations.  The retained PDF predates this
+source-only crosswalk, remains historical, and claims no render parity.
+\end{statusbox}
+
 The polynomial is not decorative: the exact endpoint lattice of
 \cref{p7:sec:endpoints} reads
 $G_q(q^n)=q^{\binom{n+1}2}\mathcal P_n(q)/(q;q)_n$, so $(q;q)_n$ is precisely
