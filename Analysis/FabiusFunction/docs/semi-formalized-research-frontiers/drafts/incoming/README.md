@@ -173,6 +173,13 @@ next quick-intake commit.  All six went to
 already there, and the nine now fall into three subjects with three
 independently written articles each.
 
+> **Superseded.** Every package named in this section was merged into
+> [`special-function-inversion/Sequence_Inversion_Transseries/`](../series-and-transseries/special-function-inversion/Sequence_Inversion_Transseries/)
+> and deleted on 4 September 2026, after a residue audit. Git history is
+> the archive; the volume's Appendix A lists each source with the chapter
+> that absorbed it.
+
+
 - `inverse_gamma_barnesG_transseries.zip` → `inverse_gamma_barnesG_transseries/`:
   1,655-line/72,966-byte source, 28-page A4/663,480-byte PDF.
 - `inverse_gamma_barnes_transseries.zip` → `inverse_gamma_barnes_transseries/`:

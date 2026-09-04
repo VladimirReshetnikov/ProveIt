@@ -12476,6 +12476,71 @@ $2\alpha q$; so $1\in A$, the semigroup is all of $\Nat$, and every integer
 power occurs.
 \end{example}
 
+\subsection{The other engine: formal Newton iteration}
+
+The triangular recurrence \eqref{p6:eq:triangular} produces one coefficient
+per step.  When many are wanted, a second engine is better, and it needs no
+new hypothesis --- only that the slope be a unit, which is what
+\cref{p6:thm:triangular} already assumes.
+
+\begin{theorem}[Valuation doubling]\label{p6:thm:newton}
+Let $\mathcal{E}(\epsilon):=\mathcal{K}_{p,v}(\epsilon)+\mathcal{R}(q,v,\epsilon)$
+be the left-hand side of \eqref{p6:eq:normalized}, and assume the hypotheses of
+\cref{p6:thm:triangular}.  Then $\mathcal{E}'$ is a unit of valuation $0$, the
+formal Newton step
+\begin{equation}\label{p6:eq:newton-step}
+ \epsilon^{[m+1]}=\epsilon^{[m]}
+ -\frac{\mathcal{E}\bigl(\epsilon^{[m]}\bigr)}
+        {\mathcal{E}'\bigl(\epsilon^{[m]}\bigr)}
+\end{equation}
+is defined, and
+\begin{equation}\label{p6:eq:newton-doubling}
+ \operatorname{val}\mathcal{E}\bigl(\epsilon^{[m]}\bigr)\ge\varrho
+ \quad\Longrightarrow\quad
+ \operatorname{val}\mathcal{E}\bigl(\epsilon^{[m+1]}\bigr)\ge2\varrho .
+\end{equation}
+Consequently the number of correct blocks doubles at each step, and $N$ of them
+cost $\bigO(\log N)$ steps of truncated-series arithmetic instead of $N$
+triangular steps.
+\end{theorem}
+
+\begin{proof}
+By \cref{p6:lem:kernel-coefficients}, $\mathcal{K}_{p,v}'(0)=\kappa_1=v+1$,
+and every monomial of $\mathcal{R}$ has positive $q$-valuation; so
+$\mathcal{E}'(\epsilon)=(v+1)+(\text{positive valuation})$, which is a unit of
+valuation $0$ because $v+1$ is invertible in $\mathscr C$ and the Hahn ring is
+complete.  Hence \eqref{p6:eq:newton-step} is defined and, writing
+$\Delta=-\mathcal{E}(\epsilon)/\mathcal{E}'(\epsilon)$,
+\[
+ \operatorname{val}\Delta=\operatorname{val}\mathcal{E}(\epsilon)\ge\varrho .
+\]
+Taylor expansion of $\mathcal{E}$ about $\epsilon$ --- legitimate because
+$\mathcal{E}$ is a formal series in $\epsilon$ with coefficients in the
+complete ring --- gives
+\[
+ \mathcal{E}(\epsilon+\Delta)
+ =\mathcal{E}(\epsilon)+\mathcal{E}'(\epsilon)\Delta
+ +\sum_{j\ge2}\frac{\mathcal{E}^{(j)}(\epsilon)}{j!}\Delta^{j} .
+\]
+The first two terms cancel by the definition of $\Delta$, and every remaining
+term has valuation at least $2\operatorname{val}\Delta\ge2\varrho$, since the
+$\mathcal{E}^{(j)}$ have valuation at least $0$.  This is
+\eqref{p6:eq:newton-doubling}, and iterating from
+$\operatorname{val}\mathcal{E}(0)>0$ gives the count.
+\end{proof}
+
+\begin{remark}[Which engine to use]\label{p6:rem:which-engine}
+The triangular recurrence exposes exact coefficient formulas and is what the
+proofs in this chapter and the next use; Newton is preferable in a computer
+algebra system at high order, because one inversion of a unit replaces many
+scalar recurrence steps.  They also check each other: run to the same
+valuation and the truncated residuals must agree, which catches an error in
+either.  The same doubling holds verbatim for the accelerated equation
+\eqref{p7:eq:acc-implicit} and the refined equation
+\eqref{p7:eq:refined-implicit} of \cref{p7:sec:top}, whose linearizations are
+$S$ and $4L_{*}$.
+\end{remark}
+
 \subsection{How deep the slope divisor goes}
 
 Every coefficient is produced by one division by $v+1$, but earlier
@@ -13856,7 +13921,8 @@ The first values are
  c_2=\frac{31}{161280},\quad
  c_3=-\frac{127}{1290240},\quad
  c_4=\frac{511}{4866048},\quad
- c_5=-\frac{1414477}{7380172800}.
+ c_5=-\frac{1414477}{7380172800},\quad
+ c_6=\frac{8191}{15335424}.
 \end{equation}
 \end{corollary}
 
@@ -14092,7 +14158,8 @@ The first values are
  d_2=\frac{31}{90720},\quad
  d_3=-\frac{103}{725760},\quad
  d_4=\frac{179}{1330560},\quad
- d_5=-\frac{6480899}{28021593600}.
+ d_5=-\frac{6480899}{28021593600},\quad
+ d_6=\frac{3485299}{5604318720}.
 \end{equation}
 \end{theorem}
 
