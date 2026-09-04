@@ -2,8 +2,8 @@
 
 This archive contains the complete LaTeX source, the compiled 43-page PDF, two fully
 commented experiment programs, exact rational data, high-precision numerical
-checks, figures, checksums, and the recursive repository-audit ledger for the
-report:
+checks, figures, and the recursive repository-audit ledger for the report.
+Historical integrity receipts remain recoverable from Git history:
 
 **Sampling, Padé, Mellin, Resolvent, and Product–Integral Representations of the
 Fabius–Rvachev–Thue–Morse System**.
