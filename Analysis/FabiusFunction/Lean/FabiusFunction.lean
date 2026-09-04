@@ -482,6 +482,7 @@ import FabiusFunction.FourierLaplaceRotation
 import FabiusFunction.IntegerZeroLocalFactorization
 import FabiusFunction.LeadingJet
 import FabiusFunction.IntegerZeroAnalyticOrder
+import FabiusFunction.RvachevLaurentLeading
 import FabiusFunction.ScaledInfiniteProducts
 import FabiusFunction.GeometricReciprocalGamma
 import FabiusFunction.GeometricSincCharacteristicFunction
