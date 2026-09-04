@@ -63,7 +63,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 908 facade-reachable modules and 11,498 public declarations, with no
+contains 909 facade-reachable modules and 11,508 public declarations, with no
 missing module headers or declaration documentation.
 
 The sibling source-only `FabiusFunction.GeometricRichardsonGenerating` module
@@ -179,7 +179,8 @@ Current packages and retained intake records:
   status formulas; because it is newer, no current render parity is claimed.
   It carries the five-theorem `QPochhammerEntire.lean`, the generic
   `QPochhammerInfinite.lean` and `QPochhammerDissection.lean` APIs, both
-  Gaussian structure modules, `CentralQBinomialReduction.lean`,
+  Gaussian structure modules, `GaussianBinomialFixedColumnRate.lean`,
+  `CentralQBinomialReduction.lean`,
   `CyclotomicFactorization.lean`, `PrimitiveRootBlock.lean`, `QLucas.lean`,
   `QCatalan.lean`, `CyclotomicDivisibility.lean`, the subsequent q-series
   module tranches including `TwoPhiOneReversal.lean`,
@@ -189,8 +190,8 @@ Current packages and retained intake records:
   `GeometricPochhammerNormalConvergence.lean` outer-product API,
   `GeometricUniformRealization.lean` (one definition and seventeen theorems),
   and `RegularCentralQBinomialSum.lean` (two definitions and one theorem). The
-  forward crosswalk is now 172 Exact, 85 Partial, 17 None, and 8 interface rows;
-  the source ledger is 84 Lean-proved, 394 human-proved frontier, 60 not
+  forward crosswalk is now 173 Exact, 84 Partial, 17 None, and 8 interface rows;
+  the source ledger is 86 Lean-proved, 392 human-proved frontier, 60 not
   applicable, and 9 conjectures. No PDF was generated locally while resolving
   this source-only merge, so the retained 389-page artifact does not render
   the current source. PDF files retained
@@ -885,7 +886,7 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 172 Exact, 85
+The latest validated forward formalization ledger has 282 rows: 173 Exact, 84
 Partial, 17 with no counterpart, and 8 interface-only. The basic
 geometric-uniform row is Exact: `GeometricUniformRealization.lean` proves that
 an `iIndepFun` process of unit-interval coordinates with uniform marginal laws
@@ -894,7 +895,11 @@ pointwise series on an arbitrary probability space. Its one definition and
 seventeen theorems cover absolute convergence, the interval and exact support,
 mean one half, reflection, the conditioning/CDF equation and exterior values;
 the affine fixed-point theorem uses a fresh canonical-law copy independent of
-the head coordinate. The original
+the head coordinate. The fixed-column row is likewise Exact: the new
+zero-definition/ten-theorem rate leaf adds the shifted limit, explicit
+nonasymptotic estimates, and all four relative/additive Big-O forms, including
+`q = 0`. Both the retained source theorem and its older redirected fixed-`k`
+donor row are therefore Lean-proved in the current source projection. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
@@ -935,6 +940,7 @@ compatibility spelling of its primary identity),
 `QPochhammerInfinite.lean` (one definition, 29 theorems),
 `QBinomialReciprocity.lean` (four theorems),
 `GaussianBinomialBounds.lean` (zero definitions, six theorems),
+`GaussianBinomialFixedColumnRate.lean` (zero definitions, ten theorems),
 `GaussianBinomialPalindromic.lean` (zero definitions, fourteen theorems),
 `GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
 `GaussianBinomialCumulants.lean` (two definitions, twenty-four theorems),
@@ -1320,6 +1326,21 @@ closed, while the compound
 greater-than-one row remains Partial at its asymptotic clauses. The
 primitive-root value in the Babbage corollary is exact, while its derivative
 clause keeps that compound row Partial.
+`GaussianBinomialFixedColumnRate.lean` adds no definitions and exactly ten
+theorems: `norm_finiteQPochhammerIn_pow_sub_one_le_exp`,
+`norm_finiteQPochhammerIn_pow_sub_one_le`,
+`norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
+`norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
+`norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`,
+`tendsto_gaussianBinomial_add_atTop`,
+`gaussianBinomial_fixedColumn_relativeError_isBigO`,
+`gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
+`gaussianBinomial_fixedColumn_error_isBigO`, and
+`gaussianBinomial_shifted_fixedColumn_error_isBigO`. They give the generic
+product defect, denominator-free relative estimate, explicit fixed/shifted
+additive errors, shifted limit, and all four relative/additive Big-O forms.
+Their generic multiplicative-norm-ring and normed-field hypotheses are
+preserved, and every statement includes `q = 0`.
 The terminating basic-hypergeometric closure consists of
 `TwoPhiOneReversal.lean` (two definitions and twelve theorems) and
 `QChuVandermonde.lean` (ten theorems). It makes both q-Chu evaluations and the

@@ -110,6 +110,7 @@ The current source includes exhaustive crosswalks for `QPochhammerEntire`
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
 theorems), `QBinomialTheoremInfinite` (one definition and twenty-two
+theorems), `GaussianBinomialFixedColumnRate` (zero definitions and ten
 theorems), `GaussianBinomialPalindromic` (zero definitions and fourteen
 theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
 theorems), `GaussianBinomialCumulants` (two definitions and twenty-four
@@ -163,7 +164,7 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 908 modules and 11,498 public declarations, with no
+audit now contains 909 modules and 11,508 public declarations, with no
 documentation gaps. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
@@ -206,6 +207,27 @@ negative integral parameters are admitted: field-totalized `qGammaC` makes
 the displayed quotient zero there, matching the product side, without
 asserting holomorphy at a pole.
 
+`GaussianBinomialFixedColumnRate.lean` has no definitions and exactly ten
+theorems. Its exhaustive public surface is
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp`,
+`norm_finiteQPochhammerIn_pow_sub_one_le`,
+`norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
+`norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
+`norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`,
+`tendsto_gaussianBinomial_add_atTop`,
+`gaussianBinomial_fixedColumn_relativeError_isBigO`,
+`gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
+`gaussianBinomial_fixedColumn_error_isBigO`, and
+`gaussianBinomial_shifted_fixedColumn_error_isBigO`. The first two give the
+generic finite-product defect, first by `exp (k * ‖q‖^m) - 1` and then by
+`k * exp k * ‖q‖^m`, in a normed commutative ring with multiplicative norm.
+The third is the denominator-free relative Gaussian estimate; its `n+k`
+specialization is the shifted relative estimate. The next two are the fixed
+and shifted nonasymptotic additive errors, the sixth is the shifted limit, and
+the final four are the fixed/shifted relative and additive Big-O wrappers.
+All ten include `q = 0` at their respective `‖q‖ ≤ 1` or `‖q‖ < 1`
+boundaries; no nonzero-nome premise is hidden.
+
 The latest `ThueMorseSparseProuhet` partition tranche adds no definitions and
 three theorems to that module's prior twelve-theorem surface, for a current
 zero-definition/fifteen-theorem total.  The new declarations are
@@ -238,15 +260,15 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 172 Exact, 85 Partial, 17 None, and 8 interface rows; the
+status ledger is 173 Exact, 84 Partial, 17 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
-completed source concordance records 84 Lean-proved rows, 394 human-proved
+completed source concordance records 86 Lean-proved rows, 392 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.  Its
 immutable source inventory and editorial dispositions remain unchanged; the
 generator's current-status projection records the q-Chu, terminating-reversal,
 q-Pfaff, two retained Jacobi two-square, partition-symmetry,
 Prouhet-partition, arbitrary-space geometric-uniform, and regular-central-sum
-advances.
+advances, together with the fixed-column rate closure.
 The basic geometric-uniform row is Exact under its arbitrary-space wording.
 The generic Banach-valued barycenter is
 `integral_id_weightedUniformDistribution`, and its real geometric

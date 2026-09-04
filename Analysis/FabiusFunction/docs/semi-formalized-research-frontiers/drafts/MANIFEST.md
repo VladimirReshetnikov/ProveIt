@@ -21,8 +21,8 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 908
-source modules and 11,498 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 909
+source modules and 11,508 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -131,6 +131,12 @@ evaluated reciprocity, nonnegative-nome lower and strict-contraction upper
 bounds, and dimension-dominant two-sided estimates for real nomes greater than
 one. Its positivity input is the already-counted
 `finiteQPochhammerIn_self_pos` imported from `GeneralQConditionNumber.lean`.
+`GaussianBinomialFixedColumnRate.lean` adds no definitions and ten theorems:
+two generic product-defect bounds, the denominator-free relative Gaussian
+estimate, fixed and shifted nonasymptotic additive errors, the shifted limit,
+and four fixed/shifted relative/additive Big-O wrappers. The ring-level bounds
+need a multiplicative norm, the quotient statements need a normed field with
+`‖q‖ < 1`, and every result includes `q = 0`.
 The existing `GaussianBinomialCumulants.lean` module now has two definitions
 and twenty-four theorems. Its three newest declarations are
 `eval_one_derivative_derivative_gaussianBinomial_X`,
@@ -160,7 +166,7 @@ copy independent of the head coordinate. The regular-central leaf proves the
 displayed sum under the exact infinite-product denominator condition, with the
 full complex zero lattice and field-totalized `qGammaC` pole behavior kept
 explicit. The forward status ledger covers 282 labelled results:
-172 Exact / 85 Partial / 17 None / 8 N/A interface rows. The
+173 Exact / 84 Partial / 17 None / 8 N/A interface rows. The
 terminating-basic-hypergeometric closure is `TwoPhiOneReversal.lean` (2+12)
 and `QChuVandermonde.lean` (0+10): both q-Chu evaluations and the reversal
 lemma are Exact for the actual tsum, while the claimed full-domain derivation

@@ -47,6 +47,7 @@ The current source incorporates exhaustive crosswalks for
 `QPochhammerEntire` (zero definitions and five legacy compatibility theorems),
 `QPochhammerInfinite` (one definition and twenty-nine theorems),
 `QPochhammerDissection` (zero definitions and two theorems),
+`GaussianBinomialFixedColumnRate` (zero definitions and ten theorems),
 `GaussianBinomialPalindromic` (zero definitions and fourteen theorems),
 `GaussianBinomialPolynomialStructure` (zero definitions and five theorems),
 `GaussianBinomialCumulants` (two definitions and twenty-four theorems),
@@ -95,7 +96,7 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 908 modules and 11,498 public declarations with no
+live facade audit contains 909 modules and 11,508 public declarations with no
 documentation gaps. Those corpus-wide totals include the q--Chu, Richardson,
 geometric-law barycenter, Lagrange--Rvachev matrix, arbitrary-space geometric
 realization, regular-central-sum, and Lambert branch-gap Bernoulli follow-ups;
@@ -125,12 +126,21 @@ complex lattice `alpha = -1 - 2*j + 2*pi*I*m/log q`, not merely its real
 negative-odd slice. Even negative integral parameters remain admitted, where
 the field-totalized `qGammaC` quotient is zero in agreement with the product
 side; no holomorphy at a pole is claimed. The
+zero-definition/ten-theorem `GaussianBinomialFixedColumnRate.lean` leaf gives
+two generic finite-product defect bounds, the denominator-free relative
+Gaussian estimate, fixed and shifted nonasymptotic additive errors, the
+shifted `Tendsto`, and all four fixed/shifted relative/additive Big-O wrappers.
+It works over the stated generic multiplicative-norm ring or normed-field
+interfaces and includes `q = 0`; the older unshifted limit remains in
+`QBinomialTheoremInfinite.lean`. The
 forward status inventory covers 282 labelled results:
-172 Exact / 85 Partial / 17 None / 8 N/A; the 191-result pre-Fabius core is
+173 Exact / 84 Partial / 17 None / 8 N/A; the 191-result pre-Fabius core is
 36 / 29 / 123 / 3.
 The five-publication concordance
-has 84 Lean-proved, 394 human-proved frontier, 60 not-applicable, and 9
-conjecture rows. The `cor:positivity`, `thm:qbinom-structure`, and
+has 86 Lean-proved, 392 human-proved frontier, 60 not-applicable, and 9
+conjecture rows. Both the retained `thm:fixed-column-limit` source row and the
+older `prop:fixed-k-limit` row redirected to it now inherit the exact canonical
+status. The `cor:positivity`, `thm:qbinom-structure`, and
 `prop:gq-positive-palindromic` rows are Exact: both Gaussian structure APIs
 support the structure row, and the fourteen-theorem generic API now gives
 the strict-interior coefficient-of-`q` formula and all boundary zeros. The

@@ -6606,28 +6606,28 @@ In the quotient on the right of \eqref{eq:regular-central-sum}, all powers of $1
 \emph{Lean status.}  Exact in
 \path{RegularCentralQBinomialSum.lean}.  The definitions
 \path{Fabius.qNumberC} and \path{Fabius.regularCentralQBinomialTerm} use the
-same principal complex power (q^z=\exp(z\log q)), and
+same principal complex power \(q^z=\exp(z\log q)\), and
 \path{Fabius.hasSum_regularCentralQBinomial} proves the displayed infinite
-sum for (0<q<1).  Its single parameter premise is exactly
+sum for \(0<q<1\).  Its single parameter premise is exactly
 \[
- \path{qPochhammerInfIn ((q : C) ^ (alpha + 1)) ((q : C) ^ 2) != 0}.
+ \path{qPochhammerInfIn ((q : Complex) ^ (alpha + 1)) ((q : Complex) ^ 2) != 0}.
 \]
 By \path{Fabius.qPochhammerInfIn_eq_zero_iff}, this says simultaneously that
-every displayed generalized (q)-number denominator is nonzero: the excluded
+every displayed generalized \(q\)-number denominator is nonzero: the excluded
 complex lattice is
 \[
  \alpha=-1-2j+\frac{2\pi i m}{\log q},
  \qquad j\in\NaturalNumbers,\quad m\in\IntegerNumbers.
 \]
-For real (alpha) this is precisely the negative odd integers stated above;
+For real \(\alpha\) this is precisely the negative odd integers stated above;
 there is no additional real-part hypothesis.  The proof uses
-\path{CentralQBinomialReduction.lean}, the full-domain (q)-Gauss theorem in
+\path{CentralQBinomialReduction.lean}, the full-domain \(q\)-Gauss theorem in
 \path{QGaussFullDomain.lean}, and the product definition of
 \path{Fabius.qGammaC}.  Lean's field operations totalize division by zero, so
 at the admitted even negative integral parameters the pole value of
 \path{qGammaC} in the denominator is represented by zero and the displayed
 outer quotient is zero, agreeing with the product side.  This pointwise
-totalization is not a claim that (q)-gamma is holomorphic at a pole.
+totalization is not a claim that \(q\)-gamma is holomorphic at a pole.
 
 \begin{corollary}[Classical limit of the regular sum]\label{cor:regular-central-classical}
 For $\alpha\notin\{-1,-3,-5,\ldots\}$,
@@ -7193,7 +7193,27 @@ which proves \eqref{eq:fixed-column-limit} and
 \eqref{eq:fixed-column-shifted-limit} and
 \eqref{eq:fixed-column-shifted-error}.
 \end{proof}
-\emph{Lean status.}  Partial: \path{Fabius.tendsto_gaussianBinomial_atTop} in \path{QBinomialTheoremInfinite.lean} proves \eqref{eq:fixed-column-limit} for any fixed \(k\) over an arbitrary normed field, with \(\AbsoluteValue q<1\) read as the norm, so that the \(q=0\) case the proof separates is subsumed rather than argued; the route is \path{Fabius.tendsto_finiteQPochhammerIn_pow_atTop}, that \((q^{m};q)_k\to1\), against the identity \path{Fabius.finiteQPochhammerIn_self_mul_gaussianBinomial}.  Not stated: the shifted limit \eqref{eq:fixed-column-shifted-limit}, which would follow by composing with \(n\mapsto n+k\), and both geometric error terms \eqref{eq:fixed-column-error} and \eqref{eq:fixed-column-shifted-error}, for which the corpus carries only uniform majorants, never a decaying one.
+\emph{Lean status.}  Exact in
+\path{GaussianBinomialFixedColumnRate.lean}, together with the earlier
+unshifted limit \path{Fabius.tendsto_gaussianBinomial_atTop}.  Over any
+normed field and for \(\lVert q\rVert<1\),
+\path{Fabius.tendsto_gaussianBinomial_add_atTop} is the shifted limit, while
+\path{Fabius.gaussianBinomial_fixedColumn_relativeError_isBigO} and
+\path{Fabius.gaussianBinomial_shifted_fixedColumn_relativeError_isBigO}
+prove the two displayed multiplicative estimates.  The additional wrappers
+\path{Fabius.gaussianBinomial_fixedColumn_error_isBigO} and
+\path{Fabius.gaussianBinomial_shifted_fixedColumn_error_isBigO} give their
+additive forms.  The underlying nonasymptotic inequalities are
+\path{Fabius.norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le},
+\path{Fabius.norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le}, and
+\path{Fabius.norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le}; their
+elementary constant is \(k\exp(k)\), multiplied by the displayed geometric
+power.  At the generic product level,
+\path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp} and
+\path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le} work in a normed
+commutative ring with multiplicative norm.  The formal statements require no
+nonzero-nome premise and therefore include \(q=0\), where every error vanishes
+once its displayed exponent is positive.
 
 
 % ed.: replaces the former statement of thm:central-fixed-q (monograph lines
@@ -13604,7 +13624,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 172 are \statusexact, 85 are
+Of the 282 labelled forward results, 173 are \statusexact, 84 are
 \statuspartial, 17 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 35 \statusexact, 30 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -13716,6 +13736,8 @@ theorems;\\
 \path{QBinomialTheoremInfinite.lean}: one definition and 22 theorems; its
 use of \path{Fabius.finiteQPochhammerIn_zero_left} imports the unique
 declaration from \path{GaussianBinomialAtOne.lean};\\
+\path{GaussianBinomialFixedColumnRate.lean}: zero definitions and ten
+theorems;\\
 \path{BasicHypergeometricSeries.lean}: two definitions and five theorems;\\
 \path{HeineTransformation.lean}: two definitions and five theorems;\\
 \path{QGaussSummation.lean}: zero definitions and two theorems;\\
@@ -13758,6 +13780,24 @@ and 22 theorems.  In particular,
 \path{Fabius.finiteQPochhammerIn_zero_left} is canonically declared in
 \path{GaussianBinomialAtOne.lean} and merely made available by that import; it
 is not redeclared in \path{QBinomialTheoremInfinite.lean}.
+
+The zero-definition, ten-theorem
+\path{GaussianBinomialFixedColumnRate.lean} surface is exhaustively
+\path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp},
+\path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le},
+\path{Fabius.norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le},
+\path{Fabius.norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le},
+\path{Fabius.norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le},
+\path{Fabius.tendsto_gaussianBinomial_add_atTop},
+\path{Fabius.gaussianBinomial_fixedColumn_relativeError_isBigO},
+\path{Fabius.gaussianBinomial_shifted_fixedColumn_relativeError_isBigO},
+\path{Fabius.gaussianBinomial_fixedColumn_error_isBigO}, and
+\path{Fabius.gaussianBinomial_shifted_fixedColumn_error_isBigO}.  The first
+two are generic finite-product defect bounds, the third is the denominator-free
+relative Gaussian bound, the next two are fixed and shifted nonasymptotic
+additive bounds, the sixth is the shifted limit, and the last four are the
+relative and additive Big-O forms.  Every declaration includes the zero nome
+at its stated norm boundary.
 
 The added finite \(q\)-algebra and geometric layers have the following
 exhaustive public surfaces.
@@ -14195,7 +14235,7 @@ Bailey transforms and the Andrews--Gordon identities & 5 & 3 & 0 & 1\\
 Cyclotomic factorization and congruences & 9 & 0 & 0 & 0\\
 Negative upper indices and geometric Newton interpolation & 9 & 0 & 0 & 0\\
 Central $q$-binomial sums and Lambert series & 3 & 0 & 4 & 0\\
-Asymptotic regimes and Bernoulli expansions & 3 & 3 & 2 & 0\\
+Asymptotic regimes and Bernoulli expansions & 4 & 2 & 2 & 0\\
 Exact limits, reciprocity, and research frontiers & 5 & 0 & 0 & 0\\
 Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 7 & 2 & 0 & 0\\
@@ -14203,7 +14243,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 7 & 2 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 3 & 10 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 8 & 45 & 3 & 0\\
 \midrule
-\textbf{Forward total} & 172 & 85 & 17 & 8\\
+\textbf{Forward total} & 173 & 84 & 17 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -15418,12 +15458,12 @@ naturality)}\\[2pt]
 \texttt{qNumberC},
 \texttt{regularCentralQBinomialTerm},
 \texttt{hasSum\_\allowbreak{}regularCentralQBinomial}\newline
-{\footnotesize\texttt{RegularCentralQBinomialSum}; for (0<q<1), under exactly
-\texttt{qPochhammerInfIn ((q : C)\string^ (alpha + 1))
-((q : C)\string^2) != 0}.  The exact factor-zero theorem identifies this with
-nonvanishing of every generalized-(q)-number denominator, equivalently
-(alpha\ne-1-2j+2\pi i m/\log q) for all (j\ge0),
-(m\in\IntegerNumbers).  At admitted even negative integral parameters the
+{\footnotesize\texttt{RegularCentralQBinomialSum}; for \(0<q<1\), under exactly
+\texttt{qPochhammerInfIn ((q : Complex)\string^ (alpha + 1))
+((q : Complex)\string^2) != 0}.  The exact factor-zero theorem identifies this with
+nonvanishing of every generalized-\(q\)-number denominator, equivalently
+\(\alpha\ne-1-2j+2\pi i m/\log q\) for all \(j\ge0\),
+\(m\in\IntegerNumbers\).  At admitted even negative integral parameters the
 totalized \texttt{qGammaC} pole value makes the quotient zero, matching the
 product side; no holomorphy at the pole is asserted.}\\[2pt]
 \Cref{cor:regular-central-classical} & \statusnone & ---\\[2pt]
@@ -15463,12 +15503,19 @@ $x/(\EulerE^{x}-1)$, which Mathlib does not carry.  Not claimed: that $2\pi$ is 
 convergence}\\[2pt]
 \Cref{thm:gaussian-bernoulli} & \statusnone & ---\\[2pt]
 \Cref{cor:gaussian-first-asymptotic} & \statusnone & ---\\[2pt]
-\Cref{thm:fixed-column-limit} & \statuspartial &
+\Cref{thm:fixed-column-limit} & \statusexact &
 \texttt{tendsto\_\allowbreak{}gaussianBinomial\_\allowbreak{}atTop},
-\texttt{tendsto\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}pow\_\allowbreak{}atTop}\newline
-{\footnotesize\texttt{QBinomialTheoremInfinite}; the limit
-\eqref{eq:fixed-column-limit} in any complete normed field; the geometric
-error terms are not stated}\\[2pt]
+\texttt{tendsto\_\allowbreak{}gaussianBinomial\_\allowbreak{}add\_\allowbreak{}atTop},
+\texttt{gaussianBinomial\_\allowbreak{}fixedColumn\_\allowbreak{}relativeError\_\allowbreak{}isBigO},
+\texttt{gaussianBinomial\_\allowbreak{}shifted\_\allowbreak{}fixedColumn\_\allowbreak{}relativeError\_\allowbreak{}isBigO},
+\texttt{gaussianBinomial\_\allowbreak{}fixedColumn\_\allowbreak{}error\_\allowbreak{}isBigO},
+\texttt{gaussianBinomial\_\allowbreak{}shifted\_\allowbreak{}fixedColumn\_\allowbreak{}error\_\allowbreak{}isBigO}\newline
+{\footnotesize\texttt{QBinomialTheoremInfinite};
+\texttt{GaussianBinomialFixedColumnRate}; over every normed field for
+\(\lVert q\rVert<1\).  The relative wrappers are exactly the two printed
+multiplicative errors; the additive wrappers and explicit nonasymptotic
+\(k\exp(k)\)-bounds are stronger.  No \(q\ne0\) premise is used, so the zero
+nome is included.}\\[2pt]
 \Cref{thm:central-fixed-q} & \statuspartial &
 \texttt{tendsto\_\allowbreak{}gaussianBinomialInt\_\allowbreak{}central}\newline
 {\footnotesize\texttt{JacobiTripleProduct}; only the last clause, the limit
