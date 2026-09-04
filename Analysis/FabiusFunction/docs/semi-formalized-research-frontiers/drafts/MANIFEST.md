@@ -138,7 +138,7 @@ product's locally uniform convergence is exact for every complex strict
 contraction, including `q = 0`, with dyadic Rvachev and bounded-Fabius Fourier
 specializations. The compound centered/MGF and exterior reciprocal/pole
 theorem remains Partial. The forward status ledger covers 282 labelled
-results: 170 Exact / 86 Partial / 18 None / 8 N/A interface rows. No PDF was
+results: 171 Exact / 85 Partial / 18 None / 8 N/A interface rows. No PDF was
 generated for this source-only merge, so the retained 354-page artifact
 remains historical. The comb synthesis also
 has a later chapter-03 notation edit: its retained 158-page, 2,456,105-byte

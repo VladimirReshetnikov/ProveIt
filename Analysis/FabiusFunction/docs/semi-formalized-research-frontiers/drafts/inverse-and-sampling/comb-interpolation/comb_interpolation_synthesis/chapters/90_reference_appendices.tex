@@ -524,11 +524,17 @@ Nodewise biorthogonality and decoder row sum
 & Paper proof
 & Directly formalized componentwise by
   \path{normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node} and
-  \path{sum_lagrangeRvachevDecoder_eq_one}; no Matrix wrapper
+  \path{sum_lagrangeRvachevDecoder_eq_one}, and in typed form by
+  \path{lagrangeRvachevEncoderMatrix_mul_decoderMatrix} and
+  \path{sum_lagrangeRvachevDecoderMatrix_row_eq_one}
 & \Cref{gq:thm:gaussian-Appell-biorthogonality}\\
 Stochastic encoder and Matrix right inverse
 & Paper proof
-& No typed Matrix or row-stochastic encoder package found
+& Directly formalized by \path{lagrangeRvachevEncoderMatrix_nonneg},
+  \path{sum_lagrangeRvachevEncoderMatrix_row_eq_one}, and
+  \path{lagrangeRvachevEncoderMatrix_mul_decoderMatrix}; the negative-entry
+  conclusion is conditional on the positive-overlap hypothesis in
+  \path{exists_lagrangeRvachevDecoderMatrix_entry_neg_of_row_overlap}
 & \Cref{gq:thm:gaussian-Appell-biorthogonality}\\
 Minimum-variation atomic decoder
 & Open problem

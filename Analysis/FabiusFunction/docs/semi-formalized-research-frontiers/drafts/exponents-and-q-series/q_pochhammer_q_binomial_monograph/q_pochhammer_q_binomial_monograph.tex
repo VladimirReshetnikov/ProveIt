@@ -2495,7 +2495,7 @@ Conjugating Ferrers diagrams proves
 \(
  \GaussianBinomial{m+k}{k}{q}=\GaussianBinomial{m+k}{m}{q}.
 \)
-Taking the complement in the rectangle proves
+If \(q\) is invertible, taking the complement in the rectangle proves
 \[
  \GaussianBinomial{m+k}{k}{q^{-1}}=q^{-mk}\GaussianBinomial{m+k}{k}{q}.
 \]
@@ -2505,10 +2505,16 @@ Taking the complement in the rectangle proves
 Conjugation exchanges a $k\times m$ rectangle with an $m\times k$ rectangle without changing size.  Complementation sends size $r$ to $mk-r$, so the generating polynomial is reciprocal of degree $mk$.
 \end{proof}
 
-\emph{Lean status.}  The conjugation symmetry is \path{Fabius.boxCoeff_transpose} and
-\path{Fabius.gaussianBinomial_symm} (\path{FiniteQBinomialCore.lean}); the complement
-symmetry $c_j=c_{km-j}$ is \path{Fabius.boxCoeff_symm}, all in
-\path{GaussianUnimodality.lean}.
+\emph{Lean status.}  Both displayed identities are exact instances of existing
+declarations, without a new compound wrapper.  The first is
+\path{Fabius.gaussianBinomial_add_symm} in
+\path{GeometricCompleteHomogeneous.lean}, over every commutative semiring.  For a
+unit \(u\) in any commutative semiring, the second is
+\path{Fabius.gaussianBinomial_reciprocity_units} in
+\path{QBinomialReciprocity.lean}, instantiated at \(u^{-1}\) and \(n=m+k\): use
+\((u^{-1})^{-1}=u\), \((m+k)-k=m\), and \(km=mk\).  The coefficient-level
+diagram symmetries are \path{Fabius.boxCoeff_transpose} and
+\path{Fabius.boxCoeff_symm} in \path{GaussianUnimodality.lean}.
 
 
 \section{Lattice paths and area}
@@ -8360,6 +8366,25 @@ has the same distribution as $X_q$.  Splitting off the first term and reindexing
 and integration over $u\in[0,1]$ proves \eqref{eq:geometric-uniform-cdf-equation}.
 \end{proof}
 
+\emph{Lean status.}  Exact under the canonical-law convention used in this
+chapter.  Lean realizes the coordinates on its fixed product probability space
+\path{uniformProduct}: absolute convergence is
+\path{summable_weightedUniformSeries_terms} applied with
+\path{summable_norm_geometricUniformWeight}, the interval and exact-support
+claims are \path{geometricUniformSeries_mem_Icc} and
+\path{geometricUniformDistribution_support_eq_Icc}, the mean is
+\path{integral_id_geometricUniformDistribution_eq_one_half}, reflection and the
+independent-copy law are \path{geometricUniformDistribution_reflection} and
+\path{geometricUniformDistribution_selfSimilar}, and the CDF clauses are
+\path{geometricUniformCDF_eq_integral},
+\path{geometricUniformCDF_zero_of_nonpos}, and
+\path{geometricUniformCDF_one_of_one_le}.  The mean theorem is the real
+specialization of the generic Banach-valued barycenter theorem
+\path{integral_id_weightedUniformDistribution}.  There is no separate Lean
+wrapper quantifying over the arbitrary ambient \(\Omega\) introduced above;
+for another realization, this crosswalk applies after identifying its full
+coordinate joint law with the canonical product law.
+
 \section{Fourier product and cumulants}
 
 Use the entire function
@@ -13513,7 +13538,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 170 are \statusexact, 86 are
+Of the 282 labelled forward results, 171 are \statusexact, 85 are
 \statuspartial, 18 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -14077,7 +14102,7 @@ The algebra of $q$-shifted factorials & 13 & 1 & 1 & 0\\
 $q$-integers and Gaussian coefficients & 9 & 0 & 0 & 0\\
 Finite $q$-binomial theorems and inversion & 10 & 0 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 5 & 3 & 0 & 0\\
-Partitions, words, paths, and inversion statistics & 7 & 2 & 0 & 0\\
+Partitions, words, paths, and inversion statistics & 8 & 1 & 0 & 0\\
 Finite fields, Grassmannians, and rank enumeration & 3 & 3 & 0 & 0\\
 Symmetry and unimodality & 0 & 1 & 2 & 0\\
 The infinite $q$-binomial theorem & 4 & 0 & 0 & 0\\
@@ -14102,7 +14127,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 7 & 2 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 8 & 45 & 3 & 0\\
 \midrule
-\textbf{Forward total} & 170 & 86 & 18 & 8\\
+\textbf{Forward total} & 171 & 85 & 18 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -14455,7 +14480,14 @@ stated in Lean}\\[2pt]
 bounded by $m$; over every semiring, by the first-part decomposition and the
 column-sum identity $\sum_{a\le m}q^a[a+k,k]_q=[m+k+1,k+1]_q$ rather than the
 word bijection; the count $\binom{m+k}{k}$ at $q=1$}\\[2pt]
-\Cref{cor:partition-symmetries} & \statuspartial & \texttt{qBinomial\_\allowbreak{}symm}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
+\Cref{cor:partition-symmetries} & \statusexact &
+\texttt{gaussianBinomial\_\allowbreak{}add\_\allowbreak{}symm},
+\texttt{gaussianBinomial\_\allowbreak{}reciprocity\_\allowbreak{}units}\newline
+{\footnotesize\texttt{GeometricCompleteHomogeneous};
+\texttt{QBinomialReciprocity}; the first identity holds over every
+commutative semiring, while the reciprocal identity is obtained by applying
+unit reciprocity to the inverse unit; this assembles existing declarations and
+does not introduce a compound wrapper}\\[2pt]
 \Cref{cor:path-area} & \statusexact &
 \texttt{pathArea},
 \texttt{pathArea\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}height},
@@ -15469,7 +15501,27 @@ affine partition, and raw partition over every commutative ring}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions}\\
 \midrule
-\Cref{thm:geometric-uniform-basic} & \statuspartial & \texttt{geometricUniformSeries\_\allowbreak{}mem\_\allowbreak{}Icc}\newline{\footnotesize\texttt{GeometricUniformLaw}}\\[2pt]
+\Cref{thm:geometric-uniform-basic} & \statuspartial &
+\texttt{summable\_\allowbreak{}weightedUniformSeries\_\allowbreak{}terms},
+\texttt{geometricUniformSeries\_\allowbreak{}mem\_\allowbreak{}Icc},
+\texttt{geometricUniformDistribution\_\allowbreak{}support\_\allowbreak{}eq\_\allowbreak{}Icc},
+\texttt{integral\_\allowbreak{}id\_\allowbreak{}geometricUniformDistribution\_\allowbreak{}eq\_\allowbreak{}one\_\allowbreak{}half},
+\texttt{geometricUniformDistribution\_\allowbreak{}reflection},
+\texttt{geometricUniformDistribution\_\allowbreak{}selfSimilar},
+\texttt{geometricUniformCDF\_\allowbreak{}eq\_\allowbreak{}integral},
+\texttt{geometricUniformCDF\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}nonpos},
+\texttt{geometricUniformCDF\_\allowbreak{}one\_\allowbreak{}of\_\allowbreak{}one\_\allowbreak{}le}\newline
+{\footnotesize\texttt{WeightedUniformSeries}; \texttt{GeometricUniformLaw};
+\texttt{GeometricUniformCDF}; the full displayed suite is exact for the
+canonical product-space law under the theorem's \(0<q<1\) hypotheses.  The
+row remains partial because the manuscript quantifies an arbitrary ambient
+probability space.  The mean specializes the generic
+Banach-valued theorem
+\texttt{integral\_\allowbreak{}id\_\allowbreak{}weightedUniformDistribution} in
+\texttt{WeightedUniformDistribution}.  Lean fixes \texttt{uniformProduct}
+and does not expose a redundant arbitrary-\(\Omega\) wrapper; another
+realization is covered after equality of its full coordinate joint law with
+the canonical product law.}\\[2pt]
 \Cref{thm:geometric-uniform-characteristic} & \statuspartial &
 \texttt{charFun\_\allowbreak{}geometricUniformDistribution\_\allowbreak{}eq\_\allowbreak{}phase\_\allowbreak{}mul\_\allowbreak{}geometricSincProduct},
 \texttt{charFun\_\allowbreak{}geometricUniformDistribution\_\allowbreak{}eq\_\allowbreak{}phase\_\allowbreak{}mul\_\allowbreak{}geometricReciprocalGamma},

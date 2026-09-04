@@ -36,10 +36,26 @@ evidence of a compiled Lean declaration. Likewise, numerical tables and plots
 are checks and illustrations, not proof premises. The current
 `FabiusFunction.LagrangeRvachevSynthesis` crosswalk verifies generic scalar
 decoder synthesis, node biorthogonality, coefficient factorization, the full
-finite interpolation loop, and the unnormalized decoder row-sum law. It does
-not claim a formal geometric Gaussian closed-form decoder, the associated
-elementary-symmetric/prefactor formula, a `Matrix` wrapper, or decoder
-optimization.
+finite interpolation loop, and the unnormalized decoder row-sum law. The
+companion `FabiusFunction.LagrangeRvachevMatrix` API adds
+`rvachevAtomIndexSet`, `RvachevAtomIndex`,
+`lagrangeRvachevEncoderMatrix`, and `lagrangeRvachevDecoderMatrix`, together
+with `lagrangeRvachevEncoderMatrix_nonneg`,
+`sum_lagrangeRvachevEncoderMatrix_row_eq_one`,
+`sum_lagrangeRvachevDecoderMatrix_row_eq_one`, and
+`lagrangeRvachevEncoderMatrix_mul_decoderMatrix`. These declarations exactly
+discharge `gq:thm:gaussian-Appell-biorthogonality`. The generic
+`exists_neg_entry_of_rightInverse_of_row_overlap` and its specialized
+`exists_lagrangeRvachevDecoderMatrix_entry_neg_of_row_overlap` prove the
+negative-entry conclusion only when the stated strictly positive row overlap
+is supplied. The crosswalk does not claim a formal geometric Gaussian
+closed-form decoder, the associated elementary-symmetric/prefactor formula,
+or decoder optimization.
+
+The 232-row concordance therefore records 4 Lean-proved rows, 162
+human-proved frontier rows, 20 conjectures, 30 open problems, and 16 rows for
+which proof status is not applicable. Its source projection and total row
+count are unchanged.
 
 The separate exact concordance row maps the strict-interior formula in
 `thm:weight-valuation` to `Fabius.twoPowChoose_padicValNat` in

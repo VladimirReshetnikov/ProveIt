@@ -346,8 +346,8 @@ superconvergence leaf and the subsequent binary-word, box-partition, and
 telescoping-certificate leaves, as well as the exact three-module Lambert
 branch-pairing, gap-bijection, and symmetric-identity tranche (respectively
 0+7, 4+16, and 0+9), the exact inverse-recursion certificates, and the Jacobi
-two-square counting leaf.  The live source census is 903 facade-reachable
-modules and 11,437 public declarations.  The retained
+two-square counting leaf.  The live source census is 904 facade-reachable
+modules and 11,449 public declarations.  The retained
 257-page, 2,438,299-byte A4 PDF, SHA-256
 \nolinkurl{3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980},
 predates these source-only overlays and the expanded ledger and is therefore a
@@ -1820,6 +1820,14 @@ scalar-shift theorems.  The compatibility surface additionally exports
 \path{WeightedUniformSeries.lean} and \path{WeightedUniformDistribution.lean}.  The
 law-level scalar wrapper is oriented as \(\mu_{cw}=(x\mapsto cx)_*\mu_w\).
 
+The same compatibility module supplies the exact Bochner barycenter
+\[
+ \int_E x\,\Differential\mu_w(x)=\frac12\mathbin{\cdot}\sum_{n=0}^{\infty}w_n
+\]
+for norm-summable weights in a complete Borel real normed space.  This is
+\lean{ProbabilityRepresentation.integral_id_weightedUniformDistribution}; it uses no sign,
+order, independence expansion, or termwise-integration hypothesis.
+
 The four-declaration absolute-continuity tranche in
 \path{WeightedUniformDistribution.lean} consists of
 \lean{ProbabilityRepresentation.uniformScaledAdd_absolutelyContinuous},
@@ -1829,6 +1837,9 @@ The four-declaration absolute-continuity tranche in
 allows an arbitrary s-finite tail law, the second assumes \(w_0\ne0\), and the sharp final
 pair assumes only \(\exists n,\ w_n\ne0\); the last theorem returns Mathlib's
 \texttt{NullSingletonClass} explicitly.
+Together with its six compatibility theorems and the barycenter theorem,
+\path{WeightedUniformDistribution.lean} has exactly eleven public theorems and no public
+definitions.
 
 The separate exact-support layer has ten public declarations in
 \path{WeightedUniformSupport.lean}:
@@ -1868,9 +1879,14 @@ nonnegative, the series lies in \([0,1]\), and the law gives mass one to that in
 zero to its complement.  For every \(|q|<1\), its topological support is exactly the series
 range, its law is absolutely continuous with respect to Lebesgue measure, and all singletons
 are null; neither of the latter two statements needs \(q\ge0\).  Under \(0\le q<1\), both
-the series range and the support are exactly \([0,1]\).
+the series range and the support are exactly \([0,1]\).  Under the weaker sharp hypothesis
+\(|q|<1\), including \(q=0\) and negative contractions, its exact mean is
+\[
+ \int_{\RealNumbers}x\,\Differential\mu_q(x)=\frac12;
+\]
+no positivity hypothesis is used.
 
-The twenty-three declarations are
+The twenty-four declarations are
 \lean{ProbabilityRepresentation.geometricUniformWeight},
 \lean{ProbabilityRepresentation.geometricUniformWeight_zero},
 \lean{ProbabilityRepresentation.geometricUniformWeight_succ},
@@ -1890,6 +1906,7 @@ The twenty-three declarations are
 \lean{ProbabilityRepresentation.uniformProduct_map_head_tail_geometricUniformSeries},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_selfSimilar},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_reflection},
+\lean{ProbabilityRepresentation.integral_id_geometricUniformDistribution_eq_one_half},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_Icc},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_compl_Icc},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_support_eq_range}, and
@@ -2528,7 +2545,7 @@ intermediate source census is 672/8,875.  The three later
 \path{TelescopingCertificate.lean} leaves add thirty-four declarations and
 bring the historical source checkpoint to 675/8,909.  The subsequent source
 union, including the exact 36-declaration Lambert branch-coordinate tranche,
-brings the live source census to 903/11,437.  These additions are source-only,
+brings the live source census to 904/11,449.  These additions are source-only,
 and the retained 257-page PDF remains explicitly historical; no PDF was built
 for this update.
 The newest six module counts are
@@ -4568,8 +4585,9 @@ The eleven-declaration generic tranche: almost-everywhere and pointwise head--ta
 recursion, continuous-linear and scalar naturality, shifted-law transport, and
 operator/scalar affine recursions; \cref{integration:sec:weighted-naturality}.\\
 \path{WeightedUniformDistribution.lean} &
-The compatibility head--tail, probability, scalar-law, and unit-interval surface, followed by
-the four-declaration s-finite uniform-smoothing, sharp weighted-law absolute-continuity, and
+The exact zero-definition/eleven-theorem compatibility surface: head--tail, probability,
+the half-total-weight barycenter, scalar-law and unit-interval results, followed by the
+four-declaration s-finite uniform-smoothing, sharp weighted-law absolute-continuity, and
 null-singleton tranche;
 \cref{integration:sec:weighted-naturality}.\\
 \path{WeightedUniformSupport.lean} &
@@ -4578,9 +4596,10 @@ continuous-pushforward support, support equal to the series range, exact signed-
 min/max intervals, and the nonnegative and unit-mass specializations;
 \cref{integration:sec:weighted-naturality}.\\
 \path{GeometricUniformLaw.lean} &
-The twenty-three-declaration named geometric weight, series, and law API: summability and
-mass, continuity and measurability, affine splitting, reflection, absolute continuity, null
-singletons, and support equal to the series range for \(|q|<1\), with exact support \([0,1]\)
+The twenty-four-declaration named geometric weight, series, and law API: summability and
+mass, continuity and measurability, affine splitting, reflection, exact mean \(1/2\),
+absolute continuity, null singletons, and support equal to the series range for \(|q|<1\),
+including zero and negative ratios, with exact support \([0,1]\)
 for \(0\le q<1\);
 \cref{integration:sec:weighted-naturality}.\\
 \path{AffineIndependentCopy.lean} &
@@ -5434,6 +5453,30 @@ result is stronger than the dyadic-only manuscript claim.  It names exact
 phase representatives, not congruence classes or a complete classification,
 and proves no maximality, positivity, or rationality theorem.
 
+The downstream \path{LagrangeRvachevMatrix.lean} leaf has the exhaustive
+four-definition/six-theorem public surface.  Its definitions and abbreviation are
+\lean{rvachevAtomIndexSet}, \lean{RvachevAtomIndex},
+\lean{lagrangeRvachevEncoderMatrix}, and \lean{lagrangeRvachevDecoderMatrix}; its theorems
+are \lean{lagrangeRvachevEncoderMatrix_nonneg},
+\lean{sum_lagrangeRvachevEncoderMatrix_row_eq_one},
+\lean{sum_lagrangeRvachevDecoderMatrix_row_eq_one},
+\lean{lagrangeRvachevEncoderMatrix_mul_decoderMatrix},
+\lean{exists_neg_entry_of_rightInverse_of_row_overlap}, and
+\lean{exists_lagrangeRvachevDecoderMatrix_entry_neg_of_row_overlap}.  On the exact finite
+atom block \(\{k\in\IntegerNumbers:-2M<k<2M\}\), it packages
+\(A_{ik}=M^{-1}\RvachevUp(v_i-k/M)\) and the sampled Lagrange--Rvachev decoder.  Encoder
+nonnegativity requires no distinctness or nonzero mesh; encoder row unitality requires
+\lean{IsFabius}, (M\ne0), and the selected node in \([-1,1]\); decoder row unitality
+requires a nonempty distinct family but no Fabius or mesh-admissibility hypothesis.
+Distinct in-range nodes, (M\ne0), and
+\(\lvert s\rvert-1\le\TwoAdicValuation(M)\) give the typed equation \(AD=I\).
+
+Generically, entrywise \(A\ge0\), row-unital \(D\), \(AD=I\), and a column strictly positive
+in two distinct rows force a negative entry of \(D\); encoder row normalization is not used.
+The specialization remains conditional on an actual overlap.  No theorem asserts that all
+admissible nodes overlap, or gives the range, kernel, rank, trace, characteristic polynomial,
+or Cauchy--Binet data of \(DA\), a geometric closed form, or decoder optimality.
+
 At the focused-build checkpoint of 30 August 2026,
 \path{CompositeMeshSharpness.lean} exports one public definition,
 \lean{rvachevCombExactThrough}, and seven public theorems:
@@ -5513,20 +5556,23 @@ interval supremum norm; raw \texttt{TendstoUniformlyOn}, norm-error-to-zero, and
 forms are exported as well.  No rate, coefficientwise limit, or uniform convergence outside
 $[-1,1]$ is asserted.
 
-The seven modules \path{RvachevMomentAppell.lean},
+The eight modules \path{RvachevMomentAppell.lean},
 \path{RvachevPolynomialSynthesis.lean},
 \path{RvachevSuperconvergentSynthesis.lean},
 \path{LagrangeRvachevSynthesis.lean},
+\path{LagrangeRvachevMatrix.lean},
 \path{CompositeMeshSharpness.lean},
 \path{FabiusLegendreTranslateBlocks.lean}, and
 \path{FabiusLegendreTranslateSeries.lean} have public definition/theorem
-inventories $6/33$, $0/5$, $1/8$, $2/7$, $1/7$, $6/7$, and $5/25$,
-respectively, for exactly $113$ public declarations.  Universal
+inventories $6/33$, $0/5$, $1/8$, $2/7$, $4/6$, $1/7$, $6/7$, and $5/25$,
+respectively, for exactly $123$ public declarations.  Universal
 whole-space mesh sharpness is now proved, but minimality for an individual Legendre mode,
 block, or partial sum is not.  Their APIs also do not prove an analytic
 reciprocal-MGF or Appell generating-series identity, a literal differential-series
 realization of deconvolution, the displayed low reciprocal coefficients, parity or the
 displayed closed formulas for the deconvolved Legendre family, rationality of the atom rows,
+range/kernel/rank/trace/characteristic-polynomial or Cauchy--Binet results for the
+coefficient-space projector,
 equality of the fixed-scale and separately scaled coefficient vectors, an unconditional
 $\operatorname{natDegree}(S_N)=2N$ theorem or nonvanishing of the top Legendre coefficient, or the later
 refinement, projector, and asymptotic layers.

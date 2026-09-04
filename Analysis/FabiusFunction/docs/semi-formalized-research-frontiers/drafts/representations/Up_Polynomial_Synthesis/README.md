@@ -91,6 +91,23 @@ theorems. The report says so explicitly. Existing compiled Lean declarations
 are named where they discharge a claim; no source-only statement is presented
 as kernel verified.
 
+The current `FabiusFunction.LagrangeRvachevMatrix` surface consists of the
+finite-index declarations `rvachevAtomIndexSet` and `RvachevAtomIndex`, the
+definitions `lagrangeRvachevEncoderMatrix` and
+`lagrangeRvachevDecoderMatrix`, and six theorems:
+`lagrangeRvachevEncoderMatrix_nonneg`,
+`sum_lagrangeRvachevEncoderMatrix_row_eq_one`,
+`sum_lagrangeRvachevDecoderMatrix_row_eq_one`,
+`lagrangeRvachevEncoderMatrix_mul_decoderMatrix`,
+`exists_neg_entry_of_rightInverse_of_row_overlap`, and
+`exists_lagrangeRvachevDecoderMatrix_entry_neg_of_row_overlap`. This closes
+`prop:lag-markov` exactly, with positive row overlap retained as a hypothesis.
+For the compound `thm:lag-right-inverse`, it closes only the boxed `UB = I`
+clause; the `BU` projector, basis, spectral, moment, intertwining, and
+Cauchy--Binet clauses remain human proofs. The crosswalk therefore remains at
+80 canonical assertion rows (including 11 conjectures); no assertion-count
+delta accompanies these evidence-status changes.
+
 The Q12 root transition is exact computer-assisted mathematics: rational
 polynomials and rational Sturm chains decide root counts. Approximate complex
 root locations are diagnostics only.

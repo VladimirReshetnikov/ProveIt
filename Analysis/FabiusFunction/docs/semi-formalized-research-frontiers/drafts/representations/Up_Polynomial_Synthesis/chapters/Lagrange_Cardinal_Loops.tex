@@ -204,6 +204,20 @@ the synthesized function and then synthesizes its cardinal interpolant.
 Finally apply Cauchy--Binet to $\det(UB)=1$.
 \end{proof}
 
+\paragraph{Lean coverage boundary.}
+The finite index block \path{rvachevAtomIndexSet} and its typed index
+\path{RvachevAtomIndex}, together with
+\path{lagrangeRvachevEncoderMatrix} and
+\path{lagrangeRvachevDecoderMatrix} in
+\path{FabiusFunction.LagrangeRvachevMatrix}, identify the Lean matrices as
+$A=hU$ and $D=h^{-1}B$.  Hence
+\path{lagrangeRvachevEncoderMatrix_mul_decoderMatrix} is an exact formal proof
+of the boxed clause $UB=I_{d+1}$.  It deliberately makes no claim about
+$BU$, so the projector range/kernel, rank, trace, characteristic polynomial,
+intertwining, basis-factorization, moment-transmutation, and Cauchy--Binet
+clauses above remain human proofs.  Accordingly
+\Cref{thm:lag-right-inverse} remains only partially Lean-covered.
+
 The factorization has an exact probabilistic normalization.  Put
 \[
  \widetilde U=hU,
@@ -237,6 +251,18 @@ used with positive weight must therefore equal $e_i$.  A column positive in
 two different encoder rows would force the same decoder row to equal two
 different extreme points, a contradiction.
 \end{proof}
+
+\paragraph{Lean counterpart.}
+Under the same identifications, \path{lagrangeRvachevEncoderMatrix_nonneg},
+\path{sum_lagrangeRvachevEncoderMatrix_row_eq_one},
+\path{sum_lagrangeRvachevDecoderMatrix_row_eq_one}, and
+\path{lagrangeRvachevEncoderMatrix_mul_decoderMatrix} prove every Markov and
+right-inverse clause of \Cref{prop:lag-markov}.  The general theorem
+\path{exists_neg_entry_of_rightInverse_of_row_overlap} proves the finite
+matrix obstruction, and
+\path{exists_lagrangeRvachevDecoderMatrix_entry_neg_of_row_overlap} is its
+exact Lagrange--Rvachev specialization.  Both retain the displayed strictly
+positive overlap as a hypothesis; no unconditional overlap claim is made.
 
 The sign obstruction has a quantitative form.  For a row-unital right
 inverse $E$ of a nonnegative row-stochastic matrix $A$, write

@@ -112,12 +112,13 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-03 audit for this documentation
-pass scans 903 facade-reachable modules and 11,437 public declarations.  It
+pass scans 904 facade-reachable modules and 11,449 public declarations.  It
 finds no missing module header or declaration comment, including throughout
-`FabiusInverseExactDyadicModulus.lean` and `JacobiTwoSquareCount.lean`.
-Relative to the 610/8,318 activation checkpoint, the current tree adds 293
-modules and 3,119 declarations.  Relative to the earlier 630/8,552 merged
-checkpoint, concurrent source work adds 273 modules and 2,885 declarations.
+`FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
+`LagrangeRvachevMatrix.lean`.  Relative to the 610/8,318 activation
+checkpoint, the current tree adds 294 modules and 3,131 declarations.
+Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
+adds 274 modules and 2,897 declarations.
 
 #### Exact Lambert branch-pairing tranche
 
@@ -271,7 +272,35 @@ finite-node decoder and atom coefficient, degree bounds, cardinal synthesis,
 componentwise biorthogonality, linear coefficient identity, exact finite
 interpolation loop, and unit row mass.  This inventory claim does not extend to
 a geometric Gaussian closed-form decoder, a matrix wrapper, or an
-optimal/minimum-variation decoder theorem.  The subsequent
+optimal/minimum-variation decoder theorem.
+
+The subsequent `LagrangeRvachevMatrix.lean` leaf is exhaustively 4+6.  Its
+definitions and abbreviation are `rvachevAtomIndexSet`, `RvachevAtomIndex`,
+`lagrangeRvachevEncoderMatrix`, and `lagrangeRvachevDecoderMatrix`; its
+theorems are `lagrangeRvachevEncoderMatrix_nonneg`,
+`sum_lagrangeRvachevEncoderMatrix_row_eq_one`,
+`sum_lagrangeRvachevDecoderMatrix_row_eq_one`,
+`lagrangeRvachevEncoderMatrix_mul_decoderMatrix`,
+`exists_neg_entry_of_rightInverse_of_row_overlap`, and
+`exists_lagrangeRvachevDecoderMatrix_entry_neg_of_row_overlap`.  It packages
+the exact lattice block `Ioo (-(2*M)) (2*M)`, the normalized nonnegative
+encoder and row-unital decoder, and the right-inverse equation under exactly
+distinct in-range nodes, `M ≠ 0`, and `s.card - 1 ≤ padicValNat 2 M`.  The
+generic sign theorem needs only encoder nonnegativity, decoder row unitality,
+the right-inverse equation, and one strictly positive column in two distinct
+rows; its Rvachev specialization remains conditional on that overlap.  It
+asserts no `decoder * encoder` projector range/kernel, rank, trace,
+characteristic-polynomial, Cauchy--Binet, geometric closed-form, or decoder
+optimality result.
+
+Two further declarations close the barycenter layer:
+`ProbabilityRepresentation.integral_id_weightedUniformDistribution` gives
+`(1 / 2) • ∑' n, w n` for norm-summable weights in every complete Borel real
+normed space without sign, order, or termwise-integration hypotheses, and
+`ProbabilityRepresentation.integral_id_geometricUniformDistribution_eq_one_half`
+specializes it to mean `1 / 2` under exactly `|q| < 1`, including `q = 0` and
+negative `q`.  Accordingly `GeometricUniformLaw.lean` now has 24 public
+declarations.  The subsequent
 `integral_polynomial_mul_rvachevUp_eq_dyadic_tsum` theorem in
 `PolynomialCombExactness.lean` packages the polynomial-times-Rvachev integral
 as the corresponding dyadic shifted-polynomial sum and contributes one further
@@ -893,7 +922,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 903/11,437
+historical 675/8,909 census and requires refresh against the live 904/11,449
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity

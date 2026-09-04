@@ -1870,6 +1870,18 @@ This is the direct CDF model on \([0,1]\).  It should not be conflated with
 the centered finite-convolution measures used by the original-paper
 approximants.
 
+The generic weighted-law compatibility layer also supplies an exact Bochner barycenter.
+For norm-summable weights in a complete Borel real normed space,
+\[
+ \int_E x\,\Differential\mu_w(x)=\frac12\mathbin{\cdot}\sum_{n=0}^{\infty}w_n.
+\]
+This is
+\nolinkurl{integral_id_weightedUniformDistribution} in
+\nolinkurl{WeightedUniformDistribution.lean}.  It assumes no sign or order on the weights
+and uses bounded-series integrability plus central reflection, not a termwise integration
+or coordinate-independence expansion.  That module now has exactly eleven public theorems
+and no public definitions.
+
 The self-similarity of \(X\) is the probabilistic counterpart of the fixed-point integral equation.  It supplies a second route to the same canonical bounded function once uniqueness of the \nolinkurl{IsFabius} specification is available.
 
 \subsection{The reusable affine-law, geometric CDF, and density layer}
@@ -1942,6 +1954,14 @@ For the geometric weights \(w_n(q)=(1-q)q^n\), write \(\mu_q\) for the law,
   f_q(x)=
   \frac{F_q(x/q)-F_q((x-(1-q))/q)}{1-q}.
 \]
+The exhaustive \nolinkurl{GeometricUniformLaw.lean} surface now has twenty-four public
+declarations.  The new specialization
+\nolinkurl{integral_id_geometricUniformDistribution_eq_one_half} proves
+\[
+ \int_{\RealNumbers}x\,\Differential\mu_q(x)=\frac12
+ \qquad\text{whenever }\lvert q\rvert<1.
+\]
+It includes \(q=0\) and every negative contraction and uses no positivity hypothesis.
 The Lean definition \nolinkurl{geometricUniformDensity q} is total in \(q\),
 but only \(0<q<1\) gives this classical density interpretation.  The formal
 boundary is now exact: at \(q=0\) the selected quotient is identically zero,
@@ -5469,6 +5489,7 @@ Fractional Fabius--Rvachev shifts & \nolinkurl{fractionalVolterra_add_one_extend
 Pointwise analytic finite filters & \nolinkurl{finiteAnalyticSeriesFilter}, \nolinkurl{geometricAnalyticSeriesFilter}, \nolinkurl{geometricLagrangeAnalyticSeriesFilter_shifted} & unconditional diagonal, exact-head/tail, and Gaussian-residual identities in \nolinkurl{AnalyticSeriesFilter.lean} \\
 Rvachev Appell deconvolution, arbitrary-phase reproduction, and parity-selected superconvergence & \nolinkurl{integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev}, \nolinkurl{integral_eval_rvachevAppellPolynomial_sub_mul_rvachev}, \nolinkurl{integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero}, \nolinkurl{normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp}, and the exact one-definition/eight-theorem \nolinkurl{RvachevSuperconvergentSynthesis.lean} API & The first three belong to the exact six-definition/thirty-three-theorem surface of \nolinkurl{RvachevMomentAppell.lean}: evenness converts additive smoothing into centered \(x-y\) convolution for every deconvolved polynomial and every Appell monomial, and every positive-degree Appell polynomial has Rvachev mean zero.  The fourth is the fifth theorem of the zero-definition/five-theorem \nolinkurl{RvachevPolynomialSynthesis.lean}: for \(M\ne0\), \(\deg P\le \TwoAdicValuation(M)\), and arbitrary real \(\theta,x\), the normalized lattice sum of \((\mathscr D_{\RvachevUp}P)(x-(\theta+k)/M)\RvachevUp((\theta+k)/M)\) is \(P(x)\).  Here division by \(M\) means real scalar division, and compact support makes the bilateral \texttt{tsum} pointwise finite.  Thus \(M=2^N\) formalizes arbitrary-phase reproduction of every polynomial \(P\) with \(\deg P\le N\), equivalently every monomial \(X^n\) for \(0\le n\le N\).  The new superconvergent module defines \nolinkurl{IsRvachevSuperconvergentPhase} and proves \nolinkurl{isRvachevSuperconvergentPhase_two_pow_iff}, \nolinkurl{tsum_quarter_monomial_eq_integral_of_even_deg}, \nolinkurl{tsum_three_quarters_monomial_eq_integral_of_even_deg}, \nolinkurl{tsum_shifted_monomial_eq_integral_superconvergent}, \nolinkurl{tsum_shifted_polynomial_eq_integral_superconvergent}, \nolinkurl{integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent}, \nolinkurl{normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp_superconvergent}, and \nolinkurl{normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent}.  For every nonzero natural \(M\), these give degree \(\TwoAdicValuation(M)+1\) exactness at selected exact phase representatives; even dyadic level selects \(0,1/2\) and odd level \(1/4,3/4\).  This is stronger than the dyadic-only claim, but is not a modulo-one phase classification or a maximality, positivity, or rationality theorem.  None of these modules supplies an analytic reciprocal MGF or Appell generating series, a literal differential-operator expansion, reciprocal/deconvolution parity, or the displayed low reciprocal coefficients.  With the four unchanged downstream modules, the seven-module tranche has inventories \(6/33,0/5,1/8,2/7,1/7,6/7,5/25\), hence exactly 113 public declarations. \\
 Generic finite-node Lagrange--Rvachev dictionary & Definitions \nolinkurl{lagrangeRvachevDecoder}, \nolinkurl{lagrangeRvachevAtomCoefficient}; theorems \nolinkurl{natDegree_lagrangeBasis_le_card_sub_one}, \nolinkurl{natDegree_lagrangeInterpolate_le_card_sub_one}, \nolinkurl{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp}, \nolinkurl{normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node}, \nolinkurl{lagrangeRvachevAtomCoefficient_eq_deconvolved_interpolate}, \nolinkurl{sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp}, \nolinkurl{sum_lagrangeRvachevDecoder_eq_one} & Exact two-definition/seven-theorem surface in \nolinkurl{LagrangeRvachevSynthesis.lean}.  It proves the generic finite-node cardinal synthesis, componentwise biorthogonality, linear data-to-atom transform, full interpolation loop, and unit row mass under the displayed mesh, interval, distinctness, and nonemptiness hypotheses.  It does not give a geometric Gaussian q-binomial/q-Pochhammer or elementary-symmetric decoder formula, a bundled matrix/right-inverse or stochastic-matrix wrapper, or an optimal/minimum-variation decoder. \\
+Typed finite Lagrange--Rvachev Matrix/Markov layer & Definitions/abbreviation \nolinkurl{rvachevAtomIndexSet}, \nolinkurl{RvachevAtomIndex}, \nolinkurl{lagrangeRvachevEncoderMatrix}, \nolinkurl{lagrangeRvachevDecoderMatrix}; theorems \nolinkurl{lagrangeRvachevEncoderMatrix_nonneg}, \nolinkurl{sum_lagrangeRvachevEncoderMatrix_row_eq_one}, \nolinkurl{sum_lagrangeRvachevDecoderMatrix_row_eq_one}, \nolinkurl{lagrangeRvachevEncoderMatrix_mul_decoderMatrix}, \nolinkurl{exists_neg_entry_of_rightInverse_of_row_overlap}, \nolinkurl{exists_lagrangeRvachevDecoderMatrix_entry_neg_of_row_overlap} & Exhaustive four-definition/six-theorem surface of \nolinkurl{LagrangeRvachevMatrix.lean}.  On the exact atom block \(\{-2M<k<2M\}\), the normalized encoder is nonnegative and row-unital and the sampled decoder is row-unital under their exact hypotheses; distinct in-range nodes, \(M\ne0\), and \(\lvert s\rvert-1\le\TwoAdicValuation(M)\) give \(AD=I\).  For any nonnegative \(A\) with row-unital right inverse \(D\), a column strictly positive in two distinct rows forces a negative entry of \(D\); the specialization is conditional on that overlap, and the generic theorem does not use encoder row normalization.  No \(DA\) range/kernel/rank/trace/characteristic-polynomial or Cauchy--Binet theorem, geometric closed form, or decoder-optimality result is asserted.  Adding this leaf to the preceding seven-module \(113\)-declaration subtotal gives eight modules and exactly \(123\) declarations. \\
 Exact even moment \(c_n\) & \nolinkurl{moment}, \nolinkurl{momentIntegral} & \nolinkurl{Arithmetic.lean}, \nolinkurl{Basic.lean}, and \nolinkurl{AnalyticMoments.lean} \\
 Normalized half moment \(d_n\) & \nolinkurl{halfMoment}, \nolinkurl{halfMomentIntegral} & \nolinkurl{Arithmetic.lean}, \nolinkurl{Basic.lean}, and \nolinkurl{AnalyticMoments.lean} \\
 Canonical moment numerators \(F_n,G_n\) & \nolinkurl{momentNumerator}, \nolinkurl{halfMomentNumerator} & \nolinkurl{Arithmetic.lean}, \nolinkurl{NormalizedEvenMoments.lean}, and \nolinkurl{NormalizedMoments.lean} \\
@@ -5479,7 +5500,7 @@ Reshetnikov quantity \(R_n\) & \nolinkurl{reshetnikov} & \nolinkurl{Arithmetic.l
 Prime-power Pascal-row valuation & \nolinkurl{primePowerChoose_padicValNat_add}, \nolinkurl{primePowerChoose_padicValNat}, \nolinkurl{primePowerSubOneChoose_padicValNat}, \nolinkurl{primePowerSubTwoChoose_padicValNat}, \nolinkurl{twoPowChoose_padicValNat}, \nolinkurl{twoPowSubTwoChoose_padicValNat} & Exhaustive zero-definition/six-theorem surface of \nolinkurl{PrimePowerBinomialValuation.lean}; the row-\(p^m\) formulas include \(j=p^m\) and \(m=0\), row \(p^m-1\) is a unit row for \(j<p^m\), and the row-\(p^m-2\) formula and its dyadic wrapper assume exactly \(0<j<p^m\) \\
 Generic continuous-CDF and density extraction & \nolinkurl{continuous_cdf_of_nullSingleton}, \nolinkurl{cdf_reflection_sub}, \nolinkurl{measure_eq_withDensity_of_cdf_hasDerivAt} & \nolinkurl{ContinuousCDF.lean} \\
 Affine independent-copy operator and uniqueness & \nolinkurl{affineIndependentCopyLaw}, \nolinkurl{affineIndependentCopyLaw_isProbabilityMeasure}, \nolinkurl{affineIndependentCopyLaw_eq_map_prod}, \nolinkurl{charFun_affineIndependentCopyLaw}, \nolinkurl{charFun_eq_mul_charFun_of_affineIndependentCopy_fixedPoint}, \nolinkurl{charFun_iterate_of_affineIndependentCopy_fixedPoint}, \nolinkurl{eq_of_charFun_affine_recurrence}, \nolinkurl{affineIndependentCopyLaw_fixedPoint_unique}, \nolinkurl{affineIndependentCopy_map_fixedPoint_unique} & \nolinkurl{AffineIndependentCopy.lean}; arbitrary measurable digit space and second-countable Borel real inner-product target, with completeness only for the three uniqueness declarations \\
-Geometric uniform law \(\mu_q\) & \nolinkurl{geometricUniformDistribution}, \nolinkurl{geometricUniformDistribution_selfSimilar}, \nolinkurl{geometricUniformDistribution_support_eq_Icc}, \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar} & \nolinkurl{GeometricUniformLaw.lean} and \nolinkurl{GeometricUniformUniqueness.lean}; the characterization holds for \(\lvert q\rvert<1\) without support, density, or moment assumptions \\
+Geometric uniform law \(\mu_q\) & \nolinkurl{geometricUniformDistribution}, \nolinkurl{geometricUniformDistribution_selfSimilar}, \nolinkurl{integral_id_geometricUniformDistribution_eq_one_half}, \nolinkurl{geometricUniformDistribution_support_eq_Icc}, \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar} & The exhaustive \nolinkurl{GeometricUniformLaw.lean} surface has 24 declarations and gives mean \(1/2\) for every \(\lvert q\rvert<1\), including zero and negative ratios; \nolinkurl{GeometricUniformUniqueness.lean} gives the characterization without support, density, or moment assumptions \\
 Fixed half--quarter multisection & \nolinkurl{evenCoordinates}, \nolinkurl{oddCoordinates}, \nolinkurl{geometricUniformSeries_one_half_multisection}, \nolinkurl{geometricUniformDistribution_one_half_multisection}, \nolinkurl{geometricUniformDistribution_one_half_conv_one_quarter} & \nolinkurl{GeometricUniformMultisection.lean}; fixed normalized two-section only \\
 General geometric-sinc Pochhammer factorization & \nolinkurl{complexQPochhammerInf}, \nolinkurl{summable_norm_sineTerm_qpow_pair}, \nolinkurl{geometricSincProduct_eq_tprod_pair}, \nolinkurl{geometricSincProduct_eq_tprod_complexQPochhammerInf}, \nolinkurl{rvachevFourierProduct_eq_tprod_complexQPochhammerInf}, \nolinkurl{rvachevFourier_eq_tprod_complexQPochhammerInf} & \nolinkurl{RvachevPochhammerFactorization.lean}; one definition and nine theorems, with the three additional symbol-convergence theorems listed in the text above \\
 Outer geometric spectral Pochhammer normal convergence & \nolinkurl{hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf}, \nolinkurl{hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf}, \nolinkurl{hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{GeometricPochhammerNormalConvergence.lean}; the general theorem assumes exactly \(\lVert q\rVert<1\), includes \(q=0\), and the last two are dyadic Rvachev/Fabius specializations; the centered/MGF and outside-disk/pole clauses remain open \\
@@ -5642,11 +5663,11 @@ Module & Role in the development \\
 \nolinkurl{OriginalCharacterization.lean} & Rvachev's original compact-support predicate, derived scale positivity, the forced scale and normalization, and the general fold from bounded Fabius solutions. \\
 \nolinkurl{OriginalUniqueness.lean} & Fourier-refinement uniqueness, the exact kernel of the fold, and the equivalences with fixed candidates or unique bounded Fabius witnesses. \\
 \nolinkurl{WeightedUniformSeries.lean} & Absolutely summable uniform-coordinate series, their canonical pushforward laws, pointwise and law-level head--tail splitting, reflection, and carried-interval results. \\
-\nolinkurl{WeightedUniformDistribution.lean} & Compatibility and naturality API for weighted laws, including scalar transport, affine recursion, sharp absolute continuity from any nonzero real coefficient, and null singletons. \\
+\nolinkurl{WeightedUniformDistribution.lean} & Exact zero-definition/eleven-theorem compatibility API for weighted laws, including the generic half-total-weight barycenter, scalar transport, affine recursion, sharp absolute continuity from any nonzero real coefficient, and null singletons. \\
 \nolinkurl{WeightedUniformSupport.lean} & Support equal to the continuous series range, exact signed-real min/max support intervals, and nonnegative unit-mass specializations. \\
 \nolinkurl{ContinuousCDF.lean} & Generic continuity of atomless probability CDFs, reflection symmetry from measure invariance, and the theorem identifying any everywhere pointwise CDF derivative as the exact Lebesgue density without prior regularity or absolute continuity assumptions. \\
 \nolinkurl{AffineIndependentCopy.lean} & The affine independent-copy convolution operator, its probability and product-map forms, characteristic-function factorization and finite fixed-point iteration, and contractive uniqueness.  The digit space is arbitrary measurable, the target is second-countable Borel real inner-product, and completeness is confined to the three uniqueness declarations; \(\lvert q\rvert<1\) includes zero and negative scales without support, density, or moment hypotheses. \\
-\nolinkurl{GeometricUniformLaw.lean} & Named weights \((1-q)q^n\), their series and probability law, affine self-similarity, reflection, absolute continuity, null singletons, and exact range/support statements. \\
+\nolinkurl{GeometricUniformLaw.lean} & Exhaustive 24-declaration API for the named weights \((1-q)q^n\), their series and probability law, exact mean \(1/2\) for \(\lvert q\rvert<1\) including zero and negative ratios, affine self-similarity, reflection, absolute continuity, null singletons, and exact range/support statements. \\
 \nolinkurl{GeometricUniformMultisection.lean} & Fixed normalized even/odd split of the half-ratio coordinate series into two independent quarter-ratio copies, with pointwise, product-map, and convolution forms. \\
 \nolinkurl{GeometricUniformUniqueness.lean} & Specializes the generic product-map theorem to prove \nolinkurl{eq_geometricUniformDistribution_of_selfSimilar}: every probability solution of the geometric affine head--tail equation is \(\mu_q\) when \(\lvert q\rvert<1\), including \(q=0\) and negative \(q\), with no support, density, or moment assumption. \\
 \nolinkurl{GeometricSincFactorization.lean} & Closed characteristic function of the scaled uniform digit, exact closed-factor and phase-collapsed finite residual formulas for \(\lvert q\rvert<1\), pointwise convergence of the phase-bearing sinc prefixes, and the two dyadic weighted-sum wrappers. \\
@@ -5988,7 +6009,7 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The live current-tree audit scans
-903 modules and 11,437 public declarations, with no missing module headers or
+904 modules and 11,449 public declarations, with no missing module headers or
 declaration comments.  At the retained historical mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
@@ -6001,6 +6022,10 @@ declarations), the two Legendre--Gaunt leaves (twenty-five),
 three half--quarter laws), and the four-declaration
 \nolinkurl{GaussianBinomialAtNegOneDerivative.lean} leaf.  It also adds the
 two-definition/seven-theorem \nolinkurl{LagrangeRvachevSynthesis.lean} leaf,
+the four-definition/six-theorem \nolinkurl{LagrangeRvachevMatrix.lean} leaf,
+the generic and geometric barycenter theorems
+\nolinkurl{integral_id_weightedUniformDistribution} and
+\nolinkurl{integral_id_geometricUniformDistribution_eq_one_half},
 the historical three-theorem surface of
 \nolinkurl{PrimePowerBinomialValuation.lean} (now expanded to six), the
 two-definition/twenty-five-theorem \nolinkurl{LegendreGauntClosedForm.lean}
@@ -6061,7 +6086,7 @@ intermediate census is therefore 672/8,875.  The subsequent
 declarations, giving the historical 675/8,909 checkpoint.  The subsequent
 source union, including the exact 0+7, 4+16, and 0+9 Lambert branch-pairing,
 gap-bijection, and symmetry surfaces, was followed by the exact inverse and
-Jacobi two-square leaves; the live census is 903/11,437, with every module
+Jacobi two-square leaves; the live census is 904/11,449, with every module
 reachable from the facade.  No aggregate facade build is claimed for this
 current-tree census.  The retained PDF and the title-page pin remain historical
 receipts and do not claim parity with the merged source; no PDF was built for

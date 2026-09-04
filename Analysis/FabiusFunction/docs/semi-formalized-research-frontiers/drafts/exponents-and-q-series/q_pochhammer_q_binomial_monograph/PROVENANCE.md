@@ -36,7 +36,7 @@ SHA-256
 `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`;
 exactly three guarded serial passes produced 343, 354, and 354 pages.
 
-The live source now postdates that receipt: it has 14,531 lines and 683,936
+The live source now postdates that receipt: it has 16,437 lines and 817,602
 bytes. No live `SHA256SUMS` file is maintained or should be recreated; the
 retained PDF therefore does not claim render parity with the current TeX. The
 validation record in `README.md` distinguishes compilation, font embedding,
@@ -90,10 +90,10 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-forward status inventory covers 282 labelled results: 90 Exact / 84 Partial /
-100 None / 8 N/A; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3.
+forward status inventory covers 282 labelled results: 171 Exact / 85 Partial /
+18 None / 8 N/A; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3.
 The five-publication concordance
-has 66 Lean-proved, 412 human-proved frontier, 60 not-applicable, and 9
+has 69 Lean-proved, 409 human-proved frontier, 60 not-applicable, and 9
 conjecture rows. The `cor:positivity`, `thm:qbinom-structure`, and
 `prop:gq-positive-palindromic` rows are Exact: both Gaussian structure APIs
 support the structure row, and the fourteen-theorem generic API now gives

@@ -1081,6 +1081,18 @@ scalar corollaries are
 \lean{ProbabilityRepresentation.weightedUniformDistribution_geometric_split}.  These are
 exactly the eleven public declarations in the generic naturality tranche.
 
+The compatibility layer also proves the exact barycenter in every complete Borel real
+normed space.  If \(\sum_n\lVert w_n\rVert<\infty\), then
+\begin{equation}
+ \int_E x\,\Differential\mu_w(x)=\frac12\mathbin{\cdot}\sum_{n=0}^{\infty}w_n.
+ \label{eq:weighted-uniform-barycenter}
+\end{equation}
+This is
+\lean{ProbabilityRepresentation.integral_id_weightedUniformDistribution}.  It uses no
+sign or order on the weights, no coordinatewise independence expansion, and no termwise
+integration hypothesis: bounded-series integrability supplies the integral and central
+reflection gives total weight minus the barycenter equal to the barycenter.
+
 The word ``geometric'' in the final two declaration names denotes only the conditional
 recursion \(w_{n+1}=cw_n\).  The named specialization is supplied separately, rather than
 being hidden in these generic theorems.
@@ -1112,6 +1124,9 @@ The sharp theorem
 only norm summability and \(\exists n,\ w_n\ne0\), and
 \lean{ProbabilityRepresentation.weightedUniformDistribution_nullSingletonClass} packages
 the resulting zero mass of every singleton as Mathlib's \texttt{NullSingletonClass}.
+Together with the six compatibility declarations listed above and the barycenter theorem,
+these are exactly the eleven public theorems, and there are no public definitions, in
+\path{WeightedUniformDistribution.lean}.
 
 The same measure language gives a clean inverse-CDF theorem without differentiating an
 inverse.
@@ -1361,7 +1376,15 @@ Equivalently, \(X_q\overset d=(1-q)U_0+qX_q'\), where \(X_q'\) is an independent
 The head coordinate and the shifted full series have product law.  Coordinate reflection
 gives \(X_q(R\omega)=1-X_q(\omega)\) and
 \(\mu_q\mathbin{\mathrm{map}}(x\mapsto1-x)=\mu_q\), where
-\((R\omega)_n=1-\omega_n\).  For every \(|q|<1\), the law \(\mu_q\) is absolutely continuous
+\((R\omega)_n=1-\omega_n\).  Its barycenter is
+\begin{equation}
+ \int_{\RealNumbers}x\,\Differential\mu_q(x)=\frac12
+ \qquad (|q|<1).                                           \label{eq:geometric-uniform-mean}
+\end{equation}
+This is the specialization
+\lean{ProbabilityRepresentation.integral_id_geometricUniformDistribution_eq_one_half}
+of \eqref{eq:weighted-uniform-barycenter}; it includes \(q=0\) and every negative
+contraction and uses no positivity hypothesis.  For every \(|q|<1\), the law \(\mu_q\) is absolutely continuous
 with respect to Lebesgue measure and has null singletons; no positivity hypothesis on \(q\)
 is needed.  For every \(|q|<1\), the topological support of \(\mu_q\)
 is exactly the range \(X_q(\Omega)\).  When \(0\le q<1\), every weight is nonnegative,
@@ -1528,7 +1551,7 @@ centered-density convolution, or a spectral dissection.
 \end{proof}
 
 \begin{proof}[Formal API crosswalk]
-The twenty-three public declarations in \path{GeometricUniformLaw.lean} are
+The twenty-four public declarations in \path{GeometricUniformLaw.lean} are
 \lean{ProbabilityRepresentation.geometricUniformWeight},
 \lean{ProbabilityRepresentation.geometricUniformWeight_zero},
 \lean{ProbabilityRepresentation.geometricUniformWeight_succ},
@@ -1548,6 +1571,7 @@ The twenty-three public declarations in \path{GeometricUniformLaw.lean} are
 \lean{ProbabilityRepresentation.uniformProduct_map_head_tail_geometricUniformSeries},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_selfSimilar},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_reflection},
+\lean{ProbabilityRepresentation.integral_id_geometricUniformDistribution_eq_one_half},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_Icc},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_compl_Icc},
 \lean{ProbabilityRepresentation.geometricUniformDistribution_support_eq_range}, and
@@ -3817,7 +3841,7 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 903 modules and 11,437 public declarations.  The current TeX also
+census is 904 modules and 11,449 public declarations.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration fixed-depth effective-inverse tranche, the
@@ -6083,6 +6107,47 @@ and the exact finite interpolation loop are proved.  This does not supply the
 geometric-node Gaussian q-binomial/q-Pochhammer or elementary-symmetric
 closed form for decoder entries, a bundled matrix/right-inverse or stochastic
 matrix wrapper, or an optimal or minimum-variation decoder.
+
+The downstream \path{LagrangeRvachevMatrix.lean} module packages precisely this scalar
+loop as typed rectangular matrices.  Its exhaustive four-definition/abbreviation surface is
+\lean{rvachevAtomIndexSet}, \lean{RvachevAtomIndex},
+\lean{lagrangeRvachevEncoderMatrix}, and
+\lean{lagrangeRvachevDecoderMatrix}.  The atom type is the subtype of the exact finite block
+
+\[
+ \{k\in\IntegerNumbers:-2M<k<2M\},
+\]
+
+with the two endpoints excluded.  If rows are indexed by the finite node family and columns
+by this block, then the encoder and decoder entries are
+\[
+ A_{ik}=M^{-1}\RvachevUp(v_i-k/M),\qquad
+ D_{kj}=\operatorname{lagrangeRvachevDecoder}(s,v,M,k,j).
+\]
+The six public theorems are
+\lean{lagrangeRvachevEncoderMatrix_nonneg},
+\lean{sum_lagrangeRvachevEncoderMatrix_row_eq_one},
+\lean{sum_lagrangeRvachevDecoderMatrix_row_eq_one},
+\lean{lagrangeRvachevEncoderMatrix_mul_decoderMatrix},
+\lean{exists_neg_entry_of_rightInverse_of_row_overlap}, and
+\lean{exists_lagrangeRvachevDecoderMatrix_entry_neg_of_row_overlap}.
+
+Encoder nonnegativity requires neither distinct nodes nor a nonzero mesh.  Its row-sum-one
+theorem requires \lean{IsFabius} for the chosen bounded solution, (M\ne0), and only that
+the selected node lie in ([-1,1]).  Decoder row unitality instead requires a nonempty
+distinct node family, but no Fabius or mesh-admissibility hypothesis.  For distinct nodes all
+in ([-1,1]), (M\ne0), and
+(lvert s\rvert-1\leq\TwoAdicValuation(M)), the scalar Kronecker identities give the typed
+right-inverse equation (AD=I).
+
+The generic overlap theorem is deliberately sharper about its algebraic assumptions.  For
+finite matrices, entrywise (A\geq0), row-unital (D), (AD=I), and one column of (A)
+strictly positive in two distinct rows force some entry of (D) to be negative; encoder row
+normalization is not used.  The final theorem applies this implication to the Rvachev
+matrices, conditional on an actual strictly positive overlap.  It does not prove that every
+admissible node family has such an overlap.  This finite layer makes no claim about the
+range, kernel, rank, trace, characteristic polynomial, or Cauchy--Binet data of (DA), and
+supplies neither a geometric Gaussian closed form nor an optimal/minimum-variation decoder.
 
 \clearpage
 At the focused-build checkpoint of 30 August 2026,
@@ -11975,20 +12040,22 @@ supremum norm.  The API also provides the raw
 to zero, and the pointwise corollary at every \(x\in[-1,1]\).  It asserts no
 rate, coefficientwise limit, or uniform convergence outside this interval.
 
-The seven modules \path{RvachevMomentAppell.lean},
+The eight modules \path{RvachevMomentAppell.lean},
 \path{RvachevPolynomialSynthesis.lean},
 \path{RvachevSuperconvergentSynthesis.lean},
 \path{LagrangeRvachevSynthesis.lean},
+\path{LagrangeRvachevMatrix.lean},
 \path{CompositeMeshSharpness.lean},
 \path{FabiusLegendreTranslateBlocks.lean}, and
 \path{FabiusLegendreTranslateSeries.lean} therefore have public
-definition/theorem inventories $6/33$, $0/5$, $1/8$, $2/7$, $1/7$, $6/7$,
-and $5/25$, respectively: exactly $113$ public declarations.  The fifth module proves
+definition/theorem inventories $6/33$, $0/5$, $1/8$, $2/7$, $4/6$, $1/7$, $6/7$,
+and $5/25$, respectively: exactly $123$ public declarations.  The sixth module proves
 least-mesh sharpness only for universal exactness on the complete polynomial
 space through a degree cutoff.  It does not prove minimality for an individual
-Legendre polynomial or a particular partial sum.  The seven modules also do not
-prove a geometric closed form or bundled matrix form for the finite-node
-decoder, decoder optimality, rationality of the atom rows, equality of the fixed-scale and separately
+Legendre polynomial or a particular partial sum.  The eight modules also do not
+prove a geometric closed form for the finite-node decoder, decoder optimality,
+range/kernel/rank/trace/characteristic-polynomial or Cauchy--Binet results for the
+coefficient-space projector, rationality of the atom rows, equality of the fixed-scale and separately
 scaled coefficient vectors, an unconditional
 \(\operatorname{natDegree}(S_N)=2N\) theorem or nonvanishing of the top
 Legendre coefficient, or the later refinement, projector, and asymptotic
@@ -12189,6 +12256,8 @@ That rule explains several choices made above:
       weak-convergence API, not an unformalized continuous box-convolution density.
 \item Arbitrary norm-summable vector weights have formal probability, head--tail,
       reflection, continuous-linear naturality, and operator-affine recursion laws;
+      their exact barycenter in a complete Borel real normed space is one half of the
+      total vector weight, without sign or order hypotheses;
       their laws have topological support exactly the series range, and arbitrary signed real
       weights have exact min/max interval ranges and supports.  A nontrivial norm-summable
       real-weight law is absolutely continuous with respect to Lebesgue measure and has null
@@ -12199,8 +12268,9 @@ That rule explains several choices made above:
       nor completeness.  The generic affine recurrence is conditional on a displayed
       shift relation.  Separately, \path{GeometricUniformLaw.lean} defines the named weights
       \((1-q)q^n\), their series and probability law, and proves self-similarity, reflection,
-      absolute continuity, null singletons, and support equal to the series range under
-      \(|q|<1\), with exact support \([0,1]\) under \(0\le q<1\).
+      exact mean (1/2), absolute continuity, null singletons, and support equal to the
+      series range under \(|q|<1\), including zero and negative contractions, with exact
+      support \([0,1]\) under \(0\le q<1\).
       \path{ContinuousCDF.lean} and \path{GeometricUniformCDF.lean} add the named CDF,
       continuity and reflection for \(|q|<1\), the exterior tails for \(0\le q<1\), and,
       for \(0<q<1\), the conditioning equations, everywhere derivative, explicit

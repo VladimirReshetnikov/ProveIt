@@ -200,14 +200,26 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 170 Exact, 86 Partial, 18 None, and 8 interface rows; the
+status ledger is 171 Exact, 85 Partial, 18 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
-completed pinned-source concordance records 68 Lean-proved rows, 410
+completed pinned-source concordance records 69 Lean-proved rows, 409
 human-proved frontier rows, 60 not-applicable rows, and 9 conjectures.  Its
 immutable source inventory and editorial dispositions remain unchanged; the
 generator's current-status projection now advances the two retained Jacobi
-two-square rows, while the later live-source promotion of the
-Prouhet-partition row remains outside the pinned ledger.
+two-square rows and the partition-symmetry row, while the later live-source
+promotion of the Prouhet-partition row remains outside the pinned ledger.
+The basic geometric-uniform row remains Partial under the strict ledger rule:
+the Lean suite covers the canonical product-space law's absolute convergence,
+the interval and exact support, mean one half, reflection, affine
+self-similarity, the conditioning integral, and both exterior CDF values.
+The generic Banach-valued barycenter is
+`integral_id_weightedUniformDistribution`, and its real geometric
+specialization is
+`integral_id_geometricUniformDistribution_eq_one_half`.  Lean fixes
+`uniformProduct`; it does not add a redundant theorem quantifying over the
+monograph's arbitrary ambient `Omega`, so another realization is covered only
+after identifying its full coordinate joint law with the canonical product
+law.
 The fourteen-theorem `GaussianBinomialPalindromic` API and five-theorem
 `GaussianBinomialPolynomialStructure` API give exact degree,
 monicity, constant and top coefficients, reflection, coefficient

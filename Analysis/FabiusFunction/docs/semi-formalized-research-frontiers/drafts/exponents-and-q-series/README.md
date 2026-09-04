@@ -166,8 +166,8 @@ Current packages and retained intake records:
   integer/complex-order Gaussian, q-Pfaff--Saalschuetz, quantum-multinomial,
   and Gaussian reciprocity/growth APIs, and the three-theorem
   `GeometricPochhammerNormalConvergence.lean` outer-product API. The forward
-  crosswalk is now 170 Exact, 86 Partial, 18 None, and 8 interface rows; the
-  source ledger is 68 Lean-proved, 410 human-proved frontier, 60 not
+  crosswalk is now 171 Exact, 85 Partial, 18 None, and 8 interface rows; the
+  source ledger is 69 Lean-proved, 409 human-proved frontier, 60 not
   applicable, and 9 conjectures. No PDF was generated locally while resolving
   this source-only merge, so the retained 354-page artifact does not render
   the current source. PDF files retained
@@ -862,8 +862,14 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 170 Exact, 86
-Partial, 18 with no counterpart, and 8 interface-only. The original
+The latest validated forward formalization ledger has 282 rows: 171 Exact, 85
+Partial, 18 with no counterpart, and 8 interface-only.  The basic
+geometric-uniform row remains Partial under the strict ledger rule: the Lean
+suite proves the canonical product-law realization, including the generic
+Banach-valued barycenter and its mean-one-half real geometric specialization,
+while the manuscript quantifies an arbitrary ambient probability space.  Such
+a realization is covered only after equality of the full coordinate joint law
+with the canonical product law. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;

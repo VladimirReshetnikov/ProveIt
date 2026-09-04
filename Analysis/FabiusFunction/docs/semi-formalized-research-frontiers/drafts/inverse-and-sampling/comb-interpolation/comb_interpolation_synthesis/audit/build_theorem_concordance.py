@@ -163,12 +163,16 @@ LEAN_PROOFS = {
         "Fabius.sum_Ioo_lagrangeRvachevAtomCoefficient_"
         "mul_shifted_rvachevUp",
     ),
+    "gq:thm:gaussian-Appell-biorthogonality": (
+        "FabiusFunction.LagrangeRvachevMatrix",
+        "Fabius.lagrangeRvachevEncoderMatrix_mul_decoderMatrix",
+    ),
 }
 
-# These declarations verify exact generic scalar ingredients of compound
+# These declarations verify exact generic ingredients of compound
 # manuscript results without upgrading the whole source row to Lean-proved.
-# In particular, the Gaussian closed forms and Matrix-level packaging in the
-# paper are stronger than the declarations named here.
+# In particular, the Gaussian closed forms in the paper can be stronger than
+# the declarations named here even when the finite Matrix layer is complete.
 LEAN_SUPPORT: dict[str, tuple[str, tuple[str, ...], str]] = {
     "thm:weight-valuation": (
         "FabiusFunction.PrimePowerBinomialValuation",
@@ -204,14 +208,16 @@ LEAN_SUPPORT: dict[str, tuple[str, tuple[str, ...], str]] = {
         "is the exact compiled crosswalk recorded in this row.",
     ),
     "gq:thm:gaussian-Appell-biorthogonality": (
-        "FabiusFunction.LagrangeRvachevSynthesis",
+        "FabiusFunction.LagrangeRvachevMatrix",
         (
-            "Fabius.normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node",
-            "Fabius.sum_lagrangeRvachevDecoder_eq_one",
+            "Fabius.lagrangeRvachevEncoderMatrix_nonneg",
+            "Fabius.sum_lagrangeRvachevEncoderMatrix_row_eq_one",
+            "Fabius.sum_lagrangeRvachevDecoderMatrix_row_eq_one",
         ),
-        "Lean proves componentwise node biorthogonality and the unnormalized "
-        "decoder row-sum law; no Matrix wrapper or row-stochastic encoder "
-        "package is formalized.",
+        "The generic typed Matrix theorem proves the exact right inverse, "
+        "and the supporting declarations prove encoder nonnegativity, "
+        "encoder row stochasticity, and decoder row unitality under the "
+        "same finite hypotheses.",
     ),
 }
 
