@@ -47,19 +47,13 @@ theorem prod_complexSinc_prefix_mul_rvachevFourierProduct (k : ℕ) (w : ℂ) :
       (fun h => complexSinc ((Real.pi : ℂ) * w / (2 : ℂ) ^ h)) (k + 1)]
     refine Finset.prod_congr rfl fun j hj => ?_
     have hjk : j ≤ k := Nat.le_of_lt_succ (mem_range.mp hj)
-    congr 1
-    have hpow : (2 : ℂ) ^ (j + 1) / (2 : ℂ) ^ (k + 1) = ((2 : ℂ) ^ (k - j))⁻¹ := by
-      rw [eq_inv_iff_mul_eq_one₀ (pow_ne_zero _ (two_ne_zero (α := ℂ))), div_mul_eq_mul_div,
-        ← pow_add, div_eq_one_iff_eq (pow_ne_zero _ (two_ne_zero (α := ℂ)))]
-      congr 1
-      omega
     have hsub : k + 1 - 1 - j = k - j := by omega
+    congr 1
     rw [hsub]
     field_simp
-    rw [mul_comm ((2 : ℂ) ^ (j + 1)) w, mul_div_assoc, mul_assoc]
-    congr 1
-    rw [div_div, ← hpow]
-    field_simp
+    rw [mul_assoc, ← pow_add]
+    congr 2
+    omega
   rw [hreindex] at hshell
   exact hshell.symm
 
