@@ -116,6 +116,7 @@ theorems), `GaussianBinomialPalindromic` (zero definitions and fourteen
 theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
 theorems), `GaussianBinomialCumulants` (two definitions and twenty-four
 theorems), `GaussianBinomialBounds` (zero definitions and six theorems),
+`HalfQBinomialRootSimplicity` (zero definitions and one theorem),
 `GeometricPochhammerNormalConvergence` (zero definitions and three theorems),
 and `GeometricUniformRealization` (one definition and seventeen theorems).
 The wider inventory also includes
@@ -165,7 +166,7 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 918 modules and 11,568 public declarations, with no
+audit now contains 921 modules and 11,604 public declarations, with no
 documentation gaps. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
@@ -243,8 +244,8 @@ base leaf produced the historical 904/11,457 checkpoint and the exact
 None-to-Partial move; the real bridge produced the historical 905/11,458
 checkpoint, and the complex leaf produced the historical incoming-branch
 906/11,461 checkpoint without another status move. After all merged tranches,
-the live census is 918/11,568, the forward ledger is 176 Exact / 82 Partial /
-16 None / 8 N/A, and the source concordance is 89 Lean-proved / 389
+the live census is 921/11,604, the forward ledger is 177 Exact / 81 Partial /
+16 None / 8 N/A, and the source concordance is 90 Lean-proved / 388
 human-proved frontier / 60 N/A / 9 conjectures.
 The same current semantic-union census includes the facade-reachable
 zero-definition/two-theorem `GaussianBinomialGreaterOneAsymptotics.lean`
@@ -281,6 +282,16 @@ commutative semiring. Composed with
 `cor:geometric-prouhet-affine` Exact under the established rational-polynomial
 convention. Neither a nonzero scale nor distinct transformed nodes are
 required, so `b = 0` and `n = 0` are covered.
+
+The zero-definition, one-theorem `HalfQBinomialRootSimplicity.lean` leaf adds
+`halfQBinomial_sum_rootMultiplicity_two_pow`, proving multiplicity exactly one
+at every displayed dyadic root `2^j`, `j < n`. Composed with
+`halfQBinomial_sum_eq_zero_iff` and
+`gaussianBinomial_half_eq_halfQBinomial`, it makes
+`cor:halfbase-root-locus` Exact under the canonical rational-polynomial and
+rational-root convention. Injective coefficient maps preserve those displayed
+multiplicities, but the leaf does not separately classify every root over
+every scalar extension.
 
 The arbitrary-space realization leaf proves that an `iIndepFun` family of
 unit-interval coordinates, each with the uniform marginal law, has full joint
@@ -356,16 +367,17 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 176 Exact, 82 Partial, 16 None, and 8 interface rows; the
+status ledger is 177 Exact, 81 Partial, 16 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
-completed source concordance records 89 Lean-proved rows, 389 human-proved
+completed source concordance records 90 Lean-proved rows, 388 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.  Its
 immutable source inventory and editorial dispositions remain unchanged; the
 generator's current-status projection records the q-Chu, terminating-reversal,
 q-Pfaff, two retained Jacobi two-square, partition-symmetry,
 Prouhet-partition, arbitrary-space geometric-uniform, and regular-central-sum
 advances, together with the fixed-column rate, greater-than-one,
-scaled-geometric polynomial-exactness, and affine geometric-Prouhet closures.
+scaled-geometric polynomial-exactness, affine geometric-Prouhet, and
+half-base root-simplicity closures.
 The basic geometric-uniform row is Exact under its arbitrary-space wording.
 The generic Banach-valued barycenter is
 `integral_id_weightedUniformDistribution`, and its real geometric

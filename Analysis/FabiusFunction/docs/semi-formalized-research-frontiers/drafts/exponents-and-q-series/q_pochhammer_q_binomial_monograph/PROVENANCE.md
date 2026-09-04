@@ -54,6 +54,7 @@ The current source incorporates exhaustive crosswalks for
 `GaussianBinomialCumulants` (two definitions and twenty-four theorems),
 `GaussianBinomialBounds` (zero definitions and six theorems),
 `FinitePolynomialFunctional` (zero definitions and sixteen theorems),
+`HalfQBinomialRootSimplicity` (zero definitions and one theorem),
 `GeometricPochhammerNormalConvergence` (zero definitions and three theorems),
 `GeometricResidualMoments` (zero definitions and nine theorems),
 and `GeometricUniformRealization` (one definition and seventeen theorems).
@@ -99,7 +100,7 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 918 modules and 11,568 public declarations with no
+live facade audit contains 921 modules and 11,604 public declarations with no
 documentation gaps. Those corpus-wide totals include the q--Chu, Richardson,
 geometric-law barycenter, Lagrange--Rvachev matrix, arbitrary-space geometric
 realization, regular-central-sum, Lambert branch-gap Bernoulli, affine
@@ -212,15 +213,24 @@ extractor across `a + b * node i` over every commutative semiring. Composed
 with `halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne`, it makes
 `cor:geometric-prouhet-affine` Exact under the canonical rational-polynomial
 convention. It assumes neither `b != 0` nor distinct transformed nodes and
-therefore includes `b = 0` and `n = 0`. The current semantic-union census is
-918/11,568.
+therefore includes `b = 0` and `n = 0`. The zero-definition, one-theorem
+`HalfQBinomialRootSimplicity.lean` leaf supplies
+`halfQBinomial_sum_rootMultiplicity_two_pow`. Together with
+`halfQBinomial_sum_eq_zero_iff` and
+`gaussianBinomial_half_eq_halfQBinomial`, it makes
+`cor:halfbase-root-locus` Exact under the canonical rational-polynomial and
+rational-root convention: all rational roots are the displayed `2^j`, and
+each has multiplicity one. Injective scalar extension preserves those
+displayed multiplicities, but the leaf does not package an all-roots
+classification over every extension field. The current semantic-union census
+is 921/11,604.
 Neither these source-only additions nor the preceding Lambert addition changes
 the retained historical artifact, and no render parity is claimed. The
 forward status inventory covers 282 labelled results:
-176 Exact / 82 Partial / 16 None / 8 N/A; the 191-result pre-Fabius core is
+177 Exact / 81 Partial / 16 None / 8 N/A; the 191-result pre-Fabius core is
 36 / 29 / 123 / 3.
 The five-publication concordance
-has 89 Lean-proved, 389 human-proved frontier, 60 not-applicable, and 9
+has 90 Lean-proved, 388 human-proved frontier, 60 not-applicable, and 9
 conjecture rows. Both the retained `thm:fixed-column-limit` source row and the
 older `prop:fixed-k-limit` row redirected to it now inherit the exact canonical
 status. The `cor:positivity`, `thm:qbinom-structure`, and

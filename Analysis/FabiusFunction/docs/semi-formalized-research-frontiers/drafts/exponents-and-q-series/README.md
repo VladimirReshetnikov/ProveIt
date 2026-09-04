@@ -63,7 +63,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 918 facade-reachable modules and 11,568 public declarations, with no
+contains 921 facade-reachable modules and 11,604 public declarations, with no
 missing module headers or declaration documentation.
 
 The sibling source-only `FabiusFunction.GeometricRichardsonGenerating` module
@@ -145,8 +145,8 @@ The base leaf gives the historical 904/11,457 checkpoint and moved the row
 from None to Partial; the real bridge gives the historical 905/11,458
 checkpoint, and the complex leaf gives the historical incoming-branch
 906/11,461 checkpoint without another status move. After all merged tranches,
-the current semantic-union census is 918/11,568 and the q ledger remains
-176/82/16/8 with source projection 89/389/60/9. The facade-reachable
+the current semantic-union census is 921/11,604 and the q ledger is
+177/81/16/8 with source projection 90/388/60/9. The facade-reachable
 zero-definition/two-theorem
 `GaussianBinomialGreaterOneAsymptotics.lean` leaf has the declarations
 `gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
@@ -254,11 +254,12 @@ Current packages and retained intake records:
   `RegularCentralQBinomialSum.lean` (two definitions and one theorem),
   `GeometricUniformMomentPolynomial.lean` (one definition and eight theorems),
   `GaussianBinomialGreaterOneAsymptotics.lean` (zero definitions and two
-  theorems), and `GeometricResidualMoments.lean` (zero definitions and nine
-  theorems). The existing `FinitePolynomialFunctional.lean` module now has
+  theorems), `GeometricResidualMoments.lean` (zero definitions and nine
+  theorems), and `HalfQBinomialRootSimplicity.lean` (zero definitions and one
+  theorem). The existing `FinitePolynomialFunctional.lean` module now has
   zero definitions and sixteen public theorems. The forward crosswalk is now
-  176 Exact, 82 Partial, 16 None, and 8 interface rows; the source ledger is
-  89 Lean-proved, 389 human-proved
+  177 Exact, 81 Partial, 16 None, and 8 interface rows; the source ledger is
+  90 Lean-proved, 388 human-proved
   frontier, 60 not
   applicable, and 9 conjectures. No PDF was generated locally while resolving
   this source-only merge, so the retained 389-page artifact does not render
@@ -601,6 +602,15 @@ with `halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne`, it proves
 `cor:geometric-prouhet-affine` exactly under the established rational-polynomial
 convention. It requires neither a nonzero scale nor distinct transformed
 nodes, so `b = 0` and `n = 0` are included.
+The zero-definition, one-theorem `HalfQBinomialRootSimplicity.lean` leaf proves
+`halfQBinomial_sum_rootMultiplicity_two_pow`. Combined with
+`halfQBinomial_sum_eq_zero_iff` and
+`gaussianBinomial_half_eq_halfQBinomial`, it makes
+`cor:halfbase-root-locus` Exact under the rational-polynomial/rational-root
+convention: the rational roots are precisely `2^j`, `j < n`, and each is
+simple. Injective scalar extension preserves the displayed multiplicities,
+but no public theorem in the leaf classifies all roots over every extension
+field.
 `AnalyticSeriesFilter.lean` carries the core to exact
 diagonal and Gaussian-tail identities for unconditionally summable sampled
 series. Its hypotheses are sharp at zero-weight nodes. The current
@@ -969,7 +979,7 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 176 Exact, 82
+The latest validated forward formalization ledger has 282 rows: 177 Exact, 81
 Partial, 16 with no counterpart, and 8 interface-only. The basic
 geometric-uniform row is Exact: `GeometricUniformRealization.lean` proves that
 an `iIndepFun` process of unit-interval coordinates with uniform marginal laws

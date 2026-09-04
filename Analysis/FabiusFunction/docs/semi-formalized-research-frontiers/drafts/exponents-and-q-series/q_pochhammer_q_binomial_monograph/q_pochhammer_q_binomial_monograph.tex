@@ -8199,6 +8199,21 @@ has the simple roots $1,2,4,\ldots,2^{n-1}$ and no others.
 It is $(z;1/2)_n=\prod_{j=0}^{n-1}(1-z/2^j)$, a degree-$n$ polynomial with exactly the displayed roots.
 \end{proof}
 
+\paragraph{Lean counterpart.}
+Under the canonical rational-polynomial and rational-root convention,
+\texttt{halfQBinomial\_sum\_eq\_zero\_iff} classifies all roots as
+$2^j$ with $j<n$, while
+\texttt{gaussianBinomial\_half\_eq\_halfQBinomial} identifies the displayed
+Gaussian coefficients with that rational polynomial.  The
+zero-definition, one-theorem leaf
+\texttt{HalfQBinomialRootSimplicity.lean} adds
+\texttt{halfQBinomial\_sum\_rootMultiplicity\_two\_pow}, which proves that
+each displayed root has multiplicity exactly one.  Thus
+\Cref{cor:halfbase-root-locus} is exact by composition over $\RationalNumbers$.
+Injective scalar extension preserves these displayed multiplicities, but the
+new leaf does not package a separate classification of every root over every
+extension field.
+
 \section{A compressed geometric Prouhet functional}
 
 Define nodes and weights
@@ -13663,7 +13678,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 176 are \statusexact, 82 are
+Of the 282 labelled forward results, 177 are \statusexact, 81 are
 \statuspartial, 16 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -14278,11 +14293,11 @@ Asymptotic regimes and Bernoulli expansions & 5 & 1 & 2 & 0\\
 Exact limits, reciprocity, and research frontiers & 5 & 0 & 0 & 0\\
 Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 8 & 1 & 0 & 0\\
-Half-base arithmetic and Prouhet--Thue--Morse cancellation & 8 & 1 & 0 & 0\\
+Half-base arithmetic and Prouhet--Thue--Morse cancellation & 9 & 0 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 3 & 10 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 8 & 46 & 2 & 0\\
 \midrule
-\textbf{Forward total} & 176 & 82 & 16 & 8\\
+\textbf{Forward total} & 177 & 81 & 16 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -15687,7 +15702,16 @@ $0\le[m-1,n]_q\le1/(q;q)_n$; the exponent is written $n(n+1)/2$}\\[2pt]
 \midrule
 \Cref{thm:halfbase-normalization} & \statusexact & \texttt{halfQPochhammer\_\allowbreak{}eq\_\allowbreak{}mersenne\_\allowbreak{}div}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
 \Cref{thm:dyadic-product-evaluation} & \statusexact & \texttt{qPochhammer\_\allowbreak{}two\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}ite}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
-\Cref{cor:halfbase-root-locus} & \statuspartial & \texttt{halfQBinomial\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
+\Cref{cor:halfbase-root-locus} & \statusexact &
+\texttt{halfQBinomial\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}iff},
+\texttt{gaussianBinomial\_\allowbreak{}half\_\allowbreak{}eq\_\allowbreak{}halfQBinomial},
+\texttt{halfQBinomial\_\allowbreak{}sum\_\allowbreak{}rootMultiplicity\_\allowbreak{}two\_\allowbreak{}pow}\newline
+{\footnotesize\texttt{HalfQBinomial};
+\texttt{HalfQBinomialRootSimplicity}; exact by composition in
+$\RationalNumbers[X]$: all rational roots are the displayed dyadic powers and
+each has multiplicity one.  Injective scalar extension preserves those
+multiplicities, but no separate all-roots classifier over every extension
+field is claimed}\[2pt]
 \Cref{thm:geometric-prouhet} & \statusexact & \texttt{halfQBinomial\_\allowbreak{}negativeDyadic\_\allowbreak{}polynomial\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}mersenne}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
 \Cref{cor:geometric-prouhet-affine} & \statusexact &
 \texttt{sum\_\allowbreak{}weight\_\allowbreak{}mul\_\allowbreak{}eval\_\allowbreak{}affine\_\allowbreak{}of\_\allowbreak{}topCoeff\_\allowbreak{}extractor},

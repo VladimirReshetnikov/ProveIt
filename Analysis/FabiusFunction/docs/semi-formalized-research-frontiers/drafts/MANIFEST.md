@@ -21,8 +21,8 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 918
-source modules and 11,568 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 921
+source modules and 11,604 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -181,7 +181,7 @@ compose to make `cor:scaled-geometric-moments` Exact over a field under finite
 power-node injectivity. The polynomial theorem allows arbitrary scale,
 including zero, so it subsumes the manuscript's nonzero-scale hypothesis. The
 forward status ledger covers 282 labelled results:
-176 Exact / 82 Partial / 16 None / 8 N/A interface rows. The new
+177 Exact / 81 Partial / 16 None / 8 N/A interface rows. The new
 `sum_weight_mul_eval_affine_of_topCoeff_extractor` theorem in the existing
 zero-definition/sixteen-theorem `FinitePolynomialFunctional.lean` module,
 composed with
@@ -189,7 +189,14 @@ composed with
 `cor:geometric-prouhet-affine` Exact under the established rational-polynomial
 half-base convention. The generic transport works over every commutative
 semiring, needs neither `b != 0` nor distinct nodes, and includes `b = 0` and
-`n = 0`; it does not generalize the half-base extractor's coefficient ring. The
+`n = 0`; it does not generalize the half-base extractor's coefficient ring.
+The zero-definition, one-theorem `HalfQBinomialRootSimplicity.lean` leaf adds
+`halfQBinomial_sum_rootMultiplicity_two_pow`; together with the existing
+rational zero classifier and Gaussian/half-q coefficient identification, it
+makes `cor:halfbase-root-locus` Exact under the rational-polynomial and
+rational-root convention. Injective scalar extension preserves the displayed
+multiplicities, but the leaf does not classify all roots over every extension
+field. The
 terminating-basic-hypergeometric closure is `TwoPhiOneReversal.lean` (2+12)
 and `QChuVandermonde.lean` (0+10): both q-Chu evaluations and the reversal
 lemma are Exact for the actual tsum, while the claimed full-domain derivation
@@ -477,9 +484,12 @@ zero-definition/two-theorem greater-than-one leaf makes `cor:qgreaterone`
 Exact, and the scaled-geometric polynomial theorem completes
 `cor:scaled-geometric-moments`. The subsequent affine transport theorem in
 `FinitePolynomialFunctional.lean` makes `cor:geometric-prouhet-affine` Exact
-by composition with the rational half-base extractor. The live census is
-918/11,568, the q forward totals are 176 Exact / 82 Partial / 16 None / 8 N/A,
-and the source concordance is 89 Lean-proved / 389 human-proved frontier /
+by composition with the rational half-base extractor. The subsequent
+`HalfQBinomialRootSimplicity.lean` theorem completes
+`cor:halfbase-root-locus` over the canonical rational polynomial, with the
+scalar-extension boundary recorded in the q package. The live census is
+921/11,604, the q forward totals are 177 Exact / 81 Partial / 16 None / 8 N/A,
+and the source concordance is 90 Lean-proved / 388 human-proved frontier /
 60 N/A / 9 conjectures. The intermediate 915/11,556 Bridge census remains a
 historical checkpoint. The
 retained 389-page q-series PDF is a
