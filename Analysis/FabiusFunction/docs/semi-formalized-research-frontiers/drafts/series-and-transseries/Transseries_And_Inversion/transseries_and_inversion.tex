@@ -9,6 +9,28 @@
 \usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+% ---------------------------------------------------------------------
+%  Lean crosswalk apparatus.
+%
+%  \lean{...} names a Lean declaration or module.  It is \detokenize'd inside
+%  math and \nolinkurl'd outside, so it is safe in BOTH modes and needs no
+%  escaping of underscores.  Prefer it to \path for declaration names: \path is
+%  verbatim-like and is fatal inside math mode ("Command $ invalid in math
+%  mode").  Existing \path{...} rows in this file are all outside math and are
+%  left alone.
+%
+%  Lean names carry Unicode subscripts (eval-sub-2, and so on).  Inside \lean
+%  and \path they are verbatim, but a \texttt row typesets them normally and
+%  inputenc then refuses an undeclared character, so declare them here.
+% ---------------------------------------------------------------------
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
+\DeclareUnicodeCharacter{2080}{\ensuremath{_0}}
+\DeclareUnicodeCharacter{2081}{\ensuremath{_1}}
+\DeclareUnicodeCharacter{2082}{\ensuremath{_2}}
+\DeclareUnicodeCharacter{2083}{\ensuremath{_3}}
+\DeclareUnicodeCharacter{2084}{\ensuremath{_4}}
+\DeclareUnicodeCharacter{2099}{\ensuremath{_n}}
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
@@ -38646,8 +38668,25 @@ and $g$ is \path{Fabius.lambertShiftInv}; the three identities of
 \path{Fabius.lambertShiftInv_eq_mul_exp} and
 \path{Fabius.principalLambertW_lambertShiftInv}, and $g$ is the two-sided
 inverse of $f$ by \path{Fabius.lambertShiftInv_lambertShift} together with
-\path{Fabius.lambertShift_eq_iff}.  This chapter is the only place in the present
-volume with formal counterparts --- this theorem, the numerator recursion of
+\path{Fabius.lambertShift_eq_iff}.
+
+The differential layer is formal as well.  \(g\) is strictly increasing and
+continuous on the open half-line (\lean{Fabius.lambertShiftInv_strictMonoOn},
+\lean{Fabius.lambertShiftInv_continuousAt}, the latter read off the exact image
+\lean{Fabius.lambertShiftInv_image_Ioi}), so the inverse-function rule applies:
+\lean{Fabius.lambertShiftInv_hasDerivAt} differentiates \(g\) at every \(z>0\), and
+\lean{Fabius.deriv_lambertShiftInv_bounds} is the strict bracket \(1/2<g'(z)<1\), both
+inequalities strict because \(0<\LambertW'<1\) once \(\LambertW>0\)
+(\lean{Fabius.inv_exp_mul_add_one_lt_one}).  From the strict growth of \(g'\)
+(\lean{Fabius.deriv_lambertShiftInv_strictMonoOn}) it follows that \(g\) is strictly
+convex there, \lean{Fabius.strictConvexOn_lambertShiftInv}.  The endpoint value
+\(g'(0)=1/2\), a one-sided derivative, is not formalized, and neither is the concavity
+of \(f\) as such --- what the corpus carries is the strict concavity of the branch
+itself, \lean{Fabius.strictConcaveOn_principalLambertW}, proved from
+\(\LambertW''<0\).
+
+This chapter is the only place in the present volume with formal counterparts ---
+this theorem and its differential layer, the numerator recursion of
 \cref{q1:prop:recursion}, and the general bracket of \cref{q1:rem:two-sided} ---
 and they are recorded because the corpus keeps a register of what is proved
 and what is merely written down.
