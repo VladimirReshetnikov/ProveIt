@@ -113,9 +113,10 @@ theorems), `QBinomialTheoremInfinite` (one definition and twenty-two
 theorems), `GaussianBinomialPalindromic` (zero definitions and fourteen
 theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
 theorems), `GaussianBinomialCumulants` (two definitions and twenty-four
-theorems), `GaussianBinomialBounds` (zero definitions and six theorems), and
-`GeometricPochhammerNormalConvergence` (zero
-definitions and three theorems). The wider inventory also includes
+theorems), `GaussianBinomialBounds` (zero definitions and six theorems),
+`GeometricPochhammerNormalConvergence` (zero definitions and three theorems),
+and `GeometricUniformRealization` (one definition and seventeen theorems).
+The wider inventory also includes
 `QMultinomial` (one definition and nine theorems),
 `QuantumMultinomial` (zero definitions and five theorems),
 `QPochhammerInfiniteBounds` (zero definitions and five theorems),
@@ -128,7 +129,8 @@ add `QExponential` (three definitions and eight theorems), `JacksonIntegral`
 and six theorems), `QPochhammerLogDerivative` (zero definitions and ten
 theorems), `QPochhammerOrderDerivative` (zero definitions and three theorems),
 `JacobiCubic` (zero definitions and two theorems),
-`CentralQBinomialReduction` (zero definitions and six theorems), and
+`CentralQBinomialReduction` (zero definitions and six theorems),
+`RegularCentralQBinomialSum` (two definitions and one theorem), and
 `CyclotomicFactorization` (zero definitions and seven theorems). The newest
 cyclotomic surfaces are `CyclotomicDivisibility` (zero definitions and three
 theorems), `PrimitiveRootBlock` (zero definitions and three theorems),
@@ -183,6 +185,27 @@ radius and adds no higher/full Puiseux or logarithmic expansion. This sibling
 promotion changes none of the forward-status or concordance totals below, and
 the retained historical PDF does not render it.
 
+The arbitrary-space realization leaf proves that an `iIndepFun` family of
+unit-interval coordinates, each with the uniform marginal law, has full joint
+law `uniformProduct`. It transfers the canonical geometric series law to the
+actual pointwise series on any measurable probability space, including
+absolute convergence, the interval and exact support, mean one half,
+reflection, the conditioning/CDF equations, and the two exterior CDF values.
+Its affine fixed-point theorem uses a fresh random variable with the canonical
+geometric law that is independent of the head coordinate; this is the precise
+independent-copy premise used by the manuscript's head--tail argument.
+
+The regular-central leaf defines `qNumberC` and
+`regularCentralQBinomialTerm` and proves
+`hasSum_regularCentralQBinomial` for `0 < q < 1`. Its sole parameter premise,
+`qPochhammerInfIn ((q : ℂ) ^ (alpha + 1)) ((q : ℂ) ^ 2) ≠ 0`, is exactly
+nonvanishing of every generalized-q-number denominator, equivalently
+`alpha ≠ -1 - 2*j + 2*pi*I*m/log q` for every natural `j` and integer `m`.
+For real `alpha` this excludes precisely the negative odd integers. Even
+negative integral parameters are admitted: field-totalized `qGammaC` makes
+the displayed quotient zero there, matching the product side, without
+asserting holomorphy at a pole.
+
 The latest `ThueMorseSparseProuhet` partition tranche adds no definitions and
 three theorems to that module's prior twelve-theorem surface, for a current
 zero-definition/fifteen-theorem total.  The new declarations are
@@ -215,27 +238,23 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 170 Exact, 86 Partial, 18 None, and 8 interface rows; the
+status ledger is 172 Exact, 85 Partial, 17 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
-completed source concordance records 81 Lean-proved rows, 397 human-proved
+completed source concordance records 84 Lean-proved rows, 394 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.  Its
 immutable source inventory and editorial dispositions remain unchanged; the
 generator's current-status projection records the q-Chu, terminating-reversal,
-q-Pfaff, two retained Jacobi two-square, and partition-symmetry advances, while
-the later live-source promotion of the Prouhet-partition row remains outside
-the pinned ledger.
-The basic geometric-uniform row remains Partial under the strict ledger rule:
-the Lean suite covers the canonical product-space law's absolute convergence,
-the interval and exact support, mean one half, reflection, affine
-self-similarity, the conditioning integral, and both exterior CDF values.
+q-Pfaff, two retained Jacobi two-square, partition-symmetry,
+Prouhet-partition, arbitrary-space geometric-uniform, and regular-central-sum
+advances.
+The basic geometric-uniform row is Exact under its arbitrary-space wording.
 The generic Banach-valued barycenter is
 `integral_id_weightedUniformDistribution`, and its real geometric
-specialization is
-`integral_id_geometricUniformDistribution_eq_one_half`.  Lean fixes
-`uniformProduct`; it does not add a redundant theorem quantifying over the
-monograph's arbitrary ambient `Omega`, so another realization is covered only
-after identifying its full coordinate joint law with the canonical product
-law.
+specialization is `integral_id_geometricUniformDistribution_eq_one_half`.
+`uniformProcess_hasLaw_uniformProduct` supplies the full-coordinate law
+identification for arbitrary `Omega`, and the realization theorem suite proves
+every displayed clause with the marginal-law, `iIndepFun`, and
+fresh-head-independent-copy hypotheses stated above.
 The fourteen-theorem `GaussianBinomialPalindromic` API and five-theorem
 `GaussianBinomialPolynomialStructure` API give exact degree,
 monicity, constant and top coefficients, reflection, coefficient

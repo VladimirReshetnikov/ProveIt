@@ -6603,6 +6603,32 @@ Finally insert
 In the quotient on the right of \eqref{eq:regular-central-sum}, all powers of $1-q^2$ cancel, and the remaining products are exactly \eqref{eq:regular-central-product2}.
 \end{proof}
 
+\emph{Lean status.}  Exact in
+\path{RegularCentralQBinomialSum.lean}.  The definitions
+\path{Fabius.qNumberC} and \path{Fabius.regularCentralQBinomialTerm} use the
+same principal complex power (q^z=\exp(z\log q)), and
+\path{Fabius.hasSum_regularCentralQBinomial} proves the displayed infinite
+sum for (0<q<1).  Its single parameter premise is exactly
+\[
+ \path{qPochhammerInfIn ((q : C) ^ (alpha + 1)) ((q : C) ^ 2) != 0}.
+\]
+By \path{Fabius.qPochhammerInfIn_eq_zero_iff}, this says simultaneously that
+every displayed generalized (q)-number denominator is nonzero: the excluded
+complex lattice is
+\[
+ \alpha=-1-2j+\frac{2\pi i m}{\log q},
+ \qquad j\in\NaturalNumbers,\quad m\in\IntegerNumbers.
+\]
+For real (alpha) this is precisely the negative odd integers stated above;
+there is no additional real-part hypothesis.  The proof uses
+\path{CentralQBinomialReduction.lean}, the full-domain (q)-Gauss theorem in
+\path{QGaussFullDomain.lean}, and the product definition of
+\path{Fabius.qGammaC}.  Lean's field operations totalize division by zero, so
+at the admitted even negative integral parameters the pole value of
+\path{qGammaC} in the denominator is represented by zero and the displayed
+outer quotient is zero, agreeing with the product side.  This pointwise
+totalization is not a claim that (q)-gamma is holomorphic at a pole.
+
 \begin{corollary}[Classical limit of the regular sum]\label{cor:regular-central-classical}
 For $\alpha\notin\{-1,-3,-5,\ldots\}$,
 \[
@@ -6629,7 +6655,13 @@ Gauss's classical summation gives
 \]
 Since $\Gamma((\alpha+3)/2)=((\alpha+1)/2)\Gamma((\alpha+1)/2)$ and $\Gamma(1/2)/2=\Gamma(3/2)$, this is \eqref{eq:regular-central-classical}.  The same identity is also the $q\to1^-$ limit of \Cref{thm:regular-central-sum} by the $q$-gamma limit in \Cref{thm:qgamma-classical-limit}.
 \end{proof}
-\emph{Lean status.}  Not formalized; neither route exists in the corpus --- Gauss's classical \({}_2F_1\) summation at \(z=1\) is absent (\path{ClassicalHypergeometricLimit.lean} carries only the \(q\to1\) degeneration of \({}_r\phi_{r-1}\) to \({}_rF_{r-1}\), and its nonterminating case is confined to \(\lVert z\rVert<1\)), and the \(q\to1^-\) passage from \Cref{thm:regular-central-sum} is unavailable because that theorem is itself unformalized.
+\emph{Lean status.}  Not formalized.  Although
+\Cref{thm:regular-central-sum} is now exact, the corpus still has neither
+Gauss's classical \({}_2F_1\) summation at (z=1) nor the required
+(q\to1^-) limit of its (q)-gamma quotient.  In particular,
+\path{ClassicalHypergeometricLimit.lean} carries only the (q\to1)
+degeneration of \({}_r\phi_{r-1}\) to \({}_rF_{r-1}\), with its
+nonterminating case confined to \(\lVert z\rVert<1\).
 
 
 \section{Deleting a singular term}
@@ -8392,24 +8424,32 @@ has the same distribution as $X_q$.  Splitting off the first term and reindexing
 and integration over $u\in[0,1]$ proves \eqref{eq:geometric-uniform-cdf-equation}.
 \end{proof}
 
-\emph{Lean status.}  Exact under the canonical-law convention used in this
-chapter.  Lean realizes the coordinates on its fixed product probability space
-\path{uniformProduct}: absolute convergence is
-\path{summable_weightedUniformSeries_terms} applied with
-\path{summable_norm_geometricUniformWeight}, the interval and exact-support
-claims are \path{geometricUniformSeries_mem_Icc} and
-\path{geometricUniformDistribution_support_eq_Icc}, the mean is
-\path{integral_id_geometricUniformDistribution_eq_one_half}, reflection and the
-independent-copy law are \path{geometricUniformDistribution_reflection} and
-\path{geometricUniformDistribution_selfSimilar}, and the CDF clauses are
-\path{geometricUniformCDF_eq_integral},
-\path{geometricUniformCDF_zero_of_nonpos}, and
-\path{geometricUniformCDF_one_of_one_le}.  The mean theorem is the real
-specialization of the generic Banach-valued barycenter theorem
-\path{integral_id_weightedUniformDistribution}.  There is no separate Lean
-wrapper quantifying over the arbitrary ambient \(\Omega\) introduced above;
-for another realization, this crosswalk applies after identifying its full
-coordinate joint law with the canonical product law.
+\emph{Lean status.}  Exact, including the arbitrary ambient probability space
+quantified above.  In \path{GeometricUniformRealization.lean}, let
+\path{U : Nat -> Omega -> Set.Icc 0 1}; assume each \path{U n} has the
+unit-interval volume law under (P), and assume \path{iIndepFun U P}.
+Then \path{uniformProcess_hasLaw_uniformProduct}, via
+\path{iIndepFun.hasLaw_infinitePi}, identifies the full coordinate process
+with the canonical product law, and
+\path{geometricUniformRealization_hasLaw} transfers the complete canonical
+suite.  Pointwise absolute convergence and bounds are
+\path{summable_norm_geometricUniformRealization_terms} and
+\path{geometricUniformRealization_mem_Icc}; exact support and mean are
+\path{map_geometricUniformRealization_support_eq_Icc} and
+\path{integral_geometricUniformRealization_eq_one_half}; reflection is
+\path{geometricUniformRealization_identDistrib_one_sub}; and the conditioning
+equation and exterior CDF values are
+\path{measureReal_geometricUniformRealization_le_eq_integral},
+\path{measureReal_geometricUniformRealization_le_eq_zero_of_nonpos}, and
+\path{measureReal_geometricUniformRealization_le_eq_one_of_one_le}.
+Finally, \path{geometricUniformRealization_identDistrib_affine} proves the
+fixed-point clause for a fresh random variable with the canonical
+geometric-uniform law that is independent of the head coordinate
+\path{U 0}; this is the precise independent-copy premise used by the printed
+head--tail proof.  The generic Banach-valued barycenter theorem remains
+\path{integral_id_weightedUniformDistribution}, with canonical real
+specialization
+\path{integral_id_geometricUniformDistribution_eq_one_half}.
 
 \section{Fourier product and cumulants}
 
@@ -13564,8 +13604,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 170 are \statusexact, 86 are
-\statuspartial, 18 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 172 are \statusexact, 85 are
+\statuspartial, 17 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 35 \statusexact, 30 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -13647,6 +13687,7 @@ compatibility spelling of the primary identity;\\
 \path{QMultinomial.lean}: one definition and nine theorems;\\
 \path{QuantumMultinomial.lean}: zero definitions and five theorems;\\
 \path{CentralQBinomialReduction.lean}: zero definitions and six theorems;\\
+\path{RegularCentralQBinomialSum.lean}: two definitions and one theorem;\\
 \path{SymmetricFunctionOrthogonality.lean}: one definition and six theorems;\\
 \path{CompleteHomogeneousGenerating.lean}: one definition and six theorems;\\
 \path{CompleteHomogeneousAsymptotics.lean}: one theorem;\\
@@ -13669,6 +13710,8 @@ compatibility spelling of the primary identity;\\
 \path{QPochhammerEntire.lean}: zero definitions and five legacy compatibility
 theorems;\\
 \path{GeometricPochhammerNormalConvergence.lean}: zero definitions and three
+theorems;\\
+\path{GeometricUniformRealization.lean}: one definition and seventeen
 theorems;\\
 \path{QBinomialTheoremInfinite.lean}: one definition and 22 theorems; its
 use of \path{Fabius.finiteQPochhammerIn_zero_left} imports the unique
@@ -14151,16 +14194,16 @@ Bailey pairs and the Rogers--Ramanujan identities & 6 & 1 & 0 & 0\\
 Bailey transforms and the Andrews--Gordon identities & 5 & 3 & 0 & 1\\
 Cyclotomic factorization and congruences & 9 & 0 & 0 & 0\\
 Negative upper indices and geometric Newton interpolation & 9 & 0 & 0 & 0\\
-Central $q$-binomial sums and Lambert series & 2 & 0 & 5 & 0\\
+Central $q$-binomial sums and Lambert series & 3 & 0 & 4 & 0\\
 Asymptotic regimes and Bernoulli expansions & 3 & 3 & 2 & 0\\
 Exact limits, reciprocity, and research frontiers & 5 & 0 & 0 & 0\\
 Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 7 & 2 & 0 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 7 & 2 & 0 & 0\\
-Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
+Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 3 & 10 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 8 & 45 & 3 & 0\\
 \midrule
-\textbf{Forward total} & 170 & 86 & 18 & 8\\
+\textbf{Forward total} & 172 & 85 & 17 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -15371,7 +15414,18 @@ field with nonvanishing denominators, from the division-free form
 $[2k,k]_{q^2}(q^2;q^2)_k=(q;q^2)_k(-q;q)_{2k}$ valid in every commutative
 ring (proved in $\IntegerNumbers[X]$ by cancellation and transported by
 naturality)}\\[2pt]
-\Cref{thm:regular-central-sum} & \statusnone & ---\\[2pt]
+\Cref{thm:regular-central-sum} & \statusexact &
+\texttt{qNumberC},
+\texttt{regularCentralQBinomialTerm},
+\texttt{hasSum\_\allowbreak{}regularCentralQBinomial}\newline
+{\footnotesize\texttt{RegularCentralQBinomialSum}; for (0<q<1), under exactly
+\texttt{qPochhammerInfIn ((q : C)\string^ (alpha + 1))
+((q : C)\string^2) != 0}.  The exact factor-zero theorem identifies this with
+nonvanishing of every generalized-(q)-number denominator, equivalently
+(alpha\ne-1-2j+2\pi i m/\log q) for all (j\ge0),
+(m\in\IntegerNumbers).  At admitted even negative integral parameters the
+totalized \texttt{qGammaC} pole value makes the quotient zero, matching the
+product side; no holomorphy at the pole is asserted.}\\[2pt]
 \Cref{cor:regular-central-classical} & \statusnone & ---\\[2pt]
 \Cref{thm:singular-central} & \statusnone & ---\\[2pt]
 \Cref{thm:central-components} & \statusnone & ---\\[2pt]
@@ -15548,27 +15602,28 @@ affine partition, and raw partition over every commutative ring}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions}\\
 \midrule
-\Cref{thm:geometric-uniform-basic} & \statuspartial &
-\texttt{summable\_\allowbreak{}weightedUniformSeries\_\allowbreak{}terms},
-\texttt{geometricUniformSeries\_\allowbreak{}mem\_\allowbreak{}Icc},
-\texttt{geometricUniformDistribution\_\allowbreak{}support\_\allowbreak{}eq\_\allowbreak{}Icc},
-\texttt{integral\_\allowbreak{}id\_\allowbreak{}geometricUniformDistribution\_\allowbreak{}eq\_\allowbreak{}one\_\allowbreak{}half},
-\texttt{geometricUniformDistribution\_\allowbreak{}reflection},
-\texttt{geometricUniformDistribution\_\allowbreak{}selfSimilar},
-\texttt{geometricUniformCDF\_\allowbreak{}eq\_\allowbreak{}integral},
-\texttt{geometricUniformCDF\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}nonpos},
-\texttt{geometricUniformCDF\_\allowbreak{}one\_\allowbreak{}of\_\allowbreak{}one\_\allowbreak{}le}\newline
-{\footnotesize\texttt{WeightedUniformSeries}; \texttt{GeometricUniformLaw};
-\texttt{GeometricUniformCDF}; the full displayed suite is exact for the
-canonical product-space law under the theorem's \(0<q<1\) hypotheses.  The
-row remains partial because the manuscript quantifies an arbitrary ambient
-probability space.  The mean specializes the generic
-Banach-valued theorem
-\texttt{integral\_\allowbreak{}id\_\allowbreak{}weightedUniformDistribution} in
-\texttt{WeightedUniformDistribution}.  Lean fixes \texttt{uniformProduct}
-and does not expose a redundant arbitrary-\(\Omega\) wrapper; another
-realization is covered after equality of its full coordinate joint law with
-the canonical product law.}\\[2pt]
+\Cref{thm:geometric-uniform-basic} & \statusexact &
+\texttt{uniformProcess\_\allowbreak{}hasLaw\_\allowbreak{}uniformProduct},
+\texttt{geometricUniformRealization\_\allowbreak{}hasLaw},
+\texttt{summable\_\allowbreak{}norm\_\allowbreak{}geometricUniformRealization\_\allowbreak{}terms},
+\texttt{geometricUniformRealization\_\allowbreak{}mem\_\allowbreak{}Icc},
+\texttt{map\_\allowbreak{}geometricUniformRealization\_\allowbreak{}support\_\allowbreak{}eq\_\allowbreak{}Icc},
+\texttt{integral\_\allowbreak{}geometricUniformRealization\_\allowbreak{}eq\_\allowbreak{}one\_\allowbreak{}half},
+\texttt{geometricUniformRealization\_\allowbreak{}identDistrib\_\allowbreak{}one\_\allowbreak{}sub},
+\texttt{geometricUniformRealization\_\allowbreak{}identDistrib\_\allowbreak{}affine},
+\texttt{measureReal\_\allowbreak{}geometricUniformRealization\_\allowbreak{}le\_\allowbreak{}eq\_\allowbreak{}integral},
+\texttt{measureReal\_\allowbreak{}geometricUniformRealization\_\allowbreak{}le\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}nonpos},
+\texttt{measureReal\_\allowbreak{}geometricUniformRealization\_\allowbreak{}le\_\allowbreak{}eq\_\allowbreak{}one\_\allowbreak{}of\_\allowbreak{}one\_\allowbreak{}le}\newline
+{\footnotesize\texttt{GeometricUniformRealization}; on an arbitrary measurable
+space, each coordinate has the unit-interval volume law and the coordinate
+family is \texttt{iIndepFun}.  The joint-law theorem transfers the canonical
+suite and the source separately proves pointwise absolute convergence and
+bounds.  The fixed-point theorem uses a fresh copy with the canonical
+geometric-uniform law that is independent of the head coordinate, precisely
+the independence required by the displayed head--tail identity.  The mean
+ultimately specializes
+\texttt{integral\_\allowbreak{}id\_\allowbreak{}weightedUniformDistribution}
+from \texttt{WeightedUniformDistribution}.}\\[2pt]
 \Cref{thm:geometric-uniform-characteristic} & \statuspartial &
 \texttt{charFun\_\allowbreak{}geometricUniformDistribution\_\allowbreak{}eq\_\allowbreak{}phase\_\allowbreak{}mul\_\allowbreak{}geometricSincProduct},
 \texttt{charFun\_\allowbreak{}geometricUniformDistribution\_\allowbreak{}eq\_\allowbreak{}phase\_\allowbreak{}mul\_\allowbreak{}geometricReciprocalGamma},

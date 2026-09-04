@@ -89,10 +89,12 @@ definition, seven theorems), `QExponential.lean` (three definitions, eight
 theorems), and `ThetaQuasiPeriodicity.lean` (one definition, six theorems).
 The subsequent tail adds `QPochhammerLogDerivative.lean` (10 theorems),
 `QPochhammerOrderDerivative.lean` (three theorems), `JacobiCubic.lean` (two
-theorems), `CentralQBinomialReduction.lean` (six theorems), and
-`CyclotomicFactorization.lean` (seven theorems); the final two modules make the
-central-reduction and cyclotomic-factorization rows Exact at their audited
-commutative-ring, field, and integral-domain boundaries.
+theorems), `CentralQBinomialReduction.lean` (six theorems),
+`RegularCentralQBinomialSum.lean` (two definitions and one theorem), and
+`CyclotomicFactorization.lean` (seven theorems); these three modules make the
+central-reduction, regular-central-sum, and cyclotomic-factorization rows Exact
+at their audited commutative-ring, field, analytic, and integral-domain
+boundaries.
 The root-of-unity tail adds `CyclotomicDivisibility.lean` (three theorems),
 `PrimitiveRootBlock.lean` (three theorems), `QCatalan.lean` (one definition
 and eleven theorems), and `QLucas.lean` (seven theorems), for one definition
@@ -149,8 +151,16 @@ theorems. The source also adds the zero-definition, three-theorem
 product's locally uniform convergence is exact for every complex strict
 contraction, including `q = 0`, with dyadic Rvachev and bounded-Fabius Fourier
 specializations. The compound centered/MGF and exterior reciprocal/pole
-theorem remains Partial. The forward status ledger covers 282 labelled
-results: 170 Exact / 86 Partial / 18 None / 8 N/A interface rows. The
+theorem remains Partial. The one-definition/seventeen-theorem
+`GeometricUniformRealization.lean` leaf identifies any `iIndepFun` uniform
+coordinate process on an arbitrary probability space with the canonical
+product law and transfers pointwise convergence, bounds, support, mean,
+reflection, and CDF clauses; its affine identity uses a fresh canonical-law
+copy independent of the head coordinate. The regular-central leaf proves the
+displayed sum under the exact infinite-product denominator condition, with the
+full complex zero lattice and field-totalized `qGammaC` pole behavior kept
+explicit. The forward status ledger covers 282 labelled results:
+172 Exact / 85 Partial / 17 None / 8 N/A interface rows. The
 terminating-basic-hypergeometric closure is `TwoPhiOneReversal.lean` (2+12)
 and `QChuVandermonde.lean` (0+10): both q-Chu evaluations and the reversal
 lemma are Exact for the actual tsum, while the claimed full-domain derivation
