@@ -324,18 +324,19 @@ and fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
 `ThueMorseNewmanSelfSimilarity.lean`. This gives the historical 934/11,709
-checkpoint. The local branch's subsequent transseries-algebra integration gives the
-historical 943/11,791 checkpoint. The exhaustive 1+11
-`TransseriesFlat.lean` leaf and three new integer-Laurent theorems in
-`TransseriesDifferentialBlock.lean` give the historical 944/11,806 census.
+census. Later branch inventories culminated in the historical
+952/11,884, 967/12,001, and 970/12,051 checkpoints. The ordinary-multinomial
+semantic union was the historical 976/12,116 checkpoint, while 977/12,133 was
+a later incoming-branch audit; these overlapping inventories are not additive.
 
-Against that checkpoint, the local pre-merge source added exactly seventeen modules:
-`BackwardErrorExistence.lean` (1+6), `BellLeibnizTower.lean` (1+5),
-`CayleyTreeFunction.lean` (1+8), `DerangementNearestInteger.lean` (1+7),
-`LambertCorrectionEquation.lean` (2+9), `LambertShiftConcavity.lean` (0+5),
-`LeastTermIndex.lean` (1+6), `LinLogCoreInversion.lean` (4+18),
-`OrdinaryPartialBell.lean` (2+4), `PowerLogCoreInversion.lean` (3+6),
-`RemainderTransport.lean` (0+3), `StaircaseInversion.lean` (0+7),
+The current semantic union contains **987 facade-reachable modules and 12,207
+public declarations**, with zero documentation gaps. Relative to the
+976/12,116 checkpoint, ten newly merged leaves add ten modules and 80
+declarations: `PochhammerFalling.lean` (1+13),
+`GridEvaluationCertificate.lean` (0+4),
+`IntegerCRTCertificate.lean` (0+5), `NorlundGeneralized.lean` (3+18),
+`StirlingSymmetricFunctions.lean` (0+4),
+`LagrangeInversionUniqueness.lean` (0+6), `NewtonReciprocal.lean` (1+5),
 `StirlingCompleteHomogeneous.lean` (0+8),
 `TouchardEulerOperator.lean` (2+8),
 `TransseriesDifferentialClosure.lean` (2+9),

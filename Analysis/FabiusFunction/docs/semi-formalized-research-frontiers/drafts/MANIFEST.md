@@ -46,7 +46,7 @@ properly distinguishes root evaluation from the still-unformalized polynomial
 congruence. Its source concordance is 103 / 375 / 60 / 9.
 
 The broader `audit_all.sh` does **not** pass: its register-consistency stage
-reports 23 known CCC issues (17 unnamed gaps, four None rows citing Lean, one
+reports 20 known CCC issues (15 unnamed gaps, three None rows citing Lean, one
 contradiction, and one stale anchor). The affected register scripts
 and CCC source are unchanged from the incoming tip. The other stages pass,
 including all 37 exact identity checks. No forbidden `SHA256SUMS` or
