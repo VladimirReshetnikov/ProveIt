@@ -49,7 +49,7 @@ theorem dickson_isPWO_pi {ι : Type*} [Finite ι] (s : Set (ι → ℕ)) : s.IsP
 
 /-! ### Neumann's lemma -/
 
-section Additive
+section Multiplicative
 
 variable {α : Type*} [CommMonoid α] [PartialOrder α] [IsOrderedCancelMonoid α]
 
@@ -65,22 +65,6 @@ theorem neumann_finite_factorizations {A B : Set α} (hA : A.IsPWO) (hB : B.IsPW
     (Set.mulAntidiagonal A B c).Finite :=
   Set.MulAntidiagonal.finite_of_isPWO hA hB c
 
-end Additive
-
-section AdditiveForm
-
-variable {α : Type*} [AddCommMonoid α] [PartialOrder α] [IsOrderedCancelAddMonoid α]
-
-/-- Neumann's lemma with the monomial group written additively, the form the
-Hahn-series construction uses. -/
-theorem neumann_isPWO_add {A B : Set α} (hA : A.IsPWO) (hB : B.IsPWO) : (A + B).IsPWO :=
-  hA.add hB
-
-/-- Finitely many additive decompositions `c = a + b`. -/
-theorem neumann_finite_decompositions {A B : Set α} (hA : A.IsPWO) (hB : B.IsPWO) (c : α) :
-    (Set.addAntidiagonal A B c).Finite :=
-  Set.AddAntidiagonal.finite_of_isPWO hA hB c
-
-end AdditiveForm
+end Multiplicative
 
 end Fabius
