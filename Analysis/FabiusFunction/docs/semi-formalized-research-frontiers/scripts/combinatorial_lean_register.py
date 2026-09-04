@@ -639,6 +639,59 @@ STATUS = {
    r"commutative-ring identity \lean{Fabius.coeff_recurrence_of_mul_derivative_eq}. "
    r"The power is formal binomial substitution with constant coefficient one; "
    r"all three divided recurrences hold over a commutative $\mathbb Q$-algebra"),
+ # --- second half (from the Bernoulli/Euler/Genocchi chapter on), session funny-gates ---
+ 'thm:merged-kirkman-cayley': ('Lean',
+   r"\lean{Fabius.dissectionNumber} (a division-free determinant), "
+   r"\lean{Fabius.dissectionNumber_mul_of_three_le}, "
+   r"\lean{Fabius.succ_dvd_choose_mul_choose}, \lean{Fabius.dissectionNumber_eq_div} "
+   r"(\lean{AssociahedronFaceNumbers}); the count of dissections itself is not formalized"),
+ 'cor:merged-associahedron-f': ('Lean',
+   r"\lean{Fabius.associahedronFaceNumber_mul}, \lean{Fabius.associahedronFaceNumber_zero}, "
+   r"\lean{Fabius.two_mul_associahedronFaceNumber_facet}, "
+   r"\lean{Fabius.associahedronFaceNumber_top} (\lean{AssociahedronFaceNumbers}); "
+   r"the face correspondence is not formalized"),
+ 'thm:merged-associahedron-h': ('partial',
+   r"\lean{Fabius.associahedronH_mul}, \lean{Fabius.associahedronH_symm}, "
+   r"\lean{Fabius.associahedronHPoly_one} (\lean{AssociahedronFaceNumbers}); "
+   r"the $h$-vector is defined as the Narayana row, the face transform is not formalized"),
+ 'thm:merged-pochhammer': ('partial',
+   r"\lean{Fabius.ascPochhammer_eval_add_index}, \lean{Fabius.descPochhammer_eval_add_index}, "
+   r"\lean{Fabius.ascPochhammer_eval_eq_Gamma_div}, "
+   r"\lean{Fabius.Gamma_add_natCast_eq_ascPochhammer_mul} (\lean{PochhammerFalling}); "
+   r"the binomial series is not formalized in Pochhammer form"),
+ 'thm:merged-pochhammer-derivatives': ('partial',
+   r"$m=1$: \lean{Fabius.derivative_ascPochhammer}, \lean{Fabius.derivative_ascPochhammer_eval}, "
+   r"\lean{Fabius.hasDerivAt_ascPochhammer_eval} (\lean{PochhammerFalling})"),
+ 'cor:merged-reciprocal-pochhammer': ('partial',
+   r"$m=1$: \lean{Fabius.hasDerivAt_inv_ascPochhammer_eval} (\lean{PochhammerFalling})"),
+ 'prop:merged-beta-integral': ('Lean',
+   r"\lean{Fabius.integral_cpow_mul_one_sub_natPow}, "
+   r"\lean{Fabius.betaIntegral_eq_factorial_div_ascPochhammer} (\lean{PochhammerFalling}), "
+   r"on Mathlib's \lean{Complex.betaIntegral_eval_nat_add_one_right}"),
+ 'thm:merged-catalan-bijection': ('partial',
+   r"Mathlib's \lean{DyckWord.equivTreesOfNumNodesEq} and "
+   r"\lean{card_dyckWord_semilength_eq_catalan}; parenthesizations not a separate type"),
+ 'thm:merged-periodic-bernoulli-fourier': ('partial',
+   r"$n\ge2$: Mathlib's \lean{fourierCoeff_bernoulli_eq}, \lean{summable_bernoulli_fourier}, "
+   r"\lean{hasSum_one_div_nat_pow_mul_cos}, \lean{hasSum_one_div_nat_pow_mul_sin}, "
+   r"\lean{hasSum_zeta_nat}; the $n=1$ clauses are not formalized"),
+ 'thm:merged-euler-gamma-limit': ('partial',
+   r"Euler's limit is Mathlib's \lean{Complex.GammaSeq_tendsto_Gamma} (pointwise); "
+   r"the Weierstrass product is not formalized"),
+ 'cor:merged-harmonic-expansion': ('partial',
+   r"leading order: Mathlib's \lean{Real.tendsto_harmonic_sub_log}; the Bernoulli tail "
+   r"needs Euler--Maclaurin, not formalized"),
+ 'prop:merged-modified-bernoulli': ('partial',
+   r"\lean{Fabius.sinhDivLogCoefficient_eq_bernoulli_formula} (\lean{SinhDivBernoulliLog}) "
+   r"at unit scale; the rescaling to $\beta^{\sharp}$ is not recorded"),
+ 'prop:merged-recurrence-uniqueness': ('partial',
+   r"one-index case: \lean{Fabius.eq_of_recurrence} (\lean{TelescopingCertificate})"),
+ 'thm:merged-raney': ('Lean',
+   r"\lean{Fabius.coeff_raneyT_pow} is \cref{eq:merged-raney} for every $p,n\ge0$ and "
+   r"$r\ge1$, with the series constructed as \lean{Fabius.raneyT} from "
+   r"\lean{Fabius.Lagrange.solution}; \lean{Fabius.raneyT_eq} is the functional equation, "
+   r"\lean{Fabius.natCast_mul_coeff_raneyT_pow} the division-free form, "
+   r"\lean{Fabius.coeff_raneyT} the Fuss--Catalan case (\lean{RaneyNumbers})"),
 }
 
 # A dict literal keeps the LAST of two equal keys and reports nothing, so a
