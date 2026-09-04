@@ -38391,6 +38391,47 @@ $-(x-\lfloor x\rfloor)+\tfrac12$ shifted, i.e.\ minus the standard sawtooth,
 whose Fourier series is the displayed one and converges pointwise off
 $\Int$.
 \end{proof}
+\begin{remark}[Formalization of the staircase]\label{p0:rem:staircase-lean}
+All five parts are order theory plus a single application of the intermediate
+value theorem; none of the analytic apparatus of this chapter is used.  That
+is visible in the formalization, \lean{StaircaseInversion.lean}, which is a
+Mathlib-only leaf and reduces the phrase \emph{admissible interpolation} to the
+two hypotheses actually consumed: $\mathcal A$ strictly monotone, and
+$\mathcal A(\nu)=y$.
+
+Part (1) is \lean{Fabius.staircase_ceil}, stated as an \texttt{IsLeast} rather than
+an equation --- $\lceil\nu\rceil$ is the least integer $n$ with
+$y\le\mathcal A(n)$ --- which is what \eqref{p0:eq:ceil-identity} means and
+what its uses need; the underlying fact that $\lceil\nu\rceil$ is least above
+$\nu$ is \lean{Fabius.isLeast_ceil}.  Part (2) is
+\lean{Fabius.staircase_separation}.  Part (3) is \lean{Fabius.staircase_round},
+and the formal statement confirms that it is unconditional: its only
+hypotheses are $|x-n|\le\eta$ and $\eta<\tfrac12$.
+
+The arithmetic of part (4) is \lean{Fabius.isLeast_residue_class}: for $r>0$,
+$\rho+r\lceil(\nu-\rho)/r\rceil$ is the least integer at or above $\nu$ in the
+residue class of $\rho$ modulo $r$.  Stated that way it is independent of the
+sequence entirely, which is why the same identity serves the parity instances
+of \cref{p0:rem:parity-instances} and the floor variant for the threshold
+query --- the volume observes that those have ``the same proof'', and here they
+have the same lemma.
+
+Part (5) is \lean{Fabius.exists_half_error_of_jump}, in the local form that
+carries the content: across a single unit jump of an integer-valued function,
+every continuous $g$ satisfies $|N-g|\ge\tfrac12$ somewhere on the
+interval.  The proof is the intermediate value theorem forcing $g$ through the
+half-integer, where every integer is at distance at least $\tfrac12$; the
+supremum statement \eqref{p0:eq:no-smooth} follows by applying it at a jump.
+
+One thing the formalization adds.  \Cref{p0:thm:staircase}(2) remarks that the
+separation condition can fail for arbitrarily small $\eta$; that is proved,
+as \lean{Fabius.staircase_separation_fails}, so the hypothesis is demonstrably
+not removable rather than merely not removed.
+
+Not formalized: the Fourier expansion of the periodic layer, and the
+construction of admissible interpolations, which is where this chapter's
+analysis actually lives.
+\end{remark}
 
 \begin{proposition}[Certified discrete inversion]\label{p0:prop:certified-rounding}
 In the setting of \cref{p0:thm:staircase}(4), suppose that for each $\rho$ an
