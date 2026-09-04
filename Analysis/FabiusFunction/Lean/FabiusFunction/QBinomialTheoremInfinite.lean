@@ -277,7 +277,8 @@ of `(q^m;q)_k` from one has the explicit bound
 
 This is the product estimate `‖∏(1+x_j)-1‖ ≤ exp(∑ ‖x_j‖)-1`, together with
 `∑_{j<k} ‖q^(m+j)‖ ≤ k ‖q‖^m`. -/
-theorem norm_finiteQPochhammerIn_pow_sub_one_le_exp {q : 𝕜}
+theorem norm_finiteQPochhammerIn_pow_sub_one_le_exp
+    {R : Type*} [NormedCommRing R] [NormOneClass R] [NormMulClass R] {q : R}
     (hq : ‖q‖ ≤ 1) (m k : ℕ) :
     ‖finiteQPochhammerIn (q ^ m) q k - 1‖ ≤
       Real.exp ((k : ℝ) * ‖q‖ ^ m) - 1 := by

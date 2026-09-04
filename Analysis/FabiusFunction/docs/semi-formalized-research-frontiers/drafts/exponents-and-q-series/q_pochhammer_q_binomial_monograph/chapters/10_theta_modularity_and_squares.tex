@@ -723,6 +723,28 @@ Since $\chi_4$ vanishes on even integers and equals $(-1)^j$ at $2j+1$,
 the second form follows.
 \end{proof}
 
+\paragraph{Lean realization.}
+The complete Gaussian-integer proof above is retained as the human proof.  The
+formal proof in \texttt{JacobiTwoSquareCount} takes a complementary analytic
+route: over $\ComplexNumbers$ it specializes Ramanujan's ${}_1\psi_1$
+summation at base $Q=q^2$ with $a=-1$, $b=-Q$, and $z=q$, proves that the
+bilateral summand is even, expands the resulting positive-index terms as an
+absolutely summable double series, and reduces the product side by elementary
+$q$-Pochhammer product identities.  Uniqueness of coefficients of convergent
+power series then gives the arithmetic count.  Concretely,
+\texttt{sumSqRep\_two\_eq\_four\_mul\_twoSquareDivisorSum} proves
+\eqref{eq:qg-two-square} for every $n:\NaturalNumbers$ with $n\ne0$, as an
+identity in $\IntegerNumbers$, while
+\texttt{sumSqRep\_two\_eq\_four\_mul\_prod} gives the displayed product under
+the explicit hypothesis that every prime divisor congruent to $3$ modulo $4$
+has even valuation.  Finally,
+\texttt{theta\_sq\_eq\_chi4\_lambert} and
+\texttt{theta\_sq\_eq\_odd\_lambert} give the two respective Lambert forms
+unconditionally for $q$ in any complete normed field with $\lVert q\rVert<1$;
+thus the complex coefficient argument feeds the already general
+hypothesis-parameterized analytic kernels rather than restricting the final
+corollary to $\ComplexNumbers$.
+
 \begin{theorem}[Jacobi's four-square theorem]
 \label{qg:thm-four-square}
 For every $n\ge1$,

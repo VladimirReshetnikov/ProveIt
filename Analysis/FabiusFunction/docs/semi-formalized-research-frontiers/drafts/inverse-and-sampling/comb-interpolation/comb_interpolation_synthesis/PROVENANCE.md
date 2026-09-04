@@ -154,6 +154,18 @@ volume retain package-level hashes, contribution summaries, and original bytes
 in its predecessor provenance appendix and Git history; this package does not
 claim a second theorem-by-theorem concordance for those nine earlier sources.
 
+The current-status projection of those immutable rows contains 7 Lean-proved,
+159 human-proved frontier, 20 conjecture, 30 open-problem, and 16
+non-applicable rows.  The source-only `FabiusFunction.RvachevAppellHasse`
+overlay promotes exactly `gq:prop:q-Appell-falling` and
+`gq:thm:gaussian-Appell-decoder`: their explicit finite formulas are supplied
+by `Fabius.eval_rvachevDeconvolvedPolynomial_qFallingPower` and
+`Fabius.geometric_lagrangeRvachevDecoder_eq`, and their synthesis clauses are
+the corresponding already-formalized generic finite polynomial and Lagrange
+decoder theorems.  This is a finite algebraic closure, not a new analytic
+reciprocal-MGF power-series theorem; totalized formulas at zero or colliding
+nodes are not asserted to be cardinal interpolation schemes.
+
 ## Historical checksum ledgers
 
 Eight source-package ledgers contain 151 entries in total. Re-evaluating them
@@ -186,10 +198,17 @@ only one human-readable publication plus unique evidence; Git is the archival
 store for superseded wrappers and publications.
 
 Publication validation is recorded once in
-[`assets/VALIDATION.md`](assets/VALIDATION.md). It preserves the completed
-historical PDF, canonical-validator, and root-ledger gates while marking the
-current semantic union—upstream Lagrange-crosswalk material together with the
-replayed general-$q$ and endpoint-jet chapter edits—as requiring a new build
-and validation cycle. Full numerical replay and fresh-checkout reproduction
+[`assets/VALIDATION.md`](assets/VALIDATION.md). The current accepted receipt is
+root
+`187L/6724B/a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`,
+nine-file aggregate
+`12773L/483551B/cef466ee56f6bb864faaac2244bccf1dbc2fd4032a717b6c81604551c0427309`,
+passes `153/160/160`, PDF
+`160pp/2468109B/bb714c8be4b82de2a888e0302da3aaf957b9e885f2c5f59466b3ea5d659e3f71`,
+and log
+`1370L/58773B/8df53a7db51c85b7a046c5f58587319095b3d28c61b0091861bdeb1f43b342e3`;
+all recorded gates passed. The validation record also preserves the completed
+158-page historical PDF, canonical-validator, and retired root-ledger gates.
+Full numerical replay and fresh-checkout reproduction
 remain separate reproducibility work; this provenance record neither
 duplicates nor supersedes those checks.

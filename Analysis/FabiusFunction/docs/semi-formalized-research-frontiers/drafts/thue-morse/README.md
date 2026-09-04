@@ -55,6 +55,22 @@ certified-remainder, and measure-refinement results named in the volume also
 have formal counterparts; the remaining roadmap obligations stay explicitly
 labeled.
 
+The local analytic companion `ThueMorseCornerIntegral.lean` has one
+definition and four theorems: `centeredBoxIntegral`,
+`centeredBoxIntegral_zero`, `centeredBoxIntegral_succ`,
+`symmetricMixedDifference_range_eq_centeredBoxIntegral`, and
+`symmetricMixedDifference_univ_eq_centeredBoxIntegral`.  It proves the
+repeated-integral clause of the continuous Thue--Morse corner theorem without
+replacing the manuscript's local regularity by a global assumption.  On an
+open order-connected set containing the full symmetric segment, local
+`ContDiffOn` regularity lets interval FTC peel one centered difference at a
+time; induction then identifies the Boolean corner sum with the nested box
+integral of the iterated derivative.  Together with
+`ThueMorseSymmetricDifference.lean`, this makes `thm:TM-corner` Exact by
+composition.  Zero half-steps and depth zero are included; the analytic leaf
+is real-valued and does not prove the separate Walsh conditional-expectation
+corollary.
+
 The current reciprocal-Gamma jet/tower overlay preserves that historical
 status and pins the first tranche to `0ba35abd4`.  The exhaustive five-theorem
 API of `ReciprocalGammaJets.lean` is `deriv_Gamma_inv_neg_nat`,
@@ -74,8 +90,28 @@ At the same commit, the first eight public declarations of
 `ofReal_exp_mpLimit_eq_gammaTower_div`.  The two definitions are total for real
 `a`; the Mellin, integral, dyadic, and ratio theorems require positive
 parameters.  GammaLog is the chosen derivative coordinate, not a proved
-`Complex.log` identity.  Only the parameter-`a` differential and iterated
-differential ladder remains open in this tower tranche.
+`Complex.log` identity.  The source-only
+`ThueMorseGammaTowerDifferential.lean` leaf adds no definitions and exactly
+three theorems: `hasDerivAt_mellin_mellinKernel_parameter`,
+`hasDerivAt_thueMorseGammaLog_succ`, and
+`iteratedDeriv_thueMorseGammaLog`.  For every complex Mellin exponent and
+positive real damping parameter the first theorem proves differentiation
+under the integral with the exponent shift `s ↦ s + 1`; the other two give
+`L_(r+1)'(a) = (r+1)L_r(a)` and the full falling-factorial iterated law for
+`k ≤ r`.  Thus `p2:thm:gamma-tower` is Exact when its displayed logarithm is
+read, as above, as the chosen GammaLog coordinate.  Every differential theorem
+retains `0 < a`; no principal-`Complex.log` identity or nonpositive-parameter
+extension is asserted. The accepted merged-source receipt is root
+`10557L/482022B/8cef828c3d92a0017e22463ac90878a5e3a98e1138059d5f4793d47c04a88404`,
+two-file aggregate
+`10841L/493857B/79a43711c6989336166d6b2ed1faa306cc985b8d70557025ab139791d455723c`,
+passes `139/144/144`, PDF
+`144pp/1740015B/deb63fe66fc8f020bb072acbc4301e9b7c9f0559b165cbae2c076f261405c5be`,
+and final log
+`1503L/59417B/1219dbc87bc4f9920c40b24659182220b14e7908a45a9eb33d0f19390148c64b`.
+Every recorded prohibited-log, A4/rotation, PDF 1.5, encryption, font/subsetting,
+Libertinus, Type-3, and visual gate passed. The former 143-page PDF remains an
+explicit historical render.
 
 `CentralBinomialValuation.lean` supplies the atlas's direct central-binomial
 crosswalk.  Its exhaustive public API is

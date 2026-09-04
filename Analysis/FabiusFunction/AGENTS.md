@@ -432,9 +432,14 @@ invocation each, so every dependency is already compiled when its turn comes.
 Two scripts do exactly this:
 
 ```sh
-python3 Analysis/FabiusFunction/scripts/affected_modules.py <base> --stats --out affected.txt
+python3 Analysis/FabiusFunction/scripts/affected_modules.py <base> \
+  --include-worktree --stats --out affected.txt
 sh Analysis/FabiusFunction/scripts/validate_affected.sh affected.txt
 ```
+
+Use `--include-worktree` before committing so staged, unstaged, and untracked
+Lean modules participate in the closure.  Omit it only when the complete
+change set is already committed between `<base>` and `HEAD`.
 
 The first closes the change set under the *reverse* `import FabiusFunction.*`
 graph and emits a topological order; `--stats` reports how many of those lack a

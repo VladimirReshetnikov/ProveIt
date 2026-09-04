@@ -7,7 +7,7 @@ the merge-resolved source described below.
 
 ## Intake provenance
 
-The package was filed from `drafts/incoming/fabius_frontier_report_bundle-D.zip` (1,508,514 bytes; SHA-256 `39f3638f52f19955b88b7a865a60b76d9ce31154d98967d1400a6ad97396fa9a`). The archive was safety-checked and its submitted 34-row checksum ledger passed in full. That immutable arrival record and the later normalized-package ledger are historical receipts recoverable from Git history; neither is maintained as a live file.
+The package was filed from `drafts/incoming/fabius_frontier_report_bundle-D.zip` (1,508,514 bytes; SHA-256 `39f3638f52f19955b88b7a865a60b76d9ce31154d98967d1400a6ad97396fa9a`). The archive was safety-checked and its submitted 34-row checksum ledger passed in full. The exact arrival receipt remains recoverable from Git history. A later normalized-package ledger covered the current-at-that-checkpoint source and metadata together with the retained historical PDF, but package-local checksum manifests have since been retired; that historical check did not assert that the PDF rendered the source.
 
 Repository normalization retained the mathematical body while replacing the submitted Letter/Latin-Modern preamble with the shared A4/27 mm/Libertinus preamble, regenerating all vector figures with embedded non-Type-3 fonts, and making generated CSV line endings deterministic. The report now states its current Lean boundary and its overlap with the separately audited digital-spectral and reciprocal-integer reports.
 
@@ -25,16 +25,31 @@ Repository normalization retained the mathematical body while replacing the subm
 - `REPOSITORY_AUDIT.md` — source-audit, claim-boundary, replay, and nonduplication record.
 - `PDF_VALIDATION.txt` — last-render build, geometry, font, text, and visual
   checks, plus the current uncompiled-source fingerprint.
-- Historical checksum receipts — the submitted 34-row ledger and a later
-  passing normalized-package ledger are recoverable from Git history. They
-  are not current package files; the source/PDF synchronization debt remains
-  explicit here and in `PDF_VALIDATION.txt`.
+- Historical checksum records — the verified 34-row submission receipt and a
+  later normalized-package checkpoint are retired from the live tree but
+  remain recoverable from Git history.  The separate source/PDF synchronization
+  debt remains explicit here and in `PDF_VALIDATION.txt`.
 
 ## Claim and formalization boundary
 
 The report distinguishes proved manuscript results, proof programs, numerical evidence, and conjectures. “Novel” means absent from the arrival-time repository snapshot, not worldwide priority.
 
-The current Lean corpus already supplies the geometric-uniform series and distribution, their positive-parameter CDF/density/support and convolution/cumulant-tail interfaces, finite sinc products, a general weighted analytic sinc–zeta expansion, and the fixed dyadic half–quarter multisection. The report does **not** elevate its negative-parameter duality, closed all-parameter Bernoulli cumulants, Gaussian/LDP limits, exact subdyadic plateaux and derivative norms, arbitrary-parameter zero divisor and spectral zeta, normalized moment-polynomial recurrence, Legendre scaling, or arbitrary-parameter periodic Laplace phase to Lean theorems. In particular, the periodic-phase contour step remains a paper proof, and no formal coverage ledger status changes merely because this package is filed.
+The current Lean corpus already supplies the geometric-uniform series and
+distribution, their positive-parameter CDF/density/support and
+convolution/cumulant-tail interfaces, finite sinc products, a general weighted
+analytic sinc--zeta expansion, and the fixed dyadic half--quarter multisection.
+It now also supplies the recursive rational moment polynomial, its real,
+inner-complex, and exterior-germ coefficient bridges, the sharp degree, and the
+one-definition/four-theorem rational-function clearing/evaluation package. That
+last package makes canonical q-series label `thm:qF-moment-polynomial` Exact;
+the broader `thm:geometric-uniform-mgf` remains Partial. The report does **not**
+thereby elevate its positive-integral-coefficient conjecture, negative-parameter
+duality, closed all-parameter Bernoulli cumulants, Gaussian/LDP limits, exact
+subdyadic plateaux and derivative norms, arbitrary-parameter zero divisor and
+spectral zeta, Legendre scaling, or arbitrary-parameter periodic Laplace phase
+to Lean theorems. In particular, the periodic-phase contour step remains a
+paper proof, and no additional coverage-ledger status changes merely because
+this package is filed.
 
 ## Principal directions developed in the report
 
@@ -72,10 +87,11 @@ pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_frontie
 pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_frontier_report.tex
 ```
 
-## Historical integrity record
+## Integrity provenance
 
-The submitted arrival ledger verified only the original archive, and the
-later normalized-package ledger verified the then-current files. Both
-ledgers have been retired from the live tree and are recoverable from Git
-history. The retained PDF remains unsynchronized with the current source, as
-recorded above.
+Package-local checksum manifests are retired repository-wide and must not be
+recreated.  The submitted and normalized-package verification records remain
+recoverable from Git history, while `REPOSITORY_AUDIT.md` and
+`PDF_VALIDATION.txt` record the surviving purpose-specific checks.  The arrival
+receipt applies to the original archive, not to normalized current files, and
+the pending source/PDF rebuild remains recorded above.

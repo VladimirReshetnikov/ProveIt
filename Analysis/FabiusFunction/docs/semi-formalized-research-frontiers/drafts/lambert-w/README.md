@@ -20,21 +20,35 @@ Four independently written article packages arrived together on
 consolidated volume:
 
 Member: `Lambert_W_Guide/` — *The Lambert W Function: A Real-Variable
-Guide*. At the pre-upstream commit `581bf`, its source had 4,864 lines and
+Guide*. Its current merged-source receipt is root
+`4961L/183269B/83301b4c66660713a70974263b6f191ea01f9ed8f5ae228495f644887b616568`,
+two-file aggregate
+`5245L/195104B/25141b9ee818b20ddf8349d88ec4f2dc977ff0ab35ca34e62cd62da64c2cf06a`,
+passes `68/70/70`, PDF
+`70pp/966637B/6c150ff18889030345de3e1a8581d5ea0ac75789a9720c1d5164ed4e7ec4b7fb`,
+and final log
+`1574L/57800B/9f995a50e3ab25256083edee745a1889027787194e3b3c6d1f12f60bf687145c`.
+Every recorded prohibited-log, A4/rotation, PDF 1.5, encryption, font/subsetting,
+Libertinus, Type-3, and visual gate passed.
+
+The following receipts are explicit history. At the pre-upstream commit
+`581bf`, its source had 4,864 lines and
 176,796 bytes, with SHA-256
 `3f3552983a73db2dab94f3625d10d054b747ee03fc2758e257af86f6216deab5`.
 The matching 70-page, 958,713-byte A4 PDF has SHA-256
 `24e8bf561283ffc5427297df6f656696a7e2538731e53d03d59e4268b50772fc`.
-After merging parallel revision `3b6396` and reconciling the branch chronology,
-the accepted source has 4,873 lines and 177,465 bytes, with SHA-256
+At revision `2d434eec`, after merging parallel revision `3b6396` and
+reconciling the branch chronology, the source had 4,873 lines and 177,465
+bytes, with SHA-256
 `90413f46373415edef411e9ea3b2d94006f7342bd2fa3ea931ca975d7f64b97e`.
-Three passes at 67/69/69 pages produced the accepted 69-page, 958,516-byte A4
+Three passes at 67/69/69 pages produced the then-accepted 69-page, 958,516-byte A4
 PDF with SHA-256
 `b159cd41f5b3e53060fa85fcfc4812d504cc1fff8400c03ecb7ef4018f37cd2c`;
 the final 1,574-line, 57,795-byte log has SHA-256
 `5c81cd6b8dc2cf070c4b1995c98c0d046c54d28f0e682b78b5ad9e16c0a8caa7`.
-All documented log, page, font, Type-3, extraction, and visual gates passed
-after the clipping repair. The `581bf` pair above is retained as a historical
+All documented log, page, font, Type-3, extraction, and visual gates passed at
+that revision after the clipping repair. This `2d434eec` receipt is historical
+and is superseded by the accepted current receipt above. The `581bf` pair is retained as a historical
 pre-upstream receipt. The superseded 4,872-line, 177,384-byte source-only pin,
 SHA-256 `4200ac6ccd23e950bcbd0cba61aca256cd9e1a647667436120cc82e8e7876b11`,
 records the state before that repair. The preceding 66-page, 1,107,064-byte
@@ -127,10 +141,11 @@ branch-coordinate modules, the four-module union is four definitions and 37
 theorems, 41 declarations.  The signed higher/convergent Puiseux program
 remains open. The exact `581bf` Guide, primary, walkthrough, and canonical-
 frontier receipts include this overlay; the q-series PDF is the exact receipt
-for its own pre-upstream source. Those five PDFs and the older independently
-published standalone geometric-q PDF remain historical. Accepted current
-source/PDF receipts now exist for all six roots, and all documented gates
-passed.
+for its own pre-upstream source. The later historical `2d434eec` receipts for those five
+roots and the standalone geometric-q root all passed their documented gates.
+The primary, walkthrough, canonical, Lambert, and q-series roots now have
+accepted current merged-source PDFs; the geometric-q root now also has its
+accepted current 404-page merged-source PDF.
 The local declaration
 chronology is 902/11,440 after `GeometricRichardsonGenerating`, 902/11,443 at
 Gaussian checkpoint `71c908e`, 903/11,448 after this five-theorem leaf at
@@ -139,15 +154,99 @@ fixed-column q-binomial declarations at `581bf`. On the parallel upstream
 branch, the sibling `FabiusFunction.GeometricUniformMomentPolynomial` module
 has one definition
 and eight theorems for its recursive polynomial, residual-product recurrence,
-degree bound, value at zero, and the four positive-index cases `P1`--`P4`.  It gives
-upstream-only checkpoint `3b6396` at 904/11,457; its merge with the independent
-fixed-column increment gives the live 904/11,462 documentation census. Its
-external source label `p7:thm:Pn` remains Partial because the analytic
-moment-coefficient normalization and leading/odd-degree clause are not part of
-that algebraic leaf. The sibling addition is absent from the retained historical
-PDFs but included in the accepted current Guide and other final-source renders.
-The preceding 66-page Guide remains an earlier historical artifact with its
-status unchanged.
+degree bound, value at zero, and first four nonconstant cases.  That algebraic
+leaf produced the historical checkpoint 904 modules and 11,457 public
+declarations.  Its companion
+`FabiusFunction.GeometricUniformMomentPolynomialBridge` has the exhaustive
+surface zero definitions and one theorem,
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`.
+For every real `|q| < 1`, it supplies the actual-MGF normalization and makes
+external source label `p7:eq:Pn-def` Exact in that real regime.  It constructs
+no complex-q infinite product by itself.  At this bridge checkpoint the
+leading-coefficient and strict odd-degree clauses were still absent, so the
+compound `p7:thm:Pn` was then Partial; the later sharp-degree sibling below
+makes it Exact.  This bridge produced the historical checkpoint 905 modules
+and 11,458 public declarations.  The subsequent sibling
+`FabiusFunction.GeometricUniformComplexMomentProduct` has the exhaustive
+surface one public definition and two public theorems:
+`Fabius.geometricUniformComplexMomentProduct`,
+`Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct`, and
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
+For complex `‖q‖ < 1` it supplies the actual locally uniform product and its
+normalized Taylor-coefficient bridge.  This is an analytic analogue; it does
+not extend the probability-moment reading of `p7:eq:Pn-def` beyond real
+`|q| < 1`.  At this historical checkpoint the canonical q-monograph
+`thm:qF-moment-polynomial` remained Partial because the global `RatFunc`
+identification and its pole-clearing polynomial continuation at roots were
+absent.  This exhaustive `1+2` leaf produced the historical checkpoint 906
+modules and 11,461 public declarations.
+The zero-definition/one-theorem
+`FabiusFunction.HalfQBinomialRootSimplicity` sibling exposes
+`Fabius.halfQBinomial_sum_rootMultiplicity_two_pow`; composed with the
+existing rational root classifier, it makes `cor:halfbase-root-locus` Exact
+without an arbitrary-base or arbitrary-field claim.
+The subsequent sibling
+`FabiusFunction.GeometricUniformExteriorComplexMomentGerm` also has the
+exhaustive surface one public definition and two public theorems:
+`Fabius.geometricUniformExteriorComplexMomentGerm`,
+`Fabius.analyticAt_geometricUniformExteriorComplexMomentGerm`, and
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient`.
+For complex `1 < ‖q‖` it supplies the actual reciprocal germ, analyticity at
+the origin, and its normalized Taylor-coefficient bridge.  It makes no unit-
+circle or global rational-function claim.  The exhaustive zero-definition/
+three-theorem `FabiusFunction.GeometricUniformMomentPolynomialDegree` sibling
+consists of `Fabius.coeff_geometricUniformMomentPolynomial_choose_two`,
+`Fabius.coeff_geometricUniformMomentPolynomial_choose_two_sub_one`, and
+`Fabius.geometricUniformMomentPolynomial_natDegree_eq`.  It proves the exact
+top and subleading Bernoulli coefficients and the parity-sensitive degree,
+making `p7:thm:Pn` and `prop:qF-P-degree-sharp` Exact.  At that checkpoint
+`thm:qF-moment-polynomial` was still Partial at the global `RatFunc` boundary.
+
+The final `FabiusFunction.GeometricUniformMomentRatFunc` sibling has one
+public definition, `Fabius.geometricUniformMomentRatFunc`, and four public
+theorems: `Fabius.qFactorial_mul_geometricUniformMomentRatFunc`,
+`Fabius.eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient`,
+`Fabius.eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient`,
+and `Fabius.eval_geometricUniformMomentRatFunc_one`.  It packages one
+`RatFunc ℚ`, proves the global q-factorial clearing identity, identifies that
+same rational function with both strict off-unit-circle Taylor-coefficient
+regimes, and treats `q = 1` through `[n]₁! = n!`.  Together with the algebraic
+polynomial leaf, this makes `thm:qF-moment-polynomial` Exact.  It does not
+assign analytic values at genuine unit-root poles or prove their divisor or
+orders.
+
+The later germ-related addition
+`FabiusFunction.RvachevLaurentLeading` has one definition and six theorems and
+makes `is:p2:thm:Laurent-leading` exact through the manuscript-normalized
+punctured-neighborhood limit and its coordinate, odd-core, nonvanishing,
+cofactor, and general-pole companions.  Puncturing is essential because Lean
+totalizes inversion at a pole; no lower Laurent coefficient is claimed.  The
+eleven-definition/seventeen-theorem
+`FabiusFunction.FinitePrefixAppellRecovery` sibling makes
+`is:p2:thm:finite-prefix-expansion` and `is:p2:thm:exact-recovery` Exact for
+every starting depth, including zero, at bases `1/2` and `1/4`.  Its exact
+degrees are outer degrees in `Polynomial (Polynomial ℚ)` and may drop after a
+fixed-inner-variable specialization; its finite-convolution moments are not a
+random-variable or analytic-MGF realization.
+
+In the merged chronology the sharp leaf gave the historical 921/11,575
+checkpoint, `RvachevLaurentLeading` gave 922/11,582, and
+`FinitePrefixAppellRecovery` gave 923/11,610.  The RatFunc leaf gives the
+historical 924/11,615 checkpoint.  Two later theorems in
+`ProbabilityLaplaceMoments` make `prop:up-tail` and `cor:up-moments` Exact,
+and the unrelated exhaustive 1+1
+`FabiusFunction.RvachevLegendreBiorthogonality` leaf gives the incoming
+925/11,619 checkpoint. Preserving the three unique local
+`QBinomialTheoremInfinite` compatibility wrappers gives the live 925/11,622
+census. Its public declarations are
+`Fabius.rvachevLegendreAnalysisKernel` and
+`Fabius.rvachevLegendreBiorthogonality`; they close the normalized translated
+kernel definition and finite Legendre biorthogonality, but not the larger
+Fourier--Bessel or matrix-projector claims.  The q ledger is 181 Exact / 78
+Partial / 15 None / 8 interface, and the source concordance is 94 Lean-proved
+/ 384 human-proved frontier / 60 non-applicable / 9 conjectures.
+All of these sibling source-only additions are likewise absent
+from the retained historical PDFs.
 
 The exact raw second-order package is `LambertWCurvature.lean`.  Its
 principal API is `deriv_principalLambertW`,

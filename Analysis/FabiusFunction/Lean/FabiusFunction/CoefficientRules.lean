@@ -34,7 +34,7 @@ variable {R : Type*} [CommRing R]
 /-- The geometric series `∑_n a^n z^n`. -/
 noncomputable def geomSeries (a : R) : R⟦X⟧ := PowerSeries.mk fun n => a ^ n
 
-/-- The coefficient of degree `n` in `geomSeries a` is `a ^ n`. -/
+/-- The degree-`n` coefficient of `geomSeries a` is `aⁿ`. -/
 @[simp] theorem coeff_geomSeries (a : R) (n : ℕ) :
     coeff n (geomSeries a) = a ^ n := coeff_mk _ _
 

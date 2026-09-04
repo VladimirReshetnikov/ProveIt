@@ -319,7 +319,7 @@ theorem twoSquareDivisorSum_eq_zero_iff {n : ℕ} (hn : n ≠ 0) :
   constructor
   · intro h
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     refine (twoSquareDivisorSum_ne_zero_iff hn).mpr (fun p hp h3 => ?_) h
     exact Nat.not_odd_iff_even.mp (hcon p hp h3)
   · rintro ⟨p, hp, h3, hodd⟩

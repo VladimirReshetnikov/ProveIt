@@ -15314,8 +15314,8 @@ The fourteenth-wave archive
 (\path{assets/Atomic_Functions_Beyond_Dyadic_Report/}) contains the script
 \texttt{experiments.py} (NumPy, Matplotlib, mpmath; fixed seed
 \texttt{20260828}), the five figures in vector form, the four CSV tables
-cited in the numerics section, \texttt{README.md}, \texttt{requirements.txt},
-and \texttt{SHA256SUMS}.  From that directory,
+cited in the numerics section, \texttt{README.md}, and \texttt{requirements.txt}.
+From that directory,
 \begin{lstlisting}[style=repoPython]
 python experiments.py --output .
 \end{lstlisting}
@@ -15325,7 +15325,7 @@ The fifteenth-wave archive
 (\path{assets/Rvachev_Atomic_Functions_Report/}) contains the deterministic
 script \texttt{numerical\_experiments.py} (Python 3.10+, NumPy, SciPy,
 Matplotlib), the three figures, six CSV/TXT diagnostic tables,
-\texttt{README.md}, \texttt{requirements.txt}, and \texttt{SHA256SUMS.txt};
+\texttt{README.md}, and \texttt{requirements.txt};
 running
 \begin{lstlisting}[style=repoPython]
 python numerical_experiments.py
@@ -16479,8 +16479,8 @@ primitive odd roots of unity --- must be controlled; the cancellation-order
 calculus of the two-nome partition function below is a candidate mechanism.
 \end{conjecture}
 
-\begin{statusbox}{Post-snapshot Lean status: Partial}
-The module \path{GeometricUniformMomentPolynomial.lean} has one
+\begin{statusbox}{Post-snapshot Lean status: Exact equation and theorem}
+The source-only module \path{GeometricUniformMomentPolynomial.lean} has one
 public definition, \lean{geometricUniformMomentPolynomial}, and exactly eight
 public theorems:
 \lean{geometricUniformMomentPolynomial_zero},
@@ -16491,18 +16491,122 @@ public theorems:
 \lean{geometricUniformMomentPolynomial_four}.  It supplies the recursively
 defined rational polynomial, the residual-product recurrence
 \eqref{p7:eq:Pn-recurrence}, the triangular degree bound, the value at zero,
-and the displayed cases \(P_0,\ldots,P_4\).  It does not identify that family
-with the normalized analytic moment coefficients in
-\eqref{p7:eq:Pn-def}, nor does it prove the leading-coefficient formula and
-the consequent strict degree drop for odd \(n>1\).  Thus the compound theorem
-\cref{p7:thm:Pn} is Partial, not Exact: its algebraic
-recurrence/bound/zero/small-case clauses are supplied, while its analytic
-normalization and leading/odd-degree clause remain open.  This \(1+8\) leaf
-was developed on a parallel upstream branch: from the Lambert-complete
-903/11,448 checkpoint that branch reached 904 modules and 11,457 public
-declarations.  Combining it with the local fixed-column branch, whose own
-checkpoint was 903/11,453, gives the live union of 904 modules and 11,462
-public declarations.
+and the displayed cases \(P_0,\ldots,P_4\).  The companion
+\path{GeometricUniformMomentPolynomialBridge.lean} has no public definitions
+and exactly one public theorem,
+\nolinkurl{geometricUniformMomentPolynomial_eval}\texttt{\textsubscript{2}}\nolinkurl{_eq_mgf_taylorCoefficient}.  For
+every real \(q\) with \(\lvert q\rvert<1\) and every \(n\), it identifies that
+polynomial with the finite-q-Pochhammer normalization of the \(n\)-th Taylor
+coefficient of the genuine geometric-uniform MGF.  Hence
+\eqref{p7:eq:Pn-def} is Exact in the real contraction regime, including
+signed \(q\) and \(q=0\).  The subsequent source-only
+\path{GeometricUniformComplexMomentProduct.lean} leaf has one public
+definition, \lean{geometricUniformComplexMomentProduct}, and exactly two
+public theorems,
+\lean{hasProdLocallyUniformly_geometricUniformComplexMomentProduct} and
+\nolinkurl{geometricUniformMomentPolynomial_eval}\texttt{\textsubscript{2}}\nolinkurl{_eq_complexMomentProduct_taylorCoefficient}.
+For every complex \(q\) with \(\lVert q\rVert<1\), it constructs the actual
+infinite product, proves locally uniform convergence on the complex plane, and
+identifies its normalized Taylor coefficient with the same polynomial.  This
+is a complex analytic analogue, not a complex probability-moment reading of
+\eqref{p7:eq:Pn-def}; that equation is Exact only in the real contraction
+regime stated above.  The subsequent source-only
+\path{GeometricUniformExteriorComplexMomentGerm.lean} leaf also has one
+public definition, \lean{geometricUniformExteriorComplexMomentGerm}, and
+exactly two public theorems,
+\lean{analyticAt_geometricUniformExteriorComplexMomentGerm} and
+\nolinkurl{geometricUniformMomentPolynomial_eval}\texttt{\textsubscript{2}}\nolinkurl{_eq_exteriorComplexMomentGerm_taylorCoefficient}.
+For every complex \(q\) with \(1<\lVert q\rVert\), it defines the actual
+reciprocal germ \((\mathcal A_{q^{-1}}(-z))^{-1}\), proves its analyticity at
+the origin, and identifies its normalized Taylor coefficient with the same
+polynomial.  The canonical q-monograph compound label
+\nolinkurl{thm:qF-moment-polynomial} is completed by the final source-only
+\path{GeometricUniformMomentRatFunc.lean} leaf.  Its exhaustive one-definition/
+four-theorem API is
+\lean{geometricUniformMomentRatFunc},
+\lean{qFactorial_mul_geometricUniformMomentRatFunc},
+\lean{eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient},
+\lean{eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient},
+and \lean{eval_geometricUniformMomentRatFunc_one}.  It packages the single
+rational function \(a_n=d_n/n!=\mathcal P_n/[n]_q!\), proves the global
+q-factorial pole-clearing identity, specializes it safely to the inner and
+exterior analytic coefficients, and handles \(q=1\) through
+\([n]_1!=n!\) rather than totalized \(0/0\).  No \texttt{RatFunc.eval}
+identity is asserted at a genuine reduced-denominator zero, and no general
+unit-circle analytic-germ claim is made.
+\end{statusbox}
+
+\begin{statusbox}{Post-snapshot Lean status (continued): Sharp degree}
+The final source-only
+\path{GeometricUniformMomentPolynomialDegree.lean} leaf has no public
+definitions and exactly three public theorems:
+\lean{coeff_geometricUniformMomentPolynomial_choose_two},
+\lean{coeff_geometricUniformMomentPolynomial_choose_two_sub_one}, and
+\lean{geometricUniformMomentPolynomial_natDegree_eq}.  Writing
+\(T_n=\binom n2\), they prove
+\[
+ [q^{T_n}]\mathcal P_n=\frac{B_n(1)}{n!},\qquad
+ [q^{T_n-1}]\mathcal P_n=-\frac{B_n(1)}{n!}
+   +\frac{B_{n-1}(1)}{2(n-1)!}\quad(n\geq2),
+\]
+and exact degree \(T_n\) when \(n=1\) or \(n\) is even, versus \(T_n-1\)
+otherwise.  Lean's \nolinkurl{bernoulli' n} is precisely
+\(B_n(1)=(-1)^nB_n\), with Mathlib using \(B_1=-1/2\).  Consequently
+\cref{p7:thm:Pn} is Exact: its algebraic recurrence, bound, zero and small
+cases, its inner strict-disk and exterior analytic normalizations, and its
+leading/odd-degree clause are all supplied.  The sharper q-monograph label
+\nolinkurl{prop:qF-P-degree-sharp} is Exact as well.  Neither promotion fills
+any missing clause of the broader geometric-uniform MGF theorem, but the
+RatFunc leaf above makes \nolinkurl{thm:qF-moment-polynomial} Exact.
+\end{statusbox}
+
+\begin{statusbox}{Post-snapshot Lean status (continued): Census and crosswalk}
+The \(1+8\)
+algebraic leaf raised the historical 903/11,448 checkpoint to the historical
+904 modules and 11,457 public declarations; the exhaustive \(0+1\) real bridge
+raised the next historical checkpoint to 905 modules and 11,458 public
+declarations; and the exhaustive \(1+2\) complex leaf raised the next
+incoming-branch checkpoint to 906 modules and 11,461 public declarations; in
+the merged chronology it formed the historical 918/11,568 checkpoint.  The
+exhaustive zero-definition/one-theorem
+\path{HalfQBinomialRootSimplicity.lean} leaf then gives the merged-main
+919/11,569 checkpoint.  Its theorem
+\lean{halfQBinomial_sum_rootMultiplicity_two_pow}, combined with the existing
+complete rational root classification and half-base Gaussian-coefficient
+bridge, makes \nolinkurl{cor:halfbase-root-locus} Exact.  It makes no
+arbitrary-base or arbitrary-field simplicity claim, and
+\nolinkurl{cor:qbinom-inversion-law} remains Partial.
+The exhaustive \(1+2\) exterior leaf then gives 920/11,572, and the exhaustive
+\(0+3\) sharp-degree leaf gives the historical 921/11,575 checkpoint.  The
+subsequent \path{RvachevLaurentLeading.lean} \((1+6)\) leaf gives 922/11,582,
+and \path{FinitePrefixAppellRecovery.lean} \((11+17)\) gives the historical
+923/11,610 checkpoint.  The final RatFunc \((1+4)\) leaf gives the historical
+924/11,615 checkpoint.  The existing
+\path{ProbabilityLaplaceMoments.lean} module then adds exactly the two public
+theorems
+\lean{weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg} and
+\lean{integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp}.
+Atomlessness makes the first the exact closed-tail convention, while the
+second is the full-law power-moment formula for every natural degree at least
+one; together with the existing global up/Fabius identities, they make
+\nolinkurl{prop:up-tail} and \nolinkurl{cor:up-moments} Exact.  This
+zero-definition/two-theorem increment gives the intermediate 924/11,617
+checkpoint.  The unrelated one-definition/one-theorem
+\path{RvachevLegendreBiorthogonality.lean} leaf then gives the historical
+925/11,619 incoming-branch census.  The local fixed-column branch separately
+recorded 903/11,453 and its first union with the algebraic polynomial branch
+recorded 904/11,462.  In the final union, its two shared declarations are
+counted once and its three remaining declarations give the live repository
+census of 925 modules and 11,622 public declarations.  The q forward ledger
+is 181 Exact / 78 Partial / 15 None / 8 interface rows, and the
+five-publication source concordance is
+94 Lean-proved / 384 human-proved frontier / 60 not-applicable / 9 conjecture
+rows.  The Laurent and finite-prefix leaves are
+included here for the census and exhaustive API counts; their Exact inverse-
+series status rows belong to the inverse-series crosswalk.
+The pre-merge PDF receipt predates these crosswalks and remains recorded solely
+as historical provenance; it is not the render receipt for this merged source
+edition.
 \end{statusbox}
 
 The polynomial is not decorative: the exact endpoint lattice of

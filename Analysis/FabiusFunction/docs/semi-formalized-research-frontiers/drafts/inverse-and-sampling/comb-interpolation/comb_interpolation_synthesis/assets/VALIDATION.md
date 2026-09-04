@@ -6,7 +6,7 @@ baseline is `73f0b373126ef22a3b5dccadfa7b99d61d445345`. Historical artifacts rem
 receipts only for their stated input graphs. Full numerical replay and
 fresh-checkout reproduction remain separate.
 
-The current source combines the incoming stable-path revisions to
+The accepted current source combines the incoming stable-path revisions to
 `chapters/01_geometric_core.tex` and `chapters/99_bibliography.tex` with the
 local general-$q$/endpoint-jet, Lagrange,
 `FabiusFunction.PrimePowerBinomialValuation`,
@@ -20,13 +20,10 @@ the geometric Newton coefficient family consistently across the driver,
 chapter 01, and chapter 90 as
 `\FabiusGeometricNewtonCoefficient{k}{q}`. The repository-wide documentation
 census recorded at the earlier merge checkpoint was 629 Lean modules and 8,546
-public declarations. The checked-in PDF was built from the earlier source graph
-and passed the complete publication gate recorded below. Later
-canonical-notation edits in chapters 01, 03, and 90 and in the driver require
-a fresh exact three-pass render. Live package-wide checksum ledgers are retired
-and no longer participate in current validation; their historical checkpoints
-remain recoverable from Git. The retained PDF and current source remain distinct
-payloads.
+public declarations. The current PDF was built from this merged graph and
+passed the complete publication gate recorded below. Live package-wide
+checksum ledgers are retired and no longer participate in current validation;
+their historical checkpoints remain recoverable from Git.
 
 ## Completed source and evidence checks
 
@@ -76,7 +73,22 @@ The complete row-level audit is
 are historical manifests, mismatches are reported rather than silently
 rewritten. They do not certify the current canonical payloads.
 
-## Current source-only Lean crosswalk checkpoint
+## Current merged-source publication receipt
+
+- The driver has 187 lines and 6,724 bytes, SHA-256
+  `a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`.
+- The ordered nine-file TeX graph has 12,773 lines and 483,551 bytes,
+  aggregate SHA-256
+  `cef466ee56f6bb864faaac2244bccf1dbc2fd4032a717b6c81604551c0427309`.
+- Three strict serial passes produced 153/160/160 pages.
+- The accepted PDF has 160 A4 pages and 2,468,109 bytes, SHA-256
+  `bb714c8be4b82de2a888e0302da3aaf957b9e885f2c5f59466b3ea5d659e3f71`.
+- The final log has 1,370 lines and 58,773 bytes, SHA-256
+  `8df53a7db51c85b7a046c5f58587319095b3d28c61b0091861bdeb1f43b342e3`.
+- The prohibited-log, A4/rotation, PDF 1.5, encryption, embedded/subset-font,
+  Libertinus, Type-3, and visual gates all passed.
+
+## Earlier source-only Lean crosswalk checkpoint (history)
 
 - The current source-only notation layer uses
   `\FabiusGeometricNewtonCoefficient{k}{q}` for the Fabius divided-difference
@@ -117,12 +129,13 @@ rewritten. They do not certify the current canonical payloads.
   discipline (213 result environments, 150 proof-required), 801 labels, 783
   references, 62 bibliography keys, all disposition and evidence audits, and
   the concordance.
-- No PDF was rebuilt.  The retained 158-page PDF remains the validated
-  historical checkpoint with 2,456,105 bytes and SHA-256
+- No PDF was rebuilt at that source-only checkpoint. The then-retained
+  158-page PDF remains a validated historical artifact with 2,456,105 bytes
+  and SHA-256
   `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`;
   its historical receipt is recorded separately from the current source.
 
-## Retained semantic-union publication checkpoint
+## Earlier semantic-union publication checkpoint (history)
 
 - The current union retains the incoming `chapters/01_geometric_core.tex` and
   `chapters/99_bibliography.tex` path corrections together with the local
