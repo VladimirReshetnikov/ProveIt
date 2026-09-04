@@ -37372,12 +37372,32 @@ $(0,\infty)$, rather than from any property of the branch.  Part (4) is
 \lean{Fabius.hasDerivAt_linLogCore} for $\Phi_0'(X)=a+b/X$ and
 \lean{Fabius.linLogCore_slope_eq} for the Lambert form $a(1+W)/W$.
 
-Not formalized: the $b<0$ half of (3).  There $\Phi_0$ has an interior critical
-point at $X_\ast=|b|/a$, the threshold $L_c$ of \eqref{p0:eq:core-threshold}
-appears, and above it there are two positive solutions --- the smaller from
-$\Wlam_0$ and the larger from $\Wlam_{-1}$, the order being reversed by
-$W\mapsto(b/a)W$.  \Cref{p0:eq:core-iff} already covers that case; what is
-missing is only the branch bookkeeping, which needs the lower real branch.
+The $b<0$ half of (3) is formalized as well, on the corpus's lower real branch
+$\Wlam_{-1}$.  \lean{Fabius.linLogCoreThreshold} is $L_c$, and
+\lean{Fabius.linLogCore_critical} states what \eqref{p0:eq:core-threshold} asserts
+in passing but does not display: $L_c$ is the \emph{critical value},
+$L_c=\Phi_0(|b|/a)$, an identity in $a$ and $b$ alone.
+\lean{Fabius.linLogCoreArg_mem_Ioo_iff} is the threshold characterization
+itself --- an equivalence, $z(L)\in(-\e^{-1},0)\iff L>L_c$ --- so the
+condition is proved necessary as well as sufficient, which is what the word
+\emph{precisely} in \cref{p0:thm:lambert-core}(3) claims.
+
+The two roots are \lean{Fabius.linLogCoreRoot} on the principal branch and
+\lean{Fabius.linLogCoreRootLower} on the lower branch;
+\lean{Fabius.linLogCoreRoot_pos_of_neg} and \lean{Fabius.linLogCoreRootLower_pos}
+give positivity, \lean{Fabius.linLogCore_linLogCoreRoot_of_neg} and
+\lean{Fabius.linLogCore_linLogCoreRootLower} that both solve
+\eqref{p0:eq:core-equation}, and \lean{Fabius.linLogCoreRoot_lt_critical}
+together with \lean{Fabius.critical_lt_linLogCoreRootLower} the separation
+$X_0<|b|/a<X_{-1}$, whence \lean{Fabius.linLogCoreRoot_ne_linLogCoreRootLower}.
+The separation is where the order reversal is used, and the formal proof makes
+the mechanism visible: it is $-1<\Wlam_0(z)$ against $\Wlam_{-1}(z)<-1$
+multiplied by the \emph{negative} number $b/a$, so the branch with the larger
+$W$ yields the smaller $X$.
+
+What remains unformalized in \cref{p0:thm:lambert-core} is only the
+asymptotic clause $X=L/a+\bigO(\log L)$ as $L\to+\infty$, and the
+complex reading with a general $\Wlam_k$.
 \end{remark}
 
 \begin{corollary}[Branch rule]\label{p0:cor:branch-rule}
