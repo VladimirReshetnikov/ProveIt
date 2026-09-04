@@ -3905,7 +3905,7 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 914 modules and 11,554 public declarations.  The immediately
+census is 914 modules and 11,555 public declarations.  The immediately
 preceding Appell/fixed-column/barycenter/Matrix checkpoint was 910/11,525;
 the complex Bernoulli value-completion checkpoint 903/11,448 remains
 historical.  The current TeX also
@@ -9446,7 +9446,17 @@ hypothesis is therefore meaningful even for zero divisors.
 
 Over a field, distinctness of $1,q,\ldots,q^p$ supplies
 \eqref{eq:geometric-exact-row-hypothesis} for the Lagrange weights
-$\lambda_{p,k}^{(q)}$.  Consequently, for every block start $s\in\NaturalNumbers$,
+$\lambda_{p,k}^{(q)}$.  More precisely, injectivity of \(k\mapsto q^k\) on
+\(0\leq k\leq p\) gives, for every \(P\in F[X]\) with
+\(\operatorname{natDegree}P\leq p\),
+\[
+ \sum_{k=0}^{p}\lambda_{p,k}^{(q)}P(cq^k)=P(0).
+\]
+Here \(c\) is arbitrary, including zero; this strictly subsumes the
+nonzero-scale premise of the q-monograph's
+\nolinkurl{cor:scaled-geometric-moments}.  Together with
+\eqref{eq:scaled-geometric-exact-row-all-moments}, it makes that corollary
+Exact by composition.  Consequently, for every block start $s\in\NaturalNumbers$,
 \begin{equation}
  \sum_{k=0}^{p}\lambda_{p,k}^{(q)}(q^{s+k})^m
  =(-1)^p q^{sm+\binom{p+1}{2}}\GaussianBinomial{m-1}{p}{q},
@@ -9494,7 +9504,10 @@ Lagrange specializations are
 \lean{sum_geometricLagrangeWeight_mul_pow_succ_add},
 \lean{sum_geometricLagrangeWeight_mul_pow_of_pos},
 \lean{sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos}, and
-\lean{sum_geometricLagrangeWeight_mul_shifted_pow_of_pos} in
+\lean{sum_geometricLagrangeWeight_mul_shifted_pow_of_pos}, together with the
+polynomial-exactness theorem
+\lean{sum_geometricLagrangeWeight_mul_eval_scaled_geometric}, in the
+zero-definition/nine-theorem module
 \path{GeometricResidualMoments.lean}.  The pre-existing pointwise closed
 weight and cleared-denominator formulas remain in
 \path{GeometricQBinomialLagrange.lean}; its positive-moment theorem is now a

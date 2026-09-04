@@ -362,8 +362,10 @@ fourteen-theorem Rvachev--Appell Hasse leaf; the zero-definition/two-theorem
 greater-than-one Gaussian asymptotics leaf; the one-definition/fourteen-theorem
 nodes-only Rvachev amplitude leaf; and the one-definition/eight-theorem
 geometric-uniform moment-polynomial algebra leaf; and the zero-definition/
-three-theorem Thue--Morse GammaLog differential leaf.  The live source census is
-914 facade-reachable modules and 11,554 public declarations; the moment-
+three-theorem Thue--Morse GammaLog differential leaf; and the one-theorem
+scaled-geometric polynomial-evaluation strengthening of the existing
+\path{GeometricResidualMoments.lean} module.  The live source census is
+914 facade-reachable modules and 11,555 public declarations; the moment-
 polynomial row remains Partial because its analytic normalization is absent.
 The retained
 257-page, 2,438,299-byte A4 PDF, SHA-256
@@ -2680,7 +2682,10 @@ the historical 910/11,525 checkpoint.  The later
 \path{GeometricUniformMomentPolynomial.lean} (1+8) leaves bring the next
 source checkpoint to 913/11,551.  The subsequent
 \path{ThueMorseGammaTowerDifferential.lean} (0+3) leaf brings the live
-source census to 914/11,554.  The nodes-only leaf makes
+source checkpoint to 914/11,554.  The subsequent one-theorem strengthening
+of the existing \path{GeometricResidualMoments.lean} module leaves the module
+count unchanged and brings the live source census to 914/11,555.  The
+nodes-only leaf makes
 \nolinkurl{cor:lag-nodes-only} Exact/Complete by composition, with rationality
 only at rational evaluation points and a formal coefficient-level Bell
 identity; it does not promote the larger right-inverse row.  Within this
@@ -2747,8 +2752,20 @@ value at zero, and the cases \(P_0,\ldots,P_4\).  It does not prove the
 analytic normalization identifying that family with the source moment
 coefficients, nor the leading-coefficient formula and consequent strict
 odd-degree drop.  Hence \nolinkurl{p7:thm:Pn} remains Partial rather than
-Exact.  The q forward ledger is 174 Exact / 84 Partial / 16 None / 8
-interface rows.  These additions are source-only, and the retained 257-page PDF
+Exact.  The existing \path{GeometricResidualMoments.lean} module now has zero
+definitions and nine public theorems.  Its
+\lean{sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos} theorem
+supplies the displayed positive-degree scaled-geometric moment formula, while
+the new \lean{sum_geometricLagrangeWeight_mul_eval_scaled_geometric} theorem
+supplies exact evaluation at zero for every polynomial whose degree is at most
+the interpolation order.  Together they make
+\nolinkurl{cor:scaled-geometric-moments} Exact by composition.  Both theorems
+hold over an arbitrary field under injectivity of \(k\mapsto q^k\) on
+\(\operatorname{range}(p+1)\); the polynomial theorem permits every scale
+\(c\), including zero, and thus subsumes the manuscript's \(c\ne0\) case.
+No larger interpolation or node-collision claim is made.  The q forward
+ledger is 175 Exact / 83 Partial / 16 None / 8 interface rows.  These
+additions are source-only, and the retained 257-page PDF
 remains explicitly historical; no PDF was built for this update.
 The newest six module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),

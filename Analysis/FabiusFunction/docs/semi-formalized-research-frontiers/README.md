@@ -127,9 +127,12 @@ public declarations. The subsequent zero-definition/two-theorem
 `GaussianBinomialGreaterOneAsymptotics`, one-definition/fourteen-theorem
 `RvachevLagrangeNodesOnly`, and one-definition/eight-theorem
 `GeometricUniformMomentPolynomial` leaves brought the next source checkpoint
-to 913 modules and 11,551 public declarations. The final zero-definition/
-three-theorem `ThueMorseGammaTowerDifferential` leaf brings the live census to
-914 modules and 11,554 public declarations.
+to 913 modules and 11,551 public declarations. The subsequent zero-definition/
+three-theorem `ThueMorseGammaTowerDifferential` leaf brought the next source
+checkpoint to 914 modules and 11,554 public declarations. The one-theorem
+strengthening of the existing `GeometricResidualMoments` module leaves the
+module count unchanged and brings the live census to 914 modules and 11,555
+public declarations.
 
 `FabiusFunction.GaussianBinomialGreaterOneAsymptotics` has exactly the two
 theorems
@@ -258,7 +261,18 @@ the later Euler, q-binomial, Jacobi, quantum-binomial, Rogers--Szegő,
 cyclotomic-divisibility, q-Catalan, primitive-root-block, q-Lucas, Jackson
 q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
 q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result
-forward status totals are now 174 Exact / 84 Partial / 16 None / 8 interface.
+forward status totals are now 175 Exact / 83 Partial / 16 None / 8 interface.
+`FabiusFunction.GeometricResidualMoments` now has zero definitions and nine
+public theorems. Its existing
+`Fabius.sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos` supplies
+the displayed positive-degree scaled-geometric moment formula, while the new
+`Fabius.sum_geometricLagrangeWeight_mul_eval_scaled_geometric` supplies exact
+evaluation at zero for every polynomial of degree at most the interpolation
+order. Together they make `cor:scaled-geometric-moments` Exact by composition.
+Both results hold over an arbitrary field under injectivity of the nodes
+`k ↦ q^k` on `range (p + 1)`; the polynomial theorem permits every scale `c`,
+including zero, and therefore subsumes the manuscript's `c ≠ 0` case. No
+larger interpolation or node-collision claim is made.
 The partition-symmetry row is exact; the basic geometric-uniform row is now
 exact because `GeometricUniformRealization.lean` transfers the canonical law
 to an arbitrary ambient probability space carrying independent coordinates

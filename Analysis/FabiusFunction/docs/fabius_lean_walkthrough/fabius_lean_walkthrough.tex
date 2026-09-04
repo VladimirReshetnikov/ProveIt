@@ -3608,13 +3608,22 @@ forms are
 \nolinkurl{sum_weight_mul_scaled_geometric_pow_of_pos}.
 
 For a field, finite-node injectivity is used only to obtain those low moments
-from the geometric Lagrange row.  The four resulting declarations are
+from the geometric Lagrange row.  The five resulting declarations are
 \nolinkurl{sum_geometricLagrangeWeight_mul_pow_succ_add},
 \nolinkurl{sum_geometricLagrangeWeight_mul_pow_of_pos},
 \nolinkurl{sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos}, and
-\nolinkurl{sum_geometricLagrangeWeight_mul_shifted_pow_of_pos}.  In the final
+\nolinkurl{sum_geometricLagrangeWeight_mul_shifted_pow_of_pos}, together with
+\nolinkurl{sum_geometricLagrangeWeight_mul_eval_scaled_geometric}.  The last
+theorem says, for every polynomial \(P\) of natural degree at most \(p\),
+\[
+ \sum_{k=0}^{p}\lambda_{p,k}^{(q)}P(cq^k)=P(0),
+\]
+under injectivity of \(k\mapsto q^k\) on the finite node range.  Its scale
+\(c\) is arbitrary, including zero, so it subsumes the manuscript's
+\(c\ne0\) case.  Along with the scaled positive-moment theorem it makes
+\nolinkurl{cor:scaled-geometric-moments} Exact by composition.  In the shifted
 form the nodes are \(q^{start+k}\), and the exponent of \(q\) is exactly
-\(start\,m+\binom{p+1}{2}\).  These sixteen declarations are finite algebra:
+\(start\,m+\binom{p+1}{2}\).  These seventeen declarations are finite algebra:
 by themselves they assert no analytic Richardson remainder, convergence rate,
 or sign bound for a sampled function.
 
@@ -5975,7 +5984,7 @@ Module & Role in the development \\
 \nolinkurl{CompleteHomogeneousBell.lean} & Finite power sums and factorially weighted Bell input; the division-free complete-homogeneous/complete-Bell identity over every commutative semiring and its factorially normalized pointwise report form over commutative \(\RationalNumbers\)-algebras.  No analytic convergence is asserted. \\
 \nolinkurl{GeometricCompleteHomogeneous.lean} & Denominator-free principal specialization \(h_n(1,q,\ldots,q^p)=\GaussianBinomial{n+p}{p}{q}\), its arbitrary common-scale form over every commutative semiring, and the range-indexed bridge used by interpolation rows. \\
 \nolinkurl{LagrangeResidualMoments.lean} & Every higher residual moment of a polynomially exact finite row, with a representation-independent commutative-ring theorem and the distinct-node Lagrange specialization. \\
-\nolinkurl{GeometricResidualMoments.lean} & Every positive residual moment on \(c,cq,\ldots,cq^p\) over a commutative ring, assuming exactness directly on those scaled nodes, together with distinct-node Lagrange, arbitrary-dilation, and shifted-block field corollaries. \\
+\nolinkurl{GeometricResidualMoments.lean} & Exhaustive zero-definition/nine-theorem surface: every positive residual moment on \(c,cq,\ldots,cq^p\) over a commutative ring, assuming exactness directly on those scaled nodes, together with distinct-node Lagrange, arbitrary-dilation, shifted-block, and polynomial-exactness field corollaries.  The theorem \nolinkurl{sum_geometricLagrangeWeight_mul_eval_scaled_geometric} assumes finite power-node injectivity and allows arbitrary \(c\), making \nolinkurl{cor:scaled-geometric-moments} Exact by composition with the positive-moment theorem. \\
 \nolinkurl{AnalyticSeriesFilter.lean} & Unconditional pointwise evaluation of finite coefficient filters: diagonalization under weighted sampled-series summability, exact finite heads and tails, and Gaussian residual tails for geometric and geometric-Lagrange rows, including shifted scales.  This generic module does not supply conditional boundary summation, uniform estimates, asymptotic rates, or a sinc-product instantiation. \\
 \nolinkurl{RvachevQBinomialFilter.lean} & Exact specialization of the Gaussian filter to the actual infinite Rvachev product: the named even modes sum to the product and scale by powers of \(c^2\); the generic complex theorem assumes exactly finite-power injectivity, the \(c=1/2\), \(q=1/4\) theorem is assumption-free, and the model-generic wrapper applies to every bounded \nolinkurl{IsFabius} solution.  Finite-prefix quotients and analytic acceleration estimates are not asserted. \\
 \nolinkurl{QBinomialVandermonde.lean} & Both zero-extended \(q\)-Vandermonde orientations, full-range and exact-\(\min\)-support central forms, the total positive shifted-central identity, and two negative-shift forms under exactly \(k\leq N\), plus the total integer-index shifted-central identity and its finitely supported \nolinkurl{finsum} form built from \nolinkurl{gaussianBinomialInt}, all denominator-free over arbitrary commutative semirings. \\
@@ -6206,7 +6215,7 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The live current-tree audit scans
-914 modules and 11,554 public declarations, with no missing module headers or
+914 modules and 11,555 public declarations, with no missing module headers or
 declaration comments.  At the retained historical mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
@@ -6316,7 +6325,10 @@ analytic normalization and sharp leading, subleading, and exact-degree claims
 remain absent.  The final 0+3
 \nolinkurl{ThueMorseGammaTowerDifferential.lean} leaf raises the live census
 to 914/11,554 and makes \nolinkurl{p2:thm:gamma-tower} Exact on \(a>0\) for
-the chosen GammaLog coordinate.  Every module is reachable from the facade.  No aggregate facade
+the chosen GammaLog coordinate.  The subsequent polynomial-exactness theorem
+in \nolinkurl{GeometricResidualMoments.lean} raises the live declaration count
+to 11,555 and makes \nolinkurl{cor:scaled-geometric-moments} Exact by
+composition. Every module is reachable from the facade.  No aggregate facade
 build is claimed for this current-tree census.  The retained PDF and the
 title-page pin remain historical receipts and do not claim parity with the
 merged source; no PDF was built for this source-only union.
