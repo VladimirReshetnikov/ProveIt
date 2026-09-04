@@ -64,7 +64,6 @@ theorem geometricLagrangeWeight_eq_qToeplitzWeight (q : ℚ) (hq : q ≠ 0)
     hfac]
   simp only [← finiteQPochhammerIn_rat_eq]
   field_simp
-  ring
 
 /-- The reflected form of the bridge: the Toeplitz weight at index `j` is
 the geometric Lagrange weight at the complementary index. -/
