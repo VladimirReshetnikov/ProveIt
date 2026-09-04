@@ -112,6 +112,7 @@ private theorem reverseRow_series (k : ℕ) :
     ring
   rw [egfA_reverseRowKernel, subst_mul hu, subst_C, subst_mul hu,
     subst_pow hu, subst_X hu, subst_logTail, hleft, hder, hmul, pow_succ]
+  simp only [PowerSeries.C]
   ring
 
 /-- The reverse-row recurrence as a finite Stirling transform. It is valid
