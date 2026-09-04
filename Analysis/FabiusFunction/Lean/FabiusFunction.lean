@@ -615,6 +615,7 @@ import FabiusFunction.QPochhammerDissection
 import FabiusFunction.QPochhammerInfinite
 import FabiusFunction.QBinomialTheoremInfinite
 import FabiusFunction.GaussianBinomialFixedColumnRate
+import FabiusFunction.GaussianBinomialGreaterOneAsymptotics
 import FabiusFunction.JacobiTripleProduct
 import FabiusFunction.QPascalSummation
 import FabiusFunction.GaussianBinomialContinuity
