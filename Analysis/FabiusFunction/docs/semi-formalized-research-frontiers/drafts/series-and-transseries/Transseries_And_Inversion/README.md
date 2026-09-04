@@ -5,7 +5,8 @@
 
 ## Status
 
-All five source groups are merged.
+Complete. All five source groups are merged, and all five source
+directories were residue-audited and deleted on 4 September 2026.
 
 | Source group | Lines | Absorbed as |
 | --- | --- | --- |
@@ -15,8 +16,8 @@ All five source groups are merged.
 | `lambert-inverse-transseries/` (3 articles) | 5,209 | Part XI, `x + W(x)` |
 | `sequence-transseries/` (5 articles) | 9,743 | Part XIV, Bell and Fubini |
 
-Remaining: the provenance and repair appendices must be extended to all
-thirty sources, and the absorbed sources deleted after a residue audit.
+The provenance appendix lists all forty-two sources with the part that
+absorbed each; the repair appendix lists every correction made.
 
 ## How the two apparatuses relate
 
@@ -79,6 +80,6 @@ a real-argument Fibonacci function); the reversal of `x + W(x)` in depth; the Be
 
 The volume is assembled by a script from its sources rather than edited in
 place; the assembled `.tex` carries a header saying so. Three `pdflatex`
-passes. Current: 54,009 lines, 689 A4 pages, 15 parts, 56 chapters, 3,075
+passes. Current: 54,306 lines, 694 A4 pages, 15 parts, 58 chapters, 3,095
 labels all distinct, no dangling references, no LaTeX errors, no undefined
 references.
