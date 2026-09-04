@@ -257,6 +257,7 @@ import FabiusFunction.ThueMorseAutocorrelation
 import FabiusFunction.ThueMorseOverlapFree
 import FabiusFunction.ThueMorseRecurrence
 import FabiusFunction.ThueMorseRecurrenceGap
+import FabiusFunction.ThueMorseSparseBinomial
 import FabiusFunction.ThueMorseMahler
 import FabiusFunction.ThueMorseBooleanMobius
 import FabiusFunction.ThueMorseMultinomial
