@@ -787,6 +787,7 @@ import FabiusFunction.LambertWAnalytic
 import FabiusFunction.MixedDifferenceForwardDiff
 import FabiusFunction.GeometricProuhetBlock
 import FabiusFunction.GeneralLinearThueMorseSum
+import FabiusFunction.QuadraticCoreCatalan
 
 set_option autoImplicit false
 
