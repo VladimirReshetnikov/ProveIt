@@ -1,4 +1,5 @@
 import FabiusFunction.ThueMorseNewmanQuantitative
+import Mathlib.Order.LiminfLimsup
 
 /-!
 # Exact self-similarity of the Newman sums, and non-convergence
@@ -36,6 +37,9 @@ and `1/√3` at every `4^k·8`.
 * `newmanRatio_oscillates` — both values recur at arbitrarily large
   cutoffs, so the ratio oscillates forever with amplitude at least
   `(2-√3)/3`.
+* `newmanRatio_mem_Icc` — the quantitative window `[1/9, 2]`.
+* `liminf_lt_limsup_newmanRatio` — **the oscillation, quantitatively**:
+  `liminf ≤ √3/3 < 2/3 ≤ limsup`.
 * `not_tendsto_newmanRatio` — **non-convergence**.
 -/
 
@@ -239,6 +243,71 @@ theorem newmanRatio_oscillates :
   ⟨frequently_newmanRatio_eq_two_div_three,
     frequently_newmanRatio_eq_sqrt_three_div_three,
     sqrt_three_div_three_lt_two_div_three⟩
+
+/-! ## The oscillation as a limsup/liminf separation -/
+
+/-- The ratio is caught between the quantitative Newman constants at
+every positive cutoff: `1/9 ≤ N₃(N)/N^(log₄3) ≤ 2`. -/
+theorem newmanRatio_mem_Icc {N : ℕ} (hN : 1 ≤ N) :
+    newmanRatio N ∈ Set.Icc (1 / 9 : ℝ) 2 := by
+  have hpos : (0 : ℝ) < (N : ℝ) ^ (Real.logb 4 3) := by
+    refine Real.rpow_pos_of_pos ?_ _
+    exact_mod_cast hN
+  obtain ⟨hlow, hhigh⟩ := newman_quantitative N hN
+  constructor
+  · rw [newmanRatio, le_div_iff₀ hpos]
+    calc (1 : ℝ) / 9 * (N : ℝ) ^ (Real.logb 4 3)
+        = (N : ℝ) ^ (Real.logb 4 3) / 9 := by ring
+      _ ≤ _ := hlow
+  · rw [newmanRatio, div_le_iff₀ hpos]
+    linarith
+
+/-- The ratio is bounded above along `atTop`. -/
+theorem isBoundedUnder_le_newmanRatio :
+    IsBoundedUnder (· ≤ ·) atTop (fun N : ℕ => newmanRatio N) := by
+  refine ⟨2, Filter.eventually_map.mpr ?_⟩
+  filter_upwards [eventually_ge_atTop 1] with N hN
+  exact (newmanRatio_mem_Icc hN).2
+
+/-- The ratio is bounded below along `atTop`. -/
+theorem isBoundedUnder_ge_newmanRatio :
+    IsBoundedUnder (· ≥ ·) atTop (fun N : ℕ => newmanRatio N) := by
+  refine ⟨1 / 9, Filter.eventually_map.mpr ?_⟩
+  filter_upwards [eventually_ge_atTop 1] with N hN
+  exact (newmanRatio_mem_Icc hN).1
+
+/-- `2/3 ≤ limsup N₃(N)/N^(log₄3)`: the larger ray value is attained
+cofinally. -/
+theorem two_div_three_le_limsup_newmanRatio :
+    (2 : ℝ) / 3 ≤ limsup (fun N : ℕ => newmanRatio N) atTop :=
+  le_limsup_of_frequently_le
+    (frequently_newmanRatio_eq_two_div_three.mono fun _ h => h.ge)
+    isBoundedUnder_le_newmanRatio
+
+/-- `liminf N₃(N)/N^(log₄3) ≤ √3/3`: the smaller ray value is attained
+cofinally. -/
+theorem liminf_newmanRatio_le_sqrt_three_div_three :
+    liminf (fun N : ℕ => newmanRatio N) atTop ≤ Real.sqrt 3 / 3 :=
+  liminf_le_of_frequently_le
+    (frequently_newmanRatio_eq_sqrt_three_div_three.mono fun _ h => h.le)
+    isBoundedUnder_ge_newmanRatio
+
+/-- **The oscillation, quantitatively**: the lower and upper limits of
+the Newman ratio are separated,
+
+`liminf ≤ √3/3 < 2/3 ≤ limsup`,
+
+so `N₃(N)/N^(log₄3)` oscillates forever with amplitude at least
+`(2-√3)/3`.  This is the sharp form of `not_tendsto_newmanRatio`: not
+merely that no limit exists, but that the two limit points are pinned to
+opposite sides of an explicit gap, inside the quantitative window
+`[1/9, 2]`. -/
+theorem liminf_lt_limsup_newmanRatio :
+    liminf (fun N : ℕ => newmanRatio N) atTop <
+      limsup (fun N : ℕ => newmanRatio N) atTop :=
+  lt_of_le_of_lt liminf_newmanRatio_le_sqrt_three_div_three
+    (lt_of_lt_of_le sqrt_three_div_three_lt_two_div_three
+      two_div_three_le_limsup_newmanRatio)
 
 /-- **The Newman ratio does not converge.**  It is constantly `2/3`
 along `N = 4^(k+1)` and constantly `1/√3` along `N = 4^k·8`, and those

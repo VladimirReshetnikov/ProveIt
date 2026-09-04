@@ -285,6 +285,7 @@ import FabiusFunction.DyadicBoundaryIdentity
 import FabiusFunction.AliasDyadicBridge
 import FabiusFunction.AliasQBinomialBridge
 import FabiusFunction.MeanValueBracket
+import FabiusFunction.TransseriesHeight
 import FabiusFunction.LambertShiftInverse
 import FabiusFunction.LambertInverseCoefficients
 import FabiusFunction.CyclicCharacterSums
@@ -514,6 +515,7 @@ import FabiusFunction.ThueMorseSinhProduct
 import FabiusFunction.RvachevFourierDecay
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
+import FabiusFunction.TransseriesBlockAntiderivative
 import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
 import FabiusFunction.TransferPositivity
