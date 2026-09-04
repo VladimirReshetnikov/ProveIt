@@ -55,7 +55,7 @@ compiler validation and report the inherited 208-page PDF as historical. Those
 historical figures are retained for provenance and do not replace the current
 register or imply an aggregate build.
 
-`NewtonReciprocal.lean` passed focused compilation on 2026-09-04 using
+All affected leaves passed focused compilation on 2026-09-04 using
 `lake env lean -o .lake/build/lib/lean/FabiusFunction/NewtonReciprocal.olean
 Analysis/FabiusFunction/Lean/FabiusFunction/NewtonReciprocal.lean` (exit zero).
 Its five public theorems are compiler-checked. At that checkpoint the other twelve
