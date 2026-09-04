@@ -1056,10 +1056,18 @@ The three facts the proof uses are formal in \path{HalfIntegerAliasIdentity.lean
 mode, \(A_{N,2s}=0\) for \(0<s<N\) (\path{Fabius.foldedCoefficient_two_mul_eq_zero}, since
 each alias point \(qN+s\) is a nonzero integer, where \(\FourierTwoPi{\RvachevUp}\) vanishes);
 and the symmetry \(A_{N,-r}=A_{N,r}\) (\path{Fabius.foldedCoefficient_neg}, from the
-evenness of \(\FourierTwoPi{\RvachevUp}\)).  The final pairing of \(r\) with \(2N-r\) into the
-cosine form \eqref{p1:eq:inverse-DCT} is not separately formalized; the dual statement on
-the sample side, the cosine form of \(A_{N,r}\) over all residues \(j\), is
-\path{Fabius.foldedCoefficient_eq_sum_cos}.
+evenness of \(\FourierTwoPi{\RvachevUp}\)).  The pairing of \(r\) with \(2N-r\) into the cosine
+form \eqref{p1:eq:inverse-DCT} is formal as well, for every even \(N\):
+\path{Fabius.gridSample_eq_half_add_sum_odd} in \path{AliasDyadicBridge.lean} is the boxed
+display verbatim.  It is the same two steps as on the sample side --- the reconstruction sum is
+made real by pairing \(r\) with \(-r\) (\path{Fabius.sum_char_mul_foldedCoefficient_eq_sum_cos},
+using \(A_{N,-r}=A_{N,r}\) and \(\chi(rj)+\chi(-rj)=2\cos(\pi rj/N)\)), and the resulting even
+sum is folded to \(1\le r<N\) by \path{Fabius.sum_zmod_even_eq_fold}, the cosine factor being
+even in the frequency by \path{Fabius.cos_alias_angle_neg_left}.  The constant \(\tfrac12\) is
+\(A_{N,0}=1\) halved, the frequency \(r=N\) drops out because \(N\) is then an even residue, and
+the surviving even frequencies below \(N\) vanish by
+\path{Fabius.foldedCoefficient_two_mul_eq_zero}, which is what leaves the odd ones alone.  The
+dual statement on the sample side is \path{Fabius.foldedCoefficient_eq_sum_cos}.
 
 \begin{corollary}[Exact discrete energy identity]\label{p1:cor:discrete-energy}
 One has
