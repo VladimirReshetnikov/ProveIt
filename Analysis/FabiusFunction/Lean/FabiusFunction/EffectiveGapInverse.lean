@@ -213,10 +213,6 @@ theorem effectiveInversionOn_Icc_of_computablePositiveRationalGap
       (inv_lt_inv₀ (by positivity) (by exact_mod_cast hn)).2 hpow
     exact hinverse.trans (by simpa only [one_div] using hreciprocal)
 
-private theorem unitClamp_mem_Icc_for_gap (x : ℝ) :
-    unitClamp x ∈ Icc (0 : ℝ) 1 :=
-  (projIcc (0 : ℝ) 1 zero_le_one x).property
-
 private theorem clampedIsComputableRealFunction
     {g : ℝ → ℝ}
     (hseq : SequentiallyComputableOn g (Icc (0 : ℝ) 1))
@@ -226,13 +222,13 @@ private theorem clampedIsComputableRealFunction
     intro x hx
     exact hseq (fun i => unitClamp (x i))
       (unitClamp_sequentiallyComputable x hx)
-      (fun i => unitClamp_mem_Icc_for_gap (x i))
+      (fun i => unitClamp_mem_Icc (x i))
   effectivelyUniformContinuous := by
     rcases heffective with ⟨d, hdComp, hdPos, hmod⟩
     refine ⟨d, hdComp, hdPos, ?_⟩
     intro n hn x y hxy
-    apply hmod n hn (unitClamp x) (unitClamp_mem_Icc_for_gap x)
-      (unitClamp y) (unitClamp_mem_Icc_for_gap y)
+    apply hmod n hn (unitClamp x) (unitClamp_mem_Icc x)
+      (unitClamp y) (unitClamp_mem_Icc y)
     exact (abs_projIcc_sub_projIcc zero_le_one).trans_lt hxy
 
 /-- Under computable positive rational dyadic-gap bounds, clamping the input

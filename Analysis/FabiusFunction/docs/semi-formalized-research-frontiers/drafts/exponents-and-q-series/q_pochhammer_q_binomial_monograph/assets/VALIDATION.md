@@ -71,5 +71,6 @@ with 73 source SHA-256 values, four explicit
 and 38 `NOT_RETAINED` markers.  All 39 destination hashes verified, and all 33
 non-script migrations were byte-identical to their sources.  The six source
 directories were then retired; snapshot
-`f46e5d7f6f225bf0a43d8945e67d6f0e4aec8d54` preserves them.  `SHA256SUMS`
-fixes the exact post-migration bytes of this inventory and its documentation.
+`f46e5d7f6f225bf0a43d8945e67d6f0e4aec8d54` preserves them. Package checksum
+manifests are now retired; the destination hashes in `ASSET_DISPOSITION.csv`
+preserve the recorded migration receipts without acting as a live package gate.

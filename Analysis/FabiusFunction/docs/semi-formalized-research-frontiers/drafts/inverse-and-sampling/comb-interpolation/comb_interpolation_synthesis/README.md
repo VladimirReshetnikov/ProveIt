@@ -36,10 +36,38 @@ evidence of a compiled Lean declaration. Likewise, numerical tables and plots
 are checks and illustrations, not proof premises. The current
 `FabiusFunction.LagrangeRvachevSynthesis` crosswalk verifies generic scalar
 decoder synthesis, node biorthogonality, coefficient factorization, the full
-finite interpolation loop, and the unnormalized decoder row-sum law. It does
-not claim a formal geometric Gaussian closed-form decoder, the associated
-elementary-symmetric/prefactor formula, a `Matrix` wrapper, or decoder
-optimization.
+finite interpolation loop, and the unnormalized decoder row-sum law. The
+companion `FabiusFunction.LagrangeRvachevMatrix` API adds
+`rvachevAtomIndexSet`, `RvachevAtomIndex`,
+`lagrangeRvachevEncoderMatrix`, and `lagrangeRvachevDecoderMatrix`, together
+with `lagrangeRvachevEncoderMatrix_nonneg`,
+`sum_lagrangeRvachevEncoderMatrix_row_eq_one`,
+`sum_lagrangeRvachevDecoderMatrix_row_eq_one`, and
+`lagrangeRvachevEncoderMatrix_mul_decoderMatrix`. These declarations exactly
+discharge `gq:thm:gaussian-Appell-biorthogonality`. The generic
+`exists_neg_entry_of_rightInverse_of_row_overlap` and its specialized
+`exists_lagrangeRvachevDecoderMatrix_entry_neg_of_row_overlap` prove the
+negative-entry conclusion only when the stated strictly positive row overlap
+is supplied. The downstream one-definition/fourteen-theorem
+`FabiusFunction.RvachevAppellHasse` module now proves the generic finite
+Appell--Hasse transform, odd reciprocal-moment parity, the even Rvachev--Hasse
+formula, the q-falling elementary-symmetric specialization, and the explicit
+geometric Lagrange--Rvachev decoder. In particular,
+`eval_rvachevDeconvolvedPolynomial_qFallingPower`, combined with the existing
+finite polynomial synthesis theorem, exactly discharges
+`gq:prop:q-Appell-falling`, while
+`geometric_lagrangeRvachevDecoder_eq`, combined with the generic scalar
+cardinal synthesis, exactly discharges
+`gq:thm:gaussian-Appell-decoder`. The algebraic formulas are totalized at zero
+or colliding nodes, but cardinal semantics use the manuscript assumptions
+`0 < q < 1` and `c > 0`; Lean writes the Gaussian power with the equivalent
+nonnegative denominator exponent. This promotion does not add an analytic
+reciprocal-MGF series theorem or a decoder-optimization result.
+
+The 232-row concordance therefore records 7 Lean-proved rows, 159
+human-proved frontier rows, 20 conjectures, 30 open problems, and 16 rows for
+which proof status is not applicable. Its source projection and total row
+count are unchanged.
 
 The separate exact concordance row maps the strict-interior formula in
 `thm:weight-valuation` to `Fabius.twoPowChoose_padicValNat` in
@@ -53,6 +81,20 @@ arbitrary-prime identities `Fabius.primePowerChoose_padicValNat_add` and
 `v_p(choose(p^m - 2, j - 1)) = v_p(j)` for the essential strict range
 `0 < j < p^m`, and `Fabius.twoPowSubTwoChoose_padicValNat` is the exact
 dyadic wrapper used by the endpoint-flat weights.
+
+The exact row for `gq:thm:richardson-generating` maps to
+`Fabius.geometricLagrangeRichardson_generating` in
+`FabiusFunction.GeometricRichardsonGenerating`. It proves the stated
+Euler-coefficient formal-power-series factorization over a field for nonzero
+`q`. No root-of-unity exclusion is needed for that totalized algebraic
+identity, but interpreting its coefficients as genuine Lagrange
+interpolation requires pairwise-distinct nodes. The separate explicit
+convolution `Fabius.geometricRichardsonTransform_generating` remains valid
+over commutative rings even at `q = 0`, without providing Lagrange
+interpolation semantics there. The analytic companion
+`Fabius.hasSum_geometricLagrangeRichardson_mul_pow` additionally assumes a
+complete normed field, `‖q‖ < 1`, and absolute summability of the normalized
+data series.
 
 ## Sources reconciled
 
@@ -108,8 +150,9 @@ The later canonical-notation edits in `chapters/01_geometric_core.tex`,
 `chapters/03_additive_dyadic.tex`, and `chapters/90_reference_appendices.tex`,
 together with the document-local geometric-Newton command in the driver, make
 that PDF a validated historical checkpoint rather than a rendering of the
-current source; a fresh exact three-pass build is pending. The root ledger
-verifies the current source and retained PDF as distinct payloads. The complete
+current source; a fresh exact three-pass build is pending. The former root
+ledger recorded the source and retained PDF as distinct payloads at its
+historical checkpoint. The complete
 checkpoint receipt and the older historical receipts are recorded once in
 [`assets/VALIDATION.md`](assets/VALIDATION.md).
 
@@ -149,10 +192,12 @@ not a live checksum certificate.
 The current source preserves the completed publication union's stable-path edits
 in `chapters/01_geometric_core.tex` and `chapters/99_bibliography.tex` together
 with the local general-$q$, endpoint-jet, Lagrange-synthesis,
-`PrimePowerBinomialValuation`, reference-appendix, layout, and driver edits in
+`PrimePowerBinomialValuation`, `GeometricRichardsonGenerating`,
+`RvachevAppellHasse`, reference-appendix, layout, and driver edits in
 `chapters/03_additive_dyadic.tex`, `chapters/90_reference_appendices.tex`, and
 `comb_interpolation_synthesis.tex`, and adds the exact generic-prime and dyadic
-companion-row valuation crosswalk described above.  It now spells every genuine
+companion-row valuation crosswalk, Richardson generating-function crosswalk,
+and q-Appell/geometric-decoder crosswalks described above.  It now spells every genuine
 two-adic valuation with the shared `\TwoAdicValuation` command and uses the
 document-local `\FabiusGeometricNewtonCoefficient{k}{q}` family for the
 geometric Newton coefficients formerly homographic with that valuation. The
@@ -165,10 +210,7 @@ The deterministic validator passes the nine-file TeX graph, structural and
 proof discipline (213 result environments, 150 proof-required), 801 labels,
 783 references, 62 bibliography keys,
 disposition, historical-ledger, companion-payload, 232-row
-theorem-concordance, and exhaustive package-checksum gates. Its narrow Lean
-identifier check is not a live theorem-type check. The root `SHA256SUMS` is the
-single exhaustive ledger for every other permanent package file, including
-the retained PDF and complete evidence tree; it verifies current bytes without
-asserting source/PDF synchronization. There is no
-`assets/SHA256SUMS`. A fresh-checkout reproduction and a full rerun of every
+theorem-concordance gates. Its narrow Lean identifier check is not a live
+theorem-type check. Package checksum manifests are retired and are not part of
+the current validator. A fresh-checkout reproduction and a full rerun of every
 retained numerical script remain separate reproducibility work.

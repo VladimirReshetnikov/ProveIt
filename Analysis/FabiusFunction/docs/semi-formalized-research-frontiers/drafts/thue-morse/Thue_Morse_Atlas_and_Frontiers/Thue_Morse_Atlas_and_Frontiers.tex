@@ -309,7 +309,7 @@ is not by itself evidence of formalization.  Statements proved in Lean carry the
 declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; statements without
 such a citation must not be inferred to have a formal counterpart.
 
-The current inventory in \cref{p1:sec:formalized-modules} consists of one hundred and three compiled
+The current inventory in \cref{p1:sec:formalized-modules} consists of one hundred and four compiled
 Lean modules.  It covers the finite algebraic, automata, moment, Fourier, rarefaction,
 Dirichlet--Mellin, word-combinatorial, and Fabius--Rvachev bridges recorded there, often in
 greater generality than the displayed prose.  The dependency-aware map in
@@ -1047,7 +1047,15 @@ oscillating \(N\)-scale term itself (Delange's periodic function) is not pursued
 \lean{Fabius.le\_two\_mul\_binaryWeightTotal\_add} and
 \lean{Fabius.two\_mul\_binaryWeightTotal\_le} (with \(\Floor{\log_2N}\) as
 \lean{Nat.log}), and \eqref{p1:eq:weight-total-bracket} is
-\lean{Fabius.abs\_binaryWeightTotal\_sub\_le}, with the real \(\log_2N\).
+\lean{Fabius.abs\_binaryWeightTotal\_sub\_le}, with the real \(\log_2N\).  Behind the
+bracket stands Trollope's exact digit formula: with \(N=\sum_j b_j2^j\) in binary,
+\[
+ S(N)=\sum_{j\ge0} b_j\bigl(j\,2^{j-1}+(N\bmod 2^j)\bigr),
+\]
+each set bit contributing the full dyadic block below it together with the residue
+above it; this is \lean{Fabius.binaryWeightTotal\_eq\_sum\_testBit} (over any digit window
+\(j<b\) with \(N<2^b\)), with the block value \(S(2^L)=L\,2^{L-1}\) as
+\lean{Fabius.binaryWeightTotal\_two\_pow}.
 
 \subsection{Square waves and a sine-sign product}
 
@@ -3547,15 +3555,18 @@ No. & Declaration & Formal content \\
 \bottomrule
 \end{longtable}
 
-This algebraic module does not prove the next multiple-integral corollary.
-More precisely, it closes the Boolean-cube, arbitrary-step polynomial
-extraction/cancellation/top-value, and exact affine-grid clauses of the
-continuous-chaos report's Thue--Morse corner theorem, but not that theorem's
-repeated-integral identity under its \(C^N\) hypotheses.  The report theorem
-therefore remains near-complete rather than fully formalized; a final
-analytic bridge and report-shaped wrapper remain.  Its following Walsh
-conditional-expectation corollary also still lacks the sign--magnitude
-probability construction, conditioning, and \(2^{-N}\) normalization.
+Together with \path{ThueMorseCornerIntegral.lean}, this algebraic module now
+proves every clause of the continuous-chaos report's Thue--Morse corner
+theorem.  The companion leaf defines the recursive centered box integral and
+proves, by local interval FTC and induction, that the symmetric mixed
+difference is the repeated integral of \(g^{(N)}\).  Its hypotheses match the
+printed local statement: the half-steps are nonnegative, \(g\) is
+\(C^N\) on an open order-connected set, and that set contains the full closed
+symmetric segment.  Thus zero half-steps and \(N=0\) are harmless
+strengthenings of the printed positive-step case.  The following Walsh
+conditional-expectation corollary remains open: it still lacks the
+sign--magnitude probability construction, conditioning, and \(2^{-N}\)
+normalization.
 
 \subsection{Exact multiple-integral remainder}
 
@@ -4195,10 +4206,17 @@ the self-reflective translation \(x=-c_m\).
 \]
 is formal for every complex \(t\): it is
 \lean{Fabius.sum\_range\_two\_pow\_thueMorseSign\_cexp\_affine} with
-\(a=-c_mt\) and \(z=t\).  The subsequent complex half-angle rewrite
-\(1-\EulerE^u=-2\EulerE^{u/2}\sinh(u/2)\), and hence the centered sinh product
-\eqref{p1:eq:centered-sinh} as a named complex theorem, is not yet packaged in
-Lean.  At the moment level, the reflection functional equation is
+\(a=-c_mt\) and \(z=t\).  For \emph{real} \(t\) the half-angle rewrite
+\(1-\EulerE^u=-2\EulerE^{u/2}\sinh(u/2)\) is
+\lean{Fabius.one\_sub\_exp\_eq\_sinh}, and the centered sinh product
+\eqref{p1:eq:centered-sinh} is formal exactly as displayed, with
+\(\prod_{j<m}\sinh(2^{j-1}t)\) written \(\prod_{j<m}\sinh(2^jt/2)\):
+\lean{Fabius.sum\_thueMorseSign\_exp\_centered\_eq\_sinh\_prod}
+(\path{ThueMorseSinhProduct.lean}), derived from the all-rings product
+identity \lean{Fabius.prod\_one\_sub\_pow\_eq\_sum\_thueMorseSign}; the
+uncentered form with its prefactor \(\EulerE^{c_mt}\) is
+\lean{Fabius.sum\_thueMorseSign\_exp\_eq\_sinh\_prod}.  The same statement
+for complex \(t\) is not yet packaged.  At the moment level, the reflection functional equation is
 \lean{Fabius.sum\_thueMorseSign\_mul\_add\_pow\_reflect}
 (\path{ThueMorseMoments.lean}, any commutative ring); the selection rule
 \eqref{p1:eq:centered-parity-zero} for odd \(m+r\) is
@@ -6965,7 +6983,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{p1:sec:formalized-modules}
 
-The first tranches of the formalization now exist as one hundred and three
+The first tranches of the formalization now exist as one hundred and four
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -7026,7 +7044,8 @@ Module & Contents \\
 \path{ThueMorseWalsh.lean} & All-ones digit patterns and masked two-power sums, \(\eps\) as a Walsh character, character orthogonality on the block, the one-point Walsh spectrum. \\
 \path{ThueMorseSparseMoments.lean} & The atlas's all-sparse-moments formula on the submask cube (\cref{p1:cor:all-sparse-moments}), as the \(S=J(n)\) instance of the arbitrary-support composition of \path{ThueMorseMoments.lean}. \\
 \path{ThueMorseMixedDifference.lean} & The dyadic mixed-difference operator and the finite-difference factorization for arbitrary functions from an additive commutative monoid into an additive commutative group, with the powerset expansion. \\
-\path{ThueMorseSymmetricDifference.lean} & Exhaustive two-definition/eleven-theorem centered companion: arbitrary half-steps and the symmetric Boolean cube, sharp commutative-ring polynomial extraction/cancellation/top value, the centered dyadic block, and both characteristic-zero increasing-grid forms.  It does not supply the repeated-integral clause of the continuous-chaos report. \\
+\path{ThueMorseSymmetricDifference.lean} & Exhaustive two-definition/eleven-theorem centered companion: arbitrary half-steps and the symmetric Boolean cube, sharp commutative-ring polynomial extraction/cancellation/top value, the centered dyadic block, and both characteristic-zero increasing-grid forms. \\
+\path{ThueMorseCornerIntegral.lean} & Exhaustive one-definition/four-theorem analytic companion: the recursive centered box integral and its zero/successor equations, the exact local first-\(N\) symmetric-difference identity, and its \(\operatorname{Fin} N\)-indexed wrapper.  The hypotheses are \(\operatorname{IsOpen}\), \(\operatorname{OrdConnected}\), local \(C^N\) regularity, and containment of the full symmetric segment; zero half-steps are allowed. \\
 \path{ThueMorseAutocorrelation.lean} & Finite autocorrelation recursion in exact integer form along \emph{any even} window, \(R_{2K}(2r)=2R_K(r)\) and \(R_{2K}(2r+1)=-(R_K(r)+R_K(r+1))\), with the dyadic layer \(A_m(k)=R_{2^m}(k)\) as its power-of-two case: zero-shift value, trivial bound, closed values at shifts one and two, and the normalized limits at shifts zero, one and two. \\
 \path{ThueMorseOverlapFree.lean} & Thue's overlap-freeness theorem with cube-freeness, the attained critical exponent two, the alphabet-free implication ``overlap-free \(\Rightarrow\) not eventually periodic'', and constructive complement and reversal closure of the factor language. \\
 \path{ThueMorseRecurrence.lean} & Full block-concatenation laws for weight and bit, all two-letter factors in every fourteen-letter window, uniform recurrence with an explicit linear bound. \\
@@ -7068,7 +7087,8 @@ Module & Contents \\
 \path{FrullaniIntegral.lean} & The Frullani integral \(\int_0^\infty(\EulerE^{-pt}-\EulerE^{-qt})t^{-1}\Differential t=\log(q/p)\), by differentiation under the integral sign; not in Mathlib. \\
 \path{ThueMorseGDirichlet.lean} & The derivative bridge \(\log G(a,b)=D'(0,b)-D'(0,a)\): the closed integral form of \(\log G\), \((1/\Gamma)'(0)=1\), and the derivative of the entire continuation at zero. \\
 \path{ReciprocalGammaJets.lean} & Exact first jets of the entire reciprocal Gamma function at every nonpositive integer: derivative \((-1)^r r!\), simple analytic order, the punctured local coefficient, and the retained origin compatibility theorem; no derivative is assigned to raw Gamma at a pole. \\
-\path{ThueMorseGammaTower.lean} & Exact first jets of the entire Dirichlet--Mellin continuation, total GammaLog and exponentiated tower definitions, Mellin and real-integral GammaLog formulas, dyadic log and tower laws for positive parameter, and the positive-parameter level-zero master-product ratio; GammaLog is a chosen coordinate, while the parameter-differential ladder remains outside the module. \\
+\path{ThueMorseGammaTower.lean} & Exact first jets of the entire Dirichlet--Mellin continuation, total GammaLog and exponentiated tower definitions, Mellin and real-integral GammaLog formulas, dyadic log and tower laws for positive parameter, and the positive-parameter level-zero master-product ratio; GammaLog is a chosen coordinate rather than a proved principal-complex-log identity. \\
+\path{ThueMorseGammaTowerDifferential.lean} & Exhaustive zero-definition/three-theorem differential closure: differentiation of the Mellin kernel in its positive real damping parameter for every complex spectral exponent, the successor GammaLog law, and its full falling-factorial iteration for \(k\le r\).  All three theorems retain \(a>0\), and concern the chosen GammaLog coordinate rather than a branch of \(\operatorname{Complex.log}\). \\
 \path{ThueMorseQuarterProduct.lean} & The quarter product \(G(1/4,3/4)=1/2\) from Woods--Robbins by parity splitting, and the value \(1/2\) of the half-shifted block product. \\
 \path{ThueMorseDiscSeries.lean} & The Thue--Morse power series as a holomorphic function on the unit disc: the complex-disc product wrapper \(F(z)=\prod_{j=0}^{\infty}(1-z^{2^j})\), locally uniform convergence, the analytic Mahler equation and its iterate, and the real-ray bound \(|F(x)|\le1-x\). \\
 \path{ThueMorseNaturalBoundary.lean} & The natural-boundary theorem: radial vanishing at dyadic roots of unity, two-power roots approximating every circle point, and the double identity-theorem argument. \\
@@ -9540,10 +9560,25 @@ The current integrated tree adds the ninth public tower declaration
 \leanPartx{Fabius.ofReal_exp_mpLimit_eq_gammaTower_div}: for \(a,b>0\), the
 complex embedding of \(\exp(\operatorname{mpLimit}(a,b))\) is
 \(T_0(b)/T_0(a)\), exactly the formal ratio law for
-\eqref{p2:eq:WR-gamma}.  The only unformalized assertions within
-\cref{p2:thm:gamma-tower} are now the parameter-\(a\) differential and iterated
-differential laws \eqref{p2:eq:gamma-differential}--\eqref{p2:eq:gamma-iterated};
-they require differentiation under the Mellin integral.
+\eqref{p2:eq:WR-gamma}.  The source-only
+\path{ThueMorseGammaTowerDifferential.lean} leaf adds no definitions and
+exactly three theorems:
+\leanPartx{Fabius.hasDerivAt_mellin_mellinKernel_parameter},
+\leanPartx{Fabius.hasDerivAt_thueMorseGammaLog_succ}, and
+\leanPartx{Fabius.iteratedDeriv_thueMorseGammaLog}.  The first differentiates
+the positive real damping parameter under the Mellin integral at every
+complex spectral exponent,
+\[
+ \frac{d}{da}\operatorname{Mellin}(\operatorname{mellinKernel}(a),s)
+ =-\operatorname{Mellin}(\operatorname{mellinKernel}(a),s+1).
+\]
+The second proves \(L_{r+1}'(a)=(r+1)L_r(a)\), and the third proves
+\eqref{p2:eq:gamma-iterated} for exactly \(k\le r\).  Each theorem assumes
+\(a>0\).  Consequently \cref{p2:thm:gamma-tower} is Exact under its stated
+positive-parameter domain and the already-explicit convention that its
+displayed logarithm denotes the chosen GammaLog coordinate; no identity with
+a branch of \(\operatorname{Complex.log}\), and no nonpositive-parameter
+differential law, is asserted.
 
 \begin{remark}[Why ``Barnes-type'']
 The hierarchy is not asserted to be a classical Barnes multiple-gamma family.  The name refers
@@ -9759,7 +9794,8 @@ tail self-similarity, the Fourier--Laplace rotation, the Lagrange characterizati
 $q$-Richardson weights with all three of its moment identities together with their closed
 $q$-binomial form (compiled in \path{GeometricQBinomialLagrange.lean}), every spectral
 level of the GammaLog/tower Mellin and dyadic laws together with the level-zero
-master-product ratio, and now the entire zeta--Lambert tail calculus --- the Euler--zeta
+master-product ratio and the full positive-parameter differential ladder
+(\path{ThueMorseGammaTowerDifferential.lean}), and now the entire zeta--Lambert tail calculus --- the Euler--zeta
 logarithm, the all-orders expansion, the certified remainder, and the exact
 prefix--corrections--tail split (\path{EulerLogTransform.lean}, \path{SincZetaSeries.lean},
 \path{SincZetaDyadic.lean}, \path{SincZetaRemainder.lean}) --- already have Lean
@@ -9896,12 +9932,14 @@ a convenient formal API for the lower real Lambert branch. \\
 Thue--Morse gamma tower
 \eqref{p2:eq:gamma-Mellin}--\eqref{p2:eq:gamma-iterated} & reciprocal-Gamma
 first jets, Atlas Dirichlet continuation, parameter differentiation &
-\emph{Mellin and dyadic layers delivered}: \path{ReciprocalGammaJets.lean}
+\emph{Exact}: \path{ReciprocalGammaJets.lean}
 proves the exact simple reciprocal-Gamma jet at every nonpositive integer, and
 \path{ThueMorseGammaTower.lean} proves every continuation first jet, the
 Mellin/integral GammaLog levels, both dyadic laws, and the level-zero
-master-product ratio.  Only \eqref{p2:eq:gamma-differential}--\eqref{p2:eq:gamma-iterated}
-remain; they need a parameter-under-the-Mellin-integral theorem. \\
+master-product ratio.  \path{ThueMorseGammaTowerDifferential.lean} proves the
+parameter-under-the-Mellin-integral derivative and both
+\eqref{p2:eq:gamma-differential} and \eqref{p2:eq:gamma-iterated} on the stated
+positive-parameter domain, for the chosen GammaLog coordinate. \\
 \bottomrule
 \end{longtable}
 \endgroup

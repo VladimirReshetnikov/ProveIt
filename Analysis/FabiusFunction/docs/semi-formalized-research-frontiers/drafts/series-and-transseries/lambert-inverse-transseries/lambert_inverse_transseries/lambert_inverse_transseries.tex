@@ -301,6 +301,19 @@ Monotonicity of \(h_1\) gives \(u=\rW_1(z)\).  Finally,
 \(x=u\e^u=z-u\), which proves both identities.
 \end{proof}
 
+\paragraph{Lean status.}
+Formal, in \path{LambertShiftInverse.lean}: with \path{Fabius.lambertShift} the map
+\(f(x)=x+\W(x)\), \path{Fabius.shiftedLambertW} the root \(u\ge0\) of \(u\e^u+u=z\)
+(defined as the inverse on \([0,\infty)\) of \path{Fabius.shiftedMulExp}, whose existence is
+the intermediate value theorem on \([0,z]\) and whose uniqueness is strict monotonicity,
+\path{Fabius.shiftedLambertW_unique}), and \path{Fabius.lambertShiftInv} the difference
+\(z-u\), the theorem is the pair \path{Fabius.lambertShift_lambertShiftInv}
+(\(f(z-u)=z\)) and \path{Fabius.lambertShiftInv_eq_mul_exp} (\(z-u=u\e^u\)); the
+intermediate fact \(\W(g(z))=u\) is \path{Fabius.principalLambertW_lambertShiftInv}.  That
+\(g\) is the two-sided inverse of \(f\) on \([0,\infty)\) is
+\path{Fabius.lambertShiftInv_lambertShift} together with
+\path{Fabius.lambertShift_strictMonoOn} and \path{Fabius.lambertShift_surjOn}.
+
 \begin{corollary}[Elementary bounds]
 \label{cor:bounds}
 For every \(z>0\),
@@ -316,6 +329,13 @@ The right inequality follows from \(g(z)=z-u\) and \(u>0\).  Let
 \(h_1(v)=v\e^v+v=z+v>z=h_1(u)\).  Monotonicity gives \(u<v\), hence
 \(g(z)=z-u>z-v\).
 \end{proof}
+
+\paragraph{Lean status.}
+Formal: \path{Fabius.lambertShiftInv_lt_self} and
+\path{Fabius.sub_principalLambertW_lt_lambertShiftInv} in \path{LambertShiftInverse.lean},
+for every \(z>0\); the second is the comparison \(u<\W(z)\)
+(\path{Fabius.shiftedLambertW_lt_principalLambertW}) read off the strict monotonicity of
+\(t\mapsto t\e^t\).
 
 Differentiating \eqref{eq:u-equation} gives
 \begin{equation}
@@ -789,6 +809,25 @@ Substitution in \eqref{eq:Am-Pm} now gives
 \(A_m(v)\sim v^m/m\), completing the proof.
 \end{proof}
 
+\paragraph{Lean status.}
+The polynomial family and every item of \eqref{eq:Pm-data} are formal in
+\path{LambertInverseCoefficients.lean}, as algebra over \(\mathbb{Z}[v]\).  With
+\path{Fabius.lambertNumerator} the family \(R_{n,k}\) (indices shifted so the recursion starts
+at \(0\): \path{Fabius.lambertNumerator} \(n\,j\) is \(R_{n,j+1}\)), the initial value
+\eqref{eq:Rnk-initial} is the definition and the recurrence \eqref{eq:Rnk-recurrence} is
+\path{Fabius.lambertNumerator_succ_eq_draft}, written exactly as displayed.  From it:
+\path{Fabius.natCast_dvd_lambertNumerator} is \(R_{n,k}\in n\mathbb{Z}[v]\), which is what makes
+\(P_m=(-1)^{m+1}R_{m+1,m}/(m+1)\) an integer polynomial;
+\path{Fabius.natDegree_lambertNumerator} is \(\deg R_{n,k}=2(k-1)\), giving \(\deg P_m=2m-2\);
+\path{Fabius.leadingCoeff_lambertNumerator} is
+\([v^{2(k-1)}]R_{n,k}=n(-1)^{k-1}(k-1)!\), which at \(n=m+1\), \(k=m\) gives
+\([v^{2m-2}]P_m=(m-1)!\); and \path{Fabius.eval_zero_lambertNumerator} is
+\(R_{n,k}(0)=n(n-1)\cdots(n-k+1)\), which at \(n=m+1\), \(k=m\) is \((m+1)!\), giving
+\(P_m(0)=(-1)^{m+1}m!\).  What is not formalized is the analytic half: the closed form
+\eqref{eq:Rnk-def} for \((\dd/\dd z)^k v^n\), hence the identification \eqref{eq:Am-Rnk} of this
+family with \(A_m\), and the asymptotic reading \eqref{eq:Am-leading}.  Those need the operator
+calculus on functions, not the recursion.
+
 \section{Direct reversion in the exponentially small parameter}
 \label{sec:q-reversion}
 
@@ -1016,6 +1055,17 @@ fixed \(M\).  Therefore the difference is beyond all orders in \(1/L\), and
 substitution of the standard Lambert expansion \eqref{eq:W-log-expansion}
 proves the result.
 \end{proof}
+
+\paragraph{Lean status.}
+Partial.  The Lambert-side input, the leading two terms of \eqref{eq:W-log-expansion}, is
+formal in \path{PrincipalLambertWAtTop.lean}: the identity \(\W(x)+\log\W(x)=\log x\)
+(\path{Fabius.principalLambertW_add_log}), the bracket \(L-\ell\le\W(x)\le L\) for \(x\ge\e\)
+(\path{Fabius.principalLambertW_log_bracket}), \(\W\sim\log\) at \(+\infty\)
+(\path{Fabius.principalLambertW_isEquivalent_log}) and the two-term statement
+\(\W(x)-(L-\ell)\to0\) (\path{Fabius.tendsto_principalLambertW_sub_log_sub_log_log}).  The
+higher terms \(P_n(\ell)/L^n\), and the beyond-all-orders step
+\(g(z)-(z-\W(z))=O(L/z)\) that transfers the expansion from \(z-\W(z)\) to \(g\), are not
+formalized.
 
 In explicit form,
 \begin{align}
@@ -1282,6 +1332,29 @@ The mean value theorem gives
 \(R=F(H)-F(G)=F'(\xi)(H-G)\) for some intermediate \(\xi\).
 Apply \eqref{eq:derivative-bounds}.
 \end{proof}
+
+\paragraph{Lean status.}
+The instance used below, \(F=f\), \(m=1\), \(M=2\), is formal in
+\path{LambertShiftInverse.lean}: the derivative bracket \eqref{eq:Fprime-bound} is
+\path{Fabius.one_le_deriv_lambertShift} and \path{Fabius.deriv_lambertShift_le_two} (from
+\path{Fabius.lambertShift_hasDerivAt} and the bound \(\W'\le1\),
+\path{Fabius.inv_exp_mul_add_one_le_one}), and the mean-value transfer is
+\path{Fabius.abs_sub_lambertShiftInv_le_abs_residual} (\(|H-G|\le|R|\)) and
+\path{Fabius.abs_residual_le_two_mul_abs_sub_lambertShiftInv} (\(|R|\le2|H-G|\)), for every
+\(z\ge0\) and every approximation \(H\ge0\).  The general \((m,M)\) statement is formal too, for
+an arbitrary function on an arbitrary convex set, in \path{MeanValueBracket.lean}: the two
+brackets are \path{Fabius.mul_abs_sub_le_abs_sub_of_le_deriv} and
+\path{Fabius.abs_sub_le_of_le_deriv}, and the transfer against a right inverse is
+\path{Fabius.abs_sub_right_inverse_le_div} (\(|H-G|\le|R|/m\)) together with
+\path{Fabius.div_le_abs_sub_right_inverse} (\(|R|/M\le|H-G|\)), which is
+\eqref{eq:residual-error-bound}.
+
+One hypothesis deserves recording, because the theorem as printed leaves it implicit in the
+words ``strictly increasing''.  The upper bracket needs \(0\le m\), not merely \(m\le F'\le M\):
+with \(F'\equiv-10\), \(m=-10\) and \(M=0\) the derivative bracket holds while
+\(\lvert F(x)-F(y)\rvert=10\lvert x-y\rvert\) exceeds \(M\lvert x-y\rvert=0\).  What
+the sign gives is monotonicity, which is what makes \(\lvert F(x)-F(y)\rvert\) the signed
+increment; the printed \(0<m\) supplies it.  The lower bracket needs no sign condition.
 
 For \(F(x)=x+\W(x)\), \eqref{eq:Wprime} gives
 \begin{equation}

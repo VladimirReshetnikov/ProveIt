@@ -81,6 +81,64 @@ theorem sincZetaCoeff_le (r : ℕ) :
     nlinarith [mul_nonneg (mul_nonneg hz1.le hr.le) (sub_nonneg.mpr h44)]
   linarith
 
+/-- The order-`N` uniform constant of the tail:
+`C_N = ζ(2(N+1))·4^{N+1}/(4^{N+1}−1)`.  It decreases to `1` as
+`N → ∞` (both factors do), whereas the crude constant `4ζ(2)/3 ≈ 2.193`
+of `sincZetaCoeff_le` is the value at `N = 0`. -/
+noncomputable def sincZetaTailConst (N : ℕ) : ℝ :=
+  evenZeta (N + 1) * 4 ^ (N + 1) / (4 ^ (N + 1) - 1)
+
+/-- The tail constant is positive. -/
+theorem sincZetaTailConst_pos (N : ℕ) : 0 < sincZetaTailConst N :=
+  div_pos (mul_pos (evenZeta_pos N.succ_ne_zero) (by positivity))
+    (four_pow_succ_sub_one_pos N)
+
+/-- At `N = 0` the tail constant is the crude constant `4ζ(2)/3`. -/
+theorem sincZetaTailConst_zero : sincZetaTailConst 0 = 4 / 3 * evenZeta 1 := by
+  rw [sincZetaTailConst]
+  norm_num
+  ring
+
+/-- **The sharpened coefficient bound**: beyond order `N`,
+`sincZetaCoeff r ≤ C_N/(r+1)` with `C_N = ζ(2(N+1))·4^{N+1}/(4^{N+1}−1)`.
+Both crude steps of `sincZetaCoeff_le` are replaced by their values at
+the *start* of the tail rather than at order `0`: `ζ(2(r+1)) ≤ ζ(2(N+1))`
+by antitonicity, and `4^{r+1}/(4^{r+1}−1) ≤ 4^{N+1}/(4^{N+1}−1)` because
+`t ↦ t/(t−1)` is decreasing. -/
+theorem sincZetaCoeff_le_of_le {N r : ℕ} (hNr : N ≤ r) :
+    sincZetaCoeff r ≤ sincZetaTailConst N / ((r : ℝ) + 1) := by
+  have hzN := evenZeta_pos N.succ_ne_zero
+  have hz : evenZeta (r + 1) ≤ evenZeta (N + 1) :=
+    evenZeta_anti N.succ_ne_zero (by omega)
+  have h4r := four_pow_succ_sub_one_pos r
+  have h4N := four_pow_succ_sub_one_pos N
+  have hpr : (0:ℝ) < (4:ℝ) ^ (r + 1) := by positivity
+  have hpN : (0:ℝ) < (4:ℝ) ^ (N + 1) := by positivity
+  have hmono : (4:ℝ) ^ (N + 1) ≤ 4 ^ (r + 1) :=
+    pow_le_pow_right₀ (by norm_num) (by omega)
+  have hr : (0:ℝ) < (r : ℝ) + 1 := by positivity
+  -- `t/(t-1)` decreases, so the `4`-factor at `r` is at most the one at `N`
+  have hfac : (4:ℝ) ^ (r + 1) / (4 ^ (r + 1) - 1) ≤
+      4 ^ (N + 1) / (4 ^ (N + 1) - 1) := by
+    rw [div_le_div_iff₀ h4r h4N]
+    nlinarith
+  have hsplit : sincZetaCoeff r =
+      evenZeta (r + 1) * ((4:ℝ) ^ (r + 1) / (4 ^ (r + 1) - 1)) /
+        ((r : ℝ) + 1) := by
+    rw [sincZetaCoeff]
+    field_simp
+  rw [hsplit, sincZetaTailConst, div_le_div_iff₀ hr hr,
+    mul_div_assoc]
+  have hz' : evenZeta (r + 1) * ((4:ℝ) ^ (r + 1) / (4 ^ (r + 1) - 1)) ≤
+      evenZeta (N + 1) * ((4:ℝ) ^ (N + 1) / (4 ^ (N + 1) - 1)) := by
+    have hnn : (0:ℝ) ≤ (4:ℝ) ^ (r + 1) / (4 ^ (r + 1) - 1) := by positivity
+    calc evenZeta (r + 1) * ((4:ℝ) ^ (r + 1) / (4 ^ (r + 1) - 1))
+        ≤ evenZeta (N + 1) * ((4:ℝ) ^ (r + 1) / (4 ^ (r + 1) - 1)) :=
+          mul_le_mul_of_nonneg_right hz hnn
+      _ ≤ evenZeta (N + 1) * ((4:ℝ) ^ (N + 1) / (4 ^ (N + 1) - 1)) :=
+          mul_le_mul_of_nonneg_left hfac hzN.le
+  exact mul_le_mul_of_nonneg_right hz' hr.le
+
 /-- The complex master-series term is the coerced coefficient times the
 even power: the bridge between `rvachevFourierProduct_eq_cexp` and the
 packaged coefficient. -/
@@ -168,6 +226,52 @@ theorem norm_sincZeta_tail_le {w : ℂ} (hw : ‖w‖ < 1) (N : ℕ) :
             (‖w‖ ^ 2) ^ r := by ring
   have hgeo : Summable fun r : ℕ =>
       4 / 3 * evenZeta 1 / ((N : ℝ) + 1) * ‖w‖ ^ (2 * (N + 1)) *
+        (‖w‖ ^ 2) ^ r :=
+    (summable_geometric_of_lt_one (by positivity) hw2).mul_left _
+  refine (Summable.tsum_le_tsum hterm hsum hgeo).trans (le_of_eq ?_)
+  rw [tsum_mul_left, tsum_geometric_of_lt_one (by positivity) hw2,
+    div_mul_eq_mul_div, ← div_eq_mul_inv, div_div]
+
+/-- **The certified zeta remainder with the sharpened constant**: the same
+tail bound as `norm_sincZeta_tail_le` with `4ζ(2)/3` replaced by
+`C_N = ζ(2(N+1))·4^{N+1}/(4^{N+1}−1)`,
+
+`‖∑'_{r} c_(r+N) w^(2(r+N+1))‖ ≤ C_N · ‖w‖^(2(N+1)) / ((N+1)(1−‖w‖²))`.
+
+Since `C_0 = 4ζ(2)/3` this is never worse than the drafts' bound, and
+`C_N → 1` as `N → ∞`, so the tail estimate loses no constant factor in
+the high-order limit. -/
+theorem norm_sincZeta_tail_le_sharp {w : ℂ} (hw : ‖w‖ < 1) (N : ℕ) :
+    ‖∑' r : ℕ, ((sincZetaCoeff (r + N) : ℝ) : ℂ) * w ^ (2 * (r + N + 1))‖ ≤
+      sincZetaTailConst N * ‖w‖ ^ (2 * (N + 1)) /
+        (((N : ℝ) + 1) * (1 - ‖w‖ ^ 2)) := by
+  have hw2 : ‖w‖ ^ 2 < 1 := pow_lt_one₀ (norm_nonneg w) hw two_ne_zero
+  have hC := sincZetaTailConst_pos N
+  have hsum := summable_norm_sincZeta_term hw N
+  refine (norm_tsum_le_tsum_norm hsum).trans ?_
+  have hterm : ∀ r : ℕ,
+      ‖((sincZetaCoeff (r + N) : ℝ) : ℂ) * w ^ (2 * (r + N + 1))‖ ≤
+        sincZetaTailConst N / ((N : ℝ) + 1) * ‖w‖ ^ (2 * (N + 1)) *
+          (‖w‖ ^ 2) ^ r := by
+    intro r
+    rw [norm_sincZeta_term_eq]
+    have hbound : sincZetaCoeff (r + N) ≤
+        sincZetaTailConst N / ((N : ℝ) + 1) := by
+      calc sincZetaCoeff (r + N)
+          ≤ sincZetaTailConst N / ((r + N : ℕ) + 1 : ℝ) :=
+            sincZetaCoeff_le_of_le (Nat.le_add_left N r)
+        _ ≤ sincZetaTailConst N / ((N : ℝ) + 1) :=
+            div_le_div_of_nonneg_left hC.le (by positivity) (by
+              push_cast
+              linarith [Nat.cast_nonneg (α := ℝ) r])
+    calc sincZetaCoeff (r + N) * (‖w‖ ^ (2 * (N + 1)) * (‖w‖ ^ 2) ^ r)
+        ≤ sincZetaTailConst N / ((N : ℝ) + 1) *
+            (‖w‖ ^ (2 * (N + 1)) * (‖w‖ ^ 2) ^ r) :=
+          mul_le_mul_of_nonneg_right hbound (by positivity)
+      _ = sincZetaTailConst N / ((N : ℝ) + 1) * ‖w‖ ^ (2 * (N + 1)) *
+            (‖w‖ ^ 2) ^ r := by ring
+  have hgeo : Summable fun r : ℕ =>
+      sincZetaTailConst N / ((N : ℝ) + 1) * ‖w‖ ^ (2 * (N + 1)) *
         (‖w‖ ^ 2) ^ r :=
     (summable_geometric_of_lt_one (by positivity) hw2).mul_left _
   refine (Summable.tsum_le_tsum hterm hsum hgeo).trans (le_of_eq ?_)

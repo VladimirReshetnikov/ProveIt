@@ -1,0 +1,35 @@
+Exact verification report for repeated signed Thue--Morse summation
+==========================================================================
+
+All assertions below were checked with exact integer/rational arithmetic.
+
+Checks completed:
+  * weighted recurrence = diagonal polynomial = signed block formula
+  * direct diagonal formula = ruler-function recurrence
+  * half-step and differential recurrences
+  * arbitrary-order finite-block theorem and signed block law
+  * hybrid arbitrary-entry evaluator = exact signed block lookup
+  * support, mirror, complement, plateau, sum, and multiplicities
+  * nonnegative half-integer root criterion
+  * negative half-integer finite-difference formula
+
+Initial diagonal polynomials D_r(x) in factored form:
+D_0(x) = 1
+D_1(x) = 2*x
+D_2(x) = (x + 1)*(2*x - 1)
+D_3(x) = 2*x*(x + 2)*(2*x - 1)/3
+D_4(x) = (4*x**4 + 12*x**3 - x**2 - 3*x - 6)/6
+D_5(x) = x*(x - 1)*(4*x**3 + 24*x**2 + 39*x + 34)/15
+D_6(x) = (x - 1)*(x + 1)*(2*x - 1)*(4*x**3 + 32*x**2 + 75*x + 90)/90
+D_7(x) = x*(x - 1)*(x + 2)*(2*x - 1)*(4*x**3 + 40*x**2 + 123*x + 192)/315
+D_8(x) = (x + 1)*(16*x**7 + 208*x**6 + 856*x**5 + 1384*x**4 - 1055*x**3 - 3719*x**2 + 3570*x - 2520)/2520
+D_9(x) = x*(x + 2)*(16*x**7 + 256*x**6 + 1384*x**5 + 3280*x**4 + 265*x**3 - 8468*x**2 + 5895*x - 10188)/11340
+D_10(x) = (x + 1)*(x + 3)*(2*x - 1)*(16*x**7 + 304*x**6 + 2040*x**5 + 6440*x**4 + 5129*x**3 - 12669*x**2 + 8190*x - 37800)/113400
+D_11(x) = x*(x + 2)*(x + 4)*(2*x - 1)*(16*x**7 + 352*x**6 + 2824*x**5 + 11152*x**4 + 15745*x**3 - 12674*x**2 + 9135*x - 109710)/623700
+D_12(x) = (x + 5)*(2*x - 3)*(32*x**10 + 944*x**9 + 11280*x**8 + 74520*x**7 + 285186*x**6 + 618267*x**5 + 888670*x**4 + 811465*x**3 - 436728*x**2 - 507276*x - 498960)/7484400
+D_13(x) = x*(x - 1)*(x + 6)*(2*x - 3)*(32*x**9 + 1136*x**8 + 16944*x**7 + 144504*x**6 + 765522*x**5 + 2596455*x**4 + 6068320*x**3 + 10287757*x**2 + 10455210*x + 6222120)/48648600
+D_14(x) = (x - 1)*(x + 1)*(x + 7)*(2*x - 3)*(2*x - 1)*(32*x**9 + 1296*x**8 + 22368*x**7 + 222936*x**6 + 1403514*x**5 + 5779305*x**4 + 16381627*x**3 + 33364932*x**2 + 43165980*x + 32432400)/681080400
+D_15(x) = x*(x - 1)*(x + 2)*(x + 8)*(2*x - 3)*(2*x - 1)*(32*x**9 + 1456*x**8 + 28528*x**7 + 325144*x**6 + 2367538*x**5 + 11437339*x**4 + 38151332*x**3 + 90894561*x**2 + 141075270*x + 127612800)/5108103000
+
+Interpretation: s(n,n+1+r)=D_r(n).
+The user-facing diagonal d=k-n is therefore P_d(n)=D_{d-1}(n).

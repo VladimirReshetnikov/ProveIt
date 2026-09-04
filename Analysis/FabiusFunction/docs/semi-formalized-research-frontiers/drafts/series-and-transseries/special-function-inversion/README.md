@@ -1,11 +1,12 @@
 # Special-function inversion at infinity
 
-Nine independently written articles that invert a rapidly growing special
-function at infinity to all orders, filed here on 2026-09-03 as quick-gate
-intakes in two batches: three from commit `5a453e1dc`, and six more that
-arrived while that first batch was being published.  All nine came as ZIP
-archives; the archives were deleted after unpacking and git history is the
-archive.
+Twenty-four independently written articles that invert a rapidly growing
+special function at infinity to all orders, filed here on 2026-09-03 as
+quick-gate intakes in four batches: three from commit `5a453e1dc`, six more
+that arrived while that first batch was being published, three (the Fibonacci
+subject) later the same day, and twelve more (the last four subjects) in a
+fourth batch that evening.  All twenty-four came as ZIP archives; the archives
+were deleted after unpacking and git history is the archive.
 
 They share a method rather than a function.  In each, the map to be inverted
 has a dominant *power–logarithmic* phase, so ordinary series reversion does not
@@ -20,38 +21,96 @@ three articles all invert the single map `x + W(x)`: the subgroups share the
 Lambert-core technique, but that one treats one map in depth while this one
 applies the technique across different special functions.
 
-## The three subjects
+## The consolidated volume
 
-The nine fall into three subjects, three articles each, written independently
-of one another.  That was noted at intake as provenance; **no comparison,
-deduplication, or canonical selection has been made**, and the titles below are
-transcribed rather than assessed.
+All eight subjects were merged, together with the shared apparatus of all
+twenty-four articles, into
 
-### Gamma and Barnes `G`
+> [`Sequence_Inversion_Transseries/`](Sequence_Inversion_Transseries/) ---
+> *Asymptotic Transseries and Inversion of Eight Sequences and Special
+> Functions*,
+> 205 A4 pages, 3 September 2026.
 
-| Directory | Document | Source | PDF |
-| --- | --- | --- | --- |
-| `Asymptotic_Inversion_Gamma_Barnes_G/` | *Asymptotic Inversion of the Gamma and Barnes `G`-Functions: Lambert-Core Transseries and a General Reversion Calculus* | 2,376 lines; 83,252 bytes | 29 A4 pages; 646,225 bytes |
-| `inverse_gamma_barnesG_transseries/` | *Asymptotic Transseries for the Inverses of the Gamma and Barnes `G`-Functions: Lambert–`W` Normal Forms, All-Orders Reversion, and Residual Certification* | 1,655 lines; 72,966 bytes | 28 A4 pages; 663,480 bytes |
-| `inverse_gamma_barnes_transseries/` | *Asymptotic Inversion of the Gamma and Barnes `G` Functions: Lambert-Normalized Transseries, Explicit Coefficients, and a General Power–Logarithmic Reversion Calculus* | 1,827 lines; 60,596 bytes | 25 A4 pages; 324,795 bytes |
+Chapter~0 of that volume states once, with complete proofs, the apparatus that
+all twenty-four articles carry a copy of: the exponential--power model and an
+axiomatized dominant core, the Bell-polynomial coefficient calculus,
+Lagrange--Bürmann, the Lagrange fixed-point formula and perturbed inversion
+around an exactly invertible core, the exact Lambert
+carrier with its branch rule, the all-orders reversion, the flattening into a
+polynomial--logarithmic transseries, the three inverse objects of a discrete
+sequence, backward error, remainder transport and optimal truncation.  Its
+Chapters~1--8 supply only the parameter dictionary and the subject-specific
+mathematics, citing Chapter~0 266 times.  Chapters~5--6 add a second exactly
+invertible core, `a x^p (log x - beta)`; Chapter~7 borrows its carrier from
+Chapter~5 rather than rederiving it, as all three of its sources do; and
+Chapter~8 falls outside the frame entirely, with no Lambert core and a
+convergent expansion.
 
-### The hyperfactorial `K`-function
+Facts the merge made visible: the partition numbers are the `alpha = 1/2`
+case of the same model and reduce to the others by `xi = sqrt(N)` (with the
+arithmetic shift taken first); the double factorial is *not* an
+exponential--power model at all --- its phase is `(s/2) log s` --- so the
+right common object is the core, not the model; the slope-denominator bound
+of the power--logarithmic family is attained, with deepest pole
+`binom(1/2,n) 12^-n` for Gamma; four apparently unrelated square roots are
+one quadratic lemma seen through two different extractions; and the
+K-function's "accelerated coordinate" is the resummation of its own resonant
+subsector, a device that applies to Barnes `G` as well but which no Barnes
+source attempted.
 
-| Directory | Document | Source | PDF |
-| --- | --- | --- | --- |
-| `inverse_k_function_transseries/` | *Inverting the K-Function at Infinity: Lambert–`W` Normalization, All-Orders Transseries, and a General Theory of Power–Logarithmic Reversion* | 2,259 lines; 66,867 bytes | 29 A4 pages; 349,822 bytes |
-| `K_Function_Inverse_Transseries/` | *Asymptotic Inversion of the Generalized Hyperfactorial `K`-Function: Lambert and `r`-Lambert Anchors, Centered Bernoulli Structure, and a General Calculus for Power–Logarithmic Transseries* | 2,644 lines; 90,380 bytes | 33 A4 pages; 724,630 bytes |
-| `K_function_inverse_transseries_article/` | *Asymptotic Inversion of the Kinkelin–Bendersky `K`-Function: Lambert-Anchored Transseries for the Generalized Hyperfactorial and a General Theory of `x^p log x` Reversion* | 2,581 lines; 84,722 bytes | 30 A4 pages; 743,783 bytes |
+The twenty-four source packages were residue-audited and deleted on
+4 September 2026; git history is the archive.
 
-### The subfactorial
+## The eight subjects, and what became of them
 
-| Directory | Document | Source | PDF |
-| --- | --- | --- | --- |
-| `inverse_subfactorial_transseries/` | *Inverting the Subfactorial at Infinity: Bell-Sector Transseries, Inverse-Gamma Geometry, and a General Reversion Calculus for Rapid Cores with Tiny Oscillatory Tails* | 2,631 lines; 95,404 bytes | 38 A4 pages; 688,626 bytes |
-| `inverse_subfactorial_transseries-2/` | *Asymptotic Inversion of the Subfactorial: Bell-Number Tails, Inverse-Gamma Anchoring, and a Calculus for Exponentially Separated Transseries* | 2,188 lines; 73,742 bytes | 27 A4 pages; 725,870 bytes |
-| `inverse_subfactorial_transseries-3/` | *Inverse Subfactorials at Infinity: Lambert–`W` Carriers, Bell-Number Sectors, and a General Calculus of Gamma-Dominant Transseries* | 1,878 lines; 81,203 bytes | 35 Letter pages; 530,302 bytes |
+The twenty-four articles fell into eight subjects, three articles each,
+written independently of one another.  All twenty-four have been **merged into
+the volume above and deleted**; they remain in git history.  The volume's
+Appendix~A lists every one of them with its line and page count and the
+chapter that absorbed it, and Appendix~B lists every correction made to them.
+
+| Subject | Volume chapter | Sources (deleted 2026-09-04) |
+| --- | --- | --- |
+| Butcher--Pólya rooted trees, A000081 | 1 | `Butcher_Tree_Transseries{,-2,-3}` |
+| the double factorial | 2 | `Double_Factorial_Transseries{,-3}`, `double_factorial_transseries-2` |
+| the partition numbers, A000041 | 3 | `Partition_Number_Transseries_and_{Asymptotic_,}Inverse`, `Partition_Numbers_Transseries_and_Inverse` |
+| the swing factorial, A056040 | 4 | `Swing_Factorial_Transseries{,_Article,_and_Inverse}` |
+| Gamma and Barnes `G` | 5 | `Asymptotic_Inversion_Gamma_Barnes_G`, `inverse_gamma_barnesG_transseries`, `inverse_gamma_barnes_transseries` |
+| the hyperfactorial `K`-function | 6 | `inverse_k_function_transseries`, `K_Function_Inverse_Transseries`, `K_function_inverse_transseries_article` |
+| the subfactorial | 7 | `inverse_subfactorial_transseries{,-2,-3}` |
+| a real-argument Fibonacci function | 8 | `Fibonacci_Inverse_LogPeriodic_Transseries`, `fibonacci_inverse_transseries_article{,-2}` |
+
+### The residue audit that preceded deletion
+
+Two probes were run over all twenty-four sources against the assembled volume.
+
+*Named results.* Every `\begin{theorem}[Title]` and its kin in every source
+was matched against the volume's 409 titled results by content-word overlap.
+Seven had no overlap at all; six of those turned out to be covered under
+different names (lateral determinations, the Dobiński moment identity, the two
+representations of the Bell tail, and so on).  The seventh was a genuine
+omission — a **formal Newton valuation-doubling theorem**, stated in three
+sources and nowhere in the volume — and it was added before deletion, as
+Theorem `p6:thm:newton`.
+
+*Numbers.* Every integer of at least four digits and every decimal constant
+was looked for in the volume, decimals matched on their leading eight
+significant digits so that a source printing forty digits and the volume
+printing twelve count as agreeing.  Of 963 integers, 198 were unseen; of 1,288
+decimals, 772.  Inspection showed these fall into three classes, none of them
+substantive: standard number-theoretic tables (Bell numbers, derangement
+numbers, swing-factorial values), the sources' own numerical error tables at
+arguments the volume does not tabulate — the volume recomputed its own — and
+coefficients printed one or two orders beyond the volume's truncation.  The
+last class is regenerable in seconds from the recurrences the volume proves;
+the two cases where the volume had stopped exactly one term short of a source
+(`c_6` and `d_6` of the `K`-function) were filled in before deletion.
 
 ## Intake receipts
+
+> **Superseded.** The packages these receipts describe were merged
+> into the volume above and deleted on 4 September 2026, after a
+> residue audit. The receipts are kept as the record of what arrived.
 
 Every archive passed a CRC check and carried no absolute path, no
 parent-directory traversal, and no symlink entry.  Each contained exactly one
@@ -89,6 +148,45 @@ also the convention the rest of the corpus follows.  Its contents are
 unchanged.  The remaining paths run 249–259 characters; the longest,
 `Asymptotic_Inversion_Gamma_Barnes_G/`, sits one character inside the limit, so
 this subgroup has no headroom for deeper nesting or longer names.
+
+### The fourth batch (twelve archives)
+
+All twelve passed a CRC check and carried no absolute path, parent-directory
+traversal, or symlink entry; each held exactly one `.tex` and one `.pdf` at top
+level with no wrapping directory, and the twelve archive stems are distinct, so
+they name the directories.  Two collision hazards were checked rather than
+assumed: the three Butcher archives ship **identical** inner file names
+(`Butcher_Tree_Transseries.tex`/`.pdf`), and `Double_Factorial_Transseries.zip`
+and `double_factorial_transseries-2.zip` ship inner names differing only in
+case, which on a case-insensitive filesystem is the hazard that silently nests
+one arrival inside another; distinct destination directories were created
+explicitly and the thirteen pre-existing members were verified intact after
+filing.
+
+All twelve sources are LF with a final newline and were filed byte-for-byte;
+git reported no line-ending normalization at staging.  All twelve PDFs are
+readable and unencrypted, produced by pdfTeX-1.40.26, with every font row
+subset-embedded and no Type 3 row.  Eleven are A4;
+`Partition_Numbers_Transseries_and_Inverse/` is Letter.  Eight carry Libertinus
+faces; the four that do not are exactly the three partition articles and
+`Swing_Factorial_Transseries_and_Inverse/`.  Two members are `book` class
+(`Butcher_Tree_Transseries-2/`, `double_factorial_transseries-2/`) where the
+rest are `article`.  None of the twelve loads `docs/fabius-notation.tex`, so
+all twelve are outside the notation migration.  No checksum ledger was
+submitted and none was added.
+
+**Path lengths.**  Measured from the repository root the longest filed path in
+this batch is 228 characters
+(`Partition_Number_Transseries_and_Asymptotic_Inverse/…​.pdf`), and 239 from the
+root of a checkout at `C:\ProveIt`.  In a *git worktree* nested under
+`.claude/worktrees/<name>/`, however, four of the twelve exceed the Windows
+`MAX_PATH` limit of 260 — the longest reaching 291 — so tools that are not
+long-path aware report a misleading *"No such file or directory"* for files
+that plainly exist.  Git itself is configured with `core.longpaths`, and the
+metadata above was read with Python, which is long-path safe.  Nothing was
+renamed on that account, because the repository-root path is what the corpus
+convention measures and it is well inside the limit; the constraint is recorded
+here so the next batch does not nest deeper without checking.
 
 ## Deferred
 

@@ -91,7 +91,8 @@ See [Building Lean](#building-lean) for the full serialization recipe.
 > `docs/semi-formalized-research-frontiers/drafts/incoming/`, first perform a
 > **quick archival intake and nothing deeper**: merge current `origin/main`,
 > verify archive safety/integrity, unpack and file the report by theme, normalize
-> repository line endings and refresh affected ledgers, delete the ZIP, update
+> repository line endings and record provenance in the surviving purpose-specific
+> records, delete the ZIP, update
 > the manifest and destination README, commit, push the feature branch, push
 > ff-only to `origin/main`, and verify the remote SHA.
 >
@@ -430,9 +431,14 @@ invocation each, so every dependency is already compiled when its turn comes.
 Two scripts do exactly this:
 
 ```sh
-python3 Analysis/FabiusFunction/scripts/affected_modules.py <base> --stats --out affected.txt
+python3 Analysis/FabiusFunction/scripts/affected_modules.py <base> \
+  --include-worktree --stats --out affected.txt
 sh Analysis/FabiusFunction/scripts/validate_affected.sh affected.txt
 ```
+
+Use `--include-worktree` before committing so staged, unstaged, and untracked
+Lean modules participate in the closure.  Omit it only when the complete
+change set is already committed between `<base>` and `HEAD`.
 
 The first closes the change set under the *reverse* `import FabiusFunction.*`
 graph and emits a topological order; `--stats` reports how many of those lack a

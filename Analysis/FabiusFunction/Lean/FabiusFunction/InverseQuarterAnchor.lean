@@ -1,6 +1,7 @@
 import FabiusFunction.FabiusInverse
 import FabiusFunction.DyadicSpecializations
 import Mathlib.Analysis.Real.Sqrt
+import Mathlib.Analysis.SpecificLimits.Basic
 
 /-!
 # The inverse Fabius function at the quarter anchor
@@ -267,6 +268,42 @@ theorem quarterPrefixDisplacement_le_inv_two_pow (n : ℕ) :
       rw [one_mul, hpow]
       exact mul_le_mul_of_nonneg_right hbase (by positivity)
     _ = ((2 : ℝ) ^ n)⁻¹ := one_div _
+
+/-- **The finite-depth quarter displacements converge to zero**, at the
+explicit geometric rate `0 < Δ_n ≤ (4/9)·4⁻ⁿ`.  Consequently the exact
+finite-depth quantiles `1/4 + Δ_n` converge to the true quarter anchor
+`fabiusInv (5/72) = 1/4`: the finite-prefix theorem recovers the anchor in
+the limit, with no compactness or continuity argument. -/
+theorem tendsto_quarterPrefixDisplacement_atTop :
+    Filter.Tendsto quarterPrefixDisplacement Filter.atTop (nhds 0) := by
+  have hgeom : Filter.Tendsto (fun n : ℕ => (4 / 9 : ℝ) * ((4 : ℝ) ^ n)⁻¹)
+      Filter.atTop (nhds 0) := by
+    have h : Filter.Tendsto (fun n : ℕ => ((4 : ℝ) ^ n)⁻¹)
+        Filter.atTop (nhds 0) := by
+      simpa only [inv_pow] using
+        tendsto_pow_atTop_nhds_zero_of_lt_one
+          (by norm_num : (0 : ℝ) ≤ (4 : ℝ)⁻¹)
+          (by norm_num : ((4 : ℝ))⁻¹ < 1)
+    simpa using h.const_mul (4 / 9 : ℝ)
+  refine squeeze_zero (fun n => (quarterPrefixDisplacement_pos n).le)
+    (fun n => ?_) hgeom
+  exact quarterInverseGerm_le_four_div_nine_mul (by positivity)
+
+/-- The exact finite-depth quantiles converge to the quarter anchor. -/
+theorem tendsto_quarterPrefix_quantile_atTop :
+    Filter.Tendsto (fun n : ℕ => 1 / 4 + quarterPrefixDisplacement n)
+      Filter.atTop (nhds (1 / 4 : ℝ)) := by
+  simpa using
+    (tendsto_quarterPrefixDisplacement_atTop.const_add (1 / 4 : ℝ))
+
+/-- The limit of the finite-depth quantiles is exactly the inverse Fabius
+value at `5/72`, by `fabiusInv_five_div_seventy_two`. -/
+theorem tendsto_quarterPrefix_quantile_fabiusInv
+    (F : BoundedFabius) (hF : IsFabius F) :
+    Filter.Tendsto (fun n : ℕ => 1 / 4 + quarterPrefixDisplacement n)
+      Filter.atTop (nhds (fabiusInv F hF (5 / 72))) := by
+  rw [fabiusInv_five_div_seventy_two F hF]
+  exact tendsto_quarterPrefix_quantile_atTop
 
 /-- The exact quarter value of any finite approximant satisfying the report's
 local polynomial on the natural radius.  This is the algebraic half of the

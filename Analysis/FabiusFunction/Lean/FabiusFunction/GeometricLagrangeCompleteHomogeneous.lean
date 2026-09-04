@@ -81,12 +81,9 @@ theorem geometricLagrangeQMoment_eq_residual_gaussianBinomial
     geometricLagrangeQMoment q p (p + 1 + r) =
       (-1 : ℚ) ^ p * q ^ (p + 1).choose 2 *
         gaussianBinomial q (p + r) r := by
-  have hPochhammer' : geometricQPochhammer q p ≠ 0 := by
-    rwa [geometricQPochhammer_rat_eq_qPochhammer]
   have hnodes : Set.InjOn (fun j : ℕ ↦ q ^ j)
       (Finset.range (p + 1)) :=
-    pow_injOn_range_of_geometricQPochhammer_ne_zero
-      q hq p hPochhammer'
+    pow_injOn_range_of_qPochhammer_self_ne_zero q hq p hPochhammer
   simpa only [geometricLagrangeQMoment] using
     sum_geometricLagrangeWeight_mul_pow_succ_add_eq_gaussianBinomial
       q p r hnodes

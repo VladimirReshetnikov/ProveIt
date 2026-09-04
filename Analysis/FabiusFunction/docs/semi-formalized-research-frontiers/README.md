@@ -21,10 +21,10 @@ The canonical frontier artifacts are:
 - [`semi-formalized-research-frontiers.tex`](semi-formalized-research-frontiers.tex)
 - [`semi-formalized-research-frontiers.pdf`](semi-formalized-research-frontiers.pdf)
 
-> **Source/PDF synchronization.** The retained 237-page A4 PDF includes the
-> 31 August 2026 Legendre Gaunt--Wigner-square closed-form overlay. Its
-> PDF (SHA-256
-> `21180fa05a754b52a057495464674e9d6ac26a51488c2c770730c641b5ffe887`)
+> **Source/PDF synchronization.** The retained 257-page, 2,438,299-byte A4 PDF
+> includes the 31 August 2026 Legendre Gaunt--Wigner-square closed-form overlay.
+> Its PDF (SHA-256
+> `3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980`)
 > source predates the later q-Pochhammer overlay and expanded ledger, so it is
 > a historical render and must not be cited as displaying the final source union.
 
@@ -37,8 +37,434 @@ explicit Rvachev--Appell specialization. In the canonical inverse synthesis
 this promotes exactly `is:p3:cor:forced-superconvergence` and
 `is:p3:thm:Appell-lattice-reproduction`, bringing its 194 immutable rows to
 49 Lean-proved / 96 human-proved / 10 conjectural / 15 open / 24
-nonassertoric. The live documentation census is 671 modules and 8,858 public
-declarations with no gaps; no PDF was rebuilt for this source-only update.
+nonassertoric. At that superconvergence checkpoint the documentation census
+was 671 modules and 8,858 public declarations; no PDF was rebuilt for that
+source-only update.
+
+The newest source-only Lambert branch-coordinate overlay formalizes the exact
+pairing theorem, its symmetric corollary, the compact Bernoulli-series identity,
+and the complex Bernoulli generating function with its standard removable
+value and exact convergence radius from `Lambert_W_Guide/`.
+`LambertWBranchPairing.lean` has 0 definitions + 7 theorems,
+`LambertWGapBijection.lean` has 4 definitions + 16 theorems, and
+`LambertWBranchSymmetry.lean` has 0 definitions + 9 theorems. For
+`x in (-exp(-1), 0)` and `delta = W_0(x) - W_{-1}(x) > 0`, they prove the two
+exact branch formulas, the explicit inverse and gap bijection, the equivalent
+`t = exp(delta) > 1` coordinate, the ratio/sum/product identities, and the
+strict bounds `W_0 + W_{-1} < -2` and `0 < W_0 W_{-1} < 1`. The proof divides
+the two equations `W_j exp(W_j) = x`, then uses branch-range uniqueness for
+the converse; `sinh(y) > y` and `y coth(y) > 1` give the strict bounds.
+The interval is deliberately open: at the branch point the rational formulas
+have zero denominator and their limiting sum/product are `-2` and `1`, while
+zero is the singular classical lower endpoint.
+
+The companion `LambertWBranchGapBernoulli.lean` has the exhaustive surface
+0 definitions + 5 theorems. Alongside the real open-disk absolute-summability
+theorem, `summable_bernoulli_mul_pow_div_factorial_iff` proves for complex `z`
+that the Bernoulli exponential generating series is summable exactly when
+`‖z‖ < 2*pi`; in particular, it diverges on `‖z‖ = 2*pi` and throughout the
+exterior. The new theorem
+`hasSum_bernoulli_mul_pow_div_factorial_complex_iff` gives the complex value
+as `(complexExpm1Div z)⁻¹` exactly on that disk. This target is `1` at `z = 0`
+and rewrites to `z / (exp z - 1)` when `z != 0`; it does not identify the
+series with Lean's literal totalized quotient, which is `0` at the origin.
+The other theorems give the all-index real quotient value away from zero and
+the two paired branch sums when `x in (-exp(-1), 0)` and the positive branch
+gap is below `2*pi`. Thus `eq:pair-Bernoulli-general` is Exact, and
+`eq:bernoulli-gen` is wholly Exact under the explicit standard
+removable-origin convention. The Guide's nearest-nonzero-zero explanation is
+not the formal proof route. With the three finite branch-coordinate modules,
+the four-module union is 4 definitions + 37 theorems = 41 declarations.
+Higher or convergent Puiseux/logarithmic
+expansions remain open. The affected retained frontier, primary, walkthrough,
+and Lambert-Guide PDFs are historical artifacts and do not render this
+source-only overlay; no render parity is claimed. The live documentation
+census on the incoming Lambert branch at the exact-radius four-theorem
+checkpoint was 903 modules and 11,447 public declarations; the value-completion
+theorem gave that branch's historical 903/11,448 checkpoint.
+
+The source-only `FabiusFunction.LagrangeRvachevMatrix` module adds three
+definitions, one abbreviation, and six theorems. It promotes
+`gq:thm:gaussian-Appell-biorthogonality` and the representation proposition
+`prop:lag-markov`; the larger `thm:lag-right-inverse` remains partial because
+only its `UB = I` clause is formalized. Its negative-decoder theorem retains
+strictly positive row overlap as an explicit hypothesis. No retained frontier,
+primary, walkthrough, comb, or representation PDF renders this addition.
+
+The subsequent source-only algebraic addition is
+`FabiusFunction.GeometricUniformMomentPolynomial`, with one definition and
+eight theorems. It defines the recursive rational polynomial family and proves
+its base case, residual-product recurrence, triangular degree bound,
+reciprocal-factorial value at zero, and the explicit cases `P1` through `P4`.
+Together with the zero theorem this is the complete displayed `P0`--`P4`
+algebraic surface. That one-module/nine-declaration increment produced the
+historical checkpoint 904 modules and 11,457 public declarations.
+
+The subsequent companion
+`FabiusFunction.GeometricUniformMomentPolynomialBridge` has no public
+definitions and exactly one public theorem,
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`.
+For every real `q` with `|q| < 1` and every `n`, it identifies the recursive
+polynomial with the finite-q-Pochhammer normalization of the `n`th Taylor
+coefficient of the actual geometric-uniform moment generating function.
+Thus `p7:eq:Pn-def` is **Exact** in this real contraction regime, including
+signed `q` and `q = 0`. The exhaustive zero-definition/one-theorem bridge
+produced the historical checkpoint 905 modules and 11,458 public
+declarations.
+
+The next source-only leaf is
+`FabiusFunction.GeometricUniformComplexMomentProduct`, with one public
+definition and exactly two public theorems. The definition
+`Fabius.geometricUniformComplexMomentProduct` is the actual infinite product;
+`Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct` proves
+its locally uniform convergence on the complex plane for `‖q‖ < 1`, and
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`
+identifies its normalized Taylor coefficient with the recursive polynomial.
+This is the complex analytic analogue of the real moment identity, not a
+complex probability-moment interpretation of `p7:eq:Pn-def`, whose Exact
+status remains restricted to real `|q| < 1`. The canonical q-monograph
+compound label is not promoted by this inner-disc analogue.
+
+The merged-main pre-local addition
+`FabiusFunction.HalfQBinomialRootSimplicity` has no public definitions and
+exactly one public theorem,
+`Fabius.halfQBinomial_sum_rootMultiplicity_two_pow`. For every `j < n`, it
+proves over `ℚ` that the exact half-base q-binomial coefficient polynomial has
+root multiplicity one at `2^j`. Together with the existing complete rational
+root classification, all roots in that locus are simple. It makes no
+arbitrary-base, arbitrary-field, or general cyclotomic simplicity claim. This
+leaf raised the historical complex-product 918/11,568 checkpoint to the actual
+merged-main pre-local checkpoint 919 modules and 11,569 public declarations.
+
+The next source-only leaf is
+`FabiusFunction.GeometricUniformExteriorComplexMomentGerm`, also with one
+public definition and exactly two public theorems. The definition
+`Fabius.geometricUniformExteriorComplexMomentGerm` is the actual reciprocal
+germ `(A_{q⁻¹}(-z))⁻¹` for complex `1 < ‖q‖`;
+`Fabius.analyticAt_geometricUniformExteriorComplexMomentGerm` proves genuine
+analyticity at the origin, and
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient`
+identifies its normalized Taylor coefficient with the recursive polynomial.
+No boundary claim at `‖q‖ = 1` is made by this analytic leaf. The inner complex
+`1+2` leaf produced the historical
+checkpoint 906 modules and 11,461 public declarations; the exterior `1+2`
+leaf formed its earlier branch-local historical checkpoint at 907 modules and
+11,464 public declarations. In the merged chronology, the exterior leaf adds
+its three declarations to 919/11,569 and gives checkpoint 920/11,572.
+
+The latest sharp-degree leaf
+`FabiusFunction.GeometricUniformMomentPolynomialDegree` has no public
+definitions and exactly three public theorems:
+`Fabius.coeff_geometricUniformMomentPolynomial_choose_two`,
+`Fabius.coeff_geometricUniformMomentPolynomial_choose_two_sub_one`, and
+`Fabius.geometricUniformMomentPolynomial_natDegree_eq`. The coefficient at
+`n.choose 2` is `bernoulli' n/n!`, equivalently `(-1)^n B_n/n!`, for every
+`n`; for `n ≥ 2`, the coefficient one below it is
+`-bernoulli' n/n! + bernoulli' (n-1)/(2*(n-1)!)`. Consequently the exact
+natural degree is `n.choose 2` for `n=1` and even `n`, including `n=0`, and
+`n.choose 2-1` for odd `n>1`. Canonical `prop:qF-P-degree-sharp` is therefore
+**Exact**, and the formerly missing leading/odd-degree clause makes the
+represented compound `p7:thm:Pn` **Exact**. This purely algebraic result does
+not assert a unit-circle analytic continuation. The 0+3 leaf gives the
+historical sharp checkpoint 921 modules and 11,575 public declarations.
+`RvachevLaurentLeading` 1+6 then gives 922/11,582, and
+`FinitePrefixAppellRecovery` 11+17 gives the historical 923/11,610 checkpoint.
+
+The final source-only leaf is
+`FabiusFunction.GeometricUniformMomentRatFunc`, with one public definition and
+exactly four public theorems. The exhaustive API is
+`Fabius.geometricUniformMomentRatFunc`,
+`Fabius.qFactorial_mul_geometricUniformMomentRatFunc`,
+`Fabius.eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient`,
+`Fabius.eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient`,
+and `Fabius.eval_geometricUniformMomentRatFunc_one`. It packages the common
+`a_n = d_n/n!` as one rational function, proves the global clearing identity
+`[n]_X! a_n = P_n`, identifies safe evaluation with the actual inner and
+exterior Taylor coefficients on `‖q‖ < 1` and `1 < ‖q‖`, and handles `q = 1`
+through `[n]_1! = n!` rather than the literal totalized `0/0` quotient. In
+composition with the algebraic polynomial API and the q-factorial/Pochhammer
+identity, this makes canonical `thm:qF-moment-polynomial` **Exact**. It does
+not assign analytic coefficient values at genuine poles or otherwise fill the
+unit-circle MGF/germ boundary. The 1+4 leaf gives the historical 924/11,615
+checkpoint.
+
+The existing `FabiusFunction.ProbabilityLaplaceMoments` module then adds
+exactly two public theorems:
+`Fabius.ProbabilityRepresentation.weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg`
+and
+`Fabius.ProbabilityRepresentation.integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.
+The first uses atomlessness to identify the closed tail of the canonical
+weighted-sum law with `rvachevUp F t` for every `t >= 0`; composed with the
+existing global reflection and nonnegative complement identities, it makes
+`prop:up-tail` **Exact**, including the manuscript's `P(X >= t)` convention.
+The second gives the full-law power-moment formula for every natural `n >= 1`
+and makes `cor:up-moments` **Exact**. Degree zero is correctly excluded: its
+left side is one while the displayed right side would vanish. These two
+declarations give checkpoint 924/11,617 and promote no broader MGF,
+fractional-moment, or complex-moment row.
+
+The subsequent source-only
+`FabiusFunction.RvachevLegendreBiorthogonality` leaf has the exhaustive public
+surface one definition, `Fabius.rvachevLegendreAnalysisKernel`, and one
+theorem, `Fabius.rvachevLegendreBiorthogonality`. The definition is exactly
+the translated normalized Legendre analysis kernel in `def:leg-Lambda`; the
+theorem proves the finite open-block Kronecker pairing for every nonzero
+natural mesh `M`, every `l,m`, and `l <= padicValNat 2 M`. Thus
+`def:leg-Lambda` and `thm:leg-biorthogonality` are **Exact/Complete**. The leaf
+does not prove the larger support/smoothness/parity/Fourier--Bessel theorem
+`thm:leg-Lambda` or the matrix-projector corollary. It gives the live
+925/11,619 census.
+
+The retained frontier, primary, walkthrough, geometric-q, and representation
+PDFs predate these source-only overlays and claim no render parity.
+
+The preceding source-only addition is
+`FabiusFunction.GeometricRichardsonGenerating`, with three definitions and
+seven theorems. Its
+`Fabius.geometricLagrangeRichardson_generating` theorem is the exact formal
+counterpart of canonical comb label `gq:thm:richardson-generating`; the module
+also supplies the report-facing analytic companion
+`Fabius.hasSum_geometricLagrangeRichardson_mul_pow` under strict nome
+contraction and absolute summability. The retained canonical-frontier,
+primary, walkthrough, and comb-synthesis PDFs all predate this crosswalk and
+remain historical artifacts; none was rebuilt for this update.
+
+The one-definition/seventeen-theorem
+`FabiusFunction.GeometricUniformRealization` module transfers the canonical
+law to arbitrary probability spaces carrying independent uniform coordinates;
+the two-definition/one-theorem `FabiusFunction.RegularCentralQBinomialSum`
+leaf proves `thm:regular-central-sum` under its exact product-nonvanishing
+hypothesis. Together with the Lambert--Bernoulli and fixed-column-rate leaves,
+they brought the preceding documentation checkpoint to 910 modules and 11,525
+public declarations. The subsequent zero-definition/two-theorem
+`GaussianBinomialGreaterOneAsymptotics`, one-definition/fourteen-theorem
+`RvachevLagrangeNodesOnly`, and one-definition/eight-theorem
+`GeometricUniformMomentPolynomial` leaves brought the next source checkpoint
+to 913 modules and 11,551 public declarations. The subsequent zero-definition/
+three-theorem `ThueMorseGammaTowerDifferential` leaf brought the next source
+checkpoint to 914 modules and 11,554 public declarations. The one-theorem
+strengthening of the existing `GeometricResidualMoments` module left the
+module count unchanged and brought the next checkpoint to 914 modules and
+11,555 public declarations. The zero-definition/one-theorem
+`GeometricUniformMomentPolynomialBridge` leaf brought the next historical
+checkpoint to 915 modules and 11,556 public declarations. The affine-Prouhet
+strengthening of the existing `FinitePolynomialFunctional` module left the
+module count unchanged and raised the next checkpoint to 915/11,557. The
+one-definition/four-theorem `ThueMorseCornerIntegral` leaf then raised it to
+916/11,562, and the zero-definition/three-theorem
+`RvachevLegendreCentralSum` leaf brought the next checkpoint to 917 modules
+and 11,565 public declarations. The complex moment-product leaf gave the
+historical 918/11,568 checkpoint; `HalfQBinomialRootSimplicity` gave the actual
+merged-main pre-local checkpoint 919/11,569; the exterior reciprocal-germ leaf
+gave 920/11,572; and the sharp-degree leaf gave the historical 921/11,575
+checkpoint. `RvachevLaurentLeading` then gives 922/11,582, and
+`FinitePrefixAppellRecovery` gives the historical 923/11,610 checkpoint. The
+RatFunc leaf gives the historical 924/11,615 checkpoint, the two probability
+theorems give 924/11,617, and the Legendre biorthogonality 1+1 leaf gives the
+live 925/11,619 union.
+
+`FabiusFunction.RvachevLaurentLeading` has one definition and six theorems.
+Its manuscript-normalized punctured-neighborhood limit, together with the
+Fourier-product coordinate, odd-core value and nonvanishing, generic cofactor
+limit, and general integer-pole companion, makes
+`is:p2:thm:Laurent-leading` Exact. Puncturing is necessary because Lean
+totalizes inversion at a pole. No lower Laurent coefficients or later
+Appell-coefficient asymptotics are promoted. This leaf first raised the
+inverse package to 52 Lean-proved / 93 human-proved rows.
+
+The eleven-definition/seventeen-theorem
+`FabiusFunction.FinitePrefixAppellRecovery` leaf then makes both
+`is:p2:thm:finite-prefix-expansion` and `is:p2:thm:exact-recovery` Exact. Its
+uncentered and centered formulas hold for every `N,n`, including `N = 0`, at
+the exact bases `1/2` and `1/4`; the recovery rows use respectively `n+1` and
+`⌊n/2⌋+1` consecutive prefixes. The exact degrees `n` and `⌊n/2⌋` are outer
+degrees in `Polynomial (Polynomial ℚ)`: a fixed-inner-`x` centered
+specialization can drop degree, for example for odd `n` at `x = 0`. The
+prefix moments are an algebraic finite-convolution model, not a new
+random-variable, `HasLaw`, or analytic-MGF realization. These promotions give
+the inverse package's current 54 Lean-proved / 91 human-proved totals.
+
+The existing `FabiusFunction.ProbabilityLaplaceMoments` module now adds
+exactly two public theorems:
+`Fabius.weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
+`Fabius.integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.
+Atomlessness changes the established strict tail to the manuscript's closed
+event `X ≥ t` for every `t ≥ 0`; survival layer cake gives
+`E[X^n] = n ∫₀¹ t^(n-1) up(t) dt` for every natural `n ≥ 1`, with the
+expectation over the full weighted-sum law. Composed with the existing global
+up/Fabius identities, these make `prop:up-tail` and `cor:up-moments` Exact.
+No density assertion or degree-zero extension is claimed.
+
+`FabiusFunction.RvachevLegendreBiorthogonality` has exactly one definition,
+`Fabius.rvachevLegendreAnalysisKernel`, and one theorem,
+`Fabius.rvachevLegendreBiorthogonality`. For `F : BoundedFabius` with
+`IsFabius F`, natural `M ≠ 0`, arbitrary synthesis and analysis degrees
+`l,m`, and `l ≤ padicValNat 2 M`, it proves the literal normalized open-block
+identity
+`M⁻¹ ∑_{-2M<k<2M} Q_l⁻(k/M) Λ_m(k/M) = if m=l then 1 else 0`.
+The proof integrates the exact degree-`l` Rvachev synthesis against the
+normalized Legendre mode and applies orthogonality; there is no restriction
+on `m`. Thus `thm:leg-biorthogonality` is Exact. The larger
+`cor:leg-biorthogonal-matrices` remains Partial because the reverse
+projector, rank/trace, and Cauchy--Binet clauses are not Lean-covered; the
+leaf also makes no dyadic-rationality claim for the analysis kernel.
+
+The zero-definition/one-theorem
+`FabiusFunction.HalfQBinomialRootSimplicity` leaf adds
+`Fabius.halfQBinomial_sum_rootMultiplicity_two_pow`. Composed with the
+existing rational zero classifier and Gaussian/half-q coefficient identity,
+it makes `cor:halfbase-root-locus` Exact under the canonical rational-polynomial
+and rational-root convention. Injective scalar extension preserves
+the displayed multiplicities, but the leaf does not classify all roots over
+every extension field. After the two probability-row promotions, the q
+forward ledger is now 181 Exact / 78 Partial / 15 None / 8 interface rows,
+and its source concordance is 94 Lean-proved / 384 human-proved frontier /
+60 non-applicable / 9 conjectures.
+
+`FabiusFunction.GaussianBinomialGreaterOneAsymptotics` has exactly the two
+theorems
+`Fabius.gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
+`Fabius.gaussianBinomial_gt_one_central_isEquivalent`. For real `q > 1`, they
+prove the printed normalized fixed-column error at rate
+`(q⁻¹)^(n-k+1)` and
+`[2m,m]_q ~ q^(m*m) (q⁻¹;q⁻¹)_∞⁻¹`. Together with the existing evaluated
+reciprocity theorem, they make `cor:qgreaterone` Exact. Natural subtraction
+is total in the rate theorem and reciprocity is used only eventually when
+`k ≤ n`; no shifted-central, non-real, or wider-nome result is asserted.
+
+`FabiusFunction.RvachevLagrangeNodesOnly` has the one definition
+`Fabius.rvachevDeconvolvedPolynomialRat` and exactly fourteen theorems:
+`Fabius.map_rvachevDeconvolvedPolynomialRat`,
+`Fabius.rvachevDeconvolvedPolynomial_eq_sum_appell`,
+`Fabius.eval_rvachevDeconvolvedPolynomial_eq_sum_even_iterateDerivative`,
+`Fabius.rvachevDeconvolvedPolynomial_prod_X_sub_C_eq_sum_appell`,
+`Fabius.eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_sum_even_iterateDerivative`,
+`Fabius.eval_rvachevDeconvolvedPolynomial_lagrangeBasis_eq_nodalWeight_mul_sum_appell`,
+`Fabius.lagrangeRvachevDecoder_eq_nodalWeight_mul_sum_appell`,
+`Fabius.map_lagrangeBasis_ratCast`,
+`Fabius.map_rvachevDeconvolvedPolynomialRat_lagrangeBasis`,
+`Fabius.lagrangeRvachevDecoder_eq_ratCast`,
+`Fabius.rvachevRawMomentRat_eq_centeredRvachevFullMoment`,
+`Fabius.momentCumulant_rvachevRawMomentRat_eq_centeredRvachevFullCumulant`,
+`Fabius.momentCumulant_rvachevRawMomentRat_even_eq_bernoulliMersenne`, and
+`Fabius.rvachevReciprocalMomentRat_eq_completeBellPolynomial_neg_centeredCumulant`.
+By composition these give an Exact/Complete counterpart of
+`cor:lag-nodes-only`: the ordinary-derivative and raw omitted-node Appell
+forms, coefficientwise rational descent and rational lattice samples, and
+the formal complete-Bell/Bernoulli--Mersenne coefficient description.
+Rationality is asserted only at rational evaluation points, and the Bell
+identity is formal coefficient algebra rather than analytic reciprocal-MGF
+convergence. There is no single nodes-only wrapper theorem. Independently,
+the existing `LagrangeRvachevSynthesis` declarations
+`Fabius.normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp` and
+`Fabius.sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp` make
+`thm:lag-cardinal` Exact/Complete by assembly. The still-Partial
+`thm:lag-right-inverse` and decoder optimality are not promoted.
+
+`FabiusFunction.ThueMorseGammaTowerDifferential` has no definitions and
+exactly three theorems:
+`Fabius.hasDerivAt_mellin_mellinKernel_parameter`,
+`Fabius.hasDerivAt_thueMorseGammaLog_succ`, and
+`Fabius.iteratedDeriv_thueMorseGammaLog`. They prove the arbitrary-complex-
+spectral Mellin parameter derivative, the successor law
+`L_(r+1)'(a) = (r+1)L_r(a)`, and the full falling-factorial iteration for
+`k ≤ r`, always under `0 < a`. Consequently `p2:thm:gamma-tower` is Exact
+when its logarithm is read as the existing chosen GammaLog coordinate. No
+principal-`Complex.log` identity or nonpositive-parameter differential law
+is claimed. These additions are source-only; the retained frontier and
+package PDFs remain historical renders and make no current-parity claim.
+
+`FabiusFunction.ThueMorseCornerIntegral` has one public definition and four
+theorems: `Fabius.centeredBoxIntegral`,
+`Fabius.centeredBoxIntegral_zero`, `Fabius.centeredBoxIntegral_succ`,
+`Fabius.symmetricMixedDifference_range_eq_centeredBoxIntegral`, and
+`Fabius.symmetricMixedDifference_univ_eq_centeredBoxIntegral`. Together with
+the existing `ThueMorseSymmetricDifference` algebra, they make
+`thm:TM-corner` Exact/Complete exactly by composition. The range theorem assumes
+nonnegative half-steps, `IsOpen I`, `OrdConnected I`,
+`ContDiffOn ℝ N g I`, and containment of the full closed symmetric segment
+in `I`; it is local rather than a global smoothness shortcut and includes
+zero steps and `N = 0`. It is real-valued and fixes the recursive integration
+order. The following Walsh conditional-expectation construction and its
+`2^(-N)` normalization remain outside this result.
+
+`FabiusFunction.RvachevLegendreCentralSum` has no definitions and exactly
+three theorems: `Fabius.eval_legendrePolynomial_even_zero`,
+`Fabius.eval_rvachevLegendreDeconvolutionPolynomial_even`, and
+`Fabius.rvachevLegendreCentralSum`. For every `F : BoundedFabius` with
+`IsFabius F` and every `n`, including `n = 0`, the last theorem proves the
+literal finite central cancellation at mesh `4^n` by combining the normalized
+Legendre value at zero, evenness, compact-support truncation, and pairing of
+the positive and negative indices. This makes only `cor:leg-central-sum`
+Exact; it adds no Jacobi decoder formula, reverse spectral closure, or larger
+Lagrange right-inverse theorem. These source-only declarations are not
+rendered by the retained frontier or synthesis PDFs.
+
+The final source-only `FabiusFunction.GaussianBinomialFixedColumnRate` leaf has
+no definitions and ten theorems:
+`Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp`,
+`Fabius.norm_finiteQPochhammerIn_pow_sub_one_le`,
+`Fabius.norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
+`Fabius.norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
+`Fabius.norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`,
+`Fabius.tendsto_gaussianBinomial_add_atTop`,
+`Fabius.gaussianBinomial_fixedColumn_relativeError_isBigO`,
+`Fabius.gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
+`Fabius.gaussianBinomial_fixedColumn_error_isBigO`, and
+`Fabius.gaussianBinomial_shifted_fixedColumn_error_isBigO`. In a normed
+commutative ring with normalized multiplicative norm, `‖q‖ ≤ 1` gives the
+exponential and elementary bounds on `‖(q^m;q)_k-1‖` and the denominator-free
+relative Gaussian bound, the last meaningful even at roots of unity. Over a
+normed field, `‖q‖ < 1` gives fixed and shifted nonasymptotic bounds, shifted
+convergence, and relative/additive `IsBigO` laws at `q^(n-k+1)` and `q^(n+1)`.
+No completeness or `q ≠ 0` hypothesis is imposed, and the constant is not
+claimed sharp. Together with the existing fixed-column limit, these results
+make every clause of `thm:fixed-column-limit` exact; the relative pair encodes
+the two displayed multiplicative `1+O` estimates.
+
+The source-only `FabiusFunction.RvachevAppellHasse` leaf has one definition,
+`Fabius.Appell.polynomialTransform`, and exactly fourteen theorems:
+`Fabius.Appell.polynomialTransform_apply`,
+`Fabius.Appell.polynomialTransform_monomial`,
+`Fabius.Appell.polynomialTransform_eq_sum_hasseDeriv_of_natDegree_lt`,
+`Fabius.Appell.polynomialTransform_eq_sum_hasseDeriv`,
+`Fabius.rvachevReciprocalMomentRat_odd`,
+`Fabius.rvachevDeconvolutionLinearMap_eq_appellPolynomialTransform`,
+`Fabius.rvachevDeconvolvedPolynomial_eq_sum_even_hasseDeriv`,
+`Fabius.eval_hasseDeriv_prod_X_sub_C_eq_elementarySymmetricEval`,
+`Fabius.eval_rvachevDeconvolvedPolynomial_prod_X_sub_C`,
+`Fabius.eval_rvachevDeconvolvedPolynomial_qFallingPower`,
+`Fabius.lagrangeBasis_eq_nodalWeight_mul_prod_X_sub_C`,
+`Fabius.lagrangeRvachevDecoder_eq_nodalWeight_mul_sum`,
+`Fabius.geometric_nodalWeight_eq_geometricQPochhammer`, and
+`Fabius.geometric_lagrangeRvachevDecoder_eq`. It identifies the generic finite
+Appell transform with a Hasse-derivative sum, proves odd reciprocal centered
+Rvachev moments vanish and hence gives the even-Hasse deconvolution, expands
+root products through elementary symmetric polynomials, and specializes this
+to q-falling powers and the full geometric Lagrange--Rvachev decoder. Thus
+`gq:prop:q-Appell-falling` is exact by composition with
+`Fabius.normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp`,
+and `gq:thm:gaussian-Appell-decoder` is exact by composition with
+`Fabius.normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp`;
+those separate synthesis theorems, rather than this algebraic leaf alone,
+supply atom reconstruction. Here gamma is the formal reciprocal-moment
+sequence `rvachevReciprocalMomentRat`, not a claim of analytic reciprocal-MGF
+convergence. The displayed algebra is total at zero or colliding nodes because
+field inversion is total, while the manuscript cardinal use assumes `c > 0`
+and `0 < q < 1` (together with its mesh, interval, and degree hypotheses).
+No larger matrix right inverse or decoder-optimality result is asserted.
+
+The newest source-only addition leaves the module count unchanged and adds
+three theorems to `FabiusFunction.GaussianBinomialCumulants`: the explicit
+second derivative at one
+`Fabius.eval_one_derivative_derivative_gaussianBinomial_X`, the division-free
+raw second moment `Fabius.twelve_mul_secondMoment_gaussianBinomial_eval_one`,
+and the division-free variance numerator
+`Fabius.twelve_mul_varianceNumerator_gaussianBinomial_eval_one`. The first is a
+characteristic-zero field identity on `k ≤ n`; the cleared identities are total
+over every commutative semiring, including the above-row zero case. Their
+probability language is the normalized-generating-polynomial interpretation of
+algebraic identities, not a new probability-space construction.
 
 The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
 the retained PDFs.  The new `QPochhammerEntire.lean` leaf has zero definitions
@@ -51,19 +477,58 @@ same current source also crosswalks the generic infinite/dissection API and
 the later Euler, q-binomial, Jacobi, quantum-binomial, Rogers--Szegő,
 cyclotomic-divisibility, q-Catalan, primitive-root-block, q-Lucas, Jackson
 q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
-q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result forward
-status totals are now 88 exact / 83 partial / 103 none / 8 interface. The
+q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result
+forward status totals are now 181 Exact / 78 Partial / 15 None / 8 interface:
+`p7:thm:Pn` moves Partial-to-Exact and `prop:qF-P-degree-sharp` moves
+None-to-Exact, while the RatFunc assembly now moves
+`thm:qF-moment-polynomial` Partial-to-Exact and the probability extension
+moves `prop:up-tail` and `cor:up-moments` Partial-to-Exact.
+`FabiusFunction.GeometricResidualMoments` now has zero definitions and nine
+public theorems. Its existing
+`Fabius.sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos` supplies
+the displayed positive-degree scaled-geometric moment formula, while the new
+`Fabius.sum_geometricLagrangeWeight_mul_eval_scaled_geometric` supplies exact
+evaluation at zero for every polynomial of degree at most the interpolation
+order. Together they make `cor:scaled-geometric-moments` Exact by composition.
+Both results hold over an arbitrary field under injectivity of the nodes
+`k ↦ q^k` on `range (p + 1)`; the polynomial theorem permits every scale `c`,
+including zero, and therefore subsumes the manuscript's `c ≠ 0` case. No
+larger interpolation or node-collision claim is made.
+The new `Fabius.sum_weight_mul_eval_affine_of_topCoeff_extractor` theorem in
+the existing zero-definition/sixteen-theorem
+`FinitePolynomialFunctional.lean` module transports a same-ring
+top-coefficient extractor across `a + b*x` over every commutative semiring.
+Composed with
+`Fabius.halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne`, it makes
+`cor:geometric-prouhet-affine` Exact under the established rational-polynomial
+half-base convention. No `b ≠ 0` or distinct-node premise is needed, and the
+cases `b = 0` and `n = 0` are included; this does not assert a half-base
+extractor over arbitrary coefficient rings.
+The partition-symmetry row is exact; the basic geometric-uniform row is now
+exact because `GeometricUniformRealization.lean` transfers the canonical law
+to an arbitrary ambient probability space carrying independent coordinates
+with the uniform marginal law. The fixed-column Gaussian row is also exact by
+the fixed and shifted limits and relative geometric-rate theorems above. The
 outer spectral product now has an exact
-locally-uniform/normal-convergence theorem; the compound centered/MGF and
-exterior reciprocal/pole layers remain partial.
+locally-uniform/normal-convergence theorem; the compound centered/MGF and full
+exterior uniqueness/pole-divisor layers remain partial.
 
-The monograph's current 14,449-line, 679,492-byte source has SHA-256
-`ed3baa67195e142531234170e67d04a04e356905523333ad95d667f0ddddcc8c`.
-Its retained 354-page A4 PDF (3,030,302 bytes; SHA-256
-`1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`)
-renders an earlier explicitly pinned source. It remains a reproducible
-historical publication checkpoint, but must not be cited as displaying the
-current theorem promotions until a new PDF is built and inspected.
+The final terminating-basic-hypergeometric inventory is
+`TwoPhiOneReversal.lean` (2 definitions + 12 theorems) and
+`QChuVandermonde.lean` (10 theorems). The two q-Chu evaluations and the
+terminating reversal lemma are exact for the actual `twoPhiOne` tsum. The
+claim that reversal alone proves the second evaluation on its full displayed
+domain remains partial: the compiled by-reversal theorem retains `C ≠ 0` and
+`(A;q)_n ≠ 0`, while the unrestricted theorem uses finite q-Cauchy directly;
+no rational-continuation or cleared commutative-ring extension is claimed.
+
+The retained 389-page A4 PDF (3,254,138 bytes; historical SHA-256
+`b8add607c85ee35be98dabf36879e1d45fb093c6b453e93679c80295fae715bc`)
+was synchronized to the preceding 16,339-line, 810,779-byte source checkpoint
+(SHA-256 `14c444feb14c435bc300becd9c8cd2765c1e96f608dd79da462becc41b28ed22`).
+The live source and its current theorem promotions postdate that artifact, so
+no current source/PDF parity is claimed. No live checksum manifest or
+current-source digest is maintained.
 
 The current finite-moment/Legendre/Gaunt crosswalk covers eleven modules with
 20 public definitions and 109 public theorems, 129 declarations in all. The
@@ -187,10 +652,12 @@ closure has SHA-256
 `aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb`
 and postdates the retained PDF, so a fresh three-pass build is required before
 source/PDF synchronization may be claimed. The reviewed concordance classifies
-49 source rows as Lean-proved and 96 as human-proved frontier results. Its two
-newest exact matches are the forced parity-selected superconvergence corollary
-and the full Appell lattice-reproduction theorem, including its degree-`N+1`
-selected-phase clause.
+54 source rows as Lean-proved and 91 as human-proved frontier results, with 10
+conjectures, 15 open problems, and 24 non-applicable rows. Its newest exact
+matches include the punctured leading-Laurent theorem and the full uncentered/
+centered finite-prefix Appell expansion and exact-recovery pair described
+above; these do not assert lower Laurent coefficients or a probabilistic
+realization of the algebraic prefix model.
 
 Later the same day the groups other than the Fourier-decay corpus were
 **consolidated into volumes**, in two styles: the original members were
@@ -279,7 +746,7 @@ the transseries calculus rather than the function, they were regrouped on
 `polynomial-logarithmic-transseries/` subgroup.  That move was verbatim —
 no source or PDF changed — and the same day the six were merged editorially
 into the single canonical volume *Polynomial–Logarithmic Transseries:
-Algebra, Composition, Series Reversal, and the Lambert W Archetype* (399 A4
+Algebra, Composition, Series Reversal, and the Lambert W Archetype* (412 A4
 pages).  None of the six was a superset of the others and each contributed a
 layer no other supplied, so the merge kept every distinct result and collapsed
 only repetition.  Every statement in the volume carries a proof: where a source

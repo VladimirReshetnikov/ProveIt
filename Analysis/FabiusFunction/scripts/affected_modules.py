@@ -22,6 +22,7 @@ Run from anywhere::
     python3 Analysis/FabiusFunction/scripts/affected_modules.py <base-commit>
     python3 Analysis/FabiusFunction/scripts/affected_modules.py <base> --out list.txt
     python3 Analysis/FabiusFunction/scripts/affected_modules.py <base> --stats
+    python3 Analysis/FabiusFunction/scripts/affected_modules.py <base> --include-worktree
 
 The companion driver ``validate_affected.sh`` consumes the ``--out`` file.
 Exit status is 0 unless the repository cannot be read.
@@ -49,14 +50,22 @@ def repo_root() -> str:
     return out.stdout.strip()
 
 
-def changed_modules(root: str, base: str) -> set[str]:
-    """Module names whose sources differ between ``base`` and ``HEAD``."""
+def changed_modules(root: str, base: str, include_worktree: bool) -> set[str]:
+    """Module names changed from ``base`` through the selected endpoint."""
+    endpoint = [] if include_worktree else ["HEAD"]
     out = subprocess.run(
-        ["git", "-C", root, "diff", "--name-only", base, "HEAD", "--",
+        ["git", "-C", root, "diff", "--name-only", base, *endpoint, "--",
          REPO_SUBDIR.replace(os.sep, "/")],
         capture_output=True, text=True, check=True)
+    paths = set(out.stdout.splitlines())
+    if include_worktree:
+        untracked = subprocess.run(
+            ["git", "-C", root, "ls-files", "--others", "--exclude-standard",
+             "--", REPO_SUBDIR.replace(os.sep, "/")],
+            capture_output=True, text=True, check=True)
+        paths.update(untracked.stdout.splitlines())
     names = set()
-    for line in out.stdout.splitlines():
+    for line in paths:
         if line.endswith(".lean"):
             names.add(os.path.basename(line)[:-5])
     return names
@@ -118,12 +127,15 @@ def main() -> int:
     parser.add_argument("--out", help="write the topological order here")
     parser.add_argument("--stats", action="store_true",
                         help="also report how many lack a built olean")
+    parser.add_argument(
+        "--include-worktree", action="store_true",
+        help="include staged, unstaged, and untracked Lean sources")
     args = parser.parse_args()
 
     root = repo_root()
     lean_dir = os.path.join(root, REPO_SUBDIR)
     graph = import_graph(lean_dir)
-    seed = changed_modules(root, args.base)
+    seed = changed_modules(root, args.base, args.include_worktree)
     present = {m for m in seed if m in graph}
     affected = reverse_closure(graph, present)
     order = topological(graph, affected)

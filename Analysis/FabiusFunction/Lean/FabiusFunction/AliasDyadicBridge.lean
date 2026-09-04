@@ -1,6 +1,7 @@
 import FabiusFunction.HalfIntegerAliasIdentity
 import FabiusFunction.EffectiveFlatness
 import FabiusFunction.DyadicAnalytic
+import FabiusFunction.CyclicCharacterSums
 
 /-!
 # The alias coefficients as a half-range cosine transform of dyadic values
@@ -19,7 +20,10 @@ infinite sinc product (the alias class of `Φ` on the half-integers) and the
 `qBinomialThueMorseTranslatedFormulaIn_eq_fabiusAtInverseTwoPow`).
 
 The general tool is a fold of a sum over `ℤ/2Nℤ` of an even function onto
-the half range `1 ≤ k ≤ N-1`, `sum_zmod_even_eq_fold`.
+the half range `1 ≤ k ≤ N-1`, `sum_zmod_even_eq_fold`.  For odd `r` the
+half-range cosine sum vanishes (`sum_Ico_cos_alias_angle_odd`), which turns
+the display into the volume's sign form `p1:eq:A-F-DCT` with `1 - up` in place
+of `up` (`foldedCoefficient_eq_halfRange_cos_odd`).
 -/
 
 set_option autoImplicit false
@@ -51,7 +55,9 @@ theorem sum_zmod_even_eq_fold (N : ℕ) [NeZero N] (f : ZMod (2 * N) → ℂ)
     ∑ j : ZMod (2 * N), f j
       = f 0 + f (N : ZMod (2 * N)) + 2 * ∑ k ∈ Ico 1 N, f (k : ZMod (2 * N)) := by
   have hN : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
-  rw [sum_zmod_eq_sum_range, two_mul, sum_range_add, range_eq_Ico,
+  have hsplit := sum_range_add (fun k : ℕ => f (k : ZMod (2 * N))) N N
+  rw [show N + N = 2 * N by ring] at hsplit
+  rw [sum_zmod_eq_sum_range, hsplit, range_eq_Ico,
     sum_eq_sum_Ico_succ_bot hN, sum_eq_sum_Ico_succ_bot hN]
   have hrefl : ∑ k ∈ Ico 1 N, f (((N + k : ℕ)) : ZMod (2 * N))
       = ∑ k ∈ Ico 1 N, f (k : ZMod (2 * N)) := by
@@ -73,10 +79,10 @@ theorem sum_zmod_even_eq_fold (N : ℕ) [NeZero N] (f : ZMod (2 * N) → ℂ)
       rw [← hf ((N - k : ℕ) : ZMod (2 * N))]
       congr 1
       have h1 : N + k = 2 * N - (N - k) := by omega
-      rw [h1, Nat.cast_sub (by omega), Nat.cast_mul, Nat.cast_ofNat, ZMod.natCast_self,
-        zero_sub]
+      have h2 : ((2 * N : ℕ) : ZMod (2 * N)) = 0 := ZMod.natCast_self (2 * N)
+      rw [h1, Nat.cast_sub (by omega), h2, zero_sub]
   rw [hrefl]
-  push_cast
+  simp only [Nat.add_zero, Nat.cast_zero]
   ring
 
 /-- The cosine factor of the sample sum is even in the residue. -/
@@ -134,17 +140,326 @@ theorem foldedCoefficient_two_pow_eq_fabiusDyadic (F : BoundedFabius) (hF : IsFa
       = ((2 : ℂ) ^ n)⁻¹ * (1 + 2 * ∑ k ∈ Ico 1 (2 ^ n),
           ((fabiusDyadic n (2 ^ n - k) : ℝ) : ℂ) *
             Complex.cos ((Real.pi * r.val * k / 2 ^ n : ℝ) : ℂ)) := by
-  rw [foldedCoefficient_eq_halfRange_cos F hF]
-  push_cast
-  congr 2
-  refine sum_congr rfl fun k hk => ?_
-  rw [mem_Ico] at hk
-  congr 2
-  rw [fabiusDyadic_cast F hF n (2 ^ n - k) (Nat.sub_le _ _), rvachevUp_eq_fabiusReal_one_sub_abs]
-  congr 1
   have h2 : (0 : ℝ) < 2 ^ n := by positivity
-  rw [abs_of_nonneg (by positivity), Nat.cast_sub hk.2.le]
+  have hup : ∀ k : ℕ, k < 2 ^ n →
+      rvachevUp F ((k : ℝ) / 2 ^ n) = (fabiusDyadic n (2 ^ n - k) : ℝ) := by
+    intro k hk
+    rw [fabiusDyadic_cast F hF n (2 ^ n - k) (Nat.sub_le _ _),
+      rvachevUp_eq_fabiusReal_one_sub_abs, abs_of_nonneg (by positivity),
+      Nat.cast_sub hk.le]
+    congr 1
+    push_cast
+    rw [sub_div, div_self h2.ne']
+  have hsum : ∑ k ∈ (Ico 1 (2 ^ n) : Finset ℕ),
+        (rvachevUp F ((k : ℝ) / 2 ^ n) : ℂ) *
+          Complex.cos ((Real.pi * r.val * k / 2 ^ n : ℝ) : ℂ)
+      = ∑ k ∈ (Ico 1 (2 ^ n) : Finset ℕ),
+        ((fabiusDyadic n (2 ^ n - k) : ℝ) : ℂ) *
+          Complex.cos ((Real.pi * r.val * k / 2 ^ n : ℝ) : ℂ) := by
+    refine Finset.sum_congr rfl fun k hk => ?_
+    rw [Finset.mem_Ico] at hk
+    rw [hup k hk.2]
+  rw [foldedCoefficient_eq_halfRange_cos F hF]
+  simp only [Nat.cast_pow, Nat.cast_ofNat, hsum]
+
+/-! ## The sign form for odd residues (`p1:eq:A-F-DCT`) -/
+
+/-- The full cosine sum over a period vanishes for every nonzero residue `r`. -/
+theorem sum_cos_alias_angle_eq_zero (N : ℕ) [NeZero N] (r : ZMod (2 * N)) (hr : r ≠ 0) :
+    ∑ j : ZMod (2 * N), Complex.cos ((Real.pi * r.val * j.val / N : ℝ) : ℂ) = 0 := by
+  have h2 : (2 : ℂ) * ∑ j : ZMod (2 * N), Complex.cos ((Real.pi * r.val * j.val / N : ℝ) : ℂ)
+      = ∑ j : ZMod (2 * N), ZMod.stdAddChar (j * r)
+        + ∑ j : ZMod (2 * N), ZMod.stdAddChar (j * -r) := by
+    rw [mul_sum, ← sum_add_distrib]
+    refine sum_congr rfl fun j _ => ?_
+    rw [Complex.two_cos, stdAddChar_mul_eq_exp, mul_neg, stdAddChar_neg_mul_eq_exp]
+  rw [sum_stdAddChar_mul, sum_stdAddChar_mul, if_neg hr, if_neg (neg_ne_zero.mpr hr),
+    add_zero] at h2
+  exact (mul_eq_zero.mp h2).resolve_left two_ne_zero
+
+/-- For odd `r` the half-range cosine sum vanishes: `∑_{1 ≤ k < N} cos(π r k/N) = 0`. -/
+theorem sum_Ico_cos_alias_angle_odd (N : ℕ) [NeZero N] (r : ZMod (2 * N)) (hr : Odd r.val) :
+    ∑ k ∈ Ico 1 N, Complex.cos ((Real.pi * r.val * k / N : ℝ) : ℂ) = 0 := by
+  have hr0 : r ≠ 0 := by
+    rintro rfl
+    rw [ZMod.val_zero] at hr
+    exact (Nat.not_odd_iff_even.mpr ⟨0, rfl⟩) hr
+  have hN : (0 : ℝ) < N := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
+  have hfold := sum_zmod_even_eq_fold N
+    (fun j => Complex.cos ((Real.pi * r.val * j.val / N : ℝ) : ℂ)) (cos_alias_angle_neg N r)
+  rw [sum_cos_alias_angle_eq_zero N r hr0] at hfold
+  have h0 : Complex.cos ((Real.pi * r.val * (0 : ZMod (2 * N)).val / N : ℝ) : ℂ) = 1 := by
+    simp
+  have hNpos : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
+  have hNN : Complex.cos ((Real.pi * r.val * (N : ZMod (2 * N)).val / N : ℝ) : ℂ) = -1 := by
+    have hval : (N : ZMod (2 * N)).val = N := by
+      rw [ZMod.val_natCast, Nat.mod_eq_of_lt (by omega)]
+    have hang : (Real.pi * r.val * (N : ZMod (2 * N)).val / N : ℝ) = (r.val : ℕ) * Real.pi := by
+      rw [hval]
+      field_simp
+    rw [hang, ← Complex.ofReal_cos, Real.cos_nat_mul_pi, Odd.neg_one_pow hr]
+    push_cast
+    ring
+  have hsum : ∑ k ∈ Ico 1 N,
+        Complex.cos ((Real.pi * r.val * ((k : ℕ) : ZMod (2 * N)).val / N : ℝ) : ℂ)
+      = ∑ k ∈ Ico 1 N, Complex.cos ((Real.pi * r.val * k / N : ℝ) : ℂ) := by
+    refine sum_congr rfl fun k hk => ?_
+    rw [mem_Ico] at hk
+    rw [ZMod.val_natCast, Nat.mod_eq_of_lt (by omega)]
+  rw [h0, hNN, hsum] at hfold
+  linear_combination (-1 / 2 : ℂ) * hfold
+
+/-- **`p1:eq:A-F-DCT`** in the form `F = 1 - up`: for odd `r`,
+`A_{N,r} = N⁻¹ [1 - 2 ∑_{1 ≤ k < N} (1 - up(k/N)) cos(π r k/N)]`. -/
+theorem foldedCoefficient_eq_halfRange_cos_odd (F : BoundedFabius) (hF : IsFabius F)
+    (N : ℕ) [NeZero N] (r : ZMod (2 * N)) (hr : Odd r.val) :
+    foldedCoefficient F N r
+      = (N : ℂ)⁻¹ * (1 - 2 * ∑ k ∈ Ico 1 N,
+          (1 - (rvachevUp F ((k : ℝ) / N) : ℂ)) *
+            Complex.cos ((Real.pi * r.val * k / N : ℝ) : ℂ)) := by
+  rw [foldedCoefficient_eq_halfRange_cos F hF]
+  congr 1
+  have h := sum_Ico_cos_alias_angle_odd N r hr
+  simp only [sub_mul, one_mul, sum_sub_distrib, h]
+  ring
+
+/-! ## The discrete energy identity in its odd form (`p1:eq:discrete-energy`)
+
+Both sides of `sum_foldedCoefficient_sq` are sums of an even function over
+`ℤ/2Nℤ`, so `sum_zmod_even_eq_fold` applies to each.  For even `N` the two
+end residues contribute `1` and `0` on each side, and every even residue
+strictly between `0` and `N` contributes nothing to the coefficient side, so
+the fold leaves exactly the volume's statement: the odd coefficients below `N`
+carry all the energy. -/
+
+/-- The sample side of the energy identity, folded:
+`∑_{j ∈ ℤ/2Nℤ} P(j/N)² = 1 + 2 ∑_{1 ≤ k < N} up(k/N)²`. -/
+theorem sum_gridSample_sq_eq_fold (F : BoundedFabius) (hF : IsFabius F)
+    (N : ℕ) [NeZero N] :
+    ∑ j : ZMod (2 * N), gridSample F N j ^ 2
+      = 1 + 2 * ∑ k ∈ Ico 1 N, (rvachevUp F ((k : ℝ) / N) : ℂ) ^ 2 := by
+  have hN : (0 : ℝ) < N := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
+  rw [sum_zmod_even_eq_fold N (fun j => gridSample F N j ^ 2)
+    (fun j => by rw [gridSample_neg])]
+  have h0 : gridSample F N 0 = 1 := by
+    rw [show (0 : ZMod (2 * N)) = ((0 : ℕ) : ZMod (2 * N)) by simp,
+      gridSample_natCast_of_le F hF N (Nat.zero_le N)]
+    simp [rvachevUp_zero F hF]
+  have hNN : gridSample F N (N : ZMod (2 * N)) = 0 := by
+    rw [gridSample_natCast_of_le F hF N le_rfl, div_self hN.ne', rvachevUp_one F hF]
+    simp
+  rw [h0, hNN]
+  have hk : ∀ k ∈ Ico 1 N, gridSample F N ((k : ℕ) : ZMod (2 * N)) ^ 2
+      = (rvachevUp F ((k : ℝ) / N) : ℂ) ^ 2 := by
+    intro k hk
+    rw [mem_Ico] at hk
+    rw [gridSample_natCast_of_le F hF N hk.2.le]
+  rw [sum_congr rfl hk]
+  ring
+
+/-- The coefficient side, folded: for even `N`,
+`∑_{r ∈ ℤ/2Nℤ} A_{N,r}² = 1 + 2 ∑_{1 ≤ k < N} A_{N,k}²`. -/
+theorem sum_foldedCoefficient_sq_eq_fold (F : BoundedFabius) (hF : IsFabius F)
+    (N : ℕ) [NeZero N] (hNe : Even N) :
+    ∑ r : ZMod (2 * N), foldedCoefficient F N r ^ 2
+      = 1 + 2 * ∑ k ∈ Ico 1 N, foldedCoefficient F N ((k : ℕ) : ZMod (2 * N)) ^ 2 := by
+  have hNpos : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
+  rw [sum_zmod_even_eq_fold N (fun r => foldedCoefficient F N r ^ 2)
+    (fun r => by rw [foldedCoefficient_neg F hF])]
+  rw [foldedCoefficient_zero F hF N]
+  obtain ⟨m, hm⟩ := hNe
+  have hNval : (N : ZMod (2 * N)) = ((2 * m : ℕ) : ZMod (2 * N)) := by
+    congr 1
+    omega
+  have hzero : foldedCoefficient F N (N : ZMod (2 * N)) = 0 := by
+    rw [hNval]
+    exact foldedCoefficient_two_mul_eq_zero F hF N (by omega) (by omega)
+  rw [hzero]
+  ring
+
+/-- Every even residue strictly between `0` and `N` contributes nothing. -/
+theorem foldedCoefficient_sq_eq_zero_of_even (F : BoundedFabius) (hF : IsFabius F)
+    (N : ℕ) [NeZero N] {k : ℕ} (hk0 : 1 ≤ k) (hkN : k < N) (hke : Even k) :
+    foldedCoefficient F N ((k : ℕ) : ZMod (2 * N)) ^ 2 = 0 := by
+  obtain ⟨s, hs⟩ := hke
+  have hks : k = 2 * s := by omega
+  rw [hks, foldedCoefficient_two_mul_eq_zero F hF N (by omega) (by omega)]
+  ring
+
+/-- **`p1:eq:discrete-energy`.**  For even `N` the energy of the folded spectrum
+sits entirely on the odd residues below `N`:
+
+`∑_{1 ≤ r < N, r odd} A_{N,r}² = N⁻¹ (1 + 2 ∑_{1 ≤ j < N} up(j/N)²) - 1/2`. -/
+theorem sum_odd_foldedCoefficient_sq (F : BoundedFabius) (hF : IsFabius F)
+    (N : ℕ) [NeZero N] (hNe : Even N) :
+    ∑ k ∈ (Ico 1 N).filter (fun k => Odd k),
+        foldedCoefficient F N ((k : ℕ) : ZMod (2 * N)) ^ 2
+      = (N : ℂ)⁻¹ * (1 + 2 * ∑ k ∈ Ico 1 N, (rvachevUp F ((k : ℝ) / N) : ℂ) ^ 2) - 1 / 2 := by
+  have hN : (N : ℂ) ≠ 0 := by exact_mod_cast NeZero.ne N
+  -- the even residues drop out of the half-range sum
+  have hfilter : ∑ k ∈ Ico 1 N, foldedCoefficient F N ((k : ℕ) : ZMod (2 * N)) ^ 2
+      = ∑ k ∈ (Ico 1 N).filter (fun k => Odd k),
+          foldedCoefficient F N ((k : ℕ) : ZMod (2 * N)) ^ 2 := by
+    refine (sum_filter_of_ne ?_).symm
+    intro k hk hne
+    rw [mem_Ico] at hk
+    by_contra hodd
+    exact hne (foldedCoefficient_sq_eq_zero_of_even F hF N hk.1 hk.2
+      (Nat.not_odd_iff_even.mp hodd))
+  have hfold := sum_foldedCoefficient_sq_eq_fold F hF N hNe
+  rw [hfilter] at hfold
+  have henergy := sum_foldedCoefficient_sq F hF N
+  rw [sum_gridSample_sq_eq_fold F hF N] at henergy
+  rw [hfold] at henergy
+  linear_combination henergy / 2
+
+/-! ## The inverse transform in cosine form (`p1:eq:inverse-DCT`)
+
+The reconstruction `P(j/N) = ½ ∑_r A_{N,r} χ(rj)` becomes a real cosine sum by
+the same `r ↦ -r` pairing that produced the forward cosine form, and then the
+half-range fold leaves only the odd residues below `N`. -/
+
+/-- Pairing `r` with `-r` turns the reconstruction sum into a cosine sum. -/
+theorem sum_char_mul_foldedCoefficient_eq_sum_cos (F : BoundedFabius) (hF : IsFabius F)
+    (N : ℕ) [NeZero N] (j : ZMod (2 * N)) :
+    ∑ r : ZMod (2 * N), ZMod.stdAddChar (r * j) * foldedCoefficient F N r
+      = ∑ r : ZMod (2 * N),
+          foldedCoefficient F N r * Complex.cos ((Real.pi * r.val * j.val / N : ℝ) : ℂ) := by
+  have hneg : ∑ r : ZMod (2 * N), ZMod.stdAddChar (-(r * j)) * foldedCoefficient F N r
+      = ∑ r : ZMod (2 * N), ZMod.stdAddChar (r * j) * foldedCoefficient F N r := by
+    refine Fintype.sum_equiv (Equiv.neg (ZMod (2 * N))) _ _ fun r => ?_
+    simp only [Equiv.neg_apply]
+    rw [foldedCoefficient_neg F hF, neg_mul]
+  have h2 : (2 : ℂ) * ∑ r : ZMod (2 * N), ZMod.stdAddChar (r * j) * foldedCoefficient F N r
+      = 2 * ∑ r : ZMod (2 * N),
+          foldedCoefficient F N r * Complex.cos ((Real.pi * r.val * j.val / N : ℝ) : ℂ) := by
+    rw [two_mul]
+    nth_rewrite 2 [← hneg]
+    rw [← sum_add_distrib, mul_sum]
+    refine sum_congr rfl fun r _ => ?_
+    have hangle : (Real.pi * j.val * r.val / N : ℝ) = (Real.pi * r.val * j.val / N : ℝ) := by
+      ring
+    rw [stdAddChar_mul_eq_exp N r j, hangle]
+    have hneg' : ZMod.stdAddChar (-(r * j))
+        = Complex.exp (-((Real.pi * r.val * j.val / N : ℝ) : ℂ) * Complex.I) := by
+      have := stdAddChar_neg_mul_eq_exp N r j
+      rwa [hangle] at this
+    rw [hneg']
+    rw [show (2 : ℂ) * (foldedCoefficient F N r *
+        Complex.cos ((Real.pi * r.val * j.val / N : ℝ) : ℂ))
+      = foldedCoefficient F N r *
+        (2 * Complex.cos ((Real.pi * r.val * j.val / N : ℝ) : ℂ)) by ring, Complex.two_cos]
+    ring
+  exact mul_left_cancel₀ two_ne_zero h2
+
+/-- The cosine factor is even in the frequency as well as in the sample index. -/
+theorem cos_alias_angle_neg_left (N : ℕ) [NeZero N] (r j : ZMod (2 * N)) :
+    Complex.cos ((Real.pi * (-r).val * j.val / N : ℝ) : ℂ)
+      = Complex.cos ((Real.pi * r.val * j.val / N : ℝ) : ℂ) := by
+  have h := cos_alias_angle_neg N j r
+  have h1 : (Real.pi * j.val * (-r).val / N : ℝ) = (Real.pi * (-r).val * j.val / N : ℝ) := by
+    ring
+  have h2 : (Real.pi * j.val * r.val / N : ℝ) = (Real.pi * r.val * j.val / N : ℝ) := by
+    ring
+  rwa [h1, h2] at h
+
+/-- **`p1:eq:inverse-DCT`.**  For even `N`, every grid sample is reconstructed from
+the odd folded classes below `N`:
+
+`P(j/N) = ½ + ∑_{1 ≤ r < N, r odd} A_{N,r} cos(π r j / N)`. -/
+theorem gridSample_eq_half_add_sum_odd (F : BoundedFabius) (hF : IsFabius F)
+    (N : ℕ) [NeZero N] (hNe : Even N) (j : ZMod (2 * N)) :
+    gridSample F N j
+      = 1 / 2 + ∑ r ∈ (Ico 1 N).filter (fun r => Odd r),
+          foldedCoefficient F N ((r : ℕ) : ZMod (2 * N)) *
+            Complex.cos ((Real.pi * r * j.val / N : ℝ) : ℂ) := by
+  have hNpos : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
+  rw [gridSample_eq_sum_foldedCoefficient F N j,
+    sum_char_mul_foldedCoefficient_eq_sum_cos F hF N j,
+    sum_zmod_even_eq_fold N
+      (fun r => foldedCoefficient F N r *
+        Complex.cos ((Real.pi * r.val * j.val / N : ℝ) : ℂ))
+      (fun r => by rw [foldedCoefficient_neg F hF, cos_alias_angle_neg_left])]
+  -- the two end frequencies
+  rw [foldedCoefficient_zero F hF N]
+  obtain ⟨m, hm⟩ := hNe
+  have hNval : (N : ZMod (2 * N)) = ((2 * m : ℕ) : ZMod (2 * N)) := by
+    congr 1
+    omega
+  have hzero : foldedCoefficient F N (N : ZMod (2 * N)) = 0 := by
+    rw [hNval]
+    exact foldedCoefficient_two_mul_eq_zero F hF N (by omega) (by omega)
+  rw [hzero]
+  simp only [ZMod.val_zero, Nat.cast_zero, zero_mul, mul_zero, zero_div,
+    Complex.ofReal_zero, Complex.cos_zero, mul_one, zero_mul, add_zero]
+  -- restrict the half-range sum to the odd frequencies
+  have hval : ∀ r ∈ Ico 1 N, ((r : ℕ) : ZMod (2 * N)).val = r := by
+    intro r hr
+    rw [mem_Ico] at hr
+    rw [ZMod.val_natCast, Nat.mod_eq_of_lt (by omega)]
+  have hfilter : ∑ r ∈ Ico 1 N,
+        foldedCoefficient F N ((r : ℕ) : ZMod (2 * N)) *
+          Complex.cos ((Real.pi * ((r : ℕ) : ZMod (2 * N)).val * j.val / N : ℝ) : ℂ)
+      = ∑ r ∈ (Ico 1 N).filter (fun r => Odd r),
+          foldedCoefficient F N ((r : ℕ) : ZMod (2 * N)) *
+            Complex.cos ((Real.pi * r * j.val / N : ℝ) : ℂ) := by
+    rw [← sum_filter_of_ne (p := fun r => Odd r)]
+    · refine sum_congr rfl fun r hr => ?_
+      rw [mem_filter] at hr
+      rw [hval r hr.1]
+    · intro r hr hne
+      rw [mem_Ico] at hr
+      by_contra hodd
+      obtain ⟨s, hs⟩ := Nat.not_odd_iff_even.mp hodd
+      apply hne
+      have hrs : r = 2 * s := by omega
+      rw [hrs, foldedCoefficient_two_mul_eq_zero F hF N (by omega) (by omega), zero_mul]
+  rw [hfilter]
+  ring
+
+/-! ## The energy at a dyadic modulus is an explicit rational
+
+The volume's power-trace theorem stresses that every `P_j = P(j/N)` is rational,
+so that `p_m(n)` is a rational number given by a finite expression.  For `m = 2`
+that is now literal: the energy identity's right-hand side is a finite sum of
+squares of the exact rational dyadic values. -/
+
+/-- The samples at a dyadic modulus are the exact rational values, extracted
+from `foldedCoefficient_two_pow_eq_fabiusDyadic` for reuse. -/
+theorem rvachevUp_two_pow_eq_fabiusDyadic (F : BoundedFabius) (hF : IsFabius F)
+    {n k : ℕ} (hk : k < 2 ^ n) :
+    rvachevUp F ((k : ℝ) / 2 ^ n) = (fabiusDyadic n (2 ^ n - k) : ℝ) := by
+  have h2 : (0 : ℝ) < 2 ^ n := by positivity
+  rw [fabiusDyadic_cast F hF n (2 ^ n - k) (Nat.sub_le _ _),
+    rvachevUp_eq_fabiusReal_one_sub_abs, abs_of_nonneg (by positivity),
+    Nat.cast_sub hk.le]
+  congr 1
   push_cast
-  field_simp
+  rw [sub_div, div_self h2.ne']
+
+/-- **`p_2(n)` in explicit rational form.**  At `N = 2^n`, `n ≥ 1`, the energy of
+the odd folded classes is a finite expression in the rational dyadic values:
+
+`∑_{1 ≤ r < 2^n, r odd} A_{2^n,r}² = 2^{-n}(1 + 2 ∑_{1 ≤ k < 2^n} F((2^n-k)/2^n)²) - 1/2`. -/
+theorem sum_odd_foldedCoefficient_sq_two_pow (F : BoundedFabius) (hF : IsFabius F)
+    {n : ℕ} (hn : 1 ≤ n) :
+    ∑ k ∈ (Ico 1 (2 ^ n)).filter (fun k => Odd k),
+        foldedCoefficient F (2 ^ n) ((k : ℕ) : ZMod (2 * 2 ^ n)) ^ 2
+      = ((2 : ℂ) ^ n)⁻¹ *
+          (1 + 2 * ∑ k ∈ (Ico 1 (2 ^ n) : Finset ℕ),
+            ((fabiusDyadic n (2 ^ n - k) : ℝ) : ℂ) ^ 2) - 1 / 2 := by
+  haveI : NeZero (2 ^ n) := ⟨by positivity⟩
+  have hEven : Even (2 ^ n) := by
+    obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+    exact ⟨2 ^ m, by ring⟩
+  have hsum : ∑ k ∈ (Ico 1 (2 ^ n) : Finset ℕ),
+        (rvachevUp F ((k : ℝ) / 2 ^ n) : ℂ) ^ 2
+      = ∑ k ∈ (Ico 1 (2 ^ n) : Finset ℕ),
+        ((fabiusDyadic n (2 ^ n - k) : ℝ) : ℂ) ^ 2 := by
+    refine Finset.sum_congr rfl fun k hk => ?_
+    rw [Finset.mem_Ico] at hk
+    rw [rvachevUp_two_pow_eq_fabiusDyadic F hF hk.2]
+  rw [sum_odd_foldedCoefficient_sq F hF (2 ^ n) hEven]
+  simp only [Nat.cast_pow, Nat.cast_ofNat, hsum]
 
 end Fabius
