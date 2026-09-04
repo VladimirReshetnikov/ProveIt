@@ -16,7 +16,7 @@
 %  math and \nolinkurl'd outside, so it is safe in BOTH modes and needs no
 %  escaping of underscores.  Prefer it to \path for declaration names: \path is
 %  verbatim-like and is fatal inside math mode ("Command $ invalid in math
-%  mode").  Existing \path{...} rows in this file are all outside math and are
+%  mode").  Every crosswalk reference in this file now uses \lean; no \path
 %  left alone.
 %
 %  Lean names carry Unicode subscripts (eval-sub-2, and so on).  Inside \lean
@@ -873,6 +873,31 @@ therefore \(w\EulerE^{w}=z\).  Since \(v\mapsto v\EulerE^{v}\) is strictly
 increasing on \((-1,\infty)\) and \(w>0>-1\), the value \(w\) is the principal
 branch \(\LambertW_{0}(z)\).
 \end{proof}
+\emph{Lean status.}  Formal, with one clause excepted, in \lean{WrightOmega.lean}.
+Rather than construct the inverse of \(\Phi\) from scratch, \(\WrightOmega\) is
+\emph{defined} there by the last relation of the proposition,
+\lean{Fabius.wrightOmega}\ \(X=\LambertW_{0}(\EulerE^{X})\), which makes
+\(\LambertW_{0}(z)=\WrightOmega(\log z)\) a rewriting step
+(\lean{Fabius.principalLambertW_eq_wrightOmega_log}) and leaves every other clause a
+consequence of the Lambert API already in the corpus.  The defining
+equation~\eqref{plt:eq:mot-omega-equation} is \lean{Fabius.wrightOmega_add_log}, valid at
+every real \(X\) with no hypothesis; that \(\Phi\) is a left inverse, hence that
+\(\WrightOmega\) really does invert it on \((0,\infty)\), is
+\lean{Fabius.wrightOmega_leftInverse}, proved from the uniqueness of the principal branch
+above \(-1\).  Strict monotonicity is \lean{Fabius.wrightOmega_strictMono}, positivity
+\lean{Fabius.wrightOmega_pos}, and the anchor \(\WrightOmega(1)=1\)
+\lean{Fabius.wrightOmega_one}.  The envelope~\eqref{plt:eq:mot-envelope} is
+\lean{Fabius.wrightOmega_envelope}, and it is obtained in a sharper order than the proof
+above uses: the upper half \lean{Fabius.wrightOmega_le_self} needs only \(\log\WrightOmega(X)\ge0\),
+and the lower half \lean{Fabius.sub_log_le_wrightOmega} then follows from it by monotonicity of
+the logarithm, with no appeal to the asymptotics of \(\LambertW\).  Divergence
+\lean{Fabius.tendsto_wrightOmega_atTop} is deduced not from the envelope but from a
+hypothesis-free linear minorant proved along the way,
+\lean{Fabius.add_one_div_two_le_wrightOmega}: since \(\log y\le y-1\), the defining equation
+gives \((X+1)/2\le\WrightOmega(X)\) for \emph{every} real \(X\).
+Real analyticity of \(\WrightOmega\) is the one clause not formalized; the corpus carries
+continuity and differentiability of \(\LambertW_{0}\) but not its analyticity.
+
 
 The envelope \eqref{plt:eq:mot-envelope} already contains the message of this
 volume in miniature.  It says that \(\WrightOmega(X)\) equals \(X\) up to a
@@ -1411,6 +1436,33 @@ determined freely by its values on the variables, and it extends uniquely to
 any localization by the quotient rule; taking \(\DX t=-t^{2}\), \(\DX L=t\)
 gives the derivation in question.
 \end{proof}
+\emph{Lean status: partial, item \textup{(v)} only.}  The block
+law~\eqref{plt:eq:mot-block-derivative} is formal in
+\lean{TransseriesDifferentialBlock.lean}, and in greater generality than stated here:
+no ambient \(\mathcal{G}\) and no construction of \(\K[t,t^{-1}][L]\) is needed, only a
+commutative ring with a derivation \(d\) and two elements satisfying
+\(d\,t=-t^{2}\) and \(d\,L=t\) --- the abstract shape of \(t=X^{-1}\), \(L=\log X\).
+(This route was chosen because Mathlib has \lean{LaurentPolynomial} but no derivation on
+it, so the concrete ring would have had to be built before anything could be said about
+it; on the abstract statement the concrete ring is merely one model.)  For \(n\ge0\) the
+law is \lean{Fabius.derivation_block}, which identifies the right-hand side with the block
+operator \(\partial_{L}-n\) of \cref{plt:lem:mot-block-antiderivative}; the integer form
+of item~\textup{(v)}, with \(n\in\IntegerNumbers\) and \(t\) a unit, is
+\lean{Fabius.derivation_block_zpow}, and the auxiliary powers are
+\lean{Fabius.derivation_pow_t}, \lean{Fabius.derivation_zpow_t},
+\lean{Fabius.derivation_val_inv} and \lean{Fabius.derivation_pow_inv}.  The resonant
+case \(n=0\), where the law degenerates to \(d(p(L))=t\,p'(L)\), is
+\lean{Fabius.derivation_block_zero}, and the two antidifferentiation statements it
+controls are \lean{Fabius.exists_block_primitive} (for \((n:F)\ne0\), with the primitive
+given explicitly by the Neumann sum) and \lean{Fabius.exists_block_primitive_resonant}.
+
+Items~\textup{(i)}--\textup{(iv)} are \emph{not} formalized: neither the minimality of the
+three \(\DX\)-stable subrings, nor the growth statement in \textup{(i)}, nor the
+algebraic independence of \(t\) and \(L\) over \(\RealNumbers\) in \textup{(iv)} with the
+unique block representation it yields.  Item~\textup{(iv)} in particular is a
+transcendence statement about the concrete ring of germs and is not implied by anything
+above.
+
 
 \begin{remark}[Reading the theorem]
 \label{plt:rmk:mot-reading-minimality}
@@ -1602,6 +1654,25 @@ Hence
 we obtain \eqref{plt:eq:mot-harmonic-conclusion} for a suitable constant
 \(C\).
 \end{proof}
+\emph{Lean status: partial, leading order only.}  In
+\lean{TransseriesHarmonicIncrement.lean}.  What is proved is that the
+hypothesis~\eqref{plt:eq:mot-harmonic-hypothesis} forces \(w_{n}/n\to c_{0}\):
+\lean{Fabius.tendsto_div_atTop_of_harmonic_increment}, which needs \(w_{n}\to+\infty\) and
+the error bound but \emph{not} \(c_{0}>0\).  Its engine is a Stolz--Ces\`aro step stated
+for an arbitrary real sequence, \lean{Fabius.tendsto_div_atTop_of_tendsto_sub}: if the
+increments \(w_{n+1}-w_{n}\) converge to \(c\) then \(w_{n}/n\to c\), with no positivity,
+monotonicity or divergence hypothesis --- the telescoped sum of the increments is
+\(w_{n}-w_{0}\), so this is Ces\`aro convergence of the increments together with
+\(w_{0}/n\to0\).
+
+What is \emph{not} formalized is the rest of
+\eqref{plt:eq:mot-harmonic-conclusion}: the logarithmic correction \((c_{1}/c_{0})\log n\),
+the constant \(C\), and the \(\LittleO(1)\) remainder.  Closing that gap needs the
+Euler--Mascheroni comparison \(\sum_{k<n}w_{k}^{-1}=c_{0}^{-1}\log n+C'+\LittleO(1)\);
+Mathlib does carry the required machinery (\(\mathtt{harmonic}\ n-\log n\to\gamma\) in
+\lean{Mathlib/NumberTheory/Harmonic/EulerMascheroni.lean}), so it is reachable, but it is
+separate work.
+
 
 \begin{example}[Iterating the sine]
 \label{plt:ex:mot-sine}
@@ -29586,6 +29657,23 @@ product being \(1\).  The \emph{complete} polynomial is
  \ExponentialPartialBellPolynomial{n}{k}(x_{1},\ldots,x_{n-k+1}).
 \end{equation}
 \end{definition}
+\emph{Lean status.}  Both polynomials of this definition already exist in the corpus,
+under the earlier combinatorial-calculus campaign rather than as work done for the present
+volume, and are recorded here because the crosswalk had not cited them.  The partial
+polynomial is \lean{Fabius.partialBell} in \lean{PartialBellPolynomials.lean}, defined not
+by the multinomial sum~\eqref{plt:eq:bell-partial-def} but by the block-of-the-largest-element
+recurrence \eqref{plt:eq:bell-comtet-rec}, which is therefore \emph{definitional} there
+(\lean{Fabius.partialBell_succ_succ}, with the binomial-convolution repackaging
+\lean{Fabius.partialBell_succ_succ_eq_binomialConv}); the boundary values are
+\lean{Fabius.partialBell_zero_zero}, \lean{Fabius.partialBell_zero_succ} and
+\lean{Fabius.partialBell_succ_zero}.  The coefficient ring is an arbitrary commutative
+semiring, so the formal statement is more general than the
+\(\RationalNumbers[x_{1},x_{2},\ldots]\) of the definition above; the equivalence with the
+multinomial sum is not itself formalized, the recurrence being taken as primitive and the
+generating identity \eqref{plt:eq:bell-egf} proved from it.  The complete
+polynomial~\eqref{plt:eq:bell-complete-def} is \lean{Bell.complete}, and that it is
+the row sum of the partial ones is \lean{Fabius.bell_complete_eq_sum_partialBell}.
+
 
 The index set in \eqref{plt:eq:bell-partial-def} is finite: the constraint
 \(\sum_{j}jm_{j}=n\) forces \(m_{j}=0\) for \(j>n\) and \(m_{j}\le n/j\).  It
@@ -29650,6 +29738,23 @@ other entries zero; the coefficient is \(n!/(1!\,(n!)^{1})=1\).  For \(k=n-1\)
 with \(n\ge2\) the only sequence is \(m_{1}=n-2\), \(m_{2}=1\); its coefficient
 is \(n!/\bigl((n-2)!\,1!\,(1!)^{n-2}(2!)^{1}\bigr)=n(n-1)/2=\binom{n}{2}\).
 \end{proof}
+\emph{Lean status: \textup{(i)} and \textup{(ii)} formal, \textup{(iii)} partial.}  The
+vanishing in \textup{(i)} is \lean{Fabius.partialBell_eq_zero_of_lt} together with the
+three boundary values cited at \cref{plt:def:bell-partial}; the last clause of \textup{(i)},
+that only \(x_{1},\ldots,x_{n-k+1}\) occur, is not formalized, the corpus having no
+variable-support predicate for these polynomials.  Statement~\textup{(ii)} is formal in
+exactly the displayed bihomogeneous form~\eqref{plt:eq:bell-bihomogeneous}:
+\lean{Fabius.partialBell_bihomogeneous} in \lean{BellHomogeneity.lean} reads
+\(\ExponentialPartialBellPolynomial{n}{k}\bigl(ab^{j}x_{j}\bigr)_{j}=a^{k}b^{n}
+\ExponentialPartialBellPolynomial{n}{k}(x)\) for arbitrary ring elements \(a,b\), and its
+two halves \lean{Fabius.partialBell_mul_left} (homogeneity of degree \(k\)) and
+\lean{Fabius.partialBell_pow_mul} (isobaric of weight \(n\)) are the separate statements
+that \textup{(ii)} calls equivalent to it.  Of the three boundary identities
+in~\eqref{plt:eq:bell-boundary} only the first,
+\(\ExponentialPartialBellPolynomial{n}{n}=x_{1}^{n}\), is formal
+(\lean{Fabius.partialBell_self}); \(\ExponentialPartialBellPolynomial{n}{1}=x_{n}\) and
+the \(\binom{n}{2}x_{1}^{n-2}x_{2}\) row have no counterpart.
+
 
 \begin{proposition}[The defining generating identity]
 \label{plt:prop:bell-gf}
@@ -29717,6 +29822,22 @@ sum is \(\sum_{k=0}^{n}\ExponentialPartialBellPolynomial{n}{k}\), which is
 series are uniquely determined, so \eqref{plt:eq:bell-egf} recovers
 \eqref{plt:eq:bell-partial-def}.
 \end{proof}
+\emph{Lean status.}  Formal in \lean{BellGeneratingFunctions.lean}, all three clauses.
+The column identity~\eqref{plt:eq:bell-egf} is \lean{Fabius.bellWeightSeries_pow}: with
+\(\Xi\) the weight series \lean{Fabius.bellWeightSeries} (constant term zero,
+\lean{Fabius.constantCoeff_bellWeightSeries}), one has \(\Xi^{k}=k!\cdot\mathrm{egf}
+\bigl(n\mapsto\ExponentialPartialBellPolynomial{n}{k}\bigr)\), which is
+\eqref{plt:eq:bell-egf} with the \(k!\) cleared.  The complete
+identity~\eqref{plt:eq:bell-complete-egf} is \lean{Fabius.exp_subst_bellWeightSeries},
+\(\exp\Xi=\mathrm{egf}\bigl(\ExponentialCompleteBellPolynomial{n}\bigr)\), stated as a
+formal substitution and proved by a differential-equation argument rather than by
+summation of \eqref{plt:eq:bell-egf} --- \lean{Fabius.derivative_bellWeightSeries} is the
+step it turns on.  The converse clause, that \eqref{plt:eq:bell-egf} determines the
+polynomials, is \lean{Fabius.partialBell_eq_of_bellWeightSeries_pow_eq_egf}: a sequence
+whose column generating function matches \(\Xi^{k}/k!\) over \(\RationalNumbers\)
+\emph{is} the sequence of partial Bell polynomials.  That last statement is the tool used
+to prove the Stirling and Lah evaluations of \cref{plt:thm:bell-stirling}.
+
 
 \Cref{plt:prop:bell-gf} is precisely the identity quoted without proof in the
 proofs of \cref{plt:prop:mul-integer-power},
@@ -29773,6 +29894,13 @@ the proof of \cref{plt:prop:bell-gf}, now without the factors \(1/j!\).  The
 last sentence is \cref{plt:prop:tay-convolution}\,(i) combined with that
 generating identity.
 \end{proof}
+\emph{Lean status: not formalized.}  The corpus has no ordinary partial Bell polynomial
+\(\OrdinaryPartialBellPolynomial{n}{k}\) with the \(k!/\prod_{j}m_{j}!\) weighting
+of~\eqref{plt:eq:bell-ord-def}, so the bridge~\eqref{plt:eq:bell-ord-exp} between the two
+normalizations has no counterpart --- the modules \lean{OrdinaryBellBivariate.lean} and
+\lean{PowerSumOrdinaryBell.lean}, whose names invite the confusion, are about different
+objects.  This is the one statement of the present chapter with no formal analogue.
+
 
 \begin{warningbox}[title={Three two-index arrays, three index orders}]
 The volume carries three arrays whose entries are indexed by a pair of
@@ -30075,6 +30203,22 @@ which is the polynomial identity
 \(\RisingFactorial{z}{n}=\sum_{k}\stirlingone{n}{k}z^{k}\) of
 \cref{plt:lem:bell-rising} evaluated at \(z=1\).
 \end{proof}
+\emph{Lean status.}  All three evaluations are formal, over \(\NaturalNumbers\), and each
+is derived from the generating identity rather than from the multinomial sum.
+\textup{(i)}, in the unsigned form, is \lean{Fabius.partialBell_factorial_pred} in
+\lean{BellGeneratingFunctions.lean}: \(\ExponentialPartialBellPolynomial{n}{k}
+\bigl((j-1)!\bigr)_{j}=\stirlingone{n}{k}\), proved by identifying
+\(\bigl(-\log(1-z)\bigr)^{k}\) with the corresponding column exponential generating
+function; the signed restatement \((-1)^{n-k}\stirlingsigned{n}{k}\) offered as an
+equivalent above is not separately formalized, the corpus working throughout with the
+unsigned numbers.  \textup{(ii)} is \lean{Fabius.partialBell_one}, and \textup{(iii)} is
+\lean{Fabius.bell_complete_factorial_pred} in \lean{BellFactorialRowSum.lean}, obtained
+from \textup{(i)} and the row sum \(\sum_{k}\stirlingone{n}{k}=n!\).  Two neighbouring
+evaluations not stated in this theorem are formal as well and are worth recording here:
+\lean{Fabius.partialBell_factorial}, that \(x_{j}=j!\) gives the Lah numbers, and
+\lean{Fabius.bell_complete_one}, that the complete polynomial at \(x=(1,1,1,\ldots)\) is
+the \(n\)-th Bell number.
+
 
 \begin{corollary}[The Lambert triangle is a slice of the Bell array]
 \label{plt:cor:bell-lambert}
@@ -38737,14 +38881,14 @@ branch is the relevant one throughout.
 
 \begin{remark}[Formalization status]\label{q1:rem:lean}
 \Cref{q1:thm:exact} is machine-checked in this repository.  In
-\path{LambertShiftInverse.lean}, $\rWone$ is \path{Fabius.shiftedLambertW} (the
-inverse on $[0,\infty)$ of \path{Fabius.shiftedMulExp}, $u\mapsto u\e^{u}+u$)
-and $g$ is \path{Fabius.lambertShiftInv}; the three identities of
-\eqref{q1:eq:exact} are \path{Fabius.lambertShift_lambertShiftInv},
-\path{Fabius.lambertShiftInv_eq_mul_exp} and
-\path{Fabius.principalLambertW_lambertShiftInv}, and $g$ is the two-sided
-inverse of $f$ by \path{Fabius.lambertShiftInv_lambertShift} together with
-\path{Fabius.lambertShift_eq_iff}.
+\lean{LambertShiftInverse.lean}, $\rWone$ is \lean{Fabius.shiftedLambertW} (the
+inverse on $[0,\infty)$ of \lean{Fabius.shiftedMulExp}, $u\mapsto u\e^{u}+u$)
+and $g$ is \lean{Fabius.lambertShiftInv}; the three identities of
+\eqref{q1:eq:exact} are \lean{Fabius.lambertShift_lambertShiftInv},
+\lean{Fabius.lambertShiftInv_eq_mul_exp} and
+\lean{Fabius.principalLambertW_lambertShiftInv}, and $g$ is the two-sided
+inverse of $f$ by \lean{Fabius.lambertShiftInv_lambertShift} together with
+\lean{Fabius.lambertShift_eq_iff}.
 
 The differential layer is formal as well.  \(g\) is strictly increasing and
 continuous on the open half-line (\lean{Fabius.lambertShiftInv_strictMonoOn},
@@ -38822,14 +38966,14 @@ chapter of this volume the slope grows, so the residual buys a bound that
 improves with $z$ but with a $z$-dependent constant.  Here the certificate is
 uniform, which is what makes numerical work on this map unusually comfortable.
 The sandwich is machine-checked as well, as
-\path{Fabius.abs_sub_lambertShiftInv_le_abs_residual} and
-\path{Fabius.abs_residual_le_two_mul_abs_sub_lambertShiftInv}; and so is the
+\lean{Fabius.abs_sub_lambertShiftInv_le_abs_residual} and
+\lean{Fabius.abs_residual_le_two_mul_abs_sub_lambertShiftInv}; and so is the
 general two-sided statement, for an arbitrary function on a convex set, in
-\path{MeanValueBracket.lean} --- the brackets are
-\path{Fabius.mul_abs_sub_le_abs_sub_of_le_deriv} and
-\path{Fabius.abs_sub_le_of_le_deriv}, and the transfer against a right inverse
-is \path{Fabius.abs_sub_right_inverse_le_div} together with
-\path{Fabius.div_le_abs_sub_right_inverse}.
+\lean{MeanValueBracket.lean} --- the brackets are
+\lean{Fabius.mul_abs_sub_le_abs_sub_of_le_deriv} and
+\lean{Fabius.abs_sub_le_of_le_deriv}, and the transfer against a right inverse
+is \lean{Fabius.abs_sub_right_inverse_le_div} together with
+\lean{Fabius.div_le_abs_sub_right_inverse}.
 \end{remark}
 
 \begin{remark}[The sign hypothesis is not decoration]\label{q1:rem:sign}
@@ -39013,14 +39157,14 @@ $P_m(0)=(-1)^{m+1}m!$, which is \eqref{q1:eq:Pm-data}; the normalization
 \begin{remark}[Formalization status of the numerator family]
 \label{q1:rem:lean-coefficients}
 \Cref{q1:prop:recursion} is machine-checked, in
-\path{LambertInverseCoefficients.lean}, a module of pure polynomial algebra
+\lean{LambertInverseCoefficients.lean}, a module of pure polynomial algebra
 with no dependence on the rest of the corpus.  With indices shifted so the
-recursion starts at $0$, \path{Fabius.lambertNumerator} is $R_{n,j+1}$;
-\path{Fabius.lambertNumerator_succ_eq_draft} is \eqref{q1:eq:recursion},
-\path{Fabius.natCast_dvd_lambertNumerator} is $R_{n,k}\in n\Int[v]$,
-\path{Fabius.natDegree_lambertNumerator} the degree,
-\path{Fabius.leadingCoeff_lambertNumerator} the leading coefficient, and
-\path{Fabius.eval_zero_lambertNumerator} the value at $0$.
+recursion starts at $0$, \lean{Fabius.lambertNumerator} is $R_{n,j+1}$;
+\lean{Fabius.lambertNumerator_succ_eq_draft} is \eqref{q1:eq:recursion},
+\lean{Fabius.natCast_dvd_lambertNumerator} is $R_{n,k}\in n\Int[v]$,
+\lean{Fabius.natDegree_lambertNumerator} the degree,
+\lean{Fabius.leadingCoeff_lambertNumerator} the leading coefficient, and
+\lean{Fabius.eval_zero_lambertNumerator} the value at $0$.
 
 What is \emph{not} formalized, and should not be read as though it were: the
 closed form for $(\dd/\dd z)^{k}v^{n}$, and hence the identification of this
