@@ -30,6 +30,7 @@ normalization by `(1 - q)^n` would be singular.
 * `geometricUniformComplexMomentProduct`: the pointwise infinite product;
 * `hasProdLocallyUniformly_geometricUniformComplexMomentProduct`: its locally
   uniform convergence for `‖q‖ < 1`;
+* `differentiable_geometricUniformComplexMomentProduct`: its entire-ness;
 * `geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`:
   the exact finite-q-Pochhammer normalization of its Taylor coefficient.
 -/
@@ -135,7 +136,9 @@ theorem hasProdLocallyUniformly_geometricUniformComplexMomentProduct
     (fun z ↦ ∏' j : ℕ, complexExpm1Div ((1 - q) * q ^ j * z))
   simpa only [smul_eq_mul] using hprod
 
-private theorem geometricUniformComplexMomentProduct_differentiable
+/-- For every strict complex contraction, the geometric-uniform moment product
+is entire. -/
+theorem differentiable_geometricUniformComplexMomentProduct
     {q : ℂ} (hq : ‖q‖ < 1) :
     Differentiable ℂ (geometricUniformComplexMomentProduct q) := by
   change Differentiable ℂ
@@ -177,7 +180,7 @@ private theorem normalized_geometricUniformComplexMomentProduct_recurrence
   let M : ℂ → ℂ := geometricUniformComplexMomentProduct q
   let D : ℂ → ℂ := fun z ↦ complexExpm1Div ((1 - q) * z)
   have hMcont (r : ℕ) : ContDiff ℂ r M :=
-    (geometricUniformComplexMomentProduct_differentiable hq).contDiff
+    (differentiable_geometricUniformComplexMomentProduct hq).contDiff
   have hDcont : ContDiffAt ℂ n D 0 := by
     have hlin : ContDiff ℂ n (fun z : ℂ ↦ (1 - q) * z) := by fun_prop
     exact (complexExpm1Div_differentiable.contDiff.comp hlin).contDiffAt

@@ -165,6 +165,7 @@ import FabiusFunction.GeometricUniformMomentPolynomial
 import FabiusFunction.GeometricUniformMomentPolynomialBridge
 import FabiusFunction.GeometricUniformComplexMomentProduct
 import FabiusFunction.GeometricUniformExteriorComplexMomentGerm
+import FabiusFunction.GeometricUniformMomentReciprocity
 import FabiusFunction.GeometricUniformMomentRatFunc
 import FabiusFunction.GeometricUniformMomentPolynomialDegree
 import FabiusFunction.Paper05442
@@ -974,8 +975,9 @@ recursive polynomial by the exact formula
 geometric-uniform MGF.  The range includes `q = 0` and negative contractions.
 
 The complex-product companion has the exhaustive public surface of one
-definition and two theorems: `geometricUniformComplexMomentProduct`,
-`hasProdLocallyUniformly_geometricUniformComplexMomentProduct`, and
+definition and three theorems: `geometricUniformComplexMomentProduct`,
+`hasProdLocallyUniformly_geometricUniformComplexMomentProduct`,
+`differentiable_geometricUniformComplexMomentProduct`, and
 `geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
 For every complex `q` with `‖q‖ < 1`, including `q = 0` and negative real
 contractions, it constructs the genuine product
@@ -994,6 +996,21 @@ For every complex `q` with `1 < ‖q‖`, it defines the actual manuscript germ
 `P_n(q) = ((q;q)_n / (1-q)^n) * (iteratedDeriv n M_q 0 / n!)`.
 The inverse is total in Lean, but only the germ at zero is asserted analytic;
 no boundary or global pole statement is included.
+
+The reciprocity companion has the exhaustive public surface of one definition
+and five theorems: `geometricUniformComplexMomentGerm`,
+`geometricUniformComplexMomentGerm_of_norm_lt_one`,
+`geometricUniformComplexMomentGerm_of_one_lt_norm`,
+`analyticAt_geometricUniformComplexMomentGerm`,
+`geometricUniformComplexMomentGerm_reciprocity`, and
+`geometricUniformComplexMomentGerm_moment_convolution`.  It joins the inner
+product and exterior reciprocal into the canonical two-regime germ, proves
+analyticity at zero away from the unit circle, and for `q ≠ 0`, `‖q‖ ≠ 1`
+proves both `M_q(z) M_{q⁻¹}(-z) = 1` as an `EventuallyEq` germ identity and
+the exact all-order binomial convolution of its Taylor moments.  The local
+statement is essential: the inner product can have zeros away from the
+origin, and no unit-circle continuation is asserted.  This makes canonical
+label `thm:qF-reciprocity` Exact.
 
 The rational-coefficient companion has the exhaustive public surface of one
 definition and four theorems:

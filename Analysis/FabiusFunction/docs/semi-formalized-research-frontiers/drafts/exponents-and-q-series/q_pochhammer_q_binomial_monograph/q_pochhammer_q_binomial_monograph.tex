@@ -13700,8 +13700,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 181 are \statusexact, 78 are
-\statuspartial, 15 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 182 are \statusexact, 78 are
+\statuspartial, 14 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -14317,9 +14317,9 @@ Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 8 & 1 & 0 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 9 & 0 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 3 & 10 & 0 & 0\\
-Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 12 & 43 & 1 & 0\\
+Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 13 & 43 & 0 & 0\\
 \midrule
-\textbf{Forward total} & 181 & 78 & 15 & 8\\
+\textbf{Forward total} & 182 & 78 & 14 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -16001,7 +16001,22 @@ formalized, not the negative-base affine law}\\[2pt]
 \texttt{mgf\_id\_self\_similar}\newline
 {\footnotesize\texttt{GeometricCgfTails}; a refinement identity exists, but not
 the general normalized analytic-germ uniqueness theorem}\\[2pt]
-\Cref{thm:qF-reciprocity} & \statusnone & ---\\[2pt]
+\Cref{thm:qF-reciprocity} & \statusexact &
+\texttt{geometricUniformComplexMomentGerm},
+\texttt{geometricUniformComplexMomentGerm\_\allowbreak{}of\_\allowbreak{}norm\_\allowbreak{}lt\_\allowbreak{}one},
+\texttt{geometricUniformComplexMomentGerm\_\allowbreak{}of\_\allowbreak{}one\_\allowbreak{}lt\_\allowbreak{}norm},
+\texttt{analyticAt\_\allowbreak{}geometricUniformComplexMomentGerm},
+\texttt{geometricUniformComplexMomentGerm\_\allowbreak{}reciprocity}, and
+\texttt{geometricUniformComplexMomentGerm\_\allowbreak{}moment\_\allowbreak{}convolution}\newline
+{\footnotesize\texttt{GeometricUniformMomentReciprocity}; for every
+$q\ne0$ with $\lVert q\rVert\ne1$, the combined inner/exterior realization is
+analytic at the origin and satisfies $M_q(t)M_{q^{-1}}(-t)=1$ as an actual
+\texttt{EventuallyEq} germ identity.  Differentiating it gives the printed
+binomial convolution with $d_n(q)=M_q^{(n)}(0)$ and the exact Kronecker delta.
+The inner product's new public entire-ness theorem
+\texttt{differentiable\_\allowbreak{}geometricUniformComplexMomentProduct}
+supplies the analytic input.  The local formulation avoids total-inverse
+values at remote zeros and asserts no unit-circle continuation}\\[2pt]
 \Cref{thm:qF-spectral} & \statuspartial &
 \texttt{charFun\_\allowbreak{}geometricUniformDistribution\_\allowbreak{}eq\_\allowbreak{}phase\_\allowbreak{}mul\_\allowbreak{}geometricSincProduct},
 \texttt{charFun\_\allowbreak{}geometricUniformDistribution\_\allowbreak{}eq\_\allowbreak{}phase\_\allowbreak{}mul\_\allowbreak{}geometricReciprocalGamma},
@@ -16079,7 +16094,10 @@ source-concordance ledgers; the RatFunc leaf raised the census from the
 historical 923/11,610 checkpoint to the historical 924/11,615 checkpoint and
 moved this one row to Exact; the subsequent unrelated
 \texttt{RvachevLegendreBiorthogonality} leaf and two new
-\texttt{ProbabilityLaplaceMoments} theorems give the live 925/11,619 census}\\[2pt]
+\texttt{ProbabilityLaplaceMoments} theorems gave the historical 925/11,619
+checkpoint.  The subsequently merged mean-value and alias tranche gave
+926/11,628, and the entire-ness plus reciprocity layer gives the live
+927-module/11,635-declaration census}\\[2pt]
 \Cref{prop:qF-P-degree-sharp} & \statusexact &
 \texttt{coeff\_geometricUniformMomentPolynomial\_choose\_two},
 \texttt{coeff\_geometricUniformMomentPolynomial\_choose\_two\_sub\_one}, and
@@ -16091,7 +16109,7 @@ parity-split degree is exact, including $n=0$ and $n=1$.  This is a purely
 algebraic polynomial theorem and adds no analytic or root-of-unity
 hypothesis.  Its zero-definition/three-theorem leaf raised the then-current
 corpus to the historical 921-module/11,575-declaration checkpoint; the live
-facade census is 925 modules and 11,619 public declarations}\\[2pt]
+facade census is 927 modules and 11,635 public declarations}\\[2pt]
 \Cref{cor:qF-halfbase-dictionary} & \statuspartial &
 \texttt{fabiusAtInverseTwoPow\_eq\_halfMoment},
 \texttt{halfQPochhammer\_eq\_mersenne\_div}\newline
