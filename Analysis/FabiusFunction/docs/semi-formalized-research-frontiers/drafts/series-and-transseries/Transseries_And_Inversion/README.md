@@ -1,18 +1,22 @@
 # Transseries: the polynomial–logarithmic calculus and its inversions
 
 **Single consolidated volume for the whole `series-and-transseries` group.**
-`transseries_and_inversion.tex` is the canonical editable source. The retained
-711-page A4 PDF is a 4 September 2026 publication checkpoint. A later
-source-only snapshot reached 55,985 lines and 3,125 distinct labels; the
-merged canonical source includes still later editorial and Lean-crosswalk
-changes. The retained artifact is therefore historical; no current
-source-size, label-count, or source/render parity is claimed.
+`transseries_and_inversion.tex` is the canonical editable source. The local
+704-page and incoming 711-page A4 PDFs are historical publication checkpoints.
+The local 704-page receipt remains recorded below, including its disclosed
+layout warnings. The incoming branch later reached 55,985 lines and 3,125
+distinct labels; the merged canonical source includes still later editorial
+and Lean-crosswalk changes. Neither artifact is therefore current. The accepted
+merged-source render is recorded in the [merge-28de4e51 receipt
+register](../../MANIFEST.md#merge-28de4e51-publication-receipts).
 
 ## Status
 
-Complete. All five source groups are merged, and all five source
-directories were residue-audited and deleted on 4 September 2026. “Complete”
-here describes the editorial consolidation, not full machine formalization.
+Editorial consolidation is complete. All five source groups are merged, and all
+five source directories were residue-audited and deleted on 4 September 2026.
+“Complete” describes the editorial consolidation, not full machine
+formalization. Current publication parity is recorded in the receipt register
+linked above.
 
 | Source group | Lines | Absorbed as |
 | --- | --- | --- |
@@ -324,10 +328,16 @@ a real-argument Fibonacci function); the reversal of `x + W(x)` in depth; the Be
 ## Artifact status
 
 The former assembler cannot be rerun; the `.tex` header identifies the
-consolidated file as the canonical source and it is now edited in place. A
-future publication build would use three `pdflatex` passes, but none was run
-for this tranche. A later source-only snapshot had 55,985 lines and 3,125
-distinct labels; the merged canonical source is newer and has no asserted
-current line or label count. The retained historical PDF has 711 A4 pages and
-predates the merged source-only crosswalk overlay; no current source/render
-parity is claimed.
+consolidated file as the canonical source and it is now edited in place. The
+local 704-page receipt was root
+`55015L/2732554B/545d4b5ead18831e37a4df0ab7fb6b74a40e1e598144dc7057e8c62aaaa46799`,
+two-file closure
+`55299L/2744389B/499a045ab45fdea7849c888bc8903db0866a2d4ca27eca3db6f62a9db282af30`,
+passes `677/704/704`, PDF
+`704pp/5119857B/45a84240f21e501a77571bc860e5bc4693898e27056c82119cf9e4813ddf31a4`,
+and log
+`4099L/160665B/c7eac59d5bfb747c1f83c2f8b277e8a667049dc1b8e3d04fd9b3c7f6dd637396`;
+it retained 114 overfull boxes and 11 duplicate Hyperref targets. The incoming
+711-page checkpoint is later but also predates the merged source-only crosswalk
+overlay. Both receipts are historical. A future publication build requires
+three `pdflatex` passes; no current source/render parity is asserted.

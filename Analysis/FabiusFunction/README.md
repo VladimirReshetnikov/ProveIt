@@ -121,7 +121,7 @@ in it must have a proved counterpart in the Lean development.
 > `CentralQVandermondeInfinite` 0+4,
 > `CyclotomicFactorization` 0+7,
 > `JacobiTripleProduct` 2+25,
-> `QBinomialTheoremInfinite` 1+27,
+> `QBinomialTheoremInfinite` 1+29,
 > `GaussianBinomialFixedColumnRate` 0+9,
 > `GaussianBinomialGreaterOneAsymptotics` 0+2, `QPascalSummation` 0+4,
 > `QuantumBinomial` 0+2, `RogersSzegoPolynomial` 1+9,
@@ -162,6 +162,11 @@ in it must have a proved counterpart in the Lean development.
 > higher-Puiseux claim is made.  Together with the three finite
 > branch-coordinate modules, the four-module Lambert union is 4+37,
 > forty-one declarations.
+> Exact historical publication receipts remain centralized in the [draft
+> manifest](docs/semi-formalized-research-frontiers/drafts/MANIFEST.md).  Where
+> this merge changes a TeX closure, its earlier PDF receipt is historical and a
+> fresh synchronized render remains pending; no earlier receipt is promoted to
+> the merged source bytes.
 > The geometric-uniform moment-polynomial union consists of
 > `GeometricUniformMomentPolynomial` 1+8 and its real-MGF normalization bridge
 > `GeometricUniformMomentPolynomialBridge` 0+1, together with the inner
@@ -247,12 +252,19 @@ in it must have a proved counterpart in the Lean development.
 > `RvachevLegendreCentralSum` 0+3, the sixteenth theorem in the existing
 > zero-definition `FinitePolynomialFunctional` module, the two new theorems in
 > `ProbabilityLaplaceMoments`, and `RvachevLegendreBiorthogonality` 1+1.
-> The retained
-> primary exposition, Lean walkthrough, canonical frontier, Representation
-> Frontiers, filed New Frontiers, notation catalogue, Integration-and-Transform
-> master, comb-interpolation, and q-series synthesis PDFs contain respectively
-> 210, 165, 273, 301, 41, 88, 377, 160, and 389 A4 pages.  Their current TeX
-> sources contain post-render unions, including the centered
+> In the combined 282-result forward ledger, the exact closures give 181 Exact
+> / 79 Partial / 14 None / 8 interface rows.  In particular, the 1+4 RatFunc
+> leaf makes `thm:qF-moment-polynomial` Exact by assembly; the broader
+> `thm:geometric-uniform-mgf` remains Partial.
+> Publication receipts remain centralized in the [draft
+> manifest](docs/semi-formalized-research-frontiers/drafts/MANIFEST.md).  The
+> prior d130 receipts are retained there as historical evidence wherever this
+> merge changes the corresponding TeX closure; those roots require fresh
+> synchronized renders.  The canonical inverse-theory receipt remains current
+> because its TeX closure is unchanged.  Older Representation Frontiers, filed
+> New Frontiers, notation-catalogue, and Integration-and-Transform page-count
+> receipts remain historical and are not promoted to current-source parity.
+> The merged TeX sources contain the post-render unions, including the centered
 > Appell/deconvolution, arbitrary-phase synthesis, Lagrange--Rvachev,
 > prime-power companion-row, outer Pochhammer normal convergence, total
 > rational integer-index zero-row Wigner-square, and
@@ -643,8 +655,8 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 | Gaussian-polynomial continuity and the finite-product quotient bridge | `FabiusFunction.GaussianBinomialContinuity` | Retained 0+3 theorem inventory: `continuous_gaussianBinomial`, `tendsto_gaussianBinomial_nhds_one`, and `gaussianBinomial_eq_finiteQPochhammerIn_div`. |
 | Gaussian-polynomial cumulants, second derivative, and cleared moments at `q = 1` | `FabiusFunction.GaussianBinomialCumulants` | Exhaustive public surface (two definitions and 24 theorems): `meanAtOne`, `varAtOne`; `meanAtOne_one`, `varAtOne_one`, `meanAtOne_mul`, `varAtOne_mul`, `meanAtOne_prod`, `varAtOne_prod`, `eval_one_derivative_X_pow`, `eval_one_derivative_derivative_X_pow`, `eval_one_qInt_X`, `eval_one_derivative_qInt_X`, `eval_one_derivative_derivative_qInt_X`, `meanAtOne_qInt_X`, `varAtOne_qInt_X`, `one_sub_X_pow_succ_eq`, `gaussianBinomial_X_mul_prod_qInt`, `eval_one_gaussianBinomial_X`, `sum_mean_diff`, `sum_var_diff`, `meanAtOne_gaussianBinomial_X`, `varAtOne_gaussianBinomial_X`, `eval_one_derivative_gaussianBinomial_X`, `eval_one_derivative_derivative_gaussianBinomial_X`, `twelve_mul_secondMoment_gaussianBinomial_eval_one`, and `twelve_mul_varianceNumerator_gaussianBinomial_eval_one`.  The last three are the new declarations.  The explicit second-derivative formula holds over a characteristic-zero field under exactly `k ≤ n`.  The two denominator-cleared raw-second-moment and variance-numerator identities hold over every commutative semiring for all natural `n,k`, including the above-row case `n < k`, where zero extension makes both sides vanish; they require no division, nonvanishing, or characteristic hypothesis. |
 | Jacobi triple product and Euler pentagonal sums | `FabiusFunction.JacobiTripleProduct` | Retained 2-definition/25-theorem inventory: finite triple-product polynomial and field forms, the bilateral Jacobi `HasSum` identities, and pentagonal and paired-pentagonal `HasSum` corollaries. |
-| Infinite q-binomial and reciprocal Euler theorems | `FabiusFunction.QBinomialTheoremInfinite` | Current 1-definition/27-theorem q-facing inventory: the retained comparison, positivity, uniform Gaussian, Euler-product, q-binomial, and reciprocal-Euler results, plus `norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one`, `isBigO_finiteQPochhammerIn_pow_sub_one`, `tendsto_gaussianBinomial_add_const_atTop`, `isBigO_gaussianBinomial_sub_inv`, and `isBigO_gaussianBinomial_add_sub_inv`.  The shared finite zero-left identity is imported from `GaussianBinomialAtOne`. |
-| Effective fixed-column Gaussian convergence | `FabiusFunction.GaussianBinomialFixedColumnRate` | Exhaustive zero-definition/nine-theorem surface: `norm_finiteQPochhammerIn_pow_sub_one_le_exp'`, `norm_finiteQPochhammerIn_pow_sub_one_le`, `norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`, `norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`, `norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`, `gaussianBinomial_fixedColumn_relativeError_isBigO`, `gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`, `gaussianBinomial_fixedColumn_error_isBigO`, and `gaussianBinomial_shifted_fixedColumn_error_isBigO`.  The unprimed exponential bound and shifted limit are now canonically owned by `QBinomialTheoremInfinite`.  The hypotheses and effective fixed/shifted geometric-rate conclusions are unchanged, so `thm:fixed-column-limit` remains **Exact**. |
+| Infinite q-binomial and reciprocal Euler theorems | `FabiusFunction.QBinomialTheoremInfinite` | Current 1-definition/29-theorem q-facing inventory: the retained comparison, positivity, uniform Gaussian, Euler-product, q-binomial, and reciprocal-Euler results; the strengthened exponential bound `norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one`; both fixed-column limit names `tendsto_gaussianBinomial_add_const_atTop` and compatibility alias `tendsto_gaussianBinomial_add_atTop`; and the effective `IsBigO` bounds.  The shared finite zero-left identity is imported from `GaussianBinomialAtOne`. |
+| Effective fixed-column Gaussian convergence | `FabiusFunction.GaussianBinomialFixedColumnRate` | Exhaustive zero-definition/nine-theorem surface: `norm_finiteQPochhammerIn_pow_sub_one_le_exp'`, `norm_finiteQPochhammerIn_pow_sub_one_le`, `norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`, `norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`, `norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`, `gaussianBinomial_fixedColumn_relativeError_isBigO`, `gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`, `gaussianBinomial_fixedColumn_error_isBigO`, and `gaussianBinomial_shifted_fixedColumn_error_isBigO`.  The unprimed exponential bound and both fixed/shifted limit names are canonically owned by `QBinomialTheoremInfinite`; the hypotheses and effective geometric-rate conclusions are unchanged, so `thm:fixed-column-limit` remains **Exact**. |
 | Gaussian-binomial asymptotics for real `q > 1` (`cor:qgreaterone`) | `FabiusFunction.GaussianBinomialGreaterOneAsymptotics` | Exhaustive zero-definition/two-theorem surface: `gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and `gaussianBinomial_gt_one_central_isEquivalent`.  For exactly `1 < q`, the first proves `(q⁻¹;q⁻¹)_k * (q^(k*(n-k)))⁻¹ * [n,k]_q - 1 = O((q⁻¹)^(n-k+1))` at fixed `k`; natural subtraction is total, while reciprocity is used only eventually when `k ≤ n`.  The second proves `[2m,m]_q ~ q^(m*m) * (q⁻¹;q⁻¹)_∞⁻¹`.  Together with `gaussianBinomial_inv`, these give `cor:qgreaterone` an **Exact** counterpart without claiming a shifted-central formula or a wider nome domain. |
 | Weighted q-Pascal summation | `FabiusFunction.QPascalSummation` | Retained 0+4 theorem inventory: `sum_gaussianBinomial_succ_mul`, `sum_gaussianBinomial_succ_mul'`, `Commute.gaussianBinomial_left`, and `Commute.gaussianBinomial_right`. |
 | Quantum-plane binomial expansion | `FabiusFunction.QuantumBinomial` | Retained 0+2 theorem inventory: `quantumPlane_mul_pow` and `quantum_binomial`. |

@@ -873,8 +873,9 @@ core-inversion utilities, backward-error, remainder-transport, staircase and
 least-term lemmas, and abstract differential-closure and harmonic-increment
 tools.  Their lexical inventory is 21 definitions and 115 theorems.  The
 existing flatness module is the semantic union of its generic-vector 1+11 API
-and a scalar-compatibility 3+11 API; the differential-block and infinite
-q-binomial modules are respectively 0+12 and 1+27.  These census statements
+and a scalar-compatibility 3+11 API; the differential-block, infinite
+q-binomial, and fixed-column-rate modules are respectively 0+12, 1+29, and
+0+9.  These census statements
 describe the public surface only: they do not supply analytic continuation,
 an unnamed error term, a concrete transseries field, or a broader paper claim
 than the hypotheses of the individual declarations support.

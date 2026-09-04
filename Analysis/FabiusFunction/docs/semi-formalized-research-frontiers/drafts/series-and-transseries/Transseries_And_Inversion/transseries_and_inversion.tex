@@ -335,7 +335,7 @@ content of the argument and the only place the scale property is used.
 \begin{remark}[Formal crosswalk]
 \label{q0:rem:scale-lean}
 The sequence-indexed content of
-\cref{q0:def:scale,q0:eq:scale,q0:def:poincare,q0:eq:poincare,
+\cref{q0:def:scale,q0:eq:scale,q0:def:poincare,q0:eq:poincare,%
 q0:eq:coefficients,q0:prop:uniqueness} is Exact in
 \lean{TransseriesScale.lean}.  The structure
 \lean{Fabius.IsAsymptoticScale} records eventual nonvanishing and the
@@ -30304,19 +30304,23 @@ the proof of \cref{plt:prop:bell-gf}, now without the factors \(1/j!\).  The
 last sentence is \cref{plt:prop:tay-convolution}\,(i) combined with that
 generating identity.
 \end{proof}
-\emph{Lean status: Exact.}  The two-definition, four-theorem module
-\lean{OrdinaryPartialBell.lean} defines the ordinary series and its coefficient family as
-\lean{Fabius.ordinarySeries} and \lean{Fabius.ordinaryPartialBell}.
-The defining power identity is \lean{Fabius.ordinaryPartialBell_pow};
-\lean{Fabius.bellWeightSeries_eq_ordinarySeries} identifies the factorially weighted
-exponential input with the corresponding ordinary series; and
-\lean{Fabius.factorial_mul_ordinaryPartialBell} is the denominator-cleared form of
-\eqref{plt:eq:bell-ord-exp}.  The supporting theorem
-\lean{Fabius.ordinaryPartialBell_eq_zero_of_lt} supplies its triangular vanishing.
-Thus the normalization bridge is a formal power-series identity over every commutative
-rational algebra.  This does not identify the ordinary Bell family with labelled set
-partitions, and the similarly named \lean{OrdinaryBellBivariate.lean} and
-\lean{PowerSumOrdinaryBell.lean} concern different objects.
+\emph{Lean status: Exact.}  The new two-definition/four-theorem module
+\lean{OrdinaryPartialBell.lean} represents the ordinary family by its
+equivalent characterizing coefficient definition rather than by the displayed
+multiplicity sum.  Its definitions \lean{Fabius.ordinarySeries} and
+\lean{Fabius.ordinaryPartialBell}, together with
+\lean{Fabius.ordinaryPartialBell_pow}, give exactly the ordinary generating
+identity following~\eqref{plt:eq:bell-ord-def};
+\lean{Fabius.ordinaryPartialBell_eq_zero_of_lt} records its triangular
+support.  The theorem \lean{Fabius.bellWeightSeries_eq_ordinarySeries}
+identifies the divided-coefficient ordinary series, and the multiplicatively
+cleared theorem \lean{Fabius.factorial_mul_ordinaryPartialBell} is precisely
+the normalization bridge~\eqref{plt:eq:bell-ord-exp} over every commutative
+\(\RationalNumbers\)-algebra.  Composing that bridge with the coefficient
+identity in \cref{plt:prop:tay-convolution}\,(i) gives the final statement for
+\(C_{n,k}\); no different object from \lean{OrdinaryBellBivariate.lean} or
+\lean{PowerSumOrdinaryBell.lean} is being substituted.
+This does not identify the ordinary family with labelled set partitions.
 
 
 \begin{warningbox}[title={Three two-index arrays, three index orders}]
@@ -37729,7 +37733,7 @@ two logarithmic normalizations are
 \lean{Fabius.coeff_logOf_eq_sum_ordPartialBell} and
 \lean{Fabius.coeff_logOf_eq_sum_partialBell}.
 
-For \cref{p0:cor:exp-log-jets}, the boundary value (A_0=1) is
+For \cref{p0:cor:exp-log-jets}, the boundary value \(A_0=1\) is
 \lean{Fabius.constantCoeff_exp_subst}, and coefficient reweighting is pinned by
 \lean{Fabius.egfA_factorialDenormalize_coeff_eq} and
 \lean{Fabius.bellWeightSeries_factorialDenormalize_coeff_eq}; the complete-Bell
@@ -55536,6 +55540,7 @@ converged on the same apparatus independently.
 \end{enumerate}
 
 \appendix
+\renewcommand*{\theHchapter}{qfour.\Alph{chapter}}
 
 \chapter{Provenance}
 \label{q4:app:provenance}

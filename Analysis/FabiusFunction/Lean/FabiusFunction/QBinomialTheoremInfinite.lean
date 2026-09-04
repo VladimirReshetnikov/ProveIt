@@ -40,6 +40,7 @@ symbols.
 * `gaussianMajorant`, `norm_gaussianBinomial_le`: the uniform bound.
 * `tendsto_gaussianBinomial_atTop`, `tendsto_gaussianBinomial_add_const_atTop`:
   the fixed-column limit, unchanged by any fixed upper-index shift.
+  `tendsto_gaussianBinomial_add_atTop` is a compatibility alias for the latter.
 * `isBigO_gaussianBinomial_sub_inv`, `isBigO_gaussianBinomial_add_sub_inv`:
   the corresponding geometric error estimates.
 * `summable_pow_choose_two_mul_pow`: summability of `r^{C(k,2)} s^k`.
@@ -277,7 +278,8 @@ of `(q^m;q)_k` from one has the explicit bound
 
 This is the product estimate `‖∏(1+x_j)-1‖ ≤ exp(∑ ‖x_j‖)-1`, together with
 `∑_{j<k} ‖q^(m+j)‖ ≤ k ‖q‖^m`. -/
-theorem norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one {q : 𝕜}
+theorem norm_finiteQPochhammerIn_pow_sub_one_le_exp
+    {R : Type*} [NormedCommRing R] [NormOneClass R] [NormMulClass R] {q : R}
     (hq : ‖q‖ ≤ 1) (m k : ℕ) :
     ‖finiteQPochhammerIn (q ^ m) q k - 1‖ ≤
       Real.exp ((k : ℝ) * ‖q‖ ^ m) - 1 := by
@@ -297,6 +299,14 @@ theorem norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one {q : 𝕜}
           exact mul_le_of_le_one_right (pow_nonneg (norm_nonneg q) m)
             (pow_le_one₀ (norm_nonneg q) hq)
         _ = (k : ℝ) * ‖q‖ ^ m := by simp
+
+/-- Compatibility specialization of
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp` to normed fields. -/
+theorem norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one {q : 𝕜}
+    (hq : ‖q‖ ≤ 1) (m k : ℕ) :
+    ‖finiteQPochhammerIn (q ^ m) q k - 1‖ ≤
+      Real.exp ((k : ℝ) * ‖q‖ ^ m) - 1 :=
+  norm_finiteQPochhammerIn_pow_sub_one_le_exp hq m k
 
 /-- For a contracting nome, the effective finite-product error is
 `O(q^m)` for every fixed column length `k`. -/
@@ -319,7 +329,7 @@ theorem isBigO_finiteQPochhammerIn_pow_sub_one {q : 𝕜}
   calc
     ‖finiteQPochhammerIn (q ^ m) q k - 1‖ ≤
         Real.exp ((k : ℝ) * ‖q‖ ^ m) - 1 :=
-      norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one hq.le m k
+      norm_finiteQPochhammerIn_pow_sub_one_le_exp hq.le m k
     _ ≤ 2 * ((k : ℝ) * ‖q‖ ^ m) := hexp
     _ = (2 * k) * ‖q ^ m‖ := by rw [norm_pow]; ring
 
@@ -349,6 +359,13 @@ theorem tendsto_gaussianBinomial_add_const_atTop {q : 𝕜}
       (𝓝 (finiteQPochhammerIn q q k)⁻¹) := by
   simpa only [Function.comp_def] using
     (tendsto_gaussianBinomial_atTop hq k).comp (tendsto_add_atTop_nat r)
+
+/-- Compatibility alias for `tendsto_gaussianBinomial_add_const_atTop`. -/
+theorem tendsto_gaussianBinomial_add_atTop {q : 𝕜}
+    (hq : ‖q‖ < 1) (k r : ℕ) :
+    Tendsto (fun n : ℕ => gaussianBinomial q (n + r) k) atTop
+      (𝓝 (finiteQPochhammerIn q q k)⁻¹) :=
+  tendsto_gaussianBinomial_add_const_atTop hq k r
 
 /-- **Effective fixed-column limit.**  For fixed `k`,
 

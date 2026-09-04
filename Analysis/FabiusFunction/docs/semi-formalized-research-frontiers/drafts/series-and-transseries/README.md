@@ -23,11 +23,12 @@ optimal-truncation theorem.
 
 > [`Transseries_And_Inversion/`](Transseries_And_Inversion/) —
 > *Transseries: the polynomial–logarithmic calculus, series reversal at
-> infinity, and the inversion of rapidly growing functions*. The retained
-> 711-page A4 PDF is a 4 September 2026 publication checkpoint. A later
-> source-only snapshot reached 55,985 lines and 3,125 distinct labels; the
-> merged canonical source is newer, so no current source-size, label-count, or
-> TeX/PDF parity claim is made.
+> infinity, and the inversion of rapidly growing functions*. The local
+> 704-page and incoming 711-page A4 PDFs are historical publication
+> checkpoints. The incoming branch later reached 55,985 source lines and 3,125
+> distinct labels, and the merged canonical source is newer still. No current
+> source-size, label-count, or TeX/PDF parity claim is made; a fresh render is
+> pending.
 
 ## What was merged
 

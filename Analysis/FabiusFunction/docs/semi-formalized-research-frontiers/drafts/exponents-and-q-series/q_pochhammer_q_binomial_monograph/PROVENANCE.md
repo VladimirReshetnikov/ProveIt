@@ -125,9 +125,9 @@ and forbidden checksum basenames both close at zero. The sole retained
 32.5659 pt overfull paragraph at source lines 590--598 is readable and
 unclipped; the final log has zero underfull diagnostics. The merged source has
 advanced beyond that receipt, so its PDF is historical; a rebuild was then
-pending. It is superseded by the current receipt below.
+pending. It is followed by the historical `b899` receipt below.
 
-The current synchronized `b899` driver has 17,265 lines and 864,659 bytes, with
+The historical synchronized `b899` driver has 17,265 lines and 864,659 bytes, with
 SHA-256
 `4dd3f7fb22387d8e3d039e8d49cd870a63ebe0881f7f215c7074854825a27bb9`.
 Its 14-file recursive TeX closure has 26,762 lines and 1,210,902 bytes, with
@@ -143,11 +143,7 @@ and none is Type 3. Required log, reference/rerun, metadata, visual, cleanup,
 and forbidden-basename gates passed. The final log has no vertical box and five
 minor horizontal boxes, none above 10.14 pt.
 
-The repository-wide semantic documentation census is 923 facade-reachable
-modules and 11,611 public declarations, with zero missing module headers and
-zero declaration-documentation gaps. The final count is one above origin's 11,610
-because the union retains the public
-`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
+The authoritative merged semantic documentation census is 983 facade-reachable\nmodules and 12,192 public declarations, with zero missing module headers and\nzero declaration-documentation gaps. The union retains the public\n`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
 Sibling source-only promotions are recorded here only to delimit this
 q-volume's receipt: `LambertWBranchPairing.lean`,
 `LambertWGapBijection.lean`, and `LambertWBranchSymmetry.lean` have exhaustive
@@ -156,6 +152,25 @@ surfaces 0+7, 4+16, and 0+9; `DyadicDerivativeFiltration.lean` is 0+6; and
 this monograph's forward-status inventory. These promotions were absent from
 the historical 395-page PDF; the retained 398-page artifact is also historical
 and awaits a merged-source rebuild.
+
+The local first-merge receipt is also retained as history: master
+`16812L/840316B/64dc18dedbd1966624162b64129128b24b51ca88d8a9e496c661cc1a46a24ba6`,
+15-file aggregate
+`26593L/1198416B/762e6d6ca441de51db9679f95d6a01d8353e8044639f99803734719b8a65a5f8`,
+passes `393/401/401`, PDF
+`401pp/2500131B/fd54459baf10845b5a89cc8b204f59ea33a0665b434ad270e738884072a1e6e1`,
+and log
+`1230L/44401B/37dca6371ea8bf9285e5f104d550bd584a290f4aa92fcf5679b028c9dfd3079d`.
+The later d130 campaign receipt is root
+`16865L/844086B/a404fd907bc8d5e4082f376d64be130f774b252d65c4b6746378cbca9cf17e99`,
+15-file aggregate
+`26646L/1202186B/8045ec45c0cd220dc4a328828d5498b9fb9969eb0fb0332c3acf157dfd240297`,
+passes `394/402/402` with clean index runs, PDF
+`402pp/2503677B/766028619c18c75009b8b738a5315f2167a2deeeb72ca156269762f0709a09af`,
+and log
+`1237L/44690B/afbccf3cd62e78b38c93e1a3dc468e3e97fa81ef76d15c5b93940cb1d2211d65`.
+Both passed their recorded gates. The merged q-series source is newer than
+every retained receipt, so a fresh synchronized render is pending.
 
 The current source incorporates exhaustive crosswalks for
 `QPochhammerEntire` (zero definitions and five legacy compatibility theorems),
@@ -242,8 +257,10 @@ totals include the q--Chu, Richardson,
 geometric-law barycenter, Lagrange--Rvachev matrix, arbitrary-space geometric
 realization, regular-central-sum, Lambert branch-gap Bernoulli, affine
 Prouhet, and complex moment-product follow-ups; they do not make the retained
-historical 391-page artifact current. The accepted 401-page receipt above is
-the current publication. Ten declarations come from the sibling
+historical 391-page artifact current. The 401-page first-merge, 402-page
+d130, and 405-page incoming receipts are all historical after the merged
+q-series source changed. A fresh synchronized render is pending. Ten
+declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` source-only module; three more
 are the explicit Gaussian second-derivative and division-free moment
 identities. The sibling `LambertWBranchGapBernoulli.lean` leaf contributes
@@ -266,7 +283,8 @@ equals `(exp z - 1) / z` away from zero; this is not the literal totalized
 quotient at zero and asserts no holomorphy. Higher/full Puiseux and logarithmic
 expansions remain open. None of these sibling changes alters this monograph's
 forward-status counts. The Lambert material belongs to its separate
-publication; the accepted 401-page receipt covers the current q-series source.
+publication; every retained 401-, 402-, and 405-page receipt is historical
+and does not claim parity with the merged q-series source.
 The
 one-definition/seventeen-theorem `GeometricUniformRealization.lean` leaf
 proves the missing arbitrary-space bridge: `iIndepFun` unit-interval
@@ -448,8 +466,9 @@ the exact positive-natural-degree layer-cake specialization over the full
 law.  Composed with the already stronger global reflection and nonnegative
 tail identities, they make `prop:up-tail` and `cor:up-moments` Exact.
 Neither these additions nor the preceding Lambert addition changes the old
-391-page historical artifact. The accepted 401-page receipt renders the
-current q-series source; Lambert parity is recorded by the Lambert package. The
+391-page historical artifact. The later 401-, 402-, and 405-page receipts
+are also historical; Lambert parity is recorded separately by the Lambert
+package. The
 forward status inventory covers 282 labelled results:
 181 Exact / 79 Partial / 14 None / 8 N/A; the relevant
 Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the 191-result pre-Fabius core is
@@ -495,9 +514,9 @@ evaluated reciprocity and the finite growth bounds on both sides of `q = 1`;
 the imported positivity theorem is not counted as a declaration of the
 bounds leaf. Its six exported theorems close the exact finite-growth row, while
 the two-theorem greater-than-one leaf closes the remaining fixed-column and
-central asymptotic clauses in their printed normalization. The current 405-page
-PDF renders this merge and is synchronized by the `b899` receipt above. The
-retained 398-page PDF remains a historical publication checkpoint.
+central asymptotic clauses in their printed normalization. The retained
+398-, 401-, 402-, and 405-page PDFs are historical checkpoints. The merged
+source requires a new synchronized render.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was

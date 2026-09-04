@@ -296,8 +296,8 @@ seven modules containing 11 definitions and 69 theorems:
 `UnitSeriesPowerRecurrence` 0+3.  Three theorems now owned by
 `ExponentialRescaling` were relocated from `NorlundDiagonal`, so existing
 modules contribute a net minus three declarations.  The exact change is
-therefore +7 modules and +77 lexical declarations, giving 977/12,133 with no
-documentation gap.  This census records reachability and the finite/formal or
+therefore +7 modules and +77 lexical declarations, giving the historical
+977/12,133 checkpoint with no documentation gap.  This census records reachability and the finite/formal or
 explicit analytic statements under their source hypotheses; it does not by
 itself promote any broader manuscript claim.
 
@@ -1455,6 +1455,9 @@ delta is the union of the new zero-definition/six-theorem
 `ThueMorseNewmanSelfSimilarity.lean`; it is not fourteen declarations in the
 new module alone.
 
+The live exact-name-deduplicated union is 983 modules and 12,192 public
+declarations, with no documentation gaps.
+
 The exhaustive `ProuhetBaseTwoBridge.lean` surface is
 `thueMorseSign_cast_eq_neg_one_pow_digits_sum`,
 `digitPowerSum_neg_one_two`, `sum_range_two_neg_one_pow`,
@@ -1483,6 +1486,13 @@ entire identities remain unchanged.
 frequently at `atTop`, and package the resulting explicit oscillation.  This
 overlay preserves the incoming API descriptions and makes no additional
 source-result status move.
+
+The combined 282-result q-series forward ledger is 181 Exact / 79 Partial /
+14 None / 8 interface rows, and its source concordance is 103 Lean-proved /
+375 human-proved frontier / 60 not-applicable / 9 conjecture rows.  In
+particular, `GeometricUniformMomentRatFunc.lean` 1+4 makes
+`thm:qF-moment-polynomial` **Exact by assembly**; the broader
+`thm:geometric-uniform-mgf` remains **Partial**.
 
 #### Series and transseries exactness overlay
 
@@ -2485,17 +2495,15 @@ also listed exhaustively above.  The
 `JacobiTripleProduct.lean` 2-definition/25-theorem tranche contains the finite triple-product
 polynomial and field identities, the bilateral Jacobi `HasSum` forms, and the
 pentagonal and paired-pentagonal `HasSum` corollaries.  The
-`QBinomialTheoremInfinite.lean` 1-definition/27-theorem surface contains the
-real comparison and norm bounds, fixed-column Gaussian limits and rates,
-Euler product, analytic q-binomial, and reciprocal Euler `HasSum` results.  Its
-five added names are
-`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one`,
-`isBigO_finiteQPochhammerIn_pow_sub_one`,
-`tendsto_gaussianBinomial_add_const_atTop`,
-`isBigO_gaussianBinomial_sub_inv`, and
-`isBigO_gaussianBinomial_add_sub_inv`.  The companion
-`GaussianBinomialFixedColumnRate.lean` surface is now 0+9 after that ownership
-transfer: `norm_finiteQPochhammerIn_pow_sub_one_le_exp'`,
+`QBinomialTheoremInfinite.lean` has one public definition and 29 public theorems.
+Its retained and strengthened surface includes the comparison and norm bounds,
+fixed-column Gaussian limits and rates, Euler product, analytic q-binomial and
+reciprocal Euler `HasSum` results,
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one`, both
+`tendsto_gaussianBinomial_add_const_atTop` and the compatibility alias
+`tendsto_gaussianBinomial_add_atTop`, and the effective `IsBigO` bounds.
+The companion `GaussianBinomialFixedColumnRate.lean` surface is 0+9:
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp'`,
 `norm_finiteQPochhammerIn_pow_sub_one_le`,
 `norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
 `norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
@@ -2503,7 +2511,9 @@ transfer: `norm_finiteQPochhammerIn_pow_sub_one_le_exp'`,
 `gaussianBinomial_fixedColumn_relativeError_isBigO`,
 `gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
 `gaussianBinomial_fixedColumn_error_isBigO`, and
-`gaussianBinomial_shifted_fixedColumn_error_isBigO`.  `QPascalSummation.lean` is 0+4:
+`gaussianBinomial_shifted_fixedColumn_error_isBigO`.  The unprimed
+exponential bound and both fixed/shifted limit names remain canonically owned
+by `QBinomialTheoremInfinite.lean`.  `QPascalSummation.lean` is 0+4:
 `sum_gaussianBinomial_succ_mul`, `sum_gaussianBinomial_succ_mul'`,
 `Commute.gaussianBinomial_left`, and `Commute.gaussianBinomial_right`.
 `QuantumBinomial.lean` is 0+2, namely `quantumPlane_mul_pow` and
