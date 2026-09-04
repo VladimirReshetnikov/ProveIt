@@ -29,12 +29,12 @@ mode this package is now expected to pass.
 
 | Directory | Document |
 | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — synchronized 211-page A4 PDF rebuilt on 2026-09-04 after integrating main at `095be8f0b` |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — synchronized 213-page A4 PDF rebuilt on 2026-09-04 after integrating main `17156aa2a` |
 
-The current PDF was rebuilt using three strict pdfLaTeX passes and a generated
-index. Six focused pages from the final render were visually reviewed; no
-whole-volume page-by-page review is claimed. The source has 209 adjacent proofs
-and a 61 Lean / 35 partial / 113 none register. Full checkpoint measurements and
+The PDF was rebuilt using three strict pdfLaTeX passes and a generated
+index. Six focused pages were visually reviewed; no whole-volume page-by-page
+review is claimed. The source has 209 adjacent proofs and a
+64 Lean / 35 partial / 110 none register. Full checkpoint measurements and
 the distinction between inherited compiler receipts and pending source proofs
 are recorded in `Combinatorial_Coefficient_Calculus/FORMALIZATION_STATUS.md`.
 Standalone checksum files are retired; provenance is kept in Git and the source
@@ -131,11 +131,12 @@ complete human proofs and exact declaration crosswalks. Three private rational
 helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
 caller refactor has now passed its own direct Lean check as well.
 
-At the upstream checkpoint the register contained 204 rows: 59 marked Lean,
-34 partial, and 111 without a Lean counterpart. Earlier classifications
-were inherited; that checkpoint added three compiler-backed entries and
-did not claim a fresh build of the whole
-corpus. The final structural/provenance validator passed with 204 adjacent
+At incoming main checkpoint `28de4e51c`, the register contained 207 rows:
+62 marked Lean, 35 partial, and 110 without a compiler-verified counterpart.
+The grid and CRT certificates retain two compiler-backed entries from
+`5a685136b`; this is not a fresh build of the whole corpus. That commit also
+corrected a stale status distribution in the earlier 204-row header.
+The incoming structural/provenance validator passed with 207 adjacent
 proofs, 27 disposition records, and six original-source inventory rows. PDF
 rebuilding was deferred in that earlier session. These are historical upstream
 measurements, not totals for the present merged manuscript.
@@ -225,17 +226,26 @@ specializations over every commutative rational algebra. They replace the
 rational-only helpers in `NorlundDiagonal` without changing their names. The
 manuscript supplies full coefficient proofs and an exact crosswalk.
 
-The pending `AbelPolynomialSeries` source constructs a solution over every
+The compiled `AbelPolynomialSeries` source constructs a solution over every
 commutative rational algebra, derives coefficients for every solution, and
 proves the full EGF and binomial identity including degree zero. The new
 `BernoulliFormalLog` source derives the rational formal logarithm of the
 Bernoulli kernel using the existing recurrence-to-logarithm bridge. Its
 coefficient formula separates degree zero and preserves the distinction between
-the two degree-one Bernoulli conventions. These two modules and the affected
-Norlund and Lambert callers still await compilation; the ThueMorse caller's
-direct check is recorded by the upstream checkpoint above. Independent
-source reviews are not compiler validation, and their register classifications
-have not been promoted on that basis.
+the two degree-one Bernoulli conventions. The Abel target passed a focused
+build; `BernoulliFormalLog` and the complete affected-dependent closure have
+not been rebuilt for this checkpoint. Independent source reviews are not
+compiler validation, and no further register row is promoted here.
+
+`GridEvaluationCertificate` and `IntegerCRTCertificate` supply nine public
+theorems with inherited warning-free focused-build and standard-axiom receipts
+in `5a685136b`. Both module sources are unchanged at incoming `17156aa2a`;
+this is not a fresh compilation of the merged tree. Their full human
+statements and proofs remain grouped in the two existing certificate theorems:
+grid uniqueness over any integral domain, and product-divisibility plus
+zero/equality certificates for signed pairwise-coprime integer moduli.
+The zero test uses the stronger full-product bound. The adjacent discussion now
+distinguishes probabilistic identity testing from exact grid certificates.
 
 The human moment-cumulant proof now states its normalization and positive-degree
 boundaries explicitly, with formal logarithm identities separated from the

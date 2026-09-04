@@ -3814,6 +3814,33 @@ The factors $i!$ forget order inside each block and $j_i!$ forget order among
 blocks of equal size.  Multiplication by $\prod_i x_i^{j_i}$ and summation gives
 \eqref{eq:partial-bell-definition}; summing over $k$ gives the complete polynomial.
 \end{proof}
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; the value statement is formal, the per-type count is not.
+Both halves of the theorem are formal in module \lean{BellSetPartitions}, over any
+commutative semiring of weights and any finite set of labels.
+\lean{Fabius.IsSetPartition} is the predicate ``$P$ partitions $s$'' (blocks nonempty,
+pairwise disjoint, covering $s$), \lean{Fabius.setPartitions} is the finite set of
+partitions of $s$ into exactly $k$ blocks, and
+\lean{Fabius.partialBell_eq_sum_setPartitions} states
+$\ExponentialPartialBellPolynomial{|s|}{k}=\sum_{P}\prod_{B\in P}x_{|B|}$
+over that set; \lean{Fabius.bell_complete_eq_sum_allSetPartitions} is the
+complete-polynomial half.  The corpus defines the partial Bell polynomial by
+the block recurrence, so this is the theorem that gives it its combinatorial
+meaning; the proof shows the partition weight obeys the same recurrence, by
+splitting on the block containing a new element, and has the same initial
+data.  A specialization worth recording separately:
+\lean{Fabius.card_setPartitions} gives $\StirlingSecondKind nk$ as the
+number of partitions of an $n$-set into exactly $k$ blocks.  Mathlib's own
+\texttt{Nat.stirlingSecond} is defined by recurrence and asserts this count only
+in a docstring, with a module-level TODO to prove it; the corpus now does.
+
+What is \emph{not} formal: \cref{cor:partition-type}, and the multinomial
+expansion \eqref{eq:partial-bell-definition} it is read off from.  Those are
+statements about the individual monomials $\prod_i x_i^{j_i}$ of
+$\ExponentialPartialBellPolynomial nk$, whereas the theorem above is about its
+\emph{value}; extracting a coefficient needs a multivariate-polynomial layer the
+corpus does not have, and nothing in the module implies the per-type count.
+\end{remark}
 
 Thus
 \begin{align*}
@@ -10442,42 +10469,104 @@ entries in the preceding row.
 
 \begin{theorem}[Polynomial grid certificate]
 \label{thm:merged-grid-certificate}
-Let $K$ be a field, let $P,Q\in K[x_1,\ldots,x_d]$, and suppose
-$\deg_{x_i}(P-Q)\leq D_i$.  If $P=Q$ on a Cartesian grid
-$S_1\times\cdots\times S_d$ with $D_i+1$ distinct values in $S_i$, then
-$P=Q$ identically.
+Let $R$ be a commutative integral domain, let $I$ be a finite index set, and
+let $S_i\subset R$ be finite for every $i\in I$.  For coordinatewise degree
+bounds, give the zero polynomial degree zero, as in Lean.  If
+$P,Q\in R[x_i\mid i\in I]$ agree on $\prod_{i\in I}S_i$ and
+\[
+ \deg_{x_i}(P-Q)<|S_i|\qquad(i\in I),
+\]
+then $P=Q$.  In particular, it suffices to have natural-number bounds
+$\deg_{x_i}(P-Q)\leq D_i$ and $D_i+1\leq|S_i|$; alternatively, one may
+bound both $\deg_{x_i}P$ and $\deg_{x_i}Q$ by $D_i$.
+Consequently, evaluation on the grid is injective on the class of
+polynomials satisfying $\deg_{x_i}P<|S_i|$ for every $i$.
 \end{theorem}
 
 \begin{proof}
-For one variable, a nonzero degree-$D$ polynomial has at most $D$ roots.
-Induct on $d$, viewing $P-Q$ as a polynomial in $x_d$.  At each grid point in
-the first $d-1$ coordinates all its coefficient polynomials vanish; the
-induction hypothesis makes each coefficient identically zero.
+Put $H=P-Q$ and induct on the number of variables.  With no variables,
+the grid consists of the unique empty tuple, whose evaluation is the
+constant $H$ itself.  Otherwise choose a last variable $t$ and write
+$H(y,t)=\sum_r c_r(y)t^r$.  Fix a grid point $y$ in the remaining
+coordinates.  The polynomial $H(y,t)$ has degree smaller than the number
+of distinct nodes in the last grid side and vanishes at every one of
+them.  Successive factorization at distinct roots would force a nonzero
+polynomial to have at least that degree, since degrees add under products
+over an integral domain.  Thus it is the zero polynomial and
+$c_r(y)=0$ for every $r$.
+Each coefficient polynomial $c_r$ has degree in a remaining coordinate
+at most that of $H$.  Induction makes every $c_r$ zero, hence $H=0$.
+The bounds using $D_i$ imply the strict degree bounds immediately.
+Finally,
+$\deg_{x_i}(P-Q)\leq\max(\deg_{x_i}P,\deg_{x_i}Q)$ proves both the
+separate-bound specialization and the injectivity assertion.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+\lean{Fabius.mvPolynomial_eq_of_eval_eq_on_grid} applies Mathlib's
+multivariate root bound to the difference over an arbitrary integral
+domain and finite variable type.  The two natural-degree-bound forms are
+\lean{Fabius.mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_sub_le} and
+\lean{Fabius.mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_le};
+\lean{Fabius.mvPolynomial_grid_eval_injective} packages uniqueness as
+injectivity on the bounded-degree class
+(\lean{GridEvaluationCertificate}).  No characteristic-zero, infinite-field,
+or interpolation-existence assumption is used.
+\end{remark}
 
 \begin{theorem}[Chinese-remainder certificate]
 \label{thm:merged-crt-certificate}
-If an integer $N$ has a proved bound $|N|<M/2$, where
-$M=p_1\cdots p_s$ and the $p_i$ are pairwise coprime, and if
-$N\equiv0\pmod{p_i}$ for every $i$, then $N=0$.
+Let $I$ be finite, let $m_i\in\IntegerNumbers$ be pairwise coprime, and
+put $M=\prod_{i\in I}m_i$, with empty product one.  If
+$N\equiv0\pmod{m_i}$ for every $i$, then $M\mid N$; hence $N=0$
+whenever $|N|<|M|$.  In particular, the original bound $|N|<M/2$
+for positive $M$ suffices but is unnecessarily restrictive.
+More generally, if $a\equiv b\pmod{m_i}$ for every $i$, then $a=b$
+whenever $|b-a|<|M|$.  Sufficient separate bounds are
+$|b|+|a|<|M|$, or the symmetric pair $2|a|<|M|$ and $2|b|<|M|$.
+The moduli may be signed or composite; the strict size bounds themselves
+exclude $M=0$.
 \end{theorem}
 
 \begin{proof}
-The congruences give $M\mid N$.  The only multiple of $M$ in
-$(-M/2,M/2)$ is zero.
+Each congruence gives $m_i\mid N$.  Pairwise coprimality implies that
+the product divides $N$: multiplying its pairwise B\'ezout identities
+shows that a new factor is coprime to the product of its predecessors.
+To see the product-divisibility step
+explicitly, if coprime $u,v$ both divide $N$, write $N=uk$ and choose
+$r,s$ with $ru+sv=1$.  Then $k=rN+svk$ is divisible by $v$, so
+$uv\mid N$.  The empty case is $1\mid N$.
+Now write $N=Mk$.  If $|N|<|M|$, then $M\ne0$; a nonzero integer
+$k$ has $|k|\geq1$, which would give $|N|=|M||k|\geq|M|$.
+Thus $k=0$ and $N=0$.
+Apply the same argument to $b-a$ for the equality version.
+The triangle inequality gives $|b-a|\leq|b|+|a|$, and adding the
+two strict doubled bounds gives $2(|b|+|a|)<2|M|$.
+These prove both separate-bound forms.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+\lean{Fabius.int_prod_dvd_of_pairwise_coprime} proves product divisibility;
+\lean{Fabius.int_eq_zero_of_modEq_zero_of_natAbs_lt_prod} gives the
+full-product zero bound.  The difference, sum, and symmetric half-product
+equality tests are respectively
+\lean{Fabius.int_eq_of_modEq_of_natAbs_sub_lt_prod},
+\lean{Fabius.int_eq_of_modEq_of_natAbs_add_lt_prod}, and
+\lean{Fabius.int_eq_of_modEq_of_two_mul_natAbs_lt_prod}
+(\lean{IntegerCRTCertificate}).  Lean uses natural absolute values and
+doubled inequalities, avoiding integer-division conventions.
+\end{remark}
+
 \begin{remark}
-Random evaluations are error detectors.  A degree bound together with the
-Schwartz--Zippel estimate bounds the probability of accepting a nonzero
-polynomial; it does not turn a random sample into a deterministic proof.
-Exact vanishing on a full interpolation grid over a field does prove the
-identity when each coordinate set has more distinct points than the known
-degree in that variable: apply the univariate root bound successively in
-each variable.
-Modular computations become exact certificates only after an integer-size
-bound is recorded.  This distinction prevents numerical evidence from being
-silently promoted to an identity.
+An exact evaluation at which two polynomials differ disproves their equality.
+Agreement at randomly sampled points remains probabilistic evidence even
+when a degree bound is known: Schwartz--Zippel bounds false acceptance
+under its field and sampling hypotheses, but does not turn successful
+random tests into a deterministic identity proof.  Agreement on a full
+grid satisfying the preceding degree bounds is an exact certificate.
+The modular certificate likewise combines proved congruences, pairwise
+coprimality, and a proved size bound.  Neither numerical nor modular
+agreement alone is silently promoted to an identity.
 \end{remark}
 
 \section{Disposition of the Bell-number decimal table}
@@ -10789,7 +10878,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 61 Lean, 35 partial, 113 none, of 209 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 64 Lean, 35 partial, 110 none, of 209 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -10809,7 +10898,7 @@ Result & Title & Status & Lean declarations (module) \\
 \Cref{thm:exponential-formula} & The exponential formula & Lean & \cref{eq:partial-bell-egf} is \lean{Fabius.bellWeightSeries_pow}, \cref{eq:bivariate-bell-egf} is \lean{Fabius.exp_subst_smul_bellWeightSeries} (\lean{ExponentialFormula}), \cref{eq:complete-bell-egf} is \lean{Fabius.exp_subst_bellWeightSeries}, all as substitutions of formal power series over any $\RationalNumbers$-algebra \\
 \Cref{cor:partition-type} & Partition-type count & none &  \\
 \Cref{thm:first-cycle} & Permutation interpretation & partial & recurrence and boundary values are Mathlib's \lean{Nat.stirlingFirst_succ_succ}, \lean{Nat.stirlingFirst_succ_zero}, \lean{Nat.stirlingFirst_eq_zero_of_lt}; the defining expansions are \lean{Fabius.ascPochhammer_eq_sum_monomial_stirlingFirst} and \lean{Fabius.descPochhammer_eq_sum_monomial_signedStirlingFirst} (\lean{StirlingBasisChange}); the permutation count itself is not formalized \\
-\Cref{thm:second-recurrence} & Second-kind recurrence & partial & \lean{Nat.stirlingSecond_succ_succ}, \lean{Nat.stirlingSecond_succ_zero}, \lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib) prove the algebraic recurrence and boundary values for the recursively defined array.  Identifying this array with the cardinality of set partitions requires a separate formal counting theorem. \\
+\Cref{thm:second-recurrence} & Second-kind recurrence & partial & \lean{Nat.stirlingSecond_succ_succ}, \lean{Nat.stirlingSecond_succ_zero}, \lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib); the set-partition count, which Mathlib leaves as a docstring claim, is \lean{Fabius.card_setPartitions} (\lean{BellSetPartitions}) \\
 \Cref{thm:second-explicit} & Surjection formula & Lean & \lean{Fabius.factorial_mul_stirlingSecond_eq_sum} (over $\mathbb Z$) and \lean{Fabius.stirlingSecond_eq_sum_div_factorial} (over $\mathbb Q$) (\lean{StirlingBasisChange}); proved by binomial inversion of \lean{Fabius.pow_eq_sum_stirlingSecond_mul_factorial_mul_choose} \\
 \Cref{thm:second-reverse-recurrences} & Alternative second-kind recurrences & partial & \cref{eq:second-triangular-explicit} is \lean{Fabius.stirlingSecond_eq_pow_div_factorial_sub_sum} (\lean{StirlingTriangularExplicit}), for all $n,k$ with the $r=0$ term included; \cref{eq:second-reverse-column} is \lean{Fabius.second_reverse_column} (\lean{StirlingSecondReverseColumn}), by the column differential equation $(1-\EulerE^{-x})F_k'=kF_k$ (\lean{Fabius.one_sub_altSeries_mul_derivative_egfA_stirlingSecond}); the new row declarations \lean{Fabius.second_reverse_row} and \lean{Fabius.second_reverse_row_ring_Icc} (\lean{StirlingSecondReverseRow}) are implemented but await compilation. The latter covers every $n\ge0$, $k\ge1$ over any unital ring. The companion \lean{StirlingSecondReverseRowIdentity} adds \lean{Fabius.second_reverse_row_range}, \lean{Fabius.second_reverse_row_sum_ring}, and the rational specialization \lean{Fabius.second_reverse_row_sum}, also pending compilation. The shared series ingredients are \lean{Fabius.coeff_logTail} and \lean{Fabius.subst_logTail}; the aggregate status stays partial until the new proof is compiler-verified \\
 \Cref{thm:first-reverse-recurrences} & Reverse recurrences of the first kind & Lean & \cref{eq:first-reverse-row} is \lean{Fabius.first_reverse_row} and \cref{eq:first-reverse-column} is \lean{Fabius.first_reverse_column} (module \lean{StirlingFirstReverse}), the first from the rising factorial, the second by comparing exponential generating functions (\lean{Fabius.egfA_first_reverse_column}). \\
@@ -10867,7 +10956,7 @@ corollary (unlabelled, no.~6) & Cauchy integral & none &  \\
 \Cref{thm:bell-numerical-bound} & Uniform numerical Bell bound & none &  \\
 \Cref{thm:bell-leading-asymptotic} & Leading Bell asymptotic & none &  \\
 \Cref{cor:bell-debruijn} & de Bruijn logarithmic expansion & none &  \\
-\Cref{thm:bell-poly-partitions} & Weighted-partition interpretation & none &  \\
+\Cref{thm:bell-poly-partitions} & Weighted-partition interpretation & Lean & \lean{Fabius.partialBell_eq_sum_setPartitions} and \lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), over any commutative semiring of weights; the per-type count \cref{cor:partition-type} is not covered \\
 \Cref{thm:bell-poly-egf} & Bell-polynomial generating functions & Lean & all five identities, as formal power series over any commutative $\mathbb Q$-algebra.  The first is \lean{Fabius.bellWeightSeries_pow} and the third \lean{Fabius.exp_subst_bellWeightSeries} (\lean{BellGeneratingFunctions}); the exponential bivariate form is \lean{Fabius.exp_subst_smul_bellWeightSeries} (\lean{ExponentialFormula}); the ordinary Bell polynomials are \lean{Fabius.ordPartialBell} with \cref{eq:ordinary-bell-ogf} as \lean{Fabius.coeff_pow_eq_ordPartialBell} (\lean{OrdinaryBellComposition}); and \cref{eq:ordinary-bell-bivariate} is \lean{Fabius.coeff_exp_subst_smul} (\lean{OrdinaryBellBivariate}).  In both bivariate statements $u$ is a scalar parameter rather than a second formal variable \\
 \Cref{thm:bell-poly-recurrences} & Complete and partial recurrences & Lean & \lean{Fabius.partialBell} is defined by \cref{eq:partial-bell-recurrence} (\lean{Fabius.partialBell_succ_succ}, \lean{Fabius.partialBell_succ_succ_eq_binomialConv}); \cref{eq:complete-bell-recurrence} is Mathlib-free \lean{Bell.complete_succ} together with \lean{Fabius.bell_complete_eq_sum_partialBell} (\lean{PartialBellPolynomials}, \lean{BellPolynomialInversion}); the boundary values are \lean{Fabius.partialBell_zero_succ}, \lean{Fabius.partialBell_succ_zero}, \lean{Fabius.partialBell_eq_zero_of_lt} \\
 \Cref{thm:bell-partial-convolution} & Block-colour convolution & Lean & \lean{Fabius.factorial_mul_partialBell_add} (\lean{BellComposition}), in the division-free form $(k_1+k_2)!\,B_{n,k_1+k_2}=k_1!k_2!\sum_i\binom ni B_{i,k_1}B_{n-i,k_2}$ \\
@@ -11010,8 +11099,8 @@ corollary (unlabelled, no.~28) & Trigonometric outer functions & none &  \\
 \Cref{alg:merged-newton-reciprocal} & Reciprocal Newton iteration & Lean & \lean{NewtonReciprocal}: initialization \lean{Fabius.X_dvd_one_sub_mul_C}, exact residual squaring \lean{Fabius.one_sub_mul_newtonReciprocalStep}, precision doubling \lean{Fabius.X_pow_dvd_one_sub_mul_newtonReciprocalStep}, coefficient agreement \lean{Fabius.coeff_mul_newtonReciprocalStep}, and actual truncation \lean{Fabius.X_pow_dvd_one_sub_mul_trunc_newtonReciprocalStep}; all over an arbitrary commutative ring and checked by focused compilation. \\
 \Cref{alg:merged-newton-reversion} & Newton reversion & none &  \\
 proposition (unlabelled, no.~13) & Recurrence uniqueness & none &  \\
-\Cref{thm:merged-grid-certificate} & Polynomial grid certificate & none &  \\
-\Cref{thm:merged-crt-certificate} & Chinese-remainder certificate & none &  \\
+\Cref{thm:merged-grid-certificate} & Polynomial grid certificate & Lean & \lean{Fabius.mvPolynomial_eq_of_eval_eq_on_grid} proves the difference-degree criterion over any integral domain and finite variable type; \lean{Fabius.mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_sub_le} and \lean{Fabius.mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_le} give the two natural-degree-bound forms, and \lean{Fabius.mvPolynomial_grid_eval_injective} gives injectivity on the bounded-degree class (\lean{GridEvaluationCertificate}). \\
+\Cref{thm:merged-crt-certificate} & Chinese-remainder certificate & Lean & \lean{Fabius.int_prod_dvd_of_pairwise_coprime} and \lean{Fabius.int_eq_zero_of_modEq_zero_of_natAbs_lt_prod} prove product divisibility and the stronger full-product zero bound; \lean{Fabius.int_eq_of_modEq_of_natAbs_sub_lt_prod}, \lean{Fabius.int_eq_of_modEq_of_natAbs_add_lt_prod}, and \lean{Fabius.int_eq_of_modEq_of_two_mul_natAbs_lt_prod} give the difference, sum, and symmetric half-product equality certificates for finite families of signed, pairwise coprime integer moduli (\lean{IntegerCRTCertificate}). \\
 \end{longtable}
 \end{footnotesize}
 

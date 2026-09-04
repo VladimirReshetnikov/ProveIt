@@ -20,14 +20,10 @@ The whole content beyond the engine is one exponent identity,
 `∏_{j<k} q^j = q^{C(k,2)}`,
 
 which is where the triangular power in the sharp moment comes from.  It is
-already named in the corpus, as
-`ThueMorseComplexProductBridge.prod_range_pow_eq_pow_choose_two`, but that
-module imports `FabiusFunction.Basic` and importing it here would pull the
-whole Fabius core into a purely algebraic leaf, so the three-lemma chain
-(`Finset.prod_pow_eq_pow_sum`, `Finset.sum_range_id`, `Nat.choose_two_right`)
-is inlined at its two use sites instead.  The lemma's natural home is a light
-module both layers can reach; moving it there is a separate change, since the
-only common ancestor is `ThueMorseBooleanCube` and that has 153 dependents.
+named in the light algebraic module `TriangularPowerProduct` as
+`prod_range_pow_eq_pow_choose_two`.  This module keeps the equivalent
+three-lemma chain (`Finset.prod_pow_eq_pow_sum`, `Finset.sum_range_id`,
+`Nat.choose_two_right`) inlined at its two use sites.
 
 The identity also explains, retroactively, the constant
 `4^{C(k,2)} = 2^{2C(k,2)}` in the dyadic

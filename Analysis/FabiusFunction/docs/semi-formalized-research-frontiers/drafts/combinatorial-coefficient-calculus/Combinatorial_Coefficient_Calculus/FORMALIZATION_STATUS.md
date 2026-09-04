@@ -6,27 +6,56 @@ canonical claim register is the **Lean formalization register** section of
 Mathematical statements and proofs belong in the TeX/PDF pair. The register's
 status words are recorded correspondence claims, not a fresh compilation receipt.
 
-## Latest merge and validation checkpoint (2026-09-04)
+## Latest publication checkpoint (2026-09-04)
 
-Main at `095be8f0b` is integrated. The current manuscript has 209 theorem-like
+Main `17156aa2a` is integrated with all text and semantic name conflicts resolved.
+The synchronized PDF has 213 A4 pages, with three serial strict passes, generated
+index, and six focused page checks. Its final log has no undefined references,
+overfull boxes, or rerun requests; Libertinus is present and no Type 3 fonts occur.
+
+The source has 11,244 lines, 552,510 UTF-8 bytes, 209 adjacent proofs, 712 labels,
+and 954 references. The regenerated register contains 64 `Lean`, 35 `partial`,
+and 110 `none` rows. The structural/provenance validator and all 14 regression
+tests pass; all 3,472 cited Fabius names resolve. The facade has 837 unique
+imports and no missing source targets among 987 modules. An incoming import of
+the absent `InverseDerivativeRecursion` module was removed. Pending proof
+extensions remain pending: these source and render checks do not replay Lean.
+
+## Preceding merge and validation checkpoint (2026-09-04)
+
+At the checkpoint integrating main `095be8f0b`, the manuscript had 209 theorem-like
 items and 209 adjacent proofs, 712 labels, 951 references, 27 disposition rows,
-and six original-source inventory rows. Its 209-row register records 61 `Lean`,
+and six original-source inventory rows. Its 209-row register recorded 61 `Lean`,
 35 `partial`, and 113 `none`; inherited compiler receipts are not fresh replay.
-The source measures 11,155 lines and 546,097 UTF-8 bytes.
+The source measured 11,155 lines and 546,097 UTF-8 bytes.
 
-The synchronized PDF has 211 A4 pages. Three serial strict pdfLaTeX passes and
-index generation succeeded; Libertinus text is present, with no Type 3 fonts,
+That synchronized PDF has 211 A4 pages. Three serial strict pdfLaTeX passes and
+index generation succeeded; Libertinus text was present, with no Type 3 fonts,
 undefined references, overfull boxes, or rerun requests. Six focused pages
 covering the latest Nörlund additions, register, and index were visually checked;
 the preceding merge's Laplace, Lagrange, symmetric-function, and Newton additions
 were reviewed separately. No whole-volume visual or mathematical audit is claimed.
 
 The canonical structural/provenance validator and all eight crosswalk regression
-tests pass. All 3,458 cited Fabius names resolve in the source audit. The exact
-finite Stirling/Bell regressions pass. The facade reaches all 984 source modules;
+tests passed. All 3,458 cited Fabius names resolved in the source audit. The exact
+finite Stirling/Bell regressions passed. The facade reached all 984 source modules;
 duplicate imports and the duplicate public reverse-row declaration were removed.
 These are source/finite/render checks, not Lean compilation. The merged proof
 extensions and new wrappers remain pending while other worktrees use the build slot.
+
+## Incoming grid and CRT certificate checkpoint
+
+The current integration of pinned main `17156aa2a` retains the nine grid/CRT
+certificate theorems from `5a685136b`. That commit records warning-free focused
+builds and the standard three axioms for all nine declarations. Both
+`GridEvaluationCertificate` and `IntegerCRTCertificate` have identical source
+blobs at that receipt and at the incoming pin. Their Lean classifications are
+therefore inherited receipts, not fresh compilation of this merged tree.
+The incoming `28de4e51c` checkpoint recorded 207 register rows: 62 `Lean`,
+35 `partial`, and 110 `none`, with a census of 985 modules and 12,199 public
+declarations. Those counts and the preceding 211-page render describe their
+historical source states. Fresh merged-source metrics, structural validation,
+and render verification remain to be recorded by the publication owner.
 
 ## Inventory and evidence boundary
 

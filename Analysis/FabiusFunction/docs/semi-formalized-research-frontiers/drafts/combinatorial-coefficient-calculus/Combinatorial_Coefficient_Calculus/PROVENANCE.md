@@ -47,7 +47,7 @@ identifies the historical snapshot, never the changing live source.
 
 At the latest 2026-09-04 checkpoint the canonical PDF was rebuilt from the
 merged source with three strict pdfLaTeX passes and a generated index.
-It contains 211 pages;
+It contains 213 pages after integration of main `17156aa2a`;
 the earlier 174-page consolidation render remains recoverable from Git.
 The current render is synchronized with the merged source. A source/render
 synchronization checkpoint is not a claim that all

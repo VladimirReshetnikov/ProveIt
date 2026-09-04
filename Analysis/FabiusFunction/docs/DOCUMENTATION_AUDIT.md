@@ -112,7 +112,7 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  The authoritative merged 2026-09-04 lexical audit
-scans 977 facade-reachable modules and 12,133 explicit public declarations.  It
+scans 985 facade-reachable modules and 12,199 explicit public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
@@ -159,11 +159,12 @@ together with `StirlingSeriesCoefficients.lean`,
 `WrightOmegaTwoOrders.lean`, and `UnitSeriesPowerRecurrence.lean`,
 together with the strengthened
 `ProbabilityLaplaceMoments.lean` surface,
-as well as the sixteenth theorem in `FinitePolynomialFunctional.lean`.
+as well as the sixteenth theorem in `FinitePolynomialFunctional.lean` and the
+new `GridEvaluationCertificate.lean` and `IntegerCRTCertificate.lean` leaves.
 Relative to the
-610/8,318 activation checkpoint, the current tree adds 367 modules and 3,815 declarations.
+610/8,318 activation checkpoint, the current tree adds 375 modules and 3,881 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 347 modules and 3,581 declarations.  The post-merge 675/8,909 inventory,
+adds 355 modules and 3,647 declarations.  The post-merge 675/8,909 inventory,
 the intervening 903/11,448 Lambert-series inventory, and the immediately
 preceding 914/11,555 scaled-geometric and 915/11,556 real-MGF-bridge
 checkpoints, together with the incoming branch's 906/11,461 complex-product
@@ -178,7 +179,7 @@ the historical pre-RatFunc checkpoint 923/11,610, and the one-definition/
 four-theorem global RatFunc leaf gave the historical 924/11,615 checkpoint.
 Two theorems added to `ProbabilityLaplaceMoments.lean` then gave 924/11,617,
 and the one-definition/one-theorem Legendre--Rvachev biorthogonality leaf gave
-the historical 925/11,619 checkpoint.  Later merged source work contributes
+the historical 925/11,619 checkpoint. Later merged source work contributes
 the zero-definition leaves `QPochhammerLambertForm` 0+5,
 `CentralQVandermondeInfinite` 0+4, `TriangularPowerProduct` 0+2,
 and `MeanValueBracket` 0+6; the 1+12 `ThueMorseNewmanSelfSimilarity` leaf; and
@@ -208,7 +209,9 @@ overlapping series/transseries route reached historical checkpoints
 943/11,787, 952/11,881, 952/11,884, 967/12,001, 969/12,048, and
 970/12,051; those receipts are not additive with the consolidated checkpoints
 above.  Reconciliation produced the historical merged checkpoint 970/12,056.
-The authoritative current audit is 977/12,133.  On the earlier
+The following seven-module checkpoint was 977/12,133; the current two-module
+certificate overlay reached 979/12,142, and the current six-module successor
+is 985/12,199.  On the earlier
 exterior-germ branch, the inner-complex 906/11,461 checkpoint was followed by
 the branch-local 907/11,464 checkpoint; its preceding real-MGF and algebraic
 moment-polynomial checkpoints were 905/11,458 and 904/11,457.  These older
@@ -283,7 +286,7 @@ not enter this lexical count.  The resulting historical inventory is 970
 modules and 12,056 declarations, with no missing module header or public
 declaration comment and no duplicate facade import.
 
-#### Current 977/12,133 census
+#### Pre-certificate 977/12,133 census
 
 Relative to the historical 970/12,056 checkpoint, the current facade adds
 seven modules containing 11 definitions and 69 theorems:
@@ -297,6 +300,41 @@ therefore +7 modules and +77 lexical declarations, giving 977/12,133 with no
 documentation gap.  This census records reachability and the finite/formal or
 explicit analytic statements under their source hypotheses; it does not by
 itself promote any broader manuscript claim.
+
+#### Historical 979/12,142 certificate census
+
+The facade now also registers two zero-definition certificate leaves carrying
+nine public theorems.  `GridEvaluationCertificate.lean` is 0+4:
+`mvPolynomial_eq_of_eval_eq_on_grid`,
+`mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_sub_le`,
+`mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_le`, and
+`mvPolynomial_grid_eval_injective`.  These work for finitely many variables
+over any commutative integral domain, with the coordinatewise grid-cardinality
+bounds stated in the theorem signatures; neither a field nor characteristic
+zero is assumed.  `IntegerCRTCertificate.lean` is 0+5:
+`int_prod_dvd_of_pairwise_coprime`,
+`int_eq_zero_of_modEq_zero_of_natAbs_lt_prod`,
+`int_eq_of_modEq_of_natAbs_sub_lt_prod`,
+`int_eq_of_modEq_of_natAbs_add_lt_prod`, and
+`int_eq_of_modEq_of_two_mul_natAbs_lt_prod`.  Its pairwise-coprime integer
+moduli may be signed or composite, and the divisibility result includes the
+empty family; the equality certificates retain their strict magnitude bounds.
+No reconstruction algorithm, primality theorem, or probabilistic certificate
+is asserted.  This exact +2-module/+9-theorem delta gives 979/12,142 with no
+documentation gap; the preceding 977/12,133 inventory remains historical.
+
+#### Current 985/12,199 census
+
+The successor adds six facade modules containing 49 public declarations:
+`NorlundGeneralized` 3+18, `StirlingSymmetricFunctions` 0+4,
+`LagrangeInversionUniqueness` 0+6, `NewtonReciprocal` 1+5,
+`StirlingSecondReverseRowIdentity` 0+2, and
+`TransseriesWrightOmegaTerms` 0+10.  Eight further public declarations enter
+existing modules, so the authoritative delta from the preceding certificate
+checkpoint is +6 modules and +57 declarations.  The resulting 985/12,199
+census has no missing module header or public declaration comment.  This is
+an API/documentation inventory under the source statements' displayed
+hypotheses, not an automatic promotion of broader claims.
 
 #### Consolidated transseries foundations and corrected flatness
 
@@ -705,9 +743,8 @@ norm when `‖q‖ ≤ 1`: they bound `‖(q^m;q)_k-1‖` first by
 `exp(k‖q‖^m)-1` and then by `(k exp k)‖q‖^m`.  Under `k≤n`, the next local theorem gives the denominator-free relative
 bound `‖(q;q)_k[n,k]_q-1‖ ≤ (k exp k)‖q‖^(n-k+1)`, which remains meaningful at
 roots of unity.  Over any normed field, `‖q‖<1` suffices for the fixed and
-shifted nonasymptotic additive bounds and all four relative/additive `IsBigO`
-results at the rates `q^(n-k+1)` and `q^(n+1)`.  The shifted
-`tendsto_gaussianBinomial_add_atTop` theorem is reused from the upstream module.
+shifted nonasymptotic additive bounds and all four
+relative/additive `IsBigO` results at the rates `q^(n-k+1)` and `q^(n+1)`.
 There is no completeness or `q≠0` hypothesis, and the displayed constant is
 elementary rather than sharp.  Together with
 `tendsto_gaussianBinomial_atTop` and the general fixed-shift limit
@@ -1038,8 +1075,8 @@ or public declaration comment.  The focused-build-verified
 `StirlingCompleteHomogeneous` leaf gave the historical 961/11,974 checkpoint.
 The overlapping incoming route also recorded 943/11,787, 952/11,881, and
 952/11,884 checkpoints, followed by 967/12,001, 969/12,048, and 970/12,051.
-The reconciled 970/12,056 checkpoint is also historical.  The authoritative
-merged audit is 977/12,133, again with no missing module header or public
+The reconciled 970/12,056 and preceding 977/12,133 and 979/12,142 checkpoints
+are historical.  The authoritative merged audit is 985/12,199, again with no missing module header or public
 declaration comment.
 
 `FinitePolynomialFunctional.lean` remains a zero-definition module and now has
@@ -1127,8 +1164,8 @@ historical 944/11,806 inventory; the sixteen-module overlay gave the historical
 `StirlingCompleteHomogeneous` leaf gave the historical 961/11,974 checkpoint.
 The overlapping incoming route recorded 943/11,787, 952/11,881, and
 952/11,884 checkpoints, followed by 967/12,001, 969/12,048, and 970/12,051.
-The reconciled 970/12,056 checkpoint is also historical; the live inventory is
-977/12,133, with no documentation gaps.
+The reconciled 970/12,056 and preceding 977/12,133 and 979/12,142 checkpoints
+are historical; the live inventory is 985/12,199, with no documentation gaps.
 
 `HalfQBinomialRootSimplicity.lean` has no public definitions and exactly one
 public theorem, `halfQBinomial_sum_rootMultiplicity_two_pow`.  Over `ℚ`, for
@@ -1325,7 +1362,9 @@ the manuscript's `X`, not a new arbitrary-random-variable wrapper.  The moment
 theorem does not assert the `n=0` case.
 
 `RvachevLegendreBiorthogonality.lean` then adds one source module and exactly
-one definition plus one theorem, giving the historical 925/11,619 checkpoint.  Its
+one definition plus one theorem, giving the historical 925/11,619 checkpoint.
+The live inventory after all later upstream work and exact-name deduplication is
+952/11,884. Its
 exhaustive public surface is `rvachevLegendreAnalysisKernel` and
 `rvachevLegendreBiorthogonality`, both in `Fabius`.  For
 clarity, the former is literally the normalized kernel
@@ -1458,8 +1497,9 @@ declaration checkpoint, with zero missing module headers and zero missing
 declaration comments.  Later work on that branch reached the historical
 incoming checkpoint of 952 modules and 11,884 explicit public declarations,
 again with zero documentation gaps.  Later branch checkpoints reached
-967/12,001, 969/12,048, and 970/12,051; the reconciled 970/12,056 checkpoint
-is likewise historical.  The authoritative merged census is 977/12,133.
+967/12,001, 969/12,048, and 970/12,051; the reconciled 970/12,056 and
+preceding 977/12,133 and 979/12,142 checkpoints are likewise historical.  The
+authoritative merged census is 985/12,199.
 
 `UnitSeriesBellCoefficients.lean` has no public definitions and exactly sixteen
 public theorems:
@@ -1597,8 +1637,8 @@ fifteen-module tranche and five net declarations in existing modules give the
 historical census of 967 modules and 12,001 explicit public declarations.
 The two subsequent leaves and existing-module extensions give the historical
 969/12,048 checkpoint, and `UnitSeriesPowerRecurrence` gives the historical
-970/12,051 checkpoint.  The reconciled 970/12,056 checkpoint follows; the
-authoritative current census is 977 modules and 12,133 explicit public
+970/12,051 checkpoint.  The reconciled 970/12,056 and preceding 977/12,133
+and 979/12,142 checkpoints follow; the authoritative current census is 985 modules and 12,199 explicit public
 declarations, with no documentation gaps.  The two
 `to_additive`-generated Neumann declarations remain usable API outside this
 lexical total, exactly as at the preceding checkpoint.
@@ -2959,7 +2999,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 977/12,133
+historical 675/8,909 census and requires refresh against the live 985/12,199
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
