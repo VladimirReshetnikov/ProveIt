@@ -24,20 +24,37 @@ The standard-library
 [`validate_canonical.py`](Combinatorial_Coefficient_Calculus/validate_canonical.py)
 checks LaTeX structure, labels, references, citations, proof pairing, exact
 source coverage, Git object availability, and the one-publication layout;
-run it with `--final`, which is the
-mode this package is now expected to pass.
+run it with `--final`, which is the mode this package is expected to pass at a
+publication checkpoint.
 
 | Directory | Document |
 | --- | --- |
 | `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — the evolving source and the retained upstream A4 PDF |
 
-Upstream supplied a rebuilt PDF at its checkpoint. The latest merged source
-includes subsequent Stirling and Nörlund changes, so that retained PDF is not
-claimed to render the current source. Further PDF building remains skipped in
-this work at the user's request. Standalone
-checksum files are retired; provenance is kept
-in Git and the source inventory, and the validator does not maintain or require
-file digests.
+Upstream supplied a rebuilt PDF at its checkpoint. The merged source includes
+subsequent Stirling, Nörlund, Bell, and Cauchy-polynomial changes, so that
+retained PDF is historical and is not claimed to render the current source.
+Further PDF building is deferred at the user's request. Standalone checksum
+files are retired; provenance is kept in Git and the source inventory, and the
+validator does not maintain or require file digests.
+
+## Additional exact correspondences retained in the merge
+
+Crosswalk work closes the full Cauchy-polynomial theorem block: the
+formal and real interval integrals, reflection, and generic generating-function
+and addition laws are now represented, with the latter two valid after
+evaluation in any commutative rational algebra. The analytic convergence and
+branch assertion attached to the generating function remains outside that
+formalized theorem block. The second-kind reverse-row recurrence is now
+machine checked in a division-free integral form, including its zero boundary
+case beyond the range used by the displayed human formula; the separately
+merged unrestricted rational-index source identity remains pending validation
+under its collision-free declaration name. The ordinary versus
+exponential Bell normalization now has both its rational ratio form and a
+denominator-free commutative-semiring form, together with functoriality and the
+upper variable-support cutoff. The sharpness witness for that cutoff, the
+general Bell near-diagonal reduction, its two-block case, and the higher
+subdiagonals remain human-only or partial as recorded in the register.
 
 ## What the final merge changed
 
@@ -96,7 +113,7 @@ The compiled zero-definition/eight-theorem
 `prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv`, cover
 the scalar factorization and reciprocal spelling. Together they make
 `thm:second-ogf` **Lean** with the corrected hypotheses. The retained PDF was
-not rebuilt for this source-only overlay, so no PDF or checksum parity is
+not rebuilt for this source-only overlay, so no current render parity is
 claimed for it.
 
 ## What this package does not claim
@@ -115,19 +132,20 @@ complete human proofs and exact declaration crosswalks. Three private rational
 helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
 caller refactor has now passed its own direct Lean check as well.
 
-The merged register contains 207 rows: 65 marked Lean, 35 partial, and 107
-without a compiler-verified counterpart. The grid and CRT certificates retain
-two compiler-backed entries alongside the incoming classifications; this is
-not a fresh build of the whole corpus. The earlier 204-row checkpoint had
-63 Lean, 32 partial, and 109 none after correcting its stale header.
-The final structural/provenance validator passes with 207 adjacent
-proofs, 27 disposition records, and six original-source inventory rows. PDF
-building remains skipped for this latest source-only synchronization.
+The document's generated register is the single source of current row counts
+and Lean/partial/none classifications. Its inherited formal-power, Stirling,
+Newton, and certificate checkpoints are not a fresh compilation of the whole
+corpus. The final structural/provenance validator checks the advertised totals
+against the actual rows as well as adjacent proofs, the 27 disposition records,
+and six original-source inventory rows. PDF building remains skipped for this
+source-only synchronization.
 
 The same-day upstream crosswalk connects the Bell normalization and unit-series
-coefficient formulas to `UnitSeriesBellCoefficients`; its labelled-set partition
-interpretation remains unformalized. That partial result is included in the
-register totals above.
+coefficient formulas to `UnitSeriesBellCoefficients`. The subsequent incoming
+`BellSetPartitions` independently supplies the weighted labelled-set
+interpretation and the Stirling block-count specialization; its compiled
+status is recorded by upstream commit `dd554e5a8`, not a fresh local replay.
+The prescribed-block-size type count remains a separate obligation.
 
 ## Coefficient-calculus campaign (2026-09-04)
 
@@ -147,13 +165,31 @@ crosswalks, and corrects boundary cases and coefficient-ring assumptions.
 The brief [campaign status](Combinatorial_Coefficient_Calculus/FORMALIZATION_STATUS.md)
 records remaining obligations without duplicating the canonical claim register.
 
+## Formal-power recurrence (2026-09-04)
+
+`UnitSeriesPowerRecurrence` supplies three checked theorems. Over any
+commutative ring, the differential equation `A C' = α A' C` implies
+`n a₀ cₙ = Σ_{j=1}^n ((α+1)j−n) aⱼ cₙ₋ⱼ`, without assuming `a₀` is
+invertible. Over a commutative rational algebra with `a₀=1`, formal binomial
+substitution gives `C=A^α`, satisfies that differential equation, and yields
+the manuscript's triangular coefficient algorithm. Its proof and crosswalk
+now cover all three clauses of `alg:merged-exp-log-power` exactly.
+
+The proof uses the Euler derivative `z d/dz` to keep degree indices aligned,
+then separates the constant-coefficient term of the Cauchy product. The
+canonical source includes that complete argument, including the constant
+term and inductive uniqueness of the resulting coefficient sequence. This
+is formal algebra; no analytic branch choice or convergence claim is made.
+
+## Additional formal-series checkpoints (2026-09-04)
+
 `ExponentialRescaling` has passed a focused build. Its four public lemmas give
 the rescaling chain rule over every commutative semiring and exponential
 specializations over every commutative rational algebra. They replace the
 rational-only helpers in `NorlundDiagonal` without changing their names. The
 manuscript supplies full coefficient proofs and an exact crosswalk.
 
-The compiled `AbelPolynomialSeries` source constructs a solution over every
+The source-reviewed `AbelPolynomialSeries` module constructs a solution over every
 commutative rational algebra, derives coefficients for every solution, and
 proves the full EGF and binomial identity including degree zero. The new
 `BernoulliFormalLog` source derives the rational formal logarithm of the
@@ -180,13 +216,23 @@ The new `NorlundGeneralized` source constructs actual polynomials at every
 scalar order over a commutative rational algebra. Its source-reviewed API
 includes the full EGF, Appell derivative, translation, convolution, natural-order
 polynomial compatibility, explicit cumulants, and the complete Bell formula.
+The next source checkpoint adds the arbitrary-order finite-difference law in
+successor and all-degree forms, including zero and negative orders.
 `BernoulliFormalLog` now transports the logarithm and its coefficients along
 arbitrary coefficient ring homomorphisms and shares the kernel normalization
 lemma. These extensions have not yet compiled, so no corresponding coverage
-promotion is claimed. General-order finite differences, the literal
-multiplicity-vector expansion, and analytic convergence remain separate
-formalization obligations.
+promotion is claimed. The new `BellCompletePartitions` leaf shares the existing
+complete-Bell/weighted-partition dictionary to state the literal multiplicity
+sum, its normalized coefficient form, and its field-division form; it assumes
+nothing about the unused zeroth input. The two new Nörlund specializations
+reuse that generic formula. These seven new public theorems are source-reviewed
+and still await compilation. The coefficient-algebra diagonal transport and
+analytic convergence remain separate formalization obligations.
 
 The human exposition gives the normalized complex logarithm construction on its
 disk separately from the formal algebra, states the coefficient-base-change
 lemma with proof, and includes the degree-zero multiplicity convention.
+The generic Bell multiplicity lemma now carries the common complete human
+proof; the Nörlund section specializes it instead of repeating that argument.
+The source validator's fourteen regression tests pass, including the inherited
+advertised-register-total checks. These are structural checks, not Lean builds.

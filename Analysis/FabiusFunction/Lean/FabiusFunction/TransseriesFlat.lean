@@ -181,7 +181,7 @@ def flatSubmodule (l : Filter α) (φ : ℕ → α → 𝕜) : Submodule 𝕜 (�
     change IsFlat l φ (fun x => c • ε x)
     exact hε.const_smul c
 
-/-- Membership in `flatSubmodule` is definitionally the flatness predicate. -/
+/-- Membership in `flatSubmodule` is flatness relative to its defining scale. -/
 @[simp] theorem mem_flatSubmodule_iff : ε ∈ flatSubmodule l φ ↔ IsFlat l φ ε := Iff.rfl
 
 /-- A multiplier absorbs a scale if every requested order can absorb the
@@ -241,7 +241,7 @@ open Real
 monomial so that the general dominance results apply. -/
 noncomputable def powScale (n : ℕ) (X : ℝ) : ℝ := plMonomial (-(n : ℝ)) 0 X
 
-/-- The power--log definition of `powScale` agrees with the plain real power. -/
+/-- The power-scale monomial is the corresponding real power `X⁻ⁿ`. -/
 theorem powScale_eq_rpow (n : ℕ) (X : ℝ) : powScale n X = X ^ (-(n : ℝ)) := by
   rw [powScale, plMonomial, Real.rpow_zero, mul_one]
 

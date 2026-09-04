@@ -175,13 +175,8 @@ unique layers of the other three are merged in
 data, and deterministic scripts --- is preserved under \path{assets/}; the
 absorbed source documents themselves are deleted once merged (git history is
 the archive, pinned by the SHA-256 hashes below).
-The last synchronized source checkpoint was validated by exactly three
-successful serial halt-on-error passes and the repository's PDF gates.  The
-merged source now postdates that checkpoint, so the retained PDF is historical
-until a fresh three-pass parity rebuild.  Exact page-count, byte-count, and
-SHA-256 receipts are kept externally in the repository documentation so that
-neither artifact embeds a self-invalidating fingerprint. No
-\nolinkurl{SHA256SUMS*} ledger exists or participates in validation.
+The pre-crosswalk publication checkpoint was a 66-page A4 artifact of
+1,107,064 bytes.  The present edition incorporates the later crosswalk edits.
 \begin{itemize}
 \item \path{Lambert_W_Function_Article/Lambert_W_Function_Article.tex} (the spine)\\
 {\footnotesize SHA-256 \path{5bca61c4e906ca8a92f283bc92913355ccd4aee26d65112b41474fd16862c6ba}}
@@ -4463,12 +4458,16 @@ the historical 921/11,575 checkpoint.  The exhaustive
 \path{RvachevLaurentLeading.lean} \((1+6)\) sibling then gives 922/11,582 and
 makes \nolinkurl{is:p2:thm:Laurent-leading} Exact.  The exhaustive
 \path{FinitePrefixAppellRecovery.lean} \((11+17)\) sibling gives the
-923/11,610 checkpoint and makes \nolinkurl{is:p2:thm:finite-prefix-expansion} and
+historical 923/11,610 checkpoint and makes
+\nolinkurl{is:p2:thm:finite-prefix-expansion} and
 \nolinkurl{is:p2:thm:exact-recovery} Exact as finite rational identities.
 Retaining the unconditional public
-\lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge gives the semantic
-live union 923 modules and 11,611 public declarations, with both documentation
-gap counts zero.  The q-Lucas manuscript result remains Partial: Lean proves
+\lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge gives the historical
+semantic-union checkpoint 957/11,921.  The residual-existence
+certificate \lean{exists_eq_in_residual_interval} is included in the current union
+computed by \path{scripts/doc_audit.py} and pinned in
+\path{docs/doc_audit_baseline.json}, with both documentation gap counts zero.
+The q-Lucas manuscript result remains Partial: Lean proves
 the evaluated primitive-root identity, not the polynomial congruence modulo
 the cyclotomic polynomial.
 
@@ -4528,6 +4527,9 @@ modules and 11,806 public declarations; the merged live census is 985/12,199.  T
 79 Partial / 14 None / 8 interface rows, the relevant Dyadic
 Gaussian--Thue--Morse chapter is 13/43/0/0, and its source concordance is
 103 Lean-proved / 375 human-proved frontier / 60 non-applicable / 9 conjectures.
+The q-Lucas row remains Partial because the Lean result is an evaluated
+primitive-root identity, not the polynomial congruence modulo the cyclotomic
+polynomial.
 
 \begin{longtable}{@{}p{0.30\textwidth}p{0.42\textwidth}p{0.22\textwidth}@{}}
 \toprule
@@ -4779,9 +4781,10 @@ identity and the compact paired series for \(0<\Delta<2\pi\) on
 \decl{hasSum\_bernoulli\_mul\_pow\_div\_factorial\_complex\_iff}, and
 \decl{principalLambertW\_lowerLambertW\_eq\_bernoulliSeries} (module
 \lean{LambertWBranchGapBernoulli}) &
-{\footnotesize Exact for the complex generating identity, the compact real branch pair, and
-the convergence locus.  The
-first theorem proves absolute summability for every real
+Exact for the complex generating identity, the compact real branch pair, and
+the convergence locus.\\
+\multicolumn{3}{@{}p{0.94\textwidth}@{}}{\emph{Details for the preceding row.}
+The first theorem proves absolute summability for every real
 \(z\) with \(\lvert z\rvert<2\pi\); the second proves, for complex \(z\), that
 the Bernoulli series is summable if and only if \(\lVert z\rVert<2\pi\), hence
 it diverges on \(\lVert z\rVert=2\pi\) and throughout the exterior; the third

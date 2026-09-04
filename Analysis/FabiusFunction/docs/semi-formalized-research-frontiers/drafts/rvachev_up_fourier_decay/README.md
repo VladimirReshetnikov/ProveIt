@@ -1,6 +1,7 @@
 # Rvachev up-function Fourier decay
 
-This group has one canonical human-readable document:
+This group has one canonical synthesis and a separately supplied rewrite awaiting
+reconciliation. The canonical document is:
 
 - [`Rvachev_Up_Fourier_Decay.tex`](Rvachev_Up_Fourier_Decay/Rvachev_Up_Fourier_Decay.tex) — editable source;
 - [`Rvachev_Up_Fourier_Decay.pdf`](Rvachev_Up_Fourier_Decay/Rvachev_Up_Fourier_Decay.pdf) — retained rendered checkpoint.
@@ -13,6 +14,22 @@ it now uses `\TwoAdicValuation` for its dyadic valuation.  The retained
 No PDF was regenerated after the notation-only source edit, so these are
 distinct live-source and historical-artifact identities, not a synchronized
 publication pair.
+
+## Separately supplied rewrite
+
+[`Rvachev_Up_Fourier_Decay-2.tex`](Rvachev_Up_Fourier_Decay-2/Rvachev_Up_Fourier_Decay-2.tex)
+and its [PDF](Rvachev_Up_Fourier_Decay-2/Rvachev_Up_Fourier_Decay-2.pdf) contain
+*Fourier Decay of Rvachev's Up-Function: A guided and rigorous account of exact
+products, decay spectra, fluctuations, Cesàro gauges, peaks, and valleys*,
+dated 3 September 2026. The pair was added in commit
+`aabd126c8a18c6c09ec5ea266788d64cc56b3462` and is retained separately pending
+claim-by-claim reconciliation with the canonical synthesis. Its filename is
+not a declaration that it supersedes that synthesis, nor is this addition a
+restoration of the older donor with the same directory name at the
+pre-consolidation pin below. Manuscript proof labels do not establish Lean
+coverage.
+
+## Canonical synthesis
 
 The article is an editorial consolidation of the original 2018 question,
 eight successive reports, the comparative and second-wave audits, the Gentle

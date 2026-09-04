@@ -110,7 +110,7 @@ theorem dissectionNumber_mul (a d : ℕ) :
       ((a + d + 2).choose d : ℤ) * (a.choose d : ℤ) := by
   -- `(d+1) C(a+1,d+1) = (a+1) C(a,d)`
   have H1 : ((d : ℤ) + 1) * ((a + 1).choose (d + 1) : ℤ) = ((a : ℤ) + 1) * (a.choose d : ℤ) := by
-    have h : (a + 1) * a.choose d = (a + 1).choose (d + 1) * (d + 1) := Nat.succ_mul_choose_eq a d
+    have h : (a + 1) * a.choose d = (a + 1).choose (d + 1) * (d + 1) := Nat.add_one_mul_choose_eq a d
     have hc := congrArg (fun t : ℕ => (t : ℤ)) h
     push_cast at hc
     linarith [hc]

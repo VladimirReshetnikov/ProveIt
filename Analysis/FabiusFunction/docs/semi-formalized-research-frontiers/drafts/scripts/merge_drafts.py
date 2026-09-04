@@ -457,7 +457,7 @@ def consolidate(group_dir, members, out_name, title, out_subdir=None):
                 os.makedirs(d, exist_ok=True)
                 src = os.path.join(root, fn)
                 dst = os.path.join(d, fn)
-                if fn == 'SHA256SUMS' or fn.startswith('SHA256SUMS.'):
+                if is_retired_checksum_basename(fn):
                     # Package checksum manifests are retired repository-wide;
                     # consolidation must not copy or regenerate them.
                     continue

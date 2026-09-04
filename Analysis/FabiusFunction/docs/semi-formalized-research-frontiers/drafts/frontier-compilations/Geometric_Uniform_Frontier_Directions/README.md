@@ -7,7 +7,16 @@ the merge-resolved source described below.
 
 ## Intake provenance
 
-The package was filed from `drafts/incoming/fabius_frontier_report_bundle-D.zip` (1,508,514 bytes; SHA-256 `39f3638f52f19955b88b7a865a60b76d9ce31154d98967d1400a6ad97396fa9a`). The archive was safety-checked and its submitted 34-row checksum ledger passed in full. The exact arrival receipt remains recoverable from Git history. A later normalized-package ledger covered the current-at-that-checkpoint source and metadata together with the retained historical PDF, but package-local checksum manifests have since been retired; that historical check did not assert that the PDF rendered the source.
+The package was filed from `drafts/incoming/fabius_frontier_report_bundle-D.zip`
+(1,508,514 bytes; SHA-256
+`39f3638f52f19955b88b7a865a60b76d9ce31154d98967d1400a6ad97396fa9a`).
+The archive was safety-checked and its submitted 34-row checksum ledger passed
+in full. The exact arrival receipt and a later normalized-package checkpoint
+remain recoverable from Git history. The latter covered the source and
+metadata current at that checkpoint together with the retained historical PDF;
+it did not assert that the PDF rendered the source. Package-local
+`SHA256SUMS*` ledgers are retired, and no live current-package ledger is
+maintained.
 
 Repository normalization retained the mathematical body while replacing the submitted Letter/Latin-Modern preamble with the shared A4/27 mm/Libertinus preamble, regenerating all vector figures with embedded non-Type-3 fonts, and making generated CSV line endings deterministic. The report now states its current Lean boundary and its overlap with the separately audited digital-spectral and reciprocal-integer reports.
 
@@ -88,11 +97,13 @@ pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_frontie
 pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_frontier_report.tex
 ```
 
-## Integrity provenance
+## Integrity and provenance
 
-Package-local checksum manifests are retired repository-wide and must not be
-recreated.  The submitted and normalized-package verification records remain
-recoverable from Git history, while `REPOSITORY_AUDIT.md` and
-`PDF_VALIDATION.txt` record the surviving purpose-specific checks.  The arrival
-receipt applies to the original archive, not to normalized current files, and
-the pending source/PDF rebuild remains recorded above.
+No package-local `SHA256SUMS*` ledger exists or should be recreated. The exact
+current-source receipt is listed above; retained-PDF checks and the explicit
+source/PDF synchronization debt are recorded in `PDF_VALIDATION.txt`.
+`REPOSITORY_AUDIT.md` and Git history preserve the verified arrival-ledger and
+normalization evidence without making it a live validation dependency. The
+arrival receipt applies to the original archive, not to normalized current
+files; the later normalized checkpoint is historical as well. The pending
+source/PDF rebuild remains recorded above.
