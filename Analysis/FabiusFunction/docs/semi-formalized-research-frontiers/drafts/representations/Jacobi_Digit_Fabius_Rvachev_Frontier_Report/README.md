@@ -14,8 +14,8 @@ This archive accompanies the report
 - `data/` -- CSV and text outputs used for validation and conjecture discovery.
 - `numerical_summary.txt` -- parameters and diagnostic summary from the final run.
 - `corpus_audit.txt` -- pinned repository-comparison method and novelty boundary.
-- The former `SHA256SUMS.txt` package ledger was retired repository-wide on
-  2026-09-01; its final snapshot remains recoverable from Git history.
+- The former package checksum ledger is retired and recoverable from Git
+  history.
 
 ## Reproduce the numerical layer
 

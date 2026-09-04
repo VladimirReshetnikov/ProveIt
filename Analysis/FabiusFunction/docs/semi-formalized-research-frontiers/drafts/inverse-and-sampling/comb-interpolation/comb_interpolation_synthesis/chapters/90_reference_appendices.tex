@@ -505,14 +505,24 @@ Dyadic fixed-radius $\RvachevUp$ synthesis
 & Directly formalized by
   \path{normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}
 & \Cref{gq:thm:up-polynomial-synthesis}\\
+Geometric q-falling Appell formula and synthesis
+& Paper proof
+& Directly formalized by
+  \path{eval_rvachevDeconvolvedPolynomial_qFallingPower}, together with
+  \path{normalized_sum_Ioo_rvachevDeconvolvedPolynomial_mul_shifted_rvachevUp}
+  at the dyadic mesh
+& \Cref{gq:prop:q-Appell-falling}\\
 Generic scalar cardinal-decoder synthesis
 & Paper proof
-& Generic scalar decoder synthesis formalized by
+& Directly formalized by
   \path{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp}
 & \Cref{gq:thm:gaussian-Appell-decoder}\\
 Geometric closed decoder formula
 & Paper proof
-& Elementary-symmetric expression and Gaussian prefactor not formalized
+& Directly formalized by
+  \path{geometric_lagrangeRvachevDecoder_eq}; its nonnegative denominator
+  exponent is equivalent to the manuscript's negative-power form under
+  \(0<q<1\) and \(c>0\)
 & \Cref{gq:thm:gaussian-Appell-decoder}\\
 Atomic coefficient factorization and full interpolation loop
 & Paper proof
@@ -524,11 +534,17 @@ Nodewise biorthogonality and decoder row sum
 & Paper proof
 & Directly formalized componentwise by
   \path{normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node} and
-  \path{sum_lagrangeRvachevDecoder_eq_one}; no Matrix wrapper
+  \path{sum_lagrangeRvachevDecoder_eq_one}, and in typed form by
+  \path{lagrangeRvachevEncoderMatrix_mul_decoderMatrix} and
+  \path{sum_lagrangeRvachevDecoderMatrix_row_eq_one}
 & \Cref{gq:thm:gaussian-Appell-biorthogonality}\\
 Stochastic encoder and Matrix right inverse
 & Paper proof
-& No typed Matrix or row-stochastic encoder package found
+& Directly formalized by \path{lagrangeRvachevEncoderMatrix_nonneg},
+  \path{sum_lagrangeRvachevEncoderMatrix_row_eq_one}, and
+  \path{lagrangeRvachevEncoderMatrix_mul_decoderMatrix}; the negative-entry
+  conclusion is conditional on the positive-overlap hypothesis in
+  \path{exists_lagrangeRvachevDecoderMatrix_entry_neg_of_row_overlap}
 & \Cref{gq:thm:gaussian-Appell-biorthogonality}\\
 Minimum-variation atomic decoder
 & Open problem

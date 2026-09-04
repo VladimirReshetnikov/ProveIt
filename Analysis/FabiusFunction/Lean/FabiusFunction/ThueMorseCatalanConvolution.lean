@@ -88,15 +88,8 @@ private theorem catalanSeriesDelta_peel_one (m : ℕ) (hm : 1 ≤ m) :
     ∑ t ∈ Icc 2 m, (-1) ^ t * (catalan t : ℤ) *
         (((m - 1).choose (t - 1) : ℕ) : ℤ) =
       catalanSeriesDelta m + 1 := by
-  rw [catalanSeriesDelta, if_neg (by omega)]
-  have h1mem : (1 : ℕ) ∈ Icc 1 m := Finset.mem_Icc.mpr (by omega)
-  have herase1 : (Icc 1 m).erase 1 = Icc 2 m := by
-    ext x
-    simp only [Finset.mem_erase, Finset.mem_Icc]
-    omega
-  rw [← Finset.add_sum_erase _
-    (fun t => (-1) ^ t * (catalan t : ℤ) * ((m - 1).choose (t - 1) : ℤ))
-    h1mem, herase1]
+  rw [catalanSeriesDelta, if_neg (by omega),
+    sum_Icc_peel_bot (by omega : 1 ≤ m)]
   have hone : (-1 : ℤ) ^ 1 * (catalan 1 : ℤ) *
       ((m - 1).choose (1 - 1) : ℤ) = -1 := by
     norm_num [catalan_one]
@@ -358,46 +351,20 @@ theorem catalanSeriesDelta_conv (m : ℕ) :
         (((m - 1).choose (t - 2) : ℕ) : ℤ) =
         2 - ∑ u ∈ Icc 2 m, (-1) ^ u *
           (((m - 1).choose (u - 1) : ℕ) : ℤ) * (catalan (u + 1) : ℤ) := by
-      have h2mem : (2 : ℕ) ∈ Icc 2 (m + 1) := Finset.mem_Icc.mpr (by omega)
-      have herase2 : (Icc 2 (m + 1)).erase 2 = Icc 3 (m + 1) := by
-        ext x
-        simp only [Finset.mem_erase, Finset.mem_Icc]
-        omega
-      rw [← Finset.add_sum_erase _
-        (fun t => (-1) ^ t * (catalan t : ℤ) *
-          ((((m - 1).choose (t - 2) : ℕ) : ℤ)))
-        h2mem, herase2]
+      rw [sum_Icc_peel_bot (by omega : 2 ≤ m + 1)]
       have htwo : (-1 : ℤ) ^ 2 * (catalan 2 : ℤ) *
           ((((m - 1).choose (2 - 2) : ℕ) : ℤ)) = 2 := by
         norm_num [catalan_two]
       rw [htwo]
-      have hshift : ∑ t ∈ Icc 3 (m + 1), (-1) ^ t * (catalan t : ℤ) *
-          ((((m - 1).choose (t - 2) : ℕ) : ℤ)) =
+      have hshift : ∑ t ∈ Icc (2 + 1) (m + 1),
+          (-1) ^ t * (catalan t : ℤ) *
+            ((((m - 1).choose (t - 2) : ℕ) : ℤ)) =
           -∑ u ∈ Icc 2 m, (-1) ^ u *
             (((m - 1).choose (u - 1) : ℕ) : ℤ) * (catalan (u + 1) : ℤ) := by
-        rw [← Finset.sum_neg_distrib]
-        refine Finset.sum_nbij' (fun t => t - 1) (fun u => u + 1)
-          ?_ ?_ ?_ ?_ ?_
-        · intro t ht
-          have := Finset.mem_Icc.mp ht
-          exact Finset.mem_Icc.mpr (by omega)
-        · intro u hu
-          have := Finset.mem_Icc.mp hu
-          exact Finset.mem_Icc.mpr (by omega)
-        · intro t ht
-          have := Finset.mem_Icc.mp ht
-          omega
-        · intro u hu
-          omega
-        · intro t ht
-          have ht3 := Finset.mem_Icc.mp ht
-          rw [show t - 1 + 1 = t by omega,
-            show t - 1 - 1 = t - 2 by omega,
-            show (-1 : ℤ) ^ (t - 1) = (-1) ^ t * (-1) from ?_]
-          · ring
-          · rw [show t = (t - 1) + 1 by omega, pow_succ]
-            rw [show t - 1 + 1 - 1 = t - 1 by omega]
-            ring
+        rw [sum_Icc_succ_succ 2 m, ← Finset.sum_neg_distrib]
+        refine Finset.sum_congr rfl fun u _ => ?_
+        rw [show u + 1 - 2 = u - 1 by omega, pow_succ]
+        ring
       rw [hshift]
       ring
     have := hsplit

@@ -65,42 +65,54 @@ The immediate inputs also carry earlier lineage:
 disposition of every immutable source result.
 [`ASSET_DISPOSITION.csv`](ASSET_DISPOSITION.csv) records the SHA-256, size,
 semantic class, canonical destination, and disposition of all 88 files in the
-two superseded source subgroups. The deduplicated canonical asset tree contains
-61 live payloads whose destinations are recorded in that table and whose bytes
-remain versioned in Git.
+two superseded source subgroups. The former 63-payload asset checkpoint
+included eight historical ledger payloads; after their retirement, the
+deduplicated canonical asset tree contains 55 live files. Their source and
+destination digests remain recorded in the disposition table and Git history.
 
-Arrival ledgers and internal source hashes remain under
-[`assets/provenance/`](assets/provenance/), including separate records for the
-sampling, endpoint, computability, non-elementarity, and inverse-iterate
-lineages. The five historical source PDFs were retired with their source
+Three non-checksum provenance files remain under
+[`assets/provenance/`](assets/provenance/): the endpoint corpus audit, the
+inverse-iterate `MANIFEST.txt`, and the inverse-iterate repository audit.
+Retired arrival-ledger and internal-source-hash bytes for all five lineages
+remain identified by `ASSET_DISPOSITION.csv` and recoverable from the pinned
+Git revision. The five historical source PDFs were retired with their source
 layouts only after the canonical publication gate passed; their bytes remain
 recoverable from the pre-retirement revision. Unique scripts, exact tables,
 data, figures, captured outputs, requirements, and audit material were migrated
 or explicitly dispositioned. No numerical output is used as a premise of a
 theorem.
 
-## Canonical source and retained publication artifact
+## Canonical source and synchronized publication artifact
 
 The current canonical master `inverse_fabius_theory.tex` has 293 lines and
 11,514 bytes and SHA-256
 `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`.
-Its exhaustive 23-input source closure has SHA-256
-`f8326a0cf839589521a4c06e66512e4684119859706c8b4984d1950b295056cf`;
-the closure comprises the master, shared notation, all nine chapters, three
-generated TeX fragments, and nine publication figures.
+Its independently measured `b899` recursive TeX closure has 17 files, 10,682
+lines, and 431,748 bytes, with digest
+`6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e`.
 
-The retained PDF has 134 A4 pages and 2,027,726 bytes, with SHA-256
-`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
-Its historical three-pass sequence produced 127, 134, and 134 pages; detailed
-log, text, page-box, font, and visual evidence for those exact PDF bytes is
-recorded in `VALIDATION.md`. The master and shared notation changed afterward,
-so the retained PDF is not presented as a rendering of the current source. A
-fresh three-pass render is required before publication synchronization is
-claimed again.
-Package-local `SHA256SUMS` ledgers were retired repository-wide on 2026-09-01.
-That policy change alters no historical claim, concordance row, disposition,
-lineage, or arrival checksum recorded above; Git history retains the deleted
-ledger snapshots.
+Exactly three serial halt-on-error passes from absent sidecars ran 132 pages /
+1,983,313 bytes → 137 / 2,045,485 → 137 / 2,045,486. The synchronized PDF
+has 137 A4 pages and 2,045,486 bytes, with SHA-256
+`cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995`.
+All log, reference/rerun, metadata, all-page A4/rotation/render/text, font, visual,
+cleanup, and forbidden-basename gates passed; all 31 font rows are embedded and
+subset, six are Libertinus, none is Type 3, and the only box diagnostics are
+two nonblocking horizontal boxes of 2.42 and 2.45 pt.
+
+The purpose-specific 23-input `SOURCE_CLOSURE.sha256` file has SHA-256
+`aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb`.
+It comprises the master, shared notation, all nine chapters, three generated
+TeX fragments, and nine publication figures at its named pre-overlay
+checkpoint. It was intentionally not regenerated for `b899` and is historical,
+not the current closure receipt. The prior PDF has 134 A4 pages and 2,027,726
+bytes, with SHA-256
+`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`;
+its historical passes produced 127 → 134 → 134 pages. Detailed evidence for
+both current and historical receipts is recorded in `VALIDATION.md`.
+The former root and nested asset checksum ledgers are retired and recoverable
+from Git; publication validation changes no historical claim, concordance row,
+disposition, lineage, or arrival checksum recorded above.
 
 ## Editorial relationship
 

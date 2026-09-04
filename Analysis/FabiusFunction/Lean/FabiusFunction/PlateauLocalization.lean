@@ -218,7 +218,9 @@ theorem fabiusUniformSpline_eqOn_cellPolynomial_dyadic
 
 /-! ### From a derivative plateau to a degree bound -/
 
-private theorem iteratedDeriv_eval_polynomial
+/-- Iterated analytic differentiation of a polynomial evaluation agrees with iterated formal
+polynomial differentiation. -/
+theorem iteratedDeriv_eval_polynomial
     (r : ℕ) (Q : Polynomial ℝ) (x : ℝ) :
     iteratedDeriv r (fun y : ℝ => Q.eval y) x =
       (Polynomial.derivative^[r] Q).eval x := by

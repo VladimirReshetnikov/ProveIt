@@ -28,7 +28,9 @@ is the Thue--Morse-signed indicator of the odd integers.
 
 The signed Gaussian weights, negative dyadic nodes, and their lower/top
 moment identities come from `HalfQBinomial`; this module uses that public
-interpolation layer as its single source of truth.
+interpolation layer as its single source of truth.  The unipotent-factor
+lemma `weighted_coeff_rescale_exp_mul` is the shared engine of both
+translation-invariance theorems.
 -/
 
 set_option autoImplicit false
@@ -39,6 +41,100 @@ open Finset
 namespace Fabius
 
 noncomputable section
+
+/-! ## Unipotent factors on the top coefficient of an annihilated family -/
+
+/-- Multiplying a whole family of power series by one fixed series only
+rescales the top coefficient of a weighted combination whose lower
+coefficients all cancel.
+
+Assume the weighted sums `∑ k ∈ s, w k * coeff d (S k)` vanish for every
+degree `d < n`.  In the convolution expansion of `coeff n (E * S k)` the
+term of degree `d` in `E` is paired with the coefficient of degree `n - d`
+of the family, and for `d ≠ 0` that pairing is annihilated by hypothesis.
+Only the constant term of `E` survives, so the weighted top coefficient is
+merely multiplied by `constantCoeff E`.
+
+The factor series `E` is completely arbitrary: no exponential, no rescaling
+and no invertibility enters the argument, and the coefficient ring is an
+arbitrary commutative ring. -/
+theorem sum_weight_mul_coeff_mul_of_lower_vanishing
+    {ι R : Type*} [CommRing R] (s : Finset ι) (w : ι → R)
+    (S : ι → PowerSeries R) (E : PowerSeries R) (n : ℕ)
+    (hlower : ∀ d < n, (∑ k ∈ s, w k * PowerSeries.coeff d (S k)) = 0) :
+    (∑ k ∈ s, w k * PowerSeries.coeff n (E * S k)) =
+      PowerSeries.constantCoeff E *
+        ∑ k ∈ s, w k * PowerSeries.coeff n (S k) := by
+  rw [Finset.mul_sum]
+  simp only [PowerSeries.coeff_mul,
+    Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
+  simp_rw [Finset.mul_sum]
+  rw [Finset.sum_comm, Finset.sum_eq_single 0]
+  · apply Finset.sum_congr rfl
+    intro k _hk
+    simp only [Nat.sub_zero, PowerSeries.coeff_zero_eq_constantCoeff_apply]
+    ring
+  · intro d hd hd0
+    have hdle : d ≤ n := Nat.le_of_lt_succ (Finset.mem_range.mp hd)
+    have hnpos : 0 < n :=
+      (Nat.pos_of_ne_zero hd0).trans_le hdle
+    have hdlt : n - d < n :=
+      Nat.sub_lt hnpos (Nat.pos_of_ne_zero hd0)
+    calc
+      (∑ k ∈ s, w k *
+          (PowerSeries.coeff d E * PowerSeries.coeff (n - d) (S k))) =
+          PowerSeries.coeff d E *
+            ∑ k ∈ s, w k * PowerSeries.coeff (n - d) (S k) := by
+        rw [Finset.mul_sum]
+        apply Finset.sum_congr rfl
+        intro k _hk
+        ring
+      _ = 0 := by
+        rw [hlower (n - d) hdlt, mul_zero]
+  · simp
+
+/-- A power series with constant coefficient one is unipotent on the top
+coefficient of a weighted family annihilated in all lower degrees:
+multiplying every member by it changes nothing.
+
+This is the shape used by the translation-invariance proofs below, where
+`E` is a rescaled exponential; the hypothesis `hE` is the only property of
+that factor which is ever used. -/
+theorem sum_weight_mul_coeff_mul_of_lower_vanishing_of_constantCoeff_one
+    {ι R : Type*} [CommRing R] (s : Finset ι) (w : ι → R)
+    (S : ι → PowerSeries R) (E : PowerSeries R) (n : ℕ)
+    (hE : PowerSeries.constantCoeff E = 1)
+    (hlower : ∀ d < n, (∑ k ∈ s, w k * PowerSeries.coeff d (S k)) = 0) :
+    (∑ k ∈ s, w k * PowerSeries.coeff n (E * S k)) =
+      ∑ k ∈ s, w k * PowerSeries.coeff n (S k) := by
+  rw [sum_weight_mul_coeff_mul_of_lower_vanishing s w S E n hlower, hE,
+    one_mul]
+
+/-- **A rescaled exponential is unipotent on the top coefficient.**  For
+a weighted family of power series annihilated in all degrees below `n`,
+multiplying every member by `rescale c (exp R)` leaves the weighted
+coefficient of degree `n` unchanged.
+
+This is the common step of every translation-invariance argument in this
+module: translating each inner Thue--Morse power by `c` multiplies the
+corresponding shifted series by `exp (c X)`, whose only surviving
+contribution is its constant term `1`. -/
+theorem weighted_coeff_rescale_exp_mul
+    {ι R : Type*} [CommRing R] [Algebra ℚ R] (s : Finset ι)
+    (w : ι → R) (S : ι → PowerSeries R) (c : R) (n : ℕ)
+    (hlower : ∀ d < n,
+      (∑ k ∈ s, w k * PowerSeries.coeff d (S k)) = 0) :
+    (∑ k ∈ s, w k *
+      PowerSeries.coeff n
+        (PowerSeries.rescale c (PowerSeries.exp R) * S k)) =
+      ∑ k ∈ s, w k * PowerSeries.coeff n (S k) := by
+  refine
+    sum_weight_mul_coeff_mul_of_lower_vanishing_of_constantCoeff_one
+      s w S (PowerSeries.rescale c (PowerSeries.exp R)) n ?_ hlower
+  rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply,
+    PowerSeries.coeff_rescale, pow_zero, one_mul,
+    PowerSeries.coeff_zero_eq_constantCoeff_apply,
+    PowerSeries.constantCoeff_exp]
 
 /-- The outer finite sum in the q-binomial--Thue--Morse formula. -/
 noncomputable def qBinomialThueMorseNumerator (n : ℕ) : ℚ :=
@@ -284,6 +380,19 @@ private theorem four_pow_choose_mul (k : ℕ) :
       (2 : ℚ) ^ k.choose 2 * (2 : ℚ) ^ k.choose 2 := by
   rw [show (4 : ℚ) = 2 * 2 by norm_num, mul_pow]
 
+/-- The raw Wolfram weight `[n choose k]_(1/2) / 4^(C(k,2))` absorbs the
+scalar `(-1)^k 2^(C(k,2))` of a shifted series into the signed Gaussian
+weight `halfQBinomialDyadicWeight n k`.  This is the closing step shared
+by every raw-weight-to-Gaussian-weight conversion in this module. -/
+private theorem rawWeight_mul_scalar (n k : ℕ) (x : ℚ) :
+    halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
+        ((((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) * x) =
+      halfQBinomialDyadicWeight n k * x := by
+  unfold halfQBinomialDyadicWeight
+  rw [four_pow_choose_mul, div_pow]
+  norm_num
+  field_simp
+
 private theorem qBinomialThueMorseNumerator_eq_weighted (n : ℕ) :
     qBinomialThueMorseNumerator n =
       ∑ k ∈ Finset.range (n + 1),
@@ -304,11 +413,7 @@ private theorem qBinomialThueMorseNumerator_eq_weighted (n : ℕ) :
           PowerSeries.coeff n (thueMorseShiftedPowerSeries k) := by
       rw [coeff_thueMorseShiftedPowerSeries]
     _ = _ := by
-      rw [coeff_shiftedSeries]
-      unfold halfQBinomialDyadicWeight
-      rw [four_pow_choose_mul, div_pow]
-      norm_num
-      field_simp
+      rw [coeff_shiftedSeries, rawWeight_mul_scalar]
 
 /-- The requested right-hand side reduces to the established recurrence
 normalization for every natural `n`, including zero. -/
@@ -387,11 +492,7 @@ private theorem rawWeight_mul_coeff_shifted_eq
         PowerSeries.coeff d (thueMorseShiftedPowerSeries k) =
       halfQBinomialDyadicWeight n k *
         PowerSeries.coeff d (refinementFactorSeries k) := by
-  rw [coeff_shiftedSeries]
-  unfold halfQBinomialDyadicWeight
-  rw [four_pow_choose_mul, div_pow]
-  norm_num
-  field_simp
+  rw [coeff_shiftedSeries, rawWeight_mul_scalar]
 
 private theorem weighted_shifted_coeff_eq_zero
     {n d : ℕ} (hd : d < n) :
@@ -438,38 +539,11 @@ theorem qBinomialThueMorseTranslatedNumerator_eq_centered
       rw [thueMorseTranslatedShiftedPowerSeries_eq_exp_mul]
     _ = ∑ k ∈ Finset.range (n + 1),
           halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
-            PowerSeries.coeff n (thueMorseShiftedPowerSeries k) := by
-      simp only [PowerSeries.coeff_mul,
-        Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
-      simp_rw [Finset.mul_sum]
-      rw [Finset.sum_comm, Finset.sum_eq_single 0]
-      · simp [PowerSeries.coeff_rescale, PowerSeries.coeff_exp]
-      · intro d hd hd0
-        have hdle : d ≤ n := Nat.le_of_lt_succ (Finset.mem_range.mp hd)
-        have hnpos : 0 < n :=
-          (Nat.pos_of_ne_zero hd0).trans_le hdle
-        have hdlt : n - d < n :=
-          Nat.sub_lt hnpos (Nat.pos_of_ne_zero hd0)
-        calc
-          (∑ k ∈ Finset.range (n + 1),
-              halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
-                (PowerSeries.coeff d
-                    (PowerSeries.rescale c (PowerSeries.exp ℚ)) *
-                  PowerSeries.coeff (n - d)
-                    (thueMorseShiftedPowerSeries k))) =
-              PowerSeries.coeff d
-                  (PowerSeries.rescale c (PowerSeries.exp ℚ)) *
-                ∑ k ∈ Finset.range (n + 1),
-                  halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
-                    PowerSeries.coeff (n - d)
-                      (thueMorseShiftedPowerSeries k) := by
-            rw [Finset.mul_sum]
-            apply Finset.sum_congr rfl
-            intro k _hk
-            ring
-          _ = 0 := by
-            rw [weighted_shifted_coeff_eq_zero hdlt, mul_zero]
-      · simp
+            PowerSeries.coeff n (thueMorseShiftedPowerSeries k) :=
+      weighted_coeff_rescale_exp_mul (Finset.range (n + 1))
+        (fun k => halfQBinomial n k / (4 : ℚ) ^ k.choose 2)
+        thueMorseShiftedPowerSeries c n
+        fun d hd => weighted_shifted_coeff_eq_zero hd
     _ = ∑ k ∈ Finset.range (n + 1),
           halfQBinomial n k /
               ((4 : ℚ) ^ k.choose 2 * ((n + k).factorial : ℚ)) *
@@ -637,6 +711,20 @@ private noncomputable def dyadicNumeratorRefinementFactorSeries
   PowerSeries.rescale (negativeDyadicNode k) (dyadicNumeratorPrefixSeries m) *
     refinementFactorSeries k
 
+/-- The rescaled prefix series times the shifted Thue--Morse series is
+the scalar `(-1)^k 2^(C(k,2))` times the arbitrary-numerator refinement
+factor series.  This single rearrangement feeds every coefficient
+extraction for arbitrary numerators. -/
+private theorem rescale_prefix_mul_shifted_eq_C_mul (m k : ℕ) :
+    PowerSeries.rescale (negativeDyadicNode k)
+        (dyadicNumeratorPrefixSeries m) *
+      thueMorseShiftedPowerSeries k =
+      PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
+        dyadicNumeratorRefinementFactorSeries m k := by
+  rw [shiftedSeries_eq_scalar_mul,
+    dyadicNumeratorRefinementFactorSeries]
+  ring
+
 private theorem coeff_dyadicNumeratorRefinementFactorSeries
     (m k n : ℕ) :
     thueMorseDyadicNumeratorPowerSum m k (n + k) /
@@ -656,16 +744,7 @@ private theorem coeff_dyadicNumeratorRefinementFactorSeries
   have hc := congrArg (PowerSeries.coeff (n + k)) hshift
   rw [PowerSeries.coeff_X_pow_mul', if_pos (by omega), Nat.add_sub_cancel_right,
     coeff_thueMorseDyadicNumeratorPowerSeries] at hc
-  rw [shiftedSeries_eq_scalar_mul] at hc
-  rw [show
-      PowerSeries.rescale (negativeDyadicNode k)
-          (dyadicNumeratorPrefixSeries m) *
-          (PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
-            refinementFactorSeries k) =
-        PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
-          dyadicNumeratorRefinementFactorSeries m k by
-      rw [dyadicNumeratorRefinementFactorSeries]
-      ring,
+  rw [rescale_prefix_mul_shifted_eq_C_mul,
     PowerSeries.coeff_C_mul] at hc
   exact hc.symm
 
@@ -779,11 +858,7 @@ private theorem qBinomialThueMorseDyadicNumerator_eq_weighted (m n : ℕ) :
         halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
           (thueMorseDyadicNumeratorPowerSum m k (n + k) /
             ((n + k).factorial : ℚ)) by field_simp,
-    coeff_dyadicNumeratorRefinementFactorSeries]
-  unfold halfQBinomialDyadicWeight
-  rw [four_pow_choose_mul, div_pow]
-  norm_num
-  field_simp
+    coeff_dyadicNumeratorRefinementFactorSeries, rawWeight_mul_scalar]
 
 /-- The arbitrary-numerator q-binomial expression is the coefficient of its
 finite Thue--Morse prefix series, with the same dyadic normalization as in
@@ -911,21 +986,20 @@ private noncomputable def dyadicNumeratorShiftedPowerSeries
   PowerSeries.rescale (negativeDyadicNode k) (dyadicNumeratorPrefixSeries m) *
     thueMorseShiftedPowerSeries k
 
+/-- `dyadicNumeratorShiftedPowerSeries` is the scalar
+`(-1)^k 2^(C(k,2))` times `dyadicNumeratorRefinementFactorSeries`. -/
+private theorem dyadicNumeratorShiftedPowerSeries_eq_C_mul (m k : ℕ) :
+    dyadicNumeratorShiftedPowerSeries m k =
+      PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
+        dyadicNumeratorRefinementFactorSeries m k :=
+  rescale_prefix_mul_shifted_eq_C_mul m k
+
 private theorem coeff_dyadicNumeratorShiftedPowerSeries
     (m k n : ℕ) :
     PowerSeries.coeff n (dyadicNumeratorShiftedPowerSeries m k) =
       thueMorseDyadicNumeratorPowerSum m k (n + k) /
         ((n + k).factorial : ℚ) := by
-  rw [dyadicNumeratorShiftedPowerSeries, shiftedSeries_eq_scalar_mul]
-  rw [show
-      PowerSeries.rescale (negativeDyadicNode k)
-          (dyadicNumeratorPrefixSeries m) *
-          (PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
-            refinementFactorSeries k) =
-        PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
-          dyadicNumeratorRefinementFactorSeries m k by
-      rw [dyadicNumeratorRefinementFactorSeries]
-      ring,
+  rw [dyadicNumeratorShiftedPowerSeries_eq_C_mul,
     PowerSeries.coeff_C_mul,
     ← coeff_dyadicNumeratorRefinementFactorSeries]
 
@@ -935,21 +1009,8 @@ private theorem rawWeight_mul_coeff_dyadicNumeratorShifted_eq
         PowerSeries.coeff d (dyadicNumeratorShiftedPowerSeries m k) =
       halfQBinomialDyadicWeight n k * PowerSeries.coeff d
         (dyadicNumeratorRefinementFactorSeries m k) := by
-  rw [dyadicNumeratorShiftedPowerSeries, shiftedSeries_eq_scalar_mul]
-  rw [show
-      PowerSeries.rescale (negativeDyadicNode k)
-          (dyadicNumeratorPrefixSeries m) *
-          (PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
-            refinementFactorSeries k) =
-        PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
-          dyadicNumeratorRefinementFactorSeries m k by
-      rw [dyadicNumeratorRefinementFactorSeries]
-      ring,
-    PowerSeries.coeff_C_mul]
-  unfold halfQBinomialDyadicWeight
-  rw [four_pow_choose_mul, div_pow]
-  norm_num
-  field_simp
+  rw [dyadicNumeratorShiftedPowerSeries_eq_C_mul,
+    PowerSeries.coeff_C_mul, rawWeight_mul_scalar]
 
 private theorem weighted_dyadicNumeratorShifted_coeff_eq_zero
     {m n d : ℕ} (hd : d < n) :
@@ -1084,40 +1145,11 @@ private theorem qBinomialThueMorseDyadicTranslatedNumerator_eq
     _ = ∑ k ∈ Finset.range (n + 1),
         halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
           PowerSeries.coeff n (dyadicNumeratorShiftedPowerSeries m k) := by
-        simp only [dyadicNumeratorTranslatedShiftedPowerSeries,
-          PowerSeries.coeff_mul,
-          Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
-        simp_rw [Finset.mul_sum]
-        rw [Finset.sum_comm, Finset.sum_eq_single 0]
-        · simp [PowerSeries.coeff_rescale, PowerSeries.coeff_exp]
-        · intro d hd hd0
-          have hdle : d ≤ n :=
-            Nat.le_of_lt_succ (Finset.mem_range.mp hd)
-          have hnpos : 0 < n :=
-            (Nat.pos_of_ne_zero hd0).trans_le hdle
-          have hdlt : n - d < n :=
-            Nat.sub_lt hnpos (Nat.pos_of_ne_zero hd0)
-          calc
-            (∑ k ∈ Finset.range (n + 1),
-                halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
-                  (PowerSeries.coeff d
-                      (PowerSeries.rescale c (PowerSeries.exp ℚ)) *
-                    PowerSeries.coeff (n - d)
-                      (dyadicNumeratorShiftedPowerSeries m k))) =
-              PowerSeries.coeff d
-                  (PowerSeries.rescale c (PowerSeries.exp ℚ)) *
-                ∑ k ∈ Finset.range (n + 1),
-                  halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
-                    PowerSeries.coeff (n - d)
-                      (dyadicNumeratorShiftedPowerSeries m k) := by
-                rw [Finset.mul_sum]
-                apply Finset.sum_congr rfl
-                intro k _hk
-                ring
-            _ = 0 := by
-              rw [weighted_dyadicNumeratorShifted_coeff_eq_zero hdlt,
-                mul_zero]
-        · simp
+        simp only [dyadicNumeratorTranslatedShiftedPowerSeries]
+        exact weighted_coeff_rescale_exp_mul (Finset.range (n + 1))
+          (fun k => halfQBinomial n k / (4 : ℚ) ^ k.choose 2)
+          (dyadicNumeratorShiftedPowerSeries m) c n
+          fun d hd => weighted_dyadicNumeratorShifted_coeff_eq_zero hd
     _ = ∑ k ∈ Finset.range (n + 1),
         halfQBinomial n k /
             ((4 : ℚ) ^ k.choose 2 * ((n + k).factorial : ℚ)) *

@@ -15,8 +15,8 @@ levels above this directory.
 - `numerical_experiments.py` -- fully commented reproducibility code.
 - `figures/` -- PDF figures used by LaTeX and PNG preview copies.
 - `data/` -- CSV tables and a plain-text numerical run summary.
-- The former `SHA256SUMS.txt` distribution ledger was retired repository-wide
-  on 2026-09-01; its final snapshot remains recoverable from Git history.
+- The former distributed-file checksum ledger is retired and recoverable from
+  Git history.
 
 ## Live-source / retained-artifact boundary
 
@@ -25,11 +25,10 @@ The current consolidated source has 8,183 lines, 349,076 bytes, and SHA-256
 It uses `\TwoAdicValuation` for every genuine dyadic valuation.  The retained
 consolidated PDF has SHA-256
 `2a97dc10398bc4f7d2eaf109c5d28a746355d2e6ddece6e7ee32c5897f487e72`
-and predates this notation-only source successor. No PDF was regenerated.
-Before repository-wide retirement on 2026-09-01, the former `SHA256SUMS.txt`
-ledger recorded a mixed checkpoint of current TeX and the retained PDF, not
-evidence that those two files were synchronized; its final snapshot remains
-recoverable from Git history.
+and predates this notation-only source successor.  No PDF was regenerated:
+The former ledger was therefore a mixed byte inventory of current TeX and a
+retained PDF checkpoint, not evidence that those two files were synchronized.
+It is now retired and recoverable from Git history.
 
 ## Central new deductions (relative to the pinned repository corpus)
 

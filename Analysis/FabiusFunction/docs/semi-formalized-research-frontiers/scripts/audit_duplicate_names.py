@@ -24,9 +24,33 @@ import os
 import re
 import sys
 
+# Declaration names carry subscripts and Greek letters.  On a cp1252 console, printing one
+# raises UnicodeEncodeError and the audit dies at the moment it has a duplicate to report --
+# so force a UTF-8 stream with an escape fallback rather than let the gate fail silently.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding='utf-8', errors='backslashreplace')
+    except Exception:
+        pass
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 LEAN = os.path.normpath(os.path.join(
     HERE, '..', '..', '..', 'Lean', 'FabiusFunction'))
+
+# Lean identifiers are Unicode.  Restricting these classes to ASCII truncated names at the
+# first subscript or Greek letter (`jacobiTheta₂_neg_inv` -> `jacobiTheta`), which made
+# unrelated declarations collide and produced phantom duplicates.  Note `\\w` is not a
+# substitute: subscript digits are Unicode category No, not Nd, so `\\w` does not match them.
+_ID_START = ("A-Za-z_"
+             "\u00c0-\u024f"      # Latin-1 supplement + Latin Extended-A/B
+             "\u0370-\u03ff"      # Greek and Coptic
+             "\u1f00-\u1fff"      # Greek Extended
+             "\u2100-\u214f")     # letterlike symbols (ℂ ℝ ℤ ℕ ℚ)
+_ID_CONT = (_ID_START +
+            "0-9'!?"
+            "\u00b2\u00b3\u00b9"  # superscripts two, three, one
+            "\u2070-\u209c")      # super- and subscripts
+_ID = '[' + _ID_START + '][' + _ID_CONT + ']*'
 
 DECL = re.compile(
     r'^(?:@\[[^\]]*\]\s*)?'
@@ -34,7 +58,7 @@ DECL = re.compile(
     r'(?:theorem|lemma|def|abbrev|structure|inductive|instance)\s+'
     # Dotted names are one declaration, not a collision on the prefix:
     # `theorem IsFabius.unique` must not read as declaring `IsFabius`.
-    r'([A-Za-z_][A-Za-z0-9_\'!?]*(?:\.[A-Za-z_][A-Za-z0-9_\'!?]*)*)',
+    r'(' + _ID + r'(?:\.' + _ID + r')*)',
     re.M)
 
 COMMENT_BLOCK = re.compile(r'/-.*?-/', re.S)
@@ -54,45 +78,50 @@ def strip_comments(text):
 
 
 NS_OPEN = re.compile(r'^namespace\s+([A-Za-z_][\w.\'!?]*)', re.M)
+SEC_OPEN = re.compile(r'^section(?:\s+([A-Za-z_][\w.\'!?]*))?\s*$', re.M)
 NS_CLOSE = re.compile(r'^end\s*([A-Za-z_][\w.\'!?]*)?\s*$', re.M)
 
 
 def qualified_names(text):
-    """Yield fully qualified declaration names, tracking `namespace`.
+    """Yield fully qualified declaration names, tracking `namespace` AND `section`.
 
-    Modules do NOT all sit in a bare `Fabius`: e.g.
-    `SaddleLogAsymptoticTransfer` opens `Fabius.SaddleExpansion`, so its
-    `coeff_pow_eq_zero_of_lt` genuinely does not collide with the one in
-    `Fabius`.  Keying on the short name reports that as a duplicate; the
-    stack is what makes the check sound.
+    Both are tracked on one stack, because Lean closes them with the same `end`.  A section frame
+    contributes nothing to the prefix but must still absorb its `end`; without that, the bare `end`
+    of an anonymous `section` pops the enclosing namespace and every declaration after it is
+    recorded unqualified.  That bug hid a real facade-blocking collision
+    (`Fabius.bernoulliPolySeries`, declared in two modules) and affected any of the 170 modules
+    here that contain a bare `end`.
 
-    `section ... end` also consumes an anonymous `end`, so only pop on
-    an `end` that either names the current namespace or is bare and
-    matched by an open namespace count.
+    Frames are `('ns', name)` or `('sec', name_or_None)`; the prefix is the dot-join of the
+    namespace frames only.
     """
     stack = []
     for line in text.splitlines():
         m = NS_OPEN.match(line)
         if m:
-            stack.append(m.group(1))
+            stack.append(('ns', m.group(1)))
+            continue
+        m = SEC_OPEN.match(line)
+        if m:
+            stack.append(('sec', m.group(1)))
             continue
         m = NS_CLOSE.match(line)
         if m and stack:
             closing = m.group(1)
-            if closing is None or closing == stack[-1]:
+            if closing is None:
                 stack.pop()
-            elif closing in stack:
-                # `end Foo` closing an outer namespace: drop to it.
-                while stack and stack[-1] != closing:
-                    stack.pop()
-                if stack:
-                    stack.pop()
+            else:
+                # `end X` closes the innermost frame named X, discarding anything inside it.
+                if any(name == closing for _kind, name in stack):
+                    while stack:
+                        _kind, name = stack.pop()
+                        if name == closing:
+                            break
             continue
         m = DECL.match(line)
         if m:
-            prefix = '.'.join(stack)
+            prefix = '.'.join(name for kind, name in stack if kind == 'ns')
             yield (prefix + '.' + m.group(1)) if prefix else m.group(1)
-
 
 def main():
     if not os.path.isdir(LEAN):
@@ -122,8 +151,21 @@ def main():
             print('  %-46s %s' % (name, ', '.join(sorted(dups[name]))))
         print()
         print('A collision usually means the lemma already exists.')
-        print('Prefer deleting the new copy and importing the old one')
-        print('over renaming.')
+        print('But a duplicate is not always a copy: check which of the two')
+        print('statements is MORE GENERAL before deciding which to remove.')
+        print()
+        print('  - older is more general  -> delete the newer, import the older;')
+        print('  - newer is more general  -> keep it.  Moving it down into the')
+        print('    older module rebuilds every importer of that module, which on')
+        print('    a one-kernel machine is expensive; renaming the newer with')
+        print("    Mathlib's primed convention (foo') is usually cheaper, and")
+        print('    its docstring should say what it generalises and why.')
+        print()
+        print('Either way, re-run audit_crosswalk_names.py afterwards: a rename')
+        print('or deletion can break a documentation citation of the old name.')
+        print()
+        print('Both directions occurred in the two collisions of 2026-09-04, so')
+        print('the blanket advice this text used to give was wrong half the time.')
         return 1
     return 0
 

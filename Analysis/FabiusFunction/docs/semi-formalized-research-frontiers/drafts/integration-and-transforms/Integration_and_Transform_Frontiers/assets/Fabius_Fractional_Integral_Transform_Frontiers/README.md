@@ -17,8 +17,6 @@ This package contains the deterministic numerical verification program, the recu
 - `numerical_results.json` — machine-readable parameters and results.
 - `corpus_manifest.txt` — recursive 78-path TeX audit ledger: the authoritative pinned 67-source inventory plus an 11-path live-main supplement.
 - `requirements.txt` — Python package versions used for the supplied run.
-- Former `SHA256SUMS.txt` ledger — retired repository-wide on 2026-09-01; its
-  historical bytes remain available from Git history only.
 
 ## Scope and status
 

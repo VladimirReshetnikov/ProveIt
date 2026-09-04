@@ -8,7 +8,11 @@ The corpus carries both real Lambert branches — `W₋₁`
 module records the facts that concern the *pair*:
 
 * `neg_exp_neg_one_le_mul_exp` — the global lower bound
-  `-e⁻¹ ≤ t·eᵗ`, from `1+x ≤ eˣ` alone;
+  `-e⁻¹ ≤ t·eᵗ`, Mathlib's `Real.mul_exp_neg_le_exp_neg_one` read at
+  `-t`;
+* `two_mul_exp_neg_two_lt_exp_neg_one` — the numerical inequality
+  `2e⁻² < e⁻¹`, which places the lower inflection argument `-2e⁻²`
+  strictly inside the lower-branch domain;
 * `mul_exp_strictAntiOn` — the forward map is strictly decreasing on
   `(-∞, -1]` (the mirror of `mul_exp_strictMonoOn` on `[-1, ∞)`);
 * `lowerLambertW_neg_two_mul_exp` — the closed value
@@ -26,32 +30,21 @@ namespace Fabius
 /-- **The global lower bound** `-e⁻¹ ≤ t·eᵗ` for every real `t`. -/
 theorem neg_exp_neg_one_le_mul_exp (t : ℝ) :
     -Real.exp (-1) ≤ t * Real.exp t := by
-  have h : -t ≤ Real.exp (-(t + 1)) := by
-    have h0 := Real.add_one_le_exp (-(t + 1))
-    linarith
-  have h2 : (-t) * Real.exp (t + 1) ≤ 1 := by
-    calc (-t) * Real.exp (t + 1)
-        ≤ Real.exp (-(t + 1)) * Real.exp (t + 1) :=
-          mul_le_mul_of_nonneg_right h (Real.exp_pos _).le
-      _ = 1 := by
-          rw [← Real.exp_add]
-          norm_num
-  have h4 : (-t) * Real.exp t ≤ Real.exp (-1) := by
-    have hle : (-t) * Real.exp t * Real.exp 1 ≤ 1 := by
-      calc (-t) * Real.exp t * Real.exp 1
-          = (-t) * Real.exp (t + 1) := by
-            rw [Real.exp_add]
-            ring
-        _ ≤ 1 := h2
-    have hh := mul_le_mul_of_nonneg_right hle (Real.exp_pos (-1)).le
-    rw [one_mul] at hh
-    calc (-t) * Real.exp t
-        = (-t) * Real.exp t * (Real.exp 1 * Real.exp (-1)) := by
-          rw [← Real.exp_add]
-          norm_num
-      _ = (-t) * Real.exp t * Real.exp 1 * Real.exp (-1) := by ring
-      _ ≤ Real.exp (-1) := hh
+  have h := Real.mul_exp_neg_le_exp_neg_one (-t)
+  rw [neg_neg, neg_mul] at h
   linarith
+
+/-- The numerical inequality `2e⁻² < e⁻¹`, i.e. `2 < e`.  It places the
+lower-branch inflection argument `-2e⁻²` strictly to the right of the
+branch point `-e⁻¹`. -/
+theorem two_mul_exp_neg_two_lt_exp_neg_one :
+    2 * Real.exp (-2) < Real.exp (-1) := by
+  have htwo : (2 : ℝ) < Real.exp 1 := by
+    nlinarith [Real.add_one_lt_exp (by norm_num : (1 : ℝ) ≠ 0)]
+  have h := mul_lt_mul_of_pos_right htwo (Real.exp_pos (-2))
+  calc
+    2 * Real.exp (-2) < Real.exp 1 * Real.exp (-2) := h
+    _ = Real.exp (-1) := by rw [← Real.exp_add]; norm_num
 
 /-- The forward map `t ↦ t·eᵗ` is strictly decreasing on
 `(-∞, -1]` — the mirror of `mul_exp_strictMonoOn`. -/
@@ -69,25 +62,10 @@ theorem mul_exp_strictAntiOn :
 /-- The closed special value `W₋₁(-2e⁻²) = -2`. -/
 theorem lowerLambertW_neg_two_mul_exp :
     lowerLambertW (-2 * Real.exp (-2)) = -2 := by
-  have h2e : (2 : ℝ) ≤ Real.exp 1 := by
-    have h := Real.add_one_le_exp 1
-    linarith
-  have hEF : Real.exp (-1) * Real.exp 1 = 1 := by
-    rw [← Real.exp_add]
-    norm_num
-  have hhalf : 2 * Real.exp (-1) ≤ 1 := by
-    have h := mul_le_mul_of_nonneg_left h2e (Real.exp_pos (-1)).le
-    rw [hEF] at h
-    linarith
   have hmem : (-2 * Real.exp (-2)) ∈
       Ico (-Real.exp (-1)) (0 : ℝ) := by
     constructor
-    · have hexp2 : Real.exp (-2) =
-          Real.exp (-1) * Real.exp (-1) := by
-        rw [← Real.exp_add]
-        norm_num
-      rw [hexp2]
-      nlinarith [Real.exp_pos (-1)]
+    · linarith [two_mul_exp_neg_two_lt_exp_neg_one]
     · have := Real.exp_pos (-2)
       nlinarith
   exact (lowerLambertW_unique_of_mem_Ico hmem (by norm_num) rfl).symm

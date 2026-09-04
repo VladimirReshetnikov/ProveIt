@@ -11,20 +11,20 @@ and conjectures are visibly distinguished in the LaTeX source and PDF.
 
 ## Main files
 
-- `matrix_dilated_fabius_rvachev.tex` — complete 1,998-line, 77,011-byte
+- `matrix_dilated_fabius_rvachev.tex` — complete 1,997-line, 76,958-byte
   LaTeX source; SHA-256
-  `f3559354efacdd5381970a67605c2e2a669c941abac6d93c080e5352ae11f2ba`.
-- `matrix_dilated_fabius_rvachev.pdf` — compiled 29-page, 879,300-byte
+  `5311ff92a6d6d430f3c6e94d61974ffb549a8fe99bb20636a5c47116ad7d9aba`.
+- `matrix_dilated_fabius_rvachev.pdf` — synchronized 29-page, 878,932-byte
   report; SHA-256
-  `cddcba19904319507a0e93d6e447583a15dfaa25054ff0e4fabc45f8e3070741`.
+  `1c7ca0f14f2b456c4bd9692057b63f0941b15ee0810c6f1a3947a2a128a9c76b`.
 - `matrix_fabius_experiments.py` — deterministic, extensively commented
   numerical experiment suite.
 - `CORPUS_AUDIT.md` — recursive-source audit and collision-search ledger.
 - `figures/` — all figures in PDF and PNG form.
 - `data/` — machine-readable numerical tables.
 - `results/numerical_summary.txt` — compact numerical audit trail.
-- The former `SHA256SUMS` distribution ledger was retired repository-wide on
-  2026-09-01; its final snapshot remains recoverable from Git history.
+- The former distributed-payload checksum ledger is retired and recoverable
+  from Git history.
 
 ## Principal results developed in the report
 
@@ -73,12 +73,14 @@ pdflatex -interaction=nonstopmode -halt-on-error matrix_dilated_fabius_rvachev.t
 pdflatex -interaction=nonstopmode -halt-on-error matrix_dilated_fabius_rvachev.tex
 ```
 
-The repository PDF was rebuilt by that exact procedure on 2026-08-31. It has
-29 A4 pages, all at rotation zero and nonblank; the three passes produced 28,
-29, and 29 pages. The final log is clean: all
-references and citations resolved, with no rerun request, overfull or underfull
-box, or package warning. All 29 font rows are embedded and subset, eight are
-Libertinus, and none is Type 3. Title, author, subject, and keywords metadata
-are present. Physical pages 1, 16, 17, 19, 21--24, and 29 passed visual
-inspection, covering the title, all six figures, the repaired Section 11
-running heads, and the references.
+The synchronized repository PDF was rebuilt by that exact procedure on
+2026-09-04. Starting from absent auxiliaries, the three successful
+halt-on-error passes produced 28 pages/867,730 bytes, 29 pages/878,931 bytes,
+and 29 pages/878,932 bytes. All pages are A4 at rotation zero, rendered, and
+contain extractable text. The final log has no TeX error, unresolved reference
+or citation, or rerun request. All 29 font rows are embedded and subset, eight
+are Libertinus, and none is Type 3. Title, author, subject, and keywords
+metadata are present. Physical pages 1, 16, 17, 19, 21--24, and 29 passed
+visual inspection, covering the title, all six figures, the repaired Section
+11 running heads, and the references. Generated sidecars were removed, and no
+package-local checksum ledger is a live publication gate.

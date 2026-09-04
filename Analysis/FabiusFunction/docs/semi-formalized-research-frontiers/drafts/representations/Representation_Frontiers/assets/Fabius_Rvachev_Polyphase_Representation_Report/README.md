@@ -48,7 +48,8 @@ The report develops, among other things:
 - `polyphase_fourier_factors.png` and `.pdf` - product-factor visualization.
 - `thue_morse_jump_comb.png` and `.pdf` - derivative-jump/atomic-comb visualization.
 - `verification_log.txt` - concise execution log.
-- `MANIFEST.sha256` - SHA-256 hashes of all other files in the bundle.
+- `MANIFEST.sha256` - submitted purpose-specific SHA-256 record for the other
+  bundle files; it is not a package-local `SHA256SUMS` ledger.
 
 ## Numerical verification summary
 
@@ -89,14 +90,10 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error \
 
 The included figures allow the PDF to be rebuilt without rerunning the Python script first.
 
-## Integrity check
+## Integrity provenance
 
-On a Unix-like shell:
-
-```bash
-sha256sum -c MANIFEST.sha256
-```
-
-The manifest intentionally does not hash itself.
+The retained submitted manifest verified at intake and intentionally did not
+hash itself. It remains as a purpose-specific historical record; it is not a
+current package-wide ledger and does not certify later editorial README edits.
 
 > **Editorial note (2026-08-28):** the report source (.tex) and compiled PDF listed above were removed from this directory after their content was merged into the volume `Representation_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance section, and git history archives the files. This directory keeps only figures, data, and scripts.

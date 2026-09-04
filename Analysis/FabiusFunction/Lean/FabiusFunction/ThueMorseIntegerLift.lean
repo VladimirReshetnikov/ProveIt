@@ -163,11 +163,8 @@ theorem integerLift_one : integerLift 1 = 1 := by
 /-- A natural number is `1` in `ZMod 2` exactly by its parity. -/
 private theorem natCast_zmod_two (m : ℕ) :
     (m : ZMod 2) = if m % 2 = 1 then 1 else 0 := by
-  conv_lhs => rw [← Nat.div_add_mod m 2]
-  push_cast
-  have h2 : (2 : ZMod 2) = 0 := by decide
-  rcases Nat.mod_two_eq_zero_or_one m with h | h <;>
-    rw [h] <;> simp [h2]
+  rw [← ZMod.natCast_mod m 2]
+  rcases Nat.mod_two_eq_zero_or_one m with h | h <;> rw [h] <;> simp
 
 /-- **The parity theorem in `ZMod 2`**: `c(n) ≡ w₂(n) (mod 2)`.
 Modulo two the alternating signs vanish, only Mersenne-indexed

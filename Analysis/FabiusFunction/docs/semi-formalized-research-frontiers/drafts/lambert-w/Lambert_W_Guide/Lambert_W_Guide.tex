@@ -102,6 +102,13 @@
 
 \newcommand{\Wz}{\LambertW_{0}}
 \newcommand{\Wm}{\LambertW_{-1}}
+% Crosswalk macros, as in the other frontier volumes: a Lean module or
+% declaration name, typeset verbatim.
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
+\newcommand{\leansubtwo}[2]{%
+  \nolinkurl{#1}\texttt{\textsubscript{2}}\nolinkurl{#2}}
+\newcommand{\decl}[1]{\nolinkurl{#1}}
 \newcommand{\stirling}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
 \newcommand{\brak}[1]{\left(#1\right)}
 % LOCAL-NON-FOURIER-HAT: \LambertRootApproximation denotes a numerical approximation to the exact Lambert root on the selected real branch.
@@ -168,6 +175,13 @@ unique layers of the other three are merged in
 data, and deterministic scripts --- is preserved under \path{assets/}; the
 absorbed source documents themselves are deleted once merged (git history is
 the archive, pinned by the SHA-256 hashes below).
+The last synchronized source checkpoint was validated by exactly three
+successful serial halt-on-error passes and the repository's PDF gates.  The
+merged source now postdates that checkpoint, so the retained PDF is historical
+until a fresh three-pass parity rebuild.  Exact page-count, byte-count, and
+SHA-256 receipts are kept externally in the repository documentation so that
+neither artifact embeds a self-invalidating fingerprint. No
+\nolinkurl{SHA256SUMS*} ledger exists or participates in validation.
 \begin{itemize}
 \item \path{Lambert_W_Function_Article/Lambert_W_Function_Article.tex} (the spine)\\
 {\footnotesize SHA-256 \path{5bca61c4e906ca8a92f283bc92913355ccd4aee26d65112b41474fd16862c6ba}}
@@ -568,6 +582,12 @@ The Bernoulli numbers \(B_n\) are defined by the generating function
        =\sum_{n=0}^{\infty}B_n\frac{z^n}{n!},
        \qquad |z|<2\pi.
 \end{equation}
+At \(z=0\), the left side of \eqref{eq:bernoulli-gen} is understood in the
+standard removable-origin sense, with value \(1\).  The Lean crosswalk below
+represents that convention by
+\(\lean{complexExpm1Div}(z)^{-1}\): this is \(1\) at the origin and is the
+literal quotient \(z/(\exp z-1)\) when \(z\ne0\).  It does not identify the
+series with Lean's totalized literal quotient at zero, whose value is \(0\).
 Thus \(B_0=1\), \(B_1=-1/2\), \(B_2=1/6\),
 \(B_4=-1/30\), and all odd \(B_n\) beyond \(B_1\) vanish.
 
@@ -2866,7 +2886,8 @@ The normalized Lambert argument is continuous by
 are \path{principalPowerExponentialPhase_continuousOn_Icc} on
 \([0,P_{m,A,\beta}]\) and
 \path{lowerPowerExponentialPhase_continuousOn_Ioc} on
-\((0,P_{m,A,\beta}]\).  Moreover, if
+\((0,P_{m,A,\beta}]\); all three are in
+\path{PowerExponentialLambertCalculus.lean}.  Moreover, if
 \(0<x\leq P_{m,A,\beta}\) and \(\lambda\geq0\), then the exact equivalence
 \[
  S_{m,A,\beta}(\lambda)=x
@@ -2933,7 +2954,7 @@ closed principal and positive endpoint-inclusive lower value intervals is
 \path{fabiusPrincipalLambertPhase_isEquivalent_id} states that the principal
 Fabius phase is asymptotic to \(x\) at zero, while
 \path{lowerPowerExponentialPhase_one_one_log_two} in
-\path{PowerExponentialLambertFabius}\texttt{.lean} identifies the lower generic phase
+\path{PowerExponentialLambertFabius.lean} identifies the lower generic phase
 exactly with the Fabius lower-Lambert phase.
 
 The separate specialization
@@ -4346,6 +4367,451 @@ Residual certificate &
 \(I\) between \(w\) and the root avoids \(-1\).\\
 \bottomrule
 \end{longtable}
+
+\section{Lean formalization crosswalk}\label{app:lean-crosswalk}
+
+The repository's Lean library carries a two-branch development of the real
+Lambert function, and several of the foundational statements of this guide
+are exact theorems there.  This appendix records the correspondence, in the
+discipline of the other frontier volumes: a row names declarations, all in
+namespace \lean{Fabius}, and a row is listed only when the Lean statement
+has the displayed mathematical content.  Where the Lean statement is
+weaker, more general, or differently normalized than the guide's, the
+difference is stated.  Everything not listed here is unformalized.
+
+The two branches are \decl{principalLambertW} (\(\Wz\), totalized, intended
+domain \([-1/\EulerE,\infty)\); module \lean{PrincipalLambertW}) and
+\decl{lowerLambertW} (\(\Wm\), intended domain \([-1/\EulerE,0)\); module
+\lean{LowerLambertW}).  Both are defined as the logarithm of an inverse of
+\(u\mapsto u\log u\) on the appropriate ray, so ``\(W(x)\)'' is a total
+real function whose values off the intended domain are junk; every theorem
+below carries the domain hypothesis explicitly.
+
+The focused branch-pair and Bernoulli tranche is exhaustive at this checkpoint:
+\lean{LambertWBranchPairing} has \(0+7\) public definitions/theorems,
+\lean{LambertWGapBijection} has \(4+16\), and
+\lean{LambertWBranchSymmetry} has \(0+9\), while
+\lean{LambertWBranchGapBernoulli} has \(0+5\).  Their four-module union is
+therefore four definitions and 37 theorems, 41 public declarations in all.
+The preceding exact-radius checkpoint had the then-current census 903/11,447; the
+complex value-completion theorem brought the next historical checkpoint to
+903/11,448.  The later sibling
+\path{GeometricUniformMomentPolynomial.lean} module has \(1+8\) public
+definitions/theorems and raised the next historical census to 904/11,457.
+Its companion \path{GeometricUniformMomentPolynomialBridge.lean} has the
+exhaustive count \(0+1\) and raised the next historical census to 905/11,458.
+Its sole
+theorem,
+\leansubtwo{geometricUniformMomentPolynomial_eval}{_eq_mgf_taylorCoefficient},
+supplies the real-\(\lvert q\rvert<1\) actual-MGF normalization and makes
+\nolinkurl{p7:eq:Pn-def} Exact in that regime.  It supplies no complex-q
+infinite-product realization by itself.  The subsequent current \(1+3\)
+\path{GeometricUniformComplexMomentProduct.lean} leaf consists of
+\nolinkurl{geometricUniformComplexMomentProduct},
+\nolinkurl{hasProdLocallyUniformly_geometricUniformComplexMomentProduct},
+\nolinkurl{differentiable_geometricUniformComplexMomentProduct}, and
+\nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient}.
+For every complex \(\lVert q\rVert<1\), these give the actual locally uniform
+product, prove complex differentiability on the whole plane, and identify its
+normalized Taylor coefficient with the recursive polynomial.  This is a
+complex analytic analogue, not a complex probability-moment extension of
+\nolinkurl{p7:eq:Pn-def}, whose Exact status
+remains restricted to real \(\lvert q\rvert<1\).  At this historical point the
+canonical q-monograph compound \nolinkurl{thm:qF-moment-polynomial} remained
+Partial because neither the global \texttt{RatFunc} identification nor its
+pole-clearing polynomial continuation at roots was formalized.  The original
+\(1+2\) complex surface raised the next
+incoming-branch checkpoint to the historical 906/11,461, and in the merged
+chronology it formed the historical 918/11,568 checkpoint; the subsequently
+exposed differentiability theorem belongs only to the live census below.  The exhaustive
+zero-definition/one-theorem \path{HalfQBinomialRootSimplicity.lean} leaf then
+gave the merged-main 919/11,569 checkpoint.  Its
+\nolinkurl{halfQBinomial_sum_rootMultiplicity_two_pow}, together with the
+existing complete rational root classification, makes
+\nolinkurl{cor:halfbase-root-locus} Exact.  No arbitrary-base or
+arbitrary-field simplicity is claimed, and
+\nolinkurl{cor:qbinom-inversion-law} remains Partial.  The subsequent
+exhaustive \(1+2\)
+\path{GeometricUniformExteriorComplexMomentGerm.lean} sibling consists of
+\nolinkurl{geometricUniformExteriorComplexMomentGerm},
+\nolinkurl{analyticAt_geometricUniformExteriorComplexMomentGerm}, and
+\leansubtwo{geometricUniformMomentPolynomial_eval}{_eq_exteriorComplexMomentGerm_taylorCoefficient}.
+For every complex \(q\) with \(1<\lVert q\rVert\), these define the actual
+reciprocal germ, prove its analyticity at the origin, and identify its
+normalized Taylor coefficient with the recursive polynomial.  No unit-circle
+or global rational-function claim is made.  The exterior leaf raises the
+census to 920/11,572.
+
+The final exhaustive \(0+3\)
+\path{GeometricUniformMomentPolynomialDegree.lean} sibling consists of
+\nolinkurl{coeff_geometricUniformMomentPolynomial_choose_two},
+\nolinkurl{coeff_geometricUniformMomentPolynomial_choose_two_sub_one}, and
+\nolinkurl{geometricUniformMomentPolynomial_natDegree_eq}.  With
+\(T_n=\binom n2\), these prove the top coefficient \(B_n(1)/n!\), the
+subleading coefficient
+\(-B_n(1)/n!+B_{n-1}(1)/(2(n-1)!)\) for \(n\geq2\), and degree \(T_n\) for
+even \(n\) or \(n=1\), one less otherwise.  Here Lean's
+\nolinkurl{bernoulli'} is \(B_n(1)=(-1)^nB_n\) under Mathlib's convention
+\(B_1=-1/2\).  This makes \nolinkurl{p7:thm:Pn} and
+\nolinkurl{prop:qF-P-degree-sharp} Exact.  At that checkpoint the global
+\nolinkurl{thm:qF-moment-polynomial} was still Partial for the separate
+\texttt{RatFunc}/root-continuation gap.  The sharp leaf raises the census to
+the historical 921/11,575 checkpoint.  The exhaustive
+\path{RvachevLaurentLeading.lean} \((1+6)\) sibling then gives 922/11,582 and
+makes \nolinkurl{is:p2:thm:Laurent-leading} Exact.  The exhaustive
+\path{FinitePrefixAppellRecovery.lean} \((11+17)\) sibling gives the
+923/11,610 checkpoint and makes \nolinkurl{is:p2:thm:finite-prefix-expansion} and
+\nolinkurl{is:p2:thm:exact-recovery} Exact as finite rational identities.
+Retaining the unconditional public
+\lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge gives the semantic
+live union 923 modules and 11,611 public declarations, with both documentation
+gap counts zero.  The q-Lucas manuscript result remains Partial: Lean proves
+the evaluated primitive-root identity, not the polynomial congruence modulo
+the cyclotomic polynomial.
+
+The final exhaustive \(1+4\)
+\path{GeometricUniformMomentRatFunc.lean} sibling consists of
+\nolinkurl{geometricUniformMomentRatFunc},
+\nolinkurl{qFactorial_mul_geometricUniformMomentRatFunc},
+\nolinkurl{eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient},
+\nolinkurl{eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient},
+and \nolinkurl{eval_geometricUniformMomentRatFunc_one}.  It packages one
+\texttt{RatFunc} over the rationals, proves the global q-factorial clearing
+identity, identifies that same rational function with both strict
+off-unit-circle Taylor-coefficient regimes, and handles \(q=1\) through
+\([n]_1!=n!\).  Together with the recursive polynomial leaf, this makes
+\nolinkurl{thm:qF-moment-polynomial} Exact and gives the historical
+924/11,615 checkpoint.  No analytic value, pole order, or divisor is asserted
+at a genuine unit-root pole.  The later
+\path{GeometricUniformMomentReciprocity.lean} sibling consists of one public
+definition, \nolinkurl{geometricUniformComplexMomentGerm}, and five public
+theorems:
+\nolinkurl{geometricUniformComplexMomentGerm_of_norm_lt_one},
+\nolinkurl{geometricUniformComplexMomentGerm_of_one_lt_norm},
+\nolinkurl{analyticAt_geometricUniformComplexMomentGerm},
+\nolinkurl{geometricUniformComplexMomentGerm_reciprocity}, and
+\nolinkurl{geometricUniformComplexMomentGerm_moment_convolution}.  It identifies
+the strict inner and exterior branches, proves analyticity at zero off the unit
+circle, and proves for \(q\ne0\) and \(\lVert q\rVert\ne1\) the local germ
+identity \(M_q(z)M_{q^{-1}}(-z)=1\) and its exact all-order binomial derivative
+convolution.  Thus \nolinkurl{thm:qF-reciprocity} is Exact; no global pointwise
+identity through genuine inner-product zeros is asserted.  The later
+\nolinkurl{weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg} and
+\nolinkurl{integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp}
+theorems make \nolinkurl{prop:up-tail} and \nolinkurl{cor:up-moments} Exact.
+The unrelated exhaustive (1+1)
+\path{RvachevLegendreBiorthogonality.lean} leaf consists of
+\nolinkurl{rvachevLegendreAnalysisKernel} and
+\nolinkurl{rvachevLegendreBiorthogonality}; it closes the translated-kernel
+definition and finite Legendre biorthogonality, but not the larger
+Fourier--Bessel or projector claims.  These additions give the historical
+925-module/11,619-declaration checkpoint.  Subsequent source-only
+tranches, including the reciprocity sibling, give the historical reciprocity
+checkpoint of 931 modules and 11,685 public declarations.  The subsequently
+merged upstream \path{DyadicBoundaryIdentity.lean} and
+\path{FinitePrefixThueMorseCollapse.lean} modules add two modules and ten
+public declarations, making the historical dyadic/finite-prefix census 933
+modules and 11,695 public declarations.  The incoming union adds one module
+and fourteen public declarations: the new zero-definition/six-theorem
+\path{ProuhetBaseTwoBridge.lean} module, one theorem added to
+\path{DyadicBoundaryIdentity.lean}, and seven theorems added to
+\path{ThueMorseNewmanSelfSimilarity.lean}.  This makes the live census 934
+modules and 11,709 public declarations.  The q forward ledger is 182 Exact /
+78 Partial / 14 None / 8 interface rows, the relevant Dyadic
+Gaussian--Thue--Morse chapter is 13/43/0/0, and its source concordance is
+95 Lean-proved / 383 human-proved frontier / 60 non-applicable / 9 conjectures.
+
+\begin{longtable}{@{}p{0.30\textwidth}p{0.42\textwidth}p{0.22\textwidth}@{}}
+\toprule
+Statement in this guide & Exact Lean declaration(s) & Remarks\\
+\midrule
+\endfirsthead
+\toprule
+Statement in this guide & Exact Lean declaration(s) & Remarks\\
+\midrule
+\endhead
+\Cref{thm:realbranches}: \(\Wz\) is a strictly increasing bijection
+\([-1/\EulerE,\infty)\to[-1,\infty)\), \(\Wm\) a strictly decreasing
+bijection \([-1/\EulerE,0)\to(-\infty,-1]\), and every real solution of
+\(w\EulerE^w=x\) is one of the two &
+\decl{principalLambertW\_strictMonoOn},
+\decl{principalLambertW\_image\_Ioi}, \decl{principalLambertW\_image\_Icc},
+\decl{neg\_one\_le\_principalLambertW},
+\decl{lowerLambertW\_strictAntiOn}, \decl{lowerLambertW\_image},
+\decl{lowerLambertW\_le\_neg\_one},
+\decl{eq\_principalLambertW\_or\_eq\_lowerLambertW} &
+The last, in module \lean{LambertBranchDichotomy}, is the dichotomy:
+\(w\EulerE^w=z\) forces \(w=\Wz(z)\) or \(w=\Wm(z)\).  The images are
+stated for the open ray \((-1/\EulerE,\infty)\) and the interval
+\([-1/\EulerE,0]\) on the principal side and the open interval
+\((-1/\EulerE,0)\) on the lower side; the endpoint values are separate
+lemmas.\\
+\addlinespace
+\Cref{cor:inverse}: \(\Wz(a\EulerE^a)=a\) for \(a\geq-1\) and
+\(\Wm(a\EulerE^a)=a\) for \(a\leq-1\) &
+\decl{principalLambertW\_unique},
+\decl{lowerLambertW\_unique\_of\_mem\_Ico}; the defining equations
+\(W(x)\EulerE^{W(x)}=x\) are \decl{principalLambertW\_mul\_exp} and
+\decl{lowerLambertW\_mul\_exp\_of\_mem\_Ico} &
+Stated as uniqueness: any \(w\geq-1\) with \(w\EulerE^w=z\) equals
+\(\Wz(z)\), and dually for \(w\leq-1\).\\
+\addlinespace
+\Cref{thm:derivatives}, first and second derivatives &
+\decl{deriv\_principalLambertW}, \decl{deriv\_deriv\_principalLambertW}
+(module \lean{LambertWCurvature});
+\decl{deriv\_lowerLambertW}, \decl{deriv\_deriv\_lowerLambertW} &
+The principal-branch first derivative is in the form
+\eqref{eq:firstder}, the lower-branch one in the form
+\eqref{eq:firstder-x}; both second derivatives are in the exponential form
+\eqref{eq:secondder-exp}.  \(\Wz'(0)=1\) is
+\decl{principalLambertW\_isEquivalent\_zero}, stated as
+\(\Wz(z)\sim z\) at \(0\).  Positivity of \(\Wz'\) is
+\decl{deriv\_principalLambertW\_pos}.\\
+\addlinespace
+\Cref{thm:curvature}: \(\Wz\) strictly concave; \(\Wm\) strictly convex on
+\((-1/\EulerE,-2/\EulerE^2)\), inflection at \(-2/\EulerE^2\), strictly
+concave on \((-2/\EulerE^2,0)\) &
+\decl{strictConcaveOn\_principalLambertW},
+\decl{strictConvexOn\_lowerLambertW\_left},
+\decl{strictConcaveOn\_lowerLambertW\_right},
+\decl{deriv\_deriv\_lowerLambertW\_eq\_zero\_iff} &
+Lean's concavity of \(\Wz\) is on the closed ray \([-1/\EulerE,\infty)\),
+slightly more than stated here; the lower-branch pieces are on the closed
+interval \([-1/\EulerE,-2/\EulerE^2]\) and the half-open
+\([-2/\EulerE^2,0)\).  The inflection is stated as
+\(\Wm''(x)=0\iff x=-2/\EulerE^2\) on the open domain.\\
+\addlinespace
+\Cref{thm:maclaurin}, \Cref{thm:cayley}: the Maclaurin coefficients
+\((-n)^{n-1}/n!\) &
+\decl{coeff\_lambertW} (module \lean{LambertWSeries}) &
+A statement about the \emph{formal} series over \(\RationalNumbers\): the
+compositional inverse of \(X\EulerE^{X}\) has \((n+1)\)-st coefficient
+\((-(n+1))^n/(n+1)!\).  It is obtained from the library's
+Lagrange--B\"urmann inversion (\Cref{thm:lagrange}), and carries no
+statement about convergence, the radius \(1/\EulerE\), or the endpoint;
+those remain unformalized.\\
+\addlinespace
+\Cref{thm:puiseux}, leading term: \(\Wz(x)+1\sim q\) and
+\(\Wm(x)+1\sim-q\) as \(x\downarrow-1/\EulerE\), with
+\(q=\sqrt{2(1+\EulerE x)}\) &
+\decl{principalLambertW\_add\_one\_isEquivalent\_branchPoint},
+\decl{lowerLambertW\_add\_one\_isEquivalent\_branchPoint} (module
+\lean{LambertWBranchPointAsymptotics}); non-differentiability at the branch
+point, \decl{principalLambertW\_not\_differentiableAt\_branchPoint} and
+\decl{lowerLambertW\_not\_differentiableAt\_branchPoint} (module
+\lean{LambertWBranchPointGeometry}) &
+Only the leading square-root term is formal; the full signed Puiseux series
+and its coefficients are not.\\
+\addlinespace
+\Cref{lem:logineq}: \(t/(1+t)\leq\log(1+t)\leq t\) for \(t>-1\) &
+Mathlib: \nolinkurl{Real.log_le_sub_one_of_pos} and
+\nolinkurl{Real.one_sub_inv_le_log_of_pos} &
+Both halves are Mathlib lemmas (not repository declarations), stated at
+\(1+t>0\); the strict upper form is
+\nolinkurl{Real.log_lt_sub_one_of_pos}.\\
+\addlinespace
+\Cref{thm:W0positivebounds}: \(x/(1+x)\leq\Wz(x)\leq\log(1+x)\leq x\) for
+\(x\geq0\), strict for \(x>0\) &
+\decl{principalLambertW\_elementary\_bounds},
+\decl{div\_one\_add\_le\_principalLambertW},
+\decl{principalLambertW\_le\_log\_one\_add},
+\decl{principalLambertW\_le\_self}, and the strict
+\decl{div\_one\_add\_lt\_principalLambertW},
+\decl{principalLambertW\_lt\_log\_one\_add} (module
+\lean{LambertWElementaryBounds}) &
+Proved from a single inequality with no Lambert content, valid for
+\emph{every} real \(w\): \decl{exp\_le\_one\_add\_mul\_exp\_self},
+\(\EulerE^w\leq1+w\EulerE^w\), strict for \(w\neq0\); the guide's
+\(w=\Wz(x)\) is one instance, and \decl{le\_log\_one\_add\_mul\_exp} states
+the upper bound for every real \(w\) in the form
+\(w\leq\log(1+w\EulerE^w)\).\\
+\addlinespace
+\Cref{thm:Wmzerobounds}: for \(-1/\EulerE<x<0\) and
+\(\eta=\log(1/(-x))\),
+\(-\eta-\eta\log\eta/(\eta-1)\leq\Wm(x)<-\eta-\log\eta\) &
+\decl{lowerLambertW\_near\_zero\_bounds}, with the halves
+\decl{neg\_log\_sub\_div\_le\_lowerLambertW} and
+\decl{lowerLambertW\_lt\_neg\_log\_sub} (module
+\lean{LowerLambertW}) &
+The mechanism is the bracket for the inverse of \(z-\log z\), stated with no
+Lambert content for every \(y>1\) with \(y-\log y=\eta\):
+\decl{SubLog.bracket\_of\_sub\_log\_eq}, from
+\decl{SubLog.strictMonoOn\_sub\_log}.  The reduction
+\(y=-\Wm(x)\), \(y-\log y=\eta\) is
+\decl{neg\_lowerLambertW\_sub\_log\_eq}, and \(\eta>1\) on the whole domain is
+\decl{one\_lt\_log\_one\_div\_neg}, so the denominator \(\eta-1\) is never a
+side condition for the caller.\\
+\addlinespace
+\Cref{thm:higherder}: every derivative of either branch is
+\(W^{(n)}=\EulerE^{-nW}P_n(W)/(1+W)^{2n-1}\) with
+\(P_{n+1}=(1+w)P_n'-(nw+3n-1)P_n\) &
+\decl{lambertDerivPoly}, \decl{lambertDerivPoly\_succ},
+\decl{iteratedDeriv\_principalLambertW},
+\decl{iteratedDeriv\_lowerLambertW} (module
+\lean{LambertWHigherDerivatives}); the general engine is
+\decl{AutonomousODE.iteratedDeriv\_eq\_comp} (module
+\lean{AutonomousIteratedDeriv}) &
+Lean's \(P_n\) is this guide's \(P_{n+1}\): the recurrence is stated as
+\(P_{n+1}=(1+w)P_n'-((n+1)w+3n+2)P_n\) from \(P_0=1\), and the formula as
+\(W^{(n+1)}=\frac{\EulerE^{-(n+1)W}P_n(W)}{(1+W)^{2n+1}}\), on the open domains
+\((-1/\EulerE,\infty)\) and \((-1/\EulerE,0)\).  The engine is stated for an
+arbitrary solution of an autonomous equation \(W'=\varphi\circ W\) on an open
+set, with the derivative family as hypotheses, so it applies beyond Lambert's
+function.\\
+\addlinespace
+\Cref{thm:antiderivatives}: \(\int W_k=\EulerE^{W_k}(W_k^2-W_k+1)
+=x(W_k-1+1/W_k)\) and \(\int W_k/x=W_k+\tfrac12W_k^2\) &
+\decl{hasDerivAt\_principalLambertW\_antiderivative},
+\decl{hasDerivAt\_lowerLambertW\_antiderivative},
+\decl{hasDerivAt\_principalLambertW\_add\_half\_sq},
+\decl{hasDerivAt\_lowerLambertW\_add\_half\_sq} (module
+\lean{LambertWAntiderivative}); the general forms
+\decl{LambertAntiderivative.hasDerivAt\_exp\_mul\_sq\_sub\_add\_one},
+\decl{LambertAntiderivative.hasDerivAt\_add\_half\_sq} and the two-form
+identity \decl{LambertAntiderivative.exp\_mul\_sq\_sub\_add\_one\_eq} &
+Stated as derivative facts (\(F'=W\), \(G'=W/x\)) on the open branch
+domains, which is the content of the antiderivative statement.  The general
+forms assume only \(W'=(\EulerE^{W}(1+W))^{-1}\) at the point, with
+\(W\neq-1\), so they hold for any local inverse of \(w\mapsto w\EulerE^w\);
+the \(x\)-form needs \(W\neq0\) and the \(W/x\) form needs \(x\neq0\), as in
+the guide.\\
+\addlinespace
+\Cref{thm:W0logbounds}: for \(x>\EulerE\), \(L=\log x\),
+\(L-\log L<\Wz(x)<L-\log(L-\log L)<L\) &
+\decl{principalLambertW\_log\_bounds}, with the halves
+\decl{log\_sub\_log\_log\_lt\_principalLambertW},
+\decl{principalLambertW\_lt\_log\_sub\_log\_log\_sub\_log\_log},
+\decl{principalLambertW\_lt\_log} (module \lean{LambertWLogBounds}); the
+non-strict outer bracket for \(x\geq\EulerE\) is
+\decl{principalLambertW\_log\_bracket} (module
+\lean{PrincipalLambertWAtTop}) and the non-strict sharper upper bound
+\decl{principalLambertW\_le\_log\_sub\_log\_log\_sub\_log\_log} &
+Exact.  All from \(W+\log W=L\) (\decl{principalLambertW\_add\_log}) and
+monotonicity of the logarithm; the equality \(\Wz(\EulerE)=1\) at the
+endpoint is \decl{principalLambertW\_exp\_one}.\\
+\addlinespace
+\Cref{prop:addition}: \((a+b)\EulerE^{a+b}=xy(1/a+1/b)\) for Lambert
+values \(a,b\neq0\) of \(x,y\), hence \(a+b=W_m(xy(1/a+1/b))\) on the branch
+containing \(a+b\) &
+\decl{mul\_exp\_add\_of\_mul\_exp} (the identity, for any reals satisfying
+their defining equations), \decl{add\_eq\_principalLambertW\_of\_mul\_exp},
+\decl{add\_eq\_lowerLambertW\_of\_mul\_exp},
+\decl{principalLambertW\_add\_principalLambertW} (module
+\lean{LambertWAdditionIdentity}) &
+Exact.  The branch consequence is stated through the uniqueness theorems:
+\(a+b\geq-1\) selects \(\Wz\), and \(a+b\leq-1\) with the product in
+\([-1/\EulerE,0)\) selects \(\Wm\); for \(x,y>0\) the two principal values
+add to the principal value, with no side condition.\\
+\addlinespace
+\Cref{thm:pairing}, forward direction: with \(\Delta=\Wz(x)-\Wm(x)>0\) on
+\((-1/\EulerE,0)\), \(\Wz=-\Delta/(\EulerE^\Delta-1)\),
+\(\Wm=-\Delta/(1-\EulerE^{-\Delta})
+=-\Delta\EulerE^\Delta/(\EulerE^\Delta-1)\),
+\(x=\Wz\EulerE^{\Wz}\) in the \(\Delta\)-form, and the \(t=\EulerE^\Delta\)
+forms &
+\decl{principalLambertW\_sub\_lowerLambertW\_pos},
+\decl{lowerLambertW\_eq\_principalLambertW\_mul\_exp\_gap},
+\decl{principalLambertW\_eq\_neg\_gap\_div},
+\decl{lowerLambertW\_eq\_neg\_gap\_mul\_exp\_div},
+\decl{lowerLambertW\_eq\_neg\_gap\_div\_one\_sub\_exp\_neg},
+\decl{eq\_neg\_gap\_div\_mul\_exp},
+\decl{principalLambertW\_lowerLambertW\_eq\_of\_exp\_gap} (module
+\lean{LambertWBranchPairing}) &
+Exact for the forward direction.  The whole computation is
+\(\Wm=\Wz\EulerE^\Delta\) from dividing the two defining equations.\\
+\addlinespace
+\Cref{thm:pairing}, converse: every \(\Delta>0\) inserted into the formulas
+produces one and only one \(x\in(-1/\EulerE,0)\), with the displayed values
+equal to \(\Wz(x)\) and \(\Wm(x)\) &
+\decl{gapPrincipal}, \decl{gapLower}, \decl{gapArg} (the three formulas as
+functions of \(\Delta\)), \decl{branchGap} (the map
+\(x\mapsto\Wz(x)-\Wm(x)\)); \decl{gapArg\_mem\_Ioo},
+\decl{principalLambertW\_gapArg}, \decl{lowerLambertW\_gapArg},
+\decl{branchGap\_gapArg}, \decl{gapArg\_branchGap}; the two directions
+packaged as \decl{branchGap\_invOn} and \decl{branchGap\_bijOn}; and the
+three \(t>1\) coordinate formulas are
+\decl{principalLambertW\_gapArg\_log},
+\decl{lowerLambertW\_gapArg\_log}, and \decl{gapArg\_log} (module
+\lean{LambertWGapBijection}) &
+Exact, and stated as a bijection: \(x\mapsto\Delta\) is a bijection from
+\((-1/\EulerE,0)\) onto \((0,\infty)\) with the explicit inverse
+\(\Delta\mapsto a(\Delta)\EulerE^{a(\Delta)}\), \(a(\Delta)=-\Delta/(\EulerE^\Delta-1)\).
+The proof is uniqueness on each branch: \(b(\Delta)=a(\Delta)\EulerE^\Delta\)
+equals \(a(\Delta)-\Delta\), so \(b\EulerE^b=a\EulerE^a\), and
+\(-1<a<0\), \(b<-1\) are the tangent-line inequalities
+\(\Delta<\EulerE^\Delta-1\) and \(\EulerE^\Delta(1-\Delta)<1\).\\
+\addlinespace
+\Cref{cor:pair-symmetric}: the exact quotient, sum, and product identities,
+and \(\Wz(x)+\Wm(x)<-2\),
+\(0<\Wz(x)\Wm(x)<1\) on \((-1/\EulerE,0)\) &
+\decl{lowerLambertW\_div\_principalLambertW\_eq\_exp\_branchGap},
+\decl{principalLambertW\_add\_lowerLambertW\_eq\_exp\_branchGap},
+\decl{principalLambertW\_add\_lowerLambertW\_eq\_cosh\_div\_sinh\_branchGap},
+\decl{principalLambertW\_mul\_lowerLambertW\_eq\_exp\_branchGap},
+\decl{principalLambertW\_mul\_lowerLambertW\_eq\_sinh\_sq\_branchGap},
+\decl{principalLambertW\_add\_lowerLambertW\_lt\_neg\_two},
+\decl{principalLambertW\_mul\_lowerLambertW\_pos},
+\decl{principalLambertW\_mul\_lowerLambertW\_lt\_one}, and
+\decl{principalLambertW\_mul\_lowerLambertW\_mem\_Ioo} (module
+\lean{LambertWBranchSymmetry}) &
+Exact.  The exponential-rational sum and product forms strengthen the printed
+hyperbolic identities, and the final theorem packages the two strict product
+bounds.  The left endpoint is sharp: at \(x=-1/\EulerE\), both branches are
+\(-1\), hence the sum is \(-2\) and the product is \(1\); the open hypotheses
+are therefore essential.  The endpoint \(x=0\) remains excluded because the
+lower real branch has no finite value there.\\
+\addlinespace
+\eqref{eq:bernoulli-gen}, with the standard removable-origin convention above,
+and \eqref{eq:pair-Bernoulli-general}: the complex Bernoulli generating
+identity and the compact paired series for \(0<\Delta<2\pi\) on
+\(-1/\EulerE<x<0\), together with the exact convergence locus &
+\decl{summable\_norm\_bernoulli\_mul\_pow\_div\_factorial},
+\decl{summable\_bernoulli\_mul\_pow\_div\_factorial\_iff},
+\decl{hasSum\_bernoulli\_mul\_pow\_div\_factorial},
+\decl{hasSum\_bernoulli\_mul\_pow\_div\_factorial\_complex\_iff}, and
+\decl{principalLambertW\_lowerLambertW\_eq\_bernoulliSeries} (module
+\lean{LambertWBranchGapBernoulli}) &
+{\footnotesize Exact for the complex generating identity, the compact real branch pair, and
+the convergence locus.  The
+first theorem proves absolute summability for every real
+\(z\) with \(\lvert z\rvert<2\pi\); the second proves, for complex \(z\), that
+the Bernoulli series is summable if and only if \(\lVert z\rVert<2\pi\), hence
+it diverges on \(\lVert z\rVert=2\pi\) and throughout the exterior; the third
+proves the actual all-index real sum \(z/(\exp z-1)\) when \(z\ne0\); the
+fourth proves the complex \(\operatorname{HasSum}\) value given by the
+inverse of \decl{complexExpm1Div} at \(z\) if and only if
+\(\lVert z\rVert<2\pi\); and the fifth specializes both real sums on the
+strict common branch domain when the positive branch gap is below \(2\pi\).
+At \(z=0\), the fourth theorem's target is the removable value \(1\); away
+from zero it rewrites to the literal quotient.  This makes both displayed
+identities in this row Exact under the stated convention, but claims no
+equality with Lean's totalized quotient at zero.  The compiled radius proof
+uses even Bernoulli--zeta coefficient bounds and a positive even subsequence;
+it does not formalize the Guide's nearest-nonzero-zero explanation.  The
+surrounding expanded displays and every Puiseux claim remain unpromoted.}\\
+\addlinespace
+\Cref{thm:W0negativebounds}: for \(-1/\EulerE<x<0\),
+\(-1+\sqrt{1+\EulerE x}<\Wz(x)<-1+\sqrt{2(1+\EulerE x)}\) and \(\Wz(x)<x\) &
+\decl{principalLambertW\_negative\_bounds}, with the halves
+\decl{neg\_one\_add\_sqrt\_lt\_principalLambertW},
+\decl{principalLambertW\_lt\_neg\_one\_add\_sqrt},
+\decl{principalLambertW\_lt\_self\_of\_neg} (module
+\lean{LambertWNegativeBounds}) &
+Exact.  In the shifted variable \(s=\Wz+1\in(0,1)\) the two square-root bounds
+are the exponential inequalities \(\EulerE^s>1+s\) and
+\(\EulerE^s(1-s)<1-s^2/2\); the second is
+\decl{exp\_mul\_one\_sub\_lt\_one\_sub\_half\_sq}, proved from its derivative
+\(s(\EulerE^s-1)>0\), with no Lambert content.\\
+\bottomrule
+\end{longtable}
+
+Not formalized, in the order they appear above: the moments of
+\Cref{sec:integrals}, the local Taylor expansion, convergence of the
+Maclaurin series, the full Puiseux and
+logarithmic asymptotic expansions, the remaining bounds of
+\Cref{sec:bounds} (the two-sided \(W_{-1}\) bound of
+\Cref{thm:chatzbound}), and everything from
+\Cref{sec:rational} onward.
 
 \section{Concordance of the four merged treatments}\label{app:concordance}
 

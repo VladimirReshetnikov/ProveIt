@@ -241,16 +241,15 @@ rendering metadata and last-digit floating-point drift.
 
 The six old report PDFs and LaTeX manuscripts are superseded by the single
 canonical volume.  Their mathematical provenance lives in the theorem
-concordance rather than in six competing renderings.  Source READMEs were
-absorbed here; source checksum ledgers were replaced by the canonical
-post-migration ledger; the two source requirements files were replaced by the
+concordance rather than in six competing renderings. Source READMEs were
+absorbed here; source checksum ledgers were retired after their historical
+receipts were recorded; the two source requirements files were replaced by the
 single requirements file above; generated LaTeX table fragments and TeX
 `.aux`, `.log`, `.out`, and `.toc` files are build products; and PNG previews
 are unnecessary when the corresponding vector PDFs are present.
 
 Retirement does not erase history: every old package remains recoverable from
-repository snapshot `f46e5d7f6f225bf0a43d8945e67d6f0e4aec8d54`. The former
-`SHA256SUMS` post-migration ledger was retired repository-wide on 2026-09-01;
-its historical bytes remain in Git history. Current validation uses the
-purpose-specific disposition and validation records rather than a
-package-local checksum ledger.
+repository snapshot `f46e5d7f6f225bf0a43d8945e67d6f0e4aec8d54`.
+Package checksum manifests are retired. Source and canonical-destination
+digests in `ASSET_DISPOSITION.csv`, together with pinned repository history,
+preserve migration receipts without creating a live checksum gate.

@@ -22,8 +22,6 @@ not alter the snapshot-relative novelty audit.
 - `fractional_power_checks.csv` — machine-readable comparison table.
 - `requirements.txt` — pinned Python dependency.
 - `PDF_VALIDATION.txt` — structural/rendering validation summary.
-- Former `SHA256SUMS` ledger — retired repository-wide on 2026-09-01; its
-  historical bytes remain available from Git history only.
 
 ## Main results represented in the report
 

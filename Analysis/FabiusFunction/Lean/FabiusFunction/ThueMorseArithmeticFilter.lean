@@ -16,17 +16,23 @@ plain prefix range, and the closed form of the signed prefix sums then
 evaluates both filtered sums for **every** `N` — the answer depends only
 on `N mod 4` and on the single sign `ε(⌊N/4⌋)`.
 
-* `sum_filter_modEq_mul_natCast` — the **general filter**, over any
-  field and any coefficient function `f`:
-  `q·∑_{n<N, n≡r (q)} f(n) = ∑_{ℓ<q} (ζ⁻¹)^(rℓ)·∑_{n<N} f(n)ζ^(nℓ)`.
+* The **general filter** `sum_filter_modEq_mul_natCast`, over any
+  field and any coefficient function `f`,
+  `q·∑_{n<N, n≡r (q)} f(n) = ∑_{ℓ<q} (ζ⁻¹)^(rℓ)·∑_{n<N} f(n)ζ^(nℓ)`,
+  lives in `ThueMorseFourierInversion`, next to the character
+  orthogonality it is built on; this module specializes it.
 * `thueMorse_rarefied_filter` — the specialization
   `q·A_{m,r}^{(q)} = ∑_{ℓ<q} ζ_q^(-rℓ)·∏_{j<m}(1-ζ_q^(ℓ·2^j))`
   over `ℂ`, with the transform written as the finite product
   (`sum_thueMorseSign_pow_mul`).
+* `sum_filter_mod_eq_sum_range` — the **residue-class reindexation**
+  for an arbitrary modulus `b` and residue `r < b`, for an arbitrary
+  function into an arbitrary additive commutative monoid:
+  `∑_{n<N, n≡r (b)} f(n) = ∑_{k<(N-r+b-1)/b} f(bk+r)`.
 * `sum_filter_even_eq_sum_range`, `sum_filter_odd_eq_sum_range` — the
-  **halving reindexations**, for an arbitrary function into an arbitrary
-  additive commutative monoid: `∑_{n<N, n even} f(n) = ∑_{k<(N+1)/2}
-  f(2k)` and `∑_{n<N, n odd} f(n) = ∑_{k<N/2} f(2k+1)`.
+  **halving reindexations**, its two instances at `b = 2`:
+  `∑_{n<N, n even} f(n) = ∑_{k<(N+1)/2} f(2k)` and
+  `∑_{n<N, n odd} f(n) = ∑_{k<N/2} f(2k+1)`.
 * `sum_thueMorseSign_range_mod_two` — the signed prefix sum in residue
   form: `∑_{t<N} ε(t)` is `0` for even `N` and `ε(N/2)` for odd `N`.
 * `sum_thueMorseSign_filter_even_eq_sum_range` and
@@ -52,39 +58,7 @@ open Finset
 
 namespace Fabius
 
-/-! ### The general root-of-unity filter -/
-
-/-- **The root-of-unity filter**, in full generality: for a primitive
-`q`-th root of unity `ζ` in a field and any `f`, the progression
-`n ≡ r (mod q)` is extracted from `range N` by averaging twisted
-transforms:
-`q·∑_{n<N, n≡r} f(n) = ∑_{ℓ<q} (ζ⁻¹)^(rℓ)·∑_{n<N} f(n)ζ^(nℓ)`. -/
-theorem sum_filter_modEq_mul_natCast {F : Type*} [Field F] [DecidableEq F]
-    {ζ : F} {q : ℕ} (hζ : IsPrimitiveRoot ζ q) (hq : q ≠ 0)
-    (f : ℕ → F) (N r : ℕ) :
-    (q : F) * ∑ n ∈ (range N).filter (fun n => n % q = r % q), f n =
-      ∑ ℓ ∈ range q, (ζ⁻¹) ^ (r * ℓ) * ∑ n ∈ range N, f n * ζ ^ (n * ℓ) := by
-  symm
-  have hstep : ∀ ℓ ∈ range q,
-      (ζ⁻¹) ^ (r * ℓ) * ∑ n ∈ range N, f n * ζ ^ (n * ℓ) =
-      ∑ n ∈ range N, f n * (ζ ^ n * (ζ⁻¹) ^ r) ^ ℓ := by
-    intro ℓ _
-    rw [Finset.mul_sum]
-    refine Finset.sum_congr rfl fun n _ => ?_
-    have hsplit : (ζ ^ n * (ζ⁻¹) ^ r) ^ ℓ =
-        ζ ^ (n * ℓ) * (ζ⁻¹) ^ (r * ℓ) := by
-      rw [mul_pow, ← pow_mul, ← pow_mul]
-    rw [hsplit]
-    ring
-  rw [Finset.sum_congr rfl hstep, Finset.sum_comm]
-  have hinner : ∀ n ∈ range N,
-      ∑ ℓ ∈ range q, f n * (ζ ^ n * (ζ⁻¹) ^ r) ^ ℓ =
-      f n * (if n % q = r % q then (q : F) else 0) := by
-    intro n _
-    rw [← Finset.mul_sum, sum_pow_mul_inv_pow_eq_ite hζ hq n r]
-  rw [Finset.sum_congr rfl hinner, Finset.sum_filter, Finset.mul_sum]
-  refine Finset.sum_congr rfl fun n _ => ?_
-  split_ifs <;> ring
+/-! ### The rarefied filter over the complex roots of unity -/
 
 /-- **The rarefied filter formula** (the atlas's boxed identity): with
 `ζ_q = e^(2πi/q)`,
@@ -106,50 +80,72 @@ theorem thueMorse_rarefied_filter (q : ℕ) (hq : q ≠ 0) (m r : ℕ) :
   rw [sum_thueMorseSign_pow_mul
     (Complex.exp (2 * Real.pi * Complex.I / q)) m ℓ]
 
-/-! ### Halving a range: the modulus-two reindexations -/
+/-! ### Reindexing a residue class: modulus `b`, then modulus two -/
+
+/-- **Extracting a residue class from a range.**  For `r < b`, the map
+`k ↦ b·k + r` is a bijection from `range ⌈(N-r)/b⌉ =
+range ((N - r + b - 1)/b)` onto the elements of `range N` congruent to
+`r` modulo `b`, so any sum over that residue class is a plain range
+sum: `∑_{n<N, n ≡ r (b)} f(n) = ∑_{k<(N-r+b-1)/b} f(bk + r)`.  The
+index count is `⌈(N - r)/b⌉` when `r < N` and `0` when `N ≤ r`
+(truncated subtraction).  Stated for an arbitrary function into an
+arbitrary additive commutative monoid; the two halving lemmas below
+are its instances at `b = 2`. -/
+theorem sum_filter_mod_eq_sum_range {M : Type*} [AddCommMonoid M]
+    (b r : ℕ) (hr : r < b) (f : ℕ → M) (N : ℕ) :
+    ∑ n ∈ (range N).filter (fun n => n % b = r), f n =
+      ∑ k ∈ range ((N - r + b - 1) / b), f (b * k + r) := by
+  have hb : 0 < b := by omega
+  have himg : (range N).filter (fun n => n % b = r) =
+      (range ((N - r + b - 1) / b)).image (fun k => b * k + r) := by
+    ext n
+    simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_image]
+    constructor
+    · rintro ⟨hn, hmod⟩
+      have hdm : b * (n / b) + r = n := by
+        rw [← hmod]
+        exact Nat.div_add_mod n b
+      refine ⟨n / b, ?_, hdm⟩
+      rw [Nat.lt_iff_add_one_le, Nat.le_div_iff_mul_le hb, add_mul,
+        one_mul, Nat.mul_comm (n / b) b]
+      omega
+    · rintro ⟨k, hk, rfl⟩
+      rw [Nat.lt_iff_add_one_le, Nat.le_div_iff_mul_le hb, add_mul,
+        one_mul, Nat.mul_comm k b] at hk
+      exact ⟨by omega, by rw [Nat.mul_add_mod, Nat.mod_eq_of_lt hr]⟩
+  rw [himg]
+  exact Finset.sum_image fun a₁ _ a₂ _ h =>
+    Nat.eq_of_mul_eq_mul_left hb (by omega)
 
 /-- **Halving the even part of a range.**  The map `k ↦ 2k` is a
 bijection from `range ⌈N/2⌉ = range ((N+1)/2)` onto the even elements of
 `range N`, so any sum over the even indices below `N` is a plain range
 sum of the doubled function:
 `∑_{n<N, n even} f(n) = ∑_{k<(N+1)/2} f(2k)`.  Stated for an arbitrary
-function into an arbitrary additive commutative monoid. -/
+function into an arbitrary additive commutative monoid; the instance
+`b = 2`, `r = 0` of `sum_filter_mod_eq_sum_range`. -/
 theorem sum_filter_even_eq_sum_range {M : Type*} [AddCommMonoid M]
     (f : ℕ → M) (N : ℕ) :
     ∑ n ∈ (range N).filter (fun n => n % 2 = 0), f n =
       ∑ k ∈ range ((N + 1) / 2), f (2 * k) := by
-  have himg : (range N).filter (fun n => n % 2 = 0) =
-      (range ((N + 1) / 2)).image (fun k => 2 * k) := by
-    ext n
-    simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_image]
-    constructor
-    · rintro ⟨hn, hpar⟩
-      exact ⟨n / 2, by omega, by omega⟩
-    · rintro ⟨k, hk, rfl⟩
-      exact ⟨by omega, by omega⟩
-  rw [himg]
-  exact Finset.sum_image (fun a _ b _ h => by omega)
+  have h := sum_filter_mod_eq_sum_range 2 0 (by omega) f N
+  rw [show (N - 0 + 2 - 1) / 2 = (N + 1) / 2 by omega] at h
+  simp only [add_zero] at h
+  exact h
 
 /-- **Halving the odd part of a range.**  The map `k ↦ 2k+1` is a
 bijection from `range ⌊N/2⌋` onto the odd elements of `range N`:
 `∑_{n<N, n odd} f(n) = ∑_{k<N/2} f(2k+1)`.  Companion of
 `sum_filter_even_eq_sum_range`, over an arbitrary additive commutative
-monoid. -/
+monoid; the instance `b = 2`, `r = 1` of
+`sum_filter_mod_eq_sum_range`. -/
 theorem sum_filter_odd_eq_sum_range {M : Type*} [AddCommMonoid M]
     (f : ℕ → M) (N : ℕ) :
     ∑ n ∈ (range N).filter (fun n => n % 2 = 1), f n =
       ∑ k ∈ range (N / 2), f (2 * k + 1) := by
-  have himg : (range N).filter (fun n => n % 2 = 1) =
-      (range (N / 2)).image (fun k => 2 * k + 1) := by
-    ext n
-    simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_image]
-    constructor
-    · rintro ⟨hn, hpar⟩
-      exact ⟨n / 2, by omega, by omega⟩
-    · rintro ⟨k, hk, rfl⟩
-      exact ⟨by omega, by omega⟩
-  rw [himg]
-  exact Finset.sum_image (fun a _ b _ h => by omega)
+  have h := sum_filter_mod_eq_sum_range 2 1 (by omega) f N
+  rw [show (N - 1 + 2 - 1) / 2 = N / 2 by omega] at h
+  exact h
 
 /-! ### The modulus-two filter in closed form -/
 
@@ -188,6 +184,18 @@ theorem sum_thueMorseSign_filter_odd_eq_sum_range (N : ℕ) :
   rw [sum_filter_odd_eq_sum_range, Finset.sum_congr rfl hodd,
     Finset.sum_neg_distrib]
 
+/-- The `mod 4` bookkeeping shared by the two closed forms below.  A
+prefix sum in residue form, `if P % 2 = 0 then 0 else ε(P/2)`, equals
+`if C then ε(N/4) else 0` as soon as the parity of `P` decides `C` and
+`P/2 = N/4` whenever `P` is odd. -/
+private theorem ite_mod_two_eq_ite (N P : ℕ) (C : Prop) [Decidable C]
+    (hC : P % 2 = 0 ↔ ¬ C) (hdiv : P % 2 ≠ 0 → P / 2 = N / 4) :
+    (if P % 2 = 0 then (0 : ℤ) else thueMorseSign (P / 2)) =
+      if C then thueMorseSign (N / 4) else 0 := by
+  by_cases h : P % 2 = 0
+  · rw [if_pos h, if_neg (hC.mp h)]
+  · rw [if_neg h, if_pos (not_not.mp fun hc => h (hC.mpr hc)), hdiv h]
+
 /-- **The even arithmetic filter, in closed form, for every `N`.**
 `∑_{n<N, n even} ε(n) = ε(⌊N/4⌋)` when `N ≡ 1` or `2 (mod 4)`, and `0`
 when `N ≡ 0` or `3 (mod 4)`.
@@ -201,18 +209,8 @@ theorem sum_thueMorseSign_filter_even (N : ℕ) :
       if N % 4 = 1 ∨ N % 4 = 2 then thueMorseSign (N / 4) else 0 := by
   rw [sum_thueMorseSign_filter_even_eq_sum_range,
     sum_thueMorseSign_range_mod_two]
-  have h4 : N % 4 = 0 ∨ N % 4 = 1 ∨ N % 4 = 2 ∨ N % 4 = 3 := by omega
-  rcases h4 with h | h | h | h
-  · rw [if_pos (by omega : (N + 1) / 2 % 2 = 0),
-      if_neg (by omega : ¬ (N % 4 = 1 ∨ N % 4 = 2))]
-  · rw [if_neg (by omega : ¬ ((N + 1) / 2 % 2 = 0)),
-      if_pos (by omega : N % 4 = 1 ∨ N % 4 = 2),
-      show (N + 1) / 2 / 2 = N / 4 by omega]
-  · rw [if_neg (by omega : ¬ ((N + 1) / 2 % 2 = 0)),
-      if_pos (by omega : N % 4 = 1 ∨ N % 4 = 2),
-      show (N + 1) / 2 / 2 = N / 4 by omega]
-  · rw [if_pos (by omega : (N + 1) / 2 % 2 = 0),
-      if_neg (by omega : ¬ (N % 4 = 1 ∨ N % 4 = 2))]
+  exact ite_mod_two_eq_ite N ((N + 1) / 2) (N % 4 = 1 ∨ N % 4 = 2)
+    ⟨fun h => by omega, fun h => by omega⟩ (fun h => by omega)
 
 /-- **The odd arithmetic filter, in closed form, for every `N`.**
 `∑_{n<N, n odd} ε(n) = -ε(⌊N/4⌋)` when `N ≡ 2` or `3 (mod 4)`, and `0`
@@ -226,19 +224,10 @@ theorem sum_thueMorseSign_filter_odd (N : ℕ) :
     ∑ n ∈ (range N).filter (fun n => n % 2 = 1), thueMorseSign n =
       if N % 4 = 2 ∨ N % 4 = 3 then -thueMorseSign (N / 4) else 0 := by
   rw [sum_thueMorseSign_filter_odd_eq_sum_range,
-    sum_thueMorseSign_range_mod_two]
-  have h4 : N % 4 = 0 ∨ N % 4 = 1 ∨ N % 4 = 2 ∨ N % 4 = 3 := by omega
-  rcases h4 with h | h | h | h
-  · rw [if_pos (by omega : N / 2 % 2 = 0),
-      if_neg (by omega : ¬ (N % 4 = 2 ∨ N % 4 = 3)), neg_zero]
-  · rw [if_pos (by omega : N / 2 % 2 = 0),
-      if_neg (by omega : ¬ (N % 4 = 2 ∨ N % 4 = 3)), neg_zero]
-  · rw [if_neg (by omega : ¬ (N / 2 % 2 = 0)),
-      if_pos (by omega : N % 4 = 2 ∨ N % 4 = 3),
-      show N / 2 / 2 = N / 4 by omega]
-  · rw [if_neg (by omega : ¬ (N / 2 % 2 = 0)),
-      if_pos (by omega : N % 4 = 2 ∨ N % 4 = 3),
-      show N / 2 / 2 = N / 4 by omega]
+    sum_thueMorseSign_range_mod_two,
+    ite_mod_two_eq_ite N (N / 2) (N % 4 = 2 ∨ N % 4 = 3)
+      ⟨fun h => by omega, fun h => by omega⟩ (fun _ => by omega),
+    apply_ite Neg.neg, neg_zero]
 
 /-- **The even-filtered discrepancy is at most one**: `|∑_{n<N, n even}
 ε(n)| ≤ 1` for every `N`, since the closed form is a single sign or

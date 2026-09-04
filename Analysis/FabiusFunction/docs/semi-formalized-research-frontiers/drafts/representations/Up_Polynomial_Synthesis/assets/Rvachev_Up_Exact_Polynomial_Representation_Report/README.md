@@ -75,8 +75,8 @@ It produces 49 atoms.  Exact evaluation at 129 dyadic points gives maximum resid
 - `generic_degree_checks.csv` — exact checks for degrees 0 through 6.
 - `verification_summary.txt` — concise verification output.
 - `representation_plot.png` — plot used in the report.
-- The former `SHA256SUMS` integrity ledger was retired repository-wide on
-  2026-09-01; its final snapshot remains recoverable from Git history.
+- The former package checksum ledger is retired and recoverable from Git
+  history.
 
 ## Repository snapshot
 

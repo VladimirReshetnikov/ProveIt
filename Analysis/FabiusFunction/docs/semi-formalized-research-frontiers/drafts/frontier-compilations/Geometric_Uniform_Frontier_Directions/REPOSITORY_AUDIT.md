@@ -79,7 +79,8 @@ The source archive `fabius_frontier_report_bundle-D.zip` was 1,508,514 bytes
 with SHA-256
 `39f3638f52f19955b88b7a865a60b76d9ce31154d98967d1400a6ad97396fa9a`.
 Its submitted 34-row checksum ledger was independently verified against all
-archive members and is preserved byte-for-byte as `ARRIVAL_SHA256SUMS`.
+archive members. That historical ledger remains recoverable byte-for-byte
+from Git history.
 
 The deterministic experiment suite was replayed in a clean Python 3.13
 environment using the versions pinned in `requirements.txt`. Exact tables
@@ -104,6 +105,6 @@ changes are expected and remove the submitted Type-3 fonts.
 The mathematical body was retained. The report now uses the shared
 article/A4/27 mm/Libertinus preamble, with only report-local notation and
 float settings after the common block. Generated CSVs use deterministic LF
-line endings. The former `SHA256SUMS` ledger was retired repository-wide on
-2026-09-01; `ARRIVAL_SHA256SUMS` remains the immutable provenance record, and
-Git history retains the retired normalized-package ledger.
+line endings. A normalized-package ledger verified those bytes before
+checksum ledgers were retired; it and the immutable arrival record remain
+recoverable from Git history.

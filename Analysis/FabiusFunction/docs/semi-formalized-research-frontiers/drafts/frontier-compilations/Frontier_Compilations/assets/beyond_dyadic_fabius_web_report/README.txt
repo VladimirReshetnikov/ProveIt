@@ -40,8 +40,6 @@ Supporting-asset contents
   experiment_output.txt             Human-readable diagnostics
   corpus_inventory.txt              Complete 57-file TeX corpus ledger
   requirements.txt                  Python dependencies
-  SHA256SUMS.txt                     Retired repository-wide on 2026-09-01;
-                                     historical bytes are in Git history only
 
 Reproducing the numerical outputs
 ---------------------------------

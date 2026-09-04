@@ -16,8 +16,8 @@ prepared on 30 August 2026 for Vladimir Reshetnikov's `ProveIt` Fabius-function 
 - `CORPUS_AUDIT.md` — the repository comparison protocol and nonduplication boundary.
 - `BUILD.sh` — reproducible regeneration and compilation commands.
 - `requirements.txt` — Python dependencies.
-- The former `SHA256SUMS.txt` delivery ledger was retired repository-wide on
-  2026-09-01; its final snapshot remains recoverable from Git history.
+- The former delivered-file checksum ledger is retired and recoverable from
+  Git history.
 
 ## Reproduce the experiments
 

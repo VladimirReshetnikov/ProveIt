@@ -30,6 +30,7 @@
   citecolor=linkblue,
   urlcolor=linkblue,
   pdftitle={The Thue--Morse Sequence: Formula Atlas and Fabius--Rvachev Frontier Results},
+  pdfauthor={Merged and expanded companion report to the Fabius--Rvachev formal development; Vladimir Reshetnikov's ProveIt repository},
   pdfsubject={Formula atlas, finite-block calculus, Fourier and Laplace products, q-binomial extrapolation, and Lean crosswalks},
   pdfkeywords={Thue-Morse, Prouhet, binary digit sum, Lucas theorem, Kummer theorem, Pascal triangle, Mahler equation, Walsh transform, Riesz product, Fabius function, Rvachev up-function, sinc product, q-binomial extrapolation}
 }
@@ -124,7 +125,6 @@
 
 \usepackage{multirow}
 \title{\bfseries The Thue--Morse Sequence: Formula Atlas and Fabius--Rvachev Frontier Results}
-\author{}
 \date{Consolidated 28 August 2026}
 \begin{document}
 \maketitle
@@ -309,7 +309,7 @@ is not by itself evidence of formalization.  Statements proved in Lean carry the
 declaration names in the text, typeset as \lean{Fabius.thueMorseSign}; statements without
 such a citation must not be inferred to have a formal counterpart.
 
-The current inventory in \cref{p1:sec:formalized-modules} consists of one hundred and three compiled
+The current inventory in \cref{p1:sec:formalized-modules} consists of one hundred and four compiled
 Lean modules.  It covers the finite algebraic, automata, moment, Fourier, rarefaction,
 Dirichlet--Mellin, word-combinatorial, and Fabius--Rvachev bridges recorded there, often in
 greater generality than the displayed prose.  The dependency-aware map in
@@ -999,16 +999,6 @@ Consequently
   \tau(n)=\frac{1-\eps_n}{2}.
   \label{p1:eq:fractional-cos}
 \end{equation}
-
-\emph{Formal version.}  Equation \eqref{p1:eq:fractional-weight} is
-\lean{Fabius.tsum\_fract\_natCast\_div\_two\_pow} in \path{DigitDefectCounting.lean},
-\(\sum_{h\ge0}\{N/2^h\}=S_2(N)\); the index \(h=0\) contributes nothing, so the sum
-there and the sum here agree, and \(S_2\) is \(\BinaryDigitSum\) by definition of the latter.  It
-sits in a defect-counting file rather than a Thue--Morse one because that is the role
-it plays: it is the regression test that fixes the \emph{sign} of the weighted defect
-series \lean{Fabius.tsum\_mul\_natCast\_div\_two\_pow} against Legendre's classical
-count.  The pointwise ingredient, \(\{N/2^h\}=(N\bmod 2^h)/2^h\), is
-\lean{Fabius.fract\_natCast\_div\_two\_pow}.
 \end{proposition}
 
 \begin{proof}
@@ -1020,6 +1010,52 @@ The geometric series gives \(\sum_{j\ge1}n/2^j=n\).  Subtract
  =\BinaryDigitSum(n).
 \]
 \end{proof}
+
+\emph{Formal version.}  Equation \eqref{p1:eq:fractional-weight} is
+\lean{Fabius.tsum\_fract\_natCast\_div\_two\_pow} in \path{DigitDefectCounting.lean},
+\(\sum_{h\ge0}\{N/2^h\}=S_2(N)\); the index \(h=0\) contributes nothing, so the sum
+there and the sum here agree, and \(S_2\) is \(\BinaryDigitSum\) by definition of the latter.  It
+sits in a defect-counting file rather than a Thue--Morse one because that is the role
+it plays: it is the regression test that fixes the \emph{sign} of the weighted defect
+series \lean{Fabius.tsum\_mul\_natCast\_div\_two\_pow} against Legendre's classical
+count.  The pointwise ingredient, \(\{N/2^h\}=(N\bmod 2^h)/2^h\), is
+\lean{Fabius.fract\_natCast\_div\_two\_pow}.
+
+\paragraph{The total binary weight.}
+Summing the digit sum over an initial segment,
+\begin{equation}
+  S(N)=\sum_{n<N}\BinaryDigitSum(n),
+  \label{p1:eq:weight-total-definition}
+\end{equation}
+gives the classical Trollope--Delange quantity, whose main term is
+\(\tfrac12N\log_2N\).  The exact dyadic structure is elementary: doubling the range
+gives \(S(2M)=2S(M)+M\), so that \(2S(2^L)=L\,2^L\) exactly, and the top digit splits an
+arbitrary range as \(S(2^L+r)=S(2^L)+r+S(r)\) for \(r<2^L\).  Iterating the split yields the
+two-sided bracket \(N\Floor{\log_2N}\le2S(N)+N\) and \(2S(N)\le N(\Floor{\log_2N}+1)\), hence
+\begin{equation}
+  \Bigl|S(N)-\tfrac12N\log_2N\Bigr|\le N,
+  \label{p1:eq:weight-total-bracket}
+\end{equation}
+the \(\BigO(N)\) error term of Trollope--Delange with an explicit constant; the
+oscillating \(N\)-scale term itself (Delange's periodic function) is not pursued here.
+
+\emph{Formal versions.}  All of this is in \path{BinaryWeightTotals.lean}: \(S(N)\) is
+\lean{Fabius.binaryWeightTotal}; the doubling law is
+\lean{Fabius.binaryWeightTotal\_two\_mul}, the exact dyadic value
+\lean{Fabius.two\_mul\_binaryWeightTotal\_two\_pow}, and the top-digit split
+\lean{Fabius.binaryWeightTotal\_two\_pow\_add}; the two integer brackets are
+\lean{Fabius.le\_two\_mul\_binaryWeightTotal\_add} and
+\lean{Fabius.two\_mul\_binaryWeightTotal\_le} (with \(\Floor{\log_2N}\) as
+\lean{Nat.log}), and \eqref{p1:eq:weight-total-bracket} is
+\lean{Fabius.abs\_binaryWeightTotal\_sub\_le}, with the real \(\log_2N\).  Behind the
+bracket stands Trollope's exact digit formula: with \(N=\sum_j b_j2^j\) in binary,
+\[
+ S(N)=\sum_{j\ge0} b_j\bigl(j\,2^{j-1}+(N\bmod 2^j)\bigr),
+\]
+each set bit contributing the full dyadic block below it together with the residue
+above it; this is \lean{Fabius.binaryWeightTotal\_eq\_sum\_testBit} (over any digit window
+\(j<b\) with \(N<2^b\)), with the block value \(S(2^L)=L\,2^{L-1}\) as
+\lean{Fabius.binaryWeightTotal\_two\_pow}.
 
 \subsection{Square waves and a sine-sign product}
 
@@ -1714,6 +1750,19 @@ By \eqref{p1:eq:glaisher-count}, \(\nu(n)=2^{\BinaryDigitSum(n)}\).  Its residue
 \(\BinaryDigitSum(n)\) is even and two when it is odd.
 \end{proof}
 
+\emph{Formal versions.}  Both displays of \eqref{p1:eq:odd-count-mod3} are in
+\path{ThueMorseBinomialLog.lean}, with \(\nu(n)\) read as the cardinality of
+\lean{Fabius.oddBinomialIndices}: the bit form \(\tau(n)=\operatorname{rem}_3(\nu(n))-1\) is
+\lean{Fabius.thueMorseBit\_eq\_card\_oddBinomialIndices\_mod\_three\_sub\_one}, its
+rearrangement \(\operatorname{rem}_3(\nu(n))=\tau(n)+1\) is
+\lean{Fabius.card\_oddBinomialIndices\_mod\_three\_eq\_bit\_add\_one}, and the sign form
+\(\eps_n=3-2\operatorname{rem}_3(\nu(n))\) is
+\lean{Fabius.thueMorseSign\_eq\_three\_sub\_two\_mul\_card\_oddBinomialIndices\_mod\_three}.
+The closing remark that the residue is never zero is
+\lean{Fabius.card\_oddBinomialIndices\_mod\_three\_ne\_zero}.  The arithmetic underneath
+all four is the two-cycle of powers of two modulo three,
+\lean{Fabius.two\_pow\_mod\_three} (in \path{SignedRowSum.lean}; \path{ThueMorseBinomialLog.lean} keeps a private copy), \(2^r\bmod3=(r\bmod2)+1\).
+
 A form using exactly the row signs of the source formula can be written without
 the odd-count notation.  Put
 \begin{equation}
@@ -1749,6 +1798,19 @@ weight is even or odd.  Also
 \(n-S(n)=2^{\BinaryDigitSum(n)+1}-2\), congruent to zero or two modulo three; the squared
 sine is therefore zero or \(3/4\).
 \end{proof}
+
+\emph{Formal versions.}  The signed row sum is \lean{Fabius.signedRowSum} in
+\path{SignedRowSum.lean}, and \eqref{p1:eq:S-pascal-exact} is
+\lean{Fabius.signedRowSum\_eq}, obtained from the full-row sum
+\(\sum_{k=0}^{n}(-1)^{\binom nk}=(n+1)-2^{\BinaryDigitSum(n)+1}\)
+(\lean{Fabius.sum\_range\_neg\_one\_pow\_choose}) by removing the \(k=0\) term.  The
+residue display \eqref{p1:eq:pascal-mod3} is
+\lean{Fabius.thueMorseBit\_eq\_two\_mul\_add\_signedRowSum\_emod\_three}, and the sine
+display \eqref{p1:eq:pascal-sine} is
+\lean{Fabius.thueMorseBit\_eq\_sin\_sq\_pi\_sub\_signedRowSum\_div\_three}; the latter
+rests on \(n-S(n)=6k+2\tau(n)\) with \(k\) exhibited explicitly
+(\lean{Fabius.two\_pow\_succ\_sub\_two\_eq}) and on \(\sin^2(2\pi/3)=3/4\)
+(\lean{Fabius.sin\_sq\_two\_pi\_div\_three}).
 
 The logarithmic and residue formulas are two shadows of the same invariant
 \(\nu(n)\): the first reads the exponent of a power of two; the second reads
@@ -2563,6 +2625,15 @@ Set \(z=1/b\) in \eqref{p1:eq:T-from-E} and
 \eqref{p1:eq:infinite-product}, then multiply by \(1/b\).
 \end{proof}
 
+\emph{Formal versions.}  Both displays are in \path{BaseBProduct.lean}, for every real
+\(b>1\): the signed companion \eqref{p1:eq:signed-base-b} is
+\lean{Fabius.tsum\_thueMorseSign\_div\_pow\_succ} and the boxed
+\eqref{p1:eq:base-b-product} is \lean{Fabius.tsum\_thueMorseBit\_div\_pow\_succ}, each stated
+with the genuine infinite sum \(\sum'\) and infinite product \(\prod'\).  Both are the real
+infinite product \lean{Fabius.tsum\_thueMorseSign\_mul\_pow} of
+\path{ThueMorseInfiniteProduct.lean} at \(x=1/b\), the second after writing
+\(\tau(n)=(1-\eps_n)/2\) and summing the geometric series.
+
 For \(b=2\), \(\Theta_2=0.0110100110010110\ldots{}_2\) is the classical
 Prouhet--Thue--Morse constant.  Mahler's theory implies its transcendence; that
 deep arithmetic result is separate from the elementary product identity
@@ -2602,6 +2673,27 @@ As a formal series, and analytically for \(|z|<1\),
 
 This representation contains no explicit binary digit sum.  The coefficient
 sequence \((a_k)\) is a simple transform of the ruler sequence.
+
+\emph{Formal version.}  \Cref{p1:thm:log-E} is formal in its denominator-free form.  A
+formal logarithm carries the denominators \(1/k\) and so lives over \(\RationalNumbers\); differentiating
+\eqref{p1:eq:log-E} and clearing \(E\) gives the equivalent identity
+\[
+  z\,E'(z)=-A(z)\,E(z),\qquad A(z)=\sum_{k\ge1}a_kz^k,
+\]
+which holds over \(\IntegerNumbers\), and that is
+\lean{Fabius.X\_mul\_derivative\_thueMorseSeries} in \path{RulerLogDerivative.lean}, an
+identity of formal power series with integer coefficients, with
+\(A\) as \lean{Fabius.rulerSeries} built on the ruler coefficient
+\lean{Fabius.rulerCoeff} of \path{ThueMorseHessenberg.lean}.  Its coefficient of \(z^n\) is
+exactly the ruler-convolution recurrence of \cref{p1:thm:ruler-convolution}, from which it
+is derived; no convergence enters.  The \(\RationalNumbers\)-logarithm itself is formal as
+well: for the corpus's recursively defined formal logarithm (\path{RulerLogSeries.lean}),
+\lean{Fabius.logCoeff\_thueMorseSign} gives \([z^k]\log E(z)=-a_k/k\) for every \(k\ge1\)
+(\lean{Fabius.logCoeff\_thueMorseSign\_of\_pos} in the explicit form
+\(-(2^{\TwoAdicValuation(k)+1}-1)/k\)), obtained from the rational form of the display above,
+\lean{Fabius.X\_mul\_derivative\_thueMorseSeriesRat}, by the uniqueness of the recursive
+logarithm.  Only the analytic reading for \(|z|<1\), the evaluation of these identities at a
+point, is not formalized.
 
 \subsection{A nonlocal convolution recurrence}
 
@@ -3463,15 +3555,18 @@ No. & Declaration & Formal content \\
 \bottomrule
 \end{longtable}
 
-This algebraic module does not prove the next multiple-integral corollary.
-More precisely, it closes the Boolean-cube, arbitrary-step polynomial
-extraction/cancellation/top-value, and exact affine-grid clauses of the
-continuous-chaos report's Thue--Morse corner theorem, but not that theorem's
-repeated-integral identity under its \(C^N\) hypotheses.  The report theorem
-therefore remains near-complete rather than fully formalized; a final
-analytic bridge and report-shaped wrapper remain.  Its following Walsh
-conditional-expectation corollary also still lacks the sign--magnitude
-probability construction, conditioning, and \(2^{-N}\) normalization.
+Together with \path{ThueMorseCornerIntegral.lean}, this algebraic module now
+proves every clause of the continuous-chaos report's Thue--Morse corner
+theorem.  The companion leaf defines the recursive centered box integral and
+proves, by local interval FTC and induction, that the symmetric mixed
+difference is the repeated integral of \(g^{(N)}\).  Its hypotheses match the
+printed local statement: the half-steps are nonnegative, \(g\) is
+\(C^N\) on an open order-connected set, and that set contains the full closed
+symmetric segment.  Thus zero half-steps and \(N=0\) are harmless
+strengthenings of the printed positive-step case.  The following Walsh
+conditional-expectation corollary remains open: it still lacks the
+sign--magnitude probability construction, conditioning, and \(2^{-N}\)
+normalization.
 
 \subsection{Exact multiple-integral remainder}
 
@@ -3508,6 +3603,30 @@ Apply
 \(h^m2^{0+1+\cdots+(m-1)}\).
 \end{proof}
 
+\emph{Formal version.}  The nested-integral display \eqref{p1:eq:integral-cubature} is
+\lean{Fabius.thueMorseBlockSum\_eq\_nestedDyadicIntegral} in \path{ThueMorseCubature.lean},
+for every \(f\) of class \(C^m\) on the whole line and every real \(x\), \(h\) (the sign of
+\(h\) plays no role in the identity itself): the block sum
+\lean{Fabius.thueMorseBlockSum} equals \((-1)^m\) times
+\lean{Fabius.nestedDyadicIntegral} of \(f^{(m)}\), the nested integral being defined
+recursively with the outermost variable on \([0,h]\) and the step doubling inward, exactly
+as displayed.  The proof is the induction sketched above, run for all base points at once:
+splitting the block by its low bit (\lean{Fabius.thueMorseBlockSum\_succ}) turns each
+pair into \(-\int_0^hf'(x+2nh+t)\Differential t\), and the integrand of the outer integral
+is then the block sum of length \(2^m\) for \(f'\) at base point \(x+t\) with step \(2h\)
+--- a finite sum of continuous functions, so the interchange needs no parametric-integral
+theory.  The bound \eqref{p1:eq:finite-difference-bound} is
+\lean{Fabius.abs\_thueMorseBlockSum\_le}, with the sup taken over
+\([x,x+(2^m-1)h]\) and the box volume written as \(2^{0+1+\cdots+(m-1)}h^m\); the exponent is
+\(\binom m2\) by \lean{Fabius.sum\_range\_id\_eq\_choose\_two}.  It follows from the
+volume bound \lean{Fabius.abs\_nestedDyadicIntegral\_le} on the nested integral.  The
+unit-cube form \eqref{p1:eq:unit-cube-cubature} is
+\lean{Fabius.thueMorseBlockSum\_eq\_nestedUnitIntegral}, with the box integral written as
+the nested unit-cube integral \lean{Fabius.nestedUnitIntegral} (outermost variable
+\(u_0\), step doubling inward); the rescaling \(t_j=2^jh\,u_j\) is performed one level at a
+time in \lean{Fabius.nestedDyadicIntegral\_eq\_unit}, which produces the box volume
+\(h^m2^{0+1+\cdots+(m-1)}\).
+
 \begin{corollary}[Sign for completely monotone kernels]
 \label{p1:cor:complete-monotone}
 If \((-1)^mf^{(m)}\ge0\) on the interval, then
@@ -3541,6 +3660,22 @@ Use \(f(y)=(a+y)^{-s}\), for which
 \(f^{(m)}(y)=(-1)^{m-1}(m-1)!/(a+y)^m\), so the integral is strictly negative.
 Exponentiation gives the product inequality.
 \end{proof}
+
+\emph{Formal version.}  The sign statement \eqref{p1:eq:complete-monotone-sign} is
+\lean{Fabius.thueMorseBlockSum\_nonneg} in \path{ThueMorseCubature.lean}: for \(h\ge0\)
+and \((-1)^mf^{(m)}\ge0\) on \([x,x+(2^m-1)h]\) --- the interval that actually contains
+every argument \(x+t_0+\cdots+t_{m-1}\) --- the block sum is nonnegative, by
+\lean{Fabius.nestedDyadicIntegral\_nonneg} applied to \((-1)^mf^{(m)}\) through
+\lean{Fabius.nestedDyadicIntegral\_const\_mul}.  The \emph{strict} form is formal as
+well: for \(h>0\) and \((-1)^mf^{(m)}>0\) on the same interval the block sum is strictly
+positive (\lean{Fabius.thueMorseBlockSum\_pos}), by induction through the one-step
+reduction \(\sum_{n<2^{m+1}}\eps_nf(x+nh)=-\int_0^h\sum_{n<2^m}\eps_nf'(x+t+2nh)\,\Differential t\)
+(\lean{Fabius.thueMorseBlockSum\_succ\_eq\_neg\_integral}), whose integrand is a finite sum
+of continuous functions and so needs no parametric-integral theory for its integrability.
+What remains informal in the two applications \eqref{p1:eq:reciprocal-power-positive} and
+\eqref{p1:eq:log-product-sign} is only the computation of the explicit derivatives of
+\((a+y)^{-s}\) and \(\log(a+y)\); their signs then feed
+\lean{Fabius.thueMorseBlockSum\_pos} directly.
 
 \subsection{Arbitrary translation weights}
 \label{p1:sec:arbitrary-weights}
@@ -3967,6 +4102,27 @@ Use the defining generating function \eqref{p1:eq:Bell-definition} and compare
 coefficients.
 \end{proof}
 
+\emph{Formal versions.}  \Cref{p1:thm:Bell-moments} is
+\lean{Fabius.thueMorsePowerSum\_eq\_completeBellPolynomial} in
+\path{BellPolynomialMoments.lean}, for every \(m\ge0\) and \(r\ge0\), with the exponent
+written as the Gauss sum \(0+1+\cdots+(m-1)=\binom m2\), \(M_{m,n}\) as
+\lean{Fabius.thueMorsePowerSum}, the complete exponential Bell polynomial as
+\lean{Fabius.completeBellPolynomial} of \path{MomentCumulantAlgebra.lean}, and the cumulants
+as \lean{Fabius.blockCumulant}, whose closed forms \eqref{p1:eq:kappa-one}--\eqref{p1:eq:kappa-odd}
+are \lean{Fabius.blockCumulant\_one}, \lean{Fabius.blockCumulant\_even} and
+\lean{Fabius.blockCumulant\_odd}.  The proof is the one above, run entirely in
+\(\RationalNumbers[[y]]\) with no logarithm ever taken: the expansion
+\eqref{p1:eq:log-expm1} is \lean{Fabius.expm1Div\_logCoeff\_eq\_bernoulli}, the identification of
+the recursively defined formal logarithm of \((\EulerE^{y}-1)/y\) with
+\(B'_n/(n\,n!)\) (second Bernoulli numbers), obtained from
+\(yG'=(B'(y)-1)G\) and Mathlib's \(B'(y)(\EulerE^{y}-1)=y\EulerE^{y}\) by the uniqueness of
+the recursive logarithm; the logarithm of the product \eqref{p1:eq:moment-Bell-factor} is the
+sum of the rescaled logarithms (\lean{Fabius.logCoeff\_prod\_range} and the corpus's
+\lean{Fabius.SaddleExpansion.logCoeff\_rescale}); and the coefficient comparison is the EGF
+dictionary \lean{Fabius.coeff\_sum\_thueMorseSign\_exp\_pow} against
+\lean{Fabius.prod\_one\_sub\_exp\_two\_pow} of \path{ThueMorseMoments.lean}.  The case
+\(r=0\) recovers \eqref{p1:eq:moment-layer0} as \lean{Fabius.thueMorsePowerSum\_self'}.
+
 The first three nonzero layers are
 \begin{align}
  M_{m,m}
@@ -4050,10 +4206,17 @@ the self-reflective translation \(x=-c_m\).
 \]
 is formal for every complex \(t\): it is
 \lean{Fabius.sum\_range\_two\_pow\_thueMorseSign\_cexp\_affine} with
-\(a=-c_mt\) and \(z=t\).  The subsequent complex half-angle rewrite
-\(1-\EulerE^u=-2\EulerE^{u/2}\sinh(u/2)\), and hence the centered sinh product
-\eqref{p1:eq:centered-sinh} as a named complex theorem, is not yet packaged in
-Lean.  At the moment level, the reflection functional equation is
+\(a=-c_mt\) and \(z=t\).  For \emph{real} \(t\) the half-angle rewrite
+\(1-\EulerE^u=-2\EulerE^{u/2}\sinh(u/2)\) is
+\lean{Fabius.one\_sub\_exp\_eq\_sinh}, and the centered sinh product
+\eqref{p1:eq:centered-sinh} is formal exactly as displayed, with
+\(\prod_{j<m}\sinh(2^{j-1}t)\) written \(\prod_{j<m}\sinh(2^jt/2)\):
+\lean{Fabius.sum\_thueMorseSign\_exp\_centered\_eq\_sinh\_prod}
+(\path{ThueMorseSinhProduct.lean}), derived from the all-rings product
+identity \lean{Fabius.prod\_one\_sub\_pow\_eq\_sum\_thueMorseSign}; the
+uncentered form with its prefactor \(\EulerE^{c_mt}\) is
+\lean{Fabius.sum\_thueMorseSign\_exp\_eq\_sinh\_prod}.  The same statement
+for complex \(t\) is not yet packaged.  At the moment level, the reflection functional equation is
 \lean{Fabius.sum\_thueMorseSign\_mul\_add\_pow\_reflect}
 (\path{ThueMorseMoments.lean}, any commutative ring); the selection rule
 \eqref{p1:eq:centered-parity-zero} for odd \(m+r\) is
@@ -5143,9 +5306,9 @@ shifts with closed forms are formal as well ---
 \(\eta_m(0)\to1\), \(\eta_m(1)\to-\tfrac13\), \(\eta_m(2)\to-\tfrac13\)
 (\lean{Fabius.tendsto\_thueMorseAutocorrelation\_zero\_shift},
 \lean{Fabius.tendsto\_thueMorseAutocorrelation\_one},
-\lean{Fabius.tendsto\_thueMorseAutocorrelation\_two}) --- but the
-existence of the limit at a \emph{general} shift \(k\), and its
-spectral consequences, remain analytic frontiers.
+\lean{Fabius.tendsto\_thueMorseAutocorrelation\_two}); the existence of the
+limit at a \emph{general} shift \(k\) is \cref{p1:thm:limiting-autocorrelation} below, now
+formal as well, while its spectral consequences remain analytic frontiers.
 
 \begin{theorem}[Limiting autocorrelation]
 \label{p1:thm:limiting-autocorrelation}
@@ -5187,6 +5350,24 @@ smaller index \(r\).  If \(k=2r+1>1\), both \(r\) and \(r+1\) are smaller
 than \(k\), so the odd recurrence and the induction hypothesis give
 convergence.  Pass to the limit and evaluate recursively.
 \end{proof}
+
+\emph{Formal version.}  \Cref{p1:thm:limiting-autocorrelation} is formal in
+\path{ThueMorseAutocorrelationLimit.lean}, with exactly the proof above.  The normalized
+sequence \(\eta_m(k)\) is \lean{Fabius.normalizedAutocorrelation}, and the two finite
+recursions hold \emph{exactly} at every scale,
+\(\eta_{m+1}(2r)=\eta_m(r)\) and \(\eta_{m+1}(2r+1)=-(\eta_m(r)+\eta_m(r+1))/2\)
+(\lean{Fabius.normalizedAutocorrelation\_succ\_even},
+\lean{Fabius.normalizedAutocorrelation\_succ\_odd}); the limit \(\eta(k)\) is
+\emph{defined} by the recursion
+\eqref{p1:eq:eta-zero}--\eqref{p1:eq:eta-odd} (\lean{Fabius.limitingAutocorrelation}, with
+\lean{Fabius.limitingAutocorrelation\_two\_mul} and
+\lean{Fabius.limitingAutocorrelation\_two\_mul\_add\_one} as its laws), so the
+characterization is by construction and the theorem is the convergence
+\eqref{p1:eq:eta-limit-definition}, \lean{Fabius.tendsto\_normalizedAutocorrelation}, by
+strong induction on \(k\) with the two formal base cases \(k=0,1\) of
+\path{ThueMorseAutocorrelation.lean}.  The samples \eqref{p1:eq:eta-samples} are
+\lean{Fabius.limitingAutocorrelation\_one}, \lean{Fabius.limitingAutocorrelation\_two},
+\lean{Fabius.limitingAutocorrelation\_three}, \lean{Fabius.limitingAutocorrelation\_five}.
 
 The numbers \(\eta(k)\) are the Fourier coefficients of
 \(\mu_{\mathrm{TM}}\).  Thus the substitution recursion, autocorrelation, and
@@ -5715,7 +5896,11 @@ The rarefied sums are finitely many samples of the trigonometric polynomial
   \label{p1:eq:gelfond-lower}
 \end{equation}
 since the factors have modulus \(|1-\omega|=|1-\omega^2|=\sqrt3\) in every
-position.  Gelfond's theorem \cite{p1:gelfond1968} --- proved below --- shows this
+position.  (The attainment is formal:
+\lean{Fabius.norm\_sum\_thueMorseSign\_exp\_two\_pi\_div\_three} in
+\path{ThueMorseGelfond.lean} evaluates the modulus at the frequency \(2\pi/3\) ---
+the atlas's \(x=\tfrac13\) --- to exactly \((\sqrt3)^m\) for every \(m\ge0\), not merely
+as a lower bound.)  Gelfond's theorem \cite{p1:gelfond1968} --- proved below --- shows this
 is sharp up to a bounded factor:
 \begin{equation}
   \boxed{
@@ -5782,6 +5967,29 @@ so \(\log_43\) is the optimal uniform growth exponent of Thue--Morse
 exponential sums \cite{p1:gelfond1968,p1:queffelec2018}.  At \(x=0\) the sum
 collapses to the bounded prefix values --- the supremum and the special
 value differ by a full power of \(N\).
+
+\emph{Formal version.}  Equation~\eqref{p1:eq:gelfond-general} is formal with an explicit constant
+and for every \(N\), not only asymptotically: \lean{Fabius.gelfond\_general\_bound} in
+\path{ThueMorseGelfond.lean} gives
+\(\bigl|\sum_{n<N}\eps_n\EulerE^{\ImaginaryUnit nx}\bigr|\le(\sqrt3+1)(\sqrt3)^{\Floor{\log_2N}}\)
+uniformly in the real frequency \(x\), by the blockwise decomposition described above
+(\lean{Fabius.norm\_sum\_thueMorseSign\_exp\_le\_of\_lt\_two\_pow}), and
+\lean{Fabius.gelfond\_general\_bound\_rpow} rewrites the right side as
+\((\sqrt3+1)\,N^{\log_43}\), which is the displayed \(\BigO(N^{\log_43})\) with the
+implied constant made \(\sqrt3+1\).  The exponent is also \emph{attained} at every length, not
+only along the dyadic subsequence: \lean{Fabius.gelfond\_general\_lower\_bound} in
+\path{ThueMorseGelfondSharpness.lean} gives
+\(N^{\log_43}/9\le\bigl|\sum_{n<N}\eps_n\omega^n\bigr|\) at the cube root of unity
+\(\omega=\EulerE^{2\pi\ImaginaryUnit/3}\) (\lean{Fabius.gelfondRoot}), and
+\lean{Fabius.gelfond\_general\_two\_sided} packages both bounds,
+\(N^{\log_43}/9\le|S_N(\omega)|\le(\sqrt3+1)N^{\log_43}\).  The lower bound comes from
+the residue-class decomposition \(S_N(\zeta)=T_0+\zeta T_1+\zeta^2T_2\) for any cube root
+of unity (\lean{Fabius.sum\_thueMorseSign\_mul\_pow\_eq\_residue}), the norm identity
+\(|a+\omega b+\omega^2c|^2=a^2+b^2+c^2-ab-bc-ca\)
+(\lean{Fabius.norm\_sq\_add\_gelfondRoot\_mul}), and the comparison
+\(N_3(N)\le|S_N(\omega)|\) with the residue count of
+\cref{p1:thm:mod3-rarefaction}
+(\lean{Fabius.thueMorseResidueSum\_three\_zero\_le\_norm\_sum}).
 
 \subsection{A matrix recursion for odd moduli}
 
@@ -5884,9 +6092,36 @@ for every modulus), the parity system is
 companion, the three sums recombine to the prefix sum by
 \lean{Fabius.thueMorseResidueSum\_three\_add}, and the prefix-sum
 bound \(|E|\le1\) is \lean{Fabius.abs\_sum\_thueMorseSign\_le\_one}.
-The quantitative bounds \(\tfrac1{20}X^{\log_43}\le
-N_3(X)\le5X^{\log_43}\) and Coquet's oscillation remain literature
-imports.  Rarefactions
+The quantitative bounds are formal as well, and with better constants than
+Newman's: \lean{Fabius.newman\_quantitative} in \path{ThueMorseNewmanQuantitative.lean} gives
+\(\tfrac19N^{\log_43}\le N_3(N)\le2N^{\log_43}\) for \emph{every} integer \(N\ge1\)
+(\lean{Fabius.newman\_lower\_bound}, \lean{Fabius.newman\_upper\_bound}), which implies the
+displayed \(\tfrac1{20}\) and \(5\) at once.  Underneath are two integer brackets ---
+\(3^k+1\le N_3(N)\) for \(N\ge4\cdot4^k\)
+(\lean{Fabius.three\_pow\_add\_one\_le\_thueMorseResidueSum\_three\_zero}) and
+\(N_3(N)+1\le2\cdot3^k\) for \(N<4^{k+1}\)
+(\lean{Fabius.thueMorseResidueSum\_three\_zero\_add\_one\_le}) --- obtained from the same
+base-four step, now isolated as
+\lean{Fabius.thueMorseResidueSum\_three\_zero\_four\_mul\_add\_bracket} in
+\path{ThueMorseNewman.lean}, with the exponent \(\log_43\) entering only through
+\(\bigl(4^j\bigr)^{\log_43}=3^j\).  The base-four step is in fact formal for
+\emph{every} residue class: \(T_r(4M)=3T_r(M)-E(M)\) for \(r<3\)
+(\lean{Fabius.thueMorseResidueSum\_three\_four\_mul}) and the bracket
+\(|T_r(4M+s)-3T_r(M)|\le2\) (\lean{Fabius.thueMorseResidueSum\_three\_bracket}), the
+latter through a window lemma valid for every modulus \(q\),
+\(|T^{(q)}_r(a+s)-T^{(q)}_r(a)|\le1\) for \(s\le q\)
+(\lean{Fabius.abs\_thueMorseResidueSum\_add\_sub\_le\_one}).  What the other two classes
+do with the same step is \path{ThueMorseNewmanResidues.lean}: the class \(1\bmod3\) has a
+one-sided law of the opposite sign, \(T_1(N)\le-1\) for \(N\ge2\)
+(\lean{Fabius.thueMorseResidueSum\_three\_one\_le\_neg\_one}) with
+\(N^{\log_43}/27\le-T_1(N)\le2N^{\log_43}\)
+(\lean{Fabius.newman\_residue\_one\_lower\_bound},
+\lean{Fabius.newman\_residue\_one\_upper\_bound}); all three classes obey
+\(|T_r(N)|\le2N^{\log_43}\) (\lean{Fabius.abs\_thueMorseResidueSum\_three\_le}); and the
+class \(2\bmod3\) has no one-sided law at all, since \(T_2(2^{2j+1})=0\)
+(\lean{Fabius.thueMorseResidueSum\_three\_two\_two\_pow\_odd}).  Coquet's oscillation
+remains a literature import.
+Rarefactions
 along other progressions and for generalized digit characters were analyzed
 by Drmota and Skalba \cite{p1:drmotaSkalba2000} and Drmota and Stoll
 \cite{p1:drmotaStoll2008}; a recent automata-theoretic treatment mechanizes
@@ -6073,7 +6308,7 @@ t^{s-1}\EulerE^{-at}\mathcal E(t)\,\Differential t\) is differentiable on all of
 (\lean{Fabius.dirichletMellinContinuation\_differentiable}) --- the
 effective flatness bound supplies an \(O(t^{-b})\) estimate at zero
 for \emph{every} \(b\)
-(\lean{Fabius.mellinKernel\_isBigO\_rpow}), precisely realizing the
+(\lean{Fabius.mellinKernel\_isBigO\_rpow\_all}), precisely realizing the
 maxim that boundary flatness removes every Mellin singularity, while
 \(1/\Gamma\) is entire --- and it agrees with \(D(\sigma,a)\) on
 the ray \(\sigma>1\)
@@ -6240,6 +6475,17 @@ Set \(s=1\) in \eqref{p1:eq:Mellin-integral} and substitute \(x=\EulerE^{-t}\).
 The integrand is positive on \((0,1)\).  Equation \eqref{p1:eq:H-dyadic} is
 \eqref{p1:eq:Dirichlet-dyadic} at \(s=1\).
 \end{proof}
+
+\emph{Formal status.}  The series \eqref{p1:eq:H-definition} is the value at \(\sigma=1\)
+of \lean{Fabius.thueMorseDirichlet} in \path{ThueMorseDirichlet.lean}, the limit of the
+partial sums \lean{Fabius.dirichletPartial}, whose conditional convergence for every
+\(\sigma>0\), \(a>0\) is \lean{Fabius.tendsto\_thueMorseDirichlet}; the dyadic law
+\eqref{p1:eq:H-dyadic} is the case \(\sigma=1\) of
+\lean{Fabius.thueMorseDirichlet\_dyadic}, where the factor \(2^{-\sigma}\) becomes the
+\(\tfrac12\) displayed.  The integral representation \eqref{p1:eq:H-integral} and the
+positivity \(H(a)>0\) are not formalized: they rest on the Mellin identity
+\eqref{p1:eq:Mellin-integral}, whose sum--integral interchange is conditional rather than
+dominated on \((0,1)\).
 
 \section[Thue--Morse exponent products]{Infinite products with Thue--Morse exponents}
 \label{p1:sec:exponent-products}
@@ -6646,8 +6892,29 @@ corresponding base-\(q\) integer and the coefficient is \(\zeta\) raised to
 its digit sum.
 \end{proof}
 
+\emph{Formal versions.}  \Cref{p1:thm:base-q-product} is formal in
+\path{BaseDigitProduct.lean}, and in a form that needs no root of unity at all.  The
+recursion \eqref{p1:eq:base-q-recursion} is
+\lean{Fabius.zeta\_pow\_digits\_sum\_mul\_add}, resting on the digit-sum law
+\(s_q(qn+r)=r+s_q(n)\) for \(r<q\) (\lean{Fabius.digits\_sum\_mul\_add}); the product
+\eqref{p1:eq:base-q-product} is \lean{Fabius.sum\_zeta\_pow\_digits\_sum\_mul\_pow}.  Both
+hold for \emph{every} \(\zeta\) in a commutative semiring: the hypothesis \(\zeta^q=1\) is
+never used, because the identity is a statement about assembling an integer from
+independently chosen digits, not about \(\zeta\).  The formal proof makes this explicit by
+first proving the product for an \emph{arbitrary} digit weight \(w:\NaturalNumbers\to R\),
+\[
+  \sum_{n<q^m}\Bigl(\prod_{j<m}w\bigl(d_j(n)\bigr)\Bigr)z^n
+  =\prod_{j<m}\Bigl(\sum_{r<q}w(r)\,z^{rq^j}\Bigr),
+\]
+where \(d_j(n)=\Floor{n/q^j}\bmod q\) is the \(j\)-th base-\(q\) digit
+(\lean{Fabius.sum\_windowWeight\_mul\_pow}, with \lean{Fabius.digitAt} and
+\lean{Fabius.windowWeight}); the theorem in the text is the case \(w(r)=\zeta^r\), and the
+bridge from the digit window to \(s_q(n)\) is \lean{Fabius.sum\_digitAt\_eq\_digits\_sum}.
+
 Each factor vanishes at \(z=1\), since
-\(1+\zeta+\cdots+\zeta^{q-1}=0\).
+\(1+\zeta+\cdots+\zeta^{q-1}=0\)
+(\lean{Fabius.geom\_sum\_eq\_zero\_of\_pow\_eq\_one} in an integral domain, from
+\(\zeta^q=1\), \(\zeta\ne1\)).
 
 \begin{theorem}[Generalized Prouhet cancellation and sharp moment]
 \label{p1:thm:base-q-Prouhet}
@@ -6680,6 +6947,40 @@ linear terms yields
 \(q^{1+2+\cdots+m}/(\zeta-1)^m\); coefficient extraction contributes \(m!\).
 \end{proof}
 
+\emph{Formal versions.}  Both displays are formal in \path{BaseDigitProuhet.lean}, with
+\(P_d(m)=\sum_{n<q^m}\zeta^{s_q(n)}n^d\) as \lean{Fabius.digitPowerSum}.  The cancellation
+\eqref{p1:eq:base-q-Prouhet} is \lean{Fabius.digitPowerSum\_eq\_zero\_of\_lt} for monomials,
+\(P_d(m)=0\) for \(d<m\), and \lean{Fabius.sum\_zeta\_pow\_digits\_sum\_mul\_eval\_eq\_zero}
+for an arbitrary polynomial of degree below \(m\); both take the single hypothesis
+\(\sum_{r<q}\zeta^r=0\) over any commutative semiring, and \(\zeta^q=1\) is not used.
+The sharp moment \eqref{p1:eq:base-q-sharp-moment} is proved division-free, as
+\((\zeta-1)^mP_m(m)=m!\,q^{0+1+\cdots+m}\) in any commutative ring
+(\lean{Fabius.sub\_one\_pow\_mul\_digitPowerSum\_self}), and then in the displayed form
+with \(/(\zeta-1)^m\) and the Gauss sum evaluated, in a field with \(\zeta\ne1\)
+(\lean{Fabius.digitPowerSum\_self\_eq\_div}).  At \(q=2\), \(\zeta=-1\) --- the Thue--Morse
+case, since \(\ThueMorseSign{n}=(-1)^{s_2(n)}\) is exactly the digit character
+(\lean{Fabius.thueMorseSign\_cast\_eq\_neg\_one\_pow\_digits\_sum}) --- the division is
+unnecessary: \lean{Fabius.digitPowerSum\_neg\_one\_two\_self} in
+\path{ProuhetBaseTwoBridge.lean} gives the closed value
+\[
+ \sum_{n<2^m}\ThueMorseSign{n}\,n^m=(-1)^m2^{\binom m2}m!
+\]
+over any commutative ring, with no field hypothesis, and
+\lean{Fabius.digitPowerSum\_neg\_one\_two\_eq\_zero\_of\_lt} is the base-two cancellation.
+That module is what connects this general theory to the classical Thue--Morse power sums; the
+two had developed independently, neither import closure containing the other.  The engine is the one-step recursion
+\lean{Fabius.digitPowerSum\_succ}, obtained by splitting \([0,q^{m+1})\) into \(q\) blocks
+\(q^mr+a\), where the digit sum adds \(r\) (\lean{Fabius.digits\_sum\_pow\_mul\_add}) and
+the binomial theorem expands \((a+q^mr)^d\); in that expansion every \(P_i(m)\) with
+\(i<d\) vanishes by induction, so for \(d\le m\) only \(i=d\) survives with coefficient
+\(\sum_r\zeta^r=0\), while at \(d=m+1\) the survivor \(i=m\) carries
+\((m+1)q^m\sum_rr\zeta^r\).  The root-of-unity derivative \eqref{p1:eq:root-unity-derivative}
+is the telescoping identity \lean{Fabius.geom\_sum\_mul\_weighted},
+\((\zeta-1)\sum_{r<q}r\zeta^r=(q-1)\zeta^q+1-\sum_{r<q}\zeta^r\) for \emph{every}
+\(\zeta\), specialized in \lean{Fabius.sub\_one\_mul\_sum\_mul\_pow}.  The degree-zero case
+is also available on its own as \lean{Fabius.sum\_zeta\_pow\_digits\_sum\_eq\_zero} in
+\path{BaseDigitProduct.lean}, by evaluating the digit product at \(z=1\).
+
 For \(q=2\) and \(\zeta=-1\), the sequence is \(u_n=\eps_n\) and
 \eqref{p1:eq:base-q-sharp-moment} becomes
 \((-1)^mm!2^{\binom m2}\), exactly
@@ -6693,7 +6994,7 @@ valuation, carry, and Pascal-row formulas remain genuinely base-two features.
 \subsection{Formalized modules (August 2026)}
 \label{p1:sec:formalized-modules}
 
-The first tranches of the formalization now exist as one hundred and three
+The first tranches of the formalization now exist as one hundred and four
 compiled Lean modules in \repo{}, complementing the corpus modules
 (\path{Parity.lean}, \path{TwoAdic.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseGenerating.lean}, \path{ThueMorseExponential.lean},
@@ -6754,7 +7055,8 @@ Module & Contents \\
 \path{ThueMorseWalsh.lean} & All-ones digit patterns and masked two-power sums, \(\eps\) as a Walsh character, character orthogonality on the block, the one-point Walsh spectrum. \\
 \path{ThueMorseSparseMoments.lean} & The atlas's all-sparse-moments formula on the submask cube (\cref{p1:cor:all-sparse-moments}), as the \(S=J(n)\) instance of the arbitrary-support composition of \path{ThueMorseMoments.lean}. \\
 \path{ThueMorseMixedDifference.lean} & The dyadic mixed-difference operator and the finite-difference factorization for arbitrary functions from an additive commutative monoid into an additive commutative group, with the powerset expansion. \\
-\path{ThueMorseSymmetricDifference.lean} & Exhaustive two-definition/eleven-theorem centered companion: arbitrary half-steps and the symmetric Boolean cube, sharp commutative-ring polynomial extraction/cancellation/top value, the centered dyadic block, and both characteristic-zero increasing-grid forms.  It does not supply the repeated-integral clause of the continuous-chaos report. \\
+\path{ThueMorseSymmetricDifference.lean} & Exhaustive two-definition/eleven-theorem centered companion: arbitrary half-steps and the symmetric Boolean cube, sharp commutative-ring polynomial extraction/cancellation/top value, the centered dyadic block, and both characteristic-zero increasing-grid forms. \\
+\path{ThueMorseCornerIntegral.lean} & Exhaustive one-definition/four-theorem analytic companion: the recursive centered box integral and its zero/successor equations, the exact local first-\(N\) symmetric-difference identity, and its \(\operatorname{Fin} N\)-indexed wrapper.  The hypotheses are \(\operatorname{IsOpen}\), \(\operatorname{OrdConnected}\), local \(C^N\) regularity, and containment of the full symmetric segment; zero half-steps are allowed. \\
 \path{ThueMorseAutocorrelation.lean} & Finite autocorrelation recursion in exact integer form along \emph{any even} window, \(R_{2K}(2r)=2R_K(r)\) and \(R_{2K}(2r+1)=-(R_K(r)+R_K(r+1))\), with the dyadic layer \(A_m(k)=R_{2^m}(k)\) as its power-of-two case: zero-shift value, trivial bound, closed values at shifts one and two, and the normalized limits at shifts zero, one and two. \\
 \path{ThueMorseOverlapFree.lean} & Thue's overlap-freeness theorem with cube-freeness, the attained critical exponent two, the alphabet-free implication ``overlap-free \(\Rightarrow\) not eventually periodic'', and constructive complement and reversal closure of the factor language. \\
 \path{ThueMorseRecurrence.lean} & Full block-concatenation laws for weight and bit, all two-letter factors in every fourteen-letter window, uniform recurrence with an explicit linear bound. \\
@@ -6796,7 +7098,8 @@ Module & Contents \\
 \path{FrullaniIntegral.lean} & The Frullani integral \(\int_0^\infty(\EulerE^{-pt}-\EulerE^{-qt})t^{-1}\Differential t=\log(q/p)\), by differentiation under the integral sign; not in Mathlib. \\
 \path{ThueMorseGDirichlet.lean} & The derivative bridge \(\log G(a,b)=D'(0,b)-D'(0,a)\): the closed integral form of \(\log G\), \((1/\Gamma)'(0)=1\), and the derivative of the entire continuation at zero. \\
 \path{ReciprocalGammaJets.lean} & Exact first jets of the entire reciprocal Gamma function at every nonpositive integer: derivative \((-1)^r r!\), simple analytic order, the punctured local coefficient, and the retained origin compatibility theorem; no derivative is assigned to raw Gamma at a pole. \\
-\path{ThueMorseGammaTower.lean} & Exact first jets of the entire Dirichlet--Mellin continuation, total GammaLog and exponentiated tower definitions, Mellin and real-integral GammaLog formulas, dyadic log and tower laws for positive parameter, and the positive-parameter level-zero master-product ratio; GammaLog is a chosen coordinate, while the parameter-differential ladder remains outside the module. \\
+\path{ThueMorseGammaTower.lean} & Exact first jets of the entire Dirichlet--Mellin continuation, total GammaLog and exponentiated tower definitions, Mellin and real-integral GammaLog formulas, dyadic log and tower laws for positive parameter, and the positive-parameter level-zero master-product ratio; GammaLog is a chosen coordinate rather than a proved principal-complex-log identity. \\
+\path{ThueMorseGammaTowerDifferential.lean} & Exhaustive zero-definition/three-theorem differential closure: differentiation of the Mellin kernel in its positive real damping parameter for every complex spectral exponent, the successor GammaLog law, and its full falling-factorial iteration for \(k\le r\).  All three theorems retain \(a>0\), and concern the chosen GammaLog coordinate rather than a branch of \(\operatorname{Complex.log}\). \\
 \path{ThueMorseQuarterProduct.lean} & The quarter product \(G(1/4,3/4)=1/2\) from Woods--Robbins by parity splitting, and the value \(1/2\) of the half-shifted block product. \\
 \path{ThueMorseDiscSeries.lean} & The Thue--Morse power series as a holomorphic function on the unit disc: the complex-disc product wrapper \(F(z)=\prod_{j=0}^{\infty}(1-z^{2^j})\), locally uniform convergence, the analytic Mahler equation and its iterate, and the real-ray bound \(|F(x)|\le1-x\). \\
 \path{ThueMorseNaturalBoundary.lean} & The natural-boundary theorem: radial vanishing at dyadic roots of unity, two-power roots approximating every circle point, and the double identity-theorem argument. \\
@@ -7977,6 +8280,23 @@ Thus every truncation error is represented by the original entire function in a 
 argument.
 \end{corollary}
 
+\emph{Formal versions.}  The Laplace half \eqref{p2:eq:full-G-TM} is
+\lean{Fabius.complexGeneratingFunction\_neg\_eq\_thueMorse\_mul} in
+\path{LaplaceEndpointAllOrders.lean}, for every \(s\ne0\) and every \(m\ge0\), with \(G(-s)\)
+read as the corpus's half-moment generating function
+(\lean{Fabius.complexGeneratingFunction\_neg\_eq\_tprod}): the corpus's finite refinement
+\(G(-s)=G_m(-s)\,G(-s/2^m)\) (\lean{Fabius.complexGeneratingFunction\_neg\_finite\_refinement})
+is combined with the identification of the finite prefix as a Thue--Morse polynomial,
+\(G_m(-s)=2^{m(m+1)/2}s^{-m}\sum_{n<2^m}\eps_n\EulerE^{-ns/2^m}\)
+(\lean{Fabius.prod\_negativeLaplaceDyadicFactor\_eq\_thueMorse}), which is the finite
+product \(\prod_{j<m}(1-x^{2^j})\) at \(x=\EulerE^{-s/2^m}\)
+(\lean{Fabius.prod\_one\_sub\_pow\_eq\_sum\_thueMorseSign}) after reflecting the scales.
+The Fourier half \eqref{p2:eq:full-Q-TM} is not formalized: its Lean shadow is the prefix
+factorization \(Q_\infty(2^kt)=\prod_{j<k}\SincRad(2^{j+1}t)\,Q_\infty(t)\)
+(\lean{Fabius.rvachevFourierProduct\_two\_pow\_mul}, \path{SincProductShells.lean}), without
+the rewriting of the sinc prefix through \(\sin z=(\EulerE^{\ImaginaryUnit z}-\EulerE^{-\ImaginaryUnit z})/(2\ImaginaryUnit)\)
+into a Thue--Morse polynomial.
+
 \section{The zeta--Lambert tail calculus}
 \label{p2:sec:zeta-tail}
 
@@ -8203,6 +8523,13 @@ Thus the infinite Fourier product admits an arbitrary-order approximation from o
 digital block.
 \end{corollary}
 
+\emph{Formal status.}  \Cref{p2:cor:up-Fourier-block} is not formalized as stated: it
+rests on the Fourier half of \cref{p2:cor:full-TM-factor}, which has no Lean counterpart,
+and on a truncation of the correction series.  Its exact, untruncated relative is formal:
+\lean{Fabius.rvachevFourierProduct\_eq\_prefix\_mul\_cexp} (\path{SincZetaDyadic.lean})
+factors \(\FourierTwoPi{\RvachevUp}\) into the finite sinc prefix and the full zeta-corrected
+tail on \(|\xi|<2^m\).
+
 \subsection{Why the coefficient array is a Lambert series}
 
 Put $q=1/4$.  Then \eqref{p2:eq:Q-all-orders} becomes
@@ -8248,6 +8575,31 @@ For $|t|<\pi b^{m+1}$,
 Repeat the proof of \cref{p2:thm:all-orders-Q}, replacing the geometric sum in $4^{-r}$ by the
 one in $b^{-2r}$.
 \end{proof}
+
+\emph{Formal versions.}  \Cref{p2:thm:base-b} is formal in \path{GeometricSincZeta.lean}, in
+exponential form with the prefix cleared and on exactly the stated domain
+\(|t|<\pi b^{m+1}\): \lean{Fabius.base\_geometric\_sinc\_eq\_prefix\_mul\_cexp} gives
+\[
+  \prod_{k\ge1}\SincRad\Bigl(\frac{t}{b^{k}}\Bigr)
+  =\prod_{k=1}^{m}\SincRad\Bigl(\frac{t}{b^{k}}\Bigr)
+  \exp\Bigl(-\sum_{r\ge1}\frac{\zeta(2r)}{r}
+  \frac{(t/(\pi b^{m+1}))^{2r}}{1-b^{-2r}}\Bigr),
+\]
+which is \eqref{p2:eq:base-b} once \(q=b^{-2}\) is substituted.  The proof is the one
+sketched above, carried out once for an \emph{arbitrary} complex ratio: the corpus's
+\(\mathrm{S}_q(z)=\prod_{n\ge0}\SincRad(\pi q^{n}z)\) satisfies
+\(\mathrm{S}_q(z)=\exp\bigl(-\sum_{r\ge1}\zeta(2r)z^{2r}/(r(1-q^{2r}))\bigr)\) on
+\(|z|<1\) for every \(|q|<1\) (\lean{Fabius.geometricSincProduct\_eq\_cexp}), with the
+finite-prefix form on \(|q^{m}z|<1\)
+(\lean{Fabius.geometricSincProduct\_eq\_prefix\_mul\_cexp}, via the shift
+\lean{Fabius.geometricSincProduct\_pow\_mul}).  The engine is the same pair-family Euler
+transform as in the dyadic case, with the geometric collapse
+\(\sum_{h}(q^{h}z)^{2r}=z^{2r}/(1-q^{2r})\) (\lean{Fabius.tsum\_pow\_mul\_even\_pow}) in
+place of \(\sum_h4^{-rh}\), and the pair power sums are again evaluated for every \(z\)
+(\lean{Fabius.geometric\_sinc\_pair\_powerSum}).  The dyadic theorem
+\cref{p2:thm:all-orders-Q} is the case \(q=1/2\); the base-\(b\) reading is \(q=1/b\) at
+\(z=t/(\pi b)\), where \(\pi q^{n}z=t/b^{n+1}\)
+(\lean{Fabius.tprod\_complexSinc\_div\_pow\_eq\_geometricSincProduct}).
 
 \section{An all-orders finite-block formula for the endpoint Laplace product}
 \label{p2:sec:Laplace-tail}
@@ -8345,6 +8697,19 @@ reduces the coefficient to the one displayed.  The closest zeros of $G(-u)$ are
 $u=\pm4\pi\ImaginaryUnit$, coming from $1-\EulerE^{-u/2}$, so the logarithmic radius is exact.
 \end{proof}
 
+\emph{Formal versions.}  \Cref{p2:thm:G-all-orders} is
+\lean{Fabius.complexGeneratingFunction\_neg\_eq\_cexp\_bernoulli} in
+\path{LaplaceEndpointAllOrders.lean}, in exponential form on \(|u|<4\pi\):
+\(G(-u)=\exp\bigl(-u/2+\sum_{r\ge1}B_{2r}u^{2r}/(2r(2r)!(4^r-1))\bigr)\).  It is obtained
+exactly as above: the master zeta form of the sinc product
+(\lean{Fabius.rvachevFourierProduct\_eq\_cexp}) read through the rotation
+\(G(-s)=\EulerE^{-s/2}\FourierTwoPi{\RvachevUp}(\ImaginaryUnit s/(4\pi))\) gives the zeta form
+\lean{Fabius.complexGeneratingFunction\_neg\_eq\_cexp\_zeta}, and the termwise Bernoulli
+evaluation \lean{Fabius.zeta\_term\_eq\_bernoulli\_term} (from
+\lean{Fabius.evenZeta\_eq\_bernoulli}) converts it.  The radius \(4\pi\) is the image of the
+sinc product's unit disk; that it is exact is not separately restated here, being the
+maximality already formalized for \cref{p2:thm:all-orders-Q}.
+
 \begin{corollary}[Certified remainder for the centered Laplace tail]
 \label{p2:cor:G-remainder}
 Let $y=|u|/(4\pi)<1$.  If the series in \eqref{p2:eq:G-all-orders} is stopped after $u^{2N}$,
@@ -8360,6 +8725,16 @@ while the exact linear term $-u/2$ is retained, then the remainder $\mathcal R_N
 \begin{proof}
 This is \cref{p2:thm:Q-remainder} at $m=0$, $t=\ImaginaryUnit u/2$.
 \end{proof}
+
+\emph{Formal version.}  As the proof says, this is the formal remainder bound of
+\cref{p2:thm:Q-remainder}, \lean{Fabius.norm\_sincZeta\_tail\_le} in
+\path{SincZetaRemainder.lean}, read at $m=0$ and $w=\ImaginaryUnit u/(4\pi)$, where
+$\|w\|=|u|/(4\pi)=y$: the series it bounds is the zeta form of $\log G(-u)$ in
+\lean{Fabius.complexGeneratingFunction\_neg\_eq\_cexp\_zeta}
+(\path{LaplaceEndpointAllOrders.lean}), whose terms are the Bernoulli terms of
+\eqref{p2:eq:G-all-orders} by \lean{Fabius.zeta\_term\_eq\_bernoulli\_term}.  The
+specialization itself --- substituting $w$ and identifying the two tails --- is not
+separately restated.
 
 \subsection{The endpoint product from one finite digital block}
 
@@ -8387,6 +8762,11 @@ Stopping the correction series after $r=N$ incurs the explicit logarithmic error
 Combine the exact factorization \eqref{p2:eq:full-G-TM} with
 \cref{p2:thm:G-all-orders} applied to the tail $G(-u)$.
 \end{proof}
+
+\emph{Formal version.}  \Cref{p2:thm:G-TM-all} is
+\lean{Fabius.complexGeneratingFunction\_neg\_eq\_thueMorse\_mul\_cexp} in
+\path{LaplaceEndpointAllOrders.lean}, for \(s\ne0\) and \(|s/2^m|<4\pi\), assembled from the
+two formal ingredients exactly as in the proof.
 
 \begin{remark}[Arithmetic-to-asymptotic bridge]
 The exact dyadic arithmetic literature typically uses finite coefficient extraction and
@@ -8615,6 +8995,15 @@ Apply the real Lagrange interpolation remainder to $H_t$ at the nodes
 $q^m,q^{m+1},\ldots,q^{m+p}$ and evaluate the interpolating polynomial at zero.
 \end{proof}
 
+\emph{Formal status.}  Neither \cref{p2:thm:qRichardson} nor \cref{p2:cor:Richardson-bound}
+is formalized: both are statements about the extrapolant $\mathcal R_{m,p}$, for which the
+corpus has no object, and the corollary's mean-value form needs the Lagrange remainder with
+its intermediate point.  The exact identity they extrapolate is formal, in a form with no
+truncation at all: \lean{Fabius.rvachevFourierProduct\_eq\_prefix\_mul\_cexp}
+(\path{SincZetaDyadic.lean}) gives $Q_\infty=Q_m\exp(\cdots)$ with the complete zeta tail,
+so that $Q_\infty/Q_m$ is the explicit function of $q^m$ that the Richardson weights are
+designed to cancel order by order.
+
 The first four weight rows are
 \begin{align}
  p=1:&\quad \left(-\frac13,\frac43\right),\notag\\
@@ -8751,6 +9140,29 @@ Set $m=0$ in \eqref{p2:eq:Q-all-orders} and identify coefficients.  The Bernoull
 from the classical evaluation of $\zeta(2r)$.
 \end{proof}
 
+\emph{Formal versions.}  The Bernoulli form of \eqref{p2:eq:cumulants} is formal for every
+even order, by a route that never takes a logarithm: with the corpus's index
+$\tilde\kappa_r=\kappa_{2r}$ (\leanPartx{Fabius.centeredRvachevEvenCumulant}, the cumulants
+of the centered up-law computed from its executable moments),
+\leanPartx{Fabius.centeredRvachevEvenCumulant\_eq\_bernoulliMersenne\_formula} in
+\path{SinhDivBernoulliLog.lean} is $\kappa_{2r}=2^{2r-1}B_{2r}/(r(4^r-1))$ for all $r\ge1$.
+The mechanism is the exact coefficient identity
+$(4^r-1)\,\tilde\kappa_r=[X^r]\log\bigl(\sinh\sqrt X/\sqrt X\bigr)$ of
+\path{CenteredMomentCumulants.lean} together with the closed form
+\leanPartx{Fabius.sinhDivLogCoefficient\_eq\_bernoulli\_formula},
+$[X^r]\log(\sinh\sqrt X/\sqrt X)=2^{2r-1}B_{2r}/(r\,(2r)!)$, itself reduced to the finite
+identity $\sum_{s=1}^{r}2^{2s-1}\binom{2r+1}{2s}B_{2s}=r$
+(\leanPartx{Fabius.weightedEvenBernoulliChooseSum}) --- the odd Bernoulli polynomial
+$B_{2r+1}$ evaluated at $\tfrac12$ --- and to the uniqueness of the recursively defined formal
+logarithm.  The vanishing of the odd cumulants is
+\leanPartx{Fabius.centeredRvachevFullCumulant\_eq\_zero\_of\_odd}
+(\path{CenteredMomentParity.lean}), the first values \eqref{p2:eq:cumulants-first} are
+\leanPartx{Fabius.centeredRvachevEvenCumulant\_one} and
+\leanPartx{Fabius.centeredRvachevEvenCumulant\_two}, and the moment recurrence the formula
+implies is \leanPartx{Fabius.moment\_bernoulliMersenne\_recurrence}.  The $\zeta(2r)$ form of
+the display, which is the Bernoulli form plus Euler's evaluation of $\zeta(2r)$, is not
+separately formalized.
+
 The first even moments, obtained from the complete Bell polynomials in the cumulants, are
 \begin{equation}
  \mu_2=\frac19,\qquad
@@ -8790,6 +9202,12 @@ Since $|Y_\infty'|\le1$, the Taylor remainder is bounded by
 $2^{-(2N+2)m}\|\varphi^{(2N+2)}\|_\infty/(2N+2)!$.
 \end{proof}
 
+\emph{Formal status.}  \Cref{p2:thm:weak-expansion} is not formalized.  Its ingredients are
+present separately --- the random-series representation of the up-law and the independence
+of $Y_m$ from the tail (\path{RandomSeriesLaw.lean}, \path{GeometricUniformDictionary.lean}),
+and the even moments $\mu_{2j}$ --- but the conditional Taylor expansion with a sup-norm
+remainder is not assembled in Lean.
+
 The first terms are therefore
 \begin{align}
  \Expectation\varphi(Y_\infty)
@@ -8824,6 +9242,9 @@ In particular,
 Pair the asserted distribution with a test function and use
 $\langle D^{2j}u_m,\varphi\rangle=\Expectation\varphi^{(2j)}(Y_m)$.
 \end{proof}
+
+\emph{Formal status.}  Not formalized: \cref{p2:cor:distributional} is the distributional
+reading of \cref{p2:thm:weak-expansion}, and the corpus has no distribution-space layer.
 
 \begin{remark}[Cumulant operator]
 Formally, and exactly at the level of the local Fourier logarithm,
@@ -8909,6 +9330,15 @@ Combine these inequalities with \eqref{p2:eq:u-window}.  Solving $2^{-h}\asymp\e
 $4^{-h}\asymp\eta$, then adding the base depth $\lambda(x)$ and absorbing the ceiling into
 $\BigO(1)$, gives \eqref{p2:eq:mraw}--\eqref{p2:eq:mctr}.
 \end{proof}
+
+\emph{Formal status.}  The asymptotic statements of \cref{p2:thm:depth-law} are not
+formalized.  The exact expansions they rest on are: the linear and quadratic leading terms
+$-u/2$ and $u^2/72$ of $\log G(-u)$ are the first two terms of
+\lean{Fabius.complexGeneratingFunction\_neg\_eq\_cexp\_bernoulli}
+(\path{LaplaceEndpointAllOrders.lean}), with $B_2/(2\cdot1\cdot2!\cdot3)=1/72$, and the
+centering $C(-u)=\EulerE^{u/2}G(-u)$ is the rotation of \cref{p2:lem:GQ}.  The two-sided
+bounds $c_1u\le\delta_{\rm raw}\le C_1u$, $c_2u^2\le\delta_{\rm ctr}\le C_2u^2$ and the
+depth window \eqref{p2:eq:u-window} remain analytic obligations.
 
 \begin{remark}[Why centering halves the precision surcharge]
 At the leading saddle scale, reaching relative tolerance $\eta$ in the raw product requires
@@ -9141,10 +9571,25 @@ The current integrated tree adds the ninth public tower declaration
 \leanPartx{Fabius.ofReal_exp_mpLimit_eq_gammaTower_div}: for \(a,b>0\), the
 complex embedding of \(\exp(\operatorname{mpLimit}(a,b))\) is
 \(T_0(b)/T_0(a)\), exactly the formal ratio law for
-\eqref{p2:eq:WR-gamma}.  The only unformalized assertions within
-\cref{p2:thm:gamma-tower} are now the parameter-\(a\) differential and iterated
-differential laws \eqref{p2:eq:gamma-differential}--\eqref{p2:eq:gamma-iterated};
-they require differentiation under the Mellin integral.
+\eqref{p2:eq:WR-gamma}.  The source-only
+\path{ThueMorseGammaTowerDifferential.lean} leaf adds no definitions and
+exactly three theorems:
+\leanPartx{Fabius.hasDerivAt_mellin_mellinKernel_parameter},
+\leanPartx{Fabius.hasDerivAt_thueMorseGammaLog_succ}, and
+\leanPartx{Fabius.iteratedDeriv_thueMorseGammaLog}.  The first differentiates
+the positive real damping parameter under the Mellin integral at every
+complex spectral exponent,
+\[
+ \frac{d}{da}\operatorname{Mellin}(\operatorname{mellinKernel}(a),s)
+ =-\operatorname{Mellin}(\operatorname{mellinKernel}(a),s+1).
+\]
+The second proves \(L_{r+1}'(a)=(r+1)L_r(a)\), and the third proves
+\eqref{p2:eq:gamma-iterated} for exactly \(k\le r\).  Each theorem assumes
+\(a>0\).  Consequently \cref{p2:thm:gamma-tower} is Exact under its stated
+positive-parameter domain and the already-explicit convention that its
+displayed logarithm denotes the chosen GammaLog coordinate; no identity with
+a branch of \(\operatorname{Complex.log}\), and no nonpositive-parameter
+differential law, is asserted.
 
 \begin{remark}[Why ``Barnes-type'']
 The hierarchy is not asserted to be a classical Barnes multiple-gamma family.  The name refers
@@ -9360,7 +9805,8 @@ tail self-similarity, the Fourier--Laplace rotation, the Lagrange characterizati
 $q$-Richardson weights with all three of its moment identities together with their closed
 $q$-binomial form (compiled in \path{GeometricQBinomialLagrange.lean}), every spectral
 level of the GammaLog/tower Mellin and dyadic laws together with the level-zero
-master-product ratio, and now the entire zeta--Lambert tail calculus --- the Euler--zeta
+master-product ratio and the full positive-parameter differential ladder
+(\path{ThueMorseGammaTowerDifferential.lean}), and now the entire zeta--Lambert tail calculus --- the Euler--zeta
 logarithm, the all-orders expansion, the certified remainder, and the exact
 prefix--corrections--tail split (\path{EulerLogTransform.lean}, \path{SincZetaSeries.lean},
 \path{SincZetaDyadic.lean}, \path{SincZetaRemainder.lean}) --- already have Lean
@@ -9497,12 +9943,14 @@ a convenient formal API for the lower real Lambert branch. \\
 Thue--Morse gamma tower
 \eqref{p2:eq:gamma-Mellin}--\eqref{p2:eq:gamma-iterated} & reciprocal-Gamma
 first jets, Atlas Dirichlet continuation, parameter differentiation &
-\emph{Mellin and dyadic layers delivered}: \path{ReciprocalGammaJets.lean}
+\emph{Exact}: \path{ReciprocalGammaJets.lean}
 proves the exact simple reciprocal-Gamma jet at every nonpositive integer, and
 \path{ThueMorseGammaTower.lean} proves every continuation first jet, the
 Mellin/integral GammaLog levels, both dyadic laws, and the level-zero
-master-product ratio.  Only \eqref{p2:eq:gamma-differential}--\eqref{p2:eq:gamma-iterated}
-remain; they need a parameter-under-the-Mellin-integral theorem. \\
+master-product ratio.  \path{ThueMorseGammaTowerDifferential.lean} proves the
+parameter-under-the-Mellin-integral derivative and both
+\eqref{p2:eq:gamma-differential} and \eqref{p2:eq:gamma-iterated} on the stated
+positive-parameter domain, for the chosen GammaLog coordinate. \\
 \bottomrule
 \end{longtable}
 \endgroup

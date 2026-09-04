@@ -180,6 +180,7 @@ the resulting theorem network.
 
 The archive contains the full source, rendered PDF, commented deterministic
 Python program, generated CSV tables, vector/raster figures, numerical summary,
-source audit, preserved recursive path ledger, dependency file, build guide,
-and integrity hashes. Numerical work checks identities and asymptotic
+source audit, preserved recursive path ledger, dependency file, and build
+guide. Historical integrity receipts remain recoverable from Git history.
+Numerical work checks identities and asymptotic
 predictions; it is not used in place of proofs.

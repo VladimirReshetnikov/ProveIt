@@ -8,10 +8,12 @@ Main files
 ----------
 
   fabius_carleman_frontiers.tex
-      Complete LaTeX source of the report.
+      Complete 1,934-line, 71,224-byte LaTeX source; SHA-256
+      49dd91c71df292725e9dfe6de450ac014b47f3c3ba4a5bc8ec02e2d2e76d34e3.
 
   fabius_carleman_frontiers.pdf
-      Compiled 24-page PDF.
+      Synchronized 24-page, 973,424-byte A4 PDF; SHA-256
+      13a7f35e23dc5a794d46b431059ce35c0b48c199f1996539b65dee9bc8c16047.
 
   frontier_experiments.py
       Deterministic, extensively commented Python program for the numerical
@@ -31,9 +33,9 @@ Main files
   CORPUS_AUDIT.txt
       Scope, method, and limitations of the repository novelty screen.
 
-  SHA256SUMS.txt (retired)
-      This package-local ledger was retired repository-wide on 2026-09-01;
-      its final archive-payload snapshot remains recoverable from Git history.
+  Historical checksum checkpoint
+      The former archive-payload ledger is retired and recoverable from Git
+      history.
 
 Principal mathematical results
 ------------------------------
@@ -90,11 +92,16 @@ exactly three serial passes:
 Verification notes
 ------------------
 
-The synchronized 2026-08-31 rebuild has 24 A4 pages at rotation zero. Every
-page rendered and contained extractable text. All 22 font rows are embedded
+The synchronized 2026-09-04 rebuild began with absent auxiliaries. Its three
+successful serial halt-on-error passes produced 24 pages/952,942 bytes, 24
+pages/973,424 bytes, and 24 pages/973,424 bytes. Every page is A4 at rotation
+zero, rendered, and contains extractable text. All 22 font rows are embedded
 and subset, four are Libertinus, and none is Type 3. The report uses the
 retained PNG companions for its plots. The final log has no TeX error,
-unresolved reference/citation, rerun request, overfull box, or underfull box.
+unresolved reference/citation, rerun request, overfull box, or underfull box;
+title, author, subject, and keywords metadata are present. Representative title,
+body, table, figure, and final pages passed visual inspection. Generated
+sidecars were removed, and no checksum ledger is a live publication gate.
 
 The novelty assessment is relative to the screened ProveIt corpus, not a claim of
 absolute publication priority.  See CORPUS_AUDIT.txt and Section 1 of the report.

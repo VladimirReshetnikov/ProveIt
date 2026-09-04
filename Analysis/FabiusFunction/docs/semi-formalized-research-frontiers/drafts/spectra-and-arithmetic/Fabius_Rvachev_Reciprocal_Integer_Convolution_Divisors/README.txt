@@ -67,8 +67,9 @@ e6e3d6df88efc3e50f7180b3853fdc6e4c9072f4e56192655bb76e195b282c4e.
 It names the law family explicitly as
 `\ReciprocalIntegerLaw{M}` (printing `\mathsf R_M^{\mathrm{law}}`) so its
 subscript cannot be mistaken for a two-adic valuation.  No PDF was rebuilt
-after this notation-only edit: the ledger records the current source and the
-retained validated PDF as distinct byte payloads, not a synchronized pair.
+after this notation-only edit. The former ledger recorded source and retained
+validated PDF as distinct byte payloads, not a synchronized pair; it is now
+retired and recoverable from Git history.
 
 Research status
 ---------------

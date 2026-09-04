@@ -11,12 +11,10 @@ The package arrived on 2026-08-30 in
 `8b1c05d59e120ecd20d69cd5aeb0009639f2b3b9a6c9fef32bdf82270eee16bd`).
 The submitted `SHA256SUMS.txt` had SHA-256
 `c270903631b0942aa7f7742b84ea0117bb9f2f4cc0d0eb374889077ba37873a0`;
-all 13 listed payload entries verified before any normalization.  Its exact
-bytes were preserved as `SHA256SUMS.arrival.txt`; the post-review
-`SHA256SUMS.txt` intentionally differed from that arrival copy. Both
-package-local ledgers were retired repository-wide on 2026-09-01 and remain
-recoverable from Git history. `MANIFEST.txt` remains the unchanged submitted
-13-file inventory.
+all 13 listed payload entries verified before any normalization. Its exact
+bytes remain recoverable from Git, and `MANIFEST.txt` remains the unchanged
+submitted 13-file inventory. The former post-review `SHA256SUMS.txt` also
+remains recoverable from Git; neither checksum ledger is live or required.
 
 Arrival source and PDF hashes were respectively
 `f4757daa3be451bf208cc858897d21b66e2dab4c9982f74d0c536d67b8beb6ab`

@@ -36,8 +36,6 @@ Supporting-asset contents
   results/reproduction_errors.csv     Cardinal-reproduction residuals.
   figures/*.pdf, figures/*.png        Vector and raster report figures.
   requirements.txt                    Python dependencies.
-  SHA256SUMS.txt                      Retired repository-wide on 2026-09-01;
-                                      historical bytes are in Git history only.
 
 Reproduce the numerical work
 ----------------------------

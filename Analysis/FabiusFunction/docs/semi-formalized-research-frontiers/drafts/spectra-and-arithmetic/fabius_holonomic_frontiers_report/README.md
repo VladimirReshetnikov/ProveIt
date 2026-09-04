@@ -57,8 +57,8 @@ remain as reproducibility assets.
 - `CORPUS_AUDIT.md` - repository snapshot, exclusions, and novelty protocol.
 - `NUMERICAL_README.md` - experiment status and tested versions.
 - `VALIDATION.md` - build, font, render, and reproducibility checks.
-- The former `SHA256SUMS` payload ledger was retired repository-wide on
-  2026-09-01; its final snapshot remains recoverable from Git history.
+- The former payload checksum ledger is retired and recoverable from Git
+  history.
 
 “Novel” in the report means novel relative to the audited repository corpus.
 The package does not assert absolute historical priority without a dedicated

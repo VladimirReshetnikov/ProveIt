@@ -50,10 +50,8 @@ paper results is claimed to have an exact Lean counterpart.
   high-resolution inspection; all fonts are embedded and subset, with no Type 3.
 - `requirements.txt` records minimum top-level dependency versions, not a full
   environment lock.
-- The former mixed source/artifact `SHA256SUMS.txt` ledger was retired
-  repository-wide on 2026-09-01 and must not be refreshed. Its final snapshot
-  remains recoverable from Git history; purpose-specific validation records
-  remain authoritative for their stated checkpoints.
+- The former mixed current-source/retained-artifact package ledger is retired;
+  its checkpoint bytes remain recoverable from Git history.
 
 ## Numerical reproduction
 
@@ -94,8 +92,7 @@ pdflatex -interaction=nonstopmode -halt-on-error Fabius_Rvachev_Shape_Divisibili
 ```
 
 Then verify A4 geometry, embedded/subset Libertinus prose fonts, zero Type-3
-fonts, resolved references, page count, rendered pages, and the refreshed live
-ledger before committing.
+fonts, resolved references, page count, and rendered pages before committing.
 
 The retained PDF was rebuilt from a clean auxiliary state on 2026-08-31 in
 exactly three strict serial passes, producing 32, 34, and 34 pages. Its frozen
@@ -114,5 +111,6 @@ reference/citation, or rerun request; its six underfull notices are benign.
 The title/status page, all four embedded PNG figures on pages 25--26, and the
 final references page were rendered and inspected. Build sidecars were
 removed, and the then-current exhaustive 18-entry ledger was refreshed only
-after that artifact freeze. The current ledger now hashes the newer live TeX
-and README alongside the byte-identical retained PDF.
+after that artifact freeze. That ledger is now retired and recoverable from
+Git history; the newer live TeX and README remain alongside the byte-identical
+retained PDF.

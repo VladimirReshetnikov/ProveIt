@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the live companion-payload provenance ledger.
+"""Build the companion-payload provenance map.
 
 ``COMPANION_PAYLOADS.csv`` has one row per retained source-provenance row,
 not merely one row per physical file.  The two byte-identical historical
@@ -9,7 +9,9 @@ canonical generated assets derived from the pinned figure generator.
 
 Two exact environment files added on main after the immutable 180-file source
 pin are checked against the mainline reconciliation revision and recorded
-separately.  There is deliberately no duplicated checksum projection.
+separately.  The source and retained-payload SHA-256 columns in
+``COMPANION_PAYLOADS.csv`` are purpose-specific provenance receipts; no
+package-wide checksum ledger is produced or checked.
 """
 
 from __future__ import annotations

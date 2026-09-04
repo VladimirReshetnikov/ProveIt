@@ -10,6 +10,7 @@ by the core file:
 
 * scalar naturality of the pushforward law;
 * a shifted-tail joint-law wrapper;
+* the exact barycenter from reflection and bounded-series integrability;
 * unit-mass interval and complement corollaries.
 
 The compatibility declarations below are thin consequences of the canonical
@@ -89,6 +90,98 @@ theorem weightedUniformDistribution_isProbabilityMeasure
     {w : ℕ → E} (hw : Summable fun n => ‖w n‖) :
     IsProbabilityMeasure (weightedUniformDistribution w) :=
   isProbabilityMeasure_weightedUniformDistribution hw
+
+/-- The identity is Bochner integrable against every norm-summable
+weighted-uniform law.
+
+The proof does not exchange an integral with the infinite series.  Instead,
+the series map is strongly measurable and is pointwise bounded in norm by
+the summable total norm of the weights; integrability is then transported
+through the defining pushforward. -/
+private theorem integrable_id_weightedUniformDistribution
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [CompleteSpace E] [MeasurableSpace E] [BorelSpace E]
+    {w : ℕ → E} (hw : Summable fun n => ‖w n‖) :
+    Integrable (fun x : E => x) (weightedUniformDistribution w) := by
+  have hseriesStrong :
+      StronglyMeasurable (weightedUniformSeries w) :=
+    (continuous_weightedUniformSeries hw).stronglyMeasurable
+  have hseriesIntegrable :
+      Integrable (weightedUniformSeries w) uniformProduct := by
+    refine Integrable.mono'
+      (integrable_const (∑' n : ℕ, ‖w n‖))
+      hseriesStrong.aestronglyMeasurable ?_
+    exact Filter.Eventually.of_forall
+      (norm_weightedUniformSeries_le hw)
+  rw [weightedUniformDistribution]
+  have hid :
+      AEStronglyMeasurable (id : E → E)
+        (uniformProduct.map (weightedUniformSeries w)) :=
+    hseriesStrong.aestronglyMeasurable.aestronglyMeasurable_id_map
+  exact
+    (integrable_map_measure hid
+      (measurable_weightedUniformSeries hw).aemeasurable).2
+      (by simpa only [Function.id_comp] using hseriesIntegrable)
+
+/-- The barycenter of a norm-summable weighted uniform-coordinate law is
+half the total vector weight:
+
+`∫ x, x ∂weightedUniformDistribution w = (1 / 2) • ∑' n, w n`.
+
+This holds in every complete real normed space with its Borel measurable
+structure.  No sign, order, independence expansion, or termwise
+integration is needed.  Bounded-series integrability makes the identity
+integrable, and central reflection of the law gives
+`totalWeight - mean = mean`. -/
+theorem integral_id_weightedUniformDistribution
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [CompleteSpace E] [MeasurableSpace E] [BorelSpace E]
+    {w : ℕ → E} (hw : Summable fun n => ‖w n‖) :
+    (∫ x : E, x ∂weightedUniformDistribution w) =
+      (1 / 2 : ℝ) • ∑' n : ℕ, w n := by
+  letI : IsProbabilityMeasure (weightedUniformDistribution w) :=
+    weightedUniformDistribution_isProbabilityMeasure hw
+  have hid :
+      Integrable (fun x : E => x) (weightedUniformDistribution w) :=
+    integrable_id_weightedUniformDistribution hw
+  have hidMap :
+      AEStronglyMeasurable (fun x : E => x)
+        ((weightedUniformDistribution w).map
+          (fun x => (∑' n : ℕ, w n) - x)) := by
+    rw [weightedUniformDistribution_reflection hw]
+    exact hid.aestronglyMeasurable
+  have hreflected :
+      (∫ x : E, (∑' n : ℕ, w n) - x
+          ∂weightedUniformDistribution w) =
+        ∫ x : E, x ∂weightedUniformDistribution w := by
+    calc
+      (∫ x : E, (∑' n : ℕ, w n) - x
+          ∂weightedUniformDistribution w) =
+          ∫ x : E, (fun y : E => y) ((∑' n : ℕ, w n) - x)
+            ∂weightedUniformDistribution w := rfl
+      _ = ∫ y : E, (fun x : E => x) y
+          ∂(weightedUniformDistribution w).map
+            (fun x => (∑' n : ℕ, w n) - x) :=
+        (MeasureTheory.integral_map
+          (by fun_prop :
+            AEMeasurable (fun x : E => (∑' n : ℕ, w n) - x)
+              (weightedUniformDistribution w))
+          hidMap).symm
+      _ = ∫ x : E, x ∂weightedUniformDistribution w := by
+        rw [weightedUniformDistribution_reflection hw]
+  have hconst :
+      Integrable (fun _ : E => ∑' n : ℕ, w n)
+        (weightedUniformDistribution w) :=
+    integrable_const _
+  rw [MeasureTheory.integral_sub hconst hid] at hreflected
+  simp only [MeasureTheory.integral_const, probReal_univ, one_smul] at hreflected
+  have htotal :
+      (∑' n : ℕ, w n) =
+        (∫ x : E, x ∂weightedUniformDistribution w) +
+          ∫ x : E, x ∂weightedUniformDistribution w :=
+    (sub_eq_iff_eq_add).mp hreflected
+  rw [htotal, ← two_smul ℝ, ← mul_smul]
+  norm_num
 
 /-- Scaling all weights pushes the law forward by the same scalar map. -/
 theorem weightedUniformDistribution_smul_weights

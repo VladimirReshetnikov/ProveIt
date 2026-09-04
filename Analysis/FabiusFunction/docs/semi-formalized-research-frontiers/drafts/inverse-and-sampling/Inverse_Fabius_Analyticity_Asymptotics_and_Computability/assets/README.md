@@ -13,14 +13,14 @@ packages:
 - `computability/` contains the standard-library finite-spline and modulus
   check;
 - `inverse-iterates/` contains the inverse formal-reversion diagnostic;
-- `provenance/` preserves surviving purpose-specific arrival records and corpus
-  audits; retired package-local ledgers remain recoverable from Git history.
+- `provenance/` preserves the surviving source inventory and corpus audits.
 
-Package-local `SHA256SUMS` ledgers were retired repository-wide on 2026-09-01.
-The root-level `ASSET_DISPOSITION.csv` records the SHA-256, size, semantic
-class, destination, and disposition of all 88 files in the two superseded
-source subgroups, including 61 retained canonical payload destinations.
-Validate that migration with:
+The former asset checkpoint contained 63 payloads, including eight historical
+ledger payloads that are now retired; the canonical tree contains 55 files.
+The root-level `ASSET_DISPOSITION.csv`
+records the SHA-256, size, semantic class, destination, and disposition of all
+88 files in the two superseded source subgroups; retired ledger bytes remain
+recoverable from Git. Audit the migrated asset records with:
 
 ```text
 python -B ../audit/build_asset_manifest.py --check
@@ -50,9 +50,9 @@ pdftoppm -png -r 300 -singlefile \
   endpoint/dyadic-completion/figures/dyadic_tail_convergence
 ```
 
-Their exact bytes are versioned directly in Git. This changes only the
-publication container: the plotted data and visual content remain those of the
-retained vector originals.
+Their migration receipts are recorded in `ASSET_DISPOSITION.csv`. This changes
+only the publication container: the plotted data and visual content remain
+those of the retained vector originals.
 
 ```text
 python -m pip install -r requirements.txt

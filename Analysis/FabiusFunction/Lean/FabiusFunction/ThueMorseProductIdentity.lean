@@ -1,4 +1,5 @@
 import FabiusFunction.ThueMorseBitSupport
+import FabiusFunction.ThueMorseBooleanCube
 
 /-!
 # The finite Thue--Morse product identity and the subset-sum polynomial
@@ -29,31 +30,8 @@ variable {R : Type*} [CommRing R]
 ring, `∏_{r<n} (1 - z^{2^r}) = ∑_{j<2^n} (-1)^{w(j)} z^j`. -/
 theorem prod_one_sub_pow_two_pow (z : R) (n : ℕ) :
     ∏ r ∈ range n, (1 - z ^ 2 ^ r) =
-      ∑ j ∈ range (2 ^ n), (thueMorseSign j : R) * z ^ j := by
-  have hstep : ∀ T ∈ (range n).powerset,
-      (∏ i ∈ T, -z ^ 2 ^ i) * (∏ _i ∈ range n \ T, (1 : R)) =
-        (thueMorseSign (∑ j ∈ T, 2 ^ j) : R) *
-          z ^ (∑ j ∈ T, 2 ^ j) := by
-    intro T _
-    rw [prod_const_one, mul_one, thueMorseSign_sum_two_pow]
-    push_cast
-    calc ∏ i ∈ T, -z ^ 2 ^ i
-        = ∏ i ∈ T, (-1 : R) * z ^ 2 ^ i :=
-          prod_congr rfl fun i _ => (neg_one_mul _).symm
-      _ = (-1 : R) ^ T.card * z ^ (∑ i ∈ T, 2 ^ i) := by
-          rw [prod_mul_distrib, prod_const, prod_pow_eq_pow_sum]
-  calc ∏ r ∈ range n, (1 - z ^ 2 ^ r)
-      = ∏ r ∈ range n, (-z ^ 2 ^ r + 1) :=
-        prod_congr rfl fun r _ => by ring
-    _ = ∑ T ∈ (range n).powerset,
-          (∏ i ∈ T, -z ^ 2 ^ i) * ∏ _i ∈ range n \ T, (1 : R) :=
-        prod_add _ _ _
-    _ = ∑ T ∈ (range n).powerset,
-          ((fun j => (thueMorseSign j : R) * z ^ j)
-            (∑ j ∈ T, 2 ^ j)) :=
-        sum_congr rfl hstep
-    _ = ∑ j ∈ range (2 ^ n), (thueMorseSign j : R) * z ^ j :=
-        sum_powerset_two_pow n (fun j => (thueMorseSign j : R) * z ^ j)
+      ∑ j ∈ range (2 ^ n), (thueMorseSign j : R) * z ^ j :=
+  prod_one_sub_pow_eq_sum_thueMorseSign z n
 
 /-- The first difference `Δτ_n(j) = τ_n(j) - τ_n(j-1)` of the
 level-`n` Thue--Morse sign word padded by zero outside `[0, 2^n)` —

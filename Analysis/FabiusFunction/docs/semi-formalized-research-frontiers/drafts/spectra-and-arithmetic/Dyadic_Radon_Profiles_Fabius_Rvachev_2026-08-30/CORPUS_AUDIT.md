@@ -157,4 +157,7 @@ The archive contains:
 * a human-readable numerical summary;
 * this audit;
 * the preserved recursive TeX path ledger;
-* build instructions, dependency versions, and SHA-256 checksums.
+* build instructions and dependency versions.
+
+The former package-wide checksum ledger is retired and remains recoverable
+from Git history.

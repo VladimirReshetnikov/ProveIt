@@ -63,8 +63,6 @@ claims.
 - `numerical_results.txt` — full output from the production run.
 - `series_convergence.csv` — selected partial sums of the complex-exponent series.
 - `README.md` — this file.
-- Former `SHA256SUMS` ledger — retired repository-wide on 2026-09-01; its
-  historical bytes remain available from Git history only.
 
 ## Principal results
 

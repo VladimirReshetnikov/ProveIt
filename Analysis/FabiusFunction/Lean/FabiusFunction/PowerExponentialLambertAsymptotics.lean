@@ -56,8 +56,7 @@ theorem powerExponentialLambertEpsilon_pos
     (hA : 0 < A) (hbeta : 0 < beta) (hx : 0 < x) :
     0 < powerExponentialLambertEpsilon m A beta x := by
   unfold powerExponentialLambertEpsilon
-  exact mul_pos
-    (div_pos hbeta (Nat.cast_pos.mpr (Nat.pos_of_ne_zero hm)))
+  exact mul_pos (powerExponentialInverseScale_pos hm hbeta)
     (Real.rpow_pos_of_pos (div_pos hx hA) _)
 
 private theorem tendsto_rpow_nhdsGT_zero_of_pos
@@ -96,7 +95,7 @@ theorem tendsto_powerExponentialLambertEpsilon_nhdsGT_zero
     inv_pos.mpr (Nat.cast_pos.mpr (Nat.pos_of_ne_zero hm))
   have hroot := (tendsto_rpow_nhdsGT_zero_of_pos _ hmpos).comp hdiv
   have hscale : 0 < beta / (m : ℝ) :=
-    div_pos hbeta (Nat.cast_pos.mpr (Nat.pos_of_ne_zero hm))
+    powerExponentialInverseScale_pos hm hbeta
   change Tendsto
     (fun x : ℝ ↦ beta / (m : ℝ) * (x / A) ^ ((m : ℝ)⁻¹))
       (nhdsWithin 0 (Ioi 0)) (nhdsWithin 0 (Ioi 0))
@@ -146,9 +145,8 @@ theorem tendsto_lowerPowerExponentialPhase_nhdsGT_zero_atTop
   have heps :=
     tendsto_powerExponentialLambertEpsilon_nhdsGT_zero hm hA hbeta
   have hW := tendsto_lowerLambertW_neg_nhdsGT_zero_atBot.comp heps
-  have hscale : -((m : ℝ) / beta) < 0 := by
-    exact neg_lt_zero.mpr <|
-      div_pos (Nat.cast_pos.mpr (Nat.pos_of_ne_zero hm)) hbeta
+  have hscale : -((m : ℝ) / beta) < 0 :=
+    neg_lt_zero.mpr (powerExponentialTurningPoint_pos hm hbeta)
   have hscaled := hW.const_mul_atBot_of_neg hscale
   exact hscaled.congr' <| Eventually.of_forall fun x ↦ by
     rfl

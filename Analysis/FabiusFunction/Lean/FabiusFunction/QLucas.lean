@@ -37,8 +37,10 @@ namespace Fabius
 
 open Polynomial Finset
 
-/-- `2 · \binom n2 = n(n-1)`. -/
-theorem two_mul_choose_two (n : ℕ) : 2 * n.choose 2 = n * (n - 1) := by
+/-- `2 · \binom n2 = n(n-1)`.  Private: the identical statement is public API in
+`QChuVandermonde`, and both modules reach the facade, where two `Fabius.two_mul_choose_two`
+would collide.  Nothing outside this file uses this copy. -/
+private theorem two_mul_choose_two (n : ℕ) : 2 * n.choose 2 = n * (n - 1) := by
   rw [Nat.choose_two_right, Nat.mul_div_cancel' (Nat.even_mul_pred_self n).two_dvd]
 
 /-- The quadratic identity behind Vandermonde for `\binom{·}{2}`, in `ℕ`. -/

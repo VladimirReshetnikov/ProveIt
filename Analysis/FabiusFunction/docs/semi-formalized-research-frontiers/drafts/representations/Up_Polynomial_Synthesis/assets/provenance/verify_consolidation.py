@@ -39,7 +39,6 @@ LEGACY_DIRECTORIES = (
     "Legendre_Rvachev_Closed_Loop_Report_v4",
     "Legendre_Rvachev_Self_Reconstruction",
 )
-EXPECTED_RETIRED_CHECKSUM_PAYLOADS = 7
 
 
 def fail(message: str) -> None:
@@ -110,12 +109,7 @@ def verify_crosswalk(environments: dict[str, str]) -> None:
         )
 
 
-def is_retired_checksum_path(path: str) -> bool:
-    name = Path(path).name
-    return name == "SHA256SUMS" or name.startswith("SHA256SUMS.")
-
-
-def verify_companion_payloads() -> tuple[int, int]:
+def verify_companion_payloads() -> int:
     mapping_path = PACKAGE / "assets/provenance/COMPANION_PAYLOADS.csv"
     with mapping_path.open(newline="", encoding="utf-8") as stream:
         rows = list(csv.DictReader(stream))
@@ -125,31 +119,41 @@ def verify_companion_payloads() -> tuple[int, int]:
     if not rows or set(rows[0]) != required:
         fail("companion mapping has the wrong columns")
     old_paths = {row["old_path"] for row in rows}
-    new_paths = {row["new_path"] for row in rows}
-    if len(old_paths) != 113 or len(new_paths) != 113:
-        fail("companion mapping is not one-to-one")
+    if len(old_paths) != 113 or "" in old_paths:
+        fail("companion mapping does not identify 113 unique historical sources")
     dispositions = [row["disposition"] for row in rows]
-    if dispositions.count("migrated") != 111 or dispositions.count("already-canonical") != 2:
-        fail("companion disposition counts are not 111 migrated plus 2 canonical")
+    if (
+        dispositions.count("migrated") != 104
+        or dispositions.count("already-canonical") != 2
+        or dispositions.count("retired_checksum_ledger") != 7
+    ):
+        fail(
+            "companion disposition counts are not 104 migrated, 2 canonical, "
+            "and 7 retired checksum ledgers"
+        )
+    retired = [row for row in rows if row["disposition"] == "retired_checksum_ledger"]
+    live = [row for row in rows if row["disposition"] != "retired_checksum_ledger"]
+    for row in retired:
+        basename = Path(row["old_path"]).name
+        if basename != "SHA256SUMS" and not basename.startswith("SHA256SUMS."):
+            fail(f"retired checksum row has an unexpected source: {row['old_path']}")
+        if row["new_path"]:
+            fail(f"retired checksum row still has a live destination: {row['old_path']}")
+        if re.fullmatch(r"[0-9a-f]{64}", row["sha256"]) is None:
+            fail(f"retired checksum row has an invalid historical digest: {row['old_path']}")
+    new_paths = {row["new_path"] for row in live}
+    if len(new_paths) != len(live) or "" in new_paths:
+        fail("live companion mapping is not one-to-one")
     mapped_entries: dict[Path, str] = {}
-    retired_checksums = 0
-    for row in rows:
+    for row in live:
         target = (PACKAGE / row["new_path"]).resolve()
         try:
             target.relative_to(PACKAGE)
         except ValueError:
             fail(f"mapped target escapes the package: {row['new_path']}")
-        if is_retired_checksum_path(row["new_path"]):
-            retired_checksums += 1
-            continue
         mapped_entries[target] = row["sha256"]
-    if retired_checksums != EXPECTED_RETIRED_CHECKSUM_PAYLOADS:
-        fail(
-            "retired checksum mapping count is "
-            f"{retired_checksums}, expected {EXPECTED_RETIRED_CHECKSUM_PAYLOADS}"
-        )
     verify_hashes(mapped_entries, "companion mapping")
-    return len(mapped_entries), retired_checksums
+    return len(rows)
 
 
 def verify_historical_sources() -> int:
@@ -184,15 +188,15 @@ def main() -> int:
         fail(
             f"canonical counts are assertions={len(environments)}, proofs={proofs}, "
             f"conjectures={conjectures}; expected 80, 80, 11"
-    )
+        )
     verify_crosswalk(environments)
-    payloads, retired_checksums = verify_companion_payloads()
+    payloads = verify_companion_payloads()
     sources = verify_historical_sources()
     print(
         "consolidation audit passed: "
         f"assertions={len(environments)}, proofs={proofs}, conjectures={conjectures}, "
         f"crosswalk={len(environments)}, companion_payloads={payloads}, "
-        f"retired_checksum_rows={retired_checksums}, retired_sources={sources}"
+        f"retired_sources={sources}"
     )
     return 0
 

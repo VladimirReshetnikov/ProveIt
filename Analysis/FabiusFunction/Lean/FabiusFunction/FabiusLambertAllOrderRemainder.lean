@@ -119,12 +119,7 @@ private noncomputable def nestedLambertEval
 
 private theorem inv_pow_isBigO_one (n : ℕ) :
     (fun t : ℝ => t⁻¹ ^ n) =O[atTop] (fun _ : ℝ => (1 : ℝ)) := by
-  apply IsBigO.of_bound 1
-  filter_upwards [eventually_ge_atTop (1 : ℝ)] with t ht
-  simp only [Real.norm_eq_abs, abs_pow,
-    abs_of_pos (inv_pos.mpr (zero_lt_one.trans_le ht)), abs_one, mul_one]
-  exact pow_le_one₀ (inv_nonneg.mpr (zero_le_one.trans ht))
-    (inv_le_one_of_one_le₀ ht)
+  simpa only [pow_zero] using invPow_isBigO_invPow_atTop (Nat.zero_le n)
 
 private theorem nestedLambertEval_isBigO_id
     (p : Polynomial (Polynomial ℝ)) :
@@ -539,7 +534,11 @@ private theorem dyadicLambertFixedPointDefect_isBigO (N : ℕ) :
     (dyadicLambertFixedPointDefect_eventuallyEq N).symm
       Filter.EventuallyEq.rfl
 
-private theorem abs_log_sub_log_le_div
+/-- **The logarithm is `K⁻¹`-Lipschitz on the ray `[K, ∞)`.**  A quantitative
+mean-value bound with no Fabius content: for `a, b ≥ K > 0`,
+`|log a - log b| ≤ |a - b| / K`.  The proof needs only `log t ≤ t - 1`, applied
+to the ratio of the two arguments, so no derivative appears. -/
+theorem abs_log_sub_log_le_div
     {K a b : ℝ} (hK : 0 < K) (ha : K ≤ a) (hb : K ≤ b) :
     |Real.log a - Real.log b| ≤ |a - b| / K := by
   have ha0 : 0 < a := hK.trans_le ha

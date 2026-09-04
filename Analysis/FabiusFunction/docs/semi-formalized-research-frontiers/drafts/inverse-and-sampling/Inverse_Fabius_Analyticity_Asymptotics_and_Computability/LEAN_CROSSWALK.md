@@ -6,7 +6,13 @@ This document records the source-level Lean correspondence for the 194 immutable
 
 The audit inspected the actual Lean source files below Analysis/FabiusFunction/Lean/FabiusFunction. It did not infer coverage from .olean files, declaration names alone, generated documentation, or historical commit messages.
 
-The inverse-computability tranches were checked by focused compilation of `EffectiveMonotoneInverse`, `EffectiveGapInverse`, `FabiusInverseComputable`, and the facade before this source-only bookkeeping pass. No Lean, Lake, or Git command was run during the bookkeeping update itself. Human-proved frontier result means that the canonical chapter contains a complete human-readable proof but the inspected Lean tree has only partial ingredients or no matching declaration.
+The inverse-computability tranches were checked by focused compilation of `EffectiveMonotoneInverse`, `EffectiveGapInverse`, `FabiusInverseComputable`, `FabiusInverseExactDyadicModulus`, and the facade before this source-only bookkeeping pass. The focused `RvachevLaurentLeading` target and its facade reachability also passed before the present documentation update. The focused `FinitePrefixAppellRecovery` target passed with its eleven definitions and seventeen theorems. Finally, the zero-definition/eight-theorem `FinitePrefixThueMorseCollapse` target and the full `FabiusFunction` facade both compiled successfully before this package-local crosswalk update. No Lean or Lake command was run during the bookkeeping update itself. The canonical validator's read-only reproduction of the pinned source snapshot was the only Git-backed check; it did not alter the worktree, index, or refs. Human-proved frontier result means that the canonical chapter contains a complete human-readable proof but the inspected Lean tree has only partial ingredients or no matching declaration.
+
+`FabiusInverseExactDyadicModulus` was inspected declaration-by-declaration in
+this source-only pass after its focused target compiled successfully.  Its two
+natural-code `Primrec` certificates close the former recursion gap, so the
+module now supplies a complete exact correspondence for
+`co:prop:exact-dyadic-modulus`.
 
 The first ten columns of theorem_concordance.csv remain field-for-field identical to audit/source_result_inventory.csv: 194 rows were compared and no immutable-field difference was found.
 
@@ -24,12 +30,12 @@ The first ten columns of theorem_concordance.csv remain field-for-field identica
 
 | Source package | Rows | Lean-proved | Human-proved | Conjecture | Open problem | Not applicable |
 |---|---:|---:|---:|---:|---:|---:|
-| Inverse_and_Sampling_Frontiers | 83 | 10 | 50 | 2 | 10 | 11 |
+| Inverse_and_Sampling_Frontiers | 83 | 16 | 44 | 2 | 10 | 11 |
 | Inverse_Endpoint_All_Orders | 29 | 1 | 20 | 6 | 0 | 2 |
-| Inverse_Fabius_Computability_Report | 40 | 23 | 7 | 1 | 4 | 5 |
+| Inverse_Fabius_Computability_Report | 40 | 24 | 6 | 1 | 4 | 5 |
 | inverse_fabius_iterates_nowhere_analytic | 24 | 2 | 17 | 1 | 1 | 3 |
 | Non_Elementarity_of_the_Fabius_Function | 18 | 14 | 1 | 0 | 0 | 3 |
-| **Total** | **194** | **49** | **96** | **10** | **15** | **24** |
+| **Total** | **194** | **57** | **88** | **10** | **15** | **24** |
 
 The high human-proved count is intentional. In particular, a full forward asymptotic expansion composed with F inverse is not an explicit all-orders inverse reversion theorem, and a formal Catalan or Richardson identity is not an analytic asymptotic for the actual finite-prefix quantiles.
 
@@ -67,12 +73,18 @@ The four unlabelled source obligations are marked not applicable and point to th
 
 ## Exact declaration index
 
-The table below is generated from the 49 Lean-proved concordance rows. Declaration names are fully qualified.
+The table below is generated from the 57 Lean-proved concordance rows. Declaration names are fully qualified.
 
 | Source key | Canonical label | Lean module | Principal declaration |
 |---|---|---|---|
 | Inverse_and_Sampling_Frontiers:p1:lem:filter-moments | is:p1:lem:filter-moments | FabiusFunction.GeometricLagrangeQMoments | Fabius.quarterGeometricLagrangeQMoment_eq_residual_qBinomial |
 | Inverse_and_Sampling_Frontiers:p1:thm:quarter-exact | is:p1:thm:quarter-exact | FabiusFunction.QuarterQuantile | Fabius.quarterQuantile_eq |
+| Inverse_and_Sampling_Frontiers:p2:thm:TM-uncentered | is:p2:thm:TM-uncentered | FabiusFunction.FinitePrefixThueMorseCollapse | Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat |
+| Inverse_and_Sampling_Frontiers:p2:cor:Prouhet-canonical | is:p2:cor:Prouhet-canonical | FabiusFunction.FinitePrefixThueMorseCollapse | Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_of_lt |
+| Inverse_and_Sampling_Frontiers:p2:thm:TM-centered | is:p2:thm:TM-centered | FabiusFunction.FinitePrefixThueMorseCollapse | Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_succ |
+| Inverse_and_Sampling_Frontiers:p2:thm:finite-prefix-expansion | is:p2:thm:finite-prefix-expansion | FabiusFunction.FinitePrefixAppellRecovery | Fabius.centeredDyadicPrefixAppellPolynomialRat_eq_sum_even |
+| Inverse_and_Sampling_Frontiers:p2:thm:exact-recovery | is:p2:thm:exact-recovery | FabiusFunction.FinitePrefixAppellRecovery | Fabius.rvachevAppellPolynomialRat_eq_sum_prefix |
+| Inverse_and_Sampling_Frontiers:p2:thm:Laurent-leading | is:p2:thm:Laurent-leading | FabiusFunction.RvachevLaurentLeading | Fabius.tendsto_rvachevCenteredMGF_laurent_two_pow_mul_odd |
 | Inverse_and_Sampling_Frontiers:p3:thm:self-sampling | is:p3:thm:self-sampling | FabiusFunction.PolynomialCombExactness | Fabius.integral_polynomial_mul_rvachevUp_eq_dyadic_tsum |
 | Inverse_and_Sampling_Frontiers:p3:thm:Appell-deconvolution | is:p3:thm:Appell-deconvolution | FabiusFunction.RvachevMomentAppell | Fabius.integral_eval_rvachevAppellPolynomial_sub_mul_rvachev |
 | Inverse_and_Sampling_Frontiers:p3:cor:Appell-mean-zero | is:p3:cor:Appell-mean-zero | FabiusFunction.RvachevMomentAppell | Fabius.integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero |
@@ -94,6 +106,7 @@ The table below is generated from the 49 Lean-proved concordance rows. Declarati
 | Inverse_Fabius_Computability_Report:thm:exact-strict-threshold | co:thm:exact-strict-threshold | FabiusFunction.InverseModulus | Fabius.forall_abs_fabiusInv_sub_lt_iff |
 | Inverse_Fabius_Computability_Report:thm:closed-dyadic-modulus | co:thm:closed-dyadic-modulus | FabiusFunction.FabiusInverseEffectiveContinuity | Fabius.abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_deltaDenominator |
 | Inverse_Fabius_Computability_Report:thm:reciprocal-modulus | co:thm:reciprocal-modulus | FabiusFunction.FabiusInverseLogarithmicModulus | Fabius.fabiusInv_effectivelyUniformContinuous_logarithmicDelta |
+| Inverse_Fabius_Computability_Report:prop:exact-dyadic-modulus | co:prop:exact-dyadic-modulus | FabiusFunction.FabiusInverseExactDyadicModulus | Fabius.inverseFabiusExactLogarithmicDenominator_primrec |
 | Inverse_Fabius_Computability_Report:lem:difference-certificate | co:lem:difference-certificate | FabiusFunction.EffectiveMonotoneInverse | Fabius.tolerantDifference_error |
 | Inverse_Fabius_Computability_Report:lem:safe-updates | co:lem:safe-updates | FabiusFunction.EffectiveMonotoneInverse | Fabius.tolerantDifference_safe_updates |
 | Inverse_Fabius_Computability_Report:lem:near-branch | co:lem:near-branch | FabiusFunction.EffectiveMonotoneInverse | Fabius.tolerantDifference_inconclusive |
@@ -125,6 +138,10 @@ The table below is generated from the 49 Lean-proved concordance rows. Declarati
 Several paper rows contain multiple clauses. For those rows, the principal declaration above belongs to the following explicit finite family; the CSV repeats the exact family at the source-row level.
 
 - Quarter-scale filter moments: `Fabius.geometricLagrangeQMoment_zero`, `Fabius.quarterGeometricLagrangeQMoment_eq_zero`, and `Fabius.quarterGeometricLagrangeQMoment_eq_residual_qBinomial` prove normalization, the cancelled range, and every residual moment.
+- Finite-prefix Thue--Morse collapse: `Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat` proves the uncentered response
+  `(-1)^N (1/2)^choose(N+1,2) n.descFactorial N x^(n-N)` for every `N,n : ℕ`, including `N = 0`; its `_of_lt` and `_self` companions give Prouhet cancellation below depth and the first nonzero constant. `Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_succ` is exactly the paper's positive-depth grid `x + (1 - 2^-(m+1)) - k/2^m` and gives the sign-free response `(1/2)^choose(m+1,2) n.descFactorial (m+1) x^(n-(m+1))`. The unsuffixed centered theorem rewrites that grid as `x + (1 - 2^-N) - 2k/2^N` and thereby strengthens the identity to every `N`, including zero; its `_of_lt` and `_self` companions record the centered cancellation and first constant. `Appell.sum_thueMorseSign_mul_eval_poly` supplies the arbitrary rational Appell-polynomial response through the signed power moments. These are coefficientwise rational finite-prefix identities: they do not prove the separately stated Barnes identification and introduce no random-variable, `HasLaw`, or analytic-MGF realization.
+- Finite-prefix Appell expansion and recovery: `Fabius.uncenteredDyadicPrefixAppellPolynomialRat_eq_sum` and `Fabius.centeredDyadicPrefixAppellPolynomialRat_eq_sum_even` give the two printed formulas for all `N,n : ℕ`, including `N = 0`, with `μ_r = halfMoment r`, `m_(2r) = moment r`, and scales `(1/2)^N` and `(1/4)^N`. The definitions `Fabius.uncenteredDyadicPrefixAppellScalePolynomialRat` and `Fabius.centeredDyadicPrefixAppellScalePolynomialRat`, the bridges `Fabius.uncenteredDyadicPrefixAppellPolynomialRat_eq_eval_scale` and `Fabius.centeredDyadicPrefixAppellPolynomialRat_eq_eval_scale`, and the degree theorems `Fabius.natDegree_uncenteredDyadicPrefixAppellScalePolynomialRat` and `Fabius.natDegree_centeredDyadicPrefixAppellScalePolynomialRat` prove exact outer degrees `n` and `n/2` in `Polynomial (Polynomial ℚ)`. The coefficient ring matters: a fixed-inner-`x` centered specialization can have smaller degree, for example when `n` is odd and `x = 0`. Finally `Fabius.kabayaIriAppellPolynomialRat_eq_sum_prefix` and `Fabius.rvachevAppellPolynomialRat_eq_sum_prefix` give exact recovery from `n+1` consecutive prefixes at base `1/2` and `n/2+1` consecutive prefixes at base `1/4`, respectively, for every starting depth and without a limit. The module's eleven definitions and seventeen theorems construct the prefix moments by finite binomial convolution; they do not supply a random-variable, `HasLaw`, or analytic-MGF realization theorem.
+- Leading Laurent coefficient: `Fabius.rvachevCenteredMGF` is the paper-normalized centered MGF. The six theorems `Fabius.rvachevCenteredMGF_eq_rvachevFourierProduct`, `Fabius.rvachevCenteredMGF_pi_mul_I_int`, `Fabius.rvachevCenteredMGF_pi_mul_I_int_ne_zero_of_odd`, `Fabius.tendsto_sub_pow_mul_inv_rvachevFourierProduct_int`, `Fabius.tendsto_rvachevCenteredMGF_laurent_int`, and `Fabius.tendsto_rvachevCenteredMGF_laurent_two_pow_mul_odd` supply the exact Fourier--Laplace coordinate, odd-core constant and nonvanishing, generic integer-zero cofactor limit, general centered-MGF pole limit, and the manuscript's `n = 2^v u` specialization with order `v + 1` and coefficient `-T_n^(v+1)/C_u`. All three limit declarations use punctured neighborhoods, exactly as a meromorphic limit must: Lean's inverse is totalized to zero at the pole. No lower Laurent coefficient, pole-shell sum, or Appell-coefficient asymptotic is inferred.
 - Density shape: `Fabius.strictMonoOn_deriv_fabiusReal_Icc`, `Fabius.strictAntiOn_deriv_fabiusReal_Icc`, and `Fabius.deriv_fabiusReal_one_sub` prove the two strict branches and reflection.
 - Inverse Fabius computability: `Fabius.fabiusInv_isComputableRealFunction` packages sequential computability of the totalized inverse together with the logarithmic-Delta effective-continuity witness. `Fabius.effectiveInversionOn_Icc` supplies the unit-interval realizer, while `Fabius.abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_deltaDenominator`, `Fabius.inverseFabiusLogarithmicOrder_isLeast`, and `Fabius.fabiusInv_effectivelyUniformContinuous_logarithmicDelta` supply the headline theorem's explicit dyadic and reciprocal-modulus clauses.
 - Tolerant bisection: `Fabius.tolerantDifference_error`, `Fabius.tolerantDifference_safe_updates`, and `Fabius.tolerantDifference_inconclusive` certify the three comparison branches; `Fabius.tolerantBisection_correct` constructs the uniform computable output name, and `Fabius.unitClamp_sequentiallyComputable` supports totalization.
@@ -134,6 +151,7 @@ Several paper rows contain multiple clauses. For those rows, the principal decla
 - Exact inverse modulus: `Fabius.sSup_abs_fabiusInv_sub_Icc_eq`, `Fabius.sSup_abs_fabiusInv_sub_eq`, `Fabius.fabiusInv_min_one`, `Fabius.abs_fabiusInv_sub_le`, `Fabius.fabiusInv_sub_le_sub`, `Fabius.fabiusInv_add_le`, `Fabius.fabiusInv_sub_eq_sub_iff_of_mem_Icc`, and `Fabius.abs_fabiusInv_sub_eq_iff_of_mem_Icc` prove the two exact suprema, saturation, pointwise and order-free gap inequalities, subadditivity, and equality loci.
 - Effective injectivity: `Fabius.abs_fabiusInv_sub_lt_of_abs_sub_lt_fabiusReal`, `Fabius.abs_fabiusInv_sub_le_of_abs_sub_le_fabiusReal`, and `Fabius.fabiusReal_le_abs_sub_of_le_abs_fabiusInv_sub` prove the strict, closed, and contrapositive forms.
 - Closed dyadic modulus: `Fabius.abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_deltaDenominator` is the exact source theorem, and `Fabius.abs_fabiusInv_sub_le_inverse_two_pow_of_le_deltaDenominator` is the documented closed-boundary strengthening.
+- Exact-dyadic repository modulus: the twelve declarations itemized below prove primitive recursiveness, exact fixed-target ceiling leastness, and the logarithmic `1/n` witness. The fixed-target leastness does not become leastness for `1/n`, and `d(0)=1` remains only a totalization convention.
 - Forced superconvergence: `Fabius.isRvachevSuperconvergentPhase_two_pow_iff` identifies the paper's parity-selected phases at mesh `M = 2^N`, and `Fabius.integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent` is the exact physical-coordinate quadrature theorem through degree `N + 1`. `Fabius.rvachevUp_nonneg`, `Fabius.rvachev_pos_iff_mem_Ioo`, `Fabius.rvachevDyadic_cast`, and `Fabius.rvachevUp_eq_zero_iff_not_mem_Ioo` supply the cited positivity, strict-support, rational-dyadic-value, and zero-off-support facts. These declarations do not classify all superconvergent phases or prove a sharpness theorem.
 - Appell lattice reproduction: `Fabius.normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp`, specialized to `M = 2^N` and `P = X^n`, proves the arbitrary-phase formula for `n <= N`; `Fabius.normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent` proves the selected-phase extension through `n <= N + 1`, with `Fabius.isRvachevSuperconvergentPhase_two_pow_iff` translating the phase condition and `Fabius.finite_support_comb` certifying finiteness. No phase-classification or sharpness claim is inferred.
 - Endpoint non-Hölder behavior: `Fabius.not_exists_fabiusInv_le_const_mul_rpow_near_zero` gives the zero-endpoint obstruction, `Fabius.tendsto_one_sub_fabiusInv_div_one_sub_rpow_atTop_at_one_left` gives its reflected endpoint-one form, and `Fabius.tendsto_fabiusInv_div_rpow_atTop_at_zero_right` together with `Fabius.sSup_abs_fabiusInv_sub_Icc_eq` gives the exact-modulus quotient divergence.
@@ -142,7 +160,7 @@ Several paper rows contain multiple clauses. For those rows, the principal decla
 
 ## Formal kernels of stronger human-proved results
 
-The following three canonical results have substantial Lean ingredients, but the
+The following two canonical results have substantial Lean ingredients, but the
 full paper statement is stronger than the cited declaration. They are therefore
 classified as human-proved frontier results, and their Lean fields are
 deliberately blank in the concordance.
@@ -151,7 +169,45 @@ deliberately blank in the concordance.
 |---|---|---|
 | `is:p3:prop:local-factorization` | `FabiusFunction.IntegerZeroLocalFactorization.Fabius.rvachevFourierProduct_int_add_factorization` proves the denominator-cleared integer-zero factorization; adjacent declarations construct the analytic cofactor and its derivative engine. | The same proposition includes the normalized exponential local form and its explicit logarithmic jet. |
 | `is:p3:thm:first-defect` | `FabiusFunction.CombDefectSeries.Fabius.tsum_shifted_monomial_sub_integral_odd` proves the odd-alias representation, and `FabiusFunction.CombFirstDefect.Fabius.iteratedDeriv_rvachevFourierProduct_nat_mul_int_of_odd` evaluates the surviving derivative. | No named declaration assembles the evaluated complex series and both displayed sine/cosine forms. |
-| `co:thm:abstract-inversion` | `FabiusFunction.EffectiveMonotoneInverse.Fabius.effectiveInversionOn_Icc` proves subset-domain sequential computability for an inverse once a computable positive reciprocal inverse modulus is supplied. | The paper starts from a computable positive forward-gap sequence, derives the inverse modulus, and also concludes effective uniform continuity. That gap-to-modulus/effective-continuity bridge is not packaged by the Lean theorem. |
+
+## Exact-dyadic Lean-proved inventory
+
+The new module's complete public surface has two definitions and ten
+theorems.  Each declaration contributes a distinct clause to the exact correspondence:
+
+- `Fabius.inverseFabiusExactDyadicDenominator` defines the natural ceiling of
+  the reciprocal of the exact rational endpoint mass at a fixed dyadic order.
+- `Fabius.inverseFabiusExactDyadicDenominator_primrec` proves that fixed-order
+  denominator is primitive recursive through a natural numerator/denominator code.
+- `Fabius.inverseFabiusExactDyadicDenominator_pos` proves it is positive,
+  including at order zero.
+- `Fabius.inv_inverseFabiusExactDyadicDenominator_le_fabiusAtInverseTwoPow`
+  proves its rational reciprocal is at most the exact endpoint mass.
+- `Fabius.inverseFabiusExactDyadicDenominator_isLeast` proves arithmetic
+  leastness among positive natural denominators satisfying that bound.
+- `Fabius.abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_exactDyadicDenominator`
+  gives the global strict inverse modulus for the fixed target `2^-r`.
+- `Fabius.exists_fabiusInv_gap_of_lt_exactDyadicDenominator` gives, for every
+  smaller positive denominator, endpoint witnesses with output gap exactly
+  `2^-r`.
+- `Fabius.inverseFabiusExactDyadicDenominator_isLeast_strictModulus` combines
+  the preceding directions into leastness among strict integer moduli for that
+  fixed dyadic target.
+- `Fabius.inverseFabiusExactLogarithmicDenominator` defines the logarithmic
+  wrapper, using the convention `d(0)=1` and the exact fixed-target denominator
+  at the least logarithmic dyadic order for positive inputs.
+- `Fabius.inverseFabiusExactLogarithmicDenominator_primrec` proves the whole
+  totalized logarithmic wrapper primitive recursive.
+- `Fabius.inverseFabiusExactLogarithmicDenominator_of_pos` states that
+  positive-input identity explicitly.
+- `Fabius.abs_fabiusInv_sub_lt_inv_nat_of_lt_exactLogarithmicDenominator`
+  gives the positive-input output bound below `1/n`.
+
+The last theorem is witness-only: it does not make the logarithmic denominator
+least for the weaker target `1/n`.  The zero value is convention-only, and no
+modulus conclusion is asserted there.  The two named `Primrec` theorems close
+the proposition's recursion clause without relying on a computability instance
+for normalized rationals.
 
 ## Post-source strengthenings
 
@@ -189,11 +245,11 @@ The dyadic singularity atlas `is:p2:prob:dyadic-singularity-atlas` is explicitly
 | Area | Exact Lean core | Missing full bridge |
 |---|---|---|
 | Explicit all-orders inverse endpoint expansion | Full forward all-orders expansion, implicit pullback along the inverse, sharp leading inverse scale, Gamma-zeta periodic data | Explicit inverse coefficient reversion, diagonal formulas, inverse top jets, elasticity hierarchy, W-resummation, Gevrey/transseries theory |
-| Inverse computability | Forward computability, sharp inverse modulus, effective injectivity, explicit effective continuity, tolerant bisection, computable positive-rational gap encoding, derived reciprocal inverse modulus, restricted inverse sequential computability, subset effective uniform continuity, computable clamping, and totalized `IsComputableRealFunction` theorems | Exact endpoint-mass ceiling minimality and input-bit asymptotics |
+| Inverse computability | Forward computability, sharp inverse modulus, effective injectivity, explicit effective continuity, tolerant bisection, computable positive-rational gap encoding, derived reciprocal inverse modulus, restricted inverse sequential computability, subset effective uniform continuity, computable clamping, totalized `IsComputableRealFunction` theorems, exact fixed-dyadic endpoint-ceiling minimality, and primitive-recursive fixed and logarithmic exact denominators | Genuine leastness for the weaker `1/n` target and input-bit asymptotics |
 | Inverse iterates | Single-inverse nonanalyticity and exact PartitionDefect combinatorics | Every n > 1 iterate theorem, zero-radius transport, spine dominance, formal-reversion radius |
 | Dyadic inverse germs | Exact quarter quantile, analytic quarter germ, complete quarter inverse jet | General reduced-dyadic analytic shadow, nonzero flat remainder, all-dyadic inverse derivatives |
-| Appell and Bernoulli structure | Appell derivative/translation laws, moments, cumulants, continuous deconvolution, polynomial synthesis | Logistic dual, Barnes identifications, full finite-prefix collapse/recovery, some displayed Bernoulli recurrences |
-| Shifted self-sampling | Exact polynomial self-sampling, sharp mesh exactness, integer-zero factorization, half-integer sign, positive half-frequency bound | Entire master-alias convergence theorem, complete phase classification, positive-filter uniqueness, tensor/base-b quadrature |
+| Appell and Bernoulli structure | Appell derivative/translation laws, moments, cumulants, continuous deconvolution, polynomial synthesis, exact finite-prefix Appell expansion and finite Richardson recovery, and complete uncentered/centered finite-prefix Thue--Morse collapses with Prouhet and first-response corollaries | Logistic dual, Barnes identifications, and some displayed Bernoulli recurrences; no probabilistic realization of the algebraic prefix model |
+| Shifted self-sampling | Exact polynomial self-sampling, sharp mesh exactness, integer-zero factorization, leading reciprocal centered-MGF Laurent coefficient, half-integer sign, positive half-frequency bound | Lower Laurent coefficients and pole-shell asymptotics, entire master-alias convergence theorem, complete phase classification, positive-filter uniqueness, tensor/base-b quadrature |
 
 ## Conjecture and problem discipline
 
@@ -205,13 +261,13 @@ The direct inverse-spine asymptotic remains the one inverse-iterate conjecture. 
 
 ## Highest-value next formalizations
 
-1. Formalize exact endpoint-mass ceiling minimality and the asymptotically sharp input-bit requirement on top of the existing inverse-modulus bounds.
+1. Determine the computability of the genuine least denominator for the weaker `1/n` target, and formalize the asymptotically sharp input-bit requirement; fixed-dyadic ceiling minimality and the logarithmic witness's primitive recursiveness are now closed.
 2. Build a generic asymptotic series-reversion layer with Bell-polynomial coefficient extraction, then instantiate it with the existing forward Lambert expansion.
 3. Prove positive convergence-radius preservation under formal compositional inversion and use it for the iterate Taylor-radius transport theorem.
 4. Formalize the Q-factorization and analytic spine estimates on top of PartitionDefect; the existing defect theorems do not by themselves prove iterate nonanalyticity.
 5. Generalize the quarter-cell analytic germ and inverse-jet bridge to every reduced dyadic point.
 6. Assemble the coefficientwise comb identities into the entire master-alias theorem with locally normal convergence.
-7. Derive the displayed Bernoulli-refined Appell recurrence and separate any genuine Appell biorthogonality theorem from the derivative-distribution pushforward law.
+7. Derive the displayed Bernoulli-refined Appell recurrence and the separate Barnes identification, and separate any genuine Appell biorthogonality theorem from the derivative-distribution pushforward law.
 8. Define the regrouped 2-adic exponential B-series and prove its Mellin representation, contour shift, and saddle map.
 
 ## Static consistency checks performed
