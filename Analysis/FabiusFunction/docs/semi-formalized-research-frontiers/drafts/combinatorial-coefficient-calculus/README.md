@@ -29,12 +29,14 @@ mode this package is now expected to pass.
 
 | Directory | Document |
 | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — synchronized 210-page A4 PDF rebuilt on 2026-09-04 |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — evolving source; the 210-page A4 PDF is the preceding 2026-09-04 render checkpoint |
 
-The PDF was rebuilt from the merged source using three strict
+At that checkpoint the PDF was rebuilt using three strict
 pdfLaTeX passes and a generated index. Nine focused pages were visually
 reviewed; no whole-volume page-by-page review is claimed.
-The in-document register records Lean compilation separately.
+The current merge requires a fresh render and validation; those historical
+counts do not assert parity with the merged source. The in-document register
+records Lean compilation separately.
 Standalone checksum files are retired; provenance is kept in Git and the source
 inventory, and the validator does not maintain or require file digests.
 
@@ -129,13 +131,14 @@ complete human proofs and exact declaration crosswalks. Three private rational
 helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
 caller refactor has now passed its own direct Lean check as well.
 
-At that checkpoint the register contained 203 rows: 58 marked Lean, 34 partial, and 111 without a
-Lean counterpart. The earlier classifications are inherited; this checkpoint
-adds two compiler-backed entries and does not claim a fresh build of the whole
-corpus. The final structural/provenance validator passed with 203 adjacent
+At the upstream checkpoint the register contained 204 rows: 59 marked Lean,
+34 partial, and 111 without a Lean counterpart. Earlier classifications
+were inherited; that checkpoint added three compiler-backed entries and
+did not claim a fresh build of the whole
+corpus. The final structural/provenance validator passed with 204 adjacent
 proofs, 27 disposition records, and six original-source inventory rows. PDF
-rebuilding was deferred at that checkpoint and was completed in the later
-source/render synchronization below.
+rebuilding was deferred in that earlier session. These are historical upstream
+measurements, not totals for the present merged manuscript.
 
 The same-day upstream crosswalk connects the Bell normalization and unit-series
 coefficient formulas to `UnitSeriesBellCoefficients`; its labelled-set partition
@@ -184,6 +187,36 @@ The last set includes 198 cases with zero singleton weight and 210 cases where
 the new summation cap shortens the range. All pass. These computations are
 regression evidence, not infinite-domain proofs or Lean compilation results.
 
+## Coefficient-calculus campaign (2026-09-04)
+
+The incoming campaign added four leaf modules, with complete human proofs and
+exact declaration names in the manuscript. `NewtonReciprocal` has an inherited
+focused Lean compilation receipt, including the actual truncated update.
+`StirlingSymmetricFunctions`, `LagrangeInversionUniqueness`, and
+`StirlingSecondReverseRowIdentity` have received independent source/API reviews;
+their compiler validation is pending. The register preserves that distinction.
+The two second-kind symmetric-function formulas are shared with the compiled
+upstream `StirlingCompleteHomogeneous` module; their duplicate implementations
+were removed from this campaign's leaf.
+
+The reverse-row merge likewise preserves the existing
+`Fabius.second_reverse_row` and all-degree `Fabius.second_reverse_row_ring_Icc`
+interfaces in `StirlingSecondReverseRow`. The companion
+`StirlingSecondReverseRowIdentity` contributes `Fabius.second_reverse_row_range`,
+`Fabius.second_reverse_row_sum_ring`, and the rational
+`Fabius.second_reverse_row_sum` by reusing that core. These merged row proofs
+and wrappers remain pending compilation; no duplicate proof is retained as
+independent validation.
+
+The campaign also repairs the Laplace theorem with explicit analytic endpoint
+hypotheses and full remainder estimates, removes contradictory duplicate
+crosswalks, and corrects boundary cases and coefficient-ring assumptions.
+The second-kind recurrence and Riordan rows remain partial: the former lacks
+the set-partition counting bridge, while the latter supplies a conditional
+one-sided inverse law rather than the full inverse construction.
+The brief [campaign status](Combinatorial_Coefficient_Calculus/FORMALIZATION_STATUS.md)
+records remaining obligations without duplicating the canonical claim register.
+
 ## Integrated Abel and moment-cumulant checkpoint (2026-09-04)
 
 `ExponentialRescaling` has passed a focused build. Its four public lemmas give
@@ -208,12 +241,15 @@ boundaries explicitly, with formal logarithm identities separated from the
 still-open set-partition interpretation. The Nörlund proof now derives the
 logarithmic coefficients without dividing by the nonunit formal variable.
 Arbitrary-order Nörlund polynomials and their analytic convergence remain open
-formalization work. The merged register has 206 rows: 62 Lean, 32 partial,
-and 112 without a compiled counterpart. The source has 10,852 lines,
-528,604 UTF-8 bytes, 709 labels, and 206 adjacent proofs. Final structural
-validation and all eight duplicate-crosswalk regression tests pass.
-The 210-page PDF contains Libertinus text and no Type 3 fonts; the final
-strict-pass log has no undefined references, overfull boxes, or rerun requests.
+formalization work. At the preceding source/render checkpoint the register
+had 206 rows: 62 Lean, 32 partial, and 112 without a compiled counterpart.
+The source then had 10,852 lines, 528,604 UTF-8 bytes, 709 labels, and 206
+adjacent proofs. Final structural validation and all eight duplicate-crosswalk
+regression tests passed at that checkpoint.
+Its 210-page PDF contained Libertinus text and no Type 3 fonts; the final
+strict-pass log had no undefined references, overfull boxes, or rerun requests.
 The earlier counts above describe their named checkpoints only. The unused
 duplicate Stirling rearrangement was removed; its earlier theorem retains
 the necessary zeroth summand and already proves the full identity.
+Fresh merged-source metrics, structural validation, and render verification
+remain to be recorded by the publication owner.

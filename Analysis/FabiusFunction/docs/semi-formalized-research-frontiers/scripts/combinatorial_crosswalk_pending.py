@@ -231,8 +231,22 @@ recurrence $(1-kx)F_k=F_{k-1}$ (\lean{Fabius.one_sub_mul_X_mul_stirlingColumnOGF
 The expansion of each geometric factor is
 \lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow}, which identifies the column
 series with $\prod_{j=1}^k\sum_{r\ge0}j^rx^r$; the complete-homogeneous
-coefficient formula \cref{eq:second-complete-symmetric} is the coefficient
-extraction of that product and is not stated separately.""")),
+coefficient formula \cref{eq:second-complete-symmetric} is supplied over every
+commutative semiring by the compiled
+\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn} and
+\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le} in
+\lean{StirlingCompleteHomogeneous}.  The same module supplies universal
+\lean{MvPolynomial.hsymm} evaluation through
+\lean{Fabius.stirlingSecond_add_eq_eval_hsymm} and the explicit multiplicity
+sum through \lean{Fabius.stirlingSecond_add_eq_sum_finsuppAntidiag}.
+The scalar falling-factorial factorization is
+\lean{Fabius.pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul}
+under $x\ne0$; its reciprocal is
+\lean{Fabius.prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv}
+under nonvanishing of every $1-jx$.  The human symmetric-function proof
+appears in \cref{thm:stirling-symmetric-semirings}; the separate first-kind
+identities and scaling extensions in \lean{StirlingSymmetricFunctions}
+still await compiler validation.""")),
 
  # --- thm:eulerian-power-series ---
  (r"""\eqref{eq:eulerian-explicit}.  Formula \eqref{eq:eulerian-k1} is its case $k=1$.
@@ -269,7 +283,10 @@ to the $n$-th coefficient of $g\,A(f)$), the product law
 inverse law \cref{eq:merged-riordan-inverse} is
 \lean{Fabius.expRiordan_mul_inverse} in the form: if $\overline f\circ f=t$
 and $g\cdot(h\circ f)=1$ then $[g,f]\,[h,\overline f]$ is the identity array
-\lean{Fabius.expRiordan_one_X}.  The Stirling examples are
+\lean{Fabius.expRiordan_one_X}.  This is a conditional one-sided inverse
+statement.  Constructing the inverse series from the theorem's unit hypotheses
+and establishing the full two-sided inverse remain separate formal obligations;
+the register status is therefore \emph{partial}.  The Stirling examples are
 \lean{Fabius.expRiordan_one_exp_sub_one} ($[1,\EulerE^t-1]$ has entries
 $\StirlingSecondKind nk$) and \lean{Fabius.expRiordan_one_log}
 ($[1,\log(1+t)]$ has entries $\SignedStirlingFirstKind{n}{k}$).""")),
@@ -390,9 +407,17 @@ PENDING += [
 from the surjection count $k^n=\sum_r\StirlingSecondKind nr\,r!\binom kr$
 (\lean{Fabius.pow_eq_sum_stirlingSecond_mul_factorial_mul_choose}); the
 formal statement holds for all $n,k\ge0$ with the sum running from $r=0$
-(the extra term $\StirlingSecondKind n0/k!$ vanishes for $n\ge1$).  The
-reverse recurrences \cref{eq:second-reverse-row,eq:second-reverse-column}
-are not formalized.""")),
+(the extra term $\StirlingSecondKind n0/k!$ vanishes for $n\ge1$).
+The column recurrence is \lean{Fabius.second_reverse_column} in
+\lean{StirlingSecondReverseColumn}.  The row recurrence is supplied by new
+source \lean{Fabius.second_reverse_row} and
+\lean{Fabius.second_reverse_row_ring_Icc} in \lean{StirlingSecondReverseRow},
+covering all $n\ge0$, $k\ge1$ over any unital ring in the latter form.
+The companion \lean{StirlingSecondReverseRowIdentity} supplies
+\lean{Fabius.second_reverse_row_range}, \lean{Fabius.second_reverse_row_sum_ring},
+and its rational specialization \lean{Fabius.second_reverse_row_sum}.
+Compiler validation of the new row proofs and wrappers is pending;
+the combined register status remains \emph{partial}.""")),
 ]
 
 PENDING += [
@@ -1370,8 +1395,16 @@ $z\psi(z)$, where $\psi$ is the power-series inverse of $\phi$, and
 \cref{eq:lagrange-functional}.  So
 \lean{Fabius.Lagrange.coeff_solution_subst_derivative} and
 \lean{Fabius.Lagrange.coeff_solution} are unconditional statements about a
-witness, not conditional ones.  Uniqueness of $g$ and
-\cref{eq:lagrange-burmann-alt} are not formalized.
+witness, not conditional ones.  New source in
+\lean{LagrangeInversionUniqueness} supplies uniqueness over an arbitrary
+commutative ring through
+\lean{Fabius.Lagrange.eq_solution_of_eq_X_mul_subst} and
+\lean{Fabius.Lagrange.existsUnique_of_isUnit_constantCoeff}.
+The alternative coefficient formula is
+\lean{Fabius.Lagrange.coeff_solution_subst_alt}, using the general
+coefficient integration-by-parts identity
+\lean{Fabius.Lagrange.coeff_jacobian_mul}.  Compiler validation of these
+additions is pending, so the register status remains \emph{partial}.
 The proof above is unavailable in Lean, because it runs through
 \cref{thm:res-subst}, which is itself unformalized.  The formal proof is
 purely algebraic and rests on one cancellation: writing $v$ for the inverse of
@@ -1679,7 +1712,14 @@ $(-1)^n$, and $\EulerE^{-x}\EulerE^{x}=1$ is \lean{Fabius.exp_mul_altSeries}.
 Worth noting beside the first-kind case: the first-kind column satisfies
 $(1-x)\log(1-x)F'=-kF$, whose kernel needs a logarithm and a dedicated series,
 while the kernel here is elementary.
-\cref{eq:second-reverse-row} is not formalized.""")),
+New source \lean{Fabius.second_reverse_row} in \lean{StirlingSecondReverseRow}
+supplies \cref{eq:second-reverse-row}; its
+\lean{Fabius.second_reverse_row_ring_Icc} covers all $n\ge0$, $k\ge1$
+over any unital ring, using \lean{Fabius.subst_logTail}.
+The companion \lean{StirlingSecondReverseRowIdentity} supplies
+\lean{Fabius.second_reverse_row_range}, \lean{Fabius.second_reverse_row_sum_ring},
+and the rational specialization \lean{Fabius.second_reverse_row_sum}.
+Compiler validation of the new row proofs and wrappers is pending.""")),
 ]
 
 PENDING += [

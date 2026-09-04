@@ -45,14 +45,18 @@ coincides with the original `CCC` manuscript's location, but its contents now
 include the consolidation and subsequent work. The `CCC` inventory row always
 identifies the historical snapshot, never the changing live source.
 
-The canonical PDF was rebuilt from the accompanying TeX on 2026-09-04 with
-three strict pdfLaTeX passes and a generated index. It contains 210 pages;
+At the preceding 2026-09-04 checkpoint the canonical PDF was rebuilt with
+three strict pdfLaTeX passes and a generated index. That render contains 210 pages;
 the earlier 174-page consolidation render remains recoverable from Git.
-This is a source/render synchronization checkpoint, not a claim that all
+The current merge requires a fresh render and validation; these historical
+page counts do not assert parity with the merged source. A source/render
+synchronization checkpoint is not a claim that all
 mathematics has been verified in Lean. The incoming Stirling and formal-power
-cores retain their historical compiler receipts; the merged compatibility,
-weak-composition, and Bell wrappers and the reverse-row source proof still
-await compilation, as distinguished in the manuscript and its register.
+cores and Newton reciprocal theorem retain their historical compiler receipts;
+the merged compatibility, weak-composition, and Bell wrappers, the reverse-row
+source proofs and wrappers, and the new Stirling/Lagrange leaves still await
+compilation, as distinguished in the manuscript and its register. Original
+arrival PDFs remain recoverable through the inventory's immutable Git locators.
 
 ## Recovery and validation
 

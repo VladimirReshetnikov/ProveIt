@@ -83,8 +83,13 @@ import FabiusFunction.NorlundDiagonal
 import FabiusFunction.ExponentialRescaling
 import FabiusFunction.BernoulliFormalLog
 import FabiusFunction.NarayanaNumbers
+import FabiusFunction.AssociahedronFaceNumbers
+import FabiusFunction.PochhammerFalling
 import FabiusFunction.StirlingFirstModH
+import FabiusFunction.StirlingSymmetricFunctions
 import FabiusFunction.LagrangeInversion
+import FabiusFunction.LagrangeInversionUniqueness
+import FabiusFunction.NewtonReciprocal
 import FabiusFunction.RaneyNumbers
 import FabiusFunction.AbelPolynomialSeries
 import FabiusFunction.LambertWSeries
@@ -107,6 +112,7 @@ import FabiusFunction.SquareRootSeries
 import FabiusFunction.PowerSumOrdinaryBell
 import FabiusFunction.StirlingParityBitwise
 import FabiusFunction.StirlingSecondReverseRow
+import FabiusFunction.StirlingSecondReverseRowIdentity
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
@@ -547,6 +553,7 @@ import FabiusFunction.TransseriesHarmonicIncrement
 import FabiusFunction.TransseriesScaleDominance
 import FabiusFunction.TransseriesBlockClasses
 import FabiusFunction.TransseriesMonomialUniqueness
+import FabiusFunction.TransseriesWrightOmegaTerms
 import FabiusFunction.TransseriesPolyLogScale
 import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
