@@ -1,3 +1,4 @@
+import FabiusFunction.LambertWAnalytic
 import FabiusFunction.PrincipalLambertWAtTop
 
 /-!
@@ -19,9 +20,9 @@ The envelope is proved here in a sharper form than the volume states it: the
 upper bound `ω(X) ≤ X` needs only `X ≥ 1`, and the lower bound then follows from
 it by monotonicity of `log`, with no appeal to the asymptotics of `W`.
 
-Real analyticity of `ω`, the one clause of the proposition not covered here, is
-not formalized; the corpus has continuity and differentiability of `W₀` but not
-its analyticity.
+Real analyticity is inherited from the analytic principal Lambert branch: the
+exponential image is contained strictly above the branch point, so analytic
+composition applies globally.
 -/
 
 set_option autoImplicit false
@@ -32,6 +33,17 @@ open Real
 
 /-- **Wright's omega**, defined through the principal Lambert branch. -/
 noncomputable def wrightOmega (X : ℝ) : ℝ := principalLambertW (Real.exp X)
+
+/-- **Real analyticity of Wright omega.**  The exponential image lies strictly
+above the principal Lambert branch point, so analyticity follows by composition
+with the real exponential. -/
+theorem analyticAt_wrightOmega (X : ℝ) :
+    AnalyticAt ℝ wrightOmega X := by
+  have hdom : -Real.exp (-1) < Real.exp X :=
+    (neg_lt_zero.mpr (Real.exp_pos (-1))).trans (Real.exp_pos X)
+  change AnalyticAt ℝ (fun x : ℝ => principalLambertW (Real.exp x)) X
+  exact (analyticAt_principalLambertW hdom).comp
+    (analyticAt_rexp (x := X))
 
 /-- `ω` is positive. -/
 theorem wrightOmega_pos (X : ℝ) : 0 < wrightOmega X :=

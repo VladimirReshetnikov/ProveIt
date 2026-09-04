@@ -23,6 +23,20 @@ Lake, rebuild the PDF, or verify the full set of 201 correspondences. A successf
 structural validator establishes neither mathematical correctness nor compilation.
 Every additional formalization milestone needs its own precise validation record.
 
+The first integration milestone merged pinned upstream
+`8159026c5310b24acb4d330a23836a473d7adaff`. Its source validator passes with
+205 theorem-like items and adjacent proofs, 27 dispositions, and six immutable
+source-inventory rows. The obsolete live checksum ledger was retired as upstream
+intended. The current register has 57 `Lean`, 36 `partial`, and 112 `none` rows;
+these totals include inherited claims and are not a fresh audit of all 205 rows.
+
+`NewtonReciprocal.lean` passed focused compilation on 2026-09-04 using
+`lake env lean -o .lake/build/lib/lean/FabiusFunction/NewtonReciprocal.olean
+Analysis/FabiusFunction/Lean/FabiusFunction/NewtonReciprocal.lean` (exit zero).
+Its five public theorems are compiler-checked. The other fourteen new public
+theorems in the three Stirling/Lagrange leaves remain source-reviewed and await
+compilation, including any missing prerequisites. No aggregate build is claimed.
+
 ## Source correspondences inspected
 
 Paths below are relative to `Analysis/FabiusFunction/Lean/FabiusFunction` unless
@@ -84,8 +98,8 @@ preflight missed a concrete API error that the compiler caught:
 `Polynomial.coeff` takes the polynomial before its index, unlike
 `PowerSeries.coeff`. The build owner replaced the erroneous partial application
 with an explicitly typed function from polynomials to their coefficient of the
-chosen degree. The correction has been inspected in source; a successful rerun
-is required before recording compilation success.
+chosen degree. The corrected file then passed the focused compiler invocation
+recorded above with exit zero and no diagnostics.
 
 `LagrangeInversionUniqueness.lean` was checked against the substitution-associativity,
 compositional-inverse, derivative, and unit APIs. Its uniqueness argument and

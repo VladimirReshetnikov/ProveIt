@@ -107,7 +107,6 @@ theorem tendsto_plMonomial_div_atTop_one (a b : ℝ) :
 
 /-- Monomials are positive beyond `X = 1`. -/
 theorem plMonomial_pos {a b X : ℝ} (hX : 1 < X) : 0 < plMonomial a b X := by
-  have hX0 : (0 : ℝ) < X := lt_trans zero_lt_one hX
   have hL : (0 : ℝ) < Real.log X := Real.log_pos hX
   rw [plMonomial]
   positivity
@@ -130,10 +129,11 @@ theorem tendsto_plMonomial_div_atTop {a b a' b' : ℝ}
     plMonomial a b X / plMonomial a' b' X
   rw [inv_div]
 
-/-- **The scale in the volume's generators.**  With `t = X⁻¹` and
-`L = log X`, the monomial `tⁿLʲ` is `plMonomial (-n) j`, so
-`tⁿLʲ` dominates `tᵐLᵏ` exactly when `n < m`, or `n = m` and `j > k`
-(`plt:eq:mot-dominance`). -/
+/-- **The forward generator-dominance rule.**  With `t = X⁻¹` and
+`L = log X`, the monomial `tⁿLʲ` is `plMonomial (-n) j`. Thus `n < m`, or
+`n = m` and `j > k`, makes `tᵐLᵏ / tⁿLʲ` tend to zero. Together with the
+preceding equal- and reverse-order limit theorems, this gives the exhaustive
+trichotomy printed as `plt:eq:mot-dominance`. -/
 theorem plMonomial_generators_dominance {n m j k : ℤ}
     (h : n < m ∨ (n = m ∧ k < j)) :
     Tendsto (fun X => plMonomial (-(m : ℝ)) (k : ℝ) X /

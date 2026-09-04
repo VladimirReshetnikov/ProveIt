@@ -74,6 +74,7 @@ import FabiusFunction.FallingFactorialSeries
 import FabiusFunction.CauchyPolynomials
 import FabiusFunction.CoefficientRules
 import FabiusFunction.ExpSeriesRecurrence
+import FabiusFunction.StirlingSeriesCoefficients
 import FabiusFunction.IteratedLeibniz
 import FabiusFunction.NorlundDiagonal
 import FabiusFunction.NarayanaNumbers
@@ -303,6 +304,7 @@ import FabiusFunction.TransseriesHeight
 import FabiusFunction.TransseriesScale
 import FabiusFunction.TransseriesWellBased
 import FabiusFunction.WrightOmega
+import FabiusFunction.WrightOmegaTwoOrders
 import FabiusFunction.LambertShiftInverse
 import FabiusFunction.LambertShiftConcavity
 import FabiusFunction.LambertCorrectionEquation
@@ -540,6 +542,7 @@ import FabiusFunction.TransseriesDifferentialClosure
 import FabiusFunction.TransseriesHarmonicIncrement
 import FabiusFunction.TransseriesScaleDominance
 import FabiusFunction.TransseriesBlockClasses
+import FabiusFunction.TransseriesMonomialUniqueness
 import FabiusFunction.TransseriesPolyLogScale
 import FabiusFunction.TransseriesFlat
 import FabiusFunction.TriangularPowerProduct
