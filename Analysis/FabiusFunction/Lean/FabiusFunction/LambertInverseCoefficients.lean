@@ -39,7 +39,7 @@ needs the operator calculus on functions, is not formalized here.
 
 set_option autoImplicit false
 
-open Polynomial Finset
+open Polynomial Finset Nat
 
 namespace Fabius
 
@@ -58,11 +58,11 @@ theorem lambertMultiplier_eq (n j : ℕ) :
 
 theorem natDegree_lambertMultiplier (n j : ℕ) :
     (lambertMultiplier n j).natDegree = 2 :=
-  natDegree_quadratic (by positivity)
+  natDegree_quadratic (by simp; omega)
 
 theorem leadingCoeff_lambertMultiplier (n j : ℕ) :
     (lambertMultiplier n j).leadingCoeff = -((j : ℤ) + 1) :=
-  leadingCoeff_quadratic (by positivity)
+  leadingCoeff_quadratic (by simp; omega)
 
 /-- `lambertNumerator n j` is the drafts' `R_{n, j+1}`. -/
 noncomputable def lambertNumerator (n : ℕ) : ℕ → ℤ[X]
@@ -87,71 +87,60 @@ theorem lambertNumerator_succ_eq_draft (n j : ℕ) :
 and leading coefficient `n(-1)^j j!`. -/
 theorem natDegree_and_leadingCoeff_lambertNumerator {n : ℕ} (hn : n ≠ 0) (j : ℕ) :
     (lambertNumerator n j).natDegree = 2 * j ∧
-      (lambertNumerator n j).leadingCoeff = (n : ℤ) * (-1) ^ j * (j ! : ℤ) := by
+      (lambertNumerator n j).leadingCoeff = (n : ℤ) * (-1) ^ j * (Nat.factorial j : ℤ) := by
+  have hnz : (n : ℤ) ≠ 0 := by exact_mod_cast hn
   induction j with
-  | zero =>
-      refine ⟨by simp, ?_⟩
-      simp [lambertNumerator_zero, leadingCoeff_C]
+  | zero => refine ⟨by simp, by simp⟩
   | succ j ih =>
       obtain ⟨hdeg, hlead⟩ := ih
-      have hne : lambertNumerator n j ≠ 0 := by
-        intro h
-        rw [h, leadingCoeff_zero] at hlead
-        have : (n : ℤ) * (-1) ^ j * (j ! : ℤ) ≠ 0 := by
-          have h1 : (n : ℤ) ≠ 0 := by exact_mod_cast hn
-          have h2 : ((j ! : ℕ) : ℤ) ≠ 0 := by
-            exact_mod_cast (Nat.factorial_pos j).ne'
-          exact mul_ne_zero (mul_ne_zero h1 (pow_ne_zero _ (by norm_num))) h2
-        exact this hlead.symm
-      -- the multiplier term carries the top degree
+      have hfac : ((Nat.factorial j : ℕ) : ℤ) ≠ 0 := by
+        exact_mod_cast (Nat.factorial_pos j).ne'
+      have hleadne : (lambertNumerator n j).leadingCoeff ≠ 0 := by
+        rw [hlead]
+        exact mul_ne_zero (mul_ne_zero hnz (pow_ne_zero _ (by norm_num))) hfac
+      have hjne : -((j : ℤ) + 1) ≠ 0 := by
+        have : (0 : ℤ) < (j : ℤ) + 1 := by positivity
+        linarith [this]
+      have hprodne :
+          (lambertMultiplier n j).leadingCoeff * (lambertNumerator n j).leadingCoeff ≠ 0 := by
+        rw [leadingCoeff_lambertMultiplier]
+        exact mul_ne_zero hjne hleadne
       have hmul : (lambertMultiplier n j * lambertNumerator n j).natDegree = 2 * j + 2 := by
-        rw [natDegree_mul' , natDegree_lambertMultiplier, hdeg]
-        · ring
-        · rw [leadingCoeff_lambertMultiplier, hlead]
-          have h1 : (n : ℤ) ≠ 0 := by exact_mod_cast hn
-          have h2 : ((j ! : ℕ) : ℤ) ≠ 0 := by exact_mod_cast (Nat.factorial_pos j).ne'
-          have h3 : -((j : ℤ) + 1) ≠ 0 := by positivity
-          exact mul_ne_zero h3 (mul_ne_zero (mul_ne_zero h1 (pow_ne_zero _ (by norm_num))) h2)
-      have hmullead : (lambertMultiplier n j * lambertNumerator n j).leadingCoeff
-          = -((j : ℤ) + 1) * ((n : ℤ) * (-1) ^ j * (j ! : ℤ)) := by
-        rw [leadingCoeff_mul' , leadingCoeff_lambertMultiplier, hlead]
-        rw [leadingCoeff_lambertMultiplier, hlead]
-        have h1 : (n : ℤ) ≠ 0 := by exact_mod_cast hn
-        have h2 : ((j ! : ℕ) : ℤ) ≠ 0 := by exact_mod_cast (Nat.factorial_pos j).ne'
-        have h3 : -((j : ℤ) + 1) ≠ 0 := by positivity
-        exact mul_ne_zero h3 (mul_ne_zero (mul_ne_zero h1 (pow_ne_zero _ (by norm_num))) h2)
-      -- the derivative term is of strictly smaller degree
-      have hderiv : (X * (1 + X) * derivative (lambertNumerator n j)).natDegree < 2 * j + 2 := by
-        have hd : (derivative (lambertNumerator n j)).natDegree ≤ 2 * j - 1 := by
-          have := natDegree_derivative_le (lambertNumerator n j)
-          omega_nat <;> simp [hdeg] at this ⊢
-        calc (X * (1 + X) * derivative (lambertNumerator n j)).natDegree
-            ≤ (X * (1 + X)).natDegree + (derivative (lambertNumerator n j)).natDegree :=
-              natDegree_mul_le
-          _ ≤ 2 + (2 * j - 1) := by
-              have hx : (X * (1 + X) : ℤ[X]).natDegree ≤ 2 := by
-                calc (X * (1 + X) : ℤ[X]).natDegree ≤ (X : ℤ[X]).natDegree + (1 + X : ℤ[X]).natDegree :=
-                      natDegree_mul_le
-                  _ ≤ 1 + 1 := by
-                      gcongr
-                      · simp
-                      · simpa using natDegree_add_le (1 : ℤ[X]) X
-                  _ = 2 := rfl
-              omega
-          _ < 2 * j + 2 := by omega
-      constructor
-      · rw [lambertNumerator_succ, add_comm, natDegree_add_eq_left_of_natDegree_lt (by
-          rw [hmul]; exact hderiv), hmul]
+        rw [natDegree_mul' hprodne, natDegree_lambertMultiplier, hdeg]
         ring
-      · rw [lambertNumerator_succ, add_comm,
-          leadingCoeff_add_of_degree_lt (by
-            refine lt_of_le_of_lt (degree_le_natDegree) ?_
-            rw [degree_eq_natDegree (by
-              intro h
-              rw [h, natDegree_zero] at hmul
-              omega)]
-            exact_mod_cast hderiv), hmullead]
-        push_cast [Nat.factorial_succ]
+      have hmullead : (lambertMultiplier n j * lambertNumerator n j).leadingCoeff
+          = -((j : ℤ) + 1) * ((n : ℤ) * (-1) ^ j * (Nat.factorial j : ℤ)) := by
+        rw [leadingCoeff_mul' hprodne, leadingCoeff_lambertMultiplier, hlead]
+      have hxdeg : (X * (1 + X) : ℤ[X]).natDegree ≤ 2 := by
+        refine le_trans natDegree_mul_le ?_
+        have h1 : (X : ℤ[X]).natDegree ≤ 1 := by simp
+        have h2 : ((1 : ℤ[X]) + X).natDegree ≤ 1 := by
+          refine le_trans (natDegree_add_le _ _) ?_
+          simp
+        omega
+      have hderiv : (X * (1 + X) * derivative (lambertNumerator n j)).natDegree < 2 * j + 2 := by
+        by_cases hzero : derivative (lambertNumerator n j) = 0
+        · rw [hzero, mul_zero, natDegree_zero]
+          omega
+        · have hjpos : j ≠ 0 := by
+            rintro rfl
+            rw [lambertNumerator_zero, derivative_C] at hzero
+            exact hzero rfl
+          have hd : (derivative (lambertNumerator n j)).natDegree ≤ 2 * j - 1 := by
+            have h := natDegree_derivative_le (lambertNumerator n j)
+            rw [hdeg] at h
+            exact h
+          have := natDegree_mul_le (p := (X * (1 + X) : ℤ[X]))
+            (q := derivative (lambertNumerator n j))
+          omega
+      refine ⟨?_, ?_⟩
+      · rw [lambertNumerator_succ, natDegree_add_eq_right_of_natDegree_lt (by rw [hmul]; exact hderiv),
+          hmul]
+        ring
+      · rw [lambertNumerator_succ,
+          leadingCoeff_add_of_degree_lt (degree_lt_degree (by rw [hmul]; exact hderiv)), hmullead]
+        rw [Nat.factorial_succ]
+        push_cast
         ring
 
 theorem natDegree_lambertNumerator {n : ℕ} (hn : n ≠ 0) (j : ℕ) :
@@ -159,7 +148,7 @@ theorem natDegree_lambertNumerator {n : ℕ} (hn : n ≠ 0) (j : ℕ) :
   (natDegree_and_leadingCoeff_lambertNumerator hn j).1
 
 theorem leadingCoeff_lambertNumerator {n : ℕ} (hn : n ≠ 0) (j : ℕ) :
-    (lambertNumerator n j).leadingCoeff = (n : ℤ) * (-1) ^ j * (j ! : ℤ) :=
+    (lambertNumerator n j).leadingCoeff = (n : ℤ) * (-1) ^ j * (Nat.factorial j : ℤ) :=
   (natDegree_and_leadingCoeff_lambertNumerator hn j).2
 
 /-- **The constant term** is the falling factorial `n(n-1)⋯(n-j)`. -/
@@ -168,10 +157,11 @@ theorem eval_zero_lambertNumerator (n j : ℕ) :
   induction j with
   | zero => simp
   | succ j ih =>
-      rw [lambertNumerator_succ, eval_add, eval_mul, eval_mul, eval_X, zero_mul, zero_mul,
-        zero_add, ih, prod_range_succ]
+      have h1 : (X * (1 + X) * derivative (lambertNumerator n j)).eval 0 = 0 := by simp
+      rw [lambertNumerator_succ, eval_add, h1, zero_add, eval_mul, ih, prod_range_succ]
       unfold lambertMultiplier
       simp only [eval_add, eval_mul, eval_pow, eval_X, eval_C]
+      push_cast
       ring
 
 /-- **Integrality**: every member of the family lies in `nℤ[v]`. -/
