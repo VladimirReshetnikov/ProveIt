@@ -1,109 +1,183 @@
 import FabiusFunction.StirlingSecondReverseRow
+import FabiusFunction.StirlingTransformEGF
 
 /-!
-# Finite reindexings of the second-kind reverse-row recurrence
+# The finite reverse-row identity for second-kind Stirling numbers
 
-The core theorem `second_reverse_row_ring_Icc` already proves
-`eq:second-reverse-row` of `thm:second-reverse-recurrences` in the canonical
-`Combinatorial_Coefficient_Calculus` monograph over every ring and for every
-row. This companion gives two finite reindexings of that same theorem:
+The series identity in `StirlingSecondReverseRow` becomes an actual finite
+recurrence here. With `u = exp X - 1`, the shared series is
 
-* `second_reverse_row_range` shifts the manuscript index by `j = i+2`,
-  so the sum runs over `range (n-k)` for every positive column `k`.
-* `second_reverse_row_sum_ring` uses the actual Stirling column index `m`;
-  its kernel is zero below `q+2`, where the entry recovered has column `q+1`.
-* `second_reverse_row_sum` preserves the rational specialization of the
-  column-indexed sum.
+`u^k / k! * logTail(u) = X * F_(k+1)' - (k+1) * F_(k+1)`.
 
-No second generating-function argument is needed. The shifted range follows
-from the exact interval by translation. Splitting off the zero kernel terms
-and using binomial symmetry gives the column-indexed sum. All coefficients
-are integer casts, so even the factor reordering is valid in a ring that is
-not commutative. Boundary rows, including empty sums at and above the
-diagonal, require no additional hypothesis.
+The Stirling transform reads its coefficients without a bivariate generating
+function. A single factorial identity identifies the resulting kernel with
+the negative-binomial weights in the source. The final theorem uses exactly
+the finite upper-triangular row, so every term has larger lower index than
+the entry being recovered. Its coefficients are integers: transporting the
+rational proof through `ℤ` gives the final recurrence over every commutative
+ring, without a characteristic-zero hypothesis.
 -/
 
 set_option autoImplicit false
 
-open Finset
+open Finset PowerSeries
 
 namespace Fabius
 
-/-- **The reverse-row recurrence with a zero-based summation index.**
+noncomputable section
 
-This is `eq:second-reverse-row` with `j = i+2`, over every ring.
-Only positivity of the column is required: when `n ≤ k` the sum is empty
-and the left side vanishes. No division or characteristic assumption is used. -/
-theorem second_reverse_row_range {R : Type*} [Ring R]
-    (n k : ℕ) (hk : 1 ≤ k) :
-    ((n : R) - (k : R)) * (Nat.stirlingSecond n k : R) =
-      ∑ i ∈ range (n - k),
-        (-1 : R) ^ (i + 2) * (i.factorial : R) *
-          ((k + i + 1).choose (i + 2) : R) *
-          (Nat.stirlingSecond n (k + i + 1) : R) := by
-  rw [second_reverse_row_ring_Icc R n k hk,
-    ← Finset.Ico_add_one_right_eq_Icc, Finset.sum_Ico_eq_sum_range,
-    show n - k + 1 + 1 - 2 = n - k by omega]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [show 2 + i = i + 2 by omega, Nat.add_sub_cancel,
-    show k + (i + 2) - 1 = k + i + 1 by omega]
+private def reverseRowKernel (k m : ℕ) : ℚ :=
+  if k + 2 ≤ m then
+    (-1 : ℚ) ^ (m - k) * (m - k - 2).factorial * m.choose k
+  else 0
 
-/-- **The reverse-row recurrence as a finite column-indexed Stirling transform.**
+private theorem reverseRowKernel_factorial (k j : ℕ) :
+    (1 / ((k + j + 2).factorial : ℚ)) *
+        ((-1 : ℚ) ^ (j + 2) * j.factorial * (k + j + 2).choose k) =
+      (1 / (k.factorial : ℚ)) *
+        ((-1 : ℚ) ^ (j + 2) / ((j + 2 : ℕ) * (j + 1 : ℕ))) := by
+  have hc : ((k + j + 2).choose k : ℚ) * k.factorial * (j + 2).factorial =
+      (k + j + 2).factorial := by
+    have h := Nat.choose_mul_factorial_mul_factorial
+      (show k ≤ k + j + 2 by omega)
+    rw [show k + j + 2 - k = j + 2 by omega] at h
+    exact_mod_cast h
+  rw [Nat.factorial_succ, Nat.factorial_succ] at hc
+  push_cast at hc ⊢
+  have hk : (k.factorial : ℚ) ≠ 0 := by positivity
+  have hn : ((k + j + 2).factorial : ℚ) ≠ 0 := by positivity
+  have hj1 : (j : ℚ) + 1 ≠ 0 := by positivity
+  have hj2 : (j : ℚ) + 2 ≠ 0 := by positivity
+  field_simp [hk, hn, hj1, hj2]
+  linear_combination (-1 : ℚ) ^ (j + 2) * hc
 
-For every `n` and `q`, the kernel is supported on `m ≥ q+2`, strictly to the
-right of column `q+1`. The result holds in every ring: the Stirling-number
-cast commutes with the integer-valued kernel even without commutativity of
-the ambient ring. Subtraction on the left is ring subtraction. -/
-theorem second_reverse_row_sum_ring {R : Type*} [Ring R] (n q : ℕ) :
-    ((n : R) - ((q + 1 : ℕ) : R)) * (Nat.stirlingSecond n (q + 1) : R) =
-      ∑ m ∈ range (n + 1), (Nat.stirlingSecond n m : R) *
-        (if q + 2 ≤ m then
-          (-1 : R) ^ (m - q) * ((m - q - 2).factorial : R) * (m.choose q : R)
+private theorem egfA_reverseRowKernel (k : ℕ) :
+    egfA ℚ (reverseRowKernel k) =
+      C (1 / (k.factorial : ℚ)) * (X ^ k * logTail ℚ) := by
+  ext m
+  rw [coeff_egfA, coeff_C_mul, coeff_X_pow_mul']
+  simp only [Algebra.algebraMap_self, RingHom.id_apply]
+  by_cases hm : k + 2 ≤ m
+  · obtain ⟨j, rfl⟩ : ∃ j, m = k + j + 2 := ⟨m - k - 2, by omega⟩
+    rw [reverseRowKernel, if_pos (by omega), if_pos (by omega),
+      show k + j + 2 - k = j + 2 by omega, Nat.add_sub_cancel,
+      coeff_logTail, if_pos (by omega)]
+    simp only [Algebra.algebraMap_self, RingHom.id_apply]
+    have h := reverseRowKernel_factorial k j
+    push_cast at h ⊢
+    rw [show (j : ℚ) + 2 - 1 = (j : ℚ) + 1 by ring]
+    exact h
+  · rw [reverseRowKernel, if_neg hm, mul_zero]
+    by_cases hkm : k ≤ m
+    · rw [if_pos hkm, coeff_logTail, if_neg (by omega), mul_zero]
+    · rw [if_neg hkm, mul_zero]
+
+private theorem factorial_succ_reciprocal (k : ℕ) :
+    ((k + 1 : ℕ) : ℚ⟦X⟧) * C (1 / ((k + 1).factorial : ℚ)) =
+      C (1 / (k.factorial : ℚ)) := by
+  rw [← map_natCast (C : ℚ →+* ℚ⟦X⟧) (k + 1), ← map_mul]
+  congr 1
+  rw [Nat.factorial_succ, Nat.cast_mul]
+  have hk : (k.factorial : ℚ) ≠ 0 := by positivity
+  have hk1 : ((k + 1 : ℕ) : ℚ) ≠ 0 := by positivity
+  field_simp [hk, hk1]
+
+private theorem reverseRow_series (k : ℕ) :
+    (egfA ℚ (reverseRowKernel k)).subst (exp ℚ - 1) =
+      egfA ℚ (fun n =>
+        ((n : ℚ) - ((k + 1 : ℕ) : ℚ)) * Nat.stirlingSecond n (k + 1)) := by
+  have hu : HasSubst (exp ℚ - 1) := HasSubst.exp_sub_one
+  have hder : d⁄dX ℚ (egfA ℚ (fun n => (Nat.stirlingSecond n (k + 1) : ℚ))) =
+      C (1 / (k.factorial : ℚ)) * (exp ℚ - 1) ^ k * exp ℚ := by
+    rw [egfA_stirlingSecond, Derivation.leibniz, derivative_C,
+      smul_zero, add_zero, derivative_pow, Nat.add_sub_cancel, map_sub,
+      Derivation.map_one_eq_zero, sub_zero, PowerSeries.derivative_exp]
+    simp only [Algebra.algebraMap_self, RingHom.id_apply, smul_eq_mul]
+    calc
+      _ = (((k + 1 : ℕ) : ℚ⟦X⟧) * C (1 / ((k + 1).factorial : ℚ))) *
+          (exp ℚ - 1) ^ k * exp ℚ := by ring
+      _ = _ := by rw [factorial_succ_reciprocal]
+  have hmul : ((k + 1 : ℕ) : ℚ⟦X⟧) *
+      egfA ℚ (fun n => (Nat.stirlingSecond n (k + 1) : ℚ)) =
+      C (1 / (k.factorial : ℚ)) * (exp ℚ - 1) ^ (k + 1) := by
+    rw [egfA_stirlingSecond]
+    simp only [Algebra.algebraMap_self, RingHom.id_apply]
+    rw [← mul_assoc, factorial_succ_reciprocal]
+  have hleft : egfA ℚ (fun n =>
+        ((n : ℚ) - ((k + 1 : ℕ) : ℚ)) * Nat.stirlingSecond n (k + 1)) =
+      X * d⁄dX ℚ (egfA ℚ (fun n => (Nat.stirlingSecond n (k + 1) : ℚ))) -
+        ((k + 1 : ℕ) : ℚ⟦X⟧) *
+          egfA ℚ (fun n => (Nat.stirlingSecond n (k + 1) : ℚ)) := by
+    rw [X_mul_derivative_egfA, natCast_mul_egfA, egfA_sub]
+    congr 1
+    funext n
+    simp only [Pi.sub_apply]
+    ring
+  rw [egfA_reverseRowKernel, subst_mul hu, subst_C, subst_mul hu,
+    subst_pow hu, subst_X hu, subst_logTail, hleft, hder, hmul, pow_succ]
+  ring
+
+/-- The reverse-row recurrence as a finite Stirling transform. It is valid
+for every `n` and `k`, including rows above the chosen column: subtraction on
+the left takes place in `ℚ`, and the right kernel vanishes below `k + 2`. -/
+theorem second_reverse_row_sum (n k : ℕ) :
+    ((n : ℚ) - ((k + 1 : ℕ) : ℚ)) * Nat.stirlingSecond n (k + 1) =
+      ∑ m ∈ range (n + 1), (Nat.stirlingSecond n m : ℚ) *
+        (if k + 2 ≤ m then
+          (-1 : ℚ) ^ (m - k) * (m - k - 2).factorial * m.choose k
         else 0) := by
-  by_cases hqn : q + 1 ≤ n
-  · rw [second_reverse_row_range n (q + 1) (by omega)]
-    let T : ℕ → R := fun m => (Nat.stirlingSecond n m : R) *
-      (if q + 2 ≤ m then
-        (-1 : R) ^ (m - q) * ((m - q - 2).factorial : R) * (m.choose q : R)
-      else 0)
-    have hzero : (∑ m ∈ range (q + 2), T m) = 0 := by
-      apply Finset.sum_eq_zero
-      intro m hm
-      dsimp only [T]
-      rw [if_neg (by have := Finset.mem_range.mp hm; omega), mul_zero]
-    change (∑ i ∈ range (n - (q + 1)),
-      (-1 : R) ^ (i + 2) * (i.factorial : R) *
-        ((q + 1 + i + 1).choose (i + 2) : R) *
-        (Nat.stirlingSecond n (q + 1 + i + 1) : R)) =
-      ∑ m ∈ range (n + 1), T m
-    rw [← Finset.sum_range_add_sum_Ico T (show q + 2 ≤ n + 1 by omega),
-      hzero, zero_add, Finset.sum_Ico_eq_sum_range,
-      show n + 1 - (q + 2) = n - (q + 1) by omega]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    dsimp only [T]
-    rw [if_pos (by omega), show q + 2 + i - q = i + 2 by omega,
-      Nat.add_sub_cancel, show q + 2 + i = q + (i + 2) by omega,
-      Nat.choose_symm_add, show q + (i + 2) = q + 1 + i + 1 by omega]
-    exact (Nat.cast_comm (Nat.stirlingSecond n (q + 1 + i + 1))
-      ((-1 : R) ^ (i + 2) * (i.factorial : R) *
-        ((q + 1 + i + 1).choose (i + 2) : R))).symm
-  · have hnq : n < q + 1 := by omega
-    rw [Nat.stirlingSecond_eq_zero_of_lt hnq, Nat.cast_zero, mul_zero]
-    symm
+  have h := reverseRow_series k
+  rw [egfA_subst_exp_sub_one] at h
+  exact (congrFun (seq_eq_of_egfA_eq ℚ h) n).symm
+
+private theorem second_reverse_row_rat (n k : ℕ) (hk : 1 ≤ k) (hkn : k ≤ n) :
+    ((n : ℚ) - k) * Nat.stirlingSecond n k =
+      ∑ i ∈ range (n - k),
+        (-1 : ℚ) ^ (i + 2) * i.factorial * (k + i + 1).choose (i + 2) *
+          Nat.stirlingSecond n (k + i + 1) := by
+  obtain ⟨q, rfl⟩ : ∃ q, k = q + 1 := ⟨k - 1, by omega⟩
+  rw [second_reverse_row_sum]
+  rw [← Nat.Ico_zero_eq_range,
+    ← Finset.sum_Ico_consecutive _ (Nat.zero_le (q + 2))
+      (show q + 2 ≤ n + 1 by omega), Nat.Ico_zero_eq_range]
+  have hzero :
+      (∑ m ∈ range (q + 2), (Nat.stirlingSecond n m : ℚ) *
+        (if q + 2 ≤ m then
+          (-1 : ℚ) ^ (m - q) * (m - q - 2).factorial * m.choose q
+        else 0)) = 0 := by
     apply Finset.sum_eq_zero
     intro m hm
     rw [if_neg (by have := Finset.mem_range.mp hm; omega), mul_zero]
+  rw [hzero, zero_add, Finset.sum_Ico_eq_sum_range,
+    show n + 1 - (q + 2) = n - (q + 1) by omega]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [if_pos (by omega), show q + 2 + i - q = i + 2 by omega,
+    Nat.add_sub_cancel, show q + 2 + i = q + (i + 2) by omega,
+    Nat.choose_symm_add]
+  rw [show q + (i + 2) = q + 1 + i + 1 by omega]
+  ring
 
-/-- The rational specialization of the column-indexed reverse-row identity.
-This retains the unrestricted `n,q` signature of the original
-`second_reverse_row_sum`; its stronger ring version is
-`second_reverse_row_sum_ring`. -/
-theorem second_reverse_row_sum (n q : ℕ) :
-    ((n : ℚ) - ((q + 1 : ℕ) : ℚ)) * (Nat.stirlingSecond n (q + 1) : ℚ) =
-      ∑ m ∈ range (n + 1), (Nat.stirlingSecond n m : ℚ) *
-        (if q + 2 ≤ m then
-          (-1 : ℚ) ^ (m - q) * ((m - q - 2).factorial : ℚ) * (m.choose q : ℚ)
-        else 0) :=
-  second_reverse_row_sum_ring n q
+/-- The finite reverse-row recurrence of the second kind, over every
+commutative ring, with source index `j = i + 2`. Its factor
+`(-1)^j * choose (k+j-1) j` is the generalized binomial coefficient
+`choose (-k) j`. Every Stirling entry on the right is strictly to the right
+of column `k`, and the sum is empty at the diagonal. This generic, triangular
+version has a distinct name from the all-boundary integer theorem
+`second_reverse_row` in `StirlingSecondReverseRow`. -/
+theorem second_reverse_row_commRing_of_le {R : Type*} [CommRing R]
+    (n k : ℕ) (hk : 1 ≤ k) (hkn : k ≤ n) :
+    ((n : R) - k) * Nat.stirlingSecond n k =
+      ∑ i ∈ range (n - k),
+        (-1 : R) ^ (i + 2) * i.factorial * (k + i + 1).choose (i + 2) *
+          Nat.stirlingSecond n (k + i + 1) := by
+  have hz : ((n : ℤ) - k) * Nat.stirlingSecond n k =
+      ∑ i ∈ range (n - k),
+        (-1 : ℤ) ^ (i + 2) * i.factorial * (k + i + 1).choose (i + 2) *
+          Nat.stirlingSecond n (k + i + 1) := by
+    exact_mod_cast second_reverse_row_rat n k hk hkn
+  simpa only [map_sub, map_mul, map_sum, map_pow, map_neg, map_one, map_natCast] using
+    congrArg (Int.castRingHom R) hz
+
+end
 
 end Fabius

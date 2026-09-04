@@ -6,83 +6,16 @@ canonical claim register is the **Lean formalization register** section of
 Mathematical statements and proofs belong in the TeX/PDF pair. The register's
 status words are recorded correspondence claims, not a fresh compilation receipt.
 
-## Latest publication checkpoint (2026-09-04)
-
-Main `da90f69d1` is integrated with the source conflicts resolved. The rebuilt
-PDF has 213 A4 pages and measures 2,063,614 bytes. The source has 11,290 lines,
-555,974 UTF-8 bytes, 209 adjacent proofs, 712 labels, and 960 references.
-The regenerated register contains 209 rows: 66 `Lean`, 35 `partial`, and
-108 `none`. The bibliography has 24 items and 14 cited keys; provenance has
-27 disposition records and six original-source inventory rows.
-These are the publication owner's current source/register/render measurements,
-not a fresh replay of the inherited Lean receipts; pending proof extensions
-remain pending.
-
-All three serial strict pdfLaTeX passes exited successfully. The PDF has five
-embedded Libertinus font entries, no Type 3 fonts, and no undefined-reference
-or rerun warnings. Six changed/register/index pages were visually inspected.
-One nonfatal 28.0023 pt overfull box remains on page 115 at the inline
-`HasFTaylorSeriesUpToOn.comp` name; it is readable and is deferred to the
-user-requested dedicated layout pass. This is not a warning-free layout claim.
-The canonical validator's final-mode rerun passed with zero errors and zero
-warnings, and all 14 validator regression tests passed at this merged state.
-These structural warnings are separate from the deferred TeX layout warning above.
-The exact `check_identities.py` regression passed 37 identities with zero
-failures. The crosswalk source audit exited successfully: all 3,476 distinct
-cited `Fabius.*` names resolved, with zero unresolved names; its source inventory
-reported 12,193 public declarations, 1,332 private declarations, and 32
-namespaces. Git merge closure is a separate owner check; none of these source,
-finite, or render checks establishes fresh Lean compilation.
-
-At the preceding `17156aa2a` checkpoint, the source had 11,244 lines,
-552,510 UTF-8 bytes, and 954 references, with a 64 `Lean` / 35 `partial` /
-110 `none` register. That 213-page PDF had three serial strict passes, a
-generated index, six focused page checks, Libertinus text, and no Type 3 fonts,
-undefined references, overfull boxes, or rerun requests. The structural/provenance
-validator and all 14 regression tests passed; all 3,472 cited Fabius names
-resolved. Its facade had 837 unique imports and no missing source targets among
-987 modules; an import of the absent `InverseDerivativeRecursion` was removed.
-These older validation counts and checks describe that named checkpoint only.
-
-## Preceding merge and validation checkpoint (2026-09-04)
-
-At the checkpoint integrating main `095be8f0b`, the manuscript had 209 theorem-like
-items and 209 adjacent proofs, 712 labels, 951 references, 27 disposition rows,
-and six original-source inventory rows. Its 209-row register recorded 61 `Lean`,
-35 `partial`, and 113 `none`; inherited compiler receipts are not fresh replay.
-The source measured 11,155 lines and 546,097 UTF-8 bytes.
-
-That synchronized PDF has 211 A4 pages. Three serial strict pdfLaTeX passes and
-index generation succeeded; Libertinus text was present, with no Type 3 fonts,
-undefined references, overfull boxes, or rerun requests. Six focused pages
-covering the latest Nörlund additions, register, and index were visually checked;
-the preceding merge's Laplace, Lagrange, symmetric-function, and Newton additions
-were reviewed separately. No whole-volume visual or mathematical audit is claimed.
-
-The canonical structural/provenance validator and all eight crosswalk regression
-tests passed. All 3,458 cited Fabius names resolved in the source audit. The exact
-finite Stirling/Bell regressions passed. The facade reached all 984 source modules;
-duplicate imports and the duplicate public reverse-row declaration were removed.
-These are source/finite/render checks, not Lean compilation. The merged proof
-extensions and new wrappers remain pending while other worktrees use the build slot.
-
-## Incoming grid and CRT certificate checkpoint
-
-The preceding integration of pinned main `17156aa2a` retained the nine grid/CRT
-certificate theorems from `5a685136b`. That commit records warning-free focused
-builds and the standard three axioms for all nine declarations. Both
-`GridEvaluationCertificate` and `IntegerCRTCertificate` have identical source
-blobs at that receipt and at the incoming pin. Their Lean classifications are
-therefore inherited receipts, not fresh compilation of this merged tree.
-The incoming `28de4e51c` checkpoint recorded 207 register rows: 62 `Lean`,
-35 `partial`, and 110 `none`, with a census of 985 modules and 12,199 public
-declarations. Those counts and the preceding 211-page render describe their
-historical source states; the current publication measurements appear above.
+The merge of main at `da90f69d1` retains the nine compiled grid/CRT certificate
+theorems from `5a685136b`. Its regenerated register has 207 rows: 65 `Lean`,
+35 `partial`, and 107 `none`; the corpus census is 986 modules and 12,233 public
+declarations. The pinned checkpoint counts and pending-build receipts below
+describe their historical source states, not a rebuild of this merged tree.
 
 ## Inventory and evidence boundary
 
-The initial source snapshot contained 201 theorem-like environments: 150 theorems,
-26 corollaries, 12 propositions, 6 lemmas, and 7 algorithms. Its register had 201
+The initial source snapshot contains 201 theorem-like environments: 150 theorems,
+26 corollaries, 12 propositions, 6 lemmas, and 7 algorithms. Its register has 201
 rows, classified as 56 `Lean`, 33 `partial`, and 112 `none`. There are no conjecture
 environments. These are environment counts, not counts of independently proved
 assertions: several environments contain multiple identities, while definitions,
@@ -102,25 +35,14 @@ The first integration milestone merged pinned upstream
 `c5a82b88c40ad493d394056c8dd42ef6d3d306ac`, followed by
 `063ef3e1b1c0403bd6c71d1c9aa265825504339c` and
 `8b6dbd52428744a8496c762fcdeb2cfebc0ba7cc` and
-`c668cb96362acbae8b89950102b8ea361102a73f`. Its source validator passed with
+`c668cb96362acbae8b89950102b8ea361102a73f`. Its source validator passes with
 206 theorem-like items and adjacent proofs, 27 dispositions, and six immutable
 source-inventory rows. The obsolete live checksum ledger was retired as upstream
-intended. That checkpoint's register had 60 `Lean`, 35 `partial`, and 111 `none` rows;
+intended. At that checkpoint the register had 60 `Lean`, 35 `partial`, and 111 `none` rows;
 these totals include inherited claims and are not a fresh audit of all 206 rows.
 The latest upstream rescaling and formal-power recurrence upgrades are retained;
 the new Bernoulli formal-logarithm and Abel sources remain separately pending.
-The upstream duplicate-crosswalk validator's eight regression tests passed at
-that checkpoint. These are historical measurements, not current merged totals.
-
-The present integration combines pinned upstream
-`2ccc7f787becde416b234d40093876eac9f9c35e` with the preceding source/render
-checkpoint. It preserves the incoming Newton reciprocal compilation receipt
-and the prior Stirling complete-homogeneous and formal-power core receipts;
-those receipts do not certify the merged wrappers or the complete dependency
-graph. Fresh merged-source counts, structural checks, and PDF verification are
-recorded separately by the publication owner. The second-kind recurrence and
-Riordan rows retain their partial classifications for the explicit semantic
-and inverse-construction gaps described below.
+The upstream duplicate-crosswalk validator's eight regression tests pass.
 
 The subsequent Nörlund synchronization incorporates main through
 `2ccc7f787becde416b234d40093876eac9f9c35e` and the source checkpoint
@@ -133,23 +55,64 @@ The inherited PDF predates these latest source edits. PDF rebuilding remains
 skipped in this work at the user's request, without discarding the upstream
 render or claiming current render parity.
 
+The finite-difference and Bell-multiplicity source checkpoint incorporates
+main through `5fddefb43b6f4009df826b68aedbdb1c6112e0d0`. It adds seven public
+theorems: three generic formulas in `BellCompletePartitions`, two
+arbitrary-scalar difference laws and two multiplicity specializations in
+`NorlundGeneralized`. Independent source/API review checked the factorial
+normalizations, unrestricted zeroth Bell input, zero-ring scope, degree zero,
+and negative orders. No Lean process was started while external Lean/Lake
+jobs occupied the host; these declarations are not compiler-verified yet.
+The generic human Bell proof is now shared by the Nörlund section.
+At this checkpoint the generated register has 208 rows, classified as
+62 `Lean`, 35 `partial`, and 111 `none`. The two added upstream `Lean`
+classifications are inherited certificate work, not promotions from this
+source review. Fourteen validator regression tests and the canonical
+structural/provenance check pass. The manifest and package README now refer
+to the canonical register instead of maintaining competing current totals.
+
+The publication merge then incorporates pinned main
+`ff76c57fa563102804b64c8c8abab90f47b09baf`. Its `BellSetPartitions`
+module supplies the weighted labelled-set interpretation for both partial
+and complete Bell polynomials, and the second-kind Stirling block count.
+That module's focused compilation is recorded in upstream commit
+`dd554e5a8`; this work performed an independent statement/hypothesis review,
+not a fresh compiler replay. Its source changes the previously open
+labelled-partition boundary but does not supply the prescribed-type count.
+The merged register has 208 rows: 63 `Lean`, 35 `partial`, and 110 `none`.
+The new local Bell multiplicity and arbitrary-order Nörlund statements
+remain pending compilation.
+
+The final synchronization incorporates main `da90f69d1` and reviews its two
+proposed correspondence upgrades. The Abel declaration references are retained,
+but the row stays `none`: source review is not compilation, and its present
+binomial-identity proof requires a rational algebra. The coordinate-free
+composition theorem now has explicit local smoothness hypotheses and canonical
+ordered-partition indexing. Direct inspection of Mathlib's
+`iteratedFDeriv_comp` and `FormalMultilinearSeries.taylorComp` establishes
+that exact correspondence; the human induction prepends the new least label,
+so it permutes no derivative arguments. Completeness is unnecessary.
+The resulting register is 208 rows: 64 `Lean`, 35 `partial`, and 109 `none`.
+This Mathlib correspondence is not a fresh local compiler run.
+
 `NewtonReciprocal.lean` passed focused compilation on 2026-09-04 using
 `lake env lean -o .lake/build/lib/lean/FabiusFunction/NewtonReciprocal.olean
 Analysis/FabiusFunction/Lean/FabiusFunction/NewtonReciprocal.lean` (exit zero).
-Its five public theorems have that inherited compiler receipt. The new
-Stirling/Lagrange source and the merged reverse-row interfaces remain
-source-reviewed and await compilation, including any missing prerequisites.
-The merger deduplicates the reverse-row proof into `StirlingSecondReverseRow`
-and derives the companion interfaces from it. No aggregate build is claimed.
-At the preceding upstream synchronization, the cited-name and duplicate-name
-structural audits passed: 3,439 distinct cited names resolved and there were no duplicate
-declaration names. The facade audit found two missing upstream imports,
+Its five public theorems are compiler-checked. The other twelve new public
+theorems in the three Stirling/Lagrange leaves remain source-reviewed and await
+compilation, including any missing prerequisites. No aggregate build is claimed.
+At the upstream synchronization checkpoint the cited-name and duplicate-name
+structural audits passed:
+3,439 distinct cited names resolved and there were no duplicate declaration
+names. The incoming alternate reverse-row declaration is now named
+`Fabius.second_reverse_row_commRing_of_le`, avoiding a collision with the
+compiled theorem while its own validation remains pending. The facade audit found two missing upstream imports,
 `AssociahedronFaceNumbers` and `PochhammerFalling`; both were restored. These
-structural checks are not a fresh aggregate Lean build or current merge audit.
-At that checkpoint all new modules had facade imports and contained no
-`sorry`, `admit`, `axiom`, or `opaque` declarations. The register-generator mappings
-preserved the new pending and compiled distinctions; both generator scripts passed
-read-only syntax and mapping checks without rewriting the canonical document.
+structural checks are not a fresh aggregate Lean build. The reviewed new modules
+contain no `sorry`, `admit`, `axiom`, or `opaque` declarations; import integration
+for the alternate reverse-row source remains part of its pending validation. The register-generator mappings
+preserve the pending and compiled distinctions; a dry run on a temporary source
+copy reproduces the canonical register and its 207-row totals.
 
 ## Source correspondences inspected
 
@@ -226,25 +189,15 @@ instances are omitted as expected for the new commutative-ring uniqueness
 statements. These six new theorems address the original uniqueness and alternative
 coefficient obligations recorded in the inspected `LagrangeInversion.lean` row.
 
-The incoming `StirlingSecondReverseRowIdentity.lean` proof was independently
-checked against the existing Stirling-transform and logarithmic-tail APIs.
-The review checked the factorial kernel, coefficient
+`StirlingSecondReverseRowIdentity.lean` was independently checked against the
+existing Stirling-transform and logarithmic-tail APIs. Its two public theorems
+state the complete rational transform and the finite reverse-row identity over
+every commutative ring. The review checked the factorial kernel, coefficient
 normalization, discarded zero prefix, finite-sum reindexing, binomial symmetry,
 and transfer through the integers. It caught a mismatch between rational
 subtraction in the logarithmic-tail denominator and natural subtraction in the
 kernel helper; the author added an explicit rational normalization. The revised
-incoming source had no further concrete blocker identified, but had not compiled.
-That historical preflight does not certify the current merged implementation.
-
-The merge retains `Fabius.second_reverse_row` and
-`Fabius.second_reverse_row_ring_Icc` in `StirlingSecondReverseRow`, the latter
-over any unital ring and with every nonnegative row index admitted.
-The companion `StirlingSecondReverseRowIdentity` now reuses that proof for
-`Fabius.second_reverse_row_range`, `Fabius.second_reverse_row_sum_ring`, and
-the rational specialization `Fabius.second_reverse_row_sum`. The core source
-proofs and these merged wrappers all remain pending compilation. Their
-existence does not upgrade the combined second-kind reverse-recurrences row
-from partial to Lean before compiler validation.
+source has no further concrete blocker identified, but awaits compilation.
 
 ## Substantive remaining obligations
 
@@ -258,11 +211,12 @@ from partial to Lean before compiler validation.
    inverses from the stated unit hypotheses; prove both array products and record
    their exact declarations. Until then distinguish the conditional inverse law
    from the full inverse construction in the register.
-3. **Combinatorial semantics.** Build cardinality or weighted-enumerator bridges
-   for set partitions, cycles, descents, and the recurrence-defined Bell and
-   Stirling arrays. Algebraic recurrences alone cannot certify a counting
-   interpretation. Use a shared finite-set decomposition API rather than proving
-   every interpretation independently.
+3. **Combinatorial semantics.** Reuse the incoming `BellSetPartitions`
+   weighted-set decomposition and Stirling block-count bridge. Remaining
+   obligations include prescribed block-size type counts, the literal partial
+   Bell monomial formula, cycles, and descents. Algebraic recurrences alone
+   cannot certify a counting interpretation; do not duplicate the completed
+   weighted Bell bridge while extending it.
 4. **Darboux analysis.** The corrected analytic-multiplier theorem explicitly
    handles polynomial exceptional exponents; the finite-smoothness subtraction
    theorem assumes a global decomposition and gives an explicit periodic boundary
@@ -271,10 +225,11 @@ from partial to Lean before compiler validation.
    integration by parts still need actual Lean statements and proofs. No existing
    Darboux register row should be promoted merely because the human proof was
    repaired.
-5. **Analytic and formal differential calculus.** Formal power-series composition
-   and the two-factor formal Leibniz theorem are useful infrastructure, but do not
-   prove the analytic Faà di Bruno theorem, the general multinomial product rule,
-   or analytic inverse-derivative claims without explicit bridges.
+5. **Analytic and formal differential calculus.** The canonical ordered
+   iterated-Fréchet-derivative composition formula is now explicitly mapped to
+   Mathlib. Its partial-Bell tensor regrouping, the general multinomial product
+   rule, and analytic inverse-derivative claims still require separate bridges;
+   formal power-series identities alone do not discharge them.
 6. **Two-way exposition coverage.** Give every presently unlabelled theorem-like
    environment a stable claim identifier. Extend the existing register to cover
    mathematical prose and examples, and identify which public Lean support
