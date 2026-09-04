@@ -91,7 +91,7 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 903 modules and 11,448 public declarations with no
+live facade audit contains 904 modules and 11,457 public declarations with no
 documentation gaps. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` source-only module; the other
 three are the explicit Gaussian second-derivative and division-free moment
@@ -113,11 +113,31 @@ clause, Guide label `eq:pair-Bernoulli-general`, and canonical-removable
 reading of `eq:bernoulli-gen` are Exact. Here `complexExpm1Div 0 = 1` and it
 equals `(exp z - 1) / z` away from zero; this is not the literal totalized
 quotient at zero and asserts no holomorphy. Higher/full Puiseux and logarithmic
-expansions remain open. None of
-these source-only changes alters this monograph's forward-status counts or
-retained historical artifact, and no render parity is claimed. The
+expansions remain open. That sibling tranche produced the historical
+903/11,448 checkpoint without changing this monograph's forward-status or
+source-concordance counts.
+
+The current q-series increment is the one-definition/eight-theorem
+`GeometricUniformMomentPolynomial.lean` leaf. Its exhaustive public surface is
+`geometricUniformMomentPolynomial`,
+`geometricUniformMomentPolynomial_zero`,
+`geometricUniformMomentPolynomial_succ`,
+`geometricUniformMomentPolynomial_natDegree_le`,
+`geometricUniformMomentPolynomial_eval_zero`,
+`geometricUniformMomentPolynomial_one`,
+`geometricUniformMomentPolynomial_two`,
+`geometricUniformMomentPolynomial_three`, and
+`geometricUniformMomentPolynomial_four`.  The recursive rational polynomial,
+its zeroth value and residual-product recurrence, the triangular degree bound,
+the value at zero, and the first four nonconstant cases are exact.  The module
+does not identify this recursive family with the normalized analytic
+coefficients `a_n(q)` or with the geometric-uniform moment-generating product.
+Accordingly `thm:qF-moment-polynomial` moves from None to Partial, not Exact;
+the sharp-degree proposition stays None.  The live census is 904/11,457.
+Neither this source-only addition nor the preceding Lambert addition changes
+the retained historical artifact, and no render parity is claimed. The
 forward status inventory covers 282 labelled results:
-166 Exact / 90 Partial / 18 None / 8 N/A; the 191-result pre-Fabius core is
+166 Exact / 91 Partial / 17 None / 8 N/A; the 191-result pre-Fabius core is
 35 / 30 / 123 / 3.
 The five-publication concordance
 has 78 Lean-proved, 400 human-proved frontier, 60 not-applicable, and 9

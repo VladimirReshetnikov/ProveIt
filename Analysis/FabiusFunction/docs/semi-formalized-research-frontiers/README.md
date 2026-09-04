@@ -80,8 +80,24 @@ expansions remain open. The affected retained frontier, primary, walkthrough,
 and Lambert-Guide PDFs are historical artifacts and do not render this
 source-only overlay; no render parity is claimed. The live documentation
 census at the exact-radius four-theorem checkpoint was 903 modules and 11,447
-public declarations; the value-completion theorem brings the live census to
-903 modules and 11,448 public declarations.
+public declarations; the value-completion theorem brought the next historical
+checkpoint to 903 modules and 11,448 public declarations.
+
+The newest source-only addition is
+`FabiusFunction.GeometricUniformMomentPolynomial`, with one definition and
+eight theorems. It defines the recursive rational polynomial family and proves
+its base case, residual-product recurrence, triangular degree bound,
+reciprocal-factorial value at zero, and the explicit cases `P1` through `P4`.
+Together with the zero theorem this is the complete displayed `P0`--`P4`
+algebraic surface. It does not identify the recursive family with the
+normalized analytic Taylor or moment coefficients, and it does not prove the
+leading-coefficient formula or the resulting strict odd-degree drop. Thus
+`p7:thm:Pn` remains **Partial**, with only its algebraic recurrence, degree
+bound, zero value, and small-case clauses supplied. This
+one-module/nine-declaration increment brings the live
+documentation census to 904 modules and 11,457 public declarations. The
+retained frontier, primary, walkthrough, and geometric-q PDFs predate this
+source-only overlay and claim no render parity.
 
 The preceding source-only addition is
 `FabiusFunction.GeometricRichardsonGenerating`, with three definitions and
@@ -118,7 +134,7 @@ the later Euler, q-binomial, Jacobi, quantum-binomial, Rogers--Szegő,
 cyclotomic-divisibility, q-Catalan, primitive-root-block, q-Lucas, Jackson
 q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
 q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result forward
-status totals are now 166 exact / 90 partial / 18 none / 8 interface. The
+status totals are now 166 exact / 91 partial / 17 none / 8 interface. The
 outer spectral product now has an exact
 locally-uniform/normal-convergence theorem; the compound centered/MGF and
 exterior reciprocal/pole layers remain partial.

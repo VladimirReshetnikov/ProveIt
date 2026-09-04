@@ -352,9 +352,12 @@ convention, \nolinkurl{eq:bernoulli-gen}; those four Lambert modules total four
 definitions and 37 theorems, 41 declarations; and the
 three-definition/seven-theorem geometric Richardson generating-function
 module, and the three-theorem second-moment
-strengthening of the existing Gaussian-binomial cumulant module.  The live
-source census is 903 facade-reachable modules and 11,448 public declarations;
-the preceding exact-radius four-theorem checkpoint was 903/11,447.
+strengthening of the existing Gaussian-binomial cumulant module, followed by
+the one-definition/eight-theorem geometric-uniform moment-polynomial algebra
+module.  The live source census is 904 facade-reachable modules and 11,457
+public declarations; the immediately preceding complex value-completion
+checkpoint was 903/11,448, and the preceding exact-radius four-theorem
+checkpoint was 903/11,447.
 The retained
 257-page, 2,438,299-byte A4 PDF, SHA-256
 \nolinkurl{3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980},
@@ -2526,14 +2529,22 @@ to 902/11,440.  Three later theorems in the existing
 division-free raw-second-moment and variance-numerator identities over every
 commutative semiring.  The subsequent zero-definition/four-theorem
 \path{LambertWBranchGapBernoulli.lean} leaf first brought the exact-radius
-checkpoint to 903/11,447.  Its fifth theorem brings the live source census to
-903/11,448 and adds the complex \(\operatorname{HasSum}\) value
+checkpoint to 903/11,447.  Its fifth theorem brought the next historical
+checkpoint to 903/11,448 and added the complex \(\operatorname{HasSum}\) value
 \(\lean{complexExpm1Div}(z)^{-1}\) exactly on the open disk.  Thus it crosswalks
 \nolinkurl{eq:pair-Bernoulli-general} and, under the explicit standard
 removable-origin convention, the whole \nolinkurl{eq:bernoulli-gen}.  This
 does not claim the literal Lean quotient at zero or formalize the Guide's
-nearest-zero proof route; Puiseux claims remain open.  These additions are
-source-only, and the retained 257-page PDF
+nearest-zero proof route; Puiseux claims remain open.  The subsequent
+one-definition/eight-theorem
+\path{GeometricUniformMomentPolynomial.lean} leaf raises the live source
+census to 904/11,457.  It supplies the recursively defined rational polynomial,
+its residual-product recurrence, triangular degree bound, reciprocal-factorial
+value at zero, and the cases \(P_0,\ldots,P_4\).  It does not prove the
+analytic normalization identifying that family with the source moment
+coefficients, nor the leading-coefficient formula and consequent strict
+odd-degree drop.  Hence \nolinkurl{p7:thm:Pn} remains Partial rather than
+Exact.  These additions are source-only, and the retained 257-page PDF
 remains explicitly historical; no PDF was built for this update.
 The newest six module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
@@ -9333,6 +9344,25 @@ analytic \path{HasSum} theorems additionally assume a complete normed field,
 strict nome contraction, and absolute summability of the normalized data
 series.  They do not provide convergence without those hypotheses or an
 analytic acceleration bound.
+
+\item \path{GeometricUniformMomentPolynomial.lean} has the one public
+definition \path{Fabius.geometricUniformMomentPolynomial} and exactly eight
+public theorems:
+\path{Fabius.geometricUniformMomentPolynomial_zero},
+\path{Fabius.geometricUniformMomentPolynomial_succ},
+\path{Fabius.geometricUniformMomentPolynomial_natDegree_le},
+\path{Fabius.geometricUniformMomentPolynomial_eval_zero},
+\path{Fabius.geometricUniformMomentPolynomial_one},
+\path{Fabius.geometricUniformMomentPolynomial_two},
+\path{Fabius.geometricUniformMomentPolynomial_three}, and
+\path{Fabius.geometricUniformMomentPolynomial_four}.  These declarations
+define the recursive family directly in \(\RationalNumbers[X]\), prove its
+division-free residual-product recurrence, triangular degree bound and value
+at zero, and calculate \(P_0,\ldots,P_4\).  They do not identify the family
+with the normalized analytic moment coefficients in
+\nolinkurl{p7:eq:Pn-def}, and they prove neither the leading-coefficient
+formula nor the strict degree drop for odd \(n>1\).  Therefore the compound
+frontier label \nolinkurl{p7:thm:Pn} is Partial, not Exact.
 
 \item The five theorems of \path{FinitePolynomialFilterExactness.lean} are
 \path{Fabius.polynomialFilter_response_eq},

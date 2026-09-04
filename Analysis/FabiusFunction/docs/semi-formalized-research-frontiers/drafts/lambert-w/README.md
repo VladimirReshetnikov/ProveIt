@@ -111,8 +111,16 @@ theorems, 41 declarations.  The signed higher/convergent Puiseux program
 remains open.  The retained 66-page Guide PDF and the other affected retained
 PDFs predate this source-only overlay, so no render parity is claimed.  The
 exact-radius four-theorem checkpoint had census 903/11,447; the fifth theorem
-brings the live documentation census to 903 modules and 11,448 public
-declarations.
+brought the next historical checkpoint to 903 modules and 11,448 public
+declarations.  The later sibling
+`FabiusFunction.GeometricUniformMomentPolynomial` module has one definition
+and eight theorems for its recursive polynomial, residual-product recurrence,
+degree bound, value at zero, and first four nonconstant cases.  It raises the
+live documentation census to 904 modules and 11,457 public declarations; its
+external source label `p7:thm:Pn` remains Partial because the analytic
+moment-coefficient normalization and leading/odd-degree clause are not part of
+that algebraic leaf.  The sibling source-only addition is likewise absent from the retained
+historical PDFs.
 
 The exact raw second-order package is `LambertWCurvature.lean`.  Its
 principal API is `deriv_principalLambertW`,

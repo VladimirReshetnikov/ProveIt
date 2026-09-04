@@ -13510,8 +13510,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 166 are \statusexact, 90 are
-\statuspartial, 18 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 166 are \statusexact, 91 are
+\statuspartial, 17 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 35 \statusexact, 30 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -14102,9 +14102,9 @@ Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 7 & 2 & 0 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
-Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 8 & 45 & 3 & 0\\
+Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 8 & 46 & 2 & 0\\
 \midrule
-\textbf{Forward total} & 166 & 90 & 18 & 8\\
+\textbf{Forward total} & 166 & 91 & 17 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -15708,7 +15708,22 @@ dyadic outer-product specializations, and real-frequency local and compact
 uniform convergence of the full prefixes are exact, but the named
 centered/MGF wrapper, reciprocal outside-disk formula, pole divisor, and
 zero--pole exchange are not packaged}\\[2pt]
-\Cref{thm:qF-moment-polynomial} & \statusnone & ---\\[2pt]
+\Cref{thm:qF-moment-polynomial} & \statuspartial &
+\texttt{geometricUniformMomentPolynomial},
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}zero},
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}succ},
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}natDegree\_\allowbreak{}le},
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval\_\allowbreak{}zero},
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}one},
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}two},
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}three},
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}four}\newline
+{\footnotesize\texttt{GeometricUniformMomentPolynomial}; the recursively
+defined polynomial family, its zeroth value and residual-product recurrence,
+the degree bound, the specialization at $q=0$, and the displayed cases
+$\mathcal P_1$ through $\mathcal P_4$ are exact.  The identification with
+$\QPochhammer{q}{q}{n}(1-q)^{-n}a_n(q)$, hence with the analytic
+moment-generating product, is not formalized}\\[2pt]
 \Cref{prop:qF-P-degree-sharp} & \statusnone & ---\\[2pt]
 \Cref{cor:qF-halfbase-dictionary} & \statuspartial &
 \texttt{fabiusAtInverseTwoPow\_eq\_halfMoment},

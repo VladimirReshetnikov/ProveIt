@@ -109,9 +109,11 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live 2026-09-04 inventory contains 903 modules and 11,448 lexically
+The live 2026-09-04 inventory contains 904 modules and 11,457 lexically
 visible public declarations, with zero missing module headers and zero missing
-doc comments.  The post-merge 2026-09-01 inventory of 675 modules and 8,909
+doc comments.  The immediately preceding Lambert-series checkpoint of 903
+modules and 11,448 declarations remains historical.  The post-merge 2026-09-01
+inventory of 675 modules and 8,909
 declarations remains a historical checkpoint: relative to the 610/8,318
 activation checkpoint, that tree added sixty-five modules and 591
 declarations, and relative to the earlier 630/8,552 merged checkpoint it added
@@ -270,7 +272,7 @@ asymptotic; the separate analytic series leaf is inventoried next.
 `LambertWBranchGapBernoulli.lean` first added one source module and four public
 theorems to the historical 902/11,443 checkpoint, giving the historical exact-radius
 checkpoint 903/11,447.  Its fifth public theorem leaves the module count fixed
-and brings the live census to 903/11,448.  Its exhaustive public surface is
+and brings that historical checkpoint to 903/11,448.  Its exhaustive public surface is
 `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
 `hasSum_bernoulli_mul_pow_div_factorial`,
@@ -300,6 +302,34 @@ does not assert equality to Lean's literal totalized quotient at `z=0` or a
 holomorphy theorem.  The real quotient theorem deliberately excludes `z=0`,
 while the branch theorem excludes both endpoints.  No remainder estimate or
 higher/convergent Puiseux expansion is included.
+
+#### Algebraic geometric-uniform moment-polynomial tranche
+
+`GeometricUniformMomentPolynomial.lean` adds one source module and nine public
+declarations to the historical 903/11,448 Lambert checkpoint, bringing the
+live census to 904/11,457.  Its exhaustive 1+8 surface is the definition
+`geometricUniformMomentPolynomial` and the theorems
+`geometricUniformMomentPolynomial_zero`,
+`geometricUniformMomentPolynomial_succ`,
+`geometricUniformMomentPolynomial_natDegree_le`,
+`geometricUniformMomentPolynomial_eval_zero`,
+`geometricUniformMomentPolynomial_one`,
+`geometricUniformMomentPolynomial_two`,
+`geometricUniformMomentPolynomial_three`, and
+`geometricUniformMomentPolynomial_four`.  Two documented residual-product
+helpers are private and therefore excluded from the public count.
+
+The recursive family is total over `ℚ[X]`.  Its zero and successor theorems
+give `P_0=1` and the residual finite q-Pochhammer recurrence; the degree theorem
+gives `natDegree P_n ≤ n.choose 2`; evaluation at zero gives
+`P_n(0)=1/(n+1)!`; and the four final theorems give the displayed values
+`P_1` through `P_4`.  These exactly close the algebraic clauses of monograph
+label `thm:qF-moment-polynomial`, including the `q=0` boundary.  The canonical
+label remains **Partial**, however, because the source defines its polynomial
+by the analytic normalization `((q;q)_n/(1-q)^n)a_n(q)` and no theorem yet
+identifies those analytic/MGF coefficients with the recursive Lean family.
+The leading and subleading coefficients and exact degree asserted by
+`prop:qF-P-degree-sharp` remain unformalized.
 
 The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
@@ -982,7 +1012,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 903/11,448
+historical 675/8,909 census and requires refresh against the live 904/11,457
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity

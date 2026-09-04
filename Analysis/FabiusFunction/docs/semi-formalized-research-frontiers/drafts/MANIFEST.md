@@ -21,8 +21,8 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 903
-source modules and 11,448 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 904
+source modules and 11,457 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -133,7 +133,7 @@ product's locally uniform convergence is exact for every complex strict
 contraction, including `q = 0`, with dyadic Rvachev and bounded-Fabius Fourier
 specializations. The compound centered/MGF and exterior reciprocal/pole
 theorem remains Partial. The forward status ledger covers 282 labelled
-results: 166 Exact / 90 Partial / 18 None / 8 N/A interface rows. The
+results: 166 Exact / 91 Partial / 17 None / 8 N/A interface rows. The
 terminating-basic-hypergeometric closure is `TwoPhiOneReversal.lean` (2+12)
 and `QChuVandermonde.lean` (0+10): both q-Chu evaluations and the reversal
 lemma are Exact for the actual tsum, while the claimed full-domain derivation
@@ -373,9 +373,32 @@ theorems, 41 declarations.  This is an exact crosswalk for
 removable-origin convention, for the whole identity `eq:bernoulli-gen`.
 The Guide's nearest-nonzero-zero explanation is not formalized as the Lean
 proof route, and the Puiseux claims remain open.  The exact-radius four-theorem
-checkpoint had the census 903/11,447; the fifth theorem gives the live census
-903/11,448.  The retained 66-page Guide PDF predates this source-only
-crosswalk, and no render parity is claimed.
+checkpoint had the census 903/11,447; the fifth theorem gives the historical
+Lambert checkpoint 903/11,448.  The retained 66-page Guide PDF predates this
+source-only crosswalk, and no render parity is claimed.
+
+The subsequent q-series leaf `GeometricUniformMomentPolynomial.lean` has one
+definition, `geometricUniformMomentPolynomial`, and exactly eight theorems:
+`geometricUniformMomentPolynomial_zero`,
+`geometricUniformMomentPolynomial_succ`,
+`geometricUniformMomentPolynomial_natDegree_le`,
+`geometricUniformMomentPolynomial_eval_zero`,
+`geometricUniformMomentPolynomial_one`,
+`geometricUniformMomentPolynomial_two`,
+`geometricUniformMomentPolynomial_three`, and
+`geometricUniformMomentPolynomial_four`.  This exhaustive API proves the
+recursive rational polynomial family, its zeroth value and residual-product
+recurrence, the triangular degree bound, its value at zero, and the displayed
+polynomials through index four.  It does not identify that recursive family
+with the normalized analytic coefficients `a_n(q)` or the underlying
+moment-generating product.  Therefore `thm:qF-moment-polynomial` moves from
+None to Partial, not Exact, while `prop:qF-P-degree-sharp` remains None.  This
+one-definition/eight-theorem addition gives the live census 904/11,457 and the
+q forward totals 166 Exact / 91 Partial / 17 None / 8 N/A.  The source
+concordance stays unchanged at 78 Lean-proved / 400 human-proved frontier /
+60 N/A / 9 conjectures because its historical-source disposition does not
+encode partial Lean coverage.  The retained 389-page q-series PDF is a
+historical checkpoint and does not render this source-only crosswalk.
 
 No finite endpoint derivative is asserted.  An `O(z + exp(-1))` remainder
 after the signed leading term, a convergent signed
