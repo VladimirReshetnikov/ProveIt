@@ -78,7 +78,10 @@ import FabiusFunction.IteratedLeibniz
 import FabiusFunction.NorlundDiagonal
 import FabiusFunction.NarayanaNumbers
 import FabiusFunction.StirlingFirstModH
+import FabiusFunction.StirlingSymmetricFunctions
 import FabiusFunction.LagrangeInversion
+import FabiusFunction.LagrangeInversionUniqueness
+import FabiusFunction.NewtonReciprocal
 import FabiusFunction.LambertWSeries
 import FabiusFunction.FussCatalanSeries
 import FabiusFunction.InverseBellCoefficients
@@ -99,6 +102,7 @@ import FabiusFunction.SquareRootSeries
 import FabiusFunction.PowerSumOrdinaryBell
 import FabiusFunction.StirlingParityBitwise
 import FabiusFunction.StirlingSecondReverseRow
+import FabiusFunction.StirlingSecondReverseRowIdentity
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
