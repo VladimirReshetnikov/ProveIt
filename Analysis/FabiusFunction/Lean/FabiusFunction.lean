@@ -517,6 +517,7 @@ import FabiusFunction.RvachevFourierDecay
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
 import FabiusFunction.TransseriesBlockAntiderivative
+import FabiusFunction.TransseriesDifferentialBlock
 import FabiusFunction.TransseriesScaleDominance
 import FabiusFunction.TransseriesPolyLogScale
 import FabiusFunction.TriangularPowerProduct
