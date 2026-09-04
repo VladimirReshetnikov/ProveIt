@@ -321,6 +321,7 @@ import FabiusFunction.ExponentialPartition
 import FabiusFunction.ThueMorsePartition
 import FabiusFunction.ExponentialBell
 import FabiusFunction.UnitSeriesBellCoefficients
+import FabiusFunction.UnitSeriesPowerRecurrence
 import FabiusFunction.ThueMorseIntegerLift
 import FabiusFunction.ThueMorseBoundaryFlatness
 import FabiusFunction.ThueMorseDirichlet
