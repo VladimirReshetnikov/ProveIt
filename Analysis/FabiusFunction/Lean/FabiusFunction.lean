@@ -28,6 +28,7 @@ import FabiusFunction.EulerianGeneratingFunctions
 import FabiusFunction.ExponentialRiordan
 import FabiusFunction.ExponentialFormula
 import FabiusFunction.OrderedBell
+import FabiusFunction.OrdinaryPartialBell
 import FabiusFunction.EulerianStirling
 import FabiusFunction.NewtonExpansion
 import FabiusFunction.ComplementaryBell
