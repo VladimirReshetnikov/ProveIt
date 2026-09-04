@@ -79,6 +79,7 @@ import FabiusFunction.IteratedLeibniz
 import FabiusFunction.NorlundDiagonal
 import FabiusFunction.ExponentialRescaling
 import FabiusFunction.BernoulliFormalLog
+import FabiusFunction.NorlundGeneralized
 import FabiusFunction.NarayanaNumbers
 import FabiusFunction.StirlingFirstModH
 import FabiusFunction.LagrangeInversion

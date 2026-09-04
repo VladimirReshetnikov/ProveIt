@@ -7237,21 +7237,108 @@ turns an isolated exponential diagonal into a polynomial identity.
 
 \begin{definition}[Generalized Bernoulli polynomials]
 \label{def:merged-norlund-polynomials}
-For $\alpha,x\in\ComplexNumbers$, define $\beta_n^{(\alpha)}(x)$ by
+Let $R$ be a commutative $\RationalNumbers$-algebra, put
+$B(t)=t/(\EulerE^t-1)$ with constant coefficient $1$, and write
+$L(t)=\log B(t)$ with constant coefficient zero.
+For every scalar $\alpha\in R$, define the polynomials
+$\beta_n^{(\alpha)}(x)\in R[x]$ by
 \begin{equation}
  \left(\frac{t}{\EulerE^t-1}\right)^\alpha\EulerE^{xt}
  =\sum_{n\geq0}\beta_n^{(\alpha)}(x)\frac{t^n}{n!}.                \label{eq:merged-norlund-egf}
 \end{equation}
-Formally, the power means
-$\exp(\alpha\log(t/(\EulerE^t-1)))$, whose inner logarithm has constant
-term zero.  Analytically, the formula holds for $|t|<2\pi$, using the unique
-holomorphic logarithm of $t/(\EulerE^t-1)$ that vanishes at $t=0$.  Thus
+Here the formal power is $B^\alpha=\exp(\alpha L)$, not an independently
+chosen branch.  In particular, if
+$b_k(\alpha)=k!\CoefficientExtraction tk\exp(\alpha L(t))$, then
+\[
+ \beta_n^{(\alpha)}(x)
+ =\sum_{k=0}^n\binom nk b_k(\alpha)x^{n-k}.
+\]
+This finite formula also defines evaluation at every $x\in R$.
+For complex parameters, \eqref{eq:merged-norlund-egf} holds analytically
+on $|t|<2\pi$, with the unique holomorphic logarithm normalized by $L(0)=0$.
+The order-zero and order-one specializations are
 $\beta_n^{(0)}(x)=x^n$ and $\beta_n^{(1)}(x)=\beta_n(x)$.
 \end{definition}
 
+\begin{proof}[Well-definedness and analytic interpretation]
+The series $G(t)=(\EulerE^t-1)/t$ has constant coefficient $1$, so its
+formal reciprocal $B$ exists and also has constant coefficient $1$.
+The normalized formal logarithm $L$ is therefore defined, and $L(0)=0$
+makes every coefficient of $\exp(\alpha L)$ a finite sum.
+The exponential Cauchy product gives the displayed polynomial formula.
+Its coefficient of $x^n$ is $b_0(\alpha)=1$, so for a nonzero coefficient
+ring each polynomial is monic of degree $n$.  Monicity, interpreted as
+leading coefficient $1$, also holds in the zero ring, where $0=1$; only
+the exact degree assertion needs the nonzero-ring hypothesis.
+For $\alpha=0$ the first factor is $1$; for $\alpha=1$ it is
+$\exp L=B$.  This proves the two specializations.
+More generally, write $U_\alpha=\exp(\alpha L)$.  The formal exponential
+product law gives
+\[
+ U_0=1,\qquad U_1=B,\qquad U_{\alpha+\gamma}=U_\alpha U_\gamma.
+\]
+Induction on $m\in\NaturalNumbers$, using $U_{m+1}=U_mB$, then gives
+$U_m=B^m$.  Hence the new family at natural order is exactly the usual
+natural-power family, as a polynomial identity rather than merely an
+identity at selected values of $x$.  In particular this identifies the
+two rational polynomial constructions coefficient by coefficient.
+
+Over $\ComplexNumbers$, the function $B$ extends holomorphically across
+zero with value $1$.  The nonzero zeros of $\EulerE^t-1$ are
+$2\pi k\ImaginaryUnit$, $k\in\IntegerNumbers\setminus\{0\}$, so $B$ is
+holomorphic and nonvanishing throughout the disk $|t|<2\pi$.
+On this simply connected disk $B'/B$ has a primitive $L$ with $L(0)=0$.
+Indeed, integrate $B'/B$ from zero to $t$; Cauchy's theorem makes the
+integral independent of the path.  Then
+$(\EulerE^{-L}B)'=0$ and $\EulerE^{-L(0)}B(0)=1$, proving
+$\EulerE^L=B$.  Any other normalized holomorphic logarithm has the same
+derivative $B'/B$, hence equals $L$.
+Consequently $\exp(\alpha L(t)+xt)$ is holomorphic on that disk for every
+complex $\alpha,x$, and its Taylor series there is
+\eqref{eq:merged-norlund-egf}.  This analytic argument is separate from
+the formal coefficient identities.
+\end{proof}
+
+\begin{lemma}[Change of coefficient algebra]
+\label{lem:merged-log-base-change}
+Let $R,S$ be commutative $\RationalNumbers$-algebras and let
+$\varphi:R\to S$ be a unital ring homomorphism.  Write $\varphi_*H$ for
+coefficientwise application of $\varphi$ to a formal series $H$.
+For every $H\in R[[t]]$ with $H(0)=1$,
+\[
+ \varphi_*(\log H)=\log(\varphi_*H).
+\]
+In particular, writing $B_R$ and $B_S$ for the Bernoulli kernels over the
+two coefficient algebras,
+\[
+ \varphi_*B_R=B_S,\qquad
+ \varphi_*(\log B_R)=\log B_S.
+\]
+Thus the rational logarithmic coefficients in
+\cref{eq:merged-log-bernoulli-kernel} transfer to every commutative
+$\RationalNumbers$-algebra, including $\ComplexNumbers$.
+\end{lemma}
+
+\begin{proof}
+A unital ring homomorphism preserves integer scalars and their inverses
+whenever they are units.  It therefore preserves the rational scalars in
+these algebras.  Since $H-1$ has constant coefficient zero, each coefficient
+of the formal expansion
+\[
+ \log H=\sum_{m\geq1}\frac{(-1)^{m+1}}m(H-1)^m
+\]
+involves only finitely many summands: in degree $n$ all $m>n$ vanish.
+The homomorphism commutes with those finite sums and products and with
+their rational coefficients, proving the first identity.
+The coefficients of $B_R$ are the images of $\beta_n/n!$, so their
+images under $\varphi$ are precisely the coefficients of $B_S$.
+Applying the first identity to $H=B_R$ proves the last assertion.
+\end{proof}
+
 \begin{theorem}[Appell, difference, and convolution calculus]
 \label{thm:merged-norlund-calculus}
-For $\alpha,x,y\in\ComplexNumbers$ and $n\geq1$,
+For $\alpha,x,y\in R$ and $n\geq1$, with the derivative interpreted
+formally in $R[x]$,
 \begin{align}
  \frac{\Differential}{\Differential x}\beta_n^{(\alpha)}(x)
  &=n\beta_{n-1}^{(\alpha)}(x),                                    \label{eq:merged-norlund-appell}\\
@@ -7260,7 +7347,7 @@ For $\alpha,x,y\in\ComplexNumbers$ and $n\geq1$,
  \beta_n^{(\alpha)}(x+1)-\beta_n^{(\alpha)}(x)
  &=n\beta_{n-1}^{(\alpha-1)}(x).                                 \label{eq:merged-norlund-difference}
 \end{align}
-More generally, for $\alpha,\gamma,x,y\in\ComplexNumbers$ and $n\geq0$,
+More generally, for $\alpha,\gamma,x,y\in R$ and $n\geq0$,
 \begin{equation}
  \beta_n^{(\alpha+\gamma)}(x+y)
  =\sum_{k=0}^{n}\binom nk
@@ -7272,14 +7359,22 @@ More generally, for $\alpha,\gamma,x,y\in\ComplexNumbers$ and $n\geq0$,
 Differentiating \eqref{eq:merged-norlund-egf} with respect to $x$ multiplies
 its left side by $t$.  Replacing $x$ by $x+y$ multiplies it by
 $\EulerE^{yt}$.  These observations and the exponential Cauchy product prove
-the first two formulas.  For the difference identity,
+the first two formulas.  The translation identity also holds at $n=0$,
+when both sides are $1$.
+For the difference identity, the normalized definition gives
+$B^\alpha=B^{\alpha-1}B$, since
+$\exp((\alpha-1)L)\exp L=\exp(\alpha L)$.
+Together with $B(\EulerE^t-1)=t$, this gives
 \[
  \left(\frac{t}{\EulerE^t-1}\right)^\alpha
  (\EulerE^{(x+1)t}-\EulerE^{xt})
  =t\left(\frac{t}{\EulerE^t-1}\right)^{\alpha-1}\EulerE^{xt}.
 \]
-Coefficient comparison proves the third formula.  Multiplying the generating
-functions of orders $\alpha$ and $\gamma$ proves the convolution identity.
+Coefficient comparison proves the third formula, with no restriction on
+$\alpha$; at order zero it legitimately uses the order $-1$ family.
+Finally $\exp(\alpha L)\exp(\gamma L)=\exp((\alpha+\gamma)L)$, so multiplying
+the two generating functions and taking the coefficient of $t^n/n!$
+proves the convolution identity, including $n=0$.
 \end{proof}
 
 \begin{remark}[Formal crosswalk]
@@ -7306,10 +7401,10 @@ orders, which need $\exp(\alpha\log(t/(\EulerE^t-1)))$, are not formalized.
 \label{thm:merged-norlund-bell-diagonal}
 Put
 \begin{equation}
- c_1(\alpha,x):=x-\frac{\alpha}{2},\qquad
+ c_0(\alpha,x):=0,\qquad c_1(\alpha,x):=x-\frac{\alpha}{2},\qquad
  c_j(\alpha,x):=-\frac{\alpha\beta_j}{j}\quad(j\geq2).            \label{eq:merged-norlund-cumulants}
 \end{equation}
-Then $\beta_0^{(\alpha)}(x)=1$, and for $n\geq1$,
+Then, for every $n\geq0$,
 \begin{align}
  \beta_n^{(\alpha)}(x)
  &=\ExponentialCompleteBellPolynomial n
@@ -7318,6 +7413,8 @@ Then $\beta_0^{(\alpha)}(x)=1$, and for $n\geq1$,
  \frac{n!}{\displaystyle\prod_{j=1}^{n}m_j!\,(j!)^{m_j}}
  \prod_{j=1}^{n}c_j(\alpha,x)^{m_j}.                             \label{eq:merged-norlund-bell-explicit}
 \end{align}
+At $n=0$, the sum has the unique empty multiplicity vector and its empty
+products are $1$; both formulas therefore include $\beta_0^{(\alpha)}(x)=1$.
 The diagonal order has the closed form
 \begin{equation}
  \boxed{\displaystyle\beta_n^{(n+1)}(x)=\FallingFactorial{x-1}{n}.} \label{eq:merged-norlund-polynomial-diagonal}
@@ -7333,8 +7430,8 @@ Consequently, for $n\geq1$,
 \begin{proof}
 Write $B(t)=t/(\EulerE^t-1)$, with the removable value $B(0)=1$, and
 $L(t)=\log B(t)$, normalized by $L(0)=0$.
-These expressions may first be read as formal series over
-$\RationalNumbers$: the reciprocal kernel
+These expressions may be read as formal series over $R$, with rational
+coefficients interpreted through its structure map: the reciprocal kernel
 $G(t)=(\EulerE^t-1)/t$ has constant term $1$, and $B(t)G(t)=1$.
 Thus the formal logarithm product law also gives $L=-\log G$.
 To compute its coefficients without dividing by the nonunit series $t$,
@@ -7362,8 +7459,18 @@ formula in the sum must start at $j=2$.
 Thus \eqref{eq:merged-norlund-egf} is
 $\exp(\sum_{j\geq1}c_j(\alpha,x)t^j/j!)$.
 The complete Bell-polynomial generating function
-\cref{thm:bell-poly-egf} proves the first formula; expanding the Bell
-polynomial proves the second.
+\cref{thm:bell-poly-egf} proves the first formula.
+For the explicit formula, a coefficient of degree $n$ is unchanged if the
+inner sum is truncated at $j=n$.  Expand the finite product
+\[
+ \prod_{j=1}^n\exp\!\left(c_j\frac{t^j}{j!}\right)
+ =\prod_{j=1}^n\left(\sum_{m_j\geq0}
+       \frac{c_j^{m_j}t^{jm_j}}{m_j!\,(j!)^{m_j}}\right).
+\]
+Precisely the choices with $\sum_{j=1}^n jm_j=n$ contribute to degree
+$n$.  Multiplication by $n!$ gives
+\cref{eq:merged-norlund-bell-explicit}, including the empty choice at
+$n=0$.
 
 For the diagonal, set $z=\EulerE^t-1$ in a formal residue:
 \begin{align*}
@@ -10236,7 +10343,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 59 Lean, 34 partial, 111 none, of 204 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 59 Lean, 34 partial, 112 none, of 205 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -10386,6 +10493,7 @@ corollary (unlabelled, no.~10) &  & none &  \\
 \Cref{thm:merged-bernoulli-stirling-touchard} & Bernoulli--Stirling formula and Touchard moments & partial & \cref{eq:merged-bernoulli-stirling} is \lean{Fabius.bernoulli_eq_sum_stirlingSecond} (\lean{BernoulliStirling}) for Mathlib's \lean{bernoulli} (with $B_1=-1/2$), from \lean{Fabius.bernoulliPowerSeries_eq_logDivSeries_subst}: the Bernoulli generating function is $\log(1+u)/u$ at $u=\EulerE^t-1$; the two integral representations are not formalized \\
 \Cref{thm:merged-bernoulli-difference} & Bernoulli polynomials from finite differences & Lean & \cref{eq:merged-bernoulli-newton-basis} is \lean{Fabius.bernoulli_eq_sum_fwdDiff} (module \lean{BernoulliNewtonBasis}), an identity in $\mathbb Q[x]$ with $\Delta^kx^n$ written out as $\sum_j(-1)^{k-j}\binom kj(x+j)^n$; the truncated Gregory composition is \lean{Fabius.X_pow_dvd_bernoulliPowerSeries_sub_gregory}. \\
 \Cref{cor:merged-bernoulli-stirling-second-proof} & Second proof of the Bernoulli--Stirling formula & Lean & \lean{Fabius.bernoulli_eq_sum_fwdDiff_zero} (module \lean{BernoulliNewtonBasis}): $\beta_n=\sum_k\frac{(-1)^k}{k+1}\Delta^k0^n$, and with the surjection formula \lean{Fabius.factorial_mul_stirlingSecond_eq_sum} this is \lean{Fabius.bernoulli_eq_sum_stirlingSecond}. \\
+\Cref{lem:merged-log-base-change} & Change of coefficient algebra & none &  \\
 \Cref{thm:merged-norlund-calculus} & Appell, difference, and convolution calculus & partial & For natural orders $\alpha,\gamma\in\mathbb N$ (module \lean{NorlundPolynomials}, $\beta_n^{(a)}$ defined by \lean{Fabius.norlund}): \cref{eq:merged-norlund-appell} is \lean{Fabius.derivative_norlund_succ}, \cref{eq:merged-norlund-translation} is \lean{Fabius.norlund_eval_add}, \cref{eq:merged-norlund-difference} is \lean{Fabius.norlund_succ_eval_add_one_sub} and \cref{eq:merged-norlund-convolution} is \lean{Fabius.norlund_add_eval_add}; complex orders are not formalized. \\
 \Cref{thm:merged-norlund-bell-diagonal} & Bell-polynomial construction and the N\"orlund diagonal & partial & The three diagonal displays are formalized for natural orders (module \lean{NorlundDiagonal}): \cref{eq:merged-norlund-polynomial-diagonal} is \lean{Fabius.norlund_diagonal}, \cref{eq:merged-norlund-number-diagonal} is \lean{Fabius.norlund_eval_zero_diagonal} and \cref{eq:merged-norlund-diagonal} is \lean{Fabius.coeff_bernoulliPowerSeries_pow_succ}; the Bell-polynomial construction \cref{eq:merged-norlund-bell,eq:merged-norlund-bell-explicit} is not formalized. \\
 \Cref{thm:merged-genocchi} & Bernoulli--Euler--Genocchi relations & Lean & with \lean{Fabius.genocchi} defined by $2(1-2^n)\beta_n$, the generating function \cref{eq:merged-genocchi-egf} is \lean{Fabius.egf_genocchi_mul_exp_add_one} (\lean{GenocchiNumbers}), i.e. the first equality of \cref{eq:merged-genocchi}, and the second equality is \lean{Fabius.genocchi_succ_eq} (\lean{EulerPolynomials}); \lean{Fabius.genocchi_one}, \lean{Fabius.genocchi_two}, \lean{Fabius.genocchi_odd} give the initial values and the parity \\

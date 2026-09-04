@@ -86,10 +86,10 @@ complete human proofs and exact declaration crosswalks. Three private rational
 helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
 caller refactor has been independently source-reviewed but awaits its own build.
 
-The register contains 204 rows: 59 marked Lean, 34 partial, and 111 without a
+The register contains 205 rows: 59 marked Lean, 34 partial, and 112 without a
 Lean counterpart. The earlier classifications are inherited; this checkpoint
 adds three compiler-backed entries and does not claim a fresh build of the whole
-corpus. The final structural/provenance validator passes with 204 adjacent
+corpus. The final structural/provenance validator passes with 205 adjacent
 proofs, 27 disposition records, and six original-source inventory rows. PDF
 rebuilding remains deferred at the user's request.
 
@@ -119,5 +119,17 @@ The human moment-cumulant proof now states its normalization and positive-degree
 boundaries explicitly, with formal logarithm identities separated from the
 still-open set-partition interpretation. The Nörlund proof now derives the
 logarithmic coefficients without dividing by the nonunit formal variable.
-Arbitrary-order Nörlund polynomials and their analytic convergence remain open
-formalization work.
+The new `NorlundGeneralized` source constructs actual polynomials at every
+scalar order over a commutative rational algebra. Its source-reviewed API
+includes the full EGF, Appell derivative, translation, convolution, natural-order
+polynomial compatibility, explicit cumulants, and the complete Bell formula.
+`BernoulliFormalLog` now transports the logarithm and its coefficients along
+arbitrary coefficient ring homomorphisms and shares the kernel normalization
+lemma. These extensions have not yet compiled, so no corresponding coverage
+promotion is claimed. General-order finite differences, the literal
+multiplicity-vector expansion, and analytic convergence remain separate
+formalization obligations.
+
+The human exposition gives the normalized complex logarithm construction on its
+disk separately from the formal algebra, states the coefficient-base-change
+lemma with proof, and includes the degree-zero multiplicity convention.
