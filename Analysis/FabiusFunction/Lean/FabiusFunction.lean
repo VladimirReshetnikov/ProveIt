@@ -93,7 +93,6 @@ import FabiusFunction.LagrangeInversion
 import FabiusFunction.LagrangeInversionUniqueness
 import FabiusFunction.NewtonReciprocal
 import FabiusFunction.RaneyNumbers
-import FabiusFunction.OffsetLagrangeReversion
 import FabiusFunction.IdentityCertificates
 import FabiusFunction.BinaryTreeRotations
 import FabiusFunction.AssociahedronFaceNumbers
