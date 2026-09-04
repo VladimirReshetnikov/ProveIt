@@ -59,7 +59,7 @@ Guide's Bernoulli-number gap series, convergence of that series, or higher
 Puiseux/logarithmic expansions. The affected retained frontier, primary,
 walkthrough, and Lambert-Guide PDFs are historical artifacts and do not render
 this source-only overlay. The live documentation census is now 901 modules and
-11,418 public declarations.
+11,430 public declarations.
 
 The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
 the retained PDFs.  The new `QPochhammerEntire.lean` leaf has zero definitions
@@ -73,18 +73,28 @@ the later Euler, q-binomial, Jacobi, quantum-binomial, Rogers--Szegő,
 cyclotomic-divisibility, q-Catalan, primitive-root-block, q-Lucas, Jackson
 q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
 q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result forward
-status totals are now 88 exact / 83 partial / 103 none / 8 interface. The
+status totals are now 166 exact / 90 partial / 18 none / 8 interface. The
 outer spectral product now has an exact
 locally-uniform/normal-convergence theorem; the compound centered/MGF and
 exterior reciprocal/pole layers remain partial.
 
-The monograph's current 14,449-line, 679,492-byte source has SHA-256
-`ed3baa67195e142531234170e67d04a04e356905523333ad95d667f0ddddcc8c`.
-Its retained 354-page A4 PDF (3,030,302 bytes; SHA-256
-`1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`)
-renders an earlier explicitly pinned source. It remains a reproducible
-historical publication checkpoint, but must not be cited as displaying the
-current theorem promotions until a new PDF is built and inspected.
+The final terminating-basic-hypergeometric inventory is
+`TwoPhiOneReversal.lean` (2 definitions + 12 theorems) and
+`QChuVandermonde.lean` (10 theorems). The two q-Chu evaluations and the
+terminating reversal lemma are exact for the actual `twoPhiOne` tsum. The
+claim that reversal alone proves the second evaluation on its full displayed
+domain remains partial: the compiled by-reversal theorem retains `C ≠ 0` and
+`(A;q)_n ≠ 0`, while the unrestricted theorem uses finite q-Cauchy directly;
+no rational-continuation or cleared commutative-ring extension is claimed.
+
+The monograph's current source has 16,359 lines and 812,257 bytes, with
+SHA-256 `e90f46955d9a9792ce469d29ceaa3aa538874eb1e94cf4c2dd7e50dbaf63b10e`.
+Its retained 389-page A4 PDF (3,254,138 bytes; SHA-256
+`b8add607c85ee35be98dabf36879e1d45fb093c6b453e93679c80295fae715bc`)
+was synchronized to the preceding 16,339-line, 810,779-byte source checkpoint
+(SHA-256 `14c444feb14c435bc300becd9c8cd2765c1e96f608dd79da462becc41b28ed22`).
+The current source-only theorem promotions postdate that artifact, so no
+current source/PDF parity is claimed.
 
 The current finite-moment/Legendre/Gaunt crosswalk covers eleven modules with
 20 public definitions and 109 public theorems, 129 declarations in all. The

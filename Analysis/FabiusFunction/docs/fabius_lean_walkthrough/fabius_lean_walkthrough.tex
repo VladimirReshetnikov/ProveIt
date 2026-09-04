@@ -2275,8 +2275,8 @@ domain, a primitive \(d\)-th root \(\zeta\) kills the interior coefficients
 \(\GaussianBinomial{d}{k}{\zeta}\); for \(d>0\), its top phase is \(-1\) and
 the complete block is \((y;\zeta)_d=1-y^d\).
 
-\nolinkurl{QLucas.lean} is 0+8:
-\nolinkurl{two_mul_choose_two}, \nolinkurl{add_mul_add_sub_one},
+\nolinkurl{QLucas.lean} is 0+7:
+\nolinkurl{add_mul_add_sub_one},
 \nolinkurl{choose_two_add}, \nolinkurl{coeff_finiteQPochhammerIn_neg_X},
 \nolinkurl{finiteQPochhammerIn_neg_X_block},
 \nolinkurl{coeff_block_pow_mul}, \nolinkurl{pow_choose_two_add_mul_eq}, and
@@ -2288,6 +2288,8 @@ coefficient, block, and phase identities prove
 \]
 when \(d>0\), \(\zeta\) is a primitive \(d\)-th root in a commutative integral
 domain, and \(b,s<d\).
+The identically named \nolinkurl{two_mul_choose_two} helper is private in this
+module; its public owner is \nolinkurl{QChuVandermonde.lean}.
 
 \nolinkurl{CyclotomicDivisibility.lean} is 0+3:
 \nolinkurl{cyclotomic_exponent_eq_one_iff},
@@ -5623,7 +5625,7 @@ Module & Role in the development \\
 \nolinkurl{CentralQBinomialReduction.lean} & Exactly six theorems and no definitions: sign pairing, even--odd dissection, naturality, integral and commutative-ring division-free central reduction, and a field quotient under two nonvanishing hypotheses. \\
 \nolinkurl{CyclotomicFactorization.lean} & Exactly seven theorems and no definitions: quotient bounds, divisor reindexing, finite-product and factorial identities over commutative rings, interval-product extension, and Gaussian cyclotomic factorization over an integral domain. \\
 \nolinkurl{PrimitiveRootBlock.lean} & Exactly three theorems and no definitions: primitive-root interior Gaussian vanishing, the top phase, and the complete finite q-Pochhammer block. \\
-\nolinkurl{QLucas.lean} & Exactly eight theorems and no definitions: three natural quadratic identities, signed-product coefficient and block formulas, the primitive-root phase, and q-Lucas. \\
+\nolinkurl{QLucas.lean} & Exactly seven theorems and no definitions: two natural quadratic identities, signed-product coefficient and block formulas, the primitive-root phase, and q-Lucas; its duplicate arithmetic helper is private. \\
 \nolinkurl{CyclotomicDivisibility.lean} & Exactly three theorems and no definitions: the carry characterization of exponent one, the rational-polynomial divisibility iff, and the multiple-index primitive-root value. \\
 \nolinkurl{QCatalan.lean} & Exactly one definition and eleven theorems: q-integer naturality, degree and cyclotomic identities, rational and integral divisibility, and the integral q-Catalan quotient with its degree and value at one. \\
 \nolinkurl{NewtonInterpolation.lean} & Exactly three definitions and nineteen theorems: triangular Newton coefficients, the node polynomial, interpolation and uniqueness, divided differences, the geometric-power-grid formulas, and the definitionally identical \nolinkurl{newtonInterpolant} compatibility API over a field. \\
@@ -5935,7 +5937,7 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The live current-tree audit scans
-901 modules and 11,418 public declarations, with no missing module headers or
+901 modules and 11,430 public declarations, with no missing module headers or
 declaration comments.  At the retained historical mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
@@ -5995,7 +5997,7 @@ q leaves contribute thirteen.  Two later linear-coefficient theorems enlarge
 \nolinkurl{EffectiveGapInverse.lean} contributes one module and eight
 declarations.  The one-definition/eight-theorem
 \nolinkurl{RvachevSuperconvergentSynthesis.lean} leaf contributes nine;
-the four root-of-unity/q-Catalan modules contribute twenty-six; the original
+the four root-of-unity/q-Catalan modules contribute twenty-five; the original
 q-beta/Newton pair contributes twenty-four; the integer/complex upper Gaussian
 and q-Pfaff--Saalsch\"utz tail contributes twenty; and the noncommutative
 q-multinomial leaf contributes five.  Finally,
@@ -6007,7 +6009,8 @@ intermediate census is therefore 672/8,875.  The subsequent
 \nolinkurl{TelescopingCertificate.lean} leaves add three modules and thirty-four
 declarations, giving the historical 675/8,909 checkpoint.  The subsequent
 source union, including the exact 0+7, 4+16, and 0+9 Lambert branch-pairing,
-gap-bijection, and symmetry surfaces, brings the live census to 901/11,418.
+gap-bijection, and symmetry surfaces, together with twelve later terminating
+basic-hypergeometric declarations, brings the live census to 901/11,430.
 No aggregate facade build is claimed for this current-tree census.  The retained
 PDF and the title-page pin remain historical receipts and do not claim parity
 with the merged source; no PDF was built for this source-only update.
@@ -6045,7 +6048,7 @@ The four root-of-unity and q-Catalan counts are
 \nolinkurl{CyclotomicDivisibility.lean} (0+3),
 \nolinkurl{PrimitiveRootBlock.lean} (0+3),
 \nolinkurl{QCatalan.lean} (1+11), and
-\nolinkurl{QLucas.lean} (0+8).  Their one definition and twenty-five theorems
+\nolinkurl{QLucas.lean} (0+7).  Their one definition and twenty-four theorems
 add the cyclotomic carry criterion, primitive-root blocks, q-Lucas, and the
 integral q-Catalan polynomial with exact degree and specialization at one.
 The newest two counts are
@@ -6082,6 +6085,19 @@ uniform bounds for \(0\le q<1\) and dimension-dominant bounds for \(Q>1\),
 with all index and order hypotheses explicit.  The proof reuses the stronger
 generic \nolinkurl{finiteQPochhammerIn_self_pos} theorem from
 \nolinkurl{GeneralQConditionNumber.lean} rather than exporting a duplicate.
+The final terminating-basic-hypergeometric pair is
+\nolinkurl{TwoPhiOneReversal.lean} (2+12) and
+\nolinkurl{QChuVandermonde.lean} (0+10).  The first connects the finite
+terminating sum to the actual \nolinkurl{twoPhiOne} tsum and proves that the
+parameter reflection and the full reversal are involutive.  The second proves
+both q-Chu--Vandermonde evaluations, their actual-tsum wrappers, a
+denominator-cleared second identity, and a separately named reversal route.
+Thus the two displayed q-Chu evaluations and the reversal lemma are exact.
+The claim that reversal alone yields the second identity over its full
+displayed domain remains partial: the compiled by-reversal theorem assumes
+\(C\ne0\) and \((A;q)_n\ne0\), while the unrestricted denominator-defined
+theorem is obtained directly from finite q-Cauchy.  Rational continuation and
+a commutative-ring cleared extension are not claimed.
 \end{remark}
 
 \section{Corrections and critical distinctions}\label{app:corrections}

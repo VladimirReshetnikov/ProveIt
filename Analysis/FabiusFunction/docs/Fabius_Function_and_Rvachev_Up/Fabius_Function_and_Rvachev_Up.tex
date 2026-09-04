@@ -3817,7 +3817,7 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 901 modules and 11,418 public declarations.  The current TeX also
+census is 901 modules and 11,430 public declarations.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration fixed-depth effective-inverse tranche, the
@@ -3825,7 +3825,7 @@ eight-declaration rational-gap inverse module, and six new
 q-calculus modules contributing 36 declarations, plus the two source-only
 central-reduction and cyclotomic-factorization modules contributing thirteen
 theorems, and the four-module root-of-unity, q-Lucas, cyclotomic-divisibility,
-and q-Catalan tranche contributing one definition and twenty-five theorems,
+and q-Catalan tranche contributing one definition and twenty-four theorems,
 and the three-module Lambert branch-pairing, gap-bijection, and symmetric-
 identity tranche contributing four definitions and thirty-two theorems.
 These are
@@ -3873,7 +3873,7 @@ The four root-of-unity and q-Catalan module counts are
 \path{CyclotomicDivisibility.lean} (0+3),
 \path{PrimitiveRootBlock.lean} (0+3),
 \path{QCatalan.lean} (1+11), and
-\path{QLucas.lean} (0+8).  Their one definition and twenty-five theorems add
+\path{QLucas.lean} (0+7).  Their one definition and twenty-four theorems add
 the cyclotomic carry criterion, complete primitive-root q-Pochhammer blocks,
 q-Lucas over integral domains, and the integral q-Catalan polynomial with its
 exact degree and Catalan specialization.
@@ -3925,6 +3925,23 @@ Its proof
 reuses the stronger ordered-field theorem
 \lean{finiteQPochhammerIn_self_pos} from
 \path{GeneralQConditionNumber.lean} rather than exporting a duplicate.
+
+The terminating basic-hypergeometric closure is split exhaustively between
+\path{TwoPhiOneReversal.lean} (two definitions and twelve theorems) and
+\path{QChuVandermonde.lean} (ten theorems).  The former identifies a
+terminating \({}_2\phi_1\) with the actual \nolinkurl{twoPhiOne} tsum, defines
+the reflected parameter triple, and proves both involutivity and cancellation
+after applying the reversal twice.  The latter proves both q-Chu--Vandermonde
+sums, including a denominator-cleared second identity and the full-domain tsum
+wrappers \lean{twoPhiOne_q_chu_vandermonde_first} and
+\lean{twoPhiOne_q_chu_vandermonde_second}.  Consequently the two displayed
+q-Chu formulas and the terminating reversal lemma are exact Lean crosswalks.
+The separate claim that the second formula follows by reversal on its entire
+displayed domain remains only partial: the compiled provenance theorem
+\lean{q_chu_vandermonde_second_by_reversal} retains the auxiliary hypotheses
+\(C\ne0\) and \((A;q)_n\ne0\), whereas the full-domain proof uses finite
+q-Cauchy directly.  No rational-continuation or cleared commutative-ring
+extension is asserted here.
 
 On the real axis the origin is the unique global point of unit modulus:
 \begin{equation}

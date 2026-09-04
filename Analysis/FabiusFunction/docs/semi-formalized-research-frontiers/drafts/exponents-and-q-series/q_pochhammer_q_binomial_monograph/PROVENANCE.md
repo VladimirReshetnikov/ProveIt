@@ -29,18 +29,18 @@ and are not canonical renderings of this larger source. The former forward
 and inverse manuscript PDFs were removed for the same reason. The merged
 master retains one publication checkpoint,
 `q_pochhammer_q_binomial_monograph.pdf`. This retained PDF is a historical
-354-page A4 artifact of 3,030,302 bytes with SHA-256
-`1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
-It was built from the then-current 14,381-line, 675,239-byte source with
-SHA-256
-`240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`;
-exactly three guarded serial passes produced 343, 354, and 354 pages.
+389-page A4 artifact of 3,254,138 bytes with SHA-256
+`b8add607c85ee35be98dabf36879e1d45fb093c6b453e93679c80295fae715bc`.
+It was synchronized to the source checkpoint at commit
+`736a241d1a025d64ac73b1573b17a7b3fc02652d`: 16,339 lines and 810,779
+bytes, with SHA-256
+`14c444feb14c435bc300becd9c8cd2765c1e96f608dd79da462becc41b28ed22`.
 
-The live source now postdates that receipt: it has 14,531 lines and 683,936
-bytes. No live `SHA256SUMS` file is maintained or should be recreated; the
-retained PDF therefore does not claim render parity with the current TeX. The
-validation record in `README.md` distinguishes compilation, font embedding,
-complete page rendering, contact-sheet review, and full-resolution inspection.
+The live working source now postdates that receipt. No live `SHA256SUMS` file
+is maintained or should be recreated; this is historical artifact metadata
+only, and the retained PDF does not claim render parity with the current TeX.
+The record in `README.md` gives the retained artifact's page, size, and font
+metadata and makes the same no-current-parity qualification.
 PDFs retained beneath `assets/` are research figures, not manuscripts.
 
 The current source incorporates exhaustive crosswalks for
@@ -67,12 +67,14 @@ theorems), `ThetaQuasiPeriodicity` (one definition and six theorems),
 `CyclotomicFactorization` (zero definitions and seven theorems), followed by
 `CyclotomicDivisibility` (zero definitions and three theorems),
 `PrimitiveRootBlock` (zero definitions and three theorems), `QCatalan` (one
-definition and eleven theorems), and `QLucas` (zero definitions and eight
+definition and eleven theorems), and `QLucas` (zero definitions and seven
 theorems). The latest tail adds `QBetaIntegral` (one definition and eight
-theorems) and `NewtonInterpolation` (two definitions and thirteen theorems),
+theorems) and `NewtonInterpolation` (three definitions and nineteen theorems),
 followed by `GaussianBinomialInteger` (one definition and ten theorems),
 `GaussianBinomialComplexOrder` (one definition and five theorems), and
-`QPfaffSaalschutz` (zero definitions and three theorems), together with
+`QPfaffSaalschutz` (zero definitions and three theorems),
+`TwoPhiOneReversal` (two definitions and twelve theorems), and
+`QChuVandermonde` (zero definitions and ten theorems), together with
 `GaussianBinomialBounds` (zero definitions and six theorems). The
 `QPochhammerEntire.lean` leaf proves the fixed-nome
 single-symbol locally uniform product and differentiability, the
@@ -88,10 +90,12 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-forward status inventory covers 282 labelled results: 90 Exact / 84 Partial /
-100 None / 8 N/A; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3.
+live facade audit contains 901 modules and 11,430 public declarations with no
+documentation gaps. The forward status inventory covers 282 labelled results:
+166 Exact / 90 Partial / 18 None / 8 N/A; the 191-result pre-Fabius core is
+35 / 30 / 123 / 3.
 The five-publication concordance
-has 66 Lean-proved, 412 human-proved frontier, 60 not-applicable, and 9
+has 76 Lean-proved, 402 human-proved frontier, 60 not-applicable, and 9
 conjecture rows. The `cor:positivity`, `thm:qbinom-structure`, and
 `prop:gq-positive-palindromic` rows are Exact: both Gaussian structure APIs
 support the structure row, and the fourteen-theorem generic API now gives
@@ -112,7 +116,13 @@ terminating q-Pfaff--Saalschütz row is Exact under its explicit denominator
 hypotheses; the integer-index Gaussian identities and reciprocal series and
 the two complex-order series rows are also Exact on the domains recorded in
 the crosswalk, while the separate complex-parameter property rows remain
-unformalized. The quantum-multinomial row is Exact over every semiring under
+unformalized. The two q-Chu--Vandermonde evaluations and the terminating
+reversal lemma are Exact for the actual `twoPhiOne` tsum, including the
+full-domain second sum, reflection involutivity, and double reversal. The
+separate reversal-derivation proposition remains Partial: its compiled route
+assumes `C ≠ 0` and `(A;q)_n ≠ 0`, while the full-domain proof uses direct
+finite q-Cauchy; rational continuation and the commutative-ring extension are
+not formalized. The quantum-multinomial row is Exact over every semiring under
 the displayed q-commutation hypotheses, without assuming that q is central or
 that the ambient semiring is commutative. `GaussianBinomialBounds` reuses
 `finiteQPochhammerIn_self_pos` from `GeneralQConditionNumber` and supplies
@@ -120,8 +130,8 @@ evaluated reciprocity and the finite growth bounds on both sides of `q = 1`;
 the imported positivity theorem is not counted as a declaration of the
 bounds leaf. Its six exported theorems close the exact finite-growth row, while
 the greater-than-one compound row remains Partial only at its asymptotic
-clauses. No PDF was generated locally while resolving this merge; the upstream
-354-page artifact remains the retained historical publication checkpoint and
+clauses. No PDF was generated locally while resolving this merge; the
+389-page artifact remains the retained historical publication checkpoint and
 does not render the current source.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit

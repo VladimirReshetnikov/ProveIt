@@ -25,14 +25,22 @@ The second sum
 
 `₂φ₁(q^{-n}, A; C; q, q) = A^n (C/A;q)_n / (C;q)_n`
 
-follows from the first by the reversal `twoPhiOneFinite_reversal` at the reflected parameters
-`a = q^{1-n}/C`, `c = q^{1-n}/A`, `z = c q^n/a`.
+has a direct denominator-cleared proof from the same finite `q`-Cauchy identity at base
+`q⁻¹`.  After the terminating numerator and `(C;q)_n` are cleared, base reversal and
+Gaussian reciprocity turn its `k`-th summand into
+`[n,k]_{q⁻¹} A^k (A⁻¹;q⁻¹)_k (Cq^k;q)_{n-k}`.  Reflecting `k ↔ n-k`
+gives finite `q`-Cauchy with `u = Cq^{n-1}` and `v = A⁻¹`.  This argument needs neither
+`C ≠ 0` nor `(A;q)_n ≠ 0`.
 
 ## Main declarations
 
 * `two_mul_choose_two`, `mul_sub_one_eq_mul_sub_add`: the exponent bookkeeping.
-* `finiteQPochhammerIn_div_eq_sum_chu`: the cleared first sum.
-* `q_chu_vandermonde_first`, `q_chu_vandermonde_second`.
+* `finiteQPochhammerIn_div_eq_sum_chu`, `finiteQPochhammerIn_div_eq_sum_chu_second`:
+  the two denominator-cleared sums.
+* `q_chu_vandermonde_first`, `q_chu_vandermonde_second`, and the explicit provenance
+  theorem `q_chu_vandermonde_second_by_reversal`.
+* `twoPhiOne_q_chu_vandermonde_first`, `twoPhiOne_q_chu_vandermonde_second`: wrappers for
+  the actual `twoPhiOne` tsum.
 -/
 
 set_option autoImplicit false
@@ -114,7 +122,6 @@ theorem finiteQPochhammerIn_div_eq_sum_chu {q : K} (hq : q ≠ 0) {A : K} (hA : 
   have h2 : q ^ k.choose 2 ≠ 0 := pow_ne_zero _ hq
   have h3 : A ^ k ≠ 0 := pow_ne_zero _ hA
   field_simp
-  all_goals ring
 
 /-- **The first `q`-Chu–Vandermonde sum**: for `q ≠ 0`, `A ≠ 0`, `(q;q)_n ≠ 0`, `(C;q)_n ≠ 0`,
 `₂φ₁(q^{-n}, A; C; q, C q^n/A) = (C/A;q)_n / (C;q)_n`. -/
@@ -142,18 +149,147 @@ theorem q_chu_vandermonde_first {q : K} (hq : q ≠ 0) {A C : K} (hA : A ≠ 0) 
   have hAk : A ^ k ≠ 0 := pow_ne_zero _ hA
   field_simp
 
-/-- **The second `q`-Chu–Vandermonde sum, by reversal**: for `q ≠ 0`, nonzero `A, C` with
-`(q;q)_n`, `(A;q)_n`, `(C;q)_n` nonzero, `₂φ₁(q^{-n}, A; C; q, q) = A^n (C/A;q)_n / (C;q)_n`.
-The proof applies `twoPhiOneFinite_reversal` to the first sum at the reflected parameters
-`a = q^{1-n}/C`, `c = q^{1-n}/A`, `z = c q^n/a`, exactly as in the monograph. -/
-theorem q_chu_vandermonde_second {q : K} (hq : q ≠ 0) {A C : K} (hA : A ≠ 0) (hC : C ≠ 0)
-    {n : ℕ} (hqq : finiteQPochhammerIn q q n ≠ 0) (hAn : finiteQPochhammerIn A q n ≠ 0)
+set_option maxRecDepth 8192 in
+/-- **The denominator-cleared second `q`-Chu–Vandermonde sum.**  For `q ≠ 0` and
+`A ≠ 0`, with no condition on `C`,
+
+`A^n (C/A;q)_n = Σ_k [n,k]_q (-1)^k q^{C(k,2)} (A;q)_k q^k q^{-nk}
+  (Cq^k;q)_{n-k}`.
+
+The proof is finite `q`-Cauchy at base `q⁻¹`, followed by reflection of the summation
+index.  It is a Laurent-polynomial identity: no `q`-Pochhammer factor is cancelled. -/
+theorem finiteQPochhammerIn_div_eq_sum_chu_second {q : K} (hq : q ≠ 0) {A : K}
+    (hA : A ≠ 0) (C : K) (n : ℕ) :
+    A ^ n * finiteQPochhammerIn (C / A) q n =
+      ∑ k ∈ range (n + 1),
+        (gaussianBinomial q n k * (-1) ^ k * q ^ k.choose 2 *
+          finiteQPochhammerIn A q k * q ^ k / q ^ (n * k)) *
+            finiteQPochhammerIn (C * q ^ k) q (n - k) := by
+  have hCauchy := finite_qCauchy_identity q⁻¹ (C * q ^ (n - 1)) A⁻¹ n
+  have hleft :
+      finiteQPochhammerIn ((C * q ^ (n - 1)) * A⁻¹) q⁻¹ n =
+        finiteQPochhammerIn (C / A) q n := by
+    calc
+      finiteQPochhammerIn ((C * q ^ (n - 1)) * A⁻¹) q⁻¹ n =
+          finiteQPochhammerIn ((C / A) * q ^ (n - 1)) q⁻¹ n := by
+        congr 1
+        simp only [div_eq_mul_inv]
+        ring
+      _ = finiteQPochhammerIn (C / A) q n :=
+        finiteQPochhammerIn_mul_pow_inv_base hq (C / A) n
+  have hsum :
+      A ^ n * finiteQPochhammerIn (C / A) q n =
+        ∑ k ∈ range (n + 1),
+          gaussianBinomial q⁻¹ n k * A ^ k * finiteQPochhammerIn A⁻¹ q⁻¹ k *
+            finiteQPochhammerIn (C * q ^ k) q (n - k) := by
+    rw [← hleft, hCauchy, mul_sum]
+    conv_rhs => rw [← sum_range_reflect _ (n + 1)]
+    refine sum_congr rfl fun i hi => ?_
+    have hi' : i ≤ n := Nat.lt_succ_iff.mp (mem_range.mp hi)
+    simp only [Nat.add_sub_cancel, Nat.sub_sub_self hi']
+    have htail :
+        finiteQPochhammerIn (C * q ^ (n - 1)) q⁻¹ i =
+          finiteQPochhammerIn (C * q ^ (n - i)) q i := by
+      rcases i with _ | i
+      · simp
+      · rw [finiteQPochhammerIn_inv_base_eq hq]
+        congr 1
+        simp only [Nat.add_sub_cancel, inv_pow]
+        rw [mul_assoc, show q ^ (n - 1) = q ^ (n - (i + 1)) * q ^ i by
+          rw [← pow_add]
+          congr 1
+          omega]
+        have hqi : q ^ i ≠ 0 := pow_ne_zero _ hq
+        field_simp
+    have hpow : A ^ n * (A⁻¹) ^ i = A ^ (n - i) := by
+      rw [show A ^ n = A ^ (n - i) * A ^ i by
+        rw [← pow_add, Nat.sub_add_cancel hi'], inv_pow, mul_assoc,
+        mul_inv_cancel₀ (pow_ne_zero _ hA), mul_one]
+    rw [gaussianBinomial_symm q⁻¹ hi', ← htail, ← hpow]
+    ring
+  rw [hsum]
+  refine sum_congr rfl fun k hk => ?_
+  have hk' : k ≤ n := Nat.lt_succ_iff.mp (mem_range.mp hk)
+  have hdegree :
+      k.choose 2 + k.choose 2 + k * (n - k) + k = n * k := by
+    obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hk'
+    rw [Nat.add_sub_cancel_left, ← two_mul, two_mul_choose_two]
+    rcases k with _ | k
+    · simp
+    · rw [Nat.add_sub_cancel]
+      ring
+  have hexp :
+      q ^ k.choose 2 * q ^ k.choose 2 * q ^ (k * (n - k)) * q ^ k = q ^ (n * k) := by
+    rw [← pow_add, ← pow_add, ← pow_add, hdegree]
+  have hsign : (-1 : K) ^ k * (-1 : K) ^ k = 1 := by
+    rw [← mul_pow]
+    simp
+  have hcoeff :
+      gaussianBinomial q n k * (-1) ^ k * q ^ k.choose 2 *
+          finiteQPochhammerIn A q k * q ^ k / q ^ (n * k) =
+        gaussianBinomial q⁻¹ n k * A ^ k * finiteQPochhammerIn A⁻¹ q⁻¹ k := by
+    rw [gaussianBinomial_inv q hq hk', finiteQPochhammerIn_base_reversal A q hA hq,
+      neg_pow, div_eq_iff (pow_ne_zero _ hq), ← hexp]
+    calc
+      _ = ((-1 : K) ^ k * (-1 : K) ^ k) *
+          (gaussianBinomial q⁻¹ n k * A ^ k * finiteQPochhammerIn A⁻¹ q⁻¹ k *
+            (q ^ k.choose 2 * q ^ k.choose 2 * q ^ (k * (n - k)) * q ^ k)) := by
+        ring
+      _ = _ := by rw [hsign]; ring
+  rw [hcoeff]
+
+/-- The second `q`-Chu–Vandermonde identity after clearing its only parameter denominator.
+Unlike the quotient wrapper, this form records explicitly that no `(A;q)_n ≠ 0` or
+`C ≠ 0` assumption is involved. -/
+theorem twoPhiOneFinite_mul_finiteQPochhammerIn_eq_chu_second {q : K} (hq : q ≠ 0)
+    {A C : K} (hA : A ≠ 0) {n : ℕ} (hqq : finiteQPochhammerIn q q n ≠ 0)
     (hCn : finiteQPochhammerIn C q n ≠ 0) :
+    twoPhiOneFinite (q ^ n)⁻¹ A C q q n * finiteQPochhammerIn C q n =
+      A ^ n * finiteQPochhammerIn (C / A) q n := by
+  rw [finiteQPochhammerIn_div_eq_sum_chu_second hq hA C n]
+  unfold twoPhiOneFinite
+  rw [sum_mul]
+  refine sum_congr rfl fun k hk => ?_
+  have hk' : k ≤ n := Nat.lt_succ_iff.mp (mem_range.mp hk)
+  have hC := finiteQPochhammerIn_add C q k (n - k)
+  rw [Nat.add_sub_of_le hk'] at hC
+  have hCk : finiteQPochhammerIn C q k ≠ 0 :=
+    finiteQPochhammerIn_ne_zero_of_le _ hk' hCn
+  have hqk : finiteQPochhammerIn q q k ≠ 0 :=
+    finiteQPochhammerIn_ne_zero_of_le _ hk' hqq
+  have hN : finiteQPochhammerIn (q ^ n)⁻¹ q k =
+      (-1) ^ k * q ^ k.choose 2 * (finiteQPochhammerIn q q k * gaussianBinomial q n k) /
+        q ^ (n * k) := by
+    rw [finiteQPochhammerIn_self_mul_gaussianBinomial q hk',
+      ← pow_mul_finiteQPochhammerIn_inv_pow_eq q hq hk',
+      mul_div_cancel_left₀ _ (pow_ne_zero _ hq)]
+  rw [hC, hN]
+  have hqnk : q ^ (n * k) ≠ 0 := pow_ne_zero _ hq
+  field_simp
+
+/-- **The second `q`-Chu–Vandermonde sum** wherever its displayed rational expressions are
+defined: for `q ≠ 0`, `A ≠ 0`, `(q;q)_n ≠ 0`, and `(C;q)_n ≠ 0`,
+`₂φ₁(q^{-n}, A; C; q, q) = A^n (C/A;q)_n / (C;q)_n`.
+
+In particular, neither `C ≠ 0` nor `(A;q)_n ≠ 0` is required. -/
+theorem q_chu_vandermonde_second {q : K} (hq : q ≠ 0) {A C : K} (hA : A ≠ 0) {n : ℕ}
+    (hqq : finiteQPochhammerIn q q n ≠ 0) (hCn : finiteQPochhammerIn C q n ≠ 0) :
+    twoPhiOneFinite (q ^ n)⁻¹ A C q q n =
+      A ^ n * finiteQPochhammerIn (C / A) q n / finiteQPochhammerIn C q n := by
+  rw [eq_div_iff hCn]
+  exact twoPhiOneFinite_mul_finiteQPochhammerIn_eq_chu_second hq hA hqq hCn
+
+/-- **The second `q`-Chu–Vandermonde sum by the monograph's reversal argument.**
+This theorem preserves the explicit proof provenance through `twoPhiOneFinite_reversal`.
+Its additional `C ≠ 0` and `(A;q)_n ≠ 0` assumptions belong to that derivation, not to
+the identity itself; `q_chu_vandermonde_second` above is the stronger full-domain theorem. -/
+theorem q_chu_vandermonde_second_by_reversal {q : K} (hq : q ≠ 0) {A C : K}
+    (hA : A ≠ 0) (hC : C ≠ 0) {n : ℕ} (hqq : finiteQPochhammerIn q q n ≠ 0)
+    (hAn : finiteQPochhammerIn A q n ≠ 0) (hCn : finiteQPochhammerIn C q n ≠ 0) :
     twoPhiOneFinite (q ^ n)⁻¹ A C q q n =
       A ^ n * finiteQPochhammerIn (C / A) q n / finiteQPochhammerIn C q n := by
   have hqn : q ^ n ≠ 0 := pow_ne_zero _ hq
   have hN : q * (q ^ n)⁻¹ ≠ 0 := mul_ne_zero hq (inv_ne_zero hqn)
-  -- the reversal of `(C;q)_n` at `i = n`
   have hrevC := finiteQPochhammerIn_sub_eq hq hC (le_refl n)
   rw [Nat.sub_self, finiteQPochhammerIn_zero, one_mul, pow_zero, mul_one] at hrevC
   set a := q * (q ^ n)⁻¹ / C with ha_def
@@ -196,6 +332,26 @@ theorem q_chu_vandermonde_second {q : K} (hq : q ≠ 0) {A C : K} (hA : A ≠ 0)
     rw [h0, mul_zero] at hrevC
     exact hCn hrevC.symm
   field_simp
-  all_goals ring
+  rw [neg_pow]
+  ring
+
+/-- The first terminating `q`-Chu–Vandermonde sum, stated for the actual `twoPhiOne` tsum. -/
+theorem twoPhiOne_q_chu_vandermonde_first {𝕜 : Type*} [NormedField 𝕜] [CompleteSpace 𝕜]
+    {q : 𝕜} (hq : q ≠ 0) {A C : 𝕜} (hA : A ≠ 0) {n : ℕ}
+    (hqq : finiteQPochhammerIn q q n ≠ 0) (hCn : finiteQPochhammerIn C q n ≠ 0) :
+    twoPhiOne (q ^ n)⁻¹ A C q (C * q ^ n / A) =
+      finiteQPochhammerIn (C / A) q n / finiteQPochhammerIn C q n := by
+  simpa only [twoPhiOne_eq_twoPhiOneFinite_inv_pow hq] using
+    (q_chu_vandermonde_first (K := 𝕜) hq hA hqq hCn)
+
+/-- The full-domain second terminating `q`-Chu–Vandermonde sum, stated for the actual
+`twoPhiOne` tsum. -/
+theorem twoPhiOne_q_chu_vandermonde_second {𝕜 : Type*} [NormedField 𝕜] [CompleteSpace 𝕜]
+    {q : 𝕜} (hq : q ≠ 0) {A C : 𝕜} (hA : A ≠ 0) {n : ℕ}
+    (hqq : finiteQPochhammerIn q q n ≠ 0) (hCn : finiteQPochhammerIn C q n ≠ 0) :
+    twoPhiOne (q ^ n)⁻¹ A C q q =
+      A ^ n * finiteQPochhammerIn (C / A) q n / finiteQPochhammerIn C q n := by
+  simpa only [twoPhiOne_eq_twoPhiOneFinite_inv_pow hq] using
+    (q_chu_vandermonde_second (K := 𝕜) hq hA hqq hCn)
 
 end Fabius
