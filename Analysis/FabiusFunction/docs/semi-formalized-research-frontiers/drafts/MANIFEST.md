@@ -892,9 +892,9 @@ all forty-two articles across `polynomial-logarithmic-transseries/`,
 `special-function-inversion/` and `sequence-transseries/` are now the single
 volume `Transseries_And_Inversion/`, and those five directories have been
 deleted after a residue audit.  The paragraphs below record what was filed,
-not what is present; git history is the archive.  The first two overlap enough
-that a later consolidation may merge them, but that comparison has not been
-made, and neither has the comparison between the second and the fourth.
+not what is present; git history is the archive.  At intake the comparison
+among the overlapping subgroups had not been made; the canonical
+consolidation's concordance chapter now records that later comparison.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |

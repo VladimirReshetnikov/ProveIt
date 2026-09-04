@@ -222,6 +222,19 @@ three distinct inverse objects, the staircase theorem, and the separation
 condition. The calculus is a theory of functions on a scale; that last group
 is about the passage from a function to a sequence.
 
+## Lean crosswalk
+
+The source records status claim by claim. Exact counterparts now cover the
+sequence-indexed asymptotic-scale/Poincaré definitions and uniqueness,
+flatness and the corrected invisible-function proposition, Dickson and Neumann
+(with `OrderDual` matching the manuscript's well-based orientation), the
+displayed power–log ratio limits and chosen decreasing
+sequence scales, the unit-series Bell coefficient formulas, and the quadratic
+Catalan identity. The full unordered power–log scale lemma, the all-integer
+Laurent block-antiderivative lemma, and the complete quadratic-core lemma are
+Partial at the boundaries stated in the source. No status promotion should be
+inferred for the surrounding transseries constructions.
+
 ## Structure
 
 Part I orients: what a transseries is, why a scale is needed, why divergence is not failure, and the algebra of monomials — replacing four parallel expository introductions.
@@ -237,7 +250,7 @@ factorial, the partition numbers A000041, the swing factorial A056040); four
 special functions (Γ and Barnes `G`, the hyperfactorial `K`, the subfactorial,
 a real-argument Fibonacci function); the reversal of `x + W(x)` in depth; the Bell numbers by a Lambert saddle and the Fubini numbers by an exact pole lattice; and a synthesis.
 
-## Build
+## Artifact status
 
 The former assembler cannot be rerun; the `.tex` header identifies the
 consolidated file as the canonical source and it is now edited in place. A

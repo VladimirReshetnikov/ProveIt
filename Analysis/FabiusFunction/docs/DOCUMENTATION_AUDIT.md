@@ -198,6 +198,136 @@ the branch-local 907/11,464 checkpoint; its preceding real-MGF and algebraic
 moment-polynomial checkpoints were 905/11,458 and 904/11,457.  These older
 branch-local counts are explicitly historical.
 
+#### Consolidated transseries foundations and corrected flatness
+
+The consolidated series-and-transseries work reached the historical
+943-module/11,791-declaration checkpoint.  The current tranche adds three
+Laurent-block theorems to an existing module and introduces the fully
+documented 1+11 `TransseriesFlat.lean` leaf.  Its net change is therefore one
+module and fifteen lexically visible public declarations, giving the live
+944/11,806 inventory with no missing module header or declaration comment.
+The ten modules inventoried here contain 91 lexically visible declarations;
+the two `to_additive` companions noted below are public generated declarations
+and are intentionally invisible to the lexical census.
+
+`TransseriesScale.lean` is exhaustively 3+6.  Its public definitions/structure
+are `IsAsymptoticScale`, `poincarePartialSum`, and `IsPoincareExpansion`; its
+theorems are `poincarePartialSum_zero`, `poincarePartialSum_succ`,
+`IsPoincareExpansion.isLittleO_succ_remainder`,
+`IsPoincareExpansion.tendsto_coeff`,
+`IsPoincareExpansion.tendsto_coeff_div`, and
+`IsPoincareExpansion.coeff_unique`.  The `q0:def:scale`, `q0:def:poincare`,
+`q0:eq:coefficients`, and `q0:prop:uniqueness` correspondence is **Exact**.
+The scale and coefficients are respectively scalar- and vector-valued over an
+arbitrary normed field and filter; uniqueness alone explicitly requires the
+proper-filter hypothesis `NeBot`.
+
+`TransseriesFlat.lean` is exhaustively 1+11.  Its definition is `IsFlat`; its
+theorems are `isFlat_zero`, `IsFlat.add`, `IsFlat.neg`, `IsFlat.sub`,
+`IsFlat.const_smul`, `isFlat_exp_neg_rpow_atTop`,
+`IsPoincareExpansion.add_flat`,
+`IsPoincareExpansion.sub_same_coeff_isFlat`,
+`IsPoincareExpansion.iff_sub_isFlat`,
+`IsFlat.smul_of_scale_absorption`, and
+`IsFlat.smul_of_isBigO_inv_pow`.  Thus `q0:def:flat` and the corrected
+power-scale `q0:prop:invisible` are **Exact**: the concrete exponentially
+small term, vector-space closure, preservation of coefficients, and the exact
+same-coefficient iff are named.  The generic multiplier theorem assumes
+explicitly that for every target `N` there is an `M` for which
+`m * φ M = O(φ N)`; only the power-scale specialization derives that
+absorption from an inverse-power growth estimate and eventual nonvanishing.
+No polynomial-growth multiplier closure for an arbitrary asymptotic scale is
+claimed.
+
+`TransseriesWellBased.lean` has no definitions and five lexically visible
+theorems: `dickson_isPWO`, `dickson_antichain_finite`, `dickson_isPWO_pi`,
+`neumann_isPWO`, and `neumann_finite_factorizations`.  The latter two also
+generate the public additive names `neumann_add_isPWO` and
+`neumann_finite_decompositions`, which the audit does not count.  The
+`q0:lem:dickson` and `q0:lem:neumann` statuses are **Exact**, with the source's
+asymptotic monomial order interpreted through `OrderDual` where necessary.
+
+`TransseriesPolyLogScale.lean` has no definitions and four theorems:
+`isLittleO_plMonomial`, `isAsymptoticScale_plMonomial`,
+`isAsymptoticScale_plMonomial_pow`, and
+`isAsymptoticScale_plMonomial_log`.  Together with the three-way limit API in
+`TransseriesScaleDominance.lean`, these make the chosen lexicographically
+decreasing sequence consequence of `plt:lem:mot-dominance` **Exact**.  They do
+not replace the source's unordered set-indexed scale by a formal set-indexed
+API.
+
+`TransseriesScaleDominance.lean` is exhaustively 1+7.  Its definition is
+`plMonomial`; its theorems are `tendsto_plMonomial_atTop_zero`,
+`plMonomial_div_eventuallyEq`, `tendsto_plMonomial_div_atTop_zero`,
+`tendsto_plMonomial_div_atTop_one`, `plMonomial_pos`,
+`tendsto_plMonomial_div_atTop`, and
+`plMonomial_generators_dominance`.  Together with the preceding 0+4 leaf,
+these declarations make the displayed three-way limits and every chosen
+decreasing sequence scale **Exact**.  The compound
+`plt:lem:mot-dominance` remains **Partial** because the unordered set-indexed
+scale and a named reverse generator implication are not packaged.
+
+`TransseriesHeight.lean` has no definitions and three theorems:
+`isLittleO_log_pow_rpow`, `isLittleO_log_pow_id`, and
+`isLittleO_pow_mul_log_pow_exp`.  The displayed `q0:eq:height` comparison and
+its logarithm-versus-power dual are **Exact**.  The broader prose taxonomy and
+comparison algorithm for arbitrarily nested exponential heights and
+logarithmic depths remain **Partial**.
+
+`TransseriesBlockAntiderivative.lean` is exhaustively 3+12.  Its definitions
+are `blockOperator`, `blockAntiderivative`, and `resonantAntiderivative`.  Its
+theorems are `sum_sub_sum_shift`, `blockOperator_zero`, `blockOperator_sub`,
+`blockOperator_blockAntiderivative`, `blockOperator_surjective`,
+`natDegree_C_mul_of_ne_zero`, `natDegree_blockOperator`,
+`blockOperator_injective`, `blockOperator_bijective`,
+`derivative_resonantAntiderivative`, `derivative_surjective`, and
+`natDegree_resonantAntiderivative`.
+
+`TransseriesDifferentialBlock.lean` is now exhaustively 0+8.  Its theorems are
+`derivation_pow_t`, `derivation_block`, `derivation_zpow_block`,
+`exists_zpow_block_primitive`, `existsUnique_zpow_block_primitive`,
+`exists_block_primitive`, `derivation_block_zero`, and
+`exists_block_primitive_resonant`.  The three newly public Laurent theorems
+give the source-shaped integer block law, nonresonant existence with preserved
+logarithmic degree, and uniqueness under explicit injectivity of evaluation at
+`L`.  The integer formula `plt:eq:mot-block-derivative` is **Exact**, as are
+the polynomial-operator clauses.  The compound
+`plt:lem:mot-block-antiderivative` remains **Partial**: the implementation uses
+an abstract ambient field rather than constructing the concrete Laurent ring,
+does not prove evaluation injectivity for that concrete model, and has no
+single resonant uniqueness-up-to-constants wrapper.
+
+`UnitSeriesBellCoefficients.lean` has no public definitions and exactly sixteen
+theorems: `ordPartialBell_eq_factorialRatio_partialBell`,
+`factorial_mul_ordPartialBell_eq_factorial_mul_partialBell`,
+`coeff_fallingSeries_subst_eq_sum_ordPartialBell`,
+`coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos`,
+`coeff_fallingSeries_subst_eq_sum_partialBell`,
+`coeff_negBinomSeries_subst_eq_sum_ordPartialBell`,
+`coeff_negBinomSeries_subst_eq_sum_ordPartialBell_of_pos`,
+`coeff_logOf_eq_sum_ordPartialBell`,
+`egfA_factorialDenormalize_coeff_eq`,
+`bellWeightSeries_factorialDenormalize_coeff_eq`,
+`coeff_logOf_eq_sum_partialBell`, `coeff_exp_subst_eq_completeBell`,
+`coeff_exp_subst_eq_partitionExpSum`,
+`coeff_exp_subst_eq_sum_weightedPartitions`,
+`coeff_exp_subst_eq_sum_div_weightedPartitions`, and
+`coeff_exp_subst_recurrence`.  The `p0:lem:bell-conversion`,
+`p0:lem:power-log`, and `p0:cor:exp-log-jets` correspondence is **Exact as
+formal power-series algebra**; no analytic convergence or logarithm branch is
+asserted.
+
+`QuadraticCoreCatalan.lean` is exhaustively 3+8.  Its definitions are
+`quadHalf`, `halfBinom`, and `quadCoef`; its theorems are `catalan_two_step`,
+`quadHalf_zero`, `quadHalf_antidiagonal`, `halfBinom_step`, `quadHalf_rat`,
+`quadCoef_rat`, `quadCoef_zero`, and `quadCoef_rec`.  The Catalan coefficient
+statement `p6:prop:quadratic-core-catalan` is **Exact**.  The larger
+`p6:lem:quadratic-core` remains **Partial**: the named family satisfies the
+quadratic equation coefficient by coefficient, but there is no packaged full
+power-series identity, positive-valuation uniqueness theorem, or formal
+square-root identity.  `p6:thm:deepest-pole`, identifying this algebraic family
+inside the Gamma and Barnes inversions, remains unformalized.
+
 #### Terminating `₂φ₁` reversal and q-Chu--Vandermonde tranche
 
 In the origin progression, that public API growth left the module count

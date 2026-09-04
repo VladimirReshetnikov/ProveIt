@@ -119,8 +119,13 @@ reciprocity checkpoint 931/11,685.  The incoming union adds one module and
 fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This makes the live Lean audit 934
-modules and 11,709 public declarations.
+`ThueMorseNewmanSelfSimilarity.lean`.  This made 934 modules and 11,709
+public declarations an explicitly historical post-Prouhet checkpoint.
+Subsequent source-only transseries/Catalan and Thue--Morse additions made
+943/11,791 the next historical checkpoint.  The finalized one-definition/
+eleven-theorem `TransseriesFlat.lean` module and three integer-zpow theorems
+in `TransseriesDifferentialBlock.lean` make the live Lean audit 944 modules
+and 11,806 public declarations.
 
 The sibling source-only `FabiusFunction.GeometricRichardsonGenerating` module
 (three definitions and seven theorems) does not change this q-series package's
@@ -271,7 +276,12 @@ dyadic/finite-prefix census 933/11,695.  The incoming union adds one module and
 fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This makes the live census 934/11,709.
+`ThueMorseNewmanSelfSimilarity.lean`.  This made 934/11,709 an explicitly
+historical post-Prouhet checkpoint.  Subsequent source-only
+transseries/Catalan and Thue--Morse additions made 943/11,791 the next
+historical checkpoint.  The finalized one-definition/eleven-theorem
+`TransseriesFlat.lean` module and three integer-zpow theorems in
+`TransseriesDifferentialBlock.lean` make the live census 944/11,806.
 That existing module adds
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
 `integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.

@@ -298,6 +298,7 @@ import FabiusFunction.MeanValueBracket
 import FabiusFunction.BackwardErrorExistence
 import FabiusFunction.TransseriesHeight
 import FabiusFunction.TransseriesScale
+import FabiusFunction.TransseriesFlat
 import FabiusFunction.TransseriesWellBased
 import FabiusFunction.WrightOmega
 import FabiusFunction.WrightOmegaTwoOrders
