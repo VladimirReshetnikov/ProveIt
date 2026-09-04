@@ -128,6 +128,7 @@ import FabiusFunction.FabiusLambertPhaseExtraction
 import FabiusFunction.FabiusLambertPhaseExtractionBell
 import FabiusFunction.PrincipalLambertW
 import FabiusFunction.PrincipalLambertWAtTop
+import FabiusFunction.ProuhetBaseTwoBridge
 import FabiusFunction.AutonomousIteratedDeriv
 import FabiusFunction.LambertWHigherDerivatives
 import FabiusFunction.LambertWAntiderivative
@@ -254,6 +255,7 @@ import FabiusFunction.ThueMorseBlockAlgebra
 import FabiusFunction.ThueMorseProductIdentity
 import FabiusFunction.ApproximationLadder
 import FabiusFunction.ThueMorseMoments
+import FabiusFunction.FinitePrefixThueMorseCollapse
 import FabiusFunction.ThueMorseArtinSchreier
 import FabiusFunction.ThueMorseEulerTransform
 import FabiusFunction.ThueMorseLucasSupport
@@ -279,9 +281,12 @@ import FabiusFunction.ThueMorseFourierInversion
 import FabiusFunction.HalfIntegerOddDFT
 import FabiusFunction.SummableCyclicAlias
 import FabiusFunction.HalfIntegerAliasIdentity
+import FabiusFunction.DyadicBoundaryIdentity
 import FabiusFunction.AliasDyadicBridge
 import FabiusFunction.AliasQBinomialBridge
 import FabiusFunction.MeanValueBracket
+import FabiusFunction.TransseriesHeight
+import FabiusFunction.TransseriesScale
 import FabiusFunction.LambertShiftInverse
 import FabiusFunction.LambertInverseCoefficients
 import FabiusFunction.CyclicCharacterSums
@@ -296,6 +301,7 @@ import FabiusFunction.ThueMorseHessenberg
 import FabiusFunction.ExponentialPartition
 import FabiusFunction.ThueMorsePartition
 import FabiusFunction.ExponentialBell
+import FabiusFunction.UnitSeriesBellCoefficients
 import FabiusFunction.ThueMorseIntegerLift
 import FabiusFunction.ThueMorseBoundaryFlatness
 import FabiusFunction.ThueMorseDirichlet
@@ -510,6 +516,9 @@ import FabiusFunction.ThueMorseSinhProduct
 import FabiusFunction.RvachevFourierDecay
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
+import FabiusFunction.TransseriesBlockAntiderivative
+import FabiusFunction.TransseriesScaleDominance
+import FabiusFunction.TransseriesPolyLogScale
 import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
 import FabiusFunction.TransferPositivity

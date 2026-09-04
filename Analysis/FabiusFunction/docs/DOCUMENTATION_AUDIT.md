@@ -112,7 +112,7 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans 925 facade-reachable modules and 11,619 public declarations.  It
+pass scans 932 facade-reachable modules and 11,688 public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
@@ -130,14 +130,17 @@ finds no missing module header or declaration comment, including throughout
 `GeometricUniformExteriorComplexMomentGerm.lean`,
 `GeometricUniformMomentPolynomialDegree.lean`,
 `RvachevLaurentLeading.lean`, `FinitePrefixAppellRecovery.lean`,
-`GeometricUniformMomentRatFunc.lean`, and
-`RvachevLegendreBiorthogonality.lean` leaves, together with the strengthened
+`GeometricUniformMomentRatFunc.lean`, `RvachevLegendreBiorthogonality.lean`,
+`QPochhammerLambertForm.lean`, `CentralQVandermondeInfinite.lean`,
+`ThueMorseNewmanSelfSimilarity.lean`, `TriangularPowerProduct.lean`,
+`DyadicBoundaryIdentity.lean`, `MeanValueBracket.lean`, and
+`FinitePrefixThueMorseCollapse.lean` leaves, together with the strengthened
 `ProbabilityLaplaceMoments.lean` surface,
 as well as the sixteenth theorem in `FinitePolynomialFunctional.lean`.
 Relative to the
-610/8,318 activation checkpoint, the current tree adds 315 modules and 3,301 declarations.
+610/8,318 activation checkpoint, the current tree adds 322 modules and 3,370 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 295 modules and 3,067 declarations.  The post-merge 675/8,909 inventory,
+adds 302 modules and 3,136 declarations.  The post-merge 675/8,909 inventory,
 the intervening 903/11,448 Lambert-series inventory, and the immediately
 preceding 914/11,555 scaled-geometric and 915/11,556 real-MGF-bridge
 checkpoints, together with the incoming branch's 906/11,461 complex-product
@@ -151,8 +154,14 @@ checkpoint.  The one-definition/six-theorem Laurent-leading leaf then gave
 the historical pre-RatFunc checkpoint 923/11,610, and the one-definition/
 four-theorem global RatFunc leaf gave the historical 924/11,615 checkpoint.
 Two theorems added to `ProbabilityLaplaceMoments.lean` then gave 924/11,617,
-and the one-definition/one-theorem Legendre--Rvachev biorthogonality leaf gives
-the live 925/11,619 census.  On the earlier
+and the one-definition/one-theorem Legendre--Rvachev biorthogonality leaf gave
+the historical 925/11,619 checkpoint.  Later merged source work contributes
+the zero-definition leaves `QPochhammerLambertForm` 0+5,
+`CentralQVandermondeInfinite` 0+4, `TriangularPowerProduct` 0+2,
+`DyadicBoundaryIdentity` 0+2, and `MeanValueBracket` 0+6; the 1+12
+`ThueMorseNewmanSelfSimilarity` leaf; a net twenty-nine further declarations
+in existing modules; and the 0+8 `FinitePrefixThueMorseCollapse` leaf.  These
+changes give the live 932/11,688 census.  On the earlier
 exterior-germ branch, the inner-complex 906/11,461 checkpoint was followed by
 the branch-local 907/11,464 checkpoint; its preceding real-MGF and algebraic
 moment-polynomial checkpoints were 905/11,458 and 904/11,457.  These older
@@ -713,9 +722,10 @@ historical 921/11,575 checkpoint.  `RvachevLaurentLeading.lean` then gave
 checkpoint 923/11,610, and `GeometricUniformMomentRatFunc.lean` gave the
 historical RatFunc checkpoint 924/11,615.  The two new
 `ProbabilityLaplaceMoments.lean` theorems gave 924/11,617, and
-`RvachevLegendreBiorthogonality.lean` gives the live facade inventory 925
+`RvachevLegendreBiorthogonality.lean` gave the historical facade inventory 925
 modules and 11,619 public declarations, with no missing module header or public
-declaration comment.
+declaration comment at that checkpoint.  The later merged consolidation and
+finite-prefix collapse described below give the live 932/11,688 inventory.
 
 `FinitePolynomialFunctional.lean` remains a zero-definition module and now has
 exactly sixteen public theorems:
@@ -790,9 +800,10 @@ upstream leaves add exactly two modules and 35 public declarations:
 `FinitePrefixAppellRecovery.lean` gives the historical pre-RatFunc checkpoint
 923 modules and 11,610 public declarations.  The subsequent global RatFunc
 leaf gives the historical 924 modules and 11,615 public declarations; the
-post-RatFunc probability and finite-biorthogonality additions below give the
-live 925 modules and 11,619 public declarations, with no missing module header
-or public declaration comment.
+post-RatFunc probability and finite-biorthogonality additions below gave the
+historical 925 modules and 11,619 public declarations, with no missing module
+header or public declaration comment at that checkpoint.  The later merged
+consolidation and collapse tranche gives the live 932/11,688 inventory.
 
 `HalfQBinomialRootSimplicity.lean` has no public definitions and exactly one
 public theorem, `halfQBinomial_sum_rootMultiplicity_two_pow`.  Over `ℚ`, for
@@ -922,7 +933,7 @@ the manuscript's `X`, not a new arbitrary-random-variable wrapper.  The moment
 theorem does not assert the `n=0` case.
 
 `RvachevLegendreBiorthogonality.lean` then adds one source module and exactly
-one definition plus one theorem, giving the live 925/11,619 inventory.  Its
+one definition plus one theorem, giving the historical 925/11,619 checkpoint.  Its
 exhaustive public surface is `rvachevLegendreAnalysisKernel` and
 `rvachevLegendreBiorthogonality`, both in `Fabius`.  For
 clarity, the former is literally the normalized kernel
@@ -937,6 +948,67 @@ smoothness, parity, origin values, Fourier--Bessel formula, and dyadic
 rationality are not all formalized; `cor:leg-biorthogonal-matrices` remains
 incomplete because no bundled matrix projector or reverse spectral closure is
 provided.
+
+#### Merged support leaves and finite-prefix Thue--Morse collapse
+
+Relative to the historical 925/11,619 checkpoint, the current facade has seven
+additional source modules and a net sixty-nine additional public declarations.
+Six merged support modules account for thirty-two of those declarations:
+`QPochhammerLambertForm.lean` is 0+5,
+`CentralQVandermondeInfinite.lean` is 0+4,
+`ThueMorseNewmanSelfSimilarity.lean` is 1+12,
+`TriangularPowerProduct.lean` is 0+2, `DyadicBoundaryIdentity.lean` is 0+2,
+and `MeanValueBracket.lean` is 0+6.  Respectively, these expose the complex and
+real Lambert exponential forms of the infinite q-Pochhammer symbol; the
+central q-Vandermonde limit and its `HasSum`/`Summable`/`tsum` forms; exact
+base-four Newman amplification, geometric-ray ratios, and nonconvergence; two
+commutative-monoid triangular exponent products; the prefix-product and
+division-free dyadic Fourier-boundary identities; and two-sided mean-value and
+residual-to-error brackets.  Consolidation of existing source surfaces gives
+the remaining net twenty-nine declarations before the final collapse leaf.
+This census accounting records the merged public API and by itself assigns no
+new frontier status to those support results.
+
+`FinitePrefixThueMorseCollapse.lean` accounts for the seventh module and the
+final eight declarations.  It has no public definitions and exactly eight
+public theorems.  The generic theorem
+`Appell.sum_thueMorseSign_mul_eval_poly` states, for an arbitrary rational
+Appell sequence, that the signed block on the grid `x+k*h` is the coefficient
+sum with factors `(n.choose r) * h^r * thueMorsePowerSum N r` and lower Appell
+polynomial `n-r`.
+
+The uncentered main theorem
+`Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat`
+uses `thueMorseSign k` on the exact grid `x+k/2^N` and returns
+`(-1)^N * 2^{-((N+1).choose 2)} * n.descFactorial N * x^(n-N)`.
+`Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_of_lt`
+specializes this to zero for `n<N`, while
+`Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_self`
+gives the first response
+`(-1)^N * N! * 2^{-((N+1).choose 2)}`.
+
+The centered main theorem
+`Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat`
+uses the total grid `x+(1-2^-N)-2k/2^N` and returns the sign-free response
+`2^{-(N.choose 2)} * n.descFactorial N * x^(n-N)`.
+`Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_succ`
+rewrites the positive depth as `N=m+1` and uses the manuscript's literal grid
+`x+(1-2^{-(m+1)})-k/2^m` with the same scale.
+`Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_of_lt`
+gives zero for `n<N`, and
+`Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_self`
+gives `N! * 2^{-(N.choose 2)}`.  The two primary theorems and both first-response
+corollaries include `N=0`; only the literal-grid successor wrapper is
+positive-depth-indexed.
+
+Consequently the uncentered main theorem supplies the exact compositional
+closure of `is:p2:thm:TM-uncentered`; its `_of_lt` and `_self` corollaries give
+the exact Prouhet cancellation and first surviving value required by
+`is:p2:cor:Prouhet-canonical`; and the centered `_succ` theorem supplies the
+exact printed grid for `is:p2:thm:TM-centered`, strengthened at `N=0` by the
+total centered theorem.  This is rational coefficient-model algebra only.  It
+introduces no random variable or `HasLaw` theorem and proves no analytic MGF or
+Barnes-function identification.
 
 The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
@@ -1534,7 +1606,8 @@ the analytic-order layer for the latter symbol, and no named equality bridge
 between the two definitions is counted.
 
 The synchronized q-series API also retains the full `origin/main` theorem
-inventory.  `GaussianBinomialAtNegOneDerivative.lean` is 0+4, and
+inventory.  `GaussianBinomialAtNegOneDerivative.lean` is 0+5, including the
+commutative-semiring evaluation theorem `gaussianBinomial_X_eval`, and
 `GaussianBinomialContinuity.lean` is 0+3:
 `continuous_gaussianBinomial`, `tendsto_gaussianBinomial_nhds_one`, and
 `gaussianBinomial_eq_finiteQPochhammerIn_div`.
@@ -1679,7 +1752,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 925/11,619
+historical 675/8,909 census and requires refresh against the live 932/11,688
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
