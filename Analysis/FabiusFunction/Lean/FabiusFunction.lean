@@ -165,6 +165,7 @@ import FabiusFunction.GeometricUniformMomentPolynomial
 import FabiusFunction.GeometricUniformMomentPolynomialBridge
 import FabiusFunction.GeometricUniformComplexMomentProduct
 import FabiusFunction.GeometricUniformExteriorComplexMomentGerm
+import FabiusFunction.GeometricUniformMomentRatFunc
 import FabiusFunction.GeometricUniformMomentPolynomialDegree
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
@@ -992,6 +993,21 @@ For every complex `q` with `1 < ‖q‖`, it defines the actual manuscript germ
 The inverse is total in Lean, but only the germ at zero is asserted analytic;
 no boundary or global pole statement is included.
 
+The rational-coefficient companion has the exhaustive public surface of one
+definition and four theorems:
+`geometricUniformMomentRatFunc`,
+`qFactorial_mul_geometricUniformMomentRatFunc`,
+`eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient`,
+`eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient`,
+and `eval_geometricUniformMomentRatFunc_one`.  It packages the common
+coefficient as the single `RatFunc ℚ` given by `P_n / [n]_X!`, proves the
+global pole-clearing identity `[n]_X! * a_n = P_n`, identifies safe evaluation
+of that same rational function with the inner product for `‖q‖ < 1` and the
+exterior reciprocal germ for `1 < ‖q‖`, and proves the removable specialization
+at `q = 1`, where `[n]_1! = n!`.  It assigns no value at a genuine pole and
+asserts no exact pole divisor, unit-circle analytic continuation, or global
+holomorphy of the exterior inverse.
+
 The sharp-degree companion has the exhaustive public surface of zero
 definitions and three theorems:
 `coeff_geometricUniformMomentPolynomial_choose_two`,
@@ -1006,16 +1022,16 @@ degree: the triangular bound is attained for `n = 1` and even `n`, while odd
 These leaves make the real probability-law normalization and both the inner
 complex-disc and exterior complex-germ Taylor normalizations exact.  Together
 with the sharp coefficient and degree theorem they make frontier label
-`p7:thm:Pn` Exact.  Monograph label
-`thm:qF-moment-polynomial` also remains Partial: its source uses one
-rational-function coefficient object across the inner product and the
-`|q| > 1` reciprocal germ, while no named `RatFunc` or root-of-unity
-continuation theorem identifies the two analytic regimes as that same global
-parameter object in Lean.
-Label `thm:geometric-uniform-mgf` remains Partial: no public theorem packages
-the product's dilation/Mahler law, entireness and normalization, formal
-uniqueness, coefficient rationality and pole data, or its direct
-identification with the real MGF or characteristic function.  The
+`p7:thm:Pn` Exact.  The global rational-function definition, pole-clearing
+identity, two regime specializations, and safe value at `q = 1` also make
+monograph label `thm:qF-moment-polynomial` Exact by assembly with the
+algebraic polynomial leaf.  This is a polynomial continuation statement, not
+an analytic continuation of either product through `‖q‖ = 1`.
+Label `thm:geometric-uniform-mgf` remains Partial: although coefficient
+rationality is now packaged, no public theorem packages the product's
+dilation/Mahler law, entireness and normalization, formal uniqueness, exact
+root-of-unity pole data, or its direct identification with the real MGF or
+characteristic function.  The
 leading/subleading coefficient and exact-degree claims of
 `prop:qF-P-degree-sharp` are exactly the sharp-degree companion's three
 theorems, so that label is Exact.

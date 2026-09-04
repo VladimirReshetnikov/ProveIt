@@ -21,8 +21,8 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 923
-source modules and 11,610 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 924
+source modules and 11,615 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -181,7 +181,7 @@ compose to make `cor:scaled-geometric-moments` Exact over a field under finite
 power-node injectivity. The polynomial theorem allows arbitrary scale,
 including zero, so it subsumes the manuscript's nonzero-scale hypothesis. The
 forward status ledger covers 282 labelled results:
-178 Exact / 81 Partial / 15 None / 8 N/A interface rows. The
+179 Exact / 80 Partial / 15 None / 8 N/A interface rows. The
 zero-definition/one-theorem `HalfQBinomialRootSimplicity.lean` leaf exports
 `halfQBinomial_sum_rootMultiplicity_two_pow`.  Together with
 `halfQBinomial_sum_eq_zero_iff` and
@@ -483,11 +483,8 @@ and
 `geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient`.
 For every complex `1 < ‖q‖`, it constructs the manuscript's actual reciprocal
 germ, proves analyticity at zero, and identifies its normalized Taylor
-coefficient with the same recursive polynomial.  Nevertheless,
-`thm:qF-moment-polynomial` remains conservatively Partial: no single Lean
-`RatFunc` packages the common inner/exterior coefficient, and no theorem
-identifies the polynomial as its root-of-unity pole-clearing, including the
-removable value at `q = 1`.
+coefficient with the same recursive polynomial.  No unit-circle analytic
+value follows from this leaf.
 `thm:geometric-uniform-mgf` remains Partial, while
 `prop:qF-P-degree-sharp` is now Exact through the exhaustive
 zero-definition/three-theorem `GeometricUniformMomentPolynomialDegree.lean`
@@ -500,6 +497,20 @@ subleading coefficient
 `n.choose 2` for `n=1` or even `n`, otherwise `n.choose 2 - 1`.  The degree
 leaf is purely algebraic and adds no analytic or root-of-unity hypothesis.
 
+The final `GeometricUniformMomentRatFunc.lean` leaf contributes one definition,
+`geometricUniformMomentRatFunc`, and exactly four theorems:
+`qFactorial_mul_geometricUniformMomentRatFunc`,
+`eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient`,
+`eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient`,
+and `eval_geometricUniformMomentRatFunc_one`. It packages the common
+`a_n = d_n/n!` as a single `RatFunc`, proves `[n]_X! a_n = P_n` globally,
+identifies safe evaluation with the actual inner and exterior Taylor
+coefficients under the strict norm hypotheses, and treats `q = 1` via
+`[n]_1! = n!` rather than a totalized `0/0`. In composition with the existing
+polynomial and q-factorial APIs, this exhaustive 1+4 surface makes
+`thm:qF-moment-polynomial` Exact. It does not evaluate genuine root-of-unity
+poles or promote the broader MGF/germ claims.
+
 The base 904/11,457, real-bridge 905/11,458, inner-complex 906/11,461, and
 pre-merge exterior-branch 907/11,464 counts remain labelled historical
 checkpoints.  The actual merged-main pre-local checkpoint is 919/11,569; the
@@ -510,10 +521,11 @@ then gives 922/11,582 and makes `is:p2:thm:Laurent-leading` Exact at the
 manuscript's centered-MGF normalization and punctured-limit boundary, without
 claiming lower Laurent coefficients or pole-shell asymptotics.  The
 eleven-definition/seventeen-theorem `FinitePrefixAppellRecovery.lean` leaf
-then gives the live 923/11,610 census and makes
+then gives the historical 923/11,610 checkpoint and makes
 `is:p2:thm:finite-prefix-expansion` and `is:p2:thm:exact-recovery` Exact as
 finite rational identities, without asserting analytic-MGF convergence or a
-universal fixed-evaluation-point degree.  In the current semantic union, the subsequent
+universal fixed-evaluation-point degree. The RatFunc 1+4 leaf then gives the
+live 924/11,615 census. In the current semantic union, the subsequent
 zero-definition/two-theorem greater-than-one leaf makes `cor:qgreaterone`
 Exact, and the scaled-geometric polynomial theorem completes
 `cor:scaled-geometric-moments`. The subsequent affine transport theorem in
@@ -522,10 +534,10 @@ by composition with the rational half-base extractor. The simple-root theorem
 in `HalfQBinomialRootSimplicity.lean`, composed with the complete rational
 root classification in `HalfQBinomial.lean`, makes
 `cor:halfbase-root-locus` Exact while leaving
-`cor:qbinom-inversion-law` Partial. The q forward totals are 178 Exact / 81
+`cor:qbinom-inversion-law` Partial. The q forward totals are 179 Exact / 80
 Partial / 15 None / 8 N/A, the relevant
 Dyadic Gaussian--Thue--Morse chapter is 9/46/1/0, and the source concordance
-is 91 Lean-proved / 387 human-proved frontier / 60 N/A / 9 conjectures. The
+is 92 Lean-proved / 386 human-proved frontier / 60 N/A / 9 conjectures. The
 intermediate 915/11,556 Bridge census remains a historical checkpoint. The
 retained 389-page q-series PDF is a
 historical checkpoint and does not render this source-only crosswalk.

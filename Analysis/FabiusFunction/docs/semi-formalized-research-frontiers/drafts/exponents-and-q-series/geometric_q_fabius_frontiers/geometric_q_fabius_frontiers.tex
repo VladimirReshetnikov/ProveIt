@@ -16520,11 +16520,20 @@ For every complex \(q\) with \(1<\lVert q\rVert\), it defines the actual
 reciprocal germ \((\mathcal A_{q^{-1}}(-z))^{-1}\), proves its analyticity at
 the origin, and identifies its normalized Taylor coefficient with the same
 polynomial.  The canonical q-monograph compound label
-\nolinkurl{thm:qF-moment-polynomial} remains Partial because no Lean
-\texttt{RatFunc} packages the single rational function \(a_n=d_n/n!\)
-across both regimes or proves its pole-clearing identity and resulting
-polynomial continuation at roots of unity.  No boundary claim at
-\(\lVert q\rVert=1\) is made.
+\nolinkurl{thm:qF-moment-polynomial} is completed by the final source-only
+\path{GeometricUniformMomentRatFunc.lean} leaf.  Its exhaustive one-definition/
+four-theorem API is
+\lean{geometricUniformMomentRatFunc},
+\lean{qFactorial_mul_geometricUniformMomentRatFunc},
+\lean{eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient},
+\lean{eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient},
+and \lean{eval_geometricUniformMomentRatFunc_one}.  It packages the single
+rational function \(a_n=d_n/n!=\mathcal P_n/[n]_q!\), proves the global
+q-factorial pole-clearing identity, specializes it safely to the inner and
+exterior analytic coefficients, and handles \(q=1\) through
+\([n]_1!=n!\) rather than totalized \(0/0\).  No \texttt{RatFunc.eval}
+identity is asserted at a genuine reduced-denominator zero, and no general
+unit-circle analytic-germ claim is made.
 
 The final source-only
 \path{GeometricUniformMomentPolynomialDegree.lean} leaf has no public
@@ -16545,8 +16554,8 @@ otherwise.  Lean's \nolinkurl{bernoulli' n} is precisely
 cases, its inner strict-disk and exterior analytic normalizations, and its
 leading/odd-degree clause are all supplied.  The sharper q-monograph label
 \nolinkurl{prop:qF-P-degree-sharp} is Exact as well.  Neither promotion fills
-the global \texttt{RatFunc} and root-continuation gap in
-\nolinkurl{thm:qF-moment-polynomial}, which remains Partial.  The \(1+8\)
+any missing clause of the broader geometric-uniform MGF theorem, but the
+RatFunc leaf above makes \nolinkurl{thm:qF-moment-polynomial} Exact.  The \(1+8\)
 algebraic leaf raised the historical 903/11,448 checkpoint to the historical
 904 modules and 11,457 public declarations; the exhaustive \(0+1\) real bridge
 raised the next historical checkpoint to 905 modules and 11,458 public
@@ -16564,8 +16573,9 @@ arbitrary-base or arbitrary-field simplicity claim, and
 The exhaustive \(1+2\) exterior leaf then gives 920/11,572, and the exhaustive
 \(0+3\) sharp-degree leaf gives the historical 921/11,575 checkpoint.  The
 subsequent \path{RvachevLaurentLeading.lean} \((1+6)\) leaf gives 922/11,582,
-and \path{FinitePrefixAppellRecovery.lean} \((11+17)\) gives the live
-923/11,610 repository census.  The Laurent and finite-prefix leaves are
+and \path{FinitePrefixAppellRecovery.lean} \((11+17)\) gives the historical
+923/11,610 checkpoint.  The final RatFunc \((1+4)\) leaf gives the live
+924/11,615 repository census.  The Laurent and finite-prefix leaves are
 included here for the census and exhaustive API counts; their Exact inverse-
 series status rows belong to the inverse-series crosswalk.
 The retained PDF predates these source-only crosswalks, remains historical,

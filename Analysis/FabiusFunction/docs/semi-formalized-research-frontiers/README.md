@@ -145,11 +145,8 @@ germ `(A_{q⁻¹}(-z))⁻¹` for complex `1 < ‖q‖`;
 analyticity at the origin, and
 `Fabius.geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient`
 identifies its normalized Taylor coefficient with the recursive polynomial.
-The canonical q-monograph compound label `thm:qF-moment-polynomial` remains
-**Partial**: no Lean `RatFunc` packages a single rational `a_n = d_n/n!`
-across the inner and exterior regimes or proves its pole-clearing identity and
-the resulting polynomial continuation at roots of unity. No boundary claim at
-`‖q‖ = 1` is made. The inner complex `1+2` leaf produced the historical
+No boundary claim at `‖q‖ = 1` is made by this analytic leaf. The inner complex
+`1+2` leaf produced the historical
 checkpoint 906 modules and 11,461 public declarations; the exterior `1+2`
 leaf formed its earlier branch-local historical checkpoint at 907 modules and
 11,464 public declarations. In the merged chronology, the exterior leaf adds
@@ -168,12 +165,28 @@ natural degree is `n.choose 2` for `n=1` and even `n`, including `n=0`, and
 `n.choose 2-1` for odd `n>1`. Canonical `prop:qF-P-degree-sharp` is therefore
 **Exact**, and the formerly missing leading/odd-degree clause makes the
 represented compound `p7:thm:Pn` **Exact**. This purely algebraic result does
-not close the distinct global `RatFunc` and root-of-unity continuation gap, so
-`thm:qF-moment-polynomial` remains **Partial**. The 0+3 leaf gives the
+not assert a unit-circle analytic continuation. The 0+3 leaf gives the
 historical sharp checkpoint 921 modules and 11,575 public declarations.
 `RvachevLaurentLeading` 1+6 then gives 922/11,582, and
-`FinitePrefixAppellRecovery` 11+17 gives the live 923/11,610 census. The
-retained frontier, primary,
+`FinitePrefixAppellRecovery` 11+17 gives the historical 923/11,610 checkpoint.
+
+The final source-only leaf is
+`FabiusFunction.GeometricUniformMomentRatFunc`, with one public definition and
+exactly four public theorems. The exhaustive API is
+`Fabius.geometricUniformMomentRatFunc`,
+`Fabius.qFactorial_mul_geometricUniformMomentRatFunc`,
+`Fabius.eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient`,
+`Fabius.eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient`,
+and `Fabius.eval_geometricUniformMomentRatFunc_one`. It packages the common
+`a_n = d_n/n!` as one rational function, proves the global clearing identity
+`[n]_X! a_n = P_n`, identifies safe evaluation with the actual inner and
+exterior Taylor coefficients on `‖q‖ < 1` and `1 < ‖q‖`, and handles `q = 1`
+through `[n]_1! = n!` rather than the literal totalized `0/0` quotient. In
+composition with the algebraic polynomial API and the q-factorial/Pochhammer
+identity, this makes canonical `thm:qF-moment-polynomial` **Exact**. It does
+not assign analytic coefficient values at genuine poles or otherwise fill the
+unit-circle MGF/germ boundary. The 1+4 leaf gives the live 924/11,615 census.
+The retained frontier, primary,
 walkthrough, and geometric-q PDFs predate these source-only overlays and claim
 no render parity.
 
@@ -217,7 +230,8 @@ historical 918/11,568 checkpoint; `HalfQBinomialRootSimplicity` gave the actual
 merged-main pre-local checkpoint 919/11,569; the exterior reciprocal-germ leaf
 gave 920/11,572; and the sharp-degree leaf gave the historical 921/11,575
 checkpoint. `RvachevLaurentLeading` then gives 922/11,582, and
-`FinitePrefixAppellRecovery` gives the live 923/11,610 union.
+`FinitePrefixAppellRecovery` gives the historical 923/11,610 checkpoint. The
+RatFunc leaf gives the live 924/11,615 union.
 
 `FabiusFunction.RvachevLaurentLeading` has one definition and six theorems.
 Its manuscript-normalized punctured-neighborhood limit, together with the
@@ -247,9 +261,9 @@ existing rational zero classifier and Gaussian/half-q coefficient identity,
 it makes `cor:halfbase-root-locus` Exact under the canonical rational-polynomial
 and rational-root convention. Injective scalar extension preserves
 the displayed multiplicities, but the leaf does not classify all roots over
-every extension field. The q forward ledger is now 178 Exact / 81 Partial /
-15 None / 8 interface rows, and its source concordance is 91 Lean-proved /
-387 human-proved frontier / 60 non-applicable / 9 conjectures.
+every extension field. The q forward ledger is now 179 Exact / 80 Partial /
+15 None / 8 interface rows, and its source concordance is 92 Lean-proved /
+386 human-proved frontier / 60 non-applicable / 9 conjectures.
 
 `FabiusFunction.GaussianBinomialGreaterOneAsymptotics` has exactly the two
 theorems
@@ -408,9 +422,10 @@ the later Euler, q-binomial, Jacobi, quantum-binomial, Rogers--Szegő,
 cyclotomic-divisibility, q-Catalan, primitive-root-block, q-Lucas, Jackson
 q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
 q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result
-forward status totals are now 178 Exact / 81 Partial / 15 None / 8 interface:
+forward status totals are now 179 Exact / 80 Partial / 15 None / 8 interface:
 `p7:thm:Pn` moves Partial-to-Exact and `prop:qF-P-degree-sharp` moves
-None-to-Exact, while `thm:qF-moment-polynomial` remains Partial.
+None-to-Exact, while the RatFunc assembly now moves
+`thm:qF-moment-polynomial` Partial-to-Exact.
 `FabiusFunction.GeometricResidualMoments` now has zero definitions and nine
 public theorems. Its existing
 `Fabius.sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos` supplies

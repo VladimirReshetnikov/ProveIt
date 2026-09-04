@@ -100,7 +100,7 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 923 modules and 11,610 public declarations with no
+live facade audit contains 924 modules and 11,615 public declarations with no
 documentation gaps. Those corpus-wide totals include the q--Chu, Richardson,
 geometric-law barycenter, Lagrange--Rvachev matrix, arbitrary-space geometric
 realization, regular-central-sum, Lambert branch-gap Bernoulli, affine
@@ -183,11 +183,20 @@ theorems, `analyticAt_geometricUniformExteriorComplexMomentGerm` and
 `geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient`.
 For every complex `1 < ‖q‖`, it constructs the actual reciprocal germ, proves
 analyticity at zero, and gives the same normalized Taylor-coefficient identity.
-Conservatively, `thm:qF-moment-polynomial` remains Partial rather than Exact:
-no single Lean `RatFunc` packages the common inner/exterior coefficient, and no
-theorem proves that clearing that rational function's root-of-unity poles gives
-the same total polynomial at the removable value `q = 1`.  The broader
-`thm:geometric-uniform-mgf` remains Partial.  The exhaustive
+The final `GeometricUniformMomentRatFunc.lean` leaf contributes one definition,
+`geometricUniformMomentRatFunc`, and four theorems:
+`qFactorial_mul_geometricUniformMomentRatFunc`,
+`eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient`,
+`eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient`,
+and `eval_geometricUniformMomentRatFunc_one`.  It packages the common
+coefficient as `P_n/[n]_q!` in `RatFunc ℚ`, proves its global polynomial
+q-factorial clearing identity, specializes safely to both analytic regimes,
+and handles `q = 1` through `[n]_1! = n!`; it makes no evaluation claim at a
+genuine reduced-denominator zero.  Thus `thm:qF-moment-polynomial` is Exact.
+The broader `thm:geometric-uniform-mgf` remains Partial because its public
+direct dilation/coefficient recurrence, formal-power-series uniqueness,
+single bundled genuine-MGF/characteristic-function identification, and
+root-of-unity pole classification are not all packaged.  The exhaustive
 zero-definition/three-theorem `GeometricUniformMomentPolynomialDegree.lean`
 surface is `coeff_geometricUniformMomentPolynomial_choose_two`,
 `coeff_geometricUniformMomentPolynomial_choose_two_sub_one`, and
@@ -203,8 +212,9 @@ pre-merge exterior-branch 907/11,464 counts remain historical checkpoints.
 The actual merged-main pre-local checkpoint is 919/11,569; the exterior leaf
 gives the next historical checkpoint 920/11,572 without another status move;
 the sharp-degree leaf gives the historical 921/11,575 checkpoint; the Laurent
-tranche gives the historical 922/11,582 checkpoint; and the finite-prefix
-tranche gives the live 923/11,610 census.
+tranche gives the historical 922/11,582 checkpoint; the finite-prefix tranche
+gives the historical 923/11,610 checkpoint; and the RatFunc leaf gives the live
+924/11,615 census.
 The facade also contains the zero-definition/two-theorem
 `GaussianBinomialGreaterOneAsymptotics.lean` leaf; its exhaustive declarations
 are `gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
@@ -241,15 +251,15 @@ rational-root convention: all rational roots are the displayed `2^j`, and
 each has multiplicity one. Injective scalar extension preserves those
 displayed multiplicities, but the leaf does not package an all-roots
 classification over every extension field. The current semantic-union census
-is 923/11,610.
+is 924/11,615.
 Neither these source-only additions nor the preceding Lambert addition changes
 the retained historical artifact, and no render parity is claimed. The
 forward status inventory covers 282 labelled results:
-178 Exact / 81 Partial / 15 None / 8 N/A; the relevant
-Dyadic Gaussian--Thue--Morse chapter is 9/46/1/0, and the 191-result pre-Fabius core is
+179 Exact / 80 Partial / 15 None / 8 N/A; the relevant
+Dyadic Gaussian--Thue--Morse chapter is 10/45/1/0, and the 191-result pre-Fabius core is
 36 / 29 / 123 / 3.
 The five-publication concordance
-has 91 Lean-proved, 387 human-proved frontier, 60 not-applicable, and 9
+has 92 Lean-proved, 386 human-proved frontier, 60 not-applicable, and 9
 conjecture rows. The unrelated `cor:qbinom-inversion-law` remains Partial.
 Both the retained `thm:fixed-column-limit` source row and the
 older `prop:fixed-k-limit` row redirected to it now inherit the exact canonical

@@ -13682,7 +13682,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 178 are \statusexact, 81 are
+Of the 282 labelled forward results, 179 are \statusexact, 80 are
 \statuspartial, 15 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -14299,9 +14299,9 @@ Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 8 & 1 & 0 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 9 & 0 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 3 & 10 & 0 & 0\\
-Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 9 & 46 & 1 & 0\\
+Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 10 & 45 & 1 & 0\\
 \midrule
-\textbf{Forward total} & 178 & 81 & 15 & 8\\
+\textbf{Forward total} & 179 & 80 & 15 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -15822,18 +15822,23 @@ formalized, but not the displayed tail-moment formula}\\[2pt]
 \texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}complexMomentProduct\_\allowbreak{}taylorCoefficient},
 \texttt{geometricUniformExteriorComplexMomentGerm},
 \texttt{analyticAt\_\allowbreak{}geometricUniformExteriorComplexMomentGerm}, and
-\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}exteriorComplexMomentGerm\_\allowbreak{}taylorCoefficient}\newline
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}exteriorComplexMomentGerm\_\allowbreak{}taylorCoefficient},
+\texttt{geometricUniformMomentRatFunc}, and
+\texttt{qFactorial\_\allowbreak{}mul\_\allowbreak{}geometricUniformMomentRatFunc}\newline
 {\footnotesize\texttt{FabiusComplexMGF};
 \texttt{GeometricUniformMomentPolynomialBridge};
 \texttt{GeometricUniformComplexMomentProduct};
-\texttt{GeometricUniformExteriorComplexMomentGerm}; the half-base transform, the
+\texttt{GeometricUniformExteriorComplexMomentGerm};
+\texttt{GeometricUniformMomentRatFunc}; the half-base transform, the
 zero-definition/one-theorem real genuine-MGF coefficient bridge, and the
 one-definition/two-theorem complex strict-contraction product, local-uniformity,
 normalized Taylor-coefficient bridge, and the one-definition/two-theorem actual
 exterior reciprocal germ with its analytic-at-zero coefficient bridge are
-present.  A public direct
-dilation/coefficient recurrence, full genuine-MGF/characteristic-function
-identification, formal uniqueness, and rationality/pole package are absent}\\[2pt]
+present.  The common coefficient is now a named rational function with a global
+q-factorial clearing identity.  A public direct dilation/coefficient recurrence,
+formal-power-series uniqueness, a single bundled genuine-MGF/characteristic-
+function identification, and the root-of-unity pole classification are still
+absent}\\[2pt]
 \Cref{lem:fabius-moment-dilation} & \statuspartial &
 \texttt{fabiusRecurrenceSequence\_recurrence}\newline
 {\footnotesize\texttt{FabiusRecurrenceSequence}; coefficient-level half-base
@@ -16000,7 +16005,7 @@ dyadic outer-product specializations, and real-frequency local and compact
 uniform convergence of the full prefixes are exact, but the named
 centered/MGF wrapper, reciprocal outside-disk formula, pole divisor, and
 zero--pole exchange are not packaged}\\[2pt]
-\Cref{thm:qF-moment-polynomial} & \statuspartial &
+\Cref{thm:qF-moment-polynomial} & \statusexact &
 \texttt{geometricUniformMomentPolynomial},
 \texttt{geometricUniformMomentPolynomial\_\allowbreak{}zero},
 \texttt{geometricUniformMomentPolynomial\_\allowbreak{}succ},
@@ -16016,11 +16021,17 @@ zero--pole exchange are not packaged}\\[2pt]
 \texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}complexMomentProduct\_\allowbreak{}taylorCoefficient},
 \texttt{geometricUniformExteriorComplexMomentGerm},
 \texttt{analyticAt\_\allowbreak{}geometricUniformExteriorComplexMomentGerm}, and
-\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}exteriorComplexMomentGerm\_\allowbreak{}taylorCoefficient}\newline
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}exteriorComplexMomentGerm\_\allowbreak{}taylorCoefficient},
+\texttt{geometricUniformMomentRatFunc},
+\texttt{qFactorial\_\allowbreak{}mul\_\allowbreak{}geometricUniformMomentRatFunc},
+\texttt{eval\_\allowbreak{}geometricUniformMomentRatFunc\_\allowbreak{}eq\_\allowbreak{}complexMomentProduct\_\allowbreak{}taylorCoefficient},
+\texttt{eval\_\allowbreak{}geometricUniformMomentRatFunc\_\allowbreak{}eq\_\allowbreak{}exteriorComplexMomentGerm\_\allowbreak{}taylorCoefficient}, and
+\texttt{eval\_\allowbreak{}geometricUniformMomentRatFunc\_\allowbreak{}one}\newline
 {\footnotesize\texttt{GeometricUniformMomentPolynomial};
 \texttt{GeometricUniformMomentPolynomialBridge};
 \texttt{GeometricUniformComplexMomentProduct};
-\texttt{GeometricUniformExteriorComplexMomentGerm}; the recursively defined
+\texttt{GeometricUniformExteriorComplexMomentGerm};
+\texttt{GeometricUniformMomentRatFunc}; the recursively defined
 polynomial family, its zeroth value and residual-product recurrence, the degree
 bound, the specialization at $q=0$, and the displayed cases $\mathcal P_1$
 through $\mathcal P_4$ are exact.  The zero-definition/one-theorem real bridge
@@ -16030,15 +16041,21 @@ uniform convergence, and the same normalized Taylor coefficient for every
 complex strict contraction, including $q=0$.  Thus the inner complex
 product/coefficient claim is exact.  The exterior leaf constructs the actual
 reciprocal germ for $1<\lVert q\rVert$, proves analyticity at zero, and gives
-the same normalized Taylor-coefficient identity.  The source additionally
-treats $a_n(q)=d_n(q)/n!$ as one rational function spanning both regimes and
-obtains $\mathcal P_n$ by clearing its root-of-unity poles, with a total
-polynomial value also at $q=1$; no single Lean RatFunc or cleared-continuation
-theorem supplies that global identification, so the compound label remains
-Partial.  The inner complex leaf gives the historical 906/11,461 checkpoint;
+the same normalized Taylor-coefficient identity.  The final one-definition/
+four-theorem leaf packages their shared coefficient as the single
+$\operatorname{RatFunc}\,\RationalNumbers$ value
+$a_n=\mathcal P_n/[n]_q!$, proves the global q-factorial clearing identity,
+specializes it safely to both analytic regimes, and treats $q=1$ through
+$[n]_1!=n!$ rather than the totalized scalar $0/0$.  At a genuine reduced
+denominator zero no \texttt{RatFunc.eval} identity is asserted.  Thus the
+polynomial, recurrence, degree bound, zero value, displayed small cases, and
+the common inner/exterior rational-coefficient normalization are all exact.
+The inner complex leaf gives the historical 906/11,461 checkpoint;
 after the merged-main corpus reached 919/11,569, the exterior leaf raised the
 next historical checkpoint to 920/11,572 without changing the forward or
-source-concordance ledgers}\\[2pt]
+source-concordance ledgers; the RatFunc leaf raises the live census from the
+historical 923/11,610 checkpoint to 924/11,615 and moves this one row to
+Exact}\\[2pt]
 \Cref{prop:qF-P-degree-sharp} & \statusexact &
 \texttt{coeff\_geometricUniformMomentPolynomial\_choose\_two},
 \texttt{coeff\_geometricUniformMomentPolynomial\_choose\_two\_sub\_one}, and
@@ -16050,7 +16067,7 @@ parity-split degree is exact, including $n=0$ and $n=1$.  This is a purely
 algebraic polynomial theorem and adds no analytic or root-of-unity
 hypothesis.  Its zero-definition/three-theorem leaf raised the then-current
 corpus to the historical 921-module/11,575-declaration checkpoint; the live
-facade census is 923 modules and 11,610 public declarations}\\[2pt]
+facade census is 924 modules and 11,615 public declarations}\\[2pt]
 \Cref{cor:qF-halfbase-dictionary} & \statuspartial &
 \texttt{fabiusAtInverseTwoPow\_eq\_halfMoment},
 \texttt{halfQPochhammer\_eq\_mersenne\_div}\newline

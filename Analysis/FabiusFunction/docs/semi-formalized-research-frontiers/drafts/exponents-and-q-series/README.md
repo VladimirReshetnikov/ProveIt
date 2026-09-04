@@ -141,12 +141,21 @@ The inner complex product/coefficient claim is therefore exact.  The following
 `geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient`.
 For every complex `1 < ‖q‖`, it constructs the actual reciprocal product germ,
 proves its analyticity at zero, and gives the same normalized Taylor-coefficient
-identity.  Under the strict whole-label policy,
-`thm:qF-moment-polynomial` remains Partial rather than Exact because no single
-Lean `RatFunc` packages the common inner/exterior coefficient or identifies
-the polynomial as its root-of-unity pole-clearing, including the removable
-value at `q = 1`.
-`thm:geometric-uniform-mgf` also remains Partial.  The exhaustive 0+3
+identity.  The final `GeometricUniformMomentRatFunc.lean` leaf has one
+definition, `geometricUniformMomentRatFunc`, and exactly four theorems:
+`qFactorial_mul_geometricUniformMomentRatFunc`,
+`eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient`,
+`eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient`,
+and `eval_geometricUniformMomentRatFunc_one`.  It packages the common
+coefficient as `P_n/[n]_q!` in `RatFunc ℚ`, proves the global q-factorial
+clearing identity, safely specializes to both analytic regimes, and treats
+`q = 1` via `[n]_1! = n!`, without evaluating at genuine reduced-denominator
+zeros.  Under the strict whole-label policy, this makes
+`thm:qF-moment-polynomial` Exact.
+`thm:geometric-uniform-mgf` remains Partial at its public direct dilation and
+coefficient recurrence, formal-power-series uniqueness, bundled genuine-MGF/
+characteristic-function identification, and root-of-unity pole classification.
+The exhaustive 0+3
 `GeometricUniformMomentPolynomialDegree.lean` leaf consists of
 `coeff_geometricUniformMomentPolynomial_choose_two`,
 `coeff_geometricUniformMomentPolynomial_choose_two_sub_one`, and
@@ -166,12 +175,13 @@ gives the historical 921/11,575 checkpoint.  The sibling
 922/11,582 and makes `is:p2:thm:Laurent-leading` Exact with the manuscript's
 centered-MGF normalization and a punctured Laurent limit.  The sibling
 `FinitePrefixAppellRecovery.lean` leaf (eleven definitions and seventeen
-theorems) gives the live 923/11,610 census and makes
+theorems) gives the historical 923/11,610 checkpoint and makes
 `is:p2:thm:finite-prefix-expansion` and `is:p2:thm:exact-recovery` Exact as
 finite rational identities; it adds no analytic-MGF convergence or universal
-fixed-evaluation-point degree claim.  The q ledger remains 178/81/15/8, its relevant
-Dyadic Gaussian--Thue--Morse chapter is 9/46/1/0, and the source projection
-is 91/387/60/9. The zero-definition/one-theorem
+fixed-evaluation-point degree claim.  The RatFunc leaf gives the live
+924/11,615 census.  The q ledger is 179/80/15/8, its relevant
+Dyadic Gaussian--Thue--Morse chapter is 10/45/1/0, and the source projection
+is 92/386/60/9. The zero-definition/one-theorem
 `HalfQBinomialRootSimplicity.lean` leaf exports
 `halfQBinomial_sum_rootMultiplicity_two_pow`; with the complete rational
 root classification `halfQBinomial_sum_eq_zero_iff`, it makes
@@ -287,10 +297,11 @@ Current packages and retained intake records:
   `GaussianBinomialGreaterOneAsymptotics.lean` (zero definitions and two
   theorems), `GeometricResidualMoments.lean` (zero definitions and nine
   theorems), and `HalfQBinomialRootSimplicity.lean` (zero definitions and one
-  theorem). The existing `FinitePolynomialFunctional.lean` module now has
+  theorem), and `GeometricUniformMomentRatFunc.lean` (one definition and four
+  theorems). The existing `FinitePolynomialFunctional.lean` module now has
   zero definitions and sixteen public theorems. The forward crosswalk is now
-  178 Exact, 81 Partial, 15 None, and 8 interface rows; the source ledger is
-  91 Lean-proved, 387 human-proved
+  179 Exact, 80 Partial, 15 None, and 8 interface rows; the source ledger is
+  92 Lean-proved, 386 human-proved
   frontier, 60 not
   applicable, and 9 conjectures. No PDF was generated locally while resolving
   this source-only merge, so the retained 389-page artifact does not render
@@ -1010,7 +1021,7 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 178 Exact, 81
+The latest validated forward formalization ledger has 282 rows: 179 Exact, 80
 Partial, 15 with no counterpart, and 8 interface-only. The basic
 geometric-uniform row is Exact: `GeometricUniformRealization.lean` proves that
 an `iIndepFun` process of unit-interval coordinates with uniform marginal laws

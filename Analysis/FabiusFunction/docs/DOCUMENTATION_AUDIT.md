@@ -112,7 +112,7 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans 923 facade-reachable modules and 11,610 public declarations.  It
+pass scans 924 facade-reachable modules and 11,615 public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
@@ -129,12 +129,13 @@ finds no missing module header or declaration comment, including throughout
 `RvachevLegendreCentralSum.lean`, `HalfQBinomialRootSimplicity.lean`,
 `GeometricUniformExteriorComplexMomentGerm.lean`,
 `GeometricUniformMomentPolynomialDegree.lean`,
-`RvachevLaurentLeading.lean`, and `FinitePrefixAppellRecovery.lean` leaves,
+`RvachevLaurentLeading.lean`, `FinitePrefixAppellRecovery.lean`, and
+`GeometricUniformMomentRatFunc.lean` leaves,
 as well as the sixteenth theorem in `FinitePolynomialFunctional.lean`.
 Relative to the
-610/8,318 activation checkpoint, the current tree adds 313 modules and 3,292 declarations.
+610/8,318 activation checkpoint, the current tree adds 314 modules and 3,297 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 293 modules and 3,058 declarations.  The post-merge 675/8,909 inventory,
+adds 294 modules and 3,063 declarations.  The post-merge 675/8,909 inventory,
 the intervening 903/11,448 Lambert-series inventory, and the immediately
 preceding 914/11,555 scaled-geometric and 915/11,556 real-MGF-bridge
 checkpoints, together with the incoming branch's 906/11,461 complex-product
@@ -144,9 +145,9 @@ followed by the half-base root-simplicity leaf at the merged-main pre-local
 checkpoint 919/11,569, the exterior reciprocal-germ leaf at 920/11,572, and
 the sharp coefficient-and-degree leaf at the historical 921/11,575
 checkpoint.  The one-definition/six-theorem Laurent-leading leaf then gave
-922/11,582, and the
-eleven-definition/seventeen-theorem finite-prefix leaf gives the live
-923/11,610 census.  On the earlier
+922/11,582, the eleven-definition/seventeen-theorem finite-prefix leaf gave
+the historical pre-RatFunc checkpoint 923/11,610, and the one-definition/
+four-theorem global RatFunc leaf gives the live 924/11,615 census.  On the earlier
 exterior-germ branch, the inner-complex 906/11,461 checkpoint was followed by
 the branch-local 907/11,464 checkpoint; its preceding real-MGF and algebraic
 moment-polynomial checkpoints were 905/11,458 and 904/11,457.  These older
@@ -623,18 +624,18 @@ origin.  It asserts no global holomorphy across poles, pole divisor, boundary
 case `‖q‖=1`, or rational-function continuation in the parameter.
 
 The inner-disc product, exterior reciprocal germ, and both Taylor-coefficient
-normalizations are therefore exact, but monograph label
-`thm:qF-moment-polynomial` remains **Partial**.  Its source uses one
-rational-function coefficient object across the two analytic regimes, and no
-named `RatFunc` or root-of-unity continuation theorem identifies those
-regime-wise coefficients as that same global parameter object in Lean.
-Label `thm:geometric-uniform-mgf` remains **Partial** because no public theorem
-packages the product's dilation/Mahler law, entireness and normalization,
-formal uniqueness, coefficient rationality and pole data, or its direct
-identification with the real MGF or characteristic function.  Frontier label
-`p7:thm:Pn` and proposition `prop:qF-P-degree-sharp` are accounted for by the
-following sharp-degree tranche, without changing the canonical monograph
-label's Partial status at the global rational-function boundary.
+normalizations are therefore exact.  At this historical exterior checkpoint,
+monograph label `thm:qF-moment-polynomial` was still **Partial** because no
+named global `RatFunc` identified those regime-wise coefficients as one
+rational parameter object.  The later RatFunc tranche below closes exactly
+that assembly boundary.  Label `thm:geometric-uniform-mgf` remains
+**Partial**: coefficient rationality and the `q=1` specialization are now
+packaged, but no public theorem packages the product's dilation/Mahler law,
+full entireness and normalization, formal uniqueness, exact pole data, or
+direct equality of the complex product with the real MGF or characteristic
+function.  Frontier label `p7:thm:Pn` and proposition
+`prop:qF-P-degree-sharp` are accounted for by the following sharp-degree
+tranche.
 
 #### Sharp geometric-uniform coefficients and exact degree
 
@@ -656,12 +657,13 @@ natural degree `n.choose 2` for `n=1` and even `n`, including `n=0`, and
 together with the algebraic recurrence and boundary tranche, the represented
 frontier theorem `p7:thm:Pn` is **Exact**.  The separate real bridge keeps
 `p7:eq:Pn-def` Exact on real `|q|<1`.  This
-purely algebraic leaf adds no analytic continuation or root-of-unity claim, so
-`thm:qF-moment-polynomial` remains **Partial** for the RatFunc reason above.
+purely algebraic leaf adds no analytic continuation or root-of-unity claim.
+At this historical sharp checkpoint, `thm:qF-moment-polynomial` therefore
+remained **Partial**; the later global RatFunc leaf promotes it by assembly.
 
 That algebraic source checkpoint was 913 modules and 11,551 public declarations, with
-no missing module header or declaration comment.  The canonical
-`thm:qF-moment-polynomial` status remains **Partial** exactly as stated above.
+no missing module header or declaration comment.  Its then-current canonical
+`thm:qF-moment-polynomial` status was **Partial** exactly as stated above.
 
 #### Thue--Morse Gamma-tower differential tranche
 
@@ -702,9 +704,10 @@ and 11,568 public declarations.  The half-base root-simplicity leaf gave the
 merged-main pre-local checkpoint 919/11,569; the exterior reciprocal-germ leaf
 then gave 920/11,572; and the sharp coefficient-and-degree leaf gave the
 historical 921/11,575 checkpoint.  `RvachevLaurentLeading.lean` then gave
-922/11,582, and `FinitePrefixAppellRecovery.lean` gives the live facade
-inventory 923 modules and 11,610 public declarations, with no missing module
-header or public declaration comment.
+922/11,582, `FinitePrefixAppellRecovery.lean` gave the historical pre-RatFunc
+checkpoint 923/11,610, and `GeometricUniformMomentRatFunc.lean` gives the live
+facade inventory 924 modules and 11,615 public declarations, with no missing
+module header or public declaration comment.
 
 `FinitePolynomialFunctional.lean` remains a zero-definition module and now has
 exactly sixteen public theorems:
@@ -776,8 +779,10 @@ checkpoint to 919/11,569.  After the exterior and sharp-degree leaves produced
 920/11,572 and the historical sharp checkpoint 921/11,575, the two subsequent
 upstream leaves add exactly two modules and 35 public declarations:
 `RvachevLaurentLeading.lean` gives 922/11,582, and
-`FinitePrefixAppellRecovery.lean` gives the live 923 modules and 11,610 public
-declarations, with no missing module header or public declaration comment.
+`FinitePrefixAppellRecovery.lean` gives the historical pre-RatFunc checkpoint
+923 modules and 11,610 public declarations.  The subsequent global RatFunc
+leaf gives the live 924 modules and 11,615 public declarations, with no missing
+module header or public declaration comment.
 
 `HalfQBinomialRootSimplicity.lean` has no public definitions and exactly one
 public theorem, `halfQBinomial_sum_rootMultiplicity_two_pow`.  Over `ℚ`, for
@@ -856,6 +861,32 @@ Rvachev--Appell polynomial from the `⌊n/2⌋+1` prefixes
 not limits.  Accordingly both `is:p2:thm:finite-prefix-expansion` and
 `is:p2:thm:exact-recovery` are **Exact**.  No analytic MGF convergence or
 universal fixed-`x` degree statement is added.
+
+#### Global geometric-uniform moment RatFunc bridge
+
+`GeometricUniformMomentRatFunc.lean` adds one source module and five public
+declarations to the historical pre-RatFunc 923/11,610 checkpoint, giving the
+live 924 modules and 11,615 public declarations.  Its exhaustive 1+4 surface
+is the definition `geometricUniformMomentRatFunc` and the theorems
+`qFactorial_mul_geometricUniformMomentRatFunc`,
+`eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient`,
+`eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient`,
+and `eval_geometricUniformMomentRatFunc_one`.  All supporting declarations are
+private and excluded from the public count.
+
+The definition packages the single rational coefficient
+`a_n(X)=P_n(X)/[n]_X!` in `RatFunc ℚ`.  Its global theorem proves the safe
+pole-clearing identity `[n]_X!·a_n=P_n`.  Safe evaluation of this same object
+is the inner complex-product Taylor coefficient for every `‖q‖<1`, including
+`q=0` and `n=0`, and the exterior reciprocal-germ Taylor coefficient for every
+`1<‖q‖`.  At `q=1`, where `[n]_1!=n!`, the final theorem gives the removable
+specialization `a_n(1)=P_n(1)/n!`.  Together with the algebraic, inner, and
+exterior tranches, this makes canonical `thm:qF-moment-polynomial` **Exact by
+assembly**.  Evaluation remains conditional on denominator nonvanishing: no
+value is assigned at a genuine pole, and no exact pole divisor or pole-order
+theorem, analytic continuation through `‖q‖=1`, or global holomorphy of the
+exterior reciprocal is claimed.  Label `thm:geometric-uniform-mgf` remains
+**Partial** under the boundary stated above.
 
 The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
@@ -1598,7 +1629,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 923/11,610
+historical 675/8,909 census and requires refresh against the live 924/11,615
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity

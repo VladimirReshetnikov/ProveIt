@@ -835,9 +835,9 @@ Thus `is:p3:cor:forced-superconvergence` and
 concordance. This source postdates the retained Representation and inverse
 PDFs, which remain historical artifacts rather than renders of the promotion.
 The corresponding historical documentation checkpoint was 671 modules and
-8,858 public declarations. The q forward ledger is 178 Exact / 81 Partial /
-15 None / 8 N/A, with chapter splits 9/0/0/0 for Half-base and 9/46/1/0 for
-Dyadic, while the source concordance is 91/387/60/9. The merged-main
+8,858 public declarations. The q forward ledger is 179 Exact / 80 Partial /
+15 None / 8 N/A, with chapter splits 9/0/0/0 for Half-base and 10/45/1/0 for
+Dyadic, while the source concordance is 92/386/60/9. The merged-main
 increment to 919/11,569 is the exhaustive zero-definition/one-theorem sibling
 `FabiusFunction.HalfQBinomialRootSimplicity`, whose
 `Fabius.halfQBinomial_sum_rootMultiplicity_two_pow` proves multiplicity one
@@ -857,8 +857,9 @@ bases `1/2` and `1/4`. The prefix module's exact degrees are symbolic outer
 degrees in `Polynomial (Polynomial ℚ)`; a fixed-inner-variable centered
 degree can drop, and its algebraic finite-convolution moments are not a
 random-variable or MGF realization. The Laurent leaf gives checkpoint
-922/11,582, and the finite-prefix leaf gives the live repository census 923
-modules and 11,610 public declarations. The census also includes the unrelated
+922/11,582, and the finite-prefix leaf gives 923/11,610.  The subsequent
+one-definition/four-theorem geometric-uniform RatFunc leaf gives the live
+repository census 924 modules and 11,615 public declarations. The census also includes the unrelated
 sibling source-only
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
@@ -922,10 +923,10 @@ the exhaustive surface one public definition and two public theorems:
 For complex `‖q‖ < 1` these construct the actual locally uniform product and
 give its normalized Taylor-coefficient bridge to the recursive polynomial.
 This is an analytic analogue rather than a complex probability-moment
-extension of `p7:eq:Pn-def`, whose Exact scope remains real `|q| < 1`. The
-canonical q-monograph `thm:qF-moment-polynomial` remains Partial because its
-global `RatFunc` identification and pole-clearing polynomial continuation at
-roots are not formalized. The complex `1+2` leaf produced the historical checkpoint 906
+extension of `p7:eq:Pn-def`, whose Exact scope remains real `|q| < 1`. At this
+historical checkpoint the canonical q-monograph `thm:qF-moment-polynomial`
+remained Partial because its global `RatFunc` identification and pole-clearing
+polynomial continuation at roots were not formalized. The complex `1+2` leaf produced the historical checkpoint 906
 modules and 11,461 public declarations. The subsequent sibling
 `FabiusFunction.GeometricUniformExteriorComplexMomentGerm` has the exhaustive
 surface one public definition and two public theorems:
@@ -949,10 +950,21 @@ subleading coefficient
 and degree `T_n` for even `n` or `n = 1`, versus `T_n - 1` otherwise.
 Mathlib uses `B₁ = -1/2`, so its `bernoulli' n` is the source convention
 `B_n(1) = (-1)^n B_n`. This sharp `0+3` leaf makes `p7:thm:Pn` and
-`prop:qF-P-degree-sharp` Exact while leaving the global
-`thm:qF-moment-polynomial` Partial, and raises the historical sharp checkpoint
+`prop:qF-P-degree-sharp` Exact; at that point the global
+`thm:qF-moment-polynomial` was still Partial.  It raises the historical sharp checkpoint
 to 921 modules and 11,575 public declarations. The Laurent and finite-prefix
-leaves then give 922/11,582 and the live 923/11,610 census. These sibling source-only modules are
+leaves then give 922/11,582 and 923/11,610.  The exhaustive `1+4`
+`FabiusFunction.GeometricUniformMomentRatFunc` leaf adds
+`Fabius.geometricUniformMomentRatFunc`,
+`Fabius.qFactorial_mul_geometricUniformMomentRatFunc`,
+`Fabius.eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient`,
+`Fabius.eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient`,
+and `Fabius.eval_geometricUniformMomentRatFunc_one`.  One global `RatFunc ℚ`
+now has a named q-factorial clearing identity, safe inner and exterior
+Taylor-coefficient specializations, and the removable `q = 1` value.  This
+makes `thm:qF-moment-polynomial` Exact and gives the live 924/11,615 census;
+no analytic value or pole order is asserted at a genuine unit-root pole.
+These sibling source-only modules are
 not rendered by the retained Representation or inverse PDFs. The immediately
 preceding complex Bernoulli value-completion checkpoint was 903 modules and
 11,448 public declarations. The earlier

@@ -4407,10 +4407,10 @@ For every complex \(\lVert q\rVert<1\), these give the actual locally uniform
 product and identify its normalized Taylor coefficient with the recursive
 polynomial.  This is a complex analytic analogue, not a complex
 probability-moment extension of \nolinkurl{p7:eq:Pn-def}, whose Exact status
-remains restricted to real \(\lvert q\rvert<1\).  The canonical q-monograph
-compound \nolinkurl{thm:qF-moment-polynomial} remains Partial because neither
-the global \texttt{RatFunc} identification nor its pole-clearing polynomial
-continuation at roots is formalized.  The complex leaf raised the next
+remains restricted to real \(\lvert q\rvert<1\).  At this historical point the
+canonical q-monograph compound \nolinkurl{thm:qF-moment-polynomial} remained
+Partial because neither the global \texttt{RatFunc} identification nor its
+pole-clearing polynomial continuation at roots was formalized.  The complex leaf raised the next
 incoming-branch checkpoint to the historical 906/11,461, and in the merged
 chronology it formed the historical 918/11,568 checkpoint.  The exhaustive
 zero-definition/one-theorem \path{HalfQBinomialRootSimplicity.lean} leaf then
@@ -4442,15 +4442,30 @@ subleading coefficient
 even \(n\) or \(n=1\), one less otherwise.  Here Lean's
 \nolinkurl{bernoulli'} is \(B_n(1)=(-1)^nB_n\) under Mathlib's convention
 \(B_1=-1/2\).  This makes \nolinkurl{p7:thm:Pn} and
-\nolinkurl{prop:qF-P-degree-sharp} Exact, while the global
-\nolinkurl{thm:qF-moment-polynomial} remains Partial for the separate
+\nolinkurl{prop:qF-P-degree-sharp} Exact.  At that checkpoint the global
+\nolinkurl{thm:qF-moment-polynomial} was still Partial for the separate
 \texttt{RatFunc}/root-continuation gap.  The sharp leaf raises the census to
 the historical 921/11,575 checkpoint.  The exhaustive
 \path{RvachevLaurentLeading.lean} \((1+6)\) sibling then gives 922/11,582 and
 makes \nolinkurl{is:p2:thm:Laurent-leading} Exact.  The exhaustive
-\path{FinitePrefixAppellRecovery.lean} \((11+17)\) sibling gives the live
-923/11,610 census and makes \nolinkurl{is:p2:thm:finite-prefix-expansion} and
+\path{FinitePrefixAppellRecovery.lean} \((11+17)\) sibling gives the
+923/11,610 checkpoint and makes \nolinkurl{is:p2:thm:finite-prefix-expansion} and
 \nolinkurl{is:p2:thm:exact-recovery} Exact as finite rational identities.
+
+The final exhaustive \(1+4\)
+\path{GeometricUniformMomentRatFunc.lean} sibling consists of
+\nolinkurl{geometricUniformMomentRatFunc},
+\nolinkurl{qFactorial_mul_geometricUniformMomentRatFunc},
+\nolinkurl{eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient},
+\nolinkurl{eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient},
+and \nolinkurl{eval_geometricUniformMomentRatFunc_one}.  It packages one
+\texttt{RatFunc} over the rationals, proves the global q-factorial clearing
+identity, identifies that same rational function with both strict
+off-unit-circle Taylor-coefficient regimes, and handles \(q=1\) through
+\([n]_1!=n!\).  Together with the recursive polynomial leaf, this makes
+\nolinkurl{thm:qF-moment-polynomial} Exact and gives the live 924/11,615
+census.  No analytic value, pole order, or divisor is asserted at a genuine
+unit-root pole.
 
 \begin{longtable}{@{}p{0.30\textwidth}p{0.42\textwidth}p{0.22\textwidth}@{}}
 \toprule

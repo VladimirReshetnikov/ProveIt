@@ -389,6 +389,7 @@ CURRENT_Q_STATUS_OVERRIDES = {
     "prop:rogers-szego-recurrence": "Lean-proved",
     "prop:rogers-szego-three-term": "Lean-proved",
     "cor:rogers-szego-dilation": "Lean-proved",
+    "thm:qF-moment-polynomial": "Lean-proved",
     "prop:qF-P-degree-sharp": "Lean-proved",
 }
 

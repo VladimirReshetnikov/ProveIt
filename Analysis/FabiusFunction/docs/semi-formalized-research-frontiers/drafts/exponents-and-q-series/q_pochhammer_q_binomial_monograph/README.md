@@ -166,7 +166,7 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 923 modules and 11,610 public declarations, with no
+audit now contains 924 modules and 11,615 public declarations, with no
 documentation gaps. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
@@ -240,12 +240,22 @@ and
 `geometricUniformMomentPolynomial_eval₂_eq_exteriorComplexMomentGerm_taylorCoefficient`.
 For every complex `1 < ‖q‖`, it constructs the manuscript's actual reciprocal
 germ, proves analyticity at zero, and identifies the same normalized Taylor
-coefficient.  The compound `thm:qF-moment-polynomial` nevertheless remains
-Partial: Lean does not yet package the inner and exterior coefficients as one
-rational function `a_n(q) = d_n(q) / n!`, or prove that clearing that RatFunc's
-root-of-unity poles gives the same total polynomial at `q = 1`.  The broader
-`thm:geometric-uniform-mgf` likewise remains Partial at its unbundled direct
-dilation, coefficient-recurrence, formal-uniqueness, and rationality clauses;
+coefficient.  The final `GeometricUniformMomentRatFunc.lean` leaf has one
+definition, `geometricUniformMomentRatFunc`, and exactly four theorems:
+`qFactorial_mul_geometricUniformMomentRatFunc`,
+`eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient`,
+`eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient`,
+and `eval_geometricUniformMomentRatFunc_one`.  It packages the inner and
+exterior coefficients as the single rational function
+`a_n(q) = P_n(q) / [n]_q!`, proves the global q-factorial clearing identity,
+specializes safely to both analytic regimes, and treats `q = 1` through
+`[n]_1! = n!` rather than totalized `0 / 0`.  It makes no `RatFunc.eval` claim
+at a genuine reduced-denominator zero.  Consequently the compound
+`thm:qF-moment-polynomial` is Exact.  The broader
+`thm:geometric-uniform-mgf` remains Partial at its unbundled public direct
+dilation and coefficient recurrence, formal-power-series uniqueness, bundled
+genuine-MGF/characteristic-function identification, and root-of-unity pole
+classification;
 `cor:qF-halfbase-dictionary` remains Partial at its still-missing endpoint
 formula even though the half-base polynomial and genuine-MGF normalization are
 now available.  The exhaustive zero-definition/three-theorem
@@ -265,11 +275,12 @@ pre-merge exterior-branch 907/11,464 counts remain historical checkpoints.
 The actual merged-main pre-local checkpoint is 919/11,569; the exterior leaf
 gives the next historical checkpoint 920/11,572 without a status move; and the
 sharp-degree leaf gives the historical 921/11,575 checkpoint. Subsequent
-Laurent and finite-prefix tranches give the historical 922/11,582 checkpoint
-and the live 923/11,610 census, respectively.  The forward ledger is
-178 Exact / 81 Partial / 15 None / 8 N/A, the relevant
-Dyadic Gaussian--Thue--Morse chapter is 9/46/1/0, and the source concordance
-is 91 Lean-proved / 387 human-proved frontier / 60 N/A / 9 conjectures.
+Laurent and finite-prefix tranches give the historical 922/11,582 and
+923/11,610 checkpoints, respectively.  The RatFunc leaf gives the live
+924/11,615 census.  The forward ledger is
+179 Exact / 80 Partial / 15 None / 8 N/A, the relevant
+Dyadic Gaussian--Thue--Morse chapter is 10/45/1/0, and the source concordance
+is 92 Lean-proved / 386 human-proved frontier / 60 N/A / 9 conjectures.
 The zero-definition/one-theorem `HalfQBinomialRootSimplicity.lean` leaf exports
 `halfQBinomial_sum_rootMultiplicity_two_pow`; composed with
 `halfQBinomial_sum_eq_zero_iff` and
@@ -400,9 +411,9 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 178 Exact, 81 Partial, 15 None, and 8 interface rows; the
+status ledger is 179 Exact, 80 Partial, 15 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
-completed source concordance records 91 Lean-proved rows, 387 human-proved
+completed source concordance records 92 Lean-proved rows, 386 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.  Its
 immutable source inventory and editorial dispositions remain unchanged; the
 generator's current-status projection records the q-Chu, terminating-reversal,
@@ -410,7 +421,8 @@ q-Pfaff, two retained Jacobi two-square, partition-symmetry,
 Prouhet-partition, arbitrary-space geometric-uniform, and regular-central-sum
 advances, together with the fixed-column rate, greater-than-one,
 scaled-geometric polynomial-exactness, affine geometric-Prouhet, and
-half-base root-simplicity closures.
+half-base root-simplicity closures, together with the common rational
+moment-coefficient closure.
 The basic geometric-uniform row is Exact under its arbitrary-space wording.
 The generic Banach-valued barycenter is
 `integral_id_weightedUniformDistribution`, and its real geometric

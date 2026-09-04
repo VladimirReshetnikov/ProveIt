@@ -3979,7 +3979,10 @@ checkpoint to 920/11,572, and the exhaustive sharp moment-polynomial degree
 leaf raises it to the historical 921/11,575 checkpoint.  The exhaustive
 one-definition/six-theorem \path{RvachevLaurentLeading.lean} leaf then gives
 922/11,582, and the eleven-definition/seventeen-theorem
-\path{FinitePrefixAppellRecovery.lean} leaf gives the live 923/11,610 census.
+\path{FinitePrefixAppellRecovery.lean} leaf gives the historical 923/11,610
+checkpoint.  The exhaustive one-definition/four-theorem
+\path{GeometricUniformMomentRatFunc.lean} leaf gives the live 924/11,615
+census.
 The immediately preceding algebraic moment-polynomial checkpoint was
 904/11,457, and the complex Bernoulli value-completion checkpoint 903/11,448
 remains historical.  The merged chronology also records the scaled-geometric
@@ -4025,8 +4028,9 @@ and the sixteenth theorem in the zero-definition
 \path{FinitePolynomialFunctional.lean} module, followed by the
 zero-definition/one-theorem \path{HalfQBinomialRootSimplicity.lean},
 one-definition/six-theorem \path{RvachevLaurentLeading.lean}, and
-eleven-definition/seventeen-theorem \path{FinitePrefixAppellRecovery.lean}
-leaves.
+eleven-definition/seventeen-theorem \path{FinitePrefixAppellRecovery.lean},
+and one-definition/four-theorem
+\path{GeometricUniformMomentRatFunc.lean} leaves.
 These are
 source-only overlays; the retained 183-page, 1,899,243-byte PDF is explicitly
 historical and has not been regenerated for these additions.
@@ -4064,7 +4068,8 @@ The newest moment-polynomial and product counts are
 \path{GeometricUniformMomentPolynomialBridge.lean} (0+1), followed by
 \path{GeometricUniformComplexMomentProduct.lean} (1+2) and
 \path{GeometricUniformExteriorComplexMomentGerm.lean} (1+2), and finally
-\path{GeometricUniformMomentPolynomialDegree.lean} (0+3).  The algebraic
+\path{GeometricUniformMomentPolynomialDegree.lean} (0+3) and
+\path{GeometricUniformMomentRatFunc.lean} (1+4).  The algebraic
 module's definition is
 \lean{geometricUniformMomentPolynomial}; its theorems are
 \lean{geometricUniformMomentPolynomial_zero},
@@ -4102,13 +4107,28 @@ For every complex \(q\) with \(1<\lVert q\rVert\), the definition is the
 actual reciprocal germ \((\mathcal A_{q^{-1}}(-z))^{-1}\), equivalently the
 manuscript's reciprocal product indexed by \(j\geq1\); the theorems prove
 analyticity at the origin and the same finite-q-Pochhammer normalization of
-its \(n\)-th Taylor coefficient.  The canonical q-monograph compound label
-\nolinkurl{thm:qF-moment-polynomial} nevertheless remains Partial: no Lean
-\texttt{RatFunc} declaration packages one rational function
-\(a_n=d_n/n!\) across the inner and exterior regimes or proves the
-pole-clearing identity and resulting polynomial continuation at roots of
-unity.  In particular, the exterior theorem does not assert a boundary value
-on \(\lVert q\rVert=1\).
+its \(n\)-th Taylor coefficient.  By itself the exterior theorem does not
+assert a boundary value on \(\lVert q\rVert=1\).
+
+The final rational-coefficient leaf has the exhaustive public surface
+\lean{geometricUniformMomentRatFunc},
+\lean{qFactorial_mul_geometricUniformMomentRatFunc},
+\lean{eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient},
+\lean{eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient},
+and \lean{eval_geometricUniformMomentRatFunc_one}.  It packages the common
+coefficient \(a_n=d_n/n!\) as one \texttt{RatFunc} over \(\RationalNumbers\), proves the
+global pole-clearing identity \([n]_X!a_n=\mathcal P_n\), identifies safe
+evaluation with the actual inner and exterior Taylor coefficients under
+\(\lVert q\rVert<1\) and \(1<\lVert q\rVert\), and proves the removable
+specialization at \(q=1\) through \([n]_1!=n!\).  Together with
+\lean{qFactorial_mul_one_sub_pow}, this supplies the cancelled-polynomial
+meaning of the manuscript normalization.  Thus
+\nolinkurl{thm:qF-moment-polynomial} is Exact by composition with the
+algebraic and analytic leaves above.  This does not turn
+\texttt{RatFunc.eval} into evaluation through a genuine pole, assign analytic
+coefficients at nontrivial roots of unity, or provide a unit-circle analytic
+continuation; the broader \nolinkurl{thm:geometric-uniform-mgf} and germ
+claims remain Partial, and the unit-circle analytic continuation remains open.
 
 The sharp-degree leaf's exhaustive public surface consists of
 \lean{coeff_geometricUniformMomentPolynomial_choose_two},
@@ -4131,12 +4151,13 @@ Here Lean's \nolinkurl{bernoulli'} is the positive convention
 \(B_n(1)=(-1)^nB_n\), with Mathlib's \(B_1=-1/2\).  Thus the canonical
 \nolinkurl{prop:qF-P-degree-sharp} and the complete algebraic/analytic
 frontier theorem \nolinkurl{p7:thm:Pn} are Exact.  This does not fill the
-separate global \texttt{RatFunc} and root-continuation gap above.  The later
+separate unit-circle analytic continuation gaps above.  The later
 merged-main checkpoint was 919/11,569, the exterior \(1+2\) leaf raises it to
 920/11,572, and this sharp \(0+3\) leaf raises it to the historical
 921/11,575 checkpoint.  The following \path{RvachevLaurentLeading.lean}
 \((1+6)\) and \path{FinitePrefixAppellRecovery.lean} \((11+17)\) leaves give
-922/11,582 and the live 923/11,610 census, respectively.
+922/11,582 and the historical 923/11,610 checkpoint, respectively; the
+RatFunc \((1+4)\) leaf gives the live 924/11,615 census.
 
 The final two module counts are
 \path{CentralQBinomialReduction.lean} (0+6) and
@@ -6456,7 +6477,7 @@ uniqueness and the generic Appell transform then give
   &=\sum_{r=0}^{n}\binom nr\,mu_r,2^{-Nr}P_{n-r}(X),
        &&\mu_r=\lean{halfMoment}\,r,                       \label{eq:finite-prefix-appell-uncentered}\
  A_n^{[N]}(X)
-  &=\sum_{r=0}^{\lfloor n/2\rfloor}\binom n{2r},m_{2r},
+  &=\sum_{r=0}^{\Floor{n/2}}\binom n{2r},m_{2r},
        4^{-Nr}A_{n-2r}(X),
        &&m_{2r}=\lean{moment}\,r.                          \label{eq:finite-prefix-appell-centered}
 \end{align}
@@ -6483,7 +6504,7 @@ Promoting the scale to a formal outer variable (Q) produces elements of
 \begin{equation}
  \operatorname{natDegree}_Q P_n^{[\,\cdot\,]}=n,
  \qquad
- \operatorname{natDegree}_Q A_n^{[\,\cdot\,]}=\lfloor n/2\rfloor,          \label{eq:finite-prefix-appell-outer-degrees}
+ \operatorname{natDegree}_Q A_n^{[\,\cdot\,]}=\Floor{n/2},          \label{eq:finite-prefix-appell-outer-degrees}
 \end{equation}
 by \lean{natDegree_uncenteredDyadicPrefixAppellScalePolynomialRat} and
 \lean{natDegree_centeredDyadicPrefixAppellScalePolynomialRat}.  The
@@ -6498,13 +6519,13 @@ the two scale polynomials at zero gives, for every starting depth (N),
 \begin{align}
  P_n(X)&=\sum_{j=0}^{n}w_{n,j}(1/2)P_n^{[N+j]}(X),
                                                                \label{eq:finite-prefix-appell-recovery}\
- A_n(X)&=\sum_{j=0}^{\lfloor n/2\rfloor}
-   w_{\lfloor n/2\rfloor,j}(1/4)A_n^{[N+j]}(X).               \label{eq:finite-prefix-centered-recovery}
+ A_n(X)&=\sum_{j=0}^{\Floor{n/2}}
+   w_{\Floor{n/2},j}(1/4)A_n^{[N+j]}(X).               \label{eq:finite-prefix-centered-recovery}
 \end{align}
 They are \lean{kabayaIriAppellPolynomialRat_eq_sum_prefix} and
 \lean{rvachevAppellPolynomialRat_eq_sum_prefix}.  Hence the full uncentered
 degree-(n) polynomial is recovered from any (n+1) consecutive prefixes,
-and the full centered polynomial from any (lfloor n/2\rfloor+1)
+and the full centered polynomial from any \(\Floor{n/2}+1\)
 consecutive prefixes, with no limiting argument.  The seventeen theorems
 listed in the preceding three paragraphs exhaust the theorem surface of the
 module.  They make both
@@ -14122,6 +14143,7 @@ Moments and exact arithmetic &
 \path{GeometricUniformComplexMomentProduct.lean},
 \path{GeometricUniformExteriorComplexMomentGerm.lean},
 \path{GeometricUniformMomentPolynomialDegree.lean},
+\path{GeometricUniformMomentRatFunc.lean},
 \path{WeightedScaleMultiplicity.lean}, \path{BaseDigitMultiplicity.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean},
 \path{CentralBinomialValuation.lean},

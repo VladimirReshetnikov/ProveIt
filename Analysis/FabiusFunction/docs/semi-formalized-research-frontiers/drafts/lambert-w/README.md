@@ -136,10 +136,11 @@ surface one public definition and two public theorems:
 For complex `‖q‖ < 1` it supplies the actual locally uniform product and its
 normalized Taylor-coefficient bridge.  This is an analytic analogue; it does
 not extend the probability-moment reading of `p7:eq:Pn-def` beyond real
-`|q| < 1`.  The canonical q-monograph `thm:qF-moment-polynomial` remains
-Partial because the global `RatFunc` identification and its pole-clearing
-polynomial continuation at roots are absent.  This exhaustive `1+2` leaf
-produced the historical checkpoint 906 modules and 11,461 public declarations.
+`|q| < 1`.  At this historical checkpoint the canonical q-monograph
+`thm:qF-moment-polynomial` remained Partial because the global `RatFunc`
+identification and its pole-clearing polynomial continuation at roots were
+absent.  This exhaustive `1+2` leaf produced the historical checkpoint 906
+modules and 11,461 public declarations.
 The zero-definition/one-theorem
 `FabiusFunction.HalfQBinomialRootSimplicity` sibling exposes
 `Fabius.halfQBinomial_sum_rootMultiplicity_two_pow`; composed with the
@@ -159,8 +160,21 @@ consists of `Fabius.coeff_geometricUniformMomentPolynomial_choose_two`,
 `Fabius.coeff_geometricUniformMomentPolynomial_choose_two_sub_one`, and
 `Fabius.geometricUniformMomentPolynomial_natDegree_eq`.  It proves the exact
 top and subleading Bernoulli coefficients and the parity-sensitive degree,
-making `p7:thm:Pn` and `prop:qF-P-degree-sharp` Exact while leaving
-`thm:qF-moment-polynomial` Partial at the global `RatFunc` boundary.
+making `p7:thm:Pn` and `prop:qF-P-degree-sharp` Exact.  At that checkpoint
+`thm:qF-moment-polynomial` was still Partial at the global `RatFunc` boundary.
+
+The final `FabiusFunction.GeometricUniformMomentRatFunc` sibling has one
+public definition, `Fabius.geometricUniformMomentRatFunc`, and four public
+theorems: `Fabius.qFactorial_mul_geometricUniformMomentRatFunc`,
+`Fabius.eval_geometricUniformMomentRatFunc_eq_complexMomentProduct_taylorCoefficient`,
+`Fabius.eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient`,
+and `Fabius.eval_geometricUniformMomentRatFunc_one`.  It packages one
+`RatFunc ℚ`, proves the global q-factorial clearing identity, identifies that
+same rational function with both strict off-unit-circle Taylor-coefficient
+regimes, and treats `q = 1` through `[n]₁! = n!`.  Together with the algebraic
+polynomial leaf, this makes `thm:qF-moment-polynomial` Exact.  It does not
+assign analytic values at genuine unit-root poles or prove their divisor or
+orders.
 
 The later germ-related addition
 `FabiusFunction.RvachevLaurentLeading` has one definition and six theorems and
@@ -178,9 +192,10 @@ random-variable or analytic-MGF realization.
 
 In the merged chronology the sharp leaf gave the historical 921/11,575
 checkpoint, `RvachevLaurentLeading` gave 922/11,582, and
-`FinitePrefixAppellRecovery` gives the live 923/11,610 census.  The q ledger is
-178 Exact / 81 Partial / 15 None / 8 interface, and the source concordance is
-91 Lean-proved / 387 human-proved frontier / 60 non-applicable / 9 conjectures.
+`FinitePrefixAppellRecovery` gave 923/11,610.  The RatFunc leaf gives the live
+924/11,615 census.  The q ledger is 179 Exact / 80 Partial / 15 None / 8
+interface, and the source concordance is 92 Lean-proved / 386 human-proved
+frontier / 60 non-applicable / 9 conjectures.
 All of these sibling source-only additions are likewise absent
 from the retained historical PDFs.
 
