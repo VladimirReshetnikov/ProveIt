@@ -61,6 +61,7 @@ so on; the value at `0` is irrelevant and is `γ` by the truncated
 subtraction. -/
 noncomputable def derivationTower (γ : A) (j : ℕ) : A := (D^[j - 1]) γ
 
+/-- The bottom of the tower is `γ` itself. -/
 @[simp] theorem derivationTower_one (γ : A) : derivationTower D γ 1 = γ := by
   rw [derivationTower]
   simp
