@@ -39193,6 +39193,34 @@ $0\le g(z)\le z$ and $\LambertW$ increases, $\LambertW(g(z))\le\LambertW(z)$,
 which gives the lower bound.  Finally $\LambertW''<0$ on $(0,\infty)$ makes
 $f$ concave, and the inverse of a concave increasing function is convex.
 \end{proof}
+\emph{Lean status.}  Formal in \lean{LambertShiftInverse.lean} and
+\lean{LambertShiftConcavity.lean}, with every inequality \emph{strict} in the interior,
+which is more than the display asserts.  The bracket on \(f'\) is
+\lean{Fabius.one_le_deriv_lambertShift} and \lean{Fabius.deriv_lambertShift_le_two}; the
+bracket on \(g'\) is \lean{Fabius.deriv_lambertShiftInv_bounds}, in the strict form
+\(\tfrac12<g'(z)<1\) for \(z>0\).  The envelope
+\(z-\LambertW(z)\le g(z)\le z\) is \lean{Fabius.sub_principalLambertW_lt_lambertShiftInv}
+and \lean{Fabius.lambertShiftInv_lt_self}, again strictly for \(z>0\); at \(z=0\) all three
+quantities are \(0\), so the weak form stated here is the correct one at the endpoint and
+the strict form is the correct one off it.
+
+The endpoint derivatives \(f'(0)=2\) and \(g'(0)=\tfrac12\) are one-sided and are not
+formalized.  What replaces them, and is in some ways better, is the finite-difference form
+of the same bracket, which needs no differentiability at \(0\) and holds on the closed
+half-line: \lean{Fabius.sub_le_lambertShift_sub} and
+\lean{Fabius.lambertShift_sub_le_two_mul_sub}, with the absolute-value versions
+\lean{Fabius.abs_sub_le_abs_lambertShift_sub} and
+\lean{Fabius.abs_lambertShift_sub_le_two_mul}.  These are what the certificate of
+\cref{q1:prop:certificate} is actually built from.
+
+Convexity of \(g\) is \lean{Fabius.strictConvexOn_lambertShiftInv}, obtained from the strict
+growth of \(g'\) rather than from the concavity of \(f\).  Concavity of \(f\) is
+\lean{Fabius.strictConcaveOn_lambertShift}, and it holds on the \emph{full} closed domain
+\([-\EulerE^{-1},\infty)\) of the principal branch, not merely on \((0,\infty)\): adding the
+identity to a strictly concave function leaves it strictly concave, the linear part
+contributing an equality to the concavity inequality, so no positivity enters.  The
+restriction the volume states is \lean{Fabius.strictConcaveOn_lambertShift_Ici_zero}.
+
 
 \begin{proposition}[A sharp residual certificate]\label{q1:prop:certificate}
 Let $\widetilde g(z)\ge0$ be any approximation and put
@@ -39213,6 +39241,27 @@ $f(\widetilde g)-f(g)=R$ gives $R=f'(\xi)(\widetilde g-g)$ for some
 intermediate $\xi$, and dividing by $f'(\xi)\in[1,2]$ gives both inequalities
 and the equality of signs.
 \end{proof}
+\emph{Lean status.}  Formal, both clauses, in \lean{LambertShiftInverse.lean} with the
+volume's display assembled in \lean{LambertShiftConcavity.lean}.  The
+sandwich~\eqref{q1:eq:sandwich} is \lean{Fabius.abs_sub_lambertShiftInv_sandwich}, whose two
+halves are \lean{Fabius.abs_sub_lambertShiftInv_le_abs_residual} (the upper bound, from
+\(f'\ge1\)) and \lean{Fabius.abs_residual_le_two_mul_abs_sub_lambertShiftInv} (the lower,
+from \(f'\le2\)).  The sign agreement is
+\lean{Fabius.residual_sign_agrees}, packaging \lean{Fabius.residual_pos_iff} and
+\lean{Fabius.residual_neg_iff}, with the exact case
+\lean{Fabius.residual_eq_zero_iff}: a vanishing residual pins the candidate at \(g(z)\)
+and nowhere else, so the certificate is sharp at the root as well as away from it.
+
+The proposition is stated for an \emph{arbitrary} approximation \(\widetilde g\ge0\), and
+so is the formal version: the hypotheses are \(z\ge0\) and \(\widetilde g(z)\ge0\), nothing
+else.  The underlying two-sided mean-value bracket is
+\lean{MeanValueBracket.lean}, independent of the Lambert material ---
+\lean{Fabius.mul_abs_sub_right_inverse_le} and
+\lean{Fabius.abs_sub_le_mul_abs_sub_right_inverse} are the general statements, and one
+hypothesis there is worth flagging because it is easy to get wrong: a two-sided slope
+bracket \(m\le f'\le M\) gives \(|f(x)-f(y)|\le M|x-y|\) only when \(0\le m\), the
+conclusion being false otherwise.
+
 
 \begin{remark}[Why this one is two-sided]\label{q1:rem:two-sided}
 \Cref{p0:thm:backward-error} gives a two-sided bound whenever the slope is
@@ -53634,6 +53683,36 @@ For $j\ge1$ put
  q_j(r)=\frac{T_j(r)}{r\,(1+r)^{j/2}} .
 \end{equation}
 \end{definition}
+\emph{Lean status.}  Formal in \lean{TouchardEulerOperator.lean}.  The polynomial side
+of \eqref{q2:eq:touchard} is \lean{Fabius.touchardPolynomial}, which has been in the corpus
+since the combinatorial-calculus campaign; what this module adds is the \emph{analytic}
+characterization, which is the one the saddle-point argument actually uses, and the bridge
+between the two.  The Euler operator \(r\partial_{r}\) is \lean{Fabius.eulerOp},
+\lean{Fabius.iterate_eulerOp_exp} identifies its \(j\)-th iterate on \(\EulerE^{r}\) as
+\(\EulerE^{r}T_{j}(r)\) --- stated as an equality of functions, since that is what the
+induction on \(j\) requires --- and \lean{Fabius.exp_neg_mul_iterate_eulerOp_exp} is both
+halves of \eqref{q2:eq:touchard} at once,
+\(\EulerE^{-r}(r\partial_{r})^{j}\EulerE^{r}=\sum_{k}\stirlingsecond{j}{k}r^{k}\).
+
+The whole content is one polynomial identity,
+\lean{Fabius.touchardPolynomial_succ_eq_X_mul_add_derivative}: \(T_{n+1}=X(T_{n}+T_{n}')\),
+which is the differential form of the Stirling recurrence
+\(\stirlingsecond{n+1}{k+1}=(k+1)\stirlingsecond{n}{k+1}+\stirlingsecond{n}{k}\).  Given it,
+the analytic statement is an induction whose step is the product rule.  The supporting
+coefficient identity is \lean{Fabius.coeff_touchardPolynomial}, valid at every index rather
+than only below the degree.
+
+Two points of care.  The formal sum runs over \(0\le k\le j\), not \(1\le k\le j\), and in
+that form it is correct for \emph{every} \(j\) including \(j=0\), where the volume's sum
+from \(k=1\) would be empty while \(\EulerE^{-r}\EulerE^{r}=1\); the volume's indexing is
+recovered for \(j\ge1\) by \lean{Fabius.eval_touchardPolynomial_succ_eq_sum_Icc}, which drops
+the vanishing \(k=0\) term.  And nothing in the analytic statement needs \(r>0\): it holds
+at every real \(r\), the only hypothesis anywhere being the nonvanishing of the denominator
+in the normalized form.  That normalized form is \lean{Fabius.touchardQ}, with
+\lean{Fabius.touchardQ_mul} the defining relation cleared of its denominator and
+\lean{Fabius.touchardQ_one} the central value \(q_{j}(1)=B_{j}/2^{j/2}\), which exhibits
+the normalization as the one that divides the Bell number by the Gaussian factor.
+
 
 \begin{lemma}[Central and complementary arcs]\label{q2:lem:localization}
 Write $\Phi_r(\theta)$ for the exponent of the Cauchy integrand on the circle
