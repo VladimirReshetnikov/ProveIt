@@ -28,10 +28,11 @@ The same logarithmic formula places the inverse strictly between every
 positive real power of the endpoint argument and every real power of its
 logarithmic scale.
 
-Among the explicit leading inverse formulas, only the phase estimate retains
-the quantitative `O(log T / sqrt T)` error.  The logarithmic and exponentiated
-statements use its immediate `o(1)` consequence, which is the weakest input
-they need.
+The phase estimate and the logarithmic formula both carry the quantitative
+`O(log T / sqrt T)` error
+(`log_fabiusInv_sub_fabiusInverseLogAsymptoticMain_isBigO`); the
+exponentiated statements use its immediate `o(1)` consequence, which is the
+weakest input they need.
 -/
 
 set_option autoImplicit false
@@ -247,60 +248,138 @@ theorem
     (fabiusLambertPhase_fabiusInv_sub_fabiusInverseQuadraticPhaseMain_isBigO
       F hF).trans_tendsto (hrateTop.comp hT)
 
-private theorem tendsto_log_sub_half_log_of_sqrt_affine_approximation
+/-- `|log (1 + u)| ≤ 2|u|` for `|u| ≤ 1/2`: from `log x ≤ x - 1` at
+`x = 1 + u` and at `x = (1 + u)⁻¹`. -/
+private theorem abs_log_one_add_le_two_mul {u : ℝ} (hu : |u| ≤ 1 / 2) :
+    |Real.log (1 + u)| ≤ 2 * |u| := by
+  have hu' := abs_le.mp hu
+  have hpos : 0 < 1 + u := by linarith
+  have hupper : Real.log (1 + u) ≤ u := by
+    have := Real.log_le_sub_one_of_pos hpos
+    linarith
+  have hlower : u / (1 + u) ≤ Real.log (1 + u) := by
+    have h := Real.log_le_sub_one_of_pos (inv_pos.mpr hpos)
+    rw [Real.log_inv] at h
+    have heq : (1 + u)⁻¹ - 1 = -(u / (1 + u)) := by
+      rw [inv_eq_one_div, div_sub_one hpos.ne', ← neg_div]
+      congr 1
+      ring
+    linarith
+  rw [abs_le]
+  rcases le_or_gt 0 u with hu0 | hu0
+  · have h3 : 0 ≤ u / (1 + u) := div_nonneg hu0 hpos.le
+    rw [abs_of_nonneg hu0]
+    constructor <;> linarith
+  · have h3 : 2 * u ≤ u / (1 + u) := by
+      rw [le_div_iff₀ hpos]
+      nlinarith [mul_nonneg (neg_nonneg.mpr hu0.le)
+        (by linarith : (0 : ℝ) ≤ 1 + 2 * u)]
+    rw [abs_of_neg hu0]
+    constructor <;> linarith
+
+/-- **Quantitative logarithmic transfer of a square-root–affine
+approximation.**  If `T → ∞` and `lam = √(cT) + a + O(log T/√T)`, then
+
+`log lam = log T/2 + log c/2 + O(log T/√T)`.
+
+The rate survives the logarithm because `log(lam/√(cT)) = log(1 + u)` with
+`u = (lam - √(cT))/√(cT) = O(1/√T)`, and `|log(1 + u)| ≤ 2|u|` for small
+`u`. -/
+theorem log_sub_half_log_isBigO_of_sqrt_affine_approximation
     {α : Type*} {l : Filter α} {T lam : α → ℝ} {c a : ℝ}
-    (hc : 0 < c)
-    (hT : Tendsto T l atTop)
-    (happrox :
-      Tendsto (fun i => lam i - (Real.sqrt (c * T i) + a)) l (nhds 0)) :
-    Tendsto
-      (fun i => Real.log (lam i) -
-        (Real.log (T i) / 2 + Real.log c / 2))
-      l (nhds 0) := by
-  have hscaled : Tendsto (fun i => c * T i) l atTop :=
-    hT.const_mul_atTop hc
-  have hsqrtTop : Tendsto (fun i => Real.sqrt (c * T i)) l atTop :=
-    Real.tendsto_sqrt_atTop.comp hscaled
-  have hmainTop :
-      Tendsto (fun i => Real.sqrt (c * T i) + a) l atTop :=
-    tendsto_atTop_add_const_right l a hsqrtTop
-  have honeMain :
-      (fun _ : α => (1 : ℝ)) =o[l]
-        (fun i => Real.sqrt (c * T i) + a) :=
-    (isLittleO_one_left_iff ℝ).mpr
-      (tendsto_norm_atTop_atTop.comp hmainTop)
-  have hlamMain :
-      lam ~[l] (fun i => Real.sqrt (c * T i) + a) :=
-    ((happrox.isBigO_one ℝ).trans_isLittleO honeMain).isEquivalent
-  have hmainSqrt :
-      (fun i => Real.sqrt (c * T i) + a) ~[l]
-        (fun i => Real.sqrt (c * T i)) :=
-    (IsEquivalent.refl
-      (u := fun i => Real.sqrt (c * T i))).add_const_of_norm_tendsto_atTop
-        (tendsto_norm_atTop_atTop.comp hsqrtTop)
-  have hlamSqrt :
-      lam ~[l] (fun i => Real.sqrt (c * T i)) :=
-    hlamMain.trans hmainSqrt
-  have hsqrtPos : ∀ᶠ i in l, 0 < Real.sqrt (c * T i) :=
-    hsqrtTop.eventually_gt_atTop 0
-  have hlamPos : ∀ᶠ i in l, 0 < lam i :=
-    hlamSqrt.eventually_pos hsqrtPos
-  have hratio :
-      Tendsto (fun i => lam i / Real.sqrt (c * T i)) l (nhds 1) :=
-    (isEquivalent_iff_tendsto_one (hsqrtPos.mono fun _ hi => hi.ne')).mp
-      hlamSqrt
-  have hlogRatio :
-      Tendsto (fun i => Real.log (lam i / Real.sqrt (c * T i)))
-        l (nhds 0) := by
-    simpa using hratio.log one_ne_zero
-  apply hlogRatio.congr'
-  filter_upwards [hT.eventually_gt_atTop 0, hlamPos] with i hTi hli
-  have hsPos : 0 < Real.sqrt (c * T i) :=
-    Real.sqrt_pos.2 (mul_pos hc hTi)
-  rw [Real.log_div hli.ne' hsPos.ne',
-    Real.log_sqrt (mul_nonneg hc.le hTi.le),
-    Real.log_mul hc.ne' hTi.ne']
-  ring
+    (hc : 0 < c) (hT : Tendsto T l atTop)
+    (happrox : (fun i => lam i - (Real.sqrt (c * T i) + a)) =O[l]
+      (fun i => Real.log (T i) / Real.sqrt (T i))) :
+    (fun i => Real.log (lam i) -
+      (Real.log (T i) / 2 + Real.log c / 2)) =O[l]
+      (fun i => Real.log (T i) / Real.sqrt (T i)) := by
+  have hrateTop :
+      Tendsto (fun t : ℝ => Real.log t / Real.sqrt t) atTop (nhds 0) := by
+    simpa only [Real.sqrt_eq_rpow] using
+      (isLittleO_log_rpow_atTop
+        (r := (1 / 2 : ℝ)) (by norm_num)).tendsto_div_nhds_zero
+  have hrate0 :
+      Tendsto (fun i => Real.log (T i) / Real.sqrt (T i)) l (nhds 0) :=
+    hrateTop.comp hT
+  have hTpos : ∀ᶠ i in l, 0 < T i := hT.eventually_gt_atTop 0
+  have hTe : ∀ᶠ i in l, 1 ≤ Real.log (T i) := by
+    filter_upwards [hT.eventually_ge_atTop (Real.exp 1)] with i hi
+    calc (1 : ℝ) = Real.log (Real.exp 1) := (Real.log_exp 1).symm
+      _ ≤ Real.log (T i) := Real.log_le_log (Real.exp_pos 1) hi
+  -- the deviation `lam - √(cT)` is bounded
+  have hdev : (fun i => lam i - Real.sqrt (c * T i)) =O[l]
+      (fun _ => (1 : ℝ)) := by
+    have h1 : (fun i => lam i - (Real.sqrt (c * T i) + a)) =O[l]
+        (fun _ => (1 : ℝ)) :=
+      (happrox.trans_tendsto hrate0).isBigO_one ℝ
+    have h2 : (fun _ : α => a) =O[l] (fun _ => (1 : ℝ)) :=
+      isBigO_const_const a one_ne_zero l
+    exact (h1.add h2).congr_left fun i => by ring
+  -- hence `u = (lam - √(cT))/√(cT) = O(1/√T)`
+  set u : α → ℝ := fun i =>
+    (lam i - Real.sqrt (c * T i)) / Real.sqrt (c * T i) with hu_def
+  have hsqrtc : 0 < Real.sqrt c := Real.sqrt_pos.mpr hc
+  have hu : u =O[l] (fun i => (Real.sqrt (T i))⁻¹) := by
+    have h := hdev.mul (isBigO_refl (fun i => (Real.sqrt (c * T i))⁻¹) l)
+    refine (h.congr_left fun i => by
+      simp only [hu_def, div_eq_mul_inv]).trans ?_
+    refine IsBigO.of_bound (Real.sqrt c)⁻¹ ?_
+    filter_upwards [hTpos] with i hi
+    refine le_of_eq ?_
+    rw [one_mul, Real.sqrt_mul hc.le, mul_inv, Real.norm_eq_abs,
+      Real.norm_eq_abs, abs_of_pos (by positivity), abs_of_pos (by positivity)]
+  have hsqrtT : Tendsto (fun i => (Real.sqrt (T i))⁻¹) l (nhds 0) :=
+    (Real.tendsto_sqrt_atTop.comp hT).inv_tendsto_atTop
+  have hu0 : Tendsto u l (nhds 0) := hu.trans_tendsto hsqrtT
+  have husmall : ∀ᶠ i in l, |u i| ≤ 1 / 2 := by
+    filter_upwards [Metric.tendsto_nhds.mp hu0 (1 / 2) (by norm_num)] with i hi
+    rw [Real.dist_eq, sub_zero] at hi
+    exact hi.le
+  -- `log (1 + u) = O(u)`
+  have hlog : (fun i => Real.log (1 + u i)) =O[l] u := by
+    refine IsBigO.of_bound 2 ?_
+    filter_upwards [husmall] with i hi
+    rw [Real.norm_eq_abs, Real.norm_eq_abs]
+    exact abs_log_one_add_le_two_mul hi
+  -- `lam > 0` eventually
+  have hlamPos : ∀ᶠ i in l, 0 < lam i := by
+    filter_upwards [husmall, hTpos] with i hi hi0
+    have hs : 0 < Real.sqrt (c * T i) := Real.sqrt_pos.mpr (mul_pos hc hi0)
+    have hs' : Real.sqrt (c * T i) ≠ 0 := hs.ne'
+    have hui : -(1 / 2) ≤ u i := (abs_le.mp hi).1
+    have hcancel : Real.sqrt (c * T i) *
+        ((lam i - Real.sqrt (c * T i)) / Real.sqrt (c * T i)) =
+        lam i - Real.sqrt (c * T i) := by
+      field_simp
+    have hlam : lam i = Real.sqrt (c * T i) * (1 + u i) := by
+      simp only [hu_def]
+      rw [mul_add, mul_one, hcancel]
+      ring
+    rw [hlam]
+    exact mul_pos hs (by linarith)
+  -- `log lam - log √(cT) = log (1 + u)`
+  have hkey : (fun i => Real.log (lam i) -
+      (Real.log (T i) / 2 + Real.log c / 2)) =ᶠ[l]
+      (fun i => Real.log (1 + u i)) := by
+    filter_upwards [hlamPos, hTpos] with i hli hi0
+    have hs : 0 < Real.sqrt (c * T i) := Real.sqrt_pos.mpr (mul_pos hc hi0)
+    have h1u : 1 + u i = lam i / Real.sqrt (c * T i) := by
+      simp only [hu_def]
+      rw [add_div' _ _ _ hs.ne']
+      congr 1
+      ring
+    rw [h1u, Real.log_div hli.ne' hs.ne',
+      Real.log_sqrt (mul_nonneg hc.le hi0.le), Real.log_mul hc.ne' hi0.ne']
+    ring
+  refine ((hlog.trans hu).congr' hkey.symm EventuallyEq.rfl).trans ?_
+  -- `1/√T = O(log T/√T)` once `log T ≥ 1`
+  refine IsBigO.of_bound 1 ?_
+  filter_upwards [hTpos, hTe] with i hi0 hi1
+  have hs : 0 < Real.sqrt (T i) := Real.sqrt_pos.mpr hi0
+  rw [one_mul, Real.norm_eq_abs, Real.norm_eq_abs,
+    abs_of_pos (inv_pos.mpr hs),
+    abs_of_pos (div_pos (by linarith) hs), inv_eq_one_div]
+  gcongr
 
 private theorem log_two_mul_sqrt_two_mul_div_log_two
     (T : ℝ) (hT : 0 ≤ T) :
@@ -323,41 +402,43 @@ private theorem log_two_mul_sqrt_two_mul_div_log_two
     Real.sqrt_nonneg _
   nlinarith
 
-/-- **Sharp logarithmic asymptotic of the inverse Fabius function.**
+/-- **Sharp logarithmic asymptotic of the inverse Fabius function, with
+rate.**
 
 For `T = -log y` and `L = log 2`,
 
 `log (fabiusInv F hF y) =
-  -sqrt (2 * L * T) + log T / 2 - 1 - log L / 2 + o(1)`
+  -sqrt (2 * L * T) + log T / 2 - 1 - log L / 2 + O(log T / sqrt T)`
 
 as `y -> 0+`.  The constant `-1` is the exact cancellation between the
-half-logarithm of `2` and the affine phase displacement. -/
-theorem tendsto_log_fabiusInv_sub_fabiusInverseLogAsymptoticMain
+half-logarithm of `2` and the affine phase displacement; the rate is the
+one of the phase estimate, carried through the logarithm by
+`log_sub_half_log_isBigO_of_sqrt_affine_approximation`. -/
+theorem log_fabiusInv_sub_fabiusInverseLogAsymptoticMain_isBigO
     (F : BoundedFabius) (hF : IsFabius F) :
-    Tendsto
-      (fun y : ℝ => Real.log (fabiusInv F hF y) -
-        fabiusInverseLogAsymptoticMain y)
-      (𝓝[>] (0 : ℝ)) (nhds 0) := by
+    (fun y : ℝ => Real.log (fabiusInv F hF y) -
+      fabiusInverseLogAsymptoticMain y) =O[𝓝[>] (0 : ℝ)]
+      (fun y : ℝ =>
+        Real.log (-Real.log y) / Real.sqrt (-Real.log y)) := by
   let l : Filter ℝ := 𝓝[>] (0 : ℝ)
   have hL : 0 < Real.log (2 : ℝ) := Real.log_pos (by norm_num)
   have hT : Tendsto (fun y : ℝ => -Real.log y) l atTop :=
     tendsto_neg_atBot_atTop.comp Real.tendsto_log_nhdsGT_zero
   have hphase :=
-    tendsto_fabiusLambertPhase_fabiusInv_sub_fabiusInverseQuadraticPhaseMain
+    fabiusLambertPhase_fabiusInv_sub_fabiusInverseQuadraticPhaseMain_isBigO
       F hF
   have hlogPhase :=
-    tendsto_log_sub_half_log_of_sqrt_affine_approximation
+    log_sub_half_log_isBigO_of_sqrt_affine_approximation
       (T := fun y : ℝ => -Real.log y)
       (lam := fun y : ℝ => fabiusLambertPhase (fabiusInv F hF y))
       (c := 2 / Real.log 2)
       (a := (1 + Real.log 2 / 2) / Real.log 2)
       (div_pos (by norm_num) hL) hT (by
-        apply hphase.congr'
-        filter_upwards with y
+        refine hphase.congr_left fun y => ?_
         unfold fabiusInverseQuadraticPhaseMain
         congr 3
         all_goals ring)
-  have hraw := hlogPhase.sub (hphase.const_mul (Real.log 2))
+  have hraw := hlogPhase.sub (hphase.const_mul_left (Real.log 2))
   have hinv := tendsto_fabiusInv_nhdsGT_zero F hF
   have hinvSmall :
       ∀ᶠ y in l,
@@ -370,26 +451,47 @@ theorem tendsto_log_fabiusInv_sub_fabiusInverseLogAsymptoticMain
     filter_upwards [hinv.eventually hlt] with y hy
     have hmul := (lt_div_iff₀ hL).mp hy
     simpa only [mul_comm] using hmul
-  simpa only [mul_zero, sub_zero] using hraw.congr' (by
-    filter_upwards [self_mem_nhdsWithin,
-      nhdsWithin_le_nhds (Iio_mem_nhds (zero_lt_one : (0 : ℝ) < 1)),
-      hinvSmall] with y hy0 hy1 hsmall
-    have hxPos : 0 < fabiusInv F hF y :=
-      (fabiusInv_mem_Ioo F hF ⟨hy0, hy1⟩).1
-    have hTPos : 0 < -Real.log y :=
-      neg_pos.mpr (Real.log_neg hy0 hy1)
-    rw [log_fabiusLambertArgument hxPos hsmall]
-    unfold fabiusInverseQuadraticPhaseMain
-      fabiusInverseLogAsymptoticMain
-    have hsqrt :
-        Real.log 2 * Real.sqrt (-(Real.log y * 2 / Real.log 2)) =
-          Real.sqrt (-(Real.log y * 2 * Real.log 2)) := by
-      convert log_two_mul_sqrt_two_mul_div_log_two
-        (-Real.log y) hTPos.le using 1
-      all_goals ring_nf
-    rw [Real.log_div (by norm_num : (2 : ℝ) ≠ 0) hL.ne']
-    field_simp [hL.ne']
-    nlinarith [hsqrt])
+  refine hraw.congr' ?_ EventuallyEq.rfl
+  filter_upwards [self_mem_nhdsWithin,
+    nhdsWithin_le_nhds (Iio_mem_nhds (zero_lt_one : (0 : ℝ) < 1)),
+    hinvSmall] with y hy0 hy1 hsmall
+  have hxPos : 0 < fabiusInv F hF y :=
+    (fabiusInv_mem_Ioo F hF ⟨hy0, hy1⟩).1
+  have hTPos : 0 < -Real.log y :=
+    neg_pos.mpr (Real.log_neg hy0 hy1)
+  rw [log_fabiusLambertArgument hxPos hsmall]
+  unfold fabiusInverseQuadraticPhaseMain
+    fabiusInverseLogAsymptoticMain
+  have hsqrt :
+      Real.log 2 * Real.sqrt (-(Real.log y * 2 / Real.log 2)) =
+        Real.sqrt (-(Real.log y * 2 * Real.log 2)) := by
+    convert log_two_mul_sqrt_two_mul_div_log_two
+      (-Real.log y) hTPos.le using 1
+    all_goals ring_nf
+  rw [Real.log_div (by norm_num : (2 : ℝ) ≠ 0) hL.ne']
+  field_simp [hL.ne']
+  nlinarith [hsqrt]
+
+/-- **Sharp logarithmic asymptotic of the inverse Fabius function** (the
+`o(1)` form): the rate `O(log T / sqrt T)` of
+`log_fabiusInv_sub_fabiusInverseLogAsymptoticMain_isBigO` tends to `0`. -/
+theorem tendsto_log_fabiusInv_sub_fabiusInverseLogAsymptoticMain
+    (F : BoundedFabius) (hF : IsFabius F) :
+    Tendsto
+      (fun y : ℝ => Real.log (fabiusInv F hF y) -
+        fabiusInverseLogAsymptoticMain y)
+      (𝓝[>] (0 : ℝ)) (nhds 0) := by
+  have hT : Tendsto (fun y : ℝ => -Real.log y) (𝓝[>] (0 : ℝ)) atTop :=
+    tendsto_neg_atBot_atTop.comp Real.tendsto_log_nhdsGT_zero
+  have hrateTop :
+      Tendsto (fun T : ℝ => Real.log T / Real.sqrt T)
+        atTop (nhds 0) := by
+    simpa only [Real.sqrt_eq_rpow] using
+      (isLittleO_log_rpow_atTop
+        (r := (1 / 2 : ℝ)) (by norm_num)).tendsto_div_nhds_zero
+  exact IsBigO.trans_tendsto
+    (log_fabiusInv_sub_fabiusInverseLogAsymptoticMain_isBigO F hF)
+    (hrateTop.comp hT)
 
 private theorem exp_fabiusInverseLogAsymptoticMain_eq
     {y : ℝ} (hy0 : 0 < y) (hy1 : y < 1) :

@@ -1,0 +1,2211 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[a4paper,margin=27mm,headsep=8mm,footskip=13mm]{geometry}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
+\usepackage{bm}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\usepackage{listings}
+\usepackage{needspace}
+
+\definecolor{deepolive}{HTML}{41533B}
+\definecolor{softolive}{HTML}{F0F4EC}
+\definecolor{deepteal}{HTML}{155E63}
+\definecolor{softteal}{HTML}{EAF5F5}
+\definecolor{warmgray}{HTML}{6A625C}
+\definecolor{softcoral}{HTML}{FCF1EC}
+\definecolor{deepblue}{HTML}{254D73}
+\definecolor{softblue}{HTML}{EEF4FA}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=deepteal,
+  citecolor=deepolive,
+  urlcolor=deepblue,
+  pdftitle={The Full Asymptotic Transseries of the Bell Numbers},
+  pdfauthor={A repository-guided research synthesis}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Bell-number asymptotic transseries}}
+\fancyhead[R]{\small\textsc{Coefficient calculus and Lambert--W geometry}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.5pt plus 1.5pt minus 1pt}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\allowdisplaybreaks
+\emergencystretch=2.5em
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{identity}[theorem]{Identity}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{historical}[theorem]{Historical note}
+
+\newtcolorbox{masterbox}[1][]{
+  enhanced,breakable,colback=softolive,colframe=deepolive,
+  boxrule=0.7pt,arc=1mm,left=2.3mm,right=2.3mm,top=1.7mm,bottom=1.7mm,
+  title={Main result},fonttitle=\bfseries,#1
+}
+\newtcolorbox{transbox}[1][]{
+  enhanced,breakable,colback=softteal,colframe=deepteal,
+  boxrule=0.7pt,arc=1mm,left=2.3mm,right=2.3mm,top=1.7mm,bottom=1.7mm,
+  title={Transseries form},fonttitle=\bfseries,#1
+}
+\newtcolorbox{auditbox}[1][]{
+  enhanced,breakable,colback=softcoral,colframe=warmgray,
+  boxrule=0.6pt,arc=1mm,left=2.3mm,right=2.3mm,top=1.7mm,bottom=1.7mm,
+  title={Scope and status},fonttitle=\bfseries,#1
+}
+\newtcolorbox{algbox}[1][]{
+  enhanced,breakable,colback=softblue,colframe=deepblue,
+  boxrule=0.6pt,arc=1mm,left=2.3mm,right=2.3mm,top=1.7mm,bottom=1.7mm,
+  title={Coefficient engine},fonttitle=\bfseries,#1
+}
+
+\newcommand{\Bell}{\mathcal B}
+\newcommand{\Tch}{\mathscr T}
+\newcommand{\E}{\mathbb E}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\BigO}{\mathcal O}
+\newcommand{\littleo}{\mathrm o}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\Stwo}[2]{\genfrac\{\}{0pt}{}{#1}{#2}}
+\newcommand{\Sone}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\newcommand{\Gauss}{\mathcal G}
+\newcommand{\LambertW}{W}
+\newcommand{\Bern}{\beta}
+\newcommand{\cA}{\mathsf A}
+\newcommand{\cD}{\mathsf D}
+\newcommand{\cR}{\mathsf R}
+\newcommand{\cH}{\mathsf H}
+\newcommand{\cE}{\mathsf E}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\RePart}{Re}
+\DeclareMathOperator{\ImPart}{Im}
+
+\title{\Huge\bfseries The Full Asymptotic Transseries of the Bell Numbers\\[3mm]
+\Large Finite all-orders saddle coefficients, Lambert--\(W\) geometry,\\
+Touchard cumulants, and polynomial--logarithmic re-expansion}
+\author{A repository-guided research synthesis with complete coefficient formulae}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The Bell numbers \(\Bell_n\), defined by
+\[
+  \exp(\ee^z-1)=\sum_{n\ge 0}\Bell_n\frac{z^n}{n!},
+\]
+have a classical saddle point at \(r=W_0(n)\).  The leading Moser--Wyman--de
+Bruijn approximation is well known, but an actually usable ``all-orders formula''
+requires more than unnamed correction polynomials: it must specify a genuine
+asymptotic scale, a finite rule for every coefficient, and a remainder theorem.
+This article supplies that data.
+
+Write
+\[
+ \Tch_j(r)=\ee^{-r}(r\partial_r)^j\ee^r
+          =\sum_{k=1}^j\Stwo{j}{k}r^k,
+ \qquad
+ q_j(r)=\frac{\Tch_j(r)}{r(1+r)^{j/2}}.
+\]
+For every \(m\ge 0\), the \(m\)-th saddle coefficient is given by a finite
+partition sum
+\[
+ c_m(r)=
+ \sum_{\substack{k_1,\ldots,k_{2m}\ge0\\
+                   \sum_{s=1}^{2m}s k_s=2m}}
+ (-1)^{m+K}(2m+2K-1)!!
+ \prod_{s=1}^{2m}
+ \frac{q_{s+2}(r)^{k_s}}{((s+2)!)^{k_s}k_s!},
+ \qquad K=\sum_{s=1}^{2m}k_s,
+\]
+with \(c_0=1\).  Equivalently, the same coefficients are Gaussian averages of
+complete exponential Bell polynomials.  We prove, uniformly to arbitrary fixed
+order,
+\[
+ \Bell_n=
+ \frac{n!\exp(\ee^r-1)}{r^n\sqrt{2\pi n(1+r)}}
+ \left(\sum_{m=0}^{M-1}\frac{c_m(r)}{n^m}
+       +\BigO_M\!\left((r/n)^M\right)\right).
+\]
+Every \(c_m\) is rational in \(r\), more precisely
+\(c_m(r)=P_m(r)/(1+r)^{3m}\) with \(P_m\in\Q[r]\),
+\(\deg P_m\le 4m\), and \(c_m(r)=\BigO(r^m)\).
+
+After combining this saddle expansion with the complete Stirling series for
+\(n!\), the Bell numbers acquire the natural exponential transseries scale
+\(\ee^{-r}=r/n\):
+\[
+ \log \Bell_n
+ \sim n\left(r-1+\frac1r\right)-1-\frac12\log(1+r)
+       +\sum_{m\ge1}\cD_m(r)\ee^{-mr},
+\]
+where every \(\cD_m(r)\) is a bounded rational function given by finite
+coefficient operations.  Exponentiating yields a multiplicative transseries with
+finite general formulae for its coefficients.  Finally, substituting the
+Stirling-cycle-number expansion of \(W_0(n)\) gives the full
+polynomial--logarithmic form in \(L=\log n\) and \(\lambda=\log L\), including
+the beyond-all-orders sectors \(n^{-m}L^m\Q[\lambda][[L^{-1}]]\).  The same
+universal saddle coefficients also govern the Touchard polynomials
+\(\Bell_n(x)\) for fixed \(x>0\).
+\end{abstract}
+
+\begin{auditbox}
+This is a self-contained mathematical article, not a claim of Lean
+formalization.  Its principal contribution is an explicit organization of the
+standard saddle-point mechanism into finite coefficient formulae and a ranked
+transseries.  The first nontrivial correction agrees with the independently
+reported 2026 expansion of Hwang, Li, and Zacharovas.  The section on nonprincipal
+complex saddles is deliberately labeled \emph{formal/hyperasymptotic}: determining
+all Stokes multipliers of the original Cauchy contour is a separate global
+steepest-descent problem.
+\end{auditbox}
+
+\tableofcontents
+\newpage
+
+\section{Introduction and statement of the problem}
+
+\subsection{Bell numbers and the missing all-orders data}
+
+The Bell number \(\Bell_n\) counts set partitions of an \(n\)-element labelled
+set.  Its most useful analytic definition is the exponential generating
+function
+\begin{equation}\label{eq:bell-egf}
+  F(z):=\exp(\ee^z-1)
+       =\sum_{n\ge0}\Bell_n\frac{z^n}{n!}.
+\end{equation}
+The coefficient is therefore
+\begin{equation}\label{eq:cauchy-basic}
+ \frac{\Bell_n}{n!}
+ =\frac{1}{2\pi\ii}\int_{|z|=\rho}
+   \frac{\exp(\ee^z-1)}{z^{n+1}}\dd z,
+ \qquad \rho>0.
+\end{equation}
+The positive saddle is selected by
+\begin{equation}\label{eq:saddle-equation}
+   r\ee^r=n,
+   \qquad r=W_0(n).
+\end{equation}
+This gives the classical leading approximation
+\begin{equation}\label{eq:classical-leading}
+ \Bell_n\sim
+ \frac{n!\exp(\ee^r-1)}{r^n\sqrt{2\pi n(1+r)}}
+ \sim\frac{\exp\!\left(n(r-1+r^{-1})-1\right)}{\sqrt{1+r}}.
+\end{equation}
+The two right-hand expressions in \cref{eq:classical-leading} are
+asymptotically equivalent; the second uses only the leading factor in
+Stirling's formula for \(n!\).
+
+A complete refinement must answer four questions.
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.2em]
+\item What is the asymptotic scale?
+\item How is the coefficient of every term defined by a finite computation?
+\item What algebraic structure do those coefficients possess?
+\item What remainder remains after an arbitrary fixed truncation?
+\end{enumerate}
+The linked coefficient-calculus manuscript explicitly identifies these as the
+missing obligations behind a schematic Moser--Wyman display.  The purpose here
+is to discharge them for the Bell numbers and, at almost no extra cost, for the
+Touchard polynomials.
+
+\subsection{Three equivalent notions of ``full expansion''}
+
+There are three useful normal forms, and confusing them obscures the hierarchy
+of small terms.
+
+\paragraph{Saddle normal form.}
+Keep \(r=W_0(n)\) exact and expand the normalized Cauchy integral in powers of
+\(n^{-1}\).  Its coefficients grow like \(r^m\), so the actual term of order
+\(m\) is \(\BigO((r/n)^m)\).
+
+\paragraph{Lambert--\(W\) exponential normal form.}
+Since \(r/n=\ee^{-r}\), absorb the Stirling series for \(n!\) and rewrite the
+answer in powers of the genuine transmonomial \(\ee^{-r}\).  The coefficient
+functions are then bounded rational functions of \(r\).
+
+\paragraph{Polynomial--logarithmic normal form.}
+Write \(L=\log n\), \(\lambda=\log L\), expand \(r=W_0(n)\) in
+\(L^{-1}\Q[\lambda]\), and compose.  The logarithm of \(\Bell_n\) splits into
+three ranked sectors:
+\[
+ nL\,\Q[\lambda][[L^{-1}]],
+ \qquad
+ \log L+\Q[\lambda][[L^{-1}]],
+ \qquad
+ \sum_{m\ge1}n^{-m}L^m\Q[\lambda][[L^{-1}]].
+\]
+The last family is beyond every power of \(L^{-1}\) relative to the first two.
+Nonprincipal complex saddles lie farther beyond all these sectors.
+
+\subsection{Road map}
+
+\Cref{sec:exact} develops the exact integral and the Touchard-polynomial
+cumulants.  \Cref{sec:allorders} proves the all-orders saddle theorem.
+\Cref{sec:coeffcalc} gives four equivalent finite formulae for the coefficients
+and proves their rationality.  \Cref{sec:explicit} lists the first coefficients.
+\Cref{sec:logtrans} combines the result with Stirling's series and produces the
+\(\ee^{-r}\)-transseries.  \Cref{sec:polylog} performs the full
+polynomial--logarithmic re-expansion.  \Cref{sec:complex} describes the formal
+secondary-saddle sectors, \Cref{sec:touchard} gives the Touchard extension,
+\Cref{sec:algorithm} presents exact algorithms, and \Cref{sec:numerics}
+quantifies the numerical improvement.
+
+\section{Exact representations and saddle geometry}\label{sec:exact}
+
+\subsection{Combinatorial and probabilistic formulae}
+
+The Stirling numbers of the second kind satisfy
+\[
+  \Bell_n=\sum_{k=0}^n\Stwo{n}{k}.
+\]
+Dobinski's formula gives a second exact representation:
+\begin{equation}\label{eq:dobinski}
+  \Bell_n=\ee^{-1}\sum_{k=0}^{\infty}\frac{k^n}{k!}.
+\end{equation}
+Indeed,
+\[
+ \ee^{-1}\sum_{k\ge0}\frac{\ee^{kz}}{k!}
+ =\ee^{-1}\exp(\ee^z)=\exp(\ee^z-1),
+\]
+and comparison with \cref{eq:bell-egf} proves \cref{eq:dobinski}.  Thus
+\(\Bell_n\) is also the \(n\)-th raw moment of a Poisson random variable of
+mean one.
+
+The saddle method may be applied either to \cref{eq:cauchy-basic} or, after a
+local central-limit analysis, to \cref{eq:dobinski}.  The contour route is more
+convenient for obtaining every correction coefficient in one uniform formula.
+
+\subsection{The circular integral through the positive saddle}
+
+Set \(z=r\ee^{\ii\theta}\) in \cref{eq:cauchy-basic}, where
+\(r=W_0(n)\).  Since \(\dd z=\ii z\dd\theta\),
+\begin{equation}\label{eq:circular-integral}
+ \frac{\Bell_n}{n!}
+ =\frac{\exp(\ee^r-1)}{2\pi r^n}
+  \int_{-\pi}^{\pi}\exp\!\bigl(\Phi_r(\theta)\bigr)\dd\theta,
+\end{equation}
+where
+\begin{equation}\label{eq:phase}
+ \Phi_r(\theta)
+ :=\ee^{r\ee^{\ii\theta}}-\ee^r-\ii n\theta.
+\end{equation}
+The saddle equation makes \(\Phi_r'(0)=0\).
+
+The complex phase in the original \(z\)-plane is
+\begin{equation}\label{eq:zphase}
+ \Psi_n(z):=\ee^z-1-n\Log z.
+\end{equation}
+Its saddle equation \(\Psi_n'(z)=0\) is \(z\ee^z=n\).  Hence all formal saddles
+are
+\[
+ r_k=W_k(n),\qquad k\in\mathbb Z,
+\]
+but only \(r_0=r>0\) is needed for the ordinary Poincare expansion on the
+positive real axis.
+
+\subsection{Touchard polynomials as phase cumulants}
+
+\begin{definition}[Touchard polynomial]\label{def:touchard}
+For \(j\ge0\), define
+\begin{equation}\label{eq:touchard-def}
+ \Tch_j(r):=\ee^{-r}(r\partial_r)^j\ee^r.
+\end{equation}
+Then \(\Tch_0(r)=1\), and for \(j\ge1\),
+\begin{equation}\label{eq:touchard-stirling}
+ \Tch_j(r)=\sum_{k=1}^j\Stwo{j}{k}r^k.
+\end{equation}
+\end{definition}
+
+\begin{proof}
+The operator identity
+\[
+ (r\partial_r)^j=\sum_{k=0}^j\Stwo{j}{k}r^k\partial_r^k
+\]
+is the standard change from powers to falling factorials.  Applying it to
+\(\ee^r\), for which \(\partial_r^k\ee^r=\ee^r\), gives
+\cref{eq:touchard-stirling}.
+\end{proof}
+
+The first values are
+\begin{align*}
+ \Tch_1&=r,\\
+ \Tch_2&=r+r^2,\\
+ \Tch_3&=r+3r^2+r^3,\\
+ \Tch_4&=r+7r^2+6r^3+r^4,\\
+ \Tch_5&=r+15r^2+25r^3+10r^4+r^5.
+\end{align*}
+They obey the differential recurrence
+\begin{equation}\label{eq:touchard-recurrence}
+ \Tch_{j+1}(r)=r\bigl(\Tch_j(r)+\Tch_j'(r)\bigr).
+\end{equation}
+
+\begin{lemma}[Exact phase expansion]\label{lem:phase-expansion}
+For \(|\theta|\) sufficiently small,
+\begin{equation}\label{eq:phase-taylor}
+ \Phi_r(\theta)
+ =\sum_{j\ge2}\frac{\ii^j\ee^r\Tch_j(r)}{j!}\theta^j.
+\end{equation}
+In particular, with
+\begin{equation}\label{eq:variance-A}
+ A:=\ee^r\Tch_2(r)=n(1+r),
+\end{equation}
+we have \(\Phi_r(\theta)=-A\theta^2/2+\BigO(nr^2|\theta|^3)\).
+\end{lemma}
+
+\begin{proof}
+Differentiation with respect to \(\theta\) acts on
+\(\ee^{r\ee^{\ii\theta}}\) as \(\ii r\partial_r\) at \(\theta=0\).  Therefore
+its \(j\)-th derivative there is \(\ii^j\ee^r\Tch_j(r)\).  The linear term is
+\(\ii\ee^r\Tch_1(r)\theta=\ii r\ee^r\theta=\ii n\theta\) and cancels the last
+term in \cref{eq:phase}.  The quadratic identity follows from
+\(\Tch_2=r(1+r)\) and \(r\ee^r=n\).
+\end{proof}
+
+\subsection{Standardized cumulants}
+
+Scale
+\begin{equation}\label{eq:theta-scale}
+  \theta=\frac{u}{\sqrt{A}}
+  =\frac{u}{\sqrt{n(1+r)}}.
+\end{equation}
+For \(s\ge1\), define
+\begin{equation}\label{eq:qj-def}
+ q_{s+2}(r):=\frac{\Tch_{s+2}(r)}{r(1+r)^{(s+2)/2}},
+ \qquad
+ a_s(u;r):=\frac{\ii^{s+2}q_{s+2}(r)}{(s+2)!}u^{s+2}.
+\end{equation}
+Then \cref{eq:phase-taylor} becomes the exact formal identity
+\begin{equation}\label{eq:scaled-phase}
+ \Phi_r\!\left(\frac{u}{\sqrt A}\right)
+ =-\frac{u^2}{2}+\sum_{s\ge1}n^{-s/2}a_s(u;r).
+\end{equation}
+Since \(\deg \Tch_{s+2}=s+2\),
+\begin{equation}\label{eq:q-growth}
+  q_{s+2}(r)=\BigO_s(r^{s/2})
+  \qquad(r\to\infty).
+\end{equation}
+Thus the effective small parameter is not merely \(n^{-1/2}\), but
+\[
+  \varepsilon:=\sqrt{\frac rn}=\ee^{-r/2}.
+\]
+The Gaussian symmetry removes odd powers of \(\varepsilon\); the final expansion
+therefore proceeds in powers of \(\varepsilon^2=r/n=\ee^{-r}\).
+
+\section{The all-orders saddle theorem}\label{sec:allorders}
+
+\subsection{Localization of the Cauchy integral}
+
+The first issue is not formal expansion but localization: the part of the circle
+away from \(\theta=0\) must be smaller than every retained algebraic term.
+
+\begin{lemma}[Central and complementary arcs]\label{lem:localization}
+There exist absolute constants \(\delta,c_1,c_2>0\) such that, for all
+sufficiently large \(n\), with \(r=W_0(n)\),
+\begin{align}
+ \RePart\Phi_r(\theta)&\le -c_1A\theta^2,
+ && |\theta|\le \delta/r,\label{eq:central-decay}\\
+ \RePart\Phi_r(\theta)&\le -c_2n/r^2,
+ && \delta/r\le |\theta|\le\pi.\label{eq:outer-decay}
+\end{align}
+Consequently the complementary arc contributes
+\begin{equation}\label{eq:outer-small}
+ \int_{\delta/r\le|\theta|\le\pi}
+       \exp(\Phi_r(\theta))\dd\theta
+ =\BigO\!\left(\exp(-c_2n/r^2)\right),
+\end{equation}
+which is smaller than \((r/n)^M\) for every fixed \(M\).
+\end{lemma}
+
+\begin{proof}
+For the central bound, \cref{lem:phase-expansion} gives
+\[
+ \RePart\Phi_r(\theta)
+ =-\frac12A\theta^2+\BigO(nr^2|\theta|^3).
+\]
+Because \(A=n(1+r)\asymp nr\), the ratio of the error to
+\(A\theta^2\) is \(\BigO(r|\theta|)\).  Choosing \(\delta\) sufficiently small
+proves \cref{eq:central-decay}.
+
+For the complementary bound, discard the oscillating cosine:
+\begin{align*}
+ \RePart\Phi_r(\theta)
+ &=\ee^{r\cos\theta}\cos(r\sin\theta)-\ee^r\\
+ &\le \ee^{r\cos\theta}-\ee^r
+ =-\ee^r\bigl(1-\ee^{-r(1-\cos\theta)}\bigr).
+\end{align*}
+On \([-\pi,\pi]\), \(1-\cos\theta\ge C\min(\theta^2,1)\).  If
+\(|\theta|\ge\delta/r\), then
+\(r(1-\cos\theta)\ge C'\delta^2/r\) until this quantity is bounded away from
+zero; in either case
+\[
+ 1-\ee^{-r(1-\cos\theta)}\ge C''/r.
+\]
+Since \(\ee^r=n/r\), this gives \cref{eq:outer-decay}.  Finally,
+\(n/r^2\to\infty\) faster than \(\log(n/r)\), so the exponential in
+\cref{eq:outer-small} is smaller than every fixed power of \(r/n\).
+\end{proof}
+
+\begin{remark}
+The much-studied Hayman admissibility of \(F(z)=\exp(\ee^z-1)\) gives a general
+framework for this localization.  The elementary inequalities above are included
+so that the particular Bell-number argument does not depend on quoting the full
+admissibility machinery.
+\end{remark}
+
+\subsection{Gaussian reduction}
+
+Let \(Z\) be standard normal and write
+\[
+  \E f(Z)=\frac1{\sqrt{2\pi}}
+          \int_{-\infty}^{\infty}f(u)\ee^{-u^2/2}\dd u.
+\]
+After \cref{eq:theta-scale}, the central part of \cref{eq:circular-integral}
+becomes
+\begin{equation}\label{eq:gaussian-reduction}
+ \frac{1}{\sqrt{2\pi A}}
+ \int \ee^{-u^2/2}
+ \exp\!\left(\sum_{s\ge1}n^{-s/2}a_s(u;r)\right)\dd u,
+\end{equation}
+up to a contribution smaller than every power of \(r/n\).  Formally replacing
+the finite scaled interval by \(\R\) is justified by
+\cref{eq:central-decay}; the Gaussian tails are super-algebraically small.
+
+For a precise truncation, choose \(0<\alpha<1/6\) and restrict first to
+\(|u|\le U_n:=(n/r)^\alpha\).  On this interval,
+\[
+ n^{-s/2}a_s(u;r)
+ =\BigO_s\!\left((r/n)^{s/2}U_n^{s+2}\right),
+\]
+and the right side tends to zero for every fixed \(s\).  Taylor's theorem for
+the exponential may therefore be applied uniformly to any prescribed order.
+Outside \([-U_n,U_n]\), \cref{eq:central-decay} supplies a bound
+\(\BigO(\ee^{-cU_n^2})\).  This is the standard Watson-lemma mechanism, here
+with coefficients depending slowly on \(r\).
+
+\subsection{All-orders theorem}
+
+\begin{theorem}[Full principal-saddle expansion]\label{thm:all-orders}
+Let \(r=W_0(n)\), and define \(a_s\) by \cref{eq:qj-def}.  Put
+\begin{equation}\label{eq:cm-gaussian-def}
+ c_m(r):=
+ \E\!\left[
+   \coef{t}{2m}
+   \exp\!\left(\sum_{s\ge1}a_s(Z;r)t^s\right)
+ \right],
+ \qquad m\ge0.
+\end{equation}
+Then \(c_0(r)=1\), and for every fixed integer \(M\ge1\),
+\begin{equation}\label{eq:all-orders-main}
+ \boxed{
+ \Bell_n=
+ \frac{n!\exp(\ee^r-1)}{r^n\sqrt{2\pi n(1+r)}}
+ \left(
+   \sum_{m=0}^{M-1}\frac{c_m(r)}{n^m}
+   +\BigO_M\!\left((r/n)^M\right)
+ \right).}
+\end{equation}
+The constant in the remainder depends on \(M\), but not on \(n\).
+\end{theorem}
+
+\begin{proof}
+Expand the second exponential in \cref{eq:gaussian-reduction} in the bookkeeping
+variable \(t=n^{-1/2}\):
+\begin{equation}\label{eq:formal-expansion-Pj}
+ \exp\!\left(\sum_{s\ge1}a_s(u;r)t^s\right)
+ =\sum_{j\ge0}P_j(u;r)t^j.
+\end{equation}
+Every monomial contributing to \(P_j\) has the form
+\(\prod_s a_s^{k_s}\) with \(\sum_s sk_s=j\).  Its degree in \(u\) is
+\[
+ \sum_s(s+2)k_s=j+2\sum_s k_s,
+\]
+which has the same parity as \(j\).  Therefore \(P_j(-u;r)=(-1)^jP_j(u;r)\),
+and \(\E P_j(Z;r)=0\) for odd \(j\).  The coefficient of \(n^{-m}\) is
+exactly \(c_m(r)=\E P_{2m}(Z;r)\).
+
+By \cref{eq:q-growth}, each monomial in \(P_{2m}\) is
+\(\BigO_m(r^m)\) after Gaussian averaging, because
+\(\sum_s sk_s=2m\).  Hence
+\begin{equation}\label{eq:cm-growth-preliminary}
+ c_m(r)=\BigO_m(r^m).
+\end{equation}
+The uniform Taylor argument preceding the theorem, with enough terms retained,
+shows that the first omitted even contribution is
+\(\BigO_M(r^M n^{-M})\), while the central Gaussian tail and the complementary
+arc are smaller than this by \cref{lem:localization}.  Multiplying by the
+prefactor in \cref{eq:circular-integral} yields
+\cref{eq:all-orders-main}.
+\end{proof}
+
+\begin{masterbox}
+The asymptotic scale in \cref{eq:all-orders-main} is genuine:
+\[
+  1,\quad \frac rn,\quad \left(\frac rn\right)^2,\quad\ldots
+  \qquad\left(\frac rn=\ee^{-r}\right).
+\]
+The displayed coefficient \(c_m/n^m\) has size \(\BigO((r/n)^m)\), and the
+remainder after \(M\) terms has the size of the next member of this scale.  No
+unnamed correction polynomial is required.
+\end{masterbox}
+
+\section{Finite coefficient calculus}\label{sec:coeffcalc}
+
+\subsection{Complete Bell-polynomial formula}
+
+Let \(Y_j\) denote the complete exponential Bell polynomial, characterized by
+\begin{equation}\label{eq:complete-bell-def}
+ \exp\!\left(\sum_{s\ge1}x_s\frac{t^s}{s!}\right)
+ =\sum_{j\ge0}Y_j(x_1,\ldots,x_j)\frac{t^j}{j!}.
+\end{equation}
+Taking \(x_s=s!a_s(Z;r)\) in \cref{eq:complete-bell-def} gives the first finite
+closed rule.
+
+\begin{proposition}[Bell-polynomial coefficient]\label{prop:bellpoly-cm}
+For \(m\ge0\),
+\begin{equation}\label{eq:cm-bellpoly}
+ c_m(r)=\frac1{(2m)!}\E\!
+ \left[
+  Y_{2m}\bigl(1!a_1(Z;r),2!a_2(Z;r),\ldots,(2m)!a_{2m}(Z;r)\bigr)
+ \right].
+\end{equation}
+Thus \(c_m\) uses only
+\(\Tch_3,\Tch_4,\ldots,\Tch_{2m+2}\).
+\end{proposition}
+
+\begin{proof}
+This is coefficient comparison in \cref{eq:complete-bell-def}; terms with
+\(s>2m\) cannot affect \(\coef{t}{2m}\).
+\end{proof}
+
+The Gaussian average can itself be written as a differential operator:
+\begin{equation}\label{eq:gaussian-heat}
+ \E P(Z)=\left.\exp\!\left(\frac12\partial_u^2\right)P(u)\right|_{u=0}
+\end{equation}
+for every polynomial \(P\).  Consequently \cref{eq:cm-bellpoly} is a finite
+composition of two standard coefficient-calculus operations: a complete Bell
+polynomial followed by the heat operator at the origin.
+
+\subsection{Explicit partition sum}
+
+The Bell-polynomial formula becomes completely elementary after expanding the
+exponential and using
+\(\E Z^{2j}=(2j-1)!!\), \(\E Z^{2j+1}=0\).
+
+\begin{theorem}[Finite partition formula]\label{thm:partition-cm}
+For \(m\ge1\),
+\begin{equation}\label{eq:cm-partition}
+ \boxed{
+ c_m(r)=
+ \sum_{\substack{k_1,\ldots,k_{2m}\ge0\\
+                   \sum_{s=1}^{2m}s k_s=2m}}
+ (-1)^{m+K}(2m+2K-1)!!
+ \prod_{s=1}^{2m}
+ \frac{q_{s+2}(r)^{k_s}}{((s+2)!)^{k_s}k_s!},}
+ \qquad K:=\sum_{s=1}^{2m}k_s.
+\end{equation}
+We use the convention \((-1)!!=1\).
+\end{theorem}
+
+\begin{proof}
+The coefficient of \(t^{2m}\) in
+\(\exp(\sum_sa_st^s)\) is
+\[
+ \sum_{\sum sk_s=2m}\prod_s\frac{a_s^{k_s}}{k_s!}.
+\]
+The power of \(Z\) in such a term is
+\(\sum(s+2)k_s=2m+2K\), and the power of \(\ii\) is the same.  Hence
+\[
+ \ii^{2m+2K}=(-1)^{m+K},
+ \qquad
+ \E Z^{2m+2K}=(2m+2K-1)!!.
+\]
+Substitution of \cref{eq:qj-def} proves \cref{eq:cm-partition}.
+\end{proof}
+
+\begin{remark}[Finiteness]
+The sum is indexed by partitions of \(2m\): the vector
+\((k_1,\ldots,k_{2m})\) records \(k_s\) parts of size \(s\).  Therefore the
+number of summands is the partition number \(p(2m)\), not an infinite or
+asymptotic count.  This is the requested finite coefficient-extraction rule.
+\end{remark}
+
+\subsection{A dynamic recurrence}
+
+Direct enumeration of partitions is conceptually transparent.  For symbolic
+computation, a recurrence for the intermediate polynomials is often faster.
+Differentiating \cref{eq:formal-expansion-Pj} with respect to \(t\) gives
+\begin{equation}\label{eq:Pj-recurrence}
+ P_0(u;r)=1,
+ \qquad
+ P_j(u;r)=\frac1j\sum_{s=1}^{j}s\,a_s(u;r)P_{j-s}(u;r)
+ \quad(j\ge1).
+\end{equation}
+Then
+\begin{equation}\label{eq:cm-from-P}
+ c_m(r)=\E P_{2m}(Z;r).
+\end{equation}
+Because parity is preserved by \cref{eq:Pj-recurrence}, odd \(P_j\) need not be
+Gaussian-averaged at all.
+
+\subsection{Rationality, denominators, and degrees}
+
+\begin{theorem}[Algebraic structure of the coefficients]\label{thm:cm-structure}
+For every \(m\ge0\), there is a polynomial \(P_m(r)\in\Q[r]\) such that
+\begin{equation}\label{eq:cm-rational-structure}
+ c_m(r)=\frac{P_m(r)}{(1+r)^{3m}},
+ \qquad
+ \deg P_m\le4m.
+\end{equation}
+Moreover
+\begin{equation}\label{eq:cm-growth}
+ c_m(r)=\BigO_m(r^m)\qquad(r\to\infty).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Fix a vector in \cref{eq:cm-partition}.  Since
+\(\sum sk_s=2m\),
+\begin{equation}\label{eq:denom-exponent}
+ \prod_s(1+r)^{(s+2)k_s/2}
+ =(1+r)^{m+K}.
+\end{equation}
+Also \(K\le2m\), because every part has size at least one.  Bringing the term to
+the common denominator \((1+r)^{3m}\) multiplies its numerator by
+\((1+r)^{2m-K}\).
+
+Now \(\Tch_{s+2}(r)/r\) is a polynomial of degree \(s+1\).  The product of
+these polynomials has degree
+\[
+ \sum_s(s+1)k_s=2m+K.
+\]
+After multiplication by \((1+r)^{2m-K}\), the degree is at most \(4m\).
+This proves \cref{eq:cm-rational-structure}.  Finally,
+\(q_{s+2}(r)=\BigO(r^{s/2})\), so every summand in
+\cref{eq:cm-partition} is \(\BigO(r^{\sum sk_s/2})=\BigO(r^m)\), proving
+\cref{eq:cm-growth}.
+\end{proof}
+
+\begin{corollary}[Asymptotic sequence]\label{cor:genuine-scale}
+For fixed \(m\),
+\[
+ \frac{c_{m+1}(r)n^{-m-1}}{c_m(r)n^{-m}}
+ =\BigO_m(r/n)=\BigO_m(\ee^{-r})
+\]
+whenever the denominator is nonzero.  Thus the sequence of term sizes is
+strictly asymptotic.
+\end{corollary}
+
+\subsection{The limiting Stirling identity}
+
+The highest-degree part of \(c_m\) has a classical interpretation.  Define
+\begin{equation}\label{eq:gamma-m-def}
+ \gamma_m:=\lim_{r\to\infty}\frac{c_m(r)}{r^m}.
+\end{equation}
+Because \(q_{s+2}(r)/r^{s/2}\to1\), \cref{eq:cm-gaussian-def} yields
+\begin{equation}\label{eq:gamma-gaussian}
+ \gamma_m=
+ \E\!\left[
+  \coef{t}{2m}
+  \exp\!\left(
+    \sum_{s\ge1}\frac{\ii^{s+2}Z^{s+2}}{(s+2)!}t^s
+  \right)
+ \right].
+\end{equation}
+Comparison with the saddle derivation of Stirling's formula gives the formal
+identity
+\begin{equation}\label{eq:gamma-stirling-inverse}
+ \boxed{
+ \sum_{m\ge0}\gamma_m x^m
+ =\exp\!\left(
+   -\sum_{j\ge1}\frac{\Bern_{2j}}{2j(2j-1)}x^{2j-1}
+ \right),}
+\end{equation}
+where
+\begin{equation}\label{eq:bernoulli-convention}
+ \frac{t}{\ee^t-1}=\sum_{j\ge0}\Bern_j\frac{t^j}{j!},
+ \qquad \Bern_1=-\frac12.
+\end{equation}
+This is the Gaussian coefficient identity that appears when Stirling's formula
+is derived on two equivalent saddle contours.
+
+The first values are
+\begin{equation}\label{eq:gamma-values}
+ \gamma_0=1,
+ \quad \gamma_1=-\frac1{12},
+ \quad \gamma_2=\frac1{288},
+ \quad \gamma_3=\frac{139}{51840},
+ \quad \gamma_4=-\frac{571}{2488320}.
+\end{equation}
+Equation \cref{eq:gamma-stirling-inverse} supplies a useful independent check on
+any symbolic implementation of \cref{eq:cm-partition}.
+
+\section{Explicit principal-saddle coefficients}\label{sec:explicit}
+
+\subsection{The first correction by hand}
+
+Only \(a_1\) and \(a_2\) can contribute to \(c_1\):
+\[
+ c_1=\E\!\left(a_2(Z;r)+\frac12a_1(Z;r)^2\right).
+\]
+Since
+\[
+ a_1=-\frac{\ii q_3}{6}u^3,
+ \qquad
+ a_2=\frac{q_4}{24}u^4,
+\]
+and \(\E Z^4=3\), \(\E Z^6=15\),
+\begin{equation}\label{eq:c1-q}
+ c_1(r)=\frac18q_4(r)-\frac5{24}q_3(r)^2.
+\end{equation}
+Substitution of \(\Tch_3\) and \(\Tch_4\) gives
+\begin{equation}\label{eq:c1-explicit}
+ \boxed{
+ c_1(r)=
+ -\frac{2r^4+9r^3+16r^2+6r+2}{24(1+r)^3}.}
+\end{equation}
+The sign is worth noting: for large \(r\), \(c_1(r)\sim-r/12\).
+
+\subsection{The second correction}
+
+At order \(t^4\), the partitions of four give
+\begin{align}
+ c_2={}&-\frac1{48}q_6
+ +\frac7{48}q_3q_5
+ +\frac{35}{384}q_4^2
+ -\frac{35}{64}q_3^2q_4
+ +\frac{385}{1152}q_3^4.\label{eq:c2-q}
+\end{align}
+After rational simplification,
+\begin{equation}\label{eq:c2-explicit}
+ \boxed{
+ c_2(r)=
+ \frac{
+ 4r^8-12r^7-143r^6-384r^5-588r^4-636r^3
+ +100r^2+24r+4}
+ {1152(1+r)^6}.}
+\end{equation}
+
+\subsection{The third correction}
+
+The finite rule \cref{eq:cm-partition} gives
+\begin{equation}\label{eq:c3-explicit}
+\boxed{
+\begin{aligned}
+ c_3(r)=\frac{1}{414720(1+r)^9}\bigl(&
+ 1112r^{12}+12708r^{11}+56082r^{10}+118683r^9\\
+ &+97176r^8-74394r^7-259046r^6-456444r^5\\
+ &-635424r^4+115308r^3+39432r^2+10008r+1112
+ \bigr).
+\end{aligned}}
+\end{equation}
+The leading coefficients of \(c_1,c_2,c_3\) agree with
+\(\gamma_1,\gamma_2,\gamma_3\) in \cref{eq:gamma-values}.
+
+\subsection{How to read the first terms}
+
+Substituting \cref{eq:c1-explicit,eq:c2-explicit,eq:c3-explicit} into
+\cref{eq:all-orders-main} gives
+\begin{align}\label{eq:bell-first-cs}
+ \Bell_n={}&
+ \frac{n!\exp(\ee^r-1)}{r^n\sqrt{2\pi n(1+r)}}
+ \left(
+  1+\frac{c_1(r)}n+\frac{c_2(r)}{n^2}
+    +\frac{c_3(r)}{n^3}
+    +\BigO\!\left(\frac{r^4}{n^4}\right)
+ \right).
+\end{align}
+This is already a complete Poincare expansion, but it hides the most natural
+transmonomial because \(c_m(r)\) grows like \(r^m\).  The next section absorbs
+Stirling's series and rewrites every term as a bounded coefficient times
+\(\ee^{-mr}\).
+
+\section{Logarithmic and exponential transseries}\label{sec:logtrans}
+
+\subsection{Combining the saddle series with Stirling's series}
+
+Stirling's complete logarithmic expansion is
+\begin{equation}\label{eq:stirling-log}
+ \log n!
+ \sim n\log n-n+\frac12\log(2\pi n)
+ +\sum_{j\ge1}\frac{\Bern_{2j}}{2j(2j-1)n^{2j-1}}.
+\end{equation}
+Define
+\begin{equation}\label{eq:sigma-m}
+ \sigma_m:=
+ \begin{cases}
+ \displaystyle\frac{\Bern_{m+1}}{m(m+1)},&m\text{ odd},\\[2mm]
+ 0,&m\text{ even}.
+ \end{cases}
+\end{equation}
+Thus the last sum in \cref{eq:stirling-log} is
+\(\sum_{m\ge1}\sigma_mn^{-m}\).
+
+Let
+\begin{equation}\label{eq:ell-def}
+ C(x;r):=1+\sum_{m\ge1}c_m(r)x^m,
+ \qquad
+ \log C(x;r)=\sum_{m\ge1}\ell_m(r)x^m.
+\end{equation}
+Every \(\ell_m\) is finite and can be obtained in either of the forms
+\begin{align}
+ \ell_m(r)
+ &=\sum_{\substack{k_1,\ldots,k_m\ge0\\
+                    \sum_{j=1}^mjk_j=m}}
+   (-1)^{K+1}(K-1)!
+   \prod_{j=1}^m\frac{c_j(r)^{k_j}}{k_j!},
+ \qquad K=\sum_jk_j,
+ \label{eq:ell-partition}\\
+ \ell_1&=c_1,
+ \qquad
+ \ell_m=c_m-\frac1m\sum_{j=1}^{m-1}j\ell_jc_{m-j}
+ \quad(m\ge2).
+ \label{eq:ell-recurrence}
+\end{align}
+The recurrence follows from \(C'=C(\log C)'\).
+
+\begin{definition}[Logarithmic saddle coefficients]\label{def:d-m}
+Set
+\begin{equation}\label{eq:d-m-def}
+ d_m(r):=\sigma_m+\ell_m(r).
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Lambert--\(W\) logarithmic form]\label{thm:log-W-form}
+For every fixed \(M\ge1\), with \(r=W_0(n)\),
+\begin{equation}\label{eq:log-W-truncated}
+ \boxed{
+ \log\Bell_n
+ =n\left(r-1+\frac1r\right)-1-\frac12\log(1+r)
+ +\sum_{m=1}^{M-1}\frac{d_m(r)}{n^m}
+ +\BigO_M\!\left((r/n)^M\right).}
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:bell-exp-d}
+ \Bell_n=
+ \frac{\exp\!\left(n(r-1+r^{-1})-1\right)}{\sqrt{1+r}}
+ \exp\!\left(
+    \sum_{m=1}^{M-1}\frac{d_m(r)}{n^m}
+    +\BigO_M((r/n)^M)
+ \right).
+\end{equation}
+Each \(d_m\) has the form
+\begin{equation}\label{eq:d-structure}
+ d_m(r)=\frac{Q_m(r)}{(1+r)^{3m}},
+ \qquad Q_m\in\Q[r],\qquad \deg Q_m\le4m,
+\end{equation}
+and \(d_m(r)=\BigO_m(r^m)\).
+\end{theorem}
+
+\begin{proof}
+Insert \cref{eq:stirling-log} and \cref{eq:ell-def} into the logarithm of
+\cref{eq:all-orders-main}.  The identities
+\[
+ \log n-\log r=r,
+ \qquad
+ \ee^r=\frac nr
+\]
+follow from \(r\ee^r=n\) and produce the first line of
+\cref{eq:log-W-truncated}.  The structure statement follows from
+\cref{thm:cm-structure}, the finite logarithm formula
+\cref{eq:ell-partition}, and a common denominator \((1+r)^{3m}\).
+\end{proof}
+
+\subsection{The genuine \texorpdfstring{\(\ee^{-r}\)}{exp(-r)}-transseries}
+
+Define the bounded rational functions
+\begin{equation}\label{eq:D-m-def}
+ \cD_m(r):=\frac{d_m(r)}{r^m}.
+\end{equation}
+Since \(n=r\ee^r\),
+\[
+ \frac{d_m(r)}{n^m}=\cD_m(r)\ee^{-mr}.
+\]
+Therefore \cref{eq:log-W-truncated} becomes the genuine exponential
+transseries.
+
+\begin{transbox}
+For every fixed \(M\),
+\begin{equation}\label{eq:log-e-r-transseries}
+ \boxed{
+ \begin{aligned}
+ \log\Bell_n={}&n\left(r-1+\frac1r\right)-1-\frac12\log(1+r)\\
+ &+\sum_{m=1}^{M-1}\cD_m(r)\ee^{-mr}
+ +\BigO_M(\ee^{-Mr}),
+ \qquad r=W_0(n).
+ \end{aligned}}
+\end{equation}
+Every \(\cD_m\) is rational and bounded as \(r\to\infty\).  Thus
+\(1,\ee^{-r},\ee^{-2r},\ldots\) is an honest asymptotic scale with bounded
+coefficient functions.
+\end{transbox}
+
+The first logarithmic coefficients simplify markedly:
+\begin{align}
+ d_1(r)
+ &=-\frac{r^2(2r^2+7r+10)}{24(1+r)^3},
+ \label{eq:d1}\\
+ d_2(r)
+ &=-\frac{r^3(2r^4+12r^3+29r^2+40r+36)}{48(1+r)^6},
+ \label{eq:d2}\\
+ d_3(r)
+ &=\frac{r^4}{5760(1+r)^9}
+ \bigl(16r^8+164r^7+616r^6+818r^5-1096r^4
+ \notag\\[-1mm]
+ &\hspace{38mm}{}-5793r^3-10032r^2-12208r-12048\bigr).
+ \label{eq:d3}
+\end{align}
+Consequently
+\begin{align}
+ \cD_1(r)
+ &=-\frac{r(2r^2+7r+10)}{24(1+r)^3},
+ \label{eq:D1}\\
+ \cD_2(r)
+ &=-\frac{r(2r^4+12r^3+29r^2+40r+36)}{48(1+r)^6},
+ \label{eq:D2}\\
+ \cD_3(r)
+ &=\frac{r}{5760(1+r)^9}
+ \bigl(16r^8+164r^7+616r^6+818r^5-1096r^4
+ \notag\\[-1mm]
+ &\hspace{38mm}{}-5793r^3-10032r^2-12208r-12048\bigr).
+ \label{eq:D3}
+\end{align}
+Their large-\(r\) expansions begin
+\begin{align}
+ \cD_1(r)&=-\frac1{12}-\frac1{24r}-\frac1{24r^2}
+             +\frac1{3r^3}-\frac5{6r^4}+\cdots,
+ \label{eq:D1-invr}\\
+ \cD_2(r)&=-\frac1{24r}+\frac1{48r^3}-\frac1{8r^4}+\cdots,
+ \label{eq:D2-invr}\\
+ \cD_3(r)&=\frac1{360}+\frac1{288r}-\frac7{288r^2}
+             +\frac7{2880r^3}+\cdots.
+ \label{eq:D3-invr}
+\end{align}
+Because the only finite singularities of these displayed rational functions are
+at \(r=0\) and \(r=-1\), their inverse-\(r\) expansions converge for
+sufficiently large \(|r|\), not merely formally.
+
+\subsection{The first correction and comparison with the literature}
+
+Keeping only \(d_1/n\) in \cref{eq:bell-exp-d} gives
+\begin{equation}\label{eq:first-literature-correction}
+ \boxed{
+ \Bell_n=
+ \frac{\exp\!\left(n(r-1+r^{-1})-1\right)}{\sqrt{1+r}}
+ \left(
+  1-
+  \frac{r^2(2r^2+7r+10)}{24(1+r)^3n}
+  +\BigO\!\left(\frac{r^2}{n^2}\right)
+ \right).}
+\end{equation}
+This is exactly the first correction reported in the 2026 expansion of Hwang,
+Li, and Zacharovas, with their notation \(\omega_n=W(n)\).  Here it is not an
+isolated correction: it is the first member of the finite all-orders mechanism
+\cref{eq:cm-partition,eq:ell-partition,eq:d-m-def}.
+
+\subsection{Multiplicative exponential coefficients}
+
+Define \(\cA_0(r)=1\) and
+\begin{equation}\label{eq:A-generating}
+ \exp\!\left(\sum_{j\ge1}\cD_j(r)y^j\right)
+ =\sum_{m\ge0}\cA_m(r)y^m.
+\end{equation}
+Then
+\begin{align}
+ \cA_m(r)
+ &=\sum_{\substack{k_1,\ldots,k_m\ge0\\
+                    \sum_{j=1}^mjk_j=m}}
+   \prod_{j=1}^m\frac{\cD_j(r)^{k_j}}{k_j!},
+ \label{eq:A-partition}\\
+ m\cA_m(r)
+ &=\sum_{j=1}^m j\cD_j(r)\cA_{m-j}(r).
+ \label{eq:A-recurrence}
+\end{align}
+Exponentiating \cref{eq:log-e-r-transseries} gives
+\begin{equation}\label{eq:multiplicative-e-r}
+ \boxed{
+ \Bell_n=
+ \frac{\exp\!\left(n(r-1+r^{-1})-1\right)}{\sqrt{1+r}}
+ \left(
+   \sum_{m=0}^{M-1}\cA_m(r)\ee^{-mr}
+   +\BigO_M(\ee^{-Mr})
+ \right).}
+\end{equation}
+The first three bounded coefficient functions are
+\begin{align}
+ \cA_1(r)
+ &=-\frac{r(2r^2+7r+10)}{24(1+r)^3},
+ \label{eq:A1}\\
+ \cA_2(r)
+ &=\frac{r(4r^5-20r^4-199r^3-556r^2-860r-864)}
+ {1152(1+r)^6},
+ \label{eq:A2}\\
+ \cA_3(r)
+ &=\frac{r}{414720(1+r)^9}
+ \bigl(1112r^8+12828r^7+55962r^6+111301r^5
+ \notag\\[-1mm]
+ &\hspace{27mm}{}+55818r^4-196476r^3-492584r^2
+ -749376r-867456\bigr).
+ \label{eq:A3}
+\end{align}
+
+\subsection{Bernoulli boundary values}
+
+Taking the logarithm of \cref{eq:gamma-stirling-inverse} identifies the limits
+of the bounded logarithmic coefficients.
+
+\begin{proposition}[Limits at the transseries boundary]\label{prop:D-limits}
+For \(m\ge1\),
+\begin{equation}\label{eq:D-limit}
+ \lim_{r\to\infty}\cD_m(r)=
+ \begin{cases}
+ \displaystyle-\frac{\Bern_{m+1}}{m(m+1)},&m\text{ odd},\\[2mm]
+ 0,&m\text{ even}.
+ \end{cases}
+\end{equation}
+Moreover
+\begin{equation}\label{eq:A-limit}
+ \lim_{r\to\infty}\cA_m(r)=\gamma_m.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+By \cref{eq:ell-def}, the coefficient of \(x^m\) in
+\(\log\sum_jc_j(r)x^j\), after the scaling \(x\mapsto x/r\), tends to the
+coefficient of \(x^m\) in \(\log\sum_j\gamma_jx^j\).  Equation
+\cref{eq:gamma-stirling-inverse} gives \cref{eq:D-limit}; the fixed Stirling
+term \(\sigma_m/r^m\) tends to zero.  Exponentiating proves
+\cref{eq:A-limit}.
+\end{proof}
+
+\section{Polynomial--logarithmic re-expansion}\label{sec:polylog}
+
+\subsection{The all-orders Lambert--\texorpdfstring{\(W\)}{W} coefficients}
+
+Set
+\begin{equation}\label{eq:L-lambda}
+  L:=\log n,
+  \qquad \lambda:=\log L.
+\end{equation}
+The principal Lambert function has the Stirling-cycle-number expansion
+\begin{equation}\label{eq:W-polylog}
+ r=W_0(n)
+ \sim L-\lambda+\sum_{N\ge1}\frac{\cR_N(\lambda)}{L^N},
+\end{equation}
+where
+\begin{equation}\label{eq:R-N-general}
+ \boxed{
+ \cR_N(\lambda)=
+ \sum_{m=1}^{N}
+ \frac{(-1)^{N-m}}{m!}
+ \Sone{N}{N-m+1}\lambda^m.}
+\end{equation}
+Here \(\Sone{N}{j}\) is the unsigned Stirling cycle number.  The first
+polynomials are
+\begin{align}
+ \cR_1&=\lambda,\notag\\
+ \cR_2&=\frac{\lambda(\lambda-2)}2,\notag\\
+ \cR_3&=\frac{\lambda(2\lambda^2-9\lambda+6)}6,\notag\\
+ \cR_4&=\frac{\lambda(3\lambda^3-22\lambda^2+36\lambda-12)}{12},
+ \label{eq:R-first}\\
+ \cR_5&=\frac{\lambda(12\lambda^4-125\lambda^3+350\lambda^2
+                         -300\lambda+60)}{60}.\notag
+\end{align}
+Formula \cref{eq:R-N-general} is the exact coefficient bridge between the
+combinatorial first-kind Stirling calculus and the logarithmic transseries
+calculus.
+
+\subsection{The extensive sector: coefficients multiplying \texorpdfstring{\(n\)}{n}}
+
+Put \(z=L^{-1}\) and define
+\begin{equation}\label{eq:Dformal}
+ \Delta(z;\lambda)
+ :=1-\lambda z+\sum_{j\ge1}\cR_j(\lambda)z^{j+1}.
+\end{equation}
+Then \(r=z^{-1}\Delta(z;\lambda)\).  Define
+\begin{equation}\label{eq:H-general}
+ \boxed{
+ \cH_N(\lambda):=
+ \cR_N(\lambda)+\coef{z}{N-1}\Delta(z;\lambda)^{-1}.}
+\end{equation}
+Only \(\cR_1,\ldots,\cR_N\) are needed to calculate \(\cH_N\).  Since
+\(1/r=z\Delta^{-1}\),
+\begin{equation}\label{eq:F-polylog-general}
+ r-1+\frac1r
+ \sim L-\lambda-1+
+       \sum_{N\ge1}\frac{\cH_N(\lambda)}{L^N}.
+\end{equation}
+The first coefficients are
+\begin{align}
+ \cH_1&=\lambda+1,\notag\\
+ \cH_2&=\frac{\lambda^2}{2},\notag\\
+ \cH_3&=\frac{\lambda^2(2\lambda-3)}6,\notag\\
+ \cH_4&=\frac{\lambda^2(3\lambda^2-10\lambda+6)}{12},
+ \label{eq:H-first}\\
+ \cH_5&=\frac{\lambda^2(12\lambda^3-65\lambda^2+90\lambda-30)}{60},\notag\\
+ \cH_6&=\frac{\lambda^2(20\lambda^4-154\lambda^3+355\lambda^2
+                              -280\lambda+60)}{120}.\notag
+\end{align}
+Therefore the classical de Bruijn expansion is refined to arbitrary order by
+\begin{equation}\label{eq:normalized-log-debruijn}
+ \frac{\log\Bell_n}{n}
+ \sim L-\lambda-1+
+ \sum_{N\ge1}\frac{\cH_N(\lambda)}{L^N},
+\end{equation}
+where all omitted sectors are \(\BigO(\log L/n)\), hence beyond every power of
+\(L^{-1}\).
+
+Written out through \(L^{-6}\),
+\begin{align}\label{eq:debruijn-many}
+ \frac{\log\Bell_n}{n}
+ \sim{}&L-\lambda-1+\frac{\lambda+1}{L}
+ +\frac{\lambda^2}{2L^2}
+ +\frac{\lambda^2(2\lambda-3)}{6L^3}\\
+ &+\frac{\lambda^2(3\lambda^2-10\lambda+6)}{12L^4}
+ +\frac{\lambda^2(12\lambda^3-65\lambda^2+90\lambda-30)}{60L^5}
+ \notag\\
+ &+\frac{\lambda^2(20\lambda^4-154\lambda^3+355\lambda^2
+                              -280\lambda+60)}{120L^6}+\cdots.\notag
+\end{align}
+
+\subsection{The edge sector}
+
+The factor \((1+r)^{-1/2}\) lives on a lower transseries level than the terms
+multiplied by \(n\).  Define
+\begin{equation}\label{eq:Sigmaformal}
+ \Sigma(z;\lambda)
+ :=z(1+r)=\Delta(z;\lambda)+z
+ =1+(1-\lambda)z+\sum_{j\ge1}\cR_j(\lambda)z^{j+1},
+\end{equation}
+and
+\begin{equation}\label{eq:E-general}
+ \boxed{
+ \cE_N(\lambda):=-\frac12\coef{z}{N}\log\Sigma(z;\lambda).}
+\end{equation}
+Then
+\begin{equation}\label{eq:edge-general}
+ -1-\frac12\log(1+r)
+ \sim -1-\frac12\log L+
+       \sum_{N\ge1}\frac{\cE_N(\lambda)}{L^N}.
+\end{equation}
+The first values are
+\begin{align}
+ \cE_1&=\frac{\lambda-1}{2},\notag\\
+ \cE_2&=\frac{\lambda^2-4\lambda+1}{4},\notag\\
+ \cE_3&=\frac{2\lambda^3-15\lambda^2+18\lambda-2}{12},
+ \label{eq:E-first}\\
+ \cE_4&=\frac{3\lambda^4-34\lambda^3+84\lambda^2-48\lambda+3}{24},\notag\\
+ \cE_5&=\frac{12\lambda^5-185\lambda^4+730\lambda^3-900\lambda^2
+                    +300\lambda-12}{120}.\notag
+\end{align}
+As with \(\ell_m\), an explicit partition formula follows by expanding
+\(\log(1+u)\); \cref{eq:E-general} is usually the shortest exact definition.
+
+\subsection{All exponentially small sectors}
+
+For each \(m\ge1\), define polynomial--logarithmic coefficient polynomials
+\(p_{m,j}(\lambda)\) by
+\begin{equation}\label{eq:p-mj}
+ \boxed{
+ p_{m,j}(\lambda):=
+ \coef{z}{j}
+ \left\{
+ z^m d_m\!\left(z^{-1}\Delta(z;\lambda)\right)
+ \right\}.}
+\end{equation}
+Because \(d_m(r)=\BigO(r^m)\), the expression in braces is a formal power
+series in \(z\), so \cref{eq:p-mj} is well-defined.  It gives
+\begin{equation}\label{eq:dm-polylog-sector}
+ \frac{d_m(r)}{n^m}
+ \sim \frac{L^m}{n^m}
+       \sum_{j\ge0}\frac{p_{m,j}(\lambda)}{L^j}.
+\end{equation}
+Every \(p_{m,j}\) is obtained by a finite computation from Stirling numbers of
+both kinds, Gaussian moments, and ordinary coefficient extraction.
+
+For illustration, the first sector begins
+\begin{align}\label{eq:first-exp-sector}
+ \frac{d_1(r)}n
+ \sim \frac{L}{n}\biggl(&
+ -\frac1{12}
+ +\frac{2\lambda-1}{24L}
+ -\frac{2\lambda+1}{24L^2}
+ -\frac{\lambda^2-\lambda-8}{24L^3}\\
+ &-\frac{2\lambda^3-6\lambda^2-45\lambda+60}{72L^4}
+ +\cdots\biggr).\notag
+\end{align}
+The next two begin
+\begin{align}
+ \frac{d_2(r)}{n^2}
+ &\sim \frac{L^2}{n^2}\left(
+ -\frac1{24L}+\frac{\lambda}{24L^2}
+ -\frac{2\lambda-1}{48L^3}
+ -\frac{\lambda^2-3\lambda+6}{48L^4}+\cdots\right),
+ \label{eq:second-exp-sector}\\
+ \frac{d_3(r)}{n^3}
+ &\sim \frac{L^3}{n^3}\left(
+ \frac1{360}-\frac{12\lambda-5}{1440L}
+ +\frac{12\lambda^2+2\lambda-35}{1440L^2}+\cdots\right).
+ \label{eq:third-exp-sector}
+\end{align}
+
+\subsection{The full polynomial--logarithmic transseries}
+
+Combining \cref{eq:F-polylog-general,eq:edge-general,eq:dm-polylog-sector}
+gives the promised all-level expansion.
+
+\begin{theorem}[Full logarithmic transseries in \(L\) and \(\lambda\)]
+\label{thm:full-polylog}
+With \(L=\log n\), \(\lambda=\log L\),
+\begin{equation}\label{eq:full-polylog-box}
+\boxed{
+\begin{aligned}
+ \log\Bell_n\sim{}&
+ n\left(
+   L-\lambda-1+
+   \sum_{N\ge1}\frac{\cH_N(\lambda)}{L^N}
+ \right)
+ -1-\frac12\log L
+ +\sum_{N\ge1}\frac{\cE_N(\lambda)}{L^N}\\
+ &+\sum_{m\ge1}\frac{L^m}{n^m}
+   \sum_{j\ge0}\frac{p_{m,j}(\lambda)}{L^j}.
+\end{aligned}}
+\end{equation}
+The coefficient families are given explicitly by
+\cref{eq:R-N-general,eq:H-general,eq:E-general,eq:p-mj}, while the
+\(d_m\) entering \cref{eq:p-mj} are defined by the finite formulae
+\cref{eq:cm-partition,eq:ell-partition,eq:d-m-def}.
+\end{theorem}
+
+\begin{proof}
+The first two lines are formal composition of \cref{eq:W-polylog} with the
+rational functions in \cref{eq:log-W-truncated}.  Because the inner series has
+leading monomial \(L\), inversion, logarithm, and rational composition are
+valid in the polynomial--logarithmic transseries ring.  The coefficient
+extraction \cref{eq:p-mj} handles each exponentially small sector separately.
+The hierarchy is well ordered by first comparing the power of \(n^{-1}\), then
+the power of \(L^{-1}\) within that sector.
+\end{proof}
+
+\begin{remark}[Exponentiating the full logarithmic transseries]
+Equation \cref{eq:full-polylog-box} is usually the cleanest form because
+\(\Bell_n\) is enormous.  The Bell number itself is obtained simply as
+\(\Bell_n\sim\exp(\text{right-hand side})\).  Alternatively, exponentiate the
+last line sector by sector using complete Bell polynomials; this reproduces the
+bounded multiplicative coefficients \(\cA_m\) of
+\cref{eq:multiplicative-e-r} after the substitution \(r=W_0(n)\).
+\end{remark}
+
+\section{Nonprincipal saddles and hyperasymptotic sectors}\label{sec:complex}
+
+\subsection{Universal local germs}
+
+The phase \(\Psi_n(z)=\ee^z-1-n\Log z\) has saddles
+\(r_k=W_k(n)\).  Around any nondegenerate saddle, the same local calculation
+applies after analytic continuation.  Thus the formal local germ is
+\begin{equation}\label{eq:complex-local-germ}
+ \mathfrak S_k(n)\sim
+ \frac{n!\exp(\ee^{r_k}-1)}{r_k^n\sqrt{2\pi n(1+r_k)}}
+ \sum_{m\ge0}\frac{c_m(r_k)}{n^m},
+\end{equation}
+with a consistent branch of the square root chosen along the steepest-descent
+direction.  The coefficient functions \(c_m\) need no modification: they are
+rational and hence analytically continue away from \(r_k=-1\).
+
+\subsection{Relative actions}
+
+Let
+\begin{equation}\label{eq:Delta-k}
+ \Delta_k(n):=\Psi_n(r_k)-\Psi_n(r_0).
+\end{equation}
+For fixed \(k\), put \(y=2\pi\ii k\).  The relation
+\(r_k+\Log r_k=r+\log r+y\) may be written
+\begin{equation}\label{eq:delta-eq}
+ \delta_k+\log\!\left(1+\frac{\delta_k}{r}\right)=y,
+ \qquad \delta_k:=r_k-r.
+\end{equation}
+Formal reversion gives
+\begin{equation}\label{eq:delta-expansion}
+ \delta_k
+ =y-\frac yr+\frac{y(y+2)}{2r^2}
+ +\frac{y(-2y^2-9y-6)}{6r^3}+\BigO_k(r^{-4}).
+\end{equation}
+Using \(\ee^r=n/r\), one obtains
+\begin{equation}\label{eq:action-expansion}
+ \frac{\Delta_k(n)}n
+ =-\frac yr+\frac{y^2}{2r^2}
+ -\frac{y^2/2+y^3/3}{r^3}+\BigO_k(r^{-4}).
+\end{equation}
+Hence
+\begin{equation}\label{eq:real-action-gap}
+ \RePart\Delta_k(n)
+ =-\frac{2\pi^2k^2n}{r^2}
+   \left(1-\frac1r+\BigO_k(r^{-2})\right).
+\end{equation}
+The adjacent complex saddles are therefore suppressed on the scale
+\begin{equation}\label{eq:complex-scale}
+ \exp\!\left(-\frac{2\pi^2k^2n}{r^2}
+              (1+\BigO_k(r^{-1}))\right),
+\end{equation}
+which is smaller than \(\ee^{-Mr}\) for every fixed \(M\).
+
+\begin{auditbox}[title={Why no unconditional global saddle sum is asserted}]
+A formal expression
+\[
+  \sum_{k\in\mathbb Z}\sigma_k(n)\mathfrak S_k(n)
+\]
+requires the intersection numbers or Stokes multipliers \(\sigma_k(n)\) of the
+original Cauchy contour with the steepest-descent thimbles.  The local coefficient
+calculus determines \(\mathfrak S_k\), but not those global multipliers.  For the
+ordinary positive-real Poincare expansion, \(k=0\) alone suffices and the
+remainder theorem of \cref{thm:all-orders} is unconditional.  The scales
+\cref{eq:complex-scale} describe the natural hyperasymptotic remainder and the
+location of possible exponentially tiny oscillations, not an unproved exact
+transseries decomposition.
+\end{auditbox}
+
+\section{Touchard polynomials and shifted Bell numbers}\label{sec:touchard}
+
+\subsection{Universality for \texorpdfstring{\(\Bell_n(x)\)}{Bell polynomials}}
+
+Define the Touchard polynomial
+\begin{equation}\label{eq:touchard-egf-x}
+ \exp\!\bigl(x(\ee^z-1)\bigr)
+ =\sum_{n\ge0}\Bell_n(x)\frac{z^n}{n!},
+ \qquad
+ \Bell_n(x)=\sum_{k=0}^n\Stwo{n}{k}x^k.
+\end{equation}
+For fixed \(x>0\), the positive saddle satisfies
+\begin{equation}\label{eq:touchard-saddle-x}
+  xr\ee^r=n,
+  \qquad r=W_0(n/x).
+\end{equation}
+The phase derivatives are \(x\ee^r\Tch_j(r)\).  Since
+\(x\ee^r=n/r\), the normalized quantities \(q_j(r)\) are exactly the same as
+before.
+
+\begin{theorem}[Universal Touchard expansion]\label{thm:touchard-universal}
+Let \(K\subset(0,\infty)\) be compact.  Uniformly for \(x\in K\), with
+\(r=W_0(n/x)\),
+\begin{equation}\label{eq:touchard-allorders}
+ \Bell_n(x)=
+ \frac{n!\exp\!\bigl(x(\ee^r-1)\bigr)}
+      {r^n\sqrt{2\pi n(1+r)}}
+ \left(
+   \sum_{m=0}^{M-1}\frac{c_m(r)}{n^m}
+   +\BigO_{M,K}\!\left((r/n)^M\right)
+ \right).
+\end{equation}
+The same \(c_m\) from \cref{eq:cm-partition} works for every \(x\).
+After Stirling's expansion,
+\begin{equation}\label{eq:touchard-log}
+ \log\Bell_n(x)
+ =x(\ee^r-1)+nr-n-\frac12\log(1+r)
+ +\sum_{m=1}^{M-1}\frac{d_m(r)}{n^m}
+ +\BigO_{M,K}((r/n)^M).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Repeat \cref{eq:circular-integral} with
+\(\ee^{r\ee^{\ii\theta}}-\ee^r\) multiplied by \(x\).  Equation
+\cref{eq:touchard-saddle-x} gives the same quadratic coefficient
+\(A=n(1+r)\) and the same scaled phase \cref{eq:scaled-phase}.  The
+localization estimates are uniform for \(x\) in a compact positive interval
+because \(r=W_0(n/x)\sim\log n\) uniformly there.  The logarithmic form follows
+as in \cref{thm:log-W-form}.
+\end{proof}
+
+\begin{remark}
+The universality is stronger than a mere substitution.  The parameter \(x\)
+changes the saddle location and the leading exponential, but after the saddle
+equation is imposed it disappears from every standardized local cumulant.
+Regimes in which \(x=x_n\to0\) or \(x_n\to\infty\) require separate uniformity
+conditions; \cref{thm:touchard-universal} intentionally treats fixed positive
+parameter ranges.
+\end{remark}
+
+\subsection{A fixed-shift coefficient formula}
+
+For fixed integer \(h\), one may either apply the main theorem directly to
+\(N=n+h\), or keep the saddle \(r=W_0(n)\).  The latter gives
+\begin{equation}\label{eq:shift-integral}
+ \frac{\Bell_{n+h}}{(n+h)!}
+ =\frac{\exp(\ee^r-1)}{2\pi r^{n+h}}
+  \int_{-\pi}^{\pi}\exp(\Phi_r(\theta))\ee^{-\ii h\theta}\dd\theta.
+\end{equation}
+After the Gaussian scaling, define
+\begin{equation}\label{eq:shift-cm}
+ c_m(r;h):=
+ \E\!\left[
+  \coef{t}{2m}
+  \exp\!\left(
+   -\frac{\ii hZ}{\sqrt{1+r}}t
+   +\sum_{s\ge1}a_s(Z;r)t^s
+  \right)
+ \right].
+\end{equation}
+Then, uniformly for \(|h|\le H\) with fixed \(H\),
+\begin{equation}\label{eq:shift-expansion}
+ \Bell_{n+h}=
+ \frac{(n+h)!\exp(\ee^r-1)}{r^{n+h}\sqrt{2\pi n(1+r)}}
+ \left(
+   \sum_{m=0}^{M-1}\frac{c_m(r;h)}{n^m}
+   +\BigO_{M,H}((r/n)^M)
+ \right).
+\end{equation}
+Thus the fixed-shift coefficients are again finite complete Bell polynomials;
+the only new atom is the linear Gaussian term in \cref{eq:shift-cm}.
+
+\section{Algorithms and exact coefficient generation}\label{sec:algorithm}
+
+The formulae above are not merely existential.  They give several independent
+coefficient engines, each suited to a different task.  This section records the
+engines in a form that can be implemented in an exact computer-algebra system
+or formalized over the rational-function field \(\Q(r)\).
+
+\subsection{A radical-free partition algorithm}
+
+Although the standardized atoms \(q_j(r)\) in \cref{eq:qj-def} contain
+half-integer powers of \(1+r\), every contributing monomial in
+\cref{eq:cm-partition} has an even total Gaussian degree.  Define
+\begin{equation}\label{eq:Uj-def}
+ U_j(r):=\frac{\Tch_j(r)}{r}
+        =\sum_{k=1}^{j}\Stwo{j}{k}r^{k-1}\in\N[r].
+\end{equation}
+For a vector \(\bm k=(k_1,\ldots,k_{2m})\) satisfying
+\(\sum_{s=1}^{2m}s k_s=2m\), put \(K=\sum_s k_s\).  Since
+\[
+ \frac12\sum_{s=1}^{2m}(s+2)k_s=m+K,
+\]
+\cref{eq:cm-partition} becomes the completely radical-free identity
+\begin{equation}\label{eq:cm-radical-free}
+ \boxed{
+ c_m(r)=
+ \sum_{\substack{k_1,\ldots,k_{2m}\ge0\\
+                   \sum_{s=1}^{2m}s k_s=2m}}
+ \frac{(-1)^{m+K}(2m+2K-1)!!}{(1+r)^{m+K}}
+ \prod_{s=1}^{2m}
+ \frac{U_{s+2}(r)^{k_s}}{((s+2)!)^{k_s}k_s!}. }
+\end{equation}
+This is often the cleanest exact formula.  It requires one term for each
+integer partition of \(2m\), not one term for each composition.  In
+particular, it is finite before any simplification, and all of its arithmetic
+takes place in \(\Q(r)\).
+
+\begin{algorithm}[Partition engine for \(c_m\)]\label{alg:partition-engine}
+Given \(m\ge0\):
+\begin{enumerate}[label=\arabic*.,leftmargin=2.1em,itemsep=2pt]
+ \item Generate \(\Tch_0=1\) and
+       \(\Tch_{j+1}=r(\Tch_j+\Tch_j')\) up to \(j=2m+2\).
+ \item Set \(U_j=\Tch_j/r\) for \(2\le j\le2m+2\).
+ \item Enumerate the multiplicity vectors \(\bm k\) with
+       \(\sum s k_s=2m\).
+ \item Add the summand in \cref{eq:cm-radical-free} for each vector.
+ \item Put the result over the common denominator \((1+r)^{3m}\), cancel
+       common factors, and return the numerator polynomial.
+\end{enumerate}
+For \(m=0\), return \(c_0=1\) without entering the loop.
+\end{algorithm}
+
+The exponent \(m+K\) never exceeds \(3m\), because \(K\le2m\).  This makes the
+denominator theorem \cref{thm:cm-structure} visible directly in the algorithm.
+The degree estimate follows just as transparently: the product of the
+\(U_{s+2}\)'s has degree at most
+\(\sum(s+1)k_s=2m+K\), and multiplication by
+\((1+r)^{3m-(m+K)}\) raises it to at most \(4m\).
+
+\subsection{Dynamic Bell-polynomial algorithm}
+
+Partition enumeration is conceptually direct, while the recurrence
+\cref{eq:Pj-recurrence} is usually faster for moderate orders.  Let
+\(\Gauss:\Q(r)[u]\to\Q(r)\) be the Gaussian moment functional
+\begin{equation}\label{eq:gaussian-functional}
+ \Gauss(u^{2j})=(2j-1)!!,
+ \qquad
+ \Gauss(u^{2j+1})=0.
+\end{equation}
+Construct \(a_s(u;r)\) from \cref{eq:scaled-phase}, then compute
+\begin{equation}\label{eq:algorithm-P-recurrence}
+ P_0(u;r)=1,
+ \qquad
+ P_j(u;r)=\frac1j\sum_{s=1}^{j}s\,a_s(u;r)P_{j-s}(u;r).
+\end{equation}
+The desired answer is \(c_m=\Gauss(P_{2m})\).  Only \(a_1,\ldots,a_{2m}\)
+are needed.  Odd values of \(P_j\) need not be Gaussian-averaged, but they
+must be retained because they feed later even values.
+
+\begin{algbox}[title={Exact symbolic pseudocode}]
+The following pseudocode uses the recurrence, but applies the Gaussian
+functional before the final rational simplification.  The symbol
+\texttt{stirling2(j,k)} denotes a Stirling number of the second kind.
+\begin{lstlisting}[language=Python,basicstyle=\ttfamily\small,columns=fullflexible,
+breaklines=true,showstringspaces=false]
+def touchard(j, r):
+    return sum(stirling2(j, k) * r**k for k in range(1, j + 1))
+
+def gaussian_moment_polynomial(poly, u):
+    ans = 0
+    for exponent, coefficient in coefficients_in(poly, u):
+        if exponent % 2 == 0:
+            ans += coefficient * double_factorial(exponent - 1)
+    return ans
+
+def saddle_coefficient(m, r, u):
+    if m == 0:
+        return 1
+    a = {}
+    for s in range(1, 2*m + 1):
+        T = touchard(s + 2, r)
+        q = T / (r * (1 + r)**((s + 2)/2))
+        a[s] = I**(s + 2) * q * u**(s + 2) / factorial(s + 2)
+    P = {0: 1}
+    for j in range(1, 2*m + 1):
+        P[j] = expand(sum(s*a[s]*P[j-s] for s in range(1, j + 1))/j)
+    return factor(gaussian_moment_polynomial(P[2*m], u))
+\end{lstlisting}
+In exact software, the exponent \((s+2)/2\) should be represented as a rational
+number, not as floating-point division.  Alternatively, use
+\cref{eq:cm-radical-free} and avoid radicals altogether.
+\end{algbox}
+
+\subsection{Logarithmic, exponential, and polynomial--logarithmic engines}
+
+Once \(c_1,\ldots,c_M\) are known, no further integration is needed.
+The remaining coefficient systems are ordinary formal-series transforms.
+For convenient reference, the pipeline is
+\begin{equation}\label{eq:coefficient-pipeline}
+ \{c_m\}
+ \xrightarrow{\ \log\ }
+ \{\ell_m\}
+ \xrightarrow{\ +\sigma_m\ }
+ \{d_m\}
+ \xrightarrow{\ d_m/r^m\ }
+ \{\cD_m\}
+ \xrightarrow{\ \exp\ }
+ \{\cA_m\}.
+\end{equation}
+The arrows are implemented respectively by
+\cref{eq:ell-recurrence,eq:d-m-def,eq:D-m-def,eq:A-recurrence}.  Explicitly,
+\begin{align}
+ \ell_m
+ &=c_m-\frac1m\sum_{j=1}^{m-1}j\ell_jc_{m-j},
+ \label{eq:algorithm-log}\\
+ d_m&=\ell_m+\sigma_m,
+ \qquad
+ \cD_m=\frac{d_m}{r^m},
+ \label{eq:algorithm-dD}\\
+ \cA_0&=1,
+ \qquad
+ \cA_m=\frac1m\sum_{j=1}^{m}j\cD_j\cA_{m-j}.
+ \label{eq:algorithm-exp}
+\end{align}
+All operations are triangular: coefficients through order \(M\) require only
+coefficients through order \(M\) at the preceding stage.
+
+For the polynomial--logarithmic sector, first compute the Lambert polynomials
+\(\cR_N(\lambda)\) by \cref{eq:R-N-general}, then build the truncated formal
+series
+\begin{equation}\label{eq:algorithm-Delta}
+ \Delta_M(z)=1-\lambda z+
+             \sum_{j=1}^{M-1}\cR_j(\lambda)z^{j+1}.
+\end{equation}
+Ordinary truncated multiplication, reciprocal, and logarithm operations give
+\(\cH_N\) from \cref{eq:H-general}, \(\cE_N\) from
+\cref{eq:E-general}, and every \(p_{m,j}\) from \cref{eq:p-mj}.  Thus the
+full transseries is generated by three familiar coefficient calculi:
+Stirling-cycle numbers for \(W\), complete Bell polynomials for composition
+and exponentiation, and Gaussian moments for the saddle integral.
+
+\subsection{Complexity and internal checks}
+
+Let \(p(N)\) be the integer partition function.  The direct formula for
+\(c_m\) has \(p(2m)\) summands.  The dynamic recurrence has only
+\(O(m^2)\) formal convolutions, although polynomial expansion and rational
+simplification dominate the actual bit complexity.  In either approach, exact
+coefficient generation is practical well beyond the four orders printed in
+this article.
+
+A reliable implementation should enforce the following invariants at every
+order:
+\begin{enumerate}[label=(\roman*),leftmargin=2.2em,itemsep=2pt]
+ \item \((1+r)^{3m}c_m(r)\in\Q[r]\);
+ \item its degree is at most \(4m\);
+ \item \(c_m(r)=\BigO(r^m)\) as \(r\to\infty\);
+ \item \(\cD_m(r)\) has a finite limit given by \cref{eq:D-limit};
+ \item the limiting \(\cA_m\)'s satisfy the inverse Stirling identity
+       \cref{eq:gamma-stirling-inverse};
+ \item numerical substitution into \cref{eq:all-orders-main} improves the
+       relative error by approximately one factor of \(r/n=\ee^{-r}\) per
+       retained order.
+\end{enumerate}
+These checks detect sign errors, missing factorials, and incorrect Gaussian
+moments very efficiently.
+
+\section{Numerical validation}\label{sec:numerics}
+
+\subsection{Definition of the tested approximants}
+
+For \(M\ge0\), define the principal-saddle approximant
+\begin{equation}\label{eq:SM-def}
+ S_M(n):=
+ \frac{n!\exp(\ee^r-1)}{r^n\sqrt{2\pi n(1+r)}}
+ \sum_{m=0}^{M}\frac{c_m(r)}{n^m},
+ \qquad r=W_0(n).
+\end{equation}
+Thus \(S_0\) is the classical leading approximation and \(S_4\) uses
+\(c_1,c_2,c_3,c_4\), with \(c_4\) printed in
+\cref{app:c4}.  Exact Bell numbers were generated by
+\begin{equation}\label{eq:bell-recurrence-numerics}
+ \Bell_0=1,
+ \qquad
+ \Bell_{n+1}=\sum_{k=0}^{n}\binom{n}{k}\Bell_k,
+\end{equation}
+and all transcendental evaluations were performed at substantially higher
+precision than the digits shown.
+
+\subsection{Relative-error table}
+
+The table reports
+\(\varepsilon_M(n):=S_M(n)/\Bell_n-1\).  The signs are retained because they
+provide a more sensitive check than absolute errors alone.
+
+\begin{table}[htbp]
+\centering
+\caption{Relative errors of the all-orders principal-saddle approximants.}
+\label{tab:relative-errors}
+\small
+\setlength{\tabcolsep}{4.4pt}
+\begin{tabular}{r@{\qquad}rrrrr}
+\toprule
+\(n\) & \(M=0\) & \(M=1\) & \(M=2\) & \(M=3\) & \(M=4\)\\
+\midrule
+10  & \( 2.6771612\,10^{-2}\) & \( 3.8253603\,10^{-4}\) & \(-1.2965341\,10^{-5}\) & \(-6.2268398\,10^{-6}\) & \(-1.1599281\,10^{-6}\)\\
+20  & \( 1.5326828\,10^{-2}\) & \( 1.1293364\,10^{-4}\) & \(-3.8237417\,10^{-6}\) & \(-7.5548761\,10^{-7}\) & \(-7.1302490\,10^{-8}\)\\
+50  & \( 7.2381178\,10^{-3}\) & \( 2.1197165\,10^{-5}\) & \(-5.8160607\,10^{-7}\) & \(-4.1043863\,10^{-8}\) & \(-1.3992028\,10^{-9}\)\\
+100 & \( 4.0615707\,10^{-3}\) & \( 5.7437480\,10^{-6}\) & \(-1.2399466\,10^{-7}\) & \(-4.2053807\,10^{-9}\) & \(-6.2657058\,10^{-11}\)\\
+200 & \( 2.2599385\,10^{-3}\) & \( 1.5057677\,10^{-6}\) & \(-2.4589871\,10^{-8}\) & \(-4.0769478\,10^{-10}\) & \(-2.4569360\,10^{-12}\)\\
+500 & \( 1.0289535\,10^{-3}\) & \( 2.4364162\,10^{-7}\) & \(-2.6649303\,10^{-9}\) & \(-1.7364703\,10^{-11}\) & \(-2.4871987\,10^{-14}\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The data exhibit the predicted Poincar\'e ordering.  Because
+\(r/n=\ee^{-r}\), the nominal ratio between consecutive terms is of order
+\(r/n\), multiplied by a coefficient that grows polynomially in \(r\).  The
+improvement is already substantial at \(n=10\), and by \(n=500\) four
+corrections reduce the relative error to roughly \(2.5\cdot10^{-14}\).
+The small nonmonotonicity between orders two and three at \(n=10\) is normal
+for a finite asymptotic expansion and does not signal a failure of the
+coefficient formula.
+
+\subsection{Independent check of the first correction}
+
+Using \(n=r\ee^r\), the logarithmic first-order coefficient gives
+\begin{equation}\label{eq:first-check-expanded}
+ \exp\!\left(\frac{d_1(r)}{n}+\BigO((r/n)^2)\right)
+ =1-
+ \frac{r^2(2r^2+7r+10)}{24(1+r)^3n}
+ +\BigO\!\left(\frac{r^2}{n^2}\right).
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:first-check-final}
+ \Bell_n=
+ \frac{\exp\!\left(n(r-1+r^{-1})-1\right)}{\sqrt{1+r}}
+ \left(
+ 1-
+ \frac{r^2(2r^2+7r+10)}{24(1+r)^3n}
+ +\BigO\!\left(\frac{r^2}{n^2}\right)
+ \right),
+\end{equation}
+which is algebraically identical to the independently obtained 2026
+first-correction formula discussed in \cref{sec:logtrans}.  This comparison is
+important: it tests simultaneously the saddle coefficient \(c_1\), the
+Stirling correction \(1/(12n)\), and the conversion from the factorial form to
+the Lambert--\(W\) exponential form.
+
+\section{Proof audit, transseries meaning, and limitations}\label{sec:audit}
+
+\subsection{What has been proved}
+
+The principal result is an ordinary asymptotic theorem with a moving
+parameter.  For every fixed \(M\), the coefficients are evaluated at
+\(r=W_0(n)\), and \cref{thm:all-orders} states a uniform remainder of relative
+size \(\BigO_M((r/n)^M)\) after \(M\) retained coefficients.  Since
+\(r\sim\log n\), \cref{cor:genuine-scale} proves that these terms form a
+genuine asymptotic sequence.  The finite coefficient formulae are exact
+identities in \(\Q(r)\), not asymptotic guesses.
+
+The following implications are therefore rigorous:
+\begin{equation}\label{eq:rigorous-implications}
+ \text{localized Cauchy integral}
+ \Longrightarrow \{c_m\}
+ \Longrightarrow \{d_m,\cD_m,\cA_m\}
+ \Longrightarrow \text{every finite truncation in }r.
+\end{equation}
+The polynomial--logarithmic formula then follows by composing any prescribed
+finite truncation with the convergent large-positive-argument expansion of
+\(W_0\), or formally to all orders by coefficient extraction.  At a fixed
+requested precision, only finitely many \(W\)-coefficients and finitely many
+saddle coefficients contribute.
+
+\subsection{The ranking of the full transseries}
+
+The phrase ``full transseries'' can be ambiguous unless the ordering is stated.
+The expansion constructed here has three nested ranks:
+\begin{enumerate}[label=\arabic*.,leftmargin=2.1em,itemsep=3pt]
+ \item The \emph{extensive rank}, of size \(n\), is the expansion of
+       \(n(r-1+r^{-1})\) in powers of \(L^{-1}\) with polynomial
+       coefficients in \(\lambda=\log L\).
+ \item The \emph{edge rank}, of size one, comes from
+       \(-1-\tfrac12\log(1+r)\) and has its own
+       \(L^{-1}\Q[\lambda]\)-series.
+ \item The \emph{exponentially small ranks} are indexed by \(m\ge1\) and have
+       magnitude
+       \(\ee^{-mr}=n^{-m}L^m(1+o(1))\), each carrying a complete
+       \(L^{-1}\Q[\lambda]\)-expansion.
+\end{enumerate}
+Within a fixed exponential sector, powers of \(L^{-1}\) give the local
+ordering.  Across sectors, every term of the \(m+1\) sector is beyond all
+algebraic orders of the \(m\) sector after a finite polynomial--logarithmic
+truncation.  This is the precise sense in which
+\cref{eq:full-polylog-box} is a transseries rather than one undifferentiated
+formal series.
+
+\subsection{What is not claimed}
+
+\begin{auditbox}[title={Boundaries of the present result}]
+\begin{enumerate}[label=(\alph*),leftmargin=2.1em,itemsep=3pt]
+ \item No convergence claim is made for the infinite principal-saddle series
+       \(\sum c_m(r)n^{-m}\) when the order tends to infinity together with
+       \(n\).  The theorem is Poincar\'e asymptotic: \(M\) is fixed first.
+ \item No sharp factorial-over-power estimate for \(c_m\) as
+       \(m\to\infty\) is proved.  Such an estimate is needed for rigorous
+       optimal truncation and resurgence.
+ \item The formal nonprincipal saddle germs in \cref{sec:complex} do not by
+       themselves determine which complex saddles occur on a deformation of
+       the original Cauchy circle, nor their Stokes multipliers.
+ \item The Touchard theorem is uniform only for \(x\) in a fixed compact
+       subset of \((0,\infty)\).  Coalescing regimes such as \(x\to0\), or
+       complex \(x\) near Stokes curves, require a separate analysis.
+ \item The document supplies a formalization map but not a machine-checked
+       proof.  In particular, the complex-analytic localization estimates and
+       all truncation bookkeeping would have to be encoded explicitly in a
+       proof assistant.
+\end{enumerate}
+\end{auditbox}
+
+These qualifications are mathematically substantive.  They separate the
+complete all-orders coefficient calculus proved here from a stronger, still
+open hyperasymptotic description of the exact Bell sequence.
+
+\subsection{A formalization map}
+
+The proof naturally decomposes into modules.
+\begin{longtable}{p{0.25\textwidth}p{0.66\textwidth}}
+\toprule
+Module & Principal statements and dependencies\\
+\midrule
+\endfirsthead
+\toprule
+Module & Principal statements and dependencies\\
+\midrule
+\endhead
+Combinatorial algebra & Stirling recurrence; Touchard recurrence
+\cref{eq:touchard-recurrence}; divisibility \(r\mid\Tch_j\); complete Bell
+polynomials; integer-partition indexing.\\[2pt]
+Formal power series & Exponential recurrence \cref{eq:Pj-recurrence}; logarithm
+recurrence \cref{eq:ell-recurrence}; exponential recurrence
+\cref{eq:A-recurrence}; truncated composition and inversion.\\[2pt]
+Gaussian calculus & Moment identity \cref{eq:gaussian-functional}; Wick pairing;
+equivalence of \cref{eq:cm-bellpoly,eq:cm-partition}.\\[2pt]
+Real asymptotics & Bounds for \(r=W_0(n)\); estimates
+\cref{eq:central-decay,eq:outer-decay}; domination of Taylor remainders by a
+Gaussian integrable majorant.\\[2pt]
+Complex analysis & Cauchy's coefficient formula; parameterization of the
+saddle circle; complementary-arc localization.\\[2pt]
+Lambert calculus & Stirling-cycle-number expansion
+\cref{eq:R-N-general}; finite coefficient extraction for
+\(\cH_N,\cE_N,p_{m,j}\).\\
+\bottomrule
+\end{longtable}
+The algebraic modules can be developed independently of analysis and reused
+for other admissible exponential generating functions.  The only Bell-specific
+analytic input is the phase \(\ee^{r\ee^{\ii\theta}}\), whose derivatives are
+encoded by the Touchard polynomials.
+
+\section{Further deductions and research directions}\label{sec:future}
+
+The coefficient calculus reveals several questions that are not visible at
+leading order.
+
+\subsection{Large-order growth and resurgence}
+
+The nearest competing saddles are \(W_{\pm1}(n)\).  Their action gap is of
+magnitude \(2\pi^2n/r^2\) by \cref{eq:real-action-gap}.  Standard resurgence
+heuristics therefore suggest that the late terms of the principal-saddle
+series should eventually be controlled by these adjacent actions.  A natural
+program is to prove a bound of schematic form
+\begin{equation}\label{eq:late-term-program}
+ c_m(r)\sim
+ \sum_{k=\pm1}
+ \frac{S_k(r)\,\Gamma(m+\alpha_k)}{\Delta_k(r)^{m+\alpha_k}}
+ \left(1+\frac{b_{k,1}(r)}m+\cdots\right),
+\end{equation}
+with explicitly determined Stokes constants \(S_k\).  Formula
+\cref{eq:cm-partition} supplies arbitrarily many exact low-order data with
+which such a conjecture can be tested, but it does not prove
+\cref{eq:late-term-program}.
+
+\subsection{Ratio, logarithmic derivative, and finite differences}
+
+Because all transforms are formal and triangular, the present results
+immediately generate complete expansions of
+\begin{equation}\label{eq:derived-observables}
+ \frac{\Bell_{n+1}}{\Bell_n},
+ \qquad
+ \log\Bell_{n+1}-\log\Bell_n,
+ \qquad
+ \Delta^j\log\Bell_n,
+ \qquad
+ \frac{\Bell_{n+h}}{\Bell_n}
+\end{equation}
+for fixed \(j,h\).  There are two equivalent routes: substitute
+\(n\mapsto n+h\) into the master transseries and re-expand, or use the shifted
+coefficient germ \cref{eq:shift-cm}.  Comparing the two gives an infinite
+family of exact identities among the rational functions \(c_m(r;h)\), the
+derivatives of \(W\), and the unshifted \(c_m(r)\).  These identities appear
+well suited to automated proof and can sharpen explicit ratio bounds.
+
+\subsection{Uniform Touchard regimes}
+
+The universality theorem suggests several boundary problems:
+\begin{enumerate}[label=(\roman*),leftmargin=2.2em,itemsep=2pt]
+ \item \(x=x_n\to0^+\), where \(r=W(n/x)\) grows faster than \(\log n\);
+ \item \(x=x_n\to\infty\), where the saddle can leave the logarithmic regime;
+ \item negative or complex \(x\), where several saddles can have comparable
+       real action;
+ \item double scaling near a Stokes curve, requiring an error-function or
+       Airy-type smoothing rather than a single Gaussian saddle.
+\end{enumerate}
+The finite local coefficients remain meaningful by analytic continuation, but
+the global contour and uniform remainder must be rebuilt in each regime.
+
+\subsection{A general exponential-of-exponential template}
+
+Consider a family
+\begin{equation}\label{eq:general-template}
+ F(z)=\exp(H(z)),
+ \qquad
+ [z^n]F(z)=\frac{F(r)}{r^n\sqrt{2\pi b(r)}}
+           \left(1+\cdots\right),
+\end{equation}
+where \(rH'(r)=n\) and
+\(b(r)=(r\partial_r)^2H(r)\).  Define normalized logarithmic derivatives
+\begin{equation}\label{eq:general-cumulants}
+ \kappa_j(r):=\frac{(r\partial_r)^jH(r)}{b(r)^{j/2}}.
+\end{equation}
+Exactly the same Gaussian Bell-polynomial calculation gives every local
+saddle coefficient as a finite polynomial in
+\(\kappa_3,\ldots,\kappa_{2m+2}\).  Bell numbers are special because
+\(H(z)=\ee^z-1\) converts these derivatives into Touchard polynomials and the
+saddle into a Lambert \(W\)-function.  This observation provides a systematic
+route from the repository's combinatorial coefficient calculus to a wider
+class of labelled combinatorial assemblies.
+
+\section{Conclusion}\label{sec:conclusion}
+
+The Bell-number saddle is classical; the point of this article is to make its
+entire correction mechanism explicit and finite.  The result can be summarized
+in four layers.
+
+First, all local derivatives of the phase are Touchard polynomials.  Second,
+Gaussian reduction turns those derivatives into the exact finite coefficient
+formula \cref{eq:cm-partition}, or equivalently the radical-free form
+\cref{eq:cm-radical-free}.  Third, ordinary logarithm and exponential
+recurrences combine the saddle series with Stirling's series to produce the
+bounded rational coefficient families \(\cD_m(r)\) and \(\cA_m(r)\) in the
+natural exponential variable \(\ee^{-r}=r/n\).  Fourth, the
+Stirling-cycle-number expansion of \(W_0(n)\) resolves every one of these
+coefficients into the ranked polynomial--logarithmic transseries in
+\(L=\log n\) and \(\lambda=\log L\).
+
+Thus every coefficient at every displayed rank is governed by a finite
+formula.  The theorem includes an arbitrary-order principal-saddle remainder,
+its first correction agrees with an independent recent derivation, and direct
+numerics confirm rapid improvement.  The remaining frontier is no longer the
+local coefficient calculus; it is the global hyperasymptotic problem of
+nonprincipal saddles, large-order coefficient growth, and Stokes switching.
+
+\appendix
+
+\section{The fourth principal-saddle coefficient}\label{app:c4}
+
+For numerical checks and as a higher-order checksum, the fourth coefficient is
+\begin{equation}\label{eq:c4-explicit}
+ c_4(r)=-\frac{N_4(r)}{39813120(1+r)^{12}},
+\end{equation}
+where
+\begin{align*}
+ N_4(r)={}&
+ 9136r^{16}-357408r^{15}-5092600r^{14}-29432904r^{13}
+ -98499653r^{12}\\
+ &-212369184r^{11}-302729704r^{10}-277448328r^9
+ -156972248r^8\\
+ &-52300272r^7+110053352r^6+302787360r^5+198352r^4\\
+ &+2545056r^3+647456r^2+109632r+9136.
+\end{align*}
+The sign in \cref{eq:c4-explicit} applies to the whole numerator.  In
+particular, the leading behavior is
+\begin{equation}\label{eq:c4-leading}
+ c_4(r)=-\frac{571}{2488320}r^4+\BigO(r^3),
+\end{equation}
+in agreement with \(\gamma_4=-571/2488320\) in
+\cref{eq:gamma-values}.
+
+\section{Coefficient dictionaries}\label{app:dictionaries}
+
+This appendix collects the coefficient-extraction rules in one place.  They
+are useful when translating between notational conventions in the literature.
+
+\subsection{Principal saddle}
+
+With \(Z\sim N(0,1)\),
+\begin{align}
+ a_s(Z;r)
+ &=\frac{\ii^{s+2}\Tch_{s+2}(r)}
+         {(s+2)!\,r(1+r)^{(s+2)/2}}Z^{s+2},
+ \label{eq:dict-a}\\
+ c_m(r)
+ &=\E\coef{t}{2m}
+   \exp\!\left(\sum_{s\ge1}a_s(Z;r)t^s\right).
+ \label{eq:dict-c}
+\end{align}
+Equations \cref{eq:dict-a,eq:dict-c} are the shortest universal definition;
+\cref{eq:cm-radical-free} is the shortest radical-free definition.
+
+\subsection{Logarithmic and multiplicative sectors}
+
+Let \(C(x)=1+\sum_{m\ge1}c_mx^m\).  Then
+\begin{align}
+ \log C(x)&=\sum_{m\ge1}\ell_mx^m,
+ &d_m&=\ell_m+\sigma_m,
+ &\cD_m&=r^{-m}d_m,
+ \label{eq:dict-log}\\
+ \exp\!\left(\sum_{m\ge1}\cD_my^m\right)
+ &=\sum_{m\ge0}\cA_my^m.
+ \label{eq:dict-mult}
+\end{align}
+The Bell number can therefore be written either as
+\begin{align}
+ \log\Bell_n
+ &\sim n(r-1+r^{-1})-1-\tfrac12\log(1+r)
+       +\sum_{m\ge1}\cD_m(r)\ee^{-mr},
+ \label{eq:dict-logbell}\\
+ \Bell_n
+ &\sim \frac{\exp(n(r-1+r^{-1})-1)}{\sqrt{1+r}}
+       \sum_{m\ge0}\cA_m(r)\ee^{-mr}.
+ \label{eq:dict-multbell}
+\end{align}
+
+\subsection{Inverse-\texorpdfstring{\(r\)}{r} and polynomial--logarithmic subcoefficients}
+
+Because every \(\cD_m(r)\) is regular at \(r=\infty\), define
+\begin{equation}\label{eq:Dmk-def}
+ \cD_{m,j}:=\coef{u}{j}\cD_m(u^{-1}),
+ \qquad
+ \cD_m(r)=\sum_{j\ge0}\cD_{m,j}r^{-j}
+\end{equation}
+formally at infinity.  Likewise
+\(\cA_{m,j}:=\coef{u}{j}\cA_m(u^{-1})\).  Substitution of
+\(r=L\Delta(L^{-1})\) gives the sector coefficients
+\begin{equation}\label{eq:sector-double-extraction}
+ p_{m,j}(\lambda)
+ =\coef{z}{j}
+   \left[z^m d_m\!\left(z^{-1}\Delta(z)\right)\right]
+ =\coef{z}{j}
+   \left[\Delta(z)^m\cD_m\!\left(z^{-1}\Delta(z)\right)\right].
+\end{equation}
+This second equality makes explicit that the leading value is controlled by
+\(\cD_m(\infty)\), whereas all lower inverse powers of \(r\) generate the
+internal \(L^{-1}\)-tail of the same exponential sector.
+
+\section{A direct derivation of the first coefficient}\label{app:c1proof}
+
+For readers wishing to audit every normalization, retain terms through order
+\(n^{-1}\) in \cref{eq:scaled-phase}:
+\begin{equation}\label{eq:first-local-phase}
+ \exp\!\left(n^{-1/2}a_1+n^{-1}a_2+\BigO(n^{-3/2})\right)
+ =1+n^{-1/2}a_1+n^{-1}\left(a_2+\frac12a_1^2\right)
+  +\BigO(n^{-3/2}).
+\end{equation}
+The odd term has zero Gaussian mean.  Since
+\[
+ a_1=-\frac{\ii q_3}{6}Z^3,
+ \qquad
+ a_2=\frac{q_4}{24}Z^4,
+\]
+we obtain
+\begin{align}
+ c_1
+ &=\frac{q_4}{24}\E Z^4
+   -\frac{q_3^2}{72}\E Z^6
+ =\frac{q_4}{8}-\frac{5q_3^2}{24}.
+ \label{eq:c1-audit-q}
+\end{align}
+Now
+\begin{align*}
+ \Tch_3(r)&=r+3r^2+r^3,
+ &\Tch_4(r)&=r+7r^2+6r^3+r^4,
+\end{align*}
+so substitution and collection over \(24(1+r)^3\) yield
+\[
+ c_1(r)=-\frac{2r^4+9r^3+16r^2+6r+2}{24(1+r)^3}.
+\]
+Finally, adding the first Stirling logarithm coefficient gives
+\begin{align*}
+ d_1(r)
+ &=c_1(r)+\frac1{12}\\
+ &=-\frac{r^2(2r^2+7r+10)}{24(1+r)^3},
+\end{align*}
+which explains the cancellation of the constant and linear terms in the
+numerator.  This cancellation is the first visible instance of the Bernoulli
+boundary mechanism in \cref{prop:D-limits}.
+
+\section{Bibliographic notes}\label{app:bibnotes}
+
+Moser and Wyman identified the Lambert-type saddle and developed classical
+correction expansions.  Hayman's admissibility theory places the Bell
+generating function in a broad coefficient-asymptotic framework, while de
+Bruijn gives the familiar logarithmic form.  Harris and Schoenfeld developed
+general coefficient expansions for analytic functions.  Corless et al. and
+the DLMF provide the branch-aware all-orders Lambert \(W\) expansion used in
+\cref{sec:polylog}.  More recent work supplies explicit bounds and an
+independent elementary derivation of the first Bell correction.
+
+The novelty claimed here is organizational and algebraic rather than a claim
+that saddle-point expansions for Bell numbers were previously unknown: the
+article makes every coefficient finite and computable, proves the rational
+structure adapted to \(r=W(n)\), and threads the result through logarithmic,
+exponential, and polynomial--logarithmic transseries in one consistent
+notation.
+
+\begin{thebibliography}{99}
+
+\bibitem{Bell1934}
+E.~T. Bell,
+\newblock Exponential polynomials,
+\newblock \emph{Annals of Mathematics} \textbf{35} (1934), 258--277.
+
+\bibitem{Comtet1974}
+L.~Comtet,
+\newblock \emph{Advanced Combinatorics: The Art of Finite and Infinite
+Expansions},
+\newblock D.~Reidel, Dordrecht, 1974.
+
+\bibitem{MoserWyman1955}
+L.~Moser and M.~Wyman,
+\newblock An asymptotic formula for the Bell numbers,
+\newblock \emph{Transactions of the Royal Society of Canada, Section III}
+\textbf{49} (1955), 49--54.
+
+\bibitem{Hayman1956}
+W.~K. Hayman,
+\newblock A generalisation of Stirling's formula,
+\newblock \emph{Journal f\"ur die reine und angewandte Mathematik}
+\textbf{196} (1956), 67--95.
+
+\bibitem{HarrisSchoenfeld1968}
+B.~Harris and L.~Schoenfeld,
+\newblock Asymptotic expansions for the coefficients of analytic functions,
+\newblock \emph{Illinois Journal of Mathematics} \textbf{12} (1968),
+264--277.
+
+\bibitem{deBruijn1981}
+N.~G. de~Bruijn,
+\newblock \emph{Asymptotic Methods in Analysis}, third edition,
+\newblock Dover, New York, 1981.
+
+\bibitem{CorlessEtAl1996}
+R.~M. Corless, G.~H. Gonnet, D.~E.~G. Hare, D.~J. Jeffrey, and D.~E. Knuth,
+\newblock On the Lambert \(W\) function,
+\newblock \emph{Advances in Computational Mathematics} \textbf{5} (1996),
+329--359.
+
+\bibitem{FlajoletSedgewick2009}
+P.~Flajolet and R.~Sedgewick,
+\newblock \emph{Analytic Combinatorics},
+\newblock Cambridge University Press, Cambridge, 2009.
+
+\bibitem{Hwang2023}
+H.-K. Hwang,
+\newblock A curious identity arising from Stirling's formula and saddle-point
+method on two different contours,
+\newblock \emph{The Electronic Journal of Combinatorics} \textbf{30}(4)
+(2023), Paper P4.3.
+
+\bibitem{GrunwaldSerafin2025}
+J.~Grunwald and G.~Serafin,
+\newblock Explicit bounds for Bell numbers and their ratios,
+\newblock \emph{Journal of Mathematical Analysis and Applications}
+\textbf{549}(2) (2025), Article 129527,
+\newblock doi:10.1016/j.jmaa.2025.129527.
+
+\bibitem{HwangLiZacharovas2026}
+H.-K. Hwang, C.-Y. Li, and V.~Zacharovas,
+\newblock Elementary asymptotics for the Stirling numbers of the second kind:
+the central range,
+\newblock arXiv:2605.29633, 2026.
+
+\bibitem{DLMFW}
+NIST Digital Library of Mathematical Functions,
+\newblock \S4.13, Lambert \(W\)-function,
+\newblock release consulted September 2026.
+
+\bibitem{RepoCoefficientCalculus}
+V.~Reshetnikov,
+\newblock \emph{Combinatorial Coefficient Calculus},
+\newblock \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Combinatorial_Coefficient_Calculus}{repository manuscript in the ProveIt project},
+revision consulted September 3, 2026.
+
+\bibitem{RepoSeriesTransseries}
+V.~Reshetnikov,
+\newblock \emph{Series and Transseries},
+\newblock \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries}{repository draft collection in the ProveIt project},
+revision consulted September 3, 2026.
+
+\end{thebibliography}
+
+\end{document}

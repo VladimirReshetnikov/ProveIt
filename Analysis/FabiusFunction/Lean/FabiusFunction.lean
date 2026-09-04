@@ -127,6 +127,14 @@ import FabiusFunction.FabiusLambertPhaseExtraction
 import FabiusFunction.FabiusLambertPhaseExtractionBell
 import FabiusFunction.PrincipalLambertW
 import FabiusFunction.PrincipalLambertWAtTop
+import FabiusFunction.AutonomousIteratedDeriv
+import FabiusFunction.LambertWHigherDerivatives
+import FabiusFunction.LambertWAntiderivative
+import FabiusFunction.LambertWLogBounds
+import FabiusFunction.LambertWNegativeBounds
+import FabiusFunction.LambertWAdditionIdentity
+import FabiusFunction.LambertWBranchPairing
+import FabiusFunction.LambertWGapBijection
 import FabiusFunction.LowerLambertW
 import FabiusFunction.GeneralizedLambertCoordinate
 import FabiusFunction.LambertBranchDichotomy
@@ -248,6 +256,8 @@ import FabiusFunction.ThueMorseSymmetricDifference
 import FabiusFunction.ThueMorseAutocorrelation
 import FabiusFunction.ThueMorseOverlapFree
 import FabiusFunction.ThueMorseRecurrence
+import FabiusFunction.ThueMorseRecurrenceGap
+import FabiusFunction.ThueMorseSparseBinomial
 import FabiusFunction.ThueMorseMahler
 import FabiusFunction.ThueMorseBooleanMobius
 import FabiusFunction.ThueMorseMultinomial
@@ -323,6 +333,7 @@ import FabiusFunction.PoissonApproximateIdentity
 import FabiusFunction.PoissonMassSwap
 import FabiusFunction.StieltjesPerron
 import FabiusFunction.GeneralQConditionNumber
+import FabiusFunction.GeometricToeplitzBridge
 import FabiusFunction.LimitConditionNumber
 import FabiusFunction.CumulantGridConstant
 import FabiusFunction.MultipleAngleBounds
@@ -474,6 +485,7 @@ import FabiusFunction.CenteredRvachevThueMorseFourier
 import FabiusFunction.LogSeriesMultiplicative
 import FabiusFunction.BaseLayerRegrouping
 import FabiusFunction.ShellEnvelopeExplicit
+import FabiusFunction.ThueMorseSinhProduct
 import FabiusFunction.RvachevFourierDecay
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
@@ -496,6 +508,8 @@ import FabiusFunction.BoseFinitePartIntegral
 import FabiusFunction.PeriodicMean
 import FabiusFunction.PeriodicRegularity
 import FabiusFunction.LaplacePeriodicSecondOrder
+import FabiusFunction.EndpointLogDerivativeExpansion
+import FabiusFunction.LaplaceMomentBoundsSharp
 import FabiusFunction.FabiusTranslatedLegendreSeries
 import FabiusFunction.FabiusLegendreLeastSquares
 import FabiusFunction.LegendreGaunt
@@ -547,7 +561,9 @@ import FabiusFunction.InverseBranch
 import FabiusFunction.InverseNotElementary
 import FabiusFunction.FabiusComputableSpline
 import FabiusFunction.EffectiveMonotoneInverse
+import FabiusFunction.PrimrecNatPow
 import FabiusFunction.EffectiveGapInverse
+import FabiusFunction.FabiusGapInversion
 import FabiusFunction.FabiusInverseComputable
 import FabiusFunction.FabiusSaddleJetClosedForm
 import FabiusFunction.FabiusSaddleExponentClosedForm

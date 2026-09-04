@@ -124,32 +124,49 @@ theorem inv_pi_mul_poisson_kernel_nonneg (x t : ℝ) {ε : ℝ}
   mul_nonneg (le_of_lt (inv_pos.mpr Real.pi_pos))
     (le_of_lt (poisson_kernel_pos x t hε))
 
-/-! ### The kernel normalises in the other variable -/
+/-! ### The kernel normalises in the other variable
+
+The normalised Poisson kernel in `x` at height `ε` and centre `t` is
+Mathlib's Cauchy probability density `cauchyPDFReal t ε`; its
+integrability and normalisation are Mathlib's. -/
+
+/-- **The normalised Poisson kernel is the Cauchy density** with
+location `t` and scale `ε`. -/
+theorem inv_pi_mul_poisson_kernel_eq_cauchyPDFReal (x t : ℝ) {ε : ℝ}
+    (hε : 0 < ε) :
+    π⁻¹ * (ε / ((x - t) ^ 2 + ε ^ 2)) =
+      ProbabilityTheory.cauchyPDFReal t ⟨ε, hε.le⟩ x := by
+  rw [ProbabilityTheory.cauchyPDFReal_def, NNReal.coe_mk]
+  ring
+
+/-- The normalised Poisson kernel in `x`, as a function, is the Cauchy
+density. -/
+theorem inv_pi_mul_poisson_kernel_fun_eq_cauchyPDFReal (t : ℝ) {ε : ℝ}
+    (hε : 0 < ε) :
+    (fun x : ℝ => π⁻¹ * (ε / ((x - t) ^ 2 + ε ^ 2))) =
+      ProbabilityTheory.cauchyPDFReal t ⟨ε, hε.le⟩ :=
+  funext fun x => inv_pi_mul_poisson_kernel_eq_cauchyPDFReal x t hε
 
 /-- For a fixed `t`, the normalised kernel is Lebesgue integrable in
-`x`: this is `integrable_poisson_kernel` moved across
-`poisson_kernel_symm`. -/
+`x`: it is the Cauchy density. -/
 theorem integrable_poisson_kernel_swapped (t : ℝ) {ε : ℝ}
     (hε : 0 < ε) :
     Integrable fun x : ℝ => π⁻¹ * (ε / ((x - t) ^ 2 + ε ^ 2)) := by
-  refine ((integrable_poisson_kernel t hε).const_mul π⁻¹).congr
-    (Filter.Eventually.of_forall fun x => ?_)
-  dsimp only
-  rw [poisson_kernel_symm x t ε]
+  rw [inv_pi_mul_poisson_kernel_fun_eq_cauchyPDFReal t hε]
+  exact ProbabilityTheory.integrable_cauchyPDFReal t
 
 /-- **The kernel normalises in `x` as well**: for a fixed `t` and
-`ε > 0`, `∫ π⁻¹·ε/((x-t)² + ε²) dx = 1`.  The content is
-`integral_poisson_kernel_eq_one`; only the roles of the two variables
-differ, and `poisson_kernel_symm` identifies the two integrands. -/
+`ε > 0`, `∫ π⁻¹·ε/((x-t)² + ε²) dx = 1` — the Cauchy density has
+total mass one. -/
 theorem integral_poisson_kernel_swapped_eq_one (t : ℝ) {ε : ℝ}
     (hε : 0 < ε) :
     ∫ x : ℝ, π⁻¹ * (ε / ((x - t) ^ 2 + ε ^ 2)) = 1 := by
-  have hfun : (fun x : ℝ => π⁻¹ * (ε / ((x - t) ^ 2 + ε ^ 2))) =
-      fun x : ℝ => π⁻¹ * (ε / ((t - x) ^ 2 + ε ^ 2)) := by
-    funext x
-    rw [poisson_kernel_symm x t ε]
-  rw [hfun]
-  exact integral_poisson_kernel_eq_one t hε
+  rw [inv_pi_mul_poisson_kernel_fun_eq_cauchyPDFReal t hε]
+  refine ProbabilityTheory.integral_cauchyPDFReal_eq_one t ?_
+  intro h
+  apply hε.ne'
+  have := congrArg NNReal.toReal h
+  simpa using this
 
 /-- The `ℝ≥0∞` form of the `x`-side normalisation. -/
 theorem lintegral_ofReal_poisson_kernel_swapped (t : ℝ) {ε : ℝ}

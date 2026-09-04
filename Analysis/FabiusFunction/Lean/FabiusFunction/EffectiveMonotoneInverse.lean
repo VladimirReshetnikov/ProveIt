@@ -1,4 +1,5 @@
 import FabiusFunction.FabiusComputability
+import FabiusFunction.PrimrecNatPow
 import Mathlib.Topology.Order.ProjIcc
 import Mathlib.Topology.UnitInterval
 
@@ -30,13 +31,45 @@ def SequentiallyComputableOn (f : ℝ → ℝ) (s : Set ℝ) : Prop :=
 noncomputable def unitClamp (x : ℝ) : ℝ :=
   projIcc (0 : ℝ) 1 zero_le_one x
 
+/-! ### The clamp API
+
+Four one-line facts about `unitClamp` that the computability modules had
+each restated privately. -/
+
+/-- The clamp lands in the unit interval. -/
+theorem unitClamp_mem_Icc (x : ℝ) : unitClamp x ∈ Icc (0 : ℝ) 1 :=
+  (projIcc (0 : ℝ) 1 zero_le_one x).property
+
+/-- The clamp is the identity on the unit interval. -/
+theorem unitClamp_of_mem {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
+    unitClamp x = x := by
+  simpa only [unitClamp] using
+    congrArg Subtype.val (projIcc_of_mem zero_le_one hx)
+
+/-- The clamp is `0` to the left of the unit interval. -/
+theorem unitClamp_eq_zero_of_nonpos {x : ℝ} (hx : x ≤ 0) :
+    unitClamp x = 0 := by
+  simpa only [unitClamp] using
+    congrArg Subtype.val (projIcc_of_le_left (b := (1 : ℝ)) zero_le_one hx)
+
+/-- The clamp is `1` to the right of the unit interval. -/
+theorem unitClamp_eq_one_of_one_le {x : ℝ} (hx : 1 ≤ x) :
+    unitClamp x = 1 := by
+  simpa only [unitClamp] using
+    congrArg Subtype.val (projIcc_of_right_le (a := (0 : ℝ)) zero_le_one hx)
+
+/-- The clamp is `1`-Lipschitz. -/
+theorem abs_unitClamp_sub_unitClamp_le (x y : ℝ) :
+    |unitClamp x - unitClamp y| ≤ |x - y| :=
+  abs_projIcc_sub_projIcc zero_le_one
+
 private def unitClampNumerator (c : DyadicNumerator) (p : ℕ) : DyadicNumerator :=
   (min (c.1 - c.2) (2 ^ p), 0)
 
 private theorem unitClampNumerator_primrec :
     Primrec₂ unitClampNumerator := by
   have hpow : Primrec₂ (fun (_c : DyadicNumerator) (p : ℕ) => 2 ^ p) :=
-    (Primrec₂.unpaired'.1 Nat.Primrec.pow).comp₂ (Primrec.const 2).to₂
+    primrec₂_nat_pow.comp₂ (Primrec.const 2).to₂
       Primrec₂.right
   have hsub : Primrec₂ (fun (c : DyadicNumerator) (_p : ℕ) => c.1 - c.2) :=
     Primrec.nat_sub.comp₂
@@ -590,7 +623,7 @@ private theorem tolerantBisectionNoneStep_computable
   have hpd5 : Computable (fun z : X => z.1.2 + den z.1.2 + 5) :=
     Primrec.nat_add.to_comp.comp hpd (Computable.const 5)
   have hpow : Computable₂ ((· ^ ·) : ℕ → ℕ → ℕ) :=
-    (Primrec₂.unpaired'.1 Nat.Primrec.pow).to_comp
+    computable₂_nat_pow
   have hscale : Computable (fun z : X => 2 ^ (z.1.2 + den z.1.2 + 5)) :=
     hpow.comp (Computable.const 2) hpd5
   have hnum : Computable
