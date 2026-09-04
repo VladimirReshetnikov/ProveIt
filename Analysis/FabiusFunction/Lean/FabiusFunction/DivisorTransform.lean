@@ -1,5 +1,6 @@
 import Mathlib.NumberTheory.Divisors
 import Mathlib.Algebra.Order.BigOperators.Ring.Finset
+import Mathlib.Algebra.Order.Field.Rat
 
 /-!
 # The divisor transform and the disturbance coefficients
