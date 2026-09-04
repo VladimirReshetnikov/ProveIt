@@ -16,7 +16,8 @@ reciprocal of a series with constant term one.
 
 ## Main results
 
-* `ordPartialBell`, `ordPartialBell_mul_left`, `ordPartialBell_congr`.
+* `ordPartialBell`, `ordPartialBell_mul_left`, `ordPartialBell_congr_of_le`,
+  `ordPartialBell_congr`.
 * `coeff_pow_eq_ordPartialBell`: `[t^n] f^k = B̂_{n,k}(f_1, f_2, …)`.
 * `coeff_subst_eq_sum_ordPartialBell`: the ordinary composition theorem.
 * `reciprocalSeries`, `mul_reciprocalSeries`, `coeff_reciprocalSeries`.
@@ -50,15 +51,25 @@ theorem ordPartialBell_succ_right (x : ℕ → R) (n k : ℕ) :
       ∑ i ∈ Finset.range n, x (i + 1) * ordPartialBell x (n - (i + 1)) k := by
   rw [ordPartialBell]
 
-/-- `B̂_{n,k}` only depends on the weights `x_i` with `i ≥ 1`. -/
-theorem ordPartialBell_congr {x y : ℕ → R} (h : ∀ i, 1 ≤ i → x i = y i) (n k : ℕ) :
+/-- `B̂_{n,k}` only depends on the weights `x_i` with `1 ≤ i ≤ n`. -/
+theorem ordPartialBell_congr_of_le {x y : ℕ → R} (n k : ℕ)
+    (h : ∀ i, 1 ≤ i → i ≤ n → x i = y i) :
     ordPartialBell x n k = ordPartialBell y n k := by
   induction k generalizing n with
   | zero => simp
   | succ k ih =>
     rw [ordPartialBell_succ_right, ordPartialBell_succ_right]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    rw [h (i + 1) (by omega), ih]
+    refine Finset.sum_congr rfl fun i hi => ?_
+    have hin : i + 1 ≤ n :=
+      Nat.succ_le_iff.mpr (Finset.mem_range.mp hi)
+    rw [h (i + 1) (by omega) hin]
+    rw [ih (n := n - (i + 1)) (fun j hjpos hjle =>
+      h j hjpos (hjle.trans (Nat.sub_le n (i + 1))))]
+
+/-- `B̂_{n,k}` only depends on the weights `x_i` with `i ≥ 1`. -/
+theorem ordPartialBell_congr {x y : ℕ → R} (h : ∀ i, 1 ≤ i → x i = y i) (n k : ℕ) :
+    ordPartialBell x n k = ordPartialBell y n k :=
+  ordPartialBell_congr_of_le n k (fun i hi _ => h i hi)
 
 /-- Degree homogeneity: `B̂_{n,k}(c x) = c^k B̂_{n,k}(x)`. -/
 theorem ordPartialBell_mul_left (c : R) (x : ℕ → R) (n k : ℕ) :
@@ -70,6 +81,17 @@ theorem ordPartialBell_mul_left (c : R) (x : ℕ → R) (n k : ℕ) :
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [ih]
     ring
+
+/-- Ring homomorphisms commute with ordinary partial Bell polynomials. -/
+theorem map_ordPartialBell {S : Type*} [CommSemiring S] (f : R →+* S)
+    (x : ℕ → R) (n k : ℕ) :
+    f (ordPartialBell x n k) = ordPartialBell (fun j => f (x j)) n k := by
+  induction k generalizing n with
+  | zero => simp
+  | succ k ih =>
+    rw [ordPartialBell_succ_right, ordPartialBell_succ_right, map_sum]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    rw [map_mul, ih]
 
 end Def
 

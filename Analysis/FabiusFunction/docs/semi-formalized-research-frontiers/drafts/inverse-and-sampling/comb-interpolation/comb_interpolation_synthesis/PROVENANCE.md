@@ -199,13 +199,15 @@ store for superseded wrappers and publications.
 
 Publication validation is recorded once in
 [`assets/VALIDATION.md`](assets/VALIDATION.md). It preserves the completed
-historical PDF, canonical-validator, and root-ledger gates and records the
-current synchronized `b899` semantic union: a 187-line / 6,724-byte driver,
-15-file / 12,597-line / 477,163-byte recursive TeX closure, and 160-page /
-2,468,000-byte PDF. Their SHA-256 receipts and three-pass/gate evidence are kept
-there. This current build renders the upstream Lagrange-crosswalk material,
-replayed general-$q$ and endpoint-jet chapter edits, and Rvachev--Appell Hasse
-crosswalk.
+158-page checkpoint and both later 160-page receipts as explicit history: the
+local nine-file aggregate/PDF tuple
+`cef466ee56f6bb864faaac2244bccf1dbc2fd4032a717b6c81604551c0427309` /
+`bb714c8be4b82de2a888e0302da3aaf957b9e885f2c5f59466b3ea5d659e3f71`,
+and the incoming `b899` 15-file closure/PDF tuple
+`9e22455b3f65eb48306ad21c57445b6052a56498cb363666ffb9b160f5cc8090` /
+`ad8587049580e6fde371f534b6f8b4e56fa4c929173f87d3021ed369e5225d4c`.
+Both rendered their own frozen source graphs and passed the recorded gates.
+The merged TeX inputs are newer, so a fresh synchronized receipt is pending.
 Full numerical replay and fresh-checkout reproduction
 remain separate reproducibility work; this provenance record neither
 duplicates nor supersedes those checks.

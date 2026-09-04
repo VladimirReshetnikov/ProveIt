@@ -29,7 +29,7 @@ The canonical frontier artifacts are:
 > source predates the later q-Pochhammer overlay and expanded ledger, so it is
 > a historical render and must not be cited as displaying the final source
 > union, including either series/transseries overlay, the historical
-> 952/11,884 and 967/12,001 checkpoints, or the live 985/12,199 census.
+> 952/11,884 and 967/12,001 checkpoints, or the live 986/12,233 census.
 
 > **Historical publication receipt (2026-09-03).** The most recent pre-`9135bd7e`
 > source is the 17,954-line, 813,297-byte TeX file with SHA-256
@@ -88,17 +88,26 @@ The canonical frontier artifacts are:
 > files / 140,223 lines / 6,439,569 bytes, with direct aggregate digest
 > `ae8690ad8d160055cbae36eff96d858f87572d171e7aacf7540d67543998af21`.
 
-The `b899` publication rebuild touched ten roots: the primary exposition, Lean
+> **Deferred publication status.**  The fixed-26 publication check—14 fresh
+> build cycles and 12 retained verified pairs—is recorded once in the
+> [fixed-26 publication checkpoint](drafts/MANIFEST.md#fixed-26-publication-checkpoint).
+> A row still marked pending makes no synchronization claim.  The exact older
+> receipts on this page remain historical evidence; under the user-directed
+> deferral, the fixed-26 table is an inventory rather than a merged-current
+> parity receipt.
+
+The historical `69b447f7c` publication rebuild touched ten roots: the primary exposition, Lean
 walkthrough, canonical frontier, geometric-q synthesis, canonical q-series
 synthesis, inverse-theory synthesis, comb synthesis, Lambert Guide, Up
-Polynomial Synthesis, and Thue--Morse Atlas. At that checkpoint all ten roots
-had exact synchronized final-source/PDF receipts in the draft manifest and
-their local records. Those and earlier artifacts remain historical receipts
-for their named source states; the subsequently changed global sources claim
-no current PDF parity.
+Polynomial Synthesis, and Thue--Morse Atlas. All ten roots have exact
+synchronized source/PDF receipts for that checkpoint in the draft manifest
+and their local records. The merged source closures make those pairs
+historical; the deferred replacement batch is recorded in the fixed-26
+checkpoint linked above.  Receipts outside that batch remain valid only for
+their named source states.
 
-The authoritative live Lean audit now contains exactly 985 facade-reachable
-modules and 12,199 unique public declarations, with no missing module headers
+The authoritative live Lean audit now contains exactly 986 facade-reachable
+modules and 12,233 unique public declarations, with no missing module headers
 or declaration documentation.  The historical 923/11,611 snapshot comprised
 an origin inventory of 11,610 declarations plus this tree's retained
 unconditional public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge.  The
@@ -107,7 +116,7 @@ q-Pochhammer ownership remains
 `QPochhammerInfinite` 1+29;
 `complexQPochhammerInf_eq_qPochhammerInfIn` remains the unconditional public
 definitional bridge to the generic symbol.  The later checkpoints culminate in
-the live 985/12,199/0 census recorded below.  Fixed-nome normal convergence,
+the live 986/12,233/0 census recorded below.  Fixed-nome normal convergence,
 product identifiability, all finite/infinite q-calculus tranches, the
 root-of-unity and q-Catalan layers, finite Newton interpolation, q-beta
 integration, integer and complex Gaussian upper indices,
@@ -117,6 +126,11 @@ have declaration-level crosswalks.
 The Lambert branch-coordinate surface is exhaustive.  Its newest analytic
 companion formalizes the Bernoulli-series identity, its canonical removable
 complex value, and its exact convergence radius from `Lambert_W_Guide/`:
+
+The exact d130 and earlier publication receipts remain historical in the
+[draft manifest](drafts/MANIFEST.md).  The accepted synchronized render of the
+merged canonical frontier is recorded in the [merge-28de4e51 receipt
+register](drafts/MANIFEST.md#merge-28de4e51-publication-receipts).
 `LambertWBranchPairing.lean` has 0 definitions + 7 theorems,
 `LambertWGapBijection.lean` has 4 + 16, and
 `LambertWBranchSymmetry.lean` has 0 + 9.  These are 36 current declarations,
@@ -146,9 +160,11 @@ removable-origin convention. The Guide's nearest-nonzero-zero explanation is
 not the formal proof route. With the three finite branch-coordinate modules,
 the four-module union is 4 definitions + 37 theorems = 41 declarations.
 Higher or convergent Puiseux/logarithmic
-expansions remain open. The historical `b899` primary, walkthrough, Lambert-Guide, and
-canonical-frontier PDFs render this integration and have synchronized receipts.
-The historical branch-local documentation
+expansions remain open.  The d130, `b899`, and earlier primary,
+walkthrough, Lambert-Guide, and canonical-frontier receipts remain historical
+for their recorded source checkpoints.  Their accepted merged-source renders
+are recorded in the [merge-28de4e51 receipt
+register](drafts/MANIFEST.md#merge-28de4e51-publication-receipts).  The live documentation
 census on the incoming Lambert branch at the exact-radius four-theorem
 checkpoint was 903 modules and 11,447 public declarations; the value-completion
 theorem gave that branch's historical 903/11,448 checkpoint.
@@ -324,7 +340,7 @@ Against that checkpoint, the local pre-merge source added exactly seventeen modu
 They total 21 definitions and 123 theorems. Four existing surfaces add the
 other 24 declarations: `TransseriesFlat.lean` grows by 3+11 to 4+22,
 `TransseriesDifferentialBlock.lean` gains four theorems to 0+12,
-`QBinomialTheoremInfinite.lean` gains five theorems to 1+27, and
+`QBinomialTheoremInfinite.lean` reaches its historical 1+27 checkpoint, and
 `RvachevPochhammerFactorization.lean` retains one additional public bridge.
 The modified `LaplaceMomentBoundsSharp.lean` is excluded from the new-module
 count. Thus the local pre-merge census was 961/11,974, with both documentation-gap counts
@@ -360,9 +376,10 @@ new leaves contribute 80 declarations while three existing declarations move
 from `NorlundDiagonal.lean` to `ExponentialRescaling.lean`, a net increase
 of 77. The eight-theorem Stirling leaf is retained.
 The two certificate leaves added nine public theorems at the historical
-979/12,142 checkpoint. The current merged inventory is 985/12,199 after six
-further leaves add 57 declarations. No new aggregate-build or PDF-parity
-claim is made.
+979/12,142 checkpoint. Six further leaves and extensions to existing modules
+then added 57 declarations. The incoming BellSetPartitions module adds 34
+more, giving the current merged inventory of 986/12,233. No new aggregate-build
+or PDF-parity claim is made.
 
 The claim crosswalk remains conservative. The abstract Faà di Bruno result,
 ordinary Bell normalization, and Touchard definition and displayed
@@ -404,11 +421,12 @@ does not prove the larger support/smoothness/parity/Fourier--Bessel theorem
 historical dyadic/finite-prefix census is 933/11,695. The later branch
 inventories, including local 961/11,974 and 970/12,056 and incoming
 952/11,884, 967/12,001, 969/12,048, and 970/12,051, are also
-historical. The current merged census is 985/12,199, as recorded above,
+historical. The current merged census is 986/12,233, as recorded above,
 with zero missing module headers and zero
 missing declaration comments.
 
-### Series/transseries Lean overlays
+The retained frontier, primary, walkthrough, geometric-q, and representation
+PDFs predate these source-only overlays and claim no render parity.
 
 The first overlay exhausts the public surfaces of nine modules that crosswalk
 the canonical `Transseries_And_Inversion` volume. The incoming overlay adds
@@ -418,7 +436,7 @@ pre-incoming checkpoint, while 952/11,881 is the historical post-incoming
 checkpoint. The two written OrderDual Neumann wrappers and the real-analytic
 Wright omega theorem gave the incoming historical 952/11,884/0
 modules/declarations/missing-comments checkpoint. The live merged census is
-985/12,199/0. The following list records the incoming module surfaces at that
+986/12,233/0. The following list records the incoming module surfaces at that
 historical checkpoint, not the larger merged surfaces inventoried above.
 The retained PDFs predate the incoming source-only overlay and claim no
 render parity.
@@ -434,7 +452,7 @@ render parity.
   commutative rational algebra. Thus the power clause of
   `alg:merged-exp-log-power` is **Exact**; no analytic branch is asserted.
   The merged coefficient-calculus concordance has 207 rows:
-  62 Lean, 35 Partial, and 110 None.
+  65 Lean, 35 Partial, and 107 None.
 
 - The eleven-declaration weighted-translation extension of
   `AppellSequence.lean` consists of `Bell.binomialConv_unitSeq`,
@@ -707,11 +725,12 @@ render parity.
   remains **Partial** because its four-term expansion and explicit
   quantitative envelope are not formalized here.
 
-Exactly ten publication roots were invalidated by this merge. All ten now have
-accepted current PDFs: primary 199 pages, walkthrough 171, canonical 273,
-q series 401, Lambert 70, inverse 137, comb 160, Up 63, Thue--Morse 144, and
-geometric-q 404. The dyadic-chaos PDF is not one of these ten.
-
+The d130 and earlier receipts for the eleven merge-affected publication roots
+remain historical.  Accepted synchronized merged-source renders for the
+primary, walkthrough, canonical, geometric-q, q-series, Lambert, inverse,
+comb, Up, Thue--Morse, and Transseries roots are recorded in the
+[merge-28de4e51 receipt register](drafts/MANIFEST.md#merge-28de4e51-publication-receipts).
+The dyadic-chaos PDF is not part of this render set.
 The preceding declaration addition is
 `FabiusFunction.GeometricRichardsonGenerating`, with three definitions and
 seven theorems. Its
@@ -720,9 +739,9 @@ counterpart of canonical comb label `gq:thm:richardson-generating`; the module
 also supplies the report-facing analytic companion
 `Fabius.hasSum_geometricLagrangeRichardson_mul_pow` under strict nome
 contraction and absolute summability. The historical `b899` primary,
-walkthrough, q-series, comb-synthesis, and canonical-frontier PDFs render that
-named source checkpoint and have synchronized receipts for it; they do not
-render the current source union.
+walkthrough, q-series, comb-synthesis, and canonical-frontier PDFs rendered
+this source union at their named checkpoint; the deferred replacement
+inventory is recorded in the fixed-26 table without a merged-current parity claim.
 
 The one-definition/seventeen-theorem
 `FabiusFunction.GeometricUniformRealization` module transfers the canonical
@@ -771,7 +790,7 @@ and 961/11,974 inventories and the incoming branch's 943/11,787, 952/11,881,
 and 952/11,884 inventories, followed by incoming 967/12,001, 969/12,048,
 and 970/12,051, are historical and overlap. The preceding local merged
 970/12,056 inventory is also historical. The reconciled merged
-audit is 985/12,199, with zero documentation gaps, as inventoried above.
+audit is 986/12,233, with zero documentation gaps, as inventoried above.
 
 `FabiusFunction.RvachevLaurentLeading` has one definition and six theorems.
 Its manuscript-normalized punctured-neighborhood limit, together with the
@@ -854,10 +873,12 @@ existing rational zero classifier and Gaussian/half-q coefficient identity,
 it makes `cor:halfbase-root-locus` Exact under the canonical rational-polynomial
 and rational-root convention. Injective scalar extension preserves
 the displayed multiplicities, but the leaf does not classify all roots over
-every extension field. After the reciprocity promotion, the q
-forward ledger is now 181 Exact / 79 Partial / 14 None / 8 interface rows,
-and its source concordance is 103 Lean-proved / 375 human-proved frontier /
-60 non-applicable / 9 conjectures.
+every extension field. After all valid promotions, the rigorous q forward
+ledger is now 181 Exact / 79 Partial / 14 None / 8 interface rows, and its
+source concordance is 103 Lean-proved / 375 human-proved frontier / 60
+non-applicable / 9 conjectures. The q-Lucas row remains Partial because Lean
+proves primitive-root evaluation, not the polynomial congruence modulo the
+cyclotomic polynomial.
 
 `FabiusFunction.GaussianBinomialGreaterOneAsymptotics` has exactly the two
 theorems
@@ -909,8 +930,9 @@ spectral Mellin parameter derivative, the successor law
 `k ≤ r`, always under `0 < a`. Consequently `p2:thm:gamma-tower` is Exact
 when its logarithm is read as the existing chosen GammaLog coordinate. No
 principal-`Complex.log` identity or nonpositive-parameter differential law
-is claimed. The historical `b899` Thue--Morse Atlas and canonical-frontier PDFs
-render these additions and have synchronized receipts.
+is claimed. The historical `b899` Thue--Morse Atlas and canonical-frontier
+PDFs rendered these additions at their named checkpoint; the deferred
+replacement inventory is recorded in the fixed-26 table.
 
 `FabiusFunction.ThueMorseCornerIntegral` has one public definition and four
 theorems: `Fabius.centeredBoxIntegral`,
@@ -935,8 +957,9 @@ literal finite central cancellation at mesh `4^n` by combining the normalized
 Legendre value at zero, evenness, compact-support truncation, and pairing of
 the positive and negative indices. This makes only `cor:leg-central-sum`
 Exact; it adds no Jacobi decoder formula, reverse spectral closure, or larger
-Lagrange right-inverse theorem. These declarations are rendered by the
-historical `b899` Up-synthesis and canonical-frontier PDFs.
+Lagrange right-inverse theorem.  These declarations are rendered by the
+historical `b899`, d130 Up-synthesis, and canonical-frontier PDFs.  This merge
+changes both TeX closures, so fresh synchronized renders are pending.
 
 The final source-only `FabiusFunction.GaussianBinomialFixedColumnRate` leaf has
 no definitions and exactly nine theorems:
@@ -945,6 +968,7 @@ no definitions and exactly nine theorems:
 `Fabius.norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
 `Fabius.norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
 `Fabius.norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`,
+`Fabius.tendsto_gaussianBinomial_add_atTop`,
 `Fabius.gaussianBinomial_fixedColumn_relativeError_isBigO`,
 `Fabius.gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
 `Fabius.gaussianBinomial_fixedColumn_error_isBigO`, and
@@ -994,7 +1018,7 @@ field inversion is total, while the manuscript cardinal use assumes `c > 0`
 and `0 < q < 1` (together with its mesh, interval, and degree hypotheses).
 No larger matrix right inverse or decoder-optimality result is asserted.
 
-The next declaration addition leaves the module count unchanged and adds
+The newest source-only addition leaves the module count unchanged and adds
 three theorems to `FabiusFunction.GaussianBinomialCumulants`: the explicit
 second derivative at one
 `Fabius.eval_one_derivative_derivative_gaussianBinomial_X`, the division-free
@@ -1009,6 +1033,9 @@ algebraic identities, not a new probability-space construction.
 At the 1 September 2026 checkpoint, the source-only q-Pochhammer overlay was
 newer than the PDFs retained at that time.  The new `QPochhammerEntire.lean`
 leaf has zero definitions
+The later d130 q-series, primary, walkthrough, and canonical-frontier receipts
+also remain historical after this merge changed those TeX closures.  The new
+`QPochhammerEntire.lean` leaf has zero definitions
 and five theorems: for a fixed complex nome with norm less than one it proves
 local uniform convergence of the infinite product, differentiability in the
 symbol, the division-free factor-zero criterion, the reciprocal-power zero
@@ -1025,6 +1052,9 @@ None-to-Exact, while the RatFunc assembly now moves
 `thm:qF-moment-polynomial` Partial-to-Exact and the probability extension
 moves `prop:up-tail` and `cor:up-moments` Partial-to-Exact. The reciprocity
 leaf additionally moves `thm:qF-reciprocity` None-to-Exact.
+The q-Lucas row remains Partial: its evaluated primitive-root identity does
+not by itself prove the manuscript's polynomial congruence modulo the
+cyclotomic polynomial.
 `FabiusFunction.GeometricResidualMoments` now has zero definitions and nine
 public theorems. Its existing
 `Fabius.sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos` supplies
@@ -1064,6 +1094,28 @@ domain remains partial: the compiled by-reversal theorem retains `C ≠ 0` and
 `(A;q)_n ≠ 0`, while the unrestricted theorem uses finite q-Cauchy directly;
 no rational-continuation or cleared commutative-ring extension is claimed.
 
+The historical first-merge q-series receipt is master
+`16812L/840316B/64dc18dedbd1966624162b64129128b24b51ca88d8a9e496c661cc1a46a24ba6`,
+15-file aggregate
+`26593L/1198416B/762e6d6ca441de51db9679f95d6a01d8353e8044639f99803734719b8a65a5f8`,
+passes `393/401/401` with three clean `makeindex` runs (`164/0/254/0`), PDF
+`401pp/2500131B/fd54459baf10845b5a89cc8b204f59ea33a0665b434ad270e738884072a1e6e1`,
+and log
+`1230L/44401B/37dca6371ea8bf9285e5f104d550bd584a290f4aa92fcf5679b028c9dfd3079d`;
+all recorded gates passed at that checkpoint. Later source changes make that
+tuple historical. The accepted current q-series receipt is in the
+[merge-28de4e51 receipt
+register](drafts/MANIFEST.md#merge-28de4e51-publication-receipts). The
+historical `2d434eec` receipt is the 391-page,
+2,464,712-byte A4 PDF (SHA-256
+`a52eb90dec7b874cc29dea891a107b9eb2d55e6727eb8bd8943d0aab609c58a6`).
+It was accepted against the 16,448-line, 816,185-byte master (SHA-256
+`a463abef7bb3c70e12a568a46fc192aac88a8ce240f8f781fff2b018a4aa086d`)
+and its 26,114-line, 1,168,039-byte source graph (aggregate SHA-256
+`d4c5b84cc07f6abb99279c5bba4fdf7404326426cbe81f4b33b72ba01e62739c`).
+It and the earlier 389-page artifact remain historical checkpoints. No live checksum
+manifest or current-source digest is maintained.
+
 The pre-`9135bd7e` q-series receipt names the 16,834-line,
 837,715-byte source (SHA-256
 `4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`)
@@ -1072,9 +1124,9 @@ and its 395-page, 2,494,961-byte A4 PDF (SHA-256
 The q-Chu/Richardson, Gaussian second-moment, Lambert branch-gap Bernoulli, and
 geometric-uniform moment-polynomial source union postdates that exact historical
 receipt.  Its
-current source concordance now records 103 Lean-proved, 375 human-proved,
-60 not-applicable, and 9 conjectural rows; the rigorous forward ledger is 181
-Exact / 79 Partial / 14 None / 8 interface, with q-Lucas still Partial.
+source concordance at this merge records 103 Lean-proved, 375 human-proved,
+60 not-applicable, and 9 conjectural rows; the rigorous forward ledger is 182
+Exact / 78 Partial / 14 None / 8 interface, with q-Lucas still Partial.
 
 The historical q-series receipt (2026-09-04 source checkpoint) records the then-current 16,910-line,
 842,514-byte TeX source at SHA-256
@@ -1102,7 +1154,7 @@ geometric q-frontier log has zero overfull and 37 underfull diagnostics. These
 remain historical receipts for their named checkpoints and are superseded by
 the synchronized `b899` receipts below.
 
-The current `b899` q-series driver has 17,265 lines and 864,659 bytes (SHA-256
+The historical `b899` q-series driver has 17,265 lines and 864,659 bytes (SHA-256
 `4dd3f7fb22387d8e3d039e8d49cd870a63ebe0881f7f215c7074854825a27bb9`);
 its 14-file recursive TeX closure has 26,762 lines and 1,210,902 bytes, with
 digest `b567430fdd64f6d50bd24fcb070216c27f7e3e81e8b0c76c3228767ebdf980c6`.
@@ -1111,7 +1163,7 @@ Its passes ran 397 pages / 2,417,476 bytes → 405 / 2,533,717 → 405 /
 `055eb1fc26467857394a5b3bd8cd327f6985ea5d2f966ab5f099ac20bb2b8fb2`.
 Every pass's index run accepted 164 entries, rejected none, produced 254 lines,
 and emitted no warning; all common publication gates passed, with five minor
-horizontal boxes (maximum 10.14 pt). The current geometric-q driver has 27,671
+horizontal boxes (maximum 10.14 pt). The historical `b899` geometric-q driver has 27,671
 lines and 1,275,367 bytes (SHA-256
 `d47c0ad93eb359d13e7e9772668f16dbc98bcb4d880f3679366e1d461451bbcd`);
 its 8-file recursive TeX closure has 27,777 lines and 1,281,413 bytes, with
@@ -1122,6 +1174,11 @@ Its passes ran 388 pages / 8,163,847 bytes → 405 / 8,346,265 → 405 /
 Both 405-page PDFs are A4 at rotation zero on every page, render with nonblank
 text throughout, use embedded/subset fonts with Libertinus and no Type 3, and
 passed metadata, visual, log, cleanup, and forbidden-basename gates.
+
+All q-series and geometric-q tuples above are historical source-specific
+receipts.  Their accepted merged-source renders are recorded in the
+[merge-28de4e51 receipt register](drafts/MANIFEST.md#merge-28de4e51-publication-receipts);
+no earlier PDF is promoted to the merged bytes.
 
 The current finite-moment/Legendre/Gaunt crosswalk covers eleven modules with
 20 public definitions and 109 public theorems, 129 declarations in all. The
@@ -1189,9 +1246,6 @@ reproduces it, the canonical TeX labels it explicitly as unverified rather than
 silently treating it as authenticated. The source snapshots consolidated on
 25 August 2026 were recorded as follows:
 
-No live `SHA256SUMS` or `SHA256SUMS.*` manifest is maintained; the inline
-values below are historical provenance receipts only.
-
 | Former source | SHA-256 |
 | --- | --- |
 | `Fabius_Dyadic_Formulae_and_Alternative_Representations/Fabius_Dyadic_Formulae_and_Alternative_Representations.tex` | `462276b10fcd32b0446deb7cfedc4ec07c2ae55dbd333d5ff9b1d98f07df89e1` |
@@ -1236,30 +1290,23 @@ Sampling*](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_an
 Its immutable extraction input is pinned at
 `0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`; all 194 source-result rows have
 reviewed dispositions, all 88 files in the two superseded source subgroups have
-asset dispositions, and the deduplicated inventory covers 55 retained files;
-eight checksum-ledger rows from the former 63-payload checkpoint are retired.
-The former package paths, source hashes, nested lineage, and recovery
+asset dispositions, and the deduplicated asset inventory covers 55 retained
+files.  Eight checksum-ledger rows from the former 63-payload checkpoint are
+retired.  The former package paths, source hashes, nested lineage, and recovery
 revisions remain in the package's
 [`PROVENANCE.md`](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/PROVENANCE.md).
-Its retained 134-page, 2,027,726-byte A4 publication has SHA-256
-`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
-The package README records that historical checkpoint's clean three-pass
-build, font preflight, and visual inspection. The purpose-specific 23-input
-`SOURCE_CLOSURE.sha256` file is a historical pre-overlay record with file
-SHA-256
-`aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb`
-and was intentionally not regenerated. It is not the current publication
-closure. The `b899` driver is 293 lines / 11,514 bytes / SHA-256
-`92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`;
-its independently measured recursive TeX closure is 17 files / 10,682 lines /
-431,748 bytes / digest
-`6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e`.
-Three passes ran 132 pages / 1,983,313 bytes → 137 / 2,045,485 → 137 /
-2,045,486; the final 137-page PDF has SHA-256
-`cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995`.
-All publication gates passed; the only box diagnostics are two nonblocking
-horizontal boxes of 2.42 and 2.45 pt. The reviewed concordance classifies
-54 source rows as Lean-proved and 91 as human-proved frontier results, with 10
+The d130 canonical-inverse receipt remains historical provenance; the accepted
+merged-source source/PDF/log tuple is retained in the [merge-28de4e51 receipt
+register](drafts/MANIFEST.md#merge-28de4e51-publication-receipts).
+The purpose-specific 23-input source ledger is regenerated separately by its
+approved generator; its historical digests remain provenance rather than
+current-publication claims.  The former 134-page, 2,027,726-byte PDF (SHA-256
+`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`)
+and historical closure digests
+`418f6f93e5b40ec2fa441cc6379a21c9587f2b6e6c50f7863c75595c062e606c`
+and `e07cb51f4fe072cd79a014cc891cb8cede62880593d7659b17da9377a21099bc`
+remain explicit history.  The reviewed concordance classifies
+57 source rows as Lean-proved and 88 as human-proved frontier results, with 10
 conjectures, 15 open problems, and 24 non-applicable rows. Its newest exact
 matches include the punctured leading-Laurent theorem and the full uncentered/
 centered finite-prefix Appell expansion and exact-recovery pair described
@@ -1361,14 +1408,9 @@ asserted a result without one it was supplied, and where a source claimed
 analytic validity on the strength of formal algebra the claim was weakened to
 what the algebra establishes, each repair marked at the point of repair and
 collected in the volume's ledger.  Its formalization register records what the
-Lean corpus does and does not cover.  The current source overlay gives exact
-counterparts for the formal unit-series Bell identities, sequence-scale
-foundations, elementary power--logarithmic dominance and height comparisons,
-and polynomial block antidifferentiation, while keeping the unordered maximal
-scale, full Laurent wrapper, and deepest-pole identification outside the exact
-surface.  It still distinguishes those direct counterparts from a formalized
-*neighbour* — for example, the corpus proves Lagrange inversion and the Lambert
-series at the **origin**, while this volume works at **infinity**.  The absorbed
+Lean corpus does and does not cover, distinguishing a formalized *neighbour* —
+the corpus proves Lagrange inversion and the Lambert series at the **origin**,
+while this volume works at **infinity** — from actual coverage.  The absorbed
 directories were deleted after a residue audit.  By the same precedent, a
 standalone reference monograph on q-Pochhammer symbols and q-binomial
 coefficients — the machinery consumed by the exponents

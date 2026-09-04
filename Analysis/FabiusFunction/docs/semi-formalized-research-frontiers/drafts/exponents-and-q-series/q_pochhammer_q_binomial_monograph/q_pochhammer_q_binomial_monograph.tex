@@ -230,7 +230,8 @@
 \begin{center}
 \small\itshape This merged source edition incorporates the post-receipt
 closures described below.  Any pre-merge PDF receipt is retained solely as
-historical provenance and is not a receipt for this edition.
+historical provenance for the edition preceding this merged source and is not
+a receipt for this edition.
 \end{center}
 
 \chapter*{Abstract}
@@ -717,12 +718,15 @@ $\Norm q<1$, the declaration
 \path{hasProdLocallyUniformly_complexQPochhammerInf} proves locally
 uniform convergence on the whole $a$-plane and
 \path{complexQPochhammerInf_differentiable} proves entirety.  The
-division-free theorem \path{complexQPochhammerInf_eq_zero_iff} says
+division-free theorem
+\path{complexQPochhammerInf_eq_zero_iff} says
 that the product vanishes exactly when some factor $1-aq^j$ vanishes; it
 remains valid at $q=0$.  Under the present theorem's hypothesis $q\ne0$,
-\path{complexQPochhammerInf_eq_zero_iff_eq_inv_pow} gives the
+\path{complexQPochhammerInf_eq_zero_iff_eq_inv_pow}
+gives the
 literal lattice $a=(q^j)^{-1}$.  Finally,
-\path{analyticOrderAt_complexQPochhammerInf_of_eq_zero} proves that
+\path{analyticOrderAt_complexQPochhammerInf_of_eq_zero}
+proves that
 every zero has analytic order one.  Its proof splits the infinite product
 into the first $j+1$ factors and a shifted tail; uniqueness of the vanishing
 factor makes both complementary factors nonzero, leaving a nonzero analytic
@@ -1111,8 +1115,8 @@ Induct on $n$.  The boundary values are $1$.  Either recurrence in \Cref{thm:qpa
 
 \begin{remark}[Exact universal polynomial in Lean]
 The theorem
-\texttt{Fabius.gaussianBinomial\_\allowbreak{}eq\_\allowbreak{}eval%
-\textsubscript{2}\_\allowbreak{}universal} in
+\texttt{Fabius.gaussianBinomial\_\allowbreak{}eq\_\allowbreak{}eval}%
+\textsubscript{2}\allowbreak{}\texttt{\_universal} in
 \path{GaussianBinomialUniversal.lean} identifies every Gaussian coefficient
 over a commutative semiring with the evaluation of the universal polynomial
 \(GaussianBinomial{n}{k}{X}\in\NaturalNumbers[X]\).  Thus the polynomiality
@@ -7231,32 +7235,33 @@ which proves \eqref{eq:fixed-column-limit} and
 \eqref{eq:fixed-column-shifted-limit} and
 \eqref{eq:fixed-column-shifted-error}.
 \end{proof}
-\emph{Lean status.}  Exact in
-\path{GaussianBinomialFixedColumnRate.lean}, together with the earlier
-unshifted limit \path{Fabius.tendsto_gaussianBinomial_atTop}.  Over any
-normed field and for \(\lVert q\rVert<1\),
-\path{Fabius.tendsto_gaussianBinomial_add_const_atTop} in
-\path{QBinomialTheoremInfinite.lean} is the shifted limit --- stated there for
-an arbitrary shift, of which the shift by \(k\) used here is one case --- while
-\path{Fabius.gaussianBinomial_fixedColumn_relativeError_isBigO} and
-\path{Fabius.gaussianBinomial_shifted_fixedColumn_relativeError_isBigO}
-prove the two displayed multiplicative estimates.  The additional wrappers
-\path{Fabius.gaussianBinomial_fixedColumn_error_isBigO} and
-\path{Fabius.gaussianBinomial_shifted_fixedColumn_error_isBigO} give their
-additive forms.  The underlying nonasymptotic inequalities are
+\emph{Lean status.}  Exact by the combined
+\path{QBinomialTheoremInfinite.lean} and
+\path{GaussianBinomialFixedColumnRate.lean} APIs.  The upstream
+one-definition/29-theorem module proves the unshifted limit
+\path{Fabius.tendsto_gaussianBinomial_atTop}; both
+\path{Fabius.tendsto_gaussianBinomial_add_const_atTop} and its compatibility
+alias \path{Fabius.tendsto_gaussianBinomial_add_atTop} permit every fixed
+upper-index shift, and therefore give \eqref{eq:fixed-column-shifted-limit} at
+shift \(k\).  It also contains the generalized product bound
+\path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp}, its normed-field
+alias \path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one},
+its asymptotic form
+\path{Fabius.isBigO_finiteQPochhammerIn_pow_sub_one}, and the additive rates
+\path{Fabius.isBigO_gaussianBinomial_sub_inv} and
+\path{Fabius.isBigO_gaussianBinomial_add_sub_inv}.  The downstream
+zero-definition/nine-theorem rate leaf adds the compatibility product alias
+\path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp'},
+\path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le},
 \path{Fabius.norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le},
-\path{Fabius.norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le}, and
-\path{Fabius.norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le}; their
-elementary constant is \(k\exp(k)\), multiplied by the displayed geometric
-power.  At the generic product level,
-\path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp'} and
-\path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le} work in a normed
-commutative ring with multiplicative norm and \(\lVert1\rVert=1\).
-The primed exponential bound generalizes the normed-field result
-\path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one}
-in \path{QBinomialTheoremInfinite.lean}. The formal statements require no
-nonzero-nome premise and therefore include \(q=0\), where every error vanishes
-once its displayed exponent is positive.
+\path{Fabius.norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le},
+\path{Fabius.norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le}, and the
+four named relative/additive \texttt{IsBigO} wrappers.  Thus the formalization
+includes both displayed multiplicative estimates, their additive companions,
+and explicit nonasymptotic bounds with elementary constant \(k\exp(k)\).
+The product estimates already work in a normed commutative ring with
+normalized multiplicative norm; the field statements require neither
+completeness nor \(q\ne0\), so they include \(q=0\).
 
 
 % ed.: replaces the former statement of thm:central-fixed-q (monograph lines
@@ -8244,13 +8249,13 @@ It is $(z;1/2)_n=\prod_{j=0}^{n-1}(1-z/2^j)$, a degree-$n$ polynomial with exact
 
 \paragraph{Lean counterpart.}
 Under the canonical rational-polynomial and rational-root convention,
-\path{halfQBinomial_sum_eq_zero_iff} classifies all roots as
+\nolinkurl{halfQBinomial_sum_eq_zero_iff} classifies all roots as
 $2^j$ with $j<n$, while
-\path{gaussianBinomial_half_eq_halfQBinomial} identifies the displayed
+\nolinkurl{gaussianBinomial_half_eq_halfQBinomial} identifies the displayed
 Gaussian coefficients with that rational polynomial.  The
 zero-definition, one-theorem leaf
-\path{HalfQBinomialRootSimplicity.lean} adds
-\path{halfQBinomial_sum_rootMultiplicity_two_pow}, which proves that
+\nolinkurl{HalfQBinomialRootSimplicity.lean} adds
+\nolinkurl{halfQBinomial_sum_rootMultiplicity_two_pow}, which proves that
 each displayed root has multiplicity exactly one.  Thus
 \Cref{cor:halfbase-root-locus} is exact by composition over $\RationalNumbers$.
 Injective scalar extension preserves these displayed multiplicities, but the
@@ -13729,13 +13734,16 @@ retired source assertions, to their surviving canonical destinations.  These
 three views are complementary: the table below answers the Lean-status
 question for each labelled forward result, while the concordances preserve
 complete merger provenance without counting a repeated theorem twice.
-An independent lexical audit of the live Lean facade finds
-923 source modules and 11,611 public declarations, with zero missing module
-headers and zero declaration-documentation gaps.  The sibling source-only
+At the earlier frozen-merge checkpoint, an independent lexical audit found
+an upstream census of 957 source modules and 11,920 public declarations, with zero missing module
+headers and zero declaration-documentation gaps.  Retaining the unconditional
+public \path{Fabius.complexQPochhammerInf_eq_qPochhammerInfIn} bridge gives the
+historical semantic-union checkpoint 957/11,921.  The residual-existence
+certificate \path{Fabius.exists_eq_in_residual_interval} is included in the
+current census computed by \path{scripts/doc_audit.py} and pinned in
+\path{docs/doc_audit_baseline.json}.  The sibling source-only
 \path{GeometricRichardsonGenerating.lean} module contributes three definitions
 and seven theorems but changes no row in this forward \(q\)-series crosswalk.
-The declaration count is one above origin's 11,610 because the union retains
-the public \path{Fabius.complexQPochhammerInf_eq_qPochhammerInfIn} bridge.
 The census includes \path{RvachevSuperconvergentSynthesis.lean} (one
 definition and eight theorems); that synthesis module changes no row in this
 forward \(q\)-series crosswalk and no row in the immutable source
@@ -13895,7 +13903,7 @@ theorems;\\
 \path{QPochhammerComplexOrder.lean}: one definition and four theorems;\\
 \path{QPochhammerLogDerivative.lean}: zero definitions and ten theorems;\\
 \path{QPochhammerOrderDerivative.lean}: zero definitions and three theorems;\\
-\path{QBinomialTheoremInfinite.lean}: one definition and 22 theorems; its
+\path{QBinomialTheoremInfinite.lean}: one definition and 29 theorems; its
 use of \path{Fabius.finiteQPochhammerIn_zero_left} imports the unique
 declaration from \path{GaussianBinomialAtOne.lean};\\
 \path{GaussianBinomialFixedColumnRate.lean}: zero definitions and nine
@@ -13931,9 +13939,6 @@ generic theorem imported from \path{GeneralQConditionNumber.lean};\\
 \path{GaussianBinomialContinuity.lean}: zero definitions and three theorems;\\
 \path{GaussianBinomialUniversal.lean}: zero definitions and two theorems;\\
 \path{JacobiTripleProduct.lean}: two definitions and twenty-five theorems;\\
-\path{QBinomialTheoremInfinite.lean}: one definition and twenty-two theorems;
-its use of \path{Fabius.finiteQPochhammerIn_zero_left} imports the unique
-declaration from \path{GaussianBinomialAtOne.lean};\\
 \path{QPascalSummation.lean}: zero definitions and four theorems;\\
 \path{QuantumBinomial.lean}: zero definitions and two theorems;\\
 \path{PolynomialQDerivative.lean}: two definitions and seventeen theorems;\\
@@ -13956,7 +13961,7 @@ declaration from \path{GaussianBinomialAtOne.lean};\\
 \end{center}
 
 The imported \path{QBinomialTheoremInfinite.lean} surface has one definition
-and twenty-seven theorems.  In particular,
+and 29 theorems.  In particular,
 \path{Fabius.finiteQPochhammerIn_zero_left} is canonically declared in
 \path{GaussianBinomialAtOne.lean} and merely made available by that import; it
 is not redeclared in \path{QBinomialTheoremInfinite.lean}.
@@ -13979,7 +13984,9 @@ The zero-definition, nine-theorem
 \path{Fabius.gaussianBinomial_shifted_fixedColumn_relativeError_isBigO},
 \path{Fabius.gaussianBinomial_fixedColumn_error_isBigO}, and
 \path{Fabius.gaussianBinomial_shifted_fixedColumn_error_isBigO}.  The first
-two are generic finite-product defect bounds, the third is the denominator-free
+declaration is a compatibility alias for the generalized exponential product
+bound owned by the upstream one-definition/29-theorem module.  The second is
+the elementary finite-product defect bound, the third is the denominator-free
 relative Gaussian bound, the next two are fixed and shifted nonasymptotic
 additive bounds, and the last four are the relative and additive Big-O forms.
 The first three work over a normed commutative ring with
@@ -16408,7 +16415,7 @@ the manuscript's closed-tail convention}\\[2pt]
 $n\ge1$, with the expectation represented by the full-line measure integral}\\[2pt]
 \Cref{thm:geometric-uniform-mgf} & \statuspartial &
 \texttt{complexMGF\_weightedSumDistribution\_eq\_complexGeneratingFunction},
-\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval\textsubscript{2}\_\allowbreak{}eq\_\allowbreak{}mgf\_\allowbreak{}taylorCoefficient},
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval}\texttt{\textsubscript{2}}\texttt{\_\allowbreak{}eq\_\allowbreak{}mgf\_\allowbreak{}taylorCoefficient},
 \texttt{geometricUniformComplexMomentProduct},
 \texttt{hasProdLocallyUniformly\_\allowbreak{}geometricUniformComplexMomentProduct},
 \texttt{differentiable\_\allowbreak{}geometricUniformComplexMomentProduct},
@@ -16612,7 +16619,8 @@ outer-locally-uniform general-$q$ nome-$q^2$ Pochhammer factorization, both
 dyadic outer-product specializations, and real-frequency local and compact
 uniform convergence of the full prefixes are exact, but the named
 centered/MGF wrapper, reciprocal outside-disk formula, pole divisor, and
-zero--pole exchange are not packaged}\\[2pt]
+zero--pole exchange and the packaged complex-frequency full-phase-prefix
+statement are not formalized}\\[2pt]
 \Cref{thm:qF-moment-polynomial} & \statusexact &
 \texttt{geometricUniformMomentPolynomial},
 \texttt{geometricUniformMomentPolynomial\_\allowbreak{}zero},
@@ -16623,19 +16631,20 @@ zero--pole exchange are not packaged}\\[2pt]
 \texttt{geometricUniformMomentPolynomial\_\allowbreak{}two},
 \texttt{geometricUniformMomentPolynomial\_\allowbreak{}three},
 \texttt{geometricUniformMomentPolynomial\_\allowbreak{}four},
-\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval\textsubscript{2}\_\allowbreak{}eq\_\allowbreak{}mgf\_\allowbreak{}taylorCoefficient},
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval}\texttt{\textsubscript{2}}\texttt{\_\allowbreak{}eq\_\allowbreak{}mgf\_\allowbreak{}taylorCoefficient},
 \texttt{geometricUniformComplexMomentProduct},
 \texttt{hasProdLocallyUniformly\_\allowbreak{}geometricUniformComplexMomentProduct}, and
-\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval\textsubscript{2}\_\allowbreak{}eq\_\allowbreak{}complexMomentProduct\_\allowbreak{}taylorCoefficient},
-\texttt{geometricUniformExteriorComplexMomentGerm},
-\texttt{analyticAt\_\allowbreak{}geometricUniformExteriorComplexMomentGerm}, and
-\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}exteriorComplexMomentGerm\_\allowbreak{}taylorCoefficient},
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval}\texttt{\textsubscript{2}}\texttt{\_\allowbreak{}eq\_\allowbreak{}complexMomentProduct\_\allowbreak{}taylorCoefficient},
+\texttt{geometricUniformExterior}\allowbreak{}\texttt{ComplexMomentGerm},
+\texttt{analyticAt\_}\allowbreak{}\texttt{geometricUniformExterior}\allowbreak{}\texttt{ComplexMomentGerm}, and
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval}\texttt{\textsubscript{2}}\texttt{\_\allowbreak{}eq\_\allowbreak{}exteriorComplexMomentGerm\_\allowbreak{}taylorCoefficient},
 \texttt{geometricUniformMomentRatFunc},
 \texttt{qFactorial\_\allowbreak{}mul\_\allowbreak{}geometricUniformMomentRatFunc},
 \texttt{eval\_\allowbreak{}geometricUniformMomentRatFunc\_\allowbreak{}eq\_\allowbreak{}complexMomentProduct\_\allowbreak{}taylorCoefficient},
 \texttt{eval\_\allowbreak{}geometricUniformMomentRatFunc\_\allowbreak{}eq\_\allowbreak{}exteriorComplexMomentGerm\_\allowbreak{}taylorCoefficient}, and
-\texttt{eval\_\allowbreak{}geometricUniformMomentRatFunc\_\allowbreak{}one}\newline
-{\footnotesize\texttt{GeometricUniformMomentPolynomial};
+\texttt{eval\_\allowbreak{}geometricUniformMomentRatFunc\_\allowbreak{}one}\\[2pt]
+& & {\footnotesize\emph{\Cref{thm:qF-moment-polynomial}, continued.}
+\texttt{GeometricUniformMomentPolynomial};
 \texttt{GeometricUniformMomentPolynomialBridge};
 \texttt{GeometricUniformComplexMomentProduct};
 \texttt{GeometricUniformExterior}\allowbreak{}\texttt{ComplexMomentGerm};

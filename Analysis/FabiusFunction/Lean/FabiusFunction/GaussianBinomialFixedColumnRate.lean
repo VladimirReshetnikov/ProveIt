@@ -27,9 +27,8 @@ eight sharper nonasymptotic and relative/additive error results below.
 
 ## Main declarations
 
-* `norm_finiteQPochhammerIn_pow_sub_one_le_exp'` bounds the product defect by
-  the exponential of the sum of the factor norms, over a normed commutative
-  ring rather than only a normed field.
+* `norm_finiteQPochhammerIn_pow_sub_one_le_exp'` is the compatibility alias
+  for the upstream generalized exponential product-defect estimate.
 * `norm_finiteQPochhammerIn_pow_sub_one_le` gives the geometric bound with
   the simple fixed-column constant `k * exp k`.
 * `norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le` is the
@@ -76,49 +75,14 @@ section FiniteProduct
 
 variable {R : Type*} [NormedCommRing R] [NormOneClass R] [NormMulClass R]
 
-/-- A finite shifted q-Pochhammer product differs from one by at most the
-exponential of the sum of its factor norms:
-
-`||(q^m;q)_k - 1|| <= exp(k * ||q||^m) - 1` when `||q|| <= 1`.
-
-This is the q-Pochhammer specialization of Mathlib's general finite-product
-defect estimate `Finset.norm_prod_one_add_sub_one_le`.
-
-The prime marks a genuine generalization rather than a variant: the unprimed
-`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` in
-`QBinomialTheoremInfinite.lean`
-asks for a normed *field*, while this version needs only a normed commutative
-ring with multiplicative norm and norm-one unit, which every normed field is. -/
+/-- Compatibility alias for the generalized exponential product-defect estimate
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp` supplied by
+`QBinomialTheoremInfinite`. -/
 theorem norm_finiteQPochhammerIn_pow_sub_one_le_exp'
     (q : R) (hq : ‖q‖ ≤ 1) (m k : ℕ) :
     ‖finiteQPochhammerIn (q ^ m) q k - 1‖ ≤
-      Real.exp ((k : ℝ) * ‖q‖ ^ m) - 1 := by
-  have hsum :
-      (∑ j ∈ Finset.range k, ‖-(q ^ m * q ^ j)‖) ≤
-        (k : ℝ) * ‖q‖ ^ m := by
-    calc
-      (∑ j ∈ Finset.range k, ‖-(q ^ m * q ^ j)‖) =
-          ∑ j ∈ Finset.range k, ‖q‖ ^ m * ‖q‖ ^ j := by
-            apply Finset.sum_congr rfl
-            intro j _hj
-            rw [norm_neg, norm_mul, norm_pow, norm_pow]
-      _ ≤ ∑ _j ∈ Finset.range k, ‖q‖ ^ m * 1 := by
-            apply Finset.sum_le_sum
-            intro j _hj
-            exact mul_le_mul_of_nonneg_left
-              (pow_le_one₀ (norm_nonneg q) hq)
-              (pow_nonneg (norm_nonneg q) m)
-      _ = (k : ℝ) * ‖q‖ ^ m := by
-            simp only [mul_one, Finset.sum_const, Finset.card_range,
-              nsmul_eq_mul]
-  calc
-    ‖finiteQPochhammerIn (q ^ m) q k - 1‖ ≤
-        Real.exp (∑ j ∈ Finset.range k, ‖-(q ^ m * q ^ j)‖) - 1 := by
-      simpa only [finiteQPochhammerIn, sub_eq_add_neg] using
-        (Finset.norm_prod_one_add_sub_one_le (Finset.range k)
-          (fun j : ℕ ↦ -(q ^ m * q ^ j)))
-    _ ≤ Real.exp ((k : ℝ) * ‖q‖ ^ m) - 1 :=
-      sub_le_sub_right (Real.exp_le_exp.mpr hsum) 1
+      Real.exp ((k : ℝ) * ‖q‖ ^ m) - 1 :=
+  norm_finiteQPochhammerIn_pow_sub_one_le_exp hq m k
 
 /-- **Geometric finite-product defect bound.**  For `||q|| <= 1`,
 
@@ -143,7 +107,7 @@ theorem norm_finiteQPochhammerIn_pow_sub_one_le
   calc
     ‖finiteQPochhammerIn (q ^ m) q k - 1‖ ≤
         Real.exp ((k : ℝ) * ‖q‖ ^ m) - 1 :=
-      norm_finiteQPochhammerIn_pow_sub_one_le_exp' q hq m k
+      norm_finiteQPochhammerIn_pow_sub_one_le_exp hq m k
     _ ≤ ((k : ℝ) * ‖q‖ ^ m) *
         Real.exp ((k : ℝ) * ‖q‖ ^ m) :=
       exp_sub_one_le_mul_exp_fixedColumn _

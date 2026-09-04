@@ -6,8 +6,8 @@
 > When one or more reports arrive, perform a **quick archival intake only**:
 > fetch and merge `origin/main`; check archive safety and integrity; unpack each
 > report; move it to the appropriate thematic directory; normalize repository
-> line endings; record provenance in the surviving purpose-specific records;
-> retire any submitted `SHA256SUMS` or `SHA256SUMS.*` ledger;
+> line endings; retire submitted files whose basename is `SHA256SUMS` or matches
+> `SHA256SUMS.*`; record intake provenance in surviving purpose-specific records;
 > delete the ZIP; update
 > `MANIFEST.md` and the destination `README.md`; then commit and immediately
 > publish that intake commit to the feature branch and to `origin/main` by an
@@ -161,12 +161,13 @@ third package, which git applied at commit. All three PDFs are readable,
 unencrypted, pdfTeX-1.40.26, A4;
 one is fully embedded and Type-3-free, the other two carry two or three Type-3
 rows inherited from a Matplotlib figure. Two carry Libertinus faces. None loads
-`docs/fabius-notation.tex`. Two archives shipped a submitted checksum manifest
-and one shipped `MANIFEST.sha256`; all three were verified at intake. The two
-prohibited package ledgers were retired under repository policy, while the
-purpose-specific `MANIFEST.sha256` remains in the filed package. Historical
-bytes remain recoverable from Git. Comparison, deduplication, canonical selection,
-proof checking, numerical reproduction and Lean crosswalking were all deferred.
+`docs/fabius-notation.tex`. Two archives shipped a submitted `SHA256SUMS` and
+one a `MANIFEST.sha256`; all three were verified at intake. The two prohibited
+package ledgers were retired, while the purpose-specific manifest remains in
+the filed package. Historical bytes remain recoverable from the filing revision
+in Git, and no replacement package ledger was added. Comparison,
+deduplication, canonical selection, proof checking, numerical reproduction,
+and Lean crosswalking were all deferred.
 
 Previous batch (three archives, filed and removed on 2026-09-03): the three Fibonacci-inversion articles, all to
 `../series-and-transseries/special-function-inversion/` as its fourth subject.

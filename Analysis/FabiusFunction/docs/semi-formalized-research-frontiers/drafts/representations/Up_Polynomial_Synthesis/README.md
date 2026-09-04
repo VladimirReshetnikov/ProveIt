@@ -31,12 +31,24 @@ normalization claims have been demoted to problems.
   conjugated operators, Gauss/Christoffel--Darboux synthesis, smoothed
   Legendre--Appell connections, parity, central q-determinants, asymptotics,
   exact Sturm evidence, and consolidated conjectures.
-- The driver plus its three chapter sources form a four-file closure of 5,434
-  lines and 211,270 bytes, with digest
-  `62aa76428089cd164705b1d31e038d4e48545681eedc01cb491e6a94f07b0e41`.
-- Up_Polynomial_Synthesis.pdf — synchronized 62-page, 1,071,181-byte report;
-  SHA-256
+- Up_Polynomial_Synthesis.pdf — the local 63-page receipt and incoming
+  62-page `b899` receipt are both historical after the merged driver changed.
+  The local tuple is root
+  `2385L/99806B/81f3ba09894aca8331ae33c77e2a56f78c107fa3b04072878cff8ad60e815b5a`,
+  five-file aggregate
+  `11bd62d880f5ba4c63d872fb0ba5d801d10ba2a2337ef5d098643383639086dd`,
+  passes `61/63/63`, PDF
+  `63pp/1077921B/0903f2920d21f0ea8182822c31338e0be268d4d77bc8ddb7a2ff861ba2a6aa5f`,
+  and log
+  `964L/38999B/52bd9d03864853f1ee31fa682fa96806345bb355582831c55fcc152c1acb2e7d`.
+  The incoming four-file closure was 5,434 lines / 211,270 bytes with digest
+  `62aa76428089cd164705b1d31e038d4e48545681eedc01cb491e6a94f07b0e41`;
+  its 62-page / 1,071,181-byte PDF had SHA-256
   `99c5d8256b983652755fe8e46ef015277e61b94941a4ca6c875bddaf0493b101`.
+  Each tuple remains evidence for its own source snapshot. The accepted
+  merged-source render is in the [merge-28de4e51 receipt
+  register](../../MANIFEST.md#merge-28de4e51-publication-receipts); the former
+  60-page artifact remains earlier history.
 - assets/provenance/THEOREM_CROSSWALK.md — one-to-one provenance and evidence
   ledger for all 80 theorem-like assertions.
 - assets/provenance/ — source snapshots, migration map, and asset policy.
@@ -91,7 +103,7 @@ is Type 3. Representative title, chapter-opening, theorem, table, figure, and
 final pages passed visual inspection. Generated sidecars were removed, and no
 package-local checksum ledger is a live publication gate.
 
-The current synchronized `b899` checkpoint uses the source and closure identity
+The historical synchronized `b899` checkpoint uses the source and closure identity
 listed under Canonical artifacts. Exactly three serial halt-on-error passes from
 absent sidecars ran 61 pages / 1,045,488 bytes → 62 / 1,071,179 → 62 /
 1,071,181. The final 62-page, 1,071,181-byte PDF has SHA-256
@@ -200,8 +212,8 @@ It is slightly stronger only in allowing any `BoundedFabius` satisfying
 `IsFabius`, and it includes `n = 0`. This promotion does not formalize the
 Jacobi closed form, all-degree parity or rationality in `thm:leg-mode-synthesis`,
 nor reverse closure, mesh minimality, or any larger Lagrange right-inverse
-claim. The current 62-page `b899` package PDF renders these status annotations;
-the preceding 60-page PDF remains historical.
+claim. The 60-, 62-, and 63-page package PDFs remain historical; none is
+asserted to render the merged driver.
 
 The compiled source-only `FabiusFunction.RvachevLegendreBiorthogonality`
 module promotes only `thm:leg-biorthogonality` to Exact/Complete. Its
@@ -228,8 +240,10 @@ both odd. The latter is exactly `mu_(2m) = 1 mod 2` under the standard residue
 convention for rational two-adic units. Both declarations include `m = 0`.
 This is executable rational valuation/parity data, not construction of a
 separate topological `ℚ_2` value, and it promotes no neighboring Legendre
-asymptotic or matrix row. The accepted current 63-page package PDF renders both
-promotions; the former 60-page artifact predates them.
+asymptotic or matrix row. The historical 63-page package PDF renders both
+promotions; the current merged-source receipt is in the [merge-28de4e51
+register](../../MANIFEST.md#merge-28de4e51-publication-receipts). The former
+60-page artifact predates them.
 
 The Q12 root transition is exact computer-assisted mathematics: rational
 polynomials and rational Sturm chains decide root counts. Approximate complex
