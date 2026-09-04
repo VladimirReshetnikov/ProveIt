@@ -451,6 +451,8 @@ def consolidate(group_dir, members, out_name, title, out_subdir=None):
                     continue  # the merged source itself
                 if fn.lower().endswith('.pdf') and os.path.splitext(fn)[0].lower() == os.path.splitext(mtex)[0].lower() and rel == '.':
                     continue  # the member's own compiled PDF
+                if is_retired_checksum_basename(fn):
+                    continue  # retired package-local checksum ledger
                 d = os.path.join(dstdir, rel)
                 os.makedirs(d, exist_ok=True)
                 src = os.path.join(root, fn)

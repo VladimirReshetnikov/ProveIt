@@ -78,12 +78,13 @@ The canonical frontier artifacts are:
 > files / 140,223 lines / 6,439,569 bytes, with direct aggregate digest
 > `ae8690ad8d160055cbae36eff96d858f87572d171e7aacf7540d67543998af21`.
 
-> **Current publication status.**  The fixed-26 publication check—14 fresh
+> **Deferred publication status.**  The fixed-26 publication check—14 fresh
 > build cycles and 12 retained verified pairs—is recorded once in the
 > [fixed-26 publication checkpoint](drafts/MANIFEST.md#fixed-26-publication-checkpoint).
 > A row still marked pending makes no synchronization claim.  The exact older
-> receipts on this page remain historical evidence; only the fixed-26 table
-> revalidates an unchanged pair for the current source union.
+> receipts on this page remain historical evidence; under the user-directed
+> deferral, the fixed-26 table is an inventory rather than a merged-current
+> parity receipt.
 
 The historical `69b447f7c` publication rebuild touched ten roots: the primary exposition, Lean
 walkthrough, canonical frontier, geometric-q synthesis, canonical q-series
@@ -91,8 +92,8 @@ synthesis, inverse-theory synthesis, comb synthesis, Lambert Guide, Up
 Polynomial Synthesis, and Thue--Morse Atlas. All ten roots have exact
 synchronized source/PDF receipts for that checkpoint in the draft manifest
 and their local records. The merged source closures make those pairs
-historical; replacement parity is recorded only in the fixed-26 checkpoint
-linked above.  Receipts outside that replacement batch remain valid only for
+historical; the deferred replacement batch is recorded in the fixed-26
+checkpoint linked above.  Receipts outside that batch remain valid only for
 their named source states.
 
 The authoritative live Lean census and zero-gap result are recorded in the
@@ -149,7 +150,8 @@ the four-module union is 4 definitions + 37 theorems = 41 declarations.
 Higher or convergent Puiseux/logarithmic
 expansions remain open. The historical `b899` primary, walkthrough,
 Lambert-Guide, and canonical-frontier PDFs rendered this integration at their
-named source checkpoint; replacement parity is recorded in the fixed-26 table.
+named source checkpoint; the deferred replacement inventory is recorded in the
+fixed-26 table without a merged-current parity claim.
 The live documentation
 census on the incoming Lambert branch at the exact-radius four-theorem
 checkpoint was 903 modules and 11,447 public declarations; the value-completion
@@ -358,8 +360,8 @@ also supplies the report-facing analytic companion
 `Fabius.hasSum_geometricLagrangeRichardson_mul_pow` under strict nome
 contraction and absolute summability. The historical `b899` primary,
 walkthrough, q-series, comb-synthesis, and canonical-frontier PDFs rendered
-this source union at their named checkpoint; replacement parity is recorded
-in the fixed-26 table.
+this source union at their named checkpoint; the deferred replacement
+inventory is recorded in the fixed-26 table without a merged-current parity claim.
 
 The one-definition/seventeen-theorem
 `FabiusFunction.GeometricUniformRealization` module transfers the canonical
@@ -548,8 +550,8 @@ spectral Mellin parameter derivative, the successor law
 when its logarithm is read as the existing chosen GammaLog coordinate. No
 principal-`Complex.log` identity or nonpositive-parameter differential law
 is claimed. The historical `b899` Thue--Morse Atlas and canonical-frontier
-PDFs rendered these additions at their named checkpoint; replacement parity
-is recorded in the fixed-26 table.
+PDFs rendered these additions at their named checkpoint; the deferred
+replacement inventory is recorded in the fixed-26 table.
 
 `FabiusFunction.ThueMorseCornerIntegral` has one public definition and four
 theorems: `Fabius.centeredBoxIntegral`,
@@ -575,8 +577,8 @@ Legendre value at zero, evenness, compact-support truncation, and pairing of
 the positive and negative indices. This makes only `cor:leg-central-sum`
 Exact; it adds no Jacobi decoder formula, reverse spectral closure, or larger
 Lagrange right-inverse theorem. These declarations were rendered by the
-historical `b899` Up-synthesis and canonical-frontier PDFs; replacement parity
-is recorded in the fixed-26 table.
+historical `b899` Up-synthesis and canonical-frontier PDFs; the deferred
+replacement inventory is recorded in the fixed-26 table.
 
 The final source-only `FabiusFunction.GaussianBinomialFixedColumnRate` leaf has
 no definitions and ten theorems:
@@ -713,9 +715,9 @@ and its 395-page, 2,494,961-byte A4 PDF (SHA-256
 The q-Chu/Richardson, Gaussian second-moment, Lambert branch-gap Bernoulli, and
 geometric-uniform moment-polynomial source union postdates that exact historical
 receipt.  Its
-current source concordance now records 99 Lean-proved, 379 human-proved,
-60 not-applicable, and 9 conjectural rows; the rigorous forward ledger is 177
-Exact / 82 Partial / 15 None / 8 interface, with q-Lucas still Partial.
+current source concordance records 103 Lean-proved, 375 human-proved,
+60 not-applicable, and 9 conjectural rows; the rigorous forward ledger is 181
+Exact / 79 Partial / 14 None / 8 interface, with q-Lucas still Partial.
 
 The historical q-series receipt (2026-09-04 source checkpoint) records the then-current 16,910-line,
 842,514-byte TeX source at SHA-256

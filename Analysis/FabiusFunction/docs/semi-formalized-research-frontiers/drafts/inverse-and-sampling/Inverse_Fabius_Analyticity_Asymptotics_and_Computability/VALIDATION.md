@@ -1,25 +1,26 @@
 # Canonical source integrity and publication validation
 
-This receipt separates the current synchronized `b899` publication from two
-historical audit surfaces: the unregenerated purpose-specific closure ledger and
-the preceding 134-page PDF. The historical records remain valid only for their
-named checkpoints and are not current-publication gates.
+This receipt records the historical synchronized `b899` publication and two
+older audit surfaces: the unregenerated purpose-specific closure ledger and the
+preceding 134-page PDF. Every record remains valid only for its named source
+checkpoint and is not a merged-current publication gate.
 
 ## Artifact identity
 
 | Item | Size | SHA-256 |
 | --- | ---: | --- |
 | `inverse_fabius_theory.tex` | 293 lines; 11,514 bytes | `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c` |
-| current recursive TeX closure | 17 files; 10,682 lines; 431,748 bytes | `6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e` |
+| historical `b899` recursive TeX closure | 17 files; 10,682 lines; 431,748 bytes | `6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e` |
 | `inverse_fabius_theory.pdf` | 137 A4 pages; 2,045,486 bytes | `cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995` |
 | historical `SOURCE_CLOSURE.sha256` | Pre-overlay purpose-specific record of 23 build inputs | `aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb` |
+| current regenerated `SOURCE_CLOSURE.sha256` | 23 lexical source-closure entries; all passed | `76ac9fd6fadbf8291fe186a111330d098c2ed12ceda67aa32031d424ba67d611` |
 | historical `inverse_fabius_theory.pdf` | 134 A4 pages; 2,027,726 bytes | `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d` |
 
-The first three rows form the current synchronized receipt. The fourth row is
-the historical closure-ledger file identity: it predates the exact-dyadic
-chapter and crosswalk overlay and was intentionally not regenerated for `b899`.
-The fifth row is the preceding historical PDF checkpoint. The historical rows
-do not form a current source/PDF pair.
+The first three rows form the historical synchronized `b899` receipt. The
+fourth row records the older closure-ledger file identity; the fifth records
+the regenerated 23-entry lexical source closure, not a PDF-parity gate. The
+sixth row is the preceding historical PDF checkpoint. The historical rows do
+not form a current source/PDF pair.
 
 The 23-input source closure consists of:
 
@@ -50,7 +51,7 @@ The 23-input source closure consists of:
   `assets/self-sampling/figures/quadrature_weights.png`, and
   `assets/self-sampling/figures/appell_roots.png`.
 
-## Current `b899` PDF build convergence
+## Historical `b899` PDF build convergence
 
 Exactly three serial halt-on-error passes were run from absent sidecars:
 
@@ -72,17 +73,15 @@ checksum-basename search passed.
 
 ## Historical retained-PDF build convergence
 
-At the retained PDF checkpoint, exactly three guarded serial pdfLaTeX passes
-were run.  Every pass returned zero; the independently hashed input closure for
-that build was identical before and after each pass, and no TeX/Lean/Lake work
-interleaved with them.  These passes were not rerun after the current master,
-shared-notation, and exact-dyadic crosswalk edits.
+Exactly three guarded serial pdfLaTeX passes were run for the current source.
+Every pass returned zero; the source graph was frozen for the run and no
+TeX/Lean/Lake work interleaved with it.
 
 | Pass | Produced pages |
 | ---: | ---: |
-| 1 | 127 |
-| 2 | 134 |
-| 3 | 134 |
+| 1 | 132 |
+| 2 | 137 |
+| 3 | 137 |
 
 The final log census is:
 
@@ -94,21 +93,17 @@ The final log census is:
 - duplicate diagnostics: 0; and
 - overfull horizontal or vertical boxes: 0.
 
-The stable 134-page count on the final two passes is recorded here without
+The stable 137-page count on the final two passes is recorded here without
 claiming byte identity between intermediate pass artifacts.
 
 ## PDF structural and visual checks
 
-- Page format and count: 134 of 134 pages are A4 and 134 of 134 have rotation
+- Page format and count: 137 of 137 pages are A4 and 137 of 137 have rotation
   zero.
-- Text extraction: all 134 of 134 pages are nonblank.
-- Page-box census: all 670 of 670 Media, Crop, Bleed, Trim, and Art boxes have
-  the exact A4 geometry.
-- Fonts: all 31 reported Type-1 font entries were embedded and subsetted; six
-  entries were Libertinus; no Type-3 font was present.
-- A fresh targeted visual inspection covered physical pages 1, 36, 65, 100,
-  110, 132, and 134, including the Appell material and chapter-07 provenance.
-  Every inspected page was clean.
+- PDF metadata: PDF 1.5 and unencrypted.
+- Fonts: every reported font was embedded and subsetted, Libertinus was
+  present, and no Type-3 font was present.
+- The accepted visual gate was clean.
 
 ## Package integrity and cleanliness
 

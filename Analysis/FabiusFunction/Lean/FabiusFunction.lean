@@ -5,6 +5,10 @@ import FabiusFunction.PeriodicOrbitGelfondBound
 import FabiusFunction.PascalParityPeriodic
 import FabiusFunction.RvachevHalfIntegerEnergy
 import FabiusFunction.LambertWElementaryBounds
+import FabiusFunction.CayleyTreeFunction
+import FabiusFunction.CayleyKernel
+import FabiusFunction.CayleyLocalCoordinate
+import FabiusFunction.DivisorTransform
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.CompleteHomogeneousGenerating
 import FabiusFunction.CompleteHomogeneousBell
@@ -26,6 +30,7 @@ import FabiusFunction.BellComposition
 import FabiusFunction.BernoulliStirling
 import FabiusFunction.BellHomogeneity
 import FabiusFunction.StirlingOrdinaryGF
+import FabiusFunction.StirlingCompleteHomogeneous
 import FabiusFunction.EulerianGeneratingFunctions
 import FabiusFunction.ExponentialRiordan
 import FabiusFunction.ExponentialFormula
@@ -70,11 +75,24 @@ import FabiusFunction.FallingFactorialSeries
 import FabiusFunction.CauchyPolynomials
 import FabiusFunction.CauchyPolynomialReflection
 import FabiusFunction.CoefficientRules
+import FabiusFunction.UnitSeriesPowerRecurrence
+import FabiusFunction.ExpSeriesRecurrence
+import FabiusFunction.StirlingSeriesCoefficients
 import FabiusFunction.IteratedLeibniz
 import FabiusFunction.NorlundDiagonal
+import FabiusFunction.ExponentialRescaling
+import FabiusFunction.BernoulliFormalLog
+import FabiusFunction.NorlundGeneralized
 import FabiusFunction.NarayanaNumbers
+import FabiusFunction.AssociahedronFaceNumbers
+import FabiusFunction.PochhammerFalling
 import FabiusFunction.StirlingFirstModH
+import FabiusFunction.StirlingSymmetricFunctions
 import FabiusFunction.LagrangeInversion
+import FabiusFunction.LagrangeInversionUniqueness
+import FabiusFunction.NewtonReciprocal
+import FabiusFunction.RaneyNumbers
+import FabiusFunction.AbelPolynomialSeries
 import FabiusFunction.LambertWSeries
 import FabiusFunction.FussCatalanSeries
 import FabiusFunction.InverseBellCoefficients
@@ -95,6 +113,7 @@ import FabiusFunction.SquareRootSeries
 import FabiusFunction.PowerSumOrdinaryBell
 import FabiusFunction.StirlingParityBitwise
 import FabiusFunction.StirlingSecondReverseRow
+import FabiusFunction.StirlingSecondReverseRowIdentity
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
@@ -290,10 +309,13 @@ import FabiusFunction.DyadicBoundaryIdentity
 import FabiusFunction.AliasDyadicBridge
 import FabiusFunction.AliasQBinomialBridge
 import FabiusFunction.MeanValueBracket
+import FabiusFunction.BackwardErrorExistence
 import FabiusFunction.TransseriesHeight
 import FabiusFunction.TransseriesScale
+import FabiusFunction.TransseriesFlat
 import FabiusFunction.TransseriesWellBased
 import FabiusFunction.WrightOmega
+import FabiusFunction.WrightOmegaTwoOrders
 import FabiusFunction.LambertShiftInverse
 import FabiusFunction.LambertShiftConcavity
 import FabiusFunction.LambertCorrectionEquation
@@ -527,10 +549,13 @@ import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
 import FabiusFunction.TransseriesBlockAntiderivative
 import FabiusFunction.TransseriesDifferentialBlock
+import FabiusFunction.TransseriesDifferentialClosure
 import FabiusFunction.TransseriesHarmonicIncrement
 import FabiusFunction.TransseriesScaleDominance
+import FabiusFunction.TransseriesBlockClasses
+import FabiusFunction.TransseriesMonomialUniqueness
+import FabiusFunction.TransseriesWrightOmegaTerms
 import FabiusFunction.TransseriesPolyLogScale
-import FabiusFunction.TransseriesFlat
 import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
 import FabiusFunction.TransferPositivity
@@ -573,6 +598,7 @@ import FabiusFunction.Regularity
 import FabiusFunction.Convexity
 import FabiusFunction.EffectiveFlatness
 import FabiusFunction.SharpFlatness
+import FabiusFunction.FabiusEndpointTwoTerm
 import FabiusFunction.FabiusInverse
 import FabiusFunction.InverseModulus
 import FabiusFunction.FabiusInverseEffectiveContinuity
@@ -830,6 +856,17 @@ filters are diagonalized coefficientwise on formal power series, with exact
 Gaussian residual multipliers for geometric rows; the recursive Gaussian
 coefficients themselves have functorial, symmetric, denominator-free ring
 laws.
+The current facade also reaches sixteen newly added, fully documented leaves:
+the Bell/Touchard and Cayley/derangement algebraic APIs, scoped Lambert and
+core-inversion utilities, backward-error, remainder-transport, staircase and
+least-term lemmas, and abstract differential-closure and harmonic-increment
+tools.  Their lexical inventory is 21 definitions and 115 theorems.  The
+existing flatness module is the semantic union of its generic-vector 1+11 API
+and a scalar-compatibility 3+11 API; the differential-block and infinite
+q-binomial modules are respectively 1+20 and 1+27.  These census statements
+describe the public surface only: they do not supply analytic continuation,
+an unnamed error term, a concrete transseries field, or a broader paper claim
+than the hypotheses of the individual declarations support.
 The geometric Richardson generating-function layer is the exact 3+7 public
 surface `geometricRichardsonKernel`, `qPochhammerNormalizedDataSeries`,
 `geometricRichardsonTransform`,
@@ -1153,7 +1190,8 @@ finite q-Pochhammer products, with the quotient form retaining both explicit
 nonvanishing-denominator hypotheses.
 
 Four root-of-unity and q-Catalan companions add one definition and twenty-four
-theorems: `CyclotomicDivisibility` 0+3, `PrimitiveRootBlock` 0+3,
+theorems (twenty-five declarations): `CyclotomicDivisibility` 0+3,
+`PrimitiveRootBlock` 0+3,
 `QCatalan` 1+11, and `QLucas` 0+7.  They prove the cyclotomic carry criterion,
 complete primitive-root blocks, the q-Lucas theorem over integral domains, and
 MacMahon's integral q-Catalan polynomial with its degree and value at one.
@@ -1243,9 +1281,9 @@ with the two positivity checks discharged by 32-piece subdivided Bernstein
 certificates — integer coefficients verified by `ring` normalization, no
 Sturm sequences — on a general piecewise-positivity engine for `[0,1]`.
 
-The Newton-interpolation and Jackson-q-beta tail contributes three definitions
-and twenty-one theorems.  `NewtonInterpolation` has two definitions and
-thirteen theorems: triangular Newton coefficients and polynomials,
+The Newton-interpolation and Jackson-q-beta tail contributes four definitions
+and twenty-seven theorems.  `NewtonInterpolation` has three definitions and
+nineteen theorems: triangular Newton coefficients and polynomials,
 interpolation and uniqueness, the divided-difference formula, and its explicit
 geometric-grid specialization.  `QBetaIntegral` has one definition and eight
 theorems: for `0 < q < 1` and positive arguments it evaluates the Jackson

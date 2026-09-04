@@ -40,6 +40,16 @@ carries is its own re-derivation of the shared layer.
 Every absorbed report's verification material — scripts, data tables, and
 figures — is preserved under `geometric_q_fabius_frontiers/assets/`.
 
+The accepted current whole-root receipt for
+`geometric_q_fabius_frontiers/` is a 27,520-line, 1,266,515-byte source with
+SHA-256 `8292f10862334cb809139259eeb4906bb14f517d41b9600c9b7ad53bb21525b1`.
+Three passes at 385/402/402 pages produced the 402-page, 8,332,886-byte A4 PDF
+with SHA-256
+`d47431e4d3e721fccf12f90226db77f1898e44b477878954acca3a6e90127cf4`;
+the final 2,557-line, 114,331-byte log has SHA-256
+`4d6f8c7974def4a3f9e6bc8ccdffefc3eef7ca8cb7c2f0145a075f95b82ff45e`.
+All documented log, page, font, Type-3, extraction, and visual gates passed.
+
 The detailed package record below still describes the six absorbed documents
 individually; those entries are retained as provenance, and their directory
 paths are dead. Resolve any path through the table above or through the
@@ -77,7 +87,7 @@ and forbidden checksum basenames both close at zero. The sole retained
 32.5659 pt overfull paragraph at source lines 590–598 is readable and
 unclipped; the final log has zero underfull diagnostics. The merged source has
 advanced beyond this receipt, so the retained PDF is historical and a rebuild
-was then pending; the historical `b899` receipt below is the latest retained
+was then pending; the historical `b899` receipt below is the retained historical
 build receipt.
 
 The historical synchronized `b899` q-series driver has 17,265 lines and
@@ -113,7 +123,7 @@ fourteen public declarations: the new zero-definition/six-theorem
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
 `ThueMorseNewmanSelfSimilarity.lean`.  That tranche formed the historical
 934-module/11,709-declaration checkpoint.  After the subsequent tranches, the
-final audited upstream target is 957 modules and 11,920 public declarations;
+earlier audited upstream target is 957 modules and 11,920 public declarations;
 retaining the unconditional public
 `Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge gives the historical
 semantic-union checkpoint 957/11,921. The residual-existence certificate
@@ -127,10 +137,17 @@ forward-status totals.
 Its exact comb crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`, with
 `Fabius.hasSum_geometricLagrangeRichardson_mul_pow` as the analytic companion.
-No retained PDF in this group renders that unrelated promotion.
+No retained PDF in this group rendered that unrelated promotion at its initial
+source-only checkpoint. The accepted current q-series and standalone
+geometric-q renders include the post-union crosswalk.
 The additional three declarations are the second-derivative, raw-second-moment,
 and variance-numerator identities in `GaussianBinomialCumulants`; they
 strengthen the existing q-series moment crosswalk without changing its status.
+That module's exhaustive public surface is two definitions and twenty-four
+theorems. The next five declarations belong to the one-definition,
+twenty-seven-theorem `QBinomialTheoremInfinite` surface and prove the effective
+fixed-column limits and geometric rates; they are the only part of this recent
+repository-wide sequence that changes this package's forward-status totals.
 
 That repository-wide census includes a sibling, source-only Lambert-W
 promotion rather than a new q-series result. Its exhaustive module counts are
@@ -159,9 +176,10 @@ canonical-removable reading of `eq:bernoulli-gen` are Exact. Here
 `complexExpm1Div 0 = 1` and it equals `(exp z - 1) / z` away from zero; this
 does not assert the literal totalized quotient at zero or holomorphy of a named
 sum function. Higher or full Puiseux/logarithmic branch expansions remain open.
-No retained PDF in this group renders this unrelated source-only promotion,
-and none was rebuilt for this update.  It is the historical 903/11,448
-checkpoint immediately preceding the current q-series leaf.
+No retained PDF in this group rendered this unrelated promotion at its original
+source-only checkpoint. The accepted current Lambert Guide does render the
+completed branch-gap union. Its completed checkpoint is `217a6b9` at
+903/11,448; the later local fixed-column commit `581bf` is 903/11,453.
 
 The current q-series tranche starts with `GeometricUniformMomentPolynomial.lean`, with the one
 definition `geometricUniformMomentPolynomial` and the eight theorems
@@ -263,7 +281,7 @@ fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
 `ThueMorseNewmanSelfSimilarity.lean`.  That tranche formed the historical
-934/11,709 checkpoint.  After the subsequent tranches, the final audited
+934/11,709 checkpoint.  After the subsequent tranches, the earlier audited
 upstream census is 957/11,920; retaining the unconditional public
 q-Pochhammer bridge gives the historical semantic-union checkpoint
 957/11,921, and the residual-existence certificate is included in the current
@@ -296,7 +314,7 @@ use exactly the normalized fixed-column error
 `q^(m*m) (q⁻¹;q⁻¹)_∞⁻¹`. Natural subtraction is total, reciprocity is used
 only eventually when `k ≤ n`, and no shifted-central or wider nome-domain
 claim is made. The `b899` q-series and geometric-q PDFs are now historical
-checkpoints; both changed roots require fresh synchronized three-pass builds.
+checkpoints; PDF regeneration for both changed roots is deferred by user approval.
 
 The sibling `DyadicDerivativeFiltration.lean` module has zero definitions and
 exactly six theorems. Its exhaustive surface consists of
@@ -420,7 +438,7 @@ Current packages and retained intake records:
   frontier, 60 not
   applicable, and 9 conjectures. The `b899` 405-page monograph PDF and the
   former 398-page PDF are historical artifacts; a synchronized rebuild of the
-  changed monograph root is pending.
+  changed monograph root is deferred by user approval.
   PDF files retained
   beneath `assets/` are vector research figures, not manuscript builds.
   Manuscript result labels and numerical checks remain
@@ -904,8 +922,8 @@ embedded/subset font rows (eleven Libertinus, no Type 3). The final log has no
 horizontal or vertical box; metadata, visual, cleanup, and forbidden-basename
 gates passed.
 The merged driver has advanced beyond this receipt, so the retained PDF is
-historical and a synchronized rebuild of the changed geometric-q root is
-pending.
+historical and PDF regeneration of the changed geometric-q root is
+deferred by user approval.
 
 This is the 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
@@ -1140,7 +1158,7 @@ volume's Part VII; their figures/data are likewise under `assets/`.)
 Canonical forward/inverse publication:
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/)
 (historical synchronized `b899` TeX/PDF checkpoint with a 405-page A4 PDF;
-the changed canonical source is rebuild-pending, and exact current and
+the changed canonical source is PDF-regeneration-deferred by user approval, and exact current and
 historical details appear above) — *q-Series and Inverse q-Analogs:
 A Proof-Oriented Synthesis*. Its forward backbone proves from first principles
 the shifted-factorial, Gaussian, hypergeometric, theta, partition, Bailey,
@@ -1172,9 +1190,11 @@ seventeen theorems cover absolute convergence, the interval and exact support,
 mean one half, reflection, the conditioning/CDF equation and exterior values;
 the affine fixed-point theorem uses a fresh canonical-law copy independent of
 the head coordinate. The fixed-column row is likewise Exact: the new
-zero-definition/ten-theorem rate leaf adds the shifted limit, explicit
-nonasymptotic estimates, and all four relative/additive Big-O forms, including
-`q = 0`. Both the retained source theorem and its older redirected fixed-`k`
+zero-definition/eight-theorem rate leaf adds explicit nonasymptotic estimates
+and all four relative/additive Big-O forms, including `q = 0`, while reusing the
+exponential product bound and shifted limit from the one-definition,
+twenty-seven-theorem `QBinomialTheoremInfinite` surface. Both the retained
+source theorem and its older redirected fixed-`k`
 donor row are therefore Lean-proved in the current source projection. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
@@ -1219,7 +1239,7 @@ compatibility spelling of its primary identity),
 `QPochhammerInfinite.lean` (one definition, 29 theorems),
 `QBinomialReciprocity.lean` (four theorems),
 `GaussianBinomialBounds.lean` (zero definitions, six theorems),
-`GaussianBinomialFixedColumnRate.lean` (zero definitions, ten theorems),
+`GaussianBinomialFixedColumnRate.lean` (zero definitions, eight theorems),
 `GaussianBinomialPalindromic.lean` (zero definitions, fourteen theorems),
 `GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
 `GaussianBinomialCumulants.lean` (two definitions, twenty-four theorems),
@@ -1588,21 +1608,22 @@ closed, and `GaussianBinomialGreaterOneAsymptotics.lean` closes the compound
 greater-than-one row at its exact fixed-column and central normalizations. The
 primitive-root value in the Babbage corollary is exact, while its derivative
 clause keeps that compound row Partial.
-`GaussianBinomialFixedColumnRate.lean` adds no definitions and exactly ten
-theorems: `norm_finiteQPochhammerIn_pow_sub_one_le_exp`,
-`norm_finiteQPochhammerIn_pow_sub_one_le`,
+`GaussianBinomialFixedColumnRate.lean` adds no definitions and exactly eight
+theorems: `norm_finiteQPochhammerIn_pow_sub_one_le`,
 `norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
 `norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
 `norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`,
-`tendsto_gaussianBinomial_add_atTop`,
 `gaussianBinomial_fixedColumn_relativeError_isBigO`,
 `gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
 `gaussianBinomial_fixedColumn_error_isBigO`, and
-`gaussianBinomial_shifted_fixedColumn_error_isBigO`. They give the generic
-product defect, denominator-free relative estimate, explicit fixed/shifted
-additive errors, shifted limit, and all four relative/additive Big-O forms.
-Their generic multiplicative-norm-ring and normed-field hypotheses are
-preserved, and every statement includes `q = 0`.
+`gaussianBinomial_shifted_fixedColumn_error_isBigO`. The closure reuses
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp` and
+`tendsto_gaussianBinomial_add_atTop` from the one-definition,
+twenty-seven-theorem `QBinomialTheoremInfinite.lean` module. Together they give
+the generic product defect, denominator-free relative estimate, explicit
+fixed/shifted additive errors, shifted limit, and all four relative/additive
+Big-O forms. Their generic multiplicative-norm-ring and normed-field hypotheses
+are preserved, and every statement includes `q = 0`.
 The terminating basic-hypergeometric closure consists of
 `TwoPhiOneReversal.lean` (two definitions and twelve theorems) and
 `QChuVandermonde.lean` (ten theorems). It makes both q-Chu evaluations and the

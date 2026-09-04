@@ -42,7 +42,8 @@ section Polynomials
 
 variable (R : Type*) [CommRing R]
 
-/-- The zeroth Touchard polynomial is the constant polynomial one. -/
+/-- `T_0 = 1`, the anchor of the induction: the empty Euler iterate leaves
+`e^r` alone. -/
 @[simp] theorem touchardPolynomial_zero : touchardPolynomial R 0 = 1 := by
   simp [touchardPolynomial]
 
@@ -50,7 +51,7 @@ variable (R : Type*) [CommRing R]
 second kind, at *every* index: beyond the degree both sides vanish. -/
 theorem coeff_touchardPolynomial (n m : ℕ) :
     (touchardPolynomial R n).coeff m = (Nat.stirlingSecond n m : R) := by
-  rw [touchardPolynomial, finset_sum_coeff]
+  rw [touchardPolynomial, finsetSum_coeff]
   simp only [← C_eq_natCast, coeff_C_mul, coeff_X_pow, mul_ite, mul_one, mul_zero]
   rw [Finset.sum_ite_eq (Finset.range (n + 1)) m fun k => (Nat.stirlingSecond n k : R)]
   by_cases hm : m ∈ Finset.range (n + 1)

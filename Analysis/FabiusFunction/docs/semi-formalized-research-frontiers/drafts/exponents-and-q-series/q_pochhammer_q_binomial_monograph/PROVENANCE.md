@@ -25,6 +25,14 @@ field. The union also retains the later upstream promotions
 `thm:qF-reciprocity`, `prop:up-tail`, `cor:up-moments`, and
 `thm:qF-moment-polynomial`. In particular, it does not promote
 `thm:q-lucas`, whose polynomial congruence still lacks a Lean proof.
+
+The 2026-09-04 merge-regression check restored the seven missing generator
+entries from that local override set; the classical-limit entry was already
+present. The retained CSV needed no changes. Direct counting gives the
+103/375/60/9 projection above, while the 28 forward chapter subtotals and all
+282 result rows give 181/79/14/8. Their stale grand total and narrative were
+corrected without changing any result-level status. The source-only canonical
+validator passes; this repair performs no Lean or PDF build.
 Directory names
 in the table are historical paths in that pinned snapshot, not live package
 paths.
@@ -142,7 +150,7 @@ census was 923 facade-reachable modules and 11,611 public declarations, with
 zero missing module headers and zero declaration-documentation gaps. The
 declaration count was one above that checkpoint's upstream census because the
 union retained the public
-`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge. The final audited
+`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge. The earlier audited
 upstream facade census is 957 modules and 11,920 public declarations;
 retaining that bridge gives the historical semantic-union checkpoint
 957/11,921, and the residual-existence certificate
@@ -162,7 +170,8 @@ The current source incorporates exhaustive crosswalks for
 `QPochhammerEntire` (zero definitions and five legacy compatibility theorems),
 `QPochhammerInfinite` (one definition and twenty-nine theorems),
 `QPochhammerDissection` (zero definitions and two theorems),
-`GaussianBinomialFixedColumnRate` (zero definitions and ten theorems),
+`QBinomialTheoremInfinite` (one definition and twenty-seven theorems),
+`GaussianBinomialFixedColumnRate` (zero definitions and eight theorems),
 `GaussianBinomialGreaterOneAsymptotics` (zero definitions and two theorems),
 `GaussianBinomialPalindromic` (zero definitions and fourteen theorems),
 `GaussianBinomialPolynomialStructure` (zero definitions and five theorems),
@@ -233,16 +242,17 @@ zero-definition/six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem
 added to `DyadicBoundaryIdentity.lean`, and seven theorems added to
 `ThueMorseNewmanSelfSimilarity.lean`. This formed the historical
 934-module/11,709-declaration checkpoint. After the subsequent tranches, the
-final audited upstream facade census is 957/11,920; retaining the unconditional
+earlier audited upstream facade census is 957/11,920; retaining the unconditional
 public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge gives the semantic
-union checkpoint 957/11,921. The residual-existence certificate gives the live
+union checkpoint 957/11,921. The residual-existence certificate is included in the current
 union computed by `scripts/doc_audit.py` and pinned in
 `docs/doc_audit_baseline.json`. The historical 933/11,695 corpus-wide
 totals include the q--Chu, Richardson,
 geometric-law barycenter, Lagrange--Rvachev matrix, arbitrary-space geometric
 realization, regular-central-sum, Lambert branch-gap Bernoulli, affine
 Prouhet, and complex moment-product follow-ups; they do not make the retained
-historical artifact current. Ten declarations come from the sibling
+historical 391-page artifact current. The accepted 401-page receipt above is
+the current publication. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` source-only module; three more
 are the explicit Gaussian second-derivative and division-free moment
 identities. The sibling `LambertWBranchGapBernoulli.lean` leaf contributes
@@ -263,9 +273,10 @@ clause, Guide label `eq:pair-Bernoulli-general`, and canonical-removable
 reading of `eq:bernoulli-gen` are Exact. Here `complexExpm1Div 0 = 1` and it
 equals `(exp z - 1) / z` away from zero; this is not the literal totalized
 quotient at zero and asserts no holomorphy. Higher/full Puiseux and logarithmic
-expansions remain open. None of these sibling source-only changes alters this
-monograph's forward-status counts or retained historical artifact, and no
-render parity is claimed. The
+expansions remain open. None of these sibling changes alters this monograph's
+forward-status counts. The Lambert material belongs to its separate
+publication; the accepted 401-page receipt covers the current q-series source.
+The
 one-definition/seventeen-theorem `GeometricUniformRealization.lean` leaf
 proves the missing arbitrary-space bridge: `iIndepFun` unit-interval
 coordinates with uniform marginal laws have joint law `uniformProduct`, so
@@ -279,12 +290,15 @@ complex lattice `alpha = -1 - 2*j + 2*pi*I*m/log q`, not merely its real
 negative-odd slice. Even negative integral parameters remain admitted, where
 the field-totalized `qGammaC` quotient is zero in agreement with the product
 side; no holomorphy at a pole is claimed. The
-zero-definition/ten-theorem `GaussianBinomialFixedColumnRate.lean` leaf gives
-two generic finite-product defect bounds, the denominator-free relative
-Gaussian estimate, fixed and shifted nonasymptotic additive errors, the
-shifted `Tendsto`, and all four fixed/shifted relative/additive Big-O wrappers.
-It works over the stated generic multiplicative-norm ring or normed-field
-interfaces and includes `q = 0`; the older unshifted limit remains in
+zero-definition/eight-theorem `GaussianBinomialFixedColumnRate.lean` leaf gives
+the elementary finite-product defect bound, the denominator-free relative
+Gaussian estimate, fixed and shifted nonasymptotic additive errors, and all
+four fixed/shifted relative/additive Big-O wrappers. The closure reuses
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp` and
+`tendsto_gaussianBinomial_add_atTop` from the one-definition,
+twenty-seven-theorem `QBinomialTheoremInfinite.lean` surface. It works over the
+stated generic multiplicative-norm ring or normed-field interfaces and includes
+`q = 0`; the older unshifted limit also remains in
 `QBinomialTheoremInfinite.lean`.
 
 The current q-series increment starts with the one-definition/eight-theorem
@@ -378,7 +392,7 @@ declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
 `ThueMorseNewmanSelfSimilarity.lean`.  That tranche formed the historical
-934/11,709 checkpoint.  After the subsequent tranches, the final audited
+934/11,709 checkpoint.  After the subsequent tranches, the earlier audited
 upstream census is 957/11,920; retaining the unconditional public
 q-Pochhammer bridge gives the historical semantic-union checkpoint
 957/11,921, and the residual-existence certificate is included in the current
@@ -429,10 +443,10 @@ declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
 `ThueMorseNewmanSelfSimilarity.lean`.  That tranche formed the historical
-934/11,709 checkpoint.  After the subsequent tranches, the final audited
+934/11,709 checkpoint.  After the subsequent tranches, the earlier audited
 upstream census is 957/11,920; retaining the unconditional public
 q-Pochhammer bridge gives the historical semantic-union checkpoint
-957/11,921, and the residual-existence certificate gives the current semantic
+957/11,921, and the residual-existence certificate is included in the current semantic
 union computed by `scripts/doc_audit.py` and pinned in
 `docs/doc_audit_baseline.json`.  The existing
 `ProbabilityLaplaceMoments.lean` module now also
@@ -444,8 +458,9 @@ replace its strict-Ioi survival event by the closed tail `Ici`; the second is
 the exact positive-natural-degree layer-cake specialization over the full
 law.  Composed with the already stronger global reflection and nonnegative
 tail identities, they make `prop:up-tail` and `cor:up-moments` Exact.
-Neither these source-only additions nor the preceding Lambert addition changes
-the retained historical artifact, and no render parity is claimed. The
+Neither these additions nor the preceding Lambert addition changes the old
+391-page historical artifact. The accepted 401-page receipt renders the
+current q-series source; Lambert parity is recorded by the Lambert package. The
 forward status inventory covers 282 labelled results:
 181 Exact / 79 Partial / 14 None / 8 N/A; the relevant
 Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the 191-result pre-Fabius core is
@@ -494,7 +509,7 @@ the two-theorem greater-than-one leaf closes the remaining fixed-column and
 central asymptotic clauses in their printed normalization. The 405-page PDF
 renders the named `b899` source and remains synchronized historical evidence
 for that checkpoint. The current merged source has advanced beyond it, so the
-changed canonical root is rebuild-pending. The retained 398-page PDF remains a
+changed canonical root is PDF-regeneration-deferred by user approval. The retained 398-page PDF remains a
 historical publication checkpoint.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit

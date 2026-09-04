@@ -112,8 +112,8 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans the semantic union of 958 facade-reachable modules and 11,946
-public declarations.  The frozen upstream tip contributes 11,920 declarations; the
+pass scans the semantic union of 984 facade-reachable modules and 12,215
+public declarations.  An earlier frozen upstream checkpoint contained 11,920 declarations; the
 retained unconditional public
 `complexQPochhammerInf_eq_qPochhammerInfIn` bridge in
 `RvachevPochhammerFactorization.lean` gives the 11,921 merge-union checkpoint,
@@ -121,7 +121,9 @@ and `exists_eq_in_residual_interval` in `MeanValueBracket.lean` contributes
 the second post-upstream declaration. The Bell normalization/support package
 adds four declarations, repeated differential blocks add nine, the Cauchy
 reflection/integral/addition package adds ten, and the reverse-row Stirling
-recurrence adds one. This is a lexical inventory, not a claim that every
+recurrence adds one. Those later additions are included in the audited union;
+this paragraph does not derive the current total by arithmetic from the older
+checkpoint. This is a lexical inventory, not a claim that every
 module has just been recompiled. The audit finds no missing module
 header or declaration comment,
 including throughout
@@ -2132,12 +2134,12 @@ an exact least endpoint-mass denominator.  The third module,
 above, and supplies the generic rational-gap-to-modulus bridge; its clamped
 extension boundary remains explicit.
 
-**Current publication status.**  The fixed-26 publication check—14 fresh build
+**Deferred publication status.**  The fixed-26 publication check—14 fresh build
 cycles and 12 retained verified pairs—is recorded once in the
 [draft manifest](semi-formalized-research-frontiers/drafts/MANIFEST.md#fixed-26-publication-checkpoint).
 A row still marked pending makes no synchronization claim.  The exact older
-receipts below remain historical evidence; only the fixed-26 table revalidates
-an unchanged pair for the current source union.
+receipts below remain historical evidence; under the user-directed deferral,
+the fixed-26 table is an inventory rather than a merged-current parity receipt.
 
 Four direct artifact receipts record the last synchronized pre-9135 source/PDF
 pairs and are now historical because the live sources include the new
@@ -2245,8 +2247,8 @@ historical receipts for their named source checkpoints; the later historical
 **Historical `b899` synchronized publication receipts (2026-09-04).** Each pass
 tuple below is `pages/bytes`.  All ten roots were frozen and built in exactly
 three serial halt-on-error passes from absent sidecars.  Subsequent merged
-source changes make these receipts historical; current rebuild state is
-recorded only in the fixed-26 checkpoint linked above.
+source changes make these receipts historical; the deferred rebuild inventory
+is recorded in the fixed-26 checkpoint linked above.
 
 - Primary exposition: TeX 15,148 lines / 759,509 bytes / SHA-256
   `721cb901de2254ef48991452c4831762f54a36e0a405b4bbeb7f812653e71754`;
@@ -2423,7 +2425,8 @@ Transform 377-page, Representation Frontiers 301-page, New Frontiers 41-page,
 and notation-catalogue 88-page receipts remain valid at their own stated
 checkpoints. All ten `b899` roots had source/render parity at that checkpoint;
 subsequent merged source changes make those receipts historical.  Replacement
-parity is recorded only in the fixed-26 checkpoint linked above.  The
+work is deferred in the fixed-26 checkpoint linked above, which makes no
+merged-current parity claim.  The
 inverse-computability receipt likewise reflects the
 historical 675/8,909 census; it is provenance rather than the current semantic
 union computed by `scripts/doc_audit.py` and pinned in

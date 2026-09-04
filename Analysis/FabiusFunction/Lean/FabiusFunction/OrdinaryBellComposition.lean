@@ -84,9 +84,9 @@ theorem map_ordPartialBell {S : Type*} [CommSemiring S] (f : R →+* S)
 
 end Def
 
-section Series
+section PowerCoefficients
 
-variable {R : Type*} [CommRing R]
+variable {R : Type*} [CommSemiring R]
 
 /-- `[t^n] f^k = B̂_{n,k}(f_1, f_2, …)` when `f` has zero constant term. -/
 theorem coeff_pow_eq_ordPartialBell {f : R⟦X⟧} (hf : constantCoeff f = 0) (n k : ℕ) :
@@ -99,6 +99,12 @@ theorem coeff_pow_eq_ordPartialBell {f : R⟦X⟧} (hf : constantCoeff f = 0) (n
     simp only [Nat.sub_zero, coeff_zero_eq_constantCoeff_apply, hf, zero_mul, add_zero]
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [ih]
+
+end PowerCoefficients
+
+section Series
+
+variable {R : Type*} [CommRing R]
 
 /-- **The ordinary composition theorem:**
 `[t^n] g(f(t)) = ∑_{k ≤ n} g_k B̂_{n,k}(f_1, f_2, …)` when `f` has zero constant term. -/

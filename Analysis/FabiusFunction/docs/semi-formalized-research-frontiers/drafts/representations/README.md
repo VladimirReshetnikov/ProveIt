@@ -747,11 +747,12 @@ and were subsequently folded into
 `Lagrange_Rvachev_Closed_Loop_Report/`,
 `Rvachev_Lagrange_Loop_Report_v5/`,
 and `Rvachev_Lagrange_Loop_Report_v6/`.
-The v6 member was delivered as a bare TeX file; its rendered landing notes
-record the missing companion assets and the absence of a declaration-level
-Lean crosswalk.
+The v6 member was delivered as a bare TeX file; its landing notes recorded the
+missing companion assets and the absence of a declaration-level Lean crosswalk.
+All six former package directories are retired, with their source bytes and
+intake evidence preserved through the canonical inventory and Git history.
 
-[`Legendre_Rvachev_Self_Reconstruction/`](Legendre_Rvachev_Self_Reconstruction/)
+The former `Legendre_Rvachev_Self_Reconstruction/`
 (*Legendre--Rvachev
 Self-Reconstruction on [-1,1]*) landed 2026-08-29 and was subsequently folded
 into `Up_Polynomial_Synthesis/`. It is not a seventh
@@ -958,7 +959,8 @@ theorem, closes representation proposition `prop:lag-markov`. The larger
 identity `U B = I`, not a coefficient-space projector identity, and the
 negative-entry conclusion retains the source proposition's strictly positive
 row-overlap hypothesis. Neither source-only promotion is rendered by the
-retained Representation or inverse PDFs; no PDF was rebuilt for them. The
+retained historical Representation PDFs. The current inverse publication
+receipt is recorded separately in the inverse package. The
 source-only `FabiusFunction.RvachevAppellHasse` leaf contributes one definition
 and fourteen theorems. Its explicit finite Hasse-derivative, q-falling-power,
 and geometric decoder formulas combine with the existing synthesis theorems
@@ -1106,15 +1108,16 @@ block `-2*M < k < 2*M`. Thus `def:leg-Lambda` and
 parity, origin-value, and Fourier--Bessel theorem `thm:leg-Lambda` and the
 matrix-projector corollary remain unpromoted.
 
-These sibling source-only modules are
-not rendered by the retained Representation or inverse PDFs. The immediately
+These sibling modules are not rendered by the retained historical
+Representation PDFs. The current inverse publication receipt is governed by
+the inverse package. The immediately
 preceding complex Bernoulli value-completion checkpoint was 903 modules and
 11,448 public declarations. The earlier
 ten-declaration increment was the
 unrelated sibling `FabiusFunction.GeometricRichardsonGenerating` module (three
 definitions and seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`. This promotion is not rendered
-by the retained Representation or inverse PDFs. Three other declarations
+by the retained historical Representation PDFs. Three other declarations
 strengthen the existing sibling `FabiusFunction.GaussianBinomialCumulants`
 module with second-derivative, raw-second-moment, and variance-numerator
 identities; they likewise do not change the Representation or inverse results.

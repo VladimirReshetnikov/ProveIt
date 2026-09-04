@@ -55,12 +55,13 @@ was interrupted, are retained without a new source/render-parity claim.
 The inventory below records the preceding frozen-source publication work;
 pending rows are not accepted publication receipts.
 
-**Fixed-26 publication checkpoint (2026-09-04; publication check in progress).** This is
-the sole live batch receipt for the 26 publication roots affected by the
-current source union.  Fourteen rows require fresh build cycles; twelve rows
+**Fixed-26 publication checkpoint (2026-09-04; publication work deferred).** This is
+the historical inventory for the 26 publication roots affected by the source
+union at the time of deferral.  Fourteen rows required fresh build cycles; twelve rows
 retain verified pairs whose full source/input graph and PDF are byte-identical
 to `69b447f7c`.  Source/PDF identity is recorded in Git, so this record
-does not duplicate a 26-file hash ledger.  Existing purpose-specific
+does not duplicate a 26-file hash ledger.  It is not a merged-current parity
+receipt.  Existing purpose-specific
 `SOURCE_CLOSURE` records retain their stated provenance roles.  No row claims
 replacement parity until its final page count, final PDF byte count, and gate
 result have replaced all three explicit `(pending)` entries.
@@ -660,7 +661,7 @@ formalization status per result.
 
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical, consolidation complete:** *Combinatorial Coefficient Calculus* — historical 8,966-line/390,732-byte source and 174-page A4 PDF built from it in the same run; replacement status is recorded in the fixed-26 checkpoint above | Six-source provenance plus purpose-specific closure and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip` (SHA-256 `a22479ac8f58e1710117af9d0a3f515c7d24ec250548f537520c9f9024f4321a`); the five retired donors are identified in `SOURCE_CLOSURE.sha256` |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical, editorial consolidation complete:** *Combinatorial Coefficient Calculus* — the current 207-row formalization register records 63 Lean, 36 Partial, and 108 None rows. The retained 174-page A4 PDF is an earlier render; rebuilding is deferred by user instruction and no merged-current parity is claimed. | Six-source provenance and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip`; `SOURCE_INVENTORY.csv` records immutable Git locators for all six inputs, including the five retired donors. The mutable checksum closure is retired. |
 
 ## exponents-and-q-series — `exponents-and-q-series/`
 

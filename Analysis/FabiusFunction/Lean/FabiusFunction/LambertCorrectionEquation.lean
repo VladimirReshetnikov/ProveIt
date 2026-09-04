@@ -89,7 +89,8 @@ theorem summable_corrExpTerm (v : ℝ) :
   rw [neg_pow]
   ring
 
-/-- The correction exponential series sums to `exp (-v)`. -/
+/-- The exponential series summed: `∑ (-1)^k v^k / k! = e^{-v}`, which is the
+second of the two series subtracted in `corrB_eq_tsum`. -/
 theorem tsum_corrExpTerm (v : ℝ) :
     ∑' k : ℕ, (-1) ^ k / k.factorial * v ^ k = Real.exp (-v) := by
   have hexp : Real.exp (-v) = ∑' k : ℕ, (-v) ^ k / k.factorial := by

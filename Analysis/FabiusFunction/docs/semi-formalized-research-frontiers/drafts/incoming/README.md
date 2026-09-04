@@ -273,9 +273,10 @@ The preceding processed batch (all filed and removed on 2026-09-01):
 These six bare-directory arrivals landed together in direct-arrival commit
 `730e1763291099cd50ca1e20ed2c62c38d95ab4f`; none included an archive or
 checksum ledger.  All six sources were already LF with a final newline, so no
-normalization was needed.  They were filed byte-for-byte; the temporary
-repository-added two-row checksum manifests were later retired under the
-repository-wide abolition policy, while Git history preserves the intake bytes.
+normalization was needed.  They were filed byte-for-byte with a temporary,
+repository-added two-row `SHA256SUMS` ledger and archival README in each
+package; those derivative ledgers were later retired, while Git history
+preserves the intake bytes.
 All PDFs are readable,
 unencrypted, embedded/subset, and Type-3-free, but none uses Libertinus; two
 have a custom 522-by-738-point page, two are Letter, and two are A4.  Styling
@@ -312,9 +313,11 @@ The immediately preceding processed batch, also filed and removed on
 All six became standalone archival packages under
 [`../combinatorial-coefficient-calculus/`](../combinatorial-coefficient-calculus/).
 Each safe flat archive contained exactly one TeX/PDF pair; all CRCs passed, the
-filed payloads were byte-identical to their archive members; the temporary
-two-row checksum manifests were later retired repository-wide. Their similar
-titles and subjects were noted without comparing or deduplicating them. Claim review, canonical selection,
+filed payloads were byte-identical to their archive members, and every
+package's two-row `SHA256SUMS` ledger verified at intake. Those derivative
+ledgers were later retired and remain recoverable from Git. Their similar
+titles and subjects were noted without comparing or deduplicating them. Claim
+review, canonical selection,
 LaTeX rewriting, PDF rebuilding, and Lean crosswalking remain deliberately
 deferred until this intake is published.
 

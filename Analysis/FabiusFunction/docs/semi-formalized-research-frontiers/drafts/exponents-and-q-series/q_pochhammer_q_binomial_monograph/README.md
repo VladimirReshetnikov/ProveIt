@@ -177,13 +177,19 @@ and none is Type 3. Required log, reference/rerun, metadata, visual, cleanup,
 and forbidden-basename gates passed. The final log has no vertical box and five
 minor horizontal boxes, none above 10.14 pt.
 
+The later source-only crosswalk corrections use the renamed shifted-limit
+theorem and distinguish the nine-theorem generic fixed-column module from
+the field-level convergence module. No PDF was rebuilt for these corrections;
+the `b899` receipt does not assert parity with the current source. PDF
+regeneration for this merge is deferred by user approval.
+
 The source at that historical checkpoint includes exhaustive crosswalks for
 `QPochhammerEntire`
 (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
-theorems), `QBinomialTheoremInfinite` (one definition and twenty-two
-theorems), `GaussianBinomialFixedColumnRate` (zero definitions and ten
+theorems), `QBinomialTheoremInfinite` (one definition and twenty-seven
+theorems), `GaussianBinomialFixedColumnRate` (zero definitions and eight
 theorems), `GaussianBinomialGreaterOneAsymptotics` (zero definitions and two
 theorems), `GaussianBinomialPalindromic` (zero definitions and fourteen
 theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
@@ -249,7 +255,7 @@ zero-definition/six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem
 added to `DyadicBoundaryIdentity.lean`, and seven theorems added to
 `ThueMorseNewmanSelfSimilarity.lean`. That tranche formed the historical
 934-module/11,709-declaration checkpoint. After the subsequent tranches, the
-final audited upstream facade census is 957 modules and 11,920 public
+earlier audited upstream facade census is 957 modules and 11,920 public
 declarations; retaining the unconditional public
 `Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge gives the historical
 semantic-union checkpoint 957/11,921. The residual-existence certificate
@@ -289,9 +295,11 @@ clause, Guide label `eq:pair-Bernoulli-general`, and canonical-removable
 reading of `eq:bernoulli-gen` are Exact. Here `complexExpm1Div 0 = 1` and it
 equals `(exp z - 1) / z` away from zero; this is not the literal totalized
 quotient at zero and asserts no holomorphy. Higher/full Puiseux and logarithmic
-expansions remain open. That sibling promotion produced the historical
-903/11,448 checkpoint and changed none of the q-series forward-status or
-source-concordance totals.
+expansions remain open. That sibling promotion produced the 903/11,448
+checkpoint and changed none of the q-series forward-status or source-
+concordance totals. The five fixed-column declarations later produced local
+checkpoint `581bf` at 903/11,453. The Lambert crosswalk is outside the q-series
+publication and is not rendered by its exact `581bf` receipt.
 
 The newest q-series tranche starts with
 `GeometricUniformMomentPolynomial.lean`, with one definition,
@@ -394,7 +402,7 @@ fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
 `ThueMorseNewmanSelfSimilarity.lean`.  That tranche formed the historical
-934/11,709 checkpoint.  After the subsequent tranches, the final audited
+934/11,709 checkpoint.  After the subsequent tranches, the earlier audited
 upstream census is 957/11,920; retaining the unconditional public
 q-Pochhammer bridge gives the historical semantic-union checkpoint
 957/11,921, and the residual-existence certificate is included in the current
@@ -439,9 +447,9 @@ when `k ≤ n`. The second is exactly
 `[2m,m]_q ~ q^(m*m) (q⁻¹;q⁻¹)_∞⁻¹`. Together with
 `gaussianBinomial_inv`, whose explicit hypotheses are `q ≠ 0` and `k ≤ n`,
 these declarations make `cor:qgreaterone` Exact. No shifted-central or wider
-nome-domain statement is claimed. The retained historical PDF renders none of
-these q-series leaves or the preceding Lambert tranche, and no source/PDF
-parity is claimed.
+nome-domain statement is claimed. The current 401-page PDF renders these
+q-series leaves. The preceding Lambert tranche belongs to a separate
+publication and is not a q-series source/PDF-parity claim.
 
 `GeometricResidualMoments.lean` now has zero definitions and nine public
 theorems. Its existing
@@ -515,26 +523,25 @@ negative integral parameters are admitted: field-totalized `qGammaC` makes
 the displayed quotient zero there, matching the product side, without
 asserting holomorphy at a pole.
 
-`GaussianBinomialFixedColumnRate.lean` has no definitions and exactly ten
+`GaussianBinomialFixedColumnRate.lean` has no definitions and exactly eight
 theorems. Its exhaustive public surface is
-`norm_finiteQPochhammerIn_pow_sub_one_le_exp`,
 `norm_finiteQPochhammerIn_pow_sub_one_le`,
 `norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
 `norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
 `norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`,
-`tendsto_gaussianBinomial_add_atTop`,
 `gaussianBinomial_fixedColumn_relativeError_isBigO`,
 `gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
 `gaussianBinomial_fixedColumn_error_isBigO`, and
-`gaussianBinomial_shifted_fixedColumn_error_isBigO`. The first two give the
-generic finite-product defect, first by `exp (k * ‖q‖^m) - 1` and then by
-`k * exp k * ‖q‖^m`, in a normed commutative ring with multiplicative norm.
-The third is the denominator-free relative Gaussian estimate; its `n+k`
-specialization is the shifted relative estimate. The next two are the fixed
-and shifted nonasymptotic additive errors, the sixth is the shifted limit, and
-the final four are the fixed/shifted relative and additive Big-O wrappers.
-All ten include `q = 0` at their respective `‖q‖ ≤ 1` or `‖q‖ < 1`
-boundaries; no nonzero-nome premise is hidden.
+`gaussianBinomial_shifted_fixedColumn_error_isBigO`. This closure additionally
+reuses `norm_finiteQPochhammerIn_pow_sub_one_le_exp` and
+`tendsto_gaussianBinomial_add_atTop` from the one-definition,
+twenty-seven-theorem `QBinomialTheoremInfinite` module. The imported
+exponential bound and the rate leaf's elementary bound give the generic
+finite-product defect; the latter seven declarations give the denominator-free
+relative estimate, fixed and shifted nonasymptotic additive errors, and all
+four fixed/shifted relative and additive Big-O wrappers. The reused theorem
+supplies the shifted limit. All ten closure names include `q = 0` at their
+respective `‖q‖ ≤ 1` or `‖q‖ < 1` boundaries; no nonzero-nome premise is hidden.
 
 The latest `ThueMorseSparseProuhet` partition tranche adds no definitions and
 three theorems to that module's prior twelve-theorem surface, for a current
@@ -692,4 +699,4 @@ remain synchronized historical evidence for the checkpoint recorded above.
 The retained 398-page PDF is likewise a historical 2026-09-04 receipt. The
 405-page PDF and its named source remain synchronized historical evidence for
 the `b899` checkpoint above; the current merged source has advanced beyond
-that checkpoint, so the changed canonical root is rebuild-pending.
+that checkpoint, so the changed canonical root is PDF-regeneration-deferred by user approval.
