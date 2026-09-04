@@ -291,6 +291,7 @@ import FabiusFunction.MeanValueBracket
 import FabiusFunction.TransseriesHeight
 import FabiusFunction.TransseriesScale
 import FabiusFunction.TransseriesWellBased
+import FabiusFunction.WrightOmega
 import FabiusFunction.LambertShiftInverse
 import FabiusFunction.LambertInverseCoefficients
 import FabiusFunction.CyclicCharacterSums
@@ -525,6 +526,7 @@ import FabiusFunction.TransseriesDifferentialBlock
 import FabiusFunction.TransseriesHarmonicIncrement
 import FabiusFunction.TransseriesScaleDominance
 import FabiusFunction.TransseriesPolyLogScale
+import FabiusFunction.TransseriesFlat
 import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
 import FabiusFunction.TransferPositivity
@@ -797,6 +799,8 @@ import FabiusFunction.QuadraticCoreCatalan
 import FabiusFunction.DerangementNearestInteger
 import FabiusFunction.PowerLogCoreInversion
 import FabiusFunction.LinLogCoreInversion
+import FabiusFunction.StaircaseInversion
+import FabiusFunction.RemainderTransport
 
 set_option autoImplicit false
 
