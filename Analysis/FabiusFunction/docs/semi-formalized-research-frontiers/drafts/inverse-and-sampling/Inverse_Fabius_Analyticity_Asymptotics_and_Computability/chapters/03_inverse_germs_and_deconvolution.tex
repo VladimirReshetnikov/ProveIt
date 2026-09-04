@@ -1633,6 +1633,35 @@ All exponentials cancel, leaving
 $\EulerE^{xt}t^N\prod_ja_j=2^{-N(N-1)/2}t^N\EulerE^{xt}$.  Coefficient comparison proves the theorem.
 \end{proof}
 
+\paragraph{Exact Lean correspondence.}
+The zero-definition/eight-theorem module
+\path{FabiusFunction.FinitePrefixThueMorseCollapse} proves these three
+canonical results in the rational finite-prefix coefficient model.  Its
+principal uncentered declaration
+\path{Fabius.sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat}
+is exactly \eqref{is:p2:eq:TM-P-collapse}, including the sign
+$(-1)^N$ and scale $2^{-\binom{N+1}{2}}$, and strengthens it to $N=0$.
+The companion declaration with suffix \path{_of_lt} proves the vanishing
+range in \cref{is:p2:cor:Prouhet-canonical}; the unsuffixed theorem gives the
+$n>N$ monomial response, and the \path{_self} companion gives the first
+constant $(-1)^N N!2^{-\binom{N+1}{2}}$.  For the centered result,
+\path{Fabius.sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_succ}
+uses the literal grid in \eqref{is:p2:eq:TM-A-collapse}, with $N=m+1$, and
+proves the sign-free scale $2^{-\binom{N}{2}}$.  Its unsuffixed companion uses
+the total common-denominator grid
+
+\[
+ x+(1-2^{-N})-\frac{2k}{2^N}
+\]
+
+and therefore extends the centered identity to $N=0$; its \path{_of_lt} and
+\path{_self} companions give the centered cancellation and first constant.
+The generic theorem \path{Appell.sum_thueMorseSign_mul_eval_poly} records the
+response of any rational Appell polynomial through the signed power moments.
+These are coefficientwise finite identities.  They introduce no random
+variable or \path{HasLaw} bridge, assert no analytic MGF, and do not promote
+the separate Barnes identification in \cref{is:p2:thm:Barnes-identification}.
+
 \begin{example}[The first genuinely centered identity]
 For $N=2$,
 \begin{equation}

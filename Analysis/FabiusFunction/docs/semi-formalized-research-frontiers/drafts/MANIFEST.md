@@ -21,8 +21,8 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 925
-source modules and 11,619 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 932
+source modules and 11,688 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -544,8 +544,8 @@ universal fixed-evaluation-point degree.  On its branch, the RatFunc 1+4 leaf
 then gives the historical 924/11,615 checkpoint.  Independently, the two new
 `ProbabilityLaplaceMoments.lean` theorems and the 1+1
 `RvachevLegendreBiorthogonality.lean` leaf give the incoming branch's
-historical 924/11,614 checkpoint.  Their semantic union gives the live
-925/11,619 census. In the current semantic union, the subsequent
+historical 924/11,614 checkpoint.  Their semantic union gives the historical
+925/11,619 checkpoint. In the subsequent semantic union, the
 zero-definition/two-theorem greater-than-one leaf makes `cor:qgreaterone`
 Exact, and the scaled-geometric polynomial theorem completes
 `cor:scaled-geometric-moments`. The subsequent affine transport theorem in
@@ -554,9 +554,10 @@ by composition with the rational half-base extractor. The simple-root theorem
 in `HalfQBinomialRootSimplicity.lean`, composed with the complete rational
 root classification in `HalfQBinomial.lean`, makes
 `cor:halfbase-root-locus` Exact while leaving
-`cor:qbinom-inversion-law` Partial. The live semantic-union facade census is
-925/11,619; the RatFunc-only 924/11,615 and incoming-only 924/11,614 counts
-remain historical branch checkpoints. The q forward totals are 181 Exact / 78
+`cor:qbinom-inversion-law` Partial. The 925/11,619 semantic-union count, the
+RatFunc-only 924/11,615 count, and the incoming-only 924/11,614 count all
+remain historical branch checkpoints; the repository-wide live census is the
+932/11,688 checkpoint recorded above. The q forward totals are 181 Exact / 78
 Partial / 15 None / 8 N/A, the relevant Dyadic Gaussian--Thue--Morse chapter
 is 12/43/1/0, and the source concordance is 94 Lean-proved / 384 human-proved
 frontier / 60 N/A / 9 conjectures. The
@@ -785,12 +786,12 @@ rows (projection SHA-256
 `ff123825f7516adb1edfd9e738f9021d38c03960f0ea134554ede9e14cd8459f`),
 and the reviewed `theorem_concordance.csv` preserves those ten immutable
 source fields for all 194 rows. The structural validator passes with 748
-labels and 596 references. Its current dispositions are 54 Lean-proved,
-91 human-proved frontier results, 10 conjectures, 15 open problems, and 24
+labels and 601 references. Its current dispositions are 57 Lean-proved,
+88 human-proved frontier results, 10 conjectures, 15 open problems, and 24
 nonassertoric rows. In particular, the centered Appell deconvolution,
 positive-degree Appell mean-zero, and arbitrarily phased
-polynomial-deconvolution rows have exact named Lean counterparts. The two
-newest promotions are `is:p3:cor:forced-superconvergence` and
+polynomial-deconvolution rows have exact named Lean counterparts. Two earlier
+promotions are `is:p3:cor:forced-superconvergence` and
 `is:p3:thm:Appell-lattice-reproduction`. The one-definition, eight-theorem
 `RvachevSuperconvergentSynthesis.lean` module proves the parity-selected extra
 degree for arbitrary nonzero natural meshes, its physical-coordinate
@@ -815,6 +816,14 @@ bases `1/2` and `1/4`. Its exact degree equalities are symbolic outer degrees
 over polynomial coefficients—a fixed-inner-variable centered degree may
 drop—and its prefix moments are an algebraic finite-convolution model rather
 than a random-variable realization.
+The zero-definition/eight-theorem `FinitePrefixThueMorseCollapse.lean` module
+then makes `is:p2:thm:TM-uncentered`, `is:p2:cor:Prouhet-canonical`, and
+`is:p2:thm:TM-centered` exact.  It proves the uncentered sign and triangular
+scale, the Prouhet vanishing and first-survivor clauses, and the sign-free
+centered collapse on both the literal positive-depth grid and a total
+common-denominator grid valid at depth zero.  These are rational
+coefficient-model identities; they add no random-variable, `HasLaw`,
+analytic-MGF, or Barnes-identification result.
 `ASSET_DISPOSITION.csv` accounts for 88 source-group files, and the deduplicated
 asset tree contains the 63 retained payloads. No operational checksum verification is claimed. The retained 134-page, 2,027,726-byte A4 PDF
 has SHA-256
@@ -845,7 +854,7 @@ work.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `Inverse_Fabius_Analyticity_Asymptotics_and_Computability/` | *Inverse Fabius Theory: Analyticity, Asymptotics, Computability, and Dyadic Sampling* — canonical editorial synthesis of five peer inputs. Its immutable extractor pin is `0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`; all 194 source-result rows are dispositioned (54 Lean-proved, 91 human-proved frontier results, 10 conjectures, 15 open problems, and 24 non-applicable environments). The newest exact rows are `is:p2:thm:Laurent-leading`, `is:p2:thm:finite-prefix-expansion`, and `is:p2:thm:exact-recovery`, supplied by the source-only one-definition/six-theorem `RvachevLaurentLeading.lean` and eleven-definition/seventeen-theorem `FinitePrefixAppellRecovery.lean` modules with the punctured-limit, symbolic-degree, and algebraic-prefix boundaries recorded above. `ASSET_DISPOSITION.csv` accounts for all 88 source-subgroup files, while the deduplicated asset inventory lists 63 retained payloads. Five post-snapshot results are classified separately in `LEAN_CROSSWALK.md`. The retained, fully reviewed PDF checkpoint has 134 A4 pages and 2,027,726 bytes (SHA-256 `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`). Its historical three-pass page, font, text, and visual gates and the independently checked current 23-input source closure are recorded separately in canonical `VALIDATION.md`; the source changed after that render, so a fresh build is required before synchronization is claimed. | At pre-retirement revision `93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`: `analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function/`; `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/`; `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers/`; `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders/`; `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/`. Nested predecessors and arrival archives are recorded in canonical `PROVENANCE.md`; Git history is the byte-level archive. |
+| `Inverse_Fabius_Analyticity_Asymptotics_and_Computability/` | *Inverse Fabius Theory: Analyticity, Asymptotics, Computability, and Dyadic Sampling* — canonical editorial synthesis of five peer inputs. Its immutable extractor pin is `0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`; all 194 source-result rows are dispositioned (57 Lean-proved, 88 human-proved frontier results, 10 conjectures, 15 open problems, and 24 non-applicable environments). The newest exact rows are `is:p2:thm:TM-uncentered`, `is:p2:cor:Prouhet-canonical`, and `is:p2:thm:TM-centered`, supplied by the source-only zero-definition/eight-theorem `FinitePrefixThueMorseCollapse.lean` module. It certifies the exact uncentered sign and triangular scale, every Prouhet clause, the sign-free centered literal grid, and the all-`N` common-denominator strengthening in the rational coefficient model, without promoting a `HasLaw`, analytic-MGF, or Barnes-identification statement. The preceding `RvachevLaurentLeading.lean` and `FinitePrefixAppellRecovery.lean` modules retain the punctured-limit, symbolic-degree, and algebraic-prefix boundaries recorded above. `ASSET_DISPOSITION.csv` accounts for all 88 source-subgroup files, while the deduplicated asset inventory lists 63 retained payloads. Five post-snapshot results are classified separately in `LEAN_CROSSWALK.md`. The retained, fully reviewed PDF checkpoint has 134 A4 pages and 2,027,726 bytes (SHA-256 `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`). Its historical three-pass page, font, text, and visual gates and the independently checked current 23-input source closure are recorded separately in canonical `VALIDATION.md`; the source changed after that render, so a fresh build is required before synchronization is claimed. | At pre-retirement revision `93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`: `analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function/`; `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/`; `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers/`; `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders/`; `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/`. Nested predecessors and arrival archives are recorded in canonical `PROVENANCE.md`; Git history is the byte-level archive. |
 | `comb-interpolation/comb_interpolation_synthesis/` | *Comb Interpolation and Sampling Frontiers: Additive and Geometric Combs in the Fabius--Rvachev System* — canonical editorial synthesis of the former additive-dyadic volume and the three geometric-comb manuscripts. Shared Gaussian--Pascal, Jackson--Newton, Lagrange, stability, Fabius-boundary, quadrature, interpolation, modal, Mellin, regular-variation, spline, reciprocal-product, Euler--Maclaurin, Ruffa, and Thue--Morse material is deduplicated or preserved according to its exact source disposition. Its 180-file inventory and the historical 151-row and current 138-row package inventories are recorded. The current 232-row theorem concordance contains 7 Lean-proved rows, 159 human-proved frontier rows, 20 conjectures, 30 open problems, and 16 non-applicable environments. It promotes `gq:thm:richardson-generating` to `Fabius.geometricLagrangeRichardson_generating` in the source-only 3-definition + 7-theorem module `FabiusFunction.GeometricRichardsonGenerating`, with analytic companion `Fabius.hasSum_geometricLagrangeRichardson_mul_pow`. It also promotes `gq:thm:gaussian-Appell-biorthogonality` and representation `prop:lag-markov` through the source-only 3-definition + 1-abbreviation + 6-theorem module `FabiusFunction.LagrangeRvachevMatrix`; its exact finite identity is `Fabius.lagrangeRvachevEncoderMatrix_mul_decoderMatrix`, while `thm:lag-right-inverse` remains Partial because Lean proves only the finite node-space identity `U B = I`, not a coefficient-space projector identity, and the signed-decoder conclusion remains conditional on a strictly positive row overlap. The source-only 1-definition + 14-theorem `FabiusFunction.RvachevAppellHasse` leaf makes `gq:prop:q-Appell-falling` and `gq:thm:gaussian-Appell-decoder` exact by combining its explicit finite formulas with the existing synthesis theorems; it makes no analytic reciprocal-MGF or decoder-optimality claim. The retained 158-page, 2,456,105-byte A4 PDF (SHA-256 `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`) is a validated historical checkpoint; the chapter-03 notation edit and the later chapter-01 crosswalks postdate it, and no PDF was generated for these source-only updates. Full numerical replay remains separate reproducibility work. | Replaces `Dyadic_Comb_Frontiers/`, `geometric_comb_q_fabius_report/`, `geometric_comb_interpolation_report/`, and `geometric_comb_interpolation_report-3/`; original bytes remain in Git history. |
 | `fabius_information_frontier/` | *Exact Information Geometry and New Frontiers for the Fabius--Rvachev System* (retained submitted 30-page A4 PDF; current 2,139-line TeX; a 601-line experiment, five data products, and three PDF/PNG figure pairs). Its 18 arrival hashes and 19 later payload hashes distinguish the submitted PDF from subsequent source changes. The information-geometry, entropy, Fisher-information, prefix-code, Thue--Morse, and endpoint layers remain archival manuscript claims pending hostile audit, numerical replay, an exact Lean crosswalk, canonical normalization, and rebuild; manuscript theorem labels do not establish formal verification. | `frontier-compilations/fabius_information_frontier/`; moved here by the thematic reorganization. |
 
