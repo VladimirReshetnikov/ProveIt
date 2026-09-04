@@ -29,7 +29,7 @@ The first ten columns of theorem_concordance.csv remain field-for-field identica
 | Inverse_Fabius_Computability_Report | 40 | 23 | 7 | 1 | 4 | 5 |
 | inverse_fabius_iterates_nowhere_analytic | 24 | 2 | 17 | 1 | 1 | 3 |
 | Non_Elementarity_of_the_Fabius_Function | 18 | 14 | 1 | 0 | 0 | 3 |
-| **Total** | **194** | **49** | **96** | **10** | **15** | **24** |
+| **Total** | **194** | **50** | **95** | **10** | **15** | **24** |
 
 The high human-proved count is intentional. In particular, a full forward asymptotic expansion composed with F inverse is not an explicit all-orders inverse reversion theorem, and a formal Catalan or Richardson identity is not an analytic asymptotic for the actual finite-prefix quantiles.
 
@@ -67,7 +67,7 @@ The four unlabelled source obligations are marked not applicable and point to th
 
 ## Exact declaration index
 
-The table below is generated from the 49 Lean-proved concordance rows. Declaration names are fully qualified.
+The table below is generated from the 50 Lean-proved concordance rows. Declaration names are fully qualified.
 
 | Source key | Canonical label | Lean module | Principal declaration |
 |---|---|---|---|
@@ -142,7 +142,7 @@ Several paper rows contain multiple clauses. For those rows, the principal decla
 
 ## Formal kernels of stronger human-proved results
 
-The following three canonical results have substantial Lean ingredients, but the
+The following two canonical results have substantial Lean ingredients, but the
 full paper statement is stronger than the cited declaration. They are therefore
 classified as human-proved frontier results, and their Lean fields are
 deliberately blank in the concordance.
@@ -151,7 +151,6 @@ deliberately blank in the concordance.
 |---|---|---|
 | `is:p3:prop:local-factorization` | `FabiusFunction.IntegerZeroLocalFactorization.Fabius.rvachevFourierProduct_int_add_factorization` proves the denominator-cleared integer-zero factorization; adjacent declarations construct the analytic cofactor and its derivative engine. | The same proposition includes the normalized exponential local form and its explicit logarithmic jet. |
 | `is:p3:thm:first-defect` | `FabiusFunction.CombDefectSeries.Fabius.tsum_shifted_monomial_sub_integral_odd` proves the odd-alias representation, and `FabiusFunction.CombFirstDefect.Fabius.iteratedDeriv_rvachevFourierProduct_nat_mul_int_of_odd` evaluates the surviving derivative. | No named declaration assembles the evaluated complex series and both displayed sine/cosine forms. |
-| `co:thm:abstract-inversion` | `FabiusFunction.EffectiveMonotoneInverse.Fabius.effectiveInversionOn_Icc` proves subset-domain sequential computability for an inverse once a computable positive reciprocal inverse modulus is supplied. | The paper starts from a computable positive forward-gap sequence, derives the inverse modulus, and also concludes effective uniform continuity. That gap-to-modulus/effective-continuity bridge is not packaged by the Lean theorem. |
 
 ## Post-source strengthenings
 

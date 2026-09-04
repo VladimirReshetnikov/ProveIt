@@ -23,8 +23,8 @@ computation.
 
 Its
 [`theorem_concordance.csv`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/theorem_concordance.csv)
-fully dispositions all 194 immutable source-result rows: 49 are Lean-proved,
-96 are human-proved frontier results, 10 are conjectures, 15 are open
+fully dispositions all 194 immutable source-result rows: 50 are Lean-proved,
+95 are human-proved frontier results, 10 are conjectures, 15 are open
 problems, and 24 are non-applicable source environments.
 [`LEAN_CROSSWALK.md`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/LEAN_CROSSWALK.md)
 records exact module/declaration matches and separately classifies five
@@ -33,8 +33,9 @@ post-snapshot additions without changing those source totals.
 accounts for all 88 source-subgroup files, and the live asset ledger covers 63
 retained, deduplicated payloads.
 
-Five recent exact source-row matches are centered Appell deconvolution,
-positive-degree Appell mean-zero, arbitrary-phase polynomial deconvolution,
+The six newest exact source-row matches are abstract effective inversion,
+centered Appell deconvolution, positive-degree Appell mean-zero,
+arbitrary-phase polynomial deconvolution,
 `is:p3:cor:forced-superconvergence`, and
 `is:p3:thm:Appell-lattice-reproduction`. The last two are the newest
 promotions: the parity-selected degree-`N+1` quadrature and its explicit
@@ -77,18 +78,21 @@ labels do not by themselves establish current Lean verification.
 
 ## Formalization notes
 
-The effective-inverse layer gives eight inverse-computability rows exact
+The latest effective-inverse layer gives nine inverse-computability rows exact
 compiled counterparts: the main computability theorem, the three tolerant
-difference branch certificates, the branch-selection theorem, tolerant
-bisection, the totalized clamped inverse, and its effective modulus. The newer
+difference branch certificates, tolerant bisection, restricted and totalized
+sequential inversion, computable clamping, and abstract inversion from
+computable positive rational gaps.  The principal new declaration is
+`Fabius.effectiveInversionOn_Icc_of_computablePositiveRationalGap`; its clamped
+wrapper yields a total computable real function.  The newer
 `RvachevSuperconvergentSynthesis.lean` leaf contributes one definition and
 eight theorems: it packages the parity-selected phases, the extra-degree
 monomial and polynomial rules, generic-mesh physical quadrature, deconvolved
 polynomial synthesis, and the Rvachev--Appell specialization. These two latest
-row promotions bring the canonical concordance to 49 Lean-proved, 96
+row promotions bring the canonical concordance to 50 Lean-proved, 95
 human-proved frontier results, 10 conjectures, 15 open problems, and 24
-nonassertoric environments. The live Lean documentation census is 670 modules
-and 8,852 public declarations with no gaps. The retired source layouts remain
+nonassertoric environments. The live Lean documentation census is 672 modules
+and 8,876 public declarations with no gaps. The retired source layouts remain
 immutable provenance only; the source is newer than the retained historical
 PDF.
 
