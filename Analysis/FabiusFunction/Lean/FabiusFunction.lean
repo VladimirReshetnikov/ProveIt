@@ -12,6 +12,8 @@ import FabiusFunction.DivisorTransform
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.CompleteHomogeneousGenerating
 import FabiusFunction.CompleteHomogeneousBell
+import FabiusFunction.CompleteHomogeneousWeakComposition
+import FabiusFunction.StirlingCompleteHomogeneous
 import FabiusFunction.CompleteHomogeneousAsymptotics
 import FabiusFunction.SymmetricFunctionOrthogonality
 import FabiusFunction.FiniteTriangularTransform
@@ -30,7 +32,6 @@ import FabiusFunction.BellComposition
 import FabiusFunction.BernoulliStirling
 import FabiusFunction.BellHomogeneity
 import FabiusFunction.StirlingOrdinaryGF
-import FabiusFunction.StirlingCompleteHomogeneous
 import FabiusFunction.EulerianGeneratingFunctions
 import FabiusFunction.ExponentialRiordan
 import FabiusFunction.ExponentialRiordanInverse
@@ -51,6 +52,7 @@ import FabiusFunction.StirlingTransformEGF
 import FabiusFunction.StirlingSummations
 import FabiusFunction.StirlingNormalOrder
 import FabiusFunction.BinomialType
+import FabiusFunction.BinomialTypeCharacterization
 import FabiusFunction.BellLeadingZeros
 import FabiusFunction.GenocchiNumbers
 import FabiusFunction.EulerianAlternating
@@ -97,6 +99,7 @@ import FabiusFunction.LagrangeInversionUniqueness
 import FabiusFunction.LagrangeExistence
 import FabiusFunction.NewtonReciprocal
 import FabiusFunction.RaneyNumbers
+import FabiusFunction.RaneyNumbersUniqueness
 import FabiusFunction.IdentityCertificates
 import FabiusFunction.BinaryTreeRotations
 import FabiusFunction.AbelPolynomialSeries
@@ -565,6 +568,8 @@ import FabiusFunction.TransseriesBlockClasses
 import FabiusFunction.TransseriesMonomialUniqueness
 import FabiusFunction.TransseriesWrightOmegaTerms
 import FabiusFunction.LambertCoefficientPolynomials
+import FabiusFunction.LambertPolynomialStirling
+import FabiusFunction.LambertPolynomialCoefficients
 import FabiusFunction.TransseriesPolyLogScale
 import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration

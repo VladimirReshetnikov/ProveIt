@@ -48,10 +48,10 @@ and addition laws are now represented, with the latter two valid after
 evaluation in any commutative rational algebra. The analytic convergence and
 branch assertion attached to the generating function remains outside that
 formalized theorem block. The second-kind reverse-row recurrence is now
-machine checked in a division-free integral form, including its zero boundary
-case beyond the range used by the displayed human formula; the separately
-merged unrestricted rational-index source identity remains pending validation
-under its collision-free declaration name. The ordinary versus
+machine checked in a division-free integral form and, by transport from the
+integers, over every commutative ring, including its zero boundary case beyond
+the range used by the displayed human formula. The separately merged
+unrestricted rational-index source identity remains pending validation. The ordinary versus
 exponential Bell normalization now has both its rational ratio form and a
 denominator-free commutative-semiring form, together with functoriality and the
 upper variable-support cutoff. The sharpness witness for that cutoff, the
@@ -115,30 +115,48 @@ complete human proofs and exact declaration crosswalks. Three private rational
 helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
 caller refactor has now passed its own direct Lean check as well.
 
-The document's generated register is the single source of current row counts
-and Lean/partial/none classifications. Its inherited formal-power, Stirling,
-Newton, and certificate checkpoints are not a fresh compilation of the whole
-corpus. The final structural/provenance validator checks the advertised totals
-against the actual rows as well as adjacent proofs, the 27 disposition records,
-and six original-source inventory rows. PDF building remains skipped for this
-source-only synchronization.
+At that earlier checkpoint, the merged register contained 207 rows: 68 marked Lean, 35 partial, and 104
+without a compiler-verified counterpart. The grid and CRT certificates, the
+Bell set-partition interpretation, and the retained Bell, Cauchy, and reverse-row
+crosswalks contribute compiler-backed entries alongside the incoming
+classifications; this is not a fresh build of the whole corpus. The source-level
+validator accounts for 210 adjacent proofs, 27 disposition records, and six
+original-source inventory rows. The retained PDF is historical; this merge follows the
+user-requested PDF deferral, so current render parity is not claimed.
 
-The same-day upstream crosswalk connects the Bell normalization and unit-series
-coefficient formulas to `UnitSeriesBellCoefficients`. The subsequent incoming
-`BellSetPartitions` independently supplies the weighted labelled-set
-interpretation and the Stirling block-count specialization; its compiled
-status is recorded by upstream commit `dd554e5a8`, not a fresh local replay.
-The prescribed-block-size type count remains a separate obligation.
+The Bell normalization and unit-series coefficient formulas are connected to
+`UnitSeriesBellCoefficients`; `BellSetPartitions` separately supplies the exact
+weighted labelled-set partition interpretation. The finer per-type coefficient
+count remains outside that theorem, as recorded in the register.
+
+## Formal-power recurrence (2026-09-04)
+
+`UnitSeriesPowerRecurrence` supplies three checked theorems. Over any
+commutative ring, the differential equation `A C' = α A' C` implies
+`n a₀ cₙ = Σ_{j=1}^n ((α+1)j−n) aⱼ cₙ₋ⱼ`, without assuming `a₀` is
+invertible. Over a commutative rational algebra with `a₀=1`, formal binomial
+substitution gives `C=A^α`, satisfies that differential equation, and yields
+the manuscript's triangular coefficient algorithm. Its proof and crosswalk
+now cover all three clauses of `alg:merged-exp-log-power` exactly.
+
+The proof uses the Euler derivative `z d/dz` to keep degree indices aligned,
+then separates the constant-coefficient term of the Cauchy product. The
+canonical source includes that complete argument, including the constant
+term and inductive uniqueness of the resulting coefficient sequence. This
+is formal algebra; no analytic branch choice or convergence claim is made.
 
 ## Coefficient-calculus campaign (2026-09-04)
 
-Four new leaf modules supply seventeen public theorem statements, with complete
-human proofs and exact declaration names in the manuscript. `NewtonReciprocal`
-has passed focused Lean compilation, including the actual truncated update.
-`StirlingSymmetricFunctions`, `LagrangeInversionUniqueness`, and
-`StirlingSecondReverseRowIdentity` have independent source/API reviews.
-`ExponentialRiordanInverse` and `LagrangeExistence` are in the current review
-queue. All five remaining leaves await successful compilation.
+The new leaf modules supply the public theorem statements listed in the
+register, with complete human proofs and exact declaration names in the
+manuscript. Upstream focused receipts record direct sequential compilation of
+`NewtonReciprocal`, `StirlingSymmetricFunctions`, `LagrangeInversionUniqueness`,
+and `StirlingSecondReverseRowIdentity`, including the actual truncated Newton
+update and the integer-transport reverse-row identity. This merge does not rerun
+those Lean commands; the register preserves the more precise claim-level
+boundaries. The two second-kind symmetric-function formulas are shared with the
+compiled upstream `StirlingCompleteHomogeneous` module, and their duplicate
+implementations were removed from this campaign's leaf.
 
 The first Lagrange uniqueness compilation attempt reached the default heartbeat
 limit while inferring an inverse witness. The correction supplies explicit
@@ -148,7 +166,7 @@ now have weaker coefficient-ring assumptions and have passed direct compilation.
 They are not counted among the twenty-five new theorems.
 
 The manuscript currently contains 210 theorem-like entries: **77 `Lean`,
-49 `partial`, and 84 `none`**. The latest claim audit corrected overclaims in
+53 `partial`, and 80 `none`**. The latest claim audit corrected overclaims in
 the Abel and Fréchet crosswalks and confirmed the second-kind Stirling
 set-partition counting interpretation through
 `BellSetPartitions.card_setPartitions`. That correspondence uses upstream

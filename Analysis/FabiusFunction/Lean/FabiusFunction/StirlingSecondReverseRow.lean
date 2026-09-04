@@ -29,6 +29,7 @@ and what is left is the single series identity `∑_{j≥2} (-1)^j t^j/(j(j-1)) 
 * `coeff_logTail`, the coefficients of `(1+X)log(1+X) - X`.
 * `subst_logTail`, its value at `u = e^x - 1`, namely `x·e^x - u`.
 * `second_reverse_row`, the division-free integral reverse row recurrence.
+* `second_reverse_row_commRing`, its all-boundary image in every commutative ring.
 -/
 
 set_option autoImplicit false
@@ -245,6 +246,23 @@ theorem second_reverse_row (n k : ℕ) (hk : 1 ≤ k) :
       simpa only [Nat.cast_add, Nat.cast_one] using hseq
     exact_mod_cast hq
   · simp [Nat.sub_eq_zero_of_le (Nat.le_of_not_gt hkn)]
+
+/-- The division-free reverse-row recurrence over every commutative ring.
+This is the image of `second_reverse_row` under the canonical map from the
+integers. It holds for every `n`, including `n < k`, where the Stirling entry
+and the finite sum both vanish. -/
+theorem second_reverse_row_commRing {R : Type*} [CommRing R]
+    (n k : ℕ) (hk : 1 ≤ k) :
+    ((n : R) - k) * Nat.stirlingSecond n k =
+      ∑ i ∈ range (n - k),
+        (-1 : R) ^ (i + 2) * i.factorial * (k + i + 1).choose (i + 2) *
+          Nat.stirlingSecond n (k + i + 1) := by
+  by_cases hkn : k ≤ n
+  · have hz := congrArg (Int.castRingHom R) (second_reverse_row n k hk)
+    simpa only [map_sub, map_mul, map_sum, map_pow, map_neg, map_one, map_natCast,
+      Nat.cast_sub hkn] using hz
+  · have hnk : n < k := Nat.lt_of_not_ge hkn
+    simp [Nat.sub_eq_zero_of_le hnk.le, Nat.stirlingSecond_eq_zero_of_lt hnk]
 
 end Recurrence
 

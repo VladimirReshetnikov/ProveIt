@@ -281,15 +281,20 @@ public declarations, making the historical dyadic/finite-prefix census
 declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This made 934/11,709 an explicitly
-historical post-Prouhet checkpoint.  Subsequent source-only
-transseries/Catalan and Thue--Morse additions made 943/11,791 the next
-historical checkpoint.  The finalized one-definition/eleven-theorem
-`TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 985/12,199.
-The q ledger is 181 Exact / 79 Partial / 14 None / 8 interface, the relevant Dyadic
+`ThueMorseNewmanSelfSimilarity.lean`.  That historical tranche reached
+934/11,709.  The frozen merge target now contains 957 modules and 11,920
+public declarations; retaining the unconditional public
+`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge gives the historical
+merge-union checkpoint 957/11,921, and
+`Fabius.exists_eq_in_residual_interval` is included in the current semantic
+union computed by `scripts/doc_audit.py` and pinned in
+`docs/doc_audit_baseline.json`, with zero documentation gaps.  The rigorous q
+ledger is 181 Exact / 79 Partial / 14 None / 8 interface, the relevant Dyadic
 Gaussian--Thue--Morse chapter is 13/43/0/0, and the source concordance is 103
 Lean-proved / 375 human-proved frontier / 60 non-applicable / 9 conjectures.
+The q-Lucas row remains Partial because the Lean declaration proves only
+primitive-root evaluation, not the polynomial congruence modulo the
+cyclotomic polynomial.
 All of these sibling source-only additions are likewise absent
 from the retained historical PDFs.
 

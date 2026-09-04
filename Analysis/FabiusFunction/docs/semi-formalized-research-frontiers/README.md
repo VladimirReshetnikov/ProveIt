@@ -29,7 +29,7 @@ The canonical frontier artifacts are:
 > source predates the later q-Pochhammer overlay and expanded ledger, so it is
 > a historical render and must not be cited as displaying the final source
 > union, including either series/transseries overlay, the historical
-> 952/11,884 and 967/12,001 checkpoints, or the live 986/12,233 census.
+> 952/11,884 and 967/12,001 checkpoints, or the live 1003/12,485 census.
 
 > **Historical publication receipt (2026-09-03).** The most recent pre-`9135bd7e`
 > source is the 17,954-line, 813,297-byte TeX file with SHA-256
@@ -102,21 +102,24 @@ synthesis, inverse-theory synthesis, comb synthesis, Lambert Guide, Up
 Polynomial Synthesis, and Thue--Morse Atlas. All ten roots have exact
 synchronized source/PDF receipts for that checkpoint in the draft manifest
 and their local records. The merged source closures make those pairs
-historical; the deferred replacement batch is recorded in the fixed-26
+historical; the prior replacement inventory is recorded in the fixed-26
 checkpoint linked above.  Receipts outside that batch remain valid only for
 their named source states.
 
-The authoritative live Lean audit now contains exactly 986 facade-reachable
-modules and 12,233 unique public declarations, with no missing module headers
-or declaration documentation.  The historical 923/11,611 snapshot comprised
-an origin inventory of 11,610 declarations plus this tree's retained
-unconditional public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge.  The
+The authoritative live Lean census and zero-gap result are recorded in the
+[documentation audit](../DOCUMENTATION_AUDIT.md#findings) and pinned in
+`docs/doc_audit_baseline.json`; this overview does not duplicate their live
+numeric receipt.  The frozen upstream 957/11,920 inventory, the retained
+unconditional public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge's
+957/11,921 merge-union checkpoint, and the residual-existence certificate's
+957/11,922 checkpoint are historical waypoints.  Four Bell declarations,
+nine repeated-differential declarations, ten Cauchy declarations, and the
+reverse-row Stirling theorem are included in that authoritative receipt.  The
 q-Pochhammer ownership remains
 `RvachevPochhammerFactorization` 1+10, `QPochhammerEntire` 0+5, and
 `QPochhammerInfinite` 1+29;
 `complexQPochhammerInf_eq_qPochhammerInfIn` remains the unconditional public
-definitional bridge to the generic symbol.  The later checkpoints culminate in
-the live 986/12,233/0 census recorded below.  Fixed-nome normal convergence,
+definitional bridge to the generic symbol.  Fixed-nome normal convergence,
 product identifiability, all finite/infinite q-calculus tranches, the
 root-of-unity and q-Catalan layers, finite Newton interpolation, q-beta
 integration, integer and complex Gaussian upper indices,
@@ -160,11 +163,11 @@ removable-origin convention. The Guide's nearest-nonzero-zero explanation is
 not the formal proof route. With the three finite branch-coordinate modules,
 the four-module union is 4 definitions + 37 theorems = 41 declarations.
 Higher or convergent Puiseux/logarithmic
-expansions remain open.  The d130, `b899`, and earlier primary,
-walkthrough, Lambert-Guide, and canonical-frontier receipts remain historical
-for their recorded source checkpoints.  Their accepted merged-source renders
-are recorded in the [merge-28de4e51 receipt
-register](drafts/MANIFEST.md#merge-28de4e51-publication-receipts).  The live documentation
+expansions remain open. The historical `b899` primary, walkthrough,
+Lambert-Guide, and canonical-frontier PDFs rendered this integration at their
+named source checkpoint; the deferred replacement inventory is recorded in the
+fixed-26 table without a merged-current parity claim.
+The live documentation
 census on the incoming Lambert branch at the exact-radius four-theorem
 checkpoint was 903 modules and 11,447 public declarations; the value-completion
 theorem gave that branch's historical 903/11,448 checkpoint.
@@ -378,8 +381,8 @@ of 77. The eight-theorem Stirling leaf is retained.
 The two certificate leaves added nine public theorems at the historical
 979/12,142 checkpoint. Six further leaves and extensions to existing modules
 then added 57 declarations. The incoming BellSetPartitions module adds 34
-more, giving the current merged inventory of 986/12,233. No new aggregate-build
-or PDF-parity claim is made.
+more, giving the historical 986/12,233 checkpoint. The merged current inventory
+is 1003/12,485. No new aggregate-build or PDF-parity claim is made.
 
 The claim crosswalk remains conservative. The abstract Faà di Bruno result,
 ordinary Bell normalization, and Touchard definition and displayed
@@ -418,11 +421,9 @@ natural mesh `M`, every `l,m`, and `l <= padicValNat 2 M`. Thus
 does not prove the larger support/smoothness/parity/Fourier--Bessel theorem
 `thm:leg-Lambda` or the matrix-projector corollary. It gives the historical
 925/11,619 census; the historical reciprocity census is 931/11,685 and the
-historical dyadic/finite-prefix census is 933/11,695. The later branch
-inventories, including local 961/11,974 and 970/12,056 and incoming
-952/11,884, 967/12,001, 969/12,048, and 970/12,051, are also
-historical. The current merged census is 986/12,233, as recorded above,
-with zero missing module headers and zero
+historical dyadic/finite-prefix census is 933/11,695. The current live census
+is recorded in the documentation audit linked above and pinned in
+`docs/doc_audit_baseline.json`, with zero missing module headers and zero
 missing declaration comments.
 
 The retained frontier, primary, walkthrough, geometric-q, and representation
@@ -436,7 +437,7 @@ pre-incoming checkpoint, while 952/11,881 is the historical post-incoming
 checkpoint. The two written OrderDual Neumann wrappers and the real-analytic
 Wright omega theorem gave the incoming historical 952/11,884/0
 modules/declarations/missing-comments checkpoint. The live merged census is
-986/12,233/0. The following list records the incoming module surfaces at that
+1003/12,485/0. The following list records the incoming module surfaces at that
 historical checkpoint, not the larger merged surfaces inventoried above.
 The retained PDFs predate the incoming source-only overlay and claim no
 render parity.
@@ -785,12 +786,11 @@ The incoming union adds one module and fourteen public declarations: the new
 zero-definition/six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem
 added to `DyadicBoundaryIdentity.lean`, and seven theorems added to
 `ThueMorseNewmanSelfSimilarity.lean`. This gives the historical 934/11,709
-checkpoint. The local branch's 943/11,791, 944/11,806, 960/11,966,
-and 961/11,974 inventories and the incoming branch's 943/11,787, 952/11,881,
-and 952/11,884 inventories, followed by incoming 967/12,001, 969/12,048,
-and 970/12,051, are historical and overlap. The preceding local merged
-970/12,056 inventory is also historical. The reconciled merged
-audit is 986/12,233, with zero documentation gaps, as inventoried above.
+checkpoint. The frozen merge target plus the retained public q-Pochhammer
+bridge gives the historical 957/11,921 merge-union checkpoint.  The live union,
+including the residual-existence certificate, is recorded in the documentation
+audit linked above and pinned in `docs/doc_audit_baseline.json`, with zero
+documentation gaps.
 
 `FabiusFunction.RvachevLaurentLeading` has one definition and six theorems.
 Its manuscript-normalized punctured-neighborhood limit, together with the
@@ -962,7 +962,7 @@ historical `b899`, d130 Up-synthesis, and canonical-frontier PDFs.  This merge
 changes both TeX closures, so fresh synchronized renders are pending.
 
 The final source-only `FabiusFunction.GaussianBinomialFixedColumnRate` leaf has
-no definitions and exactly nine theorems:
+no definitions and nine theorems:
 `Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp'`,
 `Fabius.norm_finiteQPochhammerIn_pow_sub_one_le`,
 `Fabius.norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
@@ -972,19 +972,19 @@ no definitions and exactly nine theorems:
 `Fabius.gaussianBinomial_fixedColumn_relativeError_isBigO`,
 `Fabius.gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
 `Fabius.gaussianBinomial_fixedColumn_error_isBigO`, and
-`Fabius.gaussianBinomial_shifted_fixedColumn_error_isBigO`. The closure reuses
-`Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` and
-`Fabius.tendsto_gaussianBinomial_add_const_atTop` from the one-definition,
-twenty-seven-theorem `QBinomialTheoremInfinite` module. In a normed
+`Fabius.gaussianBinomial_shifted_fixedColumn_error_isBigO`. In a normed
 commutative ring with normalized multiplicative norm, `‖q‖ ≤ 1` gives the
 exponential and elementary bounds on `‖(q^m;q)_k-1‖` and the denominator-free
 relative Gaussian bound, the last meaningful even at roots of unity. Over a
 normed field, `‖q‖ < 1` gives fixed and shifted nonasymptotic bounds, shifted
 convergence, and relative/additive `IsBigO` laws at `q^(n-k+1)` and `q^(n+1)`.
 No completeness or `q ≠ 0` hypothesis is imposed, and the constant is not
-claimed sharp. Together with the existing fixed-column limit, these results
-make every clause of `thm:fixed-column-limit` exact; the relative pair encodes
-the two displayed multiplicative `1+O` estimates.
+claimed sharp. Together with the existing fixed-column limit and the
+`QBinomialTheoremInfinite` declarations
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` and
+`tendsto_gaussianBinomial_add_const_atTop`, these results make every clause of
+`thm:fixed-column-limit` exact; the relative pair encodes the two displayed
+multiplicative `1+O` estimates.
 
 The source-only `FabiusFunction.RvachevAppellHasse` leaf has one definition,
 `Fabius.Appell.polynomialTransform`, and exactly fourteen theorems:

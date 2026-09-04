@@ -220,7 +220,9 @@ formalized.
 
 PENDING += [
  # --- thm:second-ogf ---
- (r"""The factorial form follows by direct factorization.
+ (r"""If the factors $1-jx$ are nonzero, taking reciprocals gives the stated scalar
+rational identity.  For $k=0$ both products over $j=1,\ldots,k$ are empty,
+so the same argument yields $F_0=1$.
 \end{proof}
 """,
   remark(r"""% ed.: crosswalk added 2026-09-01.
@@ -230,24 +232,26 @@ $R$, the column series $\sum_{r\ge0}\StirlingSecondKind{k+r}{k}x^r$ times
 $\prod_{j=1}^k(1-jx)$ equals $1$, proved exactly as above from the column
 recurrence $(1-kx)F_k=F_{k-1}$ (\lean{Fabius.one_sub_mul_X_mul_stirlingColumnOGF_succ}).
 The expansion of each geometric factor is
-\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow}, which identifies the column
-series with $\prod_{j=1}^k\sum_{r\ge0}j^rx^r$; the complete-homogeneous
-coefficient formula \cref{eq:second-complete-symmetric} is supplied over every
-commutative semiring by the compiled
-\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn} and
-\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le} in
-\lean{StirlingCompleteHomogeneous}.  The same module supplies universal
-\lean{MvPolynomial.hsymm} evaluation through
-\lean{Fabius.stirlingSecond_add_eq_eval_hsymm} and the explicit multiplicity
-sum through \lean{Fabius.stirlingSecond_add_eq_sum_finsuppAntidiag}.
-The scalar falling-factorial factorization is
-\lean{Fabius.pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul}
-under $x\ne0$; its reciprocal is
+\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow}.  The compiled zero-definition/
+eight-theorem module \lean{StirlingCompleteHomogeneous} adds the six declarations
+\lean{Fabius.stirlingColumnOGF_eq_completeHomogeneousGeneratingSeriesOn},
+\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn},
+\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le},
+\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEval},
+\lean{Fabius.stirlingSecond_add_eq_eval_hsymm}, and
+\lean{Fabius.stirlingSecond_add_eq_sum_finsuppAntidiag}.  They implement the
+inverse-uniqueness proof, the $n=k+r$ and $n\ge k$ complete-homogeneous
+coefficient identities, the universal symmetric-polynomial evaluation, and
+the explicit finite multiplicity sum, including $k=0$ and $r=0$.
+
+Its two scalar-factorization declarations
+\lean{Fabius.pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul} and
 \lean{Fabius.prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv}
-under nonvanishing of every $1-jx$.  The human symmetric-function proof
-appears in \cref{thm:stirling-symmetric-semirings}; the separate first-kind
-identities and scaling extensions in \lean{StirlingSymmetricFunctions}
-still await compiler validation.""")),
+are stated over a field under $x\ne0$.  Lean's reciprocal is defined also at
+zero, so its reciprocal identity needs no further hypothesis; the conventional
+fraction interpretation above additionally assumes every $1-jx$ is nonzero.
+Together these declarations formalize every clause of the corrected
+theorem, so its register status is Lean.""")),
 
  # --- thm:eulerian-power-series ---
  (r"""\eqref{eq:eulerian-explicit}.  Formula \eqref{eq:eulerian-k1} is its case $k=1$.
@@ -402,27 +406,6 @@ $(1-t)^{n+1}$ through \cref{eq:eulerian-power-series}.""")),
 ]
 
 PENDING += [
- # --- thm:second-reverse-recurrences ---
- (r"""$(1-\EulerE^{-x})F_k'(x)=kF_k(x)$.
-\end{proof}
-""",
-  remark(r"""% ed.: crosswalk added 2026-09-01.
-\cref{eq:second-triangular-explicit} is
-\lean{Fabius.stirlingSecond_eq_pow_div_factorial_sub_sum} (module
-\lean{StirlingTriangularExplicit}), proved exactly as in the first paragraph
-from the surjection count $k^n=\sum_r\StirlingSecondKind nr\,r!\binom kr$
-(\lean{Fabius.pow_eq_sum_stirlingSecond_mul_factorial_mul_choose}); the
-formal statement holds for all $n,k\ge0$ with the sum running from $r=0$
-(the extra term $\StirlingSecondKind n0/k!$ vanishes for $n\ge1$).
-The column recurrence is \lean{Fabius.second_reverse_column} in
-\lean{StirlingSecondReverseColumn}.  The row recurrence is supplied by new
-source \lean{Fabius.second_reverse_row} and
-\lean{Fabius.second_reverse_row_sum} in
-\lean{StirlingSecondReverseRowIdentity}, with compiler validation pending;
-the combined register status remains \emph{partial}.""")),
-]
-
-PENDING += [
  # --- thm:spivey ---
  (r"""classification is unique and gives the summand.
 \end{proof}
@@ -444,19 +427,6 @@ $\TouchardPolynomial{m+1}(\EulerE^t)=\bigl(\TouchardPolynomial{m}(\EulerE^t)\big
 $\EulerE^{jt}\EulerE^{\EulerE^t-1}$ is the binomial convolution
 $\sum_k\binom nk\BellNumber kj^{n-k}$.""")),
 
- # --- thm:bell-inversions ---
- (r"""turns it into the right side after expanding
-$(X-1)^k$.
-\end{proof}
-""",
-  remark(r"""% ed.: crosswalk added 2026-09-01.
-\cref{eq:bell-inversion-one} is
-\lean{Fabius.bell_eq_sum_neg_one_pow_choose_bell_succ} (module
-\lean{BellShiftEGF}): binomial inversion
-(\lean{Fabius.binomial_inversion_ring}) of the recurrence
-\cref{eq:bell-binomial-recurrence} in the form
-\lean{Fabius.bell_succ_eq_sum_choose}.  \cref{eq:bell-inversion-two} is not
-formalized.""")),
 ]
 
 PENDING += [
@@ -1016,19 +986,6 @@ occurs, derived algebraically from $(n+2)\CatalanNumber{n+1}=\binom{2n+2}{n+1}$
 and $\binom{2n+2}{n+1}(n+1)=\binom{2n+2}{n}(n+2)$; the reflection bijection
 itself is not formalized.""")),
 
- # --- thm:merged-catalan-first-return ---
- (r"""equation.  Of the two quadratic roots, only the displayed branch has constant
-term $1$.
-\end{proof}
-""",
-  remark(r"""% ed.: crosswalk added 2026-09-02.
-\lean{Fabius.catalanSeries_eq} (module \lean{CatalanGeneratingFunction}) is
-$C(z)=1+zC(z)^2$ in $R[[z]]$ over any commutative ring, read off from
-Mathlib's recurrence \lean{catalan_succ'} by coefficient comparison, and
-\lean{Fabius.eq_catalanSeries_of_eq_one_add_X_mul_sq} is the uniqueness
-statement behind the choice of branch: every power series $F$ with
-$F=1+zF^2$ equals $C(z)$, since the equation determines each coefficient from
-the earlier ones.  The closed form with $\sqrt{1-4z}$ is not formalized.""")),
 ]
 
 PENDING += [
@@ -1097,27 +1054,50 @@ formula, so it is not an independent second proof there.)""")),
 ]
 
 PENDING += [
- # --- thm:merged-norlund-calculus ---
- (r"""functions of orders $\alpha$ and $\gamma$ proves the convolution identity.
+ # --- lem:merged-log-base-change ---
+ (r"""Applying the first identity to $H=B_R$ proves the last assertion.
 \end{proof}
 """,
-  remark(r"""% ed.: crosswalk added 2026-09-02; natural orders only.
-Module \lean{NorlundPolynomials} defines $\beta_n^{(a)}(x)$ for natural
-orders $a\in\mathbb N$ by \cref{eq:merged-norlund-egf} with the $a$-th power
-of Mathlib's \lean{bernoulliPowerSeries} (\lean{Fabius.norlund}), so that
-$\beta_n^{(0)}=x^n$ and $\beta_n^{(1)}=\beta_n$ (\lean{Fabius.norlund_zero},
-\lean{Fabius.norlund_one}).  For $a,c\in\mathbb N$ and rational $x,y$:
-\cref{eq:merged-norlund-appell} is \lean{Fabius.derivative_norlund_succ},
-proved by differentiating the coefficients of $G(t)\EulerE^{xt}$ in $x$
-(\lean{Fabius.derivative_coeff_succ_map_C_mul_rescale_exp});
-\cref{eq:merged-norlund-convolution} is \lean{Fabius.norlund_add_eval_add},
-from the product of the two exponential generating functions
-(\lean{Fabius.egfA_norlund_eval}, \lean{Fabius.egfA_mul});
-\cref{eq:merged-norlund-translation} is its case $\gamma=0$
-(\lean{Fabius.norlund_eval_add}); and \cref{eq:merged-norlund-difference} is
-\lean{Fabius.norlund_succ_eval_add_one_sub}, from
-$(\EulerE^{(x+1)t}-\EulerE^{xt})\,t/(\EulerE^t-1)=t\EulerE^{xt}$.  Complex
-orders, which need $\exp(\alpha\log(t/(\EulerE^t-1)))$, are not formalized.""")),
+  remark(r"""% ed.: crosswalk added 2026-09-04; all base-change clauses are exact.
+The compiler-checked module \lean{BernoulliFormalLog} proves the general
+identity as \lean{Fabius.map_logOf}: for every unital ring homomorphism
+between commutative $\RationalNumbers$-algebras and every series with constant
+coefficient one, coefficientwise mapping commutes with the normalized formal
+logarithm.  The kernel identity is
+\lean{Fabius.map_bernoulliPowerSeries}; combining it with
+\lean{Fabius.logOf_bernoulliPowerSeries_algebra} and
+\lean{Fabius.coeff_logOf_bernoulliPowerSeries_algebra} transports the full
+rational coefficient formula, including degree zero, to the target algebra.
+Thus every clause of \cref{lem:merged-log-base-change} is exact.""")),
+
+ # --- thm:merged-norlund-calculus ---
+ (r"""Finally $\exp(\alpha L)\exp(\gamma L)=\exp((\alpha+\gamma)L)$, so multiplying
+the two generating functions and taking the coefficient of $t^n/n!$
+proves the convolution identity, including $n=0$.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk updated 2026-09-04; arbitrary-order scope is explicit.
+The compiler-checked module \lean{NorlundGeneralized} defines
+\lean{Fabius.generalizedNorlund} for every scalar order in an arbitrary
+commutative $\RationalNumbers$-algebra and proves the defining EGF as
+\lean{Fabius.egfA_generalizedNorlund_eval}.  In that scope,
+\cref{eq:merged-norlund-appell} is
+\lean{Fabius.derivative_generalizedNorlund_succ},
+\cref{eq:merged-norlund-translation} is
+\lean{Fabius.generalizedNorlund_eval_add}, and
+\cref{eq:merged-norlund-convolution} is
+\lean{Fabius.generalizedNorlund_add_eval_add}, all including their
+degree-zero boundaries where applicable.  The kernel product law is
+\lean{Fabius.generalizedNorlundKernel_add}, and
+\lean{Fabius.generalizedNorlund_natCast} proves equality as polynomials with
+the prior natural-order family \lean{Fabius.norlund}.
+
+For natural orders, \cref{eq:merged-norlund-difference} is
+\lean{Fabius.norlund_succ_eval_add_one_sub} in
+\lean{NorlundPolynomials}.  The corresponding arbitrary-scalar difference
+identity, including the order $-1$ specialization used at $\alpha=0$, is not
+formalized.  This single scope gap keeps the combined theorem
+\emph{partial}.""")),
 ]
 
 PENDING += [
@@ -1313,7 +1293,7 @@ the polynomial diagonal.  Replace $n$ by $n-1$ and set $x=0$ to obtain the
 number diagonal; division by $(n-1)!$ gives the coefficient identity.
 \end{proof}
 """,
-  remark(r"""% ed.: crosswalk added 2026-09-02; the Lean proof avoids residues entirely.
+  remark(r"""% ed.: crosswalk updated 2026-09-04; Bell construction and natural diagonal separated.
 Module \lean{NorlundDiagonal} formalizes the three diagonal displays for
 natural orders: \cref{eq:merged-norlund-polynomial-diagonal} is
 \lean{Fabius.norlund_diagonal}, in the form
@@ -1345,9 +1325,9 @@ first term and leaves $\beta_{n+1}^{(n+2)}(x+1)=x\beta_n^{(n+1)}(x)$
 $\FallingFactorial{x-1}{n+1}=(x-1)\FallingFactorial{x-2}{n}$ then gives the
 closed form, and $x=0$ with
 $\FallingFactorial{-1}{n}=(-1)^nn!$ (\lean{Fabius.descPochhammer_eval_neg_one})
-gives the other two.  Complex orders are not formalized, nor is the
-Bell-polynomial construction
-\cref{eq:merged-norlund-bell,eq:merged-norlund-bell-explicit}.""")),
+gives the other two.  The literal finite multiplicity-vector expansion
+\cref{eq:merged-norlund-bell-explicit} is not formalized, so this combined
+theorem remains \emph{partial}.""")),
 ]
 
 PENDING += [
@@ -1428,8 +1408,9 @@ commutative ring through
 The alternative coefficient formula is
 \lean{Fabius.Lagrange.coeff_solution_subst_alt}, using the general
 coefficient integration-by-parts identity
-\lean{Fabius.Lagrange.coeff_jacobian_mul}.  Compiler validation of these
-additions is pending, so the register status remains \emph{partial}.
+\lean{Fabius.Lagrange.coeff_jacobian_mul}.  All six declarations in
+\lean{LagrangeInversionUniqueness} have passed focused compiler validation,
+so the uniqueness and all three coefficient formulas in the theorem are exact.
 The proof above is unavailable in Lean, because it runs through
 \cref{thm:res-subst}, which is itself unformalized.  The formal proof is
 purely algebraic and rests on one cancellation: writing $v$ for the inverse of
@@ -1568,6 +1549,10 @@ vanish for that reason rather than by convention.
 product, so that $k=0$ gives $\ExponentialPartialBellPolynomial n0=\delta_{n,0}$
 and $x^{1\diamondsuit}=x$ (\lean{Fabius.diamondPow_one}); for $k\ge1$ this is
 the $k$-fold product of the source.
+The raw convolution, \lean{Fabius.diamondPow}, and its zero, successor, and
+one laws hold over every commutative semiring.  The EGF and partial-Bell
+bridges below retain the commutative $\RationalNumbers$-algebra hypotheses
+needed for factorial normalization.
 The proof is the one above.  \lean{Fabius.egfA_mul} turns a binomial convolution
 into a product of exponential generating functions, so
 \lean{Fabius.egfA_diamondPow} gives $X(t)^k$ by induction, and

@@ -91,12 +91,13 @@ STATUS = {
    r"solution of $T=te^{-aT}$. The characteristic-free binomial addition identity "
    r"stated here for every commutative ring still needs a formal transfer proof."),
  'thm:merged-frechet-faa': ('partial',
-   r"Mathlib's \lean{HasFTaylorSeriesUpToOn.comp} (FaaDiBruno.lean) proves "
-   r"composition for supplied Taylor series indexed by \lean{OrderedFinpartition}. "
-   r"The bridge to the stated formula for iterated Fr\'echet derivatives indexed "
-   r"by unordered set partitions, and its regrouping into partial-Bell form, "
-   r"have not been formalized."),
-
+   r"The focused Mathlib composition theorem is \lean{iteratedFDeriv_comp}, "
+   r"unfolded with \lean{FormalMultilinearSeries.taylorComp} and "
+   r"\lean{FormalMultilinearSeries.compAlongOrderedFinpartition_apply}; "
+   r"the source also records \lean{HasFTaylorSeriesUpToOn.comp} "
+   r"(FaaDiBruno.lean). The bridge to the stated formula for iterated "
+   r"Fr\'echet derivatives indexed by unordered set partitions, and its regrouping "
+   r"into partial-Bell form, have not been formalized."),
  'thm:eulerian-irwin-hall': ('partial',
    r"\lean{Fabius.cubeSliceCount_succ_sub} (\lean{EulerianPermutohedron}), the combinatorial "
    r"slab count; the Fubini volume step is not formal"),
@@ -138,7 +139,10 @@ STATUS = {
  'thm:bell-poly-partitions': ('Lean',
    r"\lean{Fabius.partialBell_eq_sum_setPartitions} and "
    r"\lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), "
-   r"over any commutative semiring of weights; the per-type count "
+   r"over any commutative semiring of weights.  The compatible finite "
+   r"multiplicity-vector formula is \lean{Fabius.coeff_exp_subst_eq_sum_weightedPartitions} "
+   r"together with \lean{Fabius.coeff_exp_subst_eq_completeBell} "
+   r"(\lean{UnitSeriesBellCoefficients}); the per-type count "
    r"\cref{cor:partition-type} is not covered"),
  'thm:second-explicit': ('Lean',
    r"\lean{Fabius.factorial_mul_stirlingSecond_eq_sum} (over $\mathbb Z$) and "
@@ -365,6 +369,37 @@ STATUS = {
    r"The all-index commutative-ring theorem \lean{Fabius.coeff_subst_eq_sum_multinomial} "
    r"combines these forms; at $n=0$ its unique empty profile gives $c_0=a_0$.  "
    r"The reciprocal specialization is \lean{Fabius.coeff_reciprocalSeries}"),
+ 'thm:merged-kirkman-cayley': ('partial',
+   r"The arithmetic formula is formalized in \lean{AssociahedronFaceNumbers}: "
+   r"\lean{Fabius.dissectionNumber_mul_of_three_le} is the denominator-free manuscript "
+   r"formula, with integrality and the literal quotient supplied by "
+   r"\lean{Fabius.succ_dvd_choose_mul_choose_of_three_le} and "
+   r"\lean{Fabius.dissectionNumber_eq_div}. The quantity "
+   r"\lean{Fabius.dissectionNumber} is defined arithmetically; the polygon-dissection "
+   r"type, its cardinality theorem, and a cycle-lemma bijection are not formalized"),
+ 'cor:merged-associahedron-f': ('partial',
+   r"\lean{Fabius.associahedronFaceNumber_mul} gives the division-free face-array formula, "
+   r"and \lean{Fabius.associahedronFaceNumber_zero}, "
+   r"\lean{Fabius.two_mul_associahedronFaceNumber_facet}, and "
+   r"\lean{Fabius.associahedronFaceNumber_top} give the three boundary values "
+   r"(\lean{AssociahedronFaceNumbers}). The array is defined from the dissection numbers; "
+   r"an associahedron face lattice and its noncrossing-diagonal correspondence are not "
+   r"formalized"),
+ 'thm:merged-associahedron-h': ('partial',
+   r"For the arithmetically defined Narayana row \lean{Fabius.associahedronH}, "
+   r"\lean{Fabius.associahedronH_mul} gives the closed form, "
+   r"\lean{Fabius.associahedronH_symm} gives palindromicity, and "
+   r"\lean{Fabius.sum_associahedronH}, \lean{Fabius.associahedronHPoly_one}, and "
+   r"\lean{Fabius.associahedronHPoly_one_eq_faceNumber_zero} give the Catalan sum and "
+   r"$h(1)=f_0$ (\lean{AssociahedronFaceNumbers}). The geometric $h$-polynomial, face "
+   r"transform, and alternating Vandermonde derivation are not formalized"),
+ 'thm:merged-raney': ('partial',
+   r"\lean{Fabius.raneyT_eq} constructs the canonical solution, and "
+   r"\lean{Fabius.coeff_raneyT_pow} proves \cref{eq:merged-raney} for it for every "
+   r"$p,n\geq0$ and $r\geq1$, including degree zero; "
+   r"\lean{Fabius.natCast_mul_coeff_raneyT_pow} is the positive-degree denominator-free "
+   r"form (\lean{RaneyNumbers}). The manuscript quantifies over every solution $T$; "
+   r"uniqueness or transfer from an arbitrary solution to the constructed one is not formalized"),
  'thm:eulerian-binomial-recurrence': ('Lean',
    r"\lean{Fabius.eulerianPolynomial_binomial_recurrence} in $R[t]$ and "
    r"\lean{Fabius.eulerian_binomial_recurrence_series} in $R[[t]]$ (\lean{EulerianEGF}), for "
@@ -393,18 +428,19 @@ STATUS = {
    r"\cref{eq:second-triangular-explicit} is "
    r"\lean{Fabius.stirlingSecond_eq_pow_div_factorial_sub_sum} (\lean{StirlingTriangularExplicit}), "
    r"for all $n,k$ with the $r=0$ term included; \cref{eq:second-reverse-row} is "
-   r"\lean{Fabius.second_reverse_row} (\lean{StirlingSecondReverseRow}), in a division-free "
-   r"integral form assuming only $1\le k$ and covering $n\le k$, with $i=j-2$ and "
-   r"$\binom{-k}{i+2}=(-1)^{i+2}\binom{k+i+1}{i+2}$; its one-variable series steps are "
-   r"\lean{Fabius.coeff_logTail} and \lean{Fabius.subst_logTail}.  "
+   r"\lean{Fabius.second_reverse_row} and, over every commutative ring, "
+   r"\lean{Fabius.second_reverse_row_commRing} (\lean{StirlingSecondReverseRow}), both "
+   r"assuming only $1\le k$ and covering all $n$, including $n<k$ where both sides "
+   r"vanish.  The integral proof uses \lean{Fabius.coeff_logTail} and "
+   r"\lean{Fabius.subst_logTail}; the generic theorem transports it through "
+   r"\lean{Int.castRingHom}.  "
    r"\cref{eq:second-reverse-column} is "
    r"\lean{Fabius.second_reverse_column} (\lean{StirlingSecondReverseColumn}), by the "
    r"column differential equation $(1-\EulerE^{-x})F_k'=kF_k$ "
-   r"(\lean{Fabius.one_sub_altSeries_mul_derivative_egfA_stirlingSecond}).  The alternate "
-   r"commutative-ring form \lean{Fabius.second_reverse_row_commRing_of_le} and the stronger "
+   r"(\lean{Fabius.one_sub_altSeries_mul_derivative_egfA_stirlingSecond}).  The stronger "
    r"unrestricted rational-index form \lean{Fabius.second_reverse_row_sum} in "
-   r"\lean{StirlingSecondReverseRowIdentity} remain source-reviewed pending compiler "
-   r"validation and are not used for this status."),
+   r"\lean{StirlingSecondReverseRowIdentity} is also compiler-verified; its triangular "
+   r"generic wrapper is a direct corollary of the all-boundary ring theorem."),
  'thm:eulerian-stirling': ('Lean',
    r"\lean{Fabius.sum_eulerianNumber_mul_X_pow_eq_sum_stirlingSecond} (\lean{EulerianStirling}), "
    r"as an identity in $R[[t]]$ over any commutative ring $R$, from the rising-factorial "

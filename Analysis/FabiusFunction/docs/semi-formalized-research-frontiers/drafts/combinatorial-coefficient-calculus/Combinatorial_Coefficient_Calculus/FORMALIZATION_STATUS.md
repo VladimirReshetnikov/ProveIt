@@ -8,8 +8,14 @@ classification records a claimed correspondence, not a fresh compilation receipt
 
 ## Current checkpoint
 
+The merge of main at `da90f69d1` retains the nine compiled grid/CRT certificate
+theorems from `5a685136b`. Its regenerated register has 207 rows: 65 `Lean`,
+35 `partial`, and 107 `none`; the corpus census is 1003 modules and 12,485 public
+declarations. These pinned checkpoint counts and pending-build receipts describe
+historical source states, not a rebuild of the current merged tree.
+
 The merged manuscript contains 210 theorem-like entries: **77 `Lean`,
-49 `partial`, and 84 `none`** after the current claim audit. The audit corrected
+53 `partial`, and 80 `none`** after the current claim audit. The audit corrected
 two overclaims for the Abel and Fréchet statements and confirmed the
 second-kind Stirling counting interpretation through
 `BellSetPartitions.card_setPartitions`. This is a source-correspondence result
@@ -36,71 +42,38 @@ solution definition now work over arbitrary commutative rings. The coefficient
 arguments that divide by positive integers retain their rational-algebra
 assumptions. No aggregate corpus build is claimed.
 
-The current campaign rebuilds the canonical TeX/PDF pair. **Rendering is pending
-at this checkpoint**; page count and final source/render parity will be recorded
-after the build owner completes and checks the render. Statements inherited
-from other source-only sessions that PDF rebuilding was skipped at their user's
-request describe those historical sessions only; they are not an instruction
-or waiver for this campaign. PDF rendering and Lean compilation remain separate
-validation results.
+The canonical PDF is intentionally not rebuilt in this merge, at the user's
+request. The retained PDF is a historical artifact whose byte identity is
+preserved; the current source/PDF pair has no render-parity claim until a future
+build is authorized.
 
-## Compilation and source-review receipts
-The finite-difference and Bell-multiplicity source checkpoint incorporates
-main through `5fddefb43b6f4009df826b68aedbdb1c6112e0d0`. It adds seven public
-theorems: three generic formulas in `BellCompletePartitions`, two
-arbitrary-scalar difference laws and two multiplicity specializations in
-`NorlundGeneralized`. Independent source/API review checked the factorial
-normalizations, unrestricted zeroth Bell input, zero-ring scope, degree zero,
-and negative orders. No Lean process was started while external Lean/Lake
-jobs occupied the host; these declarations are not compiler-verified yet.
-The generic human Bell proof is now shared by the Nörlund section.
-At this checkpoint the generated register has 208 rows, classified as
-62 `Lean`, 35 `partial`, and 111 `none`. The two added upstream `Lean`
-classifications are inherited certificate work, not promotions from this
-source review. Fourteen validator regression tests and the canonical
-structural/provenance check pass. The manifest and package README now refer
-to the canonical register instead of maintaining competing current totals.
-
-The publication merge then incorporates pinned main
-`ff76c57fa563102804b64c8c8abab90f47b09baf`. Its `BellSetPartitions`
-module supplies the weighted labelled-set interpretation for both partial
-and complete Bell polynomials, and the second-kind Stirling block count.
-That module's focused compilation is recorded in upstream commit
-`dd554e5a8`; this work performed an independent statement/hypothesis review,
-not a fresh compiler replay. Its source changes the previously open
-labelled-partition boundary but does not supply the prescribed-type count.
-The merged register has 208 rows: 63 `Lean`, 35 `partial`, and 110 `none`.
-The new local Bell multiplicity and arbitrary-order Nörlund statements
-remain pending compilation.
-
-The final synchronization at main `da90f69d1` recorded an upstream register of
-208 rows: 64 `Lean`, 35 `partial`, and 109 `none`. At that historical snapshot
-the Abel row was left `none` because source review is not compilation, and the
-coordinate-free composition row was described through Mathlib's
-`iteratedFDeriv_comp` and `FormalMultilinearSeries.taylorComp`. The current
-branch re-audited both correspondences: Abel remains `partial` because its
-universal polynomial transfer is still open, and the Fréchet statement remains
-`partial` until the ordered-partition bridge is verified against the exact local
-hypotheses. Neither historical description is a fresh local compiler run.
+The upstream synchronization receipts also record the earlier integration through
+`c668cb96362acbae8b89950102b8ea361102a73f`, with structural validation and
+crosswalk regression checks passing, followed by the Nörlund and Bernoulli
+formal-logarithm extensions. The named receipts distinguish source review from
+compiler validation and report the inherited 208-page PDF as historical. Those
+historical figures are retained for provenance and do not replace the current
+register or imply an aggregate build.
 
 `NewtonReciprocal.lean` passed focused compilation on 2026-09-04 using
 `lake env lean -o .lake/build/lib/lean/FabiusFunction/NewtonReciprocal.olean
 Analysis/FabiusFunction/Lean/FabiusFunction/NewtonReciprocal.lean` (exit zero).
-Its five public theorems are compiler-checked. The other twelve new public
-theorems in the three Stirling/Lagrange leaves remain source-reviewed and await
-compilation, including any missing prerequisites. No aggregate build is claimed.
+Its five public theorems are compiler-checked. At that checkpoint the other twelve
+new public theorems in the three Stirling/Lagrange leaves awaited compilation.
+The two reverse-row identity declarations have since passed the focused check
+above; no aggregate build is claimed.
 At the upstream synchronization checkpoint the cited-name and duplicate-name
 structural audits passed:
 3,439 distinct cited names resolved and there were no duplicate declaration
-names. The incoming alternate reverse-row declaration is now named
-`Fabius.second_reverse_row_commRing_of_le`, avoiding a collision with the
-compiled theorem while its own validation remains pending. The facade audit found two missing upstream imports,
+names. The generic `Fabius.second_reverse_row_commRing` has since passed focused
+compilation. The facade audit found two missing upstream imports,
 `AssociahedronFaceNumbers` and `PochhammerFalling`; both were restored. These
 structural checks are not a fresh aggregate Lean build. The reviewed new modules
-contain no `sorry`, `admit`, `axiom`, or `opaque` declarations; import integration
-for the alternate reverse-row source remains part of its pending validation. The register-generator mappings
+contain no `sorry`, `admit`, `axiom`, or `opaque` declarations. Both reverse-row
+modules now pass focused compilation on their merged sources. The register-generator mappings
 preserve the pending and compiled distinctions; a dry run on a temporary source
-copy reproduces the canonical register and its 207-row totals.
+copy reproduces the canonical register and its current 210-row totals
+(77 `Lean`, 53 `partial`, 80 `none`).
 
 - On 2026-09-04, `NewtonReciprocal.lean` passed the focused command below with
   exit zero. Its initial source preflight had missed a coefficient-API argument
@@ -142,7 +115,7 @@ demonstrate.
 
 ## Historical checkpoint receipts
 
-These figures belong to the named snapshots, not to the current 209-entry
+These figures belong to the named snapshots, not to the current 210-entry
 manuscript, and do not establish a rebuild of the merged tree.
 
 | Snapshot or receipt | Recorded evidence |
@@ -175,12 +148,12 @@ not duplicate the canonical register's status classifications.
 
 | Canonical claim | Inspected source | Boundary to preserve |
 | --- | --- | --- |
-| `thm:merged-binomial-inversion` | `BinomialInversionEGF.lean` | Both formal generating-function directions are present over a commutative rational algebra; the old blanket denial was stale. |
-| `thm:merged-moment-cumulant` | `CumulantBellFormula.lean` | Formal logarithm and closed Bell-polynomial formulas require normalization. They do not supply the separate weighted set-partition interpretation. |
-| `thm:merged-catalan-first-return` | `SquareRootSeries.lean` | Formal square-root existence and uniqueness do not establish analytic branches or convergence. |
-| `thm:merged-riordan` | `ExponentialRiordan.lean` and pending `ExponentialRiordanInverse.lean` | The existing inverse law assumes inverse data and proves one product. The new leaf constructs those data and addresses both products; its compilation is still required. |
-| `thm:lagrange-burmann` | `LagrangeInversion.lean` and pending Lagrange leaves | The existing coefficient construction uses a supplied inverse of the weight. The new uniqueness, alternative-coefficient, and arbitrary-weight existence assertions have their own validation obligations. |
-| `thm:second-recurrence` | Mathlib `Combinatorics/Enumerative/Stirling.lean` and `BellSetPartitions.lean` | `BellSetPartitions.card_setPartitions` supplies the counting bridge. The canonical successor-index recurrence states its zero boundaries explicitly. This campaign verified the source correspondence; no fresh compilation of the counting module is claimed. |
+| `thm:merged-binomial-inversion` | `BinomialInversionEGF.lean`: `Fabius.egfA_eq_exp_mul_iff`, `Fabius.egfA_eq_altSeries_mul_iff`, `Fabius.egfA_eq_exp_mul_iff_egfA_eq_altSeries_mul` | Both formal generating-function directions are present over a commutative rational algebra. The old adjacent statement that this part is unformalized was stale. |
+| `thm:merged-moment-cumulant` | `CumulantBellFormula.lean`: `Fabius.logOf_egfA`, `Fabius.cumulant_eq_cumulantSum` | The formal logarithm and closed partial-Bell expression are present, assuming the moment sequence starts with one. This does not identify these recurrence-defined polynomials with sums over actual set partitions. |
+| `thm:merged-catalan-first-return` | `SquareRootSeries.lean`: `Fabius.sq_sqrtOf`, `Fabius.sqrt_unique`, `Fabius.sqrtOf_one_sub_four_X` | The square-root identity is present as a formal series identity with constant term one over a commutative rational algebra. Analytic branch and convergence statements remain separate obligations. |
+| `thm:merged-riordan` | `ExponentialRiordan.lean` and `ExponentialRiordanInverse.lean`: `Fabius.expRiordan_action`, `Fabius.expRiordan_mul`, `Fabius.expRiordan_mul_inverse`, `Fabius.riordanInverseWeight`, `Fabius.expRiordan_mul_constructedInverse`, `Fabius.expRiordan_constructedInverse_mul` | Action and multiplication are explicit. The inverse theorem is conditional; the constructed inverse leaf and its two-sided statement retain a separate compiler-validation receipt. |
+| `thm:lagrange-burmann` | `LagrangeInversion.lean` and `LagrangeInversionUniqueness.lean`: `Fabius.Lagrange.solution`, `Fabius.Lagrange.solution_eq`, `Fabius.Lagrange.coeff_solution_subst_derivative`, `Fabius.Lagrange.coeff_solution`, `Fabius.Lagrange.eq_solution_of_eq_X_mul_subst`, `Fabius.Lagrange.existsUnique_solution`, `Fabius.Lagrange.existsUnique_of_isUnit_constantCoeff`, `Fabius.Lagrange.coeff_jacobian_mul`, `Fabius.Lagrange.coeff_subst_alt`, `Fabius.Lagrange.coeff_solution_subst_alt` | The construction, uniqueness, Jacobian identity, and alternative coefficient assertions have source/API receipts; the current campaign keeps their exact compiler obligations separate. Construction and uniqueness work over a commutative ring when the weight constant coefficient is a unit; coefficient formulas use a commutative rational algebra and `1\le n`. Formal power-series algebra is covered; analytic convergence and residue language are not asserted. |
+| `thm:second-recurrence` | Mathlib `Combinatorics/Enumerative/Stirling.lean` and `BellSetPartitions.lean` | `BellSetPartitions.card_setPartitions` supplies the counting bridge, while Mathlib supplies the recursive successor-index array and its zero boundaries. This campaign has not freshly compiled the counting module. |
 
 ## Editorial work and remaining obligations
 
@@ -265,7 +238,8 @@ normalization, discarded zero prefix, finite-sum reindexing, binomial symmetry,
 and transfer through the integers. It caught a mismatch between rational
 subtraction in the logarithmic-tail denominator and natural subtraction in the
 kernel helper; the author added an explicit rational normalization. The revised
-source has no further concrete blocker identified, but awaits compilation.
+source has no further concrete blocker identified and now passes direct
+sequential Lean elaboration.
 
 ## Substantive remaining obligations
 

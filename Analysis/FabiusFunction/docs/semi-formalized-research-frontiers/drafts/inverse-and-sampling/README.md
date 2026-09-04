@@ -204,21 +204,27 @@ declarations, making the historical 933/11,695 census.  The incoming union
 adds one module and fourteen public declarations: the new zero-definition/
 six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This made 934/11,709 an explicitly
-historical post-Prouhet checkpoint.  Subsequent source-only
-transseries/Catalan and Thue--Morse additions made 943/11,791 the next
-historical checkpoint.  The finalized one-definition/eleven-theorem
-`TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 985/12,199.
-The exhaustive audit still has no missing module header or public-declaration
-doc comment.  The q forward
-ledger is now 181 Exact / 79 Partial / 14 None / 8 interface rows, its relevant
-Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and its source concordance
-is 103 Lean-proved / 375 human-proved frontier / 60 non-applicable / 9
-conjectures.  The preceding finite-prefix checkpoint was 923/11,610.  The
-retired source layouts remain immutable provenance only. The first-merge
-inverse receipt is historical and the current source requires rerender; the
-comb receipt remains current.
+`ThueMorseNewmanSelfSimilarity.lean`.  This makes 934/11,709 a historical
+checkpoint. Later post-baseline additions contribute another 23 modules and
+211 public declarations, giving 957/11,920; retaining the unconditional public
+`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` compatibility theorem gives
+the historical merge-union checkpoint 957/11,921. The residual-existence
+certificate `Fabius.exists_eq_in_residual_interval` is included in the current
+semantic union computed by `scripts/doc_audit.py` and pinned in
+`docs/doc_audit_baseline.json`. The exhaustive lexical audit has no missing
+module header or public-declaration doc comment.
+
+The q forward ledger's semantic union is 181 Exact / 79 Partial / 14 None / 8
+interface rows; the local q-Lucas correction is retained rather than reverting
+that row to Exact. Its source concordance is 103 Lean-proved / 375 human-proved
+frontier / 60 non-applicable / 9 conjectures. The preceding finite-prefix
+checkpoint was 923/11,610. The retired source layouts remain immutable
+provenance only. The canonical inverse-synthesis source now includes later
+chapter edits and is newer than the retained historical 137-page `b899` PDF;
+the separate information-frontier source and PDF remain synchronized under
+their own receipt. The q-Lucas manuscript row remains Partial because Lean
+proves only the primitive-root evaluation, not the polynomial congruence
+modulo the cyclotomic polynomial.
 
 `QuarterCatalanGerm.lean` proves that the distinguished rational quarter germ
 becomes the Catalan inverse of `X + 4 X^2` under the exact `9/4` parameter

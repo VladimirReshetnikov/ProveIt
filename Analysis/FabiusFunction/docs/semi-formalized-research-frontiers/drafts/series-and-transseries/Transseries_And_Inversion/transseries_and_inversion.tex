@@ -17237,6 +17237,23 @@ from \(\LamP{n}\) by operations with no free constant, so the family is
 determined by \(\LamP{0}=-u\).
 \end{proof}
 
+\emph{Lean status: Exact for the definition, the boundary value and the
+differential recurrence; the integral form and the uniqueness clause are not
+formalized.}  \lean{LambertCoefficientPolynomials.lean} defines
+\lean{Fabius.lambertPoly} by the operator formula
+\eqref{plt:eq:lambert-operator} verbatim, with the shifted derivative
+\lean{Fabius.lambertShiftOp} and the falling operator
+\lean{Fabius.lambertFallingOp}; \lean{Fabius.lambertPoly_zero} and
+\lean{Fabius.lambertPoly_one} are \(\LamP{0}=-u\), \(\LamP{1}=u\).  The
+boundary value \eqref{plt:eq:lambert-boundary} is
+\lean{Fabius.lambertPoly_eval_zero}, proved by the order-of-vanishing
+bookkeeping of the proof above (\lean{Fabius.coeff_eq_zero_lambertFalling}), and
+the differential recurrence \eqref{plt:eq:lambert-diff-rec} is
+\lean{Fabius.derivative_lambertPoly_succ}, with the commutation of the operator
+with \(\partial_u\) as \lean{Fabius.derivative_lambertFalling}.  The integral
+form \eqref{plt:eq:lambert-int-rec} and the uniqueness clause need polynomial
+antidifferentiation and are not formalized.
+
 \begin{remark}[Reconciliation with the one-based drafts]
 \label{plt:rmk:om-onebased}
 % ed.: S3 and S6 start the recurrence at P_1 = u and impose P_{n}(0)=0 as a
@@ -17344,6 +17361,20 @@ the definition.
 The four ``edge'' coefficients below all come from a single generating
 polynomial, so we prove the Stirling evaluations rather than quote them.
 
+\emph{Lean status: Exact.}  \lean{LambertPolynomialStirling.lean} proves the
+signed coefficient form of \eqref{plt:eq:lambert-lambda} as
+\lean{Fabius.coeff_lambertPoly}, for every \(m\le n+1\); the unsigned form
+\eqref{plt:eq:lambert-stirling} is \lean{Fabius.coeff_lambertPoly_eq_unsigned}
+in \lean{LambertPolynomialCoefficients.lean}, for \(1\le m\le n\), and the
+vanishing outside that range is \lean{Fabius.coeff_lambertPoly_of_lt} together
+with \lean{Fabius.coeff_lambertPoly_succ_self}.  The route is the one above
+made literal: \lean{Fabius.lambertFallingOp_eq_derivEval} says the falling
+operator is the falling factorial evaluated at \(\partial_u\), the evaluation
+being \lean{Polynomial.aeval} into the endomorphism algebra of
+\(\RationalNumbers[u]\), and
+\lean{Fabius.descPochhammer_eq_sum_monomial_signedStirlingFirst} supplies
+\eqref{plt:eq:om-stirling-def}.
+
 \begin{lemma}[Four Stirling evaluations]
 \label{plt:lem:om-stirling-values}
 For \(n\ge1\) let \(H_r=\sum_{j=1}^{r}j^{-1}\) and
@@ -17428,6 +17459,19 @@ Formula (vi) also returns the correct value \(0\) at \(n=2\), where
 \end{remark}
 
 \section{Integrality and the scaled family}
+
+\emph{Lean status: partial; (i), (ii), (iii), (v), (vii) Exact, (iv) and
+(vi) not formalized.}  In \lean{LambertPolynomialCoefficients.lean}: (i) is
+\lean{Fabius.natDegree_lambertPoly} and \lean{Fabius.X_dvd_lambertPoly}, with
+the constant term \lean{Fabius.lambertPoly_eval_zero}; (ii) is
+\lean{Fabius.neg_one_pow_mul_coeff_lambertPoly_pos}, that
+\((-1)^{n-m}\lambda_{n,m}>0\) for \(1\le m\le n\), together with
+\lean{Fabius.coeff_lambertPoly_ne_zero}, resting on the positivity
+\lean{Fabius.stirlingFirst_pos} of the unsigned numbers; (iii) is
+\lean{Fabius.coeff_lambertPoly_self}; (v) is \lean{Fabius.coeff_lambertPoly_one};
+(vii) is \lean{Fabius.coeff_lambertPoly_two}.  Items (iv) and (vi) need the
+harmonic-number values of \cref{plt:lem:om-stirling-values}, which are not
+in Mathlib and not yet in the corpus; they will be cited once formalized.
 
 \begin{corollary}[Integrality]
 \label{plt:cor:lambert-integrality}
