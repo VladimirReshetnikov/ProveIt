@@ -1002,6 +1002,38 @@ reference, and those demotions are listed in
       susceptibility resolvent, and the conditional smooth dynamics.
 \end{description}
 
+\subsection{Conjectures settled inside the volume}
+\label{p0:sec:demotions}
+
+The status rule of \cref{p0:sec:status} forbids a \emph{Conjecture} or
+\emph{Open problem} environment for an assertion proved somewhere in the
+volume.  Merging the six reports settled four such items, each by a result
+that another report had proved independently; they are recorded here so that
+a reader comparing the parts with their standalone sources can see what moved
+and why.
+\begin{itemize}
+\item Part~VIII conjectured the uniform first Edgeworth expansion of the
+      standardized density.  Part~XI proves the all-orders, polynomially
+      weighted, termwise-differentiable expansion for the same standardized
+      variable (\cref{p11:thm:edgeworth-schwartz}, with the identification of
+      the two variables in \cref{p0:prop:dictionary}); the conjecture is now
+      \cref{p8:prop:edgeworth}, proved by specialization.
+\item Part~VIII's all-orders Bernoulli--Bell--Hermite conjecture is the
+      statement of \cref{p11:thm:edgeworth-schwartz} together with
+      \cref{p11:prop:h-power-series}; it is now the remark
+      \cref{p8:rem:all-orders}, pointing there.
+\item Part~IX's appendix left the all-orders fixed-frequency radial expansion
+      as a conjecture; it is now \cref{p9:thm:all-orders}, proved once the
+      multiplier estimates of that part were made uniform in the summation
+      index.
+\item Part~III posed as an open problem the sharp leading constants of the
+      prefix-product error for general base; Part~VI proves them for every
+      base $a\ge2$, and Part~III now points there instead.
+\end{itemize}
+The remaining entropy-deficit conjecture of Part~VIII stays conjectural and
+is cross-referenced to the matching conjecture of Part~XI, whose
+second-order constant agrees with it in exact rationals.
+
 \subsection{Result census}
 \label{p0:sec:census}
 
@@ -1034,19 +1066,19 @@ IV & 13 & 1 & 0 & 3 & 1 & 1 & 0 & 13\\
 V & 13 & 1 & 2 & 3 & 1 & 4 & 0 & 17\\
 VI & 40 & 6 & 1 & 13 & 1 & 19 & 0 & 52\\
 VII & 15 & 1 & 0 & 3 & 1 & 3 & 4 & 16\\
-VIII & 6 & 1 & 1 & 5 & 1 & 4 & 1 & 13\\
+VIII & 6 & 4 & 2 & 5 & 1 & 2 & 1 & 17\\
 IX & 15 & 6 & 6 & 4 & 3 & 2 & 7 & 30\\
 X & 6 & 3 & 0 & 1 & 0 & 5 & 4 & 9\\
 XI & 9 & 2 & 3 & 1 & 1 & 8 & 3 & 15\\
 XII & 11 & 4 & 2 & 5 & 1 & 4 & 3 & 22\\
 \midrule
-Total & 167 & 36 & 19 & 47 & 14 & 58 & 28 & 242\\
+Total & 167 & 39 & 20 & 47 & 14 & 56 & 28 & 246\\
 \bottomrule
 \end{longtable}
 \endgroup
 
-Two readings are worth stating.  First, the volume asserts 269 results of
-proved kind against 58 conjectures and 28 open problems: it is a proof
+Two readings are worth stating.  First, the volume asserts 273 results of
+proved kind against 56 conjectures and 28 open problems: it is a proof
 document with a frontier register attached, not a problem list.  Second, the
 distribution is uneven by design --- Part~VI carries a third of everything
 because it is itself a threefold editorial merge of independent
@@ -17135,8 +17167,9 @@ principal open frontiers.
 The current \texttt{ProveIt/Analysis/FabiusFunction/docs} corpus develops the Fabius and
 Rvachev functions from probability, functional equations, exact dyadic arithmetic,
 $q$-calculus, infinite sinc products, Thue--Morse cancellation, Legendre expansions,
-Lambert--$W$ endpoint asymptotics, and formalized analysis.  Its integrated frontier
-volume explicitly leaves open, for the geometric-uniform family, the density
+Lambert--$W$ endpoint asymptotics, and formalized analysis.  When this report was
+written, its integrated frontier volume explicitly left open, for the
+geometric-uniform family, the density
 interpretation at negative parameters, centered affine transport, log-concavity and
 central plateaux, explicit Bernoulli cumulants and Bell moments in the generic
 parameter, and Gaussian-limit statements.
@@ -17206,19 +17239,36 @@ to state a sharp non-duplication target.
 
 \subsection{What is taken as established}
 
-We use without reproving every foundational layer already organized in the repository:
+The absorbed report imported seven foundational layers from the repository
+with a single blanket citation.  In the merged volume six of them are proved,
+and each is now cited by its in-volume number; only the last remains a corpus
+input.
 
 \begin{enumerate}[label=(\roman*),leftmargin=2.2em]
-\item existence and almost-sure convergence of the weighted uniform series;
-\item the affine independent-copy equation and uniqueness of its probability-law fixed
-      point for every real \(\lvert q\rvert<1\), including negative \(q\);
-\item continuity and reflection symmetry of the CDF;
-\item exact support for the geometric law;
-\item smoothness and the density formula for \(0<q<1\);
+\item existence and almost-sure convergence of the weighted uniform series:
+      \cref{p0:prop:basic};
+\item the affine independent-copy equation and uniqueness of its
+      probability-law fixed point for every real \(\lvert q\rvert<1\),
+      including negative \(q\): \cref{p0:prop:fixed-point} among laws with a
+      finite first moment, and \cref{p8:lem:fixed-point-all-laws} below among
+      all probability laws;
+\item reflection symmetry of the CDF: \cref{p0:prop:basic}; its continuity:
+      the law has a density (\cref{p8:thm:all-sign-density} for \(q\ne0\),
+      the uniform law at \(q=0\));
+\item exact support for the geometric law: \eqref{p0:eq:support};
+\item the density formula for \(0<q<1\): \cref{p8:thm:all-sign-density},
+      which covers every \(0<\lvert q\rvert<1\); the \(C^\infty\) regularity of
+      \(g_q\) for \(q\ne0\): the Fourier envelope recorded at
+      \eqref{p7:eq:spectral-zeta};
 \item the half-base bridge
-      \(F_{1/2}=F\) and \(f_{1/2}(x)=2\RvachevUp(2x-1)\);
-\item the Bernoulli/Bell, $q$-binomial, sinc-product, Legendre, and Lambert--\(W\)
-      toolkits developed there.
+      \(F_{1/2}=F\) and \(g_{1/2}(x)=2\RvachevUp(2x-1)\):
+      \cref{p0:prop:fabius-point};
+\item the Bernoulli/Bell, $q$-binomial, sinc-product, Legendre, and
+      Lambert--\(W\) toolkits developed there (\statusexisting).  The one
+      corpus theorem used inside a proof below is the Thue--Morse
+      derivative-peak identity \eqref{p8:eq:up-peaks-baseline} with its
+      higher-order flatness, consumed by \cref{p8:cor:negative-thue-morse};
+      it is not reproved in this volume.
 \end{enumerate}
 
 The report nevertheless restates enough notation to make every new proof self-contained.
@@ -17294,9 +17344,42 @@ If \(X_q'\) is an independent copy of \(X_q\), then splitting off the first digi
 \begin{equation}
  X_q\ \doteqL\ (1-q)U_0+qX_q'.                       \label{p8:eq:affine-fixed-point}
 \end{equation}
-The repository proves that this equation uniquely characterizes the law among all
-probability measures for every \(\lvert q\rvert<1\), without a support or density
-assumption.  In the positive range, \(X_r\) is supported on \([0,1]\).  At \(r=1/2\),
+\Cref{p0:prop:fixed-point} proves that this equation characterizes the law
+uniquely among probability measures with a finite first moment, for every real
+\(\lvert q\rvert<1\) and without any support or density assumption.  The
+moment hypothesis, which that contraction argument needs for its complete
+metric, is not needed for the conclusion.
+
+\begin{lemma}[Uniqueness among all probability laws]\label{p8:lem:fixed-point-all-laws}
+Let \(\lvert q\rvert<1\) be real and let \(\nu\) be any probability measure on
+\(\RealNumbers\) such that \(Z\sim\nu\) satisfies \(Z\doteqL(1-q)U+qZ'\) with \(U\)
+uniform on \((0,1)\), \(Z'\sim\nu\), and \(U,Z'\) independent.  Then \(\nu\) is
+the law of \(X_q\).
+\end{lemma}
+
+\begin{proof}
+Iterating the equation \(N\) times gives, for every \(N\ge1\),
+\[
+ Z\ \doteqL\ S_N+q^NZ_N,
+ \qquad
+ S_N=(1-q)\sum_{n<N}q^nU_n,
+\]
+with \(Z_N\sim\nu\) independent of \((U_n)_{n<N}\).  For every
+\(\varepsilon>0\),
+\[
+ \Probability\bigl(\AbsoluteValue{q^NZ_N}>\varepsilon\bigr)
+ =\nu\bigl(\SetOf{z:\AbsoluteValue z>\varepsilon\AbsoluteValue q^{-N}}\bigr)
+ \longrightarrow0
+ \qquad(N\to\infty),
+\]
+because \(\nu\) is a finite measure: no moment is used.
+Since \(S_N\) converges almost surely to a variable with the law of \(X_q\)
+(\cref{p0:prop:basic}), the sum \(S_N+q^NZ_N\) converges in probability to
+that variable, hence in law to the law of \(X_q\); as its law is \(\nu\) for
+every \(N\), \(\nu\) is that limit.
+\end{proof}
+
+In the positive range, \(X_r\) is supported on \([0,1]\).  At \(r=1/2\),
 \begin{equation}
  F_{1/2}=F,
  \qquad
@@ -17401,17 +17484,33 @@ For \(1\le p\le\infty\) and \(k\ge0\),
  \Norm{g_{-r}^{(k)}}_p
  =c_r^{1/p-k-1}\Norm{g_r^{(k)}}_p,                        \label{p8:eq:sobolev-scaling}
 \end{equation}
-with \(1/\infty=0\).  The differential entropy satisfies
+with \(1/\infty=0\).  The differential entropy \(h(X_r)=-\int g_r\log g_r\) is
+finite, with
+\begin{equation}
+ \log(1-r)\le h(X_r)\le0,                                  \label{p8:eq:entropy-finite}
+\end{equation}
+and satisfies
 \begin{equation}
  h(X_{-r})=h(X_r)+\log c_r.                               \label{p8:eq:entropy-scaling}
 \end{equation}
-The same affine law gives the standard Rényi-entropy scaling.
+For every order \(\alpha\in(0,1)\cup(1,\infty)\) the R\'enyi entropy
+\(h_\alpha(X)=(1-\alpha)^{-1}\log\int f_X^{\alpha}\) obeys the same law,
+\(h_\alpha(X_{-r})=h_\alpha(X_r)+\log c_r\).
 \end{corollary}
 
 \begin{proof}
 Use \eqref{p7:eq:derivative-transport} and the substitution
-\(y=1/2+(x-1/2)/c_r\).  The entropy identity is the usual Jacobian formula for
-\(aX+b\) with \(a=c_r>0\).
+\(y=1/2+(x-1/2)/c_r\).  For \eqref{p8:eq:entropy-finite}:
+\eqref{p8:eq:density-probability} gives \(0\le g_r\le1/(1-r)\), so
+\(-\int g_r\log g_r\ge-\log\Norm{g_r}_\infty\ge\log(1-r)\), while Jensen's
+inequality on the support \([0,1]\), of length one, gives
+\(h(X_r)\le\log1=0\).  The two entropy identities are the Jacobian formula
+for \(aX+b\) with \(a=c_r>0\): if \(f_X\) is the density of \(X\), then
+\(aX+b\) has density \(a^{-1}f_X\bigl((\cdot-b)/a\bigr)\), so
+\(\int\bigl(a^{-1}f_X((x-b)/a)\bigr)^{\alpha}\Differential x
+ =a^{1-\alpha}\int f_X^{\alpha}\), which is
+\(h_\alpha(aX+b)=h_\alpha(X)+\log a\), and \(\alpha\to1\) gives the Shannon
+case.
 \end{proof}
 
 \subsection{Characteristic functions and sinc products}
@@ -17507,62 +17606,147 @@ result.
 
 \subsection{Legendre-series transport}
 
-Suppose the even Legendre expansion on \([-1,1]\) is
+The absorbed report assumed the Legendre expansion of \(\RvachevUp\) in
+\(L^2\) and asserted its transport pointwise.  The assumption is not needed:
+smoothness on the closed interval already forces absolute and uniform
+convergence, so the identities below hold at every point.
+
+\begin{proposition}[Legendre transport]\label{p8:prop:legendre-transport}
+Let \(P_k\) be the Legendre polynomials on \([-1,1]\) and put
+\[
+ b_n=\frac{4n+1}{2}\int_{-1}^{1}\RvachevUp(t)P_{2n}(t)\Differential t,
+ \qquad
+ a_n^{(r)}=(4n+1)\int_0^1g_r(y)P_{2n}(2y-1)\Differential y
+ \quad(0<r<1).
+\]
+Then \(b_n=\BigO(n^{-k})\) and \(a_n^{(r)}=\BigOAt{n^{-k}}{r}\) for every
+\(k\), the even Legendre expansion
 \begin{equation}
- \RvachevUp(t)=\sum_{n=0}^{\infty}b_nP_{2n}(t)                   \label{p8:eq:up-legendre}
+ \RvachevUp(t)=\sum_{n=0}^{\infty}b_nP_{2n}(t),
+ \qquad -1\le t\le1,                                    \label{p8:eq:up-legendre}
 \end{equation}
-in \(L^2\), or in any stronger mode established for the coefficient sequence.  Then the
-negative dyadic density has the immediate expansion
+converges absolutely and uniformly, and so does
+\(g_r(y)=\sum_{n\ge0}a_n^{(r)}P_{2n}(2y-1)\) on \([0,1]\).  Consequently the
+negative dyadic density has the pointwise expansion
 \begin{equation}
  \boxed{
  g_{-1/2}(x)=\frac23\sum_{n=0}^{\infty}
  b_nP_{2n}\!\left(\frac{2x-1}{3}\right),
- \qquad -1\le x\le2.}                                    \label{p8:eq:negative-legendre}
+ \qquad -1\le x\le2,}                                    \label{p8:eq:negative-legendre}
 \end{equation}
-No coefficients need to be recomputed: only the Jacobian and affine Legendre coordinate
-change.  More generally, if
-\[
- g_r(y)=\sum_{n\ge0}a_n^{(r)}P_{2n}(2y-1)
-\]
-on \([0,1]\), then
+and, for every \(0<r<1\) and \(\ell_r\le x\le u_r\),
 \begin{equation}
  g_{-r}(x)=\frac1{c_r}\sum_{n\ge0}a_n^{(r)}
  P_{2n}\!\left(\frac{2x-1}{c_r}\right).                  \label{p8:eq:general-negative-legendre}
 \end{equation}
+No coefficients need to be recomputed: only the Jacobian and the affine
+Legendre coordinate change.
+\end{proposition}
+
+\begin{proof}
+Let \(f\in C^\infty[-1,1]\) be even; the two cases are
+\(f=\RvachevUp\) restricted to \([-1,1]\) and \(f(t)=g_r\bigl((t+1)/2\bigr)\),
+both smooth on the closed interval because \(\RvachevUp\) and \(g_r\) are
+\(C^\infty\) on \(\RealNumbers\) (\cref{p7:cor:transport} and
+\eqref{p7:eq:spectral-zeta}) and both even because the two densities are
+symmetric about their centers.  The Legendre operator
+\(\mathcal L f=\bigl((1-t^2)f'\bigr)'\) satisfies
+\(\mathcal L P_k=-k(k+1)P_k\), and it is symmetric on \(C^2[-1,1]\) with no
+boundary condition, since the weight \(1-t^2\) vanishes at \(\pm1\):
+\(\int_{-1}^1(\mathcal L f)g=-\int_{-1}^1(1-t^2)f'g'=\int_{-1}^1f\,\mathcal L g\).
+Hence for every \(k\ge1\) and \(n\ge1\),
+\[
+ \int_{-1}^1fP_{2n}
+ =\frac{(-1)^k}{\bigl(2n(2n+1)\bigr)^k}\int_{-1}^1(\mathcal L^kf)P_{2n},
+ \qquad\text{so}\qquad
+ \AbsoluteValue{\int_{-1}^1fP_{2n}}
+ \le\frac{2\Norm{\mathcal L^kf}_\infty}{\bigl(2n(2n+1)\bigr)^k},
+\]
+using \(\sup_{[-1,1]}\AbsoluteValue{P_{2n}}=1\).  Multiplying by the
+normalizing factor \((4n+1)/2\) gives coefficients of order \(n^{1-2k}\) for
+every \(k\), which is the stated decay, and \(\sum_n\AbsoluteValue{b_n}<\infty\).
+Since \(\AbsoluteValue{P_{2n}}\le1\) on \([-1,1]\), the series
+\(\sum_nb_nP_{2n}\) converges absolutely and uniformly there to a continuous
+function; by completeness of the Legendre polynomials in \(L^2(-1,1)\) its
+\(L^2\) limit is \(f\) (the odd coefficients vanish by evenness), so the
+continuous limit agrees with the continuous \(f\) almost everywhere, hence
+everywhere.  The same argument gives the expansion of \(g_r\).  Finally
+\(g_{-1/2}(x)=\tfrac23\RvachevUp\bigl((2x-1)/3\bigr)\) and
+\(g_{-r}(x)=c_r^{-1}g_r\bigl(T_r^{-1}(x)\bigr)\) with
+\(2T_r^{-1}(x)-1=(2x-1)/c_r\) (\cref{p7:cor:transport}); substituting the
+uniformly convergent expansions gives \eqref{p8:eq:negative-legendre} and
+\eqref{p8:eq:general-negative-legendre} pointwise.
+\end{proof}
+
 This supplies a direct bridge from the positive-$q$ Legendre theory to every negative
 parameter.
 
 \subsection{Exact transport of the Lambert--\texorpdfstring{$W_{-1}$}{W-1} endpoint phase}
 
-Let \(L=\log2\), and let \(\lambda(z)\) be the large positive solution of
+Let \(L=\log2\).  The function
+\(\lambda\mapsto\lambda2^{-\lambda}=\lambda\EulerE^{-L\lambda}\) increases on
+\((0,1/L)\) to its maximum \(1/(\EulerE L)\) and decreases to \(0\)
+afterwards, so for \(0<z<1/(\EulerE L)\) the equation
 \begin{equation}
- z=\lambda2^{-\lambda}.
+ z=\lambda2^{-\lambda}
 \end{equation}
-For sufficiently small positive \(z\),
+has exactly two positive solutions; \(\lambda(z)\) denotes the larger one,
+\(\lambda(z)>1/L\).  Writing the equation as
+\((-L\lambda)\EulerE^{-L\lambda}=-Lz\) with \(-Lz\in(-1/\EulerE,0)\), its two real
+solutions are \(-L\lambda=W_0(-Lz)\in(-1,0)\) and \(-L\lambda=W_{-1}(-Lz)<-1\)
+\cite{bib:corless1996}, and the larger \(\lambda\) is the second:
 \begin{equation}
- \lambda(z)=-\frac1L W_{-1}(-Lz).                         \label{p8:eq:lambert-phase}
+ \lambda(z)=-\frac1L W_{-1}(-Lz),
+ \qquad 0<z<\frac1{\EulerE L}.                              \label{p8:eq:lambert-phase}
 \end{equation}
-The corpus emphasizes that periodic coefficient functions must be evaluated at this
-\emph{exact} phase rather than at a phase with merely bounded error.
+The corpus's all-orders endpoint expansion of the Fabius function is written
+in this coordinate, and it emphasizes that its periodic coefficient functions
+must be evaluated at the \emph{exact} phase \(\lambda(z)\) rather than at a
+phase with merely bounded error.  That expansion is imported here as
+\statusexisting{}: it is neither restated nor reproved, and nothing below
+depends on its form.  What this part proves is the transport of the
+coordinate; the absorbed report presented the boxed formula below without a
+statement or proof, and it is one change of variables.
 
-At the left endpoint of the negative dyadic support, write \(x=-1+\xi\).  Then
+\begin{proposition}[Exact transport of the endpoint coordinate]
+\label{p8:prop:lambert-transport}
+Write \(x=-1+\xi\) near the left endpoint of the support of \(X_{-1/2}\).
+Then for every real \(\xi\) and every \(k\ge0\),
 \begin{equation}
- F_{-1/2}(-1+\xi)=F(\xi/3),                               \label{p8:eq:endpoint-transport}
+ F_{-1/2}(-1+\xi)=F(\xi/3),
+ \qquad
+ g_{-1/2}^{(k)}(-1+\xi)=3^{-(k+1)}g_{1/2}^{(k)}(\xi/3),       \label{p8:eq:endpoint-transport}
 \end{equation}
-and the exact transported phase is
+and for \(0<\xi<3/(\EulerE L)\) the transported phase is
 \begin{equation}
  \boxed{
  \lambda_-(\xi)=\lambda(\xi/3)
  =-\frac1L W_{-1}\!\left(-\frac{L\xi}{3}\right).}        \label{p8:eq:negative-lambert-phase}
 \end{equation}
-Therefore every all-orders Fabius endpoint expansion, including its smooth one-periodic
-logarithmic corrections, transfers verbatim after the replacement
-\(\lambda\mapsto\lambda_-\) and the elementary Jacobian factors for derivatives.  The
-right endpoint follows by reflection.  For the inverse law, the exact relation is even
-simpler:
+Consequently, if \(F(z)=\mathcal E\bigl(z,\lambda(z)\bigr)+\rho(z)\) as
+\(z\downarrow0\) for some expression \(\mathcal E\) and remainder \(\rho\)
+--- in particular for the corpus's all-orders expansion with its one-periodic
+coefficient functions of \(\lambda\) --- then
+\(F_{-1/2}(-1+\xi)=\mathcal E\bigl(\xi/3,\lambda_-(\xi)\bigr)+\rho(\xi/3)\):
+the coefficient functions are evaluated at \(\lambda_-\), the remainder bound
+transfers verbatim, and each derivative acquires the factor \(3^{-k}\).  The
+right endpoint follows from the symmetry of both laws about \(1/2\), and for
+the quantile
 \begin{equation}
- Q_{-1/2}(u)+1=3F^{-1}(u).                                \label{p8:eq:inverse-endpoint-transport}
+ Q_{-1/2}(u)+1=3F^{-1}(u),\qquad 0<u<1.                    \label{p8:eq:inverse-endpoint-transport}
 \end{equation}
+\end{proposition}
+
+\begin{proof}
+\(F_{-1/2}(x)=F\bigl((x+1)/3\bigr)\), \(Q_{-1/2}(u)=3F^{-1}(u)-1\) and
+\(g_{-1/2}^{(k)}(x)=3^{-(k+1)}g_{1/2}^{(k)}\bigl((x+1)/3\bigr)\) are
+\cref{p7:cor:transport} and \eqref{p7:eq:derivative-transport} at
+\(a=\tfrac12\), where \(\lambda_{1/2}=3\) and \(\beta_{1/2}=1\); put
+\(x=-1+\xi\).  The phase line is the definition of \(\lambda\) at the
+argument \(\xi/3\), admissible exactly when \(\xi/3<1/(\EulerE L)\).  The
+transfer statement is the substitution \(z=\xi/3\) in the assumed expansion,
+and the derivative factors are those of \eqref{p8:eq:endpoint-transport}.
+\end{proof}
 
 \section{Shape theory: log-concavity and exact plateaux}
 
@@ -17588,7 +17772,8 @@ compact intervals, a negative coefficient merely reflects an interval, and
 affine images and convolutions
 preserve log-concavity by the Pr\'ekopa theorem \cite{bib:prekopa1973}.  Its proof there then passes to the limit
 locally uniformly through the sinc-product tail bound.  This supplies the
-global shape theorem that the repository lists as open, it implies
+global shape theorem that the repository's frontier list recorded as open
+when the absorbed report was written; it implies
 unimodality, and with reflection symmetry it places the mode at \(1/2\).  It
 does \emph{not} by itself imply strict log-concavity: the same theorem
 exhibits a whole parameter region where strictness is impossible.
@@ -17722,9 +17907,12 @@ using the reversed vector gives pathwise equality.
 \subsection{Canonical limits for \texorpdfstring{$\lvert q\rvert>1$}{|q|>1}}
 
 \begin{theorem}[Reciprocal-base compactification]\label{p8:thm:outside-limit}
-Let \(\lvert q\rvert>1\) and put \(p=1/q\).  Then
+Let \(q\) be real with \(\lvert q\rvert>1\) and put \(p=1/q\), so that
+\(0<\lvert p\rvert<1\); both normalizations \([N]_q\) and \([N]_p\) are then
+nonzero for every \(N\ge1\).  Then, for every \(N\), \(X_{q,N}\doteqL X_{p,N}\),
+and
 \begin{equation}
- X_{q,N}\ \doteqL\ X_{p,N}\ \Longrightarrow\ X_p
+ X_{q,N}\ \Longrightarrow\ X_p
  \qquad(N\to\infty).                                     \label{p8:eq:outside-limit}
 \end{equation}
 Thus the normalized finite laws at every real base outside the unit interval have a
@@ -17739,10 +17927,15 @@ canonical weak limit.  Explicitly,
 \end{theorem}
 
 \begin{proof}
-The reciprocal identity is \cref{p8:thm:reciprocal-duality}.  Since \(\lvert p\rvert<1\),
-\([N]_p\to(1-p)^{-1}\) and the normalized finite series converges almost surely to
-\((1-p)\sum_{n\ge0}p^nU_n=X_p\).  The special cases use
-\cref{p7:thm:sign-conjugacy}.
+For real \(\lvert q\rvert>1\) one has \(q^N\ne1\), so \([N]_q\ne0\), and
+\(\lvert p\rvert<1\) gives \([N]_p\ne0\); the identity in law is therefore
+\cref{p8:thm:reciprocal-duality}.  Since \(\lvert p\rvert<1\),
+\([N]_p\to(1-p)^{-1}\) and \(\sum_{n<N}p^nU_n\to\sum_{n\ge0}p^nU_n\) almost
+surely (\cref{p0:prop:basic}), so
+\(X_{p,N}=[N]_p^{-1}\sum_{n<N}p^nU_n\to(1-p)\sum_{n\ge0}p^nU_n=X_p\)
+almost surely.  Almost-sure convergence implies convergence in law, and the
+identity \(X_{q,N}\doteqL X_{p,N}\) transfers the weak limit to
+\(X_{q,N}\).  The special cases use \cref{p7:thm:sign-conjugacy}.
 \end{proof}
 
 \begin{proposition}[Exponential coupling rate]\label{p8:prop:finite-rate}
@@ -17899,7 +18092,41 @@ The Berry--Esseen Lyapunov ratio is therefore
    \frac{(1-r^2)^{3/2}}{1-r^3}\\
  &=\frac{3\sqrt3}{4}\frac{(1-r^2)^{3/2}}{1-r^3}.
 \end{align*}
-Apply the finite-sum inequality and pass to the almost-sure limit.  The sign collapse
+The Berry--Esseen inequality for independent, non-identically distributed
+summands \cite{bib:berry1941,bib:esseen1942,bib:petrov1975} is a finite-sum
+statement, so it is applied to the truncations and the limit is taken
+afterwards.  Put
+\[
+ S_N=\sum_{n<N}a_{n,q}V_n,
+ \qquad
+ s_N^2=\Variance(S_N)=\frac1{12}\sum_{n<N}a_{n,q}^2,
+ \qquad
+ Z^{(N)}=\frac{S_N}{s_N}.
+\]
+For each \(N\ge1\) the inequality gives
+\(\sup_x\AbsoluteValue{\Probability(Z^{(N)}\le x)-\PhiN(x)}\le C_{\mathrm{BE}}L_N\)
+with the truncated Lyapunov ratio
+\[
+ L_N=\frac{\sum_{n<N}\Expectation\AbsoluteValue{a_{n,q}V_n}^3}{s_N^3}
+ =\frac{3\sqrt3}{4}\,
+ \frac{(1-r^{3N})\,(1-r^2)^{3/2}}{(1-r^3)\,(1-r^{2N})^{3/2}} .
+\]
+As \(N\to\infty\), \(L_N\to L_\infty=\frac{3\sqrt3}{4}(1-r^2)^{3/2}/(1-r^3)\),
+the ratio \(L_N/L_\infty=(1-r^{3N})/(1-r^{2N})^{3/2}\) exceeding \(1\) for
+every finite \(N\), so that no single truncation yields the boxed constant.
+Now \(S_N\to Y_q\) almost surely (\cref{p0:prop:basic}) and
+\(s_N\to\sigma_q\), so \(Z^{(N)}\to Z_r\) almost surely, hence in law; and
+\(Z_r\) has a density (\cref{p8:thm:all-sign-density}), so its distribution
+function is continuous and
+\(\Probability(Z^{(N)}\le x)\to\Probability(Z_r\le x)\) for \emph{every}
+\(x\).  Therefore, for each fixed \(x\),
+\[
+ \AbsoluteValue{\Probability(Z_r\le x)-\PhiN(x)}
+ =\lim_{N\to\infty}\AbsoluteValue{\Probability(Z^{(N)}\le x)-\PhiN(x)}
+ \le C_{\mathrm{BE}}\lim_{N\to\infty}L_N
+ =C_{\mathrm{BE}}L_\infty,
+\]
+and the supremum over \(x\) is \cref{p8:eq:BE-bound}.  The sign collapse
 \eqref{p7:eq:standard-sign-collapse} handles \(-r\).  Expanding
 \(1-r^2\sim2(1-r)\) and \(1-r^3\sim3(1-r)\) gives
 \cref{p8:eq:BE-asymptotic}.
@@ -17946,28 +18173,51 @@ All odd moments vanish.
 \end{corollary}
 
 \begin{proof}
-Use the moment--cumulant Bell expansion.  The Gaussian term consists entirely of pair
-blocks and equals \((2m-1)!!\).  At first order in \(1-r\), the only possible
-non-Gaussian partition has one block of size four and \(m-2\) pairs.  Its number is
+Use the moment--cumulant Bell expansion: \(\Expectation Z_r^{2m}\) is the sum
+over set partitions of \(\{1,\dots,2m\}\) of the product of the cumulants
+\(\lambda_{\AbsoluteValue B}\) over the blocks \(B\).  Blocks of odd size
+contribute \(0\), since all odd cumulants vanish.  The Gaussian term consists
+entirely of pair blocks (\(\lambda_2=1\)) and equals \((2m-1)!!\).  Since
+\(\lambda_{2k}(r)=\BigO((1-r)^{k-1})\) by \cref{p8:thm:standard-cumulants},
+a partition with blocks of sizes \(2k_1,\dots,2k_j\) contributes
+\(\BigO\bigl((1-r)^{\sum_i(k_i-1)}\bigr)\); the only partitions of order
+exactly \(1-r\) have one block of size four and \(m-2\) pairs, and their
+number is
 \[
- \binom{2m}{4}(2m-5)!!.
+ \binom{2m}{4}(2m-5)!!,
 \]
-Every block of size at least six contributes \(\BigO((1-r)^2)\), as does a product of
-two fourth cumulants.  Insert \cref{p8:eq:lambda4}.
+with the convention \((-1)!!=1\) at \(m=2\), where the formula
+\(\Expectation Z_r^4=3+\lambda_4(r)\) is exact.  Every block of size at least
+six, and every product of two fourth cumulants, contributes
+\(\BigO((1-r)^2)\); the implied constant depends on \(m\), through the
+number of such partitions.  Insert \cref{p8:eq:lambda4}.
 \end{proof}
 
 \subsection{Quartic characteristic correction}
 
 \begin{theorem}[First mod-Gaussian-type correction]\label{p8:thm:quartic-correction}
-For every fixed \(T>0\), uniformly for \(\AbsoluteValue t\le T\),
+For \(T>0\) put \(r_0(T)=\sqrt{\max\{0,\,1-1/(3T^2)\}}\).  For
+\(r_0(T)<r<1\) and \(\AbsoluteValue t\le T\) every factor of
+\eqref{p8:eq:standardized-sinc} is positive, \(\log\Psi_r(t)\) is the
+absolutely convergent sum of the logarithms of the factors, and
 \begin{equation}
  \boxed{
  \log\Psi_r(t)
  =-\frac{t^2}{2}
  -\frac{1-r^2}{20(1+r^2)}t^4
- +\BigO_T((1-r)^2).}                                      \label{p8:eq:quartic-logpsi}
+ +\BigO_T((1-r)^2),}                                      \label{p8:eq:quartic-logpsi}
 \end{equation}
-Consequently, for every fixed real \(t\),
+where the remainder term, written \(\varrho_r(t)\), is explicitly bounded by
+\begin{equation}
+ \AbsoluteValue{\varrho_r(t)}
+ \le\frac{27}{2600}\,\AbsoluteValue t^6\,\frac{(1-r^2)^2}{1+r^2+r^4}
+ \le\frac{T^6(1-r)^2}{24}.                                 \label{p8:eq:quartic-remainder}
+\end{equation}
+The restriction on \(r\) cannot be dropped: \(\Psi_r\) vanishes at
+\(t=\pi/\sqrt{3(1-r^2)}\), which lies in \([-T,T]\) as soon as
+\(1-r^2\ge\pi^2/(3T^2)\) (at \(r=0\), \(\Psi_0(t)=\SincRad(\sqrt3\,t)\)
+vanishes at \(t=\pi/\sqrt3\approx1.81\)), and there \(\log\Psi_r(t)\) is
+undefined.  Consequently, for every fixed real \(t\),
 \begin{equation}
  \lim_{r\uparrow1}
  \frac{\log\Psi_r(t)+t^2/2}{1-r}
@@ -17976,49 +18226,110 @@ Consequently, for every fixed real \(t\),
 \end{theorem}
 
 \begin{proof}
-Use \cref{p8:eq:standardized-sinc} and the local expansion
-\[
- \log\SincRad z=-\frac{z^2}{6}-\frac{z^4}{180}+\BigO(z^6).
-\]
-For \(z_n=\sqrt{3(1-r^2)}r^nt\),
+Put \(z_n=\sqrt{3(1-r^2)}\,r^nt\).  For \(r>r_0(T)\) and
+\(\AbsoluteValue t\le T\) one has \(3(1-r^2)T^2<1\), hence
+\(\AbsoluteValue{z_n}\le\AbsoluteValue{z_0}<1<\pi\) for every \(n\): all
+factors of \eqref{p8:eq:standardized-sinc} are positive, and since
+\(\sum_nz_n^2<\infty\) the logarithm of the product is the absolutely
+convergent sum of the logarithms.  For \(\AbsoluteValue z<\pi\), Euler's product
+\(\SincRad z=\prod_{k\ge1}\bigl(1-z^2/(\pi^2k^2)\bigr)\) gives the exact series
+\begin{align*}
+ \log\SincRad z
+ &=-\sum_{m\ge1}\frac{\zeta(2m)}{m\,\pi^{2m}}\,z^{2m}
+ =-\frac{z^2}{6}-\frac{z^4}{180}+R(z),\\
+ \AbsoluteValue{R(z)}
+ &\le z^6\sum_{m\ge3}\frac{\zeta(2m)}{m\,\pi^{2m}}
+ \le\frac{z^6}{2600}
+ \qquad(\AbsoluteValue z\le1),
+\end{align*}
+all terms having one sign; the constant is
+\(\zeta(6)/(3\pi^6)+\zeta(8)/(4\pi^8)+\cdots=0.000381\ldots<1/2600\).
+Summing over \(n\),
 \begin{align*}
  \sum_{n\ge0}z_n^2&=3t^2,\\
  \sum_{n\ge0}z_n^4&=9t^4\frac{(1-r^2)^2}{1-r^4}
  =9t^4\frac{1-r^2}{1+r^2},\\
  \sum_{n\ge0}\AbsoluteValue{z_n}^6
  &=27\AbsoluteValue t^6\frac{(1-r^2)^3}{1-r^6}
- =\BigO_T((1-r)^2).
+ =27\AbsoluteValue t^6\frac{(1-r^2)^2}{1+r^2+r^4},
 \end{align*}
-For \(r\) close enough to one, all \(z_n\) lie in a fixed neighborhood where the
-sixth-order remainder is uniform.  Substitution gives \cref{p8:eq:quartic-logpsi}.
-Finally, \((1-r^2)/(1+r^2)=(1-r)+\BigO((1-r)^2)\).
+so \(\log\Psi_r(t)=-\tfrac12t^2-\tfrac1{20}\tfrac{1-r^2}{1+r^2}t^4
++\varrho_r(t)\) with \(\varrho_r(t)=\sum_nR(z_n)\), and
+\(\AbsoluteValue{\varrho_r(t)}\le\tfrac1{2600}\sum_n\AbsoluteValue{z_n}^6\) is
+the first bound of \eqref{p8:eq:quartic-remainder}; the second uses
+\((1-r^2)^2\le4(1-r)^2\), \(1+r^2+r^4\ge1\), and \(108/2600<1/24\).  For the
+limit \eqref{p8:eq:quartic-limit}, fix \(t\ne0\) (the case \(t=0\) is
+trivial) and take \(T=\AbsoluteValue t\): the expansion applies for
+\(r>r_0(\AbsoluteValue t)\), and
+\((1-r^2)/(1+r^2)=(1-r)+\BigO((1-r)^2)\).
 \end{proof}
 
-\subsection{Expected Edgeworth and entropy refinements}
+\subsection{The first Edgeworth correction, and the entropy deficit}
 
-Let \(H_k\) be the probabilists' Hermite polynomial.  Fourier inversion of the formal
-cumulant expansion predicts
+Let \(H_k\) be the probabilists' Hermite polynomial.  Fourier inversion of the
+cumulant expansion of \cref{p8:thm:quartic-correction} predicts the first
+Edgeworth correction, which we write with explicit remainder terms,
 \begin{equation}
  f_{Z_r}(z)=\phiN(z)
  \left[1+\frac{\lambda_4(r)}{24}H_4(z)\right]
- +\BigO((1-r)^2),                                         \label{p8:eq:formal-edgeworth-density}
+ +\mathcal R_r(z),                                        \label{p8:eq:formal-edgeworth-density}
 \end{equation}
 and
 \begin{equation}
  \Probability(Z_r\le z)=\PhiN(z)
  -\frac{\lambda_4(r)}{24}H_3(z)\phiN(z)
- +\BigO((1-r)^2).                                         \label{p8:eq:formal-edgeworth-cdf}
+ +\mathcal R_r^{F}(z),
+ \qquad
+ \mathcal R_r^{F}(z)=\int_{-\infty}^{z}\mathcal R_r ;    \label{p8:eq:formal-edgeworth-cdf}
 \end{equation}
-The fixed-frequency theorem above is rigorous; making the remainders uniform in \(z\)
-requires a high-frequency estimate uniform in \(r\), which is not supplied here.
+the two displays are consistent because
+\(\frac{\Differential}{\Differential z}\bigl[H_3(z)\phiN(z)\bigr]=-H_4(z)\phiN(z)\).
+The fixed-frequency theorem above does not control these remainders uniformly
+in \(z\): that requires a high-frequency estimate uniform in \(r\), which the
+absorbed report did not supply and therefore conjectured.  Part~XI supplies
+it (\cref{p11:lem:sinc-envelope}), and the conjecture is a theorem of this
+volume.
 
-\begin{conjecture}[Uniform first Edgeworth expansion]\label{p8:conj:edgeworth}
-The remainders in \cref{p8:eq:formal-edgeworth-density,p8:eq:formal-edgeworth-cdf} are
-\(\BigO((1-r)^2)\) uniformly in \(z\), with the density statement remaining valid after
-any fixed number of derivatives when multiplied by a suitable polynomial weight.
-The second-order term is the standard Bell--Hermite combination of
-\(\lambda_6H_6/720\) and \(\lambda_4^2H_8/(2\cdot24^2)\).
-\end{conjecture}
+\begin{proposition}[Uniform first Edgeworth expansion]\label{p8:prop:edgeworth}
+There are \(r_0<1\) and, for each pair of integers \(j,K\ge0\), constants
+\(C_{j,K}\) and \(C_F\) such that for \(r_0<r<1\)
+\begin{equation}
+ \sup_{z\in\RealNumbers}(1+\AbsoluteValue z)^K
+ \AbsoluteValue{\mathcal R_r^{(j)}(z)}\le C_{j,K}(1-r)^2,
+ \qquad
+ \sup_{z\in\RealNumbers}\AbsoluteValue{\mathcal R_r^{F}(z)}\le C_F(1-r)^2 .
+                                                          \label{p8:eq:edgeworth-uniform}
+\end{equation}
+The next term of the expansion is
+\(\phiN(z)\bigl[\lambda_6(r)H_6(z)/720+\lambda_4(r)^2H_8(z)/1152\bigr]\), after
+which the remainder is \(\BigO((1-r)^3)\) in the same seminorms.
+\end{proposition}
+
+\begin{proof}
+This is \cref{p11:thm:edgeworth-schwartz} read through
+\cref{p0:tab:dictionary}: Part~XI's \(Z_h\) is \(Z_r\) at \(r=\EulerE^{-h}\),
+its \(\lambda_{2m}(h)\) is \(\lambda_{2m}(r)\) (\cref{p0:prop:dictionary}),
+and \(h=-\log r=(1-r)\bigl(1+\BigO(1-r)\bigr)\), so powers of \(h\) and of
+\(1-r\) are interchangeable, up to constants, in every remainder.  In the
+exact-cumulant Edgeworth polynomial \eqref{p11:eq:edgeworth-polynomial} the
+multi-indices of weight at most \(1\) are the empty one and \(k_2=1\), giving
+\(\mathcal E_{1,h}=1+\lambda_4H_4/4!\); those of weight \(2\) are \(k_3=1\)
+and \(k_2=2\), giving \(\lambda_6H_6/6!+\lambda_4^2H_8/(2!\,(4!)^2)\), and
+\(2\cdot24^2=1152\).  The density bound is \eqref{p11:eq:edgeworth-main} with
+\(R=1\) (respectively \(R=2\)); the distribution-function bound is its case
+\(j=0\), \(K=2\), integrated:
+\(\AbsoluteValue{\mathcal R_r^F(z)}\le\int_{\RealNumbers}\AbsoluteValue{\mathcal R_r}
+ \le C_{0,2}h^2\int_{\RealNumbers}(1+\AbsoluteValue x)^{-2}\Differential x
+ =2C_{0,2}h^2\).
+\end{proof}
+
+The absorbed report stated \cref{p8:prop:edgeworth} as a conjecture; under
+the convention of \cref{p0:sec:status} it is recorded here as a proposition
+proved in Part~XI, and the same applies to the all-orders statement of
+\cref{p8:rem:all-orders}.  The entropy deficit is a different matter: the
+first Edgeworth term is now proved, but its use inside a relative entropy
+needs global logarithmic control of \(f_{Z_r}/\phiN\), which Part~XI also
+lacks (\cref{p11:conj:entropy}).
 
 \begin{conjecture}[Entropy deficit]\label{p8:conj:entropy-deficit}
 Let \(D(\LawOperator(Z_r)\Vert N(0,1))\) be relative entropy.  Then
@@ -18035,8 +18346,10 @@ Equivalently,
 
 The coefficient \(1/48\) follows formally by inserting
 \(f/\phiN=1+(\lambda_4/24)H_4+\cdots\) into relative entropy and using
-\(\Expectation_{\phiN}H_4^2=4!\).  A proof should combine the uniform Edgeworth expansion with
-tail control supplied by log-concavity.
+\(\Expectation_{\phiN}H_4^2=4!\).  This is the leading term \(d_2=3/100\) of
+the full entropic expansion conjectured as \cref{p11:conj:entropy}; a proof
+should combine \cref{p8:prop:edgeworth} with tail control supplied by
+log-concavity (\cref{p7:thm:shape}) where \(f_{Z_r}/\phiN\) is small or large.
 
 \section{Numerical experiments}
 
@@ -18098,17 +18411,21 @@ small and fourth moments converge more slowly than CDFs.  The exact values in
 
 \subsection{All-orders Gaussian asymptotics}
 
-\begin{conjecture}[Complete Bernoulli--Bell--Hermite expansion]\label{p8:conj:all-orders}
-For every integer \(M\ge1\), the standardized density has an expansion through order
-\((1-r)^M\) whose coefficients are finite Bell polynomials in the exact cumulants
-\(\lambda_4(r),\lambda_6(r),\ldots,\lambda_{2M+2}(r)\), expressed in the Hermite basis.
-The expansion is uniform with polynomial weights and differentiable termwise a fixed
-number of times.
-\end{conjecture}
-
-A proof would turn the corpus's Bernoulli and Bell machinery into a full parameter-edge
-asymptotic calculus.  The crucial analytic estimate is uniform control of
-\cref{p8:eq:standardized-sinc} outside the low-frequency window.
+\begin{remark}[Complete Bernoulli--Bell--Hermite expansion: proved in Part~XI]
+\label{p8:rem:all-orders}
+The absorbed report conjectured that for every integer \(M\ge1\) the
+standardized density has an expansion through order \((1-r)^M\) whose
+coefficients are finite Bell polynomials in the exact cumulants
+\(\lambda_4(r),\lambda_6(r),\ldots,\lambda_{2M+2}(r)\), expressed in the
+Hermite basis, uniform with polynomial weights and differentiable termwise a
+fixed number of times.  This is exactly \cref{p11:thm:edgeworth-schwartz}
+together with \cref{p11:prop:h-power-series}, with \(h=-\log r\) as the
+expansion variable and the Bell-polynomial coefficient structure displayed in
+\eqref{p11:eq:edgeworth-polynomial}; following \cref{p0:sec:status} the
+conjecture is demoted to this remark.  The analytic estimate the report
+identified as crucial --- uniform control of \eqref{p8:eq:standardized-sinc}
+outside the low-frequency window --- is \cref{p11:lem:sinc-envelope}.
+\end{remark}
 
 \subsection{A generic-$q$ Lambert--\texorpdfstring{$W$}{W} endpoint theory}
 
@@ -18116,7 +18433,10 @@ The all-orders endpoint programme is \cref{p7:conj:all-orders}, and its
 transform-level half is already proved: the negative Laplace transform of
 \(X_r\) is the geometric harmonic sum
 \(\Expectation\EulerE^{-sX_r}=\prod_{n\ge0}\bigl(1-\EulerE^{-(1-r)r^ns}\bigr)
-/\bigl((1-r)r^ns\bigr)\), and \cref{p7:thm:cocycle-resolved} resolves its
+/\bigl((1-r)r^ns\bigr)\) --- the product formula \eqref{p0:eq:mgf} at
+\(t=-s\), since \(E(-a)=(1-\EulerE^{-a})/a\), the interchange of expectation
+and infinite product being justified there by locally uniform convergence ---
+and \cref{p7:thm:cocycle-resolved} resolves its
 logarithm exactly into a quadratic polynomial in \(\log s\), a real-analytic
 one-periodic fluctuation in \(\log_{1/r}s\) with explicit Gamma--zeta Fourier
 modes, and an exponentially small remainder.  What remains open is the
@@ -18203,9 +18523,10 @@ are not separate theories but affine or reciprocal views of the same laws.
 Finally, the parameter edge \(\lvert q\rvert\uparrow1\) is a genuine Gaussian boundary.
 The rate is controlled by a closed Berry--Esseen ratio, and the departure from normality
 is encoded by Bernoulli cumulants and Bell partitions.  The quartic coefficient
-\(-t^4/20\) is the first term of an all-orders asymptotic program that should connect the
-probability family to the repository's existing Bell, Bernoulli, Lambert, Legendre, and
-formal saddle machinery.
+\(-t^4/20\) is the first term of the all-orders Bernoulli--Bell--Hermite
+expansion proved in Part~XI (\cref{p11:thm:edgeworth-schwartz}), which
+connects the probability family to the repository's existing Bell, Bernoulli,
+Lambert, Legendre, and formal saddle machinery.
 
 \appendix
 \section{Auxiliary algebra}
