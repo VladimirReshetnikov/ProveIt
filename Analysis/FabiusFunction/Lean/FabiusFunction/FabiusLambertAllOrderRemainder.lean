@@ -119,12 +119,7 @@ private noncomputable def nestedLambertEval
 
 private theorem inv_pow_isBigO_one (n : ℕ) :
     (fun t : ℝ => t⁻¹ ^ n) =O[atTop] (fun _ : ℝ => (1 : ℝ)) := by
-  apply IsBigO.of_bound 1
-  filter_upwards [eventually_ge_atTop (1 : ℝ)] with t ht
-  simp only [Real.norm_eq_abs, abs_pow,
-    abs_of_pos (inv_pos.mpr (zero_lt_one.trans_le ht)), abs_one, mul_one]
-  exact pow_le_one₀ (inv_nonneg.mpr (zero_le_one.trans ht))
-    (inv_le_one_of_one_le₀ ht)
+  simpa only [pow_zero] using invPow_isBigO_invPow_atTop (Nat.zero_le n)
 
 private theorem nestedLambertEval_isBigO_id
     (p : Polynomial (Polynomial ℝ)) :

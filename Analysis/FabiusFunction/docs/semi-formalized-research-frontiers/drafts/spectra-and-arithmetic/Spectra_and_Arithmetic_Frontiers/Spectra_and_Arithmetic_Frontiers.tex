@@ -3157,7 +3157,13 @@ $d$ pairs, take cube roots --- gives $\prod_{j<d}|\sin(\pi a2^{j}/q)|\le(\sqrt3/
 (\path{Fabius.abs_prod_sin_orbit_le_sharp}).  The linear (non-cyclic) pairing of
 \path{SharpGelfondBound.lean} leaves one factor uncovered and yields only
 $2^{1/d}\cdot3^{(d-1)/2d}$; closing the orbit is exactly what removes that loss.  The
-equality clause --- equality if and only if $q=3$ --- is not formalized.
+equality clause --- equality if and only if $q=3$ --- is half formalized.  The half that
+matters for sharpness is: at $q=3$ the bound is attained, so the constant $\sqrt3$ cannot be
+lowered.  That is \path{Fabius.abs_prod_sin_orbit_three_eq_sharp} in
+\path{CyclicSineProductBound.lean}, with the two orbit points $\pi/3$ and $2\pi/3$ evaluated in
+\path{Fabius.abs_sin_orbit_three} and the closed value $3/4$ in
+\path{Fabius.abs_prod_sin_orbit_three_eq}.  The converse, that no other odd $q$ attains it, is
+not formalized.
 
 \begin{corollary}[Sharp minimum of the rational-ray exponent]\label{p2:cor:kappa-minimum}
 Every nonzero rational ray satisfies

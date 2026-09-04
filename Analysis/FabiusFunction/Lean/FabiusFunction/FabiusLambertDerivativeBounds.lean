@@ -59,6 +59,10 @@ exact quadratic term and the standard Gaussian exponent.
   `abs_sq_mul_negativeLaplaceForwardTailSecond_le_div` and
   `abs_cube_mul_negativeLaplaceForwardTailThird_le_div` of order `1 / s`;
   the pre-existing constant bounds are retained as convenient corollaries.
+  Both families are instances of two generic estimates stated here:
+  `norm_tsum_le_two_mul_of_norm_le_half_pow` sums a geometric majorant,
+  and `abs_pow_mul_le_div_of_norm_le` rescales a `C / s ^ (k + 1)` bound
+  by `s ^ k`.
 * `negativeLaplacePsiThird` -- the third derivative of `Ψ`, one order past
   where `FabiusFunction.PeriodicRegularity` stops, with the expected
   periodicity, continuity, boundedness and `HasDerivAt` support lemmas, plus
@@ -157,6 +161,26 @@ theorem exists_bound_abs_negativeLaplacePsiThird :
   exact exists_nonneg_bound_abs_of_isBounded_range negativeLaplacePsiThird
     isBounded_range_negativeLaplacePsiThird
 
+/-- Summing a geometric majorant.  If every term of a real series is
+bounded in norm by `C * (1 / 2) ^ n`, then the series is summable and
+its sum is bounded in norm by `2 * C`.  This is the common step behind
+the explicit forward-tail decay bounds in this file; the constant `C` is
+allowed to depend on anything but the summation index. -/
+theorem norm_tsum_le_two_mul_of_norm_le_half_pow {f : ℕ → ℝ} {C : ℝ}
+    (h : ∀ n, ‖f n‖ ≤ C * (1 / 2 : ℝ) ^ n) :
+    ‖∑' n, f n‖ ≤ 2 * C := by
+  have hgeom : Summable (fun n : ℕ => C * (1 / 2 : ℝ) ^ n) :=
+    (summable_geometric_of_norm_lt_one
+      (by norm_num : ‖(1 / 2 : ℝ)‖ < 1)).mul_left _
+  have hf : Summable f := hgeom.of_norm_bounded h
+  calc
+    ‖∑' n, f n‖ ≤ ∑' n, ‖f n‖ := norm_tsum_le_tsum_norm hf.norm
+    _ ≤ ∑' n, C * (1 / 2 : ℝ) ^ n := hf.norm.tsum_le_tsum h hgeom
+    _ = 2 * C := by
+      rw [tsum_mul_left,
+        tsum_geometric_of_norm_lt_one (by norm_num : ‖(1 / 2 : ℝ)‖ < 1)]
+      ring
+
 private lemma norm_negativeLaplaceForwardTermSecond_le_invCube_geometric
     {s : ℝ} (hs : 1 ≤ s) (n : ℕ) :
     ‖negativeLaplaceForwardTermSecond s n‖ ≤
@@ -205,24 +229,13 @@ individual terms. -/
 theorem norm_negativeLaplaceForwardTailSecond_le_inv_cube
     {s : ℝ} (hs : 1 ≤ s) :
     ‖negativeLaplaceForwardTailSecond s‖ ≤ 48 / s ^ 3 := by
-  have hgeom : Summable (fun n : ℕ =>
-      (24 / s ^ 3) * (1 / 2 : ℝ) ^ n) :=
-    (summable_geometric_of_norm_lt_one (by norm_num : ‖(1 / 2 : ℝ)‖ < 1)).mul_left _
-  have hterm : Summable (negativeLaplaceForwardTermSecond s) :=
-    hgeom.of_norm_bounded
-      (fun n => norm_negativeLaplaceForwardTermSecond_le_invCube_geometric hs n)
+  have h := norm_tsum_le_two_mul_of_norm_le_half_pow
+    (norm_negativeLaplaceForwardTermSecond_le_invCube_geometric hs)
   calc
-    ‖negativeLaplaceForwardTailSecond s‖ ≤
-        ∑' n : ℕ, ‖negativeLaplaceForwardTermSecond s n‖ :=
-      norm_tsum_le_tsum_norm hterm.norm
-    _ ≤ ∑' n : ℕ, (24 / s ^ 3) * (1 / 2 : ℝ) ^ n :=
-      hterm.norm.tsum_le_tsum
-        (fun n => norm_negativeLaplaceForwardTermSecond_le_invCube_geometric hs n)
-        hgeom
-    _ = 48 / s ^ 3 := by
-      rw [tsum_mul_left,
-        tsum_geometric_of_norm_lt_one (by norm_num : ‖(1 / 2 : ℝ)‖ < 1)]
-      ring
+    ‖negativeLaplaceForwardTailSecond s‖ =
+        ‖∑' n : ℕ, negativeLaplaceForwardTermSecond s n‖ := rfl
+    _ ≤ 2 * (24 / s ^ 3) := h
+    _ = 48 / s ^ 3 := by ring
 
 private lemma norm_negativeLaplaceForwardTermThird_le_invFourth_geometric
     {s : ℝ} (hs : 1 ≤ s) (n : ℕ) :
@@ -279,24 +292,13 @@ geometric majorant; the constant is sufficient, not sharp. -/
 theorem norm_negativeLaplaceForwardTailThird_le_inv_fourth
     {s : ℝ} (hs : 1 ≤ s) :
     ‖negativeLaplaceForwardTailThird s‖ ≤ 768 / s ^ 4 := by
-  have hgeom : Summable (fun n : ℕ =>
-      (384 / s ^ 4) * (1 / 2 : ℝ) ^ n) :=
-    (summable_geometric_of_norm_lt_one (by norm_num : ‖(1 / 2 : ℝ)‖ < 1)).mul_left _
-  have hterm : Summable (negativeLaplaceForwardTermThird s) :=
-    hgeom.of_norm_bounded
-      (fun n => norm_negativeLaplaceForwardTermThird_le_invFourth_geometric hs n)
+  have h := norm_tsum_le_two_mul_of_norm_le_half_pow
+    (norm_negativeLaplaceForwardTermThird_le_invFourth_geometric hs)
   calc
-    ‖negativeLaplaceForwardTailThird s‖ ≤
-        ∑' n : ℕ, ‖negativeLaplaceForwardTermThird s n‖ :=
-      norm_tsum_le_tsum_norm hterm.norm
-    _ ≤ ∑' n : ℕ, (384 / s ^ 4) * (1 / 2 : ℝ) ^ n :=
-      hterm.norm.tsum_le_tsum
-        (fun n => norm_negativeLaplaceForwardTermThird_le_invFourth_geometric hs n)
-        hgeom
-    _ = 768 / s ^ 4 := by
-      rw [tsum_mul_left,
-        tsum_geometric_of_norm_lt_one (by norm_num : ‖(1 / 2 : ℝ)‖ < 1)]
-      ring
+    ‖negativeLaplaceForwardTailThird s‖ =
+        ‖∑' n : ℕ, negativeLaplaceForwardTermThird s n‖ := rfl
+    _ ≤ 2 * (384 / s ^ 4) := h
+    _ = 768 / s ^ 4 := by ring
 
 private lemma hasDerivAt_logb_two {s : ℝ} (hs : s ≠ 0) :
     HasDerivAt (fun x : ℝ => Real.logb 2 x)
@@ -482,85 +484,72 @@ theorem negativeLaplaceRpowThirdResidual_eq
   field_simp [(Real.log_pos (by norm_num : (1 : ℝ) < 2)).ne', hr.ne']
   ring
 
+/-- Rescaling a tail bound.  If `‖g s‖ ≤ C / s ^ (k + 1)` at some
+`s ≥ 1`, then `|s ^ k * g s| ≤ C / s`.  The six scaled forward-tail
+bounds below are the instances `k = 1, 2, 3`; the constant bound `≤ C`
+follows from this one by `div_le_self`. -/
+theorem abs_pow_mul_le_div_of_norm_le {g : ℝ → ℝ} {k : ℕ} {C s : ℝ}
+    (hs : 1 ≤ s) (h : ‖g s‖ ≤ C / s ^ (k + 1)) :
+    |s ^ k * g s| ≤ C / s := by
+  have hs0 : 0 < s := zero_lt_one.trans_le hs
+  have hk : s ^ k ≠ 0 := pow_ne_zero k hs0.ne'
+  rw [Real.norm_eq_abs] at h
+  rw [abs_mul, abs_of_pos (pow_pos hs0 k)]
+  calc
+    s ^ k * |g s| ≤ s ^ k * (C / s ^ (k + 1)) := by gcongr
+    _ = C / s := by
+      rw [pow_succ, mul_div_assoc',
+        div_eq_div_iff (mul_ne_zero hk hs0.ne') hs0.ne']
+      ring
+
 /-- Sharper scaled first-tail bound:
 `|s * negativeLaplaceForwardTailFirst s| ≤ 8 / s` whenever `s ≥ 1`. -/
 lemma abs_mul_negativeLaplaceForwardTailFirst_le_div
     {s : ℝ} (hs : 1 ≤ s) :
     |s * negativeLaplaceForwardTailFirst s| ≤ 8 / s := by
-  have hs0 : 0 < s := zero_lt_one.trans_le hs
-  have h := norm_negativeLaplaceForwardTailFirst_le_inv_sq hs
-  rw [Real.norm_eq_abs] at h
-  rw [abs_mul, abs_of_pos hs0]
-  calc
-    s * |negativeLaplaceForwardTailFirst s| ≤ s * (8 / s ^ 2) := by gcongr
-    _ = 8 / s := by field_simp
+  simpa only [pow_one] using
+    abs_pow_mul_le_div_of_norm_le (g := negativeLaplaceForwardTailFirst)
+      (k := 1) hs (norm_negativeLaplaceForwardTailFirst_le_inv_sq hs)
 
 /-- Scaled first-tail bound: `|s * negativeLaplaceForwardTailFirst s| ≤ 8`
 whenever `s ≥ 1`. -/
 lemma abs_mul_negativeLaplaceForwardTailFirst_le_eight
     {s : ℝ} (hs : 1 ≤ s) :
-    |s * negativeLaplaceForwardTailFirst s| ≤ 8 := by
-  have hs0 : 0 < s := zero_lt_one.trans_le hs
-  calc
-    |s * negativeLaplaceForwardTailFirst s| ≤ 8 / s :=
-      abs_mul_negativeLaplaceForwardTailFirst_le_div hs
-    _ ≤ 8 := by
-      rw [div_le_iff₀ hs0]
-      nlinarith
+    |s * negativeLaplaceForwardTailFirst s| ≤ 8 :=
+  (abs_mul_negativeLaplaceForwardTailFirst_le_div hs).trans
+    (div_le_self (by norm_num) hs)
 
 /-- Sharper scaled second-tail bound:
 `|s ^ 2 * negativeLaplaceForwardTailSecond s| ≤ 48 / s` whenever `s ≥ 1`. -/
 lemma abs_sq_mul_negativeLaplaceForwardTailSecond_le_div
     {s : ℝ} (hs : 1 ≤ s) :
-    |s ^ 2 * negativeLaplaceForwardTailSecond s| ≤ 48 / s := by
-  have hs0 : 0 < s := zero_lt_one.trans_le hs
-  have h := norm_negativeLaplaceForwardTailSecond_le_inv_cube hs
-  rw [Real.norm_eq_abs] at h
-  rw [abs_mul, abs_of_pos (pow_pos hs0 2)]
-  calc
-    s ^ 2 * |negativeLaplaceForwardTailSecond s| ≤ s ^ 2 * (48 / s ^ 3) := by
-      gcongr
-    _ = 48 / s := by field_simp
+    |s ^ 2 * negativeLaplaceForwardTailSecond s| ≤ 48 / s :=
+  abs_pow_mul_le_div_of_norm_le (g := negativeLaplaceForwardTailSecond)
+    (k := 2) hs (norm_negativeLaplaceForwardTailSecond_le_inv_cube hs)
 
 /-- Scaled second-tail bound:
 `|s ^ 2 * negativeLaplaceForwardTailSecond s| ≤ 48` whenever `s ≥ 1`. -/
 lemma abs_sq_mul_negativeLaplaceForwardTailSecond_le
     {s : ℝ} (hs : 1 ≤ s) :
-    |s ^ 2 * negativeLaplaceForwardTailSecond s| ≤ 48 := by
-  have hs0 : 0 < s := zero_lt_one.trans_le hs
-  calc
-    |s ^ 2 * negativeLaplaceForwardTailSecond s| ≤ 48 / s :=
-      abs_sq_mul_negativeLaplaceForwardTailSecond_le_div hs
-    _ ≤ 48 := by
-      rw [div_le_iff₀ hs0]
-      nlinarith
+    |s ^ 2 * negativeLaplaceForwardTailSecond s| ≤ 48 :=
+  (abs_sq_mul_negativeLaplaceForwardTailSecond_le_div hs).trans
+    (div_le_self (by norm_num) hs)
 
 /-- Sharper scaled third-tail bound:
 `|s ^ 3 * negativeLaplaceForwardTailThird s| ≤ 768 / s` whenever `s ≥ 1`. -/
 lemma abs_cube_mul_negativeLaplaceForwardTailThird_le_div
     {s : ℝ} (hs : 1 ≤ s) :
-    |s ^ 3 * negativeLaplaceForwardTailThird s| ≤ 768 / s := by
-  have hs0 : 0 < s := zero_lt_one.trans_le hs
-  have h := norm_negativeLaplaceForwardTailThird_le_inv_fourth hs
-  rw [Real.norm_eq_abs] at h
-  rw [abs_mul, abs_of_pos (pow_pos hs0 3)]
-  calc
-    s ^ 3 * |negativeLaplaceForwardTailThird s| ≤ s ^ 3 * (768 / s ^ 4) := by
-      gcongr
-    _ = 768 / s := by field_simp
+    |s ^ 3 * negativeLaplaceForwardTailThird s| ≤ 768 / s :=
+  abs_pow_mul_le_div_of_norm_le (g := negativeLaplaceForwardTailThird)
+    (k := 3) hs (norm_negativeLaplaceForwardTailThird_le_inv_fourth hs)
 
 /-- Scaled third-tail bound:
 `|s ^ 3 * negativeLaplaceForwardTailThird s| ≤ 768` whenever `s ≥ 1`. -/
 lemma abs_cube_mul_negativeLaplaceForwardTailThird_le
     {s : ℝ} (hs : 1 ≤ s) :
-    |s ^ 3 * negativeLaplaceForwardTailThird s| ≤ 768 := by
-  have hs0 : 0 < s := zero_lt_one.trans_le hs
-  calc
-    |s ^ 3 * negativeLaplaceForwardTailThird s| ≤ 768 / s :=
-      abs_cube_mul_negativeLaplaceForwardTailThird_le_div hs
-    _ ≤ 768 := by
-      rw [div_le_iff₀ hs0]
-      nlinarith
+    |s ^ 3 * negativeLaplaceForwardTailThird s| ≤ 768 :=
+  (abs_cube_mul_negativeLaplaceForwardTailThird_le_div hs).trans
+    (div_le_self (by norm_num) hs)
 
 /-- Uniform bound on the first residual over the half-line `b ≥ 0`: for a
 Fabius function `F` some nonnegative constant dominates
@@ -585,10 +574,8 @@ theorem exists_bound_abs_negativeLaplaceRpowFirstResidual
       |1 / 2 + deriv negativeLaplacePsi b / Real.log 2 -
           (2 : ℝ) ^ b * negativeLaplaceForwardTailFirst ((2 : ℝ) ^ b)| ≤
         |1 / 2 + deriv negativeLaplacePsi b / Real.log 2| +
-          |(2 : ℝ) ^ b * negativeLaplaceForwardTailFirst ((2 : ℝ) ^ b)| := by
-    simpa only [sub_eq_add_neg, abs_neg] using abs_add_le
-      (1 / 2 + deriv negativeLaplacePsi b / Real.log 2)
-      (-((2 : ℝ) ^ b * negativeLaplaceForwardTailFirst ((2 : ℝ) ^ b)))
+          |(2 : ℝ) ^ b * negativeLaplaceForwardTailFirst ((2 : ℝ) ^ b)| :=
+    abs_sub _ _
   have htri2 := abs_add_le (1 / 2)
     (deriv negativeLaplacePsi b / Real.log 2)
   simp only [abs_div, abs_of_pos hlog] at htri2
@@ -635,18 +622,14 @@ theorem exists_bound_abs_negativeLaplaceRpowSecondResidual
           ((2 : ℝ) ^ b) ^ 2 * negativeLaplaceForwardTailSecond ((2 : ℝ) ^ b)| ≤
         |-1 / 2 - 1 / L - deriv negativeLaplacePsi b / L +
           deriv (deriv negativeLaplacePsi) b / L ^ 2| +
-        |((2 : ℝ) ^ b) ^ 2 * negativeLaplaceForwardTailSecond ((2 : ℝ) ^ b)| := by
-    simpa only [sub_eq_add_neg, abs_neg] using abs_add_le
-      (-1 / 2 - 1 / L - deriv negativeLaplacePsi b / L +
-        deriv (deriv negativeLaplacePsi) b / L ^ 2)
-      (-(((2 : ℝ) ^ b) ^ 2 * negativeLaplaceForwardTailSecond ((2 : ℝ) ^ b)))
+        |((2 : ℝ) ^ b) ^ 2 * negativeLaplaceForwardTailSecond ((2 : ℝ) ^ b)| :=
+    abs_sub _ _
   have ha := abs_add_le
     (-1 / 2 - 1 / L - deriv negativeLaplacePsi b / L)
     (deriv (deriv negativeLaplacePsi) b / L ^ 2)
   have hb' : |-1 / 2 - 1 / L - deriv negativeLaplacePsi b / L| ≤
-      |-1 / 2 - 1 / L| + |deriv negativeLaplacePsi b / L| := by
-    simpa only [sub_eq_add_neg, abs_neg] using abs_add_le
-      (-1 / 2 - 1 / L) (-(deriv negativeLaplacePsi b / L))
+      |-1 / 2 - 1 / L| + |deriv negativeLaplacePsi b / L| :=
+    abs_sub _ _
   have hbase : |-1 / 2 - 1 / L| = 1 / 2 + 1 / L := by
     have hnonpos : -1 / 2 - 1 / L ≤ 0 := by
       have : 0 < 1 / L := by positivity
@@ -712,14 +695,8 @@ theorem exists_bound_abs_negativeLaplaceRpowThirdResidual
         |1 + 3 / L + 2 * deriv negativeLaplacePsi b / L -
           3 * deriv (deriv negativeLaplacePsi) b / L ^ 2 +
           negativeLaplacePsiThird b / L ^ 3| +
-        |((2 : ℝ) ^ b) ^ 3 * negativeLaplaceForwardTailThird ((2 : ℝ) ^ b)| := by
-    let A := 1 + 3 / L + 2 * deriv negativeLaplacePsi b / L -
-      3 * deriv (deriv negativeLaplacePsi) b / L ^ 2 +
-      negativeLaplacePsiThird b / L ^ 3
-    let T := ((2 : ℝ) ^ b) ^ 3 * negativeLaplaceForwardTailThird ((2 : ℝ) ^ b)
-    change |A - T| ≤ |A| + |T|
-    rw [sub_eq_add_neg]
-    simpa only [abs_neg] using abs_add_le A (-T)
+        |((2 : ℝ) ^ b) ^ 3 * negativeLaplaceForwardTailThird ((2 : ℝ) ^ b)| :=
+    abs_sub _ _
   have ha := abs_add_le
     (1 + 3 / L + 2 * deriv negativeLaplacePsi b / L -
       3 * deriv (deriv negativeLaplacePsi) b / L ^ 2)
@@ -728,10 +705,8 @@ theorem exists_bound_abs_negativeLaplaceRpowThirdResidual
       |1 + 3 / L + 2 * deriv negativeLaplacePsi b / L -
           3 * deriv (deriv negativeLaplacePsi) b / L ^ 2| ≤
         |1 + 3 / L + 2 * deriv negativeLaplacePsi b / L| +
-          |3 * deriv (deriv negativeLaplacePsi) b / L ^ 2| := by
-    simpa only [sub_eq_add_neg, abs_neg] using abs_add_le
-      (1 + 3 / L + 2 * deriv negativeLaplacePsi b / L)
-      (-(3 * deriv (deriv negativeLaplacePsi) b / L ^ 2))
+          |3 * deriv (deriv negativeLaplacePsi) b / L ^ 2| :=
+    abs_sub _ _
   have hc := abs_add_le (1 + 3 / L) (2 * deriv negativeLaplacePsi b / L)
   have hbase : |1 + 3 / L| = 1 + 3 / L := by
     rw [abs_of_pos]
