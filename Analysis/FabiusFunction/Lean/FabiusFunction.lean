@@ -632,6 +632,7 @@ import FabiusFunction.PolynomialQLeibniz
 import FabiusFunction.QGamma
 import FabiusFunction.LambertSeriesLog
 import FabiusFunction.QPochhammerDerivative
+import FabiusFunction.HalfQBinomialRootSimplicity
 import FabiusFunction.ClassicalPochhammerLimit
 import FabiusFunction.QPochhammerIntegerIndex
 import FabiusFunction.QPartialFractions
