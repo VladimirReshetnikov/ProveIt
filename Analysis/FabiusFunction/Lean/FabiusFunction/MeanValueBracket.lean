@@ -40,16 +40,16 @@ theorem abs_sub_le_of_le_deriv (hD : Convex ℝ D) (hf : ContinuousOn f D)
     (hx : x ∈ D) (hy : y ∈ D) :
     |f x - f y| ≤ M * |x - y| := by
   rcases le_total x y with h | h
-  · have hup := hD.image_sub_le_mul_sub_of_deriv_le hf hf' hM x hx y hy h
-    have hlo := hD.mul_sub_le_image_sub_of_le_deriv hf hf' hm x hx y hy h
+  · have hup := Convex.image_sub_le_mul_sub_of_deriv_le hD hf hf' hM x hx y hy h
+    have hlo := Convex.mul_sub_le_image_sub_of_le_deriv hD hf hf' hm x hx y hy h
     rw [abs_sub_comm x y, abs_of_nonneg (by linarith : (0 : ℝ) ≤ y - x)]
     rcases le_total (f x) (f y) with hfxy | hfxy
     · rw [abs_sub_comm, abs_of_nonneg (by linarith : (0 : ℝ) ≤ f y - f x)]
       exact hup
     · rw [abs_of_nonneg (by linarith : (0 : ℝ) ≤ f x - f y)]
       nlinarith [hlo, hup]
-  · have hup := hD.image_sub_le_mul_sub_of_deriv_le hf hf' hM y hy x hx h
-    have hlo := hD.mul_sub_le_image_sub_of_le_deriv hf hf' hm y hy x hx h
+  · have hup := Convex.image_sub_le_mul_sub_of_deriv_le hD hf hf' hM y hy x hx h
+    have hlo := Convex.mul_sub_le_image_sub_of_le_deriv hD hf hf' hm y hy x hx h
     rw [abs_of_nonneg (by linarith : (0 : ℝ) ≤ x - y)]
     rcases le_total (f y) (f x) with hfxy | hfxy
     · rw [abs_of_nonneg (by linarith : (0 : ℝ) ≤ f x - f y)]
@@ -65,10 +65,10 @@ theorem mul_abs_sub_le_abs_sub_of_le_deriv (hD : Convex ℝ D) (hf : ContinuousO
     (hx : x ∈ D) (hy : y ∈ D) :
     m * |x - y| ≤ |f x - f y| := by
   rcases le_total x y with h | h
-  · have hlo := hD.mul_sub_le_image_sub_of_le_deriv hf hf' hm x hx y hy h
+  · have hlo := Convex.mul_sub_le_image_sub_of_le_deriv hD hf hf' hm x hx y hy h
     rw [abs_sub_comm x y, abs_of_nonneg (by linarith : (0 : ℝ) ≤ y - x)]
     exact le_trans hlo (le_abs_self _)
-  · have hlo := hD.mul_sub_le_image_sub_of_le_deriv hf hf' hm y hy x hx h
+  · have hlo := Convex.mul_sub_le_image_sub_of_le_deriv hD hf hf' hm y hy x hx h
     rw [abs_of_nonneg (by linarith : (0 : ℝ) ≤ x - y)]
     rw [abs_sub_comm]
     exact le_trans hlo (le_abs_self _)
