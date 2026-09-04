@@ -3726,12 +3726,28 @@ the recursive polynomial with the finite-q-Pochhammer normalization of the
 \(n\)-th Taylor coefficient of the genuine geometric-uniform moment
 generating function.  This exhaustive \(0+1\) bridge makes
 \nolinkurl{p7:eq:Pn-def} Exact in the real contraction regime, including
-signed \(q\) and \(q=0\).  It does not construct the manuscript's complex-q
-infinite product.  The leading-coefficient formula and consequent strict
-degree drop at odd \(n>1\) are still absent.  Consequently the compound
+signed \(q\) and \(q=0\).
+
+The subsequent source-only leaf
+\nolinkurl{GeometricUniformComplexMomentProduct.lean} has the exhaustive
+public surface one definition,
+\nolinkurl{geometricUniformComplexMomentProduct}, and two theorems,
+\nolinkurl{hasProdLocallyUniformly_geometricUniformComplexMomentProduct} and
+\nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient}.
+For every complex \(q\) with \(\lVert q\rVert<1\), it constructs the actual
+infinite product, proves locally uniform convergence on the complex plane, and
+identifies the recursive polynomial with the finite-q-Pochhammer normalization
+of its \(n\)-th Taylor coefficient.  This is a complex analytic analogue, not
+a complex probability-moment extension of \nolinkurl{p7:eq:Pn-def}; that label
+remains Exact only in the stated real contraction regime.  The canonical
+q-monograph compound \nolinkurl{thm:qF-moment-polynomial} remains Partial
+because the exterior reciprocal-germ coefficient, the single rational
+\(a_n=d_n/n!\), and its removable pole-cleared continuation at roots are not
+identified in Lean.  The leading-coefficient formula and consequent strict
+degree drop at odd \(n>1\) are also still absent.  Consequently the compound
 frontier label \nolinkurl{p7:thm:Pn} remains Partial: its recurrence, degree
-bound, value at zero, small cases, and analytic normalization are supplied,
-but its leading/odd-degree clause is not.
+bound, value at zero, small cases, and strict-disk analytic normalization are
+supplied, but its leading/odd-degree clause is not.
 
 \subsection{Fixed-order phase-locked Lambert extraction}
 The later current-tree phase-extraction tranche supplies the analytic layer
@@ -5820,6 +5836,7 @@ Quantum binomial theorem & \nolinkurl{quantumPlane_mul_pow}, \nolinkurl{quantum_
 Rogers--Szeg\H{o} polynomials & \nolinkurl{rogersSzego}, \nolinkurl{rogersSzego_succ}, \nolinkurl{rogersSzego_three_term}, \nolinkurl{hasSum_rogersSzego_generating} & \nolinkurl{RogersSzegoPolynomial.lean}; one definition and nine theorems, listed exhaustively above \\
 Geometric-uniform moment-polynomial algebra & \nolinkurl{geometricUniformMomentPolynomial}; \nolinkurl{geometricUniformMomentPolynomial_zero}, \nolinkurl{geometricUniformMomentPolynomial_succ}, \nolinkurl{geometricUniformMomentPolynomial_natDegree_le}, \nolinkurl{geometricUniformMomentPolynomial_eval_zero}, \nolinkurl{geometricUniformMomentPolynomial_one}, \nolinkurl{geometricUniformMomentPolynomial_two}, \nolinkurl{geometricUniformMomentPolynomial_three}, \nolinkurl{geometricUniformMomentPolynomial_four} & Exhaustive one-definition/eight-theorem surface of \nolinkurl{GeometricUniformMomentPolynomial.lean}; recursive polynomial algebra, bound, zero value, and \(P_0\) through \(P_4\) \\
 Real geometric-uniform moment bridge & \nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient} & Exhaustive zero-definition/one-theorem surface of \nolinkurl{GeometricUniformMomentPolynomialBridge.lean}; exact \nolinkurl{p7:eq:Pn-def} for real \(\lvert q\rvert<1\).  The compound \nolinkurl{p7:thm:Pn} remains Partial only because its leading-coefficient and strict odd-degree clauses are absent \\
+Complex geometric-uniform moment product & \nolinkurl{geometricUniformComplexMomentProduct}; \nolinkurl{hasProdLocallyUniformly_geometricUniformComplexMomentProduct}, \nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient} & Exhaustive one-definition/two-theorem surface of \nolinkurl{GeometricUniformComplexMomentProduct.lean}; actual locally uniform product and normalized Taylor-coefficient bridge for complex \(\lVert q\rVert<1\).  This does not promote the globally continued q-monograph moment-polynomial label or turn the real probability identity into a complex one \\
 Geometric CDF \(F_q\) and density \(f_q\) & \nolinkurl{geometricUniformCDF}, \nolinkurl{geometricUniformDensity}, \nolinkurl{geometricUniformDensity_zero}, \nolinkurl{geometricUniformDensity_nonpos_of_neg}, \nolinkurl{volume_withDensity_geometricUniformDensity_eq_zero_of_nonpos}, \nolinkurl{geometricUniformDistribution_ne_withDensity_geometricUniformDensity_of_nonpos}, \nolinkurl{geometricUniformCDF_hasDerivAt}, \nolinkurl{geometricUniformDistribution_eq_withDensity}, \nolinkurl{contDiff_geometricUniformCDF}, \nolinkurl{contDiff_geometricUniformDensity} & \nolinkurl{GeometricUniformCDF.lean} \\
 Weighted-sum CDF and half-base bridges & \nolinkurl{weightedSumCDF}, \nolinkurl{weightedSumCDF_eq_geometricUniformCDF_one_half}, \nolinkurl{geometricUniformCDF_one_half_eq_fabiusReal}, \nolinkurl{geometricUniformDensity_one_half_eq_rvachevUp} & \nolinkurl{ProbabilityRepresentation.lean} \\
 Totalized activation kernel \(p\) & \nolinkurl{activationProbability}, \nolinkurl{tanhDiv_eq_dslope}, \nolinkurl{activationProbability_le_min_one_sq_div_three}, \nolinkurl{activationProbability_mul_le_quadratic}, \nolinkurl{tendsto_activationProbability_mul_div_sq} & \nolinkurl{HyperbolicActivation.lean}, \nolinkurl{ActivationSeries.lean}, and \nolinkurl{ActivationAsymptotics.lean} \\
@@ -6110,6 +6127,7 @@ Module & Role in the development \\
 \nolinkurl{GeometricUniformMomentPolynomialBridge.lean} & Exhaustive zero-definition/one-theorem surface: \nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient} identifies that polynomial with the normalized Taylor coefficient of the actual geometric-uniform MGF for every real \(\lvert q\rvert<1\), making \nolinkurl{p7:eq:Pn-def} Exact in that regime.  It supplies no complex-q infinite-product realization or leading-coefficient/strict odd-degree theorem, so the compound \nolinkurl{p7:thm:Pn} remains Partial. \\
 \nolinkurl{RvachevLagrangeNodesOnly.lean} & Exhaustive one-definition/fourteen-theorem surface named in the crosswalk: ordinary-derivative and raw omitted-node Appell forms, rational descent and rational lattice samples, and formal complete-Bell/Bernoulli--Mersenne coefficients.  It makes \nolinkurl{cor:lag-nodes-only} Exact only by composition; the rational-point, synthesis-hypothesis, and non-analytic-MGF caveats remain explicit. \\
 \nolinkurl{ThueMorseGammaTowerDifferential.lean} & No definitions and exactly three theorems, named in the crosswalk: positive-parameter Mellin differentiation and the full finite GammaLog derivative ladder.  This makes \nolinkurl{p2:thm:gamma-tower} Exact under its chosen-coordinate convention, not as a principal-log identity. \\
+\nolinkurl{GeometricUniformComplexMomentProduct.lean} & Exhaustive one-definition/two-theorem surface: \nolinkurl{geometricUniformComplexMomentProduct} is the actual complex product, \nolinkurl{hasProdLocallyUniformly_geometricUniformComplexMomentProduct} proves its locally uniform convergence for \(\lVert q\rVert<1\), and \nolinkurl{geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient} gives the normalized Taylor-coefficient bridge.  It is an analytic analogue of the real identity; the exterior rational-function/removable-continuation gap keeps \nolinkurl{thm:qF-moment-polynomial} Partial. \\
 \nolinkurl{LambertPhaseLockedRichardson.lean} & Exact lower-Lambert phase locking, reciprocal-grid Lagrange weights, cancellation, and every complete-homogeneous residual moment. \\
 \nolinkurl{LambertPhaseLockedBell.lean} & Generalized harmonic power sums and Bell input for the shifted reciprocal alphabet, together with exact complete-homogeneous and reciprocal-Lagrange moment rewrites in factorially normalized complete-Bell form over characteristic-zero fields (with the direct rewrite using the rational-algebra structure).  Total field inversion requires no positivity or nonvanishing hypothesis on the shift. \\
 \nolinkurl{FabiusLambertPhaseLockedPullback.lean} & Pullback of the arbitrary-order logarithmic Fabius expansion to every fixed phase-locked Lambert node, with the periodic correction and saddle coefficients frozen at the base phase. \\
@@ -6330,7 +6348,7 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The live current-tree audit scans
-917 modules and 11,565 public declarations, with no missing module headers or
+918 modules and 11,568 public declarations, with no missing module headers or
 declaration comments.  At the retained historical mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
@@ -6454,11 +6472,19 @@ strict odd-degree clauses remain absent, so the compound
 the 1+4 \nolinkurl{ThueMorseCornerIntegral.lean} and 0+3
 \nolinkurl{RvachevLegendreCentralSum.lean} leaves, while the existing
 zero-definition \nolinkurl{FinitePolynomialFunctional.lean} module grows to
-sixteen theorems.  This gives the live 917/11,565 census.  Every module is reachable from the
-facade.  No aggregate facade
-build is claimed for this current-tree census.  The retained PDF and the
-title-page pin remain historical receipts and do not claim parity with the
-merged source; no PDF was built for this source-only union.
+sixteen theorems.  The subsequent exhaustive \(1+2\)
+\nolinkurl{GeometricUniformComplexMomentProduct.lean} leaf constructs the
+actual product for complex \(\lVert q\rVert<1\), proves its locally uniform
+convergence, and identifies its normalized Taylor coefficient with the same
+polynomial.  On its incoming branch it formed the historical 906/11,461
+checkpoint; in the merged chronology it gives the live 918/11,568 census.
+This complex analytic analogue does not supply the exterior reciprocal germ
+or the rational/removable continuation through roots required to promote the
+canonical q-monograph \nolinkurl{thm:qF-moment-polynomial}; that compound
+label remains Partial.  Every module is reachable from the facade.  No
+aggregate facade build is claimed for this current-tree census.  The retained
+PDF and title-page pin remain historical receipts and do not claim parity
+with the merged source; no PDF was built for this source-only union.
 
 Those six counts are \nolinkurl{QPochhammerInfiniteBounds.lean} (0+5),
 \nolinkurl{HeineTransformation.lean} (2+5),

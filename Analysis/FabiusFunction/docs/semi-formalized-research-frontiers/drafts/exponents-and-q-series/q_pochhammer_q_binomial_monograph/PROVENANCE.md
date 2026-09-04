@@ -99,15 +99,16 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 915 modules and 11,557 public declarations with no
+live facade audit contains 918 modules and 11,568 public declarations with no
 documentation gaps. Those corpus-wide totals include the q--Chu, Richardson,
 geometric-law barycenter, Lagrange--Rvachev matrix, arbitrary-space geometric
-realization, regular-central-sum, and Lambert branch-gap Bernoulli follow-ups;
-they do not make the retained historical artifact current. Ten declarations
-come from the sibling `FabiusFunction.GeometricRichardsonGenerating`
-source-only module; three more are the explicit Gaussian second-derivative and
-division-free moment identities. The sibling `LambertWBranchGapBernoulli.lean`
-leaf contributes zero definitions and exactly five theorems:
+realization, regular-central-sum, Lambert branch-gap Bernoulli, affine
+Prouhet, and complex moment-product follow-ups; they do not make the retained
+historical artifact current. Ten declarations come from the sibling
+`FabiusFunction.GeometricRichardsonGenerating` source-only module; three more
+are the explicit Gaussian second-derivative and division-free moment
+identities. The sibling `LambertWBranchGapBernoulli.lean` leaf contributes
+zero definitions and exactly five theorems:
 `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
 `hasSum_bernoulli_mul_pow_div_factorial`,
@@ -167,12 +168,24 @@ definitions and the single public theorem
 full real domain `|q| < 1`, it identifies the recursive polynomial with the
 finite-q-Pochhammer normalization of the genuine geometric-uniform MGF Taylor
 coefficient; the theorem is regular at `q = 0` and includes negative
-contractions.  The manuscript's complex-`q` infinite-product coefficient is
-still not defined or identified in Lean.  Accordingly
-`thm:qF-moment-polynomial` remains Partial, not Exact, and the sharp-degree
-proposition stays None.  The base leaf's 904/11,457 census is the historical
-checkpoint at which the row moved from None to Partial; the bridge gives the
-historical incoming-branch checkpoint 905/11,458 without another status move.
+contractions.  The next `GeometricUniformComplexMomentProduct.lean` leaf has
+one definition, `geometricUniformComplexMomentProduct`, and exactly two public
+theorems, `hasProdLocallyUniformly_geometricUniformComplexMomentProduct` and
+`geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
+They construct the actual manuscript product for every complex `‖q‖ < 1`,
+including `q = 0`, prove its locally uniform convergence, and identify the
+recursive polynomial with the finite-q-Pochhammer normalization of its Taylor
+coefficient.  This makes the inner complex product/coefficient bridge exact.
+Conservatively, `thm:qF-moment-polynomial` remains Partial rather than Exact:
+the exterior reciprocal-germ coefficients have not been identified in Lean
+with the same rational function `a_n(q) = d_n(q) / n!`, and no theorem proves
+that clearing that RatFunc's root-of-unity poles gives the same total
+polynomial at `q = 1`.  The broader `thm:geometric-uniform-mgf` remains
+Partial, and the sharp-degree proposition stays None.  The base leaf's
+904/11,457 census is the historical checkpoint at which the row moved from
+None to Partial; the real bridge gives the historical 905/11,458 checkpoint,
+and the complex leaf gives the historical incoming-branch 906/11,461
+checkpoint without another status move.
 The facade also contains the zero-definition/two-theorem
 `GaussianBinomialGreaterOneAsymptotics.lean` leaf; its exhaustive declarations
 are `gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
@@ -200,7 +213,7 @@ with `halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne`, it makes
 `cor:geometric-prouhet-affine` Exact under the canonical rational-polynomial
 convention. It assumes neither `b != 0` nor distinct transformed nodes and
 therefore includes `b = 0` and `n = 0`. The current semantic-union census is
-915/11,557.
+918/11,568.
 Neither these source-only additions nor the preceding Lambert addition changes
 the retained historical artifact, and no render parity is claimed. The
 forward status inventory covers 282 labelled results:

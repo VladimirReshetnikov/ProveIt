@@ -63,7 +63,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 915 facade-reachable modules and 11,557 public declarations, with no
+contains 918 facade-reachable modules and 11,568 public declarations, with no
 missing module headers or declaration documentation.
 
 The sibling source-only `FabiusFunction.GeometricRichardsonGenerating` module
@@ -126,19 +126,32 @@ the single public theorem
 `geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`: for every
 real `|q| < 1`, including `q = 0` and negative `q`, it proves the exact
 finite-q-Pochhammer normalization by the Taylor coefficient of the genuine
-geometric-uniform MGF.  The manuscript's complex-`q` product identification
-is still absent.  Thus `thm:qF-moment-polynomial` remains Partial, not Exact;
-all algebraic clauses and the real genuine-MGF bridge are exact, while the
-complex analytic bridge is open.  The sharp-degree proposition remains None.
+geometric-uniform MGF.  The subsequent
+`GeometricUniformComplexMomentProduct.lean` leaf has the one definition
+`geometricUniformComplexMomentProduct` and exactly two theorems,
+`hasProdLocallyUniformly_geometricUniformComplexMomentProduct` and
+`geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
+For every complex strict contraction, including `q = 0`, this exhaustive 1+2
+surface gives the actual manuscript product, locally uniform convergence on
+the whole complex plane, and the exact normalized Taylor-coefficient bridge.
+The inner complex product/coefficient claim is therefore exact.  Under the
+strict whole-label policy, `thm:qF-moment-polynomial` remains Partial rather
+than Exact because the exterior reciprocal germ is not connected to the same
+rational `a_n(q) = d_n(q) / n!`, and no theorem identifies the polynomial
+obtained by clearing that RatFunc's root-of-unity poles, including at `q = 1`.
+`thm:geometric-uniform-mgf` also remains
+Partial, and the sharp-degree proposition remains None.
 The base leaf gives the historical 904/11,457 checkpoint and moved the row
-from None to Partial; the bridge gives the historical incoming-branch
-905/11,458 checkpoint without changing the forward ledger or source
-concordance.  Together with the facade-reachable zero-definition/two-theorem
-`GaussianBinomialGreaterOneAsymptotics.lean` leaf, the current semantic-union
-census is 915/11,557. Its declarations
+from None to Partial; the real bridge gives the historical 905/11,458
+checkpoint, and the complex leaf gives the historical incoming-branch
+906/11,461 checkpoint without another status move. After all merged tranches,
+the current semantic-union census is 918/11,568 and the q ledger remains
+176/82/16/8 with source projection 89/389/60/9. The facade-reachable
+zero-definition/two-theorem
+`GaussianBinomialGreaterOneAsymptotics.lean` leaf has the declarations
 `gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
-`gaussianBinomial_gt_one_central_isEquivalent`, together with
-`gaussianBinomial_inv`, make `cor:qgreaterone` Exact. For real `q > 1`, they
+`gaussianBinomial_gt_one_central_isEquivalent`. Together with
+`gaussianBinomial_inv`, they make `cor:qgreaterone` Exact. For real `q > 1`, they
 use exactly the normalized fixed-column error
 `(q⁻¹;q⁻¹)_k (q^(k*(n-k)))⁻¹ [n,k]_q - 1` with
 `O((q⁻¹)^(n-k+1))`, and the central scale

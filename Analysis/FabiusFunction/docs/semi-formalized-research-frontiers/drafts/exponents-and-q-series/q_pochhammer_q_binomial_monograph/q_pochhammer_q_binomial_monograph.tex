@@ -11453,9 +11453,11 @@ $q=0$ and negative contractions.  The additional declarations
 \path{tendstoLocallyUniformly_prefix_sinc_charFun} and
 \path{tendstoUniformlyOn_prefix_sinc_charFun} give local uniform convergence
 of the full prefixes on the real frequency line and uniform convergence on
-every compact real frequency set.  There is still no named centered transform
-or complex-parameter MGF-product bridge, no packaged complex-frequency
-full-phase-prefix statement, and no
+every compact real frequency set.  The separate
+\path{GeometricUniformComplexMomentProduct.lean} leaf now supplies the named
+complex strict-contraction product, its locally uniform convergence, and its
+exact normalized Taylor-coefficient bridge.  There is still no named centered
+transform, no packaged complex-frequency full-phase-prefix statement, and no
 outside formula, pole divisor, or zero--pole exchange.  Thus
 \Cref{thm:qF-spectral} remains only partially formalized even though its
 inside-disk pointwise factorization and outer normal convergence are exact.
@@ -15786,12 +15788,18 @@ event, not the stated closed-tail equality}\\[2pt]
 formalized, but not the displayed tail-moment formula}\\[2pt]
 \Cref{thm:geometric-uniform-mgf} & \statuspartial &
 \texttt{complexMGF\_weightedSumDistribution\_eq\_complexGeneratingFunction},
-\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}mgf\_\allowbreak{}taylorCoefficient}\newline
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}mgf\_\allowbreak{}taylorCoefficient},
+\texttt{geometricUniformComplexMomentProduct},
+\texttt{hasProdLocallyUniformly\_\allowbreak{}geometricUniformComplexMomentProduct}, and
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}complexMomentProduct\_\allowbreak{}taylorCoefficient}\newline
 {\footnotesize\texttt{FabiusComplexMGF};
-\texttt{GeometricUniformMomentPolynomialBridge}; the half-base transform and
-real-$q$, $\AbsoluteValue q<1$ MGF Taylor normalization are present, but not the
-general complex-$q$ product, its direct recurrence, entireness, formal
-uniqueness, and rationality package}\\[2pt]
+\texttt{GeometricUniformMomentPolynomialBridge};
+\texttt{GeometricUniformComplexMomentProduct}; the half-base transform, the
+zero-definition/one-theorem real genuine-MGF coefficient bridge, and the
+one-definition/two-theorem complex strict-contraction product, local-uniformity,
+and normalized Taylor-coefficient bridge are present.  A public direct
+dilation/coefficient recurrence, full genuine-MGF/characteristic-function
+identification, formal uniqueness, and rationality/pole package are absent}\\[2pt]
 \Cref{lem:fabius-moment-dilation} & \statuspartial &
 \texttt{fabiusRecurrenceSequence\_recurrence}\newline
 {\footnotesize\texttt{FabiusRecurrenceSequence}; coefficient-level half-base
@@ -15967,18 +15975,29 @@ zero--pole exchange are not packaged}\\[2pt]
 \texttt{geometricUniformMomentPolynomial\_\allowbreak{}one},
 \texttt{geometricUniformMomentPolynomial\_\allowbreak{}two},
 \texttt{geometricUniformMomentPolynomial\_\allowbreak{}three},
-\texttt{geometricUniformMomentPolynomial\_\allowbreak{}four}, and
-\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}mgf\_\allowbreak{}taylorCoefficient}\newline
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}four},
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}mgf\_\allowbreak{}taylorCoefficient},
+\texttt{geometricUniformComplexMomentProduct},
+\texttt{hasProdLocallyUniformly\_\allowbreak{}geometricUniformComplexMomentProduct}, and
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}complexMomentProduct\_\allowbreak{}taylorCoefficient}\newline
 {\footnotesize\texttt{GeometricUniformMomentPolynomial};
-\texttt{GeometricUniformMomentPolynomialBridge}; the recursively
-defined polynomial family, its zeroth value and residual-product recurrence,
-the degree bound, the specialization at $q=0$, and the displayed cases
-$\mathcal P_1$ through $\mathcal P_4$ are exact.  For every real $\AbsoluteValue q<1$,
-including $q=0$ and negative $q$, the bridge identifies this polynomial with
-the $\QPochhammer{q}{q}{n}(1-q)^{-n}$ normalization of the genuine
-geometric-uniform MGF Taylor coefficient.  The manuscript's complex-$q$
-infinite-product coefficient is not defined or identified, so the compound
-label remains Partial}\\[2pt]
+\texttt{GeometricUniformMomentPolynomialBridge};
+\texttt{GeometricUniformComplexMomentProduct}; the recursively defined
+polynomial family, its zeroth value and residual-product recurrence, the degree
+bound, the specialization at $q=0$, and the displayed cases $\mathcal P_1$
+through $\mathcal P_4$ are exact.  The zero-definition/one-theorem real bridge
+gives the genuine-MGF coefficient on $\AbsoluteValue q<1$; the subsequent
+one-definition/two-theorem complex leaf gives the actual product, its locally
+uniform convergence, and the same normalized Taylor coefficient for every
+complex strict contraction, including $q=0$.  Thus the inner complex
+product/coefficient claim is exact.  The source also treats
+$a_n(q)=d_n(q)/n!$ as one rational function spanning the exterior reciprocal
+germ and obtains $\mathcal P_n$ by clearing its root-of-unity poles, with a
+total polynomial value also at $q=1$; no Lean reciprocal-germ/RatFunc theorem
+or cleared continuation supplies that global identification, so the compound
+label remains Partial.  The complex leaf raises the live compiled census from
+the historical 905/11,458 checkpoint to 906/11,461 without changing
+the forward or source-concordance ledgers}\\[2pt]
 \Cref{prop:qF-P-degree-sharp} & \statusnone & ---\\[2pt]
 \Cref{cor:qF-halfbase-dictionary} & \statuspartial &
 \texttt{fabiusAtInverseTwoPow\_eq\_halfMoment},

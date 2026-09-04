@@ -371,16 +371,19 @@ strengthening of the existing zero-definition/sixteen-theorem
 \path{FinitePolynomialFunctional.lean} module; the one-definition/four-
 theorem local corner-integral leaf \path{ThueMorseCornerIntegral.lean}; and
 the zero-definition/three-theorem central Legendre cancellation leaf
-\path{RvachevLegendreCentralSum.lean}.  The live source census is 917
-facade-reachable modules and 11,565 public declarations.  The compound
+\path{RvachevLegendreCentralSum.lean}; and the one-definition/two-theorem
+complex moment-product leaf
+\path{GeometricUniformComplexMomentProduct.lean}.  The live source census is
+918 facade-reachable modules and 11,568 public declarations.  The compound
 moment-polynomial row remains Partial only because its leading-coefficient
 and strict odd-degree clauses are absent; its actual-MGF normalization is
 Exact for real \(\lvert q\rvert<1\).  The incoming bridge branch recorded the
 successive historical checkpoints 903/11,447, 903/11,448, 904/11,457, and
 905/11,458.  In the merged chronology the real-MGF bridge first reached
 915/11,556; the affine theorem, local corner leaf, and central Legendre leaf
-then give the successive checkpoints 915/11,557, 916/11,562, and the current
-917/11,565.
+then give the successive checkpoints 915/11,557, 916/11,562, and 917/11,565;
+the complex product leaf forms the live 918/11,568 union.  Its incoming-branch
+906/11,461 census is historical.
 The retained
 257-page, 2,438,299-byte A4 PDF, SHA-256
 \nolinkurl{3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980},
@@ -2719,7 +2722,8 @@ strengthening of the existing \path{FinitePolynomialFunctional.lean} module
 leaves the module count unchanged and brings the next checkpoint to
 915/11,557.  The \path{ThueMorseCornerIntegral.lean} (1+4) and
 \path{RvachevLegendreCentralSum.lean} (0+3) leaves then bring the successive
-checkpoints to 916/11,562 and the live 917/11,565.  The nodes-only leaf makes
+checkpoints to 916/11,562 and 917/11,565; the complex moment-product leaf
+gives the live 918/11,568 union.  The nodes-only leaf makes
 \nolinkurl{cor:lag-nodes-only} Exact/Complete by composition, with rationality
 only at rational evaluation points and a formal coefficient-level Bell
 identity; it does not promote the larger right-inverse row.  Within this
@@ -2819,10 +2823,24 @@ checkpoint to 905/11,458.  Its exhaustive public surface is
 for every real \(\lvert q\rvert<1\) identifies that polynomial with the
 finite-q-Pochhammer normalization of the Taylor coefficient of the actual
 geometric-uniform MGF.  Hence \nolinkurl{p7:eq:Pn-def} is Exact in this real
-contraction regime, including signed \(q\) and \(q=0\).  The bridge constructs
-no complex-q infinite product, and the leading-coefficient formula and
-consequent strict odd-degree drop remain absent.  Thus the compound
-\nolinkurl{p7:thm:Pn} remains Partial rather than Exact.  The existing
+contraction regime, including signed \(q\) and \(q=0\).  The subsequent
+\path{GeometricUniformComplexMomentProduct.lean} leaf has the exhaustive
+public surface one definition and two theorems:
+\lean{geometricUniformComplexMomentProduct},
+\lean{hasProdLocallyUniformly_geometricUniformComplexMomentProduct}, and
+\lean{geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient}.
+For every complex \(q\) with \(\lVert q\rVert<1\), these construct the actual
+infinite product, prove its locally uniform convergence on the complex plane,
+and give the finite-q-Pochhammer normalization of its Taylor coefficient.  The
+result is a complex analytic analogue, not a complex probability-moment
+extension of \nolinkurl{p7:eq:Pn-def}.  The canonical q-monograph compound
+\nolinkurl{thm:qF-moment-polynomial} remains Partial because the exterior
+reciprocal-germ coefficient, its global rational \(a_n=d_n/n!\), and the
+pole-cleared removable continuation at roots are not identified in Lean.  The
+leading-coefficient formula and consequent strict odd-degree drop also remain
+absent, so the compound \nolinkurl{p7:thm:Pn} remains Partial rather than
+Exact.  The complex \(1+2\) leaf formed the historical 906/11,461 checkpoint;
+the merged live census is 918/11,568.  The existing
 \path{GeometricResidualMoments.lean} module now has zero definitions and nine
 public theorems.  Its
 \lean{sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos} theorem
@@ -9709,10 +9727,21 @@ definitions and the single theorem
 For every real \(\lvert q\rvert<1\) and every \(n\), that theorem identifies
 the polynomial evaluation with the finite-q-Pochhammer normalization of the
 \(n\)-th Taylor coefficient of the genuine geometric-uniform MGF.  Therefore
-\nolinkurl{p7:eq:Pn-def} is Exact in this real contraction regime.  It proves
-neither a complex-q infinite-product realization nor the leading-coefficient
-formula and strict degree drop for odd \(n>1\).  Therefore the compound
-frontier label \nolinkurl{p7:thm:Pn} is Partial, not Exact.
+\nolinkurl{p7:eq:Pn-def} is Exact in this real contraction regime.  The
+exhaustive public surface of
+\path{GeometricUniformComplexMomentProduct.lean} is the definition
+\path{Fabius.geometricUniformComplexMomentProduct} and the two theorems
+\path{Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct} and
+\path{Fabius.geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient}.
+They construct the actual locally uniform product and its normalized
+Taylor-coefficient bridge for every complex \(\lVert q\rVert<1\).  This is an
+analytic analogue rather than a complex probability-moment identity, and it
+does not identify the exterior reciprocal germ or the global rational/removable
+continuation at roots required by the canonical q-monograph
+\nolinkurl{thm:qF-moment-polynomial}; that compound label remains Partial.
+Neither module proves the leading-coefficient formula and strict degree drop
+for odd \(n>1\).  Therefore the compound frontier label
+\nolinkurl{p7:thm:Pn} is Partial, not Exact.
 
 \item The five theorems of \path{FinitePolynomialFilterExactness.lean} are
 \path{Fabius.polynomialFilter_response_eq},

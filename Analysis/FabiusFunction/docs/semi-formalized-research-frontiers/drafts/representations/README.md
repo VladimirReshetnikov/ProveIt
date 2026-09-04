@@ -40,18 +40,23 @@ New standalone intake members:
 
   The [label-complete Lean crosswalk](fabius_dyadic_chaos_frontier/LEAN_CROSSWALK.md)
   inventories all 41 nonconjectural report results: 12 Unformalized, 20
-  Partial, 3 Near-complete, and 6 Complete.  The six statement-exact Lean
+  Partial, 2 Near-complete, and 7 Complete.  The seven statement-exact Lean
   results cover the totalized activation dictionary, scaled sharp local
   coefficient, the finite activation Taylor jet through (O(x^{10})),
   arbitrary-index square-summable activation budget and Tannery limit,
-  geometric/dyadic activation dimension with sharp coefficient, and certified
-  dyadic truncation.  Their current source provenance is commit
+  geometric/dyadic activation dimension with sharp coefficient, certified
+  dyadic truncation, and the continuous Thue--Morse corner identity. Their
+  current source provenance is commit
   `a345425d21d90e680bf15e34093af42c69c08a83`, whose seven activation modules
   expose 6 definitions and 99 theorems, or 105 public declarations.  The
-  focused-built symmetric
-  Thue--Morse module separately supplies the exact algebraic and report-grid
-  clauses of `thm:TM-corner`; its repeated `C^N` integral clause remains.
-  Paper markers still record manuscript provenance rather than Lean status.
+  focused-built symmetric Thue--Morse module supplies the exact algebraic and
+  report-grid clauses of `thm:TM-corner`, while the subsequent one-definition,
+  four-theorem `ThueMorseCornerIntegral.lean` leaf supplies its repeated
+  `C^N` integral under the local openness, order-connectedness, smoothness, and
+  closed-segment-containment hypotheses. Thus `thm:TM-corner` is Complete by
+  composition. The following Walsh conditional-expectation construction and
+  its `2^(-N)` normalization remain outside this promotion. Paper markers still
+  record manuscript provenance rather than Lean status.
 
 - [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/),
   the 36-page *Common-Digit Fabius Zonoids* bundle committed directly to
@@ -830,8 +835,9 @@ Thus `is:p3:cor:forced-superconvergence` and
 concordance. This source postdates the retained Representation and inverse
 PDFs, which remain historical artifacts rather than renders of the promotion.
 The corresponding historical documentation checkpoint was 671 modules and
-8,858 public declarations. The later live repository census is 915 modules
-and 11,556 public declarations. It includes the unrelated sibling source-only
+8,858 public declarations. The later live repository census is 918 modules
+and 11,568 public declarations; the q forward ledger is 176 Exact / 82 Partial /
+16 None / 8 N/A. It includes the unrelated sibling source-only
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`. It also includes the
@@ -884,13 +890,25 @@ surface zero definitions and one theorem,
 `Fabius.geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`.
 For every real `|q| < 1`, that theorem supplies the actual-MGF normalization,
 making `p7:eq:Pn-def` Exact in that real regime, including signed `q` and
-`q = 0`. It supplies no complex-q infinite-product realization. The
-leading-coefficient and strict odd-degree clauses remain absent, so the
-compound `p7:thm:Pn` remains Partial. The bridge produced the incoming branch
-checkpoint 905/11,458; the immediately preceding complex Bernoulli value-
-completion checkpoint was 903/11,448. These sibling source-only modules are
-not rendered by the retained Representation or inverse PDFs. The three
-declarations
+`q = 0`. It supplies no complex-q infinite-product realization by itself. The
+subsequent sibling `FabiusFunction.GeometricUniformComplexMomentProduct` has
+the exhaustive surface one public definition and two public theorems:
+`Fabius.geometricUniformComplexMomentProduct`,
+`Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct`, and
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
+For complex `‖q‖ < 1` these construct the actual locally uniform product and
+give its normalized Taylor-coefficient bridge to the recursive polynomial.
+This is an analytic analogue rather than a complex probability-moment
+extension of `p7:eq:Pn-def`, whose Exact scope remains real `|q| < 1`. The
+canonical q-monograph `thm:qF-moment-polynomial` remains Partial because its
+exterior reciprocal-germ/rational-function identification and removable
+continuation at roots are not formalized. The leading-coefficient and strict
+odd-degree clauses also remain absent, so the compound `p7:thm:Pn` remains
+Partial. The real bridge and complex `1+2` leaf produced the historical branch
+checkpoints 905/11,458 and 906/11,461, respectively. These sibling source-only
+modules are not rendered by the retained Representation or inverse PDFs. The
+immediately preceding complex Bernoulli value-completion checkpoint was 903
+modules and 11,448 public declarations. Three other declarations
 strengthen the existing sibling `FabiusFunction.GaussianBinomialCumulants`
 module with second-derivative, raw-second-moment, and variance-numerator
 identities; they likewise do not change the Representation or inverse results.
@@ -954,6 +972,17 @@ coefficient `(1/2)^d * choose (2*d) d`.  The remaining theorems specialize the
 finite synthesis to meshes `2^d` and `4^n`, identify each literal finite translate
 block with the existing polynomial block on `[-1,1]`, and prove its complete
 orthogonality and exact finite atom-Gram expansion.
+
+The source-only `FabiusFunction.RvachevLegendreCentralSum` leaf has no public
+definitions and three theorems: `eval_legendrePolynomial_even_zero`,
+`eval_rvachevLegendreDeconvolutionPolynomial_even`, and
+`rvachevLegendreCentralSum`. It makes only `cor:leg-central-sum`
+Exact/Complete: for every bounded Fabius witness and every `n`, including zero,
+the principal theorem proves the literal mesh-`4^n` cancellation by central
+evaluation of the existing even-mode synthesis, compact-support truncation,
+and parity pairing. It does not promote the Jacobi decoder, all-degree parity
+or rationality, reverse spectral closure, target-specific mesh minimality, or
+the larger Lagrange right-inverse.
 
 At compiled checkpoint `a3854643d`, the focused-build
 `FabiusLegendreTranslateSeries.lean` exports five public

@@ -100,7 +100,7 @@ Together with the zero theorem this is the complete displayed `P0`--`P4`
 algebraic surface. That one-module/nine-declaration increment produced the
 historical checkpoint 904 modules and 11,457 public declarations.
 
-The newest companion
+The subsequent companion
 `FabiusFunction.GeometricUniformMomentPolynomialBridge` has no public
 definitions and exactly one public theorem,
 `Fabius.geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`.
@@ -108,13 +108,30 @@ For every real `q` with `|q| < 1` and every `n`, it identifies the recursive
 polynomial with the finite-q-Pochhammer normalization of the `n`th Taylor
 coefficient of the actual geometric-uniform moment generating function.
 Thus `p7:eq:Pn-def` is **Exact** in this real contraction regime, including
-signed `q` and `q = 0`. The bridge does not construct the manuscript's
-complex-q infinite product. The leading-coefficient formula and resulting
-strict odd-degree drop remain unproved, so the compound `p7:thm:Pn` remains
-**Partial** with only those clauses outstanding. This exhaustive zero-
-definition/one-theorem bridge produced the incoming branch checkpoint of
-905 modules and 11,458 public declarations; after the merged source-only
-tranches, the live documentation census is 917 modules and 11,565 public
+signed `q` and `q = 0`. The exhaustive zero-definition/one-theorem bridge
+produced the historical checkpoint 905 modules and 11,458 public
+declarations.
+
+The newest source-only leaf is
+`FabiusFunction.GeometricUniformComplexMomentProduct`, with one public
+definition and exactly two public theorems. The definition
+`Fabius.geometricUniformComplexMomentProduct` is the actual infinite product;
+`Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct` proves
+its locally uniform convergence on the complex plane for `‖q‖ < 1`, and
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`
+identifies its normalized Taylor coefficient with the recursive polynomial.
+This is the complex analytic analogue of the real moment identity, not a
+complex probability-moment interpretation of `p7:eq:Pn-def`, whose Exact
+status remains restricted to real `|q| < 1`. The canonical q-monograph
+compound label `thm:qF-moment-polynomial` remains **Partial**: the exterior
+reciprocal-germ coefficient, its identification with a single rational
+`a_n = d_n/n!`, and the pole-cleared removable continuation at roots of unity
+are not formalized. On its incoming branch, the `1+2` leaf formed the
+historical checkpoint 906 modules and 11,461 public declarations. The
+leading-coefficient formula and resulting strict odd-degree drop also remain
+unproved, so the compound `p7:thm:Pn` remains **Partial**. After the subsequent
+source-only affine-Prouhet, local TM-corner, and central-Legendre closures, the
+current live documentation census is 918 modules and 11,568 public
 declarations. The retained frontier, primary,
 walkthrough, and geometric-q PDFs predate these source-only overlays and claim
 no render parity.
@@ -153,8 +170,9 @@ strengthening of the existing `FinitePolynomialFunctional` module left the
 module count unchanged and raised the next checkpoint to 915/11,557. The
 one-definition/four-theorem `ThueMorseCornerIntegral` leaf then raised it to
 916/11,562, and the zero-definition/three-theorem
-`RvachevLegendreCentralSum` leaf brings the live census to 917 modules and
-11,565 public declarations.
+`RvachevLegendreCentralSum` leaf brought the next checkpoint to 917 modules
+and 11,565 public declarations. The complex moment-product leaf gives the
+current live union, 918 modules and 11,568 public declarations.
 
 `FabiusFunction.GaussianBinomialGreaterOneAsymptotics` has exactly the two
 theorems
