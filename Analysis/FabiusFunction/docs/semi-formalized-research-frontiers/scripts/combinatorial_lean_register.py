@@ -358,37 +358,6 @@ STATUS = {
    r"\cref{eq:merged-abel-egf} for every solution, including degree zero.  "
    r"\cref{eq:merged-abel-binomial} is \lean{Fabius.abelPolynomial_eval_add}, also for "
    r"every $n\geq0$ (\lean{AbelPolynomialSeries})"),
- 'thm:merged-kirkman-cayley': ('partial',
-   r"The arithmetic formula is formalized in \lean{AssociahedronFaceNumbers}: "
-   r"\lean{Fabius.dissectionNumber_mul_of_three_le} is the denominator-free manuscript "
-   r"formula, with integrality and the literal quotient supplied by "
-   r"\lean{Fabius.succ_dvd_choose_mul_choose_of_three_le} and "
-   r"\lean{Fabius.dissectionNumber_eq_div}.  The quantity "
-   r"\lean{Fabius.dissectionNumber} is defined arithmetically; the polygon-dissection "
-   r"type, its cardinality theorem, and a cycle-lemma bijection are not formalized"),
- 'cor:merged-associahedron-f': ('partial',
-   r"\lean{Fabius.associahedronFaceNumber_mul} gives the division-free face-array formula, "
-   r"and \lean{Fabius.associahedronFaceNumber_zero}, "
-   r"\lean{Fabius.two_mul_associahedronFaceNumber_facet}, and "
-   r"\lean{Fabius.associahedronFaceNumber_top} give the three boundary values "
-   r"(\lean{AssociahedronFaceNumbers}).  The array is defined from the dissection numbers; "
-   r"an associahedron face lattice and its noncrossing-diagonal correspondence are not "
-   r"formalized"),
- 'thm:merged-associahedron-h': ('partial',
-   r"For the arithmetically defined Narayana row \lean{Fabius.associahedronH}, "
-   r"\lean{Fabius.associahedronH_mul} gives the closed form, "
-   r"\lean{Fabius.associahedronH_symm} gives palindromicity, and "
-   r"\lean{Fabius.sum_associahedronH}, \lean{Fabius.associahedronHPoly_one}, and "
-   r"\lean{Fabius.associahedronHPoly_one_eq_faceNumber_zero} give the Catalan sum and "
-   r"$h(1)=f_0$ (\lean{AssociahedronFaceNumbers}).  The geometric $h$-polynomial, face "
-   r"transform, and alternating Vandermonde derivation are not formalized"),
- 'thm:merged-raney': ('partial',
-   r"\lean{Fabius.raneyT_eq} constructs the canonical solution, and "
-   r"\lean{Fabius.coeff_raneyT_pow} proves \cref{eq:merged-raney} for it for every "
-   r"$p,n\geq0$ and $r\geq1$, including degree zero; "
-   r"\lean{Fabius.natCast_mul_coeff_raneyT_pow} is the positive-degree denominator-free "
-   r"form (\lean{RaneyNumbers}).  The manuscript quantifies over every solution $T$; "
-   r"uniqueness or transfer from an arbitrary solution to the constructed one is not formalized"),
  'thm:eulerian-binomial-recurrence': ('Lean',
    r"\lean{Fabius.eulerianPolynomial_binomial_recurrence} in $R[t]$ and "
    r"\lean{Fabius.eulerian_binomial_recurrence_series} in $R[[t]]$ (\lean{EulerianEGF}), for "
@@ -833,6 +802,69 @@ STATUS = {
    r"\lean{Fabius.coeff_mul_newtonReciprocalStep}, and actual truncation "
    r"\lean{Fabius.X_pow_dvd_one_sub_mul_trunc_newtonReciprocalStep}; all over an arbitrary "
    r"commutative ring and checked by focused compilation."),
+ # --- second half (from the Bernoulli/Euler/Genocchi chapter on), session funny-gates ---
+ 'prop:merged-loday-hyperplane': ('Lean',
+   r"\lean{Fabius.lodaySum_eq}, \lean{Fabius.two_mul_lodaySum_add_numLeaves}, "
+   r"\lean{Fabius.sum_lodayCoordinates_eq_of_mem_treesOfNumNodesEq} "
+   r"(\lean{BinaryTreeRotations}); the lowest-common-ancestor bijection is not formalized"),
+ 'thm:merged-tamari-order': ('Lean',
+   r"\lean{Fabius.TamariRotate}, \lean{Fabius.tamariPotential_lt_of_tamariRotate}, "
+   r"\lean{Fabius.reflTransGen_tamariRotate_antisymm}, \lean{Fabius.instPartialOrderTamari} "
+   r"(\lean{BinaryTreeRotations})"),
+ 'thm:merged-kirkman-cayley': ('Lean',
+   r"\lean{Fabius.dissectionNumber} (a division-free determinant), "
+   r"\lean{Fabius.dissectionNumber_mul_of_three_le}, "
+   r"\lean{Fabius.succ_dvd_choose_mul_choose}, \lean{Fabius.dissectionNumber_eq_div} "
+   r"(\lean{AssociahedronFaceNumbers}); the count of dissections itself is not formalized"),
+ 'cor:merged-associahedron-f': ('Lean',
+   r"\lean{Fabius.associahedronFaceNumber_mul}, \lean{Fabius.associahedronFaceNumber_zero}, "
+   r"\lean{Fabius.two_mul_associahedronFaceNumber_facet}, "
+   r"\lean{Fabius.associahedronFaceNumber_top} (\lean{AssociahedronFaceNumbers}); "
+   r"the face correspondence is not formalized"),
+ 'thm:merged-associahedron-h': ('partial',
+   r"\lean{Fabius.associahedronH_mul}, \lean{Fabius.associahedronH_symm}, "
+   r"\lean{Fabius.associahedronHPoly_one} (\lean{AssociahedronFaceNumbers}); "
+   r"the $h$-vector is defined as the Narayana row, the face transform is not formalized"),
+ 'thm:merged-pochhammer': ('partial',
+   r"\lean{Fabius.ascPochhammer_eval_add_index}, \lean{Fabius.descPochhammer_eval_add_index}, "
+   r"\lean{Fabius.ascPochhammer_eval_eq_Gamma_div}, "
+   r"\lean{Fabius.Gamma_add_natCast_eq_ascPochhammer_mul} (\lean{PochhammerFalling}); "
+   r"the binomial series is not formalized in Pochhammer form"),
+ 'thm:merged-pochhammer-derivatives': ('partial',
+   r"$m=1$: \lean{Fabius.derivative_ascPochhammer}, \lean{Fabius.derivative_ascPochhammer_eval}, "
+   r"\lean{Fabius.hasDerivAt_ascPochhammer_eval} (\lean{PochhammerFalling})"),
+ 'cor:merged-reciprocal-pochhammer': ('partial',
+   r"$m=1$: \lean{Fabius.hasDerivAt_inv_ascPochhammer_eval} (\lean{PochhammerFalling})"),
+ 'prop:merged-beta-integral': ('Lean',
+   r"\lean{Fabius.integral_cpow_mul_one_sub_natPow}, "
+   r"\lean{Fabius.betaIntegral_eq_factorial_div_ascPochhammer} (\lean{PochhammerFalling}), "
+   r"on Mathlib's \lean{Complex.betaIntegral_eval_nat_add_one_right}"),
+ 'thm:merged-catalan-bijection': ('partial',
+   r"Mathlib's \lean{DyckWord.equivTreesOfNumNodesEq} and "
+   r"\lean{card_dyckWord_semilength_eq_catalan}; parenthesizations not a separate type"),
+ 'thm:merged-periodic-bernoulli-fourier': ('partial',
+   r"$n\ge2$: Mathlib's \lean{fourierCoeff_bernoulli_eq}, \lean{summable_bernoulli_fourier}, "
+   r"\lean{hasSum_one_div_nat_pow_mul_cos}, \lean{hasSum_one_div_nat_pow_mul_sin}, "
+   r"\lean{hasSum_zeta_nat}; the $n=1$ clauses are not formalized"),
+ 'thm:merged-euler-gamma-limit': ('partial',
+   r"Euler's limit is Mathlib's \lean{Complex.GammaSeq_tendsto_Gamma} (pointwise); "
+   r"the Weierstrass product is not formalized"),
+ 'cor:merged-harmonic-expansion': ('partial',
+   r"leading order: Mathlib's \lean{Real.tendsto_harmonic_sub_log}; the Bernoulli tail "
+   r"needs Euler--Maclaurin, not formalized"),
+ 'prop:merged-modified-bernoulli': ('partial',
+   r"\lean{Fabius.sinhDivLogCoefficient_eq_bernoulli_formula} (\lean{SinhDivBernoulliLog}) "
+   r"at unit scale; the rescaling to $\beta^{\sharp}$ is not recorded"),
+ 'prop:merged-recurrence-uniqueness': ('Lean',
+   r"\lean{Fabius.eq_of_row_recurrence} (\lean{IdentityCertificates}), arrays with equal "
+   r"row 0, equal boundary values and equal row step; one-index ancestor "
+   r"\lean{Fabius.eq_of_recurrence} (\lean{TelescopingCertificate})"),
+ 'thm:merged-raney': ('Lean',
+   r"\lean{Fabius.coeff_raneyT_pow} is \cref{eq:merged-raney} for every $p,n\ge0$ and "
+   r"$r\ge1$, with the series constructed as \lean{Fabius.raneyT} from "
+   r"\lean{Fabius.Lagrange.solution}; \lean{Fabius.raneyT_eq} is the functional equation, "
+   r"\lean{Fabius.natCast_mul_coeff_raneyT_pow} the division-free form, "
+   r"\lean{Fabius.coeff_raneyT} the Fuss--Catalan case (\lean{RaneyNumbers})"),
 }
 
 # A dict literal keeps the LAST of two equal keys and reports nothing, so a
