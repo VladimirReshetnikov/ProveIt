@@ -181,9 +181,8 @@ def flatSubmodule (l : Filter α) (φ : ℕ → α → 𝕜) : Submodule 𝕜 (�
     change IsFlat l φ (fun x => c • ε x)
     exact hε.const_smul c
 
-/-- Membership in `flatSubmodule` is flatness, by definition. -/
-@[simp]
-theorem mem_flatSubmodule_iff : ε ∈ flatSubmodule l φ ↔ IsFlat l φ ε := Iff.rfl
+/-- Membership in `flatSubmodule` is definitionally the flatness predicate. -/
+@[simp] theorem mem_flatSubmodule_iff : ε ∈ flatSubmodule l φ ↔ IsFlat l φ ε := Iff.rfl
 
 /-- A multiplier absorbs a scale if every requested order can absorb the
 multiplier times some (possibly later) scale member. -/

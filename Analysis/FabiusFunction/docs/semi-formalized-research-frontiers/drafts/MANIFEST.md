@@ -21,8 +21,13 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
+The 2026-09-04 source-only q-series crosswalk correction updates two renamed
+declarations and the nine-theorem fixed-column inventory. Its retained
+405-page PDF and `b899` receipt are historical; that correction made no PDF
+or checksum update.
+
 **Current artifact checkpoint (2026-09-04).** The live Lean audit scans 970
-source modules and 12,056 explicit public declarations, with no missing module headers or
+source modules and 12,133 explicit public declarations, with no missing module headers or
 declaration comments. The reciprocity leaf's 931/11,685 checkpoint remains
 historical; the subsequently merged upstream `DyadicBoundaryIdentity.lean`
 and `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
@@ -65,7 +70,7 @@ Neumann wrappers and the real-analytic Wright omega theorem then gave the
 incoming historical checkpoint 952/11,884. These branch inventories overlap
 and are not additive.
 
-The merged source audit is now **970 facade-reachable modules and 12,056
+The preceding local merge audit was **970 facade-reachable modules and 12,056
 explicit public declarations**, with zero missing module headers, missing
 declaration comments, or duplicate public names. Relative to the local
 961/11,974 checkpoint, the nine new modules are `CayleyKernel.lean`,
@@ -73,10 +78,19 @@ declaration comments, or duplicate public names. Relative to the local
 `ExpSeriesRecurrence.lean`, `FabiusEndpointTwoTerm.lean`,
 `StirlingSeriesCoefficients.lean`, `TransseriesBlockClasses.lean`,
 `TransseriesMonomialUniqueness.lean`, and `WrightOmegaTwoOrders.lean`.
-They contribute eight definitions and 60 theorems; changes to existing modules
-contribute a net 14 declarations. The retained Stirling complete-homogeneous
-leaf still has eight theorems. This is a source audit, not a new aggregate-build
-or PDF-parity claim.
+At that checkpoint they contributed eight definitions and 60 theorems;
+existing-module changes contributed a net 14 declarations. The retained Stirling complete-homogeneous
+leaf still has eight theorems. The later incoming branch recorded 967/12,001 after fifteen modules and
+117 declarations, then 969/12,048 after two modules and 47 declarations;
+the three-theorem power-recurrence leaf gave its historical 970/12,051
+checkpoint. These counts overlap the local inventories and are not additive.
+
+The current merged audit is **977 modules and 12,133 explicit public
+declarations**, with zero documentation gaps. Relative to 970/12,056, seven
+new leaves contribute 80 declarations while three existing declarations move
+from `NorlundDiagonal.lean` to `ExponentialRescaling.lean`, a net increase
+of 77. The eight-theorem Stirling leaf is retained.
+No new aggregate-build or PDF-parity claim is made.
 
 The abstract Faà di Bruno result, ordinary Bell normalization, and Touchard
 definition and displayed Euler-operator equation are **Exact**. The real
@@ -650,14 +664,15 @@ The final pass proved the sharp Bell bound the arrivals had only asserted,
 supplied Euler's limit and the Weierstrass product on which an existing
 polygamma proof silently depended, merged thirteen further donor-only results,
 repaired eight double-superscript errors that had made the source fail to
-compile at all, and completed the notation-catalogue migration. The filed PDF
-now renders the filed TeX. None of the manuscript proofs is claimed as Lean
+compile at all, and completed the notation-catalogue migration. The retained
+174-page PDF is an earlier render; the source has changed since that checkpoint,
+and rebuilding remains deferred at the user's request. None of the manuscript proofs is claimed as Lean
 verification; the in-document "Lean formalization register" states the
 formalization status per result.
 
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical, editorial consolidation complete:** *Combinatorial Coefficient Calculus* — the current source extends the consolidated manuscript with weighted binomial translation and inversion; the retained 174-page A4 PDF is an earlier render. PDF rebuilding is deferred by user instruction. Lean coverage is tracked result by result in the source. | Six-source provenance and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip`; `SOURCE_INVENTORY.csv` records immutable Git locators for all six inputs, including the five retired donors. No checksum ledger is required. |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical, editorial consolidation complete:** *Combinatorial Coefficient Calculus* — current source with 204 adjacent proofs and a 59 Lean / 34 partial / 111 none register. `UnitSeriesPowerRecurrence.lean` supplies the generic differential-equation recurrence and unit-series specialization that make `alg:merged-exp-log-power` Exact. The retained 174-page A4 PDF is an earlier render; PDF rebuilding is deferred by user instruction. | Six-source provenance and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip`; `SOURCE_INVENTORY.csv` records immutable Git locators for all six inputs, including the five retired donors. The mutable `SOURCE_CLOSURE.sha256` ledger is retired and no checksum ledger is required. |
 
 ## exponents-and-q-series — `exponents-and-q-series/`
 
@@ -880,8 +895,10 @@ six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `ThueMorseNewmanSelfSimilarity.lean`. This gives the historical 934/11,709
 checkpoint. The local branch's 943/11,791, 944/11,806, 960/11,966,
 and 961/11,974 inventories and the incoming branch's 943/11,787, 952/11,881,
-and 952/11,884 inventories are historical and overlap. The reconciled merged
-audit is 970/12,056, with zero documentation gaps, as inventoried above.
+and 952/11,884 inventories, followed by incoming 967/12,001, 969/12,048,
+and 970/12,051, are historical and overlap. The preceding local merged
+970/12,056 inventory is also historical. The reconciled merged
+audit is 977/12,133, with zero documentation gaps, as inventoried above.
 In the current semantic union, the subsequent
 zero-definition/two-theorem greater-than-one leaf makes `cor:qgreaterone`
 Exact, and the scaled-geometric polynomial theorem completes
@@ -892,8 +909,9 @@ in `HalfQBinomialRootSimplicity.lean`, composed with the complete rational
 root classification in `HalfQBinomial.lean`, makes
 `cor:halfbase-root-locus` Exact while leaving
 `cor:qbinom-inversion-law` Partial. The live semantic-union facade census is
-970/12,056; the local 961/11,974, 960/11,966, 944/11,806, and 943/11,791
-inventories and the incoming 952/11,884, 952/11,881, and 943/11,787 inventories
+977/12,133; the local 961/11,974, 960/11,966, 944/11,806, and 943/11,791
+inventories, the preceding local merge 970/12,056, and the incoming
+970/12,051, 969/12,048, 967/12,001, 952/11,884, 952/11,881, and 943/11,787 inventories
 remain historical branch checkpoints. The historical dyadic/Prouhet census
 is 934/11,709, the earlier dyadic/finite-prefix census is 933/11,695, and the
 historical reciprocity census is 931/11,685, while the RatFunc-only
@@ -946,7 +964,7 @@ consolidation's concordance chapter now records that later comparison.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `series-and-transseries/Transseries_And_Inversion/` | **Canonical consolidation of the whole `series-and-transseries` group.** *Transseries: the polynomial--logarithmic calculus, series reversal at infinity, and the inversion of rapidly growing functions* — current source with a retained historical 702-page A4 PDF built from the 55,005-line, 3,111-label consolidation checkpoint. The incoming branch later recorded 55,319 source lines and 3,118 distinct labels, with 15 parts and 58 chapters; those counts are historical source receipts, not a census of the merged source. The retained PDF checkpoint had no dangling references, LaTeX errors, undefined references, or duplicate labels; later editorial repairs and Lean crosswalks are source-only, so no render parity or current page count is claimed. Merges forty-two independently written articles in five groups, thirty of which had already been consolidated once. Part~I orients (replacing four parallel expository introductions, proving what they state and demoting five theorems they quote without proof); the calculus parts develop the polynomial--logarithmic scale through arithmetic, composition and reversal at infinity, then Lambert~$\LambertW$ and Wright~$\omega$, then formal to analytic with certificates, then algorithms; the inversion parts add the exponential--power model, perturbed inversion, and the theory of inverting a sequence; the application parts invert $x+\LambertW(x)$, four combinatorial sequences, four special functions, and the Bell and Fubini numbers. A concordance chapter settles the comparison this group had recorded as open: the calculus and the inversion apparatus overlap far less than title matching suggests — of six apparent overlaps one is a genuine duplicate, one a strengthening, one has no counterpart, and three are different theorems, the two Lagrange--Bürmanns being the near-identity operator form and the classical coefficient form. The current claim-level Lean crosswalk marks sequence scales/Poincaré uniqueness, flatness and the corrected invisible-function proposition, Dickson/Neumann with the required order dual, the displayed power--log limits and chosen sequence scales, the unit-series Bell identities, and the quadratic Catalan identity Exact; it keeps the unordered power--log scale package, the all-integer Laurent block-antiderivative statement, and the full quadratic core Partial at their documented boundaries. All five source groups were residue-audited and deleted on 2026-09-04; the two previously consolidated volumes are absorbed verbatim, differing in 36 of 47,854 substantive lines, every difference a deliberate assembly transformation | consolidation of forty-two articles filed 2026-09-01 to -03, all of which it replaces; the sources survive in git history |
+| `series-and-transseries/Transseries_And_Inversion/` | **Canonical consolidation of the whole `series-and-transseries` group.** *Transseries: the polynomial--logarithmic calculus, series reversal at infinity, and the inversion of rapidly growing functions* — current source with a retained historical 711-page A4 PDF; the earlier 702-page PDF was built from the 55,005-line, 3,111-label consolidation checkpoint. The incoming branch later recorded 55,985 source lines and 3,125 labels, with 15 parts and 58 chapters; those are historical source counts, not a census of the merged source. The retained PDF predates the merged source-only Lean crosswalk overlays, so no current render parity is claimed. Merges forty-two independently written articles in five groups, thirty of which had already been consolidated once. Part~I orients (replacing four parallel expository introductions, proving what they state and demoting five theorems they quote without proof); the calculus parts develop the polynomial--logarithmic scale through arithmetic, composition and reversal at infinity, then Lambert~$\LambertW$ and Wright~$\omega$, then formal to analytic with certificates, then algorithms; the inversion parts add the exponential--power model, perturbed inversion, and the theory of inverting a sequence; the application parts invert $x+\LambertW(x)$, four combinatorial sequences, four special functions, and the Bell and Fubini numbers. A concordance chapter settles the comparison this group had recorded as open: the calculus and the inversion apparatus overlap far less than title matching suggests — of six apparent overlaps one is a genuine duplicate, one a strengthening, one has no counterpart, and three are different theorems, the two Lagrange--Bürmanns being the near-identity operator form and the classical coefficient form. The current claim-level Lean crosswalk marks sequence scales/Poincaré uniqueness, flatness and the corrected invisible-function proposition, Dickson/Neumann with the required order dual, the displayed power--log limits and chosen sequence scales, the unit-series Bell identities, and the quadratic Catalan identity Exact; it keeps the unordered power--log scale package, the all-integer Laurent block-antiderivative statement, and the full quadratic core Partial at their documented boundaries. All five source groups were residue-audited and deleted on 2026-09-04; the two previously consolidated volumes are absorbed verbatim, differing in 36 of 47,854 substantive lines, every difference a deliberate assembly transformation | consolidation of forty-two articles filed 2026-09-01 to -03, all of which it replaces; the sources survive in git history |
 
 The consolidation is complete.  The six arrival packages and their
 retained historical PDFs were deleted once every source was absorbed and
@@ -955,21 +973,31 @@ history is the archive, and the volume's provenance appendix records
 each source's intake and absorbed receipts, what it uniquely contributed,
 and every convention reconciled against the notation catalogue.  The
 canonical volume is A4 with Libertinus, which also clears the styling
-debt recorded against the arrivals.  The retained package PDF is a historical
-checkpoint and is not a render of the current source.  Lean coverage is now
-recorded claim by claim as Exact, Partial, Neighbouring, or Absent in the
-volume's inline crosswalks and formalization register.
+debt recorded against the arrivals. The retained package PDF is a historical
+checkpoint, not a render of the current source. Lean coverage is recorded
+claim by claim as Exact, Partial, Neighbouring, or Absent in the volume.
 
-The incoming branch's historical source overlay recorded the following eighteen
-module surfaces: 169 explicit public commands plus two named declarations
-generated by `to_additive` (171 named API entries). This is the incoming
-snapshot, not an exhaustive inventory of the merged modules; their expanded
-local surfaces and the merged 970/12,056 census are recorded above. In
-particular, the merged `TransseriesWellBased.lean` has seven written theorems
-plus two generated names, `WrightOmega.lean` has one definition and thirteen
-theorems, and `RemainderTransport.lean` now has four theorems. The incoming
-claim-level interfaces and their scope boundaries are retained here.
+The earlier incoming snapshot recorded eighteen module surfaces with 169
+explicit public commands and two generated names. The later incoming
+snapshot expanded this to thirty-five focused surfaces with 304 explicit
+public commands plus two names generated by `to_additive` (306 named API
+entries). These are historical incoming inventories, not a recount of the
+merged 977/12,133 corpus; the module interfaces below retain their stated
+scope boundaries. The preceding local merge census was 970/12,056.
 
+Fourteen of the fifteen incoming leaves contribute 95 focused declarations:
+`BackwardErrorExistence` (7), `BellLeibnizTower` (5), `CayleyKernel` (10),
+`CayleyLocalCoordinate` (7), `CayleyTreeFunction` (7), `DivisorTransform` (9),
+`ExpSeriesRecurrence` (4), `LambertCorrectionEquation` (8),
+`LambertShiftConcavity` (5), `LeastTermIndex` (7), `TouchardEulerOperator` (9),
+`TransseriesBlockClasses` (3), `TransseriesDifferentialClosure` (12), and
+`TransseriesMonomialUniqueness` (2). The fifteenth, `NewtonInterpolation` (22),
+belongs to another focused package. Three later focused leaves contribute
+`StirlingSeriesCoefficients` (15), `WrightOmegaTwoOrders` (8), and
+`UnitSeriesPowerRecurrence` (3); the latter makes the coefficient-calculus
+arbitrary-power recurrence Exact without adding an analytic branch claim.
+`NewtonInterpolation` and eleven new `AppellSequence` declarations remain
+global-only for this focused inventory.
 - `UnitSeriesBellCoefficients.lean` (0+16):
   `ordPartialBell_eq_factorialRatio_partialBell`,
   `factorial_mul_ordPartialBell_eq_factorial_mul_partialBell`,
@@ -1122,10 +1150,10 @@ claim-level interfaces and their scope boundaries are retained here.
   `r=1` specialization is exact; general `r`, complex powers, and branch
   bookkeeping keep `p6:lem:core` **Partial**.
 
-- `RemainderTransport.lean` (0+3): `lipschitzOn_of_abs_deriv_le`,
-  `transport_bound_mul`, and `transport_bound`.  The displacement bound is
-  exact, while the second-order first-correction clause keeps
-  `p0:thm:remainder-transport` **Partial**.
+- `RemainderTransport.lean` (0+4): `lipschitzOn_of_abs_deriv_le`,
+  `transport_bound_mul`, `transport_first_order`, and `transport_bound`.  The
+  displacement and displayed explicit-error clauses are exact; the closing
+  asymptotic clause keeps `p0:thm:remainder-transport` **Partial**.
 
 - `StaircaseInversion.lean` (0+7): `isLeast_ceil`, `staircase_ceil`,
   `staircase_separation`, `staircase_separation_fails`, `staircase_round`,

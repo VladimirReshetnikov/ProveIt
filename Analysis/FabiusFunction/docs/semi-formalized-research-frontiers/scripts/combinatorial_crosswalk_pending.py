@@ -1104,23 +1104,39 @@ formalized.""")),
 
 PENDING += [
  # --- thm:merged-moment-cumulant ---
- (r"""partitions by block sizes is exactly the coefficient expansion of $\EulerE^K$ and
-$\log M$.
+ (r"""Each unordered partition into $k$ blocks has $k!$ block orders, so its
+logarithmic weight is $(-1)^{k-1}k!/k=(-1)^{k-1}(k-1)!$.
+This gives the backward relation coefficientwise and proves the two
+formal-series equivalences without any convergence assumption.
 \end{proof}
 """,
-  remark(r"""% ed.: crosswalk added 2026-09-02; the formal statement is the block-size (Bell polynomial) form.
-Module \lean{BellPolynomialInversion} defines the complete Bell polynomials
-\lean{Bell.complete} by the recurrence $m_{n+1}=\sum_k\binom nk\kappa_{k+1}m_{n-k}$
-(the sum over partitions grouped by the block containing $n+1$) and the
-cumulant sequence \lean{Bell.cumulant} by the inverse recurrence, and proves
-that the two constructions are mutually inverse
-(\lean{Bell.complete_cumulant} for $m_0=1$, \lean{Bell.cumulant_complete}
-for $\kappa_0=0$), over any commutative ring; the generating-function form
-$M=\EulerE^K$ is \lean{Fabius.exp_subst_bellWeightSeries} (module
-\lean{BellGeneratingFunctions}), where $K$ is the weight series
-\lean{Fabius.bellWeightSeries}.  The sums over the partition lattice
-\cref{eq:merged-moment-cumulant-forward,eq:merged-moment-cumulant-backward}
-and the identity $K=\log M$ are not formalized.""")),
+  remark(r"""% ed.: crosswalk updated 2026-09-04; recurrence, formal series, and partitions have distinct scopes.
+Module \lean{BellPolynomialInversion} defines the complete Bell family
+\lean{Bell.complete} and its inverse recurrence \lean{Bell.cumulant}.
+They are mutually inverse over every commutative ring:
+\lean{Bell.complete_cumulant} assumes $m_0=1$, and
+\lean{Bell.cumulant_complete} assumes $\kappa_0=0$.
+
+The generating-function statements are formal power-series identities over
+every commutative $\RationalNumbers$-algebra.
+\lean{Fabius.exp_subst_bellWeightSeries} in
+\lean{BellGeneratingFunctions} identifies the exponential of the cumulant
+weight series with the EGF of its complete Bell family.
+For $m_0=1$, \lean{Fabius.logOf_egfA} in
+\lean{CumulantBellFormula} identifies $\log M$ with the EGF of the
+alternating factorial-weighted partial Bell sum
+\lean{Fabius.cumulantSum}; \lean{Fabius.cumulant_eq_cumulantSum}
+identifies that sequence with \lean{Bell.cumulant}.
+Together they prove $K=\log M$ for the recursively defined cumulants.
+The inverse identity used in the proof is
+\lean{Fabius.exp_subst_logOf} in \lean{ExpLog}, for a formal series with
+constant coefficient $1$.
+
+The remaining obligation is the identification with the sums over actual
+set partitions in
+\cref{eq:merged-moment-cumulant-forward,eq:merged-moment-cumulant-backward}.
+Thus the formal-series and block-size formulas are formalized, while the
+set-partition formulation remains partial.""")),
 ]
 
 PENDING += [
@@ -1563,9 +1579,14 @@ convolving against the constant sequence $1$, or against $(-1)^n$, gives the
 displayed sums after reflecting the summation index
 (\lean{Fabius.binomialConv_one_left},
 \lean{Fabius.binomialConv_altSeries_left}).  And
-\lean{Fabius.exp_mul_altSeries} is the binomial theorem at $-1+1=0$ rather than
-a separate alternating-sum computation, which keeps it valid over an arbitrary
-commutative ring instead of only over $\IntegerNumbers$.""")),
+\lean{Fabius.exp_mul_altSeries} uses the binomial theorem at $-1+1=0$ for
+coefficient cancellation.  This cancellation is valid in every commutative
+ring; the EGF statements retain their $\RationalNumbers$-algebra hypothesis
+because their coefficients contain inverse factorials.
+The reverse triangular product is supplied by the general commutation theorem
+\lean{Fabius.lowerTriangular_orthogonal_comm}, and both directions are
+instances of the finite triangular transform calculus of
+\lean{Fabius.lowerTriangularTransform}.""")),
 ]
 
 PENDING += [
@@ -1770,11 +1791,45 @@ algebraic normalization only, not the separate labelled-set interpretation."""))
 
  # --- alg:merged-exp-log-power ---
  (r"""\begin{proof}
-Compare coefficients in $A'=AL'$ to obtain the first two recurrences.  For
-powers, compare degree $n-1$ in $AC'=\alpha A'C$ and isolate $nc_n$.
+All three divided recurrences are for $n\geq1$.  From $A'=AL'$,
+the coefficient of $z^{n-1}$ gives
+\[
+ n a_n=\sum_{j=1}^{n}j\ell_j a_{n-j}.
+\]
+This is the exponential recurrence.  Since $a_0=1$, its $j=n$ term is
+$n\ell_n$; isolating that term gives the logarithmic recurrence.
+
+For powers, put $w=A-1$ and define the formal binomial series
+\[
+ F_\alpha(t)=\sum_{k\geq0}\frac{\FallingFactorial{\alpha}{k}}{k!}t^k,
+ \qquad C=F_\alpha(w).
+\]
+The falling-factorial recurrence gives
+$(1+t)F_\alpha'(t)=\alpha F_\alpha(t)$.  As $w(0)=0$, formal substitution
+and the chain rule are valid and yield $AC'=\alpha A'C$ and $c_0=1$.
+Multiplying the differential equation by $z$ keeps the coefficient index
+unchanged, since $[z^n](zH')=n[z^n]H$.  Cauchy's rule therefore gives
+\[
+ 0=[z^n]\bigl(\alpha(zA')C-A(zC')\bigr)
+   =\sum_{j=0}^{n}\bigl((\alpha+1)j-n\bigr)a_jc_{n-j}.
+\]
+The $j=0$ term is $-nc_n$, so its isolation proves
+\eqref{eq:merged-alg-power}.  Every remaining $c_{n-j}$ has smaller index,
+and positive integers are invertible in the ambient
+$\RationalNumbers$-algebra.  Thus $c_0=1$ and this recurrence uniquely
+determine the coefficients by induction.
+
+More generally, the same coefficient calculation over \emph{any}
+commutative ring, with no normalization or invertibility assumption on
+$a_0$, shows that $AC'=\alpha A'C$ implies
+\[
+ n a_0c_n=\sum_{j=1}^{n}\bigl((\alpha+1)j-n\bigr)a_jc_{n-j}.
+\]
+This denominator-free identity remains valid in positive characteristic;
+only the step of solving for $c_n$ requires an invertible $na_0$.
 \end{proof}
 """,
-  remark(r"""% ed.: crosswalk added 2026-09-04; two recurrences exact, one open.
+  remark(r"""% ed.: crosswalk updated 2026-09-04; all three recurrences exact.
 The logarithmic recurrence \eqref{eq:merged-alg-log} is the positive-degree
 unfolding \lean{Fabius.SaddleExpansion.logCoeff_succ}, after reflecting its
 finite summation index; its output is identified with Mathlib's formal
@@ -1782,14 +1837,21 @@ logarithm by \lean{Fabius.SaddleExpansion.logSeries_eq_logOf} (modules
 \lean{SaddleLogExpansionAlgebra} and \lean{SaddleLogExpansionPowerSeries}).
 The exponential recurrence \eqref{eq:merged-alg-exp} is
 \lean{Fabius.coeff_exp_subst_recurrence} in module
-\lean{UnitSeriesBellCoefficients}, stated in the denominator-cleared form
-$na_n=\sum_{j=1}^n j\ell_j a_{n-j}$ and valid also at $n=0$.
-The same module gives nonrecursive Bell-polynomial coefficient formulas for
-arbitrary formal powers in
-\lean{Fabius.coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos} and
-\lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}.  It does not prove
-the distinct recursive identity \eqref{eq:merged-alg-power}; that clause remains
-the precise missing obligation, so the algorithm is only \emph{partial}.""")),
+\lean{UnitSeriesBellCoefficients}, in denominator-cleared form.
+For powers, module \lean{UnitSeriesPowerRecurrence} proves the general
+commutative-ring identity
+\lean{Fabius.coeff_recurrence_of_mul_derivative_eq}, the formal binomial
+differential equation
+\lean{Fabius.mul_derivative_fallingSeries_subst_sub_one}, and its
+unit-constant recurrence
+\lean{Fabius.coeff_fallingSeries_subst_sub_one_recurrence}.
+The constant coefficient is one by
+\lean{Fabius.constantCoeff_subst_of_constantCoeff_eq_zero} in
+\lean{BellGeneratingFunctions} and
+\lean{Fabius.constantCoeff_fallingSeries}.  Thus the whole algorithm is
+\emph{Lean}-proved over a commutative $\mathbb Q$-algebra, with the
+denominator-free identity generalized to arbitrary commutative rings.
+These are formal series statements, not assertions about analytic branches.""")),
 ]
 
 applied = 0

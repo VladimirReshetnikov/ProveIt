@@ -125,7 +125,7 @@ Subsequent source-only transseries/Catalan and Thue--Morse additions made
 943/11,791 the next historical checkpoint.  The finalized one-definition/
 eleven-theorem `TransseriesFlat.lean` module and three integer-zpow theorems
 in `TransseriesDifferentialBlock.lean` gave the historical Lean audit 944 modules
-and 11,806 public declarations; the merged live census is 970/12,056.
+and 11,806 public declarations; the merged live census is 977/12,133.
 
 The sibling source-only `FabiusFunction.GeometricRichardsonGenerating` module
 (three definitions and seven theorems) does not change this q-series package's
@@ -281,7 +281,7 @@ historical post-Prouhet checkpoint.  Subsequent source-only
 transseries/Catalan and Thue--Morse additions made 943/11,791 the next
 historical checkpoint.  The finalized one-definition/eleven-theorem
 `TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 970/12,056.
+`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 977/12,133.
 That existing module adds
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
 `integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.

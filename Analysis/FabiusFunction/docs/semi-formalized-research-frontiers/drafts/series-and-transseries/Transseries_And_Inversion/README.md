@@ -2,12 +2,11 @@
 
 **Single consolidated volume for the whole `series-and-transseries` group.**
 `transseries_and_inversion.tex` is the canonical editable source. The retained
-702-page PDF was built on 4 September 2026 from the 55,005-line,
-3,111-label publication checkpoint. A later branch reached 55,319 lines and
-3,118 distinct labels, and the merged canonical source includes still later
-editorial and Lean-crosswalk changes. The retained artifact is therefore
-historical; no current source-size, label-count, or source/render parity is
-claimed.
+711-page A4 PDF is a 4 September 2026 publication checkpoint. A later
+source-only snapshot reached 55,985 lines and 3,125 distinct labels; the
+merged canonical source includes still later editorial and Lean-crosswalk
+changes. The retained artifact is therefore historical; no current
+source-size, label-count, or source/render parity is claimed.
 
 ## Status
 
@@ -28,17 +27,19 @@ absorbed each; the repair appendix lists every correction made.
 
 ## Lean formalization inventory
 
-The live corpus census is 970 modules and 12,056 explicit public declarations,
+The live corpus census is 977 modules and 12,133 explicit public declarations,
 with zero missing declaration comments and zero missing module headers. The
-952/11,884 incoming-branch census is historical. The eighteen directly
-relevant modules contain 178 explicit public commands; two named `to_additive`
-declarations bring this inventory to 180 named API entries.
+thirty-five directly relevant modules contain 304 explicit public commands; two
+named `to_additive` declarations bring this inventory to 306 named API entries.
+The 970/12,056 census is the preceding historical checkpoint.
 Automatically generated structure projections are outside both tallies.
 
-- `TransseriesScale.lean` (one structure, one definition, three theorems):
-  `IsAsymptoticScale`, `IsPoincareExpansion`,
+- `TransseriesScale.lean` (one structure, two definitions, six theorems):
+  `IsAsymptoticScale`, `IsPoincareExpansion`, `poincarePartialSum`,
+  `poincarePartialSum_zero`, `poincarePartialSum_succ`,
   `IsPoincareExpansion.isLittleO_succ_remainder`,
-  `IsPoincareExpansion.tendsto_coeff`, and
+  `IsPoincareExpansion.tendsto_coeff`,
+  `IsPoincareExpansion.tendsto_coeff_div`, and
   `IsPoincareExpansion.coeff_unique`.
 - `TransseriesScaleDominance.lean` (one definition, seven theorems):
   `plMonomial`, `tendsto_plMonomial_atTop_zero`,
@@ -71,9 +72,10 @@ Automatically generated structure projections are outside both tallies.
 - `TransseriesDifferentialBlock.lean` (twelve theorems):
   `derivation_pow_t`, `derivation_block`, `derivation_zpow_block`,
   `exists_zpow_block_primitive`, `existsUnique_zpow_block_primitive`,
-  `exists_block_primitive`, `derivation_block_zero`,
-  `exists_block_primitive_resonant`, `derivation_val_inv`,
-  `derivation_pow_inv`, `derivation_zpow_t`, and `derivation_block_zpow`.
+  `exists_block_primitive`,
+  `derivation_block_zero`, `exists_block_primitive_resonant`,
+  `derivation_val_inv`, `derivation_pow_inv`, `derivation_zpow_t`, and
+  `derivation_block_zpow`.
 - `UnitSeriesBellCoefficients.lean` (sixteen theorems):
   `ordPartialBell_eq_factorialRatio_partialBell`,
   `factorial_mul_ordPartialBell_eq_factorial_mul_partialBell`,
@@ -108,7 +110,12 @@ Automatically generated structure projections are outside both tallies.
   `isPoincareExpansion_iff_isFlat_sub`,
   `isPoincareExpansion_zero_iff`, `powScale_eq_rpow`,
   `absorbsScale_of_isBigO_pow`, `isFlat_exp_neg`, and
-  `isPoincareExpansion_add_exp_neg`.
+  `isPoincareExpansion_add_exp_neg`, together with
+  `isFlat_exp_neg_rpow_atTop`, `IsPoincareExpansion.add_flat`,
+  `IsPoincareExpansion.sub_same_coeff_isFlat`,
+  `IsPoincareExpansion.iff_sub_isFlat`,
+  `IsFlat.smul_of_scale_absorption`, and
+  `IsFlat.smul_of_isBigO_inv_pow`.
 - `WrightOmega.lean` (one definition, thirteen theorems): `wrightOmega`,
   `analyticAt_wrightOmega`, `wrightOmega_pos`, `wrightOmega_add_log`,
   `principalLambertW_eq_wrightOmega_log`, `wrightOmega_leftInverse`,
@@ -140,9 +147,9 @@ Automatically generated structure projections are outside both tallies.
   `powerLogCore_exp`, `log_powerLogCoreRoot_sub`,
   `powerLogCore_of_lambert`, `powerLogCore_powerLogCoreRoot`,
   `hasDerivAt_powerLogCore`, and `hasDerivAt_powerLogCore_root`.
-- `RemainderTransport.lean` (three theorems):
-  `lipschitzOn_of_abs_deriv_le`, `transport_bound_mul`, and
-  `transport_bound`.
+- `RemainderTransport.lean` (four theorems):
+  `lipschitzOn_of_abs_deriv_le`, `transport_bound_mul`, `transport_first_order`,
+  and `transport_bound`.
 - `StaircaseInversion.lean` (seven theorems): `isLeast_ceil`,
   `staircase_ceil`, `staircase_separation`, `staircase_separation_fails`,
   `staircase_round`, `isLeast_residue_class`, and
@@ -154,6 +161,23 @@ Automatically generated structure projections are outside both tallies.
   `abs_numDerangements_sub_lt_half`, and
   `round_factorial_mul_exp_neg_one`.
 
+Fourteen incoming leaves add 95 focused declarations:
+`BackwardErrorExistence.lean` (7), `BellLeibnizTower.lean` (5),
+`CayleyKernel.lean` (10), `CayleyLocalCoordinate.lean` (7),
+`CayleyTreeFunction.lean` (7), `DivisorTransform.lean` (9),
+`ExpSeriesRecurrence.lean` (4), `LambertCorrectionEquation.lean` (8),
+`LambertShiftConcavity.lean` (5), `LeastTermIndex.lean` (7),
+`TouchardEulerOperator.lean` (9), `TransseriesBlockClasses.lean` (3),
+`TransseriesDifferentialClosure.lean` (12), and
+`TransseriesMonomialUniqueness.lean` (2). Their declaration-level boundaries
+are recorded beside the corresponding results in the canonical TeX. The
+fifteenth incoming leaf, `NewtonInterpolation.lean` (22), belongs to another
+focused package. Three later focused leaves add
+`StirlingSeriesCoefficients.lean` (15), `WrightOmegaTwoOrders.lean` (8), and
+`UnitSeriesPowerRecurrence.lean` (3). `NewtonInterpolation.lean` and the eleven
+new `AppellSequence.lean` declarations are included only in the global corpus
+census above.
+
 The exact status map is deliberately narrower than the inventory:
 
 - Exact: `q0:def:scale`, `q0:eq:scale`, `q0:def:poincare`,
@@ -161,7 +185,8 @@ The exact status map is deliberately narrower than the inventory:
   `q0:def:flat`, `q0:prop:invisible`, `q0:lem:dickson`, `q0:lem:neumann`
   through its literal `OrderDual` wrappers (the printed total order is a
   specialization), the analytic content of `plt:lem:mot-dominance`,
-  `plt:prop:mot-omega-basic` over the reals only, and the displayed equations
+  `plt:prop:mot-blocks`, `plt:prop:mot-omega-basic` over the reals only,
+  `plt:lem:tay-bell-recurrence`, and the displayed equations
   `plt:eq:mot-block-derivative` and `plt:eq:dif-block` in the abstract unit
   model, `plt:lem:bell-normalizations`, all three
   unit-series Bell results
@@ -170,13 +195,19 @@ The exact status map is deliberately narrower than the inventory:
 - Partial: `q0:prop:height` beyond its two exact displayed estimates;
   `plt:def:mot-scale` beyond the ordered-sequence version;
   `plt:lem:mot-harmonic` beyond its leading Stolz limit;
+  `plt:prop:mot-two-orders` beyond its exact concluding equivalences;
+  `plt:cor:mot-both-generators-needed` beyond its exact monomial-uniqueness and
+  Wright-omega residual engines; `plt:thm:mot-smallest-differential-algebra` beyond its exact
+  abstract minimality statements and integer block law, since the concrete
+  germ-model growth and algebraic-independence clauses remain absent;
   the compound `plt:lem:mot-block-antiderivative` and `plt:prop:dif-block`
-  beyond their exact integer equations and polynomial coefficient operator,
-  since the concrete Laurent ambient, faithful evaluation, ambient uniqueness,
-  and general-exponent apparatus are absent;
+  beyond their exact integer equations, polynomial coefficient operator, and
+  conditional nonresonant primitive API, since the concrete Laurent ambient
+  and remaining faithful-evaluation/uniqueness links are absent;
   `p0:thm:lambert-core` beyond its real algebra and branch rules;
   `p0:thm:staircase` beyond its order-theoretic clauses;
-  `p0:thm:remainder-transport` beyond the displacement bound;
+  `p0:thm:remainder-transport` beyond its exact displacement and explicit-error
+  clauses, since the closing asymptotic clause remains absent;
   `p6:lem:core` beyond the real `r = 1` case;
   `p8:cor:nearest-integer` beyond integer arguments; and
   `p6:lem:quadratic-core` beyond its verified coefficient recurrence.
@@ -187,6 +218,10 @@ The Bell statements are formal power-series identities: they make no analytic
 convergence or branch claim. The weighted-partition formula is most generally
 stated with rational scalar multiplication over a commutative rational
 algebra; literal division is a characteristic-zero-field specialization.
+`UnitSeriesPowerRecurrence.lean` adds the generic commutative-ring recurrence
+from `F G' = β F' G` and its unit-series falling-factorial specialization over
+a commutative rational algebra. This makes the coefficient-calculus arbitrary-
+power recurrence exact, but introduces no analytic power or branch choice.
 
 ## How the two apparatuses relate
 
@@ -232,9 +267,9 @@ is about the passage from a function to a sequence.
 
 ## Lean crosswalk
 
-The current integrated inventory is 970 modules and 12,056 public declarations,
-with no documentation gaps. The 961/11,974 and 960/11,966 branch inventories
-and 944/11,806 are historical checkpoints. `TransseriesFlat` now has 4 definitions
+The current integrated inventory is 977 modules and 12,133 public declarations,
+with no documentation gaps. The preceding 970/12,056 inventory is a historical
+checkpoint. `TransseriesFlat` now has 4 definitions
 and 22 theorems, preserving the general vector-valued API together with the
 scalar submodule, absorption, and power-scale interfaces. The integer block
 interfaces and the incoming inverse-power derivative lemmas together make
@@ -252,8 +287,9 @@ inferred for the surrounding transseries constructions.
 
 The incoming `BellLeibnizTower` and `OrdinaryPartialBell` modules supply the
 abstract Faà di Bruno formula and the ordinary/exponential normalization
-bridge. `TouchardEulerOperator` supplies the Touchard definition and displayed
-Euler-operator equation. The backward-error, transfer, and Lambert-certificate
+bridge. `TouchardEulerOperator` supplies the Touchard definition, coefficient
+identities, and displayed Euler-operator equation. The backward-error,
+transfer, and Lambert-certificate
 claims depend on assembling their named existence and comparison theorems.
 The broader Wright-omega, differential-closure, harmonic-increment, Cayley,
 derangement, Lambert-correction and bracket, core-inversion,
@@ -281,9 +317,8 @@ a real-argument Fibonacci function); the reversal of `x + W(x)` in depth; the Be
 The former assembler cannot be rerun; the `.tex` header identifies the
 consolidated file as the canonical source and it is now edited in place. A
 future publication build would use three `pdflatex` passes, but none was run
-for this tranche. A later branch source had 55,319 lines and 3,118 distinct
-labels; the merged canonical source is newer and has no asserted current
-line or label count.
-The retained historical PDF has 702 A4 pages and was built from the preceding
-55,005-line, 3,111-label source checkpoint; no current source/render parity is
-claimed.
+for this tranche. A later source-only snapshot had 55,985 lines and 3,125
+distinct labels; the merged canonical source is newer and has no asserted
+current line or label count. The retained historical PDF has 711 A4 pages and
+predates the merged source-only crosswalk overlay; no current source/render
+parity is claimed.

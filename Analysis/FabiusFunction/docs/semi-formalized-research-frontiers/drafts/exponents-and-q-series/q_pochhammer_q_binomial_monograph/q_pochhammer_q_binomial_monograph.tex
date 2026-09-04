@@ -7229,7 +7229,9 @@ which proves \eqref{eq:fixed-column-limit} and
 \path{GaussianBinomialFixedColumnRate.lean}, together with the earlier
 unshifted limit \path{Fabius.tendsto_gaussianBinomial_atTop}.  Over any
 normed field and for \(\lVert q\rVert<1\),
-\path{Fabius.tendsto_gaussianBinomial_add_const_atTop} is the shifted limit, while
+\path{Fabius.tendsto_gaussianBinomial_add_const_atTop} in
+\path{QBinomialTheoremInfinite.lean} is the shifted limit --- stated there for
+an arbitrary shift, of which the shift by \(k\) used here is one case --- while
 \path{Fabius.gaussianBinomial_fixedColumn_relativeError_isBigO} and
 \path{Fabius.gaussianBinomial_shifted_fixedColumn_relativeError_isBigO}
 prove the two displayed multiplicative estimates.  The additional wrappers
@@ -7244,7 +7246,9 @@ power.  At the generic product level,
 \path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp'} and
 \path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le} work in a normed
 commutative ring with multiplicative norm and \(\lVert1\rVert=1\).
-The formal statements require no
+The primed exponential bound generalizes the normed-field result
+\path{Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one}
+in \path{QBinomialTheoremInfinite.lean}. The formal statements require no
 nonzero-nome premise and therefore include \(q=0\), where every error vanishes
 once its displayed exponent is positive.
 
@@ -16667,7 +16671,7 @@ historical post-Prouhet checkpoint.  Subsequent source-only
 transseries/Catalan and Thue--Morse additions made 943/11,791 the next
 historical checkpoint.  The finalized one-definition/eleven-theorem
 \texttt{TransseriesFlat} module and three integer-zpow theorems in
-\texttt{TransseriesDifferentialBlock} gave the historical census 944/11,806; the merged live census is 970/12,056}\\[2pt]
+\texttt{TransseriesDifferentialBlock} gave the historical census 944/11,806; the merged live census is 977/12,133}\\[2pt]
 \Cref{prop:qF-P-degree-sharp} & \statusexact &
 \texttt{coeff\_geometricUniformMomentPolynomial\_choose\_two},
 \texttt{coeff\_geometricUniformMomentPolynomial\_choose\_two\_sub\_one}, and
@@ -16690,7 +16694,7 @@ Subsequent source-only transseries/Catalan and Thue--Morse additions made
 943/11,791 the next historical checkpoint.  The finalized one-definition/
 eleven-theorem \texttt{TransseriesFlat} module and three integer-zpow theorems
 in \texttt{TransseriesDifferentialBlock} gave the historical facade census 944
-modules and 11,806 public declarations; the merged live census is 970/12,056}\\[2pt]
+modules and 11,806 public declarations; the merged live census is 977/12,133}\\[2pt]
 \Cref{cor:qF-halfbase-dictionary} & \statuspartial &
 \texttt{fabiusAtInverseTwoPow\_eq\_halfMoment},
 \texttt{halfQPochhammer\_eq\_mersenne\_div}\newline
