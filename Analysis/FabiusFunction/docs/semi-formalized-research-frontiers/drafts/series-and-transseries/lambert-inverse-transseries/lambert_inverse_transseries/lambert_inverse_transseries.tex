@@ -809,6 +809,25 @@ Substitution in \eqref{eq:Am-Pm} now gives
 \(A_m(v)\sim v^m/m\), completing the proof.
 \end{proof}
 
+\paragraph{Lean status.}
+The polynomial family and every item of \eqref{eq:Pm-data} are formal in
+\path{LambertInverseCoefficients.lean}, as algebra over \(\mathbb{Z}[v]\).  With
+\path{Fabius.lambertNumerator} the family \(R_{n,k}\) (indices shifted so the recursion starts
+at \(0\): \path{Fabius.lambertNumerator} \(n\,j\) is \(R_{n,j+1}\)), the initial value
+\eqref{eq:Rnk-initial} is the definition and the recurrence \eqref{eq:Rnk-recurrence} is
+\path{Fabius.lambertNumerator_succ_eq_draft}, written exactly as displayed.  From it:
+\path{Fabius.natCast_dvd_lambertNumerator} is \(R_{n,k}\in n\mathbb{Z}[v]\), which is what makes
+\(P_m=(-1)^{m+1}R_{m+1,m}/(m+1)\) an integer polynomial;
+\path{Fabius.natDegree_lambertNumerator} is \(\deg R_{n,k}=2(k-1)\), giving \(\deg P_m=2m-2\);
+\path{Fabius.leadingCoeff_lambertNumerator} is
+\([v^{2(k-1)}]R_{n,k}=n(-1)^{k-1}(k-1)!\), which at \(n=m+1\), \(k=m\) gives
+\([v^{2m-2}]P_m=(m-1)!\); and \path{Fabius.eval_zero_lambertNumerator} is
+\(R_{n,k}(0)=n(n-1)\cdots(n-k+1)\), which at \(n=m+1\), \(k=m\) is \((m+1)!\), giving
+\(P_m(0)=(-1)^{m+1}m!\).  What is not formalized is the analytic half: the closed form
+\eqref{eq:Rnk-def} for \((\dd/\dd z)^k v^n\), hence the identification \eqref{eq:Am-Rnk} of this
+family with \(A_m\), and the asymptotic reading \eqref{eq:Am-leading}.  Those need the operator
+calculus on functions, not the recursion.
+
 \section{Direct reversion in the exponentially small parameter}
 \label{sec:q-reversion}
 
