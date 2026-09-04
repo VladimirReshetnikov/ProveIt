@@ -63,7 +63,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 902 facade-reachable modules and 11,443 public declarations, with no
+contains 903 facade-reachable modules and 11,447 public declarations, with no
 missing module headers or declaration documentation.
 
 The ten-declaration increase is the sibling source-only
@@ -81,13 +81,28 @@ That repository-wide census includes a sibling, source-only Lambert-W
 promotion rather than a new q-series result. Its exhaustive module counts are
 `LambertWBranchPairing.lean` (0 definitions + 7 theorems),
 `LambertWGapBijection.lean` (4 + 16), and
-`LambertWBranchSymmetry.lean` (0 + 9). Together they prove, only for the open
-two-branch domain `(-exp(-1), 0)`, the exact gap parametrization and its
+`LambertWBranchSymmetry.lean` (0 + 9), followed by
+`LambertWBranchGapBernoulli.lean` (0 + 4). Their exhaustive four-module union
+is 4 definitions + 36 theorems, 40 public declarations. The first three prove,
+only for the
+open two-branch domain `(-exp(-1), 0)`, the exact gap parametrization and its
 inverse bijection, the `t = exp(delta) > 1` formulas, and the exact
-ratio/sum/product laws with strict sum and product bounds. They do not include
-either endpoint, the Bernoulli-number expansion in the gap, its convergence,
-or any higher branch expansion. No retained PDF in this group renders that
-unrelated source-only promotion, and none was rebuilt for this update.
+ratio/sum/product laws with strict sum and product bounds. The last module's
+exhaustive public surface is
+`summable_norm_bernoulli_mul_pow_div_factorial`,
+`summable_bernoulli_mul_pow_div_factorial_iff`,
+`hasSum_bernoulli_mul_pow_div_factorial`, and
+`principalLambertW_lowerLambertW_eq_bernoulliSeries`: real absolute
+convergence for `|z| < 2*pi`, complex summability exactly when
+`‖z‖ < 2*pi` (hence divergence on and outside the boundary), the real quotient
+sum for nonzero `z`, and the paired branch series on the same strict x-domain
+when the positive gap is below `2*pi`. Thus the radius/boundary clause and
+Guide label `eq:pair-Bernoulli-general` are Exact. The complete complex
+evaluation in `eq:bernoulli-gen` remains Partial because its available value
+theorem is real, assumes `z != 0`, and does not package the removable value at
+zero. Higher or full Puiseux/logarithmic branch expansions remain open.
+No retained PDF in this group renders this unrelated source-only promotion,
+and none was rebuilt for this update.
 
 ## Detailed package record
 

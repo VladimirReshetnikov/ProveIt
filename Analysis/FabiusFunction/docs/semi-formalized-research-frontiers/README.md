@@ -42,7 +42,8 @@ was 671 modules and 8,858 public declarations; no PDF was rebuilt for that
 source-only update.
 
 The newest source-only Lambert branch-coordinate overlay formalizes the exact
-pairing theorem and its symmetric corollary from `Lambert_W_Guide/`.
+pairing theorem, its symmetric corollary, and one compact Bernoulli-series
+identity with its exact convergence radius from `Lambert_W_Guide/`.
 `LambertWBranchPairing.lean` has 0 definitions + 7 theorems,
 `LambertWGapBijection.lean` has 4 definitions + 16 theorems, and
 `LambertWBranchSymmetry.lean` has 0 definitions + 9 theorems. For
@@ -54,12 +55,26 @@ the two equations `W_j exp(W_j) = x`, then uses branch-range uniqueness for
 the converse; `sinh(y) > y` and `y coth(y) > 1` give the strict bounds.
 The interval is deliberately open: at the branch point the rational formulas
 have zero denominator and their limiting sum/product are `-2` and `1`, while
-zero is the singular classical lower endpoint. These modules do not prove the
-Guide's Bernoulli-number gap series, convergence of that series, or higher
-Puiseux/logarithmic expansions. The affected retained frontier, primary,
-walkthrough, and Lambert-Guide PDFs are historical artifacts and do not render
-this source-only overlay. The live documentation census is now 902 modules and
-11,443 public declarations.
+zero is the singular classical lower endpoint.
+
+The companion `LambertWBranchGapBernoulli.lean` has the exhaustive surface
+0 definitions + 4 theorems. Alongside the real open-disk absolute-summability
+theorem, `summable_bernoulli_mul_pow_div_factorial_iff` proves for complex `z`
+that the Bernoulli exponential generating series is summable exactly when
+`‖z‖ < 2*pi`; in particular, it diverges on `‖z‖ = 2*pi` and throughout the
+exterior. The remaining theorems give the actual all-index real `HasSum` value
+`z / (exp z - 1)` for `z != 0` and the two paired branch sums when
+`x in (-exp(-1), 0)` and the positive branch gap is below `2*pi`. This makes
+only `eq:pair-Bernoulli-general` Exact as a labelled Guide formula, while also
+proving its printed convergence-radius claim; the full complex value identity
+remains Partial. At `z = 0` convergence still holds, but the real quotient
+evaluation excludes the removable value. With the three finite
+branch-coordinate modules, the four-module union is 4 definitions + 36
+theorems = 40 declarations. Higher or convergent Puiseux/logarithmic
+expansions remain open. The affected retained frontier, primary, walkthrough,
+and Lambert-Guide PDFs are historical artifacts and do not render this
+source-only overlay; no render parity is claimed. The live documentation
+census is now 903 modules and 11,447 public declarations.
 
 The preceding source-only addition is
 `FabiusFunction.GeometricRichardsonGenerating`, with three definitions and

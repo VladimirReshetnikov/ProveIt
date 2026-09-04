@@ -136,6 +136,7 @@ import FabiusFunction.LambertWNegativeBounds
 import FabiusFunction.LambertWAdditionIdentity
 import FabiusFunction.LambertWBranchPairing
 import FabiusFunction.LambertWGapBijection
+import FabiusFunction.LambertWBranchGapBernoulli
 import FabiusFunction.LambertWBranchSymmetry
 import FabiusFunction.LowerLambertW
 import FabiusFunction.GeneralizedLambertCoordinate
@@ -899,12 +900,22 @@ three modules and seventeen public declarations.
 
 The real Lambert branch layer packages the positive gap between the principal
 and lower branches as an explicit bijective coordinate on the open two-branch
-interval.  Its pairing, inverse-gap, and symmetry modules expose four
+interval.  Its finite pairing, inverse-gap, and symmetry modules expose four
 definitions and thirty-two theorems: both branch reconstructions (including
 the `t = exp gap` coordinate), the inverse bijection, exact ratio, sum, and
-product formulas, and the sharp strict sum and product bounds.  The endpoints
-at the branch point and at zero are deliberately excluded; this layer does not
-claim the subsequent Bernoulli gap expansion or branch-point asymptotics.
+product formulas, and the sharp strict sum and product bounds.  The companion
+`LambertWBranchGapBernoulli` leaf adds exactly four theorems: absolute
+summability of the real Bernoulli exponential generating series on
+`|z| < 2 * pi`; the exact complex convergence locus `‖z‖ < 2 * pi`, hence
+divergence on and outside its boundary circle; its actual real sum
+`z / (exp z - 1)` for `z != 0`; and the two printed branch-gap series when the
+positive gap is below `2 * pi`.  Together the four Lambert gap modules expose
+four definitions and thirty-six theorems, forty declarations.  The complex
+summability theorem includes `z = 0`, but a complex `HasSum` quotient
+evaluation on the punctured disk and a separate theorem packaging the series
+value `1` at the removable origin remain open.  The branch point and zero
+endpoint are excluded from the branch series, and no remainder or higher
+Puiseux claim is made.
 
 The parity-selected Rvachev synthesis layer exports exactly one definition and
 eight theorems.  `IsRvachevSuperconvergentPhase` selects the endpoint phases

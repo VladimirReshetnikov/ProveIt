@@ -840,8 +840,8 @@ Thus `is:p3:cor:forced-superconvergence` and
 concordance. This source postdates the retained Representation and inverse
 PDFs, which remain historical artifacts rather than renders of the promotion.
 The corresponding historical documentation checkpoint was 671 modules and
-8,858 public declarations. The later live repository census is 902 modules
-and 11,443 public declarations. The preceding ten-declaration increment was the
+8,858 public declarations. The later live repository census is 903 modules
+and 11,447 public declarations. The preceding ten-declaration increment was the
 unrelated sibling `FabiusFunction.GeometricRichardsonGenerating` module (three
 definitions and seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`. This promotion is not rendered
@@ -852,14 +852,27 @@ identities; they likewise do not change the Representation or inverse results.
 The census also includes the
 sibling source-only Lambert
 branch-coordinate tranche: `LambertWBranchPairing.lean` has 0 definitions + 7
-theorems, `LambertWGapBijection.lean` has 4 + 16, and
-`LambertWBranchSymmetry.lean` has 0 + 9. These three modules prove the exact
-gap parametrization, its inverse bijection, and the symmetric ratio, sum, and
-product laws with strict bounds on `(-exp(-1), 0)`. They exclude both
-endpoints and do not prove the Bernoulli gap series or any higher branch
-expansion. This unrelated addition is not rendered by the retained
-Representation or inverse PDFs; no PDF was rebuilt for this source-only
-update.
+theorems, `LambertWGapBijection.lean` has 4 + 16,
+`LambertWBranchSymmetry.lean` has 0 + 9, and the subsequent
+`LambertWBranchGapBernoulli.lean` has 0 + 4. Their exhaustive four-module
+union is 4 definitions + 36 theorems, 40 public declarations. The first three
+modules prove the exact gap parametrization, its inverse bijection, and the
+symmetric ratio, sum, and product laws with strict bounds on
+`(-exp(-1), 0)`. The final module's exhaustive theorem list is
+`summable_norm_bernoulli_mul_pow_div_factorial`,
+`summable_bernoulli_mul_pow_div_factorial_iff`,
+`hasSum_bernoulli_mul_pow_div_factorial`, and
+`principalLambertW_lowerLambertW_eq_bernoulliSeries`; these give real absolute
+convergence for `|z| < 2*pi`, complex summability exactly when
+`‖z‖ < 2*pi` and therefore boundary/exterior divergence, the nonzero real
+quotient evaluation, and both branch series on the strict two-branch domain
+when the positive gap is below `2*pi`. Thus the exact radius/boundary clause
+and Guide label `eq:pair-Bernoulli-general` are Exact. The complete complex
+`eq:bernoulli-gen` evaluation remains Partial because its value theorem is
+real, assumes `z != 0`, and does not package the removable value at zero.
+Higher or full Puiseux/logarithmic expansions remain open. This unrelated
+addition is not rendered by the retained Representation or inverse PDFs; no
+PDF was rebuilt for this source-only update.
 
 The focused-build `CompositeMeshSharpness.lean` module exports one public
 definition, `rvachevCombExactThrough`, and seven public theorems:

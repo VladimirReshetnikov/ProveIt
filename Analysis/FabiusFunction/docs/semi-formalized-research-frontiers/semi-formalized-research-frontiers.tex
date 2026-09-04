@@ -345,10 +345,14 @@ eight-declaration rational-gap inverse module, and the parity-selected Rvachev
 superconvergence leaf and the subsequent binary-word, box-partition, and
 telescoping-certificate leaves, as well as the exact three-module Lambert
 branch-pairing, gap-bijection, and symmetric-identity tranche (respectively
-0+7, 4+16, and 0+9), and the three-definition/seven-theorem geometric
-Richardson generating-function module, and the three-theorem second-moment
+0+7, 4+16, and 0+9), its subsequent zero-definition/four-theorem real
+Bernoulli branch-gap companion crosswalking only
+\nolinkurl{eq:pair-Bernoulli-general}; those four Lambert modules total four
+definitions and 36 theorems, 40 declarations; and the
+three-definition/seven-theorem geometric Richardson generating-function
+module, and the three-theorem second-moment
 strengthening of the existing Gaussian-binomial cumulant module.  The live
-source census is 902 facade-reachable modules and 11,443 public declarations.
+source census is 903 facade-reachable modules and 11,447 public declarations.
 The retained
 257-page, 2,438,299-byte A4 PDF, SHA-256
 \nolinkurl{3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980},
@@ -981,8 +985,27 @@ The bounds are \(\sinh y>y\) and \(y\coth y>1\) at \(y=\delta/2\). &
 \nolinkurl{LambertWBranchSymmetry.lean}; exhaustive public surface.  At the
 branch point the gap is zero and the limiting sum/product equal \(-2,1\);
 zero is the singular lower endpoint.  Neither endpoint is in these theorems,
-and no Bernoulli-gap series, convergence theorem, or higher Puiseux/logarithmic
-expansion is asserted. \\
+and this symmetry leaf itself asserts no Bernoulli-gap series or higher
+Puiseux/logarithmic expansion. \\
+The real Bernoulli branch-gap series and its exact complex convergence radius
+(zero definitions and four theorems), crosswalking exactly
+\nolinkurl{eq:pair-Bernoulli-general} and no other labelled formula in its
+surrounding Guide corollary.  The complex Bernoulli exponential generating
+series is summable if and only if \(\lVert z\rVert<2\pi\), so it diverges on
+the boundary and throughout the exterior; on the real line it has its actual
+all-index sum \(z/(e^z-1)\) for \(z\ne0\).  On
+\(x\in(-e^{-1},0)\) with positive gap \(\delta<2\pi\), the two sums are
+\(W_0=-\sum_{n\geq0}B_n\delta^n/n!\) and
+\(W_{-1}=-\delta-\sum_{n\geq0}B_n\delta^n/n!\). &
+\nolinkurl{summable_norm_bernoulli_mul_pow_div_factorial},
+\nolinkurl{summable_bernoulli_mul_pow_div_factorial_iff},
+\nolinkurl{hasSum_bernoulli_mul_pow_div_factorial},
+\nolinkurl{principalLambertW_lowerLambertW_eq_bernoulliSeries} &
+\nolinkurl{LambertWBranchGapBernoulli.lean}; exhaustive public surface.
+The convergence theorem includes \(z=0\), but the quotient theorem excludes
+the removable value because Lean's totalized quotient is zero there.  The
+radius and boundary divergence are Exact, while the full complex value
+identity is Partial and all higher or convergent Puiseux claims remain open. \\
 Raw real Lambert curvature (the first 13 declarations of the exact 36-name
 curvature inventory).  For \(z>-e^{-1}\), the principal branch has the
 nonsingular formula
@@ -2492,11 +2515,15 @@ closure, brings the preceding source checkpoint to 901/11,430.  The later
 three-definition/seven-theorem
 \path{GeometricRichardsonGenerating.lean} leaf brought that source checkpoint
 to 902/11,440.  Three later theorems in the existing
-\path{GaussianBinomialCumulants.lean} module bring the live source census to
+\path{GaussianBinomialCumulants.lean} module brought that source census to
 902/11,443: the characteristic-zero second-derivative formula and the two
 division-free raw-second-moment and variance-numerator identities over every
-commutative semiring.  These additions are source-only, and the retained
-257-page PDF
+commutative semiring.  The subsequent zero-definition/four-theorem
+\path{LambertWBranchGapBernoulli.lean} leaf brings the live source census to
+903/11,447 and crosswalks only \nolinkurl{eq:pair-Bernoulli-general}.  It also
+proves the exact complex convergence radius and boundary divergence; the full
+complex value identity and Puiseux claims remain open.  These additions are
+source-only, and the retained 257-page PDF
 remains explicitly historical; no PDF was built for this update.
 The newest six module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
