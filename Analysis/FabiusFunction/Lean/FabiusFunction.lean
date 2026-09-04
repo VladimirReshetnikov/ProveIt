@@ -293,6 +293,7 @@ import FabiusFunction.TransseriesScale
 import FabiusFunction.TransseriesWellBased
 import FabiusFunction.WrightOmega
 import FabiusFunction.LambertShiftInverse
+import FabiusFunction.LambertShiftConcavity
 import FabiusFunction.LambertInverseCoefficients
 import FabiusFunction.CyclicCharacterSums
 import FabiusFunction.AliasErrorBound
