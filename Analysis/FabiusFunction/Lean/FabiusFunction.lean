@@ -384,6 +384,7 @@ import FabiusFunction.CompositeMeshExactness
 import FabiusFunction.RvachevPolynomialSynthesis
 import FabiusFunction.LagrangeRvachevSynthesis
 import FabiusFunction.RvachevAppellHasse
+import FabiusFunction.RvachevLagrangeNodesOnly
 import FabiusFunction.LagrangeRvachevMatrix
 import FabiusFunction.CombFirstDefect
 import FabiusFunction.CompositeMeshSharpness
