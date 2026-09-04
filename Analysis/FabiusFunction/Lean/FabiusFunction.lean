@@ -119,6 +119,7 @@ import FabiusFunction.GeometricLagrangeWeights
 import FabiusFunction.GeometricLagrangeQBinomial
 import FabiusFunction.GeometricLagrangeQMoments
 import FabiusFunction.GeometricLagrangeCompleteHomogeneous
+import FabiusFunction.GeometricRichardsonGenerating
 import FabiusFunction.LambertPhaseLockedRichardson
 import FabiusFunction.LambertPhaseLockedBell
 import FabiusFunction.LambertReciprocalAsymptotics
@@ -773,6 +774,24 @@ filters are diagonalized coefficientwise on formal power series, with exact
 Gaussian residual multipliers for geometric rows; the recursive Gaussian
 coefficients themselves have functorial, symmetric, denominator-free ring
 laws.
+The geometric Richardson generating-function layer is the exact 3+7 public
+surface `geometricRichardsonKernel`, `qPochhammerNormalizedDataSeries`,
+`geometricRichardsonTransform`,
+`coeff_rescale_qPochhammerSeries_eq_geometricRichardsonKernel`,
+`coeff_qPochhammerNormalizedDataSeries`,
+`geometricRichardsonTransform_generating`,
+`geometricRichardsonTransform_eq_sum_lagrange`,
+`geometricLagrangeRichardson_generating`,
+`hasSum_geometricRichardsonTransform_mul_pow`, and
+`hasSum_geometricLagrangeRichardson_mul_pow`.  The formal convolution and
+factorization hold over every commutative ring using total `Ring.inverse`,
+without topology or q-regularity.  The canonical Lagrange-row identification,
+which makes the comb-interpolation claim `gq:thm:richardson-generating` Exact,
+holds over fields for `q ≠ 0`; roots of unity are allowed algebraically, but
+colliding nodes do not acquire interpolation exactness, and the repeated-node
+case `q = 0`, `n ≥ 2` is excluded.  The analytic `HasSum` pair assumes a
+complete normed field, `‖q‖ < 1`, and norm-summability of the normalized data,
+with `q ≠ 0` additionally required only for the Lagrange form.
 It also exposes the exact Fourier--Legendre expansion of Rvachev's up
 function, with absolute uniform convergence on `[-1,1]`, and its translated
 monomial representation of the signed global Fabius function on `[0,2]`.

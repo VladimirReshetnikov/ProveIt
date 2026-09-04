@@ -9,7 +9,8 @@ fresh-checkout reproduction remain separate.
 The current source combines the incoming stable-path revisions to
 `chapters/01_geometric_core.tex` and `chapters/99_bibliography.tex` with the
 local general-$q$/endpoint-jet, Lagrange,
-`FabiusFunction.PrimePowerBinomialValuation`, reference-appendix, and driver
+`FabiusFunction.PrimePowerBinomialValuation`,
+`FabiusFunction.GeometricRichardsonGenerating`, reference-appendix, and driver
 revisions in `chapters/03_additive_dyadic.tex`,
 `chapters/90_reference_appendices.tex`, and
 `comb_interpolation_synthesis.tex`, followed by the exact generic-prime and
@@ -74,7 +75,7 @@ The complete row-level audit is
 are historical manifests, mismatches are reported rather than silently
 rewritten. They do not certify the current canonical payloads.
 
-## Current source-only companion-row valuation checkpoint
+## Current source-only Lean crosswalk checkpoint
 
 - The current source-only notation layer uses
   `\FabiusGeometricNewtonCoefficient{k}{q}` for the Fabius divided-difference
@@ -99,6 +100,18 @@ rewritten. They do not certify the current canonical payloads.
   rows with source projection
   `a065b161c80786829033f1efd39bb5d1e4c521b9b9c4446959a73729a55718e0`.
   This is an identifier-presence check, not a Lean build or theorem-type check.
+- Source row `gq:thm:richardson-generating` is now crosswalked exactly to
+  `Fabius.geometricLagrangeRichardson_generating` in
+  `FabiusFunction.GeometricRichardsonGenerating`. It is the
+  Euler-coefficient formal-series identity over a field for nonzero `q`.
+  Roots of unity are allowed by the totalized algebraic theorem, but genuine
+  interpolation still requires pairwise-distinct nodes. The separate explicit
+  convolution `Fabius.geometricRichardsonTransform_generating` remains valid
+  over commutative rings at `q = 0`, without providing Lagrange interpolation
+  semantics there. The checked analytic
+  companion `Fabius.hasSum_geometricLagrangeRichardson_mul_pow` additionally
+  assumes a complete normed field, `‖q‖ < 1`, and absolute summability of the
+  normalized data series.
 - The source validator passes the nine-file TeX graph, environment and proof
   discipline (213 result environments, 150 proof-required), 801 labels, 783
   references, 62 bibliography keys, all disposition and evidence audits, the
@@ -106,7 +119,7 @@ rewritten. They do not certify the current canonical payloads.
 - No PDF was rebuilt.  The retained 158-page PDF remains the validated
   historical checkpoint with 2,456,105 bytes and SHA-256
   `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`;
-  the root ledger records it separately from the current source.
+  the former root ledger recorded it separately from that checkpoint's source.
 
 ## Retained semantic-union publication checkpoint
 

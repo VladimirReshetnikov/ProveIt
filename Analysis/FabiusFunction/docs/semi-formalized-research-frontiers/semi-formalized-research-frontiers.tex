@@ -345,8 +345,9 @@ eight-declaration rational-gap inverse module, and the parity-selected Rvachev
 superconvergence leaf and the subsequent binary-word, box-partition, and
 telescoping-certificate leaves, as well as the exact three-module Lambert
 branch-pairing, gap-bijection, and symmetric-identity tranche (respectively
-0+7, 4+16, and 0+9).  The live source census is 901 facade-reachable
-modules and 11,430 public declarations.  The retained
+0+7, 4+16, and 0+9), and the three-definition/seven-theorem geometric
+Richardson generating-function module.  The live source census is 902
+facade-reachable modules and 11,440 public declarations.  The retained
 257-page, 2,438,299-byte A4 PDF, SHA-256
 \nolinkurl{3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980},
 predates these source-only overlays and the expanded ledger and is therefore a
@@ -2485,9 +2486,11 @@ intermediate source census is 672/8,875.  The three later
 bring the historical source checkpoint to 675/8,909.  The subsequent source
 union, including the exact 36-declaration Lambert branch-coordinate tranche
 and the subsequent twelve-declaration terminating-basic-hypergeometric
-closure, brings the live source census to 901/11,430.  These additions are source-only,
-and the retained 257-page PDF remains explicitly historical; no PDF was built
-for this update.
+closure, brings the preceding source checkpoint to 901/11,430.  The later
+three-definition/seven-theorem
+\path{GeometricRichardsonGenerating.lean} leaf brings the live source census
+to 902/11,440.  These additions are source-only, and the retained 257-page PDF
+remains explicitly historical; no PDF was built for this update.
 The newest six module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
 \path{HeineTransformation.lean} (2+5),
@@ -4655,7 +4658,7 @@ The exhaustive zero-definition, seven-theorem finite-product and Gaussian cyclot
 \path{PrimitiveRootBlock.lean} &
 The exhaustive zero-definition, three-theorem primitive-root Gaussian-vanishing, phase, and complete-block interface.\\
 \path{QLucas.lean} &
-The exhaustive zero-definition, eight-theorem natural quadratic, block-coefficient, phase, and q-Lucas interface.\\
+The exhaustive zero-definition, seven-theorem natural quadratic, block-coefficient, phase, and q-Lucas interface.\\
 \path{CyclotomicDivisibility.lean} &
 The exhaustive zero-definition, three-theorem cyclotomic carry, rational divisibility, and primitive-root multiple-value interface.\\
 \path{QCatalan.lean} &
@@ -9264,6 +9267,28 @@ the rational quotient bridges retain their explicit nonzero-Pochhammer or
 These are finite rational identities.  Quotient statements retain their
 nonzero denominators, and positivity, sign, and absolute-value formulas retain
 \(0<q<1\); the module makes no analytic convergence or remainder claim.
+
+\item \path{GeometricRichardsonGenerating.lean} has exactly three public
+definitions,
+\path{Fabius.geometricRichardsonKernel},
+\path{Fabius.qPochhammerNormalizedDataSeries}, and
+\path{Fabius.geometricRichardsonTransform}, and seven public theorems:
+\path{Fabius.coeff_rescale_qPochhammerSeries_eq_geometricRichardsonKernel},
+\path{Fabius.coeff_qPochhammerNormalizedDataSeries},
+\path{Fabius.geometricRichardsonTransform_generating},
+\path{Fabius.geometricRichardsonTransform_eq_sum_lagrange},
+\path{Fabius.geometricLagrangeRichardson_generating},
+\path{Fabius.hasSum_geometricRichardsonTransform_mul_pow}, and
+\path{Fabius.hasSum_geometricLagrangeRichardson_mul_pow}.
+The theorem \path{Fabius.geometricLagrangeRichardson_generating} is the exact
+formal counterpart of the canonical comb-manuscript label
+\path{gq:thm:richardson-generating}.  The underlying convolution factorization
+is formal over an arbitrary commutative ring with totalized inverses; its
+Lagrange-row identification assumes a field and nonzero nome.  The two
+analytic \path{HasSum} theorems additionally assume a complete normed field,
+strict nome contraction, and absolute summability of the normalized data
+series.  They do not provide convergence without those hypotheses or an
+analytic acceleration bound.
 
 \item The five theorems of \path{FinitePolynomialFilterExactness.lean} are
 \path{Fabius.polynomialFilter_response_eq},

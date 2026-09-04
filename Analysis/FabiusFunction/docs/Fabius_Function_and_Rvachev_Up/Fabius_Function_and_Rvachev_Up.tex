@@ -3817,7 +3817,7 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 901 modules and 11,430 public declarations.  The current TeX also
+census is 902 modules and 11,440 public declarations.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration fixed-depth effective-inverse tranche, the
@@ -3827,7 +3827,9 @@ central-reduction and cyclotomic-factorization modules contributing thirteen
 theorems, and the four-module root-of-unity, q-Lucas, cyclotomic-divisibility,
 and q-Catalan tranche contributing one definition and twenty-four theorems,
 and the three-module Lambert branch-pairing, gap-bijection, and symmetric-
-identity tranche contributing four definitions and thirty-two theorems.
+identity tranche contributing four definitions and thirty-two theorems, and
+the three-definition/seven-theorem geometric Richardson generating-function
+module.
 These are
 source-only overlays; the retained 183-page, 1,899,243-byte PDF is explicitly
 historical and has not been regenerated for these additions.
@@ -7119,12 +7121,12 @@ a primitive \(d\)-th root \(\zeta\) makes
 \((-1)^d\zeta^{\binom d2}=-1\), and consequently
 \((y;\zeta)_d=1-y^d\).
 
-The zero-definition/eight-theorem \path{QLucas.lean} surface is
-\lean{two_mul_choose_two}, \lean{add_mul_add_sub_one},
+The zero-definition/seven-theorem \path{QLucas.lean} surface is
+\lean{add_mul_add_sub_one},
 \lean{choose_two_add}, \lean{coeff_finiteQPochhammerIn_neg_X},
 \lean{finiteQPochhammerIn_neg_X_block}, \lean{coeff_block_pow_mul},
 \lean{pow_choose_two_add_mul_eq}, and \lean{gaussianBinomial_q_lucas}.
-The first three are natural-number quadratic identities.  The polynomial
+The first two are natural-number quadratic identities.  The polynomial
 coefficient and block formulas compare the finite q-binomial expansion with
 complete primitive-root blocks.  If \(d>0\), \(\zeta\) is a primitive
 \(d\)-th root in a commutative integral domain, and \(b,s<d\), the final theorem is
@@ -7832,6 +7834,35 @@ $q$-binomial notation, prove the residual sign, and compute the exact finite
 $\ell^1$ norm of the row.  Their dedicated quarter-base corollaries include
 \lean{quarterGeometricLagrangeQMoment_eq_residual_qBinomial} and
 \lean{sum_abs_quarterGeometricLagrangeWeight_eq_qPochhammer_ratio}.
+The whole geometric Richardson triangle now has the exact formal factorization
+\[
+ \sum_{n\ge0}\left(\sum_{j=0}^n\lambda_{n,j}^{(q)}y_j\right)X^n
+  =(qX;q)_\infty\sum_{j\ge0}\frac{y_j}{(q;q)_j}X^j.
+\]
+The report-facing field-valued statement is
+\lean{geometricLagrangeRichardson_generating} in
+\path{GeometricRichardsonGenerating.lean}; it assumes only \(q\ne0\) and is an
+identity of formal power series, so it makes no analytic convergence claim.
+The same module first proves the stronger convolution identity
+\lean{geometricRichardsonTransform_generating} over an arbitrary commutative
+ring with totalized \path{Ring.inverse}, and its theorem
+\lean{geometricRichardsonTransform_eq_sum_lagrange} identifies the coefficients
+with the established Lagrange row over a field.  Its analytic companions
+\lean{hasSum_geometricRichardsonTransform_mul_pow} and
+\lean{hasSum_geometricLagrangeRichardson_mul_pow} require a complete normed
+field, strict nome contraction, and absolute summability of the normalized
+data series; the Lagrange form also assumes a nonzero nome.  The exhaustive
+public surface is the three definitions
+\lean{geometricRichardsonKernel},
+\lean{qPochhammerNormalizedDataSeries}, and
+\lean{geometricRichardsonTransform}, and the seven theorems
+\lean{coeff_rescale_qPochhammerSeries_eq_geometricRichardsonKernel},
+\lean{coeff_qPochhammerNormalizedDataSeries},
+\lean{geometricRichardsonTransform_generating},
+\lean{geometricRichardsonTransform_eq_sum_lagrange},
+\lean{geometricLagrangeRichardson_generating},
+\lean{hasSum_geometricRichardsonTransform_mul_pow}, and
+\lean{hasSum_geometricLagrangeRichardson_mul_pow}.
 The generic unconditionally summable geometric filter and its exact Gaussian
 \(\mathsf{tsum}\) tail are proved in \Cref{prop:analytic-series-filter}.  The finite row
 variation, with \(w_q(n,j)\) the $q$-Toeplitz weight
@@ -13156,7 +13187,8 @@ Lagrange/Richardson exactness &
 \path{GeometricLagrangeWeights.lean},
 \path{GeometricLagrangeQBinomial.lean},
 \path{GeometricLagrangeQMoments.lean},
-\path{GeometricLagrangeCompleteHomogeneous.lean}\\
+\path{GeometricLagrangeCompleteHomogeneous.lean},
+\path{GeometricRichardsonGenerating.lean}\\
 Phase-locked reciprocal-grid Richardson and Bell algebra &
 \path{LambertPhaseLockedRichardson.lean},
 \path{LambertPhaseLockedBell.lean}\\

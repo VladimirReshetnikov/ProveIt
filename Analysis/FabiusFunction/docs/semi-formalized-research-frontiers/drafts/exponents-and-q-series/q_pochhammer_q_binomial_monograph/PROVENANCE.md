@@ -90,8 +90,11 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 901 modules and 11,430 public declarations with no
-documentation gaps. The forward status inventory covers 282 labelled results:
+live facade audit contains 902 modules and 11,440 public declarations with no
+documentation gaps. The ten-declaration increase is the unrelated sibling
+`FabiusFunction.GeometricRichardsonGenerating` source-only module; it does not
+alter this monograph's theorem statuses or retained historical artifact. The
+forward status inventory covers 282 labelled results:
 166 Exact / 90 Partial / 18 None / 8 N/A; the 191-result pre-Fabius core is
 35 / 30 / 123 / 3.
 The five-publication concordance

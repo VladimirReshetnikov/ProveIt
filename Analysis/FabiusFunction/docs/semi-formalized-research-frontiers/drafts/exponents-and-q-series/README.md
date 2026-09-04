@@ -63,8 +63,16 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 901 facade-reachable modules and 11,430 public declarations, with no
+contains 902 facade-reachable modules and 11,440 public declarations, with no
 missing module headers or declaration documentation.
+
+The ten-declaration increase is the sibling source-only
+`FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
+seven theorems), not a change to this q-series package's forward-status totals.
+Its exact comb crosswalk is
+`Fabius.geometricLagrangeRichardson_generating`, with
+`Fabius.hasSum_geometricLagrangeRichardson_mul_pow` as the analytic companion.
+No retained PDF in this group renders that unrelated promotion.
 
 That repository-wide census includes a sibling, source-only Lambert-W
 promotion rather than a new q-series result. Its exhaustive module counts are

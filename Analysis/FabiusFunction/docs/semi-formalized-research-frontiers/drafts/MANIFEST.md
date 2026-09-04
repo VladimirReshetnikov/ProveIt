@@ -21,8 +21,8 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
-**Current artifact checkpoint (2026-09-03).** The live Lean audit scans 901
-source modules and 11,430 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-03).** The live Lean audit scans 902
+source modules and 11,440 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -136,8 +136,8 @@ lemma are Exact for the actual tsum, while the claimed full-domain derivation
 of the second identity by reversal remains Partial because its compiled
 provenance theorem retains two auxiliary nonvanishing assumptions. No PDF was
 generated for this source-only merge, so the retained 389-page artifact
-remains historical. The comb synthesis also
-has a later chapter-03 notation edit: its retained 158-page, 2,456,105-byte
+remains historical. The comb synthesis also has later chapter-03 notation and
+chapter-01 Richardson-crosswalk edits: its retained 158-page, 2,456,105-byte
 A4 PDF has SHA-256
 `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`;
 it is a validated historical checkpoint pending a fresh three-pass render.
@@ -204,7 +204,8 @@ directory.  Claim review, comparison, consolidation, and Lean crosswalking of
 this batch are deferred past the intake publication gate.  Text files inside
 the packages are stored with repository (LF) line endings; each package's own
 `SHA256SUMS` ledger, where present, was computed by its author on the
-submitted bytes and is kept verbatim.
+submitted bytes. Those files were later retired under the repository-wide
+checksum-manifest abolition policy; Git history preserves the submitted bytes.
 
 ## fourier-decay — `rvachev_up_fourier_decay/`
 
@@ -235,8 +236,8 @@ proof checking, numerical reproduction, and Lean crosswalking are deferred.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `thue_morse_diagonal_polynomials/` | *Diagonal Polynomials and Dyadic Block Geometry in Repeated Thue–Morse Summation* — 1,763-line/56,520-byte source, 24-page A4/724,035-byte PDF (pdfTeX-1.40.26; 25 font rows, 7 Libertinus; 3 Type-3 rows inherited from the Matplotlib figure `row_profiles.pdf`); 14 theorems, 1 proposition, 1 lemma, 3 corollaries in 15 sections; `experiments.py`, `thue_morse_table.wl`, `verification_report.txt`; submitted `SHA256SUMS` kept as payload | `incoming/thue_morse_diagonal_polynomials.zip` |
-| `thue_morse_diagonal_polynomials-2/` | *Diagonal Polynomial Laws in Odd Iterated Thue–Morse Summation: Riordan-array structure, 2-adic Bell recurrences, exact arithmetic, and fast Wolfram Language evaluation* — 2,202-line/72,380-byte source, 37-page A4/801,220-byte PDF (fully embedded, Type-3-free, 7 Libertinus rows); 11 theorems, 2 propositions, 7 corollaries, 1 conjecture, 3 definitions in 16 sections; `diagonal_polynomials.py`, `diagonal_polynomials.wl`, `VERIFICATION.txt`; submitted `SHA256SUMS` kept as payload | `incoming/thue_morse_diagonal_polynomials-2.zip` |
+| `thue_morse_diagonal_polynomials/` | *Diagonal Polynomials and Dyadic Block Geometry in Repeated Thue–Morse Summation* — 1,763-line/56,520-byte source, 24-page A4/724,035-byte PDF (pdfTeX-1.40.26; 25 font rows, 7 Libertinus; 3 Type-3 rows inherited from the Matplotlib figure `row_profiles.pdf`); 14 theorems, 1 proposition, 1 lemma, 3 corollaries in 15 sections; `experiments.py`, `thue_morse_table.wl`, `verification_report.txt`; the submitted checksum manifest was retired repository-wide and remains recoverable from Git history | `incoming/thue_morse_diagonal_polynomials.zip` |
+| `thue_morse_diagonal_polynomials-2/` | *Diagonal Polynomial Laws in Odd Iterated Thue–Morse Summation: Riordan-array structure, 2-adic Bell recurrences, exact arithmetic, and fast Wolfram Language evaluation* — 2,202-line/72,380-byte source, 37-page A4/801,220-byte PDF (fully embedded, Type-3-free, 7 Libertinus rows); 11 theorems, 2 propositions, 7 corollaries, 1 conjecture, 3 definitions in 16 sections; `diagonal_polynomials.py`, `diagonal_polynomials.wl`, `VERIFICATION.txt`; the submitted checksum manifest was retired repository-wide and remains recoverable from Git history | `incoming/thue_morse_diagonal_polynomials-2.zip` |
 | `thue_morse_diagonal_polynomials_article_and_code/` | *Diagonal Polynomials and Dyadic Block Geometry in Repeated Thue–Morse Prefix Summation: Exact formulas, denominator laws, rational roots, and fast Wolfram Language evaluation* — 2,136-line/76,590-byte source, 33-page A4/536,235-byte PDF (26 font rows, no Libertinus; 2 Type-3 rows inherited from the Matplotlib figure); 10 theorems, 10 propositions, 1 lemma, 6 corollaries, 1 definition in 14 sections; `diagonal_analysis.py`, `thue_morse_diagonals.wl`, `generated/` (two CSV tables, run log, verification report), `figures/`; submitted `MANIFEST.sha256` kept as payload; the two CSV tables received the repository's CRLF-to-LF normalization at commit, so their submitted checksums no longer match the filed bytes | `incoming/thue_morse_diagonal_polynomials_article_and_code.zip` |
 | `Thue_Morse_Atlas_and_Frontiers/` | *The Thue–Morse Sequence: Formula Atlas and Fabius–Rvachev Frontier Results* (137 pp) — consolidation (2026-08-28) of the former `Thue_Morse_Formula_Atlas/` (*A Unified Formula Atlas for the Thue–Morse Sequence*) and `Fabius_Rvachev_Thue_Morse_Frontier_Results/` (*A Finite-Block Calculus for the Fabius–Rvachev–Thue–Morse System*, heavily Lean-crosswalked); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 
@@ -629,17 +630,20 @@ historical/source assets.
 The comb row below is superseded in its publication receipt. The unchanged
 driver SHA-256 is
 `63fb8372dbcb6c0b27eb7dea19e387dea27af23811df9fcfbe9313d37c8180a4`,
-but the later canonical-notation edit in `chapters/03_additive_dyadic.tex`
-postdates the retained three-pass 158-page, 2,456,105-byte A4 PDF with SHA-256
+but the later canonical-notation edit in `chapters/03_additive_dyadic.tex` and
+the exact `gq:thm:richardson-generating` Lean crosswalk in
+`chapters/01_geometric_core.tex` postdate the retained three-pass 158-page,
+2,456,105-byte A4 PDF with SHA-256
 `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`.
 That artifact passed the log, A4/page, text, metadata, font, render, and visual
-gates for its recorded source graph. The updated source and retained PDF remain distinct payloads; a fresh three-pass render
-is pending, and full numerical replay remains separate reproducibility work.
+gates for its recorded source graph. The updated source and retained PDF remain
+distinct payloads; no PDF was generated for the Richardson source-only update,
+and full numerical replay remains separate reproducibility work.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
 | `Inverse_Fabius_Analyticity_Asymptotics_and_Computability/` | *Inverse Fabius Theory: Analyticity, Asymptotics, Computability, and Dyadic Sampling* — canonical editorial synthesis of five peer inputs. Its immutable extractor pin is `0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`; all 194 source-result rows are dispositioned (50 Lean-proved, 95 human-proved frontier results, 10 conjectures, 15 open problems, and 24 non-applicable environments). The newest exact rows include abstract effective inversion, `is:p3:cor:forced-superconvergence`, and `is:p3:thm:Appell-lattice-reproduction`. `ASSET_DISPOSITION.csv` accounts for all 88 source-subgroup files, while the deduplicated asset inventory lists 63 retained payloads. Five post-snapshot results are classified separately in `LEAN_CROSSWALK.md`. The retained, fully reviewed PDF checkpoint has 134 A4 pages and 2,027,726 bytes (SHA-256 `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`). Its historical three-pass page, font, text, and visual gates and the independently checked current 23-input source closure are recorded separately in canonical `VALIDATION.md`; the source changed after that render, so a fresh build is required before synchronization is claimed. | At pre-retirement revision `93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`: `analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function/`; `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/`; `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers/`; `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders/`; `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/`. Nested predecessors and arrival archives are recorded in canonical `PROVENANCE.md`; Git history is the byte-level archive. |
-| `comb-interpolation/comb_interpolation_synthesis/` | *Comb Interpolation and Sampling Frontiers: Additive and Geometric Combs in the Fabius--Rvachev System* — canonical editorial synthesis of the former additive-dyadic volume and the three geometric-comb manuscripts. Shared Gaussian--Pascal, Jackson--Newton, Lagrange, stability, Fabius-boundary, quadrature, interpolation, modal, Mellin, regular-variation, spline, reciprocal-product, Euler--Maclaurin, Ruffa, and Thue--Morse material is deduplicated or preserved according to its exact source disposition. Its 180-file inventory and the historical 151-row and current 138-row package inventories are recorded. The retained 158-page, 2,456,105-byte A4 PDF (SHA-256 `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`) is a validated historical checkpoint; the current chapter-03 notation edit requires a fresh three-pass render before source/PDF synchronization is claimed. Full numerical replay remains separate reproducibility work. | Replaces `Dyadic_Comb_Frontiers/`, `geometric_comb_q_fabius_report/`, `geometric_comb_interpolation_report/`, and `geometric_comb_interpolation_report-3/`; original bytes remain in Git history. |
+| `comb-interpolation/comb_interpolation_synthesis/` | *Comb Interpolation and Sampling Frontiers: Additive and Geometric Combs in the Fabius--Rvachev System* — canonical editorial synthesis of the former additive-dyadic volume and the three geometric-comb manuscripts. Shared Gaussian--Pascal, Jackson--Newton, Lagrange, stability, Fabius-boundary, quadrature, interpolation, modal, Mellin, regular-variation, spline, reciprocal-product, Euler--Maclaurin, Ruffa, and Thue--Morse material is deduplicated or preserved according to its exact source disposition. Its 180-file inventory and the historical 151-row and current 138-row package inventories are recorded. The current 232-row theorem concordance promotes `gq:thm:richardson-generating` to the exact Lean declaration `Fabius.geometricLagrangeRichardson_generating` in the new 3+7 module `FabiusFunction.GeometricRichardsonGenerating`; its analytic companion is `Fabius.hasSum_geometricLagrangeRichardson_mul_pow`. The retained 158-page, 2,456,105-byte A4 PDF (SHA-256 `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`) is a validated historical checkpoint; both the chapter-03 notation edit and the chapter-01 Richardson crosswalk postdate it, and no PDF was generated for this source-only update. Full numerical replay remains separate reproducibility work. | Replaces `Dyadic_Comb_Frontiers/`, `geometric_comb_q_fabius_report/`, `geometric_comb_interpolation_report/`, and `geometric_comb_interpolation_report-3/`; original bytes remain in Git history. |
 | `fabius_information_frontier/` | *Exact Information Geometry and New Frontiers for the Fabius--Rvachev System* (retained submitted 30-page A4 PDF; current 2,139-line TeX; a 601-line experiment, five data products, and three PDF/PNG figure pairs). Its 18 arrival hashes and 19 later payload hashes distinguish the submitted PDF from subsequent source changes. The information-geometry, entropy, Fisher-information, prefix-code, Thue--Morse, and endpoint layers remain archival manuscript claims pending hostile audit, numerical replay, an exact Lean crosswalk, canonical normalization, and rebuild; manuscript theorem labels do not establish formal verification. | `frontier-compilations/fabius_information_frontier/`; moved here by the thematic reorganization. |
 
 The subgroup `dyadic-up-extraction/` received six reports on 2026-09-02, all

@@ -158,8 +158,12 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 901 modules and 11,430 public declarations, with no
-documentation gaps.
+audit now contains 902 modules and 11,440 public declarations, with no
+documentation gaps. The ten-declaration increase is the unrelated sibling
+`FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
+seven theorems), whose exact comb-manuscript crosswalk is
+`Fabius.geometricLagrangeRichardson_generating`; it does not change this
+monograph's forward-status inventory or make its retained PDF current.
 
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero

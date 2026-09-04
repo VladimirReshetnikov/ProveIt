@@ -58,8 +58,19 @@ zero is the singular classical lower endpoint. These modules do not prove the
 Guide's Bernoulli-number gap series, convergence of that series, or higher
 Puiseux/logarithmic expansions. The affected retained frontier, primary,
 walkthrough, and Lambert-Guide PDFs are historical artifacts and do not render
-this source-only overlay. The live documentation census is now 901 modules and
-11,430 public declarations.
+this source-only overlay. The live documentation census is now 902 modules and
+11,440 public declarations.
+
+The newest source-only addition is
+`FabiusFunction.GeometricRichardsonGenerating`, with three definitions and
+seven theorems. Its
+`Fabius.geometricLagrangeRichardson_generating` theorem is the exact formal
+counterpart of canonical comb label `gq:thm:richardson-generating`; the module
+also supplies the report-facing analytic companion
+`Fabius.hasSum_geometricLagrangeRichardson_mul_pow` under strict nome
+contraction and absolute summability. The retained canonical-frontier,
+primary, walkthrough, and comb-synthesis PDFs all predate this crosswalk and
+remain historical artifacts; none was rebuilt for this update.
 
 The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
 the retained PDFs.  The new `QPochhammerEntire.lean` leaf has zero definitions

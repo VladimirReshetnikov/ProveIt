@@ -109,7 +109,7 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live 2026-09-03 inventory contains 901 modules and 11,430 lexically
+The live 2026-09-03 inventory contains 902 modules and 11,440 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  The post-merge 2026-09-01 inventory of 675 modules and 8,909
 declarations remains a historical checkpoint: relative to the 610/8,318
@@ -119,12 +119,13 @@ forty-five modules and 357 declarations.
 
 #### Terminating `₂φ₁` reversal and q-Chu--Vandermonde tranche
 
-The final public API growth leaves the module count unchanged and adds twelve
+That public API growth left the module count unchanged and added twelve
 declarations to the immediately preceding 901/11,418 live inventory.
 `TwoPhiOneReversal.lean` grows from 1+6 to 2+12 (one definition and six
 theorems added), and `QChuVandermonde.lean` grows from 0+5 to 0+10 (five
-theorems added).  The resulting live census is therefore exactly 901 modules
-and 11,430 public declarations.
+theorems added).  The resulting q-Chu checkpoint was therefore exactly 901
+modules and 11,430 public declarations; the generating-function tranche below
+is the subsequent live increment.
 
 The exhaustive `TwoPhiOneReversal.lean` inventory is two definitions,
 `twoPhiOneFinite` and `twoPhiOneReflection`, and twelve theorems:
@@ -159,6 +160,37 @@ uses `twoPhiOneFinite_reversal` only on the additional locus `C ≠ 0` and
 wrapper instead follow from a direct denominator-cleared q-Cauchy argument.
 The monograph's rational-continuation step and cleared commutative-ring
 extension remain unformalized.
+
+#### Geometric Richardson generating-function tranche
+
+`GeometricRichardsonGenerating.lean` adds one source module and exactly ten
+public declarations to the 901/11,430 q-Chu checkpoint.  The live facade union
+is therefore 902 modules and 11,440 public declarations.  Its three definitions
+are `geometricRichardsonKernel`, `qPochhammerNormalizedDataSeries`, and
+`geometricRichardsonTransform`.  Its seven theorems are
+`coeff_rescale_qPochhammerSeries_eq_geometricRichardsonKernel`,
+`coeff_qPochhammerNormalizedDataSeries`,
+`geometricRichardsonTransform_generating`,
+`geometricRichardsonTransform_eq_sum_lagrange`,
+`geometricLagrangeRichardson_generating`,
+`hasSum_geometricRichardsonTransform_mul_pow`, and
+`hasSum_geometricLagrangeRichardson_mul_pow`.  Two private proof helpers are
+excluded from the public count.
+
+The comb-interpolation label `gq:thm:richardson-generating` is **Exact** via
+`geometricLagrangeRichardson_generating`.  The stronger formal layer works
+over every commutative ring, with no topology or `QRegular` hypothesis, and
+uses `Ring.inverse` to make coefficients total even when a finite
+q-Pochhammer factor is not a unit.  Over a field, `q ≠ 0` identifies this
+convolution with the canonical totalized Lagrange row.  Roots of unity need
+not be excluded for the algebraic equality, but colliding nodes are not
+thereby a valid interpolation scheme; at `q = 0`, nodes repeat for `n ≥ 2`
+and the closed Lagrange formula fails, so the report-facing bridge correctly
+excludes that base.  The analytic pair assumes a complete normed field,
+`‖q‖ < 1`, and norm-summability of the normalized data series at the chosen
+`z`; the Lagrange form additionally assumes `q ≠ 0` and proves a `HasSum`
+identity.  It does not claim a general analytic evaluation operation for
+arbitrary formal power series.
 
 #### Exact Lambert branch-pairing tranche
 
@@ -885,7 +917,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 901/11,430
+historical 675/8,909 census and requires refresh against the live 902/11,440
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
