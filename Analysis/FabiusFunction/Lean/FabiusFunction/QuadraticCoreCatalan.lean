@@ -87,6 +87,7 @@ noncomputable def quadHalf (K : Type*) [Field K] (n : ℕ) : K :=
 
 variable {K : Type*} [Field K] [CharZero K]
 
+/-- The first quadratic-core coefficient is `1 / 2`. -/
 theorem quadHalf_zero : quadHalf K 0 = 1 / 2 := by
   rw [quadHalf]
   norm_num
@@ -131,6 +132,8 @@ notation the volume uses. -/
 noncomputable def halfBinom (n : ℕ) : ℚ :=
   (∏ i ∈ Finset.range n, ((1 : ℚ) / 2 - i)) / (Nat.factorial n)
 
+/-- The half-binomial coefficients satisfy their first-order ratio
+recurrence after denominators are cleared. -/
 theorem halfBinom_step (n : ℕ) :
     2 * ((n : ℚ) + 1) * halfBinom (n + 1) = (1 - 2 * n) * halfBinom n := by
   have hf : ((Nat.factorial n : ℚ)) ≠ 0 := Nat.cast_ne_zero.mpr n.factorial_ne_zero
