@@ -9,8 +9,8 @@
 | --- | --- | --- |
 | `polynomial-logarithmic-transseries/` (1 volume, 8 parts) | 36,033 | **absorbed** — Parts I–VIII |
 | `special-function-inversion/` (1 volume, 10 chapters) | 16,771 | **absorbed** — Parts IX–XII |
-| `lambert-inverse-transseries/` (3 articles) | 5,209 | pending |
-| `sequence-transseries/` (5 articles) | 9,743 | pending |
+| `lambert-inverse-transseries/` (3 articles) | 5,209 | **absorbed** — Part XIII |
+| `sequence-transseries/` (5 articles) | 9,743 | **absorbed** — Part XV |
 | `transseries-tutorials/` (4 articles) | 26,099 | pending |
 
 The two already-consolidated volumes are in. The three groups that were never
@@ -58,6 +58,6 @@ a real-argument Fibonacci function); and a synthesis.
 
 The volume is assembled by a script from its sources rather than edited in
 place; the assembled `.tex` carries a header saying so. Three `pdflatex`
-passes. Current: 52,636 lines, 666 A4 pages, 12 parts, 50 chapters, 2,945
+passes. Current: 53,422 lines, 680 A4 pages, 14 parts, 53 chapters, 3,024
 labels all distinct, no dangling references, no LaTeX errors, no undefined
 references.
