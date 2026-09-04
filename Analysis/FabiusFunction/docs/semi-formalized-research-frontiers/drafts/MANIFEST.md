@@ -603,8 +603,9 @@ The final pass proved the sharp Bell bound the arrivals had only asserted,
 supplied Euler's limit and the Weierstrass product on which an existing
 polygamma proof silently depended, merged thirteen further donor-only results,
 repaired eight double-superscript errors that had made the source fail to
-compile at all, and completed the notation-catalogue migration. The filed PDF
-now renders the filed TeX. None of the manuscript proofs is claimed as Lean
+compile at all, and completed the notation-catalogue migration. The retained
+174-page PDF is an earlier render; the source has changed since that checkpoint,
+and rebuilding remains deferred at the user's request. None of the manuscript proofs is claimed as Lean
 verification; the in-document "Lean formalization register" states the
 formalization status per result.
 
@@ -850,9 +851,9 @@ root classification in `HalfQBinomial.lean`, makes
 censuses remain checkpoints, and the
 historical reciprocity census is 931/11,685, while the RatFunc-only
 924/11,615 and incoming-only 924/11,614 counts remain historical branch
-checkpoints. The q forward totals are 182 Exact / 78 Partial / 14 None / 8
+checkpoints. The q forward totals are 181 Exact / 79 Partial / 14 None / 8
 N/A, the relevant Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the
-source concordance is 95 Lean-proved / 383 human-proved
+source concordance is 103 Lean-proved / 375 human-proved
 frontier / 60 N/A / 9 conjectures. The
 intermediate 915/11,556 Bridge census remains a historical checkpoint. The
 retained 398-page q-series PDF is a
@@ -892,9 +893,9 @@ all forty-two articles across `polynomial-logarithmic-transseries/`,
 `special-function-inversion/` and `sequence-transseries/` are now the single
 volume `Transseries_And_Inversion/`, and those five directories have been
 deleted after a residue audit.  The paragraphs below record what was filed,
-not what is present; git history is the archive.  The first two overlap enough
-that a later consolidation may merge them, but that comparison has not been
-made, and neither has the comparison between the second and the fourth.
+not what is present; git history is the archive.  At intake the comparison
+among the overlapping subgroups had not been made; the canonical
+consolidation's concordance chapter now records that later comparison.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |

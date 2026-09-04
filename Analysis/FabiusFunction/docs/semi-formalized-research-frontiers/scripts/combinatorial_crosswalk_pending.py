@@ -1510,7 +1510,7 @@ vanish for that reason rather than by convention.
 product, so that $k=0$ gives $\ExponentialPartialBellPolynomial n0=\delta_{n,0}$
 and $x^{1\diamondsuit}=x$ (\lean{Fabius.diamondPow_one}); for $k\ge1$ this is
 the $k$-fold product of the source.
-The proof is the one above.  \lean{Bell.egfA_mul} turns a binomial convolution
+The proof is the one above.  \lean{Fabius.egfA_mul} turns a binomial convolution
 into a product of exponential generating functions, so
 \lean{Fabius.egfA_diamondPow} gives $X(t)^k$ by induction, and
 \lean{Fabius.bellWeightSeries_pow} already reads the coefficients of $X(t)^k$
