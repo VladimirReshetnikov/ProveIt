@@ -224,7 +224,7 @@ in it must have a proved counterpart in the Lean development.
 > primary exposition, Lean walkthrough, canonical frontier, Representation
 > Frontiers, filed New Frontiers, notation catalogue, Integration-and-Transform
 > master, comb-interpolation, and q-series synthesis PDFs contain respectively
-> 183, 130, 257, 301, 41, 88, 377, 158, and 389 A4 pages.  Their current TeX
+> 210, 165, 273, 301, 41, 88, 377, 160, and 389 A4 pages.  Their current TeX
 > sources contain post-render unions, including the centered
 > Appell/deconvolution, arbitrary-phase synthesis, Lagrange--Rvachev,
 > prime-power companion-row, outer Pochhammer normal convergence, total
