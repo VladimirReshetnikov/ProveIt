@@ -8,8 +8,8 @@ pre-retirement snapshot of all five source packages is commit
 `9560165ae2eb33590404a090ab26bd3ca715f32f`, recorded in
 `audit/MERGE_SOURCE_REVISION`; the completed `source_concordance.csv` gives a
 reviewed disposition for all 547 source result environments. This immutable
-merger ledger's current canonical-status projection is 99 Lean-proved rows,
-379 human-proved frontier result rows, 60 not-applicable rows, and 9
+merger ledger's current canonical-status projection is 103 Lean-proved rows,
+375 human-proved frontier result rows, 60 not-applicable rows, and 9
 conjecture rows.
 That projection is the semantic union of thirteen incoming Lean overrides
 (`cor:geometric-prouhet-affine`, `cor:halfbase-root-locus`,
@@ -23,6 +23,15 @@ overrides (`cor:qbinom-classical`, `cor:qgamma-theta`, `prop:logder-finite`,
 `thm:q-leibniz`, and `thm:quantum-binomial`). It changes no immutable source
 field. In particular, it does not promote `thm:q-lucas`, whose polynomial
 congruence still lacks a Lean proof.
+
+The 2026-09-04 merge-regression check restored the seven missing generator
+entries from that local override set; the classical-limit entry was already
+present. The retained CSV needed no changes. Direct counting gives the
+103/375/60/9 projection above, while the 28 forward chapter subtotals and all
+282 result rows give 181/79/14/8. Their stale grand total and narrative were
+corrected without changing any result-level status. The source-only canonical
+validator passes; this repair performs no Lean or PDF build.
+
 Directory names
 in the table are historical paths in that pinned snapshot, not live package
 paths.
@@ -435,11 +444,11 @@ tail identities, they make `prop:up-tail` and `cor:up-moments` Exact.
 Neither these source-only additions nor the preceding Lambert addition changes
 the retained historical artifact, and no render parity is claimed. The
 forward status inventory covers 282 labelled results:
-182 Exact / 78 Partial / 14 None / 8 N/A; the relevant
+181 Exact / 79 Partial / 14 None / 8 N/A; the relevant
 Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the 191-result pre-Fabius core is
 36 / 29 / 123 / 3.
 The five-publication concordance
-has 95 Lean-proved, 383 human-proved frontier, 60 not-applicable, and 9
+has 103 Lean-proved, 375 human-proved frontier, 60 not-applicable, and 9
 conjecture rows. The unrelated `cor:qbinom-inversion-law` remains Partial.
 Both the retained `thm:fixed-column-limit` source row and the
 older `prop:fixed-k-limit` row redirected to it now inherit the exact canonical

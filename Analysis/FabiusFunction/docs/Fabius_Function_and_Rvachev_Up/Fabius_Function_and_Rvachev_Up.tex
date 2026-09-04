@@ -199,14 +199,14 @@ an exact Lean theorem are kept in the companion volume under
 \end{abstract}
 
 \begin{boxedremark}\textbf{Artifact status (4 September 2026).}\space
-The authoritative live lexical audit contains exactly 923 facade-reachable
-source modules and 11,611 unique public declarations: 313 modules and 3,293
-declarations beyond the 610/8,318 activation checkpoint, and 274 modules and
-2,913 declarations beyond the 649/8,698 publication-union checkpoint.  The
-merge target contributes 11,610 declarations; the retained unconditional
-public \lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge in the 1+10
-\path{RvachevPochhammerFactorization.lean} surface contributes the additional
-declaration.  Module headers and declaration documentation are complete; the
+The authoritative live lexical audit contains exactly 960 facade-reachable
+source modules and 11,966 unique public declarations: 350 modules and 3,648
+declarations beyond the 610/8,318 activation checkpoint, and 311 modules and
+3,268 declarations beyond the 649/8,698 publication-union checkpoint.  The
+earlier 923/11,611 semantic-union census is historical; at that checkpoint the
+merge target contributed 11,610 declarations and the retained unconditional
+public \lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge supplied the
+additional declaration.  Module headers and declaration documentation are complete; the
 checked baseline records both zero-gap invariants.  This source includes the earlier finite and
 infinite q-series APIs together with the final Gaussian-palindromic, Jackson
 integral, q-exponential, theta, Jacobi-cubic, logarithmic-derivative,
@@ -3399,10 +3399,10 @@ theorems; its public surface comprises \lean{gaussianMajorant},
 \lean{gaussianMajorant_nonneg},
 \lean{norm_gaussianBinomial_le},
 \lean{tendsto_finiteQPochhammerIn_pow_atTop},
-\lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp},
+\lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one},
 \lean{isBigO_finiteQPochhammerIn_pow_sub_one},
 \lean{tendsto_gaussianBinomial_atTop},
-\lean{tendsto_gaussianBinomial_add_atTop},
+\lean{tendsto_gaussianBinomial_add_const_atTop},
 \lean{isBigO_gaussianBinomial_sub_inv},
 \lean{isBigO_gaussianBinomial_add_sub_inv},
 \lean{summable_pow_choose_two_mul_pow},
@@ -4749,9 +4749,9 @@ Its proof
 reuses the stronger ordered-field theorem
 \lean{finiteQPochhammerIn_self_pos} from
 \path{GeneralQConditionNumber.lean} rather than exporting a duplicate.
-The rigorous 282-row forward q-series ledger is therefore 177 Exact, 82 Partial,
-15 None, and 8 interface rows; its 547-row source concordance is 99 Lean,
-379 human, 60 N/A, and 9 conjecture rows.  In particular q-Lucas remains Partial
+The rigorous 282-row forward q-series ledger is now 181 Exact, 79 Partial,
+14 None, and 8 interface rows; its 547-row source concordance is 103 Lean,
+375 human, 60 N/A, and 9 conjecture rows.  In particular q-Lucas remains Partial
 because Lean proves the evaluated primitive-root identity rather than the
 polynomial congruence modulo \(\Phi_d\); the Gaussian majorant row is Exact,
 and the \(Q>1\) asymptotic row is Exact via the fixed-column and central
@@ -15219,7 +15219,7 @@ limit, Jacobi identities, and pentagonal identities add completeness, with
 \(z\ne0\) exactly for Jacobi.  The pentagonal identities include \(q=0\),
 and the real theta majorant assumes \(0\le r<1\) and \(0<s\) &
 \path{JacobiTripleProduct.lean}\\
-One definition, \lean{gaussianMajorant}, and exactly twenty-two theorems:
+One definition, \lean{gaussianMajorant}, and exactly twenty-seven theorems:
 \lean{hasSum_of_tendsto_of_dominated},
 \lean{one_le_qPochhammerInfIn_neg},
 \lean{finiteQPochhammerIn_neg_le_qPochhammerInfIn},
@@ -15235,7 +15235,12 @@ One definition, \lean{gaussianMajorant}, and exactly twenty-two theorems:
 \lean{gaussianBinomial_eq_div}, \lean{gaussianMajorant_nonneg},
 \lean{norm_gaussianBinomial_le},
 \lean{tendsto_finiteQPochhammerIn_pow_atTop},
+\lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one},
+\lean{isBigO_finiteQPochhammerIn_pow_sub_one},
 \lean{tendsto_gaussianBinomial_atTop},
+\lean{tendsto_gaussianBinomial_add_const_atTop},
+\lean{isBigO_gaussianBinomial_sub_inv},
+\lean{isBigO_gaussianBinomial_add_sub_inv},
 \lean{summable_pow_choose_two_mul_pow}, \lean{hasSum_euler_product},
 \lean{qPochhammerInfIn_ne_zero_of_norm_lt_one},
 \lean{hasSum_qBinomial_theorem}, and

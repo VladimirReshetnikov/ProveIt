@@ -850,9 +850,9 @@ root classification in `HalfQBinomial.lean`, makes
 censuses remain checkpoints, and the
 historical reciprocity census is 931/11,685, while the RatFunc-only
 924/11,615 and incoming-only 924/11,614 counts remain historical branch
-checkpoints. The q forward totals are 182 Exact / 78 Partial / 14 None / 8
+checkpoints. The q forward totals are 181 Exact / 79 Partial / 14 None / 8
 N/A, the relevant Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the
-source concordance is 95 Lean-proved / 383 human-proved
+source concordance is 103 Lean-proved / 375 human-proved
 frontier / 60 N/A / 9 conjectures. The
 intermediate 915/11,556 Bridge census remains a historical checkpoint. The
 retained 398-page q-series PDF is a

@@ -87,12 +87,12 @@ records. Their preceding artifacts remain historical receipts for their named
 checkpoints. Unaffected synchronized receipts remain valid for
 their named source states.
 
-The authoritative live Lean audit now contains exactly 923 facade-reachable
-modules and 11,611 unique public declarations, with no missing module headers
-or declaration documentation.  The checked baseline records both zero-gap
-invariants.  The corresponding origin inventory has 11,610 declarations
-because it lacks this tree's retained unconditional public
-`complexQPochhammerInf_eq_qPochhammerInfIn` bridge.  The q-Pochhammer ownership remains
+The authoritative live Lean audit now contains exactly 960 facade-reachable
+modules and 11,966 unique public declarations, with no missing module headers
+or declaration documentation.  The historical 923/11,611 snapshot comprised
+an origin inventory of 11,610 declarations plus this tree's retained
+unconditional public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge.  The
+q-Pochhammer ownership remains
 `RvachevPochhammerFactorization` 1+10, `QPochhammerEntire` 0+5, and
 `QPochhammerInfinite` 1+29;
 `complexQPochhammerInf_eq_qPochhammerInfIn` remains the unconditional public
@@ -704,8 +704,8 @@ it makes `cor:halfbase-root-locus` Exact under the canonical rational-polynomial
 and rational-root convention. Injective scalar extension preserves
 the displayed multiplicities, but the leaf does not classify all roots over
 every extension field. After the reciprocity promotion, the q
-forward ledger is now 182 Exact / 78 Partial / 14 None / 8 interface rows,
-and its source concordance is 95 Lean-proved / 383 human-proved frontier /
+forward ledger is now 181 Exact / 79 Partial / 14 None / 8 interface rows,
+and its source concordance is 103 Lean-proved / 375 human-proved frontier /
 60 non-applicable / 9 conjectures.
 
 `FabiusFunction.GaussianBinomialGreaterOneAsymptotics` has exactly the two
@@ -866,7 +866,7 @@ the later Euler, q-binomial, Jacobi, quantum-binomial, Rogers--Szegő,
 cyclotomic-divisibility, q-Catalan, primitive-root-block, q-Lucas, Jackson
 q-beta, geometric Newton-interpolation, integer/complex upper Gaussian, and
 q-Pfaff--Saalschütz, and noncommutative q-multinomial tranches. Its 282-result
-forward status totals are now 182 Exact / 78 Partial / 14 None / 8 interface:
+forward status totals are now 181 Exact / 79 Partial / 14 None / 8 interface:
 `p7:thm:Pn` moves Partial-to-Exact and `prop:qF-P-degree-sharp` moves
 None-to-Exact, while the RatFunc assembly now moves
 `thm:qF-moment-polynomial` Partial-to-Exact and the probability extension
@@ -919,9 +919,9 @@ and its 395-page, 2,494,961-byte A4 PDF (SHA-256
 The q-Chu/Richardson, Gaussian second-moment, Lambert branch-gap Bernoulli, and
 geometric-uniform moment-polynomial source union postdates that exact historical
 receipt.  Its
-current source concordance now records 99 Lean-proved, 379 human-proved,
-60 not-applicable, and 9 conjectural rows; the rigorous forward ledger is 177
-Exact / 82 Partial / 15 None / 8 interface, with q-Lucas still Partial.
+current source concordance now records 103 Lean-proved, 375 human-proved,
+60 not-applicable, and 9 conjectural rows; the rigorous forward ledger is 181
+Exact / 79 Partial / 14 None / 8 interface, with q-Lucas still Partial.
 
 The historical q-series receipt (2026-09-04 source checkpoint) records the then-current 16,910-line,
 842,514-byte TeX source at SHA-256

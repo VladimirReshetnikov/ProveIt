@@ -895,9 +895,9 @@ inverse-concordance promotion; the retained inverse PDF remains a historical
 artifact rather than a render of it.
 The corresponding historical documentation checkpoint was 671 modules and
 8,858 public declarations. After the reciprocity promotion, the q forward
-ledger is 182 Exact / 78 Partial / 14 None / 8 N/A, with chapter splits
+ledger is 181 Exact / 79 Partial / 14 None / 8 N/A, with chapter splits
 9/0/0/0 for Half-base and 13/43/0/0 for Dyadic, while the source concordance
-is 95/383/60/9. The merged-main
+is 103/375/60/9. The merged-main
 increment to 919/11,569 is the exhaustive zero-definition/one-theorem sibling
 `FabiusFunction.HalfQBinomialRootSimplicity`, whose
 `Fabius.halfQBinomial_sum_rootMultiplicity_two_pow` proves multiplicity one

@@ -1662,8 +1662,8 @@ dimension-dominant real bounds for `Q > 1`, with `k ≤ n` and all nonzero and
 order hypotheses explicit.  The module reuses the stronger ordered-field
 `finiteQPochhammerIn_self_pos` theorem from `GeneralQConditionNumber.lean`
 rather than exporting a duplicate.
-The rigorous forward q-monograph ledger is 177 Exact, 82 Partial, 15 None,
-and 8 interface rows; its source concordance is 99 Lean, 379 human, 60 N/A,
+The rigorous forward q-monograph ledger is 181 Exact, 79 Partial, 14 None,
+and 8 interface rows; its source concordance is 103 Lean, 375 human, 60 N/A,
 and 9 conjecture rows, and the concordance extractor passes.
 `prop:gaussian-bound` is Exact.  `thm:q-lucas` remains
 Partial because the proved evaluated primitive-root identity is weaker than
@@ -2306,9 +2306,16 @@ also listed exhaustively above.  The
 `JacobiTripleProduct.lean` 2-definition/25-theorem tranche contains the finite triple-product
 polynomial and field identities, the bilateral Jacobi `HasSum` forms, and the
 pentagonal and paired-pentagonal `HasSum` corollaries.  The
-`QBinomialTheoremInfinite.lean` 1-definition/22-theorem tranche contains the real comparison and
-norm bounds, fixed-column Gaussian limit, Euler product, analytic q-binomial,
-and reciprocal Euler `HasSum` results.  The subsequent
+`QBinomialTheoremInfinite.lean` 1-definition/27-theorem tranche contains the
+retained real comparison and norm bounds, fixed-column Gaussian limit, Euler
+product, analytic q-binomial, and reciprocal Euler `HasSum` results.  Its five
+current additions are
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one`,
+`isBigO_finiteQPochhammerIn_pow_sub_one`,
+`tendsto_gaussianBinomial_add_const_atTop`,
+`isBigO_gaussianBinomial_sub_inv`, and
+`isBigO_gaussianBinomial_add_sub_inv`; their explicit norm hypotheses remain
+part of the API.  The subsequent
 `GaussianBinomialFixedColumnRate.lean` 0+10 tranche supplies the explicit
 finite-product defect, nonasymptotic fixed/shifted errors, shifted limit, and
 relative/additive geometric-rate results inventoried above.  `QPascalSummation.lean` is 0+4:

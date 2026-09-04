@@ -288,9 +288,9 @@ That existing module adds
 Atomlessness identifies the strict and closed tails, and the second theorem
 is the exact full-law moment formula for every natural `n >= 1`; together
 with the existing global up/Fabius identities, these promote `prop:up-tail`
-and `cor:up-moments` to Exact.  The q ledger is 182/78/14/8, its relevant
+and `cor:up-moments` to Exact.  The q ledger is 181/79/14/8, its relevant
 Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the source projection
-is 95/383/60/9. The zero-definition/one-theorem
+is 103/375/60/9. The zero-definition/one-theorem
 `HalfQBinomialRootSimplicity.lean` leaf exports
 `halfQBinomial_sum_rootMultiplicity_two_pow`; with the complete rational
 root classification `halfQBinomial_sum_eq_zero_iff`, it makes
@@ -377,8 +377,8 @@ Current packages and retained intake records:
   and the historical artifact lineage. The completed
   [`source_concordance.csv`](q_pochhammer_q_binomial_monograph/source_concordance.csv)
   gives a reviewed disposition for all 547 source result environments from the
-  five merged publications. Its canonical destinations comprise 99 Lean-proved
-  rows, 379 human-proved
+  five merged publications. Its canonical destinations comprise 103 Lean-proved
+  rows, 375 human-proved
   frontier results, 60 not-applicable rows, and 9 conjectures. The historical
   [`theorem_concordance.csv`](q_pochhammer_q_binomial_monograph/theorem_concordance.csv)
   continues to account for all 260 inverse-source result environments, and
@@ -426,8 +426,8 @@ Current packages and retained intake records:
   theorems), and `GeometricUniformMomentReciprocity.lean` (one definition and
   five theorems). The existing `FinitePolynomialFunctional.lean` module now has
   zero definitions and sixteen public theorems. The forward crosswalk is now
-  182 Exact, 78 Partial, 14 None, and 8 interface rows; the source ledger is
-  95 Lean-proved, 383 human-proved
+  181 Exact, 79 Partial, 14 None, and 8 interface rows; the source ledger is
+  103 Lean-proved, 375 human-proved
   frontier, 60 not
   applicable, and 9 conjectures. The current `b899` 405-page monograph PDF
   renders this merged source and is synchronized by the receipt above; the
@@ -1168,7 +1168,7 @@ claims about the current canonical source. The historical pre-`d8b` and
 2026-09-04 receipts both appear above; neither is a parity claim for the
 current merged source.
 
-The latest validated forward formalization ledger has 282 rows: 182 Exact, 78
+The latest validated forward formalization ledger has 282 rows: 181 Exact, 79
 Partial, 14 with no counterpart, and 8 interface-only. The basic
 geometric-uniform row is Exact: `GeometricUniformRealization.lean` proves that
 an `iIndepFun` process of unit-interval coordinates with uniform marginal laws
