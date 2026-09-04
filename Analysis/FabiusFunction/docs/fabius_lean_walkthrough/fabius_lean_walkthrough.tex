@@ -126,40 +126,44 @@ A mathematically oriented reader should begin with Sections~\ref{ch:objects}, \r
 \end{boxedremark}
 
 \begin{boxedremark}\textbf{Artifact status (1 September 2026).}\space
-The live facade contains exactly 665 source modules and 8,819 public
-declarations, with no missing module headers or declaration comments in the
-current static audit.  This is the 649/8,698 checkpoint plus sixteen modules
-and 121 declarations.  The Pochhammer ownership census is
-\nolinkurl{RvachevPochhammerFactorization.lean} (1+10),
-\nolinkurl{QPochhammerEntire.lean} (0+5), and
+The authoritative live facade contains exactly 671 source modules and 8,859
+public declarations, with no missing module headers or declaration comments.
+This is the 649/8,698 checkpoint plus 22 modules and 161 declarations.  The
+Pochhammer ownership census remains
+\nolinkurl{RvachevPochhammerFactorization.lean} (1+10), including
+\nolinkurl{complexQPochhammerInf_eq_qPochhammerInfIn};
+\nolinkurl{QPochhammerEntire.lean} (0+5); and
 \nolinkurl{QPochhammerInfinite.lean} (1+29), while
-\nolinkurl{QMultinomial.lean} remains 1+9.  The eight-module increment is
-\nolinkurl{GaussianBinomialPalindromic.lean} (0+12),
-\nolinkurl{JacksonIntegral.lean} (1+7), \nolinkurl{QExponential.lean} (3+8),
-\nolinkurl{ThetaQuasiPeriodicity.lean} (1+6), \nolinkurl{JacobiCubic.lean}
-(0+2), \nolinkurl{QPochhammerLogDerivative.lean} (0+10),
-\nolinkurl{QPochhammerOrderDerivative.lean} (0+3), and
-\nolinkurl{GaussianBinomialPolynomialStructure.lean} (0+5).  The next pair is
-\nolinkurl{CentralQBinomialReduction.lean} (0+6) and
-\nolinkurl{CyclotomicFactorization.lean} (0+7).  The final six modules are
+\nolinkurl{QMultinomial.lean} remains 1+9 and
+\nolinkurl{GaussianBinomialPolynomialStructure.lean} remains 0+5.
+The 665/8,819 checkpoint includes
 \nolinkurl{CyclotomicDivisibility.lean} (0+3),
 \nolinkurl{PrimitiveRootBlock.lean} (0+3), \nolinkurl{QLucas.lean} (0+8),
 \nolinkurl{QCatalan.lean} (1+11), \nolinkurl{NewtonInterpolation.lean} (2+13),
-and \nolinkurl{QBetaIntegral.lean} (1+8), four definitions and 46 theorems.
-The rigorous forward q-monograph ledger is 80 Exact, 86 Partial, 108 None,
-and 8 interface rows.  In particular, \nolinkurl{thm:q-lucas} is Partial:
-Lean proves the evaluated primitive-root identity, while the manuscript's
-polynomial congruence modulo \(\Phi_d\) still needs a minimal-polynomial lift.
-The new Exact rows are \nolinkurl{lem:root-block},
-\nolinkurl{cor:squarefree-cyclotomic}, \nolinkurl{cor:q-catalan},
-\nolinkurl{thm:qbeta}, \nolinkurl{cor:qbeta-recurrence},
-\nolinkurl{thm:geometric-newton}, and
-\nolinkurl{cor:geometric-triangular}.  The row
-\nolinkurl{cor:babbage-derivative} also remains Partial: its value is
-formalized, but its derivative is not.
-The committed 150-page PDF predates this six-module union and remains a
-historical validation receipt pending a fresh uninterrupted parity rebuild;
-it does not certify parity for the present TeX file.
+and \nolinkurl{QBetaIntegral.lean} (1+8).  Newton's definitions are
+\nolinkurl{newtonCoeff} and \nolinkurl{newtonInterpolant}; the latter preserves
+the established scalar-sequence \nolinkurl{Fabius.newtonPoly} API.
+The latest six modules are \nolinkurl{GaussianBinomialInteger.lean} (1+10),
+\nolinkurl{GaussianBinomialComplexOrder.lean} (1+5),
+\nolinkurl{QPfaffSaalschutz.lean} (0+3),
+\nolinkurl{QuantumMultinomial.lean} (0+5),
+\nolinkurl{RvachevSuperconvergentSynthesis.lean} (1+8), and
+\nolinkurl{GaussianBinomialBounds.lean} (0+6): three definitions and 37
+theorems, hence six modules and 40 unique declarations.
+The rigorous forward q-monograph ledger is 90 Exact, 85 Partial, 99 None,
+and 8 interface rows.  The new bound leaf changes
+\nolinkurl{prop:gaussian-bound} from None to Exact, witnessed by
+\nolinkurl{one_le_gaussianBinomial} and
+\nolinkurl{gaussianBinomial_le_inv_qPochhammerInfIn}.
+\nolinkurl{thm:q-lucas} remains Partial: Lean proves the evaluated
+primitive-root identity, while the manuscript's polynomial congruence modulo
+\(\Phi_d\) still needs a minimal-polynomial lift.
+\nolinkurl{cor:babbage-derivative} also remains Partial because its value,
+but not its derivative, is formalized.
+The committed 150-page PDF and all other retained PDFs predate the present
+source union.  They are historical validation receipts pending fresh
+uninterrupted parity rebuilds; repository checksum ledgers have been
+abolished.
 \end{boxedremark}
 
 \section*{Scope and conventions}
@@ -1717,7 +1721,7 @@ The use of \(\operatorname{ENat.toNat}\) is safe here because
 order as a finite natural cast.
 
 The proof is deliberately triangular.  The valuation identity
-\(\nu_2(2^n)=n\) turns each sampled order into the inclusive prefix
+\(\TwoAdicValuation(2^n)=n\) turns each sampled order into the inclusive prefix
 \(P_a(n)\).  For \(n=0\), the sample is \(z=1\), not \(z=0\), and
 \(P_a(0)=a(0)\); all these products have value one at the origin.  The
 successor law \(P_a(n+1)=P_a(n)+a(n+1)\) and natural cancellation give the
@@ -2317,26 +2321,6 @@ declarations to the 649/8,698 checkpoint.  Their definition-plus-theorem
 counts are respectively 0+12, 1+7, 3+8, 1+6, 0+2, 0+10, 0+3, and 0+5 in the
 order documented below; the following inventories are exhaustive.
 
-The downstream \nolinkurl{GaussianBinomialPalindromic.lean} has no public
-definitions and exactly twelve public theorems:
-\nolinkurl{reflect_add_of_natDegree_le}, \nolinkurl{reflect_one'},
-\nolinkurl{gaussianBinomial_natDegree_le},
-\nolinkurl{gaussianBinomial_zero_left},
-\nolinkurl{gaussianBinomial_diag'}, \nolinkurl{reflect_gaussianBinomial},
-\nolinkurl{coeff_gaussianBinomial_reflect},
-\nolinkurl{coeff_gaussianBinomial_zero},
-\nolinkurl{coeff_gaussianBinomial_top},
-\nolinkurl{gaussianBinomial_natDegree},
-\nolinkurl{gaussianBinomial_monic}, and
-\nolinkurl{two_mul_derivative_gaussianBinomial_eval_one}.  Over every
-commutative semiring these give the general reflection helpers, the Gaussian
-degree bound, zero and diagonal values, reflection in degree \(k(n-k)\),
-constant and top coefficients one, bounded-index coefficient reversal, and
-the division-free mean identity.  Exact degree and monicity require only
-nontriviality.  With existing symmetry and reciprocity this keeps the canonical
-forward q-binomial structure theorem exact; it does not prove that the
-coefficient of \(q\) is one.
-
 The companion \nolinkurl{GaussianBinomialPolynomialStructure.lean} has no
 public definitions and exactly five public theorems:
 \nolinkurl{natDegree_gaussianBinomial_universal},
@@ -2367,8 +2351,10 @@ an arbitrary commutative semiring.  The Gaussian statements use \(k\le n\);
 coefficient reversal additionally bounds \(j\le k(n-k)\), while exact degree
 and monicity alone require a nontrivial coefficient semiring.  The last
 theorem is the division-free identity
-\(2G'_{n,k}(1)=k(n-k)\binom nk\); no characteristic restriction, positivity,
-or unimodality claim is hidden in it.
+\(2G'_{n,k}(1)=k(n-k)\binom nk\).  With row symmetry and reciprocity these
+results close the canonical forward structure theorem; they do not identify
+the coefficient of \(q\) with one, and no characteristic restriction,
+positivity, or unimodality claim is hidden in them.
 
 The three definitions \nolinkurl{qDeriv}, \nolinkurl{qExp}, and
 \nolinkurl{qExpBig}, together with the eight theorems
@@ -4216,8 +4202,8 @@ infinite-series result.
 This source contains the exhaustive two-definition, twenty-eight-theorem closed-form
 inventory and the expanded formula-and-proof ledger in this subsubsection.  Source/PDF
 parity is certified only by the repository metadata for a successful final-source build
-of this exact TeX checkpoint; the page count, checksum, and validation facts in that
-build receipt are authoritative.
+of this exact TeX checkpoint; its build log, page geometry, and font-validation facts
+are authoritative.  Repository checksum ledgers have been abolished.
 \end{boxedremark}
 
 The limitations just stated remain exact descriptions of the two predecessor modules.
@@ -5432,7 +5418,7 @@ Exact Fabius primitive ladders & \nolinkurl{normalizedVolterra_extendedFabius}, 
 Fractional Volterra operator and order calculus & \nolinkurl{fractionalVolterra}, \nolinkurl{fractionalVolterra_add}, \nolinkurl{fractionalVolterra_affine}, \nolinkurl{fractionalVolterra_add_one_deriv} & \nolinkurl{FractionalVolterra.lean}, \nolinkurl{FractionalVolterraSemigroup.lean}, and \nolinkurl{FractionalVolterraCalculus.lean} \\
 Fractional Fabius--Rvachev shifts & \nolinkurl{fractionalVolterra_add_one_extendedFabius_of_nonneg}, \nolinkurl{fractionalVolterra_add_one_fabiusReal}, \nolinkurl{fractionalVolterra_add_one_rvachevUp} & \nolinkurl{FabiusFractionalVolterra.lean} \\
 Pointwise analytic finite filters & \nolinkurl{finiteAnalyticSeriesFilter}, \nolinkurl{geometricAnalyticSeriesFilter}, \nolinkurl{geometricLagrangeAnalyticSeriesFilter_shifted} & unconditional diagonal, exact-head/tail, and Gaussian-residual identities in \nolinkurl{AnalyticSeriesFilter.lean} \\
-Rvachev Appell deconvolution and arbitrary-phase polynomial reproduction & \nolinkurl{integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev}, \nolinkurl{integral_eval_rvachevAppellPolynomial_sub_mul_rvachev}, \nolinkurl{integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero}, and \nolinkurl{normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp} & The first three belong to the exact six-definition/thirty-three-theorem surface of \nolinkurl{RvachevMomentAppell.lean}: evenness converts additive smoothing into centered \(x-y\) convolution for every deconvolved polynomial and every Appell monomial, and every positive-degree Appell polynomial has Rvachev mean zero.  The fourth is the fifth theorem of the zero-definition/five-theorem \nolinkurl{RvachevPolynomialSynthesis.lean}: for \(M\ne0\), \(\deg P\le \TwoAdicValuation(M)\), and arbitrary real \(\theta,x\), the normalized lattice sum of \((\mathscr D_{\RvachevUp}P)(x-(\theta+k)/M)\RvachevUp((\theta+k)/M)\) is \(P(x)\).  Here division by \(M\) means real scalar division, and compact support makes the bilateral \texttt{tsum} pointwise finite.  Thus \(M=2^N\) formalizes arbitrary-phase reproduction of every polynomial \(P\) with \(\deg P\le N\), equivalently every monomial \(X^n\) for \(0\le n\le N\).  The Appell-lattice degree-\(N+1\) extension remains outside Lean and uses phases \(\theta\equiv0,1/2\pmod1\) for even \(N\), or \(\theta\equiv1/4,3/4\pmod1\) for odd \(N\).  Neither module supplies an analytic reciprocal MGF or Appell generating series, a literal differential-operator expansion, reciprocal/deconvolution parity, or the displayed low reciprocal coefficients.  With the four unchanged downstream modules, the six-module tranche now contains 104 public declarations. \\
+Rvachev Appell deconvolution, arbitrary-phase reproduction, and parity-selected superconvergence & \nolinkurl{integral_eval_rvachevDeconvolvedPolynomial_sub_mul_rvachev}, \nolinkurl{integral_eval_rvachevAppellPolynomial_sub_mul_rvachev}, \nolinkurl{integral_eval_rvachevAppellPolynomial_mul_rvachev_eq_zero}, \nolinkurl{normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp}, and the exact one-definition/eight-theorem \nolinkurl{RvachevSuperconvergentSynthesis.lean} API & The first three belong to the exact six-definition/thirty-three-theorem surface of \nolinkurl{RvachevMomentAppell.lean}: evenness converts additive smoothing into centered \(x-y\) convolution for every deconvolved polynomial and every Appell monomial, and every positive-degree Appell polynomial has Rvachev mean zero.  The fourth is the fifth theorem of the zero-definition/five-theorem \nolinkurl{RvachevPolynomialSynthesis.lean}: for \(M\ne0\), \(\deg P\le \TwoAdicValuation(M)\), and arbitrary real \(\theta,x\), the normalized lattice sum of \((\mathscr D_{\RvachevUp}P)(x-(\theta+k)/M)\RvachevUp((\theta+k)/M)\) is \(P(x)\).  Here division by \(M\) means real scalar division, and compact support makes the bilateral \texttt{tsum} pointwise finite.  Thus \(M=2^N\) formalizes arbitrary-phase reproduction of every polynomial \(P\) with \(\deg P\le N\), equivalently every monomial \(X^n\) for \(0\le n\le N\).  The new superconvergent module defines \nolinkurl{IsRvachevSuperconvergentPhase} and proves \nolinkurl{isRvachevSuperconvergentPhase_two_pow_iff}, \nolinkurl{tsum_quarter_monomial_eq_integral_of_even_deg}, \nolinkurl{tsum_three_quarters_monomial_eq_integral_of_even_deg}, \nolinkurl{tsum_shifted_monomial_eq_integral_superconvergent}, \nolinkurl{tsum_shifted_polynomial_eq_integral_superconvergent}, \nolinkurl{integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent}, \nolinkurl{normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp_superconvergent}, and \nolinkurl{normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent}.  For every nonzero natural \(M\), these give degree \(\TwoAdicValuation(M)+1\) exactness at selected exact phase representatives; even dyadic level selects \(0,1/2\) and odd level \(1/4,3/4\).  This is stronger than the dyadic-only claim, but is not a modulo-one phase classification or a maximality, positivity, or rationality theorem.  None of these modules supplies an analytic reciprocal MGF or Appell generating series, a literal differential-operator expansion, reciprocal/deconvolution parity, or the displayed low reciprocal coefficients.  With the four unchanged downstream modules, the seven-module tranche has inventories \(6/33,0/5,1/8,2/7,1/7,6/7,5/25\), hence exactly 113 public declarations. \\
 Generic finite-node Lagrange--Rvachev dictionary & Definitions \nolinkurl{lagrangeRvachevDecoder}, \nolinkurl{lagrangeRvachevAtomCoefficient}; theorems \nolinkurl{natDegree_lagrangeBasis_le_card_sub_one}, \nolinkurl{natDegree_lagrangeInterpolate_le_card_sub_one}, \nolinkurl{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp}, \nolinkurl{normalized_sum_Ioo_lagrangeRvachevDecoder_eval_node}, \nolinkurl{lagrangeRvachevAtomCoefficient_eq_deconvolved_interpolate}, \nolinkurl{sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp}, \nolinkurl{sum_lagrangeRvachevDecoder_eq_one} & Exact two-definition/seven-theorem surface in \nolinkurl{LagrangeRvachevSynthesis.lean}.  It proves the generic finite-node cardinal synthesis, componentwise biorthogonality, linear data-to-atom transform, full interpolation loop, and unit row mass under the displayed mesh, interval, distinctness, and nonemptiness hypotheses.  It does not give a geometric Gaussian q-binomial/q-Pochhammer or elementary-symmetric decoder formula, a bundled matrix/right-inverse or stochastic-matrix wrapper, or an optimal/minimum-variation decoder. \\
 Exact even moment \(c_n\) & \nolinkurl{moment}, \nolinkurl{momentIntegral} & \nolinkurl{Arithmetic.lean}, \nolinkurl{Basic.lean}, and \nolinkurl{AnalyticMoments.lean} \\
 Normalized half moment \(d_n\) & \nolinkurl{halfMoment}, \nolinkurl{halfMomentIntegral} & \nolinkurl{Arithmetic.lean}, \nolinkurl{Basic.lean}, and \nolinkurl{AnalyticMoments.lean} \\
@@ -5948,9 +5934,9 @@ Lean audits of the previously recorded new or refactored declarations,
 \nolinkurl{propext}, \nolinkurl{Classical.choice}, and \nolinkurl{Quot.sound}
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
-the 105 activation declarations documented.  The live current-tree census is
-665 modules and 8,819 public declarations, all reachable from the facade under
-the current static audit, with no missing module headers or declaration
+the 105 activation declarations documented.  The authoritative live
+current-tree audit scans 671 modules and 8,859 public declarations, all
+reachable from the facade, with no missing module headers or declaration
 comments.  The historical linear census after the Rvachev Appell and original
 four-theorem \nolinkurl{QPochhammerEntire.lean} tranche, but before the generic
 q-Pochhammer modules, was 621 modules and 8,446 declarations; adding
@@ -6033,12 +6019,28 @@ No new result-status claim is inferred from this live static census.  No
 aggregate facade build is claimed for this union.  The retained
 PDF and title-page pin are historical receipts and remain rebuild-pending;
 they do not claim parity with the merged source.
-Those six counts are \nolinkurl{QPochhammerInfiniteBounds.lean} (0+5),
+For the final union accounting, the central/cyclotomic pair adds thirteen
+declarations to 659/8,769; the four root-of-unity/q-Catalan leaves add one
+definition and 25 theorems to 663/8,795; and the Newton/q-beta pair adds three
+definitions and 21 theorems to 665/8,819.
+\nolinkurl{RvachevSuperconvergentSynthesis.lean} then contributes one
+definition and eight theorems, the integer/complex-upper Gaussian,
+q-Pfaff--Saalsch\"utz, and noncommutative q-multinomial leaves contribute four
+modules and 25 declarations, and \nolinkurl{GaussianBinomialBounds.lean}
+contributes six new theorems.  The authoritative union is therefore
+671/8,859, with no documentation gaps.
+The earlier retained six counts are \nolinkurl{QPochhammerInfiniteBounds.lean} (0+5),
 \nolinkurl{HeineTransformation.lean} (2+5),
 \nolinkurl{QGaussSummation.lean} (0+2),
 \nolinkurl{QPochhammerComplexOrder.lean} (1+4),
 \nolinkurl{BasicHypergeometricSeries.lean} (2+5), and
 \nolinkurl{QMultinomial.lean} (1+9).
+For the last module, \nolinkurl{qMultinomial},
+\nolinkurl{qMultinomial_nil}, and \nolinkurl{qMultinomial_cons} require only
+an arbitrary semiring.  The diagonal, singleton, pair, naturality, and
+universal laws require a commutative semiring; the factorial identity uses a
+commutative ring, and the field quotient assumes exactly
+\((q;q)_{\sum l}\ne0\).
 
 The following two-module union adds thirteen theorems and no definitions.  The
 exhaustive \nolinkurl{CentralQBinomialReduction.lean} surface is
@@ -6184,13 +6186,94 @@ evaluation, q-gamma quotient, symmetry, positivity, and both unit-shift
 recurrences.  The total definition supplies no theorem at \(q=0\) or \(q=1\),
 with a zero parameter, for complex continuation, or for the classical limit.
 
-Thus the first four new leaves contribute one definition and 25 theorems,
-changing 659/8,769 to 663/8,795; the Newton/q-beta pair contributes three
-definitions and 21 theorems, giving the live 665/8,819 census.  The rigorous
-forward q-monograph totals are 80 Exact, 86 Partial, 108 None, and 8 interface
-rows.  The retained 150-page PDF and the other checkpoint PDFs are historical
-receipts predating this union and remain pending fresh uninterrupted parity
-rebuilds.
+The exhaustive one-definition/ten-theorem
+\nolinkurl{GaussianBinomialInteger.lean} surface is
+\nolinkurl{gaussianBinomialZ};
+\nolinkurl{finiteQPochhammerIn_inv_base_eq},
+\nolinkurl{finiteQPochhammerIn_mul_pow_inv_base},
+\nolinkurl{finiteQPochhammerIn_pow_div},
+\nolinkurl{gaussianBinomialZ_zero_right},
+\nolinkurl{gaussianBinomialZ_natCast}, \nolinkurl{gaussianBinomialZ_succ},
+\nolinkurl{gaussianBinomialZ_succ'},
+\nolinkurl{gaussianBinomialZ_neg_natCast},
+\nolinkurl{hasSum_reciprocal_finiteQPochhammerIn}, and
+\nolinkurl{hasSum_reciprocal_finiteQPochhammerIn_neg}.  The finite identities
+are field-valued.  The two inversion laws require \(q\ne0\);
+\nolinkurl{finiteQPochhammerIn_pow_div} needs only \((q;q)_k\ne0\); the
+zero-column law is unconditional; natural agreement and negative reflection
+require \(q\ne0\) and \((q;q)_k\ne0\); and both integer q-Pascal laws require
+\(q\ne0\) and \((q;q)_{k+1}\ne0\).  Over a complete normed field the
+reciprocal series assumes exactly \(\lVert q\rVert<1\) and
+\(\lVert z\rVert<1\) for every \(m\), including zero; its negative-index
+spelling also assumes \(q\ne0\).  No meromorphic continuation or boundary
+theorem is asserted.
+
+The exhaustive one-definition/five-theorem
+\nolinkurl{GaussianBinomialComplexOrder.lean} surface is
+\nolinkurl{gaussianBinomialC};
+\nolinkurl{gaussianBinomialC_intCast},
+\nolinkurl{gaussianBinomialC_natCast},
+\nolinkurl{hasSum_gaussianBinomialC_add},
+\nolinkurl{hasSum_qPochhammerC_inv}, and
+\nolinkurl{hasSum_qPochhammerC}.  The definition uses principal complex
+powers.  Integer agreement is unconditional; natural agreement assumes
+\(q\ne0\) and \((q;q)_k\ne0\).  The upper-parameter and reciprocal series
+assume \(\lVert q\rVert<1\) and \(\lVert z\rVert<1\); the generalized finite
+series additionally assumes \(q\ne0\) and
+\(\lVert zq^\alpha\rVert<1\).  No boundary, branch-independent, or analytic
+continuation result is present.
+
+The exhaustive zero-definition/three-theorem
+\nolinkurl{QPfaffSaalschutz.lean} surface is
+\nolinkurl{finiteQPochhammerIn_ne_zero_of_le},
+\nolinkurl{q_pfaff_saalschutz_term}, and
+\nolinkurl{q_pfaff_saalschutz}.  Over a field, prefix nonvanishing assumes
+only \(m\le n\) and nonvanishing of the longer symbol.  The term and finite
+sum require \(q,a,b,c\ne0\) and nonzero \((q;q)_n\), \((c;q)_n\),
+\((abq/(cq^n);q)_n\), and \((c/(ab);q)_n\); the term additionally assumes
+\(k\le n\).  The case \(n=0\) is included.  This is finite algebra, not a
+convergence theorem.
+
+The exhaustive zero-definition/five-theorem
+\nolinkurl{QuantumMultinomial.lean} surface is
+\nolinkurl{sum_antidiagonalTuple_succ},
+\nolinkurl{gaussianBinomial_eq_evalRingHom_quantum},
+\nolinkurl{gaussianBinomial_symm'},
+\nolinkurl{Commute.qMultinomial_left}, and
+\nolinkurl{quantum_multinomial}.  Tuple decomposition needs only an additive
+commutative monoid; the other theorems hold in an arbitrary, possibly
+noncommutative semiring, with symmetry assuming \(k\le n\).  If \(q\)
+commutes with every \(x_i\) and \(x_jx_i=q(x_ix_j)\) for \(i<j\), the final
+theorem expands every finite power into increasing-index ordered monomials
+weighted by \nolinkurl{qMultinomial}, including \(r=0\) and \(n=0\).  It
+needs neither invertibility nor global centrality and makes no convergence
+claim.
+
+The exhaustive zero-definition/six-theorem
+\nolinkurl{GaussianBinomialBounds.lean} surface is
+\nolinkurl{gaussianBinomial_inv}, \nolinkurl{one_le_gaussianBinomial},
+\nolinkurl{finiteQPochhammerIn_pow_le_one},
+\nolinkurl{gaussianBinomial_le_inv_qPochhammerInfIn},
+\nolinkurl{pow_le_gaussianBinomial_of_one_lt}, and
+\nolinkurl{gaussianBinomial_le_pow_div_of_one_lt}.  Inversion holds over a
+field for \(q\ne0\) and \(k\le n\); the lower bound one holds over a strict
+ordered field for \(q\ge0\) and \(k\le n\).  The real positivity theorem
+\nolinkurl{finiteQPochhammerIn_self_pos} is imported and reused from
+\nolinkurl{GeneralQConditionNumber.lean}, not redeclared here.  That
+positivity input and the infinite-product upper bound assume \(0\le q<1\),
+the finite-factor bound assumes \(0\le q\le1\), and the two large-base
+estimates assume \(Q>1\), with \(k\le n\) wherever a Gaussian coefficient
+occurs.  No above-diagonal, limiting, or asymptotic estimate is claimed.
+
+The already inventoried \nolinkurl{RvachevSuperconvergentSynthesis.lean}
+surface is 1+8.  Together these latest six modules add three definitions and
+37 theorems, taking the 665/8,819 union to the authoritative 671/8,859 census.
+The rigorous forward q-monograph totals are 90 Exact, 85 Partial, 99 None,
+and 8 interface rows.  Evaluated q-Lucas leaves \nolinkurl{thm:q-lucas}
+Partial because the polynomial-congruence lift remains unformalized.  The
+retained 150-page PDF and every other checkpoint PDF are historical receipts
+predating this source union and remain pending fresh uninterrupted parity
+rebuilds; repository checksum ledgers have been abolished.
 \end{remark}
 
 \section{Corrections and critical distinctions}\label{app:corrections}

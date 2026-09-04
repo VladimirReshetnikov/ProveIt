@@ -241,7 +241,7 @@ The following are \emph{not} claimed as discoveries here.
  \item Exact rationality at dyadic points, the moment recurrences, the
  highest-bit recursion, and the finite $q=1/2$ Gaussian-binomial--Thue--Morse
  formula for $\FabiusGlobal(m/2^n)$.
- \item The integer zero set of $\PhiU$, multiplicity $1+\nu_2(m)$ at a nonzero
+ \item The integer zero set of $\PhiU$, multiplicity $1+\TwoAdicValuation(m)$ at a nonzero
  integer $m$, strict logarithmic concavity between zeros, and the sign law
  $\Sign \PhiU(x)=\ThueMorseSign{M}$ on $M<x<M+1$.
  \item The pointwise, metric, probabilistic, extremal, annular, and transfer-operator
@@ -378,7 +378,7 @@ selecting the first $J$ factors gives the elementary rapid-decay estimate
  \frac{2^{J(J-1)/2}}{\pi^J|x|^J}.
 \end{equation}
 The nonzero real zeros are exactly the integers; at $m\ne0$ the multiplicity is
-$1+\nu_2(|m|)$.  If $M<x<M+1$, then
+$1+\TwoAdicValuation(|m|)$.  If $M<x<M+1$, then
 \begin{equation}\label{p1:eq:Phi-sign-law}
  \Sign \PhiU(x)=\ThueMorseSign{M}.
 \end{equation}
@@ -3858,7 +3858,6 @@ L.~C.~Washington,
 % extra macros for part 3
 \renewcommand{\headrulewidth}{0.35pt}
 \renewcommand{\headrule}{\hbox to\headwidth{\color{rulegray}\leaders\hrule height \headrulewidth\hfill}}
-\newcommand{\nuu}{\nu_2}
 \newcommand{\ResPartl}{\operatorname*{Res}}
 \newcommand{\PhiR}{\Phi_r}
 \newcommand{\Nr}{\mathcal N_r}
@@ -3943,7 +3942,7 @@ The present report begins at a boundary not developed in that corpus: the arithm
   \Phi_r(z)=\prod_{h\ge0}\SincPi\!\left(\frac z{2^h}\right)^{\binom h{r-1}},
   \qquad r\ge1.
 \]
-Each member is the Fourier transform of a $C_c^\infty$ probability density on $[-1,1]$ and satisfies the refinement ladder $\Phi_r(2z)=\Phi_r(z)\Phi_{r-1}(z)$, with $\Phi_0(z)=\SincPi(2z)$.  Its zero at an integer $n\ne0$ has multiplicity $\binom{\nu_2(n)+1}{r}$, and the corresponding zero-divisor Dirichlet series is
+Each member is the Fourier transform of a $C_c^\infty$ probability density on $[-1,1]$ and satisfies the refinement ladder $\Phi_r(2z)=\Phi_r(z)\Phi_{r-1}(z)$, with $\Phi_0(z)=\SincPi(2z)$.  Its zero at an integer $n\ne0$ has multiplicity $\binom{\TwoAdicValuation(n)+1}{r}$, and the corresponding zero-divisor Dirichlet series is
 \[
   \mathcal Z_r(s)=\zeta(s)\frac{2^{-(r-1)s}}{(1-2^{-s})^r}.
 \]
@@ -3967,7 +3966,7 @@ Finally, the left-endpoint Laplace exponent admits a Mellin representation whose
 \end{abstract}
 
 \begin{statusbox}[Frontier and proof status]
-\textbf{Known inputs.}  The classical up-function sinc product, its probability interpretation, its canonical integer zero set with multiplicities $1+\nu_2(n)$, its Thue--Morse sign law, and its rank-one endpoint/Fourier asymptotics are treated in the surveyed corpus and literature.
+\textbf{Known inputs.}  The classical up-function sinc product, its probability interpretation, its canonical integer zero set with multiplicities $1+\TwoAdicValuation(n)$, its Thue--Morse sign law, and its rank-one endpoint/Fourier asymptotics are treated in the surveyed corpus and literature.
 
 \textbf{Proved in this report.}  The cumulative spectral counting identities; the Pascal--Rvachev hierarchy; its refinement, support, zero divisor, zeta function, exact digital count, automatic signs, Prouhet partitions, $q$-scale identities, cumulants, Gaussian rank limit, sharp Fourier envelope, and Mellin residue expansion.
 
@@ -4004,7 +4003,7 @@ Throughout,
   \qquad
   \FourierTwoPi{f}(\xi):=\int_{\RealNumbers}f(x)e^{-2\pi i x\xi}\,\Differential x.
 \]
-Thus the Fourier transform of the uniform probability density on $[-a/2,a/2]$ is $\SincPi(a\xi)$.  The $2$-adic valuation of a positive integer is $\nu_2(n)$, and
+Thus the Fourier transform of the uniform probability density on $[-a/2,a/2]$ is $\SincPi(a\xi)$.  The $2$-adic valuation of a positive integer is $\TwoAdicValuation(n)$, and
 \[
   n=\sum_{j\ge0}b_j(n)2^j,
   \qquad b_j(n)\in\{0,1\},
@@ -4036,7 +4035,7 @@ The surveyed sources \cite{p3:repo-primary,p3:repo-frontiers,p3:arias1982,p3:ari
 \item moment formulae and arithmetic denominator questions;
 \item the canonical product
 \[
-  \Phi_1(z)=\prod_{n=1}^{\infty}\left(1-\frac{z^2}{n^2}\right)^{1+\nu_2(n)};
+  \Phi_1(z)=\prod_{n=1}^{\infty}\left(1-\frac{z^2}{n^2}\right)^{1+\TwoAdicValuation(n)};
 \]
 \item the sign law $\Sign\Phi_1(x)=\ThueMorseSign{N}$ for $N<x<N+1$;
 \item pointwise, metric, mean, extremal, annular, and near-zero analyses of the Fourier decay;
@@ -4052,7 +4051,7 @@ The new work below does not compete with those results.  It asks what becomes vi
 
 For a positive integer $n$, the zero multiplicity of \eqref{p3:eq:phi1} is
 \[
-  \mu_1(n)=1+\nu_2(n).
+  \mu_1(n)=1+\TwoAdicValuation(n).
 \]
 Define the cumulative positive-zero multiplicity
 \[
@@ -4094,7 +4093,7 @@ Let
 \]
 At $n\ge1$ its zero multiplicity is
 \[
-  \mu_{1,M}(n)=\min\{M,1+\nu_2(n)\}.
+  \mu_{1,M}(n)=\min\{M,1+\TwoAdicValuation(n)\}.
 \]
 
 \begin{proposition}[Finite-scale count]\label{p3:prop:finite-classical}
@@ -4131,7 +4130,7 @@ The canonical product suggests treating the zero multiplicities as an arithmetic
 \begin{definition}
 For $\Re s>1$, define the zero-divisor Dirichlet series
 \[
-  \mathcal Z_1(s):=\sum_{n\ge1}\frac{1+\nu_2(n)}{n^s},
+  \mathcal Z_1(s):=\sum_{n\ge1}\frac{1+\TwoAdicValuation(n)}{n^s},
   \qquad
   \mathcal Z_{1,M}(s):=\sum_{n\ge1}\frac{\mu_{1,M}(n)}{n^s}.
 \]
@@ -4153,7 +4152,7 @@ At $s=s_k$ its residue is $\zeta(s_k)/\log2$.
 \end{theorem}
 
 \begin{proof}
-Write $1+\nu_2(n)=\sum_{h\ge0}\IndicatorOf{2^h\mid n}$.  Absolute convergence permits interchange:
+Write $1+\TwoAdicValuation(n)=\sum_{h\ge0}\IndicatorOf{2^h\mid n}$.  Absolute convergence permits interchange:
 \[
  \mathcal Z_1(s)=\sum_{h\ge0}\sum_{m\ge1}(2^hm)^{-s}
  =\zeta(s)\sum_{h\ge0}2^{-hs}
@@ -4294,8 +4293,8 @@ This is the endpoint counterpart of the Fourier ladder and will drive the Mellin
 \begin{theorem}[Pascal zero multiplicity]\label{p3:thm:zero-multiplicity}
 Let $r\ge1$ and $n\in\IntegerNumbers\setminus\{0\}$.  The multiplicity of the zero of $\Phi_r$ at $n$ is
 \begin{equation}\label{p3:eq:mu-r}
-  \mu_r(n)=\sum_{h=0}^{\nu_2(|n|)}\binom h{r-1}
-  =\binom{\nu_2(|n|)+1}{r}.
+  \mu_r(n)=\sum_{h=0}^{\TwoAdicValuation(|n|)}\binom h{r-1}
+  =\binom{\TwoAdicValuation(|n|)+1}{r}.
 \end{equation}
 Consequently,
 \begin{equation}\label{p3:eq:canonical-r}
@@ -4306,7 +4305,7 @@ The product converges normally on compact sets.
 \end{theorem}
 
 \begin{proof}
-The factor at scale $h$ vanishes at $n$ precisely when $2^h\mid n$, and then contributes multiplicity $\binom h{r-1}$.  Summing over $0\le h\le\nu_2(n)$ and applying the hockey-stick identity gives \eqref{p3:eq:mu-r}.  Expanding each sinc by Euler's product and collecting equal zeros yields \eqref{p3:eq:canonical-r}.  Normal convergence follows from
+The factor at scale $h$ vanishes at $n$ precisely when $2^h\mid n$, and then contributes multiplicity $\binom h{r-1}$.  Summing over $0\le h\le\TwoAdicValuation(n)$ and applying the hockey-stick identity gives \eqref{p3:eq:mu-r}.  Expanding each sinc by Euler's product and collecting equal zeros yields \eqref{p3:eq:canonical-r}.  Normal convergence follows from
 $\sum_n\mu_r(n)n^{-2}<\infty$, a consequence of \cref{p3:thm:zeta-r} below.
 \end{proof}
 
@@ -4315,12 +4314,12 @@ The finite arithmetic equality in \eqref{p3:eq:mu-r} is now machine-checked:
 \path{weightedScaleMultiplicity_choose} in
 \path{WeightedScaleMultiplicity.lean}, specialized to base $2$ and Lean's
 Pascal index $r-1$, proves
-$\sum_{h=0}^{\nu_2(n)}\binom h{r-1}=\binom{\nu_2(n)+1}r$.
+$\sum_{h=0}^{\TwoAdicValuation(n)}\binom h{r-1}=\binom{\TwoAdicValuation(n)+1}r$.
 It does \emph{not} by itself prove that this number is the analytic zero
 order of $\Phi_r$, nor does it establish \eqref{p3:eq:canonical-r} or normal
 convergence.  Those assertions remain in the analytic frontier.
 
-Thus $\Phi_r$ has a zero at $n$ exactly when $2^{r-1}\mid n$.  Higher rank does not spread the zeros; it thins their locations while increasing their multiplicities according to the $r$th binomial coefficient in $\nu_2(n)+1$.
+Thus $\Phi_r$ has a zero at $n$ exactly when $2^{r-1}\mid n$.  Higher rank does not spread the zeros; it thins their locations while increasing their multiplicities according to the $r$th binomial coefficient in $\TwoAdicValuation(n)+1$.
 
 \subsection{Finite scale and a Pascal tail formula}
 
@@ -4331,7 +4330,7 @@ Define
 \end{equation}
 Its zero multiplicity is
 \begin{equation}\label{p3:eq:finite-mu-r}
-  \mu_{r,M}(n)=\binom{\min\{M,\nu_2(n)+1\}}{r}.
+  \mu_{r,M}(n)=\binom{\min\{M,\TwoAdicValuation(n)+1\}}{r}.
 \end{equation}
 Let
 \[
@@ -4415,7 +4414,7 @@ For $|u2^{-s}|<|1-2^{-s}|$,
 At each fixed integer $n\ge1$,
 \begin{equation}\label{p3:eq:mu-rank-gen}
  \sum_{r\ge1}\mu_r(n)u^{r-1}
- =\frac{(1+u)^{\nu_2(n)+1}-1}{u}.
+ =\frac{(1+u)^{\TwoAdicValuation(n)+1}-1}{u}.
 \end{equation}
 \end{corollary}
 
@@ -4688,11 +4687,11 @@ The largest centered summand divided by the standard deviation is $\BigO(m^{-1/2
 \begin{resultbox}[Spectral arithmetic summary]
 The integer zero divisor now carries three nested layers of binary information:
 \begin{enumerate}[label=\arabic*.]
-\item the full multiplicity $\binom{\nu_2(n)+1}{r}$;
+\item the full multiplicity $\binom{\TwoAdicValuation(n)+1}{r}$;
 \item the exact cumulative discrepancy $S_r(N)$, a polynomially weighted digit sum;
 \item the mod-$2$ sign mask $\binom j{r-1}\bmod2$, a periodic row of Pascal's triangle generating an automatic sequence and exact Prouhet partitions.
 \end{enumerate}
-For $r=1$ these collapse respectively to $1+\nu_2(n)$, $\BinaryDigitSum(N)$, and the ordinary Thue--Morse sign.
+For $r=1$ these collapse respectively to $1+\TwoAdicValuation(n)$, $\BinaryDigitSum(N)$, and the ordinary Thue--Morse sign.
 \end{resultbox}
 
 \section{\texorpdfstring{$q$}{q}-scale calculus: Pascal maxima versus Gaussian sums}\label{p3:sec:qcalculus}
@@ -5398,7 +5397,7 @@ has the two exact forms
 \begin{align}
  \mathscr R_N(u)
  &=\sum_{n=1}^{N}
-   \frac{(1+u)^{\nu_2(n)+1}-1}{u},\label{p3:eq:rank-count-valuations}\\
+   \frac{(1+u)^{\TwoAdicValuation(n)+1}-1}{u},\label{p3:eq:rank-count-valuations}\\
  &=\frac{2N-\displaystyle\sum_{j\ge0}b_j(N)(1+u)^{j+1}}
  {1-u}.\label{p3:eq:rank-count-digits}
 \end{align}
@@ -5501,7 +5500,7 @@ Refinement
 & Pascal's identity becomes convolution and moment recurrences.\\
 
 Integer zero divisor
-& $\mu_r(n)=\binom{\nu_2(n)+1}{r}$
+& $\mu_r(n)=\binom{\TwoAdicValuation(n)+1}{r}$
 & Valuations, entire products, and rank-generating polynomials.\\
 
 Zero zeta
@@ -5751,7 +5750,7 @@ already fixed.
 
 The original rank-one sinc product contains more arithmetic than its pointwise sign pattern suggests.  Counting its zeros with multiplicity gives the exact formula $2N-\BinaryDigitSum(N)$, so the Thue--Morse sequence is the parity boundary of a spectral counting law.  Promoting the constant scale multiplicity to the Pascal column $\binom h{r-1}$ reveals that this is the first case of a coherent hierarchy rather than an isolated coincidence.
 
-The hierarchy is unusually rigid.  Its support remains $[-1,1]$ at every rank; its refinement is exactly Pascal's identity; its zero multiplicities are binomial polynomials in $\nu_2$; its zero zeta function is elementary; its finite counts are digital; its signs are automatic; its blocks solve exact Prouhet problems; its moments are rational; and its normalized central laws become Gaussian.  In the two most delicate asymptotic regimes, the same coefficient
+The hierarchy is unusually rigid.  Its support remains $[-1,1]$ at every rank; its refinement is exactly Pascal's identity; its zero multiplicities are binomial polynomials in $\TwoAdicValuation$; its zero zeta function is elementary; its finite counts are digital; its signs are automatic; its blocks solve exact Prouhet problems; its moments are rational; and its normalized central laws become Gaussian.  In the two most delicate asymptotic regimes, the same coefficient
 $C_r=((r+1)!(\log2)^r)^{-1}$ governs sharp Fourier decay and endpoint small deviations.
 
 The most consequential structural result is the common scale zeta factor.  It converts a scale enumeration into the entire zero divisor, the local Fourier logarithm, all even cumulants, and the endpoint Mellin transform.  Its real pole at zero determines the main logarithmic degree; its imaginary dyadic lattice determines periodic corrections; and the resulting endpoint saddle is inverted by $W_{-1}$.  This places the Thue--Morse, $q$-binomial, sinc-product, and Lambert-$W$ phenomena within one exact analytic mechanism.
@@ -6028,7 +6027,7 @@ $X_r$ & centered random series with characteristic function $\Phi_r$\\
 $f_r$ & density of $X_r$, supported on $[-1,1]$\\
 $D_r=X_r+1$ & shifted nonnegative series, supported on $[0,2]$\\
 $H_r$ & distribution function $\Probability(D_r\le x)$\\
-$\mu_r(n)$ & integer-zero multiplicity $\binom{\nu_2(n)+1}{r}$\\
+$\mu_r(n)$ & integer-zero multiplicity $\binom{\TwoAdicValuation(n)+1}{r}$\\
 $\mathcal N_r(N)$ & cumulative positive-zero multiplicity through $N$\\
 $Q_r(j)$ & Pascal tail weight $\sum_{k<r}\binom{j+1}{k}$\\
 $S_r(N)$ & digital discrepancy $\sum_jb_j(N)Q_r(j)$\\

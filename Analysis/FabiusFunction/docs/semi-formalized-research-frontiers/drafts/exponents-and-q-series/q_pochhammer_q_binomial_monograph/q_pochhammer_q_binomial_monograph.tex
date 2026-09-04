@@ -135,6 +135,9 @@
 \newcommand{\LatticePathArea}[1]{\operatorname{area}(#1)}
 \newcommand{\WeightCharacter}[2]{\operatorname{ch}_{#2}\!\left(#1\right)}
 \newcommand{\CyclotomicValuation}[3]{\nu^{\mathrm{cyc}}_{#1,#2}\!\left(#3\right)}
+\newcommand{\BellBlockMultiplicity}[1]{m^{\mathrm{Bell}}_{#1}}
+\newcommand{\MacMahonQCatalanPolynomial}[2]{%
+  C^{\mathrm{Mac}}_{#1}\!\left(#2\right)}
 \newcommand{\SubspaceMobius}[3]{\mu_{\mathcal L(#1)}\!\left(#2,#3\right)}
 \newcommand{\MultiplicativeTheta}[2]{\vartheta_{\mathrm{mult}}\!\left(#1;#2\right)}
 \newcommand{\BilateralTheta}[2]{\Theta_{\mathrm{bil}}\!\left(#1;#2\right)}
@@ -647,15 +650,15 @@ with $g_j$ entire.  Differentiating at $a_0$, where $1-a_0q^j=0$, leaves only $-
 This theorem has an exact Lean counterpart in
 \path{FabiusFunction.QPochhammerEntire}.  For a fixed complex nome with
 $\Norm q<1$, the declaration
-\texttt{hasProdLocallyUniformly\_complexQPochhammerInf} proves locally
+\path{hasProdLocallyUniformly_complexQPochhammerInf} proves locally
 uniform convergence on the whole $a$-plane and
-\texttt{complexQPochhammerInf\_differentiable} proves entirety.  The
-division-free theorem \texttt{complexQPochhammerInf\_eq\_zero\_iff} says
+\path{complexQPochhammerInf_differentiable} proves entirety.  The
+division-free theorem \path{complexQPochhammerInf_eq_zero_iff} says
 that the product vanishes exactly when some factor $1-aq^j$ vanishes; it
 remains valid at $q=0$.  Under the present theorem's hypothesis $q\ne0$,
-\texttt{complexQPochhammerInf\_eq\_zero\_iff\_eq\_inv\_pow} gives the
+\path{complexQPochhammerInf_eq_zero_iff_eq_inv_pow} gives the
 literal lattice $a=(q^j)^{-1}$.  Finally,
-\texttt{analyticOrderAt\_complexQPochhammerInf\_of\_eq\_zero} proves that
+\path{analyticOrderAt_complexQPochhammerInf_of_eq_zero} proves that
 every zero has analytic order one.  Its proof splits the infinite product
 into the first $j+1$ factors and a shifted tail; uniqueness of the vanishing
 factor makes both complementary factors nonzero, leaving a nonzero analytic
@@ -5049,9 +5052,23 @@ The degrees add to $4+6+4+6=20=4(10-4)$, as required by reciprocity.
 \index{Catalan number!$q$-analogue}
 For $n\ge0$ put
 \[
- C_n(q)\DefinitionEquals\frac1{\QInteger{n+1}{q}}\GaussianBinomial{2n}{n}{q}.
+ \MacMahonQCatalanPolynomial{n}{q}
+ \DefinitionEquals
+ \frac{\GaussianBinomial{2n}{n}{q}}{\QInteger{n+1}{q}}.
 \]
-Then $C_n(q)\in\IntegerNumbers[q]$; it has degree $n(n-1)$, and $C_n(1)=\frac1{n+1}\binom{2n}{n}$.
+The displayed quotient initially denotes an element of $\RationalNumbers(q)$;
+the assertion is that it is the unique exact polynomial quotient in
+$\IntegerNumbers[q]$, so values at zeros of $\QInteger{n+1}{q}$ mean values of
+that polynomial continuation, not literal division by zero.  At the boundary
+$n=0$ one has
+$\MacMahonQCatalanPolynomial{0}{q}=1$.  The specialization $q=1$ is polynomial
+evaluation and gives
+\[
+ \MacMahonQCatalanPolynomial{n}{1}
+ =\frac1{n+1}\binom{2n}{n}.
+\]
+For general $n$, the polynomial
+$\MacMahonQCatalanPolynomial{n}{q}\in\IntegerNumbers[q]$ has degree $n(n-1)$.
 \end{corollary}
 
 \begin{proof}
@@ -5065,6 +5082,8 @@ Since $q^{N}-1=\prod_{d\mid N}\Phi_d(q)$ and $\Phi_1(q)=q-1$,
  \QInteger{n+1}{q}=\frac{q^{\,n+1}-1}{q-1}
  =\prod_{\substack{d\mid n+1\\ d>1}}\Phi_d(q).
 \]
+The middle quotient is read literally for $q\ne1$ and by its removable
+polynomial continuation $1+q+\cdots+q^n$ at $q=1$.
 Hence $\CyclotomicValuation{d}{q}{\QInteger{n+1}{q}}=1$ exactly for those $d>1$ dividing $n+1$, and
 $\CyclotomicValuation{d}{q}{\QInteger{n+1}{q}}=0$ for every other $d$, the case $d=1$ included: indeed
 $\QInteger{n+1}{q}$ takes the value $n+1\ne0$ at $q=1$, so $q-1$ does not divide it.
@@ -5084,22 +5103,28 @@ $\CyclotomicValuation{d}{q}{\GaussianBinomial{2n}{n}{q}}=1$.  Combining the two 
  \ge\CyclotomicValuation{d}{q}{\QInteger{n+1}{q}}
  \qquad\text{for every }d\ge1,
 \]
-so $\QInteger{n+1}{q}$ divides $\GaussianBinomial{2n}{n}{q}$ in $\RationalNumbers[q]$ and $C_n\in\RationalNumbers[q]$.
+so $\QInteger{n+1}{q}$ divides $\GaussianBinomial{2n}{n}{q}$ in $\RationalNumbers[q]$ and
+$\MacMahonQCatalanPolynomial{n}{q}\in\RationalNumbers[q]$.
 Moreover $\QInteger{n+1}{q}=1+q+\cdots+q^{n}$ is monic and
 $\GaussianBinomial{2n}{n}{q}\in\IntegerNumbers[q]$ by \Cref{cor:positivity}, so division with remainder
 in $\IntegerNumbers[q]$ produces a quotient in $\IntegerNumbers[q]$; by uniqueness of the quotient in
-$\RationalNumbers[q]$ that quotient is $C_n$, whence $C_n\in\IntegerNumbers[q]$.
+$\RationalNumbers[q]$ that quotient is
+$\MacMahonQCatalanPolynomial{n}{q}$, whence
+$\MacMahonQCatalanPolynomial{n}{q}\in\IntegerNumbers[q]$.
 
 Finally, $\deg\GaussianBinomial{2n}{n}{q}=n\cdot n=n^2$ by
 \Cref{thm:qbinom-structure}(iii) and $\deg\QInteger{n+1}{q}=n$, so
-$\deg C_n=n^2-n$.  Evaluating the polynomial identity
-$\QInteger{n+1}{q}\,C_n(q)=\GaussianBinomial{2n}{n}{q}$ at $q=1$ and using
-\Cref{cor:qbinom-classical} gives $(n+1)C_n(1)=\binom{2n}{n}$.
+$\deg_q\MacMahonQCatalanPolynomial{n}{q}=n^2-n$.  Evaluating the polynomial identity
+$\QInteger{n+1}{q}\,\MacMahonQCatalanPolynomial{n}{q}
+=\GaussianBinomial{2n}{n}{q}$ at $q=1$ and using
+\Cref{cor:qbinom-classical} gives
+$(n+1)\MacMahonQCatalanPolynomial{n}{1}=\binom{2n}{n}$.
 \end{proof}
 
 \begin{remark}\label{rem:q-catalan-positivity}
 The argument above establishes integrality and says nothing about signs.  The
-coefficients of $C_n(q)$ are in fact nonnegative --- $C_n$ enumerates the
+coefficients of $\MacMahonQCatalanPolynomial{n}{q}$ are in fact nonnegative ---
+$\MacMahonQCatalanPolynomial{n}{q}$ enumerates the
 Dyck paths of semilength $n$ by a suitable major-index statistic, for which
 see \cite{Stanley1999} --- but that is a combinatorial theorem and not a
 consequence of cyclotomic divisibility.  Compare \Cref{cor:path-area}, where
@@ -8447,11 +8472,15 @@ cumulants \eqref{eq:halfbase-cumulants}.  Then for every $n\ge0$
  F\bigl(2^{-n}\bigr)
  =\frac{2^{-\binom n2}}{n!}\,\mathcal B_n(\kappa_1,\ldots,\kappa_n)
  =2^{-\binom n2}
- \sum_{\substack{\nu_1,\ldots,\nu_n\ge0\\ \nu_1+2\nu_2+\cdots+n\nu_n=n}}
- \prod_{r=1}^{n}\frac1{\nu_r!}\left(\frac{\kappa_r}{r!}\right)^{\nu_r}.
+ \sum_{\substack{
+   (\BellBlockMultiplicity{r})_{1\le r\le n}\in\NaturalNumbers^n\\
+   \sum_{r=1}^{n}r\,\BellBlockMultiplicity{r}=n}}
+ \prod_{r=1}^{n}\frac1{\BellBlockMultiplicity{r}!}
+ \left(\frac{\kappa_r}{r!}\right)^{\BellBlockMultiplicity{r}}.
 \end{equation}
 Only $\kappa_1$ and the even $\kappa_r$ contribute, and every value $F(2^{-n})$ is
-rational.
+rational.  For $n=0$, the indexing set consists of the unique empty vector in
+$\NaturalNumbers^0$; its weighted sum is $0$, and the associated empty product is $1$.
 \end{corollary}
 
 \begin{proof}
@@ -12512,8 +12541,12 @@ three views are complementary: the table below answers the Lean-status
 question for each labelled forward result, while the concordances preserve
 complete merger provenance without counting a repeated theorem twice.
 An independent lexical audit of the live Lean facade at this checkpoint finds
-665 source modules and 8,819 public declarations, with no missing module
+671 source modules and 8,859 public declarations, with no missing module
 headers or declaration doc comments.
+The census includes \path{RvachevSuperconvergentSynthesis.lean} (one
+definition and eight theorems); that synthesis module changes no row in this
+forward \(q\)-series crosswalk and no row in the immutable source
+concordance.
 
 The classification is deliberately severe, and it is the same rule the
 project uses to decide whether a claim may leave its quarantine boundary.
@@ -12536,8 +12569,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 80 are \statusexact, 86 are
-\statuspartial, 108 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 90 are \statusexact, 85 are
+\statuspartial, 99 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -12625,6 +12658,7 @@ statically checked against the complete public declaration lists:
 \path{QBinomialCauchy.lean}: one definition and five theorems, including the
 compatibility spelling of the primary identity;\\
 \path{QMultinomial.lean}: one definition and nine theorems;\\
+\path{QuantumMultinomial.lean}: zero definitions and five theorems;\\
 \path{CentralQBinomialReduction.lean}: zero definitions and six theorems;\\
 \path{SymmetricFunctionOrthogonality.lean}: one definition and six theorems;\\
 \path{CompleteHomogeneousGenerating.lean}: one definition and six theorems;\\
@@ -12633,8 +12667,10 @@ compatibility spelling of the primary identity;\\
 \path{SymmetricFunctionTransform.lean}: four definitions and five theorems;\\
 \path{SymmetricFunctionGenerating.lean}: two definitions and six theorems;\\
 \path{QDifferenceAnnihilation.lean}: four theorems;\\
+\path{NewtonInterpolation.lean}: two definitions and thirteen theorems;\\
 \path{QExponential.lean}: three definitions and eight theorems;\\
 \path{JacksonIntegral.lean}: one definition and seven theorems;\\
+\path{QBetaIntegral.lean}: one definition and eight theorems;\\
 \path{QBinomialInversionSpecializations.lean}: two definitions and four theorems;\\
 \path{QPochhammerElementaryIdentities.lean}: 13 theorems;\\
 \path{QPochhammerIntegerIndex.lean}: two definitions and fourteen theorems;\\
@@ -12658,8 +12694,10 @@ theorems;\\
 \path{QLucas.lean}: zero definitions and eight theorems;\\
 \path{CyclotomicDivisibility.lean}: zero definitions and three theorems;\\
 \path{QCatalan.lean}: one definition and eleven theorems;\\
-\path{NewtonInterpolation.lean}: two definitions and thirteen theorems;\\
-\path{QBetaIntegral.lean}: one definition and eight theorems;\\
+\path{QPfaffSaalschutz.lean}: zero definitions and three theorems;\\
+\path{GaussianBinomialInteger.lean}: one definition and ten theorems;\\
+\path{GaussianBinomialComplexOrder.lean}: one definition and five theorems;\\
+\path{GaussianBinomialBounds.lean}: zero definitions and six new theorems;\\
 \path{GaussianBinomialPalindromic.lean}: zero definitions and twelve
 theorems;\\
 \path{GaussianBinomialPolynomialStructure.lean}: zero definitions and five
@@ -12825,6 +12863,79 @@ real $x$; the product and gamma evaluations, symmetry, positivity, and both
 recurrences assume exactly $0<q<1$ and $x,y>0$.  They make
 \Cref{thm:qbeta} and \Cref{cor:qbeta-recurrence} exact on their stated real
 domain, without claiming complex continuation or a classical-limit theorem.
+
+\item The one-definition, ten-theorem module
+\path{GaussianBinomialInteger.lean} consists exactly of the definition
+\path{Fabius.gaussianBinomialZ} and the theorems
+\path{Fabius.finiteQPochhammerIn_inv_base_eq},
+\path{Fabius.finiteQPochhammerIn_mul_pow_inv_base},
+\path{Fabius.finiteQPochhammerIn_pow_div},
+\path{Fabius.gaussianBinomialZ_zero_right},
+\path{Fabius.gaussianBinomialZ_natCast},
+\path{Fabius.gaussianBinomialZ_succ},
+\path{Fabius.gaussianBinomialZ_succ'},
+\path{Fabius.gaussianBinomialZ_neg_natCast},
+\path{Fabius.hasSum_reciprocal_finiteQPochhammerIn}, and
+\path{Fabius.hasSum_reciprocal_finiteQPochhammerIn_neg}.  The algebraic
+declarations hold over a field.  Inverse-base and integer-index comparison
+require $q\ne0$; the quotient statements retain their displayed nonzero
+finite \(q\)-Pochhammer denominators, and both Pascal laws require
+$(q;q)_{k+1}\ne0$.  The two series are \path{HasSum} statements in a complete
+normed field under $\lVert q\rVert<1$ and $\lVert z\rVert<1$; the
+negative-index form additionally assumes $q\ne0$.
+
+\item The one-definition, five-theorem module
+\path{GaussianBinomialComplexOrder.lean} consists exactly of the definition
+\path{Fabius.gaussianBinomialC} and the theorems
+\path{Fabius.gaussianBinomialC_intCast},
+\path{Fabius.gaussianBinomialC_natCast},
+\path{Fabius.hasSum_gaussianBinomialC_add},
+\path{Fabius.hasSum_qPochhammerC_inv}, and
+\path{Fabius.hasSum_qPochhammerC}.  The definition uses the principal
+complex power.  Integer agreement is unconditional; natural agreement
+retains $q\ne0$ and the nonzero finite denominator.  The first two series
+assume $\lVert q\rVert<1$ and $\lVert z\rVert<1$; the generalized finite
+series assumes $q\ne0$ and $\lVert zq^\alpha\rVert<1$.
+
+\item The zero-definition, three-theorem module
+\path{QPfaffSaalschutz.lean} consists exactly of
+\path{Fabius.finiteQPochhammerIn_ne_zero_of_le},
+\path{Fabius.q_pfaff_saalschutz_term}, and
+\path{Fabius.q_pfaff_saalschutz}.  The terminating identity is algebraic
+over any field.  It assumes nonzero $q,a,b,c$ and nonzero
+$(q;q)_n$, $(c;q)_n$, $(abq/(cq^n);q)_n$, and $(c/(ab);q)_n$; the term
+theorem additionally assumes $k\le n$.  It makes no convergence or limiting
+claim.
+
+\item The zero-definition, five-theorem module
+\path{QuantumMultinomial.lean} consists exactly of
+\path{Fabius.sum_antidiagonalTuple_succ},
+\path{Fabius.gaussianBinomial_eq_evalRingHom_quantum},
+\path{Fabius.gaussianBinomial_symm'},
+\path{Fabius.Commute.qMultinomial_left}, and
+\path{Fabius.quantum_multinomial}.  Its main theorem holds in every semiring
+when $q$ commutes with each variable and $x_jx_i=q(x_ix_j)$ for $i<j$.
+The sum is over \path{Nat.antidiagonalTuple} and uses an ordered
+\path{List} product; neither centrality of $q$ nor commutativity of the
+ambient semiring is assumed.
+
+\item The zero-definition module
+\path{GaussianBinomialBounds.lean} contributes exactly the six new theorems
+\path{Fabius.gaussianBinomial_inv},
+\path{Fabius.one_le_gaussianBinomial},
+\path{Fabius.finiteQPochhammerIn_pow_le_one},
+\path{Fabius.gaussianBinomial_le_inv_qPochhammerInfIn},
+\path{Fabius.pow_le_gaussianBinomial_of_one_lt}, and
+\path{Fabius.gaussianBinomial_le_pow_div_of_one_lt}.  Reciprocity holds over
+any field for $q\ne0$ and $k\le n$; the lower bound holds in a linearly
+ordered field for $q\ge0$; the remaining bounds are real under the displayed
+$0\le q<1$ or $Q>1$ assumptions.  It reuses the stronger generic positivity
+theorem \path{Fabius.finiteQPochhammerIn_self_pos} from
+\path{GeneralQConditionNumber.lean}; that theorem is not a new declaration of
+this module.  The module proves no asymptotic error estimate.  It makes
+\Cref{prop:qbinom-growth,prop:gaussian-bound,prop:extreme-specializations}
+exact, while \Cref{cor:qgreaterone} remains
+partial because only its reciprocity clause is formalized.
 
 \item The four theorems of \path{QBinomialReciprocity.lean} are
 \path{Fabius.gaussianBinomial_reciprocity_units},
@@ -13461,8 +13572,9 @@ degrees, including the empty and degree-zero boundaries.  Weighted inversion
 is now \statusexact.  Weighted generating products and reciprocal finite
 products are each \statuspartial: their formal power-series identities are
 proved, but their analytic evaluation and convergence clauses are not.  The
-nearby \(q\)-Pfaff--Saalsch\"utz summation remains \statusnone{} and is not
-inferred from a related finite identity.
+nearby terminating \(q\)-Pfaff--Saalsch\"utz summation is now
+\statusexact{} as finite field algebra under its explicit nonzero-factor
+hypotheses; it makes no convergence or limiting claim.
 
 \section{By chapter}
 
@@ -13476,13 +13588,13 @@ $q$-integers and Gaussian coefficients & 8 & 1 & 0 & 0\\
 Finite $q$-binomial theorems and inversion & 9 & 1 & 0 & 0\\
 Weighted binomial coefficients and symmetric functions & 3 & 2 & 3 & 0\\
 Partitions, words, paths, and inversion statistics & 3 & 1 & 5 & 0\\
-Finite fields, Grassmannians, and rank enumeration & 0 & 1 & 5 & 0\\
+Finite fields, Grassmannians, and rank enumeration & 1 & 1 & 4 & 0\\
 Symmetry and unimodality & 0 & 0 & 3 & 0\\
 The infinite $q$-binomial theorem & 1 & 1 & 2 & 0\\
-Basic hypergeometric series & 1 & 3 & 5 & 0\\
+Basic hypergeometric series & 2 & 3 & 4 & 0\\
 Euler telescoping and very-well-poised summations & 0 & 0 & 4 & 0\\
 Bilateral series and Ramanujan's \texorpdfstring{${}_1\psi_1$}{1psi1} sum & 0 & 0 & 2 & 0\\
-$q$-difference calculus and the quantum binomial & 7 & 2 & 1 & 0\\
+$q$-difference calculus and the quantum binomial & 8 & 2 & 0 & 0\\
 The $q$-gamma and $q$-beta functions & 3 & 1 & 4 & 0\\
 Jacobi's triple product & 5 & 2 & 1 & 0\\
 Theta modularity, lattice dissection, and sums of squares & 0 & 0 & 14 & 4\\
@@ -13490,9 +13602,9 @@ Partitions and product--sum identities & 0 & 0 & 4 & 0\\
 Bailey pairs and the Rogers--Ramanujan identities & 1 & 0 & 6 & 0\\
 Bailey transforms and the Andrews--Gordon identities & 0 & 0 & 8 & 1\\
 Cyclotomic factorization and congruences & 5 & 2 & 2 & 0\\
-Negative upper indices and geometric Newton interpolation & 2 & 2 & 5 & 0\\
+Negative upper indices and geometric Newton interpolation & 7 & 0 & 2 & 0\\
 Central $q$-binomial sums and Lambert series & 1 & 0 & 6 & 0\\
-Asymptotic regimes and Bernoulli expansions & 0 & 2 & 6 & 0\\
+Asymptotic regimes and Bernoulli expansions & 2 & 3 & 3 & 0\\
 Exact limits, reciprocity, and research frontiers & 0 & 0 & 5 & 0\\
 Computation, certification, and formal proof architecture & 0 & 3 & 8 & 3\\
 Geometric interpolation and exact $q$-filters & 6 & 2 & 1 & 0\\
@@ -13500,7 +13612,7 @@ Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 6 & 44 & 6 & 0\\
 \midrule
-\textbf{Forward total} & 80 & 86 & 108 & 8\\
+\textbf{Forward total} & 90 & 85 & 99 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -13803,7 +13915,14 @@ theorem, including the reindexed boundary case}\\[2pt]
 \Cref{thm:flag-count} & \statusnone & ---\\[2pt]
 \Cref{thm:rank-matrices} & \statusnone & ---\\[2pt]
 \Cref{thm:grassmann-poincare} & \statusnone & ---\\[2pt]
-\Cref{prop:qbinom-growth} & \statusnone & ---\\[2pt]
+\Cref{prop:qbinom-growth} & \statusexact &
+\texttt{pow\_\allowbreak{}le\_\allowbreak{}gaussianBinomial\_\allowbreak{}of\_\allowbreak{}one\_\allowbreak{}lt},
+\texttt{gaussianBinomial\_\allowbreak{}le\_\allowbreak{}pow\_\allowbreak{}div\_\allowbreak{}of\_\allowbreak{}one\_\allowbreak{}lt},
+\texttt{one\_\allowbreak{}le\_\allowbreak{}gaussianBinomial},
+\texttt{gaussianBinomial\_\allowbreak{}le\_\allowbreak{}inv\_\allowbreak{}qPochhammerInfIn}\newline
+{\footnotesize\texttt{GaussianBinomialBounds}; over $\RealNumbers$, via the
+bounds $1\le[n,k]_q\le1/(q;q)_\infty$ for $0\le q<1$ (the lower bound in every
+ordered field) and reciprocity}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Symmetry and unimodality}\\
 \midrule
@@ -13857,7 +13976,16 @@ formalized}\\[2pt]
 \Cref{lem:cauchy-II} & \statusexact &
 \texttt{finite\_\allowbreak{}qCauchy\_\allowbreak{}second\_\allowbreak{}identity}\newline
 {\footnotesize\texttt{QBinomialCauchy}; arbitrary commutative ring and all parameters/degrees}\\[2pt]
-\Cref{thm:q-pfaff} & \statusnone & ---\\[2pt]
+\Cref{thm:q-pfaff} & \statusexact &
+\texttt{q\_\allowbreak{}pfaff\_\allowbreak{}saalschutz},
+\texttt{q\_\allowbreak{}pfaff\_\allowbreak{}saalschutz\_\allowbreak{}term},
+\texttt{finiteQPochhammerIn\_\allowbreak{}ne\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}le}\newline
+{\footnotesize\texttt{QPfaffSaalschutz}; the terminating sum as a finite
+identity in any field with $q\ne0$, nonzero $a,b,c$, and the four displayed
+denominators nonzero, derived algebraically from
+\texttt{finite\_\allowbreak{}qCauchy\_\allowbreak{}second\_\allowbreak{}identity}
+exactly as in the proof; $q^{-n}$ is $(q^n)^{-1}$ and $abq^{1-n}/c$ is
+$abq/(cq^n)$}\\[2pt]
 \Cref{cor:q-chu} & \statusnone & ---\\[2pt]
 \Cref{lem:2phi1-reversal} & \statusnone & ---\\[2pt]
 \Cref{prop:qchu2-by-reversal} & \statusnone & ---\\[2pt]
@@ -13901,10 +14029,20 @@ $N$, rather than invoking a basis}\\[2pt]
 \Cref{thm:quantum-binomial} & \statusexact &
 \texttt{quantum\_\allowbreak{}binomial},
 \texttt{quantumPlane\_\allowbreak{}mul\_\allowbreak{}pow}\newline
-{\footnotesize\texttt{QuantumBinomial}; every semiring, assuming only that
-$q$ commutes with $X,Y$ and that $YX=qXY$; see
+{\footnotesize\texttt{QuantumBinomial}; every semiring, with $q$ assumed only
+to commute with $X$ and $Y$ and $YX=qXY$; see
 \Cref{rem:quantum-binomial-generality}}\\[2pt]
-\Cref{cor:quantum-multinomial} & \statusnone & ---\\[2pt]
+\Cref{cor:quantum-multinomial} & \statusexact &
+\texttt{quantum\_\allowbreak{}multinomial},
+\texttt{sum\_\allowbreak{}antidiagonalTuple\_\allowbreak{}succ},
+\texttt{gaussianBinomial\_\allowbreak{}symm'},
+\texttt{Commute.qMultinomial\_\allowbreak{}left}\newline
+{\footnotesize\texttt{QuantumMultinomial}; in any semiring, for
+$x_0,\dots,x_{r-1}$ with $x_jx_i=qx_ix_j$ ($i<j$) and $q$ commuting with
+each $x_i$, no centrality of $q$ or ambient commutative ring required; the
+sum runs over \texttt{Finset.Nat.antidiagonalTuple} and the ordered monomial
+is a \texttt{List} product; the symmetry $[n,n-k]_q=[n,k]_q$ is transported
+to every semiring from the universal polynomial}\\[2pt]
 \Cref{cor:qexp-factor} & \statuspartial &
 \texttt{hasSum\_\allowbreak{}qExp},
 \texttt{hasSum\_\allowbreak{}qExpBig},
@@ -13955,7 +14093,9 @@ not formalized}\\[2pt]
 \texttt{qBeta\_\allowbreak{}comm},
 \texttt{qBeta\_\allowbreak{}pos}\newline
 {\footnotesize\texttt{QBetaIntegral}; $B_q(x,y)$ as the Jackson integral
-$\int_0^1 t^{x-1}(qt;q)_\infty/(q^yt;q)_\infty\,d_qt$ over $\RealNumbers$ for
+$\displaystyle\int_0^1 t^{x-1}
+ \frac{\QPochhammer{qt}{q}{\infty}}{\QPochhammer{q^y t}{q}{\infty}}
+ \,\JacksonDifferential{q}{t}$ over $\RealNumbers$ for
 $0<q<1$ and $x,y>0$; the term-by-term tail cancellation, the infinite
 $q$-binomial summation, and the gamma quotient, with symmetry and positivity}\\[2pt]
 \Cref{cor:qbeta-recurrence} & \statusexact &
@@ -14053,17 +14193,24 @@ exponent bound $e_d\le1$ of \texttt{CyclotomicFactorization}}\\[2pt]
 \texttt{qInt\_\allowbreak{}X\_\allowbreak{}mul\_\allowbreak{}qCatalan},
 \texttt{qCatalan\_\allowbreak{}natDegree},
 \texttt{qCatalan\_\allowbreak{}eval\_\allowbreak{}one}\newline
-{\footnotesize\texttt{QCatalan}; $C_n(X)\in\IntegerNumbers[X]$ as the exact
-quotient $[2n,n]_X/[n+1]_X$, the divisibility from the carry criterion and
+{\footnotesize\texttt{QCatalan};
+$\MacMahonQCatalanPolynomial{n}{X}\in\IntegerNumbers[X]$ as the unique exact
+polynomial quotient
+$\GaussianBinomial{2n}{n}{X}/\QInteger{n+1}{X}$, with
+$\MacMahonQCatalanPolynomial{0}{X}=1$; the divisibility from the carry criterion and
 the coprimality of distinct cyclotomic polynomials over
 $\RationalNumbers$ transported to $\IntegerNumbers[X]$ by monicity, the
-degree $n(n-1)$, and $C_n(1)=\operatorname{catalan}(n)$}\\[2pt]
+degree $n(n-1)$, and the polynomial specialization
+$\MacMahonQCatalanPolynomial{n}{1}=\operatorname{catalan}(n)$; here the
+rational presentation $(X^{n+1}-1)/(X-1)$ of the $q$-integer is understood
+at $X=1$ by removable polynomial continuation}\\[2pt]
 \Cref{lem:root-block} & \statusexact &
 \texttt{finiteQPochhammerIn\_\allowbreak{}isPrimitiveRoot},
 \texttt{gaussianBinomial\_\allowbreak{}isPrimitiveRoot\_\allowbreak{}eq\_\allowbreak{}zero}\newline
 {\footnotesize\texttt{PrimitiveRootBlock}; over every integral domain, in the
 form $\prod_{j<d}(1-y\zeta^j)=1-y^d$, derived from the finite $q$-binomial
-theorem at $q=\zeta$ and the vanishing of $[d,k]_\zeta$ for $0<k<d$ (a
+theorem at $q=\zeta$ and the vanishing of
+$\GaussianBinomial{d}{k}{\zeta}$ for $0<k<d$ (a
 consequence of the cyclotomic factorization), rather than from a root count}\\[2pt]
 \Cref{thm:q-lucas} & \statuspartial &
 \texttt{gaussianBinomial\_\allowbreak{}q\_\allowbreak{}lucas},
@@ -14089,19 +14236,59 @@ classes, including total above-row zero extension}\\[2pt]
 \Cref{cor:babbage-derivative} & \statuspartial &
 \texttt{gaussianBinomial\_\allowbreak{}mul\_\allowbreak{}isPrimitiveRoot}\newline
 {\footnotesize\texttt{CyclotomicDivisibility}; the value
-$[an,bn]_\zeta=\binom ab$ from the $q$-Lucas theorem, at every primitive
+$\GaussianBinomial{an}{bn}{\zeta}=\binom{a}{b}$ from the $q$-Lucas theorem,
+at every primitive
 $n$th root of unity of every integral domain; the derivative clause is not
 formalized}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Negative upper indices and geometric Newton interpolation}\\
 \midrule
-\Cref{prop:negative-gaussian} & \statusnone & ---\\[2pt]
-\Cref{thm:generalized-pascal} & \statuspartial & \texttt{gaussianBinomial\_\allowbreak{}succ\_\allowbreak{}succ}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
-\Cref{cor:reciprocal-product-negative} & \statusnone & ---\\[2pt]
-\Cref{thm:upper-parameter-series} & \statusnone & ---\\[2pt]
+\Cref{prop:negative-gaussian} & \statusexact &
+\texttt{gaussianBinomialZ},
+\texttt{gaussianBinomialZ\_\allowbreak{}natCast},
+\texttt{gaussianBinomialZ\_\allowbreak{}neg\_\allowbreak{}natCast},
+\texttt{finiteQPochhammerIn\_\allowbreak{}inv\_\allowbreak{}base\_\allowbreak{}eq}\newline
+{\footnotesize\texttt{GaussianBinomialInteger}; the integer-index coefficient
+$(q^{N-k+1};q)_k/(q;q)_k$ in any field with $q\ne0$, its agreement with the
+Gaussian coefficient for $N\ge0$ (including the value $0$ above the diagonal),
+and the reflection for every $m\ge0$ (the case $m=0$ reads $0=0$ for
+$k\ge1$), with $q^{-mk-\binom k2}$ written as the inverse of a natural
+power}\\[2pt]
+\Cref{thm:generalized-pascal} & \statusexact &
+\texttt{gaussianBinomialZ\_\allowbreak{}succ},
+\texttt{gaussianBinomialZ\_\allowbreak{}succ'},
+\texttt{gaussianBinomial\_\allowbreak{}succ\_\allowbreak{}succ}\newline
+{\footnotesize\texttt{GaussianBinomialInteger}; both Pascal laws for every
+integer upper index in any field with $q\ne0$ and $(q;q)_k\ne0$, not only in
+$\RationalNumbers(q)$; \texttt{FiniteQBinomialCore} for natural
+indices over any semiring}\\[2pt]
+\Cref{cor:reciprocal-product-negative} & \statusexact &
+\texttt{hasSum\_\allowbreak{}reciprocal\_\allowbreak{}finiteQPochhammerIn},
+\texttt{hasSum\_\allowbreak{}reciprocal\_\allowbreak{}finiteQPochhammerIn\_\allowbreak{}neg},
+\texttt{finiteQPochhammerIn\_\allowbreak{}pow\_\allowbreak{}div}\newline
+{\footnotesize\texttt{GaussianBinomialInteger}; both expansions as
+\texttt{HasSum} statements in any complete normed field for $\lVert q\rVert<1$,
+$\lVert z\rVert<1$, and every $m\ge0$; the formal version is
+\texttt{prod\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}qPow\_\allowbreak{}X\_\allowbreak{}mul\_\allowbreak{}gaussianBinomialGeneratingSeries}
+(\texttt{SymmetricFunctionGenerating})}\\[2pt]
+\Cref{thm:upper-parameter-series} & \statusexact &
+\texttt{gaussianBinomialC},
+\texttt{hasSum\_\allowbreak{}gaussianBinomialC\_\allowbreak{}add}\newline
+{\footnotesize\texttt{GaussianBinomialComplexOrder}; complex $\alpha$ with the
+principal branch of $q^\alpha$, $\lVert q\rVert<1$, $\lVert z\rVert<1$}\\[2pt]
 \Cref{thm:complex-gaussian-properties} & \statusnone & ---\\[2pt]
 \Cref{cor:complex-gaussian-classical} & \statusnone & ---\\[2pt]
-\Cref{thm:generalized-qbinomial} & \statuspartial & \texttt{finite\_\allowbreak{}qBinomial\_\allowbreak{}theorem}\newline{\footnotesize\texttt{FiniteQBinomialCore}}\\[2pt]
+\Cref{thm:generalized-qbinomial} & \statusexact &
+\texttt{hasSum\_\allowbreak{}qPochhammerC},
+\texttt{hasSum\_\allowbreak{}qPochhammerC\_\allowbreak{}inv},
+\texttt{gaussianBinomialC\_\allowbreak{}natCast},
+\texttt{finite\_\allowbreak{}qBinomial\_\allowbreak{}theorem}\newline
+{\footnotesize\texttt{GaussianBinomialComplexOrder}; both series over
+$\ComplexNumbers$ for the complex-order symbol \texttt{qPochhammerC}, under
+$\lVert q\rVert<1$, $q\ne0$, $\lVert zq^\alpha\rVert<1$ (finite form) and
+$\lVert z\rVert<1$ (reciprocal form); the integral specializations follow
+from \texttt{gaussianBinomialC\_\allowbreak{}natCast}, and the terminating
+polynomial identity is \texttt{FiniteQBinomialCore}}\\[2pt]
 \Cref{thm:geometric-newton} & \statusexact &
 \texttt{newtonInterpolant},
 \texttt{eval\_\allowbreak{}newtonPoly},
@@ -14113,8 +14300,11 @@ formalized}\\[2pt]
 {\footnotesize\texttt{NewtonInterpolation}; Newton interpolation at arbitrary
 nodes of any field (existence, uniqueness, and the divided-difference
 coefficients via Mathlib's Lagrange interpolant), then specialized to the
-grid $1,q,\dots,q^n$: the basis $\prod_{r<k}(X-q^r)=(-1)^kq^{\binom k2}(X;q^{-1})_k$
-and the denominators $(-1)^jq^{\binom j2+j(k-j)}(q;q)_j(q;q)_{k-j}$, whose
+grid $1,q,\dots,q^n$: the basis
+$\prod_{r<k}(X-q^r)=(-1)^kq^{\binom k2}\QPochhammer{X}{q^{-1}}{k}$
+and the denominators
+$(-1)^jq^{\binom j2+j(k-j)}
+ \QPochhammer{q}{q}{j}\QPochhammer{q}{q}{k-j}$, whose
 exponent equals $jk-\binom{j+1}{2}$}\\[2pt]
 \Cref{cor:geometric-triangular} & \statusexact &
 \texttt{newtonCoeff},
@@ -14156,9 +14346,29 @@ error terms are not stated}\\[2pt]
 {\footnotesize\texttt{JacobiTripleProduct}; only the last clause, the limit
 of $\GaussianBinomial{2m}{m+r}{q}$ for a fixed integer shift $r$, read through
 the zero-extended integer-indexed coefficient}\\[2pt]
-\Cref{prop:gaussian-bound} & \statusnone & ---\\[2pt]
-\Cref{cor:qgreaterone} & \statusnone & ---\\[2pt]
-\Cref{prop:extreme-specializations} & \statusnone & ---\\[2pt]
+\Cref{prop:gaussian-bound} & \statusexact &
+\texttt{one\_\allowbreak{}le\_\allowbreak{}gaussianBinomial},
+\texttt{gaussianBinomial\_\allowbreak{}le\_\allowbreak{}inv\_\allowbreak{}qPochhammerInfIn}\newline
+{\footnotesize\texttt{GaussianBinomialBounds}; over $\RealNumbers$, exactly
+for $0<q<1$ and $k\le n$; the formal upper theorem also permits the boundary
+$q=0$}\\[2pt]
+\Cref{cor:qgreaterone} & \statuspartial &
+\texttt{gaussianBinomial\_\allowbreak{}inv}\newline
+{\footnotesize\texttt{GaussianBinomialBounds}; the reciprocity
+\eqref{eq:qgreaterone-reciprocity} in every field for $q\ne0$, evaluated
+from palindromicity; the asymptotic statements
+\eqref{eq:qgreaterone-fixed-k} and \eqref{eq:qgreaterone-central} are not
+formalized}\\[2pt]
+\Cref{prop:extreme-specializations} & \statusexact &
+\texttt{gaussianBinomial\_\allowbreak{}zero\_\allowbreak{}left},
+\texttt{tendsto\_\allowbreak{}gaussianBinomial\_\allowbreak{}nhds\_\allowbreak{}one},
+\texttt{gaussianBinomial\_\allowbreak{}natDegree},
+\texttt{gaussianBinomial\_\allowbreak{}monic},
+\texttt{coeff\_\allowbreak{}gaussianBinomial\_\allowbreak{}top}\newline
+{\footnotesize\texttt{GaussianBinomialPalindromic};
+\texttt{GaussianBinomialContinuity}; the value $1$ at $q=0$ over every
+semiring, the limit $\binom nk$ in every topological semiring, and the
+monic leading term $q^{k(n-k)}$ of the universal polynomial}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Computation, certification, and formal proof architecture}\\
 \midrule

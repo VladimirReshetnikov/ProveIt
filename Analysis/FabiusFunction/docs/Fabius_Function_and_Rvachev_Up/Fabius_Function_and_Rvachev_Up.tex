@@ -197,16 +197,18 @@ an exact Lean theorem are kept in the companion volume under
 \end{abstract}
 
 \begin{boxedremark}\textbf{Artifact status (1 September 2026).}\space
-The live facade contains exactly 665 source modules and 8,819 public
-declarations: 55 modules and 501 declarations beyond the 610/8,318 activation
-checkpoint, and 16 modules and 121 declarations beyond the 649/8,698
+The live facade contains exactly 671 source modules and 8,859 public
+declarations: 61 modules and 541 declarations beyond the 610/8,318 activation
+checkpoint, and 22 modules and 161 declarations beyond the 649/8,698
 publication-union checkpoint.  This source includes the earlier finite and
 infinite q-series APIs together with the final Gaussian-palindromic, Jackson
 integral, q-exponential, theta, Jacobi-cubic, logarithmic-derivative,
 order-derivative, universal-polynomial, central-reduction, and cyclotomic-
 factorization tranche, followed by primitive-root blocks, q-Lucas evaluation,
 cyclotomic divisibility, q-Catalan polynomials, finite Newton interpolation,
-and the real Jackson q-beta integral.  The retained 189-page A4 PDF, SHA-256
+the real Jackson q-beta integral, Gaussian upper-index and quantum identities,
+superconvergent Rvachev synthesis, and Gaussian bounds.  The retained
+189-page A4 PDF, SHA-256
 \nolinkurl{de0fc11a0ee45cd5a8942385aea543ec456b869a09e560878b021363a657796c},
 is the validated pre-aed checkpoint for the 659-module/8,769-declaration
 source.  It is a historical publication receipt, not a render of the present
@@ -3920,7 +3922,7 @@ Let \(a:\NaturalNumbers\to\NaturalNumbers\) satisfy
  \label{eq:generalized-rvachev-product-identifiability}
 \end{equation}
 The complete generalized zero-divisor theorem and
-\(\nu_2(2^n)=n\) give the sparse but lossless sampling formula
+\(\TwoAdicValuation(2^n)=n\) give the sparse but lossless sampling formula
 \begin{equation}
  \boxed{\quad
  \OrderOperator_{z=2^n}\Phi_a(z)
@@ -3985,15 +3987,18 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the final concurrent source union, the live facade
-census is exactly 665 modules and 8,819 public declarations.  The current TeX
+census is exactly 671 modules and 8,859 public declarations.  The current TeX
 contains the six-theorem prime-power companion-row API, the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, the
 two-module/nine-declaration effective-inverse tranche, the preceding six
-q-series modules, and the final eight-module/fifty-eight-declaration tranche
-below, followed by the two-module/thirteen-theorem central-reduction and
-cyclotomic-factorization layer and the six-module/fifty-declaration extension
-recorded next.  These are source-only overlays; the retained 189-page pre-aed
-PDF is explicitly historical and has not been regenerated for this union.
+q-series modules, the eight-module/fifty-eight-declaration tranche below, the
+two-module/thirteen-theorem central-reduction and cyclotomic-factorization
+layer, the six-module/fifty-declaration extension, the four-module/
+twenty-five-declaration upper-index and quantum tranche, the six new Gaussian
+bounds theorems, and the one-definition/eight-theorem superconvergent
+synthesis API recorded later.  These are source-only overlays; the retained
+189-page pre-union PDF is explicitly historical and has not been regenerated
+for this source.
 
 The six q-calculus module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
@@ -4125,9 +4130,9 @@ Finally, \path{QBetaIntegral.lean} (1+8) has the total real definition
 \lean{qBeta_add_one_right}.  The evaluation, q-gamma identity, symmetry,
 positivity, and recurrences assume exactly \(0<q<1\) and \(x,y>0\); the term
 cancellation assumes \(y>0\) with arbitrary real \(x\).  No complex
-continuation or classical-limit theorem is asserted.  On the 282 labelled
-forward rows the resulting ledger is 80 Exact, 86 Partial, 108 None, and 8
-N/A.  In particular, q-Lucas is Partial: Lean proves the evaluated
+continuation or classical-limit theorem is asserted.  At this pre-upper-index
+checkpoint the 282 labelled forward rows were 80 Exact, 86 Partial, 108 None,
+and 8 N/A.  In particular, q-Lucas is Partial: Lean proves the evaluated
 primitive-root identity, while the manuscript's polynomial congruence modulo
 \(\Phi_d\) still needs a minimal-polynomial lift.
 
@@ -4198,6 +4203,65 @@ leaf has no definitions and five theorems:
 \(\NaturalNumbers[X]\) under \(k\le n\) and supplies the exact universal
 degree, monicity, constant coefficient, reflection, and bounded-index
 coefficient symmetry.
+
+The four root-of-unity and q-Catalan module counts are
+\path{CyclotomicDivisibility.lean} (0+3),
+\path{PrimitiveRootBlock.lean} (0+3),
+\path{QCatalan.lean} (1+11), and
+\path{QLucas.lean} (0+8).  Their one definition and twenty-five theorems add
+the cyclotomic carry criterion, complete primitive-root q-Pochhammer blocks,
+q-Lucas over integral domains, and the integral q-Catalan polynomial with its
+exact degree and Catalan specialization.
+
+The newest interpolation and q-integral module counts are
+\path{NewtonInterpolation.lean} (2+13) and
+\path{QBetaIntegral.lean} (1+8).  Their three definitions and twenty-one
+theorems construct triangular Newton coefficients and interpolants, prove
+evaluation, uniqueness, divided differences, and the geometric-grid formula,
+and evaluate the Jackson q-beta integral in product and q-gamma forms for
+\(0<q<1\) and positive arguments, with symmetry, positivity, and both
+successor recurrences.  No endpoint or \(q\to1\) limit is claimed.
+
+The latest three q-series module counts are
+\path{GaussianBinomialInteger.lean} (1+10),
+\path{GaussianBinomialComplexOrder.lean} (1+5), and
+\path{QPfaffSaalschutz.lean} (0+3).  Their two definitions and eighteen
+theorems extend Gaussian coefficients to integer and principal-branch complex
+upper indices, prove the integer q-Pascal and negative-index reflection laws,
+derive the reciprocal finite and generalized complex-order q-binomial series,
+and establish the terminating balanced \({}_3\phi_2\) q-Pfaff--Saalsch\"utz
+summation over a field.  Nonzero nomes and parameters, strict-contraction
+bounds, and every finite-product nonvanishing premise remain explicit.
+
+The zero-definition/five-theorem module
+\path{QuantumMultinomial.lean} then decomposes natural tuple antidiagonals,
+transports Gaussian symmetry to arbitrary semirings, proves q-multinomial
+coefficient commutation, and establishes the ordered noncommutative
+q-multinomial theorem.  Its hypotheses are exactly that the nome commute with
+each variable and that \(x_jx_i=q(x_ix_j)\) for \(i<j\).  The statement is
+finite and division-free, with no ambient commutativity or convergence
+assumption.
+
+The zero-definition module
+\path{GaussianBinomialBounds.lean} contributes the six new theorems
+\lean{gaussianBinomial_inv}, \lean{one_le_gaussianBinomial},
+\lean{finiteQPochhammerIn_pow_le_one},
+\lean{gaussianBinomial_le_inv_qPochhammerInfIn},
+\lean{pow_le_gaussianBinomial_of_one_lt}, and
+\lean{gaussianBinomial_le_pow_div_of_one_lt}.  Reciprocity is over a field
+with (q\ne0) and (k\le n); the ordered lower bound needs (q\ge0); the
+finite and infinite real-product bounds use respectively (0\le q\le1) and
+(0\le q<1); and the two dimension-dominant estimates assume (Q>1).
+The module proves no fixed-column or central asymptotic and no quantitative
+error term.  It reuses the stronger generic positivity theorem
+\lean{finiteQPochhammerIn_self_pos} from
+\path{GeneralQConditionNumber.lean}; that declaration is not counted again.
+With these rows and the upper-index and quantum tranche, the
+282-row forward ledger is 90 Exact, 85 Partial, 99 None, and 8 interface
+rows.  In particular q-Lucas remains Partial because Lean proves the
+evaluated primitive-root identity, not a polynomial congruence modulo
+\(\Phi_d\); the Gaussian majorant row is Exact, while the (Q>1) asymptotic
+row remains Partial because only reciprocity and finite bounds are proved.
 
 On the real axis the origin is the unique global point of unit modulus:
 \begin{equation}
@@ -6173,10 +6237,31 @@ contribute.  The theorem assumes exactly \(M\ne0\) and
 \(\deg P\le \TwoAdicValuation(M)\).  Thus the specialization \(M=2^N\)
 formalizes arbitrary-phase reproduction of every polynomial
 \(P\in\RealNumbers[X]\) with \(\deg P\le N\), equivalently every monomial
-\(X^n\) for \(0\le n\le N\).  The Appell-lattice extension to degree
-\(N+1\) remains outside Lean and uses the phases
-\(\theta\equiv0,1/2\pmod1\) for even \(N\), or
-\(\theta\equiv1/4,3/4\pmod1\) for odd \(N\).
+\(X^n\) for \(0\le n\le N\).
+
+The compiled module \path{RvachevSuperconvergentSynthesis.lean} adds exactly
+one public definition and eight public theorems.  Its definition
+\lean{IsRvachevSuperconvergentPhase} selects \(0,1/2\) when
+\(\TwoAdicValuation(M)+1\) is odd and \(1/4,3/4\) when it is even.
+The theorem \lean{isRvachevSuperconvergentPhase_two_pow_iff} rewrites this for
+\(M=2^N\): even \(N\) selects the endpoint phases and odd \(N\) the quarter
+phases.  The remaining seven theorems are
+\lean{tsum_quarter_monomial_eq_integral_of_even_deg},
+\lean{tsum_three_quarters_monomial_eq_integral_of_even_deg},
+\lean{tsum_shifted_monomial_eq_integral_superconvergent},
+\lean{tsum_shifted_polynomial_eq_integral_superconvergent},
+\lean{integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent},
+\lean{normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp_superconvergent},
+and
+\lean{normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent}.
+For every nonzero natural \(M\), they prove selected-phase monomial and
+polynomial identities through degree \(\TwoAdicValuation(M)+1\), physical
+quadrature, deconvolved-polynomial reconstruction, and the Appell
+specialization.  This arbitrary-\(M\) result is stronger than the
+manuscript's dyadic-only claim.  The phase predicate uses exact real
+representatives rather than congruence classes modulo one, and the module
+asserts neither a complete phase classification nor maximality, positivity,
+or rationality of the quadrature.
 
 The current-tree module \path{LagrangeRvachevSynthesis.lean} has the exact
 public inventory of two definitions,
@@ -6479,29 +6564,29 @@ Lucas parity is packaged as
 \lean{momentNumerator_odd}.  For every \(n\ge1\), the reduced numerator and denominator of
 \(2d_n\) are both odd, equivalently
 \begin{equation}
- \nu_2(d_n)=-1.                                            \label{eq:half-moment-valuation}
+ \TwoAdicValuation(d_n)=-1.                                            \label{eq:half-moment-valuation}
 \end{equation}
 This is \lean{two_mul_halfMoment_num_den_odd} together with
 \lean{halfMoment_padicVal_two}.
 
 Consequently, for \(n\ge1\),
 \begin{equation}
- \nu_2\!\left(F(2^{-n})\right)
- =-\binom n2-1-\nu_2(n!),                                  \label{eq:valuation-inverse}
+ \TwoAdicValuation\!\left(F(2^{-n})\right)
+ =-\binom n2-1-\TwoAdicValuation(n!),                                  \label{eq:valuation-inverse}
 \end{equation}
 by \lean{fabiusAtInverseTwoPow_padicVal_two}.  The binary form uses the proved Legendre
 identity
 \begin{equation}
- \nu_2(n!)=n-\BinaryDigitSum(n),                                       \label{eq:legendre-v2}
+ \TwoAdicValuation(n!)=n-\BinaryDigitSum(n),                                       \label{eq:legendre-v2}
 \end{equation}
 namely \lean{factorial_padicVal_two}; the combined declaration is
 \lean{fabiusAtInverseTwoPow_padicVal_two_closed} in \path{TwoAdic.lean}.
 
 The central-binomial specialization gives, for every \(n\ge0\),
 \begin{align}
- \nu_2\!\binom{2n}{n}&=\BinaryDigitSum(n),
+ \TwoAdicValuation\!\binom{2n}{n}&=\BinaryDigitSum(n),
                                                    \label{eq:central-binomial-valuation}\\
- \varepsilon_n&=(-1)^{\nu_2\binom{2n}{n}}.
+ \varepsilon_n&=(-1)^{\TwoAdicValuation\binom{2n}{n}}.
                                                    \label{eq:central-binomial-sign}
 \end{align}
 These are \lean{padicValNat_two_centralBinom} and
@@ -11688,17 +11773,18 @@ supremum norm.  The API also provides the raw
 to zero, and the pointwise corollary at every \(x\in[-1,1]\).  It asserts no
 rate, coefficientwise limit, or uniform convergence outside this interval.
 
-The six modules \path{RvachevMomentAppell.lean},
+The seven modules \path{RvachevMomentAppell.lean},
 \path{RvachevPolynomialSynthesis.lean},
+\path{RvachevSuperconvergentSynthesis.lean},
 \path{LagrangeRvachevSynthesis.lean},
 \path{CompositeMeshSharpness.lean},
 \path{FabiusLegendreTranslateBlocks.lean}, and
 \path{FabiusLegendreTranslateSeries.lean} therefore have public
-definition/theorem inventories $6/33$, $0/5$, $2/7$, $1/7$, $6/7$, and $5/25$,
-respectively: exactly $104$ public declarations.  The fourth module proves
+definition/theorem inventories $6/33$, $0/5$, $1/8$, $2/7$, $1/7$, $6/7$,
+and $5/25$, respectively: exactly $113$ public declarations.  The fifth module proves
 least-mesh sharpness only for universal exactness on the complete polynomial
 space through a degree cutoff.  It does not prove minimality for an individual
-Legendre polynomial or a particular partial sum.  The six modules also do not
+Legendre polynomial or a particular partial sum.  The seven modules also do not
 prove a geometric closed form or bundled matrix form for the finite-node
 decoder, decoder optimality, rationality of the atom rows, equality of the fixed-scale and separately
 scaled coefficient vectors, an unconditional
@@ -13266,6 +13352,7 @@ Legendre expansion and computability &
 \path{FabiusLegendreRationalEnergy.lean},
 \path{FabiusSquareEnergyFourier.lean},
 \path{RvachevPolynomialSynthesis.lean},
+\path{RvachevSuperconvergentSynthesis.lean},
 \path{CompositeMeshSharpness.lean},
 \path{FabiusLegendreTranslateBlocks.lean},
 \path{FabiusLegendreTranslateSeries.lean},

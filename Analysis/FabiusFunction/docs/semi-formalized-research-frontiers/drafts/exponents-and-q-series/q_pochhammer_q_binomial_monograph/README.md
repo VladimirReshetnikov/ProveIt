@@ -48,9 +48,8 @@ the earlier six-package inverse provenance is not silently reinterpreted.
 
 The migrated `assets/` tree preserves six experiment programs, nineteen
 CSV/TXT outputs, and fourteen vector figures selected by the historical
-77-row `assets/ASSET_DISPOSITION.csv`. Its active `assets/SHA256SUMS` has 43
-entries because it also covers asset metadata and environment files; this is
-not a contradiction with the 39 retained historical payloads.
+77-row `assets/ASSET_DISPOSITION.csv`. That reviewed disposition distinguishes
+the 39 retained historical payloads from asset metadata and environment files.
 
 ## Validation state
 
@@ -88,60 +87,40 @@ It compares all coefficients through degree 100 using integer arithmetic:
 1,515 equalities in total. This is a transcription-quality gate, explicitly
 not an infinite proof of any recorded identity.
 
-After the pending parity rebuild, the final release-checksum gate is:
+The repository no longer maintains package checksum-ledger files. Publication
+parity is established by a fresh deterministic build and the structural,
+archival, font, page-geometry, and rendering checks recorded here.
 
-```text
-python audit/build_package_checksums.py --check
-```
+The current `q_pochhammer_q_binomial_monograph.pdf` is synchronized with the
+resolved 671-module/8,859-declaration source union.  The 15,016-line,
+709,986-byte master has SHA-256
+`1fc6fdc5dcfa55748ad9de398e3905654ca7e253b0feafa32b3735304b0962ab`;
+the 362-page, 2,300,923-byte PDF has SHA-256
+`4ae8f174305f24423b76bdf9939eb8c2bfd5070eccdcd1e5bd4be582885ce205`.
+After bounded reference-list and breakable-identifier fixes and a clean sidecar state,
+exactly three serial `SOURCE_DATE_EPOCH=1788242400 pdflatex
+-interaction=nonstopmode -halt-on-error` passes produced 352, 362, and 362
+pages. `makeindex` accepted 164 entries, rejected none, and wrote 254 lines
+without warning in each pass.
 
-It checks every permanent package file except the self-referential root
-`SHA256SUMS` ledger itself. At this post-aed source checkpoint the root ledger
-is deliberately marked `PARTIAL/PENDING`: it retains only hash-valid stable
-payload rows and the verified historical PDF row, while omitting the mutable
-README, provenance, and live master. It does not assert source/PDF parity, and
-the command above is not a release gate until a final build regenerates the
-exhaustive 70-row ledger. The nested asset ledger remains independently useful
-because it preserves the migrated experiment and research-figure boundary.
+The final log has no TeX errors, warnings, unresolved references or citations,
+rerun request, overfull box, underfull box, or missing glyph.  All 362 pages
+are A4 with zero rotation, contain extractable nonblank text, and rendered to
+nonempty rasters with no diagnostic output.  Metadata is complete and uses the
+fixed epoch.  `pdffonts` reports 42 rows, all embedded and subsetted, including
+five Libertinus rows, with no Type-3 font.  Pages 1, 18, 319, 321, 324, 340,
+347, and 362 were inspected at full resolution, covering the title, repaired
+long identifiers, formalization
+appendix, new module inventories, forward-status tables, and final index.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a verified historical
-357-page A4 publication receipt from before the aed source integration. Its
-14,635-line, 688,123-byte source had SHA-256
-`30a75dde89df2c1b7b5f5e2b7188ec4dfc17c498aa4ae6c65cf1c6062310ad6b`;
-the 2,270,834-byte PDF has SHA-256
-`3673b2cb7d617ccbcc9e3c32af17dbb9f4e8d8c16882d889d2a299bd128e0593`.
-After a clean sidecar state, exactly three serial
-`SOURCE_DATE_EPOCH=1788242400 pdflatex -interaction=nonstopmode
--halt-on-error` passes produced 346, 357, and 357 pages. `imakeidx` invoked
-`makeindex` in each pass; the stable index accepted 164 entries, rejected
-none, and wrote 254 lines without warning.
+This build resolved the binary merge conflict from the `2b04abd6` source
+boundary.  During that active merge `origin/main` advanced to `cd023e919`, so
+any later source integration must be followed by another clean publication
+build before parity is claimed. Files under `assets/experiments/**/figures/`
+remain research figures rather than publication manuscripts.
 
-The final log has no TeX errors, undefined references or citations, or rerun
-request. Its only layout diagnostics are the three known overfull boxes in
-the long `QPochhammerEntire` identifier paragraph at source lines 647--665.
-Every page is A4 with zero rotation, and an 18-dpi raster audit found ink on
-all 357 pages (the sparsest page still had 193 non-white pixels). The title,
-author, subject, and keyword metadata match the source; both PDF dates resolve
-to the fixed epoch, 2026-09-01 06:00:00 UTC. `pdffonts` reports 42 rows, all
-embedded and subsetted, including five Libertinus rows, with no Type-3 font.
-A representative contact sheet of pages 1, 5, 13, 140, 253, 273, 319, and 357
-was inspected for complete rendering, including the cover, contents,
-theorem-heavy pages, inverse material, the formalization appendix, and index.
-
-Before that build, both the local remote-tracking ref and remote
-`origin/main` were pinned to
-`5e3fe8fcb99d0662096fe39c436d51a6ec7c1169`; the clean working HEAD
-`191cce0e849a330f173c25be2b9f2f4cd7c2f211` had that checkpoint as a merge
-parent. The mandatory post-build check observed that `origin/main` had moved
-to `e6f3308dc377baa46aaa9463f0ae6fe9451d5ee2`. The subsequent integration
-through `aed11fdf2738210f235490ba3477f134bba80aed` changes the live master,
-so the source and PDF hashes above are preserved only as a matched historical
-receipt. The live source has no current render-parity claim; a fresh final
-build, audit, and exhaustive ledger regeneration are pending. Files under
-`assets/experiments/**/figures/` remain research figures rather than
-publication manuscripts.
-
-An independent lexical audit of the live facade union finds exactly 665
-source modules and 8,819 public declarations, with no missing module headers
+An independent lexical audit of the live facade union finds exactly 671
+source modules and 8,859 public declarations, with no missing module headers
 or declaration doc comments. The reviewed 547-row source concordance is an
 immutable merger ledger and remains 73 Lean-proved rows, 405 human-proved
 frontier-result rows, 60 not-applicable rows, and 9 conjecture rows.
@@ -156,7 +135,7 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 80 Exact, 86 Partial, 108 None, and 8 interface rows; the
+status ledger is 90 Exact, 85 Partial, 99 None, and 8 interface rows; the
 191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
 theorem remains Partial even though the three-theorem outer-product leaf proves
 local-uniform (normal) convergence for every complex strict contraction, its
@@ -286,17 +265,78 @@ complete surfaces and boundaries are:
   and recurrences assume exactly `0 < q < 1` and `x,y > 0`. No complex
   continuation or classical-limit theorem is claimed.
 
+The five-module q-series tail contributes exactly 32 further public
+declarations, with these exhaustive surfaces and boundaries:
+
+- `GaussianBinomialInteger` (one definition, ten theorems):
+  `gaussianBinomialZ`; `finiteQPochhammerIn_inv_base_eq`,
+  `finiteQPochhammerIn_mul_pow_inv_base`, `finiteQPochhammerIn_pow_div`,
+  `gaussianBinomialZ_zero_right`, `gaussianBinomialZ_natCast`,
+  `gaussianBinomialZ_succ`, `gaussianBinomialZ_succ'`,
+  `gaussianBinomialZ_neg_natCast`,
+  `hasSum_reciprocal_finiteQPochhammerIn`, and
+  `hasSum_reciprocal_finiteQPochhammerIn_neg`. The algebraic declarations
+  hold over a field. Inverse-base and integer-index comparison require
+  `q ≠ 0`; quotient statements retain the displayed nonzero finite
+  q-Pochhammer denominator, and both Pascal laws require `(q;q)_(k+1) ≠ 0`.
+  The two series are `HasSum` statements in a complete normed field under
+  `‖q‖ < 1` and `‖z‖ < 1`; the negative-index form additionally assumes
+  `q ≠ 0`.
+
+- `GaussianBinomialComplexOrder` (one definition, five theorems):
+  `gaussianBinomialC`; `gaussianBinomialC_intCast`,
+  `gaussianBinomialC_natCast`, `hasSum_gaussianBinomialC_add`,
+  `hasSum_qPochhammerC_inv`, and `hasSum_qPochhammerC`. The definition uses
+  the principal complex power. Integer agreement is unconditional; natural
+  agreement retains `q ≠ 0` and the nonzero finite denominator. The first two
+  series assume `‖q‖ < 1`, `‖z‖ < 1`; the generalized finite series assumes
+  `q ≠ 0` and `‖z*q^α‖ < 1`.
+
+- `QPfaffSaalschutz` (zero definitions, three theorems):
+  `finiteQPochhammerIn_ne_zero_of_le`, `q_pfaff_saalschutz_term`, and
+  `q_pfaff_saalschutz`. The terminating identity is algebraic over any field.
+  It assumes nonzero `q,a,b,c` and nonzero `(q;q)_n`, `(c;q)_n`,
+  `(abq/(cq^n);q)_n`, and `(c/(ab);q)_n`; the term theorem additionally
+  assumes `k ≤ n`. No convergence or limiting claim is made.
+
+- `QuantumMultinomial` (zero definitions, five theorems):
+  `sum_antidiagonalTuple_succ`, `gaussianBinomial_eq_evalRingHom_quantum`,
+  `gaussianBinomial_symm'`, `Commute.qMultinomial_left`, and
+  `quantum_multinomial`. The main theorem holds in every semiring when `q`
+  commutes with each variable and `x_j*x_i = q*(x_i*x_j)` for `i < j`; it
+  sums over `Nat.antidiagonalTuple` and uses the ordered list product. It
+  requires neither a central `q` nor an ambient commutative ring.
+
+- `GaussianBinomialBounds` (zero definitions, six new theorems):
+  `gaussianBinomial_inv`, `one_le_gaussianBinomial`,
+  `finiteQPochhammerIn_pow_le_one`,
+  `gaussianBinomial_le_inv_qPochhammerInfIn`,
+  `pow_le_gaussianBinomial_of_one_lt`, and
+  `gaussianBinomial_le_pow_div_of_one_lt`. Reciprocity holds over any field
+  for `q ≠ 0` and `k ≤ n`; the lower bound holds in a linearly ordered field
+  for `q ≥ 0`; the remaining bounds are real, using `0 ≤ q < 1` or `Q > 1`
+  exactly as displayed. It reuses the stronger generic positivity theorem
+  `finiteQPochhammerIn_self_pos` from `GeneralQConditionNumber`; that theorem
+  is not a new declaration of this module. The module proves no asymptotic
+  error estimate.
+
 The master contains an exhaustive declaration-by-declaration crosswalk for
-these six modules together with the prior ten-module tail. Its 282-row
-forward ledger is 80 Exact, 86 Partial, 108 None, and 8 interface rows.
+these modules together with the prior union. Its 282-row forward ledger is
+90 Exact, 85 Partial, 99 None, and 8 interface rows.
 `lem:central-reduction` and `thm:cyclotomic-pochhammer` remain Exact. In
 particular, `thm:qbinom-structure` is Exact and `thm:qbinom-moments` is
 Partial: palindromicity proves the mean identity, but the variance clause
 remains outside Lean. The half-base Gaussian valuation row also remains
 Partial: Lean proves the reciprocal identity and symmetry used in the
 argument, but not its concluding odd-integer valuation statement.
+The evaluated primitive-root q-Lucas theorem does not provide the manuscript's
+polynomial congruence modulo `Φ_d`, so `thm:q-lucas` remains Partial.
+`prop:qbinom-growth`, `prop:gaussian-bound`, and
+`prop:extreme-specializations` are Exact; `cor:qgreaterone` is Partial because
+only its reciprocity clause is formalized. `RvachevSuperconvergentSynthesis`
+adds one definition and eight theorems to the corpus census but changes no row
+in this forward q-series ledger or the immutable source concordance.
 
-The live master and retained PDF are not synchronized after the aed source
-integration. The partial root `SHA256SUMS` intentionally records only stable
-or historical hash-valid payloads. A fresh publication build and exhaustive
-ledger regeneration are required before release parity may be claimed.
+The live master and retained PDF are not synchronized after the source union.
+A fresh publication build and validation are required before release parity
+may be claimed.

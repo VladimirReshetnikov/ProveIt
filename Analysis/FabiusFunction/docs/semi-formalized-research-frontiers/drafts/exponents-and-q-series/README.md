@@ -42,10 +42,16 @@ definitions and 53 theorems across `GaussianBinomialPalindromic.lean`,
 `PrimitiveRootBlock.lean` (0+3), `QLucas.lean` (0+8),
 `CyclotomicDivisibility.lean` (0+3), `QCatalan.lean` (1+11),
 `NewtonInterpolation.lean` (2+13), and `QBetaIntegral.lean` (1+8): four
-definitions and 46 theorems. A fresh three-pass render and ledger refresh are
-pending. Retained PDFs under its `assets/` tree are research
+definitions and 46 theorems. The final q tail adds
+`GaussianBinomialInteger.lean` (1+10),
+`GaussianBinomialComplexOrder.lean` (1+5), `QPfaffSaalschutz.lean` (0+3),
+`QuantumMultinomial.lean` (0+5), and `GaussianBinomialBounds.lean` (0+6),
+while `RvachevSuperconvergentSynthesis.lean` (1+8) changes the corpus census
+but no q-series status row. The rigorous forward ledger is
+90 Exact / 85 Partial / 99 None / 8 interface rows. A fresh three-pass render
+and validation are pending. Retained PDFs under its `assets/` tree are research
 figures, not alternate manuscript renderings. The current Lean audit contains
-exactly 665 facade-reachable modules and 8,819 public declarations, with no
+exactly 671 facade-reachable modules and 8,859 public declarations, with no
 missing module headers or declaration documentation.
 
 ## Detailed package record
@@ -59,10 +65,10 @@ Current packages and retained intake records:
   four CSV tables, two captured outputs, and four PDF/PNG figure pairs),
   arrived as a bare directory in direct-arrival commit
   `8a184546747082cbd92ad4675fb61981c6b8c3b6`; no archive or outer hash was
-  supplied. Its submitted ledger covers all 20 non-ledger payloads and was
-  refreshed after four CSV entries received CRLF-to-LF normalization. The
-  later strict rebuild replaced the main TeX/PDF pair; the refreshed 20-entry
-  operational ledger verifies every current payload. All five current PDFs
+  supplied. At intake, all 20 delivered payload hashes were verified; four CSV
+  payloads were subsequently normalized from CRLF to LF. The later strict
+  rebuild replaced the main TeX/PDF pair, after which all 20 current payloads
+  were hash-verified. All five current PDFs
   are readable and unencrypted (26 pages total). The main report has 33
   embedded/subset font rows, including five Libertinus rows and eight Type-3
   rows inherited from the four included vector figures; the standalone figure
@@ -80,7 +86,7 @@ Current packages and retained intake records:
   `Fabius_Rvachev_Frontier_Report_2026-08-30-G/` and was filed under this
   title-derived collision-safe name. Its manifest covers the full delivery.
   The current PDF was rebuilt from the final source in three strict passes;
-  the refreshed 19-entry ledger verifies every current payload. The main PDF
+  all 19 current payloads were hash-verified at that checkpoint. The main PDF
   has 33 embedded/subset font rows, including six Libertinus rows and six
   Type-3 rows inherited from the three included vector figures; the standalone
   figure PDFs contain the same six Type-3 rows. Its title and abstract concern
@@ -96,9 +102,9 @@ Current packages and retained intake records:
   results are stated once in their strongest proved form, while independent or
   genuinely stronger results are retained with complete human-readable proofs.
   Its
-  [`PROVENANCE.md`](q_pochhammer_q_binomial_monograph/PROVENANCE.md)
-  records the five-publication merge surface and the earlier six-package
-  inverse lineage. The completed
+  [`PROVENANCE.md`](q_pochhammer_q_binomial_monograph/PROVENANCE.md) records
+  the five-publication merge surface, the earlier six-package inverse lineage,
+  and the historical artifact lineage. The completed
   [`source_concordance.csv`](q_pochhammer_q_binomial_monograph/source_concordance.csv)
   gives a reviewed disposition for all 547 source result environments from the
   five merged publications. Its canonical destinations comprise 73 Lean-proved
@@ -113,7 +119,7 @@ Current packages and retained intake records:
 
   The earlier 335-, 340-, 345-, 347-, and 348-page synchronized pairs remain
   historical provenance. The retained
-  `q_pochhammer_q_binomial_monograph.pdf` is the validated pre-aed 357-page A4
+  `q_pochhammer_q_binomial_monograph.pdf` is the validated pre-union 357-page A4
   artifact, with SHA-256
   `3673b2cb7d617ccbcc9e3c32af17dbb9f4e8d8c16882d889d2a299bd128e0593`.
   Its A4 boxes, text extraction, embedded/subset Type-1 fonts including
@@ -123,10 +129,10 @@ Current packages and retained intake records:
   convergence, exponent identifiability, the complete q-series/q-calculus
   union, and the central-reduction and cyclotomic-factorization modules. That
   PDF validates the preceding 659-module/8,769-declaration source and omits
-  the latest six-module/fifty-declaration extension.
+  the later twelve-module/ninety-declaration extension.
   Consequently the source and retained PDF are distinct payloads and no render
   parity is claimed. The current source fingerprint is intentionally deferred
-  until the pending final-source build and ledger refresh. PDF files retained
+  until the pending final-source build and validation. PDF files retained
   beneath `assets/` are vector research figures, not manuscript builds.
   Manuscript result labels and numerical checks remain
   distinct from Lean verification.
@@ -146,8 +152,8 @@ Current packages and retained intake records:
   cyclotomic asymptotic and natural-boundary layers manuscript-only. The
   retained main PDF has 28 A4 pages, so the five PDFs have 32 pages in total
   (28 main plus four one-page figures). Its current 1,875-line source postdates
-  that rendering; a fresh strict three-pass build and operational-ledger
-  refresh are pending. The retained main PDF uses
+  that rendering; a fresh strict three-pass build and payload validation are
+  pending. The retained main PDF uses
   embedded/subset Type-1 Libertinus fonts with no Type 3 font; the unchanged
   standalone vector figures retain nine embedded/subset Type-3 rows as
   disclosed archival debt.
@@ -155,9 +161,9 @@ Current packages and retained intake records:
 - [`Fabius_Rvachev_Frontier_Report/`](geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/),
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (current
 1,475-line source and matching 26-page A4 PDF), arrived on 2026-08-30 with all
-13 payload checksums verified. Its current PDF was rebuilt from the final
-source, and the refreshed operational ledger verifies all thirteen current
-payloads. It develops
+13 delivered payload digests verified. Its current PDF was rebuilt from the
+final source, and all thirteen current payloads were hash-verified at that
+checkpoint. It develops
 negative-parameter affine transport, reciprocal-base digit reversal,
 multisection, shape theory, and the Gaussian boundary for geometric-uniform
 laws.  Because much of that subject already appears in Part VII of the
@@ -171,9 +177,9 @@ theorem labels do not by themselves assert Lean formalization.
   was filed on 2026-08-30 from `fabius_frontier_report_2026.zip` (803,598 bytes;
   SHA-256
   `afdcf522589a7baad82c81a527c02dcc09e58455ab14c57a9c492e65563c647e`).
-  Its immutable 13-entry arrival ledger verifies 13/13. The current PDF was
-  rebuilt from the final source, and the refreshed 17-entry operational ledger
-  verifies 17/17. The pinned replay reproduced the two exact
+  All thirteen arrival payload hashes verified. The current PDF was rebuilt
+  from the final source, and all seventeen current payloads were hash-verified
+  at that checkpoint. The pinned replay reproduced the two exact
   algebra tables, common-random-number table, and two figures byte-for-byte;
   the two Monte-Carlo tables differed only at documented last-bit levels far
   below their sampling errors. A hostile review repaired the conditional-law
@@ -562,7 +568,7 @@ The retired-analysis-alias migration produced a 16,369-line, 737,768-byte
 source checkpoint with SHA-256
 `4313bddb87a0f248a8bad4bd5e5a7cfbb25da51d1b994abc0c9d4c62525ca78c`.
 The live TeX changed again after that checkpoint and every named source/PDF
-pair. Its final fingerprint is deferred until rebuild and ledger regeneration.
+pair. A current fingerprint is not asserted before final-source validation.
 It adds the upstream
 q-API material, exact zero-order/exponent identifiability with constructive
 dyadic first differences, and the later normal-convergence and `6c7a69be9`
@@ -570,10 +576,10 @@ crosswalks, followed by the final eight-module q-calculus/theta tranche. The
 exact `GeneralizedRvachevIdentifiability.lean` crosswalk gives constructive
 dyadic-order first differences and full-product rigidity;
 zeta-quotient, cumulant/analytic-sample, and probability-law identifiability
-remain Partial in Lean. The retained PDF is therefore historical. The two
-package ledgers explicitly omit the live TeX and certify the current historical
-PDF plus unchanged stable payloads; final-source rendering, fingerprinting,
-ledger regeneration, and full publication validation remain pending. This is the
+remain Partial in Lean. It also replaces raw dyadic-valuation spellings by the
+shared `\TwoAdicValuation` command. The retained PDF is therefore historical;
+final-source rendering, fingerprinting, and full publication validation remain
+pending. This is the
 2026-08-28 consolidation of the two former drafts (Part I:
 Newton-basis frontiers; Part II: q-binomial Richardson), joined the
 same day by the eighth-wave report as **Part III** — *Finite Dyadic
@@ -828,8 +834,8 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 80 Exact, 86
-Partial, 108 with no counterpart, and 8 N/A interface rows. The original
+The latest validated forward formalization ledger has 282 rows: 90 Exact, 85
+Partial, 99 with no counterpart, and 8 interface-only. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
@@ -843,11 +849,11 @@ unformalized results; the q-integer and Gaussian-coefficient chapter for
 8 exact, 1 partial, and 0 unformalized results. The finite
 q-binomial/inversion chapter now accounts for 9 exact, 1 partial, and 0
 unformalized results; the weighted chapter for 3 exact, 2 partial, and 3
-unformalized results; and the basic-hypergeometric chapter for 1 exact, 3
-partial, and 5 unformalized results. The cyclotomic chapter now has 6 exact,
-1 partial, and 2 unformalized results; q-gamma/q-beta has 3 exact, 1 partial,
-and 4 unformalized results; and negative upper indices/geometric Newton has 2
-exact, 2 partial, and 5 unformalized results. The exact rows include the primary and
+unformalized results; and the basic-hypergeometric chapter for 2 exact, 3
+partial, and 4 unformalized results. The cyclotomic chapter now has 5 exact,
+2 partial, and 2 unformalized results; q-gamma/q-beta has 3 exact, 1 partial,
+and 4 unformalized results; and negative upper indices/geometric Newton has 7
+exact, 0 partial, and 2 unformalized results. The exact rows include the primary and
 second q-Cauchy identities, both weighted-Pascal recurrences,
 elementary--complete orthogonality, and weighted symmetric-function inversion.
 Their adjacent strengthenings are recorded human-readably in the canonical
@@ -856,8 +862,9 @@ reflected q-Cauchy and the q-Bernstein partition of unity, plus total
 empty-family and degree-zero boundaries. Weighted generating products and the
 reciprocal finite theorem are partial because their formal power-series
 identities are exact while their analytic evaluation and convergence clauses
-remain open. The q-Pfaff--Saalschütz summation remains unformalized; no status
-is inferred from a related finite identity. These counts and boundaries were
+remain open. The terminating q-Pfaff--Saalschütz summation is Exact as finite
+field algebra under its explicit nonzero-factor hypotheses; it makes no
+convergence claim. These counts and boundaries were
 statically cross-checked against the exhaustive public surfaces of
 `QBinomialCauchy.lean` (one definition and five theorems, including the
 compatibility spelling of its primary identity),
@@ -881,6 +888,11 @@ compatibility spelling of its primary identity),
 `QCatalan.lean` (one definition, eleven theorems),
 `NewtonInterpolation.lean` (two definitions, thirteen theorems),
 `QBetaIntegral.lean` (one definition, eight theorems),
+`GaussianBinomialInteger.lean` (one definition, ten theorems),
+`GaussianBinomialComplexOrder.lean` (one definition, five theorems),
+`QPfaffSaalschutz.lean` (zero definitions, three theorems),
+`QuantumMultinomial.lean` (zero definitions, five theorems),
+`GaussianBinomialBounds.lean` (zero definitions, six new theorems),
 `GaussianBinomialAtNegOne.lean` (five theorems),
 `RvachevPochhammerFactorization.lean` (one definition, ten theorems),
 `QPochhammerEntire.lean` (zero definitions, five theorems),
@@ -1264,13 +1276,83 @@ and both recurrences assume `0 < q < 1` and `x,y > 0`; term cancellation
 assumes `y > 0` with arbitrary real `x`. No complex continuation or classical
 limit is formalized.
 
+`GaussianBinomialInteger.lean` has the definition `gaussianBinomialZ` and
+exactly ten theorems: `finiteQPochhammerIn_inv_base_eq`,
+`finiteQPochhammerIn_mul_pow_inv_base`, `finiteQPochhammerIn_pow_div`,
+`gaussianBinomialZ_zero_right`, `gaussianBinomialZ_natCast`,
+`gaussianBinomialZ_succ`, `gaussianBinomialZ_succ'`,
+`gaussianBinomialZ_neg_natCast`,
+`hasSum_reciprocal_finiteQPochhammerIn`, and
+`hasSum_reciprocal_finiteQPochhammerIn_neg`. Its algebraic declarations are
+over a field. Inverse-base and natural-index comparison require `q ≠ 0`,
+quotient and Pascal forms retain the displayed nonzero denominators, and the
+two `HasSum` results require a complete normed field, `‖q‖ < 1`, and
+`‖z‖ < 1`, with `q ≠ 0` additionally required for the negative-index series.
+
+`GaussianBinomialComplexOrder.lean` has the principal-power definition
+`gaussianBinomialC` and exactly five theorems:
+`gaussianBinomialC_intCast`, `gaussianBinomialC_natCast`,
+`hasSum_gaussianBinomialC_add`, `hasSum_qPochhammerC_inv`, and
+`hasSum_qPochhammerC`. Integer agreement is unconditional; natural
+agreement requires `q ≠ 0` and its nonzero finite denominator. The first two
+series assume `‖q‖ < 1` and `‖z‖ < 1`; the generalized finite series assumes
+`q ≠ 0` and `‖z*q^α‖ < 1`.
+
+`QPfaffSaalschutz.lean` has zero definitions and exactly three theorems:
+`finiteQPochhammerIn_ne_zero_of_le`, `q_pfaff_saalschutz_term`, and
+`q_pfaff_saalschutz`. The terminating identity is field algebra under
+nonzero `q,a,b,c` and nonzero `(q;q)_n`, `(c;q)_n`,
+`(abq/(cq^n);q)_n`, and `(c/(ab);q)_n`; the term theorem additionally
+assumes `k ≤ n`. No convergence claim is made.
+
+`QuantumMultinomial.lean` has zero definitions and exactly five theorems:
+`sum_antidiagonalTuple_succ`, `gaussianBinomial_eq_evalRingHom_quantum`,
+`gaussianBinomial_symm'`, `Commute.qMultinomial_left`, and
+`quantum_multinomial`. The ordered theorem holds in every semiring when `q`
+commutes with each variable and `x_j*x_i = q*(x_i*x_j)` for `i < j`; it
+uses `Nat.antidiagonalTuple` and a list product and assumes no centrality,
+ambient commutativity, division, or convergence.
+
+`GaussianBinomialBounds.lean` has zero definitions and exactly six new
+theorems: `gaussianBinomial_inv`, `one_le_gaussianBinomial`,
+`finiteQPochhammerIn_pow_le_one`,
+`gaussianBinomial_le_inv_qPochhammerInfIn`,
+`pow_le_gaussianBinomial_of_one_lt`, and
+`gaussianBinomial_le_pow_div_of_one_lt`. Reciprocity holds over a field for
+`q ≠ 0` and `k ≤ n`; the lower bound is ordered-field algebra for `q ≥ 0`;
+the other bounds are real under the displayed `0 ≤ q < 1` or `Q > 1`
+hypotheses. Positivity of `(q;q)_k` reuses the established
+`GeneralQConditionNumber.finiteQPochhammerIn_self_pos` theorem instead of
+redeclaring it. No asymptotic error term is proved. The module makes
+`prop:qbinom-growth`, `prop:gaussian-bound`, and
+`prop:extreme-specializations` Exact; `cor:qgreaterone` remains Partial
+because only reciprocity is formalized.
+
+The corpus-only `RvachevSuperconvergentSynthesis.lean` surface has the one
+definition `IsRvachevSuperconvergentPhase` and exactly eight theorems:
+`isRvachevSuperconvergentPhase_two_pow_iff`,
+`tsum_quarter_monomial_eq_integral_of_even_deg`,
+`tsum_three_quarters_monomial_eq_integral_of_even_deg`,
+`tsum_shifted_monomial_eq_integral_superconvergent`,
+`tsum_shifted_polynomial_eq_integral_superconvergent`,
+`integral_polynomial_mul_rvachevUp_eq_normalized_tsum_superconvergent`,
+`normalized_tsum_shifted_rvachevDeconvolvedPolynomial_mul_rvachevUp_superconvergent`,
+and `normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent`.
+For every nonzero natural mesh it selects the stated endpoint, half, or
+quarter phases and proves exactness through degree `padicValNat 2 M + 1`,
+physical quadrature, deconvolved reconstruction, and the Appell
+specialization. It asserts no complete phase classification, maximality,
+positivity, or rationality and changes no q-series status row.
+
 These six modules promote seven forward rows from None to Exact: the root
 block, squarefreeness, q-Catalan, q-beta evaluation, q-beta recurrence,
 geometric Newton, and its triangular corollary. Q-Lucas and the Babbage
 derivative move from None to Partial for the exact boundaries above. Thus the
-282-row ledger is 80 Exact / 86 Partial / 108 None / 8 N/A.
+282-row ledger is 90 Exact / 85 Partial / 99 None / 8 N/A. The evaluated
+q-Lucas theorem remains Partial because Lean supplies no minimal-polynomial
+lift to the manuscript polynomial congruence modulo `Φ_d`.
 
-The live audit across the facade is exactly 665 modules and 8,819 public
+The live audit across the facade is exactly 671 modules and 8,859 public
 declarations. The Exponents TeX contains these semantic-union crosswalk
 additions, but its retained 238-page PDF predates them and remains
 rebuild-pending.

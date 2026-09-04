@@ -209,7 +209,7 @@ $A(1/2)<\infty$, where $A(q)=\sum_{h\ge0}a_hq^h$, define
 It is the characteristic function of an explicit compactly supported convolution of
 uniform variables.  We prove a universal dictionary in which the same generating function
 $A$ controls: the integer-zero multiplicity
-$m_a(n)=\sum_{h\le\nu_2(n)}a_h$; the spectral zeta
+$m_a(n)=\sum_{h\le\TwoAdicValuation(n)}a_h$; the spectral zeta
 $\mathcal Z_a(s)=\zeta(s)A(2^{-s})$; every even cumulant
 $\kappa_{2j}=B_{2j}A(4^{-j})/(2j)$; the Fourier-lobe sign; exact digital zero counts;
 and the order of Prouhet cancellation of each finite sign block.  The zero divisor, the
@@ -236,7 +236,7 @@ is especially striking.  It satisfies
  =\prod_{r=0}^d\Phi_{r+1}(z)^{(-1)^{d-r}},
 \]
 has support $[-1,1]$, zero multiplicity
-$1+\binom{\nu_2(n)}{d+1}$, and converges in total variation to the uniform law.  Its
+$1+\binom{\TwoAdicValuation(n)}{d+1}$, and converges in total variation to the uniform law.  Its
 transition across the two discontinuities of the limiting box density has a Gaussian
 boundary layer with an explicit Berry--Esseen rate.  For $d=2$ this supplies the concrete
 positive-definite quotient $\Phi_1\Phi_3/\Phi_2$.
@@ -273,7 +273,7 @@ matching Lean declarations.  The consolidated frontier volume and its current de
 contain the non-formalized but mathematically developed material.  In particular, the audit
 treated the following as prior art rather than as discoveries of this report:
 \begin{itemize}
-\item the integer zero set and multiplicity $1+\nu_2(n)$ of the classical Rvachev transform;
+\item the integer zero set and multiplicity $1+\TwoAdicValuation(n)$ of the classical Rvachev transform;
 \item its spectral determinant, spectral zeta, heat trace, local zero jets, and symmetric
       $q$-integer deformation;
 \item the full signed Thue--Morse formula atlas, Prouhet cancellation, Mahler products,
@@ -1753,7 +1753,7 @@ integer-zero multiplicity, spectral zeta, and even cumulants are
  &=\frac12A_P(1/2)=\sum_{r=0}^{d}c_r,
  \label{p1:eq:RP}\\
  m_P(n)
- &=\sum_{r=0}^{d}c_r\binom{\nu_2(n)+1}{r+1},
+ &=\sum_{r=0}^{d}c_r\binom{\TwoAdicValuation(n)+1}{r+1},
  \label{p1:eq:mP}\\
  \Zspec_P(s)
  &=\zeta(s)\sum_{r=0}^{d}c_r
@@ -2328,7 +2328,7 @@ For every positive integer $n$,
 \begin{equation}
  \boxed{
  \OrderOperator_{z=n}\Psi_d(z)
- =1+\binom{\nu_2(n)}{d+1}.}
+ =1+\binom{\TwoAdicValuation(n)}{d+1}.}
  \label{p1:eq:Psi-multiplicity}
 \end{equation}
 Its spectral zeta and even cumulants are
@@ -2440,7 +2440,7 @@ For $d=2$,
  \qquad
  A_2(q)=1+\frac{q^3}{(1-q)^3}.
 \]
-Every odd integer and every integer with $\nu_2(n)\le2$ remains a simple zero.  The first
+Every odd integer and every integer with $\TwoAdicValuation(n)\le2$ remains a simple zero.  The first
 extra multiplicity occurs at $n=8$, where the order is $2$; at $n=16$ it is $5$; at
 $n=32$ it is $11$.  Yet the same entire function is the quotient
 $\Phi_1\Phi_3/\Phi_2$.
@@ -2449,7 +2449,7 @@ Every number in this example is checked against the general formula in
 \path{AlternatingNewtonFamily.lean}: the weight values
 (\lean{Fabius.alternatingNewtonWeight\_two\_values}), the simple-zero range
 (\lean{Fabius.weightedScaleMultiplicity\_alternatingNewton\_two\_of\_le}), and the three
-multiplicities $2$, $5$, $11$, which are $1+\binom{\nu_2(n)}3$ at $\nu_2=3,4,5$.  Since the
+multiplicities $2$, $5$, $11$, which are $1+\binom{\TwoAdicValuation(n)}3$ at $\TwoAdicValuation=3,4,5$.  Since the
 example was worked by hand and the formula proved independently, the agreement is evidence for
 both.  The final sentence is the one part not formalized: reading $\Psi_2$ as the quotient
 $\Phi_1\Phi_3/\Phi_2$ needs a signed exponent, which $\Phi_a$ does not accept.
@@ -2943,11 +2943,11 @@ floating-point weights.
 \subsection{The sparse zero spectrum for $d=2$}
 
 The generated file \path{zero_multiplicities_d2.csv} compares the prefix sum of the original
-exponents with $1+\binom{\nu_2(n)}3$.  The first exceptional values are
+exponents with $1+\binom{\TwoAdicValuation(n)}3$.  The first exceptional values are
 \begin{center}
 \begin{tabular}{@{}r r r@{}}
 \toprule
-$n$ & $\nu_2(n)$ & zero order\\
+$n$ & $\TwoAdicValuation(n)$ & zero order\\
 \midrule
 $8$ & $3$ & $2$\\
 $16$ & $4$ & $5$\\
@@ -3152,7 +3152,7 @@ A dependency-aware order is as follows.
 
 \begin{enumerate}
 \item Define exponent prefixes and prove
-      $m_a(n)=\sum_{h\le\nu_2(n)}a_h$ for finite products.
+      $m_a(n)=\sum_{h\le\TwoAdicValuation(n)}a_h$ for finite products.
 \item Prove the finite zero-count identity
       $M_a(N)=\sum_ha_h\Floor{N/2^h}$ and the binary defect
       \eqref{p1:eq:M-bit}.
@@ -11513,7 +11513,7 @@ level-$n$ Hutchinson approximant of the attractor $K_a$ of
  =\frac{a-2}{a^{\,n+1}(a-1)},
 \end{equation}
 and $\nu_a$ is the equal-weight self-similar measure on $K_a$, of Hausdorff
-and information dimension $D_a=\log2/\log a$.  At $a=2$, $\nu_2$ is the
+and information dimension $D_a=\log2/\log a$.  At $a=2$, $\TwoAdicValuation$ is the
 uniform law on $[-1,1]$.
 \end{theorem}
 

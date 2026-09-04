@@ -35,33 +35,41 @@ The canonical frontier artifacts are:
 > Libertinus, and no-Type-3 checks.  The live TeX has advanced since both
 > builds, so a fresh three-pass build and inspection are pending.
 
-The live Lean audit now contains exactly 641 facade-reachable modules and
-8,652 public declarations, with no missing module headers or declaration
-documentation.  The q-Pochhammer topology now includes all six public
-theorems in `QPochhammerEntire.lean`: parameter-local uniform convergence,
-complex differentiability, the division-free zero criterion, the
-nonzero-nome reciprocal-power lattice, analytic order one for the historical
-complex symbol, and the corresponding generic-symbol analytic-order theorem.
-`GeometricPochhammerNormalConvergence.lean` adds three facade-reachable
-theorems and closes the formerly open local-uniform outer spectral-product
-boundary for the geometric sinc product, the standalone Rvachev Fourier
-product, and every bounded Fabius witness.  The six-theorem
-`GeneralizedRvachevIdentifiability.lean` recovers exponent sequences from
-dyadic zero orders.  The five later leaves
-`ClassicalPochhammerLimit.lean`, `GaussianBinomialUniversal.lean`,
-`PolynomialQTaylor.lean`, `QPartialFractions.lean`, and
-`QPochhammerIntegerIndex.lean` contribute another 50 public declarations
-(five definitions and 45 theorems) for the classical limit, universal
-Gaussian polynomial, q-Taylor calculus, partial fractions, and integer-index
-symbols.
+The live Lean audit now contains exactly 671 facade-reachable modules and
+8,859 public declarations, with no missing module headers or declaration
+documentation.  The current q-Pochhammer ownership is
+`RvachevPochhammerFactorization` 1+10, `QPochhammerEntire` 0+5, and
+`QPochhammerInfinite` 1+29; the public definitional bridge to the generic
+symbol is retained.  Fixed-nome normal convergence, product identifiability,
+the finite/infinite q-calculus tranches, the root-of-unity and q-Catalan
+layers, finite Newton interpolation, q-beta integration, integer and complex
+Gaussian upper indices, q-Pfaff--Saalschütz, and the noncommutative quantum
+multinomial theorem all have declaration-level crosswalks.
 
-The q-series publication receipts remain reproducible history rather than
-current render claims.  In particular, the retained 340-page A4 PDF
-(2,180,191 bytes; SHA-256
-`e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`)
-and the later source/PDF checkpoints recorded in the package README predate
-the final `6c7a69be9` source union.  They must not be cited as displaying the
-new theorem promotions until the live source is rebuilt and inspected.
+`RvachevSuperconvergentSynthesis.lean` contributes one definition and eight
+theorems for arbitrary nonzero natural meshes.  It packages the literal
+parity-selected phases, exactness through degree `v₂(M)+1`, physical-coordinate
+quadrature, deconvolved-polynomial synthesis, and the Rvachev--Appell
+specialization.  In the canonical inverse synthesis this promotes exactly
+`is:p3:cor:forced-superconvergence` and
+`is:p3:thm:Appell-lattice-reproduction`, bringing its 194 rows to 49
+Lean-proved / 96 human-proved / 10 conjectural / 15 open / 24 nonassertoric.
+It does not prove phase completeness or maximality.
+
+`GaussianBinomialBounds.lean` contributes six new theorems: reciprocity,
+nonnegative lower bounds, finite and infinite Pochhammer bounds for
+`0 ≤ q < 1`, and two dimension-dominant estimates for `Q > 1`.  It proves no
+fixed-column or central asymptotic.  The stronger generic positivity theorem
+`finiteQPochhammerIn_self_pos` is reused from `GeneralQConditionNumber` and is
+not counted again.  The rigorous 282-row q-monograph totals
+are therefore 90 exact / 85 partial / 99 none / 8 interface: q-Lucas remains
+Partial because the polynomial-congruence lift is absent, the Gaussian
+majorant is Exact, and the `Q > 1` asymptotic row remains Partial.
+
+All retained frontier and q-series PDFs predate this semantic union.  They
+remain historical publication checkpoints and must not be cited as displaying
+the present theorem promotions until their live sources are rebuilt and
+inspected.
 
 The current finite-moment/Legendre/Gaunt crosswalk covers eleven modules with
 20 public definitions and 109 public theorems, 129 declarations in all. The
@@ -175,15 +183,15 @@ asset dispositions, and the deduplicated live asset ledger covers 63 retained
 payloads. The former package paths, source hashes, nested lineage, and recovery
 revisions remain in the package's
 [`PROVENANCE.md`](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/PROVENANCE.md).
-Its synchronized 133-page A4 publication has SHA-256
-`83a2cc2050e4f6c0c6ea26b472c09f05d4c77d2d84d4ba47e316d8176e7c11c6`;
-the package README records the clean three-pass build, font preflight, and
-all-page visual inspection.
-The reviewed concordance classifies 39 source rows as Lean-proved and 106 as
-human-proved frontier results. Its three newest exact matches are centered
-Appell deconvolution, positive-degree Appell mean-zero, and arbitrary-phase
-polynomial deconvolution; the degree-`N+1` superconvergent phase in the Appell
-lattice theorem remains explicitly human-proved.
+Its retained 134-page, 2,027,726-byte A4 publication has SHA-256
+`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
+It is a fully reviewed historical checkpoint, but the current source changed
+after that render and therefore requires a fresh three-pass build before
+synchronization is claimed. The reviewed concordance classifies 49 source rows
+as Lean-proved and 96 as human-proved frontier results. Its two newest exact
+matches are the forced parity-selected superconvergence corollary and the full
+Appell lattice-reproduction theorem, including its degree-`N+1` selected-phase
+clause.
 
 Later the same day the groups other than the Fourier-decay corpus were
 **consolidated into volumes**, in two styles: the original members were

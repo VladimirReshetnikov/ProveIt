@@ -1,24 +1,29 @@
 # Spectra and arithmetic
 
-## Source-only merge status (2026-08-31)
+## Source-only notation status (2026-09-01)
 
-The canonical-notation integration changed the consolidated
-`Spectra_and_Arithmetic_Frontiers` source and eight standalone report sources.
-`Automatic_Scale_Factorizations_Rvachev_2026-08-30` has an exact three-pass
-source/PDF receipt and a refreshed live ledger.  `Fabius_Pascal_Frontiers_Report`
-also has a reviewed three-pass PDF checkpoint, but its TeX changed afterward;
-that PDF is therefore historical rather than synchronized, while its live
-ledger now inventories the exact current mixed checkpoint.  The earlier page,
-font, and build facts for the remaining reports likewise describe their last
-validated renders, not the current TeX.  Pending operational-ledger work
-includes `Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30`,
-`Dyadic_Spectral_Divisors_and_Gamma_Duality`,
-`Fabius_Rvachev_Carleman_Frontiers_2026-08-30` (1/21),
-`Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors` (1/14),
-`Fabius_Total_Positivity_Frontier_Report` (1/12), and
-`fabius_holonomic_frontiers_report` (1/26). Arrival ledgers remain immutable.
-PDF regeneration, validation-sidecar updates, and live-ledger refresh are
-explicitly deferred.
+The two-adic-valuation notation pass changed the consolidated
+`Spectra_and_Arithmetic_Frontiers` source and five standalone report sources.
+The exact current live-TeX snapshots are:
+
+| Live source | Lines | Bytes | SHA-256 |
+|---|---:|---:|---|
+| `Automatic_Scale_Factorizations_Rvachev_2026-08-30/automatic_scale_factorizations.tex` | 1,682 | 62,490 | `3e40fef5247ed3d7263ff885dc97159b456f26347614817fc18e087af647de90` |
+| `Digital_Spectral_Geometry_and_Log_Periodic_Saddles/Fabius_Rvachev_Frontier_Report.tex` | 1,940 | 61,049 | `92d98914722f98b37f84a19283536c8b3925584d0729920b6346a4f572c735b1` |
+| `Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.tex` | 2,307 | 90,871 | `e6e3d6df88efc3e50f7180b3853fdc6e4c9072f4e56192655bb76e195b282c4e` |
+| `fabius_holonomic_frontiers_report/fabius_holonomic_frontiers.tex` | 2,251 | 85,256 | `75f2a36ee0ae4b68e17030536cd7aa2cd922fea8941ed023afb272fafd29b20f` |
+| `Fabius_Total_Positivity_Frontier_Report/Fabius_Total_Positivity_Frontier_Report.tex` | 1,060 | 58,362 | `e7f05ac66a92284e82886bfe8b3376715ca0f71493a217d5a1adab6c17171475` |
+| `Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex` | 8,183 | 349,076 | `683a560044772216980b05c4dd26957c6bbfb6c34019cc8d4cae815d9cff8df1` |
+
+These metrics and hashes describe the live TeX only. No PDFs were regenerated
+for this pass. Consequently, every page-count, font, visual-inspection, and
+three-pass-build statement below remains evidence about its earlier retained
+PDF checkpoint, not evidence of byte-level or rendered parity with the current
+source. Mutable live ledgers for the affected packages have been or are being
+refreshed to record the source-only checkpoint; immutable arrival ledgers and
+the historical build hashes recorded in package receipts remain unchanged.
+`Fabius_Pascal_Frontiers_Report` likewise retains its already documented mixed
+checkpoint: its reviewed PDF predates its current TeX.
 
 ## Direct-directory intake: late 2026-08-30 batch
 
@@ -34,16 +39,24 @@ not a visual review, experiment replay, TeX rebuild, mathematical audit, or
 Lean verification.
 
 - [`Automatic_Scale_Factorizations_Rvachev_2026-08-30/`](Automatic_Scale_Factorizations_Rvachev_2026-08-30/)
-  contains *Automatic Scale Factorizations of the Rvachev Law* (22 A4 pp,
-  1,684 source lines; with a 473-line program, eight data outputs, and three
+  contains *Automatic Scale Factorizations of the Rvachev Law* (retained
+  22-A4-page PDF checkpoint; current live TeX: 1,682 lines, 62,490 bytes,
+  SHA-256
+  `3e40fef5247ed3d7263ff885dc97159b456f26347614817fc18e087af647de90`;
+  with a 473-line program, eight data outputs, and three
   PDF/PNG figure pairs), from arrival commit
-  `8a184546747082cbd92ad4675fb61981c6b8c3b6`. Its submitted ledger covers all
-  21 non-ledger payloads and verifies after six CSV hashes were refreshed for
-  LF storage and the JSON summary's missing final newline was repaired.  The
-  current source selects the retained PNG plot companions; an exact three-pass
-  rebuild embeds and subsets every font, retains Libertinus prose, and has no
+  `8a184546747082cbd92ad4675fb61981c6b8c3b6`. At its normalized intake
+  checkpoint, the submitted ledger covered all 21 non-ledger payloads and
+  verified after six CSV hashes were refreshed for LF storage and the JSON
+  summary's missing final newline was repaired. The
+  current source selects the retained PNG plot companions; the exact
+  three-pass rebuild embedded and subset every font, retained Libertinus prose,
+  and had no
   Type 3 fonts, while the vector-PDF plots remain reproducibility payloads. The
-  corresponding live ledger now verifies. Its
+  corresponding exact three-pass render is a retained historical checkpoint,
+  not a current source/PDF parity claim. No PDF was regenerated after the
+  notation-only TeX change, and the mutable live ledger is being refreshed for
+  that source-only checkpoint. Its
   Thue--Morse scale partition, q-Mahler, Mellin, moment, plateau, and endpoint
   themes remain standalone pending claim and experiment review, comparison,
   and a Lean crosswalk.
@@ -76,12 +89,18 @@ Lean verification.
 
 - [`fabius_holonomic_frontiers_report/`](fabius_holonomic_frontiers_report/)
   contains *Holonomic Rank, Exact Overlaps, and Non-P-Recursiveness in the
-  Fabius--Rvachev System* (30 A4 pp, 2,279 source lines; with a 644-line
+  Fabius--Rvachev System* (retained 30-A4-page PDF checkpoint; current live
+  TeX: 2,251 lines, 85,256 bytes, SHA-256
+  `75f2a36ee0ae4b68e17030536cd7aa2cd922fea8941ed023afb272fafd29b20f`;
+  with a 644-line
   experiment, six CSV tables, a generated TeX fragment, a captured text
   check, and five PDF/PNG figure pairs), from
   `6d6737530ec541196c506f95ec20a701a29872b3`. Six CSV hashes in its complete
-  26-entry ledger were refreshed for LF storage. All six delivered PDFs are
-  readable and unencrypted (35 pages total); the report concerns finite
+  26-entry ledger were refreshed for LF storage. At intake, all six delivered
+  PDFs were readable and unencrypted (35 pages total). Those retained PDFs
+  predate the current notation-only TeX; no PDF was regenerated, and the
+  mutable live ledger is being refreshed for the source-only checkpoint. The
+  report concerns finite
   sinc-product differential rank, exact signed overlaps, dyadic
   Thue--Morse/frequency spectra, and non-D-finiteness/non-P-recursiveness.
 
@@ -118,7 +137,10 @@ claim has been proved in Lean.
 
 New standalone intake member:
 [`Digital_Spectral_Geometry_and_Log_Periodic_Saddles/`](Digital_Spectral_Geometry_and_Log_Periodic_Saddles/),
-*Digital Spectral Geometry and Log-Periodic Saddles* (24 A4 pp), arrived from the
+*Digital Spectral Geometry and Log-Periodic Saddles* (retained 24-A4-page PDF
+checkpoint; current live TeX: 1,940 lines, 61,049 bytes, SHA-256
+`92d98914722f98b37f84a19283536c8b3925584d0729920b6346a4f572c735b1`),
+arrived from the
 rootless `Fabius_Rvachev_Frontier_Report_Package.zip` on 2026-08-30. The
 title-based directory avoids collision with an unrelated q-series package
 that used the same generic report filename. Its delivered zero-file audit was
@@ -140,15 +162,20 @@ The report remains a separate overlap intake; its labels assert neither
 novelty nor Lean status. It now reproduces the current primary document's
 canonical A4 package, theorem, macro, boxed-environment, and listing-style
 block verbatim, apart from permitted metadata and running-head text, with only
-four required local notation commands appended. The validated PDF
-uses fully embedded, subset Libertinus fonts and no Type 3 fonts. Current
-payload checksums, including the preserved ten-entry arrival ledger, pass
-completely (18/18).
+four required local notation commands appended. At its render checkpoint, the
+validated PDF used fully embedded, subset Libertinus fonts and no Type 3 fonts,
+and the then-current payload checksums, including the preserved ten-entry
+arrival ledger, passed completely (18/18). That retained PDF predates the
+current notation-only TeX; no PDF was regenerated. Its mutable current-live
+ledger is being refreshed, while the arrival ledger remains immutable.
 
 New standalone intake member:
 [`Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/`](Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/),
-*Reciprocal-Integer Convolution Divisors of the Rvachev Law* (35 A4 pp,
-2327 source lines; with a 352-line exact/numerical experiment),
+*Reciprocal-Integer Convolution Divisors of the Rvachev Law* (retained
+35-A4-page PDF checkpoint; current live TeX: 2,307 lines, 90,871 bytes,
+SHA-256
+`e6e3d6df88efc3e50f7180b3853fdc6e4c9072f4e56192655bb76e195b282c4e`;
+with a 352-line exact/numerical experiment),
 arrived from a rootless 14-file archive on 2026-08-30.  The package's
 characteristic quotients
 `Q_M(z) = Phi(z) / Phi(z/M)` classify reciprocal-integer decompositions of
@@ -165,12 +192,16 @@ convolution roots.  The report nevertheless shares foundational zero-count,
 Bernoulli/Bell, endpoint, and inverse-Fabius infrastructure with the
 consolidated corpus, so it remains separate pending a theorem-by-theorem
 crosswalk. The rootless archive supplied no checksum ledger or dependency
-lock; the repository-generated 14-entry `SHA256SUMS` covers every stored
-payload after five CSV files were normalized to LF. The repair gives the
+lock; at the repaired package checkpoint, the repository-generated 14-entry
+`SHA256SUMS` covered every stored payload after five CSV files were normalized
+to LF. The repair gives the
 report a title-derived source/PDF pair and canonical A4/27 mm/Libertinus
-styling; three final `pdflatex` passes produced a 35-page PDF with all fonts
-embedded and subset, no Type 3 font, and no overfull box. Key pages and every
-figure were inspected. A temp-isolated Python 3.12 replay regenerated every output: four
+styling; three final `pdflatex` passes produced the retained 35-page PDF with
+all fonts embedded and subset, no Type 3 font, and no overfull box. Key pages and every
+figure were inspected at that checkpoint. The PDF predates the current
+notation-only TeX; no PDF was regenerated, no current source/PDF parity is
+claimed, and the mutable live ledger is being refreshed. A temp-isolated
+Python 3.12 replay regenerated every output: four
 CSVs were byte-identical, the text summary was EOL-equivalent, and the endpoint
 CSV had only 66 last-place differences (maximum `1.11e-16`).  All four PNGs
 showed the expected layout drift between the unpinned packaged Matplotlib
@@ -182,7 +213,10 @@ Manuscript theorem labels do not imply Lean proof status.
 
 [`Fabius_Total_Positivity_Frontier_Report/`](Fabius_Total_Positivity_Frontier_Report/),
 *Total Positivity and Cartwright Geometry in the Fabius--Rvachev Dyadic Sinc
-Product* (24 pp), arrived as a bare TeX/PDF/script package on 2026-08-30.
+Product* (retained 24-page PDF checkpoint; current live TeX: 1,060 lines,
+58,362 bytes, SHA-256
+`e7f05ac66a92284e82886bfe8b3376715ca0f71493a217d5a1adab6c17171475`),
+arrived as a bare TeX/PDF/script package on 2026-08-30.
 Its imaginary-square-root transform, Laguerre--Polya and multiplier-sequence
 structure, exact zero divisor and Thue--Morse sign interpolation, Cartwright
 geometry, and geometric-scale deformation extend the arithmetic/spectral
@@ -191,7 +225,10 @@ environment pin, or captured run output. The repository repair regenerated
 the four required figure/table inputs and four CSV evidence tables, normalized
 the source to A4/Libertinus, rebuilt the PDF in three passes, and added a live
 12-entry payload ledger; exact arrival hashes remain recorded in the global
-manifest.  The current source crosswalks the exact finite general-base digit
+manifest. That retained PDF predates the current notation-only TeX; no PDF was
+regenerated, no current source/PDF parity is claimed, and the mutable live
+ledger is being refreshed. The current source crosswalks the exact finite
+general-base digit
 count in `BaseDigitMultiplicity.lean` without promoting the analytic zero or
 sign claims. Its novelty screen is already stale at its pinned
 snapshot: matching Laguerre--Polya/PF-infinity/shifted-Jensen and zero-sign
@@ -201,7 +238,13 @@ theorem labels do not by themselves assert Lean status.
 
 Arithmetic and spectral structure of the Rvachev Fourier product,
 consolidated (2026-08-28) into the single volume
-[`Spectra_and_Arithmetic_Frontiers/`](Spectra_and_Arithmetic_Frontiers/):
+[`Spectra_and_Arithmetic_Frontiers/`](Spectra_and_Arithmetic_Frontiers/).
+Its current live TeX has 8,183 lines and 349,076 bytes, with SHA-256
+`683a560044772216980b05c4dd26957c6bbfb6c34019cc8d4cae815d9cff8df1`.
+The retained PDF was not regenerated after the notation-only source change,
+so its earlier render validation is a historical checkpoint rather than a
+current source/PDF parity claim. The mutable live ledger is being refreshed.
+The consolidated volume comprises:
 
 - **Part I** — *Half-Integer Spectral Arithmetic*
   (formerly `Fabius_Half_Integer_Spectral_Frontier_Report/`);

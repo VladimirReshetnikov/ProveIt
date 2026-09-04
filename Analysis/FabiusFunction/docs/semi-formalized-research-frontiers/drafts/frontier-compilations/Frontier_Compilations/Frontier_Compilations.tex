@@ -2464,10 +2464,10 @@ The principal synthesis is that the canonical-product zero multiplicities of the
 Fourier transform
 \[
  \Phi(z)=\FourierTwoPi{\RvachevUp}(z)=\prod_{h\ge0}\SincRad\!\left(\frac{\pi z}{2^h}\right)
-       =\prod_{n\ge1}\left(1-\frac{z^2}{n^2}\right)^{1+\nu_2(n)}
+       =\prod_{n\ge1}\left(1-\frac{z^2}{n^2}\right)^{1+\TwoAdicValuation(n)}
 \]
 form an arithmetic spectrum.  Its multiplicity function
-$a(n)=1+\nu_2(n)$ has Dirichlet series
+$a(n)=1+\TwoAdicValuation(n)$ has Dirichlet series
 $\zeta(s)/(1-2^{-s})$, exact counting law
 $\sum_{n\le N}a(n)=2N-\BinaryDigitSum(N)$, and a dense dyadic natural boundary in its
 ordinary generating function.  These elementary facts organize several results
@@ -2479,7 +2479,7 @@ corollary of the exact zero count and is converted into an absolutely convergent
 Thue--Morse lobe decomposition of $\RvachevUp$ and all its derivatives.  Second, the
 zero multiplicity gives an exact Strang--Fix hierarchy: on the lattice
 $N^{-1}\IntegerNumbers$, polynomially weighted periodizations are constant through degree
-$\nu_2(N)$, and the next degree fails.  A reciprocal-moment Appell correction then
+$\TwoAdicValuation(N)$, and the next degree fails.  A reciprocal-moment Appell correction then
 reproduces every polynomial of that degree exactly.  Thus the approximation order
 of the translate system is controlled not by the size of $N$, but by its
 $2$-adic valuation.
@@ -2495,7 +2495,7 @@ stage and emerge through an explicit pole-condensation limit.  Gaussian
 $q$-binomial coefficients appear as the algebra of independently selecting
 spectral layers, while the common-zero statistics form a hierarchy
 \[
- \sum_{n\ge1}\binom{1+\nu_2(n)}r n^{-s}
+ \sum_{n\ge1}\binom{1+\TwoAdicValuation(n)}r n^{-s}
  =\zeta(s)\frac{2^{-(r-1)s}}{(1-2^{-s})^r}.
 \]
 A heat-trace expansion and a base-$b$ extension complete the report.
@@ -2570,7 +2570,7 @@ claims.
 \item Moment deconvolution and Richardson acceleration already occur in archived
       dyadic and convergence reports, including a half-base Gaussian-binomial
       filter across spline degrees.
-\item Exact zero multiplicity $1+\nu_2(n)$ is already formalized in the Lean
+\item Exact zero multiplicity $1+\TwoAdicValuation(n)$ is already formalized in the Lean
       canonical-product module.
 \item The sign pattern of the Fourier lobes was stated in Vladimir Reshetnikov's
       2018 Math StackExchange question, and the answer there essentially proves
@@ -2625,7 +2625,7 @@ Euler's product for sine and an absolutely convergent rearrangement give
 \begin{equation}
  \Phi(z)=\prod_{n=1}^{\infty}
  \left(1-\frac{z^2}{n^2}\right)^{a(n)},
- \qquad a(n)=1+\nu_2(n).                                  \label{p2:eq:canonical}
+ \qquad a(n)=1+\TwoAdicValuation(n).                                  \label{p2:eq:canonical}
 \end{equation}
 Thus
 \begin{equation}
@@ -2650,7 +2650,7 @@ from the repository's moment recurrence.
 
 \begin{theorem}[Arithmetic spectrum package \NewResult]
 \label{p2:thm:spectrum-package}
-For $n\ge1$, let $a(n)=1+\nu_2(n)$.  Then:
+For $n\ge1$, let $a(n)=1+\TwoAdicValuation(n)$.  Then:
 \begin{align}
  a(n)&=\sum_{h\ge0}\IndicatorOf{2^h\mid n},                  \label{p2:eq:a-divisor}\\
  \sum_{n\ge1}\frac{a(n)}{n^s}
@@ -2678,7 +2678,7 @@ so the limiting mean and variance are both $2$.
 
 \begin{proof}
 The number of nonnegative $h$ for which $2^h\mid n$ is exactly
-$1+\nu_2(n)$, proving \eqref{p2:eq:a-divisor}.  Absolute convergence permits
+$1+\TwoAdicValuation(n)$, proving \eqref{p2:eq:a-divisor}.  Absolute convergence permits
 summation by layers:
 \[
  \sum_{n\ge1}\frac{a(n)}{n^s}
@@ -2778,9 +2778,9 @@ For every $n\ge1$,
 \end{lemma}
 
 \begin{proof}
-Adding one to $n-1$ erases $\nu_2(n)$ trailing ones and creates one new one, so
-$\BinaryDigitSum(n)=\BinaryDigitSum(n-1)+1-\nu_2(n)$.  Hence
-$\BinaryDigitSum(n-1)+\BinaryDigitSum(n)\equiv1+\nu_2(n)=a(n)\pmod2$.
+Adding one to $n-1$ erases $\TwoAdicValuation(n)$ trailing ones and creates one new one, so
+$\BinaryDigitSum(n)=\BinaryDigitSum(n-1)+1-\TwoAdicValuation(n)$.  Hence
+$\BinaryDigitSum(n-1)+\BinaryDigitSum(n)\equiv1+\TwoAdicValuation(n)=a(n)\pmod2$.
 \end{proof}
 
 \subsection{Exact lobe signs}
@@ -2904,7 +2904,7 @@ critical-value sequence may be written
 The repository's Fourier-decay program studies the highly irregular envelope
 $M_n$.  The arithmetic spectrum explains why a single ``typical'' exponent cannot
 capture all subsequences: the inherited multiplicity at each endpoint varies
-with $\nu_2(n)$, while the lobe sign varies with the integrated parity
+with $\TwoAdicValuation(n)$, while the lobe sign varies with the integrated parity
 $\BinaryDigitSum(n)\bmod2$.
 
 \section{Exact $2$-adic Strang--Fix hierarchy}
@@ -2926,7 +2926,7 @@ The sum is locally finite because $\RvachevUp$ has compact support.
 
 \begin{theorem}[Sharp weighted partition hierarchy \NewResult]
 \label{p2:thm:weighted}
-Let $q=\nu_2(N)$.  For every $0\le r\le q$ and every real $x$,
+Let $q=\TwoAdicValuation(N)$.  For every $0\le r\le q$ and every real $x$,
 \begin{equation}
  \boxed{\mathcal P_{N,r}(x)=N\mu_r.}                       \label{p2:eq:weighted-constant}
 \end{equation}
@@ -2934,7 +2934,7 @@ The statement is sharp: $\mathcal P_{N,q+1}$ is not constant.  Equivalently, the
 translate system generated by $\RvachevUp$ on the lattice $N^{-1}\IntegerNumbers$ has exact
 Strang--Fix order
 \begin{equation}
- \operatorname{SF}(N)=1+\nu_2(N).                          \label{p2:eq:SF-order}
+ \operatorname{SF}(N)=1+\TwoAdicValuation(N).                          \label{p2:eq:SF-order}
 \end{equation}
 \end{theorem}
 
@@ -2950,7 +2950,7 @@ Differentiating the Fourier transform,
 \end{equation}
 For $m\ne0$, the zero at $mN$ has order
 \[
- a(mN)=1+\nu_2(mN)=1+q+\nu_2(m)\ge q+1.
+ a(mN)=1+\TwoAdicValuation(mN)=1+q+\TwoAdicValuation(m)\ge q+1.
 \]
 Hence $\Phi^{(r)}(mN)=0$ for $r\le q$.  Only $m=0$ remains in
 \eqref{p2:eq:poisson-weighted}, giving $N\FourierTwoPi{g_r}(0)=N\mu_r$.
@@ -2996,7 +2996,7 @@ $P_r$ by
 
 \begin{theorem}[Appell-corrected lattice reproduction \NewResult]
 \label{p2:thm:reproduction}
-If $q=\nu_2(N)$, then for every polynomial degree $0\le r\le q$,
+If $q=\TwoAdicValuation(N)$, then for every polynomial degree $0\le r\le q$,
 \begin{equation}
  \boxed{\frac1N\sum_{k\in\IntegerNumbers}P_r(k/N)\RvachevUp(x-k/N)=x^r.}      \label{p2:eq:reproduce}
 \end{equation}
@@ -3037,7 +3037,7 @@ for Lean into three reusable statements:
 \item Fourier transform of $x^r\RvachevUp(x)$ equals
       $(-2\pi\ImaginaryUnit)^{-r}\Phi^{(r)}$;
 \item periodization on $N^{-1}\IntegerNumbers$ has Fourier coefficients sampled at $mN$;
-\item exact zero order at $mN$ is $1+\nu_2(mN)$.
+\item exact zero order at $mN$ is $1+\TwoAdicValuation(mN)$.
 \end{enumerate}
 No asymptotic estimate is needed.  Once a suitable Poisson theorem for compactly
 supported smooth functions is available, the sharpness proof is a one-coefficient
@@ -3196,7 +3196,7 @@ $\Gamma(-\chi_k)$ is exponentially small at the first nonzero imaginary height.
 
 The $J$-factor product \eqref{p2:eq:PhiJ} has multiplicity
 \begin{equation}
- a_J(n)=\min\{J,1+\nu_2(n)\}.                              \label{p2:eq:aJ}
+ a_J(n)=\min\{J,1+\TwoAdicValuation(n)\}.                              \label{p2:eq:aJ}
 \end{equation}
 Let $q=2^{-s}$.  Then
 \begin{theorem}[Finite spectral $q$-integer \NewResult]
@@ -3286,7 +3286,7 @@ complex dimension $\chi_k$ unless canceled by $\zeta(\chi_k)$.
 
 \begin{proof}
 The number $\binom{a(n)}r$ counts $r$-subsets of the layers
-$\{0,1,\ldots,\nu_2(n)\}$.  Group such subsets by their largest element $h$.
+$\{0,1,\ldots,\TwoAdicValuation(n)\}$.  Group such subsets by their largest element $h$.
 There are $\binom{h}{r-1}$ choices and their common zeros are precisely the
 multiples of $2^h$.  Hence
 \[
@@ -3414,7 +3414,7 @@ Fourier transform $\Phi_b$ is
  1+\nu_b(N).                                               \label{p2:eq:SFb}
 \end{equation}
 The weighted periodization and Appell reproduction theorems hold verbatim with
-$\nu_2$ replaced by $\nu_b$ and the corresponding centered moments.
+$\TwoAdicValuation$ replaced by $\nu_b$ and the corresponding centered moments.
 \end{theorem}
 
 The Mellin calculation also persists.  Let $L_b=\log b$,
@@ -3479,7 +3479,7 @@ recurrences \eqref{p2:eq:a-rec} through $10^6$ without exception.
 
 The main identities can be checked without evaluating $\RvachevUp$ itself:
 \begin{enumerate}
-\item enumerate $a(n)=1+\nu_2(n)$ and compare partial sums with $2N-\BinaryDigitSum(N)$;
+\item enumerate $a(n)=1+\TwoAdicValuation(n)$ and compare partial sums with $2N-\BinaryDigitSum(N)$;
 \item compare $\sum_{n\le M}a(n)n^{-s}$ with
       $\zeta(s)/(1-2^{-s})$ for $\Re s>1$;
 \item evaluate $\Phi(x)$ by the sinc product and compare its sign with
@@ -3500,7 +3500,7 @@ new theorem package.
 Statement & Status & Comment \\
 \midrule
 \endhead
-Canonical product and zero order $1+\nu_2(n)$ & \Corpus & Already in the main
+Canonical product and zero order $1+\TwoAdicValuation(n)$ & \Corpus & Already in the main
 exposition and Lean canonical-product module. \\
 All-order endpoint asymptotics and Gamma--zeta coefficients & \Corpus & Already
 in the corrected small-argument study. \\
@@ -3510,7 +3510,7 @@ One critical point per real lobe & \Observed & Essentially proved in the MSE
 answer; recast here through Laguerre--Polya theory and the resolvent trace. \\
 Arithmetic spectrum package, exact counting law as zero data, spectral traces &
 \NewResult & Not found assembled in the pinned TeX corpus. \\
-Weighted partition hierarchy and sharp order $1+\nu_2(N)$ & \NewResult & Degree
+Weighted partition hierarchy and sharp order $1+\TwoAdicValuation(N)$ & \NewResult & Degree
 zero is classical; the exact higher stopping law was not located in the corpus. \\
 Appell-corrected exact polynomial reproduction & \NewResult & Uses existing
 moment-deconvolution ideas in a different, sharp lattice theorem. \\
@@ -3560,7 +3560,7 @@ are connected to exact orders.
 
 Finite versions should precede infinite analytic statements:
 \begin{itemize}
-\item $a_J(n)=\min(J,1+\nu_2(n))$;
+\item $a_J(n)=\min(J,1+\TwoAdicValuation(n))$;
 \item finite counting formula \eqref{p2:eq:AJ};
 \item finite $q$-integer and Gaussian-binomial polynomial identities;
 \item finite common-layer count \eqref{p2:eq:ZJr}.
@@ -3601,7 +3601,7 @@ zero spectrum to the endpoint Laplace transform.
 
 \begin{problem}[Critical-point arithmetic]
 Let $c_n$ be the unique critical point in $(n,n+1)$.  Determine asymptotic laws
-for $c_n-n$ and $M_n=|\Phi(c_n)|$ conditioned on $\nu_2(n)$, $\nu_2(n+1)$, or
+for $c_n-n$ and $M_n=|\Phi(c_n)|$ conditioned on $\TwoAdicValuation(n)$, $\TwoAdicValuation(n+1)$, or
 finite binary words around $n$.  The logarithmic derivative
 \eqref{p2:eq:logder} converts this into a weighted electrostatic equilibrium problem
 with ruler-function charges.
@@ -3665,7 +3665,7 @@ why its apparently separate parts keep rediscovering the same dyadic algebra.
 
 The most immediate formal target is \cref{p2:thm:weighted}: it is exact, strong,
 short once the current canonical-product theorem is available, and exposes a
-clean new role for $\nu_2(N)$.  The most conceptually unifying analytic target is
+clean new role for $\TwoAdicValuation(N)$.  The most conceptually unifying analytic target is
 \cref{p2:thm:H-asymp}, which identifies the endpoint periodic fluctuation as a
 residue trace of the Fourier zero spectrum.  Together they turn an infinite sinc
 product from a transform formula into an arithmetic spectral object.
@@ -3925,7 +3925,7 @@ $q^{2r+3}/((1-q^{r+1})(1-q^{r+2}))$.  Thus all levels are nested from order zero
 when $q\le(\sqrt5-1)/2$, or equivalently $b\ge\sqrt\varphi$.  In the dyadic Fabius--Rvachev
 case $q=1/4$, every level is nested.  This gives two monotone analytic chains squeezing the
 Fourier product while preserving all included integer zeros, their multiplicities
-$1+\nu_2(n)$, their Thue--Morse lobe signs, and their first nonzero derivatives.
+$1+\TwoAdicValuation(n)$, their Thue--Morse lobe signs, and their first nonzero derivatives.
 
 Numerical experiments, supplied as a fully commented Python program, independently compare
 direct products with the exact coefficient series, compute the threshold curve and unique
@@ -4902,7 +4902,7 @@ numerics.
 
 \subsection{A multiplicity-five zero}
 
-Take $m=48$, whose zero multiplicity is $1+\nu_2(48)=5$, and choose $N=5$, so
+Take $m=48$, whose zero multiplicity is $1+\TwoAdicValuation(48)=5$, and choose $N=5$, so
 $|m|<2^6$.  The exact positive tail is
 \[
  \mathcal T_5(48)=\Phi(48/64)=0.217723205308944050125343\ldots.
@@ -5267,7 +5267,7 @@ Reciprocal-moment Appell polynomials $\Acard_n^{[r]}$ then give finite exact for
 $\sum_k\Acard_n^{[r]}(k)U_r(x-k)=x^n$ for $n\le r$.  Their coefficients are explicit complete Bell polynomials in Bernoulli cumulants; their dyadic scale transport is governed by the Bernoulli-polynomial values $B_n(1/2)$; and, because $\Acard_n(x;Q)$ is polynomial in $Q=4^r$, the scale sequence obeys exact q-binomial finite-difference closures at $q=1/4$.
 
 Third, two independent obstructions exclude holonomicity.  The midpoint identity propagates nonanalyticity backward through the dyadic tent map, proving that $F$ is nonanalytic at every dyadic rational; the same mechanism gives dense nonanalytic sets for $F^{-1}$ and $\RvachevUp$.  Hence none is locally D-finite on any open interval.  Independently, the unbounded multiplicities
-$\OrderOperator_m\FourierTwoPi{\RvachevUp}=1+\nu_2(|m|)$ rule out a polynomial-coefficient differential equation for the entire Fourier transform.  This implies non-D-finiteness of the moment generating functions, non-P-recursiveness of the moment sequences, and non-P-recursiveness of every fixed-$x$ Appell coefficient sequence.  Symbolic and high-precision numerical experiments accompany the proofs, and the fully commented Python program is included in the archive.
+$\OrderOperator_m\FourierTwoPi{\RvachevUp}=1+\TwoAdicValuation(|m|)$ rule out a polynomial-coefficient differential equation for the entire Fourier transform.  This implies non-D-finiteness of the moment generating functions, non-P-recursiveness of the moment sequences, and non-P-recursiveness of every fixed-$x$ Appell coefficient sequence.  Symbolic and high-precision numerical experiments accompany the proofs, and the fully commented Python program is included in the archive.
 \end{abstract}
 
 \begin{tcolorbox}[colback=lightorange,colframe=conjorange,title=Priority and novelty disclaimer,fonttitle=\bfseries]
@@ -5734,12 +5734,12 @@ Thus the universal part of the integer zero multiplicity is literally the moment
 \label{p4:prop:zero-multiplicity}
 For every nonzero integer $m$,
 \begin{equation}
- \OrderOperator_m\FourierTwoPi{U}=1+\nu_2(|m|).
+ \OrderOperator_m\FourierTwoPi{U}=1+\TwoAdicValuation(|m|).
  \label{p4:eq:zero-multiplicity}
 \end{equation}
 Consequently, for every nonzero $\ell\in\IntegerNumbers$,
 \begin{equation}
- \OrderOperator_\ell\FourierTwoPi{U_r}=r+1+\nu_2(|\ell|).
+ \OrderOperator_\ell\FourierTwoPi{U_r}=r+1+\TwoAdicValuation(|\ell|).
  \label{p4:eq:scaled-zero-multiplicity}
 \end{equation}
 \end{proposition}
@@ -5751,12 +5751,12 @@ In \eqref{p4:eq:sinc-product}, the factor indexed by $n$ vanishes at an integer 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.92\textwidth]{assets/Fabius_Rvachev_Frontier_Report_2026-08-27/figures/zero_multiplicity_ladder.png}
-\caption{The exact multiplicities $1+\nu_2(m)$ for $1\le m\le64$.  The unbounded spikes at powers of two later obstruct D-finiteness of the entire Fourier transform.}
+\caption{The exact multiplicities $1+\TwoAdicValuation(m)$ for $1\le m\le64$.  The unbounded spikes at powers of two later obstruct D-finiteness of the entire Fourier transform.}
 \label{p4:fig:zero-multiplicity}
 \end{figure}
 
 \begin{remark}
-The multiplicity formula is not used as a novelty claim by itself.  Its role here is structural: the first $r+1$ units of multiplicity are explained by the Prouhet block \eqref{p4:eq:tm-derivative}, while the remaining $\nu_2(\ell)$ units come from the infinite tail.  This split is precisely what drives the cardinal reproduction order in the next section.
+The multiplicity formula is not used as a novelty claim by itself.  Its role here is structural: the first $r+1$ units of multiplicity are explained by the Prouhet block \eqref{p4:eq:tm-derivative}, while the remaining $\TwoAdicValuation(\ell)$ units come from the infinite tail.  This split is precisely what drives the cardinal reproduction order in the next section.
 \end{remark}
 
 \section{A dyadic cardinal reproduction ladder}
@@ -6510,7 +6510,6 @@ C. R. Acad. Sci. Paris \textbf{33} (1851), 225.
 \newcommand{\CovPartii}{\Covariance}
 \newcommand{\suppPartii}{\SupportOperator}
 \newcommand{\sgnPartii}{\Sign}
-\newcommand{\vtwoPartii}{\TwoAdicValuation}
 \newcommand{\diagPartii}{\DiagonalOperator}
 \newcommand{\Cum}{\operatorname{Cum}}
 \newcommand{\repoPartii}{\nolinkurl{Analysis/FabiusFunction}}
@@ -9769,7 +9768,7 @@ Let
  =\prod_{j=0}^{\infty}\SincRad\!\left(\frac{\pi z}{2^j}\right),
  \qquad \SincRad w=\frac{\sin w}{w}.
 \]
-The inspected corpus already contains the canonical integer-zero product, the exact multiplicity $1+\nu_2(m)$ at a nonzero integer $m$, and the Thue--Morse sign law between consecutive zeros.  The present report does not relabel those facts as new.  Instead it introduces the diagonal operator
+The inspected corpus already contains the canonical integer-zero product, the exact multiplicity $1+\TwoAdicValuation(m)$ at a nonzero integer $m$, and the Thue--Morse sign law between consecutive zeros.  The present report does not relabel those facts as new.  Instead it introduces the diagonal operator
 \[
  D e_{j,n}=2^j n\,e_{j,n}\qquad(j\ge0,\ n\ge1)
 \]
@@ -9788,7 +9787,7 @@ and a heat trace with an explicit real-analytic log-periodic term.  We derive a 
 \]
 obtain finite multiscale Gaussian-binomial expansions, and calculate the complete small-$t$ Mellin asymptotics of $\Ecal(u;\EulerE^{-t})$, including the critical $u=1$ quadratic logarithm.  Finally, with the symmetric $q$-integer $[m]_Q$, we construct
 \[
- \Phi_Q(z)=\prod_{m\ge1}\left(1-\frac{z^2}{[m]_Q^2}\right)^{1+\nu_2(m)}
+ \Phi_Q(z)=\prod_{m\ge1}\left(1-\frac{z^2}{[m]_Q^2}\right)^{1+\TwoAdicValuation(m)}
 \]
 and prove an exact $q$-Pochhammer factorization, the scaling law
 \[
@@ -9832,9 +9831,9 @@ The main examples of statements that are \emph{not} claimed here as new are:
 \item the infinite sinc product for $\FourierTwoPiTransformOf{\RvachevUp}$ and its dyadic scaling equation;
 \item the canonical product
 \[
- \Phi(z)=\prod_{m=1}^{\infty}\left(1-\frac{z^2}{m^2}\right)^{1+\nu_2(m)};
+ \Phi(z)=\prod_{m=1}^{\infty}\left(1-\frac{z^2}{m^2}\right)^{1+\TwoAdicValuation(m)};
 \]
-\item the assertion that the nonzero zeros are precisely the integers, with multiplicity $1+\nu_2(|m|)$;
+\item the assertion that the nonzero zeros are precisely the integers, with multiplicity $1+\TwoAdicValuation(|m|)$;
 \item strict logarithmic concavity of $|\Phi|$ between consecutive zeros and the sign formula
 \[
  \sgnPartxx\Phi(x)=(-1)^{\BinaryDigitSum(M)}\qquad(M<x<M+1);
@@ -9887,7 +9886,7 @@ For $n\ge0$, let $\BinaryDigitSum(n)$ denote the sum of the binary digits of $n$
 \begin{equation}\label{p7:eq:tm}
  \ThueMorseSignSymbol_n=(-1)^{\BinaryDigitSum(n)}.
 \end{equation}
-The sequence satisfies $\ThueMorseSignSymbol_{2n}=\ThueMorseSignSymbol_n$ and $\ThueMorseSignSymbol_{2n+1}=-\ThueMorseSignSymbol_n$.  We write $\nu_2(m)$ for the exponent of $2$ in a positive integer $m$.
+The sequence satisfies $\ThueMorseSignSymbol_{2n}=\ThueMorseSignSymbol_n$ and $\ThueMorseSignSymbol_{2n+1}=-\ThueMorseSignSymbol_n$.  We write $\TwoAdicValuation(m)$ for the exponent of $2$ in a positive integer $m$.
 
 \subsection{$q$-notation}
 
@@ -9916,7 +9915,7 @@ Euler's sine product applied scale by scale to \cref{p7:eq:Phi-sinc} gives
  \left(1-\frac{z^2}{(2^jn)^2}\right)
  =\prod_{m=1}^{\infty}
  \left(1-\frac{z^2}{m^2}\right)^{a_m},
- \qquad a_m:=1+\nu_2(m).
+ \qquad a_m:=1+\TwoAdicValuation(m).
 \end{equation}
 The second equality counts the representations $m=2^jn$.  Consequently the nonzero zeros are exactly $\pm m$, each with multiplicity $a_m$.  The active Fourier-decay corpus already contains \cref{p7:eq:canonical-established}; it is the starting point, not a new theorem of this report.
 
@@ -9993,7 +9992,7 @@ This is an \emph{ordinary} Fredholm determinant, not a zeta-regularized determin
 
 The eigenvalue $m$ of $D$ occurs once for every $j$ such that $2^j\mid m$.  Therefore
 \begin{equation}\label{p7:eq:am}
- \operatorname{mult}_D(m)=a_m=1+\nu_2(m),
+ \operatorname{mult}_D(m)=a_m=1+\TwoAdicValuation(m),
  \qquad
  a_{2m}=a_m+1,
  \qquad
@@ -10027,10 +10026,10 @@ Consequently, with $M=\Floor{R}$, the number of nonzero zeros of $\Phi$ in $|z|\
 \begin{proof}
 Counting the pairs $(j,n)$ with $2^jn\le M$ gives the floor sum.  On the other hand,
 \[
- A(M)=M+\sum_{m=1}^{M}\nu_2(m)
- =M+\nu_2(M!).
+ A(M)=M+\sum_{m=1}^{M}\TwoAdicValuation(m)
+ =M+\TwoAdicValuation(M!).
 \]
-Legendre's binary formula $\nu_2(M!)=M-\BinaryDigitSum(M)$ proves \cref{p7:eq:A-exact}.  The zeros are symmetric, so the disk count is twice $A(M)$.
+Legendre's binary formula $\TwoAdicValuation(M!)=M-\BinaryDigitSum(M)$ proves \cref{p7:eq:A-exact}.  The zeros are symmetric, so the disk count is twice $A(M)$.
 \end{proof}
 
 The exact formula refines the linear Weyl term $A(M)\sim2M$ by a digit-sum fluctuation.  In particular,
@@ -10118,7 +10117,7 @@ For $j\le\Floor{\log_2M}$, the inner tail is at most $2^j/M$; summing gives less
 For $\Re s>1$,
 \begin{equation}\label{p7:eq:zetaD}
  \boxed{\ \zeta_D(s):=\TraceOperator D^{-s}
- =\sum_{m=1}^{\infty}\frac{1+\nu_2(m)}{m^s}
+ =\sum_{m=1}^{\infty}\frac{1+\TwoAdicValuation(m)}{m^s}
  =\frac{\zeta(s)}{1-2^{-s}}.\ }
 \end{equation}
 This identity gives a meromorphic continuation to $\ComplexNumbers$.  Besides the pole at $s=1$ with residue $2$, it has the dyadic pole lattice
@@ -10146,7 +10145,7 @@ For $k\ne0$, the numerator does not vanish on the imaginary axis; this follows, 
 \begin{corollary}[Reciprocal zero power sums]\label{p7:cor:zero-powers}
 For every integer $r\ge1$,
 \begin{equation}\label{p7:eq:zero-powers}
- \sum_{m=1}^{\infty}\frac{1+\nu_2(m)}{m^{2r}}
+ \sum_{m=1}^{\infty}\frac{1+\TwoAdicValuation(m)}{m^{2r}}
  =\frac{\zeta(2r)}{1-4^{-r}}.
 \end{equation}
 \end{corollary}
@@ -10297,7 +10296,7 @@ The exact counting remainder $-\BinaryDigitSum(M)$ is discontinuous and arithmet
 
 Fix a nonzero integer $m$.  Write
 \begin{equation}\label{p7:eq:m-rq}
- r=\nu_2(|m|),\qquad a=r+1,\qquad q=\frac{m}{2^r},
+ r=\TwoAdicValuation(|m|),\qquad a=r+1,\qquad q=\frac{m}{2^r},
 \end{equation}
 so that $q$ is odd.
 
@@ -10364,9 +10363,9 @@ center, as
 germ at zero by
 \path{Fabius.rvachevFourierProduct_int_add_eventuallyEq_pow_mul_cofactor}.
 The resulting cofactor is analytic and nonzero at the origin; Lean proves
-its exact value, the exact analytic order \(1+\nu_2(|m|)\), every lower
+its exact value, the exact analytic order \(1+\TwoAdicValuation(|m|)\), every lower
 derivative vanishing, and, with \(U_m\) denoting that cofactor and
-\(a=1+\nu_2(|m|)\), every higher derivative in the division-free form
+\(a=1+\TwoAdicValuation(|m|)\), every higher derivative in the division-free form
 \[
  \Phi^{(a+\ell)}(m)=\binom{a+\ell}{a}a!\,U_m^{(\ell)}(0).
 \]
@@ -10407,7 +10406,7 @@ All higher jets follow by formal multiplication of the three analytic factors in
 The leading coefficients propagate exactly along dyadic rays.
 
 \begin{corollary}[Dyadic-ray recursion]\label{p7:cor:dyadic-ray}
-If $a=1+\nu_2(m)$, then
+If $a=1+\TwoAdicValuation(m)$, then
 \begin{equation}\label{p7:eq:C-ray}
  C_{2m}=\frac{C_m}{2^{a+1}m}.
 \end{equation}
@@ -10426,7 +10425,7 @@ The integers $m$ and $2m$ have the same odd part, while their multiplicities dif
 
 For $m>0$, write its odd part as $q=2k+1$.  The established interval-sign theorem gives $\sgnPartxx\Phi(q/2)=(-1)^{\BinaryDigitSum(k)}$.  Hence
 \begin{equation}\label{p7:eq:jet-sign}
- \boxed{\ \sgnPartxx\Phi^{(1+\nu_2(m))}(m)
+ \boxed{\ \sgnPartxx\Phi^{(1+\TwoAdicValuation(m))}(m)
  =-(-1)^{\BinaryDigitSum((q-1)/2)}.\ }
 \end{equation}
 Thus the leading Taylor coefficient at every positive zero is controlled by the Thue--Morse bit of half the predecessor of its odd part.
@@ -10437,7 +10436,7 @@ The following values were computed independently from a high-precision truncated
 \begin{center}
 \begin{tabular}{@{}rrrr@{}}
 \toprule
-$m$ & $a=1+\nu_2(m)$ & $\Phi^{(a)}(m)$ & sign\\
+$m$ & $a=1+\TwoAdicValuation(m)$ & $\Phi^{(a)}(m)$ & sign\\
 \midrule
 1  & 1 & $-0.5537712758888100953$ & $-$\\
 2  & 2 & $-0.2768856379444050477$ & $-$\\
@@ -10888,7 +10887,7 @@ For fixed $0<Q<1$, the nonzero zeros of $\Phi_Q$ are exactly
 \begin{equation}\label{p7:eq:q-zero-set}
  z=\pm[m]_Q,\qquad m\ge1,
 \end{equation}
-with multiplicity $a_m=1+\nu_2(m)$.  Hence
+with multiplicity $a_m=1+\TwoAdicValuation(m)$.  Hence
 \begin{equation}\label{p7:eq:q-sign}
  \boxed{\ \sgnPartxx\Phi_Q(x)=(-1)^{\BinaryDigitSum(M)}
  \quad\text{for}\quad [M]_Q<x<[M+1]_Q.\ }
@@ -11108,7 +11107,7 @@ The operator-theoretic presentation is conceptually compact, but a successful Le
 
 The most accessible statements are:
 \begin{enumerate}[leftmargin=2em]
-\item $a_m=1+\nu_2(m)$ and the recursions $a_{2m}=a_m+1$, $a_{2m+1}=1$;
+\item $a_m=1+\TwoAdicValuation(m)$ and the recursions $a_{2m}=a_m+1$, $a_{2m+1}=1$;
 \item $\sum_{m\le M}a_m=2M-\BinaryDigitSum(M)$;
 \item the finite factorization \cref{p7:eq:finite-pch};
 \item the Gaussian-binomial coefficient formula \cref{p7:eq:CMk};
@@ -11178,7 +11177,7 @@ Relate the diagonal spectral model $D$ to the transfer operators used in the Fou
 \end{problem}
 
 \begin{conjecture}[Universality of the symmetric $q$-deformation]
-Among deformations that (i) preserve the multiplicity word $1+\nu_2(m)$, (ii) obey an exact two-scale factorization, (iii) have order zero for fixed $Q<1$, and (iv) converge locally uniformly to $\Phi$, the symmetric $q$-integer model \cref{p7:eq:PhiQ} is unique up to an analytic reparameterization of $Q$ and a scalar rescaling of $z$.
+Among deformations that (i) preserve the multiplicity word $1+\TwoAdicValuation(m)$, (ii) obey an exact two-scale factorization, (iii) have order zero for fixed $Q<1$, and (iv) converge locally uniformly to $\Phi$, the symmetric $q$-integer model \cref{p7:eq:PhiQ} is unique up to an analytic reparameterization of $Q$ and a scalar rescaling of $z$.
 \end{conjecture}
 
 \section{Conclusion}
@@ -13343,7 +13342,6 @@ source TeX included in the repository as \texttt{Lacunary\_products.tex}.
 \renewcommand{\headrulewidth}{0.4pt}
 \newcommand{\VarPartcc}{\Variance}
 \newcommand{\suppPartcc}{\SupportOperator}
-\newcommand{\vtwoPartcc}{\TwoAdicValuation}
 \newcommand{\wtPartcc}{\BinaryDigitSum}
 \newcommand{\statusE}{\textsf{[E]}}
 \newcommand{\statusN}{\textsf{[N]}}
@@ -13372,9 +13370,9 @@ The principal new results, in the precise sense ``not found explicitly in the in
 corpus'', are as follows.  First, the Rvachev transform admits the $q$-Pochhammer product
 \[
  \FourierTwoPi{\RvachevUp}(z)=\prod_{\ell\ge1}(z^2/\ell^2;1/4)_\infty
-               =\prod_{n\ge1}(1-z^2/n^2)^{\vtwoPartcc(n)+1},
+               =\prod_{n\ge1}(1-z^2/n^2)^{\TwoAdicValuation(n)+1},
 \]
-so its integer zero multiplicity is exactly $\vtwoPartcc(n)+1$.  A finite version has both a
+so its integer zero multiplicity is exactly $\TwoAdicValuation(n)+1$.  A finite version has both a
 Gaussian-binomial factorization and an exact signed Thue--Morse exponential-sum
 factorization.  Second, if
 $\Theta(q)=\sum_{n\ge0}(-1)^{\wtPartcc(n)}q^n=\prod_{j\ge0}(1-q^{2^j})$, then the exponentially
@@ -13382,7 +13380,7 @@ small endpoint correction in the negative-Laplace formula is exactly
 $-\log\Theta(\EulerE^{-s})$.  Its Lambert-series coefficients satisfy
 \[
  -\log\Theta(\EulerE^{-s})
- =\sum_{n\ge1}\frac{2^{\vtwoPartcc(n)+1}-1}{n}\EulerE^{-ns}
+ =\sum_{n\ge1}\frac{2^{\TwoAdicValuation(n)+1}-1}{n}\EulerE^{-ns}
  =\sum_{n\ge1}\frac{2^{\OrderOperator_{z=n}\FourierTwoPi{\RvachevUp}}-1}{n}\EulerE^{-ns},
 \]
 giving a direct spectral--endpoint dictionary.  Third, its Mellin transform is
@@ -13782,11 +13780,11 @@ Set $q=1/4$.  Then $\Phi_{1/4}=\Phi=\FourierTwoPiTransformOf{\RvachevUp}$.
 \begin{equation}
  \boxed{
  \Phi(z)=\prod_{n=1}^{\infty}\left(1-\frac{z^2}{n^2}\right)^{\mu(n)},
- \qquad \mu(n)=\vtwoPartcc(n)+1.}                                \label{p9:eq:arithmetic-product}
+ \qquad \mu(n)=\TwoAdicValuation(n)+1.}                                \label{p9:eq:arithmetic-product}
 \end{equation}
 Thus the nonzero zeros of $\Phi$ are exactly the integers, and
 \begin{equation}
- \boxed{\OrderOperator_{z=n}\Phi=\vtwoPartcc(|n|)+1\qquad(n\in\IntegerNumbers\setminus\{0\}).} \label{p9:eq:zero-mult}
+ \boxed{\OrderOperator_{z=n}\Phi=\TwoAdicValuation(|n|)+1\qquad(n\in\IntegerNumbers\setminus\{0\}).} \label{p9:eq:zero-mult}
 \end{equation}
 Moreover
 \begin{equation}
@@ -13801,12 +13799,12 @@ From \eqref{p9:eq:qpoch-full},
  \left(1-\frac{z^2}{4^jk^2}\right).
 \]
 For a fixed positive integer $n$, the equality $n=2^jk$ with $k\in\NaturalNumbers$ occurs exactly for
-$j=0,\ldots,\vtwoPartcc(n)$.  Absolute convergence permits regrouping and proves
+$j=0,\ldots,\TwoAdicValuation(n)$.  Absolute convergence permits regrouping and proves
 \eqref{p9:eq:arithmetic-product}.  Each contributing factor has a simple zero, proving
 \eqref{p9:eq:zero-mult}.  Finally
 \[
- \sum_{n\le N}\mu(n)=N+\sum_{n\le N}\vtwoPartcc(n)
- =N+\vtwoPartcc(N!)=2N-\wtPartcc(N)
+ \sum_{n\le N}\mu(n)=N+\sum_{n\le N}\TwoAdicValuation(n)
+ =N+\TwoAdicValuation(N!)=2N-\wtPartcc(N)
 \]
 by Legendre's formula.
 \end{proof}
@@ -13939,7 +13937,7 @@ immediate from \eqref{p9:eq:E-tail} and \eqref{p9:eq:Lambda-periodic}.
 \subsection{The $2$-adic Lambert series}
 Define
 \begin{equation}
- a(n)=\sum_{j=0}^{\vtwoPartcc(n)}2^j=2^{\vtwoPartcc(n)+1}-1.           \label{p9:eq:a-n}
+ a(n)=\sum_{j=0}^{\TwoAdicValuation(n)}2^j=2^{\TwoAdicValuation(n)+1}-1.           \label{p9:eq:a-n}
 \end{equation}
 
 \begin{theorem}[Lambert expansion and derivative hierarchy]\label{p9:thm:Lambert-tail}
@@ -13972,7 +13970,7 @@ Expand every logarithm in \eqref{p9:eq:E-tail}:
  \mathcal E(s)=\sum_{m\ge0}\sum_{k\ge1}\frac{\EulerE^{-k2^ms}}k.
 \]
 For a fixed $n$, the representations $n=k2^m$ are indexed by
-$m=0,\ldots,\vtwoPartcc(n)$, and $1/k=2^m/n$.  Their sum is $a(n)/n$.
+$m=0,\ldots,\TwoAdicValuation(n)$, and $1/k=2^m/n$.  Their sum is $a(n)/n$.
 Termwise differentiation is justified by absolute convergence on every half-line
 $s\ge s_0>0$.
 \end{proof}
@@ -14001,7 +13999,7 @@ Equivalently, the weighted zero-multiplicity Dirichlet series is
 \end{theorem}
 
 \begin{proof}
-By \eqref{p9:eq:zero-mult}, $\mu(n)=\vtwoPartcc(n)+1$, so \eqref{p9:eq:a-mu} is
+By \eqref{p9:eq:zero-mult}, $\mu(n)=\TwoAdicValuation(n)+1$, so \eqref{p9:eq:a-mu} is
 \eqref{p9:eq:a-n}.  For the Dirichlet series, write
 $a(n)=\sum_{j\ge0}2^j\IndicatorOf{2^j\mid n}$ and use Tonelli:
 \[
@@ -14022,7 +14020,7 @@ individual exponential coefficient with a local spectral multiplicity.
 \begin{center}
 \begin{tabular}{@{}rrrr@{}}
 \toprule
-$n$ & $\vtwoPartcc(n)$ & $\OrderOperator_{z=n}\Phi$ & coefficient of $\EulerE^{-ns}$ in $\mathcal E(s)$\\
+$n$ & $\TwoAdicValuation(n)$ & $\OrderOperator_{z=n}\Phi$ & coefficient of $\EulerE^{-ns}$ in $\mathcal E(s)$\\
 \midrule
 1 & 0 & 1 & $1$\\
 2 & 1 & 2 & $3/2$\\
@@ -14533,7 +14531,7 @@ The central relationships can be read as the following chain:
  &&\Big\updownarrow&&\Big\downarrow\text{ residues}\\[-0.2em]
  \Phi(z)=\prod\SincRad(\pi z/2^j)
  &\xrightarrow{\ \text{zero divisor}\ }&
- \mu(n)=\vtwoPartcc(n)+1
+ \mu(n)=\TwoAdicValuation(n)+1
  &\xrightarrow{\ a(n)=2^{\mu(n)}-1\ }&
  P(\log_2s).
 \end{array}
@@ -14590,7 +14588,7 @@ The following statements appear especially suitable for Lean because their proof
 finite products, absolutely convergent series, or elementary operator identities.
 \begin{enumerate}
 \item \textbf{Arithmetic canonical product:} formalize
-$\Phi(z)=\prod_{n\ge1}(1-z^2/n^2)^{\vtwoPartcc(n)+1}$ and the integer zero multiplicity.
+$\Phi(z)=\prod_{n\ge1}(1-z^2/n^2)^{\TwoAdicValuation(n)+1}$ and the integer zero multiplicity.
 \item \textbf{Finite triple factorization:} combine the finite sinc product with the
 formal Thue--Morse polynomial and Prouhet cancellation.
 \item \textbf{Endpoint Mahler identity:} prove
@@ -14664,7 +14662,7 @@ theory of the Fabius and Rvachev functions.  The main contribution of this repor
 new isolated formula but a new exact dictionary:
 \begin{enumerate}
 \item the infinite sinc product is a base-$1/4$ $q$-Pochhammer product;
-\item its integer zero multiplicity is $\vtwoPartcc(n)+1$;
+\item its integer zero multiplicity is $\TwoAdicValuation(n)+1$;
 \item the Thue--Morse endpoint logarithm weights that multiplicity by $2^\mu-1$;
 \item the resulting Dirichlet series has Mellin transform
 $\Gamma(w)\zeta(w+1)/(1-2^{-w})$;
@@ -14850,7 +14848,7 @@ $R$ & $sT'(s)$, the exponentially small derivative correction\\
 $A$ & $-s\Lambda'(s)=s\Expectation_sX$\\
 $\Pi$ & $-1/2-P'/L$, the periodic part of $A-\log_2s$\\
 $C$ & $\Pi(u)+R(2^u)$, the exact bounded saddle perturbation\\
-$\mu(n)$ & integer-zero multiplicity $\OrderOperator_{z=n}\Phi=\vtwoPartcc(n)+1$\\
+$\mu(n)$ & integer-zero multiplicity $\OrderOperator_{z=n}\Phi=\TwoAdicValuation(n)+1$\\
 \bottomrule
 \end{tabularx}
 \end{center}

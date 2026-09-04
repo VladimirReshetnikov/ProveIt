@@ -29,13 +29,23 @@ layer, while zero-count and sign material appears elsewhere in that volume.
 The report therefore remains standalone pending a claim-by-claim crosswalk and
 deliberate deduplication; paper theorem labels do not imply Lean status.
 
-The 1,060-line source selects Libertinus and uses the repository's A4,
-27 mm geometry. The normalized report was rebuilt on 2026-08-31 with exactly
-three strict `pdflatex` passes and is 24 pages. Its log has no errors,
+The source selects Libertinus and uses the repository's A4, 27 mm geometry.
+The normalized report was rebuilt on 2026-08-31 with exactly three strict
+`pdflatex` passes from the 1,060-line build source having SHA-256
+`2cc6c6843478663828377456c5bc2290786ff090ad3bd0eede8a2df777a59204`;
+the retained PDF is 24 pages with SHA-256
+`94a4ce8adada4c32513ad95e00a64e556020f6c9fef422274cfd6ace2eef6234`.
+Its log has no errors,
 unresolved cross-references, rerun request, overfull box, or underfull box;
 all 19 PDF font rows are embedded and subset, four are Libertinus, and no Type
-3 font remains. Every page rendered and contained extractable text. The live
-12-entry payload ledger covers the source, PDF, script, README, three PNG
+3 font remains. Every page rendered and contained extractable text.
+
+The current live TeX is 1,060 lines and 58,362 bytes with SHA-256
+`e7f05ac66a92284e82886bfe8b3376715ca0f71493a217d5a1adab6c17171475`.
+It now uses the shared `\TwoAdicValuation` command and postdates the render;
+therefore the PDF is a retained validated checkpoint, not a rendering of the
+current source. The live 12-entry payload ledger inventories the current
+source, retained PDF, script, README, three PNG
 figures, generated TeX table, and four CSV evidence tables.  The exact
 five-theorem `BaseDigitMultiplicity.lean` crosswalk closes the finite
 general-base digit count only; analytic zero order, product convergence, and
