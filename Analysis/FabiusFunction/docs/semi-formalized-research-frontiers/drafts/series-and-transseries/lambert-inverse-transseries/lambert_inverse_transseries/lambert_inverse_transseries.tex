@@ -1341,8 +1341,20 @@ The instance used below, \(F=f\), \(m=1\), \(M=2\), is formal in
 \path{Fabius.inv_exp_mul_add_one_le_one}), and the mean-value transfer is
 \path{Fabius.abs_sub_lambertShiftInv_le_abs_residual} (\(|H-G|\le|R|\)) and
 \path{Fabius.abs_residual_le_two_mul_abs_sub_lambertShiftInv} (\(|R|\le2|H-G|\)), for every
-\(z\ge0\) and every approximation \(H\ge0\).  The general \((m,M)\) statement is not
-separately formalized.
+\(z\ge0\) and every approximation \(H\ge0\).  The general \((m,M)\) statement is formal too, for
+an arbitrary function on an arbitrary convex set, in \path{MeanValueBracket.lean}: the two
+brackets are \path{Fabius.mul_abs_sub_le_abs_sub_of_le_deriv} and
+\path{Fabius.abs_sub_le_of_le_deriv}, and the transfer against a right inverse is
+\path{Fabius.abs_sub_right_inverse_le_div} (\(|H-G|\le|R|/m\)) together with
+\path{Fabius.div_le_abs_sub_right_inverse} (\(|R|/M\le|H-G|\)), which is
+\eqref{eq:residual-error-bound}.
+
+One hypothesis deserves recording, because the theorem as printed leaves it implicit in the
+words ``strictly increasing''.  The upper bracket needs \(0\le m\), not merely \(m\le F'\le M\):
+with \(F'\equiv-10\), \(m=-10\) and \(M=0\) the derivative bracket holds while
+\(\lvert F(x)-F(y)\rvert=10\lvert x-y\rvert\) exceeds \(M\lvert x-y\rvert=0\).  What
+the sign gives is monotonicity, which is what makes \(\lvert F(x)-F(y)\rvert\) the signed
+increment; the printed \(0<m\) supplies it.  The lower bracket needs no sign condition.
 
 For \(F(x)=x+\W(x)\), \eqref{eq:Wprime} gives
 \begin{equation}
