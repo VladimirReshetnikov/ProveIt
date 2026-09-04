@@ -29,11 +29,13 @@ mode this package is now expected to pass.
 
 | Directory | Document |
 | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — the evolving source and a historical 174-page A4 PDF |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — the evolving source and the retained upstream A4 PDF |
 
-The TeX has changed since the committed PDF was rendered. PDF rebuilding is
-currently skipped at the user's request, so the pair has no current
-render-parity claim. Standalone checksum files are retired; provenance is kept
+Upstream supplied a rebuilt PDF at its checkpoint. The latest merged source
+includes subsequent Stirling and Nörlund changes, so that retained PDF is not
+claimed to render the current source. Further PDF building remains skipped in
+this work at the user's request. Standalone
+checksum files are retired; provenance is kept
 in Git and the source inventory, and the validator does not maintain or require
 file digests.
 
@@ -70,6 +72,33 @@ section "Closure of the merge", carries the in-document record. In summary:
   upright `e` inside one exponent. The document now follows
   `FabiusFunction_Mathematical_Notation_Catalogue` throughout.
 
+## Current source-only Stirling overlay
+
+The fixed-column second-kind Stirling theorem `thm:second-ogf` now separates
+its formal-power-series content from scalar rational evaluation. Its
+coefficient identity explicitly assumes `n >= k`; the formal proof identifies
+two inverses of the same finite product, extracts the coefficient of the
+finite product of geometric series, and then proves
+`x^(k+1) * (1/x)↓(k+1) = ∏_{j=1}^k (1-jx)`. The falling-factorial spelling at
+a scalar requires `x != 0`, and its reciprocal form also requires every
+factor `1-jx` to be nonzero. The `k = 0`, `n = 0` empty-product case is
+included.
+
+The compiled zero-definition/eight-theorem
+`StirlingCompleteHomogeneous.lean` surface contributes
+`stirlingColumnOGF_eq_completeHomogeneousGeneratingSeriesOn`,
+`stirlingSecond_add_eq_completeHomogeneousEvalOn`,
+`stirlingSecond_eq_completeHomogeneousEvalOn_of_le`,
+`stirlingSecond_add_eq_completeHomogeneousEval`,
+`stirlingSecond_add_eq_eval_hsymm`, and
+`stirlingSecond_add_eq_sum_finsuppAntidiag`. Its two companion declarations,
+`pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul` and
+`prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv`, cover
+the scalar factorization and reciprocal spelling. Together they make
+`thm:second-ogf` **Lean** with the corrected hypotheses. The retained PDF was
+not rebuilt for this source-only overlay, so no PDF or checksum parity is
+claimed for it.
+
 ## What this package does not claim
 
 The manuscript is research-frontier mathematical writing. Its theorem and proof
@@ -79,24 +108,43 @@ and what is not; it is maintained separately from this consolidation.
 
 ## Formalization checkpoints (2026-09-04)
 
-The `AppellSequence` extension has passed a focused Lean build with
-`LAKE_JOBS=1`: eleven public lemmas provide weighted binomial translation,
+The `AppellSequence` extension has passed direct, sequential Lean elaboration:
+eleven public lemmas provide weighted binomial translation,
 convolution transport, cancellation, and inversion. The manuscript gives their
 complete human proofs and exact declaration crosswalks. Three private rational
 helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
-caller refactor has been independently source-reviewed but awaits its own build.
+caller refactor has now passed its own direct Lean check as well.
 
-The register contains 205 rows: 59 marked Lean, 34 partial, and 112 without a
-Lean counterpart. The earlier classifications are inherited; this checkpoint
-adds three compiler-backed entries and does not claim a fresh build of the whole
-corpus. The final structural/provenance validator passes with 205 adjacent
+The merged register contains 207 rows: 60 marked Lean, 35 partial, and 112
+without a compiler-verified counterpart. These include inherited classifications
+and the upstream formal-power, Stirling, and Newton checkpoints; they are not
+a fresh compilation of the whole corpus. The final structural/provenance
+validator passes with 207 adjacent
 proofs, 27 disposition records, and six original-source inventory rows. PDF
-rebuilding remains deferred at the user's request.
+building remains skipped for this latest source-only synchronization.
 
 The same-day upstream crosswalk connects the Bell normalization and unit-series
 coefficient formulas to `UnitSeriesBellCoefficients`; its labelled-set partition
 interpretation remains unformalized. That partial result is included in the
 register totals above.
+
+## Coefficient-calculus campaign (2026-09-04)
+
+Four new leaf modules supply seventeen public theorem statements, with complete
+human proofs and exact declaration names in the manuscript. `NewtonReciprocal`
+has passed focused Lean compilation, including the actual truncated update.
+`StirlingSymmetricFunctions`, `LagrangeInversionUniqueness`, and
+`StirlingSecondReverseRowIdentity` have received independent source/API reviews;
+their compiler validation is pending. The register preserves that distinction.
+The two second-kind symmetric-function formulas are shared with the compiled
+upstream `StirlingCompleteHomogeneous` module; their duplicate implementations
+were removed from this campaign's leaf.
+
+The campaign also repairs the Laplace theorem with explicit analytic endpoint
+hypotheses and full remainder estimates, removes contradictory duplicate
+crosswalks, and corrects boundary cases and coefficient-ring assumptions.
+The brief [campaign status](Combinatorial_Coefficient_Calculus/FORMALIZATION_STATUS.md)
+records remaining obligations without duplicating the canonical claim register.
 
 `ExponentialRescaling` has passed a focused build. Its four public lemmas give
 the rescaling chain rule over every commutative semiring and exponential
@@ -111,7 +159,8 @@ proves the full EGF and binomial identity including degree zero. The new
 Bernoulli kernel using the existing recurrence-to-logarithm bridge. Its
 coefficient formula separates degree zero and preserves the distinction between
 the two degree-one Bernoulli conventions. These two modules and the affected
-Norlund, Lambert, and ThueMorse callers still await compilation; independent
+Norlund and Lambert callers still await compilation; the ThueMorse caller's
+direct check is recorded by the upstream checkpoint above. Independent
 source reviews are not compiler validation, and their register classifications
 have not been promoted on that basis.
 

@@ -231,8 +231,22 @@ recurrence $(1-kx)F_k=F_{k-1}$ (\lean{Fabius.one_sub_mul_X_mul_stirlingColumnOGF
 The expansion of each geometric factor is
 \lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow}, which identifies the column
 series with $\prod_{j=1}^k\sum_{r\ge0}j^rx^r$; the complete-homogeneous
-coefficient formula \cref{eq:second-complete-symmetric} is the coefficient
-extraction of that product and is not stated separately.""")),
+coefficient formula \cref{eq:second-complete-symmetric} is supplied over every
+commutative semiring by the compiled
+\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn} and
+\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le} in
+\lean{StirlingCompleteHomogeneous}.  The same module supplies universal
+\lean{MvPolynomial.hsymm} evaluation through
+\lean{Fabius.stirlingSecond_add_eq_eval_hsymm} and the explicit multiplicity
+sum through \lean{Fabius.stirlingSecond_add_eq_sum_finsuppAntidiag}.
+The scalar falling-factorial factorization is
+\lean{Fabius.pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul}
+under $x\ne0$; its reciprocal is
+\lean{Fabius.prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv}
+under nonvanishing of every $1-jx$.  The human symmetric-function proof
+appears in \cref{thm:stirling-symmetric-semirings}; the separate first-kind
+identities and scaling extensions in \lean{StirlingSymmetricFunctions}
+still await compiler validation.""")),
 
  # --- thm:eulerian-power-series ---
  (r"""\eqref{eq:eulerian-explicit}.  Formula \eqref{eq:eulerian-k1} is its case $k=1$.
@@ -269,7 +283,10 @@ to the $n$-th coefficient of $g\,A(f)$), the product law
 inverse law \cref{eq:merged-riordan-inverse} is
 \lean{Fabius.expRiordan_mul_inverse} in the form: if $\overline f\circ f=t$
 and $g\cdot(h\circ f)=1$ then $[g,f]\,[h,\overline f]$ is the identity array
-\lean{Fabius.expRiordan_one_X}.  The Stirling examples are
+\lean{Fabius.expRiordan_one_X}.  This is a conditional one-sided inverse
+statement.  Constructing the inverse series from the theorem's unit hypotheses
+and establishing the full two-sided inverse remain separate formal obligations;
+the register status is therefore \emph{partial}.  The Stirling examples are
 \lean{Fabius.expRiordan_one_exp_sub_one} ($[1,\EulerE^t-1]$ has entries
 $\StirlingSecondKind nk$) and \lean{Fabius.expRiordan_one_log}
 ($[1,\log(1+t)]$ has entries $\SignedStirlingFirstKind{n}{k}$).""")),
@@ -390,9 +407,13 @@ PENDING += [
 from the surjection count $k^n=\sum_r\StirlingSecondKind nr\,r!\binom kr$
 (\lean{Fabius.pow_eq_sum_stirlingSecond_mul_factorial_mul_choose}); the
 formal statement holds for all $n,k\ge0$ with the sum running from $r=0$
-(the extra term $\StirlingSecondKind n0/k!$ vanishes for $n\ge1$).  The
-reverse recurrences \cref{eq:second-reverse-row,eq:second-reverse-column}
-are not formalized.""")),
+(the extra term $\StirlingSecondKind n0/k!$ vanishes for $n\ge1$).
+The column recurrence is \lean{Fabius.second_reverse_column} in
+\lean{StirlingSecondReverseColumn}.  The row recurrence is supplied by new
+source \lean{Fabius.second_reverse_row} and
+\lean{Fabius.second_reverse_row_sum} in
+\lean{StirlingSecondReverseRowIdentity}, with compiler validation pending;
+the combined register status remains \emph{partial}.""")),
 ]
 
 PENDING += [
@@ -1370,8 +1391,16 @@ $z\psi(z)$, where $\psi$ is the power-series inverse of $\phi$, and
 \cref{eq:lagrange-functional}.  So
 \lean{Fabius.Lagrange.coeff_solution_subst_derivative} and
 \lean{Fabius.Lagrange.coeff_solution} are unconditional statements about a
-witness, not conditional ones.  Uniqueness of $g$ and
-\cref{eq:lagrange-burmann-alt} are not formalized.
+witness, not conditional ones.  New source in
+\lean{LagrangeInversionUniqueness} supplies uniqueness over an arbitrary
+commutative ring through
+\lean{Fabius.Lagrange.eq_solution_of_eq_X_mul_subst} and
+\lean{Fabius.Lagrange.existsUnique_of_isUnit_constantCoeff}.
+The alternative coefficient formula is
+\lean{Fabius.Lagrange.coeff_solution_subst_alt}, using the general
+coefficient integration-by-parts identity
+\lean{Fabius.Lagrange.coeff_jacobian_mul}.  Compiler validation of these
+additions is pending, so the register status remains \emph{partial}.
 The proof above is unavailable in Lean, because it runs through
 \cref{thm:res-subst}, which is itself unformalized.  The formal proof is
 purely algebraic and rests on one cancellation: writing $v$ for the inverse of
@@ -1679,7 +1708,12 @@ $(-1)^n$, and $\EulerE^{-x}\EulerE^{x}=1$ is \lean{Fabius.exp_mul_altSeries}.
 Worth noting beside the first-kind case: the first-kind column satisfies
 $(1-x)\log(1-x)F'=-kF$, whose kernel needs a logarithm and a dedicated series,
 while the kernel here is elementary.
-\cref{eq:second-reverse-row} is not formalized.""")),
+New source \lean{Fabius.second_reverse_row} in
+\lean{StirlingSecondReverseRowIdentity} supplies
+\cref{eq:second-reverse-row} over every commutative ring by extracting
+coefficients from \lean{Fabius.subst_logTail};
+\lean{Fabius.second_reverse_row_sum} gives the unrestricted rational-index
+version.  Compiler validation of the new row identities is pending.""")),
 ]
 
 PENDING += [
@@ -1791,11 +1825,45 @@ algebraic normalization only, not the separate labelled-set interpretation."""))
 
  # --- alg:merged-exp-log-power ---
  (r"""\begin{proof}
-Compare coefficients in $A'=AL'$ to obtain the first two recurrences.  For
-powers, compare degree $n-1$ in $AC'=\alpha A'C$ and isolate $nc_n$.
+All three divided recurrences are for $n\geq1$.  From $A'=AL'$,
+the coefficient of $z^{n-1}$ gives
+\[
+ n a_n=\sum_{j=1}^{n}j\ell_j a_{n-j}.
+\]
+This is the exponential recurrence.  Since $a_0=1$, its $j=n$ term is
+$n\ell_n$; isolating that term gives the logarithmic recurrence.
+
+For powers, put $w=A-1$ and define the formal binomial series
+\[
+ F_\alpha(t)=\sum_{k\geq0}\frac{\FallingFactorial{\alpha}{k}}{k!}t^k,
+ \qquad C=F_\alpha(w).
+\]
+The falling-factorial recurrence gives
+$(1+t)F_\alpha'(t)=\alpha F_\alpha(t)$.  As $w(0)=0$, formal substitution
+and the chain rule are valid and yield $AC'=\alpha A'C$ and $c_0=1$.
+Multiplying the differential equation by $z$ keeps the coefficient index
+unchanged, since $[z^n](zH')=n[z^n]H$.  Cauchy's rule therefore gives
+\[
+ 0=[z^n]\bigl(\alpha(zA')C-A(zC')\bigr)
+   =\sum_{j=0}^{n}\bigl((\alpha+1)j-n\bigr)a_jc_{n-j}.
+\]
+The $j=0$ term is $-nc_n$, so its isolation proves
+\eqref{eq:merged-alg-power}.  Every remaining $c_{n-j}$ has smaller index,
+and positive integers are invertible in the ambient
+$\RationalNumbers$-algebra.  Thus $c_0=1$ and this recurrence uniquely
+determine the coefficients by induction.
+
+More generally, the same coefficient calculation over \emph{any}
+commutative ring, with no normalization or invertibility assumption on
+$a_0$, shows that $AC'=\alpha A'C$ implies
+\[
+ n a_0c_n=\sum_{j=1}^{n}\bigl((\alpha+1)j-n\bigr)a_jc_{n-j}.
+\]
+This denominator-free identity remains valid in positive characteristic;
+only the step of solving for $c_n$ requires an invertible $na_0$.
 \end{proof}
 """,
-  remark(r"""% ed.: crosswalk added 2026-09-04; two recurrences exact, one open.
+  remark(r"""% ed.: crosswalk updated 2026-09-04; all three recurrences exact.
 The logarithmic recurrence \eqref{eq:merged-alg-log} is the positive-degree
 unfolding \lean{Fabius.SaddleExpansion.logCoeff_succ}, after reflecting its
 finite summation index; its output is identified with Mathlib's formal
@@ -1803,14 +1871,21 @@ logarithm by \lean{Fabius.SaddleExpansion.logSeries_eq_logOf} (modules
 \lean{SaddleLogExpansionAlgebra} and \lean{SaddleLogExpansionPowerSeries}).
 The exponential recurrence \eqref{eq:merged-alg-exp} is
 \lean{Fabius.coeff_exp_subst_recurrence} in module
-\lean{UnitSeriesBellCoefficients}, stated in the denominator-cleared form
-$na_n=\sum_{j=1}^n j\ell_j a_{n-j}$ and valid also at $n=0$.
-The same module gives nonrecursive Bell-polynomial coefficient formulas for
-arbitrary formal powers in
-\lean{Fabius.coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos} and
-\lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}.  It does not prove
-the distinct recursive identity \eqref{eq:merged-alg-power}; that clause remains
-the precise missing obligation, so the algorithm is only \emph{partial}.""")),
+\lean{UnitSeriesBellCoefficients}, in denominator-cleared form.
+For powers, module \lean{UnitSeriesPowerRecurrence} proves the general
+commutative-ring identity
+\lean{Fabius.coeff_recurrence_of_mul_derivative_eq}, the formal binomial
+differential equation
+\lean{Fabius.mul_derivative_fallingSeries_subst_sub_one}, and its
+unit-constant recurrence
+\lean{Fabius.coeff_fallingSeries_subst_sub_one_recurrence}.
+The constant coefficient is one by
+\lean{Fabius.constantCoeff_subst_of_constantCoeff_eq_zero} in
+\lean{BellGeneratingFunctions} and
+\lean{Fabius.constantCoeff_fallingSeries}.  Thus the whole algorithm is
+\emph{Lean}-proved over a commutative $\mathbb Q$-algebra, with the
+denominator-free identity generalized to arbitrary commutative rings.
+These are formal series statements, not assertions about analytic branches.""")),
 ]
 
 applied = 0
