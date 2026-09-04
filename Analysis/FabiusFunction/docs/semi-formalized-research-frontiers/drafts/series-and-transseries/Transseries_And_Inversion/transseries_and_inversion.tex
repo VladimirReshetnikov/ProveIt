@@ -645,6 +645,38 @@ it is why the degree profile there is a lexicographic invariant rather than a
 single number.
 \end{remark}
 
+\begin{remark}[Branch hypotheses, and which way to get them wrong]
+\label{q0:rem:branch-hypotheses}
+Every inverse-function statement in this volume carries a hypothesis choosing a
+branch, and the same question about that hypothesis has arisen independently in
+three different chapters --- for the Lambert equation of
+\cref{p0:thm:lambert-core}, for the shifted inverse of \cref{q1:thm:exact}, and
+for the Cayley tree function of \cref{p1:def:cayley}.  It is worth settling
+once.
+
+The branch point of \(\LambertW\) at \(z=-\EulerE^{-1}\) belongs to the
+principal branch: \(\LambertW_{0}(-\EulerE^{-1})=-1\), and the principal branch
+is defined and monotone on the \emph{closed} ray \([-\EulerE^{-1},\infty)\).
+So a statement \emph{about} \(\LambertW_{0}\) --- monotonicity, concavity, a
+bound, a functional equation --- should take the closed hypothesis, and loses
+nothing by it.  But a statement asserting that the two branches are
+\emph{distinct} must take the open one.  At \(z=-\EulerE^{-1}\) the two
+branches coincide, so a phase with two positive roots for \(z\) inside the
+punctured interval has exactly one at the endpoint: the assertion
+\(X_{0}<|b|/a<X_{-1}\) is not vacuous there, it is false.
+
+The asymmetry is what makes this worth stating rather than remembering.  A
+hypothesis that is too weak yields a theorem that is \emph{wrong} at one point;
+a hypothesis that is too strong yields one that is merely \emph{vacuous}
+there.  Only the second failure is safe, so where the two readings compete, take
+the stronger hypothesis and weaken it at the point of use --- passing
+\(z>-\EulerE^{-1}\) to a lemma that asks only \(z\ge-\EulerE^{-1}\) costs one
+token and no generality.  The corresponding formal hypotheses are the closed
+\lean{Set.Ici} for statements about the branch and the open \lean{Set.Ioo} for
+statements separating two of them; both readings typecheck, which is precisely
+why the distinction has to be made by the author rather than by the checker.
+\end{remark}
+
 \section{How to read this volume}
 \label{q0:sec:roadmap}
 
