@@ -6,6 +6,12 @@ canonical claim register is the **Lean formalization register** section of
 Mathematical statements and proofs belong in the TeX/PDF pair. The register's
 status words are recorded correspondence claims, not a fresh compilation receipt.
 
+The merge of main at `28de4e51c` retains the nine compiled grid/CRT certificate
+theorems from `5a685136b`. Its regenerated register has 207 rows: 62 `Lean`,
+35 `partial`, and 110 `none`; the corpus census is 985 modules and 12,199 public
+declarations. The pinned checkpoint counts and pending-build receipts below
+describe their historical source states, not a rebuild of this merged tree.
+
 ## Inventory and evidence boundary
 
 The initial source snapshot contains 201 theorem-like environments: 150 theorems,
@@ -32,11 +38,22 @@ The first integration milestone merged pinned upstream
 `c668cb96362acbae8b89950102b8ea361102a73f`. Its source validator passes with
 206 theorem-like items and adjacent proofs, 27 dispositions, and six immutable
 source-inventory rows. The obsolete live checksum ledger was retired as upstream
-intended. The current register has 60 `Lean`, 35 `partial`, and 111 `none` rows;
+intended. At that checkpoint the register had 60 `Lean`, 35 `partial`, and 111 `none` rows;
 these totals include inherited claims and are not a fresh audit of all 206 rows.
 The latest upstream rescaling and formal-power recurrence upgrades are retained;
 the new Bernoulli formal-logarithm and Abel sources remain separately pending.
 The upstream duplicate-crosswalk validator's eight regression tests pass.
+
+The subsequent Nörlund synchronization incorporates main through
+`2ccc7f787becde416b234d40093876eac9f9c35e` and the source checkpoint
+`16975fdfd`. The regenerated register has 207 results: 60 `Lean`, 35 `partial`,
+and 112 `none`. `NorlundGeneralized` and the coefficient-base-change extension
+of `BernoulliFormalLog` have independent source/API reviews but still await
+compilation; no coverage upgrade is inferred from those reviews. Their human
+proofs now include normalization, zero-ring boundaries, and degree zero.
+The inherited PDF predates these latest source edits. PDF rebuilding remains
+skipped in this work at the user's request, without discarding the upstream
+render or claiming current render parity.
 
 `NewtonReciprocal.lean` passed focused compilation on 2026-09-04 using
 `lake env lean -o .lake/build/lib/lean/FabiusFunction/NewtonReciprocal.olean

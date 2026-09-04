@@ -38,6 +38,22 @@ if '\\newcommand{\\lean}' not in s:
 # ---------------------------------------------------------------- statuses
 # label -> (status, "declarations (module)")
 STATUS = {
+ 'thm:merged-grid-certificate': ('Lean',
+   r"\lean{Fabius.mvPolynomial_eq_of_eval_eq_on_grid} proves the difference-degree "
+   r"criterion over any integral domain and finite variable type; "
+   r"\lean{Fabius.mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_sub_le} and "
+   r"\lean{Fabius.mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_le} give the two "
+   r"natural-degree-bound forms, and \lean{Fabius.mvPolynomial_grid_eval_injective} "
+   r"gives injectivity on the bounded-degree class (\lean{GridEvaluationCertificate})."),
+ 'thm:merged-crt-certificate': ('Lean',
+   r"\lean{Fabius.int_prod_dvd_of_pairwise_coprime} and "
+   r"\lean{Fabius.int_eq_zero_of_modEq_zero_of_natAbs_lt_prod} prove product "
+   r"divisibility and the stronger full-product zero bound; "
+   r"\lean{Fabius.int_eq_of_modEq_of_natAbs_sub_lt_prod}, "
+   r"\lean{Fabius.int_eq_of_modEq_of_natAbs_add_lt_prod}, and "
+   r"\lean{Fabius.int_eq_of_modEq_of_two_mul_natAbs_lt_prod} give the difference, "
+   r"sum, and symmetric half-product equality certificates for finite families "
+   r"of signed, pairwise coprime integer moduli (\lean{IntegerCRTCertificate})."),
  'lem:merged-formal-rescaling': ('Lean',
    r"\cref{eq:merged-formal-rescaling-derivative} is "
    r"\lean{Fabius.derivative_rescale} over every commutative semiring; "
@@ -54,9 +70,23 @@ STATUS = {
    r"(\lean{StirlingBasisChange}); the permutation count itself is not formalized"),
  'thm:second-recurrence': ('partial',
    r"\lean{Nat.stirlingSecond_succ_succ}, \lean{Nat.stirlingSecond_succ_zero}, "
-   r"\lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib) prove the algebraic recurrence and "
-   r"boundary values for the recursively defined array.  Identifying this array with the "
-   r"cardinality of set partitions requires a separate formal counting theorem."),
+   r"\lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib); the set-partition count, "
+   r"which Mathlib leaves as a docstring claim, is \lean{Fabius.card_setPartitions} "
+   r"(\lean{BellSetPartitions})"),
+ 'prop:merged-abel': ('Lean',
+   r"\lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_eval_add}, "
+   r"\lean{Fabius.abelSeries_eq}, \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} "
+   r"(\lean{AbelPolynomialSeries}); the EGF identity is proved for every solution "
+   r"of $T=te^{-aT}$, not only the constructed one"),
+ 'thm:merged-frechet-faa': ('Lean',
+   r"Mathlib's \texttt{HasFTaylorSeriesUpToOn.comp} (FaaDiBruno.lean), indexed by "
+   r"\texttt{OrderedFinpartition} rather than unordered partitions; the regrouping "
+   r"into partial-Bell form is not formal"),
+ 'thm:bell-poly-partitions': ('Lean',
+   r"\lean{Fabius.partialBell_eq_sum_setPartitions} and "
+   r"\lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), "
+   r"over any commutative semiring of weights; the per-type count "
+   r"\cref{cor:partition-type} is not covered"),
  'thm:second-explicit': ('Lean',
    r"\lean{Fabius.factorial_mul_stirlingSecond_eq_sum} (over $\mathbb Z$) and "
    r"\lean{Fabius.stirlingSecond_eq_sum_div_factorial} (over $\mathbb Q$) "
@@ -584,10 +614,13 @@ STATUS = {
    r"\lean{Fabius.diamondPow_apply} and \lean{Fabius.partialBell_eq_diamondPow_div} "
    r"(\lean{DiamondPower}); the diamond product is \lean{Bell.binomialConv}, and "
    r"\lean{Fabius.binomialConv_eq_sum_Ico} checks that the two extreme terms the source "
-   r"omits do vanish, so the two definitions agree.  The proof is the source's: "
+   r"omits do vanish, so the two definitions agree.  Raw diamond powers and their "
+   r"zero/successor/one laws hold over every "
+   r"commutative semiring; the EGF and partial-Bell bridge retain commutative "
+   r"$\RationalNumbers$-algebra hypotheses.  The proof is the source's: "
    r"\lean{Fabius.egfA_mul} makes the generating function of the power a power "
    r"(\lean{Fabius.egfA_diamondPow}), and \lean{Fabius.bellWeightSeries_pow} reads off its "
-   r"coefficients"),
+   r"coefficients."),
  'thm:bell-symmetric-functions': ('Lean',
    r"\cref{eq:elementary-via-bell} is \lean{Fabius.esymm_eq_bell_complete} and its sign "
    r"variant \lean{Fabius.esymm_eq_neg_bell_complete} (\lean{ElementarySymmetricBell}), for a "
