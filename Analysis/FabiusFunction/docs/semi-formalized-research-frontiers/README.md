@@ -91,19 +91,33 @@ only its `UB = I` clause is formalized. Its negative-decoder theorem retains
 strictly positive row overlap as an explicit hypothesis. No retained frontier,
 primary, walkthrough, comb, or representation PDF renders this addition.
 
-The source-only addition
+The subsequent source-only algebraic addition is
 `FabiusFunction.GeometricUniformMomentPolynomial`, with one definition and
 eight theorems. It defines the recursive rational polynomial family and proves
 its base case, residual-product recurrence, triangular degree bound,
 reciprocal-factorial value at zero, and the explicit cases `P1` through `P4`.
 Together with the zero theorem this is the complete displayed `P0`--`P4`
-algebraic surface. It does not identify the recursive family with the
-normalized analytic Taylor or moment coefficients, and it does not prove the
-leading-coefficient formula or the resulting strict odd-degree drop. Thus
-`p7:thm:Pn` remains **Partial**, with only its algebraic recurrence, degree
-bound, zero value, and small-case clauses supplied. The
-retained frontier, primary, walkthrough, and geometric-q PDFs predate this
-source-only overlay and claim no render parity.
+algebraic surface. That one-module/nine-declaration increment produced the
+historical checkpoint 904 modules and 11,457 public declarations.
+
+The newest companion
+`FabiusFunction.GeometricUniformMomentPolynomialBridge` has no public
+definitions and exactly one public theorem,
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`.
+For every real `q` with `|q| < 1` and every `n`, it identifies the recursive
+polynomial with the finite-q-Pochhammer normalization of the `n`th Taylor
+coefficient of the actual geometric-uniform moment generating function.
+Thus `p7:eq:Pn-def` is **Exact** in this real contraction regime, including
+signed `q` and `q = 0`. The bridge does not construct the manuscript's
+complex-q infinite product. The leading-coefficient formula and resulting
+strict odd-degree drop remain unproved, so the compound `p7:thm:Pn` remains
+**Partial** with only those clauses outstanding. This exhaustive zero-
+definition/one-theorem bridge produced the incoming branch checkpoint of
+905 modules and 11,458 public declarations; after the merged source-only
+tranches, the live documentation census is 915 modules and 11,556 public
+declarations. The retained frontier, primary,
+walkthrough, and geometric-q PDFs predate these source-only overlays and claim
+no render parity.
 
 The preceding source-only addition is
 `FabiusFunction.GeometricRichardsonGenerating`, with three definitions and
@@ -130,9 +144,11 @@ public declarations. The subsequent zero-definition/two-theorem
 to 913 modules and 11,551 public declarations. The subsequent zero-definition/
 three-theorem `ThueMorseGammaTowerDifferential` leaf brought the next source
 checkpoint to 914 modules and 11,554 public declarations. The one-theorem
-strengthening of the existing `GeometricResidualMoments` module leaves the
-module count unchanged and brings the live census to 914 modules and 11,555
-public declarations.
+strengthening of the existing `GeometricResidualMoments` module left the
+module count unchanged and brought the next checkpoint to 914 modules and
+11,555 public declarations. The zero-definition/one-theorem
+`GeometricUniformMomentPolynomialBridge` leaf brings the live census to 915
+modules and 11,556 public declarations.
 
 `FabiusFunction.GaussianBinomialGreaterOneAsymptotics` has exactly the two
 theorems
@@ -167,8 +183,12 @@ forms, coefficientwise rational descent and rational lattice samples, and
 the formal complete-Bell/Bernoulli--Mersenne coefficient description.
 Rationality is asserted only at rational evaluation points, and the Bell
 identity is formal coefficient algebra rather than analytic reciprocal-MGF
-convergence. There is no single wrapper theorem, and this promotion does not
-promote `thm:lag-cardinal` or the still-Partial `thm:lag-right-inverse`.
+convergence. There is no single nodes-only wrapper theorem. Independently,
+the existing `LagrangeRvachevSynthesis` declarations
+`Fabius.normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp` and
+`Fabius.sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp` make
+`thm:lag-cardinal` Exact/Complete by assembly. The still-Partial
+`thm:lag-right-inverse` and decoder optimality are not promoted.
 
 `FabiusFunction.ThueMorseGammaTowerDifferential` has no definitions and
 exactly three theorems:

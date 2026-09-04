@@ -3905,8 +3905,9 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 914 modules and 11,555 public declarations.  The immediately
-preceding Appell/fixed-column/barycenter/Matrix checkpoint was 910/11,525;
+census is 915 modules and 11,556 public declarations.  The immediately
+preceding scaled-geometric checkpoint was 914/11,555; the earlier
+Appell/fixed-column/barycenter/Matrix checkpoint was 910/11,525;
 the complex Bernoulli value-completion checkpoint 903/11,448 remains
 historical.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
@@ -3930,10 +3931,12 @@ ten-theorem \path{GaussianBinomialFixedColumnRate.lean} leaf, followed by the
 one-definition/fourteen-theorem \path{RvachevAppellHasse.lean} leaf, the
 one-definition/fourteen-theorem \path{RvachevLagrangeNodesOnly.lean} leaf, the
 zero-definition/two-theorem
-\path{GaussianBinomialGreaterOneAsymptotics.lean} leaf, and the
+\path{GaussianBinomialGreaterOneAsymptotics.lean} leaf, the
 one-definition/eight-theorem
-\path{GeometricUniformMomentPolynomial.lean} module, and the zero-definition/
-three-theorem \path{ThueMorseGammaTowerDifferential.lean} leaf.
+\path{GeometricUniformMomentPolynomial.lean} module, the zero-definition/
+three-theorem \path{ThueMorseGammaTowerDifferential.lean} leaf, and the
+zero-definition/one-theorem
+\path{GeometricUniformMomentPolynomialBridge.lean} companion.
 These are
 source-only overlays; the retained 183-page, 1,899,243-byte PDF is explicitly
 historical and has not been regenerated for these additions.
@@ -3966,8 +3969,10 @@ universal Gaussian polynomial structure over \(\NaturalNumbers[X]\), Jacobi's cu
 identity, the q-Pochhammer logarithmic derivative and Lambert-series form, and
 the derivative with respect to complex order under the displayed hypotheses.
 
-The newest algebraic moment-polynomial count is
-\path{GeometricUniformMomentPolynomial.lean} (1+8).  Its definition is
+The newest moment-polynomial counts are
+\path{GeometricUniformMomentPolynomial.lean} (1+8) and
+\path{GeometricUniformMomentPolynomialBridge.lean} (0+1).  The algebraic
+module's definition is
 \lean{geometricUniformMomentPolynomial}; its theorems are
 \lean{geometricUniformMomentPolynomial_zero},
 \lean{geometricUniformMomentPolynomial_succ},
@@ -3977,10 +3982,17 @@ specializations
 \lean{geometricUniformMomentPolynomial_one} through
 \lean{geometricUniformMomentPolynomial_four}.  This supplies the recursive
 polynomial family, residual-product recurrence, triangular degree bound,
-value at zero, and the cases \(P_0,\ldots,P_4\).  It does not identify that
-family with the analytically defined moment coefficients or prove the leading
-coefficient and strict odd-degree drop.  Accordingly the frontier label
-\nolinkurl{p7:thm:Pn} remains Partial rather than Exact.
+value at zero, and the cases \(P_0,\ldots,P_4\).  The companion's exhaustive
+public surface is the single theorem
+\lean{geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient}.  For
+every real \(q\) with \(\lvert q\rvert<1\) and every \(n\), it identifies the
+polynomial evaluation with the finite-q-Pochhammer normalization of the
+\(n\)-th Taylor coefficient of the actual geometric-uniform moment generating
+function.  Thus \nolinkurl{p7:eq:Pn-def} is Exact in this real contraction
+regime.  The leading-coefficient formula and consequent strict degree drop
+for odd \(n>1\) remain absent, so the compound frontier label
+\nolinkurl{p7:thm:Pn} remains Partial rather than Exact.  No complex-q
+infinite-product realization is asserted.
 
 The final two module counts are
 \path{CentralQBinomialReduction.lean} (0+6) and
@@ -13735,6 +13747,7 @@ Moments and exact arithmetic &
 \path{RvachevAppellHasse.lean},
 \path{RvachevLagrangeNodesOnly.lean},
 \path{GeometricUniformMomentPolynomial.lean},
+\path{GeometricUniformMomentPolynomialBridge.lean},
 \path{WeightedScaleMultiplicity.lean}, \path{BaseDigitMultiplicity.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean},
 \path{CentralBinomialValuation.lean},

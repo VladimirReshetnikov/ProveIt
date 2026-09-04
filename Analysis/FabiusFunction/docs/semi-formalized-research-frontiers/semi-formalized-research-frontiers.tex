@@ -364,9 +364,15 @@ nodes-only Rvachev amplitude leaf; and the one-definition/eight-theorem
 geometric-uniform moment-polynomial algebra leaf; and the zero-definition/
 three-theorem Thue--Morse GammaLog differential leaf; and the one-theorem
 scaled-geometric polynomial-evaluation strengthening of the existing
-\path{GeometricResidualMoments.lean} module.  The live source census is
-914 facade-reachable modules and 11,555 public declarations; the moment-
-polynomial row remains Partial because its analytic normalization is absent.
+\path{GeometricResidualMoments.lean} module; and the zero-definition/one-
+theorem real-MGF bridge in
+\path{GeometricUniformMomentPolynomialBridge.lean}.  The live source census
+is 915 facade-reachable modules and 11,556 public declarations.  The compound
+moment-polynomial row remains Partial only because its leading-coefficient
+and strict odd-degree clauses are absent; its actual-MGF normalization is
+Exact for real \(\lvert q\rvert<1\).  The incoming bridge branch recorded the
+successive historical checkpoints 903/11,447, 903/11,448, 904/11,457, and
+905/11,458.
 The retained
 257-page, 2,438,299-byte A4 PDF, SHA-256
 \nolinkurl{3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980},
@@ -2684,8 +2690,10 @@ source checkpoint to 913/11,551.  The subsequent
 \path{ThueMorseGammaTowerDifferential.lean} (0+3) leaf brings the live
 source checkpoint to 914/11,554.  The subsequent one-theorem strengthening
 of the existing \path{GeometricResidualMoments.lean} module leaves the module
-count unchanged and brings the live source census to 914/11,555.  The
-nodes-only leaf makes
+count unchanged and brings the next source checkpoint to 914/11,555.  The
+zero-definition/one-theorem
+\path{GeometricUniformMomentPolynomialBridge.lean} leaf brings the live source
+census to 915/11,556.  The nodes-only leaf makes
 \nolinkurl{cor:lag-nodes-only} Exact/Complete by composition, with rationality
 only at rational evaluation points and a formal coefficient-level Bell
 identity; it does not promote the larger right-inverse row.  Within this
@@ -2707,10 +2715,13 @@ The exhaustive nodes-only surface is the definition
 \lean{momentCumulant_rvachevRawMomentRat_even_eq_bernoulliMersenne}, and
 \lean{rvachevReciprocalMomentRat_eq_completeBellPolynomial_neg_centeredCumulant}.
 Its Exact/Complete status is compositional rather than a claim of one wrapper:
-rationality holds at rational evaluation points, the Bell identity is formal
-coefficient algebra rather than analytic reciprocal-MGF convergence, and
-neither \nolinkurl{thm:lag-cardinal} nor the still-Partial
-\nolinkurl{thm:lag-right-inverse} is promoted.
+rationality holds at rational evaluation points, and the Bell identity is
+formal coefficient algebra rather than analytic reciprocal-MGF convergence.
+Independently, the existing \path{LagrangeRvachevSynthesis.lean} theorems
+\lean{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp} and
+\lean{sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp} make
+\nolinkurl{thm:lag-cardinal} Exact/Complete by assembly.  The still-Partial
+\nolinkurl{thm:lag-right-inverse} and decoder optimality are not promoted.
 
 \path{GaussianBinomialGreaterOneAsymptotics.lean} consists exactly of
 \lean{gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO} and
@@ -2746,14 +2757,23 @@ removable-origin convention, the whole \nolinkurl{eq:bernoulli-gen}.  This
 does not claim the literal Lean quotient at zero or formalize the Guide's
 nearest-zero proof route; Puiseux claims remain open.  The subsequent
 one-definition/eight-theorem
-\path{GeometricUniformMomentPolynomial.lean} leaf supplies the recursively defined rational polynomial,
-its residual-product recurrence, triangular degree bound, reciprocal-factorial
-value at zero, and the cases \(P_0,\ldots,P_4\).  It does not prove the
-analytic normalization identifying that family with the source moment
-coefficients, nor the leading-coefficient formula and consequent strict
-odd-degree drop.  Hence \nolinkurl{p7:thm:Pn} remains Partial rather than
-Exact.  The existing \path{GeometricResidualMoments.lean} module now has zero
-definitions and nine public theorems.  Its
+\path{GeometricUniformMomentPolynomial.lean} leaf raised the next historical
+source census to 904/11,457.  It supplies the recursively defined rational
+polynomial, its residual-product recurrence, triangular degree bound,
+reciprocal-factorial value at zero, and the cases \(P_0,\ldots,P_4\).  Its
+zero-definition/one-theorem companion
+\path{GeometricUniformMomentPolynomialBridge.lean} raised its incoming branch
+checkpoint to 905/11,458.  Its exhaustive public surface is
+\lean{geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient}, which
+for every real \(\lvert q\rvert<1\) identifies that polynomial with the
+finite-q-Pochhammer normalization of the Taylor coefficient of the actual
+geometric-uniform MGF.  Hence \nolinkurl{p7:eq:Pn-def} is Exact in this real
+contraction regime, including signed \(q\) and \(q=0\).  The bridge constructs
+no complex-q infinite product, and the leading-coefficient formula and
+consequent strict odd-degree drop remain absent.  Thus the compound
+\nolinkurl{p7:thm:Pn} remains Partial rather than Exact.  The existing
+\path{GeometricResidualMoments.lean} module now has zero definitions and nine
+public theorems.  Its
 \lean{sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos} theorem
 supplies the displayed positive-degree scaled-geometric moment formula, while
 the new \lean{sum_geometricLagrangeWeight_mul_eval_scaled_geometric} theorem
@@ -9621,10 +9641,16 @@ public theorems:
 \path{Fabius.geometricUniformMomentPolynomial_four}.  These declarations
 define the recursive family directly in \(\RationalNumbers[X]\), prove its
 division-free residual-product recurrence, triangular degree bound and value
-at zero, and calculate \(P_0,\ldots,P_4\).  They do not identify the family
-with the normalized analytic moment coefficients in
-\nolinkurl{p7:eq:Pn-def}, and they prove neither the leading-coefficient
-formula nor the strict degree drop for odd \(n>1\).  Therefore the compound
+at zero, and calculate \(P_0,\ldots,P_4\).  The exhaustive public surface of
+the companion \path{GeometricUniformMomentPolynomialBridge.lean} is no
+definitions and the single theorem
+\path{Fabius.geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient}.
+For every real \(\lvert q\rvert<1\) and every \(n\), that theorem identifies
+the polynomial evaluation with the finite-q-Pochhammer normalization of the
+\(n\)-th Taylor coefficient of the genuine geometric-uniform MGF.  Therefore
+\nolinkurl{p7:eq:Pn-def} is Exact in this real contraction regime.  It proves
+neither a complex-q infinite-product realization nor the leading-coefficient
+formula and strict degree drop for odd \(n>1\).  Therefore the compound
 frontier label \nolinkurl{p7:thm:Pn} is Partial, not Exact.
 
 \item The five theorems of \path{FinitePolynomialFilterExactness.lean} are

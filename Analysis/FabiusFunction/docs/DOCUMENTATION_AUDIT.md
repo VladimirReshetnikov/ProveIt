@@ -112,7 +112,7 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans 914 facade-reachable modules and 11,555 public declarations.  It
+pass scans 915 facade-reachable modules and 11,556 public declarations.  It
 finds no missing module header or declaration comment, including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
@@ -123,12 +123,13 @@ finds no missing module header or declaration comment, including throughout
 `LambertWBranchGapBernoulli.lean`, `GaussianBinomialFixedColumnRate.lean`, and
 `RvachevAppellHasse.lean`, `GeometricUniformMomentPolynomial.lean`,
 `RvachevLagrangeNodesOnly.lean`, `GaussianBinomialGreaterOneAsymptotics.lean`,
-and `ThueMorseGammaTowerDifferential.lean` leaves.  Relative to the
-610/8,318 activation checkpoint, the current tree adds 304 modules and 3,237 declarations.
+`ThueMorseGammaTowerDifferential.lean`, and
+`GeometricUniformMomentPolynomialBridge.lean` leaves.  Relative to the
+610/8,318 activation checkpoint, the current tree adds 305 modules and 3,238 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 284 modules and 3,003 declarations.  The post-merge 675/8,909 inventory,
+adds 285 modules and 3,004 declarations.  The post-merge 675/8,909 inventory,
 the intervening 903/11,448 Lambert-series inventory, and the immediately
-preceding 910/11,525 Appell/fixed-column checkpoint remain historical, not
+preceding 914/11,555 scaled-geometric checkpoint remain historical, not
 descriptions of the live facade.
 
 #### Terminating `₂φ₁` reversal and q-Chu--Vandermonde tranche
@@ -520,14 +521,34 @@ give `P_0=1` and the residual finite q-Pochhammer recurrence; the degree theorem
 gives `natDegree P_n ≤ n.choose 2`; evaluation at zero gives
 `P_n(0)=1/(n+1)!`; and the four final theorems give the displayed values
 `P_1` through `P_4`.  These exactly close the algebraic clauses of monograph
-label `thm:qF-moment-polynomial`, including the `q=0` boundary.  The canonical
-label remains **Partial**, however, because the source defines its polynomial
-by the analytic normalization `((q;q)_n/(1-q)^n)a_n(q)` and no theorem yet
-identifies those analytic/MGF coefficients with the recursive Lean family.
-The leading and subleading coefficients and exact degree asserted by
-`prop:qF-P-degree-sharp` remain unformalized.
+label `thm:qF-moment-polynomial`, including the `q=0` boundary.  At this
+checkpoint the canonical label moved from None to **Partial**, because its
+analytic coefficient normalization had not yet been identified with the
+recursive Lean family.
 
-That source checkpoint was 913 modules and 11,551 public declarations, with
+#### Real-MGF normalization bridge
+
+`GeometricUniformMomentPolynomialBridge.lean` adds one source module and one
+public theorem to the immediately preceding 914/11,555 scaled-geometric
+checkpoint, bringing the live census to 915/11,556.  Its exhaustive 0+1 surface is
+`geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`; every helper
+declaration in the module is private and excluded from the public count.
+
+For every real `q` with `|q| < 1` and every natural index, the theorem identifies
+evaluation of the recursive rational polynomial by the exact formula
+`P_n(q)=((q;q)_n/(1-q)^n)·(iteratedDeriv n M_q 0/n!)`, where `M_q` is the genuine
+geometric-uniform MGF.  The sharp domain includes `q=0` and negative
+contractions.  This supplies the
+analytic normalization in frontier label `p7:thm:Pn` throughout its real
+probability-law regime, but that label remains **Partial** because its
+leading-coefficient formula and consequent strict odd-degree drop are absent.
+Monograph label `thm:qF-moment-polynomial` also remains **Partial**: its source
+coefficient is defined through a complex-parameter locally-uniform infinite
+product, which the real-MGF bridge neither constructs nor identifies.  The
+leading and subleading coefficients and exact degree asserted by
+`prop:qF-P-degree-sharp` remain unformalized, so that label remains **None**.
+
+That algebraic source checkpoint was 913 modules and 11,551 public declarations, with
 no missing module header or declaration comment.  The canonical
 `thm:qF-moment-polynomial` status remains **Partial** exactly as stated above.
 
@@ -557,7 +578,7 @@ including zero.  Together with
 `cor:scaled-geometric-moments` **Exact** by composition and strengthens the
 manuscript's `c ≠ 0` hypothesis.
 
-The resulting live inventory is 914 modules and 11,555 public declarations,
+The resulting live inventory is 915 modules and 11,556 public declarations,
 with no missing module header or declaration comment.
 
 The one-definition/eight-theorem
@@ -1301,7 +1322,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 914/11,555
+historical 675/8,909 census and requires refresh against the live 915/11,556
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity

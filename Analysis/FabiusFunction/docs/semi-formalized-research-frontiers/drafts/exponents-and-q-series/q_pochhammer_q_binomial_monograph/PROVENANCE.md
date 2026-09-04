@@ -98,7 +98,7 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 914 modules and 11,555 public declarations with no
+live facade audit contains 915 modules and 11,556 public declarations with no
 documentation gaps. Those corpus-wide totals include the q--Chu, Richardson,
 geometric-law barycenter, Lagrange--Rvachev matrix, arbitrary-space geometric
 realization, regular-central-sum, and Lambert branch-gap Bernoulli follow-ups;
@@ -147,7 +147,7 @@ It works over the stated generic multiplicative-norm ring or normed-field
 interfaces and includes `q = 0`; the older unshifted limit remains in
 `QBinomialTheoremInfinite.lean`.
 
-The current q-series increment is the one-definition/eight-theorem
+The current q-series increment starts with the one-definition/eight-theorem
 `GeometricUniformMomentPolynomial.lean` leaf. Its exhaustive public surface is
 `geometricUniformMomentPolynomial`,
 `geometricUniformMomentPolynomial_zero`,
@@ -159,14 +159,22 @@ The current q-series increment is the one-definition/eight-theorem
 `geometricUniformMomentPolynomial_three`, and
 `geometricUniformMomentPolynomial_four`.  The recursive rational polynomial,
 its zeroth value and residual-product recurrence, the triangular degree bound,
-the value at zero, and the first four nonconstant cases are exact.  The module
-does not identify this recursive family with the normalized analytic
-coefficients `a_n(q)` or with the geometric-uniform moment-generating product.
-Accordingly `thm:qF-moment-polynomial` moves from None to Partial, not Exact;
-the sharp-degree proposition stays None. The facade also contains the
-zero-definition/two-theorem `GaussianBinomialGreaterOneAsymptotics.lean` leaf;
-its exhaustive declarations are
-`gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
+the value at zero, and the first four nonconstant cases are exact.  The
+downstream `GeometricUniformMomentPolynomialBridge.lean` leaf contributes zero
+definitions and the single public theorem
+`geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`.  On the
+full real domain `|q| < 1`, it identifies the recursive polynomial with the
+finite-q-Pochhammer normalization of the genuine geometric-uniform MGF Taylor
+coefficient; the theorem is regular at `q = 0` and includes negative
+contractions.  The manuscript's complex-`q` infinite-product coefficient is
+still not defined or identified in Lean.  Accordingly
+`thm:qF-moment-polynomial` remains Partial, not Exact, and the sharp-degree
+proposition stays None.  The base leaf's 904/11,457 census is the historical
+checkpoint at which the row moved from None to Partial; the bridge gives the
+historical incoming-branch checkpoint 905/11,458 without another status move.
+The facade also contains the zero-definition/two-theorem
+`GaussianBinomialGreaterOneAsymptotics.lean` leaf; its exhaustive declarations
+are `gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
 `gaussianBinomial_gt_one_central_isEquivalent`. For real `q > 1` they prove,
 respectively, the exact printed normalized fixed-column error
 `(q⁻¹;q⁻¹)_k (q^(k*(n-k)))⁻¹ [n,k]_q - 1 = O((q⁻¹)^(n-k+1))` and
@@ -174,9 +182,8 @@ the central equivalence `[2m,m]_q ~ q^(m*m) (q⁻¹;q⁻¹)_∞⁻¹`. Natural
 subtraction is total in the first statement, while reciprocity is needed only
 eventually when `k ≤ n`; together with `gaussianBinomial_inv`, these make
 `cor:qgreaterone` Exact without asserting a shifted-central or wider
-nome-domain result. The live census is 914/11,555.
-`GeometricResidualMoments.lean` now contains zero definitions and nine public
-theorems. The pair
+nome-domain result. `GeometricResidualMoments.lean` contains zero definitions
+and nine public theorems. The pair
 `sum_geometricLagrangeWeight_mul_scaled_geometric_pow_of_pos` and
 `sum_geometricLagrangeWeight_mul_eval_scaled_geometric` proves respectively
 the positive-degree moment formula and polynomial exactness at zero over an
@@ -184,8 +191,8 @@ arbitrary field, under injectivity of `k |-> q^k` on the finite node range.
 The polynomial theorem accepts arbitrary `c`, so the manuscript's `c != 0`
 hypothesis is subsumed and the mass-one boundary `c = 0` is also covered.
 This exact-by-composition API promotes `cor:scaled-geometric-moments` without
-changing any other row.
-Neither this source-only addition nor the preceding Lambert addition changes
+changing any other row. The current semantic-union census is 915/11,556.
+Neither these source-only additions nor the preceding Lambert addition changes
 the retained historical artifact, and no render parity is claimed. The
 forward status inventory covers 282 labelled results:
 175 Exact / 83 Partial / 16 None / 8 N/A; the 191-result pre-Fabius core is

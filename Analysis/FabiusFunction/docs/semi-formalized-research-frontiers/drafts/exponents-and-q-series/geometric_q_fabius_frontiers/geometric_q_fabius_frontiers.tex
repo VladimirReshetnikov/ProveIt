@@ -16479,7 +16479,7 @@ primitive odd roots of unity --- must be controlled; the cancellation-order
 calculus of the two-nome partition function below is a candidate mechanism.
 \end{conjecture}
 
-\begin{statusbox}{Post-snapshot Lean status: Partial}
+\begin{statusbox}{Post-snapshot Lean status: Exact equation; Partial theorem}
 The source-only module \path{GeometricUniformMomentPolynomial.lean} has one
 public definition, \lean{geometricUniformMomentPolynomial}, and exactly eight
 public theorems:
@@ -16491,16 +16491,25 @@ public theorems:
 \lean{geometricUniformMomentPolynomial_four}.  It supplies the recursively
 defined rational polynomial, the residual-product recurrence
 \eqref{p7:eq:Pn-recurrence}, the triangular degree bound, the value at zero,
-and the displayed cases \(P_0,\ldots,P_4\).  It does not identify that family
-with the normalized analytic moment coefficients in
-\eqref{p7:eq:Pn-def}, nor does it prove the leading-coefficient formula and
-the consequent strict degree drop for odd \(n>1\).  Thus the compound theorem
-\cref{p7:thm:Pn} is Partial, not Exact: its algebraic
-recurrence/bound/zero/small-case clauses are supplied, while its analytic
-normalization and leading/odd-degree clause remain open.  This \(1+8\) leaf
-raises the live facade census from the historical 903/11,448 checkpoint to
-904 modules and 11,457 public declarations.  The retained PDF predates this
-source-only crosswalk, remains historical, and claims no render parity.
+and the displayed cases \(P_0,\ldots,P_4\).  The companion
+\path{GeometricUniformMomentPolynomialBridge.lean} has no public definitions
+and exactly one public theorem,
+\lean{geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient}.  For
+every real \(q\) with \(\lvert q\rvert<1\) and every \(n\), it identifies that
+polynomial with the finite-q-Pochhammer normalization of the \(n\)-th Taylor
+coefficient of the genuine geometric-uniform MGF.  Hence
+\eqref{p7:eq:Pn-def} is Exact in the real contraction regime, including
+signed \(q\) and \(q=0\).  The bridge does not construct the complex-q
+infinite product.  Nor does either module prove the leading-coefficient
+formula and consequent strict degree drop for odd \(n>1\).  Thus the compound
+theorem \cref{p7:thm:Pn} remains Partial, not Exact: its algebraic
+recurrence/bound/zero/small-case clauses and analytic normalization are
+supplied, while its leading/odd-degree clause remains open.  The \(1+8\)
+algebraic leaf raised the historical 903/11,448 checkpoint to the historical
+904 modules and 11,457 public declarations; the exhaustive \(0+1\) bridge
+raises the live facade census to 905 modules and 11,458 public declarations.
+The retained PDF predates these source-only crosswalks, remains historical,
+and claims no render parity.
 \end{statusbox}
 
 The polynomial is not decorative: the exact endpoint lattice of

@@ -162,6 +162,7 @@ import FabiusFunction.GeometricUniformUniqueness
 import FabiusFunction.GeometricUniformCDF
 import FabiusFunction.GeometricUniformRealization
 import FabiusFunction.GeometricUniformMomentPolynomial
+import FabiusFunction.GeometricUniformMomentPolynomialBridge
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
@@ -938,8 +939,8 @@ holomorphy theorem is asserted.  The branch point and zero endpoint are
 excluded from the branch series, and no remainder or higher Puiseux claim is
 made.
 
-The geometric-uniform moment-polynomial leaf has the exhaustive public surface
-of one definition and eight theorems:
+The geometric-uniform moment-polynomial algebra leaf has the exhaustive public
+surface of one definition and eight theorems:
 `geometricUniformMomentPolynomial`,
 `geometricUniformMomentPolynomial_zero`,
 `geometricUniformMomentPolynomial_succ`,
@@ -951,12 +952,24 @@ of one definition and eight theorems:
 `geometricUniformMomentPolynomial_four`.  It proves the division-free
 residual-product recursion over `ℚ[X]`, the bound `natDegree P_n ≤ n.choose 2`,
 the specialization `P_n(0) = 1/(n+1)!`, and the displayed values through
-`P_4`.  This is precisely the algebraic tranche of monograph label
-`thm:qF-moment-polynomial`; that canonical label remains Partial because no
-theorem yet identifies this recursive family with the analytically defined
-coefficient normalization involving `a_n(q)`.  The sharp leading/subleading
-coefficient and exact-degree claims of `prop:qF-P-degree-sharp` are also not
-included.
+`P_4`.
+
+The companion geometric-uniform moment-polynomial bridge leaf has the
+exhaustive public surface of zero definitions and one theorem,
+`geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`.  For every
+real `q` with `|q| < 1` and every index, it identifies evaluation of the
+recursive polynomial by the exact formula
+`P_n(q) = ((q;q)_n / (1-q)^n) * (iteratedDeriv n M_q 0 / n!)`, where `M_q` is the genuine
+geometric-uniform MGF.  The range includes `q = 0` and negative contractions.
+This closes the analytic normalization used by
+frontier label `p7:thm:Pn` on its real probability-law domain, but that label
+remains Partial because its leading-coefficient formula and strict odd-degree
+drop are absent.  Monograph label `thm:qF-moment-polynomial` also remains
+Partial: its source coefficient is defined through a complex-parameter
+locally-uniform infinite product, which this real-MGF theorem does not
+construct or identify.  The leading/subleading coefficient and exact-degree
+claims of `prop:qF-P-degree-sharp` remain unformalized, so that label remains
+None.
 
 The parity-selected Rvachev synthesis layer exports exactly one definition and
 eight theorems.  `IsRvachevSuperconvergentPhase` selects the endpoint phases
