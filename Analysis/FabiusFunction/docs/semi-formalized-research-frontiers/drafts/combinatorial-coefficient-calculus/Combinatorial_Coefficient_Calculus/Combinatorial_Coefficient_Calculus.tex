@@ -4811,7 +4811,7 @@ $(1-t)^{n+1}$ through \cref{eq:eulerian-power-series}.
 
 \section{An Irwin--Hall integral and hypersimplex volumes}
 \begin{theorem}\label{thm:eulerian-irwin-hall}
-For every function $f:\RealNumbers\to\ComplexNumbers$ for which the following finite sum is defined,
+Let $n\ge1$.  For every function $f:\RealNumbers\to\ComplexNumbers$ for which the following finite sum is defined,
 \begin{equation}\label{eq:eulerian-irwin-hall}
  \sum_{k=0}^{n-1}\TypeAEulerianNumber nk f(k)
  =n!\int_{[0,1]^n}f\!\left(\Floor{x_1+\cdots+x_n}\right)
@@ -4823,6 +4823,9 @@ In particular, the slab
 \]
 has volume $\TypeAEulerianNumber nk/n!$.
 \end{theorem}
+% ed.: 2026-09-04, hypothesis n >= 1 added.  At n = 0 the left side is the empty sum 0
+% while the right side is f(0): the identity is false there, and the sum's upper limit
+% n-1 only suggested the restriction without stating it.
 \begin{proof}
 The volume of $\{x\in[0,1]^n:\sum x_i<y\}$ is obtained from the simplex
 $\{x_i\ge0:\sum x_i<y\}$ by inclusion--exclusion over coordinates exceeding $1$:
@@ -4969,10 +4972,21 @@ Let $\TypeBEulerianNumber{n}{k}$ count signed permutations with $k$ such descent
 $\TypeBEulerianPolynomial{n}(t)=\sum_{k=0}^{n}\TypeBEulerianNumber{n}{k}t^k$.
 
 \begin{auditbox}
-The archived display reverses the two entries in the descent inequality and pairs
-that convention with an incompatible explicit formula.  The definition above is
-the standard Coxeter descent convention.  It gives the archived table
-$1,6,1$ for $n=2$ and the midpoint-Eulerian generating function below.
+The archived display reverses the two entries in the descent inequality.  The
+definition above is the standard Coxeter convention, and it is the right one ---
+but not for the reason an earlier version of this box gave.  Reproducing the
+table $1,6,1$ does \emph{not} discriminate between the two conventions: negating
+every letter of a signed permutation exchanges descents and ascents at every
+position $0,\ldots,n-1$, so the row is palindromic and the reversed inequality
+yields the \emph{same} triangle (checked by enumeration for $n\le5$), and the
+explicit formula \eqref{eq:typeB-explicit} is compatible with either.  What the
+reversal breaks is the identification
+$\operatorname{Des}_B(w)=\{i:\ell(ws_i)<\ell(w)\}$ of descents with
+length-decreasing simple reflections, which the shelling proof of
+\cref{thm:typeB-permutohedron-h-polynomial} uses.  That is the reason to fix the
+convention; the table is merely consistent with it.
+% ed.: 2026-09-04, justification replaced.  The previous text claimed the archived
+% convention was numerically incompatible with the explicit formula; it is not.
 \end{auditbox}
 
 \begin{theorem}[Type-$B$ recurrence and Worpitzky series]\label{thm:typeB-eulerian}
@@ -6560,6 +6574,21 @@ Finally, $T(0)=0$ and its unit linear coefficient show that the EGF uses
 a delta series, as required by the definition of binomial type.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; every clause is formal, including the hedge.
+All of this is formal in module \lean{AbelPolynomialSeries}, and the
+division-free bookkeeping of the statement is respected.
+\lean{Fabius.abelPolynomial} is $P_n(a,x)=x(x-na)^{n-1}$ over any commutative
+ring, with $P_0=1$; \eqref{eq:merged-abel-binomial} is
+\lean{Fabius.abelPolynomial_eval_add}, again over any commutative ring.  The
+series clauses need the $\RationalNumbers$-algebra: \lean{Fabius.abelSeries_eq} is
+a solution of $T=t\EulerE^{-aT}$, and \eqref{eq:merged-abel-egf} is
+\lean{Fabius.exp_subst_eq_egfA_abelPolynomial}, which is stated for an
+\emph{arbitrary} series $T$ satisfying that equation rather than for the
+constructed one --- so the phrase ``every such solution'' above is exactly
+what is proved, not a strengthening left to the reader.
+\end{remark}
+
 \section{Exponential Riordan arrays}
 
 \begin{definition}
@@ -6740,6 +6769,23 @@ according as $\{n+1\}$ is a singleton or not.  The product and chain rules for
 multilinear maps supply no further multiplicities because blocks are already
 labelled subsets.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; Mathlib proves this, under a different indexing.
+This is Mathlib's Fa\`a di Bruno formula,
+\texttt{HasFTaylorSeriesUpToOn.comp} in \texttt{Mathlib/Analysis/Calculus/ContDiff/FaaDiBruno.lean},
+for maps between normed spaces with Taylor series up to order $n$.  One
+convention differs and is worth knowing before comparing the two displays:
+Mathlib indexes the sum by \texttt{OrderedFinpartition} --- partitions of
+$\{0,\ldots,n-1\}$ whose blocks are listed in a canonical order, each block
+listed in increasing order --- rather than by the unordered partitions
+$\Pi_n$ of \eqref{eq:merged-frechet-faa}.  Because the outer derivative
+$D^{|\pi|}f$ is symmetric, every ordering of the blocks contributes the same
+term, and Mathlib's canonical ordering picks exactly one representative; so the
+two sums agree term by term and no multiplicity is lost or gained.  The
+regrouping of Mathlib's indexed sum into the partial-Bell form
+\eqref{eq:merged-frechet-bell} below is not yet formal in the corpus.
+\end{remark}
 
 \begin{corollary}
 When all directions are equal to $h$,
@@ -10934,7 +10980,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 67 Lean, 45 partial, 95 none, of 207 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 69 Lean, 45 partial, 93 none, of 207 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -11067,11 +11113,11 @@ theorem (unlabelled, no.~77) &  & none &  \\
 \Cref{thm:merged-binomial-type-characterization} & Generating-function characterization of binomial type & none &  \\
 \Cref{thm:merged-sheffer} & Addition and lowering & partial & \cref{eq:merged-sheffer-addition} is \lean{Fabius.shefferPoly_add} (\lean{BinomialType}), for \lean{Fabius.shefferPoly} $=c\star p$ (binomial convolution of the coefficients of $g$ with the binomial-type sequence), with generating function \lean{Fabius.egfA_mul_exp_subst_smul_bellWeightSeries}; the lowering law \cref{eq:merged-sheffer-lowering} is not formalized \\
 \Cref{lem:merged-formal-rescaling} & Formal rescaling and exponentials & Lean & \cref{eq:merged-formal-rescaling-derivative} is \lean{Fabius.derivative_rescale} over every commutative semiring; \lean{Fabius.derivative_rescale_exp}, \lean{Fabius.rescale_zero_exp}, and \lean{Fabius.rescale_exp_add_one} give the exponential specializations over every commutative $\RationalNumbers$-algebra (\lean{ExponentialRescaling}). The general product law is Mathlib's \lean{PowerSeries.exp_mul_exp_eq_exp_add}. \\
-\Cref{prop:merged-abel} & Abel polynomials & none &  \\
+\Cref{prop:merged-abel} & Abel polynomials & Lean & \lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_eval_add}, \lean{Fabius.abelSeries_eq}, \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} (\lean{AbelPolynomialSeries}); the EGF identity is proved for every solution of $T=te^{-aT}$, not only the constructed one \\
 \Cref{thm:merged-riordan} & Riordan action, product, and inverse & partial & \lean{Fabius.expRiordan_action}, \lean{Fabius.expRiordan_mul}, \lean{Fabius.expRiordan_mul_inverse} (\lean{ExponentialRiordan}) prove the action, product, and a conditional one-sided inverse law, assuming the inverse series and $g\,(h\circ f)=1$.  Construction of these inverse series from the theorem's unit hypotheses and the full two-sided inverse statement remain to be formalized.  The Stirling examples are \lean{Fabius.expRiordan_one_exp_sub_one} and \lean{Fabius.expRiordan_one_log}. \\
 \Cref{thm:merged-complementary-bell} & EGF, recurrence, and Dobiński-type series & Lean & \lean{Fabius.complementaryBell} (\lean{ComplementaryBell}); \cref{eq:merged-complementary-egf} is \lean{Fabius.exp_subst_neg_exp_sub_one}, \cref{eq:merged-complementary-recurrence} is \lean{Fabius.complementaryBell_succ}, and \cref{eq:merged-complementary-dobinski} is \lean{Fabius.complementaryBell_eq_exp_mul_tsum} (the series converges absolutely as the Poisson moment series of \lean{Fabius.tsum_pow_mul_pow_div_factorial}) \\
 \Cref{cor:merged-bell-convolution-inverse} & Convolution inverse of the Bell sequence & Lean & \lean{Fabius.sum_choose_bell_mul_complementaryBell} (\lean{ComplementaryBell}), from the addition law \lean{Bell.complete_add} of complete Bell polynomials at weights $\pm1$ \\
-\Cref{thm:merged-frechet-faa} & Coordinate-free Faà di Bruno & none &  \\
+\Cref{thm:merged-frechet-faa} & Coordinate-free Faà di Bruno & Lean & Mathlib's \texttt{HasFTaylorSeriesUpToOn.comp} (FaaDiBruno.lean), indexed by \texttt{OrderedFinpartition} rather than unordered partitions; the regrouping into partial-Bell form is not formal \\
 corollary (unlabelled, no.~11) &  & none &  \\
 \Cref{thm:merged-inverse-derivative} & Inverse derivative recursion & none &  \\
 \Cref{thm:merged-inverse-derivative-operator} & Inverse-derivative operator & none &  \\
