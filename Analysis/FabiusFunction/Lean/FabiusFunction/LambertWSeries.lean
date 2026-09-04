@@ -1,5 +1,6 @@
 import FabiusFunction.LagrangeInversion
 import Mathlib.RingTheory.PowerSeries.Exp
+import FabiusFunction.ExponentialRescaling
 
 /-!
 # The Lambert `W` series at the origin
@@ -31,7 +32,7 @@ noncomputable def expNeg : ℚ⟦X⟧ := rescale (-1 : ℚ) (exp ℚ)
 
 /-- `e^{0·w} = 1`. -/
 theorem rescale_zero_exp' : rescale (0 : ℚ) (exp ℚ) = 1 := by
-  rw [rescale_zero, RingHom.comp_apply, constantCoeff_exp, map_one]
+  exact rescale_zero_exp
 
 /-- `e^{-w} e^{w} = 1`. -/
 theorem expNeg_mul_exp : expNeg * exp ℚ = 1 := by

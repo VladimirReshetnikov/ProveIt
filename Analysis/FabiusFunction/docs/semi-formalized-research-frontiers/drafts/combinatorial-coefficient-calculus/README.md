@@ -86,10 +86,10 @@ complete human proofs and exact declaration crosswalks. Three private rational
 helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
 caller refactor has been independently source-reviewed but awaits its own build.
 
-The register contains 203 rows: 58 marked Lean, 34 partial, and 111 without a
+The register contains 204 rows: 58 marked Lean, 34 partial, and 112 without a
 Lean counterpart. The earlier classifications are inherited; this checkpoint
 adds two compiler-backed entries and does not claim a fresh build of the whole
-corpus. The final structural/provenance validator passes with 203 adjacent
+corpus. The final structural/provenance validator passes with 204 adjacent
 proofs, 27 disposition records, and six original-source inventory rows. PDF
 rebuilding remains deferred at the user's request.
 
@@ -97,3 +97,12 @@ The same-day upstream crosswalk connects the Bell normalization and unit-series
 coefficient formulas to `UnitSeriesBellCoefficients`; its labelled-set partition
 interpretation remains unformalized. That partial result is included in the
 register totals above.
+
+The pending Abel checkpoint adds the formal-series construction over an arbitrary
+commutative rational algebra, the coefficient formula for every solution, and
+the full EGF and binomial identity. `ExponentialRescaling` has passed a focused
+build; the Abel module and affected callers still await compilation, so the
+new manuscript entries have not yet been promoted in the register. The human
+moment-cumulant proof now states its normalization and positive-degree boundaries
+explicitly, with formal logarithm identities separated from the still-open
+set-partition interpretation.
