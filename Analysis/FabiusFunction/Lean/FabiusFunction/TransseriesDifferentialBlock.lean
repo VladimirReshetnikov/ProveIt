@@ -30,6 +30,9 @@ concrete ring is one model of it.
 * `exists_block_primitive` — **antidifferentiation inside a nonresonant
   block**: for `n ≠ 0` in the base field every `t^(n+1)·p(L)` is `d` of
   some `tⁿ·q(L)`, with `q` given explicitly by the Neumann sum.
+* `derivation_block_zero`, `exists_block_primitive_resonant` — the
+  resonant block `n = 0`, where the primitive still exists but its
+  logarithmic degree is one higher.
 -/
 
 set_option autoImplicit false
@@ -78,5 +81,26 @@ theorem exists_block_primitive {F : Type*} [Field F] [Algebra F A]
     d (t ^ n * aeval L (blockAntiderivative (n : F) p)) =
       t ^ (n + 1) * aeval L p := by
   rw [derivation_block d hdt hdL n, blockOperator_blockAntiderivative hn]
+
+/-- The block law at `n = 0`: `d (p(L)) = t·p'(L)`, the statement that
+`L` differentiates to `t` extended from `L` to every polynomial in it. -/
+theorem derivation_block_zero (hdt : d t = -t ^ 2) (hdL : d L = t)
+    (p : K[X]) :
+    d (aeval L p) = t * aeval L (derivative p) := by
+  have h := derivation_block d hdt hdL 0 p
+  simpa [blockOperator] using h
+
+/-- **Antidifferentiation at the resonant block.**  The block law at
+`n = 0` says `d` restricted to `K[L]` is `t·∂_L`, and `∂_L` is surjective
+over a characteristic zero field, so every `t·p(L)` still has a primitive
+— but the primitive is `resonantAntiderivative p`, whose logarithmic
+degree is one higher than `p`'s (`natDegree_resonantAntiderivative`).
+This is the sense in which the resonant block creates a logarithm: the
+antiderivative exists, but not inside the same logarithmic degree. -/
+theorem exists_block_primitive_resonant {F : Type*} [Field F] [CharZero F]
+    [Algebra F A] (d : Derivation F A A) {t L : A} (hdt : d t = -t ^ 2)
+    (hdL : d L = t) (p : F[X]) :
+    d (aeval L (resonantAntiderivative p)) = t * aeval L p := by
+  rw [derivation_block_zero d hdt hdL, derivative_resonantAntiderivative]
 
 end Fabius
