@@ -89,21 +89,21 @@ It compares all coefficients through degree 100 using integer arithmetic:
 1,515 equalities in total. This is a transcription-quality gate, explicitly
 not an infinite proof of any recorded identity.
 
-Checksum ledgers have been abolished repository-wide; no checksum manifest is
-kept for this package or its assets, and no checksum gate is part of its
-validation state. Deleted checksum manifests must not be recreated. Historical
-SHA-256 values recorded directly in this README and in `PROVENANCE.md` remain
-provenance receipts for the named artifacts.
+Checksum ledgers have been abolished repository-wide: no `SHA256SUMS*` file
+exists or participates in validation for this package or its assets. Deleted
+checksum manifests must not be recreated. Historical SHA-256 values recorded
+directly in this README and in `PROVENANCE.md` remain provenance receipts for
+the named artifacts.
 
 The current publication artifact was rebuilt on 2026-09-03 from a clean
-auxiliary state at fixed source epoch `1788495770`. Exactly three successful
+auxiliary state. Exactly three successful
 serial `pdflatex -interaction=nonstopmode -halt-on-error` passes produced 386,
 395, and 395 pages. During each pass `imakeidx` ran `makeindex` successfully:
 164 entries were accepted, none rejected, and the 254-line index was generated
 without a warning. The 16,834-line, 837,715-byte source has SHA-256
-`d8f730b8eb6602d4d16112aea77a3e67dfbeadf46bcd28c1cdf3b12450b7d4fb`;
-the resulting 2,494,949-byte PDF has SHA-256
-`5d25df07e6df1cd32118ee87e64c1cc54ad32da7c578a182231f98dd9fee9d5c`.
+`4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`;
+the resulting 2,494,961-byte PDF has SHA-256
+`89159b2635f489a42d4c972fac95332808b1d637dee7921085db1ed7d6e055af`.
 
 All 395 pages are A4 at rotation zero, rendered successfully at 24 dpi, and
 are nonblank. Title, author, subject, and keyword metadata are present. All 43
@@ -115,7 +115,11 @@ physical page 17 was inspected and is readable and unclipped. Physical pages
 1, 5, 17, 101, 113, 278, 332, 393, and 395 were visually inspected at 120 dpi,
 covering the title, contents, the overfull paragraph, theta and Bailey
 material, Gaussian inversion, the formalization appendix, and both ends of
-the index. This receipt establishes current source/PDF rendering parity.
+the index. All blocking compilation, index, reference, font, page-render, and
+visual gates passed; the one harmless, readable 32.5659 pt overfull paragraph
+is the only disclosed exception to otherwise clean diagnostics. This receipt
+establishes current source/PDF rendering parity. The current formalization
+ledger closes at 166 Exact, 90 Partial, 18 None, and 8 interface rows.
 Files under `assets/experiments/**/figures/` remain research figures, not
 publication manuscripts.
 
@@ -264,6 +268,5 @@ reciprocal-product expansions, the complex upper-parameter series, and the
 generalized q-binomial theorem. The remaining complex-Gaussian property and
 classical-limit rows stay unformalized.
 
-The retained PDF is a historical checkpoint and does not render this resolved
-source union. A fresh three-pass build and full publication validation are
-required before synchronization may be claimed.
+The current 395-page PDF is the validated rendering of this resolved source
+union; no further synchronization rebuild is pending.

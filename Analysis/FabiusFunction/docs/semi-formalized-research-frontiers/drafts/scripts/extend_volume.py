@@ -314,6 +314,10 @@ def build(cfg):
                         and os.path.splitext(fn)[0].lower()
                         == os.path.splitext(mtex)[0].lower()):
                     continue
+                if fn == 'SHA256SUMS' or fn.startswith('SHA256SUMS.'):
+                    # Package checksum manifests are retired repository-wide;
+                    # extension must not create or restore them.
+                    continue
                 d = os.path.join(dstdir, rel)
                 os.makedirs(d, exist_ok=True)
                 src, dst = os.path.join(root, fn), os.path.join(d, fn)

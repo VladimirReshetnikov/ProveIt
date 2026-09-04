@@ -21,17 +21,20 @@ The canonical frontier artifacts are:
 - [`semi-formalized-research-frontiers.tex`](semi-formalized-research-frontiers.tex)
 - [`semi-formalized-research-frontiers.pdf`](semi-formalized-research-frontiers.pdf)
 
-> **Pre-`d8b` publication receipt (2026-09-03; rebuild pending).** The most
-> recent validated source was the 808,185-byte TeX file with SHA-256
-> `7dd140370a0ac68522364a83a3c6423df93570741eafaef2ee8c1fac17670e2f`.
-> Its exact clean final three-pass cycle produced a 260-page, 1,877,159-byte
-> A4 PDF with SHA-256
-> `9d38ab9d43befd6e26fd06ab9680b4a761365fb9d8a9f0de18489c243bd62d3e`;
-> the final log and recorded publication gates were clean for that named source.
-> The present semantic union postdates both fingerprints, so the PDF is a
-> historical receipt and must not be cited as rendering the current TeX.  No
-> live `SHA256SUMS*` ledger is maintained or should be regenerated.  Earlier
-> renders remain historical receipts for their own named source states only:
+> **Current publication receipt (2026-09-03).** The synchronized canonical
+> source is the 17,954-line, 813,297-byte TeX file with SHA-256
+> `bcd9eefce2ead08e2cbb283e091a859aa31f36c67416543e994e10e8f9db3075`.
+> Its exact guarded three-pass cycle ran 254 -> 262 -> 262 pages and produced
+> the current 262-page, 1,885,642-byte A4 PDF with SHA-256
+> `7f7e1279e38c766a465e640638ea7e0079a942de0bc84a5c22be497af27c7bab`.
+> The recorded publication gates are clean apart from the expected underfull
+> box diagnostics.  No `SHA256SUMS*` file exists or participates in
+> validation.  Earlier renders remain historical receipts for their own named
+> source states only: the immediately preceding 808,185-byte TeX file
+> (SHA-256
+> `7dd140370a0ac68522364a83a3c6423df93570741eafaef2ee8c1fac17670e2f`)
+> and its 260-page, 1,877,159-byte PDF (SHA-256
+> `9d38ab9d43befd6e26fd06ab9680b4a761365fb9d8a9f0de18489c243bd62d3e`),
 > a 237-page PDF (SHA-256
 > `21180fa05a754b52a057495464674e9d6ac26a51488c2c770730c641b5ffe887`),
 > a post-`c5633206e` 243-page, 1,789,269-byte PDF from source SHA-256
@@ -71,8 +74,8 @@ also complete.  In addition to support vanishing, above-depth vanishing, the
 critical signed value, and exact depth detection, its two new theorems are
 `iteratedDeriv_rvachevUp_eq_extendedFabius` and
 `iteratedDeriv_rvachevUp_dyadic_below`; they identify every below-depth
-derivative with the corresponding rescaled global Fabius value.  None of the
-retained PDFs renders this merged source-only delta.
+derivative with the corresponding rescaled global Fabius value.  The current
+262-page canonical-frontier PDF renders this merged source state.
 
 `RvachevSuperconvergentSynthesis.lean` contributes one definition and eight
 theorems for arbitrary nonzero natural meshes.  It packages the literal
@@ -94,11 +97,10 @@ are therefore 166 Exact / 90 Partial / 18 None / 8 interface: q-Lucas remains
 Partial because the polynomial-congruence lift is absent, the Gaussian
 majorant is Exact, and the `Q > 1` asymptotic row remains Partial.
 
-The retained 260-page canonical-frontier PDF above and the 395-page q-series
-master are pre-`d8b` historical publication receipts.  Their merged TeX
-sources now postdate those renders, so both are rebuild-pending and neither
-displays this semantic union.  Other retained subgroup PDFs likewise must not
-be cited as displaying later source changes unless their own package records
+The synchronized 262-page canonical-frontier PDF above and the current
+395-page q-series master render their respective final TeX sources and the
+merged semantic-union crosswalks.  Other retained subgroup PDFs must not be
+cited as displaying later source changes unless their own package records
 parity with an explicitly named source state.
 
 The current finite-moment/Legendre/Gaunt crosswalk covers eleven modules with

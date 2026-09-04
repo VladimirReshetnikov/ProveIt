@@ -40,7 +40,8 @@ and Meixner-Pollaczek orthogonality are cited in the report.
 - `generated/exact_summary.txt` — software versions, random seed, and check summary.
 - `SOURCE_AUDIT.md` — repository-reading and novelty-boundary notes.
 - `requirements.txt` — Python dependencies used for the supplied outputs.
-- `SHA256SUMS.txt` — SHA-256 checksums for every packaged file except itself.
+- Package-local `SHA256SUMS*` ledgers are retired; Git history preserves the
+  arrival evidence without making a checksum manifest a live dependency.
 
 ## Build the PDF
 
@@ -85,13 +86,12 @@ parameters in `generated/exact_summary.txt`, and does not use Monte Carlo data
 inside any proof.  SymPy is used for exact Euler-Hankel and Legendre checks;
 NumPy is used for floating-point determinant and covariance checks.
 
-## Verify the archive
+## Validation and provenance
 
-On systems with `sha256sum`:
-
-```bash
-sha256sum -c SHA256SUMS.txt
-```
+No package-local `SHA256SUMS*` ledger exists or should be recreated. The exact
+three-pass build and PDF gates are recorded above, `SOURCE_AUDIT.md` records the
+repository-reading boundary, and Git history preserves the retired package
+evidence.
 
 The final PDF was rendered page-by-page at 170 dpi and visually checked for
 clipped text, overlap, missing figures, black boxes, and broken glyphs.

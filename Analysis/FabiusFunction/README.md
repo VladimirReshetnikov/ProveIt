@@ -113,28 +113,45 @@ in it must have a proved counterpart in the Lean development.
 > `thm:q-lucas` remains Partial because Lean proves the evaluated primitive-root
 > identity rather than the manuscript's polynomial congruence modulo `Φ_d`;
 > `cor:babbage-derivative` remains Partial because only its value is formalized.
-> Four exact direct receipts record the last pre-d8b source/PDF pairs.  The
-> 694,350-byte primary TeX has SHA-256
-> `938517a92565685ac9f7194b879cfe752ce783f258bde8b7b685aee41aed13dc`;
-> its 195-page, 1,593,577-byte PDF has SHA-256
-> `bf26d78dd2cc49feb87a85413ef9c04c7a8a3dac4f793cf86e3436f7502cb2a7`.
-> The 456,855-byte Lean-walkthrough TeX has SHA-256
-> `e598aa02d4d10eda8bcfdafe3731f4a663bdcba58407f454485fae6796b41050`;
-> its 145-page, 1,219,336-byte PDF has SHA-256
-> `5ff79c24fbced37dfaa5eb9c34447d0e7661b2b2bc5a0597687e43f93d7e189a`.
-> The 808,185-byte canonical-frontier TeX has SHA-256
-> `7dd140370a0ac68522364a83a3c6423df93570741eafaef2ee8c1fac17670e2f`;
-> its 260-page, 1,877,159-byte PDF has SHA-256
-> `9d38ab9d43befd6e26fd06ab9680b4a761365fb9d8a9f0de18489c243bd62d3e`.
+> Four exact direct receipts identify the synchronized final-source
+> publications.  The 14,037-line, 702,119-byte primary TeX has SHA-256
+> `6a20e02cf300c0b29ba8d175831b4f86e4b336601cc5bd5f5752d5c5889be69a`;
+> its 197-page, 1,602,500-byte PDF has SHA-256
+> `f083cd78308aba99d23d42372786c4b0a946ea8f5d47445c44d664fccfdde5e3`.
+> The 6,598-line, 465,231-byte Lean-walkthrough TeX has SHA-256
+> `796dd849fa423ba07413eaf0a1f30dc608355c5a3cd877aa7409ad089c54794e`;
+> its 149-page, 1,231,442-byte PDF has SHA-256
+> `bc6e3e716a1a10daf24a065f6c97e2d00cbc95071ada777050a95f91598db4a0`.
+> The 17,954-line, 813,297-byte canonical-frontier TeX has SHA-256
+> `bcd9eefce2ead08e2cbb283e091a859aa31f36c67416543e994e10e8f9db3075`;
+> its 262-page, 1,885,642-byte PDF has SHA-256
+> `7f7e1279e38c766a465e640638ea7e0079a942de0bc84a5c22be497af27c7bab`.
 > The 16,834-line, 837,715-byte q-series master has SHA-256
-> `d8f730b8eb6602d4d16112aea77a3e67dfbeadf46bcd28c1cdf3b12450b7d4fb`;
-> its 395-page, 2,494,949-byte PDF has SHA-256
-> `5d25df07e6df1cd32118ee87e64c1cc54ad32da7c578a182231f98dd9fee9d5c`.
-> Each pair completed its recorded clean three-pass publication gate before the
-> d8b semantic union.  That union adds thirteen Lambert-branch declarations and
-> two dyadic-derivative declarations, so all four PDFs are now historical
-> receipts pending final-source rebuilds.  Representation Frontiers, filed New
-> Frontiers, the notation catalogue, Integration-and-Transform master, and
+> `4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`;
+> its 395-page, 2,494,961-byte PDF has SHA-256
+> `89159b2635f489a42d4c972fac95332808b1d637dee7921085db1ed7d6e055af`.
+> Their exact successful three-pass page sequences were respectively
+> 194→197→197, 144→149→149, 254→262→262, and 386→395→395.  Primary and
+> walkthrough logs and publication gates are clean; the frontier retains only
+> expected underfull diagnostics, and the q-series master retains one harmless,
+> readable 32.5659 pt overfull line.  All page, metadata, font, render, text,
+> and representative-visual gates passed.  The q ledger passes all 282 rows:
+> 166 Exact, 90 Partial, 18 None, and 8 interface.
+>
+> For provenance, the superseded pre-d8b pairs remain historical receipts:
+> primary TeX/PDF `938517a92565685ac9f7194b879cfe752ce783f258bde8b7b685aee41aed13dc` /
+> `bf26d78dd2cc49feb87a85413ef9c04c7a8a3dac4f793cf86e3436f7502cb2a7`
+> (694,350 / 1,593,577 bytes; 195 PDF pages); walkthrough
+> `e598aa02d4d10eda8bcfdafe3731f4a663bdcba58407f454485fae6796b41050` /
+> `5ff79c24fbced37dfaa5eb9c34447d0e7661b2b2bc5a0597687e43f93d7e189a`
+> (456,855 / 1,219,336 bytes; 145 pages); frontier
+> `7dd140370a0ac68522364a83a3c6423df93570741eafaef2ee8c1fac17670e2f` /
+> `9d38ab9d43befd6e26fd06ab9680b4a761365fb9d8a9f0de18489c243bd62d3e`
+> (808,185 / 1,877,159 bytes; 260 pages); and q-series
+> `d8f730b8eb6602d4d16112aea77a3e67dfbeadf46bcd28c1cdf3b12450b7d4fb` /
+> `5d25df07e6df1cd32118ee87e64c1cc54ad32da7c578a182231f98dd9fee9d5c`
+> (837,715 / 2,494,949 bytes; 395 pages).  Representation Frontiers, filed
+> New Frontiers, the notation catalogue, Integration-and-Transform master, and
 > comb-interpolation PDF likewise remain historical 301-, 41-, 88-, 377-, and
 > 158-page receipts.  Checksum ledgers remain abolished repository-wide; no
 > `SHA256SUMS*` files exist or participate in validation.

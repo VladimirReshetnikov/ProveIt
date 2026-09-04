@@ -54,8 +54,9 @@ in three serial passes from a 15,630-line, 764,952-byte source with SHA-256
 `403a25dccadc15e7a34bedd8d28a2dc3369cb6e6a046cd199a30ed178742a32d`.
 That receipt remains provenance for its named historical source only.
 
-The most recent pre-`d8b` canonical publication was rebuilt on 2026-09-03 from clean
-auxiliaries at fixed source epoch `1788495770`. Exactly three successful
+The final pre-`d8b` publication receipt is retained here as history. It was
+rebuilt on 2026-09-03 from clean auxiliaries at fixed source epoch
+`1788495770`. Exactly three successful
 serial `pdflatex -interaction=nonstopmode -halt-on-error` passes produced 386,
 395, and 395 pages, with `imakeidx` successfully generating the index during
 each pass. Its 16,834-line, 837,715-byte source has SHA-256
@@ -71,11 +72,19 @@ visually checked on physical page 17 and is readable and unclipped. The
 validation record in `README.md` gives the complete page-render and visual
 sample receipt. No live checksum manifest is maintained. PDFs retained beneath
 `assets/` are research figures, not manuscripts.
-The merged live source now postdates that receipt and is rebuild-pending.  No
-live `SHA256SUMS*` file is maintained or should be recreated; the retained PDF
-therefore does not claim render parity with the current TeX.  The validation
-record in `README.md` distinguishes compilation, font embedding, complete page
-rendering, contact-sheet review, and full-resolution inspection.
+
+The current post-merge publication supersedes that historical receipt. Its
+16,834-line, 837,715-byte TeX source has SHA-256
+`4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`;
+exactly three successful serial passes produced 386, 395, and 395 pages, and
+the resulting 395-page, 2,494,961-byte A4 PDF has SHA-256
+`89159b2635f489a42d4c972fac95332808b1d637dee7921085db1ed7d6e055af`.
+Compilation, index generation, references, font embedding, complete page
+rendering, and visual inspection all passed. The final log is clean apart from
+one harmless 32.5659 pt overfull paragraph, inspected at full resolution and
+confirmed readable and unclipped. No `SHA256SUMS*` file exists or participates
+in validation, and none should be recreated. The validation record in
+`README.md` gives the complete current gate and visual-sample receipt.
 
 The repository-wide live documentation census is 901 facade-reachable modules
 and 11,419 public declarations with both documentation gaps zero.  Two sibling
@@ -85,8 +94,8 @@ receipt: `LambertWBranchPairing.lean`, `LambertWGapBijection.lean`, and
 (36 current declarations, 13 supplied by the upstream delta), while
 `DyadicDerivativeFiltration.lean` is 0+6 after adding exactly
 `iteratedDeriv_rvachevUp_eq_extendedFabius` and
-`iteratedDeriv_rvachevUp_dyadic_below`.  Neither promotion is rendered by the
-retained 395-page PDF.
+`iteratedDeriv_rvachevUp_dyadic_below`. Both promotions are rendered by the
+current 395-page PDF.
 
 The current source incorporates exhaustive crosswalks for
 `QPochhammerEntire` (zero definitions and five legacy compatibility theorems),
