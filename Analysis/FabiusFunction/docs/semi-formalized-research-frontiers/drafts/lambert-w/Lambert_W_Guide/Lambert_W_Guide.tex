@@ -579,6 +579,12 @@ The Bernoulli numbers \(B_n\) are defined by the generating function
        =\sum_{n=0}^{\infty}B_n\frac{z^n}{n!},
        \qquad |z|<2\pi.
 \end{equation}
+At \(z=0\), the left side of \eqref{eq:bernoulli-gen} is understood in the
+standard removable-origin sense, with value \(1\).  The Lean crosswalk below
+represents that convention by
+\(\lean{complexExpm1Div}(z)^{-1}\): this is \(1\) at the origin and is the
+literal quotient \(z/(\exp z-1)\) when \(z\ne0\).  It does not identify the
+series with Lean's totalized literal quotient at zero, whose value is \(0\).
 Thus \(B_0=1\), \(B_1=-1/2\), \(B_2=1/6\),
 \(B_4=-1/30\), and all odd \(B_n\) beyond \(B_1\) vanish.
 
@@ -4381,8 +4387,11 @@ The focused branch-pair and Bernoulli tranche is exhaustive at this checkpoint:
 \lean{LambertWBranchPairing} has \(0+7\) public definitions/theorems,
 \lean{LambertWGapBijection} has \(4+16\), and
 \lean{LambertWBranchSymmetry} has \(0+9\), while
-\lean{LambertWBranchGapBernoulli} has \(0+4\).  Their four-module union is
-therefore four definitions and 36 theorems, 40 public declarations in all.
+\lean{LambertWBranchGapBernoulli} has \(0+5\).  Their four-module union is
+therefore four definitions and 37 theorems, 41 public declarations in all.
+The preceding exact-radius checkpoint had the census 903/11,447; the complex
+value-completion theorem brings origin's inventory to 903/11,448, and the
+retained public q-Pochhammer bridge gives the live union 903/11,449.
 
 \begin{longtable}{@{}p{0.30\textwidth}p{0.42\textwidth}p{0.22\textwidth}@{}}
 \toprule
@@ -4624,27 +4633,34 @@ bounds.  The left endpoint is sharp: at \(x=-1/\EulerE\), both branches are
 are therefore essential.  The endpoint \(x=0\) remains excluded because the
 lower real branch has no finite value there.\\
 \addlinespace
-\eqref{eq:pair-Bernoulli-general}: the compact paired Bernoulli series for
-\(0<\Delta<2\pi\) on \(-1/\EulerE<x<0\), together with the exact complex
-convergence radius and boundary divergence &
+\eqref{eq:bernoulli-gen}, with the standard removable-origin convention above,
+and \eqref{eq:pair-Bernoulli-general}: the complex Bernoulli generating
+identity and the compact paired series for \(0<\Delta<2\pi\) on
+\(-1/\EulerE<x<0\), together with the exact convergence locus &
 \decl{summable\_norm\_bernoulli\_mul\_pow\_div\_factorial},
 \decl{summable\_bernoulli\_mul\_pow\_div\_factorial\_iff},
-\decl{hasSum\_bernoulli\_mul\_pow\_div\_factorial}, and
+\decl{hasSum\_bernoulli\_mul\_pow\_div\_factorial},
+\decl{hasSum\_bernoulli\_mul\_pow\_div\_factorial\_complex\_iff}, and
 \decl{principalLambertW\_lowerLambertW\_eq\_bernoulliSeries} (module
 \lean{LambertWBranchGapBernoulli}) &
-Exact for the compact real branch pair and for the convergence radius.  The
+Exact for the complex generating identity, the compact real branch pair, and
+the convergence locus.  The
 first theorem proves absolute summability for every real
 \(z\) with \(\lvert z\rvert<2\pi\); the second proves, for complex \(z\), that
 the Bernoulli series is summable if and only if \(\lVert z\rVert<2\pi\), hence
 it diverges on \(\lVert z\rVert=2\pi\) and throughout the exterior; the third
-proves the actual all-index real sum \(z/(\exp z-1)\) when \(z\ne0\); and the
-fourth specializes both real sums on the strict common branch domain when the
-positive branch gap is below \(2\pi\).  At \(z=0\) convergence still holds,
-but the quotient theorem excludes the removable value because Lean's
-totalized quotient is zero there.  This makes
-\eqref{eq:pair-Bernoulli-general} Exact and proves the printed radius claim;
-the full complex value identity in \eqref{eq:bernoulli-gen} remains Partial.
-The surrounding expanded displays and every Puiseux claim remain unpromoted.\\
+proves the actual all-index real sum \(z/(\exp z-1)\) when \(z\ne0\); the
+fourth proves the complex \(\operatorname{HasSum}\) value
+\(\lean{complexExpm1Div}(z)^{-1}\) if and only if
+\(\lVert z\rVert<2\pi\); and the fifth specializes both real sums on the
+strict common branch domain when the positive branch gap is below \(2\pi\).
+At \(z=0\), the fourth theorem's target is the removable value \(1\); away
+from zero it rewrites to the literal quotient.  This makes both displayed
+identities in this row Exact under the stated convention, but claims no
+equality with Lean's totalized quotient at zero.  The compiled radius proof
+uses even Bernoulli--zeta coefficient bounds and a positive even subsequence;
+it does not formalize the Guide's nearest-nonzero-zero explanation.  The
+surrounding expanded displays and every Puiseux claim remain unpromoted.\\
 \addlinespace
 \Cref{thm:W0negativebounds}: for \(-1/\EulerE<x<0\),
 \(-1+\sqrt{1+\EulerE x}<\Wz(x)<-1+\sqrt{2(1+\EulerE x)}\) and \(\Wz(x)<x\) &
@@ -4661,9 +4677,9 @@ are the exponential inequalities \(\EulerE^s>1+s\) and
 \bottomrule
 \end{longtable}
 
-Not formalized, in the order they appear above: the full complex value form of
-\eqref{eq:bernoulli-gen}, the moments of \Cref{sec:integrals}, the local Taylor
-expansion, convergence of the Maclaurin series, the full Puiseux and
+Not formalized, in the order they appear above: the moments of
+\Cref{sec:integrals}, the local Taylor expansion, convergence of the
+Maclaurin series, the full Puiseux and
 logarithmic asymptotic expansions, the remaining bounds of
 \Cref{sec:bounds} (the two-sided \(W_{-1}\) bound of
 \Cref{thm:chatzbound}), and everything from

@@ -198,9 +198,9 @@ an exact Lean theorem are kept in the companion volume under
 
 \begin{boxedremark}\textbf{Artifact status (4 September 2026).}\space
 The authoritative live lexical audit contains exactly 903 facade-reachable
-source modules and 11,448 unique public declarations: 293 modules and 3,130
+source modules and 11,449 unique public declarations: 293 modules and 3,131
 declarations beyond the 610/8,318 activation checkpoint, and 254 modules and
-2,750 declarations beyond the 649/8,698 publication-union checkpoint.  Module
+2,751 declarations beyond the 649/8,698 publication-union checkpoint.  Module
 headers and declaration documentation are complete; the checked baseline records
 both zero-gap invariants.  This source includes the earlier finite and
 infinite q-series APIs together with the final Gaussian-palindromic, Jackson
@@ -212,7 +212,7 @@ the real Jackson q-beta integral, Gaussian upper-index and quantum identities,
 superconvergent Rvachev synthesis, Gaussian bounds, the complete terminating
 \({}_2\phi_1\) reversal and q-Chu--Vandermonde surfaces, the geometric
 Richardson generating-function module, the complete Lambert branch-coordinate
-surfaces and their zero-definition/four-theorem Bernoulli branch-gap
+surfaces and their zero-definition/five-theorem Bernoulli branch-gap
 companion, the six-theorem dyadic derivative filtration, and the three-theorem
 second-moment extension of \path{GaussianBinomialCumulants.lean}.  The retained
 PDF predates the Lambert--Bernoulli source update and remains an explicitly
@@ -3994,9 +3994,9 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  The origin-side source union contains 903 modules and
-11,447 public declarations.  Retaining the unconditional public
+11,448 public declarations.  Retaining the unconditional public
 \lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge gives the merged live
-facade census of exactly 903 modules and 11,448 unique public declarations,
+facade census of exactly 903 modules and 11,449 unique public declarations,
 with no missing module headers or declaration documentation.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
@@ -4007,12 +4007,18 @@ central-reduction and cyclotomic-factorization modules contributing thirteen
 theorems, and the four-module root-of-unity, q-Lucas, cyclotomic-divisibility,
 and q-Catalan tranche contributing one definition and twenty-four theorems.
 The four Lambert modules expose their exhaustive 0+7 branch-pairing, 4+16
-gap-bijection, 0+9 branch-symmetry, and 0+4 Bernoulli branch-gap surfaces:
-four definitions and thirty-six theorems, forty public declarations in all,
+gap-bijection, 0+9 branch-symmetry, and 0+5 Bernoulli branch-gap surfaces:
+four definitions and thirty-seven theorems, forty-one public declarations in all,
 with 13 declarations in the first three modules supplied by the earlier
 upstream delta.  The fourth module proves in particular that the complex
 Bernoulli series is summable exactly for \(\lvert z\rvert<2\pi\), hence
-diverges on and outside that boundary.  The zero-definition/six-theorem dyadic
+diverges on and outside that boundary.  Its
+\lean{hasSum_bernoulli_mul_pow_div_factorial_complex_iff} theorem gives the
+actual complex \(\operatorname{HasSum}\) value
+\(\lean{complexExpm1Div}(z)^{-1}\) exactly on that disk, including value one
+at \(z=0\).  This is the canonical removable representation, not an equality
+with Lean's literal totalized quotient at zero, and it asserts no holomorphy.
+The zero-definition/six-theorem dyadic
 derivative-filtration module likewise contains the two new below-depth
 theorems inventoried below.  The exhaustive terminating-basic-hypergeometric
 pair contributes two definitions and twenty-two theorems, and
@@ -10888,10 +10894,11 @@ theorems:
 \lean{principalLambertW_mul_lowerLambertW_lt_one}, and
 \lean{principalLambertW_mul_lowerLambertW_mem_Ioo}.
 The final file \path{LambertWBranchGapBernoulli.lean} has zero definitions and
-exactly four theorems:
+exactly five theorems:
 \lean{summable_norm_bernoulli_mul_pow_div_factorial},
 \lean{summable_bernoulli_mul_pow_div_factorial_iff},
-\lean{hasSum_bernoulli_mul_pow_div_factorial}, and
+\lean{hasSum_bernoulli_mul_pow_div_factorial},
+\lean{hasSum_bernoulli_mul_pow_div_factorial_complex_iff}, and
 \lean{principalLambertW_lowerLambertW_eq_bernoulliSeries}.
 
 \begin{theorem}[Bernoulli exponential generating function in the gap coordinate]
@@ -10903,6 +10910,19 @@ For every \(w\in\ComplexNumbers\),
 \]
 In particular, the series diverges at every point on or outside
 \(\lvert w\rvert=2\pi\).
+Writing
+\[
+ E_{\exp}(w)=
+ \begin{cases}
+  (\exp(w)-1)/w,&w\ne0,\\
+  1,&w=0,
+ \end{cases}
+\]
+the series has the canonical removable value
+\[
+ \sum_{n=0}^{\infty}\frac{B_nw^n}{n!}=E_{\exp}(w)^{-1}
+ \qquad (\lvert w\rvert<2\pi).
+\]
 For every real \(z\) with \(\lvert z\rvert<2\pi\),
 \begin{equation}
  \sum_{n=0}^{\infty}
@@ -10963,7 +10983,8 @@ If \(\lvert w\rvert\ge2\pi\), these even-index term norms are at least \(2\),
 so the terms do not tend to zero and the series cannot converge.  This proves
 the exact complex convergence locus, including divergence on the boundary.
 
-For the value of the sum, write
+For the value of the sum away from the origin, the same argument works over
+\(\ComplexNumbers\).  Write
 \[
  f_n=\frac{B_nz^n}{n!},\qquad
  g_n=\frac{z^n}{n!}-\IndicatorOf{\{n=0\}}.
@@ -10985,17 +11006,23 @@ Absolute summability therefore justifies the analytic Cauchy product and gives
  \left(\sum_{n\ge0}f_n\right)(\exp(z)-1)
  =\sum_{n\ge0}\sum_{i+j=n}f_i g_j=z.
 \]
-When \(z\ne0\), injectivity of the real exponential makes
-\(\exp(z)-1\ne0\), so division proves \eqref{eq:bernoulli-egf}.  On the branch
+When \(z\ne0\), the product identity itself makes
+\(\exp(z)-1\ne0\): a zero denominator would force \(z=0\).  Division gives
+the complex quotient value.  At \(z=0\), the Bernoulli series has only its
+constant term and sums to \(1=E_{\exp}(0)^{-1}\).  Lean combines these cases
+with the exact convergence criterion in
+\lean{hasSum_bernoulli_mul_pow_div_factorial_complex_iff}; restricting to real
+nonzero \(z\) proves \eqref{eq:bernoulli-egf}.  On the branch
 domain, \(\delta>0\), hence the extra hypothesis gives
 \(\lvert\delta\rvert<2\pi\).  Substituting \eqref{eq:bernoulli-egf} into
 \(W_0=-\delta/(\exp\delta-1)\), and then using
 \(W_{-1}=W_0-\delta\), proves
 \eqref{eq:lambert-principal-bernoulli}--\eqref{eq:lambert-lower-bernoulli}.
-The four public declarations supporting these claims are respectively
+The five public declarations supporting these claims are respectively
 \lean{summable_norm_bernoulli_mul_pow_div_factorial},
 \lean{summable_bernoulli_mul_pow_div_factorial_iff},
-\lean{hasSum_bernoulli_mul_pow_div_factorial}, and
+\lean{hasSum_bernoulli_mul_pow_div_factorial},
+\lean{hasSum_bernoulli_mul_pow_div_factorial_complex_iff}, and
 \lean{principalLambertW_lowerLambertW_eq_bernoulliSeries}.
 \end{proof}
 
@@ -11012,11 +11039,14 @@ classical lower branch has a singular extended endpoint, so it too is
 excluded; no claim is made about the all-real totalization there.  The
 absolute-summability statement includes \(z=0\), but the quotient statement
 does not: its series has value \(B_0=1\) there, whereas Lean's totalized
-\(0/(\exp 0-1)\) is zero.  The complex summability theorem gives the exact
-radius and proves divergence at every point on and outside
-\(\lvert z\rvert=2\pi\).  The quotient evaluation remains only a real,
-nonzero-argument theorem; no complete complex evaluation or theorem packaging
-the removable value at zero is asserted.  Its Lambert specialization still
+\(0/(\exp 0-1)\) is zero.  The complex \lean{HasSum} equivalence gives the
+exact radius, proves divergence at every point on and outside
+\(\lvert z\rvert=2\pi\), and evaluates the series throughout the open disk as
+\(\lean{complexExpm1Div}(z)^{-1}\).  Thus the complex Bernoulli EGF is Exact
+under this canonical removable-origin convention, whose value at zero is
+one and which agrees with \(z/(\exp z-1)\) away from zero; it is not a claim
+about Lean's literal totalized quotient at zero, nor a holomorphy theorem for
+a named sum function.  Its Lambert specialization still
 excludes both branch endpoints and additionally requires \(\delta<2\pi\).
 It is a convergent series in the gap coordinate, not a higher-order or full
 Puiseux expansion in \(x+\EulerE^{-1}\), and it adds no logarithmic expansion

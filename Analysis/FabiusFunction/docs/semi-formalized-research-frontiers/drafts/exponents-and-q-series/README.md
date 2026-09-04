@@ -69,9 +69,9 @@ module tranches and the zero-definition, three-theorem
 `GeometricPochhammerNormalConvergence.lean` leaf, in its formalization
 crosswalk. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 903 facade-reachable modules and 11,448 public declarations, with zero
+contains 903 facade-reachable modules and 11,449 public declarations, with zero
 missing module headers and zero declaration-documentation gaps. The final
-declaration count is one above origin's 11,447 because this union retains the
+declaration count is one above origin's 11,448 because this union retains the
 public `Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
 
 The ten-declaration increase is the sibling source-only
@@ -90,8 +90,8 @@ promotion rather than a new q-series result. Its exhaustive module counts are
 `LambertWBranchPairing.lean` (0 definitions + 7 theorems),
 `LambertWGapBijection.lean` (4 + 16), and
 `LambertWBranchSymmetry.lean` (0 + 9), followed by
-`LambertWBranchGapBernoulli.lean` (0 + 4). Their exhaustive four-module union
-is 4 definitions + 36 theorems, 40 public declarations. The first three prove,
+`LambertWBranchGapBernoulli.lean` (0 + 5). Their exhaustive four-module union
+is 4 definitions + 37 theorems, 41 public declarations. The first three prove,
 only for the
 open two-branch domain `(-exp(-1), 0)`, the exact gap parametrization and its
 inverse bijection, the `t = exp(delta) > 1` formulas, and the exact
@@ -99,16 +99,19 @@ ratio/sum/product laws with strict sum and product bounds. The last module's
 exhaustive public surface is
 `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
-`hasSum_bernoulli_mul_pow_div_factorial`, and
+`hasSum_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial_complex_iff`, and
 `principalLambertW_lowerLambertW_eq_bernoulliSeries`: real absolute
 convergence for `|z| < 2*pi`, complex summability exactly when
 `‖z‖ < 2*pi` (hence divergence on and outside the boundary), the real quotient
-sum for nonzero `z`, and the paired branch series on the same strict x-domain
-when the positive gap is below `2*pi`. Thus the radius/boundary clause and
-Guide label `eq:pair-Bernoulli-general` are Exact. The complete complex
-evaluation in `eq:bernoulli-gen` remains Partial because its available value
-theorem is real, assumes `z != 0`, and does not package the removable value at
-zero. Higher or full Puiseux/logarithmic branch expansions remain open.
+sum for nonzero `z`, the actual complex `HasSum` value
+`(complexExpm1Div z)⁻¹` throughout the open disk, and the paired branch series
+on the same strict x-domain when the positive gap is below `2*pi`. Thus the
+radius/boundary clause, Guide label `eq:pair-Bernoulli-general`, and the
+canonical-removable reading of `eq:bernoulli-gen` are Exact. Here
+`complexExpm1Div 0 = 1` and it equals `(exp z - 1) / z` away from zero; this
+does not assert the literal totalized quotient at zero or holomorphy of a named
+sum function. Higher or full Puiseux/logarithmic branch expansions remain open.
 No retained PDF in this group renders this unrelated source-only promotion,
 and none was rebuilt for this update.
 

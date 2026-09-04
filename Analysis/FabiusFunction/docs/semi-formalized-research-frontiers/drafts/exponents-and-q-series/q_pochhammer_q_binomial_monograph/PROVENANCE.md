@@ -91,8 +91,8 @@ PDF is now historical and the merged source remains pending a final union
 rebuild.
 
 The repository-wide documentation census is 903 facade-reachable modules and
-11,448 public declarations, with zero missing module headers and zero
-declaration-documentation gaps. The final count is one above origin's 11,447
+11,449 public declarations, with zero missing module headers and zero
+declaration-documentation gaps. The final count is one above origin's 11,448
 because the union retains the public
 `Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
 Sibling source-only promotions are recorded here only to delimit this
@@ -155,27 +155,31 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 903 modules and 11,448 public declarations with
-zero documentation gaps. Ten declarations come from the sibling
+live facade audit contains 903 modules and 11,449 public declarations with
+zero documentation gaps. Origin's 11,448-declaration inventory omits the
+retained public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge. Ten
+declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` source-only module, three are
 the explicit Gaussian second-derivative and division-free moment identities,
-and the union retains the public `complexQPochhammerInf_eq_qPochhammerInfIn`
-bridge. The subsequent sibling `LambertWBranchGapBernoulli.lean` leaf
-contributes zero definitions and exactly four theorems:
+and the subsequent sibling `LambertWBranchGapBernoulli.lean` leaf contributes
+zero definitions and exactly five theorems:
 `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
-`hasSum_bernoulli_mul_pow_div_factorial`, and
+`hasSum_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial_complex_iff`, and
 `principalLambertW_lowerLambertW_eq_bernoulliSeries`. They cover real absolute
 convergence for `|z| < 2*pi`, complex summability exactly when
 `‖z‖ < 2*pi` and hence divergence on and outside the boundary, the nonzero
-real Bernoulli-EGF quotient, and the paired strict Lambert branch formulas when
-the positive gap is below `2*pi`. Together with the three finite
-branch-coordinate modules, the exhaustive Lambert union has
-4 definitions + 36 theorems = 40 public declarations. The radius/boundary
-clause and Guide label `eq:pair-Bernoulli-general` are Exact. The complete
-complex evaluation in `eq:bernoulli-gen` remains Partial because the value
-theorem is real, assumes `z != 0`, and does not package the removable origin
-value; higher/full Puiseux and logarithmic expansions remain open. None of
+real Bernoulli-EGF quotient, the actual complex `HasSum` value
+`(complexExpm1Div z)⁻¹` throughout the open disk, and the paired strict Lambert
+branch formulas when the positive gap is below `2*pi`. Together with the
+three finite branch-coordinate modules, the exhaustive Lambert union has
+4 definitions + 37 theorems = 41 public declarations. The radius/boundary
+clause, Guide label `eq:pair-Bernoulli-general`, and canonical-removable
+reading of `eq:bernoulli-gen` are Exact. Here `complexExpm1Div 0 = 1` and it
+equals `(exp z - 1) / z` away from zero; this is not the literal totalized
+quotient at zero and asserts no holomorphy. Higher/full Puiseux and logarithmic
+expansions remain open. None of
 these source-only changes alters this monograph's forward-status counts or
 retained historical artifact, and no render parity is claimed. The
 forward status inventory covers 282 labelled results: 165 Exact / 91 Partial /

@@ -12,17 +12,19 @@ On the common real domain of the two Lambert branches, write
 `W0(x)` with `-Delta / (exp Delta - 1)` and `W-1(x)` with `W0(x) - Delta`.
 This module evaluates the Bernoulli exponential generating series on the
 open disk needed by those formulas and proves that its complex convergence
-radius is exactly `2*pi`:
+radius is exactly `2*pi`.  On that disk the complex sum is packaged by the
+canonical removable quotient:
 
-`sum_n B_n z^n / n! = z / (exp z - 1)`, for `z ≠ 0` and `|z| < 2*pi`.
+`sum_n B_n z^n / n! = (complexExpm1Div z)⁻¹`.
 
 Indeed, the series is summable for complex `z` exactly when `‖z‖ < 2*pi`.
-At and outside the boundary, its positive even terms do not tend to zero.
+At and outside the boundary, its even-index term norms do not tend to zero.
 
-The value at `z = 0` is deliberately excluded from the quotient statement:
-the series has removable value `1`, whereas division in Lean totalizes
-`0 / (exp 0 - 1)` to `0`.  Likewise the Lambert wrapper remains on the
-strict two-branch domain and assumes `branchGap x < 2*pi`.
+Here `complexExpm1Div z` is the removable extension of
+`(exp z - 1) / z`, with value `1` at zero.  The older real quotient statement
+deliberately excludes `z = 0`, where division in Lean totalizes
+`0 / (exp 0 - 1)` to `0`.  Likewise the Lambert wrapper remains on the strict
+two-branch domain and assumes `branchGap x < 2*pi`.
 
 The convergence proof reuses the even-zeta majorant behind
 `BasicBernoulliLog`.  The evaluation itself is coefficientwise: Mathlib's
@@ -297,6 +299,109 @@ theorem hasSum_bernoulli_mul_pow_div_factorial {z : ℝ} (hz0 : z ≠ 0)
   refine hf_norm.of_norm.hasSum.congr_fun fun n => ?_
   simp only [f, b]
   ring
+
+/-- The Bernoulli exponential generating series has the canonical removable
+complex value `(complexExpm1Div z)⁻¹` exactly on the open disk of radius
+`2*pi`. -/
+theorem hasSum_bernoulli_mul_pow_div_factorial_complex_iff (z : ℂ) :
+    HasSum (fun n : ℕ => (bernoulli n : ℂ) * z ^ n / (n.factorial : ℂ))
+      (complexExpm1Div z)⁻¹ ↔ ‖z‖ < 2 * Real.pi := by
+  constructor
+  · intro hsum
+    exact (summable_bernoulli_mul_pow_div_factorial_iff z).1 hsum.summable
+  · intro hz
+    by_cases hz0 : z = 0
+    · subst z
+      simp only [complexExpm1Div_zero, inv_one]
+      refine (hasSum_ite_eq 0 (1 : ℂ)).congr_fun fun n => ?_
+      by_cases hn : n = 0
+      · subst n
+        norm_num
+      · simp [hn]
+    rw [complexExpm1Div_of_ne hz0, inv_div]
+    let b : ℕ → ℂ := fun n => (bernoulli n : ℂ) / (n.factorial : ℂ)
+    let c : ℕ → ℂ := fun n =>
+      PowerSeries.coeff n (PowerSeries.exp ℂ - 1)
+    let f : ℕ → ℂ := fun n => b n * z ^ n
+    let g : ℕ → ℂ := fun n => c n * z ^ n
+    have hf_norm : Summable fun n => ‖f n‖ := by
+      refine ((summable_bernoulli_mul_pow_div_factorial_iff z).2 hz).norm.congr
+        fun n => ?_
+      congr 1
+      simp only [f, b]
+      ring
+    have hg_eq (n : ℕ) :
+        g n = z ^ n / (n.factorial : ℂ) - if n = 0 then 1 else 0 := by
+      by_cases hn : n = 0
+      · subst n
+        simp [g, c]
+      · simp [g, c, hn]
+        ring
+    have hg : Summable g := by
+      have hdelta : Summable (fun n : ℕ => if n = 0 then (1 : ℂ) else 0) :=
+        (hasSum_ite_eq 0 (1 : ℂ)).summable
+      exact ((NormedSpace.expSeries_div_summable z).sub hdelta).congr
+        (fun n => (hg_eq n).symm)
+    have hg_norm : Summable fun n => ‖g n‖ := hg.norm
+    have hgf : (∑' n, g n) = Complex.exp z - 1 := by
+      calc
+        (∑' n, g n) =
+            ∑' n : ℕ, (z ^ n / (n.factorial : ℂ) - if n = 0 then 1 else 0) :=
+          tsum_congr hg_eq
+        _ = (∑' n : ℕ, z ^ n / (n.factorial : ℂ)) -
+            ∑' n : ℕ, if n = 0 then 1 else 0 :=
+          (NormedSpace.expSeries_div_summable z).tsum_sub
+            (hasSum_ite_eq 0 (1 : ℂ)).summable
+        _ = NormedSpace.exp z - 1 := by
+          rw [(NormedSpace.expSeries_div_hasSum_exp z).tsum_eq,
+            (hasSum_ite_eq 0 (1 : ℂ)).tsum_eq]
+        _ = Complex.exp z - 1 := by rw [Complex.exp_eq_exp_ℂ]
+    have hcoeff (n : ℕ) :
+        ∑ ij ∈ Finset.antidiagonal n, f ij.1 * g ij.2 =
+          PowerSeries.coeff n PowerSeries.X * z ^ n := by
+      calc
+        ∑ ij ∈ Finset.antidiagonal n, f ij.1 * g ij.2 =
+            (∑ ij ∈ Finset.antidiagonal n, b ij.1 * c ij.2) * z ^ n := by
+              rw [Finset.sum_mul]
+              apply Finset.sum_congr rfl
+              intro ij hij
+              rw [Finset.mem_antidiagonal] at hij
+              simp only [f, g]
+              rw [← hij, pow_add]
+              ring
+        _ = PowerSeries.coeff n
+              (bernoulliPowerSeries ℂ * (PowerSeries.exp ℂ - 1)) * z ^ n := by
+            rw [PowerSeries.coeff_mul]
+            apply congrArg (fun y : ℂ => y * z ^ n)
+            apply Finset.sum_congr rfl
+            intro ij _hij
+            simp [b, c, bernoulliPowerSeries]
+        _ = PowerSeries.coeff n PowerSeries.X * z ^ n := by
+            rw [bernoulliPowerSeries_mul_exp_sub_one]
+    have hprod := tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm
+      hf_norm hg_norm
+    have hconv : (∑' n, f n) * (Complex.exp z - 1) = z := by
+      rw [← hgf, hprod, tsum_congr hcoeff]
+      calc
+        (∑' n : ℕ, PowerSeries.coeff n PowerSeries.X * z ^ n) =
+            ∑' n : ℕ, if n = 1 then z else 0 := by
+          apply tsum_congr
+          intro n
+          by_cases hn : n = 1
+          · subst n
+            simp
+          · simp [PowerSeries.coeff_X, hn]
+        _ = z := (hasSum_ite_eq 1 z).tsum_eq
+    have hden : Complex.exp z - 1 ≠ 0 := by
+      intro hzero
+      apply hz0
+      simpa [hzero] using hconv.symm
+    have hsum : (∑' n, f n) = z / (Complex.exp z - 1) :=
+      (eq_div_iff hden).2 hconv
+    rw [← hsum]
+    refine hf_norm.of_norm.hasSum.congr_fun fun n => ?_
+    simp only [f, b]
+    ring
 
 /-- On the strict common real domain, if the positive branch gap is below
 `2*pi`, both Lambert branches are the Bernoulli series printed in the guide:

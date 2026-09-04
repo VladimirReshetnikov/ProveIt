@@ -88,25 +88,32 @@ left endpoint both branches equal `-1`, so the sum is exactly `-2` and the
 product exactly `1`, while the lower branch has no finite value at zero.
 
 The source-only companion `LambertWBranchGapBernoulli.lean` has the exhaustive
-surface zero definitions and four theorems:
+surface zero definitions and five theorems:
 `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
-`hasSum_bernoulli_mul_pow_div_factorial`, and
+`hasSum_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial_complex_iff`, and
 `principalLambertW_lowerLambertW_eq_bernoulliSeries`.  They prove absolute
 summability of the real Bernoulli exponential generating series for
 `|z| < 2*pi`; the exact complex criterion that the series is summable if and
 only if `‖z‖ < 2*pi`, so it diverges on the boundary and throughout the
-exterior; its actual all-index real sum `z / (exp z - 1)` for `z != 0`; and
-the paired compact branch-gap sums for a positive gap below `2*pi`.  This is
-an exact crosswalk only for Guide label `eq:pair-Bernoulli-general`, together
-with the Guide's printed convergence-radius claim.  The full complex value
-identity remains Partial.  Convergence includes `z = 0`, while the real
-quotient evaluation correctly excludes its removable value.  With the three
-finite branch-coordinate modules, the four-module union is four definitions
-and 36 theorems, 40 declarations.  The signed higher/convergent Puiseux
-program remains open.  The retained 66-page Guide PDF and the other affected
-retained PDFs predate this source-only overlay, so no render parity is claimed.
-The live documentation census is 903 modules and 11,448 public declarations.
+exterior; the complex `HasSum` value `(complexExpm1Div z)⁻¹` exactly on that
+disk; its actual all-index real sum `z / (exp z - 1)` for `z != 0`; and the
+paired compact branch-gap sums for a positive gap below `2*pi`.  At the origin
+the complex target has the standard removable value `1`; away from the origin
+it rewrites to the literal quotient.  No equality with Lean's totalized
+quotient at zero is claimed.  This exactly crosswalks Guide label
+`eq:pair-Bernoulli-general` and makes `eq:bernoulli-gen` wholly Exact under
+that explicit removable-origin convention.  The Guide's nearest-nonzero-zero
+argument is not the formal proof route.  With the three finite
+branch-coordinate modules, the four-module union is four definitions and 37
+theorems, 41 declarations.  The signed higher/convergent Puiseux program
+remains open.  The latest Guide PDF predates this fifth-theorem source overlay,
+so no render parity is claimed until its final rebuild.  The exact-radius
+four-theorem checkpoint had census 903/11,447; the fifth theorem brings
+origin's inventory to 903/11,448, and retaining this tree's unconditional
+public q-Pochhammer bridge gives the live census of 903 modules and 11,449
+public declarations.
 
 The exact raw second-order package is `LambertWCurvature.lean`.  Its
 principal API is `deriv_principalLambertW`,

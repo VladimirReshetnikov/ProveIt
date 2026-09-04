@@ -109,10 +109,10 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live 2026-09-04 semantic union contains 903 modules and 11,448 lexically
+The live 2026-09-04 semantic union contains 903 modules and 11,449 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments; the checked JSON baseline records this clean state.  The
-corresponding origin inventory has 11,447 declarations because it lacks this
+corresponding origin inventory has 11,448 declarations because it lacks this
 tree's unique public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge.  The
 earlier 901/11,419 local semantic union remains a historical checkpoint, as
 does the post-merge 2026-09-01 inventory of 675 modules and 8,909 declarations.
@@ -274,18 +274,21 @@ asymptotic; the separate analytic series leaf is inventoried next.
 
 #### Exact Lambert branch-gap Bernoulli tranche
 
-`LambertWBranchGapBernoulli.lean` adds one source module and exactly four
-public theorems to the historical 902/11,443 checkpoint, giving the live
-origin census of 903/11,447 and the authoritative local union of 903/11,448.
-Its exhaustive public surface is
+`LambertWBranchGapBernoulli.lean` first added one source module and four public
+theorems to the historical 902/11,443 checkpoint, giving the historical exact-radius
+checkpoint 903/11,447.  Its fifth public theorem leaves the module count fixed
+and brings the origin census to 903/11,448; retaining this tree's unique public
+q-Pochhammer bridge gives the authoritative semantic union 903/11,449.  Its
+exhaustive public surface is
 `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
-`hasSum_bernoulli_mul_pow_div_factorial`, and
+`hasSum_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial_complex_iff`, and
 `principalLambertW_lowerLambertW_eq_bernoulliSeries`; five private majorant,
 coefficient-transport, norm-transport, zeta-lower-bound, and even-term helpers
 are excluded from the public count.  Together with the three finite
 branch-coordinate modules, this makes the four-module Lambert union four
-definitions and 36 theorems, 40 declarations.
+definitions and 37 theorems, 41 declarations.
 
 The first theorem proves absolute convergence of the real Bernoulli
 exponential generating series for `|z| < 2π`.  The second proves for every
@@ -293,15 +296,19 @@ complex `z` that the series is summable exactly when `‖z‖ < 2π`; consequent
 every boundary and exterior point diverges, and its proof exhibits an
 even-indexed subsequence whose term norms stay at least `2`.  The third gives the real
 series its actual `HasSum` value `z/(exp z-1)` under the additional condition
-`z ≠ 0`.  The final theorem specializes this evaluation to
+`z ≠ 0`.  The fourth theorem gives the strongest complete complex statement:
+the series has sum `(complexExpm1Div z)⁻¹` exactly when `‖z‖ < 2π`, including
+value `1` at the removable origin.  The final theorem specializes the real
+evaluation to
 `x ∈ (-exp(-1),0)` and
 `branchGap x < 2π`, returning both branch identities as one conjunction.  It
-makes only the Lambert Guide label `eq:pair-Bernoulli-general` **Exact**.  The
-complex convergence theorem includes `z=0`, but there is no complex `HasSum`
-quotient evaluation on the punctured disk or separate theorem giving the
-series value `1` at the removable origin.  The real quotient theorem deliberately
-excludes `z=0`, while the branch theorem excludes both endpoints.  No remainder
-estimate or higher/convergent Puiseux expansion is included.
+makes Lambert Guide label `eq:pair-Bernoulli-general` **Exact**.  Label
+`eq:bernoulli-gen` is also **Exact** only when its displayed quotient is read as
+the canonical removable-origin representation `(complexExpm1Div z)⁻¹`; this
+does not assert equality to Lean's literal totalized quotient at `z=0` or a
+holomorphy theorem.  The real quotient theorem deliberately excludes `z=0`,
+while the branch theorem excludes both endpoints.  No remainder estimate or
+higher/convergent Puiseux expansion is included.
 
 #### Completed dyadic derivative filtration
 
@@ -1228,7 +1235,7 @@ walkthrough logs and publication gates are clean; the frontier retains only
 expected underfull diagnostics, and the q-series master retains one harmless,
 readable 32.5659 pt overfull line.  All page, metadata, font, render, text,
 and representative-visual gates passed.  These receipts certify their named
-pre-9135 pairs, not parity with the 903/11,448 live union; all four publications
+pre-9135 pairs, not parity with the 903/11,449 live union; all four publications
 require new final-source rebuilds.
 
 The independently scoped Sequence publication remains current.  The Lambert
@@ -1279,7 +1286,7 @@ current merged sources.  Their package notices treat those PDFs as historical
 validation receipts, not parity claims, until fresh uninterrupted three-pass
 builds complete.  The inverse-computability receipt likewise still reflects
 the historical 675/8,909 census and requires refresh against the live
-903/11,448 inventory.  Checksum ledgers remain abolished and hardened
+903/11,449 inventory.  Checksum ledgers remain abolished and hardened
 repository-wide; no `SHA256SUMS*` files exist or participate in validation.
 The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged

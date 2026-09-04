@@ -22,14 +22,15 @@ moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
 **Current artifact checkpoint (2026-09-04).** The live Lean audit scans 903
-facade-reachable source modules and 11,448 unique public declarations, with no
+facade-reachable source modules and 11,449 unique public declarations, with no
 missing module headers and no missing documentation comments; the checked
-baseline records this zero-gap state. The q-Chu/Richardson/Gaussian-moment and
-sharp Lambert branch-gap Bernoulli unions change the primary exposition, Lean
-walkthrough, canonical frontier, Lambert guide, and canonical q-series
-documentation after their latest renders. Those PDFs are therefore historical
-checkpoints pending final-source rebuilds; other packages retain their own
-explicit source/PDF status.
+baseline records this zero-gap state.  Origin's 11,448-declaration inventory
+lacks this tree's retained public q-Pochhammer bridge.  The new complex
+Bernoulli-series value theorem changes the primary exposition, Lean walkthrough,
+canonical frontier, and Lambert Guide after their latest renders, so those four
+PDFs are historical checkpoints pending final-source rebuilds.  The canonical
+q-series TeX/PDF pair is unaffected by this tail; other packages retain their
+own explicit source/PDF status.
 
 Four pre-`9135bd7e` publication pairs have exact historical receipts.  The
 primary exposition is a 14,037-line, 702,119-byte TeX source (SHA-256
@@ -374,21 +375,29 @@ so the sum/product bounds become the equalities `-2` and `1`; at zero the
 lower real branch has no finite value.
 
 The subsequent `LambertWBranchGapBernoulli.lean` leaf has the exhaustive
-zero-definition/four-theorem surface
+zero-definition/five-theorem surface
 `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
-`hasSum_bernoulli_mul_pow_div_factorial`, and
+`hasSum_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial_complex_iff`, and
 `principalLambertW_lowerLambertW_eq_bernoulliSeries`.  It proves absolute
 summability on the real open disk `|z| < 2*pi`, the exact complex summability
 criterion `‖z‖ < 2*pi` and consequent boundary/exterior divergence, the
-actual all-index real Bernoulli sum for nonzero `z`, and the two paired
-branch-gap sums for a positive gap below `2*pi`.  Together with the finite
-branch-coordinate tranche, this gives four definitions and 36 theorems, 40
-declarations.  This is an exact crosswalk only for
-`eq:pair-Bernoulli-general`, together with the printed convergence-radius
-claim; no other label in the surrounding Guide corollary is promoted, and
-the full complex value identity remains Partial.  The retained 66-page Guide
-PDF predates this source-only crosswalk, and no render parity is claimed.
+complex `HasSum` value `(complexExpm1Div z)⁻¹` exactly on that disk, the actual
+all-index real Bernoulli quotient for nonzero `z`, and the two paired
+branch-gap sums for a positive gap below `2*pi`.  The complex target is `1`
+at `z = 0` and is the literal quotient `z / (exp z - 1)` away from zero; no
+claim equates the series to Lean's totalized quotient at zero.  Together with
+the finite branch-coordinate tranche, this gives four definitions and 37
+theorems, 41 declarations.  This is an exact crosswalk for
+`eq:pair-Bernoulli-general` and, under that explicit standard
+removable-origin convention, for the whole identity `eq:bernoulli-gen`.
+The Guide's nearest-nonzero-zero explanation is not formalized as the Lean
+proof route, and the Puiseux claims remain open.  The exact-radius four-theorem
+checkpoint had the census 903/11,447; the fifth theorem gives origin's census
+903/11,448, while the retained public q-Pochhammer bridge raises the live union
+to 903/11,449.  The latest Guide PDF predates this source-only
+crosswalk, and no render parity is claimed.
 
 No finite endpoint derivative is asserted.  An `O(z + exp(-1))` remainder
 after the signed leading term, a convergent signed

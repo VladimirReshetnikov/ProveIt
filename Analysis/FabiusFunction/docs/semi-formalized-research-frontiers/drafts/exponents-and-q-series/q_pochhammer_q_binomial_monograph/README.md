@@ -177,35 +177,38 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 903 modules and 11,448 public declarations, with zero
+audit now contains 903 modules and 11,449 public declarations, with zero
 missing module headers and zero declaration-documentation gaps. The
 ten-declaration increase is the unrelated sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`; it does not change this
 monograph's forward-status inventory or make its retained PDF current.
-The final declaration count is one above origin's 11,447 because this union
+The final declaration count is one above origin's 11,448 because this union
 retains the public `Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
 The other three new declarations are the explicit second-derivative,
 division-free raw-second-moment, and division-free variance-numerator theorems
 in `GaussianBinomialCumulants`; they strengthen the already-Exact
 `thm:qbinom-moments` row without changing its disposition.
-The final one-module/four-declaration increase is the unrelated sibling
+The final one-module/five-declaration increase is the unrelated sibling
 `LambertWBranchGapBernoulli.lean` leaf. Its exhaustive zero-definition public
 surface is `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
-`hasSum_bernoulli_mul_pow_div_factorial`, and
+`hasSum_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial_complex_iff`, and
 `principalLambertW_lowerLambertW_eq_bernoulliSeries`: real absolute
 convergence for `|z| < 2*pi`, complex summability exactly when
 `‖z‖ < 2*pi` and hence divergence on and outside the boundary, the nonzero
-real Bernoulli-EGF quotient evaluation, and the paired Lambert formulas on the
-strict common branch domain with gap below `2*pi`. Together with the three
-finite branch-coordinate modules, the exhaustive Lambert union has
-4 definitions + 36 theorems = 40 public declarations. The radius/boundary
-clause and Guide label `eq:pair-Bernoulli-general` are Exact. The complete
-complex evaluation in `eq:bernoulli-gen` remains Partial because the value
-theorem is real, assumes `z != 0`, and does not package the removable origin
-value; higher/full Puiseux and logarithmic expansions remain open. This
+real Bernoulli-EGF quotient evaluation, the actual complex `HasSum` value
+`(complexExpm1Div z)⁻¹` throughout the open disk, and the paired Lambert
+formulas on the strict common branch domain with gap below `2*pi`. Together
+with the three finite branch-coordinate modules, the exhaustive Lambert union
+has 4 definitions + 37 theorems = 41 public declarations. The radius/boundary
+clause, Guide label `eq:pair-Bernoulli-general`, and canonical-removable
+reading of `eq:bernoulli-gen` are Exact. Here `complexExpm1Div 0 = 1` and it
+equals `(exp z - 1) / z` away from zero; this is not the literal totalized
+quotient at zero and asserts no holomorphy. Higher/full Puiseux and logarithmic
+expansions remain open. This
 sibling promotion changes none of the forward-status or concordance totals
 below, and the retained historical PDF does not render it.
 
