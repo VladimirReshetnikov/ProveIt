@@ -21,9 +21,16 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 932
-source modules and 11,688 public declarations, with no missing module headers or
-declaration comments.
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 934
+source modules and 11,709 public declarations, with no missing module headers or
+declaration comments. The reciprocity leaf's 931/11,685 checkpoint remains
+historical; the subsequently merged upstream `DyadicBoundaryIdentity.lean`
+and `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
+declarations, giving the historical 933/11,695 checkpoint. The incoming union
+adds one module and fourteen public declarations: the new zero-definition/
+six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`. This gives the live 934/11,709 census.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
 In particular, the primary exposition, Lean walkthrough, canonical frontier,
@@ -181,7 +188,7 @@ compose to make `cor:scaled-geometric-moments` Exact over a field under finite
 power-node injectivity. The polynomial theorem allows arbitrary scale,
 including zero, so it subsumes the manuscript's nonzero-scale hypothesis. The
 forward status ledger covers 282 labelled results:
-181 Exact / 78 Partial / 15 None / 8 N/A interface rows. The
+182 Exact / 78 Partial / 14 None / 8 N/A interface rows. The
 zero-definition/one-theorem `HalfQBinomialRootSimplicity.lean` leaf exports
 `halfQBinomial_sum_rootMultiplicity_two_pow`.  Together with
 `halfQBinomial_sum_eq_zero_iff` and
@@ -486,12 +493,13 @@ the recursive polynomial on every real `|q| < 1` with the
 finite-q-Pochhammer normalization of the Taylor coefficient of the genuine
 geometric-uniform MGF.  This is regular at `q = 0` and includes negative
 contractions.  The following `GeometricUniformComplexMomentProduct.lean` leaf
-has one definition, `geometricUniformComplexMomentProduct`, and exactly two
-theorems, `hasProdLocallyUniformly_geometricUniformComplexMomentProduct` and
+has one definition, `geometricUniformComplexMomentProduct`, and exactly three
+theorems, `hasProdLocallyUniformly_geometricUniformComplexMomentProduct`,
+`differentiable_geometricUniformComplexMomentProduct`, and
 `geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
 For every complex `‖q‖ < 1`, including `q = 0`, it supplies the manuscript's
-actual infinite product, its locally uniform convergence, and its exact
-normalized Taylor-coefficient bridge.  The inner complex product/coefficient
+actual infinite product, its locally uniform convergence and complex
+differentiability, and its exact normalized Taylor-coefficient bridge.  The inner complex product/coefficient
 claim is exact.  The next `GeometricUniformExteriorComplexMomentGerm.lean`
 leaf has one definition, `geometricUniformExteriorComplexMomentGerm`, and
 exactly two theorems, `analyticAt_geometricUniformExteriorComplexMomentGerm`
@@ -525,7 +533,26 @@ coefficients under the strict norm hypotheses, and treats `q = 1` via
 `[n]_1! = n!` rather than a totalized `0/0`. In composition with the existing
 polynomial and q-factorial APIs, this exhaustive 1+4 surface makes
 `thm:qF-moment-polynomial` Exact. It does not evaluate genuine root-of-unity
-poles or promote the broader MGF/germ claims.
+poles or promote the broader MGF, germ-uniqueness, or pole-divisor claims.
+
+The subsequent `GeometricUniformMomentReciprocity.lean` leaf has exactly one
+definition and five theorems. Its exhaustive public API is
+`geometricUniformComplexMomentGerm`,
+`geometricUniformComplexMomentGerm_of_norm_lt_one`,
+`geometricUniformComplexMomentGerm_of_one_lt_norm`,
+`analyticAt_geometricUniformComplexMomentGerm`,
+`geometricUniformComplexMomentGerm_reciprocity`, and
+`geometricUniformComplexMomentGerm_moment_convolution`. The combined germ
+uses the inner product for `‖q‖ < 1` and the exterior reciprocal germ for
+`1 < ‖q‖`. Under exactly `q != 0` and `‖q‖ != 1`, reciprocity is an
+`EventuallyEq` at zero, not a global identity: continuity makes the inner
+product nonzero near its value one at zero, the exterior definition supplies
+its inverse there, and the outer regime follows after replacing `q` by
+`q⁻¹`. Differentiating the local identity gives the manuscript's binomial
+moment convolution, including its degree-zero Kronecker boundary. This makes
+`thm:qF-reciprocity` Exact. No unit-circle value, `q = 0` extension, explicit
+maximal disc, global cancellation across zeros, normalized Mahler-germ
+uniqueness, or exterior pole divisor is claimed.
 
 The base 904/11,457, real-bridge 905/11,458, inner-complex 906/11,461, and
 pre-merge exterior-branch 907/11,464 counts remain labelled historical
@@ -545,7 +572,18 @@ then gives the historical 924/11,615 checkpoint.  Independently, the two new
 `ProbabilityLaplaceMoments.lean` theorems and the 1+1
 `RvachevLegendreBiorthogonality.lean` leaf give the incoming branch's
 historical 924/11,614 checkpoint.  Their semantic union gives the historical
-925/11,619 checkpoint. In the subsequent semantic union, the
+925/11,619 checkpoint. Subsequent merged-main additions give
+the pre-reciprocity 930/11,678 checkpoint. Publicizing
+`differentiable_geometricUniformComplexMomentProduct` gives 930/11,679, and
+the reciprocity 1+5 leaf gives the historical 931/11,685 census. The
+subsequently merged upstream `DyadicBoundaryIdentity.lean` and
+`FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
+declarations, giving the historical 933/11,695 census. The incoming union adds
+one module and fourteen public declarations: the new zero-definition/
+six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`. This gives the live 934/11,709 census.
+In the current semantic union, the subsequent
 zero-definition/two-theorem greater-than-one leaf makes `cor:qgreaterone`
 Exact, and the scaled-geometric polynomial theorem completes
 `cor:scaled-geometric-moments`. The subsequent affine transport theorem in
@@ -554,12 +592,13 @@ by composition with the rational half-base extractor. The simple-root theorem
 in `HalfQBinomialRootSimplicity.lean`, composed with the complete rational
 root classification in `HalfQBinomial.lean`, makes
 `cor:halfbase-root-locus` Exact while leaving
-`cor:qbinom-inversion-law` Partial. The 925/11,619 semantic-union count, the
-RatFunc-only 924/11,615 count, and the incoming-only 924/11,614 count all
-remain historical branch checkpoints; the repository-wide live census is the
-932/11,688 checkpoint recorded above. The q forward totals are 181 Exact / 78
-Partial / 15 None / 8 N/A, the relevant Dyadic Gaussian--Thue--Morse chapter
-is 12/43/1/0, and the source concordance is 94 Lean-proved / 384 human-proved
+`cor:qbinom-inversion-law` Partial. The live semantic-union facade census is
+934/11,709; the historical dyadic/finite-prefix census is 933/11,695 and the
+historical reciprocity census is 931/11,685, while the RatFunc-only
+924/11,615 and incoming-only 924/11,614 counts remain historical branch
+checkpoints. The q forward totals are 182 Exact / 78 Partial / 14 None / 8
+N/A, the relevant Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the
+source concordance is 95 Lean-proved / 383 human-proved
 frontier / 60 N/A / 9 conjectures. The
 intermediate 915/11,556 Bridge census remains a historical checkpoint. The
 retained 389-page q-series PDF is a

@@ -166,15 +166,33 @@ make q-frontier labels `prop:up-tail` and `cor:up-moments` Exact, including
 the closed-tail convention and every positive natural moment order.  The
 unrelated one-definition/one-theorem
 `FabiusFunction.RvachevLegendreBiorthogonality` leaf then gave the historical
-925-module/11,619-declaration checkpoint.  The current exhaustive Lean audit
-is 932 modules and 11,688 public declarations, still with no missing module
-header or public-declaration doc comment.  The exact finite Legendre pairing
+925-module/11,619-declaration checkpoint.  Its exact finite Legendre pairing
 and the other intervening declarations do not change this inverse-package
 ledger; the finite-prefix Thue--Morse module changes only the three rows
-identified above.  The q forward ledger is now 181
-Exact / 78 Partial / 15 None / 8 interface rows, and its source concordance
-is 94 Lean-proved / 384 human-proved frontier / 60 non-applicable / 9
-conjectures.  The preceding finite-prefix checkpoint was 923/11,610.  The retired source layouts remain immutable
+identified above.  The later
+one-definition/five-theorem
+`FabiusFunction.GeometricUniformMomentReciprocity` leaf defines the combined
+inner/exterior germ, identifies both strict branches, proves analyticity at
+zero off the unit circle, and proves for `q != 0`, `‖q‖ != 1` the local
+`EventuallyEq` `M_q(z) * M_(q⁻¹)(-z) = 1` and its exact all-order binomial
+derivative convolution.  It makes q-monograph label `thm:qF-reciprocity`
+Exact; no global pointwise identity through genuine inner-product zeros is
+claimed.  Subsequent source-only tranches, including that reciprocity leaf,
+give the historical reciprocity checkpoint 931/11,685.  The subsequently
+merged upstream `DyadicBoundaryIdentity.lean` and
+`FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
+declarations, making the historical 933/11,695 census.  The incoming union
+adds one module and fourteen public declarations: the new zero-definition/
+six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`.  This makes the live census 934/11,709.
+The exhaustive audit still has no missing module header or public-declaration
+doc comment.  The q forward
+ledger is now 182 Exact / 78 Partial / 14 None / 8 interface rows, its relevant
+Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and its source concordance
+is 95 Lean-proved / 383 human-proved frontier / 60 non-applicable / 9
+conjectures.  The preceding finite-prefix checkpoint was 923/11,610.  The
+retired source layouts remain immutable
 provenance only; the source is newer than the retained historical PDF.
 
 `QuarterCatalanGerm.lean` proves that the distinguished rational quarter germ

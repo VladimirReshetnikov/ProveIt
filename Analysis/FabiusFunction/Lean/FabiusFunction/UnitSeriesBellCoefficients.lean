@@ -112,6 +112,23 @@ theorem coeff_fallingSeries_subst_eq_sum_ordPartialBell
   intro k _hk
   rw [fallingSeries, coeff_egfA]
 
+/-- Positive-degree manuscript indexing for the coefficients of the formal
+power `(1+w)^β`: the summation range is exactly `1 ≤ k ≤ n`. -/
+theorem coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos
+    {w : A⟦X⟧} (hw : constantCoeff w = 0) (β : A)
+    (n : ℕ) (hn : 1 ≤ n) :
+    coeff n ((fallingSeries A β).subst w) =
+      ∑ k ∈ Ico 1 (n + 1),
+        (algebraMap ℚ A (1 / k.factorial) *
+          (descPochhammer A k).eval β) *
+            ordPartialBell (fun r => coeff r w) n k := by
+  rw [coeff_fallingSeries_subst_eq_sum_ordPartialBell A hw,
+    Finset.range_eq_Ico,
+    ← Finset.sum_Ico_consecutive _ (Nat.zero_le 1)
+      (by omega : 1 ≤ n + 1),
+    Nat.Ico_zero_eq_range, Finset.sum_range_one,
+    ordPartialBell_zero_right, if_neg (Nat.ne_of_gt hn), mul_zero, zero_add]
+
 /-- Exponential-Bell form of the coefficients of the formal power
 `(1 + w)^β`. The theorem is valid also in degree zero. -/
 theorem coeff_fallingSeries_subst_eq_sum_partialBell
@@ -225,6 +242,18 @@ theorem egfA_factorialDenormalize_coeff_eq (U : A⟦X⟧) :
   rw [← mul_assoc, ← map_mul, one_div_mul_cancel (by positivity), map_one,
     one_mul]
 
+/-- Reweighting the coefficients of a zero-constant series by `n!` and then
+forming the Bell weight series recovers the original series. -/
+theorem bellWeightSeries_factorialDenormalize_coeff_eq
+    {D : A⟦X⟧} (hD : constantCoeff D = 0) :
+    bellWeightSeries A (factorialDenormalize fun n => coeff n D) = D := by
+  let d : ℕ → A := factorialDenormalize fun n => coeff n D
+  have hd0 : d 0 = 0 := by
+    simpa only [d, factorialDenormalize, Nat.factorial_zero, Nat.cast_one,
+      one_smul, coeff_zero_eq_constantCoeff_apply] using hD
+  rw [← egfA_eq_bellWeightSeries A d hd0,
+    egfA_factorialDenormalize_coeff_eq A D]
+
 /-- Exponential-Bell form of the logarithmic coefficients of a unit series.
 The factorially denormalized input is the sequence `(n! * [X^n] U)_n`. -/
 theorem coeff_logOf_eq_sum_partialBell
@@ -259,14 +288,8 @@ theorem coeff_exp_subst_eq_completeBell
       algebraMap ℚ A (1 / n.factorial) *
         Bell.complete (factorialDenormalize fun r => coeff r D) n := by
   let d : ℕ → A := factorialDenormalize fun r => coeff r D
-  have hcoeff0 : coeff 0 D = 0 := by
-    rw [coeff_zero_eq_constantCoeff_apply, hD]
-  have hd0 : d 0 = 0 := by
-    simpa only [d, factorialDenormalize, Nat.factorial_zero, Nat.cast_one,
-      one_smul] using hcoeff0
   have hseries : bellWeightSeries A d = D := by
-    rw [← egfA_eq_bellWeightSeries A d hd0,
-      egfA_factorialDenormalize_coeff_eq A D]
+    simpa only [d] using bellWeightSeries_factorialDenormalize_coeff_eq A hD
   calc
     coeff n ((PowerSeries.exp A).subst D) =
         coeff n ((PowerSeries.exp A).subst (bellWeightSeries A d)) := by
@@ -313,6 +336,18 @@ theorem coeff_exp_subst_eq_sum_weightedPartitions
       ∑ f ∈ weightedPartitions n, ∏ j ∈ Icc 1 n,
         (((f j).factorial : ℚ)⁻¹) • (coeff j D) ^ f j := by
   rw [coeff_exp_subst_eq_partitionExpSum A hD, partitionExpSum]
+
+/-- Familiar division notation for the weighted-partition formula over a
+characteristic-zero field. The rational-scalar theorem above is the more
+general commutative-rational-algebra statement. -/
+theorem coeff_exp_subst_eq_sum_div_weightedPartitions
+    {F : Type*} [Field F] [CharZero F]
+    {D : F⟦X⟧} (hD : constantCoeff D = 0) (n : ℕ) :
+    coeff n ((PowerSeries.exp F).subst D) =
+      ∑ f ∈ weightedPartitions n, ∏ j ∈ Icc 1 n,
+        (coeff j D) ^ f j / (f j).factorial := by
+  rw [coeff_exp_subst_eq_partitionExpSum F hD,
+    partitionExpSum_eq_sum_div]
 
 /-- Triangular recurrence for the coefficients of a formal exponential:
 `n A_n = ∑_{j=1}^n j d_j A_{n-j}`. -/

@@ -90,7 +90,6 @@ theorem rvachevFourierProduct_dyadic_boundary (k : ℕ) (w : ℂ) :
           ((∏ h ∈ range (k + 1), complexSinc ((Real.pi : ℂ) * w / (2 : ℂ) ^ h)) *
             rvachevFourierProduct (w / (2 : ℂ) ^ (k + 1))) *
           rvachevFourierProduct (1 / 2 + w / (2 : ℂ) ^ (k + 1)) := by
-        push_cast
         ring
     _ = -w ^ (k + 1) * rvachevFourierProduct w *
           rvachevFourierProduct (1 / 2 + w / (2 : ℂ) ^ (k + 1)) := by rw [hprefix]

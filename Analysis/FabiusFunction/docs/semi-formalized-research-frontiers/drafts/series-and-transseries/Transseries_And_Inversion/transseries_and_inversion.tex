@@ -1074,6 +1074,19 @@ A finite such expansion is \emph{maximal} when it admits no further term, that
 is, when the final remainder is not asymptotically equivalent to a constant
 multiple of any element of \(\mathfrak{M}\).
 \end{definition}
+\emph{Lean status.}  This working definition has a formal counterpart in the sequence-indexed
+form the rest of the corpus uses: \lean{Fabius.IsAsymptoticScale} in
+\lean{TransseriesScale.lean}, for an arbitrary filter on an arbitrary normed field, asks that
+each \(\varphi_{n}\) be eventually nonvanishing and that \(\varphi_{n+1}=\littleo(\varphi_{n})\),
+and \lean{Fabius.IsPoincareExpansion} is the expansion relation.  That the
+power-logarithmic monomials form such a scale is \lean{Fabius.isAsymptoticScale_plMonomial} in
+\lean{TransseriesPolyLogScale.lean}, for any lexicographically decreasing sequence of exponent
+pairs, with the two ladders used most often supplied ready-made:
+\lean{Fabius.isAsymptoticScale_plMonomial_pow} for \(X^{-n}\) and
+\lean{Fabius.isAsymptoticScale_plMonomial_log} for \(X^{c}(\log X)^{-n}\).  The set-indexed
+formulation above, quantifying over an unordered \(\mathfrak M\), is not formalized as such;
+the sequence form is what the uniqueness theorem \cref{q0:prop:uniqueness} is stated against.
+
 
 This is the coarse blockwise notion adequate for a motivating discussion.
 Part~VI replaces it by the sharper statements needed for analytic work,
@@ -1126,6 +1139,18 @@ For \eqref{plt:eq:mot-dominance}, apply the trichotomy with \((a,b)=(-n,j)\)
 and \((a',b')=(-m,k)\): the monomial \(t^{n}L^{j}\) dominates \(t^{m}L^{k}\)
 exactly when \(-n>-m\), i.e.\ \(n<m\), or when \(n=m\) and \(j>k\).
 \end{proof}
+\emph{Lean status.}  Formal in \lean{TransseriesScaleDominance.lean}, with real exponents in
+both slots: \lean{Fabius.plMonomial} is \(X^{a}(\log X)^{b}\), and the three cases of the
+displayed limit are \lean{Fabius.tendsto_plMonomial_div_atTop_zero},
+\lean{Fabius.tendsto_plMonomial_div_atTop_one} and \lean{Fabius.tendsto_plMonomial_div_atTop};
+the workhorse is \lean{Fabius.tendsto_plMonomial_atTop_zero}, that \(X^{c}(\log X)^{d}\to0\)
+for every \(c<0\) and \emph{every} real \(d\).  The lexicographic law in the volume's own
+generators \(t=1/X\), \(L=\log X\) --- \eqref{plt:eq:mot-dominance} --- is
+\lean{Fabius.plMonomial_generators_dominance}, with positivity past \(X=1\) recorded as
+\lean{Fabius.plMonomial_pos} and the quotient rewritten by
+\lean{Fabius.plMonomial_div_eventuallyEq}.  The dominance in \(\littleo\) form is
+\lean{Fabius.isLittleO_plMonomial} in \lean{TransseriesPolyLogScale.lean}.
+
 
 The dominance order is not a convention chosen to make bookkeeping convenient.
 The grouping of monomials into inverse-power blocks is intrinsic.
@@ -1518,6 +1543,20 @@ exactly one on nonconstant polynomials.  Taking \(n=1\) in
 \(q\) with \(q'=p\).  The case \(p=1\), \(q=L\) is
 \(\int X^{-1}\Differential X=\log X\).
 \end{proof}
+\emph{Lean status.}  Formal, both clauses, in \lean{TransseriesBlockAntiderivative.lean}
+(a Mathlib-only leaf).  The operator \(\partial_{L}-c\) is \lean{Fabius.blockOperator}.
+For \(c\ne0\) the inverse is \emph{explicit} rather than abstract:
+\lean{Fabius.blockAntiderivative} is the finite Neumann series
+\(-\sum_{k\le\deg f}c^{-(k+1)}\partial^{k}f\), finite because \(\partial\) is nilpotent in
+bounded degree, and \lean{Fabius.blockOperator_blockAntiderivative} makes it a right inverse;
+with \lean{Fabius.blockOperator_injective} and \lean{Fabius.natDegree_blockOperator} this gives
+the degree-preserving bijection \lean{Fabius.blockOperator_bijective}.  For the resonant block
+\(c=0\), \lean{Fabius.resonantAntiderivative} is an explicit primitive, whence
+\lean{Fabius.derivative_surjective} over any field of characteristic zero and
+\lean{Fabius.natDegree_resonantAntiderivative}, the degree rising by exactly one.  The
+telescoping engine is \lean{Fabius.sum_sub_sum_shift}, stated for an arbitrary additive
+commutative group.
+
 
 \begin{lemma}[The discrete counterpart: a harmonic increment makes a logarithm]
 \label{plt:lem:mot-harmonic}

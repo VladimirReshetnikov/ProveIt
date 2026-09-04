@@ -26,7 +26,7 @@ Everything here is about `Polynomial K`; only the resonant half needs
 characteristic zero.
 
 * `sum_sub_sum_shift` — the telescoping identity behind the inverse.
-* `blockOperator c p = ∂p - c·p`.
+* `blockOperator c p = ∂p - c·p`, over any commutative ring.
 * `blockAntiderivative` — an **explicit finite inverse**
   `-∑_{k≤deg f} c^{-(k+1)}·∂^k f`, the Neumann series of `∂/c`, finite
   because `∂` is nilpotent on polynomials of bounded degree.
@@ -54,15 +54,25 @@ theorem sum_sub_sum_shift {M : Type*} [AddCommGroup M] (g : ℕ → M) (n : ℕ)
   rw [Finset.sum_range_succ' g n, Finset.sum_range_succ (fun k => g (k + 1)) n]
   abel
 
-variable {K : Type*} [Field K]
-
 /-- The block operator `∂_L - c` acting on the logarithmic polynomial
-ring of a single block. -/
-noncomputable def blockOperator (c : K) (p : K[X]) : K[X] :=
+ring of a single block.  Only a commutative ring is needed to state it;
+the inversion results below need a field. -/
+noncomputable def blockOperator {R : Type*} [CommRing R] (c : R)
+    (p : R[X]) : R[X] :=
   derivative p - Polynomial.C c * p
 
-@[simp] theorem blockOperator_zero (c : K) : blockOperator c 0 = 0 := by
+/-- The block operator sends the zero polynomial to zero. -/
+@[simp] theorem blockOperator_zero {R : Type*} [CommRing R] (c : R) :
+    blockOperator c 0 = 0 := by
   simp [blockOperator]
+
+/-- The block operator is additive in its polynomial argument. -/
+theorem blockOperator_sub {R : Type*} [CommRing R] (c : R) (p q : R[X]) :
+    blockOperator c (p - q) = blockOperator c p - blockOperator c q := by
+  simp only [blockOperator, map_sub, mul_sub]
+  ring
+
+variable {K : Type*} [Field K]
 
 /-- The explicit inverse of `∂_L - c` at `c ≠ 0`: the finite Neumann sum
 `-∑_{k ≤ deg f} c^{-(k+1)}·∂^k f`.  The sum is finite because `∂` kills
@@ -132,11 +142,7 @@ theorem blockOperator_injective {c : K} (hc : c ≠ 0) :
     Function.Injective (blockOperator c) := by
   intro p q hpq
   have hzero : blockOperator c (p - q) = 0 := by
-    have hsub : blockOperator c (p - q) =
-        blockOperator c p - blockOperator c q := by
-      simp only [blockOperator, map_sub, mul_sub]
-      ring
-    rw [hsub, hpq, sub_self]
+    rw [blockOperator_sub, hpq, sub_self]
   by_contra hne
   have hd : p - q ≠ 0 := sub_ne_zero.mpr hne
   have hdeg := natDegree_blockOperator hc (p - q)

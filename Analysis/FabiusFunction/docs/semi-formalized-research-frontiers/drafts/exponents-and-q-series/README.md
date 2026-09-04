@@ -62,9 +62,18 @@ module tranches and the zero-definition, three-theorem
 `GeometricPochhammerNormalConvergence.lean` leaf, in its formalization
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
-research figures, not alternate manuscript renderings. The current Lean audit
-contains 925 facade-reachable modules and 11,619 public declarations, with no
-missing module headers or declaration documentation.
+research figures, not alternate manuscript renderings. The Lean audit at the
+historical dyadic/finite-prefix checkpoint contains 933 facade-reachable
+modules and 11,695 public declarations, with no missing module headers or
+declaration documentation.  The merged upstream
+`DyadicBoundaryIdentity.lean` and `FinitePrefixThueMorseCollapse.lean` modules
+account for the two-module/ten-declaration increase beyond the historical
+reciprocity checkpoint 931/11,685.  The incoming union adds one module and
+fourteen public declarations: the new zero-definition/six-theorem
+`ProuhetBaseTwoBridge.lean` module, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`.  This makes the live Lean audit 934
+modules and 11,709 public declarations.
 
 The sibling source-only `FabiusFunction.GeometricRichardsonGenerating` module
 (three definitions and seven theorems) does not change this q-series package's
@@ -128,12 +137,14 @@ real `|q| < 1`, including `q = 0` and negative `q`, it proves the exact
 finite-q-Pochhammer normalization by the Taylor coefficient of the genuine
 geometric-uniform MGF.  The subsequent
 `GeometricUniformComplexMomentProduct.lean` leaf has the one definition
-`geometricUniformComplexMomentProduct` and exactly two theorems,
-`hasProdLocallyUniformly_geometricUniformComplexMomentProduct` and
+`geometricUniformComplexMomentProduct` and exactly three theorems,
+`hasProdLocallyUniformly_geometricUniformComplexMomentProduct`,
+`differentiable_geometricUniformComplexMomentProduct`, and
 `geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
-For every complex strict contraction, including `q = 0`, this exhaustive 1+2
-surface gives the actual manuscript product, locally uniform convergence on
-the whole complex plane, and the exact normalized Taylor-coefficient bridge.
+For every complex strict contraction, including `q = 0`, this exhaustive 1+3
+surface gives the actual manuscript product, locally uniform convergence and
+complex differentiability on the whole plane, and the exact normalized
+Taylor-coefficient bridge.
 The inner complex product/coefficient claim is therefore exact.  The following
 `GeometricUniformExteriorComplexMomentGerm.lean` leaf has the one definition
 `geometricUniformExteriorComplexMomentGerm` and exactly two theorems,
@@ -152,6 +163,20 @@ clearing identity, safely specializes to both analytic regimes, and treats
 `q = 1` via `[n]_1! = n!`, without evaluating at genuine reduced-denominator
 zeros.  Under the strict whole-label policy, this makes
 `thm:qF-moment-polynomial` Exact.
+The subsequent `GeometricUniformMomentReciprocity.lean` leaf has one
+definition, `geometricUniformComplexMomentGerm`, and exactly five theorems:
+`geometricUniformComplexMomentGerm_of_norm_lt_one`,
+`geometricUniformComplexMomentGerm_of_one_lt_norm`,
+`analyticAt_geometricUniformComplexMomentGerm`,
+`geometricUniformComplexMomentGerm_reciprocity`, and
+`geometricUniformComplexMomentGerm_moment_convolution`.  It joins the inner
+product and exterior reciprocal into one germ, proves analyticity at zero off
+the unit circle, and, for `q != 0` and `‖q‖ != 1`, proves
+`M_q(z) * M_(q⁻¹)(-z) = 1` as a local `EventuallyEq` together with its exact
+all-order binomial derivative convolution.  Thus `thm:qF-reciprocity` is
+Exact.  The pointwise equality is intentionally local because Lean's total
+inverse cannot turn a genuine zero of the inner product into a global
+reciprocal identity.
 `thm:geometric-uniform-mgf` remains Partial at its public direct dilation and
 coefficient recurrence, formal-power-series uniqueness, bundled genuine-MGF/
 characteristic-function identification, and root-of-unity pole classification.
@@ -181,16 +206,26 @@ finite rational identities; it adds no analytic-MGF convergence or universal
 fixed-evaluation-point degree claim.  The RatFunc leaf gives the historical
 924/11,615 checkpoint.  After adjoining the unrelated one-definition/
 one-theorem `RvachevLegendreBiorthogonality.lean` leaf and the following two
-declarations in the existing `ProbabilityLaplaceMoments.lean` module, the live
-census is 925/11,619.  That existing module adds
+declarations in the existing `ProbabilityLaplaceMoments.lean` module, the
+historical census reached 925/11,619.  Subsequent source-only tranches,
+including the reciprocity leaf above, give the historical reciprocity
+checkpoint 931/11,685.  The subsequently merged upstream
+`DyadicBoundaryIdentity.lean` and `FinitePrefixThueMorseCollapse.lean` modules
+add two modules and ten public declarations, making the historical
+dyadic/finite-prefix census 933/11,695.  The incoming union adds one module and
+fourteen public declarations: the new zero-definition/six-theorem
+`ProuhetBaseTwoBridge.lean` module, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`.  This makes the live census 934/11,709.
+That existing module adds
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
 `integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.
 Atomlessness identifies the strict and closed tails, and the second theorem
 is the exact full-law moment formula for every natural `n >= 1`; together
 with the existing global up/Fabius identities, these promote `prop:up-tail`
-and `cor:up-moments` to Exact.  The q ledger is 181/78/15/8, its relevant
-Dyadic Gaussian--Thue--Morse chapter is 12/43/1/0, and the source projection
-is 94/384/60/9. The zero-definition/one-theorem
+and `cor:up-moments` to Exact.  The q ledger is 182/78/14/8, its relevant
+Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the source projection
+is 95/383/60/9. The zero-definition/one-theorem
 `HalfQBinomialRootSimplicity.lean` leaf exports
 `halfQBinomial_sum_rootMultiplicity_two_pow`; with the complete rational
 root classification `halfQBinomial_sum_eq_zero_iff`, it makes
@@ -306,11 +341,12 @@ Current packages and retained intake records:
   `GaussianBinomialGreaterOneAsymptotics.lean` (zero definitions and two
   theorems), `GeometricResidualMoments.lean` (zero definitions and nine
   theorems), and `HalfQBinomialRootSimplicity.lean` (zero definitions and one
-  theorem), and `GeometricUniformMomentRatFunc.lean` (one definition and four
-  theorems). The existing `FinitePolynomialFunctional.lean` module now has
+  theorem), `GeometricUniformMomentRatFunc.lean` (one definition and four
+  theorems), and `GeometricUniformMomentReciprocity.lean` (one definition and
+  five theorems). The existing `FinitePolynomialFunctional.lean` module now has
   zero definitions and sixteen public theorems. The forward crosswalk is now
-  181 Exact, 78 Partial, 15 None, and 8 interface rows; the source ledger is
-  94 Lean-proved, 384 human-proved
+  182 Exact, 78 Partial, 14 None, and 8 interface rows; the source ledger is
+  95 Lean-proved, 383 human-proved
   frontier, 60 not
   applicable, and 9 conjectures. No PDF was generated locally while resolving
   this source-only merge, so the retained 389-page artifact does not render
@@ -1030,8 +1066,8 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 181 Exact, 78
-Partial, 15 with no counterpart, and 8 interface-only. The basic
+The latest validated forward formalization ledger has 282 rows: 182 Exact, 78
+Partial, 14 with no counterpart, and 8 interface-only. The basic
 geometric-uniform row is Exact: `GeometricUniformRealization.lean` proves that
 an `iIndepFun` process of unit-interval coordinates with uniform marginal laws
 has joint law `uniformProduct`, then transfers the canonical law to the actual
