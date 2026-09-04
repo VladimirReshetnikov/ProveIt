@@ -5781,6 +5781,9 @@ Mathematical object & Principal Lean name & Defining or identifying module \\
 Mathematical object & Principal Lean name & Defining or identifying module \\
 \midrule
 \endhead
+Half-base Gaussian root locus & \nolinkurl{halfQBinomial_sum_rootMultiplicity_two_pow}, composed with \nolinkurl{halfQBinomial_sum_eq_zero_iff} and \nolinkurl{gaussianBinomial_half_eq_halfQBinomial} & Exhaustive zero-definition/one-theorem \nolinkurl{HalfQBinomialRootSimplicity.lean} surface.  Over \(\RationalNumbers\), every classified root \(2^j\), \(j<n\), has multiplicity one; composition gives exactly the rational roots \(1,2,\ldots,2^{n-1}\), no others, all simple, and makes \nolinkurl{cor:halfbase-root-locus} Exact.  The derivative proof deletes the unique vanishing finite-product factor.  No arbitrary-characteristic simplicity or arbitrary-base root classification is claimed. \\
+Leading Laurent coefficient of the reciprocal centered Rvachev MGF & Definition \nolinkurl{rvachevCenteredMGF}; theorems \nolinkurl{rvachevCenteredMGF_eq_rvachevFourierProduct}, \nolinkurl{rvachevCenteredMGF_pi_mul_I_int}, \nolinkurl{rvachevCenteredMGF_pi_mul_I_int_ne_zero_of_odd}, \nolinkurl{tendsto_sub_pow_mul_inv_rvachevFourierProduct_int}, \nolinkurl{tendsto_rvachevCenteredMGF_laurent_int}, \nolinkurl{tendsto_rvachevCenteredMGF_laurent_two_pow_mul_odd} & Exhaustive one-definition/six-theorem \nolinkurl{RvachevLaurentLeading.lean} surface.  It normalizes \(M(t)\) as the existing centered generating function at \(2t\), proves \(M(t)=\Phi(\mathrm i t/(2\pi))\), and transports the exact integer-zero cofactor limit.  For \(n=2^v u\), \(u\) odd, the pole at \(T_n=2\pi\mathrm i n\) has leading coefficient \(-T_n^{v+1}/M(\pi\mathrm i u)\), with nonzero denominator.  All limits use \(\mathcal N[\ne]\), because inverse is totalized at the pole.  This makes \nolinkurl{is:p2:thm:Laurent-leading} Exact but adds no lower Laurent coefficients or pole-shell/Appell asymptotics. \\
+Finite dyadic Appell prefixes and exact recovery & Definitions \nolinkurl{unitUniformRawMomentRat}, \nolinkurl{centeredUnitUniformRawMomentRat}, \nolinkurl{dyadicPrefixScaleRat}, \nolinkurl{dyadicPrefixMomentRat}, \nolinkurl{uncenteredDyadicPrefixMomentRat}, \nolinkurl{centeredDyadicPrefixMomentRat}, \nolinkurl{kabayaIriAppellPolynomialRat}, \nolinkurl{uncenteredDyadicPrefixAppellPolynomialRat}, \nolinkurl{centeredDyadicPrefixAppellPolynomialRat}, \nolinkurl{uncenteredDyadicPrefixAppellScalePolynomialRat}, \nolinkurl{centeredDyadicPrefixAppellScalePolynomialRat}; theorems \nolinkurl{Appell.poly_binomialConv}, \nolinkurl{Appell.binomialConv_dilate}, \nolinkurl{Appell.dilate_dilate}, \nolinkurl{dyadicPrefixMomentRat_zero}, \nolinkurl{uncenteredDyadicPrefixMomentRat_zero}, \nolinkurl{centeredDyadicPrefixMomentRat_zero}, \nolinkurl{dyadicPrefixMomentRat_binomialConv_tail}, \nolinkurl{binomialConv_uncenteredDyadicPrefixMomentRat_tail}, \nolinkurl{binomialConv_centeredDyadicPrefixMomentRat_tail}, \nolinkurl{uncenteredDyadicPrefixAppellPolynomialRat_eq_sum}, \nolinkurl{centeredDyadicPrefixAppellPolynomialRat_eq_sum_even}, \nolinkurl{uncenteredDyadicPrefixAppellPolynomialRat_eq_eval_scale}, \nolinkurl{centeredDyadicPrefixAppellPolynomialRat_eq_eval_scale}, \nolinkurl{natDegree_uncenteredDyadicPrefixAppellScalePolynomialRat}, \nolinkurl{natDegree_centeredDyadicPrefixAppellScalePolynomialRat}, \nolinkurl{kabayaIriAppellPolynomialRat_eq_sum_prefix}, \nolinkurl{rvachevAppellPolynomialRat_eq_sum_prefix} & Exhaustive eleven-definition/seventeen-theorem \nolinkurl{FinitePrefixAppellRecovery.lean} surface.  Finite digit-moment convolution and reciprocal uniqueness give the exact uncentered \(2^{-N}\) and centered even \(4^{-N}\) expansions.  Their outer degrees in \(\operatorname{Polynomial}(\operatorname{Polynomial}\RationalNumbers)\) are \(n\) and \(\lfloor n/2\rfloor\); fixing the inner point can lower that degree, notably in centered odd degree at \(x=0\).  Geometric Lagrange evaluation recovers the full uncentered polynomial from any \(n+1\) consecutive prefixes and the centered polynomial from any \(\lfloor n/2\rfloor+1\), without a limit.  Thus \nolinkurl{is:p2:thm:finite-prefix-expansion} and \nolinkurl{is:p2:thm:exact-recovery} are Exact.  This is rational coefficient algebra, not analytic MGF convergence. \\
 Abstract bounded Fabius specification & \nolinkurl{IsFabius} & \nolinkurl{Basic.lean} \\
 Canonical bounded function \(F\) & \nolinkurl{fabius}, \nolinkurl{fabius_spec} & chosen in \nolinkurl{PaperStatements.lean}; existence and uniqueness proved in \nolinkurl{Existence.lean} \\
 Rvachev up-function \(\RvachevUp\) & \nolinkurl{rvachevUp} & \nolinkurl{Basic.lean}; analytic properties in \nolinkurl{Differential.lean} and later shape modules \\
@@ -5959,6 +5962,7 @@ Module & Role in the development \\
 \multicolumn{2}{l}{\textbf{Moments, arithmetic, and denominators}}\\[0.25em]
 \nolinkurl{AnalyticMoments.lean} & Compact-support integration, total mass, moment and half-moment recurrences, identification with exact rational sequences, and the named even Fourier modes \nolinkurl{rvachevFourierMomentTerm} with their zero term, scaling law, and genuine \nolinkurl{HasSum} to the Rvachev Fourier transform. \\
 \nolinkurl{MomentPowerSeries.lean} & Exact \nolinkurl{PowerSeries} algebra over \(\RationalNumbers\), including \(M(4X)=M(X)S(X)\); analytic evaluation is deferred to later modules. \\
+\nolinkurl{FinitePrefixAppellRecovery.lean} & Exhaustive 11+17 rational finite-prefix Appell API named in the crosswalk: constructive digit-moment convolutions, exact uncentered and centered-even expansions, exact symbolic outer degrees, and finite geometric-Lagrange recovery.  Specializing the inner variable can lower the centered outer degree; no analytic MGF convergence is asserted. \\
 \nolinkurl{NormalizedMoments.lean} & Division-free normalization theorem for half moments using factorial and Mersenne products. \\
 \nolinkurl{NormalizedEvenMoments.lean} & Natural numerator and common-denominator formula for even centered moments. \\
 \nolinkurl{Parity.lean} & Lucas-theorem parity analysis and oddness of natural moment numerators. \\
@@ -5974,6 +5978,7 @@ Module & Role in the development \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Fourier, probability, and the first paper}}\\[0.25em]
 \nolinkurl{FourierProduct.lean} & Entire sinc, pointwise multipliability, finite-product recurrence, and equality of the product with the analytic Fourier transform. \\
+\nolinkurl{RvachevLaurentLeading.lean} & Exhaustive 1+6 centered-MGF/Fourier rotation and integer-cofactor limit API, including the manuscript's exact odd-core leading Laurent coefficient.  Limits are punctured because inversion is totalized at the pole; no lower Laurent coefficients are supplied. \\
 \nolinkurl{GeneralizedRvachevIdentifiability.lean} & Zero definitions and six theorems recovering an admissible exponent sequence from dyadic analytic orders, with the exact generalized-product equality criterion. \\
 \nolinkurl{FourierAnalytic.lean} & Entire Fourier transform of \(\RvachevUp\), Fourier inversion consequences, and its imaginary-axis relation to the half-moment generating function. \\
 \nolinkurl{OriginalCharacterization.lean} & Rvachev's original compact-support predicate, derived scale positivity, the forced scale and normalization, and the general fold from bounded Fabius solutions. \\
@@ -6040,6 +6045,7 @@ Module & Role in the development \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Finite q-binomial and Thue--Morse algebra}}\\[0.25em]
 \nolinkurl{HalfQBinomial.lean} & Exact q-binomial coefficients at q=1/2, q-Pascal recurrence, Mersenne normalization, and a finite q-binomial theorem. \\
+\nolinkurl{HalfQBinomialRootSimplicity.lean} & Exhaustive 0+1 rational multiplicity theorem; with the complete half-base zero classification and coefficient bridge, it makes \nolinkurl{cor:halfbase-root-locus} Exact by composition. \\
 \nolinkurl{QBinomialCauchy.lean} & One q-Bernstein definition and five denominator-free finite q-Cauchy/q-Bernstein theorems over arbitrary commutative rings, including the compatibility alias \nolinkurl{finiteQPochhammerIn_mul_eq_sum_gaussianBinomial}. \\
 \nolinkurl{ThueMorseMixedDifference.lean} & Order-independent translation differences, Boolean-cube expansion, polynomial coefficient extraction, and dyadic Thue--Morse specialization. \\
 \nolinkurl{ThueMorseSymmetricDifference.lean} & Centered half-step recurrence and Boolean-cube expansion, sign-free sharp polynomial extraction, strict-degree cancellation, and centered/increasing-grid dyadic Thue--Morse block formulas. \\
@@ -6348,7 +6354,7 @@ Lean audits of the previously recorded new or refactored declarations,
 for each.  At that upstream checkpoint, static inspection found all 610 modules
 below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  The live current-tree audit scans
-918 modules and 11,568 public declarations, with no missing module headers or
+921 modules and 11,604 public declarations, with no missing module headers or
 declaration comments.  At the retained historical mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
 immediately preceding census, after the Rvachev Appell and original
@@ -6477,7 +6483,12 @@ sixteen theorems.  The subsequent exhaustive \(1+2\)
 actual product for complex \(\lVert q\rVert<1\), proves its locally uniform
 convergence, and identifies its normalized Taylor coefficient with the same
 polynomial.  On its incoming branch it formed the historical 906/11,461
-checkpoint; in the merged chronology it gives the live 918/11,568 census.
+checkpoint; in the merged chronology it gives the historical 918/11,568
+checkpoint.  The subsequent 0+1
+\nolinkurl{HalfQBinomialRootSimplicity.lean}, 1+6
+\nolinkurl{RvachevLaurentLeading.lean}, and 11+17
+\nolinkurl{FinitePrefixAppellRecovery.lean} leaves add three modules and 36
+public declarations, giving the live 921/11,604 census.
 This complex analytic analogue does not supply the exterior reciprocal germ
 or the rational/removable continuation through roots required to promote the
 canonical q-monograph \nolinkurl{thm:qF-moment-polynomial}; that compound

@@ -3678,6 +3678,71 @@ exported directly as
 positive-integer limit in \Cref{thm:fourier-zeros}: it is a signed-integer,
 complex-local theorem with the first surviving derivative evaluated exactly.
 
+\subsection{Leading Laurent coefficient of the reciprocal centered MGF}
+\label{sec:rvachev-centered-laurent-leading}
+
+For a bounded Fabius solution (F), define the centered Rvachev moment
+generating function in the manuscript normalization by
+\begin{equation}
+ M_F(t):=\lean{rvachevCenteredMGF}\,F\,t
+ =\lean{centeredComplexGeneratingFunction}\,F\,(2t).       \label{eq:rvachev-centered-mgf-definition}
+\end{equation}
+The factor (2) corrects the half-scale coordinate of the repository's
+pre-existing centered generating function.  If
+(h_F:\lean{IsFabius}\,F), Fourier--Laplace rotation gives
+\begin{equation}
+ M_F(t)=\Phi\!\left(\frac{\mathrm i t}{2\pi}\right),       \label{eq:rvachev-centered-mgf-rotation}
+\end{equation}
+which is
+\lean{rvachevCenteredMGF_eq_rvachevFourierProduct}.
+
+The reusable product-coordinate statement is worth recording first.  For
+every nonzero (m\in\IntegerNumbers), put
+(d_m=\TwoAdicValuation(|m|)+1).  Then
+\begin{equation}
+ \lim_{\substack{z\to m\\z\ne m}}
+ (z-m)^{d_m}\Phi(z)^{-1}=U_m(0)^{-1}.                    \label{eq:rvachev-fourier-reciprocal-cofactor-limit}
+\end{equation}
+This is
+\lean{tendsto_sub_pow_mul_inv_rvachevFourierProduct_int}; it follows directly
+from the local factorization in
+\eqref{eq:integer-zero-local-factorization} and the fact that (U_m) is a
+nonvanishing analytic unit.
+
+Now let (n=2^v u\ne0), where (v\in\NaturalNumbers) and
+(u\in\IntegerNumbers) is odd, and set (T_n=2\pi\mathrm i n).  Transporting
+\eqref{eq:rvachev-fourier-reciprocal-cofactor-limit} through
+\eqref{eq:rvachev-centered-mgf-rotation} gives the manuscript-normalized
+leading Laurent law
+\begin{equation}
+ \boxed{\quad
+ \lim_{\substack{t\to T_n\\t\ne T_n}}
+ (t-T_n)^{v+1}M_F(t)^{-1}
+ =-\frac{T_n^{v+1}}{M_F(\pi\mathrm i u)}.
+ \quad}                                                          \label{eq:rvachev-centered-mgf-laurent-leading}
+\end{equation}
+The odd-core value in the denominator is nonzero.  The exact wrapper is
+\lean{tendsto_rvachevCenteredMGF_laurent_two_pow_mul_odd}; the signed-integer
+form before choosing (v,u) is
+\lean{tendsto_rvachevCenteredMGF_laurent_int}.  Evenness converts the signed
+odd core to Lean's positive \texttt{Nat.divMaxPow} representative through
+\lean{rvachevCenteredMGF_pi_mul_I_int}, and
+\lean{rvachevCenteredMGF_pi_mul_I_int_ne_zero_of_odd} proves nonvanishing.
+
+Thus \path{RvachevLaurentLeading.lean} has the exhaustive public surface of
+one definition, \lean{rvachevCenteredMGF}, and the six theorems
+\lean{rvachevCenteredMGF_eq_rvachevFourierProduct},
+\lean{rvachevCenteredMGF_pi_mul_I_int},
+\lean{rvachevCenteredMGF_pi_mul_I_int_ne_zero_of_odd},
+\lean{tendsto_sub_pow_mul_inv_rvachevFourierProduct_int},
+\lean{tendsto_rvachevCenteredMGF_laurent_int}, and
+\lean{tendsto_rvachevCenteredMGF_laurent_two_pow_mul_odd}.  This makes
+\nolinkurl{is:p2:thm:Laurent-leading} Exact.  All three reciprocal limits use
+the punctured neighborhood, essentially: Lean totalizes inversion by
+(0^{-1}=0), so the displayed pole-cancelled expression does not have its
+limiting value at the pole itself.  No lower Laurent coefficients,
+pole-shell summation, or downstream Appell-coefficient asymptotic is claimed.
+
 \subsection{Finite weighted scale arithmetic behind the zero orders}
 
 The valuation in \eqref{eq:fourier-zero-order} belongs to a more general
@@ -3905,7 +3970,7 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 918 modules and 11,568 public declarations.  The exhaustive complex
+census is 921 modules and 11,604 public declarations.  The exhaustive complex
 moment-product leaf formed the historical 906/11,461 checkpoint, the real-MGF
 bridge checkpoint was 905/11,458, the immediately preceding scaled-geometric
 checkpoint was 914/11,555 in the merged chronology, the earlier
@@ -3944,7 +4009,11 @@ one-definition/two-theorem
 one-definition/four-theorem \path{ThueMorseCornerIntegral.lean} and
 zero-definition/three-theorem \path{RvachevLegendreCentralSum.lean} leaves,
 and the sixteenth theorem in the zero-definition
-\path{FinitePolynomialFunctional.lean} module.
+\path{FinitePolynomialFunctional.lean} module, followed by the
+zero-definition/one-theorem \path{HalfQBinomialRootSimplicity.lean},
+one-definition/six-theorem \path{RvachevLaurentLeading.lean}, and
+eleven-definition/seventeen-theorem \path{FinitePrefixAppellRecovery.lean}
+leaves.
 These are
 source-only overlays; the retained 183-page, 1,899,243-byte PDF is explicitly
 historical and has not been regenerated for these additions.
@@ -4016,8 +4085,10 @@ at roots of unity (including the \(q=1\) convention).  The leading-coefficient
 formula and consequent strict degree drop for odd \(n>1\) also remain absent,
 so the compound frontier label \nolinkurl{p7:thm:Pn} remains Partial rather
 than Exact.  The real bridge checkpoint was 905/11,458, and the complex
-\(1+2\) leaf formed the historical 906/11,461 checkpoint; the live census
-after the subsequent merged closures is 918/11,568.
+\(1+2\) leaf formed the historical 906/11,461 checkpoint; the subsequent
+merged closures formed the historical 918/11,568 checkpoint, and the three
+root/Laurent/finite-prefix leaves described below give the live 921/11,604
+census.
 
 The final two module counts are
 \path{CentralQBinomialReduction.lean} (0+6) and
@@ -6307,6 +6378,92 @@ no convergence theorem for an analytic reciprocal MGF is asserted.  Atom
 reconstruction remains owned by those synthesis declarations, and this leaf
 adds no larger matrix right-inverse or decoder-optimality statement.
 
+\subsubsection{Finite dyadic Appell prefixes and exact recovery}
+
+The compiled leaf \path{FinitePrefixAppellRecovery.lean} constructs the
+finite-prefix moment sequences rather than assuming the desired formulas.
+Its eleven public definitions are
+\lean{unitUniformRawMomentRat},
+\lean{centeredUnitUniformRawMomentRat},
+\lean{dyadicPrefixScaleRat}, \lean{dyadicPrefixMomentRat},
+\lean{uncenteredDyadicPrefixMomentRat},
+\lean{centeredDyadicPrefixMomentRat},
+\lean{kabayaIriAppellPolynomialRat},
+\lean{uncenteredDyadicPrefixAppellPolynomialRat},
+\lean{centeredDyadicPrefixAppellPolynomialRat},
+\lean{uncenteredDyadicPrefixAppellScalePolynomialRat}, and
+\lean{centeredDyadicPrefixAppellScalePolynomialRat}.
+The generic prefix recursively convolves the exact moments of the first (N)
+uniform digits at scales (2^{-1},\ldots,2^{-N}); depth zero is the point
+mass at zero.  The uncentered digit has moment (1/(r+1)), while the centered
+digit has that value in even degree and zero in odd degree.
+
+Write (P_n=\lean{kabayaIriAppellPolynomialRat}\,n),
+(A_n=\lean{rvachevAppellPolynomialRat}\,n), and use superscript ([N])
+for the corresponding prefix Appell polynomial.  The full one-step moment
+recurrences yield exact prefix--tail binomial factorizations.  Reciprocal
+uniqueness and the generic Appell transform then give
+\begin{align}
+ P_n^{[N]}(X)
+  &=\sum_{r=0}^{n}\binom nr\,mu_r,2^{-Nr}P_{n-r}(X),
+       &&\mu_r=\lean{halfMoment}\,r,                       \label{eq:finite-prefix-appell-uncentered}\
+ A_n^{[N]}(X)
+  &=\sum_{r=0}^{\lfloor n/2\rfloor}\binom n{2r},m_{2r},
+       4^{-Nr}A_{n-2r}(X),
+       &&m_{2r}=\lean{moment}\,r.                          \label{eq:finite-prefix-appell-centered}
+\end{align}
+These are
+\lean{uncenteredDyadicPrefixAppellPolynomialRat_eq_sum} and
+\lean{centeredDyadicPrefixAppellPolynomialRat_eq_sum_even}.  Their reusable
+algebraic engine consists of
+\lean{Appell.poly_binomialConv}, \lean{Appell.binomialConv_dilate}, and
+\lean{Appell.dilate_dilate}; normalization and tail factorization are
+\lean{dyadicPrefixMomentRat_zero},
+\lean{uncenteredDyadicPrefixMomentRat_zero},
+\lean{centeredDyadicPrefixMomentRat_zero},
+\lean{dyadicPrefixMomentRat_binomialConv_tail},
+\lean{binomialConv_uncenteredDyadicPrefixMomentRat_tail}, and
+\lean{binomialConv_centeredDyadicPrefixMomentRat_tail}.
+
+Promoting the scale to a formal outer variable (Q) produces elements of
+\(RationalNumbers[X][Q]\), implemented as
+\(lean{Polynomial}\,(\lean{Polynomial}\,\RationalNumbers)\).  Evaluation at
+(Q=2^{-N}) and (Q=4^{-N}) recovers the two prefix polynomials by
+\lean{uncenteredDyadicPrefixAppellPolynomialRat_eq_eval_scale} and
+\lean{centeredDyadicPrefixAppellPolynomialRat_eq_eval_scale}.  Their exact
+\emph{outer polynomial-valued} degrees are
+\begin{equation}
+ \operatorname{natDegree}_Q P_n^{[\,\cdot\,]}=n,
+ \qquad
+ \operatorname{natDegree}_Q A_n^{[\,\cdot\,]}=\lfloor n/2\rfloor,          \label{eq:finite-prefix-appell-outer-degrees}
+\end{equation}
+by \lean{natDegree_uncenteredDyadicPrefixAppellScalePolynomialRat} and
+\lean{natDegree_centeredDyadicPrefixAppellScalePolynomialRat}.  The
+polynomial-valued qualifier is essential.  After fixing the inner evaluation
+point (X=x), the outer degree may fall; for centered odd (n), the top
+inner Appell coefficient vanishes at (x=0).  Thus no universal exact
+fixed-(x) degree statement is inferred from
+\eqref{eq:finite-prefix-appell-outer-degrees}.
+
+Finally let (w_{d,j}(q)=lean{geometricLagrangeWeight}\,q\,d\,j).  Evaluating
+the two scale polynomials at zero gives, for every starting depth (N),
+\begin{align}
+ P_n(X)&=\sum_{j=0}^{n}w_{n,j}(1/2)P_n^{[N+j]}(X),
+                                                               \label{eq:finite-prefix-appell-recovery}\
+ A_n(X)&=\sum_{j=0}^{\lfloor n/2\rfloor}
+   w_{\lfloor n/2\rfloor,j}(1/4)A_n^{[N+j]}(X).               \label{eq:finite-prefix-centered-recovery}
+\end{align}
+They are \lean{kabayaIriAppellPolynomialRat_eq_sum_prefix} and
+\lean{rvachevAppellPolynomialRat_eq_sum_prefix}.  Hence the full uncentered
+degree-(n) polynomial is recovered from any (n+1) consecutive prefixes,
+and the full centered polynomial from any (lfloor n/2\rfloor+1)
+consecutive prefixes, with no limiting argument.  The seventeen theorems
+listed in the preceding three paragraphs exhaust the theorem surface of the
+module.  They make both
+\nolinkurl{is:p2:thm:finite-prefix-expansion} and
+\nolinkurl{is:p2:thm:exact-recovery} Exact.  This is exact rational
+coefficient algebra; no analytic MGF convergence theorem is claimed.
+
 The subsequent \path{RvachevLagrangeNodesOnly.lean} leaf has the one public
 definition \lean{rvachevDeconvolvedPolynomialRat} and exactly fourteen public
 theorems:
@@ -8489,6 +8646,28 @@ This is \lean{qBinomial_half_sum_algebraMap_eq_zero_iff} in
 \path{HalfQBinomial.lean}.  The scalar statement classifies the embedded rational
 arguments \(\iota z\); it does not assert a root classification for arbitrary elements of
 \(K\).
+
+The multiplicity layer is now exact as well.  If (p_ninRationalNumbers[X])
+denotes the polynomial on the left of
+\eqref{eq:half-q-root-locus}, then for every (j<n),
+\begin{equation}
+ \operatorname{rootMultiplicity}_{p_n}(2^j)=1.             \label{eq:half-q-root-simplicity}
+\end{equation}
+This is the sole public theorem
+\lean{halfQBinomial_sum_rootMultiplicity_two_pow} in the zero-definition/
+one-theorem module \path{HalfQBinomialRootSimplicity.lean}.  Its proof
+differentiates the finite q-Pochhammer product.  At (2^j), every term of the
+product rule vanishes except the one in which the (j)-th factor was deleted;
+all factors in that remaining product are nonzero.  Hence the derivative is
+nonzero and the already classified root is simple.  Together with
+\lean{halfQBinomial_sum_eq_zero_iff} and
+\lean{gaussianBinomial_half_eq_halfQBinomial}, this proves the manuscript's
+\nolinkurl{cor:halfbase-root-locus} exactly by composition: the rational
+polynomial has roots (1,2,\ldots,2^{n-1}), no others, and each has
+multiplicity one.  The theorem is deliberately over (RationalNumbers),
+matching the coefficient and root-classification API; it does not claim a
+new simplicity theorem in arbitrary characteristic or a root locus at an
+arbitrary q-base.
 
 The same Gaussian coefficients form a geometric Prouhet functional.  Set
 \[
