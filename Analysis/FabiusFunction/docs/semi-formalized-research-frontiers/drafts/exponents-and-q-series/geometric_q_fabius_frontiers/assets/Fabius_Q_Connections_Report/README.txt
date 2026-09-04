@@ -18,7 +18,6 @@ Contents
 - q_fabius_experiments.py         : deterministic numerical verification code
 - numerics/                       : residual tables, q-Lagrange weights, cumulants
 - figures/                        : vector PDF and PNG versions of the report figures
-- SHA256SUMS.txt                  : integrity hashes for every packaged file
 
 Compilation
 -----------
@@ -45,4 +44,4 @@ explicitly labeled conjectures. Claims of novelty are relative to the audited
 ProveIt Fabius-function LaTeX corpus and the cited literature, not an assertion
 of exhaustive priority across all unpublished work.
 
-> **Editorial note (2026-08-28):** the report source and compiled PDF listed above (and, where listed, the supplied source scan/OCR) were removed from this directory after their content was merged into the volume `Exponents_and_q_Series_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance list (and in `SHA256SUMS` here where present), and git history archives the files. This directory keeps only figures, data, and scripts.
+> **Editorial note (2026-08-28):** the report source and compiled PDF listed above (and, where listed, the supplied source scan/OCR) were removed from this directory after their content was merged into the volume `Exponents_and_q_Series_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance list, and Git history archives the files. This directory keeps only figures, data, and scripts.

@@ -2,8 +2,8 @@
 
 This archive contains the complete LaTeX source, the compiled 43-page PDF, two fully
 commented experiment programs, exact rational data, high-precision numerical
-checks, figures, checksums, and the recursive repository-audit ledger for the
-report:
+checks, figures, and the recursive repository-audit ledger for the report.
+Historical integrity receipts remain recoverable from Git history:
 
 **Sampling, Padé, Mellin, Resolvent, and Product–Integral Representations of the
 Fabius–Rvachev–Thue–Morse System**.
@@ -18,7 +18,8 @@ Fabius–Rvachev–Thue–Morse System**.
   Bose–Malmsten, Mellin, formal-Jacobi, Padé, and complex-quadrature experiments.
 - `corpus_inventory.tex` — pinned 67-path recursive audit ledger plus live additions.
 - `AUDIT_SCOPE.md` — snapshot and novelty conventions.
-- `SHA256SUMS` — checksums for every packaged file except the checksum file itself.
+- The former package checksum ledger is retired and recoverable from Git
+  history.
 
 ## Reproducibility data
 

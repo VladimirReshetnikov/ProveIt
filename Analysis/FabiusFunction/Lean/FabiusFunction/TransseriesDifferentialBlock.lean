@@ -204,4 +204,65 @@ theorem exists_block_primitive_resonant {F : Type*} [Field F] [CharZero F]
     d (aeval L (resonantAntiderivative p)) = t * aeval L p := by
   rw [derivation_block_zero d hdL, derivative_resonantAntiderivative]
 
+/-! ## Integer exponents: the Laurent form of the block law -/
+
+/-- `t⁻¹` differentiates to `1`: with `t = X⁻¹` this is `dX/dX = 1`. -/
+theorem derivation_val_inv {u : Aˣ} (hdt : d (u : A) = -(u : A) ^ 2) :
+    d ((u⁻¹ : Aˣ) : A) = 1 := by
+  have h : ((u⁻¹ : Aˣ) : A) * (u : A) = 1 := u.inv_mul
+  rw [d.leibniz_of_mul_eq_one h, hdt]
+  simp only [smul_eq_mul, mul_neg, neg_mul, neg_neg]
+  rw [← mul_pow, u.inv_mul, one_pow]
+
+/-- Powers of `t⁻¹`: `d ((t⁻¹)^m) = m·(t⁻¹)^(m-1)`, the ordinary power
+rule for the variable `X = t⁻¹`. -/
+theorem derivation_pow_inv {u : Aˣ} (hdt : d (u : A) = -(u : A) ^ 2)
+    (m : ℕ) :
+    d (((u⁻¹ : Aˣ) : A) ^ m) = (m : A) * ((u⁻¹ : Aˣ) : A) ^ (m - 1) := by
+  rw [d.leibniz_pow, derivation_val_inv d hdt]
+  simp [nsmul_eq_mul]
+
+/-- `d (tⁿ) = -n·t^(n+1)` for **integer** `n`, when `t` is a unit. -/
+theorem derivation_zpow_t {u : Aˣ} (hdt : d (u : A) = -(u : A) ^ 2)
+    (n : ℤ) :
+    d ((u ^ n : Aˣ) : A) = -(n : A) * ((u ^ (n + 1) : Aˣ) : A) := by
+  rcases le_or_gt 0 n with hn | hn
+  · obtain ⟨m, rfl⟩ := Int.eq_ofNat_of_zero_le hn
+    have h1 : ((u ^ (m : ℤ) : Aˣ) : A) = (u : A) ^ m := by
+      rw [zpow_natCast, Units.val_pow_eq_pow_val]
+    have h2 : ((u ^ ((m : ℤ) + 1) : Aˣ) : A) = (u : A) ^ (m + 1) := by
+      rw [show ((m : ℤ) + 1) = ((m + 1 : ℕ) : ℤ) by push_cast; ring,
+        zpow_natCast, Units.val_pow_eq_pow_val]
+    rw [h1, h2, derivation_pow_t d hdt m]
+    push_cast
+    ring
+  · obtain ⟨m, rfl⟩ : ∃ m : ℕ, n = -((m : ℤ) + 1) :=
+      ⟨(-n - 1).toNat, by omega⟩
+    have h1 : ((u ^ (-((m : ℤ) + 1)) : Aˣ) : A) = ((u⁻¹ : Aˣ) : A) ^ (m + 1) := by
+      rw [show (-((m : ℤ) + 1)) = -((m + 1 : ℕ) : ℤ) by push_cast; ring,
+        zpow_neg, zpow_natCast, ← inv_pow, Units.val_pow_eq_pow_val]
+    have h2 : ((u ^ (-((m : ℤ) + 1) + 1) : Aˣ) : A) = ((u⁻¹ : Aˣ) : A) ^ m := by
+      rw [show (-((m : ℤ) + 1) + 1) = -((m : ℕ) : ℤ) by ring,
+        zpow_neg, zpow_natCast, ← inv_pow, Units.val_pow_eq_pow_val]
+    rw [h1, h2, derivation_pow_inv d hdt (m + 1), Nat.add_sub_cancel]
+    push_cast
+    ring
+
+/-- **The block law with integer exponents** (`plt:eq:mot-block-derivative`):
+for `n ∈ ℤ` and `p ∈ K[L]`,
+
+`d (tⁿ·p(L)) = t^(n+1)·(p'(L) - n·p(L))`. -/
+theorem derivation_block_zpow {u : Aˣ} (hdt : d (u : A) = -(u : A) ^ 2)
+    (hdL : d L = (u : A)) (n : ℤ) (p : K[X]) :
+    d (((u ^ n : Aˣ) : A) * aeval L p) =
+      ((u ^ (n + 1) : Aˣ) : A) * aeval L (blockOperator (n : K) p) := by
+  have hchain : d (aeval L p) = aeval L (derivative p) • d L :=
+    d.comp_aeval_eq L p
+  have e1 : ((u ^ (n + 1) : Aˣ) : A) = ((u ^ n : Aˣ) : A) * (u : A) := by
+    rw [zpow_add_one, Units.val_mul]
+  rw [d.leibniz, hchain, hdL, derivation_zpow_t d hdt n, blockOperator,
+    map_sub, map_mul, aeval_C, map_intCast, e1]
+  simp only [smul_eq_mul]
+  ring
+
 end Fabius

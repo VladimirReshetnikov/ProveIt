@@ -2,6 +2,20 @@
 
 Everything in this group is now one document.
 
+The live Lean inventory after the current integration is 960 modules and
+11,966 public declarations; 944/11,806 is the preceding historical checkpoint.
+The flatness module now includes both its vector-valued API and the scalar
+submodule, absorption, and inverse-power-scale interfaces (4 definitions and
+22 theorems). The differential-block module contains 12 theorems.
+
+The new Bell derivation-tower and ordinary-Bell normalization results have
+exact source counterparts. The Touchard definitions and coefficient identities
+are also formalized. The wider Wright-omega, differential-closure, harmonic,
+Cayley, derangement, Lambert-correction, core-inversion, remainder-transport,
+and staircase statements still have the qualifications recorded in the source;
+the least-term-index lemmas are supporting results, not a complete
+optimal-truncation theorem.
+
 > [`Transseries_And_Inversion/`](Transseries_And_Inversion/) —
 > *Transseries: the polynomial–logarithmic calculus, series reversal at
 > infinity, and the inversion of rapidly growing functions*. The current

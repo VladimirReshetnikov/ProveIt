@@ -7,12 +7,11 @@ series.
 ## Main files
 
 - `fabius_dyadic_chaos_frontiers.tex` - current live, self-contained LaTeX
-  source: 3,153 lines, 112,391 bytes, SHA-256
-  `34241042a005ea529219aca0761c121760a2574324bbb2300c365012cc1435c2`.
-- `fabius_dyadic_chaos_frontiers.pdf` - retained historical 40-page A4
-  report: 819,265 bytes, SHA-256
-  `0be7f0943e8d5fb795878aa0b3ecb21af25680155ad214ee2f1598de50e705ea`.
-  It is not a rendering of the current live source; a rebuild is pending.
+  source: 3,153 lines, 112,400 bytes, SHA-256
+  `38840c5baa85a9661af4b957e1a03560b42df8fb5dd0992e38a64f0561f2fd8e`.
+- `fabius_dyadic_chaos_frontiers.pdf` - synchronized 40-page A4 report:
+  821,194 bytes, SHA-256
+  `ccc5a898be59c7e14c406248dd3ad377e5601e475aea8c6fffae483f49535471`.
 - `LEAN_CROSSWALK.md` - label-complete map from all 41 nonconjectural paper
   results to the current Lean corpus, with exact remaining proof obligations.
 - `experiments.py` - deterministic, extensively commented exact and
@@ -187,21 +186,23 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error \
 ```
 
 Equivalently, run `pdflatex` repeatedly until the table of contents and cross
-references stabilize. The retained repository PDF was rebuilt from a clean
+references stabilize. The current repository PDF was rebuilt from the
+3,153-line, 112,400-byte source (SHA-256
+`38840c5baa85a9661af4b957e1a03560b42df8fb5dd0992e38a64f0561f2fd8e`)
+with exactly three explicit `pdflatex` passes.  The earlier clean
 3,153-line, 111,604-byte frozen source (SHA-256
 `3ff13b907faf7d2000ad6c218c8eb8f3468ed9750e32ceb2e31eb21cbe713fe5`)
-with exactly three explicit `pdflatex` passes using pdfTeX 1.40.22 (TeX Live
-2022/dev); `latexmk` was not used. The current live source has changed since
-that build and has not yet been rendered. Standard packages are used, with
+and its build remain a historical checkpoint.  `latexmk` was not used for the
+current build. Standard packages are used, with
 Libertinus fonts when available and Latin Modern as a fallback.
 
-## Retained PDF/build verification (historical)
+## Current PDF/build verification
 
 - All theorem, equation, figure, and bibliography references resolve.
-- The retained PDF has 40 A4 pages and is an unencrypted 819,265-byte PDF 1.5
-  artifact. Every font is embedded and no Type 3 font is
+- The synchronized PDF has 40 A4 pages and is an unencrypted 821,194-byte PDF
+  artifact. Every font is embedded and subset and no Type 3 font is
   present in either the report or its six vector figures.
-- The retained PDF was preflighted and all 40 pages were rendered at 120 dpi.
+- The synchronized PDF was preflighted and all 40 pages were rendered at 120 dpi.
   Four complete contact sheets were inspected, followed by full-resolution
   checks of pages 12--13, 22--23, and 36--38: the scaled and square-summable
   limits, the geometric/dyadic sharp coefficients, the conclusion, status
@@ -210,8 +211,8 @@ Libertinus fonts when available and Latin Modern as a fallback.
   were observed.
 - The exact five appended compiler-backed result headings audited during the
   PDF release are each extractable once when matched with their theorem number
-  and class. The retained report SHA-256 is
-  `0be7f0943e8d5fb795878aa0b3ecb21af25680155ad214ee2f1598de50e705ea`.
+  and class. The current report SHA-256 is
+  `ccc5a898be59c7e14c406248dd3ad377e5601e475aea8c6fffae483f49535471`.
 - The experiment was replayed in two fresh trees. The six archived figure pairs
   were regenerated from the recorded environment after selecting TrueType
   output for the vector plots; the numerical data were retained where the

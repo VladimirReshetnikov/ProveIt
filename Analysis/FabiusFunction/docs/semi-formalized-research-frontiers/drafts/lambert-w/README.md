@@ -20,9 +20,9 @@ Four independently written article packages arrived together on
 consolidated volume:
 
 Member: `Lambert_W_Guide/` — *The Lambert W Function: A Real-Variable
-Guide*.  Its retained PDF is a historical 66-page A4 artifact of 1,107,064
-bytes; the current source is newer, so no render parity is claimed.  The most
-complete of the four treatments forms the body; the unique layers of the
+Guide*.  Its earlier 66-page, 1,107,064-byte A4 artifact remains a historical
+receipt for its named source.  The most complete of the four treatments forms
+the body; the unique layers of the
 other three (the
 complete power-tower convergence theorem, inverse-Taylor corrections,
 the branch-exchange involution, the transcendence theorem, a
@@ -35,6 +35,36 @@ verification scripts are preserved under `Lambert_W_Guide/assets/`;
 the absorbed source documents themselves are deleted after merging,
 with SHA-256 provenance in the document itself (git history is the
 archive).
+
+The synchronized publication receipt (2026-09-04) records a historical
+checkpoint superseded by the current `b899` receipt below. The checkpoint
+comprised the
+4,876-line, 177,511-byte TeX source at SHA-256
+`d852a345685dd61335a89fc4fd1092680bdc597a5d1e6ac612883946ad0d99ea`.
+Exactly three successful serial halt-on-error passes from absent sidecars ran
+68 pages / 963,230 bytes → 70 / 986,865 → 70 / 986,865. The final 70-page,
+986,865-byte A4 PDF has SHA-256
+`0b8801649a6dd43d9f02dcfc2f60cac50b5c8f88bd782645bf97d30cc3dfbd41`.
+All 42 font rows are embedded and subset, five are Libertinus, and none is Type
+3. Final-log reference/rerun/error checks, PDF metadata (with intentionally
+empty author and keywords), every-page render and
+nonblank-text checks, and representative visuals passed; generated sidecars
+and forbidden checksum basenames both close at zero. The previous clipped-box
+warning is gone; the sole harmless 0.82504 pt overfull box is readable, and the
+final log has 133 underfull diagnostics.
+
+The current synchronized `b899` source has 4,940 lines and 181,577 bytes, with
+SHA-256
+`2e6a4782fc4e4b945869f5fb45b39cf94e8dc34296866edf26b4cdfe19b1898b`.
+Exactly three serial halt-on-error passes from absent sidecars ran 68 pages /
+968,083 bytes → 70 / 991,847 → 70 / 991,848. The final 70-page,
+991,848-byte PDF has SHA-256
+`f802d78299f8f6aca7d31b935a4884f9343389a7307decb04c18b5159c8a4f04`.
+All 70 pages are A4 at rotation zero, render successfully, and contain nonblank
+text. All 42 font rows are embedded and subset, five are Libertinus, and none
+is Type 3. Required log, reference/rerun, metadata (with intentionally blank
+author and keywords), visual, cleanup, and forbidden-basename gates passed. The
+only box diagnostic is one nonblocking 0.83 pt horizontal box.
 
 Six polynomial-logarithmic transseries packages were also filed here on
 2026-09-01, because Lambert W is their guiding example.  Their subject is the
@@ -89,7 +119,7 @@ statements connect exactly the two open domains.  At the input interval's
 left endpoint both branches equal `-1`, so the sum is exactly `-2` and the
 product exactly `1`, while the lower branch has no finite value at zero.
 
-The source-only companion `LambertWBranchGapBernoulli.lean` has the exhaustive
+The companion `LambertWBranchGapBernoulli.lean` has the exhaustive
 surface zero definitions and five theorems:
 `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
@@ -110,11 +140,12 @@ that explicit removable-origin convention.  The Guide's nearest-nonzero-zero
 argument is not the formal proof route.  With the three finite
 branch-coordinate modules, the four-module union is four definitions and 37
 theorems, 41 declarations.  The signed higher/convergent Puiseux program
-remains open.  The retained 66-page Guide PDF and the other affected retained
-PDFs predate this source-only overlay, so no render parity is claimed.  The
-exact-radius four-theorem checkpoint had census 903/11,447; the fifth theorem
-brought the next historical checkpoint to 903 modules and 11,448 public
-declarations.  The later sibling
+remains open. The current 70-page `b899` Guide PDF recorded above renders the
+source overlay and is synchronized; the preceding 70-page receipt remains
+historical. The exact-radius
+four-theorem checkpoint had census 903/11,447; the fifth theorem brought the
+next local checkpoint to 903 modules and 11,449 public declarations, including
+the retained unconditional public q-Pochhammer bridge.  The later sibling
 `FabiusFunction.GeometricUniformMomentPolynomial` module has one definition
 and eight theorems for its recursive polynomial, residual-product recurrence,
 degree bound, value at zero, and first four nonconstant cases.  That algebraic
@@ -210,7 +241,7 @@ degrees are outer degrees in `Polynomial (Polynomial ℚ)` and may drop after a
 fixed-inner-variable specialization; its finite-convolution moments are not a
 random-variable or analytic-MGF realization.
 
-In the merged chronology the sharp leaf gave the historical 921/11,575
+In the origin-side chronology the sharp leaf gave the historical 921/11,575
 checkpoint, `RvachevLaurentLeading` gave 922/11,582, and
 `FinitePrefixAppellRecovery` gave 923/11,610.  The RatFunc leaf gives the
 historical 924/11,615 checkpoint.  Two later theorems in
@@ -235,10 +266,10 @@ historical post-Prouhet checkpoint.  Subsequent source-only
 transseries/Catalan and Thue--Morse additions made 943/11,791 the next
 historical checkpoint.  The finalized one-definition/eleven-theorem
 `TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` make the live census 944/11,806.
-The q ledger is 182 Exact / 78 Partial / 14 None / 8 interface, the relevant Dyadic
-Gaussian--Thue--Morse chapter is 13/43/0/0, and the source concordance is 95
-Lean-proved / 383 human-proved frontier / 60 non-applicable / 9 conjectures.
+`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 960/11,966.
+The q ledger is 181 Exact / 79 Partial / 14 None / 8 interface, the relevant Dyadic
+Gaussian--Thue--Morse chapter is 13/43/0/0, and the source concordance is 103
+Lean-proved / 375 human-proved frontier / 60 non-applicable / 9 conjectures.
 All of these sibling source-only additions are likewise absent
 from the retained historical PDFs.
 

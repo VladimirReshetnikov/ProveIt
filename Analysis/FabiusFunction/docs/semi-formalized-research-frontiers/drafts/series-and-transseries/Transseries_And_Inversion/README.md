@@ -65,6 +65,13 @@ is about the passage from a function to a sequence.
 
 ## Lean crosswalk
 
+The current integrated inventory is 960 modules and 11,966 public declarations;
+944/11,806 is a historical checkpoint. `TransseriesFlat` now has 4 definitions
+and 22 theorems, preserving the general vector-valued API together with the
+scalar submodule, absorption, and power-scale interfaces. The integer block
+interfaces and the incoming inverse-power derivative lemmas together make
+`TransseriesDifferentialBlock` a 12-theorem module.
+
 The source records status claim by claim. Exact counterparts now cover the
 sequence-indexed asymptotic-scale/Poincaré definitions and uniqueness,
 flatness and the corrected invisible-function proposition, Dickson and Neumann
@@ -75,6 +82,18 @@ Catalan identity. The full unordered power–log scale lemma, the all-integer
 Laurent block-antiderivative lemma, and the complete quadratic-core lemma are
 Partial at the boundaries stated in the source. No status promotion should be
 inferred for the surrounding transseries constructions.
+
+The incoming `BellLeibnizTower` and `OrdinaryPartialBell` modules supply the
+abstract Faà di Bruno formula and the ordinary/exponential normalization
+bridge. `TouchardEulerOperator` supplies the Touchard definitions and
+coefficient identities. The backward-error, transfer, and Lambert-certificate
+claims depend on assembling their named existence and comparison theorems.
+The broader Wright-omega, differential-closure, harmonic-increment, Cayley,
+derangement, Lambert-correction and bracket, core-inversion,
+remainder-transport, and staircase claims remain Partial where their source
+clauses exceed the exposed APIs. `LeastTermIndex` supplies neighboring
+ratio and unimodality lemmas; it does not prove the full optimal-truncation
+claim.
 
 ## Structure
 

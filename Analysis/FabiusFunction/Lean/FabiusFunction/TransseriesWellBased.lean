@@ -1,6 +1,7 @@
 import Mathlib.Order.WellQuasiOrder
 import Mathlib.Data.Set.MulAntidiagonal
 import Mathlib.Data.Finset.MulAntidiagonal
+import Mathlib.Algebra.Group.Pointwise.Set.Basic
 
 /-!
 # Well-based supports: Dickson's lemma and Neumann's lemma
@@ -49,6 +50,8 @@ theorem dickson_isPWO_pi {ι : Type*} [Finite ι] (s : Set (ι → ℕ)) : s.IsP
 
 /-! ### Neumann's lemma -/
 
+section Multiplicative
+
 variable {α : Type*} [CommMonoid α] [PartialOrder α] [IsOrderedCancelMonoid α]
 
 /-- **`q0:lem:neumann`, first half.**  The product of two well-based sets is
@@ -66,5 +69,7 @@ Every element of `A + B` has only finitely many decompositions with one summand 
 theorem neumann_finite_factorizations {A B : Set α} (hA : A.IsPWO) (hB : B.IsPWO) (c : α) :
     (Set.mulAntidiagonal A B c).Finite :=
   Set.MulAntidiagonal.finite_of_isPWO hA hB c
+
+end Multiplicative
 
 end Fabius
