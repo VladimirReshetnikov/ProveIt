@@ -166,6 +166,7 @@ import FabiusFunction.GeometricUniformMomentPolynomial
 import FabiusFunction.GeometricUniformMomentPolynomialBridge
 import FabiusFunction.GeometricUniformComplexMomentProduct
 import FabiusFunction.GeometricUniformExteriorComplexMomentGerm
+import FabiusFunction.GeometricUniformMomentReciprocity
 import FabiusFunction.GeometricUniformMomentRatFunc
 import FabiusFunction.GeometricUniformMomentPolynomialDegree
 import FabiusFunction.Paper05442
@@ -990,13 +991,15 @@ recursive polynomial by the exact formula
 geometric-uniform MGF.  The range includes `q = 0` and negative contractions.
 
 The complex-product companion has the exhaustive public surface of one
-definition and two theorems: `geometricUniformComplexMomentProduct`,
-`hasProdLocallyUniformly_geometricUniformComplexMomentProduct`, and
+definition and three theorems: `geometricUniformComplexMomentProduct`,
+`hasProdLocallyUniformly_geometricUniformComplexMomentProduct`,
+`differentiable_geometricUniformComplexMomentProduct`, and
 `geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
 For every complex `q` with `‖q‖ < 1`, including `q = 0` and negative real
 contractions, it constructs the genuine product
 `A_q(z) = ∏' j, complexExpm1Div ((1-q) * q^j * z)`, proves locally uniform
-convergence on the whole complex plane, and proves
+convergence on the whole complex plane, proves that the resulting function is
+entire, and proves
 `P_n(q) = ((q;q)_n / (1-q)^n) * (iteratedDeriv n A_q 0 / n!)`.
 For nonreal `q`, this analytic product is not described as a probability MGF.
 
@@ -1010,6 +1013,21 @@ For every complex `q` with `1 < ‖q‖`, it defines the actual manuscript germ
 `P_n(q) = ((q;q)_n / (1-q)^n) * (iteratedDeriv n M_q 0 / n!)`.
 The inverse is total in Lean, but only the germ at zero is asserted analytic;
 no boundary or global pole statement is included.
+
+The reciprocity companion has the exhaustive public surface of one definition
+and five theorems: `geometricUniformComplexMomentGerm`,
+`geometricUniformComplexMomentGerm_of_norm_lt_one`,
+`geometricUniformComplexMomentGerm_of_one_lt_norm`,
+`analyticAt_geometricUniformComplexMomentGerm`,
+`geometricUniformComplexMomentGerm_reciprocity`, and
+`geometricUniformComplexMomentGerm_moment_convolution`.  It joins the inner
+product and exterior reciprocal into the canonical two-regime germ, proves
+analyticity at zero away from the unit circle, and for `q ≠ 0`, `‖q‖ ≠ 1`
+proves both `M_q(z) M_{q⁻¹}(-z) = 1` as an `EventuallyEq` germ identity and
+the exact all-order binomial convolution of its Taylor moments.  The local
+statement is essential: the inner product can have zeros away from the
+origin, and no unit-circle continuation is asserted.  This makes canonical
+label `thm:qF-reciprocity` Exact.
 
 The rational-coefficient companion has the exhaustive public surface of one
 definition and four theorems:
@@ -1047,7 +1065,7 @@ algebraic polynomial leaf.  This is a polynomial continuation statement, not
 an analytic continuation of either product through `‖q‖ = 1`.
 Label `thm:geometric-uniform-mgf` remains Partial: although coefficient
 rationality is now packaged, no public theorem packages the product's
-dilation/Mahler law, entireness and normalization, formal uniqueness, exact
+dilation/Mahler law, normalization, formal uniqueness, exact
 root-of-unity pole data, or its direct identification with the real MGF or
 characteristic function.  The
 leading/subleading coefficient and exact-degree claims of
@@ -1300,6 +1318,27 @@ natural `n,k` over every commutative semiring, including above-row zero
 extension.  Probability language describes the normalized coefficient
 generating polynomial; these declarations prove its algebraic moment
 identities and do not construct a separate random variable.
+
+`FinitePrefixThueMorseCollapse` is an exhaustive zero-definition/eight-theorem
+leaf.  Its public surface is `Appell.sum_thueMorseSign_mul_eval_poly`,
+`sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat`,
+`sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_of_lt`,
+`sum_thueMorseSign_mul_uncenteredDyadicPrefixAppellPolynomialRat_self`,
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat`,
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_succ`,
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_of_lt`, and
+`sum_thueMorseSign_mul_centeredDyadicPrefixAppellPolynomialRat_self`.  These
+are finite rational coefficient identities, total at depth zero; they add no
+analytic generating-function or convergence claim.
+
+`DyadicBoundaryIdentity` is an exhaustive zero-definition/two-theorem leaf.
+`prod_complexSinc_prefix_mul_rvachevFourierProduct` clears the finite sinc
+prefix against the rescaled product, and
+`rvachevFourierProduct_dyadic_boundary` composes that result with the
+integer-zero factorization to give the entire denominator-cleared boundary
+identity for every natural shell and complex displacement.  No nonvanishing
+hypothesis is needed until one passes to a quotient formulation.  These two
+upstream API descriptions do not change any source-coverage status.
 
 The probabilistic layer is closed at the level of measures.  The up-measure
 `μ_up = up·Leb` satisfies the refinement equation

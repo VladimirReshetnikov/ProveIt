@@ -13715,8 +13715,8 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 181 are \statusexact, 78 are
-\statuspartial, 15 are \statusnone, and 8 are \statusna.  The original
+Of the 282 labelled forward results, 182 are \statusexact, 78 are
+\statuspartial, 14 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
 add 31 human-proved but not Lean-formalized assertions and five labelled
@@ -14332,9 +14332,9 @@ Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 8 & 1 & 0 & 0\\
 Half-base arithmetic and Prouhet--Thue--Morse cancellation & 9 & 0 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 3 & 10 & 0 & 0\\
-Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 12 & 43 & 1 & 0\\
+Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 13 & 43 & 0 & 0\\
 \midrule
-\textbf{Forward total} & 181 & 78 & 15 & 8\\
+\textbf{Forward total} & 182 & 78 & 14 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -15856,6 +15856,7 @@ $n\ge1$, with the expectation represented by the full-line measure integral}\\[2
 \texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}mgf\_\allowbreak{}taylorCoefficient},
 \texttt{geometricUniformComplexMomentProduct},
 \texttt{hasProdLocallyUniformly\_\allowbreak{}geometricUniformComplexMomentProduct}, and
+\texttt{differentiable\_\allowbreak{}geometricUniformComplexMomentProduct}, and
 \texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}complexMomentProduct\_\allowbreak{}taylorCoefficient},
 \texttt{geometricUniformExteriorComplexMomentGerm},
 \texttt{analyticAt\_\allowbreak{}geometricUniformExteriorComplexMomentGerm}, and
@@ -15868,8 +15869,8 @@ $n\ge1$, with the expectation represented by the full-line measure integral}\\[2
 \texttt{GeometricUniformExteriorComplexMomentGerm};
 \texttt{GeometricUniformMomentRatFunc}; the half-base transform, the
 zero-definition/one-theorem real genuine-MGF coefficient bridge, and the
-one-definition/two-theorem complex strict-contraction product, local-uniformity,
-normalized Taylor-coefficient bridge, and the one-definition/two-theorem actual
+one-definition/three-theorem complex strict-contraction product, local-uniformity,
+entire-ness, normalized Taylor-coefficient bridge, and the one-definition/two-theorem actual
 exterior reciprocal germ with its analytic-at-zero coefficient bridge are
 present.  The common coefficient is now a named rational function with a global
 q-factorial clearing identity.  A public direct dilation/coefficient recurrence,
@@ -16016,7 +16017,22 @@ formalized, not the negative-base affine law}\\[2pt]
 \texttt{mgf\_id\_self\_similar}\newline
 {\footnotesize\texttt{GeometricCgfTails}; a refinement identity exists, but not
 the general normalized analytic-germ uniqueness theorem}\\[2pt]
-\Cref{thm:qF-reciprocity} & \statusnone & ---\\[2pt]
+\Cref{thm:qF-reciprocity} & \statusexact &
+\texttt{geometricUniformComplexMomentGerm},
+\texttt{geometricUniformComplexMomentGerm\_\allowbreak{}of\_\allowbreak{}norm\_\allowbreak{}lt\_\allowbreak{}one},
+\texttt{geometricUniformComplexMomentGerm\_\allowbreak{}of\_\allowbreak{}one\_\allowbreak{}lt\_\allowbreak{}norm},
+\texttt{analyticAt\_\allowbreak{}geometricUniformComplexMomentGerm},
+\texttt{geometricUniformComplexMomentGerm\_\allowbreak{}reciprocity}, and
+\texttt{geometricUniformComplexMomentGerm\_\allowbreak{}moment\_\allowbreak{}convolution}\newline
+{\footnotesize\texttt{GeometricUniformMomentReciprocity}; for every
+$q\ne0$ with $\lVert q\rVert\ne1$, the combined inner/exterior realization is
+analytic at the origin and satisfies $M_q(t)M_{q^{-1}}(-t)=1$ as an actual
+\texttt{EventuallyEq} germ identity.  Differentiating it gives the printed
+binomial convolution with $d_n(q)=M_q^{(n)}(0)$ and the exact Kronecker delta.
+The inner product's new public entire-ness theorem
+\texttt{differentiable\_\allowbreak{}geometricUniformComplexMomentProduct}
+supplies the analytic input.  The local formulation avoids total-inverse
+values at remote zeros and asserts no unit-circle continuation}\\[2pt]
 \Cref{thm:qF-spectral} & \statuspartial &
 \texttt{charFun\_\allowbreak{}geometricUniformDistribution\_\allowbreak{}eq\_\allowbreak{}phase\_\allowbreak{}mul\_\allowbreak{}geometricSincProduct},
 \texttt{charFun\_\allowbreak{}geometricUniformDistribution\_\allowbreak{}eq\_\allowbreak{}phase\_\allowbreak{}mul\_\allowbreak{}geometricReciprocalGamma},
@@ -16073,8 +16089,8 @@ polynomial family, its zeroth value and residual-product recurrence, the degree
 bound, the specialization at $q=0$, and the displayed cases $\mathcal P_1$
 through $\mathcal P_4$ are exact.  The zero-definition/one-theorem real bridge
 gives the genuine-MGF coefficient on $\AbsoluteValue q<1$; the subsequent
-one-definition/two-theorem complex leaf gives the actual product, its locally
-uniform convergence, and the same normalized Taylor coefficient for every
+one-definition/three-theorem complex leaf gives the actual product, its locally
+uniform convergence and entire-ness, and the same normalized Taylor coefficient for every
 complex strict contraction, including $q=0$.  Thus the inner complex
 product/coefficient claim is exact.  The exterior leaf constructs the actual
 reciprocal germ for $1<\lVert q\rVert$, proves analyticity at zero, and gives
@@ -16094,7 +16110,19 @@ source-concordance ledgers; the RatFunc leaf raised the census from the
 historical 923/11,610 checkpoint to the historical 924/11,615 checkpoint and
 moved this one row to Exact; the subsequent unrelated
 \texttt{RvachevLegendreBiorthogonality} leaf and two new
-\texttt{ProbabilityLaplaceMoments} theorems give the live 925/11,619 census}\\[2pt]
+\texttt{ProbabilityLaplaceMoments} theorems gave the historical 925/11,619
+checkpoint.  The subsequently merged mean-value and alias tranche gave
+926/11,628, and the later upstream $q$/Thue--Morse tranche raised the
+pre-reciprocity tree to 930/11,678.  The entire-ness plus reciprocity layer
+gave the historical 931-module/11,685-declaration checkpoint.  The subsequently
+merged \texttt{DyadicBoundaryIdentity} and
+\texttt{FinitePrefixThueMorseCollapse} leaves add two modules and ten public
+declarations, giving the historical dyadic/finite-prefix 933/11,695 census.
+The incoming union adds one module and fourteen public declarations: the new
+zero-definition/six-theorem \texttt{ProuhetBaseTwoBridge} module, one theorem
+added to \texttt{DyadicBoundaryIdentity}, and seven theorems added to
+\texttt{ThueMorseNewmanSelfSimilarity}.  This gives the live 934/11,709
+census}\\[2pt]
 \Cref{prop:qF-P-degree-sharp} & \statusexact &
 \texttt{coeff\_geometricUniformMomentPolynomial\_choose\_two},
 \texttt{coeff\_geometricUniformMomentPolynomial\_choose\_two\_sub\_one}, and
@@ -16105,8 +16133,14 @@ subleading coefficient has the displayed formula for $n\ge2$, and the
 parity-split degree is exact, including $n=0$ and $n=1$.  This is a purely
 algebraic polynomial theorem and adds no analytic or root-of-unity
 hypothesis.  Its zero-definition/three-theorem leaf raised the then-current
-corpus to the historical 921-module/11,575-declaration checkpoint; the live
-facade census is 925 modules and 11,619 public declarations}\\[2pt]
+corpus to the historical 921-module/11,575-declaration checkpoint; the
+dyadic/finite-prefix facade census of 933 modules and 11,695 public
+declarations is also historical.  The incoming union adds one module and
+fourteen public declarations: the new zero-definition/six-theorem
+\texttt{ProuhetBaseTwoBridge} module, one theorem added to
+\texttt{DyadicBoundaryIdentity}, and seven theorems added to
+\texttt{ThueMorseNewmanSelfSimilarity}.  The live facade census is 934 modules
+and 11,709 public declarations}\\[2pt]
 \Cref{cor:qF-halfbase-dictionary} & \statuspartial &
 \texttt{fabiusAtInverseTwoPow\_eq\_halfMoment},
 \texttt{halfQPochhammer\_eq\_mersenne\_div}\newline
