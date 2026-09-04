@@ -20,9 +20,28 @@ Four independently written article packages arrived together on
 consolidated volume:
 
 Member: `Lambert_W_Guide/` — *The Lambert W Function: A Real-Variable
-Guide*.  Its earlier 66-page, 1,107,064-byte A4 artifact remains a historical
-receipt for its named source.  The most complete of the four treatments forms
-the body; the unique layers of the
+Guide*. Its first-merge accepted receipt is root
+`4961L/183269B/83301b4c66660713a70974263b6f191ea01f9ed8f5ae228495f644887b616568`,
+two-file aggregate
+`5245L/195104B/25141b9ee818b20ddf8349d88ec4f2dc977ff0ab35ca34e62cd62da64c2cf06a`,
+passes `68/70/70`, PDF
+`70pp/966637B/6c150ff18889030345de3e1a8581d5ea0ac75789a9720c1d5164ed4e7ec4b7fb`,
+and final log
+`1574L/57800B/9f995a50e3ab25256083edee745a1889027787194e3b3c6d1f12f60bf687145c`.
+Every recorded gate passed for that source snapshot. Later d130 and incoming
+`b899` 70-page receipts also passed their recorded gates. All are historical
+after this merge changed the Guide source. The accepted merged-source render
+is in the [merge-28de4e51 receipt register](../MANIFEST.md#merge-28de4e51-publication-receipts).
+The d130 tuple remains in the historical campaign register below.
+
+At pre-upstream commit `581bf`, the source had 4,864 lines / 176,796 bytes /
+SHA-256
+`3f3552983a73db2dab94f3625d10d054b747ee03fc2758e257af86f6216deab5`;
+its 70-page / 958,713-byte PDF has SHA-256
+`24e8bf561283ffc5427297df6f656696a7e2538731e53d03d59e4268b50772fc`.
+The `2d434eec` 69-page receipt and the 66-page predecessor remain explicit
+history. The most complete of the four treatments forms the body; the unique
+layers of the
 other three (the
 complete power-tower convergence theorem, inverse-Taylor corrections,
 the branch-exchange involution, the transcendence theorem, a
@@ -53,7 +72,7 @@ and forbidden checksum basenames both close at zero. The previous clipped-box
 warning is gone; the sole harmless 0.82504 pt overfull box is readable, and the
 final log has 133 underfull diagnostics.
 
-The historical synchronized `69b447f7c` source has 4,940 lines and 181,577 bytes, with
+The historical synchronized `b899` source has 4,940 lines and 181,577 bytes, with
 SHA-256
 `2e6a4782fc4e4b945869f5fb45b39cf94e8dc34296866edf26b4cdfe19b1898b`.
 Exactly three serial halt-on-error passes from absent sidecars ran 68 pages /
@@ -140,13 +159,14 @@ that explicit removable-origin convention.  The Guide's nearest-nonzero-zero
 argument is not the formal proof route.  With the three finite
 branch-coordinate modules, the four-module union is four definitions and 37
 theorems, 41 declarations.  The signed higher/convergent Puiseux program
-remains open. The historical 70-page `69b447f7c` Guide PDF recorded above renders the
-source overlay and is synchronized; the preceding 70-page receipt remains
-historical. The exact-radius
-four-theorem checkpoint had census 903/11,447; the fifth theorem brought the
-next local checkpoint to 903 modules and 11,449 public declarations, including
-the retained unconditional public q-Pochhammer bridge.  The later sibling
-`FabiusFunction.GeometricUniformMomentPolynomial` module has one definition
+remains open. The exact `581bf`, `2d434eec`, first-merge, d130, and
+incoming `b899` Guide receipts remain explicit history for their frozen
+sources. The accepted merged-source render is recorded in the [merge-28de4e51
+receipt register](../MANIFEST.md#merge-28de4e51-publication-receipts).
+The exact-radius four-theorem checkpoint was 903/11,447, its fifth theorem made
+903/11,449, and subsequent checkpoints remain part of the chronology. The
+later sibling `FabiusFunction.GeometricUniformMomentPolynomial` module has one
+definition
 and eight theorems for its recursive polynomial, residual-product recurrence,
 degree bound, value at zero, and first four nonconstant cases.  That algebraic
 leaf produced the historical checkpoint 904 modules and 11,457 public

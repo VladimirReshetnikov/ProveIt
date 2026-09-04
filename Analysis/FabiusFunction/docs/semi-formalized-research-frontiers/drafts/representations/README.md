@@ -706,32 +706,24 @@ verification package lives under
 Absorbed directories deleted; provenance with SHA-256 remains in the volume's
 Appendix B, while the former absorbed-payload ledger is retired and recoverable
 from Git history.
-At the last synchronized publication checkpoint the volume had subsequently
-absorbed the six Lagrange-loop and four
-Legendre-closure reports described below, for thirteen predecessor packages in
-all. Its driver is 2,324 lines and 95,757 bytes (SHA-256
-`15f7c593895ed4a06b7f9d90c72d55078a193cd01f0818cb3b3cfa4f4d585a52`);
-the driver plus its three chapter sources total 5,279 lines and 202,019 bytes.
-Three serial halt-on-error passes from absent auxiliaries produced 59
-pages/1,030,964 bytes, 60 pages/1,056,607 bytes, and a final 60-page,
-1,056,613-byte PDF with SHA-256
-`0b7fc962bcb4509affc322571100cc4f27252b1ec113ca8116b05c59d23ffd35`.
-The final log, metadata, A4/rotation-zero, all-page render/text, and
-representative visual gates passed; all 27 font rows are embedded/subset, four
-are Libertinus, none is Type 3, and generated sidecars are absent. No checksum
-ledger is a live publication gate. The merged Up-synthesis driver and chapter
-sources later postdated that checkpoint, which remains historical. The current
-synchronized `b899` driver has 2,368 lines and 98,609 bytes (SHA-256
-`95d293e34559e910cca2df4547e6e181a8d26bc8e8cf61c4445cf12c57ed8e0e`);
-its four-file TeX closure has 5,434 lines and 211,270 bytes (digest
-`62aa76428089cd164705b1d31e038d4e48545681eedc01cb491e6a94f07b0e41`).
-Three passes ran 61 pages / 1,045,488 bytes → 62 / 1,071,179 → 62 /
-1,071,181. The final 62-page PDF has SHA-256
+The canonical source and its 113-row companion inventory preserve all migrated
+payloads and seven retired checksum-ledger rows without live destinations. The
+incoming 60- and 62-page and local 63-page publication receipts each passed
+their recorded gates for their named source snapshots. The local tuple is root
+`2385L/99806B/81f3ba09894aca8331ae33c77e2a56f78c107fa3b04072878cff8ad60e815b5a`,
+five-file aggregate
+`11bd62d880f5ba4c63d872fb0ba5d801d10ba2a2337ef5d098643383639086dd`,
+passes `61/63/63`, PDF
+`63pp/1077921B/0903f2920d21f0ea8182822c31338e0be268d4d77bc8ddb7a2ff861ba2a6aa5f`,
+and log
+`964L/38999B/52bd9d03864853f1ee31fa682fa96806345bb355582831c55fcc152c1acb2e7d`.
+The incoming `b899` tuple used a four-file / 5,434-line / 211,270-byte
+closure with digest
+`62aa76428089cd164705b1d31e038d4e48545681eedc01cb491e6a94f07b0e41`
+and a 62-page PDF with SHA-256
 `99c5d8256b983652755fe8e46ef015277e61b94941a4ca6c875bddaf0493b101`.
-All publication gates passed: all 62 pages are A4 at rotation zero and render
-with nonblank text; all 27 font rows are embedded/subset, four are Libertinus,
-none is Type 3; log, metadata, representative-visual, cleanup, and forbidden-
-basename checks are clean.
+The merged Up source is newer than every retained artifact, so all remain
+historical and a fresh synchronized render is pending.
 The focused-build `CompositeMeshSharpness.lean` module now certifies the
 natural-mesh universal slice of the sharp order statement: exactness for the
 whole polynomial space through degree `d` is equivalent to `d <= v_2(M)`, or
@@ -959,8 +951,10 @@ theorem, closes representation proposition `prop:lag-markov`. The larger
 identity `U B = I`, not a coefficient-space projector identity, and the
 negative-entry conclusion retains the source proposition's strictly positive
 row-overlap hypothesis. Neither source-only promotion is rendered by the
-retained historical Representation PDFs. The current inverse publication
-receipt is recorded separately in the inverse package. The
+retained historical Representation PDFs. The inverse package preserves its
+historical receipts and records its accepted current source/PDF receipt in the
+[authoritative receipt
+register](../MANIFEST.md#current-post-merge-publication-receipts). The
 source-only `FabiusFunction.RvachevAppellHasse` leaf contributes one definition
 and fourteen theorems. Its explicit finite Hasse-derivative, q-falling-power,
 and geometric decoder formulas combine with the existing synthesis theorems
@@ -1109,8 +1103,8 @@ parity, origin-value, and Fourier--Bessel theorem `thm:leg-Lambda` and the
 matrix-projector corollary remain unpromoted.
 
 These sibling modules are not rendered by the retained historical
-Representation PDFs. The current inverse publication receipt is governed by
-the inverse package. The immediately
+Representation PDFs. The inverse package governs its accepted current receipt
+and preserves its older checkpoints as history. The immediately
 preceding complex Bernoulli value-completion checkpoint was 903 modules and
 11,448 public declarations. The earlier
 ten-declaration increment was the
@@ -1144,9 +1138,11 @@ radius/boundary clause, Guide label `eq:pair-Bernoulli-general`, and the
 canonical-removable reading of `eq:bernoulli-gen` are Exact. Here
 `complexExpm1Div 0 = 1` and it equals `(exp z - 1) / z` away from zero; this
 does not assert the literal totalized quotient at zero or holomorphy of a named
-sum function. Higher or full Puiseux/logarithmic expansions remain open. This unrelated
-addition is not presented by the synchronized Representation volume or the
-retained inverse PDF; it remains a sibling-only documentation update here.
+sum function. Higher or full Puiseux/logarithmic expansions remain open. This
+unrelated addition is not rendered by the retained historical Representation
+PDFs. The inverse package keeps current parity; Lambert's retained receipts are
+historical after its merged source changed and a fresh Lambert render is
+pending.
 
 The focused-build `CompositeMeshSharpness.lean` module exports one public
 definition, `rvachevCombExactThrough`, and seven public theorems:

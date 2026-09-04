@@ -34,10 +34,9 @@ publication checkpoint.
 Upstream supplied a rebuilt PDF at its checkpoint. The merged source includes
 subsequent Stirling, Nörlund, Bell, and Cauchy-polynomial changes, so that
 retained PDF is historical and is not claimed to render the current source.
-Current render parity requires a new build unless the user extends the prior
-deferral to this merge. Standalone checksum files are retired; provenance is
-kept in Git and the source inventory, and the validator does not maintain or
-require file digests.
+Further PDF building is deferred at the user's request. Standalone checksum
+files are retired; provenance is kept in Git and the source inventory, and the
+validator does not maintain or require file digests.
 
 ## Additional exact correspondences retained in the merge
 
@@ -165,13 +164,31 @@ crosswalks, and corrects boundary cases and coefficient-ring assumptions.
 The brief [campaign status](Combinatorial_Coefficient_Calculus/FORMALIZATION_STATUS.md)
 records remaining obligations without duplicating the canonical claim register.
 
+## Formal-power recurrence (2026-09-04)
+
+`UnitSeriesPowerRecurrence` supplies three checked theorems. Over any
+commutative ring, the differential equation `A C' = α A' C` implies
+`n a₀ cₙ = Σ_{j=1}^n ((α+1)j−n) aⱼ cₙ₋ⱼ`, without assuming `a₀` is
+invertible. Over a commutative rational algebra with `a₀=1`, formal binomial
+substitution gives `C=A^α`, satisfies that differential equation, and yields
+the manuscript's triangular coefficient algorithm. Its proof and crosswalk
+now cover all three clauses of `alg:merged-exp-log-power` exactly.
+
+The proof uses the Euler derivative `z d/dz` to keep degree indices aligned,
+then separates the constant-coefficient term of the Cauchy product. The
+canonical source includes that complete argument, including the constant
+term and inductive uniqueness of the resulting coefficient sequence. This
+is formal algebra; no analytic branch choice or convergence claim is made.
+
+## Additional formal-series checkpoints (2026-09-04)
+
 `ExponentialRescaling` has passed a focused build. Its four public lemmas give
 the rescaling chain rule over every commutative semiring and exponential
 specializations over every commutative rational algebra. They replace the
 rational-only helpers in `NorlundDiagonal` without changing their names. The
 manuscript supplies full coefficient proofs and an exact crosswalk.
 
-The compiled `AbelPolynomialSeries` source constructs a solution over every
+The source-reviewed `AbelPolynomialSeries` module constructs a solution over every
 commutative rational algebra, derives coefficients for every solution, and
 proves the full EGF and binomial identity including degree zero. The new
 `BernoulliFormalLog` source derives the rational formal logarithm of the
@@ -198,13 +215,23 @@ The new `NorlundGeneralized` source constructs actual polynomials at every
 scalar order over a commutative rational algebra. Its source-reviewed API
 includes the full EGF, Appell derivative, translation, convolution, natural-order
 polynomial compatibility, explicit cumulants, and the complete Bell formula.
+The next source checkpoint adds the arbitrary-order finite-difference law in
+successor and all-degree forms, including zero and negative orders.
 `BernoulliFormalLog` now transports the logarithm and its coefficients along
 arbitrary coefficient ring homomorphisms and shares the kernel normalization
 lemma. These extensions have not yet compiled, so no corresponding coverage
-promotion is claimed. General-order finite differences, the literal
-multiplicity-vector expansion, and analytic convergence remain separate
-formalization obligations.
+promotion is claimed. The new `BellCompletePartitions` leaf shares the existing
+complete-Bell/weighted-partition dictionary to state the literal multiplicity
+sum, its normalized coefficient form, and its field-division form; it assumes
+nothing about the unused zeroth input. The two new Nörlund specializations
+reuse that generic formula. These seven new public theorems are source-reviewed
+and still await compilation. The coefficient-algebra diagonal transport and
+analytic convergence remain separate formalization obligations.
 
 The human exposition gives the normalized complex logarithm construction on its
 disk separately from the formal algebra, states the coefficient-base-change
 lemma with proof, and includes the degree-zero multiplicity convention.
+The generic Bell multiplicity lemma now carries the common complete human
+proof; the Nörlund section specializes it instead of repeating that argument.
+The source validator's fourteen regression tests pass, including the inherited
+advertised-register-total checks. These are structural checks, not Lean builds.

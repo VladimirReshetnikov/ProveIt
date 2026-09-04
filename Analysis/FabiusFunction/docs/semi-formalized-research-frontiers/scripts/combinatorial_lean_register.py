@@ -73,15 +73,58 @@ STATUS = {
    r"\lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib); the set-partition count, "
    r"which Mathlib leaves as a docstring claim, is \lean{Fabius.card_setPartitions} "
    r"(\lean{BellSetPartitions})"),
- 'prop:merged-abel': ('Lean',
+ 'prop:merged-abel': ('none',
    r"\lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_eval_add}, "
    r"\lean{Fabius.abelSeries_eq}, \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} "
-   r"(\lean{AbelPolynomialSeries}); the EGF identity is proved for every solution "
-   r"of $T=te^{-aT}$, not only the constructed one"),
+   r"(\lean{AbelPolynomialSeries}) state the EGF for every solution "
+   r"of $T=te^{-aT}$ over a commutative rational algebra, not only the constructed one. "
+   r"The polynomial definition needs only a commutative ring, but the current "
+   r"binomial-identity proof also assumes a rational algebra. Compiler validation is pending."),
  'thm:merged-frechet-faa': ('Lean',
-   r"Mathlib's \texttt{HasFTaylorSeriesUpToOn.comp} (FaaDiBruno.lean), indexed by "
-   r"\texttt{OrderedFinpartition} rather than unordered partitions; the regrouping "
-   r"into partial-Bell form is not formal"),
+   r"Mathlib's \lean{iteratedFDeriv_comp} (ContDiff/Comp.lean), unfolded with "
+   r"\lean{FormalMultilinearSeries.taylorComp} and "
+   r"\lean{FormalMultilinearSeries.compAlongOrderedFinpartition_apply}. "
+   r"The statement includes local $C^n$ hypotheses and explicitly uses "
+   r"\lean{OrderedFinpartition}'s increasing-maximum block order. "
+   r"No symmetry conversion is required; the separate partial-Bell regrouping remains open."),
+ 'thm:eulerian-irwin-hall': ('partial',
+   r"\lean{Fabius.cubeSliceCount_succ_sub} (\lean{EulerianPermutohedron}), the combinatorial "
+   r"slab count; the Fubini volume step is not formal"),
+ 'thm:permutohedron-h-polynomial': ('Lean',
+   r"\lean{Fabius.permutohedron_h_polynomial}, \lean{Fabius.permutohedron_h_vector} "
+   r"(\lean{EulerianPermutohedron}); the face numbers of the polytope are taken as input"),
+ 'thm:typeB-permutohedron-h-polynomial': ('Lean',
+   r"\lean{Fabius.sum_typeBEulerian_mul_X_pow_eq_sum_typeBFaceNumber} via the sign-free "
+   r"\lean{Fabius.typeB_newton} (\lean{EulerianPermutohedron})"),
+ 'thm:merged-inverse-derivative': ('partial',
+   r"formal-power-series form \lean{Fabius.InverseDerivative.eq_neg_mul_sum} and the explicit "
+   r"orders (\lean{InverseDerivativeRecursion}); the analytic iterated-derivative reading is not"),
+ 'thm:merged-inverse-derivative-operator': ('Lean',
+   r"\lean{Fabius.iteratedDeriv_eq_inverseDerivOp} (\lean{InverseDerivativeRecursion}), via the "
+   r"corpus autonomous-ODE iterated derivative"),
+ 'thm:fixed-point-stirling-moments': ('Lean',
+   r"\lean{Fabius.sum_card_fixedPointsFinset_pow} (\lean{StirlingIdentities}), division-free, "
+   r"for every finite type and every exponent; the expectation is a corollary"),
+ 'thm:first-double-sum': ('partial',
+   r"\lean{Fabius.firstDoubleSumInner_eq_stirlingSecond}, \lean{Fabius.firstDoubleSum_eq_crossSum} "
+   r"(\lean{StirlingIdentities}) are the theorem's own proof; the quoted input "
+   r"\eqref{eq:symmetric-cross1} (Schl\"omilch) is not formal; the diagonal instance "
+   r"\lean{Fabius.firstDoubleSum_diagonal} is unconditional"),
+ 'thm:reduced-stirling': ('partial',
+   r"polynomial core \lean{Fabius.descPochhammer_mul_sub_pow_eq_sum_stirlingSecond} and the "
+   r"characterization \lean{Fabius.reducedStirling_eq_stirlingSecond} (\lean{StirlingIdentities}); "
+   r"the graph-colouring inputs are not formal"),
+ 'thm:bell-determinants': ('Lean',
+   r"\lean{Fabius.det_bellMatrixH}, \lean{Fabius.det_bellMatrixK}, "
+   r"\lean{Fabius.det_bellMatrixK_invFactorial} (\lean{BellDeterminants}), by reindexing to the "
+   r"corpus Hessenberg matrix rather than by expansion"),
+ 'cor:det-traces-bell': ('partial',
+   r"\lean{Fabius.det_eq_bell_complete_traceWeight} (\lean{BellDeterminants}), assuming an "
+   r"eigenvalue family; tr(A^k) as a power sum of eigenvalues is not in Mathlib"),
+ 'thm:cycle-index-bell': ('partial',
+   r"equal-marks case \lean{Fabius.bell_complete_cycleWeightConst} and its instance "
+   r"\lean{Fabius.card_perm_eq_bell_complete} (\lean{BellDeterminants}); the cycle-removal "
+   r"bijection is not formal"),
  'thm:bell-poly-partitions': ('Lean',
    r"\lean{Fabius.partialBell_eq_sum_setPartitions} and "
    r"\lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), "
@@ -302,16 +345,50 @@ STATUS = {
    r"commutative ring (cancelling $x$ via \lean{Fabius.X_mul_cancel}) and "
    r"\cref{eq:stirling-n-to-n} is \lean{Fabius.pow_self_eq_sum_stirlingSecond_mul_descFactorial} "
    r"(\lean{StirlingShiftedEvaluations})"),
- 'thm:ordinary-composition': ('partial',
-   r"\cref{eq:ordinary-composition-bell} is \lean{Fabius.coeff_subst_eq_sum_ordPartialBell} "
-   r"(\lean{OrdinaryBellComposition}) over any commutative ring, with the ordinary Bell "
-   r"polynomials \lean{Fabius.ordPartialBell} defined by the composition recurrence "
-   r"$\OrdinaryPartialBellPolynomial n{k+1}=\sum_{i\ge1}b_i\OrdinaryPartialBellPolynomial{n-i}{k}$ "
-   r"(so \cref{eq:ordinary-composition-compositions} is the definition unrolled) and "
-   r"$[x^n]G^k=\OrdinaryPartialBellPolynomial nk(b)$ as \lean{Fabius.coeff_pow_eq_ordPartialBell}; "
-   r"the reciprocal formula \cref{eq:reciprocal-ordinary-bell} is "
-   r"\lean{Fabius.coeff_reciprocalSeries}; the multinomial form "
-   r"\cref{eq:ordinary-composition-multiplicities} is not formalized"),
+ 'thm:ordinary-composition': ('Lean',
+   r"\lean{Fabius.ordinaryMultiplicityProfiles} with "
+   r"\lean{Fabius.mem_ordinaryMultiplicityProfiles} encodes the part-count and total-weight "
+   r"constraints.  \cref{eq:ordinary-composition-multiplicities} is "
+   r"\lean{Fabius.ordPartialBell_eq_sum_multinomial} (\lean{OrdinaryBellMultinomial}) over "
+   r"every commutative semiring, using the finite-degree locality theorem "
+   r"\lean{Fabius.ordPartialBell_congr_of_le}; "
+   r"\cref{eq:ordinary-composition-compositions,eq:ordinary-composition-bell} are "
+   r"\lean{Fabius.ordPartialBell}, \lean{Fabius.coeff_pow_eq_ordPartialBell}, and "
+   r"\lean{Fabius.coeff_subst_eq_sum_ordPartialBell} (\lean{OrdinaryBellComposition}).  "
+   r"The all-index commutative-ring theorem \lean{Fabius.coeff_subst_eq_sum_multinomial} "
+   r"combines these forms; at $n=0$ its unique empty profile gives $c_0=a_0$.  "
+   r"The reciprocal specialization is \lean{Fabius.coeff_reciprocalSeries}"),
+ 'thm:merged-kirkman-cayley': ('partial',
+   r"The arithmetic formula is formalized in \lean{AssociahedronFaceNumbers}: "
+   r"\lean{Fabius.dissectionNumber_mul_of_three_le} is the denominator-free manuscript "
+   r"formula, with integrality and the literal quotient supplied by "
+   r"\lean{Fabius.succ_dvd_choose_mul_choose_of_three_le} and "
+   r"\lean{Fabius.dissectionNumber_eq_div}.  The quantity "
+   r"\lean{Fabius.dissectionNumber} is defined arithmetically; the polygon-dissection "
+   r"type, its cardinality theorem, and a cycle-lemma bijection are not formalized"),
+ 'cor:merged-associahedron-f': ('partial',
+   r"\lean{Fabius.associahedronFaceNumber_mul} gives the division-free face-array formula, "
+   r"and \lean{Fabius.associahedronFaceNumber_zero}, "
+   r"\lean{Fabius.two_mul_associahedronFaceNumber_facet}, and "
+   r"\lean{Fabius.associahedronFaceNumber_top} give the three boundary values "
+   r"(\lean{AssociahedronFaceNumbers}).  The array is defined from the dissection numbers; "
+   r"an associahedron face lattice and its noncrossing-diagonal correspondence are not "
+   r"formalized"),
+ 'thm:merged-associahedron-h': ('partial',
+   r"For the arithmetically defined Narayana row \lean{Fabius.associahedronH}, "
+   r"\lean{Fabius.associahedronH_mul} gives the closed form, "
+   r"\lean{Fabius.associahedronH_symm} gives palindromicity, and "
+   r"\lean{Fabius.sum_associahedronH}, \lean{Fabius.associahedronHPoly_one}, and "
+   r"\lean{Fabius.associahedronHPoly_one_eq_faceNumber_zero} give the Catalan sum and "
+   r"$h(1)=f_0$ (\lean{AssociahedronFaceNumbers}).  The geometric $h$-polynomial, face "
+   r"transform, and alternating Vandermonde derivation are not formalized"),
+ 'thm:merged-raney': ('partial',
+   r"\lean{Fabius.raneyT_eq} constructs the canonical solution, and "
+   r"\lean{Fabius.coeff_raneyT_pow} proves \cref{eq:merged-raney} for it for every "
+   r"$p,n\geq0$ and $r\geq1$, including degree zero; "
+   r"\lean{Fabius.natCast_mul_coeff_raneyT_pow} is the positive-degree denominator-free "
+   r"form (\lean{RaneyNumbers}).  The manuscript quantifies over every solution $T$; "
+   r"uniqueness or transfer from an arbitrary solution to the constructed one is not formalized"),
  'thm:eulerian-binomial-recurrence': ('Lean',
    r"\lean{Fabius.eulerianPolynomial_binomial_recurrence} in $R[t]$ and "
    r"\lean{Fabius.eulerian_binomial_recurrence_series} in $R[[t]]$ (\lean{EulerianEGF}), for "
@@ -524,7 +601,19 @@ STATUS = {
    r"\lean{Fabius.derivative_norlund_succ}, \cref{eq:merged-norlund-translation} is "
    r"\lean{Fabius.norlund_eval_add}, \cref{eq:merged-norlund-difference} is "
    r"\lean{Fabius.norlund_succ_eval_add_one_sub} and \cref{eq:merged-norlund-convolution} is "
-   r"\lean{Fabius.norlund_add_eval_add}; complex orders are not formalized."),
+   r"\lean{Fabius.norlund_add_eval_add}. The arbitrary-order source in "
+   r"\lean{NorlundGeneralized}, including "
+   r"\lean{Fabius.generalizedNorlund_succ_eval_add_one_sub} and "
+   r"\lean{Fabius.generalizedNorlund_eval_add_one_sub}, awaits compilation; "
+   r"the row is not promoted on source review alone."),
+ 'lem:merged-complete-bell-multiplicities': ('none',
+   r"The new \lean{BellCompletePartitions} source states "
+   r"\lean{Fabius.bell_complete_eq_sum_weightedPartitions}, "
+   r"\lean{Fabius.inv_factorial_smul_complete_eq_sum_weightedPartitions}, and "
+   r"\lean{Fabius.bell_complete_eq_sum_div_weightedPartitions}, including degree zero "
+   r"and unrestricted zeroth input. It shares the existing complete-Bell and "
+   r"weighted-partition bridges, but still awaits compilation. "
+   r"This is an integer-multiplicity sum, not a labelled-set partition theorem."),
  'thm:bell-poly-derivatives': ('partial',
    r"\cref{eq:partial-bell-derivative} is \lean{Fabius.pderiv_partialBell_succ} and "
    r"\cref{eq:complete-bell-derivative} is \lean{Fabius.pderiv_bellComplete} (module "
@@ -580,12 +669,14 @@ STATUS = {
    r"$(\Differential/\Differential t)^n(fg)=\sum_k\binom nk f^{(k)}g^{(n-k)}$ in $R[[t]]$ over any "
    r"commutative ring; the general $q$-factor multinomial form is not formalized."),
  'thm:merged-norlund-bell-diagonal': ('partial',
-   r"The three diagonal displays are formalized for natural orders (module "
+   r"The three diagonal displays are formalized for natural orders and rational evaluation points (module "
    r"\lean{NorlundDiagonal}): \cref{eq:merged-norlund-polynomial-diagonal} is "
    r"\lean{Fabius.norlund_diagonal}, \cref{eq:merged-norlund-number-diagonal} is "
    r"\lean{Fabius.norlund_eval_zero_diagonal} and \cref{eq:merged-norlund-diagonal} is "
-   r"\lean{Fabius.coeff_bernoulliPowerSeries_pow_succ}; the Bell-polynomial construction "
-   r"\cref{eq:merged-norlund-bell,eq:merged-norlund-bell-explicit} is not formalized."),
+   r"\lean{Fabius.coeff_bernoulliPowerSeries_pow_succ}. "
+   r"The arbitrary-order Bell and multiplicity constructions in "
+   r"\lean{NorlundGeneralized} and \lean{BellCompletePartitions} await compilation. "
+   r"Transport of the polynomial diagonal to an arbitrary coefficient algebra remains open."),
  'thm:merged-narayana': ('partial',
    r"Module \lean{NarayanaNumbers} defines $N(n,k)$ by the division-free determinant "
    r"$\binom nk\binom{n-1}{k-1}-\binom n{k-1}\binom{n-1}k$ over $\IntegerNumbers$ "
@@ -743,6 +834,49 @@ STATUS = {
    r"\lean{Fabius.coeff_mul_newtonReciprocalStep}, and actual truncation "
    r"\lean{Fabius.X_pow_dvd_one_sub_mul_trunc_newtonReciprocalStep}; all over an arbitrary "
    r"commutative ring and checked by focused compilation."),
+ # --- second half (from the Bernoulli/Euler/Genocchi chapter on), session funny-gates ---
+ 'prop:merged-loday-hyperplane': ('Lean',
+   r"\lean{Fabius.lodaySum_eq}, \lean{Fabius.two_mul_lodaySum_add_numLeaves}, "
+   r"\lean{Fabius.sum_lodayCoordinates_eq_of_mem_treesOfNumNodesEq} "
+   r"(\lean{BinaryTreeRotations}); the lowest-common-ancestor bijection is not formalized"),
+ 'thm:merged-tamari-order': ('Lean',
+   r"\lean{Fabius.TamariRotate}, \lean{Fabius.tamariPotential_lt_of_tamariRotate}, "
+   r"\lean{Fabius.reflTransGen_tamariRotate_antisymm}, \lean{Fabius.instPartialOrderTamari} "
+   r"(\lean{BinaryTreeRotations})"),
+ 'thm:merged-pochhammer': ('partial',
+   r"\lean{Fabius.ascPochhammer_eval_add_index}, \lean{Fabius.descPochhammer_eval_add_index}, "
+   r"\lean{Fabius.ascPochhammer_eval_eq_Gamma_div}, "
+   r"\lean{Fabius.Gamma_add_natCast_eq_ascPochhammer_mul} (\lean{PochhammerFalling}); "
+   r"the binomial series is not formalized in Pochhammer form"),
+ 'thm:merged-pochhammer-derivatives': ('partial',
+   r"$m=1$: \lean{Fabius.derivative_ascPochhammer}, \lean{Fabius.derivative_ascPochhammer_eval}, "
+   r"\lean{Fabius.hasDerivAt_ascPochhammer_eval} (\lean{PochhammerFalling})"),
+ 'cor:merged-reciprocal-pochhammer': ('partial',
+   r"$m=1$: \lean{Fabius.hasDerivAt_inv_ascPochhammer_eval} (\lean{PochhammerFalling})"),
+ 'prop:merged-beta-integral': ('Lean',
+   r"\lean{Fabius.integral_cpow_mul_one_sub_natPow}, "
+   r"\lean{Fabius.betaIntegral_eq_factorial_div_ascPochhammer} (\lean{PochhammerFalling}), "
+   r"on Mathlib's \lean{Complex.betaIntegral_eval_nat_add_one_right}"),
+ 'thm:merged-catalan-bijection': ('partial',
+   r"Mathlib's \lean{DyckWord.equivTreesOfNumNodesEq} and "
+   r"\lean{card_dyckWord_semilength_eq_catalan}; parenthesizations not a separate type"),
+ 'thm:merged-periodic-bernoulli-fourier': ('partial',
+   r"$n\ge2$: Mathlib's \lean{fourierCoeff_bernoulli_eq}, \lean{summable_bernoulli_fourier}, "
+   r"\lean{hasSum_one_div_nat_pow_mul_cos}, \lean{hasSum_one_div_nat_pow_mul_sin}, "
+   r"\lean{hasSum_zeta_nat}; the $n=1$ clauses are not formalized"),
+ 'thm:merged-euler-gamma-limit': ('partial',
+   r"Euler's limit is Mathlib's \lean{Complex.GammaSeq_tendsto_Gamma} (pointwise); "
+   r"the Weierstrass product is not formalized"),
+ 'cor:merged-harmonic-expansion': ('partial',
+   r"leading order: Mathlib's \lean{Real.tendsto_harmonic_sub_log}; the Bernoulli tail "
+   r"needs Euler--Maclaurin, not formalized"),
+ 'prop:merged-modified-bernoulli': ('partial',
+   r"\lean{Fabius.sinhDivLogCoefficient_eq_bernoulli_formula} (\lean{SinhDivBernoulliLog}) "
+   r"at unit scale; the rescaling to $\beta^{\sharp}$ is not recorded"),
+ 'prop:merged-recurrence-uniqueness': ('Lean',
+   r"\lean{Fabius.eq_of_row_recurrence} (\lean{IdentityCertificates}), arrays with equal "
+   r"row 0, equal boundary values and equal row step; one-index ancestor "
+   r"\lean{Fabius.eq_of_recurrence} (\lean{TelescopingCertificate})"),
 }
 
 # A dict literal keeps the LAST of two equal keys and reports nothing, so a

@@ -183,6 +183,25 @@ the field-level convergence module. No PDF was rebuilt for these corrections;
 the `b899` receipt does not assert parity with the current source. PDF
 regeneration for this merge is deferred by user approval.
 
+The local first-merge receipt is also retained as history: master
+`16812L/840316B/64dc18dedbd1966624162b64129128b24b51ca88d8a9e496c661cc1a46a24ba6`,
+15-file aggregate
+`26593L/1198416B/762e6d6ca441de51db9679f95d6a01d8353e8044639f99803734719b8a65a5f8`,
+passes `393/401/401`, PDF
+`401pp/2500131B/fd54459baf10845b5a89cc8b204f59ea33a0665b434ad270e738884072a1e6e1`,
+and log
+`1230L/44401B/37dca6371ea8bf9285e5f104d550bd584a290f4aa92fcf5679b028c9dfd3079d`.
+The later d130 campaign receipt is root
+`16865L/844086B/a404fd907bc8d5e4082f376d64be130f774b252d65c4b6746378cbca9cf17e99`,
+15-file aggregate
+`26646L/1202186B/8045ec45c0cd220dc4a328828d5498b9fb9969eb0fb0332c3acf157dfd240297`,
+passes `394/402/402` with clean index runs, PDF
+`402pp/2503677B/766028619c18c75009b8b738a5315f2167a2deeeb72ca156269762f0709a09af`,
+and log
+`1237L/44690B/afbccf3cd62e78b38c93e1a3dc468e3e97fa81ef76d15c5b93940cb1d2211d65`.
+Both passed their recorded gates. The merged q-series source is newer than
+every retained receipt, so a fresh synchronized render is pending.
+
 The source at that historical checkpoint includes exhaustive crosswalks for
 `QPochhammerEntire`
 (zero definitions
@@ -266,8 +285,8 @@ declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`; it does not change this
-monograph's forward-status inventory or make its retained PDF current.
-The other three new declarations are the explicit second-derivative,
+monograph's forward-status inventory or make a retained PDF current.
+The other three declarations are the explicit second-derivative,
 division-free raw-second-moment, and division-free variance-numerator theorems
 in `GaussianBinomialCumulants`; they strengthen the already-Exact
 `thm:qbinom-moments` row without changing its disposition.
@@ -447,8 +466,9 @@ when `k ≤ n`. The second is exactly
 `[2m,m]_q ~ q^(m*m) (q⁻¹;q⁻¹)_∞⁻¹`. Together with
 `gaussianBinomial_inv`, whose explicit hypotheses are `q ≠ 0` and `k ≤ n`,
 these declarations make `cor:qgreaterone` Exact. No shifted-central or wider
-nome-domain statement is claimed. The current 401-page PDF renders these
-q-series leaves. The preceding Lambert tranche belongs to a separate
+nome-domain statement is claimed. Every retained q-series PDF is
+historical after the merged source changes; a fresh synchronized render is
+pending. The preceding Lambert tranche belongs to a separate
 publication and is not a q-series source/PDF-parity claim.
 
 `GeometricResidualMoments.lean` now has zero definitions and nine public
@@ -576,7 +596,18 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. The public
 `complexQPochhammerInf_eq_qPochhammerInfIn` bridge is unconditional for every
 complex parameter and nome; it is a definitional equality, not a convergence
-claim. In `QBinomialTheoremInfinite`,
+claim. The merged `QBinomialTheoremInfinite` surface has one definition and
+29 theorems, retaining the strengthened APIs and compatibility aliases. Its
+five analytic closure theorems are
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp`,
+`isBigO_finiteQPochhammerIn_pow_sub_one`,
+`tendsto_gaussianBinomial_add_atTop`,
+`isBigO_gaussianBinomial_sub_inv`, and
+`isBigO_gaussianBinomial_add_sub_inv`. They close both fixed-column limits and
+both geometric rates; the Gaussian rates use additive `IsBigO` errors,
+equivalent to the manuscript's multiplicative relative errors because
+`(q;q)_k` is fixed and nonzero when `‖q‖ < 1`. In
+`QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
 status ledger is 181 Exact, 79 Partial, 14 None, and 8 interface rows; the

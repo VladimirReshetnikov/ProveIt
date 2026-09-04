@@ -28,9 +28,10 @@ The package audit surfaces are:
 - [`ASSET_DISPOSITION.csv`](ASSET_DISPOSITION.csv): the disposition of all 88
   files in the two superseded source subgroups and the migration from the
   former 63-payload checkpoint to the current 55-file canonical asset tree;
-- [`SOURCE_CLOSURE.sha256`](SOURCE_CLOSURE.sha256): the historical 23-input
-  build-graph ledger retained from the pre-overlay checkpoint; it was
-  intentionally not regenerated and is not the current closure receipt;
+- [`SOURCE_CLOSURE.sha256`](SOURCE_CLOSURE.sha256): a purpose-specific
+  23-input source-only record maintained by its approved generator; its merged
+  digest belongs to that generated file, while older digests remain historical
+  provenance below;
 - [`PROVENANCE.md`](PROVENANCE.md): source hashes, arrival lineage, nested
   predecessors, and immutable recovery points.
 
@@ -42,9 +43,11 @@ python -B audit/build_source_closure.py --check
 python -B audit/build_asset_manifest.py --check
 ```
 
-The asset audit remains separate. The historical closure file is not promoted
-to current status by the `b899` publication build; that build's independently
-measured recursive TeX closure is recorded below without rewriting the file.
+The asset audit remains separate. The purpose-specific closure is regenerated
+for the merged 23 inputs by its approved generator and has no whole-package or
+PDF-parity role. Publication parity is recorded separately by the current
+source/PDF receipt in the [authoritative receipt
+register](../../MANIFEST.md#current-post-merge-publication-receipts).
 
 `theorem_concordance.csv` records the disposition of all 194 source-result
 environments while preserving the ten immutable source fields reproduced from
@@ -84,16 +87,13 @@ recursion clause, so that source proposition is now one of the 57 Lean-proved
 rows.  Its leastness is only for the fixed dyadic target; `1/n` is witness-only,
 and `d(0)=1` is a convention with no modulus asserted at zero.
 
-There is no package-wide checksum gate. The retained `SOURCE_CLOSURE.sha256`
-receipt and migrated-asset disposition have narrower historical roles and were
-not regenerated for `b899`.
-
-The former root and asset `SHA256SUMS` inventory workflows are retired and no
-longer generated. The repository ban applies exactly to basenames
-`SHA256SUMS` and `SHA256SUMS.*`; six alternately named historical ledger
-payloads were retired separately and are not regenerated. The purpose-specific
-`SOURCE_CLOSURE.sha256` remains a historical 23-input build-graph record, not a
-live whole-package or current-publication gate.
+There is no package-wide checksum gate. The purpose-specific
+`SOURCE_CLOSURE.sha256` and migrated-asset disposition have narrower source
+integrity and migration roles. The former root and asset `SHA256SUMS`
+workflows are retired and no longer generated; the repository ban applies
+exactly to basenames `SHA256SUMS` and `SHA256SUMS.*`. Historical closure
+digests remain provenance only, while the approved generator owns the current
+23-input record.
 
 The result and asset extractors are pinned by
 [`audit/SOURCE_REVISION`](audit/SOURCE_REVISION) to
@@ -191,37 +191,38 @@ from the immutable pre-retirement revision. Thus the historical subgroup
 contains no live theorem, proof, or reproducibility payload that is absent or
 unaccounted for here.
 
-## Current source and synchronized publication artifact
+## Publication receipt chronology
 
-The current `b899` source and publication receipts are:
+The following tuple was accepted for the first-merge source snapshot:
 
 - `inverse_fabius_theory.tex`: 293 lines, 11,514 bytes, SHA-256
   `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`;
-- its independently measured recursive TeX closure has 17 files, 10,682 lines,
-  431,748 bytes, and digest
-  `6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e`;
-- the synchronized `inverse_fabius_theory.pdf`: 137 A4 pages, 2,045,486 bytes,
-  SHA-256
-  `cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995`.
+- ordered 14-file TeX graph: 10,909 lines, 438,542 bytes, aggregate
+  `24bdab6491f5ca84fbb9e716f92c7923e8961b6acbc793d9aa5e0faa68852444`;
+- purpose-specific source-only closure digest
+  `e07cb51f4fe072cd79a014cc891cb8cede62880593d7659b17da9377a21099bc`;
+- passes 132/137/137;
+- 137-page / 2,045,463-byte PDF, SHA-256
+  `ca403c74e2b46923ce9ac1eda547ab1bcb5e71039b35c8ee394acdd2014c4f8e`;
+- 1,569-line / 64,081-byte log, SHA-256
+  `d4aa25579c958e11c59d914c74dfca331fc2bbccf7bba4715dcd18fa050e771f`.
 
-Exactly three serial halt-on-error passes from absent sidecars ran 132 pages /
-1,983,313 bytes → 137 / 2,045,485 → 137 / 2,045,486. All 137 pages are A4
-at rotation zero, render successfully, and contain nonblank text. All 31 font
-rows are embedded and subset, six are Libertinus, and none is Type 3. Required
-log, reference/rerun, metadata, visual, cleanup, and forbidden-basename gates
-passed. The only box diagnostics are two nonblocking horizontal boxes of 2.42
-and 2.45 pt.
+The incoming `b899` checkpoint used the same driver, a 17-file /
+10,682-line / 431,748-byte closure with digest
+`6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e`,
+and a 137-page / 2,045,486-byte PDF with SHA-256
+`cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995`.
+Both 137-page builds passed their recorded gates. The preceding 134-page /
+2,027,726-byte PDF, SHA-256
+`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`,
+and older closure digests remain explicit history.
 
-For history, the unregenerated 23-input `SOURCE_CLOSURE.sha256` file has
-SHA-256 `aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb`;
-it predates the exact-dyadic chapter and crosswalk overlay and is not the
-current closure. The prior 134-page, 2,027,726-byte PDF has SHA-256
-`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`;
-its historical passes ran 127 → 134 → 134 pages. `VALIDATION.md` keeps those
-historical records separate from the synchronized receipt above. Package
-checksum manifests are retired repository-wide; `SOURCE_CLOSURE.sha256` and
-`ASSET_DISPOSITION.csv` retain scoped provenance without acting as live
-whole-package checksum gates.
+The accepted current inverse source/PDF tuple is recorded in the
+[authoritative receipt
+register](../../MANIFEST.md#current-post-merge-publication-receipts).
+Package checksum manifests are retired repository-wide;
+`SOURCE_CLOSURE.sha256` and `ASSET_DISPOSITION.csv` retain scoped evidence
+without acting as whole-package checksum gates.
 
 The mathematical consolidation and provenance gate are complete.  The five
 source packages and their retained renderings are historical inputs represented

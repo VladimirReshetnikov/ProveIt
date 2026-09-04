@@ -69,7 +69,8 @@ The earlier 174-page PDF was a historical consolidation render. Upstream
 subsequently supplied a rebuilt PDF at its own checkpoint; that artifact is
 retained, but the merged Stirling, Nörlund, Bell, and Cauchy-polynomial source
 edits postdate it.
-No current render parity is claimed. Render and compiler evidence are separate:
+No current render parity is claimed, and further PDF building remains skipped
+in this work at the user's request. Render and compiler evidence are separate:
 PDF parity and adjacent proof environments do not establish Lean verification.
 Original arrival PDFs remain recoverable through the inventory's immutable
 Git locators.

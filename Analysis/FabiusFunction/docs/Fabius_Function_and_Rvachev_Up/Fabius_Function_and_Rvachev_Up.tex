@@ -199,10 +199,10 @@ an exact Lean theorem are kept in the companion volume under
 \end{abstract}
 
 \begin{boxedremark}\textbf{Artifact status (4 September 2026).}\space
-The authoritative live lexical audit contains exactly 985 facade-reachable
-source modules and 12,199 unique public declarations: 375 modules and 3,881
-declarations beyond the 610/8,318 activation checkpoint, and 336 modules and
-3,501 declarations beyond the 649/8,698 publication-union checkpoint.  The
+The authoritative live lexical audit contains exactly 986 facade-reachable
+source modules and 12,233 unique public declarations: 376 modules and 3,915
+declarations beyond the 610/8,318 activation checkpoint, and 337 modules and
+3,535 declarations beyond the 649/8,698 publication-union checkpoint.  The
 earlier 923/11,611 semantic-union census is historical; at that checkpoint the
 merge target contributed 11,610 declarations and the retained unconditional
 public \lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge in the 1+10
@@ -3393,7 +3393,7 @@ noncommutative theorems \lean{quantumPlane_mul_pow} and
 \lean{quantum_binomial}.
 
 The remaining three modules carry the longer analytic inventories.
-\path{QBinomialTheoremInfinite.lean} has one definition and twenty-seven
+\path{QBinomialTheoremInfinite.lean} has one definition and twenty-nine
 theorems; its public surface comprises \lean{gaussianMajorant},
 \lean{hasSum_of_tendsto_of_dominated},
 \lean{one_le_qPochhammerInfIn_neg},
@@ -3412,9 +3412,11 @@ theorems; its public surface comprises \lean{gaussianMajorant},
 \lean{norm_gaussianBinomial_le},
 \lean{tendsto_finiteQPochhammerIn_pow_atTop},
 \lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one},
+\lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp},
 \lean{isBigO_finiteQPochhammerIn_pow_sub_one},
 \lean{tendsto_gaussianBinomial_atTop},
 \lean{tendsto_gaussianBinomial_add_const_atTop},
+\lean{tendsto_gaussianBinomial_add_atTop},
 \lean{isBigO_gaussianBinomial_sub_inv},
 \lean{isBigO_gaussianBinomial_add_sub_inv},
 \lean{summable_pow_choose_two_mul_pow},
@@ -4465,6 +4467,10 @@ support supplied by \path{BackwardErrorExistence.lean},
 \path{RemainderTransport.lean}, and \path{StaircaseInversion.lean}.
 \path{LeastTermIndex.lean} is Neighboring: it proves the least-term mechanism,
 not the report's full optimal-truncation asymptotic.
+The present union has 983 modules and 12,192 public declarations, with zero
+module-header or declaration-comment gaps.  The q forward ledger is
+181 Exact / 79 Partial / 14 None / 8 N/A: the q-Lucas polynomial-congruence
+row remains Partial because Lean currently proves its root-evaluation form.
 The immediately preceding algebraic moment-polynomial checkpoint was
 904/11,457, and the complex Bernoulli value-completion checkpoint 903/11,448
 remains historical.  The merged chronology also records the scaled-geometric
@@ -14664,15 +14670,6 @@ Legendre-series/integral interchange or infinite expansion, root or quadrature t
 Christoffel reconstruction or Pad\'e approximation, and named values for the individual
 entries of the displayed low-order \(G_3\).
 
-\begin{boxedremark}\textbf{Source/PDF parity convention.}\space
-This source contains the exhaustive two-definition, twenty-eight-theorem closed-form
-inventory and the expanded formula-and-proof ledger below.  The external repository
-metadata certifies only its named historical source/PDF checkpoint; this merged source
-postdates that receipt, and a fresh uninterrupted three-pass Libertinus parity rebuild
-remains pending.  The receipt's page count and validation facts remain authoritative
-for that historical checkpoint.
-\end{boxedremark}
-
 For a formula-level audit of the preceding inventory, the core
 \path{LegendreGauntClosedForm.lean} has exactly two public
 definitions.  The first is \lean{legendreGauntAdmissible}; in mathematical notation,
@@ -14949,8 +14946,8 @@ already formal logarithm and exponential clauses.  The whole printed
 algorithm is formal over a commutative rational algebra; the first theorem is
 stronger and denominator-free over every commutative ring, including positive
 characteristic.  These are formal-series identities, not analytic branch
-claims.  The coefficient-calculus concordance now has 204 rows: 63 Lean,
-32 Partial, and 109 None.
+claims.  The coefficient-calculus concordance now has 207 rows: 65 Lean,
+35 Partial, and 107 None.
 
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.19\textwidth}
                          >{\raggedright\arraybackslash}p{0.39\textwidth}
@@ -14959,6 +14956,112 @@ claims.  The coefficient-calculus concordance now has 204 rows: 63 Lean,
 Module and size & Incoming-checkpoint public surface & Result boundary \\
 \midrule
 \endhead
+\path{OrdinaryBellComposition.lean} (bounded-congruence extension, +1) and
+\path{OrdinaryBellMultinomial.lean} (1+3) &
+\lean{Fabius.ordPartialBell_congr_of_le};
+\lean{Fabius.ordinaryMultiplicityProfiles},
+\lean{Fabius.mem_ordinaryMultiplicityProfiles},
+\lean{Fabius.ordPartialBell_eq_sum_multinomial},
+\lean{Fabius.coeff_subst_eq_sum_multinomial} &
+Theorem~\ref{thm:formal-ordinary-composition-multinomial} makes
+\nolinkurl{thm:ordinary-composition} \textbf{Exact}, including its degree-zero
+clause.  The Bell expansion is semiring-valued; the substitution wrapper is
+over a commutative ring.  No labelled-set-partition theorem is claimed. \\
+\path{ExponentialRescaling.lean} (0+4; three names relocated) &
+\lean{Fabius.derivative_rescale},
+\lean{Fabius.derivative_rescale_exp},
+\lean{Fabius.rescale_zero_exp},
+\lean{Fabius.rescale_exp_add_one} &
+Formal scalar rescaling commutes with differentiation over a commutative
+semiring.  The exponential specializations require a commutative rational
+algebra, giving the exact formal content of
+\nolinkurl{lem:merged-formal-rescaling}.  The last three declarations moved here from
+\path{NorlundDiagonal.lean}, so their relocation does not increase the global
+declaration count. \\
+\path{AbelPolynomialSeries.lean} (2+9) &
+\lean{Fabius.abelPolynomial},
+\lean{Fabius.abelPolynomial_zero},
+\lean{Fabius.abelPolynomial_succ},
+\lean{Fabius.abelPolynomial_succ_eval},
+\lean{Fabius.abelSeries},
+\lean{Fabius.abelSeries_eq},
+\lean{Fabius.hasSubst_abelSeries},
+\lean{Fabius.abel_eq_zero_and_one},
+\lean{Fabius.coeff_exp_subst_of_abel_eq},
+\lean{Fabius.exp_subst_eq_egfA_abelPolynomial},
+\lean{Fabius.abelPolynomial_eval_add} &
+The polynomial formulas hold over every commutative ring.  Over a commutative
+rational algebra, the EGF coefficient theorem applies to every solution of
+\(T=X\exp(-aT)\), and the binomial identity includes index zero; hence
+\nolinkurl{prop:merged-abel} is \textbf{Exact}. \\
+\path{BernoulliFormalLog.lean} (0+5) &
+\lean{Fabius.bernoulliPowerSeries_mul_massSeries_expm1Div},
+\lean{Fabius.logOf_bernoulliPowerSeries},
+\lean{Fabius.coeff_logOf_bernoulliPowerSeries},
+\lean{Fabius.coeff_one_logOf_bernoulliPowerSeries},
+\lean{Fabius.coeff_logOf_bernoulliPowerSeries_of_two_le} &
+The normalized formal Bernoulli kernel and its constructed reciprocal multiply
+to one, and its formal logarithm has the displayed all-index coefficients over
+\(\RationalNumbers\).  Degree one is separated because the two Bernoulli
+conventions differ there.  This closes
+\nolinkurl{eq:merged-log-bernoulli-kernel}, not the still-missing Bell-
+polynomial construction around it; no analytic logarithm is asserted. \\
+\path{RaneyNumbers.lean} (4+12) &
+\lean{Fabius.coeff_one_add_X_pow},
+\lean{Fabius.raneyPhi},
+\lean{Fabius.constantCoeff_raneyPhi},
+\lean{Fabius.raneyPsi},
+\lean{Fabius.raneyPhi_mul_raneyPsi},
+\lean{Fabius.raneyG},
+\lean{Fabius.raneyT},
+\lean{Fabius.raneyG_def},
+\lean{Fabius.hasSubst_raneyG},
+\lean{Fabius.constantCoeff_raneyG},
+\lean{Fabius.subst_one_add_X_pow_raneyG},
+\lean{Fabius.raneyT_eq},
+\lean{Fabius.constantCoeff_raneyT},
+\lean{Fabius.natCast_mul_coeff_raneyT_pow},
+\lean{Fabius.coeff_raneyT_pow},
+\lean{Fabius.coeff_raneyT} &
+The divided and denominator-cleared Raney formulas hold over
+\(\RationalNumbers\) for the canonically constructed \lean{Fabius.raneyT},
+including \(n=0\) and even \(p=0\).  There is no uniqueness theorem carrying
+the result to every solution of \(T=1+XT^p\), so
+\nolinkurl{thm:merged-raney} is \textbf{Partial}. \\
+\path{AssociahedronFaceNumbers.lean} (4+23) &
+\lean{Fabius.dissectionNumber},
+\lean{Fabius.dissectionNumber_mul},
+\lean{Fabius.succ_dvd_choose_mul_choose},
+\lean{Fabius.dissectionNumber_eq_div},
+\lean{Fabius.dissectionNumber_nonneg},
+\lean{Fabius.dissectionNumber_eq_zero_of_lt},
+\lean{Fabius.dissectionNumber_mul_of_three_le},
+\lean{Fabius.succ_dvd_choose_mul_choose_of_three_le},
+\lean{Fabius.dissectionNumber_zero_right},
+\lean{Fabius.dissectionNumber_one},
+\lean{Fabius.dissectionNumber_self};
+\lean{Fabius.associahedronFaceNumber},
+\lean{Fabius.associahedronFaceNumber_eq},
+\lean{Fabius.associahedronFaceNumber_mul},
+\lean{Fabius.associahedronFaceNumber_zero},
+\lean{Fabius.two_mul_associahedronFaceNumber_facet},
+\lean{Fabius.associahedronFaceNumber_top};
+\lean{Fabius.associahedronH},
+\lean{Fabius.associahedronH_eq},
+\lean{Fabius.associahedronH_mul},
+\lean{Fabius.associahedronH_symm},
+\lean{Fabius.associahedronH_zero},
+\lean{Fabius.associahedronH_top},
+\lean{Fabius.sum_associahedronH},
+\lean{Fabius.associahedronHPoly},
+\lean{Fabius.associahedronHPoly_one},
+\lean{Fabius.associahedronHPoly_one_eq_faceNumber_zero} &
+These declarations prove the determinant, quotient, divisibility, support,
+face-array, and Narayana-row arithmetic.  The arrays are definitions: no
+dissection type, associahedron face lattice, bijection, or face-to-\(h\)
+transform is formalized, so \nolinkurl{thm:merged-kirkman-cayley},
+\nolinkurl{cor:merged-associahedron-f}, and
+\nolinkurl{thm:merged-associahedron-h} are \textbf{Partial}. \\
 \path{UnitSeriesPowerRecurrence.lean} (0+3) &
 \lean{Fabius.coeff_recurrence_of_mul_derivative_eq},
 \lean{Fabius.mul_derivative_fallingSeries_subst_sub_one},
@@ -15622,7 +15725,7 @@ limit, Jacobi identities, and pentagonal identities add completeness, with
 \(z\ne0\) exactly for Jacobi.  The pentagonal identities include \(q=0\),
 and the real theta majorant assumes \(0\le r<1\) and \(0<s\) &
 \path{JacobiTripleProduct.lean}\\
-One definition, \lean{gaussianMajorant}, and exactly twenty-seven theorems:
+One definition, \lean{gaussianMajorant}, and exactly twenty-nine theorems:
 \lean{hasSum_of_tendsto_of_dominated},
 \lean{one_le_qPochhammerInfIn_neg},
 \lean{finiteQPochhammerIn_neg_le_qPochhammerInfIn},
@@ -15638,9 +15741,11 @@ One definition, \lean{gaussianMajorant}, and exactly twenty-seven theorems:
 \lean{gaussianBinomial_eq_div}, \lean{gaussianMajorant_nonneg},
 \lean{norm_gaussianBinomial_le},
 \lean{tendsto_finiteQPochhammerIn_pow_atTop},
+\lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp},
 \lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one},
 \lean{isBigO_finiteQPochhammerIn_pow_sub_one},
 \lean{tendsto_gaussianBinomial_atTop},
+\lean{tendsto_gaussianBinomial_add_atTop},
 \lean{tendsto_gaussianBinomial_add_const_atTop},
 \lean{isBigO_gaussianBinomial_sub_inv},
 \lean{isBigO_gaussianBinomial_add_sub_inv},

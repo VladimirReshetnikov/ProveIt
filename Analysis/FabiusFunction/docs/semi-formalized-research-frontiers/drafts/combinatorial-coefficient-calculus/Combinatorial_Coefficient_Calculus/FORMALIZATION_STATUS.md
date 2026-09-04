@@ -6,9 +6,9 @@ canonical claim register is the **Lean formalization register** section of
 Mathematical statements and proofs belong in the TeX/PDF pair. The register's
 status words are recorded correspondence claims, not a fresh compilation receipt.
 
-The merge of main at `28de4e51c` retains the nine compiled grid/CRT certificate
-theorems from `5a685136b`. Its regenerated register has 207 rows: 62 `Lean`,
-35 `partial`, and 110 `none`; the corpus census is 985 modules and 12,199 public
+The merge of main at `da90f69d1` retains the nine compiled grid/CRT certificate
+theorems from `5a685136b`. Its regenerated register has 207 rows: 65 `Lean`,
+35 `partial`, and 107 `none`; the corpus census is 986 modules and 12,233 public
 declarations. The pinned checkpoint counts and pending-build receipts below
 describe their historical source states, not a rebuild of this merged tree.
 
@@ -184,11 +184,12 @@ source has no further concrete blocker identified, but awaits compilation.
    inverses from the stated unit hypotheses; prove both array products and record
    their exact declarations. Until then distinguish the conditional inverse law
    from the full inverse construction in the register.
-3. **Combinatorial semantics.** Build cardinality or weighted-enumerator bridges
-   for set partitions, cycles, descents, and the recurrence-defined Bell and
-   Stirling arrays. Algebraic recurrences alone cannot certify a counting
-   interpretation. Use a shared finite-set decomposition API rather than proving
-   every interpretation independently.
+3. **Combinatorial semantics.** Reuse the incoming `BellSetPartitions`
+   weighted-set decomposition and Stirling block-count bridge. Remaining
+   obligations include prescribed block-size type counts, the literal partial
+   Bell monomial formula, cycles, and descents. Algebraic recurrences alone
+   cannot certify a counting interpretation; do not duplicate the completed
+   weighted Bell bridge while extending it.
 4. **Darboux analysis.** The corrected analytic-multiplier theorem explicitly
    handles polynomial exceptional exponents; the finite-smoothness subtraction
    theorem assumes a global decomposition and gives an explicit periodic boundary
@@ -197,10 +198,11 @@ source has no further concrete blocker identified, but awaits compilation.
    integration by parts still need actual Lean statements and proofs. No existing
    Darboux register row should be promoted merely because the human proof was
    repaired.
-5. **Analytic and formal differential calculus.** Formal power-series composition
-   and the two-factor formal Leibniz theorem are useful infrastructure, but do not
-   prove the analytic Faà di Bruno theorem, the general multinomial product rule,
-   or analytic inverse-derivative claims without explicit bridges.
+5. **Analytic and formal differential calculus.** The canonical ordered
+   iterated-Fréchet-derivative composition formula is now explicitly mapped to
+   Mathlib. Its partial-Bell tensor regrouping, the general multinomial product
+   rule, and analytic inverse-derivative claims still require separate bridges;
+   formal power-series identities alone do not discharge them.
 6. **Two-way exposition coverage.** Give every presently unlabelled theorem-like
    environment a stable claim identifier. Extend the existing register to cover
    mathematical prose and examples, and identify which public Lean support

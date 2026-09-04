@@ -21,6 +21,16 @@ The canonical frontier artifacts are:
 - [`semi-formalized-research-frontiers.tex`](semi-formalized-research-frontiers.tex)
 - [`semi-formalized-research-frontiers.pdf`](semi-formalized-research-frontiers.pdf)
 
+> **Historical source/PDF synchronization receipt.** The retained 257-page,
+> 2,438,299-byte A4 PDF
+> includes the 31 August 2026 Legendre Gaunt--Wigner-square closed-form overlay.
+> Its PDF (SHA-256
+> `3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980`)
+> source predates the later q-Pochhammer overlay and expanded ledger, so it is
+> a historical render and must not be cited as displaying the final source
+> union, including either series/transseries overlay, the historical
+> 952/11,884 and 967/12,001 checkpoints, or the live 986/12,233 census.
+
 > **Historical publication receipt (2026-09-03).** The most recent pre-`9135bd7e`
 > source is the 17,954-line, 813,297-byte TeX file with SHA-256
 > `bcd9eefce2ead08e2cbb283e091a859aa31f36c67416543e994e10e8f9db3075`.
@@ -78,14 +88,13 @@ The canonical frontier artifacts are:
 > files / 140,223 lines / 6,439,569 bytes, with direct aggregate digest
 > `ae8690ad8d160055cbae36eff96d858f87572d171e7aacf7540d67543998af21`.
 
-> **Publication status.**  The fixed-26 publication check—14 fresh
-> build cycles and 12 retained verified pairs—records the prior merge's
-> user-directed deferral in the
+> **Deferred publication status.**  The fixed-26 publication check—14 fresh
+> build cycles and 12 retained verified pairs—is recorded once in the
 > [fixed-26 publication checkpoint](drafts/MANIFEST.md#fixed-26-publication-checkpoint).
 > A row still marked pending makes no synchronization claim.  The exact older
-> receipts on this page remain historical evidence, and the fixed-26 table is
-> an inventory rather than a merged-current parity receipt.  Fresh regeneration
-> for the present merged source is in progress; parity requires final gates and receipts.
+> receipts on this page remain historical evidence; under the user-directed
+> deferral, the fixed-26 table is an inventory rather than a merged-current
+> parity receipt.
 
 The historical `69b447f7c` publication rebuild touched ten roots: the primary exposition, Lean
 walkthrough, canonical frontier, geometric-q synthesis, canonical q-series
@@ -120,6 +129,11 @@ have declaration-level crosswalks.
 The Lambert branch-coordinate surface is exhaustive.  Its newest analytic
 companion formalizes the Bernoulli-series identity, its canonical removable
 complex value, and its exact convergence radius from `Lambert_W_Guide/`:
+
+The exact d130 and earlier publication receipts remain historical in the
+[draft manifest](drafts/MANIFEST.md).  The accepted synchronized render of the
+merged canonical frontier is recorded in the [merge-28de4e51 receipt
+register](drafts/MANIFEST.md#merge-28de4e51-publication-receipts).
 `LambertWBranchPairing.lean` has 0 definitions + 7 theorems,
 `LambertWGapBijection.lean` has 4 + 16, and
 `LambertWBranchSymmetry.lean` has 0 + 9.  These are 36 current declarations,
@@ -309,14 +323,77 @@ dyadic/finite-prefix checkpoint 933/11,695. The incoming union adds one module
 and fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. That historical tranche reached
-934/11,709. The frozen merge target itself contains 957 modules and 11,920
-public declarations; retaining the unconditional public
-`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge gives the historical
-957/11,921 merge-union checkpoint.  The residual-existence certificate is
-included in the live semantic union recorded in the documentation audit linked
-above and pinned in `docs/doc_audit_baseline.json`, which records zero missing
-module headers and zero missing declaration comments.
+`ThueMorseNewmanSelfSimilarity.lean`. This gives the historical 934/11,709
+checkpoint. The local branch's subsequent transseries-algebra integration gives the
+historical 943/11,791 checkpoint. The exhaustive 1+11
+`TransseriesFlat.lean` leaf and three new integer-Laurent theorems in
+`TransseriesDifferentialBlock.lean` give the historical 944/11,806 census.
+
+Against that checkpoint, the local pre-merge source added exactly seventeen modules:
+`BackwardErrorExistence.lean` (1+6), `BellLeibnizTower.lean` (1+5),
+`CayleyTreeFunction.lean` (1+8), `DerangementNearestInteger.lean` (1+7),
+`LambertCorrectionEquation.lean` (2+9), `LambertShiftConcavity.lean` (0+5),
+`LeastTermIndex.lean` (1+6), `LinLogCoreInversion.lean` (4+18),
+`OrdinaryPartialBell.lean` (2+4), `PowerLogCoreInversion.lean` (3+6),
+`RemainderTransport.lean` (0+3), `StaircaseInversion.lean` (0+7),
+`StirlingCompleteHomogeneous.lean` (0+8),
+`TouchardEulerOperator.lean` (2+8),
+`TransseriesDifferentialClosure.lean` (2+9),
+`TransseriesHarmonicIncrement.lean` (0+2), and `WrightOmega.lean` (1+12).
+They total 21 definitions and 123 theorems. Four existing surfaces add the
+other 24 declarations: `TransseriesFlat.lean` grows by 3+11 to 4+22,
+`TransseriesDifferentialBlock.lean` gains four theorems to 0+12,
+`QBinomialTheoremInfinite.lean` reaches its historical 1+27 checkpoint, and
+`RvachevPochhammerFactorization.lean` retains one additional public bridge.
+The modified `LaplaceMomentBoundsSharp.lean` is excluded from the new-module
+count. Thus the local pre-merge census was 961/11,974, with both documentation-gap counts
+zero.
+
+On the incoming branch, nine series/transseries modules carried 72 explicit
+public declarations; two further Neumann names generated by `to_additive`
+were outside the lexical count. Six concurrent declarations gave the
+historical 943/11,787 checkpoint. Nine further modules with 90 declarations
+and four integer-exponent theorems gave 952/11,881; two written OrderDual
+Neumann wrappers and the real-analytic Wright omega theorem then gave the
+incoming historical checkpoint 952/11,884. These branch inventories overlap
+and are not additive.
+
+The preceding local merge audit was **970 facade-reachable modules and 12,056
+explicit public declarations**, with zero missing module headers, missing
+declaration comments, or duplicate public names. Relative to the local
+961/11,974 checkpoint, the nine new modules are `CayleyKernel.lean`,
+`CayleyLocalCoordinate.lean`, `DivisorTransform.lean`,
+`ExpSeriesRecurrence.lean`, `FabiusEndpointTwoTerm.lean`,
+`StirlingSeriesCoefficients.lean`, `TransseriesBlockClasses.lean`,
+`TransseriesMonomialUniqueness.lean`, and `WrightOmegaTwoOrders.lean`.
+At that checkpoint they contributed eight definitions and 60 theorems;
+existing-module changes contributed a net 14 declarations. The retained Stirling complete-homogeneous
+leaf still has eight theorems. The later incoming branch recorded 967/12,001 after fifteen modules and
+117 declarations, then 969/12,048 after two modules and 47 declarations;
+the three-theorem power-recurrence leaf gave its historical 970/12,051
+checkpoint. These counts overlap the local inventories and are not additive.
+
+The preceding merged audit was **977 modules and 12,133 explicit public
+declarations**, with zero documentation gaps. Relative to 970/12,056, seven
+new leaves contribute 80 declarations while three existing declarations move
+from `NorlundDiagonal.lean` to `ExponentialRescaling.lean`, a net increase
+of 77. The eight-theorem Stirling leaf is retained.
+The two certificate leaves added nine public theorems at the historical
+979/12,142 checkpoint. Six further leaves and extensions to existing modules
+then added 57 declarations. The incoming BellSetPartitions module adds 34
+more, giving the current merged inventory of 986/12,233. No new aggregate-build
+or PDF-parity claim is made.
+
+The claim crosswalk remains conservative. The abstract Faà di Bruno result,
+ordinary Bell normalization, and Touchard definition and displayed
+Euler-operator equation are **Exact**. The real basic Wright omega row
+`plt:prop:mot-omega-basic` is also **Exact**, including real analyticity,
+without asserting complex holomorphy. The broader Wright omega claims,
+differential closure,
+harmonic increments, Cayley, derangement, Lambert correction and its bracket
+bounds, linear-logarithmic inversion, power-logarithmic inversion, remainder
+transport, and staircase inversion remain **Partial**; the least-term-index
+row is **Neighboring**.
 
 The existing `FabiusFunction.ProbabilityLaplaceMoments` module then adds
 exactly two public theorems:
@@ -352,7 +429,310 @@ missing declaration comments.
 The retained frontier, primary, walkthrough, geometric-q, and representation
 PDFs predate these source-only overlays and claim no render parity.
 
-The preceding source-only addition is
+The first overlay exhausts the public surfaces of nine modules that crosswalk
+the canonical `Transseries_And_Inversion` volume. The incoming overlay adds
+nine more modules (90 explicit public declarations) and four theorems to
+`TransseriesDifferentialBlock.lean`. Thus 943/11,787 is a historical
+pre-incoming checkpoint, while 952/11,881 is the historical post-incoming
+checkpoint. The two written OrderDual Neumann wrappers and the real-analytic
+Wright omega theorem gave the incoming historical 952/11,884/0
+modules/declarations/missing-comments checkpoint. The live merged census is
+986/12,233/0. The following list records the incoming module surfaces at that
+historical checkpoint, not the larger merged surfaces inventoried above.
+The retained PDFs predate the incoming source-only overlay and claim no
+render parity.
+
+- `UnitSeriesPowerRecurrence.lean` is 0+3:
+  `Fabius.coeff_recurrence_of_mul_derivative_eq`,
+  `Fabius.mul_derivative_fallingSeries_subst_sub_one`, and
+  `Fabius.coeff_fallingSeries_subst_sub_one_recurrence`. From
+  `F G' = beta F' G` the first theorem proves
+  `n a_0 c_n = sum_{j=1}^n (((beta+1)j-n) a_j c_{n-j})` over every
+  commutative ring, without a unit assumption. The other two specialize the
+  formal falling-factorial power at `F - 1` when `F(0)=1` over a
+  commutative rational algebra. Thus the power clause of
+  `alg:merged-exp-log-power` is **Exact**; no analytic branch is asserted.
+  The merged coefficient-calculus concordance has 207 rows:
+  65 Lean, 35 Partial, and 107 None.
+
+- The eleven-declaration weighted-translation extension of
+  `AppellSequence.lean` consists of `Bell.binomialConv_unitSeq`,
+  `Bell.binomialConv_four_swap`, `Appell.translate_zero`,
+  `Appell.translate_translate`, `Appell.binomialConv_translate`,
+  `Appell.translate_injective`, `Appell.translate_neg_translate`,
+  `Appell.translate_translate_neg`, `Appell.translate_eq_iff`,
+  `Appell.weighted_binomial_inversion_iff`, and
+  `Appell.binomialConv_translate_neg_translate`.
+  `thm:merged-weighted-binomial-translation` is **Exact** over a
+  commutative semiring, with additive left cancellation used only for
+  injectivity; `cor:merged-weighted-binomial-inversion` is **Exact** over a
+  commutative ring. These are finite coefficient identities, not analytic
+  EGF assertions.
+
+- `UnitSeriesBellCoefficients.lean` is 0+16:
+  `ordPartialBell_eq_factorialRatio_partialBell`,
+  `factorial_mul_ordPartialBell_eq_factorial_mul_partialBell`,
+  `coeff_fallingSeries_subst_eq_sum_ordPartialBell`,
+  `coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos`,
+  `coeff_fallingSeries_subst_eq_sum_partialBell`,
+  `coeff_negBinomSeries_subst_eq_sum_ordPartialBell`,
+  `coeff_negBinomSeries_subst_eq_sum_ordPartialBell_of_pos`,
+  `coeff_logOf_eq_sum_ordPartialBell`,
+  `egfA_factorialDenormalize_coeff_eq`,
+  `bellWeightSeries_factorialDenormalize_coeff_eq`,
+  `coeff_logOf_eq_sum_partialBell`, `coeff_exp_subst_eq_completeBell`,
+  `coeff_exp_subst_eq_partitionExpSum`,
+  `coeff_exp_subst_eq_sum_weightedPartitions`,
+  `coeff_exp_subst_eq_sum_div_weightedPartitions`, and
+  `coeff_exp_subst_recurrence`.  These make `p0:lem:bell-conversion`,
+  `p0:lem:power-log`, and `p0:cor:exp-log-jets` **Exact** as formal
+  power-series coefficient algebra.  They assert no analytic convergence or
+  logarithm branch.
+
+- `TransseriesWellBased.lean` is 0+7 as written:
+  `dickson_isPWO`, `dickson_antichain_finite`, `dickson_isPWO_pi`,
+  `neumann_isPWO`, `neumann_finite_factorizations`,
+  `neumann_isPWO_orderDual`, and
+  `neumann_finite_factorizations_orderDual`; `to_additive` generates
+  `neumann_add_isPWO` and `neumann_finite_decompositions` outside the lexical
+  count. `q0:lem:dickson` remains **Exact**. `q0:lem:neumann` is **Exact** for
+  the manuscript's totally ordered commutative monomial group after its
+  reverse-well-order/strict-growth convention is represented by `Set.IsPWO`
+  on `OrderDual`; the two named wrappers state its product and finite-
+  factorization clauses. They work more generally for a partially ordered
+  cancel monoid. This proves the order-theoretic mechanism, not a Hahn-series
+  type.
+
+- `TransseriesHeight.lean` is 0+3:
+  `isLittleO_log_pow_rpow`, `isLittleO_log_pow_id`, and
+  `isLittleO_pow_mul_log_pow_exp`.  The two printed real `atTop` comparisons
+  of `q0:prop:height` are **Exact**.  A recursive global height/depth order on
+  arbitrary nested transmonomials is not defined.
+
+- `TransseriesScale.lean` has one structure, two definitions, and six
+  theorems: `IsAsymptoticScale`, `poincarePartialSum`,
+  `poincarePartialSum_zero`, `poincarePartialSum_succ`,
+  `IsPoincareExpansion`,
+  `IsPoincareExpansion.isLittleO_succ_remainder`,
+  `IsPoincareExpansion.tendsto_coeff`,
+  `IsPoincareExpansion.tendsto_coeff_div`, and
+  `IsPoincareExpansion.coeff_unique`.  The sequence-indexed content of
+  `q0:def:scale`, `q0:def:poincare`, and `q0:prop:uniqueness` is **Exact**.
+  Coefficients may lie in an arbitrary normed space over the scalar field;
+  the literal quotient-limit wrapper is scalar-valued. Uniqueness assumes
+  `[l.NeBot]`; the fixed first-omitted-term remainder semantics neither
+  assert convergence nor recover flat remainders and do not package an
+  unordered set or maximal scale.
+
+- `TransseriesScaleDominance.lean` is 1+7: `plMonomial`,
+  `tendsto_plMonomial_atTop_zero`, `plMonomial_div_eventuallyEq`,
+  `tendsto_plMonomial_div_atTop_zero`,
+  `tendsto_plMonomial_div_atTop_one`, `plMonomial_pos`,
+  `tendsto_plMonomial_div_atTop`, and
+  `plMonomial_generators_dominance`.  The analytic zero/one/`atTop`
+  trichotomy and integer-generator rule of `plt:lem:mot-dominance` are
+  **Exact**; the full unordered-set/maximal package is not.
+
+- `TransseriesPolyLogScale.lean` is 0+4: `isLittleO_plMonomial`,
+  `isAsymptoticScale_plMonomial`, `isAsymptoticScale_plMonomial_pow`, and
+  `isAsymptoticScale_plMonomial_log`.  It proves the exact sequence-indexed
+  scale consequence and the two standard ladders, not the unordered-set or
+  finite-maximal clauses of `plt:def:mot-scale`.
+
+- `TransseriesBlockAntiderivative.lean` is 3+12.  Its definitions are
+  `blockOperator`, `blockAntiderivative`, and `resonantAntiderivative`; its
+  theorems are `sum_sub_sum_shift`, `blockOperator_zero`, `blockOperator_sub`,
+  `blockOperator_blockAntiderivative`, `blockOperator_surjective`,
+  `natDegree_C_mul_of_ne_zero`, `natDegree_blockOperator`,
+  `blockOperator_injective`, `blockOperator_bijective`,
+  `derivative_resonantAntiderivative`, `derivative_surjective`, and
+  `natDegree_resonantAntiderivative`.  The polynomial-operator dichotomy in
+  `plt:lem:mot-block-antiderivative` is **Exact**: explicit
+  degree-preserving inverse off resonance and explicit degree-raising
+  primitive at resonance.  It does not construct the full Laurent ambient
+  ring.
+
+- `TransseriesDifferentialBlock.lean` is 0+12:
+  `Fabius.derivation_pow_t`, `Fabius.derivation_block`,
+  `Fabius.derivation_zpow_block`,
+  `Fabius.exists_zpow_block_primitive`,
+  `Fabius.existsUnique_zpow_block_primitive`,
+  `Fabius.exists_block_primitive`, `Fabius.derivation_block_zero`, and
+  `Fabius.exists_block_primitive_resonant`, together with
+  `Fabius.derivation_val_inv`, `Fabius.derivation_pow_inv`,
+  `Fabius.derivation_zpow_t`, and `Fabius.derivation_block_zpow`.
+  The natural-exponent bridge and integer-exponent block law
+  `plt:eq:mot-block-derivative` are **Exact**. The new source-shaped Laurent
+  law and degree-preserving nonresonant primitive use an ambient field and
+  `t != 0`; uniqueness additionally assumes injectivity of evaluation at
+  `L`. The older integer statement packages `t` as a unit. Only item (v) of
+  `plt:thm:mot-smallest-differential-algebra` is closed, so that compound
+  theorem remains **Partial**: the minimal-ring, growth, and
+  algebraic-independence clauses are absent, and no concrete Laurent ambient
+  ring is constructed.
+
+- `QuadraticCoreCatalan.lean` is 3+8.  Its definitions are `quadHalf`,
+  `halfBinom`, and `quadCoef`; its theorems are `catalan_two_step`,
+  `quadHalf_zero`, `quadHalf_antidiagonal`, `halfBinom_step`, `quadHalf_rat`,
+  `quadCoef_rat`, `quadCoef_zero`, and `quadCoef_rec`.
+  `p6:prop:quadratic-core-catalan` is **Exact**.  The broader
+  `p6:lem:quadratic-core` is **Partial**—only the coefficient family and
+  coefficientwise recursion are proved, not packaged power-series
+  existence/uniqueness, a square-root identity, or the exact denominator
+  exponent.  `p6:thm:deepest-pole` is **Absent** because no Gamma/Barnes
+  identification is formalized.
+
+- `DerangementNearestInteger.lean` is 1+7:
+  `Fabius.subfactorialDefect`, `Fabius.subfactorialDefect_zero`,
+  `Fabius.subfactorialDefect_succ`, `Fabius.subfactorialDefect_pos`,
+  `Fabius.subfactorialDefect_lt`, `Fabius.numDerangements_sub_eq`,
+  `Fabius.abs_numDerangements_sub_lt_half`, and
+  `Fabius.round_factorial_mul_exp_neg_one`. The integer identity, strict
+  defect bounds, and nearest-integer conclusion of
+  `p8:cor:nearest-integer` are **Exact**. The compound printed result is
+  **Partial** because the bound at arbitrary real `x > -1` is absent;
+  `p8:thm:branch-splitting` and its branch family are **Absent**.
+
+- `LinLogCoreInversion.lean` is 4+18. Its definitions are
+  `Fabius.linLogCoreArg`, `Fabius.linLogCoreRoot`,
+  `Fabius.linLogCoreThreshold`, and `Fabius.linLogCoreRootLower`; its
+  theorems are `Fabius.linLogCore_eq_iff`,
+  `Fabius.principalLambertW_linLogCoreArg_pos`,
+  `Fabius.linLogCoreRoot_pos`, `Fabius.linLogCore_linLogCoreRoot`,
+  `Fabius.strictMonoOn_linLogCore`, `Fabius.linLogCoreRoot_unique`,
+  `Fabius.hasDerivAt_linLogCore`, `Fabius.linLogCore_slope_eq`,
+  `Fabius.linLogCore_critical`, `Fabius.linLogCoreArg_mem_Ioo_iff`,
+  `Fabius.principalLambertW_linLogCoreArg_neg`,
+  `Fabius.linLogCoreRoot_pos_of_neg`, `Fabius.linLogCoreRootLower_pos`,
+  `Fabius.linLogCore_linLogCoreRoot_of_neg`,
+  `Fabius.linLogCore_linLogCoreRootLower`,
+  `Fabius.linLogCoreRoot_lt_critical`,
+  `Fabius.critical_lt_linLogCoreRootLower`, and
+  `Fabius.linLogCoreRoot_ne_linLogCoreRootLower`. Parts (2)--(4) of
+  `p0:thm:lambert-core` are **Exact** over the reals, including both signs of
+  `b`. The compound theorem remains **Partial** because its asymptotic clause
+  and complex general-`W_k` reading are absent.
+
+- `OrdinaryPartialBell.lean` is 2+4: `Fabius.ordinarySeries`,
+  `Fabius.ordinaryPartialBell`, `Fabius.ordinaryPartialBell_pow`,
+  `Fabius.bellWeightSeries_eq_ordinarySeries`,
+  `Fabius.factorial_mul_ordinaryPartialBell`, and
+  `Fabius.ordinaryPartialBell_eq_zero_of_lt`. The ordinary generating
+  characterization, normalization bridge, and vanishing clause of
+  `plt:lem:bell-normalizations` are **Exact**. The compound printed lemma is
+  **Partial** if read as requiring the displayed multinomial-sum definition
+  and its separate `C_{n,k}` identification: the module defines the family
+  coefficientwise rather than proving that finite-sum formula.
+
+- `PowerLogCoreInversion.lean` is 3+6: `Fabius.powerLogCore`,
+  `Fabius.powerLogCoreArg`, `Fabius.powerLogCoreRoot`,
+  `Fabius.powerLogCore_exp`, `Fabius.log_powerLogCoreRoot_sub`,
+  `Fabius.powerLogCore_of_lambert`,
+  `Fabius.powerLogCore_powerLogCoreRoot`,
+  `Fabius.hasDerivAt_powerLogCore`, and
+  `Fabius.hasDerivAt_powerLogCore_root`. The real `r = 1` inversion and slope
+  clauses of `p6:lem:core` are **Exact**. The compound lemma is **Partial**:
+  general `r`, its root determination, and the complex general-`W_k` reading
+  remain absent.
+
+- `RemainderTransport.lean` is 0+3:
+  `Fabius.lipschitzOn_of_abs_deriv_le`, `Fabius.transport_bound_mul`, and
+  `Fabius.transport_bound`. Part (1), `p0:eq:transport-bound`, of
+  `p0:thm:remainder-transport` is **Exact**, with one-sided derivative and
+  two-sided Lipschitz hypotheses kept distinct. The compound theorem is
+  **Partial** because part (2), the first-order law needing a second-order
+  Taylor estimate, is absent.
+
+- `StaircaseInversion.lean` is 0+7: `Fabius.isLeast_ceil`,
+  `Fabius.staircase_ceil`, `Fabius.staircase_separation`,
+  `Fabius.staircase_separation_fails`, `Fabius.staircase_round`,
+  `Fabius.isLeast_residue_class`, and
+  `Fabius.exists_half_error_of_jump`. All five clauses of
+  `p0:thm:staircase` are **Exact** at the strict-monotonicity/inverse-equation
+  interface, and the separation failure is formal too. No admissible
+  interpolation is constructed, and the periodic layer's Fourier expansion
+  is absent.
+
+- `TransseriesFlat.lean` is 4+22. Its definitions are `Fabius.IsFlat`,
+  `Fabius.flatSubmodule`, `Fabius.AbsorbsScale`, and `Fabius.powScale`; its
+  theorems are `Fabius.isFlat_zero`, `Fabius.IsFlat.add`,
+  `Fabius.IsFlat.neg`, `Fabius.IsFlat.sub`, `Fabius.IsFlat.const_smul`,
+  `Fabius.isFlat_exp_neg_rpow_atTop`,
+  `Fabius.IsPoincareExpansion.add_flat`,
+  `Fabius.IsPoincareExpansion.sub_same_coeff_isFlat`,
+  `Fabius.IsPoincareExpansion.iff_sub_isFlat`,
+  `Fabius.IsFlat.smul_of_scale_absorption`,
+  `Fabius.IsFlat.smul_of_isBigO_inv_pow`,
+  `Fabius.mem_flatSubmodule_iff`, `Fabius.IsFlat.mul_absorbsScale`,
+  `Fabius.absorbsScale_const`,
+  `Fabius.IsPoincareExpansion.add_isFlat`,
+  `Fabius.isFlat_sub_of_isPoincareExpansion`,
+  `Fabius.isPoincareExpansion_iff_isFlat_sub`,
+  `Fabius.isPoincareExpansion_zero_iff`, `Fabius.powScale_eq_rpow`,
+  `Fabius.absorbsScale_of_isBigO_pow`, `Fabius.isFlat_exp_neg`, and
+  `Fabius.isPoincareExpansion_add_exp_neg`. `q0:def:flat` and all three
+  clauses of `q0:prop:invisible` are **Exact**. The generic statements now
+  allow vector-valued functions and coefficients on a scalar-valued scale,
+  and the same-coefficient clause is strengthened to an equivalence. Variable
+  scalar multiplication requires scale absorption; the named submodule and
+  compatibility wrappers remain scalar-valued. No convergence or recovery
+  beyond flat remainders is asserted.
+
+- `TransseriesHarmonicIncrement.lean` is 0+2:
+  `Fabius.tendsto_div_atTop_of_tendsto_sub` and
+  `Fabius.tendsto_div_atTop_of_harmonic_increment`. The leading-order
+  `w_n/n -> c_0` clause of `plt:lem:mot-harmonic` is **Exact**. The compound
+  lemma remains **Partial** because the logarithmic correction, constant,
+  and `o(1)` remainder are absent.
+
+- `StirlingSeriesCoefficients.lean` is 3+12. It defines
+  `Fabius.stirlingKernelCoeff`, `Fabius.stirlingKernel`, and
+  `Fabius.stirlingCoeff`; `Fabius.stirlingCoeff_recurrence` and the
+  coefficient/value lemmas through `Fabius.stirlingCoeff_three` prove the
+  formal-series definition and the displayed values
+  `c_0=1, c_1=1/12, c_2=1/288, c_3=-139/51840` in
+  `q2:eq:stirling-cj`. That clause is **Exact**. The surrounding
+  Fubini-sector corollary remains **Partial**: no analytic sector expansion is
+  proved by this leaf.
+
+- `WrightOmega.lean` is 1+13: `Fabius.wrightOmega`,
+  `Fabius.analyticAt_wrightOmega`, `Fabius.wrightOmega_pos`,
+  `Fabius.wrightOmega_add_log`,
+  `Fabius.principalLambertW_eq_wrightOmega_log`,
+  `Fabius.wrightOmega_leftInverse`, `Fabius.wrightOmega_strictMono`,
+  `Fabius.wrightOmega_one`, `Fabius.one_le_wrightOmega`,
+  `Fabius.wrightOmega_le_self`, `Fabius.sub_log_le_wrightOmega`,
+  `Fabius.wrightOmega_envelope`,
+  `Fabius.add_one_div_two_le_wrightOmega`, and
+  `Fabius.tendsto_wrightOmega_atTop`. The complete real proposition
+  `plt:prop:mot-omega-basic` is **Exact**: its equation, inverse, positivity,
+  strict monotonicity, Lambert bridge, envelope, divergence, and real-
+  analyticity clauses are formalized. `Fabius.analyticAt_wrightOmega` states
+  `AnalyticAt ℝ` at every real input; it makes no complex holomorphic-
+  continuation or branch claim.
+
+- `WrightOmegaTwoOrders.lean` is 0+8:
+  `Fabius.wrightOmega_lt_self`,
+  `Fabius.tendsto_log_wrightOmega_div_atTop_zero`,
+  `Fabius.tendsto_wrightOmega_div_atTop_one`,
+  `Fabius.tendsto_log_wrightOmega_sub_log_atTop_zero`,
+  `Fabius.tendsto_log_wrightOmega_div_log_atTop_one`,
+  `Fabius.self_sub_wrightOmega_isEquivalent_log`,
+  `Fabius.wrightOmega_sub_self_isEquivalent_neg_log`, and
+  `Fabius.wrightOmega_residual_isEquivalent`. The two concluding real
+  equivalences of `plt:prop:mot-two-orders`,
+  `omega(X)-X ~ -log X` and
+  `omega(X)-X+log X ~ log(X)/X`, are **Exact** at `atTop`. The proposition
+  remains **Partial** because its four-term expansion and explicit
+  quantitative envelope are not formalized here.
+
+The d130 and earlier receipts for the eleven merge-affected publication roots
+remain historical.  Accepted synchronized merged-source renders for the
+primary, walkthrough, canonical, geometric-q, q-series, Lambert, inverse,
+comb, Up, Thue--Morse, and Transseries roots are recorded in the
+[merge-28de4e51 receipt register](drafts/MANIFEST.md#merge-28de4e51-publication-receipts).
+The dyadic-chaos PDF is not part of this render set.
+The preceding declaration addition is
 `FabiusFunction.GeometricRichardsonGenerating`, with three definitions and
 seven theorems. Its
 `Fabius.geometricLagrangeRichardson_generating` theorem is the exact formal
@@ -577,9 +957,9 @@ literal finite central cancellation at mesh `4^n` by combining the normalized
 Legendre value at zero, evenness, compact-support truncation, and pairing of
 the positive and negative indices. This makes only `cor:leg-central-sum`
 Exact; it adds no Jacobi decoder formula, reverse spectral closure, or larger
-Lagrange right-inverse theorem. These declarations were rendered by the
-historical `b899` Up-synthesis and canonical-frontier PDFs; the deferred
-replacement inventory is recorded in the fixed-26 table.
+Lagrange right-inverse theorem.  These declarations are rendered by the
+historical `b899`, d130 Up-synthesis, and canonical-frontier PDFs.  This merge
+changes both TeX closures, so fresh synchronized renders are pending.
 
 The final source-only `FabiusFunction.GaussianBinomialFixedColumnRate` leaf has
 no definitions and nine theorems:
@@ -588,6 +968,7 @@ no definitions and nine theorems:
 `Fabius.norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
 `Fabius.norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
 `Fabius.norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`,
+`Fabius.tendsto_gaussianBinomial_add_atTop`,
 `Fabius.gaussianBinomial_fixedColumn_relativeError_isBigO`,
 `Fabius.gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
 `Fabius.gaussianBinomial_fixedColumn_error_isBigO`, and
@@ -652,6 +1033,9 @@ algebraic identities, not a new probability-space construction.
 At the 1 September 2026 checkpoint, the source-only q-Pochhammer overlay was
 newer than the PDFs retained at that time.  The new `QPochhammerEntire.lean`
 leaf has zero definitions
+The later d130 q-series, primary, walkthrough, and canonical-frontier receipts
+also remain historical after this merge changed those TeX closures.  The new
+`QPochhammerEntire.lean` leaf has zero definitions
 and five theorems: for a fixed complex nome with norm less than one it proves
 local uniform convergence of the infinite product, differentiability in the
 symbol, the division-free factor-zero criterion, the reciprocal-power zero
@@ -710,6 +1094,28 @@ domain remains partial: the compiled by-reversal theorem retains `C ≠ 0` and
 `(A;q)_n ≠ 0`, while the unrestricted theorem uses finite q-Cauchy directly;
 no rational-continuation or cleared commutative-ring extension is claimed.
 
+The historical first-merge q-series receipt is master
+`16812L/840316B/64dc18dedbd1966624162b64129128b24b51ca88d8a9e496c661cc1a46a24ba6`,
+15-file aggregate
+`26593L/1198416B/762e6d6ca441de51db9679f95d6a01d8353e8044639f99803734719b8a65a5f8`,
+passes `393/401/401` with three clean `makeindex` runs (`164/0/254/0`), PDF
+`401pp/2500131B/fd54459baf10845b5a89cc8b204f59ea33a0665b434ad270e738884072a1e6e1`,
+and log
+`1230L/44401B/37dca6371ea8bf9285e5f104d550bd584a290f4aa92fcf5679b028c9dfd3079d`;
+all recorded gates passed at that checkpoint. Later source changes make that
+tuple historical. The accepted current q-series receipt is in the
+[merge-28de4e51 receipt
+register](drafts/MANIFEST.md#merge-28de4e51-publication-receipts). The
+historical `2d434eec` receipt is the 391-page,
+2,464,712-byte A4 PDF (SHA-256
+`a52eb90dec7b874cc29dea891a107b9eb2d55e6727eb8bd8943d0aab609c58a6`).
+It was accepted against the 16,448-line, 816,185-byte master (SHA-256
+`a463abef7bb3c70e12a568a46fc192aac88a8ce240f8f781fff2b018a4aa086d`)
+and its 26,114-line, 1,168,039-byte source graph (aggregate SHA-256
+`d4c5b84cc07f6abb99279c5bba4fdf7404326426cbe81f4b33b72ba01e62739c`).
+It and the earlier 389-page artifact remain historical checkpoints. No live checksum
+manifest or current-source digest is maintained.
+
 The pre-`9135bd7e` q-series receipt names the 16,834-line,
 837,715-byte source (SHA-256
 `4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`)
@@ -718,9 +1124,9 @@ and its 395-page, 2,494,961-byte A4 PDF (SHA-256
 The q-Chu/Richardson, Gaussian second-moment, Lambert branch-gap Bernoulli, and
 geometric-uniform moment-polynomial source union postdates that exact historical
 receipt.  Its
-current source concordance records 103 Lean-proved, 375 human-proved,
-60 not-applicable, and 9 conjectural rows; the rigorous forward ledger is 181
-Exact / 79 Partial / 14 None / 8 interface, with q-Lucas still Partial.
+source concordance at this merge records 103 Lean-proved, 375 human-proved,
+60 not-applicable, and 9 conjectural rows; the rigorous forward ledger is 182
+Exact / 78 Partial / 14 None / 8 interface, with q-Lucas still Partial.
 
 The historical q-series receipt (2026-09-04 source checkpoint) records the then-current 16,910-line,
 842,514-byte TeX source at SHA-256
@@ -768,6 +1174,11 @@ Its passes ran 388 pages / 8,163,847 bytes → 405 / 8,346,265 → 405 /
 Both 405-page PDFs are A4 at rotation zero on every page, render with nonblank
 text throughout, use embedded/subset fonts with Libertinus and no Type 3, and
 passed metadata, visual, log, cleanup, and forbidden-basename gates.
+
+All q-series and geometric-q tuples above are historical source-specific
+receipts.  Their accepted merged-source renders are recorded in the
+[merge-28de4e51 receipt register](drafts/MANIFEST.md#merge-28de4e51-publication-receipts);
+no earlier PDF is promoted to the merged bytes.
 
 The current finite-moment/Legendre/Gaunt crosswalk covers eleven modules with
 20 public definitions and 109 public theorems, 129 declarations in all. The
@@ -879,30 +1290,23 @@ Sampling*](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_an
 Its immutable extraction input is pinned at
 `0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`; all 194 source-result rows have
 reviewed dispositions, all 88 files in the two superseded source subgroups have
-asset dispositions, and the deduplicated inventory covers 55 retained files;
-eight checksum-ledger rows from the former 63-payload checkpoint are retired.
-The former package paths, source hashes, nested lineage, and recovery
+asset dispositions, and the deduplicated asset inventory covers 55 retained
+files.  Eight checksum-ledger rows from the former 63-payload checkpoint are
+retired.  The former package paths, source hashes, nested lineage, and recovery
 revisions remain in the package's
 [`PROVENANCE.md`](drafts/inverse-and-sampling/Inverse_Fabius_Analyticity_Asymptotics_and_Computability/PROVENANCE.md).
-Its retained 134-page, 2,027,726-byte A4 publication has SHA-256
-`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
-The package README records that historical checkpoint's clean three-pass
-build, font preflight, and visual inspection. The purpose-specific 23-input
-`SOURCE_CLOSURE.sha256` file is a historical pre-overlay record with file
-SHA-256
-`aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb`
-and was intentionally not regenerated. It is not the current publication
-closure. The `b899` driver is 293 lines / 11,514 bytes / SHA-256
-`92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`;
-its independently measured recursive TeX closure is 17 files / 10,682 lines /
-431,748 bytes / digest
-`6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e`.
-Three passes ran 132 pages / 1,983,313 bytes → 137 / 2,045,485 → 137 /
-2,045,486; the final 137-page PDF has SHA-256
-`cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995`.
-All publication gates passed; the only box diagnostics are two nonblocking
-horizontal boxes of 2.42 and 2.45 pt. The reviewed concordance classifies
-54 source rows as Lean-proved and 91 as human-proved frontier results, with 10
+The d130 canonical-inverse receipt remains historical provenance; the accepted
+merged-source source/PDF/log tuple is retained in the [merge-28de4e51 receipt
+register](drafts/MANIFEST.md#merge-28de4e51-publication-receipts).
+The purpose-specific 23-input source ledger is regenerated separately by its
+approved generator; its historical digests remain provenance rather than
+current-publication claims.  The former 134-page, 2,027,726-byte PDF (SHA-256
+`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`)
+and historical closure digests
+`418f6f93e5b40ec2fa441cc6379a21c9587f2b6e6c50f7863c75595c062e606c`
+and `e07cb51f4fe072cd79a014cc891cb8cede62880593d7659b17da9377a21099bc`
+remain explicit history.  The reviewed concordance classifies
+57 source rows as Lean-proved and 88 as human-proved frontier results, with 10
 conjectures, 15 open problems, and 24 non-applicable rows. Its newest exact
 matches include the punctured leading-Laurent theorem and the full uncentered/
 centered finite-prefix Appell expansion and exact-recovery pair described

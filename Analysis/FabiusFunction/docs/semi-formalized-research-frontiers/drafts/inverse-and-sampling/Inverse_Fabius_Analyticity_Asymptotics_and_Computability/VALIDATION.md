@@ -1,9 +1,10 @@
 # Canonical source integrity and publication validation
 
-This receipt records the historical synchronized `b899` publication and two
-older audit surfaces: the unregenerated purpose-specific closure ledger and the
-preceding 134-page PDF. Every record remains valid only for its named source
-checkpoint and is not a merged-current publication gate.
+This record separates the accepted current inverse source/PDF receipt in the
+[authoritative register](../../MANIFEST.md#current-post-merge-publication-receipts)
+from the historical publication and purpose-specific closure checkpoints below.
+The closure generator is maintained independently and is not a package-wide or
+PDF checksum gate.
 
 ## Artifact identity
 
@@ -22,6 +23,9 @@ the regenerated 23-entry lexical source closure, not a PDF-parity gate. The
 sixth row is the preceding historical PDF checkpoint. The historical rows do
 not form a current source/PDF pair.
 
+Each historical source/PDF tuple is scoped to its named checkpoint. The
+purpose-specific 23-input record is regenerated separately for merged inputs;
+its generated file and checker are authoritative for that narrow scope.
 The 23-input source closure consists of:
 
 - the master `inverse_fabius_theory.tex`;
@@ -53,27 +57,16 @@ The 23-input source closure consists of:
 
 ## Historical `b899` PDF build convergence
 
-Exactly three serial halt-on-error passes were run from absent sidecars:
+Exactly three serial halt-on-error passes from absent sidecars produced
+132/137/137 pages and 1,983,313/2,045,485/2,045,486 bytes. The required
+log, reference/rerun, metadata, all-page A4/rotation/render/text, font, visual,
+cleanup, and forbidden-basename gates passed. All 31 font rows were embedded
+and subset, six were Libertinus, none was Type 3, and the only box diagnostics
+were nonblocking 2.42 and 2.45 pt horizontal boxes.
 
-| Pass | Produced pages | PDF bytes |
-| ---: | ---: | ---: |
-| 1 | 132 | 1,983,313 |
-| 2 | 137 | 2,045,485 |
-| 3 | 137 | 2,045,486 |
+## Historical first-merge PDF build convergence
 
-Required final-log error, undefined-control, reference/citation, multiply
-defined, duplicate-destination, missing-file, and rerun gates all close at zero.
-The log has no vertical box and only two nonblocking horizontal boxes, 2.42 and
-2.45 pt. All 137 pages are A4 at rotation zero, render successfully, and
-contain nonblank extracted text. All 31 font rows are embedded and subset, six
-are Libertinus, and none is Type 3. Metadata passed. Targeted visual inspection
-covered physical pages 1, 61, 124, 135, and 137; every sampled page was clean.
-Generated sidecars and temporary audit files were removed, and the forbidden
-checksum-basename search passed.
-
-## Historical retained-PDF build convergence
-
-Exactly three guarded serial pdfLaTeX passes were run for the current source.
+Exactly three guarded serial pdfLaTeX passes were run for that source snapshot.
 Every pass returned zero; the source graph was frozen for the run and no
 TeX/Lean/Lake work interleaved with it.
 
@@ -107,21 +100,21 @@ claiming byte identity between intermediate pass artifacts.
 
 ## Package integrity and cleanliness
 
-- No canonical `.aux`, `.log`, `.out`, or `.toc` file, guarded-pass/render
-  temporary, or shallow generated sidecar remains in the package.
-- The current canonical asset tree contains 55 files. Its former 63-row asset
+- The historical final log is pinned above; no transient pass/render file is
+  a publication payload.
+- The canonical asset tree contains 55 retained files. Its former 63-row asset
   checkpoint included eight historical ledger payloads that are now retired.
 - The former 90-row root ledger and 63-row asset ledger are retired and
   recoverable from Git; the latter had SHA-256
   `b274fe39cde808c34e82789136af51616e9177f424763b3eec153bc18e10fa3c`.
   Their workflows no longer generate either root or asset `SHA256SUMS` files.
-- The purpose-specific 23-input `SOURCE_CLOSURE.sha256` record remains a
-  historical pre-overlay receipt and is not the current closure.
+- The purpose-specific 23-input `SOURCE_CLOSURE.sha256` record is generated
+  and checked independently for the merged inputs and has no whole-package or
+  PDF-parity role; earlier digests above remain provenance only.
 - Python byte-code caches and other transient files are not publication
   payloads.
 
-The measured 17-file closure digest and 137-page PDF hash identify the current
-synchronized `b899` publication. The `SOURCE_CLOSURE.sha256` file hash and
-134-page PDF hash identify separate historical checkpoints; neither is a live
-current-publication gate. Retired package-ledger receipts remain recoverable
-from Git and are not live validation artifacts.
+The accepted current inverse source/PDF receipt is recorded in the
+authoritative register linked above. All earlier 134- and 137-page tuples and
+closure-file identities remain explicit history; retired package-ledger
+receipts remain Git-recoverable and are not live validation artifacts.
