@@ -74,6 +74,7 @@ theorem natCast_mul_expCoeff {K : A⟦X⟧} (hK : constantCoeff K = 0) (n : ℕ)
           = ∑ j ∈ range (r + 1),
             expCoeff A K j * (((r - j : ℕ) : A) + 1) * coeff (r - j + 1) K := by
         rw [← Finset.sum_range_reflect]
+        simp only [Nat.add_sub_cancel]
         refine Finset.sum_congr rfl fun j hj => ?_
         have hjr : j ≤ r := Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)
         rw [Nat.sub_sub_self hjr]
