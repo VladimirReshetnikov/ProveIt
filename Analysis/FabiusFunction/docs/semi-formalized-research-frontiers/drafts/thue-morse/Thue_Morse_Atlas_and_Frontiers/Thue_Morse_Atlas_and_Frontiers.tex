@@ -6957,7 +6957,18 @@ The sharp moment \eqref{p1:eq:base-q-sharp-moment} is proved division-free, as
 \((\zeta-1)^mP_m(m)=m!\,q^{0+1+\cdots+m}\) in any commutative ring
 (\lean{Fabius.sub\_one\_pow\_mul\_digitPowerSum\_self}), and then in the displayed form
 with \(/(\zeta-1)^m\) and the Gauss sum evaluated, in a field with \(\zeta\ne1\)
-(\lean{Fabius.digitPowerSum\_self\_eq\_div}).  The engine is the one-step recursion
+(\lean{Fabius.digitPowerSum\_self\_eq\_div}).  At \(q=2\), \(\zeta=-1\) --- the Thue--Morse
+case, since \(\ThueMorseSign{n}=(-1)^{s_2(n)}\) is exactly the digit character
+(\lean{Fabius.thueMorseSign\_cast\_eq\_neg\_one\_pow\_digits\_sum}) --- the division is
+unnecessary: \lean{Fabius.digitPowerSum\_neg\_one\_two\_self} in
+\path{ProuhetBaseTwoBridge.lean} gives the closed value
+\[
+ \sum_{n<2^m}\ThueMorseSign{n}\,n^m=(-1)^m2^{\binom m2}m!
+\]
+over any commutative ring, with no field hypothesis, and
+\lean{Fabius.digitPowerSum\_neg\_one\_two\_eq\_zero\_of\_lt} is the base-two cancellation.
+That module is what connects this general theory to the classical Thue--Morse power sums; the
+two had developed independently, neither import closure containing the other.  The engine is the one-step recursion
 \lean{Fabius.digitPowerSum\_succ}, obtained by splitting \([0,q^{m+1})\) into \(q\) blocks
 \(q^mr+a\), where the digit sum adds \(r\) (\lean{Fabius.digits\_sum\_pow\_mul\_add}) and
 the binomial theorem expands \((a+q^mr)^d\); in that expansion every \(P_i(m)\) with
