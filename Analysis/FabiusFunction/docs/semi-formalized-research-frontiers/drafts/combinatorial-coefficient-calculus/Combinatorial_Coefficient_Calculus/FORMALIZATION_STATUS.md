@@ -24,12 +24,13 @@ structural validator establishes neither mathematical correctness nor compilatio
 Every additional formalization milestone needs its own precise validation record.
 
 The first integration milestone merged pinned upstream
-`8159026c5310b24acb4d330a23836a473d7adaff` and then
-`3f74ee23e479399595c91b5fb030c7fbceb23f1a`. Its source validator passes with
-205 theorem-like items and adjacent proofs, 27 dispositions, and six immutable
+`8159026c5310b24acb4d330a23836a473d7adaff`, then
+`3f74ee23e479399595c91b5fb030c7fbceb23f1a`, and
+`c5a82b88c40ad493d394056c8dd42ef6d3d306ac`. Its source validator passes with
+206 theorem-like items and adjacent proofs, 27 dispositions, and six immutable
 source-inventory rows. The obsolete live checksum ledger was retired as upstream
-intended. The current register has 57 `Lean`, 36 `partial`, and 112 `none` rows;
-these totals include inherited claims and are not a fresh audit of all 205 rows.
+intended. The current register has 57 `Lean`, 36 `partial`, and 113 `none` rows;
+these totals include inherited claims and are not a fresh audit of all 206 rows.
 
 `NewtonReciprocal.lean` passed focused compilation on 2026-09-04 using
 `lake env lean -o .lake/build/lib/lean/FabiusFunction/NewtonReciprocal.olean
@@ -38,9 +39,11 @@ Its five public theorems are compiler-checked. The other fourteen new public
 theorems in the three Stirling/Lagrange leaves remain source-reviewed and await
 compilation, including any missing prerequisites. No aggregate build is claimed.
 The facade, cited-name, and duplicate-name structural audits passed before the
-second synchronization; its unrelated upstream additions are not covered by a
+later synchronizations; their unrelated upstream additions are not covered by a
 fresh aggregate Lean build. All new modules have facade imports and contain no
-`sorry`, `admit`, `axiom`, or `opaque` declarations.
+`sorry`, `admit`, `axiom`, or `opaque` declarations. The register-generator mappings
+preserve the new pending and compiled distinctions; both generator scripts passed
+read-only syntax and mapping checks without rewriting the canonical document.
 
 ## Source correspondences inspected
 

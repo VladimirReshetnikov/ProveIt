@@ -14,7 +14,7 @@ identity/algorithm), in document order, with a status column:
 
   Lean      -- an exact (or more general) Lean counterpart exists
   partial   -- a named part of the statement is proved; the rest is named
-  none      -- no Lean counterpart yet (the default)
+  none      -- no compiler-verified counterpart recorded yet (the default)
 
 Statuses come from the STATUS dictionary, keyed by label.  Unlabelled
 results are keyed by environment name and running number.
@@ -44,10 +44,11 @@ STATUS = {
    r"defining expansions are \lean{Fabius.ascPochhammer_eq_sum_monomial_stirlingFirst} and "
    r"\lean{Fabius.descPochhammer_eq_sum_monomial_signedStirlingFirst} "
    r"(\lean{StirlingBasisChange}); the permutation count itself is not formalized"),
- 'thm:second-recurrence': ('Lean',
+ 'thm:second-recurrence': ('partial',
    r"\lean{Nat.stirlingSecond_succ_succ}, \lean{Nat.stirlingSecond_succ_zero}, "
-   r"\lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib); the set-partition count is "
-   r"Mathlib's definition by this recurrence"),
+   r"\lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib) prove the algebraic recurrence and "
+   r"boundary values for the recursively defined array.  Identifying this array with the "
+   r"cardinality of set partitions requires a separate formal counting theorem."),
  'thm:second-explicit': ('Lean',
    r"\lean{Fabius.factorial_mul_stirlingSecond_eq_sum} (over $\mathbb Z$) and "
    r"\lean{Fabius.stirlingSecond_eq_sum_div_factorial} (over $\mathbb Q$) "
@@ -284,11 +285,11 @@ STATUS = {
    r"\lean{Fabius.second_reverse_column} (\lean{StirlingSecondReverseColumn}), by the "
    r"column differential equation $(1-\EulerE^{-x})F_k'=kF_k$ "
    r"(\lean{Fabius.one_sub_altSeries_mul_derivative_egfA_stirlingSecond}); "
-   r"\cref{eq:second-reverse-row} is not formalized, though its series step is: the "
-   r"coefficients of $(1+t)\log(1+t)-t$ are \lean{Fabius.coeff_logTail} and its value "
-   r"at $u=\EulerE^x-1$ is \lean{Fabius.subst_logTail} "
-   r"(\lean{StirlingSecondReverseRow}), which is what lets the row identity be proved "
-   r"in one variable rather than two"),
+   r"new source \lean{Fabius.second_reverse_row} (\lean{StirlingSecondReverseRowIdentity}) "
+   r"supplies \cref{eq:second-reverse-row} over every commutative ring by extracting "
+   r"coefficients from \lean{Fabius.subst_logTail}; \lean{Fabius.second_reverse_row_sum} "
+   r"gives the unrestricted rational-index version.  Compiler validation of the new "
+   r"row identities is pending."),
  'thm:eulerian-stirling': ('Lean',
    r"\lean{Fabius.sum_eulerianNumber_mul_X_pow_eq_sum_stirlingSecond} (\lean{EulerianStirling}), "
    r"as an identity in $R[[t]]$ over any commutative ring $R$, from the rising-factorial "
@@ -327,21 +328,35 @@ STATUS = {
    r"\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}): the column "
    r"series $\sum_r\StirlingSecondKind{k+r}{k}x^r$ times $\prod_{j\le k}(1-jx)$ is $1$, and "
    r"equals the product of the geometric series $\sum_r j^rx^r$, in $R[[x]]$ for every "
-   r"commutative ring $R$; \cref{eq:second-complete-symmetric}, which reads the coefficient "
-   r"off the product as a complete homogeneous symmetric polynomial, is displayed inside the "
-   r"theorem and is not formalized"),
+   r"commutative ring $R$.  New source "
+   r"\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn} "
+   r"(\lean{StirlingSymmetricFunctions}) supplies \cref{eq:second-complete-symmetric} for "
+   r"$k\le n$, pending compiler validation.  The displayed reciprocal falling-factorial "
+   r"presentation has no separate formal counterpart."),
+ 'thm:stirling-symmetric-semirings': ('none',
+   r"New source in \lean{StirlingSymmetricFunctions}: "
+   r"\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn}, "
+   r"\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn}, "
+   r"\lean{Fabius.stirlingFirst_eq_sum_powersetCard}, and "
+   r"\lean{Fabius.stirlingFirst_eq_esymm}; independently reviewed, compiler validation pending."),
+ 'cor:stirling-symmetric-scaling': ('none',
+   r"New source: \lean{Fabius.completeHomogeneousEvalOn_scaled_range} and "
+   r"\lean{Fabius.esymm_scaled_range} in \lean{StirlingSymmetricFunctions}; "
+   r"compiler validation pending."),
  'thm:eulerian-power-series': ('Lean',
    r"\lean{Fabius.one_sub_X_pow_mul_succPowSeries} (the identity "
    r"$(1-t)^{n+1}\sum_m(m+1)^nt^m=\TypeAEulerianPolynomial{n}(t)$ in $R[[t]]$) and "
    r"\lean{Fabius.eulerianNumber_eq_sum_int} (\lean{EulerianGeneratingFunctions}); the "
    r"symmetry \cref{eq:eulerian-symmetry} is \lean{Fabius.eulerianNumber_symm} and "
    r"\cref{eq:eulerian-k1} is \lean{Fabius.eulerianNumber_one_right}"),
- 'thm:merged-riordan': ('Lean',
+ 'thm:merged-riordan': ('partial',
    r"\lean{Fabius.expRiordan_action}, \lean{Fabius.expRiordan_mul}, "
-   r"\lean{Fabius.expRiordan_mul_inverse} (\lean{ExponentialRiordan}), for exponential Riordan "
-   r"arrays $[g,f]$ over any $\RationalNumbers$-algebra, with the inverse law in the form "
-   r"$[g,f]\,[h,\overline f]=[1,t]$ whenever $g\,(h\circ f)=1$; the Stirling examples are "
-   r"\lean{Fabius.expRiordan_one_exp_sub_one} and \lean{Fabius.expRiordan_one_log}"),
+   r"\lean{Fabius.expRiordan_mul_inverse} (\lean{ExponentialRiordan}) prove the action, "
+   r"product, and a conditional one-sided inverse law, assuming the inverse series and "
+   r"$g\,(h\circ f)=1$.  Construction of these inverse series from the theorem's unit "
+   r"hypotheses and the full two-sided inverse statement remain to be formalized.  "
+   r"The Stirling examples are \lean{Fabius.expRiordan_one_exp_sub_one} and "
+   r"\lean{Fabius.expRiordan_one_log}."),
  'thm:merged-appell': ('Lean',
    r"Bernoulli: the derivative identity is Mathlib's \lean{Polynomial.derivative_bernoulli}, "
    r"the translation formula is \lean{Fabius.bernoulli_eval_add} (\lean{BernoulliAppell}) and "
@@ -517,8 +532,11 @@ STATUS = {
    r"\cref{eq:lagrange-functional} is constructed, not assumed "
    r"(\lean{Fabius.Lagrange.solution}, \lean{Fabius.Lagrange.solution_eq}), so "
    r"\lean{Fabius.Lagrange.coeff_solution_subst_derivative} and "
-   r"\lean{Fabius.Lagrange.coeff_solution} are unconditional; uniqueness and "
-   r"\cref{eq:lagrange-burmann-alt} are not formalized."),
+   r"\lean{Fabius.Lagrange.coeff_solution} concern the constructed solution under the "
+   r"inverse-series hypothesis.  New source in "
+   r"\lean{LagrangeInversionUniqueness} supplies uniqueness over any commutative ring and "
+   r"\cref{eq:lagrange-burmann-alt} via \lean{Fabius.Lagrange.coeff_solution_subst_alt}; "
+   r"compiler validation pending."),
  'thm:lambert-W-zero': ('partial',
    r"The series \cref{eq:lambert-W-zero} is \lean{Fabius.coeff_lambertW} (module "
    r"\lean{LambertWSeries}), for \lean{Fabius.lambertW} constructed as the Lagrange solution of "
@@ -619,6 +637,13 @@ STATUS = {
    r"\lean{Fabius.coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos} and "
    r"\lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}, but the separate recurrence "
    r"\cref{eq:merged-alg-power} is not formalized"),
+ 'alg:merged-newton-reciprocal': ('Lean',
+   r"\lean{NewtonReciprocal}: initialization \lean{Fabius.X_dvd_one_sub_mul_C}, exact "
+   r"residual squaring \lean{Fabius.one_sub_mul_newtonReciprocalStep}, precision doubling "
+   r"\lean{Fabius.X_pow_dvd_one_sub_mul_newtonReciprocalStep}, coefficient agreement "
+   r"\lean{Fabius.coeff_mul_newtonReciprocalStep}, and actual truncation "
+   r"\lean{Fabius.X_pow_dvd_one_sub_mul_trunc_newtonReciprocalStep}; all over an arbitrary "
+   r"commutative ring and checked by focused compilation."),
 }
 
 # A dict literal keeps the LAST of two equal keys and reports nothing, so a
@@ -684,9 +709,10 @@ table.append(
  '(Mathlib \\texttt{v4.32.0}).  \\emph{Lean} means that a public, compiled declaration proves '
  'the exact statement or a more general one (the generalization is then noted next to the '
  'result); \\emph{partial} means that a named part of the statement is proved and the rest is '
- 'named; \\emph{none} means that no Lean counterpart exists yet.  A citation, a numerical '
+ 'named; \\emph{none} means that no compiler-verified counterpart is recorded yet, even if '
+ 'source under validation is identified.  A citation, a numerical '
  'check, or a plausible derivation does not count.  The register is generated from the '
- 'source and must be regenerated when results are added.  Current totals: '
+ 'source; its mappings must be updated when results are added or validated.  Current totals: '
  '%d Lean, %d partial, %d none, of %d results.' % (n_lean, n_part, n_none, len(rows)))
 table.append('')
 table.append('\\begin{footnotesize}')

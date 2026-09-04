@@ -90,7 +90,7 @@ At that checkpoint the register contained 203 rows: 58 marked Lean, 34 partial,
 and 111 without a Lean counterpart. The earlier classifications were inherited;
 that checkpoint
 adds two compiler-backed entries and does not claim a fresh build of the whole
-corpus. The final structural/provenance validator passes with 203 adjacent
+corpus. The final structural/provenance validator passes with 204 adjacent
 proofs, 27 disposition records, and six original-source inventory rows. PDF
 rebuilding was deferred in that earlier session and has since been resumed.
 
@@ -113,3 +113,12 @@ hypotheses and full remainder estimates, removes contradictory duplicate
 crosswalks, and corrects boundary cases and coefficient-ring assumptions.
 The brief [campaign status](Combinatorial_Coefficient_Calculus/FORMALIZATION_STATUS.md)
 records remaining obligations without duplicating the canonical claim register.
+
+The pending Abel checkpoint adds the formal-series construction over an arbitrary
+commutative rational algebra, the coefficient formula for every solution, and
+the full EGF and binomial identity. `ExponentialRescaling` has passed a focused
+build; the Abel module and affected callers still await compilation, so the
+new manuscript entries have not yet been promoted in the register. The human
+moment-cumulant proof now states its normalization and positive-degree boundaries
+explicitly, with formal logarithm identities separated from the still-open
+set-partition interpretation.

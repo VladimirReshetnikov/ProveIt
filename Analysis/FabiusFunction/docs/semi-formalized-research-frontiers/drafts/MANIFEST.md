@@ -603,8 +603,9 @@ The final pass proved the sharp Bell bound the arrivals had only asserted,
 supplied Euler's limit and the Weierstrass product on which an existing
 polygamma proof silently depended, merged thirteen further donor-only results,
 repaired eight double-superscript errors that had made the source fail to
-compile at all, and completed the notation-catalogue migration. The filed PDF
-now renders the filed TeX. None of the manuscript proofs is claimed as Lean
+compile at all, and completed the notation-catalogue migration. The retained
+174-page PDF is an earlier render; the source has changed since that checkpoint,
+and rebuilding remains deferred at the user's request. None of the manuscript proofs is claimed as Lean
 verification; the in-document "Lean formalization register" states the
 formalization status per result.
 

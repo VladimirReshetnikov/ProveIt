@@ -231,8 +231,12 @@ recurrence $(1-kx)F_k=F_{k-1}$ (\lean{Fabius.one_sub_mul_X_mul_stirlingColumnOGF
 The expansion of each geometric factor is
 \lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow}, which identifies the column
 series with $\prod_{j=1}^k\sum_{r\ge0}j^rx^r$; the complete-homogeneous
-coefficient formula \cref{eq:second-complete-symmetric} is the coefficient
-extraction of that product and is not stated separately.""")),
+coefficient formula \cref{eq:second-complete-symmetric} is supplied over a
+commutative semiring by new source
+\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn} in
+\lean{StirlingSymmetricFunctions}, with compiler validation pending.
+The human proof is in \cref{thm:stirling-symmetric-semirings}.  The reciprocal
+falling-factorial presentation has no separate formal counterpart.""")),
 
  # --- thm:eulerian-power-series ---
  (r"""\eqref{eq:eulerian-explicit}.  Formula \eqref{eq:eulerian-k1} is its case $k=1$.
@@ -269,7 +273,10 @@ to the $n$-th coefficient of $g\,A(f)$), the product law
 inverse law \cref{eq:merged-riordan-inverse} is
 \lean{Fabius.expRiordan_mul_inverse} in the form: if $\overline f\circ f=t$
 and $g\cdot(h\circ f)=1$ then $[g,f]\,[h,\overline f]$ is the identity array
-\lean{Fabius.expRiordan_one_X}.  The Stirling examples are
+\lean{Fabius.expRiordan_one_X}.  This is a conditional one-sided inverse
+statement.  Constructing the inverse series from the theorem's unit hypotheses
+and establishing the full two-sided inverse remain separate formal obligations;
+the register status is therefore \emph{partial}.  The Stirling examples are
 \lean{Fabius.expRiordan_one_exp_sub_one} ($[1,\EulerE^t-1]$ has entries
 $\StirlingSecondKind nk$) and \lean{Fabius.expRiordan_one_log}
 ($[1,\log(1+t)]$ has entries $\SignedStirlingFirstKind{n}{k}$).""")),
@@ -390,9 +397,13 @@ PENDING += [
 from the surjection count $k^n=\sum_r\StirlingSecondKind nr\,r!\binom kr$
 (\lean{Fabius.pow_eq_sum_stirlingSecond_mul_factorial_mul_choose}); the
 formal statement holds for all $n,k\ge0$ with the sum running from $r=0$
-(the extra term $\StirlingSecondKind n0/k!$ vanishes for $n\ge1$).  The
-reverse recurrences \cref{eq:second-reverse-row,eq:second-reverse-column}
-are not formalized.""")),
+(the extra term $\StirlingSecondKind n0/k!$ vanishes for $n\ge1$).
+The column recurrence is \lean{Fabius.second_reverse_column} in
+\lean{StirlingSecondReverseColumn}.  The row recurrence is supplied by new
+source \lean{Fabius.second_reverse_row} and
+\lean{Fabius.second_reverse_row_sum} in
+\lean{StirlingSecondReverseRowIdentity}, with compiler validation pending;
+the combined register status remains \emph{partial}.""")),
 ]
 
 PENDING += [
@@ -1104,23 +1115,39 @@ formalized.""")),
 
 PENDING += [
  # --- thm:merged-moment-cumulant ---
- (r"""partitions by block sizes is exactly the coefficient expansion of $\EulerE^K$ and
-$\log M$.
+ (r"""Each unordered partition into $k$ blocks has $k!$ block orders, so its
+logarithmic weight is $(-1)^{k-1}k!/k=(-1)^{k-1}(k-1)!$.
+This gives the backward relation coefficientwise and proves the two
+formal-series equivalences without any convergence assumption.
 \end{proof}
 """,
-  remark(r"""% ed.: crosswalk added 2026-09-02; the formal statement is the block-size (Bell polynomial) form.
-Module \lean{BellPolynomialInversion} defines the complete Bell polynomials
-\lean{Bell.complete} by the recurrence $m_{n+1}=\sum_k\binom nk\kappa_{k+1}m_{n-k}$
-(the sum over partitions grouped by the block containing $n+1$) and the
-cumulant sequence \lean{Bell.cumulant} by the inverse recurrence, and proves
-that the two constructions are mutually inverse
-(\lean{Bell.complete_cumulant} for $m_0=1$, \lean{Bell.cumulant_complete}
-for $\kappa_0=0$), over any commutative ring; the generating-function form
-$M=\EulerE^K$ is \lean{Fabius.exp_subst_bellWeightSeries} (module
-\lean{BellGeneratingFunctions}), where $K$ is the weight series
-\lean{Fabius.bellWeightSeries}.  The sums over the partition lattice
-\cref{eq:merged-moment-cumulant-forward,eq:merged-moment-cumulant-backward}
-and the identity $K=\log M$ are not formalized.""")),
+  remark(r"""% ed.: crosswalk updated 2026-09-04; recurrence, formal series, and partitions have distinct scopes.
+Module \lean{BellPolynomialInversion} defines the complete Bell family
+\lean{Bell.complete} and its inverse recurrence \lean{Bell.cumulant}.
+They are mutually inverse over every commutative ring:
+\lean{Bell.complete_cumulant} assumes $m_0=1$, and
+\lean{Bell.cumulant_complete} assumes $\kappa_0=0$.
+
+The generating-function statements are formal power-series identities over
+every commutative $\RationalNumbers$-algebra.
+\lean{Fabius.exp_subst_bellWeightSeries} in
+\lean{BellGeneratingFunctions} identifies the exponential of the cumulant
+weight series with the EGF of its complete Bell family.
+For $m_0=1$, \lean{Fabius.logOf_egfA} in
+\lean{CumulantBellFormula} identifies $\log M$ with the EGF of the
+alternating factorial-weighted partial Bell sum
+\lean{Fabius.cumulantSum}; \lean{Fabius.cumulant_eq_cumulantSum}
+identifies that sequence with \lean{Bell.cumulant}.
+Together they prove $K=\log M$ for the recursively defined cumulants.
+The inverse identity used in the proof is
+\lean{Fabius.exp_subst_logOf} in \lean{ExpLog}, for a formal series with
+constant coefficient $1$.
+
+The remaining obligation is the identification with the sums over actual
+set partitions in
+\cref{eq:merged-moment-cumulant-forward,eq:merged-moment-cumulant-backward}.
+Thus the formal-series and block-size formulas are formalized, while the
+set-partition formulation remains partial.""")),
 ]
 
 PENDING += [
@@ -1354,8 +1381,16 @@ $z\psi(z)$, where $\psi$ is the power-series inverse of $\phi$, and
 \cref{eq:lagrange-functional}.  So
 \lean{Fabius.Lagrange.coeff_solution_subst_derivative} and
 \lean{Fabius.Lagrange.coeff_solution} are unconditional statements about a
-witness, not conditional ones.  Uniqueness of $g$ and
-\cref{eq:lagrange-burmann-alt} are not formalized.
+witness, not conditional ones.  New source in
+\lean{LagrangeInversionUniqueness} supplies uniqueness over an arbitrary
+commutative ring through
+\lean{Fabius.Lagrange.eq_solution_of_eq_X_mul_subst} and
+\lean{Fabius.Lagrange.existsUnique_of_isUnit_constantCoeff}.
+The alternative coefficient formula is
+\lean{Fabius.Lagrange.coeff_solution_subst_alt}, using the general
+coefficient integration-by-parts identity
+\lean{Fabius.Lagrange.coeff_jacobian_mul}.  Compiler validation of these
+additions is pending, so the register status remains \emph{partial}.
 The proof above is unavailable in Lean, because it runs through
 \cref{thm:res-subst}, which is itself unformalized.  The formal proof is
 purely algebraic and rests on one cancellation: writing $v$ for the inverse of
@@ -1563,9 +1598,14 @@ convolving against the constant sequence $1$, or against $(-1)^n$, gives the
 displayed sums after reflecting the summation index
 (\lean{Fabius.binomialConv_one_left},
 \lean{Fabius.binomialConv_altSeries_left}).  And
-\lean{Fabius.exp_mul_altSeries} is the binomial theorem at $-1+1=0$ rather than
-a separate alternating-sum computation, which keeps it valid over an arbitrary
-commutative ring instead of only over $\IntegerNumbers$.""")),
+\lean{Fabius.exp_mul_altSeries} uses the binomial theorem at $-1+1=0$ for
+coefficient cancellation.  This cancellation is valid in every commutative
+ring; the EGF statements retain their $\RationalNumbers$-algebra hypothesis
+because their coefficients contain inverse factorials.
+The reverse triangular product is supplied by the general commutation theorem
+\lean{Fabius.lowerTriangular_orthogonal_comm}, and both directions are
+instances of the finite triangular transform calculus of
+\lean{Fabius.lowerTriangularTransform}.""")),
 ]
 
 PENDING += [
@@ -1658,7 +1698,12 @@ $(-1)^n$, and $\EulerE^{-x}\EulerE^{x}=1$ is \lean{Fabius.exp_mul_altSeries}.
 Worth noting beside the first-kind case: the first-kind column satisfies
 $(1-x)\log(1-x)F'=-kF$, whose kernel needs a logarithm and a dedicated series,
 while the kernel here is elementary.
-\cref{eq:second-reverse-row} is not formalized.""")),
+New source \lean{Fabius.second_reverse_row} in
+\lean{StirlingSecondReverseRowIdentity} supplies
+\cref{eq:second-reverse-row} over every commutative ring by extracting
+coefficients from \lean{Fabius.subst_logTail};
+\lean{Fabius.second_reverse_row_sum} gives the unrestricted rational-index
+version.  Compiler validation of the new row identities is pending.""")),
 ]
 
 PENDING += [
