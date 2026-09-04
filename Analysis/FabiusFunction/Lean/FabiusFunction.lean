@@ -75,6 +75,8 @@ import FabiusFunction.FallingFactorialSeries
 import FabiusFunction.PochhammerFalling
 import FabiusFunction.CauchyPolynomials
 import FabiusFunction.CoefficientRules
+import FabiusFunction.GridEvaluationCertificate
+import FabiusFunction.IntegerCRTCertificate
 import FabiusFunction.UnitSeriesPowerRecurrence
 import FabiusFunction.ExpSeriesRecurrence
 import FabiusFunction.StirlingSeriesCoefficients
@@ -91,6 +93,8 @@ import FabiusFunction.LagrangeInversion
 import FabiusFunction.LagrangeInversionUniqueness
 import FabiusFunction.NewtonReciprocal
 import FabiusFunction.RaneyNumbers
+import FabiusFunction.AssociahedronFaceNumbers
+import FabiusFunction.PochhammerFalling
 import FabiusFunction.AbelPolynomialSeries
 import FabiusFunction.LambertWSeries
 import FabiusFunction.FussCatalanSeries
@@ -332,6 +336,7 @@ import FabiusFunction.ExponentialPartition
 import FabiusFunction.ThueMorsePartition
 import FabiusFunction.ExponentialBell
 import FabiusFunction.UnitSeriesBellCoefficients
+import FabiusFunction.BellCompletePartitions
 import FabiusFunction.ThueMorseIntegerLift
 import FabiusFunction.ThueMorseBoundaryFlatness
 import FabiusFunction.ThueMorseDirichlet
@@ -554,6 +559,7 @@ import FabiusFunction.TransseriesScaleDominance
 import FabiusFunction.TransseriesBlockClasses
 import FabiusFunction.TransseriesMonomialUniqueness
 import FabiusFunction.TransseriesWrightOmegaTerms
+import FabiusFunction.LambertCoefficientPolynomials
 import FabiusFunction.TransseriesPolyLogScale
 import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
@@ -831,6 +837,7 @@ import FabiusFunction.LinLogCoreInversion
 import FabiusFunction.StaircaseInversion
 import FabiusFunction.RemainderTransport
 import FabiusFunction.LeastTermIndex
+import FabiusFunction.BellSetPartitions
 
 set_option autoImplicit false
 

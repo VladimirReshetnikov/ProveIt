@@ -82,9 +82,10 @@ That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
 > **Artifact status (2026-09-04).**  The live facade union contains exactly
-> 983 source modules and 12,192 public declarations.  The documentation audit
-> reports no missing module headers or declaration comments.  The previous
-> reconciled 970/12,056 inventory remains a historical checkpoint.  The exact-dyadic
+> 988 source modules and 12,257 explicit public declarations.  The documentation
+> audit reports no missing module headers or declaration comments.  The preceding
+> 979/12,142, 977/12,133, and earlier reconciled 970/12,056 inventories remain historical
+> checkpoints.  The exact-dyadic
 > inverse, Jacobi two-square, Lagrange--Rvachev Matrix, geometric Richardson,
 > Gaussian-binomial second-moment, fixed-column rate, and half-base root
 > simplicity, Rvachev--Appell Hasse,
@@ -229,15 +230,21 @@ in it must have a proved counterpart in the Lean development.
 > analyticity.  Those overlapping branch counts are receipts, not additive
 > deltas; later branch receipts are 967/12,001, 969/12,048, and 970/12,051.
 > Their reconciliation produced the historical 970/12,056 checkpoint.  The
-> current seven-module overlay is `AbelPolynomialSeries` 2+9,
+> following seven-module overlay is `AbelPolynomialSeries` 2+9,
 > `AssociahedronFaceNumbers` 4+23, `BernoulliFormalLog` 0+5,
 > `ExponentialRescaling` 0+4, `PochhammerFalling` 1+13,
 > `RaneyNumbers` 4+12, and `UnitSeriesPowerRecurrence` 0+3.  These modules
 > contain 80 declarations; moving three existing theorems from
-> `NorlundDiagonal` to `ExponentialRescaling` makes the net change +77 and the
-> historical 977/12,133 checkpoint, with no documentation gaps.  The live
-> exact-name-deduplicated union is 983 modules and 12,192 public declarations,
-> with no documentation gaps.  This is a conservative
+> `NorlundDiagonal` to `ExponentialRescaling` makes the net change +77 and gives
+> the preceding 977/12,133 checkpoint.  `GridEvaluationCertificate` 0+4 and
+> `IntegerCRTCertificate` 0+5 then add two modules and nine theorems, producing
+> the historical 979/12,142 checkpoint.  The six-module successor adds
+> `NorlundGeneralized` 3+18, `StirlingSymmetricFunctions` 0+4,
+> `LagrangeInversionUniqueness` 0+6, `NewtonReciprocal` 1+5,
+> `StirlingSecondReverseRowIdentity` 0+2, and
+> `TransseriesWrightOmegaTerms` 0+10, together with eight declarations in
+> existing modules.  Its +6-module/+57-declaration delta yields the live
+> 988/12,257 census with no documentation gaps.  This is a conservative
 > API inventory, not an automatic promotion of broader manuscript claims.  The separate
 > incoming-branch inner/exterior checkpoints
 > 906/11,461 and 907/11,464 remain historical.
@@ -418,6 +425,7 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 | Polynomial block operators and Laurent-block differentiation (`plt:eq:mot-block-derivative`, `plt:lem:mot-block-antiderivative`) | `FabiusFunction.TransseriesBlockAntiderivative`, `FabiusFunction.TransseriesDifferentialBlock` | `TransseriesBlockAntiderivative` remains 3+12.  `TransseriesDifferentialBlock` is now 0+12: `derivation_pow_t`, `derivation_block`, `derivation_zpow_block`, `exists_zpow_block_primitive`, `existsUnique_zpow_block_primitive`, `exists_block_primitive`, `derivation_block_zero`, `exists_block_primitive_resonant`, `derivation_val_inv`, `derivation_pow_inv`, `derivation_zpow_t`, `derivation_block_zpow`.  The integer Laurent block formula is **Exact**.  The compound antiderivative lemma remains **Partial** because generic uniqueness assumes injective evaluation at `L` and no concrete Laurent-polynomial model or resonant uniqueness-up-to-constants wrapper is constructed. |
 | Bell-polynomial coefficients of powers, logarithms, and exponentials of unit series (`p0:lem:bell-conversion`, `p0:lem:power-log`, `p0:cor:exp-log-jets`) | `FabiusFunction.UnitSeriesBellCoefficients` | **Exact as formal power-series algebra; no analytic convergence or logarithm branch is asserted.**  Exhaustive 0+16 surface: `ordPartialBell_eq_factorialRatio_partialBell`, `factorial_mul_ordPartialBell_eq_factorial_mul_partialBell`, `coeff_fallingSeries_subst_eq_sum_ordPartialBell`, `coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos`, `coeff_fallingSeries_subst_eq_sum_partialBell`, `coeff_negBinomSeries_subst_eq_sum_ordPartialBell`, `coeff_negBinomSeries_subst_eq_sum_ordPartialBell_of_pos`, `coeff_logOf_eq_sum_ordPartialBell`, `egfA_factorialDenormalize_coeff_eq`, `bellWeightSeries_factorialDenormalize_coeff_eq`, `coeff_logOf_eq_sum_partialBell`, `coeff_exp_subst_eq_completeBell`, `coeff_exp_subst_eq_partitionExpSum`, `coeff_exp_subst_eq_sum_weightedPartitions`, `coeff_exp_subst_eq_sum_div_weightedPartitions`, `coeff_exp_subst_recurrence`. |
 | Formal arbitrary-power coefficient recurrence (`alg:merged-exp-log-power`) | `FabiusFunction.UnitSeriesPowerRecurrence` | Exhaustive 0+3 surface: `coeff_recurrence_of_mul_derivative_eq`, `mul_derivative_fallingSeries_subst_sub_one`, `coeff_fallingSeries_subst_sub_one_recurrence`.  The first theorem is denominator-free over every commutative ring and assumes neither `F(0)=1` nor invertibility; the falling-series specialization is over a commutative rational algebra with `F(0)=1`.  Together with the existing logarithm and exponential recurrences this makes all of `alg:merged-exp-log-power` **Exact**.  These are formal-series identities, not analytic powers or branch choices. |
+| Deterministic grid and integer residue certificates | `FabiusFunction.GridEvaluationCertificate`, `FabiusFunction.IntegerCRTCertificate` | Exhaustive 0+4 and 0+5 surfaces.  Grid API: `mvPolynomial_eq_of_eval_eq_on_grid`, `mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_sub_le`, `mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_le`, `mvPolynomial_grid_eval_injective`.  It works for finitely many variables over any commutative integral domain; no field or characteristic-zero assumption is used.  Integer API: `int_prod_dvd_of_pairwise_coprime`, `int_eq_zero_of_modEq_zero_of_natAbs_lt_prod`, `int_eq_of_modEq_of_natAbs_sub_lt_prod`, `int_eq_of_modEq_of_natAbs_add_lt_prod`, `int_eq_of_modEq_of_two_mul_natAbs_lt_prod`.  The moduli may be signed or composite and the divisibility theorem includes the empty family; the equality tests retain their strict magnitude bounds.  No reconstruction algorithm or primality claim is made. |
 | Weighted Appell translation and inversion | `FabiusFunction.AppellSequence` | The +11 extension is `Bell.binomialConv_unitSeq`, `Bell.binomialConv_four_swap`, `Appell.translate_zero`, `Appell.translate_translate`, `Appell.binomialConv_translate`, `Appell.translate_injective`, `Appell.translate_neg_translate`, `Appell.translate_translate_neg`, `Appell.translate_eq_iff`, `Appell.weighted_binomial_inversion_iff`, and `Appell.binomialConv_translate_neg_translate`.  `thm:merged-weighted-binomial-translation` is **Exact** over a commutative semiring, with additive left cancellation only for injectivity; `cor:merged-weighted-binomial-inversion` is **Exact** over a commutative ring.  No analytic EGF claim is made. |
 | Stirling-series coefficients (`q2:eq:stirling-cj`) | `FabiusFunction.StirlingSeriesCoefficients` | Exhaustive 3+12 surface.  Definitions: `stirlingKernelCoeff`, `stirlingKernel`, `stirlingCoeff`.  Theorems: `coeff_stirlingKernel`, `constantCoeff_stirlingKernel`, `stirlingCoeff_zero`, `stirlingCoeff_recurrence`, `bernoulli_three`, `bernoulli_four`, `stirlingKernelCoeff_one`, `stirlingKernelCoeff_two`, `stirlingKernelCoeff_three`, `stirlingCoeff_one`, `stirlingCoeff_two`, `stirlingCoeff_three`.  The formal definition, recurrence, and displayed values `c₀=1`, `c₁=1/12`, `c₂=1/288`, `c₃=-139/51840` are **Exact**; the surrounding analytic Fubini-sector expansion is not claimed. |
 | Two Wright-omega orders (`plt:prop:mot-two-orders`) | `FabiusFunction.WrightOmegaTwoOrders` | Exhaustive 0+8 surface: `wrightOmega_lt_self`, `tendsto_log_wrightOmega_div_atTop_zero`, `tendsto_wrightOmega_div_atTop_one`, `tendsto_log_wrightOmega_sub_log_atTop_zero`, `tendsto_log_wrightOmega_div_log_atTop_one`, `self_sub_wrightOmega_isEquivalent_log`, `wrightOmega_sub_self_isEquivalent_neg_log`, `wrightOmega_residual_isEquivalent`.  The two concluding real equivalences `ω(X)-X∼-log X` and `ω(X)-X+log X∼(log X)/X` are **Exact** at `atTop`.  The proposition remains **Partial** at its four-term quantitative expansion and explicit envelope. |

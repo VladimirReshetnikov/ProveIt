@@ -926,10 +926,13 @@ and 11,695 public declarations. The incoming union adds one module and
 fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This made 934/11,709 an explicitly
-historical post-Prouhet checkpoint. Later work produced the historical
-943/11,791 and 944/11,806 checkpoints. The authoritative merged live census is
-983 modules and 12,192 public declarations. The census also includes
+`ThueMorseNewmanSelfSimilarity.lean`. This made 934 modules and 11,709 public
+declarations an explicitly historical post-Prouhet checkpoint. Subsequent
+source-only transseries/Catalan and Thue--Morse additions made 943/11,791 the
+next historical checkpoint. The finalized one-definition/eleven-theorem
+`TransseriesFlat.lean` module and three integer-zpow theorems in
+`TransseriesDifferentialBlock.lean` gave the historical census 944 modules and
+11,806 public declarations; the merged live census is 988/12,257. The census also includes
 the unrelated
 sibling source-only
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
@@ -1065,10 +1068,12 @@ dyadic/finite-prefix census 933/11,695.  The incoming union adds one module and
 fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This made 934/11,709 an explicitly
-historical post-Prouhet checkpoint. Later work produced the historical
-943/11,791 and 944/11,806 checkpoints. The authoritative merged live census is
-983 modules and 12,192 public declarations.
+`ThueMorseNewmanSelfSimilarity.lean`.  This made 934/11,709 an explicitly
+historical post-Prouhet checkpoint.  Subsequent source-only
+transseries/Catalan and Thue--Morse additions made 943/11,791 the next
+historical checkpoint.  The finalized one-definition/eleven-theorem
+`TransseriesFlat.lean` module and three integer-zpow theorems in
+`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 988/12,257.
 
 The existing `FabiusFunction.ProbabilityLaplaceMoments` module adds exactly
 the two theorems

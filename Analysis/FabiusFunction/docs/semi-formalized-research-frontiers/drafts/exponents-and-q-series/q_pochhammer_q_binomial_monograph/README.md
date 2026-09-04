@@ -201,7 +201,7 @@ The current source includes exhaustive crosswalks for `QPochhammerEntire`
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
 theorems), `QBinomialTheoremInfinite` (one definition and twenty-seven
-theorems), `GaussianBinomialFixedColumnRate` (zero definitions and eight
+theorems), `GaussianBinomialFixedColumnRate` (zero definitions and nine
 theorems), `GaussianBinomialGreaterOneAsymptotics` (zero definitions and two
 theorems), `GaussianBinomialPalindromic` (zero definitions and fourteen
 theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
@@ -265,10 +265,13 @@ declarations beyond the historical reciprocity checkpoint 931/11,685. The
 incoming union adds one module and fourteen public declarations: the new
 zero-definition/six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem
 added to `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This made 934/11,709 an explicitly
-historical post-Prouhet checkpoint. Later transseries/Catalan and Thue--Morse
-work produced the historical 943/11,791 and 944/11,806 checkpoints. The
-authoritative merged live census is 983 modules and 12,192 public declarations. Ten declarations come from the sibling
+`ThueMorseNewmanSelfSimilarity.lean`. This made 934 modules and 11,709 public
+declarations an explicitly historical post-Prouhet checkpoint. Subsequent
+source-only transseries/Catalan and Thue--Morse additions made 943/11,791 the
+next historical checkpoint. The finalized one-definition/eleven-theorem
+`TransseriesFlat.lean` module and three integer-zpow theorems in
+`TransseriesDifferentialBlock.lean` gave the historical facade audit 944 modules and
+11,806 public declarations; the merged live census is 988/12,257. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`; it does not change this
@@ -407,10 +410,12 @@ dyadic/finite-prefix census 933/11,695.  The incoming union adds one module and
 fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This made 934/11,709 an explicitly
-historical post-Prouhet checkpoint. Later transseries/Catalan and Thue--Morse
-work produced the historical 943/11,791 and 944/11,806 checkpoints. The
-authoritative merged live census is 983 modules and 12,192 public declarations.
+`ThueMorseNewmanSelfSimilarity.lean`.  This made 934/11,709 an explicitly
+historical post-Prouhet checkpoint.  Subsequent source-only
+transseries/Catalan and Thue--Morse additions made 943/11,791 the next
+historical checkpoint.  The finalized one-definition/eleven-theorem
+`TransseriesFlat.lean` module and three integer-zpow theorems in
+`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 988/12,257.
 The existing `ProbabilityLaplaceMoments.lean` module now adds exactly the two
 theorems
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
@@ -524,8 +529,9 @@ negative integral parameters are admitted: field-totalized `qGammaC` makes
 the displayed quotient zero there, matching the product side, without
 asserting holomorphy at a pole.
 
-`GaussianBinomialFixedColumnRate.lean` has no definitions and exactly eight
+`GaussianBinomialFixedColumnRate.lean` has no definitions and exactly nine
 theorems. Its exhaustive public surface is
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp'`,
 `norm_finiteQPochhammerIn_pow_sub_one_le`,
 `norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
 `norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
@@ -534,14 +540,13 @@ theorems. Its exhaustive public surface is
 `gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
 `gaussianBinomial_fixedColumn_error_isBigO`, and
 `gaussianBinomial_shifted_fixedColumn_error_isBigO`. This closure additionally
-reuses `norm_finiteQPochhammerIn_pow_sub_one_le_exp` and
-`tendsto_gaussianBinomial_add_atTop` from the one-definition,
-twenty-seven-theorem `QBinomialTheoremInfinite` module. The imported
-exponential bound and the rate leaf's elementary bound give the generic
-finite-product defect; the latter seven declarations give the denominator-free
+reuses `norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` and
+`tendsto_gaussianBinomial_add_const_atTop` from the one-definition,
+twenty-seven-theorem `QBinomialTheoremInfinite` module. The rate leaf's first two
+theorems give the generic finite-product defect bounds; the latter seven declarations give the denominator-free
 relative estimate, fixed and shifted nonasymptotic additive errors, and all
 four fixed/shifted relative and additive Big-O wrappers. The reused theorem
-supplies the shifted limit. All ten closure names include `q = 0` at their
+supplies the shifted limit. All eleven closure names include `q = 0` at their
 respective `‖q‖ ≤ 1` or `‖q‖ < 1` boundaries; no nonzero-nome premise is hidden.
 
 The latest `ThueMorseSparseProuhet` partition tranche adds no definitions and

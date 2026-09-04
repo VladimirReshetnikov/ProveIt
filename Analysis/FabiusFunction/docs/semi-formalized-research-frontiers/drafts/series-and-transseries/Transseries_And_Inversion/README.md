@@ -31,11 +31,11 @@ absorbed each; the repair appendix lists every correction made.
 
 ## Lean formalization inventory
 
-The live corpus census is 983 modules and 12,192 explicit public declarations,
+The live corpus census is 988 modules and 12,257 explicit public declarations,
 with zero missing declaration comments and zero missing module headers. The
 thirty-five directly relevant modules contain 304 explicit public commands; two
 named `to_additive` declarations bring this inventory to 306 named API entries.
-The 970/12,056 census is the preceding historical checkpoint.
+The 979/12,142 census is the preceding historical checkpoint.
 Automatically generated structure projections are outside both tallies.
 
 - `TransseriesScale.lean` (one structure, two definitions, six theorems):
@@ -280,8 +280,8 @@ is about the passage from a function to a sequence.
 
 ## Lean crosswalk
 
-The current integrated inventory is 983 modules and 12,192 public declarations,
-with no documentation gaps. The preceding 970/12,056 inventory is a historical
+The current integrated inventory is 988 modules and 12,257 public declarations,
+with no documentation gaps. The preceding 979/12,142 inventory is a historical
 checkpoint. `TransseriesFlat` now has 4 definitions
 and 22 theorems, preserving the general vector-valued API together with the
 scalar submodule, absorption, and power-scale interfaces. The integer block

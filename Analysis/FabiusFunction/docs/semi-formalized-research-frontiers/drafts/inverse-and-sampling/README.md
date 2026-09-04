@@ -204,11 +204,13 @@ declarations, making the historical 933/11,695 census.  The incoming union
 adds one module and fourteen public declarations: the new zero-definition/
 six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This made 934/11,709 an explicitly
-historical post-Prouhet checkpoint. Subsequent transseries/Catalan and
-Thue--Morse additions produced the historical 943/11,791 and 944/11,806
-checkpoints. The authoritative merged live census is 983 modules and 12,192
-public declarations, with no missing module header or public-declaration
+`ThueMorseNewmanSelfSimilarity.lean`.  This made 934/11,709 an explicitly
+historical post-Prouhet checkpoint.  Subsequent source-only
+transseries/Catalan and Thue--Morse additions made 943/11,791 the next
+historical checkpoint.  The finalized one-definition/eleven-theorem
+`TransseriesFlat.lean` module and three integer-zpow theorems in
+`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 988/12,257.
+The exhaustive audit still has no missing module header or public-declaration
 doc comment.  The q forward
 ledger is now 181 Exact / 79 Partial / 14 None / 8 interface rows, its relevant
 Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and its source concordance

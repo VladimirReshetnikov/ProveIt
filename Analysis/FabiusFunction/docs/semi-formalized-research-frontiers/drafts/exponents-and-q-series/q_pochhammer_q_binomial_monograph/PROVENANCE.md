@@ -143,7 +143,7 @@ and none is Type 3. Required log, reference/rerun, metadata, visual, cleanup,
 and forbidden-basename gates passed. The final log has no vertical box and five
 minor horizontal boxes, none above 10.14 pt.
 
-The authoritative merged semantic documentation census is 983 facade-reachable\nmodules and 12,192 public declarations, with zero missing module headers and\nzero declaration-documentation gaps. The union retains the public\n`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
+The authoritative merged semantic documentation census is 988 facade-reachable\nmodules and 12,257 public declarations, with zero missing module headers and\nzero declaration-documentation gaps. The union retains the public\n`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
 Sibling source-only promotions are recorded here only to delimit this
 q-volume's receipt: `LambertWBranchPairing.lean`,
 `LambertWGapBijection.lean`, and `LambertWBranchSymmetry.lean` have exhaustive
@@ -177,7 +177,7 @@ The current source incorporates exhaustive crosswalks for
 `QPochhammerInfinite` (one definition and twenty-nine theorems),
 `QPochhammerDissection` (zero definitions and two theorems),
 `QBinomialTheoremInfinite` (one definition and twenty-seven theorems),
-`GaussianBinomialFixedColumnRate` (zero definitions and eight theorems),
+`GaussianBinomialFixedColumnRate` (zero definitions and nine theorems),
 `GaussianBinomialGreaterOneAsymptotics` (zero definitions and two theorems),
 `GaussianBinomialPalindromic` (zero definitions and fourteen theorems),
 `GaussianBinomialPolynomialStructure` (zero definitions and five theorems),
@@ -246,11 +246,13 @@ declarations beyond the historical reciprocity checkpoint 931/11,685. The
 incoming union adds one module and fourteen public declarations: the new
 zero-definition/six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem
 added to `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This made 934/11,709 an explicitly
-historical post-Prouhet checkpoint. Later transseries/Catalan and Thue--Morse
-work produced the historical 943/11,791 and 944/11,806 checkpoints. The
-authoritative merged live census is 983 modules and 12,192 public declarations.
-The historical 933/11,695 corpus-wide
+`ThueMorseNewmanSelfSimilarity.lean`. This made 934 modules and 11,709 public
+declarations an explicitly historical post-Prouhet checkpoint. Subsequent
+source-only transseries/Catalan and Thue--Morse additions made 943/11,791 the
+next historical checkpoint. The finalized one-definition/eleven-theorem
+`TransseriesFlat.lean` module and three integer-zpow theorems in
+`TransseriesDifferentialBlock.lean` gave the historical facade audit 944 modules and
+11,806 public declarations; the merged live census is 988/12,257. The historical 933/11,695 corpus-wide
 totals include the q--Chu, Richardson,
 geometric-law barycenter, Lagrange--Rvachev matrix, arbitrary-space geometric
 realization, regular-central-sum, Lambert branch-gap Bernoulli, affine
@@ -298,12 +300,12 @@ negative-odd slice. Even negative integral parameters remain admitted, where
 the field-totalized `qGammaC` quotient is zero in agreement with the product
 side; no holomorphy at a pole is claimed. The
 zero-definition/nine-theorem `GaussianBinomialFixedColumnRate.lean` leaf gives
-the elementary finite-product defect bound, the denominator-free relative
+the exponential and elementary finite-product defect bounds, the denominator-free relative
 Gaussian estimate, fixed and shifted nonasymptotic additive errors, and all
 four fixed/shifted relative/additive Big-O wrappers. The closure reuses
-`norm_finiteQPochhammerIn_pow_sub_one_le_exp` and
-`tendsto_gaussianBinomial_add_atTop` from the one-definition,
-twenty-nine-theorem `QBinomialTheoremInfinite.lean` surface. It works over the
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` and
+`tendsto_gaussianBinomial_add_const_atTop` from the one-definition,
+twenty-seven-theorem `QBinomialTheoremInfinite.lean` surface. It works over the
 stated generic multiplicative-norm ring or normed-field interfaces and includes
 `q = 0`; the older unshifted limit also remains in
 `QBinomialTheoremInfinite.lean`.
@@ -398,10 +400,12 @@ public declarations, making the historical dyadic/finite-prefix census
 declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This made 934/11,709 an explicitly
-historical post-Prouhet checkpoint. Later transseries/Catalan and Thue--Morse
-work produced the historical 943/11,791 and 944/11,806 checkpoints. The
-authoritative merged live census is 983 modules and 12,192 public declarations.
+`ThueMorseNewmanSelfSimilarity.lean`.  This made 934/11,709 an explicitly
+historical post-Prouhet checkpoint.  Subsequent source-only
+transseries/Catalan and Thue--Morse additions made 943/11,791 the next
+historical checkpoint.  The finalized one-definition/eleven-theorem
+`TransseriesFlat.lean` module and three integer-zpow theorems in
+`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 988/12,257.
 The facade also contains the zero-definition/two-theorem
 `GaussianBinomialGreaterOneAsymptotics.lean` leaf; its exhaustive declarations
 are `gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
@@ -446,10 +450,13 @@ declarations, making the historical dyadic/finite-prefix semantic-union census
 declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This made 934/11,709 an explicitly
-historical post-Prouhet checkpoint. Later transseries/Catalan and Thue--Morse
-work produced the historical 943/11,791 and 944/11,806 checkpoints. The
-authoritative merged live census is 983 modules and 12,192 public declarations.  The existing `ProbabilityLaplaceMoments.lean` module now also
+`ThueMorseNewmanSelfSimilarity.lean`.  This made the semantic-union census
+checkpoint 934/11,709 explicitly historical.  Subsequent source-only
+transseries/Catalan and Thue--Morse additions made 943/11,791 the next
+historical checkpoint.  The finalized one-definition/eleven-theorem
+`TransseriesFlat.lean` module and three integer-zpow theorems in
+`TransseriesDifferentialBlock.lean` gave the historical census
+944/11,806; the merged live census is 988/12,257.  The existing `ProbabilityLaplaceMoments.lean` module now also
 contains exactly the two new declarations
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
 `integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.

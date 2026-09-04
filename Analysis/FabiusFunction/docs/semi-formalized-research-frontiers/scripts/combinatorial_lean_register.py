@@ -38,6 +38,22 @@ if '\\newcommand{\\lean}' not in s:
 # ---------------------------------------------------------------- statuses
 # label -> (status, "declarations (module)")
 STATUS = {
+ 'thm:merged-grid-certificate': ('Lean',
+   r"\lean{Fabius.mvPolynomial_eq_of_eval_eq_on_grid} proves the difference-degree "
+   r"criterion over any integral domain and finite variable type; "
+   r"\lean{Fabius.mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_sub_le} and "
+   r"\lean{Fabius.mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_le} give the two "
+   r"natural-degree-bound forms, and \lean{Fabius.mvPolynomial_grid_eval_injective} "
+   r"gives injectivity on the bounded-degree class (\lean{GridEvaluationCertificate})."),
+ 'thm:merged-crt-certificate': ('Lean',
+   r"\lean{Fabius.int_prod_dvd_of_pairwise_coprime} and "
+   r"\lean{Fabius.int_eq_zero_of_modEq_zero_of_natAbs_lt_prod} prove product "
+   r"divisibility and the stronger full-product zero bound; "
+   r"\lean{Fabius.int_eq_of_modEq_of_natAbs_sub_lt_prod}, "
+   r"\lean{Fabius.int_eq_of_modEq_of_natAbs_add_lt_prod}, and "
+   r"\lean{Fabius.int_eq_of_modEq_of_two_mul_natAbs_lt_prod} give the difference, "
+   r"sum, and symmetric half-product equality certificates for finite families "
+   r"of signed, pairwise coprime integer moduli (\lean{IntegerCRTCertificate})."),
  'lem:merged-formal-rescaling': ('Lean',
    r"\cref{eq:merged-formal-rescaling-derivative} is "
    r"\lean{Fabius.derivative_rescale} over every commutative semiring; "
@@ -54,9 +70,28 @@ STATUS = {
    r"(\lean{StirlingBasisChange}); the permutation count itself is not formalized"),
  'thm:second-recurrence': ('partial',
    r"\lean{Nat.stirlingSecond_succ_succ}, \lean{Nat.stirlingSecond_succ_zero}, "
-   r"\lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib) prove the algebraic recurrence and "
-   r"boundary values for the recursively defined array.  Identifying this array with the "
-   r"cardinality of set partitions requires a separate formal counting theorem."),
+   r"\lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib); the set-partition count, "
+   r"which Mathlib leaves as a docstring claim, is \lean{Fabius.card_setPartitions} "
+   r"(\lean{BellSetPartitions})"),
+ 'prop:merged-abel': ('none',
+   r"\lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_eval_add}, "
+   r"\lean{Fabius.abelSeries_eq}, \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} "
+   r"(\lean{AbelPolynomialSeries}) state the EGF for every solution "
+   r"of $T=te^{-aT}$ over a commutative rational algebra, not only the constructed one. "
+   r"The polynomial definition needs only a commutative ring, but the current "
+   r"binomial-identity proof also assumes a rational algebra. Compiler validation is pending."),
+ 'thm:merged-frechet-faa': ('Lean',
+   r"Mathlib's \lean{iteratedFDeriv_comp} (ContDiff/Comp.lean), unfolded with "
+   r"\lean{FormalMultilinearSeries.taylorComp} and "
+   r"\lean{FormalMultilinearSeries.compAlongOrderedFinpartition_apply}. "
+   r"The statement includes local $C^n$ hypotheses and explicitly uses "
+   r"\lean{OrderedFinpartition}'s increasing-maximum block order. "
+   r"No symmetry conversion is required; the separate partial-Bell regrouping remains open."),
+ 'thm:bell-poly-partitions': ('Lean',
+   r"\lean{Fabius.partialBell_eq_sum_setPartitions} and "
+   r"\lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), "
+   r"over any commutative semiring of weights; the per-type count "
+   r"\cref{cor:partition-type} is not covered"),
  'thm:second-explicit': ('Lean',
    r"\lean{Fabius.factorial_mul_stirlingSecond_eq_sum} (over $\mathbb Z$) and "
    r"\lean{Fabius.stirlingSecond_eq_sum_div_factorial} (over $\mathbb Q$) "
@@ -469,7 +504,19 @@ STATUS = {
    r"\lean{Fabius.derivative_norlund_succ}, \cref{eq:merged-norlund-translation} is "
    r"\lean{Fabius.norlund_eval_add}, \cref{eq:merged-norlund-difference} is "
    r"\lean{Fabius.norlund_succ_eval_add_one_sub} and \cref{eq:merged-norlund-convolution} is "
-   r"\lean{Fabius.norlund_add_eval_add}; complex orders are not formalized."),
+   r"\lean{Fabius.norlund_add_eval_add}. The arbitrary-order source in "
+   r"\lean{NorlundGeneralized}, including "
+   r"\lean{Fabius.generalizedNorlund_succ_eval_add_one_sub} and "
+   r"\lean{Fabius.generalizedNorlund_eval_add_one_sub}, awaits compilation; "
+   r"the row is not promoted on source review alone."),
+ 'lem:merged-complete-bell-multiplicities': ('none',
+   r"The new \lean{BellCompletePartitions} source states "
+   r"\lean{Fabius.bell_complete_eq_sum_weightedPartitions}, "
+   r"\lean{Fabius.inv_factorial_smul_complete_eq_sum_weightedPartitions}, and "
+   r"\lean{Fabius.bell_complete_eq_sum_div_weightedPartitions}, including degree zero "
+   r"and unrestricted zeroth input. It shares the existing complete-Bell and "
+   r"weighted-partition bridges, but still awaits compilation. "
+   r"This is an integer-multiplicity sum, not a labelled-set partition theorem."),
  'thm:bell-poly-derivatives': ('partial',
    r"\cref{eq:partial-bell-derivative} is \lean{Fabius.pderiv_partialBell_succ} and "
    r"\cref{eq:complete-bell-derivative} is \lean{Fabius.pderiv_bellComplete} (module "
@@ -519,12 +566,14 @@ STATUS = {
    r"$(\Differential/\Differential t)^n(fg)=\sum_k\binom nk f^{(k)}g^{(n-k)}$ in $R[[t]]$ over any "
    r"commutative ring; the general $q$-factor multinomial form is not formalized."),
  'thm:merged-norlund-bell-diagonal': ('partial',
-   r"The three diagonal displays are formalized for natural orders (module "
+   r"The three diagonal displays are formalized for natural orders and rational evaluation points (module "
    r"\lean{NorlundDiagonal}): \cref{eq:merged-norlund-polynomial-diagonal} is "
    r"\lean{Fabius.norlund_diagonal}, \cref{eq:merged-norlund-number-diagonal} is "
    r"\lean{Fabius.norlund_eval_zero_diagonal} and \cref{eq:merged-norlund-diagonal} is "
-   r"\lean{Fabius.coeff_bernoulliPowerSeries_pow_succ}; the Bell-polynomial construction "
-   r"\cref{eq:merged-norlund-bell,eq:merged-norlund-bell-explicit} is not formalized."),
+   r"\lean{Fabius.coeff_bernoulliPowerSeries_pow_succ}. "
+   r"The arbitrary-order Bell and multiplicity constructions in "
+   r"\lean{NorlundGeneralized} and \lean{BellCompletePartitions} await compilation. "
+   r"Transport of the polynomial diagonal to an arbitrary coefficient algebra remains open."),
  'thm:merged-narayana': ('partial',
    r"Module \lean{NarayanaNumbers} defines $N(n,k)$ by the division-free determinant "
    r"$\binom nk\binom{n-1}{k-1}-\binom n{k-1}\binom{n-1}k$ over $\IntegerNumbers$ "
