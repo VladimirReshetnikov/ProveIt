@@ -788,6 +788,7 @@ import FabiusFunction.MixedDifferenceForwardDiff
 import FabiusFunction.GeometricProuhetBlock
 import FabiusFunction.GeneralLinearThueMorseSum
 import FabiusFunction.QuadraticCoreCatalan
+import FabiusFunction.DerangementNearestInteger
 
 set_option autoImplicit false
 
