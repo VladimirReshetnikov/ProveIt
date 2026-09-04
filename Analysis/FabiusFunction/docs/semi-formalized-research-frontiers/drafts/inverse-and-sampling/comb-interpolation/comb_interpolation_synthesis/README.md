@@ -36,10 +36,38 @@ evidence of a compiled Lean declaration. Likewise, numerical tables and plots
 are checks and illustrations, not proof premises. The current
 `FabiusFunction.LagrangeRvachevSynthesis` crosswalk verifies generic scalar
 decoder synthesis, node biorthogonality, coefficient factorization, the full
-finite interpolation loop, and the unnormalized decoder row-sum law. It does
-not claim a formal geometric Gaussian closed-form decoder, the associated
-elementary-symmetric/prefactor formula, a `Matrix` wrapper, or decoder
-optimization.
+finite interpolation loop, and the unnormalized decoder row-sum law. The
+companion `FabiusFunction.LagrangeRvachevMatrix` API adds
+`rvachevAtomIndexSet`, `RvachevAtomIndex`,
+`lagrangeRvachevEncoderMatrix`, and `lagrangeRvachevDecoderMatrix`, together
+with `lagrangeRvachevEncoderMatrix_nonneg`,
+`sum_lagrangeRvachevEncoderMatrix_row_eq_one`,
+`sum_lagrangeRvachevDecoderMatrix_row_eq_one`, and
+`lagrangeRvachevEncoderMatrix_mul_decoderMatrix`. These declarations exactly
+discharge `gq:thm:gaussian-Appell-biorthogonality`. The generic
+`exists_neg_entry_of_rightInverse_of_row_overlap` and its specialized
+`exists_lagrangeRvachevDecoderMatrix_entry_neg_of_row_overlap` prove the
+negative-entry conclusion only when the stated strictly positive row overlap
+is supplied. The downstream one-definition/fourteen-theorem
+`FabiusFunction.RvachevAppellHasse` module now proves the generic finite
+Appell--Hasse transform, odd reciprocal-moment parity, the even Rvachev--Hasse
+formula, the q-falling elementary-symmetric specialization, and the explicit
+geometric Lagrange--Rvachev decoder. In particular,
+`eval_rvachevDeconvolvedPolynomial_qFallingPower`, combined with the existing
+finite polynomial synthesis theorem, exactly discharges
+`gq:prop:q-Appell-falling`, while
+`geometric_lagrangeRvachevDecoder_eq`, combined with the generic scalar
+cardinal synthesis, exactly discharges
+`gq:thm:gaussian-Appell-decoder`. The algebraic formulas are totalized at zero
+or colliding nodes, but cardinal semantics use the manuscript assumptions
+`0 < q < 1` and `c > 0`; Lean writes the Gaussian power with the equivalent
+nonnegative denominator exponent. This promotion does not add an analytic
+reciprocal-MGF series theorem or a decoder-optimization result.
+
+The 232-row concordance therefore records 7 Lean-proved rows, 159
+human-proved frontier rows, 20 conjectures, 30 open problems, and 16 rows for
+which proof status is not applicable. Its source projection and total row
+count are unchanged.
 
 The separate exact concordance row maps the strict-interior formula in
 `thm:weight-valuation` to `Fabius.twoPowChoose_padicValNat` in
@@ -165,11 +193,11 @@ The current source preserves the completed publication union's stable-path edits
 in `chapters/01_geometric_core.tex` and `chapters/99_bibliography.tex` together
 with the local general-$q$, endpoint-jet, Lagrange-synthesis,
 `PrimePowerBinomialValuation`, `GeometricRichardsonGenerating`,
-reference-appendix, layout, and driver edits in
+`RvachevAppellHasse`, reference-appendix, layout, and driver edits in
 `chapters/03_additive_dyadic.tex`, `chapters/90_reference_appendices.tex`, and
 `comb_interpolation_synthesis.tex`, and adds the exact generic-prime and dyadic
-companion-row valuation crosswalk and Richardson generating-function crosswalk
-described above.  It now spells every genuine
+companion-row valuation crosswalk, Richardson generating-function crosswalk,
+and q-Appell/geometric-decoder crosswalks described above.  It now spells every genuine
 two-adic valuation with the shared `\TwoAdicValuation` command and uses the
 document-local `\FabiusGeometricNewtonCoefficient{k}{q}` family for the
 geometric Newton coefficients formerly homographic with that valuation. The

@@ -16479,7 +16479,7 @@ primitive odd roots of unity --- must be controlled; the cancellation-order
 calculus of the two-nome partition function below is a candidate mechanism.
 \end{conjecture}
 
-\begin{statusbox}{Post-snapshot Lean status: Exact equation; Partial theorem}
+\begin{statusbox}{Post-snapshot Lean status: Exact equation and theorem}
 The source-only module \path{GeometricUniformMomentPolynomial.lean} has one
 public definition, \lean{geometricUniformMomentPolynomial}, and exactly eight
 public theorems:
@@ -16525,18 +16525,44 @@ polynomial.  The canonical q-monograph compound label
 across both regimes or proves its pole-clearing identity and resulting
 polynomial continuation at roots of unity.  No boundary claim at
 \(\lVert q\rVert=1\) is made.
-Nor does any of these modules prove the leading-coefficient formula and
-consequent strict degree drop for odd \(n>1\).  Thus the compound theorem
-\cref{p7:thm:Pn} remains Partial, not Exact: its algebraic
-recurrence/bound/zero/small-case clauses and strict-disk analytic normalization
-are supplied, while its leading/odd-degree clause remains open.  The \(1+8\)
+
+The final source-only
+\path{GeometricUniformMomentPolynomialDegree.lean} leaf has no public
+definitions and exactly three public theorems:
+\lean{coeff_geometricUniformMomentPolynomial_choose_two},
+\lean{coeff_geometricUniformMomentPolynomial_choose_two_sub_one}, and
+\lean{geometricUniformMomentPolynomial_natDegree_eq}.  Writing
+\(T_n=\binom n2\), they prove
+\[
+ [q^{T_n}]\mathcal P_n=\frac{B_n(1)}{n!},\qquad
+ [q^{T_n-1}]\mathcal P_n=-\frac{B_n(1)}{n!}
+   +\frac{B_{n-1}(1)}{2(n-1)!}\quad(n\geq2),
+\]
+and exact degree \(T_n\) when \(n=1\) or \(n\) is even, versus \(T_n-1\)
+otherwise.  Lean's \nolinkurl{bernoulli' n} is precisely
+\(B_n(1)=(-1)^nB_n\), with Mathlib using \(B_1=-1/2\).  Consequently
+\cref{p7:thm:Pn} is Exact: its algebraic recurrence, bound, zero and small
+cases, its inner strict-disk and exterior analytic normalizations, and its
+leading/odd-degree clause are all supplied.  The sharper q-monograph label
+\nolinkurl{prop:qF-P-degree-sharp} is Exact as well.  Neither promotion fills
+the global \texttt{RatFunc} and root-continuation gap in
+\nolinkurl{thm:qF-moment-polynomial}, which remains Partial.  The \(1+8\)
 algebraic leaf raised the historical 903/11,448 checkpoint to the historical
 904 modules and 11,457 public declarations; the exhaustive \(0+1\) real bridge
 raised the next historical checkpoint to 905 modules and 11,458 public
 declarations; and the exhaustive \(1+2\) complex leaf raised the next
-historical checkpoint to 906 modules and 11,461 public declarations.  The exhaustive
-\(1+2\) exterior leaf raises the live facade census to 907 modules and 11,464
-public declarations.
+historical checkpoint to 906 modules and 11,461 public declarations.  The
+later merged-main checkpoint is 919 modules and 11,569 public declarations;
+the exhaustive \(1+2\) exterior leaf raises it to 920 modules and 11,572
+public declarations, and the exhaustive \(0+3\) sharp-degree leaf raises the
+live facade census to 921 modules and 11,575 public declarations.
+The merged-main increment to 919 is the exhaustive zero-definition/
+one-theorem \path{HalfQBinomialRootSimplicity.lean} leaf.  Its theorem
+\lean{halfQBinomial_sum_rootMultiplicity_two_pow}, combined with the existing
+complete rational root classification and half-base Gaussian-coefficient
+bridge, makes \nolinkurl{cor:halfbase-root-locus} Exact.  It makes no
+arbitrary-base or arbitrary-field simplicity claim, and
+\nolinkurl{cor:qbinom-inversion-law} remains Partial.
 The retained PDF predates these source-only crosswalks, remains historical,
 and claims no render parity.
 \end{statusbox}

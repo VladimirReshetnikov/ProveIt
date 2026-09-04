@@ -459,11 +459,33 @@ For $n\ge0$ and $M=4^n$,
 \end{corollary}
 
 \begin{proof}
-Evaluate \eqref{eq:leg-mode-synthesis} for $P_{2n}$ at $x=0$.
-The boundary terms vanish, and parity pairs $k$ with $-k$.  Multiply by
-$M=4^n$ and use
-$P_{2n}(0)=(-1)^n4^{-n}\binom{2n}{n}$.
+Evaluate \eqref{eq:leg-mode-synthesis} for $P_{2n}$ at $x=0$ and
+$M=4^n$.  Compact support removes the terms with
+$M\le \lvert k\rvert<2M$ (including the zero boundary values at
+$\lvert k\rvert=M$), leaving the open integer
+interval $-M<k<M$.  Both $Q^-_{2n}$ and $u$ are even, so the nonzero terms
+pair under $k\leftrightarrow-k$; the unpaired term is
+$Q^-_{2n}(0)u(0)=Q^-_{2n}(0)$.  Multiply by $M=4^n$ and use
+$P_{2n}(0)=(-1)^n4^{-n}\binom{2n}{n}$.  When $n=0$, $M=1$ and the
+positive-index sum is empty, so the same calculation applies.
 \end{proof}
+
+\begin{statusbox}{Lean status: Exact/Complete}
+The source module \path{FabiusFunction.RvachevLegendreCentralSum} has no public
+definitions and exactly three public theorems.  The supporting declarations
+\path{eval_legendrePolynomial_even_zero} and
+\path{eval_rvachevLegendreDeconvolutionPolynomial_even} prove the two central
+normalizations used above; \path{rvachevLegendreCentralSum} is
+\eqref{eq:leg-central-sum} itself, with the printed $M=4^n$, the same open
+lattice sum, and arbitrary \path{BoundedFabius} data satisfying
+\path{IsFabius}.  The proof composes the previously formalized even-mode
+synthesis with compact support and parity, and the principal declaration is
+exactly the displayed conclusion.  This status does not promote the
+compound \cref{thm:leg-mode-synthesis}: its Jacobi closed form, all-degree
+parity, and rationality clauses remain outside this module.  Reverse spectral
+closure, target-specific mesh minimality, and \cref{thm:lag-right-inverse}
+also remain outside the claim.
+\end{statusbox}
 }
 
 For every integer $n\ge0$, put $m_n=4^n$ and define its finite even-mode train

@@ -366,18 +366,30 @@ Q_REDIRECTS = {
 # Canonical proof statuses can advance after the immutable merge snapshot.
 CURRENT_Q_STATUS_OVERRIDES = {
     "cor:q-chu": "Lean-proved",
+    "cor:halfbase-root-locus": "Lean-proved",
     "lem:2phi1-reversal": "Lean-proved",
     "thm:q-pfaff": "Lean-proved",
     "thm:qbinom-moments": "Lean-proved",
+    "thm:fixed-column-limit": "Lean-proved",
+    "cor:qgreaterone": "Lean-proved",
+    "cor:scaled-geometric-moments": "Lean-proved",
+    "cor:geometric-prouhet-affine": "Lean-proved",
     "thm:geometric-filter-bound": "Lean-proved",
     "cor:positivity": "Lean-proved",
+    "cor:partition-symmetries": "Lean-proved",
+    "cor:thue-morse-prouhet-partition": "Lean-proved",
+    "thm:geometric-uniform-basic": "Lean-proved",
+    "thm:regular-central-sum": "Lean-proved",
     "prop:dissection": "Lean-proved",
     "cor:dissection-remainder": "Lean-proved",
+    "qg:cor-two-square-lambert": "Lean-proved",
+    "qg:thm-two-square": "Lean-proved",
     "thm:qbinom-structure": "Lean-proved",
     "thm:poch-entire": "Lean-proved",
     "prop:rogers-szego-recurrence": "Lean-proved",
     "prop:rogers-szego-three-term": "Lean-proved",
     "cor:rogers-szego-dilation": "Lean-proved",
+    "prop:qF-P-degree-sharp": "Lean-proved",
 }
 
 Q_SOURCE_LINE_TARGETS = {
@@ -629,12 +641,16 @@ def inventory_revision(
         for row in package_rows:
             groups[row["source_key"]] = group
         rows.extend(package_rows)
+    known_current_status_labels = set(q_statuses)
+    for target, _disposition in parse_guide_map().values():
+        known_current_status_labels.update(target.split("|"))
     missing_current_status_labels = sorted(
-        set(CURRENT_Q_STATUS_OVERRIDES) - set(q_statuses)
+        set(CURRENT_Q_STATUS_OVERRIDES) - known_current_status_labels
     )
     if missing_current_status_labels:
         raise ValueError(
-            "current Q status overrides do not match pinned result labels: "
+            "current Q status overrides do not match pinned Q labels or "
+            "reviewed guide destinations: "
             f"{missing_current_status_labels!r}"
         )
     q_statuses.update(CURRENT_Q_STATUS_OVERRIDES)

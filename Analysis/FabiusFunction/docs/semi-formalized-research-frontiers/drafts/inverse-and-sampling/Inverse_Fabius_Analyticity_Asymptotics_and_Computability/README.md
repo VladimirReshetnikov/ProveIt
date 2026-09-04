@@ -19,7 +19,7 @@ only as reproducible checks.
 The package audit surfaces are:
 
 - [`theorem_concordance.csv`](theorem_concordance.csv): all 194 immutable
-  source-result rows, fully dispositioned as 50 Lean-proved, 95 human-proved
+  source-result rows, fully dispositioned as 51 Lean-proved, 94 human-proved
   frontier results, 10 conjectures, 15 open problems, and 24 non-applicable
   source environments;
 - [`LEAN_CROSSWALK.md`](LEAN_CROSSWALK.md): exact module and declaration
@@ -27,23 +27,28 @@ The package audit surfaces are:
   post-snapshot additions;
 - [`ASSET_DISPOSITION.csv`](ASSET_DISPOSITION.csv): the disposition of all 88
   files in the two superseded source subgroups;
-- [`SOURCE_CLOSURE.sha256`](SOURCE_CLOSURE.sha256): the reproducible ledger
-  of the 23 files consumed by the TeX build;
+- [`SOURCE_CLOSURE.sha256`](SOURCE_CLOSURE.sha256): the last recorded ledger
+  of the 23 files consumed by the TeX build, now retained as a historical
+  receipt because the source is newer;
 - [`PROVENANCE.md`](PROVENANCE.md): source hashes, arrival lineage, nested
   predecessors, and immutable recovery points.
 
-The source-closure ledger and migrated-asset audit are checked independently:
+The two independent check commands are retained for the next receipt refresh:
 
 ```bash
 python -B audit/build_source_closure.py --check
 python -B audit/build_asset_manifest.py --check
 ```
 
+The asset audit remains separate.  The source-closure check is expected to
+report that the chapter source is newer until an authorized receipt refresh;
+neither checker was run in this source-only documentation pass.
+
 `theorem_concordance.csv` records the disposition of all 194 source-result
 environments while preserving the ten immutable source fields reproduced from
-`audit/SOURCE_REVISION`.  Its current totals are 50 Lean-proved, 95
+`audit/SOURCE_REVISION`.  Its current totals are 51 Lean-proved, 94
 human-proved frontier results, 10 conjectures, 15 open problems, and 24
-nonassertoric rows.  Nine inverse-computability rows now have exact compiled
+nonassertoric rows.  Ten inverse-computability rows now have exact compiled
 counterparts: the main theorem, the three tolerant-difference branch
 certificates, tolerant-bisection correctness, unit-interval sequential
 inversion, computable clamping, and sequential computability of the totalized
@@ -51,7 +56,8 @@ inverse.  `FabiusFunction.EffectiveGapInverse` closes the ninth, abstract row:
 it derives a computable reciprocal inverse modulus from computable positive
 rational gap data and concludes both subset sequential computability and
 effective uniform continuity; its companion theorem packages the clamped
-inverse as a total computable real function.  The centered Appell
+inverse as a total computable real function.  The exact-dyadic proposition
+described below closes the tenth row.  The centered Appell
 deconvolution, positive-degree Appell
 mean-zero, and arbitrarily phased polynomial-deconvolution rows also have exact
 named Lean counterparts.  The Appell lattice theorem is now Lean-proved:
@@ -64,9 +70,21 @@ classification of every superconvergent phase or sharpness beyond the stated
 degree.  The static canonical validator passes.  `PROVENANCE.md` records source
 and asset lineage.
 
-The package checksum inventory is defined by the Git index. Resolve unmerged
-paths and stage every intended permanent package file before generating or
-checking it; the source-closure check is independent of that index state.
+The new `FabiusFunction.FabiusInverseExactDyadicModulus` module supplies the
+complete formal counterpart of `co:prop:exact-dyadic-modulus`: two definitions
+and ten theorems cover the exact ceiling, positivity, endpoint bound, fixed-dyadic
+arithmetic and strict-modulus leastness, the smaller-denominator endpoint
+counterexample, and the logarithmic `1/n` witness with convention `d(0)=1`.
+The compiled declarations
+`Fabius.inverseFabiusExactDyadicDenominator_primrec` and
+`Fabius.inverseFabiusExactLogarithmicDenominator_primrec` close the remaining
+recursion clause, so that source proposition is now one of the 51 Lean-proved
+rows.  Its leastness is only for the fixed dyadic target; `1/n` is witness-only,
+and `d(0)=1` is a convention with no modulus asserted at zero.
+
+There is no package-wide checksum gate.  The retained source-closure receipt
+and migrated-asset disposition have their narrower historical roles and were
+not regenerated here.
 
 The result and asset extractors are pinned by
 [`audit/SOURCE_REVISION`](audit/SOURCE_REVISION) to
@@ -76,10 +94,11 @@ at `93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`, a complete pre-retirement
 repository snapshot. The old paths are retained as provenance locators, not
 as live links.
 
-The six newest exact source-row matches are abstract effective inversion,
+The seven newest exact source-row matches are abstract effective inversion,
 centered Appell deconvolution, positive-degree Appell mean-zero,
 arbitrary-phase polynomial deconvolution, forced superconvergence, and finite
-Appell lattice reproduction.  The last two use
+Appell lattice reproduction, together with the exact-dyadic repository modulus.
+The superconvergence pair uses
 `FabiusFunction.RvachevSuperconvergentSynthesis`: its phase dictionary
 specializes the selected phases at `M = 2^N`, its physical quadrature wrapper
 proves polynomial exactness through degree `N+1`, and its Appell wrapper proves
@@ -96,7 +115,7 @@ masters contribute 152 of the 194 concordance rows:
 - `Inverse_Endpoint_All_Orders`: 29 rows; and
 - `Inverse_Fabius_Computability_Report`: 40 rows.
 
-Their canonical classifications are 34 exact Lean matches, 77 complete
+Their canonical classifications are 35 exact Lean matches, 76 complete
 human-proved frontier results, 18 non-live source environments (seven
 definitions, three algorithms, two examples, four editorial obligations, and
 two superseded source conjectures), nine explicitly retained conjectures, and
@@ -111,24 +130,28 @@ unaccounted for here.
 
 ## Current source and retained publication artifact
 
-The canonical source surface is current and exhaustively inventoried:
+The unchanged master-file identity and the last recorded source-closure and
+publication receipts are:
 
 - `inverse_fabius_theory.tex`: 293 lines, 11,514 bytes, SHA-256
   `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`;
-- its exhaustive 23-input source closure: SHA-256
+- its formerly current 23-input source closure: SHA-256
   `aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb`;
 - the retained `inverse_fabius_theory.pdf`: 134 A4 pages, 2,027,726 bytes,
   SHA-256
   `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
 
-The PDF is the last fully reviewed publication checkpoint.  Its historical
+The master-file identity remains current, but the source-closure digest
+predates the exact-dyadic chapter and crosswalk overlay.  The closure ledger
+was intentionally not regenerated in this source-only pass.  The PDF is the
+last fully reviewed publication checkpoint.  Its historical
 three-pass sequence was 127, 134, and 134 pages, and its log, page, text, box,
 font, and visual checks remain valid for those exact PDF bytes.  The master and
 shared notation have changed since that render, so this document does **not**
 claim that the retained PDF renders the current source.  A fresh three-pass
 render is required before source/PDF synchronization is claimed again.
-`VALIDATION.md` separates current source-integrity evidence from the retained
-artifact receipt. Package checksum manifests are retired repository-wide;
+`VALIDATION.md` separates current structural checks from the retained
+source-closure and artifact receipts. Package checksum manifests are retired repository-wide;
 `SOURCE_CLOSURE.sha256` and `ASSET_DISPOSITION.csv` retain the scoped source
 and migration evidence without acting as whole-package checksum gates.
 

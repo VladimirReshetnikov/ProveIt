@@ -10,9 +10,9 @@ claims made in the paper.
 > means “imported from the surrounding human-readable corpus.”  They do **not**
 > mean “proved in Lean.”  The original intake contained 36 nonconjectural
 > labeled results.  The maintained report now contains 41: five deliberately
-> statement-exact additions are compiler-backed, and the original result #8
-> now has a statement-exact compiler-backed counterpart as well.  The other
-> 35 original results retain the status recorded below.
+> statement-exact additions are compiler-backed, and the original results #8
+> and #33 now have statement-exact compiler-backed counterparts as well.  The
+> other 34 original results retain the status recorded below.
 
 ## Lean-status legend
 
@@ -50,8 +50,8 @@ inferred from filenames.  Module names such as
 |---|---:|
 | Unformalized | 12 |
 | Partial | 20 |
-| Near-complete | 3 |
-| Complete | 6 |
+| Near-complete | 2 |
+| Complete | 7 |
 | **Crosswalk total** | **41** |
 
 The ordinal in the first column is solely an audit key.  The original keys
@@ -99,7 +99,7 @@ without rewriting that older checkpoint's evidence.
 | 30 | `cor:phase-logconcave` — corollary | Log-concavity and full support | P | **Unformalized** | The corpus has no finite Poisson-binomial log-concavity theorem connected to a bilateral total-variation limit, nor the positivity/full-support product argument for `K_theta`. |
 | 31 | `thm:Laplace-transfer` — theorem | Exact Laplace transfer of the ANOVA atom | P | **Near-complete** | `Fabius.mgf_weightedSumDistribution_eq_generatingFunction` in `FabiusFunction.FabiusComplexMGF`, `Fabius.ProbabilityRepresentation.weightedSumDistribution_reflection` in `FabiusFunction.ProbabilityRepresentation`, `Fabius.rvachevMeasure_eq_map_weightedSum` in `FabiusFunction.RandomSeriesLaw`, and `Fabius.exp_negativeLaplaceLog_eq_generatingFunction_neg` in `FabiusFunction.NegativeLaplace` supply the law/MGF/Laplace bridges.  The exact no-active probability is not yet defined, so the displayed identity and logarithmic form still need an explicit wrapper theorem and positivity bookkeeping. |
 | 32 | `cor:transported-phase` — corollary | Transported quadratic-log phase | P+I | **Near-complete** | `Fabius.negativeLaplaceLog_exact_periodic_decomposition`, `negativeLaplacePeriodicCorrection`, `negativeLaplaceTailError`, and `abs_negativeLaplaceTailError_le_four_exp` in `FabiusFunction.NegativeLaplace` formalize the exact imported endpoint decomposition and tail.  The remaining work is to compose it with #31, normalize variables/constants exactly as in the report, and state the resulting no-active asymptotic. |
-| 33 | `thm:TM-corner` — theorem | Continuous Thue--Morse corner identity | P | **Near-complete** | `Fabius.symmetricMixedDifference_eq_sum_powerset_smul`, `symmetricMixedDifference_polynomial_eq_coeff_card`, `symmetricMixedDifference_polynomial_of_degree_lt`, `symmetricMixedDifference_pow_card`, and `symmetricDyadicMixedDifference_eq_sum_thueMorseSign_smul` in the compiler-validated `FabiusFunction.ThueMorseSymmetricDifference` prove the centered Boolean-cube identity, arbitrary-step polynomial extraction/cancellation/top value, and centered dyadic Thue--Morse block.  The report-facing theorems `symmetricDyadicMixedDifference_inv_two_pow_eq_sum_thueMorseSign_smul` and `symmetricDyadicMixedDifference_inv_two_pow_succ_eq_sum_thueMorseSign_smul` give the exact affine grid `x - (1 - 2^(-N)) + k / 2^(N-1)` and complement sign `(-1)^N`, over any characteristic-zero field and with an arbitrary additive target.  They reuse the general mixed-difference/Prouhet core in `FabiusFunction.ThueMorseMixedDifference` and `FabiusFunction.ThueMorsePrefix`.  The only mathematical clause of the report theorem not yet formalized is the repeated-integral identity under its `C^N` hypotheses; after that analytic bridge, one report-shaped wrapper should combine all clauses. |
+| 33 | `thm:TM-corner` — theorem | Continuous Thue--Morse corner identity | P | **Complete** | **Exact by composition.**  `FabiusFunction.ThueMorseCornerIntegral` has the exhaustive public surface one definition plus four theorems: `Fabius.centeredBoxIntegral`, `Fabius.centeredBoxIntegral_zero`, `Fabius.centeredBoxIntegral_succ`, `Fabius.symmetricMixedDifference_range_eq_centeredBoxIntegral`, and `Fabius.symmetricMixedDifference_univ_eq_centeredBoxIntegral`.  The range theorem proves the repeated integral for arbitrary nonnegative half-steps under exactly `IsOpen I`, `OrdConnected I`, `ContDiffOn ℝ N g I`, and containment in `I` of the full closed symmetric segment.  Thus it includes the report's positive half-steps and `C^N` open-interval domain, while also covering zero steps and `N = 0`; it is real-valued and fixes the recursive nesting order.  Its proof expands each residual corner, uses order-connectedness to keep every translated interval in the declared local domain, applies the interval FTC, exchanges a finite integrable sum with the integral, and inducts after replacing `g` by `deriv g`; the univ theorem is the `Fin.valEmbedding` reindexing.  In `FabiusFunction.ThueMorseSymmetricDifference`, `Fabius.symmetricMixedDifference_eq_sum_powerset_smul`, `symmetricMixedDifference_polynomial_eq_coeff_card`, `symmetricMixedDifference_polynomial_of_degree_lt`, `symmetricMixedDifference_pow_card`, `symmetricDyadicMixedDifference_eq_sum_thueMorseSign_smul`, `symmetricDyadicMixedDifference_inv_two_pow_eq_sum_thueMorseSign_smul`, and `symmetricDyadicMixedDifference_inv_two_pow_succ_eq_sum_thueMorseSign_smul` supply the report's sign sum, dyadic affine grid and complement sign, cancellation below degree `N`, and sharp degree-`N` value.  No mathematical clause remains, although the following Walsh conditional-expectation corollary still needs its probability construction and `2^(-N)` normalization. |
 | 34 | `cor:Walsh-corner` — corollary | Highest Walsh sign coefficient | P | **Partial** | `Fabius.sum_thueMorseSign_smul_eq_mixedDifference` in `FabiusFunction.ThueMorseMixedDifference` gives the finite sign/mixed-difference algebra.  Lean lacks the sign--magnitude probability construction, conditioning on magnitudes and a tail variable, and the conditional-expectation normalization `2^(-N)`. |
 | 35 | `prop:Rodrigues-bound` — proposition | Rodrigues bound for local coefficients | P | **Partial** | `Fabius.legendrePolynomial` in `FabiusFunction.LegendrePolynomial` uses Rodrigues normalization, while `Fabius.oddDoubleFactorial`, `oddDoubleFactorial_succ`, and `oddDoubleFactorial_pos` in `FabiusFunction.Arithmetic` provide the denominator arithmetic.  The complex coefficient `i_n(x)`, repeated integration by parts with endpoint vanishing, the beta integral, and the complex norm bound are missing. |
 | 36 | `cor:Lambert-degree` — corollary | Lambert-W inversion rule | P | **Partial** | `Fabius.principalLambertW_mul_exp` and `principalLambertW_unique` in `FabiusFunction.PrincipalLambertW`, `Fabius.log_factorial_sub_main_isBigO_log` in `FabiusFunction.StirlingAsymptotics`, and the `PowerExponentialLambert*` modules formalize the inversion technology.  The exact envelope `b_n(x)`, monotone-tail threshold `n_epsilon(x)`, certified tail, odd-double-factorial asymptotic, and the stated epsilon-to-zero asymptotic have not been connected. |
@@ -113,11 +113,11 @@ without rewriting that older checkpoint's evidence.
 
 | Class | Unformalized | Partial | Near-complete | Complete | Total |
 |---|---:|---:|---:|---:|---:|
-| Theorem | 3 | 7 | 2 | 2 | 14 |
+| Theorem | 3 | 7 | 1 | 3 | 14 |
 | Proposition | 0 | 7 | 0 | 1 | 8 |
 | Lemma | 1 | 1 | 0 | 1 | 3 |
 | Corollary | 8 | 5 | 1 | 2 | 16 |
-| **Total** | **12** | **20** | **3** | **6** | **41** |
+| **Total** | **12** | **20** | **2** | **7** | **41** |
 
 ## Conjectures and open problems
 
@@ -181,9 +181,9 @@ Lean rather than defects in the repaired paper statement:
 - Define infinite elementary-symmetric sums independently of their closed
   q-Pochhammer value, then prove the finite-prefix limit.  This avoids using the
   desired identity as a definition.
-- Translate `g in C^k(I)` into precise `ContDiffOn`/neighborhood hypotheses
-  strong enough for the repeated integral and conditional differentiation;
-  the notation `norm(g^(k))_infinity` must name its domain.
+- Translate the remaining smooth-interaction hypotheses into precise
+  `ContDiffOn`/neighborhood assumptions strong enough for conditional
+  differentiation; the notation `norm(g^(k))_infinity` must name its domain.
 - Bind all asymptotic parameters explicitly: `k` is fixed in the dyadic
   q-binomial chaos asymptotic, `q` is fixed with `0<q<1` in its geometric-q
   generalization, phase is uniform only where stated, and `x != 0` is fixed as
@@ -215,13 +215,12 @@ The following order maximizes reuse and exposes errors early.
    clauses of original report row #24 and feeds #2--#7 and #9--#30, but row
    #24 remains Partial until the deterministic dyadic sum is identified with
    the active-count expectation `E K_t`.
-2. **Finish the symmetric Thue--Morse specialization.**  The compiled
-   `FabiusFunction.ThueMorseSymmetricDifference` module now supplies the
-   centered wrapper, exact Boolean-cube expansion, polynomial extraction and
-   zero/top results, centered dyadic block, and the exact decreasing-weight
-   report reindexing.  Add the analytic repeated-integral bridge under precise
-   `ContDiffOn`/neighborhood hypotheses, then package a report-shaped wrapper
-   theorem to close #33.
+2. **Reuse the completed symmetric Thue--Morse specialization.**  The compiled
+   `FabiusFunction.ThueMorseSymmetricDifference` and
+   `FabiusFunction.ThueMorseCornerIntegral` modules now close #33 by
+   composition, including the strictly local repeated-integral theorem.  The
+   next related target is #34's sign--magnitude probability construction,
+   conditioning, and `2^(-N)` normalization, not another corner identity.
 3. **General product-observable Hoeffding API.**  On the existing independent
    uniform-coordinate space, formalize finite coordinate projections,
    independent replacements, orthogonality, exact components of a product
@@ -247,7 +246,7 @@ The following order maximizes reuse and exposes errors early.
    bound, define the monotone threshold with `Nat.find`, and connect the
    odd-double-factorial asymptotic to the principal Lambert-W API (#35--#36).
 
-This order deliberately treats the three **near-complete** rows as missing
+This order deliberately treats the two **near-complete** rows as missing
 declarations until their exact report formulations have been typechecked.  It
 also keeps all seven conjectures/problems visibly open rather than replacing
 them with premise-free placeholder theorems.

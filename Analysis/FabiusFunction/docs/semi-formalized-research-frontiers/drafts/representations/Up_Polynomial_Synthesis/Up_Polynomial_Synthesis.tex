@@ -257,6 +257,47 @@ algorithms, and atom-count results are not formalized in Lean.  The focused
 2026-08-30 module \path{CompositeMeshSharpness.lean} now formalizes only the
 natural-mesh, universally quantified shifted-comb threshold described below;
 its claim boundary is recorded after \cref{thm:scale-classification}.
+The existing module \path{LagrangeRvachevSynthesis.lean} makes
+\cref{thm:lag-cardinal} Exact/Complete by assembly, without a redundant
+report-shaped wrapper:
+\path{normalized_sum_Ioo_lagrangeRvachevDecoder_mul_shifted_rvachevUp}
+is the individual-cardinal identity, and
+\path{sum_Ioo_lagrangeRvachevAtomCoefficient_mul_shifted_rvachevUp}
+is its arbitrary-data counterpart.  The Lean hypotheses match the positive
+mesh, two-adic degree admissibility, $[-1,1]$ evaluation domain, open lattice
+block $\lvert k\rvert<2M$, spacing $h=M^{-1}$, and literal unit-radius
+translates of the theorem.  Injectivity is unnecessary for the polynomial
+identities and is supplied by the report's distinct-node assumption for the
+cardinal reading.  This does not promote \cref{thm:lag-right-inverse}.
+The current source API \path{LagrangeRvachevMatrix.lean} exactly formalizes
+the finite Markov encoder, decoder row-unit law, right inverse, and the
+strictly-positive-overlap sign obstruction of \cref{prop:lag-markov}.  For the
+larger \cref{thm:lag-right-inverse}, it formalizes only the boxed $UB=I$
+clause; the $BU$ projector and the remaining basis, spectral, moment,
+intertwining, and Cauchy--Binet clauses remain human proofs.
+The subsequent source-only module \path{RvachevLagrangeNodesOnly.lean}
+formalizes \cref{cor:lag-nodes-only} completely: its one definition and
+fourteen theorems give the ordinary-derivative and raw-node Appell forms,
+coefficientwise rational descent and rational lattice samples, and the formal
+complete-Bell/Bernoulli--Mersenne description of the reciprocal coefficients.
+This is a compositional Exact result, not a claim of analytic reciprocal-MGF
+convergence; it asserts value rationality only at rational evaluation points
+and leaves the unformalized clauses of \cref{thm:lag-right-inverse}
+unchanged.  Its promotion is independent of the preceding exact synthesis
+assembly for \cref{thm:lag-cardinal}.
+The compiled module \path{RvachevLegendreCentralSum.lean} makes
+\cref{cor:leg-central-sum} Exact/Complete.  Its exhaustive public surface has
+zero definitions and three theorems:
+\path{eval_legendrePolynomial_even_zero},
+\path{eval_rvachevLegendreDeconvolutionPolynomial_even}, and
+\path{rvachevLegendreCentralSum}.  These respectively supply the normalized
+central Legendre value, the pointwise evenness of the deconvolved even mode,
+and the literal finite identity at $M=4^n$ (including $n=0$), using the
+existing synthesis theorem and compact support.  The theorem allows any
+bounded Fabius realization satisfying the canonical axioms.  It does not
+formalize the Jacobi formula, all-degree parity or rationality in
+\cref{thm:leg-mode-synthesis}, reverse closure, target-specific mesh
+minimality, or any clause of \cref{thm:lag-right-inverse}.
 \end{statusbox}
 
 \subsection*{Notation}

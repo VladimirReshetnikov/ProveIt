@@ -68,15 +68,20 @@ It preserves the distinct modal, Mellin, regular-variation, spline,
 reciprocal-product, Euler--Maclaurin, Ruffa, Thue--Morse, and interpolation
 results while stating their common Gaussian--Pascal and Jackson--Newton spine
 once. Its 180-row source disposition and 151-row historical-ledger audit pass;
-its 232-row theorem concordance now maps canonical label
+its 232-row theorem concordance records 7 Lean-proved, 159 human-proved
+frontier, 20 conjecture, 30 open-problem, and 16 non-applicable rows. It maps
+canonical label
 `gq:thm:richardson-generating` exactly to
 `Fabius.geometricLagrangeRichardson_generating` in the new three-definition,
 seven-theorem `FabiusFunction.GeometricRichardsonGenerating` module. The module
 also exposes `Fabius.hasSum_geometricLagrangeRichardson_mul_pow` as the analytic
-companion under its explicit convergence hypotheses. The retained 158-page PDF
-predates both the notation normalization and this chapter-01 crosswalk, so it
-remains a historical checkpoint; no PDF was generated for the source-only
-Richardson update.
+companion under its explicit convergence hypotheses. The one-definition,
+fourteen-theorem `FabiusFunction.RvachevAppellHasse` leaf additionally makes
+`gq:prop:q-Appell-falling` and `gq:thm:gaussian-Appell-decoder` exact by
+combining their explicit q-falling and geometric decoder formulas with the
+existing finite synthesis theorems. The retained 158-page PDF predates the
+notation normalization and all of these chapter-01 crosswalks, so it remains a
+historical checkpoint; no PDF was generated for the source-only updates.
 
 [`fabius_information_frontier/`](fabius_information_frontier/) remains an
 archival information-geometry intake. Its arrival and operational ledgers
@@ -96,10 +101,10 @@ wrapper yields a total computable real function.  The newer
 eight theorems: it packages the parity-selected phases, the extra-degree
 monomial and polynomial rules, generic-mesh physical quadrature, deconvolved
 polynomial synthesis, and the Rvachev--Appell specialization. These two latest
-row promotions bring the canonical concordance to 50 Lean-proved, 95
+row promotions bring the canonical concordance to 51 Lean-proved, 94
 human-proved frontier results, 10 conjectures, 15 open problems, and 24
-nonassertoric environments. The live Lean documentation census is 672 modules
-and 8,876 public declarations with no gaps. The retired source layouts remain
+nonassertoric environments. The live Lean documentation census is 910 modules
+and 11,523 public declarations with no gaps. The retired source layouts remain
 immutable provenance only; the source is newer than the retained historical
 PDF.
 
@@ -124,8 +129,10 @@ formula.
 `FabiusFunction.LagrangeRvachevSynthesis` supplies two definitions and seven
 theorems closing the generic finite-node decoder, cardinal biorthogonality,
 and exact interpolation loop. It does not by itself prove the geometric-node
-Gaussian closed forms, a bundled matrix/right-inverse wrapper, or an
-optimal/minimum-variation decoder theorem; the exhaustive public inventory is
+Gaussian closed forms, but the downstream `FabiusFunction.RvachevAppellHasse`
+leaf now proves their q-Pochhammer prefactor and elementary-symmetric formula.
+The Matrix leaf supplies the typed right inverse; no module proves an
+optimal/minimum-variation decoder theorem. The exhaustive public inventory is
 in the root [`Analysis/FabiusFunction/README.md`](../../../../README.md).
 
 The subgroup [`dyadic-up-extraction/`](dyadic-up-extraction/) holds one

@@ -76,7 +76,8 @@ section Poly
 noncomputable def bernoulliPolySeries : (Polynomial ℚ)⟦X⟧ :=
   PowerSeries.mk fun n => (1 / n.factorial : ℚ) • Polynomial.bernoulli n
 
-/-- The `n`-th coefficient of `bernoulliPolySeries` is `β_n(x) / n!`. -/
+/-- The `n`-th coefficient of the Bernoulli-polynomial EGF `bernoulliPolySeries` has the standard
+factorial normalization `β_n(x) / n!`. -/
 theorem coeff_bernoulliPolySeries (n : ℕ) :
     coeff n bernoulliPolySeries = (1 / n.factorial : ℚ) • Polynomial.bernoulli n :=
   coeff_mk _ _
