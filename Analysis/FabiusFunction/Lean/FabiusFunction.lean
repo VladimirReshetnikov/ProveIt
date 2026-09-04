@@ -289,6 +289,7 @@ import FabiusFunction.DyadicBoundaryIdentity
 import FabiusFunction.AliasDyadicBridge
 import FabiusFunction.AliasQBinomialBridge
 import FabiusFunction.MeanValueBracket
+import FabiusFunction.BackwardErrorExistence
 import FabiusFunction.TransseriesHeight
 import FabiusFunction.TransseriesScale
 import FabiusFunction.TransseriesWellBased
