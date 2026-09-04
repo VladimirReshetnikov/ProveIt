@@ -109,10 +109,11 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live 2026-09-04 inventory contains 905 modules and 11,458 lexically
+The live 2026-09-04 inventory contains 906 modules and 11,461 lexically
 visible public declarations, with zero missing module headers and zero missing
-doc comments.  The immediately preceding algebraic moment-polynomial checkpoint
-of 904 modules and 11,457 declarations and the earlier Lambert-series checkpoint
+doc comments.  The immediately preceding real-MGF bridge checkpoint of 905
+modules and 11,458 declarations, the algebraic moment-polynomial checkpoint of
+904 modules and 11,457 declarations, and the earlier Lambert-series checkpoint
 of 903 modules and 11,448 declarations remain historical.  The post-merge 2026-09-01
 inventory of 675 modules and 8,909
 declarations remains a historical checkpoint: relative to the 610/8,318
@@ -334,7 +335,7 @@ recursive Lean family.
 
 `GeometricUniformMomentPolynomialBridge.lean` adds one source module and one
 public theorem to the historical 904/11,457 algebraic checkpoint, bringing the
-live census to 905/11,458.  Its exhaustive 0+1 surface is
+next historical checkpoint to 905/11,458.  Its exhaustive 0+1 surface is
 `geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`; every helper
 declaration in the module is private and excluded from the public count.
 
@@ -346,11 +347,39 @@ contractions.  This supplies the
 analytic normalization in frontier label `p7:thm:Pn` throughout its real
 probability-law regime, but that label remains **Partial** because its
 leading-coefficient formula and consequent strict odd-degree drop are absent.
-Monograph label `thm:qF-moment-polynomial` also remains **Partial**: its source
-coefficient is defined through a complex-parameter locally-uniform infinite
-product, which the real-MGF bridge neither constructs nor identifies.  The
-leading and subleading coefficients and exact degree asserted by
-`prop:qF-P-degree-sharp` remain unformalized, so that label remains **None**.
+
+#### Inner complex-product normalization bridge
+
+`GeometricUniformComplexMomentProduct.lean` adds one source module and three
+public declarations to the historical 905/11,458 real-bridge checkpoint,
+bringing the live census to 906/11,461.  Its exhaustive 1+2 surface is the
+definition `geometricUniformComplexMomentProduct` and the theorems
+`hasProdLocallyUniformly_geometricUniformComplexMomentProduct` and
+`geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
+Its thirteen helper declarations are private and excluded from the public
+count.
+
+For every complex `q` with `‖q‖ < 1`, including `q=0` and negative real
+contractions, this leaf constructs
+`A_q(z)=∏' j, complexExpm1Div ((1-q)*q^j*z)`, proves locally uniform convergence
+on the whole complex plane, and identifies the recursive polynomial by
+`P_n(q)=((q;q)_n/(1-q)^n)·(iteratedDeriv n A_q 0/n!)`.  For nonreal `q`, this
+analytic product is not described as a probability MGF; the preceding real
+0+1 theorem remains the exact probability-law MGF bridge.
+
+The inner-disc complex product and coefficient normalization are therefore
+exact, but monograph label `thm:qF-moment-polynomial` remains **Partial**.  Its
+source uses one rational-function coefficient object across the inner product
+and the `|q|>1` reciprocal germ, and no named exterior-germ, `RatFunc`, or
+root-of-unity continuation theorem identifies that same object in Lean.
+Label `thm:geometric-uniform-mgf` remains **Partial** because no public theorem
+packages the product's dilation/Mahler law, entireness and normalization,
+formal uniqueness, coefficient rationality and pole data, or its direct
+identification with the real MGF or characteristic function.  Frontier label
+`p7:thm:Pn` remains **Partial** because its leading-coefficient formula and
+strict odd-degree drop are absent.  The leading and subleading coefficients
+and exact degree asserted by `prop:qF-P-degree-sharp` remain unformalized, so
+that label remains **None**.
 
 The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
@@ -1033,7 +1062,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 905/11,458
+historical 675/8,909 census and requires refresh against the live 906/11,461
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity

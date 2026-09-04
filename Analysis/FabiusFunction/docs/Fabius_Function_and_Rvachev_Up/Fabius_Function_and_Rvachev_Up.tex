@@ -3816,11 +3816,12 @@ The two summability hypotheses in the comparison theorem are essential
 because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
-open interfaces.  With the later concurrent source union, the live facade
-census is 905 modules and 11,458 public declarations; the immediately
-preceding algebraic moment-polynomial checkpoint was 904/11,457, and the
-preceding complex Bernoulli value-completion checkpoint was 903/11,448.  The
-current TeX also
+open interfaces.  With the later concurrent source union, the real-MGF bridge
+checkpoint was 905 modules and 11,458 public declarations; the exhaustive
+complex moment-product leaf raises the live facade census to 906 modules and
+11,461 public declarations.  The immediately preceding algebraic
+moment-polynomial checkpoint was 904/11,457, and the preceding complex
+Bernoulli value-completion checkpoint was 903/11,448.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration fixed-depth effective-inverse tranche, the
@@ -3838,7 +3839,9 @@ module, and the three-theorem second-moment strengthening of the existing
 one-definition/eight-theorem
 \path{GeometricUniformMomentPolynomial.lean} module and its
 zero-definition/one-theorem
-\path{GeometricUniformMomentPolynomialBridge.lean} companion.
+\path{GeometricUniformMomentPolynomialBridge.lean} companion, followed by the
+one-definition/two-theorem
+\path{GeometricUniformComplexMomentProduct.lean} complex-product leaf.
 These are
 source-only overlays; the retained 183-page, 1,899,243-byte PDF is explicitly
 historical and has not been regenerated for these additions.
@@ -3871,9 +3874,10 @@ universal Gaussian polynomial structure over \(\NaturalNumbers[X]\), Jacobi's cu
 identity, the q-Pochhammer logarithmic derivative and Lambert-series form, and
 the derivative with respect to complex order under the displayed hypotheses.
 
-The newest moment-polynomial counts are
+The newest moment-polynomial and product counts are
 \path{GeometricUniformMomentPolynomial.lean} (1+8) and
-\path{GeometricUniformMomentPolynomialBridge.lean} (0+1).  The algebraic
+\path{GeometricUniformMomentPolynomialBridge.lean} (0+1), followed by
+\path{GeometricUniformComplexMomentProduct.lean} (1+2).  The algebraic
 module's definition is
 \lean{geometricUniformMomentPolynomial}; its theorems are
 \lean{geometricUniformMomentPolynomial_zero},
@@ -3891,10 +3895,25 @@ every real \(q\) with \(\lvert q\rvert<1\) and every \(n\), it identifies the
 polynomial evaluation with the finite-q-Pochhammer normalization of the
 \(n\)-th Taylor coefficient of the actual geometric-uniform moment generating
 function.  Thus \nolinkurl{p7:eq:Pn-def} is Exact in this real contraction
-regime.  The leading-coefficient formula and consequent strict degree drop
-for odd \(n>1\) remain absent, so the compound frontier label
-\nolinkurl{p7:thm:Pn} remains Partial rather than Exact.  No complex-q
-infinite-product realization is asserted.
+regime, including signed \(q\) and \(q=0\).
+
+The complex leaf's exhaustive public surface is the definition
+\lean{geometricUniformComplexMomentProduct} and the two theorems
+\lean{hasProdLocallyUniformly_geometricUniformComplexMomentProduct} and
+\lean{geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient}.
+For every complex \(q\) with \(\lVert q\rVert<1\), they give the actual
+infinite product, its locally uniform convergence on the complex plane, and
+the same finite-q-Pochhammer normalization of its \(n\)-th Taylor coefficient.
+This is the complex analytic analogue of the real moment identity, not a
+complex probability-moment statement.  The canonical q-monograph compound
+label \nolinkurl{thm:qF-moment-polynomial} remains Partial: no Lean theorem
+identifies a single rational function \(a_n=d_n/n!\) with the exterior
+reciprocal-germ coefficients or proves the pole-cleared removable continuation
+at roots of unity (including the \(q=1\) convention).  The leading-coefficient
+formula and consequent strict degree drop for odd \(n>1\) also remain absent,
+so the compound frontier label \nolinkurl{p7:thm:Pn} remains Partial rather
+than Exact.  The real bridge checkpoint was 905/11,458; the complex \(1+2\)
+leaf raises the live census to 906/11,461.
 
 The final two module counts are
 \path{CentralQBinomialReduction.lean} (0+6) and
@@ -13338,6 +13357,7 @@ Moments and exact arithmetic &
 \path{PolynomialExpectationCumulant.lean}, \path{RvachevMomentAppell.lean},
 \path{GeometricUniformMomentPolynomial.lean},
 \path{GeometricUniformMomentPolynomialBridge.lean},
+\path{GeometricUniformComplexMomentProduct.lean},
 \path{WeightedScaleMultiplicity.lean}, \path{BaseDigitMultiplicity.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean},
 \path{CentralBinomialValuation.lean},

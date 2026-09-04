@@ -159,7 +159,7 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 905 modules and 11,458 public declarations, with no
+audit now contains 906 modules and 11,461 public declarations, with no
 documentation gaps. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
@@ -169,6 +169,9 @@ other three are the explicit second-derivative, division-free raw-second-moment,
 and division-free variance-numerator theorems in
 `GaussianBinomialCumulants`; they strengthen the already-Exact
 `thm:qbinom-moments` row without changing its disposition.
+The three declarations beyond the historical 905-module/11,458-declaration
+checkpoint are the one-definition, two-theorem complex moment-product leaf
+described below.
 The subsequent one-module/five-declaration increase is the unrelated sibling
 `LambertWBranchGapBernoulli.lean` leaf. Its exhaustive zero-definition public
 surface is `summable_norm_bernoulli_mul_pow_div_factorial`,
@@ -211,17 +214,31 @@ exactly one public theorem,
 real `q` with `|q| < 1`, it identifies evaluation of the recursive polynomial
 with the finite-q-Pochhammer normalization of the Taylor coefficient of the
 genuine geometric-uniform MGF.  The statement is regular at `q = 0` and also
-includes signed negative contractions.  It does not construct or identify
-the manuscript's complex-`q` infinite-product coefficient, so
-`thm:qF-moment-polynomial` remains Partial rather than Exact;
+includes signed negative contractions.  The subsequent
+`GeometricUniformComplexMomentProduct.lean` leaf has one definition,
+`geometricUniformComplexMomentProduct`, and exactly two public theorems,
+`hasProdLocallyUniformly_geometricUniformComplexMomentProduct` and
+`geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
+For every complex `q` with `‖q‖ < 1`, including `q = 0`, these declarations
+give the manuscript's actual infinite product, its locally uniform convergence
+on the whole complex plane, and the exact finite-q-Pochhammer normalization of
+its Taylor coefficient.  Thus the inner complex product/coefficient bridge is
+exact.  The compound `thm:qF-moment-polynomial` nevertheless remains Partial:
+Lean does not yet identify the exterior reciprocal-germ coefficients with the
+same rational function `a_n(q) = d_n(q) / n!`, or prove that clearing that
+RatFunc's root-of-unity poles gives the same total polynomial at `q = 1`.  The broader
+`thm:geometric-uniform-mgf` likewise remains Partial at its unbundled direct
+dilation, coefficient-recurrence, formal-uniqueness, and rationality clauses;
 `prop:qF-P-degree-sharp` remains None, and `cor:qF-halfbase-dictionary`
 remains Partial at its still-missing endpoint formula even though the
 half-base polynomial and genuine-MGF normalization are now available.  The
 base leaf produced the historical 904/11,457 checkpoint and the exact
-None-to-Partial move; the bridge raises the live census to 905/11,458 without
-changing the forward ledger or source concordance.  The retained historical
-PDF renders neither q-series leaf nor the preceding Lambert tranche, and no
-source/PDF parity is claimed.
+None-to-Partial move; the real bridge produced the historical 905/11,458
+checkpoint, and the complex leaf raises the live census to 906/11,461 without
+changing the 166 Exact / 91 Partial / 17 None / 8 N/A forward ledger or the
+78 Lean-proved / 400 human-proved frontier / 60 N/A / 9 conjecture source
+concordance.  The retained historical PDF renders none of these q-series
+leaves or the preceding Lambert tranche, and no source/PDF parity is claimed.
 
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero

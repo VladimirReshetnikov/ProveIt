@@ -123,11 +123,24 @@ surface zero definitions and one theorem,
 `Fabius.geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`.
 For every real `|q| < 1`, it supplies the actual-MGF normalization and makes
 external source label `p7:eq:Pn-def` Exact in that real regime.  It constructs
-no complex-q infinite product, and the leading-coefficient and strict
-odd-degree clauses remain absent; therefore the compound `p7:thm:Pn` remains
-Partial.  This bridge raises the live documentation census to 905 modules and
-11,458 public declarations.  Both sibling source-only additions are likewise
-absent from the retained historical PDFs.
+no complex-q infinite product by itself, and the leading-coefficient and
+strict odd-degree clauses remain absent; therefore the compound `p7:thm:Pn`
+remains Partial.  This bridge produced the historical checkpoint 905 modules
+and 11,458 public declarations.  The subsequent sibling
+`FabiusFunction.GeometricUniformComplexMomentProduct` has the exhaustive
+surface one public definition and two public theorems:
+`Fabius.geometricUniformComplexMomentProduct`,
+`Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct`, and
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
+For complex `‖q‖ < 1` it supplies the actual locally uniform product and its
+normalized Taylor-coefficient bridge.  This is an analytic analogue; it does
+not extend the probability-moment reading of `p7:eq:Pn-def` beyond real
+`|q| < 1`.  The canonical q-monograph `thm:qF-moment-polynomial` remains
+Partial because the exterior reciprocal-germ coefficient and the global
+rational/removable continuation at roots are absent.  This exhaustive `1+2`
+leaf raises the live documentation census to 906 modules and 11,461 public
+declarations.  All three sibling source-only additions are likewise absent
+from the retained historical PDFs.
 
 The exact raw second-order package is `LambertWCurvature.lean`.  Its
 principal API is `deriv_principalLambertW`,

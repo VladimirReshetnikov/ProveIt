@@ -354,11 +354,13 @@ three-definition/seven-theorem geometric Richardson generating-function
 module, and the three-theorem second-moment
 strengthening of the existing Gaussian-binomial cumulant module, followed by
 the one-definition/eight-theorem geometric-uniform moment-polynomial algebra
-module and its zero-definition/one-theorem real-MGF bridge.  The live source
-census is 905 facade-reachable modules and 11,458 public declarations; the
-immediately preceding algebraic moment-polynomial checkpoint was 904/11,457,
-the preceding complex value-completion checkpoint was 903/11,448, and the
-preceding exact-radius four-theorem checkpoint was 903/11,447.
+module, its zero-definition/one-theorem real-MGF bridge, and the subsequent
+one-definition/two-theorem complex moment-product leaf.  The live source
+census is 906 facade-reachable modules and 11,461 public declarations; the
+immediately preceding real-MGF bridge checkpoint was 905/11,458, the preceding
+algebraic moment-polynomial checkpoint was 904/11,457, the preceding complex
+value-completion checkpoint was 903/11,448, and the preceding exact-radius
+four-theorem checkpoint was 903/11,447.
 The retained
 257-page, 2,438,299-byte A4 PDF, SHA-256
 \nolinkurl{3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980},
@@ -2543,17 +2545,31 @@ source census to 904/11,457.  It supplies the recursively defined rational
 polynomial, its residual-product recurrence, triangular degree bound,
 reciprocal-factorial value at zero, and the cases \(P_0,\ldots,P_4\).  Its
 zero-definition/one-theorem companion
-\path{GeometricUniformMomentPolynomialBridge.lean} raises the live census to
-905/11,458.  Its exhaustive public surface is
+\path{GeometricUniformMomentPolynomialBridge.lean} raised the next historical
+census to 905/11,458.  Its exhaustive public surface is
 \lean{geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient}, which
 for every real \(\lvert q\rvert<1\) identifies that polynomial with the
 finite-q-Pochhammer normalization of the Taylor coefficient of the actual
 geometric-uniform MGF.  Hence \nolinkurl{p7:eq:Pn-def} is Exact in this real
-contraction regime.  The bridge constructs no complex-q infinite product, and
-the leading-coefficient formula and consequent strict odd-degree drop remain
-absent.  Thus the compound \nolinkurl{p7:thm:Pn} remains Partial rather than
-Exact.  These additions are source-only, and the retained 257-page PDF
-remains explicitly historical; no PDF was built for this update.
+contraction regime, including signed \(q\) and \(q=0\).  The subsequent
+\path{GeometricUniformComplexMomentProduct.lean} leaf has the exhaustive
+public surface one definition and two theorems:
+\lean{geometricUniformComplexMomentProduct},
+\lean{hasProdLocallyUniformly_geometricUniformComplexMomentProduct}, and
+\lean{geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient}.
+For every complex \(q\) with \(\lVert q\rVert<1\), these construct the actual
+infinite product, prove its locally uniform convergence on the complex plane,
+and give the finite-q-Pochhammer normalization of its Taylor coefficient.  The
+result is a complex analytic analogue, not a complex probability-moment
+extension of \nolinkurl{p7:eq:Pn-def}.  The canonical q-monograph compound
+\nolinkurl{thm:qF-moment-polynomial} remains Partial because the exterior
+reciprocal-germ coefficient, its global rational \(a_n=d_n/n!\), and the
+pole-cleared removable continuation at roots are not identified in Lean.  The
+leading-coefficient formula and consequent strict odd-degree drop also remain
+absent, so the compound \nolinkurl{p7:thm:Pn} remains Partial rather than
+Exact.  The complex \(1+2\) leaf raises the live census to 906/11,461.  These
+additions are source-only, and the retained 257-page PDF remains explicitly
+historical; no PDF was built for this update.
 The newest six module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
 \path{HeineTransformation.lean} (2+5),
@@ -9373,10 +9389,21 @@ definitions and the single theorem
 For every real \(\lvert q\rvert<1\) and every \(n\), that theorem identifies
 the polynomial evaluation with the finite-q-Pochhammer normalization of the
 \(n\)-th Taylor coefficient of the genuine geometric-uniform MGF.  Therefore
-\nolinkurl{p7:eq:Pn-def} is Exact in this real contraction regime.  It proves
-neither a complex-q infinite-product realization nor the leading-coefficient
-formula and strict degree drop for odd \(n>1\).  Therefore the compound
-frontier label \nolinkurl{p7:thm:Pn} is Partial, not Exact.
+\nolinkurl{p7:eq:Pn-def} is Exact in this real contraction regime.  The
+exhaustive public surface of
+\path{GeometricUniformComplexMomentProduct.lean} is the definition
+\path{Fabius.geometricUniformComplexMomentProduct} and the two theorems
+\path{Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct} and
+\path{Fabius.geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient}.
+They construct the actual locally uniform product and its normalized
+Taylor-coefficient bridge for every complex \(\lVert q\rVert<1\).  This is an
+analytic analogue rather than a complex probability-moment identity, and it
+does not identify the exterior reciprocal germ or the global rational/removable
+continuation at roots required by the canonical q-monograph
+\nolinkurl{thm:qF-moment-polynomial}; that compound label remains Partial.
+Neither module proves the leading-coefficient formula and strict degree drop
+for odd \(n>1\).  Therefore the compound frontier label
+\nolinkurl{p7:thm:Pn} is Partial, not Exact.
 
 \item The five theorems of \path{FinitePolynomialFilterExactness.lean} are
 \path{Fabius.polynomialFilter_response_eq},

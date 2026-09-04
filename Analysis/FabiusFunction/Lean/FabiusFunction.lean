@@ -162,6 +162,7 @@ import FabiusFunction.GeometricUniformUniqueness
 import FabiusFunction.GeometricUniformCDF
 import FabiusFunction.GeometricUniformMomentPolynomial
 import FabiusFunction.GeometricUniformMomentPolynomialBridge
+import FabiusFunction.GeometricUniformComplexMomentProduct
 import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
@@ -943,15 +944,32 @@ real `q` with `|q| < 1` and every index, it identifies evaluation of the
 recursive polynomial by the exact formula
 `P_n(q) = ((q;q)_n / (1-q)^n) * (iteratedDeriv n M_q 0 / n!)`, where `M_q` is the genuine
 geometric-uniform MGF.  The range includes `q = 0` and negative contractions.
-This closes the analytic normalization used by
-frontier label `p7:thm:Pn` on its real probability-law domain, but that label
-remains Partial because its leading-coefficient formula and strict odd-degree
-drop are absent.  Monograph label `thm:qF-moment-polynomial` also remains
-Partial: its source coefficient is defined through a complex-parameter
-locally-uniform infinite product, which this real-MGF theorem does not
-construct or identify.  The leading/subleading coefficient and exact-degree
-claims of `prop:qF-P-degree-sharp` remain unformalized, so that label remains
-None.
+
+The complex-product companion has the exhaustive public surface of one
+definition and two theorems: `geometricUniformComplexMomentProduct`,
+`hasProdLocallyUniformly_geometricUniformComplexMomentProduct`, and
+`geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
+For every complex `q` with `‖q‖ < 1`, including `q = 0` and negative real
+contractions, it constructs the genuine product
+`A_q(z) = ∏' j, complexExpm1Div ((1-q) * q^j * z)`, proves locally uniform
+convergence on the whole complex plane, and proves
+`P_n(q) = ((q;q)_n / (1-q)^n) * (iteratedDeriv n A_q 0 / n!)`.
+For nonreal `q`, this analytic product is not described as a probability MGF.
+
+These leaves make the real probability-law normalization and the inner
+complex-disc product/Taylor normalization exact.  Frontier label `p7:thm:Pn`
+nevertheless remains Partial because its leading-coefficient formula and
+strict odd-degree drop are absent.  Monograph label
+`thm:qF-moment-polynomial` also remains Partial: its source uses one
+rational-function coefficient object across the inner product and the
+`|q| > 1` reciprocal germ, while no named exterior-germ, `RatFunc`, or
+root-of-unity continuation theorem identifies that same object in Lean.
+Label `thm:geometric-uniform-mgf` remains Partial: no public theorem packages
+the product's dilation/Mahler law, entireness and normalization, formal
+uniqueness, coefficient rationality and pole data, or its direct
+identification with the real MGF or characteristic function.  The
+leading/subleading coefficient and exact-degree claims of
+`prop:qF-P-degree-sharp` remain unformalized, so that label remains None.
 
 The parity-selected Rvachev synthesis layer exports exactly one definition and
 eight theorems.  `IsRvachevSuperconvergentPhase` selects the endpoint phases

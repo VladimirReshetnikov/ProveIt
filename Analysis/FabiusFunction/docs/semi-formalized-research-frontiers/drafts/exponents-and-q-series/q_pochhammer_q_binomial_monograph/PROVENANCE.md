@@ -91,7 +91,7 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 905 modules and 11,458 public declarations with no
+live facade audit contains 906 modules and 11,461 public declarations with no
 documentation gaps. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` source-only module; the other
 three are the explicit Gaussian second-derivative and division-free moment
@@ -136,14 +136,26 @@ definitions and the single public theorem
 full real domain `|q| < 1`, it identifies the recursive polynomial with the
 finite-q-Pochhammer normalization of the genuine geometric-uniform MGF Taylor
 coefficient; the theorem is regular at `q = 0` and includes negative
-contractions.  The manuscript's complex-`q` infinite-product coefficient is
-still not defined or identified in Lean.  Accordingly
-`thm:qF-moment-polynomial` remains Partial, not Exact, and the sharp-degree
-proposition stays None.  The base leaf's 904/11,457 census is the historical
-checkpoint at which the row moved from None to Partial; the bridge gives the
-live 905/11,458 census without another status move.  Neither source-only
-addition nor the preceding Lambert addition changes the retained historical
-artifact, and no render parity is claimed. The
+contractions.  The next `GeometricUniformComplexMomentProduct.lean` leaf has
+one definition, `geometricUniformComplexMomentProduct`, and exactly two public
+theorems, `hasProdLocallyUniformly_geometricUniformComplexMomentProduct` and
+`geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
+They construct the actual manuscript product for every complex `‖q‖ < 1`,
+including `q = 0`, prove its locally uniform convergence, and identify the
+recursive polynomial with the finite-q-Pochhammer normalization of its Taylor
+coefficient.  This makes the inner complex product/coefficient bridge exact.
+Conservatively, `thm:qF-moment-polynomial` remains Partial rather than Exact:
+the exterior reciprocal-germ coefficients have not been identified in Lean
+with the same rational function `a_n(q) = d_n(q) / n!`, and no theorem proves
+that clearing that RatFunc's root-of-unity poles gives the same total
+polynomial at `q = 1`.  The broader
+`thm:geometric-uniform-mgf` remains Partial, and the sharp-degree proposition
+stays None.  The base leaf's 904/11,457 census is the historical checkpoint at
+which the row moved from None to Partial; the real bridge gives the historical
+905/11,458 checkpoint, while the complex leaf gives the live 906/11,461 census
+without another status move.  None of these source-only additions, nor the
+preceding Lambert addition, changes the retained historical artifact, and no
+render parity is claimed. The
 forward status inventory covers 282 labelled results:
 166 Exact / 91 Partial / 17 None / 8 N/A; the 191-result pre-Fabius core is
 35 / 30 / 123 / 3.

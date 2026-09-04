@@ -21,8 +21,8 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 905
-source modules and 11,458 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 906
+source modules and 11,461 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -397,16 +397,27 @@ and exactly one theorem,
 the recursive polynomial on every real `|q| < 1` with the
 finite-q-Pochhammer normalization of the Taylor coefficient of the genuine
 geometric-uniform MGF.  This is regular at `q = 0` and includes negative
-contractions, but it does not identify the manuscript's complex-`q` product
-coefficient.  Therefore `thm:qF-moment-polynomial` remains Partial, not Exact,
-while `prop:qF-P-degree-sharp` remains None.  The base addition gives the
+contractions.  The following `GeometricUniformComplexMomentProduct.lean` leaf
+has one definition, `geometricUniformComplexMomentProduct`, and exactly two
+theorems, `hasProdLocallyUniformly_geometricUniformComplexMomentProduct` and
+`geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
+For every complex `‖q‖ < 1`, including `q = 0`, it supplies the manuscript's
+actual infinite product, its locally uniform convergence, and its exact
+normalized Taylor-coefficient bridge.  The inner complex product/coefficient
+claim is exact, but `thm:qF-moment-polynomial` remains conservatively Partial:
+the exterior reciprocal germ is not identified with the same rational
+`a_n(q) = d_n(q) / n!`, and no theorem identifies the polynomial obtained by
+clearing that RatFunc's root-of-unity poles, including at `q = 1`.
+`thm:geometric-uniform-mgf` remains Partial
+and `prop:qF-P-degree-sharp` remains None.  The base addition gives the
 historical 904/11,457 checkpoint and moved the row from None to Partial; the
-bridge gives the live census 905/11,458.  The q forward totals remain
-166 Exact / 91 Partial / 17 None / 8 N/A.  The source
-concordance stays unchanged at 78 Lean-proved / 400 human-proved frontier /
-60 N/A / 9 conjectures because its historical-source disposition does not
-encode partial Lean coverage.  The retained 389-page q-series PDF is a
-historical checkpoint and does not render this source-only crosswalk.
+real bridge gives the historical 905/11,458 checkpoint, while the complex
+leaf gives the live census 906/11,461.  The q forward totals remain 166 Exact /
+91 Partial / 17 None / 8 N/A.  The source concordance stays unchanged at 78
+Lean-proved / 400 human-proved frontier / 60 N/A / 9 conjectures because its
+historical-source disposition does not encode partial Lean coverage.  The
+retained 389-page q-series PDF is a historical checkpoint and does not render
+this source-only crosswalk.
 
 No finite endpoint derivative is asserted.  An `O(z + exp(-1))` remainder
 after the signed leading term, a convergent signed

@@ -16499,15 +16499,31 @@ every real \(q\) with \(\lvert q\rvert<1\) and every \(n\), it identifies that
 polynomial with the finite-q-Pochhammer normalization of the \(n\)-th Taylor
 coefficient of the genuine geometric-uniform MGF.  Hence
 \eqref{p7:eq:Pn-def} is Exact in the real contraction regime, including
-signed \(q\) and \(q=0\).  The bridge does not construct the complex-q
-infinite product.  Nor does either module prove the leading-coefficient
-formula and consequent strict degree drop for odd \(n>1\).  Thus the compound
-theorem \cref{p7:thm:Pn} remains Partial, not Exact: its algebraic
-recurrence/bound/zero/small-case clauses and analytic normalization are
-supplied, while its leading/odd-degree clause remains open.  The \(1+8\)
+signed \(q\) and \(q=0\).  The subsequent source-only
+\path{GeometricUniformComplexMomentProduct.lean} leaf has one public
+definition, \lean{geometricUniformComplexMomentProduct}, and exactly two
+public theorems,
+\lean{hasProdLocallyUniformly_geometricUniformComplexMomentProduct} and
+\lean{geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient}.
+For every complex \(q\) with \(\lVert q\rVert<1\), it constructs the actual
+infinite product, proves locally uniform convergence on the complex plane, and
+identifies its normalized Taylor coefficient with the same polynomial.  This
+is a complex analytic analogue, not a complex probability-moment reading of
+\eqref{p7:eq:Pn-def}; that equation is Exact only in the real contraction
+regime stated above.  The canonical q-monograph compound label
+\nolinkurl{thm:qF-moment-polynomial} remains Partial because the exterior
+reciprocal-germ coefficient, the single rational function \(a_n=d_n/n!\), and
+the pole-cleared removable continuation at roots of unity are not formalized.
+Nor does any of these modules prove the leading-coefficient formula and
+consequent strict degree drop for odd \(n>1\).  Thus the compound theorem
+\cref{p7:thm:Pn} remains Partial, not Exact: its algebraic
+recurrence/bound/zero/small-case clauses and strict-disk analytic normalization
+are supplied, while its leading/odd-degree clause remains open.  The \(1+8\)
 algebraic leaf raised the historical 903/11,448 checkpoint to the historical
-904 modules and 11,457 public declarations; the exhaustive \(0+1\) bridge
-raises the live facade census to 905 modules and 11,458 public declarations.
+904 modules and 11,457 public declarations; the exhaustive \(0+1\) real bridge
+raised the next historical checkpoint to 905 modules and 11,458 public
+declarations; and the exhaustive \(1+2\) complex leaf raises the live facade
+census to 906 modules and 11,461 public declarations.
 The retained PDF predates these source-only crosswalks, remains historical,
 and claims no render parity.
 \end{statusbox}

@@ -829,8 +829,8 @@ Thus `is:p3:cor:forced-superconvergence` and
 concordance. This source postdates the retained Representation and inverse
 PDFs, which remain historical artifacts rather than renders of the promotion.
 The corresponding historical documentation checkpoint was 671 modules and
-8,858 public declarations. The later live repository census is 905 modules
-and 11,458 public declarations. The sibling
+8,858 public declarations. The later real-MGF bridge checkpoint was 905
+modules and 11,458 public declarations. The sibling
 `FabiusFunction.GeometricUniformMomentPolynomial` module (one definition and
 eight theorems) produced the historical 904/11,457 checkpoint. It supplies the
 recursive rational polynomial, residual-product recurrence, triangular degree
@@ -840,9 +840,22 @@ surface zero definitions and one theorem,
 `Fabius.geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`.
 For every real `|q| < 1`, that theorem supplies the actual-MGF normalization,
 making `p7:eq:Pn-def` Exact in that real regime, including signed `q` and
-`q = 0`. It supplies no complex-q infinite-product realization. The
-leading-coefficient and strict odd-degree clauses remain absent, so the
-compound `p7:thm:Pn` remains Partial. These sibling source-only modules are
+`q = 0`. It supplies no complex-q infinite-product realization by itself. The
+subsequent sibling `FabiusFunction.GeometricUniformComplexMomentProduct` has
+the exhaustive surface one public definition and two public theorems:
+`Fabius.geometricUniformComplexMomentProduct`,
+`Fabius.hasProdLocallyUniformly_geometricUniformComplexMomentProduct`, and
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_complexMomentProduct_taylorCoefficient`.
+For complex `‖q‖ < 1` these construct the actual locally uniform product and
+give its normalized Taylor-coefficient bridge to the recursive polynomial.
+This is an analytic analogue rather than a complex probability-moment
+extension of `p7:eq:Pn-def`, whose Exact scope remains real `|q| < 1`. The
+canonical q-monograph `thm:qF-moment-polynomial` remains Partial because its
+exterior reciprocal-germ/rational-function identification and removable
+continuation at roots are not formalized. The leading-coefficient and strict
+odd-degree clauses also remain absent, so the compound `p7:thm:Pn` remains
+Partial. The complex `1+2` leaf raises the live repository census to 906
+modules and 11,461 public declarations. These sibling source-only modules are
 not rendered by the retained Representation or inverse PDFs. The immediately
 preceding complex Bernoulli value-completion checkpoint was 903 modules and
 11,448 public declarations. The earlier
