@@ -85,6 +85,8 @@ import FabiusFunction.NarayanaNumbers
 import FabiusFunction.StirlingFirstModH
 import FabiusFunction.LagrangeInversion
 import FabiusFunction.RaneyNumbers
+import FabiusFunction.AssociahedronFaceNumbers
+import FabiusFunction.PochhammerFalling
 import FabiusFunction.AbelPolynomialSeries
 import FabiusFunction.LambertWSeries
 import FabiusFunction.FussCatalanSeries
