@@ -68,11 +68,13 @@ theorem mul_abs_sub_le_abs_sub_of_le_deriv (hD : Convex ℝ D) (hf : ContinuousO
   rcases le_total x y with h | h
   · have hlo := Convex.mul_sub_le_image_sub_of_le_deriv hD hf hf' hm x hx y hy h
     rw [abs_sub_comm x y, abs_of_nonneg (by linarith : (0 : ℝ) ≤ y - x)]
-    exact le_trans hlo (le_abs_self _)
+    calc m * (y - x) ≤ f y - f x := hlo
+      _ ≤ |f y - f x| := le_abs_self _
+      _ = |f x - f y| := abs_sub_comm _ _
   · have hlo := Convex.mul_sub_le_image_sub_of_le_deriv hD hf hf' hm y hy x hx h
     rw [abs_of_nonneg (by linarith : (0 : ℝ) ≤ x - y)]
-    rw [abs_sub_comm]
-    exact le_trans hlo (le_abs_self _)
+    calc m * (x - y) ≤ f x - f y := hlo
+      _ ≤ |f x - f y| := le_abs_self _
 
 /-- **Residual-to-error transfer, upper half.**  With `g` a right inverse of `f`
 on `D` and `m ≤ f'`, the distance to the exact value is at most the residual
