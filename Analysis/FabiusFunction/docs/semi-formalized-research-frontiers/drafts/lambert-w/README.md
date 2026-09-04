@@ -138,8 +138,15 @@ not extend the probability-moment reading of `p7:eq:Pn-def` beyond real
 `|q| < 1`.  The canonical q-monograph `thm:qF-moment-polynomial` remains
 Partial because the exterior reciprocal-germ coefficient and the global
 rational/removable continuation at roots are absent.  This exhaustive `1+2`
-leaf raises the live documentation census to 906 modules and 11,461 public
-declarations.  All three sibling source-only additions are likewise absent
+leaf formed the historical checkpoint of 906 modules and 11,461 public
+declarations.  The subsequent compiled source union has 921 modules and
+11,604 public declarations.  Its germ-related addition
+`FabiusFunction.RvachevLaurentLeading` has one definition and six theorems and
+makes `is:p2:thm:Laurent-leading` exact through the manuscript-normalized
+punctured-neighborhood limit and its coordinate, odd-core, nonvanishing,
+cofactor, and general-pole companions.  Puncturing is essential because Lean
+totalizes inversion at a pole; no lower Laurent coefficient is claimed.  All
+three sibling source-only additions are likewise absent
 from the retained historical PDFs.
 
 The exact raw second-order package is `LambertWCurvature.lean`.  Its

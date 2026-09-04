@@ -835,9 +835,20 @@ Thus `is:p3:cor:forced-superconvergence` and
 concordance. This source postdates the retained Representation and inverse
 PDFs, which remain historical artifacts rather than renders of the promotion.
 The corresponding historical documentation checkpoint was 671 modules and
-8,858 public declarations. The later live repository census is 918 modules
-and 11,568 public declarations; the q forward ledger is 176 Exact / 82 Partial /
-16 None / 8 N/A. It includes the unrelated sibling source-only
+8,858 public declarations. The later source union adds the one-definition/
+six-theorem `FabiusFunction.RvachevLaurentLeading` module, which makes
+`is:p2:thm:Laurent-leading` exact through a punctured pole limit without
+claiming lower Laurent coefficients, and the eleven-definition/
+seventeen-theorem `FabiusFunction.FinitePrefixAppellRecovery` module, which
+makes `is:p2:thm:finite-prefix-expansion` and
+`is:p2:thm:exact-recovery` exact for all starting depths, including zero, at
+bases `1/2` and `1/4`. The prefix module's exact degrees are symbolic outer
+degrees in `Polynomial (Polynomial ℚ)`; a fixed-inner-variable centered
+degree can drop, and its algebraic finite-convolution moments are not a
+random-variable or MGF realization. The live repository census is 921 modules
+and 11,604 public declarations; the q forward ledger is 177 Exact / 81 Partial /
+16 None / 8 N/A, and its source concordance is 90 Lean-proved / 388
+human-proved frontier / 60 N/A / 9 conjectures. It includes the unrelated sibling source-only
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`. It also includes the
