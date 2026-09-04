@@ -1346,7 +1346,7 @@ variable factors.  Scaling each variable by $a$ therefore multiplies each
 monomial, and its sum, by $a^r$.  Apply the preceding theorem.
 \end{proof}
 
-\begin{remark}[Formalization source under validation]
+\begin{remark}[Formalization source]
 The compiled module \lean{StirlingCompleteHomogeneous} supplies
 \lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn} and
 \lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le} for the shifted
@@ -1357,7 +1357,7 @@ and unshifted second-kind identities.  Module
 forms, and \lean{Fabius.completeHomogeneousEvalOn_scaled_range} and
 \lean{Fabius.esymm_scaled_range} for scaling.  All statements use an
 arbitrary commutative semiring.  The four additional proofs have been reviewed
-against the local APIs; their compiler validation is pending.
+against the local APIs and checked by direct sequential Lean elaboration.
 \end{remark}
 
 The first few near-diagonals are
@@ -3045,17 +3045,6 @@ formal proof is a double induction over $\IntegerNumbers$ with no probability
 and no generating function in it.
 The probabilistic proof in the text is not thereby superseded; it explains where
 the identity comes from, which the induction does not.
-\end{remark}
-
-\begin{remark}[Formal crosswalk]
-% ed.: crosswalk added 2026-09-01.
-\cref{eq:bell-inversion-one} is
-\lean{Fabius.bell_eq_sum_neg_one_pow_choose_bell_succ} (module
-\lean{BellShiftEGF}): binomial inversion
-(\lean{Fabius.binomial_inversion_ring}) of the recurrence
-\cref{eq:bell-binomial-recurrence} in the form
-\lean{Fabius.bell_succ_eq_sum_choose}.  \cref{eq:bell-inversion-two} is not
-formalized.
 \end{remark}
 
 The first-kind Stirling numbers package all repeated shifts at once.
@@ -5843,7 +5832,17 @@ $z\psi(z)$, where $\psi$ is the power-series inverse of $\phi$, and
 \cref{eq:lagrange-functional}.  So
 \lean{Fabius.Lagrange.coeff_solution_subst_derivative} and
 \lean{Fabius.Lagrange.coeff_solution} are unconditional statements about a
-witness under the stated invertibility hypothesis.
+witness, not conditional ones.  New source in
+\lean{LagrangeInversionUniqueness} supplies uniqueness over an arbitrary
+commutative ring through
+\lean{Fabius.Lagrange.eq_solution_of_eq_X_mul_subst} and
+\lean{Fabius.Lagrange.existsUnique_of_isUnit_constantCoeff}.
+The alternative coefficient formula is
+\lean{Fabius.Lagrange.coeff_solution_subst_alt}, using the general
+coefficient integration-by-parts identity
+\lean{Fabius.Lagrange.coeff_jacobian_mul}.  All six declarations in
+\lean{LagrangeInversionUniqueness} have passed focused compiler validation,
+so the uniqueness and all three coefficient formulas in the theorem are exact.
 The proof above is unavailable in Lean, because it runs through
 \cref{thm:res-subst}, which is itself unformalized.  The formal proof is
 purely algebraic and rests on one cancellation: writing $v$ for the inverse of
@@ -5886,8 +5885,8 @@ uniqueness statements above, over any commutative ring.  Its
 \lean{Fabius.Lagrange.coeff_subst_alt} and
 \lean{Fabius.Lagrange.coeff_solution_subst_alt} give the alternative formula
 for a supplied solution and for the canonical constructed one.  These new
-proofs have been independently reviewed at source level; compiler validation
-is pending.
+proofs have passed focused compiler validation and complete the formal
+counterpart of \cref{thm:lagrange-burmann}.
 \end{remark}
 
 \section{Analytic inverse functions}
@@ -6751,6 +6750,23 @@ Thus $\deg p_n=n$ for all $n$ exactly when $B'(0)\ne0$; and already
 $p_1(x)=B'(0)x$ shows that exact degree at $n=1$ forces $B'(0)\ne0$.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; both directions, uniqueness, and the degree clause.
+Fully formal in \lean{BinomialTypeCharacterization}, and slightly more general
+than stated: the proof needs a characteristic-zero domain that is a
+$\RationalNumbers$-algebra, not a field, and the direction (2)$\Rightarrow$(1)
+holds over any commutative $\RationalNumbers$-algebra
+(\lean{Fabius.isBinomialType_of_egfA_eq}).  The equivalence is
+\lean{Fabius.isBinomialType_iff_exists_egfA_eq}, uniqueness of $B$ is
+\lean{Fabius.isBinomialType_iff_existsUnique_egfA_eq} with the explicit
+$B=\sum p_n'(0)\,t^{n}/n!$ in \lean{Fabius.eq_egfA_linearCoeff_of_egfA_eq}, and the
+degree clause is \lean{Fabius.natDegree_eq_iff_of_isBinomialType}.  The formal
+proof avoids the logarithm over $K[x]$ entirely: the binomial identity is
+turned, column by column in $x$, into $\binom{i+j}{j}C_{i+j}=C_iC_j$ for the
+column generating functions, whence $j!\,C_j=C_1^{j}$ and the corpus's
+partial-Bell column theorem identifies the coefficients.
+\end{remark}
+
 \begin{theorem}[Addition and lowering]
 \label{thm:merged-sheffer}
 Let $p_n$ be the binomial-type sequence with EGF $\EulerE^{yB(t)}$.  Then
@@ -6948,7 +6964,10 @@ to the $n$-th coefficient of $g\,A(f)$), the product law
 inverse law \cref{eq:merged-riordan-inverse} is
 \lean{Fabius.expRiordan_mul_inverse} in the form: if $\overline f\circ f=t$
 and $g\cdot(h\circ f)=1$ then $[g,f]\,[h,\overline f]$ is the identity array
-\lean{Fabius.expRiordan_one_X}.  The Stirling examples are
+\lean{Fabius.expRiordan_one_X}.  This is a conditional one-sided inverse
+statement.  Constructing the inverse series from the theorem's unit hypotheses
+and establishing the full two-sided inverse remain separate formal obligations;
+the register status is therefore \emph{partial}.  The Stirling examples are
 \lean{Fabius.expRiordan_one_exp_sub_one} ($[1,\EulerE^t-1]$ has entries
 $\StirlingSecondKind nk$) and \lean{Fabius.expRiordan_one_log}
 ($[1,\log(1+t)]$ has entries $\SignedStirlingFirstKind{n}{k}$).
@@ -7991,6 +8010,20 @@ images under $\varphi$ are precisely the coefficients of $B_S$.
 Applying the first identity to $H=B_R$ proves the last assertion.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; all base-change clauses are exact.
+The compiler-checked module \lean{BernoulliFormalLog} proves the general
+identity as \lean{Fabius.map_logOf}: for every unital ring homomorphism
+between commutative $\RationalNumbers$-algebras and every series with constant
+coefficient one, coefficientwise mapping commutes with the normalized formal
+logarithm.  The kernel identity is
+\lean{Fabius.map_bernoulliPowerSeries}; combining it with
+\lean{Fabius.logOf_bernoulliPowerSeries_algebra} and
+\lean{Fabius.coeff_logOf_bernoulliPowerSeries_algebra} transports the full
+rational coefficient formula, including degree zero, to the target algebra.
+Thus every clause of \cref{lem:merged-log-base-change} is exact.
+\end{remark}
+
 \begin{theorem}[Appell, difference, and convolution calculus]
 \label{thm:merged-norlund-calculus}
 For $\alpha,x,y\in R$ and $n\geq1$, with the derivative interpreted
@@ -8169,10 +8202,9 @@ number diagonal; division by $(n-1)!$ gives the coefficient identity.
 \end{proof}
 
 \begin{remark}[Formal crosswalk]
-% ed.: crosswalk added 2026-09-02; the Lean proof avoids residues entirely.
+% ed.: crosswalk updated 2026-09-04; Bell construction and natural diagonal separated.
 Module \lean{NorlundDiagonal} formalizes the three diagonal displays for
-natural orders and rational evaluation points:
-\cref{eq:merged-norlund-polynomial-diagonal} is
+natural orders: \cref{eq:merged-norlund-polynomial-diagonal} is
 \lean{Fabius.norlund_diagonal}, in the form
 $\beta_n^{(n+1)}(x)=\FallingFactorial{x-1}{n}$ with Mathlib's
 \lean{descPochhammer}; \cref{eq:merged-norlund-number-diagonal} is
@@ -11526,7 +11558,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 78 Lean, 52 partial, 78 none, of 208 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 83 Lean, 50 partial, 75 none, of 208 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -11560,8 +11592,8 @@ Result & Title & Status & Lean declarations (module) \\
 \Cref{thm:second-ogf} & Fixed-$k$ ordinary generating function & Lean & \lean{Fabius.prod_one_sub_mul_X_mul_stirlingColumnOGF} and \lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}) prove the formal inverse and finite geometric-product identities.  The compiled \lean{StirlingCompleteHomogeneous} declarations \lean{Fabius.stirlingColumnOGF_eq_completeHomogeneousGeneratingSeriesOn}, \lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn}, \lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le}, \lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEval}, \lean{Fabius.stirlingSecond_add_eq_eval_hsymm}, and \lean{Fabius.stirlingSecond_add_eq_sum_finsuppAntidiag} cover inverse uniqueness, the $n=k+r$ and $n\ge k$ complete-homogeneous identities over every commutative semiring, universal \lean{MvPolynomial.hsymm} evaluation, and the explicit multiplicity sum.  Its \lean{Fabius.pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul} and \lean{Fabius.prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv} cover the scalar falling-factorial factorization under $x\ne0$ and its reciprocal under nonvanishing of every $1-jx$. \\
 \Cref{thm:stirling-transform} & Stirling transform and its inverse & Lean & the inversion formula is \lean{Fabius.stirling_inversion}, \lean{Fabius.stirling_inversion_symm}, \lean{Fabius.stirling_inversion_iff} (\lean{StirlingBasisChange}), for sequences in any additive commutative group; the generating-function form is \lean{Fabius.egfA_subst_exp_sub_one} and \lean{Fabius.egfA_subst_log} (\lean{StirlingTransformEGF}): substituting $\EulerE^t-1$, respectively $\log(1+t)$, into an exponential generating function applies the second-kind, respectively signed first-kind, Stirling transform \\
 \Cref{thm:normal-order} & Stirling normal-ordering identities & partial & \lean{Fabius.iterate_X_mul_derivative} (\cref{eq:normal1}) and \lean{Fabius.xkDk_eq_sum_signedStirlingFirst} (\cref{eq:normal2}, by Stirling inversion) in \lean{StirlingNormalOrder}, as identities of operators applied to an arbitrary polynomial over any commutative ring; the falling-factorial form $\FallingFactorial{xD}{n}$ and the operator series \cref{eq:der-from-diff,eq:diff-from-der} are not formalized \\
-\Cref{thm:stirling-symmetric-semirings} & Symmetric descriptions over a commutative semiring & partial & The second-kind identities are compiled as \lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn} and \lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le} in \lean{StirlingCompleteHomogeneous}, over every commutative semiring.  New source \lean{Fabius.stirlingFirst_eq_sum_powersetCard} and \lean{Fabius.stirlingFirst_eq_esymm} in \lean{StirlingSymmetricFunctions} supplies the first-kind identities; compiler validation of those additions is pending. \\
-\Cref{cor:stirling-symmetric-scaling} & Homogeneous scaling & none & New source: \lean{Fabius.completeHomogeneousEvalOn_scaled_range} and \lean{Fabius.esymm_scaled_range} in \lean{StirlingSymmetricFunctions}; compiler validation pending. \\
+\Cref{thm:stirling-symmetric-semirings} & Symmetric descriptions over a commutative semiring & Lean & The second-kind identities are compiled as \lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn} and \lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le} in \lean{StirlingCompleteHomogeneous}, over every commutative semiring.  New source \lean{Fabius.stirlingFirst_eq_sum_powersetCard} and \lean{Fabius.stirlingFirst_eq_esymm} in \lean{StirlingSymmetricFunctions} supplies the first-kind identities over every commutative semiring; the empty-family cases are included. The displayed symmetric-function notation is represented by the corresponding finite multiset evaluations. \\
+\Cref{cor:stirling-symmetric-scaling} & Homogeneous scaling & Lean & \lean{Fabius.completeHomogeneousEvalOn_scaled_range} and \lean{Fabius.esymm_scaled_range} in \lean{StirlingSymmetricFunctions} prove both homogeneous scaling identities over every commutative semiring, including zero scalars and the first-kind guard $r\le n$. \\
 \Cref{thm:paired-sums} & First- and second-kind summations & Lean & \lean{StirlingSummations}: \cref{eq:first-two-sums} is \lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose} (module \lean{StirlingBasisChange}) and \lean{Fabius.stirlingFirst_succ_succ_eq_sum_descFactorial}, \cref{eq:second-two-sums} is \lean{Fabius.stirlingSecond_succ_succ_eq_sum} (\lean{BellStirling}) and \lean{Fabius.stirlingSecond_succ_succ_eq_sum_pow}, the hockey sticks \cref{eq:first-hockey,eq:second-hockey} are \lean{Fabius.stirlingFirst_add_succ_eq_sum} and \lean{Fabius.stirlingSecond_add_succ_eq_sum} (with lower index $k$ in the first-kind case, correcting a misprint), and the convolutions \cref{eq:first-convolution,eq:second-convolution} are \lean{Fabius.choose_mul_stirlingFirst_add} and \lean{Fabius.choose_mul_stirlingSecond_add} \\
 \Cref{thm:first-double-sum} & Explicit first-kind double sum & partial & \lean{Fabius.firstDoubleSumInner_eq_stirlingSecond}, \lean{Fabius.firstDoubleSum_eq_crossSum} (\lean{StirlingIdentities}) are the theorem's own proof; the quoted input \eqref{eq:symmetric-cross1} (Schl\"omilch) is not formal; the diagonal instance \lean{Fabius.firstDoubleSum_diagonal} is unconditional \\
 \Cref{thm:signed-near-diagonal-partition} & Near-diagonal partition formula & none &  \\
@@ -11644,7 +11676,7 @@ theorem (unlabelled, no.~77) &  & none &  \\
 \Cref{thm:faa-multivariate} & Multivariate Fa\`a di Bruno for distinct variables & none &  \\
 \Cref{thm:ordinary-composition} & Ordinary composition & Lean & \lean{Fabius.ordinaryMultiplicityProfiles} with \lean{Fabius.mem_ordinaryMultiplicityProfiles} encodes the part-count and total-weight constraints.  \cref{eq:ordinary-composition-multiplicities} is \lean{Fabius.ordPartialBell_eq_sum_multinomial} (\lean{OrdinaryBellMultinomial}) over every commutative semiring, using the finite-degree locality theorem \lean{Fabius.ordPartialBell_congr_of_le}; \cref{eq:ordinary-composition-compositions,eq:ordinary-composition-bell} are \lean{Fabius.ordPartialBell}, \lean{Fabius.coeff_pow_eq_ordPartialBell}, and \lean{Fabius.coeff_subst_eq_sum_ordPartialBell} (\lean{OrdinaryBellComposition}).  The all-index commutative-ring theorem \lean{Fabius.coeff_subst_eq_sum_multinomial} combines these forms; at $n=0$ its unique empty profile gives $c_0=a_0$.  The reciprocal specialization is \lean{Fabius.coeff_reciprocalSeries} \\
 \Cref{thm:exponential-composition} & Exponential composition & Lean & \lean{Fabius.egfA_subst_bellWeightSeries} (\lean{BellComposition}): substitution of exponential generating functions over any commutative $\mathbb Q$-algebra \\
-\Cref{thm:lagrange-burmann} & Lagrange--Bürmann & partial & \cref{eq:lagrange-burmann} is \lean{Fabius.Lagrange.coeff_subst_derivative} and \cref{eq:lagrange-basic} is \lean{Fabius.Lagrange.coeff_subst_id} (module \lean{LagrangeInversion}), over any commutative $\RationalNumbers$-algebra and in the division-free form $n[z^n]H(g)=[w^{n-1}]H'\phi^n$, from the division-free core \lean{Fabius.Lagrange.coeff_subst_mul_derivative}.  The solution $g$ of \cref{eq:lagrange-functional} is constructed, not assumed (\lean{Fabius.Lagrange.solution}, \lean{Fabius.Lagrange.solution_eq}), so \lean{Fabius.Lagrange.coeff_solution_subst_derivative} and \lean{Fabius.Lagrange.coeff_solution} concern the constructed solution under the inverse-series hypothesis.  New source in \lean{LagrangeInversionUniqueness} supplies uniqueness over any commutative ring and \cref{eq:lagrange-burmann-alt} via \lean{Fabius.Lagrange.coeff_solution_subst_alt}; compiler validation pending. \\
+\Cref{thm:lagrange-burmann} & Lagrange--Bürmann & Lean & \cref{eq:lagrange-burmann} is \lean{Fabius.Lagrange.coeff_subst_derivative} and \cref{eq:lagrange-basic} is \lean{Fabius.Lagrange.coeff_subst_id} (module \lean{LagrangeInversion}), over any commutative $\RationalNumbers$-algebra and in the division-free form $n[z^n]H(g)=[w^{n-1}]H'\phi^n$, from the division-free core \lean{Fabius.Lagrange.coeff_subst_mul_derivative}.  The solution $g$ of \cref{eq:lagrange-functional} is constructed, not assumed (\lean{Fabius.Lagrange.solution}, \lean{Fabius.Lagrange.solution_eq}), so \lean{Fabius.Lagrange.coeff_solution_subst_derivative} and \lean{Fabius.Lagrange.coeff_solution} concern the constructed solution under the inverse-series hypothesis.  \lean{Fabius.Lagrange.eq_solution_of_eq_X_mul_subst}, \lean{Fabius.Lagrange.existsUnique_solution}, and \lean{Fabius.Lagrange.existsUnique_of_isUnit_constantCoeff} prove the stated uniqueness, already over every commutative ring; \lean{Fabius.Lagrange.coeff_jacobian_mul} gives the division-free coefficient integration-by-parts identity, and \lean{Fabius.Lagrange.coeff_subst_alt} and \lean{Fabius.Lagrange.coeff_solution_subst_alt} give \cref{eq:lagrange-burmann-alt} (\lean{LagrangeInversionUniqueness}). \\
 \Cref{thm:analytic-lagrange} & Analytic Lagrange inversion & none &  \\
 \Cref{thm:inverse-bell-coeff} & Explicit inverse coefficients & Lean & \lean{InverseBellCoefficients}: \cref{eq:inverse-bell-coeff} is \lean{Fabius.factorial_mul_coeff_reversion} (sum from $k=0$) and \lean{Fabius.factorial_mul_coeff_reversion_of_two_le} (sum from $k=1$, for $n\ge2$), with $g_1=f_1^{-1}$ as \lean{Fabius.coeff_reversion_one}; the reversion itself is constructed, not assumed, and \lean{Fabius.subst_egfA_reversion} proves it inverts $f$ \\
 \Cref{thm:associahedral-inversion} & Associahedral inversion & none &  \\
@@ -11657,11 +11689,11 @@ theorem (unlabelled, no.~77) &  & none &  \\
 \Cref{thm:merged-binomial-inversion} & Binomial inversion & Lean & the equivalence of \cref{eq:merged-binomial-forward,eq:merged-binomial-backward} is \lean{Fabius.binomial_inversion_iff} (additive commutative groups) and \lean{Fabius.binomial_inversion_ring_iff} (commutative rings) (\lean{BinomialInversion}), with the kernel orthogonality \lean{Fabius.sum_Icc_neg_one_pow_choose_mul_choose}; \cref{eq:merged-binomial-egf} is \lean{Fabius.egfA_eq_exp_mul_iff} and \lean{Fabius.egfA_eq_altSeries_mul_iff} (\lean{BinomialInversionEGF}), each an iff with its sequence form, together with \lean{Fabius.egfA_eq_exp_mul_iff_egfA_eq_altSeries_mul} for the equivalence of the two generating-function equations \\
 \Cref{thm:merged-partition-mobius} & Möbius function of $\Pi\_n$ & none &  \\
 \Cref{thm:merged-moment-cumulant} & Moment--cumulant inversion & partial & In the block-size form: \lean{Bell.complete} and \lean{Bell.cumulant} are mutually inverse (\lean{Bell.complete_cumulant}, \lean{Bell.cumulant_complete}, module \lean{BellPolynomialInversion}) and $M=\EulerE^K$ is \lean{Fabius.exp_subst_bellWeightSeries}; $K=\log M$ is now \lean{Fabius.logOf_egfA} together with \lean{Fabius.cumulant_eq_cumulantSum} (\lean{CumulantBellFormula}), which also gives the closed form $\kappa_n=\sum_k(-1)^{k-1}(k-1)!\,\ExponentialPartialBellPolynomial nk(m)$, resting on the formal $\exp\circ\log$ inverse \lean{Fabius.exp_subst_logOf} (\lean{ExpLog}); the sums over set partitions are not formalized. \\
-\Cref{thm:merged-binomial-type-characterization} & Generating-function characterization of binomial type & none &  \\
+\Cref{thm:merged-binomial-type-characterization} & Generating-function characterization of binomial type & Lean & \lean{Fabius.isBinomialType_iff_exists_egfA_eq}, \lean{Fabius.isBinomialType_iff_existsUnique_egfA_eq}, \lean{Fabius.natDegree_eq_iff_of_isBinomialType} (\lean{BinomialTypeCharacterization}); over a char-0 domain that is a Q-algebra, and one direction over any commutative Q-algebra \\
 \Cref{thm:merged-sheffer} & Addition and lowering & partial & \cref{eq:merged-sheffer-addition} is \lean{Fabius.shefferPoly_add} (\lean{BinomialType}), for \lean{Fabius.shefferPoly} $=c\star p$ (binomial convolution of the coefficients of $g$ with the binomial-type sequence), with generating function \lean{Fabius.egfA_mul_exp_subst_smul_bellWeightSeries}; the lowering law \cref{eq:merged-sheffer-lowering} is not formalized \\
 \Cref{lem:merged-formal-rescaling} & Formal rescaling and exponentials & Lean & \cref{eq:merged-formal-rescaling-derivative} is \lean{Fabius.derivative_rescale} over every commutative semiring; \lean{Fabius.derivative_rescale_exp}, \lean{Fabius.rescale_zero_exp}, and \lean{Fabius.rescale_exp_add_one} give the exponential specializations over every commutative $\RationalNumbers$-algebra (\lean{ExponentialRescaling}). The general product law is Mathlib's \lean{PowerSeries.exp_mul_exp_eq_exp_add}. \\
 \Cref{prop:merged-abel} & Abel polynomials & Lean & \lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_zero}, \lean{Fabius.abelPolynomial_succ}, and \lean{Fabius.abelPolynomial_succ_eval} give the polynomial formulas over every commutative ring.  Over every commutative $\RationalNumbers$-algebra, \lean{Fabius.abelSeries_eq} constructs a solution, \lean{Fabius.abel_eq_zero_and_one} gives the boundary coefficients for every solution, and \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} proves \cref{eq:merged-abel-egf} for every solution, including degree zero.  \cref{eq:merged-abel-binomial} is \lean{Fabius.abelPolynomial_eval_add}, also for every $n\geq0$ (\lean{AbelPolynomialSeries}) \\
-\Cref{thm:merged-riordan} & Riordan action, product, and inverse & partial & \lean{Fabius.expRiordan_action}, \lean{Fabius.expRiordan_mul}, \lean{Fabius.expRiordan_mul_inverse} (\lean{ExponentialRiordan}) prove the action, product, and a conditional one-sided inverse law, assuming the inverse series and $g\,(h\circ f)=1$.  Construction of these inverse series from the theorem's unit hypotheses and the full two-sided inverse statement remain to be formalized.  The Stirling examples are \lean{Fabius.expRiordan_one_exp_sub_one} and \lean{Fabius.expRiordan_one_log}. \\
+\Cref{thm:merged-riordan} & Riordan action, product, and inverse & partial & \lean{Fabius.expRiordan_action}, \lean{Fabius.expRiordan_mul}, \lean{Fabius.expRiordan_mul_inverse} (\lean{ExponentialRiordan}) prove the action, product, and a conditional one-sided inverse law, assuming the inverse series and $g\,(h\circ f)=1$.  Construction of these inverse series from the theorem's unit hypotheses and the full two-sided inverse statement are not formalized.  The Stirling examples are \lean{Fabius.expRiordan_one_exp_sub_one} and \lean{Fabius.expRiordan_one_log}. \\
 \Cref{thm:merged-complementary-bell} & EGF, recurrence, and Dobiński-type series & Lean & \lean{Fabius.complementaryBell} (\lean{ComplementaryBell}); \cref{eq:merged-complementary-egf} is \lean{Fabius.exp_subst_neg_exp_sub_one}, \cref{eq:merged-complementary-recurrence} is \lean{Fabius.complementaryBell_succ}, and \cref{eq:merged-complementary-dobinski} is \lean{Fabius.complementaryBell_eq_exp_mul_tsum} (the series converges absolutely as the Poisson moment series of \lean{Fabius.tsum_pow_mul_pow_div_factorial}) \\
 \Cref{cor:merged-bell-convolution-inverse} & Convolution inverse of the Bell sequence & Lean & \lean{Fabius.sum_choose_bell_mul_complementaryBell} (\lean{ComplementaryBell}), from the addition law \lean{Bell.complete_add} of complete Bell polynomials at weights $\pm1$ \\
 \Cref{thm:merged-frechet-faa} & Coordinate-free Faà di Bruno & Lean & Mathlib's \lean{iteratedFDeriv_comp} (ContDiff/Comp.lean), unfolded with \lean{FormalMultilinearSeries.taylorComp} and \lean{FormalMultilinearSeries.compAlongOrderedFinpartition_apply}. The statement includes local $C^n$ hypotheses and explicitly uses \lean{OrderedFinpartition}'s increasing-maximum block order. No symmetry conversion is required; the separate partial-Bell regrouping remains open. \\
@@ -11679,7 +11711,7 @@ corollary (unlabelled, no.~11) &  & none &  \\
 \Cref{thm:merged-bernoulli-stirling-touchard} & Bernoulli--Stirling formula and Touchard moments & partial & \cref{eq:merged-bernoulli-stirling} is \lean{Fabius.bernoulli_eq_sum_stirlingSecond} (\lean{BernoulliStirling}) for Mathlib's \lean{bernoulli} (with $B_1=-1/2$), from \lean{Fabius.bernoulliPowerSeries_eq_logDivSeries_subst}: the Bernoulli generating function is $\log(1+u)/u$ at $u=\EulerE^t-1$; the two integral representations are not formalized \\
 \Cref{thm:merged-bernoulli-difference} & Bernoulli polynomials from finite differences & Lean & \cref{eq:merged-bernoulli-newton-basis} is \lean{Fabius.bernoulli_eq_sum_fwdDiff} (module \lean{BernoulliNewtonBasis}), an identity in $\mathbb Q[x]$ with $\Delta^kx^n$ written out as $\sum_j(-1)^{k-j}\binom kj(x+j)^n$; the truncated Gregory composition is \lean{Fabius.X_pow_dvd_bernoulliPowerSeries_sub_gregory}. \\
 \Cref{cor:merged-bernoulli-stirling-second-proof} & Second proof of the Bernoulli--Stirling formula & Lean & \lean{Fabius.bernoulli_eq_sum_fwdDiff_zero} (module \lean{BernoulliNewtonBasis}): $\beta_n=\sum_k\frac{(-1)^k}{k+1}\Delta^k0^n$, and with the surjection formula \lean{Fabius.factorial_mul_stirlingSecond_eq_sum} this is \lean{Fabius.bernoulli_eq_sum_stirlingSecond}. \\
-\Cref{lem:merged-log-base-change} & Change of coefficient algebra & none &  \\
+\Cref{lem:merged-log-base-change} & Change of coefficient algebra & Lean & \lean{Fabius.map_logOf} proves that coefficientwise application of every unital ring homomorphism between commutative $\mathbb Q$-algebras commutes with the normalized formal logarithm of a series with constant coefficient one; \lean{Fabius.map_bernoulliPowerSeries} gives the Bernoulli-kernel specialization, and \lean{Fabius.logOf_bernoulliPowerSeries_algebra} together with \lean{Fabius.coeff_logOf_bernoulliPowerSeries_algebra} transports all logarithmic coefficients, including degree zero (\lean{BernoulliFormalLog}). \\
 \Cref{thm:merged-norlund-calculus} & Appell, difference, and convolution calculus & partial & For natural orders $\alpha,\gamma\in\mathbb N$ (module \lean{NorlundPolynomials}, $\beta_n^{(a)}$ defined by \lean{Fabius.norlund}): \cref{eq:merged-norlund-appell} is \lean{Fabius.derivative_norlund_succ}, \cref{eq:merged-norlund-translation} is \lean{Fabius.norlund_eval_add}, \cref{eq:merged-norlund-difference} is \lean{Fabius.norlund_succ_eval_add_one_sub} and \cref{eq:merged-norlund-convolution} is \lean{Fabius.norlund_add_eval_add}. The arbitrary-order source in \lean{NorlundGeneralized}, including \lean{Fabius.generalizedNorlund_succ_eval_add_one_sub} and \lean{Fabius.generalizedNorlund_eval_add_one_sub}, awaits compilation; the row is not promoted on source review alone. \\
 \Cref{thm:merged-norlund-bell-diagonal} & Bell-polynomial construction and the N\"orlund diagonal & partial & The three diagonal displays are formalized for natural orders and rational evaluation points (module \lean{NorlundDiagonal}): \cref{eq:merged-norlund-polynomial-diagonal} is \lean{Fabius.norlund_diagonal}, \cref{eq:merged-norlund-number-diagonal} is \lean{Fabius.norlund_eval_zero_diagonal} and \cref{eq:merged-norlund-diagonal} is \lean{Fabius.coeff_bernoulliPowerSeries_pow_succ}. The arbitrary-order Bell and multiplicity constructions in \lean{NorlundGeneralized} and \lean{BellCompletePartitions} await compilation. Transport of the polynomial diagonal to an arbitrary coefficient algebra remains open. \\
 \Cref{thm:merged-genocchi} & Bernoulli--Euler--Genocchi relations & Lean & with \lean{Fabius.genocchi} defined by $2(1-2^n)\beta_n$, the generating function \cref{eq:merged-genocchi-egf} is \lean{Fabius.egf_genocchi_mul_exp_add_one} (\lean{GenocchiNumbers}), i.e. the first equality of \cref{eq:merged-genocchi}, and the second equality is \lean{Fabius.genocchi_succ_eq} (\lean{EulerPolynomials}); \lean{Fabius.genocchi_one}, \lean{Fabius.genocchi_two}, \lean{Fabius.genocchi_odd} give the initial values and the parity \\

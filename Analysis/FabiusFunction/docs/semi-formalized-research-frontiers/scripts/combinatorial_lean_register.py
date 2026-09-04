@@ -80,6 +80,11 @@ STATUS = {
    r"The statement includes local $C^n$ hypotheses and explicitly uses "
    r"\lean{OrderedFinpartition}'s increasing-maximum block order. "
    r"No symmetry conversion is required; the separate partial-Bell regrouping remains open."),
+ 'thm:merged-binomial-type-characterization': ('Lean',
+   r"\lean{Fabius.isBinomialType_iff_exists_egfA_eq}, "
+   r"\lean{Fabius.isBinomialType_iff_existsUnique_egfA_eq}, "
+   r"\lean{Fabius.natDegree_eq_iff_of_isBinomialType} (\lean{BinomialTypeCharacterization}); "
+   r"over a char-0 domain that is a Q-algebra, and one direction over any commutative Q-algebra"),
  'thm:bell-poly-partitions': ('Lean',
    r"\lean{Fabius.partialBell_eq_sum_setPartitions} and "
    r"\lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), over any "
@@ -481,18 +486,21 @@ STATUS = {
    r"\lean{Fabius.prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv} cover "
    r"the scalar falling-factorial factorization under $x\ne0$ and its reciprocal under "
    r"nonvanishing of every $1-jx$."),
- 'thm:stirling-symmetric-semirings': ('partial',
+ 'thm:stirling-symmetric-semirings': ('Lean',
    r"The second-kind identities are compiled as "
    r"\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn} and "
    r"\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le} in "
    r"\lean{StirlingCompleteHomogeneous}, over every commutative semiring.  New source "
    r"\lean{Fabius.stirlingFirst_eq_sum_powersetCard} and "
    r"\lean{Fabius.stirlingFirst_eq_esymm} in \lean{StirlingSymmetricFunctions} supplies "
-   r"the first-kind identities; compiler validation of those additions is pending."),
- 'cor:stirling-symmetric-scaling': ('none',
-   r"New source: \lean{Fabius.completeHomogeneousEvalOn_scaled_range} and "
-   r"\lean{Fabius.esymm_scaled_range} in \lean{StirlingSymmetricFunctions}; "
-   r"compiler validation pending."),
+   r"the first-kind identities over every commutative semiring; the empty-family cases "
+   r"are included. The displayed symmetric-function notation is represented by the "
+   r"corresponding finite multiset evaluations."),
+ 'cor:stirling-symmetric-scaling': ('Lean',
+   r"\lean{Fabius.completeHomogeneousEvalOn_scaled_range} and "
+   r"\lean{Fabius.esymm_scaled_range} in \lean{StirlingSymmetricFunctions} prove both "
+   r"homogeneous scaling identities over every commutative semiring, including zero "
+   r"scalars and the first-kind guard $r\le n$."),
  'thm:eulerian-power-series': ('Lean',
    r"\lean{Fabius.one_sub_X_pow_mul_succPowSeries} (the identity "
    r"$(1-t)^{n+1}\sum_m(m+1)^nt^m=\TypeAEulerianPolynomial{n}(t)$ in $R[[t]]$) and "
@@ -504,7 +512,7 @@ STATUS = {
    r"\lean{Fabius.expRiordan_mul_inverse} (\lean{ExponentialRiordan}) prove the action, "
    r"product, and a conditional one-sided inverse law, assuming the inverse series and "
    r"$g\,(h\circ f)=1$.  Construction of these inverse series from the theorem's unit "
-   r"hypotheses and the full two-sided inverse statement remain to be formalized.  "
+   r"hypotheses and the full two-sided inverse statement are not formalized.  "
    r"The Stirling examples are \lean{Fabius.expRiordan_one_exp_sub_one} and "
    r"\lean{Fabius.expRiordan_one_log}."),
  'thm:merged-appell': ('Lean',
@@ -596,6 +604,14 @@ STATUS = {
    r"$\beta_n=\sum_k\frac{(-1)^k}{k+1}\Delta^k0^n$, and with the surjection formula "
    r"\lean{Fabius.factorial_mul_stirlingSecond_eq_sum} this is "
    r"\lean{Fabius.bernoulli_eq_sum_stirlingSecond}."),
+ 'lem:merged-log-base-change': ('Lean',
+   r"\lean{Fabius.map_logOf} proves that coefficientwise application of every unital "
+   r"ring homomorphism between commutative $\mathbb Q$-algebras commutes with the "
+   r"normalized formal logarithm of a series with constant coefficient one; "
+   r"\lean{Fabius.map_bernoulliPowerSeries} gives the Bernoulli-kernel specialization, "
+   r"and \lean{Fabius.logOf_bernoulliPowerSeries_algebra} together with "
+   r"\lean{Fabius.coeff_logOf_bernoulliPowerSeries_algebra} transports all logarithmic "
+   r"coefficients, including degree zero (\lean{BernoulliFormalLog})."),
  'thm:merged-norlund-calculus': ('partial',
    r"For natural orders $\alpha,\gamma\in\mathbb N$ (module \lean{NorlundPolynomials}, "
    r"$\beta_n^{(a)}$ defined by \lean{Fabius.norlund}): \cref{eq:merged-norlund-appell} is "
@@ -693,7 +709,7 @@ STATUS = {
    r"\lean{Fabius.ascPochhammer_eq_prod_range}; the eventual vanishing that makes the spectral "
    r"reading vacuous is \lean{Fabius.stirlingFirst_cast_eq_zero_of_lt}.  The linear recurrence "
    r"over $\IntegerNumbers/h\IntegerNumbers$ and the Jordan decomposition are not formalized."),
- 'thm:lagrange-burmann': ('partial',
+ 'thm:lagrange-burmann': ('Lean',
    r"\cref{eq:lagrange-burmann} is \lean{Fabius.Lagrange.coeff_subst_derivative} and "
    r"\cref{eq:lagrange-basic} is \lean{Fabius.Lagrange.coeff_subst_id} (module "
    r"\lean{LagrangeInversion}), over any commutative $\RationalNumbers$-algebra and in the "
@@ -703,10 +719,14 @@ STATUS = {
    r"(\lean{Fabius.Lagrange.solution}, \lean{Fabius.Lagrange.solution_eq}), so "
    r"\lean{Fabius.Lagrange.coeff_solution_subst_derivative} and "
    r"\lean{Fabius.Lagrange.coeff_solution} concern the constructed solution under the "
-   r"inverse-series hypothesis.  New source in "
-   r"\lean{LagrangeInversionUniqueness} supplies uniqueness over any commutative ring and "
-   r"\cref{eq:lagrange-burmann-alt} via \lean{Fabius.Lagrange.coeff_solution_subst_alt}; "
-   r"compiler validation pending."),
+   r"inverse-series hypothesis.  \lean{Fabius.Lagrange.eq_solution_of_eq_X_mul_subst}, "
+   r"\lean{Fabius.Lagrange.existsUnique_solution}, and "
+   r"\lean{Fabius.Lagrange.existsUnique_of_isUnit_constantCoeff} prove the stated "
+   r"uniqueness, already over every commutative ring; "
+   r"\lean{Fabius.Lagrange.coeff_jacobian_mul} gives the division-free coefficient "
+   r"integration-by-parts identity, and \lean{Fabius.Lagrange.coeff_subst_alt} and "
+   r"\lean{Fabius.Lagrange.coeff_solution_subst_alt} give "
+   r"\cref{eq:lagrange-burmann-alt} (\lean{LagrangeInversionUniqueness})."),
  'thm:lambert-W-zero': ('partial',
    r"The series \cref{eq:lambert-W-zero} is \lean{Fabius.coeff_lambertW} (module "
    r"\lean{LambertWSeries}), for \lean{Fabius.lambertW} constructed as the Lagrange solution of "

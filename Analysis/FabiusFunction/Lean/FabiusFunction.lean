@@ -52,6 +52,7 @@ import FabiusFunction.StirlingTransformEGF
 import FabiusFunction.StirlingSummations
 import FabiusFunction.StirlingNormalOrder
 import FabiusFunction.BinomialType
+import FabiusFunction.BinomialTypeCharacterization
 import FabiusFunction.BellLeadingZeros
 import FabiusFunction.GenocchiNumbers
 import FabiusFunction.EulerianAlternating
