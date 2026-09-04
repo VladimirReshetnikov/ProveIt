@@ -1722,12 +1722,13 @@ $(-1)^n$, and $\EulerE^{-x}\EulerE^{x}=1$ is \lean{Fabius.exp_mul_altSeries}.
 Worth noting beside the first-kind case: the first-kind column satisfies
 $(1-x)\log(1-x)F'=-kF$, whose kernel needs a logarithm and a dedicated series,
 while the kernel here is elementary.
-New source \lean{Fabius.second_reverse_row} in
+New source \lean{Fabius.second_reverse_row_commRing_of_le} and
+\lean{Fabius.second_reverse_row_sum} in
 \lean{StirlingSecondReverseRowIdentity} supplies
 \cref{eq:second-reverse-row} over every commutative ring by extracting
 coefficients from \lean{Fabius.subst_logTail};
 \lean{Fabius.second_reverse_row_sum} gives the unrestricted rational-index
-version.  Compiler validation of the new row identities is pending.""")),
+version.  Both new row identities are compiler-checked.""")),
 ]
 
 PENDING += [

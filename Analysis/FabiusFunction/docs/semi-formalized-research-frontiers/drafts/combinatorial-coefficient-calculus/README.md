@@ -229,10 +229,10 @@ proves the full EGF and binomial identity including degree zero. The new
 `BernoulliFormalLog` source derives the rational formal logarithm of the
 Bernoulli kernel using the existing recurrence-to-logarithm bridge. Its
 coefficient formula separates degree zero and preserves the distinction between
-the two degree-one Bernoulli conventions. The Abel target passed a focused
-build; `BernoulliFormalLog` and the complete affected-dependent closure have
-not been rebuilt for this checkpoint. Independent source reviews are not
-compiler validation, and no further register row is promoted here.
+the two degree-one Bernoulli conventions. The Abel target, `BernoulliFormalLog`,
+and the complete affected-dependent closure have passed direct Lean checks.
+Independent source reviews remain distinct from compiler receipts, and the
+register records only the checked declarations.
 
 ## Inherited focused-validation receipts
 
@@ -269,17 +269,16 @@ The new `NorlundGeneralized` source constructs actual polynomials at every
 scalar order over a commutative rational algebra. Its source-reviewed API
 includes the full EGF, Appell derivative, translation, convolution, natural-order
 polynomial compatibility, explicit cumulants, and the complete Bell formula.
-The next source checkpoint adds the arbitrary-order finite-difference law in
-successor and all-degree forms, including zero and negative orders.
+The arbitrary-order finite-difference law is checked in successor and all-degree
+forms, including zero and negative orders.
 `BernoulliFormalLog` now transports the logarithm and its coefficients along
 arbitrary coefficient ring homomorphisms and shares the kernel normalization
-lemma. These extensions have not yet compiled, so no corresponding coverage
-promotion is claimed. The new `BellCompletePartitions` leaf shares the existing
+lemma. These extensions are compiler-checked. The new `BellCompletePartitions` leaf shares the existing
 complete-Bell/weighted-partition dictionary to state the literal multiplicity
 sum, its normalized coefficient form, and its field-division form; it assumes
 nothing about the unused zeroth input. The two new Nörlund specializations
-reuse that generic formula. These seven new public theorems are source-reviewed
-and still await compilation. The coefficient-algebra diagonal transport and
+reuse that generic formula. These seven new public theorems are compiler-checked.
+The coefficient-algebra diagonal transport and
 analytic convergence remain separate formalization obligations.
 
 The human exposition gives the normalized complex logarithm construction on its

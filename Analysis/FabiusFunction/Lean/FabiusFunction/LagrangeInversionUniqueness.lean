@@ -28,12 +28,7 @@ variable {R : Type*} [CommRing R]
 variable {φ ψ g : R⟦X⟧}
 
 /-- Every solution of `g = X * φ(g)` equals the canonical Lagrange solution; the functional
-equation already implies that `g` has zero constant coefficient.
-
-The heartbeat allowance is needed: `solution` unfolds to `substInvOfIsUnit`, and the final
-`calc` step's `rw` makes the elaborator `whnf` that term, which exceeds the default budget on
-this machine (the module had never been compiled here when it entered the facade). -/
-set_option maxHeartbeats 1600000 in
+equation already implies that `g` has zero constant coefficient. -/
 theorem eq_solution_of_eq_X_mul_subst (hψ : φ * ψ = 1)
     (hg : g = X * φ.subst g) : g = solution φ ψ hψ := by
   have hs : HasSubst g := hasSubst_of_eq_X_mul hg
@@ -48,14 +43,12 @@ theorem eq_solution_of_eq_X_mul_subst (hψ : φ * ψ = 1)
     HasSubst.of_constantCoeff_zero' (constantCoeff_X_mul ψ)
   have hinv : (solution φ ψ hψ).subst (X * ψ) = X := by
     unfold solution
-    exact subst_substInvOfIsUnit_left (X * ψ) (constantCoeff_X_mul ψ)
-      (by rw [coeff_one_X_mul]; exact isUnit_constantCoeff_right φ ψ hψ)
-  calc
-    g = X.subst g := (subst_X hs).symm
-    _ = ((solution φ ψ hψ).subst (X * ψ)).subst g := by rw [hinv]
-    _ = (solution φ ψ hψ).subst ((X * ψ).subst g) :=
-      subst_comp_subst_apply hf hs (solution φ ψ hψ)
-    _ = solution φ ψ hψ := by rw [hcomp, X_subst]
+    exact subst_substInvOfIsUnit_left (X * ψ) (constantCoeff_X_mul ψ) _
+  have h1 : g = (X : R⟦X⟧).subst g := (subst_X hs).symm
+  have h2 := congrArg (fun f : R⟦X⟧ => f.subst g) hinv.symm
+  have h3 := subst_comp_subst_apply hf hs (solution φ ψ hψ)
+  have h4 := congrArg (fun f : R⟦X⟧ => (solution φ ψ hψ).subst f) hcomp
+  exact h1.trans (h2.trans (h3.trans (h4.trans (X_subst (solution φ ψ hψ)))))
 
 /-- Over any commutative ring, an invertible weight series has exactly one Lagrange solution. -/
 theorem existsUnique_solution (hψ : φ * ψ = 1) :

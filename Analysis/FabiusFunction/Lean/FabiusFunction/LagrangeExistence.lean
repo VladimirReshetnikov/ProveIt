@@ -42,6 +42,7 @@ private theorem normalizedWeight_subst (a : R) (ψ : R⟦X⟧)
   have hone : (1 : R⟦X⟧).subst h = 1 := by rw [← coe_substAlgHom hs, map_one]
   rw [normalizedWeight, subst_add hs, hone, subst_mul hs, subst_X hs,
     subst_comp_subst_apply ha hs, subst_mul hs, subst_C, subst_X hs]
+  rfl
 
 private theorem scale_normalized_solution (a : R) (ψ : R⟦X⟧) {h : R⟦X⟧}
     (hh : h = X * (normalizedWeight a ψ).subst h) :
@@ -51,6 +52,7 @@ private theorem scale_normalized_solution (a : R) (ψ : R⟦X⟧) {h : R⟦X⟧}
     HasSubst.of_constantCoeff_zero' (by rw [map_mul, hh0, mul_zero])
   rw [normalizedWeight_subst a ψ hh0] at hh
   rw [subst_add hs, subst_C, subst_mul hs, subst_X hs]
+  rw [← PowerSeries.C_apply]
   linear_combination (C a) * hh
 
 private theorem lift_normalized_solution (a : R) (ψ : R⟦X⟧) {g : R⟦X⟧}
@@ -58,7 +60,8 @@ private theorem lift_normalized_solution (a : R) (ψ : R⟦X⟧) {g : R⟦X⟧}
     ∃ h : R⟦X⟧, h = X * (normalizedWeight a ψ).subst h ∧ g = C a * h := by
   let B : R⟦X⟧ := 1 - X * ψ.subst g
   have hB : constantCoeff B = 1 := by
-    rw [B, map_sub, map_one, constantCoeff_X_mul, sub_zero]
+    dsimp [B]
+    rw [map_sub, map_one, constantCoeff_X_mul, sub_zero]
   have hBu : IsUnit B := PowerSeries.isUnit_iff_constantCoeff.mpr
     (by rw [hB]; exact isUnit_one)
   obtain ⟨b, hb⟩ := hBu.exists_right_inv

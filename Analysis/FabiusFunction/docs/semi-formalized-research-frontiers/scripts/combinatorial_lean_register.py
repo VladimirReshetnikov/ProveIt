@@ -100,7 +100,7 @@ STATUS = {
    r"into partial-Bell form, have not been formalized."),
  'thm:eulerian-irwin-hall': ('partial',
    r"\lean{Fabius.cubeSliceCount_succ_sub} (\lean{EulerianPermutohedron}), the combinatorial "
-   r"slab count; the Fubini volume step is not formal"),
+   r"slab count; the Fubini volume step is not formalized"),
  'thm:permutohedron-h-polynomial': ('Lean',
    r"\lean{Fabius.permutohedron_h_polynomial}, \lean{Fabius.permutohedron_h_vector} "
    r"(\lean{EulerianPermutohedron}); the face numbers of the polytope are taken as input"),
@@ -109,7 +109,7 @@ STATUS = {
    r"\lean{Fabius.typeB_newton} (\lean{EulerianPermutohedron})"),
  'thm:merged-inverse-derivative': ('partial',
    r"formal-power-series form \lean{Fabius.InverseDerivative.eq_neg_mul_sum} and the explicit "
-   r"orders (\lean{InverseDerivativeRecursion}); the analytic iterated-derivative reading is not"),
+   r"orders (\lean{InverseDerivativeRecursion}); the analytic iterated-derivative reading is not formalized"),
  'thm:merged-inverse-derivative-operator': ('Lean',
    r"\lean{Fabius.iteratedDeriv_eq_inverseDerivOp} (\lean{InverseDerivativeRecursion}), via the "
    r"corpus autonomous-ODE iterated derivative"),
@@ -120,22 +120,22 @@ STATUS = {
    r"\lean{Fabius.firstDoubleSumInner_eq_stirlingSecond}, \lean{Fabius.firstDoubleSum_eq_crossSum} "
    r"(\lean{StirlingIdentities}) are the theorem's own proof; the quoted input "
    r"\eqref{eq:symmetric-cross1} (Schl\"omilch) is not formal; the diagonal instance "
-   r"\lean{Fabius.firstDoubleSum_diagonal} is unconditional"),
+   r"\lean{Fabius.firstDoubleSum_diagonal} is unconditional, but the quoted input is not formalized"),
  'thm:reduced-stirling': ('partial',
    r"polynomial core \lean{Fabius.descPochhammer_mul_sub_pow_eq_sum_stirlingSecond} and the "
    r"characterization \lean{Fabius.reducedStirling_eq_stirlingSecond} (\lean{StirlingIdentities}); "
-   r"the graph-colouring inputs are not formal"),
+   r"the graph-colouring inputs are not formalized"),
  'thm:bell-determinants': ('Lean',
    r"\lean{Fabius.det_bellMatrixH}, \lean{Fabius.det_bellMatrixK}, "
    r"\lean{Fabius.det_bellMatrixK_invFactorial} (\lean{BellDeterminants}), by reindexing to the "
    r"corpus Hessenberg matrix rather than by expansion"),
  'cor:det-traces-bell': ('partial',
    r"\lean{Fabius.det_eq_bell_complete_traceWeight} (\lean{BellDeterminants}), assuming an "
-   r"eigenvalue family; tr(A^k) as a power sum of eigenvalues is not in Mathlib"),
+   r"eigenvalue family; tr(A^k) as a power sum of eigenvalues is not formalized in Mathlib"),
  'thm:cycle-index-bell': ('partial',
    r"equal-marks case \lean{Fabius.bell_complete_cycleWeightConst} and its instance "
    r"\lean{Fabius.card_perm_eq_bell_complete} (\lean{BellDeterminants}); the cycle-removal "
-   r"bijection is not formal"),
+   r"bijection is not formalized"),
  'thm:bell-poly-partitions': ('Lean',
    r"\lean{Fabius.partialBell_eq_sum_setPartitions} and "
    r"\lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), "
@@ -630,15 +630,15 @@ STATUS = {
    r"\lean{Fabius.norlund_add_eval_add}. The arbitrary-order source in "
    r"\lean{NorlundGeneralized}, including "
    r"\lean{Fabius.generalizedNorlund_succ_eval_add_one_sub} and "
-   r"\lean{Fabius.generalizedNorlund_eval_add_one_sub}, awaits compilation; "
-   r"the row is not promoted on source review alone."),
- 'lem:merged-complete-bell-multiplicities': ('none',
+   r"\lean{Fabius.generalizedNorlund_eval_add_one_sub} are compiler-checked; "
+   r"the remaining arbitrary-order transfer is not formalized."),
+ 'lem:merged-complete-bell-multiplicities': ('Lean',
    r"The new \lean{BellCompletePartitions} source states "
    r"\lean{Fabius.bell_complete_eq_sum_weightedPartitions}, "
    r"\lean{Fabius.inv_factorial_smul_complete_eq_sum_weightedPartitions}, and "
    r"\lean{Fabius.bell_complete_eq_sum_div_weightedPartitions}, including degree zero "
    r"and unrestricted zeroth input. It shares the existing complete-Bell and "
-   r"weighted-partition bridges, but still awaits compilation. "
+   r"weighted-partition bridges and is compiler-checked. "
    r"This is an integer-multiplicity sum, not a labelled-set partition theorem."),
  'thm:bell-poly-derivatives': ('partial',
    r"\cref{eq:partial-bell-derivative} is \lean{Fabius.pderiv_partialBell_succ} and "
@@ -701,8 +701,8 @@ STATUS = {
    r"\lean{Fabius.norlund_eval_zero_diagonal} and \cref{eq:merged-norlund-diagonal} is "
    r"\lean{Fabius.coeff_bernoulliPowerSeries_pow_succ}. "
    r"The arbitrary-order Bell and multiplicity constructions in "
-   r"\lean{NorlundGeneralized} and \lean{BellCompletePartitions} await compilation. "
-   r"Transport of the polynomial diagonal to an arbitrary coefficient algebra remains open."),
+   r"\lean{NorlundGeneralized} and \lean{BellCompletePartitions} are compiler-checked. "
+   r"Transport of the polynomial diagonal to an arbitrary coefficient algebra is not formalized."),
  'thm:merged-narayana': ('partial',
    r"Module \lean{NarayanaNumbers} defines $N(n,k)$ by the division-free determinant "
    r"$\binom nk\binom{n-1}{k-1}-\binom n{k-1}\binom{n-1}k$ over $\IntegerNumbers$ "
@@ -865,7 +865,7 @@ STATUS = {
    r"\lean{Fabius.X_pow_dvd_one_sub_mul_trunc_newtonReciprocalStep}; all over an arbitrary "
    r"commutative ring and checked by focused compilation."),
  # --- second half (from the Bernoulli/Euler/Genocchi chapter on), session funny-gates ---
- 'prop:merged-loday-hyperplane': ('Lean',
+ 'prop:merged-loday-hyperplane': ('partial',
    r"\lean{Fabius.lodaySum_eq}, \lean{Fabius.two_mul_lodaySum_add_numLeaves}, "
    r"\lean{Fabius.sum_lodayCoordinates_eq_of_mem_treesOfNumNodesEq} "
    r"(\lean{BinaryTreeRotations}); the lowest-common-ancestor bijection is not formalized"),
@@ -880,16 +880,16 @@ STATUS = {
    r"the binomial series is not formalized in Pochhammer form"),
  'thm:merged-pochhammer-derivatives': ('partial',
    r"$m=1$: \lean{Fabius.derivative_ascPochhammer}, \lean{Fabius.derivative_ascPochhammer_eval}, "
-   r"\lean{Fabius.hasDerivAt_ascPochhammer_eval} (\lean{PochhammerFalling})"),
+   r"\lean{Fabius.hasDerivAt_ascPochhammer_eval} (\lean{PochhammerFalling}); higher-order cases are not formalized"),
  'cor:merged-reciprocal-pochhammer': ('partial',
-   r"$m=1$: \lean{Fabius.hasDerivAt_inv_ascPochhammer_eval} (\lean{PochhammerFalling})"),
+   r"$m=1$: \lean{Fabius.hasDerivAt_inv_ascPochhammer_eval} (\lean{PochhammerFalling}); higher-order cases are not formalized"),
  'prop:merged-beta-integral': ('Lean',
    r"\lean{Fabius.integral_cpow_mul_one_sub_natPow}, "
    r"\lean{Fabius.betaIntegral_eq_factorial_div_ascPochhammer} (\lean{PochhammerFalling}), "
    r"on Mathlib's \lean{Complex.betaIntegral_eval_nat_add_one_right}"),
  'thm:merged-catalan-bijection': ('partial',
    r"Mathlib's \lean{DyckWord.equivTreesOfNumNodesEq} and "
-   r"\lean{card_dyckWord_semilength_eq_catalan}; parenthesizations not a separate type"),
+   r"\lean{card_dyckWord_semilength_eq_catalan}; the parenthesization bijection is not formalized"),
  'thm:merged-periodic-bernoulli-fourier': ('partial',
    r"$n\ge2$: Mathlib's \lean{fourierCoeff_bernoulli_eq}, \lean{summable_bernoulli_fourier}, "
    r"\lean{hasSum_one_div_nat_pow_mul_cos}, \lean{hasSum_one_div_nat_pow_mul_sin}, "
@@ -902,7 +902,7 @@ STATUS = {
    r"needs Euler--Maclaurin, not formalized"),
  'prop:merged-modified-bernoulli': ('partial',
    r"\lean{Fabius.sinhDivLogCoefficient_eq_bernoulli_formula} (\lean{SinhDivBernoulliLog}) "
-   r"at unit scale; the rescaling to $\beta^{\sharp}$ is not recorded"),
+   r"at unit scale; the rescaling to $\beta^{\sharp}$ is not formalized"),
  'prop:merged-recurrence-uniqueness': ('Lean',
    r"\lean{Fabius.eq_of_row_recurrence} (\lean{IdentityCertificates}), arrays with equal "
    r"row 0, equal boundary values and equal row step; one-index ancestor "

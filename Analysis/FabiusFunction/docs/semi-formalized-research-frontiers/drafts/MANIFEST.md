@@ -30,12 +30,13 @@ cover the driver; included sources are pinned by this merge's Git tree.
 | `Up_Polynomial_Synthesis.tex` | 63 | 1077883 | `997dd721a7115040b9634117d9b2af0b64a35f432de7c7382d1b78fb2f79e10f` | `5d706feb646019dbe35c6fa267d412f36c405c2bf2ef88f375a52abdb15325ae` |
 | `Thue_Morse_Atlas_and_Frontiers.tex` | 144 | 1741882 | `7a3acb01165e951669eb6a2de834bb638bae1e2227689e1bf45f7b91a4d0ce47` | `6d73b2ca736ebd84ce50e5ab02badc12d663b04068c3752ddbe6bd514d5c77b4` |
 
-Verified: all five conflict modules (`DerangementNearestInteger`,
-`LinLogCoreInversion`, `TransseriesFlat`, `QBinomialTheoremInfinite`,
-`GaussianBinomialFixedColumnRate`) and the three required prerequisites
-(`TransseriesScale`, `TransseriesScaleDominance`, `TransseriesPolyLogScale`)
-compiled serially under the machine-wide mutex. The aggregate facade and all
-other incoming modules were not compiled in this merge pass.
+Verified: all affected modules, including the five conflict modules
+(`DerangementNearestInteger`, `LinLogCoreInversion`, `TransseriesFlat`,
+`QBinomialTheoremInfinite`, `GaussianBinomialFixedColumnRate`) and the three
+required prerequisites (`TransseriesScale`, `TransseriesScaleDominance`,
+`TransseriesPolyLogScale`), compiled serially under the machine-wide mutex.
+The 174-module affected closure and the aggregate facade were checked directly;
+no aggregate Lake build is claimed.
 
 The lexical documentation baseline is 1004 modules / 12,500 declarations, with
 zero documentation gaps; every module is facade-reachable, and the duplicate
