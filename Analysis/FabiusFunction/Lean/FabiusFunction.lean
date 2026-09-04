@@ -134,6 +134,7 @@ import FabiusFunction.LambertWLogBounds
 import FabiusFunction.LambertWNegativeBounds
 import FabiusFunction.LambertWAdditionIdentity
 import FabiusFunction.LambertWBranchPairing
+import FabiusFunction.LambertWGapBijection
 import FabiusFunction.LowerLambertW
 import FabiusFunction.GeneralizedLambertCoordinate
 import FabiusFunction.LambertBranchDichotomy
