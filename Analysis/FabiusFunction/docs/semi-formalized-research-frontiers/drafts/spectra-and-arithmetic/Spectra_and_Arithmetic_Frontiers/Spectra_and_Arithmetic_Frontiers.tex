@@ -1323,9 +1323,15 @@ where \(Q(m,n)\) is \path{Fabius.qBinomialThueMorseDyadicTranslatedFormulaIn}, t
 for every \(m\le2^n\) and every translation parameter, not only at the single point
 \(1/2^n\).  The reflected index \(2^n-k\) is the sample identity
 \(\RvachevUp(k/2^n)=\FabiusBounded((2^n-k)/2^n)\)
-(\path{Fabius.rvachevUp_dyadic_eq_qBinomial}).  So the whole of \eqref{p1:eq:q-approximant}
-except its convergence, which is analytic, is now formal: the folded alias class of the
-infinite sinc product equals a finite cosine sum of \(q\)-binomial expressions.
+(\path{Fabius.rvachevUp_dyadic_eq_qBinomial}).  The convergence clause is formal as well:
+\path{Fabius.tendsto_foldedCoefficient_two_pow} in \path{AliasErrorBound.lean} is
+\(A_{2^n,r}\to\PhiU(r/2)\) as \(n\to\infty\), for every fixed \(r\), obtained from the alias
+error bound \path{Fabius.norm_foldedCoefficient_sub_le'} at the fixed order \(K=2\), which
+already forces the difference below a multiple of \(4^{-n}\).  The sharp rate \(E_n\) of the
+theorem, which optimizes \(K\) with \(n\) and gives \(2^{-n^2/2+\BigO(n\log n)}\), is not
+claimed there.  So the whole of \eqref{p1:eq:q-approximant} is now formal, rate excepted: the
+folded alias class of the infinite sinc product equals a finite cosine sum of \(q\)-binomial
+expressions, and converges to the sinc-product value.
 
 \begin{remark}[Three structures in one finite expression]
 Formula \eqref{p1:eq:q-approximant} simultaneously contains
