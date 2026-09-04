@@ -828,8 +828,18 @@ Thus `is:p3:cor:forced-superconvergence` and
 `is:p3:thm:Appell-lattice-reproduction` are now exact in the canonical inverse
 concordance. This source postdates the retained Representation and inverse
 PDFs, which remain historical artifacts rather than renders of the promotion.
-The corresponding live documentation census is 671 modules and 8,858 public
-declarations with no gaps.
+The corresponding historical documentation checkpoint was 671 modules and
+8,858 public declarations. The later live repository census is 901 modules
+and 11,418 public declarations. It includes the sibling source-only Lambert
+branch-coordinate tranche: `LambertWBranchPairing.lean` has 0 definitions + 7
+theorems, `LambertWGapBijection.lean` has 4 + 16, and
+`LambertWBranchSymmetry.lean` has 0 + 9. These three modules prove the exact
+gap parametrization, its inverse bijection, and the symmetric ratio, sum, and
+product laws with strict bounds on `(-exp(-1), 0)`. They exclude both
+endpoints and do not prove the Bernoulli gap series or any higher branch
+expansion. This unrelated addition is not rendered by the retained
+Representation or inverse PDFs; no PDF was rebuilt for this source-only
+update.
 
 The focused-build `CompositeMeshSharpness.lean` module exports one public
 definition, `rvachevCombExactThrough`, and seven public theorems:

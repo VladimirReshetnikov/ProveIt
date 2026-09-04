@@ -21,10 +21,10 @@ The canonical frontier artifacts are:
 - [`semi-formalized-research-frontiers.tex`](semi-formalized-research-frontiers.tex)
 - [`semi-formalized-research-frontiers.pdf`](semi-formalized-research-frontiers.pdf)
 
-> **Source/PDF synchronization.** The retained 237-page A4 PDF includes the
-> 31 August 2026 Legendre Gaunt--Wigner-square closed-form overlay. Its
-> PDF (SHA-256
-> `21180fa05a754b52a057495464674e9d6ac26a51488c2c770730c641b5ffe887`)
+> **Source/PDF synchronization.** The retained 257-page, 2,438,299-byte A4 PDF
+> includes the 31 August 2026 Legendre Gaunt--Wigner-square closed-form overlay.
+> Its PDF (SHA-256
+> `3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980`)
 > source predates the later q-Pochhammer overlay and expanded ledger, so it is
 > a historical render and must not be cited as displaying the final source union.
 
@@ -37,8 +37,29 @@ explicit Rvachev--Appell specialization. In the canonical inverse synthesis
 this promotes exactly `is:p3:cor:forced-superconvergence` and
 `is:p3:thm:Appell-lattice-reproduction`, bringing its 194 immutable rows to
 49 Lean-proved / 96 human-proved / 10 conjectural / 15 open / 24
-nonassertoric. The live documentation census is 671 modules and 8,858 public
-declarations with no gaps; no PDF was rebuilt for this source-only update.
+nonassertoric. At that superconvergence checkpoint the documentation census
+was 671 modules and 8,858 public declarations; no PDF was rebuilt for that
+source-only update.
+
+The newest source-only Lambert branch-coordinate overlay formalizes the exact
+pairing theorem and its symmetric corollary from `Lambert_W_Guide/`.
+`LambertWBranchPairing.lean` has 0 definitions + 7 theorems,
+`LambertWGapBijection.lean` has 4 definitions + 16 theorems, and
+`LambertWBranchSymmetry.lean` has 0 definitions + 9 theorems. For
+`x in (-exp(-1), 0)` and `delta = W_0(x) - W_{-1}(x) > 0`, they prove the two
+exact branch formulas, the explicit inverse and gap bijection, the equivalent
+`t = exp(delta) > 1` coordinate, the ratio/sum/product identities, and the
+strict bounds `W_0 + W_{-1} < -2` and `0 < W_0 W_{-1} < 1`. The proof divides
+the two equations `W_j exp(W_j) = x`, then uses branch-range uniqueness for
+the converse; `sinh(y) > y` and `y coth(y) > 1` give the strict bounds.
+The interval is deliberately open: at the branch point the rational formulas
+have zero denominator and their limiting sum/product are `-2` and `1`, while
+zero is the singular classical lower endpoint. These modules do not prove the
+Guide's Bernoulli-number gap series, convergence of that series, or higher
+Puiseux/logarithmic expansions. The affected retained frontier, primary,
+walkthrough, and Lambert-Guide PDFs are historical artifacts and do not render
+this source-only overlay. The live documentation census is now 901 modules and
+11,418 public declarations.
 
 The 1 September 2026 source-only q-Pochhammer overlay is likewise newer than
 the retained PDFs.  The new `QPochhammerEntire.lean` leaf has zero definitions

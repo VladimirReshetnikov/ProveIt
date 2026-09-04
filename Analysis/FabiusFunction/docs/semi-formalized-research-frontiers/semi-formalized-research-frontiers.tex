@@ -343,10 +343,12 @@ q-Pfaff--Saalsch\"utz, quantum-multinomial, and Gaussian-bound layers, together
 with the completed Gaussian linear-coefficient classifier, the
 eight-declaration rational-gap inverse module, and the parity-selected Rvachev
 superconvergence leaf and the subsequent binary-word, box-partition, and
-telescoping-certificate leaves.  The live source census is 675 facade-reachable
-modules and 8,909 public declarations.  The retained
-237-page A4 PDF, SHA-256
-\nolinkurl{21180fa05a754b52a057495464674e9d6ac26a51488c2c770730c641b5ffe887},
+telescoping-certificate leaves, as well as the exact three-module Lambert
+branch-pairing, gap-bijection, and symmetric-identity tranche (respectively
+0+7, 4+16, and 0+9).  The live source census is 901 facade-reachable
+modules and 11,418 public declarations.  The retained
+257-page, 2,438,299-byte A4 PDF, SHA-256
+\nolinkurl{3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980},
 predates these source-only overlays and the expanded ledger and is therefore a
 historical render, not a rendering of the current TeX.
 \end{boxedremark}
@@ -918,6 +920,66 @@ the logarithmic-Delta modulus supplies effective uniform continuity. &
 \nolinkurl{fabiusInv_isComputableRealFunction} &
 \nolinkurl{FabiusInverseComputable.lean} \\
 Lower-Lambert coordinate & \nolinkurl{fabiusLambertPhase} & \nolinkurl{FabiusLambertSaddle.lean} \\
+Exact real-branch pairing (zero definitions and seven theorems).  For
+\(x\in(-e^{-1},0)\) and
+\(\delta=W_0(x)-W_{-1}(x)>0\),
+\(W_0=-\delta/(e^\delta-1)\),
+\(W_{-1}=-\delta e^\delta/(e^\delta-1)
+=-\delta/(1-e^{-\delta})\), and
+\(x=W_0e^{W_0}\) with this displayed value of \(W_0\).  Division of the two
+branch equations gives \(W_{-1}=W_0e^\delta\), and subtraction gives all
+three formulas. &
+\nolinkurl{principalLambertW_sub_lowerLambertW_pos},
+\nolinkurl{lowerLambertW_eq_principalLambertW_mul_exp_gap},
+\nolinkurl{principalLambertW_eq_neg_gap_div},
+\nolinkurl{lowerLambertW_eq_neg_gap_mul_exp_div},
+\nolinkurl{lowerLambertW_eq_neg_gap_div_one_sub_exp_neg},
+\nolinkurl{eq_neg_gap_div_mul_exp},
+\nolinkurl{principalLambertW_lowerLambertW_eq_of_exp_gap} &
+\nolinkurl{LambertWBranchPairing.lean}; exhaustive public surface, on the
+strict common branch domain only. \\
+The branch gap as a global coordinate (four definitions and sixteen
+theorems).  For every \(\delta>0\), the same formulas define
+\(-1<A(\delta)<0\), \(B(\delta)<-1\), and
+\(X(\delta)=A(\delta)e^{A(\delta)}\).  Since
+\(B=A-\delta\) and \(Be^B=Ae^A\), branch uniqueness proves that
+\(X\) and \(x\mapsto W_0(x)-W_{-1}(x)\) are inverse bijections between
+\((0,\infty)\) and \((-e^{-1},0)\).  With \(t=e^\delta>1\), the two branch
+values are \(-\log t/(t-1)\), \(-t\log t/(t-1)\), and the argument is
+\(-\log t\,t^{-1/(t-1)}/(t-1)\). &
+\nolinkurl{gapPrincipal}, \nolinkurl{gapLower}, \nolinkurl{gapArg},
+\nolinkurl{branchGap};
+\nolinkurl{gap_denominator_pos}, \nolinkurl{gapPrincipal_mem_Ioo},
+\nolinkurl{gapLower_eq_mul_exp}, \nolinkurl{gapLower_eq_sub},
+\nolinkurl{gapLower_lt_neg_one}, \nolinkurl{gapLower_mul_exp},
+\nolinkurl{gapArg_mem_Ioo}, \nolinkurl{principalLambertW_gapArg},
+\nolinkurl{lowerLambertW_gapArg}, \nolinkurl{branchGap_gapArg},
+\nolinkurl{gapArg_branchGap}, \nolinkurl{branchGap_invOn},
+\nolinkurl{branchGap_bijOn}, \nolinkurl{principalLambertW_gapArg_log},
+\nolinkurl{lowerLambertW_gapArg_log}, \nolinkurl{gapArg_log} &
+\nolinkurl{LambertWGapBijection.lean}; exhaustive public surface.  The
+strict tangent inequalities for \(e^\delta\) put the two constructed values
+in their unique branch ranges. \\
+Symmetric branch laws (zero definitions and nine theorems).  On the same
+strict domain,
+\(W_{-1}/W_0=e^\delta\),
+\(W_0+W_{-1}=-\delta\coth(\delta/2)<-2\), and
+\(W_0W_{-1}=\delta^2/(4\sinh^2(\delta/2))\in(0,1)\).
+The bounds are \(\sinh y>y\) and \(y\coth y>1\) at \(y=\delta/2\). &
+\nolinkurl{lowerLambertW_div_principalLambertW_eq_exp_branchGap},
+\nolinkurl{principalLambertW_add_lowerLambertW_eq_exp_branchGap},
+\nolinkurl{principalLambertW_add_lowerLambertW_eq_cosh_div_sinh_branchGap},
+\nolinkurl{principalLambertW_mul_lowerLambertW_eq_exp_branchGap},
+\nolinkurl{principalLambertW_mul_lowerLambertW_eq_sinh_sq_branchGap},
+\nolinkurl{principalLambertW_add_lowerLambertW_lt_neg_two},
+\nolinkurl{principalLambertW_mul_lowerLambertW_pos},
+\nolinkurl{principalLambertW_mul_lowerLambertW_lt_one},
+\nolinkurl{principalLambertW_mul_lowerLambertW_mem_Ioo} &
+\nolinkurl{LambertWBranchSymmetry.lean}; exhaustive public surface.  At the
+branch point the gap is zero and the limiting sum/product equal \(-2,1\);
+zero is the singular lower endpoint.  Neither endpoint is in these theorems,
+and no Bernoulli-gap series, convergence theorem, or higher Puiseux/logarithmic
+expansion is asserted. \\
 Raw real Lambert curvature (the first 13 declarations of the exact 36-name
 curvature inventory).  For \(z>-e^{-1}\), the principal branch has the
 nonsingular formula
@@ -2072,7 +2134,7 @@ characteristic-function/MGF package.  The separate three-theorem module above
 proves local-uniform convergence of the outer product in
 \eqref{integration:eq:geometric-sinc-pochhammer}, but none of those remaining
 compound spectral clauses.  This is a source-only overlay: the retained
-237-page canonical PDF predates both these five theorems and the outer-product
+257-page canonical PDF predates both these five theorems and the outer-product
 convergence tranche and remains a historical render until a three-pass
 Libertinus rebuild is performed.
 
@@ -2337,7 +2399,7 @@ Finally, the one-definition/nine-theorem
 \lean{summable_norm_pow_div_finiteQPochhammerIn_self},
 \lean{sum_antidiagonal_euler_mul_euler}, and
 \lean{hasSum_rogersSzego_generating}.  This is a source inventory, not a claim
-that the retained 237-page PDF has been rebuilt from the merged source.
+that the retained 257-page PDF has been rebuilt from the merged source.
 
 \begin{theorem}[Dyadic orders identify generalized Rvachev exponents]
 \label{integration:thm:generalized-rvachev-identifiability}
@@ -2419,8 +2481,11 @@ Gaussian-bound layers), and the parity-selected Rvachev synthesis leaf, the
 intermediate source census is 672/8,875.  The three later
 \path{BinaryWordInversions.lean}, \path{BoxPartitions.lean}, and
 \path{TelescopingCertificate.lean} leaves add thirty-four declarations and
-bring the live source census to 675/8,909.  These additions
-are source-only, and the retained 237-page PDF remains explicitly historical.
+bring the historical source checkpoint to 675/8,909.  The subsequent source
+union, including the exact 36-declaration Lambert branch-coordinate tranche,
+brings the live source census to 901/11,418.  These additions are source-only,
+and the retained 257-page PDF remains explicitly historical; no PDF was built
+for this update.
 The newest six module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
 \path{HeineTransformation.lean} (2+5),

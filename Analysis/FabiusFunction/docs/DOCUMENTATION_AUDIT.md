@@ -109,12 +109,59 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 675 modules and 8,909
-lexically visible public declarations, with zero missing module headers and
-zero missing doc comments.  Relative to the 610/8,318 activation checkpoint,
-the current tree adds sixty-five modules and 591 declarations.  Relative to
-the earlier 630/8,552 merged checkpoint, concurrent source work adds forty-five
-modules and 357 declarations.  The one-definition/eight-theorem
+The live 2026-09-03 inventory contains 901 modules and 11,418 lexically
+visible public declarations, with zero missing module headers and zero missing
+doc comments.  The post-merge 2026-09-01 inventory of 675 modules and 8,909
+declarations remains a historical checkpoint: relative to the 610/8,318
+activation checkpoint, that tree added sixty-five modules and 591
+declarations, and relative to the earlier 630/8,552 merged checkpoint it added
+forty-five modules and 357 declarations.
+
+#### Exact Lambert branch-pairing tranche
+
+The three-module Lambert branch-pairing union is exhaustively counted as
+`LambertWBranchPairing.lean` 0+7, `LambertWGapBijection.lean` 4+16, and
+`LambertWBranchSymmetry.lean` 0+9: four definitions and 32 theorems, hence 36
+public declarations.  The seven pairing theorems are
+`principalLambertW_sub_lowerLambertW_pos`,
+`lowerLambertW_eq_principalLambertW_mul_exp_gap`,
+`principalLambertW_eq_neg_gap_div`,
+`lowerLambertW_eq_neg_gap_mul_exp_div`,
+`lowerLambertW_eq_neg_gap_div_one_sub_exp_neg`,
+`eq_neg_gap_div_mul_exp`, and
+`principalLambertW_lowerLambertW_eq_of_exp_gap`.
+
+The converse module defines `gapPrincipal`, `gapLower`, `gapArg`, and
+`branchGap`.  Its sixteen theorems are `gap_denominator_pos`,
+`gapPrincipal_mem_Ioo`, `gapLower_eq_mul_exp`, `gapLower_eq_sub`,
+`gapLower_lt_neg_one`, `gapLower_mul_exp`, `gapArg_mem_Ioo`,
+`principalLambertW_gapArg`, `lowerLambertW_gapArg`, `branchGap_gapArg`,
+`gapArg_branchGap`, `branchGap_invOn`, `branchGap_bijOn`,
+`principalLambertW_gapArg_log`, `lowerLambertW_gapArg_log`, and `gapArg_log`.
+Together with the forward formulas they prove that the positive gap and the
+explicit reconstructed argument are two-sided inverses between the strict
+domains `(-exp(-1),0)` and `(0,∞)`.  The final three declarations give all
+three `t=exp Δ`, `t>1` forms: the principal branch, lower branch, and common
+argument.
+
+The nine symmetric theorems are
+`lowerLambertW_div_principalLambertW_eq_exp_branchGap`,
+`principalLambertW_add_lowerLambertW_eq_exp_branchGap`,
+`principalLambertW_add_lowerLambertW_eq_cosh_div_sinh_branchGap`,
+`principalLambertW_mul_lowerLambertW_eq_exp_branchGap`,
+`principalLambertW_mul_lowerLambertW_eq_sinh_sq_branchGap`,
+`principalLambertW_add_lowerLambertW_lt_neg_two`,
+`principalLambertW_mul_lowerLambertW_pos`,
+`principalLambertW_mul_lowerLambertW_lt_one`, and
+`principalLambertW_mul_lowerLambertW_mem_Ioo`.  They record the exact branch
+ratio, both exponential and hyperbolic sum/product forms, and the strict
+interior inequalities `W₀+W₋₁<-2` and `0<W₀W₋₁<1`.  Their hypotheses exclude
+both the branch point and zero endpoint.  This declaration census makes no
+Bernoulli-series or asymptotic claim: these three modules do not prove a
+Bernoulli-number expansion, convergence or remainder estimates for one, or
+any branch-point or small-input asymptotic.
+
+The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
 `IsRvachevSuperconvergentPhase`,
 `isRvachevSuperconvergentPhase_two_pow_iff`,
@@ -394,7 +441,7 @@ yielding 672/8,868, and the seven collision-free Newton compatibility names
 yield the intermediate 672/8,875 census.  The 5+14
 `BinaryWordInversions.lean`, 2+8 `BoxPartitions.lean`, and 0+5
 `TelescopingCertificate.lean` leaves then add three modules and thirty-four
-declarations, yielding the live 675/8,909 census.
+declarations, yielding that historical 675/8,909 census.
 
 `GaussianBinomialPalindromic.lean` is an exhaustive zero-definition,
 fourteen-theorem leaf: `Fabius.reflect_add_of_natDegree_le`,
@@ -791,13 +838,14 @@ modules; the merged fifth fixed-nome theorem, two later general
 q-Pochhammer theorems, and the twenty-five newest
 q-series/q-calculus/interpolation modules make
 final parity
-pending.  The retained 167-page primary, 126-page walkthrough, 237-page
+pending.  The retained 183-page primary, 130-page walkthrough, 257-page
 canonical frontier, 301-page Representation Frontiers, 41-page New Frontiers,
 and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
-complete.  The inverse-computability receipt likewise requires refresh for the
-675/8,909 census.  The canonical inverse-theory publication retains a 134-page
+complete.  The inverse-computability receipt likewise still reflects the
+historical 675/8,909 census and requires refresh against the live 901/11,418
+inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
 pending.

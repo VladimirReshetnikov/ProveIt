@@ -63,8 +63,20 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 672 facade-reachable modules and 8,875 public declarations, with no
+contains 901 facade-reachable modules and 11,418 public declarations, with no
 missing module headers or declaration documentation.
+
+That repository-wide census includes a sibling, source-only Lambert-W
+promotion rather than a new q-series result. Its exhaustive module counts are
+`LambertWBranchPairing.lean` (0 definitions + 7 theorems),
+`LambertWGapBijection.lean` (4 + 16), and
+`LambertWBranchSymmetry.lean` (0 + 9). Together they prove, only for the open
+two-branch domain `(-exp(-1), 0)`, the exact gap parametrization and its
+inverse bijection, the `t = exp(delta) > 1` formulas, and the exact
+ratio/sum/product laws with strict sum and product bounds. They do not include
+either endpoint, the Bernoulli-number expansion in the gap, its convergence,
+or any higher branch expansion. No retained PDF in this group renders that
+unrelated source-only promotion, and none was rebuilt for this update.
 
 ## Detailed package record
 
