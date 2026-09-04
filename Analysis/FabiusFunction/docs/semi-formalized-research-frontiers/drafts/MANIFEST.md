@@ -217,8 +217,22 @@ links to pre-consolidation commit `2e3567feb14947ee3ebcdab11adca64e746ad26f`.
 
 ## thue-morse — `thue-morse/`
 
+Besides the consolidated volume, the group holds three independently written
+articles on one question, filed 2026-09-03 from `incoming/` as separate
+members pending comparison and merge: the two-dimensional table obtained by
+repeated weighted prefix summation of the signed Thue–Morse sequence, its
+identification `s(n,k) = σ_{2n+1}(k−n−1)` with the odd iterated prefix sums,
+and the diagonal polynomials `D_r` with generating function
+`TM(z²)/(1−z)^{2x}`. All three archives wrapped an inner directory of the same
+name, so the archive stems were used as directory names. No source loads
+`docs/fabius-notation.tex`. Quick intake only; claim comparison, deduplication,
+proof checking, numerical reproduction, and Lean crosswalking are deferred.
+
 | Directory | Document | Previous path |
 | --- | --- | --- |
+| `thue_morse_diagonal_polynomials/` | *Diagonal Polynomials and Dyadic Block Geometry in Repeated Thue–Morse Summation* — 1,763-line/56,520-byte source, 24-page A4/724,035-byte PDF (pdfTeX-1.40.26; 25 font rows, 7 Libertinus; 3 Type-3 rows inherited from the Matplotlib figure `row_profiles.pdf`); 14 theorems, 1 proposition, 1 lemma, 3 corollaries in 15 sections; `experiments.py`, `thue_morse_table.wl`, `verification_report.txt`; submitted `SHA256SUMS` kept as payload | `incoming/thue_morse_diagonal_polynomials.zip` |
+| `thue_morse_diagonal_polynomials-2/` | *Diagonal Polynomial Laws in Odd Iterated Thue–Morse Summation: Riordan-array structure, 2-adic Bell recurrences, exact arithmetic, and fast Wolfram Language evaluation* — 2,202-line/72,380-byte source, 37-page A4/801,220-byte PDF (fully embedded, Type-3-free, 7 Libertinus rows); 11 theorems, 2 propositions, 7 corollaries, 1 conjecture, 3 definitions in 16 sections; `diagonal_polynomials.py`, `diagonal_polynomials.wl`, `VERIFICATION.txt`; submitted `SHA256SUMS` kept as payload | `incoming/thue_morse_diagonal_polynomials-2.zip` |
+| `thue_morse_diagonal_polynomials_article_and_code/` | *Diagonal Polynomials and Dyadic Block Geometry in Repeated Thue–Morse Prefix Summation: Exact formulas, denominator laws, rational roots, and fast Wolfram Language evaluation* — 2,136-line/76,590-byte source, 33-page A4/536,235-byte PDF (26 font rows, no Libertinus; 2 Type-3 rows inherited from the Matplotlib figure); 10 theorems, 10 propositions, 1 lemma, 6 corollaries, 1 definition in 14 sections; `diagonal_analysis.py`, `thue_morse_diagonals.wl`, `generated/` (two CSV tables, run log, verification report), `figures/`; submitted `MANIFEST.sha256` kept as payload; the two CSV tables received the repository's CRLF-to-LF normalization at commit, so their submitted checksums no longer match the filed bytes | `incoming/thue_morse_diagonal_polynomials_article_and_code.zip` |
 | `Thue_Morse_Atlas_and_Frontiers/` | *The Thue–Morse Sequence: Formula Atlas and Fabius–Rvachev Frontier Results* (137 pp) — consolidation (2026-08-28) of the former `Thue_Morse_Formula_Atlas/` (*A Unified Formula Atlas for the Thue–Morse Sequence*) and `Fabius_Rvachev_Thue_Morse_Frontier_Results/` (*A Finite-Block Calculus for the Fabius–Rvachev–Thue–Morse System*, heavily Lean-crosswalked); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 
 ## combinatorial coefficient calculus — `combinatorial-coefficient-calculus/`
@@ -350,7 +364,7 @@ made, and neither has the comparison between the second and the fourth.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries/` | **Canonical, consolidation complete:** *Polynomial--Logarithmic Transseries: Algebra, Composition, Series Reversal, and the Lambert W Archetype* — 35{,}172-line/1{,}760{,}242-byte source (`388ba72b…d9f3cb`) and the 399-page A4 PDF built from it in the same three-pass run (4{,}419{,}014 bytes, `ef995bb5…9337da`) | Editorial merge (2026-09-02) of the six 2026-09-01 arrivals `Polynomial-Logarithmic-Transseries-1/`, `-2/`, `-4/` and `Polynomial_Logarithmic_Transseries-3/`, `-5/`, `-6/`, all from direct-arrival commit `730e1763…95ab4f`; absorbed sources deleted, git history is the archive, per-source receipts in the volume's provenance appendix |
+| `polynomial-logarithmic-transseries/Polynomial_Logarithmic_Transseries/` | **Canonical, consolidation complete:** *Polynomial--Logarithmic Transseries: Algebra, Composition, Series Reversal, and the Lambert W Archetype* — 36{,}033-line/1{,}834{,}190-byte source (`2d57052c…5952c7`) and the 412-page A4 PDF built from it in the same three-pass run (4{,}504{,}362 bytes, `9d3dd9ad…06e1d5`) | Editorial merge (2026-09-02) of the six 2026-09-01 arrivals `Polynomial-Logarithmic-Transseries-1/`, `-2/`, `-4/` and `Polynomial_Logarithmic_Transseries-3/`, `-5/`, `-6/`, all from direct-arrival commit `730e1763…95ab4f`; absorbed sources deleted, git history is the archive, per-source receipts in the volume's provenance appendix |
 
 The consolidation is complete.  The six arrival packages and their
 retained historical PDFs were deleted once every source was absorbed and
@@ -447,6 +461,28 @@ crosswalking are deferred; see
 | `special-function-inversion/fibonacci_inverse_transseries_article-2/` | *Inverse Asymptotics for a Real-Argument Fibonacci Function* — 1,884-line/64,334-byte source and 24-page A4/759,845-byte PDF; inner files are plain `fibonacci_inverse_transseries.*`, kept as submitted | `drafts/incoming/fibonacci_inverse_transseries_article-2.zip`, third batch, filed 2026-09-03 |
 
 ## spectra-and-arithmetic — `spectra-and-arithmetic/`
+
+A fifth subgroup, `sequence-transseries/`, was filed on 2026-09-03 from five
+ZIP arrivals. Its articles derive the complete asymptotic transseries of a
+classical integer sequence *forwards* from its exponential generating
+function — two on the Bell numbers (saddle-point transseries about
+`r = W_0(n)`) and three on the Fubini numbers (the vertical pole lattice of
+`1/(2 − e^z)`) — so they are not inversions and are kept apart from
+`special-function-inversion/`. Each archive held one `.tex` and one `.pdf`
+with no wrapping directory; two shipped the same inner file name, and the
+distinct archive stems name the directories. Longest filed path 252
+characters. All sources LF with a final newline; all PDFs fully embedded,
+Type-3-free, pdfTeX-1.40.26. None loads `docs/fabius-notation.tex`. Quick
+intake only; see
+[`series-and-transseries/sequence-transseries/README.md`](series-and-transseries/sequence-transseries/README.md).
+
+| Directory | Document | Previous path |
+| --- | --- | --- |
+| `sequence-transseries/Bell_Number_Asymptotic_Transseries/` | *The Full Asymptotic Transseries of the Bell Numbers* — 2,211-line/78,882-byte source, 32-page A4/724,026-byte PDF; 6 theorems, 2 propositions, 2 lemmas, 1 corollary, 2 definitions in 18 sections | `incoming/Bell_Number_Asymptotic_Transseries.zip` |
+| `sequence-transseries/Bell_Number_Transseries_Article/` | *The Full Saddle–Transseries Expansion of the Bell Numbers* — 1,714-line/60,076-byte source, 23-page A4/665,924-byte PDF; 7 theorems, 2 propositions, 2 lemmas, 2 corollaries in 17 sections | `incoming/Bell_Number_Transseries_Article.zip` |
+| `sequence-transseries/Fubini_Number_Full_Transseries/` | *The Full Asymptotic Transseries of the Fubini Numbers* — 2,465-line/86,507-byte source, 33-page A4/741,812-byte PDF; 17 theorems, 2 propositions, 5 corollaries, 1 definition in 18 sections | `incoming/Fubini_Number_Full_Transseries.zip` |
+| `sequence-transseries/Fubini_Number_Transseries/` | *The Complete Asymptotic Transseries of the Fubini Numbers* — 1,881-line/64,271-byte source, 25-page A4/699,100-byte PDF; 10 theorems, 2 propositions, 1 lemma, 3 corollaries in 16 sections | `incoming/Fubini_Number_Transseries.zip` |
+| `sequence-transseries/Fubini_Number_Transseries_Article/` | untitled in source (exact identity `F_n = Γ(N)/2 · Σ_k ρ_k^{−N}`) — 1,472-line/57,681-byte source, 25-page Letter/490,186-byte PDF; 8 theorems, 1 proposition, 1 definition in 14 sections | `incoming/Fubini_Number_Transseries_Article.zip` |
 
 Current source counts for unaffected rows still supersede their older intake
 figures below: Dyadic Radon Profiles has 2,050 lines and a 29-page main PDF;
@@ -554,21 +590,29 @@ is pending, and full numerical replay remains separate reproducibility work.
 | `fabius_information_frontier/` | *Exact Information Geometry and New Frontiers for the Fabius--Rvachev System* (retained submitted 30-page A4 PDF; current 2,139-line TeX; a 601-line experiment, five data products, and three PDF/PNG figure pairs). Its 18 arrival hashes and 19 later payload hashes distinguish the submitted PDF from subsequent source changes. The information-geometry, entropy, Fisher-information, prefix-code, Thue--Morse, and endpoint layers remain archival manuscript claims pending hostile audit, numerical replay, an exact Lean crosswalk, canonical normalization, and rebuild; manuscript theorem labels do not establish formal verification. | `frontier-compilations/fabius_information_frontier/`; moved here by the thematic reorganization. |
 
 The subgroup `dyadic-up-extraction/` received six reports on 2026-09-02, all
-on the same theme: exact extraction or extrapolation of dyadic values of
-Rvachev's up-function from finite sinc-product spline prefixes, through
-geometric tails and q-binomial (quarter-base) extrapolation.  Several are
-successive drafts of one another; deduplication and comparison are deferred
-past the intake publication gate.  A byte-identical reship of
-`rvachev_q_extrapolation_bundle.zip` arrived alongside and was deleted.
+proving the same theorem — that at a dyadic point the finite sinc-product
+spline is, after the point's depth, *exactly* the up-function value plus
+finitely many geometric modes of ratio 4⁻¹, 4⁻², … — and all deriving the
+same quarter-base Gaussian-binomial extraction row from it, under six
+normalizations.  They were merged editorially on 2026-09-03 into one
+canonical volume: one statement of each result, every proof completed, the
+four index letters and three coefficient normalizations reconciled once, and
+every rational number checked against the packages' captured verification
+outputs.  The consolidation also proved what the packages had only
+verified: the defect at the last level before the onset is a Thue-Morse
+sign times a Bernoulli number, -eps_k 2^(-C(s,2)) B_s/s!, so the onset is
+exact at even depth and improves by exactly one level at odd depth.  The
+six directories and their retained arrival PDFs were deleted
+after a residue audit; git history is the archive.  The volume's
+formalization register records that the extraction row's algebra and the
+exact cell identity at x = 1/4 are kernel-verified in Lean while the general
+dyadic-depth theorem is not.  A byte-identical reship of
+`rvachev_q_extrapolation_bundle.zip` had arrived alongside and was deleted
+at intake.
 
 | Directory | Document | Supporting evidence | Previous path / provenance |
 | --- | --- | --- | --- |
-| `dyadic-up-extraction/Dyadic-Up-Extraction/` | *Exact Dyadic Extrapolation for Finite Rvachev Sinc-Product Splines* (1,725-line/58,695-byte source, 22-page/657,773-byte PDF) | `README.txt`, `SHA256SUMS.txt`, `dyadic_up_extraction.py`, `verification_output.txt` | `drafts/incoming/Dyadic-Up-Extraction.zip` (outer SHA-256 `65ec70d49d1e06f461a3ba2ec44ab2337721385aa29aaf5d6a850b6e5f63f42c`), filed 2026-09-02 |
-| `dyadic-up-extraction/Exact_Dyadic_Up_Extraction/` | *Exact q-Binomial Extraction of Rvachev Up-Function Values from Finite Sinc-Product Splines* (1,277-line/46,386-byte source, 20-page/455,880-byte PDF) | `README.txt`, `SHA256SUMS.txt`, `experiment_output.txt`, `verify_dyadic_extraction.py` | `drafts/incoming/Exact_Dyadic_Up_Extraction.zip` (outer SHA-256 `ce2376e2578954c7439238459552c2cdccca3a81ee9ea857a412f0dfcfdbc2a9`), filed 2026-09-02 |
-| `dyadic-up-extraction/Exact_Geometric_Tails_Rvachev_Up/` | *Exact Geometric Tails and q-Pochhammer Extraction for Finite-Sinc Approximants* (1,530-line/54,622-byte source, 21-page/659,341-byte PDF) | `README.txt`, `SHA256SUMS.txt`, `up_dyadic_extraction.py`, `verification.txt` | `drafts/incoming/Exact_Geometric_Tails_Rvachev_Up.zip` (outer SHA-256 `5bf158b724332dd5cddf7ef7a8f8b74073113a97a52d2198e81351e0e2de7cba`), filed 2026-09-02 |
-| `dyadic-up-extraction/dyadic_up_extraction_package/` | *Exact q-Extrapolation of Finite Sinc-Product Splines at Dyadic Points* (1,801-line/60,526-byte source, 26-page/710,914-byte PDF) | `README.txt`, `SHA256SUMS`, `finite_splines.png`, `geometric_coefficients.csv`, `geometric_mode_cancellation.png`, `sample_sequences.csv`, `verification_report.txt`, `verify_dyadic_up_extraction.py` | `drafts/incoming/dyadic_up_extraction_bundle.zip` (outer SHA-256 `1a6275692bca6dfdbe7626132a1e546c80cfc50c4cbf2ba415363567a356cea3`), filed 2026-09-02 |
-| `dyadic-up-extraction/rvachev_q_extrapolation/` | *Exact Geometric Tails and q-Binomial Extrapolation for Dyadic Values of Rvachev's Up-Function* (1,334-line/41,936-byte source, 19-page/430,625-byte PDF) | `README.txt`, `exact_extrapolation.py`, `verification_output.txt` | `drafts/incoming/rvachev_q_extrapolation_bundle.zip` (outer SHA-256 `f0dd387d453d0d6cce2e3351f5b3724eec45ef29f6e23a2e63a98702d6ff18b1`), filed 2026-09-02 |
-| `dyadic-up-extraction/rvachev_up_dyadic_extrapolation_package/` | *Exact quarter-base extrapolation for dyadic samples of Rvachev's up-function spline prefixes* (1,143-line/36,098-byte source, 15-page/426,091-byte PDF) | `README.txt`, `SHA256SUMS.txt`, `verify_extrapolation.py` | `drafts/incoming/rvachev_up_dyadic_extrapolation_package.zip` (outer SHA-256 `2fefa99ac0fde2e9cea99e13c42270ce1602fb49976ae9d5110b253f4c5785bc`), filed 2026-09-02 |
+| `dyadic-up-extraction/Dyadic_Up_Extraction/` | **Canonical, consolidation complete:** *Exact Dyadic Extraction of Rvachev's Up-Function from Finite Sinc-Product Splines* — 6{,}491-line/334{,}375-byte source (`1f3d0f03…86e582`) and the 77-page A4 PDF built from it in the same three-pass run (1{,}429{,}227 bytes, `26b967e4…72ede7`) | `verify_dyadic_up_extraction.py` (646 lines, `11f52767…44a322`): exact-arithmetic verifier adapted from the sixth arrival's, opt-in outputs, five added checks; every reduced dyadic point of depth ≤ 7 | Editorial merge (2026-09-03) of the six 2026-09-02 arrivals `Dyadic-Up-Extraction/`, `Exact_Dyadic_Up_Extraction/`, `Exact_Geometric_Tails_Rvachev_Up/`, `dyadic_up_extraction_package/`, `rvachev_q_extrapolation/`, `rvachev_up_dyadic_extrapolation_package/` from intake commit `8f822212d`; absorbed directories deleted, git history is the archive, per-source receipts in the volume's provenance appendix |
 
 ## representations — `representations/`
 

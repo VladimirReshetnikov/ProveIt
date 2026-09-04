@@ -279,7 +279,7 @@ the transseries calculus rather than the function, they were regrouped on
 `polynomial-logarithmic-transseries/` subgroup.  That move was verbatim —
 no source or PDF changed — and the same day the six were merged editorially
 into the single canonical volume *Polynomial–Logarithmic Transseries:
-Algebra, Composition, Series Reversal, and the Lambert W Archetype* (399 A4
+Algebra, Composition, Series Reversal, and the Lambert W Archetype* (412 A4
 pages).  None of the six was a superset of the others and each contributed a
 layer no other supplied, so the merge kept every distinct result and collapsed
 only repetition.  Every statement in the volume carries a proof: where a source

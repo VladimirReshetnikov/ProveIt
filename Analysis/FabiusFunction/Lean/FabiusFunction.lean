@@ -127,6 +127,14 @@ import FabiusFunction.FabiusLambertPhaseExtraction
 import FabiusFunction.FabiusLambertPhaseExtractionBell
 import FabiusFunction.PrincipalLambertW
 import FabiusFunction.PrincipalLambertWAtTop
+import FabiusFunction.AutonomousIteratedDeriv
+import FabiusFunction.LambertWHigherDerivatives
+import FabiusFunction.LambertWAntiderivative
+import FabiusFunction.LambertWLogBounds
+import FabiusFunction.LambertWNegativeBounds
+import FabiusFunction.LambertWAdditionIdentity
+import FabiusFunction.LambertWBranchPairing
+import FabiusFunction.LambertWGapBijection
 import FabiusFunction.LowerLambertW
 import FabiusFunction.GeneralizedLambertCoordinate
 import FabiusFunction.LambertBranchDichotomy
@@ -248,6 +256,8 @@ import FabiusFunction.ThueMorseSymmetricDifference
 import FabiusFunction.ThueMorseAutocorrelation
 import FabiusFunction.ThueMorseOverlapFree
 import FabiusFunction.ThueMorseRecurrence
+import FabiusFunction.ThueMorseRecurrenceGap
+import FabiusFunction.ThueMorseSparseBinomial
 import FabiusFunction.ThueMorseMahler
 import FabiusFunction.ThueMorseBooleanMobius
 import FabiusFunction.ThueMorseMultinomial
@@ -475,6 +485,7 @@ import FabiusFunction.CenteredRvachevThueMorseFourier
 import FabiusFunction.LogSeriesMultiplicative
 import FabiusFunction.BaseLayerRegrouping
 import FabiusFunction.ShellEnvelopeExplicit
+import FabiusFunction.ThueMorseSinhProduct
 import FabiusFunction.RvachevFourierDecay
 import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep

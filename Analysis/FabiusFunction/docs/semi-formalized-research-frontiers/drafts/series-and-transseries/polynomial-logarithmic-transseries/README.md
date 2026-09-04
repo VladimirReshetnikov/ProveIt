@@ -14,10 +14,10 @@ polynomials, the Lambert W branch expansions, the passage from formal
 transseries to Poincare asymptotics, algorithms with residual
 certificates, and the wider transseries landscape.
 
-- Source: `Polynomial_Logarithmic_Transseries.tex`, 35,172 lines, 1,760,242 bytes;
-  SHA-256 `388ba72b3723ac0bbed3ddeb83f7aef3d81f37798c766f5cbd96d9338bd9f3cb`.
-- Publication: `Polynomial_Logarithmic_Transseries.pdf`, 399 A4 pages, 4,419,014 bytes;
-  SHA-256 `ef995bb5dc5c0c095ad89845f22d6940866e7c81a27215bcef08ddd8969337da`.
+- Source: `Polynomial_Logarithmic_Transseries.tex`, 36,033 lines, 1,834,190 bytes;
+  SHA-256 `2d57052c623f2157bd112036dfcf8ab8da3e448d5656f20961942735015952c7`.
+- Publication: `Polynomial_Logarithmic_Transseries.pdf`, 412 A4 pages, 4,504,362 bytes;
+  SHA-256 `9d3dd9add1f5a157d2d2f49c465afc94f81fc5927f0fb7ab5baaf3563c06e1d5`.
 - The PDF was produced from exactly this source in one three-pass
   `pdflatex` run: zero errors, zero undefined references, zero
   undefined citations, no Type 3 font, and every font embedded.
