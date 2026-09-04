@@ -91,12 +91,21 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 902 modules and 11,443 public declarations with no
+live facade audit contains 903 modules and 11,446 public declarations with no
 documentation gaps. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` source-only module; the other
 three are the explicit Gaussian second-derivative and division-free moment
-identities. Neither change alters this monograph's forward-status counts or
-retained historical artifact. The
+identities. The subsequent sibling `LambertWBranchGapBernoulli.lean` leaf
+contributes zero definitions and exactly three theorems:
+`summable_norm_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial`, and
+`principalLambertW_lowerLambertW_eq_bernoulliSeries`. They cover the real open
+disk `|z| < 2*pi`, the nonzero Bernoulli-EGF quotient, and the paired strict
+Lambert branch formulas when the positive gap is below `2*pi`; they do not
+establish the boundary, exact radius, or any higher/full Puiseux or logarithmic
+expansion. None of these source-only changes alters this monograph's
+forward-status counts or retained historical artifact, and no render parity is
+claimed. The
 forward status inventory covers 282 labelled results:
 166 Exact / 90 Partial / 18 None / 8 N/A; the 191-result pre-Fabius core is
 35 / 30 / 123 / 3.

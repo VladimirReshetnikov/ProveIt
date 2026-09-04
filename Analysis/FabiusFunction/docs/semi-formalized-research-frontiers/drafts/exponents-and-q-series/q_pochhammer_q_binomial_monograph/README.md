@@ -159,7 +159,7 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 902 modules and 11,443 public declarations, with no
+audit now contains 903 modules and 11,446 public declarations, with no
 documentation gaps. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
@@ -169,6 +169,17 @@ other three are the explicit second-derivative, division-free raw-second-moment,
 and division-free variance-numerator theorems in
 `GaussianBinomialCumulants`; they strengthen the already-Exact
 `thm:qbinom-moments` row without changing its disposition.
+The final one-module/three-declaration increase is the unrelated sibling
+`LambertWBranchGapBernoulli.lean` leaf. Its exhaustive zero-definition public
+surface is `summable_norm_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial`, and
+`principalLambertW_lowerLambertW_eq_bernoulliSeries`: real absolute
+convergence for `|z| < 2*pi`, the nonzero Bernoulli-EGF quotient evaluation,
+and the paired Lambert formulas on the strict common branch domain with gap
+below `2*pi`. It asserts neither the boundary nor exact maximality of that
+radius and adds no higher/full Puiseux or logarithmic expansion. This sibling
+promotion changes none of the forward-status or concordance totals below, and
+the retained historical PDF does not render it.
 
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero

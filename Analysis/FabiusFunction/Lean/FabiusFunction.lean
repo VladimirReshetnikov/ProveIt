@@ -136,6 +136,7 @@ import FabiusFunction.LambertWNegativeBounds
 import FabiusFunction.LambertWAdditionIdentity
 import FabiusFunction.LambertWBranchPairing
 import FabiusFunction.LambertWGapBijection
+import FabiusFunction.LambertWBranchGapBernoulli
 import FabiusFunction.LambertWBranchSymmetry
 import FabiusFunction.LowerLambertW
 import FabiusFunction.GeneralizedLambertCoordinate
@@ -899,12 +900,16 @@ three modules and seventeen public declarations.
 
 The real Lambert branch layer packages the positive gap between the principal
 and lower branches as an explicit bijective coordinate on the open two-branch
-interval.  Its pairing, inverse-gap, and symmetry modules expose four
+interval.  Its finite pairing, inverse-gap, and symmetry modules expose four
 definitions and thirty-two theorems: both branch reconstructions (including
 the `t = exp gap` coordinate), the inverse bijection, exact ratio, sum, and
-product formulas, and the sharp strict sum and product bounds.  The endpoints
-at the branch point and at zero are deliberately excluded; this layer does not
-claim the subsequent Bernoulli gap expansion or branch-point asymptotics.
+product formulas, and the sharp strict sum and product bounds.  The companion
+`LambertWBranchGapBernoulli` leaf adds exactly three theorems: absolute
+summability of the real Bernoulli exponential generating series on
+`|z| < 2 * pi`, its actual sum `z / (exp z - 1)` for `z != 0`, and the two
+printed branch-gap series when the positive gap is below `2 * pi`.  The branch
+point and zero endpoint remain excluded, and no exact-radius, boundary,
+remainder, or higher Puiseux claim is made.
 
 The parity-selected Rvachev synthesis layer exports exactly one definition and
 eight theorems.  `IsRvachevSuperconvergentPhase` selects the endpoint phases

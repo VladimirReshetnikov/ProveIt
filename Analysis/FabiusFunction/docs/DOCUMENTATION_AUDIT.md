@@ -109,7 +109,7 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live 2026-09-03 inventory contains 902 modules and 11,443 lexically
+The live 2026-09-04 inventory contains 903 modules and 11,446 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  The post-merge 2026-09-01 inventory of 675 modules and 8,909
 declarations remains a historical checkpoint: relative to the 610/8,318
@@ -196,8 +196,9 @@ arbitrary formal power series.
 #### Gaussian-binomial second-moment tranche
 
 The later strengthening of the existing `GaussianBinomialCumulants.lean`
-module leaves the module count at 902 and adds three public theorems, bringing
-the live census to 11,443 public declarations.  The module's exhaustive public
+module left the module count at 902 and added three public theorems, bringing
+that historical checkpoint to 11,443 public declarations.  The module's
+exhaustive public
 inventory is two definitions, `meanAtOne` and `varAtOne`, and twenty-four
 theorems: `meanAtOne_one`, `varAtOne_one`, `meanAtOne_mul`, `varAtOne_mul`,
 `meanAtOne_prod`, `varAtOne_prod`, `eval_one_derivative_X_pow`,
@@ -260,10 +261,30 @@ The nine symmetric theorems are
 `principalLambertW_mul_lowerLambertW_mem_Ioo`.  They record the exact branch
 ratio, both exponential and hyperbolic sum/product forms, and the strict
 interior inequalities `W₀+W₋₁<-2` and `0<W₀W₋₁<1`.  Their hypotheses exclude
-both the branch point and zero endpoint.  This declaration census makes no
-Bernoulli-series or asymptotic claim: these three modules do not prove a
-Bernoulli-number expansion, convergence or remainder estimates for one, or
-any branch-point or small-input asymptotic.
+both the branch point and zero endpoint.  These three finite modules do not
+themselves prove a Bernoulli-number series or any branch-point or small-input
+asymptotic; the separate analytic series leaf is inventoried next.
+
+#### Exact Lambert branch-gap Bernoulli tranche
+
+`LambertWBranchGapBernoulli.lean` adds one source module and exactly three
+public theorems to the historical 902/11,443 checkpoint, giving the live
+903/11,446 census.  Its exhaustive public surface is
+`summable_norm_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial`, and
+`principalLambertW_lowerLambertW_eq_bernoulliSeries`; two private majorant and
+coefficient-transport helpers are excluded from the public count.
+
+The first theorem proves absolute convergence of the real Bernoulli
+exponential generating series for `|z| < 2π`.  The second gives its actual
+`HasSum` value `z/(exp z-1)` under the additional condition `z ≠ 0`.  The final
+theorem specializes this evaluation to `x ∈ (-exp(-1),0)` and
+`branchGap x < 2π`, returning both branch identities as one conjunction.  It
+makes only the Lambert Guide label `eq:pair-Bernoulli-general` **Exact**.  The
+quotient theorem deliberately excludes the removable point `z=0`, while the
+branch theorem excludes both endpoints.  No exact or maximal radius theorem,
+boundary convergence or divergence statement at `|z|=2π`, remainder estimate,
+or higher/convergent Puiseux expansion is included.
 
 The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
@@ -946,7 +967,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 902/11,443
+historical 675/8,909 census and requires refresh against the live 903/11,446
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity

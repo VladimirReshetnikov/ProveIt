@@ -42,7 +42,8 @@ was 671 modules and 8,858 public declarations; no PDF was rebuilt for that
 source-only update.
 
 The newest source-only Lambert branch-coordinate overlay formalizes the exact
-pairing theorem and its symmetric corollary from `Lambert_W_Guide/`.
+pairing theorem, its symmetric corollary, and one compact Bernoulli-series
+identity from `Lambert_W_Guide/`.
 `LambertWBranchPairing.lean` has 0 definitions + 7 theorems,
 `LambertWGapBijection.lean` has 4 definitions + 16 theorems, and
 `LambertWBranchSymmetry.lean` has 0 definitions + 9 theorems. For
@@ -54,12 +55,21 @@ the two equations `W_j exp(W_j) = x`, then uses branch-range uniqueness for
 the converse; `sinh(y) > y` and `y coth(y) > 1` give the strict bounds.
 The interval is deliberately open: at the branch point the rational formulas
 have zero denominator and their limiting sum/product are `-2` and `1`, while
-zero is the singular classical lower endpoint. These modules do not prove the
-Guide's Bernoulli-number gap series, convergence of that series, or higher
-Puiseux/logarithmic expansions. The affected retained frontier, primary,
-walkthrough, and Lambert-Guide PDFs are historical artifacts and do not render
-this source-only overlay. The live documentation census is now 902 modules and
-11,443 public declarations.
+zero is the singular classical lower endpoint.
+
+The companion `LambertWBranchGapBernoulli.lean` has the exhaustive surface
+0 definitions + 3 theorems. It proves absolute summability of the real
+Bernoulli exponential generating series on `|z| < 2*pi`, its actual all-index
+`HasSum` value `z / (exp z - 1)` for `z != 0`, and the two paired branch sums
+when `x in (-exp(-1), 0)` and the positive branch gap is below `2*pi`. This is
+an exact crosswalk only for `eq:pair-Bernoulli-general`. At `z = 0` the
+convergence theorem still applies, but the quotient evaluation excludes the
+removable value; the endpoint `|z| = 2*pi`, exact maximality of the radius,
+and higher or convergent Puiseux/logarithmic expansions remain open. The
+affected retained frontier, primary, walkthrough, and Lambert-Guide PDFs are
+historical artifacts and do not render this source-only overlay; no render
+parity is claimed. The live documentation census is now 903 modules and
+11,446 public declarations.
 
 The preceding source-only addition is
 `FabiusFunction.GeometricRichardsonGenerating`, with three definitions and

@@ -3817,7 +3817,7 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 902 modules and 11,443 public declarations.  The current TeX also
+census is 903 modules and 11,446 public declarations.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration fixed-depth effective-inverse tranche, the
@@ -3826,8 +3826,9 @@ q-calculus modules contributing 36 declarations, plus the two source-only
 central-reduction and cyclotomic-factorization modules contributing thirteen
 theorems, and the four-module root-of-unity, q-Lucas, cyclotomic-divisibility,
 and q-Catalan tranche contributing one definition and twenty-four theorems,
-and the three-module Lambert branch-pairing, gap-bijection, and symmetric-
-identity tranche contributing four definitions and thirty-two theorems, the
+and the four-module Lambert branch-pairing, gap-bijection, symmetric-identity,
+and Bernoulli-series tranche contributing four definitions and thirty-five
+theorems, the
 three-definition/seven-theorem geometric Richardson generating-function
 module, and the three-theorem second-moment strengthening of the existing
 \path{GaussianBinomialCumulants.lean} module.
@@ -10400,7 +10401,7 @@ the strict interior bounds
  \qquad 0<W_0(x)W_{-1}(x)<1.                              \label{eq:lambert-gap-strict}
 \end{equation}
 
-The three files have the following exhaustive public inventories.  The
+The four files have the following exhaustive public inventories.  The
 forward file \path{LambertWBranchPairing.lean} has zero definitions and seven
 theorems:
 \lean{principalLambertW_sub_lowerLambertW_pos},
@@ -10433,6 +10434,91 @@ theorems:
 \lean{principalLambertW_mul_lowerLambertW_pos},
 \lean{principalLambertW_mul_lowerLambertW_lt_one}, and
 \lean{principalLambertW_mul_lowerLambertW_mem_Ioo}.
+The final file \path{LambertWBranchGapBernoulli.lean} has zero definitions and
+exactly three theorems:
+\lean{summable_norm_bernoulli_mul_pow_div_factorial},
+\lean{hasSum_bernoulli_mul_pow_div_factorial}, and
+\lean{principalLambertW_lowerLambertW_eq_bernoulliSeries}.
+
+\begin{theorem}[Bernoulli exponential generating function in the gap coordinate]
+\label{thm:lambert-gap-bernoulli-series}
+For every real \(z\) with \(\lvert z\rvert<2\pi\),
+\begin{equation}
+ \sum_{n=0}^{\infty}
+ \left\lvert\frac{B_nz^n}{n!}\right\rvert<\infty.
+ \label{eq:bernoulli-egf-absolute}
+\end{equation}
+If also \(z\ne0\), then
+\begin{equation}
+ \sum_{n=0}^{\infty}\frac{B_nz^n}{n!}
+   =\frac{z}{\exp(z)-1}.                                  \label{eq:bernoulli-egf}
+\end{equation}
+Consequently, for \(x\in(-\EulerE^{-1},0)\), with
+\(\delta=W_0(x)-W_{-1}(x)<2\pi\),
+\begin{align}
+ W_0(x)&=-\sum_{n=0}^{\infty}\frac{B_n\delta^n}{n!},
+                                                               \label{eq:lambert-principal-bernoulli}\\
+ W_{-1}(x)&=-\delta-
+       \sum_{n=0}^{\infty}\frac{B_n\delta^n}{n!}.
+                                                               \label{eq:lambert-lower-bernoulli}
+\end{align}
+\end{theorem}
+
+\begin{proof}[Formal coefficient bound and Cauchy-product proof]
+Put \(q=\lvert z\rvert/(2\pi)\), so \(0\le q<1\), and set
+\[
+ c_r=\frac{B_{2(r+1)}}{2(r+1)(2(r+1))!}.
+\]
+The even-zeta estimate already proved for the Bernoulli logarithm gives
+\[
+ \left\lvert c_rz^{2(r+1)}\right\rvert
+ \le \frac{\pi^2}{6}q^{2(r+1)}.
+\]
+All odd Bernoulli numbers beyond \(B_1\) vanish, while for the positive even
+indices
+\[
+ \left\lvert\frac{B_{2(r+1)}z^{2(r+1)}}{(2(r+1))!}\right\rvert
+ =2(r+1)\left\lvert c_rz^{2(r+1)}\right\rvert
+ \le 2(r+1)\frac{\pi^2}{6}q^{2(r+1)}.
+\]
+Thus every term of index \(n\ge2\) is bounded by
+\(n(\pi^2/6)q^n\).  The series \(\sum n q^n\) converges, and adding the two
+initial terms proves \eqref{eq:bernoulli-egf-absolute}.
+
+For the value of the sum, write
+\[
+ f_n=\frac{B_nz^n}{n!},\qquad
+ g_n=\frac{z^n}{n!}-\IndicatorOf{\{n=0\}}.
+\]
+The first sequence is absolutely summable by the preceding bound.  The second
+is absolutely summable because the exponential series is absolutely summable
+and the subtracted sequence has finite support; its sum is \(\exp(z)-1\).
+Mathlib's formal power-series identity
+\[
+ \left(\sum_{n\ge0}\frac{B_n}{n!}X^n\right)(\exp X-1)=X
+\]
+says coefficientwise that
+\[
+ \sum_{i+j=n}f_i g_j=
+ \begin{cases}z,&n=1,\\0,&n\ne1.\end{cases}
+\]
+Absolute summability therefore justifies the analytic Cauchy product and gives
+\[
+ \left(\sum_{n\ge0}f_n\right)(\exp(z)-1)
+ =\sum_{n\ge0}\sum_{i+j=n}f_i g_j=z.
+\]
+When \(z\ne0\), injectivity of the real exponential makes
+\(\exp(z)-1\ne0\), so division proves \eqref{eq:bernoulli-egf}.  On the branch
+domain, \(\delta>0\), hence the extra hypothesis gives
+\(\lvert\delta\rvert<2\pi\).  Substituting \eqref{eq:bernoulli-egf} into
+\(W_0=-\delta/(\exp\delta-1)\), and then using
+\(W_{-1}=W_0-\delta\), proves
+\eqref{eq:lambert-principal-bernoulli}--\eqref{eq:lambert-lower-bernoulli}.
+The three stages are respectively
+\lean{summable_norm_bernoulli_mul_pow_div_factorial},
+\lean{hasSum_bernoulli_mul_pow_div_factorial}, and
+\lean{principalLambertW_lowerLambertW_eq_bernoulliSeries}.
+\end{proof}
 
 The forward pairing and symmetric identities have the strict input hypotheses
 in \eqref{eq:lambert-branch-gap}.  The four converse-coordinate definitions
@@ -10444,10 +10530,16 @@ gap is zero, the displayed quotients have zero denominators, and the limiting
 sum and product attain \(-2\) and \(1\), so neither the parametrization as
 stated nor the strict inequalities include that endpoint.  At \(x=0\), the
 classical lower branch has a singular extended endpoint, so it too is
-excluded; no claim is made about the all-real totalization there.  These
-three modules prove exact finite identities only.  They do not formalize the
-Bernoulli-number power-series expansions in the gap, their convergence, or
-any higher Puiseux or logarithmic branch expansion.
+excluded; no claim is made about the all-real totalization there.  The
+absolute-summability statement includes \(z=0\), but the quotient statement
+does not: its series has value \(B_0=1\) there, whereas Lean's totalized
+\(0/(\exp 0-1)\) is zero.  The new theorem is a sufficient open-disk result,
+not an exact-radius theorem: it asserts neither maximal radius nor behavior at
+\(\lvert z\rvert=2\pi\), and it is stated only for real \(z\).  Its Lambert
+specialization still excludes both branch endpoints and additionally requires
+\(\delta<2\pi\).  It is a convergent series in the gap coordinate, not a
+higher-order or full Puiseux expansion in \(x+\EulerE^{-1}\), and it adds no
+logarithmic expansion at \(x=0\).
 
 \subsubsection{Branch-point vertical geometry and leading square-root law}
 Put
@@ -13264,6 +13356,7 @@ Endpoint asymptotics &
 \path{PowerExponentialLambertFabius}\texttt{.lean}, \path{FabiusLambertPhase.lean},
 \path{LambertWBranchPairing.lean}, \path{LambertWGapBijection.lean},
 \path{LambertWBranchSymmetry.lean},
+\path{LambertWBranchGapBernoulli.lean},
 \path{LambertWCurvature.lean}, \path{LambertWBranchPointGeometry.lean},
 \path{LambertWBranchPointAsymptotics.lean},
 \path{PowerExponentialLambertCurvature.lean},
