@@ -49323,6 +49323,36 @@ and evaluate at $x=X$, where $\log X-\beta=u$.  For $r=1$, $u=v/p$ and
 $pu+r=v+1$.
 \end{proof}
 
+\begin{remark}[Formalization of the core at \(r=1\)]\label{p6:rem:core-lean}
+The case $r=1$ --- the one used for $\Gamma$ in \cref{p6:sec:gamma} and for the
+$K$-function, and the case in which no determination of an $r$-th root has to
+be made --- is machine-checked over $\Real$, in \path{PowerLogCoreInversion.lean}.
+\path{Fabius.powerLogCore} is $\Phi_0(x)=ax^{p}(\log x-\beta)$ with the real power;
+\path{Fabius.powerLogCoreArg} is the Lambert argument $pR\e^{-p\beta}/a$ and
+\path{Fabius.powerLogCoreRoot} the root $X=\e^{\beta+v/p}$;
+\path{Fabius.powerLogCore_powerLogCoreRoot} is $\Phi_0(X)=R$;
+\path{Fabius.log_powerLogCoreRoot_sub} is $\log X-\beta=v/p$; and
+\path{Fabius.hasDerivAt_powerLogCore_root} is the slope $aX^{p-1}(v+1)$, the
+third formula of \eqref{p6:eq:core-r1}.  The Lambert branch is the corpus's
+real principal branch \path{Fabius.principalLambertW}, so the hypothesis is the
+one that branch needs, $-\e^{-1}\le pR\e^{-p\beta}/a$.
+
+Two features of the formal statement are worth naming, because they say what
+the lemma actually depends on.  First, the inversion is proved in the form
+\path{Fabius.powerLogCore_of_lambert}, which assumes only that $v$ solves
+$v\e^{v}=pR\e^{-p\beta}/a$ and concludes $\Phi_0(\e^{\beta+v/p})=R$; the
+principal branch enters only in the corollary.  So the lemma is a statement
+about the Lambert \emph{equation}, not about any branch of its solution, and
+it transfers to the lower real branch, or to $\Wlam_k$, unchanged.  Second,
+nothing analytic is used beyond that equation: the substitution $x=\e^{\beta+u}$
+makes $\log x-\beta=u$ and $x^{p}=\e^{p\beta}\e^{pu}$ by construction
+(\path{Fabius.powerLogCore_exp}), and the rest is field arithmetic.
+
+Not formalized: general $r$, which needs a determination of the $r$-th root
+and is where the branch bookkeeping of \eqref{p6:eq:core-vars} lives; and the
+complex-analytic reading with a general $\Wlam_k$.
+\end{remark}
+
 \begin{remark}[The universal divisor]\label{p6:rem:universal-divisor}
 The factor $v+1$ that divides every inverse coefficient below is not an
 algebraic accident: by \eqref{p6:eq:core-r1} it is the normalized slope
