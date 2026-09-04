@@ -776,6 +776,180 @@ extracting $\Coef{t^n}$ gives \eqref{p0:eq:fp-quadratic}.
 \cref{p0:lem:lagrange-fp-quadratic}, in which the argument above sharpens the
 range of $m$ from $2n-1$ to $n$.
 
+\subsection{Perturbed inversion around an exactly invertible core}
+\label{p0:sec:perturbed}
+
+The reversions carried out in Chapters~1--4 all reduce to one step: a core
+$F$ that can be inverted exactly is perturbed by a correction $E$, and the
+inverse of $F+\varepsilon E$ is required to all orders in $\varepsilon$.  The
+answer is a single differential formula, stated here once.  It is the tool
+behind \cref{p3:thm:additive-LB} in the ordinate of the partition chapter and
+behind \cref{p4:lem:phase-lb} in the phase coordinate of the swing chapter,
+and those two are the same identity in different letters.
+
+\begin{theorem}[Perturbed inversion]\label{p0:thm:perturbed-inversion}
+Let $F$ and $E$ be analytic in a neighbourhood of $\mu_{0}\in\Cplx$, let
+$F'(\mu_{0})\ne0$, and put $y:=F(\mu_{0})$.  Write $\mu_{0}(\cdot)$ for the
+local inverse of $F$, so that $\mu_{0}(y)=\mu_{0}$ and
+$\mu_{0}'(y)=1/F'(\mu_{0}(y))$, and let
+\begin{equation}\label{p0:eq:reversion-operator}
+ \mathcal{D}:=\frac1{F'(\mu)}\frac{\dd}{\dd\mu},
+\end{equation}
+which is the derivation $\dd/\dd y$ read in the coordinate $y=F(\mu)$.  Then
+there are a neighbourhood $\mathcal{U}$ of $\mu_{0}$ and an
+$\varepsilon_{0}>0$ such that for $|\varepsilon|<\varepsilon_{0}$ the equation
+\begin{equation}\label{p0:eq:perturbed-equation}
+ F(\mu)+\varepsilon E(\mu)=y
+\end{equation}
+has exactly one root $\mu(y;\varepsilon)$ in $\mathcal{U}$; it is analytic in
+$\varepsilon$ there, and
+\begin{equation}\label{p0:eq:perturbed-inversion}
+ \mu(y;\varepsilon)=\mu_{0}(y)
+ +\sum_{M\ge1}\frac{(-\varepsilon)^{M}}{M!}\,
+ \mathcal{D}^{M-1}\!\left(\frac{E(\mu_{0}(y))^{M}}{F'(\mu_{0}(y))}\right),
+\end{equation}
+the series converging for $|\varepsilon|<\varepsilon_{0}$, with $M$th
+coefficient
+\begin{equation}\label{p0:eq:perturbed-residue}
+ \frac{(-1)^{M}}{M!}\,\mathcal{D}^{M-1}\!
+ \left(\frac{E(\mu_{0})^{M}}{F'(\mu_{0})}\right)
+ =\frac{(-1)^{M}}{M}\operatorname*{Res}_{\mu=\mu_{0}}
+ \frac{E(\mu)^{M}}{\bigl(F(\mu)-y\bigr)^{M}} .
+\end{equation}
+If moreover $E=\sum_{j}\varepsilon_{j}E_{j}$ with finitely many $E_{j}$
+analytic near $\mu_{0}$, then for every multi-index $\boldsymbol m\ne\boldsymbol0$
+with $M:=|\boldsymbol m|$ the coefficient of
+$\boldsymbol\varepsilon^{\boldsymbol m}$ in $\mu-\mu_{0}$ is
+\begin{equation}\label{p0:eq:perturbed-multi}
+ V_{\boldsymbol m}
+ =\frac{(-1)^{M}}{\boldsymbol m!}\,
+  \mathcal{D}^{M-1}\!\left(\frac{E^{\boldsymbol m}(\mu_{0})}{F'(\mu_{0})}\right)
+ =\frac{(-1)^{M}(M-1)!}{\boldsymbol m!}\,
+  \operatorname*{Res}_{\mu=\mu_{0}}
+  \frac{E^{\boldsymbol m}(\mu)}{\bigl(F(\mu)-F(\mu_{0})\bigr)^{M}},
+\end{equation}
+where $E^{\boldsymbol m}:=\prod_{j}E_{j}^{m_{j}}$ and
+$\boldsymbol m!:=\prod_{j}m_{j}!$.
+\end{theorem}
+
+\begin{proof}
+Let $\gamma$ be a small positively oriented circle about $\mu_{0}$, contained
+with its interior $\mathcal{U}$ in the common domain of analyticity and
+enclosing no zero of $F(\cdot)-y$ other than $\mu_{0}$; such a $\gamma$ exists
+because $F'(\mu_{0})\ne0$ makes $\mu_{0}$ a simple zero, hence isolated.  Put
+$m_{\gamma}:=\min_{\gamma}|F-y|>0$ and $M_{\gamma}:=\max_{\gamma}|E|$, and let
+$\varepsilon_{0}:=m_{\gamma}/(M_{\gamma}+1)$.  For
+$|\varepsilon|<\varepsilon_{0}$ we have $|\varepsilon E|<|F-y|$ on $\gamma$,
+so Rouch\'e gives exactly one zero $\mu(y;\varepsilon)$ of
+$F-y+\varepsilon E$ inside $\gamma$, and it is simple.  The argument
+principle, applied to that function, expresses it as
+\begin{equation}\label{p0:eq:argument-principle}
+ \mu(y;\varepsilon)=\frac1{2\pi\ii}\int_{\gamma}\zeta\,
+ \dd_{\zeta}\log\bigl(F(\zeta)-y+\varepsilon E(\zeta)\bigr),
+\end{equation}
+which is analytic in $\varepsilon$ on $|\varepsilon|<\varepsilon_{0}$ because
+the integrand is and $\gamma$ is compact.
+
+Subtract from \eqref{p0:eq:argument-principle} the same expression at
+$\varepsilon=0$, whose value is $\mu_{0}$, and expand
+\[
+ \log\Bigl(1+\varepsilon\frac{E}{F-y}\Bigr)
+ =\sum_{M\ge1}\frac{(-1)^{M-1}}{M}\,\varepsilon^{M}\,
+ \frac{E^{M}}{(F-y)^{M}},
+\]
+uniformly convergent on $\gamma$ since $|\varepsilon E/(F-y)|<1$ there.
+Integrating by parts once turns $\zeta\,\dd_{\zeta}(\cdot)$ into
+$-(\cdot)\,\dd\zeta$ (the boundary term vanishes on a closed contour), so the
+coefficient of $\varepsilon^{M}$ is
+\[
+ \frac{(-1)^{M}}{M}\operatorname*{Res}_{\zeta=\mu_{0}}
+ \frac{E(\zeta)^{M}}{\bigl(F(\zeta)-F(\mu_{0})\bigr)^{M}},
+\]
+which is the right-hand side of \eqref{p0:eq:perturbed-residue}.
+
+It remains to identify that residue with the differential expression.  Change
+coordinate by $w=F(\zeta)$, $\zeta=\mu_{0}(w)$, $\dd\zeta=\mu_{0}'(w)\,\dd w$,
+legitimate on a neighbourhood of $\mu_{0}$ because $F'(\mu_{0})\ne0$:
+\[
+ \operatorname*{Res}_{\zeta=\mu_{0}}
+ \frac{E(\zeta)^{M}}{(F(\zeta)-y)^{M}}\,\dd\zeta
+ =\operatorname*{Res}_{w=y}
+ \frac{E(\mu_{0}(w))^{M}\,\mu_{0}'(w)}{(w-y)^{M}}\,\dd w
+ =\frac1{(M-1)!}\frac{\dd^{M-1}}{\dd y^{M-1}}
+ \left(\frac{E(\mu_{0}(y))^{M}}{F'(\mu_{0}(y))}\right),
+\]
+the last step being the residue of a pole of order $M$.  Multiplying by
+$(-1)^{M}/M$ and using $\dd/\dd y=\mathcal{D}$ gives
+\eqref{p0:eq:perturbed-inversion} and \eqref{p0:eq:perturbed-residue}.
+
+For \eqref{p0:eq:perturbed-multi} replace $E$ by $\sum_{j}\varepsilon_{j}E_{j}$
+and expand the $M$th power by the multinomial theorem: the monomial
+$\boldsymbol\varepsilon^{\boldsymbol m}$ occurs with coefficient
+$M!/\boldsymbol m!$, which cancels the $M!$ in
+\eqref{p0:eq:perturbed-inversion}.
+\end{proof}
+
+The identity \eqref{p0:eq:perturbed-inversion} is needed in Chapter~4 with a
+correction $E$ that is a \emph{divergent} formal series, where no contour is
+available.  What survives is the coefficientwise identity, and it survives for
+the reason the Lagrange fixed-point formula does.
+
+\begin{corollary}[Formal form of the reversion]\label{p0:cor:perturbed-formal}
+Fix $M\ge1$ and let
+$\mathcal{P}:=\Rat[e_{0},\dots,e_{M-1},f_{2},\dots,f_{M}][f_{1}^{-1}]$.  Both
+of the following are elements of $\mathcal{P}$, obtained by writing out the
+indicated recursions with $e_{i}$ and $f_{i}$ standing for $E^{(i)}(\mu_{0})$
+and $F^{(i)}(\mu_{0})$:
+\begin{enumerate}
+\item the coefficient $\mu_{M}$ of $\varepsilon^{M}$ produced by solving
+\eqref{p0:eq:perturbed-equation} by formal Taylor iteration, i.e.\ by
+substituting $\mu=\mu_{0}+\sum_{k\ge1}\mu_{k}\varepsilon^{k}$, expanding $F$
+and $E$ in their Taylor jets at $\mu_{0}$, and equating coefficients of
+$\varepsilon^{M}$;
+\item the expression
+$\frac{(-1)^{M}}{M!}\mathcal{D}^{M-1}\bigl(E(\mu_{0})^{M}/F'(\mu_{0})\bigr)$
+of \eqref{p0:eq:perturbed-inversion}, expanded by the Leibniz rule.
+\end{enumerate}
+They are equal in $\mathcal{P}$.  Consequently
+\eqref{p0:eq:perturbed-inversion} and \eqref{p0:eq:perturbed-multi} hold
+coefficientwise in any commutative $\Rat$-algebra carrying jets
+$e_{i},f_{i}$ with $f_{1}$ invertible --- in particular when $F$ and $E$ are
+formal, possibly divergent, series, and when $\mathcal{D}$ is the derivation
+\eqref{p0:eq:reversion-operator} written in any coordinate.
+\end{corollary}
+
+\begin{proof}
+Each recursion visibly terminates and involves only $e_{0},\dots,e_{M-1}$,
+$f_{2},\dots,f_{M}$ and divisions by $f_{1}$: in (i) the coefficient of
+$\varepsilon^{M}$ in $F(\mu_{0}+\sum_{k\ge1}\mu_{k}\varepsilon^{k})
++\varepsilon E(\mu_{0}+\sum_{k\ge1}\mu_{k}\varepsilon^{k})$ equals
+$f_{1}\mu_{M}$ plus a polynomial in $f_{2},\dots,f_{M}$,
+$e_{0},\dots,e_{M-1}$ and $\mu_{1},\dots,\mu_{M-1}$, so $\mu_{M}$ is
+determined by one division by $f_{1}$; in (ii) each application of
+$\mathcal{D}=f_{1}^{-1}\dd/\dd\mu$ lowers the available jet order by one and
+contributes one factor $f_{1}^{-1}$, and $M-1$ applications to a function of
+$e_{0},\dots$ and $f_{1},\dots$ reach at most $e_{M-1}$ and $f_{M}$.  So both
+lie in $\mathcal{P}$.
+
+Choose $N$ with $f_{1}^{N}\mu_{M}$ and $f_{1}^{N}\cdot(\text{ii})$ both in
+$\mathcal{A}:=\Rat[e_{0},\dots,e_{M-1},f_{1},\dots,f_{M}]$, and regard them as
+polynomial functions on $\Cplx^{2M}$.  Every point of $\Cplx^{2M}$ with
+$f_{1}\ne0$ is realized by a pair of \emph{polynomials}: take $\mu_{0}=0$,
+$E(\mu):=\sum_{i=0}^{M-1}e_{i}\mu^{i}/i!$ and
+$F(\mu):=\sum_{i=1}^{M}f_{i}\mu^{i}/i!$, which are entire with
+$F'(0)=f_{1}\ne0$ and with the prescribed jets.  For such a pair
+\cref{p0:thm:perturbed-inversion} applies, and the Taylor coefficients in
+$\varepsilon$ of the analytic root $\mu(y;\varepsilon)$ satisfy the recursion
+of (i) --- substituting the convergent expansion into
+\eqref{p0:eq:perturbed-equation} and equating coefficients is legitimate ---
+so (i) and (ii) agree at that point.  Two elements of $\mathcal{A}$ agreeing on
+the Zariski-dense open set $\{f_{1}\ne0\}$ of $\Cplx^{2M}$ are equal in
+$\Cplx[e_{\bullet},f_{\bullet}]$, hence equal in $\mathcal{A}$ and, after
+dividing by $f_{1}^{N}$, in $\mathcal{P}$.  The final assertion follows by
+applying the unique $\Rat$-algebra homomorphism $\mathcal{P}\to S$ determined
+by the given jets, exactly as in \cref{p0:lem:LB-universal}.
+\end{proof}
+
 \section{The Lambert core}\label{p0:sec:core}
 
 \subsection{Exact inversion of the linear--logarithmic phase}
@@ -8387,38 +8561,20 @@ where $E^{\boldsymbol m}=\prod_{j}E_{j}^{m_{j}}$.
 \end{theorem}
 
 \begin{proof}
-Let $\gamma$ be a small positively oriented circle about $\mu_{0}$ enclosing no other zero of
-$F(\cdot)-y$. For small $|\varepsilon|$, Rouch\'e gives exactly one zero $\mu(y;\varepsilon)$ of
-$F-y+\varepsilon E$ inside $\gamma$, and the argument principle gives
-\[
-\mu(y;\varepsilon)=\frac1{2\pi\ii}\int_{\gamma} \zeta\,\dd_{\zeta}\log\bigl(F(\zeta)-y+\varepsilon
-E(\zeta)\bigr).
-\]
-Subtract the same expression at $\varepsilon=0$, expand $\log(1+\varepsilon
-E/(F-y))=\sum_{M\ge1}\frac{(-1)^{M-1}}{M} \varepsilon^{M}E^{M}(F-y)^{-M}$, and integrate by parts
-once (which converts $\zeta\,\dd_{\zeta}(\cdot)$ into $-(\cdot)\dd\zeta$). The coefficient of
-$\varepsilon^{M}$ is
-\[
-\frac{(-1)^{M}}{M}\operatorname*{Res}_{\zeta=\mu_{0}}
-\frac{E(\zeta)^{M}}{(F(\zeta)-F(\mu_{0}))^{M}} .
-\]
-Now change coordinate $w=F(\zeta)$, $\zeta=\mu_{0}(w)$, $\dd\zeta=\mu_{0}'(w)\dd w$:
-\[
-\operatorname*{Res}_{\zeta=\mu_{0}}\frac{E(\zeta)^{M}}{(F(\zeta)-y)^{M}}\dd\zeta
-=\operatorname*{Res}_{w=y}\frac{E(\mu_{0}(w))^{M}\mu_{0}'(w)}{(w-y)^{M}}\dd w
-=\frac1{(M-1)!}\frac{\dd^{M-1}}{\dd y^{M-1}}
-\left(\frac{E(\mu_{0}(y))^{M}}{F'(\mu_{0}(y))}\right),
-\]
-which is \cref{p3:eq:additive-LB} after dividing by $M$ and using $\dd/\dd y=\mathcal{D}$. The
-multivariate statement follows by replacing $E$ with $\sum_{j}\varepsilon_{j}E_{j}$ and expanding
-the $M$th power by the multinomial theorem: the coefficient $M!/\boldsymbol m!$ cancels the $M!$
-in \cref{p3:eq:additive-LB}.
+Both displays are \cref{p0:thm:perturbed-inversion} in the same letters:
+\cref{p3:eq:additive-LB} is \eqref{p0:eq:perturbed-inversion} and
+\cref{p3:eq:multi-LB} is \eqref{p0:eq:perturbed-multi}.
 
-For the partition blocks this is more than formal. With $E=\sum_{j}E_{j}+\mathcal{R}_{>K}F$ we
-have $E/F=\bigO(\mu^{C}\e^{-\mu/2})$ together with the same bound for finitely many
-derivatives, by \cref{p3:thm:tail} and \cref{p3:lem:Atilde}; so on a fixed relative neighbourhood
-of a large $\mu_{0}$, Rouch\'e applies for all $|\varepsilon|\le1+\eta$ with some $\eta>0$, and
-the Taylor series in $\varepsilon$ converges at $\varepsilon=1$.
+What that theorem supplies is convergence for $|\varepsilon|<\varepsilon_{0}$,
+with $\varepsilon_{0}$ read off a small circle about $\mu_{0}$; here the
+specialisation $\varepsilon_{j}=1$ is wanted, and for the partition blocks it
+is legitimate.  With $E=\sum_{j}E_{j}+\mathcal{R}_{>K}F$ we have
+$E/F=\bigO(\mu^{C}\e^{-\mu/2})$ together with the same bound for finitely many
+derivatives, by \cref{p3:thm:tail} and \cref{p3:lem:Atilde}; so on a fixed
+relative neighbourhood of a large $\mu_{0}$ the Rouch\'e comparison made in
+the proof of \cref{p0:thm:perturbed-inversion} holds for all
+$|\varepsilon|\le1+\eta$ with some $\eta>0$, and the Taylor series in
+$\varepsilon$ converges at $\varepsilon=1$.
 \end{proof}
 
 \begin{remark}[$\mathcal{D}$ is iterated, not a plain derivative]
@@ -10650,15 +10806,14 @@ as a formal power series in the marker $\eta$,
 \end{lemma}
 
 \begin{proof}
-Let $J=F_0^{-1}$ and $v=F_0(x)$, so the equation becomes
-$v+\eta A(v)=z$ with $A(v)=g(J(v))$.  Lagrange--B\"urmann inversion
-(\cref{p0:thm:LB}) applied to the observable $J$ gives
-\[
-  J(v)=J(z)+\sum_{k\ge1}\frac{(-\eta)^{k}}{k!}
-   \Bigl(\frac{\dd}{\dd z}\Bigr)^{k-1}\bigl(J'(z)A(z)^{k}\bigr).
-\]
-Now $J(z)=\Xcore$, $J'(z)=1/F_0'(\Xcore)$, $A(z)=g(\Xcore)$ and
-$\dd/\dd z=\mathscr D$, which is \cref{p4:eq:phase-lb}.
+This is \cref{p0:thm:perturbed-inversion} under the dictionary $F\mapsto F_0$,
+$E\mapsto g$, $\varepsilon\mapsto\eta$, $\mu_{0}\mapsto\Xcore$,
+$y\mapsto z$ and $\mathcal{D}\mapsto\mathscr D$, which carries
+\eqref{p0:eq:reversion-operator} to \cref{p4:eq:phase-operator} and
+\eqref{p0:eq:perturbed-inversion} to \cref{p4:eq:phase-lb}.  Since $g$ is here
+a formal and in general divergent series, no contour is available and the
+statement invoked is the coefficientwise one, \cref{p0:cor:perturbed-formal},
+whose only hypothesis is that $F_0'(\Xcore)$ be invertible.
 \end{proof}
 
 \begin{proposition}[Differential formula for $c_n^{(\sigma)}$]

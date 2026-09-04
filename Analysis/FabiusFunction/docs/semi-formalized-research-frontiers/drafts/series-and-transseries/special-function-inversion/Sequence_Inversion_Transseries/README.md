@@ -1,7 +1,7 @@
 # Asymptotic Transseries and Inversion of Four Combinatorial Sequences
 
 **Canonical consolidation of twelve filed articles**, made on 3 September 2026.
-`sequence_inversion_transseries.tex` (150 A4 pages) and the PDF built from it
+`sequence_inversion_transseries.tex` (151 A4 pages) and the PDF built from it
 in the same run.
 
 ## What it is
@@ -18,11 +18,12 @@ Four combinatorial sequences are developed to all orders and then inverted:
 Chapter 0 states the shared apparatus **once** — the exponential–power model
 and the axiomatized dominant core, ordinary and exponential partial Bell
 polynomials, Lagrange–Bürmann and the Lagrange fixed-point formula, the exact
-Lambert carrier and the branch rule, the all-orders reversion around the core,
+Lambert carrier and the branch rule, perturbed inversion around an exactly invertible core in both its analytic
+and its formal-jet form, the all-orders reversion around the core,
 the flattening into a polynomial–logarithmic transseries, the three inverse
 objects of a discrete sequence with the staircase theorem, backward error as a
 certificate, remainder transport, and optimal truncation.  Chapters 1–4 cite
-it: 247 cross-references into Chapter 0, and no chapter restates a Chapter 0
+it: 220 cross-references into Chapter 0, and no chapter restates a Chapter 0
 proof.  Chapter 5 compares the four and records what the common frame does not
 explain.
 
@@ -79,10 +80,10 @@ hypothesis, or a formal-versus-analytic conflation.
 
 ## Status
 
-174 named results, 169 with proofs in the text; of the five without a `proof`
+176 named results, 171 with proofs in the text; of the five without a `proof`
 environment, four are corollaries whose derivation is displayed inline and one
 is the Rademacher formula, quoted as the volume's single external analytic
-input.  956 labels, no duplicates, no dangling references, no LaTeX errors.
+input.  965 labels, no duplicates, no dangling references, no LaTeX errors.
 
 Comparison against the wider corpus, numerical reproduction beyond what is
 recorded here, and Lean crosswalking are **not** done and are deliberately
