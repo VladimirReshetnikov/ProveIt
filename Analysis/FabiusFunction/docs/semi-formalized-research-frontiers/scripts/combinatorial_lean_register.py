@@ -114,6 +114,17 @@ STATUS = {
    r"polynomial core \lean{Fabius.descPochhammer_mul_sub_pow_eq_sum_stirlingSecond} and the "
    r"characterization \lean{Fabius.reducedStirling_eq_stirlingSecond} (\lean{StirlingIdentities}); "
    r"the graph-colouring inputs are not formal"),
+ 'thm:bell-determinants': ('Lean',
+   r"\lean{Fabius.det_bellMatrixH}, \lean{Fabius.det_bellMatrixK}, "
+   r"\lean{Fabius.det_bellMatrixK_invFactorial} (\lean{BellDeterminants}), by reindexing to the "
+   r"corpus Hessenberg matrix rather than by expansion"),
+ 'cor:det-traces-bell': ('partial',
+   r"\lean{Fabius.det_eq_bell_complete_traceWeight} (\lean{BellDeterminants}), assuming an "
+   r"eigenvalue family; tr(A^k) as a power sum of eigenvalues is not in Mathlib"),
+ 'thm:cycle-index-bell': ('partial',
+   r"equal-marks case \lean{Fabius.bell_complete_cycleWeightConst} and its instance "
+   r"\lean{Fabius.card_perm_eq_bell_complete} (\lean{BellDeterminants}); the cycle-removal "
+   r"bijection is not formal"),
  'thm:bell-poly-partitions': ('Lean',
    r"\lean{Fabius.partialBell_eq_sum_setPartitions} and "
    r"\lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), "

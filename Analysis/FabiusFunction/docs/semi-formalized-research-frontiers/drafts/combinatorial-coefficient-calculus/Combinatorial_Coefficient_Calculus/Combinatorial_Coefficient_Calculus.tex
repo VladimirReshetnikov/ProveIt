@@ -4431,6 +4431,23 @@ subdiagonal becomes $-(i-1)$.  Similarity, transposition, and reversal preserve
 the determinant, proving the second equality.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; no determinant is expanded.
+Both determinants are formal in \lean{BellDeterminants}, over any commutative
+ring and for every size including the empty matrix, and the route is worth
+recording because it expands no determinant at all.  The matrix $H_n$ is not
+the matrix of a size-independent recurrence --- its entries $\binom{n-i}{j-i}$
+mention $n$ --- but reversing the index order turns it entrywise into the
+corpus's generic Hessenberg matrix, whose determinant is already known to
+satisfy the Bell recurrence; so $\det H_n=\ExponentialCompleteBellPolynomial n$
+(\lean{Fabius.det_bellMatrixH}) follows from a reindexing alone.
+$K_n$ is then an entrywise rescaling $r!\,d_c\,H^{\top}$, the
+manuscript's $K=D(JH^{\top}J)D^{-1}$ made division-free by taking the
+reciprocal factorials as a parameter $d$ with $m!\,d_m=1$
+(\lean{Fabius.det_bellMatrixK}), and specialized to commutative
+$\RationalNumbers$-algebras in \lean{Fabius.det_bellMatrixK_invFactorial}.
+\end{remark}
+
 \section{The diamond convolution}
 For sequences $x=(x_1,x_2,\ldots)$ and $y=(y_1,y_2,\ldots)$ define
 \begin{equation}\label{eq:diamond}
@@ -4563,6 +4580,19 @@ $e_n=\det A$ and $p_k=\TraceOperator(A^k)$.  Both sides are polynomial in the ma
 so the argument remains valid for nondiagonalizable matrices.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; partial -- the eigenvalue hypotheses are not discharged.
+Partially formal: \lean{Fabius.det_eq_bell_complete_traceWeight}
+(\lean{BellDeterminants}) gives $\det A=((-1)^{N}/N!)\ExponentialCompleteBellPolynomial N(w)$ with
+$w_k=-(k-1)!\operatorname{tr}(A^{k})$, \emph{assuming} a family $u$ with
+$\det A=\prod_iu_i$ and $\operatorname{tr}(A^{k})=\sum_iu_i^{k}$.  That
+is the proof above verbatim, applied to the eigenvalues.  What is not formal is
+the existence of such a family: Mathlib has the determinant and the trace as
+products and sums of the roots of the characteristic polynomial over an
+algebraically closed field, but not $\operatorname{tr}(A^{k})=\sum\lambda_i^{k}$, which
+needs a matrix triangularization theorem it does not have.
+\end{remark}
+
 \section{Cycle indices}
 Let $a_j$ mark cycles of length $j$ in a permutation.
 \begin{theorem}\label{thm:cycle-index-bell}
@@ -4578,6 +4608,21 @@ The exponential formula gives
 $\exp(\sum_{j\ge1}a_jt^j/j)$; comparison with
 \eqref{eq:complete-bell-egf} proves the identity after division by $n!$.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; partial -- the equal-marks specialization only.
+Partially formal in \lean{BellDeterminants}.  The general statement is the
+exponential formula for cycles, i.e. the cycle-removal bijection
+$S_{[n]}\simeq\sum_{S\ni n}(\text{cyclic orders on }S)\times S_{[n]\setminus S}$, for
+which Mathlib has no counting API.  What is proved is the equal-marks case:
+\lean{Fabius.bell_complete_cycleWeightConst} gives
+$\ExponentialCompleteBellPolynomial n(0!\,a,1!\,a,\ldots)=\prod_{i<n}(a+i)$, so
+$\sum_{\sigma}a^{\#\text{cycles}}$ is the rising factorial,
+over any commutative semiring; and its $a=1$ instance
+\lean{Fabius.card_perm_eq_bell_complete} equates $|S_n|$, computed independently, with
+$\ExponentialCompleteBellPolynomial n(0!,\ldots,(n-1)!)$, a genuine instance
+of the identity.
+\end{remark}
 
 \section{Moments and cumulants}
 Let $M(t)=\Expectation \EulerE^{tX}=\sum_{n\ge0}\mu'_nt^n/n!$ and
@@ -11038,7 +11083,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 68 Lean, 39 partial, 101 none, of 208 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 69 Lean, 41 partial, 98 none, of 208 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -11128,11 +11173,11 @@ corollary (unlabelled, no.~5) & Cauchy integral & none &  \\
 \Cref{thm:complete-bell-addition} & Complete Bell addition formula & Lean & \lean{Bell.complete_add} (\lean{BellPolynomialInversion}), over every commutative semiring \\
 \Cref{thm:bell-leading-zeros} & Insertion of $q$ leading zeros & Lean & \lean{Fabius.partialBell_leadingZeros} (\lean{BellLeadingZeros}), over any $\RationalNumbers$-algebra, with the zero-padded weights \lean{Fabius.leadingZeros} and the rescaled weights \lean{Fabius.qScaled}; the proof compares the weight series (\lean{Fabius.bellWeightSeries_leadingZeros}) exactly as in the text \\
 \Cref{thm:bell-transform-inverse} & Bell transform and its inverse & Lean & \cref{eq:bell-transform-x} is \lean{Fabius.bell_transform_inverse} (\lean{BellComposition}), from $X=\log(1+Y)$ formalized as \lean{Fabius.log_subst_exp_sub_one} and the composition theorem; the recursive inversion over every commutative ring is \lean{Bell.complete_cumulant} and \lean{Bell.cumulant_complete} (\lean{BellPolynomialInversion}).  The more general locally-inverse transform \cref{eq:general-bell-inverse}, which the text states after this theorem rather than inside it, is not formalized \\
-\Cref{thm:bell-determinants} & Bell determinants & none &  \\
+\Cref{thm:bell-determinants} & Bell determinants & Lean & \lean{Fabius.det_bellMatrixH}, \lean{Fabius.det_bellMatrixK}, \lean{Fabius.det_bellMatrixK_invFactorial} (\lean{BellDeterminants}), by reindexing to the corpus Hessenberg matrix rather than by expansion \\
 \Cref{thm:diamond-bell} &  & Lean & \lean{Fabius.diamondPow_apply} and \lean{Fabius.partialBell_eq_diamondPow_div} (\lean{DiamondPower}); the diamond product is \lean{Bell.binomialConv}, and \lean{Fabius.binomialConv_eq_sum_Ico} checks that the two extreme terms the source omits do vanish, so the two definitions agree.  Raw diamond powers and their zero/successor/one laws hold over every commutative semiring; the EGF and partial-Bell bridge retain commutative $\RationalNumbers$-algebra hypotheses.  The proof is the source's: \lean{Fabius.egfA_mul} makes the generating function of the power a power (\lean{Fabius.egfA_diamondPow}), and \lean{Fabius.bellWeightSeries_pow} reads off its coefficients. \\
 \Cref{thm:bell-symmetric-functions} &  & Lean & \cref{eq:elementary-via-bell} is \lean{Fabius.esymm_eq_bell_complete} and its sign variant \lean{Fabius.esymm_eq_neg_bell_complete} (\lean{ElementarySymmetricBell}), for a finite family in any commutative $\mathbb Q$-algebra; \cref{eq:powersum-via-bell} is \lean{Fabius.newton_power_sum} in cleared form and \lean{Fabius.power_sum_eq} in the divided form (\lean{NewtonPowerSumBell}), with its second form, through the ordinary partial Bell polynomials, as \lean{Fabius.power_sum_eq_ord_bell} (\lean{PowerSumOrdinaryBell}).  All of it rests on \lean{Fabius.exp_subst_logOf} (\lean{ExpLog}), which supplies the $\exp\circ\log$ inverse Mathlib lacks, and on \lean{Fabius.cumulant_eq_cumulantSum} (\lean{CumulantBellFormula}); the two forms of \cref{eq:powersum-via-bell} are the exponential and the ordinary reading of the same $\log E$, equated \\
-\Cref{cor:det-traces-bell} & Determinant from traces & none &  \\
-\Cref{thm:cycle-index-bell} &  & none &  \\
+\Cref{cor:det-traces-bell} & Determinant from traces & partial & \lean{Fabius.det_eq_bell_complete_traceWeight} (\lean{BellDeterminants}), assuming an eigenvalue family; tr(A^k) as a power sum of eigenvalues is not in Mathlib \\
+\Cref{thm:cycle-index-bell} &  & partial & equal-marks case \lean{Fabius.bell_complete_cycleWeightConst} and its instance \lean{Fabius.card_perm_eq_bell_complete} (\lean{BellDeterminants}); the cycle-removal bijection is not formal \\
 \Cref{thm:moment-cumulant} & Moment--cumulant relations & Lean & \cref{eq:moments-from-cumulants} is \lean{Fabius.bell_complete_eq_sum_partialBell} with \lean{Fabius.exp_subst_bellWeightSeries}, and \cref{eq:cumulants-from-moments} is \lean{Fabius.bell_transform_inverse} (\lean{BellComposition}); the recursive forms are \lean{Fabius.completeBellPolynomial_momentCumulant}, \lean{Fabius.momentCumulant_completeBellPolynomial} (\lean{MomentCumulantAlgebra}) and \lean{Bell.complete_cumulant} \\
 \Cref{thm:binomial-type-bell} &  & partial & with \lean{Fabius.binomialTypePoly} defined by \cref{eq:binomial-type-bell} (\lean{BinomialType}): \cref{eq:binomial-type-egf} is \lean{Fabius.exp_subst_smul_bellWeightSeries_eq_egfA_binomialTypePoly} and \cref{eq:binomial-type-identity} is \lean{Fabius.binomialTypePoly_add} (from the addition law \lean{Bell.complete_add}), over any commutative ring; the delta operator \cref{eq:delta-operator} is not formalized \\
 \Cref{thm:eulerian-recurrence} & Eulerian recurrence & partial & \cref{eq:eulerian-recurrence} defines \lean{Fabius.eulerianNumber} (\lean{EulerianNumbers}, \lean{Fabius.eulerianNumber_succ_succ}), with the textbook indexing as \lean{Fabius.eulerianNumber_succ_left}; \cref{eq:eulerian-poly-recurrence} is \lean{Fabius.eulerianPolynomial_succ} (\lean{EulerianPolynomialRecurrence}) over any commutative ring; the descent count itself is not formalized \\

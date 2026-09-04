@@ -842,6 +842,7 @@ import FabiusFunction.BellSetPartitions
 import FabiusFunction.EulerianPermutohedron
 import FabiusFunction.InverseDerivativeRecursion
 import FabiusFunction.StirlingIdentities
+import FabiusFunction.BellDeterminants
 
 set_option autoImplicit false
 
