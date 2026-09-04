@@ -46,12 +46,13 @@ include the consolidation and subsequent work. The `CCC` inventory row always
 identifies the historical snapshot, never the changing live source.
 
 The canonical PDF was rebuilt from the accompanying TeX on 2026-09-04 with
-three strict pdfLaTeX passes and a generated index. It contains 207 pages;
+three strict pdfLaTeX passes and a generated index. It contains 210 pages;
 the earlier 174-page consolidation render remains recoverable from Git.
 This is a source/render synchronization checkpoint, not a claim that all
-mathematics has been verified in Lean. The new reverse-row, complete-homogeneous,
-weak-composition, and formal-power source proofs remain explicitly marked as
-awaiting compilation in the manuscript and its register.
+mathematics has been verified in Lean. The incoming Stirling and formal-power
+cores retain their historical compiler receipts; the merged compatibility,
+weak-composition, and Bell wrappers and the reverse-row source proof still
+await compilation, as distinguished in the manuscript and its register.
 
 ## Recovery and validation
 

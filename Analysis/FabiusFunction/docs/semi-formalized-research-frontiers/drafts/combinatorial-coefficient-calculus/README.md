@@ -29,11 +29,12 @@ mode this package is now expected to pass.
 
 | Directory | Document |
 | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — the evolving source and its synchronized 207-page A4 PDF |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — synchronized 210-page A4 PDF rebuilt on 2026-09-04 |
 
-The PDF was rebuilt from the accompanying source on 2026-09-04 using three
-strict pdfLaTeX passes and a generated index. This render checkpoint does not
-certify Lean compilation; the in-document register keeps that status separate.
+The PDF was rebuilt from the merged source using three strict
+pdfLaTeX passes and a generated index. Nine focused pages were visually
+reviewed; no whole-volume page-by-page review is claimed.
+The in-document register records Lean compilation separately.
 Standalone checksum files are retired; provenance is kept in Git and the source
 inventory, and the validator does not maintain or require file digests.
 
@@ -70,6 +71,48 @@ section "Closure of the merge", carries the in-document record. In summary:
   upright `e` inside one exponent. The document now follows
   `FabiusFunction_Mathematical_Notation_Catalogue` throughout.
 
+## Integrated Stirling proof sources
+
+The fixed-column second-kind Stirling theorem `thm:second-ogf` now separates
+its formal-power-series content from scalar rational evaluation. Its
+coefficient identity explicitly assumes `n >= k`; the formal proof identifies
+two inverses of the same finite product, extracts the coefficient of the
+finite product of geometric series, and then proves
+`x^(k+1) * (1/x)↓(k+1) = ∏_{j=1}^k (1-jx)`. The falling-factorial spelling at
+a scalar requires `x != 0`, and its reciprocal form also requires every
+factor `1-jx` to be nonzero. The `k = 0`, `n = 0` empty-product case is
+included.
+
+The eight upstream theorem bodies in `StirlingCompleteHomogeneous.lean` contribute
+`stirlingColumnOGF_eq_completeHomogeneousGeneratingSeriesOn`,
+`stirlingSecond_add_eq_completeHomogeneousEvalOn`,
+`stirlingSecond_eq_completeHomogeneousEvalOn_of_le`,
+`stirlingSecond_add_eq_completeHomogeneousEval`,
+`stirlingSecond_add_eq_eval_hsymm`, and
+`stirlingSecond_add_eq_sum_finsuppAntidiag`. Its two companion declarations,
+`pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul` and
+`prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv`, cover
+the scalar factorization and reciprocal spelling. Together they make
+`thm:second-ogf` **Lean** with the corrected hypotheses. This is an inherited
+build classification, not a new compiler run in this worktree: commit
+`584ec4e68` records warning-free focused builds of
+`CompleteHomogeneousGenerating`, `StirlingOrdinaryGF`, and
+`StirlingCompleteHomogeneous`, together with the eight-declaration axiom
+audit. Its Stirling source is byte-identical to the version received at
+`ebe17b063`. The merged compatibility, explicit-tuple, and Bell power-sum
+wrappers are additional source work and still await compilation.
+
+The same distinction applies to `UnitSeriesPowerRecurrence`: commit
+`a1f579d84` records sequential elaboration of the upstream power module and
+facade, and its power-module source is byte-identical to that received at
+`ebe17b063`. The upstream declarations
+`coeff_recurrence_of_mul_derivative_eq`,
+`mul_derivative_fallingSeries_subst_sub_one`, and
+`coeff_fallingSeries_subst_sub_one_recurrence` supply the exact generic ODE
+and normalized-power crosswalks. Their inherited verification does not
+extend to the merged Euler-coefficient and compatibility wrappers or prove
+that the complete merged dependency graph compiles.
+
 ## What this package does not claim
 
 The manuscript is research-frontier mathematical writing. Its theorem and proof
@@ -77,14 +120,14 @@ environments are human-readable mathematics, not evidence of Lean verification.
 The section "Lean formalization register" states, per result, what is formalized
 and what is not; it is maintained separately from this consolidation.
 
-## Weighted-transform checkpoint (2026-09-04)
+## Formalization checkpoints (2026-09-04)
 
-The `AppellSequence` extension has passed a focused Lean build with
-`LAKE_JOBS=1`: eleven public lemmas provide weighted binomial translation,
+The `AppellSequence` extension has passed direct, sequential Lean elaboration:
+eleven public lemmas provide weighted binomial translation,
 convolution transport, cancellation, and inversion. The manuscript gives their
 complete human proofs and exact declaration crosswalks. Three private rational
 helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
-caller refactor has been independently source-reviewed but awaits its own build.
+caller refactor has now passed its own direct Lean check as well.
 
 At that checkpoint the register contained 203 rows: 58 marked Lean, 34 partial, and 111 without a
 Lean counterpart. The earlier classifications are inherited; this checkpoint
@@ -110,18 +153,18 @@ differential equation, with no normalization needed for the general ring form.
 The manuscript supplies complete human proofs and maps every new public
 declaration to its mathematical statement.
 
-These additions have passed independent mathematical and exact-library source
-reviews, but **none of the new proofs is counted as compiler-verified yet**.
-Other worktrees held the machine-wide Lean build slot during this checkpoint.
-After merging the Abel/rescaling checkpoint, the register has 206 rows:
+These additions passed independent mathematical and exact-library source
+reviews before compilation. Other worktrees held the machine-wide Lean build
+slot during that checkpoint. Before integrating the upstream compiled Stirling
+and power cores described above, the register had 206 rows:
 58 marked Lean, 34 partial, and 114 without a
 compiler-verified counterpart. The two new rows have human proofs and pending
 Lean source implementations; earlier statuses are inherited, not freshly
 validated by an aggregate build.
 
-The final structural/provenance validator passes with 206 adjacent proofs,
-27 disposition records, and six original-source inventory rows. The source is
-10,780 lines / 523,775 UTF-8 bytes. The rebuilt 207-page PDF uses Libertinus text
+At that checkpoint the final structural/provenance validator passed with 206
+adjacent proofs, 27 disposition records, and six original-source inventory
+rows. The source was 10,780 lines / 523,775 UTF-8 bytes. The rebuilt 207-page PDF uses Libertinus text
 and Computer Modern mathematics. Validation includes focused visual inspection
 of the revised recurrence, coefficient, crosswalk, and register pages; it is
 not a claim of a fresh page-by-page audit of the whole monograph.
@@ -143,11 +186,34 @@ regression evidence, not infinite-domain proofs or Lean compilation results.
 
 ## Integrated Abel and moment-cumulant checkpoint (2026-09-04)
 
-The pending Abel checkpoint adds the formal-series construction over an arbitrary
-commutative rational algebra, the coefficient formula for every solution, and
-the full EGF and binomial identity. `ExponentialRescaling` has passed a focused
-build; the Abel module and affected callers still await compilation, so the
-new manuscript entries have not yet been promoted in the register. The human
-moment-cumulant proof now states its normalization and positive-degree boundaries
-explicitly, with formal logarithm identities separated from the still-open
-set-partition interpretation.
+`ExponentialRescaling` has passed a focused build. Its four public lemmas give
+the rescaling chain rule over every commutative semiring and exponential
+specializations over every commutative rational algebra. They replace the
+rational-only helpers in `NorlundDiagonal` without changing their names. The
+manuscript supplies full coefficient proofs and an exact crosswalk.
+
+The pending `AbelPolynomialSeries` source constructs a solution over every
+commutative rational algebra, derives coefficients for every solution, and
+proves the full EGF and binomial identity including degree zero. The new
+`BernoulliFormalLog` source derives the rational formal logarithm of the
+Bernoulli kernel using the existing recurrence-to-logarithm bridge. Its
+coefficient formula separates degree zero and preserves the distinction between
+the two degree-one Bernoulli conventions. These two modules and the affected
+Norlund, Lambert, and ThueMorse callers still await compilation; independent
+source reviews are not compiler validation, and their register classifications
+have not been promoted on that basis.
+
+The human moment-cumulant proof now states its normalization and positive-degree
+boundaries explicitly, with formal logarithm identities separated from the
+still-open set-partition interpretation. The Nörlund proof now derives the
+logarithmic coefficients without dividing by the nonunit formal variable.
+Arbitrary-order Nörlund polynomials and their analytic convergence remain open
+formalization work. The merged register has 206 rows: 62 Lean, 32 partial,
+and 112 without a compiled counterpart. The source has 10,852 lines,
+528,604 UTF-8 bytes, 709 labels, and 206 adjacent proofs. Final structural
+validation and all eight duplicate-crosswalk regression tests pass.
+The 210-page PDF contains Libertinus text and no Type 3 fonts; the final
+strict-pass log has no undefined references, overfull boxes, or rerun requests.
+The earlier counts above describe their named checkpoints only. The unused
+duplicate Stirling rearrangement was removed; its earlier theorem retains
+the necessary zeroth summand and already proves the full identity.

@@ -228,7 +228,8 @@ both odd. The latter is exactly `mu_(2m) = 1 mod 2` under the standard residue
 convention for rational two-adic units. Both declarations include `m = 0`.
 This is executable rational valuation/parity data, not construction of a
 separate topological `ℚ_2` value, and it promotes no neighboring Legendre
-asymptotic or matrix row. The retained package PDF predates both promotions.
+asymptotic or matrix row. The accepted current 63-page package PDF renders both
+promotions; the former 60-page artifact predates them.
 
 The Q12 root transition is exact computer-assisted mathematics: rational
 polynomials and rational Sturm chains decide root counts. Approximate complex

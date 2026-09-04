@@ -38,6 +38,14 @@ if '\\newcommand{\\lean}' not in s:
 # ---------------------------------------------------------------- statuses
 # label -> (status, "declarations (module)")
 STATUS = {
+ 'lem:merged-formal-rescaling': ('Lean',
+   r"\cref{eq:merged-formal-rescaling-derivative} is "
+   r"\lean{Fabius.derivative_rescale} over every commutative semiring; "
+   r"\lean{Fabius.derivative_rescale_exp}, \lean{Fabius.rescale_zero_exp}, and "
+   r"\lean{Fabius.rescale_exp_add_one} give the exponential specializations "
+   r"over every commutative $\RationalNumbers$-algebra "
+   r"(\lean{ExponentialRescaling}). The general product law is Mathlib's "
+   r"\lean{PowerSeries.exp_mul_exp_eq_exp_add}."),
  'thm:first-cycle': ('partial',
    r"recurrence and boundary values are Mathlib's \lean{Nat.stirlingFirst_succ_succ}, "
    r"\lean{Nat.stirlingFirst_succ_zero}, \lean{Nat.stirlingFirst_eq_zero_of_lt}; the "
@@ -323,19 +331,25 @@ STATUS = {
    r"\lean{Fabius.egfA_fubini}: the generating function is $1/(1-u)$ at $u=\EulerE^t-1$) and "
    r"\cref{eq:ordered-bell-recurrence} is \lean{Fabius.fubini_succ} (\lean{OrderedBell}); the "
    r"ordered-partition count itself is not formalized"),
- 'thm:second-ogf': ('partial',
+ 'thm:second-ogf': ('Lean',
    r"\lean{Fabius.prod_one_sub_mul_X_mul_stirlingColumnOGF} and "
-   r"\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}): the column "
-   r"series $\sum_r\StirlingSecondKind{k+r}{k}x^r$ times $\prod_{j\le k}(1-jx)$ is $1$, and "
-   r"equals the product of the geometric series $\sum_r j^rx^r$, in $R[[x]]$ for every "
-   r"commutative ring $R$. The new "
-   r"\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn} and "
-   r"\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn} "
-   r"(\lean{StirlingCompleteHomogeneous}) implement the $S=h$ coefficient identity "
-   r"over every commutative semiring but await compilation. The explicit weak-composition "
-   r"sum is implemented by \lean{Fabius.stirlingSecond_add_eq_sum_antidiagonalTuple} "
-   r"using \lean{CompleteHomogeneousWeakComposition}, also awaiting compilation. "
-   r"The reciprocal falling-factorial clause still lacks its exact formal crosswalk"),
+   r"\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}) prove the "
+   r"formal inverse and finite geometric-product identities. The upstream-verified "
+   r"\lean{StirlingCompleteHomogeneous} declarations "
+   r"\lean{Fabius.stirlingColumnOGF_eq_completeHomogeneousGeneratingSeriesOn}, "
+   r"\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn}, "
+   r"\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le}, "
+   r"\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEval}, "
+   r"\lean{Fabius.stirlingSecond_add_eq_eval_hsymm}, and "
+   r"\lean{Fabius.stirlingSecond_add_eq_sum_finsuppAntidiag} cover inverse uniqueness, the "
+   r"$n=k+r$ and $n\ge k$ complete-homogeneous identities over every commutative semiring, universal "
+   r"\lean{MvPolynomial.hsymm} evaluation, and the explicit multiplicity sum.  Its "
+   r"\lean{Fabius.pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul} and "
+   r"\lean{Fabius.prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv} cover "
+   r"the scalar falling-factorial factorization under $x\ne0$ and its reciprocal under "
+   r"nonvanishing of every $1-jx$. This status retains the upstream build receipt for "
+   r"those unchanged theorem bodies; the merged compatibility, tuple, and Bell "
+   r"wrappers await compilation."),
  'cor:second-column-bell-power-sums': ('none',
    r"Source implementation awaiting compilation: "
    r"\lean{Fabius.bellComplete_stirlingSecond_powerSums} and "
@@ -618,12 +632,15 @@ STATUS = {
  'cor:eulerian-power-sum': ('Lean',
    r"\lean{Fabius.sum_range_pow_succ_eq_sum_eulerianNumber} (\lean{EulerianNumbers}), "
    r"in the form $\sum_{r=0}^{m} r^{n+1}=\sum_k A(n+1,k)\binom{m+k+1}{n+2}$"),
- 'prop:merged-power-ode-coefficients': ('none',
-   r"Source implementation awaiting compilation: "
-   r"\lean{Fabius.natCast_mul_coeff_of_mul_derivative_eq} and "
-   r"\lean{Fabius.coeff_X_mul_derivative_series} (\lean{UnitSeriesPowerRecurrence}); "
-   r"arbitrary commutative rings and unrestricted constant coefficients"),
- 'alg:merged-exp-log-power': ('partial',
+ 'prop:merged-power-ode-coefficients': ('Lean',
+   r"\lean{Fabius.coeff_recurrence_of_mul_derivative_eq} "
+   r"(\lean{UnitSeriesPowerRecurrence}) is the exact commutative-ring identity, "
+   r"with unrestricted constant coefficients and degree zero included; "
+   r"\lean{PowerSeries.coeff_zero_eq_constantCoeff_apply} identifies its leading "
+   r"coefficient with the displayed constant coefficient. The status retains the "
+   r"upstream build receipt for the unchanged theorem body; the merged public "
+   r"Euler-coefficient and compatibility wrappers await compilation"),
+ 'alg:merged-exp-log-power': ('Lean',
    r"\cref{eq:merged-alg-log} is the reflected-index form of "
    r"\lean{Fabius.SaddleExpansion.logCoeff_succ}, with "
    r"\lean{Fabius.SaddleExpansion.logSeries_eq_logOf} identifying that recurrence with the "
@@ -633,11 +650,16 @@ STATUS = {
    r"denominator-cleared form $na_n=\sum_{j=1}^n j\ell_j a_{n-j}$.  The same module proves "
    r"closed Bell-polynomial formulas for arbitrary powers as "
    r"\lean{Fabius.coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos} and "
-   r"\lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}. The separate recurrence "
-   r"\cref{eq:merged-alg-power} is now implemented in "
-   r"\lean{Fabius.coeff_fallingSeries_subst_recurrence} and its divided wrapper "
-   r"\lean{Fabius.coeff_fallingSeries_subst_recurrence_of_pos} "
-   r"(\lean{UnitSeriesPowerRecurrence}), but compilation remains pending"),
+   r"\lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}. "
+   r"\cref{eq:merged-alg-power} is "
+   r"\lean{Fabius.coeff_fallingSeries_subst_sub_one_recurrence} "
+   r"(\lean{UnitSeriesPowerRecurrence}), from "
+   r"\lean{Fabius.mul_derivative_fallingSeries_subst_sub_one} and the "
+   r"commutative-ring identity \lean{Fabius.coeff_recurrence_of_mul_derivative_eq}. "
+   r"The power is formal binomial substitution with constant coefficient one; "
+   r"all three divided recurrences hold over a commutative $\mathbb Q$-algebra. "
+   r"The power status retains the upstream build receipt for the unchanged core "
+   r"declarations; merged compatibility wrappers await compilation"),
 }
 
 # A dict literal keeps the LAST of two equal keys and reports nothing, so a

@@ -1791,11 +1791,45 @@ algebraic normalization only, not the separate labelled-set interpretation."""))
 
  # --- alg:merged-exp-log-power ---
  (r"""\begin{proof}
-Compare coefficients in $A'=AL'$ to obtain the first two recurrences.  For
-powers, compare degree $n-1$ in $AC'=\alpha A'C$ and isolate $nc_n$.
+All three divided recurrences are for $n\geq1$.  From $A'=AL'$,
+the coefficient of $z^{n-1}$ gives
+\[
+ n a_n=\sum_{j=1}^{n}j\ell_j a_{n-j}.
+\]
+This is the exponential recurrence.  Since $a_0=1$, its $j=n$ term is
+$n\ell_n$; isolating that term gives the logarithmic recurrence.
+
+For powers, put $w=A-1$ and define the formal binomial series
+\[
+ F_\alpha(t)=\sum_{k\geq0}\frac{\FallingFactorial{\alpha}{k}}{k!}t^k,
+ \qquad C=F_\alpha(w).
+\]
+The falling-factorial recurrence gives
+$(1+t)F_\alpha'(t)=\alpha F_\alpha(t)$.  As $w(0)=0$, formal substitution
+and the chain rule are valid and yield $AC'=\alpha A'C$ and $c_0=1$.
+Multiplying the differential equation by $z$ keeps the coefficient index
+unchanged, since $[z^n](zH')=n[z^n]H$.  Cauchy's rule therefore gives
+\[
+ 0=[z^n]\bigl(\alpha(zA')C-A(zC')\bigr)
+   =\sum_{j=0}^{n}\bigl((\alpha+1)j-n\bigr)a_jc_{n-j}.
+\]
+The $j=0$ term is $-nc_n$, so its isolation proves
+\eqref{eq:merged-alg-power}.  Every remaining $c_{n-j}$ has smaller index,
+and positive integers are invertible in the ambient
+$\RationalNumbers$-algebra.  Thus $c_0=1$ and this recurrence uniquely
+determine the coefficients by induction.
+
+More generally, the same coefficient calculation over \emph{any}
+commutative ring, with no normalization or invertibility assumption on
+$a_0$, shows that $AC'=\alpha A'C$ implies
+\[
+ n a_0c_n=\sum_{j=1}^{n}\bigl((\alpha+1)j-n\bigr)a_jc_{n-j}.
+\]
+This denominator-free identity remains valid in positive characteristic;
+only the step of solving for $c_n$ requires an invertible $na_0$.
 \end{proof}
 """,
-  remark(r"""% ed.: crosswalk added 2026-09-04; two recurrences exact, one open.
+  remark(r"""% ed.: crosswalk updated 2026-09-04; all three recurrences exact.
 The logarithmic recurrence \eqref{eq:merged-alg-log} is the positive-degree
 unfolding \lean{Fabius.SaddleExpansion.logCoeff_succ}, after reflecting its
 finite summation index; its output is identified with Mathlib's formal
@@ -1803,14 +1837,21 @@ logarithm by \lean{Fabius.SaddleExpansion.logSeries_eq_logOf} (modules
 \lean{SaddleLogExpansionAlgebra} and \lean{SaddleLogExpansionPowerSeries}).
 The exponential recurrence \eqref{eq:merged-alg-exp} is
 \lean{Fabius.coeff_exp_subst_recurrence} in module
-\lean{UnitSeriesBellCoefficients}, stated in the denominator-cleared form
-$na_n=\sum_{j=1}^n j\ell_j a_{n-j}$ and valid also at $n=0$.
-The same module gives nonrecursive Bell-polynomial coefficient formulas for
-arbitrary formal powers in
-\lean{Fabius.coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos} and
-\lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}.  It does not prove
-the distinct recursive identity \eqref{eq:merged-alg-power}; that clause remains
-the precise missing obligation, so the algorithm is only \emph{partial}.""")),
+\lean{UnitSeriesBellCoefficients}, in denominator-cleared form.
+For powers, module \lean{UnitSeriesPowerRecurrence} proves the general
+commutative-ring identity
+\lean{Fabius.coeff_recurrence_of_mul_derivative_eq}, the formal binomial
+differential equation
+\lean{Fabius.mul_derivative_fallingSeries_subst_sub_one}, and its
+unit-constant recurrence
+\lean{Fabius.coeff_fallingSeries_subst_sub_one_recurrence}.
+The constant coefficient is one by
+\lean{Fabius.constantCoeff_subst_of_constantCoeff_eq_zero} in
+\lean{BellGeneratingFunctions} and
+\lean{Fabius.constantCoeff_fallingSeries}.  Thus the whole algorithm is
+\emph{Lean}-proved over a commutative $\mathbb Q$-algebra, with the
+denominator-free identity generalized to arbitrary commutative rings.
+These are formal series statements, not assertions about analytic branches.""")),
 ]
 
 applied = 0
