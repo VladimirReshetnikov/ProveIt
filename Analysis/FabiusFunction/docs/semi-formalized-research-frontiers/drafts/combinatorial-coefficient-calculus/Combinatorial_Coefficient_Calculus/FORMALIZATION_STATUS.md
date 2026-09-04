@@ -8,18 +8,41 @@ status words are recorded correspondence claims, not a fresh compilation receipt
 
 ## Latest publication checkpoint (2026-09-04)
 
-Main `17156aa2a` is integrated with all text and semantic name conflicts resolved.
-The synchronized PDF has 213 A4 pages, with three serial strict passes, generated
-index, and six focused page checks. Its final log has no undefined references,
-overfull boxes, or rerun requests; Libertinus is present and no Type 3 fonts occur.
+Main `da90f69d1` is integrated with the source conflicts resolved. The rebuilt
+PDF has 213 A4 pages and measures 2,063,614 bytes. The source has 11,290 lines,
+555,974 UTF-8 bytes, 209 adjacent proofs, 712 labels, and 960 references.
+The regenerated register contains 209 rows: 66 `Lean`, 35 `partial`, and
+108 `none`. The bibliography has 24 items and 14 cited keys; provenance has
+27 disposition records and six original-source inventory rows.
+These are the publication owner's current source/register/render measurements,
+not a fresh replay of the inherited Lean receipts; pending proof extensions
+remain pending.
 
-The source has 11,244 lines, 552,510 UTF-8 bytes, 209 adjacent proofs, 712 labels,
-and 954 references. The regenerated register contains 64 `Lean`, 35 `partial`,
-and 110 `none` rows. The structural/provenance validator and all 14 regression
-tests pass; all 3,472 cited Fabius names resolve. The facade has 837 unique
-imports and no missing source targets among 987 modules. An incoming import of
-the absent `InverseDerivativeRecursion` module was removed. Pending proof
-extensions remain pending: these source and render checks do not replay Lean.
+All three serial strict pdfLaTeX passes exited successfully. The PDF has five
+embedded Libertinus font entries, no Type 3 fonts, and no undefined-reference
+or rerun warnings. Six changed/register/index pages were visually inspected.
+One nonfatal 28.0023 pt overfull box remains on page 115 at the inline
+`HasFTaylorSeriesUpToOn.comp` name; it is readable and is deferred to the
+user-requested dedicated layout pass. This is not a warning-free layout claim.
+The canonical validator's final-mode rerun passed with zero errors and zero
+warnings, and all 14 validator regression tests passed at this merged state.
+These structural warnings are separate from the deferred TeX layout warning above.
+The exact `check_identities.py` regression passed 37 identities with zero
+failures. The crosswalk source audit exited successfully: all 3,476 distinct
+cited `Fabius.*` names resolved, with zero unresolved names; its source inventory
+reported 12,193 public declarations, 1,332 private declarations, and 32
+namespaces. Git merge closure is a separate owner check; none of these source,
+finite, or render checks establishes fresh Lean compilation.
+
+At the preceding `17156aa2a` checkpoint, the source had 11,244 lines,
+552,510 UTF-8 bytes, and 954 references, with a 64 `Lean` / 35 `partial` /
+110 `none` register. That 213-page PDF had three serial strict passes, a
+generated index, six focused page checks, Libertinus text, and no Type 3 fonts,
+undefined references, overfull boxes, or rerun requests. The structural/provenance
+validator and all 14 regression tests passed; all 3,472 cited Fabius names
+resolved. Its facade had 837 unique imports and no missing source targets among
+987 modules; an import of the absent `InverseDerivativeRecursion` was removed.
+These older validation counts and checks describe that named checkpoint only.
 
 ## Preceding merge and validation checkpoint (2026-09-04)
 
@@ -45,7 +68,7 @@ extensions and new wrappers remain pending while other worktrees use the build s
 
 ## Incoming grid and CRT certificate checkpoint
 
-The current integration of pinned main `17156aa2a` retains the nine grid/CRT
+The preceding integration of pinned main `17156aa2a` retained the nine grid/CRT
 certificate theorems from `5a685136b`. That commit records warning-free focused
 builds and the standard three axioms for all nine declarations. Both
 `GridEvaluationCertificate` and `IntegerCRTCertificate` have identical source
@@ -54,8 +77,7 @@ therefore inherited receipts, not fresh compilation of this merged tree.
 The incoming `28de4e51c` checkpoint recorded 207 register rows: 62 `Lean`,
 35 `partial`, and 110 `none`, with a census of 985 modules and 12,199 public
 declarations. Those counts and the preceding 211-page render describe their
-historical source states. Fresh merged-source metrics, structural validation,
-and render verification remain to be recorded by the publication owner.
+historical source states; the current publication measurements appear above.
 
 ## Inventory and evidence boundary
 

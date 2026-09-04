@@ -29,12 +29,15 @@ mode this package is now expected to pass.
 
 | Directory | Document |
 | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — synchronized 213-page A4 PDF rebuilt on 2026-09-04 after integrating main `17156aa2a` |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — synchronized 213-page A4 PDF, 2,063,614 bytes, rebuilt on 2026-09-04 after integrating main `da90f69d1` |
 
-The PDF was rebuilt using three strict pdfLaTeX passes and a generated
-index. Six focused pages were visually reviewed; no whole-volume page-by-page
-review is claimed. The source has 209 adjacent proofs and a
-64 Lean / 35 partial / 110 none register. Full checkpoint measurements and
+The current source has 209 adjacent proofs and a
+66 Lean / 35 partial / 108 none register. It measures 11,290 lines and
+555,974 UTF-8 bytes, with 712 labels and 960 references. Three strict pdfLaTeX
+passes succeeded, and six changed/register/index pages were visually inspected;
+no whole-volume page-by-page review is claimed. One readable 28.0023 pt overfull
+box at the inline `HasFTaylorSeriesUpToOn.comp` name on page 115 is deferred to
+the requested dedicated layout pass. Full checkpoint measurements and
 the distinction between inherited compiler receipts and pending source proofs
 are recorded in `Combinatorial_Coefficient_Calculus/FORMALIZATION_STATUS.md`.
 Standalone checksum files are retired; provenance is kept in Git and the source

@@ -75,4 +75,3 @@ theorem int_eq_of_modEq_of_two_mul_natAbs_lt_prod
   omega
 
 end Fabius
-

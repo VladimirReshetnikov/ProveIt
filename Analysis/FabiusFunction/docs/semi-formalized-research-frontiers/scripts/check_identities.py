@@ -453,6 +453,82 @@ for n in range(1, 8):
 check('thm:permutohedron-h-polynomial',
       'h_{P_n}(t) = A_n(t), from the ordered-set-partition face numbers', bad, t)
 
+# ---------------------------------------------------------------- thm:typeB-eulerian
+# B(n,k) is recomputed by brute force from the *corrected* Coxeter descent convention
+# of the manuscript: put pi_0 = 0 and call i in {0..n-1} a descent when pi_i > pi_{i+1}.
+def _signed_perms(n):
+    for p in permutations(range(1, n + 1)):
+        for signs in product((1, -1), repeat=n):
+            yield (0,) + tuple(s * v for s, v in zip(signs, p))
+
+
+TB = [[0] * 16 for _ in range(16)]
+for n in range(0, 7):
+    for w in _signed_perms(n):
+        TB[n][sum(1 for i in range(n) if w[i] > w[i + 1])] += 1
+for n in range(7, 15):                       # continue by the recurrence past brute force
+    TB[n][0] = 1
+    for k in range(1, n + 1):
+        TB[n][k] = (2 * k + 1) * TB[n - 1][k] + (2 * n - 2 * k + 1) * TB[n - 1][k - 1]
+
+bad, t = [], 0
+for n in range(1, 7):                        # recurrence against the enumeration
+    for k in range(0, n + 1):
+        t += 1
+        prev = TB[n - 1][k - 1] if k else 0
+        if TB[n][k] != (2 * k + 1) * TB[n - 1][k] + (2 * n - 2 * k + 1) * prev:
+            bad.append(('recurrence', n, k))
+for n in range(0, 15):                       # explicit formula
+    for k in range(0, n + 1):
+        t += 1
+        if TB[n][k] != sum((-1) ** j * comb(n + 1, j) * (2 * (k - j) + 1) ** n
+                           for j in range(0, k + 1)):
+            bad.append(('explicit', n, k))
+for n in range(0, 10):                       # Worpitzky series
+    for m in range(0, 10):
+        t += 1
+        if (2 * m + 1) ** n != sum(TB[n][k] * comb(m + n - k, n) for k in range(0, n + 1)):
+            bad.append(('worpitzky', n, m))
+t += 1
+if [TB[n][:n + 1] for n in range(0, 5)] != [[1], [1, 1], [1, 6, 1], [1, 23, 23, 1],
+                                            [1, 76, 230, 76, 1]]:
+    bad.append(('table', [TB[n][:n + 1] for n in range(0, 5)]))
+check('thm:typeB-eulerian',
+      'recurrence, explicit formula and Worpitzky series of B(n,k), against a brute-force '
+      'enumeration of signed permutations by corrected type-B descents', bad, t)
+
+# The audit box attributes the archived defect to reversing the descent inequality.  The
+# type-B row is palindromic, so that reversal alone leaves every B(n,k) unchanged: it is
+# the identification with Coxeter descents, not the numbers, that the correction fixes.
+bad, t = [], 0
+for n in range(0, 6):
+    asc = [0] * (n + 2)
+    for w in _signed_perms(n):
+        asc[sum(1 for i in range(n) if w[i] < w[i + 1])] += 1
+    t += 1
+    if asc[:n + 1] != TB[n][:n + 1]:
+        bad.append((n, asc[:n + 1], TB[n][:n + 1]))
+check('thm:typeB-eulerian (audit box)',
+      'the reversed descent inequality gives the SAME triangle, so the archived formula was '
+      'not numerically incompatible with it', bad, t)
+
+# ---------------------------------------------- thm:typeB-permutohedron-h-polynomial
+# Face numbers of the type-B permutohedron in dimension n-k: signed ordered set partitions
+# of [n] into k blocks with a possibly empty zero block, counted directly.
+bad, t = [], 0
+for n in range(0, 9):
+    h = [0] * (n + 2)
+    for k in range(0, n + 1):
+        f = sum(comb(n, i) * 2 ** (n - i) * factorial(k) * S2[n - i][k] for i in range(0, n + 1))
+        for j in range(0, n - k + 1):        # f_{k-1} t^k (1-t)^{n-k}
+            h[k + j] += f * ((-1) ** j) * comb(n - k, j)
+    t += 1
+    if h[:n + 1] != TB[n][:n + 1] or any(h[n + 1:]):
+        bad.append((n, h[:n + 2], TB[n][:n + 1]))
+check('thm:typeB-permutohedron-h-polynomial',
+      'h(t) = B_n(t) for the type-B permutohedron, from its signed ordered-set-partition '
+      'face numbers', bad, t)
+
 # ------------------------------------------------------------ thm:bell-poly-partitions
 def _partial_bell(n, k, x):
     B = [[F(0)] * (n + 1) for _ in range(n + 1)]
