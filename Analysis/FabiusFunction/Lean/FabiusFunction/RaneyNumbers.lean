@@ -117,12 +117,12 @@ theorem natCast_mul_coeff_raneyT_pow (p r n : ℕ) (hr : 1 ≤ r) (hn : 1 ≤ n)
   have hone : d⁄dX ℚ ((1 : ℚ⟦X⟧) + X) = 1 := by
     rw [map_add, Derivation.map_one_eq_zero, derivative_X, zero_add]
   have hd : d⁄dX ℚ ((1 + X : ℚ⟦X⟧) ^ r)
-      = PowerSeries.C ℚ ((r : ℕ) : ℚ) * (1 + X) ^ (r - 1) := by
-    rw [derivative_pow, hone, mul_one, ← map_natCast (PowerSeries.C ℚ) r]
+      = PowerSeries.C ((r : ℕ) : ℚ) * (1 + X) ^ (r - 1) := by
+    rw [derivative_pow, hone, mul_one, ← map_natCast (PowerSeries.C : ℚ →+* ℚ⟦X⟧) r]
   have hphi : raneyPhi p ^ n = (1 + X : ℚ⟦X⟧) ^ (p * n) := by
     rw [raneyPhi, ← pow_mul]
-  have hfac : PowerSeries.C ℚ ((r : ℕ) : ℚ) * (1 + X) ^ (r - 1) * (1 + X) ^ (p * n)
-      = PowerSeries.C ℚ ((r : ℕ) : ℚ) * (1 + X) ^ (p * n + r - 1) := by
+  have hfac : PowerSeries.C ((r : ℕ) : ℚ) * (1 + X) ^ (r - 1) * (1 + X) ^ (p * n)
+      = PowerSeries.C ((r : ℕ) : ℚ) * (1 + X) ^ (p * n + r - 1) := by
     rw [mul_assoc, ← pow_add]
     congr 2
     omega
