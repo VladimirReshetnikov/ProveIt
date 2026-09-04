@@ -38451,6 +38451,38 @@ $f'(\xi)\ge m-\theta$.  Substituting gives
 \eqref{p0:eq:transport-first-order}.  The final assertion follows since then
 $\theta\to0$ and $|\varepsilon(x_0)|\to0$.
 \end{proof}
+\begin{remark}[Formalization of the transport bound]
+\label{p0:rem:transport-lean}
+Part (1), \eqref{p0:eq:transport-bound}, is machine-checked in
+\lean{RemainderTransport.lean}: \lean{Fabius.transport_bound}, with the
+division-free form \lean{Fabius.transport_bound_mul} beneath it.  It is built
+on the lower mean-value bracket \lean{Fabius.mul_abs_sub_le_abs_sub_of_le_deriv}
+of \lean{MeanValueBracket.lean}, which is the formal content of
+\cref{p0:thm:backward-error}, so the two results compose in Lean the way they
+do on the page.
+
+Formalizing it exposes an asymmetry between the two hypotheses that the
+statement above hides behind the common phrase ``derivative bound''.  The
+hypothesis on $f_0$ is a one-sided bracket, $f_0'\ge m$, and the lower
+mean-value bracket applies to it with no sign condition.  The hypothesis on
+$\varepsilon$ is two-sided, $|\varepsilon'|\le\theta$, and it is \emph{not} usable as a
+bracket: the corresponding bracket is $-\theta\le\varepsilon'\le\theta$, whose lower end
+is negative, and the upper mean-value bracket requires its lower end to be
+nonnegative --- necessarily so, as \cref{q1:rem:sign} records.  What
+$|\varepsilon'|\le\theta$ delivers is a Lipschitz bound, a different theorem with a
+different proof, and that is what the argument actually uses when it writes
+$|\varepsilon(x)|\le|\varepsilon(x_0)|+\theta|x-x_0|$.  In Lean the two enter as
+\lean{Fabius.mul_abs_sub_le_abs_sub_of_le_deriv} and
+\lean{Fabius.lipschitzOn_of_abs_deriv_le} respectively.
+
+The bound is close to sharp, not merely valid: over four hundred random
+instances with $\varepsilon$ a sinusoid of exactly the permitted Lipschitz
+constant, the ratio of the true displacement to the bound reached $0.9999$.
+So the denominator $m-\theta$ is the right one and cannot be improved to $m$.
+
+Not formalized: part (2), the first-order law \eqref{p0:eq:transport-first-order},
+which needs $f_0\in C^{2}$ and a second-order Taylor estimate.
+\end{remark}
 
 \begin{corollary}[Forward truncation to inverse accuracy]
 \label{p0:cor:forward-to-inverse}

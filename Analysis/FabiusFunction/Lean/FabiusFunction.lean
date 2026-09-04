@@ -798,6 +798,7 @@ import FabiusFunction.DerangementNearestInteger
 import FabiusFunction.PowerLogCoreInversion
 import FabiusFunction.LinLogCoreInversion
 import FabiusFunction.StaircaseInversion
+import FabiusFunction.RemainderTransport
 
 set_option autoImplicit false
 
