@@ -42,6 +42,8 @@ section Polynomials
 
 variable (R : Type*) [CommRing R]
 
+/-- `T_0 = 1`, the anchor of the induction: the empty Euler iterate leaves
+`e^r` alone. -/
 @[simp] theorem touchardPolynomial_zero : touchardPolynomial R 0 = 1 := by
   simp [touchardPolynomial]
 

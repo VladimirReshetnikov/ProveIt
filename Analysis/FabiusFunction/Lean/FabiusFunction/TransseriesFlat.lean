@@ -45,16 +45,21 @@ every term of the scale.  On the power scale this is `ε = O(x^{-∞})`. -/
 def IsFlat (l : Filter α) (φ : ℕ → α → 𝕜) (ε : α → 𝕜) : Prop :=
   ∀ n, ε =O[l] φ n
 
+/-- The zero function is flat relative to every scale. -/
 theorem isFlat_zero : IsFlat l φ (0 : α → 𝕜) := fun _ => isBigO_zero _ _
 
+/-- Flatness is preserved by sums. -/
 theorem IsFlat.add (hε : IsFlat l φ ε) (hδ : IsFlat l φ δ) : IsFlat l φ (ε + δ) :=
   fun n => (hε n).add (hδ n)
 
+/-- Flatness is preserved by negation. -/
 theorem IsFlat.neg (hε : IsFlat l φ ε) : IsFlat l φ (-ε) := fun n => (hε n).neg_left
 
+/-- Flatness is preserved by differences. -/
 theorem IsFlat.sub (hε : IsFlat l φ ε) (hδ : IsFlat l φ δ) : IsFlat l φ (ε - δ) :=
   fun n => (hε n).sub (hδ n)
 
+/-- Flatness is preserved by scaling with a constant of the coefficient field. -/
 theorem IsFlat.const_smul (c : 𝕜) (hε : IsFlat l φ ε) : IsFlat l φ (c • ε) :=
   fun n => (hε n).const_smul_left c
 
@@ -66,6 +71,7 @@ def flatSubmodule (l : Filter α) (φ : ℕ → α → 𝕜) : Submodule 𝕜 (�
   zero_mem' := isFlat_zero
   smul_mem' c _ hε := hε.const_smul c
 
+/-- Membership in `flatSubmodule` is flatness, by definition. -/
 @[simp] theorem mem_flatSubmodule_iff : ε ∈ flatSubmodule l φ ↔ IsFlat l φ ε := Iff.rfl
 
 /-! ### Closure under multiplication -/
@@ -141,6 +147,9 @@ open Real
 that the results of `TransseriesPolyLogScale.lean` apply to it. -/
 noncomputable def powScale (n : ℕ) (X : ℝ) : ℝ := plMonomial (-(n : ℝ)) 0 X
 
+/-- The power scale written as a plain real power: the logarithmic exponent is
+`0`, and `Real.rpow_zero` holds at every base including `0`, so no positivity
+hypothesis is needed here. -/
 theorem powScale_eq_rpow (n : ℕ) (X : ℝ) : powScale n X = X ^ (-(n : ℝ)) := by
   rw [powScale, plMonomial, Real.rpow_zero, mul_one]
 
