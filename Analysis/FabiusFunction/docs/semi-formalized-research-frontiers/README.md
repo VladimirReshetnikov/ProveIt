@@ -21,6 +21,16 @@ The canonical frontier artifacts are:
 - [`semi-formalized-research-frontiers.tex`](semi-formalized-research-frontiers.tex)
 - [`semi-formalized-research-frontiers.pdf`](semi-formalized-research-frontiers.pdf)
 
+> **Historical source/PDF synchronization receipt.** The retained 257-page,
+> 2,438,299-byte A4 PDF
+> includes the 31 August 2026 Legendre Gaunt--Wigner-square closed-form overlay.
+> Its PDF (SHA-256
+> `3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980`)
+> source predates the later q-Pochhammer overlay and expanded ledger, so it is
+> a historical render and must not be cited as displaying the final source
+> union, including either series/transseries overlay, the historical
+> 952/11,884 checkpoint, or the live 967/12,001 census.
+
 > **Historical publication receipt (2026-09-03).** The most recent pre-`9135bd7e`
 > source is the 17,954-line, 813,297-byte TeX file with SHA-256
 > `bcd9eefce2ead08e2cbb283e091a859aa31f36c67416543e994e10e8f9db3075`.
@@ -62,7 +72,7 @@ The canonical frontier artifacts are:
 > zero.  The sole 9.43108 pt overfull box at source lines 1032–1043 is readable
 > and unclipped; the final log has 299 underfull diagnostics.
 
-> **Current synchronized `b899` canonical-frontier receipt (2026-09-04).** The
+> **Historical synchronized `b899` canonical-frontier receipt (2026-09-04).** The
 > TeX source has 18,651 lines and 858,502 bytes, with SHA-256
 > `140256058b7a01bcdb4f1592cfab9e6c2ac170f5f0863572627a9b2f93ab7793`.
 > Exactly three serial halt-on-error passes from absent sidecars ran 265 pages /
@@ -78,14 +88,14 @@ The canonical frontier artifacts are:
 > files / 140,223 lines / 6,439,569 bytes, with direct aggregate digest
 > `ae8690ad8d160055cbae36eff96d858f87572d171e7aacf7540d67543998af21`.
 
-The `b899` publication rebuild touches ten roots: the primary exposition, Lean
+The `b899` publication rebuild touched ten roots: the primary exposition, Lean
 walkthrough, canonical frontier, geometric-q synthesis, canonical q-series
 synthesis, inverse-theory synthesis, comb synthesis, Lambert Guide, Up
-Polynomial Synthesis, and Thue--Morse Atlas. All ten roots now have exact
-synchronized final-source/PDF receipts in the draft manifest and their local
-records. Their preceding artifacts remain historical receipts for their named
-checkpoints. Unaffected synchronized receipts remain valid for
-their named source states.
+Polynomial Synthesis, and Thue--Morse Atlas. At that checkpoint all ten roots
+had exact synchronized final-source/PDF receipts in the draft manifest and
+their local records. Those and earlier artifacts remain historical receipts
+for their named source states; the subsequently changed global sources claim
+no current PDF parity.
 
 The authoritative live Lean audit now contains exactly 960 facade-reachable
 modules and 11,966 unique public declarations, with no missing module headers
@@ -96,7 +106,8 @@ q-Pochhammer ownership remains
 `RvachevPochhammerFactorization` 1+10, `QPochhammerEntire` 0+5, and
 `QPochhammerInfinite` 1+29;
 `complexQPochhammerInf_eq_qPochhammerInfIn` remains the unconditional public
-definitional bridge to the generic symbol.  Fixed-nome normal convergence,
+definitional bridge to the generic symbol.  The later checkpoints culminate in
+the live 967/12,001/0 census recorded below.  Fixed-nome normal convergence,
 product identifiability, all finite/infinite q-calculus tranches, the
 root-of-unity and q-Catalan layers, finite Newton interpolation, q-beta
 integration, integer and complex Gaussian upper indices,
@@ -135,9 +146,9 @@ removable-origin convention. The Guide's nearest-nonzero-zero explanation is
 not the formal proof route. With the three finite branch-coordinate modules,
 the four-module union is 4 definitions + 37 theorems = 41 declarations.
 Higher or convergent Puiseux/logarithmic
-expansions remain open. The `b899` primary, walkthrough, Lambert-Guide, and
+expansions remain open. The historical `b899` primary, walkthrough, Lambert-Guide, and
 canonical-frontier PDFs render this integration and have synchronized receipts.
-The live documentation
+The historical branch-local documentation
 census on the incoming Lambert branch at the exact-radius four-theorem
 checkpoint was 903 modules and 11,447 public declarations; the value-completion
 theorem gave that branch's historical 903/11,448 checkpoint.
@@ -569,9 +580,10 @@ seven theorems. Its
 counterpart of canonical comb label `gq:thm:richardson-generating`; the module
 also supplies the report-facing analytic companion
 `Fabius.hasSum_geometricLagrangeRichardson_mul_pow` under strict nome
-contraction and absolute summability. The `b899` primary, walkthrough,
-q-series, comb-synthesis, and canonical-frontier PDFs render the current source
-union and have synchronized receipts.
+contraction and absolute summability. The historical `b899` primary,
+walkthrough, q-series, comb-synthesis, and canonical-frontier PDFs render that
+named source checkpoint and have synchronized receipts for it; they do not
+render the current source union.
 
 The one-definition/seventeen-theorem
 `FabiusFunction.GeometricUniformRealization` module transfers the canonical
@@ -758,7 +770,7 @@ spectral Mellin parameter derivative, the successor law
 `k ≤ r`, always under `0 < a`. Consequently `p2:thm:gamma-tower` is Exact
 when its logarithm is read as the existing chosen GammaLog coordinate. No
 principal-`Complex.log` identity or nonpositive-parameter differential law
-is claimed. The current `b899` Thue--Morse Atlas and canonical-frontier PDFs
+is claimed. The historical `b899` Thue--Morse Atlas and canonical-frontier PDFs
 render these additions and have synchronized receipts.
 
 `FabiusFunction.ThueMorseCornerIntegral` has one public definition and four
@@ -784,8 +796,8 @@ literal finite central cancellation at mesh `4^n` by combining the normalized
 Legendre value at zero, evenness, compact-support truncation, and pairing of
 the positive and negative indices. This makes only `cor:leg-central-sum`
 Exact; it adds no Jacobi decoder formula, reverse spectral closure, or larger
-Lagrange right-inverse theorem. These declarations are rendered by the current
-`b899` Up-synthesis and canonical-frontier PDFs.
+Lagrange right-inverse theorem. These declarations are rendered by the
+historical `b899` Up-synthesis and canonical-frontier PDFs.
 
 The final source-only `FabiusFunction.GaussianBinomialFixedColumnRate` leaf has
 no definitions and ten theorems:

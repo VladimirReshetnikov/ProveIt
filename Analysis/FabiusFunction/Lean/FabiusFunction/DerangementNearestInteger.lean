@@ -65,8 +65,7 @@ private theorem intervalIntegrable_defectIntegrand (n : ℕ) :
     IntervalIntegrable (fun t : ℝ => Real.exp (t - 1) * t ^ n) volume 0 1 :=
   (continuous_defectIntegrand n).intervalIntegrable _ _
 
-/-- The base of the induction: `C(0) = 1 - e^{-1}`, which is `D_0 - 0! e^{-1}`.
--/
+/-- The zeroth defect is the elementary integral `1 - exp (-1)`. -/
 theorem subfactorialDefect_zero : subfactorialDefect 0 = 1 - Real.exp (-1) := by
   have hd : ∀ x ∈ uIcc (0:ℝ) 1,
       HasDerivAt (fun t : ℝ => Real.exp (t - 1)) (Real.exp (x - 1) * x ^ 0) x := by

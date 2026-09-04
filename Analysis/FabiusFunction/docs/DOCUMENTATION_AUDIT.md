@@ -2630,7 +2630,7 @@ publication receipts below supersede them where a rebuilt root is listed.
   overfull paragraph at source lines 590–598 is readable and unclipped; the
   final log has zero underfull diagnostics.
 
-**Current `b899` synchronized publication receipts (2026-09-04).** Each pass
+**Historical `b899` synchronized publication receipts (2026-09-04).** Each pass
 tuple below is `pages/bytes`.  All ten roots were frozen and built in exactly
 three serial halt-on-error passes from absent sidecars.
 
@@ -2717,8 +2717,9 @@ Lambert horizontal box (0.83 pt), and one canonical-frontier horizontal box
 (9.43108 pt), all nonblocking. The final aggregate TeX closure contains 76
 files / 140,223 lines / 6,439,569 bytes, with direct aggregate digest
 `ae8690ad8d160055cbae36eff96d858f87572d171e7aacf7540d67543998af21`.
-All ten current source/PDF rows are synchronized; earlier receipts below remain
-historical provenance for their named checkpoints.
+At `b899`, all ten source/PDF rows were synchronized.  They are now historical
+provenance for their named checkpoints because the merged Lean sources have
+moved beyond them.
 
 The B2--B11 publication roots retain exact synchronized or historical receipts
 at their named checkpoints. Their pass, byte-progression, font, and common-gate records are kept in
@@ -2800,14 +2801,14 @@ the convention `d(0)=1`, with no zero-input modulus conclusion.  The two
 named `Primrec` theorems close the recursive-denominator clause without
 asserting an input-bit running-time bound.
 
-The retained comb-interpolation synthesis PDF is a validated 158-page A4
+The retained comb-interpolation synthesis PDF is a validated 160-page A4
 historical receipt: the current source includes a post-render update to its
 additive-dyadic chapter, so a fresh parity build remains pending.  The rebuilt
 Integration-and-Transform master retains a historical 377-page PDF.  The canonical
 q-series synthesis is a validated 389-page historical receipt synchronized to
 the immediately preceding source checkpoint.  The current source adds the
 twelve-declaration terminating q-Chu/reversal closure, so final parity is
-again pending.  The retained 183-page primary, 130-page walkthrough, 257-page
+again pending.  The retained 210-page primary, 165-page walkthrough, 273-page
 canonical frontier, 301-page Representation Frontiers, 41-page New Frontiers,
 and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
