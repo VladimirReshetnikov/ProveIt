@@ -795,6 +795,7 @@ import FabiusFunction.GeneralLinearThueMorseSum
 import FabiusFunction.QuadraticCoreCatalan
 import FabiusFunction.DerangementNearestInteger
 import FabiusFunction.PowerLogCoreInversion
+import FabiusFunction.LinLogCoreInversion
 
 set_option autoImplicit false
 
