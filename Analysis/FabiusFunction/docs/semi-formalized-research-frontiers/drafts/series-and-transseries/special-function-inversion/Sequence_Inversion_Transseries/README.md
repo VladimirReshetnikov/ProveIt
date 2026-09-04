@@ -66,11 +66,16 @@ they occur.  The most consequential:
 * The analytic inverse expansion, asserted or sketched but proved in none of
   the three swing articles; proved here with an effective constant.
 
-**No source contained an arithmetic error.**  Every printed coefficient,
-table and decimal in all twelve was recomputed in exact arithmetic (and to
-50–220 digits where a numeric table was involved) and reproduced.  Every
-defect is in a statement, a hypothesis, or a formal-versus-analytic
-conflation.
+Every printed coefficient, table and decimal in all twelve sources was
+recomputed — in exact arithmetic where the quantity is exact, and to 50–220
+digits where a numeric table was involved — by implementations independent of
+the sources.  **All of it reproduced except in one place**: one article prints
+the constants of the inherited `−√ρ` sector to forty digits of which only
+about twenty-five are correct, and its audit appendix reports a `D₃` that
+contradicts its own main text.  Both are corrected in Chapter 1, which prints
+only digits it has verified.  With that exception, no source contained an
+arithmetic error, and every other defect found is in a statement, a
+hypothesis, or a formal-versus-analytic conflation.
 
 ## Status
 
