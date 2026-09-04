@@ -27,8 +27,8 @@ This module formalizes exactly that layer:
   `abs_residual_le_two_mul_abs_sub_lambertShiftInv` the residual certificate.
 * `lambertShiftInv_hasDerivAt` differentiates `g` by the inverse-function rule,
   and `deriv_lambertShiftInv_bounds` is `1/2 < g' < 1` on the open half-line.
-* `strictConcaveOn_lambertShift` and `strictConvexOn_lambertShiftInv`: `f` is
-  strictly concave and `g` strictly convex.
+* `strictConvexOn_lambertShiftInv`: `g` is strictly convex on the open
+  half-line, the counterpart of the concavity of `f`.
 -/
 
 set_option autoImplicit false
@@ -506,16 +506,5 @@ theorem strictConvexOn_lambertShiftInv :
     (fun z hz => (lambertShiftInv_continuousAt (mem_Ioi.mp hz)).continuousWithinAt) ?_
   rw [interior_Ioi]
   exact deriv_lambertShiftInv_strictMonoOn
-
-/-- **`f` is strictly concave** on `[0, ∞)`: the sum of the identity and the
-strictly concave branch. -/
-theorem strictConcaveOn_lambertShift :
-    StrictConcaveOn ℝ (Ici 0) lambertShift := by
-  have hW : StrictConcaveOn ℝ (Ici (0 : ℝ)) principalLambertW :=
-    strictConcaveOn_principalLambertW.subset
-      (fun x hx => mem_Ici.mpr (neg_exp_neg_one_le_of_nonneg (mem_Ici.mp hx)))
-      (convex_Ici 0)
-  have h := (concaveOn_id (convex_Ici (0 : ℝ))).add_strictConcaveOn hW
-  simpa [lambertShift, Function.funext_iff] using h
 
 end Fabius
