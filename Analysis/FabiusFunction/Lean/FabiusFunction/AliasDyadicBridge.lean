@@ -223,4 +223,94 @@ theorem foldedCoefficient_eq_halfRange_cos_odd (F : BoundedFabius) (hF : IsFabiu
   simp only [sub_mul, one_mul, sum_sub_distrib, h]
   ring
 
+/-! ## The discrete energy identity in its odd form (`p1:eq:discrete-energy`)
+
+Both sides of `sum_foldedCoefficient_sq` are sums of an even function over
+`ℤ/2Nℤ`, so `sum_zmod_even_eq_fold` applies to each.  For even `N` the two
+end residues contribute `1` and `0` on each side, and every even residue
+strictly between `0` and `N` contributes nothing to the coefficient side, so
+the fold leaves exactly the volume's statement: the odd coefficients below `N`
+carry all the energy. -/
+
+/-- The sample side of the energy identity, folded:
+`∑_{j ∈ ℤ/2Nℤ} P(j/N)² = 1 + 2 ∑_{1 ≤ k < N} up(k/N)²`. -/
+theorem sum_gridSample_sq_eq_fold (F : BoundedFabius) (hF : IsFabius F)
+    (N : ℕ) [NeZero N] :
+    ∑ j : ZMod (2 * N), gridSample F N j ^ 2
+      = 1 + 2 * ∑ k ∈ Ico 1 N, (rvachevUp F ((k : ℝ) / N) : ℂ) ^ 2 := by
+  have hN : (0 : ℝ) < N := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
+  rw [sum_zmod_even_eq_fold N (fun j => gridSample F N j ^ 2)
+    (fun j => by rw [gridSample_neg])]
+  have h0 : gridSample F N 0 = 1 := by
+    rw [show (0 : ZMod (2 * N)) = ((0 : ℕ) : ZMod (2 * N)) by simp,
+      gridSample_natCast_of_le F hF N (Nat.zero_le N)]
+    simp [rvachevUp_zero F hF]
+  have hNN : gridSample F N (N : ZMod (2 * N)) = 0 := by
+    rw [gridSample_natCast_of_le F hF N le_rfl, div_self hN.ne', rvachevUp_one F hF]
+    simp
+  rw [h0, hNN]
+  have hk : ∀ k ∈ Ico 1 N, gridSample F N ((k : ℕ) : ZMod (2 * N)) ^ 2
+      = (rvachevUp F ((k : ℝ) / N) : ℂ) ^ 2 := by
+    intro k hk
+    rw [mem_Ico] at hk
+    rw [gridSample_natCast_of_le F hF N hk.2.le]
+  rw [sum_congr rfl hk]
+  ring
+
+/-- The coefficient side, folded: for even `N`,
+`∑_{r ∈ ℤ/2Nℤ} A_{N,r}² = 1 + 2 ∑_{1 ≤ k < N} A_{N,k}²`. -/
+theorem sum_foldedCoefficient_sq_eq_fold (F : BoundedFabius) (hF : IsFabius F)
+    (N : ℕ) [NeZero N] (hNe : Even N) :
+    ∑ r : ZMod (2 * N), foldedCoefficient F N r ^ 2
+      = 1 + 2 * ∑ k ∈ Ico 1 N, foldedCoefficient F N ((k : ℕ) : ZMod (2 * N)) ^ 2 := by
+  have hNpos : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
+  rw [sum_zmod_even_eq_fold N (fun r => foldedCoefficient F N r ^ 2)
+    (fun r => by rw [foldedCoefficient_neg F hF])]
+  rw [foldedCoefficient_zero F hF N]
+  obtain ⟨m, hm⟩ := hNe
+  have hNval : (N : ZMod (2 * N)) = ((2 * m : ℕ) : ZMod (2 * N)) := by
+    congr 1
+    omega
+  have hzero : foldedCoefficient F N (N : ZMod (2 * N)) = 0 := by
+    rw [hNval]
+    exact foldedCoefficient_two_mul_eq_zero F hF N (by omega) (by omega)
+  rw [hzero]
+  ring
+
+/-- Every even residue strictly between `0` and `N` contributes nothing. -/
+theorem foldedCoefficient_sq_eq_zero_of_even (F : BoundedFabius) (hF : IsFabius F)
+    (N : ℕ) [NeZero N] {k : ℕ} (hk0 : 1 ≤ k) (hkN : k < N) (hke : Even k) :
+    foldedCoefficient F N ((k : ℕ) : ZMod (2 * N)) ^ 2 = 0 := by
+  obtain ⟨s, hs⟩ := hke
+  have hks : k = 2 * s := by omega
+  rw [hks, foldedCoefficient_two_mul_eq_zero F hF N (by omega) (by omega)]
+  ring
+
+/-- **`p1:eq:discrete-energy`.**  For even `N` the energy of the folded spectrum
+sits entirely on the odd residues below `N`:
+
+`∑_{1 ≤ r < N, r odd} A_{N,r}² = N⁻¹ (1 + 2 ∑_{1 ≤ j < N} up(j/N)²) - 1/2`. -/
+theorem sum_odd_foldedCoefficient_sq (F : BoundedFabius) (hF : IsFabius F)
+    (N : ℕ) [NeZero N] (hNe : Even N) :
+    ∑ k ∈ (Ico 1 N).filter (fun k => Odd k),
+        foldedCoefficient F N ((k : ℕ) : ZMod (2 * N)) ^ 2
+      = (N : ℂ)⁻¹ * (1 + 2 * ∑ k ∈ Ico 1 N, (rvachevUp F ((k : ℝ) / N) : ℂ) ^ 2) - 1 / 2 := by
+  have hN : (N : ℂ) ≠ 0 := by exact_mod_cast NeZero.ne N
+  -- the even residues drop out of the half-range sum
+  have hfilter : ∑ k ∈ Ico 1 N, foldedCoefficient F N ((k : ℕ) : ZMod (2 * N)) ^ 2
+      = ∑ k ∈ (Ico 1 N).filter (fun k => Odd k),
+          foldedCoefficient F N ((k : ℕ) : ZMod (2 * N)) ^ 2 := by
+    refine (sum_filter_of_ne ?_).symm
+    intro k hk hne
+    rw [mem_Ico] at hk
+    by_contra hodd
+    exact hne (foldedCoefficient_sq_eq_zero_of_even F hF N hk.1 hk.2
+      (Nat.not_odd_iff_even.mp hodd))
+  have hfold := sum_foldedCoefficient_sq_eq_fold F hF N hNe
+  rw [hfilter] at hfold
+  have henergy := sum_foldedCoefficient_sq F hF N
+  rw [sum_gridSample_sq_eq_fold F hF N] at henergy
+  rw [hfold] at henergy
+  linear_combination henergy / 2
+
 end Fabius
