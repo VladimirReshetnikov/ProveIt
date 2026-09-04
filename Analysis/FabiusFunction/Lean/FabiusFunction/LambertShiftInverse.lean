@@ -25,6 +25,8 @@ This module formalizes exactly that layer:
 * `lambertShiftInv_lt_self`, `sub_principalLambertW_lt_lambertShiftInv` are the
   bracket, and `abs_sub_lambertShiftInv_le_abs_residual`,
   `abs_residual_le_two_mul_abs_sub_lambertShiftInv` the residual certificate.
+* `lambertShiftInv_hasDerivAt` differentiates `g` by the inverse-function rule,
+  and `deriv_lambertShiftInv_bounds` is `1/2 < g' < 1` on the open half-line.
 -/
 
 set_option autoImplicit false
@@ -334,5 +336,114 @@ theorem residual_neg_iff {z x : ℝ} (hz : 0 ≤ z) (hx : 0 ≤ x) :
     have := lambertShift_strictMonoOn (mem_Ici.mpr hx) hg hlt
     rw [h] at this
     linarith
+
+/-! ### Monotonicity, continuity, and the derivative of the inverse
+
+The drafts' `eq:g-prime-bounds`: on the open half-line `g` is differentiable with
+`1/2 < g' < 1`.  Both bounds come from `1 < f' < 2` there, which is the strict
+form of the bracket above: `W' = (e^W (W+1))⁻¹` lies strictly between `0` and `1`
+once `W > 0`.  (At `z = 0` the one-sided derivative is `1/2`, the endpoint value
+the bracket degenerates to; it is not covered here.) -/
+
+/-- `g(z) > 0` for `z > 0`. -/
+theorem lambertShiftInv_pos {z : ℝ} (hz : 0 < z) : 0 < lambertShiftInv z := by
+  rw [lambertShiftInv_eq_mul_exp hz.le]
+  exact mul_pos (shiftedLambertW_pos hz) (Real.exp_pos _)
+
+/-- `f(x) > 0` for `x > 0`. -/
+theorem lambertShift_pos {x : ℝ} (hx : 0 < x) : 0 < lambertShift x := by
+  have := lambertShift_strictMonoOn (mem_Ici.mpr le_rfl) (mem_Ici.mpr hx.le) hx
+  rwa [lambertShift_zero] at this
+
+/-- `g` is strictly increasing on `[0,∞)`. -/
+theorem lambertShiftInv_strictMonoOn : StrictMonoOn lambertShiftInv (Ici 0) := by
+  intro a ha b hb hab
+  by_contra hcon
+  push_neg at hcon
+  have h := lambertShift_strictMonoOn.monotoneOn
+    (mem_Ici.mpr (lambertShiftInv_nonneg (mem_Ici.mp hb)))
+    (mem_Ici.mpr (lambertShiftInv_nonneg (mem_Ici.mp ha))) hcon
+  rw [lambertShift_lambertShiftInv (mem_Ici.mp hb),
+    lambertShift_lambertShiftInv (mem_Ici.mp ha)] at h
+  linarith
+
+/-- `g` maps the open half-line onto itself. -/
+theorem lambertShiftInv_image_Ioi : lambertShiftInv '' Ioi 0 = Ioi 0 := by
+  ext x
+  constructor
+  · rintro ⟨z, hz, rfl⟩
+    exact lambertShiftInv_pos hz
+  · intro hx
+    exact ⟨lambertShift x, lambertShift_pos hx, lambertShiftInv_lambertShift hx.le⟩
+
+/-- `g` is continuous at every positive point. -/
+theorem lambertShiftInv_continuousAt {z : ℝ} (hz : 0 < z) :
+    ContinuousAt lambertShiftInv z := by
+  have hmono : StrictMonoOn lambertShiftInv (Ioi 0) :=
+    lambertShiftInv_strictMonoOn.mono fun _ h => mem_Ici.mpr (le_of_lt h)
+  refine hmono.continuousAt_of_image_mem_nhds (isOpen_Ioi.mem_nhds hz) ?_
+  rw [lambertShiftInv_image_Ioi]
+  exact Ioi_mem_nhds (lambertShiftInv_pos hz)
+
+/-- The inverse identity holds on a whole neighbourhood of a positive point. -/
+theorem lambertShift_lambertShiftInv_eventually {z : ℝ} (hz : 0 < z) :
+    ∀ᶠ y in nhds z, lambertShift (lambertShiftInv y) = y := by
+  filter_upwards [isOpen_Ioi.mem_nhds hz] with y hy
+  exact lambertShift_lambertShiftInv (le_of_lt hy)
+
+/-- `0 < W'(x) < 1` for `x > 0`: the inverse-function derivative of `W`. -/
+theorem inv_exp_mul_add_one_lt_one {x : ℝ} (hx : 0 < x) :
+    (Real.exp (principalLambertW x) * (principalLambertW x + 1))⁻¹ < 1 := by
+  have hW : 0 < principalLambertW x := principalLambertW_pos hx
+  have h1 : 1 < Real.exp (principalLambertW x) := Real.one_lt_exp_iff_pos.mpr hW
+  have h2 : (1 : ℝ) < principalLambertW x + 1 := by linarith
+  have : (1 : ℝ) < Real.exp (principalLambertW x) * (principalLambertW x + 1) :=
+    one_lt_mul_of_lt_of_le h1 h2.le
+  exact inv_lt_one_of_one_lt₀ this
+
+/-- **Inverse-function derivative of `g`.** -/
+theorem lambertShiftInv_hasDerivAt {z : ℝ} (hz : 0 < z) :
+    HasDerivAt lambertShiftInv
+      (1 + (Real.exp (principalLambertW (lambertShiftInv z)) *
+        (principalLambertW (lambertShiftInv z) + 1))⁻¹)⁻¹ z := by
+  have hgz : 0 < lambertShiftInv z := lambertShiftInv_pos hz
+  have hpos : 0 < (Real.exp (principalLambertW (lambertShiftInv z)) *
+      (principalLambertW (lambertShiftInv z) + 1))⁻¹ :=
+    inv_pos.mpr (mul_pos (Real.exp_pos _)
+      (by linarith [principalLambertW_nonneg hgz.le]))
+  refine HasDerivAt.of_local_left_inverse (lambertShiftInv_continuousAt hz)
+    (lambertShift_hasDerivAt hgz) (by positivity)
+    (lambertShift_lambertShiftInv_eventually hz)
+
+/-- **`eq:g-prime-bounds`, upper half**: `g'(z) < 1` for `z > 0`. -/
+theorem deriv_lambertShiftInv_lt_one {z : ℝ} (hz : 0 < z) :
+    deriv lambertShiftInv z < 1 := by
+  have hgz : 0 < lambertShiftInv z := lambertShiftInv_pos hz
+  rw [(lambertShiftInv_hasDerivAt hz).deriv]
+  have hpos : 0 < (Real.exp (principalLambertW (lambertShiftInv z)) *
+      (principalLambertW (lambertShiftInv z) + 1))⁻¹ :=
+    inv_pos.mpr (mul_pos (Real.exp_pos _)
+      (by linarith [principalLambertW_nonneg hgz.le]))
+  exact inv_lt_one_of_one_lt₀ (by linarith)
+
+/-- **`eq:g-prime-bounds`, lower half**: `1/2 < g'(z)` for `z > 0`. -/
+theorem half_lt_deriv_lambertShiftInv {z : ℝ} (hz : 0 < z) :
+    1 / 2 < deriv lambertShiftInv z := by
+  have hgz : 0 < lambertShiftInv z := lambertShiftInv_pos hz
+  rw [(lambertShiftInv_hasDerivAt hz).deriv]
+  have hlt : (Real.exp (principalLambertW (lambertShiftInv z)) *
+      (principalLambertW (lambertShiftInv z) + 1))⁻¹ < 1 :=
+    inv_exp_mul_add_one_lt_one hgz
+  have hpos : 0 < (Real.exp (principalLambertW (lambertShiftInv z)) *
+      (principalLambertW (lambertShiftInv z) + 1))⁻¹ :=
+    inv_pos.mpr (mul_pos (Real.exp_pos _)
+      (by linarith [principalLambertW_nonneg hgz.le]))
+  rw [lt_inv_comm₀ (by norm_num) (by linarith)]
+  linarith
+
+/-- The two bounds together, the drafts' `eq:g-prime-bounds` on the open half-line. -/
+theorem deriv_lambertShiftInv_bounds {z : ℝ} (hz : 0 < z) :
+    1 / 2 < deriv lambertShiftInv z ∧ deriv lambertShiftInv z < 1 :=
+  ⟨half_lt_deriv_lambertShiftInv hz, deriv_lambertShiftInv_lt_one hz⟩
 
 end Fabius
