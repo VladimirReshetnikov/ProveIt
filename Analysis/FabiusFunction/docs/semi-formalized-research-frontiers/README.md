@@ -29,7 +29,7 @@ The canonical frontier artifacts are:
 > source predates the later q-Pochhammer overlay and expanded ledger, so it is
 > a historical render and must not be cited as displaying the final source
 > union, including either series/transseries overlay, the historical
-> 952/11,884 and 967/12,001 checkpoints, or the live 985/12,199 census.
+> 952/11,884 and 967/12,001 checkpoints, or the live 986/12,233 census.
 
 > **Historical publication receipt (2026-09-03).** The most recent pre-`9135bd7e`
 > source is the 17,954-line, 813,297-byte TeX file with SHA-256
@@ -97,8 +97,8 @@ their local records. Those and earlier artifacts remain historical receipts
 for their named source states; the subsequently changed global sources claim
 no current PDF parity.
 
-The authoritative live Lean audit now contains exactly 985 facade-reachable
-modules and 12,199 unique public declarations, with no missing module headers
+The authoritative live Lean audit now contains exactly 986 facade-reachable
+modules and 12,233 unique public declarations, with no missing module headers
 or declaration documentation.  The historical 923/11,611 snapshot comprised
 an origin inventory of 11,610 declarations plus this tree's retained
 unconditional public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge.  The
@@ -107,7 +107,7 @@ q-Pochhammer ownership remains
 `QPochhammerInfinite` 1+29;
 `complexQPochhammerInf_eq_qPochhammerInfIn` remains the unconditional public
 definitional bridge to the generic symbol.  The later checkpoints culminate in
-the live 985/12,199/0 census recorded below.  Fixed-nome normal convergence,
+the live 986/12,233/0 census recorded below.  Fixed-nome normal convergence,
 product identifiability, all finite/infinite q-calculus tranches, the
 root-of-unity and q-Catalan layers, finite Newton interpolation, q-beta
 integration, integer and complex Gaussian upper indices,
@@ -360,9 +360,10 @@ new leaves contribute 80 declarations while three existing declarations move
 from `NorlundDiagonal.lean` to `ExponentialRescaling.lean`, a net increase
 of 77. The eight-theorem Stirling leaf is retained.
 The two certificate leaves added nine public theorems at the historical
-979/12,142 checkpoint. The current merged inventory is 985/12,199 after six
-further leaves add 57 declarations. No new aggregate-build or PDF-parity
-claim is made.
+979/12,142 checkpoint. Six further leaves and extensions to existing modules
+then added 57 declarations. The incoming BellSetPartitions module adds 34
+more, giving the current merged inventory of 986/12,233. No new aggregate-build
+or PDF-parity claim is made.
 
 The claim crosswalk remains conservative. The abstract Faà di Bruno result,
 ordinary Bell normalization, and Touchard definition and displayed
@@ -404,7 +405,7 @@ does not prove the larger support/smoothness/parity/Fourier--Bessel theorem
 historical dyadic/finite-prefix census is 933/11,695. The later branch
 inventories, including local 961/11,974 and 970/12,056 and incoming
 952/11,884, 967/12,001, 969/12,048, and 970/12,051, are also
-historical. The current merged census is 985/12,199, as recorded above,
+historical. The current merged census is 986/12,233, as recorded above,
 with zero missing module headers and zero
 missing declaration comments.
 
@@ -418,7 +419,7 @@ pre-incoming checkpoint, while 952/11,881 is the historical post-incoming
 checkpoint. The two written OrderDual Neumann wrappers and the real-analytic
 Wright omega theorem gave the incoming historical 952/11,884/0
 modules/declarations/missing-comments checkpoint. The live merged census is
-985/12,199/0. The following list records the incoming module surfaces at that
+986/12,233/0. The following list records the incoming module surfaces at that
 historical checkpoint, not the larger merged surfaces inventoried above.
 The retained PDFs predate the incoming source-only overlay and claim no
 render parity.
@@ -434,7 +435,7 @@ render parity.
   commutative rational algebra. Thus the power clause of
   `alg:merged-exp-log-power` is **Exact**; no analytic branch is asserted.
   The merged coefficient-calculus concordance has 207 rows:
-  62 Lean, 35 Partial, and 110 None.
+  65 Lean, 35 Partial, and 107 None.
 
 - The eleven-declaration weighted-translation extension of
   `AppellSequence.lean` consists of `Bell.binomialConv_unitSeq`,
@@ -771,7 +772,7 @@ and 961/11,974 inventories and the incoming branch's 943/11,787, 952/11,881,
 and 952/11,884 inventories, followed by incoming 967/12,001, 969/12,048,
 and 970/12,051, are historical and overlap. The preceding local merged
 970/12,056 inventory is also historical. The reconciled merged
-audit is 985/12,199, with zero documentation gaps, as inventoried above.
+audit is 986/12,233, with zero documentation gaps, as inventoried above.
 
 `FabiusFunction.RvachevLaurentLeading` has one definition and six theorems.
 Its manuscript-normalized punctured-neighborhood limit, together with the

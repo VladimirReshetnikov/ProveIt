@@ -115,7 +115,7 @@ complete human proofs and exact declaration crosswalks. Three private rational
 helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
 caller refactor has now passed its own direct Lean check as well.
 
-The merged register contains 207 rows: 62 marked Lean, 35 partial, and 110
+The merged register contains 207 rows: 65 marked Lean, 35 partial, and 107
 without a compiler-verified counterpart. The grid and CRT certificates retain
 two compiler-backed entries alongside the incoming classifications; this is
 not a fresh build of the whole corpus. The earlier 204-row checkpoint had

@@ -107,8 +107,9 @@ The merged source incorporates the later five-theorem
 `QPochhammerDissection.lean` surfaces, together with the subsequent q-series
 module tranches and the zero-definition, three-theorem
 `GeometricPochhammerNormalConvergence.lean` leaf, in its formalization
-crosswalk. That source is a source-only successor to the fresh artifact receipt
-and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
+crosswalk. That source is a source-only successor to the first-merge artifact
+receipt and requires a later synchronized three-pass build. Retained PDFs under
+its `assets/` tree are
 research figures, not alternate manuscript renderings. The Lean audit at the
 historical dyadic/finite-prefix checkpoint contains 933 facade-reachable
 modules and 11,695 public declarations, with no missing module headers or

@@ -3713,6 +3713,33 @@ The factors $i!$ forget order inside each block and $j_i!$ forget order among
 blocks of equal size.  Multiplication by $\prod_i x_i^{j_i}$ and summation gives
 \eqref{eq:partial-bell-definition}; summing over $k$ gives the complete polynomial.
 \end{proof}
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; the value statement is formal, the per-type count is not.
+Both halves of the theorem are formal in module \lean{BellSetPartitions}, over any
+commutative semiring of weights and any finite set of labels.
+\lean{Fabius.IsSetPartition} is the predicate ``$P$ partitions $s$'' (blocks nonempty,
+pairwise disjoint, covering $s$), \lean{Fabius.setPartitions} is the finite set of
+partitions of $s$ into exactly $k$ blocks, and
+\lean{Fabius.partialBell_eq_sum_setPartitions} states
+$\ExponentialPartialBellPolynomial{|s|}{k}=\sum_{P}\prod_{B\in P}x_{|B|}$
+over that set; \lean{Fabius.bell_complete_eq_sum_allSetPartitions} is the
+complete-polynomial half.  The corpus defines the partial Bell polynomial by
+the block recurrence, so this is the theorem that gives it its combinatorial
+meaning; the proof shows the partition weight obeys the same recurrence, by
+splitting on the block containing a new element, and has the same initial
+data.  A specialization worth recording separately:
+\lean{Fabius.card_setPartitions} gives $\StirlingSecondKind nk$ as the
+number of partitions of an $n$-set into exactly $k$ blocks.  Mathlib's own
+\texttt{Nat.stirlingSecond} is defined by recurrence and asserts this count only
+in a docstring, with a module-level TODO to prove it; the corpus now does.
+
+What is \emph{not} formal: \cref{cor:partition-type}, and the multinomial
+expansion \eqref{eq:partial-bell-definition} it is read off from.  Those are
+statements about the individual monomials $\prod_i x_i^{j_i}$ of
+$\ExponentialPartialBellPolynomial nk$, whereas the theorem above is about its
+\emph{value}; extracting a coefficient needs a multivariate-polynomial layer the
+corpus does not have, and nothing in the module implies the per-type count.
+\end{remark}
 
 Thus
 \begin{align*}
@@ -4784,7 +4811,7 @@ $(1-t)^{n+1}$ through \cref{eq:eulerian-power-series}.
 
 \section{An Irwin--Hall integral and hypersimplex volumes}
 \begin{theorem}\label{thm:eulerian-irwin-hall}
-For every function $f:\RealNumbers\to\ComplexNumbers$ for which the following finite sum is defined,
+Let $n\ge1$.  For every function $f:\RealNumbers\to\ComplexNumbers$ for which the following finite sum is defined,
 \begin{equation}\label{eq:eulerian-irwin-hall}
  \sum_{k=0}^{n-1}\TypeAEulerianNumber nk f(k)
  =n!\int_{[0,1]^n}f\!\left(\Floor{x_1+\cdots+x_n}\right)
@@ -4796,6 +4823,9 @@ In particular, the slab
 \]
 has volume $\TypeAEulerianNumber nk/n!$.
 \end{theorem}
+% ed.: 2026-09-04, hypothesis n >= 1 added.  At n = 0 the left side is the empty sum 0
+% while the right side is f(0): the identity is false there, and the sum's upper limit
+% n-1 only suggested the restriction without stating it.
 \begin{proof}
 The volume of $\{x\in[0,1]^n:\sum x_i<y\}$ is obtained from the simplex
 $\{x_i\ge0:\sum x_i<y\}$ by inclusion--exclusion over coordinates exceeding $1$:
@@ -4942,10 +4972,21 @@ Let $\TypeBEulerianNumber{n}{k}$ count signed permutations with $k$ such descent
 $\TypeBEulerianPolynomial{n}(t)=\sum_{k=0}^{n}\TypeBEulerianNumber{n}{k}t^k$.
 
 \begin{auditbox}
-The archived display reverses the two entries in the descent inequality and pairs
-that convention with an incompatible explicit formula.  The definition above is
-the standard Coxeter descent convention.  It gives the archived table
-$1,6,1$ for $n=2$ and the midpoint-Eulerian generating function below.
+The archived display reverses the two entries in the descent inequality.  The
+definition above is the standard Coxeter convention, and it is the right one ---
+but not for the reason an earlier version of this box gave.  Reproducing the
+table $1,6,1$ does \emph{not} discriminate between the two conventions: negating
+every letter of a signed permutation exchanges descents and ascents at every
+position $0,\ldots,n-1$, so the row is palindromic and the reversed inequality
+yields the \emph{same} triangle (checked by enumeration for $n\le5$), and the
+explicit formula \eqref{eq:typeB-explicit} is compatible with either.  What the
+reversal breaks is the identification
+$\operatorname{Des}_B(w)=\{i:\ell(ws_i)<\ell(w)\}$ of descents with
+length-decreasing simple reflections, which the shelling proof of
+\cref{thm:typeB-permutohedron-h-polynomial} uses.  That is the reason to fix the
+convention; the table is merely consistent with it.
+% ed.: 2026-09-04, justification replaced.  The previous text claimed the archived
+% convention was numerically incompatible with the explicit formula; it is not.
 \end{auditbox}
 
 \begin{theorem}[Type-$B$ recurrence and Worpitzky series]\label{thm:typeB-eulerian}
@@ -6533,6 +6574,21 @@ Finally, $T(0)=0$ and its unit linear coefficient show that the EGF uses
 a delta series, as required by the definition of binomial type.
 \end{proof}
 
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; every clause is formal, including the hedge.
+All of this is formal in module \lean{AbelPolynomialSeries}, and the
+division-free bookkeeping of the statement is respected.
+\lean{Fabius.abelPolynomial} is $P_n(a,x)=x(x-na)^{n-1}$ over any commutative
+ring, with $P_0=1$; \eqref{eq:merged-abel-binomial} is
+\lean{Fabius.abelPolynomial_eval_add}, again over any commutative ring.  The
+series clauses need the $\RationalNumbers$-algebra: \lean{Fabius.abelSeries_eq} is
+a solution of $T=t\EulerE^{-aT}$, and \eqref{eq:merged-abel-egf} is
+\lean{Fabius.exp_subst_eq_egfA_abelPolynomial}, which is stated for an
+\emph{arbitrary} series $T$ satisfying that equation rather than for the
+constructed one --- so the phrase ``every such solution'' above is exactly
+what is proved, not a strengthening left to the reader.
+\end{remark}
+
 \section{Exponential Riordan arrays}
 
 \begin{definition}
@@ -6713,6 +6769,23 @@ according as $\{n+1\}$ is a singleton or not.  The product and chain rules for
 multilinear maps supply no further multiplicities because blocks are already
 labelled subsets.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+% ed.: crosswalk added 2026-09-04; Mathlib proves this, under a different indexing.
+This is Mathlib's Fa\`a di Bruno formula,
+\texttt{HasFTaylorSeriesUpToOn.comp} in \texttt{Mathlib/Analysis/Calculus/ContDiff/FaaDiBruno.lean},
+for maps between normed spaces with Taylor series up to order $n$.  One
+convention differs and is worth knowing before comparing the two displays:
+Mathlib indexes the sum by \texttt{OrderedFinpartition} --- partitions of
+$\{0,\ldots,n-1\}$ whose blocks are listed in a canonical order, each block
+listed in increasing order --- rather than by the unordered partitions
+$\Pi_n$ of \eqref{eq:merged-frechet-faa}.  Because the outer derivative
+$D^{|\pi|}f$ is symmetric, every ordering of the blocks contributes the same
+term, and Mathlib's canonical ordering picks exactly one representative; so the
+two sums agree term by term and no multiplicity is lost or gained.  The
+regrouping of Mathlib's indexed sum into the partial-Bell form
+\eqref{eq:merged-frechet-bell} below is not yet formal in the corpus.
+\end{remark}
 
 \begin{corollary}
 When all directions are equal to $h$,
@@ -10695,7 +10768,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 62 Lean, 35 partial, 110 none, of 207 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no compiler-verified counterpart is recorded yet, even if source under validation is identified.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source; its mappings must be updated when results are added or validated.  Current totals: 65 Lean, 35 partial, 107 none, of 207 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -10715,7 +10788,7 @@ Result & Title & Status & Lean declarations (module) \\
 \Cref{thm:exponential-formula} & The exponential formula & Lean & \cref{eq:partial-bell-egf} is \lean{Fabius.bellWeightSeries_pow}, \cref{eq:bivariate-bell-egf} is \lean{Fabius.exp_subst_smul_bellWeightSeries} (\lean{ExponentialFormula}), \cref{eq:complete-bell-egf} is \lean{Fabius.exp_subst_bellWeightSeries}, all as substitutions of formal power series over any $\RationalNumbers$-algebra \\
 \Cref{cor:partition-type} & Partition-type count & none &  \\
 \Cref{thm:first-cycle} & Permutation interpretation & partial & recurrence and boundary values are Mathlib's \lean{Nat.stirlingFirst_succ_succ}, \lean{Nat.stirlingFirst_succ_zero}, \lean{Nat.stirlingFirst_eq_zero_of_lt}; the defining expansions are \lean{Fabius.ascPochhammer_eq_sum_monomial_stirlingFirst} and \lean{Fabius.descPochhammer_eq_sum_monomial_signedStirlingFirst} (\lean{StirlingBasisChange}); the permutation count itself is not formalized \\
-\Cref{thm:second-recurrence} & Second-kind recurrence & partial & \lean{Nat.stirlingSecond_succ_succ}, \lean{Nat.stirlingSecond_succ_zero}, \lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib) prove the algebraic recurrence and boundary values for the recursively defined array.  Identifying this array with the cardinality of set partitions requires a separate formal counting theorem. \\
+\Cref{thm:second-recurrence} & Second-kind recurrence & partial & \lean{Nat.stirlingSecond_succ_succ}, \lean{Nat.stirlingSecond_succ_zero}, \lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib); the set-partition count, which Mathlib leaves as a docstring claim, is \lean{Fabius.card_setPartitions} (\lean{BellSetPartitions}) \\
 \Cref{thm:second-explicit} & Surjection formula & Lean & \lean{Fabius.factorial_mul_stirlingSecond_eq_sum} (over $\mathbb Z$) and \lean{Fabius.stirlingSecond_eq_sum_div_factorial} (over $\mathbb Q$) (\lean{StirlingBasisChange}); proved by binomial inversion of \lean{Fabius.pow_eq_sum_stirlingSecond_mul_factorial_mul_choose} \\
 \Cref{thm:second-reverse-recurrences} & Alternative second-kind recurrences & partial & \cref{eq:second-triangular-explicit} is \lean{Fabius.stirlingSecond_eq_pow_div_factorial_sub_sum} (\lean{StirlingTriangularExplicit}), for all $n,k$ with the $r=0$ term included; \cref{eq:second-reverse-column} is \lean{Fabius.second_reverse_column} (\lean{StirlingSecondReverseColumn}), by the column differential equation $(1-\EulerE^{-x})F_k'=kF_k$ (\lean{Fabius.one_sub_altSeries_mul_derivative_egfA_stirlingSecond}); new source \lean{Fabius.second_reverse_row} (\lean{StirlingSecondReverseRowIdentity}) supplies \cref{eq:second-reverse-row} over every commutative ring by extracting coefficients from \lean{Fabius.subst_logTail}; \lean{Fabius.second_reverse_row_sum} gives the unrestricted rational-index version.  Compiler validation of the new row identities is pending. \\
 \Cref{thm:first-reverse-recurrences} & Reverse recurrences of the first kind & Lean & \cref{eq:first-reverse-row} is \lean{Fabius.first_reverse_row} and \cref{eq:first-reverse-column} is \lean{Fabius.first_reverse_column} (module \lean{StirlingFirstReverse}), the first from the rising factorial, the second by comparing exponential generating functions (\lean{Fabius.egfA_first_reverse_column}). \\
@@ -10772,7 +10845,7 @@ corollary (unlabelled, no.~5) & Cauchy integral & none &  \\
 \Cref{thm:bell-numerical-bound} & Uniform numerical Bell bound & none &  \\
 \Cref{thm:bell-leading-asymptotic} & Leading Bell asymptotic & none &  \\
 \Cref{cor:bell-debruijn} & de Bruijn logarithmic expansion & none &  \\
-\Cref{thm:bell-poly-partitions} & Weighted-partition interpretation & none &  \\
+\Cref{thm:bell-poly-partitions} & Weighted-partition interpretation & Lean & \lean{Fabius.partialBell_eq_sum_setPartitions} and \lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), over any commutative semiring of weights; the per-type count \cref{cor:partition-type} is not covered \\
 \Cref{thm:bell-poly-egf} & Bell-polynomial generating functions & Lean & all five identities, as formal power series over any commutative $\mathbb Q$-algebra.  The first is \lean{Fabius.bellWeightSeries_pow} and the third \lean{Fabius.exp_subst_bellWeightSeries} (\lean{BellGeneratingFunctions}); the exponential bivariate form is \lean{Fabius.exp_subst_smul_bellWeightSeries} (\lean{ExponentialFormula}); the ordinary Bell polynomials are \lean{Fabius.ordPartialBell} with \cref{eq:ordinary-bell-ogf} as \lean{Fabius.coeff_pow_eq_ordPartialBell} (\lean{OrdinaryBellComposition}); and \cref{eq:ordinary-bell-bivariate} is \lean{Fabius.coeff_exp_subst_smul} (\lean{OrdinaryBellBivariate}).  In both bivariate statements $u$ is a scalar parameter rather than a second formal variable \\
 \Cref{thm:bell-poly-recurrences} & Complete and partial recurrences & Lean & \lean{Fabius.partialBell} is defined by \cref{eq:partial-bell-recurrence} (\lean{Fabius.partialBell_succ_succ}, \lean{Fabius.partialBell_succ_succ_eq_binomialConv}); \cref{eq:complete-bell-recurrence} is Mathlib-free \lean{Bell.complete_succ} together with \lean{Fabius.bell_complete_eq_sum_partialBell} (\lean{PartialBellPolynomials}, \lean{BellPolynomialInversion}); the boundary values are \lean{Fabius.partialBell_zero_succ}, \lean{Fabius.partialBell_succ_zero}, \lean{Fabius.partialBell_eq_zero_of_lt} \\
 \Cref{thm:bell-partial-convolution} & Block-colour convolution & Lean & \lean{Fabius.factorial_mul_partialBell_add} (\lean{BellComposition}), in the division-free form $(k_1+k_2)!\,B_{n,k_1+k_2}=k_1!k_2!\sum_i\binom ni B_{i,k_1}B_{n-i,k_2}$ \\
@@ -10828,11 +10901,11 @@ theorem (unlabelled, no.~77) &  & none &  \\
 \Cref{thm:merged-binomial-type-characterization} & Generating-function characterization of binomial type & none &  \\
 \Cref{thm:merged-sheffer} & Addition and lowering & partial & \cref{eq:merged-sheffer-addition} is \lean{Fabius.shefferPoly_add} (\lean{BinomialType}), for \lean{Fabius.shefferPoly} $=c\star p$ (binomial convolution of the coefficients of $g$ with the binomial-type sequence), with generating function \lean{Fabius.egfA_mul_exp_subst_smul_bellWeightSeries}; the lowering law \cref{eq:merged-sheffer-lowering} is not formalized \\
 \Cref{lem:merged-formal-rescaling} & Formal rescaling and exponentials & Lean & \cref{eq:merged-formal-rescaling-derivative} is \lean{Fabius.derivative_rescale} over every commutative semiring; \lean{Fabius.derivative_rescale_exp}, \lean{Fabius.rescale_zero_exp}, and \lean{Fabius.rescale_exp_add_one} give the exponential specializations over every commutative $\RationalNumbers$-algebra (\lean{ExponentialRescaling}). The general product law is Mathlib's \lean{PowerSeries.exp_mul_exp_eq_exp_add}. \\
-\Cref{prop:merged-abel} & Abel polynomials & none &  \\
+\Cref{prop:merged-abel} & Abel polynomials & Lean & \lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_eval_add}, \lean{Fabius.abelSeries_eq}, \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} (\lean{AbelPolynomialSeries}); the EGF identity is proved for every solution of $T=te^{-aT}$, not only the constructed one \\
 \Cref{thm:merged-riordan} & Riordan action, product, and inverse & partial & \lean{Fabius.expRiordan_action}, \lean{Fabius.expRiordan_mul}, \lean{Fabius.expRiordan_mul_inverse} (\lean{ExponentialRiordan}) prove the action, product, and a conditional one-sided inverse law, assuming the inverse series and $g\,(h\circ f)=1$.  Construction of these inverse series from the theorem's unit hypotheses and the full two-sided inverse statement remain to be formalized.  The Stirling examples are \lean{Fabius.expRiordan_one_exp_sub_one} and \lean{Fabius.expRiordan_one_log}. \\
 \Cref{thm:merged-complementary-bell} & EGF, recurrence, and Dobiński-type series & Lean & \lean{Fabius.complementaryBell} (\lean{ComplementaryBell}); \cref{eq:merged-complementary-egf} is \lean{Fabius.exp_subst_neg_exp_sub_one}, \cref{eq:merged-complementary-recurrence} is \lean{Fabius.complementaryBell_succ}, and \cref{eq:merged-complementary-dobinski} is \lean{Fabius.complementaryBell_eq_exp_mul_tsum} (the series converges absolutely as the Poisson moment series of \lean{Fabius.tsum_pow_mul_pow_div_factorial}) \\
 \Cref{cor:merged-bell-convolution-inverse} & Convolution inverse of the Bell sequence & Lean & \lean{Fabius.sum_choose_bell_mul_complementaryBell} (\lean{ComplementaryBell}), from the addition law \lean{Bell.complete_add} of complete Bell polynomials at weights $\pm1$ \\
-\Cref{thm:merged-frechet-faa} & Coordinate-free Faà di Bruno & none &  \\
+\Cref{thm:merged-frechet-faa} & Coordinate-free Faà di Bruno & Lean & Mathlib's \texttt{HasFTaylorSeriesUpToOn.comp} (FaaDiBruno.lean), indexed by \texttt{OrderedFinpartition} rather than unordered partitions; the regrouping into partial-Bell form is not formal \\
 corollary (unlabelled, no.~11) &  & none &  \\
 \Cref{thm:merged-inverse-derivative} & Inverse derivative recursion & none &  \\
 \Cref{thm:merged-inverse-derivative-operator} & Inverse-derivative operator & none &  \\
