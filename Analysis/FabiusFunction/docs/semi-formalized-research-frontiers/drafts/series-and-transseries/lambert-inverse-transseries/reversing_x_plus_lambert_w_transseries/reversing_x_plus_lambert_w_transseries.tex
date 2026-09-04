@@ -289,7 +289,15 @@ inverse of \(f\) on \([0,\infty)\) by \path{Fabius.lambertShiftInv_lambertShift}
 \path{Fabius.lambertShift_eq_iff}.  The bracket \eqref{eq:f-prime-bounds} is
 \path{Fabius.one_le_deriv_lambertShift}, \path{Fabius.deriv_lambertShift_le_two}, and the
 strict form of \eqref{eq:global-bracket} for \(z>0\) is \path{Fabius.lambertShiftInv_lt_self},
-\path{Fabius.sub_principalLambertW_lt_lambertShiftInv}.
+\path{Fabius.sub_principalLambertW_lt_lambertShiftInv}.  The derivative bracket
+\eqref{eq:g-prime-bounds} is formal on the open half-line, in its strict form: \(g\) is
+differentiable at every \(z>0\) by the inverse-function rule
+(\path{Fabius.lambertShiftInv_hasDerivAt}, resting on the strict monotonicity and continuity of
+\(g\), \path{Fabius.lambertShiftInv_strictMonoOn} and \path{Fabius.lambertShiftInv_continuousAt},
+the latter read off the exact image \path{Fabius.lambertShiftInv_image_Ioi}), and
+\path{Fabius.deriv_lambertShiftInv_bounds} is \(1/2<g'(z)<1\), both inequalities strict because
+\(0<W'<1\) once \(W>0\) (\path{Fabius.inv_exp_mul_add_one_lt_one}).  The endpoint value
+\(g'(0)=1/2\), a one-sided derivative, and the convexity of \(g\) are not formalized.
 
 This exact formula identifies the special function involved, but it does
 not by itself expose the full large-\(z\) hierarchy.  The remainder of the
