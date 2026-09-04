@@ -167,4 +167,48 @@ theorem norm_foldedCoefficient_sub_le' (F : BoundedFabius) (hF : IsFabius F) (N 
     _ = 2 * (2 : ℝ) ^ (K.choose 2) / Real.pi ^ K * (2 / (N : ℝ)) ^ K *
           ∑' n : ℕ, ((n : ℝ) + 1) ^ (-(K : ℝ)) := by ring
 
+/-! ## Convergence of the folded coefficients to the sinc product
+
+The volume's `p1:thm:q-approximant` closes with the statement that, for a fixed
+odd `r`, the finite `q`-binomial approximant converges to `Φ(r/2)` as the level
+grows.  That follows from the alias error bound above at any fixed order: the
+bound decays like `N^{-K}`, and `K = 2` already suffices for the limit. -/
+
+/-- **The alias approximants converge.**  For every fixed `r`, the folded
+coefficients at dyadic modulus converge to the sinc-product value `Φ(r/2)`.
+
+The sharp rate `E_n` of the volume is not claimed here: the bound used is the
+fixed-order one, which gives `O(4^{-n})`. -/
+theorem tendsto_foldedCoefficient_two_pow (F : BoundedFabius) (hF : IsFabius F) (r : ℕ) :
+    Filter.Tendsto
+      (fun n : ℕ => foldedCoefficient F (2 ^ n) ((r : ℕ) : ZMod (2 * 2 ^ n)))
+      Filter.atTop (nhds (rvachevFourier F ((r : ℂ) / 2))) := by
+  set C : ℝ := 2 * (2 : ℝ) ^ (Nat.choose 2 2) / Real.pi ^ 2 *
+      ∑' m : ℕ, ((m : ℝ) + 1) ^ (-(2 : ℝ)) with hC
+  rw [tendsto_iff_norm_sub_tendsto_zero]
+  refine squeeze_zero' (Filter.Eventually.of_forall fun n => norm_nonneg _) ?_ ?_
+  · -- eventually the error bound applies, with `K = 2`
+    filter_upwards [Filter.eventually_gt_atTop (Nat.log 2 r + r)] with n hn
+    haveI : NeZero (2 ^ n) := ⟨by positivity⟩
+    have hrn : r < 2 ^ n := lt_of_lt_of_le (by omega) (Nat.lt_two_pow_self.le.trans (by
+      exact Nat.pow_le_pow_right (by norm_num) (by omega)))
+    have hval : ((r : ℕ) : ZMod (2 * 2 ^ n)).val = r := by
+      rw [ZMod.val_natCast, Nat.mod_eq_of_lt (by omega)]
+    have h := norm_foldedCoefficient_sub_le' F hF (2 ^ n)
+      (r := ((r : ℕ) : ZMod (2 * 2 ^ n))) (by rw [hval]; exact hrn) (K := 2) le_rfl
+    rw [hval] at h
+    exact h
+  · -- the bound tends to zero
+    have hbase : Filter.Tendsto (fun n : ℕ => (2 / (2 : ℝ) ^ n) ^ 2) Filter.atTop (nhds 0) := by
+      have h : Filter.Tendsto (fun n : ℕ => ((1 : ℝ) / 4) ^ n) Filter.atTop (nhds 0) :=
+        tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num)
+      have heq : ∀ n : ℕ, (2 / (2 : ℝ) ^ n) ^ 2 = 4 * ((1 : ℝ) / 4) ^ n := by
+        intro n
+        rw [div_pow, one_div, inv_pow, ← pow_mul, mul_comm n 2, pow_mul]
+        norm_num
+        rw [div_eq_iff (by positivity)]
+        ring
+      simpa only [heq, mul_zero] using h.const_mul (4 : ℝ)
+    simpa only [mul_zero] using hbase.const_mul C
+
 end Fabius
