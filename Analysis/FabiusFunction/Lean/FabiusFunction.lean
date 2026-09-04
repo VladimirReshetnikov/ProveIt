@@ -21,6 +21,7 @@ import FabiusFunction.StirlingGeneratingFunctions
 import FabiusFunction.EulerianNumbers
 import FabiusFunction.PartialBellPolynomials
 import FabiusFunction.BellGeneratingFunctions
+import FabiusFunction.BellLeibnizTower
 import FabiusFunction.BellComposition
 import FabiusFunction.BernoulliStirling
 import FabiusFunction.BellHomogeneity
@@ -802,6 +803,8 @@ import FabiusFunction.DerangementNearestInteger
 import FabiusFunction.PowerLogCoreInversion
 import FabiusFunction.LinLogCoreInversion
 import FabiusFunction.StaircaseInversion
+import FabiusFunction.RemainderTransport
+import FabiusFunction.LeastTermIndex
 
 set_option autoImplicit false
 

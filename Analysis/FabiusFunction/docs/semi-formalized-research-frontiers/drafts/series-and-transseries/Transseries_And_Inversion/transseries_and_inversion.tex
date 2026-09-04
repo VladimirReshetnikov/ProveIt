@@ -38580,6 +38580,38 @@ $f'(\xi)\ge m-\theta$.  Substituting gives
 \eqref{p0:eq:transport-first-order}.  The final assertion follows since then
 $\theta\to0$ and $|\varepsilon(x_0)|\to0$.
 \end{proof}
+\begin{remark}[Formalization of the transport bound]
+\label{p0:rem:transport-lean}
+Part (1), \eqref{p0:eq:transport-bound}, is machine-checked in
+\lean{RemainderTransport.lean}: \lean{Fabius.transport_bound}, with the
+division-free form \lean{Fabius.transport_bound_mul} beneath it.  It is built
+on the lower mean-value bracket \lean{Fabius.mul_abs_sub_le_abs_sub_of_le_deriv}
+of \lean{MeanValueBracket.lean}, which is the formal content of
+\cref{p0:thm:backward-error}, so the two results compose in Lean the way they
+do on the page.
+
+Formalizing it exposes an asymmetry between the two hypotheses that the
+statement above hides behind the common phrase ``derivative bound''.  The
+hypothesis on $f_0$ is a one-sided bracket, $f_0'\ge m$, and the lower
+mean-value bracket applies to it with no sign condition.  The hypothesis on
+$\varepsilon$ is two-sided, $|\varepsilon'|\le\theta$, and it is \emph{not} usable as a
+bracket: the corresponding bracket is $-\theta\le\varepsilon'\le\theta$, whose lower end
+is negative, and the upper mean-value bracket requires its lower end to be
+nonnegative --- necessarily so, as \cref{q1:rem:sign} records.  What
+$|\varepsilon'|\le\theta$ delivers is a Lipschitz bound, a different theorem with a
+different proof, and that is what the argument actually uses when it writes
+$|\varepsilon(x)|\le|\varepsilon(x_0)|+\theta|x-x_0|$.  In Lean the two enter as
+\lean{Fabius.mul_abs_sub_le_abs_sub_of_le_deriv} and
+\lean{Fabius.lipschitzOn_of_abs_deriv_le} respectively.
+
+The bound is close to sharp, not merely valid: over four hundred random
+instances with $\varepsilon$ a sinusoid of exactly the permitted Lipschitz
+constant, the ratio of the true displacement to the bound reached $0.9999$.
+So the denominator $m-\theta$ is the right one and cannot be improved to $m$.
+
+Not formalized: part (2), the first-order law \eqref{p0:eq:transport-first-order},
+which needs $f_0\in C^{2}$ and a second-order Taylor estimate.
+\end{remark}
 
 \begin{corollary}[Forward truncation to inverse accuracy]
 \label{p0:cor:forward-to-inverse}
@@ -38700,6 +38732,40 @@ $|q_M|x^{-M}\ge k\,c_\beta\,c\,x^{-|\beta-1/2|}\e^{-Ax}$ for every
 $M\ge M_0$.  Taking logarithms of the two bounds gives
 \eqref{p0:eq:floor}.
 \end{proof}
+\begin{remark}[The least-term mechanism, formalized without Stirling]
+\label{p0:rem:least-term-lean}
+The three displayed conclusions of \cref{p0:thm:optimal-truncation} all rest on
+Stirling's formula, and none of them is formalized here.  What \emph{is}
+formalized, in \lean{LeastTermIndex.lean}, is the mechanism underneath them:
+why $M(x)=\lfloor Ax\rfloor$ is the right truncation index, and why there is
+no better one further out.  That part needs no asymptotics at all.
+
+Write $T(M)=\Gamma(M+\beta)/s^{M}$ with $s=Ax$, the profile of the
+coefficient bound in \eqref{p0:eq:gevrey-remainder}.  Then
+\begin{equation}\label{p0:eq:least-term-ratio}
+ \frac{T(M+1)}{T(M)}=\frac{M+\beta}{s},
+\end{equation}
+which is \lean{Fabius.gevreyTerm_succ} --- one application of
+$\Gamma(z+1)=z\Gamma(z)$.  Everything follows from it and the positivity of
+$\Gamma$ on $(0,\infty)$: the terms strictly decrease while $M+\beta<s$
+(\lean{Fabius.gevreyTerm_succ_lt}) and strictly increase once $M+\beta>s$
+(\lean{Fabius.gevreyTerm_lt_succ}), so the profile is unimodal with its
+minimum exactly where $M+\beta$ crosses $Ax$.  The two monotone stretches are
+\lean{Fabius.gevreyTerm_antitoneOn} and \lean{Fabius.gevreyTerm_monotoneOn}.
+
+Two things this makes precise.  First, the choice $M(x)=\lfloor Ax\rfloor$ is
+the crossing index up to the shift $\beta$, and it is optimal for an \emph{exact}
+reason, not an asymptotic one --- the ratio law is an identity.  Second,
+unimodality is what rules out a second, lower, minimum further out; without it
+``least term'' would name a local rather than a global choice, and the floor
+\eqref{p0:eq:floor} would not follow from a single truncation.  The volume
+uses both facts implicitly.
+
+Not formalized: the size of the least term --- the envelope
+\eqref{p0:eq:least-term}, the transported error \eqref{p0:eq:optimal-inverse},
+and the floor \eqref{p0:eq:floor}.  All three need Stirling asymptotics for
+$\Gamma(M+\beta)$, which is exactly the content this module does without.
+\end{remark}
 
 \begin{remark}[What may and may not be appended]\label{p0:rem:no-bare-exponential}
 \Cref{p0:thm:optimal-truncation} bounds the size of the optimal remainder; it
