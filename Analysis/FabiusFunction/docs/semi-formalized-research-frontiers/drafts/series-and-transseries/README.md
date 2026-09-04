@@ -7,7 +7,8 @@ The live Lean inventory after the current integration is 985 modules and
 inventory is the preceding historical checkpoint, not an additive count.
 The flatness module now includes both its vector-valued API and the scalar
 submodule, absorption, and inverse-power-scale interfaces (4 definitions and
-22 theorems). The differential-block module contains 12 theorems.
+22 theorems). The differential-block module contains one definition and 20
+theorems.
 
 The new Bell derivation-tower and ordinary-Bell normalization results have
 exact source counterparts. The Touchard definitions and coefficient identities
@@ -23,11 +24,12 @@ optimal-truncation theorem.
 
 > [`Transseries_And_Inversion/`](Transseries_And_Inversion/) —
 > *Transseries: the polynomial–logarithmic calculus, series reversal at
-> infinity, and the inversion of rapidly growing functions*. The retained
-> 711-page A4 PDF is a 4 September 2026 publication checkpoint. A later
-> source-only snapshot reached 55,985 lines and 3,125 distinct labels; the
-> merged canonical source is newer, so no current source-size, label-count, or
-> TeX/PDF parity claim is made.
+> infinity, and the inversion of rapidly growing functions*. The local
+> 704-page and incoming 711-page A4 PDFs are historical publication
+> checkpoints. The incoming branch later reached 55,985 source lines and 3,125
+> distinct labels, and the merged canonical source is newer still. No current
+> source-size, label-count, or TeX/PDF parity claim is made; a fresh render is
+> pending.
 
 ## What was merged
 
@@ -58,9 +60,10 @@ The result is **less overlap than a title-level comparison suggests**. Of six
 apparent overlaps, one is a genuine duplicate (the exponential partial Bell
 polynomials, the same definition in two notations), one is a strengthening in
 the inversion apparatus's favour (a two-sided residual bracket with a
-root-existence certificate against a one-sided mean-value bound), one item has
-no counterpart at all (the ordinary Bell family), and three are different
-theorems about the same subject — most notably the two results both called
+root-existence certificate, now machine-checked as
+`Fabius.exists_eq_in_residual_interval`, against a one-sided mean-value bound),
+one item has no counterpart at all (the ordinary Bell family), and three are
+different theorems about the same subject — most notably the two results both called
 Lagrange–Bürmann, which are the near-identity *operator* form and the classical
 *coefficient* form, neither implying the other without a genuine argument.
 

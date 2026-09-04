@@ -158,8 +158,10 @@ private theorem second_reverse_row_rat (n k : ℕ) (hk : 1 ≤ k) (hkn : k ≤ n
 commutative ring, with source index `j = i + 2`. Its factor
 `(-1)^j * choose (k+j-1) j` is the generalized binomial coefficient
 `choose (-k) j`. Every Stirling entry on the right is strictly to the right
-of column `k`, and the sum is empty at the diagonal. -/
-theorem second_reverse_row {R : Type*} [CommRing R]
+of column `k`, and the sum is empty at the diagonal. This generic, triangular
+version has a distinct name from the all-boundary integer theorem
+`second_reverse_row` in `StirlingSecondReverseRow`. -/
+theorem second_reverse_row_commRing_of_le {R : Type*} [CommRing R]
     (n k : ℕ) (hk : 1 ≤ k) (hkn : k ≤ n) :
     ((n : R) - k) * Nat.stirlingSecond n k =
       ∑ i ∈ range (n - k),
