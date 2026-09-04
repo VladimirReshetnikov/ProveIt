@@ -28,6 +28,7 @@ noncomputable def sumSqFiber (d n : ℕ) : Finset (Fin d → ℤ) :=
 /-- `r_d(n)`, the number of ordered representations of `n` as a sum of `d` squares. -/
 noncomputable def sumSqRep (d n : ℕ) : ℕ := (sumSqFiber d n).card
 
+/-- Membership in `sumSqFiber` is exactly the prescribed sum-of-squares equation. -/
 theorem mem_sumSqFiber {d n : ℕ} {x : Fin d → ℤ} :
     x ∈ sumSqFiber d n ↔ ∑ k, (x k).natAbs ^ 2 = n := by
   unfold sumSqFiber

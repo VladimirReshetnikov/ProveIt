@@ -1,9 +1,10 @@
 # Canonical source integrity and retained-PDF validation
 
 This receipt records two distinct audit surfaces for the canonical inverse
-Fabius synthesis: the current source closure and the last fully reviewed PDF
-artifact.  Because the source changed after that PDF was rendered, the hashes
-below are **not** asserted to form a synchronized source/PDF pair.
+Fabius synthesis: the last recorded source closure and the last fully reviewed
+PDF artifact.  Because the source changed after both receipts, the hashes below
+are **not** asserted to identify the current source or to form a synchronized
+source/PDF pair.
 
 ## Artifact identity
 
@@ -13,9 +14,12 @@ below are **not** asserted to form a synchronized source/PDF pair.
 | `SOURCE_CLOSURE.sha256` | Exhaustive ledger of 23 permanent build inputs | `aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb` |
 | `inverse_fabius_theory.pdf` | 134 A4 pages; 2,027,726 bytes | `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d` |
 
-The first two rows identify the current source surface.  The third identifies
-the retained historical PDF checkpoint.  A fresh three-pass render is required
-before those surfaces may again be described as a publication pair.
+The first row still identifies the unchanged master file.  The source-closure
+row predates the exact-dyadic chapter and crosswalk overlay, and the third row
+identifies the retained historical PDF checkpoint.  The closure ledger was
+intentionally not regenerated in the source-only documentation pass.  A fresh
+closure audit and three-pass render are required before these surfaces may
+again be described as a publication pair.
 
 The 23-input closure consists of:
 
@@ -51,8 +55,8 @@ The 23-input closure consists of:
 At the retained PDF checkpoint, exactly three guarded serial pdfLaTeX passes
 were run.  Every pass returned zero; the independently hashed input closure for
 that build was identical before and after each pass, and no TeX/Lean/Lake work
-interleaved with them.  These passes were not rerun after the current master and
-shared-notation edits.
+interleaved with them.  These passes were not rerun after the current master,
+shared-notation, and exact-dyadic crosswalk edits.
 
 | Pass | Produced pages |
 | ---: | ---: |
@@ -94,6 +98,6 @@ claiming byte identity between intermediate pass artifacts.
 - Python byte-code caches and other transient files are not publication
   payloads.
 
-The source-closure hash identifies the current build inputs, while the PDF hash
-identifies the reviewed historical artifact. Their independent validity must
-not be mistaken for current source/PDF synchronization.
+The source-closure hash identifies the preceding recorded build inputs, while
+the PDF hash identifies the reviewed historical artifact.  Neither is a claim
+of current source identity or source/PDF synchronization.

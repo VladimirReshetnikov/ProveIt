@@ -93,7 +93,7 @@ SHA-256 values recorded directly in this README and in `PROVENANCE.md` remain
 provenance receipts for the named artifacts.
 
 The retained `q_pochhammer_q_binomial_monograph.pdf` is a 378-page A4
-build of the current master source (15,630 lines, 764,952 bytes,
+historical build of the then-current master source (15,630 lines, 764,952 bytes,
 SHA-256 `403a25dccadc15e7a34bedd8d28a2dc3369cb6e6a046cd199a30ed178742a32d`).
 The PDF is 3,175,603 bytes with SHA-256
 `5d0dac5a8d1cba7bedab9055a51f59478054de22969dcf75b0f58ce3f3c265bc`.
@@ -105,8 +105,10 @@ embedded and subsetted, including 5 Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
-The retained PDF was built from the master source described above, so the
-identities recorded there belong to one synchronized source/PDF pair.
+That source hash and the PDF hash record a synchronized historical checkpoint.
+The live TeX now includes the later exact even/odd Thue--Morse partition
+crosswalk and therefore postdates the retained PDF; no current source/PDF
+parity is claimed until a fresh three-pass build is completed.
 
 The current source includes exhaustive crosswalks for `QPochhammerEntire`
 (zero definitions
@@ -157,7 +159,18 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 675 modules and 8,909 public declarations.
+audit at the synchronized PDF checkpoint contained 675 modules and 8,909
+public declarations; those figures are historical rather than a census of the
+larger current tree.
+
+The latest `ThueMorseSparseProuhet` partition tranche adds no definitions and
+three theorems to that module's prior twelve-theorem surface, for a current
+zero-definition/fifteen-theorem total.  The new declarations are
+`sum_thueMorseSign_mul_eq_sum_even_binaryWeight_sub_sum_odd_binaryWeight`,
+`sum_even_binaryWeight_affine_pow_eq_sum_odd_binaryWeight_affine_pow`, and
+`sum_even_binaryWeight_pow_eq_sum_odd_binaryWeight_pow`.  They give the exact
+finite-set parity decomposition, the affine dyadic-block partition, and its
+raw-power specialization, respectively.
 
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
@@ -169,10 +182,12 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 167 Exact, 89 Partial, 18 None, and 8 interface rows; the
+status ledger is 168 Exact, 88 Partial, 18 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 36/29/123/3, and the
-completed source concordance records 66 Lean-proved rows, 412 human-proved
-frontier rows, 60 not-applicable rows, and 9 conjectures.
+completed pinned-source concordance records 66 Lean-proved rows, 412
+human-proved frontier rows, 60 not-applicable rows, and 9 conjectures.  That
+historical disposition ledger and its generator are intentionally unchanged by
+the later live-source promotion of the Prouhet-partition row.
 The fourteen-theorem `GaussianBinomialPalindromic` API and five-theorem
 `GaussianBinomialPolynomialStructure` API give exact degree,
 monicity, constant and top coefficients, reflection, coefficient
@@ -245,6 +260,7 @@ reciprocal-product expansions, the complex upper-parameter series, and the
 generalized q-binomial theorem. The remaining complex-Gaussian property and
 classical-limit rows stay unformalized.
 
-Source and PDF were synchronized by this build. PDFs are rebuilt in batches,
-at most about once per hour, so source-only commits may precede the next
-synchronization; the figures above always describe the retained PDF.
+The retained PDF and its named source hash were synchronized at the recorded
+build checkpoint.  The present TeX is source-newer because of the exact
+even/odd partition integration.  PDFs are rebuilt in batches, at most about
+once per hour; the figures above describe only the retained historical PDF.

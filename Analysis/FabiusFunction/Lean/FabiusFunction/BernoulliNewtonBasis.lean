@@ -76,6 +76,7 @@ section Poly
 noncomputable def bernoulliPolySeries : (Polynomial ℚ)⟦X⟧ :=
   PowerSeries.mk fun n => (1 / n.factorial : ℚ) • Polynomial.bernoulli n
 
+/-- Coefficients of the Bernoulli-polynomial EGF have the standard factorial normalization. -/
 theorem coeff_bernoulliPolySeries (n : ℕ) :
     coeff n bernoulliPolySeries = (1 / n.factorial : ℚ) • Polynomial.bernoulli n :=
   coeff_mk _ _

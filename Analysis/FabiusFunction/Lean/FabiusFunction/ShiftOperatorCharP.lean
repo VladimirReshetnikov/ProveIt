@@ -45,6 +45,7 @@ variable (A : Type*) [CommRing A]
 /-- The shift endomorphism `(E b) n = b (n + 1)` on sequences. -/
 noncomputable def shiftEnd : Module.End A (ℕ → A) := LinearMap.funLeft A A (· + 1)
 
+/-- The shift endomorphism advances a sequence index by one. -/
 @[simp] theorem shiftEnd_apply (b : ℕ → A) (n : ℕ) : shiftEnd A b n = b (n + 1) := rfl
 
 /-- `(E^k b) n = b (n + k)`. -/

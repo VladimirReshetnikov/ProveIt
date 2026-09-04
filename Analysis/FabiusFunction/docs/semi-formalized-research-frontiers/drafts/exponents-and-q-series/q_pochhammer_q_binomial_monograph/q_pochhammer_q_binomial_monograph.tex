@@ -2828,7 +2828,7 @@ those columns; $U$ has full column rank, and as a map $\FiniteField_Q^{\,r}\to\F
 it is injective with image $C$.  Each column $a_j$ of $A$ lies in $C$, so $a_j=Uv_j$ for a unique
 $v_j\in\FiniteField_Q^{\,r}$; let $V$ be the $r\times n$ matrix with columns $v_1,\dots,v_n$.  Then
 $A=UV$.  Moreover $V$ has full row rank: its row space has dimension
-$\operatorname{rank}V=\operatorname{rank}UV=\operatorname{rank}A=r$, the middle equality because
+$\RankOperator V=\RankOperator UV=\RankOperator A=r$, the middle equality because
 $U$ is injective.
 
 \emph{Counting the pairs.}  A matrix $U$ of full column rank is an ordered linearly independent
@@ -4304,16 +4304,6 @@ Then, for every $n\ge0$,
 where on the right the factors are written in increasing order of index.  Equivalently, the $q$-multinomial coefficients are exactly the structure constants that expand powers of $x_1+\cdots+x_r$ in the ordered monomial basis of the quantum affine $r$-space.
 \end{corollary}
 
-\emph{Lean status.}  Exactly \path{Fabius.quantum_multinomial} in
-\path{QuantumMultinomial.lean}, with the sum over the compositions of $n$ into $r$ parts
-(\texttt{Nat.antidiagonalTuple}) and the multinomial \path{Fabius.qMultinomial}.
-
-
-% ed.: the incoming survey states only that ``iterating the proof gives a
-% ed.: $q$-multinomial theorem''.  The ordering of the monomials is part of the
-% ed.: statement, not a convention, because $x_jx_i=qx_ix_j$ is imposed only for
-% ed.: $i<j$; centrality of $q$ is likewise recorded explicitly here.
-
 \begin{proof}
 Induct on $r$.  For $r=1$ there is nothing to prove, and $r=2$ is \Cref{thm:quantum-binomial}.
 
@@ -4350,6 +4340,15 @@ monomials.  For the multi-index $(n_1,\dots,n_r)$, the coefficient is
 \]
 by the definition of the $q$-multinomial coefficient preceding \Cref{prop:qmult-factor}; the factor $\QPochhammer{q}{q}{n-n_1}$ telescopes away, exactly as in the proof of that proposition.  No factor was transposed at any stage after the expansion, so the monomials are produced in increasing order of index, as asserted.
 \end{proof}
+
+\emph{Lean status.}  Exactly \path{Fabius.quantum_multinomial} in
+\path{QuantumMultinomial.lean}, with the sum over the compositions of $n$ into $r$ parts
+(\texttt{Nat.antidiagonalTuple}) and the multinomial \path{Fabius.qMultinomial}.
+
+% ed.: the incoming survey states only that ``iterating the proof gives a
+% ed.: $q$-multinomial theorem''.  The ordering of the monomials is part of the
+% ed.: statement, not a convention, because $x_jx_i=qx_ix_j$ is imposed only for
+% ed.: $i<j$; centrality of $q$ is likewise recorded explicitly here.
 
 \begin{remark}[The same coefficient read combinatorially]\label{rem:quantum-multinomial-inversions}
 Expanding $(x_1+\cdots+x_r)^n$ without using any relation produces the $r^n$ words $x_{w_1}x_{w_2}\cdots x_{w_n}$ with $w\in\{1,\dots,r\}^n$.  Sorting such a word into increasing order uses one adjacent transposition for each inversion of $w$, and each transposition contributes exactly one factor $q$; hence
@@ -8037,7 +8036,7 @@ which proves \eqref{eq:halfbase-gaussian}.
 \emph{Lean status.}  Exactly \path{Fabius.halfQPochhammer_eq_mersenne_div} for \eqref{eq:halfbase-factorial} and
 \path{Fabius.halfQBinomial_eq_mersenne} for \eqref{eq:halfbase-gaussian}, both in \path{HalfQBinomial.lean}, with
 \(\mathfrak m_n\) the product \path{Fabius.halfMersenneProduct} and the same hypothesis \(k\le n\).  Lean places the
-powers of two in the denominator, which is the displayed identities rearranged, and works over \(\mathbb Q\);
+powers of two in the denominator, which is the displayed identities rearranged, and works over \(\RationalNumbers\);
 \path{Fabius.gaussianBinomial_half_eq_halfQBinomial} identifies \path{Fabius.halfQBinomial} with the generic recursive
 Gaussian coefficient at base \(1/2\).
 
@@ -8131,11 +8130,11 @@ Therefore
 by \eqref{eq:halfbase-factorial}.  Linearity now proves \eqref{eq:geometric-prouhet}.
 \end{proof}
 \emph{Lean status.}  Exactly \path{Fabius.halfQBinomial_negativeDyadic_polynomial_sum_eq_mersenne} in
-\path{HalfQBinomial.lean}: for \(p\in\mathbb Q[X]\) of degree at most \(n\), the sum of the weights
+\path{HalfQBinomial.lean}: for \(p\in\RationalNumbers[X]\) of degree at most \(n\), the sum of the weights
 \path{Fabius.halfQBinomialDyadicWeight} against the nodes \path{Fabius.negativeDyadicNode} is
 \(\mathfrak m_n[X^n]p\), with \(\mathfrak m_n\) supplied by \path{Fabius.halfMersenneProduct}.  The
 annihilation clause is \path{Fabius.halfQBinomial_negativeDyadic_polynomial_sum_eq_zero_of_degree_lt}.
-The Lean coefficient ring is fixed to \(\mathbb Q\).
+The Lean coefficient ring is fixed to \(\RationalNumbers\).
 
 
 \begin{corollary}[Affine form]\label{cor:geometric-prouhet-affine}
@@ -8235,13 +8234,42 @@ through a signed powerset functional with arbitrary steps, so the dyadic grid is
 there rather than a hypothesis.
 
 
-\begin{corollary}[Equal power sums]\label{cor:thue-morse-prouhet-partition}
-Partition $\{0,1,\ldots,2^n-1\}$ according to the parity of $\BinaryDigitSum(r)$.  The two classes have equal sums of $d$th powers for every $0\le d<n$.
+\begin{corollary}[Even--odd decomposition and equal power sums]\label{cor:thue-morse-prouhet-partition}
+Let $R$ be a commutative ring, let $S\subseteq\NaturalNumbers$ be finite, and
+let $g\colon\NaturalNumbers\to R$.  Interpreting the integer sign $\tau_r$ and
+each natural index in $R$, one has
+\begin{equation}\label{eq:thue-morse-even-odd-decomposition}
+ \sum_{r\in S}\tau_r g(r)
+ =\sum_{\substack{r\in S\\ \BinaryDigitSum(r)\ \mathrm{even}}}g(r)
+  -\sum_{\substack{r\in S\\ \BinaryDigitSum(r)\ \mathrm{odd}}}g(r).
+\end{equation}
+Consequently, for $n,d\in\NaturalNumbers$ with $d<n$ and all $a,b\in R$,
+\begin{equation}\label{eq:thue-morse-prouhet-affine-partition}
+ \sum_{\substack{0\le r<2^n\\ \BinaryDigitSum(r)\ \mathrm{even}}}(a+br)^d
+ =\sum_{\substack{0\le r<2^n\\ \BinaryDigitSum(r)\ \mathrm{odd}}}(a+br)^d.
+\end{equation}
+At $a=0$ and $b=1$, this says that the two parity classes in
+$\{0,1,\ldots,2^n-1\}$ have equal sums of $d$th powers for every $d<n$.
 \end{corollary}
 
 \begin{proof}
-Move the negative-sign terms in \eqref{eq:thue-morse-moments} to the other side.
+Every binary weight is either even or odd, and the two cases are disjoint.
+Since $\tau_r=(-1)^{\BinaryDigitSum(r)}$, splitting $S$ into those two parts
+gives \eqref{eq:thue-morse-even-odd-decomposition}.  For the full dyadic block
+and $g(r)=(a+br)^d$, the signed sum is zero by the lower-degree clause of
+\Cref{thm:thue-morse-moments}; hence the difference of the two filtered sums
+is zero.  The raw-power statement is the specialization $a=0$, $b=1$.
 \end{proof}
+\emph{Lean status.}  The finite-set decomposition is exactly
+\path{Fabius.sum_thueMorseSign_mul_eq_sum_even_binaryWeight_sub_sum_odd_binaryWeight};
+the affine equality is
+\path{Fabius.sum_even_binaryWeight_affine_pow_eq_sum_odd_binaryWeight_affine_pow};
+and the historical raw-power statement is exactly
+\path{Fabius.sum_even_binaryWeight_pow_eq_sum_odd_binaryWeight_pow}, all in
+\path{ThueMorseSparseProuhet.lean}.  The formal statements hold over every
+commutative ring and include every boundary allowed by the literal inequality
+$d<n$; the crosswalk uses the direct equality theorems rather than treating
+the signed-cancellation theorem alone as the formal counterpart.
 
 \section{Two cancellation mechanisms}
 
@@ -13485,7 +13513,7 @@ inside the proof below does not formalize the result the proof concludes.
   than a mathematical claim.
 \end{description}
 
-Of the 282 labelled forward results, 167 are \statusexact, 89 are
+Of the 282 labelled forward results, 168 are \statusexact, 88 are
 \statuspartial, 18 are \statusnone, and 8 are \statusna.  The original
 191-result pre-Fabius core had 36 \statusexact, 29 \statuspartial, 123
 \statusnone, and 3 \statusna{} entries.  The four integrated guide chapters
@@ -14066,11 +14094,11 @@ Asymptotic regimes and Bernoulli expansions & 3 & 3 & 2 & 0\\
 Exact limits, reciprocity, and research frontiers & 5 & 0 & 0 & 0\\
 Computation, certification, and formal proof architecture & 7 & 2 & 2 & 3\\
 Geometric interpolation and exact $q$-filters & 7 & 2 & 0 & 0\\
-Half-base arithmetic and Prouhet--Thue--Morse cancellation & 6 & 3 & 0 & 0\\
+Half-base arithmetic and Prouhet--Thue--Morse cancellation & 7 & 2 & 0 & 0\\
 Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions & 2 & 11 & 0 & 0\\
 Dyadic Gaussian--Thue--Morse structure and the values of $F$ & 8 & 45 & 3 & 0\\
 \midrule
-\textbf{Forward total} & 167 & 89 & 18 & 8\\
+\textbf{Forward total} & 168 & 88 & 18 & 8\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -14181,7 +14209,7 @@ of \texttt{QPochhammerInfinite}}\\[2pt]
 \texttt{differentiableOn\_\allowbreak{}qPochhammerC},
 \texttt{qPochhammerC\_\allowbreak{}ne\_\allowbreak{}zero}\newline
 {\footnotesize\texttt{QPochhammerOrderDerivative}, \texttt{QGammaMeromorphic}; $\alpha\mapsto(a;q)_\alpha$
-is meromorphic on $\mathbb C$ and holomorphic on every open set avoiding the poles
+is meromorphic on $\ComplexNumbers$ and holomorphic on every open set avoiding the poles
 $aq^{\alpha+j}=1$, and is nonvanishing there under the proposition's standing hypothesis
 $(a;q)_\infty\ne0$ (\texttt{qPochhammerC\_\allowbreak{}ne\_\allowbreak{}zero}); without that
 hypothesis the symbol can vanish identically, as at $a=1$.  The derivative has the displayed
@@ -14507,7 +14535,7 @@ therefore checked by hand here, not mechanically}\\[2pt]
 {\footnotesize\texttt{SubspaceCount}; the entire algebraic content, over every semiring and every
 $t$: $\sum_{\lambda\subseteq k\times(n-k)}(t^2)^{\lvert\lambda\rvert}=\GaussianBinomial{n}{k}{t^2}$
 and its graded form.  The topological identification of the coefficients with
-$\operatorname{rank}H^{2d}(\mathrm{Gr}(k,n);\IntegerNumbers)$ --- Schubert cells, vanishing
+$\RankOperator H^{2d}(\mathrm{Gr}(k,n);\IntegerNumbers)$ --- Schubert cells, vanishing
 cellular boundaries, cellular cohomology --- is not formalized and is not currently formalizable,
 Mathlib's Grassmannian carrying neither a topology nor a cohomology}\\[2pt]
 \Cref{prop:qbinom-growth} & \statusexact &
@@ -14693,7 +14721,7 @@ $(a;q)_{-m}/(b;q)_{-m}=(b/a)^m(q/b;q)_m/(q/a;q)_m$}\\[2pt]
 \texttt{onePsiOne\_\allowbreak{}eq},
 \texttt{hasSum\_\allowbreak{}onePsiOneCleared},
 \texttt{hasSum\_\allowbreak{}onePsiOneCleared\_\allowbreak{}pow}\newline
-{\footnotesize\texttt{RamanujanOnePsiOne}; over $\mathbb C$, for $0<\lvert q\rvert<1$, $a\ne0$,
+{\footnotesize\texttt{RamanujanOnePsiOne}; over $\ComplexNumbers$, for $0<\lvert q\rvert<1$, $a\ne0$,
 $(q/a;q)_\infty\ne0$, $(b;q)_\infty\ne0$ and $\lvert b/a\rvert<\lvert z\rvert<1$, by Ismail's
 identity-theorem argument in $b$ applied to the cleared series
 $\sum_n(a;q)_nz^n(bq^n;q)_\infty$ (\texttt{onePsiOneCleared}), whose terms are entire in $b$
@@ -14806,7 +14834,7 @@ second half of the fundamental theorem}\\[2pt]
 {\footnotesize\texttt{QGamma}, \texttt{QGammaMeromorphic}; the three real identities for $x>0$
 and $0<q<1$, with $[x]_q$ as \texttt{qNumber}; the complex
 $\Gamma_q(z)=(q;q)_\infty(1-q)^{1-z}/(q^z;q)_\infty$ (\texttt{qGammaC}, principal branch) is
-meromorphic on $\mathbb C$ as a quotient of entire functions and holomorphic off the zeros of
+meromorphic on $\ComplexNumbers$ as a quotient of entire functions and holomorphic off the zeros of
 $(q^z;q)_\infty$; it is genuinely a continuation of the real function, since
 \texttt{qGammaC\_\allowbreak{}ofReal} identifies the \texttt{Complex.cpow} definition with the
 \texttt{Real.rpow} one at real arguments; and it satisfies
@@ -14897,7 +14925,7 @@ $z\ne0$ and $\lVert q\rVert<1$ in any complete normed field, with the exponent
 {\footnotesize\texttt{ThetaQuasiPeriodicity}, \texttt{ThetaSimpleZeros}; for
 $\lVert q\rVert<1$, $q\ne0$ and $z\ne0$ in every complete normed field: the functional equation
 by reindexing the bilateral series, and the zero set $\{-q^m: m\in\IntegerNumbers\}$ (among
-$z\ne0$) from the product form.  Over $\mathbb C$, under the same hypotheses, the zeros are
+$z\ne0$) from the product form.  Over $\ComplexNumbers$, under the same hypotheses, the zeros are
 simple: at every $-q^m$ the theta function has a nonzero derivative, obtained by isolating the
 vanishing factor of the triple product
 (\texttt{hasDerivAt\_\allowbreak{}of\_\allowbreak{}eventuallyEq\_\allowbreak{}mul})}\\[2pt]
@@ -15422,7 +15450,12 @@ $0\le[m-1,n]_q\le1/(q;q)_n$; the exponent is written $n(n+1)/2$}\\[2pt]
 \Cref{cor:geometric-prouhet-affine} & \statuspartial & \texttt{halfQBinomial\_\allowbreak{}negativeDyadic\_\allowbreak{}polynomial\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}mersenne}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
 \Cref{thm:thue-morse-product} & \statusexact & \texttt{prod\_\allowbreak{}one\_\allowbreak{}sub\_\allowbreak{}pow\_\allowbreak{}two\_\allowbreak{}pow}\newline{\footnotesize\texttt{ThueMorseProductIdentity}}\\[2pt]
 \Cref{thm:thue-morse-moments} & \statusexact & \texttt{sum\_\allowbreak{}thueMorseSign\_\allowbreak{}mul\_\allowbreak{}affine\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}zero}\newline{\footnotesize\texttt{ThueMorseSparseProuhet}}\\[2pt]
-\Cref{cor:thue-morse-prouhet-partition} & \statuspartial & \texttt{sum\_\allowbreak{}thueMorseSign\_\allowbreak{}mul\_\allowbreak{}affine\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}zero}\newline{\footnotesize\texttt{ThueMorseSparseProuhet}}\\[2pt]
+\Cref{cor:thue-morse-prouhet-partition} & \statusexact &
+\texttt{sum\_\allowbreak{}thueMorseSign\_\allowbreak{}mul\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}even\_\allowbreak{}binaryWeight\_\allowbreak{}sub\_\allowbreak{}sum\_\allowbreak{}odd\_\allowbreak{}binaryWeight},
+\texttt{sum\_\allowbreak{}even\_\allowbreak{}binaryWeight\_\allowbreak{}affine\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}odd\_\allowbreak{}binaryWeight\_\allowbreak{}affine\_\allowbreak{}pow},
+\texttt{sum\_\allowbreak{}even\_\allowbreak{}binaryWeight\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}sum\_\allowbreak{}odd\_\allowbreak{}binaryWeight\_\allowbreak{}pow}\newline
+{\footnotesize\texttt{ThueMorseSparseProuhet}; exact finite-set decomposition,
+affine partition, and raw partition over every commutative ring}\\[2pt]
 \Cref{prin:two-prouhet-filters} & \statusexact & \texttt{halfQBinomial\_\allowbreak{}negativeDyadic\_\allowbreak{}polynomial\_\allowbreak{}sum\_\allowbreak{}eq\_\allowbreak{}mersenne}\newline{\footnotesize\texttt{HalfQBinomial}}\\[2pt]
 \midrule
 \multicolumn{3}{@{}l}{\itshape Geometric uniform sums, $q$-cumulants, and the Fabius--Rvachev functions}\\
@@ -15584,7 +15617,7 @@ $\alpha_0=1$, $\alpha_n=\sum_{k<n}\beta_{n,k}\alpha_k$, proved through the adjug
 (the recurrence reads $\mathcal H_n\alpha=\alpha_ne_n$, and the cofactor
 $\operatorname{adj}(\mathcal H_n)_{0,n}$ is the determinant of a lower-triangular matrix with
 diagonal $-1$ up to the sign $(-1)^{n-1}$).  Not formalised: the identification of this
-$\alpha_n$ with $\mathbb E X^n/n!$ and with $2^{\binom n2}F(2^{-n})$, which rests on
+$\alpha_n$ with $\Expectation X^n/n!$ and with $2^{\binom n2}F(2^{-n})$, which rests on
 \Cref{lem:fabius-moment-dilation,thm:fabius-half-moment}}\\[2pt]
 \Cref{cor:fabius-fourier-formula} & \statuspartial &
 \texttt{rvachev\_fourier\_inversion\_analytic},
@@ -15842,7 +15875,7 @@ there is no free commutative-ring or normed-field version}\\[2pt]
 \texttt{poisson\_\allowbreak{}summation\_\allowbreak{}of\_\allowbreak{}rpow\_\allowbreak{}decay}\newline
 {\footnotesize\texttt{GaussianFourierTheta}; verbatim, in the text's own transform convention,
 which is Mathlib's with no normalization or sign discrepancy.  Also proved under a hypothesis
-strictly weaker than Schwartz: continuity together with $f$ and $\widehat f=O(\lvert x\rvert^{-b})$
+strictly weaker than Schwartz: continuity together with $f$ and $\FourierTwoPi{f}=O(\lvert x\rvert^{-b})$
 for a single $b>1$.  The text's own proof is not the one formalized --- Mathlib argues through the
 Fourier series of the periodization, which discharges the two uniform-convergence assertions the
 text leaves unproved}\\[2pt]
@@ -15902,14 +15935,14 @@ product in the $\sum Q^{n^2}x^n$ normalization}\\[2pt]
 {\footnotesize\texttt{SumsOfSquaresGeneratingFunction}; the analytic identity for every
 $d\ge0$ and $\lVert q\rVert<1$ in any complete normed field, with $r_d(n)$ the cardinality
 of the finite set of ordered integer $d$-tuples of squares summing to $n$; the $d$-fold
-theta product is the sum over $\mathbb Z^d$ regrouped by the value of $\sum x_k^2$.  The
-coefficientwise identity in $\mathbb Z[[q]]$ is not stated separately}\\[2pt]
+theta product is the sum over $\IntegerNumbers^d$ regrouped by the value of $\sum x_k^2$.  The
+coefficientwise identity in $\IntegerNumbers[[q]]$ is not stated separately}\\[2pt]
 \Cref{qg:lem-gaussian-ufd} & \statusexact &
 \texttt{gaussianInt\_\allowbreak{}two\_\allowbreak{}eq},
 \texttt{gaussianInt\_\allowbreak{}irreducible\_\allowbreak{}of\_\allowbreak{}mod\_\allowbreak{}four\_\allowbreak{}eq\_\allowbreak{}three},
 \texttt{gaussianInt\_\allowbreak{}exists\_\allowbreak{}prime\_\allowbreak{}mul\_\allowbreak{}star},
 \texttt{irreducible\_\allowbreak{}of\_\allowbreak{}norm\_\allowbreak{}natAbs\_\allowbreak{}prime}\newline
-{\footnotesize\texttt{GaussianIntegerPrimes}; the Euclidean structure of $\mathbb Z[i]$ for the
+{\footnotesize\texttt{GaussianIntegerPrimes}; the Euclidean structure of $\IntegerNumbers[i]$ for the
 norm and its unique factorisation are Mathlib's
 (\texttt{GaussianInt.instEuclideanDomain}, the principal-ideal-domain route); (i) by
 computation, (ii) from Mathlib's

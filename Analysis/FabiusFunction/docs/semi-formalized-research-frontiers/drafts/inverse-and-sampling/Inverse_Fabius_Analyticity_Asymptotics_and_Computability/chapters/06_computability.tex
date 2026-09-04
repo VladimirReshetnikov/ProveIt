@@ -1024,6 +1024,37 @@ $1/d$ and output separation exactly $h_n$.  Thus $d$ cannot certify the
 stricter conclusion $\AbsoluteValue{\InvT(u)-\InvT(v)}<h_n$.
 \end{proof}
 
+The fixed-target and modulus parts of this proposition now have an exact
+formal kernel in \path{FabiusInverseExactDyadicModulus.lean}.  At a fixed
+order $r$, \path{Fabius.inverseFabiusExactDyadicDenominator} defines
+$\Ceiling{1/F(2^{-r})}$ through the exact rational evaluator;
+\path{Fabius.inverseFabiusExactDyadicDenominator_pos},
+\path{Fabius.inv_inverseFabiusExactDyadicDenominator_le_fabiusAtInverseTwoPow},
+and \path{Fabius.inverseFabiusExactDyadicDenominator_isLeast} prove its
+positivity, endpoint-mass bound, and arithmetic leastness.  The strict modulus,
+the endpoint counterexample for every smaller positive denominator, and
+leastness among strict integer moduli are respectively
+\path{Fabius.abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_exactDyadicDenominator},
+\path{Fabius.exists_fabiusInv_gap_of_lt_exactDyadicDenominator}, and
+\path{Fabius.inverseFabiusExactDyadicDenominator_isLeast_strictModulus}.
+
+The definition \path{Fabius.inverseFabiusExactLogarithmicDenominator} then
+sets the value at zero to $1$ and composes the fixed-target denominator with
+$r(n)$ at positive inputs.  Its positive-input equation is
+\path{Fabius.inverseFabiusExactLogarithmicDenominator_of_pos}, and
+\path{Fabius.abs_fabiusInv_sub_lt_inv_nat_of_lt_exactLogarithmicDenominator}
+is exactly the implication to the weaker $1/n$ target.  That last theorem is
+only a witness: it does not assert leastness for $1/n$, and its zero branch is
+only the convention $d_*(0)=1$ with no modulus conclusion there.
+
+The concordance row for \cref{co:prop:exact-dyadic-modulus} nevertheless
+remains a \emph{human-proved frontier result}.  The proposition also says that
+the logarithmic function $d_*$ is recursive, whereas the new module exports no
+named \texttt{Primrec} or computability theorem for either exact denominator.
+Thus Lean now proves every fixed-dyadic leastness clause and the logarithmic
+witness, but not that separate recursion clause; promoting the whole paper
+proposition to Lean-proved would overstate the formal surface.
+
 \begin{remark}[The genuine integer optimum for the $1/n$ target]
 The exact inverse-modulus law shows that a positive integer $d$ has the
 universal property

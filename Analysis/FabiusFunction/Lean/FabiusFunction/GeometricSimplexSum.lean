@@ -81,6 +81,7 @@ theorem hasSum_prod_fin_pi : ∀ (ℓ : ℕ) (g : Fin ℓ → ℕ → 𝕜),
 /-- The tail sums `t_h = ∑_{k ≥ h} r_k`. -/
 def tailSum {ℓ : ℕ} (r : Fin ℓ → ℕ) (h : Fin ℓ) : ℕ := ∑ k, if h ≤ k then r k else 0
 
+/-- Every tail sum is positive when each summand is positive. -/
 theorem tailSum_pos {ℓ : ℕ} {r : Fin ℓ → ℕ} (hr : ∀ h, 0 < r h) (h : Fin ℓ) :
     0 < tailSum r h := by
   unfold tailSum

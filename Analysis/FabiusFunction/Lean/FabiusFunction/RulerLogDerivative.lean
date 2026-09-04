@@ -49,12 +49,15 @@ wrong there). -/
 noncomputable def rulerSeries : PowerSeries ℤ :=
   PowerSeries.mk fun k => if k = 0 then 0 else rulerCoeff k
 
+/-- Coefficients of `rulerSeries`, including its explicit zero constant term. -/
 @[simp] theorem coeff_rulerSeries (k : ℕ) :
     coeff k rulerSeries = if k = 0 then 0 else rulerCoeff k :=
   coeff_mk k _
 
+/-- The constant coefficient of `rulerSeries` is zero. -/
 @[simp] theorem coeff_zero_rulerSeries : coeff 0 rulerSeries = 0 := by simp
 
+/-- Every positive-degree coefficient of `rulerSeries` is the corresponding ruler coefficient. -/
 theorem coeff_succ_rulerSeries (k : ℕ) : coeff (k + 1) rulerSeries = rulerCoeff (k + 1) := by
   simp
 

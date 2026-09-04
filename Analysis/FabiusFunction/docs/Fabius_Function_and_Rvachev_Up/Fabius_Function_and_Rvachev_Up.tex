@@ -3817,11 +3817,12 @@ because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
 open interfaces.  With the later concurrent source union, the live facade
-census is 675 modules and 8,909 public declarations.  The current TeX also
+census is 901 modules and 11,418 public declarations.  The current TeX also
 contains the six-theorem prime-power companion-row API and the
 zero-definition/three-theorem outer Pochhammer normal-convergence API, plus
 the two-module/nine-declaration fixed-depth effective-inverse tranche, the
-eight-declaration rational-gap inverse module, and six new
+eight-declaration rational-gap inverse module, the two-definition/eight-theorem
+sharp exact-dyadic inverse-modulus leaf, and six new
 q-calculus modules contributing 36 declarations, plus the two source-only
 central-reduction and cyclotomic-factorization modules contributing thirteen
 theorems, and the four-module root-of-unity, q-Lucas, cyclotomic-divisibility,
@@ -5395,6 +5396,96 @@ mass ceiling denominator or a tolerant-bisection realizer.  The downstream
 modules below supply the realizer, \lean{SequentiallyComputable}, and the
 combined \lean{IsComputableRealFunction} theorem; input-bit asymptotics remain
 open.
+
+\subsection{Sharp exact endpoint-mass denominators}
+\label{sec:fabius-inverse-exact-dyadic-modulus}
+
+The next leaf, \path{FabiusInverseExactDyadicModulus.lean}, uses the exact
+rational evaluator rather than a lower estimate.  At each dyadic order set
+\begin{equation}
+ D_*(r)=\Ceiling{\frac{1}{F(2^{-r})}} .
+ \label{eq:inverse-exact-dyadic-denominator}
+\end{equation}
+The formal definition is \lean{inverseFabiusExactDyadicDenominator}; internally
+it takes the natural ceiling of the reciprocal of
+\lean{fabiusAtInverseTwoPow}.  The evaluator bridge
+\lean{fabiusAtInverseTwoPow_cast} identifies that rational with the displayed
+real endpoint mass for every bounded Fabius solution.
+
+For every \(r\in\NaturalNumbers\),
+\lean{inverseFabiusExactDyadicDenominator_pos} proves \(D_*(r)>0\), and
+\lean{inv_inverseFabiusExactDyadicDenominator_le_fabiusAtInverseTwoPow}
+proves the exact rational inequality
+\begin{equation}
+ D_*(r)^{-1}\le F(2^{-r}).
+ \label{eq:inverse-exact-dyadic-threshold}
+\end{equation}
+More precisely,
+\lean{inverseFabiusExactDyadicDenominator_isLeast} says that \(D_*(r)\) is
+the least positive natural \(d\) satisfying \(d^{-1}\le F(2^{-r})\).
+Consequently, for arbitrary real \(u,v\),
+\begin{equation}
+ |u-v|<D_*(r)^{-1}
+ \Longrightarrow |I(u)-I(v)|<2^{-r}.
+ \label{eq:inverse-exact-dyadic-modulus}
+\end{equation}
+This is
+\lean{abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_exactDyadicDenominator}.
+
+The leastness is sharp for that fixed dyadic output target.  If
+\(0<d<D_*(r)\), then
+\lean{exists_fabiusInv_gap_of_lt_exactDyadicDenominator} supplies real inputs
+with input gap below \(d^{-1}\) and inverse-output gap exactly \(2^{-r}\).
+The witnesses in the proof are the endpoint pair
+\(u=0\) and \(v=F(2^{-r})\).  Thus
+\lean{inverseFabiusExactDyadicDenominator_isLeast_strictModulus} packages
+\(D_*(r)\) as the least positive integer satisfying the universal strict
+implication \eqref{eq:inverse-exact-dyadic-modulus}.
+
+The proof is the ceiling argument with its equality case retained.  Positivity
+of the exact dyadic recurrence makes its reciprocal positive, hence its natural
+ceiling is positive.  The ceiling inequality gives
+\(D_*(r)\ge F(2^{-r})^{-1}\); reciprocation gives
+\eqref{eq:inverse-exact-dyadic-threshold}, and the converse ceiling
+characterization proves the arithmetic leastness statement.  Casting the
+rational bound to the reals and applying
+\lean{abs_fabiusInv_sub_lt_of_abs_sub_lt_fabiusReal} proves the strict modulus.
+For a smaller positive \(d\), strict failure of the ceiling inequality gives
+\(F(2^{-r})<d^{-1}\); the endpoint pair above then has the required small input
+gap but output gap \(2^{-r}\).  That counterexample turns membership plus
+arithmetic leastness into leastness among all strict integer moduli.
+
+For reciprocal output tolerances, the second definition is
+\begin{equation}
+ D_{*,\log}(0)=1,\qquad
+ D_{*,\log}(n)=D_*(r_{\log}(n))\quad(n>0).
+ \label{eq:inverse-exact-logarithmic-denominator}
+\end{equation}
+It is \lean{inverseFabiusExactLogarithmicDenominator}; the positive-input
+equation is
+\lean{inverseFabiusExactLogarithmicDenominator_of_pos}.  Combining the fixed
+dyadic strict modulus with \(2^{-r_{\log}(n)}<1/n\) gives, for \(n>0\),
+\begin{equation}
+ |u-v|<D_{*,\log}(n)^{-1}
+ \Longrightarrow |I(u)-I(v)|<\frac1n,
+ \label{eq:inverse-exact-logarithmic-witness}
+\end{equation}
+which is
+\lean{abs_fabiusInv_sub_lt_inv_nat_of_lt_exactLogarithmicDenominator}.
+Equation \eqref{eq:inverse-exact-logarithmic-witness} is a witness only:
+leastness was proved for the stronger fixed target \(2^{-r_{\log}(n)}\), not
+for the weaker target \(1/n\).  The value \(D_{*,\log}(0)=1\) is only a total
+definition convention, and no modulus conclusion is asserted at zero.  The
+module also proves no named \lean{Primrec} or computability theorem for either
+exact denominator, so it does not by itself package an effective-uniform-
+continuity witness.
+
+These two definitions and the eight theorems named above are the exhaustive
+public surface of \path{FabiusInverseExactDyadicModulus.lean}.  In particular,
+the module closes exact fixed-dyadic ceiling minimality but does not prove an
+input-bit asymptotic or a least-denominator theorem for reciprocal target
+\(1/n\).
+
 \subsection{Fixed-depth tolerant inversion and computability of the total inverse}
 \label{sec:fabius-inverse-computable}
 
@@ -9592,6 +9683,53 @@ sum vanishes at $y=0$.  At the joint boundary $r=0$, $y=0$, Lean's convention
 $0^0=1$ instead gives the correct one-term value $1$ on both sides; no positive-degree
 reading should be imposed on that case.
 
+The usual equal-sums formulation is now available without leaving the same
+commutative-ring setting.
+
+\begin{proposition}[Even--odd Prouhet partition]
+\label{thm:tm-even-odd-prouhet}
+Let $R$ be a commutative ring, let $s\subseteq\NaturalNumbers$ be finite, and let
+$g\colon\NaturalNumbers\to R$.  With the integer sign $\varepsilon_h$ and each
+natural index mapped into $R$, one has
+\begin{equation}
+ \sum_{h\in s}\varepsilon_hg(h)
+ =\sum_{\substack{h\in s\\ \BinaryDigitSum(h)\ \mathrm{even}}}g(h)
+  -\sum_{\substack{h\in s\\ \BinaryDigitSum(h)\ \mathrm{odd}}}g(h).
+                                                               \label{eq:tm-even-odd-split}
+\end{equation}
+Consequently, if $d,r\in\NaturalNumbers$ and $d<r$, then for every $x,y\in R$,
+\begin{equation}
+ \sum_{\substack{0\le h<2^r\\ \BinaryDigitSum(h)\ \mathrm{even}}}(x+yh)^d
+ =\sum_{\substack{0\le h<2^r\\ \BinaryDigitSum(h)\ \mathrm{odd}}}(x+yh)^d.       \label{eq:tm-even-odd-affine-prouhet}
+\end{equation}
+In particular, setting $x=0$ and $y=1$ gives equality of the $d$th power sums
+of the even- and odd-binary-weight parts of $\{0,\ldots,2^r-1\}$.
+\end{proposition}
+
+\begin{proof}
+Every binary weight is either even or odd, and the two cases are disjoint.  By
+the definition $\varepsilon_h=(-1)^{\BinaryDigitSum(h)}$, the sign is $1$ in
+the first case and $-1$ in the second, which proves
+\eqref{eq:tm-even-odd-split}.  For the full dyadic block, expand the signed
+affine sum as
+\[
+ \sum_{k=0}^{d}\binom dk x^{d-k}y^k
+       \sum_{h<2^r}\varepsilon_hh^k.
+\]
+Every inner moment vanishes because $k\le d<r$.  Thus the left side of
+\eqref{eq:tm-even-odd-split}, with $g(h)=(x+yh)^d$, is zero, and the two
+filtered sums agree.  The raw-power statement is the indicated specialization.
+\end{proof}
+
+The three formal counterparts are respectively
+\lean{sum_thueMorseSign_mul_eq_sum_even_binaryWeight_sub_sum_odd_binaryWeight},
+\lean{sum_even_binaryWeight_affine_pow_eq_sum_odd_binaryWeight_affine_pow}, and
+\lean{sum_even_binaryWeight_pow_eq_sum_odd_binaryWeight_pow}, all in
+\path{ThueMorseSparseProuhet.lean}.  The first is valid on an arbitrary finite
+set; the latter two use the whole dyadic block and the literal strict range
+$d<r$.  No positive-characteristic nonvanishing assumption is needed, because
+these are equalities rather than coefficient-recovery statements.
+
 The binary-support parametrization used next has a canonical global foundation.  Write
 \(\operatorname{bits}(n)=\operatorname{bitSupport}(n)\) and
 \(E(T)=\sum_{j\in T}2^j\) for a finite set \(T\subseteq\NaturalNumbers\).  This support is exactly
@@ -12979,6 +13117,7 @@ Analyticity, inverse, effective inverse continuity, elementary obstruction &
 \path{FabiusInverseQuarterJet.lean},
 \path{FabiusInverseEffectiveContinuity.lean},
 \path{FabiusInverseLogarithmicModulus.lean},
+\path{FabiusInverseExactDyadicModulus.lean},
 \path{EffectiveMonotoneInverse.lean},
 \path{EffectiveGapInverse.lean},
 \path{FabiusInverseComputable.lean},
@@ -13078,7 +13217,8 @@ Dyadic and \(q\)-binomial formulas &
 \path{FabiusDiscreteLimitToeplitz.lean},
 \path{FabiusDiscreteLimitIntegration.lean}\\
 Thue--Morse algebra, finite complex transforms, prefixes, disc series, and
-ring-valued Prouhet identities, including centered symmetric mixed differences &
+ring-valued Prouhet identities, including the even/odd binary-weight partition
+and centered symmetric mixed differences &
 \path{ThueMorseBitSupport.lean}, \path{ThueMorsePrefix.lean},
 \path{ThueMorseBooleanCube.lean}, \path{ThueMorseComplexExponential.lean},
 \path{ThueMorseMixedDifference.lean},

@@ -218,6 +218,7 @@ theorem fabiusUniformSpline_eqOn_cellPolynomial_dyadic
 
 /-! ### From a derivative plateau to a degree bound -/
 
+/-- Iterated derivatives of a polynomial function agree with iterated formal derivatives. -/
 theorem iteratedDeriv_eval_polynomial
     (r : ℕ) (Q : Polynomial ℝ) (x : ℝ) :
     iteratedDeriv r (fun y : ℝ => Q.eval y) x =

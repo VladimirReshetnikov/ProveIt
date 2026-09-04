@@ -109,12 +109,16 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live post-merge 2026-09-01 inventory contains 675 modules and 8,909
+The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
-zero missing doc comments.  Relative to the 610/8,318 activation checkpoint,
-the current tree adds sixty-five modules and 591 declarations.  Relative to
-the earlier 630/8,552 merged checkpoint, concurrent source work adds forty-five
-modules and 357 declarations.  The one-definition/eight-theorem
+zero missing doc comments.  A fresh 2026-09-03 audit for this documentation
+pass scans 901 facade-reachable modules and 11,418 public declarations.  It
+finds no missing module header or declaration comment, including throughout
+`FabiusInverseExactDyadicModulus.lean`.  Relative to
+the 610/8,318 activation checkpoint,
+the current tree adds 291 modules and 3,100 declarations.  Relative to
+the earlier 630/8,552 merged checkpoint, concurrent source work adds 271
+modules and 2,866 declarations.  The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
 `IsRvachevSuperconvergentPhase`,
 `isRvachevSuperconvergentPhase_two_pow_iff`,
@@ -780,6 +784,23 @@ an exact least endpoint-mass denominator.  The third module,
 `EffectiveGapInverse.lean`, contributes 4+4, the eight declarations listed
 above, and supplies the generic rational-gap-to-modulus bridge; its clamped
 extension boundary remains explicit.
+
+`FabiusInverseExactDyadicModulus.lean` contributes two definitions and eight
+theorems.  The definitions are `inverseFabiusExactDyadicDenominator` and
+`inverseFabiusExactLogarithmicDenominator`.  Its exhaustive theorem surface is
+`inverseFabiusExactDyadicDenominator_pos`,
+`inv_inverseFabiusExactDyadicDenominator_le_fabiusAtInverseTwoPow`,
+`inverseFabiusExactDyadicDenominator_isLeast`,
+`abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_exactDyadicDenominator`,
+`exists_fabiusInv_gap_of_lt_exactDyadicDenominator`,
+`inverseFabiusExactDyadicDenominator_isLeast_strictModulus`,
+`inverseFabiusExactLogarithmicDenominator_of_pos`, and
+`abs_fabiusInv_sub_lt_inv_nat_of_lt_exactLogarithmicDenominator`.  The first
+denominator is least only for a fixed dyadic output target; the logarithmic
+`1/n` conclusion is a witness, not a leastness theorem.  Its value at zero is
+the convention `d(0)=1`, with no zero-input modulus conclusion.  The module
+has no named primitive-recursiveness/computability result for the exact
+denominators.
 
 The retained comb-interpolation synthesis PDF is a validated 158-page A4
 historical receipt: the current source includes a post-render update to its

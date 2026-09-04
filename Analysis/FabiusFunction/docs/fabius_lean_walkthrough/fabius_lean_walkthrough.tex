@@ -998,6 +998,38 @@ prove \nolinkurl{SequentiallyComputable} and the combined
 \nolinkurl{IsComputableRealFunction} statement; no input-bit asymptotic is
 claimed.
 
+The adjacent \nolinkurl{FabiusInverseExactDyadicModulus.lean} closes the
+fixed-target ceiling problem without replacing those computable witnesses.
+For a dyadic order \(r\),
+\nolinkurl{inverseFabiusExactDyadicDenominator} is the natural ceiling of the
+reciprocal of the exact rational evaluator at \(2^{-r}\).
+\nolinkurl{inverseFabiusExactDyadicDenominator_pos},
+\nolinkurl{inv_inverseFabiusExactDyadicDenominator_le_fabiusAtInverseTwoPow},
+and \nolinkurl{inverseFabiusExactDyadicDenominator_isLeast} prove positivity,
+the reciprocal endpoint bound, and leastness among positive integer
+denominators satisfying that bound.  Casting the exact evaluator to the real
+Fabius value gives
+\nolinkurl{abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_exactDyadicDenominator}.
+If a positive \(d\) is smaller, the endpoint pair \((0,F(2^{-r}))\) has input
+gap below \(d^{-1}\) and inverse-output gap exactly \(2^{-r}\); this is
+\nolinkurl{exists_fabiusInv_gap_of_lt_exactDyadicDenominator}.  Combining the
+two directions gives
+\nolinkurl{inverseFabiusExactDyadicDenominator_isLeast_strictModulus}, whose
+leastness is only for that fixed dyadic output target.
+
+The second definition,
+\nolinkurl{inverseFabiusExactLogarithmicDenominator}, is \(1\) at zero and is
+the fixed-target ceiling at \(r_{\log}(n)\) when \(n>0\).  The latter equation
+is \nolinkurl{inverseFabiusExactLogarithmicDenominator_of_pos}; composing its
+strict dyadic modulus with \(2^{-r_{\log}(n)}<1/n\) gives
+\nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_lt_exactLogarithmicDenominator}.
+This reciprocal-target theorem is a witness only, not leastness for \(1/n\),
+and no conclusion is asserted at the convention-only input \(n=0\).  The
+module also exports no named primitive-recursiveness or computability theorem
+for either exact denominator.  These two definitions and eight theorems are
+its complete public surface.  This is a source-only overlay: the retained
+walkthrough PDF is historical and was not rebuilt for it.
+
 The generic \nolinkurl{EffectiveMonotoneInverse.lean} layer has exactly two
 public definitions and six theorems.  Its definitions are
 \nolinkurl{SequentiallyComputableOn} and \nolinkurl{unitClamp}; its theorems
@@ -1244,7 +1276,9 @@ not a name-producing algorithm, so this module by itself proves neither
 \nolinkurl{SequentiallyComputable} nor a combined
 \nolinkurl{IsComputableRealFunction} theorem.  The later logarithmic and
 tolerant-bisection modules provide the selector and name-producing algorithm;
-the exact least/ceiling denominator and input-bit complexity remain open.
+the exact-dyadic leaf supplies fixed-target ceiling leastness, while a named
+recursion certificate for that exact denominator and input-bit complexity
+remain open.
 
 \subsection{Generic formal implicit roots versus inverse-Fabius germs}
 \nolinkurl{ImplicitPowerSeries.lean} isolates a purely formal root engine.
@@ -5373,6 +5407,7 @@ Inverse curvature & \nolinkurl{deriv_deriv_fabiusInv}, \nolinkurl{deriv_deriv_fa
 Exact inverse modulus & \nolinkurl{fabiusIntervalMass}, \nolinkurl{strictMonoOn_fabiusIntervalMass_firstHalf}, \nolinkurl{fabiusIntervalMass_eq_fabiusReal_iff}, \nolinkurl{fabiusInv_sub_eq_sub_iff_of_mem_Icc}, \nolinkurl{abs_fabiusInv_sub_le}, \nolinkurl{abs_fabiusInv_sub_eq_iff_of_mem_Icc}, \nolinkurl{sSup_abs_fabiusInv_sub_eq}, \nolinkurl{forall_abs_fabiusInv_sub_lt_iff} & \nolinkurl{InverseModulus.lean}; strict and equality refinements are unit-interval qualified where clamping requires it \\
 Effective dyadic inverse modulus & \nolinkurl{inverseFabiusFactorialDenominator}, \nolinkurl{inverseFabiusDeltaDenominator}, \nolinkurl{fabiusInv_effectivelyUniformContinuous} & \nolinkurl{FabiusInverseEffectiveContinuity.lean}; explicit primitive-recursive continuity modulus, not an inverse realizer \\
 Logarithmic reciprocal inverse modulus & \nolinkurl{inverseFabiusLogarithmicOrder}, \nolinkurl{inverseFabiusLogarithmicFactorialDenominator}, \nolinkurl{inverseFabiusLogarithmicDeltaDenominator}, \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmic}, \nolinkurl{fabiusInv_effectivelyUniformContinuous_logarithmicDelta} & \nolinkurl{FabiusInverseLogarithmicModulus.lean}; least binary-length selector and two primitive-recursive witnesses, not an inverse realizer \\
+Sharp exact dyadic inverse modulus & \nolinkurl{inverseFabiusExactDyadicDenominator}, \nolinkurl{inverseFabiusExactDyadicDenominator_isLeast_strictModulus}, \nolinkurl{inverseFabiusExactLogarithmicDenominator}, \nolinkurl{abs_fabiusInv_sub_lt_inv_nat_of_lt_exactLogarithmicDenominator} & \nolinkurl{FabiusInverseExactDyadicModulus.lean}; exact fixed-target ceiling and endpoint sharpness, with \(1/n\) only a witness and the zero input only a totalization convention \\
 Fixed-depth effective monotone inversion & \nolinkurl{SequentiallyComputableOn}, \nolinkurl{unitClamp}, \nolinkurl{unitClamp_sequentiallyComputable}, \nolinkurl{tolerantDifference_error}, \nolinkurl{tolerantDifference_safe_updates}, \nolinkurl{tolerantDifference_inconclusive}, \nolinkurl{tolerantBisection_correct}, \nolinkurl{effectiveInversionOn_Icc} & \nolinkurl{EffectiveMonotoneInverse.lean}; exact two-definition/six-theorem public surface, with a fixed \(p\)-step dyadic controller consuming a supplied positive computable inverse modulus \\
 Positive-rational-gap effective inversion & \nolinkurl{EffectivelyUniformContinuousOn}, \nolinkurl{ComputablePositiveRationalSequence}, \nolinkurl{ComputablePositiveRationalSequence.value}, \nolinkurl{ComputablePositiveRationalSequence.reciprocalDenominator}, \nolinkurl{ComputablePositiveRationalSequence.reciprocalDenominator_spec}, \nolinkurl{inverseModulus_of_positiveRationalGap}, \nolinkurl{effectiveInversionOn_Icc_of_computablePositiveRationalGap}, \nolinkurl{clampedEffectiveInversion_of_computablePositiveRationalGap} & Exhaustive eight-declaration surface of \nolinkurl{EffectiveGapInverse.lean}; derives the unit-interval modulus and continuity from supplied rational dyadic-gap bounds and certifies exactly the clamped total extension \\
 Computable totalized Fabius inverse & \nolinkurl{fabiusInv_isComputableRealFunction} & \nolinkurl{FabiusInverseComputable.lean}; zero definitions and one theorem combining clamped tolerant-bisection sequential computability with logarithmic-Delta effective uniform continuity \\
@@ -5445,6 +5480,7 @@ Module & Role in the development \\
 \nolinkurl{InverseModulus.lean} & Exhaustive one-definition/thirty-one-theorem structural inverse-modulus layer: global weak and maximal strict fixed-length increment shape, exact endpoint minimizers, constrained-superadditivity equality, unit-interval inverse-gap rigidity, global sharp modulus bounds and attained suprema, and effective injectivity.  The inverse equality loci are deliberately not global because of the clamped tails. \\
 \nolinkurl{FabiusInverseEffectiveContinuity.lean} & Exhaustive two-definition/twelve-theorem effective inverse-continuity layer: primitive-recursive factorial and report denominators, recurrence and endpoint-mass lower bounds, strict and closed global inverse moduli, and \nolinkurl{EffectivelyUniformContinuous}; the inverse remains noncomputable and no sequential realizer or combined computable-function theorem is supplied. \\
 \nolinkurl{FabiusInverseLogarithmicModulus.lean} & Three definitions and fifteen theorems: the primitive-recursive least binary-length order, its exact \nolinkurl{Nat.log2} formula and minimality, factorial and Delta denominators at that order, strict/closed-input reciprocal moduli, and an effective-uniform-continuity theorem for either witness; no exact endpoint-mass ceiling, tolerant-bisection realizer, sequential computability, combined computable-real-function theorem, or input-bit asymptotic. \\
+\nolinkurl{FabiusInverseExactDyadicModulus.lean} & Exactly two definitions and eight theorems: the positive exact endpoint-mass ceiling denominator, its rational bound and arithmetic leastness, its strict inverse modulus, the endpoint counterexample for every smaller positive denominator, fixed-dyadic strict-modulus leastness, and the logarithmic \(1/n\) witness with \(d(0)=1\).  Leastness is only for the fixed dyadic target; no leastness for \(1/n\), zero-input modulus conclusion, named recursion certificate, or input-bit asymptotic is asserted. \\
 \nolinkurl{EffectiveMonotoneInverse.lean} & Exactly two public definitions and six theorems: sequential computability on a set, the computable unit clamp, the difference certificate and its safe-update and inconclusive-success consequences, fixed-depth dyadic tolerant-bisection correctness, and the abstract unit-interval inversion theorem.  The abstract theorem consumes a positive computable inverse modulus. \\
 \nolinkurl{EffectiveGapInverse.lean} & Exactly eight public declarations: effective uniform continuity on a set; a computable positive rational sequence, its value and reciprocal denominator with specification; the rational-gap inverse modulus; unit-interval sequential computability plus effective continuity; and the total computability of the clamped extension. \\
 \nolinkurl{FabiusInverseComputable.lean} & Zero public definitions and exactly one theorem, \nolinkurl{fabiusInv_isComputableRealFunction}: the total inverse preserves computable real sequences by clamping and tolerant bisection and has the logarithmic-Delta effective continuity modulus. \\
@@ -5802,6 +5838,13 @@ the exact endpoint-mass ceiling, tolerant bisection, sequential computability,
 combined computable-real-function theorem, and input-bit asymptotics remain
 outside that leaf.  No aggregate checkpoint is fabricated for this merged
 surface.
+The subsequent \nolinkurl{FabiusInverseExactDyadicModulus.lean} source-only
+row has exactly two definitions and eight theorems.  It closes the exact
+fixed-dyadic ceiling, endpoint counterexample, and target-specific strict
+leastness, and composes them with the logarithmic selector to obtain a
+reciprocal \(1/n\) witness.  It does not export a named recursion certificate,
+claim leastness for \(1/n\), or assert a modulus at its convention-only zero
+input.  The retained walkthrough PDF predates this row.
 The still later compiled current-tree tranche
 \nolinkurl{EffectiveMonotoneInverse.lean} and
 \nolinkurl{FabiusInverseComputable.lean} has exactly the two-definition,
@@ -5900,7 +5943,9 @@ intermediate census is therefore 672/8,875.  The subsequent
 5+14 \nolinkurl{BinaryWordInversions.lean}, 2+8
 \nolinkurl{BoxPartitions.lean}, and 0+5
 \nolinkurl{TelescopingCertificate.lean} leaves add three modules and thirty-four
-declarations, giving the live 675/8,909 census.  No aggregate facade build is claimed for this
+declarations, giving the historical 675/8,909 census.  A fresh source audit of
+the post-merge tree reports 901/11,418, with every one of those modules
+reachable from the facade.  No aggregate facade build is claimed for this
 current-tree census.  The retained PDF and the title-page pin remain historical
 receipts and do not claim parity with the merged source.
 

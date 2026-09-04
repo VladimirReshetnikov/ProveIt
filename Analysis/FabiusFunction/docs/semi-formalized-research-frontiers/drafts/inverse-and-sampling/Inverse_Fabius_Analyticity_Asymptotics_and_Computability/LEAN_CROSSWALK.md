@@ -8,6 +8,12 @@ The audit inspected the actual Lean source files below Analysis/FabiusFunction/L
 
 The inverse-computability tranches were checked by focused compilation of `EffectiveMonotoneInverse`, `EffectiveGapInverse`, `FabiusInverseComputable`, and the facade before this source-only bookkeeping pass. No Lean, Lake, or Git command was run during the bookkeeping update itself. Human-proved frontier result means that the canonical chapter contains a complete human-readable proof but the inspected Lean tree has only partial ingredients or no matching declaration.
 
+`FabiusInverseExactDyadicModulus` was inspected declaration-by-declaration in
+this source-only pass.  Its upstream verification is taken as given; no Lean,
+Lake, or Git command was run here.  It supplies a nearly complete formal kernel
+for `co:prop:exact-dyadic-modulus`, but it has no named theorem establishing the
+recursiveness claimed by that proposition.
+
 The first ten columns of theorem_concordance.csv remain field-for-field identical to audit/source_result_inventory.csv: 194 rows were compared and no immutable-field difference was found.
 
 ## Status vocabulary
@@ -142,15 +148,50 @@ Several paper rows contain multiple clauses. For those rows, the principal decla
 
 ## Formal kernels of stronger human-proved results
 
-The following two canonical results have substantial Lean ingredients, but the
+The following three canonical results have substantial Lean ingredients, but the
 full paper statement is stronger than the cited declaration. They are therefore
 classified as human-proved frontier results, and their Lean fields are
 deliberately blank in the concordance.
 
 | Canonical result | Formal kernel | Unformalized bridge or clause |
 |---|---|---|
+| `co:prop:exact-dyadic-modulus` | `FabiusFunction.FabiusInverseExactDyadicModulus` defines the exact fixed-order ceiling denominator, proves its positivity, rational endpoint bound, arithmetic and strict-modulus leastness, gives the explicit endpoint counterexample for every smaller positive denominator, and composes it with the least logarithmic order to obtain the positive-input `1/n` witness. | The proposition additionally says the logarithmic exact denominator is recursive.  The module exports no named `Primrec` or computability theorem for either exact denominator, so the whole proposition is not promoted. |
 | `is:p3:prop:local-factorization` | `FabiusFunction.IntegerZeroLocalFactorization.Fabius.rvachevFourierProduct_int_add_factorization` proves the denominator-cleared integer-zero factorization; adjacent declarations construct the analytic cofactor and its derivative engine. | The same proposition includes the normalized exponential local form and its explicit logarithmic jet. |
 | `is:p3:thm:first-defect` | `FabiusFunction.CombDefectSeries.Fabius.tsum_shifted_monomial_sub_integral_odd` proves the odd-alias representation, and `FabiusFunction.CombFirstDefect.Fabius.iteratedDeriv_rvachevFourierProduct_nat_mul_int_of_odd` evaluates the surviving derivative. | No named declaration assembles the evaluated complex series and both displayed sine/cosine forms. |
+
+### Exact-dyadic kernel inventory
+
+The new module's complete public surface has two definitions and eight
+theorems.  Each declaration contributes a distinct clause to the formal kernel:
+
+- `Fabius.inverseFabiusExactDyadicDenominator` defines the natural ceiling of
+  the reciprocal of the exact rational endpoint mass at a fixed dyadic order.
+- `Fabius.inverseFabiusExactDyadicDenominator_pos` proves it is positive,
+  including at order zero.
+- `Fabius.inv_inverseFabiusExactDyadicDenominator_le_fabiusAtInverseTwoPow`
+  proves its rational reciprocal is at most the exact endpoint mass.
+- `Fabius.inverseFabiusExactDyadicDenominator_isLeast` proves arithmetic
+  leastness among positive natural denominators satisfying that bound.
+- `Fabius.abs_fabiusInv_sub_lt_inverse_two_pow_of_lt_exactDyadicDenominator`
+  gives the global strict inverse modulus for the fixed target `2^-r`.
+- `Fabius.exists_fabiusInv_gap_of_lt_exactDyadicDenominator` gives, for every
+  smaller positive denominator, endpoint witnesses with output gap exactly
+  `2^-r`.
+- `Fabius.inverseFabiusExactDyadicDenominator_isLeast_strictModulus` combines
+  the preceding directions into leastness among strict integer moduli for that
+  fixed dyadic target.
+- `Fabius.inverseFabiusExactLogarithmicDenominator` defines the logarithmic
+  wrapper, using the convention `d(0)=1` and the exact fixed-target denominator
+  at the least logarithmic dyadic order for positive inputs.
+- `Fabius.inverseFabiusExactLogarithmicDenominator_of_pos` states that
+  positive-input identity explicitly.
+- `Fabius.abs_fabiusInv_sub_lt_inv_nat_of_lt_exactLogarithmicDenominator`
+  gives the positive-input output bound below `1/n`.
+
+The last theorem is witness-only: it does not make the logarithmic denominator
+least for the weaker target `1/n`.  The zero value is convention-only, and no
+modulus conclusion is asserted there.  Neither definition has a named
+primitive-recursiveness or computability theorem in this module.
 
 ## Post-source strengthenings
 
@@ -188,7 +229,7 @@ The dyadic singularity atlas `is:p2:prob:dyadic-singularity-atlas` is explicitly
 | Area | Exact Lean core | Missing full bridge |
 |---|---|---|
 | Explicit all-orders inverse endpoint expansion | Full forward all-orders expansion, implicit pullback along the inverse, sharp leading inverse scale, Gamma-zeta periodic data | Explicit inverse coefficient reversion, diagonal formulas, inverse top jets, elasticity hierarchy, W-resummation, Gevrey/transseries theory |
-| Inverse computability | Forward computability, sharp inverse modulus, effective injectivity, explicit effective continuity, tolerant bisection, computable positive-rational gap encoding, derived reciprocal inverse modulus, restricted inverse sequential computability, subset effective uniform continuity, computable clamping, and totalized `IsComputableRealFunction` theorems | Exact endpoint-mass ceiling minimality and input-bit asymptotics |
+| Inverse computability | Forward computability, sharp inverse modulus, effective injectivity, explicit effective continuity, tolerant bisection, computable positive-rational gap encoding, derived reciprocal inverse modulus, restricted inverse sequential computability, subset effective uniform continuity, computable clamping, totalized `IsComputableRealFunction` theorems, and exact fixed-dyadic endpoint-ceiling minimality | A named recursion certificate for the exact ceiling denominator, genuine leastness for the weaker `1/n` target, and input-bit asymptotics |
 | Inverse iterates | Single-inverse nonanalyticity and exact PartitionDefect combinatorics | Every n > 1 iterate theorem, zero-radius transport, spine dominance, formal-reversion radius |
 | Dyadic inverse germs | Exact quarter quantile, analytic quarter germ, complete quarter inverse jet | General reduced-dyadic analytic shadow, nonzero flat remainder, all-dyadic inverse derivatives |
 | Appell and Bernoulli structure | Appell derivative/translation laws, moments, cumulants, continuous deconvolution, polynomial synthesis | Logistic dual, Barnes identifications, full finite-prefix collapse/recovery, some displayed Bernoulli recurrences |
@@ -204,7 +245,7 @@ The direct inverse-spine asymptotic remains the one inverse-iterate conjecture. 
 
 ## Highest-value next formalizations
 
-1. Formalize exact endpoint-mass ceiling minimality and the asymptotically sharp input-bit requirement on top of the existing inverse-modulus bounds.
+1. Prove a named primitive-recursiveness or computability theorem for the exact logarithmic ceiling denominator, and formalize the asymptotically sharp input-bit requirement; fixed-dyadic ceiling minimality itself is now closed.
 2. Build a generic asymptotic series-reversion layer with Bell-polynomial coefficient extraction, then instantiate it with the existing forward Lambert expansion.
 3. Prove positive convergence-radius preservation under formal compositional inversion and use it for the iterate Taylor-radius transport theorem.
 4. Formalize the Q-factorization and analytic spine estimates on top of PartitionDefect; the existing defect theorems do not by themselves prove iterate nonanalyticity.
