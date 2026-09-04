@@ -127,7 +127,6 @@ theorem sincZetaCoeff_le_of_le {N r : ℕ} (hNr : N ≤ r) :
         ((r : ℝ) + 1) := by
     rw [sincZetaCoeff]
     field_simp
-    ring
   rw [hsplit, sincZetaTailConst, div_le_div_iff₀ hr hr,
     mul_div_assoc]
   have hz' : evenZeta (r + 1) * ((4:ℝ) ^ (r + 1) / (4 ^ (r + 1) - 1)) ≤

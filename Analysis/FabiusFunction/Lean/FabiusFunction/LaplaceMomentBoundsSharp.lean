@@ -155,8 +155,11 @@ theorem abs_dyadicEndpointLaplaceLogError_add_secondOrder_le_sharp
   have hnr : (5329 : ℝ) ≤ n := by exact_mod_cast hn
   have hr0 : 0 < Real.sqrt (n : ℝ) := Real.sqrt_pos.mpr hn0
   have hrr : Real.sqrt (n : ℝ) * Real.sqrt n = n := Real.mul_self_sqrt hn0.le
-  have hr73 : (73 : ℝ) ≤ Real.sqrt n :=
-    (Real.le_sqrt (by norm_num)).mpr (by linarith)
+  have hsq73 : Real.sqrt (5329 : ℝ) = 73 := by
+    rw [show (5329 : ℝ) = 73 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]
+  have hr73 : (73 : ℝ) ≤ Real.sqrt n := by
+    rw [← hsq73]
+    exact Real.sqrt_le_sqrt (by linarith)
   have hsecond := dyadicEndpointSecondOrder_sq_le F hF hn2
   have hhigher := dyadicHigherLaplaceMoments_le_sharp F hF hn2
   have hsecond_nonneg : 0 ≤ dyadicEndpointSecondOrder F n := by
@@ -207,8 +210,11 @@ theorem abs_dyadicEndpointLaplaceLogError_add_secondOrder_le_sharp'
   have hn0 : (0 : ℝ) < n := by exact_mod_cast (show 0 < n by omega)
   have hnr : (5329 : ℝ) ≤ n := by exact_mod_cast hn
   have hr0 : 0 < Real.sqrt (n : ℝ) := Real.sqrt_pos.mpr hn0
-  have hr73 : (73 : ℝ) ≤ Real.sqrt n :=
-    (Real.le_sqrt (by norm_num)).mpr (by linarith)
+  have hsq73 : Real.sqrt (5329 : ℝ) = 73 := by
+    rw [show (5329 : ℝ) = 73 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]
+  have hr73 : (73 : ℝ) ≤ Real.sqrt n := by
+    rw [← hsq73]
+    exact Real.sqrt_le_sqrt (by linarith)
   have htail : 208896 / ((n : ℝ) * Real.sqrt n) ≤ 2862 / (n : ℝ) := by
     rw [div_le_div_iff₀ (by positivity) hn0]
     nlinarith [mul_le_mul_of_nonneg_left hr73 hn0.le]

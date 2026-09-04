@@ -166,7 +166,6 @@ theorem prod_abs_sin_div_two_pow_le (K : ℕ) (y : ℝ) :
         have harg : π * 2 ^ j * (y / 2 ^ m) = π * y / 2 ^ (m - j) := by
           rw [hsplit]
           field_simp
-          ring
         simp only [harg, Nat.add_sub_cancel]
       rw [Finset.prod_congr rfl hterm]
       exact Finset.prod_range_reflect
