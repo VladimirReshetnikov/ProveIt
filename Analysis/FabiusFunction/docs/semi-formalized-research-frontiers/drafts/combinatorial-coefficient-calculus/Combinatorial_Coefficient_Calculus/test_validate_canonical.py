@@ -12,6 +12,7 @@ from validate_canonical import (
     environment_blocks,
     strip_comments,
     validate_duplicate_crosswalks,
+    validate_register_totals,
 )
 
 
@@ -72,6 +73,45 @@ class DuplicateCrosswalkTests(unittest.TestCase):
         findings = self.diagnose(item, item, item)
         self.assertEqual([finding.line for finding in findings], [5, 8])
         self.assertTrue(all("line 2" in finding.message for finding in findings))
+
+
+class RegisterTotalsTests(unittest.TestCase):
+    def diagnose(self, summary: str, rows: str):
+        report = Report(Path.cwd())
+        source = (r"\section{Lean formalization register}" + "\n" + summary + "\n" + rows
+                  + "\n" + r"\backmatter")
+        validate_register_totals(Path("fixture.tex"), strip_comments(source), report)
+        return report.findings
+
+    def test_counts_labelled_and_unlabelled_rows(self):
+        rows = (r"\Cref{a} & A & Lean & proof \\" + "\n"
+                + r"lemma (unlabelled, no.~1) & B & none &  \\" + "\n"
+                + r"\Cref{c} & C & partial & partial proof \\")
+        self.assertEqual(self.diagnose(
+            "Current totals: 1 Lean, 1 partial, 1 none, of 3 results.", rows), [])
+
+    def test_stale_distribution_with_correct_total_is_rejected(self):
+        rows = r"\Cref{a} & A & Lean & proof \\"
+        findings = self.diagnose("Current totals: 0 Lean, 1 partial, 0 none, of 1 results.", rows)
+        self.assertEqual([finding.code for finding in findings], ["LEAN_REGISTER_TOTALS"])
+
+    def test_wrong_total_is_rejected(self):
+        findings = self.diagnose("Current totals: 0 Lean, 0 partial, 0 none, of 1 results.", "")
+        self.assertEqual([finding.code for finding in findings], ["LEAN_REGISTER_TOTALS"])
+
+    def test_comments_do_not_count_as_rows(self):
+        rows = "% " + r"\Cref{old} & Old & Lean & proof \\"
+        self.assertEqual(self.diagnose(
+            "Current totals: 0 Lean, 0 partial, 0 none, of 0 results.", rows), [])
+
+    def test_missing_summary_is_rejected(self):
+        findings = self.diagnose("No totals.", "")
+        self.assertEqual([finding.code for finding in findings], ["LEAN_REGISTER_SUMMARY"])
+
+    def test_missing_register_is_rejected(self):
+        report = Report(Path.cwd())
+        validate_register_totals(Path("fixture.tex"), "No register.", report)
+        self.assertEqual([finding.code for finding in report.findings], ["LEAN_REGISTER_MISSING"])
 
 
 if __name__ == "__main__":

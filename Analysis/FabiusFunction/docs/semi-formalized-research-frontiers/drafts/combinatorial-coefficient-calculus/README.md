@@ -118,10 +118,12 @@ complete human proofs and exact declaration crosswalks. Three private rational
 helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
 caller refactor has now passed its own direct Lean check as well.
 
-The register contains 204 rows: 59 marked Lean, 34 partial, and 111 without a
-Lean counterpart. The earlier classifications are inherited; this checkpoint
-adds three compiler-backed entries and does not claim a fresh build of the whole
-corpus. The final structural/provenance validator passes with 204 adjacent
+The register contains 204 rows: 63 marked Lean, 32 partial, and 109 without a
+Lean counterpart. The grid and CRT certificates add two compiler-backed entries;
+the other classifications are inherited, not a fresh build of the whole
+corpus. Regeneration also corrected a stale summary: the preceding rows already
+contained 61 Lean entries and 32 partial entries, despite a 59/34 header.
+The final structural/provenance validator passes with 204 adjacent
 proofs, 27 disposition records, and six original-source inventory rows. PDF
 rebuilding remains deferred at the user's request.
 
@@ -136,16 +138,24 @@ specializations over every commutative rational algebra. They replace the
 rational-only helpers in `NorlundDiagonal` without changing their names. The
 manuscript supplies full coefficient proofs and an exact crosswalk.
 
-The pending `AbelPolynomialSeries` source constructs a solution over every
+The compiled `AbelPolynomialSeries` source constructs a solution over every
 commutative rational algebra, derives coefficients for every solution, and
 proves the full EGF and binomial identity including degree zero. The new
 `BernoulliFormalLog` source derives the rational formal logarithm of the
 Bernoulli kernel using the existing recurrence-to-logarithm bridge. Its
 coefficient formula separates degree zero and preserves the distinction between
-the two degree-one Bernoulli conventions. These two modules and the affected
-Norlund, Lambert, and ThueMorse callers still await compilation; independent
-source reviews are not compiler validation, and their register classifications
-have not been promoted on that basis.
+the two degree-one Bernoulli conventions. The Abel target passed a focused
+build; `BernoulliFormalLog` and the complete affected-dependent closure have
+not been rebuilt for this checkpoint. Independent source reviews are not
+compiler validation, and no further register row is promoted here.
+
+`GridEvaluationCertificate` and `IntegerCRTCertificate` supply nine compiled
+public theorems, each with only the standard project axioms. Their full human
+statements and proofs remain grouped in the two existing certificate theorems:
+grid uniqueness over any integral domain, and product-divisibility plus
+zero/equality certificates for signed pairwise-coprime integer moduli.
+The zero test uses the stronger full-product bound. The adjacent discussion now
+distinguishes probabilistic identity testing from exact grid certificates.
 
 The human moment-cumulant proof now states its normalization and positive-degree
 boundaries explicitly, with formal logarithm identities separated from the
