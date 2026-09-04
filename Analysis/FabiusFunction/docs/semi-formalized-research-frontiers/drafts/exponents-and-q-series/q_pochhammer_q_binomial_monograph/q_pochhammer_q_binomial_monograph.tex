@@ -2,6 +2,15 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+% Lean names contain Unicode subscripts (eval₂, ₁, ₃, ...).  They are verbatim
+% inside \path and \nolinkurl, but a \texttt row typesets them normally, so
+% they must be declared or the build dies with "not set up for use with LaTeX".
+\DeclareUnicodeCharacter{2080}{\ensuremath{_0}}
+\DeclareUnicodeCharacter{2081}{\ensuremath{_1}}
+\DeclareUnicodeCharacter{2082}{\ensuremath{_2}}
+\DeclareUnicodeCharacter{2083}{\ensuremath{_3}}
+\DeclareUnicodeCharacter{2084}{\ensuremath{_4}}
+\DeclareUnicodeCharacter{2099}{\ensuremath{_n}}
 \usepackage{amsmath,amssymb,mathtools,amsthm,mathrsfs}
 \input{../../../../fabius-notation.tex}
 \IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
@@ -871,6 +880,12 @@ $\sum_{j\ge0}\sum_{m\ge0}\AbsoluteValue a^m\AbsoluteValue q^{j(m+1)}
 ($\sum_{m\ge1}a^m/(m(1-q^m))=-\sum_j\log(1-aq^j)$ for $|a|,|q|<1$), with the exponentiated
 form \path{Fabius.exp_neg_tsum_lambert_eq_qPochhammerInfIn}; the derivative clause is
 \path{Fabius.hasDerivAt_qPochhammerInfIn_lambert} (\path{QPochhammerLogDerivative.lean}).
+The identity is also available in the closed exponential shape the chapter uses,
+\((a;q)_\infty=\exp\bigl(-\sum_{r\ge1}a^{r}/(r(1-q^{r}))\bigr)\):
+\path{Fabius.qPochhammerInfIn_eq_cexp_lambert} in \path{QPochhammerLambertForm.lean}, with the
+self-argument case \path{Fabius.qPochhammerInfIn_self_eq_cexp_lambert} and real forms
+\path{Fabius.qPochhammerInfIn_eq_rexp_lambert} and
+\path{Fabius.qPochhammerInfIn_self_eq_rexp_lambert}.
 
 
 \begin{remark}[Branches]\label{rem:lambert-log-branch}
@@ -6609,9 +6624,9 @@ In the quotient on the right of \eqref{eq:regular-central-sum}, all powers of $1
 same principal complex power \(q^z=\exp(z\log q)\), and
 \path{Fabius.hasSum_regularCentralQBinomial} proves the displayed infinite
 sum for \(0<q<1\).  Its single parameter premise is exactly
-\[
- \path{qPochhammerInfIn ((q : Complex) ^ (alpha + 1)) ((q : Complex) ^ 2) != 0}.
-\]
+\begin{center}
+\path{qPochhammerInfIn ((q : Complex) ^ (alpha + 1)) ((q : Complex) ^ 2) != 0}.
+\end{center}
 By \path{Fabius.qPochhammerInfIn_eq_zero_iff}, this says simultaneously that
 every displayed generalized \(q\)-number denominator is nonzero: the excluded
 complex lattice is
@@ -6657,9 +6672,9 @@ Since $\Gamma((\alpha+3)/2)=((\alpha+1)/2)\Gamma((\alpha+1)/2)$ and $\Gamma(1/2)
 \end{proof}
 \emph{Lean status.}  Not formalized.  Although
 \Cref{thm:regular-central-sum} is now exact, the corpus still has neither
-Gauss's classical \({}_2F_1\) summation at (z=1) nor the required
-(q\to1^-) limit of its (q)-gamma quotient.  In particular,
-\path{ClassicalHypergeometricLimit.lean} carries only the (q\to1)
+Gauss's classical \({}_2F_1\) summation at \(z=1\) nor the required
+\(q\to1^-\) limit of its \(q\)-gamma quotient.  In particular,
+\path{ClassicalHypergeometricLimit.lean} carries only the \(q\to1\)
 degeneration of \({}_r\phi_{r-1}\) to \({}_rF_{r-1}\), with its
 nonterminating case confined to \(\lVert z\rVert<1\).
 
