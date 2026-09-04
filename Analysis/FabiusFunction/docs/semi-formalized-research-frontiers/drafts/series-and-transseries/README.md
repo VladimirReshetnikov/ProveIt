@@ -68,6 +68,13 @@ Shared vocabulary turned out to be a weak signal, and an intermediate stage of
 this merge was misled by it; the volume records the correction rather than
 quietly fixing it.
 
+The source now also carries a statement-level Lean crosswalk for the abstract
+asymptotic-scale and Poincaré-expansion core, flatness and invisible functions,
+the Hahn-series order foundations, polynomial--logarithmic height estimates,
+Wright omega (apart from real analyticity), differential-block integration,
+staircase inversion, and residual/error transport. These scoped matches do not
+turn unrelated human proofs or frontier statements into Lean results.
+
 What the inversion apparatus genuinely adds over the calculus is the
 exponential–power model and its axiomatized dominant core, the monomial
 α-reduction, perturbed inversion around an exactly invertible core, the

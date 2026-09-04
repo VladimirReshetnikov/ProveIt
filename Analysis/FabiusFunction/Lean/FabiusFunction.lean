@@ -1391,13 +1391,15 @@ leaf.  Its public surface is `Appell.sum_thueMorseSign_mul_eval_poly`,
 are finite rational coefficient identities, total at depth zero; they add no
 analytic generating-function or convergence claim.
 
-`DyadicBoundaryIdentity` is an exhaustive zero-definition/two-theorem leaf.
+`DyadicBoundaryIdentity` is an exhaustive zero-definition/three-theorem leaf.
 `prod_complexSinc_prefix_mul_rvachevFourierProduct` clears the finite sinc
 prefix against the rescaled product, and
 `rvachevFourierProduct_dyadic_boundary` composes that result with the
 integer-zero factorization to give the entire denominator-cleared boundary
-identity for every natural shell and complex displacement.  No nonvanishing
-hypothesis is needed until one passes to a quotient formulation.  These two
+identity for every natural shell and complex displacement.  The third theorem,
+`norm_rvachevFourierProduct_dyadic_boundary`, is the volume's quotient form on
+the real range where its denominator is nonzero.  No nonvanishing hypothesis
+is needed until one passes to that quotient formulation.  These three
 upstream API descriptions do not change any source-coverage status.
 
 The probabilistic layer is closed at the level of measures.  The up-measure

@@ -256,6 +256,15 @@ Shared vocabulary is a weak signal: two results both called
 "Lagrange–Bürmann" turned out to be different theorems, and a mechanical
 concordance reports them as the same. Only reading the statements settles it.
 
+The current source adds a scoped Lean crosswalk rather than a title-based one.
+It identifies exact counterparts for the abstract asymptotic-scale and
+Poincaré-expansion core, flatness and invisible functions, the relevant
+Hahn-series foundations, polynomial--logarithmic height estimates, Wright omega
+apart from real analyticity, differential-block integration, staircase
+inversion, and residual/error transport. Each note records its boundary; the
+crosswalk does not promote the volume's remaining human proofs or frontier
+claims wholesale.
+
 What the inversion apparatus genuinely adds over the calculus is the
 exponential–power model and its axiomatized dominant core, the monomial
 α-reduction, perturbed inversion around an exactly invertible core, the

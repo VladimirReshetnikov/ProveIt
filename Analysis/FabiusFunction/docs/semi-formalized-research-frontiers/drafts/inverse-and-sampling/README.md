@@ -223,8 +223,9 @@ ledger is now 181 Exact / 79 Partial / 14 None / 8 interface rows, its relevant
 Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and its source concordance
 is 103 Lean-proved / 375 human-proved frontier / 60 non-applicable / 9
 conjectures.  The preceding finite-prefix checkpoint was 923/11,610.  The
-retired source layouts remain immutable
-provenance only; the source is newer than the retained historical PDF.
+retired source layouts remain immutable provenance only. The first-merge
+inverse receipt is historical and the current source requires rerender; the
+comb receipt remains current.
 
 `QuarterCatalanGerm.lean` proves that the distinguished rational quarter germ
 becomes the Catalan inverse of `X + 4 X^2` under the exact `9/4` parameter

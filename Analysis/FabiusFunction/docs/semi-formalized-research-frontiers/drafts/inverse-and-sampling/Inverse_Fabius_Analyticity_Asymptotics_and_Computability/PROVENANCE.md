@@ -84,7 +84,7 @@ theorem.
 
 ## Canonical source and synchronized publication artifact
 
-The current canonical master `inverse_fabius_theory.tex` has 293 lines and
+At the first-merge receipt, the canonical master `inverse_fabius_theory.tex` had 293 lines and
 11,514 bytes and SHA-256
 `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`.
 Its independently measured `b899` recursive TeX closure has 17 files, 10,682

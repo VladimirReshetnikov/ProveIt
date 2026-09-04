@@ -179,7 +179,7 @@ the historical pre-RatFunc checkpoint 923/11,610, and the one-definition/
 four-theorem global RatFunc leaf gave the historical 924/11,615 checkpoint.
 Two theorems added to `ProbabilityLaplaceMoments.lean` then gave 924/11,617,
 and the one-definition/one-theorem Legendre--Rvachev biorthogonality leaf gave
-the historical 925/11,619 checkpoint.  Later merged source work contributes
+the historical 925/11,619 checkpoint. Later merged source work contributes
 the zero-definition leaves `QPochhammerLambertForm` 0+5,
 `CentralQVandermondeInfinite` 0+4, `TriangularPowerProduct` 0+2,
 and `MeanValueBracket` 0+6; the 1+12 `ThueMorseNewmanSelfSimilarity` leaf; and
@@ -1362,7 +1362,9 @@ the manuscript's `X`, not a new arbitrary-random-variable wrapper.  The moment
 theorem does not assert the `n=0` case.
 
 `RvachevLegendreBiorthogonality.lean` then adds one source module and exactly
-one definition plus one theorem, giving the historical 925/11,619 checkpoint.  Its
+one definition plus one theorem, giving the historical 925/11,619 checkpoint.
+The live inventory after all later upstream work and exact-name deduplication is
+952/11,884. Its
 exhaustive public surface is `rvachevLegendreAnalysisKernel` and
 `rvachevLegendreBiorthogonality`, both in `Fabius`.  For
 clarity, the former is literally the normalized kernel
