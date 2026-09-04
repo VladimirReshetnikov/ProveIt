@@ -38740,8 +38740,30 @@ instances with $\varepsilon$ a sinusoid of exactly the permitted Lipschitz
 constant, the ratio of the true displacement to the bound reached $0.9999$.
 So the denominator $m-\theta$ is the right one and cannot be improved to $m$.
 
-Not formalized: part (2), the first-order law \eqref{p0:eq:transport-first-order},
-which needs $f_0\in C^{2}$ and a second-order Taylor estimate.
+Part (2), \eqref{p0:eq:transport-first-order}, is formalized as well, as
+\lean{Fabius.transport_first_order} --- and formalizing it showed that it does
+\emph{not} need the second-order Taylor estimate the proof above reaches for.
+The mean value point already gives
+\begin{equation}\label{p0:eq:transport-exact}
+ x-x_0=-\frac{\varepsilon(x_0)}{f'(\xi)},
+\end{equation}
+which is \emph{exact}, so the whole of $E$ is the mismatch between $f'(\xi)$ and
+$f_0'(x_0)$ --- a perturbation $\varepsilon'(\xi)$ and a curvature
+$M_2|\xi-x_0|$.  Two consequences.  The hypothesis $f_0\in C^{2}$ is not used:
+what the argument consumes is a Lipschitz bound on $f_0'$, which is weaker, and
+which \lean{Fabius.lipschitzOn_of_abs_deriv_le} supplies from $|f_0''|\le M_2$.
+And part (1) is not an input to part (2): the same $\xi$ that gives
+\eqref{p0:eq:transport-exact} gives \eqref{p0:eq:transport-bound} too, so the
+two parts are siblings rather than a chain.
+
+The bound is close to sharp.  Over four hundred random instances with $f_0$ of
+controlled curvature and $\varepsilon$ a sinusoid at exactly the permitted
+Lipschitz constant, $|E|$ reached $0.92$ of the stated bound, mean $0.28$, with no
+violations.
+
+Still not formalized: the closing asymptotic clause, that $\varepsilon(x)=\bigO(x^{-M-1})$
+and $\varepsilon'(x)=\littleo(1)$ give
+$x-x_0=-\varepsilon(x_0)/f_0'(x_0)\,(1+\littleo(1))$.
 \end{remark}
 
 \begin{corollary}[Forward truncation to inverse accuracy]
