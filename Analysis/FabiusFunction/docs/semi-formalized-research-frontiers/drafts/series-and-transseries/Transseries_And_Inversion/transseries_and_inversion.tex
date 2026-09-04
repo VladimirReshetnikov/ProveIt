@@ -38968,6 +38968,28 @@ over the same index set.  The summands are identical term by term.  Both
 sources then define the complete polynomial as $\sum_{k=0}^{n}$ of the
 partial one, so those agree too.
 \end{proof}
+\emph{Lean status: the question does not arise in the corpus, and that is itself the
+answer.}  There is one partial Bell polynomial in the corpus,
+\lean{Fabius.partialBell}, and it is defined by neither of the multinomial sums compared
+here: its definition is the block-of-the-largest-element recurrence
+\eqref{plt:eq:bell-comtet-rec}.  What ties it to \emph{both} sides of
+\eqref{q3:eq:bell-same} is that the corpus proves the generating characterizations that
+each of \cref{p0:def:ebell} and \cref{plt:def:bell-partial} offers as its own
+characterization: \lean{Fabius.bellWeightSeries_pow} is
+\eqref{p0:eq:ebell-egf-partial} and \eqref{plt:eq:bell-egf} at once, and
+\lean{Fabius.exp_subst_bellWeightSeries} is \eqref{p0:eq:ebell-egf-complete} and
+\eqref{plt:eq:bell-complete-egf} at once.  Since
+\lean{Fabius.partialBell_eq_of_bellWeightSeries_pow_eq_egf} shows those identities
+determine the coefficients, any object satisfying either characterization is
+\lean{Fabius.partialBell}, which is the content of the proposition.
+
+The gap to be honest about: what is \emph{not} formalized is the equivalence of the
+multinomial sum with the recurrence, in either notation.  The corpus takes the recurrence
+as primitive and derives the generating identity from it; neither
+\eqref{p0:eq:ebell-def} nor \eqref{plt:eq:bell-partial-def} appears formally.  So the
+formal statement is that the two \emph{characterizations} pin down one object, not that
+the two displayed sums are termwise equal.
+
 
 \begin{remark}[What is done about it]\label{q3:rem:bell-action}
 Nothing is deleted.  \Cref{p0:def:ebell} additionally records the two
@@ -39010,6 +39032,34 @@ the existence clause are proved there and are not stated in
 since \eqref{q3:eq:one-sided} says nothing when $f'$ is unbounded above and
 asserts no existence.
 \end{proof}
+\emph{Lean status.}  Formal, and the comparison the proposition draws is visible in the
+module structure.  The one-sided implication~\eqref{q3:eq:one-sided} is
+\lean{Fabius.abs_sub_right_inverse_le_div} in \lean{MeanValueBracket.lean}, and the
+matching lower bound under a two-sided bracket is
+\lean{Fabius.div_le_abs_sub_right_inverse}; both are stated for an arbitrary function on
+an arbitrary convex set, with the exact solution supplied as a right inverse.
+
+The third clause --- that the residual is a \emph{certificate}, so that no separate
+existence argument is needed --- is \lean{BackwardErrorExistence.lean}, and it is the one
+place where the two statements genuinely differ rather than merely differing in strength.
+\lean{Fabius.exists_eq_of_residual} produces the root: if \(f\) is continuous on
+\([a,b]\), its increments grow at least at rate \(m>0\)
+(\lean{Fabius.HasSlopeLowerBound}), and the ball of radius \(\lvert r\rvert/m\) about the
+candidate lies in \([a,b]\), then \(f=y\) somewhere in that ball.
+\lean{Fabius.exists_eq_and_abs_sub_le} is \eqref{q3:eq:one-sided} with the existence
+hypothesis \emph{discharged} rather than assumed, which is precisely the proposition's
+claim, and \lean{Fabius.existsUnique_eq_of_residual} adds uniqueness, since
+\lean{Fabius.injOn_of_hasSlopeLowerBound} makes a positive slope bound force injectivity.
+
+Two remarks on the formal shape.  The hypothesis is a slope condition, not a derivative
+bound, so no differentiability is needed anywhere in the existence argument;
+\lean{Fabius.hasSlopeLowerBound_of_le_deriv} and \lean{Fabius.exists_eq_of_le_deriv}
+recover the differentiable case from the mean value theorem.  And the sign of the residual
+does more work here than it does in \cref{q1:prop:certificate}: there it is diagnostic,
+telling one whether the candidate overshoots; here it \emph{selects the half-interval} on
+which the intermediate value theorem is applied, since the slope bound guarantees that
+\(f\) has already crossed \(y\) by the time it reaches the far end of that half.
+
 
 \begin{remark}[Where the difference is used]\label{q3:rem:transfer-use}
 The lower bound is what makes a residual a two-sided measurement rather than
