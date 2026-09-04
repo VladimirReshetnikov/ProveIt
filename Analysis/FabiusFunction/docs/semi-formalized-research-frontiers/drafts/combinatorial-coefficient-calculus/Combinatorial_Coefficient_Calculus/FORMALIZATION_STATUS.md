@@ -6,6 +6,12 @@ canonical claim register is the **Lean formalization register** section of
 Mathematical statements and proofs belong in the TeX/PDF pair. The register's
 status words are recorded correspondence claims, not a fresh compilation receipt.
 
+The merge of main at `28de4e51c` retains the nine compiled grid/CRT certificate
+theorems from `5a685136b`. Its regenerated register has 207 rows: 62 `Lean`,
+35 `partial`, and 110 `none`; the corpus census is 985 modules and 12,199 public
+declarations. The pinned checkpoint counts and pending-build receipts below
+describe their historical source states, not a rebuild of this merged tree.
+
 ## Inventory and evidence boundary
 
 The initial source snapshot contains 201 theorem-like environments: 150 theorems,
@@ -50,31 +56,34 @@ skipped in this work at the user's request, without discarding the upstream
 render or claiming current render parity.
 
 The present merge preserves the independently compiled Bell-normalization,
-Bell-support, Cauchy-polynomial, and second-kind reverse-row correspondences.
+Bell-support, Cauchy-polynomial, and second-kind reverse-row correspondences and
+adds the compiled Bell set-partition interpretation.
 Together with the upstream results above, the regenerated 207-row register is
-classified as 63 `Lean`, 36 `partial`, and 108 `none`. The compiled
+classified as 68 `Lean`, 35 `partial`, and 104 `none`. The compiled
 `StirlingSecondReverseRow.second_reverse_row` is the declaration used to close
-the manuscript's reverse-row identity. The separately merged
-`StirlingSecondReverseRowIdentity` source contains the collision-free alternate
-`second_reverse_row_commRing_of_le` plus the stronger `second_reverse_row_sum`;
-it remains pending validation and contributes no additional status upgrade.
+the manuscript's reverse-row identity over the integers, and its compiled
+`second_reverse_row_commRing` transports the identity to every commutative ring
+for every `n`, including `n < k` where both sides vanish. The separately merged
+`StirlingSecondReverseRowIdentity.second_reverse_row_sum` and its triangular
+generic wrapper have also passed focused compilation. The wrapper now reuses
+the all-boundary ring theorem, removing a separate private rational derivation.
 
 `NewtonReciprocal.lean` passed focused compilation on 2026-09-04 using
 `lake env lean -o .lake/build/lib/lean/FabiusFunction/NewtonReciprocal.olean
 Analysis/FabiusFunction/Lean/FabiusFunction/NewtonReciprocal.lean` (exit zero).
-Its five public theorems are compiler-checked. The other twelve new public
-theorems in the three Stirling/Lagrange leaves remain source-reviewed and await
-compilation, including any missing prerequisites. No aggregate build is claimed.
+Its five public theorems are compiler-checked. At that checkpoint the other twelve
+new public theorems in the three Stirling/Lagrange leaves awaited compilation.
+The two reverse-row identity declarations have since passed the focused check
+above; no aggregate build is claimed.
 At the upstream synchronization checkpoint the cited-name and duplicate-name
 structural audits passed:
 3,439 distinct cited names resolved and there were no duplicate declaration
-names. The incoming alternate reverse-row declaration is now named
-`Fabius.second_reverse_row_commRing_of_le`, avoiding a collision with the
-compiled theorem while its own validation remains pending. The facade audit found two missing upstream imports,
+names. The generic `Fabius.second_reverse_row_commRing` has since passed focused
+compilation. The facade audit found two missing upstream imports,
 `AssociahedronFaceNumbers` and `PochhammerFalling`; both were restored. These
 structural checks are not a fresh aggregate Lean build. The reviewed new modules
-contain no `sorry`, `admit`, `axiom`, or `opaque` declarations; import integration
-for the alternate reverse-row source remains part of its pending validation. The register-generator mappings
+contain no `sorry`, `admit`, `axiom`, or `opaque` declarations. Both reverse-row
+modules now pass focused compilation on their merged sources. The register-generator mappings
 preserve the pending and compiled distinctions; a dry run on a temporary source
 copy reproduces the canonical register and its 207-row totals.
 

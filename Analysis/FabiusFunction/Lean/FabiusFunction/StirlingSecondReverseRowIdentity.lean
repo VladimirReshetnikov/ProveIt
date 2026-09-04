@@ -11,11 +11,10 @@ recurrence here. With `u = exp X - 1`, the shared series is
 
 The Stirling transform reads its coefficients without a bivariate generating
 function. A single factorial identity identifies the resulting kernel with
-the negative-binomial weights in the source. The final theorem uses exactly
-the finite upper-triangular row, so every term has larger lower index than
-the entry being recovered. Its coefficients are integers: transporting the
-rational proof through `ℤ` gives the final recurrence over every commutative
-ring, without a characteristic-zero hypothesis.
+the negative-binomial weights in the source, giving the unrestricted rational
+kernel sum `second_reverse_row_sum`. The triangular commutative-ring form is a
+short corollary of the stronger all-boundary theorem in
+`StirlingSecondReverseRow`.
 -/
 
 set_option autoImplicit false
@@ -49,7 +48,7 @@ private theorem reverseRowKernel_factorial (k j : ℕ) :
   have hj1 : (j : ℚ) + 1 ≠ 0 := by positivity
   have hj2 : (j : ℚ) + 2 ≠ 0 := by positivity
   field_simp [hk, hn, hj1, hj2]
-  linear_combination (-1 : ℚ) ^ (j + 2) * hc
+  linear_combination hc
 
 private theorem egfA_reverseRowKernel (k : ℕ) :
     egfA ℚ (reverseRowKernel k) =
@@ -115,6 +114,7 @@ private theorem reverseRow_series (k : ℕ) :
     ring
   rw [egfA_reverseRowKernel, subst_mul hu, subst_C, subst_mul hu,
     subst_pow hu, subst_X hu, subst_logTail, hleft, hder, hmul, pow_succ]
+  simp only [PowerSeries.C_apply]
   ring
 
 /-- The reverse-row recurrence as a finite Stirling transform. It is valid
@@ -130,53 +130,17 @@ theorem second_reverse_row_sum (n k : ℕ) :
   rw [egfA_subst_exp_sub_one] at h
   exact (congrFun (seq_eq_of_egfA_eq ℚ h) n).symm
 
-private theorem second_reverse_row_rat (n k : ℕ) (hk : 1 ≤ k) (hkn : k ≤ n) :
-    ((n : ℚ) - k) * Nat.stirlingSecond n k =
-      ∑ i ∈ range (n - k),
-        (-1 : ℚ) ^ (i + 2) * i.factorial * (k + i + 1).choose (i + 2) *
-          Nat.stirlingSecond n (k + i + 1) := by
-  obtain ⟨q, rfl⟩ : ∃ q, k = q + 1 := ⟨k - 1, by omega⟩
-  rw [second_reverse_row_sum]
-  rw [← Nat.Ico_zero_eq_range,
-    ← Finset.sum_Ico_consecutive _ (Nat.zero_le (q + 2))
-      (show q + 2 ≤ n + 1 by omega), Nat.Ico_zero_eq_range]
-  have hzero :
-      (∑ m ∈ range (q + 2), (Nat.stirlingSecond n m : ℚ) *
-        (if q + 2 ≤ m then
-          (-1 : ℚ) ^ (m - q) * (m - q - 2).factorial * m.choose q
-        else 0)) = 0 := by
-    apply Finset.sum_eq_zero
-    intro m hm
-    rw [if_neg (by have := Finset.mem_range.mp hm; omega), mul_zero]
-  rw [hzero, zero_add, Finset.sum_Ico_eq_sum_range,
-    show n + 1 - (q + 2) = n - (q + 1) by omega]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [if_pos (by omega), show q + 2 + i - q = i + 2 by omega,
-    Nat.add_sub_cancel, show q + 2 + i = q + (i + 2) by omega,
-    Nat.choose_symm_add]
-  rw [show q + (i + 2) = q + 1 + i + 1 by omega]
-  ring
-
-/-- The finite reverse-row recurrence of the second kind, over every
-commutative ring, with source index `j = i + 2`. Its factor
-`(-1)^j * choose (k+j-1) j` is the generalized binomial coefficient
-`choose (-k) j`. Every Stirling entry on the right is strictly to the right
-of column `k`, and the sum is empty at the diagonal. This generic, triangular
-version has a distinct name from the all-boundary integer theorem
-`second_reverse_row` in `StirlingSecondReverseRow`. -/
+/-- Triangular-domain compatibility form of `second_reverse_row_commRing`.
+The additional hypothesis records the source's natural range but is not
+needed by the stronger all-boundary theorem. -/
 theorem second_reverse_row_commRing_of_le {R : Type*} [CommRing R]
     (n k : ℕ) (hk : 1 ≤ k) (hkn : k ≤ n) :
     ((n : R) - k) * Nat.stirlingSecond n k =
       ∑ i ∈ range (n - k),
         (-1 : R) ^ (i + 2) * i.factorial * (k + i + 1).choose (i + 2) *
           Nat.stirlingSecond n (k + i + 1) := by
-  have hz : ((n : ℤ) - k) * Nat.stirlingSecond n k =
-      ∑ i ∈ range (n - k),
-        (-1 : ℤ) ^ (i + 2) * i.factorial * (k + i + 1).choose (i + 2) *
-          Nat.stirlingSecond n (k + i + 1) := by
-    exact_mod_cast second_reverse_row_rat n k hk hkn
-  simpa only [map_sub, map_mul, map_sum, map_pow, map_neg, map_one, map_natCast] using
-    congrArg (Int.castRingHom R) hz
+  have _ := hkn
+  exact second_reverse_row_commRing n k hk
 
 end
 

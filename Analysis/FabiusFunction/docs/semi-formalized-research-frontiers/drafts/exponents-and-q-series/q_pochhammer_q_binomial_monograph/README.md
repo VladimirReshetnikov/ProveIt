@@ -189,7 +189,7 @@ The source at that historical checkpoint includes exhaustive crosswalks for
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
 theorems), `QBinomialTheoremInfinite` (one definition and twenty-seven
-theorems), `GaussianBinomialFixedColumnRate` (zero definitions and eight
+theorems), `GaussianBinomialFixedColumnRate` (zero definitions and nine
 theorems), `GaussianBinomialGreaterOneAsymptotics` (zero definitions and two
 theorems), `GaussianBinomialPalindromic` (zero definitions and fourteen
 theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
@@ -523,8 +523,9 @@ negative integral parameters are admitted: field-totalized `qGammaC` makes
 the displayed quotient zero there, matching the product side, without
 asserting holomorphy at a pole.
 
-`GaussianBinomialFixedColumnRate.lean` has no definitions and exactly eight
+`GaussianBinomialFixedColumnRate.lean` has no definitions and exactly nine
 theorems. Its exhaustive public surface is
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp'`,
 `norm_finiteQPochhammerIn_pow_sub_one_le`,
 `norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
 `norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
@@ -533,8 +534,8 @@ theorems. Its exhaustive public surface is
 `gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
 `gaussianBinomial_fixedColumn_error_isBigO`, and
 `gaussianBinomial_shifted_fixedColumn_error_isBigO`. This closure additionally
-reuses `norm_finiteQPochhammerIn_pow_sub_one_le_exp` and
-`tendsto_gaussianBinomial_add_atTop` from the one-definition,
+reuses `norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` and
+`tendsto_gaussianBinomial_add_const_atTop` from the one-definition,
 twenty-seven-theorem `QBinomialTheoremInfinite` module. The imported
 exponential bound and the rate leaf's elementary bound give the generic
 finite-product defect; the latter seven declarations give the denominator-free

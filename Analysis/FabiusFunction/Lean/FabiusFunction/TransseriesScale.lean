@@ -87,7 +87,8 @@ theorem IsPoincareExpansion.isLittleO_succ_remainder
   exact hO.trans_isLittleO (hs.isLittleO_succ N)
 
 /-- **`q0:eq:coefficients`.**  Each coefficient is the limit of the normalized
-remainder. Along a nontrivial filter this determines the coefficient
+remainder. For vector-valued coefficients, normalization is inverse scalar
+multiplication. Along a nontrivial filter the limit determines the coefficient
 uniquely, as recorded by `IsPoincareExpansion.coeff_unique`. -/
 theorem IsPoincareExpansion.tendsto_coeff
     (hs : IsAsymptoticScale l φ) (h : IsPoincareExpansion l φ f a) (N : ℕ) :

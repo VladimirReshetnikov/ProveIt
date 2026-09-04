@@ -59,16 +59,16 @@ variable {α : Type*} [CommMonoid α] [PartialOrder α] [IsOrderedCancelMonoid �
 
 /-- **`q0:lem:neumann`, first half.**  The product of two well-based sets is
 well-based. -/
-@[to_additive neumann_add_isPWO
-  /-- The additive form: `A + B` is well-based when `A` and `B` are. -/]
+@[to_additive neumann_add_isPWO /-- **`q0:lem:neumann`, additive first half.**
+The sum of two well-based sets is well-based. -/]
 theorem neumann_isPWO {A B : Set α} (hA : A.IsPWO) (hB : B.IsPWO) : (A * B).IsPWO :=
   hA.mul hB
 
 /-- **`q0:lem:neumann`, second half.**  Every element of `A * B` has only
 finitely many factorizations with one factor in each set.  This is what makes
 the convolution defining a Hahn-series product a finite sum. -/
-@[to_additive neumann_finite_decompositions
-  /-- The additive form: finitely many decompositions `c = a + b`. -/]
+@[to_additive neumann_finite_decompositions /-- **`q0:lem:neumann`, additive second half.**
+Every element of `A + B` has only finitely many decompositions with one summand in each set. -/]
 theorem neumann_finite_factorizations {A B : Set α} (hA : A.IsPWO) (hB : B.IsPWO) (c : α) :
     (Set.mulAntidiagonal A B c).Finite :=
   Set.MulAntidiagonal.finite_of_isPWO hA hB c

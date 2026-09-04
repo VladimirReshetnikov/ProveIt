@@ -11,9 +11,9 @@ repair, and donor retirement have all occurred.  Every row of
 directories have been deleted, and the live package has contracted to the
 single canonical TeX/PDF location.  The canonical source continues to evolve;
 its register now accounts for 207 theorem-like or algorithm items, classified
-as 63 Lean, 36 partial, and 108 none.  The retained PDF is historical, and no
-current source/PDF parity is claimed because rebuilding was deferred at the
-user's request.
+as 68 Lean, 35 partial, and 104 none.  The retained PDF is historical; current
+source/PDF parity requires a new build unless the prior deferral is extended to
+this merge.
 
 The six intake TeX files are research-frontier manuscripts.  Their theorem and
 proof environments are human-readable mathematical writing, not evidence of
@@ -69,8 +69,7 @@ The earlier 174-page PDF was a historical consolidation render. Upstream
 subsequently supplied a rebuilt PDF at its own checkpoint; that artifact is
 retained, but the merged Stirling, Nörlund, Bell, and Cauchy-polynomial source
 edits postdate it.
-No current render parity is claimed, and further PDF building remains skipped
-in this work at the user's request. Render and compiler evidence are separate:
+No current render parity is claimed. Render and compiler evidence are separate:
 PDF parity and adjacent proof environments do not establish Lean verification.
 Original arrival PDFs remain recoverable through the inventory's immutable
 Git locators.

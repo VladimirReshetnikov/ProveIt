@@ -48,14 +48,15 @@ provenance records remain permitted.
 
 ## Fixed-26 publication checkpoint
 
-**User-directed deferral (2026-09-04).** PDF regeneration and remaining
-publication gates are deferred to prioritize the requested merge of
-`origin/main`. Existing PDFs, including generated outputs whose validation
-was interrupted, are retained without a new source/render-parity claim.
-The inventory below records the preceding frozen-source publication work;
-pending rows are not accepted publication receipts.
+**Historical user-directed deferral (2026-09-04; prior merge).** PDF
+regeneration and remaining publication gates were deferred to prioritize that
+merge of `origin/main`. Existing PDFs, including generated outputs whose
+validation was interrupted, are retained without a new source/render-parity
+claim. The inventory below records that earlier frozen-source publication
+work; pending rows are not accepted publication receipts. Fresh regeneration
+for the present merged source is in progress; parity requires final gates and receipts.
 
-**Fixed-26 publication checkpoint (2026-09-04; publication work deferred).** This is
+**Fixed-26 publication checkpoint (2026-09-04; historical deferral).** This is
 the historical inventory for the 26 publication roots affected by the source
 union at the time of deferral.  Fourteen rows required fresh build cycles; twelve rows
 retain verified pairs whose full source/input graph and PDF are byte-identical
@@ -449,10 +450,11 @@ evaluated reciprocity, nonnegative-nome lower and strict-contraction upper
 bounds, and dimension-dominant two-sided estimates for real nomes greater than
 one. Its positivity input is the already-counted
 `finiteQPochhammerIn_self_pos` imported from `GeneralQConditionNumber.lean`.
-`GaussianBinomialFixedColumnRate.lean` adds no definitions and ten theorems:
+`GaussianBinomialFixedColumnRate.lean` adds no definitions and nine theorems:
 two generic product-defect bounds, the denominator-free relative Gaussian
-estimate, fixed and shifted nonasymptotic additive errors, the shifted limit,
-and four fixed/shifted relative/additive Big-O wrappers. The ring-level bounds
+estimate, fixed and shifted nonasymptotic additive errors, and four
+fixed/shifted relative/additive Big-O wrappers. The unprimed exponential bound
+and shifted limit are owned by `QBinomialTheoremInfinite.lean`. The ring-level bounds
 need a multiplicative norm, the quotient statements need a normed field with
 `‖q‖ < 1`, and every result includes `q = 0`.
 `GaussianBinomialGreaterOneAsymptotics.lean` adds no definitions and two
@@ -661,7 +663,7 @@ formalization status per result.
 
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical, editorial consolidation complete:** *Combinatorial Coefficient Calculus* — the current 207-row formalization register records 63 Lean, 36 Partial, and 108 None rows. The retained 174-page A4 PDF is an earlier render; rebuilding is deferred by user instruction and no merged-current parity is claimed. | Six-source provenance and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip`; `SOURCE_INVENTORY.csv` records immutable Git locators for all six inputs, including the five retired donors. The mutable checksum closure is retired. |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical, editorial consolidation complete:** *Combinatorial Coefficient Calculus* — the current 207-row formalization register records 68 Lean, 35 Partial, and 104 None rows. The retained 174-page A4 PDF is an earlier render; fresh regeneration is in progress and no merged-current parity is claimed before its final gates and receipt. | Six-source provenance and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip`; `SOURCE_INVENTORY.csv` records immutable Git locators for all six inputs, including the five retired donors. The mutable checksum closure is retired. |
 
 ## exponents-and-q-series — `exponents-and-q-series/`
 

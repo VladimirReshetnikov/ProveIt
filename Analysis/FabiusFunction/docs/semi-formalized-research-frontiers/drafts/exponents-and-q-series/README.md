@@ -1190,7 +1190,7 @@ seventeen theorems cover absolute convergence, the interval and exact support,
 mean one half, reflection, the conditioning/CDF equation and exterior values;
 the affine fixed-point theorem uses a fresh canonical-law copy independent of
 the head coordinate. The fixed-column row is likewise Exact: the new
-zero-definition/eight-theorem rate leaf adds explicit nonasymptotic estimates
+zero-definition/nine-theorem rate leaf adds explicit nonasymptotic estimates
 and all four relative/additive Big-O forms, including `q = 0`, while reusing the
 exponential product bound and shifted limit from the one-definition,
 twenty-seven-theorem `QBinomialTheoremInfinite` surface. Both the retained
@@ -1239,7 +1239,7 @@ compatibility spelling of its primary identity),
 `QPochhammerInfinite.lean` (one definition, 29 theorems),
 `QBinomialReciprocity.lean` (four theorems),
 `GaussianBinomialBounds.lean` (zero definitions, six theorems),
-`GaussianBinomialFixedColumnRate.lean` (zero definitions, eight theorems),
+`GaussianBinomialFixedColumnRate.lean` (zero definitions, nine theorems),
 `GaussianBinomialPalindromic.lean` (zero definitions, fourteen theorems),
 `GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
 `GaussianBinomialCumulants.lean` (two definitions, twenty-four theorems),
@@ -1608,8 +1608,9 @@ closed, and `GaussianBinomialGreaterOneAsymptotics.lean` closes the compound
 greater-than-one row at its exact fixed-column and central normalizations. The
 primitive-root value in the Babbage corollary is exact, while its derivative
 clause keeps that compound row Partial.
-`GaussianBinomialFixedColumnRate.lean` adds no definitions and exactly eight
-theorems: `norm_finiteQPochhammerIn_pow_sub_one_le`,
+`GaussianBinomialFixedColumnRate.lean` adds no definitions and exactly nine
+theorems: `norm_finiteQPochhammerIn_pow_sub_one_le_exp'`,
+`norm_finiteQPochhammerIn_pow_sub_one_le`,
 `norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
 `norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
 `norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`,
@@ -1617,8 +1618,8 @@ theorems: `norm_finiteQPochhammerIn_pow_sub_one_le`,
 `gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
 `gaussianBinomial_fixedColumn_error_isBigO`, and
 `gaussianBinomial_shifted_fixedColumn_error_isBigO`. The closure reuses
-`norm_finiteQPochhammerIn_pow_sub_one_le_exp` and
-`tendsto_gaussianBinomial_add_atTop` from the one-definition,
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` and
+`tendsto_gaussianBinomial_add_const_atTop` from the one-definition,
 twenty-seven-theorem `QBinomialTheoremInfinite.lean` module. Together they give
 the generic product defect, denominator-free relative estimate, explicit
 fixed/shifted additive errors, shifted limit, and all four relative/additive

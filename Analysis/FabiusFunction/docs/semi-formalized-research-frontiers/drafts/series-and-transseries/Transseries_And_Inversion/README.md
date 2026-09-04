@@ -2,10 +2,10 @@
 
 **Single consolidated volume for the whole `series-and-transseries` group.**
 `transseries_and_inversion.tex` is the canonical editable source. The retained
-711-page A4 PDF is a 4 September 2026 publication checkpoint. The current
-55,985-line canonical source has 3,125 distinct labels and includes later
-merged source-only Lean crosswalks; the retained artifact is therefore
-historical and no current source/render parity is claimed.
+711-page A4 PDF is a 4 September 2026 publication checkpoint. A later
+source-only snapshot reached 55,985 lines and 3,125 distinct labels; the
+merged canonical source is newer. The retained artifact is therefore
+historical and no current source-size, label-count, or render parity is claimed.
 
 ## Status
 
@@ -26,8 +26,8 @@ absorbed each; the repair appendix lists every correction made.
 
 ## Lean formalization inventory
 
-The live corpus census is 970 modules and 12,051 explicit public declarations,
-with zero missing declaration comments and zero missing module headers. The
+The live corpus census and zero-gap result are computed by
+`scripts/doc_audit.py` and pinned in `docs/doc_audit_baseline.json`. The
 thirty-five directly relevant modules contain 304 explicit public commands; two
 named `to_additive` declarations bring this inventory to 306 named API entries.
 Automatically generated structure projections are outside both tallies.
@@ -256,6 +256,13 @@ Shared vocabulary is a weak signal: two results both called
 "Lagrange–Bürmann" turned out to be different theorems, and a mechanical
 concordance reports them as the same. Only reading the statements settles it.
 
+The source also carries a statement-level Lean crosswalk for the abstract
+asymptotic-scale and Poincaré-expansion core, flatness and invisible functions,
+the relevant Hahn-series foundations, polynomial--logarithmic height
+estimates, Wright omega, differential-block integration, staircase inversion,
+and residual/error transport. Each note records its boundary; the crosswalk
+does not promote the volume's remaining human proofs or frontier claims.
+
 What the inversion apparatus genuinely adds over the calculus is the
 exponential–power model and its axiomatized dominant core, the monomial
 α-reduction, perturbed inversion around an exactly invertible core, the
@@ -277,6 +284,17 @@ Catalan identity. The full unordered power–log scale lemma, the all-integer
 Laurent block-antiderivative lemma, and the complete quadratic-core lemma are
 Partial at the boundaries stated in the source. No status promotion should be
 inferred for the surrounding transseries constructions.
+
+The incoming `BellLeibnizTower` and `OrdinaryPartialBell` modules supply the
+abstract Faà di Bruno formula and the ordinary/exponential normalization
+bridge. `TouchardEulerOperator` supplies the Touchard definition, coefficient
+identities, and displayed Euler-operator equation. The backward-error,
+transfer, and Lambert-certificate claims depend on their named existence and
+comparison theorems. The broader Wright-omega, differential-closure,
+harmonic-increment, Cayley, derangement, Lambert-correction and bracket,
+core-inversion, remainder-transport, and staircase claims remain Partial where
+their source clauses exceed the APIs. `LeastTermIndex` supplies neighboring
+ratio and unimodality lemmas, not the full optimal-truncation claim.
 
 ## Structure
 

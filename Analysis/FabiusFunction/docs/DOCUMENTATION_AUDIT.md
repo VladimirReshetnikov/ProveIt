@@ -112,7 +112,7 @@ numbers rather than copying these historical values.
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
 zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans the semantic union of 984 facade-reachable modules and 12,215
+pass scans the semantic union of 987 facade-reachable modules and 12,259
 public declarations.  An earlier frozen upstream checkpoint contained 11,920 declarations; the
 retained unconditional public
 `complexQPochhammerInf_eq_qPochhammerInfIn` bridge in
@@ -198,6 +198,81 @@ exterior-germ branch, the inner-complex 906/11,461 checkpoint was followed by
 the branch-local 907/11,464 checkpoint; its preceding real-MGF and algebraic
 moment-polynomial checkpoints were 905/11,458 and 904/11,457.  These older
 branch-local counts are explicitly historical.
+
+#### Historical incoming proof-inventory checkpoints
+
+The incoming 16-module overlay contains 136 lexically visible public
+declarations: 21 definitions and 115 theorems.  Its exhaustive module counts
+are `BackwardErrorExistence` 1+6, `BellLeibnizTower` 1+5,
+`CayleyTreeFunction` 1+8, `DerangementNearestInteger` 1+7,
+`LambertCorrectionEquation` 2+9, `LambertShiftConcavity` 0+5,
+`LeastTermIndex` 1+6, `LinLogCoreInversion` 4+18,
+`OrdinaryPartialBell` 2+4, `PowerLogCoreInversion` 3+6,
+`RemainderTransport` 0+3, `StaircaseInversion` 0+7,
+`TouchardEulerOperator` 2+8, `TransseriesDifferentialClosure` 2+9,
+`TransseriesHarmonicIncrement` 0+2, and `WrightOmega` 1+12.
+`LaplaceMomentBoundsSharp` was modified in place and is not counted as a new
+module.  Together with 24 in-place declarations, this produced the historical
+960/11,966 checkpoint from 944/11,806.  This is an API inventory, not an
+automatic promotion of wider manuscript claims.
+
+The registered `StirlingCompleteHomogeneous` leaf is 0+8.  It identifies the
+fixed-column Stirling power series with the complete-homogeneous generating
+series, gives the `S(k+r,k)=h_r(1,…,k)` and finite-multiplicity formulas,
+supplies `Fin k` and Mathlib `hsymm` forms, and proves denominator-cleared and
+reciprocal falling-factorial normalizations.  The coefficient layer is over
+commutative semirings, the power-series bridge over commutative rings, and the
+falling-factorial results over fields with `x ≠ 0`; `k=0` is included and the
+`n-k` form assumes exactly `k ≤ n`.  It gave the historical 961/11,974
+checkpoint.
+
+From there, nine incoming modules contribute eight definitions and sixty
+theorems: `CayleyKernel` 1+14, `CayleyLocalCoordinate` 1+7,
+`DivisorTransform` 2+9, `ExpSeriesRecurrence` 1+3,
+`FabiusEndpointTwoTerm` 0+2, `StirlingSeriesCoefficients` 3+12,
+`TransseriesBlockClasses` 0+3, `TransseriesMonomialUniqueness` 0+2, and
+`WrightOmegaTwoOrders` 0+8.  Existing-module changes contributed a net
+fourteen declarations: `AppellSequence` gained eleven and became 3+34,
+`GaussianBinomialFixedColumnRate` transferred one theorem and became 0+9,
+`RemainderTransport` gained one and became 0+4, `TransseriesWellBased` gained
+two written theorems and became 0+7, and `WrightOmega` gained one and became
+1+13.  The two `to_additive` names remain outside the lexical count.  This is
+the historical merged 970/12,056 inventory.
+
+The next seven modules contain eleven definitions and 69 theorems:
+`AbelPolynomialSeries` 2+9, `AssociahedronFaceNumbers` 4+23,
+`BernoulliFormalLog` 0+5, `ExponentialRescaling` 0+4,
+`PochhammerFalling` 1+13, `RaneyNumbers` 4+12, and
+`UnitSeriesPowerRecurrence` 0+3.  Three theorems moved from
+`NorlundDiagonal` to `ExponentialRescaling`, so the net change is +77 and the
+resulting 977/12,133 checkpoint is historical.
+
+The two certificate leaves are exhaustively `GridEvaluationCertificate` 0+4
+and `IntegerCRTCertificate` 0+5.  The grid API is
+`mvPolynomial_eq_of_eval_eq_on_grid`,
+`mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_sub_le`,
+`mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_le`, and
+`mvPolynomial_grid_eval_injective`; it works over any commutative integral
+domain with the stated coordinatewise grid-cardinality bounds.  The integer
+API is `int_prod_dvd_of_pairwise_coprime`,
+`int_eq_zero_of_modEq_zero_of_natAbs_lt_prod`,
+`int_eq_of_modEq_of_natAbs_sub_lt_prod`,
+`int_eq_of_modEq_of_natAbs_add_lt_prod`, and
+`int_eq_of_modEq_of_two_mul_natAbs_lt_prod`.  Signed composite moduli and the
+empty divisibility family are included; the equality certificates retain
+strict magnitude bounds.  No field, characteristic-zero, primality,
+reconstruction, or probabilistic-certificate claim is made.  This is the
+historical 979/12,142 checkpoint.
+
+Finally, the incoming six-module successor consists of
+`NorlundGeneralized` 3+18, `StirlingSymmetricFunctions` 0+4,
+`LagrangeInversionUniqueness` 0+6, `NewtonReciprocal` 1+5,
+`StirlingSecondReverseRowIdentity` 0+2, and
+`TransseriesWrightOmegaTerms` 0+10.  Its 49 new-module declarations and eight
+in-place additions produced the historical 985/12,199 checkpoint.  The
+authoritative current census is the independently recomputed receipt in
+Findings and `docs/doc_audit_baseline.json`; none of these overlapping
+historical counts is added to it arithmetically.
 
 #### Terminating `₂φ₁` reversal and q-Chu--Vandermonde tranche
 
@@ -444,13 +519,12 @@ classical-limit corollary.
 #### Effective fixed-column Gaussian-rate tranche
 
 `GaussianBinomialFixedColumnRate.lean` adds one source module, no definitions,
-and exactly ten theorems:
-`norm_finiteQPochhammerIn_pow_sub_one_le_exp`,
+and exactly nine theorems:
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp'`,
 `norm_finiteQPochhammerIn_pow_sub_one_le`,
 `norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
 `norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
 `norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`,
-`tendsto_gaussianBinomial_add_atTop`,
 `gaussianBinomial_fixedColumn_relativeError_isBigO`,
 `gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
 `gaussianBinomial_fixedColumn_error_isBigO`, and
@@ -466,9 +540,12 @@ shifted nonasymptotic additive bounds, the shifted `Tendsto`, and all four
 relative/additive `IsBigO` results at the rates `q^(n-k+1)` and `q^(n+1)`.
 There is no completeness or `q≠0` hypothesis, and the displayed constant is
 elementary rather than sharp.  Together with the pre-existing
-`tendsto_gaussianBinomial_atTop`, the shifted limit and two relative-error
-theorems discharge every clause of `thm:fixed-column-limit`; the two additive
-theorems are stronger companion estimates.
+`tendsto_gaussianBinomial_atTop`, the imported
+`tendsto_gaussianBinomial_add_const_atTop`, and the two relative-error
+theorems, this discharges every clause of `thm:fixed-column-limit`; the two
+additive theorems are stronger companion estimates.  The unprimed exponential
+bound is likewise now owned by `QBinomialTheoremInfinite.lean` as
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one`.
 
 Together with the prior 905/11,474 branch inventory and the three-declaration
 Lambert leaf, the geometric-uniform and regular-central leaves, and this final
@@ -1920,12 +1997,14 @@ also listed exhaustively above.  The
 `JacobiTripleProduct.lean` 2-definition/25-theorem tranche contains the finite triple-product
 polynomial and field identities, the bilateral Jacobi `HasSum` forms, and the
 pentagonal and paired-pentagonal `HasSum` corollaries.  The
-`QBinomialTheoremInfinite.lean` 1-definition/22-theorem tranche contains the real comparison and
+`QBinomialTheoremInfinite.lean` 1-definition/27-theorem tranche contains the real comparison and
 norm bounds, fixed-column Gaussian limit, Euler product, analytic q-binomial,
 and reciprocal Euler `HasSum` results.  The subsequent
-`GaussianBinomialFixedColumnRate.lean` 0+10 tranche supplies the explicit
-finite-product defect, nonasymptotic fixed/shifted errors, shifted limit, and
-relative/additive geometric-rate results inventoried above.  `QPascalSummation.lean` is 0+4:
+`GaussianBinomialFixedColumnRate.lean` 0+9 tranche supplies the explicit
+finite-product defect, nonasymptotic fixed/shifted errors, and
+relative/additive geometric-rate results inventoried above; the transferred
+unprimed exponential bound and shifted limit are in the preceding module.
+`QPascalSummation.lean` is 0+4:
 `sum_gaussianBinomial_succ_mul`, `sum_gaussianBinomial_succ_mul'`,
 `Commute.gaussianBinomial_left`, and `Commute.gaussianBinomial_right`.
 `QuantumBinomial.lean` is 0+2, namely `quantumPlane_mul_pow` and
@@ -2134,12 +2213,14 @@ an exact least endpoint-mass denominator.  The third module,
 above, and supplies the generic rational-gap-to-modulus bridge; its clamped
 extension boundary remains explicit.
 
-**Deferred publication status.**  The fixed-26 publication check—14 fresh build
-cycles and 12 retained verified pairs—is recorded once in the
+**Publication status.**  The fixed-26 publication check—14 fresh build cycles
+and 12 retained verified pairs—records the prior merge's user-directed
+deferral in the
 [draft manifest](semi-formalized-research-frontiers/drafts/MANIFEST.md#fixed-26-publication-checkpoint).
 A row still marked pending makes no synchronization claim.  The exact older
-receipts below remain historical evidence; under the user-directed deferral,
-the fixed-26 table is an inventory rather than a merged-current parity receipt.
+receipts below remain historical evidence, and the fixed-26 table is an
+inventory rather than a merged-current parity receipt.  Fresh regeneration
+for the present merged source is in progress; parity requires final gates and receipts.
 
 Four direct artifact receipts record the last synchronized pre-9135 source/PDF
 pairs and are now historical because the live sources include the new

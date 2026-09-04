@@ -171,7 +171,7 @@ The current source incorporates exhaustive crosswalks for
 `QPochhammerInfinite` (one definition and twenty-nine theorems),
 `QPochhammerDissection` (zero definitions and two theorems),
 `QBinomialTheoremInfinite` (one definition and twenty-seven theorems),
-`GaussianBinomialFixedColumnRate` (zero definitions and eight theorems),
+`GaussianBinomialFixedColumnRate` (zero definitions and nine theorems),
 `GaussianBinomialGreaterOneAsymptotics` (zero definitions and two theorems),
 `GaussianBinomialPalindromic` (zero definitions and fourteen theorems),
 `GaussianBinomialPolynomialStructure` (zero definitions and five theorems),
@@ -290,12 +290,12 @@ complex lattice `alpha = -1 - 2*j + 2*pi*I*m/log q`, not merely its real
 negative-odd slice. Even negative integral parameters remain admitted, where
 the field-totalized `qGammaC` quotient is zero in agreement with the product
 side; no holomorphy at a pole is claimed. The
-zero-definition/eight-theorem `GaussianBinomialFixedColumnRate.lean` leaf gives
+zero-definition/nine-theorem `GaussianBinomialFixedColumnRate.lean` leaf gives
 the elementary finite-product defect bound, the denominator-free relative
 Gaussian estimate, fixed and shifted nonasymptotic additive errors, and all
 four fixed/shifted relative/additive Big-O wrappers. The closure reuses
-`norm_finiteQPochhammerIn_pow_sub_one_le_exp` and
-`tendsto_gaussianBinomial_add_atTop` from the one-definition,
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` and
+`tendsto_gaussianBinomial_add_const_atTop` from the one-definition,
 twenty-seven-theorem `QBinomialTheoremInfinite.lean` surface. It works over the
 stated generic multiplicative-norm ring or normed-field interfaces and includes
 `q = 0`; the older unshifted limit also remains in

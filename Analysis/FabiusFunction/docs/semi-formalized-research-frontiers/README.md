@@ -78,13 +78,14 @@ The canonical frontier artifacts are:
 > files / 140,223 lines / 6,439,569 bytes, with direct aggregate digest
 > `ae8690ad8d160055cbae36eff96d858f87572d171e7aacf7540d67543998af21`.
 
-> **Deferred publication status.**  The fixed-26 publication check—14 fresh
-> build cycles and 12 retained verified pairs—is recorded once in the
+> **Publication status.**  The fixed-26 publication check—14 fresh
+> build cycles and 12 retained verified pairs—records the prior merge's
+> user-directed deferral in the
 > [fixed-26 publication checkpoint](drafts/MANIFEST.md#fixed-26-publication-checkpoint).
 > A row still marked pending makes no synchronization claim.  The exact older
-> receipts on this page remain historical evidence; under the user-directed
-> deferral, the fixed-26 table is an inventory rather than a merged-current
-> parity receipt.
+> receipts on this page remain historical evidence, and the fixed-26 table is
+> an inventory rather than a merged-current parity receipt.  Fresh regeneration
+> for the present merged source is in progress; parity requires final gates and receipts.
 
 The historical `69b447f7c` publication rebuild touched ten roots: the primary exposition, Lean
 walkthrough, canonical frontier, geometric-q synthesis, canonical q-series
@@ -92,7 +93,7 @@ synthesis, inverse-theory synthesis, comb synthesis, Lambert Guide, Up
 Polynomial Synthesis, and Thue--Morse Atlas. All ten roots have exact
 synchronized source/PDF receipts for that checkpoint in the draft manifest
 and their local records. The merged source closures make those pairs
-historical; the deferred replacement batch is recorded in the fixed-26
+historical; the prior replacement inventory is recorded in the fixed-26
 checkpoint linked above.  Receipts outside that batch remain valid only for
 their named source states.
 
@@ -581,13 +582,12 @@ historical `b899` Up-synthesis and canonical-frontier PDFs; the deferred
 replacement inventory is recorded in the fixed-26 table.
 
 The final source-only `FabiusFunction.GaussianBinomialFixedColumnRate` leaf has
-no definitions and ten theorems:
-`Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp`,
+no definitions and nine theorems:
+`Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp'`,
 `Fabius.norm_finiteQPochhammerIn_pow_sub_one_le`,
 `Fabius.norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
 `Fabius.norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
 `Fabius.norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`,
-`Fabius.tendsto_gaussianBinomial_add_atTop`,
 `Fabius.gaussianBinomial_fixedColumn_relativeError_isBigO`,
 `Fabius.gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
 `Fabius.gaussianBinomial_fixedColumn_error_isBigO`, and
@@ -598,9 +598,12 @@ relative Gaussian bound, the last meaningful even at roots of unity. Over a
 normed field, `‖q‖ < 1` gives fixed and shifted nonasymptotic bounds, shifted
 convergence, and relative/additive `IsBigO` laws at `q^(n-k+1)` and `q^(n+1)`.
 No completeness or `q ≠ 0` hypothesis is imposed, and the constant is not
-claimed sharp. Together with the existing fixed-column limit, these results
-make every clause of `thm:fixed-column-limit` exact; the relative pair encodes
-the two displayed multiplicative `1+O` estimates.
+claimed sharp. Together with the existing fixed-column limit and the
+`QBinomialTheoremInfinite` declarations
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` and
+`tendsto_gaussianBinomial_add_const_atTop`, these results make every clause of
+`thm:fixed-column-limit` exact; the relative pair encodes the two displayed
+multiplicative `1+O` estimates.
 
 The source-only `FabiusFunction.RvachevAppellHasse` leaf has one definition,
 `Fabius.Appell.polynomialTransform`, and exactly fourteen theorems:
