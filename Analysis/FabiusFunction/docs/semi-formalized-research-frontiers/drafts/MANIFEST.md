@@ -26,8 +26,8 @@ declarations and the nine-theorem fixed-column inventory. Its retained
 405-page PDF and `b899` receipt are historical; that correction made no PDF
 or checksum update.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 970
-source modules and 12,133 explicit public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 985
+source modules and 12,199 explicit public declarations, with no missing module headers or
 declaration comments. The reciprocity leaf's 931/11,685 checkpoint remains
 historical; the subsequently merged upstream `DyadicBoundaryIdentity.lean`
 and `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
@@ -85,12 +85,15 @@ leaf still has eight theorems. The later incoming branch recorded 967/12,001 aft
 the three-theorem power-recurrence leaf gave its historical 970/12,051
 checkpoint. These counts overlap the local inventories and are not additive.
 
-The current merged audit is **977 modules and 12,133 explicit public
+The preceding merged audit was **977 modules and 12,133 explicit public
 declarations**, with zero documentation gaps. Relative to 970/12,056, seven
 new leaves contribute 80 declarations while three existing declarations move
 from `NorlundDiagonal.lean` to `ExponentialRescaling.lean`, a net increase
 of 77. The eight-theorem Stirling leaf is retained.
-No new aggregate-build or PDF-parity claim is made.
+The two certificate leaves added nine public theorems at the historical
+979/12,142 checkpoint. The current merged inventory is 985/12,199 after six
+further leaves add 57 declarations. No new aggregate-build or PDF-parity
+claim is made.
 
 The abstract Faà di Bruno result, ordinary Bell normalization, and Touchard
 definition and displayed Euler-operator equation are **Exact**. The real
@@ -465,12 +468,12 @@ evaluated reciprocity, nonnegative-nome lower and strict-contraction upper
 bounds, and dimension-dominant two-sided estimates for real nomes greater than
 one. Its positivity input is the already-counted
 `finiteQPochhammerIn_self_pos` imported from `GeneralQConditionNumber.lean`.
-`GaussianBinomialFixedColumnRate.lean` adds no definitions and eight theorems:
-the elementary product-defect bound, the denominator-free relative Gaussian
+`GaussianBinomialFixedColumnRate.lean` adds no definitions and nine theorems:
+the exponential and elementary product-defect bounds, the denominator-free relative Gaussian
 estimate, fixed and shifted nonasymptotic additive errors, and four
 fixed/shifted relative/additive Big-O wrappers. The closure reuses
-`norm_finiteQPochhammerIn_pow_sub_one_le_exp` and
-`tendsto_gaussianBinomial_add_atTop` from the one-definition,
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` and
+`tendsto_gaussianBinomial_add_const_atTop` from the one-definition,
 twenty-seven-theorem `QBinomialTheoremInfinite.lean` surface. The ring-level
 bounds need a multiplicative norm, the quotient statements need a normed field
 with `‖q‖ < 1`, and every result includes `q = 0`.
@@ -667,9 +670,8 @@ The final pass proved the sharp Bell bound the arrivals had only asserted,
 supplied Euler's limit and the Weierstrass product on which an existing
 polygamma proof silently depended, merged thirteen further donor-only results,
 repaired eight double-superscript errors that had made the source fail to
-compile at all, and completed the notation-catalogue migration. The retained
-174-page PDF is an earlier render; the source has changed since that checkpoint,
-and rebuilding remains deferred at the user's request. None of the manuscript proofs is claimed as Lean
+compile at all, and completed the notation-catalogue migration. The retained upstream PDF is a historical render; the latest merged source
+contains subsequent changes and makes no current source/PDF-parity claim. None of the manuscript proofs is claimed as Lean
 verification; the in-document "Lean formalization register" states the
 formalization status per result.
 
@@ -901,7 +903,7 @@ and 961/11,974 inventories and the incoming branch's 943/11,787, 952/11,881,
 and 952/11,884 inventories, followed by incoming 967/12,001, 969/12,048,
 and 970/12,051, are historical and overlap. The preceding local merged
 970/12,056 inventory is also historical. The reconciled merged
-audit is 977/12,133, with zero documentation gaps, as inventoried above.
+audit is 985/12,199, with zero documentation gaps, as inventoried above.
 In the current semantic union, the subsequent
 zero-definition/two-theorem greater-than-one leaf makes `cor:qgreaterone`
 Exact, and the scaled-geometric polynomial theorem completes
@@ -912,7 +914,7 @@ in `HalfQBinomialRootSimplicity.lean`, composed with the complete rational
 root classification in `HalfQBinomial.lean`, makes
 `cor:halfbase-root-locus` Exact while leaving
 `cor:qbinom-inversion-law` Partial. The live semantic-union facade census is
-977/12,133; the local 961/11,974, 960/11,966, 944/11,806, and 943/11,791
+985/12,199; the local 961/11,974, 960/11,966, 944/11,806, and 943/11,791
 inventories, the preceding local merge 970/12,056, and the incoming
 970/12,051, 969/12,048, 967/12,001, 952/11,884, 952/11,881, and 943/11,787 inventories
 remain historical branch checkpoints. The historical dyadic/Prouhet census
@@ -985,7 +987,7 @@ explicit public commands and two generated names. The later incoming
 snapshot expanded this to thirty-five focused surfaces with 304 explicit
 public commands plus two names generated by `to_additive` (306 named API
 entries). These are historical incoming inventories, not a recount of the
-merged 977/12,133 corpus; the module interfaces below retain their stated
+merged 985/12,199 corpus; the module interfaces below retain their stated
 scope boundaries. The preceding local merge census was 970/12,056.
 
 Fourteen of the fifteen incoming leaves contribute 95 focused declarations:
@@ -1412,8 +1414,8 @@ separate reproducibility work.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `Inverse_Fabius_Analyticity_Asymptotics_and_Computability/` | *Inverse Fabius Theory: Analyticity, Asymptotics, Computability, and Dyadic Sampling* — canonical editorial synthesis of five peer inputs. Its immutable extractor pin is `0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`; all 194 source-result rows are dispositioned (57 Lean-proved, 88 human-proved frontier results, 10 conjectures, 15 open problems, and 24 non-applicable environments). The newest exact rows are `is:p2:thm:TM-uncentered`, `is:p2:cor:Prouhet-canonical`, and `is:p2:thm:TM-centered`, supplied by the source-only zero-definition/eight-theorem `FinitePrefixThueMorseCollapse.lean` module. It certifies the exact uncentered sign and triangular scale, every Prouhet clause, the sign-free centered literal grid, and the all-`N` common-denominator strengthening in the rational coefficient model, without promoting a `HasLaw`, analytic-MGF, or Barnes-identification statement. The preceding `RvachevLaurentLeading.lean` and `FinitePrefixAppellRecovery.lean` modules retain the punctured-limit, symbolic-degree, and algebraic-prefix boundaries recorded above. `ASSET_DISPOSITION.csv` accounts for all 88 source-subgroup files, while the deduplicated asset inventory lists 63 retained payloads. Five post-snapshot results are classified separately in `LEAN_CROSSWALK.md`. The retained, fully reviewed PDF checkpoint has 134 A4 pages and 2,027,726 bytes (SHA-256 `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`). Its historical three-pass page, font, text, and visual gates and the independently checked current 23-input source closure are recorded separately in canonical `VALIDATION.md`; the source changed after that render, so a fresh build is required before synchronization is claimed. | At pre-retirement revision `93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`: `analyticity-and-elementarity/Non_Elementarity_of_the_Fabius_Function/`; `analyticity-and-elementarity/inverse_fabius_iterates_nowhere_analytic/`; `inverse-asymptotics-and-computability/Inverse_and_Sampling_Frontiers/`; `inverse-asymptotics-and-computability/Inverse_Endpoint_All_Orders/`; `inverse-asymptotics-and-computability/Inverse_Fabius_Computability_Report/`. Nested predecessors and arrival archives are recorded in canonical `PROVENANCE.md`; Git history is the byte-level archive. |
-| `comb-interpolation/comb_interpolation_synthesis/` | *Comb Interpolation and Sampling Frontiers: Additive and Geometric Combs in the Fabius--Rvachev System* — canonical editorial synthesis of the former additive-dyadic volume and the three geometric-comb manuscripts. Shared Gaussian--Pascal, Jackson--Newton, Lagrange, stability, Fabius-boundary, quadrature, interpolation, modal, Mellin, regular-variation, spline, reciprocal-product, Euler--Maclaurin, Ruffa, and Thue--Morse material is deduplicated or preserved according to its exact source disposition. Its 180-file inventory and the historical 151-row and current 138-row package inventories are recorded. The current 232-row theorem concordance contains 7 Lean-proved rows, 159 human-proved frontier rows, 20 conjectures, 30 open problems, and 16 non-applicable environments. It promotes `gq:thm:richardson-generating` to `Fabius.geometricLagrangeRichardson_generating` in the source-only 3-definition + 7-theorem module `FabiusFunction.GeometricRichardsonGenerating`, with analytic companion `Fabius.hasSum_geometricLagrangeRichardson_mul_pow`. It also promotes `gq:thm:gaussian-Appell-biorthogonality` and representation `prop:lag-markov` through the source-only 3-definition + 1-abbreviation + 6-theorem module `FabiusFunction.LagrangeRvachevMatrix`; its exact finite identity is `Fabius.lagrangeRvachevEncoderMatrix_mul_decoderMatrix`, while `thm:lag-right-inverse` remains Partial because Lean proves only the finite node-space identity `U B = I`, not a coefficient-space projector identity, and the signed-decoder conclusion remains conditional on a strictly positive row overlap. The source-only 1-definition + 14-theorem `FabiusFunction.RvachevAppellHasse` leaf makes `gq:prop:q-Appell-falling` and `gq:thm:gaussian-Appell-decoder` exact by combining its explicit finite formulas with the existing synthesis theorems; it makes no analytic reciprocal-MGF or decoder-optimality claim. The retained 158-page, 2,456,105-byte A4 PDF (SHA-256 `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`) is a validated historical checkpoint; the chapter-03 notation edit and the later chapter-01 crosswalks postdate it, and no PDF was generated for these source-only updates. Full numerical replay remains separate reproducibility work. | Replaces `Dyadic_Comb_Frontiers/`, `geometric_comb_q_fabius_report/`, `geometric_comb_interpolation_report/`, and `geometric_comb_interpolation_report-3/`; original bytes remain in Git history. |
+| `Inverse_Fabius_Analyticity_Asymptotics_and_Computability/` | *Inverse Fabius Theory: Analyticity, Asymptotics, Computability, and Dyadic Sampling* — canonical synthesis of five peer inputs. All 194 source-result rows are dispositioned: 57 Lean-proved, 88 human-proved frontier, 10 conjectures, 15 open problems, and 24 non-applicable. `ASSET_DISPOSITION.csv` accounts for all 88 source-subgroup files; the deduplicated inventory has 55 retained payloads and eight retired checksum-ledger rows. The first-merge receipt (137 pages; source/aggregate/PDF/log hashes recorded above and in `VALIDATION.md`) remains exact history. The live purpose-specific 23-input source-only closure has been regenerated at `76ac9fd6fadbf8291fe186a111330d098c2ed12ceda67aa32031d424ba67d611`; it has no PDF-parity role. The accepted current source/PDF receipt is in the [authoritative receipt register](#current-post-merge-publication-receipts). | The five retired source layouts remain recoverable at revision `93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`; canonical provenance names every prior path. |
+| `comb-interpolation/comb_interpolation_synthesis/` | *Comb Interpolation and Sampling Frontiers: Additive and Geometric Combs in the Fabius--Rvachev System* — canonical synthesis with a 232-row concordance (7 Lean-proved, 159 human-proved frontier, 20 conjectures, 30 open problems, 16 non-applicable). Its accepted current receipt is root `187L/6724B/a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`, nine-file aggregate `12773L/483551B/cef466ee56f6bb864faaac2244bccf1dbc2fd4032a717b6c81604551c0427309`, passes `153/160/160`, PDF `160pp/2468109B/bb714c8be4b82de2a888e0302da3aaf957b9e885f2c5f59466b3ea5d659e3f71`, and log `1370L/58773B/8df53a7db51c85b7a046c5f58587319095b3d28c61b0091861bdeb1f43b342e3`; the earlier 158-page receipt remains historical. | Replaces `Dyadic_Comb_Frontiers/`, `geometric_comb_q_fabius_report/`, `geometric_comb_interpolation_report/`, and `geometric_comb_interpolation_report-3/`; original bytes remain in Git history. |
 | `fabius_information_frontier/` | *Exact Information Geometry and New Frontiers for the Fabius--Rvachev System* (retained submitted 30-page A4 PDF; current 2,139-line TeX; a 601-line experiment, five data products, and three PDF/PNG figure pairs). Its 18 arrival hashes and 19 later payload hashes distinguish the submitted PDF from subsequent source changes. The information-geometry, entropy, Fisher-information, prefix-code, Thue--Morse, and endpoint layers remain archival manuscript claims pending hostile audit, numerical replay, an exact Lean crosswalk, canonical normalization, and rebuild; manuscript theorem labels do not establish formal verification. | `frontier-compilations/fabius_information_frontier/`; moved here by the thematic reorganization. |
 
 The subgroup `dyadic-up-extraction/` received six reports on 2026-09-02, all

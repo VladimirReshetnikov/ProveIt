@@ -124,9 +124,11 @@ and six original-source inventory rows. PDF building remains skipped for this
 source-only synchronization.
 
 The same-day upstream crosswalk connects the Bell normalization and unit-series
-coefficient formulas to `UnitSeriesBellCoefficients`; its labelled-set partition
-interpretation remains unformalized. That partial result is included in the
-register.
+coefficient formulas to `UnitSeriesBellCoefficients`. The subsequent incoming
+`BellSetPartitions` independently supplies the weighted labelled-set
+interpretation and the Stirling block-count specialization; its compiled
+status is recorded by upstream commit `dd554e5a8`, not a fresh local replay.
+The prescribed-block-size type count remains a separate obligation.
 
 ## Coefficient-calculus campaign (2026-09-04)
 
@@ -158,11 +160,18 @@ proves the full EGF and binomial identity including degree zero. The new
 `BernoulliFormalLog` source derives the rational formal logarithm of the
 Bernoulli kernel using the existing recurrence-to-logarithm bridge. Its
 coefficient formula separates degree zero and preserves the distinction between
-the two degree-one Bernoulli conventions. These two modules and the affected
-Norlund and Lambert callers still await compilation; the ThueMorse caller's
-direct check is recorded by the upstream checkpoint above. Independent
-source reviews are not compiler validation, and their register classifications
-have not been promoted on that basis.
+the two degree-one Bernoulli conventions. The Abel target passed a focused
+build; `BernoulliFormalLog` and the complete affected-dependent closure have
+not been rebuilt for this checkpoint. Independent source reviews are not
+compiler validation, and no further register row is promoted here.
+
+`GridEvaluationCertificate` and `IntegerCRTCertificate` supply nine compiled
+public theorems, each with only the standard project axioms. Their full human
+statements and proofs remain grouped in the two existing certificate theorems:
+grid uniqueness over any integral domain, and product-divisibility plus
+zero/equality certificates for signed pairwise-coprime integer moduli.
+The zero test uses the stronger full-product bound. The adjacent discussion now
+distinguishes probabilistic identity testing from exact grid certificates.
 
 The human moment-cumulant proof now states its normalization and positive-degree
 boundaries explicitly, with formal logarithm identities separated from the

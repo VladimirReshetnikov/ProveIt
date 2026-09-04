@@ -6,6 +6,12 @@ canonical claim register is the **Lean formalization register** section of
 Mathematical statements and proofs belong in the TeX/PDF pair. The register's
 status words are recorded correspondence claims, not a fresh compilation receipt.
 
+The merge of main at `28de4e51c` retains the nine compiled grid/CRT certificate
+theorems from `5a685136b`. Its regenerated register has 207 rows: 62 `Lean`,
+35 `partial`, and 110 `none`; the corpus census is 985 modules and 12,199 public
+declarations. The pinned checkpoint counts and pending-build receipts below
+describe their historical source states, not a rebuild of this merged tree.
+
 ## Inventory and evidence boundary
 
 The initial source snapshot contains 201 theorem-like environments: 150 theorems,
@@ -64,6 +70,18 @@ classifications are inherited certificate work, not promotions from this
 source review. Fourteen validator regression tests and the canonical
 structural/provenance check pass. The manifest and package README now refer
 to the canonical register instead of maintaining competing current totals.
+
+The publication merge then incorporates pinned main
+`ff76c57fa563102804b64c8c8abab90f47b09baf`. Its `BellSetPartitions`
+module supplies the weighted labelled-set interpretation for both partial
+and complete Bell polynomials, and the second-kind Stirling block count.
+That module's focused compilation is recorded in upstream commit
+`dd554e5a8`; this work performed an independent statement/hypothesis review,
+not a fresh compiler replay. Its source changes the previously open
+labelled-partition boundary but does not supply the prescribed-type count.
+The merged register has 208 rows: 63 `Lean`, 35 `partial`, and 110 `none`.
+The new local Bell multiplicity and arbitrary-order Nörlund statements
+remain pending compilation.
 
 `NewtonReciprocal.lean` passed focused compilation on 2026-09-04 using
 `lake env lean -o .lake/build/lib/lean/FabiusFunction/NewtonReciprocal.olean
@@ -177,11 +195,12 @@ source has no further concrete blocker identified, but awaits compilation.
    inverses from the stated unit hypotheses; prove both array products and record
    their exact declarations. Until then distinguish the conditional inverse law
    from the full inverse construction in the register.
-3. **Combinatorial semantics.** Build cardinality or weighted-enumerator bridges
-   for set partitions, cycles, descents, and the recurrence-defined Bell and
-   Stirling arrays. Algebraic recurrences alone cannot certify a counting
-   interpretation. Use a shared finite-set decomposition API rather than proving
-   every interpretation independently.
+3. **Combinatorial semantics.** Reuse the incoming `BellSetPartitions`
+   weighted-set decomposition and Stirling block-count bridge. Remaining
+   obligations include prescribed block-size type counts, the literal partial
+   Bell monomial formula, cycles, and descents. Algebraic recurrences alone
+   cannot certify a counting interpretation; do not duplicate the completed
+   weighted Bell bridge while extending it.
 4. **Darboux analysis.** The corrected analytic-multiplier theorem explicitly
    handles polynomial exceptional exponents; the finite-smoothness subtraction
    theorem assumes a global decomposition and gives an explicit periodic boundary

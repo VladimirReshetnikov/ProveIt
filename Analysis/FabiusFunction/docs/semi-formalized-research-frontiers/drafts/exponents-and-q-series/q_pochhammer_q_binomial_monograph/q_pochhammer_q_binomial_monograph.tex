@@ -6648,7 +6648,7 @@ same principal complex power \(q^z=\exp(z\log q)\), and
 \path{Fabius.hasSum_regularCentralQBinomial} proves the displayed infinite
 sum for \(0<q<1\).  Its single parameter premise is exactly
 \begin{center}
-\path{qPochhammerInfIn ((q : Complex) ^ (alpha + 1)) ((q : Complex) ^ 2) != 0}.
+\nolinkurl{qPochhammerInfIn ((q : Complex) ^ (alpha + 1)) ((q : Complex) ^ 2) != 0}.
 \end{center}
 By \path{Fabius.qPochhammerInfIn_eq_zero_iff}, this says simultaneously that
 every displayed generalized \(q\)-number denominator is nonzero: the excluded
@@ -6696,7 +6696,7 @@ Since $\Gamma((\alpha+3)/2)=((\alpha+1)/2)\Gamma((\alpha+1)/2)$ and $\Gamma(1/2)
 \emph{Lean status.}  Not formalized.  Although
 \Cref{thm:regular-central-sum} is now exact, the corpus still has neither
 Gauss's classical \({}_2F_1\) summation at \(z=1\) nor the required
-\(q\to1^-\) limit of its \(q\)-gamma quotient.  In particular,
+\((q\to1^-)\) limit of its \(q\)-gamma quotient.  In particular,
 \path{ClassicalHypergeometricLimit.lean} carries only the \(q\to1\)
 degeneration of \({}_r\phi_{r-1}\) to \({}_rF_{r-1}\), with its
 nonterminating case confined to \(\lVert z\rVert<1\).
@@ -13898,7 +13898,7 @@ theorems;\\
 \path{QBinomialTheoremInfinite.lean}: one definition and 22 theorems; its
 use of \path{Fabius.finiteQPochhammerIn_zero_left} imports the unique
 declaration from \path{GaussianBinomialAtOne.lean};\\
-\path{GaussianBinomialFixedColumnRate.lean}: zero definitions and eight
+\path{GaussianBinomialFixedColumnRate.lean}: zero definitions and nine
 theorems;\\
 \path{BasicHypergeometricSeries.lean}: two definitions and five theorems;\\
 \path{HeineTransformation.lean}: two definitions and five theorems;\\
@@ -16159,7 +16159,7 @@ convergence}\\[2pt]
 {\footnotesize\texttt{QBinomialTheoremInfinite};
 \texttt{GaussianBinomialFixedColumnRate}; over every normed field for
 \(\lVert q\rVert<1\).  The upstream theorem permits an arbitrary fixed shift;
-the eight-theorem rate leaf supplies the relative wrappers and explicit
+the nine-theorem rate leaf supplies the relative wrappers and explicit
 nonasymptotic \(k\exp(k)\)-bounds.  No \(q\ne0\) premise is used, so the zero
 nome is included.}\\[2pt]
 \Cref{thm:central-fixed-q} & \statuspartial &
@@ -16410,12 +16410,12 @@ $n\ge1$, with the expectation represented by the full-line measure integral}\\[2
 \texttt{complexMGF\_weightedSumDistribution\_eq\_complexGeneratingFunction},
 \texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval\textsubscript{2}\_\allowbreak{}eq\_\allowbreak{}mgf\_\allowbreak{}taylorCoefficient},
 \texttt{geometricUniformComplexMomentProduct},
-\texttt{hasProdLocallyUniformly\_\allowbreak{}geometricUniformComplexMomentProduct}, and
-\texttt{differentiable\_\allowbreak{}geometricUniformComplexMomentProduct}, and
-\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}complexMomentProduct\_\allowbreak{}taylorCoefficient},
-\texttt{geometricUniformExteriorComplexMomentGerm},
-\texttt{analyticAt\_\allowbreak{}geometricUniformExteriorComplexMomentGerm}, and
-\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}exteriorComplexMomentGerm\_\allowbreak{}taylorCoefficient},
+\texttt{hasProdLocallyUniformly\_\allowbreak{}geometricUniformComplexMomentProduct},
+\texttt{differentiable\_\allowbreak{}geometricUniformComplexMomentProduct},
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval}\texttt{\textsubscript{2}}\texttt{\_\allowbreak{}eq\_\allowbreak{}complexMomentProduct\_\allowbreak{}taylorCoefficient},
+\texttt{geometricUniformExterior}\allowbreak{}\texttt{ComplexMomentGerm},
+\texttt{analyticAt\_}\allowbreak{}\texttt{geometricUniformExterior}\allowbreak{}\texttt{ComplexMomentGerm},
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval}\texttt{\textsubscript{2}}\texttt{\_\allowbreak{}eq\_\allowbreak{}exteriorComplexMomentGerm\_\allowbreak{}taylorCoefficient},
 \texttt{geometricUniformMomentRatFunc}, and
 \texttt{qFactorial\_\allowbreak{}mul\_\allowbreak{}geometricUniformMomentRatFunc}\newline
 {\footnotesize\texttt{FabiusComplexMGF};
@@ -16681,7 +16681,7 @@ historical post-Prouhet checkpoint.  Subsequent source-only
 transseries/Catalan and Thue--Morse additions made 943/11,791 the next
 historical checkpoint.  The finalized one-definition/eleven-theorem
 \texttt{TransseriesFlat} module and three integer-zpow theorems in
-\texttt{TransseriesDifferentialBlock} gave the historical census 944/11,806; the merged live census is 977/12,133}\\[2pt]
+\texttt{TransseriesDifferentialBlock} gave the historical census 944/11,806; the merged live census is 985/12,199}\\[2pt]
 \Cref{prop:qF-P-degree-sharp} & \statusexact &
 \texttt{coeff\_geometricUniformMomentPolynomial\_choose\_two},
 \texttt{coeff\_geometricUniformMomentPolynomial\_choose\_two\_sub\_one}, and
@@ -16704,7 +16704,7 @@ Subsequent source-only transseries/Catalan and Thue--Morse additions made
 943/11,791 the next historical checkpoint.  The finalized one-definition/
 eleven-theorem \texttt{TransseriesFlat} module and three integer-zpow theorems
 in \texttt{TransseriesDifferentialBlock} gave the historical facade census 944
-modules and 11,806 public declarations; the merged live census is 977/12,133}\\[2pt]
+modules and 11,806 public declarations; the merged live census is 985/12,199}\\[2pt]
 \Cref{cor:qF-halfbase-dictionary} & \statuspartial &
 \texttt{fabiusAtInverseTwoPow\_eq\_halfMoment},
 \texttt{halfQPochhammer\_eq\_mersenne\_div}\newline

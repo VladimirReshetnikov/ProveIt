@@ -11,9 +11,10 @@ see its
 or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf).
 
 > **Artifact status (2026-09-04).**  The live facade union contains exactly
-> 977 source modules and 12,133 explicit public declarations.  The live audit
-> reports no missing module headers or declaration comments.  The previous
-> reconciled 970/12,056 inventory remains a historical checkpoint.  The exact-dyadic inverse,
+> 985 source modules and 12,199 explicit public declarations.  The live audit
+> reports no missing module headers or declaration comments.  The preceding
+> 979/12,142, 977/12,133, and earlier reconciled 970/12,056 inventories remain historical
+> checkpoints.  The exact-dyadic inverse,
 > Jacobi two-square, Lagrange--Rvachev Matrix, geometric Richardson,
 > Gaussian-binomial second-moment, fixed-column rate, and half-base root
 > simplicity, Rvachev--Appell Hasse,
@@ -278,8 +279,16 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > `ExponentialRescaling` 0+4, `PochhammerFalling` 1+13,
 > `RaneyNumbers` 4+12, and `UnitSeriesPowerRecurrence` 0+3.  Its 80 new-module
 > declarations are offset by three declarations relocated from
-> `NorlundDiagonal` to `ExponentialRescaling`, yielding the live 977/12,133
-> census with no documentation gaps.  The inventory does not by itself
+> `NorlundDiagonal` to `ExponentialRescaling`, yielding the preceding
+> 977/12,133 checkpoint.  `GridEvaluationCertificate` 0+4 and
+> `IntegerCRTCertificate` 0+5 then add two modules and nine theorems, yielding
+> the historical 979/12,142 checkpoint.  The successor adds the six facade
+> leaves `NorlundGeneralized` 3+18, `StirlingSymmetricFunctions` 0+4,
+> `LagrangeInversionUniqueness` 0+6, `NewtonReciprocal` 1+5,
+> `StirlingSecondReverseRowIdentity` 0+2, and
+> `TransseriesWrightOmegaTerms` 0+10, plus eight declarations in existing
+> modules.  This +6/+57 delta gives the live 985/12,199 census with no
+> documentation gaps.  The inventory does not by itself
 > promote a broader manuscript claim.
 > The retained primary exposition, Lean walkthrough, canonical frontier,
 > Representation Frontiers, filed New Frontiers, notation catalogue,
