@@ -73,13 +73,6 @@ STATUS = {
    r"\lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib); the set-partition count, "
    r"which Mathlib leaves as a docstring claim, is \lean{Fabius.card_setPartitions} "
    r"(\lean{BellSetPartitions})"),
- 'prop:merged-abel': ('none',
-   r"\lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_eval_add}, "
-   r"\lean{Fabius.abelSeries_eq}, \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} "
-   r"(\lean{AbelPolynomialSeries}) state the EGF for every solution "
-   r"of $T=te^{-aT}$ over a commutative rational algebra, not only the constructed one. "
-   r"The polynomial definition needs only a commutative ring, but the current "
-   r"binomial-identity proof also assumes a rational algebra. Compiler validation is pending."),
  'thm:merged-frechet-faa': ('Lean',
    r"Mathlib's \lean{iteratedFDeriv_comp} (ContDiff/Comp.lean), unfolded with "
    r"\lean{FormalMultilinearSeries.taylorComp} and "
@@ -210,13 +203,6 @@ STATUS = {
    r"\lean{Fabius.partialBell_succ_zero}, \lean{Fabius.partialBell_eq_zero_of_lt}; the upper "
    r"variable-support cutoff stated with \cref{eq:partial-bell-definition} is "
    r"\lean{Fabius.partialBell_congr_of_eq_of_le}, over every commutative semiring"),
- 'thm:bell-poly-partitions': ('partial',
-   r"\lean{Fabius.coeff_exp_subst_eq_sum_weightedPartitions} "
-   r"(\lean{UnitSeriesBellCoefficients}) identifies a formal exponential coefficient with "
-   r"the finite multiplicity-vector sum indexed by \lean{Fabius.weightedPartitions}; together "
-   r"with \lean{Fabius.coeff_exp_subst_eq_completeBell}, this formalizes the complete weighted "
-   r"multiplicity formula.  Labelled set partitions and the exact-$k$ partial interpretation "
-   r"are not formalized"),
  'thm:bell-poly-egf': ('Lean',
    r"all five identities, as formal power series over any commutative $\mathbb Q$-algebra.  "
    r"The first is \lean{Fabius.bellWeightSeries_pow} and the third "
