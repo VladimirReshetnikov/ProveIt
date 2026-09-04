@@ -55,9 +55,13 @@ into itself. -/
 def IsDerivationStable (d : Derivation R A A) (T : Subalgebra R A) : Prop :=
   ∀ a ∈ T, d a ∈ T
 
+/-- The whole algebra is stable under every derivation. -/
 theorem isDerivationStable_top (d : Derivation R A A) :
     IsDerivationStable d (⊤ : Subalgebra R A) := fun _ _ => trivial
 
+/-- Stability is preserved by arbitrary infima, so the `d`-stable
+subalgebras form a complete lattice and "the smallest `d`-stable
+subalgebra containing `S`" is well defined. -/
 theorem isDerivationStable_iInf {ι : Sort*} (d : Derivation R A A)
     {T : ι → Subalgebra R A} (h : ∀ i, IsDerivationStable d (T i)) :
     IsDerivationStable d (⨅ i, T i) := by
@@ -85,11 +89,14 @@ differentiation. -/
 def derivationOrbit (d : Derivation R A A) (S : Set A) : Set A :=
   ⋃ n : ℕ, (⇑d)^[n] '' S
 
+/-- A set sits inside its own orbit, at differentiation depth zero. -/
 theorem subset_derivationOrbit (d : Derivation R A A) (S : Set A) :
     S ⊆ derivationOrbit d S := by
   intro a ha
   exact Set.mem_iUnion.2 ⟨0, ⟨a, ha, rfl⟩⟩
 
+/-- The orbit is stable under one more differentiation: depth `n` maps to
+depth `n + 1`. -/
 theorem derivation_mem_derivationOrbit (d : Derivation R A A) {S : Set A}
     {a : A} (ha : a ∈ derivationOrbit d S) : d a ∈ derivationOrbit d S := by
   obtain ⟨_, ⟨n, rfl⟩, b, hb, rfl⟩ := ha
