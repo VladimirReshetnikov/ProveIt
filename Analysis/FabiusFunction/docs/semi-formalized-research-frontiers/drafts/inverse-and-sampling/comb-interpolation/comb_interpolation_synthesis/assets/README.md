@@ -59,12 +59,10 @@ in `../source_disposition.csv`.
   historical canonical-publication checks separately from the pending build of
   the current source union and the remaining reproducibility work.
 - [`COMPANION_PAYLOADS.csv`](COMPANION_PAYLOADS.csv) is the canonical retained-
-  payload provenance map, not a checksum manifest. The package root's
-  [`SHA256SUMS`](../SHA256SUMS) is the sole live checksum ledger. It verified
-  exhaustively at the recorded upstream checkpoint and is explicitly partial
-  pending the current union's rebuild. There is no separate `assets/SHA256SUMS`.
-  None of these current records should be confused with the historical
-  per-package ledgers.
+  payload provenance map, not a checksum manifest. Package-local
+  `SHA256SUMS` ledgers were retired repository-wide on 2026-09-01; the
+  historical ledger snapshots remain recoverable from Git, while this table
+  continues to record the canonical payload destinations.
 
 The source pin is
 `73f0b373126ef22a3b5dccadfa7b99d61d445345`. Git history is the archive for

@@ -6,9 +6,10 @@ The delivered archive `Fabius_Zero_Bias_Frontier_Report.zip` had SHA-256
 `fb8bbf8e34a2f5eb4e5bbe7b06b22566502be7583696f01960a6e41d25b518ee`.
 Its paths were traversal-safe and its 21-file delivered ledger verified
 21/21 before any edit. `ARRIVAL_SHA256SUMS` preserves that ledger verbatim.
-The live `SHA256SUMS` file records the last validated normalized checkpoint;
-its current TeX, PDF, README, and intake-audit rows describe the synchronized
-2026-08-31 repository rebuild.
+The package-local `SHA256SUMS` ledger was retired repository-wide on
+2026-09-01. Its final validated normalized-checkpoint snapshot, including the
+TeX, PDF, README, and intake-audit rows for the synchronized 2026-08-31
+repository rebuild, remains recoverable from Git history.
 
 ## Mathematical-status audit
 

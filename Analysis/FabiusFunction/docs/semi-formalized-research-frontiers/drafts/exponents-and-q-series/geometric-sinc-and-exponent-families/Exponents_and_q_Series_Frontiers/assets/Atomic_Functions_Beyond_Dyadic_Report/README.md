@@ -10,7 +10,8 @@ This package contains the English reconstruction and substantial expansion of th
 - `figures/` — five figures in both PDF and PNG formats.
 - `data/` — CSV audits for geometry, derivative norms, moments, periodicity, and Gamma–zeta Fourier modes.
 - `requirements.txt` — Python dependencies.
-- `SHA256SUMS` — checksums for every packaged file except the checksum manifest itself.
+- Former `SHA256SUMS` ledger — retired repository-wide on 2026-09-01; its
+  historical bytes remain available from Git history only.
 
 ## Mathematical scope
 

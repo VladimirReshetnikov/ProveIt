@@ -67,11 +67,11 @@ pdf_preflight.json
     preflight for the retained post-union render.  It explicitly records that
     the current source/PDF pair is not synchronized.
 
-SHA256SUMS.txt
-    Current 20-payload mixed source/retained-artifact inventory.  Its fixed
-    payload scope is preserved, every row is current, and all 20 entries verify.
-    It hashes the live TeX and metadata alongside the byte-retained historical
-    PDF; ledger validity does not assert source/PDF rendering parity.
+SHA256SUMS.txt (retired)
+    This package-local ledger was retired repository-wide on 2026-09-01. Its
+    final 20-payload mixed source/retained-artifact snapshot remains recoverable
+    from Git history; the historical verification did not assert source/PDF
+    rendering parity.
 
 Numerical publication run
 -------------------------

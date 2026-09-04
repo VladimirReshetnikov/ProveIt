@@ -170,11 +170,11 @@ The row-level evidence is preserved in
 [`assets/HISTORICAL_LEDGER_AUDIT.csv`](assets/HISTORICAL_LEDGER_AUDIT.csv).
 These ledgers describe earlier package states and are not a checksum manifest
 for the canonical tree. The live `assets/COMPANION_PAYLOADS.csv` provenance
-ledger is deliberately separate from this historical audit. The package uses
-one live checksum ledger, the root `SHA256SUMS`, rather than a second ledger
-under `assets/`. That root ledger was exhaustive at the recorded upstream
-publication checkpoint; it is explicitly partial for the current source union
-until the required rebuild and final ledger regeneration.
+ledger is deliberately separate from this historical audit. The root
+`SHA256SUMS` was exhaustive at the recorded upstream publication checkpoint
+and became partial after the source union changed. Package-local ledgers were
+retired repository-wide on 2026-09-01; the checkpoint snapshot remains
+recoverable from Git history and is not regenerated for the current tree.
 
 ## Recoverability
 

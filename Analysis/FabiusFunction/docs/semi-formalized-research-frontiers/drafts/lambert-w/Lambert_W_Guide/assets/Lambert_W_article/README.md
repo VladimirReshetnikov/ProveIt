@@ -13,7 +13,8 @@ Continued Fractions, Numerical Evaluation, and Applications**.
 - `data/numerical_results.csv` — machine-readable sampled error results.
 - `figures/*.pdf` — seven generated vector figures.
 - `requirements.txt` — Python dependencies for regenerating the computational supplement.
-- `SHA256SUMS` — checksums for the packaged files.
+- Former `SHA256SUMS` ledger — retired repository-wide on 2026-09-01; its
+  historical bytes remain available from Git history only.
 
 The article contains 53 numbered theorem-like statements, including proofs of
 the real-branch geometry, differential and integral formulas, Lagrange

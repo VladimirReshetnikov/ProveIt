@@ -44,8 +44,10 @@ audited packages, without wholesale textual duplication.
   delivery consists of one 1,656-line LF TeX manuscript: no PDF, README,
   external code, data, figures, captured output, checksum file, repository
   metadata, or archive was supplied.  Intake repaired three form-feed-corrupted
-  `\frac` tokens and added a repository-generated one-entry `SHA256SUMS`.  The
-  package still has no PDF, and the source has not yet been shown to compile.
+  `\frac` tokens and added a repository-generated one-entry `SHA256SUMS`.
+  That derivative ledger was retired repository-wide on 2026-09-01 and remains
+  recoverable from Git history.  The package still has no PDF, and the source
+  has not yet been shown to compile.
 
   Its q-deformed derivative formulas, Gaussian/Edgeworth layer,
   valuation-weighted zeros, non-Gevrey growth, and periodic Lambert endpoint

@@ -41,7 +41,8 @@ The retained pre-move PDF has SHA-256
 `e58548ebb28e613b493fe090271c86242a4c311536ddbbeb7317f91ab2283e77`;
 it has the same mathematical content but is not byte-synchronized with the
 path-adjusted driver.
-`SHA256SUMS` records and verifies all 19 current payloads. The report states
+The former `SHA256SUMS` ledger was retired repository-wide on 2026-09-01; its
+historical 19-row record remains recoverable from Git history. The report states
 precisely which claims are proved, which are numerical checks, and which are
 conjectural. Novelty assertions are relative to the audited repository corpus,
 not claims of global publication priority.

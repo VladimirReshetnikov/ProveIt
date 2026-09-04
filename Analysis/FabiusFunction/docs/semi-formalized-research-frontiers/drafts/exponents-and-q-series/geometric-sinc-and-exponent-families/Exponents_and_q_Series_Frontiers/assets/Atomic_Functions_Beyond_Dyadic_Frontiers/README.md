@@ -10,7 +10,8 @@ This archive contains the English reconstruction and expansion of the attached R
 - `figures/` — vector PDF and raster PNG versions of all eight figures.
 - `data/` — machine-readable validation tables.
 - `source_notes/` — the OCR TeX and surviving printed source pages used for the reconstruction.
-- `SHA256SUMS` — checksums for the archive contents.
+- Former `SHA256SUMS` ledger — retired repository-wide on 2026-09-01; its
+  historical bytes remain available from Git history only.
 
 ## Mathematical scope
 

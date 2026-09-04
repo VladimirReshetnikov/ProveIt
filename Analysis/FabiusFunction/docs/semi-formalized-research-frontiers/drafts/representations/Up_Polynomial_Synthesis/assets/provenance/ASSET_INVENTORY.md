@@ -23,9 +23,10 @@ already had byte-identical canonical destinations under
 as `experiments.py`, so flattening them could discard independent checks.
 
 `COMPANION_PAYLOADS.csv` maps every old path to its one live destination and
-SHA-256 hash.  `assets/companion-evidence/SHA256SUMS` verifies all 113
-destinations, including the two relative paths into the root-geometry evidence
-tree.
+SHA-256 hash.  Before repository-wide retirement on 2026-09-01, the former
+`assets/companion-evidence/SHA256SUMS` ledger verified all 113 destinations,
+including the two relative paths into the root-geometry evidence tree. Its
+final snapshot remains recoverable from Git history.
 
 ## Generated and historical material
 
@@ -69,8 +70,9 @@ were removed:
 5. The Q12 verifier and canonical certificate paths pass through degree 20.
 6. The canonical PDF passed three direct TeX runs, full-page rendering, log
    audit, and a zero-Type-3 font scan.
-7. The live root `SHA256SUMS` validates canonical Git-tree bytes from a fresh
-   checkout.
+7. Before repository-wide retirement on 2026-09-01, the former root
+   `SHA256SUMS` ledger validated canonical Git-tree bytes from a fresh checkout;
+   its final snapshot remains recoverable from Git history.
 8. Historical arrival ledgers are retained, while source snapshots remain
    recoverable at the immutable pre-retirement commit above.
 

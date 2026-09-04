@@ -39,12 +39,7 @@ LEGACY_DIRECTORIES = (
     "Legendre_Rvachev_Closed_Loop_Report_v4",
     "Legendre_Rvachev_Self_Reconstruction",
 )
-ROOT_AUXILIARIES = {
-    "Up_Polynomial_Synthesis.aux",
-    "Up_Polynomial_Synthesis.log",
-    "Up_Polynomial_Synthesis.out",
-    "Up_Polynomial_Synthesis.toc",
-}
+EXPECTED_RETIRED_CHECKSUM_PAYLOADS = 7
 
 
 def fail(message: str) -> None:
@@ -53,24 +48,6 @@ def fail(message: str) -> None:
 
 def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
-def read_ledger(path: Path) -> dict[Path, str]:
-    entries: dict[Path, str] = {}
-    pattern = re.compile(r"^([0-9a-f]{64})  (.+)$")
-    for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-        match = pattern.fullmatch(line)
-        if match is None:
-            fail(f"malformed {path.name} line {number}")
-        target = (path.parent / match.group(2)).resolve()
-        try:
-            target.relative_to(PACKAGE)
-        except ValueError:
-            fail(f"ledger target escapes the package: {match.group(2)}")
-        if target in entries:
-            fail(f"duplicate ledger target: {match.group(2)}")
-        entries[target] = match.group(1)
-    return entries
 
 
 def verify_hashes(entries: dict[Path, str], name: str) -> None:
@@ -133,7 +110,12 @@ def verify_crosswalk(environments: dict[str, str]) -> None:
         )
 
 
-def verify_companion_payloads() -> int:
+def is_retired_checksum_path(path: str) -> bool:
+    name = Path(path).name
+    return name == "SHA256SUMS" or name.startswith("SHA256SUMS.")
+
+
+def verify_companion_payloads() -> tuple[int, int]:
     mapping_path = PACKAGE / "assets/provenance/COMPANION_PAYLOADS.csv"
     with mapping_path.open(newline="", encoding="utf-8") as stream:
         rows = list(csv.DictReader(stream))
@@ -150,19 +132,24 @@ def verify_companion_payloads() -> int:
     if dispositions.count("migrated") != 111 or dispositions.count("already-canonical") != 2:
         fail("companion disposition counts are not 111 migrated plus 2 canonical")
     mapped_entries: dict[Path, str] = {}
+    retired_checksums = 0
     for row in rows:
         target = (PACKAGE / row["new_path"]).resolve()
         try:
             target.relative_to(PACKAGE)
         except ValueError:
             fail(f"mapped target escapes the package: {row['new_path']}")
+        if is_retired_checksum_path(row["new_path"]):
+            retired_checksums += 1
+            continue
         mapped_entries[target] = row["sha256"]
+    if retired_checksums != EXPECTED_RETIRED_CHECKSUM_PAYLOADS:
+        fail(
+            "retired checksum mapping count is "
+            f"{retired_checksums}, expected {EXPECTED_RETIRED_CHECKSUM_PAYLOADS}"
+        )
     verify_hashes(mapped_entries, "companion mapping")
-    ledger = read_ledger(PACKAGE / "assets/companion-evidence/SHA256SUMS")
-    if ledger != mapped_entries:
-        fail("companion ledger and old-to-new mapping disagree")
-    verify_hashes(ledger, "companion ledger")
-    return len(rows)
+    return len(mapped_entries), retired_checksums
 
 
 def verify_historical_sources() -> int:
@@ -191,40 +178,21 @@ def verify_historical_sources() -> int:
     return len(rows)
 
 
-def verify_root_ledger() -> int:
-    ledger_path = PACKAGE / "SHA256SUMS"
-    ledger = read_ledger(ledger_path)
-    expected = {
-        path.resolve()
-        for path in PACKAGE.rglob("*")
-        if path.is_file()
-        and path != ledger_path
-        and not (path.parent == PACKAGE and path.name in ROOT_AUXILIARIES)
-    }
-    if set(ledger) != expected:
-        missing = sorted(str(path.relative_to(PACKAGE)) for path in expected - set(ledger))
-        extra = sorted(str(path.relative_to(PACKAGE)) for path in set(ledger) - expected)
-        fail(f"root ledger coverage mismatch: missing={missing}, extra={extra}")
-    verify_hashes(ledger, "root ledger")
-    return len(ledger)
-
-
 def main() -> int:
     environments, proofs, conjectures = canonical_assertions()
     if len(environments) != 80 or proofs != 80 or conjectures != 11:
         fail(
             f"canonical counts are assertions={len(environments)}, proofs={proofs}, "
             f"conjectures={conjectures}; expected 80, 80, 11"
-        )
+    )
     verify_crosswalk(environments)
-    payloads = verify_companion_payloads()
+    payloads, retired_checksums = verify_companion_payloads()
     sources = verify_historical_sources()
-    root_entries = verify_root_ledger()
     print(
         "consolidation audit passed: "
         f"assertions={len(environments)}, proofs={proofs}, conjectures={conjectures}, "
         f"crosswalk={len(environments)}, companion_payloads={payloads}, "
-        f"retired_sources={sources}, root_ledger={root_entries}"
+        f"retired_checksum_rows={retired_checksums}, retired_sources={sources}"
     )
     return 0
 

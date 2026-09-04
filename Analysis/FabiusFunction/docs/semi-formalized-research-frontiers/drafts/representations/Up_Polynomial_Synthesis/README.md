@@ -41,7 +41,8 @@ normalization claims have been demoted to problems.
   root-geometry files.
 - assets/evidence/legendre/root-geometry/ — exact Q12 Sturm certificate,
   complete counts through degree twenty, and a focused verifier.
-- SHA256SUMS — live root ledger for every other canonical package file.
+- The former root `SHA256SUMS` ledger was retired repository-wide on
+  2026-09-01; its final snapshot remains recoverable from Git history.
 
 ## Notation contract
 

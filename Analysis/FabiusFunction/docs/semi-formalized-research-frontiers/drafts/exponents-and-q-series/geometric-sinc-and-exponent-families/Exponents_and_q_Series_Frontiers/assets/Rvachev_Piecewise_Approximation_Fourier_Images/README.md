@@ -10,7 +10,8 @@ This archive accompanies the research report
 - `fourier_piecewise_experiments.py` — commented symbolic and numerical experiments.
 - `requirements.txt` — Python packages used for the reproducibility run.
 - `data/` — exact CSV tables, a JSON summary, and all report figures in PDF and PNG form.
-- `SHA256SUMS.txt` — checksums for the packaged files.
+- Former `SHA256SUMS.txt` ledger — retired repository-wide on 2026-09-01; its
+  historical bytes remain available from Git history only.
 
 The LaTeX source loads its figures from `data/*.pdf`, so preserve the directory
 layout when recompiling.

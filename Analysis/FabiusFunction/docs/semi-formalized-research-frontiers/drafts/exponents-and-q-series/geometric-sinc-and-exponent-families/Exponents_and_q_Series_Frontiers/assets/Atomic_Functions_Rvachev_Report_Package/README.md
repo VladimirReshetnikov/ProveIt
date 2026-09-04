@@ -15,8 +15,8 @@ house style of the `ProveIt` Fabius-function documentation corpus.
 - `CORPUS_AUDIT.md` — pinned repository scope, corpus layers, and
   nonduplication methodology.
 - `requirements.txt` — Python dependencies.
-- `SHA256SUMS` — checksums for every packaged file except the checksum file
-  itself.
+- Former `SHA256SUMS` ledger — retired repository-wide on 2026-09-01; its
+  historical bytes remain available from Git history only.
 
 ## Main post-merge results
 

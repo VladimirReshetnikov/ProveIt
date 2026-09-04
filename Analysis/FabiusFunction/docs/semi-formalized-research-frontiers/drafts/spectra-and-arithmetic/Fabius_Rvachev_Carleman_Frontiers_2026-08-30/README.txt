@@ -31,8 +31,9 @@ Main files
   CORPUS_AUDIT.txt
       Scope, method, and limitations of the repository novelty screen.
 
-  SHA256SUMS.txt
-      SHA-256 checksums for the archive payload.
+  SHA256SUMS.txt (retired)
+      This package-local ledger was retired repository-wide on 2026-09-01;
+      its final archive-payload snapshot remains recoverable from Git history.
 
 Principal mathematical results
 ------------------------------

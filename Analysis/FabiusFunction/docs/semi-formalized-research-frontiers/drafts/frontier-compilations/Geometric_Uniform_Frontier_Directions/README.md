@@ -7,7 +7,7 @@ the merge-resolved source described below.
 
 ## Intake provenance
 
-The package was filed from `drafts/incoming/fabius_frontier_report_bundle-D.zip` (1,508,514 bytes; SHA-256 `39f3638f52f19955b88b7a865a60b76d9ce31154d98967d1400a6ad97396fa9a`). The archive was safety-checked and its submitted 34-row checksum ledger passed in full. That immutable arrival ledger is preserved as `ARRIVAL_SHA256SUMS`. The live `SHA256SUMS` ledger verifies the current source and metadata together with the retained historical PDF; this checks payload integrity and does not assert that the PDF renders the current source.
+The package was filed from `drafts/incoming/fabius_frontier_report_bundle-D.zip` (1,508,514 bytes; SHA-256 `39f3638f52f19955b88b7a865a60b76d9ce31154d98967d1400a6ad97396fa9a`). The archive was safety-checked and its submitted 34-row checksum ledger passed in full. That immutable arrival ledger is preserved as `ARRIVAL_SHA256SUMS`. Package-local `SHA256SUMS` ledgers were retired repository-wide on 2026-09-01; current source identity and retained-artifact identity remain recorded separately here and in `PDF_VALIDATION.txt`.
 
 Repository normalization retained the mathematical body while replacing the submitted Letter/Latin-Modern preamble with the shared A4/27 mm/Libertinus preamble, regenerating all vector figures with embedded non-Type-3 fonts, and making generated CSV line endings deterministic. The report now states its current Lean boundary and its overlap with the separately audited digital-spectral and reciprocal-integer reports.
 
@@ -26,9 +26,6 @@ Repository normalization retained the mathematical body while replacing the subm
 - `PDF_VALIDATION.txt` — last-render build, geometry, font, text, and visual
   checks, plus the current uncompiled-source fingerprint.
 - `ARRIVAL_SHA256SUMS` — immutable 34-row submitted-payload ledger.
-- `SHA256SUMS` — current normalized-package payload ledger. Every row verifies;
-  the separate source/PDF synchronization debt remains explicit here and in
-  `PDF_VALIDATION.txt`.
 
 ## Claim and formalization boundary
 
@@ -72,14 +69,11 @@ pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_frontie
 pdflatex -interaction=nonstopmode -halt-on-error -file-line-error fabius_frontier_report.tex
 ```
 
-## Integrity check
+## Integrity policy
 
-```bash
-sha256sum -c SHA256SUMS
-```
-
-This command verifies every current payload, including the current TeX and the
-retained historical PDF. It does not claim that the latter was rendered from
-the former; the pending rebuild is recorded above.
+There is no live package-local checksum command: the former `SHA256SUMS`
+ledger is retired. Git history, the explicit source/artifact fingerprints
+above, and the purpose-specific validation records preserve the provenance
+boundary without asserting source/PDF parity.
 
 `ARRIVAL_SHA256SUMS` is intentionally historical and should be checked against the original archive, not against normalized current files.

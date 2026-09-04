@@ -66,8 +66,8 @@ disposition of every immutable source result.
 [`ASSET_DISPOSITION.csv`](ASSET_DISPOSITION.csv) records the SHA-256, size,
 semantic class, canonical destination, and disposition of all 88 files in the
 two superseded source subgroups. The deduplicated canonical asset tree contains
-63 live payloads, exhaustively listed by
-[`assets/SHA256SUMS`](assets/SHA256SUMS).
+61 live payloads whose destinations are recorded in that table and whose bytes
+remain versioned in Git.
 
 Arrival ledgers and internal source hashes remain under
 [`assets/provenance/`](assets/provenance/), including separate records for the
@@ -97,9 +97,10 @@ recorded in `VALIDATION.md`. The master and shared notation changed afterward,
 so the retained PDF is not presented as a rendering of the current source. A
 fresh three-pass render is required before publication synchronization is
 claimed again.
-The exhaustive root `SHA256SUMS` includes the independent nested asset ledger;
-publication validation changes no historical claim, concordance row,
-disposition, lineage, or arrival checksum recorded above.
+Package-local `SHA256SUMS` ledgers were retired repository-wide on 2026-09-01.
+That policy change alters no historical claim, concordance row, disposition,
+lineage, or arrival checksum recorded above; Git history retains the deleted
+ledger snapshots.
 
 ## Editorial relationship
 

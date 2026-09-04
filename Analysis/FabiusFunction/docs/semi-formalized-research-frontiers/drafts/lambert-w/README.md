@@ -42,7 +42,9 @@ was submitted. All six sources were already LF with a final newline, so no
 normalization was needed at intake. Later repository notation and
 formal/analytic-remainder migrations revised the sources without rebuilding
 the retained PDFs. Each package's repository-generated two-row `SHA256SUMS`
-records the current source and historical PDF separately. Similar titles were noted, but claim comparison,
+ledger was retired repository-wide on 2026-09-01; its historical record remains
+recoverable from Git history, while the explicit source and PDF hashes below
+remain authoritative. Similar titles were noted, but claim comparison,
 deduplication, canonical selection, rewriting, rebuilding, and Lean
 crosswalking remain deferred until after publication of this intake.
 

@@ -95,9 +95,9 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The current `q_pochhammer_q_binomial_monograph.tex` has 14,516 lines,
-  682,778 bytes, and SHA-256
-  `3184b1ed82998f7a9a903cbd0e95a6836cbeab2edd3194e5dc35c7243b9b9618`.
+  The current `q_pochhammer_q_binomial_monograph.tex` has 14,525 lines,
+  683,417 bytes, and SHA-256
+  `a1879f2165b04a2826c2a7a7a8b97b293f4f3d3f36e5c12429fc74d264b3ba14`.
   Its retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
   354-page A4 artifact of 3,030,302 bytes, with SHA-256
   `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.

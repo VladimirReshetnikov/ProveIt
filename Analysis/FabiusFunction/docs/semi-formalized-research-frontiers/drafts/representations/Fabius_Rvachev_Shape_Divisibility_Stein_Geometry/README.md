@@ -50,10 +50,10 @@ paper results is claimed to have an exact Lean counterpart.
   high-resolution inspection; all fonts are embedded and subset, with no Type 3.
 - `requirements.txt` records minimum top-level dependency versions, not a full
   environment lock.
-- `SHA256SUMS.txt` is the mixed current-source/retained-artifact package ledger.
-  Refresh current source and metadata rows after source-only changes, and
-  refresh the PDF row only after a normalized three-pass rebuild and final
-  artifact freeze.
+- The former mixed source/artifact `SHA256SUMS.txt` ledger was retired
+  repository-wide on 2026-09-01 and must not be refreshed. Its final snapshot
+  remains recoverable from Git history; purpose-specific validation records
+  remain authoritative for their stated checkpoints.
 
 ## Numerical reproduction
 

@@ -27,7 +27,8 @@ levels above this directory.
 - `figures/` - the two figures embedded in the report.
 - `data/` - signed q-Richardson errors, boundary-layer errors, zero
   multiplicities, and the verification log.
-- `SHA256SUMS` - checksums for the report, source, code, figures, and data.
+- Former `SHA256SUMS` ledger - retired repository-wide on 2026-09-01; its
+  historical bytes remain available from Git history only.
 
 No Monte Carlo sampling is used. The boundary profiles are obtained by FFT
 inversion of exact characteristic products, while the q-Richardson identities

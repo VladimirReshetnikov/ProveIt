@@ -45,9 +45,10 @@ the earlier six-package inverse provenance is not silently reinterpreted.
 
 The migrated `assets/` tree preserves six experiment programs, nineteen
 CSV/TXT outputs, and fourteen vector figures selected by the historical
-77-row `assets/ASSET_DISPOSITION.csv`. Its active `assets/SHA256SUMS` has 43
-entries because it also covers asset metadata and environment files; this is
-not a contradiction with the 39 retained historical payloads.
+77-row `assets/ASSET_DISPOSITION.csv`. Its former 43-entry
+`assets/SHA256SUMS` ledger was retired repository-wide on 2026-09-01; the 39
+retained historical payloads, asset metadata, and environment files remain
+documented here, in the disposition record, and in Git history.
 
 ## Validation state
 
@@ -85,16 +86,10 @@ It compares all coefficients through degree 100 using integer arithmetic:
 1,515 equalities in total. This is a transcription-quality gate, explicitly
 not an infinite proof of any recorded identity.
 
-The exhaustive package checksum gate is:
-
-```text
-python audit/build_package_checksums.py --check
-```
-
-It checks every permanent package file except the self-referential root
-`SHA256SUMS` ledger itself. The nested asset ledger remains independently
-useful because it preserves the migrated experiment and research-figure
-boundary.
+Package-local `SHA256SUMS` ledgers and their checksum gate were retired
+repository-wide on 2026-09-01. The migrated experiment and research-figure
+boundary remains documented by `assets/ASSET_DISPOSITION.csv`, the validation
+records above, and Git history.
 
 The retained `q_pochhammer_q_binomial_monograph.pdf` is a historical 354-page
 A4 build of its recorded source checkpoint (14,381 lines, 675,239 bytes,
@@ -112,15 +107,16 @@ fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
 The current live master is a source-only successor to that checkpoint: it has
-14,516 lines, 682,778 bytes, and SHA-256
-`3184b1ed82998f7a9a903cbd0e95a6836cbeab2edd3194e5dc35c7243b9b9618`.
+14,525 lines, 683,417 bytes, and SHA-256
+`a1879f2165b04a2826c2a7a7a8b97b293f4f3d3f36e5c12429fc74d264b3ba14`.
 It adds the explicit document-local `\BellBlockMultiplicity{r}` and
 `\MacMahonQCatalanPolynomial{n}{q}` families and normalizes the newly merged
 Jackson, Gaussian-binomial, q-integer, and q-Pochhammer status formulas, while
 retaining the newest feature, crosswalk, and provenance expansion catalogued
-below. No PDF was regenerated after those changes. The regenerated root
-`SHA256SUMS` ledger records the live source identity; the historical source
-identity above must not be reused for it. Thus the PDF and its recorded
+below. No PDF was regenerated after those changes. The former root
+`SHA256SUMS` ledger was retired repository-wide on 2026-09-01; the live source
+identity is the explicit SHA-256 value above, and the historical ledger remains
+recoverable from Git history. Thus the PDF and its recorded
 14,381-line build source form the retained synchronized checkpoint, while the
 current master and retained PDF are distinct ledger payloads pending a fresh
 three-pass build and do not claim render parity.

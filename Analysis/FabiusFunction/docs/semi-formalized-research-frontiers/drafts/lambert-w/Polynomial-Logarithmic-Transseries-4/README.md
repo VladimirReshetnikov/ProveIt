@@ -6,8 +6,9 @@ commit `730e1763291099cd50ca1e20ed2c62c38d95ab4f`.  No archive or checksum
 ledger was submitted. At intake the source was already LF with a final
 newline, so no normalization was needed. Subsequent repository notation and
 formal/analytic-remainder migrations revised the source only; the retained PDF
-was not rebuilt. The repository-added `SHA256SUMS` records the current source
-and historical PDF as distinct payloads.
+was not rebuilt. The repository-added `SHA256SUMS` ledger was retired
+repository-wide on 2026-09-01; its historical record remains recoverable from
+Git history, while the explicit source and PDF hashes below remain authoritative.
 
 - Current source: `Polynomial-Logarithmic-Transseries-4.tex`, 3,132 lines and
   120,607 bytes; SHA-256

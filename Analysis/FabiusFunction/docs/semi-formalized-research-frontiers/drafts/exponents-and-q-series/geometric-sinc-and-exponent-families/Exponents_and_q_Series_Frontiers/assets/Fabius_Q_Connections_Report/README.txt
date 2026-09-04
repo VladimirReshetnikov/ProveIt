@@ -8,7 +8,8 @@ Contents
 - q_fabius_experiments.py         : deterministic numerical verification code
 - numerics/                       : residual tables, q-Lagrange weights, cumulants
 - figures/                        : vector PDF and PNG versions of the report figures
-- SHA256SUMS.txt                  : integrity hashes for every packaged file
+- SHA256SUMS.txt                  : retired repository-wide on 2026-09-01;
+                                    historical bytes are in Git history only
 
 Compilation
 -----------

@@ -17,8 +17,9 @@ the original archive bytes remain recoverable from that commit.
 - `figures/` -- retained PDF originals and PNG companions for the generated
   figures.
 - `requirements.txt` -- Python dependency constraints.
-- `SHA256SUMS` -- exhaustive 21-entry live payload ledger for the normalized
-  source, generated evidence, and rebuilt PDF.
+- The former 21-entry `SHA256SUMS` payload ledger was retired repository-wide
+  on 2026-09-01; its final normalized-package snapshot remains recoverable
+  from Git history.
 
 ## Corpus and formalization boundary
 

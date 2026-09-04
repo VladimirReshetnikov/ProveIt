@@ -2,12 +2,10 @@
 
 The canonical manuscript pair in this directory is
 `cyclotomic_q_fabius_frontier.tex` and `cyclotomic_q_fabius_frontier.pdf`.
-`README.txt` preserves the arrival narrative.  The extensionless `SHA256SUMS`
-retains the arrival payload row set and records the current bytes of those
-files.  Repository-added validation is recorded separately in
-`PDF_VALIDATION.txt` and `SHA256SUMS.txt`; the latter additionally covers the
-repository receipt and active extensionless ledger without introducing a
-self-hash cycle.
+`README.txt` preserves the arrival narrative, and `PDF_VALIDATION.txt` records
+the repository-added validation.  The former `SHA256SUMS` and
+`SHA256SUMS.txt` ledgers were retired repository-wide on 2026-09-01; their
+historical bytes and row sets remain recoverable from Git history.
 
 ## Retained publication receipt and current source status
 

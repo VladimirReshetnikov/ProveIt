@@ -59,7 +59,8 @@ stated separately as conjectures or research programs.
 - `gamma_zeta_coefficients.csv`, `gamma_zeta_decay.png` -- endpoint Fourier coefficient decay.
 - `tomography_errors.csv`, `tomography_errors.png` -- controlled radial--angular experiment.
 - `requirements.txt` -- Python dependencies.
-- `SHA256SUMS` -- checksums for the retained supporting files.
+- Former `SHA256SUMS` ledger -- retired repository-wide on 2026-09-01; its
+  historical bytes remain available from Git history only.
 
 ## Reproduction
 

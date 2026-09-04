@@ -37,7 +37,8 @@ of priority over the mathematical literature.
 - **REPOSITORY_AUDIT.md** — claim-status and Lean-source crosswalk.
 - **PDF_VALIDATION.txt** — final build and PDF validation record.
 - **ARRIVAL_SHA256SUMS.txt** — immutable verbatim ledger from the submitted archive.
-- **SHA256SUMS.txt** — exhaustive ledger of the current normalized package, excluding itself.
+- **SHA256SUMS.txt** — former normalized-package ledger, retired repository-wide
+  on 2026-09-01; its historical bytes remain recoverable from Git history.
 
 The submitted ZIP was **fabius_frontier_report_2026.zip**, 803,598 bytes, with SHA-256
 **afdcf522589a7baad82c81a527c02dcc09e58455ab14c57a9c492e65563c647e** and Git blob

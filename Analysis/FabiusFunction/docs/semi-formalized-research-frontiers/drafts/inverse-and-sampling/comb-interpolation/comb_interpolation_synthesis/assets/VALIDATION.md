@@ -22,10 +22,10 @@ census recorded at the earlier merge checkpoint was 629 Lean modules and 8,546
 public declarations. The checked-in PDF was built from the earlier source graph
 and passed the complete publication gate recorded below. Later
 canonical-notation edits in chapters 01, 03, and 90 and in the driver require
-a fresh exact three-pass render. The
-root `SHA256SUMS` is the single exhaustive package ledger and verifies the
-current source and retained PDF as distinct payloads; there is no
-`assets/SHA256SUMS`.
+a fresh exact three-pass render. Package-local `SHA256SUMS` ledgers were
+retired repository-wide on 2026-09-01. Historical ledger checkpoints remain
+recoverable from Git, while the current source disposition, companion-payload
+map, theorem concordance, and validator retain their separate scopes.
 
 ## Completed source and evidence checks
 
@@ -159,9 +159,9 @@ rewritten. They do not certify the current canonical payloads.
 - The canonical validator passes the TeX graph, environment balance, 212
   result environments (149 proof-required), 800 labels, 782 references, 62
   bibliography keys, source disposition, post-pin reconciliation, historical-
-  ledger audit, companion-payload provenance, 232-row theorem concordance, and
-  exhaustive root checksum ledger. The root `SHA256SUMS` covers every other
-  permanent package file exactly once and verifies in full.
+  ledger audit, companion-payload provenance, and 232-row theorem concordance.
+  The former package-checksum gate was removed with the repository-wide
+  2026-09-01 ledger retirement.
 
 ## Historical canonical publication checkpoints
 
@@ -239,10 +239,11 @@ rewritten. They do not certify the current canonical payloads.
   37, 38, 45, 149, 150, and 156 were additionally inspected at full size; no
   clipping, overlap, corrupt image, missing glyph, or unintended blank page
   was found.
-- The root `SHA256SUMS` exhaustively covers every other permanent package file,
+- The root `SHA256SUMS` exhaustively covered every other permanent package file,
   including the complete evidence tree, without duplicate or stale paths, and
-  verified in full at this checkpoint. The eight historical source-package
-  ledgers summarized by the audit remain unchanged and are not live manifests.
+  verified in full at this checkpoint. That package-ledger snapshot and the
+  eight historical source-package ledgers summarized by the audit are now
+  recoverable from Git history and are not live manifests.
 
 ### Replayed-side pre-merge checkpoint
 
@@ -340,7 +341,7 @@ rewritten. They do not certify the current canonical payloads.
 - The root `SHA256SUMS` exhaustively covered every other permanent package file,
   including that PDF and complete evidence tree, without duplicate or stale
   paths, and verified in full at this checkpoint. It does not certify the
-  current union.
+  current union and was retired under the repository-wide 2026-09-01 policy.
 
 ## Reproducibility work not rerun
 
@@ -370,7 +371,7 @@ Then inspect the final log for errors, unresolved references, rerun requests,
 and overfull boxes; inspect PDF metadata and fonts; render every page; and
 visually examine every rendered page. Record the new measurements here, update
 the README, refresh `COMPANION_PAYLOADS.csv` if the retained evidence inventory
-changed, regenerate the root `SHA256SUMS`, rerun the canonical validator, and
-verify that single ledger without further source or documentation edits. The
-current receipt above remains valid only while the publication-source,
-documentation, ledger, and PDF bytes are unchanged.
+changed, rerun the canonical validator, and inspect the resulting Git inventory
+without further source or documentation edits. The current receipt above
+remains valid only while the publication-source, documentation, and PDF bytes
+are unchanged.

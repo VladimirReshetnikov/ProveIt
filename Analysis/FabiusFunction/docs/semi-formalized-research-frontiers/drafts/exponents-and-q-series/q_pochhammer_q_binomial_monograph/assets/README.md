@@ -62,7 +62,6 @@ directories:
 assets/
 ├── README.md
 ├── VALIDATION.md
-├── SHA256SUMS
 ├── requirements.txt
 ├── ASSET_DISPOSITION.csv
 └── experiments/
@@ -250,8 +249,8 @@ single requirements file above; generated LaTeX table fragments and TeX
 are unnecessary when the corresponding vector PDFs are present.
 
 Retirement does not erase history: every old package remains recoverable from
-repository snapshot `f46e5d7f6f225bf0a43d8945e67d6f0e4aec8d54`.
-`SHA256SUMS` is the canonical post-migration ledger.  It covers every
-retained file beneath `assets/` except the ledger itself; a verifier can thus
-detect changes to programs, historical numerical snapshots, vector figures,
-the dependency manifest, or the migration documentation.
+repository snapshot `f46e5d7f6f225bf0a43d8945e67d6f0e4aec8d54`. The former
+`SHA256SUMS` post-migration ledger was retired repository-wide on 2026-09-01;
+its historical bytes remain in Git history. Current validation uses the
+purpose-specific disposition and validation records rather than a
+package-local checksum ledger.

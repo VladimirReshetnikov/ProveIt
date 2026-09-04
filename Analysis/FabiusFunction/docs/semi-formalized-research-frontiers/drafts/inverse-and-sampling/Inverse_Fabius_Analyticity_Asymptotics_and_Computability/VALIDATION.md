@@ -90,16 +90,19 @@ claiming byte identity between intermediate pass artifacts.
 
 - No canonical `.aux`, `.log`, `.out`, or `.toc` file, guarded-pass/render
   temporary, or shallow generated sidecar remains in the package.
-- Root `SHA256SUMS` contains exactly 90 rows, one for every permanent package
-  file except the self-referential ledger itself.
-- The root ledger includes the nested `assets/SHA256SUMS` as a permanent file.
-  That 63-row asset ledger passes its canonical generator, with SHA-256
-  `b274fe39cde808c34e82789136af51616e9177f424763b3eec153bc18e10fa3c`.
+- At the recorded publication checkpoint, the root `SHA256SUMS` contained 90
+  rows and included a 63-row nested `assets/SHA256SUMS`; the nested ledger had
+  SHA-256 `b274fe39cde808c34e82789136af51616e9177f424763b3eec153bc18e10fa3c`.
+  Package-local ledgers were retired repository-wide on 2026-09-01, and both
+  checkpoint snapshots remain recoverable from Git history.
+- Current package integrity is represented by the 23-input
+  `SOURCE_CLOSURE.sha256`, the 88-row `ASSET_DISPOSITION.csv`, the surviving
+  purpose-specific validation records, and Git's versioned bytes. The
+  disposition table records 61 retained canonical payload destinations.
 - Python byte-code caches and other transient files are excluded from the root
-  ledger and are not publication payloads.
+  package and are not publication payloads.
 
-The root ledger, source-closure hash, and PDF hash serve different purposes:
-the root ledger inventories the complete permanent package, the closure hash
-identifies the current build inputs, and the PDF hash identifies the reviewed
-historical artifact.  Their independent validity must not be mistaken for
-current source/PDF synchronization.
+The retired package-ledger snapshots, current source-closure hash, and PDF hash
+serve different historical or operational purposes. The closure hash identifies
+the current build inputs, while the PDF hash identifies the reviewed historical
+artifact; neither implies current source/PDF synchronization.

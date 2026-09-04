@@ -30,7 +30,8 @@ fractional_defect.png
 requirements.txt
     Python package versions used for the final numerical run.
 
-SHA256SUMS.txt
+SHA256SUMS.txt (retired repository-wide on 2026-09-01; historical bytes are
+available from Git history only)
     SHA-256 checksums for every packaged file except itself.
 
 REPRODUCING THE NUMERICAL EXPERIMENTS

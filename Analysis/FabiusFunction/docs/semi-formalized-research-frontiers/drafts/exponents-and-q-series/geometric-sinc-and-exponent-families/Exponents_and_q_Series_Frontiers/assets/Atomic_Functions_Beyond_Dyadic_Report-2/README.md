@@ -13,7 +13,8 @@ and deterministic numerical experiments.
 - `data/` - exact/numerical validation tables.
 - `source_rvachev_ocr.tex`, `source_rvachev_scan.pdf` - supplied source material.
 - `requirements.txt` - Python dependencies.
-- `SHA256SUMS` - checksums for the package files.
+- Former `SHA256SUMS` ledger - retired repository-wide on 2026-09-01; its
+  historical bytes remain available from Git history only.
 
 ## Reproduction
 

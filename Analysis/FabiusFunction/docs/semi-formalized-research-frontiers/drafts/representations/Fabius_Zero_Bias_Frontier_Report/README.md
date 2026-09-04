@@ -44,7 +44,8 @@ zero-bias transformations are classical.
   and 2026-08-31 synchronized-source/PDF validation record. That record
   predates the current source-only notation edit.
 - `ARRIVAL_SHA256SUMS` — immutable 21-entry delivered-payload ledger.
-- `SHA256SUMS` — validated normalized-package ledger (excluding itself).
+- The former normalized-package `SHA256SUMS` ledger was retired repository-wide
+  on 2026-09-01; its final snapshot remains recoverable from Git history.
 
 ## Numerical replay
 

@@ -104,5 +104,6 @@ changes are expected and remove the submitted Type-3 fonts.
 The mathematical body was retained. The report now uses the shared
 article/A4/27 mm/Libertinus preamble, with only report-local notation and
 float settings after the common block. Generated CSVs use deterministic LF
-line endings. The current `SHA256SUMS` covers the normalized package;
-`ARRIVAL_SHA256SUMS` remains the immutable provenance record.
+line endings. The former `SHA256SUMS` ledger was retired repository-wide on
+2026-09-01; `ARRIVAL_SHA256SUMS` remains the immutable provenance record, and
+Git history retains the retired normalized-package ledger.

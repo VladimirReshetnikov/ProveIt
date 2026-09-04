@@ -56,7 +56,8 @@ numerical_experiments.py                  exact and high-precision checks
 requirements.txt                          Python dependencies
 assets/*.png                              five deterministic figures
 data/*.csv                                exact values and residual tables
-SHA256SUMS.txt                            checksums for archive payload files
+SHA256SUMS.txt                            retired repository-wide on 2026-09-01;
+                                          historical bytes are in Git history only
 ```
 
 The Python program is extensively commented and deliberately avoids a symbolic

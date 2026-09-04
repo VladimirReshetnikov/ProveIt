@@ -4,9 +4,8 @@
 The source corpus is read from the exact Git commit recorded in
 ``audit/SOURCE_REVISION``; later edits or retirement of the source packages
 therefore cannot change this audit.  This program copies only reviewed, unique
-payloads, writes the exhaustive 88-row disposition ledger, and writes the live
-checksum ledger for the canonical ``assets`` tree.  ``--check`` is a strict
-read-only replay after the initial build.
+payloads and writes the exhaustive 88-row disposition ledger.  ``--check`` is
+a strict read-only replay after the initial build.
 """
 
 from __future__ import annotations
@@ -30,7 +29,6 @@ SOURCE_ROOT = CANONICAL_ROOT.parent
 SOURCE_REVISION_FILE = CANONICAL_ROOT / "audit/SOURCE_REVISION"
 ASSET_ROOT = CANONICAL_ROOT / "assets"
 DISPOSITION_CSV = CANONICAL_ROOT / "ASSET_DISPOSITION.csv"
-LIVE_LEDGER = ASSET_ROOT / "SHA256SUMS"
 STURM_CERTIFICATE = ASSET_ROOT / "self-sampling/appell_a8_sturm_certificate.txt"
 SOURCE_GROUPS = (
     "inverse-asymptotics-and-computability",
@@ -550,11 +548,13 @@ omit(
     "The TeX and README rows are stale; the canonical live ledger replaces it.",
 )
 
-# Non-elementarity provenance.
-retain(
+# The historical package-local ledger is intentionally not copied into the
+# canonical tree: SHA256SUMS and SHA256SUMS.* basenames are retired.
+omit(
     f"{NON_ELEMENTARY}/SHA256SUMS",
-    "assets/provenance/non-elementarity/SHA256SUMS.txt",
     "provenance_ledger",
+    "retired_checksum_ledger",
+    "The historical ledger remains recoverable from the pinned source revision.",
 )
 
 # Inverse-iterate lane.
@@ -587,10 +587,13 @@ omit(
     "The dependency names are merged into one canonical requirement set.",
     "assets/requirements.txt",
 )
-retain(
+# The arrival ledger remains represented by its pinned-source disposition row,
+# but is no longer copied under a retired basename.
+omit(
     f"{ITERATES}/SHA256SUMS.arrival.txt",
-    "assets/provenance/inverse-iterates/SHA256SUMS.arrival.txt",
     "provenance_ledger",
+    "retired_checksum_ledger",
+    "The historical ledger remains recoverable from the pinned source revision.",
 )
 omit(
     f"{ITERATES}/SHA256SUMS.txt",
@@ -1027,7 +1030,6 @@ def expected_asset_files() -> set[str]:
         "endpoint/dyadic-completion/figures/psi_periodic.png",
         "requirements.txt",
         "self-sampling/appell_a8_sturm_certificate.txt",
-        "SHA256SUMS",
     }
 
 
@@ -1051,23 +1053,10 @@ def write_or_check(path: Path, payload: bytes, check: bool) -> None:
         path.write_bytes(payload)
 
 
-def ledger_payload() -> bytes:
-    paths = sorted(
-        path
-        for path in ASSET_ROOT.rglob("*")
-        if path.is_file() and path != LIVE_LEDGER
-    )
-    lines = [
-        f"{sha256_file(path)}  {path.relative_to(ASSET_ROOT).as_posix()}\n"
-        for path in paths
-    ]
-    return "".join(lines).encode("ascii")
-
-
 def validate_no_duplicate_assets() -> None:
     groups: defaultdict[str, list[str]] = defaultdict(list)
     for path in ASSET_ROOT.rglob("*"):
-        if path.is_file() and path != LIVE_LEDGER:
+        if path.is_file():
             groups[sha256_file(path)].append(path.relative_to(ASSET_ROOT).as_posix())
     duplicates = {digest: names for digest, names in groups.items() if len(names) > 1}
     if duplicates:
@@ -1082,7 +1071,7 @@ def main() -> int:
     parser.add_argument(
         "--check",
         action="store_true",
-        help="verify the existing migration and ledgers without writing",
+        help="verify the existing migration and disposition data without writing",
     )
     args = parser.parse_args()
     try:
@@ -1107,13 +1096,12 @@ def main() -> int:
         write_or_check(STURM_CERTIFICATE, sturm_certificate_payload(), args.check)
 
         expected = expected_asset_files()
-        actual_without_ledger = actual_asset_files() - {"SHA256SUMS"}
-        expected_without_ledger = expected - {"SHA256SUMS"}
-        if actual_without_ledger != expected_without_ledger:
+        actual = actual_asset_files()
+        if actual != expected:
             raise ValueError(
                 "canonical asset file set differs; "
-                f"missing={sorted(expected_without_ledger - actual_without_ledger)!r}; "
-                f"unexpected={sorted(actual_without_ledger - expected_without_ledger)!r}"
+                f"missing={sorted(expected - actual)!r}; "
+                f"unexpected={sorted(actual - expected)!r}"
             )
 
         # Verify source duplicates deliberately mapped to one retained payload.
@@ -1127,18 +1115,13 @@ def main() -> int:
         rows = disposition_rows(files)
         write_or_check(DISPOSITION_CSV, csv_payload(rows), args.check)
         validate_no_duplicate_assets()
-        write_or_check(LIVE_LEDGER, ledger_payload(), args.check)
-
-        # The ledger must become exact after its own write/check, while omitting itself.
-        if LIVE_LEDGER.read_bytes() != ledger_payload():
-            raise ValueError("live asset checksum ledger is stale")
 
         dispositions = Counter(row["disposition"] for row in rows)
-        asset_count = len(actual_asset_files() - {"SHA256SUMS"})
+        asset_count = len(actual_asset_files())
         mode = "verified" if args.check else "built"
         print(f"asset migration {mode}")
         print(f"source disposition rows: {len(rows)}")
-        print(f"canonical payloads in live ledger: {asset_count}")
+        print(f"canonical payloads: {asset_count}")
         print("dispositions:")
         for disposition, count in sorted(dispositions.items()):
             print(f"  {disposition:46s} {count:3d}")

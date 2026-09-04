@@ -13,8 +13,10 @@ The migration accounts for exactly 113 selected payloads:
   `sturm_real_root_counts.csv` already had byte-identical canonical homes under
   `../evidence/legendre/root-geometry/`.
 
-`SHA256SUMS` hashes all 113 live destinations.  The old-to-new path, hash, and
-disposition of every payload are recorded one-to-one in
+Before repository-wide retirement on 2026-09-01, the former `SHA256SUMS`
+ledger hashed all 113 live destinations. Its final snapshot remains
+recoverable from Git history, while the old-to-new path, hash, and disposition
+of every payload remain recorded one-to-one in
 `../provenance/COMPANION_PAYLOADS.csv`.
 
 The absorbed report TeX, compiled PDFs, report-level READMEs, dated audit and
@@ -24,7 +26,7 @@ duplicated here.  They remain recoverable at immutable pre-retirement commit
 available.  The v6 report arrived without the companion files named in its
 prose, and this migration does not invent them.
 
-Historical package checksum files are preserved as provenance.  They describe
-arrival layouts and may encode pre-normalization line endings; the live
-authority is this directory's `SHA256SUMS` together with the canonical root
-ledger.
+Historical package checksum evidence describes arrival layouts and may encode
+pre-normalization line endings. Package-local `SHA256SUMS` ledgers were retired
+repository-wide on 2026-09-01; Git history and the purpose-specific
+`../provenance/COMPANION_PAYLOADS.csv` retain the provenance mapping.

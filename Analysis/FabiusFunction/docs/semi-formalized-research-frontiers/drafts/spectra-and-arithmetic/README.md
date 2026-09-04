@@ -77,13 +77,15 @@ Lean verification.
   in the Pascal--Rvachev Hierarchy* (26 A4 pp, 1,927 source lines; with a
   426-line program, four CSV tables, and a captured numerical summary), from
   `8a184546747082cbd92ad4675fb61981c6b8c3b6`. The nine-file delivery had no
-  checksum ledger or dependency lock, so the repository-generated
-  `SHA256SUMS` records the nine-payload scope.  The retained 26-page A4 PDF was
+  checksum ledger or dependency lock. The repository-generated `SHA256SUMS`
+  recorded the nine-payload scope before its repository-wide retirement on
+  2026-09-01; its final snapshot remains recoverable from Git history. The
+  retained 26-page A4 PDF was
   rebuilt in exactly three serial passes and has complete metadata,
   embedded/subset Type 1 fonts, six Libertinus rows, and no Type 3 font. The
   source changed after that receipt, so a new build is required before
-  synchronization is claimed; the refreshed live ledger intentionally records
-  the exact mixed checkpoint. Its higher-rank spectral
+  synchronization is claimed; the former ledger's final mixed checkpoint
+  remains in Git history. Its higher-rank spectral
   signs and Lambert series, dyadic cubature, Laguerre--Pólya/Pascal hierarchy,
   and probabilistic duals remain pending comparison.
 

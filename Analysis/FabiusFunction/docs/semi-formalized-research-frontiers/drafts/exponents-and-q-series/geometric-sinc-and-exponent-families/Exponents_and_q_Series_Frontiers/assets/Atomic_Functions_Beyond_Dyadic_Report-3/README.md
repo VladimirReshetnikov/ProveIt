@@ -20,7 +20,8 @@ The document explicitly distinguishes four kinds of statements:
 - `data/` — CSV audit tables for gap geometry, exact norms, tube and distance laws,
   moment formulae, Gaussian scaling, periodicity, and Gamma-zeta Fourier modes.
 - `requirements.txt` — Python dependencies.
-- `SHA256SUMS` — checksums of the files in the release, excluding the checksum file itself.
+- Former `SHA256SUMS` ledger — retired repository-wide on 2026-09-01; its
+  historical bytes remain available from Git history only.
 
 ## Rebuild
 

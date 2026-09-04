@@ -161,14 +161,13 @@ documentation census recorded at the earlier merge checkpoint was 629 modules
 and 8,546 public declarations. That historical census is contextual evidence,
 not a claim that every manuscript result in this volume is formalized.
 
-The deterministic validator passes the nine-file TeX graph, structural and
+The deterministic validator checks the nine-file TeX graph, structural and
 proof discipline (213 result environments, 150 proof-required), 801 labels,
-783 references, 62 bibliography keys,
-disposition, historical-ledger, companion-payload, 232-row
-theorem-concordance, and exhaustive package-checksum gates. Its narrow Lean
-identifier check is not a live theorem-type check. The root `SHA256SUMS` is the
-single exhaustive ledger for every other permanent package file, including
-the retained PDF and complete evidence tree; it verifies current bytes without
-asserting source/PDF synchronization. There is no
-`assets/SHA256SUMS`. A fresh-checkout reproduction and a full rerun of every
-retained numerical script remain separate reproducibility work.
+783 references, 62 bibliography keys, disposition, historical-ledger,
+companion-payload, and 232-row theorem-concordance gates. Its narrow Lean
+identifier check is not a live theorem-type check. Package-local `SHA256SUMS`
+ledgers were retired repository-wide on 2026-09-01; recorded checkpoint
+snapshots remain recoverable from Git history, while
+`assets/COMPANION_PAYLOADS.csv` continues to map retained payload provenance.
+A fresh-checkout reproduction and a full rerun of every retained numerical
+script remain separate reproducibility work.

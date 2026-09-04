@@ -17,8 +17,9 @@ normalized package, current Lean inputs, and paper-only frontier claims.
 - The archive’s 13 payload checksums all verified. **ARRIVAL_SHA256SUMS.txt** preserves that
   ledger verbatim. The first repository normalization changed only CRLF to LF in five CSV
   files; its 13-row ledger also verified.
-- **SHA256SUMS.txt** is a separate exhaustive ledger for the current normalized package and
-  deliberately excludes itself.
+- **SHA256SUMS.txt** was the separate exhaustive normalized-package ledger. It
+  was retired repository-wide on 2026-09-01, and its historical bytes remain
+  recoverable from Git history.
 
 ## Hostile claim audit and disposition
 

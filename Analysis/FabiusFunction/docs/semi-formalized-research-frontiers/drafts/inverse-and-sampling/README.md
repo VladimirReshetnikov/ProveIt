@@ -30,8 +30,9 @@ problems, and 24 are non-applicable source environments.
 records exact module/declaration matches and separately classifies five
 post-snapshot additions without changing those source totals.
 [`ASSET_DISPOSITION.csv`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/ASSET_DISPOSITION.csv)
-accounts for all 88 source-subgroup files, and the live asset ledger covers 63
-retained, deduplicated payloads.
+accounts for all 88 source-subgroup files and records 61 retained canonical
+payload destinations. Package-local ledgers were retired repository-wide on
+2026-09-01 and remain recoverable from Git history.
 
 Five recent exact source-row matches are centered Appell deconvolution,
 positive-degree Appell mean-zero, arbitrary-phase polynomial deconvolution,
