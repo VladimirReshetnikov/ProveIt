@@ -299,6 +299,7 @@ import FabiusFunction.TransseriesHeight
 import FabiusFunction.TransseriesScale
 import FabiusFunction.TransseriesWellBased
 import FabiusFunction.WrightOmega
+import FabiusFunction.WrightOmegaTwoOrders
 import FabiusFunction.LambertShiftInverse
 import FabiusFunction.LambertShiftConcavity
 import FabiusFunction.LambertCorrectionEquation
