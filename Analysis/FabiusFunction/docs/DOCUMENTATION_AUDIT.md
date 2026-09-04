@@ -213,7 +213,7 @@ overlapping series/transseries route reached historical checkpoints
 943/11,787, 952/11,881, 952/11,884, 967/12,001, 969/12,048, and
 970/12,051; those receipts are not additive with the consolidated checkpoints
 above.  Reconciliation produced the historical merged checkpoint 970/12,056.
-The following seven-module checkpoint was 977/12,133; the current two-module
+The following seven-module checkpoint was 977/12,133; the two-module
 certificate overlay reached 979/12,142, and the current six-module successor
 is 985/12,199.  On the earlier
 exterior-germ branch, the inner-complex 906/11,461 checkpoint was followed by
