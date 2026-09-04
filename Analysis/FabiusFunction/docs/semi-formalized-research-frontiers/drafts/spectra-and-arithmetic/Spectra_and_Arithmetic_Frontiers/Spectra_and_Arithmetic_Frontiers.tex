@@ -756,8 +756,19 @@ argument is an odd integer, where \(\RvachevUp\) vanishes
 (\path{Fabius.rvachevUp_eq_zero_of_one_le_abs}); at the depth every argument is an even
 integer and only \(j=c+2^{n-1}\) survives, with the sign
 \(\ThueMorseSign{c+2^{n-1}}=-\ThueMorseSign{c}\) (\path{Fabius.thueMorseSign_add_pow_two}).
-The remaining case \eqref{p1:eq:filtration-below}, through the global \(q\)-binomial
-formula, is not formalized here.
+The remaining case \eqref{p1:eq:filtration-below} is formal as well, and in a stronger
+form, by a different route than the proof above takes.  Since
+\((2^n+a)/2^{n-m}=2^m(1+a/2^n)\), the display is the composite of two facts that need
+neither a dyadic argument nor an order below the depth: on \((-\infty,1)\) the up-function is a
+single translate of the signed extension
+(\path{Fabius.extendedFabius_add_one_eq_rvachevUp}), so the two have the same derivatives
+there, and every iterated derivative of the extension is a rescaled global value
+(\path{Fabius.iteratedDeriv_extendedFabius}).  Composing them,
+\path{Fabius.iteratedDeriv_rvachevUp_eq_extendedFabius} is
+\(\RvachevUp^{(m)}(x)=2^{m(m+1)/2}\FabiusGlobal(2^m(1+x))\) for \emph{every} order \(m\) and
+every \(x<1\), and \path{Fabius.iteratedDeriv_rvachevUp_dyadic_below} is the volume's own
+dyadic form for \(m<n\), \(a<2^n\).  The global \(q\)-binomial formula, which the proof above
+invokes at this point, is not needed for the identity itself.
 
 \begin{corollary}[Spectral detection of the denominator]\label{p1:cor:denominator-detection}
 For an interior reduced dyadic point $t=a/2^n$ with odd $a$,

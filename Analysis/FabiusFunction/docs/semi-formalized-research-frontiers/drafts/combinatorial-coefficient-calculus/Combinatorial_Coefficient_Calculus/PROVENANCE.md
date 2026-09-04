@@ -49,14 +49,17 @@ The records distinguish four intentionally different identities.
    every consolidation checkpoint; its immutable `CCC` snapshot identity remains
    recorded here even after the canonical text diverges from that donor.
 
-The former six package-local checksum files were derivative two-row ledgers,
-not additional research payloads, and were removed under the repository-wide
-policy abolishing that filename convention.  This file,
-`SOURCE_DISPOSITION.csv`, and `SOURCE_CLOSURE.sha256` are consolidation
-metadata rather than source manuscripts.  Retirement has now happened: the
-transitional twelve-payload closure has contracted to the one canonical
-TeX/PDF pair, and the commented historical records continue to identify all
-six inputs.
+The former six package-local `SHA256SUMS` checksum manifests were derivative
+two-row ledgers, not additional research payloads.  They were removed under the
+repository-wide policy abolishing that filename convention, remain recoverable
+from repository history, and are outside the transitional twelve-payload
+closure (the live canonical TeX/PDF pair and the five donor TeX/PDF pairs).  No
+`SHA256SUMS` file is current or should be recreated.  This file,
+`SOURCE_DISPOSITION.csv`, and `SOURCE_CLOSURE.sha256` are likewise
+consolidation metadata rather than source manuscripts.  Retirement has now
+happened: the transitional twelve-payload closure has contracted to the one
+canonical TeX/PDF pair, and the commented historical records continue to
+identify all six inputs.
 
 One point of the identity model changed at retirement.  The retained
 historical PDFs were never asserted to render their notation-migrated TeX, and
