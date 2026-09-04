@@ -1565,7 +1565,7 @@ determined freely by its values on the variables, and it extends uniquely to
 any localization by the quotient rule; taking \(\DX t=-t^{2}\), \(\DX L=t\)
 gives the derivation in question.
 \end{proof}
-\emph{Lean status: partial, item \textup{(v)} only.}  The block
+\emph{Lean status: partial; \textup{(i)}--\textup{(iii)} and \textup{(v)} formal.}  The block
 law~\eqref{plt:eq:mot-block-derivative} is formal in
 \lean{TransseriesDifferentialBlock.lean}, and in greater generality than stated here:
 no ambient \(\mathcal{G}\) and no construction of \(\K[t,t^{-1}][L]\) is needed, only a
@@ -1585,12 +1585,18 @@ case \(n=0\), where the law degenerates to \(d(p(L))=t\,p'(L)\), is
 controls are \lean{Fabius.exists_block_primitive} (for \((n:F)\ne0\), with the primitive
 given explicitly by the Neumann sum) and \lean{Fabius.exists_block_primitive_resonant}.
 
-Items~\textup{(i)}--\textup{(iv)} are \emph{not} formalized: neither the minimality of the
-three \(\DX\)-stable subrings, nor the growth statement in \textup{(i)}, nor the
-algebraic independence of \(t\) and \(L\) over \(\RealNumbers\) in \textup{(iv)} with the
-unique block representation it yields.  Item~\textup{(iv)} in particular is a
-transcendence statement about the concrete ring of germs and is not implied by anything
-above.
+The three minimality statements are formal as well, in
+\lean{TransseriesDifferentialClosure.lean} and as genuine \lean{IsLeast} assertions rather
+than inclusions in one direction: \lean{Fabius.isLeast_adjoin_singleton_of_derivation_eq_one}
+is~\textup{(i)}, \lean{Fabius.isLeast_adjoin_pair_of_derivation_log} is~\textup{(ii)}, and
+\lean{Fabius.isLeast_adjoin_triple_of_derivation_log} is~\textup{(iii)}.
+
+What is \emph{not} formalized is item~\textup{(iv)} and the growth clause of~\textup{(i)}.
+Both are statements about the concrete ring of germs rather than about an abstract
+differential ring: the growth clause says every unbounded element of
+\(\RationalNumbers[X]\) grows at least like \(X\), and \textup{(iv)} is the algebraic
+independence of \(t\) and \(L\) over \(\RealNumbers\), a transcendence statement that is
+not implied by anything above and that the unique block representation depends on.
 
 
 \begin{remark}[Reading the theorem]
@@ -2082,6 +2088,15 @@ Hence \(\ell^{2}-2aC\ell-2aB\le0\), so
 \(\sqrt{p+q}\le\sqrt p+\sqrt q\).  As \(\ell=\log(1/\FabiusQuantile(y))\), this
 is \eqref{plt:eq:mot-fabius-inverse}.
 \end{proof}
+\emph{Lean status: covered, by a sharper statement.}  The corpus does not carry this
+corollary as such; what it has is strictly stronger, a two-sided asymptotic law with an
+explicit error term.  \lean{Fabius.log_fabiusInv_sub_fabiusInverseLogAsymptoticMain_isBigO}
+in \lean{FabiusInverseAsymptotic.lean} gives the main term
+\(-\sqrt{2\log 2\cdot B}+\tfrac12\log B-1-\tfrac12\log\log 2\) with error
+\(\BigO(\log B/\sqrt B)\), from which the corollary above follows by discarding everything
+past the leading term.  No separate module is needed for it, and the crosswalk records the
+implication rather than a restatement.
+
 
 \begin{remark}[What the corpus adds, and what must not be inferred]
 \label{plt:rmk:mot-fabius-status}
@@ -30467,6 +30482,12 @@ nothing is lost).  By \cref{plt:lem:tay-bell-recurrence} evaluated at
 \(x_{1},\ldots,x_{n+1-k+1}\), that is
 \(\gamma,\ldots,\partial^{\,n+1-k}\gamma\).  All sums are finite.
 \end{proof}
+\emph{Lean status.}  Formal in \lean{BellLeibnizTower.lean} as
+\lean{Fabius.iterate_derivation_eq_sum_partialBell}, with \lean{Fabius.derivationTower} and
+\lean{Fabius.derivation_partialBell_tower} as the engine.  The partial Bell polynomials it
+is stated against are the corpus family of \cref{plt:def:bell-partial}, so this lemma and
+the Bell chapter share one object rather than two definitions that happen to agree.
+
 
 \begin{remark}[The two Fa\`a di Bruno statements are two towers]
 \label{plt:rmk:bell-two-faa}
@@ -40283,6 +40304,36 @@ $\OB_{m-1,k}$ is a polynomial with rational coefficients in rational arguments. 
 $\mathcal C=1-v=1-\sum_m\omega_m\varsigma^m =1-\sum_m\omega_m2^{m/2}\upsilon^{m/2}$, which is
 \cref{p1:eq:cayley-puiseux}.
 \end{proof}
+\emph{Lean status: partial.}  In \lean{CayleyLocalCoordinate.lean}.  What is formal is the
+setup, and it is formal in both of its parts.  The identity
+\(\upsilon=\tfrac12v^{2}\Phi(v)\) is \lean{Fabius.cayleyUpsilon_eq_half_mul_kernel}, where
+\lean{Fabius.cayleyUpsilon}\ \(v=1-(1-v)\EulerE^{v}\); it is the kernel's defining relation
+\lean{Fabius.tsum_cayleyKernelTerm_mul_sq} rearranged, and stating it against the series
+rather than the closed form makes it hold at \(v=0\) too, where the closed form does not
+exist.  \lean{Fabius.cayleyUpsilon_eq_half_mul_sq_kernel} is the closed-form version for
+\(v\ne0\).
+
+The substitution itself is not free and is proved separately:
+\lean{Fabius.cayleyTree_eq_one_sub} says that
+\(\mathcal C\bigl((1-\upsilon(v))/\EulerE\bigr)=1-v\) for \(v\ge0\), so that \(\upsilon\) is
+genuinely the local coordinate of the branch rather than a function that happens to have the
+right series.  Two things make it work.  The argument never leaves the domain, by
+\lean{Fabius.one_sub_upsilon_div_exp_one_le}, which rests on
+\lean{Fabius.one_sub_mul_exp_le_one}: \((1-v)\EulerE^{v}\le1\) for \emph{every} real \(v\),
+in one step from \(1-v\le\EulerE^{-v}\) scaled by \(\EulerE^{v}>0\), with no case split on
+the sign of \(1-v\).  And the hypothesis \(v\ge0\) is exactly the branch condition
+\(1-v\le1\) of \lean{Fabius.cayleyTree_unique} --- which is the formal content of the
+phrase ``on the branch reached from \(0<w<\EulerE^{-1}\)''.  Positivity of the local
+coordinate, \lean{Fabius.cayleyUpsilon_nonneg}, is the same inequality again.
+
+What is \emph{not} formalized: everything after the setup.  The reversion
+\(v=\sum_{m\ge1}\omega_{m}(2\upsilon)^{m/2}\), the master
+formula~\eqref{p1:eq:omega-master} for \(\omega_{m}\) through the ordinary partial Bell
+polynomials, and the Puiseux expansion~\eqref{p1:eq:cayley-puiseux} all need Lagrange
+reversion at a square-root branch point, which the corpus does not carry.  The ordinary
+Bell polynomials the master formula is written in are themselves unformalized; see the
+note at \cref{plt:lem:bell-normalizations}.
+
 
 \begin{remark}[Two normalisations, one object]
 \label{p1:rem:omega-vs-c}
