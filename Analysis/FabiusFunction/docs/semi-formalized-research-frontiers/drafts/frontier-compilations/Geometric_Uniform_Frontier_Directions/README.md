@@ -35,7 +35,22 @@ Repository normalization retained the mathematical body while replacing the subm
 
 The report distinguishes proved manuscript results, proof programs, numerical evidence, and conjectures. “Novel” means absent from the arrival-time repository snapshot, not worldwide priority.
 
-The current Lean corpus already supplies the geometric-uniform series and distribution, their positive-parameter CDF/density/support and convolution/cumulant-tail interfaces, finite sinc products, a general weighted analytic sinc–zeta expansion, and the fixed dyadic half–quarter multisection. The report does **not** elevate its negative-parameter duality, closed all-parameter Bernoulli cumulants, Gaussian/LDP limits, exact subdyadic plateaux and derivative norms, arbitrary-parameter zero divisor and spectral zeta, normalized moment-polynomial recurrence, Legendre scaling, or arbitrary-parameter periodic Laplace phase to Lean theorems. In particular, the periodic-phase contour step remains a paper proof, and no formal coverage ledger status changes merely because this package is filed.
+The current Lean corpus already supplies the geometric-uniform series and
+distribution, their positive-parameter CDF/density/support and
+convolution/cumulant-tail interfaces, finite sinc products, a general weighted
+analytic sinc--zeta expansion, and the fixed dyadic half--quarter multisection.
+It now also supplies the recursive rational moment polynomial, its real,
+inner-complex, and exterior-germ coefficient bridges, the sharp degree, and the
+one-definition/four-theorem rational-function clearing/evaluation package. That
+last package makes canonical q-series label `thm:qF-moment-polynomial` Exact;
+the broader `thm:geometric-uniform-mgf` remains Partial. The report does **not**
+thereby elevate its positive-integral-coefficient conjecture, negative-parameter
+duality, closed all-parameter Bernoulli cumulants, Gaussian/LDP limits, exact
+subdyadic plateaux and derivative norms, arbitrary-parameter zero divisor and
+spectral zeta, Legendre scaling, or arbitrary-parameter periodic Laplace phase
+to Lean theorems. In particular, the periodic-phase contour step remains a
+paper proof, and no additional coverage-ledger status changes merely because
+this package is filed.
 
 ## Principal directions developed in the report
 

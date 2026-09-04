@@ -162,9 +162,8 @@ theorem exp_subst_eq_egfA_abelPolynomial (a x : A) {T : A⟦X⟧}
             (Lagrange.constantCoeff_eq_zero_of_eq_X_mul hT),
           ← coeff_zero_eq_constantCoeff_apply, coeff_rescale, pow_zero, one_mul,
           coeff_zero_eq_constantCoeff_apply, constantCoeff_exp]
-      simpa only [coeff_egfA, coeff_zero_eq_constantCoeff_apply, Nat.factorial_zero,
-        Nat.cast_one, one_div_one, map_one, abelPolynomial_zero,
-        Polynomial.eval_one, mul_one] using hconstant
+      simpa only [coeff_zero_eq_constantCoeff_apply, constantCoeff_egfA,
+        abelPolynomial_zero, Polynomial.eval_one] using hconstant
   | succ n =>
       rw [coeff_exp_subst_of_abel_eq a x hT n, coeff_egfA, abelPolynomial_succ_eval]
 

@@ -38,6 +38,14 @@ if '\\newcommand{\\lean}' not in s:
 # ---------------------------------------------------------------- statuses
 # label -> (status, "declarations (module)")
 STATUS = {
+ 'lem:merged-formal-rescaling': ('Lean',
+   r"\cref{eq:merged-formal-rescaling-derivative} is "
+   r"\lean{Fabius.derivative_rescale} over every commutative semiring; "
+   r"\lean{Fabius.derivative_rescale_exp}, \lean{Fabius.rescale_zero_exp}, and "
+   r"\lean{Fabius.rescale_exp_add_one} give the exponential specializations "
+   r"over every commutative $\RationalNumbers$-algebra "
+   r"(\lean{ExponentialRescaling}). The general product law is Mathlib's "
+   r"\lean{PowerSeries.exp_mul_exp_eq_exp_add}."),
  'thm:first-cycle': ('partial',
    r"recurrence and boundary values are Mathlib's \lean{Nat.stirlingFirst_succ_succ}, "
    r"\lean{Nat.stirlingFirst_succ_zero}, \lean{Nat.stirlingFirst_eq_zero_of_lt}; the "
@@ -322,14 +330,23 @@ STATUS = {
    r"\lean{Fabius.egfA_fubini}: the generating function is $1/(1-u)$ at $u=\EulerE^t-1$) and "
    r"\cref{eq:ordered-bell-recurrence} is \lean{Fabius.fubini_succ} (\lean{OrderedBell}); the "
    r"ordered-partition count itself is not formalized"),
- 'thm:second-ogf': ('partial',
+ 'thm:second-ogf': ('Lean',
    r"\lean{Fabius.prod_one_sub_mul_X_mul_stirlingColumnOGF} and "
-   r"\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}): the column "
-   r"series $\sum_r\StirlingSecondKind{k+r}{k}x^r$ times $\prod_{j\le k}(1-jx)$ is $1$, and "
-   r"equals the product of the geometric series $\sum_r j^rx^r$, in $R[[x]]$ for every "
-   r"commutative ring $R$; \cref{eq:second-complete-symmetric}, which reads the coefficient "
-   r"off the product as a complete homogeneous symmetric polynomial, is displayed inside the "
-   r"theorem and is not formalized"),
+   r"\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}) prove the "
+   r"formal inverse and finite geometric-product identities.  The compiled "
+   r"\lean{StirlingCompleteHomogeneous} declarations "
+   r"\lean{Fabius.stirlingColumnOGF_eq_completeHomogeneousGeneratingSeriesOn}, "
+   r"\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn}, "
+   r"\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le}, "
+   r"\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEval}, "
+   r"\lean{Fabius.stirlingSecond_add_eq_eval_hsymm}, and "
+   r"\lean{Fabius.stirlingSecond_add_eq_sum_finsuppAntidiag} cover inverse uniqueness, the "
+   r"$n=k+r$ and $n\ge k$ complete-homogeneous identities over every commutative semiring, universal "
+   r"\lean{MvPolynomial.hsymm} evaluation, and the explicit multiplicity sum.  Its "
+   r"\lean{Fabius.pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul} and "
+   r"\lean{Fabius.prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv} cover "
+   r"the scalar falling-factorial factorization under $x\ne0$ and its reciprocal under "
+   r"nonvanishing of every $1-jx$."),
  'thm:eulerian-power-series': ('Lean',
    r"\lean{Fabius.one_sub_X_pow_mul_succPowSeries} (the identity "
    r"$(1-t)^{n+1}\sum_m(m+1)^nt^m=\TypeAEulerianPolynomial{n}(t)$ in $R[[t]]$) and "
@@ -607,18 +624,21 @@ STATUS = {
  'cor:eulerian-power-sum': ('Lean',
    r"\lean{Fabius.sum_range_pow_succ_eq_sum_eulerianNumber} (\lean{EulerianNumbers}), "
    r"in the form $\sum_{r=0}^{m} r^{n+1}=\sum_k A(n+1,k)\binom{m+k+1}{n+2}$"),
- 'alg:merged-exp-log-power': ('partial',
+ 'alg:merged-exp-log-power': ('Lean',
    r"\cref{eq:merged-alg-log} is the reflected-index form of "
    r"\lean{Fabius.SaddleExpansion.logCoeff_succ}, with "
    r"\lean{Fabius.SaddleExpansion.logSeries_eq_logOf} identifying that recurrence with the "
    r"formal logarithm (\lean{SaddleLogExpansionAlgebra}, "
    r"\lean{SaddleLogExpansionPowerSeries}); \cref{eq:merged-alg-exp} is "
    r"\lean{Fabius.coeff_exp_subst_recurrence} (\lean{UnitSeriesBellCoefficients}) in the "
-   r"denominator-cleared form $na_n=\sum_{j=1}^n j\ell_j a_{n-j}$.  The same module proves "
-   r"closed Bell-polynomial formulas for arbitrary powers as "
-   r"\lean{Fabius.coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos} and "
-   r"\lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}, but the separate recurrence "
-   r"\cref{eq:merged-alg-power} is not formalized"),
+   r"denominator-cleared form $na_n=\sum_{j=1}^n j\ell_j a_{n-j}$. "
+   r"\cref{eq:merged-alg-power} is "
+   r"\lean{Fabius.coeff_fallingSeries_subst_sub_one_recurrence} "
+   r"(\lean{UnitSeriesPowerRecurrence}), from "
+   r"\lean{Fabius.mul_derivative_fallingSeries_subst_sub_one} and the "
+   r"commutative-ring identity \lean{Fabius.coeff_recurrence_of_mul_derivative_eq}. "
+   r"The power is formal binomial substitution with constant coefficient one; "
+   r"all three divided recurrences hold over a commutative $\mathbb Q$-algebra"),
 }
 
 # A dict literal keeps the LAST of two equal keys and reports nothing, so a

@@ -70,6 +70,33 @@ section "Closure of the merge", carries the in-document record. In summary:
   upright `e` inside one exponent. The document now follows
   `FabiusFunction_Mathematical_Notation_Catalogue` throughout.
 
+## Current source-only Stirling overlay
+
+The fixed-column second-kind Stirling theorem `thm:second-ogf` now separates
+its formal-power-series content from scalar rational evaluation. Its
+coefficient identity explicitly assumes `n >= k`; the formal proof identifies
+two inverses of the same finite product, extracts the coefficient of the
+finite product of geometric series, and then proves
+`x^(k+1) * (1/x)↓(k+1) = ∏_{j=1}^k (1-jx)`. The falling-factorial spelling at
+a scalar requires `x != 0`, and its reciprocal form also requires every
+factor `1-jx` to be nonzero. The `k = 0`, `n = 0` empty-product case is
+included.
+
+The compiled zero-definition/eight-theorem
+`StirlingCompleteHomogeneous.lean` surface contributes
+`stirlingColumnOGF_eq_completeHomogeneousGeneratingSeriesOn`,
+`stirlingSecond_add_eq_completeHomogeneousEvalOn`,
+`stirlingSecond_eq_completeHomogeneousEvalOn_of_le`,
+`stirlingSecond_add_eq_completeHomogeneousEval`,
+`stirlingSecond_add_eq_eval_hsymm`, and
+`stirlingSecond_add_eq_sum_finsuppAntidiag`. Its two companion declarations,
+`pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul` and
+`prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv`, cover
+the scalar factorization and reciprocal spelling. Together they make
+`thm:second-ogf` **Lean** with the corrected hypotheses. The retained PDF was
+not rebuilt for this source-only overlay, so no PDF or checksum parity is
+claimed for it.
+
 ## What this package does not claim
 
 The manuscript is research-frontier mathematical writing. Its theorem and proof
@@ -77,18 +104,18 @@ environments are human-readable mathematics, not evidence of Lean verification.
 The section "Lean formalization register" states, per result, what is formalized
 and what is not; it is maintained separately from this consolidation.
 
-## Weighted-transform checkpoint (2026-09-04)
+## Formalization checkpoints (2026-09-04)
 
-The `AppellSequence` extension has passed a focused Lean build with
-`LAKE_JOBS=1`: eleven public lemmas provide weighted binomial translation,
+The `AppellSequence` extension has passed direct, sequential Lean elaboration:
+eleven public lemmas provide weighted binomial translation,
 convolution transport, cancellation, and inversion. The manuscript gives their
 complete human proofs and exact declaration crosswalks. Three private rational
 helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
-caller refactor has been independently source-reviewed but awaits its own build.
+caller refactor has now passed its own direct Lean check as well.
 
-The register contains 204 rows: 58 marked Lean, 34 partial, and 112 without a
+The register contains 204 rows: 59 marked Lean, 34 partial, and 111 without a
 Lean counterpart. The earlier classifications are inherited; this checkpoint
-adds two compiler-backed entries and does not claim a fresh build of the whole
+adds three compiler-backed entries and does not claim a fresh build of the whole
 corpus. The final structural/provenance validator passes with 204 adjacent
 proofs, 27 disposition records, and six original-source inventory rows. PDF
 rebuilding remains deferred at the user's request.
@@ -98,11 +125,26 @@ coefficient formulas to `UnitSeriesBellCoefficients`; its labelled-set partition
 interpretation remains unformalized. That partial result is included in the
 register totals above.
 
-The pending Abel checkpoint adds the formal-series construction over an arbitrary
-commutative rational algebra, the coefficient formula for every solution, and
-the full EGF and binomial identity. `ExponentialRescaling` has passed a focused
-build; the Abel module and affected callers still await compilation, so the
-new manuscript entries have not yet been promoted in the register. The human
-moment-cumulant proof now states its normalization and positive-degree boundaries
-explicitly, with formal logarithm identities separated from the still-open
-set-partition interpretation.
+`ExponentialRescaling` has passed a focused build. Its four public lemmas give
+the rescaling chain rule over every commutative semiring and exponential
+specializations over every commutative rational algebra. They replace the
+rational-only helpers in `NorlundDiagonal` without changing their names. The
+manuscript supplies full coefficient proofs and an exact crosswalk.
+
+The pending `AbelPolynomialSeries` source constructs a solution over every
+commutative rational algebra, derives coefficients for every solution, and
+proves the full EGF and binomial identity including degree zero. The new
+`BernoulliFormalLog` source derives the rational formal logarithm of the
+Bernoulli kernel using the existing recurrence-to-logarithm bridge. Its
+coefficient formula separates degree zero and preserves the distinction between
+the two degree-one Bernoulli conventions. These two modules and the affected
+Norlund, Lambert, and ThueMorse callers still await compilation; independent
+source reviews are not compiler validation, and their register classifications
+have not been promoted on that basis.
+
+The human moment-cumulant proof now states its normalization and positive-degree
+boundaries explicitly, with formal logarithm identities separated from the
+still-open set-partition interpretation. The Nörlund proof now derives the
+logarithmic coefficients without dividing by the nonunit formal variable.
+Arbitrary-order Nörlund polynomials and their analytic convergence remain open
+formalization work.

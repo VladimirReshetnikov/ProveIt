@@ -255,21 +255,6 @@ the Stirling column arguments.  The analytic Cauchy coefficient formula and
 bound \cref{eq:cauchy-coeff} are not formalized.
 \end{remark}
 
-\begin{remark}[Formal crosswalk]
-% ed.: crosswalk added 2026-09-02; the three formal rules are Lean, the analytic one is not.
-Module \lean{CoefficientRules} proves the three formal rules over an arbitrary
-commutative ring: \cref{eq:cauchy} is
-\lean{Fabius.coeff_mul_eq_sum_range}, \cref{eq:der-coeff} is
-\lean{Fabius.coeff_derivative_eq}, and \cref{eq:geom-conv} is
-\lean{Fabius.coeff_mul_geomSeries}, where $F/(1-az)$ is read as
-$F\cdot\sum_na^nz^n$; that the geometric series really is the reciprocal of
-$1-az$ is \lean{Fabius.one_sub_C_mul_X_mul_geomSeries}, and
-\lean{Fabius.eq_mul_geomSeries_iff} lets the same rule be applied
-to a series presented by the equation $(1-az)G=F$, which is how it is used in
-the Stirling column arguments.  The analytic Cauchy coefficient formula and
-bound \cref{eq:cauchy-coeff} are not formalized.
-\end{remark}
-
 \section{Formal residues}
 For a Laurent series $A(z)$, set
 $\ResidueOperator_z A(z)\Differential z=\CoefficientExtraction z{-1}A(z)$.  Then
@@ -1079,25 +1064,72 @@ which is valid formally as well.
 
 \section{A rational ordinary generating function}
 \begin{theorem}[Fixed-$k$ ordinary generating function]\label{thm:second-ogf}
-For $k\ge0$,
+For every $k\ge0$, the following is an identity of formal power series (over
+$\IntegerNumbers$, and hence after coefficient mapping to any commutative
+ring):
 \begin{equation}\label{eq:second-ogf}
- \sum_{n\ge k}\StirlingSecondKind nk x^{n-k}
- =\prod_{j=1}^k\frac1{1-jx}
- =\frac1{x^{k+1}\FallingFactorial{1/x}{k+1}}.
+ \sum_{r\ge0}\StirlingSecondKind{k+r}{k}x^r
+ =\prod_{j=1}^k\left(\sum_{r\ge0}j^r x^r\right),
+ \qquad
+ \left(\prod_{j=1}^k(1-jx)\right)
+ \left(\sum_{r\ge0}\StirlingSecondKind{k+r}{k}x^r\right)=1.
 \end{equation}
-Consequently,
+Thus its associated rational function is $\prod_{j=1}^k(1-jx)^{-1}$.
+At a scalar value of $x$ for which every $1-jx$ is nonzero, and additionally
+$x\ne0$ when the falling-factorial spelling is used, one has
+\[
+ \prod_{j=1}^k\frac1{1-jx}
+ =\frac1{x^{k+1}\FallingFactorial{1/x}{k+1}}.
+\]
+Consequently, for every $n\ge k$,
 \begin{equation}\label{eq:second-complete-symmetric}
  \StirlingSecondKind nk=h_{n-k}(1,2,\ldots,k)
  =\sum_{c_1+\cdots+c_k=n-k}1^{c_1}2^{c_2}\cdots k^{c_k},
 \end{equation}
-where $h_r$ is a complete homogeneous symmetric polynomial.
+where $h_r$ is a complete homogeneous symmetric polynomial.  The case
+$n=k=0$ uses the usual empty-product and empty-exponent-vector conventions
+and gives $\StirlingSecondKind00=1$.  More generally, after applying the
+canonical map $\NaturalNumbers\to R$, the two identities in
+\cref{eq:second-complete-symmetric} remain valid in every commutative semiring
+$R$, with $1,2,\ldots,k$ and every monomial interpreted in $R$.
 \end{theorem}
 \begin{proof}
-Let $F_k(x)=\sum_{r\ge0}\StirlingSecondKind{k+r}{k}x^r$.  The recurrence
-\cref{eq:second-recurrence}, with $n=k+r-1$, gives
-$F_k(x)=(1-kx)^{-1}F_{k-1}(x)$ and $F_0=1$.  Iteration proves the product.
-Expanding each geometric factor independently proves the complete-homogeneous sum.
-The factorial form follows by direct factorization.
+Put
+\[
+ F_k(x)=\sum_{r\ge0}\StirlingSecondKind{k+r}{k}x^r,
+ \qquad P_k(x)=\prod_{j=1}^k(1-jx).
+\]
+The recurrence \cref{eq:second-recurrence}, with the constant term treated by
+the boundary values, gives $(1-kx)F_k=F_{k-1}$ and $F_0=1$.  Induction on $k$
+therefore gives $P_kF_k=1$ in $\IntegerNumbers[[x]]$.
+
+Now set
+\[
+ H_k(x)=\prod_{j=1}^k\left(\sum_{a\ge0}j^a x^a\right).
+\]
+Each geometric series is the formal inverse of $1-jx$, so $P_kH_k=1$.
+Inverses in a ring are unique: from $P_kF_k=1=P_kH_k$ one obtains
+$F_k=F_k(P_kH_k)=(F_kP_k)H_k=H_k$.  This proves the formal-series identity
+without evaluating a reciprocal at a scalar.
+
+For $n\ge k$, take the coefficient of degree $r=n-k$.  The coefficient of
+the finite product $H_k$ is obtained by choosing exponents
+$c_1,\ldots,c_k\ge0$ with sum $r$, and is therefore both
+$h_r(1,\ldots,k)$ and the displayed finite multiplicity sum.  This first
+gives an equality of natural numbers (use the injectivity of
+$\NaturalNumbers\to\IntegerNumbers$); the canonical natural-number
+homomorphism into any commutative semiring preserves the finite sums,
+products, powers, and complete-homogeneous evaluation, proving the stated
+semiring strengthening.  Finally, for
+$x\ne0$,
+\[
+ x^{k+1}\FallingFactorial{1/x}{k+1}
+ =x^{k+1}\prod_{j=0}^k(1/x-j)
+ =\prod_{j=0}^k(1-jx)=\prod_{j=1}^k(1-jx).
+\]
+If the factors $1-jx$ are nonzero, taking reciprocals gives the stated scalar
+rational identity.  For $k=0$ both products over $j=1,\ldots,k$ are empty,
+so the same argument yields $F_0=1$.
 \end{proof}
 
 \begin{remark}[Formal crosswalk]
@@ -1108,10 +1140,26 @@ $R$, the column series $\sum_{r\ge0}\StirlingSecondKind{k+r}{k}x^r$ times
 $\prod_{j=1}^k(1-jx)$ equals $1$, proved exactly as above from the column
 recurrence $(1-kx)F_k=F_{k-1}$ (\lean{Fabius.one_sub_mul_X_mul_stirlingColumnOGF_succ}).
 The expansion of each geometric factor is
-\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow}, which identifies the column
-series with $\prod_{j=1}^k\sum_{r\ge0}j^rx^r$; the complete-homogeneous
-coefficient formula \cref{eq:second-complete-symmetric} is the coefficient
-extraction of that product and is not stated separately.
+\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow}.  The compiled zero-definition/
+eight-theorem module \lean{StirlingCompleteHomogeneous} adds the six declarations
+\lean{Fabius.stirlingColumnOGF_eq_completeHomogeneousGeneratingSeriesOn},
+\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn},
+\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le},
+\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEval},
+\lean{Fabius.stirlingSecond_add_eq_eval_hsymm}, and
+\lean{Fabius.stirlingSecond_add_eq_sum_finsuppAntidiag}.  They implement the
+inverse-uniqueness proof, the $n=k+r$ and $n\ge k$ complete-homogeneous
+coefficient identities, the universal symmetric-polynomial evaluation, and
+the explicit finite multiplicity sum, including $k=0$ and $r=0$.
+
+Its two scalar-factorization declarations
+\lean{Fabius.pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul} and
+\lean{Fabius.prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv}
+have the boundary
+exactly the one stated above: the polynomial factorization requires $x\ne0$;
+the reciprocal identity additionally requires every factor $1-jx$ to be
+nonzero.  Together these declarations formalize every clause of the corrected
+theorem, so its register status is Lean.
 \end{remark}
 
 A useful rearrangement of the count of all maps $[n]\to[k]$ is
@@ -6245,6 +6293,10 @@ Over a commutative $\RationalNumbers$-algebra this gives, in particular,
  \EulerE^{0t}=1,\qquad
  \EulerE^{(c+1)t}=\EulerE^{ct}\EulerE^t.
 \]
+More generally, for all scalars $c,d$ in that algebra,
+\[
+ \EulerE^{ct}\EulerE^{dt}=\EulerE^{(c+d)t}.
+\]
 \end{lemma}
 
 \begin{proof}
@@ -6255,21 +6307,38 @@ $c\,c^n(n+1)f_{n+1}$.  These agree by associativity and commutativity,
 without division.  The exponential derivative follows from
 $(\EulerE^t)'=\EulerE^t$, which is the coefficient identity
 $(n+1)/(n+1)!=1/n!$.  At $c=0$ only the constant term of the exponential
-survives.  Finally, the coefficient of $t^n$ in
-$\EulerE^{ct}\EulerE^t$ is
-$\sum_{k=0}^n c^k/(k!(n-k)!)=(c+1)^n/n!$ by the binomial theorem.
+survives.  Finally, the coefficient of $t^n$ in the product is
+\[
+ \sum_{k=0}^n\frac{c^k d^{n-k}}{k!(n-k)!}
+ =\frac1{n!}\sum_{k=0}^n\binom nk c^k d^{n-k}
+ =\frac{(c+d)^n}{n!}
+\]
+by the binomial theorem.  Taking $d=1$ gives the parameter-increment identity.
 \end{proof}
+
+\begin{remark}[Formal crosswalk]
+Module \lean{ExponentialRescaling} proves
+\cref{eq:merged-formal-rescaling-derivative} as
+\lean{Fabius.derivative_rescale} over every commutative semiring.
+Over a commutative $\RationalNumbers$-algebra, its exponential
+specialization is \lean{Fabius.derivative_rescale_exp}, the zero-parameter
+identity is \lean{Fabius.rescale_zero_exp}, and the parameter-increment
+identity is \lean{Fabius.rescale_exp_add_one}.
+The general exponential product law is
+\lean{PowerSeries.exp_mul_exp_eq_exp_add} in Mathlib.
+\end{remark}
 
 \begin{proposition}[Abel polynomials]
 \label{prop:merged-abel}
-Let $R$ be a commutative $\RationalNumbers$-algebra and $a\in R$.
-There is a formal series $T(t)\in R[[t]]$ satisfying
-$T=t\EulerE^{-aT}$, and every such solution has
-$T(0)=0$ and $\CoefficientExtraction{t}{1}T=1$.
-Define polynomials
+Over every commutative ring $R$ and for $a\in R$, define polynomials
 \[
  P_0(a,x)=1,\qquad P_n(a,x)=x(x-na)^{n-1}\quad(n\geq1).
 \]
+These polynomial and evaluation formulas require no division.
+For the formal-series identities, assume additionally that $R$ is a
+$\RationalNumbers$-algebra.  There is a formal series $T(t)\in R[[t]]$
+satisfying $T=t\EulerE^{-aT}$, and every such solution has
+$T(0)=0$ and $\CoefficientExtraction{t}{1}T=1$.
 For every such solution and every $x\in R$,
 \begin{equation}
  \EulerE^{xT(t)}=1+\sum_{n\geq1}x(x-na)^{n-1}\frac{t^n}{n!}.              \label{eq:merged-abel-egf}
@@ -7325,7 +7394,20 @@ Consequently, for $n\geq1$,
 \end{theorem}
 
 \begin{proof}
-The Bernoulli generating function gives
+Write $B(t)=t/(\EulerE^t-1)$, with the removable value $B(0)=1$, and
+$L(t)=\log B(t)$, normalized by $L(0)=0$.
+These expressions may first be read as formal series over
+$\RationalNumbers$: the reciprocal kernel
+$G(t)=(\EulerE^t-1)/t$ has constant term $1$, and $B(t)G(t)=1$.
+Thus the formal logarithm product law also gives $L=-\log G$.
+To compute its coefficients without dividing by the nonunit series $t$,
+differentiate $B(\EulerE^t-1)=t$ and multiply by $B$.  The identities
+$B(\EulerE^t-1)=t$ and $B\EulerE^t=B+t$ give
+\[
+ tB'=B-B^2-tB.
+\]
+Since $BL'=B'$ and $B$ is a unit, cancellation now yields
+$tL'=1-B-t$.  With $\beta_1=-1/2$, comparison of coefficients gives
 \[
  \frac{\Differential}{\Differential t}\log\frac{t}{\EulerE^t-1}
  =-\frac12-\sum_{j\geq2}\beta_j\frac{t^{j-1}}{j!}.
@@ -7335,6 +7417,11 @@ The logarithm vanishes at $t=0$, so
  \log\frac{t}{\EulerE^t-1}
  =-\frac t2-\sum_{j\geq2}\frac{\beta_j}{j}\frac{t^j}{j!}.       \label{eq:merged-log-bernoulli-kernel}
 \end{equation}
+Equivalently, with $\beta_j^+=\beta_j+\delta_{j1}$, the constant
+coefficient of $L$ is zero and every positive-degree coefficient is
+$\CoefficientExtraction tj L=-\beta_j^+/(j\,j!)$.
+The special value $\beta_1^+=1/2$ explains why the ordinary-Bernoulli
+formula in the sum must start at $j=2$.
 Thus \eqref{eq:merged-norlund-egf} is
 $\exp(\sum_{j\geq1}c_j(\alpha,x)t^j/j!)$.
 The complete Bell-polynomial generating function
@@ -9660,12 +9747,46 @@ If $C=A^\alpha$, then
 \end{algorithm}
 
 \begin{proof}
-Compare coefficients in $A'=AL'$ to obtain the first two recurrences.  For
-powers, compare degree $n-1$ in $AC'=\alpha A'C$ and isolate $nc_n$.
+All three divided recurrences are for $n\geq1$.  From $A'=AL'$,
+the coefficient of $z^{n-1}$ gives
+\[
+ n a_n=\sum_{j=1}^{n}j\ell_j a_{n-j}.
+\]
+This is the exponential recurrence.  Since $a_0=1$, its $j=n$ term is
+$n\ell_n$; isolating that term gives the logarithmic recurrence.
+
+For powers, put $w=A-1$ and define the formal binomial series
+\[
+ F_\alpha(t)=\sum_{k\geq0}\frac{\FallingFactorial{\alpha}{k}}{k!}t^k,
+ \qquad C=F_\alpha(w).
+\]
+The falling-factorial recurrence gives
+$(1+t)F_\alpha'(t)=\alpha F_\alpha(t)$.  As $w(0)=0$, formal substitution
+and the chain rule are valid and yield $AC'=\alpha A'C$ and $c_0=1$.
+Multiplying the differential equation by $z$ keeps the coefficient index
+unchanged, since $[z^n](zH')=n[z^n]H$.  Cauchy's rule therefore gives
+\[
+ 0=[z^n]\bigl(\alpha(zA')C-A(zC')\bigr)
+   =\sum_{j=0}^{n}\bigl((\alpha+1)j-n\bigr)a_jc_{n-j}.
+\]
+The $j=0$ term is $-nc_n$, so its isolation proves
+\eqref{eq:merged-alg-power}.  Every remaining $c_{n-j}$ has smaller index,
+and positive integers are invertible in the ambient
+$\RationalNumbers$-algebra.  Thus $c_0=1$ and this recurrence uniquely
+determine the coefficients by induction.
+
+More generally, the same coefficient calculation over \emph{any}
+commutative ring, with no normalization or invertibility assumption on
+$a_0$, shows that $AC'=\alpha A'C$ implies
+\[
+ n a_0c_n=\sum_{j=1}^{n}\bigl((\alpha+1)j-n\bigr)a_jc_{n-j}.
+\]
+This denominator-free identity remains valid in positive characteristic;
+only the step of solving for $c_n$ requires an invertible $na_0$.
 \end{proof}
 
 \begin{remark}[Formal crosswalk]
-% ed.: crosswalk added 2026-09-04; two recurrences exact, one open.
+% ed.: crosswalk updated 2026-09-04; all three recurrences exact.
 The logarithmic recurrence \eqref{eq:merged-alg-log} is the positive-degree
 unfolding \lean{Fabius.SaddleExpansion.logCoeff_succ}, after reflecting its
 finite summation index; its output is identified with Mathlib's formal
@@ -9673,14 +9794,21 @@ logarithm by \lean{Fabius.SaddleExpansion.logSeries_eq_logOf} (modules
 \lean{SaddleLogExpansionAlgebra} and \lean{SaddleLogExpansionPowerSeries}).
 The exponential recurrence \eqref{eq:merged-alg-exp} is
 \lean{Fabius.coeff_exp_subst_recurrence} in module
-\lean{UnitSeriesBellCoefficients}, stated in the denominator-cleared form
-$na_n=\sum_{j=1}^n j\ell_j a_{n-j}$ and valid also at $n=0$.
-The same module gives nonrecursive Bell-polynomial coefficient formulas for
-arbitrary formal powers in
-\lean{Fabius.coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos} and
-\lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}.  It does not prove
-the distinct recursive identity \eqref{eq:merged-alg-power}; that clause remains
-the precise missing obligation, so the algorithm is only \emph{partial}.
+\lean{UnitSeriesBellCoefficients}, in denominator-cleared form.
+For powers, module \lean{UnitSeriesPowerRecurrence} proves the general
+commutative-ring identity
+\lean{Fabius.coeff_recurrence_of_mul_derivative_eq}, the formal binomial
+differential equation
+\lean{Fabius.mul_derivative_fallingSeries_subst_sub_one}, and its
+unit-constant recurrence
+\lean{Fabius.coeff_fallingSeries_subst_sub_one_recurrence}.
+The constant coefficient is one by
+\lean{Fabius.constantCoeff_subst_of_constantCoeff_eq_zero} in
+\lean{BellGeneratingFunctions} and
+\lean{Fabius.constantCoeff_fallingSeries}.  Thus the whole algorithm is
+\emph{Lean}-proved over a commutative $\mathbb Q$-algebra, with the
+denominator-free identity generalized to arbitrary commutative rings.
+These are formal series statements, not assertions about analytic branches.
 \end{remark}
 
 \begin{algorithm}[Differentiation and integration]
@@ -10212,7 +10340,7 @@ coefficient calculus rather than a catalogue of isolated identities.
 
 \section{Lean formalization register}
 \label{sec:lean-register}
-Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 58 Lean, 34 partial, 112 none, of 204 results.
+Every theorem-like environment of this monograph is listed here with the status of its formalization in the Lean development \path{Analysis/FabiusFunction/Lean/FabiusFunction} (Mathlib \texttt{v4.32.0}).  \emph{Lean} means that a public, compiled declaration proves the exact statement or a more general one (the generalization is then noted next to the result); \emph{partial} means that a named part of the statement is proved and the rest is named; \emph{none} means that no Lean counterpart exists yet.  A citation, a numerical check, or a plausible derivation does not count.  The register is generated from the source and must be regenerated when results are added.  Current totals: 59 Lean, 34 partial, 111 none, of 204 results.
 
 \begin{footnotesize}
 \begin{longtable}{@{}p{0.16\textwidth}p{0.22\textwidth}p{0.08\textwidth}p{0.40\textwidth}@{}}
@@ -10243,7 +10371,7 @@ Result & Title & Status & Lean declarations (module) \\
 \Cref{thm:fixed-point-stirling-moments} & Moments of the number of fixed points & none &  \\
 \Cref{thm:lah-conv} & Conversion between rising and falling factorials & Lean & \lean{Fabius.ascPochhammer_eq_sum_lahNumber_mul_descPochhammer}, \lean{Fabius.descPochhammer_eq_sum_lahNumber_mul_ascPochhammer}, \lean{Fabius.sum_range_lahNumber_mul_lahNumber}, \lean{Fabius.lahNumber_eq_sum_stirlingFirst_mul_stirlingSecond} (\lean{LahNumbers}); the closed form of the definition is \lean{Fabius.lahNumber_succ_succ_mul_factorial} \\
 \Cref{thm:stirling-egfs} & Column generating functions & Lean & \lean{Fabius.exp_sub_one_pow}, \lean{Fabius.egf_stirlingSecond}, \lean{Fabius.negLogOneSub_pow}, \lean{Fabius.egf_stirlingFirst}, \lean{Fabius.log_pow} (\lean{StirlingGeneratingFunctions}), as formal power series over any commutative $\mathbb Q$-algebra.  \cref{eq:second-double-egf} is \lean{Fabius.exp_subst_smul_exp_sub_one} (\lean{BellHomogeneity}), which proves $\exp(y(\EulerE^z-1))=\sum_n\bigl(\sum_k\StirlingSecondKind nk y^k\bigr)z^n/n!$ for every scalar $y$ of the coefficient algebra; taking that algebra to be $\mathbb Q[y]$ and the scalar to be $y$ recovers the display, so the content is formalized even though no Lean statement writes $y$ as a formal variable \\
-\Cref{thm:second-ogf} & Fixed-$k$ ordinary generating function & partial & \lean{Fabius.prod_one_sub_mul_X_mul_stirlingColumnOGF} and \lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}): the column series $\sum_r\StirlingSecondKind{k+r}{k}x^r$ times $\prod_{j\le k}(1-jx)$ is $1$, and equals the product of the geometric series $\sum_r j^rx^r$, in $R[[x]]$ for every commutative ring $R$; \cref{eq:second-complete-symmetric}, which reads the coefficient off the product as a complete homogeneous symmetric polynomial, is displayed inside the theorem and is not formalized \\
+\Cref{thm:second-ogf} & Fixed-$k$ ordinary generating function & Lean & \lean{Fabius.prod_one_sub_mul_X_mul_stirlingColumnOGF} and \lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}) prove the formal inverse and finite geometric-product identities.  The compiled \lean{StirlingCompleteHomogeneous} declarations \lean{Fabius.stirlingColumnOGF_eq_completeHomogeneousGeneratingSeriesOn}, \lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn}, \lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le}, \lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEval}, \lean{Fabius.stirlingSecond_add_eq_eval_hsymm}, and \lean{Fabius.stirlingSecond_add_eq_sum_finsuppAntidiag} cover inverse uniqueness, the $n=k+r$ and $n\ge k$ complete-homogeneous identities over every commutative semiring, universal \lean{MvPolynomial.hsymm} evaluation, and the explicit multiplicity sum.  Its \lean{Fabius.pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul} and \lean{Fabius.prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv} cover the scalar falling-factorial factorization under $x\ne0$ and its reciprocal under nonvanishing of every $1-jx$. \\
 \Cref{thm:stirling-transform} & Stirling transform and its inverse & Lean & the inversion formula is \lean{Fabius.stirling_inversion}, \lean{Fabius.stirling_inversion_symm}, \lean{Fabius.stirling_inversion_iff} (\lean{StirlingBasisChange}), for sequences in any additive commutative group; the generating-function form is \lean{Fabius.egfA_subst_exp_sub_one} and \lean{Fabius.egfA_subst_log} (\lean{StirlingTransformEGF}): substituting $\EulerE^t-1$, respectively $\log(1+t)$, into an exponential generating function applies the second-kind, respectively signed first-kind, Stirling transform \\
 \Cref{thm:normal-order} & Stirling normal-ordering identities & partial & \lean{Fabius.iterate_X_mul_derivative} (\cref{eq:normal1}) and \lean{Fabius.xkDk_eq_sum_signedStirlingFirst} (\cref{eq:normal2}, by Stirling inversion) in \lean{StirlingNormalOrder}, as identities of operators applied to an arbitrary polynomial over any commutative ring; the falling-factorial form $\FallingFactorial{xD}{n}$ and the operator series \cref{eq:der-from-diff,eq:diff-from-der} are not formalized \\
 \Cref{thm:paired-sums} & First- and second-kind summations & Lean & \lean{StirlingSummations}: \cref{eq:first-two-sums} is \lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose} (module \lean{StirlingBasisChange}) and \lean{Fabius.stirlingFirst_succ_succ_eq_sum_descFactorial}, \cref{eq:second-two-sums} is \lean{Fabius.stirlingSecond_succ_succ_eq_sum} (\lean{BellStirling}) and \lean{Fabius.stirlingSecond_succ_succ_eq_sum_pow}, the hockey sticks \cref{eq:first-hockey,eq:second-hockey} are \lean{Fabius.stirlingFirst_add_succ_eq_sum} and \lean{Fabius.stirlingSecond_add_succ_eq_sum} (with lower index $k$ in the first-kind case, correcting a misprint), and the convolutions \cref{eq:first-convolution,eq:second-convolution} are \lean{Fabius.choose_mul_stirlingFirst_add} and \lean{Fabius.choose_mul_stirlingSecond_add} \\
@@ -10342,7 +10470,7 @@ theorem (unlabelled, no.~76) &  & none &  \\
 \Cref{thm:merged-moment-cumulant} & Moment--cumulant inversion & partial & In the block-size form: \lean{Bell.complete} and \lean{Bell.cumulant} are mutually inverse (\lean{Bell.complete_cumulant}, \lean{Bell.cumulant_complete}, module \lean{BellPolynomialInversion}) and $M=\EulerE^K$ is \lean{Fabius.exp_subst_bellWeightSeries}; $K=\log M$ is now \lean{Fabius.logOf_egfA} together with \lean{Fabius.cumulant_eq_cumulantSum} (\lean{CumulantBellFormula}), which also gives the closed form $\kappa_n=\sum_k(-1)^{k-1}(k-1)!\,\ExponentialPartialBellPolynomial nk(m)$, resting on the formal $\exp\circ\log$ inverse \lean{Fabius.exp_subst_logOf} (\lean{ExpLog}); the sums over set partitions are not formalized. \\
 \Cref{thm:merged-binomial-type-characterization} & Generating-function characterization of binomial type & none &  \\
 \Cref{thm:merged-sheffer} & Addition and lowering & partial & \cref{eq:merged-sheffer-addition} is \lean{Fabius.shefferPoly_add} (\lean{BinomialType}), for \lean{Fabius.shefferPoly} $=c\star p$ (binomial convolution of the coefficients of $g$ with the binomial-type sequence), with generating function \lean{Fabius.egfA_mul_exp_subst_smul_bellWeightSeries}; the lowering law \cref{eq:merged-sheffer-lowering} is not formalized \\
-\Cref{lem:merged-formal-rescaling} & Formal rescaling and exponentials & none &  \\
+\Cref{lem:merged-formal-rescaling} & Formal rescaling and exponentials & Lean & \cref{eq:merged-formal-rescaling-derivative} is \lean{Fabius.derivative_rescale} over every commutative semiring; \lean{Fabius.derivative_rescale_exp}, \lean{Fabius.rescale_zero_exp}, and \lean{Fabius.rescale_exp_add_one} give the exponential specializations over every commutative $\RationalNumbers$-algebra (\lean{ExponentialRescaling}). The general product law is Mathlib's \lean{PowerSeries.exp_mul_exp_eq_exp_add}. \\
 \Cref{prop:merged-abel} & Abel polynomials & none &  \\
 \Cref{thm:merged-riordan} & Riordan action, product, and inverse & Lean & \lean{Fabius.expRiordan_action}, \lean{Fabius.expRiordan_mul}, \lean{Fabius.expRiordan_mul_inverse} (\lean{ExponentialRiordan}), for exponential Riordan arrays $[g,f]$ over any $\RationalNumbers$-algebra, with the inverse law in the form $[g,f]\,[h,\overline f]=[1,t]$ whenever $g\,(h\circ f)=1$; the Stirling examples are \lean{Fabius.expRiordan_one_exp_sub_one} and \lean{Fabius.expRiordan_one_log} \\
 \Cref{thm:merged-complementary-bell} & EGF, recurrence, and Dobiński-type series & Lean & \lean{Fabius.complementaryBell} (\lean{ComplementaryBell}); \cref{eq:merged-complementary-egf} is \lean{Fabius.exp_subst_neg_exp_sub_one}, \cref{eq:merged-complementary-recurrence} is \lean{Fabius.complementaryBell_succ}, and \cref{eq:merged-complementary-dobinski} is \lean{Fabius.complementaryBell_eq_exp_mul_tsum} (the series converges absolutely as the Poisson moment series of \lean{Fabius.tsum_pow_mul_pow_div_factorial}) \\
@@ -10420,7 +10548,7 @@ corollary (unlabelled, no.~26) & Trigonometric outer functions & none &  \\
 \Cref{cor:merged-square-root-coefficients} & Universal coefficient signature & none &  \\
 \Cref{thm:merged-kepler} & Lagrange and Fourier--Bessel forms & none &  \\
 \Cref{alg:merged-product-quotient} & Product, reciprocal, and quotient & none &  \\
-\Cref{alg:merged-exp-log-power} & Logarithm, exponential, and powers & partial & \cref{eq:merged-alg-log} is the reflected-index form of \lean{Fabius.SaddleExpansion.logCoeff_succ}, with \lean{Fabius.SaddleExpansion.logSeries_eq_logOf} identifying that recurrence with the formal logarithm (\lean{SaddleLogExpansionAlgebra}, \lean{SaddleLogExpansionPowerSeries}); \cref{eq:merged-alg-exp} is \lean{Fabius.coeff_exp_subst_recurrence} (\lean{UnitSeriesBellCoefficients}) in the denominator-cleared form $na_n=\sum_{j=1}^n j\ell_j a_{n-j}$.  The same module proves closed Bell-polynomial formulas for arbitrary powers as \lean{Fabius.coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos} and \lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}, but the separate recurrence \cref{eq:merged-alg-power} is not formalized \\
+\Cref{alg:merged-exp-log-power} & Logarithm, exponential, and powers & Lean & \cref{eq:merged-alg-log} is the reflected-index form of \lean{Fabius.SaddleExpansion.logCoeff_succ}, with \lean{Fabius.SaddleExpansion.logSeries_eq_logOf} identifying that recurrence with the formal logarithm (\lean{SaddleLogExpansionAlgebra}, \lean{SaddleLogExpansionPowerSeries}); \cref{eq:merged-alg-exp} is \lean{Fabius.coeff_exp_subst_recurrence} (\lean{UnitSeriesBellCoefficients}) in the denominator-cleared form $na_n=\sum_{j=1}^n j\ell_j a_{n-j}$. \cref{eq:merged-alg-power} is \lean{Fabius.coeff_fallingSeries_subst_sub_one_recurrence} (\lean{UnitSeriesPowerRecurrence}), from \lean{Fabius.mul_derivative_fallingSeries_subst_sub_one} and the commutative-ring identity \lean{Fabius.coeff_recurrence_of_mul_derivative_eq}. The power is formal binomial substitution with constant coefficient one; all three divided recurrences hold over a commutative $\mathbb Q$-algebra \\
 \Cref{alg:merged-differentiation-integration} & Differentiation and integration & none &  \\
 \Cref{alg:merged-composition} & Composition power table & none &  \\
 \Cref{alg:merged-lagrange-reversion} & Lagrange reversion & none &  \\
