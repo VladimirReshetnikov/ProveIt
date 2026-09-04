@@ -39873,6 +39873,13 @@ For $m\ge1$ put
  \label{p1:eq:divisor}
 \end{equation}
 \end{definition}
+\emph{Lean status.}  Formal as \lean{Fabius.divisorTransform} in
+\lean{DivisorTransform.lean}, for a sequence valued in an arbitrary commutative ring, since
+nothing in \eqref{p1:eq:divisor} is about rooted trees.  The splitting that the next lemma
+needs is \lean{Fabius.divisorTransform_eq_add_properDivisors}, that
+\(b_{m}=m\,a_{m}+\sum_{d\mid m,\,d<m}d\,a_{d}\) --- the divisors of \(m\) are its proper
+divisors together with \(m\) itself, and the term \(m\) contributes is exactly \(m\,a_{m}\).
+
 
 \begin{theorem}[Otter--P\'olya recurrence]
 \label{p1:thm:recurrence}
@@ -39952,6 +39959,31 @@ $\left(b_r-ra_r\right)/r$ by \cref{p1:eq:divisor}. Every divisor $d<r$ of $r$ sa
 r/2$.  The listed values follow from $a_1=a_2=1$, $a_3=2$, $a_4=4$: e.g.\
 $\varrho_4=(1\cdot1+2\cdot1)/4=\tfrac34$ and $\varrho_6=(1+2\cdot1+3\cdot2)/6=\tfrac32$.
 \end{proof}
+\emph{Lean status: the arithmetic clauses are formal; the numerical values are not.}  In
+\lean{DivisorTransform.lean}.  The coefficient itself is
+\lean{Fabius.disturbanceCoeff}, defined by the first expression
+of~\eqref{p1:eq:varrho}, and the equality with the second is
+\lean{Fabius.disturbanceCoeff_eq_divisorTransform}, an immediate consequence of
+\lean{Fabius.divisorTransform_sub}.  Nonnegativity, the \(\Rat_{\ge0}\) of the display, is
+\lean{Fabius.disturbanceCoeff_nonneg} under the hypothesis that the sequence is
+nonnegative.
+
+The clause that \(\varrho_{r}\) depends only on \(a_{d}\) with \(d\le r/2\) is formal in the
+form that makes it usable: \lean{Fabius.disturbanceCoeff_congr} says that two sequences
+agreeing at every \(d\) with \(2d\le r\) give the same \(\varrho_{r}\).  The arithmetic
+underneath is \lean{Fabius.two_mul_le_of_mem_properDivisors}, that a proper divisor is at
+most half of its multiple.
+
+The seven numerical values are treated unevenly, and deliberately.  Four of them are not
+four facts but one: a prime has \(\{1\}\) for its proper divisors, so
+\lean{Fabius.disturbanceCoeff_prime} gives \(\varrho_{p}=a_{1}/p\) for \emph{every} prime
+\(p\), which with \(a_{1}=1\) is \(\varrho_{2}=\tfrac12\), \(\varrho_{3}=\tfrac13\),
+\(\varrho_{5}=\tfrac15\) and \(\varrho_{7}=\tfrac17\) at once.  The remaining three,
+\(\varrho_{4}=\tfrac34\), \(\varrho_{6}=\tfrac32\) and \(\varrho_{8}=\tfrac{19}{8}\), depend
+on the tree numbers \(a_{2},a_{3},a_{4}\) themselves; the module carries no particular
+sequence, so they are not formalized, and neither is \cref{p1:thm:recurrence}, which is what
+would supply them.
+
 
 \Cref{p1:lem:R-coefficients} is due to \textsf{S2}; \textsf{S1} and \textsf{S3} carry $R$ only
 through the double sum $\sum_{k\ge2}\sum_na_n\rho^{kn}(\cdots)$. The single-sum form is used

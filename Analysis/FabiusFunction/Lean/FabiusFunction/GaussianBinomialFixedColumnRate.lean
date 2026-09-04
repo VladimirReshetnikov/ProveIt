@@ -22,8 +22,9 @@ vanish once the displayed exponent is positive.
 
 ## Main declarations
 
-* `norm_finiteQPochhammerIn_pow_sub_one_le_exp` bounds the product defect by
-  the exponential of the sum of the factor norms.
+* `norm_finiteQPochhammerIn_pow_sub_one_le_exp'` bounds the product defect by
+  the exponential of the sum of the factor norms, over a normed commutative
+  ring rather than only a normed field.
 * `norm_finiteQPochhammerIn_pow_sub_one_le` gives the geometric bound with
   the simple fixed-column constant `k * exp k`.
 * `norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le` is the
@@ -31,7 +32,9 @@ vanish once the displayed exponent is positive.
 * `norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le` and
   `norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le` are the fixed
   and shifted nonasymptotic additive error bounds.
-* `tendsto_gaussianBinomial_add_atTop` is the shifted fixed-column limit.
+* the shifted fixed-column limit `[n+k,k]_q → (q;q)_k⁻¹` is
+  `tendsto_gaussianBinomial_add_atTop` from `QBinomialTheoremInfinite.lean`,
+  read at `r = k`; it is stated there for an arbitrary shift.
 * `gaussianBinomial_fixedColumn_relativeError_isBigO` and
   `gaussianBinomial_shifted_fixedColumn_relativeError_isBigO` give the
   manuscript's multiplicative `1 + O(...)` statements.
@@ -74,8 +77,13 @@ exponential of the sum of its factor norms:
 `||(q^m;q)_k - 1|| <= exp(k * ||q||^m) - 1` when `||q|| <= 1`.
 
 This is the q-Pochhammer specialization of Mathlib's general finite-product
-defect estimate `Finset.norm_prod_one_add_sub_one_le`. -/
-theorem norm_finiteQPochhammerIn_pow_sub_one_le_exp
+defect estimate `Finset.norm_prod_one_add_sub_one_le`.
+
+The prime marks a genuine generalization rather than a variant: the unprimed
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp` in `QBinomialTheoremInfinite.lean`
+asks for a normed *field*, while this version needs only a normed commutative
+ring whose norm is multiplicative, which every normed field is. -/
+theorem norm_finiteQPochhammerIn_pow_sub_one_le_exp'
     (q : R) (hq : ‖q‖ ≤ 1) (m k : ℕ) :
     ‖finiteQPochhammerIn (q ^ m) q k - 1‖ ≤
       Real.exp ((k : ℝ) * ‖q‖ ^ m) - 1 := by
@@ -129,7 +137,7 @@ theorem norm_finiteQPochhammerIn_pow_sub_one_le
   calc
     ‖finiteQPochhammerIn (q ^ m) q k - 1‖ ≤
         Real.exp ((k : ℝ) * ‖q‖ ^ m) - 1 :=
-      norm_finiteQPochhammerIn_pow_sub_one_le_exp q hq m k
+      norm_finiteQPochhammerIn_pow_sub_one_le_exp' q hq m k
     _ ≤ ((k : ℝ) * ‖q‖ ^ m) *
         Real.exp ((k : ℝ) * ‖q‖ ^ m) :=
       exp_sub_one_le_mul_exp_fixedColumn _
@@ -206,14 +214,6 @@ theorem norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le
   simpa only [Nat.add_sub_cancel_right] using
     (norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le
       q hq (n := n + k) (k := k) (by omega))
-
-/-- The shifted fixed-column limit
-`[n+k,k]_q → (q;q)_k⁻¹` for `||q|| < 1`. -/
-theorem tendsto_gaussianBinomial_add_atTop (q : K) (hq : ‖q‖ < 1) (k : ℕ) :
-    Tendsto (fun n : ℕ ↦ gaussianBinomial q (n + k) k) atTop
-      (𝓝 (finiteQPochhammerIn q q k)⁻¹) := by
-  simpa [Function.comp_def] using
-    (tendsto_gaussianBinomial_atTop hq k).comp (tendsto_add_atTop_nat k)
 
 /-- The relative fixed-column error is
 `O(q^(n-k+1))` at infinity.  Equivalently,
