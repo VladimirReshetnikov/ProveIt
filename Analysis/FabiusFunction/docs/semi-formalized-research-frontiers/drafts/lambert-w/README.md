@@ -88,20 +88,25 @@ left endpoint both branches equal `-1`, so the sum is exactly `-2` and the
 product exactly `1`, while the lower branch has no finite value at zero.
 
 The source-only companion `LambertWBranchGapBernoulli.lean` has the exhaustive
-surface zero definitions and three theorems:
+surface zero definitions and four theorems:
 `summable_norm_bernoulli_mul_pow_div_factorial`,
+`summable_bernoulli_mul_pow_div_factorial_iff`,
 `hasSum_bernoulli_mul_pow_div_factorial`, and
 `principalLambertW_lowerLambertW_eq_bernoulliSeries`.  They prove absolute
 summability of the real Bernoulli exponential generating series for
-`|z| < 2*pi`, its actual all-index sum `z / (exp z - 1)` for `z != 0`, and
+`|z| < 2*pi`; the exact complex criterion that the series is summable if and
+only if `‖z‖ < 2*pi`, so it diverges on the boundary and throughout the
+exterior; its actual all-index real sum `z / (exp z - 1)` for `z != 0`; and
 the paired compact branch-gap sums for a positive gap below `2*pi`.  This is
-an exact crosswalk only for Guide label `eq:pair-Bernoulli-general`.  The
-convergence theorem includes `z = 0`, while the quotient evaluation correctly
-excludes its removable value.  Neither the endpoint `|z| = 2*pi` nor exact
-maximality of that radius is proved, and the signed higher/convergent Puiseux
+an exact crosswalk only for Guide label `eq:pair-Bernoulli-general`, together
+with the Guide's printed convergence-radius claim.  The full complex value
+identity remains Partial.  Convergence includes `z = 0`, while the real
+quotient evaluation correctly excludes its removable value.  With the three
+finite branch-coordinate modules, the four-module union is four definitions
+and 36 theorems, 40 declarations.  The signed higher/convergent Puiseux
 program remains open.  The retained 66-page Guide PDF and the other affected
 retained PDFs predate this source-only overlay, so no render parity is claimed.
-The live documentation census is 903 modules and 11,446 public declarations.
+The live documentation census is 903 modules and 11,447 public declarations.
 
 The exact raw second-order package is `LambertWCurvature.lean`.  Its
 principal API is `deriv_principalLambertW`,

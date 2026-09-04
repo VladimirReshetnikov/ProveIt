@@ -4378,8 +4378,8 @@ The focused branch-pair and Bernoulli tranche is exhaustive at this checkpoint:
 \lean{LambertWBranchPairing} has \(0+7\) public definitions/theorems,
 \lean{LambertWGapBijection} has \(4+16\), and
 \lean{LambertWBranchSymmetry} has \(0+9\), while
-\lean{LambertWBranchGapBernoulli} has \(0+3\).  Their four-module union is
-therefore four definitions and 35 theorems, 39 public declarations in all.
+\lean{LambertWBranchGapBernoulli} has \(0+4\).  Their four-module union is
+therefore four definitions and 36 theorems, 40 public declarations in all.
 
 \begin{longtable}{@{}p{0.30\textwidth}p{0.42\textwidth}p{0.22\textwidth}@{}}
 \toprule
@@ -4622,21 +4622,26 @@ are therefore essential.  The endpoint \(x=0\) remains excluded because the
 lower real branch has no finite value there.\\
 \addlinespace
 \eqref{eq:pair-Bernoulli-general}: the compact paired Bernoulli series for
-\(0<\Delta<2\pi\) on \(-1/\EulerE<x<0\) &
+\(0<\Delta<2\pi\) on \(-1/\EulerE<x<0\), together with the exact complex
+convergence radius and boundary divergence &
 \decl{summable\_norm\_bernoulli\_mul\_pow\_div\_factorial},
+\decl{summable\_bernoulli\_mul\_pow\_div\_factorial\_iff},
 \decl{hasSum\_bernoulli\_mul\_pow\_div\_factorial}, and
 \decl{principalLambertW\_lowerLambertW\_eq\_bernoulliSeries} (module
 \lean{LambertWBranchGapBernoulli}) &
-Exact.  The first theorem proves absolute summability for every real
-\(z\) with \(\lvert z\rvert<2\pi\); the second proves the actual all-index
-sum \(z/(\exp z-1)\) under the additional hypothesis \(z\ne0\); and the
-third specializes both sums on the strict common branch domain when the
-positive branch gap is below \(2\pi\).  At \(z=0\) the convergence theorem
-still applies, but the quotient theorem excludes the removable value because
-Lean's totalized quotient is zero there.  This row promotes only
-\eqref{eq:pair-Bernoulli-general}: it proves neither the boundary
-\(\lvert z\rvert=2\pi\) nor exact maximality of the radius, and it does not
-promote the surrounding expanded displays or any Puiseux claim.\\
+Exact for the compact real branch pair and for the convergence radius.  The
+first theorem proves absolute summability for every real
+\(z\) with \(\lvert z\rvert<2\pi\); the second proves, for complex \(z\), that
+the Bernoulli series is summable if and only if \(\lVert z\rVert<2\pi\), hence
+it diverges on \(\lVert z\rVert=2\pi\) and throughout the exterior; the third
+proves the actual all-index real sum \(z/(\exp z-1)\) when \(z\ne0\); and the
+fourth specializes both real sums on the strict common branch domain when the
+positive branch gap is below \(2\pi\).  At \(z=0\) convergence still holds,
+but the quotient theorem excludes the removable value because Lean's
+totalized quotient is zero there.  This makes
+\eqref{eq:pair-Bernoulli-general} Exact and proves the printed radius claim;
+the full complex value identity in \eqref{eq:bernoulli-gen} remains Partial.
+The surrounding expanded displays and every Puiseux claim remain unpromoted.\\
 \addlinespace
 \Cref{thm:W0negativebounds}: for \(-1/\EulerE<x<0\),
 \(-1+\sqrt{1+\EulerE x}<\Wz(x)<-1+\sqrt{2(1+\EulerE x)}\) and \(\Wz(x)<x\) &
@@ -4653,10 +4658,9 @@ are the exponential inequalities \(\EulerE^s>1+s\) and
 \bottomrule
 \end{longtable}
 
-Not formalized, in the order they appear above: exact maximality of the
-Bernoulli-series radius and its \(\lvert z\rvert=2\pi\) boundary, the moments
-of \Cref{sec:integrals}, the local Taylor expansion, convergence of the
-Maclaurin series, the full Puiseux and
+Not formalized, in the order they appear above: the full complex value form of
+\eqref{eq:bernoulli-gen}, the moments of \Cref{sec:integrals}, the local Taylor
+expansion, convergence of the Maclaurin series, the full Puiseux and
 logarithmic asymptotic expansions, the remaining bounds of
 \Cref{sec:bounds} (the two-sided \(W_{-1}\) bound of
 \Cref{thm:chatzbound}), and everything from
