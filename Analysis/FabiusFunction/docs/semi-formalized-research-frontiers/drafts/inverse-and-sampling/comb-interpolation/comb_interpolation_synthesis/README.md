@@ -140,11 +140,21 @@ pdflatex -interaction=nonstopmode -halt-on-error comb_interpolation_synthesis.te
 pdflatex -interaction=nonstopmode -halt-on-error comb_interpolation_synthesis.tex
 ```
 
-A successful command is not, by itself, the complete publication gate. From a
-clean auxiliary state, the preceding semantic-union source received exactly three
-strict serial passes at fixed source epoch `1788242400`, producing 151, 158,
-and 158 pages. The retained publication PDF has 158 pages, 2,456,105
-bytes, and SHA-256
+A successful command is not, by itself, the complete publication gate. The
+accepted merged-source receipt is root
+`187L/6724B/a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`,
+nine-file graph
+`12773L/483551B/cef466ee56f6bb864faaac2244bccf1dbc2fd4032a717b6c81604551c0427309`,
+passes `153/160/160`, PDF
+`160pp/2468109B/bb714c8be4b82de2a888e0302da3aaf957b9e885f2c5f59466b3ea5d659e3f71`,
+and final log
+`1370L/58773B/8df53a7db51c85b7a046c5f58587319095b3d28c61b0091861bdeb1f43b342e3`.
+Every recorded prohibited-log, A4/rotation, PDF 1.5, encryption, font/subsetting,
+Libertinus, Type-3, and visual gate passed.
+
+For explicit history, the preceding semantic-union source received three
+strict serial passes at fixed source epoch `1788242400`, producing 151/158/158
+pages. Its 158-page, 2,456,105-byte PDF had SHA-256
 `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`.
 The later canonical-notation edits in `chapters/01_geometric_core.tex`,
 `chapters/03_additive_dyadic.tex`, and `chapters/90_reference_appendices.tex`,

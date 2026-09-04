@@ -70,6 +70,33 @@ section "Closure of the merge", carries the in-document record. In summary:
   upright `e` inside one exponent. The document now follows
   `FabiusFunction_Mathematical_Notation_Catalogue` throughout.
 
+## Current source-only Stirling overlay
+
+The fixed-column second-kind Stirling theorem `thm:second-ogf` now separates
+its formal-power-series content from scalar rational evaluation. Its
+coefficient identity explicitly assumes `n >= k`; the formal proof identifies
+two inverses of the same finite product, extracts the coefficient of the
+finite product of geometric series, and then proves
+`x^(k+1) * (1/x)↓(k+1) = ∏_{j=1}^k (1-jx)`. The falling-factorial spelling at
+a scalar requires `x != 0`, and its reciprocal form also requires every
+factor `1-jx` to be nonzero. The `k = 0`, `n = 0` empty-product case is
+included.
+
+The compiled zero-definition/eight-theorem
+`StirlingCompleteHomogeneous.lean` surface contributes
+`stirlingColumnOGF_eq_completeHomogeneousGeneratingSeriesOn`,
+`stirlingSecond_add_eq_completeHomogeneousEvalOn`,
+`stirlingSecond_eq_completeHomogeneousEvalOn_of_le`,
+`stirlingSecond_add_eq_completeHomogeneousEval`,
+`stirlingSecond_add_eq_eval_hsymm`, and
+`stirlingSecond_add_eq_sum_finsuppAntidiag`. Its two companion declarations,
+`pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul` and
+`prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv`, cover
+the scalar factorization and reciprocal spelling. Together they make
+`thm:second-ogf` **Lean** with the corrected hypotheses. The retained PDF was
+not rebuilt for this source-only overlay, so no PDF or checksum parity is
+claimed for it.
+
 ## What this package does not claim
 
 The manuscript is research-frontier mathematical writing. Its theorem and proof
@@ -101,12 +128,15 @@ register totals above.
 
 ## Coefficient-calculus campaign (2026-09-04)
 
-Four new leaf modules supply nineteen public theorem statements, with complete
+Four new leaf modules supply seventeen public theorem statements, with complete
 human proofs and exact declaration names in the manuscript. `NewtonReciprocal`
 has passed focused Lean compilation, including the actual truncated update.
 `StirlingSymmetricFunctions`, `LagrangeInversionUniqueness`, and
 `StirlingSecondReverseRowIdentity` have received independent source/API reviews;
 their compiler validation is pending. The register preserves that distinction.
+The two second-kind symmetric-function formulas are shared with the compiled
+upstream `StirlingCompleteHomogeneous` module; their duplicate implementations
+were removed from this campaign's leaf.
 
 The campaign also repairs the Laplace theorem with explicit analytic endpoint
 hypotheses and full remainder estimates, removes contradictory duplicate

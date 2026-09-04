@@ -613,14 +613,15 @@ and arbitrary fixed-shift limit are canonically owned by
 `norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` and
 `tendsto_gaussianBinomial_add_const_atTop`.
 
-The first two estimates hold in every normed commutative ring with normalized
-multiplicative norm when `‖q‖ ≤ 1`: they bound
-`‖(q^m;q)_k-1‖` by `exp(k‖q‖^m)-1` and then by
-`(k exp k)‖q‖^m`.  Under `k≤n`, the third gives the denominator-free relative
+The upstream `norm_finiteQPochhammerIn_pow_sub_one_le_exp` and the first local
+estimate hold in every normed commutative ring with normalized multiplicative
+norm when `‖q‖ ≤ 1`: they bound `‖(q^m;q)_k-1‖` first by
+`exp(k‖q‖^m)-1` and then by `(k exp k)‖q‖^m`.  Under `k≤n`, the next local theorem gives the denominator-free relative
 bound `‖(q;q)_k[n,k]_q-1‖ ≤ (k exp k)‖q‖^(n-k+1)`, which remains meaningful at
 roots of unity.  Over any normed field, `‖q‖<1` suffices for the fixed and
-shifted nonasymptotic additive bounds, the shifted `Tendsto`, and all four
-relative/additive `IsBigO` results at the rates `q^(n-k+1)` and `q^(n+1)`.
+shifted nonasymptotic additive bounds and all four relative/additive `IsBigO`
+results at the rates `q^(n-k+1)` and `q^(n+1)`.  The shifted
+`tendsto_gaussianBinomial_add_atTop` theorem is reused from the upstream module.
 There is no completeness or `q≠0` hypothesis, and the displayed constant is
 elementary rather than sharp.  Together with the pre-existing
 `tendsto_gaussianBinomial_atTop`, the shifted limit and two relative-error
@@ -628,9 +629,11 @@ theorems discharge every clause of `thm:fixed-column-limit`; the two additive
 theorems are stronger companion estimates.
 
 Together with the prior 905/11,474 branch inventory and the three-declaration
-Lambert leaf, the geometric-uniform and regular-central leaves, and this final
-ten-theorem leaf, the fixed-column checkpoint was 909 modules and 11,508
-public declarations.
+Lambert leaf, the geometric-uniform and regular-central leaves, the incoming
+pre-dedup ten-theorem version gave the historical fixed-column checkpoint of
+909 modules and 11,508 public declarations.  Canonical upstream ownership of
+the two shared names changes the per-module split, not that historical branch
+census.
 
 #### Greater-than-one Gaussian asymptotics
 

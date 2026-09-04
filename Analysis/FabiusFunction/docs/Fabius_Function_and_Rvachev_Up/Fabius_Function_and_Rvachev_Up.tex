@@ -3419,14 +3419,24 @@ theorems; its public surface comprises \lean{gaussianMajorant},
 \lean{hasSum_qBinomial_theorem}, and
 \lean{hasSum_euler_reciprocal}.
 
-The subsequent zero-definition/ten-theorem
+The five effective fixed-column declarations in
+\path{QBinomialTheoremInfinite.lean} are exact.  They include the generalized
+finite-product estimate
+\[
+ \left\lVert(q^m;q)_k-1\right\rVert
+ \le \exp\!\left(k\lVert q\rVert^m\right)-1,
+\]
+its geometric \texttt{IsBigO} consequence, the two additive Gaussian error
+rates, and an arbitrary-fixed-shift convergence theorem
+\[
+ \GaussianBinomial{n+r}{k}{q}\longrightarrow(q;q)_k^{-1}.
+\]
+The downstream zero-definition/eight-theorem
 \path{GaussianBinomialFixedColumnRate.lean} surface is
-\lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp},
 \lean{norm_finiteQPochhammerIn_pow_sub_one_le},
 \lean{norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le},
 \lean{norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le},
 \lean{norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le},
-\lean{tendsto_gaussianBinomial_add_atTop},
 \lean{gaussianBinomial_fixedColumn_relativeError_isBigO},
 \lean{gaussianBinomial_shifted_fixedColumn_relativeError_isBigO},
 \lean{gaussianBinomial_fixedColumn_error_isBigO}, and
@@ -4172,7 +4182,13 @@ The two summability hypotheses in the comparison theorem are essential
 because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
-open interfaces.  With the later concurrent source union, the real-MGF bridge
+open interfaces.  The immutable local chronology after the 902/11,440
+Richardson state records the Gaussian second-moment extension at 902/11,443,
+the completed Lambert--Bernoulli leaf at 903/11,448, and the five-declaration
+\path{QBinomialTheoremInfinite.lean} fixed-column extension at 903/11,453.
+The parallel algebraic moment-polynomial branch reached 904/11,457 from the
+Lambert checkpoint; its first union with the local extension was 904/11,462.
+In the later concurrent source union, the real-MGF bridge
 formed the historical 905/11,458 checkpoint, the exhaustive complex
 moment-product leaf formed the historical 906/11,461 checkpoint, and the
 later exhaustive zero-definition/one-theorem
@@ -4251,7 +4267,7 @@ module, the three-theorem second-moment strengthening of the existing
 \path{GaussianBinomialCumulants.lean} module, the one-definition/seventeen-
 theorem \path{GeometricUniformRealization.lean} module, the two-definition/
 one-theorem \path{RegularCentralQBinomialSum.lean} leaf, and the zero-definition/
-ten-theorem \path{GaussianBinomialFixedColumnRate.lean} leaf, followed by the
+eight-theorem \path{GaussianBinomialFixedColumnRate.lean} leaf, followed by the
 one-definition/fourteen-theorem \path{RvachevAppellHasse.lean} leaf, the
 one-definition/fourteen-theorem \path{RvachevLagrangeNodesOnly.lean} leaf, the
 zero-definition/two-theorem
@@ -7108,7 +7124,7 @@ uniqueness and the generic Appell transform then give
   &=\sum_{r=0}^{n}\binom nr\,\mu_r\,2^{-Nr}P_{n-r}(X),
        &&\mu_r=\lean{halfMoment}\,r,                       \label{eq:finite-prefix-appell-uncentered}\\
  A_n^{[N]}(X)
-  &=\sum_{r=0}^{\Floor{n/2}}\binom n{2r},m_{2r},
+  &=\sum_{r=0}^{\Floor{n/2}}\binom n{2r}\,m_{2r}\,
        4^{-Nr}A_{n-2r}(X),
        &&m_{2r}=\lean{moment}\,r.                          \label{eq:finite-prefix-appell-centered}
 \end{align}
@@ -7149,13 +7165,13 @@ Finally let \(w_{d,j}(q)=\lean{geometricLagrangeWeight}\,q\,d\,j\).  Evaluating
 the two scale polynomials at zero gives, for every starting depth \(N\),
 \begin{align}
  P_n(X)&=\sum_{j=0}^{n}w_{n,j}(1/2)P_n^{[N+j]}(X),
-                                                               \label{eq:finite-prefix-appell-recovery}\
+                                                               \label{eq:finite-prefix-appell-recovery}\\
  A_n(X)&=\sum_{j=0}^{\Floor{n/2}}
    w_{\Floor{n/2},j}(1/4)A_n^{[N+j]}(X).               \label{eq:finite-prefix-centered-recovery}
 \end{align}
 They are \lean{kabayaIriAppellPolynomialRat_eq_sum_prefix} and
 \lean{rvachevAppellPolynomialRat_eq_sum_prefix}.  Hence the full uncentered
-degree-(n) polynomial is recovered from any (n+1) consecutive prefixes,
+degree-\(n\) polynomial is recovered from any \(n+1\) consecutive prefixes,
 and the full centered polynomial from any \(\Floor{n/2}+1\)
 consecutive prefixes, with no limiting argument.  The seventeen theorems
 listed in the preceding three paragraphs exhaust the theorem surface of the
@@ -13404,10 +13420,11 @@ The subsequent compiled leaf
 \path{RvachevLegendreBiorthogonality.lean} has exactly one public definition
 and one theorem.  Its normalized translated analysis kernel is
 \begin{equation}
- \Lambda_m(c)=\frac{2m+1}{2}\int_{-1}^{1}
- \RvachevUp(x-c)P_m(x)\Differential x,
- \qquad
- \Lambda_m=\lean{rvachevLegendreAnalysisKernel}(F,m,\cdot),       \label{eq:rvachev-legendre-analysis-kernel}
+ \begin{aligned}
+ \Lambda_m(c)&=\frac{2m+1}{2}\int_{-1}^{1}
+ \RvachevUp(x-c)P_m(x)\Differential x,\\
+ \Lambda_m&=\lean{rvachevLegendreAnalysisKernel}(F,m,\cdot).
+ \end{aligned}                                                   \label{eq:rvachev-legendre-analysis-kernel}
 \end{equation}
 and \lean{rvachevLegendreBiorthogonality} proves, for every
 \(F:\lean{BoundedFabius}\) satisfying \(\lean{IsFabius}\,F\), natural

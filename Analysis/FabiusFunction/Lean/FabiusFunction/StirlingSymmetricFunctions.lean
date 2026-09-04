@@ -1,4 +1,4 @@
-import FabiusFunction.CompleteHomogeneous
+import FabiusFunction.StirlingCompleteHomogeneous
 import FabiusFunction.StirlingFirstModH
 import Mathlib.RingTheory.Polynomial.Vieta
 
@@ -12,13 +12,14 @@ families:
 * `c(n,n-r) = e_r(0,1,...,n-1)` for `r ≤ n`.
 
 Both identities hold after casting into every commutative semiring. The
-second-kind proof compares the adjoining-variable recurrence of complete
-homogeneous functions with the Stirling recurrence. The first-kind proof
-reads the coefficients of the rising factorial using Vieta's formula.
+second-kind identity is imported from `StirlingCompleteHomogeneous`, which
+identifies the generating series over the integers and transports the result
+to every commutative semiring. The first-kind proof reads the coefficients
+of the rising factorial using Vieta's formula.
 
-In particular, the complete homogeneous formula does not require subtraction,
-formal reciprocals, characteristic zero, or distinct values of the variables.
-Scaling all variables gives the homogeneous versions of both identities.
+The resulting identities require no division, characteristic-zero hypothesis,
+or distinctness of the variable values. Scaling all variables gives the
+homogeneous versions of both identities.
 -/
 
 set_option autoImplicit false
@@ -30,40 +31,6 @@ namespace Fabius
 noncomputable section
 
 variable {R : Type*} [CommSemiring R]
-
-/-- Second-kind Stirling numbers are complete homogeneous symmetric functions
-of `1, ..., k`, over every commutative semiring. The shifted indices include
-the empty family and its degree-zero value without exceptional conventions. -/
-theorem stirlingSecond_add_eq_completeHomogeneousEvalOn (k r : ℕ) :
-    (Nat.stirlingSecond (k + r) k : R) =
-      completeHomogeneousEvalOn (Finset.range k) (fun j => ((j + 1 : ℕ) : R)) r := by
-  induction k generalizing r with
-  | zero =>
-      cases r with
-      | zero => simp [completeHomogeneousEvalOn]
-      | succ r => simp [completeHomogeneousEvalOn, Nat.stirlingSecond_succ_zero]
-  | succ k ih =>
-      induction r with
-      | zero => simp [completeHomogeneousEvalOn, Nat.stirlingSecond_self]
-      | succ r ihr =>
-          have hrec := completeHomogeneousEvalOn_insert_succ
-            (Finset.notMem_range_self (n := k))
-            (fun j => ((j + 1 : ℕ) : R)) r
-          rw [← Finset.range_succ] at hrec
-          rw [hrec, ← ihr, ← ih (r + 1)]
-          rw [show k + 1 + (r + 1) = (k + r + 1) + 1 by omega,
-            show k + 1 + r = k + r + 1 by omega,
-            show k + (r + 1) = k + r + 1 by omega,
-            Nat.stirlingSecond_succ_succ, Nat.cast_add, Nat.cast_mul]
-
-/-- The complete homogeneous description in the usual unshifted indices.
-The hypothesis `k ≤ n` is necessary because natural subtraction truncates. -/
-theorem stirlingSecond_eq_completeHomogeneousEvalOn (n k : ℕ) (h : k ≤ n) :
-    (Nat.stirlingSecond n k : R) =
-      completeHomogeneousEvalOn (Finset.range k) (fun j => ((j + 1 : ℕ) : R))
-        (n - k) := by
-  simpa only [Nat.add_sub_of_le h] using
-    (stirlingSecond_add_eq_completeHomogeneousEvalOn (R := R) k (n - k))
 
 /-- Scaling `1, ..., k` by an arbitrary scalar multiplies the degree-`r`
 complete homogeneous evaluation by that scalar to the power `r`. No

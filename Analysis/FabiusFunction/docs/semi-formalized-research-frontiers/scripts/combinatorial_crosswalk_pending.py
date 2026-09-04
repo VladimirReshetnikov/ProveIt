@@ -231,12 +231,22 @@ recurrence $(1-kx)F_k=F_{k-1}$ (\lean{Fabius.one_sub_mul_X_mul_stirlingColumnOGF
 The expansion of each geometric factor is
 \lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow}, which identifies the column
 series with $\prod_{j=1}^k\sum_{r\ge0}j^rx^r$; the complete-homogeneous
-coefficient formula \cref{eq:second-complete-symmetric} is supplied over a
-commutative semiring by new source
-\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn} in
-\lean{StirlingSymmetricFunctions}, with compiler validation pending.
-The human proof is in \cref{thm:stirling-symmetric-semirings}.  The reciprocal
-falling-factorial presentation has no separate formal counterpart.""")),
+coefficient formula \cref{eq:second-complete-symmetric} is supplied over every
+commutative semiring by the compiled
+\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn} and
+\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le} in
+\lean{StirlingCompleteHomogeneous}.  The same module supplies universal
+\lean{MvPolynomial.hsymm} evaluation through
+\lean{Fabius.stirlingSecond_add_eq_eval_hsymm} and the explicit multiplicity
+sum through \lean{Fabius.stirlingSecond_add_eq_sum_finsuppAntidiag}.
+The scalar falling-factorial factorization is
+\lean{Fabius.pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul}
+under $x\ne0$; its reciprocal is
+\lean{Fabius.prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv}
+under nonvanishing of every $1-jx$.  The human symmetric-function proof
+appears in \cref{thm:stirling-symmetric-semirings}; the separate first-kind
+identities and scaling extensions in \lean{StirlingSymmetricFunctions}
+still await compiler validation.""")),
 
  # --- thm:eulerian-power-series ---
  (r"""\eqref{eq:eulerian-explicit}.  Formula \eqref{eq:eulerian-k1} is its case $k=1$.

@@ -114,17 +114,20 @@ theorem natCast_mul_coeff_raneyT_pow (p r n : ℕ) (hr : 1 ≤ r) (hn : 1 ≤ n)
   have hmain := Lagrange.coeff_solution_subst_derivative (raneyPhi p) (raneyPsi p)
     (raneyPhi_mul_raneyPsi p) ((1 + X : ℚ⟦X⟧) ^ r) n hn
   rw [← raneyG_def, hH] at hmain
-  have hd : d⁄dX ℚ ((1 + X : ℚ⟦X⟧) ^ r) = (r : ℚ⟦X⟧) * (1 + X) ^ (r - 1) := by
-    rw [derivative_pow, map_add, derivative_one, derivative_X, zero_add, mul_one]
+  have hone : d⁄dX ℚ ((1 : ℚ⟦X⟧) + X) = 1 := by
+    rw [map_add, Derivation.map_one_eq_zero, derivative_X, zero_add]
+  have hd : d⁄dX ℚ ((1 + X : ℚ⟦X⟧) ^ r)
+      = PowerSeries.C ℚ ((r : ℕ) : ℚ) * (1 + X) ^ (r - 1) := by
+    rw [derivative_pow, hone, mul_one, ← map_natCast (PowerSeries.C ℚ) r]
   have hphi : raneyPhi p ^ n = (1 + X : ℚ⟦X⟧) ^ (p * n) := by
     rw [raneyPhi, ← pow_mul]
-  have hfac : (r : ℚ⟦X⟧) * (1 + X) ^ (r - 1) * (1 + X) ^ (p * n)
-      = (r : ℚ⟦X⟧) * (1 + X) ^ (p * n + r - 1) := by
+  have hfac : PowerSeries.C ℚ ((r : ℕ) : ℚ) * (1 + X) ^ (r - 1) * (1 + X) ^ (p * n)
+      = PowerSeries.C ℚ ((r : ℕ) : ℚ) * (1 + X) ^ (p * n + r - 1) := by
     rw [mul_assoc, ← pow_add]
     congr 2
     omega
-  rw [hd, hphi, hfac, map_mul, coeff_one_add_X_pow] at hmain
-  simpa using hmain
+  rw [hd, hphi, hfac, coeff_C_mul, coeff_one_add_X_pow] at hmain
+  exact hmain
 
 /-- **`thm:merged-raney`.**  `[z^n] T^r = (r/(pn+r)) C(pn+r, n)`, for every
 `p, n ≥ 0` and every `r ≥ 1`. -/
@@ -139,19 +142,31 @@ theorem coeff_raneyT_pow (p r n : ℕ) (hr : 1 ≤ r) :
   · have hmain := natCast_mul_coeff_raneyT_pow p r n hr hn
     have hstep : (p * n + r) * ((p * n + r - 1).choose (n - 1))
         = ((p * n + r).choose n) * n := by
-      have h := Nat.succ_mul_choose_eq (p * n + r - 1) (n - 1)
+      have h := Nat.add_one_mul_choose_eq (p * n + r - 1) (n - 1)
       have e1 : p * n + r - 1 + 1 = p * n + r := by omega
       have e2 : n - 1 + 1 = n := by omega
-      simpa [e1, e2] using h
+      rw [e1, e2] at h
+      exact h
     have hden : ((p * n + r : ℕ) : ℚ) ≠ 0 := by
-      have : 0 < p * n + r := by omega
+      have hpos : 0 < p * n + r := by omega
       positivity
     have hnne : (n : ℚ) ≠ 0 := by positivity
-    field_simp
     have hcast : ((p * n + r : ℕ) : ℚ) * (((p * n + r - 1).choose (n - 1) : ℕ) : ℚ)
         = (((p * n + r).choose n : ℕ) : ℚ) * (n : ℚ) := by
       exact_mod_cast congrArg (fun k : ℕ => (k : ℚ)) hstep
-    nlinarith [hmain, hcast]
+    have hcancel : coeff n (raneyT p ^ r) * ((p * n + r : ℕ) : ℚ) * (n : ℚ)
+        = (r : ℚ) * (((p * n + r).choose n : ℕ) : ℚ) * (n : ℚ) := by
+      calc coeff n (raneyT p ^ r) * ((p * n + r : ℕ) : ℚ) * (n : ℚ)
+          = ((n : ℚ) * coeff n (raneyT p ^ r)) * ((p * n + r : ℕ) : ℚ) := by ring
+        _ = ((r : ℚ) * (((p * n + r - 1).choose (n - 1) : ℕ) : ℚ))
+              * ((p * n + r : ℕ) : ℚ) := by rw [hmain]
+        _ = (r : ℚ) * (((p * n + r : ℕ) : ℚ)
+              * (((p * n + r - 1).choose (n - 1) : ℕ) : ℚ)) := by ring
+        _ = (r : ℚ) * ((((p * n + r).choose n : ℕ) : ℚ) * (n : ℚ)) := by rw [hcast]
+        _ = (r : ℚ) * (((p * n + r).choose n : ℕ) : ℚ) * (n : ℚ) := by ring
+    have hfinal := mul_right_cancel₀ hnne hcancel
+    rw [div_mul_eq_mul_div, eq_div_iff hden]
+    linarith [hfinal]
 
 /-- **The Fuss–Catalan case** `r = 1`: `[z^n] T = C(pn+1, n)/(pn+1)`. -/
 theorem coeff_raneyT (p n : ℕ) :

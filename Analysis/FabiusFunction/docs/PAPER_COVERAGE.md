@@ -72,7 +72,168 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > `QChuVandermonde` 0+10, `JacobiTwoSquareCount` 0+4,
 > `QuantumMultinomial` 0+5, and
 > `GaussianBinomialBounds` 0+6.  The geometric-interpolation union now also
-> includes `GeometricRichardsonGenerating` 3+7,
+> includes `GeometricRichardsonGenerating` 3+7.
+> On the earlier local publication line, Gaussian checkpoint `71c908e` was
+> 902/11,443, completed Lambert checkpoint `217a6b9` was 903/11,448, and
+> fixed-column commit `581bf177f8e784ab5d4836acc2b4a47e285e6ce0` was
+> 903/11,453 and synchronized the five source/PDF pairs recorded below.  The
+> parallel upstream-only moment-polynomial checkpoint
+> `3b6396deb6056523d944d79602d1bf7ecf18ec10` was 904/11,457.  These are
+> historical checkpoints, not descriptions of the live facade.
+>
+> **Current merged-source publication receipts (10/10 accepted).** Primary:
+> root `14628L/733516B/39d1b0b87cabbd75622b2c882db34bc842f9057561efa8d8a93918acaa97d7ea`;
+> two-file aggregate
+> `14912L/745351B/2f56e31a0545297886fd0b9f2c9005053f6d902a99f3b1b965b5d659277c71b2`;
+> passes `197/199/199`; PDF
+> `199pp/1645695B/fe3a27d09c19404a0b0827b047e57ed3d688c465487bf7054e10ca18c7f78cef`;
+> log `1315L/52885B/d6e65808a1bd2bc9e3305154e883a2e4f892d4508b63b6da4b27f83b382e1800`.
+> Walkthrough: root
+> `7135L/514216B/0e726220d274add480fedd771af140d2d5da77497b64fba4bf14294c72817fa5`;
+> two-file aggregate
+> `7419L/526051B/9599230f56ce10be66991a4c7f2923a91806a988426053dfed69d01fa8c9830f`;
+> passes `166/171/171`; PDF
+> `171pp/1250845B/e731f6af11f4f00b65b827a7a713794010c0cdf846621df91254b9e2ff2fa0f5`;
+> log `1311L/52881B/730df857bc56dab609d1599b66ac3710382b54331754b529a0b987c14d44a41f`.
+> Canonical: root
+> `18680L/851566B/8e0f799dead1a3d7d7df6a33d1b4cbe61a3fafcfc39bd68e6fb7f4fc6f63f31a`;
+> two-file aggregate
+> `18964L/863401B/07c65c06d64e0230f68cc644c4594bb47bc1f77fa43e35f04a5d4327124317d8`;
+> passes `265/273/273`; PDF
+> `273pp/1938114B/ad2362be615a8592a308abe920de982121b58e670409d3bc725e506dcae0a765`;
+> log `3123L/105692B/1bedd5ffae49c5ad85f5ce2de3069fb7e7da432ec7d5095475376982fe6437d6`.
+> Lambert: root
+> `4961L/183269B/83301b4c66660713a70974263b6f191ea01f9ed8f5ae228495f644887b616568`;
+> two-file aggregate
+> `5245L/195104B/25141b9ee818b20ddf8349d88ec4f2dc977ff0ab35ca34e62cd62da64c2cf06a`;
+> passes `68/70/70`; PDF
+> `70pp/966637B/6c150ff18889030345de3e1a8581d5ea0ac75789a9720c1d5164ed4e7ec4b7fb`;
+> log `1574L/57800B/9f995a50e3ab25256083edee745a1889027787194e3b3c6d1f12f60bf687145c`.
+> q series: root
+> `16812L/840316B/64dc18dedbd1966624162b64129128b24b51ca88d8a9e496c661cc1a46a24ba6`;
+> 15-file aggregate
+> `26593L/1198416B/762e6d6ca441de51db9679f95d6a01d8353e8044639f99803734719b8a65a5f8`;
+> passes `393/401/401` plus three clean `makeindex` runs (`164/0/254/0`);
+> PDF `401pp/2500131B/fd54459baf10845b5a89cc8b204f59ea33a0665b434ad270e738884072a1e6e1`;
+> log `1230L/44401B/37dca6371ea8bf9285e5f104d550bd584a290f4aa92fcf5679b028c9dfd3079d`.
+> Inverse: root
+> `293L/11514B/92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`;
+> 14-file aggregate
+> `10909L/438542B/24bdab6491f5ca84fbb9e716f92c7923e8961b6acbc793d9aa5e0faa68852444`;
+> passes `132/137/137`; PDF
+> `137pp/2045463B/ca403c74e2b46923ce9ac1eda547ab1bcb5e71039b35c8ee394acdd2014c4f8e`;
+> log `1569L/64081B/d4aa25579c958e11c59d914c74dfca331fc2bbccf7bba4715dcd18fa050e771f`;
+> source-only 23-input closure digest
+> `e07cb51f4fe072cd79a014cc891cb8cede62880593d7659b17da9377a21099bc`.
+> Comb: root
+> `187L/6724B/a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`;
+> nine-file aggregate
+> `12773L/483551B/cef466ee56f6bb864faaac2244bccf1dbc2fd4032a717b6c81604551c0427309`;
+> passes `153/160/160`; PDF
+> `160pp/2468109B/bb714c8be4b82de2a888e0302da3aaf957b9e885f2c5f59466b3ea5d659e3f71`;
+> log `1370L/58773B/8df53a7db51c85b7a046c5f58587319095b3d28c61b0091861bdeb1f43b342e3`.
+> Up: root
+> `2385L/99806B/81f3ba09894aca8331ae33c77e2a56f78c107fa3b04072878cff8ad60e815b5a`;
+> five-file aggregate
+> `11bd62d880f5ba4c63d872fb0ba5d801d10ba2a2337ef5d098643383639086dd`;
+> passes `61/63/63`; PDF
+> `63pp/1077921B/0903f2920d21f0ea8182822c31338e0be268d4d77bc8ddb7a2ff861ba2a6aa5f`;
+> log `964L/38999B/52bd9d03864853f1ee31fa682fa96806345bb355582831c55fcc152c1acb2e7d`.
+> Thue--Morse: root
+> `10557L/482022B/8cef828c3d92a0017e22463ac90878a5e3a98e1138059d5f4793d47c04a88404`;
+> two-file aggregate
+> `10841L/493857B/79a43711c6989336166d6b2ed1faa306cc985b8d70557025ab139791d455723c`;
+> passes `139/144/144`; PDF
+> `144pp/1740015B/deb63fe66fc8f020bb072acbc4301e9b7c9f0559b165cbae2c076f261405c5be`;
+> log `1503L/59417B/1219dbc87bc4f9920c40b24659182220b14e7908a45a9eb33d0f19390148c64b`.
+> Geometric-q: root
+> `27624L/1273010B/0839b42a3fb055d860b8e8a3d1ff5e84c2f4addce314d04707c5a067e81553d9`;
+> seven-file aggregate
+> `27997L/1288647B/18c4c6607e9b7564909ca7e647152a26e517f54d5007e157265b3f61adf8e4f0`;
+> passes `387/404/404`; PDF
+> `404pp/8341830B/a083b130a1568dc37af824294b033485f82c97dbeb30a4c4de4d463d04e99530`;
+> log `2557L/114343B/4de474675a2dcde519c36ff1ac7067717c64b60b92bd40b999d0d117ba1f8df6`.
+> All ten passed every recorded log, A4/rotation, PDF 1.5, encryption,
+> font/subsetting, Libertinus, Type-3, and visual gate. For geometric-q,
+> all 404 pages are A4 at rotation zero, the PDF is unencrypted PDF 1.5,
+> all 43 font rows are embedded and subset, Libertinus has 11 rows, Type-3 has
+> zero rows, and checksum basenames and PDF/source references are absent.
+>
+> **Earlier accepted receipts (history).** The following six tuples validate
+> only their recorded pre-merge source snapshots:
+>
+> - primary exposition: source 13,748 lines / 686,081 bytes / SHA-256
+>   `661ebb4e337f2ce79e8c3d5ca823bcdcce519fe220ff4b02d9dd5aef08d42cf9`;
+>   passes 185/187/187; PDF 187 A4 pages / 1,581,617 bytes / SHA-256
+>   `41e95844c6e5dc04933cc7256d285346c10eb29ff7eadf5a4165c472fa453eab`;
+>   final log 1,309 lines / 52,641 bytes / SHA-256
+>   `f177cb91c161f4dfc60017ddfd5efed1586ef28a4c80c68a9ae78cf19cf75da6`;
+> - Lean walkthrough: source 6,638 lines / 460,643 bytes / SHA-256
+>   `c44ab7ab38da46f8959a63916437b3d8ded628a3930f81dfa1a87996c7c66b8d`;
+>   passes 146/151/151; PDF 151 A4 pages / 1,188,993 bytes / SHA-256
+>   `907b3d2dbfc66192b63b86ada1015779229636855734815402ae5af9ea9bf015`;
+>   final log 1,296 lines / 52,126 bytes / SHA-256
+>   `0962c255aeb75bce3bcee89cbc1db9defe369e8c79ee6b6aa0435befdca410cf`;
+> - canonical frontier: source 17,983 lines / 806,798 bytes / SHA-256
+>   `a1cb1c0db2784116ca1f1d6fd1ce7e8b29afc52c64c93e7001bbffb91f775039`;
+>   passes 252/260/260; PDF 260 A4 pages / 1,877,420 bytes / SHA-256
+>   `78c19b361da06836c20c62fa5bd50131eb8fa47d3e89d37a7f089a51568953b3`;
+>   final log 2,990 lines / 101,866 bytes / SHA-256
+>   `4854a89ba1a3bb41248b9428cfed572f6ed593125b5a8fb43d5625d8d392dc0f`;
+> - Lambert Guide: source 4,873 lines / 177,465 bytes / SHA-256
+>   `90413f46373415edef411e9ea3b2d94006f7342bd2fa3ea931ca975d7f64b97e`;
+>   passes 67/69/69; PDF 69 A4 pages / 958,516 bytes / SHA-256
+>   `b159cd41f5b3e53060fa85fcfc4812d504cc1fff8400c03ecb7ef4018f37cd2c`;
+>   final log 1,574 lines / 57,795 bytes / SHA-256
+>   `5c81cd6b8dc2cf070c4b1995c98c0d046c54d28f0e682b78b5ad9e16c0a8caa7`;
+> - q-Pochhammer/q-binomial monograph: master 16,448 lines / 816,185 bytes /
+>   SHA-256 `a463abef7bb3c70e12a568a46fc192aac88a8ce240f8f781fff2b018a4aa086d`;
+>   full graph 26,114 lines / 1,168,039 bytes / aggregate SHA-256
+>   `d4c5b84cc07f6abb99279c5bba4fdf7404326426cbe81f4b33b72ba01e62739c`;
+>   passes 383/391/391 with `makeindex` after each pass (164 accepted,
+>   0 rejected, 0 warnings); PDF 391 A4 pages / 2,464,712 bytes / SHA-256
+>   `a52eb90dec7b874cc29dea891a107b9eb2d55e6727eb8bd8943d0aab609c58a6`;
+>   final log 1,231 lines / 44,343 bytes / SHA-256
+>   `fb74b0c4cbd75d9022c78c1df5c1d567120bd67728d5b418697ddc5a2aa8f450`;
+> - standalone geometric-q root: source 27,520 lines / 1,266,515 bytes /
+>   SHA-256 `8292f10862334cb809139259eeb4906bb14f517d41b9600c9b7ad53bb21525b1`;
+>   passes 385/402/402; PDF 402 A4 pages / 8,332,886 bytes / SHA-256
+>   `d47431e4d3e721fccf12f90226db77f1898e44b477878954acca3a6e90127cf4`;
+>   final log 2,557 lines / 114,331 bytes / SHA-256
+>   `4d6f8c7974def4a3f9e6bc8ccdffefc3eef7ca8cb7c2f0145a075f95b82ff45e`.
+>
+> At those recorded source snapshots, all six passed the documented log, A4
+> page, font, Type-3, extraction, and visual gates; the Lambert clipping defect
+> and canonical page-176 running-head collision were repaired before
+> acceptance.  The five `581bf` pairs retained
+> below are historical receipts.  They are the historical 187-page,
+> 1,578,751-byte primary PDF (SHA-256
+> `7a93d9c47c22c62dc50cda6a64d030bfad5f44a9ef4cc5568b3b8b16b014bc8f`)
+> from its 13,720-line, 684,413-byte source (SHA-256
+> `7efb8d2294a15cf6b150bb0b04b35db74cf68db3f3cdb4bc5d765b7738504019`);
+> the historical 150-page, 1,185,846-byte Lean-walkthrough PDF (SHA-256
+> `8a5416061addfb480f410e8306340994fe7f5160927a928112087b6b1d5c0cf5`)
+> from its 6,603-line, 457,421-byte source (SHA-256
+> `4e6ea24897a31683c53e71c6cb97eb21f37eff3ae4e452add429bd9f47646ea6`);
+> the historical 260-page, 1,875,190-byte canonical-frontier PDF (SHA-256
+> `fee3b5af21b01b16c41cf8291ba0508d1e6c613bfd098cdef457cde44ea693c2`)
+> from its 17,947-line, 804,625-byte source (SHA-256
+> `ac6b28fb8a98d97ed4b7a0fe7a5ba2cdfab852fb6de1ee2ecfda4aed75804371`);
+> the historical 70-page, 958,713-byte Lambert Guide PDF (SHA-256
+> `24e8bf561283ffc5427297df6f656696a7e2538731e53d03d59e4268b50772fc`)
+> from its 4,864-line, 176,796-byte source (SHA-256
+> `3f3552983a73db2dab94f3625d10d054b747ee03fc2758e257af86f6216deab5`);
+> and the historical 391-page, 2,464,122-byte q-series PDF (SHA-256
+> `c0a00720685f40e0684b4858e7ce18ce134701529898fd4574d09b6c090e0e91`)
+> from its 16,433-line, 815,194-byte master (SHA-256
+> `f2aae6ddc3d7a399f9ed47806a0abe6458cbcab37bf2aac9f55ad3913b5a0e2d`).
+> The preceding 257-page canonical-frontier artifact remains historical.
+> Representation Frontiers (301 pages), filed New
+> Frontiers (41), the notation catalogue (88), the Integration-and-Transform
+> master (377) remain historical or unsynchronized under their package notices.
+> The 158-page comb artifact is historical and is superseded by the accepted
+> 160-page receipt above.
+> The geometric-interpolation and decoder union also includes
 > `RvachevAppellHasse` 1+14, `RvachevLagrangeNodesOnly` 1+14, and
 > `FinitePrefixAppellRecovery` 11+17.  The Fourier/inverse union now also
 > includes `RvachevLaurentLeading` 1+6.
@@ -289,6 +450,7 @@ prefixes on the real frequency line and uniform convergence on its compact sets.
 | Total integer zero-row Wigner-square datum and closed Legendre Gaunt form | `LegendreGauntClosedForm.lean` has exactly two public definitions and twenty-five public theorems.  Its admissibility predicate means even `i+j+k` and the three weak triangle inequalities, equivalently `i=b+c`, `j=a+c`, `k=a+b` for naturals `a,b,c`.  With `C_n=choose (2*n) n` and `s=a+b+c`, the total rational square datum is zero off support and equals `C_a*C_b*C_c/((2*s+1)*C_s)` on the pairwise-add coordinates; its factorial form is `s!^2*(2*a)!*(2*b)!*(2*c)!/((2*s+1)!*a!^2*b!^2*c!^2)`.  The half-sum theorem assumes exactly `i+j+k=2*s` and `i≤s`, `j≤s`, `k≤s`.  The degenerate boundaries are `legendreGauntRat i j (i+j)=2*C_i*C_j/((2*(i+j)+1)*C_(i+j))=2*W²(i,j,i+j)` and `legendreGauntRat 0 j k = if j=k then 2/(2*j+1) else 0 = 2*W²(0,j,k)`.  At every natural triple, rational Gaunt is `2*W²`, real Gaunt is twice its real cast, the square and both Gaunt forms are nonnegative, positivity is equivalent to admissibility, and vanishing is equivalent to nonadmissibility.  The product-linearization coefficient is `(2*k+1)*W²` and is positive exactly on support.  Here `W²` abbreviates the directly defined `legendreWignerThreeJZeroSqRat`; it is only an integer-index zero-row square datum, with no signed/phase, half-integer, nonzero-magnetic-index, general `3j`/`6j`/`9j`, orthogonality, recoupling, or infinite-series claim. | Definitions: `Fabius.legendreGauntAdmissible`, `Fabius.legendreWignerThreeJZeroSqRat`.  Theorems: `Fabius.legendreGauntAdmissible_iff_exists_pairwise_add`, `Fabius.legendreGauntAdmissible_pairwise_add`, `Fabius.legendreWignerThreeJZeroSqRat_pairwise_add`, `Fabius.legendreWignerThreeJZeroSqRat_pairwise_add_factorial`, `Fabius.legendreWignerThreeJZeroSqRat_eq_factorial_of_halfSum`, `Fabius.legendreWignerThreeJZeroSqRat_eq_zero_of_not_admissible`, `Fabius.legendreGauntRat_add_boundary`, `Fabius.legendreGauntRat_add_boundary_eq_two_mul_wignerThreeJZeroSqRat`, `Fabius.legendreGauntRat_zero_left`, `Fabius.legendreGauntRat_zero_left_eq_two_mul_wignerThreeJZeroSqRat`, `Fabius.legendreGauntRat_pairwise_add_eq_two_mul_wignerThreeJZeroSqRat`, `Fabius.legendreGauntRat_eq_zero_of_not_admissible`, `Fabius.legendreGauntRat_eq_two_mul_wignerThreeJZeroSqRat`, `Fabius.legendreGaunt_eq_two_mul_wignerThreeJZeroSqRat`, `Fabius.legendreWignerThreeJZeroSqRat_pos_iff_admissible`, `Fabius.legendreWignerThreeJZeroSqRat_nonneg`, `Fabius.legendreWignerThreeJZeroSqRat_eq_zero_iff_not_admissible`, `Fabius.legendreGauntRat_pos_iff_admissible`, `Fabius.legendreGauntRat_eq_zero_iff_not_admissible`, `Fabius.legendreGaunt_pos_iff_admissible`, `Fabius.legendreGaunt_eq_zero_iff_not_admissible`, `Fabius.legendreGauntRat_nonneg`, `Fabius.legendreGaunt_nonneg`, `Fabius.legendreProductLinearizationCoeffRat_eq_mul_wignerThreeJZeroSqRat`, `Fabius.legendreProductLinearizationCoeffRat_pos_iff_admissible` |
 | Finite Wigner-square sums for rational and real up-law Legendre Gram entries | `FabiusLegendreGauntClosedForm.lean` has zero public definitions and exactly three public theorems.  Unconditionally for natural `i,j`, `rvachevLegendreGramEntryRat i j` is `2 * ∑ r ∈ range ((i+j)/2+1), canonicalRvachevLegendreCoefficientRat r * legendreWignerThreeJZeroSqRat i j (2*r)`; the identical formula holds entrywise for `i j : Fin n` in the rational Gram matrix.  For `F : BoundedFabius` with exactly `hF : IsFabius F`, the real up-Gram entry is the same finite twice-sum using `rvachevLegendreCoefficient F r` and the real cast of the square datum.  This closes the finite Wigner-square Gram route only; it supplies no signed/general Wigner symbol and no infinite Legendre-series interchange, Christoffel reconstruction, root/quadrature, Padé/J-fraction, infinite-Jacobi, or asymptotic theorem. | `Fabius.rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat`, `Fabius.rvachevLegendreGramMatrixRat_apply_eq_two_mul_sum_wignerThreeJZeroSqRat`, `Fabius.upLegendreGramMatrix_apply_eq_two_mul_sum_wignerThreeJZeroSqRat` |
 | Denominator-free geometric complete-homogeneous and Lagrange residual layer | The six `GeometricCompleteHomogeneous` theorems prove both orientations of the geometric principal specialization, its common-scale and range forms, and two denominator-free Gaussian symmetry laws over every commutative semiring.  The five `GeometricLagrangeCompleteHomogeneous` theorems retain report-facing aliases, specialize every offset residual moment, and connect the recursive Gaussian coefficient to the rational q-binomial API under exactly the stated field/injectivity or `0 < q < 1` hypotheses.  At target zero, `sum_lagrangeEvalWeight_mul_pow_card_add_zero` gives every higher moment of a nonempty distinct field-valued node family as the negative signed nodal product times its complete homogeneous function; nonemptiness excludes precisely the empty-row `0^0` exception. | `Fabius.completeHomogeneousEval_geometric`, `Fabius.completeHomogeneousEval_scaled_geometric`, `Fabius.completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial`, `Fabius.completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial_degree`, `Fabius.gaussianBinomial_add_symm`, `Fabius.gaussianBinomial_symm_via_completeHomogeneous`; `Fabius.completeHomogeneousEvalOn_geometric_range`, `Fabius.sum_geometricLagrangeWeight_mul_pow_succ_add_eq_gaussianBinomial`, `Fabius.geometricLagrangeQMoment_eq_residual_gaussianBinomial`, `Fabius.completeHomogeneousEvalOn_geometric_range_eq_qBinomial`, `Fabius.geometricLagrangeQMoment_eq_residual_qBinomial_via_completeHomogeneous`; `Fabius.sum_lagrangeEvalWeight_mul_pow_card_add_zero` |
+| Combinatorial Coefficient Calculus fixed-column Stirling OGF (`thm:second-ogf`) | **Exact in its formal/algebraic reading after focused verification.**  The zero-definition/eight-theorem `StirlingCompleteHomogeneous.lean` leaf identifies the existing Stirling column power series with the complete-homogeneous generating series over every commutative ring, extracts `S(k+r,k)=h_r(1,…,k)` and the finite multiplicity sum over every commutative semiring, and supplies `Fin k` and Mathlib `hsymm` forms.  The `n-k` statement correctly assumes `k≤n`; `k=0` is included.  Over a field and exactly `x≠0`, the final two theorems clear and invert `x^(k+1)(1/x)_(k+1)` to the product of `1-jx`.  Lean's reciprocal is totalized, so an ordinary scalar reading must still exclude the product's poles; no scalar convergence or analytic-continuation theorem is claimed. | `Fabius.stirlingColumnOGF_eq_completeHomogeneousGeneratingSeriesOn`, `Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn`, `Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le`, `Fabius.stirlingSecond_add_eq_completeHomogeneousEval`, `Fabius.stirlingSecond_add_eq_eval_hsymm`, `Fabius.stirlingSecond_add_eq_sum_finsuppAntidiag`, `Fabius.pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul`, `Fabius.prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv`; reused existing OGF results: `Fabius.prod_one_sub_mul_X_mul_stirlingColumnOGF`, `Fabius.stirlingColumnOGF_eq_prod_mk_pow` |
 | Exact finite polynomial filters | The five-theorem `FinitePolynomialFilterExactness` surface first evaluates an arbitrary finite coefficient filter on a baseline plus finitely many geometric modes, then derives mass-one/root exactness over every commutative semiring.  Its field-valued geometric specializations cancel the prescribed inverse or forward modes, preserve the baseline, and evaluate the first uncancelled forward mode as `(-1)^n q^(choose (n+1) 2)`, retaining the explicit nonzero-base and normalization-denominator assumptions. | `Fabius.polynomialFilter_response_eq`, `Fabius.polynomialFilter_exact`, `Fabius.normalizedGeometricRootPolynomial_filter_exact`, `Fabius.forwardGeometricRichardsonPolynomial_filter_exact`, `Fabius.forwardGeometricRichardsonPolynomial_filter_firstUncancelled` |
 | Complete rational geometric-moment and finite-conditioning API | `GeometricLagrangeQMoments` exhaustively contains one definition and 37 theorems.  They identify the moment with the weight and forward-Richardson polynomials, prove exact zero and residual q-Pochhammer/q-binomial forms, positivity and sign on `0 < q < 1`, both Pascal orientations and the finite q-binomial theorem in the rational quotient notation, pointwise absolute weights and exact row variation, and all dedicated quarter-base forms.  These are finite algebraic identities; quotient statements retain their nonzero-denominator hypotheses and no analytic convergence or remainder estimate is asserted. | `Fabius.geometricLagrangeQMoment`; `Fabius.geometricLagrangeQMoment_eq_weightPolynomial_eval`, `Fabius.geometricLagrangeQMoment_eq_forwardRichardson_eval`, `Fabius.geometricRootPolynomial_inv_eval_pow_mul_signedPowers`, `Fabius.geometricRootPolynomial_inv_eval_pow_mul_triangular`, `Fabius.geometricRootPolynomial_inv_eval_one_mul_triangular`, `Fabius.geometricLagrangeQMoment_eq_qPochhammer`, `Fabius.geometricLagrangeQMoment_zero`, `Fabius.geometricLagrangeQMoment_eq_zero`, `Fabius.geometricRootPolynomial_inv_eval_pow_eq_qPochhammer_of_le`, `Fabius.geometricLagrangeQMoment_eq_residual_qPochhammer`, `Fabius.qPochhammer_self_add`, `Fabius.qPochhammer_self_pos_of_pos_of_lt_one`, `Fabius.qBinomial_pos_of_pos_of_lt_one`, `Fabius.gaussianBinomial_eq_qBinomial_of_pos_of_lt_one`, `Fabius.qPochhammer_pow_pos_of_pos_of_lt_one`, `Fabius.qPochhammer_tail_div_self_eq_qBinomial`, `Fabius.geometricLagrangeQMoment_eq_residual_qBinomial`, `Fabius.geometricLagrangeQMoment_firstUncancelled`, `Fabius.negOnePow_mul_geometricLagrangeQMoment_eq_positiveResidual`, `Fabius.negOnePow_mul_geometricLagrangeQMoment_pos`, `Fabius.qPochhammer_self_succ`, `Fabius.qBinomial_succ_succ_of_pos_of_lt_one'`, `Fabius.qBinomial_succ_succ_of_pos_of_lt_one`, `Fabius.qBinomial_theorem_of_pos_of_lt_one`, `Fabius.sum_qBinomial_triangular_succ_eq_neg_qPochhammer`, `Fabius.abs_geometricLagrangeWeight_eq_qBinomial`, `Fabius.abs_geometricLagrangeWeight_eq_sign_mul`, `Fabius.abs_geometricLagrangeWeight_complement_eq_qBinomial`, `Fabius.sum_abs_geometricLagrangeWeight_eq_qPochhammer_ratio`, `Fabius.neg_qPochhammer_div_self_eq_prod`, `Fabius.sum_abs_geometricLagrangeWeight_eq_prod`, `Fabius.quarterGeometricLagrangeQMoment_eq_qPochhammer`, `Fabius.quarterGeometricLagrangeQMoment_eq_zero`, `Fabius.quarterGeometricLagrangeQMoment_eq_residual_qPochhammer`, `Fabius.quarterGeometricLagrangeQMoment_eq_residual_qBinomial`, `Fabius.quarterGeometricLagrangeQMoment_firstUncancelled`, `Fabius.sum_abs_quarterGeometricLagrangeWeight_eq_qPochhammer_ratio` |
 | `gq:thm:richardson-generating`: Euler factorization of the geometric Richardson triangle | **Exact.** `GeometricRichardsonGenerating.lean` has exactly three public definitions and seven public theorems.  Its commutative-ring layer defines the Euler kernel, q-Pochhammer-normalized data series, and lower-triangular transform, proves the two coefficient identities, and factors the formal generating series without topology or any regularity assumption on `q`; `Ring.inverse` gives a total expression even when a finite q-Pochhammer factor is not a unit.  Over every field with `q ≠ 0`, `geometricRichardsonTransform_eq_sum_lagrange` identifies the convolution coefficient with the repository's canonical totalized geometric Lagrange row, and `geometricLagrangeRichardson_generating` is the displayed manuscript identity.  Roots of unity need not be excluded for these algebraic equalities, but colliding nodes are not thereby a valid interpolation scheme; at `q = 0`, repeated nodes occur for `n ≥ 2` and the Lagrange closed form fails, so the report-facing identification correctly excludes it.  The two analytic companions work over a complete normed field under `‖q‖ < 1` and norm-summability of the normalized data at `z`; the Lagrange form again assumes `q ≠ 0` and proves `HasSum`.  They do not assert that arbitrary formal power series can be evaluated analytically. | Definitions: `Fabius.geometricRichardsonKernel`, `Fabius.qPochhammerNormalizedDataSeries`, `Fabius.geometricRichardsonTransform`.  Theorems: `Fabius.coeff_rescale_qPochhammerSeries_eq_geometricRichardsonKernel`, `Fabius.coeff_qPochhammerNormalizedDataSeries`, `Fabius.geometricRichardsonTransform_generating`, `Fabius.geometricRichardsonTransform_eq_sum_lagrange`, `Fabius.geometricLagrangeRichardson_generating`, `Fabius.hasSum_geometricRichardsonTransform_mul_pow`, `Fabius.hasSum_geometricLagrangeRichardson_mul_pow` |

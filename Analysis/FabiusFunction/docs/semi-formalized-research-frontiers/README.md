@@ -656,8 +656,10 @@ source-only overlays and claim no render parity.
   remains **Partial** because its four-term expansion and explicit
   quantitative envelope are not formalized here.
 
-The retained frontier, primary, walkthrough, geometric-q, and representation
-PDFs predate these source-only overlays and claim no render parity.
+Exactly ten publication roots were invalidated by this merge. All ten now have
+accepted current PDFs: primary 199 pages, walkthrough 171, canonical 273,
+q series 401, Lambert 70, inverse 137, comb 160, Up 63, Thue--Morse 144, and
+geometric-q 404. The dyadic-chaos PDF is not one of these ten.
 
 The preceding declaration addition is
 `FabiusFunction.GeometricRichardsonGenerating`, with three definitions and
@@ -890,17 +892,18 @@ Lagrange right-inverse theorem. These declarations are rendered by the
 historical `b899` Up-synthesis and canonical-frontier PDFs.
 
 The final source-only `FabiusFunction.GaussianBinomialFixedColumnRate` leaf has
-no definitions and ten theorems:
-`Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp`,
+no definitions and exactly eight theorems:
 `Fabius.norm_finiteQPochhammerIn_pow_sub_one_le`,
 `Fabius.norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
 `Fabius.norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
 `Fabius.norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le`,
-`Fabius.tendsto_gaussianBinomial_add_atTop`,
 `Fabius.gaussianBinomial_fixedColumn_relativeError_isBigO`,
 `Fabius.gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
 `Fabius.gaussianBinomial_fixedColumn_error_isBigO`, and
-`Fabius.gaussianBinomial_shifted_fixedColumn_error_isBigO`. In a normed
+`Fabius.gaussianBinomial_shifted_fixedColumn_error_isBigO`. The closure reuses
+`Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp` and
+`Fabius.tendsto_gaussianBinomial_add_atTop` from the one-definition,
+twenty-seven-theorem `QBinomialTheoremInfinite` module. In a normed
 commutative ring with normalized multiplicative norm, `‖q‖ ≤ 1` gives the
 exponential and elementary bounds on `‖(q^m;q)_k-1‖` and the denominator-free
 relative Gaussian bound, the last meaningful even at roots of unity. Over a

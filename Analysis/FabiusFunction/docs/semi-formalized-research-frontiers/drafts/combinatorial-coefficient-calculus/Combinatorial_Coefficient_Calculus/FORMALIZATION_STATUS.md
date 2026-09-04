@@ -28,10 +28,11 @@ The first integration milestone merged pinned upstream
 `3f74ee23e479399595c91b5fb030c7fbceb23f1a`, and
 `c5a82b88c40ad493d394056c8dd42ef6d3d306ac`, followed by
 `063ef3e1b1c0403bd6c71d1c9aa265825504339c` and
-`8b6dbd52428744a8496c762fcdeb2cfebc0ba7cc`. Its source validator passes with
+`8b6dbd52428744a8496c762fcdeb2cfebc0ba7cc` and
+`c668cb96362acbae8b89950102b8ea361102a73f`. Its source validator passes with
 206 theorem-like items and adjacent proofs, 27 dispositions, and six immutable
 source-inventory rows. The obsolete live checksum ledger was retired as upstream
-intended. The current register has 59 `Lean`, 35 `partial`, and 112 `none` rows;
+intended. The current register has 60 `Lean`, 35 `partial`, and 111 `none` rows;
 these totals include inherited claims and are not a fresh audit of all 206 rows.
 The latest upstream rescaling and formal-power recurrence upgrades are retained;
 the new Bernoulli formal-logarithm and Abel sources remain separately pending.
@@ -40,12 +41,14 @@ The upstream duplicate-crosswalk validator's eight regression tests pass.
 `NewtonReciprocal.lean` passed focused compilation on 2026-09-04 using
 `lake env lean -o .lake/build/lib/lean/FabiusFunction/NewtonReciprocal.olean
 Analysis/FabiusFunction/Lean/FabiusFunction/NewtonReciprocal.lean` (exit zero).
-Its five public theorems are compiler-checked. The other fourteen new public
+Its five public theorems are compiler-checked. The other twelve new public
 theorems in the three Stirling/Lagrange leaves remain source-reviewed and await
 compilation, including any missing prerequisites. No aggregate build is claimed.
-The facade, cited-name, and duplicate-name structural audits passed before the
-later synchronizations; their unrelated upstream additions are not covered by a
-fresh aggregate Lean build. All new modules have facade imports and contain no
+After the latest synchronization, the cited-name and duplicate-name structural
+audits pass: 3,439 distinct cited names resolve and there are no duplicate
+declaration names. The facade audit found two missing upstream imports,
+`AssociahedronFaceNumbers` and `PochhammerFalling`; both were restored. These
+structural checks are not a fresh aggregate Lean build. All new modules have facade imports and contain no
 `sorry`, `admit`, `axiom`, or `opaque` declarations. The register-generator mappings
 preserve the new pending and compiled distinctions; both generator scripts passed
 read-only syntax and mapping checks without rewriting the canonical document.
@@ -94,9 +97,11 @@ milestone. Confirm the final TeX/PDF pair before calling the milestone published
 ## New source preflight
 
 `StirlingSymmetricFunctions.lean` was independently reviewed against the actual
-imported APIs. Its six public theorems identify both Stirling triangles with
-symmetric-function evaluations and state their common-scaling laws over every
-commutative semiring. The review checked the empty-family cases, the natural
+imported APIs. Its four public theorems identify first-kind Stirling numbers
+with elementary symmetric evaluations and state the common-scaling laws for
+both Stirling triangles over every commutative semiring. The two second-kind
+evaluation formulas were deduplicated into the compiled upstream
+`StirlingCompleteHomogeneous` API. The review checked the empty-family cases, the natural
 subtraction guard, the second-kind adjoining-variable recurrence, the precise
 Vieta subset cardinality, and the multiset formulation that preserves repeated
 values in positive characteristic. No concrete source or API blocker was found.

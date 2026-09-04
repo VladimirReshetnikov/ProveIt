@@ -331,22 +331,31 @@ STATUS = {
    r"\lean{Fabius.egfA_fubini}: the generating function is $1/(1-u)$ at $u=\EulerE^t-1$) and "
    r"\cref{eq:ordered-bell-recurrence} is \lean{Fabius.fubini_succ} (\lean{OrderedBell}); the "
    r"ordered-partition count itself is not formalized"),
- 'thm:second-ogf': ('partial',
+ 'thm:second-ogf': ('Lean',
    r"\lean{Fabius.prod_one_sub_mul_X_mul_stirlingColumnOGF} and "
-   r"\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}): the column "
-   r"series $\sum_r\StirlingSecondKind{k+r}{k}x^r$ times $\prod_{j\le k}(1-jx)$ is $1$, and "
-   r"equals the product of the geometric series $\sum_r j^rx^r$, in $R[[x]]$ for every "
-   r"commutative ring $R$.  New source "
-   r"\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn} "
-   r"(\lean{StirlingSymmetricFunctions}) supplies \cref{eq:second-complete-symmetric} for "
-   r"$k\le n$, pending compiler validation.  The displayed reciprocal falling-factorial "
-   r"presentation has no separate formal counterpart."),
- 'thm:stirling-symmetric-semirings': ('none',
-   r"New source in \lean{StirlingSymmetricFunctions}: "
+   r"\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}) prove the "
+   r"formal inverse and finite geometric-product identities.  The compiled "
+   r"\lean{StirlingCompleteHomogeneous} declarations "
+   r"\lean{Fabius.stirlingColumnOGF_eq_completeHomogeneousGeneratingSeriesOn}, "
    r"\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn}, "
-   r"\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn}, "
-   r"\lean{Fabius.stirlingFirst_eq_sum_powersetCard}, and "
-   r"\lean{Fabius.stirlingFirst_eq_esymm}; independently reviewed, compiler validation pending."),
+   r"\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le}, "
+   r"\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEval}, "
+   r"\lean{Fabius.stirlingSecond_add_eq_eval_hsymm}, and "
+   r"\lean{Fabius.stirlingSecond_add_eq_sum_finsuppAntidiag} cover inverse uniqueness, the "
+   r"$n=k+r$ and $n\ge k$ complete-homogeneous identities over every commutative semiring, universal "
+   r"\lean{MvPolynomial.hsymm} evaluation, and the explicit multiplicity sum.  Its "
+   r"\lean{Fabius.pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul} and "
+   r"\lean{Fabius.prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv} cover "
+   r"the scalar falling-factorial factorization under $x\ne0$ and its reciprocal under "
+   r"nonvanishing of every $1-jx$."),
+ 'thm:stirling-symmetric-semirings': ('partial',
+   r"The second-kind identities are compiled as "
+   r"\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn} and "
+   r"\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le} in "
+   r"\lean{StirlingCompleteHomogeneous}, over every commutative semiring.  New source "
+   r"\lean{Fabius.stirlingFirst_eq_sum_powersetCard} and "
+   r"\lean{Fabius.stirlingFirst_eq_esymm} in \lean{StirlingSymmetricFunctions} supplies "
+   r"the first-kind identities; compiler validation of those additions is pending."),
  'cor:stirling-symmetric-scaling': ('none',
    r"New source: \lean{Fabius.completeHomogeneousEvalOn_scaled_range} and "
    r"\lean{Fabius.esymm_scaled_range} in \lean{StirlingSymmetricFunctions}; "

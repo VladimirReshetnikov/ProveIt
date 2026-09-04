@@ -6,7 +6,7 @@ baseline is `73f0b373126ef22a3b5dccadfa7b99d61d445345`. Historical artifacts rem
 receipts only for their stated input graphs. Full numerical replay and
 fresh-checkout reproduction remain separate.
 
-The current source combines the incoming stable-path revisions to
+The accepted current source combines the incoming stable-path revisions to
 `chapters/01_geometric_core.tex` and `chapters/99_bibliography.tex` with the
 local general-$q$/endpoint-jet, Lagrange,
 `FabiusFunction.PrimePowerBinomialValuation`,
