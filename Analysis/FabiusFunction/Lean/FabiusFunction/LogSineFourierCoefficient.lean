@@ -1,5 +1,6 @@
 import FabiusFunction.DirichletKernelCotangent
 import FabiusFunction.CocycleCovarianceHalving
+import FabiusFunction.DyadicCombTrapezoid
 import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Analysis.Real.Pi.Bounds
 
@@ -511,36 +512,21 @@ determines every Fourier coefficient of the doubling cocycle:
 theorem integral_log_two_sin_mul_sin (n : ℕ) :
     ∫ t in (0:ℝ)..1, Real.log (2 * Real.sin (π * t)) *
       Real.sin (2 * (n + 1) * (π * t)) = 0 := by
-  set F : ℝ → ℝ := fun t => Real.log (2 * Real.sin (π * t)) *
-    Real.sin (2 * (n + 1) * (π * t)) with hF
-  have hrefl : ∫ x in (0:ℝ)..1, F (1 - x) = ∫ x in (0:ℝ)..1, F x := by
-    have h := intervalIntegral.integral_comp_sub_left (a := (0:ℝ))
-      (b := 1) (f := F) 1
-    rw [h]
-    norm_num
-  have hodd : ∀ x : ℝ, F (1 - x) = -F x := by
-    intro x
-    show Real.log (2 * Real.sin (π * (1 - x))) *
-      Real.sin (2 * (n + 1) * (π * (1 - x))) =
-      -(Real.log (2 * Real.sin (π * x)) *
-        Real.sin (2 * (n + 1) * (π * x)))
-    have h1 : Real.sin (π * (1 - x)) = Real.sin (π * x) := by
-      rw [show π * (1 - x) = π - π * x by ring, Real.sin_pi_sub]
-    have h2 : Real.sin (2 * (n + 1) * (π * (1 - x))) =
-        -Real.sin (2 * (n + 1) * (π * x)) := by
-      have harg : 2 * ((n:ℝ) + 1) * (π * (1 - x)) =
-          -(2 * ((n:ℝ) + 1) * (π * x)) + ((n:ℤ) + 1 : ℤ) * (2 * π) := by
-        push_cast
-        ring
-      rw [harg, Real.sin_add_int_mul_two_pi, Real.sin_neg]
-    rw [h1, h2]
-    ring
-  have hI : ∫ x in (0:ℝ)..1, F x = -∫ x in (0:ℝ)..1, F x := by
-    calc ∫ x in (0:ℝ)..1, F x = ∫ x in (0:ℝ)..1, F (1 - x) := hrefl.symm
-      _ = ∫ x in (0:ℝ)..1, -F x := by
-          refine intervalIntegral.integral_congr fun x _ => ?_
-          exact hodd x
-      _ = -∫ x in (0:ℝ)..1, F x := intervalIntegral.integral_neg
-  linarith [hI]
+  refine integral_unit_eq_zero_of_reflect_neg fun x => ?_
+  show Real.log (2 * Real.sin (π * (1 - x))) *
+    Real.sin (2 * (n + 1) * (π * (1 - x))) =
+    -(Real.log (2 * Real.sin (π * x)) *
+      Real.sin (2 * (n + 1) * (π * x)))
+  have h1 : Real.sin (π * (1 - x)) = Real.sin (π * x) := by
+    rw [show π * (1 - x) = π - π * x by ring, Real.sin_pi_sub]
+  have h2 : Real.sin (2 * (n + 1) * (π * (1 - x))) =
+      -Real.sin (2 * (n + 1) * (π * x)) := by
+    have harg : 2 * ((n:ℝ) + 1) * (π * (1 - x)) =
+        -(2 * ((n:ℝ) + 1) * (π * x)) + ((n:ℤ) + 1 : ℤ) * (2 * π) := by
+      push_cast
+      ring
+    rw [harg, Real.sin_add_int_mul_two_pi, Real.sin_neg]
+  rw [h1, h2]
+  ring
 
 end Fabius

@@ -1,0 +1,4410 @@
+\documentclass[11pt,oneside,openany]{book}
+
+% ------------------------------------------------------------
+% Packages and page design
+% ------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=0.92in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,decorations.pathmorphing,shapes.geometric,fit,backgrounds}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+
+\definecolor{DeepBlue}{HTML}{183B56}
+\definecolor{WarmGold}{HTML}{A66A00}
+\definecolor{SoftBlue}{HTML}{EAF3F8}
+\definecolor{SoftGold}{HTML}{FFF4D6}
+\definecolor{SoftGreen}{HTML}{EAF7EF}
+\definecolor{SoftRed}{HTML}{FCECEC}
+\definecolor{SoftGray}{HTML}{F4F5F7}
+\definecolor{LinkBlue}{HTML}{0B5FA5}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=DeepBlue,
+  citecolor=WarmGold,
+  urlcolor=LinkBlue,
+  pdftitle={Transseries for Mere Mortals},
+  pdfauthor={OpenAI},
+  pdfsubject={A step-by-step tutorial on logarithmic-exponential transseries, asymptotics, Borel summation, and resurgence},
+  pdfkeywords={transseries, asymptotic series, Hahn series, Borel summation, resurgence, Stokes phenomenon, Hardy fields, surreal numbers}
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlist[itemize]{topsep=0.35em,itemsep=0.2em,leftmargin=1.6em}
+\setlist[enumerate]{topsep=0.35em,itemsep=0.25em,leftmargin=1.8em}
+\allowdisplaybreaks
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyhead[R]{\small Transseries for Mere Mortals}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\color{DeepBlue}}
+  {\filleft\Large\chaptername\ \thechapter}
+  {0.6ex}
+  {\titlerule\vspace{1ex}\Huge}
+  [\vspace{1ex}\titlerule]
+\titleformat{\section}{\Large\bfseries\color{DeepBlue}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{WarmGold}}{\thesubsection}{0.7em}{}
+
+% ------------------------------------------------------------
+% Mathematical notation
+% ------------------------------------------------------------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\G}{\mathfrak{G}}
+\newcommand{\M}{\mathfrak{M}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\magop}{\operatorname{mag}}
+\newcommand{\domop}{\operatorname{dom}}
+\newcommand{\val}{\operatorname{val}}
+\newcommand{\res}{\operatorname*{Res}}
+\newcommand{\Ei}{\operatorname{Ei}}
+\newcommand{\erf}{\operatorname{erf}}
+\newcommand{\Ai}{\operatorname{Ai}}
+\newcommand{\Bi}{\operatorname{Bi}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\Borel}{\mathcal{B}}
+\newcommand{\Laplace}{\mathcal{L}}
+\newcommand{\smallo}{\mathrm{o}}
+\newcommand{\bigO}{\mathrm{O}}
+\newcommand{\trans}{\mathcal{T}}
+\newcommand{\mon}{\mathfrak{m}}
+\newcommand{\nmon}{\mathfrak{n}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\compose}{\mathbin{\circ}}
+\newcommand{\defeq}{\mathrel{:=}}
+\newcommand{\stokes}{\mathfrak{S}}
+\newcommand{\alien}{\Delta}
+\DeclareMathOperator{\sgn}{sgn}
+
+% ------------------------------------------------------------
+% Theorem and box environments
+% ------------------------------------------------------------
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}{Exercise}[chapter]
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newtcolorbox{bigidea}[1][]{
+  enhanced,breakable,colback=SoftBlue,colframe=DeepBlue,
+  fonttitle=\bfseries,title={Big idea},arc=2mm,boxrule=0.8pt,#1}
+\newtcolorbox{intuition}[1][]{
+  enhanced,breakable,colback=SoftGold,colframe=WarmGold,
+  fonttitle=\bfseries,title={Intuition},arc=2mm,boxrule=0.8pt,#1}
+\newtcolorbox{warningbox}[1][]{
+  enhanced,breakable,colback=SoftRed,colframe=red!65!black,
+  fonttitle=\bfseries,title={Common trap},arc=2mm,boxrule=0.8pt,#1}
+\newtcolorbox{procedurebox}[1][]{
+  enhanced,breakable,colback=SoftGreen,colframe=green!45!black,
+  fonttitle=\bfseries,title={Procedure},arc=2mm,boxrule=0.8pt,#1}
+\newtcolorbox{advancedbox}[1][]{
+  enhanced,breakable,colback=SoftGray,colframe=black!55,
+  fonttitle=\bfseries,title={Optional advanced viewpoint},arc=2mm,boxrule=0.8pt,#1}
+\newtcolorbox{checkpoint}[1][]{
+  enhanced,breakable,colback=white,colframe=DeepBlue!70,
+  fonttitle=\bfseries,title={Checkpoint},arc=1mm,boxrule=0.6pt,#1}
+\newtcolorbox{worked}[1][]{
+  enhanced,breakable,colback=white,colframe=WarmGold!85!black,
+  fonttitle=\bfseries,title={Worked example},arc=2mm,boxrule=0.8pt,#1}
+
+\newcommand{\term}[1]{\textbf{#1}}
+\newcommand{\aside}[1]{\textit{#1}}
+
+\begin{document}
+
+\frontmatter
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{1.25cm}
+{\Huge\bfseries\color{DeepBlue} Transseries for Mere Mortals\par}
+\vspace{0.45cm}
+{\LARGE A Step-by-Step Tutorial from Ordinary Asymptotics\par
+ to Exponentials, Logarithms, Stokes Phenomena, and Resurgence\par}
+\vspace{1.2cm}
+\begin{tikzpicture}[x=1.0cm,y=1.0cm,>=Latex]
+  \draw[very thick,DeepBlue,-{Latex[length=4mm]}] (-6,0)--(6,0);
+  \foreach \x/\lab in {-5.2/{$\e^{\e^x}$},-3.7/{$\e^{x^2}$},-2.2/{$\e^x$},-0.7/{$x^{100}$},0.7/{$1$},2.0/{$x^{-1}$},3.4/{$\e^{-x}$},4.9/{$\e^{-x^2}$}}{
+    \draw[DeepBlue,thick] (\x,-0.12)--(\x,0.12);
+    \node[below=5pt] at (\x,0) {\lab};
+  }
+  \node[above=5pt,DeepBlue] at (-4.8,0) {larger};
+  \node[above=5pt,DeepBlue] at (4.8,0) {smaller};
+\end{tikzpicture}
+\vfill
+{\Large OpenAI\par}
+\vspace{0.25cm}
+{\large August 2026\par}
+\vfill
+\begin{minipage}{0.86\textwidth}
+\small
+This tutorial is written for a reader who has completed a standard calculus sequence and has seen elementary differential equations and power series. It synthesizes the materials supplied in the accompanying archive with the foundational literature on logarithmic-exponential transseries, asymptotic differential algebra, Borel summation, and resurgence. The goal is conceptual fluency and practical calculation rather than a bare catalogue of definitions.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\chapter*{Preface: what this book is trying to do}
+\addcontentsline{toc}{chapter}{Preface}
+
+A power series is a remarkable mathematical machine. It can encode a function, solve a differential equation, invert a map, and turn calculus into algebra. Yet it has blind spots. It cannot naturally distinguish two functions whose difference is smaller than every power of the expansion variable. It often produces divergent series near irregular singular points. It can describe a perturbative part of a solution while completely missing free constants carried by exponentially small terms.
+
+A \term{transseries} is a larger symbolic language designed to repair those blind spots. Its terms may involve powers, logarithms, exponentials, iterated exponentials and logarithms, and infinite sums arranged by asymptotic size. A typical expression might look like
+\[
+  x+\log x+\frac{\log x}{x}
+  +C\e^{-x}\left(1+\frac{2}{x}+\cdots\right)
+  +C^2\e^{-2x}\left(\frac1x+\cdots\right)+\cdots.
+\]
+In an appropriate formal setting, one can add, multiply, divide, exponentiate, take logarithms, differentiate, integrate, compose, and solve equations with such objects. The resulting field is non-Archimedean: it contains positive infinite elements such as $x$ and positive infinitesimals such as $x^{-1}$ and $\e^{-x}$.
+
+This subject has several overlapping traditions. Écalle's transseries grew from singular differential equations and resurgence. Dahn and Göring developed related exponential fields from model theory. Hardy fields, Hahn series, computer algebra, surreal numbers, and mathematical physics all meet here. The word \emph{transseries} therefore has variants. We will state conventions rather than pretend there is only one definition.
+
+\begin{bigidea}
+A transseries is best understood as an \emph{asymptotically ordered formal expansion}. The order tells us which term dominates; the support condition makes infinite algebra legal; and closure operations make the language rich enough to follow equations beyond ordinary power series.
+\end{bigidea}
+
+The book has five goals:
+\begin{enumerate}
+  \item develop intuition for asymptotic scales;
+  \item construct logarithmic-exponential transseries carefully;
+  \item teach practical expansion and equation-solving methods;
+  \item explain divergence, Borel summation, Stokes phenomena, and resurgence;
+  \item place the subject among Hardy fields, $H$-fields, surreal numbers, and symbolic computation.
+\end{enumerate}
+
+\section*{Prerequisites}
+The main prerequisites are limits, derivatives, integrals, elementary Taylor series, basic complex numbers, and introductory ordinary differential equations. No prior model theory, differential algebra, or surreal-number theory is assumed.
+
+\section*{How to read the book}
+For a first pass, read Chapters 1--4, 8--16, and 19--21. Chapters 5--7 explain support foundations and can be revisited when a formal legality question appears. The later structural chapters form a second course. Exercises are distributed throughout, with a capstone problem set and detailed solutions in the appendices.
+
+\tableofcontents
+
+\chapter*{Notation and conventions}
+\addcontentsline{toc}{chapter}{Notation and conventions}
+
+Throughout most of the book, $x$ is a formal positive infinite variable, suggesting $x\to+\infty$. We use
+\[
+  f\prec g,
+  \qquad f\asymp g,
+  \qquad f\sim g
+\]
+for ``$f$ is smaller than $g$,'' ``$f$ and $g$ have comparable magnitude,'' and ``$f/g\to1$.'' When actual functions are involved,
+\[
+  f\prec g\quad\text{corresponds to}\quad f/g\to0.
+\]
+We write $\T$ for a field of real logarithmic-exponential transseries and $\G$ for its multiplicative group of transmonomials. A monomial is denoted $\mon$ or $\nmon$.
+
+A formal equality such as
+\[
+  (1-x^{-1})^{-1}=1+x^{-1}+x^{-2}+\cdots
+\]
+is equality inside a formal field. An asymptotic relation such as
+\[
+  f(x)\sim1+x^{-1}+2x^{-2}+\cdots
+\]
+relates an actual function to its successive truncations. The distinction is essential.
+
+\mainmatter
+
+% ============================================================
+\part{Why ordinary series are not enough}
+% ============================================================
+
+\chapter{Asymptotic thinking before transseries}
+\label{ch:asymptotic-thinking}
+
+\section{A limit remembers too little}
+Suppose $f(x)\to1$ as $x\to+\infty$. This tells us the destination but not the route. The functions
+\[
+  1+\frac1x,
+  \qquad1+\frac1{\sqrt{x}},
+  \qquad1+\e^{-x},
+  \qquad1+\frac{\sin x}{x}
+\]
+all approach $1$, but at very different rates and with different qualitative behavior.
+
+We write $f=\bigO(g)$ when $|f|\le C|g|$ eventually, and $f=\smallo(g)$ when $f/g\to0$. The relation $f\sim g$ means $f/g\to1$.
+
+For example,
+\[
+  \e^{-x}=\smallo(x^{-N})
+  \qquad\text{for every fixed }N>0.
+\]
+This is proved by repeated l'Hôpital's rule or by the fact that $x^N\e^{-x}\to0$.
+
+\section{Asymptotic scales}
+A sequence $(\phi_n)$ is an asymptotic scale if
+\[
+  \phi_{n+1}\prec\phi_n.
+\]
+The familiar inverse-power scale is
+\[
+  1\succ x^{-1}\succ x^{-2}\succ x^{-3}\succ\cdots.
+\]
+A function has Poincaré expansion
+\[
+  f(x)\sim\sum_{n\ge0}a_nx^{-n}
+\]
+if for every fixed $N$,
+\[
+  f(x)-\sum_{n=0}^{N-1}a_nx^{-n}
+  =\smallo(x^{-N+1}).
+\]
+The infinite series need not converge. It is a compact promise about every finite truncation.
+
+\begin{worked}
+For $f(x)=1/(x+1)$,
+\[
+  \frac1{x+1}=\frac1x\frac1{1+x^{-1}}
+  =x^{-1}-x^{-2}+x^{-3}-\cdots.
+\]
+Here the series actually converges for $|x|>1$, but its asymptotic meaning only needs the remainder estimate after each finite truncation.
+\end{worked}
+
+\section{Beyond all algebraic orders}
+The functions $0$ and $\e^{-x}$ have the same asymptotic expansion in powers of $x^{-1}$:
+\[
+  0+0x^{-1}+0x^{-2}+\cdots.
+\]
+Indeed, $\e^{-x}=\smallo(x^{-N})$ for every $N$. Thus an inverse-power expansion is not a unique fingerprint.
+
+More generally,
+\[
+  f(x)
+  \quad\text{and}\quad
+  f(x)+C\e^{-x}
+\]
+have the same Poincaré expansion for every constant $C$. The missing constant may be exactly the integration constant of a differential equation.
+
+\begin{bigidea}
+An asymptotic scale can see only differences comparable with one of its members. To distinguish $f$ from $f+\e^{-x}$, enlarge the scale so that $\e^{-x}$ becomes a visible monomial.
+\end{bigidea}
+
+\section{Divergent series can still be useful}
+Consider
+\[
+  \sum_{n\ge0}\frac{n!}{x^{n+1}}.
+\]
+For every fixed $x$, its terms eventually grow, so the series diverges. Yet the first several terms can approximate a function very accurately when $x$ is large. The term ratio is
+\[
+  \frac{(n+1)!x^{-n-2}}{n!x^{-n-1}}=\frac{n+1}{x}.
+\]
+Terms decrease until $n$ is about $x$ and then increase. Truncating near the least term produces an exponentially small error. Divergence and exponentials are therefore linked.
+
+\section{Non-Archimedean arithmetic}
+In the real numbers, the Archimedean property says that for any positive $a,b$, some integer multiple of $a$ exceeds $b$. A field containing an element $x$ larger than every integer violates this property. Its reciprocal $x^{-1}$ is smaller than every positive real constant.
+
+Transseries treat $x$ as genuinely infinite in the formal order:
+\[
+  x>n\quad(n\in\N),
+  \qquad0<x^{-1}<1/n.
+\]
+This converts asymptotic language into ordered-field arithmetic.
+
+\section{Three notions that must not be confused}
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{>{\bfseries}p{0.23\textwidth}XX}
+\toprule
+Notion & Question & Example\\
+\midrule
+Formal legality & Is the support compatible with infinite algebra? & $\sum_{n\ge0}x^{-n}$ is legal as a Hahn series.\\
+Analytic convergence & Does the numerical sum converge for fixed $x$? & The same geometric series converges for $x>1$.\\
+Asymptotic validity & Do truncations approximate a function in a limit? & $\sum n!x^{-n-1}$ may be asymptotic although divergent.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Why differential equations force the issue}
+The equation
+\[
+  y'+y=\frac1x
+\]
+has a formal particular solution
+\[
+  \frac1x+\frac1{x^2}+\frac{2!}{x^3}+\frac{3!}{x^4}+\cdots,
+\]
+but the general solution also contains $C\e^{-x}$. A power series alone cannot record $C$. A transseries can:
+\[
+  y=\sum_{n\ge0}\frac{n!}{x^{n+1}}+C\e^{-x}.
+\]
+This example will return throughout the book.
+
+\begin{exercise}
+Prove that $\e^{-x^2}\prec\e^{-x}\prec x^{-N}$ for every fixed $N>0$.
+\end{exercise}
+
+\begin{exercise}
+Show that $x^{-1}$ and $(x+1)^{-1}$ have the same leading term but different full inverse-power expansions.
+\end{exercise}
+
+\begin{exercise}
+Explain why adding $\e^{-\sqrt{x}}$ to a function does not change its inverse-power expansion, but does change a scale containing $\e^{-\sqrt{x}}$.
+\end{exercise}
+
+
+\chapter{A larger alphabet of asymptotic sizes}
+\label{ch:alphabet}
+
+\section{The hierarchy}
+For fixed positive $a,b,c$, a useful chain is
+\[
+  \e^{x^2}\succ\e^x\succ x^a\succ(\log x)^b
+  \succ1\succ(\log x)^{-c}\succ x^{-a}
+  \succ\e^{-x}\succ\e^{-x^2}.
+\]
+Each neighboring ratio tends to infinity. For instance,
+\[
+  \frac{\e^x}{x^a}=\exp(x-a\log x)\to\infty,
+\]
+because $x\gg\log x$.
+
+\section{Transmonomials}
+A \term{transmonomial} is a formal object used as one pure asymptotic size. Examples are
+\[
+  x^a,
+  \quad x^a(\log x)^b,
+  \quad\e^{x^2-x},
+  \quad x^{-3}\e^{-x},
+  \quad\e^{-\e^x},
+  \quad\e^{x/\log x}.
+\]
+Transmonomials form a multiplicative group:
+\[
+  \mon\nmon\in\G,
+  \qquad\mon^{-1}\in\G,
+  \qquad1\in\G.
+\]
+The order is compatible with multiplication by positive monomials.
+
+\section{Comparing exponentials}
+For positive exponentials,
+\[
+  \e^A\prec\e^B
+  \quad\Longleftrightarrow\quad
+  A-B\to-\infty.
+\]
+Thus comparing exponential monomials reduces to comparing exponents.
+
+\begin{worked}
+Compare $x^{100}\e^{-x}$ and $x^{-1000}$. Their ratio is
+\[
+  \frac{x^{100}\e^{-x}}{x^{-1000}}
+  =x^{1100}\e^{-x}\to0.
+\]
+Hence
+\[
+  x^{100}\e^{-x}\prec x^{-1000}.
+\]
+No fixed algebraic power can compensate for an exponential loss.
+\end{worked}
+
+\section{Nested exponentials and logarithms}
+The hierarchy has no natural endpoint:
+\[
+  \e^{\e^x}\succ\e^{x^2}\succ\e^x,
+\]
+and
+\[
+  \log x\succ\log\log x\succ\log\log\log x\succ1
+\]
+when each logarithm is defined and tends to infinity.
+
+The ordinary vocabulary ``polynomial versus exponential'' is therefore only one level of a much taller scale.
+
+\section{Coefficients do not determine magnitude}
+For nonzero real constants $a,b$ and monomials $\mon\succ\nmon$, the magnitude of $a\mon$ dominates the magnitude of $b\nmon$. In symbols,
+\[
+  |a\mon|\succ |b\nmon|.
+\]
+A very small fixed coefficient cannot reverse an asymptotic comparison. The coefficient matters only when the monomials are equal or comparable.
+
+\section{What a transseries looks like}
+A formal transseries is an ordered sum
+\[
+  T=\sum_{\mon\in\supp T}c_\mon\mon,
+  \qquad c_\mon\in\R,
+\]
+whose support is arranged from larger monomials to smaller ones and satisfies a well-foundedness condition.
+
+Examples include
+\[
+  x+\log x+3+\frac{2}{x}-\e^{-x}+\frac{\e^{-x}}x+\cdots
+\]
+and
+\[
+  \sum_{k\ge0}C^k\e^{-kx}x^{2k}
+  \left(\sum_{n\ge0}a_{k,n}x^{-n}\right).
+\]
+The second expression is organized into exponential sectors.
+
+\section{Purely large, constant, and small parts}
+Every suitable transseries decomposes uniquely as
+\[
+  T=L+c+S,
+\]
+where $L$ consists of monomials $\succ1$, $c\in\R$, and $S\prec1$ contains monomials below $1$. This decomposition is fundamental for exponentiation:
+\[
+  \e^T=\e^L\e^c\e^S.
+\]
+The first factor is a new monomial, the second a real coefficient, and the third expands as an ordinary power series because $S$ is small.
+
+\section{Leading term and magnitude}
+If
+\[
+  T=c_0\mon_0+c_1\mon_1+\cdots,
+  \qquad\mon_0\succ\mon_1\succ\cdots,
+\]
+then
+\[
+  \operatorname{lt}(T)=c_0\mon_0,
+  \qquad
+  \magop(T)=\mon_0.
+\]
+The leading term determines sign, comparison, and often the first move in every calculation.
+
+\begin{warningbox}
+A displayed sequence of terms is not automatically a legal transseries. The support must not climb upward forever or allow infinitely many contributions to one coefficient. Formal support control comes before algebra.
+\end{warningbox}
+
+\section{Changing variables}
+The same transseries may look different under $g=1/x$. For example,
+\[
+  x^\beta\e^{-Ax}
+  =g^{-\beta}\e^{-A/g}.
+\]
+Asymptotic differential algebra commonly uses $x\to+\infty$; physics often uses $g\to0^+$. Translation between them is straightforward but changes the visual order of powers.
+
+\begin{exercise}
+Order $\e^{x/\log x}$, $\e^{\sqrt{x}}$, $x^{1000}$, and $\e^{(\log x)^2}$.
+\end{exercise}
+
+\begin{exercise}
+Decompose
+\[
+  T=\e^x+x^3-2+\frac{\log x}{x}+\e^{-x}
+\]
+into purely large, constant, and small parts.
+\end{exercise}
+
+\begin{exercise}
+Find the leading term of $(x+\log x)^2-x^2$.
+\end{exercise}
+
+
+\chapter{A first guided tour of transseries calculus}
+\label{ch:guided-tour}
+
+This chapter performs the main operations informally before the support machinery is introduced. Each computation follows one principle: factor the dominant term and expand in a small remainder.
+
+\section{Reciprocal}
+For
+\[
+  T=x+\log x,
+\]
+factor $x$:
+\[
+  T=x\left(1+\frac{\log x}{x}\right).
+\]
+Since $(\log x)/x\prec1$,
+\[
+\begin{aligned}
+  T^{-1}
+  &=x^{-1}\left(1+\frac{\log x}{x}\right)^{-1}\\
+  &=\frac1x-\frac{\log x}{x^2}
+    +\frac{(\log x)^2}{x^3}
+    -\frac{(\log x)^3}{x^4}+\cdots.
+\end{aligned}
+\]
+
+\section{Logarithm}
+For a positive transseries $T=c\mon(1+U)$ with $c>0$ and $U\prec1$,
+\[
+  \log T=\log c+\log\mon+
+  \left(U-\frac{U^2}{2}+\frac{U^3}{3}-\cdots\right).
+\]
+For example,
+\[
+\begin{aligned}
+  \log(\e^x+x)
+  &=x+\log(1+x\e^{-x})\\
+  &=x+x\e^{-x}-\frac{x^2}{2}\e^{-2x}
+    +\frac{x^3}{3}\e^{-3x}-\cdots.
+\end{aligned}
+\]
+
+\section{Exponential}
+If $S\prec1$, then
+\[
+  \e^S=1+S+\frac{S^2}{2!}+\cdots.
+\]
+For a general $T=L+c+S$,
+\[
+  \e^T=\underbrace{\e^L}_{\text{monomial}}
+  \underbrace{\e^c}_{\text{coefficient}}
+  \underbrace{\left(1+S+\frac{S^2}{2}+\cdots\right)}_{\text{small expansion}}.
+\]
+
+\begin{worked}
+Let
+\[
+  T=x+2+\frac1x+\e^{-x}.
+\]
+Then
+\[
+  \e^T=\e^x\e^2\e^{x^{-1}+\e^{-x}}.
+\]
+The final factor begins
+\[
+  1+x^{-1}+\frac1{2x^2}+\e^{-x}
+  +x^{-1}\e^{-x}+\frac12\e^{-2x}+\cdots.
+\]
+The terms must then be sorted by asymptotic size.
+\end{worked}
+
+\section{Real powers}
+Define
+\[
+  T^\alpha=\exp(\alpha\log T)
+\]
+for positive $T$. If $T=x^2(1+x^{-1})$, then
+\[
+  T^\alpha=x^{2\alpha}
+  \left(1+\alpha x^{-1}
+  +\frac{\alpha(\alpha-1)}{2}x^{-2}+\cdots\right).
+\]
+
+\section{Differentiation}
+Differentiate term by term. A monomial
+\[
+  \mon=x^a\e^{L}
+\]
+satisfies
+\[
+  \mon'=\mon\left(\frac ax+L'\right).
+\]
+Thus one input monomial may produce a finite transseries rather than a single monomial. Depending on $L'$, the leading derivative term can be larger or smaller than the input monomial.
+
+For example,
+\[
+  \frac{\dd}{\dd x}\left(x^3\e^{-x^2}\right)
+  =x^3\e^{-x^2}\left(\frac3x-2x\right)
+  =-2x^4\e^{-x^2}+3x^2\e^{-x^2}.
+\]
+
+\section{Integration}
+Integration is more delicate, but dominant balance often starts it. For
+\[
+  \int x^a\e^{-x}\dd x,
+\]
+try
+\[
+  -x^a\e^{-x}F(x),
+  \qquad F=1+\frac{a}{x}+\frac{a(a-1)}{x^2}+\cdots.
+\]
+Differentiation verifies the asymptotic antiderivative. If $a$ is a nonnegative integer, the series terminates.
+
+\section{Composition}
+If $S$ is large positive, expressions such as $T(S)$ can often be expanded formally. For
+\[
+  T(x)=\log x+x^{-1},
+  \qquad S(x)=x+\log x,
+\]
+we compute
+\[
+  T\compose S=\log(x+\log x)+\frac1{x+\log x},
+\]
+then expand each piece by factoring $x$.
+
+\section{Compositional inversion}
+To invert
+\[
+  T(y)=y+\log y,
+\]
+solve
+\[
+  y+\log y=x.
+\]
+Since $y\sim x$, a first correction is $y\approx x-\log x$. Successive substitution gives
+\[
+  y=x-\log x+\frac{\log x}{x}
+  +\frac{(\log x)^2-2\log x}{2x^2}+\cdots.
+\]
+This is $W(\e^x)$.
+
+\section{A mixed exponential inverse}
+Factor the dominant exponential:
+\[
+\begin{aligned}
+  (\e^x+x)^{-1}
+  &=\e^{-x}(1+x\e^{-x})^{-1}\\
+  &=\e^{-x}-x\e^{-2x}+x^2\e^{-3x}
+    -x^3\e^{-4x}+\cdots.
+\end{aligned}
+\]
+This simple example is a model for sector expansions.
+
+\section{A differential equation preview}
+For
+\[
+  y'+y=\frac1x,
+\]
+substitute $y=\sum a_nx^{-n-1}$. The recurrence is
+\[
+  a_0=1,
+  \qquad a_n=na_{n-1},
+\]
+so $a_n=n!$. The homogeneous solution $C\e^{-x}$ must be added. The formal answer is
+\[
+  y=\sum_{n\ge0}n!x^{-n-1}+C\e^{-x}.
+\]
+Formal differentiation verifies it even though the power-series sector diverges analytically.
+
+\begin{checkpoint}
+Nearly every elementary transseries calculation follows this pattern:
+\begin{enumerate}
+  \item find the dominant monomial;
+  \item factor it;
+  \item reduce to a familiar Taylor series in something small;
+  \item multiply out and reorder;
+  \item justify the infinite operations using support conditions.
+\end{enumerate}
+\end{checkpoint}
+
+\begin{exercise}
+Expand $\log(\cosh x)$ through the $\e^{-6x}$ sector.
+\end{exercise}
+
+\begin{exercise}
+Expand $(x^2+x+1)^{1/2}$ through $x^{-4}$.
+\end{exercise}
+
+\begin{exercise}
+Differentiate $\e^{x+\sqrt{x}}x^{-3}$ and identify its leading term.
+\end{exercise}
+
+
+% ============================================================
+\part{The formal engine}
+% ============================================================
+
+\chapter{Dominance, leading terms, and asymptotic algebra}
+\label{ch:dominance}
+
+\section{Dominance as an order relation}
+For positive monomials, write
+\[
+  \mon\succ\nmon
+\]
+when $\mon/\nmon$ is infinitely large. Equivalently, $\nmon\prec\mon$. We also use
+\[
+  \mon\asymp\nmon
+\]
+when their ratio is a nonzero real constant or, for general transseries, tends to one of comparable magnitude.
+
+The order must satisfy:
+\begin{enumerate}
+  \item exactly one of $\mon\prec\nmon$, $\mon=\nmon$, or $\mon\succ\nmon$ holds;
+  \item multiplying by a positive monomial preserves order;
+  \item inversion reverses order among monomials above $1$;
+  \item exponentiation preserves order of exponents.
+\end{enumerate}
+
+\section{Leading monomial and leading coefficient}
+For nonzero
+\[
+  T=\sum c_\mon\mon,
+\]
+let $\mon_0$ be the largest support element. Define
+\[
+  \magop(T)=\mon_0,
+  \qquad
+  \operatorname{lc}(T)=c_{\mon_0},
+  \qquad
+  \operatorname{lt}(T)=c_{\mon_0}\mon_0.
+\]
+Then
+\[
+  T\sim\operatorname{lt}(T)
+\]
+in the formal asymptotic sense.
+
+\section{Sign and order of transseries}
+A nonzero transseries is positive if its leading coefficient is positive. For $S,T\in\T$,
+\[
+  S<T\quad\Longleftrightarrow\quad T-S>0.
+\]
+Thus comparison reduces to subtracting and reading the first nonzero term.
+
+\begin{worked}
+Compare
+\[
+  A=x+\log x+x^{-1},
+  \qquad
+  B=x+2\log x-x^{-100}.
+\]
+Their difference is
+\[
+  B-A=\log x-x^{-1}-x^{-100}.
+\]
+Its leading term is $\log x>0$, so $B>A$.
+\end{worked}
+
+\section{Dominant equivalence}
+Write $S\asymp T$ if they have the same magnitude monomial, and $S\sim T$ if their quotient is $1+$ an infinitesimal. If
+\[
+  S=a\mon(1+U),
+  \qquad T=b\mon(1+V),
+  \qquad U,V\prec1,
+\]
+then $S\asymp T$, while $S\sim T$ exactly when $a=b$.
+
+\section{Cancellation}
+If $S$ and $T$ have different leading monomials, the larger survives in $S+T$. If the leading monomials agree, coefficients may cancel and reveal the next scale.
+
+For example,
+\[
+  (x+\log x)-(x+1)=\log x-1\sim\log x.
+\]
+The order of a sum cannot be predicted from the summands' magnitudes alone when cancellation is possible.
+
+\section{Multiplication}
+Leading terms multiply:
+\[
+  \operatorname{lt}(ST)=
+  \operatorname{lt}(S)\operatorname{lt}(T).
+\]
+Indeed, if $S=a\mon(1+U)$ and $T=b\nmon(1+V)$ with $U,V\prec1$, then
+\[
+  ST=ab\mon\nmon(1+U+V+UV),
+\]
+and the parenthesis is $1+$ an infinitesimal.
+
+\section{Valuation language}
+Some authors encode magnitude by a valuation $v$ satisfying
+\[
+  v(ST)=v(S)+v(T),
+  \qquad
+  v(S+T)\ge\min\{v(S),v(T)\}.
+\]
+Larger valuation means smaller magnitude. Thus
+\[
+  S\prec T\quad\Longleftrightarrow\quad v(S)>v(T).
+\]
+This reversal is standard in valuation theory but can be disorienting at first.
+
+\section{Infinitesimals and infinite elements}
+An element $S$ is infinitesimal if $S\prec1$, finite if $S\preccurlyeq1$, and infinite if $S\succ1$. If $S$ is finite, it has a unique decomposition
+\[
+  S=c+\eps,
+  \qquad c\in\R,
+  \quad\eps\prec1.
+\]
+The constant $c$ is its standard part.
+
+\section{Asymptotic equivalence behaves algebraically}
+If $S_1\sim T_1$ and $S_2\sim T_2$ with nonzero terms, then
+\[
+  S_1S_2\sim T_1T_2,
+  \qquad
+  \frac{S_1}{S_2}\sim\frac{T_1}{T_2}.
+\]
+But addition requires care: $S_1+S_2$ may experience cancellation.
+
+\begin{warningbox}
+From $S\sim T$ one may not conclude $\e^S\sim\e^T$. The ratio is $\e^{S-T}$, which tends to $1$ only if $S-T\prec1$, not merely if $(S-T)/T\prec1$. For example, $x+1\sim x$, but $\e^{x+1}/\e^x=\e$.
+\end{warningbox}
+
+\section{Dominant balance in equations}
+In a sum equal to zero, a single uniquely dominant nonzero term cannot occur. At least two terms of maximal magnitude must cancel. This elementary observation is the basis of Newton polygons, WKB actions, and sector selection.
+
+For
+\[
+  Y^2-xY-1=0,
+\]
+a branch with $Y\asymp x$ balances $Y^2$ and $xY$, while a branch with $Y\asymp x^{-1}$ balances $xY$ and $1$.
+
+\begin{exercise}
+Compare $x+\e^{-x}$ and $x+\e^{-\sqrt{x}}$.
+\end{exercise}
+
+\begin{exercise}
+Give an example where $S\asymp T$ but $S-T$ is exponentially smaller than both.
+\end{exercise}
+
+\begin{exercise}
+Show that if $S\prec1$, then $(1+S)^{-1}\sim1-S$.
+\end{exercise}
+
+
+\chapter{Supports and Hahn series}
+\label{ch:hahn}
+
+The support is the hidden skeleton of a formal series. It tells us whether infinite addition and multiplication are meaningful.
+
+\section{Generalized power series}
+Let $\G$ be a totally ordered abelian multiplicative group of monomials. A generalized series is
+\[
+  T=\sum_{\mon\in\G}c_\mon\mon,
+\]
+with support
+\[
+  \supp T=\{\mon:c_\mon\ne0\}.
+\]
+We want to read terms from largest to smaller. Therefore the support should be \term{reverse well ordered}: every nonempty subset has a largest element.
+
+In additive valuation notation, this is usually stated as a well-ordered support. The difference is only the direction of the monomial order.
+
+\section{Why reverse well ordering matters}
+If every nonempty subset has a largest monomial, then:
+\begin{itemize}
+  \item every nonzero series has a leading term;
+  \item there is no endless climb toward larger and larger support elements;
+  \item recursive calculations can proceed from the top downward.
+\end{itemize}
+
+The support
+\[
+  \{1,x^{-1},x^{-2},\ldots\}
+\]
+is reverse well ordered. The support
+\[
+  \{x,x^2,x^3,\ldots\}
+\]
+is not, because it has no largest element.
+
+\section{A subtle example}
+The set
+\[
+  \{x^{1/n}:n\ge1\}
+\]
+is reverse well ordered under dominance at $x\to\infty$: every subset of positive integers has a least index, hence a largest monomial. Yet the monomials approach $1$ from above. Such a support is legal in a broad Hahn setting but not contained in many finitely generated grids.
+
+By contrast,
+\[
+  \{\e^{-x/n}:n\ge1\}
+\]
+has no largest element, because $\e^{-x/(n+1)}\succ\e^{-x/n}$ for every $n$.
+
+\section{Addition}
+Addition is coefficientwise:
+\[
+  \left(\sum c_\mon\mon\right)
+  +\left(\sum d_\mon\mon\right)
+  =\sum(c_\mon+d_\mon)\mon.
+\]
+The union of two reverse well-ordered supports is reverse well ordered.
+
+\section{Multiplication}
+Multiplication is the Cauchy product:
+\[
+  ST=\sum_{\rho\in\G}
+  \left(\sum_{\mon\nmon=\rho}c_\mon d_\nmon\right)\rho.
+\]
+Two facts are required:
+\begin{enumerate}
+  \item the product support must remain reverse well ordered;
+  \item for each $\rho$, only finitely many pairs $(\mon,\nmon)$ may contribute a nonzero product.
+\end{enumerate}
+A classical Hahn-series theorem guarantees these properties for well-ordered supports in an ordered abelian group.
+
+\section{Summable families}
+An indexed family $(T_i)_{i\in I}$ is formally summable if:
+\begin{enumerate}
+  \item the union of all supports is reverse well ordered;
+  \item each monomial occurs in only finitely many $T_i$.
+\end{enumerate}
+Then
+\[
+  \sum_{i\in I}T_i
+\]
+is defined coefficientwise.
+
+\begin{worked}
+The family $T_n=x^{-n}$ is summable: the union support is reverse well ordered and each monomial occurs once. The family
+\[
+  T_n=1+x^{-n}
+\]
+is not summable, because the monomial $1$ occurs in infinitely many members, leading to an undefined infinite coefficient.
+\end{worked}
+
+\section{Formal convergence}
+A sequence $S_N$ converges formally to $S$ if, for every monomial cutoff, the coefficients above that cutoff eventually stabilize. This is not numerical convergence. For the geometric partial sums
+\[
+  S_N=1+x^{-1}+\cdots+x^{-N},
+\]
+each coefficient eventually stabilizes, so
+\[
+  S_N\longrightarrow\sum_{n\ge0}x^{-n}
+\]
+formally.
+
+\section{Neumann series}
+If $U\prec1$ and the powers $(U^n)$ form a summable family, then
+\[
+  (1-U)^{-1}=\sum_{n\ge0}U^n.
+\]
+The proof is formal:
+\[
+  (1-U)\sum_{n=0}^{N}U^n=1-U^{N+1},
+\]
+and $U^{N+1}$ moves below every fixed cutoff as $N$ grows.
+
+\section{Why analytic convergence is independent}
+The formal series
+\[
+  \sum_{n\ge0}n!x^{-n}
+\]
+has the same support as a geometric series and is perfectly legal as a Hahn series, though it diverges numerically for every fixed $x$. Conversely, a numerically convergent series may have a support inappropriate for a chosen formal field.
+
+\section{Hahn fields}
+The collection of generalized series with coefficients in a field $k$ and well-ordered support in an ordered abelian group $G$ is denoted in additive notation by
+\[
+  k((G)).
+\]
+It is a field. Transseries enrich a Hahn-field architecture by building a sophisticated monomial group recursively using exponentials and logarithms.
+
+\begin{advancedbox}
+Hahn's theorem is foundational because it separates two jobs: the ordered group controls monomial sizes, while well-ordered support controls infinite algebra. Transseries complicate the monomial group but retain this architecture.
+\end{advancedbox}
+
+\begin{exercise}
+Decide whether $\{x^{-n^2}:n\ge0\}$ is reverse well ordered.
+\end{exercise}
+
+\begin{exercise}
+Explain why the family $T_n=x^{-n}+x^{-n-1}$ is summable.
+\end{exercise}
+
+\begin{exercise}
+Give a family whose union support is reverse well ordered but that fails point-finiteness.
+\end{exercise}
+
+
+\chapter{Grids, ratio sets, and formal convergence}
+\label{ch:grids}
+
+Full well-based supports are flexible, but explicit calculation often needs finite combinatorial data. Grid-based transseries provide it.
+
+\section{Small ratios}
+Choose finitely many monomials
+\[
+  \boldsymbol\mu=\{\mu_1,\ldots,\mu_n\},
+  \qquad\mu_i\prec1.
+\]
+For an integer vector $\bm k=(k_1,\ldots,k_n)$, write
+\[
+  \boldsymbol\mu^{\bm k}
+  =\mu_1^{k_1}\cdots\mu_n^{k_n}.
+\]
+A grid is a set
+\[
+  \mon_0\boldsymbol\mu^{\bm k},
+  \qquad \bm k\ge\bm k_0
+\]
+coordinatewise. Moving upward in any exponent multiplies by a small ratio and therefore moves downward in magnitude.
+
+\section{Example of a grid}
+Let
+\[
+  \mu_1=x^{-1},
+  \qquad\mu_2=\e^{-x}.
+\]
+Then a grid contains monomials
+\[
+  x^{-m}\e^{-nx},
+  \qquad m\ge m_0,
+  \quad n\ge n_0.
+\]
+A transseries such as
+\[
+  1+\frac1x+\frac2{x^2}
+  +\e^{-x}\left(x^2+3x+\frac4x+\cdots\right)
+  +\e^{-2x}(1+\cdots)
+\]
+lives in a shifted grid generated by these ratios, after allowing a suitable leading monomial.
+
+\section{Ratio sets as bookkeeping certificates}
+A finite ratio set can certify:
+\begin{itemize}
+  \item that one monomial is smaller than another;
+  \item that a series is supported in a grid;
+  \item that powers of a small transseries move downward;
+  \item that a proposed infinite sum is formally convergent.
+\end{itemize}
+Edgar calls refined versions of such certificates \term{witnesses} \cite{EdgarRatios}.
+
+\section{Why finite generation helps}
+If the support is encoded by integer vectors, multiplication adds vectors:
+\[
+  \boldsymbol\mu^{\bm k}
+  \boldsymbol\mu^{\bm l}
+  =\boldsymbol\mu^{\bm k+\bm l}.
+\]
+This makes support propagation algorithmic. Truncation becomes a search over a finite region above a cutoff.
+
+\section{A grid-based geometric series}
+If
+\[
+  U=x^{-1}+\e^{-x},
+\]
+then powers of $U$ involve
+\[
+  x^{-j}\e^{-kx},
+  \qquad j,k\ge0,
+\]
+with $j+k=n$ inside $U^n$. The reciprocal
+\[
+  (1-U)^{-1}=1+U+U^2+\cdots
+\]
+therefore lies in the grid generated by $x^{-1}$ and $\e^{-x}$.
+
+\section{A support not contained in a finite grid}
+The monomials
+\[
+  \{x^{1/n}:n\ge1\}
+\]
+form a reverse-well-ordered support: every nonempty subset of positive integer indices has a least index and hence a largest monomial. Their exponents have unbounded denominators, so no finite set of fixed rational-power ratios generates all of them by integer products. This support is well based but not grid based.
+
+\section{Formal truncation}
+Choose a cutoff monomial $\eta$. To compute $T$ modulo terms smaller than $\eta$, retain only
+\[
+  \{\mon\in\supp T:\mon\succeq\eta\}.
+\]
+For a grid, this often corresponds to finitely many exponent vectors. A trustworthy computation should always state its cutoff.
+
+\section{Geometric convergence in a grid}
+If $U\prec1$ is grid based, powers $U^n$ eventually fall below any fixed grid cutoff. Therefore analytic-looking formulas such as
+\[
+  \log(1+U)=\sum_{n\ge1}\frac{(-1)^{n+1}}nU^n
+\]
+are formally legitimate.
+
+\section{Witnessing inequalities}
+Suppose
+\[
+  A=x^{-2}+\e^{-x},
+  \qquad B=x^{-1}.
+\]
+Both ratios
+\[
+  \frac{x^{-2}}{x^{-1}}=x^{-1},
+  \qquad
+  \frac{\e^{-x}}{x^{-1}}=x\e^{-x}
+\]
+are small. The ratio set
+\[
+  \{x^{-1},x\e^{-x}\}
+\]
+certifies $A\prec B$ term by term.
+
+\begin{warningbox}
+A grid is not merely a rectangular picture of the first displayed terms. It is a finite-generation statement about every monomial that can appear. Hidden operations may require enlarging the ratio set.
+\end{warningbox}
+
+\section{Grid-based versus well-based practice}
+Grid-based fields are excellent for explicit algorithms and many naturally occurring equations. Well-based fields are conceptually broader and may have stronger closure. One often proves structural theorems in the well-based world and performs calculations in a grid-based subfield.
+
+\begin{exercise}
+Find a ratio set for the support of
+\[
+  x^3\sum_{m,n\ge0}2^{-m-n}x^{-m}\e^{-nx}.
+\]
+\end{exercise}
+
+\begin{exercise}
+Explain why $\{x^{1/n}:n\ge1\}$ is not generated by finitely many rational powers of $x$.
+\end{exercise}
+
+\begin{exercise}
+For $U=x^{-1}+x\e^{-x}$, list all monomials in $U^3$.
+\end{exercise}
+
+
+\chapter[Constructing logarithmic-exponential transseries]{Constructing logarithmic-exponential\\transseries}
+\label{ch:construction}
+
+We now resolve an apparent circularity: monomials involve exponentials of transseries, while transseries are sums of monomials. The construction proceeds in stages.
+
+\section{Height zero}
+Begin with power monomials
+\[
+  \G_0=\{x^a:a\in\R\}.
+\]
+The corresponding Hahn field consists of generalized power series
+\[
+  \T_0=\R((\G_0)).
+\]
+Grid-based versions restrict supports to finitely generated exponent grids.
+
+\section{Purely large exponents}
+Let $L\in\T_0$ be purely large, meaning every monomial in $L$ is above $1$. Adjoin a monomial
+\[
+  \e^L.
+\]
+Two such exponentials compare by their exponents:
+\[
+  \e^{L_1}\prec\e^{L_2}
+  \quad\Longleftrightarrow\quad
+  L_1-L_2<0\text{ with infinite magnitude at leading order}.
+\]
+
+\section{Height one}
+The height-one monomial group contains products
+\[
+  x^a\e^L,
+  \qquad L\in\T_0\text{ purely large}.
+\]
+Taking generalized series over this group produces $\T_1$.
+
+Examples include
+\[
+  \e^{x^2+x},
+  \quad x^{-3}\e^{\sqrt{x}},
+  \quad\e^{-x+\sqrt{x}},
+  \quad\e^{x^{-1}}\text{ after small expansion rather than as a new large monomial}.
+\]
+
+\section{Why constants and small terms stay outside the monomial exponent}
+If
+\[
+  T=L+c+S,
+  \qquad S\prec1,
+\]
+then
+\[
+  \e^T=\e^L\e^c\left(1+S+\frac{S^2}{2}+\cdots\right).
+\]
+The large part creates the monomial, the constant becomes its coefficient, and the small part becomes a series. This normalization avoids redundant representations.
+
+\section{Higher exponential height}
+Repeat the process:
+\[
+  \T_0\subset\T_1\subset\T_2\subset\cdots.
+\]
+At height two, exponents may contain height-one monomials, so $\e^{\e^x}$ appears. The union over all finite heights gives a log-free exponential transseries field.
+
+\section{Adding logarithmic depth}
+To include $\log x$, substitute a logarithmically smaller infinite variable into the log-free construction. Informally, allow
+\[
+  T(\log x),
+  \quad T(\log\log x),
+  \quad\ldots
+\]
+for finitely many nested logarithms. This introduces monomials such as
+\[
+  (\log x)^a,
+  \quad\e^{x/\log x},
+  \quad\frac{x}{\log x},
+  \quad\e^{\sqrt{\log x}}.
+\]
+
+\begin{example}
+The expression
+\[
+  \frac{x}{\log x}+
+  \frac{x\log\log x}{(\log x)^2}
+\]
+has finite logarithmic depth and belongs naturally to the full logarithmic-exponential field.
+\end{example}
+
+\section{The apparent circularity disappears}
+The staged construction is:
+\begin{enumerate}
+  \item start with real powers of $x$;
+  \item form generalized series with controlled support;
+  \item exponentiate only purely large elements to create new monomials;
+  \item form generalized series over the enlarged group;
+  \item iterate exponential height finitely many times;
+  \item allow finite logarithmic substitutions.
+\end{enumerate}
+At each stage the ingredients already exist before the next stage is defined.
+
+\section{Normal form}
+A typical monomial is written
+\[
+  \mon=x^a\e^L
+\]
+with $L$ purely large and normalized. A typical positive transseries is
+\[
+  T=c\mon(1+U),
+  \qquad c>0,
+  \quad U\prec1.
+\]
+This normal form makes logarithms, powers, and comparison canonical.
+
+\section{Closure properties}
+A standard real LE-transseries field is designed to be closed under:
+\[
+  +,-,\times,^{-1},\exp,\log,
+  \frac{\dd}{\dd x},
+  \text{integration},
+  \text{and suitable composition}.
+\]
+The exact theorem depends on whether one uses grid-based or well-based transseries and on the chosen definition of composition. Foundational treatments include van der Hoeven, Edgar, and van den Dries--Macintyre--Marker \cite{DMM2001,Edgar2010,vdH2006}.
+
+\section{Finite height does not mean finite length}
+A transseries may have infinitely many terms while using only one exponential height. For example,
+\[
+  \sum_{n\ge0}x^n\e^{-(n+1)x}
+\]
+has infinitely many sectors but no nested exponential. Conversely, $\e^{\e^x}$ is a single term of greater height.
+
+\section{Uniqueness of representation}
+Normal-form conventions ensure that the same object is not represented both as a monomial and as an expanded small exponential. For example,
+\[
+  \e^{x^{-1}}
+\]
+is represented as
+\[
+  1+x^{-1}+\frac12x^{-2}+\cdots,
+\]
+because its exponent is small, whereas $\e^x$ is a monomial because its exponent is large.
+
+\begin{exercise}
+Classify the exponential height and logarithmic depth of $\e^{\e^{\sqrt{\log x}}}$ under a reasonable convention.
+\end{exercise}
+
+\begin{exercise}
+Decompose $T=x^2+3+\e^{-x}$ into $L+c+S$ and write $\e^T$ in normalized form.
+\end{exercise}
+
+\begin{exercise}
+Explain why treating $\e^{x^{-1}}$ as an independent monomial would destroy uniqueness.
+\end{exercise}
+
+
+\chapter{Field arithmetic in slow motion}
+\label{ch:arithmetic}
+
+\section{Addition and subtraction}
+Merge supports and combine coefficients. The only conceptual danger is cancellation of leading terms.
+
+\begin{worked}
+Let
+\[
+  A=x+2\log x+1+x^{-1},
+  \qquad
+  B=-x-2\log x+3-x^{-2}.
+\]
+Then
+\[
+  A+B=4+x^{-1}-x^{-2}.
+\]
+The leading scale drops from $x$ to $1$ because two successive levels cancel.
+\end{worked}
+
+\section{Multiplication}
+Multiply distributively and collect monomials. If
+\[
+  A=x+1+x^{-1},
+  \qquad B=x-1+x^{-1},
+\]
+then
+\[
+  AB=x^2+1+x^{-2}.
+\]
+Several intermediate terms cancel.
+
+\section{Reciprocal by normalization}
+For nonzero $T$, write
+\[
+  T=c\mon(1+U),
+  \qquad U\prec1.
+\]
+Then
+\[
+  T^{-1}=c^{-1}\mon^{-1}
+  (1-U+U^2-U^3+\cdots).
+\]
+This proves every nonzero transseries has a reciprocal, provided the powers of $U$ are summable.
+
+\begin{worked}
+For
+\[
+  T=x^2+x+\log x,
+\]
+write
+\[
+  T=x^2\left(1+x^{-1}+x^{-2}\log x\right).
+\]
+Let $U=x^{-1}+x^{-2}\log x$. Through $x^{-5}$,
+\[
+\begin{aligned}
+T^{-1}
+={}&x^{-2}-x^{-3}+(1-\log x)x^{-4}\\
+&+(2\log x-1)x^{-5}+\cdots.
+\end{aligned}
+\]
+\end{worked}
+
+\section{Division}
+Compute $A/B=A\cdot B^{-1}$. The leading term is
+\[
+  \operatorname{lt}(A/B)
+  =\frac{\operatorname{lt}(A)}{\operatorname{lt}(B)}.
+\]
+
+\section{Solving by coefficient matching}
+To solve
+\[
+  (1-x^{-1})Y=1,
+\]
+let $Y=\sum_{n\ge0}a_nx^{-n}$. Matching gives $a_0=1$ and $a_n=a_{n-1}$, so
+\[
+  Y=1+x^{-1}+x^{-2}+\cdots.
+\]
+This is equivalent to the Neumann-series formula.
+
+\section{Formal geometric and binomial identities}
+For $U\prec1$,
+\[
+\begin{aligned}
+(1-U)^{-1}&=\sum_{n\ge0}U^n,\\
+(1+U)^\alpha&=\sum_{n\ge0}\binom\alpha nU^n,\\
+\log(1+U)&=\sum_{n\ge1}\frac{(-1)^{n+1}}nU^n,\\
+\e^U&=\sum_{n\ge0}\frac{U^n}{n!}.
+\end{aligned}
+\]
+They are formal identities because powers of a small $U$ move downward in support.
+
+\section{Precision bookkeeping}
+If the desired answer is modulo terms $\prec\eta$, do not compute every intermediate expansion to the same naive number of terms. Multiplication by a large outer monomial can lift a small inner term above the final cutoff.
+
+For example, to compute
+\[
+  \e^x\e^{x^{-1}}
+\]
+through $x^{-3}\e^x$, one needs $\e^{x^{-1}}$ through $x^{-3}$, not merely through an absolute cutoff such as $x^{-3}$ disconnected from the outer factor.
+
+\section{Formal field laws}
+Because Hahn addition and multiplication are defined coefficientwise with support control, the usual field laws hold. Infinite sums are never rearranged arbitrarily; admissibility guarantees that each coefficient is determined by finitely many contributions.
+
+\begin{exercise}
+Compute $(x+1+x^{-1})^{-1}$ through $x^{-5}$.
+\end{exercise}
+
+\begin{exercise}
+Expand $(1+x^{-1}+\e^{-x})^{-2}$ through algebraic order $x^{-3}$ and the first exponential sector.
+\end{exercise}
+
+\begin{exercise}
+Find the leading term of
+\[
+  \frac{\e^x+x}{\e^x-x} -1.
+\]
+\end{exercise}
+
+
+\chapter{Exponential, logarithm, and real powers}
+\label{ch:exp-log}
+
+\section{Exponentiating a general transseries}
+Decompose
+\[
+  T=L+c+S,
+  \qquad L\succ1\text{ termwise},
+  \quad c\in\R,
+  \quad S\prec1.
+\]
+Then define
+\[
+  \e^T=\e^L\e^c\sum_{n\ge0}\frac{S^n}{n!}.
+\]
+This is both a definition and a normal-form algorithm.
+
+\section{Exponent laws}
+The construction is arranged so that
+\[
+  \e^{S+T}=\e^S\e^T,
+  \qquad \e^0=1,
+\]
+and $\e^T>0$. Formal proof requires checking summability of the small exponential factors.
+
+\section{Logarithm of a positive transseries}
+For positive $T$, write
+\[
+  T=c\mon(1+U),
+  \qquad c>0,
+  \quad U\prec1.
+\]
+Then
+\[
+  \log T=\log c+\log\mon+
+  \sum_{n\ge1}\frac{(-1)^{n+1}}nU^n.
+\]
+If $\mon=x^a\e^L$, then
+\[
+  \log\mon=a\log x+L.
+\]
+
+\begin{worked}
+For
+\[
+  T=3x^2\e^{\sqrt{x}}
+  \left(1+x^{-1}+\e^{-x}\right),
+\]
+we obtain
+\[
+\begin{aligned}
+\log T={}&\log3+2\log x+\sqrt{x}\\
+&+x^{-1}-\frac12x^{-2}+\frac13x^{-3}
++\e^{-x}-x^{-1}\e^{-x}+\cdots.
+\end{aligned}
+\]
+\end{worked}
+
+\section{Inverse relationship}
+For suitable transseries,
+\[
+  \log(\e^T)=T,
+  \qquad
+  \e^{\log T}=T.
+\]
+The normal-form decomposition is crucial: it tells the logarithm how to recover large exponent, coefficient, and small unit.
+
+\section{Real powers}
+For $T>0$ and $\alpha\in\R$, define
+\[
+  T^\alpha=\e^{\alpha\log T}.
+\]
+This agrees with integer powers and gives
+\[
+  T^{\alpha+\beta}=T^\alpha T^\beta.
+\]
+
+\section{Powers with transseries exponents}
+One may also define
+\[
+  T^S=\e^{S\log T}
+\]
+when $T>0$. This can create new exponential height. For example,
+\[
+  x^x=\e^{x\log x}.
+\]
+
+\section{Expansion around a dominant term}
+For $A>0$ and $R\prec A$,
+\[
+  \log(A+R)=\log A+
+  \log\left(1+\frac RA\right),
+\]
+and
+\[
+  (A+R)^\alpha=A^\alpha
+  \left(1+\frac RA\right)^\alpha.
+\]
+The same dominant-factor method works at every transseries scale.
+
+\section{The logarithm of hyperbolic functions}
+For large $x$,
+\[
+  \sinh x=\frac{\e^x}{2}(1-\e^{-2x}),
+\]
+so
+\[
+  \log\sinh x=x-\log2-
+  \sum_{n\ge1}\frac{\e^{-2nx}}n.
+\]
+This is a genuine exponential transseries invisible to inverse powers.
+
+\section{Nested operations}
+To expand
+\[
+  \log\log(\e^x+x),
+\]
+first expand the inner logarithm, then factor its dominant term $x$ before taking the outer logarithm. Expanding in the wrong order can hide the small parameter.
+
+\begin{warningbox}
+The rule $\log(1+U)=U-U^2/2+\cdots$ requires $U\prec1$. It is invalid to apply it directly to $1+x$ at $x\to\infty$. First factor the dominant $x$.
+\end{warningbox}
+
+\section{Complex branches}
+For complex transseries, logarithms require branch choices, and exponentials may no longer be ordered by positivity. The formal algebra remains useful, but Stokes sectors and phase information replace a single real total order.
+
+\begin{exercise}
+Expand $\log(x^2+x+1)$ through $x^{-4}$.
+\end{exercise}
+
+\begin{exercise}
+Expand $(\e^x+x)^{1/2}$ through the $\e^{-3x}$ sector.
+\end{exercise}
+
+\begin{exercise}
+Compute the first three terms of $x^{1+1/x}$ relative to its leading monomial.
+\end{exercise}
+
+
+\chapter{Differentiation and integration}
+\label{ch:differentiation}
+
+\section{Derivative of monomials}
+For
+\[
+  \mon=x^a\e^L,
+\]
+we have
+\[
+  \mon'=\mon\left(\frac ax+L'\right).
+\]
+The logarithmic derivative
+\[
+  \mon^\dagger=\frac{\mon'}\mon
+\]
+is therefore $a/x+L'$.
+
+\section{Termwise differentiation}
+Define
+\[
+  \left(\sum c_\mon\mon\right)'
+  =\sum c_\mon\mon'.
+\]
+A theorem is needed to show that the derivative family is summable and has admissible support. This holds in standard LE-transseries fields.
+
+\section{Examples}
+\[
+  (x^a)'=ax^{a-1},
+\]
+\[
+  (\log x)^b{}'=\frac{b(\log x)^{b-1}}x,
+\]
+and
+\[
+  (x^a\e^{-x^2})'
+  =-2x^{a+1}\e^{-x^2}+ax^{a-1}\e^{-x^2}.
+\]
+The derivative may have a larger polynomial factor while remaining on the same exponential scale.
+
+\section{Chain rule}
+For composable transseries,
+\[
+  (T\compose S)'=(T'\compose S)S'.
+\]
+This is essential for inverse functions and iteration. Its proof is formal but relies on a legal definition of composition.
+
+\section{Asymptotic integration of exponential monomials}
+Suppose
+\[
+  f=\e^{L}x^a
+\]
+and $L'$ dominates $a/x$. A first antiderivative approximation is
+\[
+  g_0=\frac{f}{L'}.
+\]
+Indeed,
+\[
+  g_0'=f+\text{smaller correction}
+\]
+under suitable hypotheses. Correct the residual recursively.
+
+For $f=\e^{-x}x^a$, $L'=-1$, so start with $-x^a\e^{-x}$. Repeated correction gives
+\[
+  \int x^a\e^{-x}\dd x
+  \sim-\e^{-x}x^a
+  \left(1+\frac a x+\frac{a(a-1)}{x^2}+\cdots\right).
+\]
+
+\section{Integration of algebraic monomials}
+For $a\ne-1$,
+\[
+  \int x^a\dd x=\frac{x^{a+1}}{a+1}.
+\]
+At the resonant exponent $a=-1$,
+\[
+  \int x^{-1}\dd x=\log x.
+\]
+This is one reason logarithmic closure is necessary.
+
+Likewise,
+\[
+  \int\frac{\dd x}{x\log x}=\log\log x,
+\]
+forcing successive logarithmic depths.
+
+\section{Integration by parts as a transseries algorithm}
+For
+\[
+  I(x)=\int^x\e^{P(t)}Q(t)\dd t,
+\]
+choose $R_0=Q/P'$ and write
+\[
+  (\e^PR_0)'=\e^P(Q+R_0').
+\]
+Then subtract an antiderivative of the smaller residual $\e^PR_0'$. Iteration produces an asymptotic series.
+
+\section{Constants of integration}
+Formal differentiation kills real constants, so antiderivatives are determined only up to $C\in\R$. In differential equations, additional constants may multiply exponentially small homogeneous solutions rather than appear as additive constants in the original variable.
+
+\section{Integration may enlarge the field}
+Not every elementary-looking integrand has an elementary antiderivative, but the transseries field often contains a formal antiderivative. Exact analytic representation may involve special functions such as $\Ei$, $\erf$, or incomplete gamma functions.
+
+\section{Differential field properties}
+The derivation satisfies
+\[
+  (S+T)'=S'+T',
+  \qquad(ST)'=S'T+ST',
+\]
+and has constant field $\R$ in the standard real transseries setting. These properties make $\T$ an ordered differential field.
+
+\begin{exercise}
+Find an asymptotic antiderivative of $x^{-2}\e^{-x}$ through three correction terms.
+\end{exercise}
+
+\begin{exercise}
+Differentiate $\e^{x/\log x}$ and identify the leading logarithmic factor.
+\end{exercise}
+
+\begin{exercise}
+Explain why repeated integration of $1/[x\log x\log\log x]$ forces another logarithmic level.
+\end{exercise}
+
+
+\chapter{Composition, inversion, and fixed points}
+\label{ch:composition}
+
+\section{When composition makes sense}
+For $T\compose S$, the inner transseries $S$ should normally be large positive so that powers and logarithms in $T$ can be evaluated asymptotically. In addition, substituting $S$ into every monomial of an infinite support must produce a summable family.
+
+\section{Composition of basic monomials}
+If $S\succ1$, then
+\[
+  x^a\compose S=S^a,
+  \qquad
+  \e^L\compose S=\e^{L\compose S},
+  \qquad
+  \log x\compose S=\log S.
+\]
+Extend linearly to a summable support.
+
+\begin{worked}
+Let
+\[
+  T(x)=\log x+x^{-1},
+  \qquad S=x+\log x.
+\]
+Then
+\[
+\begin{aligned}
+\log S
+&=\log x+\frac{\log x}{x}
+ -\frac{(\log x)^2}{2x^2}+\cdots,\\
+S^{-1}
+&=x^{-1}-\frac{\log x}{x^2}
+ +\frac{(\log x)^2}{x^3}+\cdots.
+\end{aligned}
+\]
+Adding gives $T\compose S$.
+\end{worked}
+
+\section{Taylor expansion under composition}
+If $S=x+H$ with $H\prec x$, then formally
+\[
+  T(x+H)=\sum_{n\ge0}\frac{T^{(n)}(x)}{n!}H^n
+\]
+when the family is summable. This is useful for near-identity maps, but the correct smallness condition is relative to the variation scale of $T$, not merely $H\prec x$.
+
+For $T=\e^x$, even $H=1$ changes the result by a factor $\e$; one should not call that a small relative correction.
+
+\section{Compositional inverse}
+A transseries $T$ with $T\succ1$ and appropriate monotonicity often has an inverse $S$ satisfying
+\[
+  T\compose S=x,
+  \qquad S\compose T=x.
+\]
+Start from the dominant inverse and correct recursively.
+
+\begin{procedurebox}
+To invert $T$ asymptotically:
+\begin{enumerate}
+  \item invert the dominant monomial or leading map;
+  \item substitute the approximation and compute the residual;
+  \item divide the residual by the derivative of the map;
+  \item add the negative correction;
+  \item repeat at successively smaller scales.
+\end{enumerate}
+\end{procedurebox}
+
+\section{Inverse of \texorpdfstring{$x+\log x$}{x+log x}}
+The inverse $S$ satisfies
+\[
+  S+\log S=x.
+\]
+Since $S\sim x$, begin with $S_0=x-\log x$. Continuing gives
+\[
+\begin{aligned}
+S(x)={}&x-\log x+\frac{\log x}{x}
++\frac{(\log x)^2-2\log x}{2x^2}\\
+&+\frac{2(\log x)^3-9(\log x)^2+6\log x}{6x^3}
++\cdots.
+\end{aligned}
+\]
+This is $W(\e^x)$.
+
+\section{Fixed-point equations}
+Many equations can be rearranged as
+\[
+  Y=\Phi(Y).
+\]
+If
+\[
+  \Phi(Y)-\Phi(Z)\prec Y-Z
+\]
+in the relevant asymptotic class, repeated substitution is a formal contraction.
+
+For
+\[
+  Y=x+Y^{-1},
+\]
+we have
+\[
+  \Phi(Y)-\Phi(Z)=-\frac{Y-Z}{YZ}.
+\]
+When $Y,Z\sim x$, the factor $(YZ)^{-1}\sim x^{-2}$ shrinks the error.
+
+\section{Newton iteration}
+For $F(Y)=0$, formal Newton iteration is
+\[
+  Y_{n+1}=Y_n-\frac{F(Y_n)}{F'(Y_n)}.
+\]
+With a correct dominant balance and nonzero leading derivative, each step often improves many orders at once.
+
+\section{A glimpse of fractional iteration}
+Integer iterates are
+\[
+  T^{[n]}=\underbrace{T\compose\cdots\compose T}_{n\text{ times}}.
+\]
+A fractional iterate seeks $T^{[s]}$ satisfying
+\[
+  T^{[s]}\compose T^{[t]}=T^{[s+t]}.
+\]
+If $V$ solves Abel's equation
+\[
+  V\compose T=V+1,
+\]
+then
+\[
+  T^{[s]}=V^{[-1]}\compose(V+s).
+\]
+Transseries provide a natural language for constructing $V$ and its inverse in many cases \cite{EdgarComposition,EdgarFractional}.
+
+\section{Composition is not automatic}
+Even if every individual $\mon\compose S$ is defined, the infinite family may fail summability. Rigorous composition theorems track supports, ratio sets, and the large positive behavior of $S$ \cite{EdgarComposition}.
+
+\begin{exercise}
+Use Taylor expansion to compute $\sqrt{x^2+x+1}$ through order $x^{-3}$.
+\end{exercise}
+
+\begin{exercise}
+Find the first three corrections to the inverse of $T(x)=x+x^{-1}$.
+\end{exercise}
+
+\begin{exercise}
+Show that $V(x)=\log x/\log2$ satisfies $V(2x)=V(x)+1$ and deduce the fractional iterates of $T(x)=2x$.
+\end{exercise}
+
+
+% ============================================================
+\part{A practical workshop: building and solving with transseries}
+% ============================================================
+
+\chapter{The expansion laboratory}
+\label{ch:expansion-laboratory}
+
+This chapter turns the formal rules into a repeatable method.
+
+\begin{bigidea}
+Factor out the dominant monomial. What remains should be $1+$ something small. Then use an ordinary Taylor series in that small remainder.
+\end{bigidea}
+
+\section{The universal pattern}
+If $R\prec A\ne0$, write
+\[
+  A+R=A(1+U),
+  \qquad U=R/A\prec1.
+\]
+Then
+\begin{align*}
+  (A+R)^{-1}&=A^{-1}\sum_{n\ge0}(-U)^n,\\
+  \log(A+R)&=\log A+\sum_{n\ge1}\frac{(-1)^{n+1}}nU^n,\\
+  (A+R)^\alpha&=A^\alpha\sum_{n\ge0}\binom\alpha nU^n.
+\end{align*}
+For exponentials, split $T=L+c+S$ and use $\e^T=\e^L\e^c\e^S$.
+
+\begin{procedurebox}
+\begin{enumerate}
+  \item Find the largest monomial in every sum.
+  \item Factor it out.
+  \item Name the remaining small quantity $U$.
+  \item Apply the familiar Taylor series.
+  \item Order all resulting monomials.
+  \item Check that every omitted term lies below the requested cutoff.
+\end{enumerate}
+\end{procedurebox}
+
+\section{Mixed-scale reciprocal}
+\begin{worked}
+Expand
+\[
+  \frac1{\e^x+x+1}.
+\]
+Factor $\e^x$:
+\[
+  \frac1{\e^x+x+1}
+  =\e^{-x}\left(1+(x+1)\e^{-x}\right)^{-1}.
+\]
+Hence
+\[
+\boxed{
+  \frac1{\e^x+x+1}
+  =\e^{-x}-(x+1)\e^{-2x}+(x+1)^2\e^{-3x}
+  -(x+1)^3\e^{-4x}+\cdots.}
+\]
+Within each exponential sector, expand the polynomial only as far as needed.
+\end{worked}
+
+\section{Exponentially accurate logarithms}
+Since
+\[
+  \sinh x=\frac{\e^x}{2}(1-\e^{-2x}),
+\]
+we get
+\[
+\boxed{
+  \log(\sinh x)=x-\log2-
+  \e^{-2x}-\frac12\e^{-4x}-\frac13\e^{-6x}-\cdots.}
+\]
+Similarly,
+\[
+  \log(\cosh x)=x-\log2+
+  \e^{-2x}-\frac12\e^{-4x}+\frac13\e^{-6x}-\cdots.
+\]
+Subtracting gives
+\[
+  \log(\coth x)=2\e^{-2x}+\frac23\e^{-6x}+\frac25\e^{-10x}+\cdots.
+\]
+
+\section{Nested logarithms}
+\begin{worked}
+First,
+\[
+  \log(\e^x+x)=x+x\e^{-x}-\frac{x^2}{2}\e^{-2x}
+  +\frac{x^3}{3}\e^{-3x}+\cdots.
+\]
+Factor $x$ before applying the outer logarithm:
+\[
+  \log\log(\e^x+x)
+  =\log x+\log\left(1+\e^{-x}-\frac{x}{2}\e^{-2x}
+  +\frac{x^2}{3}\e^{-3x}+\cdots\right).
+\]
+Expanding gives
+\[
+\boxed{
+\begin{aligned}
+\log\log(\e^x+x)
+={}&\log x+\e^{-x}-\frac{x+1}{2}\e^{-2x}\\
+&+\left(\frac{x^2}{3}+\frac{x}{2}+\frac13\right)\e^{-3x}
++\cdots.
+\end{aligned}}
+\]
+\end{worked}
+
+\section{Exponentiating several small scales}
+Let
+\[
+  S=x^{-1}+2x^{-2}+\e^{-x}.
+\]
+Then
+\[
+  \e^S=\e^{x^{-1}+2x^{-2}}\e^{\e^{-x}}.
+\]
+The algebraic factor is
+\[
+  1+x^{-1}+\frac52x^{-2}+\frac{13}{6}x^{-3}+\cdots,
+\]
+and the exponential-sector factor is
+\[
+  1+\e^{-x}+\frac12\e^{-2x}+\cdots.
+\]
+Multiplication creates mixed terms such as $x^{-1}\e^{-x}$.
+
+\section{Cutoffs}
+Choose a cutoff monomial $\eta$ and write
+\[
+  T\equiv S\pmod{o(\eta)}
+\]
+when $T-S\prec\eta$. This is more informative than saying ``plus higher-order terms'' in a multiscale expansion.
+
+\section{Cancellation}
+For
+\[
+  \sqrt{x^2+1}-x,
+\]
+the two displayed terms have size $x$, but cancellation reveals
+\[
+  \sqrt{x^2+1}-x
+  =\frac1{2x}-\frac1{8x^3}+\frac1{16x^5}-\cdots.
+\]
+Rationalization or a sufficiently deep expansion prevents loss of the hidden scale.
+
+\begin{exercise}
+Expand $(\e^x+x^2)^{-2}$ through the $\e^{-4x}$ sector.
+\end{exercise}
+
+\begin{exercise}
+Find the first four nonzero exponential terms in $\log(1+\tanh x)$.
+\end{exercise}
+
+\begin{exercise}
+Order $x^5\e^{-2x}$, $x^{-100}\e^{-x}$, $\e^{-x-\sqrt{x}}$, $\e^{-x}/\log x$, and $\e^{-x-x^{-1}}$.
+\end{exercise}
+
+
+\chapter{Algebraic and implicit equations}
+\label{ch:implicit-equations}
+
+\section{Dominant balance}
+If a sum equals zero, at least two dominant terms must cancel. In
+\[
+  Y^2-xY-1=0,
+\]
+one branch has $Y\asymp x$ and another has $Y\asymp x^{-1}$.
+
+The exact roots are
+\[
+  Y_\pm=\frac{x\pm\sqrt{x^2+4}}2,
+\]
+so
+\[
+\begin{aligned}
+Y_+&=x+x^{-1}-x^{-3}+2x^{-5}-5x^{-7}+\cdots,\\
+Y_-&=-x^{-1}+x^{-3}-2x^{-5}+5x^{-7}-\cdots.
+\end{aligned}
+\]
+
+\section{Residual correction}
+For $F(Y)=0$, let $R=F(Y_0)$. Writing $Y=Y_0+\delta$ gives
+\[
+  0=R+F'(Y_0)\delta+\text{smaller terms},
+\]
+so
+\[
+  \delta\sim-\frac{R}{F'(Y_0)}.
+\]
+This is asymptotic Newton iteration.
+
+\section{An implicit logarithmic equation}
+Consider
+\[
+  Y=x+\log Y+Y^{-1}.
+\]
+Let $L=\log x$ and seek
+\[
+  Y=x+L+\frac{A(L)}x+\frac{B(L)}{x^2}+\cdots.
+\]
+Expanding the right side gives
+\[
+  A=L+1,
+  \qquad B=1-\frac{L^2}{2},
+\]
+so
+\[
+  Y=x+L+\frac{L+1}{x}+\frac{1-L^2/2}{x^2}+\cdots.
+\]
+The coefficient at each inverse power is a polynomial in $\log x$.
+
+\section{Formal contraction}
+For
+\[
+  Y=x+Y^{-1},
+\]
+set $\Phi(Y)=x+Y^{-1}$. Then
+\[
+  \Phi(Y)-\Phi(Z)=-\frac{Y-Z}{YZ}.
+\]
+On $Y,Z\sim x$, the difference shrinks by $x^{-2}$, so iteration determines successive coefficients.
+
+\section{Newton polygon intuition}
+For
+\[
+  Y^3+xY+x^4=0,
+\]
+try $Y\asymp x^\alpha$. The term exponents are
+\[
+  3\alpha,
+  \quad1+\alpha,
+  \quad4.
+\]
+The only consistent top balance is $3\alpha=4$, hence $\alpha=4/3$ and
+\[
+  Y\sim\omega x^{4/3},
+  \qquad\omega^3=-1.
+\]
+Other pairwise exponent equalities fail because the remaining term dominates.
+
+\section{A formal implicit-function principle}
+A correct dominant balance and invertible linearization usually determine a unique branch, one monomial at a time. In complete transseries settings this becomes a formal implicit-function theorem.
+
+\begin{exercise}
+Find five terms of the large solution of $Y^2-xY-x=0$.
+\end{exercise}
+
+\begin{exercise}
+Solve $Y=x+\log Y$ through $x^{-3}$.
+\end{exercise}
+
+\begin{exercise}
+Use two Newton steps to solve $Y+\e^{-Y}=x$ through the $\e^{-3x}$ sector.
+\end{exercise}
+
+
+\chapter{Lambert's \texorpdfstring{$W$}{W} function as a transseries laboratory}
+\label{ch:lambert-w}
+
+The Lambert function satisfies
+\[
+  W(z)\e^{W(z)}=z,
+  \qquad W(z)+\log W(z)=\log z.
+\]
+Let
+\[
+  L_1=\log z,
+  \qquad L_2=\log L_1.
+\]
+Dominant balance gives $W\sim L_1$, and the next correction is $-L_2$.
+
+\section{Fixed-point equation for the correction}
+Write
+\[
+  W=L_1-L_2+U.
+\]
+Then
+\[
+  U=-\log\left(1-\frac{L_2-U}{L_1}\right).
+\]
+Seek
+\[
+  U=\frac{P_1(L_2)}{L_1}
+  +\frac{P_2(L_2)}{L_1^2}
+  +\frac{P_3(L_2)}{L_1^3}+\cdots.
+\]
+Matching coefficients gives
+\[
+  P_1=L_2,
+\]
+\[
+  P_2=\frac{L_2(L_2-2)}2,
+\]
+and
+\[
+  P_3=\frac{L_2(2L_2^2-9L_2+6)}6.
+\]
+Thus
+\[
+\boxed{
+\begin{aligned}
+W(z)={}&L_1-L_2+\frac{L_2}{L_1}
+ +\frac{L_2(-2+L_2)}{2L_1^2}\\
+&+\frac{L_2(6-9L_2+2L_2^2)}{6L_1^3}\\
+&+\frac{L_2(-12+36L_2-22L_2^2+3L_2^3)}{12L_1^4}
++\cdots.
+\end{aligned}}
+\]
+
+\section{Residual check}
+For a truncation $W_N$, compute
+\[
+  R_N=W_N+\log W_N-L_1.
+\]
+Since the derivative with respect to $W$ is $1+1/W\sim1$, the missing correction has the same leading size as $-R_N$.
+
+\section{Specialization to \texorpdfstring{$W(\e^x)$}{W(exp x)}}
+Setting $L_1=x$ and $L_2=\log x$ gives the inverse of $x+\log x$:
+\[
+\begin{aligned}
+W(\e^x)={}&x-\log x+\frac{\log x}{x}
+ +\frac{(\log x)^2-2\log x}{2x^2}\\
+&+\frac{2(\log x)^3-9(\log x)^2+6\log x}{6x^3}+\cdots.
+\end{aligned}
+\]
+
+\section{Small argument}
+Near $z=0$, the principal branch has the convergent Taylor series
+\[
+  W_0(z)=\sum_{n\ge1}\frac{(-n)^{n-1}}{n!}z^n
+  =z-z^2+\frac32z^3-\frac83z^4+\cdots.
+\]
+The real branch $W_{-1}(z)$ tends to $-\infty$ as $z\to0^-$. Writing $z=-\e^{-x}$ and $W_{-1}=-Y$ gives
+\[
+  Y-\log Y=x,
+\]
+which produces a different logarithmic transseries.
+
+\section{Why this example is universal}
+Lambert $W$ illustrates how inversion creates the hierarchy
+\[
+  \text{large logarithm}
+  \quad\to\quad
+  \text{logarithm of that logarithm}
+  \quad\to\quad
+  \text{polynomial corrections in their ratio}.
+\]
+
+\begin{exercise}
+Derive the $L_1^{-4}$ coefficient from the fixed-point equation.
+\end{exercise}
+
+\begin{exercise}
+Find the first three corrections to the large solution of $Y+2\log Y=x$.
+\end{exercise}
+
+\begin{exercise}
+Set $z=x^x$ and identify the first four scales in $W(z)$.
+\end{exercise}
+
+
+\chapter{Linear differential equations and hidden exponentials}
+\label{ch:linear-odes}
+
+\section{The Euler equation}
+For
+\[
+  y'+y=\frac1x,
+\]
+seek
+\[
+  y_0=\sum_{n\ge0}a_nx^{-n-1}.
+\]
+Matching gives $a_0=1$ and $a_n=na_{n-1}$, so $a_n=n!$. The homogeneous solution is $C\e^{-x}$:
+\[
+  \boxed{
+  y=\sum_{n\ge0}\frac{n!}{x^{n+1}}+C\e^{-x}.}
+\]
+Every $C$ gives the same inverse-power expansion.
+
+\section{Exact solution}
+An integrating factor gives
+\[
+  y=\e^{-x}\Ei(x)+C\e^{-x}.
+\]
+Repeated integration by parts yields
+\[
+  \Ei(x)\sim\frac{\e^x}{x}
+  \left(1+\frac1x+\frac{2!}{x^2}+\cdots\right).
+\]
+
+\section{Variable coefficient}
+For
+\[
+  y'+\left(1-\frac2x\right)y=\frac1x,
+\]
+the homogeneous solution is $Cx^2\e^{-x}$. The perturbative recurrence is
+\[
+  a_n=(n+2)a_{n-1},
+\]
+so
+\[
+  y\sim\frac1x+\frac3{x^2}+\frac{12}{x^3}
+  +\frac{60}{x^4}+\cdots+Cx^2\e^{-x}.
+\]
+The algebraic prefactor is dictated by the subleading coefficient of the equation.
+
+\section{Second-order equation}
+For
+\[
+  y''-y=\frac1x,
+\]
+a particular formal solution is
+\[
+  -x^{-1}-2!x^{-3}-4!x^{-5}-\cdots.
+\]
+The homogeneous modes are $C_+\e^x+C_-\e^{-x}$. A condition of at most algebraic growth forces $C_+=0$ but leaves $C_-$ undetermined.
+
+\section{Riccati reduction}
+For
+\[
+  y''+a(x)y'+b(x)y=0,
+\]
+put
+\[
+  y=\exp\left(\int S\dd x\right).
+\]
+Then
+\[
+  S'+S^2+aS+b=0.
+\]
+Dominant balances for $S$ reveal exponential modes; integration of lower corrections produces algebraic prefactors.
+
+\section{Variation of constants}
+For
+\[
+  y'+p(x)y=q(x),
+\]
+\[
+  y=\e^{-P(x)}
+  \left(C+\int^x\e^{P(t)}q(t)\dd t\right),
+  \qquad P'=p.
+\]
+The monomial $\e^{-P}$ carries the free constant and often matches the optimal-truncation scale of the particular series.
+
+\begin{exercise}
+Find the one-parameter transseries solution of $y'+2y=x^{-2}$ through four algebraic terms.
+\end{exercise}
+
+\begin{exercise}
+For $y'+(1-a/x)y=x^{-1}$, find the recurrence and homogeneous monomial.
+\end{exercise}
+
+\begin{exercise}
+Explain why a condition stated only as an inverse-power asymptotic expansion cannot determine the coefficient of $\e^{-x}$.
+\end{exercise}
+
+
+\chapter[Nonlinear differential equations and transseries sectors]{Nonlinear differential equations\\and transseries sectors}
+\label{ch:nonlinear-odes}
+
+Nonlinearity multiplies exponentially small corrections, creating a tower of sectors.
+
+\section{A Riccati model}
+Study
+\[
+  y'+y-y^2=\frac1x.
+\]
+For
+\[
+  y_0=\sum_{n\ge0}a_nx^{-n-1},
+\]
+the recurrence is
+\[
+  a_0=1,
+  \qquad
+  a_m=ma_{m-1}+\sum_{i+j=m-1}a_i a_j.
+\]
+Hence
+\[
+  y_0=\frac1x+\frac2{x^2}+\frac8{x^3}
+  +\frac{44}{x^4}+\frac{296}{x^5}+\cdots.
+\]
+
+\section{Linearizing around the perturbative sector}
+Set $y=y_0+\delta$. Then
+\[
+  \delta'+(1-2y_0)\delta-\delta^2=0.
+\]
+Ignoring $\delta^2$ at first,
+\[
+  \frac{\delta'}\delta=-1+2y_0.
+\]
+Therefore
+\[
+  \delta\sim C\e^{-x}x^2
+  \exp\left(-\frac4x-\frac8{x^2}-\frac{88}{3x^3}-\cdots\right).
+\]
+The carrier is $C x^2\e^{-x}$.
+
+\section{Sector tower}
+The nonlinear term $-\delta^2$ has scale $C^2x^4\e^{-2x}$, forcing a second sector. Repetition leads to
+\[
+  \boxed{
+  y=y_0+
+  \sum_{k\ge1}C^k\e^{-kx}x^{2k}\phi_k(x),
+  \qquad\phi_k\in\R[[x^{-1}]].}
+\]
+The free parameter is $C$; after normalizing $\phi_1$, the equation recursively determines the sector functions.
+
+\section{Triangular hierarchy}
+Let $E=x^2\e^{-x}$. Collecting $C^kE^k$ gives
+\[
+  \phi_k'+
+  \left(1-k+\frac{2k}{x}-2y_0\right)\phi_k
+  =\sum_{i=1}^{k-1}\phi_i\phi_{k-i}.
+\]
+The right side for sector $k$ depends only on lower sectors.
+
+\section{Several actions}
+If linearization produces $\e^{-A_1x},\ldots,\e^{-A_rx}$, a nonlinear ansatz is
+\[
+  \sum_{\bm k\in\N^r}
+  \bm C^{\bm k}
+  \e^{-(\bm k\cdot\bm A)x}
+  x^{\beta(\bm k)}\Phi_{\bm k}(x^{-1}).
+\]
+Coincident integer combinations of actions create resonance and may force logarithms.
+
+\section{Formal versus analytic}
+The sector recursion proves a formal statement. Showing that an actual solution has the transseries requires analytic estimates, integral equations, or summability theorems.
+
+\begin{exercise}
+Derive the recurrence for $a_m$ above.
+\end{exercise}
+
+\begin{exercise}
+Expand the first-sector prefactor through $x^{-3}$.
+\end{exercise}
+
+\begin{exercise}
+For $y'+y-y^3=x^{-1}$, determine which exponential sectors can be generated.
+\end{exercise}
+
+
+\chapter{WKB expansions and rapidly varying exponentials}
+\label{ch:wkb}
+
+\section{Riccati form}
+Consider
+\[
+  \eps^2y''=Q(x)y.
+\]
+Use
+\[
+  y=\exp\left(\frac1\eps\int^xS(t,\eps)\dd t\right).
+\]
+Then
+\[
+  \eps S'+S^2=Q.
+\]
+With
+\[
+  S\sim S_0+\eps S_1+\cdots,
+\]
+we obtain
+\[
+  S_0=\pm\sqrt Q,
+  \qquad
+  S_1=-\frac{Q'}{4Q}.
+\]
+Thus
+\[
+  y_\pm\sim Q^{-1/4}
+  \exp\left(\pm\frac1\eps\int^x\sqrt{Q(t)}\dd t\right)
+  (1+\eps a_1+\cdots).
+\]
+
+\section{Airy equation}
+For $y''=xy$, the actions are
+\[
+  \pm\frac23x^{3/2},
+\]
+and the formal modes are
+\[
+  x^{-1/4}\e^{\pm2x^{3/2}/3}
+  \left(1+\sum_{n\ge1}a_nx^{-3n/2}\right).
+\]
+For the decaying Airy solution,
+\[
+  \Ai(x)\sim\frac1{2\sqrt\pi}x^{-1/4}
+  \e^{-2x^{3/2}/3}
+  \left(1-\frac5{48x^{3/2}}+\cdots\right).
+\]
+The differential equation determines the shape; global normalization determines the prefactor $1/(2\sqrt\pi)$.
+
+\section{Turning points and Stokes curves}
+Where $Q(x)=0$, the WKB branches coalesce and ordinary WKB fails. A rescaled Airy equation is the local model. In the complex plane, curves where exponential phases have equal real parts mark changes in dominance and Stokes switching.
+
+\section{Large variable and small parameter}
+With $g=1/x$,
+\[
+  x^\beta\e^{-Ax}=g^{-\beta}\e^{-A/g}.
+\]
+The two notations describe the same transseries hierarchy.
+
+\begin{exercise}
+Apply leading WKB to $y''=x^2y$.
+\end{exercise}
+
+\begin{exercise}
+For $\eps^2y''=(1+x^2)y$, write the action integral explicitly.
+\end{exercise}
+
+\begin{exercise}
+Show that the action difference between the Airy modes is $4x^{3/2}/3$.
+\end{exercise}
+
+
+\chapter{Iteration, Abel equations, and fractional iterates}
+\label{ch:iteration}
+
+\section{Continuous interpolation of iterates}
+A fractional iterate satisfies
+\[
+  T^{[s+t]}=T^{[s]}\compose T^{[t]},
+  \qquad T^{[1]}=T.
+\]
+For $T(x)=x+a$, $T^{[s]}=x+sa$. For $T(x)=ax$, $T^{[s]}=a^sx$. For $T(x)=x^a$, $T^{[s]}=x^{a^s}$.
+
+\section{Abel's equation}
+If
+\[
+  V(T(x))=V(x)+1,
+\]
+then
+\[
+  T^{[s]}=V^{-1}(V+s).
+\]
+For $T(x)=2x$, take $V(x)=\log x/\log2$.
+
+\section{Near translation}
+Let
+\[
+  T(x)=x+1+\frac ax.
+\]
+Seek
+\[
+  V(x)=x-a\log x+\frac{b_1}{x}+\frac{b_2}{x^2}+\cdots.
+\]
+Substitute into $V(T)-V=1$. Taylor expansion gives
+\[
+  b_1=\frac{a(1-2a)}2,
+  \qquad
+  b_2=\frac{a(6a^2-3a+1)}{12}.
+\]
+The logarithm $-a\log x$ records the accumulated $a/x$ drift over repeated steps.
+
+\section{Iterative logarithm}
+One may seek a vector field
+\[
+  \frac{\dd x}{\dd s}=A(x)
+\]
+whose time-one map is $T$. Formally,
+\[
+  T=\exp(A(x)\partial_x),
+  \qquad
+  T^{[s]}=\exp(sA(x)\partial_x).
+\]
+The generator $A$ is an iterative logarithm.
+
+\section{Parabolic dynamics}
+A map tangent to the identity near zero becomes a near-translation after inversion of the coordinate. Abel functions then naturally involve powers, logarithms, and sometimes exponentially small corrections. This is a classical source of transseries in local dynamics.
+
+\section{Support subtlety}
+Composition requires more than termwise substitution. The substituted monomial family must remain summable. Edgar develops the needed recursion and support theory for large positive transseries and fractional iteration \cite{EdgarComposition,EdgarFractional}.
+
+\begin{exercise}
+Verify the group law for $x^{a^s}$.
+\end{exercise}
+
+\begin{exercise}
+Check the displayed values of $b_1$ and $b_2$ by expanding $V(T)-V$.
+\end{exercise}
+
+\begin{exercise}
+Show that replacing an Abel function $V$ by $V+c$ does not change the fractional iterates.
+\end{exercise}
+
+
+% ============================================================
+\part{From formal symbols to actual functions}
+% ============================================================
+
+\chapter{Divergence, least terms, and exponentially small remainders}
+\label{ch:divergence}
+
+\section{Asymptotic expansion versus convergence}
+A function has
+\[
+  f(x)\sim\sum_{n\ge0}a_nx^{-n-1}
+\]
+when every fixed truncation has the prescribed error as $x\to\infty$. This says nothing about the limit of partial sums for fixed $x$.
+
+\begin{warningbox}
+The limits $x\to\infty$ with truncation order fixed and truncation order $N\to\infty$ with $x$ fixed are different operations.
+\end{warningbox}
+
+\section{Factorial model and least term}
+For
+\[
+  t_n(x)=\frac{n!}{x^{n+1}},
+\]
+\[
+  \frac{t_{n+1}}{t_n}=\frac{n+1}{x}.
+\]
+Terms decrease until $n\approx x$ and then grow. Stirling's formula gives the least-term scale
+\[
+  t_x(x)\approx\sqrt{\frac{2\pi}{x}}\e^{-x}.
+\]
+Thus optimal truncation predicts the same exponential scale as the homogeneous solution of the Euler equation.
+
+\section{Optimal truncation}
+A practical rule is:
+\begin{enumerate}
+  \item estimate consecutive-term ratios;
+  \item truncate near the smallest term;
+  \item use its size as a first remainder estimate;
+  \item search for a transseries sector on that exponential scale.
+\end{enumerate}
+Hyperasymptotics goes further by re-expanding the remainder in adjacent sectors.
+
+\section{Gevrey order}
+A series is Gevrey-$1$ if
+\[
+  |a_n|\le CA^nn!
+\]
+for some $A,C>0$. More generally, Gevrey-$s$ growth resembles $A^n(n!)^s$. Ordinary Borel summation is naturally adapted to Gevrey-$1$ series.
+
+If
+\[
+  a_n\sim K\frac{\Gamma(n+\beta)}{A^{n+\beta}},
+\]
+then the least term appears near $n\approx Ax$ and has scale $\e^{-Ax}$ times a power of $x$.
+
+\section{Watson's lemma}
+If
+\[
+  f(x)=\int_0^\infty\e^{-xt}g(t)\dd t,
+  \qquad g(t)=\sum_{n\ge0}c_nt^n
+\]
+near $t=0$, then under suitable conditions
+\[
+  f(x)\sim\sum_{n\ge0}\frac{c_nn!}{x^{n+1}},
+\]
+because
+\[
+  \int_0^\infty\e^{-xt}t^n\dd t=\frac{n!}{x^{n+1}}.
+\]
+This explains the ubiquity of factorial growth in Laplace-type integrals.
+
+\section{Saddle points}
+For
+\[
+  I(x)=\int_\Gamma\e^{-x\phi(t)}a(t)\dd t,
+\]
+each relevant critical point contributes a sector
+\[
+  \e^{-x\phi(t_k)}x^{-\beta_k}
+  \sum_{n\ge0}c_{k,n}x^{-n}.
+\]
+The critical values are exponential actions. Changing the contour or the direction of $x$ can change which saddles contribute.
+
+\begin{bigidea}
+Divergence is often the mechanism by which an algebraic expansion announces hidden exponentially small information.
+\end{bigidea}
+
+\begin{exercise}
+Estimate the least-term index for $a_n=\Gamma(n+\beta)A^{-n}$ in $a_nx^{-n}$.
+\end{exercise}
+
+\begin{exercise}
+Show $\e^{-\sqrt{x}}$ is below every power but above $\e^{-x}$.
+\end{exercise}
+
+\begin{exercise}
+Explain why coefficients growing like $(2n)!$ require more than the ordinary Borel transform.
+\end{exercise}
+
+
+\chapter{Borel transformation and Laplace reconstruction}
+\label{ch:borel}
+
+\section{Convention}
+For
+\[
+  \widetilde\Phi(x)=\sum_{n\ge0}a_nx^{-n-1},
+\]
+define
+\[
+  \widehat\Phi(\zeta)=\Borel\widetilde\Phi
+  =\sum_{n\ge0}\frac{a_n}{n!}\zeta^n.
+\]
+The directional Laplace transform is
+\[
+  \Laplace_\theta\widehat\Phi(x)
+  =\int_0^{\e^{i\theta}\infty}
+  \e^{-x\zeta}\widehat\Phi(\zeta)\dd\zeta.
+\]
+Termwise integration returns $a_nx^{-n-1}$.
+
+\section{Three hurdles}
+For Borel summability in a direction, one needs:
+\begin{enumerate}
+  \item convergence of $\widehat\Phi$ near $0$;
+  \item analytic continuation along the Laplace ray;
+  \item at most exponential growth along that ray.
+\end{enumerate}
+
+\section{Alternating Euler series}
+For
+\[
+  \widetilde F(x)=\sum_{n\ge0}\frac{(-1)^nn!}{x^{n+1}},
+\]
+\[
+  \widehat F(\zeta)=\frac1{1+\zeta}.
+\]
+There is no positive-axis singularity, so
+\[
+  F(x)=\int_0^\infty\frac{\e^{-x\zeta}}{1+\zeta}\dd\zeta
+  =\e^xE_1(x).
+\]
+Differentiation gives
+\[
+  F'=F-\frac1x,
+\]
+so the Borel sum solves a linear ODE.
+
+\section{Products become convolutions}
+In the Borel plane,
+\[
+  \Borel(\widetilde F\widetilde G)
+  =\widehat F*\widehat G,
+\]
+where
+\[
+  (\widehat F*\widehat G)(\zeta)
+  =\int_0^\zeta\widehat F(\eta)
+  \widehat G(\zeta-\eta)\dd\eta.
+\]
+The beta-integral identity
+\[
+  \int_0^\zeta\eta^m(\zeta-\eta)^n\dd\eta
+  =\frac{m!n!}{(m+n+1)!}\zeta^{m+n+1}
+\]
+explains the factorial normalization.
+
+\section{Differentiation}
+With our convention,
+\[
+  \Borel(\widetilde\Phi')=-\zeta\widehat\Phi,
+\]
+up to special treatment of polynomial terms. Differential equations become algebraic-convolution equations.
+
+\section{Euler equation in the Borel plane}
+For
+\[
+  y'+y=\frac1x,
+\]
+the perturbative solution has
+\[
+  \widehat y(\zeta)=\frac1{1-\zeta}.
+\]
+The singularity at $\zeta=1$ is the Borel-plane shadow of the exponential $\e^{-x}$.
+
+\section{Complete sectors}
+For
+\[
+  \e^{-kAx}x^{\beta_k}\widetilde\Phi_k(x),
+\]
+one Borel-sums the fluctuation series $\widetilde\Phi_k$ and retains the exponential and power prefactors. Summing over $k$ is an additional analytic problem.
+
+\section{Limitations}
+A Borel transform may have zero radius of convergence, a natural boundary, excessive growth, or singularities on every useful ray. Generalized transforms and acceleration handle some cases, but no elementary method sums every formal series.
+
+\begin{checkpoint}
+\[
+\begin{aligned}
+  \text{factorial formal series}
+  &\xrightarrow{\Borel}\text{Borel germ}\\
+  &\xrightarrow{\text{analytic continuation}}\text{Borel-plane function}\\
+  &\xrightarrow{\Laplace}\text{sectorial analytic function}.
+\end{aligned}
+\]
+\end{checkpoint}
+
+\begin{exercise}
+Borel sum $\sum(-1)^nn!/(2x)^{n+1}$ as an integral.
+\end{exercise}
+
+\begin{exercise}
+Show the Laplace transform of a convolution is the product of Laplace transforms.
+\end{exercise}
+
+\begin{exercise}
+Apply the Borel transform to $y'+ay=x^{-1}$.
+\end{exercise}
+
+
+\chapter{Stokes phenomenon: when tiny terms switch on}
+\label{ch:stokes}
+
+\section{Lateral sums}
+For the nonalternating Euler series,
+\[
+  \widehat E(\zeta)=\frac1{1-\zeta}
+\]
+has a pole at $\zeta=1$ on the positive Laplace ray. Define upper and lower lateral sums by detouring above or below the pole:
+\[
+  \mathcal S_{0^\pm}\widetilde E
+  =\int_0^{\infty\e^{\pm i0}}
+  \frac{\e^{-x\zeta}}{1-\zeta}\dd\zeta.
+\]
+
+\begin{center}
+\begin{tikzpicture}[x=2.0cm,y=1.45cm,>=Latex]
+  \draw[-{Latex[length=3mm]},thick] (-0.15,0)--(2.55,0) node[right] {$\Re\zeta$};
+  \draw[-{Latex[length=3mm]},thick] (0,-0.75)--(0,0.9) node[above] {$\Im\zeta$};
+  \fill[red!70!black] (1,0) circle (2pt);
+  \node[below=3pt] at (1,0) {$1$};
+  \draw[DeepBlue,very thick,-{Latex[length=3mm]}]
+    (0.02,0.14).. controls (0.58,0.14) and (0.72,0.28)..(1,0.28)
+    .. controls (1.28,0.28) and (1.55,0.14)..(2.35,0.14);
+  \draw[WarmGold,very thick,-{Latex[length=3mm]}]
+    (0.02,-0.14).. controls (0.58,-0.14) and (0.72,-0.28)..(1,-0.28)
+    .. controls (1.28,-0.28) and (1.55,-0.14)..(2.35,-0.14);
+  \node[DeepBlue,above] at (1.75,0.16) {$0^+$};
+  \node[WarmGold,below] at (1.75,-0.16) {$0^-$};
+\end{tikzpicture}
+\end{center}
+
+\section{Jump}
+The contour difference gives
+\[
+  \boxed{
+  \mathcal S_{0^+}\widetilde E-
+  \mathcal S_{0^-}\widetilde E
+  =2\pi i\e^{-x}.}
+\]
+This is a homogeneous solution of $y'+y=x^{-1}$.
+
+\section{Parameter compensation}
+For
+\[
+  \widetilde y=\widetilde E+C\e^{-x},
+\]
+the same analytic function is represented on both sides if
+\[
+  C_+=C_--2\pi i.
+\]
+The exact function does not jump; its asymptotic coordinate does.
+
+\begin{bigidea}
+A Stokes jump is a change of asymptotic coordinates. The jump of the perturbative sum is compensated by a jump of the transseries parameter.
+\end{bigidea}
+
+\section{Stokes and anti-Stokes terminology}
+For exponentials $\e^{-S_1/g}$ and $\e^{-S_2/g}$, curves where imaginary parts align often support switching, while curves where real parts agree mark equal magnitude. Different communities interchange the labels Stokes and anti-Stokes; always check definitions.
+
+\section{Smoothing}
+At finite large parameter, a Stokes multiplier changes rapidly but smoothly, often with an error-function profile. The discontinuous jump is the limiting asymptotic description.
+
+\section{Median summation}
+In a simple conjugate situation, the average
+\[
+  \mathcal S_{\mathrm{med}}
+  =\frac12(\mathcal S_{0^+}+\mathcal S_{0^-})
+\]
+can produce a real value. Full median resummation in nonlinear resurgence is more structured.
+
+\section{Stokes matrices}
+For a linear system, crossing a Stokes ray changes an asymptotic basis by a triangular matrix. The off-diagonal entries are Stokes multipliers; triangularity reflects the hierarchy of dominant and subdominant exponentials.
+
+\section{Airy example}
+The Airy actions $\pm2z^{3/2}/3$ exchange dominance as $\arg z$ changes. The entire function $\Ai(z)$ does not jump, but the efficient combination of exponential asymptotic modes changes sector by sector.
+
+\begin{exercise}
+Compute the lateral jump for $1/(A-\zeta)$ with $A>0$.
+\end{exercise}
+
+\begin{exercise}
+If a perturbative jump is $S\e^{-Ax}\Phi_1$, find the compensating parameter jump.
+\end{exercise}
+
+\begin{exercise}
+Explain why a negative-axis Borel singularity does not obstruct the positive Laplace ray.
+\end{exercise}
+
+
+\chapter{Resurgence: sectors talking to one another}
+\label{ch:resurgence}
+
+\section{The resurgent feedback loop}
+A typical transseries is
+\[
+  \widetilde\Phi(x;\sigma)
+  =\sum_{k\ge0}\sigma^k\e^{-kAx}x^{k\beta}
+  \widetilde\Phi_k(x).
+\]
+Resurgence relates:
+\begin{itemize}
+  \item large-order coefficients in one sector;
+  \item Borel singularities;
+  \item low-order coefficients in neighboring sectors;
+  \item Stokes jumps of $\sigma$.
+\end{itemize}
+
+\section{Simple pole and factorial growth}
+If
+\[
+  \widehat\Phi_0(\zeta)\approx\frac{K}{A-\zeta},
+\]
+then expansion at the origin gives
+\[
+  a_{0,n}\approx K\frac{n!}{A^{n+1}}.
+\]
+Distance to the nearest Borel singularity controls late coefficient growth.
+
+\section{Branch singularities}
+If
+\[
+  \widehat\Phi_0(\zeta)
+  \sim K(A-\zeta)^{-\alpha},
+\]
+then
+\[
+  a_{0,n}\sim
+  \frac{K}{\Gamma(\alpha)}
+  \frac{\Gamma(n+\alpha)}{A^{n+\alpha}}.
+\]
+Subleading local singular terms yield a full inverse-$n$ expansion.
+
+\section{Neighboring-sector data}
+In a resurgent problem, the local singularity near $A$ often contains the Borel transform of the next sector, schematically
+\[
+  \widehat\Phi_0(\zeta)
+  \sim\frac{S_{01}}{2\pi i}
+  \widehat\Phi_1(\zeta-A)\log(\zeta-A)+\cdots.
+\]
+Consequently, late coefficients of $\Phi_0$ encode early coefficients of $\Phi_1$.
+
+\section{Numerical extraction}
+If many $a_{0,n}$ are known, normalize by predicted gamma growth:
+\[
+  \frac{A^{n+\beta}a_{0,n}}{\Gamma(n+\beta)}.
+\]
+Sequence acceleration can estimate Stokes constants and neighboring-sector coefficients.
+
+\section{Alien derivatives}
+An alien derivative $\alien_A$ measures singular content at Borel location $A$. A schematic bridge equation is
+\[
+  \alien_A\widetilde\Phi(x;\sigma)
+  =S_A(\sigma)\frac{\partial}{\partial\sigma}
+  \widetilde\Phi(x;\sigma).
+\]
+It connects Borel geometry to parameter motion. Precise conventions vary.
+
+\section{Stokes automorphism}
+Schematically,
+\[
+  \stokes_\theta
+  =\exp\left(
+  \sum_{A:\arg A=\theta}\e^{-Ax}\alien_A
+  \right),
+\]
+and lateral sums satisfy
+\[
+  \mathcal S_{\theta^+}
+  =\mathcal S_{\theta^-}\compose\stokes_\theta.
+\]
+
+\section{Transseries versus resurgence}
+A formal transseries is defined by ordered support and closure operations. Resurgence is additional analytic continuation structure. The two notions overlap but are not synonymous.
+
+\section{The triangle}
+\begin{center}
+\begin{tikzpicture}[node distance=4.1cm]
+  \node[draw,rounded corners,fill=SoftBlue,align=center] (A) {large-order growth\\of coefficients};
+  \node[draw,rounded corners,fill=SoftGold,align=center,right=of A] (B) {Borel singularities\\and continuation};
+  \node[draw,rounded corners,fill=SoftGreen,align=center,below=2.4cm of $(A)!0.5!(B)$] (C) {exponential sectors\\and Stokes jumps};
+  \draw[<->,thick,DeepBlue] (A)--(B);
+  \draw[<->,thick,DeepBlue] (B)--(C);
+  \draw[<->,thick,DeepBlue] (C)--(A);
+\end{tikzpicture}
+\end{center}
+Each corner predicts the others when the resurgent structure is controlled \cite{AnicetoBasarSchiappa,Dorigoni}.
+
+\begin{exercise}
+If $a_n\sim3n!/2^{n+1}$, predict the nearest simple Borel singularity.
+\end{exercise}
+
+\begin{exercise}
+What coefficient pattern can arise from singularities at both $A$ and $-A$?
+\end{exercise}
+
+\begin{exercise}
+Explain why factorial growth alone does not prove resurgence.
+\end{exercise}
+
+
+\chapter{Multiparameter transseries, resonance, and logarithms}
+\label{ch:resonance}
+
+\section{Sector lattice}
+With actions $A_1,A_2$,
+\[
+  \widetilde\Phi=
+  \sum_{n,m\ge0}\sigma_1^n\sigma_2^m
+  \e^{-(nA_1+mA_2)x}
+  x^{\beta_{n,m}}\widetilde\Phi_{n,m}(x).
+\]
+Quadratic nonlinearities add lattice indices.
+
+\section{Complex actions}
+Conjugate actions produce decaying oscillations:
+\[
+  \e^{-(a+ib)x}+\e^{-(a-ib)x}
+  =2\e^{-ax}\cos bx.
+\]
+Growing sectors may be excluded by boundary conditions in a chosen direction.
+
+\section{Resonance}
+If distinct integer combinations of actions coincide, different sectors occupy the same exponential scale. The recursive equation may become noninvertible and force powers of $x$ or $\log x$.
+
+The elementary equation
+\[
+  y''-y=\e^x
+\]
+is resonant: a trial $A\e^x$ fails, while $Ax\e^x$ works.
+
+\section{Logarithmic sectors}
+A resonant hierarchy may require
+\[
+  \e^{-Ax}x^\beta
+  \sum_{j=0}^{J}(\log x)^j\Phi_j(x^{-1}).
+\]
+Repeated integration of $x^{-1}$ is the simplest mechanism forcing logarithms.
+
+\section{Instanton notation}
+With $g=1/x$,
+\[
+  \Phi(g;\bm\sigma)=
+  \sum_{\bm n}\bm\sigma^{\bm n}
+  \exp\left(-\frac{\bm n\cdot\bm A}{g}\right)
+  g^{\bm n\cdot\bm\beta}
+  \Phi_{\bm n}(g).
+\]
+The algebra is the same sector bookkeeping, though terminology comes from saddle configurations in physics.
+
+\section{Five levels of validity}
+For a multiparameter transseries, distinguish:
+\begin{enumerate}
+  \item formal coefficient recursion;
+  \item legal support;
+  \item Borel summability of each sector;
+  \item summation over sectors;
+  \item global matching of parameter values.
+\end{enumerate}
+Success at one level does not automatically settle the next.
+
+\begin{exercise}
+List all two-action sectors with $n+m\le3$.
+\end{exercise}
+
+\begin{exercise}
+If $A_2=2A_1$, identify coincident action labels.
+\end{exercise}
+
+\begin{exercise}
+Rewrite $\e^{-A/g}g^\beta(\log g)^k$ in $x=1/g$ notation.
+\end{exercise}
+
+
+% ============================================================
+\part{The surrounding mathematical landscape}
+% ============================================================
+
+\chapter{Hardy fields and \texorpdfstring{$H$}{H}-fields}
+\label{ch:hfields}
+
+\section{Germs at infinity}
+Two functions have the same germ at $+\infty$ if they agree for all sufficiently large $x$. A germ forgets every bounded initial interval and keeps only eventual behavior.
+
+A \term{Hardy field} is a field of such germs closed under differentiation. Every nonzero member must be eventually nonzero, since its reciprocal must exist. Therefore $\sin x$ cannot belong to a Hardy field: it has infinitely many zeros.
+
+\section{Eventual order}
+Define
+\[
+  f<g
+  \quad\Longleftrightarrow\quad
+  f(x)<g(x)\text{ eventually}.
+\]
+For Hardy-field elements, this is a total order. A nonzero germ has eventual constant sign, and nonconstant elements are eventually monotone after examining their derivatives.
+
+\section{Formal expansions of germs}
+Expressions built from $x$, real constants, exponentials, logarithms, and field operations often belong to Hardy fields and admit corresponding transseries. A faithful expansion map turns eventual comparison into leading-monomial comparison. Not every Hardy field comes equipped with a canonical expansion map, so functions and formal series remain distinct categories.
+
+\section{The \texorpdfstring{$H$}{H}-field axioms}
+An $H$-field is an ordered differential field $K$ abstracting Hardy-field behavior. Let
+\[
+  C=\{f:f'=0\}
+\]
+be the constant field, $\mathcal O$ the convex hull of $C$, and $\mathfrak o$ the infinitesimals. A standard formulation includes:
+\begin{enumerate}
+  \item if $f$ is larger than every constant, then $f'>0$;
+  \item every bounded element is a constant plus an infinitesimal:
+  \[
+    \mathcal O=C+\mathfrak o.
+  \]
+\end{enumerate}
+The transseries field $\T$ is a central example.
+
+\section{Logarithmic derivatives}
+The logarithmic derivative
+\[
+  f^\dagger=\frac{f'}f
+\]
+turns products into sums. For basic monomials,
+\[
+  (x^a)^\dagger=\frac ax,
+  \qquad
+  (\e^L)^\dagger=L',
+  \qquad
+  ((\log x)^b)^\dagger=\frac{b}{x\log x}.
+\]
+Valuations of logarithmic derivatives form an asymptotic couple, an important invariant of an $H$-field.
+
+\section{Asymptotic integration and Liouville closure}
+An asymptotic integral of $f$ is a $g$ with $g'\sim f$. For example,
+\[
+  \left(-\frac{\e^{-x}}x\right)'
+  =\frac{\e^{-x}}x+\frac{\e^{-x}}{x^2}
+  \sim\frac{\e^{-x}}x.
+\]
+Liouville closure informally means adjoining solutions to
+\[
+  y'=f,
+  \qquad y'/y=f,
+\]
+so that antiderivatives and exponentials of antiderivatives are present.
+
+\section{Differential algebra}
+A differential polynomial is a polynomial in
+\[
+  Y,Y',\ldots,Y^{(r)}
+\]
+with coefficients in the field. Valuation and differential Newton methods analyze equations
+\[
+  P(Y,Y',\ldots,Y^{(r)})=0.
+\]
+Properties called $\omega$-freeness and newtonianity ensure, roughly, that no asymptotic gaps obstruct natural differential equations.
+
+\section{Structural results}
+The monograph of Aschenbrenner, van den Dries, and van der Hoeven develops the ordered differential algebra and model theory of $\T$ \cite{ADH2017}. A 2024 theorem by the same authors states that all maximal Hardy fields are elementarily equivalent, as differential fields, to $\T$ \cite{ADHMaximal2024}. Thus they satisfy the same first-order differential-field statements, even though they are not identified element by element.
+
+\section{Formal versus functional}
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{>{\bfseries}lXX}
+\toprule
+ & Formal transseries & Hardy-field germs\\
+\midrule
+Elements & symbolic well-based sums & eventual classes of functions\\
+Equality & coefficientwise & eventual equality\\
+Order & leading monomial & eventual pointwise order\\
+Derivative & formal termwise rule & derivative of representatives\\
+Convergence & support summability & analytic behavior\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The deepest theory builds bridges without confusing the columns.
+
+\begin{exercise}
+Show that rational-function germs form a Hardy field.
+\end{exercise}
+
+\begin{exercise}
+Compute the logarithmic derivative of $x^a(\log x)^b\e^{-x^c}$.
+\end{exercise}
+
+\begin{exercise}
+Give two reasons persistent oscillation is incompatible with a Hardy field.
+\end{exercise}
+
+
+\chapter{Surreal numbers and transseries}
+\label{ch:surreal}
+
+\section{Recursive construction}
+A surreal number is written
+\[
+  x=\{L\mid R\},
+\]
+where every member of $L$ is less than every member of $R$. It is the simplest number lying between them. Early examples are
+\[
+  0=\{\varnothing\mid\varnothing\},
+  \quad1=\{0\mid\varnothing\},
+  \quad-1=\{\varnothing\mid0\},
+  \quad\frac12=\{0\mid1\}.
+\]
+Transfinite continuation creates all reals and many non-Archimedean numbers.
+
+\section{The infinite number \texorpdfstring{$\omega$}{omega}}
+\[
+  \omega=\{0,1,2,\ldots\mid\varnothing\}
+\]
+is larger than every natural number, and $\omega^{-1}$ is a positive infinitesimal. This mirrors
+\[
+  x\succ1\succ x^{-1}
+\]
+in transseries.
+
+\section{Conway normal form}
+Every surreal has a normal form
+\[
+  s=\sum_{i<\alpha}r_i\omega^{a_i}
+\]
+with real nonzero coefficients and strictly decreasing surreal exponents. This resembles a Hahn series whose exponent group is itself surreal.
+
+\section{Exponentials, logarithms, and derivations}
+The surreal field admits an exponential extending the real exponential. Berarducci and Mantova constructed a natural derivation compatible with this structure and embedded large transseries fields into the surreals \cite{BerarducciMantova2018}. Their later work interprets transseries and larger omega-series as germs of surreal functions \cite{BerarducciMantovaGerms}.
+
+\section{Evaluation at infinity}
+A finite transseries can be informally evaluated at $x=\omega$:
+\[
+  x+\log x+\e^{-x}
+  \longmapsto
+  \omega+\log\omega+\e^{-\omega}.
+\]
+For an infinite sum, a summability theorem is needed. Under suitable embeddings, this turns formal asymptotic expressions into actual non-Archimedean values.
+
+\section{What is not identical}
+The surreal field is far larger than ordinary finite-height, finite-depth LE-transseries. Surreals may have transfinite supports and complexities outside the standard transseries field. A transseries also carries a distinguished variable and composition behavior, while a surreal number is primarily a value.
+
+\section{Why the bridge matters}
+The connection:
+\begin{itemize}
+  \item links Hahn and Conway normal forms;
+  \item gives non-Archimedean values to asymptotic expressions;
+  \item extends differential algebra to a universal ordered field;
+  \item points toward hyperseries beyond finite logarithmic depth.
+\end{itemize}
+
+\begin{exercise}
+Order $\e^\omega$, $\omega^2$, $\omega$, $\log\omega$, $1$, and $\omega^{-1}$.
+\end{exercise}
+
+\begin{exercise}
+Explain why finite substitution at $\omega$ is easier than evaluating an infinite formal sum.
+\end{exercise}
+
+\begin{exercise}
+Give a reason the whole surreal field should not simply be called the field of transseries.
+\end{exercise}
+
+
+\chapter[How a computer can manipulate transseries]{How a computer can\\manipulate transseries}
+\label{ch:computation}
+
+\section{Recursive representation}
+A truncated transseries can be stored as an ordered sparse list
+\[
+  [(c_0,\mon_0),\ldots,(c_N,\mon_N)],
+  \qquad\mon_0\succ\cdots\succ\mon_N.
+\]
+A monomial is recursively represented as $x^a\e^L$, where $L$ is a purely large transseries object. The core primitive is a comparison routine for monomials.
+
+\section{Addition}
+Addition merges ordered lists and combines equal monomials:
+\begin{verbatim}
+ADD(T,U):
+    compare the next monomial in each list
+    copy the larger one to the output
+    if equal, add coefficients and discard zero
+    continue until both lists are exhausted
+\end{verbatim}
+
+\section{Multiplication}
+For finite truncations, multiply all term pairs, combine equal monomials, sort, and truncate. For infinite supports, Hahn point-finiteness guarantees finitely many contributions to each coefficient. Priority queues can generate products from largest to smallest.
+
+\section{Reciprocal}
+Normalize
+\[
+  T=c\mon(1+U),
+  \qquad U\prec1,
+\]
+then generate
+\[
+  T^{-1}=c^{-1}\mon^{-1}(1-U+U^2-\cdots)
+\]
+until the next power lies below the cutoff.
+
+\section{Exponential and logarithm}
+The software must split $T=L+c+S$ before exponentiating, and split positive $T=c\mon(1+U)$ before taking a logarithm. Without normalization, representations are noncanonical.
+
+\section{Differentiation}
+For each term,
+\[
+  (c\mon)'=c\mon\mon^\dagger.
+\]
+One input term may create several output terms, which must be merged and reordered.
+
+\section{Composition}
+A safe composition algorithm must:
+\begin{enumerate}
+  \item verify the inner series is large positive;
+  \item recursively substitute into monomials;
+  \item expand around dominant parts;
+  \item prove the substituted family is summable;
+  \item apply a global cutoff.
+\end{enumerate}
+Naive termwise truncation can miss contributions lifted above the final cutoff.
+
+\section{Ratio sets as certificates}
+Finite ratio sets provide machine-checkable evidence that supports stay in a grid and powers move downward. A trustworthy result should report assumptions, variable direction, cutoff, and whether the output is merely formal or analytically summed.
+
+\section{A symbolic trace}
+For $(\e^x+x)^{-1}$:
+\begin{enumerate}
+  \item leading term $\e^x$;
+  \item small remainder $U=x\e^{-x}$;
+  \item ratio set $\{x\e^{-x}\}$;
+  \item powers $U^n=x^n\e^{-nx}$;
+  \item output $\e^{-x}-x\e^{-2x}+x^2\e^{-3x}-\cdots$.
+\end{enumerate}
+
+\section{Limits}
+Transseries expose cancellation symbolically. For example,
+\[
+  \frac{\e^{x+\e^{-x}}-\e^x}{1/x}
+  =x\e^x(\e^{\e^{-x}}-1)
+  =x\left(1+\frac12\e^{-x}+\cdots\right),
+\]
+so the expression tends to $+\infty$.
+
+\begin{exercise}
+Write pseudocode for truncated multiplication.
+\end{exercise}
+
+\begin{exercise}
+Why is monomial comparison needed to compare $x^{100}\e^{-x}$ with $x^{-1000}$?
+\end{exercise}
+
+\begin{exercise}
+Compute $(x+\log x)^{-1}$ through $x^{-4}$ using the reciprocal algorithm.
+\end{exercise}
+
+
+\chapter{Which kind of transseries?}
+\label{ch:variants}
+
+\section{Log-free and logarithmic-exponential}
+Log-free transseries use power monomials and exponentials without global logarithmic substitution. Full LE-transseries allow finite depth in
+\[
+  \log x,\ \log\log x,\ \ldots.
+\]
+Logarithms are essential for integration of $1/x$ and compositional inversion.
+
+\section{Grid-based and well-based}
+Grid-based supports lie in finitely generated multiplicative grids and suit algorithms. Well-based supports allow general reverse well-ordered sets and provide broader closure. Edgar's exposition emphasizes real grid-based transseries \cite{Edgar2010}.
+
+\section{LE and EL constructions}
+Different staged constructions emphasize logarithmic or exponential closure in different orders. The logarithmic-exponential series of van den Dries, Macintyre, and Marker are central in model theory \cite{DMM2001}.
+
+\section{Écalle transseries}
+Écalle's tradition closely links formal sectors to resurgence, alien calculus, and generalized summation. Analyzable functions are represented through this larger formal-analytic machinery. This overlaps with, but is not identical to, the ordered-field tradition.
+
+\section{Dulac and power-log series}
+Singular dynamical systems often produce
+\[
+  \sum_{\alpha,k}c_{\alpha,k}x^\alpha(\log x)^k.
+\]
+Dulac transseries add composition and exponentials adapted to return maps and limit-cycle problems.
+
+\section{Oscillatory transseries}
+Persistent oscillation does not fit a real total asymptotic order. Complex or oscillatory transseries include
+\[
+  \e^{-A(x)}\e^{i\phi(x)}
+  \quad\text{or}\quad
+  \e^{-A(x)}\cos\phi(x),
+\]
+with separate amplitude and phase bookkeeping.
+
+\section{Multisummability and acceleration}
+Several Gevrey levels may require repeated Borel transforms, multisummability, or Écalle acceleration. These methods extend analytic reconstruction beyond ordinary Borel summation.
+
+\section{Hyperseries}
+Finite logarithmic depth does not capture every natural scale. Logarithmic hyperseries and related constructions use transfinite iteration and connect transseries with maximal Hardy fields and surreal numbers.
+
+\section{Comparison table}
+\begin{center}
+\small
+\begin{tabularx}{0.98\textwidth}{>{\bfseries}p{0.19\textwidth}p{0.25\textwidth}Xp{0.18\textwidth}}
+\toprule
+Variant & Typical monomials & Emphasis & Setting\\
+\midrule
+Power/Puiseux & $x^q$ & algebraic branching & algebraic equations\\
+Power-log & $x^a(\log x)^k$ & regular singularities & ODEs, dynamics\\
+Grid-based LE & $x^a\e^L$ on finite grids & computation & symbolic asymptotics\\
+Well-based LE & Hahn supports & formal closure & differential algebra\\
+Resurgent & $\e^{-A/g}g^\beta\Phi(g)$ & Borel and Stokes data & ODEs, physics\\
+Oscillatory & $\e^{-A}\e^{i\phi}$ & phase and amplitude & waves, saddles\\
+Hyperseries & transfinite log/exp scales & beyond finite depth & Hardy fields, surreals\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Questions for an unfamiliar paper}
+Ask:
+\begin{enumerate}
+  \item What limit and direction are used?
+  \item Which monomials are allowed?
+  \item What support condition is imposed?
+  \item Is equality formal or after summation?
+  \item Which Borel convention is used?
+  \item How are Stokes constants normalized?
+\end{enumerate}
+Most apparent disagreements are convention mismatches.
+
+\begin{exercise}
+Classify $x^{1/3}+x^{-2/3}$, $x^{-1}(\log x)^4$, $\e^{-x\log x}$, and $\e^{-x}\cos x^2$.
+\end{exercise}
+
+\begin{exercise}
+Why does finite logarithmic depth exclude an expression using all iterated logarithms at once?
+\end{exercise}
+
+\begin{exercise}
+Why must a Borel convention be fixed before quoting a Stokes constant?
+\end{exercise}
+
+
+\chapter{Applications, history, and the big picture}
+\label{ch:applications}
+
+\section{Special functions and ODEs}
+Lambert $W$ produces nested logarithms. Airy and Bessel functions exhibit WKB sectors and Stokes switching. Exponential integrals produce factorial divergence. Painlevé equations require nonlinear resurgent transseries.
+
+\section{Singular perturbation}
+When a small parameter multiplies the highest derivative, setting it to zero changes the equation's order. Outer series, boundary layers, and exponentially small matching constants naturally form one transseries.
+
+\section{Dynamical systems}
+Near nonhyperbolic fixed points, normal forms and return maps involve powers and logarithms. Abel equations and exponentially small separatrix splitting bring in composition and resurgence.
+
+\section{Computer algebra}
+Transseries support automated limits, asymptotic comparison, inversion, composition, and formal differential-equation solving. Van der Hoeven develops this computational viewpoint systematically \cite{vdH2006}.
+
+\section{Model theory}
+The field $\T$ is rich yet tame enough for a deep first-order theory. Asymptotic differential algebra plays a role analogous to algebraic closure and real closed fields in ordinary algebra \cite{ADH2017}.
+
+\section{Mathematical physics}
+Perturbation expansions in quantum mechanics, field theory, matrix models, and string theory are often factorially divergent. Resurgent transseries combine perturbative and instanton sectors so ambiguities cancel \cite{AnicetoBasarSchiappa,Dorigoni}.
+
+\section{Saddle geometry}
+Steepest-descent contours decompose into thimbles attached to critical points. Each thimble supplies an exponential sector; Stokes phenomena occur when the thimble decomposition changes.
+
+\section{Historical timeline}
+\begin{longtable}{p{0.17\textwidth}p{0.76\textwidth}}
+\toprule
+Period & Development\\
+\midrule
+\endfirsthead
+\toprule
+Period & Development\\
+\midrule
+\endhead
+Early 1900s & Hardy studies logarithmic-exponential orders of infinity; Hahn constructs generalized series.\\
+Mid 1900s & Poincaré asymptotics, Borel summation, Stokes analysis, and generalized series mature.\\
+1970s--1990s & Écalle develops transseries, resurgence, alien calculus, and analyzable functions.\\
+1990s--2000s & Exponential fields, LE-series, model theory, and computational transseries are systematized.\\
+2000s--2010s & Connections with $H$-fields, composition, surreal derivations, and physics expand.\\
+2010s--2020s & Resurgent transseries become widespread; the model theory of $\T$ advances.\\
+2024 onward & Maximal Hardy fields are shown elementarily equivalent to $\T$; work continues on hyperseries and surreal functions.\\
+\bottomrule
+\end{longtable}
+
+\section{Five recurring principles}
+\begin{enumerate}
+  \item Determine order before coefficients.
+  \item Factor the dominant term and expand the remainder.
+  \item Let equations generate new scales.
+  \item Read divergence as information.
+  \item Keep formal legality separate from analytic summability.
+\end{enumerate}
+
+\section{Common myths}
+\begin{description}[leftmargin=2.8cm,style=nextline]
+  \item[Just a long series.] A transseries is an ordered algebra with support rules.
+  \item[Every transseries converges.] Formal summability and numerical convergence differ.
+  \item[Exponentially small means irrelevant.] Such terms may carry initial data or switching information.
+  \item[Borel summation removes all ambiguity.] Singular directions create lateral ambiguities.
+  \item[Resurgence equals transseries.] Resurgence is extra analytic structure.
+\end{description}
+
+\section{Open directions}
+Research directions include effective hyperseries algorithms, nonlinear summability, embeddings among Hardy fields and surreals, resurgence for PDEs, automated extraction of Stokes data, and links between model-theoretic tameness and analytic continuation.
+
+\section{How the supplied archive was used}
+The supplied materials span Edgar's formal grid-based calculus and composition, generalized fields of exponential series, surreal derivations, $H$-field structure, ODE asymptotics, Borel summability, and resurgence. This tutorial reorganizes those strands into a single learning path and supplements them with current primary-source references.
+
+\begin{exercise}
+Explain how one exponential $\e^{-Ax}$ can appear from linearization, optimal truncation, a Borel singularity, and a saddle action.
+\end{exercise}
+
+\begin{exercise}
+Distinguish Hardy fields, $H$-fields, surreal numbers, and resurgent functions in one paragraph.
+\end{exercise}
+
+
+\chapter{A practical study guide}
+\label{ch:study-guide}
+
+\section{Six levels of mastery}
+\begin{enumerate}
+  \item \term{Asymptotic literacy}: order mixed monomials and recognize cancellation.
+  \item \term{Formal algebra}: normalize, invert, exponentiate, logarithmize, and differentiate.
+  \item \term{Support control}: understand reverse well ordering, point-finiteness, and grids.
+  \item \term{Equation solving}: use dominant balance, residual correction, and sector ansätze.
+  \item \term{Analytic reconstruction}: apply Borel--Laplace transforms and interpret Stokes jumps.
+  \item \term{Structural context}: compare $H$-fields, surreals, computational and resurgent variants.
+\end{enumerate}
+
+\section{Twelve-week route}
+\begin{center}
+\begin{tabularx}{0.96\textwidth}{>{\bfseries}p{0.09\textwidth}p{0.28\textwidth}X}
+\toprule
+Week & Topic & Goal\\
+\midrule
+1 & Scales & Order mixed monomials.\\
+2 & Dominant-factor method & Expand inverses, logs, powers.\\
+3 & Supports & Test formal legality.\\
+4 & LE construction & Track height and depth.\\
+5 & Differential calculus & Derivatives and antiderivatives.\\
+6 & Composition & Derive Lambert $W$.\\
+7 & Linear ODEs & Recover hidden exponentials.\\
+8 & Nonlinear ODEs/WKB & Build sectors and actions.\\
+9 & Divergence & Estimate least terms.\\
+10 & Borel--Laplace & Sum Euler series.\\
+11 & Resurgence & Relate large order and sectors.\\
+12 & Structure & Compare $H$-fields and surreals.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Ten questions for every expansion}
+\begin{enumerate}
+  \item What tends where?
+  \item What is the monomial order?
+  \item What is the leading term?
+  \item Is the support admissible?
+  \item Which operations produced it?
+  \item Is equality formal or asymptotic?
+  \item Does each sector converge or require summation?
+  \item What are the Stokes directions?
+  \item What fixes the parameters?
+  \item What error follows from the cutoff?
+\end{enumerate}
+
+\section{One-page mental model}
+A common transseries has the nested shape
+\[
+  \sum_{\text{sectors}}
+  \underbrace{\e^{-\text{action}}}_{\text{beyond all orders}}
+  \underbrace{x^\beta(\log x)^k}_{\text{prefactor}}
+  \underbrace{\sum_na_nx^{-n}}_{\text{fluctuation}}.
+\]
+Formal theory controls the support and operations. Equations determine sectors and coefficients. Borel analysis turns divergent fluctuations into sectorial functions. Stokes data changes parameter coordinates. $H$-fields and surreal numbers place the hierarchy in broader algebraic worlds.
+
+
+% ============================================================
+\appendix
+% ============================================================
+
+\chapter{Capstone problem set}
+\label{app:problems}
+
+These problems combine ideas from several chapters. Detailed solutions follow in Appendix~\ref{app:solutions}.
+
+\begin{exercise}[Dominance chain]
+Arrange from largest to smallest:
+\[
+  \e^{x+\sqrt{x}},\quad
+  \e^xx^{100},\quad
+  \e^x/\log x,\quad
+  \e^{x-x^{1/3}},\quad
+  x^x,\quad
+  \e^{x\log\log x},\quad
+  \e^{x^2}.
+\]
+\end{exercise}
+
+\begin{exercise}[Mixed reciprocal]
+Expand
+\[
+  \frac1{\e^{2x}+x\e^x+\log x}
+\]
+through the $\e^{-4x}$ sector.
+\end{exercise}
+
+\begin{exercise}[Nested logarithm]
+Expand
+\[
+  \log(x+\log x+\e^{-x})
+\]
+through algebraic order $x^{-3}$ and through $x^{-2}\e^{-x}$ in the first exponential sector.
+\end{exercise}
+
+\begin{exercise}[Support test]
+Which supports are reverse well ordered?
+\[
+\begin{aligned}
+A&=\{x^{-n}:n\ge0\},&
+B&=\{x^{1/n}:n\ge1\},\\
+C&=\{\e^{-nx}:n\ge0\},&
+D&=\{\e^{-x/n}:n\ge1\},\\
+E&=\{x^n\e^{-x}:n\ge0\}.&&
+\end{aligned}
+\]
+Compare formal legality with numerical convergence of the corresponding unit-coefficient sums.
+\end{exercise}
+
+\begin{exercise}[Logarithmic inverse]
+Solve
+\[
+  y+2\log y=x
+\]
+through order $x^{-3}$.
+\end{exercise}
+
+\begin{exercise}[Exponential inverse]
+Solve
+\[
+  Y+\e^{-Y}=x
+\]
+through the $\e^{-4x}$ sector.
+\end{exercise}
+
+\begin{exercise}[Lambert coefficients]
+Derive the expansion of $W(z)$ through $L_1^{-3}$ from
+\[
+  U=-\log\left(1-\frac{L_2-U}{L_1}\right),
+  \qquad W=L_1-L_2+U.
+\]
+\end{exercise}
+
+\begin{exercise}[Linear ODE]
+Find the full one-parameter formal solution of
+\[
+  y'+2y=\frac1x
+\]
+through five algebraic terms. Identify its first Borel singularity.
+\end{exercise}
+
+\begin{exercise}[Variable-coefficient ODE]
+For
+\[
+  y'+\left(1-\frac ax\right)y=\frac1x,
+\]
+find the perturbative recurrence, first four terms, and homogeneous transmonomial.
+\end{exercise}
+
+\begin{exercise}[Nonlinear carrier]
+For
+\[
+  y'+y-y^2=\frac1x,
+\]
+compute $a_0,\ldots,a_4$ in the perturbative sector and derive the first nonperturbative carrier.
+\end{exercise}
+
+\begin{exercise}[WKB]
+Derive the leading WKB solutions of
+\[
+  \eps^2y''=(1+x^2)y
+\]
+and evaluate the action integral.
+\end{exercise}
+
+\begin{exercise}[Alternating Borel sum]
+Borel sum
+\[
+  \sum_{n\ge0}\frac{(-1)^nn!}{3^{n+1}x^{n+1}}
+\]
+in the positive direction.
+\end{exercise}
+
+\begin{exercise}[Lateral jump]
+For $A>0$, compute the upper-minus-lower Laplace jump of
+\[
+  \widehat f(\zeta)=\frac1{A-\zeta}.
+\]
+\end{exercise}
+
+\begin{exercise}[Large order]
+If
+\[
+  \widehat\Phi(\zeta)\sim K(A-\zeta)^{-3/2},
+\]
+estimate the late coefficients of
+\[
+  \widetilde\Phi(x)=\sum_{n\ge0}a_nx^{-n-1}.
+\]
+\end{exercise}
+
+\begin{exercise}[Two Borel singularities]
+What singularity pattern is suggested by
+\[
+  a_n\sim n!A^{-n-1}\bigl(K_++(-1)^nK_-\bigr)?
+\]
+\end{exercise}
+
+\begin{exercise}[Abel coordinate]
+For $T(x)=x+1+a/x$, verify
+\[
+  V=x-a\log x+\frac{a(1-2a)}{2x}
+  +\frac{a(6a^2-3a+1)}{12x^2}+\bigO(x^{-3})
+\]
+satisfies $V(T)-V=1+\bigO(x^{-4})$.
+\end{exercise}
+
+\begin{exercise}[Hardy-field sign]
+Prove that a nonzero element of a Hardy field has eventual constant sign.
+\end{exercise}
+
+\begin{exercise}[Surreal normal form]
+For
+\[
+  s=\omega+3+5\omega^{-1}+\omega^{-\omega},
+\]
+identify the leading term, finite part, and largest infinitesimal correction.
+\end{exercise}
+
+\begin{exercise}[Cutoff-aware logarithm]
+Describe an algorithm for computing $\log T$ through a cutoff when
+\[
+  T=c\mon(1+U),
+  \qquad U\prec1.
+\]
+What certificates are needed for reliable termination?
+\end{exercise}
+
+\begin{exercise}[Formal versus analytic]
+Give examples of:
+\begin{enumerate}
+  \item a formally legal divergent series;
+  \item a numerically convergent sum whose support is not in a finite grid;
+  \item two functions with one Poincaré expansion;
+  \item a series Borel summable in one direction but obstructed in another.
+\end{enumerate}
+\end{exercise}
+
+
+\chapter{Detailed solutions to the capstone problems}
+\label{app:solutions}
+
+\section*{Solution 1: dominance chain}
+Write every term as an exponential. The relevant exponents are
+\[
+  x^2,
+  \quad x\log x,
+  \quad x\log\log x,
+  \quad x+\sqrt{x},
+  \quad x+100\log x,
+  \quad x-\log\log x,
+  \quad x-x^{1/3}.
+\]
+For large $x$,
+\[
+  x^2>x\log x>x\log\log x>x+\sqrt{x}
+  >x+100\log x>x-\log\log x>x-x^{1/3}.
+\]
+Therefore
+\[
+\boxed{
+\e^{x^2}\succ x^x\succ\e^{x\log\log x}
+\succ\e^{x+\sqrt{x}}
+\succ\e^xx^{100}
+\succ\frac{\e^x}{\log x}
+\succ\e^{x-x^{1/3}}.}
+\]
+
+\section*{Solution 2: mixed reciprocal}
+Factor $\e^{2x}$:
+\[
+  \frac1{\e^{2x}+x\e^x+\log x}
+  =\e^{-2x}(1+U)^{-1},
+  \qquad U=x\e^{-x}+(\log x)\e^{-2x}.
+\]
+Through inner order $\e^{-2x}$,
+\[
+  (1+U)^{-1}=1-x\e^{-x}+(x^2-\log x)\e^{-2x}+\cdots.
+\]
+Hence
+\[
+\boxed{
+  \e^{-2x}-x\e^{-3x}+(x^2-\log x)\e^{-4x}+\cdots.}
+\]
+
+\section*{Solution 3: nested logarithm}
+Let $L=\log x$ and factor $x$:
+\[
+  \log(x+L+\e^{-x})
+  =\log x+\log\left(1+\frac Lx+\frac{\e^{-x}}x\right).
+\]
+Expanding gives the algebraic part
+\[
+  \frac Lx-\frac{L^2}{2x^2}+\frac{L^3}{3x^3}+\cdots.
+\]
+The terms linear in $\e^{-x}$ begin
+\[
+  \frac{\e^{-x}}x-\frac{L\e^{-x}}{x^2}
+  +\frac{L^2\e^{-x}}{x^3}+\cdots.
+\]
+Thus
+\[
+\boxed{
+\begin{aligned}
+\log(x+\log x+\e^{-x})
+={}&\log x+\frac Lx-\frac{L^2}{2x^2}+\frac{L^3}{3x^3}\\
+&+\frac{\e^{-x}}x-\frac{L\e^{-x}}{x^2}+\cdots.
+\end{aligned}}
+\]
+
+\section*{Solution 4: support test}
+$A$ is reverse well ordered: $1\succ x^{-1}\succ\cdots$. $B$ is also reverse well ordered, because every subset of positive integer indices has a least index and therefore a largest monomial $x^{1/n}$. It is generally not contained in a finite rational-power grid. $C$ is reverse well ordered. $D$ is not: every $\e^{-x/n}$ is exceeded by $\e^{-x/(n+1)}$, so there is no largest term. $E$ is not: $x^n\e^{-x}$ increases with $n$ in the formal order.
+
+For unit coefficients, the $A$ and $C$ sums converge numerically for fixed $x>1$; the $B$, $D$, and $E$ sums diverge because their terms fail to tend to zero. Formal legality and numerical convergence are independent tests.
+
+\section*{Solution 5: logarithmic inverse}
+Let $L=\log x$ and seek
+\[
+  y=x-2L+\frac A x+\frac B{x^2}+\frac C{x^3}+\cdots.
+\]
+Substitute into $y+2\log y=x$ and expand $\log y=\log x+\log(y/x)$. Matching powers gives
+\[
+  A=4L,
+  \qquad B=4L^2-8L,
+\]
+and
+\[
+  C=\frac{16}{3}L^3-24L^2+16L.
+\]
+Therefore
+\[
+\boxed{
+\begin{aligned}
+y={}&x-2L+\frac{4L}{x}
+ +\frac{4L^2-8L}{x^2}\\
+&+\frac{\frac{16}{3}L^3-24L^2+16L}{x^3}+\cdots.
+\end{aligned}}
+\]
+
+\section*{Solution 6: exponential inverse}
+Put $Y=x+\delta$ and $q=\e^{-x}$. Then
+\[
+  \delta=-q\e^{-\delta},
+  \qquad\delta\e^\delta=-q.
+\]
+Thus $\delta=W(-q)$. Using
+\[
+  W(z)=z-z^2+\frac32z^3-\frac83z^4+\cdots,
+\]
+we obtain
+\[
+\boxed{
+  Y=x-q-q^2-\frac32q^3-\frac83q^4+\cdots.}
+\]
+
+\section*{Solution 7: Lambert coefficients}
+Let $q=L_1^{-1}$ and $L=L_2$, with
+\[
+  U=qP_1+q^2P_2+q^3P_3+\cdots.
+\]
+From
+\[
+  U=q(L-U)+\frac{q^2}{2}(L-U)^2
+  +\frac{q^3}{3}(L-U)^3+\cdots,
+\]
+coefficient matching gives
+\[
+  P_1=L,
+  \qquad P_2=\frac{L^2-2L}{2},
+  \qquad P_3=\frac{2L^3-9L^2+6L}{6}.
+\]
+Insert these into $W=L_1-L_2+U$.
+
+\section*{Solution 8: linear ODE}
+For $y_0=\sum a_nx^{-n-1}$,
+\[
+  2a_0=1,
+  \qquad2a_n=na_{n-1}.
+\]
+Hence $a_n=n!/2^{n+1}$ and
+\[
+\boxed{
+  y=\frac1{2x}+\frac1{4x^2}+\frac1{4x^3}
+  +\frac3{8x^4}+\frac3{4x^5}+\cdots+C\e^{-2x}.}
+\]
+The Borel transform is
+\[
+  \widehat y(\zeta)=\frac1{2-\zeta},
+\]
+so the first singularity is at $\zeta=2$.
+
+\section*{Solution 9: variable coefficient}
+Substitution gives
+\[
+  a_0=1,
+  \qquad a_n=(n+a)a_{n-1}.
+\]
+Thus
+\[
+\begin{aligned}
+y_0={}&x^{-1}+(a+1)x^{-2}
+ +(a+1)(a+2)x^{-3}\\
+&+(a+1)(a+2)(a+3)x^{-4}+\cdots.
+\end{aligned}
+\]
+The homogeneous equation has
+\[
+  y_h=C\exp(-x+a\log x)=Cx^a\e^{-x}.
+\]
+
+\section*{Solution 10: nonlinear carrier}
+The recurrence
+\[
+  a_m=ma_{m-1}+\sum_{i+j=m-1}a_ia_j
+\]
+gives
+\[
+  a_0=1,
+  \quad a_1=2,
+  \quad a_2=8,
+  \quad a_3=44,
+  \quad a_4=296.
+\]
+Linearization yields
+\[
+  \delta'+(1-2y_0)\delta=0,
+\]
+so
+\[
+  \delta=C\exp\left(-x+2\int y_0\dd x\right)
+  \sim Cx^2\e^{-x}.
+\]
+
+\section*{Solution 11: WKB}
+Here $Q=1+x^2$. The leading forms are
+\[
+  y_\pm\sim(1+x^2)^{-1/4}
+  \exp\left(\pm\frac1\eps\int^x\sqrt{1+t^2}\dd t\right).
+\]
+Since
+\[
+  \int\sqrt{1+t^2}\dd t
+  =\frac12\left(t\sqrt{1+t^2}+\operatorname{arsinh}t\right),
+\]
+we obtain
+\[
+\boxed{
+ y_\pm\sim(1+x^2)^{-1/4}
+ \exp\left[\pm\frac{x\sqrt{1+x^2}+\operatorname{arsinh}x}{2\eps}\right].}
+\]
+
+\section*{Solution 12: alternating Borel sum}
+The Borel transform is
+\[
+  \widehat F(\zeta)=\sum_{n\ge0}\frac{(-1)^n}{3^{n+1}}\zeta^n
+  =\frac1{3+\zeta}.
+\]
+Therefore
+\[
+\boxed{
+  \mathcal S_0\widetilde F(x)
+  =\int_0^\infty\frac{\e^{-x\zeta}}{3+\zeta}\dd\zeta
+  =\e^{3x}E_1(3x).}
+\]
+
+\section*{Solution 13: lateral jump}
+The residue of $\e^{-x\zeta}/(A-\zeta)$ at $\zeta=A$ is $-\e^{-Ax}$. With the upper-minus-lower convention used here, the contour orientation yields
+\[
+\boxed{
+  \mathcal L_{0^+}\widehat f-
+  \mathcal L_{0^-}\widehat f=2\pi i\e^{-Ax}.}
+\]
+
+\section*{Solution 14: large order}
+Use
+\[
+  (A-\zeta)^{-3/2}=A^{-3/2}
+  (1-\zeta/A)^{-3/2}.
+\]
+The coefficient formula for $(1-z)^{-\alpha}$ gives
+\[
+\boxed{
+  a_n\sim\frac{K}{\Gamma(3/2)}
+  \frac{\Gamma(n+3/2)}{A^{n+3/2}}.}
+\]
+Since $\Gamma(3/2)=\sqrt\pi/2$, the prefactor is $2K/\sqrt\pi$.
+
+\section*{Solution 15: two singularities}
+A singularity at $A$ produces $n!A^{-n-1}$ growth. A singularity at $-A$ produces an alternating contribution proportional to $(-1)^nn!A^{-n-1}$. Thus the pattern suggests Borel singularities at both $\zeta=A$ and $\zeta=-A$.
+
+\section*{Solution 16: Abel coordinate}
+Let
+\[
+  V=x-a\log x+b_1x^{-1}+b_2x^{-2}.
+\]
+Taylor-expand $V(x+h)$ with $h=1+a/x$:
+\[
+  V(x+h)-V(x)=V'h+\frac12V''h^2+\frac16V'''h^3+\cdots.
+\]
+The $x^{-2}$ coefficient vanishes when
+\[
+  b_1=\frac{a(1-2a)}2,
+\]
+and the $x^{-3}$ coefficient vanishes when
+\[
+  b_2=\frac{a(6a^2-3a+1)}{12}.
+\]
+The remaining error begins at $x^{-4}$.
+
+\section*{Solution 17: Hardy-field sign}
+A nonzero Hardy-field germ has a reciprocal, so a representative must be nonzero on some tail. If it changed sign infinitely often on that tail, continuity would force infinitely many zeros. Therefore its sign is eventually constant. Equivalently, a germ with zeros arbitrarily far out cannot be invertible unless it is the zero germ.
+
+\section*{Solution 18: surreal normal form}
+The leading term is $\omega$. The finite part is $3$. The infinitesimal tail is
+\[
+  5\omega^{-1}+\omega^{-\omega},
+\]
+and its largest term is $5\omega^{-1}$ because $\omega^{-1}\succ\omega^{-\omega}$.
+
+\section*{Solution 19: cutoff-aware logarithm}
+Normalize
+\[
+  \log T=\log c+\log\mon+
+  \sum_{n\ge1}\frac{(-1)^{n+1}}nU^n.
+\]
+Generate powers of $U$, truncating after every multiplication. Stop when the whole next power lies below the cutoff. The algorithm needs a monomial comparison routine, proof that $U\prec1$, support or ratio-set data ensuring powers move downward, exact coefficient arithmetic, and a global cutoff adjusted for outer factors.
+
+\section*{Solution 20: formal versus analytic}
+Examples are:
+\begin{enumerate}
+  \item $\sum n!x^{-n-1}$ is formally legal but divergent.
+  \item $\sum2^{-n}x^{-1/n}$ converges for fixed $x>1$, but its support is not reverse well ordered, so it is not a legal Hahn transseries (and in particular is not contained in a finite rational-power grid).
+  \item $f(x)$ and $f(x)+\e^{-x}$ have the same inverse-power expansion.
+  \item $\sum n!x^{-n-1}$ is obstructed along the positive Borel ray by $\zeta=1$ but is summable along a nonsingular nearby direction.
+\end{enumerate}
+
+
+\chapter{Quick reference sheets}
+\label{app:reference}
+
+\section{Dominance hierarchy}
+For fixed positive constants and $x\to+\infty$,
+\[
+  \e^{\e^x}\succ\e^{x^2}\succ\e^x
+  \succ x^a\succ(\log x)^b\succ1
+  \succ(\log x)^{-c}\succ x^{-d}
+  \succ\e^{-x}\succ\e^{-x^2}\succ\e^{-\e^x}.
+\]
+To compare exponentials, compare exponents. To compare powers, compare exponents after reducing to a common base.
+
+\section{Normalization formulas}
+For nonzero $T$,
+\[
+  T=c\mon(1+U),
+  \qquad U\prec1.
+\]
+For arbitrary $T$,
+\[
+  T=L+c+S,
+  \qquad L\text{ purely large},
+  \quad S\prec1.
+\]
+Then
+\[
+\begin{aligned}
+  T^{-1}&=c^{-1}\mon^{-1}(1-U+U^2-\cdots),\\
+  \log T&=\log c+\log\mon+U-\frac{U^2}{2}+\cdots,\\
+  T^\alpha&=c^\alpha\mon^\alpha
+  \left(1+\alpha U+\frac{\alpha(\alpha-1)}2U^2+\cdots\right),\\
+  \e^T&=\e^L\e^c\left(1+S+\frac{S^2}{2}+\cdots\right).
+\end{aligned}
+\]
+
+\section{Derivative dictionary}
+\[
+\begin{aligned}
+  (x^a)'&=ax^{a-1},\\
+  (\log x)^b{}'&=\frac{b(\log x)^{b-1}}x,\\
+  (\e^L)'&=L'\e^L,\\
+  (x^a\e^L)'&=x^a\e^L\left(\frac ax+L'\right),\\
+  (T\compose S)'&=(T'\compose S)S'.
+\end{aligned}
+\]
+
+\section{Equation-solving dictionary}
+\begin{center}
+\begin{tabularx}{0.96\textwidth}{>{\bfseries}p{0.27\textwidth}X}
+\toprule
+Situation & First move\\
+\midrule
+Algebraic equation & Balance at least two dominant terms.\\
+Implicit equation & Use a leading guess and residual correction $-F/F'$.\\
+Fixed point $Y=\Phi(Y)$ & Check that differences shrink in asymptotic order.\\
+Linear ODE & Find perturbative recurrence and homogeneous exponentials.\\
+Nonlinear ODE & Linearize around the perturbative sector, then multiply sectors.\\
+Second-order ODE & Use Riccati/WKB to identify actions.\\
+Iteration & Solve Abel's equation or find an iterative logarithm.\\
+Divergent series & Estimate coefficient growth and Borel-transform it.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Borel--Laplace dictionary}
+For
+\[
+  \widetilde\Phi(x)=\sum_{n\ge0}a_nx^{-n-1},
+\]
+\[
+  \widehat\Phi(\zeta)=\sum_{n\ge0}\frac{a_n}{n!}\zeta^n,
+  \qquad
+  \mathcal S_\theta\widetilde\Phi
+  =\int_0^{\e^{i\theta}\infty}\e^{-x\zeta}\widehat\Phi(\zeta)\dd\zeta.
+\]
+Useful correspondences are
+\[
+\begin{array}{c|c}
+\text{$x$-plane formal operation}&\text{Borel-plane operation}\\
+\hline
+\text{multiplication}&\text{convolution}\\
+\frac{\dd}{\dd x}&-\zeta\times\\
+\text{factorial growth }n!/A^n&\text{singularity near }\zeta=A\\
+\text{sector }\e^{-Ax}&\text{Borel displacement by }A\\
+\text{Stokes jump}&\text{lateral contour difference}
+\end{array}
+\]
+
+\section{Support checklist}
+Before accepting an infinite formal expression, verify:
+\begin{enumerate}
+  \item every nonempty support subset has a largest monomial;
+  \item each coefficient receives finitely many contributions;
+  \item infinite families are point-finite;
+  \item operations preserve the support class;
+  \item a requested truncation leaves finitely many relevant terms.
+\end{enumerate}
+
+\section{Conversion between large and small variables}
+With $g=x^{-1}$,
+\[
+  x^\beta(\log x)^k\e^{-Ax}
+  =g^{-\beta}(-\log g)^k\e^{-A/g}.
+\]
+A sector expansion
+\[
+  \sum_{n\ge0}a_nx^{-n}
+\]
+becomes a small-$g$ expansion $\sum a_ng^n$.
+
+
+\chapter{Glossary}
+\label{app:glossary}
+
+\begin{description}[leftmargin=3.6cm,style=nextline]
+\item[Action] A quantity $A$ appearing in an exponential scale such as $\e^{-Ax}$ or $\e^{-A/g}$; often a saddle-value difference or integral of a WKB momentum.
+
+\item[Alien derivative] An operator detecting resurgent singular content at a specified Borel location.
+
+\item[Analyzable function] In Écalle's framework, a function represented through transseries together with generalized summation and continuation procedures.
+
+\item[Anti-Stokes line] Depending on convention, a curve where competing exponentials have equal magnitude; terminology varies.
+
+\item[Asymptotic couple] An algebraic structure recording the interaction between valuation and logarithmic differentiation in an $H$-field.
+
+\item[Asymptotic expansion] A sequence of terms whose every fixed truncation approximates a function to the scale of the next term.
+
+\item[Asymptotic scale] A sequence $\phi_{n+1}\prec\phi_n$ of progressively smaller comparison functions.
+
+\item[Beyond all orders] Smaller than every term of a chosen scale, such as $\e^{-x}\prec x^{-N}$ for every $N$.
+
+\item[Borel plane] The $\zeta$-plane in which factorially normalized coefficients define the Borel transform.
+
+\item[Borel summation] Reconstruction of a function by Borel transformation, analytic continuation, and Laplace integration.
+
+\item[Composition] Substitution of one transseries into another, under largeness and support conditions.
+
+\item[Conway normal form] A generalized series representation $\sum r_i\omega^{a_i}$ of a surreal number.
+
+\item[Cutoff monomial] The smallest magnitude retained in a truncated formal calculation.
+
+\item[Differential polynomial] A polynomial in $Y,Y',\ldots,Y^{(r)}$ with coefficients in a differential field.
+
+\item[Dominant balance] A selection of two or more largest terms in an equation that can cancel at leading order.
+
+\item[Dulac series] Power-log or transseries expansions adapted to singular dynamical systems and return maps.
+
+\item[Écalle acceleration] A generalized summation change of scale used when ordinary Borel--Laplace summation is inadequate.
+
+\item[Exponential height] A measure of the number of nested exponential construction stages needed for a transseries.
+
+\item[Flat function] A function invisible to a chosen asymptotic scale, such as $\e^{-x}$ relative to inverse powers.
+
+\item[Formal convergence] Stabilization of coefficients above every fixed monomial cutoff, not numerical convergence.
+
+\item[Formal transseries parameter] A constant symbol such as $C$ or $\sigma$ labeling solution families and exponential sectors.
+
+\item[Germ at infinity] An equivalence class of functions that agree eventually.
+
+\item[Gevrey order] A measure of coefficient growth, with Gevrey-$1$ corresponding roughly to $n!$ growth.
+
+\item[Grid] A finitely generated multiplicative set of monomials built from small ratios.
+
+\item[Hahn field] A field of generalized series with coefficients in a field and well-ordered support in an ordered abelian group.
+
+\item[Hardy field] A differential field of germs at infinity.
+
+\item[$H$-field] An ordered differential field satisfying axioms abstracting eventual growth and bounded decomposition in Hardy fields.
+
+\item[Homogeneous sector] A free solution of the linearized or homogeneous equation, often carrying an exponential monomial.
+
+\item[Hyperasymptotics] Re-expansion of optimally truncated remainders using neighboring exponential sectors.
+
+\item[Hyperseries] Generalized transseries permitting scales beyond finite iterated logarithmic-exponential depth.
+
+\item[Infinitesimal] An element smaller in magnitude than every positive real constant.
+
+\item[Instanton sector] Physics terminology for a sector multiplied by $\e^{-A/g}$ or its integer powers.
+
+\item[Iterative logarithm] A formal vector field whose time-one map is a given composition map.
+
+\item[Lambert $W$] The inverse of $w\mapsto w\e^w$, a standard source of nested-logarithm transseries.
+
+\item[Lateral Borel sum] A Laplace integral taken just above or below a singular ray.
+
+\item[Leading coefficient] The coefficient of the largest monomial in a nonzero transseries.
+
+\item[Leading monomial] The largest support monomial of a nonzero transseries.
+
+\item[LE-series] Logarithmic-exponential generalized series; details depend on the construction.
+
+\item[Liouville closed] Roughly, closed under antiderivatives and exponential integration needed for first-order linear equations.
+
+\item[Logarithmic depth] A measure of the number of outer iterated logarithmic substitutions required.
+
+\item[Logarithmic derivative] $f^\dagger=f'/f$.
+
+\item[Magnitude] The leading monomial of a transseries, ignoring its nonzero coefficient.
+
+\item[Median summation] A symmetry-preserving combination of lateral sums, generalized through the Stokes automorphism.
+
+\item[Monomial group] The ordered multiplicative group of pure asymptotic scales.
+
+\item[Multisummability] Summability involving several Gevrey levels or successive Borel--Laplace procedures.
+
+\item[Newton polygon] A geometric device that predicts valuations or leading powers of solutions from competing terms.
+
+\item[Newtonian $H$-field] An $H$-field satisfying a differential analogue of henselian solvability for Newton problems.
+
+\item[Non-Archimedean field] An ordered field containing infinite and infinitesimal elements.
+
+\item[Normal form] A canonical decomposition separating monomial, coefficient, and small unit.
+
+\item[Optimal truncation] Stopping a divergent asymptotic series near its least term.
+
+\item[Point-finite family] An indexed family in which every monomial appears in only finitely many members.
+
+\item[Purely large transseries] A transseries all of whose monomials exceed $1$.
+
+\item[Ratio set] A finite set of small monomials generating or witnessing a grid.
+
+\item[Resonance] Coincidence of sector actions or a forcing scale with a homogeneous scale, often producing powers or logarithms.
+
+\item[Resurgence] Controlled Borel analytic continuation in which singularities encode other sectors and large-order behavior.
+
+\item[Reverse well ordered] Every nonempty subset has a largest element in the dominance order.
+
+\item[Sector] A block of terms sharing an exponential action, such as $\e^{-kAx}x^\beta\Phi_k(x^{-1})$.
+
+\item[Stokes automorphism] The formal automorphism encoding cumulative jumps across a singular direction.
+
+\item[Stokes constant] A normalization-dependent constant connecting Borel singularities, sector jumps, and large-order growth.
+
+\item[Stokes phenomenon] Direction-dependent change in an asymptotic representation or summation across special rays.
+
+\item[Support] The set of monomials with nonzero coefficients.
+
+\item[Summable family] A family with admissible union support and finite contribution to every coefficient.
+
+\item[Surreal number] An element of Conway's universal ordered field built recursively from left and right sets.
+
+\item[Transasymptotic expansion] An expansion that reorganizes or sums across exponentially indexed sectors.
+
+\item[Transmonomial] A pure monomial scale involving powers, logarithms, exponentials, or their iterations.
+
+\item[Transseries] An asymptotically ordered generalized series with a rich monomial group and specified closure operations.
+
+\item[Turning point] A point where WKB characteristic roots merge, often modeled locally by the Airy equation.
+
+\item[Valuation] An additive measure of smallness; larger valuation usually means smaller magnitude.
+
+\item[Well-based transseries] A transseries with general well-founded support rather than a finitely generated grid support.
+
+\item[Witness] Finite ratio-set data certifying a comparison, support property, or convergence statement.
+
+\item[WKB expansion] A rapidly varying exponential ansatz with an action and a formal fluctuation series.
+
+\item[$\omega$-free] A technical $H$-field property excluding certain asymptotic gaps and central to the model theory of transseries.
+\end{description}
+
+
+\chapter{Further reading guide}
+\label{app:reading}
+
+\section{Best first formal source}
+Edgar's ``Transseries for Beginners'' is a concise non-specialist entry point to real grid-based transseries. It emphasizes the ordered field, monomials, grids, differentiation, integration, and examples \cite{Edgar2010}. His companion papers treat ratios, composition, convergence, and fractional iteration \cite{EdgarRatios,EdgarComposition,EdgarFractional}.
+
+\section{Systematic computational theory}
+Van der Hoeven's \emph{Transseries and Real Differential Algebra} develops transseries as an effective computational and differential-algebraic system \cite{vdH2006}.
+
+\section{Model theory and \texorpdfstring{$H$}{H}-fields}
+The book by Aschenbrenner, van den Dries, and van der Hoeven is the comprehensive structural reference \cite{ADH2017}. Their expository ICM article provides a shorter overview, and the maximal-Hardy-field preprint records a major recent theorem \cite{ADHMaximal2024}.
+
+\section{Surreal connections}
+Berarducci and Mantova's papers establish a compatible surreal derivation and interpret transseries as germs of surreal functions \cite{BerarducciMantova2018,BerarducciMantovaGerms}.
+
+\section{Borel summation and resurgence}
+Costin's book gives a rigorous introduction to asymptotics and Borel summability. Dorigoni offers a compact introduction to resurgence and alien calculus, while Aniceto, Başar, and Schiappa provide a very extensive physics-oriented primer with explicit large-order examples \cite{Dorigoni,AnicetoBasarSchiappa}.
+
+\section{How to progress}
+A productive sequence is:
+\begin{enumerate}
+  \item work through Edgar while reproducing every expansion;
+  \item learn Hahn-series support independently of analysis;
+  \item solve linear and nonlinear ODE examples by hand;
+  \item study Borel summation on Euler and Airy models;
+  \item only then approach alien calculus or advanced $H$-field model theory.
+\end{enumerate}
+
+\backmatter
+
+\begin{thebibliography}{99}
+
+\bibitem{ADH2017}
+M.~Aschenbrenner, L.~van den Dries, and J.~van der Hoeven,
+\emph{Asymptotic Differential Algebra and Model Theory of Transseries},
+Annals of Mathematics Studies 195, Princeton University Press, 2017.
+
+\bibitem{ADHMaximal2024}
+M.~Aschenbrenner, L.~van den Dries, and J.~van der Hoeven,
+``The theory of maximal Hardy fields,''
+arXiv:2408.05232, 2024.
+
+\bibitem{ADHNumbers}
+M.~Aschenbrenner, L.~van den Dries, and J.~van der Hoeven,
+``On numbers, germs, and transseries,''
+Proceedings of the International Congress of Mathematicians 2018;
+arXiv:1711.06936.
+
+\bibitem{AnicetoBasarSchiappa}
+I.~Aniceto, G.~Başar, and R.~Schiappa,
+``A primer on resurgent transseries and their asymptotics,''
+\emph{Physics Reports} 809 (2019), 1--135;
+arXiv:1802.10441.
+
+\bibitem{BerarducciMantova2018}
+A.~Berarducci and V.~Mantova,
+``Surreal numbers, derivations and transseries,''
+\emph{Journal of the European Mathematical Society} 20 (2018), 339--390.
+
+\bibitem{BerarducciMantovaGerms}
+A.~Berarducci and V.~Mantova,
+``Transseries as germs of surreal functions,''
+\emph{Transactions of the American Mathematical Society} 371 (2019), 3549--3592;
+arXiv:1703.01995.
+
+\bibitem{Borel1899}
+É.~Borel,
+``Mémoire sur les séries divergentes,''
+\emph{Annales scientifiques de l'École Normale Supérieure} 16 (1899), 9--131.
+
+\bibitem{Conway1976}
+J.~H.~Conway,
+\emph{On Numbers and Games},
+Academic Press, 1976.
+
+\bibitem{Costin2009}
+O.~Costin,
+\emph{Asymptotics and Borel Summability},
+Chapman \& Hall/CRC, 2009.
+
+\bibitem{DMM2001}
+L.~van den Dries, A.~Macintyre, and D.~Marker,
+``Logarithmic-exponential series,''
+\emph{Annals of Pure and Applied Logic} 111 (2001), 61--113.
+
+\bibitem{Dorigoni}
+D.~Dorigoni,
+``An introduction to resurgence, trans-series and alien calculus,''
+\emph{Annals of Physics} 409 (2019), 167914;
+arXiv:1411.3585.
+
+\bibitem{Ecalle}
+J.~Écalle,
+\emph{Les fonctions résurgentes}, Volumes I--III,
+Publications Mathématiques d'Orsay, 1981--1985.
+
+\bibitem{Edgar2010}
+G.~A.~Edgar,
+``Transseries for beginners,''
+\emph{Real Analysis Exchange} 35 (2010), 253--310;
+arXiv:0801.4877.
+
+\bibitem{EdgarComposition}
+G.~A.~Edgar,
+``Transseries: composition, recursion, and convergence,''
+arXiv:0909.1259, 2009.
+
+\bibitem{EdgarFractional}
+G.~A.~Edgar,
+``Fractional iteration of series and transseries,''
+arXiv:1002.2378, 2010.
+
+\bibitem{EdgarRatios}
+G.~A.~Edgar,
+``Transseries: ratios, grids, and witnesses,''
+arXiv:0909.2430, 2009.
+
+\bibitem{Hahn1907}
+H.~Hahn,
+``Über die nichtarchimedischen Grössensysteme,''
+\emph{Sitzungsberichte der Kaiserlichen Akademie der Wissenschaften, Wien,
+Mathematisch-Naturwissenschaftliche Klasse} 116 (1907), 601--655.
+
+\bibitem{Hardy1910}
+G.~H.~Hardy,
+\emph{Orders of Infinity: The `Infinitärcalcül' of Paul du Bois-Reymond},
+Cambridge University Press, 1910.
+
+\bibitem{OldeDaalhuis}
+A.~B.~Olde Daalhuis,
+``Transseries analysis and Stokes phenomena,''
+lecture notes and surveys on asymptotic analysis and special functions.
+
+\bibitem{Poincare1886}
+H.~Poincaré,
+``Sur les intégrales irrégulières des équations linéaires,''
+\emph{Acta Mathematica} 8 (1886), 295--344.
+
+\bibitem{Schmeling2001}
+M.~Schmeling,
+\emph{Corps de transséries},
+Ph.D. thesis, Université Paris VII, 2001.
+
+\bibitem{vdH2006}
+J.~van der Hoeven,
+\emph{Transseries and Real Differential Algebra},
+Lecture Notes in Mathematics 1888, Springer, 2006.
+
+\bibitem{WikipediaTransseries}
+Wikipedia contributors,
+``Transseries,''
+\emph{Wikipedia, The Free Encyclopedia},
+consulted August 2026.
+
+\end{thebibliography}
+
+\end{document}

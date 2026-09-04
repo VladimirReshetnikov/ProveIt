@@ -44,16 +44,10 @@ Woods–Robbins partial sum, by `ε(2j) = ε(j)`, `ε(2j+1) = -ε(j)` and
 a regrouping of the four linear factors. -/
 theorem wrA_two_mul (N : ℕ) :
     wrA (2 * N) = mpLog (1 / 4 : ℝ) (3 / 4) N - wrA N := by
-  rw [wrA, sum_range_two_mul, mpLog, wrA, ← Finset.sum_sub_distrib]
+  rw [wrA, sum_thueMorseSign_mul_two_mul N
+      (fun n : ℕ => Real.log ((2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2))),
+    mpLog, wrA, ← Finset.sum_sub_distrib]
   refine Finset.sum_congr rfl fun j _ => ?_
-  have hs1 : (thueMorseSign (2 * j) : ℝ) = (thueMorseSign j : ℝ) := by
-    exact_mod_cast congrArg (fun z : ℤ => (z : ℝ))
-      (thueMorseSign_two_mul j)
-  have hs2 : (thueMorseSign (2 * j + 1) : ℝ) =
-      -(thueMorseSign j : ℝ) := by
-    have h := thueMorseSign_two_mul_add_one j
-    push_cast [h]
-    ring
   have hr1 : (2 * ((2 * j : ℕ) : ℝ) + 1) / (2 * ((2 * j : ℕ) : ℝ) + 2) =
       (4 * (j : ℝ) + 1) / (4 * (j : ℝ) + 2) := by
     rw [div_eq_div_iff (by positivity) (by positivity)]
@@ -92,7 +86,7 @@ theorem wrA_two_mul (N : ℕ) :
       Real.log_div (by positivity) (by positivity),
       l1, l2, l3, l4]
     ring
-  rw [hs1, hs2, hr1, hr2]
+  rw [hr1, hr2]
   linear_combination (thueMorseSign j : ℝ) * key
 
 /-- The quarter-ratio log-series converges to `-log 2`: two copies of
@@ -124,9 +118,7 @@ theorem quarter_product :
   have h := tendsto_masterProduct (1 / 4 : ℝ) (3 / 4)
     (by norm_num) (by norm_num)
   rw [mpLimit_quarter,
-    show Real.exp (-Real.log 2) = 1 / 2 by
-      rw [Real.exp_neg, Real.exp_log (by norm_num : (0 : ℝ) < 2)]
-      norm_num] at h
+    exp_neg_log (by norm_num : (0 : ℝ) < 2)] at h
   exact h
 
 /-- The quarter product in the linear-factor form
@@ -138,9 +130,7 @@ theorem quarter_product' :
   have h := tendsto_masterProduct_affine (4 : ℝ) (1 / 4) (3 / 4)
     (by norm_num) (by norm_num) (by norm_num)
   rw [mpLimit_quarter,
-    show Real.exp (-Real.log 2) = 1 / 2 by
-      rw [Real.exp_neg, Real.exp_log (by norm_num : (0 : ℝ) < 2)]
-      norm_num] at h
+    exp_neg_log (by norm_num : (0 : ℝ) < 2)] at h
   simpa only [
     show (4 : ℝ) * (1 / 4) = 1 by norm_num,
     show (4 : ℝ) * (3 / 4) = 3 by norm_num] using h
@@ -152,9 +142,7 @@ theorem tendsto_block_product_half :
       ((k : ℝ) + 1 / 2) ^ (thueMorseSign k)) atTop (𝓝 (1 / 2 : ℝ)) := by
   have h := tendsto_block_product_half'
   rw [mpLimit_quarter,
-    show Real.exp (-Real.log 2) = 1 / 2 by
-      rw [Real.exp_neg, Real.exp_log (by norm_num : (0 : ℝ) < 2)]
-      norm_num] at h
+    exp_neg_log (by norm_num : (0 : ℝ) < 2)] at h
   exact h
 
 /-- **The half-shifted block product has value `1/2` along every even
@@ -167,9 +155,7 @@ theorem tendsto_block_product_half_even :
       ((k : ℝ) + 1 / 2) ^ (thueMorseSign k)) atTop (𝓝 (1 / 2 : ℝ)) := by
   have h := tendsto_block_product_half_even'
   rw [mpLimit_quarter,
-    show Real.exp (-Real.log 2) = 1 / 2 by
-      rw [Real.exp_neg, Real.exp_log (by norm_num : (0 : ℝ) < 2)]
-      norm_num] at h
+    exp_neg_log (by norm_num : (0 : ℝ) < 2)] at h
   exact h
 
 end Fabius

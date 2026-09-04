@@ -91,11 +91,8 @@ theorem q_pfaff_saalschutz_term (hq0 : q ≠ 0) {n : ℕ} {a b c : K} (ha0 : a �
   have hdinv : (a * b * q / (c * q ^ n))⁻¹ * q⁻¹ ^ (k - 1) = c / (a * b) * q ^ (n - k) := by
     rw [inv_div, inv_pow, h1]
     field_simp
-    all_goals ring
   have hdpow : (a * b * q / (c * q ^ n)) ^ k = q ^ k / (q ^ (n * k) * (c / (a * b)) ^ k) := by
-    rw [show a * b * q / (c * q ^ n) = q / (q ^ n * (c / (a * b))) by
-        field_simp
-        all_goals ring,
+    rw [show a * b * q / (c * q ^ n) = q / (q ^ n * (c / (a * b))) by field_simp,
       div_pow, mul_pow, ← pow_mul]
   rw [finiteQPochhammerIn_base_reversal _ q hd0 hq0 k, finiteQPochhammerIn_inv_base_eq hq0, hdinv,
     hcsplit, hesplit, hG, hnum, neg_pow (a * b * q / (c * q ^ n)) k, hdpow]
@@ -114,7 +111,6 @@ theorem q_pfaff_saalschutz_term (hq0 : q ≠ 0) {n : ℕ} {a b c : K} (ha0 : a �
   have hqn0 : qn ≠ 0 := pow_ne_zero _ hq0
   have hek0 : ek ≠ 0 := pow_ne_zero _ he0
   field_simp
-  all_goals ring
 
 /-- **The `q`-Pfaff–Saalschütz summation**: for `q ≠ 0` and nonzero `a, b, c` with
 `(q;q)_n`, `(c;q)_n`, `(abq^{1-n}/c;q)_n`, `(c/(ab);q)_n` nonzero,

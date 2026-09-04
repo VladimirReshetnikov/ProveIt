@@ -19,7 +19,7 @@ only as reproducible checks.
 The package audit surfaces are:
 
 - [`theorem_concordance.csv`](theorem_concordance.csv): all 194 immutable
-  source-result rows, fully dispositioned as 49 Lean-proved, 96 human-proved
+  source-result rows, fully dispositioned as 50 Lean-proved, 95 human-proved
   frontier results, 10 conjectures, 15 open problems, and 24 non-applicable
   source environments;
 - [`LEAN_CROSSWALK.md`](LEAN_CROSSWALK.md): exact module and declaration
@@ -41,7 +41,7 @@ python -B audit/build_asset_manifest.py --check
 
 `theorem_concordance.csv` records the disposition of all 194 source-result
 environments while preserving the ten immutable source fields reproduced from
-`audit/SOURCE_REVISION`.  Its current totals are 49 Lean-proved, 96
+`audit/SOURCE_REVISION`.  Its current totals are 50 Lean-proved, 95
 human-proved frontier results, 10 conjectures, 15 open problems, and 24
 nonassertoric rows.  Nine inverse-computability rows now have exact compiled
 counterparts: the main theorem, the three tolerant-difference branch
@@ -76,10 +76,11 @@ at `93db15ad3c0645bd3cfd0a3e6e694e3c86a3aa2b`, a complete pre-retirement
 repository snapshot. The old paths are retained as provenance locators, not
 as live links.
 
-The five newest exact source-row matches are centered Appell deconvolution,
-positive-degree Appell mean-zero, arbitrary-phase polynomial deconvolution,
-forced superconvergence, and finite Appell lattice reproduction.  The latter
-two use `FabiusFunction.RvachevSuperconvergentSynthesis`: its phase dictionary
+The six newest exact source-row matches are abstract effective inversion,
+centered Appell deconvolution, positive-degree Appell mean-zero,
+arbitrary-phase polynomial deconvolution, forced superconvergence, and finite
+Appell lattice reproduction.  The last two use
+`FabiusFunction.RvachevSuperconvergentSynthesis`: its phase dictionary
 specializes the selected phases at `M = 2^N`, its physical quadrature wrapper
 proves polynomial exactness through degree `N+1`, and its Appell wrapper proves
 the corresponding finite lattice identity.  These declarations do not assert
@@ -95,7 +96,7 @@ masters contribute 152 of the 194 concordance rows:
 - `Inverse_Endpoint_All_Orders`: 29 rows; and
 - `Inverse_Fabius_Computability_Report`: 40 rows.
 
-Their canonical classifications are 33 exact Lean matches, 78 complete
+Their canonical classifications are 34 exact Lean matches, 77 complete
 human-proved frontier results, 18 non-live source environments (seven
 definitions, three algorithms, two examples, four editorial obligations, and
 two superseded source conjectures), nine explicitly retained conjectures, and

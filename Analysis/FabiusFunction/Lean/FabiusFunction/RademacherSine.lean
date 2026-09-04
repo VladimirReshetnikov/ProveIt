@@ -220,4 +220,22 @@ theorem thueMorseSign_eq_tprod_sign_sin (n : ℕ) :
   refine sign_sin_rademacherPoint_eq_one_of_lt (lt_of_lt_of_le hn ?_)
   exact Nat.pow_le_pow_right (by norm_num) (le_of_not_gt (by simpa using hj))
 
+/-! ## The floor-sum sign of an odd numerator -/
+
+/-- The dyadic floors of an odd numerator `2c + 1` from position `1` on are
+the dyadic floors of `c` from position `0` on: `⌊(2c+1)/2^{h+1}⌋ = ⌊c/2^h⌋`. -/
+theorem two_mul_add_one_div_two_pow_succ (c h : ℕ) :
+    (2 * c + 1) / 2 ^ (h + 1) = c / 2 ^ h := by
+  rw [pow_succ', ← Nat.div_div_eq_div_mul, show (2 * c + 1) / 2 = c by omega]
+
+/-- **The floor-sum sign of an odd numerator**: for `c < 2^n`,
+`(-1)^{∑_{h=1}^{n} ⌊(2c+1)/2^h⌋} = ε_c`.  This is the sign word that the
+spectra volume's root-of-unity prefactor carries (`p1:eq:Gamma-sign`), and it
+is the same parity fact as the Rademacher–sine factor law: each floor
+`⌊c/2^h⌋` contributes the bit `b_h(c)` modulo two. -/
+theorem neg_one_pow_sum_floor_odd_div_two_pow {c n : ℕ} (hc : c < 2 ^ n) :
+    (-1 : ℤ) ^ (∑ h ∈ range n, (2 * c + 1) / 2 ^ (h + 1)) = thueMorseSign c := by
+  simp_rw [two_mul_add_one_div_two_pow_succ]
+  exact neg_one_pow_sum_div_two_pow_const_one hc
+
 end Fabius

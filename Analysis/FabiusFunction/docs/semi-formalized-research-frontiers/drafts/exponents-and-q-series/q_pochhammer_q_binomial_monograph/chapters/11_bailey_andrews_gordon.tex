@@ -153,6 +153,34 @@ parameter choice satisfying the permanent nonvanishing assumptions in the
 theorem, including choices at which one of the temporary factors vanishes.
 \end{proof}
 
+\begin{remark}[A polynomial route to the inner sum]
+\label{qg:rem:full-bailey-cauchy-route}
+% ed.: added with the formalisation (\texttt{BaileyLemmaFull})
+The inner sum \eqref{qg:eq:full-bailey-inner} can also be evaluated without
+the reversal \eqref{qg:eq:finite-reversal} and without any temporary
+denominator.  Put \(x=\rho_1q^r\), \(y=\rho_2q^r\) and \(c=xyA=aq^{2r+1}\).
+Since \(1/((q;q)_k(q;q)_{N-k})=\GaussianBinomial{N}{k}{q}/(q;q)_N\) and
+\(1/(c;q)_k=(cq^k;q)_{N-k}/(c;q)_N\), the sum in
+\eqref{qg:eq:full-bailey-inner} equals
+\[
+ \frac{1}{(q;q)_N(c;q)_N}
+ \sum_{k=0}^{N}\GaussianBinomial{N}{k}{q}
+ (x;q)_k(y;q)_kA^k(A;q)_{N-k}(cq^k;q)_{N-k},
+\]
+and the second finite Cauchy identity
+\[
+ (xA;q)_N(yA;q)_N
+ =\sum_{k=0}^{N}\GaussianBinomial{N}{k}{q}
+ (x;q)_k(y;q)_kA^k(A;q)_{N-k}(xyAq^k;q)_{N-k}
+\]
+(\texttt{finite\_qCauchy\_second\_identity}), a polynomial identity valid in
+every commutative ring, evaluates it as
+\((xA;q)_N(yA;q)_N/((q;q)_N(c;q)_N)\), which is
+\eqref{qg:eq:full-bailey-inner-evaluation} since \(xA=aq^{r+1}/\rho_2\) and
+\(yA=aq^{r+1}/\rho_1\).  The Zariski-density argument at the end of the proof
+is then unnecessary.
+\end{remark}
+
 \begin{remark}[The limiting theorem is not restated]
 \label{qg:rem:bailey-limiting-reference}
 Letting \(\rho_1,\rho_2\) tend to infinity in

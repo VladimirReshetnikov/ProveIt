@@ -34,25 +34,6 @@ open Finset Filter Metric Set Topology
 
 namespace Fabius
 
-/-- A root of unity has norm one. -/
-theorem norm_eq_one_of_pow_eq_one {ζ : ℂ} {n : ℕ} (hζ : ζ ^ n = 1)
-    (hn : n ≠ 0) : ‖ζ‖ = 1 := by
-  have h := congrArg norm hζ
-  rw [norm_pow, norm_one] at h
-  have ha0 : 0 < ‖ζ‖ := by
-    rcases eq_or_lt_of_le (norm_nonneg ζ) with h0 | h0
-    · exfalso
-      rw [← h0, zero_pow hn] at h
-      norm_num at h
-    · exact h0
-  have hlog := congrArg Real.log h
-  rw [Real.log_pow, Real.log_one] at hlog
-  have hz : Real.log ‖ζ‖ = 0 := by
-    rcases mul_eq_zero.mp hlog with hcase | hcase
-    · exact absurd hcase (Nat.cast_ne_zero.mpr hn)
-    · exact hcase
-  rw [← Real.exp_log ha0, hz, Real.exp_zero]
-
 /-- **Radial vanishing at dyadic roots of unity**: along the radius
 toward a `2^k`-th root of unity, the Thue–Morse series tends to zero
 — the head of the iterated Mahler equation stays bounded by `2^k`
@@ -61,7 +42,7 @@ theorem tendsto_thueMorseDiscSeries_radial_zero {ζ : ℂ} {k : ℕ}
     (hζ : ζ ^ 2 ^ k = 1) :
     Tendsto (fun ρ : ℝ => thueMorseDiscSeries ((ρ : ℂ) * ζ))
       (𝓝[<] (1 : ℝ)) (𝓝 0) := by
-  have hζ1 : ‖ζ‖ = 1 := norm_eq_one_of_pow_eq_one hζ (by positivity)
+  have hζ1 : ‖ζ‖ = 1 := Complex.norm_eq_one_of_pow_eq_one hζ (by positivity)
   rw [tendsto_zero_iff_norm_tendsto_zero]
   refine squeeze_zero'
     (g := fun ρ : ℝ => (2 : ℝ) ^ k * (1 - ρ ^ 2 ^ k))
@@ -239,7 +220,7 @@ theorem thueMorse_natural_boundary (z₀ : ℂ) (hz₀ : ‖z₀‖ = 1)
   have hroot0 : ∀ ζ ∈ ball z₀ R, ∀ k : ℕ,
       ζ ^ 2 ^ (k + 1) = 1 → g ζ = 0 := by
     intro ζ hζball k hζk
-    have hζ1 : ‖ζ‖ = 1 := norm_eq_one_of_pow_eq_one hζk (by positivity)
+    have hζ1 : ‖ζ‖ = 1 := Complex.norm_eq_one_of_pow_eq_one hζk (by positivity)
     have hpath : Tendsto (fun ρ : ℝ => (ρ : ℂ) * ζ) (𝓝[<] (1 : ℝ))
         (𝓝 ζ) := by
       have h : Tendsto (fun ρ : ℝ => (ρ : ℂ) * ζ) (𝓝 (1 : ℝ))

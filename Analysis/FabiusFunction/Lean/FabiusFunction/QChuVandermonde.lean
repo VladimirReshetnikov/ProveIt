@@ -1,0 +1,201 @@
+import FabiusFunction.TwoPhiOneReversal
+import FabiusFunction.QBinomialCauchy
+import FabiusFunction.GaussianBinomialBounds
+
+/-!
+# The two `q`-Chu–Vandermonde sums
+
+The first `q`-Chu–Vandermonde sum
+
+`₂φ₁(q^{-n}, A; C; q, C q^n/A) = (C/A;q)_n / (C;q)_n`
+
+is, after clearing `(C;q)_n`, the polynomial identity
+
+`(C/A;q)_n = ∑_k [n,k]_q (-1)^k q^{C(k,2)} (C/A)^k (A;q)_k (C q^k;q)_{n-k}`,
+
+and this is *exactly* the finite `q`-Cauchy identity
+`(uv;q)_n = ∑_k [n,k]_q (u;q)_k v^k (v;q)_{n-k}` at base `q⁻¹` with `u = 1/A`,
+`v = C q^{n-1}`: transcribing the base-`q⁻¹` symbols and Gaussian coefficients back to base `q`
+(`finiteQPochhammerIn_inv_base_eq`, `finiteQPochhammerIn_inv_base_reversal`,
+`gaussianBinomial_inv`) produces precisely the sign and the power `q^{C(k,2)}`, because
+`k(n-1) = k(n-k) + 2·C(k,2)`.  Hence the sum holds in every field with `q ≠ 0`, `A ≠ 0`,
+`(q;q)_n ≠ 0`, `(C;q)_n ≠ 0`, with no limiting process.
+
+The second sum
+
+`₂φ₁(q^{-n}, A; C; q, q) = A^n (C/A;q)_n / (C;q)_n`
+
+follows from the first by the reversal `twoPhiOneFinite_reversal` at the reflected parameters
+`a = q^{1-n}/C`, `c = q^{1-n}/A`, `z = c q^n/a`.
+
+## Main declarations
+
+* `two_mul_choose_two`, `mul_sub_one_eq_mul_sub_add`: the exponent bookkeeping.
+* `finiteQPochhammerIn_div_eq_sum_chu`: the cleared first sum.
+* `q_chu_vandermonde_first`, `q_chu_vandermonde_second`.
+-/
+
+set_option autoImplicit false
+
+open Finset
+
+namespace Fabius
+
+/-- `2·C(k,2) = k(k-1)`. -/
+theorem two_mul_choose_two (k : ℕ) : 2 * k.choose 2 = k * (k - 1) := by
+  induction k with
+  | zero => rfl
+  | succ k ih =>
+    rw [Nat.choose_succ_succ, Nat.choose_one_right, Nat.add_sub_cancel, mul_add, ih]
+    rcases k with _ | k
+    · rfl
+    · rw [Nat.add_sub_cancel]
+      ring
+
+/-- For `k ≤ n`: `k(n-1) = k(n-k) + 2·C(k,2)`. -/
+theorem mul_sub_one_eq_mul_sub_add {k n : ℕ} (hk : k ≤ n) :
+    k * (n - 1) = k * (n - k) + 2 * k.choose 2 := by
+  rcases k with _ | k
+  · simp
+  obtain ⟨j, rfl⟩ := Nat.exists_eq_add_of_le hk
+  rw [two_mul_choose_two, show k + 1 + j - 1 = k + j by omega, Nat.add_sub_cancel_left,
+    Nat.add_sub_cancel]
+  ring
+
+variable {K : Type*} [Field K]
+
+set_option maxRecDepth 8192 in
+/-- **The cleared first `q`-Chu–Vandermonde sum**, i.e. the finite `q`-Cauchy identity at base
+`q⁻¹`:
+`(C/A;q)_n = ∑_k [n,k]_q (-1)^k q^{C(k,2)} (C/A)^k (A;q)_k (C q^k;q)_{n-k}`. -/
+theorem finiteQPochhammerIn_div_eq_sum_chu {q : K} (hq : q ≠ 0) {A : K} (hA : A ≠ 0) (C : K)
+    (n : ℕ) :
+    finiteQPochhammerIn (C / A) q n =
+      ∑ k ∈ range (n + 1), gaussianBinomial q n k * (-1) ^ k * q ^ k.choose 2 * (C / A) ^ k *
+        finiteQPochhammerIn A q k * finiteQPochhammerIn (C * q ^ k) q (n - k) := by
+  have h := finite_qCauchy_identity q⁻¹ A⁻¹ (C * q ^ (n - 1)) n
+  have hL : finiteQPochhammerIn (A⁻¹ * (C * q ^ (n - 1))) q⁻¹ n =
+      finiteQPochhammerIn (C / A) q n := by
+    rw [finiteQPochhammerIn_inv_base_eq hq]
+    congr 1
+    rw [inv_pow]
+    have : q ^ (n - 1) ≠ 0 := pow_ne_zero _ hq
+    field_simp
+  rw [hL] at h
+  rw [h]
+  refine sum_congr rfl fun k hk => ?_
+  have hk' : k ≤ n := Nat.lt_succ_iff.mp (mem_range.mp hk)
+  -- the Gaussian coefficient at base `q⁻¹`
+  have hG : gaussianBinomial q⁻¹ n k = gaussianBinomial q n k / q ^ (k * (n - k)) := by
+    rw [gaussianBinomial_inv q hq hk', mul_div_cancel_left₀ _ (pow_ne_zero _ hq)]
+  -- the first symbol at base `q⁻¹`
+  have hA' : finiteQPochhammerIn A⁻¹ q⁻¹ k =
+      (-A⁻¹) ^ k * (q⁻¹) ^ k.choose 2 * finiteQPochhammerIn A q k := by
+    rw [finiteQPochhammerIn_inv_base_reversal A⁻¹ q (inv_ne_zero hA) hq, inv_inv]
+  -- the second symbol at base `q⁻¹`
+  have hS : finiteQPochhammerIn (C * q ^ (n - 1)) q⁻¹ (n - k) =
+      finiteQPochhammerIn (C * q ^ k) q (n - k) := by
+    rcases eq_or_lt_of_le hk' with rfl | hlt
+    · simp
+    · rw [finiteQPochhammerIn_inv_base_eq hq]
+      congr 1
+      rw [inv_pow, mul_assoc, show q ^ (n - 1) = q ^ k * q ^ (n - k - 1) by
+        rw [← pow_add]; congr 1; omega]
+      have : q ^ (n - k - 1) ≠ 0 := pow_ne_zero _ hq
+      field_simp
+  rw [hG, hA', hS]
+  -- exponent bookkeeping: `(q^{n-1})^k = q^{k(n-k)} q^{C(k,2)} q^{C(k,2)}`
+  have hexp : (q ^ (n - 1)) ^ k = q ^ (k * (n - k)) * q ^ k.choose 2 * q ^ k.choose 2 := by
+    rw [← pow_mul, mul_comm (n - 1) k, mul_sub_one_eq_mul_sub_add hk', ← pow_add, ← pow_add,
+      two_mul, add_assoc]
+  rw [mul_pow, hexp, neg_pow]
+  simp only [div_pow, inv_pow]
+  have h1 : q ^ (k * (n - k)) ≠ 0 := pow_ne_zero _ hq
+  have h2 : q ^ k.choose 2 ≠ 0 := pow_ne_zero _ hq
+  have h3 : A ^ k ≠ 0 := pow_ne_zero _ hA
+  field_simp
+  all_goals ring
+
+/-- **The first `q`-Chu–Vandermonde sum**: for `q ≠ 0`, `A ≠ 0`, `(q;q)_n ≠ 0`, `(C;q)_n ≠ 0`,
+`₂φ₁(q^{-n}, A; C; q, C q^n/A) = (C/A;q)_n / (C;q)_n`. -/
+theorem q_chu_vandermonde_first {q : K} (hq : q ≠ 0) {A C : K} (hA : A ≠ 0) {n : ℕ}
+    (hqq : finiteQPochhammerIn q q n ≠ 0) (hCn : finiteQPochhammerIn C q n ≠ 0) :
+    twoPhiOneFinite (q ^ n)⁻¹ A C q (C * q ^ n / A) n =
+      finiteQPochhammerIn (C / A) q n / finiteQPochhammerIn C q n := by
+  rw [eq_div_iff hCn, finiteQPochhammerIn_div_eq_sum_chu hq hA C n, twoPhiOneFinite, sum_mul]
+  refine sum_congr rfl fun k hk => ?_
+  have hk' : k ≤ n := Nat.lt_succ_iff.mp (mem_range.mp hk)
+  have hC := finiteQPochhammerIn_add C q k (n - k)
+  rw [Nat.add_sub_of_le hk'] at hC
+  have hCk : finiteQPochhammerIn C q k ≠ 0 := finiteQPochhammerIn_ne_zero_of_le _ hk' hCn
+  have hqk : finiteQPochhammerIn q q k ≠ 0 := finiteQPochhammerIn_ne_zero_of_le _ hk' hqq
+  have hN : finiteQPochhammerIn (q ^ n)⁻¹ q k =
+      (-1) ^ k * q ^ k.choose 2 * (finiteQPochhammerIn q q k * gaussianBinomial q n k) /
+        q ^ (n * k) := by
+    rw [finiteQPochhammerIn_self_mul_gaussianBinomial q hk',
+      ← pow_mul_finiteQPochhammerIn_inv_pow_eq q hq hk',
+      mul_div_cancel_left₀ _ (pow_ne_zero _ hq)]
+  rw [hC, hN]
+  simp only [div_pow, mul_pow]
+  rw [← pow_mul]
+  have hqnk : q ^ (n * k) ≠ 0 := pow_ne_zero _ hq
+  have hAk : A ^ k ≠ 0 := pow_ne_zero _ hA
+  field_simp
+
+/-- **The second `q`-Chu–Vandermonde sum, by reversal**: for `q ≠ 0`, nonzero `A, C` with
+`(q;q)_n`, `(A;q)_n`, `(C;q)_n` nonzero, `₂φ₁(q^{-n}, A; C; q, q) = A^n (C/A;q)_n / (C;q)_n`.
+The proof applies `twoPhiOneFinite_reversal` to the first sum at the reflected parameters
+`a = q^{1-n}/C`, `c = q^{1-n}/A`, `z = c q^n/a`, exactly as in the monograph. -/
+theorem q_chu_vandermonde_second {q : K} (hq : q ≠ 0) {A C : K} (hA : A ≠ 0) (hC : C ≠ 0)
+    {n : ℕ} (hqq : finiteQPochhammerIn q q n ≠ 0) (hAn : finiteQPochhammerIn A q n ≠ 0)
+    (hCn : finiteQPochhammerIn C q n ≠ 0) :
+    twoPhiOneFinite (q ^ n)⁻¹ A C q q n =
+      A ^ n * finiteQPochhammerIn (C / A) q n / finiteQPochhammerIn C q n := by
+  have hqn : q ^ n ≠ 0 := pow_ne_zero _ hq
+  have hN : q * (q ^ n)⁻¹ ≠ 0 := mul_ne_zero hq (inv_ne_zero hqn)
+  -- the reversal of `(C;q)_n` at `i = n`
+  have hrevC := finiteQPochhammerIn_sub_eq hq hC (le_refl n)
+  rw [Nat.sub_self, finiteQPochhammerIn_zero, one_mul, pow_zero, mul_one] at hrevC
+  set a := q * (q ^ n)⁻¹ / C with ha_def
+  set c := q * (q ^ n)⁻¹ / A with hc_def
+  have ha : a ≠ 0 := div_ne_zero hN hC
+  have hc : c ≠ 0 := div_ne_zero hN hA
+  have hcn : finiteQPochhammerIn c q n ≠ 0 :=
+    finiteQPochhammerIn_reversal_ne_zero hq hA le_rfl hAn
+  have hra : q * (q ^ n)⁻¹ / a = C := by
+    rw [ha_def]
+    field_simp
+  have hrc : q * (q ^ n)⁻¹ / c = A := by
+    rw [hc_def]
+    field_simp
+  have han : finiteQPochhammerIn (q * (q ^ n)⁻¹ / a) q n ≠ 0 := by rwa [hra]
+  have hz : c * q ^ n / a ≠ 0 := div_ne_zero (mul_ne_zero hc hqn) ha
+  have hrev := twoPhiOneFinite_reversal hq ha hc hz hqq hcn han
+  have hzq : c * q ^ (n + 1) / (a * (c * q ^ n / a)) = q := by
+    field_simp
+    ring
+  rw [hra, hrc, hzq, q_chu_vandermonde_first hq ha hqq hcn] at hrev
+  have hca : c / a = C / A := by
+    rw [ha_def, hc_def]
+    field_simp
+  have hcza : c * q ^ n / a = C * q ^ n / A := by
+    rw [ha_def, hc_def]
+    field_simp
+  rw [hca, hcza] at hrev
+  have hrev' := (div_eq_iff hcn).mp hrev
+  rw [eq_div_iff hCn, ← hrevC, hrev']
+  have hqexp : (q ^ n) ^ n = q ^ n.choose 2 * q ^ ((n + 1).choose 2) := by
+    rw [← pow_add, choose_two_add_succ_choose_two, pow_mul]
+  simp only [div_pow, mul_pow]
+  rw [hqexp]
+  have h1 : q ^ n.choose 2 ≠ 0 := pow_ne_zero _ hq
+  have h2 : q ^ ((n + 1).choose 2) ≠ 0 := pow_ne_zero _ hq
+  have h3 : A ^ n ≠ 0 := pow_ne_zero _ hA
+  have h4 : finiteQPochhammerIn a q n ≠ 0 := by
+    intro h0
+    rw [h0, mul_zero] at hrevC
+    exact hCn hrevC.symm
+  field_simp
+  all_goals ring
+
+end Fabius

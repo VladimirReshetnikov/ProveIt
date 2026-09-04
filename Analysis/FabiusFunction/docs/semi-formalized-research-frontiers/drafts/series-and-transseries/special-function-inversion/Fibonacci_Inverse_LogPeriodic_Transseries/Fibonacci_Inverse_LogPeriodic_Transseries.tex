@@ -1,0 +1,2554 @@
+\documentclass[11pt,oneside]{article}
+
+% =====================================================================
+%  Inverse transseries for the real-argument Fibonacci modulus
+%  Research draft for the ProveIt series-and-transseries collection.
+% =====================================================================
+
+\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{xurl}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
+
+\definecolor{linkblue}{RGB}{24,72,124}
+\definecolor{deepgreen}{RGB}{23,102,69}
+\definecolor{deepred}{RGB}{140,42,42}
+\definecolor{deepgold}{RGB}{122,91,19}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\definecolor{palered}{RGB}{251,236,236}
+\definecolor{palegold}{RGB}{251,245,230}
+\definecolor{palegreen}{RGB}{233,245,243}
+\definecolor{paleblue}{RGB}{237,244,251}
+
+\hypersetup{
+  hypertexnames=false,
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=deepgreen,
+  urlcolor=linkblue,
+  pdftitle={Inverting a Real-Argument Fibonacci Function: Log-Periodic Transseries, Exact Coefficients, and a General Product-Reversion Calculus},
+  pdfauthor={Research draft prepared for Vladimir Reshetnikov and the ProveIt project},
+  pdfsubject={Asymptotic and convergent transseries for the outer inverse branches of an even real interpolation of Fibonacci numbers, with multivariate Lagrange-Good inversion},
+  pdfkeywords={Fibonacci numbers, inverse function, transseries, log-periodic asymptotics, complex powers, multivariate Lagrange inversion, Good inversion, generalized binomial coefficients}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Inverse Fibonacci transseries}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.48em}
+\setlist[itemize]{leftmargin=1.45em,itemsep=0.25ex,topsep=0.55ex}
+\setlist[enumerate]{leftmargin=1.85em,itemsep=0.35ex,topsep=0.55ex}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newtcolorbox{mainresultbox}[1][]{%
+  enhanced,breakable,colback=paleblue,colframe=linkblue,
+  boxrule=0.75pt,arc=1.2mm,left=2.2mm,right=2.2mm,top=1.5mm,bottom=1.5mm,
+  title={Main result},fonttitle=\bfseries,#1}
+\newtcolorbox{summarybox}[1][]{%
+  enhanced,breakable,colback=palegold,colframe=deepgold,
+  boxrule=0.6pt,arc=1.2mm,left=1.8mm,right=1.8mm,top=1.2mm,bottom=1.2mm,
+  title={Section summary},fonttitle=\bfseries,#1}
+\newtcolorbox{checkpointbox}[1][]{%
+  enhanced,breakable,colback=palegreen,colframe=deepgreen,
+  boxrule=0.6pt,arc=1.2mm,left=1.8mm,right=1.8mm,top=1.2mm,bottom=1.2mm,
+  title={Structural checkpoint},fonttitle=\bfseries,#1}
+\newtcolorbox{warningbox}[1][]{%
+  enhanced,breakable,colback=palered,colframe=deepred,
+  boxrule=0.6pt,arc=1.2mm,left=1.8mm,right=1.8mm,top=1.2mm,bottom=1.2mm,
+  title={A point requiring care},fonttitle=\bfseries,#1}
+
+\lstdefinestyle{wlstyle}{%
+  language=Mathematica,
+  basicstyle=\ttfamily\small,columns=fullflexible,frame=single,
+  rulecolor=\color{rulegray},backgroundcolor=\color{shadegray},
+  showstringspaces=false,keepspaces=true,breaklines=true,
+  xleftmargin=0.4em,xrightmargin=0.4em,aboveskip=0.8em,belowskip=0.8em}
+\lstset{style=wlstyle}
+
+\newcommand{\Fcal}{\mathcal{F}}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Ord}{\mathcal O}
+\newcommand{\littleo}{\mathrm o}
+\newcommand{\phig}{\varphi}
+\newcommand{\Logp}{\operatorname{Log}}
+\newcommand{\Res}{\operatorname*{Res}}
+\newcommand{\Coeff}[2]{[\,#1^{#2}\,]}
+\newcommand{\multi}[1]{\bm{#1}}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\Talg}{\mathscr A_{\rho}}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\mean}[1]{\left\langle #1\right\rangle}
+\DeclareMathOperator{\arccsch}{arccsch}
+\DeclareMathOperator{\arsinh}{arsinh}
+\DeclareMathOperator{\val}{val}
+\DeclareMathOperator{\supp}{supp}
+
+\title{\textbf{Inverting a Real-Argument Fibonacci Function}\\[0.35em]
+\Large Log-Periodic Transseries, Exact Multivariate Coefficients,\\
+and a General Product-Reversion Calculus}
+\author{Research draft prepared for Vladimir Reshetnikov\\and the ProveIt project}
+\date{3 September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study the nonnegative even interpolation
+\[
+ \Fcal(x)=\sqrt{\frac25}\,
+ \sqrt{\cosh\!\bigl(2x\,\arccsch 2\bigr)-\cos(\pi x)},
+ \qquad x\in\R,
+\]
+which satisfies \(\Fcal(n)=F_n\) for every nonnegative integer \(n\).
+The map is not globally one-to-one, but it is strictly increasing on
+\([2,\infty)\).  Hence it has a positive outer inverse \(X_+(y)\) for
+\(y\ge1\), and evenness gives the negative outer inverse
+\(X_-(y)=-X_+(y)\).  We determine their complete large-\(y\) transseries.
+
+Put \(\lambda=2\log\varphi\), \(\rho=\pi/\lambda\),
+\(R=5y^2\), and \(u=\e^{-\lambda x}\).  The inverse equation admits the
+factorization
+\[
+ Ru=(1-u^{1-\ii\rho})(1-u^{1+\ii\rho}).
+\]
+This identity converts the inverse problem into an analytic bivariate
+reversion at the ordinary origin.  Multivariate Lagrange--Good inversion
+then gives the explicit all-orders formula
+\[
+ X_+(y)=\frac{\log R}{\lambda}
+ +\sum_{\substack{j,k\ge0\\j+k\ge1}}
+ \frac{(-1)^{j+k+1}}{\lambda s_{jk}}
+ \binom{s_{jk}}j\binom{s_{jk}}k R^{-s_{jk}},
+ \qquad
+ s_{jk}=j+k-\ii\rho(j-k).
+\]
+The series is not merely formal: it converges for all sufficiently large
+\(y\).  Pairing conjugate terms reorganizes it as
+\[
+ X_+(y)=\xi+\sum_{n\ge1}D_n(\theta)R^{-n},
+ \qquad
+ \xi=\frac{\log R}{\lambda},\quad \theta=\pi\xi,
+\]
+where each \(D_n\) is an explicit real trigonometric polynomial whose
+harmonics have the same parity as \(n\).  We derive the first sectors,
+a triangular recurrence, uniform remainder bounds, differentiation rules,
+a hypergeometric--elliptic formula for the angular mean, and the exact
+Banach-space radius of uniform convergence.  Numerical tests include the
+integer checkpoints \(X_+(2)=3\) and \(X_+(5)=5\).
+
+The second part develops a reusable theory for inverses of finite products
+\[
+ R=\e^{\lambda x}\prod_{r=1}^m
+ (1-c_r\e^{-\lambda\alpha_r x})^{\beta_r},
+ \qquad \Re\alpha_r>0,
+\]
+obtaining a closed multi-index coefficient formula.  We then extend the
+method to arbitrary analytic perturbations of a dominant exponential and
+to mixed carriers such as \(\e^{\lambda x}x^\mu\), where Lambert \(W\)
+and polynomial--logarithmic coefficient fields enter.  The resulting
+framework explains systematically why conjugate complex exponents generate
+log-periodic or quasiperiodic inverse transseries.
+\end{abstract}
+
+\begin{mainresultbox}
+Let
+\[
+ \lambda=2\log\varphi,\qquad \rho=\frac{\pi}{\lambda},\qquad
+ R=5y^2,
+\]
+and define
+\[
+ \xi=\frac{\log R}{\lambda}=\log_{\varphi}(\sqrt5\,y),
+ \qquad \theta=\rho\log R=\pi\xi,
+ \qquad q=R^{-1}.
+\]
+For the positive outer branch, as \(y\to+\infty\),
+\begin{align*}
+ X_+(y)={}&\xi+\frac{2q}{\lambda}\cos\theta\\
+ &-\frac{q^2}{\lambda}
+   \bigl(2+\cos2\theta+2\rho\sin2\theta\bigr)\\
+ &+\frac{q^3}{\lambda}
+ \left[
+   (6-\rho^2)\cos\theta+5\rho\sin\theta
+   +\left(\frac23-3\rho^2\right)\cos3\theta
+   +3\rho\sin3\theta
+ \right]
+ +\Ord(q^4).
+\end{align*}
+Equivalently, the leading correction is
+\[
+ X_+(y)=\log_{\varphi}(\sqrt5\,y)
+ +\frac{\cos\!\bigl(\pi\log_{\varphi}(\sqrt5\,y)\bigr)}
+ {5(\log\varphi)y^2}
+ +\Ord(y^{-4}).
+\]
+The complete coefficient formula is
+\[
+ X_+(y)=\frac{\log R}{\lambda}
+ +\sum_{\substack{j,k\ge0\\j+k\ge1}}
+ \frac{(-1)^{j+k+1}}{\lambda s_{jk}}
+ \binom{s_{jk}}j\binom{s_{jk}}k R^{-s_{jk}},
+ \qquad s_{jk}=j+k-\ii\rho(j-k).
+\]
+For every fixed \(N\), truncation at \(j+k=N\) has error
+\(\Ord(R^{-N-1})=\Ord(y^{-2N-2})\).  The negative outer branch is
+\(X_-(y)=-X_+(y)\).
+\end{mainresultbox}
+
+\tableofcontents
+\newpage
+\section{Introduction}
+
+The ordinary Fibonacci sequence is discrete, while inversion is naturally a
+continuous or complex-analytic operation.  There are many inequivalent ways
+to continue Fibonacci numbers away from the integers.  The continuation in
+this article is distinguished by three elementary features: it is real and
+nonnegative on the real axis, it is even, and it agrees exactly with the
+nonnegative Fibonacci numbers at nonnegative integers.  These features are
+purchased at the cost of global injectivity and, at the origin, ordinary
+analyticity.  Neither issue obstructs inversion at large values.
+
+The asymptotic problem has an unusual scale.  The dominant exponential gives
+\(
+ x\sim\log_{\varphi}(\sqrt5\,y)
+\), but the first correction is not a power of \(1/\log y\).  It has size
+\(y^{-2}\) and carries a periodic function of \(\log y\).  Thus it is beyond
+all inverse-logarithmic orders while still algebraic in \(y^{-1}\).  In the
+language of transseries, the relevant monomials are complex powers
+\[
+ R^{-n+\ii\rho h}=R^{-n}\e^{\ii h\rho\log R},
+ \qquad n\in\mathbb N,
+\]
+organized into finite Fourier packets at every real order \(R^{-n}\).
+Conjugation makes the final answer real.
+
+A direct Taylor reversion of the original square-root formula is possible,
+but it hides the decisive structure.  Squaring and introducing
+\(u=\e^{-\lambda x}\) reveals an exact factorization into two conjugate
+factors.  The inverse then becomes a bivariate fixed-point problem with an
+ordinary analytic germ at the origin.  This makes the multivariate
+Lagrange--Good theorem almost perfectly adapted to the problem and produces
+a closed coefficient formula.
+
+The article has two goals.  First, it gives a complete treatment of the
+specific Fibonacci interpolation: branches, explicit sectors, convergence,
+error certification, computation, and numerical checks.  Second, it isolates
+the mechanism and proves a multi-factor inversion theorem applicable to a
+large class of exponential products.  Arbitrary analytic perturbations and
+mixed dominant carriers are treated afterward.
+
+\section{The real-argument Fibonacci modulus}
+
+\subsection{Constants and equivalent forms}
+
+Let
+\begin{equation}\label{eq:phi-lambda-rho}
+ \varphi=\frac{1+\sqrt5}{2},\qquad
+ a=\arccsch 2,\qquad
+ \lambda=2a,
+ \qquad \omega=\pi,
+ \qquad \rho=\frac{\omega}{\lambda}.
+\end{equation}
+Because \(\sinh a=1/2\), the positive number \(t=\e^a\) satisfies
+\(t-t^{-1}=1\), hence \(t=\varphi\).  Therefore
+\begin{equation}\label{eq:arccsch-phi}
+ a=\log\varphi,
+ \qquad
+ \lambda=2\log\varphi.
+\end{equation}
+Numerically,
+\[
+ \lambda=0.9624236501192068949955\ldots,
+ \qquad
+ \rho=3.2642513026364969\ldots.
+\]
+
+Define
+\begin{equation}\label{eq:F-definition}
+ \Fcal(x)=\sqrt{\frac25}
+ \sqrt{\cosh(\lambda x)-\cos(\omega x)},
+ \qquad x\in\R,
+\end{equation}
+where the nonnegative square root is understood.  Squaring and expanding the
+hyperbolic cosine gives
+\begin{equation}\label{eq:F-square-exp}
+ \Fcal(x)^2
+ =\frac15\left(\e^{\lambda x}+\e^{-\lambda x}
+                   -2\cos(\omega x)\right).
+\end{equation}
+Since \(\lambda=2\log\varphi\), this can also be written as the modulus of a
+complex Binet interpolation:
+\begin{equation}\label{eq:modulus-binet}
+ \Fcal(x)
+ =\frac1{\sqrt5}\left|
+    \varphi^x-\e^{\ii\pi x}\varphi^{-x}
+  \right|.
+\end{equation}
+The modulus in \cref{eq:modulus-binet} is essential: the complex expression
+inside it is an analytic continuation, whereas \(\Fcal\) itself is an even,
+nonnegative real function.
+
+\begin{proposition}[Interpolation of Fibonacci numbers]\label{prop:integer-interpolation}
+For every integer \(n\ge0\),
+\[
+ \Fcal(n)=F_n,
+\]
+where \(F_0=0\), \(F_1=1\), and \(F_{n+2}=F_{n+1}+F_n\).
+\end{proposition}
+
+\begin{proof}
+Binet's formula is
+\[
+ F_n=\frac{\varphi^n-(-\varphi^{-1})^n}{\sqrt5}.
+\]
+It is nonnegative for \(n\ge0\), and therefore
+\begin{align*}
+ F_n^2
+ &=\frac15\left(\varphi^{2n}+\varphi^{-2n}-2(-1)^n\right)\\
+ &=\frac15\left(\e^{\lambda n}+\e^{-\lambda n}
+                  -2\cos(\pi n)\right)
+ =\Fcal(n)^2.
+\end{align*}
+Taking nonnegative square roots proves the claim.
+\end{proof}
+
+\begin{remark}
+The extension is not the usual signed extension to negative indices.  It is
+even, so \(\Fcal(-n)=F_n\), whereas the discrete signed convention gives
+\(F_{-n}=(-1)^{n+1}F_n\).  This distinction matters when the two outer
+inverse branches are named.
+\end{remark}
+
+\subsection{Basic geometry and the outer inverse branches}
+
+Equation \cref{eq:F-definition} immediately shows that \(\Fcal\) is even and
+that its only real zero is \(x=0\).  Near the origin,
+\begin{equation}\label{eq:F-origin}
+ \Fcal(x)=\sqrt{\frac{\lambda^2+\omega^2}{5}}\,|x|
+ +\Ord(|x|^3),
+\end{equation}
+so the even interpolation has a cusp there.
+
+For \(x>0\), differentiation of \cref{eq:F-square-exp} gives
+\begin{equation}\label{eq:F-derivative}
+ \Fcal'(x)=
+ \frac{\lambda\sinh(\lambda x)+\omega\sin(\omega x)}
+      {5\Fcal(x)}.
+\end{equation}
+The oscillatory sine can create a small nonmonotone region, but exponential
+growth eventually dominates it.
+
+\begin{proposition}[Monotonicity of the outer branch]\label{prop:outer-monotone}
+Let
+\begin{equation}\label{eq:x-star}
+ x_*=\frac1\lambda\arsinh\!\left(\frac\omega\lambda\right)
+ =1.972992734136994\ldots.
+\end{equation}
+Then \(\Fcal'(x)>0\) for every \(x>x_*\).  In particular,
+\(\Fcal\) is strictly increasing on \([2,\infty)\), and it maps that
+interval bijectively onto \([1,\infty)\).
+\end{proposition}
+
+\begin{proof}
+By \cref{eq:F-derivative}, the sign is the sign of its numerator.  Since
+\(\sin(\omega x)\ge-1\),
+\[
+ \lambda\sinh(\lambda x)+\omega\sin(\omega x)
+ \ge \lambda\sinh(\lambda x)-\omega.
+\]
+The right-hand side is positive exactly when \(x>x_*\).  Moreover,
+\(x_*<2\) and \(\Fcal(2)=F_2=1\).  Since \(\Fcal(x)\to\infty\), the stated
+bijection follows.
+\end{proof}
+
+\begin{definition}[Outer inverse branches]\label{def:outer-branches}
+For \(y\ge1\), let \(X_+(y)\in[2,\infty)\) be the unique solution of
+\(\Fcal(x)=y\).  Define
+\[
+ X_-(y)=-X_+(y).
+\]
+These are the positive and negative outer inverse branches.
+\end{definition}
+
+On the entire real line, \(\Fcal\) is not globally one-to-one.  Numerically,
+the two nontrivial critical points in \((1,2)\) are approximately
+\[
+ 1.132379068\ldots,
+ \qquad
+ 1.719250886\ldots,
+\]
+with function values \(1.013859885\ldots\) and
+\(0.911172684\ldots\), respectively.  Consequently, some moderate values
+have additional inner preimages.  This finite-scale geometry disappears
+from the large-value problem: because \([0,2]\) is compact, every
+sufficiently large \(y\) has exactly the two real preimages \(X_+(y)\) and
+\(X_-(y)\).
+
+\begin{warningbox}
+The phrase ``the inverse of \(\Fcal\)'' is ambiguous unless a branch is
+specified.  Every asymptotic formula below first refers to \(X_+\); the
+negative real branch follows by evenness.  Complex branches require an
+additional logarithm index and are discussed in \cref{sec:complex-branches}.
+\end{warningbox}
+
+\section{Exact normalization and factorization}
+
+\subsection{The squared inverse equation}
+
+Fix the positive outer branch and put
+\begin{equation}\label{eq:R-def}
+ R=5y^2.
+\end{equation}
+The equation \(\Fcal(x)=y\) becomes
+\begin{equation}\label{eq:R-equation-x}
+ R=\e^{\lambda x}+\e^{-\lambda x}-2\cos(\omega x).
+\end{equation}
+For positive real \(x\), introduce
+\begin{equation}\label{eq:u-def}
+ u=\e^{-\lambda x}\in(0,1),
+ \qquad \rho=\frac\omega\lambda.
+\end{equation}
+Using the real logarithm of \(u\),
+\[
+ \e^{\ii\omega x}=u^{-\ii\rho},
+ \qquad
+ \e^{-\ii\omega x}=u^{\ii\rho}.
+\]
+Therefore \cref{eq:R-equation-x} is equivalent to
+\begin{equation}\label{eq:R-u-unfactored}
+ R=u^{-1}+u-u^{\ii\rho}-u^{-\ii\rho}.
+\end{equation}
+Multiplication by \(u\) produces the key identity.
+
+\begin{theorem}[Conjugate factorization]\label{thm:factorization}
+With
+\begin{equation}\label{eq:alpha-def}
+ \alpha=1-\ii\rho,
+ \qquad
+ \bar\alpha=1+\ii\rho,
+\end{equation}
+the positive inverse equation is exactly
+\begin{equation}\label{eq:factorized-u}
+ Ru=(1-u^\alpha)(1-u^{\bar\alpha}).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Expanding the right-hand side gives
+\[
+ (1-u^{1-\ii\rho})(1-u^{1+\ii\rho})
+ =1-u^{1-\ii\rho}-u^{1+\ii\rho}+u^2,
+\]
+which is precisely \(u\) times the right-hand side of
+\cref{eq:R-u-unfactored}.
+\end{proof}
+
+This factorization is the structural reason the inverse coefficients admit
+a closed formula.  Without it one still obtains a recursion, but the two
+oscillatory pieces appear unrelated.  In factorized form they are a
+conjugate pair.
+
+\subsection{Baseline, phase, and the normalized implicit equation}
+
+Define
+\begin{equation}\label{eq:q-xi-theta}
+ q=R^{-1},
+ \qquad
+ \xi=\frac{\log R}{\lambda},
+ \qquad
+ \theta=\rho\log R=\omega\xi.
+\end{equation}
+The dominant balance in \cref{eq:R-equation-x} is
+\(R\sim\e^{\lambda x}\), hence \(x\sim\xi\).  Write
+\begin{equation}\label{eq:delta-def}
+ x=\xi+\delta.
+\end{equation}
+Since \(\e^{\lambda\xi}=R\), division of
+\cref{eq:R-equation-x} by \(R\) yields the exact scalar equation
+\begin{equation}\label{eq:H-equation}
+ H(\delta;q,\theta):=
+ \e^{\lambda\delta}
+ +q^2\e^{-\lambda\delta}
+ -2q\cos(\theta+\omega\delta)-1=0.
+\end{equation}
+At \(q=0\), this reduces to \(\e^{\lambda\delta}=1\), and the real germ is
+\(\delta=0\).  Furthermore,
+\[
+ \frac{\partial H}{\partial\delta}(0;0,\theta)=\lambda\ne0.
+\]
+The analytic implicit-function theorem therefore gives a unique small
+solution for \(|q|\) sufficiently small, uniformly in real \(\theta\).
+Equation \cref{eq:H-equation} already proves the existence of an expansion
+in powers of \(q\) whose coefficients are trigonometric polynomials.  The
+factorization will do much more: it will calculate every coefficient in one
+line.
+
+\subsection{Bivariate lift}
+
+From \cref{eq:factorized-u}, set
+\begin{equation}\label{eq:VABXY}
+ V=\frac uq,
+ \qquad
+ A=u^\alpha,
+ \qquad
+ B=u^{\bar\alpha},
+ \qquad
+ X=q^\alpha,
+ \qquad
+ Y=q^{\bar\alpha}.
+\end{equation}
+Then
+\begin{equation}\label{eq:V-product}
+ V=(1-A)(1-B),
+\end{equation}
+and, because \(u=qV\),
+\begin{equation}\label{eq:AB-fixed-point}
+ A=XV^\alpha,
+ \qquad
+ B=YV^{\bar\alpha}.
+\end{equation}
+Finally,
+\begin{equation}\label{eq:delta-logV}
+ \delta=-\frac1\lambda\log V.
+\end{equation}
+Equations \cref{eq:V-product,eq:AB-fixed-point,eq:delta-logV} are an
+ordinary bivariate analytic reversion problem at \((X,Y)=(0,0)\).
+For positive real \(q\),
+\begin{equation}\label{eq:X-Y-phase}
+ X=q\e^{\ii\theta},
+ \qquad
+ Y=q\e^{-\ii\theta}.
+\end{equation}
+Thus every monomial \(X^jY^k\) becomes
+\(q^{j+k}\e^{\ii(j-k)\theta}\).
+
+\begin{checkpointbox}
+The large variable \(y\) has disappeared from the analytic reversion itself.
+It enters only through the small radial variable \(q=(5y^2)^{-1}\) and the
+logarithmic angle \(\theta=\rho\log(5y^2)\).  The inverse correction is an
+analytic bivariate germ restricted to the spiral
+\((X,Y)=(q\e^{\ii\theta},q\e^{-\ii\theta})\).
+\end{checkpointbox}
+
+\section{The log-periodic transseries algebra}\label{sec:algebra}
+
+\subsection{Complex powers and Fourier packets}
+
+For the present problem the natural monomials are
+\begin{equation}\label{eq:monomial-R}
+ R^{-s_{jk}},
+ \qquad
+ s_{jk}=\alpha j+\bar\alpha k
+       =j+k-\ii\rho(j-k),
+ \qquad j,k\in\Nzero.
+\end{equation}
+Their absolute sizes are \(R^{-(j+k)}\).  If
+\begin{equation}\label{eq:n-h}
+ n=j+k,
+ \qquad h=j-k,
+\end{equation}
+then \(|h|\le n\), \(h\equiv n\pmod2\), and
+\begin{equation}\label{eq:monomial-qtheta}
+ R^{-s_{jk}}=q^n\e^{\ii h\theta}.
+\end{equation}
+At each fixed radial order \(q^n\), only finitely many Fourier harmonics are
+possible.
+
+\begin{definition}[Fibonacci log-periodic algebra]\label{def:Talg}
+Let \(\Talg\) be the set of formal series
+\begin{equation}\label{eq:Talg-form}
+ T(q,\theta)=\sum_{n\ge0}D_n(\theta)q^n,
+\end{equation}
+where
+\begin{equation}\label{eq:Dn-cone}
+ D_n(\theta)=
+ \sum_{\substack{|h|\le n\\h\equiv n\ (2)}}d_{n,h}\e^{\ii h\theta}
+\,
+\end{equation}
+and, for real series, \(d_{n,-h}=\overline{d_{n,h}}\).  The valuation of a
+nonzero series is the least \(n\) for which \(D_n\ne0\).
+\end{definition}
+
+The cone and parity conditions in \cref{eq:Dn-cone} are closed under
+multiplication.  The resulting \(q\)-adic metric makes \(\Talg\) complete.
+If \(T\) has positive valuation, then analytic substitutions such as
+\(\exp T\), \(\log(1+T)\), and \(\cos(\theta+T)\) are well defined by their
+ordinary Taylor series: only finitely many terms contribute to any prescribed
+radial order.  Consequently \cref{eq:H-equation} has a unique formal solution
+\(\delta\in q\Talg\), independently of convergence questions.
+
+\subsection{Differentiation}
+
+The algebra is also stable under the Euler derivative.  Since
+\(q=R^{-1}\) and \(\theta=\rho\log R\),
+\begin{equation}\label{eq:euler-action}
+ R\frac{\dd}{\dd R}
+ \left(q^n\e^{\ii h\theta}\right)
+ =(-n+\ii\rho h)q^n\e^{\ii h\theta}
+ =-s_{jk}R^{-s_{jk}}.
+\end{equation}
+In the original variable \(y\), because \(R=5y^2\),
+\begin{equation}\label{eq:y-euler-action}
+ y\frac{\dd}{\dd y}
+ \left(q^n\e^{\ii h\theta}\right)
+ =2(-n+\ii\rho h)q^n\e^{\ii h\theta}.
+\end{equation}
+Thus differentiation does not change radial valuation.  Ordinary derivatives
+add the expected powers of \(y^{-1}\).
+
+\subsection{Why this is a transseries rather than an ordinary power series}
+
+If \(q\) and \(\theta\) were independent, \cref{eq:Talg-form} would simply
+be a power series with trigonometric-polynomial coefficients.  Along the
+physical curve, however,
+\(
+ \theta=-\rho\log q
+\), so every Fourier factor is a complex power of \(q\).
+The scale is therefore a finitely generated grid of complex powers.  It is
+well based by the real valuation \(\Re s_{jk}=j+k\), even though the complex
+exponents are not linearly ordered by their imaginary parts.
+
+Relative to the coarse expansion scale generated by
+\(\log y\), \(\log\log y\), and inverse logarithms, every nonconstant sector
+of \(\Talg\) is beyond all orders:
+\[
+ y^{-2}=\littleo\!\left((\log y)^{-M}\right)
+ \qquad\text{for every fixed }M>0.
+\]
+This explains why a purely polynomial--logarithmic analysis recovers only
+the carrier \(\xi\) and misses the oscillatory corrections.
+
+\begin{summarybox}
+The correct coefficient ring is not merely \(\R[[y^{-2}]]\).  It is a
+complete valued algebra of Fourier packets in \(\log y\).  The bivariate
+variables \(X\) and \(Y\) linearize its support: \(X^jY^k\) corresponds to
+the complex-power monomial \(R^{-s_{jk}}\).
+\end{summarybox}
+\section{Multivariate Lagrange--Good inversion}\label{sec:good}
+
+\subsection{The coefficient theorem}
+
+We use the following form of multivariate Lagrange inversion.  For a
+multi-index \(\multi n=(n_1,\ldots,n_m)\), write
+\(
+ \multi Q^{\multi n}=\prod_r Q_r^{n_r}
+\) and similarly for \(\multi A^{\multi n}\).
+
+\begin{theorem}[Lagrange--Good coefficient formula]\label{thm:good}
+Suppose analytic germs \(A_r=A_r(\multi Q)\) are determined near the origin
+by
+\begin{equation}\label{eq:Good-system}
+ A_r=Q_r\Phi_r(\multi A),
+ \qquad r=1,\ldots,m,
+ \qquad \Phi_r(\multi0)\ne0.
+\end{equation}
+Then for every analytic germ \(f\),
+\begin{equation}\label{eq:Good-formula}
+ [\multi Q^{\multi n}]f(\multi A(\multi Q))
+ = [\multi A^{\multi n}]
+ f(\multi A)\prod_{r=1}^m\Phi_r(\multi A)^{n_r}
+ \Delta(\multi A),
+\end{equation}
+where
+\begin{equation}\label{eq:Good-determinant}
+ \Delta(\multi A)=
+ \det\!\left(
+   \delta_{rs}-A_s\frac{\partial}{\partial A_s}
+                   \log\Phi_r(\multi A)
+ \right)_{r,s=1}^m.
+\end{equation}
+\end{theorem}
+
+The theorem can be proved by a multivariate residue change of variables.
+The determinant is the Jacobian correction for
+\(Q_r=A_r/\Phi_r(\multi A)\).  We will not merely invoke the formula: in the
+present system its determinant has rank one, and the entire coefficient
+calculation collapses to generalized binomial coefficients.
+
+\subsection{Evaluation for the Fibonacci system}
+
+For \cref{eq:AB-fixed-point},
+\[
+ \Phi_1=V^\alpha,
+ \qquad
+ \Phi_2=V^{\bar\alpha},
+ \qquad
+ V=(1-A)(1-B).
+\]
+Because
+\[
+ \frac{\partial\log V}{\partial A}=-\frac1{1-A},
+ \qquad
+ \frac{\partial\log V}{\partial B}=-\frac1{1-B},
+\]
+the Good matrix is
+\[
+ \begin{pmatrix}
+  1+\dfrac{\alpha A}{1-A} & \dfrac{\alpha B}{1-B}\\[0.8em]
+  \dfrac{\bar\alpha A}{1-A} & 1+\dfrac{\bar\alpha B}{1-B}
+ \end{pmatrix}.
+\]
+It is an identity matrix plus a rank-one matrix, so
+\begin{equation}\label{eq:Delta-fib}
+ \Delta(A,B)=1+\frac{\alpha A}{1-A}
+                +\frac{\bar\alpha B}{1-B}.
+\end{equation}
+
+For \(j,k\ge0\), define
+\begin{equation}\label{eq:sjk-repeat}
+ s_{jk}=\alpha j+\bar\alpha k.
+\end{equation}
+Introduce the auxiliary coefficient
+\begin{equation}\label{eq:Pjk-def}
+ P_{jk}(t)=[A^jB^k]V^t\Delta(A,B).
+\end{equation}
+The next lemma is the computational core.
+
+\begin{lemma}[Binomial collapse]\label{lem:binomial-collapse}
+For \((j,k)\ne(0,0)\),
+\begin{equation}\label{eq:Pjk-formula}
+ P_{jk}(t)=(-1)^{j+k}
+ \binom tj\binom tk\left(1-\frac{s_{jk}}t\right),
+\end{equation}
+where
+\begin{equation}\label{eq:generalized-binomial}
+ \binom zn=\frac{z(z-1)\cdots(z-n+1)}{n!},
+ \qquad \binom z0=1.
+\end{equation}
+The apparent singularity at \(t=0\) in \cref{eq:Pjk-formula} is removable
+when the expression is interpreted as the polynomial obtained from
+\cref{eq:Pjk-def}.
+\end{lemma}
+
+\begin{proof}
+The contribution of the constant term \(1\) in \cref{eq:Delta-fib} is
+\[
+ [A^jB^k](1-A)^t(1-B)^t
+ =(-1)^{j+k}\binom tj\binom tk.
+\]
+For the \(A\)-term in the determinant, the coefficient is
+\begin{align*}
+ &\alpha[A^{j-1}](1-A)^{t-1}[B^k](1-B)^t\\
+ &\quad=\alpha(-1)^{j+k-1}
+          \binom{t-1}{j-1}\binom tk
+ =-(-1)^{j+k}\binom tj\binom tk\frac{\alpha j}{t}.
+\end{align*}
+The \(B\)-term similarly contributes the factor
+\(-\bar\alpha k/t\).  Adding the three pieces gives
+\cref{eq:Pjk-formula}.
+\end{proof}
+
+\subsection{Differentiating at the forced zero}
+
+Apply \cref{thm:good} to the auxiliary function \(f(A,B)=V^\tau\).  Since
+\(\Phi_1^j\Phi_2^k=V^{s_{jk}}\),
+\begin{equation}\label{eq:Vtau-coeff}
+ [X^jY^k]V(A(X,Y),B(X,Y))^\tau
+ =P_{jk}(\tau+s_{jk}).
+\end{equation}
+Differentiating at \(\tau=0\) gives
+\begin{equation}\label{eq:logV-coeff-P}
+ [X^jY^k]\log V=P_{jk}'(s_{jk}).
+\end{equation}
+The factor \(1-s_{jk}/t\) in \cref{eq:Pjk-formula} vanishes at
+\(t=s_{jk}\), so derivatives of the binomial factors disappear and
+\begin{equation}\label{eq:Pprime}
+ P_{jk}'(s_{jk})=
+ \frac{(-1)^{j+k}}{s_{jk}}
+ \binom{s_{jk}}j\binom{s_{jk}}k.
+\end{equation}
+Combining this with \cref{eq:delta-logV} proves the explicit coefficient
+formula.
+
+\begin{theorem}[Exact bivariate inverse germ]\label{thm:bivariate-inverse}
+In a neighborhood of \((X,Y)=(0,0)\), the inverse correction is the
+convergent bivariate series
+\begin{equation}\label{eq:delta-XY}
+ \delta(X,Y)=
+ \sum_{\substack{j,k\ge0\\j+k\ge1}}
+ C_{jk}X^jY^k,
+\end{equation}
+where
+\begin{equation}\label{eq:Cjk}
+ C_{jk}=\frac{(-1)^{j+k+1}}{\lambda s_{jk}}
+ \binom{s_{jk}}j\binom{s_{jk}}k,
+ \qquad
+ s_{jk}=j+k-\ii\rho(j-k).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The analytic implicit-function theorem applied to
+\cref{eq:AB-fixed-point} gives analytic germs \(A(X,Y)\) and \(B(X,Y)\),
+so \(V\) and \(\delta\) are analytic.  Equations
+\cref{eq:logV-coeff-P,eq:Pprime,eq:delta-logV} calculate every nonconstant
+Taylor coefficient.  The constant term vanishes because \(V(0,0)=1\).
+\end{proof}
+
+\begin{remark}[Why the denominator is harmless]
+For \((j,k)\ne(0,0)\),
+\(
+ \Re s_{jk}=j+k>0
+\), hence \(s_{jk}\ne0\).  No resonance or small-denominator problem occurs
+in this positive cone.  The imaginary part records phase; it cannot cancel
+the positive real valuation.
+\end{remark}
+
+\section{Complete inverse transseries}\label{sec:complete-transseries}
+
+\subsection{Complex-power form}
+
+Substitute \cref{eq:X-Y-phase} into \cref{eq:delta-XY}.  Since
+\(X^jY^k=R^{-s_{jk}}\), we obtain the central result.
+
+\begin{theorem}[All-orders inverse of the Fibonacci modulus]\label{thm:all-orders}
+Let \(X_+\) be the outer inverse from \cref{def:outer-branches}.  For all
+sufficiently large positive \(y\),
+\begin{equation}\label{eq:all-orders-complex}
+ \boxed{
+ X_+(y)=\frac{\log R}{\lambda}
+ +\sum_{\substack{j,k\ge0\\j+k\ge1}}
+ \frac{(-1)^{j+k+1}}{\lambda s_{jk}}
+ \binom{s_{jk}}j\binom{s_{jk}}k R^{-s_{jk}}
+ }
+\end{equation}
+with
+\begin{equation}\label{eq:R-lambda-rho-again}
+ R=5y^2,
+ \qquad \lambda=2\log\varphi,
+ \qquad \rho=\frac\pi\lambda,
+ \qquad s_{jk}=j+k-\ii\rho(j-k).
+\end{equation}
+The series converges to the exact branch.  Independently of convergence,
+it is a complete Poincare asymptotic expansion: for every fixed \(N\),
+\begin{equation}\label{eq:truncation-complex}
+ X_+(y)=\frac{\log R}{\lambda}
+ +\sum_{1\le j+k\le N}C_{jk}R^{-s_{jk}}
+ +\Ord(R^{-N-1}).
+\end{equation}
+The negative branch satisfies
+\begin{equation}\label{eq:negative-branch}
+ X_-(y)=-X_+(y).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The bivariate series in \cref{thm:bivariate-inverse} converges in a
+polydisc about the origin.  Along the physical curve
+\((X,Y)=(q\e^{\ii\theta},q\e^{-\ii\theta})\), both variables tend to zero
+as \(y\to\infty\), so the series converges and solves the exact normalized
+equation.  Uniqueness of the small real solution identifies it with the
+outer branch.  Truncation by total degree leaves an analytic remainder of
+total degree at least \(N+1\); because \(|X|=|Y|=q=R^{-1}\), this is
+\(\Ord(R^{-N-1})\).  Evenness proves \cref{eq:negative-branch}.
+\end{proof}
+
+\subsection{Real Fourier-sector form}
+
+The coefficients satisfy
+\begin{equation}\label{eq:C-conjugation}
+ C_{kj}=\overline{C_{jk}}.
+\end{equation}
+Consequently terms with \((j,k)\) and \((k,j)\) pair to a real expression.
+For \(n\ge1\) and admissible \(h\), define
+\begin{equation}\label{eq:dhat-nh}
+ \widehat D_{n,h}=
+ \frac{(-1)^{n+1}}{\lambda(n-\ii\rho h)}
+ \binom{n-\ii\rho h}{(n+h)/2}
+ \binom{n-\ii\rho h}{(n-h)/2}.
+\end{equation}
+Then put
+\begin{equation}\label{eq:Dn-definition}
+ D_n(\theta)=
+ \sum_{\substack{|h|\le n\\h\equiv n\ (2)}}
+ \widehat D_{n,h}\e^{\ii h\theta}.
+\end{equation}
+
+\begin{corollary}[Real log-periodic sectors]\label{cor:real-sectors}
+The positive outer inverse can be written
+\begin{equation}\label{eq:all-orders-real}
+ \boxed{
+ X_+(y)=\xi+\sum_{n\ge1}D_n(\theta)q^n,
+ \qquad
+ q=(5y^2)^{-1},\quad
+ \xi=\log_{\varphi}(\sqrt5\,y),\quad
+ \theta=\pi\xi.
+ }
+\end{equation}
+Each \(D_n\) is real for real \(\theta\), has Fourier degree at most \(n\),
+and contains only harmonics congruent to \(n\) modulo \(2\).  Moreover,
+\begin{equation}\label{eq:D-parity}
+ D_n(\theta+\pi)=(-1)^nD_n(\theta).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Set \(n=j+k\) and \(h=j-k\) in \cref{eq:all-orders-complex}.
+Equation \cref{eq:C-conjugation} implies
+\(
+ \widehat D_{n,-h}=\overline{\widehat D_{n,h}}
+\), hence reality.  The support conditions follow from
+\(j=(n+h)/2\) and \(k=(n-h)/2\).  Finally,
+\(\e^{\ii h\pi}=(-1)^h=(-1)^n\) for every admissible \(h\), proving
+\cref{eq:D-parity}.
+\end{proof}
+
+\subsection{The first three sectors}
+
+Direct simplification of \cref{eq:Dn-definition} gives
+\begin{align}
+ D_1(\theta)
+ &=\frac2\lambda\cos\theta,
+ \label{eq:D1}\\
+ D_2(\theta)
+ &=-\frac1\lambda
+   \left(2+\cos2\theta+2\rho\sin2\theta\right),
+ \label{eq:D2}\\
+ D_3(\theta)
+ &=\frac1\lambda\left[
+   (6-\rho^2)\cos\theta+5\rho\sin\theta
+   +\left(\frac23-3\rho^2\right)\cos3\theta
+   +3\rho\sin3\theta
+ \right].
+ \label{eq:D3}
+\end{align}
+Thus
+\begin{align}
+ X_+(y)={}&\xi+\frac{2q}{\lambda}\cos\theta
+ -\frac{q^2}{\lambda}
+   \left(2+\cos2\theta+2\rho\sin2\theta\right)
+ \notag\\
+ &+\frac{q^3}{\lambda}\left[
+   (6-\rho^2)\cos\theta+5\rho\sin\theta
+   +\left(\frac23-3\rho^2\right)\cos3\theta
+   +3\rho\sin3\theta
+ \right]
+ +\Ord(q^4).
+ \label{eq:first-three-sectors}
+\end{align}
+The leading form in the original variable is
+\begin{equation}\label{eq:leading-y}
+ X_+(y)=\log_{\varphi}(\sqrt5\,y)
+ +\frac{\cos\!\bigl(\pi\log_{\varphi}(\sqrt5\,y)\bigr)}
+ {5(\log\varphi)y^2}
+ +\Ord(y^{-4}).
+\end{equation}
+
+The fourth sector is compactly represented by positive-frequency
+coefficients.  If
+\begin{equation}\label{eq:D-positive-frequency}
+ D_n(\theta)=d_{n,0}+
+ 2\Re\sum_{\substack{1\le h\le n\\h\equiv n\ (2)}}
+ d_{n,h}\e^{\ii h\theta},
+\end{equation}
+with the constant term omitted for odd \(n\), then
+\begin{align}
+ d_{4,0}&=-\frac9\lambda,\label{eq:d40}\\
+ d_{4,2}&=-\frac{2(\lambda-\ii\omega)(2\lambda-\ii\omega)
+                    (3\lambda-2\ii\omega)}{3\lambda^4},
+ \label{eq:d42}\\
+ d_{4,4}&=-\frac{(\lambda-4\ii\omega)(\lambda-2\ii\omega)
+                    (3\lambda-4\ii\omega)}{12\lambda^4}.
+ \label{eq:d44}
+\end{align}
+The general formula \cref{eq:dhat-nh} is usually preferable to fully
+expanded trigonometric expressions at higher orders.
+
+\begin{remark}[Amplitude and phase form]
+Every conjugate pair can equivalently be written
+\[
+ 2|\widehat D_{n,h}|q^n
+ \cos\!\left(h\theta+\arg\widehat D_{n,h}\right).
+\]
+The phase shifts are therefore algebraic consequences of the complex
+binomial coefficients; they are not independent fitting parameters.
+\end{remark}
+
+\begin{summarybox}
+The outer inverse consists of the logarithmic carrier \(\xi\) plus a
+convergent hierarchy of log-periodic sectors.  The sector of radial order
+\(q^n=(5y^2)^{-n}\) contains precisely the harmonics
+\(n,n-2,\ldots,-n\).  Formula \cref{eq:dhat-nh} gives every Fourier
+coefficient directly.
+\end{summarybox}
+\section{Recursive construction and rigorous remainders}\label{sec:recurrence}
+
+The closed formula is ideal for theory, but a triangular recurrence is often
+more convenient for symbolic implementation.  Return to the normalized
+scalar equation \cref{eq:H-equation} and seek
+\begin{equation}\label{eq:delta-series-D}
+ \delta(q,\theta)=\sum_{n\ge1}D_n(\theta)q^n.
+\end{equation}
+Suppose \(D_1,\ldots,D_{n-1}\) are known and set
+\begin{equation}\label{eq:delta-less-n}
+ \delta_{<n}(q,\theta)=\sum_{r=1}^{n-1}D_r(\theta)q^r.
+\end{equation}
+
+\begin{proposition}[Triangular sector recurrence]\label{prop:sector-recurrence}
+For every \(n\ge1\),
+\begin{equation}\label{eq:sector-recurrence}
+ \boxed{
+ D_n(\theta)=-\frac1\lambda[q^n]\left(
+ \e^{\lambda\delta_{<n}}
+ +q^2\e^{-\lambda\delta_{<n}}
+ -2q\cos(\theta+\omega\delta_{<n})-1
+ \right).
+ }
+\end{equation}
+Here \([q^n]\) means extraction of the coefficient of \(q^n\), treating
+\(\theta\) as an independent parameter.
+\end{proposition}
+
+\begin{proof}
+Substitute
+\(
+ \delta=\delta_{<n}+D_nq^n+\Ord(q^{n+1})
+\)
+into \cref{eq:H-equation}.  In \(\e^{\lambda\delta}\), the unknown sector
+contributes \(\lambda D_nq^n\).  The cosine term is multiplied by \(q\), so
+its dependence on \(D_nq^n\) begins at order \(q^{n+1}\); the second
+exponential is multiplied by \(q^2\), so its dependence begins still later.
+Thus the coefficient equation at order \(q^n\) is linear with coefficient
+\(\lambda\), yielding \cref{eq:sector-recurrence}.
+\end{proof}
+
+\subsection{Bell-polynomial form}
+
+The recurrence can be expanded using complete exponential Bell polynomials.
+For example, if
+\(
+ E(q)=\exp(\lambda\delta(q))=\sum_{n\ge0}E_nq^n
+\), then
+\begin{equation}\label{eq:Bell-exp}
+ E_n=\frac1{n!}
+ B_n\!\left(1!\lambda D_1,2!\lambda D_2,\
+ \ldots,n!\lambda D_n\right),
+\end{equation}
+where \(B_n\) is the complete Bell polynomial.  The Fourier cone is
+preserved under all products appearing in these Bell polynomials.  A similar
+expansion of
+\(
+ \exp(\ii\omega\delta)
+\)
+handles the cosine through
+\[
+ \cos(\theta+\omega\delta)
+ =\Re\!\left(\e^{\ii\theta}\e^{\ii\omega\delta}\right).
+\]
+This gives a purely algebraic, finite computation at each order.
+
+The closed coefficient formula and the triangular recurrence are useful for
+different purposes.  Formula \cref{eq:Cjk} exposes arithmetic and asymptotic
+structure; recurrence \cref{eq:sector-recurrence} is easy to truncate,
+simplify, and evaluate numerically without manipulating generalized
+binomial functions of large complex arguments.
+
+\subsection{Residual certification}
+
+For \(N\ge0\), let
+\begin{equation}\label{eq:delta-N}
+ \delta_N(q,\theta)=\sum_{n=1}^ND_n(\theta)q^n,
+ \qquad \delta_0=0.
+\end{equation}
+By construction,
+\begin{equation}\label{eq:residual-order}
+ H(\delta_N;q,\theta)=\Ord(q^{N+1}).
+\end{equation}
+The derivative of \(H\) is
+\begin{equation}\label{eq:H-delta}
+ H_\delta(\delta;q,\theta)=
+ \lambda\e^{\lambda\delta}
+ -\lambda q^2\e^{-\lambda\delta}
+ +2\omega q\sin(\theta+\omega\delta).
+\end{equation}
+For \(|q|\) and \(|\delta|\) small, this is bounded away from zero
+uniformly in real \(\theta\).
+
+\begin{theorem}[Uniform remainder estimate]\label{thm:uniform-remainder}
+For each \(N\ge0\), there exist \(q_N>0\) and \(C_N>0\) such that, for
+real \(\theta\) and \(0<q<q_N\),
+\begin{equation}\label{eq:uniform-remainder}
+ \left|
+ \delta(q,\theta)-\delta_N(q,\theta)
+ \right|\le C_Nq^{N+1}.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:uniform-remainder-y}
+ X_+(y)-\left(\xi+\sum_{n=1}^ND_n(\theta)(5y^2)^{-n}\right)
+ =\Ord(y^{-2N-2}).
+\end{equation}
+For every fixed ordinary derivative order \(m\ge0\),
+\begin{equation}\label{eq:derivative-remainder}
+ \frac{\dd^m}{\dd y^m}
+ \left[
+ X_+(y)-\xi-\sum_{n=1}^ND_n(\theta)(5y^2)^{-n}
+ \right]
+ =\Ord(y^{-2N-2-m}).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Equation \cref{eq:residual-order} and the uniform lower bound for
+\(|H_\delta|\) imply \cref{eq:uniform-remainder} by the mean-value theorem
+on the real branch, or by the analytic inverse-function theorem with a
+uniform compact parameter \(\theta\in\R/2\pi\mathbb Z\).  Since
+\(q=(5y^2)^{-1}\), this gives \cref{eq:uniform-remainder-y}.  The exact
+solution is analytic in \((X,Y)\) near the origin, so the normalized
+remainder is analytic in \(q\) with smooth periodic dependence on
+\(\theta\).  Applying
+\[
+ y\frac{\dd}{\dd y}=-2q\frac{\partial}{\partial q}
+ +2\rho\frac{\partial}{\partial\theta}
+\]
+preserves radial order.  Converting Euler derivatives to ordinary
+derivatives adds one factor \(y^{-1}\) per differentiation, proving
+\cref{eq:derivative-remainder}.
+\end{proof}
+
+\subsection{Newton acceleration in the transseries algebra}
+
+A second computational route is Newton iteration applied to
+\cref{eq:H-equation}:
+\begin{equation}\label{eq:Newton-delta}
+ \delta^{\mathrm{new}}
+ =\delta-\frac{H(\delta;q,\theta)}{H_\delta(\delta;q,\theta)}.
+\end{equation}
+All operations are performed in the truncated algebra \(\Talg/(q^{N+1})\).
+If the current approximation has residual valuation \(r\), the next Newton
+iterate ordinarily has residual valuation at least \(2r\).  Starting from
+\(\delta=0\), repeated doubling therefore computes \(N\) sectors in
+\(\Ord(\log N)\) Newton stages, assuming fast truncated multiplication.
+The triangular recurrence remains simpler for hand calculation, while
+Newton iteration is attractive for very high order.
+
+\begin{algorithm}[Certified high-order inverse evaluation]\label{alg:evaluate}
+For a prescribed \(y\), sector order \(N\), and target precision:
+\begin{enumerate}
+\item compute \(R=5y^2\), \(q=R^{-1}\),
+      \(\xi=\log R/\lambda\), and \(\theta=\pi\xi\);
+\item generate \(D_1,\ldots,D_N\) either from
+      \cref{eq:dhat-nh} or \cref{eq:sector-recurrence};
+\item evaluate \(x_N=\xi+\sum_{n=1}^ND_n(\theta)q^n\);
+\item compute the exact residual
+      \(r_N=\Fcal(x_N)-y\), or preferably the squared residual in
+      \cref{eq:R-equation-x};
+\item convert the residual to an a posteriori error estimate using a lower
+      bound for \(\Fcal'\) near \(x_N\), or perform one full-precision
+      Newton correction.
+\end{enumerate}
+\end{algorithm}
+
+\section{Coefficient structure}\label{sec:coefficient-structure}
+
+\subsection{Diagonal, edge, and mean sectors}
+
+Formula \cref{eq:dhat-nh} distinguishes several natural families.
+The edge harmonics \(h=\pm n\) correspond to \((j,k)=(n,0)\) and
+\((0,n)\).  The central harmonic \(h=0\) exists only for even \(n=2m\)
+and corresponds to \(j=k=m\).  Since \(s_{m,m}=2m\), its coefficient is
+particularly simple:
+\begin{equation}\label{eq:central-coeff}
+ \widehat D_{2m,0}
+ =-\frac1{2m\lambda}\binom{2m}{m}^2.
+\end{equation}
+The first values are
+\[
+ -\frac2\lambda,
+ \quad -\frac9\lambda,
+ \quad -\frac{200}{3\lambda},
+ \quad -\frac{1225}{2\lambda},
+ \quad\ldots.
+\]
+These constants are the angular means of the even sectors.
+
+\subsection{Hypergeometric and elliptic resummation of the mean}
+
+For a periodic function, define
+\begin{equation}\label{eq:angular-mean}
+ \mean{f}=\frac1{2\pi}\int_0^{2\pi}f(\theta)\dd\theta.
+\end{equation}
+Averaging \cref{eq:all-orders-real} and using
+\cref{eq:central-coeff} gives
+\begin{equation}\label{eq:mean-series}
+ \mean{\delta}(q)
+ =-\frac1\lambda\sum_{m\ge1}
+ \frac1{2m}\binom{2m}{m}^2q^{2m}.
+\end{equation}
+This subseries has the closed hypergeometric form
+\begin{equation}\label{eq:mean-4F3}
+ \boxed{
+ \mean{\delta}(q)=
+ -\frac{2q^2}{\lambda}\,
+ {}_4F_3\!\left(
+ \begin{matrix}1,1,\tfrac32,\tfrac32\\2,2,2\end{matrix};16q^2
+ \right).
+ }
+\end{equation}
+Let \(\mathbf K(k)\) denote the complete elliptic integral in modulus
+notation,
+\begin{equation}\label{eq:K-modulus}
+ \mathbf K(k)=\int_0^{\pi/2}
+ \frac{\dd t}{\sqrt{1-k^2\sin^2t}}.
+\end{equation}
+The classical generating function
+\begin{equation}\label{eq:central-square-K}
+ \sum_{m\ge0}\binom{2m}{m}^2q^{2m}
+ =\frac2\pi\mathbf K(4q)
+\end{equation}
+then implies
+\begin{equation}\label{eq:mean-derivative-K}
+ q\frac{\dd}{\dd q}\mean{\delta}(q)
+ =-\frac1\lambda\left(\frac2\pi\mathbf K(4q)-1\right).
+\end{equation}
+The mean sector has radius \(|q|<1/4\).  The complete transseries has a
+smaller uniform radius because off-diagonal harmonics grow more rapidly.
+
+\begin{remark}
+Averaging over the logarithmic phase is not the same operation as evaluating
+at a typical large \(y\): the physical angle \(\theta=\rho\log R\) keeps
+rotating.  Nevertheless, the mean isolates a distinguished exactly
+summable subsector and reveals a direct elliptic-integral connection.
+\end{remark}
+
+\subsection{Large-order growth and the exact uniform radius}
+
+Set \(j=np\), \(k=n(1-p)\) heuristically and define
+\begin{equation}\label{eq:sigma-p}
+ \sigma(p)=1-\ii\rho(2p-1),
+ \qquad 0\le p\le1.
+\end{equation}
+With principal logarithms and the convention \(0\log0=0\), put
+\begin{align}
+ g_\rho(p)={}&\Re\!\left[
+ 2\sigma\Logp\sigma
+ -(\sigma-p)\Logp(\sigma-p)
+ -(\sigma-1+p)\Logp(\sigma-1+p)
+ \right]
+ \notag\\
+ &-p\log p-(1-p)\log(1-p).
+ \label{eq:g-rho}
+\end{align}
+The function is continuous and symmetric under \(p\mapsto1-p\).
+
+\begin{theorem}[Coefficient growth and uniform convergence radius]\label{thm:uniform-radius}
+Let
+\begin{equation}\label{eq:Gstar-qstar}
+ G_\rho=\exp\!\left(\max_{0\le p\le1}g_\rho(p)\right),
+ \qquad q_*=G_\rho^{-1}.
+\end{equation}
+Then
+\begin{equation}\label{eq:C-growth}
+ \limsup_{n\to\infty}
+ \max_{0\le j\le n}|C_{j,n-j}|^{1/n}=G_\rho,
+\end{equation}
+and, with the supremum norm on continuous \(2\pi\)-periodic functions,
+\begin{equation}\label{eq:D-growth}
+ \limsup_{n\to\infty}\|D_n\|_\infty^{1/n}=G_\rho.
+\end{equation}
+Consequently the Banach-valued power series
+\(\sum_{n\ge1}D_n(\theta)q^n\) has exact radius \(q_*\) for uniform
+convergence in \(\theta\).
+\end{theorem}
+
+\begin{proof}
+Write the generalized binomial coefficients in \cref{eq:Cjk} as Gamma
+quotients and apply Stirling's formula with \(j/n\to p\).  The terms
+proportional to \(n\log n\) and \(n\) cancel, leaving precisely
+\(g_\rho(p)\) as the exponential rate.  Uniform Stirling estimates on
+closed subintervals, followed by continuous endpoint limits, give
+\cref{eq:C-growth}.
+
+Every \(C_{j,n-j}\) is a Fourier coefficient of \(D_n\), hence
+\[
+ \max_j|C_{j,n-j}|\le\|D_n\|_\infty.
+\]
+Conversely,
+\[
+ \|D_n\|_\infty
+ \le\sum_{j=0}^n|C_{j,n-j}|
+ \le(n+1)\max_j|C_{j,n-j}|.
+\]
+Taking \(n\)-th roots proves \cref{eq:D-growth}; the Cauchy--Hadamard
+formula gives the radius.
+\end{proof}
+
+For the Fibonacci value \(\rho=\pi/(2\log\varphi)\), numerical maximization
+gives two symmetric maximizers,
+\begin{equation}\label{eq:pstar-numeric}
+ p_*=0.0934868615594596\ldots,
+ \qquad 1-p_*=0.9065131384405404\ldots,
+\end{equation}
+and
+\begin{align}
+ G_\rho&=10.1243628948610529\ldots,
+ \label{eq:G-numeric}\\
+ q_*&=0.09877164720237184\ldots.
+ \label{eq:qstar-numeric}
+\end{align}
+Therefore the Fourier-sector expansion converges absolutely and uniformly
+whenever
+\begin{equation}\label{eq:y-uniform-threshold}
+ q=(5y^2)^{-1}<q_*;
+ \qquad\text{in particular, whenever}\qquad
+ y>1.422980175185941\ldots.
+\end{equation}
+This sufficient-and-sharp threshold concerns uniform convergence as a
+power series with values in \(C(\R/2\pi\mathbb Z)\).  Special phases may
+have larger pointwise domains; no such enlargement is needed for the
+large-argument theory.
+
+The dominant large-order coefficients are not the angular means.  The mean
+has per-radial-order growth \(4^n\), while the full norm grows like
+\(G_\rho^n\) with \(G_\rho\approx10.1244\).  The maximizing normalized
+frequency is
+\[
+ \frac{|h|}{n}=|2p_*-1|
+ =0.813026276881081\ldots,
+\]
+so high-order growth is driven by off-center harmonics.
+
+\begin{summarybox}
+The inverse transseries is a genuinely convergent expansion, not merely a
+formal asymptotic device.  Its exact uniform radial radius is determined by
+a one-dimensional entropy-like maximization derived from complex Stirling
+asymptotics.  For every integer Fibonacci checkpoint beginning with
+\(y=F_3=2\), the physical value \(q=(5y^2)^{-1}\) lies comfortably inside
+the uniform disk.
+\end{summarybox}
+\section{Numerical verification}\label{sec:numerics}
+
+The explicit series can be tested without any ambiguity by substituting its
+partial sums into the original function.  Define
+\begin{equation}\label{eq:XN-def}
+ X_{+,N}(y)=\xi+\sum_{n=1}^ND_n(\theta)q^n,
+ \qquad X_{+,0}(y)=\xi.
+\end{equation}
+The following values were computed with high-precision arithmetic.  The
+entries \(E_N\) are absolute errors
+\(
+ |X_{+,N}(y)-X_+(y)|
+\).  At \(y=2\) and \(y=5\), the exact inverse values are integers because
+\(2=F_3\) and \(5=F_5\).
+
+\begin{table}[H]
+\centering
+\caption{Exact inverse values and absolute errors of sector truncations.}
+\label{tab:numerical-errors}
+\small
+\begin{tabular}{@{}r l@{}}
+\toprule
+\(y\) & exact \(X_+(y)\)\\
+\midrule
+2   & \(3\)\\
+5   & \(5\)\\
+10  & \(6.45779309028821164945\ldots\)\\
+100 & \(11.24218977013280389416\ldots\)\\
+\bottomrule
+\end{tabular}
+
+\medskip
+\begin{tabular}{@{}r r r r r@{}}
+\toprule
+\(y\) & \(E_0\) & \(E_1\) & \(E_2\) & \(E_3\)\\
+\midrule
+2
+& \(1.1269603\!\times10^{-1}\)
+& \(1.5236037\!\times10^{-2}\)
+& \(2.9618737\!\times10^{-3}\)
+& \(2.2607545\!\times10^{-3}\)\\
+5
+& \(1.6827815\!\times10^{-2}\)
+& \(2.2634536\!\times10^{-4}\)
+& \(1.8596489\!\times10^{-5}\)
+& \(9.6297844\!\times10^{-7}\)\\
+10
+& \(5.4518532\!\times10^{-4}\)
+& \(1.1352239\!\times10^{-5}\)
+& \(1.5425214\!\times10^{-7}\)
+& \(2.1471593\!\times10^{-9}\)\\
+100
+& \(3.0101615\!\times10^{-5}\)
+& \(3.5619587\!\times10^{-9}\)
+& \(2.9715886\!\times10^{-13}\)
+& \(5.7169682\!\times10^{-18}\)\\
+\bottomrule
+\end{tabular}
+
+\medskip
+\begin{tabular}{@{}r r r r@{}}
+\toprule
+\(y\) & \(E_4\) & \(E_6\) & \(E_8\)\\
+\midrule
+2
+& \(3.7691613\!\times10^{-4}\)
+& \(1.2868198\!\times10^{-4}\)
+& \(1.5141006\!\times10^{-5}\)\\
+5
+& \(2.9886773\!\times10^{-8}\)
+& \(1.8233102\!\times10^{-11}\)
+& \(6.5804309\!\times10^{-13}\)\\
+10
+& \(3.0170906\!\times10^{-11}\)
+& \(6.0001812\!\times10^{-15}\)
+& \(1.1659689\!\times10^{-18}\)\\
+100
+& \(4.3013834\!\times10^{-21}\)
+& \(1.4868585\!\times10^{-28}\)
+& \(2.1225057\!\times10^{-36}\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The convergence is phase dependent, so errors need not decrease
+monotonically at every adjacent order.  For example, at \(y=2\) the
+order-10 and order-11 errors are approximately
+\(1.1640\times10^{-6}\) and \(1.4004\times10^{-6}\), respectively.
+The all-orders estimate concerns the magnitude of
+the remainder after a fixed truncation as \(y\to\infty\), while convergence
+for a fixed admissible \(y\) follows from the power-series theorem.  By
+\(y=10\), each additional sector already contributes roughly two more
+decimal digits; at \(y=100\), the leading carrier is accurate to five
+decimal places and a few sectors give extremely high precision.
+
+\subsection{Integer checkpoints}
+
+For every integer \(n\ge2\), \cref{prop:integer-interpolation} and
+\cref{prop:outer-monotone} imply
+\begin{equation}\label{eq:integer-checkpoint}
+ X_+(F_n)=n.
+\end{equation}
+For \(n\ge3\), one has \(q=(5F_n^2)^{-1}\le1/20<q_*\), so the
+uniform convergence theorem applies.  Substituting \(y=F_n\) into
+\cref{eq:all-orders-complex} therefore yields the convergent identity:
+\begin{equation}\label{eq:integer-transseries-identity}
+ n=\log_{\varphi}(\sqrt5\,F_n)
+ +\sum_{\substack{j,k\ge0\\j+k\ge1}}
+ C_{jk}(5F_n^2)^{-s_{jk}}.
+\end{equation}
+This is not a tautological restatement of Binet's formula at the level of
+individual sectors.  It decomposes the exact difference between \(n\) and
+the logarithmic Binet estimate into a convergent hierarchy of log-periodic
+complex-power corrections.
+
+At integer \(n\), Binet's formula gives
+\[
+ \sqrt5\,F_n=\varphi^n\left(1-(-1)^n\varphi^{-2n}\right),
+\]
+so
+\begin{equation}\label{eq:baseline-integer-error}
+ \log_{\varphi}(\sqrt5\,F_n)
+ =n+\frac1{\log\varphi}
+ \log\!\left(1-(-1)^n\varphi^{-2n}\right).
+\end{equation}
+The leading sector in \cref{eq:leading-y} cancels the first term of the
+logarithm in \cref{eq:baseline-integer-error}; all higher sectors complete
+the exact cancellation.  This provides a stringent symbolic and numerical
+check on signs and phase conventions.
+
+\section{Wolfram Language implementation}\label{sec:wl}
+
+The user-supplied interpolation is already expressed in Wolfram Language,
+so it is natural to give an implementation in the same notation.  The
+following code evaluates the exact coefficient formula and groups it by
+radial order.
+
+\begin{lstlisting}[caption={Closed coefficients and truncated inverse transseries.},label={lst:wl-coeff}]
+ClearAll[lam, rho, s, c, dn, inverseSeries];
+
+lam = 2 ArcCsch[2];                 (* = 2 Log[GoldenRatio] *)
+rho = Pi/lam;
+
+s[j_Integer?NonNegative, k_Integer?NonNegative] :=
+  (1 - I rho) j + (1 + I rho) k;
+
+c[j_Integer?NonNegative, k_Integer?NonNegative] /; j + k > 0 :=
+  (-1)^(j + k + 1)/(lam s[j, k]) *
+    Binomial[s[j, k], j] Binomial[s[j, k], k];
+
+dn[n_Integer?Positive, theta_] :=
+  FullSimplify[
+    ComplexExpand[
+      Sum[c[j, n - j] Exp[I (2 j - n) theta], {j, 0, n}],
+      TargetFunctions -> {Re, Im}
+    ],
+    Assumptions -> Element[theta, Reals]
+  ];
+
+inverseSeries[y_, nmax_Integer?NonNegative] := Module[
+  {r = 5 y^2, q, xi, theta},
+  q = 1/r;
+  xi = Log[r]/lam;
+  theta = Pi xi;
+  xi + Sum[dn[n, theta] q^n, {n, 1, nmax}]
+];
+\end{lstlisting}
+
+For numerical validation, one may compare against a high-precision root of
+the original function.
+
+\begin{lstlisting}[caption={Direct outer inverse and residual check.},label={lst:wl-root}]
+ClearAll[f, outerInverse, check];
+
+f[x_] := Sqrt[2/5] Sqrt[Cosh[lam x] - Cos[Pi x]];
+
+outerInverse[y_?NumericQ, wp_: 80] := Module[{x0},
+  x0 = N[Log[5 y^2]/lam, wp];
+  x /. FindRoot[
+    f[x] == SetPrecision[y, wp],
+    {x, x0},
+    WorkingPrecision -> wp,
+    AccuracyGoal -> Floor[wp/2],
+    PrecisionGoal -> Floor[wp/2]
+  ]
+];
+
+check[y_?NumericQ, nmax_Integer?NonNegative, wp_: 80] := Module[
+  {xa, xt},
+  xa = N[inverseSeries[SetPrecision[y, wp], nmax], wp];
+  xt = outerInverse[y, wp];
+  <|
+    "Approximation" -> xa,
+    "DirectRoot" -> xt,
+    "AbsoluteError" -> Abs[xa - xt],
+    "FunctionResidual" -> Abs[f[xa] - y]
+  |>
+];
+\end{lstlisting}
+
+The recurrence \cref{eq:sector-recurrence} can also be implemented by
+repeatedly forming a truncated \texttt{Series}.  The closed formula is less
+stateful and naturally parallelizes over pairs \((j,k)\); the recurrence is
+usually faster after simplification when one needs all sectors up to a large
+common order.
+
+\subsection{Stable numerical evaluation of high-order coefficients}
+
+For moderate \(n\), Wolfram Language's exact generalized
+\texttt{Binomial} expression is reliable.  At large \(n\), direct products
+can overflow or suffer cancellation in machine arithmetic.  Three remedies
+are standard:
+\begin{enumerate}
+\item evaluate with arbitrary precision and use \texttt{LogGamma} to form
+      Gamma quotients in logarithmic scale;
+\item pair \((j,k)\) with \((k,j)\) before summing, so every contribution is
+      explicitly real;
+\item use the triangular recurrence or Newton iteration in the real Fourier
+      basis, avoiding large intermediate complex binomials.
+\end{enumerate}
+For a requested numerical value rather than symbolic coefficients, a few
+transseries sectors followed by one Newton step is typically the most
+stable and economical procedure.
+\part{General inversion theory}
+
+\section{Finite exponential products}\label{sec:general-products}
+
+The Fibonacci factorization is a special case of a broad class whose
+inverses admit equally explicit coefficients.  Let \(m\ge1\), let
+\(\lambda\ne0\), and consider a chosen sector in which
+\(\Re(\lambda x)\to+\infty\).  Fix parameters
+\begin{equation}\label{eq:general-params}
+ c_r,\beta_r\in\C,
+ \qquad \alpha_r\in\C,
+ \qquad \Re\alpha_r>0,
+ \qquad r=1,\ldots,m.
+\end{equation}
+Branches of powers are chosen by analytic continuation from factors near
+\(1\).
+
+Consider the normalized product map
+\begin{equation}\label{eq:general-product-map}
+ R=\e^{\lambda x}
+ \prod_{r=1}^m
+ \left(1-c_r\e^{-\lambda\alpha_r x}\right)^{\beta_r}.
+\end{equation}
+A nonzero constant prefactor \(A\) causes no difficulty: replace \(R\) by
+\(R/A\).
+
+\subsection{Fixed-point normalization}
+
+Set
+\begin{equation}\label{eq:general-uq}
+ u=\e^{-\lambda x},
+ \qquad q=R^{-1}.
+\end{equation}
+Then \cref{eq:general-product-map} is
+\begin{equation}\label{eq:general-u-equation}
+ Ru=\prod_{r=1}^m(1-c_ru^{\alpha_r})^{\beta_r}.
+\end{equation}
+Introduce
+\begin{equation}\label{eq:general-AQV}
+ A_r=c_ru^{\alpha_r},
+ \qquad
+ Q_r=c_rq^{\alpha_r},
+ \qquad
+ V=\frac uq=\prod_{r=1}^m(1-A_r)^{\beta_r}.
+\end{equation}
+Then
+\begin{equation}\label{eq:general-fixed-system}
+ A_r=Q_rV^{\alpha_r},
+ \qquad r=1,\ldots,m,
+\end{equation}
+and the inverse correction is
+\begin{equation}\label{eq:general-delta}
+ x=\frac{\log R}{\lambda}-\frac1\lambda\log V.
+\end{equation}
+This is the same architecture as the Fibonacci problem, with an arbitrary
+number of factors and arbitrary exponents.
+
+For a multi-index \(\multi n=(n_1,\ldots,n_m)\in\Nzero^m\), write
+\begin{equation}\label{eq:S-multi}
+ |\multi n|=\sum_{r=1}^mn_r,
+ \qquad
+ S_{\multi n}=\sum_{r=1}^m\alpha_rn_r,
+ \qquad
+ \multi c^{\multi n}=\prod_{r=1}^mc_r^{n_r}.
+\end{equation}
+Because every \(\Re\alpha_r>0\), one has
+\(\Re S_{\multi n}>0\) for every nonzero \(\multi n\).
+
+\begin{theorem}[Closed inverse of a finite exponential product]\label{thm:general-product}
+For \(|R|\) sufficiently large in the selected sector, the inverse branch
+of \cref{eq:general-product-map} satisfying
+\(x\sim\lambda^{-1}\log R\) is
+\begin{equation}\label{eq:general-product-inverse}
+ \boxed{
+ x(R)=\frac{\log R}{\lambda}
+ +\sum_{\multi n\in\Nzero^m\setminus\{\multi0\}}
+ \frac{(-1)^{|\multi n|+1}}{\lambda S_{\multi n}}
+ \left[
+   \prod_{r=1}^m
+   \binom{\beta_rS_{\multi n}}{n_r}c_r^{n_r}
+ \right]
+ R^{-S_{\multi n}}.
+ }
+\end{equation}
+The multi-series converges near \(R=\infty\) in its natural variables
+\(Q_r=c_rR^{-\alpha_r}\), and it is a complete asymptotic transseries when
+ordered by \(\Re S_{\multi n}\).
+\end{theorem}
+
+\begin{proof}
+Apply \cref{thm:good} to \cref{eq:general-fixed-system}, where
+\[
+ \Phi_r(\multi A)=V(\multi A)^{\alpha_r},
+ \qquad
+ V(\multi A)=\prod_{s=1}^m(1-A_s)^{\beta_s}.
+\]
+The Good matrix is
+\begin{equation}\label{eq:general-Good-matrix}
+ M_{rs}=\delta_{rs}
+ +\alpha_r\frac{\beta_sA_s}{1-A_s}.
+\end{equation}
+It is \(I+\multi a\multi b^{\mathsf T}\), where
+\(a_r=\alpha_r\) and
+\(b_s=\beta_sA_s/(1-A_s)\).  The matrix determinant lemma gives
+\begin{equation}\label{eq:general-Delta}
+ \Delta(\multi A)=
+ 1+\sum_{r=1}^m\frac{\alpha_r\beta_rA_r}{1-A_r}.
+\end{equation}
+
+Define
+\begin{equation}\label{eq:Pn-general}
+ P_{\multi n}(t)=
+ [\multi A^{\multi n}]V(\multi A)^t\Delta(\multi A).
+\end{equation}
+The constant part of the determinant contributes
+\begin{equation}\label{eq:Bn-general}
+ B_{\multi n}(t)=
+ (-1)^{|\multi n|}
+ \prod_{r=1}^m\binom{\beta_rt}{n_r}.
+\end{equation}
+For the summand indexed by \(r\) in \cref{eq:general-Delta}, use
+\[
+ \beta_r\binom{\beta_rt-1}{n_r-1}
+ =\frac{n_r}{t}\binom{\beta_rt}{n_r}.
+\]
+Its sign is opposite to \cref{eq:Bn-general}, so summing all determinant
+terms gives
+\begin{equation}\label{eq:Pn-collapse}
+ P_{\multi n}(t)=B_{\multi n}(t)
+ \left(1-\frac{S_{\multi n}}t\right).
+\end{equation}
+
+For an auxiliary exponent \(\tau\), Good inversion gives
+\begin{equation}\label{eq:general-Vtau}
+ [\multi Q^{\multi n}]V(\multi A(\multi Q))^\tau
+ =P_{\multi n}(\tau+S_{\multi n}).
+\end{equation}
+Differentiation at \(\tau=0\) yields the coefficient of \(\log V\).  The
+factor in parentheses in \cref{eq:Pn-collapse} vanishes at
+\(t=S_{\multi n}\), hence
+\begin{equation}\label{eq:general-logV-coeff}
+ [\multi Q^{\multi n}]\log V
+ =\frac{(-1)^{|\multi n|}}{S_{\multi n}}
+ \prod_{r=1}^m\binom{\beta_rS_{\multi n}}{n_r}.
+\end{equation}
+Now use \cref{eq:general-delta} and
+\(
+ \multi Q^{\multi n}=\multi c^{\multi n}R^{-S_{\multi n}}
+\) to obtain \cref{eq:general-product-inverse}.  Analytic convergence near
+\(\multi Q=\multi0\) follows from the implicit-function theorem.
+\end{proof}
+
+\subsection{Checks and special cases}
+
+\begin{example}[One factor]\label{ex:one-factor}
+For
+\[
+ R=\e^{\lambda x}(1-c\e^{-\lambda\alpha x})^\beta,
+\]
+\cref{eq:general-product-inverse} reduces to
+\begin{equation}\label{eq:one-factor-inverse}
+ x=\frac{\log R}{\lambda}
+ +\sum_{n\ge1}
+ \frac{(-1)^{n+1}}{\lambda\alpha n}
+ \binom{\beta\alpha n}{n}c^nR^{-\alpha n}.
+\end{equation}
+When \(\alpha=\beta=1\), the original equation is
+\(R=\e^{\lambda x}-c\), whose exact inverse is
+\[
+ x=\frac1\lambda\log(R+c)
+ =\frac{\log R}{\lambda}
+ +\frac1\lambda\sum_{n\ge1}\frac{(-1)^{n+1}}n
+ \left(\frac cR\right)^n.
+\]
+Formula \cref{eq:one-factor-inverse} reproduces it because
+\(\binom nn=1\).
+\end{example}
+
+\begin{example}[Fibonacci conjugate pair]\label{ex:fib-product}
+Take \(m=2\),
+\[
+ c_1=c_2=1,
+ \qquad \beta_1=\beta_2=1,
+ \qquad \alpha_1=1-\ii\rho,
+ \qquad \alpha_2=1+\ii\rho.
+\]
+Then \(S_{(j,k)}=s_{jk}\), and
+\cref{eq:general-product-inverse} becomes exactly
+\cref{eq:all-orders-complex}.
+\end{example}
+
+\begin{example}[Purely real corrections]\label{ex:real-product}
+If all \(\alpha_r,c_r,\beta_r\) are real and
+\(\alpha_r>0\), every exponent \(S_{\multi n}\) is real.  The result is an
+ordinary generalized power series in real powers of \(R^{-1}\), with no
+logarithmic oscillation.  Log-periodicity appears precisely when nonreal
+exponents occur.
+\end{example}
+
+\subsection{Reality, periodicity, and quasiperiodicity}
+
+Suppose the parameter list is closed under complex conjugation, with
+conjugate values of \(c_r\), \(\alpha_r\), and \(\beta_r\).  Multi-indices
+are then paired by conjugation, and the inverse transseries is real on the
+positive real axis.  A monomial with
+\(
+ S_{\multi n}=a-\ii b
+\) takes the form
+\begin{equation}\label{eq:general-log-periodic-monomial}
+ R^{-S_{\multi n}}=R^{-a}\e^{\ii b\log R}.
+\end{equation}
+If all frequencies \(b\) lie in an integer multiple of one basic frequency,
+the coefficients are periodic functions of \(\log R\).  If several basic
+frequencies are rationally independent, the coefficient functions are
+quasiperiodic on a finite-dimensional torus.  The same inversion theorem
+handles both cases without modification; only the presentation of the
+monomial group changes.
+
+\subsection{Support and local finiteness}
+
+Let
+\begin{equation}\label{eq:Gamma-support}
+ \Gamma=\left\{
+ S_{\multi n}:\multi n\in\Nzero^m
+ \right\}.
+\end{equation}
+Because \(\min_r\Re\alpha_r>0\), for every \(A>0\) there are only finitely
+many multi-indices satisfying \(\Re S_{\multi n}\le A\).  Thus the support
+is locally finite with respect to real asymptotic order.  Multiplication,
+analytic substitution, and coefficient extraction are therefore finite at
+every prescribed order.  This is the elementary finite-grid version of the
+well-based support condition used in general transseries and Hahn-series
+calculus.
+
+\section{Arbitrary analytic perturbations}\label{sec:analytic-perturbations}
+
+The product form is special because its coefficients collapse to a product
+of binomial factors.  The normalization itself needs only analyticity.
+Let
+\begin{equation}\label{eq:Psi-map}
+ R=\e^{\lambda x}
+ \Psi\!\left(
+ c_1\e^{-\lambda\alpha_1x},\ldots,
+ c_m\e^{-\lambda\alpha_mx}
+ \right),
+\end{equation}
+where \(\Psi\) is analytic near the origin and
+\begin{equation}\label{eq:Psi-zero}
+ \Psi(\multi0)=1,
+ \qquad \Re\alpha_r>0.
+\end{equation}
+With \(u=\e^{-\lambda x}\), \(q=R^{-1}\),
+\[
+ A_r=c_ru^{\alpha_r},
+ \qquad Q_r=c_rq^{\alpha_r},
+ \qquad V=\frac uq,
+\]
+the inverse equation becomes
+\begin{equation}\label{eq:Psi-fixed}
+ V=\Psi(\multi A),
+ \qquad
+ A_r=Q_rV^{\alpha_r},
+ \qquad
+ x=\frac{\log R}{\lambda}-\frac1\lambda\log V.
+\end{equation}
+
+\begin{theorem}[Analytic perturbation inversion]\label{thm:Psi-inversion}
+Under \cref{eq:Psi-zero}, there is a unique analytic germ
+\(V(\multi Q)=1+\Ord(\multi Q)\) solving \cref{eq:Psi-fixed}.  Hence the
+inverse branch has a convergent transseries
+\begin{equation}\label{eq:Psi-inverse-series}
+ x(R)=\frac{\log R}{\lambda}
+ +\sum_{\multi n\ne\multi0}a_{\multi n}
+ \multi c^{\multi n}R^{-S_{\multi n}},
+ \qquad S_{\multi n}=\sum_r\alpha_rn_r.
+\end{equation}
+Its coefficients admit the extraction formula
+\begin{equation}\label{eq:Psi-coeff-formula}
+ \boxed{
+ a_{\multi n}= -\frac1\lambda
+ \left.\frac{\dd}{\dd t}\right|_{t=S_{\multi n}}
+ [\multi A^{\multi n}]
+ \Psi(\multi A)^t
+ \det\!\left(
+  \delta_{rs}-\alpha_rA_s\frac{\partial}{\partial A_s}
+                    \log\Psi(\multi A)
+ \right).
+ }
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The equations
+\(
+ A_r=Q_r\Psi(\multi A)^{\alpha_r}
+\)
+have the solution \(\multi A=\multi0\) at \(\multi Q=\multi0\), and their
+Jacobian with respect to \(\multi A\) is the identity there.  The analytic
+implicit-function theorem gives the unique germ.  Apply
+\cref{thm:good} with
+\(
+ \Phi_r=\Psi^{\alpha_r}
+\) and auxiliary function \(\Psi^\tau\).  The coefficient is the expression
+inside \cref{eq:Psi-coeff-formula} evaluated at
+\(t=\tau+S_{\multi n}\); differentiation at \(\tau=0\), followed by the
+factor \(-1/\lambda\), proves the result.
+\end{proof}
+
+The product theorem is recovered by setting
+\(
+ \Psi(\multi A)=\prod_r(1-A_r)^{\beta_r}
+\).  Its special rank-one Jacobian and binomial factorization are what turn
+the general coefficient extraction \cref{eq:Psi-coeff-formula} into the
+closed product \cref{eq:general-product-inverse}.
+
+\subsection{A recursive alternative}
+
+For general \(\Psi\), a total-degree recursion may be simpler than
+\cref{eq:Psi-coeff-formula}.  Write
+\[
+ V=1+W,
+ \qquad W\in(\multi Q),
+\]
+and iterate
+\begin{equation}\label{eq:Psi-picard}
+ W=\Psi\!\left(Q_1(1+W)^{\alpha_1},\ldots,
+ Q_m(1+W)^{\alpha_m}\right)-1
+\end{equation}
+by total degree.  The right-hand side at degree \(N\) depends only linearly
+on the unknown degree-\(N\) part of \(W\), and the coefficient of that part
+is zero at the origin, so the recursion is triangular.  Newton iteration in
+the complete multi-adic algebra gives quadratic order-doubling when many
+coefficients are required.
+
+\subsection{Uniform analytic estimates}
+
+Choose a polydisc \(|Q_r|\le r_r\) on which the implicit solution is
+analytic and remains away from zeros and branch cuts of \(\Psi\).  Cauchy's
+estimate gives
+\begin{equation}\label{eq:multi-Cauchy}
+ |a_{\multi n}|\le M\prod_{r=1}^mr_r^{-n_r}
+\end{equation}
+for a suitable \(M\).  Along a physical ray,
+\(|Q_r|=|c_r||R|^{-\Re\alpha_r}\) times a bounded angular factor.  This
+immediately supplies uniform truncation estimates by any half-plane of the
+support,
+\(
+ \Re S_{\multi n}\le A
+\), and justifies termwise differentiation on smaller polydiscs.
+
+\begin{summarybox}
+A dominant exponential plus any analytic combination of finitely many
+subdominant exponential monomials has a convergent inverse transseries on
+the additive semigroup generated by their exponents.  Product perturbations
+are the exactly solvable subclass in which multivariate Good inversion
+collapses to generalized binomial coefficients.
+\end{summarybox}
+\section{Mixed carriers and nested transseries}\label{sec:mixed-carriers}
+
+The preceding theory assumes that the dominant carrier is a pure
+exponential.  Many special functions instead have a carrier of the form
+\begin{equation}\label{eq:mixed-carrier}
+ C(x)=A\e^{\lambda x}x^\mu(\log x)^\nu
+ \left(1+\sum_{r\ge1}\frac{P_r(\log x)}{x^r}\right),
+\end{equation}
+possibly multiplied by exponentially small factors.  Its inverse already
+belongs to a polynomial--logarithmic or Lambert-type transseries.  The
+log-periodic sectors developed above can be placed over that slower
+coefficient field.
+
+\subsection{Carrier-first normalization}
+
+Consider
+\begin{equation}\label{eq:carrier-Psi}
+ Y=C(x)\,
+ \Psi\!\left(c_1\e^{-\zeta_1x},\ldots,
+             c_m\e^{-\zeta_mx}\right),
+ \qquad \Psi(\multi0)=1,
+ \qquad \Re\zeta_r>0.
+\end{equation}
+Let \(x_0=x_0(Y)\) be a selected inverse branch of the carrier,
+\begin{equation}\label{eq:x0-carrier}
+ C(x_0)=Y,
+\end{equation}
+and write \(x=x_0+\delta\).  Define
+\begin{equation}\label{eq:carrier-Q}
+ Q_r=c_r\e^{-\zeta_rx_0}.
+\end{equation}
+The exact correction equation is
+\begin{equation}\label{eq:carrier-correction-exact}
+ \log C(x_0+\delta)-\log C(x_0)
+ +\log\Psi\!\left(Q_1\e^{-\zeta_1\delta},\ldots,
+                  Q_m\e^{-\zeta_m\delta}\right)=0.
+\end{equation}
+If
+\begin{equation}\label{eq:kappa-def}
+ \kappa(x_0)=\frac{\dd}{\dd x}\log C(x)\bigg|_{x=x_0}
+\end{equation}
+is nonzero, the implicit-function theorem gives a unique correction
+\(\delta=\Ord(\multi Q)\).  Its first term is
+\begin{equation}\label{eq:carrier-first-correction}
+ \delta=-\frac{\log\Psi(\multi Q)}{\kappa(x_0)}
+ +\Ord(\|\multi Q\|^2).
+\end{equation}
+For a product perturbation
+\(
+ \Psi=\prod_r(1-Q_r)^{\beta_r}
+\), this becomes
+\begin{equation}\label{eq:carrier-first-product}
+ \delta=\frac1{\kappa(x_0)}
+ \sum_{r=1}^m\beta_rQ_r+\Ord(\|\multi Q\|^2).
+\end{equation}
+
+The higher coefficients involve derivatives of \(\log C\) at \(x_0\) and
+therefore belong to the differential coefficient field generated by
+\(x_0(Y)\).  The small monomials are
+\(
+ \e^{-\zeta_rx_0(Y)}
+\), which may themselves be powers of \(Y\) multiplied by powers of
+\(\log Y\) and iterated logarithms.  This is the natural nested-transseries
+construction: invert the slow carrier first, then perform a finite-grid
+exponential reversion over its coefficient field.
+
+\subsection{The carrier \texorpdfstring{\(\e^{\lambda x}x^\mu\)}{exp(lambda x) times x to the mu} and Lambert \texorpdfstring{\(W\)}{W}}
+
+Take
+\begin{equation}\label{eq:exp-power-carrier}
+ C(x)=A\e^{\lambda x}x^\mu.
+\end{equation}
+For \(\mu\ne0\), a carrier inverse is
+\begin{equation}\label{eq:x0-W}
+ x_0(Y)=\frac\mu\lambda
+ W_k\!\left(
+   \frac\lambda\mu\left(\frac YA\right)^{1/\mu}
+ \right),
+\end{equation}
+with the branch \(W_k\) selected to match the desired sector.  Indeed,
+raising \(\e^{\lambda x}x^\mu=Y/A\) to the power \(1/\mu\) reduces the
+equation to the defining form \(we^w=z\).  When \(\mu=0\),
+\begin{equation}\label{eq:x0-pure-exp}
+ x_0(Y)=\frac1\lambda\log\frac YA.
+\end{equation}
+The logarithmic derivative is
+\begin{equation}\label{eq:kappa-exp-power}
+ \kappa(x_0)=\lambda+\frac\mu{x_0}.
+\end{equation}
+Consequently the first product correction is
+\begin{equation}\label{eq:first-W-sector}
+ \delta=\frac{
+   \sum_r\beta_rc_r\e^{-\zeta_rx_0}}
+ {\lambda+\mu/x_0}
+ +\Ord\!\left(\max_r|\e^{-\zeta_rx_0}|^2\right).
+\end{equation}
+Expanding \(W_k\) at infinity turns the coefficients into
+polynomials in \(\log Y\) and \(\log\log Y\), while the factors
+\(\e^{-\zeta_rx_0}\) become complex powers of \(Y\) decorated by slow
+logarithmic powers.  Thus polynomial--logarithmic and log-periodic
+transseries are not competing descriptions: the former supplies the slow
+coefficient field, and the latter supplies the exponentially separated
+sectors.
+
+\subsection{A formal implicit-function principle over a slow field}
+
+Let \(\mathscr K\) be a differential field of slow transseries in a large
+variable \(Y\), closed under the operations needed to describe \(x_0(Y)\)
+and the derivatives of \(\log C\).  Let \(\mathfrak m\) be the ideal
+generated by the small monomials \(Q_r=\e^{-\zeta_rx_0}\).  If
+\(\kappa(x_0)\) is a unit of \(\mathscr K\), then
+\cref{eq:carrier-correction-exact} has a unique solution
+\begin{equation}\label{eq:delta-slow-field}
+ \delta\in\mathfrak m\,
+ \mathscr K[[Q_1,\ldots,Q_m]].
+\end{equation}
+The proof is the same recursive implicit-function argument as before: the
+linearized coefficient of \(\delta\) is the unit \(\kappa(x_0)\), and every
+nonlinear operation raises total \(Q\)-degree.  This principle is the
+appropriate abstraction for inverses of Gamma-, Barnes-, hyperfactorial-,
+and Lambert-type carriers perturbed by subdominant exponential products.
+
+\begin{warningbox}
+One should not expand the slow carrier and the exponentially small sectors
+in a single undifferentiated list of terms.  The correct organization is
+lexicographic: first by exponential sector, then by the internal
+polynomial--logarithmic scale of its coefficient.  Mixing the two orderings
+can destroy local finiteness and makes remainder statements ambiguous.
+\end{warningbox}
+
+\section{Complex inverse branches}\label{sec:complex-branches}
+
+The real interpolation uses a square root and modulus interpretation, but
+the squared equation
+\begin{equation}\label{eq:complex-squared}
+ R=\e^{\lambda x}+\e^{-\lambda x}-2\cos(\omega x)
+\end{equation}
+is entire in \(x\) and can be inverted locally in the complex plane.  Fix a
+branch of \(\Logp R\).  The dominant equation \(\e^{\lambda x}=R\) has
+logarithmic branches
+\begin{equation}\label{eq:x0m}
+ x_{0,m}=\frac{\Logp R+2\pi\ii m}{\lambda},
+ \qquad m\in\mathbb Z.
+\end{equation}
+Define
+\begin{equation}\label{eq:ZmXYm}
+ Z_m=\e^{\ii\omega x_{0,m}},
+ \qquad
+ X_m=R^{-1}Z_m,
+ \qquad
+ Y_m=R^{-1}Z_m^{-1}.
+\end{equation}
+Writing \(x=x_{0,m}+\delta\), the normalized equation factors as
+\begin{align}
+ 1={}&\e^{\lambda\delta}
+ \left(1-X_m\e^{(-\lambda+\ii\omega)\delta}\right)
+ \left(1-Y_m\e^{(-\lambda-\ii\omega)\delta}\right).
+ \label{eq:complex-factor-delta}
+\end{align}
+With \(V=\e^{-\lambda\delta}\), this is again
+\[
+ A=X_mV^\alpha,
+ \qquad B=Y_mV^{\bar\alpha},
+ \qquad V=(1-A)(1-B).
+\]
+
+\begin{proposition}[Right-exponential complex branches]\label{prop:complex-branches}
+Whenever \(|X_m|\) and \(|Y_m|\) are sufficiently small, there is a unique
+solution near \(x_{0,m}\), and it is
+\begin{equation}\label{eq:complex-branch-series}
+ x_m(R)=x_{0,m}+
+ \sum_{\substack{j,k\ge0\\j+k\ge1}}C_{jk}X_m^jY_m^k,
+\end{equation}
+with the same universal coefficients \(C_{jk}\) as in
+\cref{eq:Cjk}.
+\end{proposition}
+
+The condition involves both \(|X_m|\) and \(|Y_m|\).  Since
+\(
+ |Z_m|=\exp(-2\pi\rho m)
+\) for positive real \(R\) and the principal logarithm, moving far in one
+direction of the branch index makes one generator small but the conjugate
+generator large.  Thus \cref{eq:complex-branch-series} describes precisely
+the complex branches for which the \(\e^{\lambda x}\) balance remains
+dominant.  Other complex solutions may be governed by a different dominant
+balance and require a separate Newton polygon or transseries chart.
+
+The real positive branch is \(m=0\), with
+\(Z_0=\e^{\ii\theta}\), and the real negative branch comes from the exact
+even symmetry \(x\mapsto-x\), not from changing \(m\) in the right-exponential
+family.
+
+\section{Interpretation of the log-periodic sectors}\label{sec:interpretation}
+
+\subsection{Discrete scale covariance}
+
+The phase is
+\begin{equation}\label{eq:phase-logR}
+ \theta=\rho\log R=\pi\log_{\varphi}(\sqrt5\,y).
+\end{equation}
+A shift \(\theta\mapsto\theta+2\pi\) corresponds to
+\begin{equation}\label{eq:scale-period}
+ R\mapsto R\e^{2\pi/\rho}=R\e^{2\lambda}=R\varphi^4,
+ \qquad
+ y\mapsto\varphi^2y.
+\end{equation}
+Thus every coefficient function \(D_n(\theta)\) repeats under the discrete
+scale factor \(\varphi^2\) in \(y\), while its radial amplitude acquires the
+expected factor \(\varphi^{-4n}\).  This is covariance rather than exact
+periodicity of the whole correction: each sector transforms with its own
+weight.
+
+Because \(D_n(\theta+\pi)=(-1)^nD_n(\theta)\), the half-period scale
+\(y\mapsto\varphi y\) changes the sign of odd sectors and preserves even
+ones, while multiplying the \(n\)-th radial amplitude by \(\varphi^{-2n}\).
+This parity mirrors the alternating term in Binet's formula.
+
+\subsection{Complex dimensions}
+
+The exponents
+\begin{equation}\label{eq:complex-dimensions}
+ s_{jk}=n-\ii\rho h
+\end{equation}
+form a two-dimensional lattice projected onto the complex plane.  Their
+real parts determine decay, and their imaginary parts determine logarithmic
+frequency.  In Mellin-transform language, such exponents play the role of
+complex poles or complex dimensions.  Here they arise algebraically before
+any transform is taken: they are generated by the two conjugate factors in
+\cref{eq:factorized-u}.  The inverse operation preserves the additive
+semigroup of these exponents but renormalizes their amplitudes through
+complex generalized binomial coefficients.
+
+\subsection{No Stokes ambiguity on the positive real branch}
+
+The expansion is convergent in a nontrivial domain, so its coefficients do
+not hide an exponentially small ambiguity.  On the positive real branch,
+there is no choice of transseries parameter analogous to a Stokes constant:
+analytic continuation from \(q=0\) fixes the solution uniquely.  Stokes
+phenomena may enter only after one enlarges the problem to competing complex
+dominant balances or to divergent slow-carrier expansions.  This distinction
+is useful: the log-periodic sectors are small relative to inverse logarithms,
+but they are not nonperturbative ambiguities.  They are ordinary convergent
+Taylor sectors in the lifted variables \((X,Y)\).
+
+\section{Further deductions and research directions}\label{sec:future}
+
+The exact formula opens several directions that are not visible from a few
+low-order coefficients.
+
+\subsection{Pointwise singularity curves}
+
+The exact uniform radius \(q_*\) is controlled by coefficient growth in the
+supremum norm over all phases.  For a fixed physical phase trajectory
+\(\theta=-\rho\log q\), cancellation among harmonics may postpone the first
+singularity.  Determining the maximal analytic continuation of
+\(q\mapsto\delta(q,-\rho\log q)\) requires solving simultaneously
+\begin{equation}\label{eq:singularity-system}
+ H(\delta;q,\theta)=0,
+ \qquad
+ H_\delta(\delta;q,\theta)=0,
+ \qquad
+ \theta=-\rho\log q
+\end{equation}
+with compatible logarithm branches.  The resulting singularities should
+govern exponentially accurate large-order asymptotics of the physical
+one-variable coefficient combinations.
+
+\subsection{Asymptotics near the dominant coefficient rays}
+
+The maximizers \(p_*,1-p_*\) in \cref{eq:pstar-numeric} identify dominant
+rays \(j/n\to p_*\) in coefficient space.  A two-dimensional saddle-point
+analysis of \(C_{j,n-j}\), followed by a local Fourier summation in \(j\),
+should produce an asymptotic approximation to \(D_n(\theta)\) uniform in
+\(\theta\).  Depending on phase, the two conjugate saddles may reinforce or
+cancel.  This would refine the root test into a complete estimate of the
+prefactor, phase, and transition regions.
+
+\subsection{Arithmetic at Fibonacci arguments}
+
+Identity \cref{eq:integer-transseries-identity} evaluates the convergent
+complex-power series at \(R=5F_n^2\) to an integer.  The individual terms
+are generally transcendental-looking, involving
+\(
+ \exp(\ii\rho h\log(5F_n^2))
+\), yet their full sum has exact arithmetic meaning.  One may seek finite
+transformations, functional equations, or resummations that make the Binet
+alternation manifest term by term.  The half-period parity
+\cref{eq:D-parity} suggests separating even and odd radial sectors before
+specializing to Fibonacci arguments.
+
+\subsection{Other Lucas sequences}
+
+For a Lucas sequence with characteristic roots \(r\) and \(s\), a modulus
+interpolation of
+\(
+ (r^x-s^x)/(r-s)
+\)
+usually leads, after squaring, to a dominant exponential plus conjugate or
+real subdominant exponentials.  When the squared expression factorizes into
+a finite product in \(u=\e^{-\lambda x}\),
+\cref{thm:general-product} applies directly.  The nature of the inverse
+sectors is controlled by the ratios of logarithms of the characteristic
+roots: real ratios yield generalized powers, while imaginary parts yield
+log-periodic phases.
+
+\subsection{Formalization prospects}
+
+The essential proof can be decomposed into formalizable algebraic pieces:
+\begin{enumerate}
+\item the identity \(\arccsch2=\log\varphi\) and the squared Binet formula;
+\item monotonicity of the outer branch on \([2,\infty)\);
+\item the factorization \cref{eq:factorized-u};
+\item a formal multivariate power-series implicit-function theorem;
+\item Good's coefficient formula and the rank-one determinant calculation;
+\item finite coefficient identities in generalized binomial polynomials;
+\item analytic convergence and residual bounds on an explicit neighborhood.
+\end{enumerate}
+The algebraic coefficient theorem is particularly suitable for
+formalization because every coefficient at a fixed multi-index reduces to a
+finite polynomial identity; Gamma functions are unnecessary if generalized
+binomial coefficients are defined by falling factorials.
+
+\subsection{Conjectural sharp physical radius}
+
+It is natural to distinguish three radii: the bivariate domain of the lifted
+germ, the uniform Fourier radius \(q_*\), and the radius seen along the
+physical logarithmic spiral.  Numerical analytic continuation could test
+the following working conjecture.
+
+\begin{quote}
+\textbf{Conjecture.}
+The first singularity encountered when the positive physical
+logarithmic-spiral branch is continued inward from arbitrarily small
+positive \(q\) is a square-root branch point produced by the system
+\cref{eq:singularity-system}; its modulus is at least \(q_*\), with strict
+inequality unless a maximizing Fourier phase aligns with the logarithmic
+spiral.
+\end{quote}
+
+The conjecture is deliberately stated as a program rather than a theorem.
+The uniform radius proved in \cref{thm:uniform-radius} is exact in its stated
+Banach-space sense and does not depend on this pointwise question.
+\section{Conclusion}
+
+The real-argument Fibonacci modulus has an inverse problem whose apparent
+mixture of an exponential, a reciprocal exponential, and a trigonometric
+term conceals a simple product structure.  After squaring, setting
+\(u=\e^{-\lambda x}\), and normalizing by \(R=5y^2\), the entire problem is
+encoded by
+\[
+ Ru=(1-u^{1-\ii\rho})(1-u^{1+\ii\rho}).
+\]
+The two conjugate factors lift the inverse to a bivariate analytic germ.
+Multivariate Lagrange--Good inversion then yields the exact coefficient
+formula \cref{eq:Cjk}; restriction to the physical logarithmic spiral gives
+the real Fourier sectors \cref{eq:dhat-nh}.  The result is simultaneously a
+complete asymptotic transseries, a convergent expansion, and an effective
+high-precision algorithm.
+
+Several features are worth retaining as a general template.  One should
+first identify the dominant carrier, then rewrite subdominant terms as a
+finite set of small exponential monomials, and finally lift those monomials
+to independent variables before applying formal or analytic inversion.
+Conjugate complex exponents become periodic functions of the logarithm;
+rationally independent imaginary parts become quasiperiodic coefficient
+functions.  Product perturbations have closed generalized-binomial
+coefficients, while arbitrary analytic perturbations retain an explicit
+Good-determinant extraction formula.  When the carrier itself requires a
+Lambert or polynomial--logarithmic inverse, the same exponential-sector
+calculus operates over the resulting slow coefficient field.
+
+For the specific interpolation, the two real large-value inverse branches
+are therefore completely described:
+\[
+ X_-(y)=-X_+(y),
+ \qquad
+ X_+(y)=\log_{\varphi}(\sqrt5\,y)
+ +\sum_{n\ge1}D_n\!\left(
+   \pi\log_{\varphi}(\sqrt5\,y)
+ \right)(5y^2)^{-n}.
+\]
+Every coefficient is explicit, every fixed truncation has a certified
+remainder order, and the full Fourier-sector series has a rigorously
+identified uniform convergence radius.
+
+\appendix
+
+\section{Factorized Fourier coefficients through order six}\label{app:coefficients}
+
+For convenience, define positive-frequency coefficients by
+\begin{equation}\label{eq:appendix-positive}
+ D_n(\theta)=d_{n,0}+
+ 2\Re\sum_{\substack{1\le h\le n\\h\equiv n\ (2)}}
+ d_{n,h}\e^{\ii h\theta},
+\end{equation}
+where \(d_{n,0}\) is present only for even \(n\).  In all formulas below,
+\(\omega=\pi\).  The universal expression is
+\begin{equation}\label{eq:appendix-dnh-general}
+ d_{n,h}=\frac{(-1)^{n+1}}{\lambda(n-\ii\rho h)}
+ \binom{n-\ii\rho h}{(n+h)/2}
+ \binom{n-\ii\rho h}{(n-h)/2}.
+\end{equation}
+The following factorizations avoid unnecessary expanded polynomials.
+
+\begingroup
+\small
+\begin{align*}
+ d_{1,1}&=\frac1\lambda;\\[0.35em]
+ d_{2,0}&=-\frac2\lambda,
+ &d_{2,2}&=-\frac{\lambda-2\ii\omega}{2\lambda^2};\\[0.35em]
+ d_{3,1}&=\frac{(2\lambda-\ii\omega)(3\lambda-\ii\omega)}
+                    {2\lambda^3},
+ &d_{3,3}&=\frac{(\lambda-3\ii\omega)(2\lambda-3\ii\omega)}
+                    {6\lambda^3};\\[0.35em]
+ d_{4,0}&=-\frac9\lambda,\\
+ d_{4,2}&=-\frac{2(\lambda-\ii\omega)(2\lambda-\ii\omega)
+                    (3\lambda-2\ii\omega)}{3\lambda^4},\\
+ d_{4,4}&=-\frac{(\lambda-4\ii\omega)(\lambda-2\ii\omega)
+                    (3\lambda-4\ii\omega)}{12\lambda^4};\\[0.35em]
+ d_{5,1}&=\frac{(3\lambda-\ii\omega)(4\lambda-\ii\omega)^2
+                    (5\lambda-\ii\omega)}{12\lambda^5},\\
+ d_{5,3}&=\frac{(\lambda-\ii\omega)(2\lambda-3\ii\omega)
+                    (4\lambda-3\ii\omega)(5\lambda-3\ii\omega)}
+                    {8\lambda^5},\\
+ d_{5,5}&=\frac{(\lambda-5\ii\omega)(2\lambda-5\ii\omega)
+                    (3\lambda-5\ii\omega)(4\lambda-5\ii\omega)}
+                    {120\lambda^5};\\[0.35em]
+ d_{6,0}&=-\frac{200}{3\lambda},\\
+ d_{6,2}&=-\frac{(2\lambda-\ii\omega)(3\lambda-2\ii\omega)
+                    (3\lambda-\ii\omega)(5\lambda-2\ii\omega)^2}
+                    {12\lambda^6},\\
+ d_{6,4}&=-\frac{2(\lambda-2\ii\omega)(\lambda-\ii\omega)
+                    (3\lambda-4\ii\omega)(3\lambda-2\ii\omega)
+                    (5\lambda-4\ii\omega)}{15\lambda^6},\\
+ d_{6,6}&=-\frac{(\lambda-6\ii\omega)(\lambda-3\ii\omega)
+                    (\lambda-2\ii\omega)(2\lambda-3\ii\omega)
+                    (5\lambda-6\ii\omega)}{60\lambda^6}.
+\end{align*}
+\endgroup
+
+The negative-frequency coefficients are
+\(d_{n,-h}=\overline{d_{n,h}}\).  These expressions also provide convenient
+unit tests for a symbolic implementation of \cref{eq:dhat-nh}.
+
+\section{Direct derivation of the first sectors}\label{app:direct-sectors}
+
+This appendix verifies \cref{eq:D1,eq:D2,eq:D3} without multivariate
+inversion.  Substitute
+\[
+ \delta=D_1q+D_2q^2+D_3q^3+\Ord(q^4)
+\]
+into \cref{eq:H-equation}.  The coefficient of \(q\) is
+\begin{equation}\label{eq:direct-q1}
+ \lambda D_1-2\cos\theta=0,
+\end{equation}
+so \(D_1=2\cos\theta/\lambda\).
+
+At order \(q^2\), one obtains
+\begin{equation}\label{eq:direct-q2}
+ \lambda D_2+\frac{\lambda^2}{2}D_1^2+1
+ +2\omega D_1\sin\theta=0.
+\end{equation}
+Substituting \(D_1\) and using elementary double-angle identities yields
+\[
+ D_2=-\frac1\lambda
+ \left(2+\cos2\theta+2\rho\sin2\theta\right).
+\]
+
+At order \(q^3\), the coefficient equation is
+\begin{equation}\label{eq:direct-q3}
+ \lambda D_3
+ +\lambda^2D_1D_2
+ +\frac{\lambda^3}{6}D_1^3
+ -\lambda D_1
+ +2\omega D_2\sin\theta
+ +\omega^2D_1^2\cos\theta=0.
+\end{equation}
+After substituting the first two sectors and reducing products of sines and
+cosines to harmonics \(1\) and \(3\), this becomes \cref{eq:D3}.  The
+calculation illustrates both the triangular nature of the scalar recurrence
+and the rapid growth of algebraic complexity that the closed coefficient
+formula avoids.
+
+\section{Residue proof of the Lagrange--Good formula}\label{app:good-proof}
+
+For completeness, we outline a formal-residue proof of
+\cref{thm:good}.  Write
+\begin{equation}\label{eq:Q-change}
+ Q_r=\frac{A_r}{\Phi_r(\multi A)}.
+\end{equation}
+The hypothesis \(\Phi_r(\multi0)\ne0\) makes this a formally invertible
+change of variables.  Coefficient extraction is a multivariate residue:
+\begin{equation}\label{eq:coeff-residue}
+ [\multi Q^{\multi n}]f(\multi A(\multi Q))
+ =\Res_{\multi Q=\multi0}
+ f(\multi A(\multi Q))
+ \prod_{r=1}^mQ_r^{-n_r-1}\dd Q_r.
+\end{equation}
+The Jacobian of \cref{eq:Q-change} is
+\begin{equation}\label{eq:Q-Jacobian}
+ \det\!\left(\frac{\partial Q_r}{\partial A_s}\right)
+ =\left(\prod_{r=1}^m\Phi_r^{-1}\right)
+ \det\!\left(
+  \delta_{rs}-A_r\frac{\partial}{\partial A_s}
+                         \log\Phi_r
+ \right).
+\end{equation}
+By the identity \(\det(I-UV)=\det(I-VU)\), the determinant in
+\cref{eq:Q-Jacobian} equals
+\begin{equation}\label{eq:Good-det-equivalent}
+ \det\!\left(
+  \delta_{rs}-A_s\frac{\partial}{\partial A_s}
+                         \log\Phi_r
+ \right)=\Delta(\multi A).
+\end{equation}
+Meanwhile,
+\begin{equation}\label{eq:Q-powers-change}
+ \prod_rQ_r^{-n_r-1}
+ =\prod_rA_r^{-n_r-1}\Phi_r^{n_r+1}.
+\end{equation}
+Multiplying \cref{eq:Q-Jacobian} and
+\cref{eq:Q-powers-change} cancels one factor \(\Phi_r\) for each \(r\),
+leaving
+\[
+ f(\multi A)\prod_r\Phi_r^{n_r}\Delta(\multi A)
+ \prod_rA_r^{-n_r-1}\dd A_r.
+\]
+Its residue is exactly the coefficient on the right-hand side of
+\cref{eq:Good-formula}.  The same proof is valid analytically on sufficiently
+small tori or formally in the ring of multivariate Laurent series.
+
+\section{Notation crosswalk}\label{app:notation}
+
+\begin{longtable}{@{}p{0.21\textwidth}p{0.72\textwidth}@{}}
+\toprule
+Symbol & Meaning\\
+\midrule
+\endhead
+\(\varphi\) & Golden ratio \((1+\sqrt5)/2\).\\
+\(\lambda\) & Dominant exponential rate \(2\log\varphi\).\\
+\(\omega\) & Oscillatory frequency \(\pi\).\\
+\(\rho\) & Frequency ratio \(\omega/\lambda\).\\
+\(R\) & Squared output variable \(5y^2\).\\
+\(q\) & Small radial variable \(R^{-1}\).\\
+\(\xi\) & Leading inverse carrier \(\lambda^{-1}\log R
+=\log_{\varphi}(\sqrt5\,y)\).\\
+\(\theta\) & Logarithmic phase \(\rho\log R=\pi\xi\).\\
+\(u\) & Exponential inverse variable \(\e^{-\lambda x}\).\\
+\(\alpha,\bar\alpha\) & Conjugate exponents \(1\mp\ii\rho\).\\
+\(s_{jk}\) & Complex radial exponent \(j+k-\ii\rho(j-k)\).\\
+\(C_{jk}\) & Bivariate coefficient in \cref{eq:Cjk}.\\
+\(D_n(\theta)\) & Real Fourier polynomial multiplying \(q^n\).\\
+\(S_{\multi n}\) & General multi-factor exponent
+\(\sum_r\alpha_rn_r\).\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+
+\bibitem{Corless1996}
+R.~M. Corless, G.~H. Gonnet, D.~E.~G. Hare, D.~J. Jeffrey, and D.~E. Knuth,
+``On the Lambert \(W\) function,''
+\emph{Advances in Computational Mathematics} \textbf{5} (1996), 329--359.
+
+\bibitem{FlajoletGourdonDumas1995}
+P.~Flajolet, X.~Gourdon, and P.~Dumas,
+``Mellin transforms and asymptotics: harmonic sums,''
+\emph{Theoretical Computer Science} \textbf{144} (1995), 3--58.
+
+\bibitem{Gessel1987}
+I.~M. Gessel,
+``A combinatorial proof of the multivariable Lagrange inversion formula,''
+\emph{Journal of Combinatorial Theory, Series A} \textbf{45} (1987),
+178--195.
+
+\bibitem{Gessel2016}
+I.~M. Gessel,
+``Lagrange inversion,''
+\emph{Journal of Combinatorial Theory, Series A} \textbf{144} (2016),
+212--249; arXiv:1609.05988.
+
+\bibitem{Good1960}
+I.~J. Good,
+``Generalizations to several variables of Lagrange's expansion, with
+applications to stochastic processes,''
+\emph{Proceedings of the Cambridge Philosophical Society} \textbf{56}
+(1960), 367--380.
+
+\bibitem{GKP1994}
+R.~L. Graham, D.~E. Knuth, and O.~Patashnik,
+\emph{Concrete Mathematics}, 2nd ed., Addison--Wesley, 1994.
+
+\bibitem{Koshy2001}
+T.~Koshy,
+\emph{Fibonacci and Lucas Numbers with Applications}, Wiley, 2001.
+
+\bibitem{Olver1997}
+F.~W.~J. Olver,
+\emph{Asymptotics and Special Functions}, A K Peters, 1997 reprint.
+
+\bibitem{ProveItTransseries}
+V.~Reshetnikov,
+``Series and transseries,'' in the \emph{ProveIt} Fabius-function research
+drafts, 2026,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries}.
+
+\bibitem{Sornette1998}
+D.~Sornette,
+``Discrete-scale invariance and complex dimensions,''
+\emph{Physics Reports} \textbf{297} (1998), 239--270.
+
+\bibitem{vanderHoeven2006}
+J.~van der Hoeven,
+\emph{Transseries and Real Differential Algebra},
+Lecture Notes in Mathematics 1888, Springer, 2006.
+
+\end{thebibliography}
+
+\end{document}

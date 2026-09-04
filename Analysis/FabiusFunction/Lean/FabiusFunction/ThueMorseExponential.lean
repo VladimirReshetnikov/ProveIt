@@ -41,6 +41,14 @@ therefore developed *before* the centered specializations; the genuinely
 centered-only results (the integer lift and the halving recurrence) keep their
 own proofs; the translated product factorization is instead derived from the
 centered one.
+
+The translated family exists first over an arbitrary commutative ring,
+as `thueMorseTranslatedPowerSumRing`, where the sharp-degree formulas
+`_of_le`, `_eq_zero_of_lt` and `_self` are proved from the ring-level
+affine engine `thueMorse_affine_power_sum_of_le_ring`; the rational
+family `thueMorseTranslatedPowerSum` is definitionally its `ℚ`
+instance (`thueMorseTranslatedPowerSum_eq_ring`), and its three
+formulas are instances of the ring-level ones.
 -/
 
 set_option autoImplicit false
@@ -86,6 +94,68 @@ def thueMorseTranslatedPowerSum (c : ℚ) (k m : ℕ) : ℚ :=
     (thueMorseSign r.val : ℚ) *
       ((r.val : ℚ) - (2 : ℚ) ^ k + c) ^ m
 
+/-! ## The translated sums over an arbitrary commutative ring -/
+
+/-- The translated signed power sum over an arbitrary commutative ring
+`R`: `∑_{r<2^k} ε(r)·(r - 2^k + c)^m` for a translation `c : R`.
+The rational `thueMorseTranslatedPowerSum` is definitionally its
+`R = ℚ` instance (`thueMorseTranslatedPowerSum_eq_ring`), and the
+sharp-degree formulas below are proved once here, from the ring-level
+affine engine `thueMorse_affine_power_sum_of_le_ring`. -/
+def thueMorseTranslatedPowerSumRing {R : Type*} [CommRing R]
+    (c : R) (k m : ℕ) : R :=
+  ∑ r : Fin (2 ^ k),
+    ((thueMorseSign r.val : ℤ) : R) *
+      ((r.val : R) - (2 : R) ^ k + c) ^ m
+
+/-- Bridge: the rational translated sum is the ring-level one at
+`R = ℚ`. -/
+theorem thueMorseTranslatedPowerSum_eq_ring (c : ℚ) (k m : ℕ) :
+    thueMorseTranslatedPowerSum c k m =
+      thueMorseTranslatedPowerSumRing c k m := rfl
+
+/-- Range-indexed form of the ring-level translated power sum. -/
+theorem thueMorseTranslatedPowerSumRing_eq_sum_range
+    {R : Type*} [CommRing R] (c : R) (k m : ℕ) :
+    thueMorseTranslatedPowerSumRing c k m =
+      ∑ r ∈ Finset.range (2 ^ k),
+        ((thueMorseSign r : ℤ) : R) *
+          ((r : R) - (2 : R) ^ k + c) ^ m := by
+  rw [thueMorseTranslatedPowerSumRing,
+    Fin.sum_univ_eq_sum_range
+      (fun r : ℕ =>
+        ((thueMorseSign r : ℤ) : R) *
+          ((r : R) - (2 : R) ^ k + c) ^ m)
+      (2 ^ k)]
+
+/-- Unified vanishing/sharp-degree formula for every translation, over
+an arbitrary commutative ring. -/
+theorem thueMorseTranslatedPowerSumRing_of_le
+    {R : Type*} [CommRing R] (c : R) (k m : ℕ) (hm : m ≤ k) :
+    thueMorseTranslatedPowerSumRing c k m =
+      if m = k then
+        (-1 : R) ^ k * (2 : R) ^ k.choose 2 * k.factorial
+      else 0 := by
+  rw [thueMorseTranslatedPowerSumRing]
+  simpa only [one_mul, one_pow, mul_one, sub_eq_add_neg, add_comm,
+    add_left_comm, add_assoc] using
+    thueMorse_affine_power_sum_of_le_ring k m hm (-(2 : R) ^ k + c) 1
+
+/-- Translation does not affect Prouhet cancellation below degree `k`,
+over an arbitrary commutative ring. -/
+theorem thueMorseTranslatedPowerSumRing_eq_zero_of_lt
+    {R : Type*} [CommRing R] (c : R) (k m : ℕ) (hm : m < k) :
+    thueMorseTranslatedPowerSumRing c k m = 0 := by
+  rw [thueMorseTranslatedPowerSumRing_of_le c k m hm.le, if_neg hm.ne]
+
+/-- Translation by an arbitrary ring element leaves the first nonzero
+Thue--Morse power sum unchanged. -/
+theorem thueMorseTranslatedPowerSumRing_self
+    {R : Type*} [CommRing R] (c : R) (k : ℕ) :
+    thueMorseTranslatedPowerSumRing c k k =
+      (-1 : R) ^ k * (2 : R) ^ k.choose 2 * k.factorial := by
+  rw [thueMorseTranslatedPowerSumRing_of_le c k k le_rfl, if_pos rfl]
+
 /-- Bridge: the centered sum is the translation by `c = 0`.  The two
 summands differ only by the redundant `+ 0`, so a single `add_zero`
 rewrite identifies them. -/
@@ -117,30 +187,35 @@ theorem thueMorseTranslatedPowerSum_eq_sum_range
   simp [thueMorseTranslatedPowerSum, thueMorseSign, binaryWeight,
     sub_eq_add_neg, add_comm]
 
-/-- Unified vanishing/sharp-degree formula for every rational translation. -/
+/-- Unified vanishing/sharp-degree formula for every rational
+translation: the `R = ℚ` instance of
+`thueMorseTranslatedPowerSumRing_of_le`. -/
 theorem thueMorseTranslatedPowerSum_of_le
     (c : ℚ) (k m : ℕ) (hm : m ≤ k) :
     thueMorseTranslatedPowerSum c k m =
       if m = k then
         (-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 * k.factorial
       else 0 := by
-  rw [thueMorseTranslatedPowerSum]
-  simpa only [one_mul, one_pow, mul_one, sub_eq_add_neg, add_comm,
-    add_left_comm, add_assoc] using
-    thueMorse_affine_power_sum_of_le k m hm (-(2 : ℚ) ^ k + c) 1
+  rw [thueMorseTranslatedPowerSum_eq_ring]
+  exact thueMorseTranslatedPowerSumRing_of_le c k m hm
 
-/-- Translation does not affect Prouhet cancellation below degree `k`. -/
+/-- Translation does not affect Prouhet cancellation below degree `k`:
+the `R = ℚ` instance of
+`thueMorseTranslatedPowerSumRing_eq_zero_of_lt`. -/
 theorem thueMorseTranslatedPowerSum_eq_zero_of_lt
     (c : ℚ) (k m : ℕ) (hm : m < k) :
     thueMorseTranslatedPowerSum c k m = 0 := by
-  rw [thueMorseTranslatedPowerSum_of_le c k m hm.le, if_neg hm.ne]
+  rw [thueMorseTranslatedPowerSum_eq_ring]
+  exact thueMorseTranslatedPowerSumRing_eq_zero_of_lt c k m hm
 
 /-- Translation by an arbitrary rational constant also leaves the first
-nonzero Thue--Morse power sum unchanged. -/
+nonzero Thue--Morse power sum unchanged: the `R = ℚ` instance of
+`thueMorseTranslatedPowerSumRing_self`. -/
 theorem thueMorseTranslatedPowerSum_self (c : ℚ) (k : ℕ) :
     thueMorseTranslatedPowerSum c k k =
       (-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 * k.factorial := by
-  rw [thueMorseTranslatedPowerSum_of_le c k k le_rfl, if_pos rfl]
+  rw [thueMorseTranslatedPowerSum_eq_ring]
+  exact thueMorseTranslatedPowerSumRing_self c k
 
 /-! ## Centered specializations of the translated sums -/
 

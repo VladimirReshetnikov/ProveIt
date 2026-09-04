@@ -221,13 +221,8 @@ theorem thueMorseSign_overlap_free :
     ¬ ∃ i p, 0 < p ∧
       ∀ j ≤ p, thueMorseSign (i + j) = thueMorseSign (i + p + j) := by
   rintro ⟨i, p, hp, hover⟩
-  refine thueMorseBit_not_overlap p hp i fun j hj => ?_
-  have h := hover j hj
-  have h1 := thueMorseSign_eq_one_sub_two_mul_bit (i + j)
-  have h2 := thueMorseSign_eq_one_sub_two_mul_bit (i + p + j)
-  have b1 := thueMorseBit_le_one (i + j)
-  have b2 := thueMorseBit_le_one (i + p + j)
-  omega
+  exact thueMorseBit_not_overlap p hp i fun j hj =>
+    (thueMorseBit_eq_iff_thueMorseSign_eq _ _).mpr (hover j hj)
 
 /-- The Thue–Morse sequence is cube-free: no nonempty block repeats three
 times in a row. -/
@@ -292,9 +287,8 @@ theorem thueMorseBit_not_eventually_periodic :
 
 private theorem thueMorseBit_add_pow_two (m n : ℕ) (hn : n < 2 ^ m) :
     thueMorseBit (2 ^ m + n) = 1 - thueMorseBit n := by
-  have hs := thueMorseSign_add_pow_two m n hn
-  have h1 := thueMorseSign_eq_one_sub_two_mul_bit (2 ^ m + n)
-  have h2 := thueMorseSign_eq_one_sub_two_mul_bit n
+  have hne := (thueMorseBit_ne_iff_thueMorseSign_eq_neg _ _).mpr
+    (thueMorseSign_add_pow_two m n hn)
   have b1 := thueMorseBit_le_one (2 ^ m + n)
   have b2 := thueMorseBit_le_one n
   omega
@@ -339,10 +333,6 @@ theorem thueMorseBit_exists_reversal (i L : ℕ) :
     rw [hm, pow_mul]
     norm_num
   rw [heven, one_mul] at hrefl
-  have h1 := thueMorseSign_eq_one_sub_two_mul_bit (2 ^ m - i - L + j)
-  have h2 := thueMorseSign_eq_one_sub_two_mul_bit (i + (L - 1) - j)
-  have b1 := thueMorseBit_le_one (2 ^ m - i - L + j)
-  have b2 := thueMorseBit_le_one (i + (L - 1) - j)
-  omega
+  exact (thueMorseBit_eq_iff_thueMorseSign_eq _ _).mpr hrefl
 
 end Fabius

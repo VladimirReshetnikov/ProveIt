@@ -41,6 +41,57 @@ lemma log_pow_div_sq_isBigO_inv_nat (k : ℕ) :
     have hN : (n : ℝ) ≠ 0 := natCast_ne_zero_of_one_le hn
     field_simp
 
+/-- **Products multiply the log/power exponents**: `f = O(logᵃ¹/nʲ¹)` and
+`g = O(logᵃ²/nʲ²)` give `fg = O(log^{a₁+a₂}/n^{j₁+j₂})`.  This is the
+bookkeeping step that every cumulant term of
+`dyadicEndpointLaplaceLogError_add_secondOrder_isBigO_of_logDerivative_bounds`
+performs. -/
+theorem isBigO_log_pow_div_pow_mul {f g : ℕ → ℝ} {a₁ j₁ a₂ j₂ : ℕ}
+    (hf : f =O[atTop] fun n : ℕ => Real.log (n : ℝ) ^ a₁ / (n : ℝ) ^ j₁)
+    (hg : g =O[atTop] fun n : ℕ => Real.log (n : ℝ) ^ a₂ / (n : ℝ) ^ j₂) :
+    (fun n : ℕ => f n * g n) =O[atTop]
+      fun n : ℕ => Real.log (n : ℝ) ^ (a₁ + a₂) / (n : ℝ) ^ (j₁ + j₂) :=
+  (hf.mul hg).congr_right fun n => by
+    rw [pow_add, pow_add, div_mul_div_comm]
+
+/-- The `m`-fold power case of `isBigO_log_pow_div_pow_mul`. -/
+theorem isBigO_log_pow_div_pow_pow {f : ℕ → ℝ} {a j : ℕ} (m : ℕ)
+    (hf : f =O[atTop] fun n : ℕ => Real.log (n : ℝ) ^ a / (n : ℝ) ^ j) :
+    (fun n : ℕ => f n ^ m) =O[atTop]
+      fun n : ℕ => Real.log (n : ℝ) ^ (a * m) / (n : ℝ) ^ (j * m) :=
+  (hf.pow m).congr_right fun n => by
+    rw [div_pow, ← pow_mul, ← pow_mul]
+
+/-- **The polynomial-weight step**: a bound `f = O(logᵃ/nʲ)` survives
+multiplication by `nᵏ` as `O(1/n)` whenever `k + 2 ≤ j`, because the two
+spare powers of `n` absorb every power of the logarithm
+(`log_pow_div_sq_isBigO_inv_nat`).  Each of the eleven cumulant terms below
+is one application. -/
+theorem isBigO_natCast_pow_mul_of_isBigO_log_pow_div {f : ℕ → ℝ} {k a j : ℕ}
+    (hj : k + 2 ≤ j)
+    (hf : f =O[atTop] fun n : ℕ => Real.log (n : ℝ) ^ a / (n : ℝ) ^ j) :
+    (fun n : ℕ => (n : ℝ) ^ k * f n) =O[atTop] fun n : ℕ => (n : ℝ)⁻¹ := by
+  have hstep :
+      (fun n : ℕ => (n : ℝ) ^ k * (Real.log (n : ℝ) ^ a / (n : ℝ) ^ j))
+        =O[atTop] fun n : ℕ => Real.log (n : ℝ) ^ a / (n : ℝ) ^ 2 := by
+    refine IsBigO.of_bound 1 ?_
+    filter_upwards [eventually_atTop.2 ⟨1, fun (_ : ℕ) hn => hn⟩] with n hn
+    have hn1 : (1 : ℝ) ≤ n := by exact_mod_cast hn
+    have hn0 : (0 : ℝ) < n := by linarith
+    have hlog : 0 ≤ Real.log (n : ℝ) := Real.log_nonneg hn1
+    have hkey : (n : ℝ) ^ k / (n : ℝ) ^ j ≤ 1 / (n : ℝ) ^ 2 := by
+      rw [div_le_div_iff₀ (by positivity) (by positivity), one_mul, ← pow_add]
+      exact pow_le_pow_right₀ hn1 (by omega)
+    rw [one_mul, Real.norm_eq_abs, Real.norm_eq_abs,
+      abs_of_nonneg (by positivity), abs_of_nonneg (by positivity)]
+    calc (n : ℝ) ^ k * (Real.log (n : ℝ) ^ a / (n : ℝ) ^ j)
+        = Real.log (n : ℝ) ^ a * ((n : ℝ) ^ k / (n : ℝ) ^ j) := by ring
+      _ ≤ Real.log (n : ℝ) ^ a * (1 / (n : ℝ) ^ 2) :=
+          mul_le_mul_of_nonneg_left hkey (by positivity)
+      _ = Real.log (n : ℝ) ^ a / (n : ℝ) ^ 2 := by ring
+  exact ((isBigO_refl (fun n : ℕ => (n : ℝ) ^ k) atTop).mul hf).trans
+    (hstep.trans (log_pow_div_sq_isBigO_inv_nat a))
+
 /-- The first normalized Laplace moment is the negative first logarithmic
 derivative.  Together with the second-, third-, and fourth-order identities
 below, this completes the Bell-polynomial inversion API through order four. -/
@@ -114,159 +165,85 @@ theorem dyadicEndpointLaplaceLogError_add_secondOrder_isBigO_of_logDerivative_bo
         (negativeLaplaceLogSecond F n +
           negativeLaplaceLogFirst F n ^ 2)) =O[atTop]
       (fun n : ℕ => (n : ℝ)⁻¹) := by
-  have hn : ∀ᶠ n : ℕ in atTop, 1 ≤ n :=
-    eventually_atTop.2 ⟨1, fun _ hn => hn⟩
+  -- normalise the four hypotheses to the `logᵃ/nʲ` shape
+  have h1 : (fun n : ℕ => negativeLaplaceLogFirst F n) =O[atTop]
+      (fun n : ℕ => Real.log (n : ℝ) ^ 1 / (n : ℝ) ^ 1) := by
+    simpa only [pow_one] using hfirst
+  have h2 : (fun n : ℕ => negativeLaplaceLogSecond F n) =O[atTop]
+      (fun n : ℕ => Real.log (n : ℝ) ^ 1 / (n : ℝ) ^ 2) := by
+    simpa only [pow_one] using hsecond
+  have h3 : (fun n : ℕ => negativeLaplaceLogThird F n) =O[atTop]
+      (fun n : ℕ => Real.log (n : ℝ) ^ 1 / (n : ℝ) ^ 3) := by
+    simpa only [pow_one] using hthird
+  have h4 : (fun n : ℕ => negativeLaplaceLogFourth F n) =O[atTop]
+      (fun n : ℕ => Real.log (n : ℝ) ^ 1 / (n : ℝ) ^ 4) := by
+    simpa only [pow_one] using hfourth
   apply dyadicEndpointLaplaceLogError_add_secondOrder_isBigO F hF
-  · have ht2raw := (isBigO_refl (fun n : ℕ => (n : ℝ) ^ 2) atTop).mul
-      (hsecond.pow 2)
-    have ht2 :
-        (fun n : ℕ => (n : ℝ) ^ 2 *
-          negativeLaplaceLogSecond F n ^ 2) =O[atTop]
-          (fun n : ℕ => Real.log (n : ℝ) ^ 2 / (n : ℝ) ^ 2) := by
-      apply ht2raw.congr'
-      · filter_upwards with n
-        rfl
-      · filter_upwards [hn] with n hn
-        have hN : (n : ℝ) ≠ 0 := natCast_ne_zero_of_one_le hn
-        field_simp [hN]
-    have ht2' := ht2.trans (log_pow_div_sq_isBigO_inv_nat 2)
-    have ht3raw := (isBigO_refl (fun n : ℕ => (n : ℝ) ^ 2) atTop).mul
-      (hsecond.mul (hfirst.pow 2))
-    have ht3 :
-        (fun n : ℕ => (n : ℝ) ^ 2 *
-          (negativeLaplaceLogSecond F n *
-            negativeLaplaceLogFirst F n ^ 2)) =O[atTop]
-          (fun n : ℕ => Real.log (n : ℝ) ^ 3 / (n : ℝ) ^ 2) := by
-      apply ht3raw.congr'
-      · filter_upwards with n
-        rfl
-      · filter_upwards [hn] with n hn
-        have hN : (n : ℝ) ≠ 0 := natCast_ne_zero_of_one_le hn
-        field_simp [hN]
-    have ht3' := ht3.trans (log_pow_div_sq_isBigO_inv_nat 3)
-    have ht4raw := (isBigO_refl (fun n : ℕ => (n : ℝ) ^ 2) atTop).mul
-      (hfirst.pow 4)
-    have ht4 :
-        (fun n : ℕ => (n : ℝ) ^ 2 *
-          negativeLaplaceLogFirst F n ^ 4) =O[atTop]
-          (fun n : ℕ => Real.log (n : ℝ) ^ 4 / (n : ℝ) ^ 2) := by
-      apply ht4raw.congr'
-      · filter_upwards with n
-        rfl
-      · filter_upwards [hn] with n hn
-        have hN : (n : ℝ) ≠ 0 := natCast_ne_zero_of_one_le hn
-        field_simp [hN]
-    have ht4' := ht4.trans (log_pow_div_sq_isBigO_inv_nat 4)
+  · -- the squared second-order term
+    have ht2' : (fun n : ℕ =>
+        (n : ℝ) ^ 2 * negativeLaplaceLogSecond F n ^ 2) =O[atTop]
+        (fun n : ℕ => (n : ℝ)⁻¹) :=
+      isBigO_natCast_pow_mul_of_isBigO_log_pow_div (by omega)
+        (isBigO_log_pow_div_pow_pow 2 h2)
+    have ht3' : (fun n : ℕ => (n : ℝ) ^ 2 *
+        (negativeLaplaceLogSecond F n *
+          negativeLaplaceLogFirst F n ^ 2)) =O[atTop]
+        (fun n : ℕ => (n : ℝ)⁻¹) :=
+      isBigO_natCast_pow_mul_of_isBigO_log_pow_div (by omega)
+        (isBigO_log_pow_div_pow_mul h2 (isBigO_log_pow_div_pow_pow 2 h1))
+    have ht4' : (fun n : ℕ =>
+        (n : ℝ) ^ 2 * negativeLaplaceLogFirst F n ^ 4) =O[atTop]
+        (fun n : ℕ => (n : ℝ)⁻¹) :=
+      isBigO_natCast_pow_mul_of_isBigO_log_pow_div (by omega)
+        (isBigO_log_pow_div_pow_pow 4 h1)
     have hsum := ht2'.add (ht3'.const_mul_left 2) |>.add ht4'
     have hscaled := hsum.const_mul_left (1 / 4 : ℝ)
     apply hscaled.congr'
     · filter_upwards with n
       ring
     · exact Filter.EventuallyEq.rfl
-  · have hn3raw := (isBigO_refl (fun n : ℕ => (n : ℝ)) atTop).mul hthird
-    have hn3 :
-        (fun n : ℕ => (n : ℝ) * negativeLaplaceLogThird F n) =O[atTop]
-          (fun n : ℕ => Real.log (n : ℝ) / (n : ℝ) ^ 2) := by
-      apply hn3raw.congr'
-      · exact Filter.EventuallyEq.rfl
-      · filter_upwards [hn] with n hn
-        have hN : (n : ℝ) ≠ 0 := natCast_ne_zero_of_one_le hn
-        field_simp [hN]
-    have hn3' := hn3.trans (by
-      simpa only [pow_one] using log_pow_div_sq_isBigO_inv_nat 1)
-    have hn12raw := (isBigO_refl (fun n : ℕ => (n : ℝ)) atTop).mul
-      (hfirst.mul hsecond)
-    have hn12 :
-        (fun n : ℕ => (n : ℝ) *
-          (negativeLaplaceLogFirst F n *
-            negativeLaplaceLogSecond F n)) =O[atTop]
-          (fun n : ℕ => Real.log (n : ℝ) ^ 2 / (n : ℝ) ^ 2) := by
-      apply hn12raw.congr'
-      · filter_upwards with n
-        rfl
-      · filter_upwards [hn] with n hn
-        have hN : (n : ℝ) ≠ 0 := natCast_ne_zero_of_one_le hn
-        field_simp [hN]
-    have hn12' := hn12.trans (log_pow_div_sq_isBigO_inv_nat 2)
-    have hn111raw := (isBigO_refl (fun n : ℕ => (n : ℝ)) atTop).mul
-      (hfirst.pow 3)
-    have hn111 :
-        (fun n : ℕ => (n : ℝ) *
-          negativeLaplaceLogFirst F n ^ 3) =O[atTop]
-          (fun n : ℕ => Real.log (n : ℝ) ^ 3 / (n : ℝ) ^ 2) := by
-      apply hn111raw.congr'
-      · filter_upwards with n
-        rfl
-      · filter_upwards [hn] with n hn
-        have hN : (n : ℝ) ≠ 0 := natCast_ne_zero_of_one_le hn
-        field_simp [hN]
-    have hn111' := hn111.trans (log_pow_div_sq_isBigO_inv_nat 3)
-    have hn24raw := (isBigO_refl (fun n : ℕ => (n : ℝ) ^ 2) atTop).mul
-      hfourth
-    have hn24 :
-        (fun n : ℕ => (n : ℝ) ^ 2 * negativeLaplaceLogFourth F n) =O[atTop]
-          (fun n : ℕ => Real.log (n : ℝ) / (n : ℝ) ^ 2) := by
-      apply hn24raw.congr'
-      · exact Filter.EventuallyEq.rfl
-      · filter_upwards [hn] with n hn
-        have hN : (n : ℝ) ≠ 0 := natCast_ne_zero_of_one_le hn
-        field_simp [hN]
-    have hn24' := hn24.trans (by
-      simpa only [pow_one] using log_pow_div_sq_isBigO_inv_nat 1)
-    have hn213raw := (isBigO_refl (fun n : ℕ => (n : ℝ) ^ 2) atTop).mul
-      (hfirst.mul hthird)
-    have hn213 :
-        (fun n : ℕ => (n : ℝ) ^ 2 *
-          (negativeLaplaceLogFirst F n *
-            negativeLaplaceLogThird F n)) =O[atTop]
-          (fun n : ℕ => Real.log (n : ℝ) ^ 2 / (n : ℝ) ^ 2) := by
-      apply hn213raw.congr'
-      · filter_upwards with n
-        rfl
-      · filter_upwards [hn] with n hn
-        have hN : (n : ℝ) ≠ 0 := natCast_ne_zero_of_one_le hn
-        field_simp [hN]
-    have hn213' := hn213.trans (log_pow_div_sq_isBigO_inv_nat 2)
-    have hn222raw := (isBigO_refl (fun n : ℕ => (n : ℝ) ^ 2) atTop).mul
-      (hsecond.pow 2)
-    have hn222 :
-        (fun n : ℕ => (n : ℝ) ^ 2 *
-          negativeLaplaceLogSecond F n ^ 2) =O[atTop]
-          (fun n : ℕ => Real.log (n : ℝ) ^ 2 / (n : ℝ) ^ 2) := by
-      apply hn222raw.congr'
-      · filter_upwards with n
-        rfl
-      · filter_upwards [hn] with n hn
-        have hN : (n : ℝ) ≠ 0 := natCast_ne_zero_of_one_le hn
-        field_simp [hN]
-    have hn222' := hn222.trans (log_pow_div_sq_isBigO_inv_nat 2)
-    have hn2112raw := (isBigO_refl (fun n : ℕ => (n : ℝ) ^ 2) atTop).mul
-      ((hfirst.pow 2).mul hsecond)
-    have hn2112 :
-        (fun n : ℕ => (n : ℝ) ^ 2 *
-          (negativeLaplaceLogFirst F n ^ 2 *
-            negativeLaplaceLogSecond F n)) =O[atTop]
-          (fun n : ℕ => Real.log (n : ℝ) ^ 3 / (n : ℝ) ^ 2) := by
-      apply hn2112raw.congr'
-      · filter_upwards with n
-        rfl
-      · filter_upwards [hn] with n hn
-        have hN : (n : ℝ) ≠ 0 := natCast_ne_zero_of_one_le hn
-        field_simp [hN]
-    have hn2112' := hn2112.trans (log_pow_div_sq_isBigO_inv_nat 3)
-    have hn21111raw := (isBigO_refl (fun n : ℕ => (n : ℝ) ^ 2) atTop).mul
-      (hfirst.pow 4)
-    have hn21111 :
-        (fun n : ℕ => (n : ℝ) ^ 2 *
-          negativeLaplaceLogFirst F n ^ 4) =O[atTop]
-          (fun n : ℕ => Real.log (n : ℝ) ^ 4 / (n : ℝ) ^ 2) := by
-      apply hn21111raw.congr'
-      · filter_upwards with n
-        rfl
-      · filter_upwards [hn] with n hn
-        have hN : (n : ℝ) ≠ 0 := natCast_ne_zero_of_one_le hn
-        field_simp [hN]
-    have hn21111' := hn21111.trans (log_pow_div_sq_isBigO_inv_nat 4)
+  · -- the third- and fourth-moment transfer term
+    have hn3' : (fun n : ℕ =>
+        (n : ℝ) ^ 1 * negativeLaplaceLogThird F n) =O[atTop]
+        (fun n : ℕ => (n : ℝ)⁻¹) :=
+      isBigO_natCast_pow_mul_of_isBigO_log_pow_div (by omega) h3
+    have hn12' : (fun n : ℕ => (n : ℝ) ^ 1 *
+        (negativeLaplaceLogFirst F n *
+          negativeLaplaceLogSecond F n)) =O[atTop]
+        (fun n : ℕ => (n : ℝ)⁻¹) :=
+      isBigO_natCast_pow_mul_of_isBigO_log_pow_div (by omega)
+        (isBigO_log_pow_div_pow_mul h1 h2)
+    have hn111' : (fun n : ℕ =>
+        (n : ℝ) ^ 1 * negativeLaplaceLogFirst F n ^ 3) =O[atTop]
+        (fun n : ℕ => (n : ℝ)⁻¹) :=
+      isBigO_natCast_pow_mul_of_isBigO_log_pow_div (by omega)
+        (isBigO_log_pow_div_pow_pow 3 h1)
+    have hn24' : (fun n : ℕ =>
+        (n : ℝ) ^ 2 * negativeLaplaceLogFourth F n) =O[atTop]
+        (fun n : ℕ => (n : ℝ)⁻¹) :=
+      isBigO_natCast_pow_mul_of_isBigO_log_pow_div (by omega) h4
+    have hn213' : (fun n : ℕ => (n : ℝ) ^ 2 *
+        (negativeLaplaceLogFirst F n *
+          negativeLaplaceLogThird F n)) =O[atTop]
+        (fun n : ℕ => (n : ℝ)⁻¹) :=
+      isBigO_natCast_pow_mul_of_isBigO_log_pow_div (by omega)
+        (isBigO_log_pow_div_pow_mul h1 h3)
+    have hn222' : (fun n : ℕ =>
+        (n : ℝ) ^ 2 * negativeLaplaceLogSecond F n ^ 2) =O[atTop]
+        (fun n : ℕ => (n : ℝ)⁻¹) :=
+      isBigO_natCast_pow_mul_of_isBigO_log_pow_div (by omega)
+        (isBigO_log_pow_div_pow_pow 2 h2)
+    have hn2112' : (fun n : ℕ => (n : ℝ) ^ 2 *
+        (negativeLaplaceLogFirst F n ^ 2 *
+          negativeLaplaceLogSecond F n)) =O[atTop]
+        (fun n : ℕ => (n : ℝ)⁻¹) :=
+      isBigO_natCast_pow_mul_of_isBigO_log_pow_div (by omega)
+        (isBigO_log_pow_div_pow_mul (isBigO_log_pow_div_pow_pow 2 h1) h2)
+    have hn21111' : (fun n : ℕ =>
+        (n : ℝ) ^ 2 * negativeLaplaceLogFirst F n ^ 4) =O[atTop]
+        (fun n : ℕ => (n : ℝ)⁻¹) :=
+      isBigO_natCast_pow_mul_of_isBigO_log_pow_div (by omega)
+        (isBigO_log_pow_div_pow_pow 4 h1)
     have hpoly :=
       (hn3'.const_mul_left (-1)).add (hn12'.const_mul_left (-3)) |>.add
         (hn111'.const_mul_left (-1)) |>.add hn24' |>.add

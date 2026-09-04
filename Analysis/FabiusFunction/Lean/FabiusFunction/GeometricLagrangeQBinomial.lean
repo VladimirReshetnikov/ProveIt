@@ -77,19 +77,23 @@ theorem geometricQPochhammer_succ (q : K) (n : ℕ) :
       geometricQPochhammer q n * (1 - q ^ (n + 1)) := by
   simp [geometricQPochhammer, Finset.prod_range_succ]
 
+/-- The geometric q-Pochhammer symbol and the root polynomial evaluated at
+one are the same product, under two names. -/
+theorem geometricQPochhammer_eq_geometricRootPolynomial_eval_one
+    (q : K) (n : ℕ) :
+    geometricQPochhammer q n = (geometricRootPolynomial q n).eval 1 :=
+  (geometricRootPolynomial_eval_one q n).symm
+
 /-- The finite product `(q;q)_n` is nonzero exactly when none of
 `q, q^2, ..., q^n` is one.  This is the precise finite non-root-of-unity
-condition needed for Gaussian-quotient cancellation. -/
+condition needed for Gaussian-quotient cancellation.  It is the same
+statement as `geometricRootPolynomial_eval_one_ne_zero_iff`, the two names
+denoting the same product. -/
 theorem geometricQPochhammer_ne_zero_iff (q : K) (n : ℕ) :
     geometricQPochhammer q n ≠ 0 ↔
       ∀ r < n, q ^ (r + 1) ≠ 1 := by
-  unfold geometricQPochhammer
-  rw [Finset.prod_ne_zero_iff]
-  constructor
-  · intro h r hr hpow
-    exact h r (Finset.mem_range.mpr hr) (sub_eq_zero.mpr hpow.symm)
-  · intro h r hr
-    exact sub_ne_zero.mpr (h r (Finset.mem_range.mp hr)).symm
+  rw [geometricQPochhammer_eq_geometricRootPolynomial_eval_one]
+  exact geometricRootPolynomial_eval_one_ne_zero_iff q n
 
 /-- A nonzero base with `(q;q)_p != 0` has distinct powers
 `1, q, ..., q^p`.  Thus the finite Pochhammer denominator is not merely an
@@ -300,6 +304,16 @@ theorem qPochhammer_self_ne_zero_iff (q : ℚ) (n : ℕ) :
       ∀ r < n, q ^ (r + 1) ≠ 1 := by
   rw [← geometricQPochhammer_rat_eq_qPochhammer]
   exact geometricQPochhammer_ne_zero_iff q n
+
+/-- **Rational node-distinctness from the q-Pochhammer denominator**: the
+form in which the geometric Lagrange development actually uses
+`pow_injOn_range_of_geometricQPochhammer_ne_zero`.  Eight call sites had
+each converted `qPochhammer` to `geometricQPochhammer` by hand first. -/
+theorem pow_injOn_range_of_qPochhammer_self_ne_zero
+    (q : ℚ) (hq : q ≠ 0) (p : ℕ) (h : qPochhammer q q p ≠ 0) :
+    Set.InjOn (fun j : ℕ => q ^ j) (Finset.range (p + 1)) :=
+  pow_injOn_range_of_geometricQPochhammer_ne_zero q hq p
+    (by rwa [geometricQPochhammer_rat_eq_qPochhammer])
 
 /-- Rational q-Pochhammer form of the explicit geometric Lagrange weight. -/
 theorem geometricLagrangeWeight_eq_qPochhammer

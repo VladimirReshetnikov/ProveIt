@@ -18,26 +18,7 @@ open Set
 
 namespace Fabius
 
-private theorem unitClamp_mem_Icc (x : ℝ) :
-    unitClamp x ∈ Icc (0 : ℝ) 1 :=
-  (projIcc (0 : ℝ) 1 zero_le_one x).property
-
-private theorem unitClamp_of_mem {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
-    unitClamp x = x := by
-  simpa only [unitClamp] using
-    congrArg Subtype.val (projIcc_of_mem zero_le_one hx)
-
-private theorem unitClamp_eq_zero_of_nonpos {x : ℝ} (hx : x ≤ 0) :
-    unitClamp x = 0 := by
-  simpa only [unitClamp] using
-    congrArg Subtype.val (projIcc_of_le_left (b := (1 : ℝ)) zero_le_one hx)
-
-private theorem unitClamp_eq_one_of_one_le {x : ℝ} (hx : 1 ≤ x) :
-    unitClamp x = 1 := by
-  simpa only [unitClamp] using
-    congrArg Subtype.val (projIcc_of_right_le (a := (0 : ℝ)) zero_le_one hx)
-
-private theorem fabiusInv_unitClamp
+theorem fabiusInv_unitClamp
     (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
     fabiusInv F hF (unitClamp x) = fabiusInv F hF x := by
   by_cases hx0 : x ≤ 0

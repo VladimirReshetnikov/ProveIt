@@ -218,7 +218,7 @@ theorem fabiusUniformSpline_eqOn_cellPolynomial_dyadic
 
 /-! ### From a derivative plateau to a degree bound -/
 
-private theorem iteratedDeriv_eval_polynomial
+theorem iteratedDeriv_eval_polynomial
     (r : ℕ) (Q : Polynomial ℝ) (x : ℝ) :
     iteratedDeriv r (fun y : ℝ => Q.eval y) x =
       (Polynomial.derivative^[r] Q).eval x := by

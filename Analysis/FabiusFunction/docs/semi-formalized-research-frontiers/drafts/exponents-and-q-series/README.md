@@ -1,17 +1,49 @@
 # Exponents and q-series
 
-The seven live document packages are organized by their primary mathematical
-overlap:
+There are two live document packages:
 
 - [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/)
   is the single canonical synthesis of forward q-series and branch-aware
   inverse-q theory.
-- [`q-fabius-parameter-deformations/`](q-fabius-parameter-deformations/)
-  contains the continuous-parameter, limit-regime, susceptibility, and smooth
-  response reports for the geometric q-Fabius family.
-- [`geometric-sinc-and-exponent-families/`](geometric-sinc-and-exponent-families/)
-  contains the central exponent/geometric-sinc synthesis and its
-  negative/reciprocal and cyclotomic companion reports.
+- [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/) is the
+  single consolidated frontier volume for the geometric q-deformation of the
+  Fabius–Rvachev system: exponent sequences, sinc products, atomic splines,
+  and parameter deformations.
+
+## The 2026-09-02 consolidation
+
+The two former subgroups `q-fabius-parameter-deformations/` and
+`geometric-sinc-and-exponent-families/` no longer exist. Their six standalone
+documents were merged into `geometric_q_fabius_frontiers/` and deleted from the
+working tree; git history is the archive, and the volume's own provenance
+section pins every absorbed snapshot by SHA-256.
+
+| Former package | Now |
+| --- | --- |
+| `geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/` | Parts I–VII (the volume's spine; renamed in place, assets retained) |
+| `geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/` | Part VIII |
+| `geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/` | Part IX |
+| `q-fabius-parameter-deformations/fabius_q_frontiers_report/` | Part X |
+| `q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/` | Part XI |
+| `q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/` | Part XII |
+
+The consolidation added a new **Part 0, Common Framework**, written for the
+merge rather than absorbed from any source. The six reports had fixed the same
+objects independently and inconsistently — three affine normalizations of one
+random variable, two sinc arguments, and the letters `X_q` and `Y_q` denoting
+different objects in different reports — so Part 0 states the shared
+definitions, transforms, and cumulant identities once with complete proofs and
+tabulates the exact dictionary from each part's local convention to the
+canonical one. Each absorbed part keeps its own mathematics; what it no longer
+carries is its own re-derivation of the shared layer.
+
+Every absorbed report's verification material — scripts, data tables, and
+figures — is preserved under `geometric_q_fabius_frontiers/assets/`.
+
+The detailed package record below still describes the six absorbed documents
+individually; those entries are retained as provenance, and their directory
+paths are dead. Resolve any path through the table above or through the
+[draft manifest](../MANIFEST.md).
 
 The former `q-pochhammer-and-inversion/` locations are recorded in pinned
 history; no live index or package remains at that path. Every live package
@@ -21,7 +53,7 @@ inverse-q synthesis have been dispositioned into
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/).
 Their earlier names, arrival hashes, and publication facts remain provenance,
 not parallel live documents. The current canonical TeX postdates its retained
-historical PDF; the exact source and artifact receipt appears once in the
+historical PDF; the historical source-and-artifact receipt appears once in the
 detailed package record below. The merged source incorporates the later
 five-theorem
 `QPochhammerEntire.lean`, `QPochhammerInfinite.lean`, and
@@ -31,31 +63,36 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 671 facade-reachable modules and 8,858 public declarations, with no
+contains 672 facade-reachable modules and 8,875 public declarations, with no
 missing module headers or declaration documentation.
 
 ## Detailed package record
 
 Current packages and retained intake records:
 
-- [`fabius_q_frontiers_report/`](q-fabius-parameter-deformations/fabius_q_frontiers_report/),
+- **Absorbed 2026-09-02 as Part~X of
+  [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/);
+  the directory `q-fabius-parameter-deformations/fabius_q_frontiers_report/` no longer exists.**
+  Formerly `fabius_q_frontiers_report/`,
   *Parameter-Flow, Gaussian, and Large-Deviation Frontiers for the
   q-Fabius--Rvachev Family* (23 A4 pp and 1,506 source lines at arrival;
   current main artifact: 22 A4 pp from 1,492 source lines; with two scripts,
   four CSV tables, two captured outputs, and four PDF/PNG figure pairs),
   arrived as a bare directory in direct-arrival commit
   `8a184546747082cbd92ad4675fb61981c6b8c3b6`; no archive or outer hash was
-  supplied. Its submitted ledger covers all 20 non-ledger payloads and was
-  refreshed after four CSV entries received CRLF-to-LF normalization. The
-  later strict rebuild replaced the main TeX/PDF pair; the refreshed 20-entry
-  operational ledger verifies every current payload. All five current PDFs
+  supplied. Its arrival receipt covered all 20 payloads; four CSV entries later
+  received CRLF-to-LF normalization. The later strict rebuild replaced the
+  main TeX/PDF pair. All five current PDFs
   are readable and unencrypted (26 pages total). The main report has 33
   embedded/subset font rows, including five Libertinus rows and eight Type-3
   rows inherited from the four included vector figures; the standalone figure
   PDFs contain the same eight Type-3 rows. Figure-font normalization remains
   deferred.
 
-- [`Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/`](q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/),
+- **Absorbed 2026-09-02 as Part~XI of
+  [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/);
+  the directory `q-fabius-parameter-deformations/Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/` no longer exists.**
+  Formerly `Continuous_Parameter_Edgeworth_and_q_Gevrey_Frontier/`,
   *Continuous-Parameter Edgeworth Theory, Large Deviations, and Quadratic
   q-Gevrey Regularity at the Fabius--Rvachev Frontier* (29 A4 pp and 1,387
   main-source lines at arrival; current main artifact: 29 A4 pp from 1,372
@@ -65,8 +102,8 @@ Current packages and retained intake records:
   `52179f63fe955a64508915eedaa560de9f3056da` under the bare generic wrapper
   `Fabius_Rvachev_Frontier_Report_2026-08-30-G/` and was filed under this
   title-derived collision-safe name. Its manifest covers the full delivery.
-  The current PDF was rebuilt from the final source in three strict passes;
-  the refreshed 19-entry ledger verifies every current payload. The main PDF
+  The current PDF was rebuilt from the final source in three strict passes.
+  The main PDF
   has 33 embedded/subset font rows, including six Libertinus rows and six
   Type-3 rows inherited from the three included vector figures; the standalone
   figure PDFs contain the same six Type-3 rows. Its title and abstract concern
@@ -95,11 +132,9 @@ Current packages and retained intake records:
   figures. Pinned source revisions and Git history preserve every superseded
   layout and arrival fact.
 
-  The current `q_pochhammer_q_binomial_monograph.tex` has 14,516 lines,
-  682,778 bytes, and SHA-256
-  `3184b1ed82998f7a9a903cbd0e95a6836cbeab2edd3194e5dc35c7243b9b9618`.
-  Its retained `q_pochhammer_q_binomial_monograph.pdf` is a historical
-  354-page A4 artifact of 3,030,302 bytes, with SHA-256
+  The current `q_pochhammer_q_binomial_monograph.tex` has 14,531 lines and
+  683,936 bytes. Its retained `q_pochhammer_q_binomial_monograph.pdf` is a
+  historical 354-page A4 artifact of 3,030,302 bytes, with SHA-256
   `1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
   That PDF was built in exactly three guarded serial passes (343, 354, and 354
   pages) from the preceding 14,381-line, 675,239-byte source with SHA-256
@@ -114,18 +149,23 @@ Current packages and retained intake records:
   Gaussian structure modules, `CentralQBinomialReduction.lean`,
   `CyclotomicFactorization.lean`, `PrimitiveRootBlock.lean`, `QLucas.lean`,
   `QCatalan.lean`, `CyclotomicDivisibility.lean`, the subsequent q-series
-  module tranches, and the three-theorem
+  module tranches including the q-beta, collision-free Newton,
+  integer/complex-order Gaussian, q-Pfaff--Saalschuetz, quantum-multinomial,
+  and Gaussian reciprocity/growth APIs, and the three-theorem
   `GeometricPochhammerNormalConvergence.lean` outer-product API. The forward
-  crosswalk is now 77 Exact, 85 Partial, 112 None, and 8 interface rows; the
+  crosswalk is now 90 Exact, 84 Partial, 100 None, and 8 interface rows; the
   source ledger is 66 Lean-proved, 412 human-proved frontier, 60 not
   applicable, and 9 conjectures. No PDF was generated locally while resolving
-  this source-only merge, so the retained 348-page artifact does not render
+  this source-only merge, so the retained 354-page artifact does not render
   the current source. PDF files retained
   beneath `assets/` are vector research figures, not manuscript builds.
   Manuscript result labels and numerical checks remain
   distinct from Lean verification.
 
-- [`Cyclotomic_q_Fabius_Rvachev_Frontier/`](geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/),
+- **Absorbed 2026-09-02 as Part~IX of
+  [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/);
+  the directory `geometric-sinc-and-exponent-families/Cyclotomic_q_Fabius_Rvachev_Frontier/` no longer exists.**
+  Formerly `Cyclotomic_q_Fabius_Rvachev_Frontier/`,
   *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc
   Product* (25 pp at arrival; currently 28 A4 pp and 1,875 source lines),
   arrived on 2026-08-30 from
@@ -140,18 +180,20 @@ Current packages and retained intake records:
   cyclotomic asymptotic and natural-boundary layers manuscript-only. The
   retained main PDF has 28 A4 pages, so the five PDFs have 32 pages in total
   (28 main plus four one-page figures). Its current 1,875-line source postdates
-  that rendering; a fresh strict three-pass build and operational-ledger
-  refresh are pending. The retained main PDF uses
+  that rendering; a fresh strict three-pass build remains pending. The
+  retained main PDF uses
   embedded/subset Type-1 Libertinus fonts with no Type 3 font; the unchanged
   standalone vector figures retain nine embedded/subset Type-3 rows as
   disclosed archival debt.
 
-- [`Fabius_Rvachev_Frontier_Report/`](geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/),
+- **Absorbed 2026-09-02 as Part~VIII of
+  [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/);
+  the directory `geometric-sinc-and-exponent-families/Fabius_Rvachev_Frontier_Report/` no longer exists.**
+  Formerly `Fabius_Rvachev_Frontier_Report/`,
 *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (current
 1,475-line source and matching 26-page A4 PDF), arrived on 2026-08-30 with all
 13 payload checksums verified. Its current PDF was rebuilt from the final
-source, and the refreshed operational ledger verifies all thirteen current
-payloads. It develops
+source. It develops
 negative-parameter affine transport, reciprocal-base digit reversal,
 multisection, shape theory, and the Gaussian boundary for geometric-uniform
 laws.  Because much of that subject already appears in Part VII of the
@@ -159,15 +201,17 @@ consolidated volume, the report remains standalone until its genuinely new
 claims are isolated and the overlap is deliberately deduplicated.  Paper
 theorem labels do not by themselves assert Lean formalization.
 
-- [`Fabius_Flat_Parameter_Response_Dynamics/`](q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/),
+- **Absorbed 2026-09-02 as Part~XII of
+  [`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/);
+  the directory `q-fabius-parameter-deformations/Fabius_Flat_Parameter_Response_Dynamics/` no longer exists.**
+  Formerly `Fabius_Flat_Parameter_Response_Dynamics/`,
   *Flat Parameter Fronts, q-Susceptibility, and Smooth Dynamics* (26 A4 pp;
   current 1,890-line TeX and 519-line deterministic exact/Monte-Carlo program),
   was filed on 2026-08-30 from `fabius_frontier_report_2026.zip` (803,598 bytes;
   SHA-256
   `afdcf522589a7baad82c81a527c02dcc09e58455ab14c57a9c492e65563c647e`).
-  Its immutable 13-entry arrival ledger verifies 13/13. The current PDF was
-  rebuilt from the final source, and the refreshed 17-entry operational ledger
-  verifies 17/17. The pinned replay reproduced the two exact
+  Its immutable 13-entry arrival digest receipt records 13/13. The current PDF was
+  rebuilt from the final source. The pinned replay reproduced the two exact
   algebra tables, common-random-number table, and two figures byte-for-byte;
   the two Monte-Carlo tables differed only at documented last-bit levels far
   below their sampling errors. A hostile review repaired the conditional-law
@@ -523,7 +567,8 @@ remain research frontiers. These fractional-Volterra API claims were checked at 
 `149332f9d`.
 
 Geometric-sinc subgroup member:
-[`Exponents_and_q_Series_Frontiers/`](geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/)
+[`geometric_q_fabius_frontiers/`](geometric_q_fabius_frontiers/), whose
+Parts~I--VII are the former `Exponents_and_q_Series_Frontiers/`
 (current semantic-union TeX: 16,369 lines and 737,912 bytes, SHA-256
 `a4aecd625f7eb405de866e2b368bbdc648fb0f9e11b423cb936a2f319d195f02`;
 retained PDF: 238 A4 pages and 6,953,898 bytes, SHA-256
@@ -533,9 +578,9 @@ across seven parts). Exactly three serial passes from the preceding 16,274-line,
 `4be184dc95f7c9d7665e5edf56cd22dc66bdacbc2f113b03b700468836018f8b`
 produced 228, 238, and 238 pages. Basic A4, text-extraction, embedded-font, and
 no-Type-3 checks passed, but the containing multi-document batch stopped before
-a fresh full log, page-box, and visual audit. The child ledgers now record the
-actual current TeX and retained PDF as distinct payloads; that does not assert
-render parity. The semantic-union source adds the upstream q-API crosswalk
+a fresh full log, page-box, and visual audit. The current TeX and retained PDF
+remain distinct payloads; that does not assert render parity. The
+semantic-union source adds the upstream q-API crosswalk
 material and the exact `GeneralizedRvachevIdentifiability.lean`
 zero-order/exponent crosswalk after the PDF's source checkpoint. The latter
 gives constructive dyadic-order first differences and full-product rigidity;
@@ -804,8 +849,8 @@ claims about the current canonical source. The canonical synthesis's current
 source and retained historical PDF are identified by the single exact receipt
 in the detailed package record above.
 
-The latest validated forward formalization ledger has 282 rows: 88 Exact, 83
-Partial, 103 with no counterpart, and 8 interface-only. The original
+The latest validated forward formalization ledger has 282 rows: 90 Exact, 84
+Partial, 100 with no counterpart, and 8 interface-only. The original
 191-result pre-Fabius core had 36 exact, 29 partial, 123 with no counterpart,
 and 3 interface-only entries. The four integrated-guide chapters add 31
 human-proved but not Lean-formalized assertions and five labelled definitions;
@@ -845,6 +890,7 @@ compatibility spelling of its primary identity),
 `QPochhammerDissection.lean` (two theorems),
 `QPochhammerInfinite.lean` (one definition, 29 theorems),
 `QBinomialReciprocity.lean` (four theorems),
+`GaussianBinomialBounds.lean` (zero definitions, six theorems),
 `GaussianBinomialPalindromic.lean` (zero definitions, fourteen theorems),
 `GaussianBinomialPolynomialStructure.lean` (zero definitions, five theorems),
 `CentralQBinomialReduction.lean` (zero definitions, six theorems),
@@ -1160,7 +1206,7 @@ eight theorems) and `NewtonInterpolation.lean` (two definitions, thirteen
 theorems). It formalizes the Jackson q-beta product and q-gamma evaluation,
 symmetry, positivity, and recurrences, together with generic Newton
 interpolation and its geometric-grid specialization; the interpolation
-polynomial is named `newtonInterpolant` to remain distinct from the older
+polynomial is named `nodeNewtonPoly` to remain distinct from the older
 Newton-basis generating-function `newtonPoly`.
 The final three-module tail adds integer and principal-complex upper-index
 Gaussian coefficients and the terminating balanced q-Pfaff--Saalschütz sum:
@@ -1171,6 +1217,12 @@ strict-contraction, and denominator hypotheses remain explicit.
 `QuantumMultinomial.lean` adds five theorems for antidiagonal tuple recursion,
 noncommutative Gaussian symmetry, and the ordered q-multinomial expansion for
 pairwise q-commuting variables.
-`GaussianBinomialBounds.lean` adds six theorems: field reciprocity, the
-nonnegative-nome lower bound and strict-contraction q-Pochhammer upper bound,
-and the corresponding dimension-dominant two-sided real bounds for `Q > 1`.
+`GaussianBinomialBounds.lean` adds six theorems and reuses the stronger
+`finiteQPochhammerIn_self_pos` from `GeneralQConditionNumber`: evaluated
+reciprocity, the finite bounds for `0 <= q < 1`, and the dimension-dominant
+lower and upper bounds for `q > 1`. The imported positivity theorem is not
+counted as a declaration of the bounds leaf. The exact finite-growth row is
+closed, while the compound
+greater-than-one row remains Partial at its asymptotic clauses. The
+primitive-root value in the Babbage corollary is exact, while its derivative
+clause keeps that compound row Partial.

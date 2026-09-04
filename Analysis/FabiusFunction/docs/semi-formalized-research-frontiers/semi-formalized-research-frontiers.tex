@@ -337,8 +337,14 @@ zero-definition/six-theorem generalized Rvachev identifiability overlay
 described in the audit map below, as well as the six-theorem prime-power
 companion-row and zero-definition/three-theorem outer Pochhammer
 normal-convergence overlays, the effective-inverse closure, and the latest
-twenty-seven-module q-series/q-calculus union.  The live source census is 672
-facade-reachable modules and 8,868 public declarations.  The retained
+expanded q-series/q-calculus union, including the finite root-of-unity,
+q-Catalan, Newton-interpolation, q-beta, upper-index Gaussian,
+q-Pfaff--Saalsch\"utz, quantum-multinomial, and Gaussian-bound layers, together
+with the completed Gaussian linear-coefficient classifier, the
+eight-declaration rational-gap inverse module, and the parity-selected Rvachev
+superconvergence leaf and the subsequent binary-word, box-partition, and
+telescoping-certificate leaves.  The live source census is 675 facade-reachable
+modules and 8,909 public declarations.  The retained
 237-page A4 PDF, SHA-256
 \nolinkurl{21180fa05a754b52a057495464674e9d6ac26a51488c2c770730c641b5ffe887},
 predates these source-only overlays and the expanded ledger and is therefore a
@@ -620,7 +626,8 @@ MacMahon q-Catalan polynomial &
 \nolinkurl{qCatalan_eval_one_mul}, \nolinkurl{qCatalan_eval_one} &
 \nolinkurl{QCatalan.lean}; one definition and eleven theorems \\
 Newton interpolation and geometric divided differences &
-\nolinkurl{newtonCoeff}, \nolinkurl{newtonInterpolant};
+\nolinkurl{newtonCoeff}, \nolinkurl{nodeNewtonPoly},
+\nolinkurl{newtonInterpolant};
 \nolinkurl{newtonCoeff_eq}, \nolinkurl{newtonCoeff_zero},
 \nolinkurl{newtonCoeff_mul_prod}, \nolinkurl{newtonPoly_succ},
 \nolinkurl{eval_newtonPoly}, \nolinkurl{degree_newtonPoly_lt},
@@ -628,8 +635,11 @@ Newton interpolation and geometric divided differences &
 \nolinkurl{eq_newtonPoly_of_eval_eq},
 \nolinkurl{coeff_newtonPoly_self}, \nolinkurl{newtonCoeff_eq_sum},
 \nolinkurl{nodal_range_pow}, \nolinkurl{prod_erase_pow_sub_pow},
-\nolinkurl{newtonCoeff_pow_eq_sum} &
-\nolinkurl{NewtonInterpolation.lean}; two definitions and thirteen theorems \\
+\nolinkurl{newtonCoeff_pow_eq_sum}, \nolinkurl{newtonPoly_succ},
+\nolinkurl{eval_newtonPoly}, \nolinkurl{degree_newtonPoly_lt},
+\nolinkurl{newtonPoly_eq_interpolate},
+\nolinkurl{eq_newtonPoly_of_eval_eq}, \nolinkurl{coeff_newtonPoly_self} &
+\nolinkurl{NewtonInterpolation.lean}; three definitions and nineteen theorems \\
 Jackson q-beta integral &
 \nolinkurl{qBeta}; \nolinkurl{qNumber_pos}, \nolinkurl{qBeta_term_eq},
 \nolinkurl{qBeta_eq_prod}, \nolinkurl{qBeta_eq_qGamma},
@@ -890,7 +900,7 @@ For a strict increasing inverse pair on \([0,1]\), the lower bound
 \(\alpha(p)\le f(x+2^{-p})-f(x)\) for every
 \(x\in[0,1-2^{-p}]\) yields the inverse modulus, sequential computability,
 and effective uniform continuity.  The total result is precisely the clamped
-extension \(x\mapsto g(\nolinkurl{unitClamp}(x))\), not a claim about the
+extension \(x\mapsto g(\lean{unitClamp}(x))\), not a claim about the
 unclamped values of \(g\) outside \([0,1]\). &
 \nolinkurl{EffectivelyUniformContinuousOn},
 \nolinkurl{ComputablePositiveRationalSequence},
@@ -2240,14 +2250,20 @@ integral domain gives \(\GaussianBinomial{an}{bn}{\zeta}=\binom ab\).
 \([n+1]_X\mid\GaussianBinomial{2n}{n}{X}\), has degree \(n(n-1)\), and
 evaluates at one to the ordinary Catalan number.
 
-\path{NewtonInterpolation.lean} is 2+13: definitions \lean{newtonCoeff} and
-\lean{newtonInterpolant}; theorems \lean{newtonCoeff_eq},
+\path{NewtonInterpolation.lean} is 3+19: definitions \lean{newtonCoeff},
+\lean{nodeNewtonPoly}, and \lean{newtonInterpolant}; theorems \lean{newtonCoeff_eq},
 \lean{newtonCoeff_zero}, \lean{newtonCoeff_mul_prod},
+\lean{nodeNewtonPoly_succ}, \lean{eval_nodeNewtonPoly},
+\lean{degree_nodeNewtonPoly_lt}, \lean{nodeNewtonPoly_eq_interpolate},
+\lean{eq_nodeNewtonPoly_of_eval_eq}, \lean{coeff_nodeNewtonPoly_self},
+\lean{newtonCoeff_eq_sum}, \lean{nodal_range_pow},
+\lean{prod_erase_pow_sub_pow}, \lean{newtonCoeff_pow_eq_sum},
 \lean{newtonPoly_succ}, \lean{eval_newtonPoly},
 \lean{degree_newtonPoly_lt}, \lean{newtonPoly_eq_interpolate},
-\lean{eq_newtonPoly_of_eval_eq}, \lean{coeff_newtonPoly_self},
-\lean{newtonCoeff_eq_sum}, \lean{nodal_range_pow},
-\lean{prod_erase_pow_sub_pow}, and \lean{newtonCoeff_pow_eq_sum}.
+\lean{eq_newtonPoly_of_eval_eq}, and \lean{coeff_newtonPoly_self}.  The final
+six are compatibility wrappers for the incoming \lean{newtonInterpolant}
+name; the scalar \lean{newtonPoly} from
+\path{NewtonBasisGeneratingFunction.lean} remains a different object.
 \path{QBetaIntegral.lean} is 1+8: definition \lean{qBeta}; theorems
 \lean{qNumber_pos}, \lean{qBeta_term_eq}, \lean{qBeta_eq_prod},
 \lean{qBeta_eq_qGamma}, \lean{qBeta_comm}, \lean{qBeta_pos},
@@ -2394,9 +2410,16 @@ identifiability is formalized; those remain open.  This one-module,
 six-declaration overlay raised its historical census from 629/8,546 to
 630/8,552.  With later concurrent integration, including the six-theorem
 prime-power companion row, zero-definition/three-theorem outer Pochhammer
-normal-convergence leaf, two-module effective-inverse closure, and twenty-seven-module
-q-series/q-calculus union and the parity-selected Rvachev synthesis leaf, the
-live source census is 672/8,868.  These additions
+normal-convergence leaf, two-module fixed-depth effective-inverse closure, the
+eight-declaration rational-gap inverse leaf, the expanded q-series/q-calculus
+union (including the completed Gaussian linear-coefficient classifier,
+root-of-unity/q-Catalan tranche, Newton-interpolation/q-beta tranche,
+upper-index Gaussian, q-Pfaff--Saalsch\"utz, quantum-multinomial, and
+Gaussian-bound layers), and the parity-selected Rvachev synthesis leaf, the
+intermediate source census is 672/8,875.  The three later
+\path{BinaryWordInversions.lean}, \path{BoxPartitions.lean}, and
+\path{TelescopingCertificate.lean} leaves add thirty-four declarations and
+bring the live source census to 675/8,909.  These additions
 are source-only, and the retained 237-page PDF remains explicitly historical.
 The newest six module counts are
 \path{QPochhammerInfiniteBounds.lean} (0+5),
@@ -2440,12 +2463,15 @@ exact degree and Catalan specialization.
 
 The newest two module counts are
 \path{QBetaIntegral.lean} (1+8) and
-\path{NewtonInterpolation.lean} (2+13).  Their three definitions and
-twenty-one theorems evaluate the Jackson q-beta integral as both an
+\path{NewtonInterpolation.lean} (3+19).  Their four definitions and
+twenty-seven theorems evaluate the Jackson q-beta integral as both an
 infinite-product quotient and a q-gamma quotient for \(0<q<1\) and positive
 arguments, and construct Newton coefficients and interpolants with evaluation,
-uniqueness, divided differences, and the explicit geometric-grid formula.
-No endpoint or \(q\to1\) limit theorem is included.
+uniqueness, divided differences, and the explicit geometric-grid formula.  The
+node-polynomial and incoming interpolant names coexist as proved compatibility
+aliases, while the older scalar \path{NewtonBasisGeneratingFunction.lean}
+\nolinkurl{newtonPoly} remains distinct.  No endpoint or \(q\to1\) limit theorem
+is included.
 
 The latest three q-series module counts are
 \path{GaussianBinomialInteger.lean} (1+10),
@@ -2467,12 +2493,18 @@ q-multinomial expansion.  It assumes exactly that the nome commute with each
 variable and that \(x_jx_i=q(x_ix_j)\) for \(i<j\); the finite identity is
 division-free and needs no ambient commutativity or convergence hypothesis.
 
-The zero-definition/six-theorem module
-\path{GaussianBinomialBounds.lean} evaluates field reciprocity, proves the
-constant-term lower bound and infinite-q-Pochhammer upper bound for
-nonnegative real strict contractions, and transfers them to
-dimension-dominant two-sided bounds for every real $Q>1$.  Its $k\le n$,
-nonzero, order, and strict-contraction premises remain explicit.
+The latest Gaussian-bound module \path{GaussianBinomialBounds.lean} is 0+6.
+It imports the stronger \lean{finiteQPochhammerIn\_self\_pos} from
+\path{GeneralQConditionNumber.lean} rather than recounting it, evaluates field
+reciprocity, proves the constant-term lower and infinite-q-Pochhammer upper
+bounds for nonnegative real strict contractions, and transfers them to
+dimension-dominant two-sided bounds for every real \(Q>1\).  Its \(k\le n\),
+nonzero, order, and strict-contraction premises remain explicit.  The
+parity-selected synthesis module
+\path{RvachevSuperconvergentSynthesis.lean} is 1+8: it names the selected
+dyadic phase representatives and proves the corresponding monomial,
+polynomial, deconvolution, and Appell sampling identities.  It asserts neither
+a complete phase classification nor maximality beyond those representatives.
 
 The earlier compiler-validated checkpoint \texttt{e6f535e5d} supplied the two modules that
 promote the
@@ -4550,7 +4582,7 @@ The exhaustive zero-definition, three-theorem cyclotomic carry, rational divisib
 \path{QCatalan.lean} &
 The exhaustive one-definition, eleven-theorem integral q-Catalan divisibility, degree, and value-at-one interface.\\
 \path{NewtonInterpolation.lean} &
-The exhaustive two-definition, thirteen-theorem finite-node and geometric-grid Newton interface.\\
+The exhaustive three-definition, nineteen-theorem finite-node and geometric-grid Newton interface, including the collision-free node-polynomial API and incoming interpolant compatibility wrappers.\\
 \path{QBetaIntegral.lean} &
 The exhaustive one-definition, eight-theorem Jackson q-beta and q-Gamma interface.\\
 \path{QuantumBinomial.lean} &
@@ -10622,7 +10654,7 @@ Module & Role in the present article \\
 \path{QLucas.lean} & Exactly eight public theorems and no definitions: \lean{two_mul_choose_two}, \lean{add_mul_add_sub_one}, \lean{choose_two_add}, \lean{coeff_finiteQPochhammerIn_neg_X}, \lean{finiteQPochhammerIn_neg_X_block}, \lean{coeff_block_pow_mul}, \lean{pow_choose_two_add_mul_eq}, and \lean{gaussianBinomial_q_lucas}.  The final theorem assumes only positive primitive-root order and the residue bounds \(b,s<d\), not \(r\le a\) or \(s\le b\). \\
 \path{CyclotomicDivisibility.lean} & Exactly three public theorems and no definitions: \lean{cyclotomic_exponent_eq_one_iff}, \lean{cyclotomic_dvd_gaussianBinomial_iff}, and \lean{gaussianBinomial_mul_isPrimitiveRoot}.  The carry criterion assumes \(k\le n\), \(d>0\); divisibility is in \(\RationalNumbers[X]\); the primitive-root value needs no \(b\le a\). \\
 \path{QCatalan.lean} & Exactly one public definition, \lean{qCatalan}, and eleven theorems: \lean{map_qInt}, \lean{qInt_X_monic}, \lean{qInt_X_natDegree}, \lean{X_sub_one_mul_qInt}, \lean{qInt_X_eq_prod_cyclotomic}, \lean{qInt_X_dvd_gaussianBinomial_rat}, \lean{qInt_X_dvd_gaussianBinomial_int}, \lean{qInt_X_mul_qCatalan}, \lean{qCatalan_natDegree}, \lean{qCatalan_eval_one_mul}, and \lean{qCatalan_eval_one}.  The integral \path{divByMonic} quotient is defined for every natural \(n\); coefficient positivity, palindromicity, and a combinatorial interpretation are not asserted. \\
-\path{NewtonInterpolation.lean} & Exactly two definitions and thirteen theorems: \lean{newtonCoeff}, \lean{newtonInterpolant}; \lean{newtonCoeff_eq}, \lean{newtonCoeff_zero}, \lean{newtonCoeff_mul_prod}, \lean{newtonPoly_succ}, \lean{eval_newtonPoly}, \lean{degree_newtonPoly_lt}, \lean{newtonPoly_eq_interpolate}, \lean{eq_newtonPoly_of_eval_eq}, \lean{coeff_newtonPoly_self}, \lean{newtonCoeff_eq_sum}, \lean{nodal_range_pow}, \lean{prod_erase_pow_sub_pow}, and \lean{newtonCoeff_pow_eq_sum}. \\
+\path{NewtonInterpolation.lean} & Exactly three definitions and nineteen theorems: \lean{newtonCoeff}, \lean{nodeNewtonPoly}, \lean{newtonInterpolant}; \lean{newtonCoeff_eq}, \lean{newtonCoeff_zero}, \lean{newtonCoeff_mul_prod}, \lean{nodeNewtonPoly_succ}, \lean{eval_nodeNewtonPoly}, \lean{degree_nodeNewtonPoly_lt}, \lean{nodeNewtonPoly_eq_interpolate}, \lean{eq_nodeNewtonPoly_of_eval_eq}, \lean{coeff_nodeNewtonPoly_self}, \lean{newtonCoeff_eq_sum}, \lean{nodal_range_pow}, \lean{prod_erase_pow_sub_pow}, \lean{newtonCoeff_pow_eq_sum}, \lean{newtonPoly_succ}, \lean{eval_newtonPoly}, \lean{degree_newtonPoly_lt}, \lean{newtonPoly_eq_interpolate}, \lean{eq_newtonPoly_of_eval_eq}, and \lean{coeff_newtonPoly_self}. \\
 \path{QBetaIntegral.lean} & Exactly one definition and eight theorems: \lean{qBeta}; \lean{qNumber_pos}, \lean{qBeta_term_eq}, \lean{qBeta_eq_prod}, \lean{qBeta_eq_qGamma}, \lean{qBeta_comm}, \lean{qBeta_pos}, \lean{qBeta_add_one_left}, and \lean{qBeta_add_one_right}. \\
 \path{QPochhammerElementaryIdentities.lean} & Exactly 13 public theorems: unit-valued ring reversals, root-safe terminating and adjacent cross identities, and field quotient forms with their exact nonzero-denominator hypotheses; the cross identities are total by zero extension, while the adjacent quotients retain \(k<n\). \\
 \path{QDifferenceAnnihilation.lean} & Exactly four public theorems: the scaled inverse-Gaussian characteristic polynomial, its complete geometric monomial moments, scalar-extension top-coefficient extraction, and strict-degree \(q\)-difference annihilation; \cref{dyadicq:rem:scaled-qdiff}. \\
@@ -16646,7 +16678,7 @@ computable dyadic approximation of \(f\) and both interval maps, the next
 theorem proves sequential computability and effective uniform continuity of
 \(g\) on the unit interval.  The last proves
 \path{IsComputableRealFunction} only for
-\(x\mapsto g(\path{unitClamp}(x))\), which agrees with \(g\) on \([0,1]\) but
+\(x\mapsto g(\lean{unitClamp}(x))\), which agrees with \(g\) on \([0,1]\) but
 does not constrain its unclamped values outside that interval.  The separate
 \path{FabiusInverseComputable.lean} has zero public definitions and the single
 public theorem \path{Fabius.fabiusInv_isComputableRealFunction}.  It
@@ -16886,6 +16918,213 @@ snapshot 25 August 2026.
 
 \renewcommand{\arraystretch}{1}
 % END SYNTHESIZED TOPIC: inverse and small-argument saddle analysis
+
+% BEGIN FRONTIER PART: general-nome value identity (added 2026-09-02)
+\clearpage
+\part{The General-Nome Value Identity for the Geometric Fabius Recursion}
+
+\begin{boxedremark}
+\textbf{Status.}  Everything in this part is a frontier claim: numerically
+verified in exact rational arithmetic, not formalized.  The two negative
+results of \Cref{genq:sec:negative} \emph{are} settled, in the sense that a
+single exact counterexample refutes each; they are recorded here because both
+refuted statements are the ones a reader would guess.  Added 2 September 2026.
+\end{boxedremark}
+
+\section{The dyadic identity and the shape of its deformation}
+\label{genq:sec:statement}
+
+The primary exposition's central dyadic result evaluates the Fabius function at
+the points \(2^{-n}\) through a \(q\)-binomial--Thue--Morse sum at the fixed
+nome \(q=1/2\):
+\begin{equation}
+\label{genq:eq:dyadic}
+  F\!\left(2^{-n}\right)
+  =\frac{1}{2^{n^{2}}\QPochhammer{1/2}{1/2}{n}}
+   \sum_{k=0}^{n}
+     \frac{\GaussianBinomial nk{1/2}}{4^{\Btri k}\,(n+k)!}
+     \sum_{r<2^{k}}\ThueMorseSign r\,\bigl(r-2^{k}\bigr)^{n+k}.
+\end{equation}
+This is formalized: \lean{fabiusAtInverseTwoPow_eq_qBinomialThueMorse_sum} in
+\path{FabiusQBinomialFormula.lean}.  Its prefactor is now also identified with a
+group order, \(2^{n^{2}}\QPochhammer{1/2}{1/2}{n}=\lvert\mathrm{GL}_{n}(\mathbb
+F_{2})\rvert\), by \lean{two_pow_nat_sq_mul_qPochhammer_half_eq_card_GL} in
+\path{FabiusGeneralLinearDenominator.lean}.
+
+The nome \(1/2\) is written into \eqref{genq:eq:dyadic} in three separate
+places, and it is not obvious which of them are essential.  Two of the three are
+not.  The outer Gaussian weights are governed by the finite \(q\)-binomial
+theorem, which the atlas proves over an arbitrary commutative ring
+(\lean{finite_qBinomial_theorem}, \path{FiniteQBinomialCore.lean}); and the
+inner signed block is governed by a powerset annihilation engine stated for an
+\emph{arbitrary} family of step weights over an arbitrary commutative ring
+(\lean{sum_powerset_neg_one_pow_eval} and
+\lean{sum_powerset_neg_one_pow_pow_card}, \path{ThueMorseSparseProuhet.lean}),
+in which the dyadic steps \(2^{j}\) are never used.  Only the left-hand side is
+genuinely base-two: \lean{halfMoment} hard-codes the denominator
+\((n+2)(2^{n+1}-1)\), and the formal-series engine of the proof rescales by
+\(2\) throughout.
+
+The deformation below replaces the steps \(2^{j}\) by \(q^{-j}\) and the
+half-moment recursion by its \(q\)-analogue.
+
+\begin{definition}[The \(q\)-deformed data]
+\label{genq:def:data}
+Let \(K\) be a field of characteristic zero and let \(q\in K\) satisfy
+\(q^{m}\neq1\) for \(1\le m\le n\); equivalently
+\(\QPochhammer qqn\neq0\), which in particular forces \(q\neq0,1\).  Define
+\begin{align}
+  d_{q}(0)&=1, &
+  d_{q}(n+1)&=\frac{\displaystyle\sum_{k=0}^{n}\binom{n+2}{k}d_{q}(k)}
+                  {(n+2)\bigl(q^{-(n+1)}-1\bigr)}, &
+  a_{q}(n)&=\frac{d_{q}(n)}{n!},
+\end{align}
+and, for \(k,d\in\NaturalNumbers\) and \(x\in K\), the \emph{\(q\)-Prouhet
+block}
+\begin{equation}
+\label{genq:eq:block}
+  P_{q}(k,d,x)=\sum_{T\subseteq\{0,\dots,k-1\}}(-1)^{\lvert T\rvert}
+    \Bigl(x+\sum_{j\in T}q^{-j}\Bigr)^{d}.
+\end{equation}
+\end{definition}
+
+At \(q=1/2\) the Mersenne factor reappears, since
+\(q^{-(n+1)}-1=2^{n+1}-1\); this is precisely why
+\(\QPochhammer{1/2}{1/2}{n}\) occurs in \eqref{genq:eq:dyadic}, and
+\(d_{1/2}=\lean{halfMoment}\), \(a_{1/2}=\lean{fabiusRecurrenceSequence}\).
+
+\begin{candidate}[General-nome value identity]
+\label{genq:cand:main}
+With the data of \Cref{genq:def:data}, for every \(n\in\NaturalNumbers\),
+\begin{equation}
+\label{genq:eq:general}
+  q^{\Btri n}\,a_{q}(n)
+  =\frac{1}{q^{-n^{2}}\QPochhammer qqn}
+   \sum_{k=0}^{n}
+     \frac{\GaussianBinomial nkq}{q^{-2\Btri k}\,(n+k)!}\,
+     P_{q}\Bigl(k,\;n+k,\;-\sum_{j<k}q^{-j}\Bigr).
+\end{equation}
+\end{candidate}
+
+Note the exponent \(q^{+\Btri n}\) on the left, and that the inner block is
+centred at \(-\sum_{j<k}q^{-j}\), the negative of the largest node of the
+block, rather than at any single power of \(q\).  Both points are sharp; see
+\Cref{genq:sec:negative}.
+
+\section{Numerical evidence}
+\label{genq:sec:evidence}
+
+\Cref{genq:cand:main} was checked in exact rational arithmetic --- no floating
+point --- for \(q\in\{1/2,\;1/3,\;2/5,\;3/4,\;1/4\}\) and \(0\le n\le6\), both
+sides agreeing as rationals in all thirty-five cases.  At \(q=1/2\) the left
+side reproduces the Fabius dyadic values
+\[
+  1,\quad \tfrac12,\quad \tfrac5{72},\quad \tfrac1{288},\quad
+  \tfrac{143}{2073600},\quad \tfrac{19}{33177600},
+\]
+which are exactly the values \eqref{genq:eq:dyadic} produces, so
+\eqref{genq:eq:general} contains the formalized dyadic identity as its
+\(q=1/2\) specialization.
+
+That specialization is a corollary and not a restatement.  Under the Boolean
+cube reindexing \(T\mapsto r=\sum_{j\in T}2^{j}\)
+(\lean{sum_powerset_two_pow}), \(P_{1/2}(k,d,x)\) becomes
+\(\sum_{r<2^{k}}\ThueMorseSign r\,(x+r)^{d}\) with \(x=-(2^{k}-1)\), whereas
+\eqref{genq:eq:dyadic} uses \(x=-2^{k}\).  The two centrings differ term by
+term and agree only after the full \(\GaussianBinomial nkq\)-weighted sum over
+\(k\) has been taken; a centring-shift lemma is therefore part of the
+obligation below.
+
+\section{Two refutations}
+\label{genq:sec:negative}
+
+Both statements refuted here are the natural guesses, which is why they are
+recorded rather than passed over.
+
+\begin{warning}[The naive centring is wrong off the dyadic point]
+\label{genq:warn:centring}
+Replacing the centring \(-\sum_{j<k}q^{-j}\) in \eqref{genq:eq:general} by the
+single power \(-q^{-k}\) --- the literal transcription of the \(-2^{k}\) of
+\eqref{genq:eq:dyadic} --- yields a statement that is true for every \(n\) at
+\(q=1/2\) and false at every \(n\ge1\) for \(q=1/3\) and \(q=3/4\), by exact
+computation.  The dyadic case is thus accidental: at \(q=1/2\),
+\(\sum_{j<k}2^{j}=2^{k}-1\) and the discrepancy is absorbed by the outer sum.
+\end{warning}
+
+\begin{warning}[The left-hand side is not a distribution function]
+\label{genq:warn:cdf}
+It is tempting to read \(q^{\Btri n}a_{q}(n)\) as the geometric-uniform
+distribution function \lean{geometricUniformCDF} evaluated at \(q^{n}\),
+because that reading is correct at \(q=1/2\), where it is the Fabius
+CDF.  It is false in general: at \(q=3/4\) and \(n=1\) the recursion gives
+\(d_{q}(1)=\tfrac32\) and \(\Btri1=0\), so the left side of
+\eqref{genq:eq:general} equals \(3/2>1\) and cannot be the value of any
+distribution function.  Whether some renormalization of \(a_{q}\) admits a
+probabilistic reading is open; the naive one does not.
+\end{warning}
+
+\Cref{genq:warn:cdf} is worth stating explicitly because the corresponding
+dyadic statement is both true and formalized
+(\lean{geometricUniformCDF_one_half_eq_fabiusReal},
+\path{ProbabilityRepresentation.lean}), so the false generalization inherits an
+unusually strong appearance of support.
+
+\section{What remains to be formalized}
+\label{genq:sec:obligation}
+
+\begin{obligation}[General-nome value identity]
+\label{genq:obl:main}
+Prove \eqref{genq:eq:general} in Lean.  Three components are already available
+at the required generality and need only to be instantiated:
+\begin{enumerate}[label=(\roman*)]
+  \item the outer Gaussian weights, by \lean{finite_qBinomial_theorem} over an
+        arbitrary commutative ring;
+  \item the vanishing of \(P_{q}(k,d,x)\) for \(d<k\) and its sharp value at
+        \(d=k\), by \lean{sum_powerset_neg_one_pow_eval} and
+        \lean{sum_powerset_neg_one_pow_pow_card} at the step weights
+        \(w_{j}=q^{-j}\), whose product \(\prod_{j<k}q^{-j}=q^{-\Btri k}\)
+        supplies the denominator \(q^{-2\Btri k}\) after squaring;
+  \item the centring-shift lemma of \Cref{genq:sec:evidence}.
+\end{enumerate}
+The genuinely missing components are:
+\begin{enumerate}[label=(\alph*)]
+  \item a definition of \(d_{q}\) and \(a_{q}\) --- the atlas has only the
+        base-two \lean{halfMoment} and \lean{fabiusRecurrenceSequence}, whose
+        denominator \((n+2)(2^{n+1}-1)\) is hard-coded; and
+  \item a nome-general replacement for the formal-series engine of
+        \path{FabiusQBinomialFormula.lean}, whose
+        \lean{recurrenceSeries_rescale_two} rescales by \(2\) and whose
+        \lean{refinementFactorSeries} is a product over
+        \(\mathrm{rescale}(-2^{j})\).  The abstract coefficient extractor
+        \lean{weighted_factor_coefficient} in the same file is already stated
+        for an abstract weight, node and annihilation family, so its
+        \emph{statement} should transfer unchanged.
+\end{enumerate}
+
+\begin{warning}[Three of those declarations are \texttt{private}]
+\label{genq:warn:private}
+\lean{recurrenceSeries_rescale_two}, \lean{refinementFactorSeries} and
+\lean{weighted_factor_coefficient} are all declared \texttt{private} in
+\path{FabiusQBinomialFormula.lean}, so none of them is accessible from another
+module as things stand.  Component (b) therefore begins with a step this
+register originally omitted: making those three public, or relocating the
+abstract extractor to a module the general-nome development can import.  That
+is bookkeeping rather than mathematics, but it is not nothing --- the extractor
+is the piece the whole route was supposed to reuse, and "reuse it unchanged" is
+not available until it is visible.
+\end{warning}
+\end{obligation}
+
+\begin{obligation}[Probabilistic reading, if any]
+\label{genq:obl:prob}
+Decide whether \(a_{q}\) admits a probabilistic interpretation generalizing the
+Fabius one.  \Cref{genq:warn:cdf} refutes the naive candidate, so this
+obligation is to find the correct normalization or to show that none exists.
+Note that \path{GeometricUniformCDF.lean} already develops
+\lean{geometricUniformCDF} at a general nome with its density, support and
+smoothness, so only the closed form at the grid points \(q^{n}\) is missing.
+\end{obligation}
+% END FRONTIER PART: general-nome value identity
 
 % BEGIN POST-CONSOLIDATION REGISTER: Primary_Exposition_Gap_Register/Primary_Exposition_Gap_Register.tex
 % Original source SHA-256: 06c7b888d9601b67ad7a5c0aee3f087d44d9ecaaa9abfb3bf3edfda4bd29c0d1

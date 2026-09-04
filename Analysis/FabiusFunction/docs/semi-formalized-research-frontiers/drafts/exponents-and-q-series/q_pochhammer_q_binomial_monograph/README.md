@@ -46,7 +46,9 @@ the earlier six-package inverse provenance is not silently reinterpreted.
 The migrated `assets/` tree preserves six experiment programs, nineteen
 CSV/TXT outputs, and fourteen vector figures selected by the historical
 77-row `assets/ASSET_DISPOSITION.csv`. That disposition ledger remains the
-authoritative inventory of the 39 retained historical payloads.
+authoritative inventory of the 39 retained historical payloads; the pinned
+source revisions and repository history preserve their digest receipts. No
+live checksum manifest is maintained.
 
 ## Validation state
 
@@ -84,39 +86,27 @@ It compares all coefficients through degree 100 using integer arithmetic:
 1,515 equalities in total. This is a transcription-quality gate, explicitly
 not an infinite proof of any recorded identity.
 
-Checksum ledgers have been abolished repository-wide; no `SHA256SUMS` file is
+Checksum ledgers have been abolished repository-wide; no checksum manifest is
 kept for this package or its assets, and no checksum gate is part of its
 validation state. Deleted checksum manifests must not be recreated. Historical
 SHA-256 values recorded directly in this README and in `PROVENANCE.md` remain
 provenance receipts for the named artifacts.
 
-The retained `q_pochhammer_q_binomial_monograph.pdf` is a historical 354-page
-A4 build of its recorded source checkpoint (14,381 lines, 675,239 bytes,
-SHA-256 `240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`).
-The PDF is 3,030,302 bytes with SHA-256
-`1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`.
+The retained `q_pochhammer_q_binomial_monograph.pdf` is a 378-page A4
+build of the current master source (15,630 lines, 764,952 bytes,
+SHA-256 `403a25dccadc15e7a34bedd8d28a2dc3369cb6e6a046cd199a30ed178742a32d`).
+The PDF is 3,175,603 bytes with SHA-256
+`5d0dac5a8d1cba7bedab9055a51f59478054de22969dcf75b0f58ce3f3c265bc`.
 It was built by exactly three serial
-`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 343,
-354, and 354 pages, with `makeindex` run on the `.idx` file after each pass.
-The final log scan found three overfull boxes, all in the single paragraph of
-the `QPochhammerEntire` crosswalk, whose long declaration names lack break
-points. All pages are A4. `pdffonts` reports 42 font rows, all embedded and
-subsetted, including five Libertinus rows, with no Type-3
+`pdflatex -interaction=nonstopmode -halt-on-error` passes, which produced 378,
+378, and 378 pages, with `makeindex` run on the `.idx` file after each pass.
+3 overfull hboxes All pages are A4. `pdffonts` reports 43 font rows, all
+embedded and subsetted, including 5 Libertinus rows, with no Type-3
 fonts. The files under `assets/experiments/**/figures/` remain research
 figures, not publication manuscripts.
 
-The current live master is a source-only successor to that checkpoint: it has
-14,530 lines, 683,858 bytes, and SHA-256
-`b77e9ab54d9437485bab9ee36783cc1f1d5c36c347e67a5242953af8319650fc`.
-It adds the explicit document-local `\BellBlockMultiplicity{r}` and
-`\MacMahonQCatalanPolynomial{n}{q}` families and normalizes the newly merged
-Jackson, Gaussian-binomial, q-integer, and q-Pochhammer status formulas, while
-retaining the newest feature, crosswalk, and provenance expansion catalogued
-below. No PDF was regenerated after those changes; the historical source
-identity above must not be reused for the live source. Thus the PDF and its
-recorded 14,381-line build source form the retained synchronized checkpoint,
-while the current master and retained PDF are distinct payloads pending a
-fresh three-pass build and do not claim render parity.
+The retained PDF was built from the master source described above, so the
+identities recorded there belong to one synchronized source/PDF pair.
 
 The current source includes exhaustive crosswalks for `QPochhammerEntire`
 (zero definitions
@@ -141,17 +131,33 @@ and six theorems), `QPochhammerLogDerivative` (zero definitions and ten
 theorems), `QPochhammerOrderDerivative` (zero definitions and three theorems),
 `JacobiCubic` (zero definitions and two theorems),
 `CentralQBinomialReduction` (zero definitions and six theorems), and
-`CyclotomicFactorization` (zero definitions and seven theorems).  The newest
-cyclotomic tail consists exhaustively of `CyclotomicDivisibility` (zero
-definitions and three theorems), `PrimitiveRootBlock` (zero definitions and
-three theorems), `QCatalan` (one definition and eleven theorems), and `QLucas`
-(zero definitions and eight theorems).  The latest analytic and interpolation
-tail adds `QBetaIntegral` (one definition and eight theorems) and
-`NewtonInterpolation` (two definitions and thirteen theorems).  The newest
-tail adds `GaussianBinomialInteger` (one definition and ten theorems),
-`GaussianBinomialComplexOrder` (one definition and five theorems), and
-`QPfaffSaalschutz` (zero definitions and three theorems), together with
+`CyclotomicFactorization` (zero definitions and seven theorems). The newest
+cyclotomic surfaces are `CyclotomicDivisibility` (zero definitions and three
+theorems), `PrimitiveRootBlock` (zero definitions and three theorems),
+`QCatalan` (one definition and eleven theorems), and `QLucas` (zero
+definitions and eight theorems). The analytic and interpolation tail adds
+`QBetaIntegral` (one definition and eight theorems) and
+`NewtonInterpolation` (two definitions and thirteen theorems), covering the
+Jackson q-beta product and arbitrary-node/geometric-grid interpolation.
+The collision-free polynomial API is `nodeNewtonPoly`,
+`nodeNewtonPoly_succ`, `eval_nodeNewtonPoly`,
+`degree_nodeNewtonPoly_lt`, `nodeNewtonPoly_eq_interpolate`,
+`eq_nodeNewtonPoly_of_eval_eq`, and `coeff_nodeNewtonPoly_self`; the remaining
+eight Newton declarations retain their incoming names.
+The newest finite-q surfaces are `GaussianBinomialInteger` (one definition
+and ten theorems), `GaussianBinomialComplexOrder` (one definition and five
+theorems), `QPfaffSaalschutz` (zero definitions and three theorems),
+`QuantumMultinomial` (zero definitions and five theorems), and
+`GaussianBinomialBounds` (zero definitions and six theorems), together with
 expanded Euler, Jacobi, and Rogers--Szegő material.
+The newest combinatorial and certification tranche adds
+`BinaryWordInversions` (five definitions and fourteen theorems),
+`BoxPartitions` (two definitions and eight theorems), and
+`TelescopingCertificate` (zero definitions and five theorems). These give the
+binary-word inversion and path-area generating functions, rectangular-box
+partition generating functions and counts, finite telescoping certificates,
+recurrence uniqueness, and rational-identity specialization. The live facade
+audit now contains 675 modules and 8,909 public declarations.
 
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
@@ -163,14 +169,36 @@ entireness, zero-locus, reciprocal-power, and analytic-order results rather
 than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `finiteQPochhammerIn_zero_left` remains the unique declaration owned by
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
-status ledger is 97 Exact, 85 Partial, 92 None, and 8 interface rows; the
-191-result pre-Fabius core is 36/29/123/3. The compound outer spectral-product
-theorem remains Partial even though the three-theorem outer-product leaf proves
-local-uniform (normal) convergence for every complex strict contraction, its
-nome-`1/4` Rvachev specialization, and the bounded-Fabius Fourier
-specialization. Its named centered/MGF packaging and exterior reciprocal
-formula, pole divisor, and zero--pole exchange remain outside Lean.
-
+status ledger is 167 Exact, 89 Partial, 18 None, and 8 interface rows; the
+original 191-result pre-Fabius core is 36/29/123/3, and the
+completed source concordance records 66 Lean-proved rows, 412 human-proved
+frontier rows, 60 not-applicable rows, and 9 conjectures.
+The fourteen-theorem `GaussianBinomialPalindromic` API and five-theorem
+`GaussianBinomialPolynomialStructure` API give exact degree,
+monicity, constant and top coefficients, reflection, coefficient
+palindromicity, and the division-free mean identity over generic commutative
+semirings. Its new `coeff_gaussianBinomial_one_of_pos_of_lt` and
+`coeff_gaussianBinomial_one` theorems prove the strict-interior coefficient
+of `q` is one and give the total formula with every boundary zero. Thus
+`cor:positivity`, `thm:qbinom-structure`, and the inverse-source proposition
+`prop:gq-positive-palindromic` are Exact. The compound
+outer spectral-product theorem remains Partial even though the three-theorem
+outer-product leaf proves local-uniform (normal) convergence for every complex
+strict contraction, including `q = 0`, together with the nome-`1/4` Rvachev
+and bounded-Fabius Fourier specializations. Its named centered/MGF packaging,
+exterior reciprocal formula, pole divisor, and zero--pole exchange remain
+outside Lean.
+The six-theorem `GaussianBinomialBounds` surface reuses the stronger
+`finiteQPochhammerIn_self_pos` from `GeneralQConditionNumber` and supplies
+evaluated reciprocity and the exact finite growth bounds on both sides of `q = 1`; the
+compound greater-than-one row remains Partial only at its asymptotic clauses.
+The new tranche makes `thm:binary-inversions`,
+`thm:rectangle-partitions`, `cor:path-area`,
+`thm:telescoping-certificate`, `cor:identity-certification`,
+`lem:polynomial-identity-principle`, and `cor:safe-specialization` Exact.
+`cor:qbinom-inversion-law` becomes Partial because its word count and inversion
+distribution are formalized while its identification with the separately
+defined random variable is not.
 The new status changes record the exact q-exponential eigenfunction and
 Jackson integration-by-parts subclaims, and Partial formalizations of the
 q-exponential factorization, Jackson fundamental theorem, and theta
@@ -217,6 +245,6 @@ reciprocal-product expansions, the complex upper-parameter series, and the
 generalized q-binomial theorem. The remaining complex-Gaussian property and
 classical-limit rows stay unformalized.
 
-No PDF was generated locally while resolving this merge. The retained
-354-page artifact remains the validated historical checkpoint described
-above. No deleted checksum manifest was recreated.
+Source and PDF were synchronized by this build. PDFs are rebuilt in batches,
+at most about once per hour, so source-only commits may precede the next
+synchronization; the figures above always describe the retained PDF.
