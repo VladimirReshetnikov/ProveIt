@@ -14,6 +14,8 @@ into these formulas, produces one and only one `x ∈ (-1/e, 0)`, and the
 displayed values are its two branches.  Together the two directions say that
 the gap `x ↦ W₀(x) - W₋₁(x)` is a bijection from `(-1/e, 0)` onto `(0, ∞)`,
 with the explicit inverse `Δ ↦ a(Δ) e^{a(Δ)}`, `a(Δ) = -Δ/(e^Δ - 1)`.
+The final three theorems express the reconstructed argument and both branch
+values in the equivalent coordinate `t = exp Δ > 1`.
 
 ## The mechanism
 
@@ -137,5 +139,34 @@ gap is attained at exactly one argument. -/
 theorem branchGap_bijOn : BijOn branchGap (Ioo (-Real.exp (-1)) 0) (Ioi 0) :=
   branchGap_invOn.bijOn (fun _ hx => principalLambertW_sub_lowerLambertW_pos hx)
     (fun _ hΔ => gapArg_mem_Ioo hΔ)
+
+/-! ## The equivalent `t = exp Δ` coordinate -/
+
+/-- In the coordinate `t = exp Δ > 1`, the reconstructed principal branch is
+`-log t/(t - 1)`. -/
+theorem principalLambertW_gapArg_log {t : ℝ} (ht : 1 < t) :
+    principalLambertW (gapArg (Real.log t)) = -Real.log t / (t - 1) := by
+  have ht0 : 0 < t := lt_trans zero_lt_one ht
+  simpa [gapPrincipal, Real.exp_log ht0] using
+    principalLambertW_gapArg (Real.log_pos ht)
+
+/-- In the coordinate `t = exp Δ > 1`, the reconstructed lower branch is
+`-t log t/(t - 1)`. -/
+theorem lowerLambertW_gapArg_log {t : ℝ} (ht : 1 < t) :
+    lowerLambertW (gapArg (Real.log t)) =
+      -(t * Real.log t) / (t - 1) := by
+  have ht0 : 0 < t := lt_trans zero_lt_one ht
+  simpa [gapLower, Real.exp_log ht0, mul_comm] using
+    lowerLambertW_gapArg (Real.log_pos ht)
+
+/-- In the coordinate `t = exp Δ > 1`, the inverse branch-pair argument is
+`-(log t)/(t - 1) * t ^ (-1/(t - 1))`. -/
+theorem gapArg_log {t : ℝ} (ht : 1 < t) :
+    gapArg (Real.log t) =
+      (-Real.log t / (t - 1)) * t ^ (-1 / (t - 1) : ℝ) := by
+  have ht0 : 0 < t := lt_trans zero_lt_one ht
+  rw [gapArg, gapPrincipal, Real.exp_log ht0, Real.rpow_def_of_pos ht0]
+  congr 2
+  ring
 
 end Fabius

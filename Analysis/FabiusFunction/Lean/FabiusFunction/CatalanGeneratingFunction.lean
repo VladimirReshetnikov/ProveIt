@@ -33,6 +33,7 @@ variable (R : Type*) [CommRing R]
 /-- The Catalan generating function `C(z) = ∑_n C_n z^n`. -/
 noncomputable def catalanSeries : R⟦X⟧ := PowerSeries.mk fun n => (catalan n : R)
 
+/-- The coefficient of degree `n` in the Catalan series is the `n`-th Catalan number. -/
 @[simp] theorem coeff_catalanSeries (n : ℕ) :
     PowerSeries.coeff n (catalanSeries R) = (catalan n : R) := by
   rw [catalanSeries, coeff_mk]

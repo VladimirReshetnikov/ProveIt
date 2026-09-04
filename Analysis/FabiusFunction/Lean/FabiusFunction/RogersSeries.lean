@@ -25,6 +25,7 @@ variable {𝕜 : Type*} [NormedField 𝕜] [CompleteSpace 𝕜]
 noncomputable def rogersSeries (q : 𝕜) (m : ℕ) : 𝕜 :=
   ∑' n : ℕ, q ^ (n * n + m * n) / finiteQPochhammerIn q q n
 
+/-- The defining series for `rogersSeries q m` is summable whenever `‖q‖ < 1`. -/
 theorem summable_rogersSeries_term {q : 𝕜} (hq : ‖q‖ < 1) (m : ℕ) :
     Summable fun n : ℕ => q ^ (n * n + m * n) / finiteQPochhammerIn q q n := by
   have hQ : qPochhammerInfIn q q ≠ 0 := qPochhammerInfIn_self_ne_zero hq
@@ -39,6 +40,7 @@ theorem summable_rogersSeries_term {q : 𝕜} (hq : ‖q‖ < 1) (m : ℕ) :
           (hC n) (inv_nonneg.mpr (norm_nonneg _)) (by positivity)
     _ = C₁ * ‖q‖ ^ n := mul_comm _ _
 
+/-- The summands defining `rogersSeries q m` sum to that series. -/
 theorem hasSum_rogersSeries {q : 𝕜} (hq : ‖q‖ < 1) (m : ℕ) :
     HasSum (fun n : ℕ => q ^ (n * n + m * n) / finiteQPochhammerIn q q n) (rogersSeries q m) :=
   (summable_rogersSeries_term hq m).hasSum

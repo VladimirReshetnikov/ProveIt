@@ -20,8 +20,10 @@ Four independently written article packages arrived together on
 consolidated volume:
 
 Member: `Lambert_W_Guide/` — *The Lambert W Function: A Real-Variable
-Guide* (62 pp, consolidated edition).  The most complete of the four
-treatments forms the body; the unique layers of the other three (the
+Guide*.  Its retained PDF is a historical 66-page A4 artifact of 1,107,064
+bytes; the current source is newer, so no render parity is claimed.  The most
+complete of the four treatments forms the body; the unique layers of the
+other three (the
 complete power-tower convergence theorem, inverse-Taylor corrections,
 the branch-exchange involution, the transcendence theorem, a
 practitioner's toolkit, further applications, and the r-Lambert
@@ -67,6 +69,23 @@ monotonicity), the closed value `W₋₁(-2e⁻²) = -2`, and the **branch
 dichotomy**: every real solution of `w·e^w = z` is `W₀(z)` or `W₋₁(z)`
 (`Fabius.eq_principalLambertW_or_eq_lowerLambertW`) — the guide's
 two-branch inversion statement, kernel-verified.
+
+The guide's exact branch-pair parametrization and symmetric corollary now have
+a focused three-module crosswalk.  `LambertWBranchPairing.lean` has zero
+definitions and seven theorems, including both displayed formulas for W₋₁;
+`LambertWGapBijection.lean` has four definitions and sixteen theorems,
+including the inverse bijection and all three `t > 1` coordinate formulas;
+and `LambertWBranchSymmetry.lean` has zero definitions and nine theorems for
+the quotient, exponential-rational and hyperbolic sum/product forms, and the
+strict sum/product bounds.  The disjoint union is four definitions and 32
+theorems, hence 36 public declarations.  The forward pairing and symmetric
+laws use the sharp open input interval `(-exp(-1), 0)`.  In the converse
+module the four coordinate definitions are total, `gapLower_eq_mul_exp` is
+unconditional, the reconstruction results use a positive gap, and the three
+logarithmic-coordinate results assume `t > 1`; its inverse and bijection
+statements connect exactly the two open domains.  At the input interval's
+left endpoint both branches equal `-1`, so the sum is exactly `-2` and the
+product exactly `1`, while the lower branch has no finite value at zero.
 
 The exact raw second-order package is `LambertWCurvature.lean`.  Its
 principal API is `deriv_principalLambertW`,
