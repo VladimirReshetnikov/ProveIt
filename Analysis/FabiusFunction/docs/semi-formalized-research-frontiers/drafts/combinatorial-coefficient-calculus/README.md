@@ -79,12 +79,12 @@ and what is not; it is maintained separately from this consolidation.
 
 ## Formalization checkpoints (2026-09-04)
 
-The `AppellSequence` extension has passed a focused Lean build with
-`LAKE_JOBS=1`: eleven public lemmas provide weighted binomial translation,
+The `AppellSequence` extension has passed direct, sequential Lean elaboration:
+eleven public lemmas provide weighted binomial translation,
 convolution transport, cancellation, and inversion. The manuscript gives their
 complete human proofs and exact declaration crosswalks. Three private rational
 helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
-caller refactor has been independently source-reviewed but awaits its own build.
+caller refactor has now passed its own direct Lean check as well.
 
 The register contains 204 rows: 59 marked Lean, 34 partial, and 111 without a
 Lean counterpart. The earlier classifications are inherited; this checkpoint

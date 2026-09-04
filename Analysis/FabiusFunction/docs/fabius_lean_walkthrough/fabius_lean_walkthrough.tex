@@ -128,11 +128,16 @@ A mathematically oriented reader should begin with Sections~\ref{ch:objects}, \r
 \end{boxedremark}
 
 \begin{boxedremark}\textbf{Artifact status (4 September 2026).}\space
-The authoritative live lexical audit of the facade semantic union contains
-exactly 960 source modules and 11,966 public declarations.  It finds no
-missing module headers and no public declarations without doc comments.  The
-historical 923/11,611 snapshot comprised the merge target's 11,610
-declarations and the retained unconditional public Pochhammer bridge.  The
+At the historical publication checkpoint, the authoritative lexical audit of
+the facade semantic union contained exactly 923 source modules and 11,611
+public declarations.  It found no missing module headers and no public
+declarations without doc comments; the then-checked baseline recorded this
+zero-gap state.  The merge target then contributed
+11,610 declarations, and the retained unconditional public Pochhammer bridge
+contributed the one additional declaration in that union.  A later incoming-
+branch audit reached the historical 960/11,966 checkpoint; the semantic union
+then reached the historical 967/12,001 and 969/12,048 checkpoints.  The live
+census is now 970/12,051/0, as recorded in the later current-tree audit.  The
 historical 671/8,859 local checkpoint was the 649/8,698 checkpoint plus 22
 modules and 161 declarations.  The
 Pochhammer ownership census remains
@@ -6224,6 +6229,36 @@ Periodic correction \(\Psi\) & \nolinkurl{negativeLaplacePsi} & \nolinkurl{Perio
 Even Legendre truncation & \nolinkurl{rvachevLegendrePartialSumPolynomial} & \nolinkurl{FabiusLegendreLeastSquares.lean} \\
 Total squared zero-row integer Wigner datum & \nolinkurl{legendreGauntAdmissible}, \nolinkurl{legendreWignerThreeJZeroSqRat}, \nolinkurl{legendreGauntRat_eq_two_mul_wignerThreeJZeroSqRat} & Exhaustive two-definition/twenty-five-theorem closed form, factorial formulas, sharp support, and positivity in \nolinkurl{LegendreGauntClosedForm.lean}; no signed phase, half-integer/nonzero magnetic indices, orthogonality, or recoupling \\
 Finite Rvachev/up-law Wigner-square Gram sums & \nolinkurl{rvachevLegendreGramEntryRat_eq_two_mul_sum_wignerThreeJZeroSqRat}, \nolinkurl{rvachevLegendreGramMatrixRat_apply_eq_two_mul_sum_wignerThreeJZeroSqRat}, \nolinkurl{upLegendreGramMatrix_apply_eq_two_mul_sum_wignerThreeJZeroSqRat} & Exact zero-definition/three-theorem rational-entry, rational-matrix, and real-matrix surface of \nolinkurl{FabiusLegendreGauntClosedForm.lean} \\
+Formal arbitrary-power recurrence &
+\nolinkurl{Fabius.coeff_recurrence_of_mul_derivative_eq},
+\nolinkurl{Fabius.mul_derivative_fallingSeries_subst_sub_one},
+\nolinkurl{Fabius.coeff_fallingSeries_subst_sub_one_recurrence} & Exhaustive
+0+3 \nolinkurl{UnitSeriesPowerRecurrence.lean} surface.  Multiplying
+\(FG'=\beta F'G\) by \(X\), extracting the \(n\)-th Euler-derivative
+coefficient, and isolating the \(j=0\) term gives
+\(na_0c_n=\sum_{j=1}^n((\beta+1)j-n)a_jc_{n-j}\) over every commutative
+ring.  Formal substitution in the falling-factorial series gives the
+unit-constant power specialization over a rational algebra.  Thus the power
+clause of \nolinkurl{alg:merged-exp-log-power} is Exact, with no analytic
+branch claim.  The 203-row coefficient-calculus concordance is 59 Lean,
+33 Partial, and 111 None. \\
+Weighted binomial translation and inversion &
+\nolinkurl{Bell.binomialConv_unitSeq},
+\nolinkurl{Bell.binomialConv_four_swap},
+\nolinkurl{Appell.translate_zero},
+\nolinkurl{Appell.translate_translate},
+\nolinkurl{Appell.binomialConv_translate},
+\nolinkurl{Appell.translate_injective},
+\nolinkurl{Appell.translate_neg_translate},
+\nolinkurl{Appell.translate_translate_neg},
+\nolinkurl{Appell.translate_eq_iff},
+\nolinkurl{Appell.weighted_binomial_inversion_iff},
+\nolinkurl{Appell.binomialConv_translate_neg_translate} & Eleven-declaration
+extension of \nolinkurl{AppellSequence.lean}.
+\nolinkurl{thm:merged-weighted-binomial-translation} is Exact over
+commutative semirings, with left-cancellative addition needed only for
+injectivity; \nolinkurl{cor:merged-weighted-binomial-inversion} is Exact over
+commutative rings.  These are finite identities, not analytic EGF claims. \\
 Unit-series Bell conversion, powers/logarithms, and exponential jets &
 \nolinkurl{ordPartialBell_eq_factorialRatio_partialBell},
 \nolinkurl{factorial_mul_ordPartialBell_eq_factorial_mul_partialBell},
@@ -6267,15 +6302,19 @@ Elementary height comparison &
 \nolinkurl{atTop} comparisons of \nolinkurl{q0:prop:height} are Exact; no
 recursive height/depth type for arbitrary nested transmonomials is defined. \\
 Sequence-indexed scale and coefficient uniqueness &
-\nolinkurl{IsAsymptoticScale}, \nolinkurl{IsPoincareExpansion},
+\nolinkurl{IsAsymptoticScale}, \nolinkurl{poincarePartialSum},
+\nolinkurl{poincarePartialSum_zero}, \nolinkurl{poincarePartialSum_succ},
+\nolinkurl{IsPoincareExpansion},
 \nolinkurl{IsPoincareExpansion.isLittleO_succ_remainder},
 \nolinkurl{IsPoincareExpansion.tendsto_coeff},
+\nolinkurl{IsPoincareExpansion.tendsto_coeff_div},
 \nolinkurl{IsPoincareExpansion.coeff_unique} & Exhaustive one-structure,
-one-definition, three-theorem \nolinkurl{TransseriesScale.lean} surface.
+two-definition, six-theorem \nolinkurl{TransseriesScale.lean} surface.
 The sequence forms of \nolinkurl{q0:def:scale}, \nolinkurl{q0:def:poincare},
-and \nolinkurl{q0:prop:uniqueness} are Exact; uniqueness needs
-\nolinkurl{[l.NeBot]}, and no convergence, flat-remainder recovery,
-unordered-set, or maximal-scale claim is made. \\
+and \nolinkurl{q0:prop:uniqueness} are Exact for coefficients in an arbitrary
+normed space over the scalar field; the quotient wrapper is scalar-valued.
+Uniqueness needs \nolinkurl{[l.NeBot]}, and no convergence, flat-remainder
+recovery, unordered-set, or maximal-scale claim is made. \\
 Power--logarithmic dominance &
 \nolinkurl{plMonomial}, \nolinkurl{tendsto_plMonomial_atTop_zero},
 \nolinkurl{plMonomial_div_eventuallyEq},
@@ -6312,6 +6351,9 @@ explicit degree-preserving nonresonant inverse and degree-raising resonant
 primitive.  It does not construct the full Laurent ring. \\
 Abstract differential-block bridge &
 \nolinkurl{Fabius.derivation_pow_t}, \nolinkurl{Fabius.derivation_block},
+\nolinkurl{Fabius.derivation_zpow_block},
+\nolinkurl{Fabius.exists_zpow_block_primitive},
+\nolinkurl{Fabius.existsUnique_zpow_block_primitive},
 \nolinkurl{Fabius.exists_block_primitive},
 \nolinkurl{Fabius.derivation_block_zero},
 \nolinkurl{Fabius.exists_block_primitive_resonant},
@@ -6319,9 +6361,11 @@ Abstract differential-block bridge &
 \nolinkurl{Fabius.derivation_pow_inv},
 \nolinkurl{Fabius.derivation_zpow_t},
 \nolinkurl{Fabius.derivation_block_zpow} & Exhaustive
-0+9 \nolinkurl{TransseriesDifferentialBlock.lean} surface.  The natural and
-integer-exponent forms of \nolinkurl{plt:eq:mot-block-derivative} are Exact,
-the latter for unit \(t\).  This closes exactly item~(v) of
+0+12 \nolinkurl{TransseriesDifferentialBlock.lean} surface.  The natural and
+integer-exponent forms of \nolinkurl{plt:eq:mot-block-derivative} are Exact.
+The source-shaped Laurent law and degree-preserving nonresonant primitive use
+an ambient field and \(t\ne0\); uniqueness also needs injective evaluation at
+\(L\).  The older integer form packages \(t\) as a unit.  This closes exactly item~(v) of
 \nolinkurl{plt:thm:mot-smallest-differential-algebra}; that compound theorem
 remains Partial because the minimal-ring, growth, algebraic-independence, and
 concrete Laurent-ring clauses are absent. \\
@@ -6428,6 +6472,12 @@ Flatness and invisible remainders &
 \nolinkurl{Fabius.isFlat_zero}, \nolinkurl{Fabius.IsFlat.add},
 \nolinkurl{Fabius.IsFlat.neg}, \nolinkurl{Fabius.IsFlat.sub},
 \nolinkurl{Fabius.IsFlat.const_smul},
+\nolinkurl{Fabius.isFlat_exp_neg_rpow_atTop},
+\nolinkurl{Fabius.IsPoincareExpansion.add_flat},
+\nolinkurl{Fabius.IsPoincareExpansion.sub_same_coeff_isFlat},
+\nolinkurl{Fabius.IsPoincareExpansion.iff_sub_isFlat},
+\nolinkurl{Fabius.IsFlat.smul_of_scale_absorption},
+\nolinkurl{Fabius.IsFlat.smul_of_isBigO_inv_pow},
 \nolinkurl{Fabius.mem_flatSubmodule_iff},
 \nolinkurl{Fabius.IsFlat.mul_absorbsScale},
 \nolinkurl{Fabius.absorbsScale_const},
@@ -6438,11 +6488,14 @@ Flatness and invisible remainders &
 \nolinkurl{Fabius.powScale_eq_rpow},
 \nolinkurl{Fabius.absorbsScale_of_isBigO_pow},
 \nolinkurl{Fabius.isFlat_exp_neg},
-\nolinkurl{Fabius.isPoincareExpansion_add_exp_neg} & Exhaustive 4+16
+\nolinkurl{Fabius.isPoincareExpansion_add_exp_neg} & Exhaustive 4+22
 \nolinkurl{TransseriesFlat.lean} surface.  \nolinkurl{q0:def:flat} and all
-three clauses of \nolinkurl{q0:prop:invisible} are Exact, with the
-same-coefficient statement strengthened to an equivalence.  No convergence
-or recovery beyond flat remainders is asserted. \\
+three clauses of \nolinkurl{q0:prop:invisible} are Exact for vector-valued
+functions and coefficients on a scalar scale, with the same-coefficient
+statement strengthened to an equivalence.  Variable scalar multiplication
+requires scale absorption; the named submodule and compatibility wrappers
+remain scalar-valued.  No convergence or recovery beyond flat remainders is
+asserted. \\
 Harmonic-increment leading order &
 \nolinkurl{Fabius.tendsto_div_atTop_of_tendsto_sub},
 \nolinkurl{Fabius.tendsto_div_atTop_of_harmonic_increment} & Exhaustive 0+2
@@ -6450,6 +6503,25 @@ Harmonic-increment leading order &
 \(w_n/n\to c_0\) clause of \nolinkurl{plt:lem:mot-harmonic} is Exact.  The
 compound lemma is Partial because the logarithmic correction, constant, and
 \(o(1)\) remainder are absent. \\
+Stirling-series coefficients &
+\nolinkurl{Fabius.stirlingKernelCoeff},
+\nolinkurl{Fabius.stirlingKernel}, \nolinkurl{Fabius.stirlingCoeff},
+\nolinkurl{Fabius.coeff_stirlingKernel},
+\nolinkurl{Fabius.constantCoeff_stirlingKernel},
+\nolinkurl{Fabius.stirlingCoeff_recurrence},
+\nolinkurl{Fabius.bernoulli_three},
+\nolinkurl{Fabius.bernoulli_four},
+\nolinkurl{Fabius.stirlingKernelCoeff_one},
+\nolinkurl{Fabius.stirlingKernelCoeff_two},
+\nolinkurl{Fabius.stirlingKernelCoeff_three},
+\nolinkurl{Fabius.stirlingCoeff_zero},
+\nolinkurl{Fabius.stirlingCoeff_one},
+\nolinkurl{Fabius.stirlingCoeff_two},
+\nolinkurl{Fabius.stirlingCoeff_three} & Exhaustive 3+12
+\nolinkurl{StirlingSeriesCoefficients.lean} surface.  The formal definition,
+recurrence, and four displayed values in \nolinkurl{q2:eq:stirling-cj} are
+Exact.  The surrounding Fubini-sector corollary remains Partial because the
+analytic sector expansion is not proved by this leaf. \\
 Wright omega basics &
 \nolinkurl{Fabius.wrightOmega},
 \nolinkurl{Fabius.analyticAt_wrightOmega},
@@ -6471,6 +6543,19 @@ positivity, strict monotonicity, Lambert bridge, envelope, divergence, and
 real-analyticity clauses are formalized.  The analyticity theorem is
 \nolinkurl{AnalyticAt} over \(\RealNumbers\) at every real input; it makes no
 complex holomorphic-continuation or branch claim. \\
+First two Wright-omega orders &
+\nolinkurl{Fabius.wrightOmega_lt_self},
+\nolinkurl{Fabius.tendsto_log_wrightOmega_div_atTop_zero},
+\nolinkurl{Fabius.tendsto_wrightOmega_div_atTop_one},
+\nolinkurl{Fabius.tendsto_log_wrightOmega_sub_log_atTop_zero},
+\nolinkurl{Fabius.tendsto_log_wrightOmega_div_log_atTop_one},
+\nolinkurl{Fabius.self_sub_wrightOmega_isEquivalent_log},
+\nolinkurl{Fabius.wrightOmega_sub_self_isEquivalent_neg_log},
+\nolinkurl{Fabius.wrightOmega_residual_isEquivalent} & Exhaustive 0+8
+\nolinkurl{WrightOmegaTwoOrders.lean} surface.  The two concluding real
+equivalences of \nolinkurl{plt:prop:mot-two-orders} are Exact at
+\nolinkurl{atTop}.  The proposition remains Partial: its four-term expansion
+and explicit quantitative envelope are not formalized here. \\
 \bottomrule
 \end{longtable}
 \normalsize
@@ -6971,9 +7056,15 @@ below \nolinkurl{FabiusFunction/} reachable from the facade and every one of
 the 105 activation declarations documented.  A later historical current-tree
 audit scanned 925 modules and 11,619 public declarations, with no missing
 module headers or declaration comments.  The 934/11,709, 943/11,787, and
-952/11,881 source checkpoints are now historical.  The live current-tree audit
-scans 952 modules and 11,884 explicit public declarations, with zero missing
-module headers and zero missing declaration comments; the
+952/11,881 source checkpoints are now historical.  The two written OrderDual
+Neumann wrappers and the real-analytic Wright omega theorem give the further
+historical 952/11,884 checkpoint.  The subsequently merged 15-module tranche
+adds 117 explicit public declarations, giving the historical 967/12,001
+checkpoint.  Two modules and 47 declarations then give the historical
+969/12,048 checkpoint; the final power-recurrence leaf adds one module and
+three theorems.  The live current-tree audit scans 970 modules and 12,051
+explicit public declarations, with zero missing module headers and zero
+missing declaration comments; the
 Legendre-biorthogonality 925/11,619 census remains an explicit historical
 checkpoint.  At the retained historical
 mainline checkpoint before the latest
@@ -7162,8 +7253,13 @@ historical 943/11,787 checkpoint.  The incoming nine-module tranche adds 90
 explicit public declarations, and four integer-exponent theorems extend
 \nolinkurl{TransseriesDifferentialBlock.lean}, giving the historical
 952/11,881 checkpoint.  Two written OrderDual Neumann wrappers and the
-real-analytic Wright omega theorem then give the live 952/11,884 census, with
-zero missing module headers and zero missing declaration comments.
+real-analytic Wright omega theorem then give the historical 952/11,884
+checkpoint.  The subsequently merged 15-module tranche adds 117 explicit
+public declarations and gives the historical 967/12,001 checkpoint.  The next
+two modules and 47 declarations give the historical 969/12,048 checkpoint;
+\nolinkurl{UnitSeriesPowerRecurrence.lean} adds one module and three theorems.
+The live census is 970/12,051, with zero missing module headers and zero
+missing declaration comments.
 Every module is reachable from the facade.  No aggregate facade build is
 claimed for this current-tree census.  The retained PDF and title-page pin
 remain historical receipts and do not claim parity with the merged source; no

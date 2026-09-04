@@ -79,8 +79,8 @@ exponential of the sum of its factor norms:
 This is the q-Pochhammer specialization of Mathlib's general finite-product
 defect estimate `Finset.norm_prod_one_add_sub_one_le`.
 
-The prime marks a genuine generalization rather than a variant: the unprimed
-`norm_finiteQPochhammerIn_pow_sub_one_le_exp` in `QBinomialTheoremInfinite.lean`
+The prime marks a genuine generalization rather than a variant:
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` in `QBinomialTheoremInfinite.lean`
 asks for a normed *field*, while this version needs only a normed commutative
 ring whose norm is multiplicative, which every normed field is. -/
 theorem norm_finiteQPochhammerIn_pow_sub_one_le_exp'

@@ -73,6 +73,7 @@ import FabiusFunction.RStirling
 import FabiusFunction.FallingFactorialSeries
 import FabiusFunction.CauchyPolynomials
 import FabiusFunction.CoefficientRules
+import FabiusFunction.UnitSeriesPowerRecurrence
 import FabiusFunction.ExpSeriesRecurrence
 import FabiusFunction.StirlingSeriesCoefficients
 import FabiusFunction.IteratedLeibniz

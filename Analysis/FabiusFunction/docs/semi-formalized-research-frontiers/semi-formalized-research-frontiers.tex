@@ -423,10 +423,13 @@ series/transseries tranche adds nine facade-reachable modules with 90 explicit
 public declarations and four integer-exponent theorems to
 \path{TransseriesDifferentialBlock.lean}, giving the historical 952/11,881
 checkpoint.  Two written OrderDual Neumann wrappers and the real-analytic
-Wright omega theorem then add three declarations without adding a module.  The
-live source census is therefore 952 modules and 11,884 explicit public
-declarations, with zero missing module headers and zero missing declaration
-comments.  The
+Wright omega theorem then add three declarations without adding a module,
+giving the historical 952/11,884 checkpoint.  The subsequently merged
+15-module tranche adds 117 explicit public declarations, giving the historical
+967/12,001 checkpoint.  Two modules and 47 declarations then give the
+historical 969/12,048 checkpoint; the final zero-definition/three-theorem
+power-recurrence leaf gives the live 970-module, 12,051-declaration census,
+with zero missing module headers and zero missing declaration comments.  The
 Legendre-biorthogonality 925/11,619 census remains an explicit historical
 checkpoint.
 The sharp
@@ -465,8 +468,12 @@ added to \path{ThueMorseNewmanSelfSimilarity.lean}.  This gives the historical
 declarations then give the historical 943/11,787 checkpoint.  The subsequent
 nine-module, 90-declaration tranche and four-theorem integer-exponent extension
 give the historical 952/11,881 checkpoint.  The two written OrderDual Neumann
-wrappers and the real-analytic Wright omega theorem give the live 952/11,884
-union with zero documentation gaps.
+wrappers and the real-analytic Wright omega theorem give the historical
+952/11,884 checkpoint.  The subsequently merged 15-module tranche adds 117
+explicit public declarations and gives the historical 967/12,001 union.  The
+next two modules and 47 declarations give the historical 969/12,048
+checkpoint; \path{UnitSeriesPowerRecurrence.lean} adds one module and three
+theorems, giving the live 970/12,051 union with zero documentation gaps.
 The incoming-branch
 906/11,461 and earlier exterior-branch 907/11,464 censuses remain explicitly
 historical.
@@ -1327,6 +1334,35 @@ Puiseux expansion. &
 \nolinkurl{strictConvexOn_fabiusPrincipalLambertPhase} &
 \nolinkurl{PowerExponentialLambertFabiusCurvature.lean} \\
 All-orders saddle expansion & saddle mass/log coefficient declarations & \nolinkurl{FabiusFullAsymptoticExpansion.lean} and related modules \\
+Formal arbitrary-power recurrence (0+3).  From \(FG'=\beta F'G\), Euler-
+derivative coefficient extraction gives
+\(na_0c_n=\sum_{j=1}^n((\beta+1)j-n)a_jc_{n-j}\) over every commutative ring.
+The formal falling-factorial substitution supplies the unit-constant power
+case over a rational algebra, making the power clause of
+\nolinkurl{alg:merged-exp-log-power} Exact.  No analytic branch is asserted;
+the 203-row coefficient-calculus concordance is 59 Lean, 33 Partial, and
+111 None. &
+\nolinkurl{Fabius.coeff_recurrence_of_mul_derivative_eq},
+\nolinkurl{Fabius.mul_derivative_fallingSeries_subst_sub_one},
+\nolinkurl{Fabius.coeff_fallingSeries_subst_sub_one_recurrence} &
+\nolinkurl{UnitSeriesPowerRecurrence.lean} \\
+Weighted binomial translation and inversion (+11).
+\nolinkurl{thm:merged-weighted-binomial-translation} is Exact over
+commutative semirings, with left-cancellative addition needed only for
+injectivity; \nolinkurl{cor:merged-weighted-binomial-inversion} is Exact over
+commutative rings.  These are finite identities, not analytic EGF claims. &
+\nolinkurl{Bell.binomialConv_unitSeq},
+\nolinkurl{Bell.binomialConv_four_swap},
+\nolinkurl{Appell.translate_zero},
+\nolinkurl{Appell.translate_translate},
+\nolinkurl{Appell.binomialConv_translate},
+\nolinkurl{Appell.translate_injective},
+\nolinkurl{Appell.translate_neg_translate},
+\nolinkurl{Appell.translate_translate_neg},
+\nolinkurl{Appell.translate_eq_iff},
+\nolinkurl{Appell.weighted_binomial_inversion_iff},
+\nolinkurl{Appell.binomialConv_translate_neg_translate} &
+\nolinkurl{AppellSequence.lean} \\
 Formal unit-series Bell calculus (0+16).  The labels
 \nolinkurl{p0:lem:bell-conversion}, \nolinkurl{p0:lem:power-log}, and
 \nolinkurl{p0:cor:exp-log-jets} are Exact as coefficient algebra over the
@@ -1373,16 +1409,22 @@ recursive height/depth order on arbitrary nested transmonomials is defined. &
 \nolinkurl{Fabius.isLittleO_log_pow_id},
 \nolinkurl{Fabius.isLittleO_pow_mul_log_pow_exp} &
 \nolinkurl{TransseriesHeight.lean} \\
-Sequence-indexed scale and Poincar\'e coefficients (one structure, one
-definition, three theorems).  The sequence forms of
+Sequence-indexed scale and Poincar\'e coefficients (one structure, two
+definitions, six theorems).  The sequence forms of
 \nolinkurl{q0:def:scale}, \nolinkurl{q0:def:poincare}, and
-\nolinkurl{q0:prop:uniqueness} are Exact.  Uniqueness requires
-\nolinkurl{[l.NeBot]}; the first-omitted-term remainder convention carries no
-convergence, flat-remainder recovery, unordered-set, or maximal-scale claim. &
+\nolinkurl{q0:prop:uniqueness} are Exact for coefficients in an arbitrary
+normed space over the scalar field; the quotient wrapper is scalar-valued.
+Uniqueness requires \nolinkurl{[l.NeBot]}; the first-omitted-term remainder
+convention carries no convergence, flat-remainder recovery, unordered-set, or
+maximal-scale claim. &
 \nolinkurl{Fabius.IsAsymptoticScale},
+\nolinkurl{Fabius.poincarePartialSum},
+\nolinkurl{Fabius.poincarePartialSum_zero},
+\nolinkurl{Fabius.poincarePartialSum_succ},
 \nolinkurl{Fabius.IsPoincareExpansion},
 \nolinkurl{Fabius.IsPoincareExpansion.isLittleO_succ_remainder},
 \nolinkurl{Fabius.IsPoincareExpansion.tendsto_coeff},
+\nolinkurl{Fabius.IsPoincareExpansion.tendsto_coeff_div},
 \nolinkurl{Fabius.IsPoincareExpansion.coeff_unique} &
 \nolinkurl{TransseriesScale.lean} \\
 Real power--logarithmic dominance (1+7).  The analytic zero/one/
@@ -1428,15 +1470,21 @@ Laurent ambient ring. &
 \nolinkurl{Fabius.derivative_surjective},
 \nolinkurl{Fabius.natDegree_resonantAntiderivative} &
 \nolinkurl{TransseriesBlockAntiderivative.lean} \\
-Abstract differential-block bridge (0+9).  It transports the polynomial
+Abstract differential-block bridge (0+12).  It transports the polynomial
 calculation through a derivation satisfying (d(t)=-t^{2}), (d(L)=t), for
-natural exponents and, when \(t\) is a unit, for every integer exponent.
-Thus \nolinkurl{plt:eq:mot-block-derivative} is Exact.  Only item~(v) of
+natural and integer exponents.  The source-shaped Laurent law and its degree-
+preserving nonresonant primitive use an ambient field and \(t\ne0\);
+uniqueness also requires injective evaluation at \(L\), while the older
+integer form packages \(t\) as a unit.  Thus
+\nolinkurl{plt:eq:mot-block-derivative} is Exact.  Only item~(v) of
 \nolinkurl{plt:thm:mot-smallest-differential-algebra} is closed; that compound
 theorem remains Partial because its minimal-ring, growth,
 algebraic-independence, and concrete Laurent-ring clauses are absent. &
 \nolinkurl{Fabius.derivation_pow_t},
 \nolinkurl{Fabius.derivation_block},
+\nolinkurl{Fabius.derivation_zpow_block},
+\nolinkurl{Fabius.exists_zpow_block_primitive},
+\nolinkurl{Fabius.existsUnique_zpow_block_primitive},
 \nolinkurl{Fabius.exists_block_primitive},
 \nolinkurl{Fabius.derivation_block_zero},
 \nolinkurl{Fabius.exists_block_primitive_resonant},
@@ -1548,15 +1596,24 @@ the periodic layer's Fourier expansion. &
 \nolinkurl{Fabius.isLeast_residue_class},
 \nolinkurl{Fabius.exists_half_error_of_jump} &
 \nolinkurl{StaircaseInversion.lean} \\
-Flatness and invisible remainders (4+16).  \nolinkurl{q0:def:flat} and all
-three clauses of \nolinkurl{q0:prop:invisible} are Exact, with the
-same-coefficient statement strengthened to an equivalence.  This asserts no
-convergence or recovery beyond flat remainders. &
+Flatness and invisible remainders (4+22).  \nolinkurl{q0:def:flat} and all
+three clauses of \nolinkurl{q0:prop:invisible} are Exact for vector-valued
+functions and coefficients on a scalar-valued scale, with the same-coefficient
+statement strengthened to an equivalence.  Variable scalar multiplication
+requires scale absorption; the named submodule and compatibility wrappers
+remain scalar-valued.  No convergence or recovery beyond flat remainders is
+asserted. &
 \nolinkurl{Fabius.IsFlat}, \nolinkurl{Fabius.flatSubmodule},
 \nolinkurl{Fabius.AbsorbsScale}, \nolinkurl{Fabius.powScale},
 \nolinkurl{Fabius.isFlat_zero}, \nolinkurl{Fabius.IsFlat.add},
 \nolinkurl{Fabius.IsFlat.neg}, \nolinkurl{Fabius.IsFlat.sub},
 \nolinkurl{Fabius.IsFlat.const_smul},
+\nolinkurl{Fabius.isFlat_exp_neg_rpow_atTop},
+\nolinkurl{Fabius.IsPoincareExpansion.add_flat},
+\nolinkurl{Fabius.IsPoincareExpansion.sub_same_coeff_isFlat},
+\nolinkurl{Fabius.IsPoincareExpansion.iff_sub_isFlat},
+\nolinkurl{Fabius.IsFlat.smul_of_scale_absorption},
+\nolinkurl{Fabius.IsFlat.smul_of_isBigO_inv_pow},
 \nolinkurl{Fabius.mem_flatSubmodule_iff},
 \nolinkurl{Fabius.IsFlat.mul_absorbsScale},
 \nolinkurl{Fabius.absorbsScale_const},
@@ -1576,6 +1633,27 @@ absent. &
 \nolinkurl{Fabius.tendsto_div_atTop_of_tendsto_sub},
 \nolinkurl{Fabius.tendsto_div_atTop_of_harmonic_increment} &
 \nolinkurl{TransseriesHarmonicIncrement.lean} \\
+Stirling-series coefficients (3+12).  The formal definition, recurrence, and
+the displayed values \(c_0=1\), \(c_1=1/12\), \(c_2=1/288\), and
+\(c_3=-139/51840\) in \nolinkurl{q2:eq:stirling-cj} are Exact.  The
+surrounding Fubini-sector corollary remains Partial because this leaf proves no
+analytic sector expansion. &
+\nolinkurl{Fabius.stirlingKernelCoeff},
+\nolinkurl{Fabius.stirlingKernel},
+\nolinkurl{Fabius.stirlingCoeff},
+\nolinkurl{Fabius.coeff_stirlingKernel},
+\nolinkurl{Fabius.constantCoeff_stirlingKernel},
+\nolinkurl{Fabius.stirlingCoeff_recurrence},
+\nolinkurl{Fabius.bernoulli_three},
+\nolinkurl{Fabius.bernoulli_four},
+\nolinkurl{Fabius.stirlingKernelCoeff_one},
+\nolinkurl{Fabius.stirlingKernelCoeff_two},
+\nolinkurl{Fabius.stirlingKernelCoeff_three},
+\nolinkurl{Fabius.stirlingCoeff_zero},
+\nolinkurl{Fabius.stirlingCoeff_one},
+\nolinkurl{Fabius.stirlingCoeff_two},
+\nolinkurl{Fabius.stirlingCoeff_three} &
+\nolinkurl{StirlingSeriesCoefficients.lean} \\
 Wright omega basics (1+13).  The complete real proposition
 \nolinkurl{plt:prop:mot-omega-basic} is Exact: its equation, inverse,
 positivity, strict monotonicity, Lambert bridge, envelope, divergence, and
@@ -1597,6 +1675,19 @@ complex holomorphic continuation or branch statement. &
 \nolinkurl{Fabius.add_one_div_two_le_wrightOmega},
 \nolinkurl{Fabius.tendsto_wrightOmega_atTop} &
 \nolinkurl{WrightOmega.lean} \\
+First two Wright-omega orders (0+8).  The two concluding real asymptotic
+equivalences of \nolinkurl{plt:prop:mot-two-orders} are Exact at
+\nolinkurl{atTop}.  The proposition remains Partial: its four-term expansion
+and explicit quantitative envelope are not formalized here. &
+\nolinkurl{Fabius.wrightOmega_lt_self},
+\nolinkurl{Fabius.tendsto_log_wrightOmega_div_atTop_zero},
+\nolinkurl{Fabius.tendsto_wrightOmega_div_atTop_one},
+\nolinkurl{Fabius.tendsto_log_wrightOmega_sub_log_atTop_zero},
+\nolinkurl{Fabius.tendsto_log_wrightOmega_div_log_atTop_one},
+\nolinkurl{Fabius.self_sub_wrightOmega_isEquivalent_log},
+\nolinkurl{Fabius.wrightOmega_sub_self_isEquivalent_neg_log},
+\nolinkurl{Fabius.wrightOmega_residual_isEquivalent} &
+\nolinkurl{WrightOmegaTwoOrders.lean} \\
 \bottomrule
 \end{longtable}
 
@@ -3117,8 +3208,13 @@ historical 943/11,787 checkpoint.  The incoming nine modules add 90 explicit
 public declarations, and four integer-exponent theorems extend
 \path{TransseriesDifferentialBlock.lean}, giving the historical 952/11,881
 checkpoint.  Two written OrderDual Neumann wrappers and the real-analytic
-Wright omega theorem then give the live 952/11,884 union, with zero missing
-module headers and zero missing declaration comments.
+Wright omega theorem then give the historical 952/11,884 checkpoint.  The
+subsequently merged 15-module tranche adds 117 explicit public declarations
+and gives the historical 967/12,001 union.  The next two modules and 47
+declarations give the historical 969/12,048 checkpoint;
+\path{UnitSeriesPowerRecurrence.lean} adds one module and three theorems,
+giving the live 970/12,051 union, with zero missing module headers and zero
+missing declaration comments.
 
 The Laurent leaf makes \nolinkurl{is:p2:thm:Laurent-leading} Exact through
 the manuscript-normalized punctured-neighborhood limit and its Fourier
@@ -3461,7 +3557,12 @@ concurrent declarations give the historical 943/11,787 checkpoint.  The next
 nine facade modules (90 declarations) and four integer-exponent differential-
 block theorems give the historical 952/11,881 checkpoint.  The two written
 OrderDual Neumann wrappers and the real-analytic Wright omega theorem give the
-live 952/11,884 census, with zero documentation gaps.
+historical 952/11,884 checkpoint.  The subsequently merged 15-module tranche
+adds 117 explicit public declarations and gives the historical 967/12,001
+checkpoint.  The next two modules and 47 declarations give the historical
+969/12,048 checkpoint; the final power-recurrence leaf adds one module and
+three theorems, giving the live 970/12,051 census with zero documentation
+gaps.
 The existing
 \path{GeometricResidualMoments.lean} module now has zero definitions and nine
 public theorems.  Its
