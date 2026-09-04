@@ -87,8 +87,8 @@ records. Their preceding artifacts remain historical receipts for their named
 checkpoints. Unaffected synchronized receipts remain valid for
 their named source states.
 
-The authoritative live Lean audit now contains exactly 960 facade-reachable
-modules and 11,966 unique public declarations, with no missing module headers
+The authoritative live Lean audit now contains exactly 961 facade-reachable
+modules and 11,974 unique public declarations, with no missing module headers
 or declaration documentation.  The historical 923/11,611 snapshot comprised
 an origin inventory of 11,610 declarations plus this tree's retained
 unconditional public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge.  The
@@ -299,23 +299,24 @@ historical 943/11,791 checkpoint. The exhaustive 1+11
 `TransseriesFlat.lean` leaf and three new integer-Laurent theorems in
 `TransseriesDifferentialBlock.lean` give the historical 944/11,806 census.
 
-Against that checkpoint, the current source adds exactly sixteen modules:
+Against that checkpoint, the current source adds exactly seventeen modules:
 `BackwardErrorExistence.lean` (1+6), `BellLeibnizTower.lean` (1+5),
 `CayleyTreeFunction.lean` (1+8), `DerangementNearestInteger.lean` (1+7),
 `LambertCorrectionEquation.lean` (2+9), `LambertShiftConcavity.lean` (0+5),
 `LeastTermIndex.lean` (1+6), `LinLogCoreInversion.lean` (4+18),
 `OrdinaryPartialBell.lean` (2+4), `PowerLogCoreInversion.lean` (3+6),
 `RemainderTransport.lean` (0+3), `StaircaseInversion.lean` (0+7),
+`StirlingCompleteHomogeneous.lean` (0+8),
 `TouchardEulerOperator.lean` (2+8),
 `TransseriesDifferentialClosure.lean` (2+9),
 `TransseriesHarmonicIncrement.lean` (0+2), and `WrightOmega.lean` (1+12).
-They total 21 definitions and 115 theorems. Four existing surfaces add the
+They total 21 definitions and 123 theorems. Four existing surfaces add the
 other 24 declarations: `TransseriesFlat.lean` grows by 3+11 to 4+22,
 `TransseriesDifferentialBlock.lean` gains four theorems to 0+12,
 `QBinomialTheoremInfinite.lean` gains five theorems to 1+27, and
 `RvachevPochhammerFactorization.lean` retains one additional public bridge.
 The modified `LaplaceMomentBoundsSharp.lean` is excluded from the new-module
-count. Thus the live census is 960/11,966, with both documentation-gap counts
+count. Thus the live census is 961/11,974, with both documentation-gap counts
 zero.
 
 The claim crosswalk remains conservative. The abstract Faà di Bruno result,
@@ -354,7 +355,7 @@ does not prove the larger support/smoothness/parity/Fourier--Bessel theorem
 925/11,619 census; the historical reciprocity census is 931/11,685 and the
 historical dyadic/finite-prefix census is 933/11,695. The later 934/11,709 and
 943/11,791 and 944/11,806 unions are also historical. The current live census
-is 960/11,966, as recorded above, with zero missing module headers and zero
+is 961/11,974, as recorded above, with zero missing module headers and zero
 missing declaration comments.
 
 The retained frontier, primary, walkthrough, geometric-q, and representation
@@ -417,7 +418,7 @@ union. The subsequent transseries-algebra integration gives the historical
 943/11,791 checkpoint; `TransseriesFlat.lean` (1+11) and the three new
 integer-Laurent theorems in `TransseriesDifferentialBlock.lean` give the
 historical 944/11,806 union. The sixteen-module overlay inventoried above gives
-the current live 960/11,966 union, with zero documentation gaps.
+the current live 961/11,974 union, with zero documentation gaps.
 
 `FabiusFunction.RvachevLaurentLeading` has one definition and six theorems.
 Its manuscript-normalized punctured-neighborhood limit, together with the

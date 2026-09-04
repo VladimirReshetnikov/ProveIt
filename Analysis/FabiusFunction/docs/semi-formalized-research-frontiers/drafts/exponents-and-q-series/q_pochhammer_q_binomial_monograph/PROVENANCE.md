@@ -236,7 +236,7 @@ source-only transseries/Catalan and Thue--Morse additions made 943/11,791 the
 next historical checkpoint. The finalized one-definition/eleven-theorem
 `TransseriesFlat.lean` module and three integer-zpow theorems in
 `TransseriesDifferentialBlock.lean` gave the historical facade audit 944 modules and
-11,806 public declarations; the merged live census is 960/11,966. The historical 933/11,695 corpus-wide
+11,806 public declarations; the merged live census is 961/11,974. The historical 933/11,695 corpus-wide
 totals include the q--Chu, Richardson,
 geometric-law barycenter, Lagrange--Rvachev matrix, arbitrary-space geometric
 realization, regular-central-sum, Lambert branch-gap Bernoulli, affine
@@ -381,7 +381,7 @@ historical post-Prouhet checkpoint.  Subsequent source-only
 transseries/Catalan and Thue--Morse additions made 943/11,791 the next
 historical checkpoint.  The finalized one-definition/eleven-theorem
 `TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 960/11,966.
+`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 961/11,974.
 The facade also contains the zero-definition/two-theorem
 `GaussianBinomialGreaterOneAsymptotics.lean` leaf; its exhaustive declarations
 are `gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
@@ -432,7 +432,7 @@ transseries/Catalan and Thue--Morse additions made 943/11,791 the next
 historical checkpoint.  The finalized one-definition/eleven-theorem
 `TransseriesFlat.lean` module and three integer-zpow theorems in
 `TransseriesDifferentialBlock.lean` gave the historical census
-944/11,806; the merged live census is 960/11,966.  The existing `ProbabilityLaplaceMoments.lean` module now also
+944/11,806; the merged live census is 961/11,974.  The existing `ProbabilityLaplaceMoments.lean` module now also
 contains exactly the two new declarations
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
 `integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.

@@ -21,8 +21,8 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 960
-source modules and 11,966 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 961
+source modules and 11,974 public declarations, with no missing module headers or
 declaration comments. The reciprocity leaf's 931/11,685 checkpoint remains
 historical; the subsequently merged upstream `DyadicBoundaryIdentity.lean`
 and `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
@@ -36,23 +36,24 @@ census. The subsequent transseries-algebra integration gives the historical
 three integer-Laurent additions to `TransseriesDifferentialBlock.lean` then
 give the historical 944/11,806 census.
 
-Against that checkpoint, the current source adds exactly sixteen modules:
+Against that checkpoint, the current source adds exactly seventeen modules:
 `BackwardErrorExistence.lean` (1+6), `BellLeibnizTower.lean` (1+5),
 `CayleyTreeFunction.lean` (1+8), `DerangementNearestInteger.lean` (1+7),
 `LambertCorrectionEquation.lean` (2+9), `LambertShiftConcavity.lean` (0+5),
 `LeastTermIndex.lean` (1+6), `LinLogCoreInversion.lean` (4+18),
 `OrdinaryPartialBell.lean` (2+4), `PowerLogCoreInversion.lean` (3+6),
 `RemainderTransport.lean` (0+3), `StaircaseInversion.lean` (0+7),
+`StirlingCompleteHomogeneous.lean` (0+8),
 `TouchardEulerOperator.lean` (2+8),
 `TransseriesDifferentialClosure.lean` (2+9),
 `TransseriesHarmonicIncrement.lean` (0+2), and `WrightOmega.lean` (1+12),
-for 21 definitions and 115 theorems. Existing surfaces contribute the other
+for 21 definitions and 123 theorems. Existing surfaces contribute the other
 24 declarations: `TransseriesFlat.lean` grows by 3+11 to 4+22,
 `TransseriesDifferentialBlock.lean` gains four theorems to 0+12,
 `QBinomialTheoremInfinite.lean` gains five theorems to 1+27, and
 `RvachevPochhammerFactorization.lean` retains one additional public bridge.
 The modified `LaplaceMomentBoundsSharp.lean` is excluded from the new-module
-count. Thus the live census is 960/11,966, with both documentation-gap counts
+count. Thus the live census is 961/11,974, with both documentation-gap counts
 zero.
 
 The abstract Faà di Bruno result, ordinary Bell normalization, and Touchard
@@ -857,7 +858,7 @@ census. The subsequent transseries-algebra integration gives the historical
 943/11,791 checkpoint. The then-exhaustive 1+11 `TransseriesFlat.lean` leaf and
 three integer-Laurent additions to `TransseriesDifferentialBlock.lean` give
 the historical 944/11,806 census. The sixteen-module overlay inventoried above
-gives the current live 960/11,966 census, with zero documentation gaps.
+gives the current live 961/11,974 census, with zero documentation gaps.
 In the current semantic union, the subsequent
 zero-definition/two-theorem greater-than-one leaf makes `cor:qgreaterone`
 Exact, and the scaled-geometric polynomial theorem completes
@@ -868,7 +869,7 @@ in `HalfQBinomialRootSimplicity.lean`, composed with the complete rational
 root classification in `HalfQBinomial.lean`, makes
 `cor:halfbase-root-locus` Exact while leaving
 `cor:qbinom-inversion-law` Partial. The live semantic-union facade census is
-960/11,966; the historical pre-overlay census is 944/11,806, the historical
+961/11,974; the historical pre-overlay census is 944/11,806, the historical
 transseries-algebra census is 943/11,791, the
 historical dyadic/Prouhet census is 934/11,709, the earlier
 dyadic/finite-prefix census is 933/11,695, and the historical reciprocity

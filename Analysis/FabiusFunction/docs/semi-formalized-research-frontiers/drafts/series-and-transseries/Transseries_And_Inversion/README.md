@@ -65,7 +65,7 @@ is about the passage from a function to a sequence.
 
 ## Lean crosswalk
 
-The current integrated inventory is 960 modules and 11,966 public declarations;
+The current integrated inventory is 961 modules and 11,974 public declarations;
 944/11,806 is a historical checkpoint. `TransseriesFlat` now has 4 definitions
 and 22 theorems, preserving the general vector-valued API together with the
 scalar submodule, absorption, and power-scale interfaces. The integer block

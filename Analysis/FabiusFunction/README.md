@@ -81,9 +81,11 @@ and as a [rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_
 That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
-> **Artifact status (2026-09-04).**  The live facade union contains exactly
-> 960 source modules and 11,966 public declarations.  The documentation audit
-> reports no missing module headers or declaration comments; the exact-dyadic
+> **Artifact status (2026-09-04).**  The registered live facade target contains
+> exactly 961 source modules and 11,974 public declarations.  The newest
+> zero-definition/eight-theorem `StirlingCompleteHomogeneous` leaf passed its
+> focused warning-free build; the preceding 960/11,966 audit reported no missing
+> module headers or declaration comments.  The exact-dyadic
 > inverse, Jacobi two-square, Lagrange--Rvachev Matrix, geometric Richardson,
 > Gaussian-binomial second-moment, fixed-column rate, and half-base root
 > simplicity, Rvachev--Appell Hasse,
@@ -199,14 +201,15 @@ in it must have a proved counterpart in the Lean development.
 > series-and-transseries consolidation reached the historical 943/11,791
 > checkpoint.  The generic-vector `TransseriesFlat` 1+11 surface and the
 > then-0+8 `TransseriesDifferentialBlock` surface belong to the historical
-> 944/11,806 census.  The current overlay adds sixteen source modules with
+> 944/11,806 census.  The sixteen-module overlay added source modules with
 > 21 definitions and 115 theorems, plus 24 declarations in place: the scalar
 > compatibility half of `TransseriesFlat` adds 3+11, four integer-power
 > derivation theorems extend `TransseriesDifferentialBlock`, five effective
 > fixed-column theorems extend `QBinomialTheoremInfinite`, and
 > `complexQPochhammerInf_eq_qPochhammerInfIn` extends
-> `RvachevPochhammerFactorization`.  Thus the live census is 960/11,966, with
-> no missing module header or public declaration comment.  The added-module
+> `RvachevPochhammerFactorization`.  Thus that sixteen-module overlay checkpoint
+> is the historical 960/11,966 census, with no missing module header or public
+> declaration comment.  Its added-module
 > inventory is `BackwardErrorExistence` 1+6, `BellLeibnizTower` 1+5,
 > `CayleyTreeFunction` 1+8, `DerangementNearestInteger` 1+7,
 > `LambertCorrectionEquation` 2+9, `LambertShiftConcavity` 0+5,
@@ -214,7 +217,9 @@ in it must have a proved counterpart in the Lean development.
 > `OrdinaryPartialBell` 2+4, `PowerLogCoreInversion` 3+6,
 > `RemainderTransport` 0+3, `StaircaseInversion` 0+7,
 > `TouchardEulerOperator` 2+8, `TransseriesDifferentialClosure` 2+9,
-> `TransseriesHarmonicIncrement` 0+2, and `WrightOmega` 1+12.  These modules
+> `TransseriesHarmonicIncrement` 0+2, and `WrightOmega` 1+12.  Registering the
+> focused-build-verified `StirlingCompleteHomogeneous` 0+8 leaf advances the
+> live facade target to 961/11,974.  These modules
 > provide deliberately scoped algebraic, inversion, error-transport, and
 > transseries utilities; the census does not by itself promote any broader
 > manuscript claim to Exact.  The separate
@@ -505,6 +510,7 @@ Padé/J-fractions, infinite Jacobi theory, and asymptotics also remain open.
 | Universal endpoint-transfer polynomials and their formal exponential series | `FabiusFunction.EndpointTransferPolynomials` | `endpointTransferPolynomial_succ`, `endpointTransferPolynomial_eq_partitionExpSum`, `endpointTransferSeries_eq_exp_subst`, `aeval_endpointTransferPolynomial`, `map_endpointTransferSeries` |
 | Finite base-`b` layer regrouping in multiplicative and additive form | `FabiusFunction.BaseLayerRegrouping` | `filter_dvd_eq_image`, `prod_multiples_eq_prod_filter`, `sum_multiples_eq_sum_filter`, `prod_layers_eq_prod_pow_card`, `sum_layers_eq_sum_nsmul_card`, `card_filter_pow_dvd`, `prod_layers_eq_prod_pow_multiplicity`, `sum_layers_eq_sum_nsmul_multiplicity` |
 | Complete homogeneous evaluations, finite formal generating series, Bell/power-sum conversion, fixed-degree asymptotic bounds, denominator-free geometric principal specialization, and a second proof of Gaussian symmetry | `FabiusFunction.CompleteHomogeneous`, `FabiusFunction.CompleteHomogeneousGenerating`, `FabiusFunction.CompleteHomogeneousBell`, `FabiusFunction.CompleteHomogeneousAsymptotics`, `FabiusFunction.GeometricCompleteHomogeneous` | `CompleteHomogeneousBell` exhaustively exports `completeHomogeneousPowerSum`, `completeHomogeneousBellInput`, `completeHomogeneousEvalOn_insert_eq_sum`, `bellComplete_completeHomogeneousBellInput`, `factorialNormalize_completeBellPolynomial_completeHomogeneousBellInput`, and `completeHomogeneousEvalOn_eq_factorialNormalize_completeBellPolynomial`.  Its backbone is division-free over every commutative semiring: `Bell.complete κ n = n! * h_n`; only the normalized `h_n = B_n/n!` form uses a commutative `ℚ`-algebra.  Empty alphabets, repeated or zero entries, zero divisors, positive characteristic, and the zero ring are included.  `GeometricCompleteHomogeneous` exhaustively exports six theorems: `completeHomogeneousEval_geometric`, `completeHomogeneousEval_scaled_geometric`, `completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial`, `completeHomogeneousEvalOn_range_pow_eq_gaussianBinomial_degree`, `gaussianBinomial_add_symm`, and `gaussianBinomial_symm_via_completeHomogeneous`.  The principal specializations and both symmetry proofs need no distinctness, division, cancellation, ordering, topology, or convergence assumptions; the separate generating identities are purely formal, while the asymptotic theorem transfers coordinatewise Big-O through every fixed homogeneous degree. |
+| Fixed-column Stirling series and complete-homogeneous coefficients | `FabiusFunction.StirlingCompleteHomogeneous` | **Focused verification passed.**  The exhaustive zero-definition/eight-theorem surface is `stirlingColumnOGF_eq_completeHomogeneousGeneratingSeriesOn`, `stirlingSecond_add_eq_completeHomogeneousEvalOn`, `stirlingSecond_eq_completeHomogeneousEvalOn_of_le`, `stirlingSecond_add_eq_completeHomogeneousEval`, `stirlingSecond_add_eq_eval_hsymm`, `stirlingSecond_add_eq_sum_finsuppAntidiag`, `pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul`, and `prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv`.  The formal-series identity is over commutative rings, coefficient forms are over commutative semirings, and the falling-factorial normalization is over fields with `x ≠ 0`.  The API includes `k = 0`, requires `k ≤ n` for the `n-k` spelling, uses Lean's totalized inverse in the reciprocal theorem, and asserts no analytic convergence. |
 | Infinite products at summable scales | `FabiusFunction.ScaledInfiniteProducts` | `summable_norm_scaled_sub_one`, `hasProdUniformlyOn_scaled`, `multipliableUniformlyOn_scaled`, `hasProdLocallyUniformly_scaled`, `multipliableLocallyUniformly_scaled`, `continuous_tprod_scaled`, `differentiable_tprod_scaled`, `differentiable_tprod_scaled_of_eq_one`, `tprod_scaled_ne_zero`, `tprod_scaled_eq_zero_iff`; pointwise deviation summability allows an arbitrary normed-ring target, the compact-uniform API assumes a continuous factor and a complete commutative normed-ring target with a normed unit, local uniformity adds local compactness, holomorphy uses a complete normed complex-algebra target, and zero detection adds a multiplicative norm but needs neither continuity nor local compactness |
 | Geometric reciprocal-Gamma products and the dyadic Rvachev bridge | `FabiusFunction.GeometricReciprocalGamma` | Exhaustive public surface (six definitions and 23 theorems, 29 declarations): `shiftedReciprocalGamma`, `shiftedReciprocalGamma_zero`, `shiftedReciprocalGamma_differentiable`, `shiftedReciprocalGamma_sub_one_isBigO`, `shiftedReciprocalGamma_eq_zero_iff`, `shiftedReciprocalGamma_mul_neg`, `summable_norm_qpow`, `geometricReciprocalGamma`, `geometricReciprocalGammaFactors_multipliable`, `geometricReciprocalGamma_differentiable`, `geometricReciprocalGamma_zero`, `geometricReciprocalGamma_mahler`, `geometricReciprocalGamma_eq_zero_iff`, `geometricGamma`, `geometricGamma_meromorphic`, `geometricGamma_mahler`, `geometricSincProduct`, `hasProdLocallyUniformly_geometricSincProduct`, `geometricSincProductFactors_multipliable`, `hasProd_geometricSincProduct`, `geometricReciprocalGamma_mul_neg`, `geometricSincProduct_differentiable`, `dyadicReciprocalGamma`, `dyadicGamma`, `dyadicReciprocalGamma_differentiable`, `dyadicReciprocalGamma_zero`, `geometricSincProduct_inv_two`, `dyadicReciprocalGamma_mul_neg`, `rvachevFourierProduct_eq_one_div_dyadicGamma_mul`.  For complex `q` with `‖q‖ < 1`, including `q = 0`, the sinc factors now have a named locally uniform product, pointwise `Multipliable` and `HasProd` forms, and an entire `geometricSincProduct`; the reciprocal-Gamma product retains its Mahler, zero, meromorphic-inverse, reflection, and dyadic bridge laws.  Normalization at zero is unconditional.  `geometricGamma` and `dyadicGamma` are totalized pointwise inverses, not proved raw Gamma tprods away from poles. |
 | Complex infinite `q`-Pochhammer convergence and global geometric-sinc spectral factorization | `FabiusFunction.RvachevPochhammerFactorization` | Exhaustive public surface (one definition and ten theorems): `complexQPochhammerInf`; `complexQPochhammerInf_eq_tprod`, `complexQPochhammerInf_eq_qPochhammerInfIn`, `multipliable_one_sub_mul_pow_complex`, `hasProd_complexQPochhammerInf`, `tendsto_finiteQPochhammerIn_complex`, `summable_norm_sineTerm_qpow_pair`, `geometricSincProduct_eq_tprod_pair`, `geometricSincProduct_eq_tprod_complexQPochhammerInf`, `rvachevFourierProduct_eq_tprod_complexQPochhammerInf`, and `rvachevFourier_eq_tprod_complexQPochhammerInf`.  The bridge to the generic symbol is unconditional.  Product convergence requires exactly `‖q‖ < 1`; the global spectral factorization includes `q = 0` and individual zero factors.  The factorization module alone supplies no centered characteristic/MGF wrapper or reciprocal outside-disk theory; outer-product normal convergence is the separate downstream API in `GeometricPochhammerNormalConvergence`. |

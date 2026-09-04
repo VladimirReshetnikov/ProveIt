@@ -111,9 +111,10 @@ numbers rather than copying these historical values.
 
 The historical post-merge 2026-09-01 inventory contained 675 modules and 8,909
 lexically visible public declarations, with zero missing module headers and
-zero missing doc comments.  A fresh 2026-09-04 audit for this documentation
-pass scans 960 facade-reachable modules and 11,966 public declarations.  It
-finds no missing module header or declaration comment, including throughout
+zero missing doc comments.  The completed 2026-09-04 audit for the preceding
+documentation pass scanned 960 facade-reachable modules and 11,966 public
+declarations.  It found no missing module header or declaration comment,
+including throughout
 `FabiusInverseExactDyadicModulus.lean`, `JacobiTwoSquareCount.lean`, and
 `LagrangeRvachevMatrix.lean`, as well as the incoming
 `GeometricRichardsonGenerating.lean`, `TwoPhiOneReversal.lean`, and
@@ -140,9 +141,9 @@ together with the strengthened
 `ProbabilityLaplaceMoments.lean` surface,
 as well as the sixteenth theorem in `FinitePolynomialFunctional.lean`.
 Relative to the
-610/8,318 activation checkpoint, the current tree adds 350 modules and 3,648 declarations.
+610/8,318 activation checkpoint, the current tree adds 351 modules and 3,656 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 330 modules and 3,414 declarations.  The post-merge 675/8,909 inventory,
+adds 331 modules and 3,422 declarations.  The post-merge 675/8,909 inventory,
 the intervening 903/11,448 Lambert-series inventory, and the immediately
 preceding 914/11,555 scaled-geometric and 915/11,556 real-MGF-bridge
 checkpoints, together with the incoming branch's 906/11,461 complex-product
@@ -174,12 +175,15 @@ Finally, `ProuhetBaseTwoBridge` 0+6, one new theorem in
 total, giving the historical 934/11,709 census.  Subsequent consolidated
 series-and-transseries work reached the historical 943/11,791 checkpoint.
 The next flatness/block tranche gave the historical 944/11,806 census.  The
-current overlay adds sixteen modules with 21 definitions and 115 theorems and
+sixteen-module overlay added sixteen modules with 21 definitions and 115 theorems and
 24 declarations in place: `TransseriesFlat` gains 3+11 scalar-compatibility
 declarations, `TransseriesDifferentialBlock` gains four theorems,
 `QBinomialTheoremInfinite` gains five, and
-`RvachevPochhammerFactorization` gains one.  The live result is therefore
-960/11,966, again with no missing module header or public declaration comment.
+`RvachevPochhammerFactorization` gains one.  That audited overlay checkpoint is
+therefore the historical 960/11,966 census, with no missing module header or
+public declaration comment.  Registering the focused-build-verified
+zero-definition/eight-theorem `StirlingCompleteHomogeneous` leaf advances the
+live facade target to 961/11,974.
 On
 the earlier
 exterior-germ branch, the inner-complex 906/11,461 checkpoint was followed by
@@ -187,7 +191,7 @@ the branch-local 907/11,464 checkpoint; its preceding real-MGF and algebraic
 moment-polynomial checkpoints were 905/11,458 and 904/11,457.  These older
 branch-local counts are explicitly historical.
 
-#### Current 16-module overlay census
+#### Historical 16-module overlay census
 
 The cached added-file boundary contains exactly sixteen Lean modules and 136
 lexically visible public declarations: 21 definitions and 115 theorems.  The
@@ -216,8 +220,25 @@ the paper crosswalk.
 
 Together with the 24 in-place additions described below and in the q-series
 inventory, this 136-declaration tranche changes the historical 944/11,806
-checkpoint by exactly +16 modules and +160 declarations, giving the live
-960/11,966 census.
+checkpoint by exactly +16 modules and +160 declarations, giving the historical
+overlay checkpoint 960/11,966 census.
+
+#### Stirling complete-homogeneous registration
+
+`StirlingCompleteHomogeneous.lean` is registered in the facade with zero public
+definitions and eight public theorems.  It identifies the fixed-column Stirling
+power series with the complete-homogeneous generating series, extracts the
+`S(k+r,k)=h_r(1,…,k)` and finite multiplicity formulas, supplies `Fin k` and
+Mathlib `hsymm` forms, and proves both denominator-cleared and reciprocal
+falling-factorial normalizations.  Its two natural-number construction helpers
+are private and excluded from the public census.  The coefficient layer works
+over commutative semirings, the power-series bridge over commutative rings, and
+the falling-factorial results over fields with `x ≠ 0`; `k=0` is included and
+the `n-k` form retains exactly `k ≤ n`.  Lean's reciprocal is totalized, and
+the module asserts no scalar convergence or analytic continuation.  This
+registration adds one module and eight declarations to the audited 960/11,966
+checkpoint, setting the live baseline target to 961/11,974.  The focused leaf
+build completed warning-free.
 
 #### Consolidated transseries foundations and corrected flatness
 
@@ -949,9 +970,10 @@ pre-reciprocity 930/11,678 checkpoint; reciprocity then gave the historical
 leaves gave the historical 933/11,695 checkpoint.  The incoming base-two
 Prouhet bridge and the strengthened dyadic-boundary and Newman APIs described
 below give the historical 934/11,709 inventory.  The later transseries
-checkpoints culminate in the historical 944/11,806 inventory; the current
-overlay gives the live 960/11,966 inventory, again with no missing module
-header or public declaration comment.
+checkpoints culminate in the historical 944/11,806 inventory; the sixteen-module
+overlay gave the historical 960/11,966 inventory with no missing module header
+or public declaration comment.  The focused-build-verified
+`StirlingCompleteHomogeneous` leaf sets the live target to 961/11,974.
 
 `FinitePolynomialFunctional.lean` remains a zero-definition module and now has
 exactly sixteen public theorems:
@@ -1033,8 +1055,9 @@ and reciprocity gave the historical 931/11,685 checkpoint; the dyadic-boundary
 and finite-prefix-collapse leaves then gave the historical 933/11,695
 checkpoint.  The incoming one-module/fourteen-declaration tranche gives the
 historical 934/11,709 inventory.  The later transseries tranches give the
-historical 944/11,806 inventory; the current overlay gives the live
-960/11,966 inventory, with no documentation gaps.
+historical 944/11,806 inventory; the sixteen-module overlay gave the historical
+960/11,966 inventory with no documentation gaps.  The registered
+`StirlingCompleteHomogeneous` leaf sets the live target to 961/11,974.
 
 `HalfQBinomialRootSimplicity.lean` has no public definitions and exactly one
 public theorem, `halfQBinomial_sum_rootMultiplicity_two_pow`.  Over `ℚ`, for
@@ -2573,7 +2596,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 960/11,966
+historical 675/8,909 census and requires refresh against the live 961/11,974
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
