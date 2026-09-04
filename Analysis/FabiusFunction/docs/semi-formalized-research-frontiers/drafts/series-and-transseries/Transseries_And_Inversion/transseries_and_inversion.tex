@@ -54351,6 +54351,30 @@ amplitude $C_{j,k}$ is then the product of the $j$-th Stirling coefficient and
 the constant $\rho/\zeta_k$ of \cref{q2:rem:simple-pole}; no $k$-dependence
 enters the $j$-sum, which is why the same series multiplies every sector.
 \end{proof}
+\emph{Lean status: partial, the Stirling coefficients only.}  The definition
+\eqref{q2:eq:stirling-cj} and its four listed values are formal in
+\lean{StirlingSeriesCoefficients.lean}.  \lean{Fabius.stirlingKernelCoeff} is
+\(\varkappa_{r}=B_{r+1}/(r(r+1))\), \lean{Fabius.stirlingKernel} the series it assembles,
+\lean{Fabius.constantCoeff_stirlingKernel} the fact that makes \(\exp\) of it a
+substitution, and \lean{Fabius.stirlingCoeff} the coefficients \(c_{j}\).  Their values are
+\lean{Fabius.stirlingCoeff_zero}, \lean{Fabius.stirlingCoeff_one},
+\lean{Fabius.stirlingCoeff_two} and \lean{Fabius.stirlingCoeff_three}, giving
+\(1,\ \tfrac1{12},\ \tfrac1{288},\ -\tfrac{139}{51840}\) --- constants that this volume
+quotes rather than derives, so it is worth having them machine-checked from the definition
+rather than from a table.
+
+The derivation is the general recurrence of \lean{ExpSeriesRecurrence.lean} read at this
+kernel (\lean{Fabius.stirlingCoeff_recurrence}); the only arithmetic inputs are
+\(B_{2}=\tfrac16\), \(B_{3}=0\) and \(B_{4}=-\tfrac1{30}\), the last of which is derived
+formally from \(\sum_{k<5}\binom5k B_{k}=0\) rather than assumed
+(\lean{Fabius.bernoulli_four}).  The vanishing of \(B_{3}\) is why \(c_{2}\) receives no
+contribution from \(\varkappa_{2}\) and equals \(\varkappa_{1}^{2}/2\).
+
+Not formalized: the asymptotic~\eqref{q2:eq:fubini-elementary} itself, the convergence of
+the \(k\)-sum, and the identification of \(\sum_{j}c_{j}t^{j}\) with the Stirling series of
+the gamma factor.  What is formal is the coefficient family, defined exactly as the
+corollary defines it.
+
 
 \section{Certified truncation}
 \label{q2:sec:fubini-truncation}
@@ -54501,6 +54525,21 @@ $\gamma_1=-2/24=-\tfrac1{12}$, $\gamma_2=4/1152=\tfrac1{288}$ and
 $\gamma_3=1112/414720=\tfrac{139}{51840}$.  Comparison with the expansion of
 \eqref{q2:eq:stirling-cj} gives \eqref{q2:eq:gamma-c}.
 \end{proof}
+\emph{Lean status: one side of the comparison is formal.}  The Stirling coefficients
+\(c_{1},c_{2},c_{3}\) of the right-hand side are machine-checked ---
+\(\tfrac1{12},\ \tfrac1{288},\ -\tfrac{139}{51840}\), by
+\lean{Fabius.stirlingCoeff_one}, \lean{Fabius.stirlingCoeff_two} and
+\lean{Fabius.stirlingCoeff_three} in \lean{StirlingSeriesCoefficients.lean}, derived from
+the definition rather than quoted.  So the numbers this proposition compares against are no
+longer taken on trust, and the displayed values agree with the formal ones under the sign
+convention \(\gamma_{m}=(-1)^{m}c_{m}\).
+
+The other side is not formalized: \(\gamma_{m}=\lim_{r\to\infty}c_{m}(r)/r^{m}\) requires
+the Bell saddle expansion of \cref{q2:thm:bell} and the coefficient structure of
+\cref{q2:prop:bell-structure}, neither of which the corpus carries.  So the proposition's
+content --- that the two families coincide up to sign --- remains unformalized; what is
+settled is that one of the two families is what the volume says it is.
+
 
 \begin{remark}[Why that is not a coincidence, and what is not proved]
 \label{q2:rem:gamma-c}
