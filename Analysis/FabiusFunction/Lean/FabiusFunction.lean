@@ -254,6 +254,7 @@ import FabiusFunction.ThueMorseBlockAlgebra
 import FabiusFunction.ThueMorseProductIdentity
 import FabiusFunction.ApproximationLadder
 import FabiusFunction.ThueMorseMoments
+import FabiusFunction.FinitePrefixThueMorseCollapse
 import FabiusFunction.ThueMorseArtinSchreier
 import FabiusFunction.ThueMorseEulerTransform
 import FabiusFunction.ThueMorseLucasSupport
