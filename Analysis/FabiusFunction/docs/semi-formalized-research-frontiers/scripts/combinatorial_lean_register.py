@@ -38,6 +38,14 @@ if '\\newcommand{\\lean}' not in s:
 # ---------------------------------------------------------------- statuses
 # label -> (status, "declarations (module)")
 STATUS = {
+ 'lem:merged-formal-rescaling': ('Lean',
+   r"\cref{eq:merged-formal-rescaling-derivative} is "
+   r"\lean{Fabius.derivative_rescale} over every commutative semiring; "
+   r"\lean{Fabius.derivative_rescale_exp}, \lean{Fabius.rescale_zero_exp}, and "
+   r"\lean{Fabius.rescale_exp_add_one} give the exponential specializations "
+   r"over every commutative $\RationalNumbers$-algebra "
+   r"(\lean{ExponentialRescaling}). The general product law is Mathlib's "
+   r"\lean{PowerSeries.exp_mul_exp_eq_exp_add}."),
  'thm:first-cycle': ('partial',
    r"recurrence and boundary values are Mathlib's \lean{Nat.stirlingFirst_succ_succ}, "
    r"\lean{Nat.stirlingFirst_succ_zero}, \lean{Nat.stirlingFirst_eq_zero_of_lt}; the "
@@ -625,18 +633,21 @@ STATUS = {
  'cor:eulerian-power-sum': ('Lean',
    r"\lean{Fabius.sum_range_pow_succ_eq_sum_eulerianNumber} (\lean{EulerianNumbers}), "
    r"in the form $\sum_{r=0}^{m} r^{n+1}=\sum_k A(n+1,k)\binom{m+k+1}{n+2}$"),
- 'alg:merged-exp-log-power': ('partial',
+ 'alg:merged-exp-log-power': ('Lean',
    r"\cref{eq:merged-alg-log} is the reflected-index form of "
    r"\lean{Fabius.SaddleExpansion.logCoeff_succ}, with "
    r"\lean{Fabius.SaddleExpansion.logSeries_eq_logOf} identifying that recurrence with the "
    r"formal logarithm (\lean{SaddleLogExpansionAlgebra}, "
    r"\lean{SaddleLogExpansionPowerSeries}); \cref{eq:merged-alg-exp} is "
    r"\lean{Fabius.coeff_exp_subst_recurrence} (\lean{UnitSeriesBellCoefficients}) in the "
-   r"denominator-cleared form $na_n=\sum_{j=1}^n j\ell_j a_{n-j}$.  The same module proves "
-   r"closed Bell-polynomial formulas for arbitrary powers as "
-   r"\lean{Fabius.coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos} and "
-   r"\lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}, but the separate recurrence "
-   r"\cref{eq:merged-alg-power} is not formalized"),
+   r"denominator-cleared form $na_n=\sum_{j=1}^n j\ell_j a_{n-j}$. "
+   r"\cref{eq:merged-alg-power} is "
+   r"\lean{Fabius.coeff_fallingSeries_subst_sub_one_recurrence} "
+   r"(\lean{UnitSeriesPowerRecurrence}), from "
+   r"\lean{Fabius.mul_derivative_fallingSeries_subst_sub_one} and the "
+   r"commutative-ring identity \lean{Fabius.coeff_recurrence_of_mul_derivative_eq}. "
+   r"The power is formal binomial substitution with constant coefficient one; "
+   r"all three divided recurrences hold over a commutative $\mathbb Q$-algebra"),
  'alg:merged-newton-reciprocal': ('Lean',
    r"\lean{NewtonReciprocal}: initialization \lean{Fabius.X_dvd_one_sub_mul_C}, exact "
    r"residual squaring \lean{Fabius.one_sub_mul_newtonReciprocalStep}, precision doubling "

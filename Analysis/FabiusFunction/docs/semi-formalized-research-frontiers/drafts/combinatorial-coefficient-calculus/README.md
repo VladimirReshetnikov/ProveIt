@@ -77,19 +77,19 @@ environments are human-readable mathematics, not evidence of Lean verification.
 The section "Lean formalization register" states, per result, what is formalized
 and what is not; it is maintained separately from this consolidation.
 
-## Weighted-transform checkpoint (2026-09-04)
+## Formalization checkpoints (2026-09-04)
 
-The `AppellSequence` extension has passed a focused Lean build with
-`LAKE_JOBS=1`: eleven public lemmas provide weighted binomial translation,
+The `AppellSequence` extension has passed direct, sequential Lean elaboration:
+eleven public lemmas provide weighted binomial translation,
 convolution transport, cancellation, and inversion. The manuscript gives their
 complete human proofs and exact declaration crosswalks. Three private rational
 helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
-caller refactor has been independently source-reviewed but awaits its own build.
+caller refactor has now passed its own direct Lean check as well.
 
-At that checkpoint the register contained 203 rows: 58 marked Lean, 34 partial,
-and 111 without a Lean counterpart. The earlier classifications were inherited;
-that checkpoint
-adds two compiler-backed entries and does not claim a fresh build of the whole
+At the upstream checkpoint the register contained 204 rows: 59 marked Lean,
+34 partial, and 111 without a Lean counterpart. Earlier classifications
+were inherited; that checkpoint added three compiler-backed entries and
+did not claim a fresh build of the whole
 corpus. The final structural/provenance validator passes with 204 adjacent
 proofs, 27 disposition records, and six original-source inventory rows. PDF
 rebuilding was deferred in that earlier session and has since been resumed.
@@ -114,11 +114,26 @@ crosswalks, and corrects boundary cases and coefficient-ring assumptions.
 The brief [campaign status](Combinatorial_Coefficient_Calculus/FORMALIZATION_STATUS.md)
 records remaining obligations without duplicating the canonical claim register.
 
-The pending Abel checkpoint adds the formal-series construction over an arbitrary
-commutative rational algebra, the coefficient formula for every solution, and
-the full EGF and binomial identity. `ExponentialRescaling` has passed a focused
-build; the Abel module and affected callers still await compilation, so the
-new manuscript entries have not yet been promoted in the register. The human
-moment-cumulant proof now states its normalization and positive-degree boundaries
-explicitly, with formal logarithm identities separated from the still-open
-set-partition interpretation.
+`ExponentialRescaling` has passed a focused build. Its four public lemmas give
+the rescaling chain rule over every commutative semiring and exponential
+specializations over every commutative rational algebra. They replace the
+rational-only helpers in `NorlundDiagonal` without changing their names. The
+manuscript supplies full coefficient proofs and an exact crosswalk.
+
+The pending `AbelPolynomialSeries` source constructs a solution over every
+commutative rational algebra, derives coefficients for every solution, and
+proves the full EGF and binomial identity including degree zero. The new
+`BernoulliFormalLog` source derives the rational formal logarithm of the
+Bernoulli kernel using the existing recurrence-to-logarithm bridge. Its
+coefficient formula separates degree zero and preserves the distinction between
+the two degree-one Bernoulli conventions. These two modules and the affected
+Norlund, Lambert, and ThueMorse callers still await compilation; independent
+source reviews are not compiler validation, and their register classifications
+have not been promoted on that basis.
+
+The human moment-cumulant proof now states its normalization and positive-degree
+boundaries explicitly, with formal logarithm identities separated from the
+still-open set-partition interpretation. The Nörlund proof now derives the
+logarithmic coefficients without dividing by the nonunit formal variable.
+Arbitrary-order Nörlund polynomials and their analytic convergence remain open
+formalization work.

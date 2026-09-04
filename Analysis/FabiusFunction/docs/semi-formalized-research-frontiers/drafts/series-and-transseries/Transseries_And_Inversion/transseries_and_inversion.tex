@@ -341,11 +341,15 @@ q0:eq:coefficients,q0:prop:uniqueness} is Exact in
 \lean{TransseriesScale.lean}.  The structure
 \lean{Fabius.IsAsymptoticScale} records eventual nonvanishing and the
 successive little-\(o\) law; \lean{Fabius.IsPoincareExpansion} records the
-first-omitted-term remainder convention;
+first-omitted-term remainder convention, with finite sums
+\lean{Fabius.poincarePartialSum} and their boundary/successor laws
+\lean{Fabius.poincarePartialSum_zero} and
+\lean{Fabius.poincarePartialSum_succ};
 \lean{Fabius.IsPoincareExpansion.isLittleO_succ_remainder} sharpens the next
 remainder to little-\(o\);
 \lean{Fabius.IsPoincareExpansion.tendsto_coeff} is exactly
-\eqref{q0:eq:coefficients}; and
+\eqref{q0:eq:coefficients}, with the literal quotient form supplied by
+\lean{Fabius.IsPoincareExpansion.tendsto_coeff_div}; and
 \lean{Fabius.IsPoincareExpansion.coeff_unique} proves coefficientwise
 uniqueness.  The last theorem assumes a nontrivial filter
 \texttt{[l.NeBot]}, which makes the limiting direction meaningful.  This is
@@ -353,23 +357,6 @@ the ordered sequence version used throughout the corpus; it does not package
 the unordered-set, finite-maximal, positive-monomial, or nonzero-coefficient
 conventions of \cref{plt:def:mot-scale}.
 \end{remark}
-
-\emph{Lean status.}  Exact, in \lean{TransseriesScale.lean}.  The structure
-\lean{Fabius.IsAsymptoticScale} is \cref{q0:def:scale}, including eventual
-nonvanishing, and \lean{Fabius.IsPoincareExpansion} is
-\cref{q0:def:poincare}; its finite sums are
-\lean{Fabius.poincarePartialSum}, with boundary and successor identities
-\lean{Fabius.poincarePartialSum_zero} and
-\lean{Fabius.poincarePartialSum_succ}.  The step in the proof above is
-\lean{Fabius.IsPoincareExpansion.isLittleO_succ_remainder}; coefficient
-recovery is \lean{Fabius.IsPoincareExpansion.tendsto_coeff}, or the literal
-quotient printed in \eqref{q0:eq:coefficients} in
-\lean{Fabius.IsPoincareExpansion.tendsto_coeff_div}; and uniqueness is
-\lean{Fabius.IsPoincareExpansion.coeff_unique}.  Lean proves the statements
-for an arbitrary filter, an arbitrary normed scalar field, and coefficients
-in an arbitrary normed vector space.  Its explicit \texttt{NeBot} hypothesis
-on uniqueness is the formal version of the tacit requirement here that the
-limiting filter be proper.
 
 \begin{remark}[Uniqueness is relative, and that is the whole point]
 \label{q0:rem:relative}
@@ -666,20 +653,6 @@ order is a specialization of the stronger partial-order hypotheses.  This
 status covers the support and finite-factorization assertions, not a
 construction of the ambient Hahn-series object.
 \end{remark}
-
-\emph{Lean status.}  Exact, in \lean{TransseriesWellBased.lean}, with one
-order translation made explicit.  The Dickson statements are
-\lean{Fabius.dickson_isPWO}, \lean{Fabius.dickson_antichain_finite}, and the
-finite-index generalization \lean{Fabius.dickson_isPWO_pi}.  The two clauses of
-Neumann's lemma are \lean{Fabius.neumann_isPWO} and
-\lean{Fabius.neumann_finite_factorizations}; the module also generates their
-additive companions.  Mathlib's \texttt{Set.IsPWO} uses its native order,
-whereas \(\mathfrak m\prec\mathfrak n\) here means that
-\(\mathfrak m\) is the \emph{smaller} asymptotic monomial and well-basedness
-forbids an infinite \(\prec\)-increasing chain.  Thus the faithful
-instantiation of the Neumann declarations is on
-\texttt{OrderDual}~\(\mathfrak M\); without that dual, the order convention
-would be reversed.
 
 \begin{remark}[What these two are for]\label{q0:rem:why-lemmas}
 \Cref{q0:lem:neumann} is what makes the \emph{product} of two Hahn series
@@ -1323,6 +1296,15 @@ The two asymptotic equivalences follow: \(\WrightOmega(X)-X=-L+r\) with
 \(\WrightOmega(X)-X+L=r\sim\varepsilon=L/X\).
 \end{proof}
 
+\emph{Lean status: partial, with both concluding equivalences Exact.}
+\lean{WrightOmegaTwoOrders.lean} proves
+\lean{Fabius.self_sub_wrightOmega_isEquivalent_log}, its signed companion,
+and \lean{Fabius.wrightOmega_residual_isEquivalent}.  These are precisely
+\(\WrightOmega(X)-X\sim-\log X\) and
+\(\WrightOmega(X)-X+\log X\sim(\log X)/X\).  The explicit second-order
+polynomial and \(O(L^{3}/X^{3})\) remainder, and the displayed numerical
+envelope, are not formalized, so the whole proposition remains Partial.
+
 \begin{remark}[What the two coefficients are]
 \label{plt:rmk:mot-lambert-preview}
 The three coefficient blocks produced by the computation are the members
@@ -1944,14 +1926,18 @@ operator has an explicit finite-Neumann-series inverse and preserves
 \texttt{natDegree}; the chosen resonant primitive exists and raises
 \texttt{natDegree} by one for a nonzero input.  In the companion module
 \lean{TransseriesDifferentialBlock.lean},
-\lean{Fabius.derivation_block_zpow} makes the displayed integer identity
-\eqref{plt:eq:mot-block-derivative} Exact in an abstract differential algebra
-when the power generator is a unit.  The compound lemma nevertheless also
-asserts consequences inside the concrete ring \(\K[t,t^{-1}][L]\), including
-faithful polynomial evaluation, ambient uniqueness modulo constants, and the
-kernel and degree conclusions for its primitives; that Laurent ambient and
-those uniqueness links are not packaged.  Thus the compound lemma remains
-Partial even though its displayed integer block equation is Exact.  The
+\lean{Fabius.derivation_zpow_block} makes the displayed integer identity
+\eqref{plt:eq:mot-block-derivative} Exact in an ambient field with nonzero
+power generator.  For \(n\ne1\),
+\lean{Fabius.exists_zpow_block_primitive} proves source-shaped existence and
+degree preservation, while \lean{Fabius.existsUnique_zpow_block_primitive}
+proves uniqueness under an explicit injectivity hypothesis on evaluation at
+\(L\).  The compound lemma nevertheless asserts these consequences inside the
+concrete ring \(\K[t,t^{-1}][L]\), including the needed faithful evaluation and
+the resonant ambient kernel/uniqueness conclusions; that Laurent model and
+those remaining links are not packaged.  Thus the compound lemma remains
+Partial even though its displayed integer block equation and nonresonant
+conditional primitive API are Exact.  The
 nonresonant operator core needs only a field and \(c\ne0\); characteristic
 zero is needed for resonant surjectivity and the printed resonant degree
 claims.
@@ -36422,21 +36408,32 @@ Result & Status & Lean surface and boundary \\
   \lean{TransseriesScaleDominance.lean} and
   \lean{TransseriesPolyLogScale.lean}; analytic real-exponent trichotomy and
   ordered sequence scales. \\
+\cref{plt:prop:mot-blocks} & Exact &
+  \lean{TransseriesBlockClasses.lean}; the printed integer-exponent
+  logarithmic-comparability equivalence follows from a real-exponent theorem. \\
+\cref{plt:cor:mot-both-generators-needed} & Partial &
+  \lean{TransseriesMonomialUniqueness.lean} and
+  \lean{WrightOmegaTwoOrders.lean} prove its monomial-uniqueness and analytic
+  residual inputs; their assembly from an arbitrary three-term scale is absent. \\
 \cref{plt:prop:mot-omega-basic} & Exact & \lean{WrightOmega.lean}; all clauses
   including \lean{Fabius.analyticAt_wrightOmega}, over the reals only, with no
   complex branch or holomorphy assertion. \\
+\cref{plt:prop:mot-two-orders} & Partial &
+  \lean{WrightOmegaTwoOrders.lean} proves both concluding asymptotic
+  equivalences; the explicit second-order block, error, and envelope are absent. \\
 \cref{plt:thm:mot-smallest-differential-algebra} & Partial & The integer
-  block law is exact in \lean{TransseriesDifferentialBlock.lean} when the
-  power generator is a unit; the concrete Laurent ring, minimality, growth,
-  and algebraic independence clauses remain absent. \\
+  block law and the three abstract \texttt{IsLeast} minimality statements are
+  exact in \lean{TransseriesDifferentialBlock.lean} and
+  \lean{TransseriesDifferentialClosure.lean}; the germ-model growth and
+  algebraic-independence clauses remain absent. \\
 \cref{plt:eq:mot-block-derivative,plt:eq:dif-block} & Exact &
-  \lean{Fabius.derivation_block_zpow}; the integer block identity in an
-  abstract differential algebra with a unit power generator. \\
+  \lean{Fabius.derivation_zpow_block}; the integer block identity in an
+  ambient field with a nonzero power generator. \\
 \cref{plt:lem:mot-block-antiderivative,plt:prop:dif-block} & Partial &
   \lean{TransseriesBlockAntiderivative.lean} and
-  \lean{TransseriesDifferentialBlock.lean}; polynomial operator and exact
-  integer equations, but not the concrete Laurent-series, faithful evaluation,
-  ambient uniqueness, and general-exponent apparatus of the compound claims. \\
+  \lean{TransseriesDifferentialBlock.lean}; polynomial operator, integer law,
+  and conditional nonresonant primitive existence/uniqueness are exact, but
+  the concrete Laurent model and remaining ambient links are absent. \\
 \cref{plt:lem:mot-harmonic} & Partial &
   \lean{TransseriesHarmonicIncrement.lean} proves the Stolz leading term;
   the logarithmic correction, constant, and little-\(o(1)\) term remain absent. \\
@@ -36446,6 +36443,9 @@ Result & Status & Lean surface and boundary \\
 \cref{p0:lem:bell-conversion,p0:lem:power-log,p0:cor:exp-log-jets} & Exact &
   All sixteen declarations of \lean{UnitSeriesBellCoefficients.lean}; purely
   formal coefficient identities. \\
+\cref{plt:lem:tay-bell-recurrence} & Exact &
+  \lean{BellLeibnizTower.lean}; the abstract derivation tower and its partial
+  Bell-polynomial recurrence. \\
 \cref{p0:thm:lambert-core} & Partial & \lean{LinLogCoreInversion.lean} proves
   the real substitution, both real branch rules, uniqueness, threshold, and
   slope; the asymptotic and general complex-branch clauses remain absent. \\
@@ -36453,8 +36453,9 @@ Result & Status & Lean surface and boundary \\
   five order/rounding/jump mechanisms (including residue classes); the printed
   Fourier layer and analytic interpolation construction remain absent. \\
 \cref{p0:thm:remainder-transport} & Partial &
-  \lean{RemainderTransport.lean} proves the sharp displacement bound; the
-  displayed second-order first-correction estimate remains absent. \\
+  \lean{RemainderTransport.lean} proves the sharp displacement bound and the
+  displayed first-order law with explicit error; only the closing asymptotic
+  clause remains absent. \\
 \cref{p6:lem:core} & Partial & \lean{PowerLogCoreInversion.lean} proves the
   real \(r=1\) Lambert inversion and slope; general \(r\), complex powers,
   and branch bookkeeping remain absent. \\
@@ -36471,30 +36472,60 @@ Result & Status & Lean surface and boundary \\
 \bottomrule
 \end{longtable}
 
-Together these eighteen modules expose \(169\) explicit public commands:
-\lean{TransseriesScale.lean} \(5\),
+Together these thirty-five modules expose \(304\) explicit public commands.
+The original eighteen-module surface, extended in place where noted, is:
+\lean{TransseriesScale.lean} \(9\),
 \lean{TransseriesScaleDominance.lean} \(8\),
 \lean{TransseriesPolyLogScale.lean} \(4\),
 \lean{TransseriesWellBased.lean} \(7\) written declarations,
 \lean{TransseriesHeight.lean} \(3\),
 \lean{TransseriesBlockAntiderivative.lean} \(15\),
-\lean{TransseriesDifferentialBlock.lean} \(9\),
+\lean{TransseriesDifferentialBlock.lean} \(12\),
 \lean{UnitSeriesBellCoefficients.lean} \(16\), and
 \lean{QuadraticCoreCatalan.lean} \(11\),
-\lean{TransseriesFlat.lean} \(20\),
+\lean{TransseriesFlat.lean} \(26\),
 \lean{WrightOmega.lean} \(14\) (one definition and thirteen theorems),
 \lean{TransseriesHarmonicIncrement.lean} \(2\),
 \lean{OrdinaryPartialBell.lean} \(6\),
 \lean{LinLogCoreInversion.lean} \(22\),
 \lean{PowerLogCoreInversion.lean} \(9\),
-\lean{RemainderTransport.lean} \(3\),
+\lean{RemainderTransport.lean} \(4\),
 \lean{StaircaseInversion.lean} \(7\), and
-\lean{DerangementNearestInteger.lean} \(8\).  In addition, the named
+\lean{DerangementNearestInteger.lean} \(8\).  Fourteen incoming leaves add
+\lean{BackwardErrorExistence.lean} \(7\),
+\lean{BellLeibnizTower.lean} \(5\),
+\lean{CayleyKernel.lean} \(10\),
+\lean{CayleyLocalCoordinate.lean} \(7\),
+\lean{CayleyTreeFunction.lean} \(7\),
+\lean{DivisorTransform.lean} \(9\),
+\lean{ExpSeriesRecurrence.lean} \(4\),
+\lean{LambertCorrectionEquation.lean} \(8\),
+\lean{LambertShiftConcavity.lean} \(5\),
+\lean{LeastTermIndex.lean} \(7\),
+\lean{TouchardEulerOperator.lean} \(9\),
+\lean{TransseriesBlockClasses.lean} \(3\),
+\lean{TransseriesDifferentialClosure.lean} \(12\), and
+\lean{TransseriesMonomialUniqueness.lean} \(2\).  Three later focused leaves add
+\lean{StirlingSeriesCoefficients.lean} \(15\),
+\lean{WrightOmegaTwoOrders.lean} \(8\), and
+\lean{UnitSeriesPowerRecurrence.lean} \(3\).  (The fifteenth incoming
+leaf, \lean{NewtonInterpolation.lean} with \(22\) declarations, belongs to a
+different focused package.)  In addition, the named
 \texttt{to\_additive} attributes in \lean{TransseriesWellBased.lean} generate
-two public additive twins, for \(171\) named inventory/API entries under this
+two public additive twins, for \(306\) named inventory/API entries under this
 convention.  The corpus's
 lexical documentation census intentionally counts explicit commands only;
 automatically generated structure projections are outside both tallies.
+
+The last of these leaves also closes the coefficient-calculus recurrence for
+an arbitrary formal power.  In \lean{UnitSeriesPowerRecurrence.lean},
+\lean{Fabius.coeff_recurrence_of_mul_derivative_eq} extracts a triangular
+coefficient law from \(F G'=\beta F'G\) over any commutative ring, while
+\lean{Fabius.mul_derivative_fallingSeries_subst_sub_one} and
+\lean{Fabius.coeff_fallingSeries_subst_sub_one_recurrence} specialize it to
+the falling-factorial definition of a unit-series power over a commutative
+\(\RationalNumbers\)-algebra.  This is purely formal: it adds no convergence
+or analytic branch assertion.
 
 \section{The remaining two-generator formal algebra: absent}
 

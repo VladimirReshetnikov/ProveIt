@@ -26,11 +26,16 @@ Every additional formalization milestone needs its own precise validation record
 The first integration milestone merged pinned upstream
 `8159026c5310b24acb4d330a23836a473d7adaff`, then
 `3f74ee23e479399595c91b5fb030c7fbceb23f1a`, and
-`c5a82b88c40ad493d394056c8dd42ef6d3d306ac`. Its source validator passes with
+`c5a82b88c40ad493d394056c8dd42ef6d3d306ac`, followed by
+`063ef3e1b1c0403bd6c71d1c9aa265825504339c` and
+`8b6dbd52428744a8496c762fcdeb2cfebc0ba7cc`. Its source validator passes with
 206 theorem-like items and adjacent proofs, 27 dispositions, and six immutable
 source-inventory rows. The obsolete live checksum ledger was retired as upstream
-intended. The current register has 57 `Lean`, 36 `partial`, and 113 `none` rows;
+intended. The current register has 59 `Lean`, 35 `partial`, and 112 `none` rows;
 these totals include inherited claims and are not a fresh audit of all 206 rows.
+The latest upstream rescaling and formal-power recurrence upgrades are retained;
+the new Bernoulli formal-logarithm and Abel sources remain separately pending.
+The upstream duplicate-crosswalk validator's eight regression tests pass.
 
 `NewtonReciprocal.lean` passed focused compilation on 2026-09-04 using
 `lake env lean -o .lake/build/lib/lean/FabiusFunction/NewtonReciprocal.olean

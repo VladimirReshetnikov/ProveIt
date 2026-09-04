@@ -154,9 +154,9 @@ and forbidden checksum basenames both close at zero. The sole retained
 32.5659 pt overfull paragraph at source lines 590--598 is readable and
 unclipped; the final log has zero underfull diagnostics. The merged source has
 advanced beyond that receipt, so the PDF is historical; a rebuild was then
-pending. It is superseded by the current receipt below.
+pending. It is superseded by the later historical receipt below.
 
-The current synchronized `b899` driver has 17,265 lines and 864,659 bytes, with
+The historical synchronized `b899` driver had 17,265 lines and 864,659 bytes, with
 SHA-256
 `4dd3f7fb22387d8e3d039e8d49cd870a63ebe0881f7f215c7074854825a27bb9`.
 Its 14-file recursive TeX closure has 26,762 lines and 1,210,902 bytes, with
@@ -171,6 +171,11 @@ nonblank text. All 43 font rows are embedded and subset, five are Libertinus,
 and none is Type 3. Required log, reference/rerun, metadata, visual, cleanup,
 and forbidden-basename gates passed. The final log has no vertical box and five
 minor horizontal boxes, none above 10.14 pt.
+
+The later source-only crosswalk corrections use the renamed shifted-limit
+theorem and distinguish the nine-theorem generic fixed-column module from
+the field-level convergence module. No PDF was rebuilt for these corrections;
+the `b899` receipt does not assert parity with the current source.
 
 The current source includes exhaustive crosswalks for `QPochhammerEntire`
 (zero definitions
@@ -679,5 +684,5 @@ The retained 395-page PDF and source SHA-256
 `4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`
 remain synchronized historical evidence for the checkpoint recorded above.
 The retained 398-page PDF is likewise a historical 2026-09-04 receipt. The
-current merged source and 405-page PDF are synchronized by the `b899` receipt
+405-page PDF records the source state synchronized by the historical `b899` receipt
 above.
