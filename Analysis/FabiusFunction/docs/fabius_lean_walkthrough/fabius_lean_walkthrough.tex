@@ -137,7 +137,8 @@ zero-gap state.  The merge target then contributed
 contributed the one additional declaration in that union.  A later incoming-
 branch audit reached the historical 960/11,966 checkpoint; the semantic union
 then reached the historical 967/12,001 and 969/12,048 checkpoints.  The live
-census is now 970/12,051/0, as recorded in the later current-tree audit.  The
+census is now 976/12,116/0; the intervening 970/12,051 and 975/12,111
+checkpoints are historical.  The
 historical 671/8,859 local checkpoint was the 649/8,698 checkpoint plus 22
 modules and 161 declarations.  The
 Pochhammer ownership census remains
@@ -6240,8 +6241,67 @@ coefficient, and isolating the \(j=0\) term gives
 ring.  Formal substitution in the falling-factorial series gives the
 unit-constant power specialization over a rational algebra.  Thus the power
 clause of \nolinkurl{alg:merged-exp-log-power} is Exact, with no analytic
-branch claim.  The 203-row coefficient-calculus concordance is 59 Lean,
-33 Partial, and 111 None. \\
+branch claim.  At that historical checkpoint the 203-row coefficient-calculus
+concordance was 59 Lean, 33 Partial, and 111 None. \\
+Ordinary composition by multiplicity profiles &
+\nolinkurl{Fabius.ordPartialBell_congr_of_le};
+\nolinkurl{Fabius.ordinaryMultiplicityProfiles},
+\nolinkurl{Fabius.mem_ordinaryMultiplicityProfiles},
+\nolinkurl{Fabius.ordPartialBell_eq_sum_multinomial},
+\nolinkurl{Fabius.coeff_subst_eq_sum_multinomial} & The bounded congruence is
+a one-theorem extension of \nolinkurl{OrdinaryBellComposition.lean}; the other
+four names are the exhaustive 1+3 surface of
+\nolinkurl{OrdinaryBellMultinomial.lean}.  A \(\lean{Fin}\,n\)-profile records
+part count \(k\) and total weight \(n\), with coefficient
+\nolinkurl{Nat.multinomial}.  Degree zero is the unique empty profile, and for
+positive degree the \(k=0\) summand is empty.  Hence
+\nolinkurl{thm:ordinary-composition} is Exact; the separate labelled-set-
+partition claim is not included. \\
+Formal rescaling, Abel polynomials, and the Bernoulli logarithm &
+\nolinkurl{Fabius.derivative_rescale},
+\nolinkurl{Fabius.derivative_rescale_exp},
+\nolinkurl{Fabius.rescale_zero_exp},
+\nolinkurl{Fabius.rescale_exp_add_one};
+\nolinkurl{Fabius.abelPolynomial}, \nolinkurl{Fabius.abelSeries},
+\nolinkurl{Fabius.abel_eq_zero_and_one},
+\nolinkurl{Fabius.coeff_exp_subst_of_abel_eq},
+\nolinkurl{Fabius.exp_subst_eq_egfA_abelPolynomial},
+\nolinkurl{Fabius.abelPolynomial_eval_add};
+\nolinkurl{Fabius.logOf_bernoulliPowerSeries},
+\nolinkurl{Fabius.coeff_logOf_bernoulliPowerSeries},
+\nolinkurl{Fabius.coeff_logOf_bernoulliPowerSeries_of_two_le} & The 0+4
+\nolinkurl{ExponentialRescaling.lean} surface gives the semiring rescaling
+chain rule and rational-algebra exponential specializations; three names were
+relocated from \nolinkurl{NorlundDiagonal.lean}.  The 2+9
+\nolinkurl{AbelPolynomialSeries.lean} surface proves the closed polynomials,
+the EGF for every solution of \(T=X\exp(-aT)\), and the all-index binomial
+law, making \nolinkurl{prop:merged-abel} Exact.  The 0+5
+\nolinkurl{BernoulliFormalLog.lean} surface proves the formal rational identity
+\(\log(X/(\exp X-1))=-X/2-\sum_{n\ge2}\beta_nX^n/(n\,n!)\), with no analytic
+logarithm claim. \\
+Raney and associahedral arithmetic &
+\nolinkurl{Fabius.raneyPhi}, \nolinkurl{Fabius.raneyPsi},
+\nolinkurl{Fabius.raneyG}, \nolinkurl{Fabius.raneyT},
+\nolinkurl{Fabius.raneyT_eq},
+\nolinkurl{Fabius.natCast_mul_coeff_raneyT_pow},
+\nolinkurl{Fabius.coeff_raneyT_pow};
+\nolinkurl{Fabius.dissectionNumber},
+\nolinkurl{Fabius.dissectionNumber_mul},
+\nolinkurl{Fabius.dissectionNumber_eq_div},
+\nolinkurl{Fabius.associahedronFaceNumber},
+\nolinkurl{Fabius.associahedronFaceNumber_mul},
+\nolinkurl{Fabius.associahedronH},
+\nolinkurl{Fabius.associahedronH_symm},
+\nolinkurl{Fabius.associahedronHPoly_one} & The 4+12
+\nolinkurl{RaneyNumbers.lean} surface proves the coefficient formula for its
+constructed \(T_p\), including \(n=0\), but no uniqueness/any-solution
+transport; the Raney row is Partial.  The 4+23
+\nolinkurl{AssociahedronFaceNumbers.lean} surface proves exact determinant,
+quotient, face-array, and Narayana-row arithmetic.  Since the arrays are
+defined and neither dissections nor the face-to-\(h\) transform is constructed,
+the Kirkman--Cayley and two associahedral rows remain Partial.  With the Abel
+and ordinary promotions, the current 204-row concordance is 62 Lean, 36
+Partial, and 106 None. \\
 Weighted binomial translation and inversion &
 \nolinkurl{Bell.binomialConv_unitSeq},
 \nolinkurl{Bell.binomialConv_four_swap},
@@ -7061,8 +7121,12 @@ Neumann wrappers and the real-analytic Wright omega theorem give the further
 historical 952/11,884 checkpoint.  The subsequently merged 15-module tranche
 adds 117 explicit public declarations, giving the historical 967/12,001
 checkpoint.  Two modules and 47 declarations then give the historical
-969/12,048 checkpoint; the final power-recurrence leaf adds one module and
-three theorems.  The live current-tree audit scans 970 modules and 12,051
+969/12,048 checkpoint; the power-recurrence leaf adds one module and
+three theorems, giving the historical 970/12,051 checkpoint.  Five incoming
+coefficient-calculus modules add 60 declarations net after three shared
+exponential helpers are relocated, giving 975/12,111; the ordinary-
+multinomial leaf and bounded congruence add one module and five declarations.
+The live current-tree audit scans 976 modules and 12,116
 explicit public declarations, with zero missing module headers and zero
 missing declaration comments; the
 Legendre-biorthogonality 925/11,619 census remains an explicit historical
@@ -7257,11 +7321,16 @@ real-analytic Wright omega theorem then give the historical 952/11,884
 checkpoint.  The subsequently merged 15-module tranche adds 117 explicit
 public declarations and gives the historical 967/12,001 checkpoint.  The next
 two modules and 47 declarations give the historical 969/12,048 checkpoint;
-\nolinkurl{UnitSeriesPowerRecurrence.lean} adds one module and three theorems.
-The live census is 970/12,051, with zero missing module headers and zero
+\nolinkurl{UnitSeriesPowerRecurrence.lean} adds one module and three theorems,
+giving the historical 970/12,051 checkpoint.  The next five modules add 60
+declarations net, and the ordinary-multinomial leaf plus bounded congruence add
+one module and five declarations.  The live census is 976/12,116, with zero
+missing module headers and zero
 missing declaration comments.
-Every module is reachable from the facade.  No aggregate facade build is
-claimed for this current-tree census.  The retained PDF and title-page pin
+Every module is reachable from the facade.  The nine changed modules and three
+ordinary-composition callers passed direct sequential checks, followed by a
+facade import check against their compiled dependency cache; no full corpus
+rebuild is claimed.  The retained PDF and title-page pin
 remain historical receipts and do not claim parity with the merged source; no
 PDF was built for this source-only union.
 

@@ -474,11 +474,12 @@ $\sum_mm^nt^m=t\sum_m(m+1)^nt^m$ (\lean{Fabius.X_mul_succPowSeries}) finishes.""
 
 PENDING += [
  # --- thm:ordinary-composition ---
- (r"""coefficient, proving the second.  The third is the definition of the ordinary
-Bell polynomial.
+ (r"""For $n=0$, only $k=0$ contributes: equivalently, the sole admissible
+multiplicity profile is the empty profile, whose multinomial coefficient and
+monomial are both $1$.  Hence $c_0=a_0$.
 \end{proof}
 """,
-  remark(r"""% ed.: crosswalk added 2026-09-01.
+  remark(r"""% ed.: crosswalk updated 2026-09-04; all three forms and degree zero are exact.
 Module \lean{OrdinaryBellComposition} defines the ordinary partial Bell
 polynomials \lean{Fabius.ordPartialBell} over any commutative semiring by the
 composition recurrence
@@ -487,14 +488,28 @@ $\OrdinaryPartialBellPolynomial n{k+1}(b)=\sum_{i=1}^{n}b_i
 n0=\delta_{n0}$, which is \cref{eq:ordinary-composition-compositions} unrolled
 one part at a time; \lean{Fabius.coeff_pow_eq_ordPartialBell} is
 $[x^n]G(x)^k=\OrdinaryPartialBellPolynomial nk(b_1,b_2,\ldots)$ for $G$ with
-zero constant term, and \cref{eq:ordinary-composition-bell} is
-\lean{Fabius.coeff_subst_eq_sum_ordPartialBell}, with the sum starting at
-$k=0$ (the term $k=0$ is $a_0\delta_{n0}$, which also covers $c_0=a_0$).  The
+zero constant term.
+
+Module \lean{OrdinaryBellMultinomial} defines the finite profile set
+\lean{Fabius.ordinaryMultiplicityProfiles}; its membership theorem
+\lean{Fabius.mem_ordinaryMultiplicityProfiles} is exactly the two constraints
+$\sum_j\pi_j=k$ and $\sum_j(j+1)\pi_j=n$ (the Lean index $j:\operatorname{Fin}n$
+records the manuscript's part size $j+1$).  The commutative-semiring theorem
+\lean{Fabius.ordPartialBell_eq_sum_multinomial} is
+\cref{eq:ordinary-composition-multiplicities}; its proof uses the finite-degree
+locality lemma \lean{Fabius.ordPartialBell_congr_of_le} before applying the
+multinomial theorem.  Finally,
+\lean{Fabius.coeff_subst_eq_sum_multinomial} proves the complete coefficient
+formula over any commutative ring, while
+\lean{Fabius.coeff_subst_eq_sum_ordPartialBell} is its Bell-polynomial form.
+Both sums start at $k=0$.  At $n=0$, $\operatorname{Fin}0$ is empty and the
+unique empty profile occurs only for $k=0$, so the same theorem gives
+$c_0=a_0$; for $n\geq1$ that term vanishes and the range is $1\leq k\leq n$.
+These are formal-series identities and require no convergence hypothesis.  The
 reciprocal formula \cref{eq:reciprocal-ordinary-bell} is
 \lean{Fabius.coeff_reciprocalSeries}, where \lean{Fabius.reciprocalSeries} is
 $1/(1-u)$ at $u=-(A-1)$ and \lean{Fabius.mul_reciprocalSeries} shows it
-inverts $A$.  The multinomial form \cref{eq:ordinary-composition-multiplicities}
-is not formalized.""")),
+inverts $A$.""")),
 ]
 
 PENDING += [
@@ -1104,23 +1119,39 @@ formalized.""")),
 
 PENDING += [
  # --- thm:merged-moment-cumulant ---
- (r"""partitions by block sizes is exactly the coefficient expansion of $\EulerE^K$ and
-$\log M$.
+ (r"""Each unordered partition into $k$ blocks has $k!$ block orders, so its
+logarithmic weight is $(-1)^{k-1}k!/k=(-1)^{k-1}(k-1)!$.
+This gives the backward relation coefficientwise and proves the two
+formal-series equivalences without any convergence assumption.
 \end{proof}
 """,
-  remark(r"""% ed.: crosswalk added 2026-09-02; the formal statement is the block-size (Bell polynomial) form.
-Module \lean{BellPolynomialInversion} defines the complete Bell polynomials
-\lean{Bell.complete} by the recurrence $m_{n+1}=\sum_k\binom nk\kappa_{k+1}m_{n-k}$
-(the sum over partitions grouped by the block containing $n+1$) and the
-cumulant sequence \lean{Bell.cumulant} by the inverse recurrence, and proves
-that the two constructions are mutually inverse
-(\lean{Bell.complete_cumulant} for $m_0=1$, \lean{Bell.cumulant_complete}
-for $\kappa_0=0$), over any commutative ring; the generating-function form
-$M=\EulerE^K$ is \lean{Fabius.exp_subst_bellWeightSeries} (module
-\lean{BellGeneratingFunctions}), where $K$ is the weight series
-\lean{Fabius.bellWeightSeries}.  The sums over the partition lattice
-\cref{eq:merged-moment-cumulant-forward,eq:merged-moment-cumulant-backward}
-and the identity $K=\log M$ are not formalized.""")),
+  remark(r"""% ed.: crosswalk updated 2026-09-04; recurrence, formal series, and partitions have distinct scopes.
+Module \lean{BellPolynomialInversion} defines the complete Bell family
+\lean{Bell.complete} and its inverse recurrence \lean{Bell.cumulant}.
+They are mutually inverse over every commutative ring:
+\lean{Bell.complete_cumulant} assumes $m_0=1$, and
+\lean{Bell.cumulant_complete} assumes $\kappa_0=0$.
+
+The generating-function statements are formal power-series identities over
+every commutative $\RationalNumbers$-algebra.
+\lean{Fabius.exp_subst_bellWeightSeries} in
+\lean{BellGeneratingFunctions} identifies the exponential of the cumulant
+weight series with the EGF of its complete Bell family.
+For $m_0=1$, \lean{Fabius.logOf_egfA} in
+\lean{CumulantBellFormula} identifies $\log M$ with the EGF of the
+alternating factorial-weighted partial Bell sum
+\lean{Fabius.cumulantSum}; \lean{Fabius.cumulant_eq_cumulantSum}
+identifies that sequence with \lean{Bell.cumulant}.
+Together they prove $K=\log M$ for the recursively defined cumulants.
+The inverse identity used in the proof is
+\lean{Fabius.exp_subst_logOf} in \lean{ExpLog}, for a formal series with
+constant coefficient $1$.
+
+The remaining obligation is the identification with the sums over actual
+set partitions in
+\cref{eq:merged-moment-cumulant-forward,eq:merged-moment-cumulant-backward}.
+Thus the formal-series and block-size formulas are formalized, while the
+set-partition formulation remains partial.""")),
 ]
 
 PENDING += [
@@ -1264,6 +1295,14 @@ $\beta_n^{(n+1)}(x)=\FallingFactorial{x-1}{n}$ with Mathlib's
 \lean{Fabius.norlund_eval_zero_diagonal}; and
 \cref{eq:merged-norlund-diagonal} is
 \lean{Fabius.coeff_bernoulliPowerSeries_pow_succ}.
+The logarithm calculation \eqref{eq:merged-log-bernoulli-kernel} inside the
+human proof is separately exact over $\RationalNumbers$ in module
+\lean{BernoulliFormalLog}: \lean{Fabius.logOf_bernoulliPowerSeries} identifies
+the formal logarithm, \lean{Fabius.coeff_logOf_bernoulliPowerSeries} gives all
+coefficients using the positive convention $\beta_n^+$ and includes degree
+zero, \lean{Fabius.coeff_one_logOf_bernoulliPowerSeries} isolates the value
+$-1/2$, and \lean{Fabius.coeff_logOf_bernoulliPowerSeries_of_two_le} gives the
+ordinary-Bernoulli formula for $n\geq2$.
 The formal proof does not use \cref{thm:res-subst}, and needs no residue
 calculus.  It rests instead on the Riccati equation
 $t\,\frac{\Differential}{\Differential t}\!\left(\frac{t}{\EulerE^t-1}\right)
@@ -1563,9 +1602,14 @@ convolving against the constant sequence $1$, or against $(-1)^n$, gives the
 displayed sums after reflecting the summation index
 (\lean{Fabius.binomialConv_one_left},
 \lean{Fabius.binomialConv_altSeries_left}).  And
-\lean{Fabius.exp_mul_altSeries} is the binomial theorem at $-1+1=0$ rather than
-a separate alternating-sum computation, which keeps it valid over an arbitrary
-commutative ring instead of only over $\IntegerNumbers$.""")),
+\lean{Fabius.exp_mul_altSeries} uses the binomial theorem at $-1+1=0$ for
+coefficient cancellation.  This cancellation is valid in every commutative
+ring; the EGF statements retain their $\RationalNumbers$-algebra hypothesis
+because their coefficients contain inverse factorials.
+The reverse triangular product is supplied by the general commutation theorem
+\lean{Fabius.lowerTriangular_orthogonal_comm}, and both directions are
+instances of the finite triangular transform calculus of
+\lean{Fabius.lowerTriangularTransform}.""")),
 ]
 
 PENDING += [
@@ -1831,6 +1875,111 @@ The constant coefficient is one by
 \emph{Lean}-proved over a commutative $\mathbb Q$-algebra, with the
 denominator-free identity generalized to arbitrary commutative rings.
 These are formal series statements, not assertions about analytic branches.""")),
+]
+
+PENDING += [
+ # --- prop:merged-abel ---
+ (r"""Finally, $T(0)=0$ and its unit linear coefficient show that the EGF uses
+a delta series, as required by the definition of binomial type.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-04; the whole proposition is exact.
+Module \lean{AbelPolynomialSeries} proves the proposition with the same split
+of hypotheses.  Over every commutative ring, \lean{Fabius.abelPolynomial},
+\lean{Fabius.abelPolynomial_zero}, \lean{Fabius.abelPolynomial_succ}, and
+\lean{Fabius.abelPolynomial_succ_eval} give the polynomial and evaluation
+formulas, including degree zero.  Over every commutative
+$\RationalNumbers$-algebra, \lean{Fabius.abelSeries} and
+\lean{Fabius.abelSeries_eq} construct a solution of $T=t\EulerE^{-aT}$, while
+\lean{Fabius.abel_eq_zero_and_one} proves the constant and linear coefficients
+for every solution.  The positive coefficient calculation is
+\lean{Fabius.coeff_exp_subst_of_abel_eq}, and the all-degree identity
+\cref{eq:merged-abel-egf}, for an arbitrary solution rather than only the
+constructed one, is \lean{Fabius.exp_subst_eq_egfA_abelPolynomial}.
+Finally, \cref{eq:merged-abel-binomial} is
+\lean{Fabius.abelPolynomial_eval_add} for every $n\geq0$.  All statements are
+formal algebra; no convergence interpretation is used.""")),
+
+ # --- thm:merged-kirkman-cayley ---
+ (r"""which becomes \eqref{eq:merged-kirkman-cayley} after substitution.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-04; arithmetic exact, bijective count open.
+Module \lean{AssociahedronFaceNumbers} defines the arithmetic quantity
+\lean{Fabius.dissectionNumber} in the shifted variable $a=N-3$ by a
+division-free determinant.  The cleared Kirkman--Cayley formula is
+\lean{Fabius.dissectionNumber_mul}; its manuscript-variable form is
+\lean{Fabius.dissectionNumber_mul_of_three_le}.  Exact divisibility and the
+literal natural-number quotient are
+\lean{Fabius.succ_dvd_choose_mul_choose},
+\lean{Fabius.succ_dvd_choose_mul_choose_of_three_le}, and
+\lean{Fabius.dissectionNumber_eq_div}; nonnegativity and vanishing outside the
+range are \lean{Fabius.dissectionNumber_nonneg} and
+\lean{Fabius.dissectionNumber_eq_zero_of_lt}.  Thus the complete arithmetic
+formula, including its integrality, is formalized.  The polygon-dissection
+type, the interpretation of this arithmetic quantity as its cardinality, and
+the cycle-lemma bijection in the human proof are not formalized, so the theorem
+remains \emph{partial}.""")),
+
+ # --- cor:merged-associahedron-f ---
+ (r"""$d=N-3-j$ in \eqref{eq:merged-kirkman-cayley} and simplify.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-04; arithmetic face array only.
+Module \lean{AssociahedronFaceNumbers} defines
+\lean{Fabius.associahedronFaceNumber} from
+\lean{Fabius.dissectionNumber}.  With $N=j+e+3$, the division-free form of
+\cref{eq:merged-associahedron-f} is
+\lean{Fabius.associahedronFaceNumber_mul}, and
+\lean{Fabius.associahedronFaceNumber_eq} identifies the shifted parameters.
+The three displayed boundary values are
+\lean{Fabius.associahedronFaceNumber_zero},
+\lean{Fabius.two_mul_associahedronFaceNumber_facet}, and
+\lean{Fabius.associahedronFaceNumber_top}.  These theorems establish the
+arithmetic face-number array.  No associahedron face lattice or bijection
+between its faces and noncrossing diagonal sets is defined, so the geometric
+corollary remains \emph{partial}.""")),
+
+ # --- thm:merged-associahedron-h ---
+ (r"""polytope.  Finally $h(1)=\sum_kN(N-2,k)=\CatalanNumber{N-2}$, which is $f_0$
+as it must be for a simple polytope.
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-04; Narayana arithmetic exact, face transform open.
+Module \lean{AssociahedronFaceNumbers} defines
+\lean{Fabius.associahedronH} to be the relevant Narayana row and proves the
+closed form in denominator-free shape as
+\lean{Fabius.associahedronH_mul}.  The identification with the shifted
+Narayana indices is \lean{Fabius.associahedronH_eq}, palindromicity is
+\lean{Fabius.associahedronH_symm}, and the Catalan row sum is
+\lean{Fabius.sum_associahedronH}.  For the polynomial
+\lean{Fabius.associahedronHPoly}, the specializations $h(1)=\CatalanNumber{N-2}$
+and $h(1)=f_0$ are \lean{Fabius.associahedronHPoly_one} and
+\lean{Fabius.associahedronHPoly_one_eq_faceNumber_zero}.  The actual
+associahedron $h$-polynomial, the transform from its face vector, and
+\cref{eq:merged-alternating-vandermonde} are not formalized; the theorem is
+therefore \emph{partial} rather than an identification with a formalized
+geometric object.""")),
+
+ # --- thm:merged-raney ---
+ (r""" =\frac r{pn+r}\binom{pn+r}{n}.
+\]
+\end{proof}
+""",
+  remark(r"""% ed.: crosswalk added 2026-09-04; constructed solution exact, transfer open.
+Module \lean{RaneyNumbers} constructs \lean{Fabius.raneyT} by the formal
+Lagrange inverse and proves its functional equation as
+\lean{Fabius.raneyT_eq}.  For this constructed solution,
+\lean{Fabius.natCast_mul_coeff_raneyT_pow} is the denominator-free positive-
+degree identity, and \lean{Fabius.coeff_raneyT_pow} is exactly
+\cref{eq:merged-raney}, including $n=0$; it allows $p=0$ as well as the
+manuscript's $p\geq1$ and assumes precisely $r\geq1$.  The specialization
+$r=1$ is \lean{Fabius.coeff_raneyT}.  The manuscript theorem quantifies over
+an arbitrary $T$ satisfying the functional equation, whereas the formal
+development has no uniqueness or coefficient-transfer theorem from such a
+solution to \lean{Fabius.raneyT}.  Consequently the displayed formula is
+formalized for the canonical constructed solution, but the theorem remains
+\emph{partial} at its stated universal scope.""")),
 ]
 
 applied = 0

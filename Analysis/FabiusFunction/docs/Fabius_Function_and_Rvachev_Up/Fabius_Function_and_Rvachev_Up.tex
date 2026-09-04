@@ -212,8 +212,11 @@ declaration.  A later incoming-branch audit reached the now-historical
 610/8,318 activation checkpoint, and 311 modules and 3,268 declarations beyond
 the 649/8,698 publication-union checkpoint.  The subsequent semantic union
 reached the historical 967/12,001 checkpoint.  The next two-module extension
-gave the historical 969/12,048 checkpoint, and the final source-only power-
-recurrence leaf gives the live 970/12,051/0 census.  Module headers and
+gave the historical 969/12,048 checkpoint, and the source-only power-
+recurrence leaf gave the historical 970/12,051 checkpoint.  Five incoming
+coefficient-calculus modules then give the historical 975/12,111 checkpoint,
+and the ordinary-multinomial leaf plus its reusable bounded-congruence theorem
+give the live 976/12,116/0 census.  Module headers and
 declaration documentation are complete; the checked lexical baseline records
 both zero-gap invariants.  This source includes the earlier finite and
 infinite q-series APIs together with the final Gaussian-palindromic, Jackson
@@ -4217,9 +4220,15 @@ giving the historical 952/11,884 checkpoint.  The subsequently merged
 15-module tranche adds 117 explicit public declarations, giving the historical
 967/12,001 checkpoint.  Two new modules and 47 declarations then give the
 historical 969/12,048 checkpoint; the zero-definition/three-theorem
-\path{UnitSeriesPowerRecurrence.lean} leaf gives the live 970-module,
-12,051-declaration census, with zero missing module headers and zero missing
-declaration comments.
+\path{UnitSeriesPowerRecurrence.lean} leaf gives the historical 970-module,
+12,051-declaration census.  The five-module coefficient-calculus tranche has
+63 public declarations, with three shared exponential helpers relocated from
+\path{NorlundDiagonal.lean} to \path{ExponentialRescaling.lean}, and therefore
+adds 60 declarations net, giving the historical 975/12,111 checkpoint.
+\path{OrdinaryBellMultinomial.lean} and the new bounded-congruence theorem in
+\path{OrdinaryBellComposition.lean} then add one module and five declarations,
+giving the live 976/12,116 census, with zero missing module headers and zero
+missing declaration comments.
 The immediately preceding algebraic moment-polynomial checkpoint was
 904/11,457, and the complex Bernoulli value-completion checkpoint 903/11,448
 remains historical.  The merged chronology also records the scaled-geometric
@@ -4475,8 +4484,11 @@ subsequently merged 15-module tranche adds 117 explicit public declarations
 and gives the historical 967/12,001 checkpoint.  The next two-module tranche
 adds 47 declarations, giving the historical 969/12,048 checkpoint; the final
 \path{UnitSeriesPowerRecurrence.lean} leaf adds one module and three theorems.
-The live census is therefore 970/12,051, with zero missing module headers and
-zero missing declaration comments.
+That 970/12,051 checkpoint is historical.  The subsequent five modules add
+60 declarations net after the three-theorem rescaling relocation, and the
+ordinary-multinomial module plus bounded congruence add one module and five
+declarations.  The live census is therefore 976/12,116, with zero missing
+module headers and zero missing declaration comments.
 
 The exhaustive public surface of
 \path{FinitePrefixThueMorseCollapse.lean} is zero definitions and eight
@@ -14651,7 +14663,10 @@ historical 952/11,884 checkpoint.  The subsequently merged 15-module tranche
 adds 117 explicit public declarations, giving the historical 967/12,001
 checkpoint.  The next two-module tranche adds 47 declarations and gives the
 historical 969/12,048 checkpoint; \path{UnitSeriesPowerRecurrence.lean} then
-adds one module and three theorems.  Thus 970/12,051/0 is the live
+adds one module and three theorems, giving the historical 970/12,051
+checkpoint.  Five coefficient-calculus modules add 60 declarations net, and
+the ordinary-multinomial leaf plus bounded congruence add one module and five
+declarations.  Thus 976/12,116/0 is the live
 modules/declarations/missing-comments census.  The following inventory is
 exhaustive for both overlays and keeps the formal/analytic and
 polynomial/Laurent boundaries explicit.  No PDF was rebuilt for the incoming
@@ -14696,8 +14711,167 @@ already formal logarithm and exponential clauses.  The whole printed
 algorithm is formal over a commutative rational algebra; the first theorem is
 stronger and denominator-free over every commutative ring, including positive
 characteristic.  These are formal-series identities, not analytic branch
-claims.  The coefficient-calculus concordance now has 203 rows: 59 Lean,
-33 Partial, and 111 None.
+claims.
+
+\begin{theorem}[Ordinary composition in multiplicity form]
+\label{thm:formal-ordinary-composition-multinomial}
+Let \(R\) be a commutative ring, let \(f,g\in R\llbracket X\rrbracket\),
+and suppose \([X^0]f=0\).  For \(n,k\in\NaturalNumbers\), put
+\[
+ \Pi_{n,k}=\left\{(\pi_1,\ldots,\pi_n)\in\NaturalNumbers^n:
+   \sum_{j=1}^n\pi_j=k,\quad \sum_{j=1}^n j\pi_j=n\right\}.
+\]
+For arbitrary weights \(x_j\in R\), \(j\geq1\), the ordinary partial Bell
+polynomial and the composite coefficient are
+\begin{align}
+ \OrdinaryPartialBellPolynomial nk(x)
+ &=\sum_{\pi\in\Pi_{n,k}}
+   \binom{k}{\pi_1,\ldots,\pi_n}
+   \prod_{j=1}^n x_j^{\pi_j},                                  \label{eq:formal-ordinary-bell-multinomial}\\
+ [X^n]g(f(X))
+ &=\sum_{k=0}^n [X^k]g(X)
+   \sum_{\pi\in\Pi_{n,k}}
+   \binom{k}{\pi_1,\ldots,\pi_n}
+   \prod_{j=1}^n([X^j]f)^{\pi_j}.                              \label{eq:formal-ordinary-composition-multinomial}
+\end{align}
+Equation~\eqref{eq:formal-ordinary-bell-multinomial} already holds over a
+commutative semiring.  At \(n=0\), the unique empty profile has \(k=0\),
+multinomial coefficient one, and empty product one, so
+\eqref{eq:formal-ordinary-composition-multinomial} says
+\([X^0]g(f)=[X^0]g\).  For \(n>0\), the \(k=0\) profile set is empty, and the
+outer sum is exactly the printed range \(1\leq k\leq n\).
+\end{theorem}
+
+\begin{proof}
+For fixed \(n\), truncate the weight series to
+\(p=\sum_{j=1}^n x_jX^j\).  Induction on \(k\) in the defining recurrence
+shows that \(\OrdinaryPartialBellPolynomial nk\) only reads
+\(x_1,\ldots,x_n\): peeling a positive part leaves a total degree at most
+\(n\), so the induction hypothesis applies to every summand.  This is the
+bounded congruence lemma.  The existing power
+coefficient theorem identifies it with \([X^n]p^k\).  Expand \(p^k\) by the
+finite multinomial theorem.  A profile contributes to \([X^n]\) precisely
+when its part count is \(k\) and its weighted sum is \(n\), which proves
+\eqref{eq:formal-ordinary-bell-multinomial}.  Substitution followed by the
+existing ordinary-Bell composition formula proves
+\eqref{eq:formal-ordinary-composition-multinomial}.  The same calculation on
+the empty finite type proves the stated degree-zero case, with no exceptional
+convention.
+\end{proof}
+
+The profile finset, its membership characterization, the Bell expansion, and
+the composite coefficient theorem are respectively
+\lean{Fabius.ordinaryMultiplicityProfiles},
+\lean{Fabius.mem_ordinaryMultiplicityProfiles},
+\lean{Fabius.ordPartialBell_eq_sum_multinomial}, and
+\lean{Fabius.coeff_subst_eq_sum_multinomial}.  The reusable truncation step is
+\lean{Fabius.ordPartialBell_congr_of_le}; the older unbounded
+\lean{Fabius.ordPartialBell_congr} is now its corollary.  Together with
+\lean{Fabius.coeff_pow_eq_ordPartialBell} and
+\lean{Fabius.coeff_subst_eq_sum_ordPartialBell}, these declarations cover the
+ordered-composition, multiplicity, ordinary-Bell, and \(c_0=a_0\) clauses of
+\nolinkurl{thm:ordinary-composition}, which is therefore Exact.  This is an
+ordinary composition-profile count \(k!/\prod_j\pi_j!\); it does not prove the
+distinct labelled-set-partition interpretation in
+\nolinkurl{thm:bell-poly-partitions}.
+
+\paragraph{Five coefficient-calculus modules.}
+The shared rescaling theorem is the denominator-free identity
+\[
+ \frac{\Differential}{\Differential X}f(cX)=c f'(cX)
+\]
+over every commutative semiring.  Over a commutative rational algebra it gives
+\((\exp(cX))'=c\exp(cX)\), \(\exp(0X)=1\), and
+\(\exp((c+1)X)=\exp(cX)\exp X\).  These are the four public statements of
+\path{ExponentialRescaling.lean}; the final three retain their old public
+names after moving out of \path{NorlundDiagonal.lean}.  Indeed, the coefficient
+of \(X^n\) on the two sides of the rescaling chain rule is respectively
+\((n+1)c^{n+1}f_{n+1}\) and
+\(c\,c^n(n+1)f_{n+1}\), so associativity and commutativity suffice and no
+division is used.  The three exponential cases then follow from the formal
+exponential derivative, zero rescaling, and the exponential product law.
+
+For a commutative ring, the Abel polynomials are
+\[
+ A_0(a,x)=1,\qquad A_{n+1}(a,x)=x\bigl(x-(n+1)a\bigr)^n.
+\]
+Over a commutative rational algebra, \path{AbelPolynomialSeries.lean}
+constructs \(T=X\exp(-aT)\), proves that every series satisfying that equation
+has constant coefficient zero and linear coefficient one, and proves for
+every such solution
+\[
+ \exp(xT)=\sum_{n\geq0}A_n(a,x)\frac{X^n}{n!},\qquad
+ A_n(a,x+y)=\sum_{k=0}^n\binom nk A_k(a,x)A_{n-k}(a,y).
+\]
+The proof applies the unconditional Lagrange construction to the inverse pair
+\(\exp(-aX),\exp(aX)\), then applies Lagrange--B\"urmann to \(\exp(xX)\);
+multiplication of the two exponential generating functions gives the binomial
+identity, including \(n=0\).
+
+Writing \(B=X/(\exp X-1)\) for the normalized formal Bernoulli kernel,
+\path{BernoulliFormalLog.lean} proves
+\[
+ \log B=-\frac X2-\sum_{n\geq2}\frac{\beta_n}{n}\frac{X^n}{n!}.
+\]
+The all-index coefficient theorem uses the positive convention
+\(\beta'_1=1/2\), while the ordinary Bernoulli convention is used only from
+degree two onward.  The proof first shows that \(B\) and the constructed
+\((\exp X-1)/X\) series multiply to one and then applies the formal logarithm
+product law.  This is a formal identity over \(\RationalNumbers\), with no
+analytic logarithm or convergence assertion.
+
+For \(p\in\NaturalNumbers\), \path{RaneyNumbers.lean} constructs one canonical
+series \(T_p=1+G_p\) satisfying \(T_p=1+XT_p^p\), and, for \(r\geq1\), proves
+\[
+ [X^n]T_p^r=\frac{r}{pn+r}\binom{pn+r}{n}\qquad(n\geq0),
+\]
+together with the division-free positive-degree form
+\(n[X^n]T_p^r=r\binom{pn+r-1}{n-1}\).  Lagrange--B\"urmann applied to
+\((1+X)^r\) proves the formula, and the theorem handles \(n=0\) separately.
+The module proves this for its constructed \lean{Fabius.raneyT}; it does not
+prove uniqueness or transport the formula to an arbitrary solution of the
+functional equation.
+
+Finally, \path{AssociahedronFaceNumbers.lean} defines the shifted arithmetic
+array
+\[
+ D(a,d)=\binom ad\binom{a+d+2}{d+1}
+       -\binom{a+1}{d+1}\binom{a+d+2}{d}\in\IntegerNumbers
+\]
+and proves
+\[
+ (d+1)D(a,d)=\binom{a+d+2}{d}\binom ad,
+\]
+including divisibility, the exact natural-number quotient, nonnegativity,
+support, and the \(d=0,1,a\) boundary values.  It defines the putative
+associahedral face entries by \(f_j=D(N-3,N-3-j)\) and the putative
+\(h\)-entries by the corresponding Narayana row, proving their closed forms,
+symmetry, endpoints, Catalan sum, and \(h(1)=f_0\).  These are exact arithmetic
+array identities.  No polygon dissections or face lattice is constructed,
+and the bijection and face-to-\(h\) transform are not formalized; the definitions
+therefore must not be read as proofs of that missing combinatorial content.
+For the arithmetic proof, the two absorption identities
+\[
+ (d+1)\binom{a+1}{d+1}=(a+1)\binom ad,
+ \qquad
+ (d+1)\binom{a+d+2}{d+1}=(a+2)\binom{a+d+2}{d}
+\]
+turn \((d+1)D(a,d)\) into
+\(\binom ad\binom{a+d+2}{d}\bigl((a+2)-(a+1)\bigr)\), proving the cleared
+formula.  The positive factor \(d+1\) then gives nonnegativity and exact
+division, while binomial vanishing gives the support.  The cases \(d=0,1\)
+reduce to \(\binom m0=1\) and \(\binom m1=m\); the case \(d=a\) is the
+standard cleared Catalan identity
+\((a+1)C_{a+1}=\binom{2a+2}{a}\).  The face-array formulas are now only a
+reindexing with \(N=j+e+3\).  Finally the definition of the \(h\)-array and
+the already proved Narayana closed form, symmetry, endpoint values, and row
+sum give the remaining displayed arithmetic identities and
+\(h(1)=f_0=C_{N-2}\).
+
+After the ordinary-composition promotion, the coefficient-calculus
+concordance has 204 rows: 62 Lean, 36 Partial, and 106 None.  In particular,
+the Abel row is Exact; the Raney and three associahedral rows are Partial at
+the scope boundaries just stated.
 
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.19\textwidth}
                          >{\raggedright\arraybackslash}p{0.39\textwidth}
@@ -14706,6 +14880,112 @@ claims.  The coefficient-calculus concordance now has 203 rows: 59 Lean,
 Module and size & Exhaustive public surface & Result boundary \\
 \midrule
 \endhead
+\path{OrdinaryBellComposition.lean} (bounded-congruence extension, +1) and
+\path{OrdinaryBellMultinomial.lean} (1+3) &
+\lean{Fabius.ordPartialBell_congr_of_le};
+\lean{Fabius.ordinaryMultiplicityProfiles},
+\lean{Fabius.mem_ordinaryMultiplicityProfiles},
+\lean{Fabius.ordPartialBell_eq_sum_multinomial},
+\lean{Fabius.coeff_subst_eq_sum_multinomial} &
+Theorem~\ref{thm:formal-ordinary-composition-multinomial} makes
+\nolinkurl{thm:ordinary-composition} \textbf{Exact}, including its degree-zero
+clause.  The Bell expansion is semiring-valued; the substitution wrapper is
+over a commutative ring.  No labelled-set-partition theorem is claimed. \\
+\path{ExponentialRescaling.lean} (0+4; three names relocated) &
+\lean{Fabius.derivative_rescale},
+\lean{Fabius.derivative_rescale_exp},
+\lean{Fabius.rescale_zero_exp},
+\lean{Fabius.rescale_exp_add_one} &
+Formal scalar rescaling commutes with differentiation over a commutative
+semiring.  The exponential specializations require a commutative rational
+algebra, giving the exact formal content of
+\nolinkurl{lem:merged-formal-rescaling}.  The last three declarations moved here from
+\path{NorlundDiagonal.lean}, so their relocation does not increase the global
+declaration count. \\
+\path{AbelPolynomialSeries.lean} (2+9) &
+\lean{Fabius.abelPolynomial},
+\lean{Fabius.abelPolynomial_zero},
+\lean{Fabius.abelPolynomial_succ},
+\lean{Fabius.abelPolynomial_succ_eval},
+\lean{Fabius.abelSeries},
+\lean{Fabius.abelSeries_eq},
+\lean{Fabius.hasSubst_abelSeries},
+\lean{Fabius.abel_eq_zero_and_one},
+\lean{Fabius.coeff_exp_subst_of_abel_eq},
+\lean{Fabius.exp_subst_eq_egfA_abelPolynomial},
+\lean{Fabius.abelPolynomial_eval_add} &
+The polynomial formulas hold over every commutative ring.  Over a commutative
+rational algebra, the EGF coefficient theorem applies to every solution of
+\(T=X\exp(-aT)\), and the binomial identity includes index zero; hence
+\nolinkurl{prop:merged-abel} is \textbf{Exact}. \\
+\path{BernoulliFormalLog.lean} (0+5) &
+\lean{Fabius.bernoulliPowerSeries_mul_massSeries_expm1Div},
+\lean{Fabius.logOf_bernoulliPowerSeries},
+\lean{Fabius.coeff_logOf_bernoulliPowerSeries},
+\lean{Fabius.coeff_one_logOf_bernoulliPowerSeries},
+\lean{Fabius.coeff_logOf_bernoulliPowerSeries_of_two_le} &
+The normalized formal Bernoulli kernel and its constructed reciprocal multiply
+to one, and its formal logarithm has the displayed all-index coefficients over
+\(\RationalNumbers\).  Degree one is separated because the two Bernoulli
+conventions differ there.  This closes
+\nolinkurl{eq:merged-log-bernoulli-kernel}, not the still-missing Bell-
+polynomial construction around it; no analytic logarithm is asserted. \\
+\path{RaneyNumbers.lean} (4+12) &
+\lean{Fabius.coeff_one_add_X_pow},
+\lean{Fabius.raneyPhi},
+\lean{Fabius.constantCoeff_raneyPhi},
+\lean{Fabius.raneyPsi},
+\lean{Fabius.raneyPhi_mul_raneyPsi},
+\lean{Fabius.raneyG},
+\lean{Fabius.raneyT},
+\lean{Fabius.raneyG_def},
+\lean{Fabius.hasSubst_raneyG},
+\lean{Fabius.constantCoeff_raneyG},
+\lean{Fabius.subst_one_add_X_pow_raneyG},
+\lean{Fabius.raneyT_eq},
+\lean{Fabius.constantCoeff_raneyT},
+\lean{Fabius.natCast_mul_coeff_raneyT_pow},
+\lean{Fabius.coeff_raneyT_pow},
+\lean{Fabius.coeff_raneyT} &
+The divided and denominator-cleared Raney formulas hold over
+\(\RationalNumbers\) for the canonically constructed \lean{Fabius.raneyT},
+including \(n=0\) and even \(p=0\).  There is no uniqueness theorem carrying
+the result to every solution of \(T=1+XT^p\), so
+\nolinkurl{thm:merged-raney} is \textbf{Partial}. \\
+\path{AssociahedronFaceNumbers.lean} (4+23) &
+\lean{Fabius.dissectionNumber},
+\lean{Fabius.dissectionNumber_mul},
+\lean{Fabius.succ_dvd_choose_mul_choose},
+\lean{Fabius.dissectionNumber_eq_div},
+\lean{Fabius.dissectionNumber_nonneg},
+\lean{Fabius.dissectionNumber_eq_zero_of_lt},
+\lean{Fabius.dissectionNumber_mul_of_three_le},
+\lean{Fabius.succ_dvd_choose_mul_choose_of_three_le},
+\lean{Fabius.dissectionNumber_zero_right},
+\lean{Fabius.dissectionNumber_one},
+\lean{Fabius.dissectionNumber_self};
+\lean{Fabius.associahedronFaceNumber},
+\lean{Fabius.associahedronFaceNumber_eq},
+\lean{Fabius.associahedronFaceNumber_mul},
+\lean{Fabius.associahedronFaceNumber_zero},
+\lean{Fabius.two_mul_associahedronFaceNumber_facet},
+\lean{Fabius.associahedronFaceNumber_top};
+\lean{Fabius.associahedronH},
+\lean{Fabius.associahedronH_eq},
+\lean{Fabius.associahedronH_mul},
+\lean{Fabius.associahedronH_symm},
+\lean{Fabius.associahedronH_zero},
+\lean{Fabius.associahedronH_top},
+\lean{Fabius.sum_associahedronH},
+\lean{Fabius.associahedronHPoly},
+\lean{Fabius.associahedronHPoly_one},
+\lean{Fabius.associahedronHPoly_one_eq_faceNumber_zero} &
+These declarations prove the determinant, quotient, divisibility, support,
+face-array, and Narayana-row arithmetic.  The arrays are definitions: no
+dissection type, associahedron face lattice, bijection, or face-to-\(h\)
+transform is formalized, so \nolinkurl{thm:merged-kirkman-cayley},
+\nolinkurl{cor:merged-associahedron-f}, and
+\nolinkurl{thm:merged-associahedron-h} are \textbf{Partial}. \\
 \path{UnitSeriesPowerRecurrence.lean} (0+3) &
 \lean{Fabius.coeff_recurrence_of_mul_derivative_eq},
 \lean{Fabius.mul_derivative_fallingSeries_subst_sub_one},

@@ -29,7 +29,8 @@ The canonical frontier artifacts are:
 > source predates the later q-Pochhammer overlay and expanded ledger, so it is
 > a historical render and must not be cited as displaying the final source
 > union, including either series/transseries overlay, the historical
-> 952/11,884 and 967/12,001 checkpoints, or the live 970/12,051 census.
+> 952/11,884, 967/12,001, and 970/12,051 checkpoints, or the live
+> 976/12,116 census.
 
 > **Historical publication receipt (2026-09-03).** The most recent pre-`9135bd7e`
 > source is the 17,954-line, 813,297-byte TeX file with SHA-256
@@ -106,12 +107,14 @@ unconditional public
 `complexQPochhammerInf_eq_qPochhammerInfIn` bridge.  A later incoming-branch
 audit reached the now-historical 960/11,966 checkpoint.  The semantic union
 then reached the historical 967/12,001 checkpoint, followed by the historical
-969/12,048 checkpoint and the live 970/12,051/0 census described below.  The
+969/12,048 and 970/12,051 checkpoints and the live 976/12,116/0 census
+described below.  The
 q-Pochhammer ownership remains
 `RvachevPochhammerFactorization` 1+10, `QPochhammerEntire` 0+5, and
 `QPochhammerInfinite` 1+29;
 `complexQPochhammerInf_eq_qPochhammerInfIn` remains the unconditional public
-definitional bridge to the generic symbol.  Fixed-nome normal convergence,
+definitional bridge to the generic symbol.  The later checkpoints culminate in
+the live 976/12,116/0 census recorded below.  Fixed-nome normal convergence,
 product identifiability, all finite/infinite q-calculus tranches, the
 root-of-unity and q-Catalan layers, finite Newton interpolation, q-beta
 integration, integer and complex Gaussian upper indices,
@@ -321,8 +324,13 @@ and the real-analytic Wright omega theorem then give the historical
 explicit public declarations, giving the historical 967/12,001 checkpoint.
 The next two-module tranche adds 47 declarations, giving the historical
 969/12,048 checkpoint; `UnitSeriesPowerRecurrence.lean` then adds one module
-and three theorems. The live census is 970/12,051/0, with zero missing module
-headers and zero missing declaration comments.
+and three theorems, giving the historical 970/12,051 checkpoint. Five incoming
+coefficient-calculus modules expose 63 declarations; three shared exponential
+helpers moved out of `NorlundDiagonal.lean`, so the net increase is 60 and the
+next historical checkpoint is 975/12,111. `OrdinaryBellMultinomial.lean` and
+the bounded-congruence extension of `OrdinaryBellComposition.lean` add one
+module and five declarations. The live census is 976/12,116/0, with zero
+missing module headers and zero missing declaration comments.
 
 The existing `FabiusFunction.ProbabilityLaplaceMoments` module then adds
 exactly two public theorems:
@@ -351,7 +359,7 @@ does not prove the larger support/smoothness/parity/Fourier--Bessel theorem
 `thm:leg-Lambda` or the matrix-projector corollary. It gives the historical
 925/11,619 census; the historical reciprocity census is 931/11,685 and the
 historical dyadic/finite-prefix census is 933/11,695. The current live census
-is 970/12,051, as recorded above, with zero missing module headers and zero
+is 976/12,116, as recorded above, with zero missing module headers and zero
 missing declaration comments.
 
 ### Series/transseries Lean overlays
@@ -367,8 +375,10 @@ Wright omega theorem add three declarations, giving the historical
 explicit public declarations, giving the historical 967/12,001 checkpoint.
 The next two-module tranche adds 47 declarations and gives the historical
 969/12,048 checkpoint; the final zero-definition/three-theorem power-
-recurrence leaf gives the live 970/12,051/0
-modules/declarations/missing-comments census. The retained PDFs predate these
+recurrence leaf gives the historical 970/12,051 checkpoint. The five-module
+incoming tranche gives 975/12,111 after its three-theorem relocation, and the
+ordinary-multinomial module plus bounded congruence give the live
+976/12,116/0 modules/declarations/missing-comments census. The retained PDFs predate these
 source-only overlays and claim no render parity.
 
 - `UnitSeriesPowerRecurrence.lean` is 0+3:
@@ -381,8 +391,61 @@ source-only overlays and claim no render parity.
   formal falling-factorial power at `F - 1` when `F(0)=1` over a
   commutative rational algebra. Thus the power clause of
   `alg:merged-exp-log-power` is **Exact**; no analytic branch is asserted.
-  The coefficient-calculus concordance is now 203 rows: 59 Lean, 33 Partial,
-  and 111 None.
+  At that historical checkpoint the coefficient-calculus concordance had 203
+  rows: 59 Lean, 33 Partial, and 111 None.
+
+- `OrdinaryBellComposition.lean` adds the reusable
+  `Fabius.ordPartialBell_congr_of_le`, and
+  `OrdinaryBellMultinomial.lean` is 1+3:
+  `Fabius.ordinaryMultiplicityProfiles`,
+  `Fabius.mem_ordinaryMultiplicityProfiles`,
+  `Fabius.ordPartialBell_eq_sum_multinomial`, and
+  `Fabius.coeff_subst_eq_sum_multinomial`. A profile on `Fin n` records the
+  multiplicity of each positive part size; its two constraints are total part
+  count `k` and weighted sum `n`, and its coefficient is `Nat.multinomial`.
+  The composition theorem includes `n = 0`, where the unique empty profile
+  returns `coeff 0 g`; for positive `n` its `k = 0` term is empty. Thus
+  `thm:ordinary-composition` is **Exact** over the stated formal-series scope.
+  This does not prove the separate labelled-set-partition interpretation in
+  `thm:bell-poly-partitions`.
+
+- The five-module coefficient-calculus tranche is crosswalked as follows.
+  `ExponentialRescaling.lean` is 0+4: `Fabius.derivative_rescale` is the
+  semiring chain rule for scalar rescaling, while
+  `Fabius.derivative_rescale_exp`, `Fabius.rescale_zero_exp`, and
+  `Fabius.rescale_exp_add_one` are rational-algebra exponential
+  specializations relocated from `NorlundDiagonal.lean`.
+  `AbelPolynomialSeries.lean` is 2+9: `Fabius.abelPolynomial` and
+  `Fabius.abelSeries` are accompanied by the zero/successor/evaluation,
+  functional-equation, substitution, any-solution coefficient/EGF, and
+  binomial-addition theorems through `Fabius.abelPolynomial_eval_add`;
+  `prop:merged-abel` is **Exact** for every solution of `T = X exp(-aT)` over a
+  commutative rational algebra, with the polynomials defined over any
+  commutative ring. `BernoulliFormalLog.lean` is 0+5, from
+  `Fabius.bernoulliPowerSeries_mul_massSeries_expm1Div` through
+  `Fabius.coeff_logOf_bernoulliPowerSeries_of_two_le`; it proves the formal
+  logarithm of the Bernoulli kernel over the rationals and separates degree
+  one because of the two Bernoulli conventions. No analytic logarithm is
+  asserted.
+
+- `RaneyNumbers.lean` is 4+12. It constructs `Fabius.raneyPhi`,
+  `Fabius.raneyPsi`, `Fabius.raneyG`, and `Fabius.raneyT`; the public support
+  surface proves the inverse, substitution, constant terms, and functional
+  equation, while `Fabius.natCast_mul_coeff_raneyT_pow`,
+  `Fabius.coeff_raneyT_pow`, and `Fabius.coeff_raneyT` give the cleared,
+  divided, and Fuss--Catalan coefficient formulas, including degree zero.
+  `thm:merged-raney` remains bounded to this canonical construction: no
+  uniqueness theorem transports it to every series satisfying the equation.
+  `AssociahedronFaceNumbers.lean` is 4+23. Its
+  `Fabius.dissectionNumber*`, `Fabius.associahedronFaceNumber*`, and
+  `Fabius.associahedronH*` families prove the determinant, exact quotient,
+  divisibility, support, boundary values, face-array formula, Narayana-row
+  symmetry, and Catalan sum. The face and `h` arrays are definitions; polygon
+  dissections, a face lattice, the bijection, and the face-to-`h` transform
+  are not formalized, so the three associahedral manuscript rows retain those
+  Partial boundaries. After the ordinary-composition and Abel promotions and
+  the bounded incoming rows, the current coefficient-calculus concordance has
+  204 rows: 62 Lean, 36 Partial, and 106 None.
 
 - The eleven-declaration weighted-translation extension of
   `AppellSequence.lean` consists of `Bell.binomialConv_unitSeq`,
@@ -721,7 +784,10 @@ theorem give the historical 952/11,884 checkpoint. The subsequently merged
 15-module tranche adds 117 public declarations and gives the historical
 967/12,001 union. The next two modules and 47 declarations give the historical
 969/12,048 checkpoint; `UnitSeriesPowerRecurrence.lean` adds one module and
-three theorems, giving the live 970/12,051 union with zero documentation gaps.
+three theorems, giving the historical 970/12,051 union. The next five modules
+add 60 declarations net, and the ordinary-multinomial leaf and bounded
+congruence add one module and five declarations, giving the live 976/12,116
+union with zero documentation gaps.
 
 `FabiusFunction.RvachevLaurentLeading` has one definition and six theorems.
 Its manuscript-normalized punctured-neighborhood limit, together with the

@@ -38,6 +38,14 @@ if '\\newcommand{\\lean}' not in s:
 # ---------------------------------------------------------------- statuses
 # label -> (status, "declarations (module)")
 STATUS = {
+ 'lem:merged-formal-rescaling': ('Lean',
+   r"\cref{eq:merged-formal-rescaling-derivative} is "
+   r"\lean{Fabius.derivative_rescale} over every commutative semiring; "
+   r"\lean{Fabius.derivative_rescale_exp}, \lean{Fabius.rescale_zero_exp}, and "
+   r"\lean{Fabius.rescale_exp_add_one} give the exponential specializations "
+   r"over every commutative $\RationalNumbers$-algebra "
+   r"(\lean{ExponentialRescaling}). The general product law is Mathlib's "
+   r"\lean{PowerSeries.exp_mul_exp_eq_exp_add}."),
  'thm:first-cycle': ('partial',
    r"recurrence and boundary values are Mathlib's \lean{Nat.stirlingFirst_succ_succ}, "
    r"\lean{Nat.stirlingFirst_succ_zero}, \lean{Nat.stirlingFirst_eq_zero_of_lt}; the "
@@ -243,16 +251,60 @@ STATUS = {
    r"commutative ring (cancelling $x$ via \lean{Fabius.X_mul_cancel}) and "
    r"\cref{eq:stirling-n-to-n} is \lean{Fabius.pow_self_eq_sum_stirlingSecond_mul_descFactorial} "
    r"(\lean{StirlingShiftedEvaluations})"),
- 'thm:ordinary-composition': ('partial',
-   r"\cref{eq:ordinary-composition-bell} is \lean{Fabius.coeff_subst_eq_sum_ordPartialBell} "
-   r"(\lean{OrdinaryBellComposition}) over any commutative ring, with the ordinary Bell "
-   r"polynomials \lean{Fabius.ordPartialBell} defined by the composition recurrence "
-   r"$\OrdinaryPartialBellPolynomial n{k+1}=\sum_{i\ge1}b_i\OrdinaryPartialBellPolynomial{n-i}{k}$ "
-   r"(so \cref{eq:ordinary-composition-compositions} is the definition unrolled) and "
-   r"$[x^n]G^k=\OrdinaryPartialBellPolynomial nk(b)$ as \lean{Fabius.coeff_pow_eq_ordPartialBell}; "
-   r"the reciprocal formula \cref{eq:reciprocal-ordinary-bell} is "
-   r"\lean{Fabius.coeff_reciprocalSeries}; the multinomial form "
-   r"\cref{eq:ordinary-composition-multiplicities} is not formalized"),
+ 'thm:ordinary-composition': ('Lean',
+   r"\lean{Fabius.ordinaryMultiplicityProfiles} with "
+   r"\lean{Fabius.mem_ordinaryMultiplicityProfiles} encodes the part-count and total-weight "
+   r"constraints.  \cref{eq:ordinary-composition-multiplicities} is "
+   r"\lean{Fabius.ordPartialBell_eq_sum_multinomial} (\lean{OrdinaryBellMultinomial}) over "
+   r"every commutative semiring, using the finite-degree locality theorem "
+   r"\lean{Fabius.ordPartialBell_congr_of_le}; "
+   r"\cref{eq:ordinary-composition-compositions,eq:ordinary-composition-bell} are "
+   r"\lean{Fabius.ordPartialBell}, \lean{Fabius.coeff_pow_eq_ordPartialBell}, and "
+   r"\lean{Fabius.coeff_subst_eq_sum_ordPartialBell} (\lean{OrdinaryBellComposition}).  "
+   r"The all-index commutative-ring theorem \lean{Fabius.coeff_subst_eq_sum_multinomial} "
+   r"combines these forms; at $n=0$ its unique empty profile gives $c_0=a_0$.  "
+   r"The reciprocal specialization is \lean{Fabius.coeff_reciprocalSeries}"),
+ 'prop:merged-abel': ('Lean',
+   r"\lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_zero}, "
+   r"\lean{Fabius.abelPolynomial_succ}, and \lean{Fabius.abelPolynomial_succ_eval} "
+   r"give the polynomial formulas over every commutative ring.  Over every commutative "
+   r"$\RationalNumbers$-algebra, \lean{Fabius.abelSeries_eq} constructs a solution, "
+   r"\lean{Fabius.abel_eq_zero_and_one} gives the boundary coefficients for every solution, "
+   r"and \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} proves "
+   r"\cref{eq:merged-abel-egf} for every solution, including degree zero.  "
+   r"\cref{eq:merged-abel-binomial} is \lean{Fabius.abelPolynomial_eval_add}, also for "
+   r"every $n\geq0$ (\lean{AbelPolynomialSeries})"),
+ 'thm:merged-kirkman-cayley': ('partial',
+   r"The arithmetic formula is formalized in \lean{AssociahedronFaceNumbers}: "
+   r"\lean{Fabius.dissectionNumber_mul_of_three_le} is the denominator-free manuscript "
+   r"formula, with integrality and the literal quotient supplied by "
+   r"\lean{Fabius.succ_dvd_choose_mul_choose_of_three_le} and "
+   r"\lean{Fabius.dissectionNumber_eq_div}.  The quantity "
+   r"\lean{Fabius.dissectionNumber} is defined arithmetically; the polygon-dissection "
+   r"type, its cardinality theorem, and a cycle-lemma bijection are not formalized"),
+ 'cor:merged-associahedron-f': ('partial',
+   r"\lean{Fabius.associahedronFaceNumber_mul} gives the division-free face-array formula, "
+   r"and \lean{Fabius.associahedronFaceNumber_zero}, "
+   r"\lean{Fabius.two_mul_associahedronFaceNumber_facet}, and "
+   r"\lean{Fabius.associahedronFaceNumber_top} give the three boundary values "
+   r"(\lean{AssociahedronFaceNumbers}).  The array is defined from the dissection numbers; "
+   r"an associahedron face lattice and its noncrossing-diagonal correspondence are not "
+   r"formalized"),
+ 'thm:merged-associahedron-h': ('partial',
+   r"For the arithmetically defined Narayana row \lean{Fabius.associahedronH}, "
+   r"\lean{Fabius.associahedronH_mul} gives the closed form, "
+   r"\lean{Fabius.associahedronH_symm} gives palindromicity, and "
+   r"\lean{Fabius.sum_associahedronH}, \lean{Fabius.associahedronHPoly_one}, and "
+   r"\lean{Fabius.associahedronHPoly_one_eq_faceNumber_zero} give the Catalan sum and "
+   r"$h(1)=f_0$ (\lean{AssociahedronFaceNumbers}).  The geometric $h$-polynomial, face "
+   r"transform, and alternating Vandermonde derivation are not formalized"),
+ 'thm:merged-raney': ('partial',
+   r"\lean{Fabius.raneyT_eq} constructs the canonical solution, and "
+   r"\lean{Fabius.coeff_raneyT_pow} proves \cref{eq:merged-raney} for it for every "
+   r"$p,n\geq0$ and $r\geq1$, including degree zero; "
+   r"\lean{Fabius.natCast_mul_coeff_raneyT_pow} is the positive-degree denominator-free "
+   r"form (\lean{RaneyNumbers}).  The manuscript quantifies over every solution $T$; "
+   r"uniqueness or transfer from an arbitrary solution to the constructed one is not formalized"),
  'thm:eulerian-binomial-recurrence': ('Lean',
    r"\lean{Fabius.eulerianPolynomial_binomial_recurrence} in $R[t]$ and "
    r"\lean{Fabius.eulerian_binomial_recurrence_series} in $R[[t]]$ (\lean{EulerianEGF}), for "
@@ -491,7 +543,13 @@ STATUS = {
    r"\lean{NorlundDiagonal}): \cref{eq:merged-norlund-polynomial-diagonal} is "
    r"\lean{Fabius.norlund_diagonal}, \cref{eq:merged-norlund-number-diagonal} is "
    r"\lean{Fabius.norlund_eval_zero_diagonal} and \cref{eq:merged-norlund-diagonal} is "
-   r"\lean{Fabius.coeff_bernoulliPowerSeries_pow_succ}; the Bell-polynomial construction "
+   r"\lean{Fabius.coeff_bernoulliPowerSeries_pow_succ}.  The internal logarithm formula "
+   r"\cref{eq:merged-log-bernoulli-kernel} is \lean{Fabius.logOf_bernoulliPowerSeries}, "
+   r"with its degree-zero, degree-one, and $n\ge2$ coefficient forms supplied by "
+   r"\lean{Fabius.coeff_logOf_bernoulliPowerSeries}, "
+   r"\lean{Fabius.coeff_one_logOf_bernoulliPowerSeries}, and "
+   r"\lean{Fabius.coeff_logOf_bernoulliPowerSeries_of_two_le} "
+   r"(\lean{BernoulliFormalLog}); the arbitrary-order Bell-polynomial construction "
    r"\cref{eq:merged-norlund-bell,eq:merged-norlund-bell-explicit} is not formalized."),
  'thm:merged-narayana': ('partial',
    r"Module \lean{NarayanaNumbers} defines $N(n,k)$ by the division-free determinant "

@@ -41,6 +41,7 @@ import FabiusFunction.ComplementaryBell
 import FabiusFunction.StirlingTriangularExplicit
 import FabiusFunction.BellShiftEGF
 import FabiusFunction.OrdinaryBellComposition
+import FabiusFunction.OrdinaryBellMultinomial
 import FabiusFunction.EulerianEGF
 import FabiusFunction.BernoulliAppell
 import FabiusFunction.StirlingShiftedEvaluations
@@ -78,9 +79,14 @@ import FabiusFunction.ExpSeriesRecurrence
 import FabiusFunction.StirlingSeriesCoefficients
 import FabiusFunction.IteratedLeibniz
 import FabiusFunction.NorlundDiagonal
+import FabiusFunction.ExponentialRescaling
+import FabiusFunction.BernoulliFormalLog
 import FabiusFunction.NarayanaNumbers
+import FabiusFunction.AssociahedronFaceNumbers
 import FabiusFunction.StirlingFirstModH
 import FabiusFunction.LagrangeInversion
+import FabiusFunction.RaneyNumbers
+import FabiusFunction.AbelPolynomialSeries
 import FabiusFunction.LambertWSeries
 import FabiusFunction.FussCatalanSeries
 import FabiusFunction.InverseBellCoefficients

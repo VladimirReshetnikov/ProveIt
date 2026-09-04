@@ -611,14 +611,15 @@ The final pass proved the sharp Bell bound the arrivals had only asserted,
 supplied Euler's limit and the Weierstrass product on which an existing
 polygamma proof silently depended, merged thirteen further donor-only results,
 repaired eight double-superscript errors that had made the source fail to
-compile at all, and completed the notation-catalogue migration. The filed PDF
-now renders the filed TeX. None of the manuscript proofs is claimed as Lean
+compile at all, and completed the notation-catalogue migration. The retained
+174-page PDF is an earlier render; the source has changed since that checkpoint,
+and rebuilding remains deferred at the user's request. None of the manuscript proofs is claimed as Lean
 verification; the in-document "Lean formalization register" states the
 formalization status per result.
 
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical, editorial consolidation complete:** *Combinatorial Coefficient Calculus* — current source 10,538 lines / 509,494 bytes / 703 labels, with 203 adjacent proofs and a 59 Lean / 33 partial / 111 none register. `UnitSeriesPowerRecurrence.lean` supplies the generic differential-equation recurrence and unit-series specialization that make `alg:merged-exp-log-power` Exact. The retained 174-page A4 PDF is an earlier render; PDF rebuilding is deferred by user instruction. | Six-source provenance and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip`; `SOURCE_INVENTORY.csv` records immutable Git locators for all six inputs, including the five retired donors. The mutable `SOURCE_CLOSURE.sha256` ledger is retired and no checksum ledger is required. |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical, editorial consolidation complete:** *Combinatorial Coefficient Calculus* — current source 10,764 lines / 524,170 bytes / 706 labels, with 204 adjacent proofs and a 62 Lean / 36 partial / 106 none register. `UnitSeriesPowerRecurrence.lean` supplies the generic differential-equation recurrence and unit-series specialization that make `alg:merged-exp-log-power` Exact. `OrdinaryBellMultinomial.lean` closes the ordinary-composition multiplicity formula, including degree zero, and `AbelPolynomialSeries.lean` closes the Abel row. The Raney and three associahedron rows now record their exact arithmetic scope and remaining formal obligations. The retained 174-page A4 PDF is an earlier render; PDF rebuilding is deferred by user instruction. | Six-source provenance and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip`; `SOURCE_INVENTORY.csv` records immutable Git locators for all six inputs, including the five retired donors. The mutable `SOURCE_CLOSURE.sha256` ledger is retired and no checksum ledger is required. |
 
 ## exponents-and-q-series — `exponents-and-q-series/`
 

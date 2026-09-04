@@ -77,7 +77,7 @@ environments are human-readable mathematics, not evidence of Lean verification.
 The section "Lean formalization register" states, per result, what is formalized
 and what is not; it is maintained separately from this consolidation.
 
-## Weighted-transform checkpoint (2026-09-04)
+## Formalization checkpoints (2026-09-04)
 
 The `AppellSequence` extension has passed direct, sequential Lean elaboration:
 eleven public lemmas provide weighted binomial translation,
@@ -86,14 +86,21 @@ complete human proofs and exact declaration crosswalks. Three private rational
 helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
 caller refactor has now passed its own direct Lean check as well.
 
-The weighted-transform checkpoint added two entries, giving 203 rows:
-58 marked Lean, 34 partial, and 111 without a Lean counterpart. The subsequent
-power-recurrence proof below promotes one partial row, so the live totals are
-**59 Lean, 33 partial, and 111 none**. Earlier classifications are inherited;
-these counts are a coverage register, not a fresh rebuild of every proof.
-Structural/provenance validation checks 203 adjacent proofs, 27 disposition
-records, and six original-source inventory rows. PDF rebuilding remains
-deferred at the user's request.
+All nine new or changed source leaves in this checkpoint have now passed direct,
+sequential Lean elaboration, including `OrdinaryBellComposition`,
+`OrdinaryBellMultinomial`, `AbelPolynomialSeries`, `BernoulliFormalLog`,
+`RaneyNumbers`, and `AssociahedronFaceNumbers`.
+
+The combined register contains 204 rows.  The retained formal-power result and
+the ordinary-composition multiplicity theorem below each promote one previously
+partial row; the Abel, Raney, and associahedron sources also replace five
+previously empty rows with one exact and four partial crosswalks.  The live
+totals are therefore **62 Lean, 36 partial, and 106 none**.
+Earlier classifications are inherited; these counts are a coverage register,
+not a fresh rebuild of every proof. Structural/provenance validation checks 204
+adjacent proofs, 27 disposition records, and six original-source inventory
+rows; the current source pass sees 706 labels and zero missing Lean declaration
+names. PDF rebuilding remains deferred at the user's request.
 
 The same-day upstream crosswalk connects the Bell normalization and unit-series
 coefficient formulas to `UnitSeriesBellCoefficients`; its labelled-set partition
@@ -115,3 +122,56 @@ then separates the constant-coefficient term of the Cauchy product. The
 canonical source includes that complete argument, including the constant
 term and inductive uniqueness of the resulting coefficient sequence. This
 is formal algebra; no analytic branch choice or convergence claim is made.
+
+## Additional formal-series checkpoints (2026-09-04)
+
+`ExponentialRescaling` has passed a focused build. Its four public lemmas give
+the rescaling chain rule over every commutative semiring and exponential
+specializations over every commutative rational algebra. They replace the
+rational-only helpers in `NorlundDiagonal` without changing their names. The
+manuscript supplies full coefficient proofs and an exact crosswalk.
+
+`AbelPolynomialSeries` constructs a solution over every commutative rational
+algebra, derives coefficients for every solution, and proves the full EGF and
+binomial identity including degree zero; this makes the complete Abel
+proposition Exact. The new
+`BernoulliFormalLog` source derives the rational formal logarithm of the
+Bernoulli kernel using the existing recurrence-to-logarithm bridge. Its
+coefficient formula separates degree zero and preserves the distinction between
+the two degree-one Bernoulli conventions. This exactly covers the internal
+logarithm calculation in the Nörlund proof, but it does not construct
+arbitrary-order Nörlund polynomials and therefore does not promote that row.
+
+`RaneyNumbers` proves the displayed coefficient formula, including degree zero,
+for its constructed Lagrange solution; the manuscript's arbitrary-solution
+scope still lacks a uniqueness or transfer theorem. `AssociahedronFaceNumbers`
+proves the dissection, face-array, and Narayana-row arithmetic, including
+integrality and boundary values, but deliberately defines those arrays without
+constructing dissections, a face lattice, or the face-to-`h` transform. Those
+four rows are therefore Partial rather than Exact.
+
+The human moment-cumulant proof now states its normalization and positive-degree
+boundaries explicitly, with formal logarithm identities separated from the
+still-open set-partition interpretation. The Nörlund proof now derives the
+logarithmic coefficients without dividing by the nonunit formal variable.
+Arbitrary-order Nörlund polynomials and their analytic convergence remain open
+formalization work.
+
+## Ordinary composition multiplicities (2026-09-04)
+
+`OrdinaryBellMultinomial` gives a finite profile set for the multiplicities of
+parts of sizes `1,…,n`, characterizes its two constraints, and proves the
+multinomial formula for ordinary partial Bell polynomials over every
+commutative semiring. Its composition corollary works over every commutative
+ring and includes degree zero: the unique empty profile gives `c₀=a₀`.
+Together with the upstream finite-degree locality theorem
+`ordPartialBell_congr_of_le`, these are five new public declarations. The live
+source census is therefore 976 modules and 12,116 explicit declarations.
+
+Direct sequential Lean checks passed for all nine new or changed modules in
+this merge, the three ordinary-composition callers, and the complete facade
+import check against the compiled dependency cache. The Raney proof was
+repaired before this check; its derivative, scalar-coefficient extraction,
+and nonzero-factor cancellation now elaborate. This is a focused validation,
+not a fresh build of the whole corpus. The canonical validator passes with
+zero errors or warnings, and crosswalk regeneration applies no pending remarks.
