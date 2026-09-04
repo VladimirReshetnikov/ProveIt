@@ -52,10 +52,14 @@ theorem principalLambertW_eq_wrightOmega_log {z : ℝ} (hz : 0 < z) :
 theorem wrightOmega_leftInverse (y : ℝ) (hy : 0 < y) :
     wrightOmega (y + Real.log y) = y := by
   have hpos : 0 < y * Real.exp y := mul_pos hy (Real.exp_pos y)
+  have hz : -Real.exp (-1) ≤ y * Real.exp y := by
+    have := Real.exp_pos (-1)
+    linarith
   have hexp : Real.exp (y + Real.log y) = y * Real.exp y := by
     rw [Real.exp_add, Real.exp_log hy]
     ring
-  rw [wrightOmega, hexp, principalLambertW_mul_exp_self hy.le]
+  rw [wrightOmega, hexp]
+  exact (principalLambertW_unique hz (by linarith) rfl).symm
 
 /-- `ω` is strictly increasing. -/
 theorem wrightOmega_strictMono : StrictMono wrightOmega := by
@@ -99,17 +103,21 @@ theorem wrightOmega_envelope {X : ℝ} (hX : 1 ≤ X) :
     X - Real.log X ≤ wrightOmega X ∧ wrightOmega X ≤ X :=
   ⟨sub_log_le_wrightOmega hX, wrightOmega_le_self hX⟩
 
-/-- `ω(X) → ∞` as `X → ∞`, immediate from the envelope. -/
+/-- A global linear lower bound, from `log y ≤ y - 1`: `(X + 1)/2 ≤ ω(X)` for
+every real `X`, with no hypothesis at all.  It is weaker than the envelope where
+the envelope applies, but it holds everywhere and is enough for divergence. -/
+theorem add_one_div_two_le_wrightOmega (X : ℝ) : (X + 1) / 2 ≤ wrightOmega X := by
+  have heq := wrightOmega_add_log X
+  have hlog : Real.log (wrightOmega X) ≤ wrightOmega X - 1 :=
+    Real.log_le_sub_one_of_pos (wrightOmega_pos X)
+  linarith
+
+/-- `ω(X) → ∞` as `X → ∞`. -/
 theorem tendsto_wrightOmega_atTop :
     Filter.Tendsto wrightOmega Filter.atTop Filter.atTop := by
-  have hsub : Filter.Tendsto (fun X : ℝ => X - Real.log X) Filter.atTop Filter.atTop :=
-    Filter.tendsto_atTop_add_left_of_le' _ 0
-      (by
-        filter_upwards [Filter.eventually_ge_atTop (1 : ℝ)] with X hX
-        exact neg_nonpos.mpr (Real.log_nonneg hX))
-      Filter.tendsto_id |>.congr (fun X => by ring)
-  refine Filter.tendsto_atTop_mono' _ ?_ hsub
-  filter_upwards [Filter.eventually_ge_atTop (1 : ℝ)] with X hX
-  exact sub_log_le_wrightOmega hX
+  have hlin : Filter.Tendsto (fun X : ℝ => (X + 1) / 2) Filter.atTop Filter.atTop :=
+    Filter.Tendsto.atTop_div_const two_pos
+      (Filter.tendsto_atTop_add_const_right _ 1 Filter.tendsto_id)
+  exact Filter.tendsto_atTop_mono add_one_div_two_le_wrightOmega hlin
 
 end Fabius
