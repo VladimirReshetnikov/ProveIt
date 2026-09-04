@@ -14,7 +14,8 @@ Both are Mathlib results once "well-based" is read as `Set.IsPWO`, so this
 module is a bridge rather than a proof: it states them in the volume's phrasing
 and pins the Mathlib names, which is what the crosswalk needs.  The volume notes
 that one of the two is stated in its sources without proof; here both are
-machine-checked.
+machine-checked. The two multiplicative Neumann statements also generate
+additive twins, `neumann_add_isPWO` and `neumann_finite_decompositions`.
 
 `Set.IsPWO s` says `s` is partially well-ordered by `≤`: every sequence in `s`
 has an increasing pair.  For a linear order that is the volume's "well-based"
@@ -25,6 +26,7 @@ hypothesis, since it is what closes under products.
 set_option autoImplicit false
 
 open Set
+open scoped Pointwise
 
 namespace Fabius
 
@@ -52,14 +54,16 @@ variable {α : Type*} [CommMonoid α] [PartialOrder α] [IsOrderedCancelMonoid �
 
 /-- **`q0:lem:neumann`, first half.**  The product of two well-based sets is
 well-based. -/
-@[to_additive "The additive form: `A + B` is well-based when `A` and `B` are."]
+@[to_additive neumann_add_isPWO
+  /-- The additive form: `A + B` is well-based when `A` and `B` are. -/]
 theorem neumann_isPWO {A B : Set α} (hA : A.IsPWO) (hB : B.IsPWO) : (A * B).IsPWO :=
   hA.mul hB
 
 /-- **`q0:lem:neumann`, second half.**  Every element of `A * B` has only
 finitely many factorizations with one factor in each set.  This is what makes
 the convolution defining a Hahn-series product a finite sum. -/
-@[to_additive "The additive form: finitely many decompositions `c = a + b`."]
+@[to_additive neumann_finite_decompositions
+  /-- The additive form: finitely many decompositions `c = a + b`. -/]
 theorem neumann_finite_factorizations {A B : Set α} (hA : A.IsPWO) (hB : B.IsPWO) (c : α) :
     (Set.mulAntidiagonal A B c).Finite :=
   Set.MulAntidiagonal.finite_of_isPWO hA hB c
