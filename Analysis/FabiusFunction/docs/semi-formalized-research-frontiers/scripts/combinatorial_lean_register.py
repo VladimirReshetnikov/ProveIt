@@ -54,6 +54,16 @@ STATUS = {
    r"\lean{Fabius.int_eq_of_modEq_of_two_mul_natAbs_lt_prod} give the difference, "
    r"sum, and symmetric half-product equality certificates for finite families "
    r"of signed, pairwise coprime integer moduli (\lean{IntegerCRTCertificate})."),
+ 'prop:lagrange-existence-arbitrary-ring': ('none',
+   r"New source \lean{LagrangeExistence}: \lean{Fabius.Lagrange.existsUnique_eq_X_mul_subst} "
+   r"and \lean{Fabius.Lagrange.C_constantCoeff_dvd_of_eq_X_mul_subst} prove existence, "
+   r"uniqueness, and constant-series divisibility over every commutative ring, without a "
+   r"unit hypothesis on the weight; compiler validation pending."),
+ 'cor:lagrange-nilpotent-constant': ('none',
+   r"New source \lean{LagrangeExistence}: "
+   r"\lean{Fabius.Lagrange.pow_eq_zero_of_constantCoeff_pow_eq_zero} and "
+   r"\lean{Fabius.Lagrange.eq_zero_of_eq_X_mul_subst_of_constantCoeff_zero}; "
+   r"compiler validation pending."),
  'lem:merged-formal-rescaling': ('Lean',
    r"\cref{eq:merged-formal-rescaling-derivative} is "
    r"\lean{Fabius.derivative_rescale} over every commutative semiring; "
@@ -68,18 +78,26 @@ STATUS = {
    r"defining expansions are \lean{Fabius.ascPochhammer_eq_sum_monomial_stirlingFirst} and "
    r"\lean{Fabius.descPochhammer_eq_sum_monomial_signedStirlingFirst} "
    r"(\lean{StirlingBasisChange}); the permutation count itself is not formalized"),
- 'thm:second-recurrence': ('partial',
-   r"\lean{Nat.stirlingSecond_succ_succ}, \lean{Nat.stirlingSecond_succ_zero}, "
+ 'thm:second-recurrence': ('Lean',
+   r"\lean{Nat.stirlingSecond_succ_succ}, \lean{Nat.stirlingSecond_zero}, \lean{Nat.stirlingSecond_succ_zero}, "
    r"\lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib); the set-partition count, "
    r"which Mathlib leaves as a docstring claim, is \lean{Fabius.card_setPartitions} "
    r"(\lean{BellSetPartitions})"),
- 'thm:merged-frechet-faa': ('Lean',
-   r"Mathlib's \lean{iteratedFDeriv_comp} (ContDiff/Comp.lean), unfolded with "
-   r"\lean{FormalMultilinearSeries.taylorComp} and "
-   r"\lean{FormalMultilinearSeries.compAlongOrderedFinpartition_apply}. "
-   r"The statement includes local $C^n$ hypotheses and explicitly uses "
-   r"\lean{OrderedFinpartition}'s increasing-maximum block order. "
-   r"No symmetry conversion is required; the separate partial-Bell regrouping remains open."),
+ 'prop:merged-abel': ('partial',
+   r"\lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_eval_add}, "
+   r"\lean{Fabius.abelSeries_eq}, \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} "
+   r"(\lean{AbelPolynomialSeries}) prove the addition and EGF identities over "
+   r"commutative $\RationalNumbers$-algebras; the EGF identity holds for every "
+   r"solution of $T=te^{-aT}$. The characteristic-free binomial addition identity "
+   r"stated here for every commutative ring still needs a formal transfer proof."),
+ 'thm:merged-frechet-faa': ('partial',
+   r"The focused Mathlib composition theorem is \lean{iteratedFDeriv_comp}, "
+   r"unfolded with \lean{FormalMultilinearSeries.taylorComp} and "
+   r"\lean{FormalMultilinearSeries.compAlongOrderedFinpartition_apply}; "
+   r"the source also records \lean{HasFTaylorSeriesUpToOn.comp} "
+   r"(FaaDiBruno.lean). The bridge to the stated formula for iterated "
+   r"Fr\'echet derivatives indexed by unordered set partitions, and its regrouping "
+   r"into partial-Bell form, have not been formalized."),
  'thm:eulerian-irwin-hall': ('partial',
    r"\lean{Fabius.cubeSliceCount_succ_sub} (\lean{EulerianPermutohedron}), the combinatorial "
    r"slab count; the Fubini volume step is not formal"),
@@ -356,7 +374,7 @@ STATUS = {
    r"\lean{Fabius.dissectionNumber_mul_of_three_le} is the denominator-free manuscript "
    r"formula, with integrality and the literal quotient supplied by "
    r"\lean{Fabius.succ_dvd_choose_mul_choose_of_three_le} and "
-   r"\lean{Fabius.dissectionNumber_eq_div}.  The quantity "
+   r"\lean{Fabius.dissectionNumber_eq_div}. The quantity "
    r"\lean{Fabius.dissectionNumber} is defined arithmetically; the polygon-dissection "
    r"type, its cardinality theorem, and a cycle-lemma bijection are not formalized"),
  'cor:merged-associahedron-f': ('partial',
@@ -364,7 +382,7 @@ STATUS = {
    r"and \lean{Fabius.associahedronFaceNumber_zero}, "
    r"\lean{Fabius.two_mul_associahedronFaceNumber_facet}, and "
    r"\lean{Fabius.associahedronFaceNumber_top} give the three boundary values "
-   r"(\lean{AssociahedronFaceNumbers}).  The array is defined from the dissection numbers; "
+   r"(\lean{AssociahedronFaceNumbers}). The array is defined from the dissection numbers; "
    r"an associahedron face lattice and its noncrossing-diagonal correspondence are not "
    r"formalized"),
  'thm:merged-associahedron-h': ('partial',
@@ -373,14 +391,14 @@ STATUS = {
    r"\lean{Fabius.associahedronH_symm} gives palindromicity, and "
    r"\lean{Fabius.sum_associahedronH}, \lean{Fabius.associahedronHPoly_one}, and "
    r"\lean{Fabius.associahedronHPoly_one_eq_faceNumber_zero} give the Catalan sum and "
-   r"$h(1)=f_0$ (\lean{AssociahedronFaceNumbers}).  The geometric $h$-polynomial, face "
+   r"$h(1)=f_0$ (\lean{AssociahedronFaceNumbers}). The geometric $h$-polynomial, face "
    r"transform, and alternating Vandermonde derivation are not formalized"),
  'thm:merged-raney': ('partial',
    r"\lean{Fabius.raneyT_eq} constructs the canonical solution, and "
    r"\lean{Fabius.coeff_raneyT_pow} proves \cref{eq:merged-raney} for it for every "
    r"$p,n\geq0$ and $r\geq1$, including degree zero; "
    r"\lean{Fabius.natCast_mul_coeff_raneyT_pow} is the positive-degree denominator-free "
-   r"form (\lean{RaneyNumbers}).  The manuscript quantifies over every solution $T$; "
+   r"form (\lean{RaneyNumbers}). The manuscript quantifies over every solution $T$; "
    r"uniqueness or transfer from an arbitrary solution to the constructed one is not formalized"),
  'thm:eulerian-binomial-recurrence': ('Lean',
    r"\lean{Fabius.eulerianPolynomial_binomial_recurrence} in $R[t]$ and "
@@ -495,8 +513,12 @@ STATUS = {
    r"\lean{Fabius.expRiordan_action}, \lean{Fabius.expRiordan_mul}, "
    r"\lean{Fabius.expRiordan_mul_inverse} (\lean{ExponentialRiordan}) prove the action, "
    r"product, and a conditional one-sided inverse law, assuming the inverse series and "
-   r"$g\,(h\circ f)=1$.  Construction of these inverse series from the theorem's unit "
-   r"hypotheses and the full two-sided inverse statement remain to be formalized.  "
+   r"$g\,(h\circ f)=1$.  New source \lean{ExponentialRiordanInverse} constructs the "
+   r"inverse prefactor \lean{Fabius.riordanInverseWeight}, proves the weight identities "
+   r"\lean{Fabius.riordanInverseWeight_mul_subst} and "
+   r"\lean{Fabius.mul_riordanInverseWeight_subst}, and proves both products as "
+   r"\lean{Fabius.expRiordan_mul_constructedInverse} and "
+   r"\lean{Fabius.expRiordan_constructedInverse_mul}; compiler validation is pending.  "
    r"The Stirling examples are \lean{Fabius.expRiordan_one_exp_sub_one} and "
    r"\lean{Fabius.expRiordan_one_log}."),
  'thm:merged-appell': ('Lean',

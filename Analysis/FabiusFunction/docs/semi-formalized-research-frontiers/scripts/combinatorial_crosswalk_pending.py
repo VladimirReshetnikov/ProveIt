@@ -274,7 +274,7 @@ by induction on the recurrence, reverses the exponents.  The explicit formula
 \lean{Fabius.eulerianNumber_one_right}.""")),
 
  # --- thm:merged-riordan ---
- (r"""$\overline f$ gives the inverse.
+ (r"""$g\circ\overline f$, this proves \cref{eq:merged-riordan-inverse}.
 \end{proof}
 """,
   remark(r"""% ed.: crosswalk added 2026-09-01.
@@ -289,9 +289,14 @@ inverse law \cref{eq:merged-riordan-inverse} is
 \lean{Fabius.expRiordan_mul_inverse} in the form: if $\overline f\circ f=t$
 and $g\cdot(h\circ f)=1$ then $[g,f]\,[h,\overline f]$ is the identity array
 \lean{Fabius.expRiordan_one_X}.  This is a conditional one-sided inverse
-statement.  Constructing the inverse series from the theorem's unit hypotheses
-and establishing the full two-sided inverse remain separate formal obligations;
-the register status is therefore \emph{partial}.  The Stirling examples are
+statement.  New source \lean{ExponentialRiordanInverse} constructs
+\lean{Fabius.riordanInverseWeight} from the unit hypotheses.  Its ring-level
+weight identities are \lean{Fabius.riordanInverseWeight_mul_subst} and
+\lean{Fabius.mul_riordanInverseWeight_subst}; the two array products are
+\lean{Fabius.expRiordan_mul_constructedInverse} and
+\lean{Fabius.expRiordan_constructedInverse_mul}.  These four new theorems
+await compiler validation, so the register remains \emph{partial}.
+The Stirling examples are
 \lean{Fabius.expRiordan_one_exp_sub_one} ($[1,\EulerE^t-1]$ has entries
 $\StirlingSecondKind nk$) and \lean{Fabius.expRiordan_one_log}
 ($[1,\log(1+t)]$ has entries $\SignedStirlingFirstKind{n}{k}$).""")),
