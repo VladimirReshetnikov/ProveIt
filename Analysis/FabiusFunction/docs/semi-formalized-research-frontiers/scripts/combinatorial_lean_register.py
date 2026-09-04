@@ -73,13 +73,6 @@ STATUS = {
    r"\lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib); the set-partition count, "
    r"which Mathlib leaves as a docstring claim, is \lean{Fabius.card_setPartitions} "
    r"(\lean{BellSetPartitions})"),
- 'prop:merged-abel': ('none',
-   r"\lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_eval_add}, "
-   r"\lean{Fabius.abelSeries_eq}, \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} "
-   r"(\lean{AbelPolynomialSeries}) state the EGF for every solution "
-   r"of $T=te^{-aT}$ over a commutative rational algebra, not only the constructed one. "
-   r"The polynomial definition needs only a commutative ring, but the current "
-   r"binomial-identity proof also assumes a rational algebra. Compiler validation is pending."),
  'thm:merged-frechet-faa': ('Lean',
    r"Mathlib's \lean{iteratedFDeriv_comp} (ContDiff/Comp.lean), unfolded with "
    r"\lean{FormalMultilinearSeries.taylorComp} and "
@@ -87,6 +80,19 @@ STATUS = {
    r"The statement includes local $C^n$ hypotheses and explicitly uses "
    r"\lean{OrderedFinpartition}'s increasing-maximum block order. "
    r"No symmetry conversion is required; the separate partial-Bell regrouping remains open."),
+ 'prop:merged-abel': ('Lean',
+   r"\lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_zero}, \lean{Fabius.abelPolynomial_succ}, "
+   r"\lean{Fabius.abelPolynomial_succ_eval} give the polynomial formulas over every commutative "
+   r"ring and \lean{Fabius.abelPolynomial_eval_add} the binomial identity; \lean{Fabius.abelSeries_eq} "
+   r"and \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} (\lean{AbelPolynomialSeries}) give the EGF "
+   r"identity for every solution of $T=te^{-aT}$, not only the constructed one"),
+ 'thm:bell-poly-partitions': ('Lean',
+   r"\lean{Fabius.partialBell_eq_sum_setPartitions} and "
+   r"\lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), over any "
+   r"commutative semiring of weights -- the weight of actual set partitions; the "
+   r"multiplicity-vector form is \lean{Fabius.coeff_exp_subst_eq_sum_weightedPartitions} "
+   r"(\lean{UnitSeriesBellCoefficients}); the per-type count \cref{cor:partition-type} is "
+   r"not yet covered"),
  'thm:eulerian-irwin-hall': ('partial',
    r"\lean{Fabius.cubeSliceCount_succ_sub} (\lean{EulerianPermutohedron}), the combinatorial "
    r"slab count; the Fubini volume step is not formal"),
@@ -125,11 +131,6 @@ STATUS = {
    r"equal-marks case \lean{Fabius.bell_complete_cycleWeightConst} and its instance "
    r"\lean{Fabius.card_perm_eq_bell_complete} (\lean{BellDeterminants}); the cycle-removal "
    r"bijection is not formal"),
- 'thm:bell-poly-partitions': ('Lean',
-   r"\lean{Fabius.partialBell_eq_sum_setPartitions} and "
-   r"\lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), "
-   r"over any commutative semiring of weights; the per-type count "
-   r"\cref{cor:partition-type} is not covered"),
  'thm:second-explicit': ('Lean',
    r"\lean{Fabius.factorial_mul_stirlingSecond_eq_sum} (over $\mathbb Z$) and "
    r"\lean{Fabius.stirlingSecond_eq_sum_div_factorial} (over $\mathbb Q$) "
@@ -210,13 +211,6 @@ STATUS = {
    r"\lean{Fabius.partialBell_succ_zero}, \lean{Fabius.partialBell_eq_zero_of_lt}; the upper "
    r"variable-support cutoff stated with \cref{eq:partial-bell-definition} is "
    r"\lean{Fabius.partialBell_congr_of_eq_of_le}, over every commutative semiring"),
- 'thm:bell-poly-partitions': ('partial',
-   r"\lean{Fabius.coeff_exp_subst_eq_sum_weightedPartitions} "
-   r"(\lean{UnitSeriesBellCoefficients}) identifies a formal exponential coefficient with "
-   r"the finite multiplicity-vector sum indexed by \lean{Fabius.weightedPartitions}; together "
-   r"with \lean{Fabius.coeff_exp_subst_eq_completeBell}, this formalizes the complete weighted "
-   r"multiplicity formula.  Labelled set partitions and the exact-$k$ partial interpretation "
-   r"are not formalized"),
  'thm:bell-poly-egf': ('Lean',
    r"all five identities, as formal power series over any commutative $\mathbb Q$-algebra.  "
    r"The first is \lean{Fabius.bellWeightSeries_pow} and the third "
@@ -362,16 +356,6 @@ STATUS = {
    r"The all-index commutative-ring theorem \lean{Fabius.coeff_subst_eq_sum_multinomial} "
    r"combines these forms; at $n=0$ its unique empty profile gives $c_0=a_0$.  "
    r"The reciprocal specialization is \lean{Fabius.coeff_reciprocalSeries}"),
- 'prop:merged-abel': ('Lean',
-   r"\lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_zero}, "
-   r"\lean{Fabius.abelPolynomial_succ}, and \lean{Fabius.abelPolynomial_succ_eval} "
-   r"give the polynomial formulas over every commutative ring.  Over every commutative "
-   r"$\RationalNumbers$-algebra, \lean{Fabius.abelSeries_eq} constructs a solution, "
-   r"\lean{Fabius.abel_eq_zero_and_one} gives the boundary coefficients for every solution, "
-   r"and \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} proves "
-   r"\cref{eq:merged-abel-egf} for every solution, including degree zero.  "
-   r"\cref{eq:merged-abel-binomial} is \lean{Fabius.abelPolynomial_eval_add}, also for "
-   r"every $n\geq0$ (\lean{AbelPolynomialSeries})"),
  'thm:merged-kirkman-cayley': ('partial',
    r"The arithmetic formula is formalized in \lean{AssociahedronFaceNumbers}: "
    r"\lean{Fabius.dissectionNumber_mul_of_three_le} is the denominator-free manuscript "
