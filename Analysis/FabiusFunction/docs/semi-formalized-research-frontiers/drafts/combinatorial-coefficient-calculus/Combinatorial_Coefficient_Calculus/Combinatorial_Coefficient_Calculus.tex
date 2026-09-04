@@ -1064,25 +1064,72 @@ which is valid formally as well.
 
 \section{A rational ordinary generating function}
 \begin{theorem}[Fixed-$k$ ordinary generating function]\label{thm:second-ogf}
-For $k\ge0$,
+For every $k\ge0$, the following is an identity of formal power series (over
+$\IntegerNumbers$, and hence after coefficient mapping to any commutative
+ring):
 \begin{equation}\label{eq:second-ogf}
- \sum_{n\ge k}\StirlingSecondKind nk x^{n-k}
- =\prod_{j=1}^k\frac1{1-jx}
- =\frac1{x^{k+1}\FallingFactorial{1/x}{k+1}}.
+ \sum_{r\ge0}\StirlingSecondKind{k+r}{k}x^r
+ =\prod_{j=1}^k\left(\sum_{r\ge0}j^r x^r\right),
+ \qquad
+ \left(\prod_{j=1}^k(1-jx)\right)
+ \left(\sum_{r\ge0}\StirlingSecondKind{k+r}{k}x^r\right)=1.
 \end{equation}
-Consequently,
+Thus its associated rational function is $\prod_{j=1}^k(1-jx)^{-1}$.
+At a scalar value of $x$ for which every $1-jx$ is nonzero, and additionally
+$x\ne0$ when the falling-factorial spelling is used, one has
+\[
+ \prod_{j=1}^k\frac1{1-jx}
+ =\frac1{x^{k+1}\FallingFactorial{1/x}{k+1}}.
+\]
+Consequently, for every $n\ge k$,
 \begin{equation}\label{eq:second-complete-symmetric}
  \StirlingSecondKind nk=h_{n-k}(1,2,\ldots,k)
  =\sum_{c_1+\cdots+c_k=n-k}1^{c_1}2^{c_2}\cdots k^{c_k},
 \end{equation}
-where $h_r$ is a complete homogeneous symmetric polynomial.
+where $h_r$ is a complete homogeneous symmetric polynomial.  The case
+$n=k=0$ uses the usual empty-product and empty-exponent-vector conventions
+and gives $\StirlingSecondKind00=1$.  More generally, after applying the
+canonical map $\NaturalNumbers\to R$, the two identities in
+\cref{eq:second-complete-symmetric} remain valid in every commutative semiring
+$R$, with $1,2,\ldots,k$ and every monomial interpreted in $R$.
 \end{theorem}
 \begin{proof}
-Let $F_k(x)=\sum_{r\ge0}\StirlingSecondKind{k+r}{k}x^r$.  The recurrence
-\cref{eq:second-recurrence}, with $n=k+r-1$, gives
-$F_k(x)=(1-kx)^{-1}F_{k-1}(x)$ and $F_0=1$.  Iteration proves the product.
-Expanding each geometric factor independently proves the complete-homogeneous sum.
-The factorial form follows by direct factorization.
+Put
+\[
+ F_k(x)=\sum_{r\ge0}\StirlingSecondKind{k+r}{k}x^r,
+ \qquad P_k(x)=\prod_{j=1}^k(1-jx).
+\]
+The recurrence \cref{eq:second-recurrence}, with the constant term treated by
+the boundary values, gives $(1-kx)F_k=F_{k-1}$ and $F_0=1$.  Induction on $k$
+therefore gives $P_kF_k=1$ in $\IntegerNumbers[[x]]$.
+
+Now set
+\[
+ H_k(x)=\prod_{j=1}^k\left(\sum_{a\ge0}j^a x^a\right).
+\]
+Each geometric series is the formal inverse of $1-jx$, so $P_kH_k=1$.
+Inverses in a ring are unique: from $P_kF_k=1=P_kH_k$ one obtains
+$F_k=F_k(P_kH_k)=(F_kP_k)H_k=H_k$.  This proves the formal-series identity
+without evaluating a reciprocal at a scalar.
+
+For $n\ge k$, take the coefficient of degree $r=n-k$.  The coefficient of
+the finite product $H_k$ is obtained by choosing exponents
+$c_1,\ldots,c_k\ge0$ with sum $r$, and is therefore both
+$h_r(1,\ldots,k)$ and the displayed finite multiplicity sum.  This first
+gives an equality of natural numbers (use the injectivity of
+$\NaturalNumbers\to\IntegerNumbers$); the canonical natural-number
+homomorphism into any commutative semiring preserves the finite sums,
+products, powers, and complete-homogeneous evaluation, proving the stated
+semiring strengthening.  Finally, for
+$x\ne0$,
+\[
+ x^{k+1}\FallingFactorial{1/x}{k+1}
+ =x^{k+1}\prod_{j=0}^k(1/x-j)
+ =\prod_{j=0}^k(1-jx)=\prod_{j=1}^k(1-jx).
+\]
+If the factors $1-jx$ are nonzero, taking reciprocals gives the stated scalar
+rational identity.  For $k=0$ both products over $j=1,\ldots,k$ are empty,
+so the same argument yields $F_0=1$.
 \end{proof}
 
 \begin{remark}[Formal crosswalk]
@@ -1093,10 +1140,26 @@ $R$, the column series $\sum_{r\ge0}\StirlingSecondKind{k+r}{k}x^r$ times
 $\prod_{j=1}^k(1-jx)$ equals $1$, proved exactly as above from the column
 recurrence $(1-kx)F_k=F_{k-1}$ (\lean{Fabius.one_sub_mul_X_mul_stirlingColumnOGF_succ}).
 The expansion of each geometric factor is
-\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow}, which identifies the column
-series with $\prod_{j=1}^k\sum_{r\ge0}j^rx^r$; the complete-homogeneous
-coefficient formula \cref{eq:second-complete-symmetric} is the coefficient
-extraction of that product and is not stated separately.
+\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow}.  The compiled zero-definition/
+eight-theorem module \lean{StirlingCompleteHomogeneous} adds the six declarations
+\lean{Fabius.stirlingColumnOGF_eq_completeHomogeneousGeneratingSeriesOn},
+\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn},
+\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le},
+\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEval},
+\lean{Fabius.stirlingSecond_add_eq_eval_hsymm}, and
+\lean{Fabius.stirlingSecond_add_eq_sum_finsuppAntidiag}.  They implement the
+inverse-uniqueness proof, the $n=k+r$ and $n\ge k$ complete-homogeneous
+coefficient identities, the universal symmetric-polynomial evaluation, and
+the explicit finite multiplicity sum, including $k=0$ and $r=0$.
+
+Its two scalar-factorization declarations
+\lean{Fabius.pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul} and
+\lean{Fabius.prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv}
+have the boundary
+exactly the one stated above: the polynomial factorization requires $x\ne0$;
+the reciprocal identity additionally requires every factor $1-jx$ to be
+nonzero.  Together these declarations formalize every clause of the corrected
+theorem, so its register status is Lean.
 \end{remark}
 
 A useful rearrangement of the count of all maps $[n]\to[k]$ is
@@ -10308,7 +10371,7 @@ Result & Title & Status & Lean declarations (module) \\
 \Cref{thm:fixed-point-stirling-moments} & Moments of the number of fixed points & none &  \\
 \Cref{thm:lah-conv} & Conversion between rising and falling factorials & Lean & \lean{Fabius.ascPochhammer_eq_sum_lahNumber_mul_descPochhammer}, \lean{Fabius.descPochhammer_eq_sum_lahNumber_mul_ascPochhammer}, \lean{Fabius.sum_range_lahNumber_mul_lahNumber}, \lean{Fabius.lahNumber_eq_sum_stirlingFirst_mul_stirlingSecond} (\lean{LahNumbers}); the closed form of the definition is \lean{Fabius.lahNumber_succ_succ_mul_factorial} \\
 \Cref{thm:stirling-egfs} & Column generating functions & Lean & \lean{Fabius.exp_sub_one_pow}, \lean{Fabius.egf_stirlingSecond}, \lean{Fabius.negLogOneSub_pow}, \lean{Fabius.egf_stirlingFirst}, \lean{Fabius.log_pow} (\lean{StirlingGeneratingFunctions}), as formal power series over any commutative $\mathbb Q$-algebra.  \cref{eq:second-double-egf} is \lean{Fabius.exp_subst_smul_exp_sub_one} (\lean{BellHomogeneity}), which proves $\exp(y(\EulerE^z-1))=\sum_n\bigl(\sum_k\StirlingSecondKind nk y^k\bigr)z^n/n!$ for every scalar $y$ of the coefficient algebra; taking that algebra to be $\mathbb Q[y]$ and the scalar to be $y$ recovers the display, so the content is formalized even though no Lean statement writes $y$ as a formal variable \\
-\Cref{thm:second-ogf} & Fixed-$k$ ordinary generating function & partial & \lean{Fabius.prod_one_sub_mul_X_mul_stirlingColumnOGF} and \lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}): the column series $\sum_r\StirlingSecondKind{k+r}{k}x^r$ times $\prod_{j\le k}(1-jx)$ is $1$, and equals the product of the geometric series $\sum_r j^rx^r$, in $R[[x]]$ for every commutative ring $R$; \cref{eq:second-complete-symmetric}, which reads the coefficient off the product as a complete homogeneous symmetric polynomial, is displayed inside the theorem and is not formalized \\
+\Cref{thm:second-ogf} & Fixed-$k$ ordinary generating function & Lean & \lean{Fabius.prod_one_sub_mul_X_mul_stirlingColumnOGF} and \lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}) prove the formal inverse and finite geometric-product identities.  The compiled \lean{StirlingCompleteHomogeneous} declarations \lean{Fabius.stirlingColumnOGF_eq_completeHomogeneousGeneratingSeriesOn}, \lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn}, \lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le}, \lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEval}, \lean{Fabius.stirlingSecond_add_eq_eval_hsymm}, and \lean{Fabius.stirlingSecond_add_eq_sum_finsuppAntidiag} cover inverse uniqueness, the $n=k+r$ and $n\ge k$ complete-homogeneous identities over every commutative semiring, universal \lean{MvPolynomial.hsymm} evaluation, and the explicit multiplicity sum.  Its \lean{Fabius.pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul} and \lean{Fabius.prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv} cover the scalar falling-factorial factorization under $x\ne0$ and its reciprocal under nonvanishing of every $1-jx$. \\
 \Cref{thm:stirling-transform} & Stirling transform and its inverse & Lean & the inversion formula is \lean{Fabius.stirling_inversion}, \lean{Fabius.stirling_inversion_symm}, \lean{Fabius.stirling_inversion_iff} (\lean{StirlingBasisChange}), for sequences in any additive commutative group; the generating-function form is \lean{Fabius.egfA_subst_exp_sub_one} and \lean{Fabius.egfA_subst_log} (\lean{StirlingTransformEGF}): substituting $\EulerE^t-1$, respectively $\log(1+t)$, into an exponential generating function applies the second-kind, respectively signed first-kind, Stirling transform \\
 \Cref{thm:normal-order} & Stirling normal-ordering identities & partial & \lean{Fabius.iterate_X_mul_derivative} (\cref{eq:normal1}) and \lean{Fabius.xkDk_eq_sum_signedStirlingFirst} (\cref{eq:normal2}, by Stirling inversion) in \lean{StirlingNormalOrder}, as identities of operators applied to an arbitrary polynomial over any commutative ring; the falling-factorial form $\FallingFactorial{xD}{n}$ and the operator series \cref{eq:der-from-diff,eq:diff-from-der} are not formalized \\
 \Cref{thm:paired-sums} & First- and second-kind summations & Lean & \lean{StirlingSummations}: \cref{eq:first-two-sums} is \lean{Fabius.stirlingFirst_succ_succ_eq_sum_choose} (module \lean{StirlingBasisChange}) and \lean{Fabius.stirlingFirst_succ_succ_eq_sum_descFactorial}, \cref{eq:second-two-sums} is \lean{Fabius.stirlingSecond_succ_succ_eq_sum} (\lean{BellStirling}) and \lean{Fabius.stirlingSecond_succ_succ_eq_sum_pow}, the hockey sticks \cref{eq:first-hockey,eq:second-hockey} are \lean{Fabius.stirlingFirst_add_succ_eq_sum} and \lean{Fabius.stirlingSecond_add_succ_eq_sum} (with lower index $k$ in the first-kind case, correcting a misprint), and the convolutions \cref{eq:first-convolution,eq:second-convolution} are \lean{Fabius.choose_mul_stirlingFirst_add} and \lean{Fabius.choose_mul_stirlingSecond_add} \\

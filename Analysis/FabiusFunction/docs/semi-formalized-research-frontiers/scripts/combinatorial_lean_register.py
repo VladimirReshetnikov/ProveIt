@@ -330,14 +330,23 @@ STATUS = {
    r"\lean{Fabius.egfA_fubini}: the generating function is $1/(1-u)$ at $u=\EulerE^t-1$) and "
    r"\cref{eq:ordered-bell-recurrence} is \lean{Fabius.fubini_succ} (\lean{OrderedBell}); the "
    r"ordered-partition count itself is not formalized"),
- 'thm:second-ogf': ('partial',
+ 'thm:second-ogf': ('Lean',
    r"\lean{Fabius.prod_one_sub_mul_X_mul_stirlingColumnOGF} and "
-   r"\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}): the column "
-   r"series $\sum_r\StirlingSecondKind{k+r}{k}x^r$ times $\prod_{j\le k}(1-jx)$ is $1$, and "
-   r"equals the product of the geometric series $\sum_r j^rx^r$, in $R[[x]]$ for every "
-   r"commutative ring $R$; \cref{eq:second-complete-symmetric}, which reads the coefficient "
-   r"off the product as a complete homogeneous symmetric polynomial, is displayed inside the "
-   r"theorem and is not formalized"),
+   r"\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}) prove the "
+   r"formal inverse and finite geometric-product identities.  The compiled "
+   r"\lean{StirlingCompleteHomogeneous} declarations "
+   r"\lean{Fabius.stirlingColumnOGF_eq_completeHomogeneousGeneratingSeriesOn}, "
+   r"\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn}, "
+   r"\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn_of_le}, "
+   r"\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEval}, "
+   r"\lean{Fabius.stirlingSecond_add_eq_eval_hsymm}, and "
+   r"\lean{Fabius.stirlingSecond_add_eq_sum_finsuppAntidiag} cover inverse uniqueness, the "
+   r"$n=k+r$ and $n\ge k$ complete-homogeneous identities over every commutative semiring, universal "
+   r"\lean{MvPolynomial.hsymm} evaluation, and the explicit multiplicity sum.  Its "
+   r"\lean{Fabius.pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul} and "
+   r"\lean{Fabius.prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv} cover "
+   r"the scalar falling-factorial factorization under $x\ne0$ and its reciprocal under "
+   r"nonvanishing of every $1-jx$."),
  'thm:eulerian-power-series': ('Lean',
    r"\lean{Fabius.one_sub_X_pow_mul_succPowSeries} (the identity "
    r"$(1-t)^{n+1}\sum_m(m+1)^nt^m=\TypeAEulerianPolynomial{n}(t)$ in $R[[t]]$) and "
