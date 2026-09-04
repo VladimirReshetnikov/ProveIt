@@ -38557,6 +38557,46 @@ $f(x_\ast)=\lambda+r_\ast>\lambda$, while
 using $f'\ge m$.  The intermediate value theorem supplies a point of
 $[x_\ast-\varrho,x_\ast]$ where $f=\lambda$.
 \end{proof}
+\begin{remark}[Formalization: the bound, and the certificate]
+\label{p0:rem:backward-error-lean}
+Both halves are machine-checked, in two modules, and the split between them
+follows the split in the statement.
+
+The two-sided bound \eqref{p0:eq:backward-two-sided} is
+\lean{MeanValueBracket.lean}: \lean{Fabius.abs_sub_right_inverse_le_div}
+is the upper half and \lean{Fabius.div_le_abs_sub_right_inverse} the lower,
+resting on the brackets \lean{Fabius.abs_sub_le_of_le_deriv} and
+\lean{Fabius.mul_abs_sub_le_abs_sub_of_le_deriv}.  The hypothesis $0<m$ in
+\eqref{p0:eq:slope-bounds} is genuinely needed for the \emph{upper} bound and not
+merely for the interpretation; \cref{q1:rem:sign} gives the counterexample.
+
+The certificate clause is \lean{BackwardErrorExistence.lean}.  Its hypothesis is
+deliberately weaker than a derivative bracket: \lean{Fabius.HasSlopeLowerBound}
+asks only that $m(v-u)\le f(v)-f(u)$ for $u\le v$ in the domain, a condition
+on \emph{slopes} rather than on a derivative, so the theorem applies where one
+has monotonicity data and no differentiability at all.
+\lean{Fabius.hasSlopeLowerBound_of_le_deriv} recovers it from $f'\ge m$, and
+\lean{Fabius.exists_eq_of_le_deriv} is the differentiable form matching the
+statement above.  The certificate itself is \lean{Fabius.exists_eq_of_residual};
+\lean{Fabius.exists_eq_and_abs_sub_le} packages it with the bound, so that
+existence is \emph{discharged} rather than assumed.
+
+Two things the formalization adds.  First, the root is unique:
+\lean{Fabius.injOn_of_hasSlopeLowerBound} and
+\lean{Fabius.existsUnique_eq_of_residual} upgrade ``$f$ takes the value
+$\lambda$ somewhere in that interval'' to ``at exactly one point of the
+domain'', which the theorem above does not claim and every use of it wants.
+
+Second, and worth stating because the proof above does it without saying so: the
+\emph{sign} of the residual does two different jobs.  In the bound
+\eqref{p0:eq:backward-two-sided} it is discarded --- only $|r_\ast|$ appears ---
+and tells the reader at most whether the candidate overshoots.  In the
+certificate it is what \emph{selects} the half-interval on which the intermediate
+value theorem is applied: the proof above takes $[x_\ast-\varrho,x_\ast]$
+precisely because $r_\ast>0$, the slope bound guaranteeing that $f$ has already
+fallen to $\lambda$ by the far end.  Same quantity, two roles, and only the
+second is essential.
+\end{remark}
 
 \begin{remark}[Use in the logarithmic variable]\label{p0:rem:log-residual}
 In every application $f=\log F$ and $\lambda=\log y$: $F$ itself overflows any

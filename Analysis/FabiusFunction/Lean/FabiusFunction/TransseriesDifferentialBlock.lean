@@ -141,7 +141,7 @@ theorem derivation_zpow_t {u : Aˣ} (hdt : d (u : A) = -(u : A) ^ 2)
       rw [show (-((m : ℤ) + 1)) = -((m + 1 : ℕ) : ℤ) by push_cast; ring,
         zpow_neg, zpow_natCast, ← inv_pow, Units.val_pow_eq_pow_val]
     have h2 : ((u ^ (-((m : ℤ) + 1) + 1) : Aˣ) : A) = ((u⁻¹ : Aˣ) : A) ^ m := by
-      rw [show (-((m : ℤ) + 1) + 1) = -((m : ℕ) : ℤ) by push_cast; ring,
+      rw [show (-((m : ℤ) + 1) + 1) = -((m : ℕ) : ℤ) by ring,
         zpow_neg, zpow_natCast, ← inv_pow, Units.val_pow_eq_pow_val]
     rw [h1, h2, derivation_pow_inv d hdt (m + 1), Nat.add_sub_cancel]
     push_cast
