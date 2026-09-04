@@ -72,7 +72,7 @@ theorem bernoulli_three : bernoulli 3 = 0 :=
 theorem bernoulli_four : bernoulli 4 = -1 / 30 := by
   have h := sum_bernoulli 5
   simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add] at h
-  norm_num [bernoulli_three] at h
+  norm_num [Nat.choose, bernoulli_three] at h
   linarith
 
 /-! ### The first four coefficients -/
