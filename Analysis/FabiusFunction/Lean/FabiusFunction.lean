@@ -525,6 +525,7 @@ import FabiusFunction.TransseriesDifferentialBlock
 import FabiusFunction.TransseriesHarmonicIncrement
 import FabiusFunction.TransseriesScaleDominance
 import FabiusFunction.TransseriesPolyLogScale
+import FabiusFunction.TransseriesFlat
 import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
 import FabiusFunction.TransferPositivity
