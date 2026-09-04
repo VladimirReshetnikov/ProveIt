@@ -904,18 +904,20 @@ interval.  Its finite pairing, inverse-gap, and symmetry modules expose four
 definitions and thirty-two theorems: both branch reconstructions (including
 the `t = exp gap` coordinate), the inverse bijection, exact ratio, sum, and
 product formulas, and the sharp strict sum and product bounds.  The companion
-`LambertWBranchGapBernoulli` leaf adds exactly four theorems: absolute
+`LambertWBranchGapBernoulli` leaf adds exactly five theorems: absolute
 summability of the real Bernoulli exponential generating series on
 `|z| < 2 * pi`; the exact complex convergence locus `‖z‖ < 2 * pi`, hence
 divergence on and outside its boundary circle; its actual real sum
-`z / (exp z - 1)` for `z != 0`; and the two printed branch-gap series when the
-positive gap is below `2 * pi`.  Together the four Lambert gap modules expose
-four definitions and thirty-six theorems, forty declarations.  The complex
-summability theorem includes `z = 0`, but a complex `HasSum` quotient
-evaluation on the punctured disk and a separate theorem packaging the series
-value `1` at the removable origin remain open.  The branch point and zero
-endpoint are excluded from the branch series, and no remainder or higher
-Puiseux claim is made.
+`z / (exp z - 1)` for `z != 0`; its complex sum as
+`(complexExpm1Div z)⁻¹` exactly on that disk, including value `1` at the
+removable origin; and the two printed branch-gap series when the positive gap
+is below `2 * pi`.  Together the four Lambert gap modules expose four
+definitions and thirty-seven theorems, forty-one declarations.  Guide label
+`eq:bernoulli-gen` is Exact only under this canonical removable-origin
+representation, not as Lean's literal totalized quotient at zero, and no
+holomorphy theorem is asserted.  The branch point and zero endpoint are
+excluded from the branch series, and no remainder or higher Puiseux claim is
+made.
 
 The parity-selected Rvachev synthesis layer exports exactly one definition and
 eight theorems.  `IsRvachevSuperconvergentPhase` selects the endpoint phases

@@ -109,7 +109,7 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live 2026-09-04 inventory contains 903 modules and 11,447 lexically
+The live 2026-09-04 inventory contains 903 modules and 11,448 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  The post-merge 2026-09-01 inventory of 675 modules and 8,909
 declarations remains a historical checkpoint: relative to the 610/8,318
@@ -267,17 +267,19 @@ asymptotic; the separate analytic series leaf is inventoried next.
 
 #### Exact Lambert branch-gap Bernoulli tranche
 
-`LambertWBranchGapBernoulli.lean` adds one source module and exactly four
-public theorems to the historical 902/11,443 checkpoint, giving the live
-903/11,447 census.  Its exhaustive public surface is
+`LambertWBranchGapBernoulli.lean` first added one source module and four public
+theorems to the historical 902/11,443 checkpoint, giving the historical exact-radius
+checkpoint 903/11,447.  Its fifth public theorem leaves the module count fixed
+and brings the live census to 903/11,448.  Its exhaustive public surface is
 `summable_norm_bernoulli_mul_pow_div_factorial`,
 `summable_bernoulli_mul_pow_div_factorial_iff`,
-`hasSum_bernoulli_mul_pow_div_factorial`, and
+`hasSum_bernoulli_mul_pow_div_factorial`,
+`hasSum_bernoulli_mul_pow_div_factorial_complex_iff`, and
 `principalLambertW_lowerLambertW_eq_bernoulliSeries`; five private majorant,
 coefficient-transport, norm-transport, zeta-lower-bound, and even-term helpers
 are excluded from the public count.  Together with the three finite
 branch-coordinate modules, this makes the four-module Lambert union four
-definitions and 36 theorems, 40 declarations.
+definitions and 37 theorems, 41 declarations.
 
 The first theorem proves absolute convergence of the real Bernoulli
 exponential generating series for `|z| < 2π`.  The second proves for every
@@ -285,15 +287,19 @@ complex `z` that the series is summable exactly when `‖z‖ < 2π`; consequent
 every boundary and exterior point diverges, and its proof exhibits an
 even-indexed subsequence whose term norms stay at least `2`.  The third gives the real
 series its actual `HasSum` value `z/(exp z-1)` under the additional condition
-`z ≠ 0`.  The final theorem specializes this evaluation to
+`z ≠ 0`.  The fourth theorem gives the strongest complete complex statement:
+the series has sum `(complexExpm1Div z)⁻¹` exactly when `‖z‖ < 2π`, including
+value `1` at the removable origin.  The final theorem specializes the real
+evaluation to
 `x ∈ (-exp(-1),0)` and
 `branchGap x < 2π`, returning both branch identities as one conjunction.  It
-makes only the Lambert Guide label `eq:pair-Bernoulli-general` **Exact**.  The
-complex convergence theorem includes `z=0`, but there is no complex `HasSum`
-quotient evaluation on the punctured disk or separate theorem giving the
-series value `1` at the removable origin.  The real quotient theorem deliberately
-excludes `z=0`, while the branch theorem excludes both endpoints.  No remainder
-estimate or higher/convergent Puiseux expansion is included.
+makes Lambert Guide label `eq:pair-Bernoulli-general` **Exact**.  Label
+`eq:bernoulli-gen` is also **Exact** only when its displayed quotient is read as
+the canonical removable-origin representation `(complexExpm1Div z)⁻¹`; this
+does not assert equality to Lean's literal totalized quotient at `z=0` or a
+holomorphy theorem.  The real quotient theorem deliberately excludes `z=0`,
+while the branch theorem excludes both endpoints.  No remainder estimate or
+higher/convergent Puiseux expansion is included.
 
 The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
@@ -976,7 +982,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 903/11,447
+historical 675/8,909 census and requires refresh against the live 903/11,448
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity
