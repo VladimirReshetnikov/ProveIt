@@ -139,7 +139,8 @@ theorem norm_rvachevFourierProduct_dyadic_boundary (k : ℕ) {z : ℝ}
   -- take norms
   have hnorm := congrArg (fun c : ℂ => ‖c‖) hid
   simp only [norm_mul, norm_neg, norm_pow] at hnorm
-  rw [Complex.norm_real, Complex.norm_real, abs_of_pos hsum, abs_of_pos hz0] at hnorm
+  rw [Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg hsum.le,
+    Real.norm_of_nonneg hz0.le] at hnorm
   -- solve for the target
   field_simp at hnorm ⊢
   rw [div_pow]
