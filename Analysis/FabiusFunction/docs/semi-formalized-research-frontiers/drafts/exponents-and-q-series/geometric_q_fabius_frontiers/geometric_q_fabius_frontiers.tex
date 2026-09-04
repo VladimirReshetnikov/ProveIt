@@ -353,6 +353,20 @@ $\tfrac12\bigl(\tfrac1{1-a}-\tfrac a{1-a}\bigr)=\tfrac12$, and for
 $0\le q<1$ the midpoint of $[0,1]$ is again $\tfrac12$, consistently with
 the symmetry of $\GeoLawCentered{q}$.
 \end{proof}
+\emph{Lean status.}  Partial.  Absolute convergence of the defining series is
+\lean{Fabius.summable_norm_geometricUniformWeight} and
+\lean{Fabius.hasSum_geometricUniformWeight}, with the sum continuous and measurable in the
+sample point (\lean{Fabius.continuous_geometricUniformSeries},
+\lean{Fabius.measurable_geometricUniformSeries}); the support statement for \(0\le q<1\) is
+\lean{Fabius.geometricUniformSeries_mem_Icc} together with
+\lean{Fabius.geometricUniformDistribution_support_eq_range}, and the symmetry of the centered
+law is \lean{Fabius.geometricUniformSeries_reflect}, in distribution-function form
+\lean{Fabius.geometricUniformCDF_reflection} (all in \path{GeometricUniformLaw.lean} and
+\path{GeometricUniformCDF.lean}).  Not formalized as such: the \(L^p\) convergence clause, the
+mean \(\Expectation\GeoLaw{q}=\tfrac12\) --- the corpus states the median form
+\lean{Fabius.geometricUniformCDF_one_half}, which is what the reflection gives --- and the
+support for negative \(q\).
+
 
 \begin{proposition}[Affine fixed point and its uniqueness]
 \label{p0:prop:fixed-point}
@@ -389,6 +403,14 @@ one fixed point in $\mathcal P_1(\RealNumbers)$.  By the first paragraph
 $\LawOf{\GeoLaw{q}}$ is a fixed point, and it has finite first moment by
 \cref{p0:prop:basic}.
 \end{proof}
+\emph{Lean status.}  Both clauses are formal.  The fixed-point identity is
+\lean{Fabius.geometricUniformDistribution_selfSimilar}, with the convolution form
+\lean{Fabius.geometricUniformDistribution_conv} in \path{GeometricUniformDictionary.lean}; the
+converse --- that it characterizes the law --- is
+\lean{Fabius.eq_geometricUniformDistribution_of_selfSimilar} in
+\path{GeometricUniformUniqueness.lean}, for every probability measure on \(\RealNumbers\)
+satisfying the same push-forward equation, at every ratio with \(\AbsoluteValue q<1\).
+
 
 \begin{remark}
 \label{p0:rem:uniqueness-scope}
@@ -425,6 +447,16 @@ $[-1,1]$, i.e. into the standard Rvachev series, whose density is
 $\RvachevUp$.  Undoing the two affine steps gives
 \eqref{p0:eq:fabius-point}.
 \end{proof}
+\emph{Lean status.}  The identification of the distribution function is formal: at
+\(q=\tfrac12\) the law is the classical dyadic weighted-sum law
+(\lean{Fabius.weightedSumDistribution_eq_geometricUniformDistribution_one_half},
+\path{ProbabilityRepresentation.lean}), whose distribution function is the bounded Fabius
+function (\lean{Fabius.weightedSumDistribution_real_Iic_eq_fabiusReal},
+\path{IncompleteBetaMaster.lean}).  The density display \eqref{p0:eq:fabius-point} is not
+stated in that form; what the corpus carries about the density is the general
+\lean{Fabius.geometricUniformDensity} with its continuity, nonnegativity and compact support
+in \([0,1]\) (\path{GeometricUniformCDF.lean}).
+
 
 \begin{remark}[Degenerate and boundary parameters]
 \label{p0:rem:endpoints}
@@ -656,6 +688,13 @@ $k\in\IntegerNumbers\setminus\SetOf0$; the principal logarithm is
 therefore holomorphic on the disc of radius $2\pi$ and no larger, and the
 same computation in the variable $w$ gives radius $\pi$.
 \end{proof}
+\emph{Lean status.}  Formal coefficientwise rather than analytically:
+\lean{Fabius.sinhDivLogCoefficient_eq_bernoulli} in \path{SinhDivBernoulliLog.lean} identifies
+every coefficient of the formal logarithm of \(\sinh(z/2)/(z/2)\) with
+\(B_{2m}/(2m\,(2m)!)\), which is \eqref{p0:eq:log-sinhc-half} as an identity of formal power
+series.  The proof is deliberately free of any analytic logarithm, branch choice, or
+convergence statement, so the disc of validity \(\AbsoluteValue z<2\pi\) is not part of it.
+
 
 \begin{theorem}[Exact cumulants of the family]
 \label{p0:thm:cumulants}
