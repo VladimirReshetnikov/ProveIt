@@ -101,7 +101,6 @@ import FabiusFunction.AbelPolynomialSeries
 import FabiusFunction.LambertWSeries
 import FabiusFunction.FussCatalanSeries
 import FabiusFunction.InverseBellCoefficients
-import FabiusFunction.InverseDerivativeRecursion
 import FabiusFunction.StirlingFirstDiagonal
 import FabiusFunction.DiamondPower
 import FabiusFunction.OrdinaryBellBivariate
@@ -339,6 +338,7 @@ import FabiusFunction.ExponentialPartition
 import FabiusFunction.ThueMorsePartition
 import FabiusFunction.ExponentialBell
 import FabiusFunction.UnitSeriesBellCoefficients
+import FabiusFunction.BellCompletePartitions
 import FabiusFunction.ThueMorseIntegerLift
 import FabiusFunction.ThueMorseBoundaryFlatness
 import FabiusFunction.ThueMorseDirichlet
@@ -556,11 +556,13 @@ import FabiusFunction.TransferOperatorStep
 import FabiusFunction.TransseriesBlockAntiderivative
 import FabiusFunction.TransseriesDifferentialBlock
 import FabiusFunction.TransseriesDifferentialClosure
+import FabiusFunction.TransseriesIteratedBlock
 import FabiusFunction.TransseriesHarmonicIncrement
 import FabiusFunction.TransseriesScaleDominance
 import FabiusFunction.TransseriesBlockClasses
 import FabiusFunction.TransseriesMonomialUniqueness
 import FabiusFunction.TransseriesWrightOmegaTerms
+import FabiusFunction.LambertCoefficientPolynomials
 import FabiusFunction.TransseriesPolyLogScale
 import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
@@ -839,6 +841,8 @@ import FabiusFunction.StaircaseInversion
 import FabiusFunction.RemainderTransport
 import FabiusFunction.LeastTermIndex
 import FabiusFunction.BellSetPartitions
+import FabiusFunction.EulerianPermutohedron
+import FabiusFunction.InverseDerivativeRecursion
 
 set_option autoImplicit false
 
