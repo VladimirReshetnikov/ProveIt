@@ -395,7 +395,7 @@ theorem lambertShift_lambertShiftInv_eventually {z : ℝ} (hz : 0 < z) :
 theorem inv_exp_mul_add_one_lt_one {x : ℝ} (hx : 0 < x) :
     (Real.exp (principalLambertW x) * (principalLambertW x + 1))⁻¹ < 1 := by
   have hW : 0 < principalLambertW x := principalLambertW_pos hx
-  have h1 : 1 < Real.exp (principalLambertW x) := Real.one_lt_exp_iff_pos.mpr hW
+  have h1 : 1 < Real.exp (principalLambertW x) := Real.one_lt_exp_iff.mpr hW
   have h2 : (1 : ℝ) < principalLambertW x + 1 := by linarith
   have : (1 : ℝ) < Real.exp (principalLambertW x) * (principalLambertW x + 1) :=
     one_lt_mul_of_lt_of_le h1 h2.le
