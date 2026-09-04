@@ -33,6 +33,7 @@ import FabiusFunction.StirlingOrdinaryGF
 import FabiusFunction.StirlingCompleteHomogeneous
 import FabiusFunction.EulerianGeneratingFunctions
 import FabiusFunction.ExponentialRiordan
+import FabiusFunction.ExponentialRiordanInverse
 import FabiusFunction.ExponentialFormula
 import FabiusFunction.OrderedBell
 import FabiusFunction.OrdinaryPartialBell
@@ -93,6 +94,7 @@ import FabiusFunction.StirlingFirstModH
 import FabiusFunction.StirlingSymmetricFunctions
 import FabiusFunction.LagrangeInversion
 import FabiusFunction.LagrangeInversionUniqueness
+import FabiusFunction.LagrangeExistence
 import FabiusFunction.NewtonReciprocal
 import FabiusFunction.RaneyNumbers
 import FabiusFunction.IdentityCertificates
@@ -563,6 +565,7 @@ import FabiusFunction.TransseriesBlockClasses
 import FabiusFunction.TransseriesMonomialUniqueness
 import FabiusFunction.TransseriesWrightOmegaTerms
 import FabiusFunction.LambertCoefficientPolynomials
+import FabiusFunction.LambertPolynomialStirling
 import FabiusFunction.TransseriesPolyLogScale
 import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
