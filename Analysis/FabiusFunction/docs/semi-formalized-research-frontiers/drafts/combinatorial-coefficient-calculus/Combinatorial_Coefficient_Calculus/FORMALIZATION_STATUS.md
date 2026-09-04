@@ -55,6 +55,46 @@ The inherited PDF predates these latest source edits. PDF rebuilding remains
 skipped in this work at the user's request, without discarding the upstream
 render or claiming current render parity.
 
+The finite-difference and Bell-multiplicity source checkpoint incorporates
+main through `5fddefb43b6f4009df826b68aedbdb1c6112e0d0`. It adds seven public
+theorems: three generic formulas in `BellCompletePartitions`, two
+arbitrary-scalar difference laws and two multiplicity specializations in
+`NorlundGeneralized`. Independent source/API review checked the factorial
+normalizations, unrestricted zeroth Bell input, zero-ring scope, degree zero,
+and negative orders. No Lean process was started while external Lean/Lake
+jobs occupied the host; these declarations are not compiler-verified yet.
+The generic human Bell proof is now shared by the Nörlund section.
+At this checkpoint the generated register has 208 rows, classified as
+62 `Lean`, 35 `partial`, and 111 `none`. The two added upstream `Lean`
+classifications are inherited certificate work, not promotions from this
+source review. Fourteen validator regression tests and the canonical
+structural/provenance check pass. The manifest and package README now refer
+to the canonical register instead of maintaining competing current totals.
+
+The publication merge then incorporates pinned main
+`ff76c57fa563102804b64c8c8abab90f47b09baf`. Its `BellSetPartitions`
+module supplies the weighted labelled-set interpretation for both partial
+and complete Bell polynomials, and the second-kind Stirling block count.
+That module's focused compilation is recorded in upstream commit
+`dd554e5a8`; this work performed an independent statement/hypothesis review,
+not a fresh compiler replay. Its source changes the previously open
+labelled-partition boundary but does not supply the prescribed-type count.
+The merged register has 208 rows: 63 `Lean`, 35 `partial`, and 110 `none`.
+The new local Bell multiplicity and arbitrary-order Nörlund statements
+remain pending compilation.
+
+The final synchronization incorporates main `da90f69d1` and reviews its two
+proposed correspondence upgrades. The Abel declaration references are retained,
+but the row stays `none`: source review is not compilation, and its present
+binomial-identity proof requires a rational algebra. The coordinate-free
+composition theorem now has explicit local smoothness hypotheses and canonical
+ordered-partition indexing. Direct inspection of Mathlib's
+`iteratedFDeriv_comp` and `FormalMultilinearSeries.taylorComp` establishes
+that exact correspondence; the human induction prepends the new least label,
+so it permutes no derivative arguments. Completeness is unnecessary.
+The resulting register is 208 rows: 64 `Lean`, 35 `partial`, and 109 `none`.
+This Mathlib correspondence is not a fresh local compiler run.
+
 `NewtonReciprocal.lean` passed focused compilation on 2026-09-04 using
 `lake env lean -o .lake/build/lib/lean/FabiusFunction/NewtonReciprocal.olean
 Analysis/FabiusFunction/Lean/FabiusFunction/NewtonReciprocal.lean` (exit zero).
@@ -167,11 +207,12 @@ source has no further concrete blocker identified, but awaits compilation.
    inverses from the stated unit hypotheses; prove both array products and record
    their exact declarations. Until then distinguish the conditional inverse law
    from the full inverse construction in the register.
-3. **Combinatorial semantics.** Build cardinality or weighted-enumerator bridges
-   for set partitions, cycles, descents, and the recurrence-defined Bell and
-   Stirling arrays. Algebraic recurrences alone cannot certify a counting
-   interpretation. Use a shared finite-set decomposition API rather than proving
-   every interpretation independently.
+3. **Combinatorial semantics.** Reuse the incoming `BellSetPartitions`
+   weighted-set decomposition and Stirling block-count bridge. Remaining
+   obligations include prescribed block-size type counts, the literal partial
+   Bell monomial formula, cycles, and descents. Algebraic recurrences alone
+   cannot certify a counting interpretation; do not duplicate the completed
+   weighted Bell bridge while extending it.
 4. **Darboux analysis.** The corrected analytic-multiplier theorem explicitly
    handles polynomial exceptional exponents; the finite-smoothness subtraction
    theorem assumes a global decomposition and gives an explicit periodic boundary
@@ -180,10 +221,11 @@ source has no further concrete blocker identified, but awaits compilation.
    integration by parts still need actual Lean statements and proofs. No existing
    Darboux register row should be promoted merely because the human proof was
    repaired.
-5. **Analytic and formal differential calculus.** Formal power-series composition
-   and the two-factor formal Leibniz theorem are useful infrastructure, but do not
-   prove the analytic Faà di Bruno theorem, the general multinomial product rule,
-   or analytic inverse-derivative claims without explicit bridges.
+5. **Analytic and formal differential calculus.** The canonical ordered
+   iterated-Fréchet-derivative composition formula is now explicitly mapped to
+   Mathlib. Its partial-Bell tensor regrouping, the general multinomial product
+   rule, and analytic inverse-derivative claims still require separate bridges;
+   formal power-series identities alone do not discharge them.
 6. **Two-way exposition coverage.** Give every presently unlabelled theorem-like
    environment a stable claim identifier. Extend the existing register to cover
    mathematical prose and examples, and identify which public Lean support
