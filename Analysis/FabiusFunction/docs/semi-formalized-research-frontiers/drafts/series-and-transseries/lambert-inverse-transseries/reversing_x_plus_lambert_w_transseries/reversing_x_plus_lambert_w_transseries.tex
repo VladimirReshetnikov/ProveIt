@@ -296,8 +296,14 @@ differentiable at every \(z>0\) by the inverse-function rule
 \(g\), \path{Fabius.lambertShiftInv_strictMonoOn} and \path{Fabius.lambertShiftInv_continuousAt},
 the latter read off the exact image \path{Fabius.lambertShiftInv_image_Ioi}), and
 \path{Fabius.deriv_lambertShiftInv_bounds} is \(1/2<g'(z)<1\), both inequalities strict because
-\(0<W'<1\) once \(W>0\) (\path{Fabius.inv_exp_mul_add_one_lt_one}).  The endpoint value
-\(g'(0)=1/2\), a one-sided derivative, and the convexity of \(g\) are not formalized.
+\(0<W'<1\) once \(W>0\) (\path{Fabius.inv_exp_mul_add_one_lt_one}).  The convexity of
+\(g\) is formal as well: \path{Fabius.strictConvexOn_lambertShiftInv} is its strict convexity on
+the open half-line, obtained from the strict growth of \(g'\)
+(\path{Fabius.deriv_lambertShiftInv_strictMonoOn}), which in turn is the strict decay of \(W'\)
+(\path{Fabius.inv_exp_mul_add_one_strictAntiOn}).  The concavity of \(f\) is not stated as such;
+what the corpus carries is the strict concavity of the branch itself,
+\path{Fabius.strictConcaveOn_principalLambertW} in \path{LambertWCurvature.lean}, proved there
+from \(W''<0\).  The endpoint value \(g'(0)=1/2\), a one-sided derivative, is not formalized.
 
 This exact formula identifies the special function involved, but it does
 not by itself expose the full large-\(z\) hierarchy.  The remainder of the
