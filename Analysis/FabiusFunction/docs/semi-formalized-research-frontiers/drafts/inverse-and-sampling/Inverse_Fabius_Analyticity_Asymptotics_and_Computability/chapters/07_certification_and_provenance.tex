@@ -23,7 +23,7 @@ whose special case is formalized is not labelled Lean-proved unless the
 specialization and all of its hypotheses match exactly.
 
 In the current reviewed concordance, the resulting classification is
-\(49\) Lean-proved rows, \(96\) human-proved frontier
+\(52\) Lean-proved rows, \(93\) human-proved frontier
 rows, \(10\) conjectures, \(15\) open problems, and \(24\) nonassertoric
 rows, for \(194\) rows in all.  These are source-result counts, not counts of
 distinct canonical theorem environments: deduplication may send several
@@ -59,6 +59,17 @@ The exact dyadic phase dictionary is
 \path{Fabius.isRvachevSuperconvergentPhase_two_pow_iff}.  Existing positivity,
 strict-interior positivity, rational dyadic evaluation, and finite-support
 declarations complete the finite families recorded in the Lean crosswalk.
+
+The leading Laurent coefficient theorem
+\cref{is:p2:thm:Laurent-leading} is also Lean-proved by the one-definition,
+six-theorem module \path{FabiusFunction.RvachevLaurentLeading}.  Its principal
+manuscript-normalized declaration is
+\path{Fabius.tendsto_rvachevCenteredMGF_laurent_two_pow_mul_odd}; the crosswalk
+records the normalization, odd-core nonvanishing, generic cofactor limit, and
+general integer-pole companions.  The limits are deliberately punctured,
+because the inverse operation is totalized at the zero itself.  This exact row
+promotion does not extend to lower Laurent coefficients or the later
+pole-shell and Appell-coefficient asymptotics.
 
 Five canonical results were added after the immutable source snapshot and
 therefore do not alter the \(194\)-row totals.  Three are Lean-proved:

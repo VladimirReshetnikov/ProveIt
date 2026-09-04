@@ -209,6 +209,7 @@ import FabiusFunction.GeometricActivationDimension
 import FabiusFunction.GeometricActivationAsymptotics
 import FabiusFunction.ReciprocalExponentialGenerating
 import FabiusFunction.RvachevMomentAppell
+import FabiusFunction.FinitePrefixAppellRecovery
 import FabiusFunction.ImplicitPowerSeries
 import FabiusFunction.QuadraticCompositionalInverse
 import FabiusFunction.PolynomialExpectationCumulant
@@ -484,6 +485,7 @@ import FabiusFunction.FourierLaplaceRotation
 import FabiusFunction.IntegerZeroLocalFactorization
 import FabiusFunction.LeadingJet
 import FabiusFunction.IntegerZeroAnalyticOrder
+import FabiusFunction.RvachevLaurentLeading
 import FabiusFunction.ScaledInfiniteProducts
 import FabiusFunction.GeometricReciprocalGamma
 import FabiusFunction.GeometricSincCharacteristicFunction

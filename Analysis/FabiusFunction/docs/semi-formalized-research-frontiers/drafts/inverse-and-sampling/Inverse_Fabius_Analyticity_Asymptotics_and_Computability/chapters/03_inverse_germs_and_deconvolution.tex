@@ -2049,10 +2049,31 @@ Consequently
 Taking reciprocals proves \eqref{is:p2:eq:Laurent-leading}.
 \end{proof}
 
+\paragraph{Exact Lean status.}
+The compiled module \path{FabiusFunction.RvachevLaurentLeading} formalizes
+this theorem with the manuscript's normalization.  Its definition
+\path{Fabius.rvachevCenteredMGF} is connected to the sinc product by
+\path{Fabius.rvachevCenteredMGF_eq_rvachevFourierProduct}; the odd-core value
+and its nonvanishing are
+\path{Fabius.rvachevCenteredMGF_pi_mul_I_int} and
+\path{Fabius.rvachevCenteredMGF_pi_mul_I_int_ne_zero_of_odd}.  The reusable
+product-coordinate limit is
+\path{Fabius.tendsto_sub_pow_mul_inv_rvachevFourierProduct_int}, the arbitrary
+nonzero-integer centered-MGF form is
+\path{Fabius.tendsto_rvachevCenteredMGF_laurent_int}, and
+\path{Fabius.tendsto_rvachevCenteredMGF_laurent_two_pow_mul_odd} is exactly
+\eqref{is:p2:eq:Laurent-leading} for $n=2^v u$, $u$ odd.  These limit
+theorems use a punctured neighborhood of the pole.  This is the precise
+meaning of the displayed meromorphic limit: Lean's inverse is totalized to
+zero at a zero of $M$, so the value at the pole itself must be excluded.
+No lower Laurent coefficients or subsequent coefficient asymptotics are
+claimed by this formalization.
+
 \begin{remark}
-The repository already identifies the zero multiplicity $\TwoAdicValuation(n)+1$ of the sinc product.  The new
-step is to retain the leading Laurent amplitude and to propagate the full divisor into coefficient
-asymptotics for the polynomial deconvolution sequence.
+The repository now identifies both the zero multiplicity
+$\TwoAdicValuation(n)+1$ and the exact leading Laurent amplitude.  Propagating
+the full divisor into coefficient asymptotics for the polynomial
+deconvolution sequence remains a separate step.
 \end{remark}
 
 \subsection{A \texorpdfstring{$2$}{2}-adic hierarchy of exponentially small corrections}
