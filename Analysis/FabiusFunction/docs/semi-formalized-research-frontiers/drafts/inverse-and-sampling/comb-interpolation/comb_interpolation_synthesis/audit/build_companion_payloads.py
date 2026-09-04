@@ -9,9 +9,8 @@ canonical generated assets derived from the pinned figure generator.
 
 Two exact environment files added on main after the immutable 180-file source
 pin are checked against the mainline reconciliation revision and recorded
-separately.  The package-wide ``SHA256SUMS`` is built and checked by
-``build_package_checksums.py``; there is deliberately no duplicated asset-only
-checksum projection.
+separately.  Package checksum manifests are retired; the CSV's per-payload
+digests remain the canonical provenance record.
 """
 
 from __future__ import annotations

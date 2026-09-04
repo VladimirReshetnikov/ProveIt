@@ -44,8 +44,9 @@ The records distinguish four intentionally different identities.
    every consolidation checkpoint; its immutable `CCC` snapshot identity remains
    recorded here even after the canonical text diverges from that donor.
 
-The six package-local `SHA256SUMS` files are derivative two-row ledgers, not
-additional research payloads.  They are therefore outside the transitional
+The six former package-local checksum manifests were derivative two-row
+ledgers, not additional research payloads. They are retired and remain
+recoverable from repository history; they are therefore outside the transitional
 twelve-payload closure (the live canonical TeX/PDF pair and the five donor
 TeX/PDF pairs).  This file, `SOURCE_DISPOSITION.csv`, and
 `SOURCE_CLOSURE.sha256` are likewise consolidation metadata rather than source

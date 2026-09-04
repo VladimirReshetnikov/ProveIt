@@ -7,7 +7,9 @@ different degree ranges, normalizations, grids, or operators.
 
 ## Selected payload
 
-The canonical package retains exactly 113 selected payloads:
+The historical selection contains exactly 113 provenance rows. After retiring
+seven checksum-manifest payloads, the canonical package retains 106 live
+destinations:
 
 - every independent executable reproducer;
 - every exact rational CSV, TeX table, symbolic certificate, and captured
@@ -16,15 +18,16 @@ The canonical package retains exactly 113 selected payloads:
 - environment and requirements inputs needed for reproduction;
 - the exact Q12 Sturm certificate, root-count table, and verifier.
 
-Of these, 111 are grouped by source-directory slug under
+Of these, 104 are grouped by source-directory slug under
 `assets/companion-evidence/`; the Q12 certificate and complete root-count table
 already had byte-identical canonical destinations under
 `assets/evidence/legendre/root-geometry/`. Several scripts collide on names such
 as `experiments.py`, so flattening them could discard independent checks.
 
-`COMPANION_PAYLOADS.csv` maps every old path to its one live destination and
-SHA-256 hash.  `assets/companion-evidence/SHA256SUMS` verifies all 113
-destinations, including the two relative paths into the root-geometry evidence
+`COMPANION_PAYLOADS.csv` preserves every selected old path, destination, and
+SHA-256 hash. Seven checksum-manifest rows are historical-only after the
+repository-wide retirement; the validator checks the remaining 106 live
+destinations directly, including the two paths in the root-geometry evidence
 tree.
 
 ## Generated and historical material
@@ -33,8 +36,7 @@ Generated diagnostic images and logs are not mathematical authorities; scripts
 and exact data are. Historical README, MANIFEST, repository-snapshot, and source
 files remain recoverable at immutable pre-retirement commit
 `443793e846934e7363e314ea01129b9f50197a58`. Historical package checksum files
-are retained with the companion evidence as arrival provenance; they are not
-presented as current live ledgers.
+remain recoverable at that commit and are not retained as live payloads.
 
 Legacy ledgers contain 142 entries: 123 verify raw and 19 differ only because
 arrival ledgers hashed CRLF bytes while the repository stores LF. The
@@ -60,8 +62,9 @@ were removed:
 
 1. Every proved source result has an auditable canonical crosswalk: 80
    theorem-like environments, 80 proofs, and 80 one-to-one crosswalk rows.
-2. All 113 selected payloads have canonical destinations and live hashes in the
-   companion mapping and ledger.
+2. At this historical gate, all 113 selected payloads had canonical
+   destinations and live hashes in the companion mapping and then-current
+   ledger. Seven checksum-manifest payloads have since been retired.
 3. Distinct coefficient normalizations and degree ranges are documented in the
    canonical chapters and assertion-level crosswalk.
 4. The v6 missing-at-arrival boundary remains explicit here, in the README, and
@@ -69,9 +72,9 @@ were removed:
 5. The Q12 verifier and canonical certificate paths pass through degree 20.
 6. The canonical PDF passed three direct TeX runs, full-page rendering, log
    audit, and a zero-Type-3 font scan.
-7. The live root `SHA256SUMS` validates canonical Git-tree bytes from a fresh
-   checkout.
-8. Historical arrival ledgers are retained, while source snapshots remain
+7. The now-retired root checksum manifest validated canonical Git-tree bytes at
+   this historical gate.
+8. Historical arrival ledgers remain recoverable, while source snapshots remain
    recoverable at the immutable pre-retirement commit above.
 
 The exact directories retired by this gate are:

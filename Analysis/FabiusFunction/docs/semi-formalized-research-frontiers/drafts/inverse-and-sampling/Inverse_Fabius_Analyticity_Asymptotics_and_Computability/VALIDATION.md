@@ -90,16 +90,10 @@ claiming byte identity between intermediate pass artifacts.
 
 - No canonical `.aux`, `.log`, `.out`, or `.toc` file, guarded-pass/render
   temporary, or shallow generated sidecar remains in the package.
-- Root `SHA256SUMS` contains exactly 90 rows, one for every permanent package
-  file except the self-referential ledger itself.
-- The root ledger includes the nested `assets/SHA256SUMS` as a permanent file.
-  That 63-row asset ledger passes its canonical generator, with SHA-256
-  `b274fe39cde808c34e82789136af51616e9177f424763b3eec153bc18e10fa3c`.
-- Python byte-code caches and other transient files are excluded from the root
-  ledger and are not publication payloads.
+- Package checksum manifests are retired and are not a validation gate.
+- Python byte-code caches and other transient files are not publication
+  payloads.
 
-The root ledger, source-closure hash, and PDF hash serve different purposes:
-the root ledger inventories the complete permanent package, the closure hash
-identifies the current build inputs, and the PDF hash identifies the reviewed
-historical artifact.  Their independent validity must not be mistaken for
-current source/PDF synchronization.
+The source-closure hash identifies the current build inputs, while the PDF hash
+identifies the reviewed historical artifact. Their independent validity must
+not be mistaken for current source/PDF synchronization.

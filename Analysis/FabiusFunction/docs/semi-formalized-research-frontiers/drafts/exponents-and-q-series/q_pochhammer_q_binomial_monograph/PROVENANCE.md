@@ -39,8 +39,7 @@ exactly three guarded serial passes produced 343, 354, and 354 pages.
 The live source now postdates that receipt: it has 14,530 lines, 683,858 bytes,
 and SHA-256
 `b77e9ab54d9437485bab9ee36783cc1f1d5c36c347e67a5242953af8319650fc`.
-The regenerated root `SHA256SUMS` ledger records the same identity; the
-retained PDF therefore does not claim render parity with the current TeX. The
+The retained PDF therefore does not claim render parity with the current TeX. The
 validation record in `README.md` distinguishes compilation, font embedding,
 complete page rendering, contact-sheet review, and full-resolution inspection.
 PDFs retained beneath `assets/` are research figures, not manuscripts.
@@ -358,8 +357,9 @@ canonical layout; the forward `q_expansion_experiments.py` stayed
 byte-identical because it writes only to standard output and required no path
 rewrite.  The programs were rerun serially;
 [`assets/VALIDATION.md`](assets/VALIDATION.md) records exact-output parity and
-the one disclosed last-digit runtime drift, while `assets/SHA256SUMS` fixes
-the post-migration bytes.
+the one disclosed last-digit runtime drift. Canonical destination digests in
+`assets/ASSET_DISPOSITION.csv` preserve the post-migration byte receipts;
+repository policy no longer retains package checksum manifests.
 
 All six superseded directories were removed from the live tree.
 All tracked superseded material remains recoverable from Git history.  The
