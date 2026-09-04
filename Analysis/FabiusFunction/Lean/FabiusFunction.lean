@@ -99,6 +99,7 @@ import FabiusFunction.AbelPolynomialSeries
 import FabiusFunction.LambertWSeries
 import FabiusFunction.FussCatalanSeries
 import FabiusFunction.InverseBellCoefficients
+import FabiusFunction.InverseDerivativeRecursion
 import FabiusFunction.StirlingFirstDiagonal
 import FabiusFunction.DiamondPower
 import FabiusFunction.OrdinaryBellBivariate
@@ -836,9 +837,6 @@ import FabiusFunction.StaircaseInversion
 import FabiusFunction.RemainderTransport
 import FabiusFunction.LeastTermIndex
 import FabiusFunction.BellSetPartitions
-import FabiusFunction.StirlingIdentities
-import FabiusFunction.BellDeterminants
-import FabiusFunction.EulerianPermutohedron
 
 set_option autoImplicit false
 
