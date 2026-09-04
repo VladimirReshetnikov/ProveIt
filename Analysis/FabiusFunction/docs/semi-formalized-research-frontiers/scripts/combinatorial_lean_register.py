@@ -73,6 +73,15 @@ STATUS = {
    r"\lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib); the set-partition count, "
    r"which Mathlib leaves as a docstring claim, is \lean{Fabius.card_setPartitions} "
    r"(\lean{BellSetPartitions})"),
+ 'prop:merged-abel': ('Lean',
+   r"\lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_eval_add}, "
+   r"\lean{Fabius.abelSeries_eq}, \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} "
+   r"(\lean{AbelPolynomialSeries}); the EGF identity is proved for every solution "
+   r"of $T=te^{-aT}$, not only the constructed one"),
+ 'thm:merged-frechet-faa': ('Lean',
+   r"Mathlib's \texttt{HasFTaylorSeriesUpToOn.comp} (FaaDiBruno.lean), indexed by "
+   r"\texttt{OrderedFinpartition} rather than unordered partitions; the regrouping "
+   r"into partial-Bell form is not formal"),
  'thm:bell-poly-partitions': ('Lean',
    r"\lean{Fabius.partialBell_eq_sum_setPartitions} and "
    r"\lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), "
