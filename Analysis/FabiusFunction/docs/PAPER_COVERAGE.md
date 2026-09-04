@@ -11,8 +11,9 @@ see its
 or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf).
 
 > **Artifact status (2026-09-04).**  The live facade union contains exactly
-> 970 source modules and 12,051 explicit public declarations.  The live audit reports no
-> missing module headers or declaration comments; the exact-dyadic inverse,
+> 977 source modules and 12,133 explicit public declarations.  The live audit
+> reports no missing module headers or declaration comments.  The previous
+> reconciled 970/12,056 inventory remains a historical checkpoint.  The exact-dyadic inverse,
 > Jacobi two-square, Lagrange--Rvachev Matrix, geometric Richardson,
 > Gaussian-binomial second-moment, fixed-column rate, and half-base root
 > simplicity, Rvachev--Appell Hasse,
@@ -271,7 +272,15 @@ or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.
 > existing modules, giving the historical 967/12,001 checkpoint.  The next
 > merge adds two modules and 47 declarations, giving the historical
 > intermediate 969/12,048 checkpoint; `UnitSeriesPowerRecurrence` 0+3 then
-> gives the live 970/12,051 census.
+> gave the historical 970/12,051 census.  The reconciled 970/12,056 checkpoint
+> is also historical.  The current overlay adds `AbelPolynomialSeries` 2+9,
+> `AssociahedronFaceNumbers` 4+23, `BernoulliFormalLog` 0+5,
+> `ExponentialRescaling` 0+4, `PochhammerFalling` 1+13,
+> `RaneyNumbers` 4+12, and `UnitSeriesPowerRecurrence` 0+3.  Its 80 new-module
+> declarations are offset by three declarations relocated from
+> `NorlundDiagonal` to `ExponentialRescaling`, yielding the live 977/12,133
+> census with no documentation gaps.  The inventory does not by itself
+> promote a broader manuscript claim.
 > The retained primary exposition, Lean walkthrough, canonical frontier,
 > Representation Frontiers, filed New Frontiers, notation catalogue,
 > comb-interpolation synthesis, and q-series synthesis PDFs contain respectively
@@ -785,7 +794,7 @@ The three companion rows for `BellPolynomialInversion.lean`,
 `AppellSequence.lean`, and `ReciprocalExponentialGenerating.lean`, together with
 the normalized round-trip corollary `Bell.cumulant_complete`, are likewise
 exhaustive public-API inventories: respectively five definitions and 28
-theorems, three definitions and 23 theorems, and one definition and 19 theorems.
+theorems, three definitions and 34 theorems, and one definition and 19 theorems.
 The two private recurrence helpers in `BellPolynomialInversion.lean` are
 intentionally excluded.
 

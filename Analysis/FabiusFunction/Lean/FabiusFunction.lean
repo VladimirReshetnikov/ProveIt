@@ -72,6 +72,7 @@ import FabiusFunction.BellDerivative
 import FabiusFunction.AssociatedStirling
 import FabiusFunction.RStirling
 import FabiusFunction.FallingFactorialSeries
+import FabiusFunction.PochhammerFalling
 import FabiusFunction.CauchyPolynomials
 import FabiusFunction.CoefficientRules
 import FabiusFunction.UnitSeriesPowerRecurrence
