@@ -21,8 +21,8 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 904
-source modules and 11,457 public declarations, with no missing module headers or
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 905
+source modules and 11,458 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -377,7 +377,8 @@ checkpoint had the census 903/11,447; the fifth theorem gives the historical
 Lambert checkpoint 903/11,448.  The retained 66-page Guide PDF predates this
 source-only crosswalk, and no render parity is claimed.
 
-The subsequent q-series leaf `GeometricUniformMomentPolynomial.lean` has one
+The subsequent q-series tranche starts with
+`GeometricUniformMomentPolynomial.lean`, which has one
 definition, `geometricUniformMomentPolynomial`, and exactly eight theorems:
 `geometricUniformMomentPolynomial_zero`,
 `geometricUniformMomentPolynomial_succ`,
@@ -389,12 +390,19 @@ definition, `geometricUniformMomentPolynomial`, and exactly eight theorems:
 `geometricUniformMomentPolynomial_four`.  This exhaustive API proves the
 recursive rational polynomial family, its zeroth value and residual-product
 recurrence, the triangular degree bound, its value at zero, and the displayed
-polynomials through index four.  It does not identify that recursive family
-with the normalized analytic coefficients `a_n(q)` or the underlying
-moment-generating product.  Therefore `thm:qF-moment-polynomial` moves from
-None to Partial, not Exact, while `prop:qF-P-degree-sharp` remains None.  This
-one-definition/eight-theorem addition gives the live census 904/11,457 and the
-q forward totals 166 Exact / 91 Partial / 17 None / 8 N/A.  The source
+polynomials through index four.  The downstream
+`GeometricUniformMomentPolynomialBridge.lean` leaf contributes zero definitions
+and exactly one theorem,
+`geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`, identifying
+the recursive polynomial on every real `|q| < 1` with the
+finite-q-Pochhammer normalization of the Taylor coefficient of the genuine
+geometric-uniform MGF.  This is regular at `q = 0` and includes negative
+contractions, but it does not identify the manuscript's complex-`q` product
+coefficient.  Therefore `thm:qF-moment-polynomial` remains Partial, not Exact,
+while `prop:qF-P-degree-sharp` remains None.  The base addition gives the
+historical 904/11,457 checkpoint and moved the row from None to Partial; the
+bridge gives the live census 905/11,458.  The q forward totals remain
+166 Exact / 91 Partial / 17 None / 8 N/A.  The source
 concordance stays unchanged at 78 Lean-proved / 400 human-proved frontier /
 60 N/A / 9 conjectures because its historical-source disposition does not
 encode partial Lean coverage.  The retained 389-page q-series PDF is a

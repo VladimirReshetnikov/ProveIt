@@ -354,10 +354,11 @@ three-definition/seven-theorem geometric Richardson generating-function
 module, and the three-theorem second-moment
 strengthening of the existing Gaussian-binomial cumulant module, followed by
 the one-definition/eight-theorem geometric-uniform moment-polynomial algebra
-module.  The live source census is 904 facade-reachable modules and 11,457
-public declarations; the immediately preceding complex value-completion
-checkpoint was 903/11,448, and the preceding exact-radius four-theorem
-checkpoint was 903/11,447.
+module and its zero-definition/one-theorem real-MGF bridge.  The live source
+census is 905 facade-reachable modules and 11,458 public declarations; the
+immediately preceding algebraic moment-polynomial checkpoint was 904/11,457,
+the preceding complex value-completion checkpoint was 903/11,448, and the
+preceding exact-radius four-theorem checkpoint was 903/11,447.
 The retained
 257-page, 2,438,299-byte A4 PDF, SHA-256
 \nolinkurl{3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980},
@@ -2537,13 +2538,20 @@ removable-origin convention, the whole \nolinkurl{eq:bernoulli-gen}.  This
 does not claim the literal Lean quotient at zero or formalize the Guide's
 nearest-zero proof route; Puiseux claims remain open.  The subsequent
 one-definition/eight-theorem
-\path{GeometricUniformMomentPolynomial.lean} leaf raises the live source
-census to 904/11,457.  It supplies the recursively defined rational polynomial,
-its residual-product recurrence, triangular degree bound, reciprocal-factorial
-value at zero, and the cases \(P_0,\ldots,P_4\).  It does not prove the
-analytic normalization identifying that family with the source moment
-coefficients, nor the leading-coefficient formula and consequent strict
-odd-degree drop.  Hence \nolinkurl{p7:thm:Pn} remains Partial rather than
+\path{GeometricUniformMomentPolynomial.lean} leaf raised the next historical
+source census to 904/11,457.  It supplies the recursively defined rational
+polynomial, its residual-product recurrence, triangular degree bound,
+reciprocal-factorial value at zero, and the cases \(P_0,\ldots,P_4\).  Its
+zero-definition/one-theorem companion
+\path{GeometricUniformMomentPolynomialBridge.lean} raises the live census to
+905/11,458.  Its exhaustive public surface is
+\lean{geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient}, which
+for every real \(\lvert q\rvert<1\) identifies that polynomial with the
+finite-q-Pochhammer normalization of the Taylor coefficient of the actual
+geometric-uniform MGF.  Hence \nolinkurl{p7:eq:Pn-def} is Exact in this real
+contraction regime.  The bridge constructs no complex-q infinite product, and
+the leading-coefficient formula and consequent strict odd-degree drop remain
+absent.  Thus the compound \nolinkurl{p7:thm:Pn} remains Partial rather than
 Exact.  These additions are source-only, and the retained 257-page PDF
 remains explicitly historical; no PDF was built for this update.
 The newest six module counts are
@@ -9358,10 +9366,16 @@ public theorems:
 \path{Fabius.geometricUniformMomentPolynomial_four}.  These declarations
 define the recursive family directly in \(\RationalNumbers[X]\), prove its
 division-free residual-product recurrence, triangular degree bound and value
-at zero, and calculate \(P_0,\ldots,P_4\).  They do not identify the family
-with the normalized analytic moment coefficients in
-\nolinkurl{p7:eq:Pn-def}, and they prove neither the leading-coefficient
-formula nor the strict degree drop for odd \(n>1\).  Therefore the compound
+at zero, and calculate \(P_0,\ldots,P_4\).  The exhaustive public surface of
+the companion \path{GeometricUniformMomentPolynomialBridge.lean} is no
+definitions and the single theorem
+\path{Fabius.geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient}.
+For every real \(\lvert q\rvert<1\) and every \(n\), that theorem identifies
+the polynomial evaluation with the finite-q-Pochhammer normalization of the
+\(n\)-th Taylor coefficient of the genuine geometric-uniform MGF.  Therefore
+\nolinkurl{p7:eq:Pn-def} is Exact in this real contraction regime.  It proves
+neither a complex-q infinite-product realization nor the leading-coefficient
+formula and strict degree drop for odd \(n>1\).  Therefore the compound
 frontier label \nolinkurl{p7:thm:Pn} is Partial, not Exact.
 
 \item The five theorems of \path{FinitePolynomialFilterExactness.lean} are

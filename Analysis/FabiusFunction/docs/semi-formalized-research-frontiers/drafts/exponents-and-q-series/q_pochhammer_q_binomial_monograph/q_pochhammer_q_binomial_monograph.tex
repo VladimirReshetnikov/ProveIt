@@ -11303,8 +11303,9 @@ $q=0$ and negative contractions.  The additional declarations
 \path{tendstoLocallyUniformly_prefix_sinc_charFun} and
 \path{tendstoUniformlyOn_prefix_sinc_charFun} give local uniform convergence
 of the full prefixes on the real frequency line and uniform convergence on
-every compact real frequency set.  There is still no named centered or MGF
-bridge, no packaged complex-frequency full-phase-prefix statement, and no
+every compact real frequency set.  There is still no named centered transform
+or complex-parameter MGF-product bridge, no packaged complex-frequency
+full-phase-prefix statement, and no
 outside formula, pole divisor, or zero--pole exchange.  Thus
 \Cref{thm:qF-spectral} remains only partially formalized even though its
 inside-disk pointwise factorization and outer normal convergence are exact.
@@ -15539,9 +15540,13 @@ event, not the stated closed-tail equality}\\[2pt]
 {\footnotesize\texttt{ProbabilityLaplaceMoments}; the integral bridge is
 formalized, but not the displayed tail-moment formula}\\[2pt]
 \Cref{thm:geometric-uniform-mgf} & \statuspartial &
-\texttt{complexMGF\_weightedSumDistribution\_eq\_complexGeneratingFunction}\newline
-{\footnotesize\texttt{FabiusComplexMGF}; only the half-base transform is present,
-not the general complex-$q$ product and recurrence}\\[2pt]
+\texttt{complexMGF\_weightedSumDistribution\_eq\_complexGeneratingFunction},
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}mgf\_\allowbreak{}taylorCoefficient}\newline
+{\footnotesize\texttt{FabiusComplexMGF};
+\texttt{GeometricUniformMomentPolynomialBridge}; the half-base transform and
+real-$q$, $\AbsoluteValue q<1$ MGF Taylor normalization are present, but not the
+general complex-$q$ product, its direct recurrence, entireness, formal
+uniqueness, and rationality package}\\[2pt]
 \Cref{lem:fabius-moment-dilation} & \statuspartial &
 \texttt{fabiusRecurrenceSequence\_recurrence}\newline
 {\footnotesize\texttt{FabiusRecurrenceSequence}; coefficient-level half-base
@@ -15717,19 +15722,27 @@ zero--pole exchange are not packaged}\\[2pt]
 \texttt{geometricUniformMomentPolynomial\_\allowbreak{}one},
 \texttt{geometricUniformMomentPolynomial\_\allowbreak{}two},
 \texttt{geometricUniformMomentPolynomial\_\allowbreak{}three},
-\texttt{geometricUniformMomentPolynomial\_\allowbreak{}four}\newline
-{\footnotesize\texttt{GeometricUniformMomentPolynomial}; the recursively
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}four}, and
+\texttt{geometricUniformMomentPolynomial\_\allowbreak{}eval₂\_\allowbreak{}eq\_\allowbreak{}mgf\_\allowbreak{}taylorCoefficient}\newline
+{\footnotesize\texttt{GeometricUniformMomentPolynomial};
+\texttt{GeometricUniformMomentPolynomialBridge}; the recursively
 defined polynomial family, its zeroth value and residual-product recurrence,
 the degree bound, the specialization at $q=0$, and the displayed cases
-$\mathcal P_1$ through $\mathcal P_4$ are exact.  The identification with
-$\QPochhammer{q}{q}{n}(1-q)^{-n}a_n(q)$, hence with the analytic
-moment-generating product, is not formalized}\\[2pt]
+$\mathcal P_1$ through $\mathcal P_4$ are exact.  For every real $\AbsoluteValue q<1$,
+including $q=0$ and negative $q$, the bridge identifies this polynomial with
+the $\QPochhammer{q}{q}{n}(1-q)^{-n}$ normalization of the genuine
+geometric-uniform MGF Taylor coefficient.  The manuscript's complex-$q$
+infinite-product coefficient is not defined or identified, so the compound
+label remains Partial}\\[2pt]
 \Cref{prop:qF-P-degree-sharp} & \statusnone & ---\\[2pt]
 \Cref{cor:qF-halfbase-dictionary} & \statuspartial &
 \texttt{fabiusAtInverseTwoPow\_eq\_halfMoment},
 \texttt{halfQPochhammer\_eq\_mersenne\_div}\newline
-{\footnotesize\texttt{MomentPowerSeries}; \texttt{HalfQBinomial}; the polynomial
-$\mathcal P_n(q)$ and general-$q$ endpoint formula are absent}\\[2pt]
+{\footnotesize\texttt{MomentPowerSeries}; \texttt{HalfQBinomial};
+\texttt{GeometricUniformMomentPolynomial};
+\texttt{GeometricUniformMomentPolynomialBridge}; the polynomial family and
+its genuine-MGF normalization at $q=1/2$ are formalized, but the general-$q$
+endpoint formula tying it to inverse-geometric CDF values is absent}\\[2pt]
 \Cref{thm:universal-functoriality} & \statuspartial &
 \texttt{map\_gaussianBinomial}\newline
 {\footnotesize\texttt{FiniteQBinomialCore}; functoriality is formalized, but not

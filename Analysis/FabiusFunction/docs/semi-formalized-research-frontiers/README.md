@@ -83,21 +83,31 @@ census at the exact-radius four-theorem checkpoint was 903 modules and 11,447
 public declarations; the value-completion theorem brought the next historical
 checkpoint to 903 modules and 11,448 public declarations.
 
-The newest source-only addition is
+The subsequent source-only algebraic addition is
 `FabiusFunction.GeometricUniformMomentPolynomial`, with one definition and
 eight theorems. It defines the recursive rational polynomial family and proves
 its base case, residual-product recurrence, triangular degree bound,
 reciprocal-factorial value at zero, and the explicit cases `P1` through `P4`.
 Together with the zero theorem this is the complete displayed `P0`--`P4`
-algebraic surface. It does not identify the recursive family with the
-normalized analytic Taylor or moment coefficients, and it does not prove the
-leading-coefficient formula or the resulting strict odd-degree drop. Thus
-`p7:thm:Pn` remains **Partial**, with only its algebraic recurrence, degree
-bound, zero value, and small-case clauses supplied. This
-one-module/nine-declaration increment brings the live
-documentation census to 904 modules and 11,457 public declarations. The
-retained frontier, primary, walkthrough, and geometric-q PDFs predate this
-source-only overlay and claim no render parity.
+algebraic surface. That one-module/nine-declaration increment produced the
+historical checkpoint 904 modules and 11,457 public declarations.
+
+The newest companion
+`FabiusFunction.GeometricUniformMomentPolynomialBridge` has no public
+definitions and exactly one public theorem,
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`.
+For every real `q` with `|q| < 1` and every `n`, it identifies the recursive
+polynomial with the finite-q-Pochhammer normalization of the `n`th Taylor
+coefficient of the actual geometric-uniform moment generating function.
+Thus `p7:eq:Pn-def` is **Exact** in this real contraction regime, including
+signed `q` and `q = 0`. The bridge does not construct the manuscript's
+complex-q infinite product. The leading-coefficient formula and resulting
+strict odd-degree drop remain unproved, so the compound `p7:thm:Pn` remains
+**Partial** with only those clauses outstanding. This exhaustive
+zero-definition/one-theorem bridge brings the live documentation census to
+905 modules and 11,458 public declarations. The retained frontier, primary,
+walkthrough, and geometric-q PDFs predate these source-only overlays and claim
+no render parity.
 
 The preceding source-only addition is
 `FabiusFunction.GeometricRichardsonGenerating`, with three definitions and

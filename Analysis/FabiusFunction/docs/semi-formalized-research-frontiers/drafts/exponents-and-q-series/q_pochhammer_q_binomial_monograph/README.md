@@ -159,7 +159,7 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 904 modules and 11,457 public declarations, with no
+audit now contains 905 modules and 11,458 public declarations, with no
 documentation gaps. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
@@ -191,7 +191,7 @@ expansions remain open. That sibling promotion produced the historical
 903/11,448 checkpoint and changed none of the q-series forward-status or
 source-concordance totals.
 
-The newest source-only q-series leaf is
+The newest q-series tranche starts with
 `GeometricUniformMomentPolynomial.lean`, with one definition,
 `geometricUniformMomentPolynomial`, and exactly eight theorems:
 `geometricUniformMomentPolynomial_zero`,
@@ -204,16 +204,24 @@ The newest source-only q-series leaf is
 `geometricUniformMomentPolynomial_four`.  It formalizes the recursive
 rational polynomial family, the zeroth value and residual-product recurrence,
 the triangular degree bound, the specialization at zero, and all displayed
-cases through the fourth polynomial.  It deliberately does not identify that
-recursive family with the normalized coefficients `a_n(q)` of the analytic
-moment-generating product.  Consequently `thm:qF-moment-polynomial` moves
-from None to Partial, not Exact; `prop:qF-P-degree-sharp` remains None, and
-`cor:qF-halfbase-dictionary` remains Partial.  This one-definition,
-eight-theorem addition brings the live census to 904/11,457 and changes the
-forward ledger by exactly one None-to-Partial move.  The source concordance
-is unchanged because its provenance disposition remains a human-proved
-frontier result.  The retained historical PDF renders neither this tranche
-nor the preceding Lambert tranche, and no source/PDF parity is claimed.
+cases through the fourth polynomial.  The downstream
+`GeometricUniformMomentPolynomialBridge.lean` leaf has zero definitions and
+exactly one public theorem,
+`geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`.  For every
+real `q` with `|q| < 1`, it identifies evaluation of the recursive polynomial
+with the finite-q-Pochhammer normalization of the Taylor coefficient of the
+genuine geometric-uniform MGF.  The statement is regular at `q = 0` and also
+includes signed negative contractions.  It does not construct or identify
+the manuscript's complex-`q` infinite-product coefficient, so
+`thm:qF-moment-polynomial` remains Partial rather than Exact;
+`prop:qF-P-degree-sharp` remains None, and `cor:qF-halfbase-dictionary`
+remains Partial at its still-missing endpoint formula even though the
+half-base polynomial and genuine-MGF normalization are now available.  The
+base leaf produced the historical 904/11,457 checkpoint and the exact
+None-to-Partial move; the bridge raises the live census to 905/11,458 without
+changing the forward ledger or source concordance.  The retained historical
+PDF renders neither q-series leaf nor the preceding Lambert tranche, and no
+source/PDF parity is claimed.
 
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero

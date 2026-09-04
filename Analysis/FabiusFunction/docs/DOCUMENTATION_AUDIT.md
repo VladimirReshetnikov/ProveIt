@@ -109,10 +109,11 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live 2026-09-04 inventory contains 904 modules and 11,457 lexically
+The live 2026-09-04 inventory contains 905 modules and 11,458 lexically
 visible public declarations, with zero missing module headers and zero missing
-doc comments.  The immediately preceding Lambert-series checkpoint of 903
-modules and 11,448 declarations remains historical.  The post-merge 2026-09-01
+doc comments.  The immediately preceding algebraic moment-polynomial checkpoint
+of 904 modules and 11,457 declarations and the earlier Lambert-series checkpoint
+of 903 modules and 11,448 declarations remain historical.  The post-merge 2026-09-01
 inventory of 675 modules and 8,909
 declarations remains a historical checkpoint: relative to the 610/8,318
 activation checkpoint, that tree added sixty-five modules and 591
@@ -307,7 +308,7 @@ higher/convergent Puiseux expansion is included.
 
 `GeometricUniformMomentPolynomial.lean` adds one source module and nine public
 declarations to the historical 903/11,448 Lambert checkpoint, bringing the
-live census to 904/11,457.  Its exhaustive 1+8 surface is the definition
+next historical checkpoint to 904/11,457.  Its exhaustive 1+8 surface is the definition
 `geometricUniformMomentPolynomial` and the theorems
 `geometricUniformMomentPolynomial_zero`,
 `geometricUniformMomentPolynomial_succ`,
@@ -324,12 +325,32 @@ give `P_0=1` and the residual finite q-Pochhammer recurrence; the degree theorem
 gives `natDegree P_n ≤ n.choose 2`; evaluation at zero gives
 `P_n(0)=1/(n+1)!`; and the four final theorems give the displayed values
 `P_1` through `P_4`.  These exactly close the algebraic clauses of monograph
-label `thm:qF-moment-polynomial`, including the `q=0` boundary.  The canonical
-label remains **Partial**, however, because the source defines its polynomial
-by the analytic normalization `((q;q)_n/(1-q)^n)a_n(q)` and no theorem yet
-identifies those analytic/MGF coefficients with the recursive Lean family.
-The leading and subleading coefficients and exact degree asserted by
-`prop:qF-P-degree-sharp` remain unformalized.
+label `thm:qF-moment-polynomial`, including the `q=0` boundary.  At this
+checkpoint the canonical label moved from None to **Partial**, because its
+analytic coefficient normalization had not yet been identified with the
+recursive Lean family.
+
+#### Real-MGF normalization bridge
+
+`GeometricUniformMomentPolynomialBridge.lean` adds one source module and one
+public theorem to the historical 904/11,457 algebraic checkpoint, bringing the
+live census to 905/11,458.  Its exhaustive 0+1 surface is
+`geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`; every helper
+declaration in the module is private and excluded from the public count.
+
+For every real `q` with `|q| < 1` and every natural index, the theorem identifies
+evaluation of the recursive rational polynomial by the exact formula
+`P_n(q)=((q;q)_n/(1-q)^n)·(iteratedDeriv n M_q 0/n!)`, where `M_q` is the genuine
+geometric-uniform MGF.  The sharp domain includes `q=0` and negative
+contractions.  This supplies the
+analytic normalization in frontier label `p7:thm:Pn` throughout its real
+probability-law regime, but that label remains **Partial** because its
+leading-coefficient formula and consequent strict odd-degree drop are absent.
+Monograph label `thm:qF-moment-polynomial` also remains **Partial**: its source
+coefficient is defined through a complex-parameter locally-uniform infinite
+product, which the real-MGF bridge neither constructs nor identifies.  The
+leading and subleading coefficients and exact degree asserted by
+`prop:qF-P-degree-sharp` remain unformalized, so that label remains **None**.
 
 The one-definition/eight-theorem
 `RvachevSuperconvergentSynthesis.lean` leaf contributes
@@ -1012,7 +1033,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 904/11,457
+historical 675/8,909 census and requires refresh against the live 905/11,458
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity

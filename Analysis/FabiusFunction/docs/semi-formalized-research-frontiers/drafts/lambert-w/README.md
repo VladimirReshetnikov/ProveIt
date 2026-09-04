@@ -115,12 +115,19 @@ brought the next historical checkpoint to 903 modules and 11,448 public
 declarations.  The later sibling
 `FabiusFunction.GeometricUniformMomentPolynomial` module has one definition
 and eight theorems for its recursive polynomial, residual-product recurrence,
-degree bound, value at zero, and first four nonconstant cases.  It raises the
-live documentation census to 904 modules and 11,457 public declarations; its
-external source label `p7:thm:Pn` remains Partial because the analytic
-moment-coefficient normalization and leading/odd-degree clause are not part of
-that algebraic leaf.  The sibling source-only addition is likewise absent from the retained
-historical PDFs.
+degree bound, value at zero, and first four nonconstant cases.  That algebraic
+leaf produced the historical checkpoint 904 modules and 11,457 public
+declarations.  Its companion
+`FabiusFunction.GeometricUniformMomentPolynomialBridge` has the exhaustive
+surface zero definitions and one theorem,
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`.
+For every real `|q| < 1`, it supplies the actual-MGF normalization and makes
+external source label `p7:eq:Pn-def` Exact in that real regime.  It constructs
+no complex-q infinite product, and the leading-coefficient and strict
+odd-degree clauses remain absent; therefore the compound `p7:thm:Pn` remains
+Partial.  This bridge raises the live documentation census to 905 modules and
+11,458 public declarations.  Both sibling source-only additions are likewise
+absent from the retained historical PDFs.
 
 The exact raw second-order package is `LambertWCurvature.lean`.  Its
 principal API is `deriv_principalLambertW`,

@@ -63,7 +63,7 @@ module tranches and the zero-definition, three-theorem
 crosswalk. That source is a source-only successor to the fresh artifact receipt
 and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The current Lean audit
-contains 904 facade-reachable modules and 11,457 public declarations, with no
+contains 905 facade-reachable modules and 11,458 public declarations, with no
 missing module headers or declaration documentation.
 
 The ten-declaration increase is the sibling source-only
@@ -108,7 +108,7 @@ No retained PDF in this group renders this unrelated source-only promotion,
 and none was rebuilt for this update.  It is the historical 903/11,448
 checkpoint immediately preceding the current q-series leaf.
 
-The current leaf is `GeometricUniformMomentPolynomial.lean`, with the one
+The current q-series tranche starts with `GeometricUniformMomentPolynomial.lean`, with the one
 definition `geometricUniformMomentPolynomial` and the eight theorems
 `geometricUniformMomentPolynomial_zero`,
 `geometricUniformMomentPolynomial_succ`,
@@ -120,15 +120,20 @@ definition `geometricUniformMomentPolynomial` and the eight theorems
 `geometricUniformMomentPolynomial_four`.  This exhaustive API proves the
 recursive rational polynomial, zeroth value, residual-product recurrence,
 triangular degree bound, specialization at zero, and the first four
-nonconstant examples.  It does not prove that this recursive family is the
-normalized analytic coefficient family `a_n(q)` of the geometric-uniform
-moment-generating product.  Thus `thm:qF-moment-polynomial` is Partial, not
-Exact; all of its algebraic clauses are exact, while that analytic
-normalization bridge is missing.  The sharp-degree proposition remains None.
-The one-definition/eight-theorem tranche gives the live 904/11,457 census and
-changes the forward ledger only by moving this row from None to Partial.  The
-source concordance remains unchanged, and no retained PDF renders the new
-source-only crosswalk.
+nonconstant examples.  The downstream
+`GeometricUniformMomentPolynomialBridge.lean` leaf has zero definitions and
+the single public theorem
+`geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`: for every
+real `|q| < 1`, including `q = 0` and negative `q`, it proves the exact
+finite-q-Pochhammer normalization by the Taylor coefficient of the genuine
+geometric-uniform MGF.  The manuscript's complex-`q` product identification
+is still absent.  Thus `thm:qF-moment-polynomial` remains Partial, not Exact;
+all algebraic clauses and the real genuine-MGF bridge are exact, while the
+complex analytic bridge is open.  The sharp-degree proposition remains None.
+The base leaf gives the historical 904/11,457 checkpoint and moved the row
+from None to Partial; the bridge gives the live 905/11,458 census without
+changing the forward ledger.  The source concordance remains unchanged, and
+no retained PDF renders the new source-only crosswalk.
 
 ## Detailed package record
 

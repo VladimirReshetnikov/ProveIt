@@ -829,23 +829,28 @@ Thus `is:p3:cor:forced-superconvergence` and
 concordance. This source postdates the retained Representation and inverse
 PDFs, which remain historical artifacts rather than renders of the promotion.
 The corresponding historical documentation checkpoint was 671 modules and
-8,858 public declarations. The later live repository census is 904 modules
-and 11,457 public declarations. Its newest one-module/nine-declaration
-increment is the sibling
+8,858 public declarations. The later live repository census is 905 modules
+and 11,458 public declarations. The sibling
 `FabiusFunction.GeometricUniformMomentPolynomial` module (one definition and
-eight theorems). It supplies the recursive rational polynomial, residual-product
-recurrence, triangular degree bound, value at zero, and explicit cases `P0`
-through `P4`, but not the analytic moment-coefficient normalization or the
-leading-coefficient and strict odd-degree clauses; accordingly `p7:thm:Pn`
-remains Partial. This sibling source-only module is not rendered by the
-retained Representation or inverse PDFs. The immediately preceding complex
-Bernoulli value-completion
-checkpoint was 903 modules and 11,448 public declarations. The earlier
+eight theorems) produced the historical 904/11,457 checkpoint. It supplies the
+recursive rational polynomial, residual-product recurrence, triangular degree
+bound, value at zero, and explicit cases `P0` through `P4`. Its companion
+`FabiusFunction.GeometricUniformMomentPolynomialBridge` has the exhaustive
+surface zero definitions and one theorem,
+`Fabius.geometricUniformMomentPolynomial_eval₂_eq_mgf_taylorCoefficient`.
+For every real `|q| < 1`, that theorem supplies the actual-MGF normalization,
+making `p7:eq:Pn-def` Exact in that real regime, including signed `q` and
+`q = 0`. It supplies no complex-q infinite-product realization. The
+leading-coefficient and strict odd-degree clauses remain absent, so the
+compound `p7:thm:Pn` remains Partial. These sibling source-only modules are
+not rendered by the retained Representation or inverse PDFs. The immediately
+preceding complex Bernoulli value-completion checkpoint was 903 modules and
+11,448 public declarations. The earlier
 ten-declaration increment was the
 unrelated sibling `FabiusFunction.GeometricRichardsonGenerating` module (three
 definitions and seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`. This promotion is not rendered
-by the retained Representation or inverse PDFs. The newest three declarations
+by the retained Representation or inverse PDFs. Three other declarations
 strengthen the existing sibling `FabiusFunction.GaussianBinomialCumulants`
 module with second-derivative, raw-second-moment, and variance-numerator
 identities; they likewise do not change the Representation or inverse results.
