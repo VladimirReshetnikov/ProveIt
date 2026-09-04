@@ -49551,6 +49551,72 @@ which is the first formula.  Expanding $\sqrt{1+w}=\sum_{n\ge0}\binom{1/2}{n}w^{
 $w=-4c\sigma q/A^{2}$ and multiplying by $A/(2c)$ gives the second.
 \end{proof}
 
+\begin{proposition}[The coefficients of the quadratic core are Catalan numbers]
+\label{p6:prop:quadratic-core-catalan}
+For every $n\ge1$,
+\begin{equation}\label{p6:eq:half-binom-catalan}
+ \binom{1/2}{n}=(-1)^{n-1}\,\mathrm{Cat}_{n-1}\,2^{-(2n-1)},
+\end{equation}
+where $\mathrm{Cat}_{k}=\frac1{k+1}\binom{2k}{k}$ is the $k$th Catalan number, and
+consequently the convolution that \eqref{p6:eq:quadratic-model} imposes on its
+coefficients,
+\begin{equation}\label{p6:eq:half-binom-convolution}
+ \sum_{j=1}^{n-1}\binom{1/2}{j}\binom{1/2}{n-j}
+ =-2\binom{1/2}{n}\qquad(n\ge2),
+\end{equation}
+is precisely the Catalan recursion $\mathrm{Cat}_{m+1}=\sum_{i+j=m}\mathrm{Cat}_{i}\mathrm{Cat}_{j}$.
+\end{proposition}
+
+\begin{proof}
+Both sides of \eqref{p6:eq:half-binom-catalan} satisfy the same first-order
+recursion and agree at $n=1$: writing $g_n$ for the right-hand side,
+$\binom{1/2}{n+1}=\binom{1/2}{n}(1/2-n)/(n+1)$, while
+$(n+2)\mathrm{Cat}_{n+1}=2(2n+1)\mathrm{Cat}_{n}$ --- the latter obtained by cancelling $n+1$
+from the central binomial recursion $(n+1)\binom{2n+2}{n+1}=2(2n+1)\binom{2n}{n}$ ---
+and these two ratios agree after the sign and the power of $2$ are accounted
+for.  Given \eqref{p6:eq:half-binom-catalan}, substituting into the left side of
+\eqref{p6:eq:half-binom-convolution}, with $j=i+1$ and $n=m+2$, gives
+$(-1)^{m}2^{-(2m+2)}\sum_{i+j=m}\mathrm{Cat}_{i}\mathrm{Cat}_{j}$, and the right side is
+$-2(-1)^{m+1}\mathrm{Cat}_{m+1}2^{-(2m+3)}=(-1)^{m}\mathrm{Cat}_{m+1}2^{-(2m+2)}$; the two agree
+exactly when $\mathrm{Cat}_{m+1}=\sum_{i+j=m}\mathrm{Cat}_{i}\mathrm{Cat}_{j}$, which is the Catalan
+recursion.
+\end{proof}
+
+\begin{remark}[What the reduction buys, and the formalization]
+\label{p6:rem:quadratic-core-lean}
+The proof of \cref{p6:lem:quadratic-core} given above is analytic: it passes
+through the binomial series for $\sqrt{1+w}$, hence through a question of
+convergence that the formal statement does not need.  \Cref{p6:prop:quadratic-core-catalan}
+removes that detour.  The only property of the coefficient family the
+quadratic model actually uses is the convolution
+\eqref{p6:eq:half-binom-convolution}, and under
+\eqref{p6:eq:half-binom-catalan} that convolution is a finite combinatorial
+recursion.  So \cref{p6:lem:quadratic-core}, and with it the deepest-pole
+family of \cref{p6:thm:deepest-pole} in both the $\Gamma$ and the Barnes
+$G$ cases, rests on no analysis at all.
+
+This is machine-checked, in \path{QuadraticCoreCatalan.lean}, over an arbitrary
+field of characteristic zero, and as a Mathlib-only leaf with no dependence on
+the rest of the corpus.  \path{Fabius.catalan_two_step} is the ratio recursion;
+\path{Fabius.quadHalf} is the coefficient family, indexed from zero, defined by
+the closed form \eqref{p6:eq:half-binom-catalan};
+\path{Fabius.quadHalf_antidiagonal} is the convolution
+\eqref{p6:eq:half-binom-convolution};
+\path{Fabius.quadHalf_rat} is \eqref{p6:eq:half-binom-catalan} itself, 
+identifying that family over $\Rat$ with $\binom{1/2}{n+1}$ as defined by the
+falling product; and \path{Fabius.quadCoef_zero} together with
+\path{Fabius.quadCoef_rec} are the two halves of \cref{p6:lem:quadratic-core}
+--- that $\epsilon_n=((-4c\sigma)^{n}/2c)\binom{1/2}{n}A^{-(2n-1)}$ solves
+\eqref{p6:eq:quadratic-model} order by order.  The index is shifted so that the
+convolution runs over $\texttt{Finset.antidiagonal}$ and the sum
+\eqref{p6:eq:half-binom-convolution}, which is empty at $n=1$, is carried by the
+separate statement \path{Fabius.quadCoef_zero} rather than by a boundary case.
+
+What is \emph{not} formalized: that this family is the deepest-pole family of
+the two inversions, which is \cref{p6:thm:deepest-pole} and needs the
+transseries apparatus.  The module supplies only the algebraic core.
+\end{remark}
+
 \begin{theorem}[The deepest pole is attained, with an explicit coefficient]
 \label{p6:thm:deepest-pole}
 \leavevmode
