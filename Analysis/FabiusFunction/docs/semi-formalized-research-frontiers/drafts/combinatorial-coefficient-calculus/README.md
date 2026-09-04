@@ -29,11 +29,13 @@ mode this package is now expected to pass.
 
 | Directory | Document |
 | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — the evolving source and a historical 174-page A4 PDF |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — the evolving source and the retained upstream A4 PDF |
 
-The TeX has changed since the committed PDF was rendered. PDF rebuilding is
-currently skipped at the user's request, so the pair has no current
-render-parity claim. Standalone checksum files are retired; provenance is kept
+Upstream supplied a rebuilt PDF at its checkpoint. The latest merged source
+includes subsequent Stirling and Nörlund changes, so that retained PDF is not
+claimed to render the current source. Further PDF building remains skipped in
+this work at the user's request. Standalone
+checksum files are retired; provenance is kept
 in Git and the source inventory, and the validator does not maintain or require
 file digests.
 
@@ -113,17 +115,37 @@ complete human proofs and exact declaration crosswalks. Three private rational
 helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
 caller refactor has now passed its own direct Lean check as well.
 
-The register contains 204 rows: 59 marked Lean, 34 partial, and 111 without a
-Lean counterpart. The earlier classifications are inherited; this checkpoint
-adds three compiler-backed entries and does not claim a fresh build of the whole
-corpus. The final structural/provenance validator passes with 204 adjacent
+The merged register contains 207 rows: 62 marked Lean, 35 partial, and 110
+without a compiler-verified counterpart. The grid and CRT certificates retain
+two compiler-backed entries alongside the incoming classifications; this is
+not a fresh build of the whole corpus. The earlier 204-row checkpoint had
+63 Lean, 32 partial, and 109 none after correcting its stale header.
+The final structural/provenance validator passes with 207 adjacent
 proofs, 27 disposition records, and six original-source inventory rows. PDF
-rebuilding remains deferred at the user's request.
+building remains skipped for this latest source-only synchronization.
 
 The same-day upstream crosswalk connects the Bell normalization and unit-series
 coefficient formulas to `UnitSeriesBellCoefficients`; its labelled-set partition
 interpretation remains unformalized. That partial result is included in the
 register totals above.
+
+## Coefficient-calculus campaign (2026-09-04)
+
+Four new leaf modules supply seventeen public theorem statements, with complete
+human proofs and exact declaration names in the manuscript. `NewtonReciprocal`
+has passed focused Lean compilation, including the actual truncated update.
+`StirlingSymmetricFunctions`, `LagrangeInversionUniqueness`, and
+`StirlingSecondReverseRowIdentity` have received independent source/API reviews;
+their compiler validation is pending. The register preserves that distinction.
+The two second-kind symmetric-function formulas are shared with the compiled
+upstream `StirlingCompleteHomogeneous` module; their duplicate implementations
+were removed from this campaign's leaf.
+
+The campaign also repairs the Laplace theorem with explicit analytic endpoint
+hypotheses and full remainder estimates, removes contradictory duplicate
+crosswalks, and corrects boundary cases and coefficient-ring assumptions.
+The brief [campaign status](Combinatorial_Coefficient_Calculus/FORMALIZATION_STATUS.md)
+records remaining obligations without duplicating the canonical claim register.
 
 `ExponentialRescaling` has passed a focused build. Its four public lemmas give
 the rescaling chain rule over every commutative semiring and exponential
@@ -131,20 +153,40 @@ specializations over every commutative rational algebra. They replace the
 rational-only helpers in `NorlundDiagonal` without changing their names. The
 manuscript supplies full coefficient proofs and an exact crosswalk.
 
-The pending `AbelPolynomialSeries` source constructs a solution over every
+The compiled `AbelPolynomialSeries` source constructs a solution over every
 commutative rational algebra, derives coefficients for every solution, and
 proves the full EGF and binomial identity including degree zero. The new
 `BernoulliFormalLog` source derives the rational formal logarithm of the
 Bernoulli kernel using the existing recurrence-to-logarithm bridge. Its
 coefficient formula separates degree zero and preserves the distinction between
-the two degree-one Bernoulli conventions. These two modules and the affected
-Norlund, Lambert, and ThueMorse callers still await compilation; independent
-source reviews are not compiler validation, and their register classifications
-have not been promoted on that basis.
+the two degree-one Bernoulli conventions. The Abel target passed a focused
+build; `BernoulliFormalLog` and the complete affected-dependent closure have
+not been rebuilt for this checkpoint. Independent source reviews are not
+compiler validation, and no further register row is promoted here.
+
+`GridEvaluationCertificate` and `IntegerCRTCertificate` supply nine compiled
+public theorems, each with only the standard project axioms. Their full human
+statements and proofs remain grouped in the two existing certificate theorems:
+grid uniqueness over any integral domain, and product-divisibility plus
+zero/equality certificates for signed pairwise-coprime integer moduli.
+The zero test uses the stronger full-product bound. The adjacent discussion now
+distinguishes probabilistic identity testing from exact grid certificates.
 
 The human moment-cumulant proof now states its normalization and positive-degree
 boundaries explicitly, with formal logarithm identities separated from the
 still-open set-partition interpretation. The Nörlund proof now derives the
 logarithmic coefficients without dividing by the nonunit formal variable.
-Arbitrary-order Nörlund polynomials and their analytic convergence remain open
-formalization work.
+The new `NorlundGeneralized` source constructs actual polynomials at every
+scalar order over a commutative rational algebra. Its source-reviewed API
+includes the full EGF, Appell derivative, translation, convolution, natural-order
+polynomial compatibility, explicit cumulants, and the complete Bell formula.
+`BernoulliFormalLog` now transports the logarithm and its coefficients along
+arbitrary coefficient ring homomorphisms and shares the kernel normalization
+lemma. These extensions have not yet compiled, so no corresponding coverage
+promotion is claimed. General-order finite differences, the literal
+multiplicity-vector expansion, and analytic convergence remain separate
+formalization obligations.
+
+The human exposition gives the normalized complex logarithm construction on its
+disk separately from the formal algebra, states the coefficient-base-change
+lemma with proof, and includes the degree-zero multiplicity convention.
