@@ -13,6 +13,9 @@ echo
 echo "== crosswalk names =="
 python "$D/audit_crosswalk_names.py" || FAIL=1
 echo
+echo "== crosswalk attribution and namespace heads =="
+python "$D/audit_crosswalk_attribution.py" || FAIL=1
+echo
 python "$D/audit_duplicate_names.py" || FAIL=1
 echo
 python "$D/audit_docstring_names.py" || FAIL=1
