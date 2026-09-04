@@ -134,6 +134,7 @@ import FabiusFunction.LambertWLogBounds
 import FabiusFunction.LambertWNegativeBounds
 import FabiusFunction.LambertWAdditionIdentity
 import FabiusFunction.LambertWBranchPairing
+import FabiusFunction.LambertWGapBijection
 import FabiusFunction.LowerLambertW
 import FabiusFunction.GeneralizedLambertCoordinate
 import FabiusFunction.LambertBranchDichotomy
@@ -255,6 +256,7 @@ import FabiusFunction.ThueMorseSymmetricDifference
 import FabiusFunction.ThueMorseAutocorrelation
 import FabiusFunction.ThueMorseOverlapFree
 import FabiusFunction.ThueMorseRecurrence
+import FabiusFunction.ThueMorseRecurrenceGap
 import FabiusFunction.ThueMorseMahler
 import FabiusFunction.ThueMorseBooleanMobius
 import FabiusFunction.ThueMorseMultinomial

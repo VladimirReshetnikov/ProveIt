@@ -4565,10 +4565,26 @@ forms &
 \decl{eq\_neg\_gap\_div\_mul\_exp},
 \decl{principalLambertW\_lowerLambertW\_eq\_of\_exp\_gap} (module
 \lean{LambertWBranchPairing}) &
-Forward direction only: the guide's converse, that every \(\Delta>0\) arises
-from exactly one \(x\in(-1/\EulerE,0)\), is not formalized.  The whole
-computation is \(\Wm=\Wz\EulerE^\Delta\) from dividing the two defining
-equations.\\
+Exact for the forward direction.  The whole computation is
+\(\Wm=\Wz\EulerE^\Delta\) from dividing the two defining equations.\\
+\addlinespace
+\Cref{thm:pairing}, converse: every \(\Delta>0\) inserted into the formulas
+produces one and only one \(x\in(-1/\EulerE,0)\), with the displayed values
+equal to \(\Wz(x)\) and \(\Wm(x)\) &
+\decl{gapPrincipal}, \decl{gapLower}, \decl{gapArg} (the three formulas as
+functions of \(\Delta\)), \decl{branchGap} (the map
+\(x\mapsto\Wz(x)-\Wm(x)\)); \decl{gapArg\_mem\_Ioo},
+\decl{principalLambertW\_gapArg}, \decl{lowerLambertW\_gapArg},
+\decl{branchGap\_gapArg}, \decl{gapArg\_branchGap}; the two directions
+packaged as \decl{branchGap\_invOn} and \decl{branchGap\_bijOn} (module
+\lean{LambertWGapBijection}) &
+Exact, and stated as a bijection: \(x\mapsto\Delta\) is a bijection from
+\((-1/\EulerE,0)\) onto \((0,\infty)\) with the explicit inverse
+\(\Delta\mapsto a(\Delta)\EulerE^{a(\Delta)}\), \(a(\Delta)=-\Delta/(\EulerE^\Delta-1)\).
+The proof is uniqueness on each branch: \(b(\Delta)=a(\Delta)\EulerE^\Delta\)
+equals \(a(\Delta)-\Delta\), so \(b\EulerE^b=a\EulerE^a\), and
+\(-1<a<0\), \(b<-1\) are the tangent-line inequalities
+\(\Delta<\EulerE^\Delta-1\) and \(\EulerE^\Delta(1-\Delta)<1\).\\
 \addlinespace
 \Cref{thm:W0negativebounds}: for \(-1/\EulerE<x<0\),
 \(-1+\sqrt{1+\EulerE x}<\Wz(x)<-1+\sqrt{2(1+\EulerE x)}\) and \(\Wz(x)<x\) &
@@ -4585,9 +4601,8 @@ are the exponential inequalities \(\EulerE^s>1+s\) and
 \bottomrule
 \end{longtable}
 
-Not formalized, in the order they appear above: the converse half of
-\Cref{thm:pairing} (that every gap \(\Delta>0\) arises from exactly one
-\(x\)), the moments of \Cref{sec:integrals}, the local Taylor
+Not formalized, in the order they appear above: the moments of
+\Cref{sec:integrals}, the local Taylor
 expansion, convergence of the Maclaurin series, the full Puiseux and
 logarithmic asymptotic expansions, the remaining bounds of
 \Cref{sec:bounds} (the two-sided \(W_{-1}\) bound of
