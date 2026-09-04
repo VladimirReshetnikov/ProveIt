@@ -158,9 +158,9 @@ followed by `NorlundGeneralized.lean`, `StirlingSymmetricFunctions.lean`,
 `StirlingSecondReverseRowIdentity.lean`, and
 `TransseriesWrightOmegaTerms.lean`.
 Relative to the
-610/8,318 activation checkpoint, the current tree adds 375 modules and 3,881 declarations.
+610/8,318 activation checkpoint, the current tree adds 393 modules and 4,167 declarations.
 Relative to the earlier 630/8,552 merged checkpoint, concurrent source work
-adds 355 modules and 3,647 declarations.  The post-merge 675/8,909 inventory,
+adds 373 modules and 3,933 declarations.  The post-merge 675/8,909 inventory,
 the intervening 903/11,448 Lambert-series inventory, and the immediately
 preceding 914/11,555 scaled-geometric and 915/11,556 real-MGF-bridge
 checkpoints, together with the incoming branch's 906/11,461 complex-product
@@ -208,7 +208,8 @@ above.  Reconciliation produced the historical merged checkpoint 970/12,056.
 The following seven-module checkpoint was 977/12,133; the two-module
 certificate overlay reached 979/12,142, and the six-module successor was
 985/12,199.  Adding the one-module, 34-declaration `BellSetPartitions` leaf
-gives the current 986/12,233 census.  On the earlier
+gives the historical 986/12,233 census.  The merged current inventory is
+1003/12,485.  On the earlier
 exterior-germ branch, the inner-complex 906/11,461 checkpoint was followed by
 the branch-local 907/11,464 checkpoint; its preceding real-MGF and algebraic
 moment-polynomial checkpoints were 905/11,458 and 904/11,457.  These older
@@ -296,12 +297,20 @@ census had no missing module header or public declaration comment.  This is
 an API/documentation inventory under the source statements' displayed
 hypotheses, not an automatic promotion of broader claims.
 
-#### Current 986/12,233 census
+#### Historical 986/12,233 census
 
 `BellSetPartitions` adds one facade module and 34 explicit public declarations
-to the preceding checkpoint.  The authoritative 986/12,233 audit reports no
+to the preceding checkpoint.  The historical 986/12,233 audit reports no
 missing module header or public declaration comment.  This census update does
 not by itself promote any broader manuscript claim.
+
+#### Current 1003/12,485 census
+
+The fetched mainline overlay and the existing feature-branch union add 17
+facade-reachable modules and 252 public declarations beyond the historical
+986/12,233 checkpoint.  The current source audit reports 1003 modules and
+12,485 explicit public declarations, with no missing module headers or
+declaration comments.
 
 #### Consolidated transseries foundations and corrected flatness
 
@@ -1038,7 +1047,7 @@ or public declaration comment.  The focused-build-verified
 The overlapping incoming route also recorded 943/11,787, 952/11,881, and
 952/11,884 checkpoints, followed by 967/12,001, 969/12,048, and 970/12,051.
 The reconciled 970/12,056 and preceding 977/12,133, 979/12,142, and 985/12,199 checkpoints
-are historical.  The authoritative merged audit is 986/12,233, again with no missing module header or public
+are historical.  The authoritative merged audit is 1003/12,485, again with no missing module header or public
 declaration comment.
 
 `FinitePolynomialFunctional.lean` remains a zero-definition module and now has
@@ -1127,7 +1136,7 @@ historical 944/11,806 inventory; the sixteen-module overlay gave the historical
 The overlapping incoming route recorded 943/11,787, 952/11,881, and
 952/11,884 checkpoints, followed by 967/12,001, 969/12,048, and 970/12,051.
 The reconciled 970/12,056 and preceding 977/12,133, 979/12,142, and 985/12,199 checkpoints
-are historical; the live inventory is 986/12,233, with no documentation gaps.
+are historical; the live inventory is 1003/12,485, with no documentation gaps.
 
 `HalfQBinomialRootSimplicity.lean` has no public definitions and exactly one
 public theorem, `halfQBinomial_sum_rootMultiplicity_two_pow`.  Over `ℚ`, for
@@ -1431,7 +1440,7 @@ delta is the union of the new zero-definition/six-theorem
 `ThueMorseNewmanSelfSimilarity.lean`; it is not fourteen declarations in the
 new module alone.
 
-The live exact-name-deduplicated union is 983 modules and 12,192 public
+The live exact-name-deduplicated union is 1003 modules and 12,485 public
 declarations, with no documentation gaps.
 
 The exhaustive `ProuhetBaseTwoBridge.lean` surface is
@@ -2697,7 +2706,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 986/12,233
+historical 675/8,909 census and requires refresh against the live 1003/12,485
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity

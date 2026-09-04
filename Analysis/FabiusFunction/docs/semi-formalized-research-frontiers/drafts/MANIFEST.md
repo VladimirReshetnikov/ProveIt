@@ -37,7 +37,7 @@ Verified: all five conflict modules (`DerangementNearestInteger`,
 compiled serially under the machine-wide mutex. The aggregate facade and all
 other incoming modules were not compiled in this merge pass.
 
-The lexical documentation baseline is 983 modules / 12,192 declarations, with
+The lexical documentation baseline is 1003 modules / 12,485 declarations, with
 zero documentation gaps; every module is facade-reachable, and the duplicate
 declaration audit passes. The q, inverse, and comb canonical validators pass,
 as does the 23-input inverse source-closure check. The q ledger is

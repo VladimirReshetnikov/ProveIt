@@ -29,7 +29,7 @@ The canonical frontier artifacts are:
 > source predates the later q-Pochhammer overlay and expanded ledger, so it is
 > a historical render and must not be cited as displaying the final source
 > union, including either series/transseries overlay, the historical
-> 952/11,884 and 967/12,001 checkpoints, or the live 986/12,233 census.
+> 952/11,884 and 967/12,001 checkpoints, or the live 1003/12,485 census.
 
 > **Historical publication receipt (2026-09-03).** The most recent pre-`9135bd7e`
 > source is the 17,954-line, 813,297-byte TeX file with SHA-256
@@ -381,8 +381,8 @@ of 77. The eight-theorem Stirling leaf is retained.
 The two certificate leaves added nine public theorems at the historical
 979/12,142 checkpoint. Six further leaves and extensions to existing modules
 then added 57 declarations. The incoming BellSetPartitions module adds 34
-more, giving the current merged inventory of 986/12,233. No new aggregate-build
-or PDF-parity claim is made.
+more, giving the historical 986/12,233 checkpoint. The merged current inventory
+is 1003/12,485. No new aggregate-build or PDF-parity claim is made.
 
 The claim crosswalk remains conservative. The abstract Faà di Bruno result,
 ordinary Bell normalization, and Touchard definition and displayed
@@ -437,7 +437,7 @@ pre-incoming checkpoint, while 952/11,881 is the historical post-incoming
 checkpoint. The two written OrderDual Neumann wrappers and the real-analytic
 Wright omega theorem gave the incoming historical 952/11,884/0
 modules/declarations/missing-comments checkpoint. The live merged census is
-986/12,233/0. The following list records the incoming module surfaces at that
+1003/12,485/0. The following list records the incoming module surfaces at that
 historical checkpoint, not the larger merged surfaces inventoried above.
 The retained PDFs predate the incoming source-only overlay and claim no
 render parity.

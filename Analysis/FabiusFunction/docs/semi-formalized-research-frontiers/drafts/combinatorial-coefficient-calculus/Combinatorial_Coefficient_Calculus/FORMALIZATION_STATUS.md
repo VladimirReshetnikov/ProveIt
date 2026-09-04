@@ -8,7 +8,7 @@ status words are recorded correspondence claims, not a fresh compilation receipt
 
 The merge of main at `da90f69d1` retains the nine compiled grid/CRT certificate
 theorems from `5a685136b`. Its regenerated register has 207 rows: 65 `Lean`,
-35 `partial`, and 107 `none`; the corpus census is 986 modules and 12,233 public
+35 `partial`, and 107 `none`; the corpus census is 1003 modules and 12,485 public
 declarations. The pinned checkpoint counts and pending-build receipts below
 describe their historical source states, not a rebuild of this merged tree.
 
