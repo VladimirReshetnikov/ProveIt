@@ -410,6 +410,7 @@ import FabiusFunction.FabiusInverse
 import FabiusFunction.InverseModulus
 import FabiusFunction.FabiusInverseEffectiveContinuity
 import FabiusFunction.FabiusInverseLogarithmicModulus
+import FabiusFunction.FabiusInverseExactDyadicModulus
 import FabiusFunction.MidpointEndpointTransfer
 import FabiusFunction.InverseMidpointDefect
 import FabiusFunction.InverseLayerCake
