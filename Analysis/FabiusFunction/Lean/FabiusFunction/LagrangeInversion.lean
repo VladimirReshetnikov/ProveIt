@@ -18,6 +18,10 @@ The mechanism is that `v^{M+1} g'` has vanishing `M`-th coefficient for every `M
 `M`-th coefficient of a derivative-times-`z` cancels the first term exactly.  Feeding that into the
 truncated substitution expansion `Fabius.coeff_mul_subst_eq` collapses the sum to a single term.
 
+The elementary identities and the canonical solution construction work over every commutative
+ring.  Only the coefficient-calculus sections require a `ℚ`-algebra: their proof divides by a
+positive integer, even though the final coefficient identities are written without division.
+
 ## Main results
 
 * `constantCoeff_eq_zero_of_eq_X_mul`, `hasSubst_of_eq_X_mul`, `derivative_eq_X_mul`.
@@ -36,7 +40,7 @@ namespace Fabius
 
 namespace Lagrange
 
-variable {R : Type*} [CommRing R] [Algebra ℚ R]
+variable {R : Type*} [CommRing R]
 variable {φ g u v : R⟦X⟧}
 
 /-- `g = z u` has vanishing constant term. -/
@@ -89,6 +93,10 @@ theorem coeff_inv_mul_derivative (hg : g = X * u) (hv : u * v = 1) :
     exact hc
   rw [h0, h1, add_zero]
 
+section RationalCalculus
+
+variable [Algebra ℚ R]
+
 /-- **The vanishing that collapses the sum:** for `M ≥ 1`, `[z^M] (v^{M+1} g') = 0`. -/
 theorem coeff_pow_succ_mul_derivative_eq_zero (hg : g = X * u) (hv : u * v = 1) (M : ℕ)
     (hM : 1 ≤ M) : coeff M (v ^ (M + 1) * d⁄dX R g) = 0 := by
@@ -120,6 +128,7 @@ theorem coeff_pow_succ_mul_derivative_eq_zero (hg : g = X * u) (hv : u * v = 1) 
       rw [hMc, ← map_mul, one_div, inv_mul_cancel₀ (by positivity : ((M : ℚ) + 1) ≠ 0), map_one]
     linear_combination (-(coeff (M + 1) (v ^ (M + 1)))) * hcancel
 
+omit [Algebra ℚ R] in
 /-- `A(g) = (A φ^n)(g) · v^n`. -/
 theorem subst_mul_pow_inv (hg : g = X * u) (hu : u = φ.subst g) (hv : u * v = 1)
     (A : R⟦X⟧) (n : ℕ) : A.subst g = ((A * φ ^ n).subst g) * v ^ n := by
@@ -192,6 +201,8 @@ theorem coeff_subst_id (hg : g = X * u) (hu : u = φ.subst g) (hv : u * v = 1)
   rw [derivative_X, one_mul, subst_X hs] at h
   exact h
 
+end RationalCalculus
+
 /-! ### Existence of the solution -/
 
 section Existence
@@ -246,6 +257,8 @@ theorem solution_eq (hψ : φ * ψ = 1) :
         rw [hone, mul_one]
     _ = solution φ ψ hψ * ψ.subst (solution φ ψ hψ) * φ.subst (solution φ ψ hψ) := by ring
     _ = X * φ.subst (solution φ ψ hψ) := by rw [hsub]
+
+variable [Algebra ℚ R]
 
 /-- **Lagrange–Bürmann, unconditional:** `n [z^n] H(g) = [w^{n-1}] (H' φ^n)` for the canonical
 solution `g` of `g = z φ(g)`. -/

@@ -29,11 +29,13 @@ mode this package is now expected to pass.
 
 | Directory | Document |
 | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — the evolving source and a historical 174-page A4 PDF |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — the evolving source and the retained upstream A4 PDF |
 
-The TeX has changed since the committed PDF was rendered. PDF rebuilding is
-currently skipped at the user's request, so the pair has no current
-render-parity claim. Standalone checksum files are retired; provenance is kept
+Upstream supplied a 208-page, 2,014,975-byte rebuilt PDF at its checkpoint. The
+latest merged source includes subsequent Stirling and Nörlund changes, so that
+retained PDF is a historical artifact and is not claimed to render the current
+source. Further PDF building remains skipped in this work at the user's request. Standalone
+checksum files are retired; provenance is kept
 in Git and the source inventory, and the validator does not maintain or require
 file digests.
 
@@ -70,6 +72,33 @@ section "Closure of the merge", carries the in-document record. In summary:
   upright `e` inside one exponent. The document now follows
   `FabiusFunction_Mathematical_Notation_Catalogue` throughout.
 
+## Current source-only Stirling overlay
+
+The fixed-column second-kind Stirling theorem `thm:second-ogf` now separates
+its formal-power-series content from scalar rational evaluation. Its
+coefficient identity explicitly assumes `n >= k`; the formal proof identifies
+two inverses of the same finite product, extracts the coefficient of the
+finite product of geometric series, and then proves
+`x^(k+1) * (1/x)↓(k+1) = ∏_{j=1}^k (1-jx)`. The falling-factorial spelling at
+a scalar requires `x != 0`, and its reciprocal form also requires every
+factor `1-jx` to be nonzero. The `k = 0`, `n = 0` empty-product case is
+included.
+
+The compiled zero-definition/eight-theorem
+`StirlingCompleteHomogeneous.lean` surface contributes
+`stirlingColumnOGF_eq_completeHomogeneousGeneratingSeriesOn`,
+`stirlingSecond_add_eq_completeHomogeneousEvalOn`,
+`stirlingSecond_eq_completeHomogeneousEvalOn_of_le`,
+`stirlingSecond_add_eq_completeHomogeneousEval`,
+`stirlingSecond_add_eq_eval_hsymm`, and
+`stirlingSecond_add_eq_sum_finsuppAntidiag`. Its two companion declarations,
+`pow_mul_descPochhammer_eval_inv_eq_prod_one_sub_natCast_mul` and
+`prod_inv_one_sub_natCast_mul_eq_inv_pow_mul_descPochhammer_eval_inv`, cover
+the scalar factorization and reciprocal spelling. Together they make
+`thm:second-ogf` **Lean** with the corrected hypotheses. The retained PDF was
+not rebuilt for this source-only overlay, so no PDF or checksum parity is
+claimed for it.
+
 ## What this package does not claim
 
 The manuscript is research-frontier mathematical writing. Its theorem and proof
@@ -91,16 +120,19 @@ sequential Lean elaboration, including `OrdinaryBellComposition`,
 `OrdinaryBellMultinomial`, `AbelPolynomialSeries`, `BernoulliFormalLog`,
 `RaneyNumbers`, and `AssociahedronFaceNumbers`.
 
-The combined register contains 204 rows.  The retained formal-power result and
-the ordinary-composition multiplicity theorem below each promote one previously
-partial row; the Abel, Raney, and associahedron sources also replace five
-previously empty rows with one exact and four partial crosswalks.  The live
-totals are therefore **62 Lean, 36 partial, and 106 none**.
+The merged register contains 207 rows. The retained formal-power result and
+ordinary-composition multiplicity theorem are Exact, as is the Abel proposition;
+the Raney and associahedron arithmetic has the narrower scope recorded below,
+and Riordan inversion is Partial because its inverse data are assumed rather
+than constructed. The live totals are therefore **69 Lean, 35 partial, and 103
+none**. The new Lagrange, Raney, Nörlund, Newton, grid/CRT, Pochhammer, and
+Stirling leaves have all passed direct sequential Lean elaboration; the register
+still distinguishes exact formal algebra from its remaining analytic and
+combinatorial obligations.
 Earlier classifications are inherited; these counts are a coverage register,
-not a fresh rebuild of every proof. Structural/provenance validation checks 204
+not a fresh rebuild of every proof. Structural/provenance validation covers 207
 adjacent proofs, 27 disposition records, and six original-source inventory
-rows; the current source pass sees 706 labels and zero missing Lean declaration
-names. PDF rebuilding remains deferred at the user's request.
+rows. PDF rebuilding remains deferred at the user's request.
 
 The same-day upstream crosswalk connects the Bell normalization and unit-series
 coefficient formulas to `UnitSeriesBellCoefficients`; its labelled-set partition
@@ -123,6 +155,25 @@ canonical source includes that complete argument, including the constant
 term and inductive uniqueness of the resulting coefficient sequence. This
 is formal algebra; no analytic branch choice or convergence claim is made.
 
+## Coefficient-calculus campaign (2026-09-04)
+
+The new leaf modules supply the public theorem statements listed in the
+register, with complete human proofs and exact declaration names in the
+manuscript. `NewtonReciprocal`, `StirlingSymmetricFunctions`,
+`LagrangeInversionUniqueness`, and `StirlingSecondReverseRowIdentity` have all
+passed direct sequential Lean compilation, including the actual truncated
+Newton update and the integer-transport reverse-row identity. The register
+preserves the remaining claim-level distinctions.
+The two second-kind symmetric-function formulas are shared with the compiled
+upstream `StirlingCompleteHomogeneous` module; their duplicate implementations
+were removed from this campaign's leaf.
+
+The campaign also repairs the Laplace theorem with explicit analytic endpoint
+hypotheses and full remainder estimates, removes contradictory duplicate
+crosswalks, and corrects boundary cases and coefficient-ring assumptions.
+The brief [campaign status](Combinatorial_Coefficient_Calculus/FORMALIZATION_STATUS.md)
+records remaining obligations without duplicating the canonical claim register.
+
 ## Additional formal-series checkpoints (2026-09-04)
 
 `ExponentialRescaling` has passed a focused build. Its four public lemmas give
@@ -139,8 +190,8 @@ proposition Exact. The new
 Bernoulli kernel using the existing recurrence-to-logarithm bridge. Its
 coefficient formula separates degree zero and preserves the distinction between
 the two degree-one Bernoulli conventions. This exactly covers the internal
-logarithm calculation in the Nörlund proof, but it does not construct
-arbitrary-order Nörlund polynomials and therefore does not promote that row.
+logarithm calculation in the Nörlund proof; that internal result alone does not
+promote the arbitrary-order row.
 
 `RaneyNumbers` proves the displayed coefficient formula, including degree zero,
 for its constructed Lagrange solution; the manuscript's arbitrary-solution
@@ -154,8 +205,6 @@ The human moment-cumulant proof now states its normalization and positive-degree
 boundaries explicitly, with formal logarithm identities separated from the
 still-open set-partition interpretation. The Nörlund proof now derives the
 logarithmic coefficients without dividing by the nonunit formal variable.
-Arbitrary-order Nörlund polynomials and their analytic convergence remain open
-formalization work.
 
 ## Ordinary composition multiplicities (2026-09-04)
 
@@ -165,13 +214,33 @@ multinomial formula for ordinary partial Bell polynomials over every
 commutative semiring. Its composition corollary works over every commutative
 ring and includes degree zero: the unique empty profile gives `c₀=a₀`.
 Together with the upstream finite-degree locality theorem
-`ordPartialBell_congr_of_le`, these are five new public declarations. The live
-source census is therefore 976 modules and 12,116 explicit declarations.
+`ordPartialBell_congr_of_le`, these are five public declarations. The current
+merged source census is 987 modules and 12,207 explicit declarations after the
+post-merge Raney addition.
 
 Direct sequential Lean checks passed for all nine new or changed modules in
 this merge, the three ordinary-composition callers, and the complete facade
 import check against the compiled dependency cache. The Raney proof was
 repaired before this check; its derivative, scalar-coefficient extraction,
 and nonzero-factor cancellation now elaborate. This is a focused validation,
-not a fresh build of the whole corpus. The canonical validator passes with
-zero errors or warnings, and crosswalk regeneration applies no pending remarks.
+not a fresh build of the whole corpus. At that checkpoint the canonical
+validator passed with zero errors or warnings, and crosswalk regeneration
+applied no pending remarks.
+
+## Arbitrary-order Nörlund synchronization (2026-09-04)
+
+The compiler-checked `NorlundGeneralized` source constructs actual polynomials
+at every scalar order over a commutative rational algebra. Its API includes the
+full EGF, Appell derivative, translation, convolution, natural-order polynomial
+compatibility, explicit cumulants, and the complete Bell formula.
+`BernoulliFormalLog` now compiler-verifiably transports the logarithm and its
+coefficients along arbitrary coefficient ring homomorphisms and shares the
+kernel normalization lemma. This makes `lem:merged-log-base-change` Exact and
+strengthens both Nörlund crosswalks without promoting their combined rows:
+general-order finite differences and the literal multiplicity-vector expansion
+remain separate formalization obligations. Analytic convergence likewise
+remains outside these formal-series declarations.
+
+The human exposition gives the normalized complex logarithm construction on its
+disk separately from the formal algebra, states the coefficient-base-change
+lemma with proof, and includes the degree-zero multiplicity convention.

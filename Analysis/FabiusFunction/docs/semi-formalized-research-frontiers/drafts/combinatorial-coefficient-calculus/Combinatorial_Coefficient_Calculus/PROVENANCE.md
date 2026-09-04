@@ -45,11 +45,14 @@ coincides with the original `CCC` manuscript's location, but its contents now
 include the consolidation and subsequent work. The `CCC` inventory row always
 identifies the historical snapshot, never the changing live source.
 
-The committed 174-page PDF is a historical render from an earlier consolidation
-checkpoint. The TeX has changed since that render. PDF rebuilding is currently
-skipped at the user's request; the surviving pair therefore has no current
-render-parity claim. An existing PDF and adjacent proof environments do not
-establish either rendered correctness or Lean verification.
+The earlier 174-page PDF was a historical consolidation render. Upstream
+subsequently supplied a 208-page, 2,014,975-byte PDF at its own checkpoint;
+that artifact is retained, but the latest merged source edits postdate it.
+No current render parity is claimed, and further PDF building remains skipped
+in this work at the user's request. Render and compiler evidence are separate:
+PDF parity and adjacent proof environments do not establish Lean verification.
+Original arrival PDFs remain recoverable through the inventory's immutable
+Git locators.
 
 ## Recovery and validation
 

@@ -266,10 +266,10 @@ historical post-Prouhet checkpoint.  Subsequent source-only
 transseries/Catalan and Thue--Morse additions made 943/11,791 the next
 historical checkpoint.  The finalized one-definition/eleven-theorem
 `TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` make the live census 944/11,806.
-The q ledger is 182 Exact / 78 Partial / 14 None / 8 interface, the relevant Dyadic
-Gaussian--Thue--Morse chapter is 13/43/0/0, and the source concordance is 95
-Lean-proved / 383 human-proved frontier / 60 non-applicable / 9 conjectures.
+`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 987/12,207.
+The q ledger is 181 Exact / 79 Partial / 14 None / 8 interface, the relevant Dyadic
+Gaussian--Thue--Morse chapter is 13/43/0/0, and the source concordance is 103
+Lean-proved / 375 human-proved frontier / 60 non-applicable / 9 conjectures.
 All of these sibling source-only additions are likewise absent
 from the retained historical PDFs.
 

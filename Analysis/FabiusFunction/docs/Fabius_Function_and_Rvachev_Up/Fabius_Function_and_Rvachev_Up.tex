@@ -199,26 +199,19 @@ an exact Lean theorem are kept in the companion volume under
 \end{abstract}
 
 \begin{boxedremark}\textbf{Artifact status (4 September 2026).}\space
-At the historical publication checkpoint, the authoritative lexical audit
-contained exactly 923 facade-reachable source modules and 11,611 unique public
-declarations: 313 modules and 3,293
-declarations beyond the 610/8,318 activation checkpoint, and 274 modules and
-2,913 declarations beyond the 649/8,698 publication-union checkpoint.  The
-merge target then contributed 11,610 declarations; the retained unconditional
+The authoritative live lexical audit contains exactly 987 facade-reachable
+source modules and 12,207 unique public declarations: 377 modules and 3,889
+declarations beyond the 610/8,318 activation checkpoint, and 338 modules and
+3,509 declarations beyond the 649/8,698 publication-union checkpoint.  The
+earlier 923/11,611 semantic-union census is historical; at that checkpoint the
+merge target contributed 11,610 declarations and the retained unconditional
 public \lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge in the 1+10
-\path{RvachevPochhammerFactorization.lean} surface contributes the additional
-declaration.  A later incoming-branch audit reached the now-historical
-960/11,966 checkpoint: 350 modules and 3,648 declarations beyond the
-610/8,318 activation checkpoint, and 311 modules and 3,268 declarations beyond
-the 649/8,698 publication-union checkpoint.  The subsequent semantic union
-reached the historical 967/12,001 checkpoint.  The next two-module extension
-gave the historical 969/12,048 checkpoint, and the source-only power-
-recurrence leaf gave the historical 970/12,051 checkpoint.  Five incoming
-coefficient-calculus modules then give the historical 975/12,111 checkpoint,
-and the ordinary-multinomial leaf plus its reusable bounded-congruence theorem
-give the live 976/12,116/0 census.  Module headers and
-declaration documentation are complete; the checked lexical baseline records
-both zero-gap invariants.  This source includes the earlier finite and
+\path{RvachevPochhammerFactorization.lean} surface supplied the additional
+declaration.  The 952/11,884, 967/12,001, 970/12,051, 976/12,116, and
+977/12,133 inventories are also historical branch or merge checkpoints and
+are not additive.  Module headers and declaration documentation are complete;
+the checked lexical baseline records both zero-gap invariants.  This source
+includes the earlier finite and
 infinite q-series APIs together with the final Gaussian-palindromic, Jackson
 integral, q-exponential, theta, Jacobi-cubic, logarithmic-derivative,
 order-derivative, universal-polynomial, central-reduction, and cyclotomic-
@@ -3422,14 +3415,24 @@ theorems; its public surface comprises \lean{gaussianMajorant},
 \lean{hasSum_qBinomial_theorem}, and
 \lean{hasSum_euler_reciprocal}.
 
-The subsequent zero-definition/ten-theorem
+The five effective fixed-column declarations in
+\path{QBinomialTheoremInfinite.lean} are exact.  They include the generalized
+finite-product estimate
+\[
+ \left\lVert(q^m;q)_k-1\right\rVert
+ \le \exp\!\left(k\lVert q\rVert^m\right)-1,
+\]
+its geometric \texttt{IsBigO} consequence, the two additive Gaussian error
+rates, and an arbitrary-fixed-shift convergence theorem
+\[
+ \GaussianBinomial{n+r}{k}{q}\longrightarrow(q;q)_k^{-1}.
+\]
+The downstream zero-definition/eight-theorem
 \path{GaussianBinomialFixedColumnRate.lean} surface is
-\lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp},
 \lean{norm_finiteQPochhammerIn_pow_sub_one_le},
 \lean{norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le},
 \lean{norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le},
 \lean{norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le},
-\lean{tendsto_gaussianBinomial_add_atTop},
 \lean{gaussianBinomial_fixedColumn_relativeError_isBigO},
 \lean{gaussianBinomial_shifted_fixedColumn_relativeError_isBigO},
 \lean{gaussianBinomial_fixedColumn_error_isBigO}, and
@@ -4175,7 +4178,13 @@ The two summability hypotheses in the comparison theorem are essential
 because the underlying infinite product is totalized outside its admissible
 range.  No spectral-zeta recovery, cumulant-sample recovery, or
 identifiability of an underlying probability law is asserted; those remain
-open interfaces.  With the later concurrent source union, the real-MGF bridge
+open interfaces.  The immutable local chronology after the 902/11,440
+Richardson state records the Gaussian second-moment extension at 902/11,443,
+the completed Lambert--Bernoulli leaf at 903/11,448, and the five-declaration
+\path{QBinomialTheoremInfinite.lean} fixed-column extension at 903/11,453.
+The parallel algebraic moment-polynomial branch reached 904/11,457 from the
+Lambert checkpoint; its first union with the local extension was 904/11,462.
+In the later concurrent source union, the real-MGF bridge
 formed the historical 905/11,458 checkpoint, the exhaustive complex
 moment-product leaf formed the historical 906/11,461 checkpoint, and the
 later exhaustive zero-definition/one-theorem
@@ -4205,30 +4214,30 @@ checkpoint 933/11,695.  The incoming union adds one module and fourteen public
 declarations: the new zero-definition/six-theorem
 \path{ProuhetBaseTwoBridge.lean} module, one theorem added to
 \path{DyadicBoundaryIdentity.lean}, and seven theorems added to
-\path{ThueMorseNewmanSelfSimilarity.lean}.  This gives the historical 934/11,709
-census.  The subsequent nine-module series/transseries overlay contributes 72
-explicit public declarations, while two additive Neumann names generated by
-\texttt{to\_additive} lie outside the lexical count; six concurrent declarations
-elsewhere give the historical 943/11,787 checkpoint.  The next incoming
-series/transseries tranche adds nine facade-reachable modules with 90 explicit
-public declarations and four integer-exponent theorems to the existing
-\path{TransseriesDifferentialBlock.lean} module, giving the historical
-952/11,881 checkpoint.  Two written OrderDual Neumann wrappers in
-\path{TransseriesWellBased.lean} and the real-analytic Wright omega theorem in
-\path{WrightOmega.lean} then add three declarations without adding a module,
-giving the historical 952/11,884 checkpoint.  The subsequently merged
-15-module tranche adds 117 explicit public declarations, giving the historical
-967/12,001 checkpoint.  Two new modules and 47 declarations then give the
-historical 969/12,048 checkpoint; the zero-definition/three-theorem
-\path{UnitSeriesPowerRecurrence.lean} leaf gives the historical 970-module,
-12,051-declaration census.  The five-module coefficient-calculus tranche has
-63 public declarations, with three shared exponential helpers relocated from
-\path{NorlundDiagonal.lean} to \path{ExponentialRescaling.lean}, and therefore
-adds 60 declarations net, giving the historical 975/12,111 checkpoint.
-\path{OrdinaryBellMultinomial.lean} and the new bounded-congruence theorem in
-\path{OrdinaryBellComposition.lean} then add one module and five declarations,
-giving the live 976/12,116 census, with zero missing module headers and zero
-missing declaration comments.
+\path{ThueMorseNewmanSelfSimilarity.lean}.  This gives the historical
+934/11,709 checkpoint.  Later local and incoming branch inventories culminated
+in the historical 952/11,884, 967/12,001, and 970/12,051 checkpoints; their
+overlapping module sets are not additive.  The ordinary-multinomial semantic
+union was the historical 976/12,116 checkpoint, while 977/12,133 was a later
+incoming-branch audit.
+
+Relative to 976/12,116, ten newly merged leaves contribute ten modules and 80
+public declarations: \path{PochhammerFalling.lean},
+\path{GridEvaluationCertificate.lean}, \path{IntegerCRTCertificate.lean},
+\path{NorlundGeneralized.lean}, \path{StirlingSymmetricFunctions.lean},
+\path{LagrangeInversionUniqueness.lean}, \path{NewtonReciprocal.lean},
+\path{StirlingCompleteHomogeneous.lean},
+\path{StirlingSecondReverseRowIdentity.lean}, and
+\path{TransseriesWrightOmegaTerms.lean}.  Existing-module changes add
+eight declarations, including six base-change declarations that extend
+\path{BernoulliFormalLog.lean} to 0+11 and the commutative-ring strengthening
+of the Lagrange core.  The new 0+3
+\path{RaneyNumbersUniqueness.lean} leaf supplies the remaining module and
+three declarations.  Thus the authoritative merged census is 987/12,207/0,
+with every module facade-reachable and with no missing module header or public
+declaration comment.  The detailed inventory below states the precise
+algebraic, analytic, and combinatorial boundaries; no aggregate PDF parity is
+claimed for this source-only union.
 The immediately preceding algebraic moment-polynomial checkpoint was
 904/11,457, and the complex Bernoulli value-completion checkpoint 903/11,448
 remains historical.  The merged chronology also records the scaled-geometric
@@ -4260,7 +4269,7 @@ module, the three-theorem second-moment strengthening of the existing
 \path{GaussianBinomialCumulants.lean} module, the one-definition/seventeen-
 theorem \path{GeometricUniformRealization.lean} module, the two-definition/
 one-theorem \path{RegularCentralQBinomialSum.lean} leaf, and the zero-definition/
-ten-theorem \path{GaussianBinomialFixedColumnRate.lean} leaf, followed by the
+eight-theorem \path{GaussianBinomialFixedColumnRate.lean} leaf, followed by the
 one-definition/fourteen-theorem \path{RvachevAppellHasse.lean} leaf, the
 one-definition/fourteen-theorem \path{RvachevLagrangeNodesOnly.lean} leaf, the
 zero-definition/two-theorem
@@ -4470,25 +4479,10 @@ public declarations, giving the historical dyadic/finite-prefix checkpoint
 declarations: the new zero-definition/six-theorem
 \path{ProuhetBaseTwoBridge.lean} module, one theorem added to
 \path{DyadicBoundaryIdentity.lean}, and seven theorems added to
-\path{ThueMorseNewmanSelfSimilarity.lean}.  This gives the historical 934/11,709
-census.  The subsequent nine-module series/transseries overlay contributes 72
-explicit public declarations, while two additive Neumann names generated by
-\texttt{to\_additive} lie outside the lexical count; six concurrent declarations
-elsewhere give the historical 943/11,787 checkpoint.  The next incoming
-series/transseries tranche adds nine facade-reachable modules with 90 explicit
-public declarations and four integer-exponent theorems to
-\path{TransseriesDifferentialBlock.lean}, giving the historical 952/11,881
-checkpoint.  The two written OrderDual Neumann wrappers and the real-analytic
-Wright omega theorem then give the historical 952/11,884 checkpoint.  The
-subsequently merged 15-module tranche adds 117 explicit public declarations
-and gives the historical 967/12,001 checkpoint.  The next two-module tranche
-adds 47 declarations, giving the historical 969/12,048 checkpoint; the final
-\path{UnitSeriesPowerRecurrence.lean} leaf adds one module and three theorems.
-That 970/12,051 checkpoint is historical.  The subsequent five modules add
-60 declarations net after the three-theorem rescaling relocation, and the
-ordinary-multinomial module plus bounded congruence add one module and five
-declarations.  The live census is therefore 976/12,116, with zero missing
-module headers and zero missing declaration comments.
+\path{ThueMorseNewmanSelfSimilarity.lean}.  This gives the historical
+934/11,709 checkpoint.  All later branch-local counts quoted above are
+historical and overlap.  The semantic union is the live 987/12,207/0 census
+recorded in the consolidated inventory, with zero documentation gaps.
 
 The exhaustive public surface of
 \path{FinitePrefixThueMorseCollapse.lean} is zero definitions and eight
@@ -7120,7 +7114,7 @@ uniqueness and the generic Appell transform then give
   &=\sum_{r=0}^{n}\binom nr\,\mu_r\,2^{-Nr}P_{n-r}(X),
        &&\mu_r=\lean{halfMoment}\,r,                       \label{eq:finite-prefix-appell-uncentered}\\
  A_n^{[N]}(X)
-  &=\sum_{r=0}^{\Floor{n/2}}\binom n{2r},m_{2r},
+  &=\sum_{r=0}^{\Floor{n/2}}\binom n{2r}\,m_{2r}\,
        4^{-Nr}A_{n-2r}(X),
        &&m_{2r}=\lean{moment}\,r.                          \label{eq:finite-prefix-appell-centered}
 \end{align}
@@ -7161,13 +7155,13 @@ Finally let \(w_{d,j}(q)=\lean{geometricLagrangeWeight}\,q\,d\,j\).  Evaluating
 the two scale polynomials at zero gives, for every starting depth \(N\),
 \begin{align}
  P_n(X)&=\sum_{j=0}^{n}w_{n,j}(1/2)P_n^{[N+j]}(X),
-                                                               \label{eq:finite-prefix-appell-recovery}\
+                                                               \label{eq:finite-prefix-appell-recovery}\\
  A_n(X)&=\sum_{j=0}^{\Floor{n/2}}
    w_{\Floor{n/2},j}(1/4)A_n^{[N+j]}(X).               \label{eq:finite-prefix-centered-recovery}
 \end{align}
 They are \lean{kabayaIriAppellPolynomialRat_eq_sum_prefix} and
 \lean{rvachevAppellPolynomialRat_eq_sum_prefix}.  Hence the full uncentered
-degree-(n) polynomial is recovered from any (n+1) consecutive prefixes,
+degree-\(n\) polynomial is recovered from any \(n+1\) consecutive prefixes,
 and the full centered polynomial from any \(\Floor{n/2}+1\)
 consecutive prefixes, with no limiting argument.  The seventeen theorems
 listed in the preceding three paragraphs exhaust the theorem surface of the
@@ -13416,10 +13410,11 @@ The subsequent compiled leaf
 \path{RvachevLegendreBiorthogonality.lean} has exactly one public definition
 and one theorem.  Its normalized translated analysis kernel is
 \begin{equation}
- \Lambda_m(c)=\frac{2m+1}{2}\int_{-1}^{1}
- \RvachevUp(x-c)P_m(x)\Differential x,
- \qquad
- \Lambda_m=\lean{rvachevLegendreAnalysisKernel}(F,m,\cdot),       \label{eq:rvachev-legendre-analysis-kernel}
+ \begin{aligned}
+ \Lambda_m(c)&=\frac{2m+1}{2}\int_{-1}^{1}
+ \RvachevUp(x-c)P_m(x)\Differential x,\\
+ \Lambda_m&=\lean{rvachevLegendreAnalysisKernel}(F,m,\cdot).
+ \end{aligned}                                                   \label{eq:rvachev-legendre-analysis-kernel}
 \end{equation}
 and \lean{rvachevLegendreBiorthogonality} proves, for every
 \(F:\lean{BoundedFabius}\) satisfying \(\lean{IsFabius}\,F\), natural
@@ -14666,10 +14661,11 @@ historical 969/12,048 checkpoint; \path{UnitSeriesPowerRecurrence.lean} then
 adds one module and three theorems, giving the historical 970/12,051
 checkpoint.  Five coefficient-calculus modules add 60 declarations net, and
 the ordinary-multinomial leaf plus bounded congruence add one module and five
-declarations.  Thus 976/12,116/0 is the live
-modules/declarations/missing-comments census.  The following inventory is
-exhaustive for both overlays and keeps the formal/analytic and
-polynomial/Laurent boundaries explicit.  No PDF was rebuilt for the incoming
+declarations, giving the historical 976/12,116 checkpoint.  The authoritative
+live modules/declarations/missing-comments census is 987/12,207/0.  The
+following inventory is exhaustive for the new leaves and keeps the
+formal/analytic and polynomial/Laurent boundaries explicit.  No PDF was
+rebuilt for the incoming
 source-only overlay; the retained PDF remains a historical render.
 
 \begin{theorem}[Triangular recurrence for a formal power]
@@ -14817,20 +14813,74 @@ The all-index coefficient theorem uses the positive convention
 \(\beta'_1=1/2\), while the ordinary Bernoulli convention is used only from
 degree two onward.  The proof first shows that \(B\) and the constructed
 \((\exp X-1)/X\) series multiply to one and then applies the formal logarithm
-product law.  This is a formal identity over \(\RationalNumbers\), with no
-analytic logarithm or convergence assertion.
+product law.  The coefficientwise map commutes with this formal logarithm,
+so all coefficients transport from \(\RationalNumbers\) to every commutative
+rational algebra, including rings with zero divisors.  This is a formal
+identity, with no analytic logarithm or convergence assertion.
 
-For \(p\in\NaturalNumbers\), \path{RaneyNumbers.lean} constructs one canonical
-series \(T_p=1+G_p\) satisfying \(T_p=1+XT_p^p\), and, for \(r\geq1\), proves
+The uniqueness mechanism behind the next application is also algebraic.  In
+an arbitrary commutative ring, suppose \(\phi\psi=1\) and
+\(g=X\phi(g)\).  The equation forces \([X^0]g=0\), hence substitution at
+\(g\) is defined, and
 \[
- [X^n]T_p^r=\frac{r}{pn+r}\binom{pn+r}{n}\qquad(n\geq0),
+ (X\psi)(g)=g\psi(g)=X\phi(g)\psi(g)=X.
 \]
-together with the division-free positive-degree form
-\(n[X^n]T_p^r=r\binom{pn+r-1}{n-1}\).  Lagrange--B\"urmann applied to
-\((1+X)^r\) proves the formula, and the theorem handles \(n=0\) separately.
-The module proves this for its constructed \lean{Fabius.raneyT}; it does not
-prove uniqueness or transport the formula to an arbitrary solution of the
-functional equation.
+If \(s\) is the constructed compositional inverse of \(X\psi\), then
+associativity of substitution gives \(g=s((X\psi)(g))=s(X)=s\).  This proves
+existence and uniqueness, including the version in which only
+\([X^0]\phi\) is assumed to be a unit.  Coefficient differentiation of
+\(H\phi^n\) gives, for \(n\geq1\), the denominator-free integration-by-parts
+identity
+\[
+ n[X^n]\bigl(H\phi^{n-1}(\phi-X\phi')\bigr)
+   =[X^{n-1}]H'\phi^n.
+\]
+Cancelling \(n\) over a commutative rational algebra and combining it with
+the derivative form of Lagrange--B\"urmann gives the alternative Jacobian
+formula in \nolinkurl{thm:lagrange-burmann}.  The six exact public statements
+are \lean{Fabius.Lagrange.eq_solution_of_eq_X_mul_subst},
+\lean{Fabius.Lagrange.existsUnique_solution},
+\lean{Fabius.Lagrange.existsUnique_of_isUnit_constantCoeff},
+\lean{Fabius.Lagrange.coeff_jacobian_mul},
+\lean{Fabius.Lagrange.coeff_subst_alt}, and
+\lean{Fabius.Lagrange.coeff_solution_subst_alt}.
+
+\begin{theorem}[Arbitrary-solution Raney formula]
+Let \(p\in\NaturalNumbers\) and let \(T\in\RationalNumbers\llbracket
+X\rrbracket\) satisfy \(T=1+XT^p\).  Then \(T\) is the canonical series
+\(T_p\).  For every \(r\geq1\) and \(n\geq0\),
+\[
+ [X^n]T^r=\frac{r}{pn+r}\binom{pn+r}{n},
+\]
+and, for \(n\geq1\),
+\[
+ n[X^n]T^r=r\binom{pn+r-1}{n-1}.
+\]
+The statement permits \(p=0\), strengthening the printed \(p\geq1\) scope.
+\end{theorem}
+
+\begin{proof}
+Put \(g=T-1\).  Then \(g=XT^p\), so \([X^0]g=0\) and substitution at
+\(g\) is defined.  With \(\phi=(1+X)^p\), substitution gives
+\(\phi(g)=T^p\), hence \(g=X\phi(g)\).  The inverse partner used in the
+canonical Raney construction satisfies \(\phi\psi=1\); the uniqueness
+argument above therefore identifies \(g\) with the canonical
+\(G_p\), and consequently \(T=1+G_p=T_p\).  Rewriting by this equality in
+the already proved canonical denominator-cleared and divided coefficient
+formulas gives the two displayed identities.  The divided identity treats
+\(n=0\) directly: both sides are one.  The hypothesis \(r\geq1\) is retained
+because Lean's division is totalized; at \(r=n=0\) its right side would be
+zero whereas \([X^0]T^0=1\).
+\end{proof}
+
+The exact transport statements in the zero-definition/three-theorem
+\path{RaneyNumbersUniqueness.lean} leaf are
+\lean{Fabius.eq_raneyT_of_eq_one_add_X_mul_pow},
+\lean{Fabius.natCast_mul_coeff_pow_of_eq_one_add_X_mul_pow}, and
+\lean{Fabius.coeff_pow_of_eq_one_add_X_mul_pow}.  Together with the canonical
+surface in \path{RaneyNumbers.lean}, they make
+\nolinkurl{thm:merged-raney} Exact for every formal solution, not merely for
+the constructed one.
 
 Finally, \path{AssociahedronFaceNumbers.lean} defines the shifted arithmetic
 array
@@ -14868,16 +14918,16 @@ the already proved Narayana closed form, symmetry, endpoint values, and row
 sum give the remaining displayed arithmetic identities and
 \(h(1)=f_0=C_{N-2}\).
 
-After the ordinary-composition promotion, the coefficient-calculus
-concordance has 204 rows: 62 Lean, 36 Partial, and 106 None.  In particular,
-the Abel row is Exact; the Raney and three associahedral rows are Partial at
-the scope boundaries just stated.
+The current coefficient-calculus concordance has 207 rows; its final status
+split is synchronized below with the canonical register.  The Abel and
+ordinary-composition rows are Exact, while the three geometric
+associahedron/dissection rows retain the scope boundaries just stated.
 
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.19\textwidth}
                          >{\raggedright\arraybackslash}p{0.39\textwidth}
                          >{\raggedright\arraybackslash}p{0.36\textwidth}@{}}
 \toprule
-Module and size & Exhaustive public surface & Result boundary \\
+Module and size & Incoming-checkpoint public surface & Result boundary \\
 \midrule
 \endhead
 \path{OrdinaryBellComposition.lean} (bounded-congruence extension, +1) and

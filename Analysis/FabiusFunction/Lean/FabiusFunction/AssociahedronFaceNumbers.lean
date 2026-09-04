@@ -1,7 +1,7 @@
 import FabiusFunction.NarayanaNumbers
 
 /-!
-# Kirkman–Cayley dissection numbers and the associahedron face and `h` vectors
+# Kirkman–Cayley dissection numbers and the associahedral face and `h` vectors
 
 This module formalizes three statements of the combinatorial coefficient-calculus manuscript:
 `thm:merged-kirkman-cayley` (the Kirkman–Cayley dissection formula), `cor:merged-associahedron-f`
@@ -18,12 +18,12 @@ Formalizing a definition with a division forces a choice.  Rather than divide in
 in `ℕ` and carry the exactness of the division as a side condition, the count is **defined here
 by a division-free `2×2` determinant of binomial coefficients in `ℤ`**,
 
-`D(N,d) = C(N-3,d) C(N+d-1,d+1) - C(N-2,d+1) C(N+d-1,d)`      (`dissectionNumber`, in the
-shifted variable `a = N - 3`),
+`D(N,d) = C(N-3,d) C(N+d-1,d+1) - C(N-2,d+1) C(N+d-1,d)`
 
-exactly as `Fabius.narayana` is defined in `FabiusFunction.NarayanaNumbers`.  This keeps the
-definition unconditional and the arithmetic in a ring, and it *makes* the integrality of the
-manuscript's fraction a theorem rather than an assumption:
+(`dissectionNumber`, written in the shifted variable `a = N - 3`), exactly as `Fabius.narayana`
+is defined in `FabiusFunction.NarayanaNumbers`.  This keeps the definition unconditional and the
+arithmetic inside a ring, and it *makes* the integrality of the manuscript's fraction a theorem
+rather than an assumption:
 
 * `dissectionNumber_mul` is the manuscript formula in division-free shape,
   `(d+1) D(N,d) = C(N+d-1,d) C(N-3,d)`;
@@ -32,20 +32,20 @@ manuscript's fraction a theorem rather than an assumption:
   with the manuscript's literal quotient `C(N+d-1,d) C(N-3,d) / (d+1)` taken in `ℕ`;
 * `dissectionNumber_nonneg` records that the determinant is nonnegative, as a count must be.
 
-The proof of `dissectionNumber_mul` is the whole content of the integrality: the two
-elementary absorption identities `(d+1) C(a+1,d+1) = (a+1) C(a,d)` and
-`(d+1) C(a+d+2,d+1) = (a+2) C(a+d+2,d)` turn the determinant into
+The proof of `dissectionNumber_mul` carries the whole content of the integrality: the two
+absorption identities `(d+1) C(a+1,d+1) = (a+1) C(a,d)` and
+`(d+1) C(a+d+2,d+1) = (a+2) C(a+d+2,d)` collapse the determinant to
 `C(a,d) C(a+d+2,d) ((a+2) - (a+1))`.
 
 Throughout, `N` is shifted to `a = N - 3` (dissections of a convex `N`-gon, `N ≥ 3`) or to the
 pair `(j, e)` with `N = j + e + 3` (the `j`-faces, `e = N - 3 - j` being the number of diagonals
-fixed), so that no truncated subtraction occurs inside a definition.  The manuscript-shaped
-restatements with an explicit `N` and hypothesis `3 ≤ N` are
+held fixed), so that no truncated subtraction occurs inside a definition.  The
+manuscript-shaped restatements with an explicit `N` and hypothesis `3 ≤ N` are
 `dissectionNumber_mul_of_three_le` and `succ_dvd_choose_mul_choose_of_three_le`.
 
 ## What is deliberately NOT formalized
 
-* **All bijective content.** The corpus does not construct polygon dissections, plane trees or
+* **All bijective content.**  The corpus does not construct polygon dissections, plane trees or
   the associahedron, and this module does not define them either.  In particular the statement
   that a `j`-face of the associahedron `Assoc_{N-3}` corresponds to a set of `N-3-j` pairwise
   noncrossing diagonals (the first half of `cor:merged-associahedron-f`), the cycle-lemma proof
@@ -57,10 +57,13 @@ restatements with an explicit `N` and hypothesis `3 ≤ N` are
   the `f`-vector by that transform together with the alternating Vandermonde identity
   `∑_j (-1)^j C(M,j) C(R-j,S) = C(R-M,S-M)` (`eq:merged-alternating-vandermonde`).  Neither the
   transform nor that identity is proved here; `associahedronH` is instead **defined** as the
-  Narayana number `N(N-2, r+1)`, which is the manuscript's conclusion, and the assertions of
-  `thm:merged-associahedron-h` that are proved are the ones about that Narayana row: its closed
-  form, its palindromicity, and `h(1) = C_{N-2}`.  The one consistency check between the two
-  vectors that is proved is `associahedronHPoly_one_eq_faceNumber_zero`: `h(1) = f_0`.
+  Narayana number `N(N-2, r+1)`, which is again the manuscript's conclusion, and the assertions
+  of `thm:merged-associahedron-h` that are proved are the ones about that Narayana row: its
+  closed form, its palindromicity, and `h(1) = C_{N-2}`.  The one consistency check between the
+  two vectors that is proved is `associahedronHPoly_one_eq_faceNumber_zero`: `h(1) = f_0`.
+* **The alternative face-vector shape `eq:merged-associahedron-f-alt`**,
+  `f_d = (1/n) C(n-2,d) C(2n-d-2,n-1)` with `n = N-1`, which the manuscript introduces only as a
+  device for the face transform, is not recorded.
 
 ## Main results
 
@@ -92,9 +95,9 @@ determinant**
 
 `D(a+3, d) = C(a,d) C(a+d+2,d+1) - C(a+1,d+1) C(a+d+2,d)`.
 
-The manuscript's fraction `(1/(d+1)) C(N+d-1,d) C(N-3,d)` is recovered in
-`dissectionNumber_mul` and `dissectionNumber_eq_div`.  Nothing here constructs a dissection;
-see the module docstring. -/
+The manuscript's fraction `(1/(d+1)) C(N+d-1,d) C(N-3,d)` is recovered in `dissectionNumber_mul`
+and `dissectionNumber_eq_div`.  Nothing here constructs a dissection; see the module
+docstring. -/
 def dissectionNumber (a d : ℕ) : ℤ :=
   (a.choose d : ℤ) * ((a + d + 2).choose (d + 1) : ℤ) -
     ((a + 1).choose (d + 1) : ℤ) * ((a + d + 2).choose d : ℤ)
@@ -105,11 +108,13 @@ def dissectionNumber (a d : ℕ) : ℤ :=
 theorem dissectionNumber_mul (a d : ℕ) :
     ((d : ℤ) + 1) * dissectionNumber a d =
       ((a + d + 2).choose d : ℤ) * (a.choose d : ℤ) := by
+  -- `(d+1) C(a+1,d+1) = (a+1) C(a,d)`
   have H1 : ((d : ℤ) + 1) * ((a + 1).choose (d + 1) : ℤ) = ((a : ℤ) + 1) * (a.choose d : ℤ) := by
     have h : (a + 1) * a.choose d = (a + 1).choose (d + 1) * (d + 1) := Nat.add_one_mul_choose_eq a d
     have hc := congrArg (fun t : ℕ => (t : ℤ)) h
     push_cast at hc
     linarith [hc]
+  -- `(d+1) C(a+d+2,d+1) = (a+2) C(a+d+2,d)`
   have H2 : ((d : ℤ) + 1) * ((a + d + 2).choose (d + 1) : ℤ)
       = ((a + d + 2).choose d : ℤ) * ((a : ℤ) + 2) := by
     have h : (a + d + 2).choose (d + 1) * (d + 1) = (a + d + 2).choose d * (a + 2) := by
@@ -118,18 +123,16 @@ theorem dissectionNumber_mul (a d : ℕ) :
     have hc := congrArg (fun t : ℕ => (t : ℤ)) h
     push_cast at hc
     linarith [hc]
-  unfold dissectionNumber
-  have expand : ((d : ℤ) + 1) *
-      ((a.choose d : ℤ) * ((a + d + 2).choose (d + 1) : ℤ) -
-        ((a + 1).choose (d + 1) : ℤ) * ((a + d + 2).choose d : ℤ))
+  have key : ((d : ℤ) + 1) * dissectionNumber a d
       = (a.choose d : ℤ) * (((d : ℤ) + 1) * ((a + d + 2).choose (d + 1) : ℤ))
         - (((d : ℤ) + 1) * ((a + 1).choose (d + 1) : ℤ)) * ((a + d + 2).choose d : ℤ) := by
+    unfold dissectionNumber
     ring
-  rw [expand, H1, H2]
+  rw [key, H1, H2]
   ring
 
-/-- **Integrality of the Kirkman–Cayley fraction:** `(d+1)` divides `C(N+d-1,d) C(N-3,d)`,
-here with `a = N - 3`.  This is what makes the manuscript's `(1/(d+1)) C(N+d-1,d) C(N-3,d)` an
+/-- **Integrality of the Kirkman–Cayley fraction:** `(d+1)` divides `C(N+d-1,d) C(N-3,d)`, here
+with `a = N - 3`.  This is what makes the manuscript's `(1/(d+1)) C(N+d-1,d) C(N-3,d)` an
 integer; it follows from the division-free form `dissectionNumber_mul`. -/
 theorem succ_dvd_choose_mul_choose (a d : ℕ) :
     (d + 1) ∣ (a + d + 2).choose d * a.choose d := by
@@ -139,8 +142,8 @@ theorem succ_dvd_choose_mul_choose (a d : ℕ) :
     exact (dissectionNumber_mul a d).symm
   exact_mod_cast h
 
-/-- The determinant agrees with the manuscript's literal quotient, the division being taken in
-`ℕ` and being exact by `succ_dvd_choose_mul_choose`. -/
+/-- The determinant agrees with the manuscript's literal quotient, the division taken in `ℕ` and
+exact by `succ_dvd_choose_mul_choose`. -/
 theorem dissectionNumber_eq_div (a d : ℕ) :
     dissectionNumber a d = ((a + d + 2).choose d * a.choose d / (d + 1) : ℕ) := by
   have hne : ((d : ℤ) + 1) ≠ 0 := by positivity
@@ -162,11 +165,10 @@ theorem dissectionNumber_nonneg (a d : ℕ) : 0 ≤ dissectionNumber a d := by
 /-- Outside the manuscript's range `0 ≤ d ≤ N - 3` the determinant vanishes: an `N`-gon has no
 `d` pairwise noncrossing diagonals once `d > N - 3`. -/
 theorem dissectionNumber_eq_zero_of_lt (a d : ℕ) (h : a < d) : dissectionNumber a d = 0 := by
-  unfold dissectionNumber
-  rw [Nat.choose_eq_zero_of_lt h,
-    Nat.choose_eq_zero_of_lt (show a + 1 < d + 1 from by omega)]
-  push_cast
-  ring
+  have hne : ((d : ℤ) + 1) ≠ 0 := by positivity
+  apply mul_left_cancel₀ hne
+  rw [dissectionNumber_mul, Nat.choose_eq_zero_of_lt h]
+  simp
 
 /-- **The Kirkman–Cayley formula in the manuscript's variable** (`thm:merged-kirkman-cayley`):
 for `N ≥ 3`, `(d+1) D(N,d) = C(N+d-1,d) C(N-3,d)`. -/
@@ -186,13 +188,14 @@ theorem succ_dvd_choose_mul_choose_of_three_le (N d : ℕ) (hN : 3 ≤ N) :
 
 /-- `D(N,0) = 1`: the empty set of diagonals. -/
 theorem dissectionNumber_zero_right (a : ℕ) : dissectionNumber a 0 = 1 := by
+  have h1 : a + 0 + 2 = a + 2 := by omega
+  have h2 : (0 : ℕ) + 1 = 1 := by omega
   unfold dissectionNumber
-  rw [show a + 0 + 2 = a + 2 from by omega, show (0 : ℕ) + 1 = 1 from by omega,
-    Nat.choose_zero_right, Nat.choose_one_right, Nat.choose_one_right, Nat.choose_zero_right]
+  simp only [h1, h2, Nat.choose_zero_right, Nat.choose_one_right]
   push_cast
   ring
 
-/-- `2 D(N,1) = N (N-3)`: with `a = N - 3`, the `N`-gon has `N(N-3)/2` diagonals. -/
+/-- `2 D(N,1) = N (N-3)`: with `a = N - 3`, a convex `N`-gon has `N(N-3)/2` diagonals. -/
 theorem dissectionNumber_one (a : ℕ) :
     2 * dissectionNumber a 1 = ((a : ℤ) + 3) * (a : ℤ) := by
   have h := dissectionNumber_mul a 1
@@ -221,13 +224,12 @@ it is built into this definition.  What is proved below is the arithmetic of the
 numbers. -/
 def associahedronFaceNumber (N j : ℕ) : ℤ := dissectionNumber (N - 3) (N - 3 - j)
 
-/-- With `N = j + e + 3`, so that `e = N - 3 - j` is the number of fixed diagonals,
+/-- With `N = j + e + 3`, so that `e = N - 3 - j` is the number of diagonals held fixed,
 `f_j = D(N, e)`. -/
 theorem associahedronFaceNumber_eq (j e : ℕ) :
     associahedronFaceNumber (j + e + 3) j = dissectionNumber (j + e) e := by
-  have h1 : j + e + 3 - 3 = j + e := by omega
-  have h2 : j + e - j = e := by omega
-  simp only [associahedronFaceNumber, h1, h2]
+  unfold associahedronFaceNumber
+  rw [show j + e + 3 - 3 = j + e from by omega, show j + e - j = e from by omega]
 
 /-- **The associahedral face vector** (`cor:merged-associahedron-f`), division-free: with
 `N = j + e + 3`, so that `N - 2 - j = e + 1`, `2N - 4 - j = j + 2e + 2` and `N - 3 - j = e`,
@@ -246,18 +248,16 @@ theorem associahedronFaceNumber_mul (j e : ℕ) :
 (`cor:merged-associahedron-f`).  Here `N = m + 3`. -/
 theorem associahedronFaceNumber_zero (m : ℕ) :
     associahedronFaceNumber (m + 3) 0 = catalan (m + 1) := by
-  have h1 : m + 3 - 3 = m := by omega
-  have h2 : m - 0 = m := by omega
-  simp only [associahedronFaceNumber, h1, h2]
+  unfold associahedronFaceNumber
+  rw [show m + 3 - 3 = m from by omega, Nat.sub_zero]
   exact dissectionNumber_self m
 
 /-- `2 f_{N-4} = N (N-3)`: the facets of `Assoc_{N-3}` are the diagonals of the `N`-gon
 (`cor:merged-associahedron-f`).  Here `N = j + 4`, so `N - 3 = j + 1`. -/
 theorem two_mul_associahedronFaceNumber_facet (j : ℕ) :
     2 * associahedronFaceNumber (j + 4) j = ((j : ℤ) + 4) * ((j : ℤ) + 1) := by
-  have h1 : j + 4 - 3 = j + 1 := by omega
-  have h2 : j + 1 - j = 1 := by omega
-  simp only [associahedronFaceNumber, h1, h2]
+  unfold associahedronFaceNumber
+  rw [show j + 4 - 3 = j + 1 from by omega, show j + 1 - j = 1 from by omega]
   have h := dissectionNumber_one (j + 1)
   push_cast at h
   linarith [h]
@@ -265,9 +265,8 @@ theorem two_mul_associahedronFaceNumber_facet (j : ℕ) :
 /-- `f_{N-3} = 1`: the unique top-dimensional face (`cor:merged-associahedron-f`).
 Here `N = j + 3`. -/
 theorem associahedronFaceNumber_top (j : ℕ) : associahedronFaceNumber (j + 3) j = 1 := by
-  have h1 : j + 3 - 3 = j := by omega
-  have h2 : j - j = 0 := by omega
-  simp only [associahedronFaceNumber, h1, h2]
+  unfold associahedronFaceNumber
+  rw [show j + 3 - 3 = j from by omega, Nat.sub_self]
   exact dissectionNumber_zero_right j
 
 /-! ### The associahedral `h`-polynomial -/
@@ -276,15 +275,15 @@ theorem associahedronFaceNumber_top (j : ℕ) : associahedronFaceNumber (j + 3) 
 `N(N-2, r+1)` of `FabiusFunction.NarayanaNumbers`.
 
 The manuscript derives this from the face vector by the face transform
-`h(t) = ∑_d f_d (t-1)^d` and the alternating Vandermonde identity; that derivation is not
-formalized (see the module docstring), so the identification is taken as the definition and the
-Narayana-row assertions of `thm:merged-associahedron-h` are what is proved. -/
+`h(t) = ∑_d f_d (t-1)^d` together with an alternating Vandermonde identity; that derivation is
+not formalized (see the module docstring), so the identification is taken as the definition and
+the Narayana-row assertions of `thm:merged-associahedron-h` are what is proved. -/
 def associahedronH (N r : ℕ) : ℤ := narayana (N - 2) (r + 1)
 
 /-- With `N = m + 3`, the `h`-vector is the `(m+1)`st Narayana row. -/
 theorem associahedronH_eq (m r : ℕ) : associahedronH (m + 3) r = narayana (m + 1) (r + 1) := by
-  have h : m + 3 - 2 = m + 1 := by omega
-  simp only [associahedronH, h]
+  unfold associahedronH
+  rw [show m + 3 - 2 = m + 1 from by omega]
 
 /-- **The `h`-vector closed form** (`thm:merged-associahedron-h`), division-free: with
 `N = m + 3`, `(N-2) h_r = C(N-2, r+1) C(N-2, r)`.  This is `Fabius.narayana_mul`. -/
@@ -294,8 +293,8 @@ theorem associahedronH_mul (m r : ℕ) :
   rw [associahedronH_eq]
   exact narayana_mul m r
 
-/-- **Palindromicity of the `h`-vector** (`thm:merged-associahedron-h`, the Dehn–Sommerville
-relation for this polytope): with `N = m + 3` and `r ≤ m`, `h_r = h_{m-r}`, the indices running
+/-- **Palindromicity of the `h`-vector** (`thm:merged-associahedron-h`; the Dehn–Sommerville
+relation for this polytope): with `N = m + 3` and `r ≤ m`, `h_r = h_{m-r}`, the index running
 over `0 ≤ r ≤ N - 3 = m`.  This is the Narayana symmetry `Fabius.narayana_symm`. -/
 theorem associahedronH_symm (m r : ℕ) (hr : r ≤ m) :
     associahedronH (m + 3) r = associahedronH (m + 3) (m - r) := by
@@ -320,7 +319,7 @@ theorem associahedronH_top (m : ℕ) : associahedronH (m + 3) m = 1 := by
 `∑_{r=0}^{N-3} h_r = C_{N-2}`, with `N = m + 3`.  This is `Fabius.sum_narayana`. -/
 theorem sum_associahedronH (m : ℕ) :
     ∑ r ∈ range (m + 1), associahedronH (m + 3) r = catalan (m + 1) := by
-  rw [Finset.sum_congr rfl fun r _ => associahedronH_eq m r]
+  simp only [associahedronH_eq]
   exact sum_narayana m
 
 /-- The associahedral `h`-polynomial `h(t) = ∑_{r=0}^{N-3} h_r t^r`, evaluated at `t`. -/
@@ -328,12 +327,13 @@ def associahedronHPoly (N : ℕ) (t : ℤ) : ℤ := ∑ r ∈ range (N - 2), ass
 
 /-- **`h(1) = C_{N-2}`** (`thm:merged-associahedron-h`), with `N = m + 3`. -/
 theorem associahedronHPoly_one (m : ℕ) : associahedronHPoly (m + 3) 1 = catalan (m + 1) := by
-  have h : m + 3 - 2 = m + 1 := by omega
-  simp only [associahedronHPoly, h, one_pow, mul_one]
+  unfold associahedronHPoly
+  rw [show m + 3 - 2 = m + 1 from by omega]
+  simp only [one_pow, mul_one]
   exact sum_associahedronH m
 
-/-- `h(1) = f_0`, the only consistency check between the face vector and the `h`-vector proved
-here: both are `C_{N-2}`, as they must be for a simple polytope. -/
+/-- `h(1) = f_0`: the one consistency check between the face vector and the `h`-vector proved
+here.  Both are `C_{N-2}`, as they must be for a simple polytope. -/
 theorem associahedronHPoly_one_eq_faceNumber_zero (m : ℕ) :
     associahedronHPoly (m + 3) 1 = associahedronFaceNumber (m + 3) 0 := by
   rw [associahedronHPoly_one, associahedronFaceNumber_zero]

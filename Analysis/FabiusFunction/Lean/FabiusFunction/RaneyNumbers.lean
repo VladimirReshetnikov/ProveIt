@@ -24,7 +24,7 @@ right-hand side collapses to `r · [w^{n-1}] (1+w)^{pn+r-1}`, since `H'` and
 `n · [z^n] T^r = r · C(pn + r - 1, n - 1)`
 
 is `natCast_mul_coeff_raneyT_pow`.  The manuscript's divided form follows from
-`Nat.succ_mul_choose_eq`, which is the exact statement that clearing the
+`Nat.add_one_mul_choose_eq`, which is the exact statement that clearing the
 denominator is legitimate.
 
 The divided form `coeff_raneyT_pow` includes the manuscript's degree-zero

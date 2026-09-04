@@ -2,10 +2,11 @@
 
 **Single consolidated volume for the whole `series-and-transseries` group.**
 `transseries_and_inversion.tex` is the canonical editable source. The retained
-711-page A4 PDF is a 4 September 2026 publication checkpoint. The current
-55,985-line canonical source has 3,125 distinct labels and includes later
-merged source-only Lean crosswalks; the retained artifact is therefore
-historical and no current source/render parity is claimed.
+711-page A4 PDF is a 4 September 2026 publication checkpoint. A later
+source-only snapshot reached 55,985 lines and 3,125 distinct labels; the
+merged canonical source includes still later editorial and Lean-crosswalk
+changes. The retained artifact is therefore historical; no current
+source-size, label-count, or source/render parity is claimed.
 
 ## Status
 
@@ -26,10 +27,12 @@ absorbed each; the repair appendix lists every correction made.
 
 ## Lean formalization inventory
 
-The live corpus census is 970 modules and 12,051 explicit public declarations,
+The live corpus census is 987 modules and 12,207 explicit public declarations,
 with zero missing declaration comments and zero missing module headers. The
-thirty-five directly relevant modules contain 304 explicit public commands; two
-named `to_additive` declarations bring this inventory to 306 named API entries.
+thirty-six directly relevant modules contain 316 explicit public commands; two
+named `to_additive` declarations bring this inventory to 318 named API entries.
+The earlier 35/304/306 focused inventory and the 970/12,056, 976/12,116, and
+incoming-branch 977/12,133 corpus censuses are historical checkpoints.
 Automatically generated structure projections are outside both tallies.
 
 - `TransseriesScale.lean` (one structure, two definitions, six theorems):
@@ -98,18 +101,17 @@ Automatically generated structure projections are outside both tallies.
 - `TransseriesFlat.lean` (four definitions, twenty-two theorems): `IsFlat`,
   `flatSubmodule`, `AbsorbsScale`, `powScale`, `isFlat_zero`, `IsFlat.add`,
   `IsFlat.neg`, `IsFlat.sub`, `IsFlat.const_smul`,
+  `isFlat_exp_neg_rpow_atTop`, `IsPoincareExpansion.add_flat`,
+  `IsPoincareExpansion.sub_same_coeff_isFlat`,
+  `IsPoincareExpansion.iff_sub_isFlat`,
+  `IsFlat.smul_of_scale_absorption`, `IsFlat.smul_of_isBigO_inv_pow`,
   `mem_flatSubmodule_iff`, `IsFlat.mul_absorbsScale`,
   `absorbsScale_const`, `IsPoincareExpansion.add_isFlat`,
   `isFlat_sub_of_isPoincareExpansion`,
   `isPoincareExpansion_iff_isFlat_sub`,
   `isPoincareExpansion_zero_iff`, `powScale_eq_rpow`,
   `absorbsScale_of_isBigO_pow`, `isFlat_exp_neg`, and
-  `isPoincareExpansion_add_exp_neg`, together with
-  `isFlat_exp_neg_rpow_atTop`, `IsPoincareExpansion.add_flat`,
-  `IsPoincareExpansion.sub_same_coeff_isFlat`,
-  `IsPoincareExpansion.iff_sub_isFlat`,
-  `IsFlat.smul_of_scale_absorption`, and
-  `IsFlat.smul_of_isBigO_inv_pow`.
+  `isPoincareExpansion_add_exp_neg`.
 - `WrightOmega.lean` (one definition, thirteen theorems): `wrightOmega`,
   `analyticAt_wrightOmega`, `wrightOmega_pos`, `wrightOmega_add_log`,
   `principalLambertW_eq_wrightOmega_log`, `wrightOmega_leftInverse`,
@@ -155,7 +157,8 @@ Automatically generated structure projections are outside both tallies.
   `abs_numDerangements_sub_lt_half`, and
   `round_factorial_mul_exp_neg_one`.
 
-Fourteen incoming leaves add 95 focused declarations:
+At the earlier focused checkpoint, fourteen incoming leaves added 95 focused
+declarations:
 `BackwardErrorExistence.lean` (7), `BellLeibnizTower.lean` (5),
 `CayleyKernel.lean` (10), `CayleyLocalCoordinate.lean` (7),
 `CayleyTreeFunction.lean` (7), `DivisorTransform.lean` (9),
@@ -169,8 +172,23 @@ fifteenth incoming leaf, `NewtonInterpolation.lean` (22), belongs to another
 focused package. Three later focused leaves add
 `StirlingSeriesCoefficients.lean` (15), `WrightOmegaTwoOrders.lean` (8), and
 `UnitSeriesPowerRecurrence.lean` (3). `NewtonInterpolation.lean` and the eleven
-new `AppellSequence.lean` declarations are included only in the global
-970/12,051 census.
+new `AppellSequence.lean` declarations are included only in the global corpus
+census above.
+
+The final focused addition is the ten-theorem
+`TransseriesWrightOmegaTerms.lean` leaf:
+`plMonomial_one_zero_eventuallyEq`, `plMonomial_zero_one_eventuallyEq`,
+`plMonomial_neg_one_one_eventuallyEq`, `exponents_of_wrightOmega`,
+`exponents_of_wrightOmega_sub`, `exponents_of_wrightOmega_residual`,
+`not_pure_of_wrightOmega_three_terms`,
+`not_isEquivalent_pure_power_wrightOmega_sub`,
+`tendsto_wrightOmega_div_plMonomial_zero_atTop`, and
+`isLittleO_wrightOmega_residual_plMonomial_zero`.  The two added theorems in
+`TransseriesMonomialUniqueness.lean` are
+`tendsto_const_mul_plMonomial_div_one_iff` and
+`isEquivalent_const_mul_plMonomial_iff`; the two earlier compatibility
+wrappers remain.  These twelve declarations account exactly for the change
+from the historical 35/304/306 focused inventory to 36/316/318.
 
 The exact status map is deliberately narrower than the inventory:
 
@@ -180,6 +198,9 @@ The exact status map is deliberately narrower than the inventory:
   through its literal `OrderDual` wrappers (the printed total order is a
   specialization), the analytic content of `plt:lem:mot-dominance`,
   `plt:prop:mot-blocks`, `plt:prop:mot-omega-basic` over the reals only,
+  the unique first three Wright-omega monomial terms, and the real-`atTop`
+  statements `plt:cor:mot-both-generators-needed` and
+  `plt:prop:mot-one-generator-fails`,
   `plt:lem:tay-bell-recurrence`, and the displayed equations
   `plt:eq:mot-block-derivative` and `plt:eq:dif-block` in the abstract unit
   model, `plt:lem:bell-normalizations`, all three
@@ -189,9 +210,10 @@ The exact status map is deliberately narrower than the inventory:
 - Partial: `q0:prop:height` beyond its two exact displayed estimates;
   `plt:def:mot-scale` beyond the ordered-sequence version;
   `plt:lem:mot-harmonic` beyond its leading Stolz limit;
-  `plt:prop:mot-two-orders` beyond its exact concluding equivalences;
-  `plt:cor:mot-both-generators-needed` beyond its exact monomial-uniqueness and
-  Wright-omega residual engines; `plt:thm:mot-smallest-differential-algebra` beyond its exact
+  `plt:prop:mot-two-orders` beyond its exact concluding equivalences and at
+  its four-term quantitative expansion; the abstract construction of a full
+  transseries scale beyond the proved monomial set consequences;
+  `plt:thm:mot-smallest-differential-algebra` beyond its exact
   abstract minimality statements and integer block law, since the concrete
   germ-model growth and algebraic-independence clauses remain absent;
   the compound `plt:lem:mot-block-antiderivative` and `plt:prop:dif-block`
@@ -261,17 +283,37 @@ is about the passage from a function to a sequence.
 
 ## Lean crosswalk
 
+The current integrated inventory is 987 modules and 12,207 public declarations,
+with no documentation gaps. The 970/12,056, 976/12,116, and incoming-branch
+977/12,133 inventories are historical checkpoints. `TransseriesFlat` now has 4 definitions
+and 22 theorems, preserving the general vector-valued API together with the
+scalar submodule, absorption, and power-scale interfaces. The integer block
+interfaces and the incoming inverse-power derivative lemmas together make
+`TransseriesDifferentialBlock` a 12-theorem module.
 The source records status claim by claim. Exact counterparts now cover the
 sequence-indexed asymptotic-scale/Poincaré definitions and uniqueness,
 flatness and the corrected invisible-function proposition, Dickson and Neumann
 (with `OrderDual` matching the manuscript's well-based orientation), the
 displayed power–log ratio limits and chosen decreasing
-sequence scales, the unit-series Bell coefficient formulas, and the quadratic
+sequence scales, the unique first three Wright-omega monomial terms and both
+real one-generator failures, the unit-series Bell coefficient formulas, and the quadratic
 Catalan identity. The full unordered power–log scale lemma, the all-integer
 Laurent block-antiderivative lemma, and the complete quadratic-core lemma are
 Partial at the boundaries stated in the source. No status promotion should be
 inferred for the surrounding transseries constructions.
 
+The incoming `BellLeibnizTower` and `OrdinaryPartialBell` modules supply the
+abstract Faà di Bruno formula and the ordinary/exponential normalization
+bridge. `TouchardEulerOperator` supplies the Touchard definition, coefficient
+identities, and displayed Euler-operator equation. The backward-error,
+transfer, and Lambert-certificate
+claims depend on assembling their named existence and comparison theorems.
+The broader Wright-omega, differential-closure, harmonic-increment, Cayley,
+derangement, Lambert-correction and bracket, core-inversion,
+remainder-transport, and staircase claims remain Partial where their source
+clauses exceed the exposed APIs. `LeastTermIndex` supplies neighboring
+ratio and unimodality lemmas; it does not prove the full optimal-truncation
+claim.
 ## Structure
 
 Part I orients: what a transseries is, why a scale is needed, why divergence is not failure, and the algebra of monomials — replacing four parallel expository introductions.
@@ -292,6 +334,8 @@ a real-argument Fibonacci function); the reversal of `x + W(x)` in depth; the Be
 The former assembler cannot be rerun; the `.tex` header identifies the
 consolidated file as the canonical source and it is now edited in place. A
 future publication build would use three `pdflatex` passes, but none was run
-for this tranche. The current TeX has 55,985 lines and 3,125 distinct labels.
-The retained historical PDF has 711 A4 pages and predates the merged source-
-only crosswalk overlay; no current source/render parity is claimed.
+for this tranche. A later source-only snapshot had 55,985 lines and 3,125
+distinct labels; the merged canonical source is newer and has no asserted
+current line or label count. The retained historical PDF has 711 A4 pages and
+predates the merged source-only crosswalk overlay; no current source/render
+parity is claimed.

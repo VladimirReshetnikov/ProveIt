@@ -20,6 +20,11 @@ Their `IsBigO` corollaries are the two effective clauses of the manuscript's
 fixed-column theorem.  All results include `q = 0`; in that case the errors
 vanish once the displayed exponent is positive.
 
+The upstream `QBinomialTheoremInfinite` module already supplies the general
+exponential product-defect estimate and the shifted limit (for an arbitrary
+fixed additive shift).  This leaf reuses those declarations and adds the
+eight sharper nonasymptotic and relative/additive error results below.
+
 ## Main declarations
 
 * `norm_finiteQPochhammerIn_pow_sub_one_le_exp'` bounds the product defect by
@@ -79,10 +84,11 @@ exponential of the sum of its factor norms:
 This is the q-Pochhammer specialization of Mathlib's general finite-product
 defect estimate `Finset.norm_prod_one_add_sub_one_le`.
 
-The prime marks a genuine generalization rather than a variant:
-`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` in `QBinomialTheoremInfinite.lean`
+The prime marks a genuine generalization rather than a variant: the unprimed
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` in
+`QBinomialTheoremInfinite.lean`
 asks for a normed *field*, while this version needs only a normed commutative
-ring whose norm is multiplicative, which every normed field is. -/
+ring with multiplicative norm and norm-one unit, which every normed field is. -/
 theorem norm_finiteQPochhammerIn_pow_sub_one_le_exp'
     (q : R) (hq : ‖q‖ ≤ 1) (m k : ℕ) :
     ‖finiteQPochhammerIn (q ^ m) q k - 1‖ ≤
