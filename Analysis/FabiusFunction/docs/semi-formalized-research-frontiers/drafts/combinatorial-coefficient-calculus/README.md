@@ -29,13 +29,13 @@ mode this package is now expected to pass.
 
 | Directory | Document |
 | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — the evolving source and a historical 174-page A4 PDF |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — the evolving source and its synchronized 206-page A4 PDF |
 
-The TeX has changed since the committed PDF was rendered. PDF rebuilding is
-currently skipped at the user's request, so the pair has no current
-render-parity claim. Standalone checksum files are retired; provenance is kept
-in Git and the source inventory, and the validator does not maintain or require
-file digests.
+The PDF was rebuilt from the accompanying source on 2026-09-04 using three
+strict pdfLaTeX passes and a generated index. This render checkpoint does not
+certify Lean compilation; the in-document register keeps that status separate.
+Standalone checksum files are retired; provenance is kept in Git and the source
+inventory, and the validator does not maintain or require file digests.
 
 ## What the final merge changed
 
@@ -86,14 +86,41 @@ complete human proofs and exact declaration crosswalks. Three private rational
 helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
 caller refactor has been independently source-reviewed but awaits its own build.
 
-The register contains 203 rows: 58 marked Lean, 34 partial, and 111 without a
+At that checkpoint the register contained 203 rows: 58 marked Lean, 34 partial, and 111 without a
 Lean counterpart. The earlier classifications are inherited; this checkpoint
 adds two compiler-backed entries and does not claim a fresh build of the whole
 corpus. The final structural/provenance validator passes with 203 adjacent
 proofs, 27 disposition records, and six original-source inventory rows. PDF
-rebuilding remains deferred at the user's request.
+rebuilding was deferred at that checkpoint and was completed in the later
+source/render synchronization below.
 
 The same-day upstream crosswalk connects the Bell normalization and unit-series
 coefficient formulas to `UnitSeriesBellCoefficients`; its labelled-set partition
 interpretation remains unformalized. That partial result is included in the
 register totals above.
+
+## Stirling and formal-power source checkpoint (2026-09-04)
+
+The source implementation now includes the second-kind reverse-row recurrence
+over arbitrary rings, the complete-homogeneous identification of Stirling
+columns over commutative semirings, an explicit weak-composition reindexing,
+and a division-free Bell/power-sum consequence. A separate reusable
+coefficient-extraction theorem gives the formal-power recurrence from its
+differential equation, with no normalization needed for the general ring form.
+The manuscript supplies complete human proofs and maps every new public
+declaration to its mathematical statement.
+
+These additions have passed independent mathematical and exact-library source
+reviews, but **none of the new proofs is counted as compiler-verified yet**.
+Other worktrees held the machine-wide Lean build slot during this checkpoint.
+The register has 205 rows: 58 marked Lean, 34 partial, and 113 without a
+compiler-verified counterpart. The two new rows have human proofs and pending
+Lean source implementations; earlier statuses are inherited, not freshly
+validated by an aggregate build.
+
+The final structural/provenance validator passes with 205 adjacent proofs,
+27 disposition records, and six original-source inventory rows. The source is
+10,625 lines / 515,956 UTF-8 bytes. The rebuilt 206-page PDF uses Libertinus text
+and Computer Modern mathematics. Validation includes focused visual inspection
+of the revised recurrence, coefficient, crosswalk, and register pages; it is
+not a claim of a fresh page-by-page audit of the whole monograph.

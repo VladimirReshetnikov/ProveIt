@@ -45,11 +45,13 @@ coincides with the original `CCC` manuscript's location, but its contents now
 include the consolidation and subsequent work. The `CCC` inventory row always
 identifies the historical snapshot, never the changing live source.
 
-The committed 174-page PDF is a historical render from an earlier consolidation
-checkpoint. The TeX has changed since that render. PDF rebuilding is currently
-skipped at the user's request; the surviving pair therefore has no current
-render-parity claim. An existing PDF and adjacent proof environments do not
-establish either rendered correctness or Lean verification.
+The canonical PDF was rebuilt from the accompanying TeX on 2026-09-04 with
+three strict pdfLaTeX passes and a generated index. It contains 206 pages;
+the earlier 174-page consolidation render remains recoverable from Git.
+This is a source/render synchronization checkpoint, not a claim that all
+mathematics has been verified in Lean. The new reverse-row, complete-homogeneous,
+weak-composition, and formal-power source proofs remain explicitly marked as
+awaiting compilation in the manuscript and its register.
 
 ## Recovery and validation
 

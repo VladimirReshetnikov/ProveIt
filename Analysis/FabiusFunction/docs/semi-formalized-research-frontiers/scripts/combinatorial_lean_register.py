@@ -284,11 +284,12 @@ STATUS = {
    r"\lean{Fabius.second_reverse_column} (\lean{StirlingSecondReverseColumn}), by the "
    r"column differential equation $(1-\EulerE^{-x})F_k'=kF_k$ "
    r"(\lean{Fabius.one_sub_altSeries_mul_derivative_egfA_stirlingSecond}); "
-   r"\cref{eq:second-reverse-row} is not formalized, though its series step is: the "
-   r"coefficients of $(1+t)\log(1+t)-t$ are \lean{Fabius.coeff_logTail} and its value "
-   r"at $u=\EulerE^x-1$ is \lean{Fabius.subst_logTail} "
-   r"(\lean{StirlingSecondReverseRow}), which is what lets the row identity be proved "
-   r"in one variable rather than two"),
+   r"the new row declarations \lean{Fabius.second_reverse_row} and "
+   r"\lean{Fabius.second_reverse_row_ring_Icc} (\lean{StirlingSecondReverseRow}) "
+   r"are implemented but await compilation. The latter covers every $n\ge0$, $k\ge1$ "
+   r"over any unital ring. Its established series ingredients are "
+   r"\lean{Fabius.coeff_logTail} and \lean{Fabius.subst_logTail}; "
+   r"the aggregate status stays partial until the new proof is compiler-verified"),
  'thm:eulerian-stirling': ('Lean',
    r"\lean{Fabius.sum_eulerianNumber_mul_X_pow_eq_sum_stirlingSecond} (\lean{EulerianStirling}), "
    r"as an identity in $R[[t]]$ over any commutative ring $R$, from the rising-factorial "
@@ -327,9 +328,19 @@ STATUS = {
    r"\lean{Fabius.stirlingColumnOGF_eq_prod_mk_pow} (\lean{StirlingOrdinaryGF}): the column "
    r"series $\sum_r\StirlingSecondKind{k+r}{k}x^r$ times $\prod_{j\le k}(1-jx)$ is $1$, and "
    r"equals the product of the geometric series $\sum_r j^rx^r$, in $R[[x]]$ for every "
-   r"commutative ring $R$; \cref{eq:second-complete-symmetric}, which reads the coefficient "
-   r"off the product as a complete homogeneous symmetric polynomial, is displayed inside the "
-   r"theorem and is not formalized"),
+   r"commutative ring $R$. The new "
+   r"\lean{Fabius.stirlingSecond_add_eq_completeHomogeneousEvalOn} and "
+   r"\lean{Fabius.stirlingSecond_eq_completeHomogeneousEvalOn} "
+   r"(\lean{StirlingCompleteHomogeneous}) implement the $S=h$ coefficient identity "
+   r"over every commutative semiring but await compilation. The explicit weak-composition "
+   r"sum is implemented by \lean{Fabius.stirlingSecond_add_eq_sum_antidiagonalTuple} "
+   r"using \lean{CompleteHomogeneousWeakComposition}, also awaiting compilation. "
+   r"The reciprocal falling-factorial clause still lacks its exact formal crosswalk"),
+ 'cor:second-column-bell-power-sums': ('none',
+   r"Source implementation awaiting compilation: "
+   r"\lean{Fabius.bellComplete_stirlingSecond_powerSums} and "
+   r"\lean{Fabius.stirlingSecond_add_eq_factorialNormalize_completeBellPolynomial} "
+   r"(\lean{StirlingCompleteHomogeneous}); no compiler-backed status is claimed yet"),
  'thm:eulerian-power-series': ('Lean',
    r"\lean{Fabius.one_sub_X_pow_mul_succPowSeries} (the identity "
    r"$(1-t)^{n+1}\sum_m(m+1)^nt^m=\TypeAEulerianPolynomial{n}(t)$ in $R[[t]]$) and "
@@ -607,6 +618,11 @@ STATUS = {
  'cor:eulerian-power-sum': ('Lean',
    r"\lean{Fabius.sum_range_pow_succ_eq_sum_eulerianNumber} (\lean{EulerianNumbers}), "
    r"in the form $\sum_{r=0}^{m} r^{n+1}=\sum_k A(n+1,k)\binom{m+k+1}{n+2}$"),
+ 'prop:merged-power-ode-coefficients': ('none',
+   r"Source implementation awaiting compilation: "
+   r"\lean{Fabius.natCast_mul_coeff_of_mul_derivative_eq} and "
+   r"\lean{Fabius.coeff_X_mul_derivative_series} (\lean{UnitSeriesPowerRecurrence}); "
+   r"arbitrary commutative rings and unrestricted constant coefficients"),
  'alg:merged-exp-log-power': ('partial',
    r"\cref{eq:merged-alg-log} is the reflected-index form of "
    r"\lean{Fabius.SaddleExpansion.logCoeff_succ}, with "
@@ -617,8 +633,11 @@ STATUS = {
    r"denominator-cleared form $na_n=\sum_{j=1}^n j\ell_j a_{n-j}$.  The same module proves "
    r"closed Bell-polynomial formulas for arbitrary powers as "
    r"\lean{Fabius.coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos} and "
-   r"\lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}, but the separate recurrence "
-   r"\cref{eq:merged-alg-power} is not formalized"),
+   r"\lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}. The separate recurrence "
+   r"\cref{eq:merged-alg-power} is now implemented in "
+   r"\lean{Fabius.coeff_fallingSeries_subst_recurrence} and its divided wrapper "
+   r"\lean{Fabius.coeff_fallingSeries_subst_recurrence_of_pos} "
+   r"(\lean{UnitSeriesPowerRecurrence}), but compilation remains pending"),
 }
 
 # A dict literal keeps the LAST of two equal keys and reports nothing, so a

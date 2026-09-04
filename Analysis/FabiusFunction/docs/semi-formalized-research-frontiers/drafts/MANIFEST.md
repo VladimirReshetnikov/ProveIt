@@ -610,7 +610,7 @@ formalization status per result.
 
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical, editorial consolidation complete:** *Combinatorial Coefficient Calculus* — the current source extends the consolidated manuscript with weighted binomial translation and inversion; the retained 174-page A4 PDF is an earlier render. PDF rebuilding is deferred by user instruction. Lean coverage is tracked result by result in the source. | Six-source provenance and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip`; `SOURCE_INVENTORY.csv` records immutable Git locators for all six inputs, including the five retired donors. No checksum ledger is required. |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical, editorial consolidation complete:** *Combinatorial Coefficient Calculus* — synchronized 206-page A4 PDF rebuilt on 2026-09-04. The source adds arbitrary-ring Stirling reverse-row and formal-power recurrences, semiring complete-homogeneous/weak-composition bridges, and a Bell power-sum consequence. The 205-row register distinguishes 58 Lean / 34 partial / 113 without compiler verification; all new source proofs still await compilation. | Six-source provenance and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip`; `SOURCE_INVENTORY.csv` records immutable Git locators for all six inputs, including the five retired donors. No checksum ledger is required. |
 
 ## exponents-and-q-series — `exponents-and-q-series/`
 
