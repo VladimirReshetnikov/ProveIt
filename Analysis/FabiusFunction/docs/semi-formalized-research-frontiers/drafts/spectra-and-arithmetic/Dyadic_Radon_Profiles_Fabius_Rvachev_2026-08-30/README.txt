@@ -8,10 +8,12 @@ MAIN DELIVERABLES
 -----------------
 
 dyadic_radon_profiles_fabius_rvachev.tex
-    Complete LaTeX manuscript.
+    Complete 2,050-line, 74,839-byte LaTeX manuscript; SHA-256
+    0ac7695620cb22896bb912598e2e91fd404e70dbd3c5d1e769ee76a6e92578d4.
 
 dyadic_radon_profiles_fabius_rvachev.pdf
-    Compiled 29-page A4 PDF, rebuilt from the current source.
+    Synchronized 29-page, 998,017-byte A4 PDF; SHA-256
+    39e76001f71c6628308ccdb8232251538674faee3c9102fa26e4cec00eb276c0.
 
 numerical_experiments.py
     Fully commented experiment driver.  Exact integer/rational arithmetic is
@@ -93,11 +95,15 @@ next to the TeX source.
 PDF ARTIFACT VERIFICATION
 -------------------------
 
-The synchronized 2026-08-31 rebuild has 29 A4 pages at rotation zero. Every
-page rendered and contained extractable text. All 24 font rows are embedded
+The synchronized 2026-09-04 rebuild began with absent auxiliaries. Its three
+successful serial halt-on-error passes produced 27 pages/984,841 bytes, 29
+pages/998,017 bytes, and 29 pages/998,017 bytes. Every page is A4 at rotation
+zero, rendered, and contains extractable text. All 24 font rows are embedded
 and subset, six are Libertinus, and none is Type 3. The final log has no TeX
 error, unresolved reference/citation, rerun request, overfull box, or underfull
-box.
+box; title, author, subject, and keywords metadata are present. Representative
+title, body, table, figure, and final pages passed visual inspection. Generated
+sidecars were removed, and no checksum ledger is a live publication gate.
 
 DEPENDENCIES
 ------------

@@ -30,10 +30,12 @@ Files
 -----
 
   thue_morse_diagonal_polynomials.tex
-      Complete LaTeX source.
+      Complete 1,763-line, 56,530-byte LaTeX source; SHA-256
+      eee5751653bb19ec04042f51ded34d74bf8862f5b06b49d47e68ea78bb689c45.
 
   thue_morse_diagonal_polynomials.pdf
-      Rendered 24-page article.
+      Synchronized 24-page, 778,595-byte A4 article; SHA-256
+      8db0c4e0a4fcf682bd3e1311f7d8197ea04dcca56e102236b52494267d99cbbe.
 
   thue_morse_table.wl
       Standalone Wolfram Language implementation.  It provides:
@@ -109,6 +111,17 @@ A recent TeX Live installation with latexmk is recommended.  From this folder:
     latexmk -pdf -interaction=nonstopmode -halt-on-error \
       thue_morse_diagonal_polynomials.tex
 
+The current publication was rebuilt on 4 September 2026 from absent
+auxiliaries using exactly three serial halt-on-error pdflatex passes. They
+produced 23 pages/768,048 bytes, 24 pages/778,598 bytes, and finally 24
+pages/778,595 bytes. The final log has no TeX error, unresolved reference or
+citation, or rerun request; title, author, subject, and keywords metadata are
+present. Every page is A4 at rotation zero, rendered, and contains extractable
+text. All 22 font rows are embedded and subset, seven are Libertinus, and none
+is Type 3. Representative title, body, formula, figure, and final pages passed
+visual inspection. Generated sidecars were removed, and no checksum ledger is
+a live publication gate.
+
 Clean auxiliary files with:
 
     latexmk -c thue_morse_diagonal_polynomials.tex
@@ -118,5 +131,5 @@ Reproducibility notes
 
 * All mathematical identity checks use Python integers or exact SymPy
   rationals.  Floating-point arithmetic is used only for plotting.
-* The PDF is A4, unencrypted, text-searchable, and uses embedded fonts.
-* The article was built and verified on 3 September 2026.
+* The PDF is A4, unencrypted, text-searchable, and uses embedded/subset fonts.
+* The current article was built and verified on 4 September 2026.

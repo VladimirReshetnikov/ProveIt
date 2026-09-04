@@ -22,11 +22,18 @@ FABIUS_ROOT = FRONTIER_ROOT.parent.parent
 DOCS = FRONTIER_ROOT
 LEAN = FABIUS_ROOT / 'Lean' / 'FabiusFunction'
 
+# Share the documentation auditor's nested-comment/string lexer. In
+# particular, a named attribute before a multiline doc comment is still code.
+sys.path.insert(0, str(FABIUS_ROOT / 'scripts'))
+from doc_audit import strip_comments
+
 DECL = re.compile(
     r'^\s*(?:@\[[^\]]*\]\s*)?'
     r'(?:private\s+|protected\s+|noncomputable\s+|partial\s+|unsafe\s+)*'
     r'(?:theorem|lemma|def|abbrev|instance|structure|inductive|class)\s+'
     r"([A-Za-z_][A-Za-z0-9_.']*)")
+TO_ADDITIVE_NAMED = re.compile(
+    r"^\s*@\[to_additive\s+([A-Za-z_][A-Za-z0-9_.']*)")
 NS_OPEN = re.compile(r"^\s*namespace\s+([A-Za-z_][A-Za-z0-9_.']*)")
 NS_END = re.compile(r"^\s*end\s+([A-Za-z_][A-Za-z0-9_.']*)\s*$")
 
@@ -45,7 +52,7 @@ for root, _dirs, files in os.walk(LEAN):
         stack = []
         with io.open(os.path.join(root, fn), encoding='utf-8',
                      errors='replace') as fh:
-            for line in fh:
+            for line, *_ in strip_comments(fh.read().splitlines()):
                 m = NS_OPEN.match(line)
                 if m:
                     stack.extend(m.group(1).split('.'))
@@ -56,6 +63,14 @@ for root, _dirs, files in os.walk(LEAN):
                     parts = m.group(1).split('.')
                     if stack[-len(parts):] == parts:
                         del stack[-len(parts):]
+                    continue
+                # Named `to_additive` attributes generate public declarations
+                # even though no second `theorem` command occurs in the file.
+                # Record those names so exhaustive crosswalks can cite the
+                # generated additive API without a false unresolved-name error.
+                m = TO_ADDITIVE_NAMED.match(line)
+                if m:
+                    defined.add('.'.join(stack + [m.group(1)]))
                     continue
                 m = DECL.match(line)
                 if m:
@@ -75,7 +90,12 @@ for full in list(defined) + list(namespaces):
         resolvable.add('.'.join(parts[i:]))
 
 # 2. Citations.  Dotted names are captured whole.
-CITE = re.compile(r"Fabius\.((?:[A-Za-z0-9_'\\]|\.(?=[A-Za-z_]))+)")
+# The negative lookbehind is necessary, not decorative: without it the
+# module name `PowerExponentialLambertFabius.lean` matches as the citation
+# `Fabius.lean`, which is then reported MISSING.  A false positive against
+# correct text is the worst kind of audit failure, so the match must not
+# be allowed to start in the middle of an identifier.
+CITE = re.compile(r"(?<![A-Za-z0-9_])Fabius\.((?:[A-Za-z0-9_'\\]|\.(?=[A-Za-z_]))+)")
 # Ledger-style citations `\decl{name}` (Fourier-decay, Integration, Lambert W
 # volumes): a bare declaration name understood in namespace `Fabius`, or a
 # module path `FabiusFunction.Foo`.  A bare name resolves through the

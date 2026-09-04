@@ -27,6 +27,8 @@ eight sharper nonasymptotic and relative/additive error results below.
 
 ## Main declarations
 
+* `norm_finiteQPochhammerIn_pow_sub_one_le_exp'` is the compatibility alias
+  for the upstream generalized exponential product-defect estimate.
 * `norm_finiteQPochhammerIn_pow_sub_one_le` gives the geometric bound with
   the simple fixed-column constant `k * exp k`.
 * `norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le` is the
@@ -34,6 +36,9 @@ eight sharper nonasymptotic and relative/additive error results below.
 * `norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le` and
   `norm_gaussianBinomial_add_sub_inv_finiteQPochhammerIn_le` are the fixed
   and shifted nonasymptotic additive error bounds.
+* the shifted fixed-column limit `[n+k,k]_q → (q;q)_k⁻¹` is
+  `tendsto_gaussianBinomial_add_const_atTop` from `QBinomialTheoremInfinite.lean`,
+  read at `r = k`; it is stated there for an arbitrary shift.
 * `gaussianBinomial_fixedColumn_relativeError_isBigO` and
   `gaussianBinomial_shifted_fixedColumn_relativeError_isBigO` give the
   manuscript's multiplicative `1 + O(...)` statements.
@@ -69,6 +74,15 @@ private theorem exp_sub_one_le_mul_exp_fixedColumn (t : ℝ) :
 section FiniteProduct
 
 variable {R : Type*} [NormedCommRing R] [NormOneClass R] [NormMulClass R]
+
+/-- Compatibility alias for the generalized exponential product-defect estimate
+`norm_finiteQPochhammerIn_pow_sub_one_le_exp` supplied by
+`QBinomialTheoremInfinite`. -/
+theorem norm_finiteQPochhammerIn_pow_sub_one_le_exp'
+    (q : R) (hq : ‖q‖ ≤ 1) (m k : ℕ) :
+    ‖finiteQPochhammerIn (q ^ m) q k - 1‖ ≤
+      Real.exp ((k : ℝ) * ‖q‖ ^ m) - 1 :=
+  norm_finiteQPochhammerIn_pow_sub_one_le_exp hq m k
 
 /-- **Geometric finite-product defect bound.**  For `||q|| <= 1`,
 

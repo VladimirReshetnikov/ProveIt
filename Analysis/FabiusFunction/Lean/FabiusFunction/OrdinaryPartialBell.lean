@@ -47,6 +47,7 @@ characterizing property: the coefficient of `z^n` in `(∑_{j≥1} ξ_j z^j)^k`.
 noncomputable def ordinaryPartialBell (ξ : ℕ → A) (n k : ℕ) : A :=
   coeff n (ordinarySeries A ξ ^ k)
 
+omit [Algebra ℚ A] in
 /-- The defining identity, true by construction:
 `(∑_{j≥1} ξ_j z^j)^k = ∑_n B̂_{n,k}(ξ) z^n`. -/
 theorem ordinaryPartialBell_pow (ξ : ℕ → A) (k : ℕ) :
@@ -92,6 +93,7 @@ theorem factorial_mul_ordinaryPartialBell (x : ℕ → A) (n k : ℕ) :
           ((k.factorial : A) * partialBell x n k) := by ring
     _ = (k.factorial : A) * partialBell x n k := by rw [hfac, one_mul]
 
+omit [Algebra ℚ A] in
 /-- The ordinary family vanishes above the diagonal: the series has no
 constant term, so its `k`-th power is divisible by `X^k`. -/
 theorem ordinaryPartialBell_eq_zero_of_lt (ξ : ℕ → A) {n k : ℕ} (h : n < k) :

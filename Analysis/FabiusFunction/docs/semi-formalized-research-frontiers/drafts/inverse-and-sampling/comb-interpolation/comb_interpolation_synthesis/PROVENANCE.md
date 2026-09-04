@@ -198,17 +198,16 @@ only one human-readable publication plus unique evidence; Git is the archival
 store for superseded wrappers and publications.
 
 Publication validation is recorded once in
-[`assets/VALIDATION.md`](assets/VALIDATION.md). The current accepted receipt is
-root
-`187L/6724B/a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`,
-nine-file aggregate
-`12773L/483551B/cef466ee56f6bb864faaac2244bccf1dbc2fd4032a717b6c81604551c0427309`,
-passes `153/160/160`, PDF
-`160pp/2468109B/bb714c8be4b82de2a888e0302da3aaf957b9e885f2c5f59466b3ea5d659e3f71`,
-and log
-`1370L/58773B/8df53a7db51c85b7a046c5f58587319095b3d28c61b0091861bdeb1f43b342e3`;
-all recorded gates passed. The validation record also preserves the completed
-158-page historical PDF, canonical-validator, and retired root-ledger gates.
+[`assets/VALIDATION.md`](assets/VALIDATION.md). It preserves the completed
+158-page checkpoint and both later 160-page receipts as explicit history: the
+local nine-file aggregate/PDF tuple
+`cef466ee56f6bb864faaac2244bccf1dbc2fd4032a717b6c81604551c0427309` /
+`bb714c8be4b82de2a888e0302da3aaf957b9e885f2c5f59466b3ea5d659e3f71`,
+and the incoming `b899` 15-file closure/PDF tuple
+`9e22455b3f65eb48306ad21c57445b6052a56498cb363666ffb9b160f5cc8090` /
+`ad8587049580e6fde371f534b6f8b4e56fa4c929173f87d3021ed369e5225d4c`.
+Both rendered their own frozen source graphs and passed the recorded gates.
+The merged TeX inputs are newer, so a fresh synchronized receipt is pending.
 Full numerical replay and fresh-checkout reproduction
 remain separate reproducibility work; this provenance record neither
 duplicates nor supersedes those checks.

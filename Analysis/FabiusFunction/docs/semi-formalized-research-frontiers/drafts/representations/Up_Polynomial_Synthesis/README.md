@@ -18,7 +18,9 @@ normalization claims have been demoted to problems.
 
 ## Canonical artifacts
 
-- Up_Polynomial_Synthesis.tex — report driver.
+- Up_Polynomial_Synthesis.tex — current 2,368-line, 98,609-byte report driver;
+  SHA-256
+  `95d293e34559e910cca2df4547e6e181a8d26bc8e8cf61c4445cf12c57ed8e0e`.
 - chapters/Lagrange_Cardinal_Loops.tex — exact cardinal synthesis, right
   inverses, projectors, ghosts, nested details, conditioning, q-binomial rows,
   Appell--Vandermonde growth, and denominator support.
@@ -29,8 +31,9 @@ normalization claims have been demoted to problems.
   conjugated operators, Gauss/Christoffel--Darboux synthesis, smoothed
   Legendre--Appell connections, parity, central q-determinants, asymptotics,
   exact Sturm evidence, and consolidated conjectures.
-- Up_Polynomial_Synthesis.pdf — accepted current 63-page report. The complete
-  merged-source receipt is root
+- Up_Polynomial_Synthesis.pdf — the local 63-page receipt and incoming
+  62-page `b899` receipt are both historical after the merged driver changed.
+  The local tuple is root
   `2385L/99806B/81f3ba09894aca8331ae33c77e2a56f78c107fa3b04072878cff8ad60e815b5a`,
   five-file aggregate
   `11bd62d880f5ba4c63d872fb0ba5d801d10ba2a2337ef5d098643383639086dd`,
@@ -38,9 +41,14 @@ normalization claims have been demoted to problems.
   `63pp/1077921B/0903f2920d21f0ea8182822c31338e0be268d4d77bc8ddb7a2ff861ba2a6aa5f`,
   and log
   `964L/38999B/52bd9d03864853f1ee31fa682fa96806345bb355582831c55fcc152c1acb2e7d`.
-  Every recorded prohibited-log, A4/rotation, PDF 1.5, encryption,
-  font/subsetting, Libertinus, Type-3, and visual gate passed. The former
-  60-page artifact remains explicit history.
+  The incoming four-file closure was 5,434 lines / 211,270 bytes with digest
+  `62aa76428089cd164705b1d31e038d4e48545681eedc01cb491e6a94f07b0e41`;
+  its 62-page / 1,071,181-byte PDF had SHA-256
+  `99c5d8256b983652755fe8e46ef015277e61b94941a4ca6c875bddaf0493b101`.
+  Each tuple remains evidence for its own source snapshot. The accepted
+  merged-source render is in the [merge-28de4e51 receipt
+  register](../../MANIFEST.md#merge-28de4e51-publication-receipts); the former
+  60-page artifact remains earlier history.
 - assets/provenance/THEOREM_CROSSWALK.md — one-to-one provenance and evidence
   ledger for all 80 theorem-like assertions.
 - assets/provenance/ — source snapshots, migration map, and asset policy.
@@ -79,6 +87,36 @@ Then inspect the log for undefined references, missing files, overfull boxes,
 and font substitution. Render all pages to images and inspect the full contact
 sheet plus representative pages at original resolution. The committed PDF
 must be A4, have embedded/subset fonts, and contain no Type 3 fonts.
+
+The preceding synchronized publication checkpoint was rebuilt from absent
+auxiliaries on 2026-09-04 by the exact procedure above. It is now historical.
+At that checkpoint the driver had 2,324 lines and 95,757 bytes (SHA-256
+`15f7c593895ed4a06b7f9d90c72d55078a193cd01f0818cb3b3cfa4f4d585a52`),
+the driver plus three chapters had 5,279 lines and 202,019 bytes, and the three
+successful halt-on-error passes produced
+59 pages/1,030,964 bytes, 60 pages/1,056,607 bytes, and finally 60
+pages/1,056,613 bytes. The final log has no TeX error, unresolved reference or
+citation, or rerun request; title, author, subject, and keywords metadata are
+present. Every page is A4 at rotation zero, rendered, and contains extractable
+text. All 27 font rows are embedded and subset, four are Libertinus, and none
+is Type 3. Representative title, chapter-opening, theorem, table, figure, and
+final pages passed visual inspection. Generated sidecars were removed, and no
+package-local checksum ledger is a live publication gate.
+
+The historical synchronized `b899` checkpoint uses the source and closure identity
+listed under Canonical artifacts. Exactly three serial halt-on-error passes from
+absent sidecars ran 61 pages / 1,045,488 bytes → 62 / 1,071,179 → 62 /
+1,071,181. The final 62-page, 1,071,181-byte PDF has SHA-256
+`99c5d8256b983652755fe8e46ef015277e61b94941a4ca6c875bddaf0493b101`.
+Required final-log error, undefined-control, reference/citation, multiply-
+defined, duplicate-destination, missing-file, rerun, and box gates all close at
+zero. All 62 pages are A4 at rotation zero, render successfully, and contain
+nonblank text. All 27 font rows are embedded and subset, four are Libertinus,
+and none is Type 3. Metadata passed. Visual inspection of pages 1, 5, 6, 25,
+43, and 62 covered the title, split status box, changed Lagrange and Legendre
+material, and endpoint; every sample was clean. Generated sidecars and
+temporary audits were removed, and the forbidden-checksum-basename search
+passed.
 
 The focused exact Sturm verifier requires SymPy:
 
@@ -174,8 +212,8 @@ It is slightly stronger only in allowing any `BoundedFabius` satisfying
 `IsFabius`, and it includes `n = 0`. This promotion does not formalize the
 Jacobi closed form, all-degree parity or rationality in `thm:leg-mode-synthesis`,
 nor reverse closure, mesh minimality, or any larger Lagrange right-inverse
-claim. The accepted current 63-page package PDF renders these status
-annotations; the former 60-page artifact remains historical.
+claim. The 60-, 62-, and 63-page package PDFs remain historical; none is
+asserted to render the merged driver.
 
 The compiled source-only `FabiusFunction.RvachevLegendreBiorthogonality`
 module promotes only `thm:leg-biorthogonality` to Exact/Complete. Its
@@ -202,8 +240,10 @@ both odd. The latter is exactly `mu_(2m) = 1 mod 2` under the standard residue
 convention for rational two-adic units. Both declarations include `m = 0`.
 This is executable rational valuation/parity data, not construction of a
 separate topological `ℚ_2` value, and it promotes no neighboring Legendre
-asymptotic or matrix row. The accepted current 63-page package PDF renders both
-promotions; the former 60-page artifact predates them.
+asymptotic or matrix row. The historical 63-page package PDF renders both
+promotions; the current merged-source receipt is in the [merge-28de4e51
+register](../../MANIFEST.md#merge-28de4e51-publication-receipts). The former
+60-page artifact predates them.
 
 The Q12 root transition is exact computer-assisted mathematics: rational
 polynomials and rational Sturm chains decide root counts. Approximate complex

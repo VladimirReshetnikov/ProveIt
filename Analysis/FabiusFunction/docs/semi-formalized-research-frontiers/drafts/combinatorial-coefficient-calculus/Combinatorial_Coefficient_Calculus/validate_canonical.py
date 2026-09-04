@@ -15,7 +15,7 @@ are anchored at this file, so either of the following invocations works:
 The default, transitional mode validates the canonical package while the five
 donor packages are still being dispositioned.  ``--final`` additionally
 enforces the promised one-document layout, completed source disposition and
-closure records, and removal of stale donor routes from navigation.
+provenance records, and removal of stale donor routes from navigation.
 
 Proof/status convention
 -----------------------
@@ -35,12 +35,12 @@ from __future__ import annotations
 import argparse
 import bisect
 import csv
-import hashlib
 import io
 import re
+import subprocess
 import sys
 from dataclasses import dataclass
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 from typing import Iterable, Iterator, Sequence
 
 
@@ -63,7 +63,8 @@ SOURCE_PACKAGES = (
 DONOR_PACKAGES = tuple(name for name in SOURCE_PACKAGES if name != PACKAGE_DIR.name)
 
 DISPOSITION_NAME = "SOURCE_DISPOSITION.csv"
-CLOSURE_NAME = "SOURCE_CLOSURE.sha256"
+INVENTORY_NAME = "SOURCE_INVENTORY.csv"
+SOURCE_IDS = dict(zip(("CCC-2", "CCC", "CFIT", "UCCC", "UCF", "UCFIT"), SOURCE_PACKAGES))
 
 THEOREM_TITLES = {
     "theorem",
@@ -116,7 +117,6 @@ NEW_THEOREM_RE = re.compile(
     r"(?:\{(?P<title>[^{}]+)\}|\[[^\[\]]+\]\s*\{(?P<title2>[^{}]+)\})"
 )
 CONFLICT_RE = re.compile(r"^(?:<<<<<<<|=======|>>>>>>>)(?:\s.*)?$", re.MULTILINE)
-SHA_ROW_RE = re.compile(r"^(?P<digest>[0-9A-Fa-f]{64})[ \t]+(?P<mode>[ *])(?P<path>.+?)\s*$")
 STATUS_COMMENT_RE = re.compile(
     r"^\s*%\s*(?:canonical[-_ ]*)?proof[-_ ]status\s*:\s*"
     r"(?P<status>[A-Za-z][A-Za-z0-9_-]*)\s*$",
@@ -151,7 +151,7 @@ class Counts:
     citations: int = 0
     bibitems: int = 0
     disposition_rows: int = 0
-    closure_rows: int = 0
+    inventory_rows: int = 0
 
 
 class Report:
@@ -514,6 +514,40 @@ def validate_cross_references(path: Path, clean: str, report: Report) -> None:
                 )
 
 
+def validate_duplicate_crosswalks(
+    path: Path,
+    clean: str,
+    blocks: Sequence[tuple[str, int, int, int]],
+    report: Report,
+) -> None:
+    """Reject repeated crosswalk bodies after comment and whitespace normalization.
+
+    ``clean`` has already passed through ``strip_comments``, preserving source
+    offsets and escaped percent signs. Only whole bodies are compared: sharing
+    declaration names or other fragments is not a duplication diagnostic.
+    """
+    opening = re.compile(r"\\begin\s*\{remark\}\s*\[\s*Formal\s+crosswalk\s*\]")
+    closing = re.compile(r"\\end\s*\{remark\}$")
+    first_lines: dict[str, int] = {}
+    for name, begin, end, line in sorted(blocks, key=lambda block: block[1]):
+        if name != "remark":
+            continue
+        match = opening.match(clean, begin, end)
+        if match is None:
+            continue
+        body = " ".join(closing.sub("", clean[match.end():end]).split())
+        if body in first_lines:
+            report.error(
+                "DUPLICATE_FORMAL_CROSSWALK",
+                path,
+                f"Formal crosswalk repeats the body from line {first_lines[body]} "
+                "after removing comments and normalizing whitespace",
+                line,
+            )
+        else:
+            first_lines[body] = line
+
+
 def validate_citations(path: Path, clean: str, report: Report) -> None:
     source_map = SourceMap(clean)
     bibitems = [
@@ -622,10 +656,10 @@ def find_metadata(name: str, report: Report, final: bool) -> Path | None:
     return None
 
 
-def validate_disposition(path: Path, report: Report, final: bool) -> None:
+def validate_disposition(path: Path, report: Report, final: bool) -> list[dict[str, str]]:
     text = read_text(path, report, "DISPOSITION_READ")
     if text is None:
-        return
+        return []
     validate_conflicts(path, text, report)
     try:
         reader = csv.DictReader(io.StringIO(text), strict=True)
@@ -634,7 +668,7 @@ def validate_disposition(path: Path, report: Report, final: bool) -> None:
         rows = list(reader)
     except csv.Error as exc:
         report.error("DISPOSITION_CSV", path, f"invalid CSV: {exc}")
-        return
+        return []
 
     required = {
         "record_id",
@@ -653,12 +687,12 @@ def validate_disposition(path: Path, report: Report, final: bool) -> None:
             "missing required column(s): " + ", ".join(missing),
             1,
         )
-        return
+        return []
 
     report.counts.disposition_rows = len(rows)
     if not rows:
         report.error("DISPOSITION_EMPTY", path, "source disposition contains no records", 1)
-        return
+        return []
 
     canonical_rows: list[dict[str, str]] = []
     for row in rows:
@@ -719,103 +753,111 @@ def validate_disposition(path: Path, report: Report, final: bool) -> None:
             report.error("DISPOSITION_INCOMPLETE", path, message)
         else:
             report.warning("DISPOSITION_INCOMPLETE", path, message)
+    return canonical_rows
 
 
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+def safe_relative_path(value: str) -> bool:
+    """Accept portable repository paths, excluding drive and traversal syntax."""
+    posix = PurePosixPath(value)
+    windows = PureWindowsPath(value)
+    return bool(value) and not (
+        posix.is_absolute()
+        or windows.drive
+        or windows.root
+        or "\\" in value
+        or ":" in value
+        or any(part in {"", ".", ".."} for part in value.split("/"))
+    )
 
 
-def validate_closure(path: Path, report: Report, final: bool) -> None:
-    text = read_text(path, report, "CLOSURE_READ")
+def validate_inventory(
+    path: Path, report: Report, disposition: list[dict[str, str]]
+) -> None:
+    """Check original-source provenance through Git, without mutable digests."""
+    text = read_text(path, report, "INVENTORY_READ")
     if text is None:
         return
     validate_conflicts(path, text, report)
-    rows: list[tuple[str, str, int]] = []
-    seen_paths: dict[str, int] = {}
+    fields = (
+        "source_id", "source_package", "snapshot_commit", "tex_path", "pdf_path",
+        "archive_blob", "tex_member", "pdf_member",
+    )
+    try:
+        reader = csv.DictReader(io.StringIO(text), strict=True)
+        if reader.fieldnames != list(fields):
+            report.error("INVENTORY_SCHEMA", path, "expected columns: " + ", ".join(fields), 1)
+            return
+        rows = list(reader)
+    except csv.Error as exc:
+        report.error("INVENTORY_CSV", path, f"invalid CSV: {exc}")
+        return
 
-    for line_number, line in enumerate(text.splitlines(), start=1):
-        stripped = line.strip()
-        if not stripped or stripped.startswith("#"):
+    report.counts.inventory_rows = len(rows)
+    seen: set[str] = set()
+    objects: list[tuple[str, str, int]] = []
+    group_path = GROUP_DIR.relative_to(report.repo_root).as_posix()
+    for line, row in enumerate(rows, start=2):
+        if None in row or any(row.get(field) is None for field in fields):
+            report.error("INVENTORY_COLUMNS", path, "row does not have exactly eight fields", line)
             continue
-        match = SHA_ROW_RE.match(line)
-        if match is None:
-            report.error(
-                "CLOSURE_FORMAT",
-                path,
-                "expected sha256sum row: 64 hex digits, two spaces (or space + '*'), then a repo-relative path",
-                line_number,
-            )
+        row = {field: row[field].strip() for field in fields}
+        source_id = row["source_id"]
+        if source_id not in SOURCE_IDS or source_id in seen:
+            report.error("INVENTORY_ID", path, f"unknown or duplicate source_id {source_id!r}", line)
             continue
-        digest = match.group("digest").lower()
-        relative = match.group("path").strip().replace("\\", "/")
-        if relative in seen_paths:
-            report.error(
-                "CLOSURE_DUPLICATE",
-                path,
-                f"path {relative!r} duplicates line {seen_paths[relative]}",
-                line_number,
-            )
-            continue
-        seen_paths[relative] = line_number
-        rows.append((digest, relative, line_number))
+        seen.add(source_id)
+        package = SOURCE_IDS[source_id]
+        stem = CANONICAL_STEM if source_id == "CCC-2" else package
+        if row["source_package"] != package:
+            report.error("INVENTORY_PACKAGE", path, f"{source_id} must identify {package!r}", line)
+        commit = row["snapshot_commit"]
+        archive = row["archive_blob"]
+        for field, value in (("snapshot_commit", commit), ("archive_blob", archive)):
+            if not re.fullmatch(r"[0-9a-f]{40}", value):
+                report.error("INVENTORY_GIT_ID", path, f"{field} must be a full immutable Git object ID", line)
+        if re.fullmatch(r"[0-9a-f]{40}", commit):
+            objects.append((commit, "commit", line))
+        if re.fullmatch(r"[0-9a-f]{40}", archive):
+            objects.append((archive, "blob", line))
+        for kind in ("tex", "pdf"):
+            relative = row[f"{kind}_path"]
+            member = row[f"{kind}_member"]
+            expected_member = f"{stem}.{kind}"
+            expected_path = f"{group_path}/{package}/{expected_member}"
+            if not safe_relative_path(relative) or relative != expected_path:
+                report.error("INVENTORY_PATH", path, f"expected repository path {expected_path!r}", line)
+            elif re.fullmatch(r"[0-9a-f]{40}", commit):
+                objects.append((f"{commit}:{relative}", "blob", line))
+            if not safe_relative_path(member) or member != expected_member:
+                report.error("INVENTORY_MEMBER", path, f"expected flat archive member {expected_member!r}", line)
+        source_rows = [item for item in disposition if item.get("record_id") == f"SRC-{source_id}"]
+        if len(source_rows) != 1 or (
+            source_rows[0].get("source_id") != source_id
+            or source_rows[0].get("source_path") != f"{package}/{stem}.tex"
+        ):
+            report.error("INVENTORY_DISPOSITION", path, f"{source_id} lacks its matching source-disposition row", line)
 
-        relative_path = Path(relative)
-        if relative_path.is_absolute() or ".." in relative_path.parts:
-            report.error(
-                "CLOSURE_PATH",
-                path,
-                f"unsafe or non-repository-relative path {relative!r}",
-                line_number,
+    missing = sorted(SOURCE_IDS.keys() - seen)
+    if missing:
+        report.error("INVENTORY_COVERAGE", path, "missing original source(s): " + ", ".join(missing))
+    if objects:
+        try:
+            result = subprocess.run(
+                ["git", "cat-file", "--batch-check=%(objecttype)"],
+                cwd=report.repo_root,
+                input="".join(f"{identity}\n" for identity, _kind, _line in objects),
+                capture_output=True, text=True, check=True, timeout=30,
             )
-            continue
-        payload = report.repo_root.joinpath(*relative_path.parts)
-        if not payload.is_file():
-            report.error(
-                "CLOSURE_MISSING_PAYLOAD",
-                path,
-                f"ledger payload does not exist: {relative!r}; archive deleted-source hashes as comments instead",
-                line_number,
-            )
-            continue
-        actual = sha256_file(payload)
-        if actual != digest:
-            report.error(
-                "CLOSURE_DIGEST",
-                path,
-                f"SHA-256 mismatch for {relative!r}: ledger {digest}, actual {actual}",
-                line_number,
-            )
-
-    report.counts.closure_rows = len(rows)
-    if not rows:
-        report.error("CLOSURE_EMPTY", path, "source closure contains no active sha256sum rows")
-
-    ledger_text = text.replace("\\", "/")
-    for source in SOURCE_PACKAGES:
-        if source not in ledger_text:
-            report.error(
-                "CLOSURE_COVERAGE",
-                path,
-                f"source package {source!r} has no active or commented identity record",
-            )
-
-    if final:
-        canonical_suffixes = {
-            f"/{PACKAGE_DIR.name}/{CANONICAL_TEX.name}",
-            f"/{PACKAGE_DIR.name}/{CANONICAL_PDF.name}",
-        }
-        active = {f"/{relative}" for _digest, relative, _line in rows}
-        for suffix in canonical_suffixes:
-            if not any(item.endswith(suffix) for item in active):
-                report.error(
-                    "CLOSURE_CANONICAL_PAYLOAD",
-                    path,
-                    f"final closure lacks an active digest row ending in {suffix!r}",
-                )
+        except (OSError, subprocess.SubprocessError) as exc:
+            report.error("INVENTORY_GIT_READ", path, f"cannot verify original Git objects: {exc}")
+            return
+        types = result.stdout.splitlines()
+        if len(types) != len(objects):
+            report.error("INVENTORY_GIT_READ", path, "Git returned an incomplete object inventory")
+            return
+        for (identity, expected_type, line), actual_type in zip(objects, types):
+            if actual_type != expected_type:
+                report.error("INVENTORY_GIT_OBJECT", path, f"{identity!r} is not an available Git {expected_type}", line)
 
 
 def navigation_files() -> Iterator[Path]:
@@ -900,16 +942,18 @@ def validate_package(final: bool) -> Report:
         validate_braces(CANONICAL_TEX, brace_clean, report)
         blocks = environment_blocks(CANONICAL_TEX, clean, report)
         validate_cross_references(CANONICAL_TEX, clean, report)
+        validate_duplicate_crosswalks(CANONICAL_TEX, clean, blocks, report)
         validate_citations(CANONICAL_TEX, clean, report)
         validate_statement_proofs(CANONICAL_TEX, raw, clean, blocks, report)
         validate_frontier_disclaimer(CANONICAL_TEX, clean, report)
 
+    disposition_rows: list[dict[str, str]] = []
     disposition = find_metadata(DISPOSITION_NAME, report, final)
     if disposition is not None:
-        validate_disposition(disposition, report, final)
-    closure = find_metadata(CLOSURE_NAME, report, final)
-    if closure is not None:
-        validate_closure(closure, report, final)
+        disposition_rows = validate_disposition(disposition, report, final)
+    inventory = find_metadata(INVENTORY_NAME, report, final)
+    if inventory is not None:
+        validate_inventory(inventory, report, disposition_rows)
 
     if final:
         validate_final_layout(report)
@@ -938,7 +982,7 @@ def print_report(report: Report, final: bool) -> None:
     print(f"  labels/references: {counts.labels}/{counts.references}")
     print(f"  bibliography items/citations: {counts.bibitems}/{counts.citations}")
     print(f"  source-disposition rows: {counts.disposition_rows}")
-    print(f"  active source-closure rows: {counts.closure_rows}")
+    print(f"  original-source inventory rows: {counts.inventory_rows}")
 
     for finding in sorted(
         report.findings,

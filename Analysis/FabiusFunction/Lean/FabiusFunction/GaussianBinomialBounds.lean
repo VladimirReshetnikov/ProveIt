@@ -25,6 +25,8 @@ numerator at most `1`.  Hence for `Q > 1`
 
 * `gaussianBinomial_inv`: reciprocity in any field.
 * `one_le_gaussianBinomial`: `1 ≤ [n,k]_q` for `q ≥ 0` in any ordered field.
+* `finiteQPochhammerIn_pow_le_one`: the finite numerator bound; positivity of
+  `(q;q)_k` is reused from `GeneralQConditionNumber`.
 * `gaussianBinomial_le_inv_qPochhammerInfIn`: `[n,k]_q ≤ 1/(q;q)_∞` for `0 ≤ q < 1`.
 * `pow_le_gaussianBinomial_of_one_lt`, `gaussianBinomial_le_pow_div_of_one_lt`: the bounds at
   `Q > 1`.

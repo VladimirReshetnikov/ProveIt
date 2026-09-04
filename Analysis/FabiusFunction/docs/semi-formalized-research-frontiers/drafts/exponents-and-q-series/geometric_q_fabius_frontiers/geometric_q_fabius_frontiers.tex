@@ -95,6 +95,8 @@
 \newcommand{\ConstantWeightSequence}{\boldsymbol{1}}
 \newcommand{\lean}[1]{%
   \ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
+\newcommand{\leansubtwo}[2]{%
+  \nolinkurl{#1}\texttt{\textsubscript{2}}\nolinkurl{#2}}
 
 \newenvironment{statusbox}[1]{%
   \par\medskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
@@ -15353,8 +15355,8 @@ The fourteenth-wave archive
 (\path{assets/Atomic_Functions_Beyond_Dyadic_Report/}) contains the script
 \texttt{experiments.py} (NumPy, Matplotlib, mpmath; fixed seed
 \texttt{20260828}), the five figures in vector form, the four CSV tables
-cited in the numerics section, \texttt{README.md}, and \texttt{requirements.txt}.
-From that directory,
+cited in the numerics section, \texttt{README.md}, and
+\texttt{requirements.txt}.  From that directory,
 \begin{lstlisting}[style=repoPython]
 python experiments.py --output .
 \end{lstlisting}
@@ -16138,9 +16140,11 @@ $q^2$-Pochhammer symbol.  Outside the disk, apply this to $1/C_{1/q}$.
 
 \begin{statusbox}{Lean crosswalk: general complex sinc--Pochhammer factorization}
 The current formal API does not prove the whole compound statement
-\cref{p7:thm:sinc-poch}.  It defines the complex symbol through
-\path{complexQPochhammerInf} and exposes exactly the nine theorems
+\cref{p7:thm:sinc-poch}.  The module
+\path{RvachevPochhammerFactorization.lean} contains exactly one definition,
+\path{complexQPochhammerInf}, and exactly the ten theorems
 \path{complexQPochhammerInf_eq_tprod},
+\path{complexQPochhammerInf_eq_qPochhammerInfIn},
 \path{multipliable_one_sub_mul_pow_complex},
 \path{hasProd_complexQPochhammerInf},
 \path{tendsto_finiteQPochhammerIn_complex},
@@ -16148,10 +16152,11 @@ The current formal API does not prove the whole compound statement
 \path{geometricSincProduct_eq_tprod_pair},
 \path{geometricSincProduct_eq_tprod_complexQPochhammerInf},
 \path{rvachevFourierProduct_eq_tprod_complexQPochhammerInf}, and
-\path{rvachevFourier_eq_tprod_complexQPochhammerInf} in
-\path{RvachevPochhammerFactorization.lean}.  The first three convergence
-results after the definitional equality allow arbitrary complex $a$ and
-require exactly $\lVert q\rVert<1$.
+\path{rvachevFourier_eq_tprod_complexQPochhammerInf}.  The first two
+equalities are unconditional; in particular, the second identifies the
+historical complex symbol with \path{qPochhammerInfIn}.  The following three
+convergence results allow arbitrary complex $a$ and require exactly
+$\lVert q\rVert<1$.
 The generic \path{QPochhammerDissection.lean} proves the exact finite
 residue-class formulas through
 \path{finiteQPochhammerIn_dissection} and
@@ -16289,6 +16294,79 @@ compound label \cref{p7:thm:sinc-poch} remains only partially formalized: its
 inside-disk pointwise factorization and outer normal convergence are exact,
 while the centered/MGF packaging and outside-disk reciprocal layer remain
 frontier obligations.
+\end{statusbox}
+
+\begin{statusbox}{Lean crosswalk: latest q-calculus and theta tranche}
+The final source union adds eight facade-reachable modules with five public
+definitions and fifty-three public theorems.  Their ownership is exact:
+\path{GaussianBinomialPalindromic.lean} has zero definitions and twelve
+theorems,
+\path{reflect_add_of_natDegree_le}, \path{reflect_one'},
+\path{gaussianBinomial_natDegree_le}, \path{gaussianBinomial_zero_left},
+\path{gaussianBinomial_diag'}, \path{reflect_gaussianBinomial},
+\path{coeff_gaussianBinomial_reflect},
+\path{coeff_gaussianBinomial_zero}, \path{coeff_gaussianBinomial_top},
+\path{gaussianBinomial_natDegree}, \path{gaussianBinomial_monic}, and
+\path{two_mul_derivative_gaussianBinomial_eval_one}.  Over a commutative
+semiring these give the degree bound, reflection and coefficient symmetry,
+constant and top coefficients, and the division-free first-moment identity;
+exact degree and monicity additionally require nontriviality.
+
+\path{QExponential.lean} has the three definitions \path{qDeriv},
+\path{qExp}, and \path{qExpBig}, and eight theorems:
+\path{qFactorial_mul_one_sub_pow}, \path{qFactorial_ne_zero},
+\path{qDeriv_mul}, \path{hasSum_qExp}, \path{hasSum_qExpBig},
+\path{qExp_mul_qExpBig_neg}, \path{qDeriv_qExp}, and
+\path{qDeriv_qExpBig}.  The product rule is unconditional; the analytic
+statements retain the displayed strict-nome, argument-disc, and nonzero-point
+hypotheses.  \path{JacksonIntegral.lean} has the definition
+\path{jacksonIntegral} and seven theorems:
+\path{qDeriv_jacksonIntegral}, \path{one_sub_mul_pow_mul_qDeriv},
+\path{tendsto_jackson_sum_qDeriv}, \path{jacksonIntegral_qDeriv},
+\path{tendsto_jackson_sum_parts}, \path{jackson_parts_of_tendsto}, and
+\path{jacksonIntegral_mul_qDeriv}.  They separate partial-sum telescoping from
+the summable fundamental-theorem and integration-by-parts forms; no
+unconditional convergence is inferred.
+
+\path{ThetaQuasiPeriodicity.lean} has the definition \path{bilateralTheta}
+and six theorems:
+\path{thetaExponent_add_one}, \path{pow_thetaExponent_add_one},
+\path{hasSum_bilateralTheta}, \path{bilateralTheta_eq_prod},
+\path{bilateralTheta_mul_left}, and \path{bilateralTheta_eq_zero_iff}.
+The last two retain \(q\ne 0\) and \(z\ne 0\), and the zero set is exactly
+\(z=-q^m\) for \(m\in\IntegerNumbers\).  The zero-definition,
+two-theorem \path{JacobiCubic.lean} surface is
+\path{two_mul_add_one_le_three_pow} and \path{hasSum_jacobi_cubic}; the
+second is Jacobi's cubic identity over \(\ComplexNumbers\) under exactly
+\(\lVert q\rVert<1\).
+
+\path{QPochhammerLogDerivative.lean} has zero definitions and ten theorems:
+\path{one_sub_le_norm_one_sub_mul_pow},
+\path{summable_pow_div_one_sub_mul_pow},
+\path{summable_log_one_sub_mul_pow}, \path{one_sub_mul_pow_ne_zero},
+\path{qPochhammerInfIn_eq_cexp_tsum_log},
+\path{hasDerivAt_tsum_log_one_sub_mul_pow},
+\path{hasDerivAt_qPochhammerInfIn}, \path{hasDerivAt_lambert_series},
+\path{tsum_neg_pow_div_one_sub_mul_pow_eq}, and
+\path{hasDerivAt_qPochhammerInfIn_lambert}.  Its two logarithmic-derivative
+forms require complex \(\lVert q\rVert<1\) and \(\lVert a\rVert<1\).
+\path{QPochhammerOrderDerivative.lean} has zero definitions and three
+theorems, \path{hasDerivAt_const_cpow'},
+\path{hasDerivAt_qPochhammerInfIn_mul_cpow}, and
+\path{hasDerivAt_qPochhammerC}; the order derivative keeps
+\(q\ne0\), \(\lVert q\rVert<1\), and \(\lVert aq^\alpha\rVert<1\).
+
+Finally, \path{GaussianBinomialPolynomialStructure.lean} remains the distinct
+zero-definition, five-theorem \(\NaturalNumbers[X]\) compatibility surface:
+\path{natDegree_gaussianBinomial_universal},
+\path{gaussianBinomial_universal_monic},
+\path{coeff_zero_gaussianBinomial_universal},
+\path{gaussianBinomial_universal_reflect}, and
+\path{coeff_gaussianBinomial_universal_symm}.  At this historical tranche the
+facade census was exactly 657 modules and 8,756 public declarations.  The
+238-page PDF from that stage remains a historical artifact. The merged source
+now also leads its retained PDF, so a fresh rendering is pending; no
+source/PDF parity or package-wide checksum ledger is claimed.
 \end{statusbox}
 
 The nome is $q^2$, not $q$: centering makes every factor even, and evenness
@@ -16525,15 +16603,17 @@ public theorems:
 \lean{geometricUniformMomentPolynomial_zero},
 \lean{geometricUniformMomentPolynomial_succ},
 \lean{geometricUniformMomentPolynomial_natDegree_le},
-\lean{geometricUniformMomentPolynomial_eval_zero}, and
-\lean{geometricUniformMomentPolynomial_one} through
+\lean{geometricUniformMomentPolynomial_eval_zero},
+\lean{geometricUniformMomentPolynomial_one},
+\lean{geometricUniformMomentPolynomial_two},
+\lean{geometricUniformMomentPolynomial_three}, and
 \lean{geometricUniformMomentPolynomial_four}.  It supplies the recursively
 defined rational polynomial, the residual-product recurrence
 \eqref{p7:eq:Pn-recurrence}, the triangular degree bound, the value at zero,
 and the displayed cases \(P_0,\ldots,P_4\).  The companion
 \path{GeometricUniformMomentPolynomialBridge.lean} has no public definitions
 and exactly one public theorem,
-\nolinkurl{geometricUniformMomentPolynomial_eval}\texttt{\textsubscript{2}}\nolinkurl{_eq_mgf_taylorCoefficient}.  For
+\leansubtwo{geometricUniformMomentPolynomial_eval}{_eq_mgf_taylorCoefficient}.  For
 every real \(q\) with \(\lvert q\rvert<1\) and every \(n\), it identifies that
 polynomial with the finite-q-Pochhammer normalization of the \(n\)-th Taylor
 coefficient of the genuine geometric-uniform MGF.  Hence
@@ -16556,7 +16636,7 @@ regime stated above.  The subsequent source-only
 public definition, \lean{geometricUniformExteriorComplexMomentGerm}, and
 exactly two public theorems,
 \lean{analyticAt_geometricUniformExteriorComplexMomentGerm} and
-\nolinkurl{geometricUniformMomentPolynomial_eval}\texttt{\textsubscript{2}}\nolinkurl{_eq_exteriorComplexMomentGerm_taylorCoefficient}.
+\leansubtwo{geometricUniformMomentPolynomial_eval}{_eq_exteriorComplexMomentGerm_taylorCoefficient}.
 For every complex \(q\) with \(1<\lVert q\rVert\), it defines the actual
 reciprocal germ \((\mathcal A_{q^{-1}}(-z))^{-1}\), proves its analyticity at
 the origin, and identifies its normalized Taylor coefficient with the same
@@ -16666,21 +16746,23 @@ public declarations, making the historical dyadic/finite-prefix census
 declarations: the new zero-definition/six-theorem
 \path{ProuhetBaseTwoBridge.lean} module, one theorem added to
 \path{DyadicBoundaryIdentity.lean}, and seven theorems added to
-\path{ThueMorseNewmanSelfSimilarity.lean}.  This makes the historical census
-934/11,709.  Subsequent source tranches add eighteen modules and 172 public
-declarations, giving the upstream-tip 952/11,881 inventory.  The local
-fixed-column branch separately recorded 903/11,453 and its first union with
-the algebraic polynomial branch recorded 904/11,462; counting its two shared
-declarations once and retaining its three other declarations gives the live
-merged census of 952 modules and 11,884 public declarations.  The q forward
-ledger is 182 Exact / 78 Partial / 14 None / 8 interface rows, the relevant
+\path{ThueMorseNewmanSelfSimilarity.lean}.  This made 934/11,709 an
+explicitly historical post-Prouhet checkpoint.  Subsequent source-only
+transseries/Catalan and Thue--Morse additions made 943/11,791 the next
+historical checkpoint.  The finalized one-definition/eleven-theorem
+\path{TransseriesFlat.lean} module and three integer-zpow theorems in
+\path{TransseriesDifferentialBlock.lean} gave the historical census 944/11,806.
+Further merged tranches reached the historical 952/11,884 and 977/12,133
+checkpoints; the authoritative live census is 983 modules and 12,192 public
+declarations.  The q forward ledger is 181 Exact / 79 Partial / 14 None / 8
+interface rows, the relevant
 Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the five-publication
-source concordance is 95 Lean-proved / 383 human-proved frontier / 60
+source concordance is 103 Lean-proved / 375 human-proved frontier / 60
 not-applicable / 9 conjecture rows.  The Laurent and finite-prefix leaves are
 included here for the census and exhaustive API counts; their Exact inverse-
-series status rows belong to the inverse-series crosswalk.
-The accepted 404-page pre-integration PDF and all earlier receipts predate
-this source union and remain solely historical provenance.
+series status rows belong to the inverse-series crosswalk.  The accepted
+404-page PDF and all earlier receipts predate this source union and remain
+solely historical provenance; they are not receipts for this merged edition.
 \end{statusbox}
 
 The polynomial is not decorative: the exact endpoint lattice of

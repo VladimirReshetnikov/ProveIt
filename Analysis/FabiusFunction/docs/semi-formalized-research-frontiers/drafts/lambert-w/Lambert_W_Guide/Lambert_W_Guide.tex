@@ -106,6 +106,8 @@
 % declaration name, typeset verbatim.
 \newcommand{\lean}[1]{%
   \ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
+\newcommand{\leansubtwo}[2]{%
+  \nolinkurl{#1}\texttt{\textsubscript{2}}\nolinkurl{#2}}
 \newcommand{\decl}[1]{\nolinkurl{#1}}
 \newcommand{\stirling}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
 \newcommand{\brak}[1]{\left(#1\right)}
@@ -2879,7 +2881,8 @@ The normalized Lambert argument is continuous by
 are \path{principalPowerExponentialPhase_continuousOn_Icc} on
 \([0,P_{m,A,\beta}]\) and
 \path{lowerPowerExponentialPhase_continuousOn_Ioc} on
-\((0,P_{m,A,\beta}]\).  Moreover, if
+\((0,P_{m,A,\beta}]\); all three are in
+\path{PowerExponentialLambertCalculus.lean}.  Moreover, if
 \(0<x\leq P_{m,A,\beta}\) and \(\lambda\geq0\), then the exact equivalence
 \[
  S_{m,A,\beta}(\lambda)=x
@@ -2946,7 +2949,7 @@ closed principal and positive endpoint-inclusive lower value intervals is
 \path{fabiusPrincipalLambertPhase_isEquivalent_id} states that the principal
 Fabius phase is asymptotic to \(x\) at zero, while
 \path{lowerPowerExponentialPhase_one_one_log_two} in
-\path{PowerExponentialLambertFabius}\texttt{.lean} identifies the lower generic phase
+\path{PowerExponentialLambertFabius.lean} identifies the lower generic phase
 exactly with the Fabius lower-Lambert phase.
 
 The separate specialization
@@ -4397,7 +4400,7 @@ Its companion \path{GeometricUniformMomentPolynomialBridge.lean} has the
 exhaustive count \(0+1\) and raised the next historical census to 905/11,458.
 Its sole
 theorem,
-\nolinkurl{geometricUniformMomentPolynomial_eval}\texttt{\textsubscript{2}}\nolinkurl{_eq_mgf_taylorCoefficient},
+\leansubtwo{geometricUniformMomentPolynomial_eval}{_eq_mgf_taylorCoefficient},
 supplies the real-\(\lvert q\rvert<1\) actual-MGF normalization and makes
 \nolinkurl{p7:eq:Pn-def} Exact in that regime.  It supplies no complex-q
 infinite-product realization by itself.  The subsequent current \(1+3\)
@@ -4430,7 +4433,7 @@ exhaustive \(1+2\)
 \path{GeometricUniformExteriorComplexMomentGerm.lean} sibling consists of
 \nolinkurl{geometricUniformExteriorComplexMomentGerm},
 \nolinkurl{analyticAt_geometricUniformExteriorComplexMomentGerm}, and
-\nolinkurl{geometricUniformMomentPolynomial_eval}\texttt{\textsubscript{2}}\nolinkurl{_eq_exteriorComplexMomentGerm_taylorCoefficient}.
+\leansubtwo{geometricUniformMomentPolynomial_eval}{_eq_exteriorComplexMomentGerm_taylorCoefficient}.
 For every complex \(q\) with \(1<\lVert q\rVert\), these define the actual
 reciprocal germ, prove its analyticity at the origin, and identify its
 normalized Taylor coefficient with the recursive polynomial.  No unit-circle
@@ -4457,6 +4460,12 @@ makes \nolinkurl{is:p2:thm:Laurent-leading} Exact.  The exhaustive
 \path{FinitePrefixAppellRecovery.lean} \((11+17)\) sibling gives the
 923/11,610 checkpoint and makes \nolinkurl{is:p2:thm:finite-prefix-expansion} and
 \nolinkurl{is:p2:thm:exact-recovery} Exact as finite rational identities.
+Retaining the unconditional public
+\lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge gives the semantic
+live union 923 modules and 11,611 public declarations, with both documentation
+gap counts zero.  The q-Lucas manuscript result remains Partial: Lean proves
+the evaluated primitive-root identity, not the polynomial congruence modulo
+the cyclotomic polynomial.
 
 The final exhaustive \(1+4\)
 \path{GeometricUniformMomentRatFunc.lean} sibling consists of
@@ -4504,17 +4513,16 @@ modules and 11,695 public declarations.  The incoming union adds one module
 and fourteen public declarations: the new zero-definition/six-theorem
 \path{ProuhetBaseTwoBridge.lean} module, one theorem added to
 \path{DyadicBoundaryIdentity.lean}, and seven theorems added to
-\path{ThueMorseNewmanSelfSimilarity.lean}.  This made the historical census
-934 modules and 11,709 public declarations.  Subsequent source tranches add
-eighteen modules and 172 public declarations, reaching the upstream-tip
-952/11,881 census; fixed-column reconciliation adds three net declarations
-and gives the authoritative live census of 952 modules and 11,884 public
-declarations.  The q forward ledger is 182 Exact /
-78 Partial / 14 None / 8 interface rows, the relevant Dyadic
+\path{ThueMorseNewmanSelfSimilarity.lean}.  This made 934 modules and 11,709
+public declarations an explicitly historical post-Prouhet checkpoint.
+Subsequent source-only transseries/Catalan and Thue--Morse additions made
+943/11,791 the next historical checkpoint.  The finalized one-definition/
+eleven-theorem \path{TransseriesFlat.lean} module and three integer-zpow
+theorems in \path{TransseriesDifferentialBlock.lean} gave the historical census 944
+modules and 11,806 public declarations; the merged live census is 983/12,192.  The q forward ledger is 181 Exact /
+79 Partial / 14 None / 8 interface rows, the relevant Dyadic
 Gaussian--Thue--Morse chapter is 13/43/0/0, and its source concordance is
-95 Lean-proved / 383 human-proved frontier / 60 non-applicable / 9 conjectures.
-The accepted 70-page preintegration Guide PDF receipt remains recorded solely
-as historical provenance for the edition preceding this merged source.
+103 Lean-proved / 375 human-proved frontier / 60 non-applicable / 9 conjectures.
 
 \begin{longtable}{@{}p{0.30\textwidth}p{0.42\textwidth}p{0.22\textwidth}@{}}
 \toprule

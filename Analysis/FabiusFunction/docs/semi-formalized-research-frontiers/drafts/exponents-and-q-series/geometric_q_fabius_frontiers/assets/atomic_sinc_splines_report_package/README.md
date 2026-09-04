@@ -27,6 +27,8 @@ Repository/source snapshot date: **2026-08-28**.
 - `data/` - exact moment, weighted-Prouhet, and finite-product convergence tables.
 - `corpus_audit.txt` - scope and limitations of the recursive repository audit.
 - `requirements.txt` - Python dependencies.
+- The standalone package's historical `SHA256SUMS` ledger is retired from the
+  live tree and must not be recreated; Git history preserves it as provenance.
 
 ## Status labels used in the report
 
@@ -131,4 +133,12 @@ the public GitHub tree, raw canonical source files, and the archive manifest and
 README.  Therefore it is a substantive mathematical non-duplication audit, not a
 claim of an exact byte-level census of every historical `.tex` object.
 
-> **Editorial note (2026-08-28):** the report source and compiled PDF listed above (and, where listed, the supplied source scan/OCR) were removed from this directory after their content was merged into the volume `Exponents_and_q_Series_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance list, and Git history archives the files. This directory keeps only figures, data, and scripts.
+## Historical standalone integrity instruction
+
+The original standalone package instructed users to run
+`sha256sum -c SHA256SUMS`. That command is recorded here only as historical,
+non-executable provenance and is not a current validation step. The ledger is
+absent from the live tree and must not be recreated; use the consolidated
+volume's provenance and Git history instead.
+
+> **Editorial note (2026-08-28):** the report source and compiled PDF listed above (and, where listed, the supplied source scan/OCR) were removed from this directory after their content was merged into the volume `Exponents_and_q_Series_Frontiers.tex`; their SHA-256 hashes remain in the volume provenance list, and git history archives the files. This directory keeps only figures, data, and scripts.

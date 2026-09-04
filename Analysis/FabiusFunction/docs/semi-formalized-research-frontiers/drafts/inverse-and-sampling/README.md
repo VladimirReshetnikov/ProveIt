@@ -7,8 +7,8 @@ This theme has three live navigation targets:
 - [`comb-interpolation/comb_interpolation_synthesis/`](comb-interpolation/comb_interpolation_synthesis/)
   — the canonical additive and geometric comb synthesis;
 - [`fabius_information_frontier/`](fabius_information_frontier/)
-  — a separate information-geometry intake whose source/PDF synchronization
-  and claim-level acceptance remain explicitly qualified.
+  — a separate information-geometry intake with a synchronized canonical
+  source/PDF pair; claim-level acceptance remains explicitly qualified.
 
 ## Canonical inverse synthesis
 
@@ -82,29 +82,20 @@ Barnes-identification result.  The current concordance is therefore 57
 Lean-proved / 88 human-proved frontier / 10 conjecture / 15 open-problem / 24
 nonassertoric rows.
 
-The accepted first-merge receipt, now retained as historical provenance, is root
-`293L/11514B/92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`,
-14-file aggregate
-`10909L/438542B/24bdab6491f5ca84fbb9e716f92c7923e8961b6acbc793d9aa5e0faa68852444`,
-passes `132/137/137`, PDF
-`137pp/2045463B/ca403c74e2b46923ce9ac1eda547ab1bcb5e71039b35c8ee394acdd2014c4f8e`,
-and log
-`1569L/64081B/d4aa25579c958e11c59d914c74dfca331fc2bbccf7bba4715dcd18fa050e771f`.
-The first-merge purpose-specific 23-input source-only closure digest was
-`e07cb51f4fe072cd79a014cc891cb8cede62880593d7659b17da9377a21099bc`.
-The live purpose-specific closure has since been regenerated for the current
-23 inputs at
-`76ac9fd6fadbf8291fe186a111330d098c2ed12ceda67aa32031d424ba67d611`;
-it is a source-only receipt with no PDF-parity role. The accepted current
-source/PDF receipt is in the [authoritative receipt
-register](../MANIFEST.md#current-post-merge-publication-receipts).
-All recorded publication gates passed at that checkpoint. This receipt and the earlier historical
-134-page tuple are recorded in the
-canonical package's
+The canonical inverse package preserves its 134-page and two 137-page
+historical checkpoints in
 [`VALIDATION.md`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/VALIDATION.md).
-The historical PDF was 134 A4 pages and 2,027,726 bytes, SHA-256
-`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`;
-it precedes the later first-merge receipt, and both are historical.
+The incoming `b899` tuple used a 293-line / 11,514-byte driver, a 17-file /
+10,682-line / 431,748-byte closure with digest
+`6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e`,
+and a 137-page / 2,045,486-byte PDF with SHA-256
+`cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995`.
+The local first-merge tuple and older purpose-specific closure digests remain
+history. The accepted current inverse source/PDF receipt is in the
+[authoritative receipt
+register](../MANIFEST.md#current-post-merge-publication-receipts); the
+purpose-specific 23-input closure is regenerated independently and has no
+PDF-parity role.
 
 The immutable extraction pin is
 `0a0cdabeb72a6f7d67cfdfb76d02a8f7381c7bf7`. The five old layouts are also
@@ -134,22 +125,26 @@ companion under its explicit convergence hypotheses. The one-definition,
 fourteen-theorem `FabiusFunction.RvachevAppellHasse` leaf additionally makes
 `gq:prop:q-Appell-falling` and `gq:thm:gaussian-Appell-decoder` exact by
 combining their explicit q-falling and geometric decoder formulas with the
-existing finite synthesis theorems. The accepted merged-source comb receipt is
-root
-`187L/6724B/a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`,
-nine-file aggregate
-`12773L/483551B/cef466ee56f6bb864faaac2244bccf1dbc2fd4032a717b6c81604551c0427309`,
-passes `153/160/160`, PDF
-`160pp/2468109B/bb714c8be4b82de2a888e0302da3aaf957b9e885f2c5f59466b3ea5d659e3f71`,
-and log
-`1370L/58773B/8df53a7db51c85b7a046c5f58587319095b3d28c61b0091861bdeb1f43b342e3`;
-all recorded gates passed. The preceding 158-page PDF remains an explicit
-historical checkpoint.
+existing finite synthesis theorems. The retained 158-page and both later
+160-page comb PDFs are historical checkpoints. The local nine-file
+aggregate/PDF tuple is
+`cef466ee56f6bb864faaac2244bccf1dbc2fd4032a717b6c81604551c0427309` /
+`bb714c8be4b82de2a888e0302da3aaf957b9e885f2c5f59466b3ea5d659e3f71`;
+the incoming `b899` 15-file closure/PDF tuple is
+`9e22455b3f65eb48306ad21c57445b6052a56498cb363666ffb9b160f5cc8090` /
+`ad8587049580e6fde371f534b6f8b4e56fa4c929173f87d3021ed369e5225d4c`.
+Merged TeX inputs are newer, so a synchronized comb rerender is pending.
 
 [`fabius_information_frontier/`](fabius_information_frontier/) remains an
 archival information-geometry intake. Its retired arrival and operational
 ledger checkpoints remain recoverable from Git and distinguish the submitted
-PDF from later source changes; manuscript theorem
+PDF from the current incoming publication checkpoint. The source is 2,138
+lines and 78,310 bytes (SHA-256
+`57a06279153b6e4c97ea0c084a193867b2f5c60a0163983149f36453eb196c9d`);
+passes 28/29/29 produced a final 790,802-byte PDF with SHA-256
+`3af03cd4dcc7fb1a502976f47edb56ee7d5c2b8dc9a8da537e79f8382ef885d5`.
+Its recorded publication gates passed and no checksum ledger is a live gate.
+Manuscript theorem
 labels do not by themselves establish current Lean verification.
 
 ## Formalization notes
@@ -209,14 +204,15 @@ declarations, making the historical 933/11,695 census.  The incoming union
 adds one module and fourteen public declarations: the new zero-definition/
 six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This makes 934/11,709 a historical
-checkpoint. Later upstream work reaches 952/11,881, and the three unique local
-q-binomial compatibility wrappers give the live 952/11,884 census. The
-exhaustive audit still has no missing module header or public-declaration
+`ThueMorseNewmanSelfSimilarity.lean`. This made 934/11,709 an explicitly
+historical post-Prouhet checkpoint. Subsequent transseries/Catalan and
+Thue--Morse additions produced the historical 943/11,791 and 944/11,806
+checkpoints. The authoritative merged live census is 983 modules and 12,192
+public declarations, with no missing module header or public-declaration
 doc comment.  The q forward
-ledger is now 182 Exact / 78 Partial / 14 None / 8 interface rows, its relevant
+ledger is now 181 Exact / 79 Partial / 14 None / 8 interface rows, its relevant
 Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and its source concordance
-is 95 Lean-proved / 383 human-proved frontier / 60 non-applicable / 9
+is 103 Lean-proved / 375 human-proved frontier / 60 non-applicable / 9
 conjectures.  The preceding finite-prefix checkpoint was 923/11,610.  The
 retired source layouts remain immutable provenance only. The first-merge
 inverse receipt is historical and the current source requires rerender; the

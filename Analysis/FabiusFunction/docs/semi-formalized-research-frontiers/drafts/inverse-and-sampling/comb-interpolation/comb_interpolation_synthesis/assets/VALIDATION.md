@@ -1,12 +1,12 @@
 # Validation record
 
-This record distinguishes completed inventory work, historical publication
-checkpoints, and the current source graph. The immutable source
+This record distinguishes completed inventory work and historical publication
+checkpoints, including the synchronized `b899` source/PDF graph. The immutable source
 baseline is `73f0b373126ef22a3b5dccadfa7b99d61d445345`. Historical artifacts remain
 receipts only for their stated input graphs. Full numerical replay and
 fresh-checkout reproduction remain separate.
 
-The accepted current source combines the incoming stable-path revisions to
+The accepted `b899` source combined the incoming stable-path revisions to
 `chapters/01_geometric_core.tex` and `chapters/99_bibliography.tex` with the
 local general-$q$/endpoint-jet, Lagrange,
 `FabiusFunction.PrimePowerBinomialValuation`,
@@ -20,10 +20,13 @@ the geometric Newton coefficient family consistently across the driver,
 chapter 01, and chapter 90 as
 `\FabiusGeometricNewtonCoefficient{k}{q}`. The repository-wide documentation
 census recorded at the earlier merge checkpoint was 629 Lean modules and 8,546
-public declarations. The current PDF was built from this merged graph and
-passed the complete publication gate recorded below. Live package-wide
-checksum ledgers are retired and no longer participate in current validation;
-their historical checkpoints remain recoverable from Git.
+public declarations. The retained 158-page PDF was built from the earlier source
+graph and passed its historical publication gate. Two later 160-page PDFs each
+rendered a frozen successor graph and passed the receipts recorded below. The
+merged TeX inputs are newer than both, so neither is a current-parity artifact.
+The accepted merged-source render is in the [merge-28de4e51 receipt
+register](../../../../MANIFEST.md#merge-28de4e51-publication-receipts). Package checksum manifests are retired and do
+not participate in current validation.
 
 ## Completed source and evidence checks
 
@@ -73,7 +76,7 @@ The complete row-level audit is
 are historical manifests, mismatches are reported rather than silently
 rewritten. They do not certify the current canonical payloads.
 
-## Current merged-source publication receipt
+## Historical local merged-source publication receipt
 
 - The driver has 187 lines and 6,724 bytes, SHA-256
   `a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`.
@@ -81,7 +84,8 @@ rewritten. They do not certify the current canonical payloads.
   aggregate SHA-256
   `cef466ee56f6bb864faaac2244bccf1dbc2fd4032a717b6c81604551c0427309`.
 - Three strict serial passes produced 153/160/160 pages.
-- The accepted PDF has 160 A4 pages and 2,468,109 bytes, SHA-256
+- The accepted-at-that-checkpoint PDF has 160 A4 pages and 2,468,109 bytes,
+  SHA-256
   `bb714c8be4b82de2a888e0302da3aaf957b9e885f2c5f59466b3ea5d659e3f71`.
 - The final log has 1,370 lines and 58,773 bytes, SHA-256
   `8df53a7db51c85b7a046c5f58587319095b3d28c61b0091861bdeb1f43b342e3`.
@@ -94,7 +98,9 @@ rewritten. They do not certify the current canonical payloads.
   `\FabiusGeometricNewtonCoefficient{k}{q}` for the Fabius divided-difference
   coefficient on the complete node list $1,q,\ldots,q^k$, including the
   $k=0$ boundary, and reserves `\TwoAdicValuation` for the actual dyadic
-  valuation.  The retained PDF predates these notation-only edits.
+  valuation. The historical 158-page PDF predates these notation-only edits;
+  the historical 160-page `b899` PDF renders them; the current merged-source
+  receipt is in the register linked above.
 - The existing strict-interior dyadic comb-weight theorem remains crosswalked
   exactly to `Fabius.twoPowChoose_padicValNat`; the arbitrary-prime row-$p^m$
   declarations and their positive right endpoint remain unchanged.
@@ -129,13 +135,34 @@ rewritten. They do not certify the current canonical payloads.
   discipline (213 result environments, 150 proof-required), 801 labels, 783
   references, 62 bibliography keys, all disposition and evidence audits, and
   the concordance.
-- No PDF was rebuilt at that source-only checkpoint. The then-retained
-  158-page PDF remains a validated historical artifact with 2,456,105 bytes
-  and SHA-256
+- The retained 158-page PDF remains the validated historical checkpoint with
+  2,456,105 bytes and SHA-256
   `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`;
-  its historical receipt is recorded separately from the current source.
+  the former root ledger recorded it separately from that checkpoint's source.
 
-## Earlier semantic-union publication checkpoint (history)
+## Historical incoming `b899` publication checkpoint
+
+- Driver: 187 lines / 6,724 bytes / SHA-256
+  `a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`.
+- Recursive TeX closure: 15 files / 12,597 lines / 477,163 bytes / digest
+  `9e22455b3f65eb48306ad21c57445b6052a56498cb363666ffb9b160f5cc8090`.
+- Exactly three serial halt-on-error passes from absent sidecars ran 153 pages /
+  2,383,950 bytes → 160 / 2,467,995 → 160 / 2,468,000.
+- Final PDF: 160 A4 pages / 2,468,000 bytes / SHA-256
+  `ad8587049580e6fde371f534b6f8b4e56fa4c929173f87d3021ed369e5225d4c`.
+- Required final-log error, undefined-control, reference/citation,
+  multiply-defined, duplicate-destination, missing-file, rerun, horizontal-box,
+  and vertical-box gates all closed at zero.
+- All 160 pages were A4 at rotation zero, rendered successfully, and contained
+  nonblank extracted text. All 33 font rows were embedded and subset, seven
+  were Libertinus, and none was Type 3. Metadata passed.
+- Targeted visual inspection covered physical pages 1, 32, 38, 39, 154, and
+  160; every sampled page was clean.
+
+The merged TeX inputs postdate both 160-page checkpoints. A new synchronized
+publication receipt is pending.
+
+## Historical retained semantic-union publication checkpoint
 
 - The current union retains the incoming `chapters/01_geometric_core.tex` and
   `chapters/99_bibliography.tex` path corrections together with the local
@@ -396,6 +423,8 @@ Then inspect the final log for errors, unresolved references, rerun requests,
 and overfull boxes; inspect PDF metadata and fonts; render every page; and
 visually examine every rendered page. Record the new measurements here, update
 the README, refresh `COMPANION_PAYLOADS.csv` if the retained evidence inventory
-changed, and rerun the canonical validator without creating or checking a live
-package-wide checksum ledger. The current receipt above remains valid only while
-the publication-source, documentation, and PDF bytes are unchanged.
+changed, and rerun the canonical validator without recreating a package
+checksum manifest. Do not create or check a live package-wide checksum ledger.
+Each historical receipt above is scoped to its frozen TeX source graph and
+resulting PDF bytes. Documentation-only edits do not alter that identity; any
+TeX-input or PDF change requires a new receipt.

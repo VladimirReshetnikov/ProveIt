@@ -7,7 +7,32 @@ publications and three retired general-guide donors. The immutable
 pre-retirement snapshot of all five source packages is commit
 `9560165ae2eb33590404a090ab26bd3ca715f32f`, recorded in
 `audit/MERGE_SOURCE_REVISION`; the completed `source_concordance.csv` gives a
-reviewed disposition for all 547 source result environments. Directory names
+reviewed disposition for all 547 source result environments. This immutable
+merger ledger's current canonical-status projection is 103 Lean-proved rows,
+375 human-proved frontier result rows, 60 not-applicable rows, and 9
+conjecture rows.
+That projection is the semantic union of thirteen incoming Lean overrides
+(`cor:geometric-prouhet-affine`, `cor:halfbase-root-locus`,
+`cor:partition-symmetries`, `cor:qgreaterone`,
+`cor:scaled-geometric-moments`, `cor:thue-morse-prouhet-partition`, redirected
+`prop:fixed-k-limit`, `prop:qF-P-degree-sharp`, `thm:fixed-column-limit`,
+`thm:geometric-uniform-basic`, `thm:regular-central-sum`,
+`qg:thm-two-square`, and `qg:cor-two-square-lambert`) and eight retained local
+overrides (`cor:qbinom-classical`, `cor:qgamma-theta`, `prop:logder-finite`,
+`prop:qbinom-products`, `prop:qderivative-rules`, `prop:qgamma-reflection`,
+`thm:q-leibniz`, and `thm:quantum-binomial`). It changes no immutable source
+field. In particular, it does not promote `thm:q-lucas`, whose polynomial
+congruence still lacks a Lean proof.
+
+The 2026-09-04 merge-regression check restored the seven missing generator
+entries from that local override set; the classical-limit entry was already
+present. The retained CSV needed no changes. Direct counting gives the
+103/375/60/9 projection above, while the 28 forward chapter subtotals and all
+282 result rows give 181/79/14/8. Their stale grand total and narrative were
+corrected without changing any result-level status. The source-only canonical
+validator passes; this repair performs no Lean or PDF build.
+
+Directory names
 in the table are historical paths in that pinned snapshot, not live package
 paths.
 
@@ -27,60 +52,125 @@ assets: each donor package consisted only of TeX, PDF, and a historical digest
 receipt. Their superseded PDFs were retired with the donor packages
 and are not canonical renderings of this larger source. The former forward
 and inverse manuscript PDFs were removed for the same reason. The merged
-master retains one publication artifact,
-`q_pochhammer_q_binomial_monograph.pdf`.
-
-The first-merge accepted receipt is: master 16,812 lines / 840,316 bytes /
-SHA-256 `64dc18dedbd1966624162b64129128b24b51ca88d8a9e496c661cc1a46a24ba6`;
-15-file graph 26,593 lines / 1,198,416 bytes / aggregate SHA-256
-`762e6d6ca441de51db9679f95d6a01d8353e8044639f99803734719b8a65a5f8`;
-passes 393/401/401, with `makeindex` after each pass (164 accepted, 0 rejected,
-254 lines, 0 warnings); accepted 401-page, 2,500,131-byte A4 PDF, SHA-256
-`fd54459baf10845b5a89cc8b204f59ea33a0665b434ad270e738884072a1e6e1`;
-and final 1,230-line, 44,401-byte log, SHA-256
-`37dca6371ea8bf9285e5f104d550bd584a290f4aa92fcf5679b028c9dfd3079d`.
-All recorded log, A4/rotation, PDF 1.5, encryption, font/subsetting,
-Libertinus, Type-3, index, and visual gates passed for that source snapshot.
-Later source changes make this an exact historical receipt. The accepted
-current source/PDF receipt, including three clean `makeindex` runs, is in the
-[authoritative receipt
-register](../../MANIFEST.md#current-post-merge-publication-receipts).
-
-The following tuples are retained as explicit history. At the pre-upstream
-commit `581bf`,
-the source had 16,433 lines and 815,194 bytes, with SHA-256
-`f2aae6ddc3d7a399f9ed47806a0abe6458cbcab37bf2aac9f55ad3913b5a0e2d`;
-the matching 391-page, 2,464,122-byte A4 PDF has SHA-256
-`c0a00720685f40e0684b4858e7ce18ce134701529898fd4574d09b6c090e0e91`.
-At revision `2d434eec`, after merging parallel revision `3b6396`, the source
-had 16,448 lines and 816,185 bytes, with
+master records an earlier historical source-pinned publication receipt: a
+reproducible 335-page A4 artifact built from the then-current source SHA-256
+`9b7ac11a815efa7f3c6ea08b9626c06143fd6b0d633fef6edfc8bc21c2f6783a`
+by exactly three successful serial passes at fixed source epoch `1788242400`.
+The build gate pinned `origin/main` at
+`8a7d03dc379638a6cbda302074b2feba27c21961`; the 2,163,339-byte PDF has
 SHA-256
-`a463abef7bb3c70e12a568a46fc192aac88a8ce240f8f781fff2b018a4aa086d`.
-The full source graph has 26,114 lines and 1,168,039 bytes, with aggregate
-SHA-256 `d4c5b84cc07f6abb99279c5bba4fdf7404326426cbe81f4b33b72ba01e62739c`.
-Three passes at 383/391/391 pages, with `makeindex` after each pass (164
-accepted, 0 rejected, 0 warnings), produced the then-accepted 391-page,
-2,464,712-byte A4 PDF with SHA-256
-`a52eb90dec7b874cc29dea891a107b9eb2d55e6727eb8bd8943d0aab609c58a6`.
-The final 1,231-line, 44,343-byte log has SHA-256
-`fb74b0c4cbd75d9022c78c1df5c1d567120bd67728d5b418697ddc5a2aa8f450`;
-all documented log, page, font, Type-3, extraction, and visual gates passed at
-that revision. The `2d434eec` tuple is historical and was superseded by the
-later first-merge receipt above; both are now historical.
-The `581bf` pair above is retained as an exact historical pre-upstream receipt.
-The preceding 389-page, 3,254,138-byte A4 artifact with SHA-256
-`b8add607c85ee35be98dabf36879e1d45fb093c6b453e93679c80295fae715bc`
-was synchronized to the source checkpoint at commit
-`736a241d1a025d64ac73b1573b17a7b3fc02652d`: 16,339 lines and 810,779
-bytes, with SHA-256
-`14c444feb14c435bc300becd9c8cd2765c1e96f608dd79da462becc41b28ed22`.
+`91c649d0c69628e134e71f1be6c39c3cbc96b91bfc63e456011083cf0e882f03`.
+That earlier receipt remains provenance for its named source only. A later
+validated historical checkpoint was a reproducible 340-page A4 artifact built
+from source SHA-256
+`da420f5b2622cd088af43cea0ac448105c9f6af65cf1734de6535e3427f8e052`.
+The 2,180,191-byte PDF has SHA-256
+`e64a4ef65a9fcce3a4f211f2125b0f8440910cf4527635f76975b0967800e667`.
+It too remains provenance for its named source only.
 
-That preceding pair remains historical provenance. No live `SHA256SUMS` file
-is maintained or should be recreated. The record in `README.md` gives the
-historical first-merge receipt, the historical `2d434eec` source-graph/PDF/
-final-log receipt, the frozen historical `581bf` receipt, and the earlier
-historical artifact's page, size, and font metadata.
-PDFs retained beneath `assets/` are research figures, not manuscripts.
+A subsequent upstream publication receipt records a historical 378-page A4
+PDF of 3,175,603 bytes, with SHA-256
+`5d0dac5a8d1cba7bedab9055a51f59478054de22969dcf75b0f58ce3f3c265bc`, built
+in three serial passes from a 15,630-line, 764,952-byte source with SHA-256
+`403a25dccadc15e7a34bedd8d28a2dc3369cb6e6a046cd199a30ed178742a32d`.
+That receipt remains provenance for its named historical source only.
+
+The final pre-`d8b` publication receipt is retained here as history. It was
+rebuilt on 2026-09-03 from clean auxiliaries at fixed source epoch
+`1788495770`. Exactly three successful
+serial `pdflatex -interaction=nonstopmode -halt-on-error` passes produced 386,
+395, and 395 pages, with `imakeidx` successfully generating the index during
+each pass. Its 16,834-line, 837,715-byte source has SHA-256
+`d8f730b8eb6602d4d16112aea77a3e67dfbeadf46bcd28c1cdf3b12450b7d4fb`;
+the resulting 395-page, 2,494,949-byte A4 PDF has SHA-256
+`5d25df07e6df1cd32118ee87e64c1cc54ad32da7c578a182231f98dd9fee9d5c`.
+Every page is rotation zero, rendered successfully, and nonblank; all 43 font
+rows are embedded and subset Type 1 fonts, five are Libertinus, and none is
+Type 3. Title, author, subject, and keyword metadata are present. The final log
+has no TeX or package warning, undefined reference or citation, duplicate
+destination, or rerun request. Its one 32.5659 pt overfull paragraph was
+visually checked on physical page 17 and is readable and unclipped. The
+validation record in `README.md` gives the complete page-render and visual
+sample receipt. Package-local checksum ledgers have been abolished. PDFs retained beneath
+`assets/` are research figures, not manuscripts.
+
+The subsequent pre-`9135` publication checkpoint supersedes that earlier
+historical receipt for its own named source. Its
+16,834-line, 837,715-byte TeX source has SHA-256
+`4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`;
+exactly three successful serial passes produced 386, 395, and 395 pages, and
+the resulting 395-page, 2,494,961-byte A4 PDF has SHA-256
+`89159b2635f489a42d4c972fac95332808b1d637dee7921085db1ed7d6e055af`.
+Compilation, index generation, references, font embedding, complete page
+rendering, and visual inspection all passed. The final log is clean apart from
+one harmless 32.5659 pt overfull paragraph, inspected at full resolution and
+confirmed readable and unclipped. No `SHA256SUMS*` file exists or participates
+in validation, and none should be recreated. The validation record in
+`README.md` gives the complete gate and visual-sample receipt for that named
+source. The checkpoint predates the `9135` final source union, so its 395-page
+PDF is historical and is superseded by the later historical receipt below.
+
+The latest retained publication receipt (2026-09-04) records a historical
+16,910-line, 842,514-byte TeX source at SHA-256
+`196f219d5e1efba463ebabb69659697b1afb28989ef1a8da6219226d3262ad32`.
+Exactly three successful serial halt-on-error passes from absent sidecars ran
+390 pages / 2,386,364 bytes → 398 / 2,501,624 → 398 / 2,501,638; during every
+pass `makeindex` accepted 164 entries, rejected none, produced 254 lines, and
+emitted no warning. The final 398-page, 2,501,638-byte A4 PDF has SHA-256
+`e8094b054f52b1fb71c7540f0834155fae0eac17887cb7cac1567848bd65d3b3`.
+All 43 font rows are embedded and subset, five are Libertinus, and none is Type
+3. Final-log reference/rerun/error checks, metadata, every-page render and
+nonblank-text checks, and representative visuals passed; generated sidecars
+and forbidden checksum basenames both close at zero. The sole retained
+32.5659 pt overfull paragraph at source lines 590--598 is readable and
+unclipped; the final log has zero underfull diagnostics. The merged source has
+advanced beyond that receipt, so its PDF is historical; a rebuild was then
+pending. It is followed by the historical `b899` receipt below.
+
+The historical synchronized `b899` driver has 17,265 lines and 864,659 bytes, with
+SHA-256
+`4dd3f7fb22387d8e3d039e8d49cd870a63ebe0881f7f215c7074854825a27bb9`.
+Its 14-file recursive TeX closure has 26,762 lines and 1,210,902 bytes, with
+digest `b567430fdd64f6d50bd24fcb070216c27f7e3e81e8b0c76c3228767ebdf980c6`.
+Exactly three serial halt-on-error passes from absent sidecars ran 397 pages /
+2,417,476 bytes → 405 / 2,533,717 → 405 / 2,533,715. During every pass,
+`makeindex` accepted 164 entries, rejected none, produced 254 lines, and emitted
+no warning. The final 405-page, 2,533,715-byte PDF has SHA-256
+`055eb1fc26467857394a5b3bd8cd327f6985ea5d2f966ab5f099ac20bb2b8fb2`.
+All 405 pages are A4 at rotation zero, render successfully, and contain
+nonblank text. All 43 font rows are embedded and subset, five are Libertinus,
+and none is Type 3. Required log, reference/rerun, metadata, visual, cleanup,
+and forbidden-basename gates passed. The final log has no vertical box and five
+minor horizontal boxes, none above 10.14 pt.
+
+The authoritative merged semantic documentation census is 983 facade-reachable\nmodules and 12,192 public declarations, with zero missing module headers and\nzero declaration-documentation gaps. The union retains the public\n`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
+Sibling source-only promotions are recorded here only to delimit this
+q-volume's receipt: `LambertWBranchPairing.lean`,
+`LambertWGapBijection.lean`, and `LambertWBranchSymmetry.lean` have exhaustive
+surfaces 0+7, 4+16, and 0+9; `DyadicDerivativeFiltration.lean` is 0+6; and
+`GeometricRichardsonGenerating.lean` is 3+7. The last module changes no row in
+this monograph's forward-status inventory. These promotions were absent from
+the historical 395-page PDF; the retained 398-page artifact is also historical
+and awaits a merged-source rebuild.
+
+The local first-merge receipt is also retained as history: master
+`16812L/840316B/64dc18dedbd1966624162b64129128b24b51ca88d8a9e496c661cc1a46a24ba6`,
+15-file aggregate
+`26593L/1198416B/762e6d6ca441de51db9679f95d6a01d8353e8044639f99803734719b8a65a5f8`,
+passes `393/401/401`, PDF
+`401pp/2500131B/fd54459baf10845b5a89cc8b204f59ea33a0665b434ad270e738884072a1e6e1`,
+and log
+`1230L/44401B/37dca6371ea8bf9285e5f104d550bd584a290f4aa92fcf5679b028c9dfd3079d`.
+The later d130 campaign receipt is root
+`16865L/844086B/a404fd907bc8d5e4082f376d64be130f774b252d65c4b6746378cbca9cf17e99`,
+15-file aggregate
+`26646L/1202186B/8045ec45c0cd220dc4a328828d5498b9fb9969eb0fb0332c3acf157dfd240297`,
+passes `394/402/402` with clean index runs, PDF
+`402pp/2503677B/766028619c18c75009b8b738a5315f2167a2deeeb72ca156269762f0709a09af`,
+and log
+`1237L/44690B/afbccf3cd62e78b38c93e1a3dc468e3e97fa81ef76d15c5b93940cb1d2211d65`.
+Both passed their recorded gates. The merged q-series source is newer than
+every retained receipt, so a fresh synchronized render is pending.
 
 The current source incorporates exhaustive crosswalks for
 `QPochhammerEntire` (zero definitions and five legacy compatibility theorems),
@@ -97,7 +187,13 @@ The current source incorporates exhaustive crosswalks for
 `HalfQBinomialRootSimplicity` (zero definitions and one theorem),
 `GeometricPochhammerNormalConvergence` (zero definitions and three theorems),
 `GeometricResidualMoments` (zero definitions and nine theorems),
-and `GeometricUniformRealization` (one definition and seventeen theorems).
+`GeometricUniformRealization` (one definition and seventeen theorems),
+`GeometricUniformMomentPolynomial` (one definition and eight theorems),
+`GeometricUniformMomentPolynomialBridge` (zero definitions and one theorem),
+`GeometricUniformComplexMomentProduct` (one definition and two theorems),
+`GeometricUniformExteriorComplexMomentGerm` (one definition and two theorems),
+and `GeometricUniformMomentPolynomialDegree` (zero definitions and three
+theorems).
 It also inventories `QMultinomial` (one definition and nine
 theorems), `QuantumMultinomial` (zero definitions and five theorems),
 `QPochhammerInfiniteBounds` (zero definitions and five theorems),
@@ -130,7 +226,9 @@ followed by `GaussianBinomialInteger` (one definition and ten theorems),
 single-symbol locally uniform product and differentiability, the
 division-free factor-zero criterion including `q = 0`, the reciprocal-power
 zero lattice for nonzero nome, and simple analytic order at every zero. The
-generic `QPochhammerInfinite.lean` surface now owns actual derivative
+public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge is an unconditional
+definitional equality for every complex parameter and nome; it makes no
+convergence claim. The generic `QPochhammerInfinite.lean` surface now owns actual derivative
 nonvanishing from every raw factor equation, including `q = 0`, and analytic
 order exactly one at every zero; `QPochhammerEntire.lean` preserves the legacy
 complex-wrapper naming surface. Only `thm:poch-entire` is promoted by those
@@ -148,17 +246,19 @@ declarations beyond the historical reciprocity checkpoint 931/11,685. The
 incoming union adds one module and fourteen public declarations: the new
 zero-definition/six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem
 added to `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This makes 934/11,709 a historical
-facade checkpoint. Later upstream work reaches 952/11,881, and the three
-unique local q-binomial compatibility wrappers give the live facade audit of
-952 modules and 11,884 public declarations. The historical 933/11,695 corpus-wide
+`ThueMorseNewmanSelfSimilarity.lean`. This made 934/11,709 an explicitly
+historical post-Prouhet checkpoint. Later transseries/Catalan and Thue--Morse
+work produced the historical 943/11,791 and 944/11,806 checkpoints. The
+authoritative merged live census is 983 modules and 12,192 public declarations.
+The historical 933/11,695 corpus-wide
 totals include the q--Chu, Richardson,
 geometric-law barycenter, Lagrange--Rvachev matrix, arbitrary-space geometric
 realization, regular-central-sum, Lambert branch-gap Bernoulli, affine
 Prouhet, and complex moment-product follow-ups; they do not make the retained
-historical 391-page artifact current. The accepted 401-page first-merge receipt
-above is also historical after later source changes; the accepted current
-receipt is linked above. Ten declarations come from the sibling
+historical 391-page artifact current. The 401-page first-merge, 402-page
+d130, and 405-page incoming receipts are all historical after the merged
+q-series source changed. A fresh synchronized render is pending. Ten
+declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` source-only module; three more
 are the explicit Gaussian second-derivative and division-free moment
 identities. The sibling `LambertWBranchGapBernoulli.lean` leaf contributes
@@ -181,8 +281,8 @@ equals `(exp z - 1) / z` away from zero; this is not the literal totalized
 quotient at zero and asserts no holomorphy. Higher/full Puiseux and logarithmic
 expansions remain open. None of these sibling changes alters this monograph's
 forward-status counts. The Lambert material belongs to its separate
-publication; the accepted 401-page first-merge receipt is historical and does
-not claim parity with the later q-series source.
+publication; every retained 401-, 402-, and 405-page receipt is historical
+and does not claim parity with the merged q-series source.
 The
 one-definition/seventeen-theorem `GeometricUniformRealization.lean` leaf
 proves the missing arbitrary-space bridge: `iIndepFun` unit-interval
@@ -197,13 +297,13 @@ complex lattice `alpha = -1 - 2*j + 2*pi*I*m/log q`, not merely its real
 negative-odd slice. Even negative integral parameters remain admitted, where
 the field-totalized `qGammaC` quotient is zero in agreement with the product
 side; no holomorphy at a pole is claimed. The
-zero-definition/eight-theorem `GaussianBinomialFixedColumnRate.lean` leaf gives
+zero-definition/nine-theorem `GaussianBinomialFixedColumnRate.lean` leaf gives
 the elementary finite-product defect bound, the denominator-free relative
 Gaussian estimate, fixed and shifted nonasymptotic additive errors, and all
 four fixed/shifted relative/additive Big-O wrappers. The closure reuses
 `norm_finiteQPochhammerIn_pow_sub_one_le_exp` and
 `tendsto_gaussianBinomial_add_atTop` from the one-definition,
-twenty-seven-theorem `QBinomialTheoremInfinite.lean` surface. It works over the
+twenty-nine-theorem `QBinomialTheoremInfinite.lean` surface. It works over the
 stated generic multiplicative-norm ring or normed-field interfaces and includes
 `q = 0`; the older unshifted limit also remains in
 `QBinomialTheoremInfinite.lean`.
@@ -298,9 +398,10 @@ public declarations, making the historical dyadic/finite-prefix census
 declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This makes 934/11,709 historical.
-Later upstream work reaches 952/11,881, and the three unique local
-`QBinomialTheoremInfinite` wrappers give the live union 952/11,884.
+`ThueMorseNewmanSelfSimilarity.lean`. This made 934/11,709 an explicitly
+historical post-Prouhet checkpoint. Later transseries/Catalan and Thue--Morse
+work produced the historical 943/11,791 and 944/11,806 checkpoints. The
+authoritative merged live census is 983 modules and 12,192 public declarations.
 The facade also contains the zero-definition/two-theorem
 `GaussianBinomialGreaterOneAsymptotics.lean` leaf; its exhaustive declarations
 are `gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
@@ -345,10 +446,10 @@ declarations, making the historical dyadic/finite-prefix semantic-union census
 declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This makes 934/11,709 a historical
-semantic-union checkpoint. Later upstream work and the three unique local
-q-binomial compatibility wrappers give the current 952/11,884 census. The
-existing `ProbabilityLaplaceMoments.lean` module now also
+`ThueMorseNewmanSelfSimilarity.lean`. This made 934/11,709 an explicitly
+historical post-Prouhet checkpoint. Later transseries/Catalan and Thue--Morse
+work produced the historical 943/11,791 and 944/11,806 checkpoints. The
+authoritative merged live census is 983 modules and 12,192 public declarations.  The existing `ProbabilityLaplaceMoments.lean` module now also
 contains exactly the two new declarations
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
 `integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.
@@ -358,15 +459,15 @@ the exact positive-natural-degree layer-cake specialization over the full
 law.  Composed with the already stronger global reflection and nonnegative
 tail identities, they make `prop:up-tail` and `cor:up-moments` Exact.
 Neither these additions nor the preceding Lambert addition changes the old
-391-page historical artifact. The accepted 401-page first-merge receipt is
-also historical after later source changes; Lambert parity is recorded by the
-Lambert package. The
+391-page historical artifact. The later 401-, 402-, and 405-page receipts
+are also historical; Lambert parity is recorded separately by the Lambert
+package. The
 forward status inventory covers 282 labelled results:
-182 Exact / 78 Partial / 14 None / 8 N/A; the relevant
+181 Exact / 79 Partial / 14 None / 8 N/A; the relevant
 Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the 191-result pre-Fabius core is
 36 / 29 / 123 / 3.
 The five-publication concordance
-has 95 Lean-proved, 383 human-proved frontier, 60 not-applicable, and 9
+has 103 Lean-proved, 375 human-proved frontier, 60 not-applicable, and 9
 conjecture rows. The unrelated `cor:qbinom-inversion-law` remains Partial.
 Both the retained `thm:fixed-column-limit` source row and the
 older `prop:fixed-k-limit` row redirected to it now inherit the exact canonical
@@ -378,8 +479,10 @@ central-reduction row is Exact through its division-free commutative-ring
 identity and field quotient wrapper. The cyclotomic-factorization row is Exact
 for the factorial form over every commutative ring and the Gaussian form over
 every integral domain, with the exponent bounds explicit. The complete root
-block, evaluated q-Lucas theorem, square-free cyclotomic criterion, and
-q-Catalan row are Exact. The primitive-root value in the Babbage corollary is
+block, square-free cyclotomic criterion, and q-Catalan row are Exact. The
+evaluated primitive-root q-Lucas identity is formalized, but `thm:q-lucas`
+remains Partial because its polynomial congruence modulo `Φ_d(q)` has no Lean
+counterpart. The primitive-root value in the Babbage corollary is
 formalized, but its derivative clause keeps that compound row Partial. The
 half-base Gaussian valuation row remains Partial because its concluding
 odd-integer valuation statement has not yet been formalized. The q-beta integral and
@@ -404,10 +507,9 @@ evaluated reciprocity and the finite growth bounds on both sides of `q = 1`;
 the imported positivity theorem is not counted as a declaration of the
 bounds leaf. Its six exported theorems close the exact finite-growth row, while
 the two-theorem greater-than-one leaf closes the remaining fixed-column and
-central asymptotic clauses in their printed normalization. No PDF was generated
-at the source-resolution checkpoint; the 391-page `2d434eec` artifact and the
-389-page predecessor are history. The accepted 401-page first-merge receipt
-above is historical; the accepted current receipt is linked above.
+central asymptotic clauses in their printed normalization. The retained
+398-, 401-, 402-, and 405-page PDFs are historical checkpoints. The merged
+source requires a new synchronized render.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was
@@ -657,7 +759,7 @@ rewrite.  The programs were rerun serially;
 [`assets/VALIDATION.md`](assets/VALIDATION.md) records exact-output parity and
 the one disclosed last-digit runtime drift. Canonical destination digests in
 `assets/ASSET_DISPOSITION.csv` and repository history preserve the
-post-migration byte receipts; no live `SHA256SUMS` file remains, and none
+post-migration byte receipts. No package-local checksum ledger remains or
 should be recreated.
 
 All six superseded directories were removed from the live tree.

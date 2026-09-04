@@ -30,6 +30,11 @@ def sha256(path):
     return h.hexdigest()
 
 
+def is_retired_checksum_basename(path):
+    basename = os.path.basename(path)
+    return basename == 'SHA256SUMS' or basename.startswith('SHA256SUMS.')
+
+
 LABEL_CMDS = ['label', 'ref', 'eqref', 'pageref', 'autoref', 'cref', 'Cref',
               'cite', 'bibitem', 'nameref']
 
@@ -165,6 +170,9 @@ PART_ROMAN = ['0', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX',
 def build(cfg):
     group_dir = cfg['group_dir']
     out_dir = os.path.join(group_dir, cfg['out_dir'])
+    output_name = cfg['out_name'] + '.tex'
+    if is_retired_checksum_basename(output_name):
+        raise ValueError('output filename is reserved by the retired checksum-ledger policy')
     os.makedirs(os.path.join(out_dir, 'assets'), exist_ok=True)
 
     base_dir, base_tex = cfg['base']
@@ -318,6 +326,10 @@ def build(cfg):
                         and os.path.splitext(fn)[0].lower()
                         == os.path.splitext(mtex)[0].lower()):
                     continue
+                if is_retired_checksum_basename(fn):
+                    # Package checksum manifests are retired repository-wide;
+                    # extension must not create or restore them.
+                    continue
                 d = os.path.join(dstdir, rel)
                 os.makedirs(d, exist_ok=True)
                 src, dst = os.path.join(root, fn), os.path.join(d, fn)
@@ -358,7 +370,7 @@ def build(cfg):
     out = (pre + '\\begin{document}\n\\maketitle\n\\tableofcontents\n\\clearpage\n'
            + banner + base_body_parts + ''.join(member_blocks)
            + '\n\\end{document}\n')
-    outpath = os.path.join(out_dir, cfg['out_name'] + '.tex')
+    outpath = os.path.join(out_dir, output_name)
     io.open(outpath, 'w', encoding='utf-8', newline='\n').write(out)
     print('wrote %s  (%d lines)' % (outpath, out.count('\n') + 1))
     if notes:

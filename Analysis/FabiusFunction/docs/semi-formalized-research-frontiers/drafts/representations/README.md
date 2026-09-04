@@ -26,17 +26,16 @@ New standalone intake members:
   deterministic experiment in the recorded and a newer compatible
   environment; and rebuilt the figures and report without Type 3 fonts.  The
   retained seven PDFs comprise 46 pages: a 40-page A4 report and six one-page
-  vector figures. A historical 3,153-line, 112,391-byte source checkpoint had
-  SHA-256
-  `34241042a005ea529219aca0761c121760a2574324bbb2300c365012cc1435c2`.
-  That source checkpoint is newer than the retained report PDF, whose 819,265
-  bytes have SHA-256
-  `0be7f0943e8d5fb795878aa0b3ecb21af25680155ad214ee2f1598de50e705ea`;
-  a source-parity rebuild is pending. The repository-wide checksum-ledger
-  retirement removed the former active and arrival ledger files; their
-  historical contents remain recoverable from Git history. No live checksum
-  manifest or current-source digest is maintained, and the retained PDF is not
-  asserted to render the current TeX.
+  vector figures.  The synchronized live TeX is 3,153 lines and 112,400 bytes
+  (SHA-256
+  `38840c5baa85a9661af4b957e1a03560b42df8fb5dd0992e38a64f0561f2fd8e`),
+  and the current 40-page report PDF is 821,194 bytes (SHA-256
+  `ccc5a898be59c7e14c406248dd3ad377e5601e475aea8c6fffae483f49535471`).
+  Its exact three-pass build and PDF gates passed. The former 33-entry mixed
+  current-source/retained-artifact checksum ledger recorded every non-ledger
+  file, including the submitted arrival ledger, at that checkpoint without
+  asserting that the retained PDF rendered the current TeX. Both ledgers are
+  now retired; their bytes remain recoverable from Git history.
 
   The [label-complete Lean crosswalk](fabius_dyadic_chaos_frontier/LEAN_CROSSWALK.md)
   inventories all 41 nonconjectural report results: 12 Unformalized, 20
@@ -63,7 +62,16 @@ New standalone intake members:
   `incoming/` by `fef364bfd162f80919cd77b808530dd0734f1cb1`.
   All 24 non-ledger payloads were covered by its submitted ledger; six CSV
   hashes were refreshed after repository CRLF-to-LF normalization. The ledger
-  is now retired and recoverable from Git history.
+  is now retired and recoverable from Git history. Its current 2,092-line,
+  89,360-byte source has SHA-256
+  `ad6d0bfa137efe0c79cf0ee599845b8708d82ef31f6fc2c3016e80ff14a7675e`.
+  Three serial halt-on-error passes from absent auxiliaries produced
+  34 pages/1,152,987 bytes, 36 pages/1,171,153 bytes, and a final 36-page,
+  1,171,153-byte PDF with SHA-256
+  `4169b907f96b46cb75b1aab067e237a431798cfb612bbad11e2a74a38d494cd4`.
+  The final log, metadata, A4/rotation-zero, all-page render/text, and
+  representative visual gates passed; all 27 font rows are embedded/subset,
+  five are Libertinus, none is Type 3, and generated sidecars are absent.
 
 - [`Jacobi_Digit_Fabius_Rvachev_Frontier_Report/`](Jacobi_Digit_Fabius_Rvachev_Frontier_Report/),
   the 32-page *Jacobi-Digit Deformations of the Fabius--Rvachev Law* bundle
@@ -75,7 +83,15 @@ New standalone intake members:
   `8a184546747082cbd92ad4675fb61981c6b8c3b6`. Its former complete 27-entry
   ledger recorded the LF repository bytes; seven CSV entries changed only by
   line-ending normalization. The ledger is now retired and recoverable from
-  Git history.
+  Git history. Its current 1,997-line, 76,958-byte source has SHA-256
+  `5311ff92a6d6d430f3c6e94d61974ffb549a8fe99bb20636a5c47116ad7d9aba`.
+  Three serial halt-on-error passes from absent auxiliaries produced
+  28 pages/867,730 bytes, 29 pages/878,931 bytes, and a final 29-page,
+  878,932-byte PDF with SHA-256
+  `1c7ca0f14f2b456c4bd9692057b63f0941b15ee0810c6f1a3947a2a128a9c76b`.
+  The final log, metadata, A4/rotation-zero, all-page render/text, and
+  representative visual gates passed; all 29 font rows are embedded/subset,
+  eight are Libertinus, none is Type 3, and generated sidecars are absent.
 
 These were already-extracted tracked directories, not archives, so no outer
 ZIP hashes exist.  The common-digit and matrix-dilated manuscripts are related
@@ -345,17 +361,22 @@ dependent inverse/non-elementarity corollaries remain manuscript-level.
 
 Series and orthogonal-expansion representations of the up-function,
 consolidated (2026-08-28) into the single volume
-[`Representation_Frontiers/`](Representation_Frontiers/) (last built artifact:
-301 pp; the current Lean-status source edit is rebuild-pending;
-eight parts):
+[`Representation_Frontiers/`](Representation_Frontiers/) (301 pp; eight parts):
 
-> **Source/PDF synchronization.** The current consolidated TeX includes the
-> 31 August 2026 Legendre Gaunt--Wigner-square closed-form overlay. The
-> retained 301-page, 3,608,573-byte A4 PDF has SHA-256
-> `5d44e25f7069fe2ea7091090521e290cab560355c3e29a35105eed7d3cc6d7ca`.
-> It is a readable historical artifact, not a certified rendering of the
-> current master. Exact three-pass, log, font, page-box, and visual parity are
-> deferred until a fresh rebuild.
+> **Current publication receipt (2026-09-04).** The synchronized
+> `Representation_Frontiers.tex` has 18,637 lines and 776,458 bytes (SHA-256
+> `dd41bc90b03d1f54d9fae71c116061b0130d505740cb92fe908d6db3c21f3d95`).
+> From absent auxiliaries, three successful serial halt-on-error passes produced
+> 285 pages/3,480,218 bytes, 301 pages/3,609,119 bytes, and finally 301
+> pages/3,609,120 bytes. The final PDF has SHA-256
+> `4dae6f87e6cc4da953319ba85c18316c23bf6e34a8bdac5680f20255356c4ba7`.
+> Its log has no TeX error, unresolved reference or citation, or rerun request;
+> it has zero overfull and 80 underfull diagnostics, and metadata is present.
+> All 301 pages are A4 at rotation zero, render, and contain
+> extractable text. All 39 font rows are embedded and subset, nine are
+> Libertinus, and none is Type 3; representative title, body, table, figure, and
+> final pages passed visual inspection. Generated sidecars were removed, and no
+> package-local checksum ledger is a live publication dependency.
 
 - **Part I** — *Resolvent, Continued-Fraction, and Transform
   Representations of the Fabius–Rvachev System* (Jacobi coefficients,
@@ -654,9 +675,9 @@ member directories and the interim volume deleted, provenance with
 SHA-256 for all eight sources in the volume's front matter.
 
 The two fourth-wave polynomial-representation drafts (2026-08-28) were
-merged the same day into the volume
+merged the same day into the initial form of the volume
 [`Up_Polynomial_Synthesis/`](Up_Polynomial_Synthesis/) (*Exact
-Polynomial Synthesis from Rvachev Up-Atoms*, 23 pp): the common-scale
+Polynomial Synthesis from Rvachev Up-Atoms*, then 23 pp): the common-scale
 dictionary construction (formerly
 `Rvachev_Up_Polynomial_Representation_Package/`, *Exact Polynomial
 Synthesis by Finite Rvachev Up-Function Dictionaries*) and the
@@ -685,19 +706,24 @@ verification package lives under
 Absorbed directories deleted; provenance with SHA-256 remains in the volume's
 Appendix B, while the former absorbed-payload ledger is retired and recoverable
 from Git history.
-The canonical source now has 5,487 lines across its driver and three chapter
-files. Its 113-row companion inventory records 106 retained or migrated
-payloads and seven retired checksum-ledger payloads; the retired rows have no
-live destination. The accepted merged-source receipt is root
+The canonical source and its 113-row companion inventory preserve all migrated
+payloads and seven retired checksum-ledger rows without live destinations. The
+incoming 60- and 62-page and local 63-page publication receipts each passed
+their recorded gates for their named source snapshots. The local tuple is root
 `2385L/99806B/81f3ba09894aca8331ae33c77e2a56f78c107fa3b04072878cff8ad60e815b5a`,
 five-file aggregate
 `11bd62d880f5ba4c63d872fb0ba5d801d10ba2a2337ef5d098643383639086dd`,
 passes `61/63/63`, PDF
 `63pp/1077921B/0903f2920d21f0ea8182822c31338e0be268d4d77bc8ddb7a2ff861ba2a6aa5f`,
 and log
-`964L/38999B/52bd9d03864853f1ee31fa682fa96806345bb355582831c55fcc152c1acb2e7d`;
-all recorded gates passed. The former 60-page PDF remains an explicit
-historical artifact.
+`964L/38999B/52bd9d03864853f1ee31fa682fa96806345bb355582831c55fcc152c1acb2e7d`.
+The incoming `b899` tuple used a four-file / 5,434-line / 211,270-byte
+closure with digest
+`62aa76428089cd164705b1d31e038d4e48545681eedc01cb491e6a94f07b0e41`
+and a 62-page PDF with SHA-256
+`99c5d8256b983652755fe8e46ef015277e61b94941a4ca6c875bddaf0493b101`.
+The merged Up source is newer than every retained artifact, so all remain
+historical and a fresh synchronized render is pending.
 The focused-build `CompositeMeshSharpness.lean` module now certifies the
 natural-mesh universal slice of the sharp order statement: exactness for the
 whole polynomial space through degree `d` is equivalent to `d <= v_2(M)`, or
@@ -706,7 +732,7 @@ space.  This is not a minimality result for one target polynomial, Legendre
 mode, or partial sum.
 
 Six same-question Lagrange-loop reconstruction reports landed on 2026-08-29
-and were later folded into
+and were subsequently folded into
 [`Up_Polynomial_Synthesis/`](Up_Polynomial_Synthesis/):
 `rvachev_lagrange_loop_report/`, `Lagrange_Rvachev_Loop_Package/`,
 `lagrange_rvachev_loop_report_v3/`,
@@ -720,8 +746,8 @@ intake evidence preserved through the canonical inventory and Git history.
 
 The former `Legendre_Rvachev_Self_Reconstruction/`
 (*Legendre--Rvachev
-Self-Reconstruction on [-1,1]*) landed 2026-08-29 and was later merged into
-`Up_Polynomial_Synthesis/`. It is not a seventh
+Self-Reconstruction on [-1,1]*) landed 2026-08-29 and was subsequently folded
+into `Up_Polynomial_Synthesis/`. It is not a seventh
 Lagrange-loop sibling: the six loop reports synthesize *Lagrange
 cardinals* from shifted up-atoms, whereas this one turns the Legendre
 strand inward, onto the self-reconstruction and energy structure of up
@@ -857,13 +883,14 @@ physical-coordinate quadrature, deconvolved-polynomial synthesis, and
 `normalized_tsum_shifted_rvachevAppellPolynomial_mul_rvachevUp_superconvergent`.
 Thus `is:p3:cor:forced-superconvergence` and
 `is:p3:thm:Appell-lattice-reproduction` are now exact in the canonical inverse
-concordance. This source postdates the retained Representation and inverse
-PDFs, which remain historical artifacts rather than renders of the promotion.
+concordance. The synchronized Representation volume does not present this
+inverse-concordance promotion; the retained inverse PDF remains a historical
+artifact rather than a render of it.
 The corresponding historical documentation checkpoint was 671 modules and
 8,858 public declarations. After the reciprocity promotion, the q forward
-ledger is 182 Exact / 78 Partial / 14 None / 8 N/A, with chapter splits
+ledger is 181 Exact / 79 Partial / 14 None / 8 N/A, with chapter splits
 9/0/0/0 for Half-base and 13/43/0/0 for Dyadic, while the source concordance
-is 95/383/60/9. The merged-main
+is 103/375/60/9. The merged-main
 increment to 919/11,569 is the exhaustive zero-definition/one-theorem sibling
 `FabiusFunction.HalfQBinomialRootSimplicity`, whose
 `Fabius.halfQBinomial_sum_rootMultiplicity_two_pow` proves multiplicity one
@@ -899,10 +926,10 @@ and 11,695 public declarations. The incoming union adds one module and
 fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This makes 934 modules and 11,709 public
-declarations a historical checkpoint. Later upstream work reaches 952/11,881;
-the three unique local q-binomial compatibility wrappers give the live census
-of 952 modules and 11,884 public declarations. The census also includes
+`ThueMorseNewmanSelfSimilarity.lean`. This made 934/11,709 an explicitly
+historical post-Prouhet checkpoint. Later work produced the historical
+943/11,791 and 944/11,806 checkpoints. The authoritative merged live census is
+983 modules and 12,192 public declarations. The census also includes
 the unrelated
 sibling source-only
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
@@ -918,8 +945,8 @@ theorem, closes representation proposition `prop:lag-markov`. The larger
 identity `U B = I`, not a coefficient-space projector identity, and the
 negative-entry conclusion retains the source proposition's strictly positive
 row-overlap hypothesis. Neither source-only promotion is rendered by the
-retained historical Representation PDFs. The inverse package records its
-first-merge receipt as historical and its accepted current receipt in the
+retained historical Representation PDFs. The inverse package preserves its
+historical receipts and records its accepted current source/PDF receipt in the
 [authoritative receipt
 register](../MANIFEST.md#current-post-merge-publication-receipts). The
 source-only `FabiusFunction.RvachevAppellHasse` leaf contributes one definition
@@ -1038,9 +1065,10 @@ dyadic/finite-prefix census 933/11,695.  The incoming union adds one module and
 fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This makes 934/11,709 a historical
-checkpoint. Later upstream work and the three unique local q-binomial
-compatibility wrappers give the live census 952/11,884.
+`ThueMorseNewmanSelfSimilarity.lean`. This made 934/11,709 an explicitly
+historical post-Prouhet checkpoint. Later work produced the historical
+943/11,791 and 944/11,806 checkpoints. The authoritative merged live census is
+983 modules and 12,192 public declarations.
 
 The existing `FabiusFunction.ProbabilityLaplaceMoments` module adds exactly
 the two theorems
@@ -1067,9 +1095,8 @@ parity, origin-value, and Fourier--Bessel theorem `thm:leg-Lambda` and the
 matrix-projector corollary remain unpromoted.
 
 These sibling modules are not rendered by the retained historical
-Representation PDFs. The inverse package preserves its first-merge receipt as
-history and records its accepted current receipt in the [authoritative receipt
-register](../MANIFEST.md#current-post-merge-publication-receipts). The immediately
+Representation PDFs. The inverse package governs its accepted current receipt
+and preserves its older checkpoints as history. The immediately
 preceding complex Bernoulli value-completion checkpoint was 903 modules and
 11,448 public declarations. The earlier
 ten-declaration increment was the
@@ -1105,11 +1132,9 @@ canonical-removable reading of `eq:bernoulli-gen` are Exact. Here
 does not assert the literal totalized quotient at zero or holomorphy of a named
 sum function. Higher or full Puiseux/logarithmic expansions remain open. This
 unrelated addition is not rendered by the retained historical Representation
-PDFs. The inverse package records its historical first-merge receipt and
-current acceptance in the [authoritative receipt
-register](../MANIFEST.md#current-post-merge-publication-receipts), alongside
-Lambert's current receipt; both packages retain their older receipts as
-provenance.
+PDFs. The inverse package keeps current parity; Lambert's retained receipts are
+historical after its merged source changed and a fresh Lambert render is
+pending.
 
 The focused-build `CompositeMeshSharpness.lean` module exports one public
 definition, `rvachevCombExactThrough`, and seven public theorems:
@@ -1233,9 +1258,9 @@ unconditional `natDegree(S_N) = 2*N` theorem or nonvanishing of its top
 Legendre coefficient, or the later refinement, projector, and asymptotic
 layers.
 
-Three further Legendre-closure reports landed the same day and were later
-merged into `Up_Polynomial_Synthesis/`; all answer the same question from
-different angles:
+Three further Legendre-closure reports landed the same day and were
+subsequently folded into `Up_Polynomial_Synthesis/`; all answer the same
+question from different angles:
 `legendre_rvachev_closed_loop/` (*Legendre--Rvachev Biorthogonal
 Closure*) carries the arithmetic — exact `u_n` to `n=80` with 2-adic
 valuations, reciprocal-MGF coefficients, and exact spectral sum rules;
@@ -1248,9 +1273,8 @@ orthogonal for no measure; `Legendre_Rvachev_Closed_Loop_Report_v4/`
 restricting to a single scale.  The `_v3`/`_v4` suffixes are
 deliberate: those two archives share a top-level directory name.
 
-Together with `Legendre_Rvachev_Self_Reconstruction/` these make four
-same-day Legendre reports beside the six Lagrange-loop ones. All ten former
-package directories are now retired after their material and evidence were
-dispositioned into `Up_Polynomial_Synthesis/`.
+Together with `Legendre_Rvachev_Self_Reconstruction/` these made four
+same-day Legendre reports beside the six Lagrange-loop ones. That ten-member
+tranche is now absorbed into `Up_Polynomial_Synthesis/`.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and provenance.

@@ -5,6 +5,10 @@ import FabiusFunction.PeriodicOrbitGelfondBound
 import FabiusFunction.PascalParityPeriodic
 import FabiusFunction.RvachevHalfIntegerEnergy
 import FabiusFunction.LambertWElementaryBounds
+import FabiusFunction.CayleyTreeFunction
+import FabiusFunction.CayleyKernel
+import FabiusFunction.CayleyLocalCoordinate
+import FabiusFunction.DivisorTransform
 import FabiusFunction.CompleteHomogeneous
 import FabiusFunction.CompleteHomogeneousGenerating
 import FabiusFunction.CompleteHomogeneousBell
@@ -16,14 +20,17 @@ import FabiusFunction.BinomialInversion
 import FabiusFunction.StirlingBasisChange
 import FabiusFunction.LahNumbers
 import FabiusFunction.BellStirling
+import FabiusFunction.TouchardEulerOperator
 import FabiusFunction.StirlingGeneratingFunctions
 import FabiusFunction.EulerianNumbers
 import FabiusFunction.PartialBellPolynomials
 import FabiusFunction.BellGeneratingFunctions
+import FabiusFunction.BellLeibnizTower
 import FabiusFunction.BellComposition
 import FabiusFunction.BernoulliStirling
 import FabiusFunction.BellHomogeneity
 import FabiusFunction.StirlingOrdinaryGF
+import FabiusFunction.StirlingCompleteHomogeneous
 import FabiusFunction.EulerianGeneratingFunctions
 import FabiusFunction.ExponentialRiordan
 import FabiusFunction.ExponentialFormula
@@ -65,13 +72,26 @@ import FabiusFunction.BellDerivative
 import FabiusFunction.AssociatedStirling
 import FabiusFunction.RStirling
 import FabiusFunction.FallingFactorialSeries
+import FabiusFunction.PochhammerFalling
 import FabiusFunction.CauchyPolynomials
 import FabiusFunction.CoefficientRules
+import FabiusFunction.UnitSeriesPowerRecurrence
+import FabiusFunction.ExpSeriesRecurrence
+import FabiusFunction.StirlingSeriesCoefficients
 import FabiusFunction.IteratedLeibniz
 import FabiusFunction.NorlundDiagonal
+import FabiusFunction.ExponentialRescaling
+import FabiusFunction.BernoulliFormalLog
+import FabiusFunction.NorlundGeneralized
 import FabiusFunction.NarayanaNumbers
+import FabiusFunction.AssociahedronFaceNumbers
 import FabiusFunction.StirlingFirstModH
+import FabiusFunction.StirlingSymmetricFunctions
 import FabiusFunction.LagrangeInversion
+import FabiusFunction.LagrangeInversionUniqueness
+import FabiusFunction.NewtonReciprocal
+import FabiusFunction.RaneyNumbers
+import FabiusFunction.AbelPolynomialSeries
 import FabiusFunction.LambertWSeries
 import FabiusFunction.FussCatalanSeries
 import FabiusFunction.InverseBellCoefficients
@@ -92,6 +112,7 @@ import FabiusFunction.SquareRootSeries
 import FabiusFunction.PowerSumOrdinaryBell
 import FabiusFunction.StirlingParityBitwise
 import FabiusFunction.StirlingSecondReverseRow
+import FabiusFunction.StirlingSecondReverseRowIdentity
 import FabiusFunction.SymmetricFunctionTransform
 import FabiusFunction.SymmetricFunctionGenerating
 import FabiusFunction.FiniteQBinomialCore
@@ -287,11 +308,16 @@ import FabiusFunction.DyadicBoundaryIdentity
 import FabiusFunction.AliasDyadicBridge
 import FabiusFunction.AliasQBinomialBridge
 import FabiusFunction.MeanValueBracket
+import FabiusFunction.BackwardErrorExistence
 import FabiusFunction.TransseriesHeight
 import FabiusFunction.TransseriesScale
+import FabiusFunction.TransseriesFlat
 import FabiusFunction.TransseriesWellBased
 import FabiusFunction.WrightOmega
+import FabiusFunction.WrightOmegaTwoOrders
 import FabiusFunction.LambertShiftInverse
+import FabiusFunction.LambertShiftConcavity
+import FabiusFunction.LambertCorrectionEquation
 import FabiusFunction.LambertInverseCoefficients
 import FabiusFunction.CyclicCharacterSums
 import FabiusFunction.AliasErrorBound
@@ -522,10 +548,13 @@ import FabiusFunction.BoundednessSkeleton
 import FabiusFunction.TransferOperatorStep
 import FabiusFunction.TransseriesBlockAntiderivative
 import FabiusFunction.TransseriesDifferentialBlock
+import FabiusFunction.TransseriesDifferentialClosure
 import FabiusFunction.TransseriesHarmonicIncrement
 import FabiusFunction.TransseriesScaleDominance
+import FabiusFunction.TransseriesBlockClasses
+import FabiusFunction.TransseriesMonomialUniqueness
+import FabiusFunction.TransseriesWrightOmegaTerms
 import FabiusFunction.TransseriesPolyLogScale
-import FabiusFunction.TransseriesFlat
 import FabiusFunction.TriangularPowerProduct
 import FabiusFunction.LasotaYorkeIteration
 import FabiusFunction.TransferPositivity
@@ -568,6 +597,7 @@ import FabiusFunction.Regularity
 import FabiusFunction.Convexity
 import FabiusFunction.EffectiveFlatness
 import FabiusFunction.SharpFlatness
+import FabiusFunction.FabiusEndpointTwoTerm
 import FabiusFunction.FabiusInverse
 import FabiusFunction.InverseModulus
 import FabiusFunction.FabiusInverseEffectiveContinuity
@@ -800,6 +830,7 @@ import FabiusFunction.PowerLogCoreInversion
 import FabiusFunction.LinLogCoreInversion
 import FabiusFunction.StaircaseInversion
 import FabiusFunction.RemainderTransport
+import FabiusFunction.LeastTermIndex
 
 set_option autoImplicit false
 
@@ -824,6 +855,18 @@ filters are diagonalized coefficientwise on formal power series, with exact
 Gaussian residual multipliers for geometric rows; the recursive Gaussian
 coefficients themselves have functorial, symmetric, denominator-free ring
 laws.
+The current facade also reaches sixteen newly added, fully documented leaves:
+the Bell/Touchard and Cayley/derangement algebraic APIs, scoped Lambert and
+core-inversion utilities, backward-error, remainder-transport, staircase and
+least-term lemmas, and abstract differential-closure and harmonic-increment
+tools.  Their lexical inventory is 21 definitions and 115 theorems.  The
+existing flatness module is the semantic union of its generic-vector 1+11 API
+and a scalar-compatibility 3+11 API; the differential-block, infinite
+q-binomial, and fixed-column-rate modules are respectively 0+12, 1+29, and
+0+9.  These census statements
+describe the public surface only: they do not supply analytic continuation,
+an unnamed error term, a concrete transseries field, or a broader paper claim
+than the hypotheses of the individual declarations support.
 The geometric Richardson generating-function layer is the exact 3+7 public
 surface `geometricRichardsonKernel`, `qPochhammerNormalizedDataSeries`,
 `geometricRichardsonTransform`,

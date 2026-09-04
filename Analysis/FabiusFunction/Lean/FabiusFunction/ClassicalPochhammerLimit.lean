@@ -69,7 +69,7 @@ theorem tendsto_finiteQPochhammerIn_div_pow_of_hasDerivAt {f : 𝕜 → 𝕜} {c
       simp only [hf1, one_pow, mul_one, one_mul]
     exact tendsto_one_sub_div_one_sub_of_hasDerivAt hg (by simp [hf1])
   rw [ascPochhammer_eval_eq_prod_range]
-  refine (tendsto_finset_prod (Finset.range n) fun j _ => hfac j).congr fun q => ?_
+  refine (tendsto_finsetProd (Finset.range n) fun j _ => hfac j).congr fun q => ?_
   rw [finiteQPochhammerIn, Finset.prod_div_distrib, Finset.prod_const, Finset.card_range]
 
 /-- **The complex classical limit** `(q^x;q)_n / (1-q)^n → (x)_n` as `q → 1`,

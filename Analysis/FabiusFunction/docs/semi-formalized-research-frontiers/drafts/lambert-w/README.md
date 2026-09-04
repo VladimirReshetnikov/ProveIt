@@ -28,37 +28,20 @@ passes `68/70/70`, PDF
 `70pp/966637B/6c150ff18889030345de3e1a8581d5ea0ac75789a9720c1d5164ed4e7ec4b7fb`,
 and final log
 `1574L/57800B/9f995a50e3ab25256083edee745a1889027787194e3b3c6d1f12f60bf687145c`.
-Every recorded prohibited-log, A4/rotation, PDF 1.5, encryption, font/subsetting,
-Libertinus, Type-3, and visual gate passed for that source snapshot. Later
-source changes make the tuple historical. The accepted current source/PDF
-receipt is the Lambert row in the [authoritative receipt
-register](../MANIFEST.md#current-post-merge-publication-receipts); source/PDF
-parity is current and every documented gate passed.
+Every recorded gate passed for that source snapshot. Later d130 and incoming
+`b899` 70-page receipts also passed their recorded gates. All are historical
+after this merge changed the Guide source. The accepted merged-source render
+is in the [merge-28de4e51 receipt register](../MANIFEST.md#merge-28de4e51-publication-receipts).
+The d130 tuple remains in the historical campaign register below.
 
-The following receipts are explicit history. At the pre-upstream commit
-`581bf`, its source had 4,864 lines and
-176,796 bytes, with SHA-256
-`3f3552983a73db2dab94f3625d10d054b747ee03fc2758e257af86f6216deab5`.
-The matching 70-page, 958,713-byte A4 PDF has SHA-256
+At pre-upstream commit `581bf`, the source had 4,864 lines / 176,796 bytes /
+SHA-256
+`3f3552983a73db2dab94f3625d10d054b747ee03fc2758e257af86f6216deab5`;
+its 70-page / 958,713-byte PDF has SHA-256
 `24e8bf561283ffc5427297df6f656696a7e2538731e53d03d59e4268b50772fc`.
-At revision `2d434eec`, after merging parallel revision `3b6396` and
-reconciling the branch chronology, the source had 4,873 lines and 177,465
-bytes, with SHA-256
-`90413f46373415edef411e9ea3b2d94006f7342bd2fa3ea931ca975d7f64b97e`.
-Three passes at 67/69/69 pages produced the then-accepted 69-page, 958,516-byte A4
-PDF with SHA-256
-`b159cd41f5b3e53060fa85fcfc4812d504cc1fff8400c03ecb7ef4018f37cd2c`;
-the final 1,574-line, 57,795-byte log has SHA-256
-`5c81cd6b8dc2cf070c4b1995c98c0d046c54d28f0e682b78b5ad9e16c0a8caa7`.
-All documented log, page, font, Type-3, extraction, and visual gates passed at
-that revision after the clipping repair. This `2d434eec` receipt is historical
-and was superseded by the later first-merge receipt above; both are now
-historical. The `581bf` pair is retained as a historical
-pre-upstream receipt. The superseded 4,872-line, 177,384-byte source-only pin,
-SHA-256 `4200ac6ccd23e950bcbd0cba61aca256cd9e1a647667436120cc82e8e7876b11`,
-records the state before that repair. The preceding 66-page, 1,107,064-byte
-artifact remains an earlier historical receipt.
-The most complete of the four treatments forms the body; the unique layers of the
+The `2d434eec` 69-page receipt and the 66-page predecessor remain explicit
+history. The most complete of the four treatments forms the body; the unique
+layers of the
 other three (the
 complete power-tower convergence theorem, inverse-Taylor corrections,
 the branch-exchange involution, the transcendence theorem, a
@@ -71,6 +54,36 @@ verification scripts are preserved under `Lambert_W_Guide/assets/`;
 the absorbed source documents themselves are deleted after merging,
 with SHA-256 provenance in the document itself (git history is the
 archive).
+
+The synchronized publication receipt (2026-09-04) records a historical
+checkpoint superseded by the current `b899` receipt below. The checkpoint
+comprised the
+4,876-line, 177,511-byte TeX source at SHA-256
+`d852a345685dd61335a89fc4fd1092680bdc597a5d1e6ac612883946ad0d99ea`.
+Exactly three successful serial halt-on-error passes from absent sidecars ran
+68 pages / 963,230 bytes → 70 / 986,865 → 70 / 986,865. The final 70-page,
+986,865-byte A4 PDF has SHA-256
+`0b8801649a6dd43d9f02dcfc2f60cac50b5c8f88bd782645bf97d30cc3dfbd41`.
+All 42 font rows are embedded and subset, five are Libertinus, and none is Type
+3. Final-log reference/rerun/error checks, PDF metadata (with intentionally
+empty author and keywords), every-page render and
+nonblank-text checks, and representative visuals passed; generated sidecars
+and forbidden checksum basenames both close at zero. The previous clipped-box
+warning is gone; the sole harmless 0.82504 pt overfull box is readable, and the
+final log has 133 underfull diagnostics.
+
+The historical synchronized `b899` source has 4,940 lines and 181,577 bytes, with
+SHA-256
+`2e6a4782fc4e4b945869f5fb45b39cf94e8dc34296866edf26b4cdfe19b1898b`.
+Exactly three serial halt-on-error passes from absent sidecars ran 68 pages /
+968,083 bytes → 70 / 991,847 → 70 / 991,848. The final 70-page,
+991,848-byte PDF has SHA-256
+`f802d78299f8f6aca7d31b935a4884f9343389a7307decb04c18b5159c8a4f04`.
+All 70 pages are A4 at rotation zero, render successfully, and contain nonblank
+text. All 42 font rows are embedded and subset, five are Libertinus, and none
+is Type 3. Required log, reference/rerun, metadata (with intentionally blank
+author and keywords), visual, cleanup, and forbidden-basename gates passed. The
+only box diagnostic is one nonblocking 0.83 pt horizontal box.
 
 Six polynomial-logarithmic transseries packages were also filed here on
 2026-09-01, because Lambert W is their guiding example.  Their subject is the
@@ -146,21 +159,14 @@ that explicit removable-origin convention.  The Guide's nearest-nonzero-zero
 argument is not the formal proof route.  With the three finite
 branch-coordinate modules, the four-module union is four definitions and 37
 theorems, 41 declarations.  The signed higher/convergent Puiseux program
-remains open. The exact `581bf` Guide, primary, walkthrough, and canonical-
-frontier receipts include this overlay; the q-series PDF is the exact receipt
-for its own pre-upstream source. The later historical `2d434eec` receipts for those five
-roots and the standalone geometric-q root all passed their documented gates.
-The later first-merge primary, walkthrough, canonical, Lambert, q-series, and
-404-page geometric-q receipts are also retained as historical provenance. The
-primary, walkthrough, canonical, Lambert, q series, and geometric-q now all
-have accepted current receipts.
-The local declaration
-chronology is 902/11,440 after `GeometricRichardsonGenerating`, 902/11,443 at
-Gaussian checkpoint `71c908e`, 903/11,448 after this five-theorem leaf at
-completed Lambert checkpoint `217a6b9`, and 903/11,453 after the five
-fixed-column q-binomial declarations at `581bf`. On the parallel upstream
-branch, the sibling `FabiusFunction.GeometricUniformMomentPolynomial` module
-has one definition
+remains open. The exact `581bf`, `2d434eec`, first-merge, d130, and
+incoming `b899` Guide receipts remain explicit history for their frozen
+sources. The accepted merged-source render is recorded in the [merge-28de4e51
+receipt register](../MANIFEST.md#merge-28de4e51-publication-receipts).
+The exact-radius four-theorem checkpoint was 903/11,447, its fifth theorem made
+903/11,449, and subsequent checkpoints remain part of the chronology. The
+later sibling `FabiusFunction.GeometricUniformMomentPolynomial` module has one
+definition
 and eight theorems for its recursive polynomial, residual-product recurrence,
 degree bound, value at zero, and first four nonconstant cases.  That algebraic
 leaf produced the historical checkpoint 904 modules and 11,457 public
@@ -255,7 +261,7 @@ degrees are outer degrees in `Polynomial (Polynomial ℚ)` and may drop after a
 fixed-inner-variable specialization; its finite-convolution moments are not a
 random-variable or analytic-MGF realization.
 
-In the merged chronology the sharp leaf gave the historical 921/11,575
+In the origin-side chronology the sharp leaf gave the historical 921/11,575
 checkpoint, `RvachevLaurentLeading` gave 922/11,582, and
 `FinitePrefixAppellRecovery` gave 923/11,610.  The RatFunc leaf gives the
 historical 924/11,615 checkpoint.  Two later theorems in
@@ -275,12 +281,12 @@ public declarations, making the historical dyadic/finite-prefix census
 declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This makes 934/11,709 a historical
-checkpoint. Later upstream work and the three unique local q-binomial
-compatibility wrappers give the live census 952/11,884.
-The q ledger is 182 Exact / 78 Partial / 14 None / 8 interface, the relevant Dyadic
-Gaussian--Thue--Morse chapter is 13/43/0/0, and the source concordance is 95
-Lean-proved / 383 human-proved frontier / 60 non-applicable / 9 conjectures.
+`ThueMorseNewmanSelfSimilarity.lean`. This made 934/11,709 an explicitly
+historical post-Prouhet checkpoint. Later transseries/Catalan and Thue--Morse
+additions made 943/11,791 and 944/11,806 historical checkpoints. The
+authoritative merged live census is 983 modules / 12,192 public declarations.
+The canonical q ledger and source concordance are maintained in the q-series
+package documentation.
 All of these sibling source-only additions are likewise absent
 from the retained historical PDFs.
 

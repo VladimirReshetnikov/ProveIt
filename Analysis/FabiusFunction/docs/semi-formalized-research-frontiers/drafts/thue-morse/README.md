@@ -2,8 +2,10 @@
 
 The Thue-Morse side of the corpus, consolidated (2026-08-28) into the
 single volume [`Thue_Morse_Atlas_and_Frontiers.tex`](Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex)
-([PDF](Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.pdf),
-137 pp):
+([PDF](Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.pdf);
+the 144-page `b899` publication and 137-page predecessor are historical; the
+accepted merged-source render is in the [merge-28de4e51 receipt
+register](../MANIFEST.md#merge-28de4e51-publication-receipts)):
 
 - **Part I** — *A Unified Formula Atlas for the Thue–Morse Sequence*
   (formerly `Thue_Morse_Formula_Atlas/`);
@@ -21,7 +23,16 @@ are filed as separate members, not yet compared or merged into the volume:
 - [`thue_morse_diagonal_polynomials/`](thue_morse_diagonal_polynomials/) —
   *Diagonal Polynomials and Dyadic Block Geometry in Repeated Thue–Morse
   Summation* (24 pp A4; 14 theorems; Wolfram Language table code, Python
-  verification, one profile figure).
+  verification, one profile figure). Its current 1,763-line, 56,530-byte
+  source has SHA-256
+  `eee5751653bb19ec04042f51ded34d74bf8862f5b06b49d47e68ea78bb689c45`.
+  Three serial halt-on-error passes from absent auxiliaries produced
+  23 pages/768,048 bytes, 24 pages/778,598 bytes, and a final 24-page,
+  778,595-byte PDF with SHA-256
+  `8db0c4e0a4fcf682bd3e1311f7d8197ea04dcca56e102236b52494267d99cbbe`.
+  The final log, metadata, A4/rotation-zero, all-page render/text, and
+  representative visual gates passed; all 22 font rows are embedded/subset,
+  seven are Libertinus, none is Type 3, and generated sidecars are absent.
 - [`thue_morse_diagonal_polynomials-2/`](thue_morse_diagonal_polynomials-2/) —
   *Diagonal Polynomial Laws in Odd Iterated Thue–Morse Summation* (37 pp A4;
   11 theorems, 1 conjecture; Riordan-array structure and 2-adic Bell
@@ -36,9 +47,11 @@ prefix row by the weighted recurrence `s(n,k) = Σ_{j<k} (k−j) s(n−1,j)`; al
 three identify it with the odd iterated prefix sums, `s(n,k) = σ_{2n+1}(k−n−1)`,
 and derive the polynomial on every diagonal from the generating identity
 `Σ_m D_m(x) z^m = TM(z²)/(1−z)^{2x}`, `TM(z) = Π_j (1 − z^{2^j})`. None of the
-three loads `docs/fabius-notation.tex`. Comparison, canonical selection,
-proof checking, numerical reproduction, and Lean crosswalking are deferred;
-the volume's own Prouhet and prefix-sum material is the natural merge target.
+three loads `docs/fabius-notation.tex`. Cross-package comparison, canonical
+selection, proof checking, numerical reproduction, and Lean crosswalking remain
+deferred; the first package alone now has the synchronized publication receipt
+above. The volume's own Prouhet and prefix-sum material is the natural merge
+target.
 
 Both parts carry extensive inline Lean crosswalks. As of 2026-08-28,
 `ThueMorseComplexProductBridge.lean` supplies the finite-product core in total
@@ -101,7 +114,9 @@ under the integral with the exponent shift `s ↦ s + 1`; the other two give
 `k ≤ r`.  Thus `p2:thm:gamma-tower` is Exact when its displayed logarithm is
 read, as above, as the chosen GammaLog coordinate.  Every differential theorem
 retains `0 < a`; no principal-`Complex.log` identity or nonpositive-parameter
-extension is asserted. The accepted first-merge receipt, now historical, is root
+extension is asserted. The local and incoming 144-page receipts are both
+historical after the merged TeX source changed. The local first-merge tuple is
+root
 `10557L/482022B/8cef828c3d92a0017e22463ac90878a5e3a98e1138059d5f4793d47c04a88404`,
 two-file aggregate
 `10841L/493857B/79a43711c6989336166d6b2ed1faa306cc985b8d70557025ab139791d455723c`,
@@ -109,11 +124,12 @@ passes `139/144/144`, PDF
 `144pp/1740015B/deb63fe66fc8f020bb072acbc4301e9b7c9f0559b165cbae2c076f261405c5be`,
 and final log
 `1503L/59417B/1219dbc87bc4f9920c40b24659182220b14e7908a45a9eb33d0f19390148c64b`.
-Every recorded prohibited-log, A4/rotation, PDF 1.5, encryption, font/subsetting,
-Libertinus, Type-3, and visual gate passed at that checkpoint. The former
-143-page PDF remains an earlier historical render. The accepted current
-source/PDF receipt is in the [authoritative receipt
-register](../MANIFEST.md#current-post-merge-publication-receipts).
+The incoming `b899` source had 10,553 lines / 481,614 bytes / SHA-256
+`cced4128c359ec467baaf1a55c21c68424397f783a39ea7fe2af5a94975b9dd5`;
+passes 139/144/144 produced a 1,739,884-byte PDF with SHA-256
+`1c81863b0976017fab1b7f5972c50cd541b3ffb05306bf85994548a56a782fc0`.
+Both checkpoints passed their recorded gates. The former 137- and 143-page
+artifacts remain earlier history, and a merged-source receipt is pending.
 
 `CentralBinomialValuation.lean` supplies the atlas's direct central-binomial
 crosswalk.  Its exhaustive public API is

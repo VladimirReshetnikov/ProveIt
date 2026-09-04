@@ -22,7 +22,8 @@ Repository normalization retained the mathematical body while replacing the subm
 - `figures/` — eight vector PDF figures used by the report and eight PNG previews.
 - `data/` — eleven CSV, TXT, and JSON outputs used for numerical checks.
 - `requirements.txt` — pinned Python package versions used for the validated replay.
-- `REPOSITORY_AUDIT.md` — source-audit, claim-boundary, replay, and nonduplication record.
+- `REPOSITORY_AUDIT.md` — source-audit, claim-boundary, replay, nonduplication,
+  verified intake-ledger, and normalized-package provenance record.
 - `PDF_VALIDATION.txt` — last-render build, geometry, font, text, and visual
   checks, plus the current uncompiled-source fingerprint.
 - Historical checksum records — the verified 34-row submission receipt and a

@@ -1,5 +1,59 @@
 # Draft manifest
 
+## Merge 28de4e51 publication receipts
+
+This merge incorporates the fetched mainline tip
+`28de4e51cf90637f8971c5c7d1657956ccb540f6` into the previously published
+`d130a3476` feature branch. The eleven PDFs below were regenerated from the
+resolved sources with three successful halt-on-error passes each, with an
+index pass after each q-series pass. Every PDF is A4 and contains Libertinus.
+No unresolved references, missing-character warnings, or duplicate destinations
+remain. The Transseries render retains 115 nonfatal overfull boxes; the other
+ten final logs contain none. Full visual review of every page is not claimed.
+
+These are the current publication receipts. Earlier render-pending statements
+and d130/b899/first-merge tuples below describe their historical checkpoints,
+not an outstanding rebuild for these eleven documents. Source hashes below
+cover the driver; included sources are pinned by this merge's Git tree.
+
+| Driver | Pages | PDF bytes | Driver SHA-256 | PDF SHA-256 |
+| --- | ---: | ---: | --- | --- |
+| `Fabius_Function_and_Rvachev_Up.tex` | 225 | 1730634 | `421b6849688bfaef50ec244db1d8f941bd32e340a815b47e271fe8ddc177c624` | `863d530a227b326922c5fd1f84cdebb8b460a9795f3e327e17d541ca5e68d556` |
+| `fabius_lean_walkthrough.tex` | 176 | 1361751 | `687f9460872dab615811340d8b6885303a0d50dcc98d5775671439d17d8cdcef` | `c12fef3309706ada617750590c346c4326bc53e21e167bf1c908b33b084c8d40` |
+| `geometric_q_fabius_frontiers.tex` | 407 | 8355755 | `7a04b909eb3cd4f5f109af8bf6b18b1c9ee380c5fca77815665f1f43bc50d418` | `1d5d7a0a4df752d218fcc9b76737d3eb226d5dfbd9843cd895ede90aa7ecbe12` |
+| `q_pochhammer_q_binomial_monograph.tex` | 408 | 2542260 | `30455315294acd8f3199e5b874162851af9abfab317e62cdfd2b1c9123bd5bc7` | `0d0ba52001ab7494e37f8995fca9de4579882356984c8660aaa5129cfdac6f76` |
+| `Lambert_W_Guide.tex` | 70 | 969608 | `87692e3ffcb091a8ddfec3843348948221aafb4f2c674c6a9fbbb081e90510f5` | `f8e452c43445e375962704f6f0fc2f95fa05adb411b650209f47952190d0ff3b` |
+| `transseries_and_inversion.tex` | 721 | 5204353 | `98d0abf7ab5ce0689f2c8516a87e763578f60cb860128d583bb368978bc6157e` | `91b68f17403c78525530934bc7b44db2b1854ffb1290a53161a4f291b9f6cc79` |
+| `semi-formalized-research-frontiers.tex` | 294 | 2014674 | `046a14a177e6e5919695692ba6ddb2e854f7083f3727d5048eb916414b215214` | `fdfdc88e437daf24a0d8c5f738b8155b01d7f1aa4e8051891398a8bd1f84266c` |
+| `comb_interpolation_synthesis.tex` | 160 | 2468023 | `a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56` | `bb2022613d989a36b35f74b7b0023a0b6a4e2f16d29f7c947e2a0ec850eda1fb` |
+| `inverse_fabius_theory.tex` | 139 | 2051407 | `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c` | `57287c4a4187a062892c810d7b92f5dcddd0eeb574ba1fa530e539fd22ef2371` |
+| `Up_Polynomial_Synthesis.tex` | 63 | 1077883 | `997dd721a7115040b9634117d9b2af0b64a35f432de7c7382d1b78fb2f79e10f` | `5d706feb646019dbe35c6fa267d412f36c405c2bf2ef88f375a52abdb15325ae` |
+| `Thue_Morse_Atlas_and_Frontiers.tex` | 144 | 1741882 | `7a3acb01165e951669eb6a2de834bb638bae1e2227689e1bf45f7b91a4d0ce47` | `6d73b2ca736ebd84ce50e5ab02badc12d663b04068c3752ddbe6bd514d5c77b4` |
+
+Verified: all five conflict modules (`DerangementNearestInteger`,
+`LinLogCoreInversion`, `TransseriesFlat`, `QBinomialTheoremInfinite`,
+`GaussianBinomialFixedColumnRate`) and the three required prerequisites
+(`TransseriesScale`, `TransseriesScaleDominance`, `TransseriesPolyLogScale`)
+compiled serially under the machine-wide mutex. The aggregate facade and all
+other incoming modules were not compiled in this merge pass.
+
+The lexical documentation baseline is 983 modules / 12,192 declarations, with
+zero documentation gaps; every module is facade-reachable, and the duplicate
+declaration audit passes. The q, inverse, and comb canonical validators pass,
+as does the 23-input inverse source-closure check. The q ledger is
+181 Exact / 79 Partial / 14 None / 8 N/A: the incoming q-Lucas correction
+properly distinguishes root evaluation from the still-unformalized polynomial
+congruence. Its source concordance is 103 / 375 / 60 / 9.
+
+The broader `audit_all.sh` does **not** pass: its register-consistency stage
+reports eight pre-existing CCC issues (five unnamed gaps, one None row citing
+Lean, and two stale anchors). The affected register scripts and CCC source are
+unchanged from the incoming tip. The other stages pass, including all 34 exact
+identity checks. No forbidden `SHA256SUMS` or `SHA256SUMS.*` file was restored.
+
+## Draft inventory
+
+
 Global inventory of every research draft under this directory, grouped by
 theme. Each draft directory holds one source package and any supporting data,
 scripts, or figures; most also retain a compiled publication PDF, while a
@@ -21,11 +75,100 @@ so no PDF was rebuilt for it.  The same holds for the 2026-09-02 split that
 moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
-**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 952
-source modules and 11,884 public declarations, with no missing module headers or
-declaration comments. The incoming-only 952/11,881 count is a historical
-checkpoint; preserving three unique local `QBinomialTheoremInfinite` wrappers
-gives the exact-name-deduplicated current total.
+The 2026-09-04 source-only q-series crosswalk correction updates two renamed
+declarations and the nine-theorem fixed-column inventory. Its retained
+405-page PDF and `b899` receipt are historical; that correction made no PDF
+or checksum update.
+
+**Current artifact checkpoint (2026-09-04).** The live Lean audit scans 983
+source modules and 12,192 explicit public declarations, with no missing module headers or
+declaration comments. The reciprocity leaf's 931/11,685 checkpoint remains
+historical; the subsequently merged upstream `DyadicBoundaryIdentity.lean`
+and `FinitePrefixThueMorseCollapse.lean` modules add two modules and ten public
+declarations, giving the historical 933/11,695 checkpoint. The incoming union
+adds one module and fourteen public declarations: the new zero-definition/
+six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem added to
+`DyadicBoundaryIdentity.lean`, and seven theorems added to
+`ThueMorseNewmanSelfSimilarity.lean`. This gives the historical 934/11,709
+census. The local branch's subsequent transseries-algebra integration gives the historical
+943/11,791 checkpoint. The then-exhaustive 1+11 `TransseriesFlat.lean` leaf and
+three integer-Laurent additions to `TransseriesDifferentialBlock.lean` then
+give the historical 944/11,806 census.
+
+Against that checkpoint, the local pre-merge source added exactly seventeen modules:
+`BackwardErrorExistence.lean` (1+6), `BellLeibnizTower.lean` (1+5),
+`CayleyTreeFunction.lean` (1+8), `DerangementNearestInteger.lean` (1+7),
+`LambertCorrectionEquation.lean` (2+9), `LambertShiftConcavity.lean` (0+5),
+`LeastTermIndex.lean` (1+6), `LinLogCoreInversion.lean` (4+18),
+`OrdinaryPartialBell.lean` (2+4), `PowerLogCoreInversion.lean` (3+6),
+`RemainderTransport.lean` (0+3), `StaircaseInversion.lean` (0+7),
+`StirlingCompleteHomogeneous.lean` (0+8),
+`TouchardEulerOperator.lean` (2+8),
+`TransseriesDifferentialClosure.lean` (2+9),
+`TransseriesHarmonicIncrement.lean` (0+2), and `WrightOmega.lean` (1+12),
+for 21 definitions and 123 theorems. Existing surfaces contribute the other
+24 declarations: `TransseriesFlat.lean` grows by 3+11 to 4+22,
+`TransseriesDifferentialBlock.lean` gains four theorems to 0+12,
+`QBinomialTheoremInfinite.lean` gains five theorems to 1+27, and
+`RvachevPochhammerFactorization.lean` retains one additional public bridge.
+The modified `LaplaceMomentBoundsSharp.lean` is excluded from the new-module
+count. Thus the local pre-merge census was 961/11,974, with both documentation-gap counts
+zero.
+
+On the incoming branch, nine series/transseries modules carried 72 explicit
+public declarations; two further Neumann names generated by `to_additive`
+were outside the lexical count. Six concurrent declarations gave the
+historical 943/11,787 checkpoint. Nine further modules with 90 declarations
+and four integer-exponent theorems gave 952/11,881; two written OrderDual
+Neumann wrappers and the real-analytic Wright omega theorem then gave the
+incoming historical checkpoint 952/11,884. These branch inventories overlap
+and are not additive.
+
+The preceding local merge audit was **970 facade-reachable modules and 12,056
+explicit public declarations**, with zero missing module headers, missing
+declaration comments, or duplicate public names. Relative to the local
+961/11,974 checkpoint, the nine new modules are `CayleyKernel.lean`,
+`CayleyLocalCoordinate.lean`, `DivisorTransform.lean`,
+`ExpSeriesRecurrence.lean`, `FabiusEndpointTwoTerm.lean`,
+`StirlingSeriesCoefficients.lean`, `TransseriesBlockClasses.lean`,
+`TransseriesMonomialUniqueness.lean`, and `WrightOmegaTwoOrders.lean`.
+At that checkpoint they contributed eight definitions and 60 theorems;
+existing-module changes contributed a net 14 declarations. The retained Stirling complete-homogeneous
+leaf still has eight theorems. The later incoming branch recorded 967/12,001 after fifteen modules and
+117 declarations, then 969/12,048 after two modules and 47 declarations;
+the three-theorem power-recurrence leaf gave its historical 970/12,051
+checkpoint. These counts overlap the local inventories and are not additive.
+
+The current merged audit is **983 modules and 12,192 explicit public
+declarations**, with zero documentation gaps. Relative to 970/12,056, seven
+new leaves contribute 80 declarations while three existing declarations move
+from `NorlundDiagonal.lean` to `ExponentialRescaling.lean`, a net increase
+of 77. The eight-theorem Stirling leaf is retained.
+No new aggregate-build or PDF-parity claim is made.
+
+The abstract Faà di Bruno result, ordinary Bell normalization, and Touchard
+definition and displayed Euler-operator equation are **Exact**. The real
+basic Wright omega row `plt:prop:mot-omega-basic` is also **Exact**, including
+real analyticity, without asserting complex holomorphy. The broader Wright
+omega claims, differential closure, harmonic increments, Cayley, derangement, Lambert
+correction and its bracket bounds, linear-logarithmic inversion,
+power-logarithmic inversion, remainder transport, and staircase inversion
+remain **Partial**; the least-term-index row is **Neighboring**.
+Several PDFs below are retained,
+readable publication checkpoints rather than renders of the final merged TeX.
+In particular, the primary exposition, Lean walkthrough, canonical frontier,
+Integration-and-Transform master, notation catalogue, Representation master,
+New Frontiers-2, inverse-computability report, canonical inverse-theory
+synthesis, and canonical forward/inverse q-series synthesis require a fresh
+final-source build (the inverse-theory PDF has not yet been published).
+Documented retained checkpoints include 183 pages
+for the primary exposition, 130 for the walkthrough, 257 for the canonical
+frontier, 377 for the Integration master, 88 for the notation catalogue, 301
+for Representation, 41 for New Frontiers-2, 42 for inverse computability, 158
+for the comb synthesis, 389 for the consolidated q-series synthesis, and 238
+for Exponents. The
+listed page counts are artifact receipts, not claims of current source/PDF
+synchronization except where a package explicitly records it.
 
 The first merge changed the source closure of exactly ten retained
 publications. All ten received accepted PDFs at that source snapshot; their
@@ -78,48 +221,304 @@ index was clean after each pass. For geometric-q, all 404 pages are A4 at
 rotation zero, the PDF is unencrypted PDF 1.5, all 43 font rows are embedded
 and subset, Libertinus has 11 rows, Type-3 has zero rows, and prohibited
 checksum basenames and PDF/source references are absent. These tuples remain
-exact historical receipts. Up and comb still have current parity. All accepted
-current campaign receipts are recorded in the authoritative table below.
-All nine campaign roots now have current source/PDF parity; the Transseries
-row discloses its remaining layout warnings. The dyadic-chaos PDF is not in
-this set. Other
+exact historical receipts. This merge changes the primary, walkthrough,
+canonical, geometric-q, q-series, Lambert, comb, Up, Thue--Morse, and
+Transseries TeX closures. All eleven corresponding publication PDFs, including
+the unchanged inverse closure's conflicted binary, have been regenerated;
+their current receipts are in the merge-28de4e51 register above. The d130
+tuples below remain historical. The dyadic-chaos PDF is not in this set. Other
 already-unsynchronized retained publications below keep their existing
 historical status. Page counts are artifact receipts, not claims of current
 source/PDF synchronization.
 
-### Current post-merge publication receipts
+### d130 publication receipts and current parity status
 
-This is the authoritative live source/PDF parity register for the nine roots in
-the current rerender campaign. The first-merge tuples above remain immutable
-historical provenance. Counts are `lines/bytes/SHA-256`; each aggregate covers
+This is the historical d130 receipt register. Its tuples and the first-merge
+tuples above remain immutable provenance; current publication receipts are in
+the merge-28de4e51 register above. Counts are `lines/bytes/SHA-256`; each aggregate covers
 the root's recursively expanded TeX input closure. An accepted row passed the
 documented machine, semantic, font, and visual gates.
 
 | Root | Status | Root source | TeX closure | Passes | PDF | Final log |
 | --- | --- | --- | --- | --- | --- | --- |
-| Primary | Accepted | `14745L/740148B/dae5ff21eda13302f6af4ac9fb92bdeeac15f5a34d003c9312b310f931841258` | `15029L/751983B/ec89bbb7aaa0be861d47446680098e0cec81e8bf40f18c1427a0f63cd95192fb` | `199/201/201` | `201pp/1656033B/c3cb4101432d29985362a05e14446a842e3e307ea94a9ed3dbf7091f8b77f633` | `1315L/52897B/e8a41f4cab9cba4cdc997c744ca944a7eaf96b1c0b535c92f6b884d149cfef7f` |
-| Lean walkthrough | Accepted | `7239L/521416B/8609ae2a494b61e878aec96e37d4b30fdb6da907b3c9dff379cea0867b2a2248` | `7523L/533251B/163a4f6ea84794f48d76efa3ee98fbad56c1d4665a1e0b9124bc5f50d5e29cdd` | `167/172/172` | `172pp/1260237B/e300c14078a9d4dc0ceddfa7e6e92f17a8e268fa42988898514e018c56f82a80` | `1311L/52887B/9c7e1542607dfadc80ddd63fcfc5dc235ef05052dcb27fd21d06b2598f1ae54b` |
-| Canonical frontier | Accepted | `18838L/860479B/34b5e0940dfeda087802e54273f31469437aa84d2ba099047eda55b997ad48dd` | `19122L/872314B/17a2e5ba9fd61659f57d3aad1cb1671b0cfd42182bfefc6e43baad8b4d51342d` | `268/276/276` | `276pp/1950021B/3edd83f0f8669a35d90badc8cf0c5d183ca9b38b90eae8fe6541ee41a400d16a` | `3123L/105769B/e493aea71d44f5980340eb9935c5c89557c58528142f55137973ea5b548206c8` |
-| Geometric-q | Accepted | `27698L/1277747B/e2858f1f3595a7d7401c5da6b5f84015c1c4027d36a923f118c988c8ea062c9e` | `28071L/1293384B/aa809fbd88b75412ffcd1fe510adf06d3f3a80b5d649fcadc562c955cefafc96` | `389/406/406` | `406pp/8349052B/605b9fc75d50e776ebae4494828470528be56a92751a4075ea57686cf9ce44c7` | `2557L/114355B/2888d79bf198e77effca0579426d4b6759b6249e23da95da58601a68de32423e` |
-| q-series monograph | Accepted | `16865L/844086B/a404fd907bc8d5e4082f376d64be130f774b252d65c4b6746378cbca9cf17e99` | `26646L/1202186B/8045ec45c0cd220dc4a328828d5498b9fb9969eb0fb0332c3acf157dfd240297` | `394/402/402`; index `164/0/254/0` | `402pp/2503677B/766028619c18c75009b8b738a5315f2167a2deeeb72ca156269762f0709a09af` | `1237L/44690B/afbccf3cd62e78b38c93e1a3dc468e3e97fa81ef76d15c5b93940cb1d2211d65` |
+| Primary | Historical | `14745L/740148B/dae5ff21eda13302f6af4ac9fb92bdeeac15f5a34d003c9312b310f931841258` | `15029L/751983B/ec89bbb7aaa0be861d47446680098e0cec81e8bf40f18c1427a0f63cd95192fb` | `199/201/201` | `201pp/1656033B/c3cb4101432d29985362a05e14446a842e3e307ea94a9ed3dbf7091f8b77f633` | `1315L/52897B/e8a41f4cab9cba4cdc997c744ca944a7eaf96b1c0b535c92f6b884d149cfef7f` |
+| Lean walkthrough | Historical | `7239L/521416B/8609ae2a494b61e878aec96e37d4b30fdb6da907b3c9dff379cea0867b2a2248` | `7523L/533251B/163a4f6ea84794f48d76efa3ee98fbad56c1d4665a1e0b9124bc5f50d5e29cdd` | `167/172/172` | `172pp/1260237B/e300c14078a9d4dc0ceddfa7e6e92f17a8e268fa42988898514e018c56f82a80` | `1311L/52887B/9c7e1542607dfadc80ddd63fcfc5dc235ef05052dcb27fd21d06b2598f1ae54b` |
+| Canonical frontier | Historical | `18838L/860479B/34b5e0940dfeda087802e54273f31469437aa84d2ba099047eda55b997ad48dd` | `19122L/872314B/17a2e5ba9fd61659f57d3aad1cb1671b0cfd42182bfefc6e43baad8b4d51342d` | `268/276/276` | `276pp/1950021B/3edd83f0f8669a35d90badc8cf0c5d183ca9b38b90eae8fe6541ee41a400d16a` | `3123L/105769B/e493aea71d44f5980340eb9935c5c89557c58528142f55137973ea5b548206c8` |
+| Geometric-q | Historical | `27698L/1277747B/e2858f1f3595a7d7401c5da6b5f84015c1c4027d36a923f118c988c8ea062c9e` | `28071L/1293384B/aa809fbd88b75412ffcd1fe510adf06d3f3a80b5d649fcadc562c955cefafc96` | `389/406/406` | `406pp/8349052B/605b9fc75d50e776ebae4494828470528be56a92751a4075ea57686cf9ce44c7` | `2557L/114355B/2888d79bf198e77effca0579426d4b6759b6249e23da95da58601a68de32423e` |
+| q-series monograph | Historical | `16865L/844086B/a404fd907bc8d5e4082f376d64be130f774b252d65c4b6746378cbca9cf17e99` | `26646L/1202186B/8045ec45c0cd220dc4a328828d5498b9fb9969eb0fb0332c3acf157dfd240297` | `394/402/402`; index `164/0/254/0` | `402pp/2503677B/766028619c18c75009b8b738a5315f2167a2deeeb72ca156269762f0709a09af` | `1237L/44690B/afbccf3cd62e78b38c93e1a3dc468e3e97fa81ef76d15c5b93940cb1d2211d65` |
 | Canonical inverse theory | Accepted | `293L/11514B/92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c` | `10959L/441363B/c26c9a0bd0abf473126aa4c850db6b9c18cac19e18d0018840381a84d7a03629` | `133/139/139` | `139pp/2051407B/7a9535315ffdf0f98a7b3b0f02a085b2ac392d852bd81941a90692c42dbffb51` | `1569L/64092B/942b64004150d4e9ff023f5e769373271cb8db5db8fed13f78c82456b1345598` |
-| Lambert Guide | Accepted | `4992L/185327B/10757fc254f75b43458ed945e6805720cce192440da33417500ed6ef09b4a863` | `5276L/197162B/07c8707efbd39ffd27b557f3467698ad93eb3fb3d20d1227c156c4202412a6f2` | `68/70/70` | `70pp/968983B/5627d79b4d26d3d27a433f66e619919425543a924617f5fec7c44c922167fab8` | `1574L/57800B/09385c7b339439d2f9fa6b4ff61b66d6a9435822ba7cb3b9ea5c97a8e65b88b4` |
-| Thue--Morse atlas | Accepted | `10568L/482740B/6f66e3db3323715b54d1b5c42d14a3a7e79c3ce5c9a0d84dc408b81c7e016132` | `10852L/494575B/dbd32cf684b1d76be346ef06bf58625f2ec1d6955ccd4e19b3ce6800741a6fba` | `139/144/144` | `144pp/1741158B/96ac88ecc20807cce8338fa0f9211c20b9c7048e918413808c79d4e8143dd17d` | `1503L/59417B/c9582eac1922d17958bec7ba26ad42c5d3fdbf6ae31e99ad66a94e1c198ab8eb` |
+| Lambert Guide | Historical | `4992L/185327B/10757fc254f75b43458ed945e6805720cce192440da33417500ed6ef09b4a863` | `5276L/197162B/07c8707efbd39ffd27b557f3467698ad93eb3fb3d20d1227c156c4202412a6f2` | `68/70/70` | `70pp/968983B/5627d79b4d26d3d27a433f66e619919425543a924617f5fec7c44c922167fab8` | `1574L/57800B/09385c7b339439d2f9fa6b4ff61b66d6a9435822ba7cb3b9ea5c97a8e65b88b4` |
+| Thue--Morse atlas | Historical | `10568L/482740B/6f66e3db3323715b54d1b5c42d14a3a7e79c3ce5c9a0d84dc408b81c7e016132` | `10852L/494575B/dbd32cf684b1d76be346ef06bf58625f2ec1d6955ccd4e19b3ce6800741a6fba` | `139/144/144` | `144pp/1741158B/96ac88ecc20807cce8338fa0f9211c20b9c7048e918413808c79d4e8143dd17d` | `1503L/59417B/c9582eac1922d17958bec7ba26ad42c5d3fdbf6ae31e99ad66a94e1c198ab8eb` |
 | Transseries synthesis | Rendered; layout warnings | `55015L/2732554B/545d4b5ead18831e37a4df0ab7fb6b74a40e1e598144dc7057e8c62aaaa46799` | `55299L/2744389B/499a045ab45fdea7849c888bc8903db0866a2d4ca27eca3db6f62a9db282af30` | `677/704/704` | `704pp/5119857B/45a84240f21e501a77571bc860e5bc4693898e27056c82119cf9e4813ddf31a4` | `4099L/160665B/c7eac59d5bfb747c1f83c2f8b277e8a667049dc1b8e3d04fd9b3c7f6dd637396`; 114 overfull boxes; 11 duplicate Hyperref targets |
 
-The notation-unification tranche completed on 2026-09-01 was source-only: no
-PDF was regenerated.  For every affected package, the live-source description
-recorded in the thematic checkpoint below supersedes an older inline source
-count or any earlier statement that the retained publication PDF renders the
-current TeX.  Immutable arrival records and all historical build fingerprints
-remain provenance evidence rather than current-source claims.
+Four pre-`9135bd7e` publication pairs have exact historical receipts.  The
+primary exposition is a 14,037-line, 702,119-byte TeX source (SHA-256
+`6a20e02cf300c0b29ba8d175831b4f86e4b336601cc5bd5f5752d5c5889be69a`)
+and a 197-page, 1,602,500-byte PDF (SHA-256
+`f083cd78308aba99d23d42372786c4b0a946ea8f5d47445c44d664fccfdde5e3`).
+Its guarded passes ran 194 -> 197 -> 197 pages and closed cleanly.  The Lean
+walkthrough is a 6,598-line, 465,231-byte TeX source (SHA-256
+`796dd849fa423ba07413eaf0a1f30dc608355c5a3cd877aa7409ad089c54794e`)
+and a 149-page, 1,231,442-byte PDF (SHA-256
+`bc6e3e716a1a10daf24a065f6c97e2d00cbc95071ada777050a95f91598db4a0`).
+The canonical frontier is a 17,954-line, 813,297-byte TeX source (SHA-256
+`bcd9eefce2ead08e2cbb283e091a859aa31f36c67416543e994e10e8f9db3075`)
+and a 262-page, 1,885,642-byte PDF (SHA-256
+`7f7e1279e38c766a465e640638ea7e0079a942de0bc84a5c22be497af27c7bab`).
+Its guarded passes ran 254 -> 262 -> 262 pages; the recorded gates are clean
+apart from expected underfull-box diagnostics.
+The canonical forward/inverse q-series synthesis is a 16,834-line,
+837,715-byte TeX source (SHA-256
+`4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`)
+and a 395-page, 2,494,961-byte PDF (SHA-256
+`89159b2635f489a42d4c972fac95332808b1d637dee7921085db1ed7d6e055af`).
+Its guarded passes ran 386 -> 395 -> 395 pages.  The 165 Exact / 91 Partial /
+18 None / 8 interface ledger and publication gates were current at that
+source checkpoint; the sole 32.5659 pt overfull diagnostic was harmless and
+readable.  The walkthrough likewise completed its exact three-pass cycle with
+clean recorded gates.  All four receipts became historical when the later
+q-Chu/Richardson crosswalk changed their sources.
+
+The 2026-09-04 publication receipts below record exact historical source
+checkpoints.  Each pass tuple is `pages/bytes`.  All six pairs completed
+exactly three successful serial halt-on-error passes from absent sidecars.
+Final-log reference/rerun/error checks, metadata, A4 rotation zero, every-page
+render and nonblank-text checks, embedded/subset fonts with Libertinus and no
+Type 3, and representative visual checks all passed; generated sidecars and
+forbidden checksum basenames both close at zero.
+
+- Primary exposition: TeX 14,328 lines / 715,760 bytes / SHA-256
+  `60c0a6ff4e75ec37e6928067859671d87622ad8f430a1006dd4c71c7e7b25674`;
+  passes 197/1,579,558 → 200/1,621,473 → 200/1,621,467; final PDF 200 pages /
+  1,621,467 bytes / SHA-256
+  `50febffeb7dda743330bd346b8f5fd45f85668db97c19fb52d4cd741d1692826`;
+  fonts 29 total / 6 Libertinus / 0 Type 3.
+- Lean walkthrough: TeX 6,855 lines / 482,759 bytes / SHA-256
+  `1c48c54b194eb9e99dae64ddca70e2aa5d2edd995160ee2d5bc6455b545683f7`;
+  passes 149/1,225,017 → 154/1,262,552 → 154/1,262,574; final PDF 154 pages /
+  1,262,574 bytes / SHA-256
+  `f9cba79348ffb81c41fc08b6523548effcc45ded9a2eb2b18e618ac9d59d0648`;
+  fonts 30 / 7 / 0.
+- Lambert Guide: TeX 4,876 lines / 177,511 bytes / SHA-256
+  `d852a345685dd61335a89fc4fd1092680bdc597a5d1e6ac612883946ad0d99ea`;
+  passes 68/963,230 → 70/986,865 → 70/986,865; final PDF 70 pages /
+  986,865 bytes / SHA-256
+  `0b8801649a6dd43d9f02dcfc2f60cac50b5c8f88bd782645bf97d30cc3dfbd41`;
+  fonts 42 / 5 / 0; one harmless readable 0.82504 pt overfull and 133
+  underfull diagnostics.
+- Canonical frontier: TeX 18,173 lines / 826,738 bytes / SHA-256
+  `844842bf699a24651f660bd7d81d814f6396b4fe6fc6de66a04908904221860b`;
+  passes 257/1,822,725 → 265/1,904,567 → 265/1,904,551; final PDF 265 pages /
+  1,904,551 bytes / SHA-256
+  `dcaa7ac1e5397912c97a474b4023521e49d0785eb6ef67d83d0ce002d9cbb6e6`;
+  fonts 40 / 8 / 0; one readable unclipped 9.43108 pt overfull at source
+  lines 1032–1043 and 299 underfull diagnostics.
+- Geometric q-frontier: TeX 27,598 lines / 1,270,870 bytes / SHA-256
+  `6db4e211b0588ed75a0e89e13d97306f1d5d38b42a2bf941914ea16b9ca93dae`;
+  passes 386/8,157,293 → 403/8,339,780 → 403/8,339,736; final PDF 403 pages /
+  8,339,736 bytes / SHA-256
+  `4d909b5e228e2053d473dc75da502382c7a4fe2b096f798e124e6530d3a15027`;
+  fonts 43 / 11 / 0; zero overfull and 37 underfull diagnostics.
+- Canonical q-series synthesis: TeX 16,910 lines / 842,514 bytes / SHA-256
+  `196f219d5e1efba463ebabb69659697b1afb28989ef1a8da6219226d3262ad32`;
+  passes 390/2,386,364 → 398/2,501,624 → 398/2,501,638; final PDF 398 pages /
+  2,501,638 bytes / SHA-256
+  `e8094b054f52b1fb71c7540f0834155fae0eac17887cb7cac1567848bd65d3b3`;
+  fonts 43 / 5 / 0.  Every pass's index run accepted 164 entries, rejected none,
+  produced 254 lines, and emitted no warning.  The sole retained 32.5659 pt
+  overfull paragraph at source lines 590–598 is readable and unclipped; the
+  final log has zero underfull diagnostics.
+
+The current `b899` receipts below use `pages/bytes` pass tuples. All ten roots
+were frozen and built in exactly three serial halt-on-error passes from absent
+sidecars.
+
+- Root 1, primary exposition: TeX 15,148 lines / 759,509 bytes / SHA-256
+  `721cb901de2254ef48991452c4831762f54a36e0a405b4bbeb7f812653e71754`;
+  passes 208/1,640,077 → 210/1,683,143 → 210/1,683,141; final PDF
+  210 pages / 1,683,141 bytes / SHA-256
+  `afe85efec5716fe85cc7d8a5d6af459fd72775526f4bda11df04e6ff275b36c9`;
+  fonts 29 total / 6 Libertinus / 0 Type 3.
+- Root 2, Lean walkthrough: TeX 7,260 lines / 526,929 bytes / SHA-256
+  `2005d4a70a66a1d8f3eac9be6d83585ea70c9312b09b098f2c65025db9fca814`;
+  passes 160/1,281,609 → 165/1,319,585 → 165/1,319,594; final PDF
+  165 pages / 1,319,594 bytes / SHA-256
+  `b5e886d7c76db56fd9e9e1552bdd78fbd65ea9075ea1e04d62c00a7c04e948fb`;
+  fonts 30 / 7 / 0.
+- Root 3, geometric q-frontier: driver 27,671 lines / 1,275,367 bytes /
+  SHA-256
+  `d47c0ad93eb359d13e7e9772668f16dbc98bcb4d880f3679366e1d461451bbcd`;
+  recursive TeX closure 8 files / 27,777 lines / 1,281,413 bytes / digest
+  `39f7cd41e706314f2cafb903c2da2e6e83d2b17f5bb0612492204d15c1a28d91`;
+  passes 388/8,163,847 → 405/8,346,265 → 405/8,346,247; final PDF
+  405 pages / 8,346,247 bytes / SHA-256
+  `fef7d8260543ad1d20d69e9e41fa0cfc31603de7961f6aeb97a50740aecd596c`;
+  fonts 43 / 11 / 0.
+- Root 4, canonical q-series synthesis: driver 17,265 lines / 864,659 bytes /
+  SHA-256
+  `4dd3f7fb22387d8e3d039e8d49cd870a63ebe0881f7f215c7074854825a27bb9`;
+  recursive TeX closure 14 files / 26,762 lines / 1,210,902 bytes / digest
+  `b567430fdd64f6d50bd24fcb070216c27f7e3e81e8b0c76c3228767ebdf980c6`;
+  passes 397/2,417,476 → 405/2,533,717 → 405/2,533,715; final PDF
+  405 pages / 2,533,715 bytes / SHA-256
+  `055eb1fc26467857394a5b3bd8cd327f6985ea5d2f966ab5f099ac20bb2b8fb2`;
+  fonts 43 / 5 / 0; every pass's index run accepted 164 entries, rejected
+  none, produced 254 lines, and emitted no warning.
+- Root 5, inverse-theory synthesis: driver 293 lines / 11,514 bytes / SHA-256
+  `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c`;
+  recursive TeX closure 17 files / 10,682 lines / 431,748 bytes / digest
+  `6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e`;
+  passes 132/1,983,313 → 137/2,045,485 → 137/2,045,486; final PDF
+  137 pages / 2,045,486 bytes / SHA-256
+  `cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995`;
+  fonts 31 / 6 / 0.
+- Root 6, comb-interpolation synthesis: driver 187 lines / 6,724 bytes /
+  SHA-256
+  `a4c1e33165ff7291682cd890f23fe4af98e9f11f7ad1d9a7f8b68c78d53f9a56`;
+  recursive TeX closure 15 files / 12,597 lines / 477,163 bytes / digest
+  `9e22455b3f65eb48306ad21c57445b6052a56498cb363666ffb9b160f5cc8090`;
+  passes 153/2,383,950 → 160/2,467,995 → 160/2,468,000; final PDF
+  160 pages / 2,468,000 bytes / SHA-256
+  `ad8587049580e6fde371f534b6f8b4e56fa4c929173f87d3021ed369e5225d4c`;
+  fonts 33 / 7 / 0.
+- Root 7, Lambert Guide: TeX 4,940 lines / 181,577 bytes / SHA-256
+  `2e6a4782fc4e4b945869f5fb45b39cf94e8dc34296866edf26b4cdfe19b1898b`;
+  passes 68/968,083 → 70/991,847 → 70/991,848; final PDF 70 pages /
+  991,848 bytes / SHA-256
+  `f802d78299f8f6aca7d31b935a4884f9343389a7307decb04c18b5159c8a4f04`;
+  fonts 42 / 5 / 0.
+- Root 8, Up Polynomial Synthesis: driver 2,368 lines / 98,609 bytes /
+  SHA-256
+  `95d293e34559e910cca2df4547e6e181a8d26bc8e8cf61c4445cf12c57ed8e0e`;
+  four-file TeX closure 5,434 lines / 211,270 bytes / digest
+  `62aa76428089cd164705b1d31e038d4e48545681eedc01cb491e6a94f07b0e41`;
+  passes 61/1,045,488 → 62/1,071,179 → 62/1,071,181; final PDF
+  62 pages / 1,071,181 bytes / SHA-256
+  `99c5d8256b983652755fe8e46ef015277e61b94941a4ca6c875bddaf0493b101`;
+  fonts 27 / 4 / 0.
+- Root 9, Thue--Morse Atlas: TeX 10,553 lines / 481,614 bytes / SHA-256
+  `cced4128c359ec467baaf1a55c21c68424397f783a39ea7fe2af5a94975b9dd5`;
+  passes 139/1,681,559 → 144/1,739,891 → 144/1,739,884; final PDF
+  144 pages / 1,739,884 bytes / SHA-256
+  `1c81863b0976017fab1b7f5972c50cd541b3ffb05306bf85994548a56a782fc0`;
+  fonts 38 / 8 / 0.
+- Root 10, canonical semi-formalized frontier: TeX 18,651 lines / 858,502 bytes /
+  SHA-256
+  `140256058b7a01bcdb4f1592cfab9e6c2ac170f5f0863572627a9b2f93ab7793`;
+  passes 265/1,868,249 → 273/1,950,120 → 273/1,950,112; final PDF
+  273 pages / 1,950,112 bytes / SHA-256
+  `17525c7623bf774f515ecf1a949d533bbe125fde036356c4bb9f787eedad0322`;
+  fonts 40 / 8 / 0.
+
+Across all ten roots, required final-log error/reference/rerun gates, metadata,
+A4/rotation-zero checks, every-page render and nonblank-text checks,
+embedded/subset fonts with Libertinus and no Type 3, representative visual
+checks, sidecar cleanup, and the forbidden-checksum-basename search all passed.
+Diagnostics are clean except for five minor q-series horizontal boxes (maximum
+10.14 pt), two inverse horizontal boxes (2.42 and 2.45 pt), one Lambert
+horizontal box (0.83 pt), and one canonical-frontier horizontal box (9.43108
+pt), all nonblocking. The final aggregate TeX closure contains 76 files /
+140,223 lines / 6,439,569 bytes, with direct aggregate digest
+`ae8690ad8d160055cbae36eff96d858f87572d171e7aacf7540d67543998af21`.
+
+The unaffected B2--B6 and B8--B11 roots have matching synchronized receipts.
+The B7 row below is the preceding historical Up checkpoint and is superseded by
+root 8 above. All passed the same
+three-pass, log/reference/rerun, metadata, A4/rotation, all-page render/text,
+embedded/subset-font, representative-visual, sidecar-cleanup, and
+forbidden-basename gates stated above.  Their exact current rows are:
+
+- B2, Frontier Compilations: TeX 17,311 lines / 748,733 bytes /
+  `600bab0556c95661c6963438ea3e8e5ed1c691af36d64e1c105435199e605736`;
+  passes 258/2,660,225 → 275/2,790,715 → 275/2,790,721; PDF 275 pages /
+  2,790,721 bytes /
+  `49159c19d59fdd5bd397d3ab70bd024ea5bc7995fb037a532bc1fded9c9ad4fa`;
+  fonts 39 / 10 Libertinus / 0 Type 3.
+- B3, Integration and Transform Frontiers: TeX 25,147 lines / 1,058,819
+  bytes / `b60b232e55af7c021e82dec476823e727ef8398388bda9af0a3334aba4a30be3`;
+  passes 359/3,125,415 → 377/3,292,590 → 377/3,292,594; PDF 377 pages /
+  3,292,594 bytes /
+  `52b1b7e5cd86cbd8d00cb0d90580ea555b2762d7a638aa52b5ea680dcbca7199`;
+  fonts 42 / 9 / 0; zero overfull and 81 underfull diagnostics.
+- B4, Fabius Information Frontier: TeX 2,138 lines / 78,310 bytes /
+  `57a06279153b6e4c97ea0c084a193867b2f5c60a0163983149f36453eb196c9d`;
+  passes 28/778,760 → 29/790,804 → 29/790,802; PDF 29 pages / 790,802 bytes /
+  `3af03cd4dcc7fb1a502976f47edb56ee7d5c2b8dc9a8da537e79f8382ef885d5`;
+  fonts 23 / 6 / 0.
+- B5, Matrix-Dilated Fabius--Rvachev: TeX 1,997 lines / 76,958 bytes /
+  `5311ff92a6d6d430f3c6e94d61974ffb549a8fe99bb20636a5c47116ad7d9aba`;
+  passes 28/867,730 → 29/878,931 → 29/878,932; PDF 29 pages / 878,932 bytes /
+  `1c7ca0f14f2b456c4bd9692057b63f0941b15ee0810c6f1a3947a2a128a9c76b`;
+  fonts 29 / 8 / 0.
+- B6, Representation Frontiers: TeX 18,637 lines / 776,458 bytes /
+  `dd41bc90b03d1f54d9fae71c116061b0130d505740cb92fe908d6db3c21f3d95`;
+  passes 285/3,480,218 → 301/3,609,119 → 301/3,609,120; PDF 301 pages /
+  3,609,120 bytes /
+  `4dae6f87e6cc4da953319ba85c18316c23bf6e34a8bdac5680f20255356c4ba7`;
+  fonts 39 / 9 / 0; zero overfull and 80 underfull diagnostics.
+- B7, Up Polynomial Synthesis (historical): TeX 2,324 lines / 95,757 bytes /
+  `15f7c593895ed4a06b7f9d90c72d55078a193cd01f0818cb3b3cfa4f4d585a52`;
+  passes 59/1,030,964 → 60/1,056,607 → 60/1,056,613; PDF 60 pages /
+  1,056,613 bytes /
+  `0b7fc962bcb4509affc322571100cc4f27252b1ec113ca8116b05c59d23ffd35`;
+  fonts 27 / 4 / 0.
+- B8, Common-Digit Fabius Zonoids: TeX 2,092 lines / 89,360 bytes /
+  `ad6d0bfa137efe0c79cf0ee599845b8708d82ef31f6fc2c3016e80ff14a7675e`;
+  passes 34/1,152,987 → 36/1,171,153 → 36/1,171,153; PDF 36 pages /
+  1,171,153 bytes /
+  `4169b907f96b46cb75b1aab067e237a431798cfb612bbad11e2a74a38d494cd4`;
+  fonts 27 / 5 / 0.
+- B9, Dyadic Radon Profiles: TeX 2,050 lines / 74,839 bytes /
+  `0ac7695620cb22896bb912598e2e91fd404e70dbd3c5d1e769ee76a6e92578d4`;
+  passes 27/984,841 → 29/998,017 → 29/998,017; PDF 29 pages / 998,017 bytes /
+  `39e76001f71c6628308ccdb8232251538674faee3c9102fa26e4cec00eb276c0`;
+  fonts 24 / 6 / 0.
+- B10, Fabius--Rvachev Carleman Frontiers: TeX 1,934 lines / 71,224 bytes /
+  `49dd91c71df292725e9dfe6de450ac014b47f3c3ba4a5bc8ec02e2d2e76d34e3`;
+  passes 24/952,942 → 24/973,424 → 24/973,424; PDF 24 pages / 973,424 bytes /
+  `13a7f35e23dc5a794d46b431059ce35c0b48c199f1996539b65dee9bc8c16047`;
+  fonts 22 / 4 / 0.
+- B11, Thue--Morse Diagonal Polynomials: TeX 1,763 lines / 56,530 bytes /
+  `eee5751653bb19ec04042f51ded34d74bf8862f5b06b49d47e68ea78bb689c45`;
+  passes 23/768,048 → 24/778,598 → 24/778,595; PDF 24 pages / 778,595 bytes /
+  `8db0c4e0a4fcf682bd3e1311f7d8197ea04dcca56e102236b52494267d99cbbe`;
+  fonts 22 / 7 / 0.
+
+The immediately preceding pre-`d8b` receipts are retained strictly as
+historical provenance: the 694,350-byte primary TeX and its 195-page,
+1,593,577-byte PDF had respective SHA-256 values
+`938517a92565685ac9f7194b879cfe752ce783f258bde8b7b685aee41aed13dc` and
+`bf26d78dd2cc49feb87a85413ef9c04c7a8a3dac4f793cf86e3436f7502cb2a7`;
+the 456,855-byte walkthrough TeX and its 145-page, 1,219,336-byte PDF had
+`e598aa02d4d10eda8bcfdafe3731f4a663bdcba58407f454485fae6796b41050` and
+`5ff79c24fbced37dfaa5eb9c34447d0e7661b2b2bc5a0597687e43f93d7e189a`;
+the 808,185-byte frontier TeX and its 260-page, 1,877,159-byte PDF had
+`7dd140370a0ac68522364a83a3c6423df93570741eafaef2ee8c1fac17670e2f` and
+`9d38ab9d43befd6e26fd06ab9680b4a761365fb9d8a9f0de18489c243bd62d3e`;
+and the 16,834-line, 837,715-byte q-series TeX and its 395-page,
+2,494,949-byte PDF had
+`d8f730b8eb6602d4d16112aea77a3e67dfbeadf46bcd28c1cdf3b12450b7d4fb` and
+`5d25df07e6df1cd32118ee87e64c1cc54ad32da7c578a182231f98dd9fee9d5c`.
+
+Several older PDFs below remain readable historical checkpoints.  The earlier
+377-page Integration-and-Transform and 301-page Representation artifacts are
+superseded by the synchronized B3 and B6 receipts above.  The notation
+catalogue, New Frontiers-2, and inverse-computability report retain 88-, 41-,
+and 42-page historical artifacts. The inverse-theory 134-page and comb
+158-page artifacts are superseded by the current 137- and 160-page `b899`
+receipts above. Earlier 167-page
+primary, 126- and 150-page walkthrough, 237- and 243-page canonical-frontier,
+354- and 378-page q-series, and 238-page Exponents fingerprints remain
+provenance receipts for their named historical sources only.  No
+`SHA256SUMS*` file exists or participates in validation; direct SHA-256 values
+in this manifest are artifact receipts.
 
 The historical inverse-computability predecessor is retired and survives only
 through the pinned pre-retirement snapshot and canonical provenance record.
 Its latest source-only checkpoint supersedes the older inline boundary: the
 report was 2,992 lines (SHA-256
 `359ac1239788d1d7af25214a6be26e421f716db6d1c254692469bddd2d25833a`).
-`EffectiveMonotoneInverse.lean` now proves the certified fixed-depth
+`EffectiveMonotoneInverse.lean` proves the certified fixed-depth
 tolerant-bisection realizer and restricted sequential inversion, while
 `FabiusInverseComputable.lean` proves the totalized inverse is an
 `IsComputableRealFunction`. `EffectiveGapInverse.lean` additionally derives a
@@ -129,8 +528,9 @@ exact endpoint-mass ceiling minimality and input-bit asymptotics remain outside
 Lean.
 
 The q-series synthesis retains the accepted first-merge receipt above as
-history; its accepted current receipt is in the [authoritative receipt
-register](#current-post-merge-publication-receipts). At pre-upstream
+history; its d130 receipt is retained in the [authoritative receipt
+register](#d130-publication-receipts-and-current-parity-status), but this merge
+changes the q-series TeX closure and the fresh synchronized render is recorded in the merge-28de4e51 register above. At pre-upstream
 commit `581bf`, its 16,433-line, 815,194-byte source (SHA-256
 `f2aae6ddc3d7a399f9ed47806a0abe6458cbcab37bf2aac9f55ad3913b5a0e2d`)
 matched a 391-page, 2,464,122-byte A4 PDF (SHA-256
@@ -160,6 +560,22 @@ well as later formalization crosswalks and the Gaussian second-moment formulas,
 so it is source-only relative to that historical build. No live checksum
 manifest or current-source digest is maintained. The
 still earlier 348-page artifact checkpoint also remains historical evidence:
+
+Before the 395-page receipt above, the q-series synthesis had a 389-page,
+3,254,138-byte A4 artifact (SHA-256
+`b8add607c85ee35be98dabf36879e1d45fb093c6b453e93679c80295fae715bc`)
+built from a 16,339-line, 810,779-byte source (SHA-256
+`14c444feb14c435bc300becd9c8cd2765c1e96f608dd79da462becc41b28ed22`).
+An earlier 14,516-line, 682,778-byte source checkpoint had SHA-256
+`3184b1ed82998f7a9a903cbd0e95a6836cbeab2edd3194e5dc35c7243b9b9618`;
+its 354-page, 3,030,302-byte A4 PDF had SHA-256
+`1050a9a3b0b7a8df8e7de0870946ae64940d7d7839a2f20427be0ebe14b0ba8c`
+and was built from the preceding 14,381-line source with SHA-256
+`240bff72fb47562e9a8fd87085b5a3a96d738189714518db17988f7c4ac15d31`.
+The live TeX additionally contains the q-Chu/Richardson crosswalk and the
+Gaussian second-derivative and division-free moment formulas, so it is newer
+than every receipt in this paragraph.  The still earlier 348-page artifact
+checkpoint also remains historical evidence:
 its PDF SHA-256 is
 `8bf14b52d8a0fc0abc4d54cca503fd47a2df37cf76ee1bb4e442bea1fd2a4aa7`,
 and its 14,158-line, 661,835-byte build source had SHA-256
@@ -252,7 +668,11 @@ and Appell sampling identities, without a maximality claim.
 The local reciprocal-power zero-lattice theorem completes
 `QPochhammerEntire.lean` to five theorems, and two further general-product
 theorems complete `QPochhammerInfinite.lean` to one definition and 29
-theorems. The source also adds the zero-definition, three-theorem
+theorems. `RvachevPochhammerFactorization.lean` retains one definition and ten
+theorems, including the unconditional public bridge
+`complexQPochhammerInf_eq_qPochhammerInfIn`; it identifies the historical and
+generic total-product names even in the nonmultipliable junk-value regime and
+makes no convergence assertion there. The source also adds the zero-definition, three-theorem
 `GeometricPochhammerNormalConvergence.lean` crosswalk: the outer spectral
 product's locally uniform convergence is exact for every complex strict
 contraction, including `q = 0`, with dyadic Rvachev and bounded-Fabius Fourier
@@ -271,7 +691,7 @@ compose to make `cor:scaled-geometric-moments` Exact over a field under finite
 power-node injectivity. The polynomial theorem allows arbitrary scale,
 including zero, so it subsumes the manuscript's nonzero-scale hypothesis. The
 forward status ledger covers 282 labelled results:
-182 Exact / 78 Partial / 14 None / 8 N/A interface rows. The
+181 Exact / 79 Partial / 14 None / 8 N/A interface rows. The
 zero-definition/one-theorem `HalfQBinomialRootSimplicity.lean` leaf exports
 `halfQBinomial_sum_rootMultiplicity_two_pow`.  Together with
 `halfQBinomial_sum_eq_zero_iff` and
@@ -313,19 +733,19 @@ terminating-basic-hypergeometric closure is `TwoPhiOneReversal.lean` (2+12)
 and `QChuVandermonde.lean` (0+10): both q-Chu evaluations and the reversal
 lemma are Exact for the actual tsum, while the claimed full-domain derivation
 of the second identity by reversal remains Partial because its compiled
-provenance theorem retains two auxiliary nonvanishing assumptions. No PDF was
-generated at that source-only checkpoint; its 391-page `2d434eec` artifact and
-the 389-page predecessor are explicit history. The accepted 401-page
-first-merge receipt is recorded above, and the accepted current receipt is in
-the authoritative register linked above.
-The comb synthesis also has later chapter-03 notation and
+provenance theorem retains two auxiliary nonvanishing assumptions.  The 391-,
+398-, 401-, 402-, and 405-page q-series receipts remain historical evidence for
+their named source checkpoints; this merge changes the q-series TeX closure,
+so the fresh synchronized render is recorded in the merge-28de4e51 register above.  The comb synthesis also has later
+chapter-03 notation and
 chapter-01 Richardson, Matrix, and Rvachev--Appell Hasse crosswalk edits. Its
 232-row concordance now records 7 Lean-proved, 159 human-proved frontier, 20 conjecture, 30 open-problem,
 and 16 non-applicable rows. Its former 158-page, 2,456,105-byte
 A4 PDF had SHA-256
 `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`;
-it is a validated historical checkpoint superseded by the accepted 160-page
-current receipt above.
+it is a validated historical checkpoint.  The later d130 160-page receipt is
+also historical because this merge changes the comb TeX closure; a fresh
+synchronized render is pending.
 
 The q-series consolidation retired the three general guides, the former
 forward q-Pochhammer monograph, and the former inverse-q driver after recording
@@ -377,12 +797,36 @@ SHA-256
 `4be184dc95f7c9d7665e5edf56cd22dc66bdacbc2f113b03b700468836018f8b`.
 The exact `581bf` q-series PDF rendered its then-current merged source; the
 accepted first-merge q-series PDF is also historical after later source
-changes. The current q-series receipt is accepted in the authoritative register.
+changes. The d130 q-series receipt remains accepted historical evidence; current parity
+is pending after this merge changed its TeX closure.
 The
 retained Exponents Parts-I--VII PDF still
 predates its notation successor and remains a distinct historical payload for
 which no final-source/PDF parity is claimed.
 These current facts supersede the older rows below.
+
+recoverable from its pinned revision and Git history.
+
+The consolidated geometric q-frontier's historical 2026-09-04 receipt names
+the 27,598-line, 1,270,870-byte TeX source with SHA-256
+`6db4e211b0588ed75a0e89e13d97306f1d5d38b42a2bf941914ea16b9ca93dae`.
+Its exact guarded pass sequence was 386 pages / 8,157,293 bytes → 403 /
+8,339,780 → 403 / 8,339,736.  The final 403-page, 8,339,736-byte A4 PDF has
+SHA-256
+`4d909b5e228e2053d473dc75da502382c7a4fe2b096f798e124e6530d3a15027`;
+all 43 font rows are embedded and subset, eleven are Libertinus, and none is
+Type 3.  Final-log reference/rerun/error checks, metadata, all-page rendering
+and nonblank text, and representative visuals passed; the log has zero
+overfull and 37 underfull diagnostics.  The preceding
+808,185-byte source and 260-page PDF, the earlier 238-page PDF, and the 16,274-
+and 16,369-line source checkpoints remain historical provenance only.  Its
+exact identifiability and outer q-Pochhammer normal-convergence crosswalks and
+named remaining Partial claims are unchanged.  No
+`SHA256SUMS*` file exists or participates in validation; direct SHA-256 values
+are artifact receipts, and immutable arrival fingerprints remain historical
+provenance. This historical render and the later d130 receipt remain source-specific
+history; this merge changes the geometric-q closure and current parity is
+pending.
 
 ## Incoming status
 
@@ -396,10 +840,9 @@ one byte-identical reship (`rvachev_q_extrapolation_bundle (1).zip`, same
 SHA-256 as `rvachev_q_extrapolation_bundle.zip`) deleted without a second
 directory.  Claim review, comparison, consolidation, and Lean crosswalking of
 this batch are deferred past the intake publication gate.  Text files inside
-the packages are stored with repository (LF) line endings; each package's own
-`SHA256SUMS` ledger, where present, was computed by its author on the submitted
-bytes, was verified at intake, and is now retired; its bytes remain recoverable
-from the filing revision in Git.
+the packages are stored with repository (LF) line endings.  Submitted package
+checksum ledgers have been retired under repository policy; their historical
+bytes remain recoverable from Git history.
 
 ## fourier-decay — `rvachev_up_fourier_decay/`
 
@@ -430,10 +873,10 @@ proof checking, numerical reproduction, and Lean crosswalking are deferred.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `thue_morse_diagonal_polynomials/` | *Diagonal Polynomials and Dyadic Block Geometry in Repeated Thue–Morse Summation* — 1,763-line/56,520-byte source, 24-page A4/724,035-byte PDF (pdfTeX-1.40.26; 25 font rows, 7 Libertinus; 3 Type-3 rows inherited from the Matplotlib figure `row_profiles.pdf`); 14 theorems, 1 proposition, 1 lemma, 3 corollaries in 15 sections; `experiments.py`, `thue_morse_table.wl`, `verification_report.txt`; submitted `SHA256SUMS` verified at intake and since retired (Git-recoverable) | `incoming/thue_morse_diagonal_polynomials.zip` |
-| `thue_morse_diagonal_polynomials-2/` | *Diagonal Polynomial Laws in Odd Iterated Thue–Morse Summation: Riordan-array structure, 2-adic Bell recurrences, exact arithmetic, and fast Wolfram Language evaluation* — 2,202-line/72,380-byte source, 37-page A4/801,220-byte PDF (fully embedded, Type-3-free, 7 Libertinus rows); 11 theorems, 2 propositions, 7 corollaries, 1 conjecture, 3 definitions in 16 sections; `diagonal_polynomials.py`, `diagonal_polynomials.wl`, `VERIFICATION.txt`; submitted `SHA256SUMS` verified at intake and since retired (Git-recoverable) | `incoming/thue_morse_diagonal_polynomials-2.zip` |
-| `thue_morse_diagonal_polynomials_article_and_code/` | *Diagonal Polynomials and Dyadic Block Geometry in Repeated Thue–Morse Prefix Summation: Exact formulas, denominator laws, rational roots, and fast Wolfram Language evaluation* — 2,136-line/76,590-byte source, 33-page A4/536,235-byte PDF (26 font rows, no Libertinus; 2 Type-3 rows inherited from the Matplotlib figure); 10 theorems, 10 propositions, 1 lemma, 6 corollaries, 1 definition in 14 sections; `diagonal_analysis.py`, `thue_morse_diagonals.wl`, `generated/` (two CSV tables, run log, verification report), `figures/`; submitted `MANIFEST.sha256` kept as a purpose-specific intake record; the two CSV tables received the repository's CRLF-to-LF normalization at commit, so their submitted checksums no longer match the filed bytes | `incoming/thue_morse_diagonal_polynomials_article_and_code.zip` |
-| `Thue_Morse_Atlas_and_Frontiers/` | *The Thue–Morse Sequence: Formula Atlas and Fabius–Rvachev Frontier Results* (historical first-merge receipt: root `10557L/482022B/8cef828c3d92a0017e22463ac90878a5e3a98e1138059d5f4793d47c04a88404`; two-file aggregate `10841L/493857B/79a43711c6989336166d6b2ed1faa306cc985b8d70557025ab139791d455723c`; passes `139/144/144`; PDF `144pp/1740015B/deb63fe66fc8f020bb072acbc4301e9b7c9f0559b165cbae2c076f261405c5be`; log `1503L/59417B/1219dbc87bc4f9920c40b24659182220b14e7908a45a9eb33d0f19390148c64b`; all recorded gates clean; former 143-page PDF retained as history. The accepted current receipt is in the [authoritative receipt register](#current-post-merge-publication-receipts)) — consolidation (2026-08-28) of the former `Thue_Morse_Formula_Atlas/` (*A Unified Formula Atlas for the Thue–Morse Sequence*) and `Fabius_Rvachev_Thue_Morse_Frontier_Results/` (*A Finite-Block Calculus for the Fabius–Rvachev–Thue–Morse System*, heavily Lean-crosswalked); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
+| `thue_morse_diagonal_polynomials/` | *Diagonal Polynomials and Dyadic Block Geometry in Repeated Thue–Morse Summation* — current synchronized 1,763-line/56,530-byte source and 24-page/778,595-byte A4 PDF; all 22 font rows are embedded/subset, 7 are Libertinus, and none is Type 3; exact B11 hashes and passes above. The earlier 724,035-byte PDF with three figure-inherited Type-3 rows remains historical; 14 theorems, 1 proposition, 1 lemma, 3 corollaries in 15 sections; `experiments.py`, `thue_morse_table.wl`, `verification_report.txt`; submitted checksum ledger retired, with historical bytes recoverable from Git | `incoming/thue_morse_diagonal_polynomials.zip` |
+| `thue_morse_diagonal_polynomials-2/` | *Diagonal Polynomial Laws in Odd Iterated Thue–Morse Summation: Riordan-array structure, 2-adic Bell recurrences, exact arithmetic, and fast Wolfram Language evaluation* — 2,202-line/72,380-byte source, 37-page A4/801,220-byte PDF (fully embedded, Type-3-free, 7 Libertinus rows); 11 theorems, 2 propositions, 7 corollaries, 1 conjecture, 3 definitions in 16 sections; `diagonal_polynomials.py`, `diagonal_polynomials.wl`, `VERIFICATION.txt`; submitted checksum ledger retired, with historical bytes recoverable from Git | `incoming/thue_morse_diagonal_polynomials-2.zip` |
+| `thue_morse_diagonal_polynomials_article_and_code/` | *Diagonal Polynomials and Dyadic Block Geometry in Repeated Thue–Morse Prefix Summation: Exact formulas, denominator laws, rational roots, and fast Wolfram Language evaluation* — 2,136-line/76,590-byte source, 33-page A4/536,235-byte PDF (26 font rows, no Libertinus; 2 Type-3 rows inherited from the Matplotlib figure); 10 theorems, 10 propositions, 1 lemma, 6 corollaries, 1 definition in 14 sections; `diagonal_analysis.py`, `thue_morse_diagonals.wl`, `generated/` (two CSV tables, run log, verification report), `figures/`; submitted `MANIFEST.sha256` retained as a purpose-specific intake record; the two CSV tables received the repository's CRLF-to-LF normalization at commit, so their submitted checksums no longer match the filed bytes | `incoming/thue_morse_diagonal_polynomials_article_and_code.zip` |
+| `Thue_Morse_Atlas_and_Frontiers/` | *The Thue–Morse Sequence: Formula Atlas and Fabius–Rvachev Frontier Results* (historical synchronized `b899` pair: 10,553-line/481,614-byte source, SHA-256 `cced4128c359ec467baaf1a55c21c68424397f783a39ea7fe2af5a94975b9dd5`; 144-page/1,739,884-byte A4 PDF, SHA-256 `1c81863b0976017fab1b7f5972c50cd541b3ffb05306bf85994548a56a782fc0`; the retained 137-page PDF remains historical; this merge changes the atlas TeX closure, so the fresh synchronized render is recorded in the merge-28de4e51 register above) — consolidation (2026-08-28) of the former `Thue_Morse_Formula_Atlas/` (*A Unified Formula Atlas for the Thue–Morse Sequence*) and `Fabius_Rvachev_Thue_Morse_Frontier_Results/` (*A Finite-Block Calculus for the Fabius–Rvachev–Thue–Morse System*, heavily Lean-crosswalked); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 
 ## combinatorial coefficient calculus — `combinatorial-coefficient-calculus/`
 
@@ -451,14 +894,15 @@ The final pass proved the sharp Bell bound the arrivals had only asserted,
 supplied Euler's limit and the Weierstrass product on which an existing
 polygamma proof silently depended, merged thirteen further donor-only results,
 repaired eight double-superscript errors that had made the source fail to
-compile at all, and completed the notation-catalogue migration. The filed PDF
-now renders the filed TeX. None of the manuscript proofs is claimed as Lean
+compile at all, and completed the notation-catalogue migration. The retained
+174-page PDF is an earlier render; the source has changed since that checkpoint,
+and rebuilding remains deferred at the user's request. None of the manuscript proofs is claimed as Lean
 verification; the in-document "Lean formalization register" states the
 formalization status per result.
 
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical, consolidation complete:** *Combinatorial Coefficient Calculus* — 8,966-line/390,732-byte source and the 174-page A4 PDF built from it in the same run | Six-source provenance, purpose-specific closure, and disposition records remain in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip` (SHA-256 `a22479ac8f58e1710117af9d0a3f515c7d24ec250548f537520c9f9024f4321a`); the five retired donors are identified in `SOURCE_CLOSURE.sha256` |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical, editorial consolidation complete:** *Combinatorial Coefficient Calculus* — current source with 204 adjacent proofs and a 59 Lean / 34 partial / 111 none register. `UnitSeriesPowerRecurrence.lean` supplies the generic differential-equation recurrence and unit-series specialization that make `alg:merged-exp-log-power` Exact. The retained 174-page A4 PDF is an earlier render; PDF rebuilding is deferred by user instruction. | Six-source provenance and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip`; `SOURCE_INVENTORY.csv` records immutable Git locators for all six inputs, including the five retired donors. The mutable `SOURCE_CLOSURE.sha256` ledger is retired and no checksum ledger is required. |
 
 ## exponents-and-q-series — `exponents-and-q-series/`
 
@@ -497,11 +941,10 @@ rather than a live path. The former `q-pochhammer-and-inversion/` locations
 are likewise provenance-only.
 
 For the canonical q-series and whole-root geometric-q packages, the accepted
-first-merge receipts above identify historical PDFs for their exact source
-snapshots. Both current rerenders are accepted in the authoritative register.
-The historical `2d434eec` receipts
-below and the older
-Parts-I--VII and other artifact
+The first-merge, `b899`, and d130 q-series and geometric-q receipts above are
+historical for their exact source snapshots.  This merge changes both TeX
+closures, so fresh synchronized renders are pending; older Parts-I--VII and
+other artifact
 checkpoints remain explicitly historical. Older numbers embedded in the long
 provenance rows are superseded and do not assert current source/PDF parity.
 
@@ -509,12 +952,12 @@ provenance rows are superseded and do not assert current source/PDF parity.
 | --- | --- | --- |
 | *(absorbed 2026-09-02 as Part~XI of `geometric_q_fabius_frontiers/`; directory deleted)* | **Absorbed.** *Continuous-Parameter Edgeworth Theory, Large Deviations, and Quadratic q-Gevrey Regularity at the Fabius--Rvachev Frontier* (29-page retained A4 PDF; 1,387 main-source lines at arrival and 1,372 currently). Landed 2026-08-30 in direct-arrival commit `52179f63fe955a64508915eedaa560de9f3056da` from the bare generic wrapper `drafts/incoming/Fabius_Rvachev_Frontier_Report_2026-08-30-G/` under this title-derived collision-safe name. Its manifest covers the full delivery; historical payload hashes reflect three CSV CRLF-to-LF normalization changes. Its title and abstract concern Edgeworth/deviation regimes, Lambert endpoint asymptotics, and quadratic-exponential Denjoy--Carleman regularity. It remains standalone pending post-publication claim and experiment review, comparison, and a Lean crosswalk; manuscript proof labels do not establish Lean proof status | `drafts/incoming/Fabius_Rvachev_Frontier_Report_2026-08-30-G/`; renamed and filed here |
 | *(absorbed 2026-09-02 as Part~X of `geometric_q_fabius_frontiers/`; directory deleted)* | **Absorbed.** *Parameter-Flow, Gaussian, and Large-Deviation Frontiers for the q-Fabius--Rvachev Family* (23 A4 pp, 1,506 source lines; two scripts, four CSV tables, two captured outputs, and four PDF/PNG figure pairs). Landed 2026-08-30 as a bare directory in direct-arrival commit `8a184546747082cbd92ad4675fb61981c6b8c3b6`; no archive or outer hash was supplied. Historical intake hashes cover all 20 payloads and reflect four CSV CRLF-to-LF normalization changes. All five PDFs are readable and unencrypted (27 pages total); its title and abstract concern q-transport, convex order, Gaussian/Edgeworth limits, large deviations, and a Lambert-W boundary. It remains standalone pending assessment, document-style normalization, comparison with the closely overlapping continuous-parameter report, and a Lean crosswalk; manuscript labels and numerical checks do not establish Lean verification | `drafts/incoming/fabius_q_frontiers_report/`; filed here and removed from the live inbox |
-| `q_pochhammer_q_binomial_monograph/` | *q-Series and Inverse q-Analogs: A Proof-Oriented Synthesis* — the single canonical publication for forward q-Pochhammer, Gaussian, hypergeometric, theta, partition, Bailey, interpolation, Thue--Morse, and Fabius--Rvachev theory together with branch-aware inverse q-analogs, asymptotics, certification, and labelled frontiers. The former q-Pochhammer/q-binomial monograph supplies the forward backbone; the former inverse-q synthesis supplies its nine inverse chapters; and the three general q-series guides were reviewed as donor manuscripts, with repetitions collapsed into the strongest proved statement. The historical 260-row inverse theorem concordance, package/archive provenance, 77-row asset-disposition ledger, and unique reproducibility assets remain intact. `audit/MERGE_SOURCE_REVISION` separately pins the five-publication source surface used for this merge. The historical first-merge accepted receipt is root `16812L/840316B/64dc18dedbd1966624162b64129128b24b51ca88d8a9e496c661cc1a46a24ba6`, 15-file aggregate `26593L/1198416B/762e6d6ca441de51db9679f95d6a01d8353e8044639f99803734719b8a65a5f8`, passes `393/401/401` plus three clean `makeindex` runs (`164/0/254/0`), PDF `401pp/2500131B/fd54459baf10845b5a89cc8b204f59ea33a0665b434ad270e738884072a1e6e1`, and log `1230L/44401B/37dca6371ea8bf9285e5f104d550bd584a290f4aa92fcf5679b028c9dfd3079d`; all recorded gates passed for that snapshot. Later source changes make that tuple historical; the accepted current receipt is in the [authoritative receipt register](#current-post-merge-publication-receipts). The 391-page `2d434eec` and older 389-page PDFs remain explicit history. Only historical artifact and build-source fingerprints are otherwise retained, and no live checksum manifest or current-source digest is maintained. Retained PDFs under `assets/` are research figures only. | Former live publications: `general-q-series-guides/q-series-proof-oriented-article/` (arrival commit `1360db6064c676f83bceb23bece5ed304dd09ce8`), `general-q-series-guides/q_series_from_first_principles/` (`c167e550348bfb33b4297684100d55dfb48b8c1a`), `general-q-series-guides/q_series_monograph/` (`1f0f98390d551725fc7d2274638dbd7de86ee346`), `q-pochhammer-and-inversion/q_pochhammer_q_binomial_monograph/`, and `q-pochhammer-and-inversion/inverse_q_analogs_and_series/`; all layouts remain recoverable from pinned revisions and Git history |
+| `q_pochhammer_q_binomial_monograph/` | *q-Series and Inverse q-Analogs: A Proof-Oriented Synthesis* — the single canonical publication for forward q-Pochhammer, Gaussian, hypergeometric, theta, partition, Bailey, interpolation, Thue--Morse, and Fabius--Rvachev theory together with branch-aware inverse q-analogs, asymptotics, certification, and labelled frontiers. The former q-Pochhammer/q-binomial monograph supplies the forward backbone; the former inverse-q synthesis supplies its nine inverse chapters; and the three general q-series guides were reviewed as donor manuscripts, with repetitions collapsed into the strongest proved statement. The historical 260-row inverse theorem concordance, package/archive provenance, 77-row asset-disposition ledger, and unique reproducibility assets remain intact. `audit/MERGE_SOURCE_REVISION` separately pins the five-publication source surface used for this merge. The historical synchronized `b899` pair is the 17,265-line, 864,659-byte driver (SHA-256 `4dd3f7fb22387d8e3d039e8d49cd870a63ebe0881f7f215c7074854825a27bb9`) and 405-page, 2,533,715-byte PDF (SHA-256 `055eb1fc26467857394a5b3bd8cd327f6985ea5d2f966ab5f099ac20bb2b8fb2`); its 14-file recursive TeX closure and exact pass receipt appear above; the 398-page and d130 pairs remain historical. This merge changes the TeX closure, so the fresh synchronized render is recorded in the merge-28de4e51 register above, and no live checksum manifest is maintained. Retained PDFs under `assets/` are research figures only. | Former live publications: `general-q-series-guides/q-series-proof-oriented-article/` (arrival commit `1360db6064c676f83bceb23bece5ed304dd09ce8`), `general-q-series-guides/q_series_from_first_principles/` (`c167e550348bfb33b4297684100d55dfb48b8c1a`), `general-q-series-guides/q_series_monograph/` (`1f0f98390d551725fc7d2274638dbd7de86ee346`), `q-pochhammer-and-inversion/q_pochhammer_q_binomial_monograph/`, and `q-pochhammer-and-inversion/inverse_q_analogs_and_series/`; all layouts remain recoverable from pinned revisions and Git history |
 | *(absorbed 2026-09-02 as Part~IX of `geometric_q_fabius_frontiers/`; directory deleted)* | **Absorbed.** *Cyclotomic Blow-Ups and Natural Boundaries for the q-Fabius--Rvachev Sinc Product* (25 pp and 1558 source lines at arrival; currently 29 A4 pp and 1896 source lines, with a 577-line deterministic high-precision experiment, five CSV tables, two further generated data files, and four PDF/PNG figure pairs). Landed 2026-08-30 from `drafts/incoming/Cyclotomic_q_Fabius_Rvachev_Frontier.zip` (outer SHA-256 `029da7d9ec96a0b2e5c4164c37f2b361dd015112bd0c6237263e3c538c5b0f64`) in its own collision-safe wrapper. Historical intake hashes covered all 22 payloads; five CSV entries changed after CRLF-to-LF repository normalization. Its title and abstract concern the complex geometric sinc product, radial root-of-unity expansions and a claimed natural boundary, cyclotomic blow-ups, Bell/moment condensation, and inverse frequency and q-branches. A post-publication revision crosswalks the global geometric-sinc q-Pochhammer factorization while leaving the cyclotomic asymptotic and natural-boundary layers manuscript-only; the historical intake hashes record all 22 payloads. The current five PDFs have 33 pages in total (29 main plus four one-page figures). The main report remains Latin Modern with nine embedded/subset Type-3 figure-font rows, and the four standalone figures contain nine more; normalization remains deferred | arrived through `drafts/incoming/`; archive unpacked here and deleted |
 | *(exact reship of the package now absorbed as Part~VIII; no second directory)* | `drafts/incoming/Fabius_Rvachev_Frontier_Report_2026-08-30-E.zip` (outer SHA-256 `174bf733156cd874cf4f9321c6ab71ca44f311856cc01dc158ddf83dc00cf813`) was processed on 2026-08-30 as an exact reship of `Fabius_Rvachev_Frontier_Report/`: the same 15-file set, with every non-CSV, non-ledger payload byte-identical and all three CSVs identical after the repository's existing CRLF-to-LF normalization. Its 13 submitted hashes again matched but omitted `README.txt`; only the historical hash receipt differs from the filed normalized package. No redundant wrapper was created, and no claim-level reassessment or experiment rerun was performed | duplicate archive verified and deleted; existing filed directory remains canonical |
 | *(absorbed 2026-09-02 as Part~XII of `geometric_q_fabius_frontiers/`; directory deleted)* | **Absorbed.** *Flat Parameter Fronts, q-Susceptibility, and Smooth Dynamics: New Frontier Results in the Fabius–Rvachev System* (23 pp, 1792 source lines; with a 519-line deterministic exact/Monte-Carlo program, five CSV tables, and two PNG figures). Landed 2026-08-30 from `drafts/incoming/fabius_frontier_report_2026.zip` (outer SHA-256 `afdcf522589a7baad82c81a527c02dcc09e58455ab14c57a9c492e65563c647e`) and filed under a title-derived collision-safe directory. Historical intake hashes covered all 13 payloads; five CSV entries changed after CRLF-to-LF repository normalization. The manuscript concerns parameter susceptibility and tangent measures, flat q-parameter fronts, transform/moment/Legendre response, and Schröder/Böttcher-style Fabius dynamics. All 23 A4/Type-1 report pages rendered cleanly; blank author metadata and a nearly empty final bibliography page remain document-policy work. It remains standalone pending post-publication assessment and a Lean crosswalk; its 23 nonconjectural labels, four conjectures, and three problems record manuscript status only, and none of the new layers is thereby Lean-verified | arrived through `drafts/incoming/`; archive unpacked here and deleted |
 | *(absorbed 2026-09-02 as Part~VIII of `geometric_q_fabius_frontiers/`; directory deleted)* | **Absorbed.** *Negative Parameters, Reciprocal Bases, and the Gaussian Boundary* (26 pp, 1491 source lines; with a deterministic numerical script, three CSV tables, a generated TeX fragment, and three dual-format figures). Landed 2026-08-30 from `drafts/incoming/Fabius_Rvachev_Frontier_Report_2026-08-30.zip`; all 13 payload checksums verified. Its principal paper-level strands are the affine transport from negative to positive geometric-uniform parameters, finite reciprocal-base digit reversal, residue-class multiplication, real-base log-concavity and plateau phases, and the Gaussian boundary with explicit cumulants and Berry--Esseen control. It overlaps Part VII's signed/reciprocal q-Fabius layer and therefore remains a separate member pending a claim-by-claim audit and deliberate editorial merge; no Lean status is inferred from the report labels | arrived through `drafts/incoming/`; archive unpacked here and deleted |
-| `geometric_q_fabius_frontiers/` | *Geometric q-Fabius–Rvachev Frontiers* (historical first-merge whole-root receipt: root 27,624 lines / 1,273,010 bytes / SHA-256 `0839b42a3fb055d860b8e8a3d1ff5e84c2f4addce314d04707c5a067e81553d9`; exact seven-file aggregate 27,997 lines / 1,288,647 bytes / SHA-256 `18c4c6607e9b7564909ca7e647152a26e517f54d5007e157265b3f61adf8e4f0`; passes 387/404/404; 404-page, 8,341,830-byte A4 PDF, SHA-256 `a083b130a1568dc37af824294b033485f82c97dbeb30a4c4de4d463d04e99530`; final 2,557-line, 114,343-byte log, SHA-256 `4de474675a2dcde519c36ff1ac7067717c64b60b92bd40b999d0d117ba1f8df6`; all prohibited-log and visual gates passed; 404 A4 pages at rotation zero; PDF 1.5 unencrypted; all 43 font rows embedded and subset, including 11 Libertinus rows; zero Type-3 rows; checksum basenames and PDF/source references absent. Explicit historical `2d434eec` whole-root receipt: 27,520-line, 1,266,515-byte source, SHA-256 `8292f10862334cb809139259eeb4906bb14f517d41b9600c9b7ad53bb21525b1`; passes 385/402/402; 402-page, 8,332,886-byte A4 PDF, SHA-256 `d47431e4d3e721fccf12f90226db77f1898e44b477878954acca3a6e90127cf4`; final 2,557-line, 114,331-byte log, SHA-256 `4d6f8c7974def4a3f9e6bc8ccdffefc3eef7ca8cb7c2f0145a075f95b82ff45e`; all documented log, page, font, Type-3, extraction, and visual gates passed at that revision. Historical consolidation record: 2026-09-02: renamed from `geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/`, given a new Part~0 common-framework part, and extended by the five reports above as Parts~VIII–XII; the merged source builds in three serial passes with 0 errors, 0 undefined references, 0 multiply-defined labels, and 0 duplicate hyperref destinations). Its Parts~I–VII are the former *Exponent-Sequence and q-Series Frontiers* (historical notation-source TeX: 16,369 lines, 737,912 bytes, SHA-256 `a4aecd625f7eb405de866e2b368bbdc648fb0f9e11b423cb936a2f319d195f02`; retained historical PDF: 238 A4 pages, 6,953,898 bytes, SHA-256 `fa719a8ea68d3c474928b9fae7449f827eb35a5452613f2b660d8e88ba27267e`; the source and artifact hashes are retained as historical receipts, but no render parity is claimed) — consolidation (2026-08-28) of the former `Fabius_Newton_Rvachev_Frontier_Report/` (*Exponent-Sequence and Newton-Basis Frontiers*, Lean-crosswalked) and `fabius_frontier_results/` (*q-Binomial Richardson Acceleration of Geometric Sinc Products*), joined the same day by the eighth-wave `finite_sinc_products_report/` (*Finite Dyadic Sinc Products and Piecewise-Polynomial Approximants to Rvachev's Up-Function*, from `drafts/incoming/finite_sinc_products_report_bundle.zip`) as Part III — exact truncated-power prefix formula with Thue–Morse jumps, sharp derivative plateaux, exact error law 2^(C(r+3,2)−1)/(9·4ⁿ), exact Kolmogorov 1/(9·4ⁿ), Bell–Bernoulli all-orders expansion, q=1/4 Richardson weights, uniform scale mixture X = R·U, positive Gauss/Radau/Lobatto tail quadrature with exact constants (incl. the previously open variance-matched positive 16⁻ⁿ scheme) — and by the two ninth-wave same-topic reports `Rvachev_Piecewise_Approximation_Fourier_Images/` and `rvachev_fourier_frontier_report/` **merged editorially** as Part IV (*Fourier Images of the Repeated-Integration Approximants*): master factorization F̂ₙ = Φ·A(2⁻ⁿt) with the transfer function A = sinc z/Φ(z), valuation-weighted canonical product with divisor 1−v₂(m), digit-sum zero counts and Thue–Morse sign law, exact Taylor radius 4π with dominant-pole asymptotics and arithmetic Darboux hierarchy, finite/limit zero filtration, sharp o(2ⁿ) relative window, conditioning thresholds π2ⁿ/4π2ⁿ, deconvolution impossibility, weighted-L^p and Sobolev all-orders laws, exact mean-square tails with sharp H^s threshold s<n+½, and positive atomic/dyadic/polynomial closure menus (16⁻ⁿ–256⁻ⁿ) complementing Part III's box mixtures; and by the tenth-wave `fabius_finite_products_frontier/` as Part V (*Finite Dyadic Sinc Products and Exact Transport Geometry of Rvachev Spline Approximants*): convex-order and peakedness chains, exact E\|X_N\| = 5/18 − 4⁻ᴺ/9, fixed single crossing of the density error at ±½, the exact metric collapse W₁ = d_K = 4⁻ᴺ/9, TV = 2·4⁻ᴺ/9, stop-loss = Zolotarev-2 = 4⁻ᴺ/18, W∞ = 2⁻ᴺ, the exact Thue–Morse call-potential spline, the positive-mixture no-go theorem (signed weights are structurally necessary for Richardson acceleration), entropy/Fisher monotonicity with I(u_N)<∞ ⟺ N≥3 and KL(u‖u_N)=∞, and conjectural weighted information/W_p expansions with the p≈2N transport crossover; and by the thirteenth-wave `atomic_sinc_splines_report_package/` as Part VI (*Atomic Sinc-Product Splines Beyond the Binary Point*): an English translation and frontier expansion of Rvachev's Chapter 3 on atomic functions — the geometric family h_a with ĥ_a = ∏ sinc(2πa⁻ʲξ), the zero-matching existence criterion for general atomic equations, closed cumulants κ₂ₘ = 2²ᵐB₂ₘ/(2m(a²ᵐ−1)) with Bell/Lambert-series moment calculus, weighted Prouhet identities and the full derivative hierarchy with exact norms a^{n(n+3)/2+1}/2^{n+1} (L¹: a^{n(n+1)/2}), the Cantor gap atlas for a>2 (dim_H = log2/log a, exact per-gap degree, one-branch symbolic localization, complete Taylor-germ trichotomy), the rational-power Strang–Fix reproduction theorem with Appell coefficient operator, log-Gaussian Fourier envelope, all-orders prefix expansion with r₁ = −1/(6(a²−1)) and exact leading norm a⁶/(48(a²−1)) (specializing to the binary 4/9 and 31/16200), the a↓2 collapse, the reconstructed uniqueness theorem, and the periodic-Lambert/double-scaling/lattice-obstruction conjecture register; Part VI was then **merged editorially** (2026-08-28) with its fourteenth-wave twin `Atomic_Functions_Beyond_Dyadic_Report/` (*Atomic Functions Beyond the Critical Dyadic Case*) — a second independent reconstruction of the same Rvachev chapter (identical readings on every commonly transcribed equation; shared translation/h_a core deduplicated, OCR ledger preserved in assets) whose distinctive layers became dedicated Part VI sections: the fractal-string geometry of K_a (geometric zeta ℓ₀^s/(1−2a^{−s}), complex dimensions D_a+2πik/log a with residues ℓ₀^{s_k}/log a, exact tube formula with continuous nonconstant one-periodic Minkowski profile ⇒ K_a not Minkowski measurable, explicit logarithmic average), the geometric local-degree law P(N_a=r)=((a−2)/a)(2/a)^r with E N_a=2/(a−2) and (a−2)/2·N_a → Exp(1) as a↓2 (identifying the first marginal of the critical double-scaling program), quantitative parameter limits at both ends (a↓1: standardized cumulants 3^m2^{2m}B_{2m}(a²−1)^m/(2m(a^{2m}−1)), λ₄=−(6/5)(a²−1)/(a²+1), first characteristic correction; a→∞: W∞ ≤ 1/(a−1), TV ≤ 1/(2(a−1)), exactly uniform core g_a=1/2 on |y|≤(a−2)/(a−1)), the exact general-base negative-Laplace decomposition Λ_a(u) = −(log u)²/(2 log a) + (log u)/2 + P_a(log_a u) + E_a(u) with 0 ≤ E_a(u) ≤ e^{−u}/((1−e^{−u})(1−e^{−(a−1)u})) and real-analytic one-periodic P_a whose Fourier modes are −Γ(−χ_k)ζ(1−χ_k)/log a, χ_k=2πik/log a (settling the transform-level half of the periodic-Lambert program, pinning the Lambert normalization c_a=√a·log a/2, and re-verified independently during the merge to 10⁻¹³–10⁻²⁸), the divisor-polynomial form of log M_a, and the canonical Fup ladder G_n → 2Up(2·) in every C^m (first rung of the factor-redistribution direction); and (same day) with its fifteenth-wave twin `Rvachev_Atomic_Functions_Report/` (*Atomic Functions, Rvachev's up-Function, and Smooth Cantor Splines*) — a third independent reconstruction (again identical shared readings; repairs ledger and crosswalk preserved in assets) contributing the signed gap leading coefficients L_ω = (−1)^{N₊(ω)}a^{(r+1)(r+2)/2}/(2^{r+1}r!) with fixed-point verification at a=3, the derivative equimeasurability theorem with the full L^p ladder ‖h_a^{(n)}‖_p = (a^{n(n+3)/2}/2ⁿ)(2/a)^{n/p}‖h_a‖_p and the exact derivative-value mixture law (atom 1−(2/a)ⁿ at 0 + fair-signed amplified copy), the endpoint jet-reduction remark with the Bernoulli→cumulants→moments→jets→gap-polynomials exact engine, the classical Fup_n hierarchy F̂up_n = sinc(t2^{−n−1})ⁿ·Û(t2^{−n}) with the exact triangular reconstruction of Up by n(n+1)/2 dyadic averaging steps (limit: the cosine-multiplicity product ∏cos(t2^{−r})^{r−1}), closed Fup_n cumulants (σ_n² = 4^{−n}(3n+4)/36) and the quantitative CLT (Berry–Esseen O(n^{−1/2}), standardized cumulants O(n^{1−m})), the edge pantograph equations g_a′(u) = (a²/2)g_a(au) and F_a′(x) = a²/(2(a−1))F_a(ax) generalizing F′=2F(2·), and three more register items (Fup_n Edgeworth, graph-directed atomic splines, pressure-function Taylor multifractal); then with the two **revised fourteenth-wave editions** (`Atomic_Functions_Beyond_Dyadic_Report-2/`, `-3/`) contributing the Orlicz/rearrangement form of equimeasurability (all a≥2, all 0<p<∞, exact rearrangement thinning (h^{(n)})*(t)=C_{a,n}h*(t/(2/a)ⁿ)), the **spectral Stieltjes–Wigert bridge** (the normalized Fourier energy of h_a has squared-frequency moments a^{n(n+2)}/2ⁿ — the scaled Stieltjes–Wigert sequence, moment-equal to lognormal N(2log a−log2, 2log a) yet a distinct density ⇒ explicit non-lognormal representing measures for an indeterminate problem, with exact q-Pearson equations, Hankel determinants c^{N(N+1)}q^{−N(N+1)(4N+5)/6}∏(q;q)_k, monic OPs, and a Nevanlinna–Pick register conjecture), the **Mellin law of the distance to K_a** (Δ =d ½ℓ₀a^{−N_a}V; E Δ^s with pole lattice D_a−1+2πik/log a — the complex dimensions shifted by −1; distribution function = the exact tube formula; critical logarithmic gap scale → Exp(1)), and — decisive for provenance — the **eleven-page Russian source scan itself** (`source_rvachev_scan.pdf`), against which the translation layers were checked; the scan and the raw OCR were both deleted once their recoverable content was merged and verified (SHA-256 hashes in the volume's provenance list, the deduplicated repair ledger in Part VI's concordance appendix, git history the archive); then with the **revised fifteenth-wave edition** (`Atomic_Functions_Rvachev_Report_Package/`) contributing the **q-Gaussian derivative Gram geometry** (normalized towers ψ_n=h^{(n)}/‖h^{(n)}‖₂ split into two orthogonal parity towers with exact stationary kernel ⟨η_j,η_k⟩=q^{(j−k)²}, q=1/a; Gram determinants det G_N=∏_{r≤N}(q²;q²)_r, pivots (q²;q²)_N, sharp Riesz bounds ϑ₄(0,q) ≤ symbol ≤ ϑ₃(0,q) — the derivative tower is a uniformly conditioned Riesz sequence), the **log-Weibull jet-intermittency law** (leading amplitude A=L_{N_a}: exact staircase tail P(A≥L_r)=(2/a)^r, log P(A>x)/√log x → −log(a/2)√(2/log a), all positive moments infinite, log-moments finite), and the **PROOF of the Fup_n Edgeworth program** (uniform on ℝ, all orders, after any fixed number of derivatives, exact-cumulant Bernoulli–Hermite coefficients λ₄,n=−18(15n+16)/(25(3n+4)²), λ₆,n=144(63n+64)/(49(3n+4)³); register conjecture resolved, replaced by the beyond-all-orders Stokes program); then with the **expanded fifteenth-wave edition** (`Atomic_Functions_Rvachev_Expanded_Report/`, from `drafts/incoming/Atomic_Functions_Rvachev_Expanded_Report.zip`; audit-aware — it explicitly marks the previously merged layers as inherited baseline, so only its new layer was merged) contributing the **closed q-Gram–Schmidt orthogonalization** ψ*_n = Σ_j q^{n−j}·[n,j]_{q²}·e_j with norms ‖ψ*_n‖² = (q²;q²)_n, explicit Cholesky factorization C G_N Cᵀ = diag((q²;q²)_r) and closed inverse Gram (G_N⁻¹)_{jk} = Σ_n q^{2n−j−k}[n,j][n,k]/(q²;q²)_n, the Rogers–Szegő identification q^n H_n(z/q;q²) of the orthogonalizers, the uniform-innovation corollary dist²(e_n, span before) = (q²;q²)_n ↓ (q²;q²)_∞ > 0, the **wrapped-heat-kernel circle model** (each parity tower is unitarily the monomial sequence in L²(𝕋, ϑ₄(θ/2,q) dθ/2π) — the wrapped heat kernel at time log a centred at θ=π; two more derivatives = multiplication by z), the MacMahon determinant constant det G_N = (q²;q²)_∞^{N+1}·𝔐(a⁻²)(1+O(Nq^{2N})) with parity-factored full-sequence determinants D_{2N} = (det G_{N−1})², D_{2N+1} = det G_N det G_{N−1}, triple-product Riesz forms A_a = (q²;q²)_∞(q;q²)_∞², B_a = (q²;q²)_∞(−q;q²)_∞² with a verified numeric table (A₂ ≈ 0.1211242080, B₂ ≈ 2.1289368272), and the overlap-regime theta conjecture (translated correlations for 1 < a < 2 → the same theta kernel unless a log-periodic cycle obstructs; reduces to two-term derivative-norm asymptotics); then with two **expanded fourteenth-wave editions** (`Atomic_Functions_Beyond_Dyadic_Expanded/` and `Atomic_Functions_Beyond_Dyadic_Frontiers/`, both from `drafts/incoming/` zips, both audit-aware, both re-shipping byte-identical copies of the recorded source scan/OCR — again not retained) contributing disjoint new layers: the first the **physical-space Stieltjes–Wigert differential ladder** Υ_{a,n} = P_{a,n}(−d²/dx²)h_a (compactly supported orthogonal system with norms c^{2n}q^{−n(2n+1)}(q;q)_n‖h_a‖², explicit q-binomial expansion in even derivatives, three-term operator recurrence with α_n = cq^{−2n−1}(1+q−q^{n+1}), β_n = c²q^{−(4n−1)}(1−q^n)) — **identified during the merge with the expanded-15th-wave Gram–Schmidt vectors**, Υ_{a,n} = (−1)^n‖h^{(2n)}‖₂ψ*_n (a cross-edition unification; the check also caught and repaired a sign-convention slip in the first printing of the closed Gram–Schmidt theorem: the closed coefficients orthogonalize the raw tower, the sign-corrected basis takes alternating coefficients) — plus both parity **derivative-jet Gram determinants** (odd exponent −(N+1)(N+2)(4N+3)/6), the **autocorrelation germ** (−1)^n acf_a^{(2n)}(0)/acf_a(0) = a^{n(n+2)}/2^n with zero Taylor radius and provable ladder incompleteness (Riesz density criterion, spectral law absolutely continuous), and the explicit-spectral-null-modes conjecture; the second the **exact derivative-energy factorization** μ_{a,n,p} = Law(S_{a,n} + a^{−n}Y_{a,p}) (every normalized p-energy of every derivative = level-n Bernoulli address sum + compressed base profile) with W∞(μ_{a,n,p}, ν_a) ≤ 2a^{−n}/(a−1) to the symmetric **Bernoulli convolution** ν_a (uniform at a=2, equal-weight Cantor measure on K_a for a>2; Peres–Schlag–Solomyak cited), exact Hausdorff support rate b₁a^{−n}, exact **Rényi/Shannon entropy laws** H_β(n) = H_β(0) + n log(2/a) (0<β≤∞) with the critical entropy discontinuity and the information-dimension reading (address entropy n log2 / geometric scale n log a = D_a), and the overlap-regime derivative-energy conjecture (companion of the theta conjecture); then with two **expanded fifteenth-wave editions** (`Atomic_Functions_Rvachev_Report_Expanded/` and `Atomic_Functions_Rvachev_qBinomial_Frontiers/`, both from `drafts/incoming/` zips, both audit-aware; the first re-shipped byte-identical copies of the scan, OCR, **and the two previous editions of its own lineage** — all SHAs previously recorded, none retained) contributing four closures of the orthogonalization theory and two of the jet theory: the **nodal-polynomial reading** (residual generating polynomial P_n(z) = q^{n²}∏_{j<n}(z−q^{−2j}); orthogonality = interpolation at geometric nodes, pivot = value at the next node), the **exact inverse transform** η_n = Σ_k q^{(n−k)²}[n,k]_{q²} r_k with C′B = BC′ = I and the entrywise-positive Cholesky G = BDBᵀ, the **minimum-phase theta whitening** (innovation filters → a_r = (−q)^r/(q²;q²)_r in ℓ¹, A_q(z) = 1/(−qz;q²)_∞, exact identity |A_q|²·ϑ₃(θ/2,q) = (q²;q²)_∞ — the Szegő spectral factor of the q-Gaussian covariance; both editions' statements independently confirm the repaired sign convention), the **Schur-minor strict total positivity** (every mixed minor = q-power × Vandermonde × Schur polynomial > 0; oscillation-matrix and checkerboard-inverse consequences, Karlin cited), the **two-term jet tail** log P(A>x) = −γ_a√log x − (log(a/2)/(2 log a))·log log x + O(1) with the sharp Orlicz threshold E exp(θ√log A) < ∞ ⟺ θ < γ_a (boundary divergent), and the **highest-jet partial-theta law**: 𝒥_a = |h^{(N_a)}(Y)| has exact staircase tail with quadratic level inversion, reciprocal moments E𝒥^{−s} = p_a2^s a^{−s}·ϑ_p(2^{s+1}a^{−1−3s/2}; a^{−s/2}) (partial theta), and joint jet–distance transform whose s=0 limit degenerates to the distance-Mellin law — for s>0 the fractal pole lattice is replaced by an entire partial theta series; five new register conjectures (infinite dual tower with 1/ϑ₃ generating function, finite-section theta boundary layer, centered staircase limit set, partial-theta recreation of the complex dimensions, graph-directed Gaussian-binomial prediction) plus the transcendental-dichotomy sharpening of the algebraic-breakpoint conjecture; and by the sixteenth- and seventeenth-wave same-topic twins `Fabius_Q_Connections_Report/` (*Beyond the Dyadic Fabius Web*) and `Signed_Reciprocal_q_Fabius_Frontiers/` **merged editorially** as Part VII (*Signed and Reciprocal q-Fabius Frontiers*): the geometric-uniform family Y_q=(1−q)Σqʲ U_j on the full Klein-four orbit {q,−q,q⁻¹,−q⁻¹} — affine sign conjugacy Y_{−a} =d λ_a Y_a − β_a (λ_a=(1+a)/(1−a); no new normalized shapes at negative q), the reciprocal meromorphic germ with M_q(t)M_{1/q}(−t)=1 and finite digit-reversal duality Y_q^{[m]} =d Y_{q⁻¹}^{[m]} (giving q=±2,±4 exact finite/limiting meaning), geometric multisection Y_q =d Σ q^r/[m]_q·Y_{q^m}^{(r)} (Fabius = convolution of two quarter-base laws; u_{1/2}=u_{1/4}*2u_{1/4}(2·)) = Pochhammer dissection, the spectral q²-Pochhammer factorization ψ_q=∏_k((1−q)²t²/4π²k²;q²)_∞ with zero–pole exchange under inversion and base-b zero divisor 1+ν_b(n), cumulants κ_n=B_n/n·(1−q)ⁿ/(1−qⁿ) with spectral zeta ((1−q)/2π)^s ζ(s)/(1−|q|^s), log-concavity and the exact plateau phase |q|≤1/2 (crosswalked to Part VI's h_a plateau), the positive Laplace representation of reciprocal germs (moments on Re z=1/2, Hankel signature (−1)^{C(n,2)}, orthogonal polynomials with vertical zeros), the q-Fabius–Bernoulli Appell deconvolution family 𝔅_n^{(r)} (Bernoulli polynomials at r=0, centered monomials at r→1), the moment polynomial 𝒫_n(q)=(q;q)_n m_n/((1−q)ⁿn!) with degree C(n,2), boundaries 1/(n+1)! and B_n(1)/n!, and the odd-q-integer divisor conjecture ∏[d]_q | 𝒫_n (checked n≤16), the two-nome partition function Z_N(u,t;ρ,σ) unifying Gaussian layers and Prouhet cancellation (renormalized maximal Prouhet jet = the q-Fabius MGF; partial cancellations at root-of-unity nomes) plus the digit-position product Ξ_m(u,z;q) with position-parity companion χ(n) (4-state automaton), the exact q-Prouhet moment transfer S_{N,N+ℓ}=(−1)^N (N+ℓ)!/ℓ!·q^{C(N,2)}E T_{q,N}^ℓ ≡ general-radix Bell–Bernoulli, comb transport (sign=translation×parity, inversion=dilation), the Grassmannian/Hermitian finite-geometry square (Fu–Reiner–Stanton–Thiem) for both orbits, box-spline derivative combs with the quartic Cantor skeleton dim_H=1/2 and the comb factorization Δ_{q,2N}=Δ_{q²,N}*(D_q)_*Δ_{q²,N}, reciprocal q-Lagrange row reversal λ^{(q)}_{n,k}=λ^{(q⁻¹)}_{n,n−k}, the stop-loss simplex endpoint formula and exact inverse-geometric lattice G_q(qⁿ)=q^{C(n+1,2)}𝒫_n/(q;q)_n generalizing F(2⁻ⁿ) (new inverse-quartic values 1/6, 1/240, 1/51840, …) with all derivative jets G_q^{(r)}(qⁿ)=(1−q)^{−r}q^{−C(r,2)}G_q(q^{n−r}), the uniform two-term endpoint law log G_q = −ℓ²/2L − ℓ log ℓ/L + O(ℓ) and its √(2L log(1/y))−½ log log(1/y) inversion, and the RESOLUTION of the sixteenth wave's periodic-cocycle conjecture by Part VI's exact Γ–ζ Laplace decomposition (transform level closed uniformly in the base; density-level all-orders Lambert-W₋₁ transseries remains the shared open program, with the quartic phase conjecturally reconstructible from the dyadic one through decimation); the eighth-wave fold also repaired the volume's part-boundary section numbering; figures/data/scripts under `assets/` (absorbed source .tex files deleted after merging; SHA-256 provenance in the document) | absorbed drafts deleted; git history is the archive The accepted current receipt is in the [authoritative receipt register](#current-post-merge-publication-receipts). |
+| `geometric_q_fabius_frontiers/` | *Geometric q-Fabius–Rvachev Frontiers* (historical first-merge whole-root receipt: root 27,624 lines / 1,273,010 bytes / SHA-256 `0839b42a3fb055d860b8e8a3d1ff5e84c2f4addce314d04707c5a067e81553d9`; exact seven-file aggregate 27,997 lines / 1,288,647 bytes / SHA-256 `18c4c6607e9b7564909ca7e647152a26e517f54d5007e157265b3f61adf8e4f0`; passes 387/404/404; 404-page, 8,341,830-byte A4 PDF, SHA-256 `a083b130a1568dc37af824294b033485f82c97dbeb30a4c4de4d463d04e99530`; final 2,557-line, 114,343-byte log, SHA-256 `4de474675a2dcde519c36ff1ac7067717c64b60b92bd40b999d0d117ba1f8df6`; all prohibited-log and visual gates passed; 404 A4 pages at rotation zero; PDF 1.5 unencrypted; all 43 font rows embedded and subset, including 11 Libertinus rows; zero Type-3 rows; checksum basenames and PDF/source references absent. Explicit historical `2d434eec` whole-root receipt: 27,520-line, 1,266,515-byte source, SHA-256 `8292f10862334cb809139259eeb4906bb14f517d41b9600c9b7ad53bb21525b1`; passes 385/402/402; 402-page, 8,332,886-byte A4 PDF, SHA-256 `d47431e4d3e721fccf12f90226db77f1898e44b477878954acca3a6e90127cf4`; final 2,557-line, 114,331-byte log, SHA-256 `4d6f8c7974def4a3f9e6bc8ccdffefc3eef7ca8cb7c2f0145a075f95b82ff45e`; all documented log, page, font, Type-3, extraction, and visual gates passed at that revision. Historical consolidation record: 2026-09-02: renamed from `geometric-sinc-and-exponent-families/Exponents_and_q_Series_Frontiers/`, given a new Part~0 common-framework part, and extended by the five reports above as Parts~VIII–XII; the merged source builds in three serial passes with 0 errors, 0 undefined references, 0 multiply-defined labels, and 0 duplicate hyperref destinations). Its Parts~I–VII are the former *Exponent-Sequence and q-Series Frontiers* (historical notation-source TeX: 16,369 lines, 737,912 bytes, SHA-256 `a4aecd625f7eb405de866e2b368bbdc648fb0f9e11b423cb936a2f319d195f02`; retained historical PDF: 238 A4 pages, 6,953,898 bytes, SHA-256 `fa719a8ea68d3c474928b9fae7449f827eb35a5452613f2b660d8e88ba27267e`; the source and artifact hashes are retained as historical receipts, but no render parity is claimed) — consolidation (2026-08-28) of the former `Fabius_Newton_Rvachev_Frontier_Report/` (*Exponent-Sequence and Newton-Basis Frontiers*, Lean-crosswalked) and `fabius_frontier_results/` (*q-Binomial Richardson Acceleration of Geometric Sinc Products*), joined the same day by the eighth-wave `finite_sinc_products_report/` (*Finite Dyadic Sinc Products and Piecewise-Polynomial Approximants to Rvachev's Up-Function*, from `drafts/incoming/finite_sinc_products_report_bundle.zip`) as Part III — exact truncated-power prefix formula with Thue–Morse jumps, sharp derivative plateaux, exact error law 2^(C(r+3,2)−1)/(9·4ⁿ), exact Kolmogorov 1/(9·4ⁿ), Bell–Bernoulli all-orders expansion, q=1/4 Richardson weights, uniform scale mixture X = R·U, positive Gauss/Radau/Lobatto tail quadrature with exact constants (incl. the previously open variance-matched positive 16⁻ⁿ scheme) — and by the two ninth-wave same-topic reports `Rvachev_Piecewise_Approximation_Fourier_Images/` and `rvachev_fourier_frontier_report/` **merged editorially** as Part IV (*Fourier Images of the Repeated-Integration Approximants*): master factorization F̂ₙ = Φ·A(2⁻ⁿt) with the transfer function A = sinc z/Φ(z), valuation-weighted canonical product with divisor 1−v₂(m), digit-sum zero counts and Thue–Morse sign law, exact Taylor radius 4π with dominant-pole asymptotics and arithmetic Darboux hierarchy, finite/limit zero filtration, sharp o(2ⁿ) relative window, conditioning thresholds π2ⁿ/4π2ⁿ, deconvolution impossibility, weighted-L^p and Sobolev all-orders laws, exact mean-square tails with sharp H^s threshold s<n+½, and positive atomic/dyadic/polynomial closure menus (16⁻ⁿ–256⁻ⁿ) complementing Part III's box mixtures; and by the tenth-wave `fabius_finite_products_frontier/` as Part V (*Finite Dyadic Sinc Products and Exact Transport Geometry of Rvachev Spline Approximants*): convex-order and peakedness chains, exact E\|X_N\| = 5/18 − 4⁻ᴺ/9, fixed single crossing of the density error at ±½, the exact metric collapse W₁ = d_K = 4⁻ᴺ/9, TV = 2·4⁻ᴺ/9, stop-loss = Zolotarev-2 = 4⁻ᴺ/18, W∞ = 2⁻ᴺ, the exact Thue–Morse call-potential spline, the positive-mixture no-go theorem (signed weights are structurally necessary for Richardson acceleration), entropy/Fisher monotonicity with I(u_N)<∞ ⟺ N≥3 and KL(u‖u_N)=∞, and conjectural weighted information/W_p expansions with the p≈2N transport crossover; and by the thirteenth-wave `atomic_sinc_splines_report_package/` as Part VI (*Atomic Sinc-Product Splines Beyond the Binary Point*): an English translation and frontier expansion of Rvachev's Chapter 3 on atomic functions — the geometric family h_a with ĥ_a = ∏ sinc(2πa⁻ʲξ), the zero-matching existence criterion for general atomic equations, closed cumulants κ₂ₘ = 2²ᵐB₂ₘ/(2m(a²ᵐ−1)) with Bell/Lambert-series moment calculus, weighted Prouhet identities and the full derivative hierarchy with exact norms a^{n(n+3)/2+1}/2^{n+1} (L¹: a^{n(n+1)/2}), the Cantor gap atlas for a>2 (dim_H = log2/log a, exact per-gap degree, one-branch symbolic localization, complete Taylor-germ trichotomy), the rational-power Strang–Fix reproduction theorem with Appell coefficient operator, log-Gaussian Fourier envelope, all-orders prefix expansion with r₁ = −1/(6(a²−1)) and exact leading norm a⁶/(48(a²−1)) (specializing to the binary 4/9 and 31/16200), the a↓2 collapse, the reconstructed uniqueness theorem, and the periodic-Lambert/double-scaling/lattice-obstruction conjecture register; Part VI was then **merged editorially** (2026-08-28) with its fourteenth-wave twin `Atomic_Functions_Beyond_Dyadic_Report/` (*Atomic Functions Beyond the Critical Dyadic Case*) — a second independent reconstruction of the same Rvachev chapter (identical readings on every commonly transcribed equation; shared translation/h_a core deduplicated, OCR ledger preserved in assets) whose distinctive layers became dedicated Part VI sections: the fractal-string geometry of K_a (geometric zeta ℓ₀^s/(1−2a^{−s}), complex dimensions D_a+2πik/log a with residues ℓ₀^{s_k}/log a, exact tube formula with continuous nonconstant one-periodic Minkowski profile ⇒ K_a not Minkowski measurable, explicit logarithmic average), the geometric local-degree law P(N_a=r)=((a−2)/a)(2/a)^r with E N_a=2/(a−2) and (a−2)/2·N_a → Exp(1) as a↓2 (identifying the first marginal of the critical double-scaling program), quantitative parameter limits at both ends (a↓1: standardized cumulants 3^m2^{2m}B_{2m}(a²−1)^m/(2m(a^{2m}−1)), λ₄=−(6/5)(a²−1)/(a²+1), first characteristic correction; a→∞: W∞ ≤ 1/(a−1), TV ≤ 1/(2(a−1)), exactly uniform core g_a=1/2 on |y|≤(a−2)/(a−1)), the exact general-base negative-Laplace decomposition Λ_a(u) = −(log u)²/(2 log a) + (log u)/2 + P_a(log_a u) + E_a(u) with 0 ≤ E_a(u) ≤ e^{−u}/((1−e^{−u})(1−e^{−(a−1)u})) and real-analytic one-periodic P_a whose Fourier modes are −Γ(−χ_k)ζ(1−χ_k)/log a, χ_k=2πik/log a (settling the transform-level half of the periodic-Lambert program, pinning the Lambert normalization c_a=√a·log a/2, and re-verified independently during the merge to 10⁻¹³–10⁻²⁸), the divisor-polynomial form of log M_a, and the canonical Fup ladder G_n → 2Up(2·) in every C^m (first rung of the factor-redistribution direction); and (same day) with its fifteenth-wave twin `Rvachev_Atomic_Functions_Report/` (*Atomic Functions, Rvachev's up-Function, and Smooth Cantor Splines*) — a third independent reconstruction (again identical shared readings; repairs ledger and crosswalk preserved in assets) contributing the signed gap leading coefficients L_ω = (−1)^{N₊(ω)}a^{(r+1)(r+2)/2}/(2^{r+1}r!) with fixed-point verification at a=3, the derivative equimeasurability theorem with the full L^p ladder ‖h_a^{(n)}‖_p = (a^{n(n+3)/2}/2ⁿ)(2/a)^{n/p}‖h_a‖_p and the exact derivative-value mixture law (atom 1−(2/a)ⁿ at 0 + fair-signed amplified copy), the endpoint jet-reduction remark with the Bernoulli→cumulants→moments→jets→gap-polynomials exact engine, the classical Fup_n hierarchy F̂up_n = sinc(t2^{−n−1})ⁿ·Û(t2^{−n}) with the exact triangular reconstruction of Up by n(n+1)/2 dyadic averaging steps (limit: the cosine-multiplicity product ∏cos(t2^{−r})^{r−1}), closed Fup_n cumulants (σ_n² = 4^{−n}(3n+4)/36) and the quantitative CLT (Berry–Esseen O(n^{−1/2}), standardized cumulants O(n^{1−m})), the edge pantograph equations g_a′(u) = (a²/2)g_a(au) and F_a′(x) = a²/(2(a−1))F_a(ax) generalizing F′=2F(2·), and three more register items (Fup_n Edgeworth, graph-directed atomic splines, pressure-function Taylor multifractal); then with the two **revised fourteenth-wave editions** (`Atomic_Functions_Beyond_Dyadic_Report-2/`, `-3/`) contributing the Orlicz/rearrangement form of equimeasurability (all a≥2, all 0<p<∞, exact rearrangement thinning (h^{(n)})*(t)=C_{a,n}h*(t/(2/a)ⁿ)), the **spectral Stieltjes–Wigert bridge** (the normalized Fourier energy of h_a has squared-frequency moments a^{n(n+2)}/2ⁿ — the scaled Stieltjes–Wigert sequence, moment-equal to lognormal N(2log a−log2, 2log a) yet a distinct density ⇒ explicit non-lognormal representing measures for an indeterminate problem, with exact q-Pearson equations, Hankel determinants c^{N(N+1)}q^{−N(N+1)(4N+5)/6}∏(q;q)_k, monic OPs, and a Nevanlinna–Pick register conjecture), the **Mellin law of the distance to K_a** (Δ =d ½ℓ₀a^{−N_a}V; E Δ^s with pole lattice D_a−1+2πik/log a — the complex dimensions shifted by −1; distribution function = the exact tube formula; critical logarithmic gap scale → Exp(1)), and — decisive for provenance — the **eleven-page Russian source scan itself** (`source_rvachev_scan.pdf`), against which the translation layers were checked; the scan and the raw OCR were both deleted once their recoverable content was merged and verified (SHA-256 hashes in the volume's provenance list, the deduplicated repair ledger in Part VI's concordance appendix, git history the archive); then with the **revised fifteenth-wave edition** (`Atomic_Functions_Rvachev_Report_Package/`) contributing the **q-Gaussian derivative Gram geometry** (normalized towers ψ_n=h^{(n)}/‖h^{(n)}‖₂ split into two orthogonal parity towers with exact stationary kernel ⟨η_j,η_k⟩=q^{(j−k)²}, q=1/a; Gram determinants det G_N=∏_{r≤N}(q²;q²)_r, pivots (q²;q²)_N, sharp Riesz bounds ϑ₄(0,q) ≤ symbol ≤ ϑ₃(0,q) — the derivative tower is a uniformly conditioned Riesz sequence), the **log-Weibull jet-intermittency law** (leading amplitude A=L_{N_a}: exact staircase tail P(A≥L_r)=(2/a)^r, log P(A>x)/√log x → −log(a/2)√(2/log a), all positive moments infinite, log-moments finite), and the **PROOF of the Fup_n Edgeworth program** (uniform on ℝ, all orders, after any fixed number of derivatives, exact-cumulant Bernoulli–Hermite coefficients λ₄,n=−18(15n+16)/(25(3n+4)²), λ₆,n=144(63n+64)/(49(3n+4)³); register conjecture resolved, replaced by the beyond-all-orders Stokes program); then with the **expanded fifteenth-wave edition** (`Atomic_Functions_Rvachev_Expanded_Report/`, from `drafts/incoming/Atomic_Functions_Rvachev_Expanded_Report.zip`; audit-aware — it explicitly marks the previously merged layers as inherited baseline, so only its new layer was merged) contributing the **closed q-Gram–Schmidt orthogonalization** ψ*_n = Σ_j q^{n−j}·[n,j]_{q²}·e_j with norms ‖ψ*_n‖² = (q²;q²)_n, explicit Cholesky factorization C G_N Cᵀ = diag((q²;q²)_r) and closed inverse Gram (G_N⁻¹)_{jk} = Σ_n q^{2n−j−k}[n,j][n,k]/(q²;q²)_n, the Rogers–Szegő identification q^n H_n(z/q;q²) of the orthogonalizers, the uniform-innovation corollary dist²(e_n, span before) = (q²;q²)_n ↓ (q²;q²)_∞ > 0, the **wrapped-heat-kernel circle model** (each parity tower is unitarily the monomial sequence in L²(𝕋, ϑ₄(θ/2,q) dθ/2π) — the wrapped heat kernel at time log a centred at θ=π; two more derivatives = multiplication by z), the MacMahon determinant constant det G_N = (q²;q²)_∞^{N+1}·𝔐(a⁻²)(1+O(Nq^{2N})) with parity-factored full-sequence determinants D_{2N} = (det G_{N−1})², D_{2N+1} = det G_N det G_{N−1}, triple-product Riesz forms A_a = (q²;q²)_∞(q;q²)_∞², B_a = (q²;q²)_∞(−q;q²)_∞² with a verified numeric table (A₂ ≈ 0.1211242080, B₂ ≈ 2.1289368272), and the overlap-regime theta conjecture (translated correlations for 1 < a < 2 → the same theta kernel unless a log-periodic cycle obstructs; reduces to two-term derivative-norm asymptotics); then with two **expanded fourteenth-wave editions** (`Atomic_Functions_Beyond_Dyadic_Expanded/` and `Atomic_Functions_Beyond_Dyadic_Frontiers/`, both from `drafts/incoming/` zips, both audit-aware, both re-shipping byte-identical copies of the recorded source scan/OCR — again not retained) contributing disjoint new layers: the first the **physical-space Stieltjes–Wigert differential ladder** Υ_{a,n} = P_{a,n}(−d²/dx²)h_a (compactly supported orthogonal system with norms c^{2n}q^{−n(2n+1)}(q;q)_n‖h_a‖², explicit q-binomial expansion in even derivatives, three-term operator recurrence with α_n = cq^{−2n−1}(1+q−q^{n+1}), β_n = c²q^{−(4n−1)}(1−q^n)) — **identified during the merge with the expanded-15th-wave Gram–Schmidt vectors**, Υ_{a,n} = (−1)^n‖h^{(2n)}‖₂ψ*_n (a cross-edition unification; the check also caught and repaired a sign-convention slip in the first printing of the closed Gram–Schmidt theorem: the closed coefficients orthogonalize the raw tower, the sign-corrected basis takes alternating coefficients) — plus both parity **derivative-jet Gram determinants** (odd exponent −(N+1)(N+2)(4N+3)/6), the **autocorrelation germ** (−1)^n acf_a^{(2n)}(0)/acf_a(0) = a^{n(n+2)}/2^n with zero Taylor radius and provable ladder incompleteness (Riesz density criterion, spectral law absolutely continuous), and the explicit-spectral-null-modes conjecture; the second the **exact derivative-energy factorization** μ_{a,n,p} = Law(S_{a,n} + a^{−n}Y_{a,p}) (every normalized p-energy of every derivative = level-n Bernoulli address sum + compressed base profile) with W∞(μ_{a,n,p}, ν_a) ≤ 2a^{−n}/(a−1) to the symmetric **Bernoulli convolution** ν_a (uniform at a=2, equal-weight Cantor measure on K_a for a>2; Peres–Schlag–Solomyak cited), exact Hausdorff support rate b₁a^{−n}, exact **Rényi/Shannon entropy laws** H_β(n) = H_β(0) + n log(2/a) (0<β≤∞) with the critical entropy discontinuity and the information-dimension reading (address entropy n log2 / geometric scale n log a = D_a), and the overlap-regime derivative-energy conjecture (companion of the theta conjecture); then with two **expanded fifteenth-wave editions** (`Atomic_Functions_Rvachev_Report_Expanded/` and `Atomic_Functions_Rvachev_qBinomial_Frontiers/`, both from `drafts/incoming/` zips, both audit-aware; the first re-shipped byte-identical copies of the scan, OCR, **and the two previous editions of its own lineage** — all SHAs previously recorded, none retained) contributing four closures of the orthogonalization theory and two of the jet theory: the **nodal-polynomial reading** (residual generating polynomial P_n(z) = q^{n²}∏_{j<n}(z−q^{−2j}); orthogonality = interpolation at geometric nodes, pivot = value at the next node), the **exact inverse transform** η_n = Σ_k q^{(n−k)²}[n,k]_{q²} r_k with C′B = BC′ = I and the entrywise-positive Cholesky G = BDBᵀ, the **minimum-phase theta whitening** (innovation filters → a_r = (−q)^r/(q²;q²)_r in ℓ¹, A_q(z) = 1/(−qz;q²)_∞, exact identity |A_q|²·ϑ₃(θ/2,q) = (q²;q²)_∞ — the Szegő spectral factor of the q-Gaussian covariance; both editions' statements independently confirm the repaired sign convention), the **Schur-minor strict total positivity** (every mixed minor = q-power × Vandermonde × Schur polynomial > 0; oscillation-matrix and checkerboard-inverse consequences, Karlin cited), the **two-term jet tail** log P(A>x) = −γ_a√log x − (log(a/2)/(2 log a))·log log x + O(1) with the sharp Orlicz threshold E exp(θ√log A) < ∞ ⟺ θ < γ_a (boundary divergent), and the **highest-jet partial-theta law**: 𝒥_a = |h^{(N_a)}(Y)| has exact staircase tail with quadratic level inversion, reciprocal moments E𝒥^{−s} = p_a2^s a^{−s}·ϑ_p(2^{s+1}a^{−1−3s/2}; a^{−s/2}) (partial theta), and joint jet–distance transform whose s=0 limit degenerates to the distance-Mellin law — for s>0 the fractal pole lattice is replaced by an entire partial theta series; five new register conjectures (infinite dual tower with 1/ϑ₃ generating function, finite-section theta boundary layer, centered staircase limit set, partial-theta recreation of the complex dimensions, graph-directed Gaussian-binomial prediction) plus the transcendental-dichotomy sharpening of the algebraic-breakpoint conjecture; and by the sixteenth- and seventeenth-wave same-topic twins `Fabius_Q_Connections_Report/` (*Beyond the Dyadic Fabius Web*) and `Signed_Reciprocal_q_Fabius_Frontiers/` **merged editorially** as Part VII (*Signed and Reciprocal q-Fabius Frontiers*): the geometric-uniform family Y_q=(1−q)Σqʲ U_j on the full Klein-four orbit {q,−q,q⁻¹,−q⁻¹} — affine sign conjugacy Y_{−a} =d λ_a Y_a − β_a (λ_a=(1+a)/(1−a); no new normalized shapes at negative q), the reciprocal meromorphic germ with M_q(t)M_{1/q}(−t)=1 and finite digit-reversal duality Y_q^{[m]} =d Y_{q⁻¹}^{[m]} (giving q=±2,±4 exact finite/limiting meaning), geometric multisection Y_q =d Σ q^r/[m]_q·Y_{q^m}^{(r)} (Fabius = convolution of two quarter-base laws; u_{1/2}=u_{1/4}*2u_{1/4}(2·)) = Pochhammer dissection, the spectral q²-Pochhammer factorization ψ_q=∏_k((1−q)²t²/4π²k²;q²)_∞ with zero–pole exchange under inversion and base-b zero divisor 1+ν_b(n), cumulants κ_n=B_n/n·(1−q)ⁿ/(1−qⁿ) with spectral zeta ((1−q)/2π)^s ζ(s)/(1−|q|^s), log-concavity and the exact plateau phase |q|≤1/2 (crosswalked to Part VI's h_a plateau), the positive Laplace representation of reciprocal germs (moments on Re z=1/2, Hankel signature (−1)^{C(n,2)}, orthogonal polynomials with vertical zeros), the q-Fabius–Bernoulli Appell deconvolution family 𝔅_n^{(r)} (Bernoulli polynomials at r=0, centered monomials at r→1), the moment polynomial 𝒫_n(q)=(q;q)_n m_n/((1−q)ⁿn!) with degree C(n,2), boundaries 1/(n+1)! and B_n(1)/n!, and the odd-q-integer divisor conjecture ∏[d]_q | 𝒫_n (checked n≤16), the two-nome partition function Z_N(u,t;ρ,σ) unifying Gaussian layers and Prouhet cancellation (renormalized maximal Prouhet jet = the q-Fabius MGF; partial cancellations at root-of-unity nomes) plus the digit-position product Ξ_m(u,z;q) with position-parity companion χ(n) (4-state automaton), the exact q-Prouhet moment transfer S_{N,N+ℓ}=(−1)^N (N+ℓ)!/ℓ!·q^{C(N,2)}E T_{q,N}^ℓ ≡ general-radix Bell–Bernoulli, comb transport (sign=translation×parity, inversion=dilation), the Grassmannian/Hermitian finite-geometry square (Fu–Reiner–Stanton–Thiem) for both orbits, box-spline derivative combs with the quartic Cantor skeleton dim_H=1/2 and the comb factorization Δ_{q,2N}=Δ_{q²,N}*(D_q)_*Δ_{q²,N}, reciprocal q-Lagrange row reversal λ^{(q)}_{n,k}=λ^{(q⁻¹)}_{n,n−k}, the stop-loss simplex endpoint formula and exact inverse-geometric lattice G_q(qⁿ)=q^{C(n+1,2)}𝒫_n/(q;q)_n generalizing F(2⁻ⁿ) (new inverse-quartic values 1/6, 1/240, 1/51840, …) with all derivative jets G_q^{(r)}(qⁿ)=(1−q)^{−r}q^{−C(r,2)}G_q(q^{n−r}), the uniform two-term endpoint law log G_q = −ℓ²/2L − ℓ log ℓ/L + O(ℓ) and its √(2L log(1/y))−½ log log(1/y) inversion, and the RESOLUTION of the sixteenth wave's periodic-cocycle conjecture by Part VI's exact Γ–ζ Laplace decomposition (transform level closed uniformly in the base; density-level all-orders Lambert-W₋₁ transseries remains the shared open program, with the quartic phase conjecturally reconstructible from the dyadic one through decimation); the eighth-wave fold also repaired the volume's part-boundary section numbering; figures/data/scripts under `assets/` (absorbed source .tex files deleted after merging; SHA-256 provenance in the document) | absorbed drafts deleted; git history is the archive The d130 receipt in the [authoritative receipt register](#d130-publication-receipts-and-current-parity-status) is historical because this merge changes the geometric-q TeX closure; a fresh synchronized render is pending. |
 
 
 
@@ -569,9 +1012,9 @@ removable-origin convention, for the whole identity `eq:bernoulli-gen`.
 The Guide's nearest-nonzero-zero explanation is not formalized as the Lean
 proof route, and the Puiseux claims remain open.  The exact-radius four-theorem
 checkpoint on the incoming Lambert branch had census 903/11,447; the fifth
-theorem gave that branch's historical 903/11,448 checkpoint.  The retained
-66-page Guide PDF predates this source-only
-crosswalk, and no render parity is claimed.
+theorem gave that branch's historical 903/11,448 checkpoint. The earlier
+70-page Guide receipt is historical; the synchronized current root-7 receipt
+above renders this crosswalk.
 
 The subsequent q-series tranche starts with
 `GeometricUniformMomentPolynomial.lean`, which has one
@@ -684,9 +1127,13 @@ one module and fourteen public declarations: the new zero-definition/
 six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
 `ThueMorseNewmanSelfSimilarity.lean`. This gives the historical 934/11,709
-census. Later upstream work reaches 952/11,881, and the three unique local
-q-binomial compatibility wrappers give the live 952/11,884 census. In the
-current semantic union, the subsequent
+checkpoint. The local branch's 943/11,791, 944/11,806, 960/11,966,
+and 961/11,974 inventories and the incoming branch's 943/11,787, 952/11,881,
+and 952/11,884 inventories, followed by incoming 967/12,001, 969/12,048,
+and 970/12,051, are historical and overlap. The preceding local merged
+970/12,056 inventory is also historical. The reconciled live
+audit is 983/12,192, with zero documentation gaps, as inventoried above.
+In the current semantic union, the subsequent
 zero-definition/two-theorem greater-than-one leaf makes `cor:qgreaterone`
 Exact, and the scaled-geometric polynomial theorem completes
 `cor:scaled-geometric-moments`. The subsequent affine transport theorem in
@@ -696,17 +1143,20 @@ in `HalfQBinomialRootSimplicity.lean`, composed with the complete rational
 root classification in `HalfQBinomial.lean`, makes
 `cor:halfbase-root-locus` Exact while leaving
 `cor:qbinom-inversion-law` Partial. The live semantic-union facade census is
-952/11,884; 934/11,709, the dyadic/finite-prefix census 933/11,695, and the
-reciprocity census 931/11,685 remain historical, while the RatFunc-only
+983/12,192; the local 961/11,974, 960/11,966, 944/11,806, and 943/11,791
+inventories, the preceding local merge 970/12,056, and the incoming
+970/12,051, 969/12,048, 967/12,001, 952/11,884, 952/11,881, and 943/11,787 inventories
+remain historical branch checkpoints. The historical dyadic/Prouhet census
+is 934/11,709, the earlier dyadic/finite-prefix census is 933/11,695, and the
+historical reciprocity census is 931/11,685, while the RatFunc-only
 924/11,615 and incoming-only 924/11,614 counts remain historical branch
-checkpoints. The q forward totals are 182 Exact / 78 Partial / 14 None / 8
+checkpoints. The q forward totals are 181 Exact / 79 Partial / 14 None / 8
 N/A, the relevant Dyadic Gaussian--Thue--Morse chapter is 13/43/0/0, and the
-source concordance is 95 Lean-proved / 383 human-proved
+source concordance is 103 Lean-proved / 375 human-proved
 frontier / 60 N/A / 9 conjectures. The
 intermediate 915/11,556 Bridge census remains a historical checkpoint. The
-latest retained 391-page `2d434eec` q-series PDF is a historical checkpoint
-and does not render this source-only crosswalk; the 389-page PDF is earlier
-history.
+the retained 391-page, 398-page, and later q-series PDFs are historical
+checkpoints and do not render this merged source-only crosswalk.
 
 No finite endpoint derivative is asserted.  An `O(z + exp(-1))` remainder
 after the signed leading term, a convergent signed
@@ -718,7 +1168,7 @@ open.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `Lambert_W_Guide/` | *The Lambert W Function: A Real-Variable Guide* (historical first-merge receipt: root `4961L/183269B/83301b4c66660713a70974263b6f191ea01f9ed8f5ae228495f644887b616568`; two-file aggregate `5245L/195104B/25141b9ee818b20ddf8349d88ec4f2dc977ff0ab35ca34e62cd62da64c2cf06a`; passes `68/70/70`; PDF `70pp/966637B/6c150ff18889030345de3e1a8581d5ea0ac75789a9720c1d5164ed4e7ec4b7fb`; log `1574L/57800B/9f995a50e3ab25256083edee745a1889027787194e3b3c6d1f12f60bf687145c`; all recorded gates clean. The accepted current receipt is in the [authoritative receipt register](#current-post-merge-publication-receipts). Historical `2d434eec` receipt: 4,873-line, 177,465-byte source, SHA-256 `90413f46373415edef411e9ea3b2d94006f7342bd2fa3ea931ca975d7f64b97e`; passes 67/69/69; 69-page, 958,516-byte A4 PDF, SHA-256 `b159cd41f5b3e53060fa85fcfc4812d504cc1fff8400c03ecb7ef4018f37cd2c`; final 1,574-line, 57,795-byte log, SHA-256 `5c81cd6b8dc2cf070c4b1995c98c0d046c54d28f0e682b78b5ad9e16c0a8caa7`; all documented gates passed at that revision after the clipping repair. Further historical receipts: the pre-upstream `581bf` pair had 4,864 source lines, 176,796 bytes, SHA-256 `3f3552983a73db2dab94f3625d10d054b747ee03fc2758e257af86f6216deab5`, and a 70-page, 958,713-byte A4 PDF, SHA-256 `24e8bf561283ffc5427297df6f656696a7e2538731e53d03d59e4268b50772fc`; the preceding 66-page artifact remains earlier history) — editorial merge of the four independent treatments: the spine is the most complete article (branches, identities, exact branch-pair parametrization with Bernoulli gap expansions, derivative polynomials, integral calculus with all polynomial moments and Mellin integrals on both unbounded ends, local Taylor, Maclaurin with proved Lagrange–Bürmann, tree function/Cayley, signed Puiseux at the branch point with recurrences, unified Stirling-number logarithmic asymptotics for both branches, rigorous elementary bounds incl. Chatzigeorgiou's W₋₁ bracket, Padé and Euler continued fractions, Kalugin–Jeffrey–Corless cut integrals with complete monotonicity of W₀′, residual-certified branch-safe logarithmic Newton with monotone global starts, transcendental-equation catalogue, applications, Wright omega, complex-branch guide, problems with solutions, formula sheet); a complements section preserves the other three treatments' unique layers — the complete power-tower convergence theorem (exact interval e^{−e} ≤ a ≤ e^{1/e} with two-cycle exclusion and neutral endpoints), x^y = y^x, inverse-Taylor/Schröder corrections with branch-aware seeds, the logarithmic fixed-point iteration criterion (attracting iff \|W\|>1), branch-exchange involution, scaling identities, fixed points 2πin, unwinding-integer logarithm identity, closed Lagrange form of the Puiseux coefficients, square-root monodromy, the transcendence theorem (W_k(algebraic ≠ 0) is transcendental), a practitioner's toolkit (parameter gradients with the (1+w)^{−1} factor, differentiate-in-w, parametrize-by-w, floating-point hazards), further applications (patch residence via W₋₁, Wien displacement, linear-drag fall time, Schwarzschild tortoise inversion, π(x) < x/W₀(x)), and the r-Lambert/generalized-Lambert outlook; plus a corpus-role section and a four-way concordance appendix (all shared constants verified identical); the packages' figures/data/scripts live under `assets/` (absorbed article .tex sources deleted after merging; SHA-256 provenance in the document) | absorbed member packages deleted; git history is the archive |
+| `Lambert_W_Guide/` | *The Lambert W Function: A Real-Variable Guide* (historical synchronized `b899` pair: 4,940-line, 181,577-byte source, SHA-256 `2e6a4782fc4e4b945869f5fb45b39cf94e8dc34296866edf26b4cdfe19b1898b`; 70-page, 991,848-byte A4 PDF, SHA-256 `f802d78299f8f6aca7d31b935a4884f9343389a7307decb04c18b5159c8a4f04`; the earlier 70-page/986,865-byte, d130, and 66-page artifacts remain historical; this merge changes the Guide TeX closure, so a fresh synchronized render is pending) — editorial merge of the four independent treatments: the spine is the most complete article (branches, identities, exact branch-pair parametrization with Bernoulli gap expansions, derivative polynomials, integral calculus with all polynomial moments and Mellin integrals on both unbounded ends, local Taylor, Maclaurin with proved Lagrange–Bürmann, tree function/Cayley, signed Puiseux at the branch point with recurrences, unified Stirling-number logarithmic asymptotics for both branches, rigorous elementary bounds incl. Chatzigeorgiou's W₋₁ bracket, Padé and Euler continued fractions, Kalugin–Jeffrey–Corless cut integrals with complete monotonicity of W₀′, residual-certified branch-safe logarithmic Newton with monotone global starts, transcendental-equation catalogue, applications, Wright omega, complex-branch guide, problems with solutions, formula sheet); a complements section preserves the other three treatments' unique layers — the complete power-tower convergence theorem (exact interval e^{−e} ≤ a ≤ e^{1/e} with two-cycle exclusion and neutral endpoints), x^y = y^x, inverse-Taylor/Schröder corrections with branch-aware seeds, the logarithmic fixed-point iteration criterion (attracting iff \|W\|>1), branch-exchange involution, scaling identities, fixed points 2πin, unwinding-integer logarithm identity, closed Lagrange form of the Puiseux coefficients, square-root monodromy, the transcendence theorem (W_k(algebraic ≠ 0) is transcendental), a practitioner's toolkit (parameter gradients with the (1+w)^{−1} factor, differentiate-in-w, parametrize-by-w, floating-point hazards), further applications (patch residence via W₋₁, Wien displacement, linear-drag fall time, Schwarzschild tortoise inversion, π(x) < x/W₀(x)), and the r-Lambert/generalized-Lambert outlook; plus a corpus-role section and a four-way concordance appendix (all shared constants verified identical); the packages' figures/data/scripts live under `assets/` (absorbed article .tex sources deleted after merging; SHA-256 provenance in the document) | absorbed member packages deleted; git history is the archive |
 
 The six polynomial-logarithmic transseries packages filed here on 2026-09-01
 moved to
@@ -742,13 +1192,13 @@ all forty-two articles across `polynomial-logarithmic-transseries/`,
 `special-function-inversion/` and `sequence-transseries/` are now the single
 volume `Transseries_And_Inversion/`, and those five directories have been
 deleted after a residue audit.  The paragraphs below record what was filed,
-not what is present; git history is the archive.  The first two overlap enough
-that a later consolidation may merge them, but that comparison has not been
-made, and neither has the comparison between the second and the fourth.
+not what is present; git history is the archive.  At intake the comparison
+among the overlapping subgroups had not been made; the canonical
+consolidation's concordance chapter now records that later comparison.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `series-and-transseries/Transseries_And_Inversion/` | **Canonical consolidation of the whole `series-and-transseries` group.** *Transseries: the polynomial--logarithmic calculus, series reversal at infinity, and the inversion of rapidly growing functions*. The current source inventory is 55,015 lines / 2,732,554 bytes / SHA-256 `545d4b5ead18831e37a4df0ab7fb6b74a40e1e598144dc7057e8c62aaaa46799`, with 16 parts, 58 chapters, and 3,111 unique labels. Its two-file root-plus-notation closure is 55,299 lines / 2,744,389 bytes / aggregate SHA-256 `499a045ab45fdea7849c888bc8903db0866a2d4ca27eca3db6f62a9db282af30`. The incoming 702-page, 7,172,512-byte A4 PDF (SHA-256 `7cbc430332c78a6f2dcd06513c771e15685d87d3ef3a867f55c2687a8702d067`) remains a structurally validated historical pre-merge checkpoint. The three-pass 704-page current render establishes source/PDF parity; its exact tuple and the retained 114 overfull boxes and 11 duplicate Hyperref targets are recorded in the [authoritative receipt register](#current-post-merge-publication-receipts). The volume merges forty-two articles, and its concordance records the genuine duplicate, strengthening, missing counterpart, and three non-equivalent same-subject comparisons. | Consolidation of forty-two articles filed 2026-09-01 to -03; all replaced source layouts remain recoverable from Git history. |
+| `series-and-transseries/Transseries_And_Inversion/` | **Canonical consolidation of the whole `series-and-transseries` group.** *Transseries: the polynomial--logarithmic calculus, series reversal at infinity, and the inversion of rapidly growing functions*. The historical d130 source inventory is 55,015 lines / 2,732,554 bytes / SHA-256 `545d4b5ead18831e37a4df0ab7fb6b74a40e1e598144dc7057e8c62aaaa46799`, with 16 parts, 58 chapters, and 3,111 unique labels. Its two-file root-plus-notation closure is 55,299 lines / 2,744,389 bytes / aggregate SHA-256 `499a045ab45fdea7849c888bc8903db0866a2d4ca27eca3db6f62a9db282af30`. The incoming 702- and 711-page artifacts and their associated source counts remain historical checkpoints. The d130 three-pass 704-page render is historical; the merged source was rebuilt as 721 pages in the merge-28de4e51 register above. Its earlier tuple and warnings remain in the [d130 receipt register](#d130-publication-receipts-and-current-parity-status). The volume merges forty-two independently written articles across five groups and records one genuine duplicate, one strengthening, one missing counterpart, and three non-equivalent same-subject comparisons; its Lagrange--Bürmann comparison distinguishes the near-identity operator form from the classical coefficient form. All absorbed layouts remain recoverable from Git history. | Consolidation of forty-two articles filed 2026-09-01 to -03; all replaced source layouts remain recoverable from Git history. |
 
 The consolidation is complete.  The six arrival packages and their
 retained historical PDFs were deleted once every source was absorbed and
@@ -757,8 +1207,201 @@ history is the archive, and the volume's provenance appendix records
 each source's intake and absorbed receipts, what it uniquely contributed,
 and every convention reconciled against the notation catalogue.  The
 canonical volume is A4 with Libertinus, which also clears the styling
-debt recorded against the arrivals.  Lean crosswalking remains open and
-is scoped in the volume's formalization register.
+debt recorded against the arrivals. The retained package PDF is a historical
+checkpoint, not a render of the current source. Lean coverage is recorded
+claim by claim as Exact, Partial, Neighbouring, or Absent in the volume.
+
+The earlier incoming snapshot recorded eighteen module surfaces with 169
+explicit public commands and two generated names. The later incoming
+snapshot expanded this to thirty-five focused surfaces with 304 explicit
+public commands plus two names generated by `to_additive` (306 named API
+entries). These are historical incoming inventories, not a recount of the
+merged 983/12,192 corpus; the module interfaces below retain their stated
+scope boundaries. The preceding local merge census was 970/12,056.
+
+Fourteen of the fifteen incoming leaves contribute 95 focused declarations:
+`BackwardErrorExistence` (7), `BellLeibnizTower` (5), `CayleyKernel` (10),
+`CayleyLocalCoordinate` (7), `CayleyTreeFunction` (7), `DivisorTransform` (9),
+`ExpSeriesRecurrence` (4), `LambertCorrectionEquation` (8),
+`LambertShiftConcavity` (5), `LeastTermIndex` (7), `TouchardEulerOperator` (9),
+`TransseriesBlockClasses` (3), `TransseriesDifferentialClosure` (12), and
+`TransseriesMonomialUniqueness` (2). The fifteenth, `NewtonInterpolation` (22),
+belongs to another focused package. Three later focused leaves contribute
+`StirlingSeriesCoefficients` (15), `WrightOmegaTwoOrders` (8), and
+`UnitSeriesPowerRecurrence` (3); the latter makes the coefficient-calculus
+arbitrary-power recurrence Exact without adding an analytic branch claim.
+`NewtonInterpolation` and eleven new `AppellSequence` declarations remain
+global-only for this focused inventory.
+- `UnitSeriesBellCoefficients.lean` (0+16):
+  `ordPartialBell_eq_factorialRatio_partialBell`,
+  `factorial_mul_ordPartialBell_eq_factorial_mul_partialBell`,
+  `coeff_fallingSeries_subst_eq_sum_ordPartialBell`,
+  `coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos`,
+  `coeff_fallingSeries_subst_eq_sum_partialBell`,
+  `coeff_negBinomSeries_subst_eq_sum_ordPartialBell`,
+  `coeff_negBinomSeries_subst_eq_sum_ordPartialBell_of_pos`,
+  `coeff_logOf_eq_sum_ordPartialBell`,
+  `egfA_factorialDenormalize_coeff_eq`,
+  `bellWeightSeries_factorialDenormalize_coeff_eq`,
+  `coeff_logOf_eq_sum_partialBell`, `coeff_exp_subst_eq_completeBell`,
+  `coeff_exp_subst_eq_partitionExpSum`,
+  `coeff_exp_subst_eq_sum_weightedPartitions`,
+  `coeff_exp_subst_eq_sum_div_weightedPartitions`, and
+  `coeff_exp_subst_recurrence`.  The three labels
+  `p0:lem:bell-conversion`, `p0:lem:power-log`, and
+  `p0:cor:exp-log-jets` are **Exact**, formally and coefficientwise only;
+  there is no analytic convergence or logarithm-branch claim.
+
+- `TransseriesWellBased.lean` (0+7 written): `dickson_isPWO`,
+  `dickson_antichain_finite`, `dickson_isPWO_pi`, `neumann_isPWO`, and
+  `neumann_finite_factorizations`, `neumann_isPWO_orderDual`, and
+  `neumann_finite_factorizations_orderDual`; `to_additive` also generates
+  `neumann_add_isPWO` and `neumann_finite_decompositions` outside the lexical
+  count.  `q0:lem:dickson` and `q0:lem:neumann` are **Exact**. The public
+  `OrderDual` wrappers encode the manuscript's greatest-element/no-increasing
+  convention literally, and its totally ordered abelian group specializes the
+  stronger partially ordered, order-cancellative commutative-monoid setting.
+  No Hahn-series type is constructed.
+
+- `TransseriesHeight.lean` (0+3): `isLittleO_log_pow_rpow`,
+  `isLittleO_log_pow_id`, `isLittleO_pow_mul_log_pow_exp`.  The two printed
+  real `atTop` comparisons in `q0:prop:height` are **Exact**; a recursive
+  global height/depth order is not defined.
+
+- `TransseriesScale.lean` (one structure, one definition, three theorems):
+  `IsAsymptoticScale`, `IsPoincareExpansion`,
+  `IsPoincareExpansion.isLittleO_succ_remainder`,
+  `IsPoincareExpansion.tendsto_coeff`, and
+  `IsPoincareExpansion.coeff_unique`.  The sequence-indexed forms of
+  `q0:def:scale`, `q0:def:poincare`, and `q0:prop:uniqueness` are **Exact**.
+  Uniqueness requires `[l.NeBot]`; the fixed remainder convention implies no
+  convergence, flat-remainder recovery, unordered-set, or maximal-scale
+  assertion.
+
+- `TransseriesScaleDominance.lean` (1+7): `plMonomial`,
+  `tendsto_plMonomial_atTop_zero`, `plMonomial_div_eventuallyEq`,
+  `tendsto_plMonomial_div_atTop_zero`,
+  `tendsto_plMonomial_div_atTop_one`, `plMonomial_pos`,
+  `tendsto_plMonomial_div_atTop`, and
+  `plMonomial_generators_dominance`.  The analytic trichotomy and generator
+  rule in `plt:lem:mot-dominance` are **Exact**, not a full unordered-set or
+  maximal package.
+
+- `TransseriesPolyLogScale.lean` (0+4): `isLittleO_plMonomial`,
+  `isAsymptoticScale_plMonomial`, `isAsymptoticScale_plMonomial_pow`, and
+  `isAsymptoticScale_plMonomial_log`.  The sequence-indexed consequence and
+  two standard ladders are exact; the unordered-set/finite-maximal part of
+  `plt:def:mot-scale` is not.
+
+- `TransseriesBlockAntiderivative.lean` (3+12): definitions `blockOperator`,
+  `blockAntiderivative`, `resonantAntiderivative`; theorems
+  `sum_sub_sum_shift`, `blockOperator_zero`, `blockOperator_sub`,
+  `blockOperator_blockAntiderivative`, `blockOperator_surjective`,
+  `natDegree_C_mul_of_ne_zero`, `natDegree_blockOperator`,
+  `blockOperator_injective`, `blockOperator_bijective`,
+  `derivative_resonantAntiderivative`, `derivative_surjective`, and
+  `natDegree_resonantAntiderivative`.  The polynomial-operator dichotomy is
+  exact, and `derivation_block_zpow` in the companion differential-block leaf
+  makes `plt:eq:mot-block-derivative` **Exact** for a unit power generator.
+  The compound `plt:lem:mot-block-antiderivative` remains **Partial** because
+  the concrete Laurent ambient, faithful polynomial evaluation, and ambient
+  kernel/uniqueness links are not packaged. Characteristic zero remains
+  necessary for the printed resonant surjectivity and degree claims.
+
+- `TransseriesDifferentialBlock.lean` (0+9): `derivation_pow_t`,
+  `derivation_block`, `exists_block_primitive`, `derivation_block_zero`,
+  `exists_block_primitive_resonant`, `derivation_val_inv`,
+  `derivation_pow_inv`, `derivation_zpow_t`, and `derivation_block_zpow`.
+  The displayed abstract integer-exponent identities
+  `plt:eq:mot-block-derivative` and `plt:eq:dif-block` are **Exact** when `t`
+  is a unit; the compound `plt:prop:dif-block` remains **Partial** because the
+  full Laurent-series, general-exponent, uniqueness, and coefficient-field
+  clauses are absent.
+
+- `QuadraticCoreCatalan.lean` (3+8): definitions `quadHalf`, `halfBinom`,
+  `quadCoef`; theorems `catalan_two_step`, `quadHalf_zero`,
+  `quadHalf_antidiagonal`, `halfBinom_step`, `quadHalf_rat`, `quadCoef_rat`,
+  `quadCoef_zero`, and `quadCoef_rec`.  `p6:prop:quadratic-core-catalan` is
+  **Exact**; `p6:lem:quadratic-core` is **Partial** at the coefficient-recursion
+  layer only, without packaged power-series existence/uniqueness, square-root,
+  or exact denominator-exponent clauses; and `p6:thm:deepest-pole` is
+  **Absent**, with no Gamma/Barnes identification.
+
+- `TransseriesFlat.lean` (4+16): `IsFlat`, `flatSubmodule`, `AbsorbsScale`,
+  `powScale`, `isFlat_zero`, `IsFlat.add`, `IsFlat.neg`, `IsFlat.sub`,
+  `IsFlat.const_smul`, `mem_flatSubmodule_iff`,
+  `IsFlat.mul_absorbsScale`, `absorbsScale_const`,
+  `IsPoincareExpansion.add_isFlat`,
+  `isFlat_sub_of_isPoincareExpansion`,
+  `isPoincareExpansion_iff_isFlat_sub`,
+  `isPoincareExpansion_zero_iff`, `powScale_eq_rpow`,
+  `absorbsScale_of_isBigO_pow`, `isFlat_exp_neg`, and
+  `isPoincareExpansion_add_exp_neg`.  `q0:def:flat` and
+  `q0:prop:invisible` are **Exact**, with the latter strengthened to an iff.
+
+- `WrightOmega.lean` (1+13): `wrightOmega`, `analyticAt_wrightOmega`, `wrightOmega_pos`,
+  `wrightOmega_add_log`, `principalLambertW_eq_wrightOmega_log`,
+  `wrightOmega_leftInverse`, `wrightOmega_strictMono`, `wrightOmega_one`,
+  `one_le_wrightOmega`, `wrightOmega_le_self`, `sub_log_le_wrightOmega`,
+  `wrightOmega_envelope`, `add_one_div_two_le_wrightOmega`, and
+  `tendsto_wrightOmega_atTop`.  `plt:prop:mot-omega-basic` is **Exact** over
+  the reals, including real analyticity at every point; this status makes no
+  complex holomorphy or branch-domain claim.
+
+- `TransseriesHarmonicIncrement.lean` (0+2):
+  `tendsto_div_atTop_of_tendsto_sub` and
+  `tendsto_div_atTop_of_harmonic_increment`.  The leading Stolz limit in
+  `plt:lem:mot-harmonic` is exact; the logarithmic correction, constant, and
+  little-o remainder keep the whole lemma **Partial**.
+
+- `OrdinaryPartialBell.lean` (2+4): `ordinarySeries`,
+  `ordinaryPartialBell`, `ordinaryPartialBell_pow`,
+  `bellWeightSeries_eq_ordinarySeries`,
+  `factorial_mul_ordinaryPartialBell`, and
+  `ordinaryPartialBell_eq_zero_of_lt`.  It makes
+  `plt:lem:bell-normalizations` **Exact** as a formal power-series identity,
+  without adding a labelled-set-partition interpretation.
+
+- `LinLogCoreInversion.lean` (4+18): `linLogCoreArg`, `linLogCoreRoot`,
+  `linLogCoreThreshold`, `linLogCoreRootLower`, `linLogCore_eq_iff`,
+  `principalLambertW_linLogCoreArg_pos`, `linLogCoreRoot_pos`,
+  `linLogCore_linLogCoreRoot`, `strictMonoOn_linLogCore`,
+  `linLogCoreRoot_unique`, `hasDerivAt_linLogCore`,
+  `linLogCore_slope_eq`, `linLogCore_critical`,
+  `linLogCoreArg_mem_Ioo_iff`, `principalLambertW_linLogCoreArg_neg`,
+  `linLogCoreRoot_pos_of_neg`, `linLogCoreRootLower_pos`,
+  `linLogCore_linLogCoreRoot_of_neg`, `linLogCore_linLogCoreRootLower`,
+  `linLogCoreRoot_lt_critical`, `critical_lt_linLogCoreRootLower`, and
+  `linLogCoreRoot_ne_linLogCoreRootLower`.  The real substitution, both real
+  branch rules, threshold, uniqueness, and slope are exact;
+  `p0:thm:lambert-core` remains **Partial** at its asymptotic and general
+  complex-branch clauses.
+
+- `PowerLogCoreInversion.lean` (3+6): `powerLogCore`, `powerLogCoreArg`,
+  `powerLogCoreRoot`, `powerLogCore_exp`, `log_powerLogCoreRoot_sub`,
+  `powerLogCore_of_lambert`, `powerLogCore_powerLogCoreRoot`,
+  `hasDerivAt_powerLogCore`, and `hasDerivAt_powerLogCore_root`.  The real
+  `r=1` specialization is exact; general `r`, complex powers, and branch
+  bookkeeping keep `p6:lem:core` **Partial**.
+
+- `RemainderTransport.lean` (0+4): `lipschitzOn_of_abs_deriv_le`,
+  `transport_bound_mul`, `transport_first_order`, and `transport_bound`.  The
+  displacement and displayed explicit-error clauses are exact; the closing
+  asymptotic clause keeps `p0:thm:remainder-transport` **Partial**.
+
+- `StaircaseInversion.lean` (0+7): `isLeast_ceil`, `staircase_ceil`,
+  `staircase_separation`, `staircase_separation_fails`, `staircase_round`,
+  `isLeast_residue_class`, and `exists_half_error_of_jump`.  The five
+  order/rounding/jump mechanisms are exact, but the Fourier layer and analytic
+  interpolation construction keep `p0:thm:staircase` **Partial**.
+
+- `DerangementNearestInteger.lean` (1+7): `subfactorialDefect`,
+  `subfactorialDefect_zero`, `subfactorialDefect_succ`,
+  `subfactorialDefect_pos`, `subfactorialDefect_lt`,
+  `numDerangements_sub_eq`, `abs_numDerangements_sub_lt_half`, and
+  `round_factorial_mul_exp_neg_one`.  It proves the integer nearest-integer
+  result; the real-argument defect bound and analytic branch family keep
+  `p8:cor:nearest-integer` **Partial** as printed.
 
 A second subgroup, `lambert-inverse-transseries/`, received three
 independently written articles on 2026-09-02 that invert `f(x) = x + W(x)`
@@ -898,12 +1541,12 @@ the long provenance rows below; arrival fingerprints remain unchanged.
 | --- | --- | --- |
 | `Digital_Spectral_Geometry_and_Log_Periodic_Saddles/` | *Digital Spectral Geometry and Log-Periodic Saddles* (24 A4 pp and 1,963 source lines at arrival; retained historical 24-page A4 PDF; current notation-source TeX: 1,940 lines, 61,049 bytes, SHA-256 `92d98914722f98b37f84a19283536c8b3925584d0729920b6346a4f572c735b1`; with a 490-line arbitrary-precision numerical program, a generated TeX fragment and summary, three generated PNG figures, and a reproducible 161-line repository-audit program). Landed 2026-08-30 from the rootless `drafts/incoming/Fabius_Rvachev_Frontier_Report_Package.zip` (outer SHA-256 `0028cb4f47134574ba7cd698bfc0ec11f08776b320cbc82b8467bea20d865f6d`) under a collision-safe title directory: the generic report stem is already occupied by the unrelated q-series member. The delivered manifest's TeX/PDF size and hash entries verified, but its repository audit had read **zero** TeX files and its numerical generation had failed. Intake repair preserved those arrival records, made the script compatible with current mpmath, regenerated all requested outputs at 80 digits and completed a recursive screen of 188 prior TeX files, 390,119 lines, and 16,813,357 bytes excluding this package directory (raw corpus digest `bb8a7de4c16a960f8d640d99797085b4f17cd0cdcc38b38caa4014536806b4d3`; cluster hits 43/88/36/24/75/37; `repository_audit.md` SHA-256 `70e66ec477a46666b3acfe5d81123ebf50576b92b4f9d25deb6cf6a93d27b5fb`). No theorem-level novelty is accepted on intake: the divisor/zeta/count/heat/cumulant spine specializes Exponents I and Frontier Compilations II/VII; the exact `K`/Lambert/base-b layer occurs in Exponents VI; Appell reproduction/first defect occurs in Exponents VI and `Up_Polynomial_Synthesis`; Legendre--Bessel occurs in `Representation_Frontiers`; sub-Gaussianity occurs in Frontier Compilations V; and the endpoint/inverse program has a stronger inverse synthesis. Only minor corollary-level residue remains to assess. The report's all-orders saddle and inverse statements were downgraded for a missing uniform remainder, global Strang--Fix sharpness was restricted to the proved canonical Appell defect, and the false strict-curvature range was corrected using the `b=2` center flatness and `b>2` plateau. Report labels convey no Lean status. `BaseDigitMultiplicity.lean`, `WeightedScaleMultiplicity.lean`, and `SpectralZetaWeighted.lean` now provide an exact seven-declaration finite arithmetic crosswalk, without proving the analytic zero multiplicities, canonical product, or complex spectral-zeta identity. The rebuilt PDF uses the current primary document's canonical A4 package, theorem, macro, boxed-environment, and listing-style block verbatim apart from permitted PDF metadata and running-head text; four required local notation commands follow it. Its Libertinus fonts are embedded and subset, with no Type 3 fonts. The retained historical 24-page A4 PDF is 852,061 bytes (SHA-256 `a87074c73f97d7040dbc1e5cd665e5214fcefecec64426441152caf306201dba`), and its build-source TeX was 60,274 bytes (SHA-256 `6612eaca5ba7f1a29c863cf4faf24904d0a991056dee747388c39a40fde14880`). Historical intake recorded ten arrival hashes and a later 18-payload validation receipt (SHA-256 `35fc6b627c4ef6a0bad20636747954b4ddad01a28d9b9a6a98957735663410d8`); the subsequent source-only merge makes no operational checksum-verification claim | arrived through `drafts/incoming/`; archive unpacked here and deleted after validation |
 | `Automatic_Scale_Factorizations_Rvachev_2026-08-30/` | *Automatic Scale Factorizations of the Rvachev Law* (retained historical 22-page PDF; current notation-source TeX: 1,682 lines, 62,490 bytes, SHA-256 `3e40fef5247ed3d7263ff885dc97159b456f26347614817fc18e087af647de90`; with experiment, data, figures, and audits), committed directly to the inbox by `8a184546747082cbd92ad4675fb61981c6b8c3b6`. The 21 historical payload hashes reflect six CSV LF-normalization changes and the repaired JSON final newline. It remains standalone pending comparison with the scale-factorization and spectral material already in the corpus; report labels do not imply Lean proofs | `drafts/incoming/Automatic_Scale_Factorizations_Rvachev_2026-08-30/`; filed here |
-| `Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/` | *Dyadic Radon Profiles in the Fabius--Rvachev Web* (31 pp with experiment, data, figures, and audit), direct arrival `03b2f61889674f7d64ac86d3233236f5fa7ce660`. Its 26 historical payload hashes record nine CSV CRLF-to-LF normalization changes. The zero-profile, Pascal, and digital-sign strands await claim-level comparison and Lean crosswalk | `drafts/incoming/Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/`; filed here |
+| `Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/` | *Dyadic Radon Profiles in the Fabius--Rvachev Web* (current synchronized 2,050-line source and 29-page A4 PDF; exact B9 receipt above; with experiment, data, figures, and audit), direct arrival `03b2f61889674f7d64ac86d3233236f5fa7ce660`. Its 26 historical payload hashes record nine CSV CRLF-to-LF normalization changes. The zero-profile, Pascal, and digital-sign strands await claim-level comparison and Lean crosswalk | `drafts/incoming/Dyadic_Radon_Profiles_Fabius_Rvachev_2026-08-30/`; filed here |
 | `Fabius_Pascal_Frontiers_Report/` | *Automatic Spectra, Exact Dyadic Cubature, and Probabilistic Duals in the Pascal--Rvachev Hierarchy* (27 pp plus experiment/output payload), direct arrival `8a184546747082cbd92ad4675fb61981c6b8c3b6`. No checksum file was supplied; historical intake recorded hashes for all nine delivered files. Its substantial overlap with the consolidated Pascal--Rvachev hierarchy is deferred to the required second phase; manuscript claims are not Lean status | `drafts/incoming/Fabius_Pascal_Frontiers_Report/`; filed here |
 | `fabius_holonomic_frontiers_report/` | *Holonomic Rank, Exact Overlaps, and Non-P-Recursiveness* (retained historical 30-page PDF; current notation-source TeX: 2,251 lines, 85,256 bytes, SHA-256 `75f2a36ee0ae4b68e17030536cd7aa2cd922fea8941ed023afb272fafd29b20f`; with certificates, experiments, and figures), direct arrival `6d6737530ec541196c506f95ec20a701a29872b3`. The 26 historical payload hashes reflect six CSV LF-normalization changes. Non-D-finiteness and non-P-recursiveness claims overlap the existing frontier corpus and remain unassessed at this intake stage | `drafts/incoming/fabius_holonomic_frontiers_report/`; filed here |
-| `Fabius_Rvachev_Carleman_Frontiers_2026-08-30/` | *Critical Ultradifferentiable Geometry of the Fabius--Rvachev System* (24 pp with exact/high-precision experiment and figures), direct arrival `92c9909242ed6a2ab51d68ed816d1aa2a5339719`. The 21 historical payload hashes reflect four CSV LF-normalization changes. Its derivative-growth and Carleman layers overlap the consolidated derivative-norm spectrum and same-batch q reports; comparison and formalization remain pending | `drafts/incoming/Fabius_Rvachev_Carleman_Frontiers_2026-08-30/`; filed here |
+| `Fabius_Rvachev_Carleman_Frontiers_2026-08-30/` | *Critical Ultradifferentiable Geometry of the Fabius--Rvachev System* (current synchronized 1,934-line source and 24-page A4 PDF; exact B10 receipt above; with exact/high-precision experiment and figures), direct arrival `92c9909242ed6a2ab51d68ed816d1aa2a5339719`. The 21 historical payload hashes reflect four CSV LF-normalization changes. Its derivative-growth and Carleman layers overlap the consolidated derivative-norm spectrum and same-batch q reports; comparison and formalization remain pending | `drafts/incoming/Fabius_Rvachev_Carleman_Frontiers_2026-08-30/`; filed here |
 | `Dyadic_Spectral_Divisors_and_Gamma_Duality/` | *Dyadic Spectral Divisors and Gamma Duality* (22 pp with experiments, generated tables, and figures), direct arrival `d4605275f58f648ebcdeb74bc2ef5e4983abb6f0` under generic wrapper `Fabius_Rvachev_Frontier_Report-F/`. Its historically submitted three-entry inventory covered four payloads, while repository intake recorded hashes for all twenty delivered files. Zero-divisor, Laguerre--Polya, holonomicity, and moment claims remain separate pending semantic deduplication and Lean crosswalk | `drafts/incoming/Fabius_Rvachev_Frontier_Report-F/`; renamed and filed here |
-| `Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/` | *Reciprocal-Integer Convolution Divisors of the Rvachev Law* (retained historical 35-page A4 PDF; current notation-source TeX: 2,307 lines, 90,871 bytes, SHA-256 `e6e3d6df88efc3e50f7180b3853fdc6e4c9072f4e56192655bb76e195b282c4e`; with a 352-line exact/numerical experiment, six data files, four PNG figures, and a README). Landed 2026-08-30 from the rootless 14-file archive `drafts/incoming/fabius_rvachev_frontier_report_2026-08-30-B.zip` (outer SHA-256 `cfae82f303c3740bd76673fed772b1f69b9fedb0a911505360c930db7cc5a13f`). The repaired package has a title-derived pair, canonical A4/27 mm/Libertinus styling, deterministic LF CSV output, an exact three-pass build, with historical hashes recorded for its 14 payloads; all fonts are embedded/subset, no Type 3 font or overfull box remains, and key pages and figures were inspected. Its reciprocal-integer characteristic quotients, scale classification, digit cocycle, parity theorem, transport and inverse bounds, arithmetic zero divisor, spectral zeta, Thue--Morse quotient, and Stern/hyperbinary specialization form a distinct arithmetic/spectral layer. Adjacent `GeneralizedZeroDivisor` and `ReciprocalIntegerGammaZeros` APIs are crosswalked without upgrading the quotient family to Lean status. A temp-isolated unpinned Python replay reproduced four CSVs byte-identically, the summary modulo EOL, and the endpoint CSV within `1.1102230246251565e-16`; Matplotlib layout drift is recorded. The package remains standalone pending claim-by-claim integration; manuscript theorem labels do not imply Lean status | arrived through `drafts/incoming/`; archive unpacked here and deleted |
+| `Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/` | *Reciprocal-Integer Convolution Divisors of the Rvachev Law* (current synchronized pair: 2,307-line, 90,895-byte TeX, SHA-256 `0e293a5fda90d2ccef8b4e3aa28800f8394c406c607c92968c958ab5d301fa36`; 35-page, 1,009,221-byte A4 PDF, SHA-256 `79e22145eb2fb78ee50415da3b5d1ef340ace923e84e177813a55e1c49e1291d`; with a 352-line exact/numerical experiment, six data files, four PNG figures, and a README). Landed 2026-08-30 from the rootless 14-file archive `drafts/incoming/fabius_rvachev_frontier_report_2026-08-30-B.zip` (outer SHA-256 `cfae82f303c3740bd76673fed772b1f69b9fedb0a911505360c930db7cc5a13f`). The repaired package has a title-derived pair, canonical A4/27 mm/Libertinus styling, deterministic LF CSV output, an exact three-pass build, with historical hashes recorded for its 14 payloads; all fonts are embedded/subset, no Type 3 font or overfull box remains, and key pages and figures were inspected. Its reciprocal-integer characteristic quotients, scale classification, digit cocycle, parity theorem, transport and inverse bounds, arithmetic zero divisor, spectral zeta, Thue--Morse quotient, and Stern/hyperbinary specialization form a distinct arithmetic/spectral layer. Adjacent `GeneralizedZeroDivisor` and `ReciprocalIntegerGammaZeros` APIs are crosswalked without upgrading the quotient family to Lean status. A temp-isolated unpinned Python replay reproduced four CSVs byte-identically, the summary modulo EOL, and the endpoint CSV within `1.1102230246251565e-16`; Matplotlib layout drift is recorded. The package remains standalone pending claim-by-claim integration; manuscript theorem labels do not imply Lean status | arrived through `drafts/incoming/`; archive unpacked here and deleted |
 | `Fabius_Total_Positivity_Frontier_Report/` | *Total Positivity and Cartwright Geometry in the Fabius--Rvachev Dyadic Sinc Product* (retained historical 24-page PDF; current notation-source TeX: 1,060 lines, 58,362 bytes, SHA-256 `e7f05ac66a92284e82886bfe8b3376715ca0f71493a217d5a1adab6c17171475`; with a 153-line numerical/symbolic experiment script, three generated PNG figures, one generated TeX table, and four CSV evidence tables). Landed 2026-08-30 as the bare three-file directory `drafts/incoming/Fabius_Total_Positivity_Frontier_Report/`; it shipped no README, checksum inventory, environment pin, captured run output, or generated inputs. Arrival SHA-256 values are TeX `efea26060e6de63e97d00b982ca9e618f2234c88b8fd02f4ae9a8d63b7beecdd`, PDF `8f087969eaeb5eea349d64f6857f97356592c3464b9c3ecabcc9e5feec07630a`, and script `6674fa59e44fead9d41fb887e0634d8c363f816d1d2cceaf7886007db22d55fa`. The repository repair regenerated all eight missing outputs with the bundled script, normalized the source to A4/Libertinus, rebuilt it in exactly three passes with no Type 3 or overfull box, and added a README; historical hashes record the 12 payloads. Its imaginary-square-root transform, Laguerre--Polya/PF-infinity and multiplier-sequence program, exact zero divisor and Thue--Morse sign interpolation, Cartwright geometry, and geometric-scale deformation belong to the arithmetic/spectral Fourier-product theme. Its novelty screen is materially stale even at its pinned snapshot: `Frontier_Compilations/` Part V already contains the matching Laguerre--Polya/PF-infinity/shifted-Jensen layer, with zero-count and sign material elsewhere in that volume; the source now records that correction and the exact finite general-base digit-count crosswalk, without promoting its analytic zero-order or sign claims. It therefore remains separate pending claim-by-claim crosswalk and deliberate deduplication; report theorem labels record paper-level status, not current Lean proof status | arrived through `drafts/incoming/`; bare directory filed and normalized here |
 | `Spectra_and_Arithmetic_Frontiers/` | *Spectral Arithmetic Frontiers of the Fabius–Rvachev System* (current notation-source consolidated TeX: 8,183 lines, 349,076 bytes, SHA-256 `683a560044772216980b05c4dd26957c6bbfb6c34019cc8d4cae815d9cff8df1`; retained PDF predates it, so no render parity is claimed) — consolidation (2026-08-28) of the former `Fabius_Half_Integer_Spectral_Frontier_Report/` (*Half-Integer Spectral Arithmetic*), `Fabius_Arithmetic_Rays_Frontier_Report/` (*Arithmetic Dyadic Rays*), `Spectral_Arithmetic_Pascal_Rvachev_Hierarchy/` (*Spectral Arithmetic and the Pascal–Rvachev Hierarchy*), and `Fabius_Derivative_Norm_Spectrum_bundle/` (*Derivative Norm Spectra and Dual Moment Geometries*); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 
@@ -911,7 +1554,7 @@ the long provenance rows below; arrival fingerprints remain unchanged.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `Integration_and_Transform_Frontiers/` | *Integration and Transform Frontiers for the Fabius–Rvachev System* (retained historical 377 pp, 12 parts) — consolidation (2026-08-28) of the former `Fabius_Antiderivatives_Report/`, `Fabius_Monomial_Antiderivatives_Report/`, `fabius_monomial_antiderivatives_report-2/`, `Fabius_Integral_Transforms_Report/`, `Fabius_Integral_and_Transform_Frontiers/`, `fabius_integral_frontiers_bundle/`, `Fabius_Rvachev_Integral_Frontiers/`, `Fabius_Integral_Transform_Fractional_Frontiers/`, `Fabius_Rvachev_Fractional_Integral_Report/`, `Fabius_Fractional_Integral_Transform_Frontiers/`, and `fabius_fractional_transform_frontiers_bundle/`, plus (folded in later on 2026-08-28 as Part XII by the same mechanical per-part step) the second-wave `Fabius_Integral_Transforms_Report/` (*Integral and Transform Calculus for the Fabius–Rvachev–Quantile System*: order-statistic spacings, beta–quantile lattices, dyadic resolvents, sinc energies, beyond-all-orders localization — an independent report sharing its directory name with Part IV's 2026-08-27 source); part order and former titles in the group README; assets under `assets/` (second-wave member under `assets/Fabius_Integral_Transforms_Report_second_wave/`), provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
+| `Integration_and_Transform_Frontiers/` | *Integration and Transform Frontiers for the Fabius–Rvachev System* (current synchronized 25,147-line source and 377-page A4 PDF; exact B3 receipt above; 12 parts) — consolidation (2026-08-28) of the former `Fabius_Antiderivatives_Report/`, `Fabius_Monomial_Antiderivatives_Report/`, `fabius_monomial_antiderivatives_report-2/`, `Fabius_Integral_Transforms_Report/`, `Fabius_Integral_and_Transform_Frontiers/`, `fabius_integral_frontiers_bundle/`, `Fabius_Rvachev_Integral_Frontiers/`, `Fabius_Integral_Transform_Fractional_Frontiers/`, `Fabius_Rvachev_Fractional_Integral_Report/`, `Fabius_Fractional_Integral_Transform_Frontiers/`, and `fabius_fractional_transform_frontiers_bundle/`, plus (folded in later on 2026-08-28 as Part XII by the same mechanical per-part step) the second-wave `Fabius_Integral_Transforms_Report/` (*Integral and Transform Calculus for the Fabius–Rvachev–Quantile System*: order-statistic spacings, beta–quantile lattices, dyadic resolvents, sinc energies, beyond-all-orders localization — an independent report sharing its directory name with Part IV's 2026-08-27 source); part order and former titles in the group README; assets under `assets/` (second-wave member under `assets/Fabius_Integral_Transforms_Report_second_wave/`), provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 
 ## inverse-and-sampling — `inverse-and-sampling/`
 
@@ -970,19 +1613,18 @@ analytic-MGF, or Barnes-identification result.
 `ASSET_DISPOSITION.csv` accounts for 88 source-group files, and the deduplicated
 asset tree contains 55 retained files. Eight checksum-ledger rows from the
 former 63-payload checkpoint are retired. No operational checksum verification
-is claimed. The former 134-page, 2,027,726-byte A4 PDF
-has SHA-256
-`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`.
-It is a fully reviewed historical checkpoint superseded by the later
-137-page first-merge receipt above; both are now historical. The retained
-23-input source-only closure digest for that later snapshot is
-`e07cb51f4fe072cd79a014cc891cb8cede62880593d7659b17da9377a21099bc`.
-PDFs
+is claimed. The former 134-page, 2,027,726-byte A4 PDF has SHA-256
+`22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d`
+and remains historical. The d130 139-page receipt remains current because this
+merge does not change the canonical inverse TeX closure; its exact tuple is in
+the [authoritative receipt register](#d130-publication-receipts-and-current-parity-status).
+The purpose-specific 23-input source ledger is regenerated separately by its
+approved generator; older ledger digests remain historical provenance. PDFs
 from the five retired source packages or migrated as evidence are likewise
 historical/source assets.
 
-The comb row below is superseded in its publication receipt. The unchanged
-driver SHA-256 is
+The comb history below records the publication checkpoint superseded by the
+current root-6 receipt above. At that historical checkpoint the driver SHA-256 was
 `63fb8372dbcb6c0b27eb7dea19e387dea27af23811df9fcfbe9313d37c8180a4`,
 but the later canonical-notation edit in `chapters/03_additive_dyadic.tex` and
 the exact `gq:thm:richardson-generating` Lean crosswalk in
@@ -994,8 +1636,9 @@ three-pass 158-page,
 2,456,105-byte A4 PDF with SHA-256
 `81d249c8b2bb124836c858bd8e0ef9c8764606a2f9655a798d69e7565b1759b4`.
 That artifact passed the log, A4/page, text, metadata, font, render, and visual
-gates for its recorded source graph and remains explicit history. The accepted
-160-page merged-source receipt above supersedes it. Full numerical replay
+gates for its recorded source graph and remains explicit history. The later
+d130 160-page receipt is also historical because this merge changes the comb
+TeX closure; a fresh synchronized render is pending. Full numerical replay
 remains separate reproducibility work.
 
 | Directory | Document | Previous path |
@@ -1034,27 +1677,30 @@ at intake.
 Series and orthogonal-expansion representations of the up-function.
 Current source counts for the unaffected documentation rows are 1,542 lines
 for forward iterates, 1,913 for Stein--Koopman, and 1,318 for Noncommutative
-Frontiers.  The exact notation-source checkpoint for the affected rows is:
-Dyadic Chaos, 3,153 lines, 112,391 bytes, SHA-256
-`34241042a005ea529219aca0761c121760a2574324bbb2300c365012cc1435c2`;
-Zero Bias, 1,926 lines, 72,231 bytes, SHA-256
+Frontiers.  The synchronized Dyadic Chaos pair is a 3,153-line, 112,400-byte
+TeX source with SHA-256
+`38840c5baa85a9661af4b957e1a03560b42df8fb5dd0992e38a64f0561f2fd8e`
+and a 40-page, 821,194-byte PDF with SHA-256
+`ccc5a898be59c7e14c406248dd3ad377e5601e475aea8c6fffae483f49535471`.
+The remaining exact notation-source checkpoints are Zero Bias, 1,926 lines,
+72,231 bytes, SHA-256
 `5b0eb2cf61123d5c9a6bd7ec5fdef5f7f09b2130ea02e3437d54f6dac2e27e42`;
 New Frontiers-2, 2,978 lines, 122,235 bytes, SHA-256
 `e0015e424fe577c4aee3ea473ace71b67b9f250d5a96569dccd6dd03ebe20c98`;
 and Shape/Divisibility/Stein, 2,057 lines, 83,124 bytes, SHA-256
 `975ec7078562d88ba76c870ef1d90363380cbe422507762c305695b61f1c9bec`.
-No PDF was rebuilt for these notation edits.  The associated PDFs remain
-historical build artifacts; these fingerprints and that source-only boundary
-supersede older counts and synchronization language embedded below, while all
-arrival and historical build hashes remain unchanged.
+No PDF was rebuilt for those three notation edits.  Their associated PDFs
+remain historical build artifacts; these fingerprints and that source-only
+boundary supersede older counts and synchronization language embedded below,
+while all arrival and historical build hashes remain unchanged.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
-| `fabius_dyadic_chaos_frontier/` | *Dyadic Sensitivity and Polynomial-Chaos Frontiers for the Fabius--Rvachev Law* (34 pp at arrival; retained historical 40-page A4 PDF; current notation-source TeX: 3,153 lines, 112,391 bytes, SHA-256 `34241042a005ea529219aca0761c121760a2574324bbb2300c365012cc1435c2`; with a 672-line deterministic experiment, ten CSV/text products, six PDF/PNG figure pairs, and four audit files). Filed 2026-08-30 from `fabius_dyadic_chaos_frontier.zip` (1,351,045 bytes; SHA-256 `d57fd01c3991a6a7ecd6ba6e745729c745745d3265cb3cfd414aac1991b11b86`). The 30 immutable submitted payload hashes are retained as historical receipts; nine CSVs were normalized from CRLF to LF, and the historical checksum inventory recorded all 33 payload rows. Post-intake review repaired the zero-field, infinite-product, Mellin-continuation, phase-limit, mode-set, Thue--Morse-domain, and Lambert-cutoff statements; replayed the deterministic experiment in two compatible environments; and rebuilt the 40-page report plus six one-page vector figures with embedded fonts and no Type 3 fonts. Its label-complete crosswalk inventories all 36 nonconjectural results. `thm:TM-corner` is now Complete exactly by composition: the existing two-definition/eleven-theorem `ThueMorseSymmetricDifference.lean` module supplies its Boolean-cube, polynomial, dyadic-sign, and report-grid algebra, while the one-definition/four-theorem `ThueMorseCornerIntegral.lean` leaf supplies the repeated integral under local `IsOpen I`, `OrdConnected I`, `ContDiffOn ℝ N g I`, and full-closed-segment containment hypotheses. The latter permits nonnegative, including zero, half-steps and `N = 0`; it is real-valued and fixes the recursive nesting order. It does not prove the following Walsh conditional-expectation construction or its `2^(-N)` normalization. The orthogonal-chaos report remains standalone pending broader comparison and deliberate integration; all other manuscript result labels retain their separately audited status | arrived through `drafts/incoming/`; archive unpacked here and deleted |
+| `fabius_dyadic_chaos_frontier/` | *Dyadic Sensitivity and Polynomial-Chaos Frontiers for the Fabius--Rvachev Law* (34 pp at arrival; current synchronized pair: 3,153-line, 112,400-byte TeX, SHA-256 `38840c5baa85a9661af4b957e1a03560b42df8fb5dd0992e38a64f0561f2fd8e`; 40-page, 821,194-byte A4 PDF, SHA-256 `ccc5a898be59c7e14c406248dd3ad377e5601e475aea8c6fffae483f49535471`; with a 672-line deterministic experiment, ten CSV/text products, six PDF/PNG figure pairs, and four audit files). Filed 2026-08-30 from `fabius_dyadic_chaos_frontier.zip` (1,351,045 bytes; SHA-256 `d57fd01c3991a6a7ecd6ba6e745729c745745d3265cb3cfd414aac1991b11b86`). The 30 immutable submitted payload hashes are retained as historical receipts; nine CSVs were normalized from CRLF to LF, and the historical checksum inventory recorded all 33 payload rows. Post-intake review repaired the zero-field, infinite-product, Mellin-continuation, phase-limit, mode-set, Thue--Morse-domain, and Lambert-cutoff statements; replayed the deterministic experiment in two compatible environments; and rebuilt the 40-page report plus six one-page vector figures with embedded fonts and no Type 3 fonts. Its label-complete crosswalk inventories all 36 nonconjectural results. `thm:TM-corner` is now Complete exactly by composition: the existing two-definition/eleven-theorem `ThueMorseSymmetricDifference.lean` module supplies its Boolean-cube, polynomial, dyadic-sign, and report-grid algebra, while the one-definition/four-theorem `ThueMorseCornerIntegral.lean` leaf supplies the repeated integral under local `IsOpen I`, `OrdConnected I`, `ContDiffOn ℝ N g I`, and full-closed-segment containment hypotheses. The latter permits nonnegative, including zero, half-steps and `N = 0`; it is real-valued and fixes the recursive nesting order. It does not prove the following Walsh conditional-expectation construction or its `2^(-N)` normalization. The orthogonal-chaos report remains standalone pending broader comparison and deliberate integration; all other manuscript result labels retain their separately audited status | arrived through `drafts/incoming/`; archive unpacked here and deleted |
 | `Fabius_Zero_Bias_Frontier_Report/` | *Zero-Bias Towers and Spectral Peeling for the Fabius--Rvachev Law* (retained historical 26-page A4 PDF; current notation-source TeX: 1,926 lines, 72,231 bytes, SHA-256 `5b0eb2cf61123d5c9a6bd7ec5fdef5f7f09b2130ea02e3437d54f6dac2e27e42`; with an 839-line reproducible experiment, six CSV tables, and five dual-format figures). Filed 2026-08-30 from `Fabius_Zero_Bias_Frontier_Report.zip` (1,300,870 bytes; SHA-256 `fb8bbf8e34a2f5eb4e5bbe7b06b22566502be7583696f01960a6e41d25b518ee`); its 21 arrival hashes and later 23-payload hashes are retained as historical receipts. Hostile intake review separates existing moment/Fourier/shape infrastructure from the paper-level zero-bias tower, collision-free occupancy, spectral peeling, and limiting claims. The canonical A4/27 mm/Libertinus report and regenerated figures contain no Type 3 fonts and were rebuilt in exactly three strict passes | arrived through `drafts/incoming/`; archive unpacked here and deleted |
-| `common_digit_fabius_zonoids_frontier_report/` | *Common-Digit Fabius Zonoids: Exact Volumes, Hyperbolic-Secant Geometry, Bernoulli Gaussianization, and Parameter Jets* (36 pp with code and generated assets), direct arrival `fef364bfd162f80919cd77b808530dd0734f1cb1`. Its 24 historical payload hashes reflect six CSV LF-normalization updates. The multivariate/zonoid layer remains standalone pending comparison and a Lean crosswalk | `drafts/incoming/common_digit_fabius_zonoids_frontier_report/`; filed here |
+| `common_digit_fabius_zonoids_frontier_report/` | *Common-Digit Fabius Zonoids: Exact Volumes, Hyperbolic-Secant Geometry, Bernoulli Gaussianization, and Parameter Jets* (current synchronized 2,092-line source and 36-page A4 PDF; exact B8 receipt above; with code and generated assets), direct arrival `fef364bfd162f80919cd77b808530dd0734f1cb1`. Its 24 historical payload hashes reflect six CSV LF-normalization updates. The multivariate/zonoid layer remains standalone pending comparison and a Lean crosswalk | `drafts/incoming/common_digit_fabius_zonoids_frontier_report/`; filed here |
 | `Jacobi_Digit_Fabius_Rvachev_Frontier_Report/` | *Jacobi-Digit Deformations of the Fabius--Rvachev Law* (32 pp with experiment, data, and figures), direct arrival `92c9909242ed6a2ab51d68ed816d1aa2a5339719`. All 38 submitted non-ledger hashes verify exactly. This distinct representation family remains standalone pending mathematical assessment and Lean formalization | `drafts/incoming/Jacobi_Digit_Fabius_Rvachev_Frontier_Report/`; filed here |
-| `Matrix_Dilated_Fabius_Rvachev_Frontier_Report/` | *Matrix-Dilated Fabius--Rvachev Laws* (29 pp with experiment, data, figures, and audits), direct arrival `8a184546747082cbd92ad4675fb61981c6b8c3b6`. Its 27 historical payload hashes reflect seven CSV LF-normalization updates. The self-affine box-spline/zonoid layer remains separate from the common-digit report pending a claim-level crosswalk; manuscript claims do not establish Lean status | `drafts/incoming/Matrix_Dilated_Fabius_Rvachev_Frontier_Report/`; filed here |
+| `Matrix_Dilated_Fabius_Rvachev_Frontier_Report/` | *Matrix-Dilated Fabius--Rvachev Laws* (current synchronized 1,997-line source and 29-page A4 PDF; exact B5 receipt above; with experiment, data, figures, and audits), direct arrival `8a184546747082cbd92ad4675fb61981c6b8c3b6`. Its 27 historical payload hashes reflect seven CSV LF-normalization updates. The self-affine box-spline/zonoid layer remains separate from the common-digit report pending a claim-level crosswalk; manuscript claims do not establish Lean status | `drafts/incoming/Matrix_Dilated_Fabius_Rvachev_Frontier_Report/`; filed here |
 | `Fabius_Rvachev_Noncommutative_Frontiers/` | *Noncommutative Cumulant Frontiers for the Fabius--Rvachev Law* (26 A4 pp, 1336 source lines; with a 681-line exact/high-precision experiment, ten result files, three dual-format figures, a README, and minimum-version requirements). Landed 2026-08-30 from `drafts/incoming/Fabius_Rvachev_Noncommutative_Frontiers.zip` (outer SHA-256 `55f780d0780a693f2450fe6a4c8a63ba964b3d0e6fcea6d985040c6cb29e25cc`); all 21 payload checksums verified on arrival. The repository repair renamed the generic document stems, normalized four CSV writers and payloads to deterministic LF, selected PNG plot companions, adopted canonical A4/27 mm/Libertinus styling, and rebuilt the PDF in exactly three passes with all fonts embedded/subset and no Type 3 font; historical hashes record its 21 payloads. Its free and Boolean moment transforms, exact non-free-infinite-divisibility certificates, q-parametric Hankel obstruction, Jacobi stripping and increment program, finite-sinc cumulant transfer, and inverse-Fabius/Legendre/endpoint interfaces form a distinct noncommutative representation layer, with spectral-arithmetic cross-links. No exact or semantic duplicate of that layer was found. It remains standalone pending a claim-by-claim Lean crosswalk and deliberate consolidation; report theorem labels record paper-level status, not current Lean proof status | arrived through `drafts/incoming/`; archive unpacked, deleted, and package normalized here |
 | `Fabius_Rvachev_New_Frontiers-2/` | *Fabius--Rvachev New Frontiers: Log-concavity, Native Orthogonal Polynomials, Christoffel Reconstruction, Rational Products for Pi, Gauss--Pade Structure, and Legendre--Gaunt Determinants* (current source with a retained pre-update 41-page A4 artifact; with a 580-line exact/high-precision experiment, three CSV tables, five clean vector figures and five supplemental PNG companions, a corpus audit, publication log, and PDF preflight). Filed 2026-08-30 from `Fabius_Rvachev_New_Frontiers-2.zip` (SHA-256 `9e27257d8b2808c6f24c754e61fbf5ce7b997233d78d33a28536600665508108`); all 15 arrival payloads verified and the fixed historical checksum scope was 20 payloads. The current crosswalk inventories all 129 declarations in eleven Gram, rational-Jacobi, determinant, rational-value, finite-Gaunt, and zero-row-square modules while retaining Nevai, J-fraction, Hankel, and Gauss--Padé material as inherited overlap. Lean proves executable rational Gaunt integrals, exact Legendre product linearization over `ℚ` and `ℝ`, the total integer-index zero-row square datum with central-binomial and factorial forms, sharp parity/triangle support and positivity, and finite rational and real Wigner-square Gram sums. It does not define a signed/general Wigner symbol or phase. Roots, Christoffel reconstruction/products, quadrature, Padé identification, infinite Jacobi products, and asymptotics remain paper-only. The current notation-source TeX has 2,978 lines, 122,235 bytes, and SHA-256 `e0015e424fe577c4aee3ea473ace71b67b9f250d5a96569dccd6dd03ebe20c98`. The retained PDF was built from the former frozen source with SHA-256 `4eeea1a1cbe5497e6db3424a0c185f3a3be750f5816b22be5e7baed091753455`; exactly three strict passes (39/41/41 pages) produced the 780,141-byte PDF with SHA-256 `9871ac93cce5d8ee1aa48e946f46dc2e19865fb33a1d2e3b9b8be01360318901`. Its 35 font rows are embedded/subset, five are Libertinus, and it contains no Type 3 font or raster image. Extraction retains the historical 99 public names, including all 25 predecessor Gaunt names; the current source adds 30 closed-form/wrapper declarations not rendered there. Targeted visuals and all five vector figures pass; the 20 source/artifact hashes are retained as historical receipts. The earlier 39-page cleaned-vector and 41-page local Gaunt checkpoints remain documented as history | arrived through `drafts/incoming/`; archive unpacked here and deleted; current source/retained PDF pair intentionally unsynchronized pending rebuild; historical hashes retained |
 | `fabius_iterates_nowhere_analytic/` | *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius Function* (22 A4 pp, 1,566-line TeX; with a 469-line numerical diagnostic, four PNG figures mirrored between report/output directories, one CSV, metadata, README, and audit). Filed 2026-08-30 from `fabius_iterates_nowhere_analytic.zip` (SHA-256 `a1fbd4cf0a0fdd9479a2955bde0e7bcf5d4146032e4466916307826cfbe3bf0d`); all 14 arrival payload hashes and the later 15-payload hashes are retained. The semantic union retains 15 nonconjectural results, two numbered warning quarantines, and one live defect-spectral-gap conjecture. `PartitionDefect.lean` formalizes three definitions and 33 finite list-arithmetic theorems, but the set-partition, weighted Bell/spine, tie, and n≥2 iterate layers remain manuscript-only. The canonical A4/27 mm/Libertinus PDF was rebuilt in exactly three strict passes with every font embedded/subset and no Type 3 fonts | arrived through `drafts/incoming/`; archive unpacked here and deleted |
@@ -1116,4 +1762,4 @@ series even where a single title leans toward another group.
 | --- | --- | --- |
 | `Geometric_Uniform_Frontier_Directions/` | *Frontier Directions for Geometric-Uniform and Fabius--Rvachev Analysis* (30 A4 pp, 1,641-line TeX; with an 874-line reproducible experiment, ten CSV/text data products, eight dual-format figures, a hostile corpus audit, and validation records). Filed 2026-08-30 from `fabius_frontier_report_bundle-D.zip` (1,508,514 bytes; SHA-256 `39f3638f52f19955b88b7a865a60b76d9ce31154d98967d1400a6ad97396fa9a`); the 34 arrival hashes and later 36-payload hashes are retained as historical receipts. Exact tables replayed; floating outputs agree within the documented last-place/platform tolerances. The corpus crosswalk distinguishes existing geometric-uniform, q-moment, and Fabius infrastructure from the paper-level asymptotic, large-deviation, Edgeworth, zero-count, and periodic claims. The canonical A4/27 mm/Libertinus report and all vector figures contain no Type 3 fonts and were rebuilt in exactly three strict passes | arrived through `drafts/incoming/`; archive unpacked here and deleted |
 | `Geometric_Uniform_Convolutions_and_New_Frontiers/` | *Geometric Uniform Convolutions and New Frontiers around the Fabius--Rvachev System* (1,656 source lines), delivered as one LF TeX source under the generic wrapper `fabius-frontier-report-H/` in direct-arrival commit `8a184546747082cbd92ad4675fb61981c6b8c3b6`. No PDF, README, code, data, figures, output, archive, metadata, or checksum file was supplied. Intake repaired three form-feed-corrupted `\frac` tokens and recorded the source hash. Its abstract says Python code accompanies the report, but none is present. Its broad q/Edgeworth, Thue--Morse, Bell--Bernoulli, valuation-zero, Fourier-zero, derivative-growth, non-Gevrey, and Lambert strands remain standalone pending compilation, claim comparison, and a Lean crosswalk; the package still has no PDF, the source has not yet been shown to compile, and manuscript labels do not establish Lean verification | `drafts/incoming/fabius-frontier-report-H/`; renamed and filed here |
-| `Frontier_Compilations/` | *Collected Frontier Reports for the Fabius–Rvachev System* (retained 274-page PDF; current source not recompiled; ten absorbed reports; ten rendered parts) — consolidation (2026-08-28) of the former `Fabius_Rvachev_Frontier_Report/`, `-2/`, `-3/`, `Fabius_Rvachev_Frontier_Report_2026-08-27/`, `Fabius_Rvachev_New_Frontiers/`, `fabius_frontier_report_bundle/`, `fabius_frontier_results_bundle/`, `fabius_frontier_new_results/`, `fabius_frontier_spectral_endpoint_report_bundle/`, and `beyond_dyadic_fabius_web_report/` (source reports I–X render one-to-one as Parts I–X; former titles in the group README); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
+| `Frontier_Compilations/` | *Collected Frontier Reports for the Fabius–Rvachev System* (current synchronized 17,311-line source and 275-page A4 PDF; exact B2 receipt above; ten absorbed reports; ten rendered parts) — consolidation (2026-08-28) of the former `Fabius_Rvachev_Frontier_Report/`, `-2/`, `-3/`, `Fabius_Rvachev_Frontier_Report_2026-08-27/`, `Fabius_Rvachev_New_Frontiers/`, `fabius_frontier_report_bundle/`, `fabius_frontier_results_bundle/`, `fabius_frontier_new_results/`, `fabius_frontier_spectral_endpoint_report_bundle/`, and `beyond_dyadic_fabius_web_report/` (source reports I–X render one-to-one as Parts I–X; former titles in the group README); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
