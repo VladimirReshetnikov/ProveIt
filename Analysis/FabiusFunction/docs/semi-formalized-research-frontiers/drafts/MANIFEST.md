@@ -22,7 +22,7 @@ moved the six polynomial-logarithmic transseries packages out of `lambert-w/`
 into the new `series-and-transseries/` group.
 
 **Current artifact checkpoint (2026-09-03).** The live Lean audit scans 902
-source modules and 11,440 public declarations, with no missing module headers or
+source modules and 11,443 public declarations, with no missing module headers or
 declaration comments.
 Several PDFs below are retained,
 readable publication checkpoints rather than renders of the final merged TeX.
@@ -61,16 +61,20 @@ positive rational forward gaps. The retained 42-page PDF remains historical;
 exact endpoint-mass ceiling minimality and input-bit asymptotics remain outside
 Lean.
 
-The two canonical syntheses have source/artifact receipts. The current
-q-series source has 16,359 lines, 812,257 bytes, and SHA-256
+The two canonical syntheses have source/artifact receipts. Immediately before
+the Gaussian second-moment source edit, the q-series TeX had 16,359 lines,
+812,257 bytes, and SHA-256
 `e90f46955d9a9792ce469d29ceaa3aa538874eb1e94cf4c2dd7e50dbaf63b10e`.
+The working source is newer, and no replacement digest is recorded here for
+this source-only update.
 Its retained PDF is a historical 389-page, 3,254,138-byte A4 artifact with
 SHA-256
 `b8add607c85ee35be98dabf36879e1d45fb093c6b453e93679c80295fae715bc`,
 built from the preceding 16,339-line, 810,779-byte source with SHA-256
 `14c444feb14c435bc300becd9c8cd2765c1e96f608dd79da462becc41b28ed22`.
 The live TeX adds the Bell-block and MacMahon q-Catalan notation successor as
-well as later formalization crosswalks, so it is source-only relative to that
+well as later formalization crosswalks and the Gaussian second-moment formulas,
+so it is source-only relative to that
 build; the two payloads are distinct and no render parity is claimed.  The
 still earlier 348-page artifact checkpoint also remains historical evidence:
 its PDF SHA-256 is

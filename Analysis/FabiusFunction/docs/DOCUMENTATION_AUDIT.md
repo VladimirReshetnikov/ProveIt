@@ -109,7 +109,7 @@ only 4,606 declarations and
 declarations, including 69 undocumented ones.  Run the script for the live
 numbers rather than copying these historical values.
 
-The live 2026-09-03 inventory contains 902 modules and 11,440 lexically
+The live 2026-09-03 inventory contains 902 modules and 11,443 lexically
 visible public declarations, with zero missing module headers and zero missing
 doc comments.  The post-merge 2026-09-01 inventory of 675 modules and 8,909
 declarations remains a historical checkpoint: relative to the 610/8,318
@@ -163,10 +163,11 @@ extension remain unformalized.
 
 #### Geometric Richardson generating-function tranche
 
-`GeometricRichardsonGenerating.lean` adds one source module and exactly ten
-public declarations to the 901/11,430 q-Chu checkpoint.  The live facade union
-is therefore 902 modules and 11,440 public declarations.  Its three definitions
-are `geometricRichardsonKernel`, `qPochhammerNormalizedDataSeries`, and
+`GeometricRichardsonGenerating.lean` added one source module and exactly ten
+public declarations to the 901/11,430 q-Chu checkpoint.  The resulting
+historical checkpoint was 902 modules and 11,440 public declarations.  Its
+three definitions are `geometricRichardsonKernel`,
+`qPochhammerNormalizedDataSeries`, and
 `geometricRichardsonTransform`.  Its seven theorems are
 `coeff_rescale_qPochhammerSeries_eq_geometricRichardsonKernel`,
 `coeff_qPochhammerNormalizedDataSeries`,
@@ -191,6 +192,34 @@ excludes that base.  The analytic pair assumes a complete normed field,
 `z`; the Lagrange form additionally assumes `q ≠ 0` and proves a `HasSum`
 identity.  It does not claim a general analytic evaluation operation for
 arbitrary formal power series.
+
+#### Gaussian-binomial second-moment tranche
+
+The later strengthening of the existing `GaussianBinomialCumulants.lean`
+module leaves the module count at 902 and adds three public theorems, bringing
+the live census to 11,443 public declarations.  The module's exhaustive public
+inventory is two definitions, `meanAtOne` and `varAtOne`, and twenty-four
+theorems: `meanAtOne_one`, `varAtOne_one`, `meanAtOne_mul`, `varAtOne_mul`,
+`meanAtOne_prod`, `varAtOne_prod`, `eval_one_derivative_X_pow`,
+`eval_one_derivative_derivative_X_pow`, `eval_one_qInt_X`,
+`eval_one_derivative_qInt_X`, `eval_one_derivative_derivative_qInt_X`,
+`meanAtOne_qInt_X`, `varAtOne_qInt_X`, `one_sub_X_pow_succ_eq`,
+`gaussianBinomial_X_mul_prod_qInt`, `eval_one_gaussianBinomial_X`,
+`sum_mean_diff`, `sum_var_diff`, `meanAtOne_gaussianBinomial_X`,
+`varAtOne_gaussianBinomial_X`, `eval_one_derivative_gaussianBinomial_X`,
+`eval_one_derivative_derivative_gaussianBinomial_X`,
+`twelve_mul_secondMoment_gaussianBinomial_eval_one`, and
+`twelve_mul_varianceNumerator_gaussianBinomial_eval_one`.
+
+The last three are the new declarations.  The first gives the explicit second
+derivative at one over a characteristic-zero field when `k ≤ n`.  The other
+two clear all denominators: over every commutative semiring and for all natural
+`n,k`, including the above-row zero case, they give the raw second coefficient
+moment and the variance numerator.  The probability terminology is the
+interpretation of the normalized coefficient generating polynomial; the
+generic theorems themselves are algebraic identities and do not construct a
+separate probability-space random variable.  Three private transport helpers
+are excluded from the public census.
 
 #### Exact Lambert branch-pairing tranche
 
@@ -917,7 +946,7 @@ and 88-page notation-catalogue artifacts likewise predate their current merged
 sources.  Their package notices treat those PDFs as historical validation
 receipts, not parity claims, until fresh uninterrupted three-pass builds
 complete.  The inverse-computability receipt likewise still reflects the
-historical 675/8,909 census and requires refresh against the live 902/11,440
+historical 675/8,909 census and requires refresh against the live 902/11,443
 inventory.  The canonical inverse-theory publication retains a 134-page
 artifact synchronized at its latest-main source checkpoint; the merged
 effective-inversion and superconvergent-synthesis tranches make current parity

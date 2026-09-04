@@ -49,6 +49,7 @@ The current source incorporates exhaustive crosswalks for
 `QPochhammerDissection` (zero definitions and two theorems),
 `GaussianBinomialPalindromic` (zero definitions and fourteen theorems),
 `GaussianBinomialPolynomialStructure` (zero definitions and five theorems),
+`GaussianBinomialCumulants` (two definitions and twenty-four theorems),
 `GaussianBinomialBounds` (zero definitions and six theorems), and
 `GeometricPochhammerNormalConvergence` (zero definitions and three theorems).
 It also inventories `QMultinomial` (one definition and nine
@@ -90,15 +91,17 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 902 modules and 11,440 public declarations with no
-documentation gaps. The ten-declaration increase is the unrelated sibling
-`FabiusFunction.GeometricRichardsonGenerating` source-only module; it does not
-alter this monograph's theorem statuses or retained historical artifact. The
+live facade audit contains 902 modules and 11,443 public declarations with no
+documentation gaps. Ten declarations come from the sibling
+`FabiusFunction.GeometricRichardsonGenerating` source-only module; the other
+three are the explicit Gaussian second-derivative and division-free moment
+identities. Neither change alters this monograph's forward-status counts or
+retained historical artifact. The
 forward status inventory covers 282 labelled results:
 166 Exact / 90 Partial / 18 None / 8 N/A; the 191-result pre-Fabius core is
 35 / 30 / 123 / 3.
 The five-publication concordance
-has 76 Lean-proved, 402 human-proved frontier, 60 not-applicable, and 9
+has 78 Lean-proved, 400 human-proved frontier, 60 not-applicable, and 9
 conjecture rows. The `cor:positivity`, `thm:qbinom-structure`, and
 `prop:gq-positive-palindromic` rows are Exact: both Gaussian structure APIs
 support the structure row, and the fourteen-theorem generic API now gives

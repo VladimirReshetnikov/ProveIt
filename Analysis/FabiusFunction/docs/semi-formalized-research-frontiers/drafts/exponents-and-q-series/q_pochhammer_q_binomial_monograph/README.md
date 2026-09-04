@@ -112,6 +112,7 @@ and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
 theorems), `QBinomialTheoremInfinite` (one definition and twenty-two
 theorems), `GaussianBinomialPalindromic` (zero definitions and fourteen
 theorems), `GaussianBinomialPolynomialStructure` (zero definitions and five
+theorems), `GaussianBinomialCumulants` (two definitions and twenty-four
 theorems), `GaussianBinomialBounds` (zero definitions and six theorems), and
 `GeometricPochhammerNormalConvergence` (zero
 definitions and three theorems). The wider inventory also includes
@@ -158,12 +159,16 @@ The newest combinatorial and certification tranche adds
 binary-word inversion and path-area generating functions, rectangular-box
 partition generating functions and counts, finite telescoping certificates,
 recurrence uniqueness, and rational-identity specialization. The live facade
-audit now contains 902 modules and 11,440 public declarations, with no
-documentation gaps. The ten-declaration increase is the unrelated sibling
+audit now contains 902 modules and 11,443 public declarations, with no
+documentation gaps. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`; it does not change this
-monograph's forward-status inventory or make its retained PDF current.
+monograph's forward-status inventory or make its retained PDF current. The
+other three are the explicit second-derivative, division-free raw-second-moment,
+and division-free variance-numerator theorems in
+`GaussianBinomialCumulants`; they strengthen the already-Exact
+`thm:qbinom-moments` row without changing its disposition.
 
 The two newest generic theorems are
 `deriv_qPochhammerInfIn_ne_zero_of_mul_pow_eq_one`, which gives a nonzero
@@ -177,7 +182,7 @@ than duplicating their analytic proofs. In `QBinomialTheoremInfinite`,
 `GaussianBinomialAtOne` and is imported rather than redeclared. The forward
 status ledger is 166 Exact, 90 Partial, 18 None, and 8 interface rows; the
 original 191-result pre-Fabius core is 35/30/123/3, and the
-  completed source concordance records 76 Lean-proved rows, 402 human-proved
+completed source concordance records 78 Lean-proved rows, 400 human-proved
 frontier rows, 60 not-applicable rows, and 9 conjectures.
 The fourteen-theorem `GaussianBinomialPalindromic` API and five-theorem
 `GaussianBinomialPolynomialStructure` API give exact degree,
@@ -194,6 +199,15 @@ strict contraction, including `q = 0`, together with the nome-`1/4` Rvachev
 and bounded-Fabius Fourier specializations. Its named centered/MGF packaging,
 exterior reciprocal formula, pole divisor, and zero--pole exchange remain
 outside Lean.
+The two-definition, twenty-four-theorem `GaussianBinomialCumulants` API now
+also exports `eval_one_derivative_derivative_gaussianBinomial_X`,
+`twelve_mul_secondMoment_gaussianBinomial_eval_one`, and
+`twelve_mul_varianceNumerator_gaussianBinomial_eval_one`. The first isolates
+the second falling-factorial moment over a characteristic-zero field for
+`k ≤ n`; the latter two clear all divisions and hold over every commutative
+semiring, including zero, diagonal, above-row, and positive-characteristic
+cases. They concern the universal generating polynomial and do not construct
+a probability space.
 The six-theorem `GaussianBinomialBounds` surface reuses the stronger
 `finiteQPochhammerIn_self_pos` from `GeneralQConditionNumber` and supplies
 evaluated reciprocity and the exact finite growth bounds on both sides of `q = 1`; the
