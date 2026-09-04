@@ -1,180 +1,168 @@
 # Formalization campaign status
 
-This is a source-review handoff for the campaign begun on 2026-09-04. The
-canonical claim register is the **Lean formalization register** section of
-`Combinatorial_Coefficient_Calculus.tex`; this file does not reproduce its rows.
-Mathematical statements and proofs belong in the TeX/PDF pair. The register's
-status words are recorded correspondence claims, not a fresh compilation receipt.
+This is the handoff for the campaign begun on 2026-09-04. The **Lean
+formalization register** in `Combinatorial_Coefficient_Calculus.tex` is the
+single claim inventory; this file records validation, provenance, and remaining
+work. Mathematical statements and proofs belong in the TeX/PDF pair. A register
+classification records a claimed correspondence, not a fresh compilation receipt.
 
-## Inventory and evidence boundary
+## Current checkpoint
 
-The initial source snapshot contains 201 theorem-like environments: 150 theorems,
-26 corollaries, 12 propositions, 6 lemmas, and 7 algorithms. Its register has 201
-rows, classified as 56 `Lean`, 33 `partial`, and 112 `none`. There are no conjecture
-environments. These are environment counts, not counts of independently proved
-assertions: several environments contain multiple identities, while definitions,
-examples, prose, complexity claims, and numerical tables also contain mathematics.
-The user's eventual two-way correspondence requirement therefore exceeds this
-register's current scope.
+The merged manuscript contains 209 theorem-like entries: **64 `Lean`,
+36 `partial`, and 109 `none`** after the current claim audit. The audit corrected
+two overclaims for the Abel and Fréchet statements and confirmed the
+second-kind Stirling counting interpretation through
+`BellSetPartitions.card_setPartitions`. This is a source-correspondence result
+using the upstream receipt, not a fresh compilation of that module in this
+campaign. Compilation of an algebraic source module does not establish every
+hypothesis or analytic assertion in a broader human-readable theorem.
 
-The audit read the package policies, the canonical source, the declaration bodies
-listed below, and selected relevant Mathlib definitions. It did not run Lean or
-Lake, rebuild the PDF, or verify the full set of 201 correspondences. A successful
-structural validator establishes neither mathematical correctness nor compilation.
-Every additional formalization milestone needs its own precise validation record.
+The six campaign leaves contain **25 new public theorems: five compiled and
+20 pending compilation**. The thirteen generalized existing Lagrange helpers
+are a separate compiled result, not additional new declarations.
 
-The first integration milestone merged pinned upstream
-`8159026c5310b24acb4d330a23836a473d7adaff`, then
-`3f74ee23e479399595c91b5fb030c7fbceb23f1a`, and
-`c5a82b88c40ad493d394056c8dd42ef6d3d306ac`, followed by
-`063ef3e1b1c0403bd6c71d1c9aa265825504339c` and
-`8b6dbd52428744a8496c762fcdeb2cfebc0ba7cc` and
-`c668cb96362acbae8b89950102b8ea361102a73f`. Its source validator passes with
-206 theorem-like items and adjacent proofs, 27 dispositions, and six immutable
-source-inventory rows. The obsolete live checksum ledger was retired as upstream
-intended. The current register has 60 `Lean`, 35 `partial`, and 111 `none` rows;
-these totals include inherited claims and are not a fresh audit of all 206 rows.
-The latest upstream rescaling and formal-power recurrence upgrades are retained;
-the new Bernoulli formal-logarithm and Abel sources remain separately pending.
-The upstream duplicate-crosswalk validator's eight regression tests pass.
+| Campaign leaf | New public theorems | Current validation |
+| --- | ---: | --- |
+| `NewtonReciprocal` | 5 | Focused compilation passed with exit zero and no diagnostics. |
+| `StirlingSymmetricFunctions` | 4 | Independent source/API review completed; compilation pending. The two second-kind evaluation formulas were deduplicated into upstream `StirlingCompleteHomogeneous`. |
+| `LagrangeInversionUniqueness` | 6 | Source reviewed. The first compilation attempt hit the elaboration heartbeat limit while inferring a unit witness. Explicit proof data now replace that inference; the corrected source awaits retry. |
+| `StirlingSecondReverseRowIdentity` | 2 | Independent source/API review completed, including the latest factorial-proof simplification; compilation pending. |
+| `ExponentialRiordanInverse` | 4 | Independent review in progress; compilation pending. |
+| `LagrangeExistence` | 4 | Independent review in progress; compilation pending. |
 
-`NewtonReciprocal.lean` passed focused compilation on 2026-09-04 using
-`lake env lean -o .lake/build/lib/lean/FabiusFunction/NewtonReciprocal.olean
-Analysis/FabiusFunction/Lean/FabiusFunction/NewtonReciprocal.lean` (exit zero).
-Its five public theorems are compiler-checked. The other twelve new public
-theorems in the three Stirling/Lagrange leaves remain source-reviewed and await
-compilation, including any missing prerequisites. No aggregate build is claimed.
-After the latest synchronization, the cited-name and duplicate-name structural
-audits pass: 3,439 distinct cited names resolve and there are no duplicate
-declaration names. The facade audit found two missing upstream imports,
-`AssociahedronFaceNumbers` and `PochhammerFalling`; both were restored. These
-structural checks are not a fresh aggregate Lean build. All new modules have facade imports and contain no
-`sorry`, `admit`, `axiom`, or `opaque` declarations. The register-generator mappings
-preserve the new pending and compiled distinctions; both generator scripts passed
-read-only syntax and mapping checks without rewriting the canonical document.
+`LagrangeInversion.lean` itself passed direct compilation after its section
+assumptions were corrected: thirteen existing helper/existence theorems and the
+solution definition now work over arbitrary commutative rings. The coefficient
+arguments that divide by positive integers retain their rational-algebra
+assumptions. No aggregate corpus build is claimed.
 
-## Source correspondences inspected
+The current campaign rebuilds the canonical TeX/PDF pair. **Rendering is pending
+at this checkpoint**; page count and final source/render parity will be recorded
+after the build owner completes and checks the render. Statements inherited
+from other source-only sessions that PDF rebuilding was skipped at their user's
+request describe those historical sessions only; they are not an instruction
+or waiver for this campaign. PDF rendering and Lean compilation remain separate
+validation results.
+
+## Compilation and source-review receipts
+
+- On 2026-09-04, `NewtonReciprocal.lean` passed the focused command below with
+  exit zero. Its initial source preflight had missed a coefficient-API argument
+  order error; the build owner corrected it with an explicitly typed function
+  before the successful compilation.
+
+  ```text
+  lake env lean -o .lake/build/lib/lean/FabiusFunction/NewtonReciprocal.olean Analysis/FabiusFunction/Lean/FabiusFunction/NewtonReciprocal.lean
+  ```
+
+- Commit `baefb1b5b` records the rational-algebra assumption repair in
+  `LagrangeInversion.lean`. Its direct compilation returned exit zero with no
+  diagnostics. Immediate dependency source and imported-artifact fingerprints
+  were checked before that build.
+- The first `LagrangeInversionUniqueness` attempt reached the default elaboration
+  heartbeat limit while matching an unspecified unit witness in the constructed
+  inverse. The correction supplies the witness and outer series explicitly.
+  No heartbeat limit was raised and no mathematical statement was weakened;
+  the revised proof remains uncompiled.
+- The `StirlingSecondReverseRowIdentity` preflight caught rational subtraction
+  in the logarithmic-tail coefficient being mistaken for natural subtraction.
+  An explicit rational normalization corrected that mismatch. Its later
+  factorial proof reuses Mathlib's casted binomial-coefficient formula and
+  direct reciprocal cancellation. Independent review found no further concrete
+  blocker. Exact integer, rational, and finite-modulus checks are supporting
+  arithmetic checks, not kernel validation.
+- Commit `720646f3b` introduces `ExponentialRiordanInverse` and
+  `LagrangeExistence`, with four new public theorems each. Their construction
+  proofs and manuscript counterparts are present; review and compilation
+  status are recorded in the current table above.
+
+The source-only conclusions for the pending leaves remain limited. The
+Stirling review checked the Vieta subset cardinality, semiring homogeneity,
+empty families, and repeated values in positive characteristic. The Lagrange
+review checked substitution associativity, inverse identities, coefficient
+integration by parts, and unit cancellation. A source review can miss
+elaboration behavior, as the concrete compiler and preflight corrections above
+demonstrate.
+
+## Historical checkpoint receipts
+
+These figures belong to the named snapshots, not to the current 209-entry
+manuscript, and do not establish a rebuild of the merged tree.
+
+| Snapshot or receipt | Recorded evidence |
+| --- | --- |
+| Initial 2026-09-04 audit | 201 theorem-like environments: 150 theorems, 26 corollaries, 12 propositions, six lemmas, seven algorithms; register totals 56 `Lean`, 33 `partial`, 112 `none`; no conjecture environments. |
+| First integration through `c668cb96362acbae8b89950102b8ea361102a73f` | Structural validator passed with 206 theorem-like items and adjacent proofs, 27 dispositions, and six immutable source-inventory rows. Its register reported 60 `Lean`, 35 `partial`, 111 `none`. The duplicate-crosswalk validator's eight regression tests passed. |
+| Nörlund synchronization through `2ccc7f787becde416b234d40093876eac9f9c35e`, source checkpoint `16975fdfd` | The reported register had 207 entries, classified 60 `Lean`, 35 `partial`, 112 `none`. The new Nörlund and Bernoulli formal-logarithm extensions had source/API review, not compilation. |
+| Main merge `28de4e51c` | Retained the nine compiled grid/CRT certificate theorems from `5a685136b`. Its reported register had 207 rows, classified 62 `Lean`, 35 `partial`, 110 `none`; its corpus census reported 985 modules and 12,199 public declarations. |
+| Earlier source integration audit | 3,439 distinct cited names resolved with no duplicate declaration names. Missing facade imports for `AssociahedronFaceNumbers` and `PochhammerFalling` were restored. Generator syntax and mapping checks passed. These are structural checks, not a fresh aggregate Lean build. |
+
+The first integration's pinned upstream merge sequence was:
+
+```text
+8159026c5310b24acb4d330a23836a473d7adaff
+3f74ee23e479399595c91b5fb030c7fbceb23f1a
+c5a82b88c40ad493d394056c8dd42ef6d3d306ac
+063ef3e1b1c0403bd6c71d1c9aa265825504339c
+8b6dbd52428744a8496c762fcdeb2cfebc0ba7cc
+c668cb96362acbae8b89950102b8ea361102a73f
+```
+
+The obsolete live checksum ledger was retired during that integration. Source
+recovery uses the immutable inventory and Git objects, not replacement ledgers.
+
+## Claim boundaries retained from the audit
 
 Paths below are relative to `Analysis/FabiusFunction/Lean/FabiusFunction` unless
-explicitly identified as Mathlib.
+explicitly identified as Mathlib. The table explains scope boundaries; it does
+not duplicate the canonical register's status classifications.
 
-| Canonical claim | Source inspected | Audit conclusion |
+| Canonical claim | Inspected source | Boundary to preserve |
 | --- | --- | --- |
-| `thm:merged-binomial-inversion` | `BinomialInversionEGF.lean`: `Fabius.egfA_eq_exp_mul_iff`, `Fabius.egfA_eq_altSeries_mul_iff`, `Fabius.egfA_eq_exp_mul_iff_egfA_eq_altSeries_mul` | Both formal generating-function directions are present over a commutative rational algebra. The old adjacent statement that this part is unformalized was stale. |
-| `thm:merged-moment-cumulant` | `CumulantBellFormula.lean`: `Fabius.logOf_egfA`, `Fabius.cumulant_eq_cumulantSum` | The formal logarithm and closed partial-Bell expression are present, assuming the moment sequence starts with one. This does not identify these recurrence-defined polynomials with sums over actual set partitions. |
-| `thm:merged-catalan-first-return` | `SquareRootSeries.lean`: `Fabius.sq_sqrtOf`, `Fabius.sqrt_unique`, `Fabius.sqrtOf_one_sub_four_X` | The square-root identity is present as a formal series identity with constant term one over a commutative rational algebra. Analytic branch and convergence statements remain separate obligations. |
-| `thm:merged-riordan` | `ExponentialRiordan.lean`: `Fabius.expRiordan_action`, `Fabius.expRiordan_mul`, `Fabius.expRiordan_mul_inverse` | Action and multiplication are explicit. The inverse theorem is conditional: it assumes a compositional inverse and a suitable multiplicative reciprocal, and concludes one product is the identity. Construction of these data and the two-sided inverse assertion are not the statement of this declaration. |
-| `thm:lagrange-burmann` | `LagrangeInversion.lean`: `Fabius.Lagrange.solution`, `Fabius.Lagrange.solution_eq`, `Fabius.Lagrange.coeff_solution_subst_derivative`, `Fabius.Lagrange.coeff_solution` | A solution and its coefficient formulas are constructed from a supplied inverse of the weight series. The reviewed source does not yet state solution uniqueness or the alternative coefficient formula. The phrase “unconditional” in its doc comments refers to constructing the solution; the supplied inverse hypothesis remains. |
-| `thm:second-recurrence` | Mathlib `Combinatorics/Enumerative/Stirling.lean`: `Nat.stirlingSecond`, `Nat.stirlingSecond_succ_succ` | Mathlib defines the array recursively. Its counting description in a doc comment is not a theorem equating it with the cardinality of set partitions. The recurrence correspondence must not claim that missing bridge. |
+| `thm:merged-binomial-inversion` | `BinomialInversionEGF.lean` | Both formal generating-function directions are present over a commutative rational algebra; the old blanket denial was stale. |
+| `thm:merged-moment-cumulant` | `CumulantBellFormula.lean` | Formal logarithm and closed Bell-polynomial formulas require normalization. They do not supply the separate weighted set-partition interpretation. |
+| `thm:merged-catalan-first-return` | `SquareRootSeries.lean` | Formal square-root existence and uniqueness do not establish analytic branches or convergence. |
+| `thm:merged-riordan` | `ExponentialRiordan.lean` and pending `ExponentialRiordanInverse.lean` | The existing inverse law assumes inverse data and proves one product. The new leaf constructs those data and addresses both products; its compilation is still required. |
+| `thm:lagrange-burmann` | `LagrangeInversion.lean` and pending Lagrange leaves | The existing coefficient construction uses a supplied inverse of the weight. The new uniqueness, alternative-coefficient, and arbitrary-weight existence assertions have their own validation obligations. |
+| `thm:second-recurrence` | Mathlib `Combinatorics/Enumerative/Stirling.lean` and `BellSetPartitions.lean` | `BellSetPartitions.card_setPartitions` supplies the counting bridge. The canonical successor-index recurrence states its zero boundaries explicitly. This campaign verified the source correspondence; no fresh compilation of the counting module is claimed. |
 
-## Editorial repairs identified in this audit
+## Editorial work and remaining obligations
 
-The documentation owner is incorporating these corrections in the current
-milestone. Confirm the final TeX/PDF pair before calling the milestone published.
+The campaign has consolidated contradictory or repetitive crosswalks, corrected
+coefficient-ring and boundary assumptions, and repaired the Laplace endpoint
+proof. Final source/render checks must cover the merged manuscript. The
+substantive remaining work is:
 
-- Replace the frontmatter's obsolete assertion that no claim-level crosswalk
-  exists, while retaining the distinction between human proofs and kernel checks.
-- Remove repeated coefficient-rule crosswalk paragraphs.
-- Reconcile the duplicated binomial-inversion and Catalan crosswalks: each had a
-  newer positive correspondence immediately followed by an obsolete denial.
-  Preserve the useful triangular-transform pointers when removing duplication.
-- Update the moment-cumulant paragraph to acknowledge `CumulantBellFormula`.
-- State the positive-radius neighborhood required by the analytic Cauchy rule.
-- Handle the zero-order finite Darboux formula by the fundamental theorem of
-  calculus before the cancellation proof for positive order.
-- Restrict finite-field and integer implementation claims: the division-bearing
-  logarithm, exponential, integration, and Lagrange recurrences require suitable
-  units, unlike the division-free recurrences.
-- Separate deterministic polynomial-grid certificates from probabilistic
-  Schwartz--Zippel error bounds; a degree bound does not make a random test a
-  deterministic proof.
-- Replace the unspecified Watson hypotheses and unsupported exponent
-  continuation in `thm:laplace-bell` with an explicit analytic endpoint theorem.
-  Independent source review of the revised argument checked the positive-branch
-  coordinate change, the polynomial continuation step, the transformed
-  coefficients, and both local and tail remainder estimates.
+1. **Pending kernel validation.** Compile the twenty pending new theorems and
+   their missing or stale prerequisites serially. Retry the corrected Lagrange
+   uniqueness proof before promoting its register entries. Complete independent
+   reviews of the new Riordan and arbitrary-weight Lagrange leaves.
+2. **Laplace endpoint formalization.** The repaired `thm:laplace-bell` states
+   explicit analytic endpoint assumptions and complete remainder estimates.
+   Its weighted coefficient identity, transformed Taylor remainder, and tail
+   estimate still need Lean counterparts. A repaired human proof is not a
+   completed formalization.
+3. **Combinatorial semantics.** Retain the established second-kind Stirling
+   set-partition cardinality bridge. Build the remaining per-profile weighted
+   enumerators and surjection, cycle, and descent interpretations, sharing
+   finite-set decomposition infrastructure where possible.
+4. **Darboux analysis.** Preserve the exceptional polynomial cases and global
+   remainder hypotheses. Formalize the gamma-ratio estimates, Cauchy bounds,
+   convolution argument, and boundary integration by parts before upgrading
+   the corresponding register entries.
+5. **Analytic and formal calculus boundaries.** Formal composition and formal
+   Leibniz lemmas require explicit bridges before they establish analytic
+   Faà di Bruno, multinomial product, or inverse-derivative claims. Match every
+   Abel and Fréchet assertion to the exact hypotheses of its cited declaration.
+6. **Other pending upstream surfaces.** The Nörlund and Bernoulli formal-logarithm
+   extensions retain their separate compilation obligations. General-order
+   finite differences, multiplicity-vector interpretations, and analytic
+   convergence must be tracked individually.
+7. **Two-way exposition coverage.** Stable identifiers and the existing register
+   must eventually cover mathematical prose, examples, algorithms, and public
+   Lean support lemmas as well as theorem environments. Environment counts
+   alone do not measure the user's requested two-way correspondence.
 
-## New source preflight
-
-`StirlingSymmetricFunctions.lean` was independently reviewed against the actual
-imported APIs. Its four public theorems identify first-kind Stirling numbers
-with elementary symmetric evaluations and state the common-scaling laws for
-both Stirling triangles over every commutative semiring. The two second-kind
-evaluation formulas were deduplicated into the compiled upstream
-`StirlingCompleteHomogeneous` API. The review checked the empty-family cases, the natural
-subtraction guard, the second-kind adjoining-variable recurrence, the precise
-Vieta subset cardinality, and the multiset formulation that preserves repeated
-values in positive characteristic. No concrete source or API blocker was found.
-This is a preflight result, not a compiler result; the build owner records actual
-compilation separately.
-
-`NewtonReciprocal.lean` received a separate source/API review covering the scalar
-initialization, exact squared-residual identity, divisibility witness, coefficient
-precision, and preservation of that precision under actual polynomial truncation.
-All five theorem statements are valid over an arbitrary commutative ring. The
-preflight missed a concrete API error that the compiler caught:
-`Polynomial.coeff` takes the polynomial before its index, unlike
-`PowerSeries.coeff`. The build owner replaced the erroneous partial application
-with an explicitly typed function from polynomials to their coefficient of the
-chosen degree. The corrected file then passed the focused compiler invocation
-recorded above with exit zero and no diagnostics.
-
-`LagrangeInversionUniqueness.lean` was checked against the substitution-associativity,
-compositional-inverse, derivative, and unit APIs. Its uniqueness argument and
-Jacobian coefficient calculation are mathematically coherent. Source review
-cannot confirm the elaborated typeclass signatures of imported declarations;
-the compiler must in particular verify that their unused rational-algebra
-instances are omitted as expected for the new commutative-ring uniqueness
-statements. These six new theorems address the original uniqueness and alternative
-coefficient obligations recorded in the inspected `LagrangeInversion.lean` row.
-
-`StirlingSecondReverseRowIdentity.lean` was independently checked against the
-existing Stirling-transform and logarithmic-tail APIs. Its two public theorems
-state the complete rational transform and the finite reverse-row identity over
-every commutative ring. The review checked the factorial kernel, coefficient
-normalization, discarded zero prefix, finite-sum reindexing, binomial symmetry,
-and transfer through the integers. It caught a mismatch between rational
-subtraction in the logarithmic-tail denominator and natural subtraction in the
-kernel helper; the author added an explicit rational normalization. The revised
-source has no further concrete blocker identified, but awaits compilation.
-
-## Substantive remaining obligations
-
-1. **Laplace endpoint formalization.** The repaired `thm:laplace-bell` now assumes
-   positive real exponents, analytic local factors, an integrable amplitude, a
-   finite interval, and a strict endpoint minimum. Formalize its weighted
-   Lagrange coefficient identity, the transformed Taylor remainder, and the
-   exponentially small tail. The human proof is repaired; the Lean obligation
-   remains. A broader asymptotic-germ theorem is a separate possible extension.
-2. **Riordan inversion.** Construct the formal compositional and multiplicative
-   inverses from the stated unit hypotheses; prove both array products and record
-   their exact declarations. Until then distinguish the conditional inverse law
-   from the full inverse construction in the register.
-3. **Combinatorial semantics.** Build cardinality or weighted-enumerator bridges
-   for set partitions, cycles, descents, and the recurrence-defined Bell and
-   Stirling arrays. Algebraic recurrences alone cannot certify a counting
-   interpretation. Use a shared finite-set decomposition API rather than proving
-   every interpretation independently.
-4. **Darboux analysis.** The corrected analytic-multiplier theorem explicitly
-   handles polynomial exceptional exponents; the finite-smoothness subtraction
-   theorem assumes a global decomposition and gives an explicit periodic boundary
-   criterion. Source review found those two repairs mathematically coherent.
-   Their gamma-ratio estimates, Cauchy bounds, convolution estimate, and boundary
-   integration by parts still need actual Lean statements and proofs. No existing
-   Darboux register row should be promoted merely because the human proof was
-   repaired.
-5. **Analytic and formal differential calculus.** Formal power-series composition
-   and the two-factor formal Leibniz theorem are useful infrastructure, but do not
-   prove the analytic Faà di Bruno theorem, the general multinomial product rule,
-   or analytic inverse-derivative claims without explicit bridges.
-6. **Two-way exposition coverage.** Give every presently unlabelled theorem-like
-   environment a stable claim identifier. Extend the existing register to cover
-   mathematical prose and examples, and identify which public Lean support
-   lemmas belong in the exposition. Do not duplicate the canonical register in a
-   second independently maintained inventory.
-
-The next efficient milestones are small reusable formal-series results and
-precise upgrades of currently partial rows. The much larger analytic and
-combinatorial interpretation layers remain part of the open campaign; the
-initial status totals must not be presented as an audit that all `Lean` rows have
-already been recompiled or that all human claims have been checked.
+Structural validation, exact finite checks, source review, PDF parity, focused
+Lean compilation, aggregate builds, and remote publication are distinct
+receipts. None should be inferred from another.

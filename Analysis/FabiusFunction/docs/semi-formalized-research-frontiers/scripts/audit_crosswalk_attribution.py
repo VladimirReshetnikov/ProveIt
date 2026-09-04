@@ -73,6 +73,9 @@ FRONTIER_ROOT = Path(__file__).resolve().parent.parent
 FABIUS_ROOT = FRONTIER_ROOT.parent.parent
 LEAN = FABIUS_ROOT / "Lean" / "FabiusFunction"
 
+sys.path.insert(0, str(FABIUS_ROOT / "scripts"))
+from doc_audit import strip_comments
+
 CITE = re.compile(r"\\(?:lean|path|decl)\{([^}]*)\}")
 # the same, but also capturing a ".lean" written immediately after the macro:
 # the split module spelling \path{Foo}\texttt{.lean}
@@ -89,7 +92,8 @@ DECL = re.compile(
     r"(?:theorem|lemma|def|abbrev|instance|structure|inductive|class|opaque|axiom)\s+"
     r"([A-Za-z_][A-Za-z0-9_.'\u2080-\u2089]*)")
 NS_OPEN = re.compile(r"^\s*namespace\s+([A-Za-z_][A-Za-z0-9_.']*)")
-SECTION = re.compile(r"^\s*section(?:\s+([A-Za-z_][A-Za-z0-9_.']*))?\s*$")
+SECTION = re.compile(
+    r"^\s*(?:noncomputable\s+)?section(?:\s+([A-Za-z_][A-Za-z0-9_.']*))?\s*$")
 END = re.compile(r"^\s*end(?:\s+([A-Za-z_][A-Za-z0-9_.']*))?\s*$")
 
 LEANNAME = re.compile(r"^[A-Za-z_][A-Za-z0-9_.'\u2080-\u2089]*$")
@@ -117,17 +121,8 @@ def corpus_symbols():
         if not fn.endswith(".lean"):
             continue
         stack: list[tuple[str, str | None]] = []
-        depth = 0
         with open(LEAN / fn, encoding="utf-8", errors="replace") as fh:
-            for raw in fh:
-                line = raw.rstrip("\n")
-                opens, closes = line.count("/-"), line.count("-/")
-                if depth:
-                    depth = max(0, depth + opens - closes)
-                    continue
-                if opens > closes:
-                    depth += opens - closes
-                    continue
+            for line, *_ in strip_comments(fh.read().splitlines()):
                 m = NS_OPEN.match(line)
                 if m:
                     stack.append(("ns", m.group(1)))

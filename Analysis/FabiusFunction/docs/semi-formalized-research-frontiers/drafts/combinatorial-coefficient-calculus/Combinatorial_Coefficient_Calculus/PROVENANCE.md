@@ -45,13 +45,18 @@ coincides with the original `CCC` manuscript's location, but its contents now
 include the consolidation and subsequent work. The `CCC` inventory row always
 identifies the historical snapshot, never the changing live source.
 
-The earlier 174-page PDF was a historical consolidation render and did not
-include subsequent source changes. The coefficient-calculus campaign now
-rebuilds the canonical PDF from the merged source in three strict LaTeX passes
-and reviews the affected pages. Its commit records the render and compilation
-scope separately: PDF parity and adjacent proof environments do not establish
-Lean verification. Original arrival PDFs remain recoverable through the
-inventory's immutable Git locators.
+The earlier 174-page PDF was a historical consolidation render. Upstream
+subsequently supplied rebuilt PDFs at its own checkpoints. Source-only sessions
+also recorded that rebuilding was skipped at their user's request; those
+receipts describe those sessions and do not govern the present campaign.
+
+The campaign begun on 2026-09-04 rebuilds the canonical TeX/PDF pair after its
+current source integration. Rendering is pending at this checkpoint, so no
+current page count or source/render parity is asserted here yet. The final
+render receipt belongs in `FORMALIZATION_STATUS.md`. Render and compiler
+evidence remain separate: PDF parity and adjacent proof environments do not
+establish Lean verification. Original arrival PDFs remain recoverable through
+the inventory's immutable Git locators.
 
 ## Recovery and validation
 

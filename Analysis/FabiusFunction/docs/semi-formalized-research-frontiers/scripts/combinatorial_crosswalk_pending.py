@@ -269,7 +269,7 @@ by induction on the recurrence, reverses the exponents.  The explicit formula
 \lean{Fabius.eulerianNumber_one_right}.""")),
 
  # --- thm:merged-riordan ---
- (r"""$\overline f$ gives the inverse.
+ (r"""$g\circ\overline f$, this proves \cref{eq:merged-riordan-inverse}.
 \end{proof}
 """,
   remark(r"""% ed.: crosswalk added 2026-09-01.
@@ -284,9 +284,14 @@ inverse law \cref{eq:merged-riordan-inverse} is
 \lean{Fabius.expRiordan_mul_inverse} in the form: if $\overline f\circ f=t$
 and $g\cdot(h\circ f)=1$ then $[g,f]\,[h,\overline f]$ is the identity array
 \lean{Fabius.expRiordan_one_X}.  This is a conditional one-sided inverse
-statement.  Constructing the inverse series from the theorem's unit hypotheses
-and establishing the full two-sided inverse remain separate formal obligations;
-the register status is therefore \emph{partial}.  The Stirling examples are
+statement.  New source \lean{ExponentialRiordanInverse} constructs
+\lean{Fabius.riordanInverseWeight} from the unit hypotheses.  Its ring-level
+weight identities are \lean{Fabius.riordanInverseWeight_mul_subst} and
+\lean{Fabius.mul_riordanInverseWeight_subst}; the two array products are
+\lean{Fabius.expRiordan_mul_constructedInverse} and
+\lean{Fabius.expRiordan_constructedInverse_mul}.  These four new theorems
+await compiler validation, so the register remains \emph{partial}.
+The Stirling examples are
 \lean{Fabius.expRiordan_one_exp_sub_one} ($[1,\EulerE^t-1]$ has entries
 $\StirlingSecondKind nk$) and \lean{Fabius.expRiordan_one_log}
 ($[1,\log(1+t)]$ has entries $\SignedStirlingFirstKind{n}{k}$).""")),
@@ -1798,9 +1803,13 @@ out-of-range cases.  Its denominator-cleared companion is
 $n!\OrdinaryPartialBellPolynomial nk(x)=k!\ExponentialPartialBellPolynomial
 nk(1!x_1,2!x_2,\ldots)$.  The Lean proof compares the ordinary coefficient of
 the $k$-th power of the factorially weighted Bell series with its exponential
-Bell coefficient.  These declarations prove the polynomial normalization;
-they do not formalize the labelled-set partition interpretation of
-\cref{thm:bell-poly-partitions}, whose register row remains \emph{none}.""")),
+Bell coefficient.  These declarations prove the polynomial normalization.
+The separate labelled-set partition interpretation in
+\cref{thm:bell-poly-partitions} is supplied by
+\lean{Fabius.partialBell_eq_sum_setPartitions} and
+\lean{Fabius.bell_complete_eq_sum_allSetPartitions}
+(\lean{BellSetPartitions}); the per-type count in
+\cref{cor:partition-type} remains a separate claim.""")),
 
  # --- eq:merged-bell-normalization ---
  (r"""\begin{proof}[Proof of \eqref{eq:merged-bell-normalization}]

@@ -38,6 +38,32 @@ if '\\newcommand{\\lean}' not in s:
 # ---------------------------------------------------------------- statuses
 # label -> (status, "declarations (module)")
 STATUS = {
+ 'thm:merged-grid-certificate': ('Lean',
+   r"\lean{Fabius.mvPolynomial_eq_of_eval_eq_on_grid} proves the difference-degree "
+   r"criterion over any integral domain and finite variable type; "
+   r"\lean{Fabius.mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_sub_le} and "
+   r"\lean{Fabius.mvPolynomial_eq_of_eval_eq_on_grid_of_degreeOf_le} give the two "
+   r"natural-degree-bound forms, and \lean{Fabius.mvPolynomial_grid_eval_injective} "
+   r"gives injectivity on the bounded-degree class (\lean{GridEvaluationCertificate})."),
+ 'thm:merged-crt-certificate': ('Lean',
+   r"\lean{Fabius.int_prod_dvd_of_pairwise_coprime} and "
+   r"\lean{Fabius.int_eq_zero_of_modEq_zero_of_natAbs_lt_prod} prove product "
+   r"divisibility and the stronger full-product zero bound; "
+   r"\lean{Fabius.int_eq_of_modEq_of_natAbs_sub_lt_prod}, "
+   r"\lean{Fabius.int_eq_of_modEq_of_natAbs_add_lt_prod}, and "
+   r"\lean{Fabius.int_eq_of_modEq_of_two_mul_natAbs_lt_prod} give the difference, "
+   r"sum, and symmetric half-product equality certificates for finite families "
+   r"of signed, pairwise coprime integer moduli (\lean{IntegerCRTCertificate})."),
+ 'prop:lagrange-existence-arbitrary-ring': ('none',
+   r"New source \lean{LagrangeExistence}: \lean{Fabius.Lagrange.existsUnique_eq_X_mul_subst} "
+   r"and \lean{Fabius.Lagrange.C_constantCoeff_dvd_of_eq_X_mul_subst} prove existence, "
+   r"uniqueness, and constant-series divisibility over every commutative ring, without a "
+   r"unit hypothesis on the weight; compiler validation pending."),
+ 'cor:lagrange-nilpotent-constant': ('none',
+   r"New source \lean{LagrangeExistence}: "
+   r"\lean{Fabius.Lagrange.pow_eq_zero_of_constantCoeff_pow_eq_zero} and "
+   r"\lean{Fabius.Lagrange.eq_zero_of_eq_X_mul_subst_of_constantCoeff_zero}; "
+   r"compiler validation pending."),
  'lem:merged-formal-rescaling': ('Lean',
    r"\cref{eq:merged-formal-rescaling-derivative} is "
    r"\lean{Fabius.derivative_rescale} over every commutative semiring; "
@@ -52,11 +78,29 @@ STATUS = {
    r"defining expansions are \lean{Fabius.ascPochhammer_eq_sum_monomial_stirlingFirst} and "
    r"\lean{Fabius.descPochhammer_eq_sum_monomial_signedStirlingFirst} "
    r"(\lean{StirlingBasisChange}); the permutation count itself is not formalized"),
- 'thm:second-recurrence': ('partial',
-   r"\lean{Nat.stirlingSecond_succ_succ}, \lean{Nat.stirlingSecond_succ_zero}, "
-   r"\lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib) prove the algebraic recurrence and "
-   r"boundary values for the recursively defined array.  Identifying this array with the "
-   r"cardinality of set partitions requires a separate formal counting theorem."),
+ 'thm:second-recurrence': ('Lean',
+   r"\lean{Nat.stirlingSecond_succ_succ}, \lean{Nat.stirlingSecond_zero}, \lean{Nat.stirlingSecond_succ_zero}, "
+   r"\lean{Nat.stirlingSecond_eq_zero_of_lt} (Mathlib); the set-partition count, "
+   r"which Mathlib leaves as a docstring claim, is \lean{Fabius.card_setPartitions} "
+   r"(\lean{BellSetPartitions})"),
+ 'prop:merged-abel': ('partial',
+   r"\lean{Fabius.abelPolynomial}, \lean{Fabius.abelPolynomial_eval_add}, "
+   r"\lean{Fabius.abelSeries_eq}, \lean{Fabius.exp_subst_eq_egfA_abelPolynomial} "
+   r"(\lean{AbelPolynomialSeries}) prove the addition and EGF identities over "
+   r"commutative $\RationalNumbers$-algebras; the EGF identity holds for every "
+   r"solution of $T=te^{-aT}$. The characteristic-free binomial addition identity "
+   r"stated here for every commutative ring still needs a formal transfer proof."),
+ 'thm:merged-frechet-faa': ('partial',
+   r"Mathlib's \lean{HasFTaylorSeriesUpToOn.comp} (FaaDiBruno.lean) proves "
+   r"composition for supplied Taylor series indexed by \lean{OrderedFinpartition}. "
+   r"The bridge to the stated formula for iterated Fr\'echet derivatives indexed "
+   r"by unordered set partitions, and its regrouping into partial-Bell form, "
+   r"have not been formalized."),
+ 'thm:bell-poly-partitions': ('Lean',
+   r"\lean{Fabius.partialBell_eq_sum_setPartitions} and "
+   r"\lean{Fabius.bell_complete_eq_sum_allSetPartitions} (\lean{BellSetPartitions}), "
+   r"over any commutative semiring of weights; the per-type count "
+   r"\cref{cor:partition-type} is not covered"),
  'thm:second-explicit': ('Lean',
    r"\lean{Fabius.factorial_mul_stirlingSecond_eq_sum} (over $\mathbb Z$) and "
    r"\lean{Fabius.stirlingSecond_eq_sum_div_factorial} (over $\mathbb Q$) "
@@ -370,8 +414,12 @@ STATUS = {
    r"\lean{Fabius.expRiordan_action}, \lean{Fabius.expRiordan_mul}, "
    r"\lean{Fabius.expRiordan_mul_inverse} (\lean{ExponentialRiordan}) prove the action, "
    r"product, and a conditional one-sided inverse law, assuming the inverse series and "
-   r"$g\,(h\circ f)=1$.  Construction of these inverse series from the theorem's unit "
-   r"hypotheses and the full two-sided inverse statement remain to be formalized.  "
+   r"$g\,(h\circ f)=1$.  New source \lean{ExponentialRiordanInverse} constructs the "
+   r"inverse prefactor \lean{Fabius.riordanInverseWeight}, proves the weight identities "
+   r"\lean{Fabius.riordanInverseWeight_mul_subst} and "
+   r"\lean{Fabius.mul_riordanInverseWeight_subst}, and proves both products as "
+   r"\lean{Fabius.expRiordan_mul_constructedInverse} and "
+   r"\lean{Fabius.expRiordan_constructedInverse_mul}; compiler validation is pending.  "
    r"The Stirling examples are \lean{Fabius.expRiordan_one_exp_sub_one} and "
    r"\lean{Fabius.expRiordan_one_log}."),
  'thm:merged-appell': ('Lean',
@@ -584,10 +632,13 @@ STATUS = {
    r"\lean{Fabius.diamondPow_apply} and \lean{Fabius.partialBell_eq_diamondPow_div} "
    r"(\lean{DiamondPower}); the diamond product is \lean{Bell.binomialConv}, and "
    r"\lean{Fabius.binomialConv_eq_sum_Ico} checks that the two extreme terms the source "
-   r"omits do vanish, so the two definitions agree.  The proof is the source's: "
+   r"omits do vanish, so the two definitions agree.  Raw diamond powers and their "
+   r"zero/successor/one laws hold over every "
+   r"commutative semiring; the EGF and partial-Bell bridge retain commutative "
+   r"$\RationalNumbers$-algebra hypotheses.  The proof is the source's: "
    r"\lean{Fabius.egfA_mul} makes the generating function of the power a power "
    r"(\lean{Fabius.egfA_diamondPow}), and \lean{Fabius.bellWeightSeries_pow} reads off its "
-   r"coefficients"),
+   r"coefficients."),
  'thm:bell-symmetric-functions': ('Lean',
    r"\cref{eq:elementary-via-bell} is \lean{Fabius.esymm_eq_bell_complete} and its sign "
    r"variant \lean{Fabius.esymm_eq_neg_bell_complete} (\lean{ElementarySymmetricBell}), for a "

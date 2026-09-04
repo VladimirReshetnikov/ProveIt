@@ -23,8 +23,8 @@ of the corpus's column theorem.
 * `ordinaryPartialBell_pow` — the defining identity, by construction.
 * `factorial_mul_ordinaryPartialBell` — **the bridge**:
   `n!·B̂_{n,k}(x_j/j!) = k!·B_{n,k}(x)`.
-* `ordinaryPartialBell_eq_zero_of_lt`, `ordinaryPartialBell_self` — the
-  boundary values transported across the bridge.
+* `ordinaryPartialBell_eq_zero_of_lt` — vanishing above the diagonal,
+  transported across the bridge.
 -/
 
 set_option autoImplicit false

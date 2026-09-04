@@ -29,7 +29,7 @@ The canonical frontier artifacts are:
 > source predates the later q-Pochhammer overlay and expanded ledger, so it is
 > a historical render and must not be cited as displaying the final source
 > union, including either series/transseries overlay, the historical
-> 952/11,884 checkpoint, or the live 967/12,001 census.
+> 952/11,884 and 967/12,001 checkpoints, or the live 985/12,199 census.
 
 > **Historical publication receipt (2026-09-03).** The most recent pre-`9135bd7e`
 > source is the 17,954-line, 813,297-byte TeX file with SHA-256
@@ -97,22 +97,17 @@ their local records. Those and earlier artifacts remain historical receipts
 for their named source states; the subsequently changed global sources claim
 no current PDF parity.
 
-At the historical `b899` publication checkpoint, the authoritative Lean audit
-contained exactly 923 facade-reachable modules and 11,611 unique public
-declarations, with no missing module headers or declaration documentation.
-The then-checked baseline recorded both zero-gap invariants.  The corresponding
-origin inventory had 11,610 declarations because it lacked this tree's retained
-unconditional public
-`complexQPochhammerInf_eq_qPochhammerInfIn` bridge.  A later incoming-branch
-audit reached the now-historical 960/11,966 checkpoint.  The semantic union
-then reached the historical 967/12,001 checkpoint, followed by the historical
-969/12,048 checkpoint and the live 970/12,051/0 census described below.  The
+The authoritative live Lean audit now contains exactly 985 facade-reachable
+modules and 12,199 unique public declarations, with no missing module headers
+or declaration documentation.  The historical 923/11,611 snapshot comprised
+an origin inventory of 11,610 declarations plus this tree's retained
+unconditional public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge.  The
 q-Pochhammer ownership remains
 `RvachevPochhammerFactorization` 1+10, `QPochhammerEntire` 0+5, and
 `QPochhammerInfinite` 1+29;
 `complexQPochhammerInf_eq_qPochhammerInfIn` remains the unconditional public
 definitional bridge to the generic symbol.  The later checkpoints culminate in
-the live 967/12,001/0 census recorded below.  Fixed-nome normal convergence,
+the live 985/12,199/0 census recorded below.  Fixed-nome normal convergence,
 product identifiability, all finite/infinite q-calculus tranches, the
 root-of-unity and q-Catalan layers, finite Newton interpolation, q-beta
 integration, integer and complex Gaussian upper indices,
@@ -310,20 +305,75 @@ and fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
 `ThueMorseNewmanSelfSimilarity.lean`. This gives the historical 934/11,709
-census. The following nine-module series/transseries overlay contributes 72
-explicit declarations; `to_additive` generates two further Neumann names, and
-six concurrent declarations elsewhere give the historical 943/11,787
-checkpoint. The next incoming series/transseries tranche adds nine
-facade-reachable modules with 90 explicit declarations and four
-integer-exponent theorems to `TransseriesDifferentialBlock.lean`, giving the
-historical 952/11,881 checkpoint. The two written OrderDual Neumann wrappers
-and the real-analytic Wright omega theorem then give the historical
-952/11,884 checkpoint. The subsequently merged 15-module tranche adds 117
-explicit public declarations, giving the historical 967/12,001 checkpoint.
-The next two-module tranche adds 47 declarations, giving the historical
-969/12,048 checkpoint; `UnitSeriesPowerRecurrence.lean` then adds one module
-and three theorems. The live census is 970/12,051/0, with zero missing module
-headers and zero missing declaration comments.
+checkpoint. The local branch's subsequent transseries-algebra integration gives the
+historical 943/11,791 checkpoint. The exhaustive 1+11
+`TransseriesFlat.lean` leaf and three new integer-Laurent theorems in
+`TransseriesDifferentialBlock.lean` give the historical 944/11,806 census.
+
+Against that checkpoint, the local pre-merge source added exactly seventeen modules:
+`BackwardErrorExistence.lean` (1+6), `BellLeibnizTower.lean` (1+5),
+`CayleyTreeFunction.lean` (1+8), `DerangementNearestInteger.lean` (1+7),
+`LambertCorrectionEquation.lean` (2+9), `LambertShiftConcavity.lean` (0+5),
+`LeastTermIndex.lean` (1+6), `LinLogCoreInversion.lean` (4+18),
+`OrdinaryPartialBell.lean` (2+4), `PowerLogCoreInversion.lean` (3+6),
+`RemainderTransport.lean` (0+3), `StaircaseInversion.lean` (0+7),
+`StirlingCompleteHomogeneous.lean` (0+8),
+`TouchardEulerOperator.lean` (2+8),
+`TransseriesDifferentialClosure.lean` (2+9),
+`TransseriesHarmonicIncrement.lean` (0+2), and `WrightOmega.lean` (1+12).
+They total 21 definitions and 123 theorems. Four existing surfaces add the
+other 24 declarations: `TransseriesFlat.lean` grows by 3+11 to 4+22,
+`TransseriesDifferentialBlock.lean` gains four theorems to 0+12,
+`QBinomialTheoremInfinite.lean` gains five theorems to 1+27, and
+`RvachevPochhammerFactorization.lean` retains one additional public bridge.
+The modified `LaplaceMomentBoundsSharp.lean` is excluded from the new-module
+count. Thus the local pre-merge census was 961/11,974, with both documentation-gap counts
+zero.
+
+On the incoming branch, nine series/transseries modules carried 72 explicit
+public declarations; two further Neumann names generated by `to_additive`
+were outside the lexical count. Six concurrent declarations gave the
+historical 943/11,787 checkpoint. Nine further modules with 90 declarations
+and four integer-exponent theorems gave 952/11,881; two written OrderDual
+Neumann wrappers and the real-analytic Wright omega theorem then gave the
+incoming historical checkpoint 952/11,884. These branch inventories overlap
+and are not additive.
+
+The preceding local merge audit was **970 facade-reachable modules and 12,056
+explicit public declarations**, with zero missing module headers, missing
+declaration comments, or duplicate public names. Relative to the local
+961/11,974 checkpoint, the nine new modules are `CayleyKernel.lean`,
+`CayleyLocalCoordinate.lean`, `DivisorTransform.lean`,
+`ExpSeriesRecurrence.lean`, `FabiusEndpointTwoTerm.lean`,
+`StirlingSeriesCoefficients.lean`, `TransseriesBlockClasses.lean`,
+`TransseriesMonomialUniqueness.lean`, and `WrightOmegaTwoOrders.lean`.
+At that checkpoint they contributed eight definitions and 60 theorems;
+existing-module changes contributed a net 14 declarations. The retained Stirling complete-homogeneous
+leaf still has eight theorems. The later incoming branch recorded 967/12,001 after fifteen modules and
+117 declarations, then 969/12,048 after two modules and 47 declarations;
+the three-theorem power-recurrence leaf gave its historical 970/12,051
+checkpoint. These counts overlap the local inventories and are not additive.
+
+The preceding merged audit was **977 modules and 12,133 explicit public
+declarations**, with zero documentation gaps. Relative to 970/12,056, seven
+new leaves contribute 80 declarations while three existing declarations move
+from `NorlundDiagonal.lean` to `ExponentialRescaling.lean`, a net increase
+of 77. The eight-theorem Stirling leaf is retained.
+The two certificate leaves added nine public theorems at the historical
+979/12,142 checkpoint. The current merged inventory is 985/12,199 after six
+further leaves add 57 declarations. No new aggregate-build or PDF-parity
+claim is made.
+
+The claim crosswalk remains conservative. The abstract Faà di Bruno result,
+ordinary Bell normalization, and Touchard definition and displayed
+Euler-operator equation are **Exact**. The real basic Wright omega row
+`plt:prop:mot-omega-basic` is also **Exact**, including real analyticity,
+without asserting complex holomorphy. The broader Wright omega claims,
+differential closure,
+harmonic increments, Cayley, derangement, Lambert correction and its bracket
+bounds, linear-logarithmic inversion, power-logarithmic inversion, remainder
+transport, and staircase inversion remain **Partial**; the least-term-index
+row is **Neighboring**.
 
 The existing `FabiusFunction.ProbabilityLaplaceMoments` module then adds
 exactly two public theorems:
@@ -351,8 +401,11 @@ natural mesh `M`, every `l,m`, and `l <= padicValNat 2 M`. Thus
 does not prove the larger support/smoothness/parity/Fourier--Bessel theorem
 `thm:leg-Lambda` or the matrix-projector corollary. It gives the historical
 925/11,619 census; the historical reciprocity census is 931/11,685 and the
-historical dyadic/finite-prefix census is 933/11,695. The current live census
-is 970/12,051, as recorded above, with zero missing module headers and zero
+historical dyadic/finite-prefix census is 933/11,695. The later branch
+inventories, including local 961/11,974 and 970/12,056 and incoming
+952/11,884, 967/12,001, 969/12,048, and 970/12,051, are also
+historical. The current merged census is 985/12,199, as recorded above,
+with zero missing module headers and zero
 missing declaration comments.
 
 ### Series/transseries Lean overlays
@@ -363,14 +416,12 @@ nine more modules (90 explicit public declarations) and four theorems to
 `TransseriesDifferentialBlock.lean`. Thus 943/11,787 is a historical
 pre-incoming checkpoint, while 952/11,881 is the historical post-incoming
 checkpoint. The two written OrderDual Neumann wrappers and the real-analytic
-Wright omega theorem add three declarations, giving the historical
-952/11,884 checkpoint. The subsequently merged 15-module tranche adds 117
-explicit public declarations, giving the historical 967/12,001 checkpoint.
-The next two-module tranche adds 47 declarations and gives the historical
-969/12,048 checkpoint; the final zero-definition/three-theorem power-
-recurrence leaf gives the live 970/12,051/0
-modules/declarations/missing-comments census. The retained PDFs predate these
-source-only overlays and claim no render parity.
+Wright omega theorem gave the incoming historical 952/11,884/0
+modules/declarations/missing-comments checkpoint. The live merged census is
+985/12,199/0. The following list records the incoming module surfaces at that
+historical checkpoint, not the larger merged surfaces inventoried above.
+The retained PDFs predate the incoming source-only overlay and claim no
+render parity.
 
 - `UnitSeriesPowerRecurrence.lean` is 0+3:
   `Fabius.coeff_recurrence_of_mul_derivative_eq`,
@@ -382,8 +433,8 @@ source-only overlays and claim no render parity.
   formal falling-factorial power at `F - 1` when `F(0)=1` over a
   commutative rational algebra. Thus the power clause of
   `alg:merged-exp-log-power` is **Exact**; no analytic branch is asserted.
-  The coefficient-calculus concordance is now 203 rows: 59 Lean, 33 Partial,
-  and 111 None.
+  The merged coefficient-calculus concordance has 207 rows:
+  62 Lean, 35 Partial, and 110 None.
 
 - The eleven-declaration weighted-translation extension of
   `AppellSequence.lean` consists of `Bell.binomialConv_unitSeq`,
@@ -715,16 +766,12 @@ The incoming union adds one module and fourteen public declarations: the new
 zero-definition/six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem
 added to `DyadicBoundaryIdentity.lean`, and seven theorems added to
 `ThueMorseNewmanSelfSimilarity.lean`. This gives the historical 934/11,709
-union. The nine series/transseries modules and six concurrent declarations
-then give the historical 943/11,787 checkpoint. The subsequent nine-module,
-90-declaration incoming tranche and four new declarations in
-`TransseriesDifferentialBlock.lean` give the historical 952/11,881 checkpoint.
-The two written OrderDual Neumann wrappers and one real-analytic Wright omega
-theorem give the historical 952/11,884 checkpoint. The subsequently merged
-15-module tranche adds 117 public declarations and gives the historical
-967/12,001 union. The next two modules and 47 declarations give the historical
-969/12,048 checkpoint; `UnitSeriesPowerRecurrence.lean` adds one module and
-three theorems, giving the live 970/12,051 union with zero documentation gaps.
+checkpoint. The local branch's 943/11,791, 944/11,806, 960/11,966,
+and 961/11,974 inventories and the incoming branch's 943/11,787, 952/11,881,
+and 952/11,884 inventories, followed by incoming 967/12,001, 969/12,048,
+and 970/12,051, are historical and overlap. The preceding local merged
+970/12,056 inventory is also historical. The reconciled merged
+audit is 985/12,199, with zero documentation gaps, as inventoried above.
 
 `FabiusFunction.RvachevLaurentLeading` has one definition and six theorems.
 Its manuscript-normalized punctured-neighborhood limit, together with the
@@ -892,7 +939,8 @@ Lagrange right-inverse theorem. These declarations are rendered by the
 historical `b899` Up-synthesis and canonical-frontier PDFs.
 
 The final source-only `FabiusFunction.GaussianBinomialFixedColumnRate` leaf has
-no definitions and exactly eight theorems:
+no definitions and exactly nine theorems:
+`Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp'`,
 `Fabius.norm_finiteQPochhammerIn_pow_sub_one_le`,
 `Fabius.norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le`,
 `Fabius.norm_gaussianBinomial_sub_inv_finiteQPochhammerIn_le`,
@@ -901,8 +949,8 @@ no definitions and exactly eight theorems:
 `Fabius.gaussianBinomial_shifted_fixedColumn_relativeError_isBigO`,
 `Fabius.gaussianBinomial_fixedColumn_error_isBigO`, and
 `Fabius.gaussianBinomial_shifted_fixedColumn_error_isBigO`. The closure reuses
-`Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp` and
-`Fabius.tendsto_gaussianBinomial_add_atTop` from the one-definition,
+`Fabius.norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` and
+`Fabius.tendsto_gaussianBinomial_add_const_atTop` from the one-definition,
 twenty-seven-theorem `QBinomialTheoremInfinite` module. In a normed
 commutative ring with normalized multiplicative norm, `‖q‖ ≤ 1` gives the
 exponential and elementary bounds on `‖(q^m;q)_k-1‖` and the denominator-free
