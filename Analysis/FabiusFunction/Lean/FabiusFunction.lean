@@ -24,6 +24,7 @@ import FabiusFunction.TouchardEulerOperator
 import FabiusFunction.StirlingGeneratingFunctions
 import FabiusFunction.EulerianNumbers
 import FabiusFunction.PartialBellPolynomials
+import FabiusFunction.BellSetPartitions
 import FabiusFunction.BellGeneratingFunctions
 import FabiusFunction.BellLeibnizTower
 import FabiusFunction.BellComposition
@@ -1396,4 +1397,15 @@ random-series law, by Lévy's continuity theorem with the pointwise
 characteristic-function convergence supplied by dominated convergence;
 the companion quantitative statement is the all-real uniform CDF bound
 `|C_p - F| ≤ 2^{-p}` of the computability module.
+The combinatorial layer also exposes the polytopal reading of the two
+Eulerian triangles, as a 3+21 public surface: `permutohedronFaceNumber`
+with `∑_k k! S(n,k) (t-1)^{n-k} = A_n(t)` in both `R⟦X⟧` and `Polynomial R`
+and its coefficientwise `h`-vector form; `cubeSliceCount`, the
+inclusion–exclusion count whose successive differences are the Eulerian
+numbers, so that the half-open hypersimplices have normalized volumes
+`A(n,k)`; and `typeBFaceNumber` with the sign-free Newton expansion
+`(2m+1)^n = ∑_k T(n,k) C(m,k)` and the type-`B` transform
+`∑_k T(n,k) t^k (1-t)^{n-k} = B_n(t)`.  These are algebraic statements
+only: no face lattice, shelling or Lebesgue measure occurs in them, and the
+Irwin--Hall theorem itself remains open for want of the volume computation.
 -/
