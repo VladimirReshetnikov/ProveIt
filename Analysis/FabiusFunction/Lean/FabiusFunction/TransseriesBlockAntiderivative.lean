@@ -61,6 +61,7 @@ ring of a single block. -/
 noncomputable def blockOperator (c : K) (p : K[X]) : K[X] :=
   derivative p - Polynomial.C c * p
 
+/-- The block operator sends the zero polynomial to zero. -/
 @[simp] theorem blockOperator_zero (c : K) : blockOperator c 0 = 0 := by
   simp [blockOperator]
 
