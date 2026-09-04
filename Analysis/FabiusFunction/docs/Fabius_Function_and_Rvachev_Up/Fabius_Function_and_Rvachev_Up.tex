@@ -207,10 +207,15 @@ declarations beyond the 610/8,318 activation checkpoint, and 274 modules and
 merge target then contributed 11,610 declarations; the retained unconditional
 public \lean{complexQPochhammerInf_eq_qPochhammerInfIn} bridge in the 1+10
 \path{RvachevPochhammerFactorization.lean} surface contributes the additional
-declaration.  Module headers and declaration documentation were complete; the
-then-checked baseline recorded both zero-gap invariants.  The live census is
-now 967/12,001/0, as recorded in the later source-only audit below.  This source
-includes the earlier finite and
+declaration.  A later incoming-branch audit reached the now-historical
+960/11,966 checkpoint: 350 modules and 3,648 declarations beyond the
+610/8,318 activation checkpoint, and 311 modules and 3,268 declarations beyond
+the 649/8,698 publication-union checkpoint.  The subsequent semantic union
+reached the historical 967/12,001 checkpoint.  The next two-module extension
+gave the historical 969/12,048 checkpoint, and the final source-only power-
+recurrence leaf gives the live 970/12,051/0 census.  Module headers and
+declaration documentation are complete; the checked lexical baseline records
+both zero-gap invariants.  This source includes the earlier finite and
 infinite q-series APIs together with the final Gaussian-palindromic, Jackson
 integral, q-exponential, theta, Jacobi-cubic, logarithmic-derivative,
 order-derivative, universal-polynomial, central-reduction, and cyclotomic-
@@ -3402,10 +3407,10 @@ theorems; its public surface comprises \lean{gaussianMajorant},
 \lean{gaussianMajorant_nonneg},
 \lean{norm_gaussianBinomial_le},
 \lean{tendsto_finiteQPochhammerIn_pow_atTop},
-\lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp},
+\lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one},
 \lean{isBigO_finiteQPochhammerIn_pow_sub_one},
 \lean{tendsto_gaussianBinomial_atTop},
-\lean{tendsto_gaussianBinomial_add_atTop},
+\lean{tendsto_gaussianBinomial_add_const_atTop},
 \lean{isBigO_gaussianBinomial_sub_inv},
 \lean{isBigO_gaussianBinomial_add_sub_inv},
 \lean{summable_pow_choose_two_mul_pow},
@@ -4209,9 +4214,12 @@ public declarations and four integer-exponent theorems to the existing
 \path{TransseriesWellBased.lean} and the real-analytic Wright omega theorem in
 \path{WrightOmega.lean} then add three declarations without adding a module,
 giving the historical 952/11,884 checkpoint.  The subsequently merged
-15-module tranche adds 117 explicit public declarations.  The live census is
-therefore 967 modules and 12,001 explicit public declarations, with zero
-missing module headers and zero missing declaration comments.
+15-module tranche adds 117 explicit public declarations, giving the historical
+967/12,001 checkpoint.  Two new modules and 47 declarations then give the
+historical 969/12,048 checkpoint; the zero-definition/three-theorem
+\path{UnitSeriesPowerRecurrence.lean} leaf gives the live 970-module,
+12,051-declaration census, with zero missing module headers and zero missing
+declaration comments.
 The immediately preceding algebraic moment-polynomial checkpoint was
 904/11,457, and the complex Bernoulli value-completion checkpoint 903/11,448
 remains historical.  The merged chronology also records the scaled-geometric
@@ -4464,8 +4472,11 @@ public declarations and four integer-exponent theorems to
 checkpoint.  The two written OrderDual Neumann wrappers and the real-analytic
 Wright omega theorem then give the historical 952/11,884 checkpoint.  The
 subsequently merged 15-module tranche adds 117 explicit public declarations
-and gives the live 967/12,001 census, with zero missing module headers and zero
-missing declaration comments.
+and gives the historical 967/12,001 checkpoint.  The next two-module tranche
+adds 47 declarations, giving the historical 969/12,048 checkpoint; the final
+\path{UnitSeriesPowerRecurrence.lean} leaf adds one module and three theorems.
+The live census is therefore 970/12,051, with zero missing module headers and
+zero missing declaration comments.
 
 The exhaustive public surface of
 \path{FinitePrefixThueMorseCollapse.lean} is zero definitions and eight
@@ -4755,9 +4766,9 @@ Its proof
 reuses the stronger ordered-field theorem
 \lean{finiteQPochhammerIn_self_pos} from
 \path{GeneralQConditionNumber.lean} rather than exporting a duplicate.
-The rigorous 282-row forward q-series ledger is therefore 177 Exact, 82 Partial,
-15 None, and 8 interface rows; its 547-row source concordance is 99 Lean,
-379 human, 60 N/A, and 9 conjecture rows.  In particular q-Lucas remains Partial
+The rigorous 282-row forward q-series ledger is now 181 Exact, 79 Partial,
+14 None, and 8 interface rows; its 547-row source concordance is 103 Lean,
+375 human, 60 N/A, and 9 conjecture rows.  In particular q-Lucas remains Partial
 because Lean proves the evaluated primitive-root identity rather than the
 polynomial congruence modulo \(\Phi_d\); the Gaussian majorant row is Exact,
 and the \(Q>1\) asymptotic row is Exact via the fixed-column and central
@@ -14637,11 +14648,56 @@ historical pre-incoming checkpoint and 952/11,881 is the historical
 post-incoming checkpoint.  The two written OrderDual Neumann wrappers and the
 real-analytic Wright omega theorem add three declarations, giving the
 historical 952/11,884 checkpoint.  The subsequently merged 15-module tranche
-adds 117 explicit public declarations, so 967/12,001/0 is the live
+adds 117 explicit public declarations, giving the historical 967/12,001
+checkpoint.  The next two-module tranche adds 47 declarations and gives the
+historical 969/12,048 checkpoint; \path{UnitSeriesPowerRecurrence.lean} then
+adds one module and three theorems.  Thus 970/12,051/0 is the live
 modules/declarations/missing-comments census.  The following inventory is
 exhaustive for both overlays and keeps the formal/analytic and
 polynomial/Laurent boundaries explicit.  No PDF was rebuilt for the incoming
 source-only overlay; the retained PDF remains a historical render.
+
+\begin{theorem}[Triangular recurrence for a formal power]
+\label{thm:formal-unit-series-power-recurrence}
+Let \(R\) be a commutative ring, let
+\(F=\sum_{n\geq0}a_nX^n\) and \(G=\sum_{n\geq0}c_nX^n\) be formal power
+series over \(R\), and let \(\beta\in R\).  If
+\(FG'=\beta F'G\), then, for every \(n\geq0\),
+\[
+ n a_0c_n=\sum_{j=1}^{n}\bigl((\beta+1)j-n\bigr)a_jc_{n-j}.
+\]
+In particular, over a commutative rational algebra, if \(a_0=1\) and
+\(G\) is the falling-factorial formal binomial series substituted at \(F-1\),
+then the differential equation holds and this is the coefficient recurrence
+for the formal power \(F^\beta\), with \(c_0=1\).
+\end{theorem}
+
+\begin{proof}
+Multiply \(FG'=\beta F'G\) by \(X\).  The Euler derivative preserves the
+coefficient index, since \([X^n](XH')=n[X^n]H\).  Cauchy's product rule applied
+to \(\beta(XF')G-F(XG')=0\) therefore gives
+\[
+ 0=\sum_{j=0}^{n}\bigl((\beta+1)j-n\bigr)a_jc_{n-j}.
+\]
+The \(j=0\) summand is \(-na_0c_n\), and moving it to the other side proves
+the formula without dividing by \(n\) or \(a_0\).  For the specialization,
+the falling-factorial identity \((1+T)B_\beta'(T)=\beta B_\beta(T)\), formal
+substitution at \(T=F-1\), and the formal chain rule give \(FG'=\beta F'G\).
+The constant-coefficient substitution rule and \(B_\beta(0)=1\) give
+\(c_0=1\).
+\end{proof}
+
+The exact source statements are
+\lean{Fabius.coeff_recurrence_of_mul_derivative_eq},
+\lean{Fabius.mul_derivative_fallingSeries_subst_sub_one}, and
+\lean{Fabius.coeff_fallingSeries_subst_sub_one_recurrence}.  They make the
+power clause of \nolinkurl{alg:merged-exp-log-power} Exact alongside its
+already formal logarithm and exponential clauses.  The whole printed
+algorithm is formal over a commutative rational algebra; the first theorem is
+stronger and denominator-free over every commutative ring, including positive
+characteristic.  These are formal-series identities, not analytic branch
+claims.  The coefficient-calculus concordance now has 203 rows: 59 Lean,
+33 Partial, and 111 None.
 
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.19\textwidth}
                          >{\raggedright\arraybackslash}p{0.39\textwidth}
@@ -14650,6 +14706,32 @@ source-only overlay; the retained PDF remains a historical render.
 Module and size & Exhaustive public surface & Result boundary \\
 \midrule
 \endhead
+\path{UnitSeriesPowerRecurrence.lean} (0+3) &
+\lean{Fabius.coeff_recurrence_of_mul_derivative_eq},
+\lean{Fabius.mul_derivative_fallingSeries_subst_sub_one},
+\lean{Fabius.coeff_fallingSeries_subst_sub_one_recurrence} &
+The denominator-free recurrence in
+Theorem~\ref{thm:formal-unit-series-power-recurrence} holds over every
+commutative ring.  Its formal-binomial specialization makes the power clause
+of \nolinkurl{alg:merged-exp-log-power} \textbf{Exact} over a commutative
+rational algebra.  No analytic power or branch is asserted. \\
+\path{AppellSequence.lean} (weighted-translation extension, +11) &
+\lean{Bell.binomialConv_unitSeq},
+\lean{Bell.binomialConv_four_swap},
+\lean{Appell.translate_zero},
+\lean{Appell.translate_translate},
+\lean{Appell.binomialConv_translate},
+\lean{Appell.translate_injective},
+\lean{Appell.translate_neg_translate},
+\lean{Appell.translate_translate_neg},
+\lean{Appell.translate_eq_iff},
+\lean{Appell.weighted_binomial_inversion_iff},
+\lean{Appell.binomialConv_translate_neg_translate} &
+\nolinkurl{thm:merged-weighted-binomial-translation} is \textbf{Exact} over
+a commutative semiring, with additive left cancellation required only for
+injectivity.  \nolinkurl{cor:merged-weighted-binomial-inversion} is
+\textbf{Exact} over a commutative ring.  These are finite coefficient
+identities, not analytic exponential-generating-function claims. \\
 \path{UnitSeriesBellCoefficients.lean} (0+16) &
 \lean{Fabius.ordPartialBell_eq_factorialRatio_partialBell},
 \lean{Fabius.factorial_mul_ordPartialBell_eq_factorial_mul_partialBell},
@@ -14693,16 +14775,22 @@ mechanism, not a Hahn-series construction. \\
 The two printed real \texttt{atTop} comparisons in
 \nolinkurl{q0:prop:height} are \textbf{Exact}.  No recursive global
 height/depth order on arbitrary nested transmonomials is defined. \\
-\path{TransseriesScale.lean} (1 structure+1 definition+3 theorems) &
-\lean{Fabius.IsAsymptoticScale}, \lean{Fabius.IsPoincareExpansion},
+\path{TransseriesScale.lean} (1 structure+2 definitions+6 theorems) &
+\lean{Fabius.IsAsymptoticScale}, \lean{Fabius.poincarePartialSum},
+\lean{Fabius.poincarePartialSum_zero},
+\lean{Fabius.poincarePartialSum_succ},
+\lean{Fabius.IsPoincareExpansion},
 \lean{Fabius.IsPoincareExpansion.isLittleO_succ_remainder},
 \lean{Fabius.IsPoincareExpansion.tendsto_coeff},
+\lean{Fabius.IsPoincareExpansion.tendsto_coeff_div},
 \lean{Fabius.IsPoincareExpansion.coeff_unique} &
 The sequence-indexed content of \nolinkurl{q0:def:scale},
 \nolinkurl{q0:def:poincare}, and \nolinkurl{q0:prop:uniqueness} is
-\textbf{Exact}.  Uniqueness assumes \texttt{[l.NeBot]}, and the fixed
-first-omitted-term remainder convention carries no convergence, flat-remainder
-recovery, unordered-set, or maximal-scale claim. \\
+\textbf{Exact}, now for coefficients in an arbitrary normed space over the
+scalar field.  The literal quotient-limit wrapper is the scalar-valued case.
+Uniqueness assumes \texttt{[l.NeBot]}, and the fixed first-omitted-term
+remainder convention carries no convergence, flat-remainder recovery,
+unordered-set, or maximal-scale claim. \\
 \path{TransseriesScaleDominance.lean} (1+7) &
 \lean{Fabius.plMonomial}, \lean{Fabius.tendsto_plMonomial_atTop_zero},
 \lean{Fabius.plMonomial_div_eventuallyEq},
@@ -14742,8 +14830,11 @@ nonresonant operator has the explicit degree-preserving inverse, and the
 resonant derivative has the explicit degree-raising primitive.  This is a
 result on \(\K[L]\), not a construction of the full
 \(\K[t,t^{-1}][L]\) Laurent ambient ring. \\
-\path{TransseriesDifferentialBlock.lean} (0+9) &
+\path{TransseriesDifferentialBlock.lean} (0+12) &
 \lean{Fabius.derivation_pow_t}, \lean{Fabius.derivation_block},
+\lean{Fabius.derivation_zpow_block},
+\lean{Fabius.exists_zpow_block_primitive},
+\lean{Fabius.existsUnique_zpow_block_primitive},
 \lean{Fabius.exists_block_primitive},
 \lean{Fabius.derivation_block_zero},
 \lean{Fabius.exists_block_primitive_resonant},
@@ -14751,8 +14842,11 @@ result on \(\K[L]\), not a construction of the full
 \lean{Fabius.derivation_zpow_t},
 \lean{Fabius.derivation_block_zpow} &
 The natural-exponent bridge and the integer-exponent block law
-\nolinkurl{plt:eq:mot-block-derivative} are \textbf{Exact} in any suitable
-commutative algebra; the integer statement assumes that \(t\) is a unit.
+\nolinkurl{plt:eq:mot-block-derivative} are \textbf{Exact}.  The new
+source-shaped Laurent law and its degree-preserving nonresonant primitive hold
+in an ambient field for \(t\ne0\); uniqueness additionally assumes that
+evaluation at \(L\) is injective.  The older integer statement packages \(t\)
+as a unit.
 Only item~(v) of \nolinkurl{plt:thm:mot-smallest-differential-algebra} is
 closed, so that compound theorem remains \textbf{Partial}: its minimal-ring,
 growth, and algebraic-independence clauses are not formalized, and no concrete
@@ -14859,12 +14953,19 @@ order-theoretic interface actually used: strict monotonicity and an inverse
 equation.  The module also proves that the separation hypothesis can fail at
 arbitrarily small scale.  It does not construct admissible interpolations or
 formalize the periodic layer's Fourier expansion. \\
-\path{TransseriesFlat.lean} (4+16) &
+\path{TransseriesFlat.lean} (4+22) &
 Definitions \lean{Fabius.IsFlat}, \lean{Fabius.flatSubmodule},
 \lean{Fabius.AbsorbsScale}, \lean{Fabius.powScale}; theorems
 \lean{Fabius.isFlat_zero}, \lean{Fabius.IsFlat.add},
 \lean{Fabius.IsFlat.neg}, \lean{Fabius.IsFlat.sub},
-\lean{Fabius.IsFlat.const_smul}, \lean{Fabius.mem_flatSubmodule_iff},
+\lean{Fabius.IsFlat.const_smul},
+\lean{Fabius.isFlat_exp_neg_rpow_atTop},
+\lean{Fabius.IsPoincareExpansion.add_flat},
+\lean{Fabius.IsPoincareExpansion.sub_same_coeff_isFlat},
+\lean{Fabius.IsPoincareExpansion.iff_sub_isFlat},
+\lean{Fabius.IsFlat.smul_of_scale_absorption},
+\lean{Fabius.IsFlat.smul_of_isBigO_inv_pow},
+\lean{Fabius.mem_flatSubmodule_iff},
 \lean{Fabius.IsFlat.mul_absorbsScale},
 \lean{Fabius.absorbsScale_const},
 \lean{Fabius.IsPoincareExpansion.add_isFlat},
@@ -14876,10 +14977,12 @@ Definitions \lean{Fabius.IsFlat}, \lean{Fabius.flatSubmodule},
 \lean{Fabius.isFlat_exp_neg},
 \lean{Fabius.isPoincareExpansion_add_exp_neg} &
 \nolinkurl{q0:def:flat} and all three clauses of
-\nolinkurl{q0:prop:invisible} are \textbf{Exact}; the same-coefficient
-statement is strengthened to an equivalence.  This is an abstract
-big-\(O\) flatness result and asserts neither convergence nor recovery beyond
-flat remainders. \\
+\nolinkurl{q0:prop:invisible} are \textbf{Exact}; the generic statements now
+allow vector-valued functions and coefficients on a scalar-valued scale, and
+the same-coefficient statement is strengthened to an equivalence.  Variable
+scalar multiplication requires the stated scale-absorption hypothesis.  The
+named submodule and compatibility wrappers remain scalar-valued.  No
+convergence or recovery beyond flat remainders is asserted. \\
 \path{TransseriesHarmonicIncrement.lean} (0+2) &
 \lean{Fabius.tendsto_div_atTop_of_tendsto_sub},
 \lean{Fabius.tendsto_div_atTop_of_harmonic_increment} &
@@ -14887,6 +14990,24 @@ The leading-order clause \(w_n/n\to c_0\) of
 \nolinkurl{plt:lem:mot-harmonic} is \textbf{Exact}.  The compound lemma
 remains \textbf{Partial}: the \((c_1/c_0)\log n\) correction, constant,
 and \(o(1)\) remainder are absent. \\
+\path{StirlingSeriesCoefficients.lean} (3+12) &
+Definitions \lean{Fabius.stirlingKernelCoeff},
+\lean{Fabius.stirlingKernel}, \lean{Fabius.stirlingCoeff}; theorems
+\lean{Fabius.coeff_stirlingKernel},
+\lean{Fabius.constantCoeff_stirlingKernel},
+\lean{Fabius.stirlingCoeff_zero},
+\lean{Fabius.stirlingCoeff_recurrence},
+\lean{Fabius.bernoulli_three}, \lean{Fabius.bernoulli_four},
+\lean{Fabius.stirlingKernelCoeff_one},
+\lean{Fabius.stirlingKernelCoeff_two},
+\lean{Fabius.stirlingKernelCoeff_three},
+\lean{Fabius.stirlingCoeff_one}, \lean{Fabius.stirlingCoeff_two},
+\lean{Fabius.stirlingCoeff_three} &
+The formal-series definition in \nolinkurl{q2:eq:stirling-cj}, its recurrence,
+and the displayed values \(c_0=1\), \(c_1=1/12\), \(c_2=1/288\), and
+\(c_3=-139/51840\) are \textbf{Exact}.  This proves only the Stirling-
+coefficient clause of the surrounding Fubini-sector corollary, not its
+analytic sector expansion. \\
 \path{WrightOmega.lean} (1+13) &
 \lean{Fabius.wrightOmega}, \lean{Fabius.analyticAt_wrightOmega},
 \lean{Fabius.wrightOmega_pos},
@@ -14907,6 +15028,22 @@ all formalized.  Here \lean{Fabius.analyticAt_wrightOmega} is
 \texttt{AnalyticAt} over \(\RealNumbers\) at every real input; it asserts no
 complex holomorphic continuation or branch statement.
 \\
+\path{WrightOmegaTwoOrders.lean} (0+8) &
+\lean{Fabius.wrightOmega_lt_self},
+\lean{Fabius.tendsto_log_wrightOmega_div_atTop_zero},
+\lean{Fabius.tendsto_wrightOmega_div_atTop_one},
+\lean{Fabius.tendsto_log_wrightOmega_sub_log_atTop_zero},
+\lean{Fabius.tendsto_log_wrightOmega_div_log_atTop_one},
+\lean{Fabius.self_sub_wrightOmega_isEquivalent_log},
+\lean{Fabius.wrightOmega_sub_self_isEquivalent_neg_log},
+\lean{Fabius.wrightOmega_residual_isEquivalent} &
+The two concluding real asymptotic equivalences of
+\nolinkurl{plt:prop:mot-two-orders},
+\(\omega(X)-X\sim-\log X\) and
+\(\omega(X)-X+\log X\sim(\log X)/X\), are \textbf{Exact} at
+\texttt{atTop}.  The proposition remains \textbf{Partial}: its four-term
+expansion with \(O((\log X)^3/X^3)\) and its explicit quantitative envelope
+are not formalized here. \\
 \bottomrule
 \end{longtable}
 
@@ -15018,21 +15155,26 @@ dimensions &
 \path{ActivationSeriesAsymptotics.lean},
 \path{GeometricActivationDimension.lean},
 \path{GeometricActivationAsymptotics.lean}\\
-Formal unit-series and ordinary Bell calculus; well-basedness, elementary
-height, flatness, and harmonic leading order; sequence-indexed scales and real
-power--log dominance; polynomial block antidifferentiation and its abstract
-integer-exponent differential bridge; real Lambert/Wright inversion cores,
-staircase inversion, remainder transport, the nearest-integer derangement
-consequence, and the Catalan quadratic coefficient core &
+Formal unit-series, arbitrary-power recurrence, weighted binomial translation,
+and ordinary Bell calculus; Stirling-series coefficients; well-basedness,
+elementary height, vector-valued flatness, and harmonic leading order;
+sequence-indexed vector-valued expansions and real power--log dominance;
+polynomial block antidifferentiation and its abstract Laurent-exponent
+differential bridge; real Lambert/Wright inversion cores and their first two
+asymptotic orders, staircase inversion, remainder transport, the nearest-
+integer derangement consequence, and the Catalan quadratic coefficient core &
 \path{UnitSeriesBellCoefficients.lean},
+\path{UnitSeriesPowerRecurrence.lean}, \path{AppellSequence.lean},
 \path{OrdinaryPartialBell.lean},
+\path{StirlingSeriesCoefficients.lean},
 \path{TransseriesWellBased.lean}, \path{TransseriesHeight.lean},
 \path{TransseriesScale.lean}, \path{TransseriesScaleDominance.lean},
 \path{TransseriesPolyLogScale.lean},
 \path{TransseriesFlat.lean}, \path{TransseriesHarmonicIncrement.lean},
 \path{TransseriesBlockAntiderivative.lean},
 \path{TransseriesDifferentialBlock.lean},
-\path{WrightOmega.lean}, \path{LinLogCoreInversion.lean},
+\path{WrightOmega.lean}, \path{WrightOmegaTwoOrders.lean},
+\path{LinLogCoreInversion.lean},
 \path{PowerLogCoreInversion.lean}, \path{StaircaseInversion.lean},
 \path{RemainderTransport.lean}, \path{DerangementNearestInteger.lean},
 \path{QuadraticCoreCatalan.lean}\\
@@ -15227,7 +15369,7 @@ limit, Jacobi identities, and pentagonal identities add completeness, with
 \(z\ne0\) exactly for Jacobi.  The pentagonal identities include \(q=0\),
 and the real theta majorant assumes \(0\le r<1\) and \(0<s\) &
 \path{JacobiTripleProduct.lean}\\
-One definition, \lean{gaussianMajorant}, and exactly twenty-two theorems:
+One definition, \lean{gaussianMajorant}, and exactly twenty-seven theorems:
 \lean{hasSum_of_tendsto_of_dominated},
 \lean{one_le_qPochhammerInfIn_neg},
 \lean{finiteQPochhammerIn_neg_le_qPochhammerInfIn},
@@ -15243,7 +15385,12 @@ One definition, \lean{gaussianMajorant}, and exactly twenty-two theorems:
 \lean{gaussianBinomial_eq_div}, \lean{gaussianMajorant_nonneg},
 \lean{norm_gaussianBinomial_le},
 \lean{tendsto_finiteQPochhammerIn_pow_atTop},
+\lean{norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one},
+\lean{isBigO_finiteQPochhammerIn_pow_sub_one},
 \lean{tendsto_gaussianBinomial_atTop},
+\lean{tendsto_gaussianBinomial_add_const_atTop},
+\lean{isBigO_gaussianBinomial_sub_inv},
+\lean{isBigO_gaussianBinomial_add_sub_inv},
 \lean{summable_pow_choose_two_mul_pow}, \lean{hasSum_euler_product},
 \lean{qPochhammerInfIn_ne_zero_of_norm_lt_one},
 \lean{hasSum_qBinomial_theorem}, and

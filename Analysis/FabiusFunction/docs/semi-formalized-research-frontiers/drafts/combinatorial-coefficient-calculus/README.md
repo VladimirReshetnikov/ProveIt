@@ -15,29 +15,27 @@ with the strongest correct hypotheses and one complete proof. A second proof
 survives only where it exposes a different mechanism.
 
 The consolidation boundary is recorded in
-[`PROVENANCE.md`](Combinatorial_Coefficient_Calculus/PROVENANCE.md), the
-historical publication and intake digests in
-[`SOURCE_CLOSURE.sha256`](Combinatorial_Coefficient_Calculus/SOURCE_CLOSURE.sha256),
+[`PROVENANCE.md`](Combinatorial_Coefficient_Calculus/PROVENANCE.md), the six
+original sources and their immutable Git recovery locators in
+[`SOURCE_INVENTORY.csv`](Combinatorial_Coefficient_Calculus/SOURCE_INVENTORY.csv),
 and the topic/claim decisions in
 [`SOURCE_DISPOSITION.csv`](Combinatorial_Coefficient_Calculus/SOURCE_DISPOSITION.csv).
 The standard-library
 [`validate_canonical.py`](Combinatorial_Coefficient_Calculus/validate_canonical.py)
-checks LaTeX structure, labels, references, citations, proof pairing, source
-coverage, the digest closure, and the one-publication layout.  Its `--final`
-mode passed at the last PDF publication checkpoint.  It is not a current-pass
-claim after the crosswalk-only TeX update, because the intentionally historical
-closure digest is expected to differ until the next PDF publication cycle.
+checks LaTeX structure, labels, references, citations, proof pairing, exact
+source coverage, Git object availability, and the one-publication layout;
+run it with `--final`, which is the
+mode this package is now expected to pass.
 
 | Directory | Document |
 | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical source:** *Combinatorial Coefficient Calculus* — 10,356-line, 499,570-byte live TeX; the retained 174-page A4 PDF is a historical, unrebuilt artifact |
+| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — the evolving source and a historical 174-page A4 PDF |
 
-The retained PDF rendered the TeX at the package's last three-pass
-`pdflatex` publication checkpoint.  The live TeX has since acquired the
-2026-09-04 Lean crosswalk and regenerated formalization register, while the PDF
-was deliberately not rebuilt.  The PDF is therefore historical: **no render-
-parity claim applies to the current TeX/PDF pair**, and the TeX is the
-authoritative live source.
+The TeX has changed since the committed PDF was rendered. PDF rebuilding is
+currently skipped at the user's request, so the pair has no current
+render-parity claim. Standalone checksum files are retired; provenance is kept
+in Git and the source inventory, and the validator does not maintain or require
+file digests.
 
 ## What the final merge changed
 
@@ -75,10 +73,45 @@ section "Closure of the merge", carries the in-document record. In summary:
 ## What this package does not claim
 
 The manuscript is research-frontier mathematical writing. Its theorem and proof
-environments are human-readable mathematics, not by themselves evidence of Lean
-verification.  The generated section "Lean formalization register" states, per
-result, what is formalized and what is not: its current 201 rows comprise 56
-Lean, 34 partial, and 111 none.  The 2026-09-04 crosswalk connects the Bell
-normalization and unit-series coefficient formulas to the 0-definition,
-16-theorem module `UnitSeriesBellCoefficients`; it expressly leaves the
-labelled-set partition interpretation unformalized.
+environments are human-readable mathematics, not evidence of Lean verification.
+The section "Lean formalization register" states, per result, what is formalized
+and what is not; it is maintained separately from this consolidation.
+
+## Weighted-transform checkpoint (2026-09-04)
+
+The `AppellSequence` extension has passed direct, sequential Lean elaboration:
+eleven public lemmas provide weighted binomial translation,
+convolution transport, cancellation, and inversion. The manuscript gives their
+complete human proofs and exact declaration crosswalks. Three private rational
+helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
+caller refactor has now passed its own direct Lean check as well.
+
+The weighted-transform checkpoint added two entries, giving 203 rows:
+58 marked Lean, 34 partial, and 111 without a Lean counterpart. The subsequent
+power-recurrence proof below promotes one partial row, so the live totals are
+**59 Lean, 33 partial, and 111 none**. Earlier classifications are inherited;
+these counts are a coverage register, not a fresh rebuild of every proof.
+Structural/provenance validation checks 203 adjacent proofs, 27 disposition
+records, and six original-source inventory rows. PDF rebuilding remains
+deferred at the user's request.
+
+The same-day upstream crosswalk connects the Bell normalization and unit-series
+coefficient formulas to `UnitSeriesBellCoefficients`; its labelled-set partition
+interpretation remains unformalized. That partial result is included in the
+register totals above.
+
+## Formal-power recurrence (2026-09-04)
+
+`UnitSeriesPowerRecurrence` supplies three checked theorems. Over any
+commutative ring, the differential equation `A C' = α A' C` implies
+`n a₀ cₙ = Σ_{j=1}^n ((α+1)j−n) aⱼ cₙ₋ⱼ`, without assuming `a₀` is
+invertible. Over a commutative rational algebra with `a₀=1`, formal binomial
+substitution gives `C=A^α`, satisfies that differential equation, and yields
+the manuscript's triangular coefficient algorithm. Its proof and crosswalk
+now cover all three clauses of `alg:merged-exp-log-power` exactly.
+
+The proof uses the Euler derivative `z d/dz` to keep degree indices aligned,
+then separates the constant-coefficient term of the Cauchy product. The
+canonical source includes that complete argument, including the constant
+term and inductive uniqueness of the resulting coefficient sequence. This
+is formal algebra; no analytic branch choice or convergence claim is made.

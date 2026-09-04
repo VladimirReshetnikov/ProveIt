@@ -2,7 +2,7 @@
 r"""(Re)generate the Lean formalization register of
 Combinatorial_Coefficient_Calculus.tex.
 
-Run:  python add_register.py <path-to-tex>
+Run:  python combinatorial_lean_register.py <path-to-tex>
 
 * First run: adds the \lean macro to the preamble and appends the register
   section before \backmatter.
@@ -99,6 +99,16 @@ STATUS = {
    r"the moment series $\sum_m m^n\lambda^m/m! = e^{\lambda}\sum_k S(n,k)\lambda^k$ is "
    r"\lean{Fabius.tsum_pow_mul_pow_div_factorial} (\lean{BellStirling}) for every real "
    r"$\lambda$; the probabilistic phrasing is not formalized"),
+ 'thm:merged-weighted-binomial-translation': ('Lean',
+   r"\lean{Appell.translate_eq_sum}, \lean{Appell.translate_translate}, "
+   r"\lean{Appell.binomialConv_translate}, and \lean{Appell.translate_injective} "
+   r"(\lean{AppellSequence}); semiring identities, with additive cancellation "
+   r"only for injectivity"),
+ 'cor:merged-weighted-binomial-inversion': ('Lean',
+   r"\lean{Appell.weighted_binomial_inversion_iff}, \lean{Appell.translate_neg_translate}, "
+   r"\lean{Appell.translate_translate_neg}, and "
+   r"\lean{Appell.binomialConv_translate_neg_translate} (\lean{AppellSequence}), "
+   r"over arbitrary commutative rings"),
  'thm:merged-binomial-inversion': ('Lean',
    r"the equivalence of \cref{eq:merged-binomial-forward,eq:merged-binomial-backward} is "
    r"\lean{Fabius.binomial_inversion_iff} (additive commutative groups) and "
@@ -597,18 +607,21 @@ STATUS = {
  'cor:eulerian-power-sum': ('Lean',
    r"\lean{Fabius.sum_range_pow_succ_eq_sum_eulerianNumber} (\lean{EulerianNumbers}), "
    r"in the form $\sum_{r=0}^{m} r^{n+1}=\sum_k A(n+1,k)\binom{m+k+1}{n+2}$"),
- 'alg:merged-exp-log-power': ('partial',
+ 'alg:merged-exp-log-power': ('Lean',
    r"\cref{eq:merged-alg-log} is the reflected-index form of "
    r"\lean{Fabius.SaddleExpansion.logCoeff_succ}, with "
    r"\lean{Fabius.SaddleExpansion.logSeries_eq_logOf} identifying that recurrence with the "
    r"formal logarithm (\lean{SaddleLogExpansionAlgebra}, "
    r"\lean{SaddleLogExpansionPowerSeries}); \cref{eq:merged-alg-exp} is "
    r"\lean{Fabius.coeff_exp_subst_recurrence} (\lean{UnitSeriesBellCoefficients}) in the "
-   r"denominator-cleared form $na_n=\sum_{j=1}^n j\ell_j a_{n-j}$.  The same module proves "
-   r"closed Bell-polynomial formulas for arbitrary powers as "
-   r"\lean{Fabius.coeff_fallingSeries_subst_eq_sum_ordPartialBell_of_pos} and "
-   r"\lean{Fabius.coeff_fallingSeries_subst_eq_sum_partialBell}, but the separate recurrence "
-   r"\cref{eq:merged-alg-power} is not formalized"),
+   r"denominator-cleared form $na_n=\sum_{j=1}^n j\ell_j a_{n-j}$. "
+   r"\cref{eq:merged-alg-power} is "
+   r"\lean{Fabius.coeff_fallingSeries_subst_sub_one_recurrence} "
+   r"(\lean{UnitSeriesPowerRecurrence}), from "
+   r"\lean{Fabius.mul_derivative_fallingSeries_subst_sub_one} and the "
+   r"commutative-ring identity \lean{Fabius.coeff_recurrence_of_mul_derivative_eq}. "
+   r"The power is formal binomial substitution with constant coefficient one; "
+   r"all three divided recurrences hold over a commutative $\mathbb Q$-algebra"),
 }
 
 # A dict literal keeps the LAST of two equal keys and reports nothing, so a

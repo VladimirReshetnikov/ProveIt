@@ -14,13 +14,15 @@ over any commutative `ℚ`-algebra, with `e^{-z}` written as the exponential gen
 `altSeries` of `(-1)^n` and shown to invert `exp` (`exp_mul_altSeries`).
 
 Both are the same one-line argument: multiplying exponential generating functions is binomial
-convolution (`Bell.egfA_mul`), convolving against the constant sequence `1` or against
+convolution (`Fabius.egfA_mul`), convolving against the constant sequence `1` or against
 `(-1)^n` produces exactly the two displayed sums once the summation index is reflected
 (`binomialConv_one_left`, `binomialConv_altSeries_left`), and a sequence is determined by its
 exponential generating function (`seq_eq_of_egfA_eq`).
 
-`exp_mul_altSeries` is the binomial theorem at `1 + (-1) = 0` rather than a separate
-computation, which keeps it valid over an arbitrary commutative ring rather than only over `ℤ`.
+The coefficient cancellation in `exp_mul_altSeries` is the binomial theorem at
+`1 + (-1) = 0` and is valid over any commutative ring. The ordinary exponential
+generating functions themselves require the stated `ℚ`-algebra structure, which
+supplies the inverse factorials.
 
 ## Main results
 
@@ -47,6 +49,7 @@ theorem exp_eq_egfA_one : exp A = egfA A fun _ => (1 : A) := by
 /-- The exponential generating function of `(-1)^n`, i.e. `e^{-z}`. -/
 noncomputable def altSeries : A⟦X⟧ := egfA A fun n => (-1 : A) ^ n
 
+omit [Algebra ℚ A] in
 /-- Convolving against the constant sequence `1` is the forward binomial transform. -/
 theorem binomialConv_one_left (a : ℕ → A) (n : ℕ) :
     Bell.binomialConv (fun _ => (1 : A)) a n = ∑ k ∈ range (n + 1), (n.choose k : A) * a k := by
@@ -57,6 +60,7 @@ theorem binomialConv_one_left (a : ℕ → A) (n : ℕ) :
   simp only [Nat.add_sub_cancel]
   rw [Nat.choose_symm hkn, one_mul]
 
+omit [Algebra ℚ A] in
 /-- Convolving against `(-1)^n` is the backward binomial transform. -/
 theorem binomialConv_altSeries_left (b : ℕ → A) (n : ℕ) :
     Bell.binomialConv (fun i => (-1 : A) ^ i) b n =

@@ -261,7 +261,12 @@ public declarations, making the historical dyadic/finite-prefix census
 declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This makes the live census 934/11,709.
+`ThueMorseNewmanSelfSimilarity.lean`.  This made 934/11,709 an explicitly
+historical post-Prouhet checkpoint.  Subsequent source-only
+transseries/Catalan and Thue--Morse additions made 943/11,791 the next
+historical checkpoint.  The finalized one-definition/eleven-theorem
+`TransseriesFlat.lean` module and three integer-zpow theorems in
+`TransseriesDifferentialBlock.lean` make the live census 944/11,806.
 The q ledger is 182 Exact / 78 Partial / 14 None / 8 interface, the relevant Dyadic
 Gaussian--Thue--Morse chapter is 13/43/0/0, and the source concordance is 95
 Lean-proved / 383 human-proved frontier / 60 non-applicable / 9 conjectures.
