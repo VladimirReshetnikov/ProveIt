@@ -91,8 +91,8 @@ PDF is now historical and the merged source remains pending a final union
 rebuild.
 
 The repository-wide documentation census is 903 facade-reachable modules and
-11,447 public declarations, with zero missing module headers and zero
-declaration-documentation gaps. The final count is one above origin's 11,446
+11,448 public declarations, with zero missing module headers and zero
+declaration-documentation gaps. The final count is one above origin's 11,447
 because the union retains the public
 `Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
 Sibling source-only promotions are recorded here only to delimit this
@@ -155,26 +155,33 @@ complex strict contraction, including `q = 0`, and gives the dyadic Rvachev
 product and bounded-Fabius Fourier specializations. The compound
 `thm:qF-spectral` row remains Partial because its named centered/MGF packaging
 and exterior reciprocal, pole-divisor, and zero--pole clauses are absent. The
-live facade audit contains 903 modules and 11,447 public declarations with
+live facade audit contains 903 modules and 11,448 public declarations with
 zero documentation gaps. Ten declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` source-only module, three are
 the explicit Gaussian second-derivative and division-free moment identities,
 and the union retains the public `complexQPochhammerInf_eq_qPochhammerInfIn`
 bridge. The subsequent sibling `LambertWBranchGapBernoulli.lean` leaf
-contributes zero definitions and exactly three theorems:
+contributes zero definitions and exactly four theorems:
 `summable_norm_bernoulli_mul_pow_div_factorial`,
+`summable_bernoulli_mul_pow_div_factorial_iff`,
 `hasSum_bernoulli_mul_pow_div_factorial`, and
 `principalLambertW_lowerLambertW_eq_bernoulliSeries`. They cover real absolute
-convergence for `|z| < 2*pi`, the Bernoulli-EGF quotient for nonzero `z`, and
-the paired strict Lambert branch formulas when the positive gap is below
-`2*pi`; they do not establish the boundary, exact radius, or any higher/full
-Puiseux or logarithmic expansion. None of these source-only changes alters
-this monograph's forward-status counts or retained historical artifact, and no
-render parity is claimed. The forward status inventory covers 282 labelled
-results: 165 Exact / 91 Partial / 18 None / 8 interface; the 191-result
-pre-Fabius core remains 36 / 29 / 123 / 3 interface. The five-publication
-concordance has 86 Lean-proved, 392 human-proved frontier, 60 not-applicable,
-and 9
+convergence for `|z| < 2*pi`, complex summability exactly when
+`‖z‖ < 2*pi` and hence divergence on and outside the boundary, the nonzero
+real Bernoulli-EGF quotient, and the paired strict Lambert branch formulas when
+the positive gap is below `2*pi`. Together with the three finite
+branch-coordinate modules, the exhaustive Lambert union has
+4 definitions + 36 theorems = 40 public declarations. The radius/boundary
+clause and Guide label `eq:pair-Bernoulli-general` are Exact. The complete
+complex evaluation in `eq:bernoulli-gen` remains Partial because the value
+theorem is real, assumes `z != 0`, and does not package the removable origin
+value; higher/full Puiseux and logarithmic expansions remain open. None of
+these source-only changes alters this monograph's forward-status counts or
+retained historical artifact, and no render parity is claimed. The
+forward status inventory covers 282 labelled results: 165 Exact / 91 Partial /
+18 None / 8 interface; the 191-result pre-Fabius core remains 36 / 29 / 123 / 3
+interface. The five-publication concordance has 86 Lean-proved, 392
+human-proved frontier, 60 not-applicable, and 9
 conjecture rows. The `cor:positivity`, `thm:qbinom-structure`, and
 `prop:gq-positive-palindromic` rows are Exact: both Gaussian structure APIs
 support the structure row, and the fourteen-theorem generic API now gives

@@ -48,9 +48,9 @@ The canonical frontier artifacts are:
 > `3766761aac90247061f5c955dc84a0feb8567454e10839f1508b9431797ee980`).
 
 The authoritative live Lean audit now contains exactly 903 facade-reachable
-modules and 11,447 unique public declarations, with no missing module headers
+modules and 11,448 unique public declarations, with no missing module headers
 or declaration documentation.  The checked baseline records both zero-gap
-invariants.  The corresponding origin inventory has 11,446 declarations
+invariants.  The corresponding origin inventory has 11,447 declarations
 because it lacks this tree's retained unconditional public
 `complexQPochhammerInf_eq_qPochhammerInfIn` bridge.  The q-Pochhammer ownership remains
 `RvachevPochhammerFactorization` 1+10, `QPochhammerEntire` 0+5, and
@@ -63,7 +63,9 @@ integration, integer and complex Gaussian upper indices,
 q-Pfaff--Saalschütz, and the noncommutative quantum multinomial theorem all
 have declaration-level crosswalks.
 
-The Lambert branch-coordinate surface is exhaustive:
+The Lambert branch-coordinate surface is exhaustive.  Its newest analytic
+companion formalizes the Bernoulli-series identity and its exact convergence
+radius from `Lambert_W_Guide/`:
 `LambertWBranchPairing.lean` has 0 definitions + 7 theorems,
 `LambertWGapBijection.lean` has 4 + 16, and
 `LambertWBranchSymmetry.lean` has 0 + 9.  These are 36 current declarations,
@@ -76,18 +78,25 @@ Bernoulli gap series or higher branch expansions; the companion analytic leaf
 does prove the series statement below.
 
 `LambertWBranchGapBernoulli.lean` has the exhaustive surface 0 definitions +
-3 theorems:
+4 theorems:
 `summable_norm_bernoulli_mul_pow_div_factorial`,
+`summable_bernoulli_mul_pow_div_factorial_iff`,
 `hasSum_bernoulli_mul_pow_div_factorial`, and
 `principalLambertW_lowerLambertW_eq_bernoulliSeries`.  The first proves
 absolute summability of the real Bernoulli exponential generating series for
-`|z| < 2π`, including `z = 0`.  The second gives its actual all-index `HasSum`
-value `z/(exp z-1)` under the additional hypothesis `z ≠ 0`.  The third gives
-both paired branch sums when `x ∈ (-exp(-1),0)` and `branchGap x < 2π`.  It is
-an exact crosswalk only for `eq:pair-Bernoulli-general`.  The quotient
-evaluation excludes the removable origin, and the branch theorem excludes
-both real-branch endpoints; no theorem at `|z| = 2π`, exact or maximal-radius
-claim, remainder estimate, or higher/convergent Puiseux expansion is included.
+`|z| < 2π`, including `z = 0`.  The second proves for every complex `z` that
+the series is summable exactly when `‖z‖ < 2π`; in particular, it diverges on
+the boundary and throughout the exterior.  The third gives its actual
+all-index real `HasSum` value `z/(exp z-1)` under the additional hypothesis
+`z ≠ 0`.  The fourth gives both paired branch sums when
+`x ∈ (-exp(-1),0)` and `branchGap x < 2π`.  It is an exact crosswalk only
+for `eq:pair-Bernoulli-general`, while also proving the Guide's printed
+convergence-radius claim; the full complex value identity remains Partial.
+The real quotient evaluation excludes the removable origin, and the branch
+theorem excludes both real-branch endpoints.  No remainder estimate or
+higher/convergent Puiseux or logarithmic expansion is included.  Together
+with the three finite branch-coordinate modules, the four-module union has
+4 definitions and 36 theorems, 40 declarations.
 The retained frontier, primary, walkthrough, and Lambert Guide PDFs all predate
 this source overlay and remain historical pending parity rebuilds.
 
