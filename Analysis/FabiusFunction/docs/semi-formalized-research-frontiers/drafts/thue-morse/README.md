@@ -161,7 +161,7 @@ PDF manuscript.
 ## Six further arrivals (2026-09-04)
 
 Six more independently written Thue–Morse articles arrived on 2026-09-04
-(intake commit `cc21b6e81`) and are filed as separate members, not compared,
+and are filed as separate members, not compared,
 deduplicated, or merged into the volume:
 
 - [`Thue_Morse_Boundary_Corrections/`](Thue_Morse_Boundary_Corrections/) —

@@ -168,9 +168,8 @@ mantissas and worked-example integers, none of them a result.
 
 ## Three further arrivals (2026-09-04)
 
-Three independently written articles arrived after the consolidation, in intake
-commits `13c6476e3` and `3824b7720`, and are filed as separate members beside
-the volume.  Each states that it extends the volume's methods to complementary
+Three independently written articles arrived on 2026-09-04, after the
+consolidation, and are filed as separate members beside the volume.  Each states that it extends the volume's methods to complementary
 families rather than restating them; whether they overlap each other, and how
 much of each the volume already contains, has not been assessed.
 

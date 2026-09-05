@@ -49,9 +49,8 @@ ledger.
 
 ## Three further arrivals (2026-09-04)
 
-Three independently written articles arrived on 2026-09-04 in intake commit
-`46e126fcd` and are filed in this subgroup as separate members beside the
-volume.  All three answer the same question — exact evaluation of `F(a/2^n)`
+Three independently written articles arrived on 2026-09-04 and are filed in
+this subgroup as separate members beside the volume.  All three answer the same question — exact evaluation of `F(a/2^n)`
 and `Up(a/2^n)` with no auxiliary quantity defined by a moment recurrence or a
 limiting process — and all three reach it through the volume's own mechanism:
 at a dyadic argument of depth `n` the centered finite-spline values are an

@@ -291,8 +291,8 @@ advertised-register-total checks. These are structural checks, not Lean builds.
 
 ## Three q-binomial arrivals (2026-09-04)
 
-Three independently written articles arrived on 2026-09-04 in intake commit
-`e20e26434` and are filed here as separate members beside the canonical volume.
+Three independently written articles arrived on 2026-09-04 and are filed here
+as separate members beside the canonical volume.
 All three extend the coefficient calculus to Gaussian (`q`-binomial)
 coefficients; two name that extension in their own titles.  They have not been
 compared with the canonical volume, with each other, or against its Lean

@@ -66,9 +66,9 @@ when no archives are waiting.
 
 Most recent processed batch (fifteen archives, filed and removed on
 2026-09-04, after the twelve-article batch below): four unrelated subjects,
-arriving in five intake commits over one day.
+arriving in five separate deliveries over one day.
 
-- Six Thue–Morse articles → `../thue-morse/` (intake `cc21b6e81`).
+- Six Thue–Morse articles → `../thue-morse/`.
   `Thue_Morse_Boundary_Corrections.zip` → `Thue_Morse_Boundary_Corrections/`:
   1,690-line/72,674-byte source, 25-page A4/662,110-byte PDF, with figures,
   `poisson_data.json`, and a submitted `PROVENANCE.md`.
@@ -87,8 +87,7 @@ arriving in five intake commits over one day.
   1,551-line/66,101-byte source (`thue_morse_mellin_and_gamma.tex`), 24-page
   Letter/436,411-byte PDF.
 - Three combinatorial-transseries extensions → `../series-and-transseries/`
-  (intake `13c6476e3` and `3824b7720`), filed as separate members beside the
-  consolidated volume.  `combinatorial_transseries_and_inverses.zip` →
+  (two deliveries), filed as separate members beside the consolidated volume.  `combinatorial_transseries_and_inverses.zip` →
   `combinatorial_transseries_and_inverses/`: 1,519-line/85,501-byte source,
   29-page A4/598,498-byte PDF.  `combinatorial_transseries_extension.zip` →
   `combinatorial_transseries_extension/`: 2,241-line/117,447-byte source,
@@ -96,8 +95,8 @@ arriving in five intake commits over one day.
   `combinatorial_transseries_extension-2/`: 1,970-line/101,772-byte source,
   39-page Letter/261,004-byte PDF from `xdvipdfmx`.
 - Three recurrence-free dyadic-value articles →
-  `../inverse-and-sampling/dyadic-up-extraction/` (intake `46e126fcd`), beside
-  the consolidated volume whose extraction mechanism they share.
+  `../inverse-and-sampling/dyadic-up-extraction/`, beside the consolidated
+  volume whose extraction mechanism they share.
   `fabius_dyadic_closed_forms.zip` → `fabius_dyadic_closed_forms/`:
   1,441-line/62,402-byte source, 22-page A4/490,000-byte PDF.
   `fabius_dyadic_closed_forms-2.zip` → `fabius_dyadic_closed_forms-2/`:
@@ -106,8 +105,8 @@ arriving in five intake commits over one day.
   `fabius_rvachev_recurrence_free_closed_forms/`: 1,681-line/68,704-byte source
   (`dyadic_closed_forms.tex`), 23-page A4/711,303-byte PDF.
 - Three Gaussian-binomial articles →
-  `../combinatorial-coefficient-calculus/` (intake `e20e26434`), beside the
-  canonical volume they extend.  `q_binomial_coefficient_calculus.zip` →
+  `../combinatorial-coefficient-calculus/`, beside the canonical volume they
+  extend.  `q_binomial_coefficient_calculus.zip` →
   `q_binomial_coefficient_calculus/`: 2,667-line/111,913-byte source, 55-page
   A4/780,056-byte PDF.  `q_binomial_coefficient_calculus-2.zip` →
   `q_binomial_coefficient_calculus-2/`: 1,747-line/77,007-byte source, 29-page
