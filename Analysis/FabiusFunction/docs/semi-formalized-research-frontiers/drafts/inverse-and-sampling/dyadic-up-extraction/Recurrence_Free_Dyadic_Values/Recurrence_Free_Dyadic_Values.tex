@@ -1,0 +1,3197 @@
+\documentclass[11pt,oneside]{article}
+
+% =====================================================================
+%  Recurrence-Free Dyadic Values of the Fabius and Rvachev Functions
+%  Consolidated document.  Editorial merge (2026-09-04) of the three
+%  independently written articles filed on 2026-09-04 in the subgroup
+%  inverse-and-sampling/dyadic-up-extraction/; see the provenance appendix
+%  for the absorbed sources and what each contributed.
+%
+%  House style follows the canonical corpus volumes: A4, Libertinus with an
+%  lmodern fallback, article class.  Mathematical notation is normative from
+%  docs/FabiusFunction_Mathematical_Notation_Catalogue through
+%  fabius-notation.tex; document-local shorthands are listed below and in
+%  the notation appendix.  Labels carry the prefix rf:.
+% =====================================================================
+
+\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\input{../../../../../fabius-notation.tex}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
+
+\definecolor{linkblue}{RGB}{24,72,124}
+\definecolor{deepgreen}{RGB}{23,102,69}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+
+\hypersetup{
+  hypertexnames=false,
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=deepgreen,
+  urlcolor=linkblue,
+  pdftitle={Recurrence-Free Dyadic Values of the Fabius and Rvachev Functions},
+  pdfauthor={Vladimir Reshetnikov; ProveIt formal-development synthesis},
+  pdfsubject={Consolidated document: finite, recurrence-free evaluation of the Fabius distribution function and Rvachev's up-function at dyadic rationals},
+  pdfkeywords={Fabius function, Rvachev up-function, dyadic rational, Thue-Morse sequence, Bernoulli numbers, ordered compositions, finite convolution, Gaussian binomial coefficient, exact extrapolation}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Recurrence-free dyadic values}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\setlist[itemize]{leftmargin=1.45em,itemsep=0.25ex,topsep=0.55ex}
+\setlist[enumerate]{leftmargin=1.85em,itemsep=0.35ex,topsep=0.55ex}
+\allowdisplaybreaks[2]
+\setlength{\emergencystretch}{2.5em}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\lstdefinestyle{pseudo}{%
+  basicstyle=\ttfamily\small,columns=fullflexible,frame=single,
+  rulecolor=\color{rulegray},backgroundcolor=\color{shadegray},
+  showstringspaces=false,keepspaces=true,breaklines=true,
+  xleftmargin=0.4em,xrightmargin=0.4em,aboveskip=0.8em,belowskip=0.8em}
+\lstset{style=pseudo}
+
+% ---------------------------------------------------------------------
+%  Document-local shorthands.  Each expands to catalogue notation or to an
+%  object defined in the setting section; recorded in the notation appendix.
+% ---------------------------------------------------------------------
+\newcommand{\Fb}{\FabiusBounded}            % bounded distribution function
+\newcommand{\Fg}{\FabiusGlobal}             % signed global extension
+\newcommand{\up}{\RvachevUp}                % the even bump
+\newcommand{\tm}[1]{\ThueMorseSign{#1}}     % Thue--Morse sign
+\newcommand{\E}{\Expectation}
+\newcommand{\Prob}{\Probability}
+\newcommand{\dd}{\Differential}
+\newcommand{\coeff}[2]{\CoefficientExtraction{#1}{#2}}
+\newcommand{\qb}[3]{\GaussianBinomial{#1}{#2}{#3}}
+\newcommand{\qp}[3]{\QPochhammer{#1}{#2}{#3}}
+\newcommand{\Comp}[1]{\mathcal{C}_{#1}}     % ordered compositions of #1
+\newcommand{\Prof}[1]{\mathcal{P}_{#1}}     % multiplicity profiles of #1
+\newcommand{\Spow}[2]{\mathcal{S}_{#1}(#2)} % integer Thue--Morse power sum
+\newcommand{\Tr}[1]{T_{#1}}                 % triangular number
+\newcommand{\Dop}{\mathrm{D}}               % differentiation of polynomials
+\newcommand{\amvol}[1]{a^{\mathrm{vol}}_{#1}} % the canonical volume's reciprocal coefficients
+
+\begin{document}
+\title{\textbf{Recurrence-Free Dyadic Values}\\[0.35em]
+  \Large of the Fabius and Rvachev Functions\\[0.6em]
+  \large Finite moment elimination, binary compression, integer determinants,\\
+  and exact quarter-base spline extraction}
+\author{Vladimir Reshetnikov\\
+  \small ProveIt formal-development synthesis}
+\date{4 September 2026}
+
+\maketitle
+
+\begin{abstract}
+Exact rationality of the Fabius distribution function $\Fb$ and of Rvachev's
+up-function at dyadic arguments is classical, but the formulas that display
+it usually leave an auxiliary sequence --- the even moments, or the values at
+reciprocal powers of two --- defined only by a triangular recurrence, or
+reach the value as the limit of finite convolutions.  This document removes
+both dependencies and organizes every finite route to the value in one
+place.
+
+The principal formula expresses $\Fb(m/2^{n})$ through
+$\Floor{n/2}+1$ explicit Thue--Morse power sums with rational
+interpolation weights at the quarter base $q=\tfrac14$.  Behind it is an
+exact, not asymptotic, statement: at a fixed dyadic point of depth $n$ the
+centred finite-uniform distribution functions are polynomials of degree at
+most $\Floor{n/2}$ in $4^{-N}$, and a shrinking-cell version identifies the
+whole polynomial piece of the finite spline with a finite deconvolution of
+the dyadic Taylor polynomial.  The degree is exactly $\Floor{n/2}$ at every
+reduced interior dyadic, so the sample count is optimal for any linear rule
+whose weights work on the whole grid.
+
+A second family compresses the classical Thue--Morse moment formula to one
+outer summand per nonzero binary digit of the numerator --- in two different
+ways, a block identity and a telescope --- and supplies the coefficients by
+positive ordered-composition sums, by Bernoulli multiplicity sums with the
+Bernoulli numbers themselves given as finite sums, and by interpolation of
+finitely many uniform convolutions.  An integer bordered determinant packages
+the value as a single ratio of integers and yields an explicit common
+denominator, which in turn gives a certified rounding formula.  The same
+finite algebra evaluates the bump, the signed global extension, every dyadic
+derivative, all iterated primitives, and the analogous normalized
+reciprocal-integer-base laws.  Every result carries a complete proof; every
+printed rational is checked by the retained exact-arithmetic verifier; the
+relation to the canonical extraction volume of this subgroup is stated
+formula by formula.  No Lean formalization of the new material is claimed.
+\end{abstract}
+
+\vfill
+\noindent\textbf{Scope.}  The bounded distribution function, the compactly
+supported bump, and the signed global extension are kept distinct
+throughout.  The results are mathematical derivations with complete proofs;
+the formalization register at the end records which pieces have Lean
+counterparts in the repository and which do not.
+
+\clearpage
+\tableofcontents
+\clearpage
+
+% =====================================================================
+\section{The question and the map of formulas}
+\label{rf:sec:intro}
+
+\subsection{What counts as a closed form here}
+\label{rf:sec:intro-closed}
+
+We seek the exact values of the Fabius distribution function and of
+Rvachev's bump at $m/2^{n}$, with integer $m$ and nonnegative integer $n$.
+A formula is called \emph{recurrence-free} when its right-hand side
+contains only explicitly bounded finite sums and products of specified
+numbers, together with rational arithmetic, integer powers, factorials,
+binary digits, and finite $q$-Pochhammer symbols.  A coefficient-extraction
+symbol may abbreviate a finite sum that is displayed separately, and a
+determinant is admissible because its entries are given explicitly and its
+Leibniz expansion is a finite sum.  What is excluded is a definition that
+leaves a desired auxiliary quantity specified only in terms of earlier
+unknown quantities: a formula that refers to ``the moments $c_{k}$,
+computed recursively'' is not a closed form in this sense, and neither is a
+limit of explicit rational approximations.  Recursion may of course be an
+efficient \emph{implementation}; the point is that no recurrence is needed
+to \emph{define} the numbers on the right-hand side of an evaluation
+identity.
+
+Three functions must be distinguished.  Throughout, $\Fb$ is the bounded
+Fabius distribution function, $\up$ is the compactly supported bump, and
+$\Fg$ is the signed global extension.  On their principal domains,
+\begin{equation}
+ \up(x)=\Fb(1-\AbsoluteValue{x}),\qquad
+ \Fb(x)=\up(x-1)\quad(0\le x\le1),\qquad
+ \Fg=\Fb\ \text{on }[0,1].
+ \label{rf:eq:intro-fold}
+\end{equation}
+The precise conventions and the probability model are fixed in
+\cref{rf:sec:setup}.
+
+\subsection{The principal formula}
+\label{rf:sec:intro-principal}
+
+Write
+\begin{equation}
+ \Tr{r}\DefinitionEquals\frac{r(r+1)}{2},\qquad
+ d\DefinitionEquals\Floor{n/2},\qquad
+ \tm{h}\DefinitionEquals(-1)^{\BinaryDigitSum(h)},
+ \label{rf:eq:intro-notation}
+\end{equation}
+where $\BinaryDigitSum(h)$ is the number of ones in the binary expansion of
+$h$.  The Thue--Morse sign is a digit formula, not a recursively defined
+sequence: for $0\le h<2^{L}$ its digits are the explicit integers
+$\Floor{h/2^{\ell}}-2\Floor{h/2^{\ell+1}}$, $0\le\ell<L$, and
+\begin{equation}
+ \tm{h}=\prod_{\ell=0}^{L-1}
+ \Bigl(1-2\bigl(\Floor{h/2^{\ell}}-2\Floor{h/2^{\ell+1}}\bigr)\Bigr).
+ \label{rf:eq:intro-tm-digits}
+\end{equation}
+Define the \emph{integer Thue--Morse power sum}
+\begin{equation}
+ \Spow{N}{A}\DefinitionEquals\sum_{h=0}^{A-1}\tm{h}\,(2A-2h-1)^{N}
+ \qquad(N\ge1,\ A\ge0).
+ \label{rf:eq:intro-power-sum}
+\end{equation}
+Empty sums are zero, empty products are one, and $0^{0}=1$ in the finite
+polynomial formulas.
+
+\begin{theorem}[Quarter-base closed formula]
+\label{rf:thm:main-quarter}
+Let $n\ge1$, $0\le m\le2^{n}$, and $d=\Floor{n/2}$.  Put
+\begin{equation}
+ w_{d,j}\DefinitionEquals
+ \frac{(-1)^{d-j}\,4^{\Tr{j}}}
+      {\displaystyle\prod_{r=1}^{j}(4^{r}-1)\prod_{r=1}^{d-j}(4^{r}-1)}
+ \qquad(0\le j\le d).
+ \label{rf:eq:main-weights-integer}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{\;
+ \Fb\!\left(\frac{m}{2^{n}}\right)
+ =\sum_{j=0}^{d}w_{d,j}\,
+   \frac{\Spow{n+j}{2^{j}m}}{2^{\Tr{n+j}}\,(n+j)!}\,.\;}
+ \label{rf:eq:main-quarter}
+\end{equation}
+More generally, for every integer $R\ge0$,
+\begin{equation}
+ \Fb\!\left(\frac{m}{2^{n}}\right)
+ =\sum_{j=0}^{d}w_{d,j}\,
+   \frac{\Spow{n+R+j}{2^{R+j}m}}{2^{\Tr{n+R+j}}\,(n+R+j)!}\,.
+ \label{rf:eq:main-quarter-shift}
+\end{equation}
+\end{theorem}
+
+The proof is completed in \cref{rf:sec:extraction}
+(\cref{rf:thm:extraction-consecutive}).  It does \emph{not} assume
+rationality of the target value, so \cref{rf:eq:main-quarter} is itself a
+proof of dyadic rationality using only rational finite expressions.  The
+formula contains no moments, Bernoulli numbers, derivative values,
+recursively defined coefficients, or limits.  The first rows of weights are
+\begin{equation}
+\begin{array}{c|l}
+ d & (w_{d,0},\ldots,w_{d,d})\\\hline
+ 0 & (1)\\
+ 1 & (-1,\,4)/3\\
+ 2 & (1,\,-20,\,64)/45\\
+ 3 & (-1,\,84,\,-1344,\,4096)/2835
+\end{array}
+\label{rf:eq:main-weight-rows}
+\end{equation}
+Each row sums to one.  These are exact interpolation rows, not fitted
+numerical coefficients.
+
+\subsection{The families of formulas}
+\label{rf:sec:intro-map}
+
+There are several genuinely different finite routes to the same rational
+number, and they are useful in different situations.
+\Cref{rf:tab:intro-map} lists them with their characteristic ingredient.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}p{0.24\textwidth}Xp{0.19\textwidth}@{}}
+\toprule
+Family & Finite ingredients and characteristic feature & Main result\\
+\midrule
+Bernoulli partitions & multiplicity vectors and finite Bernoulli power sums; visible cumulant structure & \cref{rf:thm:partition-value}\\
+Positive compositions & ordered positive parts and Mersenne-type factors $4^{S}-1$; every coefficient term is positive & \cref{rf:thm:composition-value}\\
+Binary blocks & one outer summand per nonzero binary digit; centred coefficients; valid for the signed extension at every numerator & \cref{rf:thm:binary-block}\\
+Binary telescope & the same digits, an alternating telescope of raw-moment polynomials & \cref{rf:thm:binary-telescope}\\
+Finite uniform prefixes & moments of finitely many uniforms, interpolated at the quarter base & \cref{rf:thm:moment-extraction}, \cref{rf:thm:finite-cube}\\
+Integer determinant & a bordered matrix of order $\Floor{n/2}+1$; integer certificate and a common denominator & \cref{rf:thm:determinant}\\
+Certified rounding & one enormous prefix, rounded to the common denominator & \cref{rf:cor:rounding}\\
+Quarter-base extraction & $\Floor{n/2}+1$ centred spline levels; no auxiliary coefficients at all & \cref{rf:thm:main-quarter}\\
+Direct bump extraction & the same weights applied to finite densities & \cref{rf:thm:up-quarter}\\
+\bottomrule
+\end{tabularx}
+\caption{The families of recurrence-free formulas.  All rows are exact.}
+\label{rf:tab:intro-map}
+\end{table}
+
+For a single value with a sparse binary expansion, one of the two binary
+formulas usually avoids the largest sums.  For many values on one grid, the
+master formula with centred coefficients permits the same explicitly
+computed coefficients to be reused.  The composition expression is
+transparent when positive terms and elementary denominators are wanted; the
+partition expression connects to cumulants and suits symbolic manipulation;
+the determinant is a compact integer certificate with a visible denominator.
+The quarter-base formula is the most self-contained answer when \emph{no
+auxiliary coefficient sequence at all} is acceptable: it contains only a
+short geometric interpolation row and finite power sums.
+\Cref{rf:sec:conclusion} compares them further.
+
+\subsection{Relation to the canonical volume and to the literature}
+\label{rf:sec:intro-relation}
+
+This document belongs to the subgroup whose canonical volume
+\cite{proveit-due} proves that, at a dyadic point $x$ of depth $s$, the
+finite sinc-product spline $\up_{n}$ obeys
+$\up_{n}(x)=\up(x)+\sum_{r=1}^{\Floor{s/2}}C_{r}(x)4^{-rn}$ exactly for all
+$n\ge s$, and derives from it the quarter-base Gaussian-binomial extraction
+row.  The present document proves the same polynomiality in the
+distribution-function normalization
+(\cref{rf:thm:local-cell,rf:cor:scale-polynomial}) and reads the row as an
+\emph{evaluation formula}, \cref{rf:eq:main-quarter}, in which the spline
+values themselves are replaced by explicit integer sums.  Everything else
+here --- the moment-free coefficients, the binary compressions, the
+determinant, the denominators, the shifted half-base identity, the
+primitives, and the integer-base extension --- is complementary to the
+volume.  \Cref{rf:sec:extraction-volume} gives the dictionary between the two
+normalizations, and \cref{rf:sec:register} the formalization register.
+
+The classical background is Arias de Reyna's arithmetic and analytic papers
+\cite{arias1982,arias2018}, which contain the dyadic moment formula and the
+sharp denominator theory; Haugland \cite{haugland} gives an exact dyadic
+evaluator; Reshetnikov's 2019 question \cite{reshetnikov2019} posed the
+half-base $q$-binomial expression recovered in \cref{rf:sec:halfbase}; and
+Pinelis \cite{pinelis2020} gave a finite-convolution representation followed
+by a limit, which is exactly the limiting step that the quarter-base row
+removes.  The repository's primary exposition \cite{proveit-primary} already
+contains the Thue--Morse moment formula, the reciprocal-power path and
+composition descriptions, the Bell and cumulant machinery, and the half-base
+layer; the Exponents volume \cite{proveit-exponents} contains the asymptotic
+quarter-base Richardson combination.  None of those is claimed as new.  What
+this document adds is the completion of every coefficient into a finite
+expression, the organization of the distinct evaluation routes with full
+proofs, and the exact centred cutoff identity with its precise degree.
+
+\subsection{Conventions}
+\label{rf:sec:intro-conventions}
+
+Throughout, $n,m,N$ are nonnegative integers unless another range is
+stated, and $\NaturalNumbers=\SetOf{0,1,2,\ldots}$.  For $k\ge0$, $\Comp{k}$
+is the finite set of ordered compositions of $k$ into positive parts, the
+empty composition being the only element of $\Comp{0}$; there are $2^{k-1}$
+compositions of $k\ge1$, obtained by choosing cuts among $k-1$ gaps.  For
+$\mathbf r=(r_{1},\ldots,r_{\ell})\in\Comp{k}$ the \emph{suffix sums} are
+\begin{equation}
+ R_{i}\DefinitionEquals r_{i}+r_{i+1}+\cdots+r_{\ell}\qquad(1\le i\le\ell),
+ \label{rf:eq:intro-suffix}
+\end{equation}
+so that $R_{1}=k$ and the $R_{i}$ are distinct integers in $[1,k]$.  The
+\emph{multiplicity-profile set} is
+\begin{equation}
+ \Prof{k}\DefinitionEquals
+ \SetOf{(v_{1},\ldots,v_{k})\in\NaturalNumbers^{k}:
+   v_{1}+2v_{2}+\cdots+kv_{k}=k},
+ \label{rf:eq:intro-profiles}
+\end{equation}
+which for $k=0$ consists of the empty tuple.  For $0<q<1$,
+\begin{equation}
+ \qp{q}{q}{r}=\prod_{j=1}^{r}(1-q^{j}),\qquad
+ \qb{d}{j}{q}=\frac{\qp{q}{q}{d}}{\qp{q}{q}{j}\qp{q}{q}{d-j}},
+ \label{rf:eq:intro-q}
+\end{equation}
+finite products; at $q=\tfrac14$ every such value is rational.  No infinite
+$q$-product is needed to evaluate any dyadic value in this document.
+Bernoulli numbers use the convention $B_{1}=-\tfrac12$.  A table of the
+symbols is in \cref{rf:sec:notation}.
+
+% =====================================================================
+\section{Normalization and the probability model}
+\label{rf:sec:setup}
+
+\subsection{The bounded distribution function and its centred density}
+\label{rf:sec:setup-model}
+
+Let $U_{1},U_{2},\ldots$ be independent random variables, each uniform on
+$[0,1]$, and define
+\begin{equation}
+ X\DefinitionEquals\sum_{j=1}^{\infty}2^{-j}U_{j},\qquad
+ \Fb(x)\DefinitionEquals\Prob(X\le x).
+ \label{rf:eq:setup-X}
+\end{equation}
+The series converges absolutely for every outcome, since $0\le U_{j}\le1$
+and $\sum_{j}2^{-j}=1$, and takes values in $[0,1]$.  Let $V_{j}=2U_{j}-1$,
+uniform on $[-1,1]$, and
+\begin{equation}
+ Z\DefinitionEquals2X-1=\sum_{j=1}^{\infty}2^{-j}V_{j}.
+ \label{rf:eq:setup-Z}
+\end{equation}
+The density of $Z$ is denoted $\up$; this is the standard probability
+construction of the two functions \cite{arias1982,arias2018}, and the
+catalogue entry \texttt{rvachev-up} normalizes $\up$ in exactly this way.
+
+\begin{lemma}[Smoothness and normalization]
+\label{rf:lem:setup-normalization}
+The density $\up$ is even, nonnegative, $C^{\infty}$, and supported on
+$[-1,1]$.  Moreover
+\begin{align}
+ \Fb'(x)&=2\up(2x-1),\label{rf:eq:setup-F-density}\\
+ \up(x)&=\Fb(1-\AbsoluteValue{x}),\label{rf:eq:setup-fold}\\
+ \Fb(1-x)&=1-\Fb(x),\label{rf:eq:setup-reflection}\\
+ \up'(x)&=2\up(2x+1)-2\up(2x-1),\label{rf:eq:setup-up-dilation}\\
+ \up(0)&=1,\qquad0\le\up\le1.\label{rf:eq:setup-up-bound}
+\end{align}
+The function $\Fb$ is $C^{\infty}$ on $\RealNumbers$, equals $0$ for
+$x\le0$ and $1$ for $x\ge1$, is $2$-Lipschitz, and all its positive-order
+derivatives vanish at $0$ and at $1$.  All derivatives of $\up$ vanish at
+$\pm1$.
+\end{lemma}
+
+\begin{proof}
+The law of $Z$ is symmetric because every $V_{j}$ has a symmetric law, and
+it has no atoms: conditioning on all coordinates but $U_{1}$ leaves a
+translated uniform distribution.  Its characteristic function is
+\[
+ \E\,\EulerE^{\ImaginaryUnit tZ}
+ =\prod_{j\ge1}\frac{\sin(t/2^{j})}{t/2^{j}}.
+\]
+For any fixed positive integer $L$, bound the first $L$ factors by
+$\min(1,2^{j}/\AbsoluteValue{t})$ and all remaining factors by one: this
+gives decay $\BigOAt{(1+\AbsoluteValue{t})^{-L}}{L}$.  Hence the
+characteristic function multiplied by any fixed power of $t$ is integrable,
+and Fourier inversion with differentiation under the integral gives a
+$C^{\infty}$ density.  Nonnegativity and the support $[-1,1]$ follow from
+the law of the bounded sum; the affine change $Z=2X-1$ gives
+\cref{rf:eq:setup-F-density}.
+
+Replacing every $U_{j}$ by $1-U_{j}$ shows $X\EqualInLaw1-X$, which is
+\cref{rf:eq:setup-reflection}.  For \cref{rf:eq:setup-fold} use the
+independent-copy decomposition $Z\EqualInLaw(V+Z')/2$, with $V$ uniform on
+$[-1,1]$ and $Z'$ an independent copy of $Z$.  The density of $V/2$ is one on
+$[-\tfrac12,\tfrac12]$, so
+\begin{equation}
+ \up(x)=\Prob(2x-1\le Z'\le2x+1)=\Fb(x+1)-\Fb(x).
+ \label{rf:eq:setup-up-head}
+\end{equation}
+For $x\ge0$ the upper endpoint is at least one, so the probability equals
+$\Prob(X'\ge x)=1-\Fb(x)=\Fb(1-x)$; for $x\le0$ use evenness.  The same
+display applies outside the support through the constant tails of $\Fb$.
+Differentiating \cref{rf:eq:setup-up-head} and using
+\cref{rf:eq:setup-F-density} gives \cref{rf:eq:setup-up-dilation}.  Formula
+\cref{rf:eq:setup-up-head} gives $\up(0)=\Fb(1)-\Fb(0)=1$ and $\up\le1$, and
+\cref{rf:eq:setup-F-density} then bounds $\Fb'$ by two.  Smoothness together
+with the constant exterior values forces every positive-order derivative of
+$\Fb$ to vanish at $0$ and $1$, and the compact support of the smooth $\up$
+forces all its derivatives to vanish at $\pm1$.
+\end{proof}
+
+In particular $\Fb'(x)=2\Fb(2x)$ on $[0,\tfrac12]$.  This differential
+equation must not be extended to all real $x$ with the \emph{bounded} $\Fb$
+on the right-hand side; the signed extension of the next subsection is the
+function that satisfies it globally.
+
+\subsection{The signed extension and the dyadic jet}
+\label{rf:sec:setup-signed}
+
+Define the locally finite sum
+\begin{equation}
+ \Fg(x)\DefinitionEquals\sum_{b=0}^{\infty}\tm{b}\,\up(x-2b-1).
+ \label{rf:eq:setup-global}
+\end{equation}
+On $[2b,2b+2]$ only the $b$th term can be nonzero, so
+\begin{equation}
+ \Fg(x)=\tm{b}\,\up(x-2b-1)\quad(2b\le x\le2b+2),\qquad
+ \Fg=\Fb\ \text{on }[0,1],\qquad \Fg=0\ \text{on }(-\infty,0].
+ \label{rf:eq:setup-global-block}
+\end{equation}
+At the shared endpoints $x=2b$ both adjacent formulas give zero, so the
+choice of block is immaterial.
+
+\begin{lemma}[Dilation and dyadic termination]
+\label{rf:lem:setup-dilation}
+The function $\Fg$ is $C^{\infty}$ on $\RealNumbers$ and satisfies
+\begin{equation}
+ \Fg'(x)=2\Fg(2x),\qquad
+ \Fg^{(r)}(x)=2^{\Tr{r}}\Fg(2^{r}x)\quad(r\ge0).
+ \label{rf:eq:setup-global-derivative}
+\end{equation}
+At nonnegative integers and half-integers,
+\begin{equation}
+ \Fg(2b)=0,\qquad\Fg(2b+1)=\tm{b},\qquad
+ \Fg\!\left(\frac{m}{2}\right)=\frac12\,\tm{\Floor{m/4}}\quad(m\text{ odd}).
+ \label{rf:eq:setup-integer-values}
+\end{equation}
+At a dyadic $x=m/2^{n}\in[0,1]$,
+\begin{equation}
+ \Fb^{(r)}(x)=0\qquad(r\ge n+1),
+ \label{rf:eq:setup-jet-termination}
+\end{equation}
+and likewise $\up^{(r)}(x)=0$ for $r\ge n+1$ when $\AbsoluteValue{x}\le1$ is
+dyadic of depth $n$.
+\end{lemma}
+
+\begin{proof}
+Flatness of $\up$ at $\pm1$ makes the locally finite sum smooth, including
+at the joining points.  Insert \cref{rf:eq:setup-up-dilation} into
+\cref{rf:eq:setup-global}:
+\[
+ \Fg'(x)=2\sum_{b\ge0}\tm{b}\bigl\{\up(2x-4b-1)-\up(2x-4b-3)\bigr\}
+ =2\sum_{c\ge0}\tm{c}\,\up(2x-2c-1)=2\Fg(2x),
+\]
+because the digit definition gives $\tm{2b}=\tm{b}$ and
+$\tm{2b+1}=-\tm{b}$, so the two terms are the even and odd summands of the
+single sum.  Repeated differentiation and the identity
+$\Tr{r}+r=\Tr{r+1}$ prove \cref{rf:eq:setup-global-derivative}.  The
+integer values follow from the support of $\up$ and $\up(0)=1$, $\up(\pm1)=0$;
+at an odd half-integer $m/2$ the argument of the relevant translate is
+$\pm\tfrac12$, where $\up=\Fb(\tfrac12)=\tfrac12$ by
+\cref{rf:eq:setup-fold,rf:eq:setup-reflection}, and the block index is
+$\Floor{m/4}$.
+
+If $r\ge n+1$, the argument $2^{r}m/2^{n}$ is an even integer, so
+\cref{rf:eq:setup-global-derivative} gives zero.  Derivatives of $\Fb$ and
+$\Fg$ agree at interior points of $[0,1]$ and, by smoothness and one-sided
+agreement, at the endpoints.  On $(-1,1)$ one has $\up(x)=\Fg(x+1)$, and the
+same reasoning applies to $2^{r}(x+1)$; at $x=\pm1$ all derivatives of $\up$
+vanish.
+\end{proof}
+
+\begin{remark}[A terminating jet is not a local polynomial identity]
+\label{rf:rmk:setup-jet}
+The vanishing \cref{rf:eq:setup-jet-termination} does not assert that $\Fb$
+equals its Taylor polynomial near a dyadic point --- the Fabius function is
+nowhere analytic.  The exact spline statements proved in
+\cref{rf:sec:splines} concern a \emph{finite convolution} and a cell whose
+width shrinks with its depth, together with an exact smoothing identity; at
+no point is $\Fb$ replaced by a convergent Taylor series.  This distinction
+is essential to every proof below.
+\end{remark}
+
+\subsection{Moment generating functions and independent tails}
+\label{rf:sec:setup-mgf}
+
+Put
+\begin{equation}
+ H(t)\DefinitionEquals\frac{\sinh t}{t},\quad H(0)=1,\qquad
+ M(t)\DefinitionEquals\E\,\EulerE^{tZ}=\prod_{j=1}^{\infty}H\!\left(\frac{t}{2^{j}}\right).
+ \label{rf:eq:setup-M}
+\end{equation}
+The product converges locally uniformly, since $H(t/2^{j})=1+\BigOAt{4^{-j}}{K}$
+on each compact set $K$; it defines an entire even function, which is also
+the moment generating function of the bounded variable $Z$ directly.  Its
+even Taylor coefficients are the normalized moments
+\begin{equation}
+ a_{k}\DefinitionEquals\coeff{t}{2k}M(t)=\frac{\E Z^{2k}}{(2k)!},\qquad
+ c_{k}\DefinitionEquals\E Z^{2k}=(2k)!\,a_{k},
+ \label{rf:eq:setup-a-c}
+\end{equation}
+and the odd moments vanish.  Define the finite prefixes
+\begin{equation}
+ Z_{N}\DefinitionEquals\sum_{j=1}^{N}2^{-j}V_{j},\qquad
+ M_{N}(t)\DefinitionEquals\E\,\EulerE^{tZ_{N}}=\prod_{j=1}^{N}H\!\left(\frac{t}{2^{j}}\right),
+ \label{rf:eq:setup-prefix}
+\end{equation}
+with $Z_{0}=0$, $M_{0}=1$, and the uncentred prefixes
+$X_{N}\DefinitionEquals\sum_{j=1}^{N}2^{-j}U_{j}$.  The exact
+factorizations are
+\begin{equation}
+ M(t)=M_{N}(t)\,M(2^{-N}t),\qquad M(2t)=H(t)\,M(t),
+ \label{rf:eq:setup-tail-M}
+\end{equation}
+the second being the first with $N=1$ after the substitution $t\mapsto2t$,
+or equivalently the statement $Z\EqualInLaw(V+Z')/2$ on the transform side.
+Quotients by $M$ will be used only near zero or as formal power series with
+constant term one; no assertion that $1/M$ is entire is needed.  For the
+raw variable,
+\begin{equation}
+ M_{X}(z)\DefinitionEquals\E\,\EulerE^{zX}=\EulerE^{z/2}M(z/2),\qquad
+ A_{m}\DefinitionEquals\frac{\E X^{m}}{m!}=\coeff{z}{m}M_{X}(z).
+ \label{rf:eq:setup-raw}
+\end{equation}
+Comparing coefficients in $M_{X}(z)=\EulerE^{z/2}M(z/2)$ gives the dictionary
+\begin{equation}
+ A_{m}=2^{-m}\sum_{k=0}^{\Floor{m/2}}\frac{a_{k}}{(m-2k)!},
+ \label{rf:eq:setup-raw-centred}
+\end{equation}
+so a finite formula for the $a_{k}$ is also one for the $A_{m}$, and
+conversely.
+
+% =====================================================================
+\section{From a finite box to the dyadic master identity}
+\label{rf:sec:master}
+
+\subsection{A finite-convolution formula with proof}
+\label{rf:sec:master-box}
+
+\begin{lemma}[Box--simplex inclusion--exclusion]
+\label{rf:lem:master-box}
+Let $w_{1},\ldots,w_{N}>0$ and let $U_{1},\ldots,U_{N}$ be independent
+uniforms on $[0,1]$.  For $N\ge1$ and every real $x$,
+\begin{equation}
+ \Prob\Bigl(\sum_{j=1}^{N}w_{j}U_{j}\le x\Bigr)
+ =\frac{1}{N!\prod_{j=1}^{N}w_{j}}
+  \sum_{\delta\in\SetOf{0,1}^{N}}(-1)^{\AbsoluteValue{\delta}}
+  \PositivePart{x-\sum_{j=1}^{N}w_{j}\delta_{j}}^{N},
+ \label{rf:eq:master-box}
+\end{equation}
+where $\AbsoluteValue{\delta}=\sum_{j}\delta_{j}$ and $s_{+}=\max(s,0)$.
+\end{lemma}
+
+\begin{proof}
+After the substitution $y_{j}=w_{j}U_{j}$, the probability is the volume of
+the part of the box $\prod_{j}[0,w_{j}]$ on which $\sum_{j}y_{j}\le x$,
+divided by $\prod_{j}w_{j}$.  The unrestricted nonnegative simplex
+$\SetOf{y\ge0:\sum_{j}y_{j}\le x}$ has volume $x_{+}^{N}/N!$, by scaling the
+unit simplex, whose volume is $1/N!$ by $N$ successive integrations.  Exclude
+the conditions $y_{j}>w_{j}$ by inclusion--exclusion: for a fixed set
+$S=\SetOf{j:\delta_{j}=1}$ of violated constraints, translate $y_{j}$ by
+$w_{j}$ for $j\in S$; the remaining region is again a nonnegative simplex,
+with threshold $x-\sum_{j\in S}w_{j}$.  Summing its volume with the sign
+$(-1)^{\AbsoluteValue{S}}$ gives \cref{rf:eq:master-box}.  Boundaries have
+zero volume, so the weak inequalities cause no ambiguity.
+\end{proof}
+
+For $w_{j}=2^{-j}$ the subset sums are $h/2^{N}$ with $0\le h<2^{N}$: reading
+the digits of $h$ from the most significant end, $h=\sum_{j=1}^{N}\delta_{j}2^{N-j}$,
+and the sign $(-1)^{\AbsoluteValue{\delta}}$ is the Thue--Morse sign
+$\tm{h}$.  The product of the weights is $2^{-\Tr{N}}$.  Hence the
+distribution function $H_{N}$ of the uncentred prefix $X_{N}$ is
+\begin{equation}
+ H_{N}(x)=\frac{2^{\Tr{N}}}{N!}\sum_{h=0}^{2^{N}-1}\tm{h}
+  \PositivePart{x-\frac{h}{2^{N}}}^{N}.
+ \label{rf:eq:master-uncentred-spline}
+\end{equation}
+This is a finite formula for an approximant, not yet a finite formula for
+$\Fb$.
+
+\subsection{Why the tail becomes polynomial at a dyadic point}
+\label{rf:sec:master-identity}
+
+The independent-copy decomposition $X\EqualInLaw X_{n}+2^{-n}X'$, with $X'$
+a copy of $X$ independent of $X_{n}$, gives
+$\Fb(x)=\E H_{n}(x-2^{-n}X')$ for every real $x$.  At $x=m/2^{n}$ the active
+set in \cref{rf:eq:master-uncentred-spline} is particularly simple: the
+argument $m-h-X'$ is nonnegative for every $X'\in[0,1]$ when $h<m$ and
+nonpositive when $h\ge m$.  The support $0\le X'\le1$ of the tail is exactly
+what makes this possible.
+
+\begin{theorem}[Dyadic master identity]
+\label{rf:thm:master}
+For $n\ge1$ and $0\le m\le2^{n}$,
+\begin{align}
+ \Fb\!\left(\frac{m}{2^{n}}\right)
+ &=2^{-\binom{n}{2}}\sum_{h=0}^{m-1}\tm{h}
+   \sum_{l=0}^{n}A_{l}\,\frac{(m-h-1)^{n-l}}{(n-l)!}
+ \label{rf:eq:master-raw}\\
+ &=2^{-\Tr{n}}\sum_{h=0}^{m-1}\tm{h}
+   \sum_{k=0}^{\Floor{n/2}}a_{k}\,\frac{(2m-2h-1)^{n-2k}}{(n-2k)!}
+ \label{rf:eq:master-centred}\\
+ &=\frac{2^{-\Tr{n}}}{n!}\sum_{h=0}^{m-1}\tm{h}
+   \sum_{k=0}^{\Floor{n/2}}\binom{n}{2k}c_{k}\,(2m-2h-1)^{n-2k}.
+ \label{rf:eq:master-classical}
+\end{align}
+The centred form also holds for $n=0$ with the empty sum and $a_{0}=1$,
+giving $\Fb(0)=0$ and $\Fb(1)=1$.
+\end{theorem}
+
+\begin{proof}
+Substitute $x=m/2^{n}$ in $\Fb(x)=\E H_{n}(x-2^{-n}X')$ and use
+\cref{rf:eq:master-uncentred-spline} at $N=n$:
+\[
+ \Fb\!\left(\frac{m}{2^{n}}\right)
+ =\frac{2^{\Tr{n}}}{n!}\sum_{h=0}^{2^{n}-1}\tm{h}\,
+  \E\PositivePart{\frac{m-h-X'}{2^{n}}}^{n}
+ =\frac{2^{\Tr{n}-n^{2}}}{n!}\sum_{h=0}^{m-1}\tm{h}\,
+  \E(m-h-X')^{n},
+\]
+where the inactive terms $h\ge m$ were dropped and the positive part removed
+for $h<m$; note $\Tr{n}-n^{2}=-\binom{n}{2}$.  By
+\cref{rf:eq:setup-reflection}, $X'\EqualInLaw1-X'$, so the expectation
+equals $\E(m-h-1+X)^{n}$; expanding the binomial and using
+$\E X^{l}/l!=A_{l}$ gives \cref{rf:eq:master-raw}.  Next write
+$m-h-1+X=\tfrac12(2m-2h-1+Z)$: the extra factor $2^{-n}$ turns
+$2^{-\binom{n}{2}}$ into $2^{-\Tr{n}}$, the odd moments of $Z$ vanish, and
+$\binom{n}{2k}c_{k}/n!=a_{k}/(n-2k)!$ gives \cref{rf:eq:master-centred} and
+\cref{rf:eq:master-classical}.  Symmetry of $Z$ permits either sign in front
+of it.  For $n=0$ the centred display reads $\sum_{h<m}\tm{h}$ with
+$m\in\SetOf{0,1}$.
+\end{proof}
+
+This proof explains why the tail produces only finitely many moments: the
+dyadic threshold falls between consecutive head knots, so the truncated power
+is an ordinary polynomial throughout the tail's support.  Rationality is
+not assumed anywhere.
+
+\begin{remark}[The Taylor-integral proof]
+\label{rf:rmk:master-taylor}
+The signed extension gives a second proof that also covers numerators
+larger than $2^{n}$.  Taylor's formula with integral remainder at the flat
+point $0$, of order $n+1$, and the dilation law
+\cref{rf:eq:setup-global-derivative} give
+\[
+ \Fg(x)=\frac{1}{n!}\int_{0}^{x}(x-t)^{n}\Fg^{(n+1)}(t)\,\dd t
+ =\frac{2^{-\Tr{n}}}{n!}\int_{0}^{2^{n+1}x}(2^{n+1}x-v)^{n}\Fg(v)\,\dd v
+\]
+after the substitution $v=2^{n+1}t$.  At $x=a/2^{n}$ the integration
+interval is $[0,2a]$, a union of $a$ complete signed bump blocks; on the
+$h$th block substitute $v=2h+1+y$ and use \cref{rf:eq:setup-global-block}:
+\begin{equation}
+ \Fg\!\left(\frac{a}{2^{n}}\right)
+ =\frac{2^{-\Tr{n}}}{n!}\sum_{h=0}^{a-1}\tm{h}\int_{-1}^{1}(2a-2h-1-y)^{n}\up(y)\,\dd y
+ =2^{-\Tr{n}}\sum_{h=0}^{a-1}\tm{h}\sum_{k=0}^{\Floor{n/2}}a_{k}\frac{(2a-2h-1)^{n-2k}}{(n-2k)!},
+ \label{rf:eq:master-global}
+\end{equation}
+valid for every $a\ge0$ and $n\ge0$.  For $0\le a\le2^{n}$ the left side is
+$\Fb(a/2^{n})$ and the display is \cref{rf:eq:master-centred}.
+\end{remark}
+
+For later use set
+\begin{equation}
+ \Phi_{r}(v)\DefinitionEquals\coeff{t}{r}\,\EulerE^{vt}M(t)
+ =\sum_{k=0}^{\Floor{r/2}}a_{k}\,\frac{v^{r-2k}}{(r-2k)!},\qquad\Phi_{0}=1,
+ \label{rf:eq:master-Phi}
+\end{equation}
+so that \cref{rf:eq:master-centred} reads
+\begin{equation}
+ \Fb\!\left(\frac{m}{2^{n}}\right)
+ =2^{-\Tr{n}}\sum_{h=0}^{m-1}\tm{h}\,\Phi_{n}(2m-2h-1)
+ =2^{-\Tr{n}}\coeff{t}{n}\,M(t)\sum_{h=0}^{m-1}\tm{h}\,\EulerE^{(2m-2h-1)t}.
+ \label{rf:eq:master-egf}
+\end{equation}
+At this stage the moments have merely been isolated.  The next section
+replaces every $a_{k}$, and every $A_{l}$, by a finite expression.
+
+% =====================================================================
+\section{Eliminating every moment}
+\label{rf:sec:moments}
+
+\subsection{Bernoulli numbers without a recurrence}
+\label{rf:sec:moments-bernoulli}
+
+Define, for every nonnegative integer $s$,
+\begin{equation}
+ \beta_{s}\DefinitionEquals\sum_{j=0}^{s}\frac{1}{j+1}
+  \sum_{v=0}^{j}(-1)^{v}\binom{j}{v}v^{s},
+ \label{rf:eq:moments-bernoulli-finite}
+\end{equation}
+with $0^{0}=1$.
+
+\begin{lemma}[Finite Bernoulli identity]
+\label{rf:lem:moments-bernoulli}
+As formal power series,
+$\sum_{s\ge0}\beta_{s}z^{s}/s!=z/(\EulerE^{z}-1)$.  Consequently
+$\beta_{s}=B_{s}$ with $B_{1}=-\tfrac12$, and $B_{2r+1}=0$ for $r\ge1$.
+\end{lemma}
+
+\begin{proof}
+The exponential generating function of the inner finite difference is
+$\sum_{s}\frac{z^{s}}{s!}\sum_{v=0}^{j}(-1)^{v}\binom{j}{v}v^{s}=(1-\EulerE^{z})^{j}$,
+which has order $j$ in $z$; hence the inner sum vanishes for $j>s$, and the
+sum over $j$ in \cref{rf:eq:moments-bernoulli-finite} may be extended to
+infinity without changing any coefficient.  With $u=1-\EulerE^{z}$,
+\[
+ \sum_{j\ge0}\frac{u^{j}}{j+1}=\frac{-\log(1-u)}{u}=\frac{z}{\EulerE^{z}-1}.
+\]
+All operations are formal and locally finite in each degree.  Finally
+$z/(\EulerE^{z}-1)+z/2=\tfrac{z}{2}\coth\tfrac{z}{2}$ is even, which gives
+the odd-index vanishing.
+\end{proof}
+
+\subsection{Explicit cumulants}
+\label{rf:sec:moments-cumulants}
+
+For $r\ge1$ put
+\begin{equation}
+ \lambda_{r}\DefinitionEquals\frac{2^{2r-1}B_{2r}}{r\,(2r)!\,(4^{r}-1)},\qquad
+ \beta^{\ast}_{r}\DefinitionEquals\frac{\lambda_{r}}{4^{r}}
+ =\frac{B_{2r}}{2r\,(2r)!\,(4^{r}-1)}.
+ \label{rf:eq:moments-lambda}
+\end{equation}
+The Bernoulli numbers on the right can always be replaced by
+\cref{rf:eq:moments-bernoulli-finite}.
+
+\begin{proposition}[Explicit cumulants]
+\label{rf:prop:moments-logM}
+Near zero, and also formally,
+\begin{equation}
+ \log M(t)=\sum_{r\ge1}\lambda_{r}t^{2r},\qquad
+ \log M_{X}(z)=\frac{z}{2}+\sum_{r\ge1}\beta^{\ast}_{r}z^{2r}.
+ \label{rf:eq:moments-logM}
+\end{equation}
+Thus the even cumulant of $Z$ of order $2r$ is $(2r)!\lambda_{r}$, every odd
+cumulant of $Z$ vanishes, and the cumulants of $X$ beyond the mean $\tfrac12$
+are $(2r)!\beta^{\ast}_{r}$.  The first values are
+\begin{equation}
+ \lambda_{1}=\frac{1}{18},\quad\lambda_{2}=-\frac{1}{2700},\quad
+ \lambda_{3}=\frac{1}{178605},\quad\lambda_{4}=-\frac{1}{9639000},\quad
+ \lambda_{5}=\frac{1}{478533825}.
+ \label{rf:eq:moments-lambda-values}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Differentiate $\log H(t)$:
+\[
+ \frac{\dd}{\dd t}\log H(t)=\coth t-\frac1t
+ =1+\frac{2}{\EulerE^{2t}-1}-\frac1t
+ =\frac1t\Bigl(\frac{2t}{\EulerE^{2t}-1}+t-1\Bigr)
+ =\sum_{r\ge1}\frac{2^{2r}B_{2r}}{(2r)!}t^{2r-1},
+\]
+by \cref{rf:lem:moments-bernoulli} at $z=2t$: the constant term cancels
+because $B_{1}=-\tfrac12$, and the odd Bernoulli numbers vanish.
+Integrating with zero constant term gives
+$\log H(t)=\sum_{r\ge1}\frac{2^{2r-1}B_{2r}}{r(2r)!}t^{2r}$.  Summing this
+at $t/2^{j}$ over $j\ge1$ multiplies the coefficient of $t^{2r}$ by
+$\sum_{j\ge1}4^{-rj}=1/(4^{r}-1)$; local uniform convergence of the product
+justifies the analytic argument, and coefficientwise geometric summation
+gives the same formal result.  The raw statement follows from
+$M_{X}(z)=\EulerE^{z/2}M(z/2)$ and $\lambda_{r}4^{-r}=\beta^{\ast}_{r}$.
+\end{proof}
+
+Bernoulli numbers need not be accepted even as finite sums: the cumulant
+coefficients also have a formula using only factorials.
+
+\begin{lemma}[Bernoulli-free cumulant formula]
+\label{rf:lem:moments-lambda-nob}
+For every $r\ge1$,
+\begin{equation}
+ \boxed{\;
+ \lambda_{r}=\frac{1}{4^{r}-1}\sum_{\ell=1}^{r}\frac{(-1)^{\ell-1}}{\ell}
+ \sum_{\substack{s_{1},\ldots,s_{\ell}\ge1\\ s_{1}+\cdots+s_{\ell}=r}}
+ \prod_{i=1}^{\ell}\frac{1}{(2s_{i}+1)!}\,.\;}
+ \label{rf:eq:moments-lambda-nob}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Write $H(t)=1+u(t)$ with $u(t)=\sum_{s\ge1}t^{2s}/(2s+1)!$, a formal series
+without constant term.  Then
+$\log H(t)=\sum_{\ell\ge1}\frac{(-1)^{\ell-1}}{\ell}u(t)^{\ell}$, and the
+coefficient of $t^{2r}$ in $u^{\ell}$ is the sum over ordered
+$\ell$-tuples of positive integers with sum $r$ of
+$\prod_{i}1/(2s_{i}+1)!$; only $\ell\le r$ contributes.  Hence
+$\coeff{t}{2r}\log H(t)$ is the double sum in
+\cref{rf:eq:moments-lambda-nob} without the prefactor.  Summing over the
+scales $t/2^{j}$, $j\ge1$, as in the previous proof multiplies it by
+$1/(4^{r}-1)$.  Comparison with \cref{rf:eq:moments-logM} gives the claim
+(and, incidentally, a factorial-only formula for $2^{2r-1}B_{2r}/(r(2r)!)$).
+\end{proof}
+
+\subsection{Multiplicity-profile coefficients}
+\label{rf:sec:moments-partitions}
+
+\begin{theorem}[Partition formulas for the moment coefficients]
+\label{rf:thm:moments-partition}
+For every $k,m\ge0$,
+\begin{align}
+ a_{k}&=\sum_{(v_{1},\ldots,v_{k})\in\Prof{k}}
+        \prod_{r=1}^{k}\frac{\lambda_{r}^{v_{r}}}{v_{r}!},
+ \label{rf:eq:moments-a-partition}\\
+ A_{m}&=\sum_{\substack{v_{0},v_{1},\ldots,v_{\Floor{m/2}}\ge0\\
+                        v_{0}+2\sum_{r\ge1}rv_{r}=m}}
+        \frac{2^{-v_{0}}}{v_{0}!}
+        \prod_{r=1}^{\Floor{m/2}}\frac{(\beta^{\ast}_{r})^{v_{r}}}{v_{r}!}.
+ \label{rf:eq:moments-A-partition}
+\end{align}
+At index zero each sum consists of the empty or zero vector and has value
+one.
+\end{theorem}
+
+\begin{proof}
+Exponentiating \cref{rf:eq:moments-logM} gives
+$M(t)=\prod_{r\ge1}\exp(\lambda_{r}t^{2r})$.  To extract the coefficient of
+$t^{2k}$ only the factors with $r\le k$ and the powers $v_{r}\le k/r$ can
+contribute; expanding these finitely many exponentials to the relevant
+orders and choosing $v_{r}$ copies of $\lambda_{r}t^{2r}$ gives exactly
+\cref{rf:eq:moments-a-partition}.  The second identity follows in the same
+way from $M_{X}(z)=\EulerE^{z/2}\prod_{r}\exp(\beta^{\ast}_{r}z^{2r})$, the
+factor $\EulerE^{z/2}$ contributing $v_{0}$ copies of $z/2$.  The same
+calculation is valid coefficientwise in formal power series, so no analytic
+evaluation is required.  These are the multiplicity-vector versions of the
+complete Bell-polynomial identities, written out so that no convention for
+Bell polynomials is needed.
+\end{proof}
+
+\begin{theorem}[Fully expanded Bernoulli partition value]
+\label{rf:thm:partition-value}
+Let $n\ge0$, $0\le m\le2^{n}$, and $d=\Floor{n/2}$.  Then
+\begin{equation}
+ \boxed{\;
+ \Fb\!\left(\frac{m}{2^{n}}\right)
+ =2^{-\Tr{n}}\sum_{h=0}^{m-1}\tm{h}
+  \sum_{\substack{v_{0},v_{1},\ldots,v_{d}\ge0\\ v_{0}+2\sum_{r=1}^{d}rv_{r}=n}}
+  \frac{(2m-2h-1)^{v_{0}}}{v_{0}!}\prod_{r=1}^{d}\frac{\lambda_{r}^{v_{r}}}{v_{r}!}\,,\;}
+ \label{rf:eq:partition-value}
+\end{equation}
+where every $\lambda_{r}$ is the rational expression
+\cref{rf:eq:moments-lambda}, with $B_{2r}$ given by
+\cref{rf:eq:moments-bernoulli-finite} or $\lambda_{r}$ by
+\cref{rf:eq:moments-lambda-nob}.
+\end{theorem}
+
+\begin{proof}
+Substitute \cref{rf:eq:moments-a-partition} into
+\cref{rf:eq:master-centred} and set $v_{0}=n-2k$; conversely every vector in
+\cref{rf:eq:partition-value} determines $k=\sum_{r}rv_{r}$, so the reindexing
+is a bijection.  Equivalently, expand $\EulerE^{vt}\exp(\sum_{r}\lambda_{r}t^{2r})$
+in \cref{rf:eq:master-egf}.
+\end{proof}
+
+\subsection{Positive ordered compositions: no Bernoulli numbers}
+\label{rf:sec:moments-compositions}
+
+\begin{theorem}[Positive composition formulas]
+\label{rf:thm:moments-composition}
+For every $k,m\ge0$, with the suffix sums \cref{rf:eq:intro-suffix},
+\begin{align}
+ a_{k}&=\sum_{\mathbf r\in\Comp{k}}\prod_{i=1}^{\ell(\mathbf r)}
+       \frac{1}{(2r_{i}+1)!\,(4^{R_{i}}-1)},
+ \label{rf:eq:moments-a-composition}\\
+ A_{m}&=\sum_{\mathbf r\in\Comp{m}}\prod_{i=1}^{\ell(\mathbf r)}
+       \frac{1}{(r_{i}+1)!\,(2^{R_{i}}-1)}.
+ \label{rf:eq:moments-A-composition}
+\end{align}
+Every summand is positive.  Together with $a_{0}=A_{0}=1$ this supplies
+every coefficient in \cref{rf:thm:master} without any special-number
+sequence.
+\end{theorem}
+
+\begin{proof}
+Expand the product \cref{rf:eq:setup-M} using
+$H(t/2^{j})=\sum_{r\ge0}4^{-jr}t^{2r}/(2r+1)!$.  In a contribution to degree
+$2k$, let $j_{1}<\cdots<j_{\ell}$ be the distinct occupied scales and
+$r_{i}\ge1$ the exponent chosen at scale $j_{i}$, so
+$(r_{1},\ldots,r_{\ell})\in\Comp{k}$.  Its weight is
+$\prod_{i}4^{-j_{i}r_{i}}/(2r_{i}+1)!$.  All coefficients are nonnegative,
+so the terms may be regrouped by the composition (monotone convergence, or
+first do the argument for the finite product $M_{N}$ and let $N\to\infty$,
+the even coefficients increasing to those of $M$).  Put $g_{1}=j_{1}$ and
+$g_{i}=j_{i}-j_{i-1}$ for $i>1$: the gaps are positive integers in bijection
+with the increasing tuples, and $\sum_{i}j_{i}r_{i}=\sum_{i}g_{i}R_{i}$,
+since $j_{i}=g_{1}+\cdots+g_{i}$ and each $g_{i}$ multiplies exactly the
+exponents $r_{i},\ldots,r_{\ell}$.  Hence the sum over occupied scales
+factors into finite geometric sums,
+\begin{equation}
+ \sum_{1\le j_{1}<\cdots<j_{\ell}}4^{-\sum_{i}j_{i}r_{i}}
+ =\prod_{i=1}^{\ell}\sum_{g_{i}\ge1}4^{-g_{i}R_{i}}
+ =\prod_{i=1}^{\ell}\frac{1}{4^{R_{i}}-1},
+ \label{rf:eq:moments-gaps}
+\end{equation}
+which proves \cref{rf:eq:moments-a-composition}.  For the raw coefficients
+expand $M_{X}(z)=\prod_{j\ge1}\E\,\EulerE^{2^{-j}zU_{j}}$ with
+$\E U^{r}/r!=1/(r+1)!$; the gap calculation is identical with $2$ in place
+of $4$, giving \cref{rf:eq:moments-A-composition}.
+\end{proof}
+
+\begin{example}[First coefficients]
+\label{rf:ex:moments-first}
+The compositions $(1)$, and $(2)$, $(1,1)$, give
+\[
+ a_{1}=\frac{1}{3!\,(4-1)}=\frac{1}{18},\qquad
+ a_{2}=\frac{1}{5!\,(16-1)}+\frac{1}{3!\,3!\,(16-1)(4-1)}=\frac{19}{16200},
+\]
+so $\E Z^{2}=\tfrac19$ and $\E Z^{4}=\tfrac{19}{675}$; the four
+compositions of $3$ give $a_{3}=583/42865200$, and $a_{4}=132809/1311675120000$.
+The same numbers result from \cref{rf:eq:moments-a-partition}:
+$a_{2}=\lambda_{2}+\lambda_{1}^{2}/2$ and
+$a_{3}=\lambda_{3}+\lambda_{1}\lambda_{2}+\lambda_{1}^{3}/6$.  Raw:
+$A_{1}=\tfrac12$, $A_{2}=\tfrac5{36}$, $A_{3}=\tfrac1{36}$,
+$A_{4}=\tfrac{143}{32400}$.  Multiplying normalized coefficients by
+$(2k)!$ is essential; omitting the factor would change the dyadic values.
+\end{example}
+
+\begin{theorem}[Bernoulli-free closed dyadic sum]
+\label{rf:thm:composition-value}
+For $n\ge0$, $0\le m\le2^{n}$, $d=\Floor{n/2}$,
+\begin{equation}
+ \boxed{\begin{aligned}
+ \Fb\!\left(\frac{m}{2^{n}}\right)={}&2^{-\Tr{n}}\sum_{h=0}^{m-1}\tm{h}
+   \sum_{k=0}^{d}\frac{(2m-2h-1)^{n-2k}}{(n-2k)!}\\[-0.2em]
+ &\times\sum_{\ell=0}^{k}\sum_{\substack{r_{1},\ldots,r_{\ell}\ge1\\ r_{1}+\cdots+r_{\ell}=k}}
+   \prod_{i=1}^{\ell}\frac{1}{(2r_{i}+1)!\,\bigl(4^{r_{i}+\cdots+r_{\ell}}-1\bigr)}\,.
+ \end{aligned}}
+ \label{rf:eq:composition-value}
+\end{equation}
+The $\ell=0$ inner sum is one for $k=0$ and zero otherwise.  Every quantity
+is a factorial, an integer power, a Thue--Morse sign, or a bounded sum or
+product of these.
+\end{theorem}
+
+\begin{proof}
+Insert \cref{rf:eq:moments-a-composition} into \cref{rf:eq:master-centred}.
+\end{proof}
+
+\begin{remark}[Relation to the triangular recurrence]
+\label{rf:rmk:moments-recurrence}
+Comparing coefficients of $t^{2k}$ in $M(2t)=H(t)M(t)$ gives
+\begin{equation}
+ (4^{k}-1)\,a_{k}=\sum_{j=0}^{k-1}\frac{a_{j}}{(2(k-j)+1)!}\qquad(k\ge1).
+ \label{rf:eq:moments-recurrence}
+\end{equation}
+Unrolling this recurrence produces a path interpretation with the same
+suffix-composition weights as \cref{rf:eq:moments-a-composition}, so the
+composition formula is the closed form of the recurrence, not a recurrence
+in disguise.  Equation \cref{rf:eq:moments-recurrence} is retained as an
+independent check and as the source of the matrix in
+\cref{rf:sec:determinant}; it is not part of any evaluation prescription.
+\end{remark}
+
+The composition sum has $2^{k-1}$ terms for $k\ge1$, all positive; the
+partition sum has one term per integer partition of $k$, at the price of
+alternating signs among the $\lambda_{r}$.  Both are exact rational
+formulas, and neither requires $a_{0},\ldots,a_{k-1}$ before $a_{k}$.
+
+\subsection{Finite reciprocal coefficients}
+\label{rf:sec:moments-reciprocal}
+
+The scale-polynomial results of \cref{rf:sec:splines} use
+\begin{equation}
+ \frac{1}{M(t)}=\sum_{k\ge0}e_{k}t^{2k},\qquad e_{0}=1,
+ \label{rf:eq:moments-inverse-M}
+\end{equation}
+as a formal series or near zero.  Exactly the calculation of
+\cref{rf:thm:moments-partition} applied to $\exp(-\sum_{r}\lambda_{r}t^{2r})$
+gives the recurrence-free formula
+\begin{equation}
+ e_{k}=\sum_{(v_{1},\ldots,v_{k})\in\Prof{k}}
+       \prod_{r=1}^{k}\frac{(-\lambda_{r})^{v_{r}}}{v_{r}!},
+ \label{rf:eq:moments-e-partition}
+\end{equation}
+with first values
+\begin{equation}
+ e_{1}=-\frac{1}{18},\quad e_{2}=\frac{31}{16200},\quad
+ e_{3}=-\frac{2347}{42865200},\quad e_{4}=\frac{1904369}{1311675120000}.
+ \label{rf:eq:moments-e-values}
+\end{equation}
+Alternatively, the $\lambda_{r}$ can be avoided by the finite geometric
+expansion of $1/(1+(M-1))$:
+\begin{equation}
+ e_{k}=\sum_{\ell=1}^{k}(-1)^{\ell}
+ \sum_{\substack{r_{1},\ldots,r_{\ell}\ge1\\ r_{1}+\cdots+r_{\ell}=k}}
+ \prod_{i=1}^{\ell}a_{r_{i}}\qquad(k\ge1),
+ \label{rf:eq:moments-e-compositions}
+\end{equation}
+followed by \cref{rf:eq:moments-a-composition}.  The signs $(-1)^{k}e_{k}>0$
+are proved in \cref{rf:lem:splines-e-sign}.
+
+\subsection{Reciprocal powers of two}
+\label{rf:sec:moments-reciprocal-powers}
+
+At $m=1$ the raw form \cref{rf:eq:master-raw} collapses to a single
+coefficient:
+\begin{equation}
+ \boxed{\;\Fb(2^{-n})=2^{-\binom{n}{2}}A_{n}\;}
+ \qquad(n\ge0),
+ \label{rf:eq:moments-inverse-power}
+\end{equation}
+so either \cref{rf:eq:moments-A-partition} or
+\cref{rf:eq:moments-A-composition} is a direct finite formula for these
+values, for example $\Fb(\tfrac1{16})=2^{-6}A_{4}=143/2073600$.  In centred
+form, \cref{rf:eq:master-centred} at $m=1$ gives the all-positive expression
+\begin{equation}
+ \Fb(2^{-n})=2^{-\Tr{n}}\sum_{k=0}^{\Floor{n/2}}\frac{1}{(n-2k)!}
+ \sum_{\mathbf r\in\Comp{k}}\prod_{i=1}^{\ell(\mathbf r)}
+ \frac{1}{(2r_{i}+1)!\,(4^{R_{i}}-1)}.
+ \label{rf:eq:moments-inverse-power-positive}
+\end{equation}
+For odd depths there is a further simplification through the bump's half
+moments:
+\begin{equation}
+ \Fb\!\left(2^{-(2j+1)}\right)=\frac{c_{j}}{2\,(2j)!\,2^{\binom{2j+1}{2}}}
+ =\frac{a_{j}}{2^{\binom{2j+1}{2}+1}}\qquad(j\ge0).
+ \label{rf:eq:moments-odd-depth}
+\end{equation}
+To prove it without a moment recurrence, note that
+$\up(t)=\Fb(1-t)=\Prob(X\ge t)$ on $[0,1]$ by
+\cref{rf:eq:setup-fold,rf:eq:setup-reflection}.  Layer-cake integration
+gives $\E X^{2j+1}=(2j+1)\int_{0}^{1}t^{2j}\Prob(X\ge t)\,\dd t
+=(2j+1)\int_{0}^{1}t^{2j}\up(t)\,\dd t=(2j+1)\,c_{j}/2$, by evenness of
+$\up$ and $\int_{-1}^{1}t^{2j}\up=c_{j}$; hence
+$A_{2j+1}=c_{j}/(2\,(2j)!)$, and \cref{rf:eq:moments-inverse-power} gives
+the claim.  For example $\Fb(\tfrac18)=a_{1}/2^{4}=1/288$ and
+$\Fb(\tfrac1{32})=a_{2}/2^{11}=19/33177600$.
+
+% =====================================================================
+\section{Binary compression of the numerator}
+\label{rf:sec:binary}
+
+The master formula sums over $m$ consecutive integers.  Its special signs
+permit an exact compression into binary blocks, in two different ways, and
+both are useful independently of which coefficient formula is chosen.
+
+\subsection{One outer summand per nonzero binary digit}
+\label{rf:sec:binary-block}
+
+Write the binary expansion and the digit data
+\begin{equation}
+ m=\sum_{j\ge0}b_{j}2^{j},\quad b_{j}\in\SetOf{0,1},\qquad
+ J(m)\DefinitionEquals\SetOf{j:b_{j}=1},
+ \label{rf:eq:binary-digits}
+\end{equation}
+and for $j\in J(m)$
+\begin{equation}
+ p_{j}\DefinitionEquals2^{j+1}\Floor{\frac{m}{2^{j+1}}},\qquad
+ r_{j}\DefinitionEquals m\bmod2^{j},\qquad
+ K_{j}\DefinitionEquals2^{j}+2r_{j},\qquad
+ \eta_{j}\DefinitionEquals\tm{\Floor{m/2^{j+1}}}.
+ \label{rf:eq:binary-parameters}
+\end{equation}
+Thus $p_{j}$ is the part of $m$ strictly above the $j$th bit, $r_{j}$ the
+part strictly below it, and $m=p_{j}+2^{j}+r_{j}$; these are digit
+operations, not recursive values of $\Fb$.
+
+\begin{theorem}[Binary block formula]
+\label{rf:thm:binary-block}
+For every $a\ge0$ and $n\ge0$, including numerators larger than $2^{n}$,
+\begin{equation}
+ \boxed{\;
+ \Fg\!\left(\frac{a}{2^{n}}\right)
+ =2^{-\Tr{n}}\sum_{\substack{j\in J(a)\\ j\le n}}\eta_{j}\,2^{\Tr{j}}
+  \sum_{k=0}^{\Floor{(n-j)/2}}
+  \frac{a_{k}\,4^{jk}\,K_{j}^{\,n-j-2k}}{(n-j-2k)!}\,,\;}
+ \label{rf:eq:binary-block}
+\end{equation}
+equivalently, with $\Phi_{r}$ from \cref{rf:eq:master-Phi} and
+$A_{j}\DefinitionEquals K_{j}/2^{j}=1+2^{1-j}r_{j}$,
+\begin{equation}
+ \Fg\!\left(\frac{a}{2^{n}}\right)
+ =\sum_{\substack{j\in J(a)\\ j\le n}}\eta_{j}\,2^{-\Tr{n-j}}\,\Phi_{n-j}(A_{j}).
+ \label{rf:eq:binary-block-Phi}
+\end{equation}
+For $0\le a\le2^{n}$ the left side is $\Fb(a/2^{n})$.  The coefficients
+$a_{k}$ may be supplied by \cref{rf:eq:moments-a-composition} or
+\cref{rf:eq:moments-a-partition}; the outer sum has at most
+$\min(n+1,\BinaryDigitSum(a))$ nonzero terms, independently of the size of
+$a$.
+\end{theorem}
+
+\begin{proof}
+The interval of integers $[0,a)$ is the disjoint union of the blocks
+$[p_{j},p_{j}+2^{j})$, $j\in J(a)$.  Adding an integer $h<2^{j}$ to $p_{j}$
+causes no binary carry, so $\tm{p_{j}+h}=\tm{p_{j}}\tm{h}=\eta_{j}\tm{h}$.
+The finite Thue--Morse product identity
+\begin{equation}
+ \sum_{h=0}^{2^{j}-1}\tm{h}\,z^{h}=\prod_{\ell=0}^{j-1}\bigl(1-z^{2^{\ell}}\bigr)
+ \label{rf:eq:binary-tm-product}
+\end{equation}
+holds because selecting a subset of the factors selects the nonzero digits
+of $h$.  Therefore
+\begin{equation}
+ \sum_{h=0}^{a-1}\tm{h}\,z^{h}
+ =\sum_{j\in J(a)}\eta_{j}\,z^{p_{j}}\prod_{\ell=0}^{j-1}\bigl(1-z^{2^{\ell}}\bigr).
+ \label{rf:eq:binary-prefix-product}
+\end{equation}
+By \cref{rf:eq:master-global}, the desired value is
+$2^{-\Tr{n}}\coeff{t}{n}\,\EulerE^{(2a-1)t}M(t)\sum_{h<a}\tm{h}\EulerE^{-2ht}$.
+For the block of length $2^{j}$, each factor of the product at
+$z=\EulerE^{-2t}$ is
+$1-\EulerE^{-2^{\ell+1}t}=2^{\ell+1}t\,\EulerE^{-2^{\ell}t}H(2^{\ell}t)$, so
+\begin{equation}
+ \prod_{\ell=0}^{j-1}\bigl(1-\EulerE^{-2^{\ell+1}t}\bigr)
+ =2^{\Tr{j}}\,t^{j}\,\EulerE^{-(2^{j}-1)t}\prod_{\ell=0}^{j-1}H(2^{\ell}t),
+ \label{rf:eq:binary-H-product}
+\end{equation}
+the powers of two multiplying to $2^{j+j(j-1)/2}=2^{\Tr{j}}$.  Iterating
+$M(2t)=H(t)M(t)$ gives the exact cancellation
+$M(t)\prod_{\ell=0}^{j-1}H(2^{\ell}t)=M(2^{j}t)$.  The block therefore
+contributes
+\[
+ \eta_{j}\,2^{-\Tr{n}+\Tr{j}}\coeff{t}{n-j}\,\EulerE^{(2a-2p_{j}-2^{j})t}M(2^{j}t),
+\]
+and $2a-2p_{j}-2^{j}=2^{j}+2r_{j}=K_{j}$.  Expanding
+$M(2^{j}t)=\sum_{k}a_{k}4^{jk}t^{2k}$ and extracting $t^{n-j}$ proves
+\cref{rf:eq:binary-block}; a block with $j>n$ carries the factor $t^{j}$ and
+contributes nothing, which is why the high bits enter only through the signs
+$\eta_{j}$.  Substituting $s=2^{j}t$ changes the coefficient extraction by
+the factor $2^{j(n-j)}$, turns the exponent into $A_{j}s$, and
+$-\Tr{n}+\Tr{j}+j(n-j)=-\Tr{n-j}$ gives \cref{rf:eq:binary-block-Phi}.
+\end{proof}
+
+For $a=0$ the empty sum gives zero; for $a=2^{n}$ the single block gives
+$\Phi_{0}(1)=1$; for $a=1$ only the lowest bit occurs and
+\cref{rf:eq:binary-block-Phi} reduces to $\Fb(2^{-n})=2^{-\Tr{n}}\Phi_{n}(1)$,
+which is \cref{rf:eq:moments-inverse-power-positive}.  Combining
+\cref{rf:eq:binary-block} with \cref{rf:eq:moments-a-composition} gives one
+literal expression with no unresolved coefficient symbol,
+\begin{equation}
+ \boxed{\begin{aligned}
+ \Fg\!\left(\frac{a}{2^{n}}\right)
+ ={}&\sum_{\substack{j\in J(a)\\ j\le n}}\eta_{j}\,2^{\Tr{j}-\Tr{n}}
+   \sum_{k=0}^{\Floor{(n-j)/2}}\frac{4^{jk}K_{j}^{\,n-j-2k}}{(n-j-2k)!}\\[-0.1em]
+ &\times\sum_{\ell=0}^{k}\sum_{\substack{r_{1},\ldots,r_{\ell}\ge1\\ r_{1}+\cdots+r_{\ell}=k}}
+   \prod_{i=1}^{\ell}\frac{1}{(2r_{i}+1)!\,\bigl(4^{r_{i}+\cdots+r_{\ell}}-1\bigr)}\,,
+ \end{aligned}}
+ \label{rf:eq:binary-fully-expanded}
+\end{equation}
+which, with the digit definitions \cref{rf:eq:binary-parameters}, contains
+no recursively defined constant at all.  After the universal coefficients
+have been computed there are at most $\sum_{j=0}^{n}(\Floor{(n-j)/2}+1)
+=(d+1)(n-d+1)$ argument-dependent monomials --- a count of rational
+operations, not of bit complexity.
+
+\begin{example}[Three nonzero bits]
+\label{rf:ex:binary-21}
+For $x=21/64$, $21=(10101)_{2}$ and $J(21)=\SetOf{0,2,4}$.  The block data
+give
+\begin{align*}
+ \Fb\!\left(\frac{21}{64}\right)
+ &=2^{-3}\Phi_{2}\!\left(\frac{13}{8}\right)
+ -2^{-10}\Phi_{4}\!\left(\frac{3}{2}\right)
+ +2^{-21}\Phi_{6}(1)\\
+ &=\frac{1585}{9216}-\frac{71179}{265420800}+\frac{1153}{561842749440}
+ =\frac{482385079229}{2809213747200}.
+\end{align*}
+For $a=3$, $n=3$ the two blocks $(\eta_{0},K_{0})=(-1,1)$ and
+$(\eta_{1},K_{1})=(1,4)$ give
+$\Fb(\tfrac38)=\tfrac1{64}\bigl[-(\tfrac16+\tfrac1{18})+2(\tfrac{16}{2}+\tfrac4{18})\bigr]
+=\tfrac{73}{288}$.  Without a prefix sum of length $173$,
+\begin{equation}
+ \Fb\!\left(\frac{173}{4096}\right)
+ =\frac{1490588447599319294372326859976672988757}
+       {292214732887898713986916575925267070976000000}
+ \approx5.101003747717089\cdot10^{-6},
+ \label{rf:eq:binary-large}
+\end{equation}
+where only the five set bits of $173=128+32+8+4+1$ contribute.
+\end{example}
+
+\subsection{The binary telescope}
+\label{rf:sec:binary-telescope}
+
+A second compression uses raw coefficients and the signed extension's
+antiperiodicity rather than the block product; it is a finite telescope of
+the exact Taylor reduction used in the classical arithmetic theory
+\cite{arias2018}.
+
+\begin{lemma}[One binary step]
+\label{rf:lem:binary-step}
+For an integer $b\ge1$ and $0\le t\le2^{-b}$,
+\begin{equation}
+ \Fb(2^{-b}+t)+\Fb(t)=2^{-\binom{b}{2}}\sum_{k=0}^{b}A_{b-k}\frac{(2^{b}t)^{k}}{k!}.
+ \label{rf:eq:binary-step}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+On $[0,2]$, \cref{rf:eq:setup-global-block} and $\tm{1}=-1$ give
+$\Fg(z+2)=-\Fg(z)$.  By \cref{rf:eq:setup-global-derivative} the
+$(b+1)$st derivative of the left side of \cref{rf:eq:binary-step} is
+$2^{\Tr{b+1}}\bigl[\Fg(2+2^{b+1}t)+\Fg(2^{b+1}t)\bigr]=0$ for
+$0\le2^{b+1}t\le2$, so the left side is a polynomial of degree at most $b$
+on the stated interval.  At $t=0$ every derivative of $\Fb(t)$ vanishes,
+while for $0\le k\le b$
+\[
+ \Fb^{(k)}(2^{-b})=2^{\Tr{k}}\Fb\bigl(2^{-(b-k)}\bigr)
+ =2^{\Tr{k}-\binom{b-k}{2}}A_{b-k}=2^{bk-\binom{b}{2}}A_{b-k}
+\]
+by \cref{rf:eq:setup-global-derivative} and
+\cref{rf:eq:moments-inverse-power}, using
+$\Tr{k}-\binom{b-k}{2}=bk-\binom{b}{2}$; the endpoint $k=b$ uses
+$\Fb(1)=A_{0}=1$.  The Taylor polynomial of degree $b$ at $t=0$ is therefore
+exactly the right side of \cref{rf:eq:binary-step}.
+\end{proof}
+
+\begin{theorem}[Explicit binary telescope]
+\label{rf:thm:binary-telescope}
+Let $0<x<1$ be dyadic, with nonzero binary positions
+$x=\sum_{i=1}^{\rho}2^{-b_{i}}$, $1\le b_{1}<\cdots<b_{\rho}$, and the
+explicitly known binary suffixes
+\begin{equation}
+ s_{i}\DefinitionEquals\sum_{j=i+1}^{\rho}2^{b_{i}-b_{j}},\qquad0\le s_{i}<1.
+ \label{rf:eq:binary-suffix}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{\;
+ \Fb(x)=\sum_{i=1}^{\rho}(-1)^{i-1}\,2^{-\binom{b_{i}}{2}}
+ \sum_{k=0}^{b_{i}}\frac{s_{i}^{k}}{k!}
+ \sum_{\mathbf r\in\Comp{b_{i}-k}}\prod_{j=1}^{\ell(\mathbf r)}
+ \frac{1}{(r_{j}+1)!\,(2^{R_{j}}-1)}\,.\;}
+ \label{rf:eq:binary-telescope}
+\end{equation}
+The inner composition sum is $A_{b_{i}-k}$ and may equally be replaced by
+\cref{rf:eq:moments-A-partition}.
+\end{theorem}
+
+\begin{proof}
+Write $x_{i}=\sum_{j=i}^{\rho}2^{-b_{j}}$ and $x_{\rho+1}=0$.  Since
+$x_{i}=2^{-b_{i}}+x_{i+1}$ and $2^{b_{i}}x_{i+1}=s_{i}<1$,
+\cref{rf:lem:binary-step} gives $\Fb(x_{i})+\Fb(x_{i+1})=P_{i}(s_{i})$ with
+$P_{i}$ the polynomial on the right of \cref{rf:eq:binary-step}.  Multiply
+by $(-1)^{i-1}$ and sum over $i$: all interior values cancel and
+$\Fb(x_{\rho+1})=\Fb(0)=0$.  Substituting
+\cref{rf:eq:moments-A-composition} gives the display.  This is a proof by a
+finite telescope, not an instruction to evaluate a recursive sequence.
+\end{proof}
+
+For example $3/8=2^{-2}+2^{-3}$ gives
+$\Fb(\tfrac38)=2^{-1}\bigl(A_{2}+\tfrac12A_{1}+\tfrac18A_{0}\bigr)-2^{-3}A_{3}=\tfrac{73}{288}$.
+A point with $\rho$ nonzero bits uses $\sum_{i}(b_{i}+1)\le\rho(n+1)$
+polynomial terms once the raw coefficients through index $n$ are available.
+
+\begin{remark}[The two compressions compared]
+\label{rf:rmk:binary-compare}
+Both formulas have one outer term per set bit, but they are different
+identities: the block formula groups the Thue--Morse prefix into complete
+blocks, whose sign structure is absorbed by the exact product identity
+\cref{rf:eq:binary-H-product}, uses the centred coefficients $a_{k}$ with
+the largest index $\Floor{(n-j)/2}$, and holds for the signed extension at
+every numerator; the telescope alternates signs down the bits, uses the raw
+coefficients $A_{l}$ with index up to $b_{i}$, and is confined to the unit
+interval.  Reflection $\Fb(x)=1-\Fb(1-x)$ may reduce the number of useful
+bits in either.  Neither count is a bit-complexity estimate: large rational
+numerators and the coefficient generation still have costs.
+\end{remark}
+
+% =====================================================================
+\section{Eliminating moments by finitely many uniform prefixes}
+\label{rf:sec:prefix}
+
+The coefficients $a_{k}$ admit a third recurrence-free representation:
+instead of expanding the infinite product, interpolate a coefficient of its
+finite prefixes $M_{N}$.  The same device turns the whole master identity
+into a formula with finitely many uniform coordinates.
+
+\subsection{Two explicit finite-prefix coefficients}
+\label{rf:sec:prefix-coefficients}
+
+Write
+\begin{equation}
+ a_{k,N}\DefinitionEquals\coeff{t}{2k}M_{N}(t),\qquad
+ a_{0,0}=1,\quad a_{k,0}=0\ (k>0).
+ \label{rf:eq:prefix-coefficient}
+\end{equation}
+Expanding the $N$ factors gives the finite multinomial formula
+\begin{equation}
+ a_{k,N}=\sum_{\substack{r_{1},\ldots,r_{N}\ge0\\ r_{1}+\cdots+r_{N}=k}}
+ \prod_{i=1}^{N}\frac{4^{-ir_{i}}}{(2r_{i}+1)!},
+ \label{rf:eq:prefix-multinomial}
+\end{equation}
+a finite sum because every $r_{i}\le k$.  There is also a single signed
+power sum.  Since $H(t/2^{j})=2^{j-1}t^{-1}(\EulerE^{t/2^{j}}-\EulerE^{-t/2^{j}})$,
+expanding the finite product gives, with $L_{N}=1-2^{-N}$,
+\begin{equation}
+ M_{N}(t)=2^{N(N-1)/2}\,t^{-N}\sum_{h=0}^{2^{N}-1}\tm{h}\,
+ \EulerE^{(L_{N}-2^{1-N}h)t}:
+ \label{rf:eq:prefix-exponentials}
+\end{equation}
+the subset sums $\sum_{j\in S}2^{-j}$ run through $h/2^{N}$ with sign
+$\tm{h}$ (reversing the order of the $N$ digits does not change the sign),
+and the constant is $\prod_{j=1}^{N}2^{j-1}=2^{N(N-1)/2}$.  The apparent
+pole is removable, the sum vanishing to order $N$ at $t=0$ by Prouhet's
+cancellation \cref{rf:eq:splines-prouhet} below.  Expanding the
+exponentials,
+\begin{equation}
+ \boxed{\;
+ a_{k,N}=\frac{2^{N(N-1)/2-N(2k+N)}}{(2k+N)!}
+ \sum_{h=0}^{2^{N}-1}\tm{h}\,(2^{N}-1-2h)^{2k+N}\,.\;}
+ \label{rf:eq:prefix-power}
+\end{equation}
+For instance $a_{1,1}=\tfrac1{24}$; the raw second moment $\E Z_{1}^{2}=\tfrac1{12}$
+is not $a_{1,1}$, and the normalization by $(2k)!$ remains essential.
+
+\subsection{Exact coefficient extraction at the quarter base}
+\label{rf:sec:prefix-extraction}
+
+The geometric weights $w_{d,j}(q)$ are defined and proved in
+\cref{rf:sec:extraction-row}; here only the identity
+\cref{rf:eq:extraction-filter} is used, which says that
+$\sum_{j=0}^{d}w_{d,j}(q)P(zq^{j})=P(0)$ for every polynomial $P$ of degree
+at most $d$ and every $z\neq0$.
+
+\begin{theorem}[Finite-prefix moment elimination]
+\label{rf:thm:moment-extraction}
+For every $k\ge0$ and every integer $N_{0}\ge0$,
+\begin{equation}
+ \boxed{\;a_{k}=\sum_{j=0}^{k}w_{k,j}\,a_{k,N_{0}+j}\,,\;}
+ \label{rf:eq:moment-extraction}
+\end{equation}
+with $w_{k,j}=w_{k,j}(\tfrac14)$ the explicit rational weights
+\cref{rf:eq:main-weights-integer} and each $a_{k,N}$ given by
+\cref{rf:eq:prefix-multinomial} or \cref{rf:eq:prefix-power}.  No infinite
+moment remains on the right.  A common row of degree $d\ge k$ may replace
+the row of degree $k$.
+\end{theorem}
+
+\begin{proof}
+From $M_{N}(t)=M(t)/M(2^{-N}t)$ and \cref{rf:eq:moments-inverse-M},
+\begin{equation}
+ a_{k,N}=\sum_{r=0}^{k}a_{k-r}\,e_{r}\,(4^{-N})^{r}.
+ \label{rf:eq:prefix-scale-polynomial}
+\end{equation}
+For fixed $k$ this is a polynomial of degree at most $k$ in $4^{-N}$ with
+constant term $a_{k}$.  Apply \cref{rf:eq:extraction-filter} with
+$q=\tfrac14$, $z=4^{-N_{0}}$ and the nodes $4^{-(N_{0}+j)}$.  The occurrence
+of $a_{k-r}$ in this proof is not an auxiliary recurrence in the final
+expression: all sampled coefficients on the right of
+\cref{rf:eq:moment-extraction} are supplied by independent finite formulas.
+\end{proof}
+
+At $N_{0}=0$ and $k>0$ the $j=0$ term vanishes, so only the prefixes
+$1,\ldots,k$ are needed: $a_{1}=\tfrac43a_{1,1}=\tfrac1{18}$.  Inserting
+\cref{rf:eq:moment-extraction,rf:eq:prefix-power} into
+\cref{rf:eq:master-Phi} and then into \cref{rf:eq:master-centred} or
+\cref{rf:eq:binary-block-Phi} produces another family consisting entirely of
+finite Thue--Morse sums, in which the interpolation depth is controlled by
+the moment index $k$ and the recovered coefficient is reusable at many
+dyadic arguments.
+
+\subsection{A moment-free multinomial formula}
+\label{rf:sec:prefix-cube}
+
+Applying the same interpolation to the whole master polynomial gives a
+formula with finitely many uniform coordinates.  For $N\ge0$ and any $A$,
+define
+\begin{equation}
+ C_{n,N}(A)\DefinitionEquals\frac{1}{n!}\E(A+Z_{N})^{n}
+ =\sum_{\substack{r_{0},r_{1},\ldots,r_{N}\ge0\\ r_{0}+2r_{1}+\cdots+2r_{N}=n}}
+ \frac{A^{r_{0}}}{r_{0}!}\prod_{j=1}^{N}\frac{4^{-jr_{j}}}{(2r_{j}+1)!},
+ \label{rf:eq:prefix-C}
+\end{equation}
+so $C_{n,0}(A)=A^{n}/n!$ and every summation index is bounded by $n$.
+
+\begin{theorem}[Finite-cube closed form]
+\label{rf:thm:finite-cube}
+For every $m,n\ge0$ with $0\le m\le2^{n}$ and $d=\Floor{n/2}$,
+\begin{equation}
+ \boxed{\;
+ \Fb\!\left(\frac{m}{2^{n}}\right)
+ =2^{-\Tr{n}}\sum_{h=0}^{m-1}\tm{h}\sum_{j=0}^{d}w_{d,j}\,C_{n,j}(2m-2h-1)\,,\;}
+ \label{rf:eq:finite-cube}
+\end{equation}
+and no moment of an infinite distribution occurs in its evaluation.
+\end{theorem}
+
+\begin{proof}
+With $C_{n}(A)\DefinitionEquals\coeff{t}{n}\EulerE^{At}M(t)=\Phi_{n}(A)$ and
+$C_{n,N}(A)=\coeff{t}{n}\EulerE^{At}M(t)/M(2^{-N}t)$, the reciprocal
+expansion gives $C_{n,N}(A)=\sum_{r=0}^{d}e_{r}4^{-Nr}C_{n-2r}(A)$, a
+polynomial of degree at most $d$ in $4^{-N}$ with constant term
+$\Phi_{n}(A)$.  By \cref{rf:eq:extraction-filter} at $z=1$,
+$\Phi_{n}(A)=\sum_{j=0}^{d}w_{d,j}C_{n,j}(A)$; substitute this into
+\cref{rf:eq:master-egf}.
+\end{proof}
+
+The consecutive depths $0,1,\ldots,d$ are convenient, not compulsory: for
+distinct nonnegative $N_{0},\ldots,N_{d}$ and $z_{j}=4^{-N_{j}}$, the
+Lagrange weights $\prod_{\ell\neq j}(-z_{\ell})/(z_{j}-z_{\ell})$ replace
+$w_{d,j}$ (\cref{rf:thm:extraction-arbitrary} in the same form), and for
+$N_{j}=N+Lj$ they reduce to $w_{d,j}(4^{-L})$.
+
+% =====================================================================
+\section{The exact polynomial hidden in centred finite splines}
+\label{rf:sec:splines}
+
+This section explains why a short moment-free formula exists.  It is
+important that the cutoff dependence terminates \emph{exactly}, not merely
+to a prescribed asymptotic accuracy.
+
+\subsection{The centred finite distribution}
+\label{rf:sec:splines-centred}
+
+For $N\ge1$ define
+\begin{equation}
+ Y_{N}\DefinitionEquals X_{N}+2^{-N-1}=\frac{1+Z_{N}}{2},\qquad
+ G_{N}(x)\DefinitionEquals\Prob(Y_{N}\le x).
+ \label{rf:eq:splines-centred}
+\end{equation}
+The added midpoint $2^{-N-1}$ is the mean of the omitted tail; this
+centring makes the correction polynomial even in the small scale, a
+simplification the uncentred $H_{N}$ does not enjoy
+(\cref{rf:sec:halfbase}).  The finite random variable is centred at
+$\tfrac12$, like $X$, and $G_{N}$ is a piecewise polynomial of degree $N$
+whose knots lie among the points $(h+\tfrac12)/2^{N}$, $0\le h<2^{N}$.  The
+box formula gives
+\begin{equation}
+ G_{N}(x)=\frac{2^{\Tr{N}}}{N!}\sum_{h=0}^{2^{N}-1}\tm{h}
+ \PositivePart{x-\frac{h+\frac12}{2^{N}}}^{N}.
+ \label{rf:eq:splines-G-positive}
+\end{equation}
+At $x=m/2^{n}$ with $N\ge n\ge1$, put $A=2^{N-n}m$; exactly the terms
+$h<A$ are active, every one a full power, and
+\begin{equation}
+ \boxed{\;
+ G_{N}\!\left(\frac{m}{2^{n}}\right)
+ =\frac{1}{2^{\Tr{N}}N!}\sum_{h=0}^{A-1}\tm{h}\,(2A-2h-1)^{N}
+ =\frac{\Spow{N}{A}}{2^{\Tr{N}}N!}\,.\;}
+ \label{rf:eq:splines-G-integer}
+\end{equation}
+The threshold is always halfway between two consecutive possible knots.
+The sum is empty at $m=0$ and evaluates to one at $m=2^{n}$.  Its negative
+terms come only from inclusion--exclusion; $G_{N}$ itself is a distribution
+function.
+
+\subsection{A finite expression for every dyadic derivative}
+\label{rf:sec:splines-derivatives}
+
+\begin{lemma}[Differentiated master formula]
+\label{rf:lem:splines-derivative-master}
+For $n\ge1$, $0\le m\le2^{n}$, and $0\le r\le n$,
+\begin{equation}
+ \Fb^{(r)}\!\left(\frac{m}{2^{n}}\right)
+ =2^{(n+1)r-\Tr{n}}\sum_{h=0}^{m-1}\tm{h}\,\Phi_{n-r}(2m-2h-1).
+ \label{rf:eq:splines-derivative-master}
+\end{equation}
+For $r\ge n+1$ the derivative is zero.  In particular every derivative at a
+dyadic point is explicitly rational.
+\end{lemma}
+
+\begin{proof}
+Conditioning on the independent tail gives, for every real $y$,
+\[
+ \Fb(y)=\frac{2^{\Tr{n}}}{n!}\sum_{h=0}^{2^{n}-1}\tm{h}\,
+ \E\PositivePart{y-2^{-n}(h+X')}^{n}.
+\]
+For $r\le n$ differentiate $r$ times under the expectation; when $r=n$ the
+derivative of the truncated power is $n!$ times the indicator of a positive
+argument, and $X'$ has no atoms, so the value at the cutoff is immaterial.
+At $y=m/2^{n}$ all terms with $h<m$ have a nonnegative argument for every
+$X'\in[0,1]$ and the remaining terms vanish.  Replacing $X'$ by
+$1-X'=(1-Z)/2$ and using evenness of $Z$, the scale is
+$2^{\Tr{n}}\cdot2^{-n(n-r)}\cdot2^{-(n-r)}=2^{(n+1)r-\Tr{n}}$ and the
+expectation divided by $(n-r)!$ is $\Phi_{n-r}$.  Higher derivatives vanish
+by \cref{rf:lem:setup-dilation}.
+\end{proof}
+
+Comparing with \cref{rf:eq:setup-global-derivative} evaluated by the master
+identity, this is also the statement $\Fb^{(r)}(x)=2^{\Tr{r}}\Fg(2^{r}x)$
+written out; \cref{rf:sec:rvachev-derivatives} returns to it.
+
+\subsection{Finite-jet deconvolution}
+\label{rf:sec:splines-deconvolution}
+
+Let $\Dop$ denote differentiation of polynomials in the variable $s$.  The
+next lemma is the one analytic step; it is stated generally because it is
+used four times (for the CDF, the density, the shifted spline, and the
+integer bases).
+
+\begin{lemma}[Local polynomial smoothing is invertible on a finite jet]
+\label{rf:lem:splines-local-inverse}
+Let $H$ be a piecewise polynomial that agrees with one polynomial $p(s)$ of
+degree at most $N$ at the points $x+s$, $\AbsoluteValue{s}\le\eta$, and let
+$W$ be a random variable supported on $[-1,1]$ with a bounded density.  Put
+$f(t)\DefinitionEquals\E H(t-\eta W)$ and let
+$\MomentGeneratingFunction{W}(z)=\E\,\EulerE^{zW}$.  Suppose the derivatives
+of $f$ through order $N$ at $x$ are obtained by convolving the
+corresponding piecewise derivatives of $H$.  Then, as an identity of
+polynomials of degree at most $N$,
+\begin{equation}
+ \sum_{r=0}^{N}\frac{f^{(r)}(x)}{r!}s^{r}=\MomentGeneratingFunction{W}(-\eta\Dop)\,p(s),
+ \label{rf:eq:splines-jet-operator}
+\end{equation}
+where the operator is truncated at order $N$, and consequently
+\begin{equation}
+ p(s)=\bigl[\MomentGeneratingFunction{W}(-\eta\Dop)\bigr]^{-1}
+ \sum_{r=0}^{N}\frac{f^{(r)}(x)}{r!}s^{r},
+ \label{rf:eq:splines-local-inverse}
+\end{equation}
+the inverse being the finite operator obtained by truncating the formal
+reciprocal series at order $N$.  If $W$ is symmetric, only even powers of
+$\eta\Dop$ occur.  For the distribution-function splines of this section and
+the density splines of \cref{rf:sec:rvachev-density}, the stipulated
+derivative identities hold.
+\end{lemma}
+
+\begin{proof}
+For $\AbsoluteValue{s}\le\eta$ and $\AbsoluteValue{W}\le1$ the point
+$x+s-\eta W$ may leave the cell, so the identity is proved at the level of
+jets.  Differentiating the convolution as stipulated and evaluating at $x$,
+$f^{(r)}(x)=\E H^{(r)}(x-\eta W)=\E p^{(r)}(-\eta W)$ for $0\le r\le N$,
+because $x-\eta W$ lies in the cell.  Taylor's formula for the polynomial
+$p^{(r)}$ gives $p^{(r)}(-\eta W)=\sum_{i}p^{(r+i)}(0)(-\eta W)^{i}/i!$, and
+taking expectations coefficient by coefficient,
+$f^{(r)}(x)=\sum_{i}\E[W^{i}](-\eta)^{i}p^{(r+i)}(0)/i!$, which is the
+coefficient identity behind \cref{rf:eq:splines-jet-operator}.  On
+polynomials of degree at most $N$ one has $\Dop^{N+1}=0$, so
+$\MomentGeneratingFunction{W}(-\eta\Dop)$ is a unipotent finite operator
+($\MomentGeneratingFunction{W}(0)=1$), invertible with inverse the truncated
+reciprocal series; applying it gives \cref{rf:eq:splines-local-inverse}.  No
+convergence of a Taylor series of $f$ is assumed anywhere.  For an
+$N$-uniform distribution function the derivatives through order $N-1$ are
+continuous and the $N$th is bounded and piecewise constant; these are also
+its distributional derivatives, so convolution with a bounded density gives
+the derivative identities, values at the finitely many knots not affecting
+any integral.  The density spline is the same argument one degree lower.
+\end{proof}
+
+\subsection{The exact shrinking-cell identity}
+\label{rf:sec:splines-cell}
+
+Let
+\begin{equation}
+ P_{x}(h)\DefinitionEquals\sum_{r=0}^{n}\frac{\Fb^{(r)}(x)}{r!}h^{r},\qquad x=\frac{m}{2^{n}},
+ \label{rf:eq:splines-taylor}
+\end{equation}
+the Taylor polynomial of $\Fb$ at $x$, which terminates by
+\cref{rf:eq:setup-jet-termination}; no equality $\Fb(x+h)=P_{x}(h)$ is
+asserted.
+
+\begin{theorem}[Exact shrinking-cell formula]
+\label{rf:thm:local-cell}
+Let $N\ge n\ge1$ and $x=m/2^{n}\in[0,1]$.  For every real $h$ with
+$\AbsoluteValue{h}\le2^{-N-1}$,
+\begin{equation}
+ \boxed{\;
+ G_{N}(x+h)=\sum_{k=0}^{\Floor{n/2}}e_{k}\,2^{-2k(N+1)}
+ \sum_{r=0}^{n-2k}\frac{\Fb^{(r+2k)}(x)}{r!}h^{r}\,,\;}
+ \label{rf:eq:local-cell}
+\end{equation}
+with the finite reciprocal coefficients $e_{k}$ of
+\cref{rf:eq:moments-e-partition}.  Equivalently, on this cell
+$G_{N}(x+h)=[M(2^{-N-1}\Dop_{h})]^{-1}P_{x}(h)$, the inverse meaning its
+finite action on polynomials of degree at most $n$.
+\end{theorem}
+
+\begin{proof}
+Write $R=N-n$.  The centred prefix splits into independent parts as
+$Y_{N}=X_{n}+2^{-n}Y_{R}$ with $Y_{R}=(1+Z_{R})/2$, $Y_{0}=\tfrac12$, and
+$Y_{R}$ is supported in $[2^{-R-1},1-2^{-R-1}]$.  The bound on $h$ gives
+$\AbsoluteValue{2^{n}h}\le2^{-R-1}$, so in the box formula for the first
+$n$ variables the cutoff pattern cannot change: all indices $\ell<m$
+contribute full powers and all $\ell\ge m$ contribute zero (at the two cell
+endpoints some arguments can equal zero, which changes nothing since
+$n\ge1$).  Thus
+\begin{equation}
+ G_{N}(x+h)=\frac{2^{-\Tr{n}}}{n!}\sum_{\ell=0}^{m-1}\tm{\ell}\,
+ \E\bigl(2m-2\ell-1+2^{n+1}h-Z_{R}\bigr)^{n}.
+ \label{rf:eq:local-tail-polynomial}
+\end{equation}
+Replacing $Z_{R}$ by $Z$ produces a polynomial in $h$ whose $r$th derivative
+at $0$ is \cref{rf:eq:splines-derivative-master}; that polynomial is
+exactly $P_{x}(h)$.  For any polynomial $p(v)$, symmetry gives
+$\E p(v-Z_{R})=M_{R}(\Dop_{v})p(v)$ and $\E p(v-Z)=M(\Dop_{v})p(v)$
+(\cref{rf:lem:splines-local-inverse} with $\eta=1$, or directly by Taylor
+expansion), and $M_{R}(t)=M(t)/M(2^{-R}t)$.  These identities are
+legitimate in the finite-dimensional space of polynomials.  In
+\cref{rf:eq:local-tail-polynomial} the variable is
+$v=2m-2\ell-1+2^{n+1}h$, so $\Dop_{v}=2^{-n-1}\Dop_{h}$ and the denominator
+is $M(2^{-R-n-1}\Dop_{h})=M(2^{-N-1}\Dop_{h})$.  Expanding its reciprocal
+by \cref{rf:eq:moments-inverse-M} gives \cref{rf:eq:local-cell}.
+\end{proof}
+
+\begin{corollary}[Polynomial dependence on the squared tail scale]
+\label{rf:cor:scale-polynomial}
+For a fixed dyadic $x=m/2^{n}\in[0,1]$, $n\ge1$, $d=\Floor{n/2}$, and all
+integers $N\ge n$,
+\begin{equation}
+ G_{N}(x)=Q_{x}(4^{-N}),\qquad
+ Q_{x}(z)\DefinitionEquals\sum_{k=0}^{d}e_{k}\,4^{-k}\,\Fb^{(2k)}(x)\,z^{k},
+ \label{rf:eq:scale-polynomial}
+\end{equation}
+so $Q_{x}(0)=\Fb(x)$ and $\deg Q_{x}\le d$.
+\end{corollary}
+
+This is an exact identity for the whole tail of the sequence
+$(G_{N}(x))_{N\ge n}$, not a finite-order asymptotic expansion; its constant
+term can therefore be extracted from finitely many depths.  At $x=\tfrac14$,
+where $\Fb'=1$, $\Fb''=8$ and the higher derivatives vanish,
+\begin{equation}
+ G_{N}\!\left(\tfrac14+h\right)=\frac{5}{72}+h+4h^{2}-\frac19\,4^{-N}
+ \qquad(N\ge2,\ \AbsoluteValue{h}\le2^{-N-1}),
+ \label{rf:eq:quarter-cell}
+\end{equation}
+which, after the index shift of \cref{rf:sec:extraction-volume}, is the
+quarter-point cell that is kernel-verified in the repository
+(\cref{rf:sec:register}).
+
+\begin{remark}[The degree drop seen through Prouhet cancellation]
+\label{rf:rmk:splines-prouhet}
+That the polynomial piece of $G_{N}$ on the cell has degree at most $n$,
+although a general piece has degree $N$, can also be seen combinatorially.
+The finite product \cref{rf:eq:binary-tm-product} has a zero of order $L$
+at $z=1$, so differentiating it at $z=1$ gives Prouhet's cancellation
+\begin{equation}
+ \sum_{r=0}^{2^{L}-1}\tm{r}\,r^{i}=0\qquad(0\le i<L).
+ \label{rf:eq:splines-prouhet}
+\end{equation}
+With $N=n+L$ and the active indices $h=b2^{L}+r$, $0\le b<m$, $0\le r<2^{L}$,
+the signs factor as $\tm{h}=\tm{b}\tm{r}$, and each block of the cell
+polynomial is a signed sum of powers $(A+2^{n+1}h'-Br)^{n+L}$ in the cell
+variable $h'$; the coefficient of $h'^{i}$ is a polynomial in $r$ of degree
+$n+L-i$, which is annihilated by \cref{rf:eq:splines-prouhet} when $i>n$.
+This gives the degree bound without the tail; the deconvolution then
+identifies the coefficients.
+\end{remark}
+
+\subsection{Why the degree bound is attained}
+\label{rf:sec:splines-degree}
+
+\begin{lemma}[Signs of the reciprocal coefficients]
+\label{rf:lem:splines-e-sign}
+For every $k\ge0$, $(-1)^{k}e_{k}>0$.
+\end{lemma}
+
+\begin{proof}
+Euler's product for the sine \cite[Eq.~4.22.1]{dlmf} gives, near $t=0$,
+\begin{equation}
+ \frac{1}{M(\ImaginaryUnit t)}
+ =\prod_{j=1}^{\infty}\prod_{\ell=1}^{\infty}
+ \Bigl(1-\frac{t^{2}}{4^{j}\pi^{2}\ell^{2}}\Bigr)^{-1}.
+ \label{rf:eq:splines-euler-product}
+\end{equation}
+The positive numbers $(4^{j}\pi^{2}\ell^{2})^{-1}$ have finite sum, so the
+product converges near zero and its power-series coefficients are limits of
+those of finite products.  Every coefficient of a finite product of
+geometric series $\sum_{i}(\alpha t^{2})^{i}$ with $\alpha>0$ is
+nonnegative, and for each degree $k$ even one factor contributes a strictly
+positive coefficient; hence the coefficient of $t^{2k}$ on the left, which
+is $(-1)^{k}e_{k}$, is strictly positive.  The infinite product is used
+only for the sign; the evaluation formula for $e_{k}$ remains the finite
+\cref{rf:eq:moments-e-partition}.
+\end{proof}
+
+\begin{proposition}[Exact degree at a reduced interior dyadic]
+\label{rf:prop:exact-degree}
+If $n\ge1$, $0<m<2^{n}$ and $m$ is odd, then $\deg Q_{m/2^{n}}=\Floor{n/2}$.
+\end{proposition}
+
+\begin{proof}
+By \cref{rf:eq:setup-global-derivative} and
+\cref{rf:eq:setup-integer-values}: if $n=2d$, the top even derivative is
+$\Fb^{(2d)}(m/2^{2d})=2^{\Tr{2d}}\Fg(m)=2^{\Tr{2d}}\tm{(m-1)/2}\neq0$; if
+$n=2d+1$, it is $\Fb^{(2d)}(m/2^{2d+1})=2^{\Tr{2d}}\Fg(m/2)
+=2^{\Tr{2d}-1}\tm{\Floor{m/4}}\neq0$, which also covers $n=1$, $d=0$.  The
+coefficient of $z^{d}$ in \cref{rf:eq:scale-polynomial} is then nonzero by
+\cref{rf:lem:splines-e-sign}.
+\end{proof}
+
+A dyadic argument should therefore be reduced before choosing the number of
+levels: an unreduced depth gives a correct formula with a correct upper
+bound, but introduces unnecessary interpolation nodes.
+
+% =====================================================================
+\section{Quarter-base extraction and its sharpness}
+\label{rf:sec:extraction}
+
+\subsection{Extraction from arbitrary distinct depths}
+\label{rf:sec:extraction-arbitrary}
+
+\begin{theorem}[Extraction from arbitrary depths]
+\label{rf:thm:extraction-arbitrary}
+Fix $n\ge1$, $d=\Floor{n/2}$, and distinct integers $N_{0},\ldots,N_{d}\ge n$.
+For every $x=m/2^{n}\in[0,1]$,
+\begin{equation}
+ \Fb(x)=\sum_{i=0}^{d}W_{i}\,G_{N_{i}}(x),\qquad
+ W_{i}=\prod_{\substack{0\le\ell\le d\\ \ell\neq i}}
+ \frac{4^{-N_{\ell}}}{4^{-N_{\ell}}-4^{-N_{i}}}.
+ \label{rf:eq:extraction-arbitrary}
+\end{equation}
+The weights depend only on the selected depths, not on $m$.
+\end{theorem}
+
+\begin{proof}
+Let $z_{i}=4^{-N_{i}}$.  For any polynomial $Q$ of degree at most $d$,
+$Q(z)=\sum_{i}Q(z_{i})\prod_{\ell\neq i}(z-z_{\ell})/(z_{i}-z_{\ell})$: the
+difference of the two sides has degree at most $d$ and vanishes at the $d+1$
+distinct points $z_{i}$, so it is zero.  Evaluate at $z=0$ with $Q=Q_{x}$
+from \cref{rf:cor:scale-polynomial}.
+\end{proof}
+
+\subsection{Consecutive depths and the Gaussian-binomial row}
+\label{rf:sec:extraction-row}
+
+For $0<q<1$ and $0\le j\le d$ define
+\begin{equation}
+ w_{d,j}(q)\DefinitionEquals
+ \prod_{\substack{0\le\ell\le d\\ \ell\neq j}}\frac{-q^{\ell}}{q^{j}-q^{\ell}},
+ \label{rf:eq:extraction-weights-product}
+\end{equation}
+and $w_{d,j}\DefinitionEquals w_{d,j}(\tfrac14)$.
+
+\begin{lemma}[Constant extraction on a geometric grid]
+\label{rf:lem:extraction-weights}
+For every polynomial $P$ of degree at most $d$ and every $z\neq0$,
+\begin{equation}
+ P(0)=\sum_{j=0}^{d}w_{d,j}(q)\,P(zq^{j}),
+ \label{rf:eq:extraction-filter}
+\end{equation}
+equivalently $\sum_{j=0}^{d}w_{d,j}(q)q^{jr}=[r=0]$ for $0\le r\le d$.  In
+closed form,
+\begin{equation}
+ \boxed{\;
+ w_{d,j}(q)=\frac{(-1)^{d-j}q^{\Tr{d-j}}}{\qp{q}{q}{j}\qp{q}{q}{d-j}}
+ =\frac{(-1)^{d-j}q^{\Tr{d-j}}}{\qp{q}{q}{d}}\qb{d}{j}{q}\,,\;}
+ \label{rf:eq:extraction-weights-q}
+\end{equation}
+and the generating polynomial of the row is
+\begin{equation}
+ \sum_{j=0}^{d}w_{d,j}(q)\,v^{j}=\prod_{r=1}^{d}\frac{v-q^{r}}{1-q^{r}}.
+ \label{rf:eq:extraction-row-polynomial}
+\end{equation}
+At $q=\tfrac14$, $\qp{q}{q}{r}=4^{-\Tr{r}}\prod_{s=1}^{r}(4^{s}-1)$, which
+turns \cref{rf:eq:extraction-weights-q} into the integer-product form
+\cref{rf:eq:main-weights-integer}.
+\end{lemma}
+
+\begin{proof}
+The Lagrange basis polynomial for the node $zq^{j}$ among the nodes
+$zq^{0},\ldots,zq^{d}$, evaluated at $0$, is
+$\prod_{\ell\neq j}(0-zq^{\ell})/(zq^{j}-zq^{\ell})$, in which $z$ cancels;
+that is \cref{rf:eq:extraction-weights-product}, and Lagrange interpolation
+(the uniqueness argument of the previous proof) gives
+\cref{rf:eq:extraction-filter}; the monomials $P=z^{r}$ give the moment
+identities.  Splitting the product into $\ell<j$, where the factor is
+$1/(1-q^{j-\ell})$, and $\ell>j$, where it is $-q^{\ell-j}/(1-q^{\ell-j})$,
+gives \cref{rf:eq:extraction-weights-q}, the exponent being
+$\sum_{i=1}^{d-j}i=\Tr{d-j}$.  The generating polynomial has degree $d$,
+vanishes at $v=q^{r}$ for $1\le r\le d$ by the moment identities, and takes
+the value $1$ at $v=1$ (the case $r=0$), which determines it as the right
+side of \cref{rf:eq:extraction-row-polynomial}.  The closed forms are also
+consequences of the finite $q$-binomial theorem \cite[\S17.2]{dlmf}, but no
+such theorem is needed.
+\end{proof}
+
+\begin{theorem}[Extraction at consecutive depths]
+\label{rf:thm:extraction-consecutive}
+For $n\ge1$, $0\le m\le2^{n}$, $d=\Floor{n/2}$ and every integer $R\ge0$,
+\begin{equation}
+ \boxed{\;
+ \Fb\!\left(\frac{m}{2^{n}}\right)
+ =\sum_{j=0}^{d}w_{d,j}\,G_{n+R+j}\!\left(\frac{m}{2^{n}}\right),\;}
+ \label{rf:eq:extraction-consecutive}
+\end{equation}
+and substituting \cref{rf:eq:splines-G-integer} gives
+\cref{rf:eq:main-quarter-shift}, hence \cref{rf:eq:main-quarter} at $R=0$.
+In fully explicit $q$-notation, with $Q=\tfrac14$,
+\begin{equation}
+ \boxed{\begin{aligned}
+ \Fb\!\left(\frac{m}{2^{n}}\right)={}&\frac{1}{\qp{Q}{Q}{d}}\sum_{j=0}^{d}
+ \frac{(-1)^{d-j}Q^{\Tr{d-j}}}{2^{\Tr{n+j}}\,(n+j)!}\qb{d}{j}{Q}\\[-0.2em]
+ &\times\sum_{h=0}^{2^{j}m-1}\tm{h}\,\bigl(2^{j+1}m-2h-1\bigr)^{n+j}.
+ \end{aligned}}
+ \label{rf:eq:extraction-closed}
+\end{equation}
+No moments, Bernoulli numbers, derivative values, recursively defined
+coefficients, limits, or coefficient extractors occur in this formula.
+\end{theorem}
+
+\begin{proof}
+Apply \cref{rf:lem:extraction-weights} to the polynomial $Q_{x}$ of
+\cref{rf:cor:scale-polynomial} with $q=\tfrac14$ and $z=4^{-(n+R)}$, whose
+nodes are the depths $n+R+j$; equivalently, this is
+\cref{rf:thm:extraction-arbitrary} with $N_{j}=n+R+j$, the common factor
+$4^{-(n+R)}$ cancelling from the weights.  Then replace each
+$G_{n+R+j}(m/2^{n})$ by the integer sum \cref{rf:eq:splines-G-integer} with
+$A=2^{R+j}m$, and at $R=0$ insert \cref{rf:eq:extraction-weights-q}.  The
+case $d=0$ uses the single weight one.
+\end{proof}
+
+The row \cref{rf:eq:main-quarter} uses $d+1$ splines of orders
+$n,\ldots,n+d$; its largest power is $n+d$, and before simplification it
+contains $\sum_{j=0}^{d}2^{j}m=m(2^{d+1}-1)$ signed integer powers.  It is
+attractive when the absence of every auxiliary coefficient sequence is more
+important than minimizing arithmetic; for large numerators the block
+formula is usually the better organization.  Consecutive depths need not
+start at $n$ (the parameter $R$), and arbitrary distinct depths $\ge n$ are
+covered by \cref{rf:thm:extraction-arbitrary}, which permits the reuse of
+already available spline values.
+
+\subsection{A precise optimality statement}
+\label{rf:sec:extraction-minimal}
+
+The number $d+1$ is not a lower bound on all possible algorithms --- the
+binary formulas are not interpolation rules --- but it is sharp within the
+natural class of grid-wide linear rules.
+
+\begin{theorem}[Minimal number of samples for a grid-wide linear rule]
+\label{rf:thm:extraction-minimal}
+Fix $n\ge1$ and $d=\Floor{n/2}$.  Suppose distinct depths
+$N_{1},\ldots,N_{L}\ge n$ and real numbers $c_{1},\ldots,c_{L}$, independent
+of $m$, satisfy $\Fb(m/2^{n})=\sum_{i=1}^{L}c_{i}G_{N_{i}}(m/2^{n})$ for
+every $m=0,\ldots,2^{n}$.  Then $L\ge d+1$.
+\end{theorem}
+
+\begin{proof}
+The grid contains $x_{0}=1$ and $x_{r}=2^{-2r}$ for $1\le r\le d$.  The
+polynomial $Q_{x_{0}}$ is the constant $1$, and by
+\cref{rf:prop:exact-degree} $Q_{x_{r}}$ has degree exactly $r$.  These
+$d+1$ polynomials therefore form a basis of the polynomials of degree at
+most $d$: their leading terms make the coefficient matrix triangular with
+nonzero diagonal.  The supposed rule recovers $Q(0)$ from the values
+$Q(z_{i})$, $z_{i}=4^{-N_{i}}>0$, for each basis element, hence by
+linearity for every polynomial $Q$ of degree at most $d$.  If $L\le d$,
+take $Q(z)=\prod_{i=1}^{L}(z-z_{i})$: all sampled values vanish but
+$Q(0)\neq0$, a contradiction; $L=0$ is included by the empty product.
+\end{proof}
+
+The theorem does not exclude weights depending on the point, nonlinear
+formulas, other kinds of samples, or a direct finite coefficient
+calculation.
+
+\subsection{The extraction weights are well conditioned}
+\label{rf:sec:extraction-stability}
+
+\begin{proposition}[Absolute row sum]
+\label{rf:prop:extraction-norm}
+For $0<q<1$,
+\begin{equation}
+ \sum_{j=0}^{d}\AbsoluteValue{w_{d,j}(q)}
+ =\frac{\qp{-q}{q}{d}}{\qp{q}{q}{d}}
+ =\prod_{r=1}^{d}\frac{1+q^{r}}{1-q^{r}}
+ \le\prod_{r=1}^{\infty}\frac{1+q^{r}}{1-q^{r}}<\infty.
+ \label{rf:eq:extraction-norm}
+\end{equation}
+For $q=\tfrac14$ the absolute sum is strictly less than $2$, uniformly in
+$d$; the limiting values are $1.96926\ldots$ at $q=\tfrac14$ and
+$8.25599\ldots$ at $q=\tfrac12$.  No nonnegative extraction row exists when
+$d\ge1$.
+\end{proposition}
+
+\begin{proof}
+The sign of $w_{d,j}(q)$ is $(-1)^{d-j}$, so the absolute sum is
+$(-1)^{d}\sum_{j}w_{d,j}(q)(-1)^{j}$, which by
+\cref{rf:eq:extraction-row-polynomial} at $v=-1$ equals
+$\prod_{r}(1+q^{r})/(1-q^{r})$; this is the first equality, and
+$\prod_{r\le d}(1+q^{r})=\qp{-q}{q}{d}$.  The infinite product is finite
+because $\log((1+u)/(1-u))\le2u/(1-u)$ for $0\le u<1$ and $\sum_{r}q^{r}$
+converges.  For $q=\tfrac14$ the first factor is $\tfrac53$ and
+$\sum_{r\ge2}\log\frac{1+4^{-r}}{1-4^{-r}}\le\frac{32}{15}\sum_{r\ge2}4^{-r}=\frac{8}{45}$,
+while $\log\frac65\ge\frac15-\frac1{50}=\frac{9}{50}>\frac{8}{45}$; hence the
+product is below $\tfrac53\cdot\tfrac65=2$ for every $d$ (for $d=0$ the sum
+is $1$).  Finally, positive nodes with nonnegative weights summing to one
+cannot have a vanishing first moment, so a nonnegative row is impossible
+when $d\ge1$.
+\end{proof}
+
+If each exactly computed input $G_{N_{j}}(x)$ carries an absolute error at
+most $\delta$, combining them with the exact weights adds error below
+$2\delta$.  This bounds the amplification by the outer filter only; the
+alternating power sum inside an individual spline can cancel severely, and
+exact integer or rational arithmetic is the appropriate default there.
+
+\subsection{Dictionary to the canonical extraction volume}
+\label{rf:sec:extraction-volume}
+
+The canonical volume of this subgroup \cite{proveit-due} works with the
+density splines $\up_{n}$, the inverse Fourier transforms of the prefix
+products with factors $k=0,\ldots,n$ of
+$\prod_{k\ge0}\SincRad(\pi\xi/2^{k})$, and with the reciprocal-product
+coefficients $\amvol{r}$ defined by $1/\FourierTwoPi{\up}(\xi)=\sum_{r}\amvol{r}(2\pi\xi)^{2r}$.
+In the notation of this document,
+\begin{equation}
+ \up_{n}=u_{n+1},\qquad
+ \amvol{r}=(-1)^{r}e_{r},\qquad
+ G_{N}(x)=\up_{N-1}\text{'s distribution function}=\Fb\text{-side of }u_{N},
+ \label{rf:eq:extraction-dictionary}
+\end{equation}
+where $u_{N}$ is the density of $Z_{N}$ (\cref{rf:sec:rvachev-density});
+indeed $\FourierTwoPi{\up}(\xi)=M(2\pi\ImaginaryUnit\xi)$, so
+$1/\FourierTwoPi{\up}(\xi)=\sum_{k}e_{k}(2\pi\ImaginaryUnit\xi)^{2k}
+=\sum_{k}(-1)^{k}e_{k}(2\pi\xi)^{2k}$, and the volume's
+$\amvol{1}=\tfrac1{18}$, $\amvol{2}=\tfrac{31}{16200}$, $\amvol{3}=\tfrac{2347}{42865200}$
+are the absolute values of \cref{rf:eq:moments-e-values}.  The volume's main
+theorem, $\up_{n}(x)=\up(x)+\sum_{r=1}^{d}(-1)^{r}\amvol{r}4^{-r}\up^{(2r)}(x)4^{-rn}$
+for $n\ge s(x)$, is \cref{rf:eq:rvachev-density-law} below read through this
+dictionary: $u_{N}(x)=\sum_{k}e_{k}4^{-Nk}\up^{(2k)}(x)$ with $N=n+1$.  Its
+extraction row, with the weights
+$(-1)^{d-j}Q^{\binom{d-j+1}{2}}\qb{d}{j}{Q}/\qp{Q}{Q}{d}$, is the row
+\cref{rf:eq:extraction-weights-q} of the present document, and its depth
+$s(x)$ of a dyadic $x\in[-1,1]$ is the reduced denominator exponent used
+here.  The volume also proves, from Rvachev's functional-differential
+equation, that the defect at the last level before the onset is
+$-\tm{k}2^{-\binom{s}{2}}B_{s}/s!$, and records which pieces are
+kernel-verified; \cref{rf:sec:register} collects the crosswalks relevant
+to the formulas of this document.
+
+% =====================================================================
+\section{The half-base formula and the general shift}
+\label{rf:sec:halfbase}
+
+The quarter-base formula is not obtained by replacing $\tfrac12$ by
+$\tfrac14$ in an existing identity: centring removes all odd cutoff powers
+and halves the interpolation degree.  A shift parameter makes this precise.
+For $0\le\alpha\le1$ set
+\begin{equation}
+ G_{N,\alpha}(x)\DefinitionEquals\Prob(X_{N}+\alpha2^{-N}\le x),
+ \label{rf:eq:halfbase-shifted}
+\end{equation}
+so $G_{N,1/2}=G_{N}$ and $G_{N,0}=H_{N}$.  For $x=m/2^{n}$, $N\ge n\ge1$ and
+$A=2^{N-n}m$, the box formula gives
+\begin{equation}
+ G_{N,\alpha}\!\left(\frac{m}{2^{n}}\right)
+ =\frac{2^{-\binom{N}{2}}}{N!}\sum_{h=0}^{A-1}\tm{h}\,(A-h-\alpha)^{N};
+ \label{rf:eq:halfbase-shifted-finite}
+\end{equation}
+at $\alpha\in\SetOf{0,1}$ the extra boundary terms have vanishing $N$th
+power, so the same expression covers both endpoints.  For arbitrary complex
+$\alpha$ define $G_{N,\alpha}(m/2^{n})$ by the polynomial on the right; it
+loses its probability interpretation but remains a finite algebraic
+object.
+
+\begin{proposition}[General shift and the half-base row]
+\label{rf:prop:halfbase}
+For $n\ge1$, $0\le m\le2^{n}$ and every $\alpha\in\ComplexNumbers$,
+\begin{equation}
+ \Fb\!\left(\frac{m}{2^{n}}\right)
+ =\sum_{j=0}^{n}w_{n,j}\!\left(\tfrac12\right)G_{n+j,\alpha}\!\left(\frac{m}{2^{n}}\right),
+ \label{rf:eq:halfbase-extract}
+\end{equation}
+equivalently
+\begin{equation}
+ \boxed{\begin{aligned}
+ \Fb\!\left(\frac{m}{2^{n}}\right)={}&\frac{1}{2^{n^{2}}\qp{\frac12}{\frac12}{n}}
+ \sum_{j=0}^{n}\frac{\qb{n}{j}{1/2}}{2^{j(j-1)}\,(n+j)!}\\[-0.1em]
+ &\times\sum_{h=0}^{2^{j}m-1}\tm{h}\,\bigl(h-2^{j}m+\alpha\bigr)^{n+j}.
+ \end{aligned}}
+ \label{rf:eq:halfbase-reshetnikov}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+First let $0\le\alpha\le1$ and $\eta=2^{-N}$.  The head--tail identity
+reads $\Fb(t)=\E G_{N,\alpha}(t-\eta(X'-\alpha))$, and at $x=A\eta$ the
+whole averaging interval $[x-\eta(1-\alpha),x+\eta\alpha]$ lies in one
+polynomial cell of $G_{N,\alpha}$, whose endpoints are consecutive possible
+knots.  Apply \cref{rf:lem:splines-local-inverse} with $W=X'-\alpha$
+(supported in $[-1,1]$, not symmetric) and the degree $N$: since the jet of
+$\Fb$ at $x$ terminates at order $n$,
+\[
+ G_{N,\alpha}(x)=\sum_{r=0}^{n}\gamma_{r}(\alpha)\,\eta^{r}\Fb^{(r)}(x),\qquad
+ \gamma_{r}(\alpha)=\coeff{z}{r}\frac{1}{\MomentGeneratingFunction{W}(-z)},
+\]
+with $\gamma_{0}=1$ and coefficients independent of $N$.  Thus
+$G_{N,\alpha}(x)$ is an exact polynomial of degree at most $n$ in $2^{-N}$
+with constant term $\Fb(x)$, and \cref{rf:lem:extraction-weights} at
+$q=\tfrac12$ with $n+1$ consecutive depths gives
+\cref{rf:eq:halfbase-extract}.  When \cref{rf:eq:halfbase-shifted-finite}
+is substituted, both sides are polynomials in $\alpha$; equality on $[0,1]$
+implies equality for all complex $\alpha$.  Finally insert the weights
+\cref{rf:eq:extraction-weights-q} at $q=\tfrac12$ and write
+$(A-h-\alpha)^{n+j}=(-1)^{n+j}(h-A+\alpha)^{n+j}$, which cancels the sign
+$(-1)^{n-j}$ of the weight; the powers of two combine as
+$\Tr{n-j}+\binom{n+j}{2}=n^{2}+j(j-1)$, giving
+\cref{rf:eq:halfbase-reshetnikov}.
+\end{proof}
+
+Formula \cref{rf:eq:halfbase-reshetnikov} is the unit-interval form of the
+expression posed by Reshetnikov in 2019 \cite{reshetnikov2019} and
+subsequently developed in the repository \cite{proveit-primary}, which also
+treats the signed extension at unrestricted numerators; the fold
+\cref{rf:eq:rvachev-global-fold} evaluates it everywhere without reproving
+that identity.  At $\alpha=\tfrac12$ the variable $W=Z'/2$ is symmetric, the
+odd coefficients $\gamma_{r}$ vanish, and the degree drops from at most $n$
+in $2^{-N}$ to at most $\Floor{n/2}$ in $4^{-N}$: this is precisely the
+passage from \cref{rf:eq:halfbase-extract} to
+\cref{rf:eq:extraction-consecutive}, the half-base row using $n+1$ splines
+of orders up to $2n$ where the quarter-base row uses $d+1$ of orders up to
+$n+d$.
+
+% =====================================================================
+\section{An integer determinant, a common denominator, and certified rounding}
+\label{rf:sec:determinant}
+
+\subsection{The bordered determinant}
+\label{rf:sec:determinant-formula}
+
+The composition and partition formulas expose individual coefficients.  A
+bordered integer matrix packages the entire dyadic value into a single
+ratio of integers; its Leibniz expansion is a finite sum of products, so no
+matrix inversion or recurrence is part of the definition.
+
+Put $d=\Floor{n/2}$ and define the integer row entries
+\begin{equation}
+ t_{j}\DefinitionEquals\binom{n}{2j}\,\Spow{n-2j}{m}
+ =\binom{n}{2j}\sum_{h=0}^{m-1}\tm{h}\,(2m-2h-1)^{n-2j}\qquad(0\le j\le d),
+ \label{rf:eq:determinant-row}
+\end{equation}
+with $\Spow{0}{m}=\sum_{h<m}\tm{h}$.  Let $L_{d}$ be the $d\times d$ lower
+triangular integer matrix with indices $1\le k,j\le d$ and entries
+\begin{equation}
+ (L_{d})_{kj}=
+ \begin{cases}
+ (2k+1)(4^{k}-1),& j=k,\\
+ -\binom{2k+1}{2j},& j<k,\\
+ 0,& j>k,
+ \end{cases}
+ \label{rf:eq:determinant-L}
+\end{equation}
+and form the bordered $(d+1)\times(d+1)$ matrix
+\begin{equation}
+ B_{n,m}\DefinitionEquals
+ \begin{pmatrix}
+ L_{d} & \mathbf 1\\
+ -t_{1}\ \cdots\ -t_{d} & t_{0}
+ \end{pmatrix},
+ \label{rf:eq:determinant-B}
+\end{equation}
+where $\mathbf 1$ is the column of $d$ ones; for $d=0$ this is the
+$1\times1$ matrix $(t_{0})$.  Every entry is an explicit integer.
+
+\begin{theorem}[Integer determinant formula]
+\label{rf:thm:determinant}
+For $n\ge0$ and $0\le m\le2^{n}$,
+\begin{equation}
+ \boxed{\;
+ \Fb\!\left(\frac{m}{2^{n}}\right)
+ =\frac{\det B_{n,m}}{D_{n}},\qquad
+ D_{n}\DefinitionEquals2^{\Tr{n}}\,n!\prod_{k=1}^{d}(2k+1)(4^{k}-1)
+ =2^{\Tr{n}}\,n!\,(2d+1)!!\prod_{k=1}^{d}(4^{k}-1).\;}
+ \label{rf:eq:determinant-value}
+\end{equation}
+In particular the reduced denominator of every value on the grid of spacing
+$2^{-n}$, and of every Rvachev value $\up(m/2^{n})$, divides $D_{n}$.
+\end{theorem}
+
+\begin{proof}
+Multiplying \cref{rf:eq:moments-recurrence} by $(2k+1)!$ and separating the
+top term gives, in terms of the moments $c_{j}=(2j)!a_{j}$,
+\[
+ (2k+1)(4^{k}-1)\,c_{k}=\sum_{j=0}^{k-1}\binom{2k+1}{2j}c_{j}\qquad(k\ge1),
+\]
+and since $c_{0}=1$ this is the finite system
+$L_{d}(c_{1},\ldots,c_{d})^{\mathsf T}=\mathbf 1$.  The diagonal entries are
+nonzero and $\det L_{d}=\prod_{k=1}^{d}(2k+1)(4^{k}-1)$.  For a block
+matrix with invertible upper-left block, $\det\begin{pmatrix}L&\mathbf 1\\-t^{\mathsf T}&t_{0}\end{pmatrix}
+=\det L\cdot\bigl(t_{0}+t^{\mathsf T}L^{-1}\mathbf 1\bigr)$ (the Schur
+complement; equivalently, add $t^{\mathsf T}L^{-1}$ times the first $d$ rows
+to the last row, which clears its first $d$ entries).  With
+$L_{d}^{-1}\mathbf 1=c=(c_{1},\ldots,c_{d})^{\mathsf T}$ this gives
+\[
+ \det B_{n,m}=\det L_{d}\Bigl(t_{0}+\sum_{j=1}^{d}t_{j}c_{j}\Bigr).
+\]
+By \cref{rf:eq:master-classical}, $\Fb(m/2^{n})=2^{-\Tr{n}}(n!)^{-1}\sum_{j=0}^{d}t_{j}c_{j}$,
+which is \cref{rf:eq:determinant-value}; the case $d=0$ is the same formula
+directly.  The moment relation was used only to identify the matrix; the
+final expression asks for no moment.  Integrality of the entries gives the
+denominator statement for $\Fb$, and the fold \cref{rf:eq:setup-fold} for
+$\up$.
+\end{proof}
+
+In the literal finite-sum reading,
+\begin{equation}
+ \det B_{n,m}=\sum_{\sigma\in\mathfrak S_{d+1}}
+ (-1)^{\#\SetOf{(i,j):\,i<j,\ \sigma(i)>\sigma(j)}}
+ \prod_{i=1}^{d+1}(B_{n,m})_{i,\sigma(i)},
+ \label{rf:eq:determinant-leibniz}
+\end{equation}
+so even the determinant notation can be removed; many terms vanish because
+$L_{d}$ is triangular, and an implementation should use exact elimination
+rather than this factorial-size expansion.  For $n=2$, $m=1$:
+$B_{2,1}=\begin{pmatrix}9&1\\-1&1\end{pmatrix}$, $\det B_{2,1}=10$,
+$D_{2}=2^{3}\cdot2!\cdot9=144$, and $\Fb(\tfrac14)=\tfrac{10}{144}=\tfrac5{72}$.
+
+\begin{remark}[An equivalent $(d+2)$-bordering]
+\label{rf:rmk:determinant-alt}
+One may also border the full $(d+1)\times(d+1)$ triangular matrix $T$ with
+$T_{00}=1$, $T_{ii}=(2i+1)(4^{i}-1)$, $T_{ij}=-\binom{2i+1}{2j}$ for $j<i$,
+by the unit vector $e_{0}$ and the row $v=(t_{0},\ldots,t_{d})$:
+$\Fb(m/2^{n})=-\det\begin{pmatrix}T&e_{0}\\ v^{\mathsf T}&0\end{pmatrix}/D_{n}$,
+by the same Schur-complement identity
+$\det=-\det T\cdot v^{\mathsf T}T^{-1}e_{0}=-\det T\cdot v^{\mathsf T}c$.
+The $(d+1)$-form above absorbs the row $c_{0}=1$ into the border.
+\end{remark}
+
+\subsection{A second denominator bound, and the prefix error}
+\label{rf:sec:determinant-denominator}
+
+$D_{n}$ is a convenient common denominator, not a claim of minimality, and
+it does not replace the sharper arithmetic of \cite{arias2018}.  A different
+elementary bound follows directly from the positive composition formula.
+
+\begin{proposition}[Denominator bound from compositions]
+\label{rf:prop:determinant-denominator}
+For $n\ge0$ and $d=\Floor{n/2}$, the number
+$D'_{n}\DefinitionEquals2^{\Tr{n}}(n+d)!\prod_{j=1}^{d}(4^{j}-1)$ satisfies
+$D'_{n}\Fb(m/2^{n})\in\IntegerNumbers$ for $0\le m\le2^{n}$.
+\end{proposition}
+
+\begin{proof}
+Use \cref{rf:eq:composition-value}.  A summand with index $k\le d$ and
+composition $k=r_{1}+\cdots+r_{\ell}$ has denominator dividing
+$2^{\Tr{n}}(n-2k)!\prod_{i}(2r_{i}+1)!\prod_{i}(4^{R_{i}}-1)$.  The suffix
+sums $R_{i}$ are distinct integers in $[1,k]$, so the last product divides
+$\prod_{j\le d}(4^{j}-1)$.  The factorial arguments add up to
+$(n-2k)+\sum_{i}(2r_{i}+1)=n+\ell\le n+d$, and by integrality of
+multinomial coefficients their product divides $(n+\ell)!$, which divides
+$(n+d)!$; the term $k=0$ has just $n!$.  Every summand, hence their
+integer-signed sum, has denominator dividing $D'_{n}$.
+\end{proof}
+
+Neither bound dominates the other in general: $D_{4}=16588800$ while
+$D'_{4}=2^{10}\cdot720\cdot45=33177600$, but $D'_{n}$ has the smaller
+factorial for large $n$ relative to the double factorial.  Either may be
+used below.
+
+\begin{lemma}[Uniform prefix error]
+\label{rf:lem:determinant-prefix-error}
+For every $N\ge1$ and every real $x$,
+$\AbsoluteValue{G_{N}(x)-\Fb(x)}\le2^{-N}$.
+\end{lemma}
+
+\begin{proof}
+Couple the variables by $X=Y_{N}+2^{-N-1}Z'$ with $Z'$ an independent copy
+of $Z$ and $\AbsoluteValue{Z'}\le1$.  With $\delta=2^{-N-1}$ this gives
+$\Fb(x-\delta)\le G_{N}(x)\le\Fb(x+\delta)$, and the $2$-Lipschitz bound of
+\cref{rf:lem:setup-normalization} proves the claim.
+\end{proof}
+
+\begin{corollary}[Certified one-prefix rounding]
+\label{rf:cor:rounding}
+For $n\ge1$ let $D$ be any of the common denominators $D_{n}$, $D'_{n}$,
+and choose the explicit integer $N=\max\SetOf{n,\ 2+\Floor{\log_{2}D}}$, so
+that $2^{N}>2D$.  Then
+\begin{equation}
+ \boxed{\;
+ \Fb\!\left(\frac{m}{2^{n}}\right)
+ =\frac{1}{D}\Floor{\frac{D\,\Spow{N}{2^{N-n}m}}{2^{\Tr{N}}N!}+\frac12}\,.\;}
+ \label{rf:eq:rounding}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+By \cref{rf:lem:determinant-prefix-error},
+$\AbsoluteValue{D\,G_{N}(x)-D\,\Fb(x)}\le D2^{-N}<\tfrac12$, and $D\Fb(x)$
+is an integer; nearest-integer rounding is therefore exact, with no tie.
+Substitute \cref{rf:eq:splines-G-integer}.
+\end{proof}
+
+The logarithm in the choice of $N$ can be replaced by the binary digit
+length of the explicitly specified integer $D$.  The formula has only one
+finite prefix, but that prefix is enormous; it is a mathematical
+certification device, not a recommended implementation.
+
+% =====================================================================
+\section{Rvachev values, the signed extension, derivatives and primitives}
+\label{rf:sec:rvachev}
+
+\subsection{Every dyadic bump value}
+\label{rf:sec:rvachev-fold}
+
+For an integer $a$ and $n\ge0$, the support and the fold
+\cref{rf:eq:setup-fold} give
+\begin{equation}
+ \boxed{\;
+ \up\!\left(\frac{a}{2^{n}}\right)=
+ \begin{cases}
+ \Fb\!\left(\dfrac{2^{n}-\AbsoluteValue{a}}{2^{n}}\right), & \AbsoluteValue{a}\le2^{n},\\[2mm]
+ 0, & \AbsoluteValue{a}>2^{n},
+ \end{cases}\;}
+ \label{rf:eq:rvachev-fold}
+\end{equation}
+so every formula for $\Fb$ gives a closed rational formula for $\up$ with
+no new coefficients; in particular $\up(0)=1$, $\up(\pm1)=0$,
+$\up(\pm\tfrac12)=\tfrac12$, and $\up(\tfrac34)=\Fb(\tfrac14)=\tfrac5{72}$.
+
+\subsection{Direct extraction from finite densities}
+\label{rf:sec:rvachev-density}
+
+When the available data are finite sinc products rather than distribution
+functions, a direct formula is useful.  Let $u_{N}$ be the density of
+$Z_{N}=\sum_{j=1}^{N}2^{-j}V_{j}$; under the $2\pi$ convention
+\begin{equation}
+ \FourierTwoPi{u_{N}}(\xi)=\prod_{k=0}^{N-1}\SincRad\!\left(\frac{\pi\xi}{2^{k}}\right),
+ \qquad\SincRad(z)=\frac{\sin z}{z},
+ \label{rf:eq:rvachev-sinc}
+\end{equation}
+so a product ending with the factor $k=n$ is $u_{n+1}$ in this notation; this
+one-factor offset matters in exact cutoff formulas
+(\cref{rf:sec:extraction-volume}).  Since
+$Z_{N}=\sum_{j=1}^{N}2^{1-j}U_{j}-(1-2^{-N})$, differentiating the
+weighted-uniform distribution function of \cref{rf:lem:master-box} once
+gives, for $N\ge2$ (so that the density is continuous),
+\begin{equation}
+ u_{N}(x)=\frac{2^{N(N-1)/2}}{(N-1)!}\sum_{h=0}^{2^{N}-1}\tm{h}
+ \PositivePart{x+1-2^{-N}-2^{1-N}h}^{N-1},
+ \label{rf:eq:rvachev-density-spline}
+\end{equation}
+whose knots are the odd multiples of $2^{-N}$; for $N=1$ the same display
+with the convention $s_{+}^{0}=[s>0]$ is the indicator density of
+$[-\tfrac12,\tfrac12]$.  For $\AbsoluteValue{a}<2^{n}$ and $N>n\ge0$ put
+$A=2^{N}+a2^{N-n}$, a positive even integer; the terms with $2h<A-1$ are
+exactly the active ones, and
+\begin{equation}
+ \boxed{\;
+ u_{N}\!\left(\frac{a}{2^{n}}\right)
+ =\frac{1}{(N-1)!\,2^{N(N-1)/2}}\sum_{h=0}^{A/2-1}\tm{h}\,(A-1-2h)^{N-1}.\;}
+ \label{rf:eq:rvachev-density-integer}
+\end{equation}
+The two finite objects are related by an exact fold: the independent-copy
+identity $Z_{N}\EqualInLaw(V+Z'_{N-1})/2$ gives
+$u_{N}(x)=\Prob(2x-1\le Z'_{N-1}\le2x+1)$, and for $x\ge0$ the upper cutoff
+may be discarded, so by symmetry
+\begin{equation}
+ u_{N}(x)=G_{N-1}\bigl(1-\AbsoluteValue{x}\bigr)\qquad(x\in\RealNumbers,\ N\ge2).
+ \label{rf:eq:rvachev-finite-fold}
+\end{equation}
+
+\begin{theorem}[Direct quarter-base extraction for the bump]
+\label{rf:thm:up-quarter}
+Let $n\ge0$, $\AbsoluteValue{a}<2^{n}$, $d=\Floor{n/2}$, and $x=a/2^{n}$.
+Then for every $N>n$
+\begin{equation}
+ u_{N}(x)=\sum_{k=0}^{d}e_{k}\,4^{-Nk}\,\up^{(2k)}(x),
+ \label{rf:eq:rvachev-density-law}
+\end{equation}
+and for every $R\ge0$
+\begin{equation}
+ \boxed{\;
+ \up\!\left(\frac{a}{2^{n}}\right)
+ =\sum_{j=0}^{d}w_{d,j}\,u_{n+1+R+j}\!\left(\frac{a}{2^{n}}\right),\;}
+ \label{rf:eq:up-quarter}
+\end{equation}
+with each $u_{N}$ the finite integer sum \cref{rf:eq:rvachev-density-integer}.
+For $\AbsoluteValue{a}\ge2^{n}$ the bump value is zero.
+\end{theorem}
+
+\begin{proof}
+With $\eta=2^{-N}$, $Z\EqualInLaw Z_{N}+\eta Z'$ gives $\up(t)=\E u_{N}(t-\eta Z')$.
+Since $N>n$, the number $x/\eta=a2^{N-n}$ is even while the knots of $u_{N}$
+are odd multiples of $\eta$, so $[x-\eta,x+\eta]$ is one polynomial cell, on
+which $u_{N}$ has degree $N-1$.  Apply \cref{rf:lem:splines-local-inverse}
+with this degree, $W=Z'$ and $\eta$: the jet of $\up$ at $x$ terminates at
+order $n$ (\cref{rf:lem:setup-dilation}), only even orders survive by
+symmetry, and the reciprocal operator $[M(-\eta\Dop)]^{-1}=\sum_{k}e_{k}\eta^{2k}\Dop^{2k}$
+evaluated at $s=0$ gives \cref{rf:eq:rvachev-density-law}.  Constant
+extraction on the geometric grid $4^{-N}$, $N=n+1+R+j$, with $q=\tfrac14$
+yields \cref{rf:eq:up-quarter}.  The case $N=1$, $n=0$, $a=0$ is the
+constant density on its interior and follows by the same degree-zero
+argument; outside $[-1,1]$ and at its endpoints the bump vanishes.
+Alternatively, apply \cref{rf:thm:extraction-consecutive} at
+$(2^{n}-\AbsoluteValue{a})/2^{n}$ with depths $n+R+j$ and fold back by
+\cref{rf:eq:rvachev-finite-fold}, which explains the shift by one in the
+levels.
+\end{proof}
+
+At $x=\tfrac14$: $u_{3}(\tfrac14)=\tfrac{15}{16}$, $u_{4}(\tfrac14)=\tfrac{179}{192}$,
+and $\up(\tfrac14)=\bigl(4u_{4}-u_{3}\bigr)/3=\tfrac{67}{72}$; indeed
+$\up''(\tfrac14)=-8$, so the whole tail satisfies
+$u_{N}(\tfrac14)=\tfrac{67}{72}+\tfrac49\,4^{-N}$ for $N\ge3$.  Two suitable
+consecutive values determine the limit with zero remainder, unlike
+numerical extrapolation from an asymptotic expansion.
+
+\subsection{The signed global extension at every dyadic argument}
+\label{rf:sec:rvachev-global}
+
+For $a\ge0$ define
+\begin{equation}
+ b\DefinitionEquals\Floor{\frac{a}{2^{n+1}}},\qquad
+ r\DefinitionEquals a-2^{n+1}b,\qquad
+ a^{\ast}\DefinitionEquals\min\SetOf{r,\,2^{n+1}-r}.
+ \label{rf:eq:rvachev-global-data}
+\end{equation}
+Then $0\le a^{\ast}\le2^{n}$ and, by \cref{rf:eq:setup-global-block} and the
+fold of the bump around its centre,
+\begin{equation}
+ \boxed{\;
+ \Fg\!\left(\frac{a}{2^{n}}\right)=\tm{b}\,\Fb\!\left(\frac{a^{\ast}}{2^{n}}\right),\;}
+ \qquad\Fg(x)=0\ \ (x<0).
+ \label{rf:eq:rvachev-global-fold}
+\end{equation}
+For instance $\Fb(3)=1$ whereas $\Fg(3)=-1$.  The block formula
+\cref{rf:eq:binary-block} performs this reduction implicitly through the
+high-bit signs $\eta_{j}$ and needs no separate fold.  No formula requires
+$a/2^{n}$ to be reduced: directly from the proved identities any of the
+closed expressions satisfies $\mathcal F_{n}(a)=\mathcal F_{n+1}(2a)$, and
+reducing merely shortens the sums; the reflection
+$\Fb(m/2^{n})+\Fb((2^{n}-m)/2^{n})=1$ is a further useful reduction.
+
+\subsection{Closed forms for every dyadic derivative}
+\label{rf:sec:rvachev-derivatives}
+
+For $a,n\ge0$, \cref{rf:eq:setup-global-derivative} and
+\cref{rf:eq:setup-integer-values} give
+\begin{equation}
+ \Fg^{(r)}\!\left(\frac{a}{2^{n}}\right)=
+ \begin{cases}
+ 2^{\Tr{r}}\,\Fg\!\left(a/2^{n-r}\right), & 0\le r\le n,\\
+ 0, & r\ge n+1,
+ \end{cases}
+ \label{rf:eq:rvachev-derivatives-global}
+\end{equation}
+since for $r\ge n+1$ the argument $2^{r}a/2^{n}$ is an even integer.  On the
+interior of $[0,1]$ the derivatives of $\Fb$ agree with those of $\Fg$, and
+at $0$ and $1$ all positive-order derivatives of $\Fb$ vanish.  For the bump
+use the signed extension without an absolute-value fold:
+\begin{equation}
+ \up^{(r)}(x)=2^{\Tr{r}}\,\Fg\bigl(2^{r}(x+1)\bigr)\qquad(-1\le x\le1),
+ \label{rf:eq:rvachev-up-derivatives}
+\end{equation}
+from $\up(x)=\Fg(x+1)$ on $[-1,1]$; at a dyadic $x$ of depth $n$ it
+vanishes for $r\ge n+1$, and outside the support all derivatives vanish.
+The right-hand sides are evaluated by \cref{rf:eq:rvachev-global-fold} and
+any finite formula for $\Fb$ at denominator depth at most $n-r$.  Thus
+every entry of every dyadic Taylor jet is explicitly rational, and
+substituting into \cref{rf:eq:scale-polynomial} or
+\cref{rf:eq:rvachev-density-law} makes every coefficient of the scale
+polynomials explicit --- for example
+$\up''(\tfrac14)=2^{\Tr{2}}\Fg(5)=8\,\tm{2}=-8$ by
+\cref{rf:eq:setup-integer-values}.  \Cref{rf:lem:splines-derivative-master} gives the
+same derivatives as one Thue--Morse sum without the fold.
+
+\subsection{Iterated primitives}
+\label{rf:sec:rvachev-primitives}
+
+For an integer $r\ge1$, repeated integration has an equally simple exact
+form:
+\begin{align}
+ \frac{1}{(r-1)!}\int_{0}^{x}(x-t)^{r-1}\Fg(t)\,\dd t
+ &=2^{\binom{r}{2}}\,\Fg\!\left(\frac{x}{2^{r}}\right) &&(x\ge0),
+ \label{rf:eq:rvachev-primitive-global}\\
+ \frac{1}{(r-1)!}\int_{0}^{x}(x-t)^{r-1}\Fb(t)\,\dd t
+ &=2^{\binom{r}{2}}\,\Fb\!\left(\frac{x}{2^{r}}\right) &&(0\le x\le1),
+ \label{rf:eq:rvachev-primitive-F}\\
+ \frac{1}{(r-1)!}\int_{-1}^{x}(x-t)^{r-1}\up(t)\,\dd t
+ &=2^{\binom{r}{2}}\,\Fb\!\left(\frac{x+1}{2^{r}}\right) &&(-1\le x\le1).
+ \label{rf:eq:rvachev-primitive-up}
+\end{align}
+
+\begin{proof}
+The left side of \cref{rf:eq:rvachev-primitive-global} is the $r$-fold
+iterated primitive of $\Fg$ with vanishing initial data at $0$ (Cauchy's
+formula for repeated integration).  Differentiating the right side $r$ times
+with \cref{rf:eq:setup-global-derivative} gives
+$2^{\binom{r}{2}}\,2^{\Tr{r}}\,2^{-r^{2}}\Fg(x)=\Fg(x)$, since
+$\binom{r}{2}+\Tr{r}-r^{2}=0$; its first $r$ derivatives at $0$ vanish
+because $\Fg$ is flat there.  Two functions with the same $r$th derivative
+and the same first $r$ initial data coincide.  The second line restricts the
+first to $[0,1]$, where $\Fg=\Fb$ and $x/2^{r}\in[0,1]$.  The third uses
+$\up(t)=\Fg(t+1)$ and the substitution $t\mapsto t-1$, which moves the lower
+endpoint to $0$ and the argument to $(x+1)/2^{r}\in[0,1]$.
+\end{proof}
+
+These integrals at dyadic endpoints are therefore rational, with the same
+recurrence-free evaluations at a larger denominator depth.
+
+% =====================================================================
+\section{The reciprocal-integer-base extension}
+\label{rf:sec:base}
+
+The squared-scale mechanism is not confined to base two.  The extension
+concerns a \emph{different family of distributions}; it is not a statement
+about the Fabius function at non-dyadic rationals, and it does not assert
+that the base-$b$ laws share all local analytic properties of $\Fb$.
+
+\subsection{The normalized base-$b$ law and its finite arithmetic}
+\label{rf:sec:base-law}
+
+For an integer $b\ge2$ let
+\begin{equation}
+ X_{b}\DefinitionEquals(b-1)\sum_{j=1}^{\infty}b^{-j}U_{j},\qquad
+ \Fb^{(b)}(x)\DefinitionEquals\Prob(X_{b}\le x),
+ \label{rf:eq:base-X}
+\end{equation}
+normalized so that the support is $[0,1]$; $X_{2}=X$.  The same
+absolutely convergent series and characteristic-function arguments as in
+\cref{rf:lem:setup-normalization} give reflection symmetry
+$X_{b}\EqualInLaw1-X_{b}$ and a smooth density, flat at both endpoints.
+Write $Z_{b}=2X_{b}-1$, with centred moment generating function
+$M_{b}(t)=\prod_{j\ge1}H((b-1)t/b^{j})$, even, and with
+\begin{equation}
+ \log M_{b}(t)=\sum_{r\ge1}\lambda_{r,b}\,t^{2r},\qquad
+ \lambda_{r,b}=\frac{(b-1)^{2r}\,2^{2r-1}B_{2r}}{r\,(2r)!\,(b^{2r}-1)},
+ \label{rf:eq:base-lambda}
+\end{equation}
+by the geometric summation of $\log H$ over the scales $b^{-j}$ exactly as
+in \cref{rf:prop:moments-logM}.  The raw coefficients have the positive
+finite formula
+\begin{equation}
+ \boxed{\;
+ A^{(b)}_{m}\DefinitionEquals\frac{\E X_{b}^{m}}{m!}
+ =(b-1)^{m}\sum_{\mathbf r\in\Comp{m}}\prod_{i=1}^{\ell(\mathbf r)}
+ \frac{1}{(r_{i}+1)!\,(b^{R_{i}}-1)}\,,\;}
+ \label{rf:eq:base-A}
+\end{equation}
+by the gap summation \cref{rf:eq:moments-gaps} with $b$ in place of $2$ and
+the common scale $(b-1)^{m}$.  Other integer bases do not fill one
+consecutive integer block with their subset sums, so a Boolean cube sum
+replaces the single Thue--Morse prefix.  For $n\ge1$, $0\le m\le b^{n}$ and
+$\delta\in\SetOf{0,1}^{n}$ put
+\begin{equation}
+ \Delta_{\delta}\DefinitionEquals m-(b-1)\sum_{j=0}^{n-1}\delta_{j}b^{j}.
+ \label{rf:eq:base-delta}
+\end{equation}
+
+\begin{theorem}[Finite base-$b$ arithmetic]
+\label{rf:thm:base-arithmetic}
+For these parameters,
+\begin{equation}
+ \boxed{\;
+ \Fb^{(b)}\!\left(\frac{m}{b^{n}}\right)
+ =\frac{b^{-\binom{n}{2}}}{(b-1)^{n}}
+ \sum_{\substack{\delta\in\SetOf{0,1}^{n}\\ \Delta_{\delta}\ge1}}(-1)^{\AbsoluteValue{\delta}}
+ \sum_{l=0}^{n}A^{(b)}_{l}\,\frac{(\Delta_{\delta}-1)^{n-l}}{(n-l)!}\,.\;}
+ \label{rf:eq:base-value}
+\end{equation}
+Consequently $\Fb^{(b)}$ is rational at every base-$b$ rational argument.
+\end{theorem}
+
+\begin{proof}
+Split $X_{b}$ into its first $n$ coordinates and the independent tail
+$b^{-n}X_{b}'$, and apply \cref{rf:lem:master-box} to the first
+coordinates, whose weights $(b-1)b^{-j}$, $1\le j\le n$, have product
+$(b-1)^{n}b^{-\Tr{n}}$.  Conditional on the tail, the truncated power at
+$x=m/b^{n}$ is $b^{-n^{2}}\PositivePart{\Delta_{\delta}-X_{b}'}^{n}$
+(indexing the subset by the digits $\delta_{j}$ of the weight
+$(b-1)b^{-(n-j)}$).  Since $\Delta_{\delta}$ is an integer and
+$X_{b}'\in[0,1]$, this is zero for $\Delta_{\delta}\le0$ and an ordinary
+polynomial for $\Delta_{\delta}\ge1$.  Reflection replaces $1-X_{b}'$ by
+$X_{b}'$, and expanding $(\Delta_{\delta}-1+X_{b}')^{n}/n!$ gives the inner
+sum; the scalar factors combine to $b^{\Tr{n}-n^{2}}(b-1)^{-n}=b^{-\binom{n}{2}}(b-1)^{-n}$.
+\end{proof}
+
+\subsection{Parity-reduced extraction at the base $b^{-2}$}
+\label{rf:sec:base-extraction}
+
+For $N\ge1$ let $X_{b,N}=(b-1)\sum_{j=1}^{N}b^{-j}U_{j}$ and
+$G_{b,N}(x)\DefinitionEquals\Prob(X_{b,N}+\tfrac12b^{-N}\le x)$, the centred
+prefix distribution function.  For $N\ge n$ and $A=mb^{N-n}$ the box
+formula gives the finite rational expression
+\begin{equation}
+ G_{b,N}\!\left(\frac{m}{b^{n}}\right)
+ =\frac{1}{2^{N}(b-1)^{N}b^{\binom{N}{2}}N!}
+ \sum_{\delta\in\SetOf{0,1}^{N}}(-1)^{\AbsoluteValue{\delta}}
+ \PositivePart{2A-1-2(b-1)\sum_{j=0}^{N-1}\delta_{j}b^{j}}^{N},
+ \label{rf:eq:base-spline}
+\end{equation}
+in which the positive part is a comparison of explicitly given integers;
+at a general rational $x$ the same formula holds with
+$2b^{N}x$ in place of $2A$.
+
+\begin{theorem}[Moment-free integer-base extraction]
+\label{rf:thm:base-extraction}
+For $n\ge1$, $0\le m\le b^{n}$, $d=\Floor{n/2}$, and $R\ge0$,
+\begin{equation}
+ \boxed{\;
+ \Fb^{(b)}\!\left(\frac{m}{b^{n}}\right)
+ =\sum_{j=0}^{d}w_{d,j}\!\left(b^{-2}\right)\,G_{b,n+R+j}\!\left(\frac{m}{b^{n}}\right),\;}
+ \label{rf:eq:base-extraction}
+\end{equation}
+with the weights of \cref{rf:eq:extraction-weights-q} at $q=b^{-2}$.
+\end{theorem}
+
+\begin{proof}
+The self-similarity $X_{b}\EqualInLaw((b-1)U+X_{b}')/b$ gives
+\begin{equation}
+ \bigl(\Fb^{(b)}\bigr)'(x)=\frac{b}{b-1}\Bigl\{\Fb^{(b)}(bx)-\Fb^{(b)}\bigl(bx-(b-1)\bigr)\Bigr\}.
+ \label{rf:eq:base-dilation}
+\end{equation}
+Iterating this $n$ times writes the $n$th derivative at $x$ as a finite
+linear combination of values $\Fb^{(b)}(b^{n}x-k)$ with integral $k$; one
+further differentiation and evaluation at $x=m/b^{n}$ involves only
+positive-order derivatives of $\Fb^{(b)}$ at integers, which vanish because
+integers are endpoints of, or lie outside, the support of the density.
+Hence the jet of $\Fb^{(b)}$ at $m/b^{n}$ terminates at order $n$.
+
+Now write $\eta=b^{-N}$ and use the head--tail identity
+$\Fb^{(b)}(t)=\E G_{b,N}(t-\tfrac{\eta}{2}Z_{b}')$, with $Z_{b}'$ symmetric
+and supported in $[-1,1]$.  Every knot of the centred finite distribution
+function is an odd multiple of $\eta/2$, while $m/b^{n}$ is an integer
+multiple of $\eta$ for $N\ge n$; the averaging interval of half-width
+$\eta/2$ therefore lies in one polynomial cell, and the fact that not every
+odd multiple is a knot causes no difficulty.
+\Cref{rf:lem:splines-local-inverse} with $W=Z_{b}'$ and the terminating jet
+shows that $G_{b,N}(m/b^{n})$ is an exact polynomial of degree at most $d$
+in $(\eta/2)^{2}$, hence in $b^{-2N}$, with constant term
+$\Fb^{(b)}(m/b^{n})$.  Geometric constant extraction with $q=b^{-2}$ at
+the depths $n+R+j$ proves \cref{rf:eq:base-extraction}, and substituting
+\cref{rf:eq:base-spline} shows rationality once more.
+\end{proof}
+
+For example, the explicit sums give
+\[
+ \Fb^{(3)}\!\left(\tfrac19\right)=\frac{7}{576},\quad
+ \Fb^{(3)}\!\left(\tfrac1{27}\right)=\frac{1}{6912},\quad
+ \Fb^{(4)}\!\left(\tfrac1{16}\right)=\frac{1}{240},\quad
+ \Fb^{(4)}\!\left(\tfrac1{64}\right)=\frac{1}{51840}.
+\]
+At $b=2$ the cube sums collapse to the dyadic prefix and every formula of
+the preceding sections is recovered.  For $b>2$ some of the highest jets can
+vanish for additional geometric reasons, so only the degree \emph{upper
+bound} $d$ is asserted, not the exact-degree statement of
+\cref{rf:prop:exact-degree}.  The existence of exact finite extraction is
+caused by two structures together --- grid-aligned finite-convolution knots
+and an even centred tail --- and neither alone would give the degree bound.
+
+% =====================================================================
+\section{Worked exact values and the retained verifier}
+\label{rf:sec:examples}
+
+\subsection{Universal coefficients}
+\label{rf:sec:examples-coefficients}
+
+The first normalized and raw moments, all obtained independently from the
+composition, partition, and finite-prefix formulas, are
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\small
+\begin{tabular}{c@{\quad}r@{\quad}r@{\quad}r@{\quad}r}
+\toprule
+$k$ & $a_{k}$ & $c_{k}=\E Z^{2k}$ & $e_{k}$ & $\lambda_{k}$\\
+\midrule
+0 & $1$ & $1$ & $1$ & ---\\
+1 & $1/18$ & $1/9$ & $-1/18$ & $1/18$\\
+2 & $19/16200$ & $19/675$ & $31/16200$ & $-1/2700$\\
+3 & $583/42865200$ & $583/59535$ & $-2347/42865200$ & $1/178605$\\
+4 & $132809/1311675120000$ & $132809/32531625$ & $1904369/1311675120000$ & $-1/9639000$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These numbers are universal: the dyadic numerator changes only the outer
+polynomial evaluation.  The raw coefficients begin
+$A_{1}=\tfrac12$, $A_{2}=\tfrac5{36}$, $A_{3}=\tfrac1{36}$,
+$A_{4}=\tfrac{143}{32400}$, $A_{5}=\tfrac{19}{32400}$, and the reciprocal
+powers $\Fb(2^{-n})=2^{-\binom{n}{2}}A_{n}$ for $n=0,\ldots,7$ are
+\[
+ 1,\ \tfrac12,\ \tfrac5{72},\ \tfrac1{288},\ \tfrac{143}{2073600},\
+ \tfrac{19}{33177600},\ \tfrac{1153}{561842749440},\ \tfrac{583}{179789679820800}.
+\]
+
+\subsection{Two and three samples}
+\label{rf:sec:examples-extraction}
+
+At $x=\tfrac14$ ($n=2$, $d=1$) the explicit spline sums are
+$G_{2}(\tfrac14)=\tfrac1{16}$ and $G_{3}(\tfrac14)=\tfrac{13}{192}$ --- the
+numerator of the latter is $3^{3}-1^{3}=26$ over $2^{\Tr{3}}3!=384$ --- so
+\begin{equation}
+ \Fb\!\left(\tfrac14\right)=\frac{-G_{2}(\tfrac14)+4G_{3}(\tfrac14)}{3}=\frac{5}{72},
+ \qquad G_{N}\!\left(\tfrac14\right)=\frac5{72}-\frac19\,4^{-N}\ \ (N\ge2).
+ \label{rf:eq:examples-quarter}
+\end{equation}
+Likewise $G_{3}(\tfrac38)=\tfrac{97}{384}$, $G_{4}(\tfrac38)=\tfrac{389}{1536}$,
+and $\Fb(\tfrac38)=(4G_{4}-G_{3})/3=\tfrac{73}{288}$; and
+$G_{3}(\tfrac18)=\tfrac1{384}$, $G_{4}(\tfrac18)=\tfrac5{1536}$,
+$\Fb(\tfrac18)=\tfrac1{288}$ with $G_{N}(\tfrac18)=\tfrac1{288}-\tfrac1{18}4^{-N}$.
+At depth four three levels suffice:
+\[
+ G_{4}\!\left(\tfrac1{16}\right)=\frac{1}{24576},\qquad
+ G_{5}\!\left(\tfrac1{16}\right)=\frac{121}{1966080},\qquad
+ G_{6}\!\left(\tfrac1{16}\right)=\frac{6331}{94371840},
+\]
+\begin{equation}
+ \Fb\!\left(\tfrac1{16}\right)=\frac{G_{4}-20G_{5}+64G_{6}}{45}=\frac{143}{2073600},
+ \label{rf:eq:examples-sixteenth}
+\end{equation}
+and here the polynomial in $t=4^{-N}$ is genuinely quadratic:
+\begin{equation}
+ G_{N}\!\left(\tfrac1{16}\right)=\frac{143}{2073600}-\frac{5}{648}\,t+\frac{248}{2025}\,t^{2},\qquad
+ G_{N}\!\left(\tfrac3{16}\right)=\frac{46657}{2073600}-\frac{67}{648}\,t-\frac{248}{2025}\,t^{2}
+ \quad(N\ge4).
+ \label{rf:eq:examples-sixteenth-poly}
+\end{equation}
+At $x=\tfrac5{16}$, with $G_{4}=\tfrac{1205}{8192}$, $G_{5}=\tfrac{289799}{1966080}$,
+$G_{6}=\tfrac{13917509}{94371840}$, the weighted sum
+$\tfrac1{45}G_{4}-\tfrac49G_{5}+\tfrac{64}{45}G_{6}$ is exactly
+$\tfrac{305857}{2073600}$.  No previously known value of $\Fb$ enters any of
+these extractions.
+
+\subsection{A table of exact values}
+\label{rf:sec:examples-table}
+
+All entries of \cref{rf:tab:examples-values} were matched by the master,
+partition, both binary, determinant, finite-cube and quarter-base formulas
+in exact rational arithmetic.  Reflection supplies the remaining values on
+each grid: $\Fb((16-m)/16)=1-\Fb(m/16)$, and the bump values follow from
+$\up(m/16)=\Fb((16-\AbsoluteValue{m})/16)$, for example
+$\up(\tfrac{11}{16})=\Fb(\tfrac5{16})$.
+
+\begin{table}[htbp]
+\centering
+\caption{Selected exact values, fractions reduced.}
+\label{rf:tab:examples-values}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}rl@{\qquad}rl@{}}
+\toprule
+$x$ & $\Fb(x)$ & $x$ & $\Fb(x)$\\
+\midrule
+$1/2$ & $1/2$ & $1/4$ & $5/72$\\
+$1/8$ & $1/288$ & $3/8$ & $73/288$\\
+$1/16$ & $143/2073600$ & $3/16$ & $46657/2073600$\\
+$5/16$ & $305857/2073600$ & $7/16$ & $777743/2073600$\\
+$1/32$ & $19/33177600$ & $13/32$ & $10393219/33177600$\\
+$21/64$ & $482385079229/2809213747200$ & $37/128$ & $4121049919811/35957935964160$\\
+\bottomrule
+\end{tabular}
+\end{table}
+Two further values: $\Fb(1/1024)=134926369/1246394851358539387238350848000
+\approx1.082533\cdot10^{-22}$, where the positive formula avoids subtracting
+large alternating terms, and $\Fb(173/4096)$ of \cref{rf:eq:binary-large}.
+The decimal displays are for orientation; the fractions are the actual
+outputs.
+
+\subsection{Operation counts and exact arithmetic}
+\label{rf:sec:examples-cost}
+
+For the consecutive-depth quarter formula with $R=0$ the raw integer sums
+contain $m(2^{d+1}-1)$ integer-power summands before any use of symmetry or
+cancellation identities, and the largest depth is $n+\Floor{n/2}$; reducing
+the fraction first, and replacing $x$ by $1-x$ when that is closer to zero,
+decreases the count.  The block formula has $\BinaryDigitSum(m)$ outer
+terms and needs coefficient indices at most $\Floor{n/2}$ regardless of the
+numerator; the telescope has the same number of outer terms with raw
+coefficients of index up to $n$.  The signs in $\Spow{N}{A}$ can produce
+severe cancellation between very large integers: compute the numerator
+exactly, divide only after summation, and combine the interpolation weights
+as exact fractions.  The bounded norm of the weight row
+(\cref{rf:prop:extraction-norm}) does not make a low-precision evaluation of
+the individual sums safe.  None of this asserts that a nonrecursive formula
+must outperform a well-designed recurrence.
+
+\subsection{What the retained verifier checks}
+\label{rf:sec:examples-verifier}
+
+The retained program \texttt{verify\_recurrence\_free\_dyadic\_values.py}
+uses only the Python standard library and \texttt{fractions.Fraction}; every
+comparison is an exact equality, with no floating-point tolerance.  It
+implements, as separate finite evaluators, the master formula with
+composition and with partition coefficients, the raw-moment master formula,
+the block formula (bounded and signed), the telescope, the quarter-base row
+at consecutive and at arbitrary depths, the finite-cube formula, the
+bordered determinant (by exact Bareiss elimination), the certified rounding,
+the half-base row with arbitrary shift $\alpha$ and its closed form, the
+direct density extraction, and the integer-base formulas; the only
+recursive object, the triangular moment recurrence, is isolated and used
+solely as a cross-check.  Its recorded run (\texttt{verification\_results.json})
+performs the checks of \cref{rf:tab:examples-checks}.
+
+\begin{table}[htbp]
+\centering
+\caption{Exact checks performed by the retained verifier at maximal depth 8.}
+\label{rf:tab:examples-checks}
+\small
+\begin{tabularx}{\textwidth}{@{}Xr@{}}
+\toprule
+Check & Cases\\
+\midrule
+Coefficients $a_{k}$ by compositions, partitions and the isolated oracle, $0\le k\le12$; recovery from finite prefixes at two starting depths, multinomial against power-sum prefix coefficients, both reciprocal expansions, $(-1)^{k}e_{k}>0$ and $\sum_{j}a_{j}e_{k-j}=[k=0]$, $0\le k\le8$; $\lambda_{r}$ by the Bernoulli and the Bernoulli-free formula, $r\le8$; raw $A_{m}$ by compositions, partitions and the dictionary \cref{rf:eq:setup-raw-centred}, $m\le8$; every printed constant & 39\\
+Weight rows $d\le8$: product, $q$-Pochhammer, Gaussian-binomial and integer forms agree; annihilation identities; absolute row sum and generating polynomial at three bases; the bound $<2$ & 9 rows\\
+Every representation $m/2^{n}$, $0\le n\le8$: master (three coefficient routes), block, signed block, telescope, quarter-base, determinant (and finite-cube for $n\le6$) agree; reflection; refinement $(m,n)\mapsto(2m,n+1)$; integrality against $D_{n}$ and $D'_{n}$ & 1{,}033\\
+Shifted-depth and arbitrary-depth extraction at selected points & 84\\
+Signed extension $\Fg(a/2^{n})$ by blocks against the fold, $0\le a\le3\cdot2^{n}$, $n\le6$; integer and half-integer values & 388\\
+Exact shrinking-cell identity at five offsets, grids through depth 5, three depths; scale polynomials through depth 6 at three depths; exact degree at every reduced interior point; the four printed polynomials & 1{,}005\\
+Dyadic derivatives by the differentiated master formula against the dilation law, orders $0\le r\le n+1$, $n\le5$ & 434\\
+Certified rounding, depths 1--3 & 17\\
+Half-base row with $\alpha\in\SetOf{0,\tfrac12,1,-2,\tfrac23}$, and its closed form & 65\\
+Rvachev values by direct density extraction (two starting depths), the finite fold identity, the density law \cref{rf:eq:rvachev-density-law}, $\up''(\tfrac14)=-8$ & 126\\
+Odd-depth and reciprocal-power formulas; the eight anchor values & 22\\
+Integer bases $b=2,3,4,5$: extraction against the finite arithmetic formula and at a shifted depth, reflection, cube-sum evaluations & 235\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The grid cases are numerator--depth pairs, not distinct rational points:
+unreduced representations are intentionally included.  To reproduce the
+recorded run:
+\begin{lstlisting}[language=bash]
+python verify_recurrence_free_dyadic_values.py --max-depth 8 --json verification_results.json
+\end{lstlisting}
+The exhaustive sums grow exponentially with the requested depth.  The tests
+check the implementations and the indexing; they are not a substitute for
+the proofs, nor a claim that any of this has been formalized in Lean.
+
+% =====================================================================
+\section{How the alternatives compare, and what remains}
+\label{rf:sec:conclusion}
+
+\subsection{Closed form versus evaluation algorithm}
+\label{rf:sec:conclusion-compare}
+
+An explicit finite formula may be evaluated by loops, memoization, or an
+exact linear-algebra algorithm without ceasing to be a closed form; what is
+excluded is a definition that leaves an auxiliary constant specified only
+through earlier unknown constants.  Storing previously evaluated $a_{k}$ is
+optional caching, whereas defining $a_{k}$ only by
+\cref{rf:eq:moments-recurrence} would fail the criterion.
+
+The families are algebraically equivalent descriptions but not identical
+algorithms.  The composition sum has $2^{k-1}$ positive terms, the partition
+sum one signed term per integer partition, the finite-prefix representation
+only weak compositions and rational Gaussian weights.  Once coefficients are
+available, the block formula has at most $(d+1)(n-d+1)$ polynomial terms.
+The quarter-base double sum is the most direct answer with no named
+coefficient sequence, at the price of $m(2^{d+1}-1)$ signed powers and
+enormous intermediate integers.  The determinant supplies a common
+denominator immediately, but its permutation expansion is not the preferred
+numerical algorithm.  Large powers and cancellation, bit lengths of rational
+intermediates, coefficient reuse, and whether one value or a whole grid is
+wanted all matter more than the number of summands.
+
+\subsection{Further deductions that need no new conjecture}
+\label{rf:sec:conclusion-further}
+
+A finite subset of the cutoff coefficients can vanish at special points;
+whenever the nonzero orders are known one may interpolate only those
+monomials rather than the complete degree space.  The exact-degree result
+guarantees that the top order does not vanish at reduced points but does not
+exclude gaps at lower orders, which suggests point-adapted extraction rows
+whose validity is proved by the corresponding finite moment equations.  The
+local inverse lemma applies more generally whenever a smooth law is an
+independent sum of a finite spline head and a scaled tail, the tail's
+support fits in one polynomial cell at the evaluation point, and the
+relevant jet of the limit terminates: symmetry removes the odd cutoff
+powers, other coefficient zeros can remove further powers, and the search
+for additional exact formulas separates into a geometric question about
+knot cells and an algebraic one about the nonzero jet orders.  The
+integer-base theorem is one realization of that separation.  Open beyond
+this document: a formalization of the general polynomial law
+(\cref{rf:sec:register}), and the sharp denominator arithmetic of
+\cite{arias2018} against the elementary bounds $D_{n}$, $D'_{n}$.
+
+\subsection{Conclusion}
+\label{rf:sec:conclusion-conclusion}
+
+Every dyadic value in question admits several closed forms in the strict
+finite sense.  The hidden moment recurrences of the classical formula can
+be eliminated by explicit multiplicity partitions, by positive ordered
+compositions, by finite-prefix interpolation, or by an integer determinant.
+Binary digits provide two finite compressions with no long signed prefix.
+Most importantly, centred finite convolutions have an exact polynomial
+dependence on the squared tail scale at dyadic arguments; removing that
+polynomial by geometric interpolation gives \cref{rf:eq:main-quarter}, a
+moment-free $q=\tfrac14$ formula requiring only $\Floor{n/2}+1$ spline
+levels, and the shrinking-cell theorem explains why the quarter base
+replaces the half base and why that number of samples is the least
+possible for a grid-wide rule.  Reflection and folding cover every Rvachev
+and signed Fabius value, and the same finite algebra extends to all
+derivatives, iterated primitives, and reciprocal-integer-base laws.
+Infinite products and probability models appear in the proofs; neither
+infinite limits nor auxiliary recurrences survive in the evaluation
+formulas.
+
+\clearpage
+\appendix
+
+% =====================================================================
+\section{Compact exact evaluators}
+\label{rf:app:code}
+
+The following self-contained implementations use only integer powers,
+factorials, binary digit counts, and exact fractions.  The first is the
+principal formula \cref{rf:eq:main-quarter}; the second is the block formula
+\cref{rf:eq:binary-block} with the composition coefficients
+\cref{rf:eq:moments-a-composition}, valid for the signed extension at every
+nonnegative numerator.  Python 3.10 or later suffices; pass exact rational
+inputs such as \texttt{Fraction(173, 4096)} rather than decimal floats,
+whose exact binary value may have a much larger denominator than intended.
+
+\begin{lstlisting}[language=Python]
+from fractions import Fraction
+from functools import lru_cache
+from math import factorial, prod
+
+
+def fabius_quarter(m: int, n: int) -> Fraction:
+    """Exact bounded F(m / 2**n) for 0 <= m <= 2**n by the quarter-base row."""
+    if n < 0 or not 0 <= m <= 2**n:
+        raise ValueError("require n >= 0 and 0 <= m <= 2**n")
+    while n > 0 and m % 2 == 0:      # reduce: fewer levels
+        m //= 2; n -= 1
+    if n == 0:
+        return Fraction(m)
+    d = n // 2
+    total = Fraction(0)
+    for j in range(d + 1):
+        weight = Fraction((-1)**(d - j) * 4**(j*(j+1)//2),
+                          prod(4**r - 1 for r in range(1, j+1))
+                          * prod(4**r - 1 for r in range(1, d-j+1)))
+        N, A = n + j, m * 2**j
+        power_sum = sum((-1)**h.bit_count() * (2*A - 2*h - 1)**N
+                        for h in range(A))
+        total += weight * Fraction(power_sum, 2**(N*(N+1)//2) * factorial(N))
+    return total
+
+
+def compositions(k: int):
+    if k == 0:
+        yield (); return
+    for mask in range(1 << (k - 1)):
+        cuts = [0] + [j for j in range(1, k) if (mask >> (j-1)) & 1] + [k]
+        yield tuple(v - u for u, v in zip(cuts, cuts[1:]))
+
+
+@lru_cache(None)
+def coefficient(k: int) -> Fraction:
+    """a_k = [t^(2k)] M(t) by the positive composition formula."""
+    total = Fraction(0)
+    for parts in compositions(k):
+        term, suffix = Fraction(1), k
+        for r in parts:
+            term /= factorial(2*r + 1) * (4**suffix - 1); suffix -= r
+        total += term
+    return total
+
+
+def fabius_global_blocks(a: int, n: int) -> Fraction:
+    """Signed global F_gl(a / 2**n), every a >= 0, by the binary block formula."""
+    if a < 0 or n < 0:
+        raise ValueError("a and n must be nonnegative")
+    total = Fraction(0)
+    for i in range(n + 1):
+        if not (a >> i) & 1:
+            continue
+        sign = -1 if (a >> (i + 1)).bit_count() % 2 else 1
+        K = (1 << i) + 2 * (a % (1 << i))
+        inner = sum((coefficient(k) * 4**(i*k)
+                     * Fraction(K**(n-i-2*k), factorial(n-i-2*k))
+                     for k in range((n-i)//2 + 1)), Fraction(0))
+        total += sign * 2**(i*(i+1)//2) * inner
+    return total / 2**(n*(n+1)//2)
+
+
+def rvachev_up(a: int, n: int) -> Fraction:
+    """Exact up(a / 2**n) on the whole dyadic grid."""
+    return Fraction(0) if abs(a) > 2**n else fabius_quarter(2**n - abs(a), n)
+
+
+assert fabius_quarter(1, 4) == Fraction(143, 2073600)
+assert fabius_global_blocks(173, 12) == fabius_quarter(173, 12)
+assert fabius_global_blocks(3, 0) == -1 and rvachev_up(3, 2) == Fraction(5, 72)
+\end{lstlisting}
+
+% =====================================================================
+\section{A direct finite definition of every index set}
+\label{rf:app:indices}
+
+To remove any ambiguity about the word ``finite'', all auxiliary indexing
+reduces to bounded integer tuples.  A composition of $k\ge1$ is a length
+$1\le\ell\le k$ and a tuple $(r_{1},\ldots,r_{\ell})\in\SetOf{1,\ldots,k}^{\ell}$
+with $r_{1}+\cdots+r_{\ell}=k$; the empty tuple is the only composition of
+$0$.  A multiplicity vector of weight $k$ lies in
+$\prod_{r=1}^{k}\SetOf{0,1,\ldots,\Floor{k/r}}$ and satisfies
+$\sum_{r}rv_{r}=k$; a raw profile of weight $m$ adds
+$v_{0}\in\SetOf{0,\ldots,m}$ with $v_{0}+2\sum_{r}rv_{r}=m$.  Binomial
+coefficients are factorial quotients in their stated ranges; Bernoulli
+numbers are the finite sums \cref{rf:eq:moments-bernoulli-finite}; every
+Thue--Morse sign is the digit product \cref{rf:eq:intro-tm-digits}; every
+determinant is the permutation sum \cref{rf:eq:determinant-leibniz}; every
+$q$-Pochhammer symbol in a value formula is the finite product
+\cref{rf:eq:intro-q}; the digit data \cref{rf:eq:binary-parameters} and
+\cref{rf:eq:binary-suffix} are floor and remainder operations.  There is no
+unstated recursive sequence anywhere in the evaluation layer.
+
+% =====================================================================
+\section{Notation}
+\label{rf:sec:notation}
+
+Every symbol is normative from the corpus notation catalogue where an entry
+exists (\texttt{rvachev-up}, \texttt{fabius-bounded},
+\texttt{fabius-global}, \texttt{thue-morse}, \texttt{q-pochhammer},
+\texttt{gaussian-binomial}); the remaining symbols are document-local and
+listed here.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Symbol & Meaning\\
+\midrule
+$\Fb$, $\up$, $\Fg$ & bounded distribution function of $X$; density of $Z=2X-1$; signed global extension \cref{rf:eq:setup-global}\\
+$X$, $Z$; $U_{j}$, $V_{j}$ & the random sums \cref{rf:eq:setup-X,rf:eq:setup-Z}; uniforms on $[0,1]$ and $[-1,1]$\\
+$X_{N}$, $Z_{N}$, $Y_{N}$ & uncentred and centred prefixes; $Y_{N}=X_{N}+2^{-N-1}$\\
+$H_{N}$, $G_{N}$, $G_{N,\alpha}$, $u_{N}$ & distribution functions of $X_{N}$, $Y_{N}$, $X_{N}+\alpha2^{-N}$; density of $Z_{N}$\\
+$H$, $M$, $M_{N}$, $M_{X}$ & $\sinh t/t$; moment generating functions of $Z$, $Z_{N}$, $X$\\
+$a_{k}$, $c_{k}$, $A_{m}$ & $\coeff{t}{2k}M$, $\E Z^{2k}$, $\E X^{m}/m!$\\
+$\lambda_{r}$, $\beta^{\ast}_{r}$, $e_{k}$ & coefficients of $\log M$, of $\log M_{X}-z/2$, of $1/M$\\
+$\Phi_{r}(v)$, $C_{n,N}(A)$, $a_{k,N}$ & $\coeff{t}{r}\EulerE^{vt}M$; $\E(A+Z_{N})^{n}/n!$; $\coeff{t}{2k}M_{N}$\\
+$\Tr{r}$, $d$, $\tm{h}$ & $r(r+1)/2$; $\Floor{n/2}$; Thue--Morse sign $(-1)^{\BinaryDigitSum(h)}$\\
+$\Spow{N}{A}$, $t_{j}$, $L_{d}$, $B_{n,m}$, $D_{n}$, $D'_{n}$ & integer power sum \cref{rf:eq:intro-power-sum}; determinant data \cref{rf:sec:determinant}\\
+$\Comp{k}$, $R_{i}$, $\Prof{k}$ & compositions, suffix sums, multiplicity profiles \cref{rf:sec:intro-conventions}\\
+$w_{d,j}(q)$, $w_{d,j}$ & geometric extraction weights \cref{rf:eq:extraction-weights-q}; at $q=\tfrac14$\\
+$P_{x}$, $Q_{x}$ & dyadic Taylor polynomial; scale polynomial \cref{rf:eq:scale-polynomial}\\
+$J(m)$, $p_{j}$, $r_{j}$, $K_{j}$, $\eta_{j}$; $b_{i}$, $s_{i}$ & block data \cref{rf:eq:binary-parameters}; telescope data \cref{rf:eq:binary-suffix}\\
+$X_{b}$, $\Fb^{(b)}$, $G_{b,N}$, $A^{(b)}_{m}$, $\lambda_{r,b}$ & the base-$b$ objects of \cref{rf:sec:base}\\
+$\amvol{r}$ & the canonical volume's reciprocal-product coefficients, $=(-1)^{r}e_{r}$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+% =====================================================================
+\section{Formalization register}
+\label{rf:sec:register}
+
+The results of this document are human proofs.  The repository's Lean
+development \cite{proveit-primary} contains counterparts for several of the
+ingredients, which the canonical volume's register \cite{proveit-due}
+already lists in the density normalization; the rows below state the
+correspondence for the objects as they appear here.  Every declaration
+name was checked to resolve in the repository on the day of consolidation.
+Statuses: \textsc{crosswalked}, a declaration states the same fact (with
+the translation stated); \textsc{instance}, kernel-verified for one point
+or one mode; \textsc{absent}, no declaration found.
+
+\begin{center}
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.46\textwidth}>{\raggedright\arraybackslash}p{0.18\textwidth}@{}}
+\caption{Formalization register.}\label{rf:tab:register}\\
+\toprule
+Result here & Lean declaration(s) & Status\\
+\midrule
+\endfirsthead
+\toprule
+Result here & Lean declaration(s) & Status\\
+\midrule
+\endhead
+\cref{rf:eq:splines-G-integer}: the centred finite spline as a Thue--Morse truncated-power sum
+& \texttt{Fabius.\allowbreak{}fabiusUniformSpline} (\texttt{FabiusUniformSpline}), defined as that sum in the centred-CDF variable; \texttt{Fabius.\allowbreak{}ProbabilityRepresentation.\allowbreak fabiusUniformSpline\_\allowbreak{}eq\_\allowbreak{}centeredPartialCDF}
+& \textsc{crosswalked}\\[0.3em]
+\cref{rf:eq:setup-Z}, \cref{rf:lem:setup-normalization}: $\up$ is the density of $\sum_{k}2^{-k}V_{k}$
+& \texttt{Fabius.\allowbreak{}ProbabilityRepresentation.\allowbreak rvachevUp\_\allowbreak{}eq\_\allowbreak{}weightedSum\_\allowbreak{}probability}, \texttt{\ldots geometricUniformDensity\_\allowbreak{}one\_\allowbreak{}half\_\allowbreak{}eq\_\allowbreak{}rvachevUp}
+& \textsc{crosswalked}\\[0.3em]
+\cref{rf:eq:moments-e-partition}, \cref{rf:eq:moments-a-partition}: the reciprocal and moment coefficients in Bell form
+& \texttt{Fabius.\allowbreak{}rvachevReciprocalMomentRat}, \texttt{\ldots\_\allowbreak{}eq\_\allowbreak{}completeBellPolynomial}, \texttt{Fabius.\allowbreak{}binomialConv\_\allowbreak{}rvachevRawMomentRat\_\allowbreak{}reciprocal} (\texttt{RvachevMomentAppell}): $\amvol{r}=(-1)^{r}e_{r}$ is Lean-computable
+& \textsc{crosswalked}; positivity \cref{rf:lem:splines-e-sign}: \textsc{absent}\\[0.3em]
+\cref{rf:lem:splines-local-inverse} at scale $1$
+& \texttt{Fabius.\allowbreak{}rvachevDeconvolvedPolynomial}, \texttt{Fabius.\allowbreak{}rvachevAppellPolynomialRat}, \texttt{Fabius.\allowbreak{}integral\_\allowbreak{}eval\_\allowbreak{}rvachevAppellPolynomial\_\allowbreak{}sub\_\allowbreak{}mul\_\allowbreak{}rvachev} (\texttt{RvachevMomentAppell})
+& \textsc{crosswalked} at scale $1$; the dilation and the cell identity: \textsc{absent}\\[0.3em]
+\cref{rf:lem:setup-dilation}: dilation law and the terminating dyadic jet
+& \texttt{Fabius.\allowbreak{}deriv\_\allowbreak{}rvachevUp}, \texttt{Fabius.\allowbreak{}iteratedDeriv\_\allowbreak{}rvachevUp\_\allowbreak{}eq\_\allowbreak{}thueMorse\_\allowbreak{}sum} (\texttt{Differential}); \texttt{Fabius.\allowbreak{}iteratedDeriv\_\allowbreak{}rvachevUp\_\allowbreak{}dyadic\_\allowbreak{}eq\_\allowbreak{}zero}, \texttt{Fabius.\allowbreak{}dyadic\_\allowbreak{}depth\_\allowbreak{}eq\_\allowbreak{}max\_\allowbreak{}nonzero\_\allowbreak{}iteratedDeriv} (\texttt{DyadicDerivativeFiltration}); \texttt{Fabius.\allowbreak{}iteratedDeriv\_\allowbreak{}fabiusReal\_\allowbreak{}dyadicGrid\_\allowbreak{}eq\_\allowbreak{}ite}, \texttt{Fabius.\allowbreak{}abs\_\allowbreak{}iteratedDeriv\_\allowbreak{}fabiusReal\_\allowbreak{}dyadicGrid\_\allowbreak{}of\_\allowbreak{}odd} (\texttt{BoundedDerivatives})
+& \textsc{crosswalked} (the top derivative $2^{\Tr{n}}$ at odd numerators is \cref{rf:prop:exact-degree}'s nonvanishing)\\[0.3em]
+\cref{rf:eq:quarter-cell}: the cell identity at $x=\tfrac14$
+& \texttt{Fabius.\allowbreak{}fabiusUniformSpline\_\allowbreak{}quarter\_\allowbreak{}eq\_\allowbreak{}quadratic}, \texttt{Fabius.\allowbreak{}reportFiniteFabiusApproximant\_\allowbreak{}quarter\_\allowbreak{}eq\_\allowbreak{}quadratic} (\texttt{QuarterSplineLocalPolynomial}): $\tfrac5{72}+z+4z^{2}-\tfrac49\,4^{-n}$ in the volume's level index $n=N-1$
+& \textsc{instance}; \cref{rf:thm:local-cell,rf:cor:scale-polynomial} at general depth: \textsc{absent}\\[0.3em]
+\cref{rf:lem:extraction-weights}: the weights, their closed forms, row polynomial and moment identities
+& \texttt{Fabius.\allowbreak{}geometricLagrangeWeight}, \texttt{\ldots\_\allowbreak{}eq\_\allowbreak{}product} (\texttt{GeometricLagrangeWeights}); \texttt{Fabius.\allowbreak{}quarterLagrangeWeight\_\allowbreak{}eq\_\allowbreak{}qPochhammer}, \texttt{\ldots\_\allowbreak{}eq\_\allowbreak{}qBinomial} (\texttt{GeometricLagrangeQBinomial}); \texttt{Fabius.\allowbreak{}sum\_\allowbreak{}quarterLagrangeWeight\_\allowbreak{}eq\_\allowbreak{}one}, \texttt{\ldots\_\allowbreak{}mul\_\allowbreak{}pow\_\allowbreak{}eq\_\allowbreak{}zero}, \texttt{Fabius.\allowbreak{}quarterLagrangeWeightPolynomial\_\allowbreak{}eq\_\allowbreak{}forwardRichardson}
+& \textsc{crosswalked}\\[0.3em]
+\cref{rf:thm:main-quarter}, \cref{rf:thm:extraction-consecutive}: the row applied to the spline values
+& \texttt{Fabius.\allowbreak{}quarterLagrange\_\allowbreak{}rvachevFourierProduct\_\allowbreak{}eq\_\allowbreak{}gaussian\_\allowbreak{}tsum} (\texttt{RvachevQBinomialFilter}) applies the same row to the infinite product on the Fourier side
+& neighbouring only; the theorem: \textsc{absent}, pending the law\\[0.3em]
+\cref{rf:thm:master}, \cref{rf:thm:moments-composition}, \cref{rf:thm:moments-partition}, \cref{rf:thm:binary-block}, \cref{rf:thm:binary-telescope}, \cref{rf:thm:moment-extraction}, \cref{rf:thm:finite-cube}, \cref{rf:thm:determinant}, \cref{rf:cor:rounding}, \cref{rf:prop:halfbase}, \cref{rf:thm:up-quarter}, \cref{rf:sec:rvachev-primitives}, \cref{rf:sec:base}
+& --- & \textsc{absent}\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+A formalization of the general polynomial law would follow the five-step
+plan recorded in the canonical volume (finite density and knot geometry,
+head--tail factorization at finite level, dilated deconvolution and the
+cell identity, assembly with the jet termination); the master identity and
+the coefficient formulas of \cref{rf:sec:master,rf:sec:moments} need only
+finite algebra over the existing \texttt{RvachevMomentAppell} coefficients
+and the box formula \cref{rf:lem:master-box}.
+
+% =====================================================================
+\section{Provenance of the consolidation}
+\label{rf:sec:provenance}
+
+\subsection{What was merged}
+
+Three independently written articles arrived on 2026-09-04 and were filed
+the same day, as separate members beside the canonical volume, in the
+subgroup \path{inverse-and-sampling/dyadic-up-extraction/}.  All three
+answer the same question --- exact evaluation of $\Fb(m/2^{n})$ and
+$\up(m/2^{n})$ with no auxiliary quantity defined by a moment recurrence or
+a limiting process --- and all three reach the quarter-base formula through
+the same mechanism.  They were merged editorially into this document on
+2026-09-04: one statement of each result, every proof completed, the four
+letters for the numerator, the three names for the moment coefficients, the
+three names for the reciprocal coefficients, and the two spline indexings
+reconciled once, and every printed rational checked by the retained
+verifier.  The three directories and their retained arrival PDFs were
+deleted after a residue audit; git history is the archive.
+
+\subsection{The absorbed sources and what each contributed}
+
+\begin{description}[leftmargin=1.5em,style=nextline]
+\item[S1: \emph{Recurrence-Free Closed Forms for Dyadic Fabius and Rvachev
+Values}] (\texttt{fabius\_dyadic\_closed\_forms/}, 1{,}441 lines, 22 pp.).
+The Taylor-integral proof of the master identity for the signed extension
+(\cref{rf:rmk:master-taylor}); the block formula in integer form and its
+validity at every numerator (\cref{rf:thm:binary-block}); the Bernoulli-free
+cumulant formula (\cref{rf:lem:moments-lambda-nob}); the finite-cube value
+formula and the arbitrary-prefix weights (\cref{rf:thm:finite-cube}); the
+$(d+2)$-bordered determinant (\cref{rf:rmk:determinant-alt}); the Prouhet
+route to the degree drop (\cref{rf:rmk:splines-prouhet}); the density
+splines $S_{N}=G_{N-1}$; the examples $\Fb(1/1024)$, $\Fb(173/4096)$ and the
+three-sample extraction at $\tfrac5{16}$.
+\item[S2: \emph{Recurrence-Free Dyadic Values of the Fabius and Rvachev
+Functions}] (\texttt{fabius\_dyadic\_closed\_forms-2/}, 1{,}456 lines,
+26 pp.).  The organization of \cref{rf:sec:intro,rf:sec:setup,rf:sec:master};
+the exact shrinking-cell theorem (\cref{rf:thm:local-cell}); the exact
+degree and the minimal-sample theorem
+(\cref{rf:prop:exact-degree,rf:thm:extraction-minimal}); the bound $<2$ on
+the row (\cref{rf:prop:extraction-norm}); the finite-prefix coefficients and
+their extraction (\cref{rf:sec:prefix}); the differentiated master formula
+(\cref{rf:lem:splines-derivative-master}); the composition denominator bound,
+the prefix error and the certified rounding
+(\cref{rf:prop:determinant-denominator,rf:cor:rounding}); the integer-base
+cumulants and the centred base-$b$ prefix; the example $21/64$ and the
+quadratic scale polynomials at $\tfrac1{16}$, $\tfrac3{16}$.
+\item[S3: \emph{Recurrence-Free Dyadic Formulae for the Fabius and Rvachev
+Functions}] (\texttt{fabius\_rvachev\_recurrence\_free\_closed\_forms/},
+1{,}681 lines, 23 pp.).  The raw-moment master identity and the raw
+composition and partition formulas
+(\cref{rf:eq:master-raw,rf:thm:moments-composition,rf:thm:moments-partition});
+the odd-depth formula \cref{rf:eq:moments-odd-depth}; the binary telescope
+(\cref{rf:thm:binary-telescope}); the $(d+1)$-bordered determinant and
+$D_{n}$ (\cref{rf:thm:determinant}); the general finite-jet deconvolution
+lemma (\cref{rf:lem:splines-local-inverse}); the row's generating
+polynomial and the numerical limits of the row norm; the half-base identity
+with arbitrary shift (\cref{rf:prop:halfbase}); the direct density
+extraction (\cref{rf:thm:up-quarter}); the iterated primitives
+(\cref{rf:sec:rvachev-primitives}); the finite base-$b$ arithmetic and
+extraction (\cref{rf:thm:base-arithmetic,rf:thm:base-extraction}); the
+index-set appendix.
+\end{description}
+
+\subsection{Conventions reconciled}
+
+S1 wrote the numerator as $a$, the normalized moments as $b_{k}$, the
+reciprocal coefficients as $\alpha_{r}$, the signed extension as $\Phi$, and
+worked with density splines $S_{N}(x)=p_{N}(x-1)$, so that its levels
+$n+1,\ldots,n+1+d$ are the levels $n,\ldots,n+d$ of $G_{N}$ here; S2 wrote
+$m$, $a_{k}$, $e_{k}$, $\Theta$, $G_{N}$, which this document adopts; S3
+wrote $a$, $C_{j}$, $R_{j}$, $\mathcal F$, $\mathsf H_{N}=G_{N}$ and the
+cumulant coefficients $\lambda_{r}$ (S1's $\beta_{r}$), adopted here, with
+S3's raw $\beta_{r}$ renamed $\beta^{\ast}_{r}$.  S1's finite Bernoulli sum
+and S2/S3's are the same formula.  The three common-denominator statements
+were two: $D_{n}$ (S1, S3) and $D'_{n}$ (S2), both kept.  Where the sources
+stated a result without proof --- the Bernoulli-free cumulant formula, the
+coefficient-only prefix formula, the generating polynomial of the row, the
+primitives --- a proof was written; where a proof was sketched --- the
+integer-base extraction in S2, the raw-to-centred dictionary, the
+determinant's Schur step --- it was completed.  No mathematical claim of
+any source was found to be false; the only corrections were indexing
+conventions, which are recorded above.
+
+\subsection{Status of the claims}
+
+Every theorem, proposition, lemma and corollary carries a proof.  Every
+displayed rational number, weight row, polynomial coefficient and example
+value is asserted by the retained verifier
+(\cref{rf:sec:examples-verifier}), whose recorded run passed with the
+counts of \cref{rf:tab:examples-checks}.  The verifier merges the three
+retired programs of the sources (\texttt{verify\_formulas.py},
+\texttt{verify\_closed\_forms.py}, \texttt{verify.py}) and adds the checks
+introduced by the consolidation: the raw-to-centred dictionary, the
+Bernoulli-free cumulants, the second reciprocal expansion, the arbitrary-depth
+weights, the closed half-base form, the density law, the derivative formula
+against the dilation law, and every constant printed here.  No Lean
+formalization of the new material is claimed; \cref{rf:sec:register} is
+the boundary.
+
+% =====================================================================
+\begin{thebibliography}{99}
+\setlength{\itemsep}{3pt}
+
+\bibitem{proveit-primary}
+V. Reshetnikov and contributors,
+\emph{The Fabius Function and Rvachev's Up-Function: Exact arithmetic,
+probability, Fourier analysis, and corrected sharp asymptotics},
+primary exposition of the \texttt{ProveIt} repository,
+\path{Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up/}, together
+with the Lean development under \path{Analysis/FabiusFunction/}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{proveit-due}
+V. Reshetnikov,
+\emph{Exact Dyadic Extraction of Rvachev's Up-Function from Finite
+Sinc-Product Splines}, canonical consolidated volume of the subgroup
+\path{drafts/inverse-and-sampling/dyadic-up-extraction/Dyadic_Up_Extraction/},
+3 September 2026.
+
+\bibitem{proveit-exponents}
+V. Reshetnikov,
+\emph{Geometric $q$-Fabius Frontiers}, consolidated volume
+\path{drafts/exponents-and-q-series/geometric_q_fabius_frontiers/}, Part III
+(the finite sinc-product splines and the quarter-base Richardson combination).
+
+\bibitem{arias1982}
+J. Arias de Reyna,
+\emph{An infinitely differentiable function with compact support: Definition
+and properties}, English translation (2017) of the paper in
+\emph{Rev. Real Acad. Ciencias Exactas F\'{\i}s. Natur. Madrid} \textbf{76}
+(1982), 21--38.  \url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{arias2018}
+J. Arias de Reyna,
+\emph{Arithmetic of the Fabius function},
+\emph{Integers} \textbf{18} (2018), Paper A51, 20 pp.
+\url{https://math.colgate.edu/~integers/s51/s51.pdf};
+preprint \url{https://arxiv.org/abs/1702.06487}.
+
+\bibitem{haugland}
+J. K. Haugland,
+\emph{Evaluating the Fabius function},
+arXiv:1609.07999, version 2 (2020; first version 2016).
+\url{https://arxiv.org/abs/1609.07999}.
+
+\bibitem{reshetnikov2019}
+V. Reshetnikov,
+\emph{Conjectured formula for the Fabius function},
+Mathematics Stack Exchange, question posted 5 July 2019.
+\url{https://math.stackexchange.com/questions/3283519/conjectured-formula-for-the-fabius-function}.
+
+\bibitem{pinelis2020}
+I. Pinelis,
+answer to \emph{A non-recursive, explicit formula for the Fabius function},
+MathOverflow, January 2020.
+\url{https://mathoverflow.net/questions/351004/a-non-recursive-explicit-formula-for-the-fabius-function}.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions,
+\S4.22 (infinite products and partial fractions, Eq.~4.22.1),
+\S17.2 ($q$-calculus), \S24.2 (Bernoulli numbers).
+\url{https://dlmf.nist.gov/}.
+
+\end{thebibliography}
+\end{document}

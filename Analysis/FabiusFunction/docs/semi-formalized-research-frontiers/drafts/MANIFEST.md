@@ -1562,29 +1562,34 @@ dyadic-depth theorem is not.  A byte-identical reship of
 at intake.
 
 Three further independently written articles arrived on 2026-09-04 and were
-filed in this subgroup the same day as separate members beside the volume.  All
-three answer the same question -- an exact evaluation of `F(a/2^n)` and
-`Up(a/2^n)` in which no auxiliary quantity is defined by a moment recurrence or
-a limiting process -- and all three reach it through the same mechanism as the
-volume: at a dyadic argument of depth `n`, the centered finite-spline values are
-an *exact* polynomial in `4^{-N}` of degree at most `floor(n/2)`, so Lagrange
-evaluation at zero recovers the value from `floor(n/2) + 1` consecutive levels.
-That is the volume's extraction row read as an evaluation formula rather than an
-extraction, which is why they are filed here.  The same statement is proved
-independently in `thue-morse/Thue_Morse_Research/` from this batch.  Directory
-names are the archive stems: `fabius_dyadic_closed_forms-2.zip` shipped no
-wrapping directory, and `fabius_rvachev_recurrence_free_closed_forms.zip`
-wrapped a directory named `fabius_closed_forms/`.  All three PDFs are A4 with
-every font embedded and no Type-3 row; two carry Libertinus faces.  No source
-loads `docs/fabius-notation.tex`; none shipped a checksum ledger.  Quick intake
-only; comparison with the volume and with each other, canonical selection,
-proof checking, numerical reproduction, and Lean crosswalking are deferred.
+filed in this subgroup the same day as separate members beside the volume
+(`fabius_dyadic_closed_forms/`, `fabius_dyadic_closed_forms-2/`,
+`fabius_rvachev_recurrence_free_closed_forms/`).  All three answered the same
+question -- an exact evaluation of `F(a/2^n)` and `Up(a/2^n)` in which no
+auxiliary quantity is defined by a moment recurrence or a limiting process --
+and all three reached it through the same mechanism as the volume: at a dyadic
+argument of depth `n`, the centered finite-spline values are an *exact*
+polynomial in `4^{-N}` of degree at most `floor(n/2)`, so Lagrange evaluation
+at zero recovers the value from `floor(n/2) + 1` consecutive levels.  That is
+the volume's extraction row read as an evaluation formula rather than an
+extraction, which is why they were filed here.  The same statement is proved
+independently in `thue-morse/Thue_Morse_Research/` from this batch.  They were
+merged editorially the same day into one companion document,
+`Recurrence_Free_Dyadic_Values/`: one statement of each result, every sketched
+or omitted proof written, the four numerator letters, three coefficient names,
+three reciprocal-coefficient names and two spline indexings reconciled once,
+every printed rational re-verified by a retained exact-arithmetic verifier
+that merges the three retired source programs.  The three directories and
+their retained arrival PDFs were deleted after a residue audit of every titled
+result; git history is the archive, and the companion's provenance appendix
+records what each source contributed.  The companion is kept beside the volume
+rather than folded in: the volume is the extraction theory in the density
+normalization, the companion the evaluation calculus in the
+distribution-function normalization, with an explicit dictionary between them.
 
 | Directory | Document | Supporting evidence | Previous path / provenance |
 | --- | --- | --- | --- |
-| `dyadic-up-extraction/fabius_dyadic_closed_forms/` | *Recurrence-Free Closed Forms for Dyadic Fabius and Rvachev Values* -- positive ordered-composition sums, Bernoulli and Bernoulli-free multiplicity-partition sums, finite-uniform-prefix formulas, and an integer bordered-determinant formula with an explicit permutation reading; a binary-block identity cuts the argument-dependent part from a Thue--Morse prefix of length `a` to at most `n+1` terms for `a/2^n`, and a second, moment-free finite spline formula at Gaussian base `1/4` uses only `floor(n/2)+1` prefixes with no limiting operation; the article is explicit that exactness comes from the polynomial pieces of finite splines and not from assuming that `F` equals its finite Taylor jet; 8 theorems, 2 lemmas, 2 corollaries in 15 sections. Filed source `fabius_dyadic_closed_forms.tex`, 1{,}441 lines / 62{,}402 bytes; filed PDF 22 A4 pages / 490{,}000 bytes. | `verify_formulas.py` with a captured `verification_output.txt` | `incoming/fabius_dyadic_closed_forms.zip` |
-| `dyadic-up-extraction/fabius_dyadic_closed_forms-2/` | *Recurrence-Free Dyadic Values of the Fabius and Rvachev Functions* -- expresses `F(m/2^n)` through `floor(n/2)+1` explicitly specified finite Thue--Morse power sums with rational quarter-base interpolation weights, proves the degree is exactly `floor(n/2)` at reduced interior dyadics -- so the sample count is optimal for a rule whose weights work on the whole grid -- and identifies the shrinking spline cell with a finite deconvolution of the dyadic Taylor polynomial; a second formula compresses the arithmetic to one outer summand per nonzero binary digit of the numerator; also gives a certified rounding representation, the Rvachev bump and signed global extension, and an integer-base geometric-uniform generalization; 11 theorems, 4 propositions, 7 lemmas, 2 corollaries in 16 sections; asserts no priority and no Lean formalization of the additional results. Filed source `fabius_dyadic_closed_forms.tex`, 1{,}456 lines / 71{,}737 bytes; filed PDF 26 A4 pages / 637{,}900 bytes. | `verify_closed_forms.py` with `verification_results.json` | `incoming/fabius_dyadic_closed_forms-2.zip` |
-| `dyadic-up-extraction/fabius_rvachev_recurrence_free_closed_forms/` | *Recurrence-Free Dyadic Formulae for the Fabius and Rvachev Functions* -- completes the classical Thue--Morse formula in two ways, by a Bernoulli partition expansion with the Bernoulli numbers themselves expanded into finite power sums and by a positive ordered-composition expansion; adds a binary-digit telescope removing the long Thue--Morse prefix and an integer bordered determinant giving a compact certificate and common denominator; proves the cutoff-polynomial identity and its exact degree at reduced interior dyadics, connects it to the existing half-base formula, and derives analogues for the Rvachev bump, derivatives, iterated primitives, and normalized reciprocal-integer-base uniform series; substituting the finite box-volume formula yields a double finite sum in integers, factorials, Thue--Morse signs, and `q`-Pochhammer symbols at `q = 1/4`; 12 theorems, 2 propositions, 5 lemmas in 14 sections. Filed source `dyadic_closed_forms.tex`, 1{,}681 lines / 68{,}704 bytes; filed PDF 23 A4 pages / 711{,}303 bytes. | `verify.py` with `verification.json`; the article reports exact rational comparison of five formulae on 520 dyadic grid cases plus separate spline, bump, shift, and other-base tests, not replayed at intake | `incoming/fabius_rvachev_recurrence_free_closed_forms.zip` |
+| `dyadic-up-extraction/Recurrence_Free_Dyadic_Values/` | **Canonical companion, consolidation complete:** *Recurrence-Free Dyadic Values of the Fabius and Rvachev Functions* -- the quarter-base closed formula `F(m/2^n) = Σ_j w_{d,j} S_{n+j}(2^j m)/(2^{T_{n+j}} (n+j)!)` with `d = floor(n/2)` and explicit integer Thue--Morse power sums; the exact shrinking-cell theorem and scale polynomial behind it, exact degree at reduced interior dyadics, minimal sample count for grid-wide linear rules, and the row's absolute sum below 2; the master identity in raw and centred form; moment coefficients by positive compositions, Bernoulli multiplicity sums with finite Bernoulli numbers, a Bernoulli-free factorial formula, and finite-prefix interpolation; a binary block formula valid for the signed extension at every numerator and a binary telescope; an integer bordered determinant with two common denominators and a certified rounding formula; the half-base row with arbitrary shift; direct extraction from finite densities; every dyadic derivative and iterated primitive; the reciprocal-integer-base extension; a dictionary to the extraction volume (`up_n = u_{n+1}`, `a_r = (-1)^r e_r`) and a formalization register. 18 theorems, 5 propositions, 11 lemmas, 2 corollaries, every one with a proof, in 14 sections and 5 appendices; loads `docs/fabius-notation.tex`; labels `rf:`. Source `Recurrence_Free_Dyadic_Values.tex`, 3{,}197 lines / 151{,}386 bytes; PDF 42 A4 pages / 1{,}110{,}011 bytes, three passes, 0 errors / undefined references / overfull boxes above 15 pt. | `verify_recurrence_free_dyadic_values.py` with its recorded run `verification_results.json`: standard library only, exact rationals; seven value formulas on all 1{,}033 representations through depth 8, cell identity, scale polynomials, exact degree, derivatives, rounding, shifted half base, density extraction, integer bases, every printed constant | Editorial merge (2026-09-04) of the three 2026-09-04 arrivals `fabius_dyadic_closed_forms/`, `fabius_dyadic_closed_forms-2/`, `fabius_rvachev_recurrence_free_closed_forms/` (archive stems as directory names; from `incoming/`); absorbed directories and their arrival PDFs deleted after a residue audit, git history is the archive, per-source contributions in the companion's provenance appendix |
 | `dyadic-up-extraction/Dyadic_Up_Extraction/` | **Canonical, consolidation complete:** *Exact Dyadic Extraction of Rvachev's Up-Function from Finite Sinc-Product Splines* — 6{,}491-line/334{,}375-byte source (`1f3d0f03…86e582`) and the 77-page A4 PDF built from it in the same three-pass run (1{,}429{,}227 bytes, `26b967e4…72ede7`) | `verify_dyadic_up_extraction.py` (646 lines, `11f52767…44a322`): exact-arithmetic verifier adapted from the sixth arrival's, opt-in outputs, five added checks; every reduced dyadic point of depth ≤ 7 | Editorial merge (2026-09-03) of the six 2026-09-02 arrivals `Dyadic-Up-Extraction/`, `Exact_Dyadic_Up_Extraction/`, `Exact_Geometric_Tails_Rvachev_Up/`, `dyadic_up_extraction_package/`, `rvachev_q_extrapolation/`, `rvachev_up_dyadic_extrapolation_package/` from intake commit `8f822212d`; absorbed directories deleted, git history is the archive, per-source receipts in the volume's provenance appendix |
 
 ## representations — `representations/`

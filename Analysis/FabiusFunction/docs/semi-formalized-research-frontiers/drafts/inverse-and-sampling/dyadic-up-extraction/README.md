@@ -1,6 +1,10 @@
 # Dyadic up-extraction
 
-This subgroup holds one document.
+This subgroup holds two documents: the canonical extraction volume and its
+evaluation-formula companion, consolidated from three arrivals of
+2026-09-04.
+
+## The canonical volume
 
 [`Dyadic_Up_Extraction/`](Dyadic_Up_Extraction/) is the canonical volume
 *Exact Dyadic Extraction of Rvachev's Up-Function from Finite Sinc-Product
@@ -24,67 +28,117 @@ the defect at the last level before the onset is exactly
 at odd depth), so the onset is sharp; and records in a formalization
 register which pieces are kernel-verified in Lean.
 
-- Source: `Dyadic_Up_Extraction.tex`, 6,491 lines, 334,375 bytes;
-  SHA-256 `1f3d0f03119c9e76b5ca0b975c1f0ee958e1412cf8b6b2e7b85a1a30f586e582`.
-- Publication: `Dyadic_Up_Extraction.pdf`, 77 A4 pages, 1,429,227 bytes;
-  SHA-256 `26b967e43c3d34ba57ab5e9d8ead2a9d2a36fa504db216f8758914445072ede7`.
-- Verifier: `verify_dyadic_up_extraction.py`, 646 lines, SHA-256 `11f527679a460f8c65e23fe9b277a4e7ec88f1e0818c3faf0fde9ecb3444a322`;
-  standard library only, exact `fractions.Fraction` arithmetic, writes
-  nothing unless `--out-dir` is given; checks every reduced dyadic point of
-  depth ≤ 7 in about fifteen seconds.
+- Source: `Dyadic_Up_Extraction.tex`, 6,491 lines, 334,375 bytes.
+- Publication: `Dyadic_Up_Extraction.pdf`, 77 A4 pages, 1,429,227 bytes.
+- Verifier: `verify_dyadic_up_extraction.py`, 646 lines; standard library
+  only, exact `fractions.Fraction` arithmetic, writes nothing unless
+  `--out-dir` is given; checks every reduced dyadic point of depth ≤ 7 in
+  about fifteen seconds.
 
-## Provenance
+Six independently written reports arrived as bare directories on 2026-09-02
+and were merged editorially into this volume on 2026-09-03.  All six proved
+the same theorem under six normalizations; none was a superset of the
+others, and each contributed a layer the volume keeps.  The absorbed
+directories and their retained arrival PDFs were deleted after a residue
+audit; git history is the archive, and the volume's provenance appendix
+carries each source's receipt and contribution.  Every result carries a
+proof; every printed rational was checked against the packages' captured
+verification outputs; corrections are marked `% ed.:` at the point of
+repair and collected in the volume's ledger.
 
-Six independently written reports arrived as bare directories in intake
-commit `8f822212d` on 2026-09-02 and were merged editorially into this
-volume on 2026-09-03.  All six proved the same theorem under six
-normalizations; none was a superset of the others, and each contributed a
-layer the volume keeps.  The absorbed directories and their retained
-arrival PDFs were deleted after a residue audit; git history is the archive,
-and the volume's provenance appendix carries each source's receipt and
-contribution.  Every result carries a proof; every printed rational was
-checked against the packages' captured verification outputs; corrections
-are marked `% ed.:` at the point of repair and collected in the volume's
-ledger.
+## The evaluation-formula companion
 
-## Three further arrivals (2026-09-04)
+[`Recurrence_Free_Dyadic_Values/`](Recurrence_Free_Dyadic_Values/) is
+*Recurrence-Free Dyadic Values of the Fabius and Rvachev Functions* (42 A4
+pages; 3,197 source lines, 151,386 bytes; 18 theorems, 5 propositions,
+11 lemmas, 2 corollaries, every one with a proof).  It answers a question
+the volume does not pose: exact evaluation of `F(m/2^n)` and `up(m/2^n)` by
+formulas in which no auxiliary quantity is defined by a moment recurrence or
+a limiting process.  Its principal formula expresses `F(m/2^n)` through
+`⌊n/2⌋ + 1` explicit Thue–Morse integer power sums with rational
+quarter-base interpolation weights — the volume's extraction row read as an
+evaluation formula, with the spline values themselves replaced by integer
+sums — and proves the underlying exact polynomiality of the centred
+finite-uniform distribution functions in `4^{-N}`, the exact degree
+`⌊n/2⌋` at reduced interior dyadics, and the minimality of the sample count
+for any grid-wide linear rule.  Around it are the other finite routes to the
+same rational: the Thue–Morse master identity in raw and centred form; the
+moment coefficients by positive ordered compositions, by Bernoulli
+multiplicity sums with the Bernoulli numbers given as finite sums, by a
+Bernoulli-free factorial formula, and by interpolation of finitely many
+uniform convolutions; two binary compressions to one summand per nonzero
+digit (a block identity valid for the signed extension at every numerator,
+and an alternating telescope); an integer bordered determinant with two
+explicit common denominators and a certified rounding formula; the
+half-base row with arbitrary shift, from which the quarter base follows by
+centring; direct extraction from finite densities; every dyadic derivative
+and iterated primitive; and the normalized reciprocal-integer-base laws.  A
+dictionary section relates its objects to the volume's (`up_n = u_{n+1}`,
+`a_r = (−1)^r e_r`), and a formalization register states which ingredients
+have Lean counterparts (the finite splines, the coefficients, the
+deconvolution at scale one, the dilation law and dyadic jet, the weights
+and their identities, the cell identity at `x = 1/4`) and that the general
+polynomial law and every evaluation theorem are unformalized.
 
-Three independently written articles arrived on 2026-09-04 and are filed in
-this subgroup as separate members beside the volume.  All three answer the same question — exact evaluation of `F(a/2^n)`
-and `Up(a/2^n)` with no auxiliary quantity defined by a moment recurrence or a
-limiting process — and all three reach it through the volume's own mechanism:
-at a dyadic argument of depth `n` the centered finite-spline values are an
-*exact* polynomial in `4^-N` of degree at most `floor(n/2)`, so Lagrange
-evaluation at zero recovers the value from `floor(n/2) + 1` consecutive levels.
-That is the extraction row read as an evaluation formula, which is why they are
-filed here rather than in a new group.
+- Source: `Recurrence_Free_Dyadic_Values.tex`; loads
+  `docs/fabius-notation.tex`; labels prefixed `rf:`.
+- Publication: `Recurrence_Free_Dyadic_Values.pdf`, 42 A4 pages, built by
+  three `pdflatex` passes with 0 errors, 0 undefined references, 0 overfull
+  boxes above 15 pt.
+- Verifier: `verify_recurrence_free_dyadic_values.py` with its recorded
+  run `verification_results.json`; standard library only, exact rational
+  arithmetic, no floating-point tolerance.  It merges the three retired
+  source programs and adds the checks the consolidation introduced; at
+  maximal depth 8 it compares seven value formulas on every representation
+  `m/2^n`, checks the shrinking-cell identity, the scale polynomials, the
+  exact degree, the derivatives against the dilation law, the rounding, the
+  half-base shift identity, the density extraction, the integer bases, and
+  every constant printed in the document.
 
-- [`fabius_dyadic_closed_forms/`](fabius_dyadic_closed_forms/) —
-  *Recurrence-Free Closed Forms for Dyadic Fabius and Rvachev Values*
-  (22 pp A4; 1,441 source lines; 8 theorems).  Ordered-composition sums,
-  Bernoulli and Bernoulli-free multiplicity-partition sums, an integer
-  bordered determinant, a binary-block identity, and the moment-free
-  quarter-base spline formula.
-- [`fabius_dyadic_closed_forms-2/`](fabius_dyadic_closed_forms-2/) —
-  *Recurrence-Free Dyadic Values of the Fabius and Rvachev Functions*
-  (26 pp A4; 1,456 source lines; 11 theorems).  Proves the degree is exactly
-  `floor(n/2)` at reduced interior dyadics, so the sample count is optimal for
-  a rule whose weights work on the whole grid, and compresses the arithmetic
-  to one outer summand per nonzero binary digit.
-- [`fabius_rvachev_recurrence_free_closed_forms/`](fabius_rvachev_recurrence_free_closed_forms/)
-  — *Recurrence-Free Dyadic Formulae for the Fabius and Rvachev Functions*
-  (23 pp A4; 1,681 source lines; 12 theorems).  Two completions of the
-  classical Thue–Morse formula, a binary-digit telescope, a bordered
-  determinant, and analogues for the bump, derivatives, iterated primitives,
-  and reciprocal-integer bases.
+### Provenance of the companion
 
-The same exact-polynomiality statement is proved independently in
+Three independently written articles arrived on 2026-09-04 and were filed
+the same day as separate members beside the volume:
+`fabius_dyadic_closed_forms/` (*Recurrence-Free Closed Forms for Dyadic
+Fabius and Rvachev Values*, 1,441 lines, 22 pp.),
+`fabius_dyadic_closed_forms-2/` (*Recurrence-Free Dyadic Values of the
+Fabius and Rvachev Functions*, 1,456 lines, 26 pp.), and
+`fabius_rvachev_recurrence_free_closed_forms/` (*Recurrence-Free Dyadic
+Formulae for the Fabius and Rvachev Functions*, 1,681 lines, 23 pp.).  They
+overlapped on roughly four fifths of their content — the master identity,
+the composition and partition coefficients, the block formula, the
+quarter-base extraction, the exact degree, the weight bound, the fold to
+the bump — and each carried layers the others lacked: the first the
+Taylor-integral proof for the signed extension, the finite-cube formula,
+the Bernoulli-free cumulants and the Prouhet route to the degree drop; the
+second the shrinking-cell theorem, the minimal-sample theorem, the
+finite-prefix coefficients, the certified rounding and the integer-base
+cumulants; the third the raw-moment forms, the odd-depth formula, the
+telescope, the `(d+1)`-bordered determinant, the general finite-jet
+deconvolution lemma, the shifted half-base identity, the direct density
+extraction, the primitives and the finite base-`b` arithmetic.  They were
+merged editorially into the companion on 2026-09-04 — one statement of
+each result, every sketched or omitted proof written, the four numerator
+letters, three coefficient names, three reciprocal-coefficient names and
+two spline indexings reconciled once, every printed rational re-verified —
+and the three directories with their retained arrival PDFs were deleted
+after a residue audit of every titled result; git history is the archive,
+and the companion's provenance appendix records what each source
+contributed.  No mathematical claim of any source was found to be false;
+the only corrections were indexing conventions.
+
+The same exact-polynomiality statement is also proved independently in
 [`../../thue-morse/Thue_Morse_Research/`](../../thue-morse/Thue_Morse_Research/)
-from the same day's batch.  Directory names are the archive stems: one archive
-shipped no wrapping directory, and one wrapped a directory named
-`fabius_closed_forms/`.  None shipped a checksum ledger, and no source loads
-`docs/fabius-notation.tex`.  Comparison with the volume and with each other,
-canonical selection, proof checking, numerical reproduction, and Lean
-crosswalking are deferred.
+from the same day's batch.
+
+### Why two documents
+
+The volume is the extraction theory in the density normalization, with its
+knot geometry, onset and defect theorems, mode recovery, Romberg tableau,
+and conditioning; the companion is the evaluation calculus in the
+distribution-function normalization.  They share one mechanism and one
+row, and the companion's dictionary section makes the identification exact.
+Folding the companion into the volume as a further part is the natural
+follow-up once the volume's concurrent formalization work has settled.
 
 See [`../../MANIFEST.md`](../../MANIFEST.md) for the group record.
