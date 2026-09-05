@@ -1,0 +1,1927 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{aliascnt}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={New Deductions from Thue--Morse Cancellation},pdfauthor={Research article prepared for Vladimir Reshetnikov},pdfsubject={Spline corrections, dyadic reconstruction, local limit expansions, and spectral moment indeterminacy}}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\newaliascnt{problem}{theorem}
+\newtheorem{problem}[problem]{Research problem}
+\aliascntresetthe{problem}
+\crefname{proposition}{proposition}{propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{lemma}{lemma}{lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{corollary}{corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{definition}{definitions}
+\Crefname{definition}{Definition}{Definitions}
+\crefname{example}{example}{examples}
+\Crefname{example}{Example}{Examples}
+\crefname{remark}{remark}{remarks}
+\Crefname{remark}{Remark}{Remarks}
+\crefname{problem}{research problem}{research problems}
+\Crefname{problem}{Research problem}{Research problems}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\D}{\mathrm D}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\Part}[1]{\substack{k_1,\ldots,k_{#1}\geq0\\\sum_{r=1}^{#1}rk_r=#1}}
+\newcommand{\QP}[2]{(#1;#2)}
+\DeclareMathOperator{\dist}{dist}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Thue--Morse cancellation: new deductions}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{3pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,frame=single,framerule=0.3pt,showstringspaces=false}
+\emergencystretch=2em
+
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{12mm}
+{\large A research extension of the Thue--Morse Atlas\par}
+\vspace{15mm}
+{\LARGE\bfseries New Deductions from\\[4pt] Thue--Morse Cancellation\par}
+\vspace{8mm}
+{\Large Global spline corrections, exact dyadic reconstruction,\\[3pt]
+local-limit expansions, and spectral moment twins\par}
+\vspace{11mm}
+{\large 4 September 2026\par}
+\vspace{12mm}
+\begin{minipage}{0.91\textwidth}
+\begin{abstract}
+The factorization of a Thue--Morse block into binary differences connects
+integer cancellation, compactly supported smooth functions, and lacunary
+Fourier products. We exploit the geometry of the derivative copies, rather
+than only the formal product expansion, to obtain four groups of results.
+First, finite uniform-convolution splines admit a global, all-orders
+$C^k$ correction expansion with explicit error bounds and exact leading
+supremum constants; no neighborhoods of their knots must be removed.
+Second, at a fixed dyadic argument the finite spline values become an
+\emph{exact polynomial} in $4^{-m}$. A finite Richardson formula therefore
+recovers the limiting value exactly, with absolute error amplification less
+than two at every extrapolation order.
+Third, the positive coefficients obtained by repeatedly summing a finite
+Thue--Morse block satisfy an exact differential conversion formula, a
+uniform local-limit expansion with explicit coefficient polynomials, and
+an exact terminating version on dyadic lattice subsequences. Finally, the
+normalized Fourier-energy density has moments $2^{r(r+1)}$ and consequently
+shares every polynomial moment with both a symmetric lognormal density and
+an explicit family of discrete theta measures. A separated geometric
+extension explains this last phenomenon beyond the binary case.
+
+All central claims are proved. Exact rational computations are supplied
+separately for reproducibility. The claimed contribution is the collection
+of deductions and quantitative refinements established here; classical
+identities are identified, and worldwide publication priority is not
+asserted.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.91\textwidth}
+\small
+\textbf{Status.} An independently checkable research manuscript, not a
+peer-reviewed publication or a Lean formalization. It develops and tests
+specific extensions of the supplied repository document. The distinction
+between exact identities, asymptotic statements, and unresolved extensions
+is maintained throughout.
+\end{minipage}
+\end{titlepage}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Research setting and the main contributions}\label{sec:intro}
+
+The signed Thue--Morse sequence is
+\begin{equation}
+ \eps_n=(-1)^{s_2(n)},\qquad n\geq0,
+ \label{eq:epsilon}
+\end{equation}
+where $s_2(n)$ is the number of ones in the binary expansion of $n$.
+Its apparent irregularity coexists with exact cancellation on every
+complete binary block. The classical survey of Allouche and Shallit
+\cite{allouche-shallit} describes the unusually broad reach of this
+sequence. Here we investigate one particularly productive direction:
+what quantitative information survives when those finite cancellations
+are integrated repeatedly and then passed to a smooth limit?
+
+The supplied \emph{Thue--Morse Atlas and Frontiers} \cite{atlas} already
+contains the finite-block factorization, the Fabius--Rvachev bridge,
+spectral correction coefficients, and a weak spline expansion. Its
+Part~II leaves a strong spline-correction statement away from knots as a
+conjecture. Our first main theorem proves a global fixed-order statement,
+including the knots, and identifies the exact leading norm constant.
+The other principal developments concern finite stopping on dyadic
+arguments, the local behavior of repeated-prefix coefficients, and a
+moment-theoretic interpretation of Fourier energy.
+
+The underlying compactly supported function is not new. Its probability
+interpretation, derivative identities, and rational values at dyadic
+points belong to the established theory, particularly the work of Arias
+de Reyna \cite{arias1982,arias2018}. We use these mechanisms explicitly,
+reprove the required facts, and do not relabel rationality or the binary
+product identity as discoveries. Recent work on Thue--Morse transforms,
+for example \cite{cloitre}, provides additional context for finite-block
+identities; the analytic questions treated here are more specific.
+
+\subsection{A compact statement of the results}
+
+Let $V_1,V_2,\ldots$ be independent, uniformly distributed random variables
+on $[-1,1]$. Let $u_m$ and $u$ be the densities of
+\begin{equation}
+ Y_m=\sum_{j=1}^m2^{-j}V_j,
+ \qquad
+ Y=\sum_{j=1}^{\infty}2^{-j}V_j,
+ \qquad h=2^{-m}.
+ \label{eq:random-series}
+\end{equation}
+Thus $u$ is the Rvachev up-function in the normalization
+$\supp u=[-1,1]$ and $u(0)=1$. Write
+\begin{equation}
+ a_j=\frac{\E Y^{2j}}{(2j)!},\qquad
+ K_r=2^{r(r+1)/2}.
+ \label{eq:a-K}
+\end{equation}
+The four main conclusions are as follows.
+
+\paragraph{Global correction with a sharp constant.}
+For fixed $k,N\geq0$, and $m\geq k+2N+4$,
+\begin{equation}
+ \left\|\D^k\left(u-\sum_{j=0}^N a_j4^{-jm}u_m^{(2j)}\right)\right\|_\infty
+ \leq a_{N+1}K_{k+2N+2}4^{-(N+1)m}.
+ \label{eq:intro-strong}
+\end{equation}
+After multiplication by $4^{(N+1)m}$, the norm on the left converges to
+the constant on the right. In particular,
+$4^m\norm{u-u_m}_\infty\to4/9$.
+The proof is in \cref{sec:global}.
+
+\paragraph{Exact dyadic reconstruction.}
+If $x=a/2^d\in(-1,1)$, then, once $m\geq d+2$,
+\begin{equation}
+ u_m(x)=\sum_{j=0}^{\lfloor d/2\rfloor}b_j4^{-jm}u^{(2j)}(x),
+ \qquad \sum_{j\geq0}b_jz^{2j}=\frac1{\E e^{zY}}.
+ \label{eq:intro-dyadic}
+\end{equation}
+This is an equality, not an asymptotic series. Consequently
+$\lfloor d/2\rfloor+1$ consecutive spline levels determine $u(x)$ exactly.
+The reconstruction weights have total absolute value less than two.
+See \cref{sec:dyadic}.
+
+\paragraph{A local-limit expansion with finite stopping.}
+Let $c_m(k)$ be the coefficients of
+\begin{equation}
+ A_m(z)=\frac{\prod_{j=0}^{m-1}(1-z^{2^j})}{(1-z)^m}
+       =\prod_{j=0}^{m-1}(1+z+\cdots+z^{2^j-1}).
+ \label{eq:intro-Am}
+\end{equation}
+After the centering and scaling in \cref{sec:lattice}, their lattice
+density $\rho_m$ satisfies uniformly on its entire lattice
+\begin{equation}
+ \rho_m(x)=u(x)-\left(\frac m6+\frac1{18}\right)4^{-m}u''(x)
+            +O(m^2 16^{-m}).
+ \label{eq:intro-local}
+\end{equation}
+There are explicit polynomial coefficients at every order. At fixed
+dyadic points, on the odd-level lattice subsequence, the expansion
+terminates exactly. The sharp uncorrected uniform error constant is
+$4/3$ when the error is divided by $m4^{-m}$.
+
+\paragraph{Moment twins of Fourier energy.}
+With angular-frequency Fourier transform
+$Q(t)=\int e^{\ii tx}u(x)\dd x$, the probability measure
+\begin{equation}
+ \dd\nu(t)=\frac{|Q(t)|^2\dd t}{\int_{\R}|Q(s)|^2\dd s}
+ \label{eq:intro-nu}
+\end{equation}
+has odd moments zero and even moments $2^{r(r+1)}$. It has the same
+polynomial moments as $S e^L$, where $S$ is an independent uniform sign
+and
+\begin{equation}
+ L\sim N\left(\frac{\log2}{2},\frac{\log2}{2}\right).
+ \label{eq:intro-lognormal}
+\end{equation}
+An explicit one-parameter family of purely atomic measures has these
+moments as well. The identification of this spectral measure, rather
+than the classical indeterminacy of lognormal moments itself, is the
+point of \cref{sec:spectral}.
+
+\subsection{Scope of the novelty claim}
+
+There are two different questions: whether a theorem is proved, and
+whether it has appeared anywhere before. The proofs below settle the
+first for the stated results. A targeted literature check supports
+presenting the global sharp correction theorem, finite dyadic stopping,
+and the explicit lattice refinements as research contributions relative
+to the inspected atlas. That check is not an exhaustive priority search.
+The Fourier-energy identification is presented as an additional
+potentially novel connection, with the lognormal background explicitly
+credited to the classical moment literature \cite{heyde}.
+
+Nothing below purports to solve questions about primes, squares, cubes,
+normality, or all possible Thue--Morse exponential sums. We instead
+establish a coherent set of complete results in the finite-block,
+spline, and Fourier directions.
+
+\section{From binary cancellation to compactly supported splines}\label{sec:basic}
+
+\subsection{The finite product and polynomial cancellation}
+
+For $m\geq0$ define
+\begin{equation}
+ P_m(z)=\sum_{n=0}^{2^m-1}\eps_nz^n.
+ \label{eq:Pm}
+\end{equation}
+Choosing whether each binary digit is present gives the classical identity
+\begin{equation}
+ P_m(z)=\prod_{j=0}^{m-1}(1-z^{2^j}).
+ \label{eq:block-product}
+\end{equation}
+Indeed, a subset $J\subseteq\{0,\ldots,m-1\}$ contributes
+$(-1)^{|J|}z^{\sum_{j\in J}2^j}$, and every integer in the block has a
+unique such representation.
+
+Substitution $z=e^t$ gives
+\begin{equation}
+ \sum_{n=0}^{2^m-1}\eps_ne^{nt}
+ =(-1)^m2^{m(m-1)/2}t^m+O(t^{m+1}),
+\end{equation}
+so
+\begin{equation}
+ \sum_{n=0}^{2^m-1}\eps_n n^r=
+ \begin{cases}
+ 0,&0\leq r<m,\\
+ (-1)^m m!2^{m(m-1)/2},&r=m.
+ \end{cases}
+ \label{eq:prouhet}
+\end{equation}
+This elementary Prouhet cancellation is the algebraic source of all
+compact-support cancellations used below.
+
+\subsection{The continuous convolution model}
+
+The $j$th term $2^{-j}V_j$ has density
+\begin{equation}
+ f_j(x)=2^{j-1}\mathbf1_{[-2^{-j},2^{-j}]}(x).
+\end{equation}
+Therefore $u_m=f_1*\cdots*f_m$. Its support is
+$[-1+h,1-h]$, and for $m\geq2$ it is a $C^{m-2}$ piecewise polynomial
+of degree at most $m-1$.
+
+The infinite random series in \eqref{eq:random-series} converges
+absolutely for every outcome. The distributional tail is an exact
+scaled copy of the entire series:
+\begin{equation}
+ Y\ \overset{\mathrm d}=\ Y_m+hY',
+ \qquad Y'\text{ independent of }Y_m,\quad \Law(Y')=\Law(Y).
+ \label{eq:tail-law}
+\end{equation}
+Its characteristic function is
+\begin{equation}
+ Q(t)=\prod_{j=1}^{\infty}\sinc(2^{-j}t),\qquad
+ \sinc t=\begin{cases}\sin t/t,&t\ne0,\\1,&t=0.\end{cases}
+ \label{eq:Q}
+\end{equation}
+Our Fourier convention is
+\begin{equation}
+ Q(t)=\int_{\R}e^{\ii tx}u(x)\dd x,
+ \qquad
+ u(x)=\frac1{2\pi}\int_{\R}e^{-\ii tx}Q(t)\dd t.
+ \label{eq:Fourier-convention}
+\end{equation}
+No factor of $2\pi$ is hidden inside the definition of $\sinc$.
+
+\begin{lemma}[Smoothness and a useful Fourier bound]\label{lem:decay}
+For every integer $L\geq1$,
+\begin{equation}
+ |Q(t)|\leq\min\{1,K_L|t|^{-L}\},
+ \qquad K_L=2^{L(L+1)/2}.
+ \label{eq:Qbound}
+\end{equation}
+The law of $Y$ has an even density $u\in C_c^\infty(\R)$, supported
+on $[-1,1]$, with $0\leq u\leq1$ and $u(0)=1$.
+\end{lemma}
+\begin{proof}
+For the first $L$ factors, use
+$|\sinc(2^{-j}t)|\leq2^j/|t|$; all remaining factors have modulus
+at most one. This proves \eqref{eq:Qbound}. Consequently
+$|t|^rQ(t)$ is integrable for every $r$, by choosing $L>r+1$.
+Fourier inversion yields a smooth density. Compact support and evenness
+follow from the random series. Finally write $Y=V_1/2+R$, where
+$R$ is independent and supported on $[-1/2,1/2]$. Convolution with the
+unit-height density of $V_1/2$ proves $u\leq1$ and $u(0)=1$.
+The same reasoning shows $\norm{u_m}_\infty=1$.
+\end{proof}
+
+\subsection{A finite signed formula}
+
+For $y\in\R$ write $y_+=\max\{y,0\}$.
+\begin{proposition}[Thue--Morse positive-part formula]\label{prop:positive-part}
+For $m\geq2$,
+\begin{equation}
+ u_m(x)=\frac{2^{m(m-1)/2}}{(m-1)!}
+ \sum_{n=0}^{2^m-1}\eps_n
+       (x+1-h-2hn)_+^{m-1}.
+ \label{eq:spline-positive}
+\end{equation}
+In particular the knots are among $-1+h+2hn$.
+For $0\leq r\leq m-2$, differentiation gives
+\begin{equation}
+ u_m^{(r)}(x)=\frac{2^{m(m-1)/2}}{(m-1-r)!}
+ \sum_{n=0}^{2^m-1}\eps_n
+       (x+1-h-2hn)_+^{m-1-r}.
+ \label{eq:spline-deriv-positive}
+\end{equation}
+The analogous formula for $r=m-1$ holds on open cells.
+\end{proposition}
+\begin{proof}
+The distributional derivative of $f_j$ is
+$2^{j-1}(\delta_{-2^{-j}}-\delta_{2^{-j}})$. Hence
+\begin{equation}
+ u_m^{(m)}=2^{m(m-1)/2}
+ \sum_{n=0}^{2^m-1}\eps_n\delta_{-1+h+2hn}.
+\end{equation}
+To see the locations and signs, select an upper endpoint in any subset
+of the $m$ factors. The lengths $2^{1-j}$, when put in reverse order,
+are $2h,4h,\ldots,2^mh$. Their subset sums give $2hn$ and their signs
+are $\eps_n$. Integrating $m$ times from $-\infty$ proves
+\eqref{eq:spline-positive}. The polynomial terms to the right of the
+support cancel by \eqref{eq:prouhet}. The derivative formula follows.
+\end{proof}
+
+The signed formula is excellent for exact rational computation, but
+its large cancelling summands make naive floating-point evaluation
+unreliable. A stability statement for extrapolation is not a stability
+statement for this inner signed sum.
+
+\section{The derivative-copy geometry}\label{sec:derivative}
+
+The key analytic fact is that, after differentiation, the rescaled
+copies have disjoint interiors. Thus differentiating a fixed number of
+times does \emph{not} introduce a factor growing with $m$.
+
+\begin{proposition}[Exact derivative copies and norm identities]\label{prop:copies}
+For integers $r\geq0$ and $m\geq r+2$,
+\begin{align}
+ u_m^{(r)}(x)
+ &=K_r\sum_{n=0}^{2^r-1}\eps_n
+       u_{m-r}(2^r x+2^r-1-2n),\label{eq:finite-copies}\\
+ u^{(r)}(x)
+ &=K_r\sum_{n=0}^{2^r-1}\eps_n
+       u(2^r x+2^r-1-2n).\label{eq:infinite-copies}
+\end{align}
+For every $1\leq p\leq\infty$,
+\begin{align}
+ \norm{u_m^{(r)}}_p&=K_r\norm{u_{m-r}}_p,
+ &\norm{u^{(r)}}_p&=K_r\norm{u}_p,\label{eq:Lp-copies}\\
+ \norm{u_m^{(r)}}_\infty&=K_r,
+ &\norm{u^{(r)}}_\infty&=K_r.\label{eq:sharp-deriv-norm}
+\end{align}
+\end{proposition}
+\begin{proof}
+Differentiating the first box and rescaling the tail gives
+\begin{equation}
+ u_m'(x)=2\{u_{m-1}(2x+1)-u_{m-1}(2x-1)\}.
+ \label{eq:refinement-derivative}
+\end{equation}
+The same argument applies to $u$. On iterating, the accumulated
+factor is $2^{1+2+\cdots+r}=K_r$. At every step, endpoint choices
+contribute binary digit signs, proving the two copy identities.
+
+The $n$th infinite copy is supported on
+\begin{equation}
+ \left[-1+\frac{2n}{2^r},\ -1+\frac{2n+2}{2^r}\right].
+\end{equation}
+These intervals meet only at their endpoints. Finite copies have still
+smaller supports. Thus there is no cancellation in the integral of the
+$p$th power of the absolute value. A change of variable contributes
+$2^{-r}$ for each of the $2^r$ copies, giving
+\eqref{eq:Lp-copies}. The supremum statement uses
+$\norm{u_j}_\infty=\norm{u}_\infty=1$.
+\end{proof}
+
+\begin{remark}[What is classical, and what is used here]
+Derivative self-similarity is an established part of the Fabius theory
+\cite{arias1982,arias2018}. We emphasize the exact norm consequence and
+its uniformity in the finite level. That simple observation is the
+mechanism behind the global remainder theorem and the spectral-moment
+calculation below.
+\end{remark}
+
+\begin{corollary}[Vanishing high derivatives at a dyadic point]\label{cor:dyadic-jet}
+If $x=a/2^d\in(-1,1)$ and $r>d$, then $u^{(r)}(x)=0$.
+\end{corollary}
+\begin{proof}
+In \eqref{eq:infinite-copies}, $2^rx$ is an even integer and
+$2^r-1-2n$ is odd. Every argument is therefore an odd integer.
+The density $u$ is zero at and outside $\pm1$.
+\end{proof}
+
+This does not say that $u$ agrees with its Taylor polynomial on a
+neighborhood of $x$. Vanishing higher derivatives at one point and
+local polynomiality are very different assertions for a $C^\infty$
+function.
+
+\section{Explicit coefficient calculus}\label{sec:coefficients}
+
+The moment generating function
+\begin{equation}
+ M(z)=\E e^{zY}=\prod_{j=1}^{\infty}
+          \frac{\sinh(2^{-j}z)}{2^{-j}z}
+      =\sum_{j=0}^{\infty}a_jz^{2j}
+ \label{eq:MGF}
+\end{equation}
+is entire. Its reciprocal is analytic near the origin. We shall need
+both its coefficients and those of two closely related functions.
+
+Define
+\begin{equation}
+ \lambda_r=\frac{\zeta(2r)}{r\pi^{2r}},\qquad r\geq1.
+ \label{eq:lambda}
+\end{equation}
+The sine product \cite[Sec.~4.22]{dlmf}, or its logarithmic derivative
+followed by integration, gives
+\begin{align}
+ -\log\sinc z&=\sum_{r\geq1}\lambda_rz^{2r},\label{eq:log-sinc}\\
+ \log M(z)&=\sum_{r\geq1}
+     \frac{(-1)^{r+1}\lambda_r}{4^r-1}z^{2r}.
+ \label{eq:logM}
+\end{align}
+The first coefficients are
+$\lambda_1=1/6$, $\lambda_2=1/180$, and $\lambda_3=1/2835$.
+Euler's even-zeta formula makes every $\lambda_r$ rational.
+
+For any sequence $v_1,v_2,\ldots$, define the finite partition polynomial
+\begin{equation}
+ \mathcal E_j(v)=
+ \sum_{\Part{j}}\prod_{r=1}^j\frac{v_r^{k_r}}{k_r!},
+ \qquad \mathcal E_0(v)=1.
+ \label{eq:partition-polynomial}
+\end{equation}
+It is characterized by
+$\exp(\sum_{r\geq1}v_rz^r)=\sum_{j\geq0}\mathcal E_j(v)z^j$.
+Thus all coefficients in this article have explicit finite-sum
+expressions, without requiring auxiliary recurrences.
+
+\begin{proposition}[The four coefficient families]\label{prop:coeff-families}
+Let
+\begin{align}
+ \frac1{M(z)}&=\sum_{j\geq0}b_jz^{2j},\label{eq:b-def}\\
+ \left(\frac z{\sinh z}\right)^m&=
+      \sum_{j\geq0}\gamma_j(m)z^{2j},\label{eq:gamma-def}\\
+ \exp\left(\sum_{r\geq1}\lambda_r
+           \left(m+\frac1{4^r-1}\right)z^r\right)
+      &=\sum_{j\geq0}H_j(m)z^j.\label{eq:H-def}
+\end{align}
+Then
+\begin{align}
+ a_j&=\mathcal E_j\left(
+        \frac{(-1)^{r+1}\lambda_r}{4^r-1}\right),\label{eq:a-partition}\\
+ b_j&=(-1)^j\mathcal E_j\left(\frac{\lambda_r}{4^r-1}\right),\label{eq:b-partition}\\
+ \gamma_j(m)&=(-1)^j\mathcal E_j(m\lambda_r),\label{eq:gamma-partition}\\
+ H_j(m)&=\mathcal E_j\left(\lambda_r
+                     \left(m+\frac1{4^r-1}\right)\right).
+ \label{eq:H-partition}
+\end{align}
+For each $j$, $H_j(m)$ is a rational polynomial of degree $j$ with
+positive coefficients and leading term $m^j/(6^j j!)$. Moreover,
+\begin{equation}
+ \sum_{\ell=0}^j\gamma_\ell(m)b_{j-\ell}=(-1)^jH_j(m).
+ \label{eq:coefficient-convolution}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Expand the exponentials in \eqref{eq:logM}--\eqref{eq:H-def}.
+For the alternating families, the sign of each partition monomial
+is $(-1)^{\sum rk_r}=(-1)^j$. The only degree-$j$ term in $m$ comes
+from $k_1=j$. Multiplication of the two reciprocal generating
+functions gives \eqref{eq:coefficient-convolution}.
+\end{proof}
+
+For reference, the first $a_j$ and $b_j$ are
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\begin{tabular}{c@{\qquad}r@{\qquad}r}
+\toprule
+$j$ & $a_j$ & $b_j$\\
+\midrule
+0 & $1$ & $1$\\
+1 & $1/18$ & $-1/18$\\
+2 & $19/16200$ & $31/16200$\\
+3 & $583/42865200$ & $-2347/42865200$\\
+4 & $132809/1311675120000$ & $1904369/1311675120000$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first lattice correction polynomials are
+\begin{align}
+ H_0(m)&=1,\nonumber\\
+ H_1(m)&=\frac m6+\frac1{18},\label{eq:H-first}\\
+ H_2(m)&=\frac{(m+1/3)^2}{72}+\frac{m+1/15}{180},\nonumber\\
+ H_3(m)&=\frac{(m+1/3)^3}{1296}
+      +\frac{(m+1/3)(m+1/15)}{1080}
+      +\frac{m+1/63}{2835}.\nonumber
+\end{align}
+
+\subsection{An optional rational recurrence for computation}
+
+Writing $\mu_{2j}=\E Y^{2j}$, one may alternatively use
+\begin{equation}
+ (2j+1)(4^j-1)\mu_{2j}
+ =\sum_{\ell=0}^{j-1}\binom{2j+1}{2\ell}\mu_{2\ell},
+ \qquad \mu_0=1.
+ \label{eq:moment-recurrence}
+\end{equation}
+For completeness, $M(2z)=M(z)\sinh z/z$. Multiplying by $z$,
+comparing the coefficient of $z^{2j+1}$, and moving the last term
+to the left proves \eqref{eq:moment-recurrence}. This recurrence is
+convenient for exact arithmetic, but \eqref{eq:a-partition} is a
+nonrecursive alternative.
+
+\section{Global spline corrections, sharpness, and increasing order}\label{sec:global}
+
+Define the corrected spline
+\begin{equation}
+ C_{m,N}(x)=\sum_{j=0}^N a_jh^{2j}u_m^{(2j)}(x).
+ \label{eq:corrected-spline}
+\end{equation}
+
+\begin{theorem}[Global all-orders correction]\label{thm:global}
+Let $k,N\geq0$ be integers, put $r=k+2N+2$, and suppose $m\geq r+2$.
+Then
+\begin{equation}
+ \boxed{\ \norm{\D^k(u-C_{m,N})}_\infty
+ \leq a_{N+1}K_rh^{2N+2}.\ }
+ \label{eq:global-bound}
+\end{equation}
+The same right-hand side bounds
+$\norm{u-C_{m,N}}_{C^k}:=\max_{0\leq\ell\leq k}
+\norm{\D^\ell(u-C_{m,N})}_\infty$.
+The estimate is global on $\R$, including all spline knots and the
+endpoints of the supports.
+\end{theorem}
+\begin{proof}
+The exact tail identity \eqref{eq:tail-law} gives
+\begin{equation}
+ u^{(k)}(x)=\E\,u_m^{(k)}(x-hY).
+ \label{eq:tail-differentiation}
+\end{equation}
+Set $g=u_m^{(k)}$. By the hypothesis on $m$, $g$ has $2N+2$
+continuous derivatives. Taylor's formula with the integral remainder
+implies, for real $y$,
+\begin{equation}
+ \left|g(x-hy)-\sum_{\ell=0}^{2N+1}
+             \frac{(-hy)^\ell}{\ell!}g^{(\ell)}(x)\right|
+ \leq \frac{h^{2N+2}|y|^{2N+2}}{(2N+2)!}
+             \norm{g^{(2N+2)}}_\infty.
+\end{equation}
+Average over $Y$. All odd powers disappear because $Y$ is symmetric.
+The remaining finite sum is precisely $\D^k C_{m,N}$, and the
+remainder is bounded by
+$a_{N+1}h^{2N+2}\norm{u_m^{(r)}}_\infty$.
+Now apply \eqref{eq:sharp-deriv-norm}. For lower derivatives use
+$K_{\ell+2N+2}\leq K_r$.
+\end{proof}
+
+\begin{corollary}[Global H\"older control]\label{cor:holder}
+Let $0<\alpha\leq1$, $r=k+2N+2$, and $m\geq r+3$. With
+$[f]_\alpha=\sup_{x\ne y}|f(x)-f(y)|/|x-y|^\alpha$,
+\begin{equation}
+ [\D^k(u-C_{m,N})]_\alpha
+ \leq 2^{1+\alpha r}a_{N+1}K_rh^{2N+2}.
+ \label{eq:holder-bound}
+\end{equation}
+Thus a global fixed-order H\"older version is available as well.
+\end{corollary}
+\begin{proof}
+For a bounded differentiable function, the two estimates
+$|f(x)-f(y)|\leq2\norm f_\infty$ and
+$|f(x)-f(y)|\leq\norm{f'}_\infty|x-y|$ imply
+$[f]_\alpha\leq(2\norm f_\infty)^{1-\alpha}
+\norm{f'}_\infty^\alpha$. Apply \cref{thm:global} at derivative
+orders $k$ and $k+1$, and use $K_{r+1}=2^{r+1}K_r$.
+\end{proof}
+
+\paragraph{Why the knots are harmless here.}
+The differentiation order is fixed before the level $m$ tends to
+infinity. The spline degree and its classical smoothness grow with
+$m$, while the norm of each admissible fixed derivative is exactly
+constant in $m$. Thus there is no knot singularity in the derivatives
+used in the Taylor remainder. A different argument would be required
+for arbitrary derivative orders beyond the stated regularity threshold.
+
+\begin{theorem}[Uniform leading remainder and sharp norm constant]\label{thm:sharp}
+For fixed $k,N\geq0$,
+\begin{equation}
+ h^{-2N-2}\D^k(u-C_{m,N})
+ \longrightarrow a_{N+1}u^{(k+2N+2)}
+ \quad\text{uniformly on }\R.
+ \label{eq:leading-remainder}
+\end{equation}
+Consequently
+\begin{equation}
+ \lim_{m\to\infty}4^{(N+1)m}
+       \norm{\D^k(u-C_{m,N})}_\infty
+       =a_{N+1}K_{k+2N+2}.
+ \label{eq:sharp-limit}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply \cref{thm:global} with order $N+1$ to obtain
+\begin{equation}
+ \D^k(u-C_{m,N})
+ =a_{N+1}h^{2N+2}u_m^{(k+2N+2)}+O_{k,N}(h^{2N+4})
+\end{equation}
+in the supremum norm. The same theorem at correction order zero,
+with derivative order $k+2N+2$, proves convergence of the displayed
+spline derivative to $u^{(k+2N+2)}$. Uniform convergence implies
+convergence of the supremum norms, and \cref{prop:copies} evaluates
+the limiting norm.
+\end{proof}
+
+For the first two un-differentiated cases,
+\begin{align}
+ \lim_{m\to\infty}4^m\norm{u-u_m}_\infty&=\frac49,\label{eq:sharp-first}\\
+ \lim_{m\to\infty}16^m
+ \left\|u-u_m-\frac{4^{-m}}{18}u_m''\right\|_\infty
+ &=\frac{2432}{2025}.
+ \label{eq:sharp-second}
+\end{align}
+These constants are not estimates fitted to numerical data.
+They are forced by the exact derivative norms.
+
+\subsection{A certified increasing-order construction}
+
+The next result allows the correction order to grow with the spline
+level. It is an absolute error statement, not a relative endpoint
+asymptotic.
+
+\begin{corollary}[Supergeometric absolute accuracy]\label{cor:growing}
+Fix $k\geq0$, let $m\geq k+4$, and choose $r$ to be the largest integer
+with $r\leq m-2$ and $r\equiv k\pmod2$. Set
+$N=(r-k-2)/2$. Then
+\begin{equation}
+ \norm{\D^k(u-C_{m,N})}_\infty
+ \leq \frac{2^{-m^2/2+(k+1/2)m+3}}{(m-k-3)!}.
+ \label{eq:growing-bound}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Since $|Y|\leq1$, $a_{N+1}\leq1/(r-k)!$. The bound in
+\cref{thm:global} becomes
+\begin{equation}
+ \frac{2^{r(r+1)/2-(r-k)m}}{(r-k)!}.
+\end{equation}
+Write $r=m-\delta$, where $\delta\in\{2,3\}$. The exponent equals
+$-m^2/2+(k+1/2)m+\delta(\delta-1)/2$, and
+$(r-k)!\geq(m-k-3)!$. This proves the claim.
+\end{proof}
+
+The large positive and negative terms in an actual evaluation still
+need controlled arithmetic. The error certificate establishes the
+quality of the exact corrected expression; it does not provide a
+complete floating-point or bit-complexity analysis.
+
+\section{Exact stabilization on dyadic arguments}\label{sec:dyadic}
+
+Fix $x=a/2^d\in(-1,1)$. It is harmless to choose a nonminimal $d$;
+a smaller denominator exponent simply gives a sharper degree bound.
+
+\begin{lemma}[A low-degree cell around a dyadic point]\label{lem:dyadic-cell}
+For $m\geq d+2$, the restriction of $u_m$ to
+$[x-h,x+h]$ agrees with one polynomial of degree at most $d$.
+\end{lemma}
+\begin{proof}
+The knots have coordinates $-1+h+2hn$, which are odd multiples of
+$h$ when $m\geq1$. Since $2^mx$ is even, $x$ is the center of an
+open cell whose endpoints are $x-h$ and $x+h$.
+
+Apply the derivative-copy formula at order $d+1$ on this open cell.
+It remains valid there in the borderline case as a piecewise derivative.
+Put $\ell=m-d-1\geq1$. Each argument of $u_\ell$ has the form
+\begin{equation}
+ \text{an odd integer}+2^{d+1}(y-x),\qquad |y-x|<h.
+\end{equation}
+Its distance from zero is larger than $1-2^{-\ell}$, unless it is
+farther away still. But $u_\ell$ is supported on
+$[-1+2^{-\ell},1-2^{-\ell}]$. Thus $u_m^{(d+1)}=0$ on the cell.
+The spline is a polynomial there, so its degree is at most $d$.
+Continuity gives the endpoint equality as well.
+\end{proof}
+
+\begin{theorem}[Exact finite tail calculus at dyadic points]\label{thm:dyadic}
+For $x=a/2^d\in(-1,1)$, $m\geq d+2$, and $0\leq r\leq d$,
+\begin{align}
+ u^{(r)}(x)&=\sum_{j=0}^{\lfloor(d-r)/2\rfloor}
+           a_jh^{2j}u_m^{(r+2j)}(x),\label{eq:dyadic-forward}\\
+ u_m^{(r)}(x)&=\sum_{j=0}^{\lfloor(d-r)/2\rfloor}
+           b_jh^{2j}u^{(r+2j)}(x).\label{eq:dyadic-backward}
+\end{align}
+Both formulas are exact.
+\end{theorem}
+\begin{proof}
+The tail formula \eqref{eq:tail-differentiation} averages the derivative
+of $u_m$ at points $x-hY\in[x-h,x+h]$. On this cell the derivative
+is a polynomial of degree at most $d-r$. Its Taylor formula has no
+remainder. Symmetry gives \eqref{eq:dyadic-forward}.
+
+View the vector of derivatives of orders $r,r+2,\ldots$ at $x$ as a
+finite vector. The first formula is a triangular transformation with
+diagonal entries one. The power-series identity $M(z)/M(z)=1$
+shows that its inverse has coefficients $b_j$, which proves
+\eqref{eq:dyadic-backward}. This is inversion of a finite triangular
+system, not an assertion that an infinite differential operator
+converges on an arbitrary smooth function.
+\end{proof}
+
+\begin{corollary}[Polynomial stabilization]\label{cor:poly-stabilize}
+For fixed $x=a/2^d$, there is a polynomial $R_x$ of degree at most
+$p=\lfloor d/2\rfloor$ such that
+\begin{equation}
+ u_m(x)=R_x(4^{-m}),\quad m\geq d+2,
+ \qquad R_x(0)=u(x).
+ \label{eq:exact-poly}
+\end{equation}
+Its coefficient of $z^j$ is $b_ju^{(2j)}(x)$.
+\end{corollary}
+
+\begin{corollary}[The degree is exact in lowest terms]\label{cor:exact-degree}
+Suppose $d\geq1$ and $a$ is odd, so $a/2^d$ is in lowest terms.
+The polynomial $R_x$ has degree exactly $p=\lfloor d/2\rfloor$.
+More explicitly, its highest derivative factor is
+\begin{equation}
+ u^{(2p)}(a/2^d)=
+ \begin{cases}
+ K_d\eps_{(a+2^d-1)/2},&d\text{ even},\\[3pt]
+ \frac12K_{d-1}\eps_{\lfloor(a+2^d)/4\rfloor},&d\text{ odd}.
+ \end{cases}
+ \label{eq:highest-dyadic-derivative}
+\end{equation}
+\end{corollary}
+\begin{proof}
+For even $d$, precisely one argument in the order-$d$ copy formula
+is zero, and all the others are outside the support. For odd $d$,
+at order $d-1$ precisely one argument is $1/2$ or $-1/2$.
+The corresponding values are $u(0)=1$ and $u(\pm1/2)=1/2$.
+The latter equality follows directly by convolving the first box
+with its symmetric tail. The indices in
+\eqref{eq:highest-dyadic-derivative} identify these copies. Both
+values are nonzero. Finally $b_p\ne0$ by
+\eqref{eq:b-partition}, so the highest coefficient of $R_x$
+is nonzero.
+\end{proof}
+
+The crucial word is ``polynomial.'' An ordinary all-orders asymptotic
+expansion, by itself, would not justify finite exact reconstruction.
+Here the geometry of the dyadic cell supplies the missing exactness.
+
+\subsection{Finite Richardson reconstruction}
+
+For $0<q<1$ and $p\geq0$, let
+\begin{equation}
+ (q;q)_j=\prod_{\ell=1}^j(1-q^\ell),\qquad(q;q)_0=1,
+\end{equation}
+and define
+\begin{equation}
+ w_{p,j}(q)=
+ \prod_{\substack{0\leq\ell\leq p\\\ell\ne j}}
+       \frac{-q^\ell}{q^j-q^\ell}
+ =\frac{(-1)^{p-j}q^{(p-j)(p-j+1)/2}}
+       {(q;q)_j(q;q)_{p-j}}.
+ \label{eq:qweights}
+\end{equation}
+These are simply the Lagrange interpolation weights for evaluation
+at zero from the nodes $1,q,\ldots,q^p$.
+
+\begin{theorem}[Exact reconstruction and uniform stability]\label{thm:richardson}
+Let $x=a/2^d\in(-1,1)$, $p=\lfloor d/2\rfloor$, and $m\geq d+2$.
+Then
+\begin{equation}
+ \boxed{\quad u(x)=\sum_{j=0}^p w_{p,j}(1/4)\,u_{m+j}(x).\quad}
+ \label{eq:exact-richardson}
+\end{equation}
+At every order,
+\begin{equation}
+ \sum_{j=0}^p|w_{p,j}(1/4)|
+ =\prod_{\ell=1}^p\frac{1+4^{-\ell}}{1-4^{-\ell}}<2.
+ \label{eq:stable-weights}
+\end{equation}
+Thus absolute errors bounded by $\delta$ in each input spline value
+produce an absolute output error smaller than $2\delta$.
+\end{theorem}
+\begin{proof}
+Apply Lagrange interpolation to the polynomial
+$z\mapsto R_x(4^{-m}z)$ from \cref{cor:poly-stabilize}. This proves
+the equality.
+
+Taking absolute values in \eqref{eq:qweights}, and using the finite
+$q$-binomial product identity, gives
+\begin{align}
+ \sum_{j=0}^p|w_{p,j}(q)|
+ &=\frac1{(q;q)_p}\sum_{k=0}^p
+      q^{k(k+1)/2}\frac{(q;q)_p}{(q;q)_k(q;q)_{p-k}}\nonumber\\
+ &=\frac{\prod_{\ell=1}^p(1+q^\ell)}{(q;q)_p}.
+ \label{eq:qnorm-proof}
+\end{align}
+The finite product identity follows by expanding
+$\prod_{\ell=1}^p(1+tq^\ell)$ and comparing the coefficient of
+$t^k$; alternatively its coefficients satisfy the same two-term
+recurrence on adjoining the last factor.
+
+For the strict bound, $p=0,1$ are immediate. At $q=1/4$, the first
+two factors multiply to $17/9$. For the remaining factors use
+\begin{equation}
+ \sum_{\ell=3}^{\infty}\log\frac{1+q^\ell}{1-q^\ell}
+ \leq\frac{2q^3}{(1-q)(1-q^6)}=\frac{512}{12285}.
+\end{equation}
+Since $e^t\leq(1-t)^{-1}$ for $0\leq t<1$, the entire product is
+at most
+\begin{equation}
+ \frac{17}{9}\frac1{1-512/12285}
+ =\frac{208845}{105957}<2.
+\end{equation}
+Finally apply the triangle inequality to the input perturbations.
+\end{proof}
+
+The first three weight rows are
+\begin{equation}
+ (1),\qquad
+ \left(-\frac13,\frac43\right),\qquad
+ \left(\frac1{45},-\frac49,\frac{64}{45}\right).
+\end{equation}
+These familiar extrapolation weights are not new in isolation.
+The point is the exact stopping theorem that makes them recover
+physical-space dyadic values in finitely many levels.
+
+\subsection{Examples and a closed finite formula}
+
+\begin{example}
+The following identities hold at every indicated sufficiently large level:
+\begin{align}
+ u_m(1/2)&=\frac12, &&m\geq3,\label{eq:examples-dyadic}\\
+ u_m(1/4)&=\frac{67}{72}+\frac49\,4^{-m}, &&m\geq4,\nonumber\\
+ u_m(1/8)&=\frac{287}{288}+\frac29\,4^{-m}, &&m\geq5,\nonumber\\
+ u_m(1/16)&=\frac{2073457}{2073600}
+          +\frac5{162}\,4^{-m}
+          -\frac{3968}{2025}\,16^{-m}, &&m\geq6.\nonumber
+\end{align}
+For example, $u''(1/16)=-5/9$ and $u^{(4)}(1/16)=-1024$;
+substitution into \eqref{eq:dyadic-backward} gives the last line.
+The stated thresholds are uniform sufficient thresholds, not claims
+of minimality for each example.
+\end{example}
+
+Combining \eqref{eq:exact-richardson} with
+\eqref{eq:spline-positive} gives a closed finite expression for a
+rational dyadic value. Put $m=d+2$ and $p=\lfloor d/2\rfloor$:
+\begin{equation}
+\begin{split}
+ u(x)=\sum_{j=0}^p &\frac{w_{p,j}(1/4)\,2^{(m+j)(m+j-1)/2}}
+                         {(m+j-1)!}\\[-2pt]
+ &\times\sum_{n=0}^{2^{m+j}-1}\eps_n
+ \left(x+1-2^{-(m+j)}-2^{1-m-j}n\right)_+^{m+j-1}.
+\end{split}
+\label{eq:closed-dyadic}
+\end{equation}
+Every quantity on the right is rational. This gives another proof
+of classical dyadic rationality, and more importantly exhibits a
+finite extrapolation mechanism with a uniform condition bound.
+The formula is not advertised as the fastest existing algorithm.
+
+\section{Repeated-prefix coefficients: an exact differential identity}\label{sec:lattice}
+
+\subsection{The positive coefficient array and its natural normalization}
+
+Let $c_m(k)$ be the coefficient of $z^k$ in $A_m(z)$ from
+\eqref{eq:intro-Am}, extended by zero outside its support. Put
+\begin{equation}
+ D_m=2^m-m-1,\qquad B_m=A_m(1)=2^{m(m-1)/2}.
+ \label{eq:DB}
+\end{equation}
+The support is $0\leq k\leq D_m$. The coefficients are positive
+integers on this interval and are symmetric about $D_m/2$.
+
+Repeated inclusive summation multiplies a generating function by
+$(1-z)^{-1}$. Therefore these are precisely the $m$-fold cumulative
+coefficients of the finite signed block, and
+\begin{equation}
+ c_m(k)=\sum_{n=0}^{\min(k,2^m-1)}
+            \eps_n\binom{k-n+m-1}{m-1},\qquad k\geq0.
+ \label{eq:c-binomial}
+\end{equation}
+For $k<2^m$ this agrees with the $m$-fold inclusive prefix of the
+infinite Thue--Morse sequence. Beyond that range, the finite block
+and infinite sequence should not be conflated.
+
+Let $D_0^*,\ldots,D_{m-1}^*$ be independent random variables with
+$D_j^*$ uniform on $\{0,\ldots,2^j-1\}$. Then
+\begin{equation}
+ \Prob\left(\sum_{j=0}^{m-1}D_j^*=k\right)=\frac{c_m(k)}{B_m}.
+ \label{eq:c-probability}
+\end{equation}
+Set
+\begin{equation}
+ \Delta=2h=2^{1-m},\qquad
+ x_{m,k}=\Delta(k-D_m/2)=-1+(m+1)h+2hk,
+ \label{eq:lattice-nodes}
+\end{equation}
+and define the scaled lattice mass
+\begin{equation}
+ \rho_m(x_{m,k})=\frac{c_m(k)}{\Delta B_m}.
+ \label{eq:rho}
+\end{equation}
+The division by $\Delta$ is essential: $\rho_m$ is a density-scale
+quantity, not the probability of one lattice point.
+
+\subsection{A centered factorial polynomial identity}
+
+The next lemma is a useful form of the generalized Bernoulli
+polynomial calculus; the standard generating function is recorded in
+\cite{dlmf}. Its short proof is included to fix all normalizations.
+
+\begin{lemma}[Centered factorial conversion]\label{lem:centered-factorial}
+For $m\geq2$ define
+\begin{equation}
+ p_{m-1}(w)=\prod_{r=1}^{m-1}(w+r-m/2).
+\end{equation}
+As an identity of polynomials,
+\begin{equation}
+ p_{m-1}(w)=
+ \left(\frac{\D_w/2}{\sinh(\D_w/2)}\right)^m w^{m-1}.
+ \label{eq:centered-factorial}
+\end{equation}
+The power series on the right acts finitely: every derivative of
+order greater than $m-1$ annihilates the polynomial.
+\end{lemma}
+\begin{proof}
+By coefficient extraction and the formal change of variable
+$y=e^z-1$,
+\begin{align}
+ [z^{m-1}]\left(\frac{z}{2\sinh(z/2)}\right)^m e^{wz}
+ &=\Res_{z=0}\frac{e^{(w+m/2)z}}{(e^z-1)^m}\dd z\nonumber\\
+ &=\Res_{y=0}\frac{(1+y)^{w+m/2-1}}{y^m}\dd y\nonumber\\
+ &=\binom{w+m/2-1}{m-1}
+ =\frac{p_{m-1}(w)}{(m-1)!}.
+ \label{eq:residue-factorial}
+\end{align}
+The first coefficient equals $1/(m-1)!$ times the differential
+operator in \eqref{eq:centered-factorial} applied to $w^{m-1}$.
+The change of variable is valid formally because $e^z-1=z+O(z^2)$.
+\end{proof}
+
+\begin{theorem}[Exact lattice-to-spline differential conversion]\label{thm:lattice-operator}
+For $m\geq2$ and every $k\in\Z$,
+\begin{equation}
+ \boxed{\quad
+ \rho_m(x_{m,k})=
+ \sum_{j=0}^{\lfloor(m-1)/2\rfloor}
+        \gamma_j(m)h^{2j}u_m^{(2j)}(x_{m,k}).\quad}
+ \label{eq:lattice-exact-operator}
+\end{equation}
+When $m$ is odd the highest derivative is a cellwise derivative,
+but the lattice nodes are then cell centers. When $m$ is even the
+highest derivative used is of order $m-2$ and is continuous.
+Thus every displayed evaluation is unambiguous.
+\end{theorem}
+\begin{proof}
+At $x=x_{m,k}$ put
+\begin{equation}
+ t=\frac{x+1-h}{2h}=k+\frac m2,
+ \qquad J_m=2^{-(m-1)(m-2)/2}.
+\end{equation}
+The signed spline formula becomes
+\begin{equation}
+ u_m(x)=\frac{J_m}{(m-1)!}
+       \sum_{\substack{0\leq n<2^m\\n<t}}\eps_n(t-n)^{m-1}.
+ \label{eq:spline-rescaled-t}
+\end{equation}
+On the other hand, \eqref{eq:c-binomial} and
+$1/(\Delta B_m)=J_m$ give
+\begin{equation}
+ \rho_m(x)=\frac{J_m}{(m-1)!}
+       \sum_{\substack{0\leq n<2^m\\n\leq k}}\eps_n p_{m-1}(t-n).
+ \label{eq:rho-rescaled-t}
+\end{equation}
+One can extend this last sum from $n\leq k$ to $n<t$: every new
+integer has $n=k+i$ with $1\leq i<m/2$, and then
+$p_{m-1}(m/2-i)=0$. The same observation works if the original
+sum is empty or if the finite block truncates the range.
+
+Now apply \cref{lem:centered-factorial} term by term to
+\eqref{eq:spline-rescaled-t}. Since $\D_t=2h\D_x$, its operator
+becomes $(h\D_x/\sinh(h\D_x))^m$, whose coefficients are
+$\gamma_j(m)h^{2j}$. This proves the formula. At an even-level
+knot, the derivatives involved have positive remaining polynomial
+degree; the limiting formula agrees from both sides.
+\end{proof}
+
+The first terms are
+\begin{equation}
+ \rho_m(x)=u_m(x)-\frac m6h^2u_m''(x)
+        +\left(\frac{m^2}{72}+\frac m{180}\right)h^4u_m^{(4)}(x)
+        +\cdots,
+ \label{eq:operator-first}
+\end{equation}
+where the complete expression is the finite sum in
+\eqref{eq:lattice-exact-operator}. This identity is stronger than a
+formal differential approximation.
+
+\section{The all-orders uniform local-limit theorem}\label{sec:local-limit}
+
+The exact operator in \cref{thm:lattice-operator} is useful
+algebraically. To obtain a uniform fixed-order remainder as $m$ grows,
+it is cleaner to work on the lattice Fourier interval.
+
+\subsection{Exact removal of the lattice}
+
+\begin{proposition}[Continuous noise representation]\label{prop:dequantization}
+Let
+\begin{equation}
+ X_m=\Delta\left(\sum_{j=0}^{m-1}D_j^*-D_m/2\right).
+\end{equation}
+There is a random variable $W_m$, independent of $X_m$, such that
+\begin{equation}
+ Y\ \overset{\mathrm d}=\ X_m+hW_m,
+ \qquad W_m=V_1+\cdots+V_m+Y',
+ \label{eq:dequantization}
+\end{equation}
+where all summands on the right are independent, the $V_j$ are
+uniform on $[-1,1]$, and $Y'$ is a copy of $Y$. In particular
+\begin{equation}
+ \operatorname{Var}(W_m)=\frac m3+\frac19.
+ \label{eq:noise-variance}
+\end{equation}
+The characteristic function of $X_m$ satisfies
+\begin{equation}
+ \psi_m(t)=\frac{Q(t)}{Q(ht)\sinc(ht)^m}
+ \qquad\left(|t|\leq\frac{\pi}{2h}\right).
+ \label{eq:psi-quotient}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Adjoin independent $U_j$ uniform on $[0,1]$ to $D_j^*$. Then
+$D_j^*+U_j$ is uniform on $[0,2^j]$, and
+\begin{equation}
+ \Delta\left(D_j^*+U_j-2^{j-1}\right)
+ =\Delta\left(D_j^*-\frac{2^j-1}{2}\right)+h(2U_j-1).
+\end{equation}
+Summing over $j$ produces $X_m$ plus $m$ independent uniform
+noises of half-width $h$. The continuous sum has the law of $Y_m$
+after reversing the order of its widths. Adjoin the tail $hY'$.
+The variance follows from $\mu_2=1/9$. Taking characteristic
+functions proves the quotient wherever its denominator is nonzero,
+in particular on the stated interval.
+\end{proof}
+
+This calculation explains the leading factor $m$. Continuous spline
+truncation omits one self-similar tail of scale $h$, whereas converting
+a lattice sum to its continuous counterpart requires $m$ additional
+small uniforms. Their combined variance is of order $mh^2$.
+
+\subsection{Uniform expansion and an explicit remainder constant}
+
+For use in the proof, write
+\begin{equation}
+ \mathcal H_m(z)=\sum_{j\geq0}H_j(m)z^j
+ =\exp\left(\sum_{r\geq1}\lambda_r
+               \left(m+\frac1{4^r-1}\right)z^r\right).
+\end{equation}
+By \eqref{eq:psi-quotient},
+$\psi_m(t)=Q(t)\mathcal H_m(h^2t^2)$ on the fundamental interval.
+
+\begin{theorem}[Uniform all-orders local-limit expansion]\label{thm:local-limit}
+For each fixed integer $N\geq0$, there exists an explicit constant
+$C_N$ such that for every $m\geq4$,
+\begin{equation}
+ \boxed{
+ \sup_{k\in\Z}\left|
+ \rho_m(x_{m,k})-
+ \sum_{j=0}^N(-1)^jH_j(m)h^{2j}u^{(2j)}(x_{m,k})
+ \right|
+ \leq C_N(m+1)^{N+1}h^{2N+2}.}
+ \label{eq:uniform-local-limit}
+\end{equation}
+One permissible, deliberately nonoptimized choice is obtained by
+putting $L=4N+8$ and taking
+\begin{equation}
+ C_N=\frac2\pi\left\{
+ \frac1{2N+3}+\frac{K_L}{2N+5}
+ +\frac{K_L}{4N+7}
+ +K_L\sum_{j=0}^N\frac1{4N+7-2j}
+ \right\}.
+ \label{eq:CN-explicit}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Lattice Fourier inversion and our normalization give
+\begin{equation}
+ \rho_m(x_{m,k})=\frac1{2\pi}
+ \int_{-\pi/(2h)}^{\pi/(2h)}e^{-\ii t x_{m,k}}\psi_m(t)\dd t.
+ \label{eq:lattice-inversion}
+\end{equation}
+The finite proposed approximation is the full-line inverse Fourier
+transform of
+$Q(t)\sum_{j=0}^NH_j(m)h^{2j}t^{2j}$, because multiplication by
+$t^{2j}$ corresponds to $(-1)^j\D^{2j}$.
+We estimate the difference of these transforms in $L^1$; the resulting
+bound is independent of $k$.
+
+\emph{Low frequencies.}
+Put $T=h^{-1/2}$ and $R=(m+1)^{-1}$. Since
+$\lambda_r\leq2/(r\pi^{2r})$, positivity gives
+\begin{equation}
+ \log\mathcal H_m(R)
+ \leq\frac2{\pi^2-R}\leq\frac2{\pi^2-1}<\log2.
+\end{equation}
+Hence
+\begin{equation}
+ \mathcal H_m(R)<2,
+ \qquad H_j(m)\leq2(m+1)^j.
+ \label{eq:H-coeff-bound}
+\end{equation}
+For $|t|\leq T$, put $z=h^2t^2\leq h$. Since $m\geq4$,
+$z/R\leq(m+1)h\leq5/16<1$. Positivity of all coefficients implies
+\begin{equation}
+ \left|\mathcal H_m(z)-\sum_{j=0}^NH_j(m)z^j\right|
+ \leq2\bigl((m+1)z\bigr)^{N+1}.
+ \label{eq:H-remainder}
+\end{equation}
+Therefore the low-frequency error before division by $2\pi$ is at most
+\begin{equation}
+ 2(m+1)^{N+1}h^{2N+2}
+       \int_{\R}|t|^{2N+2}|Q(t)|\dd t.
+ \label{eq:low-error}
+\end{equation}
+Using \cref{lem:decay} with $L=4N+8$ bounds the integral by
+\begin{equation}
+ 2\left(\frac1{2N+3}+\frac{K_L}{2N+5}\right).
+ \label{eq:weighted-integral-bound}
+\end{equation}
+
+\emph{High frequencies of the exact lattice transform.}
+For $|s|\leq\pi/2$, $\sinc s\geq2/\pi$. Also, multiplying the
+bounds $\sinc(2^{-j}s)\geq1-2^{-2j}s^2/6$ gives
+\begin{equation}
+ Q(s)\geq1-\frac{s^2}{18}\geq1-\frac{\pi^2}{72}>\frac12.
+\end{equation}
+Thus on the fundamental interval,
+\begin{equation}
+ |\psi_m(t)|\leq2(\pi/2)^m|Q(t)|.
+\end{equation}
+Write $\beta=\log_2(\pi/2)<1$. Integration over $|t|>T$ yields
+\begin{equation}
+ \int_{T<|t|\leq\pi/(2h)}|\psi_m(t)|\dd t
+ \leq\frac{4K_L}{L-1}h^{(L-1)/2-\beta}
+ \leq\frac{4K_L}{4N+7}h^{2N+2}.
+ \label{eq:psi-tail-bound}
+\end{equation}
+
+\emph{High frequencies of the finite approximation.}
+By \eqref{eq:H-coeff-bound} and \cref{lem:decay},
+\begin{align}
+ &\int_{|t|>T}|Q(t)|\sum_{j=0}^NH_j(m)h^{2j}|t|^{2j}\dd t\nonumber\\
+ &\quad\leq4K_L\sum_{j=0}^N
+       \frac{(m+1)^jh^{(L-1)/2+j}}{L-2j-1}\nonumber\\
+ &\quad\leq4K_L(m+1)^{N+1}h^{2N+2}
+          \sum_{j=0}^N\frac1{4N+7-2j}.
+ \label{eq:approx-tail-bound}
+\end{align}
+Add \eqref{eq:low-error}--\eqref{eq:approx-tail-bound}, divide by
+$2\pi$, and use $(m+1)^{N+1}\geq1$ in the exact-transform tail.
+The result is precisely \eqref{eq:uniform-local-limit} with
+\eqref{eq:CN-explicit}.
+\end{proof}
+
+\begin{remark}[Meaning of the local limit]
+The supremum in \eqref{eq:uniform-local-limit} includes nodes outside
+the finite support, where $c_m(k)=0$. This is a uniform comparison
+of scaled point masses with a density evaluated at the same nodes.
+It is not convergence in total variation of a discrete measure to
+an absolutely continuous one.
+\end{remark}
+
+\begin{corollary}[Sharp first local-limit error]\label{cor:local-sharp}
+Uniformly for $k\in\Z$,
+\begin{equation}
+ \frac{\rho_m(x_{m,k})-u(x_{m,k})}{m4^{-m}}
+       +\frac16u''(x_{m,k})\longrightarrow0.
+ \label{eq:normalized-lattice-error}
+\end{equation}
+In particular,
+\begin{equation}
+ \lim_{m\to\infty}
+ \frac{\sup_{k\in\Z}|\rho_m(x_{m,k})-u(x_{m,k})|}{m4^{-m}}
+ =\frac43.
+ \label{eq:lattice-sharp-constant}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Use \cref{thm:local-limit} with $N=1$ and
+$H_1(m)/m\to1/6$. Its remainder divided by $m4^{-m}$ tends to
+zero. The node spacing tends to zero, so the sampled supremum of
+the continuous compactly supported function $|u''|$ tends to
+$\norm{u''}_\infty=8$ by \cref{prop:copies}.
+\end{proof}
+
+\section{Exact dyadic stopping for the integer coefficient array}\label{sec:dyadic-lattice}
+
+The local-limit expansion has an unexpectedly exact specialization.
+It is obtained from the finite operator, not by declaring an
+asymptotic series to terminate.
+
+\begin{theorem}[Exact dyadic lattice expansion]\label{thm:dyadic-lattice}
+Fix $x=a/2^d\in(-1,1)$. If $m$ is odd and $m\geq d+2$, then
+\begin{equation}
+ k_m=2^{m-1}(1+x)-\frac{m+1}{2}\in\Z,
+ \qquad x_{m,k_m}=x,
+\end{equation}
+and
+\begin{equation}
+ \boxed{\quad
+ \rho_m(x)=\sum_{j=0}^{\lfloor d/2\rfloor}
+                 (-1)^jH_j(m)4^{-jm}u^{(2j)}(x).
+ \quad}
+ \label{eq:exact-dyadic-lattice}
+\end{equation}
+The right-hand side is an exact finite sum of polynomials in $m$
+times powers of $4^{-m}$.
+\end{theorem}
+\begin{proof}
+The stated parity makes $k_m$ an integer. On the cell about $x$,
+$u_m$ has degree at most $d$ by \cref{lem:dyadic-cell}. Hence the
+finite differential conversion in \cref{thm:lattice-operator} has
+no nonzero terms with $2j>d$ at this point. Substitute
+\eqref{eq:dyadic-backward} into its remaining terms. The coefficient
+of $h^{2j}u^{(2j)}(x)$ is the convolution
+$\sum_{\ell=0}^j\gamma_\ell(m)b_{j-\ell}$, which is
+$(-1)^jH_j(m)$ by \eqref{eq:coefficient-convolution}.
+\end{proof}
+
+\begin{example}[A closed repeated-prefix identity]\label{ex:quarter-lattice}
+For every odd $m\geq5$,
+\begin{equation}
+ \rho_m(1/4)=\frac{67}{72}
+       +\left(\frac{4m}{3}+\frac49\right)4^{-m}.
+ \label{eq:quarter-lattice-exact}
+\end{equation}
+Equivalently, an explicitly indexed coefficient of the positive
+Thue--Morse quotient is
+\begin{equation}
+ \boxed{\quad
+ c_m\left(5\cdot2^{m-3}-\frac{m+1}{2}\right)
+ =2^{m(m-1)/2-m+1}
+  \left\{\frac{67}{72}+
+         \left(\frac{4m}{3}+\frac49\right)4^{-m}\right\}.
+ \quad}
+ \label{eq:closed-prefix-quarter}
+\end{equation}
+This also evaluates the corresponding $m$-fold inclusive prefix
+of the infinite sequence, since the index is below $2^m$.
+\end{example}
+\begin{proof}
+At $x=1/4$, $u=67/72$, $u''=-8$, and all derivatives of order
+above two vanish. Apply \cref{thm:dyadic-lattice} and then undo
+the density normalization.
+\end{proof}
+
+At $x=1/16$ the exact identity has three terms:
+\begin{equation}
+ \rho_m(1/16)=\frac{2073457}{2073600}
+       +\frac59H_1(m)4^{-m}
+       -1024H_2(m)16^{-m},
+ \qquad m\geq7\text{ odd}.
+ \label{eq:sixteenth-lattice}
+\end{equation}
+The increasing polynomial factors $H_j(m)$ are therefore not
+merely artifacts of a Fourier proof; they occur in exact rational
+coefficient identities.
+
+\paragraph{A useful distinction.}
+For the spline values at a fixed dyadic point, the coefficients of
+$4^{-jm}$ are constants depending on that point. For the discrete
+array values, the coefficients are polynomials in $m$. The extra
+polynomials come from the $m$ independent lattice-removal noises.
+This distinction prevents the incorrect use of the simple spline
+Richardson weights as an exact annihilator of all lattice errors.
+
+\section{Fourier-energy moments and lognormal twins}\label{sec:spectral}
+
+We now use the $L^2$ version of the derivative-copy identity. This
+has a different flavor from either approximation theorem.
+
+\begin{definition}[The normalized energy measure]
+Let
+\begin{equation}
+ I_0=\int_{\R}|Q(t)|^2\dd t=2\pi\norm{u}_2^2,
+ \qquad \dd\nu(t)=I_0^{-1}|Q(t)|^2\dd t.
+ \label{eq:nu-def}
+\end{equation}
+This is an absolutely continuous probability measure on the angular
+frequency line. It is not the singular diffraction measure of the
+unscaled Thue--Morse substitution system.
+\end{definition}
+
+\begin{theorem}[Exact energy moments]\label{thm:energy-moments}
+Every moment of $\nu$ exists, and for $r\geq0$,
+\begin{equation}
+ \int_{\R}t^{2r}\dd\nu(t)=2^{r(r+1)},\qquad
+ \int_{\R}t^{2r+1}\dd\nu(t)=0.
+ \label{eq:energy-moments}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The decay estimate \eqref{eq:Qbound} gives existence of every
+moment. Evenness gives the odd moments. Plancherel's identity and
+\eqref{eq:Lp-copies} at $p=2$ give
+\begin{equation}
+ \frac{\int t^{2r}|Q(t)|^2\dd t}{\int|Q(t)|^2\dd t}
+ =\frac{\norm{u^{(r)}}_2^2}{\norm{u}_2^2}
+ =K_r^2=2^{r(r+1)}.
+\end{equation}
+\end{proof}
+
+\subsection{An explicit absolutely continuous twin}
+
+\begin{theorem}[Lognormal moment twin]\label{thm:lognormal}
+Let $S$ take values $-1,1$ with equal probabilities and let
+$L\sim N((\log2)/2,(\log2)/2)$ be independent of $S$. Then the
+law of $T=S e^L$ has the same moments as $\nu$, but it is a
+different probability measure. Its density is
+\begin{equation}
+ g(t)=\frac1{2|t|\sqrt{\pi\log2}}
+       \exp\left(-\frac{(\log|t|-(\log2)/2)^2}{\log2}\right),
+ \quad t\ne0,
+ \qquad g(0)=0.
+ \label{eq:lognormal-density}
+\end{equation}
+Consequently the Hamburger moment problem for
+\eqref{eq:energy-moments} is indeterminate.
+\end{theorem}
+\begin{proof}
+For a normal random variable of mean $\mu$ and variance $\sigma^2$,
+completion of the square in its density gives
+$\E e^{sL}=e^{s\mu+s^2\sigma^2/2}$. At $s=2r$ and the stated
+parameters, this is $2^{r(r+1)}$. The independent sign kills all
+odd moments. Change of variable $t=e^L$, followed by symmetrization,
+gives \eqref{eq:lognormal-density}.
+
+The density $g$ extends continuously to zero with value zero,
+whereas the density of $\nu$ has value $1/I_0>0$ there. They
+therefore differ on a neighborhood of zero, not merely at a single
+point. Thus two distinct measures have the same complete moment
+sequence.
+\end{proof}
+
+Lognormal moment indeterminacy is classical \cite{heyde}. The
+contribution here is the exact identification of a compactly
+supported smooth function's Fourier-energy measure with that
+moment class. No inference from the failure of a sufficient
+uniqueness criterion is needed: two distinct measures have been
+constructed explicitly.
+
+\subsection{A continuum of atomic twins}
+
+For $\alpha\in[0,1)$ set
+\begin{equation}
+ \Theta(\alpha)=\sum_{k\in\Z}2^{-(k+\alpha)^2}.
+ \label{eq:theta}
+\end{equation}
+It is finite and strictly positive.
+
+\begin{theorem}[Theta-supported moment twins]\label{thm:theta}
+Every measure
+\begin{equation}
+ \nu_\alpha=\frac1{2\Theta(\alpha)}
+ \sum_{k\in\Z}2^{-(k+\alpha)^2}
+ \left(\delta_{2^{k+\alpha+1/2}}+
+       \delta_{-2^{k+\alpha+1/2}}\right)
+ \label{eq:atomic-twin}
+\end{equation}
+is a probability measure with the moment sequence
+\eqref{eq:energy-moments}.
+\end{theorem}
+\begin{proof}
+The total mass is one and the odd moments vanish. For the even
+moments, complete the square in the exponent:
+\begin{align}
+ \int t^{2r}\dd\nu_\alpha(t)
+ &=\frac1{\Theta(\alpha)}
+     \sum_{k\in\Z}2^{-(k+\alpha)^2+2r(k+\alpha+1/2)}\nonumber\\
+ &=\frac{2^{r^2+r}}{\Theta(\alpha)}
+     \sum_{k\in\Z}2^{-(k+\alpha-r)^2}
+ =2^{r(r+1)}.
+\end{align}
+The last equality shifts the integer summation index by $r$.
+All sums converge absolutely.
+\end{proof}
+
+The theta construction is a standard type of discrete lognormal
+moment mechanism; the displayed proof is included rather than
+claiming that mechanism itself as a new discovery. Its combination
+with the energy identity gives the exact polynomial quadrature
+\begin{equation}
+ \frac1{I_0}\int_{\R}p(t)|Q(t)|^2\dd t
+ =\int_{\R}p(t)g(t)\dd t
+ =\int_{\R}p(t)\dd\nu_\alpha(t)
+ \quad\text{for every polynomial }p.
+ \label{eq:polynomial-quadrature}
+\end{equation}
+This equality cannot be extended to all bounded continuous test
+functions, since the measures are distinct.
+
+\subsection{Identical jets, and what restores uniqueness}
+
+Define the normalized autocorrelation
+\begin{equation}
+ R_u(x)=\frac{\int_{\R}u(y)u(y+x)\dd y}{\norm{u}_2^2}.
+ \label{eq:autocorrelation}
+\end{equation}
+It is a $C^\infty$ function supported on $[-2,2]$ and is the
+characteristic function of $\nu$. The energy moments give
+\begin{equation}
+ R_u^{(2r)}(0)=(-1)^r2^{r(r+1)},\qquad R_u^{(2r+1)}(0)=0.
+ \label{eq:autocorrelation-jet}
+\end{equation}
+Its formal Taylor series at zero has radius of convergence zero,
+since $2^{r(r+1)}/(2r)!$ has unbounded $2r$th root. The
+characteristic functions of the lognormal and atomic twins have
+exactly the same derivatives at zero. Thus their differences from
+$R_u$ are smooth and flat at zero, but not identically zero.
+
+Moments alone lose information, but the original scaling relation
+retains it.
+\begin{proposition}[Refinement restores uniqueness]\label{prop:refinement-unique}
+Suppose a probability density $f$ is continuous at zero and satisfies
+pointwise
+\begin{equation}
+ f(2t)=\sinc^2(t)f(t),\qquad t\in\R.
+ \label{eq:energy-refinement}
+\end{equation}
+Then $f(t)=I_0^{-1}Q(t)^2$.
+\end{proposition}
+\begin{proof}
+Iterating toward zero gives
+\begin{equation}
+ f(t)=f(2^{-n}t)\prod_{j=1}^n\sinc^2(2^{-j}t).
+\end{equation}
+Continuity at zero and convergence of the product imply
+$f(t)=f(0)Q(t)^2$. Integration fixes $f(0)=1/I_0$.
+\end{proof}
+
+\section{A separated geometric extension}\label{sec:geometric}
+
+The moment phenomenon is not an accidental equality special to one
+choice of units. It follows from separation of derivative copies.
+Here is a one-parameter extension that makes this explicit.
+
+For $0<\theta\leq1/2$, let $v_\theta$ be the density of
+\begin{equation}
+ Y_\theta=(1-\theta)\sum_{j=0}^{\infty}\theta^j V_j.
+ \label{eq:geometric-series}
+\end{equation}
+It is supported on $[-1,1]$ and is smooth by the same Fourier
+argument as before. At $\theta=1/2$ it equals $u$.
+
+\begin{theorem}[Separated-copy norms and their moment class]\label{thm:geometric}
+For $r\geq0$ and $1\leq p\leq\infty$,
+\begin{equation}
+ \norm{v_\theta^{(r)}}_p
+ =(2\theta)^{r/p}[2(1-\theta)]^{-r}
+       \theta^{-r(r+1)/2}\norm{v_\theta}_p,
+ \label{eq:geometric-norm}
+\end{equation}
+where $(2\theta)^{r/p}=1$ at $p=\infty$.
+If $\nu_\theta$ is its normalized Fourier-energy measure, then
+\begin{equation}
+ \int t^{2r}\dd\nu_\theta(t)
+ =[2(1-\theta)^2]^{-r}\theta^{-r^2},
+ \qquad \int t^{2r+1}\dd\nu_\theta(t)=0.
+ \label{eq:geometric-moments}
+\end{equation}
+These are the moments of a symmetric lognormal variable with
+logarithmic mean and variance
+\begin{equation}
+ \mu_\theta=-\frac12\log\bigl(2(1-\theta)^2\bigr),
+ \qquad \sigma_\theta^2=-\frac12\log\theta.
+ \label{eq:geometric-lognormal}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Differentiating the first uniform factor yields
+\begin{equation}
+ v_\theta'(x)=\frac1{2(1-\theta)\theta}
+ \left\{v_\theta\left(\frac{x+1-\theta}{\theta}\right)
+       -v_\theta\left(\frac{x-1+\theta}{\theta}\right)\right\}.
+ \label{eq:geometric-refinement}
+\end{equation}
+The two copies have disjoint interiors because $\theta\leq1/2$.
+At depth $r$ there are $2^r$ disjoint copies, each of horizontal
+scale $\theta^r$, with signs given by binary endpoint parity.
+Their common vertical multiplier is
+\begin{equation}
+ [2(1-\theta)]^{-r}\theta^{-1-2-\cdots-r}.
+\end{equation}
+Integrating the $p$th power gives \eqref{eq:geometric-norm}.
+At $p=2$, squaring the norm ratio simplifies to
+$[2(1-\theta)^2]^{-r}\theta^{-r^2}$. Plancherel proves the
+moment formula. The normal exponential-moment calculation gives
+\eqref{eq:geometric-lognormal}.
+\end{proof}
+
+For a completely explicit atomic version, put $a=-\log\theta>0$,
+$\mu=\mu_\theta$, and
+\begin{equation}
+ \Theta_a(\alpha)=\sum_{k\in\Z}e^{-a(k+\alpha)^2}.
+\end{equation}
+Then
+\begin{equation}
+ \frac1{2\Theta_a(\alpha)}\sum_{k\in\Z}e^{-a(k+\alpha)^2}
+ \left(\delta_{e^{\mu+a(k+\alpha)}}+
+       \delta_{-e^{\mu+a(k+\alpha)}}\right)
+ \label{eq:general-atomic}
+\end{equation}
+has the same moments, by shifting $k$ after completing the square.
+This generalization concerns separated copies. For $\theta>1/2$
+the copies overlap, the simple norm calculation no longer applies,
+and \eqref{eq:geometric-moments} is not asserted.
+
+\section{Exact computations and reproducibility}\label{sec:computations}
+
+The accompanying \texttt{verify.py} uses only the Python standard
+library. Algebraic tests use arbitrary-size integers and
+\texttt{fractions.Fraction}, not floating-point agreement. The saved
+\texttt{verification\_results.json} records the actual run used in
+preparing this article.
+
+\subsection{What was checked}
+
+The script performed 3,796 categorized exact checks: 35 Prouhet
+moment identities, 135 derivative-copy identities, 2,307 dyadic
+polynomial identities, 127 exact Richardson reconstructions, 510
+prefix-convolution identities, 15 extrapolation-norm identities,
+501 lattice differential conversions, and 166 dyadic lattice
+identities. The tested ranges and loop bounds are visible in the
+script. Some checks compare formulas obtained from the same
+underlying theory; they are useful for catching sign, indexing,
+and normalization errors, not substitutes for the general proofs.
+
+The implementation constructs the positive coefficient array by
+sliding-window convolution with all-ones vectors. At level $j$ the
+vector length is $O(2^j)$, so all levels through $m$ use $O(2^m)$
+integer operations. This is an arithmetic-operation count, not a
+bit-complexity bound: the integers themselves grow.
+
+\subsection{A nondyadic corrected approximation}
+
+For $x=1/3$, the reference value was computed from $C_{18,6}(x)$.
+The exact global certificate from \cref{thm:global} is less than
+$3.469\times10^{-59}$, and the reference starts
+\begin{equation}
+ u(1/3)=0.8198348851985181\ldots.
+\end{equation}
+The rational reference and its rational error bound are included
+in the JSON output. The entries in \cref{tab:corrections} are
+rounded absolute differences from that reference; its certified
+uncertainty is negligible at the digits displayed.
+
+\begin{table}[htbp]
+\centering
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{rrrr}
+\toprule
+$m$ & $|u-u_m|$ & $|u-C_{m,1}|$ & $|u-C_{m,2}|$\\
+\midrule
+6 & $8.90547\cdot10^{-5}$ & $5.96017\cdot10^{-8}$ & ---\\
+8 & $5.56024\cdot10^{-6}$ & $2.29567\cdot10^{-10}$ & $8.44219\cdot10^{-14}$\\
+10 & $3.47493\cdot10^{-7}$ & $8.95576\cdot10^{-13}$ & $2.03133\cdot10^{-17}$\\
+12 & $2.17182\cdot10^{-8}$ & $3.49806\cdot10^{-15}$ & $4.95223\cdot10^{-21}$\\
+\bottomrule
+\end{tabular}
+\caption{Corrected spline errors at $x=1/3$. The omitted entry has
+not been used because the uniform classical-regularity threshold
+for $N=2$ is $m\geq8$.}\label{tab:corrections}
+\end{table}
+
+For example, at $m=12$, $N=2$, the actual displayed error is
+approximately $4.95223\times10^{-21}$, while the rigorous global
+bound is approximately $6.03996\times10^{-21}$. The same certificate
+works at every real $x$, not only at this sample point.
+
+\subsection{An exact discrete-array experiment}
+
+At $x=1/4$ and odd levels the normalized error is exactly
+$4/3+4/(9m)$ by \eqref{eq:quarter-lattice-exact}. The script
+computed the coefficient arrays independently by positive
+convolution and obtained \cref{tab:lattice}. In every row the
+residual after subtracting the two terms of
+\eqref{eq:quarter-lattice-exact} is exactly zero.
+
+\begin{table}[htbp]
+\centering
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{rrr}
+\toprule
+$m$ & $\rho_m(1/4)$ & $\dfrac{\rho_m(1/4)-67/72}{m4^{-m}}$\\[4pt]
+\midrule
+5 & $15/16$ & $64/45$\\
+7 & $1907/2048$ & $88/63$\\
+9 & $15247/16384$ & $112/81$\\
+11 & $487881/524288$ & $136/99$\\
+13 & $1951517/2097152$ & $160/117$\\
+15 & $124897055/134217728$ & $184/135$\\
+\bottomrule
+\end{tabular}
+\caption{Exact repeated-prefix coefficients after density
+normalization. The last column tends to $4/3$.}\label{tab:lattice}
+\end{table}
+
+The script also makes finite numerical checks of the theta moment
+formulas at several values of $\alpha$. Those checks are explicitly
+numerical; the completion-of-the-square proof, not truncation of a
+theta sum, establishes the exact identity for every moment.
+
+\section{Consequences, limitations, and concrete next problems}\label{sec:frontiers}
+
+The strongest conclusion for the motivating approximation question
+is that fixed-order strong spline corrections need no deleted knot
+neighborhoods. The sufficient condition is a regularity threshold
+on the spline level. This directly addresses the strong-spline
+conjecture in the supplied atlas \cite{atlas}; it does not establish
+that document's separate relative-error endpoint saddle evaluator.
+
+The exact dyadic results exhibit a second phenomenon. A function
+can be globally nonanalytic and yet admit finite exact extraction
+from an approximation sequence at every dyadic point. The source
+of this exactness is a low-degree \emph{finite spline cell}, not
+analyticity of the limit. The highest nonzero derivative even has
+an explicit Thue--Morse sign in
+\eqref{eq:highest-dyadic-derivative}.
+
+On the discrete side, the exact centered-factorial identity
+separates two sources of correction: $\gamma_j(m)$ accounts for
+lattice removal, and $b_j$ accounts for the infinite continuous
+tail. Their convolution produces $H_j(m)$. This is an effective
+way to organize further coefficient identities without repeatedly
+rediscovering their signs and centering terms.
+
+Finally, the spectral calculation shows that an entire family of
+energy moments can conceal major differences between probability
+measures. A continuous density positive at zero, a lognormal-type
+density flat at zero, and a purely atomic measure can share every
+polynomial moment. The refinement equation restores information
+that the moments alone discard.
+
+\begin{problem}[Relative endpoint accuracy]
+Develop bounds for $C_{m,N}(x)-u(x)$ relative to $u(x)$ as $x$
+approaches an endpoint while $m$ and $N$ vary. The present global
+absolute bounds remain true there, but division by the very small
+value of $u(x)$ can make them ineffective. A proof will need local
+information beyond a global derivative norm.
+\end{problem}
+
+\begin{problem}[Efficient exact extraction]
+Determine the best bit complexity of dyadic reconstruction from
+positive coefficient arrays, local spline cells, or the signed
+formula \eqref{eq:closed-dyadic}. The extrapolation condition bound
+is uniform, but the cost of producing the inputs and the cost of
+large integer cancellation must be analyzed separately.
+\end{problem}
+
+\begin{problem}[Overlapping geometric copies]
+For $1/2<\theta<1$, compute or characterize the cross terms in
+$\norm{v_\theta^{(r)}}_2^2$. The separated calculation in
+\cref{thm:geometric} identifies exactly where the argument changes:
+the derivative-copy intervals now overlap. It is natural to ask
+which parameters, if any, retain an explicit moment class.
+\end{problem}
+
+\subsection{A formalization route without a formalization claim}
+
+The main dependency chain is short. Finite convolution and binary
+endpoint enumeration yield the derivative-copy identity. Disjoint
+supports give its norm formula. A Taylor remainder bound and the
+probability-tail identity then yield the global theorem. The
+dyadic cell lemma and finite triangular inversion are algebraic
+once that bridge is available. Separately, the centered-factorial
+identity can be formalized in a polynomial ring, and the lattice
+local-limit theorem requires Fourier inversion with explicit
+integrable majorants. Plancherel plus disjoint supports proves
+the energy moments.
+
+These are proposed proof components, not assertions that new Lean
+theorems have been compiled or added to the repository. The
+manuscript and the exact-arithmetic script are the deliverables
+of this investigation.
+
+\appendix
+\section{Normalization dictionary and implementation details}\label{app:normalization}
+
+\subsection{Frequency conventions}
+
+The angular-frequency transform used here is $Q(t)$ in
+\eqref{eq:Q}. Under the cyclic-frequency convention
+$\widehat u(\xi)=\int e^{-2\pi\ii\xi x}u(x)\dd x$, evenness gives
+\begin{equation}
+ \widehat u(\xi)=Q(2\pi\xi)
+   =\prod_{j=0}^{\infty}\sinc(\pi\xi/2^j).
+ \label{eq:cyclic-frequency}
+\end{equation}
+A finite cyclic product indexed $j=0,\ldots,n$ therefore corresponds
+to the spline $u_{n+1}$ in this article. Its omitted-tail scale is
+$2^{-(n+1)}$, not $2^{-n}$. The even moments of its normalized
+cyclic-frequency energy measure are
+\begin{equation}
+ (2\pi)^{-2r}2^{r(r+1)}.
+\end{equation}
+This dictionary is important when comparing formulas with
+repository documents that use a different Fourier convention or
+start their product index at zero.
+
+\subsection{Integer-only evaluation of a spline derivative}
+
+For $x=a/b$ with $b>0$ and $p=m-1-r\geq1$, put
+\begin{equation}
+ T=a2^m+b(2^m-1).
+\end{equation}
+Then \eqref{eq:spline-deriv-positive} is
+\begin{equation}
+ u_m^{(r)}(a/b)
+ =\frac{2^{m(m-1)/2}}{p!(b2^m)^p}
+       \sum_{\substack{0\leq n<2^m\\T-2bn>0}}
+           \eps_n(T-2bn)^p.
+ \label{eq:integer-spline-evaluation}
+\end{equation}
+The sum is an integer and can be accumulated before one final
+rational division. For a highest cellwise derivative, $p=0$,
+use the same formula away from knots with the positive-part
+indicator convention. The supplied implementation treats values
+outside the support as zero before forming the signed sum.
+
+\subsection{Reproducing the computation and PDF}
+
+From the directory containing the archive contents, run
+\begin{lstlisting}
+python verify.py
+pdflatex Thue_Morse_New_Deductions.tex
+pdflatex Thue_Morse_New_Deductions.tex
+pdflatex Thue_Morse_New_Deductions.tex
+\end{lstlisting}
+The Python script requires Python~3.10 or later and no third-party
+packages. The LaTeX source uses standard mathematical packages and
+the New~TX fonts available in a full TeX~Live installation. The
+article source is self-contained: it needs no external figures,
+bibliography database, generated tables, or source-code inclusion
+to compile.
+
+\section{Statement ledger}\label{app:ledger}
+
+\begin{longtable}{@{}p{0.26\textwidth}p{0.67\textwidth}@{}}
+\toprule
+Result & Precisely what is established\\
+\midrule
+\endhead
+Global correction &
+\Cref{thm:global,thm:sharp,cor:holder}: all fixed orders, global
+classical and H\"older norms, explicit constants, and sharp leading
+supremum asymptotics.\\[4pt]
+Increasing order &
+\Cref{cor:growing}: a supergeometric absolute error certificate
+with a specified admissible order; no relative endpoint or
+numerical-conditioning claim.\\[4pt]
+Dyadic splines &
+\Cref{thm:dyadic,cor:exact-degree,thm:richardson}: exact polynomial
+stabilization, exact degree in lowest terms, finite extraction,
+and an order-independent absolute amplification bound.\\[4pt]
+Discrete array &
+\Cref{thm:lattice-operator,thm:local-limit,thm:dyadic-lattice}:
+finite differential conversion, a uniform all-orders local-limit
+bound, and exact stopping on fixed dyadic odd-level subsequences.\\[4pt]
+Energy moments &
+\Cref{thm:energy-moments,thm:lognormal,thm:theta}: exact moments,
+explicit distinct continuous and atomic moment twins, and hence
+moment indeterminacy.\\[4pt]
+Geometric extension &
+\Cref{thm:geometric}: exact separated-copy norms and the resulting
+moment class for $0<\theta\leq1/2$, not for overlapping copies.\\[4pt]
+Priority and verification &
+Proofs and finite exact computations are supplied; universal
+publication priority, peer review, and Lean formalization are
+not claimed.\\
+\bottomrule
+\end{longtable}
+
+\clearpage
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{atlas}
+ProveIt project.
+\emph{The Thue--Morse Sequence: Formula Atlas and Fabius--Rvachev
+Frontier Results}.
+Research draft, consolidated 28 August 2026, in the repository
+maintained by Vladimir Reshetnikov. Source inspected 4 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers}.
+The live \texttt{main} URL is not an immutable commit reference.
+
+\bibitem{allouche-shallit}
+J.-P. Allouche and J. Shallit.
+The ubiquitous Prouhet--Thue--Morse sequence.
+In C. Ding, T. Helleseth, and H. Niederreiter, eds.,
+\emph{Sequences and Their Applications}, Springer, 1999, pp.~1--16.
+\url{https://doi.org/10.1007/978-1-4471-0551-0_1}.
+Author-hosted text:
+\url{https://cs.uwaterloo.ca/~shallit/Papers/ubiq15.pdf}.
+
+\bibitem{arias1982}
+J. Arias de Reyna.
+An infinitely differentiable function with compact support:
+Definition and properties.
+English translation, arXiv:1702.05442, 2017.
+Original Spanish article in \emph{Revista de la Real Academia de
+Ciencias Exactas, F\'isicas y Naturales de Madrid} \textbf{76}
+(1982), 21--38.
+\url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{arias2018}
+J. Arias de Reyna.
+Arithmetic of the Fabius function.
+\emph{Integers} \textbf{18} (2018), Article A51.
+\url{https://math.colgate.edu/~integers/s51/s51.pdf}.
+Preprint: \url{https://arxiv.org/abs/1702.06487}.
+
+\bibitem{heyde}
+C. C. Heyde.
+On a property of the lognormal distribution.
+\emph{Journal of the Royal Statistical Society, Series B}
+\textbf{25}(2) (1963), 392--393.
+\url{https://doi.org/10.1111/j.2517-6161.1963.tb00521.x}.
+
+\bibitem{dlmf}
+National Institute of Standards and Technology.
+\emph{Digital Library of Mathematical Functions},
+Secs.~4.22 and 24.16: infinite trigonometric products and
+generalized Bernoulli polynomials.
+Version 1.2.7, 15 June 2026; inspected 4 September 2026.
+\url{https://dlmf.nist.gov/4.22};
+\url{https://dlmf.nist.gov/24.16}.
+
+\bibitem{cloitre}
+B. Cloitre.
+The Thue--Morse transform.
+arXiv:2604.06243v2, 28 May 2026.
+\url{https://arxiv.org/abs/2604.06243v2}.
+Cited for related transform and Prouhet-partition context, not as
+a source for the analytic theorems proved here.
+
+\end{thebibliography}
+\end{document}

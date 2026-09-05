@@ -64,7 +64,95 @@ This `README.md` is the permanent explanation of the directory and
 **must not be deleted** — it also keeps the directory present in git
 when no archives are waiting.
 
-Most recent processed batch (twelve archives, filed and removed on 2026-09-03,
+Most recent processed batch (fifteen archives, filed and removed on
+2026-09-04, after the twelve-article batch below): four unrelated subjects,
+arriving in five intake commits over one day.
+
+- Six Thue–Morse articles → `../thue-morse/` (intake `cc21b6e81`).
+  `Thue_Morse_Boundary_Corrections.zip` → `Thue_Morse_Boundary_Corrections/`:
+  1,690-line/72,674-byte source, 25-page A4/662,110-byte PDF, with figures,
+  `poisson_data.json`, and a submitted `PROVENANCE.md`.
+  `Thue_Morse_Dyadic_Completion.zip` → `Thue_Morse_Dyadic_Completion/`:
+  2,223-line/84,303-byte source, 30-page A4/686,840-byte PDF, with `code/`,
+  `data/`, and `figures/` trees.
+  `Thue_Morse_New_Directions.zip` → `Thue_Morse_New_Directions/`:
+  2,067-line/85,629-byte source, 30-page A4/512,455-byte PDF, with four CSV
+  tables and a submitted `SOURCE_AUDIT.md`.
+  `Thue_Morse_Rational_Resonances.zip` → `Thue_Morse_Rational_Resonances/`:
+  1,427-line/80,276-byte source, 30-page Letter/348,358-byte PDF, with
+  `results/` and a submitted `SOURCES.md`; **no wrapping directory**.
+  `Thue_Morse_Research.zip` → `Thue_Morse_Research/`: 1,927-line/72,705-byte
+  source (`Thue_Morse_New_Deductions.tex`), 26-page A4/331,660-byte PDF.
+  `thue_morse_research_article.zip` → `thue_morse_research_article/`:
+  1,551-line/66,101-byte source (`thue_morse_mellin_and_gamma.tex`), 24-page
+  Letter/436,411-byte PDF.
+- Three combinatorial-transseries extensions → `../series-and-transseries/`
+  (intake `13c6476e3` and `3824b7720`), filed as separate members beside the
+  consolidated volume.  `combinatorial_transseries_and_inverses.zip` →
+  `combinatorial_transseries_and_inverses/`: 1,519-line/85,501-byte source,
+  29-page A4/598,498-byte PDF.  `combinatorial_transseries_extension.zip` →
+  `combinatorial_transseries_extension/`: 2,241-line/117,447-byte source,
+  42-page A4/566,596-byte PDF.  `combinatorial_transseries_extension-2.zip` →
+  `combinatorial_transseries_extension-2/`: 1,970-line/101,772-byte source,
+  39-page Letter/261,004-byte PDF from `xdvipdfmx`.
+- Three recurrence-free dyadic-value articles →
+  `../inverse-and-sampling/dyadic-up-extraction/` (intake `46e126fcd`), beside
+  the consolidated volume whose extraction mechanism they share.
+  `fabius_dyadic_closed_forms.zip` → `fabius_dyadic_closed_forms/`:
+  1,441-line/62,402-byte source, 22-page A4/490,000-byte PDF.
+  `fabius_dyadic_closed_forms-2.zip` → `fabius_dyadic_closed_forms-2/`:
+  1,456-line/71,737-byte source, 26-page A4/637,900-byte PDF; **no wrapping
+  directory**.  `fabius_rvachev_recurrence_free_closed_forms.zip` →
+  `fabius_rvachev_recurrence_free_closed_forms/`: 1,681-line/68,704-byte source
+  (`dyadic_closed_forms.tex`), 23-page A4/711,303-byte PDF.
+- Three Gaussian-binomial articles →
+  `../combinatorial-coefficient-calculus/` (intake `e20e26434`), beside the
+  canonical volume they extend.  `q_binomial_coefficient_calculus.zip` →
+  `q_binomial_coefficient_calculus/`: 2,667-line/111,913-byte source, 55-page
+  A4/780,056-byte PDF.  `q_binomial_coefficient_calculus-2.zip` →
+  `q_binomial_coefficient_calculus-2/`: 1,747-line/77,007-byte source, 29-page
+  A4/473,961-byte PDF, with five JSON verification products.
+  `q_binomial_coefficient_calculus-3.zip` →
+  `q_binomial_coefficient_calculus-3/`: 2,567-line/101,073-byte source,
+  35-page A4/688,859-byte PDF.
+
+Every archive passed a CRC check with no absolute path, parent-directory
+traversal, or symlink entry.  Thirteen wrapped a single top-level directory and
+two did not; six wrapper names collided outright as two triples (all three
+transseries archives wrap `combinatorial_transseries_extension/`, all three
+`q`-binomial archives wrap `q_binomial_coefficient_calculus/`), one more
+collided with a sibling under Windows case-insensitive matching
+(`thue_morse_research/` against `Thue_Morse_Research/`), and one differed from
+its stem — so the archive stems, which are distinct, name all fifteen filed
+directories uniformly.  Note that two transseries stems are crossed with their
+inner file names.  Longest filed path 191 characters absolute, 180 from the
+repository root.
+
+All fifteen sources are LF with a final newline and were filed byte-for-byte;
+the only normalization is the repository's CRLF-to-LF conversion of eight
+submitted CSV tables in `Thue_Morse_New_Directions/` and
+`Thue_Morse_Rational_Resonances/`, which git applied at commit.  All fifteen
+main PDFs are readable and unencrypted with every font embedded and none
+missing; twelve are A4 and three Letter, three carry one to four Type-3 rows
+inherited from Matplotlib figures, and six carry Libertinus faces.  Fourteen
+are pdfTeX-1.40.26; one is `xdvipdfmx (20240305)`.  None loads
+`docs/fabius-notation.tex`.  Eight submitted `SHA256SUMS.txt` or
+`SHA256SUMS.json` ledgers were verified in full — 86 of 86 entries matched —
+before extraction and then retired under repository policy; the one
+purpose-specific `MANIFEST.sha256`, in `combinatorial_transseries_and_inverses/`,
+was likewise verified and remains in its filed package.  Historical bytes
+remain recoverable from Git.
+
+Three same-subject overlaps are already visible and are recorded for the
+deferred phase, not acted on: `Thue_Morse_Dyadic_Completion/` and
+`thue_morse_research_article/` build the same dyadic completion of the
+Thue–Morse Laplace product; the three `fabius_*_closed_forms` articles answer
+one question three ways; and the exact-polynomiality-in-`4^-m` statement of
+`Thue_Morse_Research/` is the mechanism those three use.  Claim-by-claim
+comparison, deduplication, canonical selection, proof checking, numerical
+reproduction, and Lean crosswalking are all deferred.
+
+Previous batch (twelve archives, filed and removed on 2026-09-03,
 after the Bell/Fubini batch below): twelve independently written articles on
 the asymptotic transseries **and asymptotic inverse** of four combinatorial
 sequences, three articles each, all to

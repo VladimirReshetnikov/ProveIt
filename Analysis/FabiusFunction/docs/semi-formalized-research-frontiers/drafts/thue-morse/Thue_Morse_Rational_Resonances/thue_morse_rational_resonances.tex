@@ -1,0 +1,1427 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{listings}
+\hypersetup{pdftitle={Rational Resonances and Coalescing Roots of the Thue--Morse Polynomials},pdfauthor={Research article prepared for Vladimir Reshetnikov},pdfsubject={Exact moment calculus, Gaussian--Fabius limits, and cyclotomic transform quotients}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Thue--Morse rational resonances}
+\fancyhead[R]{\small Research companion}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.30em}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=0.15em,topsep=0.3em}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\B}{\mathcal B}
+\newcommand{\Up}{\mathcal U}
+\newcommand{\Rp}{\mathcal R}
+\newcommand{\Hp}{\mathcal H}
+\newcommand{\Qp}{\mathcal Q}
+\newcommand{\Np}{\mathcal N}
+\newcommand{\D}{\mathrm D}
+\newcommand{\e}{\mathrm e}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\title{\textbf{Rational Resonances and Coalescing Roots\\of the Thue--Morse Polynomials}\\[0.6em]
+\large Exact moment calculus, Gaussian--Fabius limits,\\and cyclotomic transform quotients}
+\author{Research article prepared for Vladimir Reshetnikov\\
+\small A companion to \emph{Thue--Morse Atlas and Frontiers}}
+\date{4 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+The finite Thue--Morse polynomial
+\(P_m(w)=\prod_{j=0}^{m-1}(1-w^{2^j})\)
+contains more information than its values at roots of unity. We investigate its complete local profile in a window of width \(2^{-m}\) around each rational frequency. At roots of odd order, these profiles converge along periodic subsequences to explicit entire functions. A denominator-free factorization identifies the finite-depth error exactly; complete Bell polynomials give every correction coefficient and every twisted power moment without auxiliary recurrences. Root-of-unity filtering then produces closed exponential formulas and eventual integer-coefficient recurrences for polynomially weighted arithmetic-progression sums.
+
+At dyadic roots, removal of the growing zero multiplicity yields the Laplace transform of the Fabius distribution. When the root itself approaches \(1\), this fixed-root limit is no longer uniform. We prove a hierarchy of double-scaling limits. Its quadratic member is the Fabius transform multiplied by a Gaussian transform, with variance given explicitly by the scaling parameter. This is a limit of renormalized analytic functions, not a claim that the finite complex profiles are probability laws.
+
+The odd-order profiles also satisfy a cyclotomic product identity: their product is \(\Up(qz)/\Up(z)\), where \(\Up\) is the Fabius transform. This quotient is the transform of an independent digit series. We give a self-contained singularity proof for odd \(q\), and an exact differentiability classification for even \(q\) in terms of its 2-adic valuation. Additional results describe every zero of an individual profile, its multiplicity, non-holonomicity, and strict concavity between Fourier zeros. Established background, newly derived extensions, computational checks, and unresolved questions are kept separate; worldwide priority is not asserted.
+\end{abstract}
+\vspace{0.5em}
+\noindent\textbf{Keywords.} Thue--Morse sequence; roots of unity; Bell polynomials; Fabius distribution; Gaussian limit; cyclotomic products; singular continuous measures.
+\clearpage
+\tableofcontents
+\newpage
+
+\section{Scope, provenance, and the main results}
+\label{sec:scope}
+
+\subsection{What is being extended}
+The reference atlas \cite{atlas} already treats the binary product, Prouhet cancellation, ordinary power moments, root-of-unity filters, rarefied sums, and the finite-product bridge to the Fabius--Rvachev system. Its second part also develops exact tails and high-order correction formulas for the untwisted sinc product. These are starting points here, not discoveries claimed by this article.
+
+The comparison was made with the specified online atlas, particularly the product, finite-difference, Fourier, rarefied-sum, and finite-block chapters, as available on 4 September 2026. It was not a line-by-line audit of every file in the entire repository. The atlas contains historical snapshot and consolidation dates; those should not be confused with the date of this research companion. No new Lean theorem is claimed to have been implemented or checked.
+
+The classical landscape is surveyed by Allouche and Shallit \cite{allouche}. The closest external comparisons for the present work are Sobolewski's root-of-unity recurrence theory for automatic-sequence polynomials \cite{sobolewski} and Duke--Nguyen's asymptotic theory of infinite cyclotomic products \cite{duke}. Thus neither recurrence at a rational frequency nor the use of cyclotomic products is itself new. The intended extensions are the explicit moving-window factorization, its full derivative calculus, and the coalescing-root limits proved below.
+
+The subject remains active. Baake and Coons study higher correlations \cite{baakecoons}; Gohlke, Kesseböhmer, and Schindler study generalized spectral measures \cite{gohlke}; and Cloitre's 2026 preprint constructs iterated transforms and generalized Prouhet partitions \cite{cloitre}. These works concern neighboring problems. We do not describe the results below as resolutions of their open problems, nor as new versions of the classical correlation or Prouhet theorems.
+
+\subsection{A guide to the contributions}
+There are four main groups of results.
+
+\paragraph{Exact local profiles.}
+For a nontrivial odd-order root \(\zeta\), define
+\[
+ \Qp_{m,\zeta}(z)=\frac{P_m(\zeta\e^{z/2^m})}{P_m(\zeta)}.
+\]
+Theorem~\ref{thm:profile} gives entire functions \(\Hp_{\zeta,s}\), periodic in the depth phase \(s\), with the exact identity
+\[
+ \Qp_{m,\zeta}(z)\Hp_{\zeta,0}(z/2^m)=\Hp_{\zeta,s}(z).
+\]
+Theorem~\ref{thm:correction} turns this into a convergent, all-orders expansion with an explicit remainder bound. Theorem~\ref{thm:moments} differentiates it into a closed formula for every twisted power moment.
+
+\paragraph{Coalescing-root universality.}
+At a primitive dyadic root of order \(2^r\), a polynomial of depth \(m=r+M\) has a zero of multiplicity \(M\). Removing that zero gives a normalized function \(\Np_{r,M}\). For a fixed root, its limit is \(\Up\), the Fabius transform. Theorem~\ref{thm:hierarchy} determines the different limits when \(r\) grows with \(M\). In particular,
+\[
+ r4^{-M}\longrightarrow\lambda
+ \quad\Longrightarrow\quad
+ \e^{-r2^{-M}z/(2\pi\ii)}\Np_{r,M}(z)
+ \longrightarrow \Up(z)\e^{\lambda z^2/(8\pi^2)}.
+\]
+This Gaussian--Fabius limit is the most distinctive new derivation in the article.
+
+\paragraph{Cyclotomic aggregation.}
+Theorem~\ref{thm:norm} multiplies the rational-frequency profiles into an integer dilation quotient of \(\Up\). Theorem~\ref{thm:regularity} classifies the associated probability laws: odd dilation factors give singular continuous laws; even factors give densities of an explicitly determined, finite differentiability class.
+
+\paragraph{Geometry and exact arithmetic.}
+Theorem~\ref{thm:zeros} determines the entire zero divisor of each profile. Theorem~\ref{thm:depth} gives eventual recurrences for weighted residue sums, with completely explicit characteristic roots. These results supply independent checks on the analytic constructions.
+
+\subsection{Novelty and evidence}
+The principal formulas were derived for this report and are proved here. The specific coalescing-root hierarchy and its Gaussian member were not identified in the atlas or the directly relevant sources inspected. The same statement applies to the combined profile--moment--cyclotomic-quotient package. This is a limited, source-relative novelty statement, not an assertion of historical priority. Some individual ingredients are standard consequences of infinite products, finite differences, or self-similar probability measures.
+
+All theorems below have mathematical proofs. The accompanying exact and high-precision computations are consistency checks, not evidence replacing a proof. Section~\ref{sec:checks} records their scope precisely.
+
+\section{The finite product and the Fabius transform}
+\label{sec:background}
+
+\subsection{Signs, blocks, and cancellation}
+Put
+\begin{equation}
+ \eps_n=(-1)^{s_2(n)},\qquad
+ P_m(w)=\sum_{n=0}^{2^m-1}\eps_n w^n,\qquad P_0(w)=1,
+ \label{eq:Pm}
+\end{equation}
+where \(s_2(n)\) is the number of ones in the binary expansion of \(n\). Throughout, empty products are \(1\), and \(0^0=1\) in a degree-zero moment.
+
+\begin{lemma}[The binary product]
+For every integer \(m\geq0\),
+\begin{equation}
+ P_m(w)=\prod_{j=0}^{m-1}(1-w^{2^j}).
+ \label{eq:product}
+\end{equation}
+Consequently,
+\begin{equation}
+ \sum_{n<2^m}\eps_n n^h=0\quad(0\leq h<m),\qquad
+ \sum_{n<2^m}\eps_n n^m=(-1)^m m!2^{m(m-1)/2}.
+ \label{eq:prouhet}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Selecting either \(1\) or \(-w^{2^j}\) in each factor gives exactly one monomial for each binary integer below \(2^m\), with its required sign. For the moments, substitute \(w=\e^t\). Each factor has expansion \(-2^jt+O(t^2)\), so the product starts with \((-1)^m2^{m(m-1)/2}t^m\). Differentiation at zero proves both assertions.
+\end{proof}
+
+The important point is that this argument controls the order of vanishing, not just the value of the polynomial. Our extension follows that order of vanishing at other roots and through moving roots.
+
+\subsection{A positive comparison function}
+Define the removable entire function
+\begin{equation}
+ g(z)=\frac{\e^z-1}{z},\qquad g(0)=1,
+\end{equation}
+and its finite and infinite dyadic products
+\begin{equation}
+ \Up_M(z)=\prod_{k=1}^M g(z/2^k),\qquad
+ \Up(z)=\prod_{k=1}^{\infty}g(z/2^k).
+ \label{eq:U}
+\end{equation}
+Since \(g(z)=1+O(z)\) near zero, the infinite product converges uniformly on compact subsets of \(\C\). It is entire and obeys the denominator-free identities
+\begin{equation}
+ \Up_M(z)\Up(z/2^M)=\Up(z),\qquad
+ \Up(2z)=g(z)\Up(z).
+ \label{eq:Utail}
+\end{equation}
+
+Let \(V_1,V_2,\ldots\) be independent uniform random variables on \([0,1]\), and put
+\begin{equation}
+ X=\sum_{k\geq1}2^{-k}V_k.
+ \label{eq:FabiusX}
+\end{equation}
+The series converges absolutely, \(0\leq X\leq1\), and independence gives
+\begin{equation}
+ \Up(z)=\E\e^{zX}.
+ \label{eq:Umgf}
+\end{equation}
+We use the bounded Fabius normalization \(F(x)=\Prob(X\leq x)\). This agrees on \([0,1]\) with the classical Fabius distribution construction \cite{fabius}; it should not be confused with the various extensions of the Fabius function outside that interval.
+
+For completeness, \(X\) has an infinitely differentiable density. Indeed, for each fixed \(N\), its characteristic function satisfies
+\[
+ |\Up(\ii t)|\leq \prod_{k=1}^N\min\{1,2^{k+1}/|t|\}
+ =O_N(|t|^{-N}).
+\]
+Fourier inversion can therefore be differentiated any prescribed number of times. The resulting density is smooth and compactly supported. The distributional identity \(X\overset d=(V_1+X')/2\), with \(X'\) independent and distributed as \(X\), also gives
+\begin{equation}
+ F'(x)=2\bigl(F(2x)-F(2x-1)\bigr),
+\end{equation}
+with \(F=0\) to the left of zero and \(F=1\) to the right of one. In particular \(F'(x)=2F(2x)\) on \(0<x<1/2\).
+
+The centered product is
+\begin{equation}
+ \Up(z)=\e^{z/2}\prod_{k\geq1}
+ \frac{\sinh(z/2^{k+1})}{z/2^{k+1}}.
+ \label{eq:Usinh}
+\end{equation}
+Thus the familiar sinc product is already present, but our later rational profiles will not individually be transforms of positive measures.
+
+\subsection{An explicit coefficient convention}
+Let \(b_n\) denote Bernoulli numbers with \(b_1=-1/2\), and define
+\begin{equation}
+ \beta_1=\frac12,\qquad \beta_n=\frac{b_n}{n}\quad(n\geq2).
+ \label{eq:beta}
+\end{equation}
+Then
+\begin{equation}
+ \log g(z)=\sum_{n\geq1}\beta_n\frac{z^n}{n!},\qquad
+ \log\Up(z)=\sum_{n\geq1}\frac{\beta_n}{2^n-1}\frac{z^n}{n!}.
+ \label{eq:Ulog}
+\end{equation}
+The first equality follows by differentiating the logarithm and using the generating function of the Bernoulli numbers; summing the dyadic geometric series gives the second. These logarithms are the branches that vanish at zero. The second series has radius \(4\pi\), the distance to the first zero of \(\Up\).
+
+We use complete exponential Bell polynomials in the explicit finite form
+\begin{equation}
+ \B_h(x_1,\ldots,x_h)
+ =h!\!\sum_{\substack{\nu_1,\ldots,\nu_h\geq0\\
+                       \nu_1+2\nu_2+\cdots+h\nu_h=h}}
+ \prod_{j=1}^h\frac{1}{\nu_j!}
+ \left(\frac{x_j}{j!}\right)^{\nu_j},\qquad \B_0=1.
+ \label{eq:Bell}
+\end{equation}
+Expanding an exponential coefficient by coefficient proves
+\begin{equation}
+ \exp\left(\sum_{j\geq1}x_j\frac{z^j}{j!}\right)
+ =\sum_{h\geq0}\B_h(x_1,\ldots,x_h)\frac{z^h}{h!}.
+ \label{eq:BellGF}
+\end{equation}
+All coefficient formulas below can consequently be evaluated using finite sums and products, without an auxiliary sequence defined by recurrence.
+
+\section{Odd-order rational resonance profiles}
+\label{sec:profiles}
+
+\subsection{Backward phases}
+Fix an odd integer \(q\geq3\), an integer \(a\) with \(1\leq a<q\), and
+\begin{equation}
+ \zeta=\e^{2\pi\ii a/q},\qquad L=\ord_q(2).
+\end{equation}
+The root need not be primitive. Negative exponents of \(2\) in exponents of \(\zeta\) always mean inverses modulo \(q\). Equivalently, reduce the exponent of \(2\) modulo \(L\). Define
+\begin{equation}
+ a_{s,k}=\zeta^{2^{s-k}},\qquad
+ \Hp_{\zeta,s}(z)=\prod_{k\geq1}
+ \frac{1-a_{s,k}\e^{z/2^k}}{1-a_{s,k}},
+ \qquad s\in\Z/L\Z.
+ \label{eq:H}
+\end{equation}
+Every denominator is nonzero. The index \(k\) follows the binary orbit backwards because the last, largest-scale factor of \(P_m\) becomes the first factor after rescaling.
+
+\begin{theorem}[Exact profile factorization]
+\label{thm:profile}
+The products \(\Hp_{\zeta,s}\) are entire and satisfy \(\Hp_{\zeta,s}(0)=1\). If \(m\geq0\) and \(s\equiv m\pmod L\), then
+\begin{equation}
+ \boxed{\quad
+ \frac{P_m(\zeta\e^{z/2^m})}{P_m(\zeta)}
+ \Hp_{\zeta,0}(z/2^m)=\Hp_{\zeta,s}(z).
+ \quad}
+ \label{eq:exactH}
+\end{equation}
+In particular, along \(m\equiv s\pmod L\),
+\begin{equation}
+ \Qp_{m,\zeta}(z)\longrightarrow\Hp_{\zeta,s}(z)
+ \label{eq:Hlimit}
+\end{equation}
+uniformly on every compact subset of \(\C\), together with all derivatives.
+\end{theorem}
+\begin{proof}
+Put \(d=\min_{0\leq j<L}|1-\zeta^{2^j}|>0\). For \(|z|\leq R\), the \(k\)-th factor differs from one by at most
+\begin{equation}
+ \frac{R\e^{R/2^k}}{d2^k}\leq\frac{R\e^{R/2}}{d2^k}.
+ \label{eq:factorbound}
+\end{equation}
+The sum converges. The standard product criterion, which follows directly from the Cauchy criterion and \(\prod(1+u_k)\leq\exp(\sum u_k)\) for \(u_k\geq0\), gives compact-uniform convergence and entireness.
+
+Reindex the finite product by \(k=m-j\). Its normalized factors are exactly the first \(m\) factors of \(\Hp_{\zeta,s}\). For the omitted factors write \(k=m+\ell\). Then
+\[
+ a_{s,m+\ell}=\zeta^{2^{-\ell}},\qquad
+ z/2^{m+\ell}=(z/2^m)/2^\ell.
+\]
+Their product is \(\Hp_{\zeta,0}(z/2^m)\), proving \eqref{eq:exactH}. This tail tends to one uniformly on compact sets and is nonzero there for all sufficiently large \(m\). The limit follows, and Cauchy's integral formula on slightly larger compact sets gives convergence of every derivative.
+\end{proof}
+
+The denominator-free form \eqref{eq:exactH} is important. A quotient formula without that qualification would appear to have poles at zeros of the tail even though the finite polynomial profile is entire.
+
+\subsection{Closed cumulants}
+For \(n\geq1\) and \(w\neq1\), define the rational function
+\begin{equation}
+ \Li_{1-n}(w)=\left(w\frac{\mathrm d}{\mathrm dw}\right)^{n-1}
+                  \frac{w}{1-w}.
+ \label{eq:Lirational}
+\end{equation}
+This is the rational continuation of the usual nonpositive-order polylogarithm; no infinite series at a root of unity is intended. For example,
+\[
+ \Li_0(w)=\frac{w}{1-w},\quad
+ \Li_{-1}(w)=\frac{w}{(1-w)^2},\quad
+ \Li_{-2}(w)=\frac{w(1+w)}{(1-w)^3}.
+\]
+
+\begin{theorem}[Finite formulas for all cumulants]
+\label{thm:cumulants}
+Write, near zero,
+\begin{equation}
+ \log\Hp_{\zeta,s}(z)=\sum_{n\geq1}\kappa_{\zeta,s,n}\frac{z^n}{n!}.
+\end{equation}
+Then
+\begin{equation}
+ \boxed{\quad
+ \kappa_{\zeta,s,n}=
+ -\frac{\displaystyle\sum_{k=1}^L2^{-kn}
+       \Li_{1-n}(\zeta^{2^{s-k}})}{1-2^{-Ln}}.
+ \quad}
+ \label{eq:kappa}
+\end{equation}
+In particular, all cumulants and Taylor coefficients belong to \(\Q(\zeta)\).
+\end{theorem}
+\begin{proof}
+Repeated differentiation gives
+\[
+ \left.\frac{\mathrm d^n}{\mathrm dz^n}\log(1-w\e^z)\right|_{z=0}
+ =-\Li_{1-n}(w).
+\]
+The compact convergence estimates used above justify summing derivatives in a zero-free neighborhood of the origin. Thus the cumulant is
+\(-\sum_{k\geq1}2^{-kn}\Li_{1-n}(a_{s,k})\).
+The phase is periodic with period \(L\); summing each residue class of \(k\) yields \eqref{eq:kappa}. Every summand is a rational function of \(\zeta\).
+\end{proof}
+
+Define two coefficient families explicitly by
+\begin{align}
+ h_{\zeta,s,j}
+ &=\frac1{j!}\B_j(\kappa_{\zeta,s,1},\ldots,\kappa_{\zeta,s,j}),
+ \label{eq:hcoeff}\\
+ c_{\zeta,j}
+ &=\frac1{j!}\B_j(-\kappa_{\zeta,0,1},\ldots,-\kappa_{\zeta,0,j}).
+ \label{eq:ccoeff}
+\end{align}
+Then \(\Hp_{\zeta,s}(z)=\sum h_{\zeta,s,j}z^j\) and
+\(1/\Hp_{\zeta,0}(z)=\sum c_{\zeta,j}z^j\) near zero. In particular,
+\begin{align}
+ c_0&=1,&c_1&=-\kappa_1,\\
+ c_2&=\tfrac12(\kappa_1^2-\kappa_2),&
+ c_3&=\tfrac16(-\kappa_1^3+3\kappa_1\kappa_2-\kappa_3),
+ \label{eq:firstc}
+\end{align}
+where the suppressed cumulants have phase zero.
+
+\subsection{All orders with a certified analytic bound}
+\begin{theorem}[Convergent depth expansion]
+\label{thm:correction}
+For \(s\equiv m\pmod L\) and every fixed \(N\geq0\),
+\begin{equation}
+ \Qp_{m,\zeta}(z)
+ =\Hp_{\zeta,s}(z)\sum_{j=0}^N c_{\zeta,j}z^j2^{-mj}
+       +O_{R,N,\zeta}(2^{-(N+1)m}),\qquad |z|\leq R.
+ \label{eq:allorders}
+\end{equation}
+More explicitly, put
+\[
+ d=\min_j|1-\zeta^{2^j}|,\quad \rho=d/4,\quad
+ M_R=\exp(R\e^{R/2}/d),\quad
+ J_\rho=\exp(2\rho\e^{\rho/2}/d).
+\]
+Whenever \(R2^{-m}<\rho\), the absolute remainder in \eqref{eq:allorders} is at most
+\begin{equation}
+ M_RJ_\rho\,
+ \frac{(R2^{-m}/\rho)^{N+1}}{1-R2^{-m}/\rho}.
+ \label{eq:certified}
+\end{equation}
+The infinite expansion converges whenever \(|z|2^{-m}\) is smaller than the distance from zero to the nearest zero of \(\Hp_{\zeta,0}\).
+\end{theorem}
+\begin{proof}
+Equation~\eqref{eq:factorbound} bounds \(|\Hp_{\zeta,s}(z)|\) by \(M_R\). On \(|w|\leq\rho\), write each factor of \(\Hp_{\zeta,0}\) as \(1+v_k\). The estimates give
+\[
+ \sum|v_k|\leq\rho\e^{\rho/2}/d,
+ \qquad |v_k|\leq\rho\e^{\rho/2}/(2d)<1/2,
+\]
+since \(d\leq2\). The inequality \((1-u)^{-1}\leq\e^{2u}\) for \(0\leq u\leq1/2\) bounds the reciprocal product by \(J_\rho\). Cauchy's coefficient estimate therefore gives \(|c_j|\leq J_\rho\rho^{-j}\). Summing the geometric tail and multiplying by \(M_R\) proves \eqref{eq:certified}. The exact factorization proves convergence throughout the zero-free Taylor disc of the reciprocal.
+\end{proof}
+
+This is stronger than a merely formal asymptotic series. The error correction is the Taylor expansion of one fixed analytic reciprocal, evaluated at the shrinking argument \(z2^{-m}\).
+
+\section{Zeros, symmetry, and refinement of the profiles}
+\label{sec:geometry}
+
+\subsection{The complete zero divisor}
+A normal product is especially informative when all its factors have explicit zeros. Write \(\zeta=\e^{2\pi\ii a/q}\), with \(q\) odd and \(1\leq a<q\), as before. We use \(v_2(t)=v_2(|t|)\) for nonzero integers, and take the phase \(s\) modulo \(L\).
+
+\begin{theorem}[Zeros and their exact multiplicities]
+\label{thm:zeros}
+The zeros of \(\Hp_{\zeta,s}\) are precisely
+\begin{equation}
+ z=\frac{2\pi\ii t}{q},\qquad
+ t\in2\Z\setminus\{0\},\qquad
+ t\equiv-a2^s\pmod q.
+ \label{eq:Hzeros}
+\end{equation}
+The multiplicity of this zero is \(v_2(t)\). Equivalently, the zeros are
+\begin{equation}
+ z=\frac{4\pi\ii\ell}{q},\qquad
+ \ell\equiv-a2^{s-1}\pmod q,
+ \quad\text{with multiplicity }1+v_2(\ell).
+ \label{eq:Hzerosell}
+\end{equation}
+Here negative powers of two in congruences mean inverses modulo \(q\).
+\end{theorem}
+\begin{proof}
+Choose an integer \(v_k\) representing \(a2^{s-k}\pmod q\). The \(k\)-th factor vanishes exactly when
+\[
+ z=\frac{2\pi\ii}{q}\,2^k(qj-v_k),\qquad j\in\Z.
+\]
+Consequently, at a point \(z=2\pi\ii t/q\), this factor vanishes if and only if \(2^k\mid t\) and \(t\equiv-a2^s\pmod q\). Each such zero of the factor is simple. For a fixed nonzero \(t\), precisely \(k=1,\ldots,v_2(t)\) contribute. The congruence excludes \(t=0\), since \(a\not\equiv0\pmod q\).
+
+It remains to rule out zeros introduced by the infinite tail. On every compact set the sum of the distances of the factors from \(1\) converges. A sufficiently late tail consists of nonzero factors close to \(1\), so its logarithm converges normally and its product never vanishes. Thus the zeros and multiplicities are exactly those already counted.
+\end{proof}
+
+\begin{corollary}[The exact radius of a reciprocal expansion]
+Let \(b\in\{1,\ldots,q-1\}\) represent \(-a2^{s-1}\pmod q\). The Taylor series of \(1/\Hp_{\zeta,s}(z)\) at zero has radius
+\begin{equation}
+ \frac{4\pi}{q}\min\{b,q-b\}.
+ \label{eq:reciprocalradius}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The closest integers to zero in the progression \(b+q\Z\) are \(b\) and \(b-q\). The reciprocal has a pole at each zero of \(\Hp_{\zeta,s}\), so the nearest one determines the radius.
+\end{proof}
+
+\begin{corollary}[Non-holonomicity]
+No \(\Hp_{\zeta,s}\) satisfies a nontrivial homogeneous linear differential equation with polynomial coefficients.
+\end{corollary}
+\begin{proof}
+For arbitrarily large \(k\), choose an odd integer \(u\) in the residue class \(-a2^{s-k}\pmod q\); odd representatives exist because \(q\) is odd. Then \(t=2^ku\) gives a zero of multiplicity \(k\). In particular the multiplicities are unbounded, at infinitely many distinct points.
+
+Suppose a nonzero entire function satisfies a homogeneous differential equation of order \(r\), with nonzero leading polynomial. At a point where that polynomial does not vanish, a zero of multiplicity at least \(r\) sets all \(r\) initial data to zero. Local uniqueness for the corresponding first-order system forces the function to vanish identically. Only finitely many exceptional points are zeros of the leading polynomial, contradicting the unbounded multiplicities just established. An order-zero equation is impossible for a nonzero entire function as well.
+\end{proof}
+
+This conclusion is only non-holonomicity, often called non-D-finiteness. It does not establish differential transcendence with respect to nonlinear differential equations.
+
+\subsection{A real centered Fourier profile}
+\begin{proposition}[Reflection and strict concavity]
+For every phase,
+\begin{equation}
+ \Hp_{\zeta,s}(z)=\e^z\overline{\Hp_{\zeta,s}(-\overline z)}.
+ \label{eq:reflection}
+\end{equation}
+Hence \(\operatorname{Re}\kappa_{\zeta,s,1}=1/2\), every even cumulant is real, and every odd cumulant of order at least three is purely imaginary.
+
+The function
+\begin{equation}
+ G_{\zeta,s}(t)=\e^{-\ii t/2}\Hp_{\zeta,s}(\ii t)
+ \label{eq:centeredG}
+\end{equation}
+is real on the real axis. Between any two consecutive distinct real zeros, \(\log|G_{\zeta,s}(t)|\) is strictly concave, and \(|G_{\zeta,s}|\) has exactly one critical point, a strict maximum.
+\end{proposition}
+\begin{proof}
+For \(|a|=1\), \(a\ne1\), direct algebra gives
+\[
+ \frac{1-a\e^u}{1-a}
+ =\e^u\overline{\frac{1-a\e^{-\overline u}}{1-a}}.
+\]
+Multiplying over the profile factors and using \(\sum_{k\geq1}2^{-k}=1\) gives \eqref{eq:reflection}. Comparing Taylor coefficients of the logarithms near zero proves the cumulant assertions.
+
+Write \(a_{s,k}=\e^{\ii\theta_k}\), where \(\theta_k\) is chosen periodically. The elementary sine identity gives
+\begin{equation}
+ G_{\zeta,s}(t)=\prod_{k\geq1}
+ \frac{\sin(\theta_k/2+t/2^{k+1})}{\sin(\theta_k/2)}.
+ \label{eq:sineprofile}
+\end{equation}
+All factors are real for real \(t\). On compact subintervals avoiding the zeros, the logarithmic derivatives converge normally. Indeed, in the tail the sine denominators remain uniformly bounded away from zero, while each differentiation supplies a factor \(2^{-k-1}\). Thus
+\begin{equation}
+ \frac{\dd^2}{\dd t^2}\log|G_{\zeta,s}(t)|
+ =-\sum_{k\geq1}4^{-k-1}
+ \csc^2(\theta_k/2+t/2^{k+1})<0.
+ \label{eq:concavity}
+\end{equation}
+If consecutive distinct zeros are \(\alpha<\beta\), the logarithmic derivative tends to \(+\infty\) as \(t\downarrow\alpha\), and to \(-\infty\) as \(t\uparrow\beta\), with the corresponding zero multiplicities as positive coefficients. By strict monotonicity it crosses zero exactly once. Since \(G\) does not vanish inside the interval, this proves the assertion about its absolute value.
+\end{proof}
+
+\subsection{A cyclic refinement equation}
+Set
+\begin{equation}
+ A_\zeta=\prod_{j=0}^{L-1}(1-\zeta^{2^j}),\qquad b=2^L.
+ \label{eq:Acycle}
+\end{equation}
+The value of this product is unchanged by a cyclic shift of the exponents.
+
+\begin{proposition}[One step and one complete cycle]
+The profiles satisfy
+\begin{align}
+ \Hp_{\zeta,s}(2z)
+ &=\frac{1-\zeta^{2^{s-1}}\e^z}{1-\zeta^{2^{s-1}}}
+     \Hp_{\zeta,s-1}(z),\label{eq:onestep}\\
+ \Hp_{\zeta,s}(bz)
+ &=\frac{P_L(\zeta^{2^s}\e^z)}{A_\zeta}\Hp_{\zeta,s}(z).
+ \label{eq:cycle}
+\end{align}
+\end{proposition}
+\begin{proof}
+In the first formula, split off the first factor and shift \(k\) to \(k-1\) in the tail. For the second, split off the first \(L\) factors and put \(j=L-k\). Periodicity gives \(\zeta^{2^{s-L+j}}=\zeta^{2^{s+j}}\), identifying the numerator with the finite Thue--Morse product. The remaining product is the original phase.
+\end{proof}
+The coefficients of this refinement equation are generally complex. The existence of such an equation does not by itself make an individual profile the transform of a positive measure.
+
+\section{Exact twisted moments and arithmetic progressions}
+\label{sec:moments}
+
+\subsection{All moments from a finite Bell polynomial}
+For \(h\geq0\), define
+\begin{equation}
+ T_{m,h}(\zeta)=\sum_{n<2^m}\eps_n\zeta^n n^h.
+ \label{eq:Tmoment}
+\end{equation}
+The coefficients \(h_{\zeta,s,j}\) and \(c_{\zeta,j}\) were defined in \eqref{eq:hcoeff} and \eqref{eq:ccoeff}.
+
+\begin{theorem}[Closed twisted-moment formulas]
+\label{thm:moments}
+For every \(m,h\geq0\), with \(s\equiv m\pmod L\),
+\begin{align}
+ \frac{T_{m,h}(\zeta)}{P_m(\zeta)}
+ &=h!\sum_{j=0}^h h_{\zeta,s,j}c_{\zeta,h-j}2^{mj}
+ \label{eq:momentcoeff}\\
+ &=\B_h\bigl(2^m\kappa_{\zeta,s,1}-\kappa_{\zeta,0,1},
+      \ldots,2^{mh}\kappa_{\zeta,s,h}-\kappa_{\zeta,0,h}\bigr).
+ \label{eq:momentBell}
+\end{align}
+All sums defining the cumulants and Bell polynomials are finite. Thus these formulas require no auxiliary recurrence in \(m\) or \(h\).
+\end{theorem}
+\begin{proof}
+The exponential generating function of the left side is
+\[
+ \sum_{h\geq0}\frac{T_{m,h}(\zeta)}{P_m(\zeta)}\frac{t^h}{h!}
+ =\frac{P_m(\zeta\e^t)}{P_m(\zeta)}
+ =\frac{\Hp_{\zeta,s}(2^mt)}{\Hp_{\zeta,0}(t)}
+\]
+in a neighborhood of zero, by Theorem~\ref{thm:profile}. Multiplying the two Taylor series gives \eqref{eq:momentcoeff}. Taking a logarithm first, then applying the defining generating function of the complete Bell polynomials, gives \eqref{eq:momentBell}.
+\end{proof}
+
+In particular,
+\begin{align}
+ \frac{T_{m,1}}{P_m}&=2^m\kappa_{s,1}-\kappa_{0,1},\\
+ \frac{T_{m,2}}{P_m}&=(2^m\kappa_{s,1}-\kappa_{0,1})^2
+                         +2^{2m}\kappa_{s,2}-\kappa_{0,2}.
+\end{align}
+The two parts of the result have different uses. Formula~\eqref{eq:momentBell} is compact and suitable for symbolic evaluation. Formula~\eqref{eq:momentcoeff} exhibits the exact finite collection of depth scales \(2^{mj}\).
+
+\subsection{The first nontrivial example: order three}
+Let \(\omega=\e^{2\pi\ii/3}\). Then \(L=2\), \(A_\omega=3\), and
+\begin{equation}
+ P_{2t}(\omega)=3^t,\qquad P_{2t+1}(\omega)=3^t(1-\omega).
+ \label{eq:omegaP}
+\end{equation}
+Substitution into the finite cumulant formula gives
+\begin{align}
+ \kappa_{\omega,0,1}&=\frac12+\frac{\ii\sqrt3}{18},&
+ \kappa_{\omega,1,1}&=\frac12-\frac{\ii\sqrt3}{18},\\
+ \kappa_{\omega,s,2}&=\frac19,&
+ \kappa_{\omega,s,4}&=-\frac1{45},\\
+ \kappa_{\omega,0,3}&=-\frac{\ii\sqrt3}{81},&
+ \kappa_{\omega,1,3}&=\frac{\ii\sqrt3}{81}.
+ \label{eq:omegakappa}
+\end{align}
+For example, \(\Li_0(\omega)=-1/2+\ii\sqrt3/6\), and the order-one weighted sum is
+\[
+ -\frac{\frac12\Li_0(\omega^2)+\frac14\Li_0(\omega)}{1-1/4}
+ =\frac12+\frac{\ii\sqrt3}{18}.
+\]
+The first centered moment consequently has the exact form
+\begin{equation}
+ \frac{T_{m,1}(\omega)}{P_m(\omega)}-\frac{2^m-1}{2}
+ =\frac{\ii\sqrt3}{18}\bigl((-1)^m2^m-1\bigr).
+ \label{eq:omegacenter}
+\end{equation}
+The imaginary term is not an error: the weights \(\eps_n\omega^n\) are complex.
+
+\subsection{Weighted sums in an arithmetic progression}
+For an odd \(q\geq3\), a residue \(b\in\Z\), and \(h\geq0\), put
+\begin{equation}
+ S^{(q)}_{m,b,h}=\sum_{\substack{0\leq n<2^m\\n\equiv b\pmod q}}
+                  \eps_n n^h.
+ \label{eq:progression}
+\end{equation}
+These are integers. Let \(\zeta_q=\e^{2\pi\ii/q}\), \(L=\ord_q2\), and
+\[
+ A_a=\prod_{j=0}^{L-1}(1-\zeta_q^{a2^j}),\qquad 1\leq a<q.
+\]
+Use the same \(L\) for all roots, even when one has smaller order.
+
+\begin{theorem}[An explicit eventual recurrence in the block depth]
+\label{thm:depth}
+Fix \(q,b,h\), and fix \(s\in\{0,\ldots,L-1\}\). Whenever \(Lt+s>h\),
+\begin{equation}
+ S^{(q)}_{Lt+s,b,h}
+ =\sum_{a=1}^{q-1}\sum_{j=0}^h
+ C_{a,s,b,h,j}\,(A_a2^{Lj})^t,
+ \label{eq:depthsum}
+\end{equation}
+where, writing the subscripts \(a\) for the root \(\zeta_q^a\),
+\begin{equation}
+ C_{a,s,b,h,j}=
+ \frac{\zeta_q^{-ab}}q\,P_s(\zeta_q^a)\,h!\,
+ c_{a,h-j}h_{a,s,j}2^{sj}.
+ \label{eq:depthC}
+\end{equation}
+In particular, the ordinary generating series in \(t\) is rational, with denominator dividing
+\begin{equation}
+ \prod_{a=1}^{q-1}\prod_{j=0}^{h}(1-A_a2^{Lj}T)\in\Z[T].
+ \label{eq:depthdenom}
+\end{equation}
+Equivalently, the sequence satisfies an eventual integer-coefficient linear recurrence whose characteristic polynomial can be taken to be
+\(\prod_{a,j}(X-A_a2^{Lj})\).
+\end{theorem}
+\begin{proof}
+The elementary root-of-unity filter is
+\[
+ \frac1q\sum_{a=0}^{q-1}\zeta_q^{a(n-b)}
+ =\begin{cases}1,&n\equiv b\pmod q,\\0,&\text{otherwise}.
+ \end{cases}
+\]
+After multiplication by \(\eps_nn^h\) and summation, it yields
+\[
+ S^{(q)}_{m,b,h}=\frac1q\sum_{a=0}^{q-1}\zeta_q^{-ab}T_{m,h}(\zeta_q^a).
+\]
+For \(m>h\), the term \(a=0\) vanishes by Prouhet cancellation. The product periodicity gives
+\(P_{Lt+s}(\zeta_q^a)=A_a^tP_s(\zeta_q^a)\).
+Insert \eqref{eq:momentcoeff} in the remaining terms and collect powers of \(2^{Lt}\). This proves \eqref{eq:depthsum} and \eqref{eq:depthC}.
+
+Each geometric sequence in \eqref{eq:depthsum} has a rational generating series with the indicated linear denominator. Discarding or adding finitely many initial terms changes only a polynomial, so the same denominator works for the full generating series. Finally, each \(A_a\) is an algebraic integer, and every automorphism \(\zeta_q\mapsto\zeta_q^u\), \(\gcd(u,q)=1\), permutes the factors of \eqref{eq:depthdenom}. Its coefficients are therefore rational algebraic integers, hence integers.
+\end{proof}
+
+The denominator is an explicit bound, not necessarily the minimal denominator. Cycle products may coincide, coefficients may vanish, and conjugate terms may cancel. General recurrence mechanisms are already present in automatic-sequence theory \cite{sobolewski}; the point here is the direct formula for every weighted coefficient and every candidate characteristic root.
+
+\subsection{Closed residue formulas modulo three}
+Let \(N=4^t\), so the binary depth is \(m=2t\). Substituting \eqref{eq:omegakappa} in the theorem and adding conjugates gives
+\begin{align}
+ S^{(3)}_{2t,0,0}&=2\cdot3^{t-1},&&t\geq1,\\
+ S^{(3)}_{2t,0,1}&=3^{t-1}(N-1),&&t\geq1,\\
+ S^{(3)}_{2t,0,2}&=\frac{3^{t-1}}{27}(19N^2-26N+7),&&t\geq2,\label{eq:mod3degree2}\\
+ S^{(3)}_{2t,0,3}&=\frac{3^{t-1}}9(N-1)(5N^2-4N-1),&&t\geq2.
+ \label{eq:mod3degree3}
+\end{align}
+For clarity, the degree-two computation before multiplication by the root filter is
+\[
+ \frac{T_{2t,2}(\omega)}{3^t}
+ =(N-1)^2\left(\frac12+\frac{\ii\sqrt3}{18}\right)^2
+          +\frac{N^2-1}{9}.
+\]
+Its real part is \((19N^2-26N+7)/54\), and the filter contributes twice this value divided by three. This proves \eqref{eq:mod3degree2}. The cubic identity follows by using \(\B_3(x_1,x_2,x_3)=x_1^3+3x_1x_2+x_3\); expansion gives \eqref{eq:mod3degree3}.
+
+\begin{center}
+\begin{tabular}{rrrrrr}
+\toprule
+\(t\)&\(N\)&\(S_0\)&\(S_1\)&\(S_2\)&\(S_3\)\\
+\midrule
+1&4&2&3&9&27\\
+2&16&6&45&495&6075\\
+3&64&18&567&25389&1274049\\
+4&256&54&6885&1238535&249891075\\
+5&1024&162&82863&59688981&48233475081\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here \(S_h=S^{(3)}_{2t,0,h}\). The first row was calculated directly; the last two displayed formulas do not apply to it. At \(m=h\), the unweighted-frequency term in the root filter survives. Omitting that term would incorrectly predict \(S_2=23/3\) instead of \(9\) when \(t=1\).
+
+For example, if \(R_t=S^{(3)}_{2t,0,2}\), the three roots in \eqref{eq:mod3degree2} are \(3,12,48\). Hence
+\begin{equation}
+ R_{t+3}=63R_{t+2}-756R_{t+1}+1728R_t,\qquad t\geq2.
+ \label{eq:explicitrecurrence}
+\end{equation}
+This concrete recurrence is one useful consequence of the more general derivative calculus.
+
+\section{All rational frequencies: transients and dyadic zeros}
+\label{sec:dyadic}
+
+\subsection{A finite transient followed by an odd cycle}
+Let \(\zeta\) have exact order \(2^rq\), where \(q>1\) is odd. Put
+\[
+ \xi=\zeta^{2^r},\qquad m=r+M,\qquad
+ G_{r,\zeta}(w)=\frac{P_r(\zeta\e^w)}{P_r(\zeta)}.
+\]
+The denominator is nonzero. For \(r=0\), this definition means \(G_{0,\zeta}=1\).
+
+\begin{proposition}[Separation of transient and periodic parts]
+For \(s\equiv M\pmod{\ord_q2}\),
+\begin{equation}
+ \Qp_{r+M,\zeta}(z)\Hp_{\xi,0}(z/2^M)
+ =G_{r,\zeta}(z/2^{r+M})\Hp_{\xi,s}(z).
+ \label{eq:transient}
+\end{equation}
+Consequently, for fixed \(\zeta\) and fixed phase, the normalized local profile tends to \(\Hp_{\xi,s}\). Every finite-depth correction is obtained from the single analytic germ
+\begin{equation}
+ C_{r,\zeta}(w)=\frac{G_{r,\zeta}(w)}{\Hp_{\xi,0}(2^rw)}.
+ \label{eq:transientcorrection}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Split the defining product after \(r\) factors:
+\[
+ P_{r+M}(v)=P_r(v)P_M(v^{2^r}).
+\]
+Substitute \(v=\zeta\e^{z/2^{r+M}}\) and divide by the corresponding value at \(z=0\). The remaining normalized \(M\)-factor product is \(\Qp_{M,\xi}(z)\). Apply Theorem~\ref{thm:profile}. Near zero, the multiplier is exactly \(C_{r,\zeta}(z/2^{r+M})\). Since \(C_{r,\zeta}(0)=1\), convergence and all Taylor corrections follow. Equation~\eqref{eq:transient} itself is entire and does not require division by a possibly vanishing profile.
+\end{proof}
+
+Thus rational points of non-dyadic order have no new limiting objects beyond the odd cycles. Their 2-primary part produces a finite, explicitly computable transient.
+
+\subsection{Removing the growing zero at a dyadic root}
+Suppose now that \(\zeta\) is a primitive \(2^r\)-th root, with \(r\geq1\); we also allow \(r=0\), \(\zeta=1\). If \(m=r+M\), precisely the factors with indices \(j=r,\ldots,r+M-1\) vanish at \(\zeta\). Their number is \(M\).
+
+\begin{definition}[Zero-removed dyadic profile]
+Define
+\begin{equation}
+ \Np_{r,M,\zeta}(z)=
+ \frac{(-1)^M2^{M(M+1)/2}}{P_r(\zeta)z^M}
+ P_{r+M}\bigl(\zeta\e^{z/2^{r+M}}\bigr).
+ \label{eq:dyadicN}
+\end{equation}
+The value at \(z=0\) is defined by continuity.
+\end{definition}
+
+\begin{theorem}[Exact dyadic factorization]
+The function in \eqref{eq:dyadicN} is entire, equals \(1\) at zero, and satisfies
+\begin{equation}
+ \Np_{r,M,\zeta}(z)=G_{r,\zeta}(z/2^{r+M})\Up_M(z).
+ \label{eq:dyadicfactor}
+\end{equation}
+In denominator-free form,
+\begin{equation}
+ \Np_{r,M,\zeta}(z)\Up(z/2^M)
+ =\Up(z)G_{r,\zeta}(z/2^{r+M}).
+ \label{eq:dyadictail}
+\end{equation}
+For every fixed dyadic root \(\zeta\), the functions \(\Np_{r,M,\zeta}\) tend to \(\Up\) locally uniformly, with all derivatives, as \(M\to\infty\).
+\end{theorem}
+\begin{proof}
+The factors following the first \(r\) are
+\[
+ \prod_{j=r}^{r+M-1}\bigl(1-\e^{2^jz/2^{r+M}}\bigr)
+ =\prod_{k=1}^{M}(1-\e^{z/2^k})
+ =(-1)^Mz^M2^{-M(M+1)/2}\Up_M(z).
+\]
+The leading factors form \(P_r(\zeta)G_{r,\zeta}(z/2^{r+M})\), proving \eqref{eq:dyadicfactor}. It also proves removal of the zero and the normalization at the origin. Multiplying by \(\Up(z/2^M)\) gives \eqref{eq:dyadictail}. For fixed \(r,\zeta\), the finite head tends uniformly to \(1\) on compact sets, while \(\Up_M\to\Up\). Derivative convergence follows from Cauchy's integral formula on slightly larger compact discs.
+\end{proof}
+
+For \(r=0\), this is the usual Thue--Morse--Fabius finite-product bridge. The added information is its exact form at every dyadic root, and, in the next section, its loss of uniformity when the root moves toward \(1\).
+
+\subsection{Every surviving dyadic moment}
+The zero removal also gives a closed formula for the first nonzero moment and all moments beyond it. Define
+\begin{equation}
+ C_M=(-1)^M2^{M(2r+M-1)/2}P_r(\zeta)
+ \label{eq:dyadicC}
+\end{equation}
+and, for \(n\geq1\),
+\begin{equation}
+ K_n=-\sum_{j=0}^{r-1}2^{jn}\Li_{1-n}(\zeta^{2^j})
+       +\beta_n\frac{2^{(r+M)n}-2^{rn}}{2^n-1}.
+ \label{eq:dyadicK}
+\end{equation}
+The first sum is empty when \(r=0\). None of its arguments equals \(1\).
+
+\begin{theorem}[Dyadic moments after cancellation]
+For \(0\leq d<M\), \(T_{r+M,d}(\zeta)=0\), and for \(h\geq0\),
+\begin{equation}
+ T_{r+M,M+h}(\zeta)
+ =C_M\frac{(M+h)!}{h!}\B_h(K_1,\ldots,K_h).
+ \label{eq:dyadicmoments}
+\end{equation}
+In particular, the first surviving moment is \(C_MM!\).
+\end{theorem}
+\begin{proof}
+Use the moment generating variable \(t\), without the local-window scaling. The factorization is
+\[
+ P_{r+M}(\zeta\e^t)
+ =C_Mt^M\,
+ \frac{P_r(\zeta\e^t)}{P_r(\zeta)}
+ \prod_{j=r}^{r+M-1}g(2^jt).
+\]
+For the finite head, the \(n\)-th logarithmic derivative at zero is
+\(-\sum_{j<r}2^{jn}\Li_{1-n}(\zeta^{2^j})\).
+For the remaining factors, \(\log g(t)=\sum_{n\geq1}\beta_nt^n/n!\); summing the geometric progression \(\sum_{j=r}^{r+M-1}2^{jn}\) gives the second term in \eqref{eq:dyadicK}. The normalized analytic factor therefore has exponential generating coefficients \(\B_h(K)/h!\). Multiplication by \(C_Mt^M\) and differentiation proves the theorem.
+\end{proof}
+
+\subsection{A uniform, but subcritical, moving-root estimate}
+A useful preliminary observation works uniformly over all primitive dyadic roots.
+
+\begin{proposition}[A sufficient condition for the fixed-root limit to persist]
+Let \(r=r_M\geq1\) and choose any primitive \(2^r\)-th root \(\zeta_M\). If \(r2^{-M}\to0\), then
+\(\Np_{r,M,\zeta_M}\to\Up\) locally uniformly.
+\end{proposition}
+\begin{proof}
+For \(0\leq j<r\), primitivity implies
+\[
+ |1-\zeta_M^{2^j}|\geq2\sin(\pi/2^{r-j})\geq 4/2^{r-j}.
+\]
+Here \(\sin x\geq2x/\pi\) on \([0,\pi/2]\). The deviation from \(1\) of the corresponding normalized head factor, at \(|z|\leq R\), is bounded by
+\[
+ \frac{|\e^{2^jz/2^{r+M}}-1|}{|1-\zeta_M^{2^j}|}
+ \leq R2^{-M-2}\e^{R2^{-M-1}}.
+\]
+Summing over the \(r\) factors and using
+\(|\prod(1+u_j)-1|\leq\exp(\sum|u_j|)-1\) gives
+\begin{equation}
+ \left|G_{r,\zeta_M}(z/2^{r+M})-1\right|
+ \leq\exp\bigl(rR2^{-M-2}\e^{R2^{-M-1}}\bigr)-1.
+ \label{eq:uniformhead}
+\end{equation}
+The bound tends to zero under the stated hypothesis. Combine it with \eqref{eq:dyadicfactor}.
+\end{proof}
+The condition is sufficient, not necessary for every moving sequence of roots. The following theorem identifies the critical scales for the roots closest to \(1\).
+
+\section{Coalescing roots: a Gaussian--Fabius hierarchy}
+\label{sec:coalescing}
+
+\subsection{The exact two-parameter formula}
+For the rest of this section fix
+\begin{equation}
+ c=2\pi\ii,\qquad \zeta_r=\e^{c/2^r},\qquad
+ \epsilon=2^{-M},\qquad
+ \Np_{r,M}=\Np_{r,M,\zeta_r},\qquad r\geq1.
+ \label{eq:coalescingsetup}
+\end{equation}
+The letter \(\epsilon\) here is a small positive real parameter, not the Thue--Morse sign \(\eps_n\).
+
+\begin{lemma}[An exact factorization at the closest dyadic root]
+For all \(r\geq1\), \(M\geq0\),
+\begin{equation}
+ \Np_{r,M}(z)
+ =\Up_M(z)\left(1+\frac{\epsilon z}{c}\right)^r
+              \frac{\Up_r(c+\epsilon z)}{\Up_r(c)}.
+ \label{eq:coalescingexact}
+\end{equation}
+In particular, on any fixed compact disc, for all sufficiently large \(M\), this is also
+\begin{equation}
+ \Np_{r,M}(z)
+ =\frac{\Up(z)}{\Up(\epsilon z)}
+  \left(1+\frac{\epsilon z}{c}\right)^r
+  \frac{\Up_r(c+\epsilon z)}{\Up_r(c)}.
+ \label{eq:coalescingquotient}
+\end{equation}
+The factors other than the power satisfy, uniformly in \(r\geq1\),
+\begin{equation}
+ \frac1{\Up(\epsilon z)}=1+O_R(\epsilon),\qquad
+ \frac{\Up_r(c+\epsilon z)}{\Up_r(c)}=1+O_R(\epsilon)
+ \quad (|z|\leq R).
+ \label{eq:uniformratios}
+\end{equation}
+\end{lemma}
+\begin{proof}
+In the head \(G_{r,\zeta_r}(z/2^{r+M})\), replace \(j\) by \(r-k\). Each normalized factor becomes
+\[
+ \frac{1-\e^{(c+\epsilon z)/2^k}}{1-\e^{c/2^k}}
+ =\left(1+\frac{\epsilon z}{c}\right)
+       \frac{g((c+\epsilon z)/2^k)}{g(c/2^k)}.
+\]
+Multiplication gives \eqref{eq:coalescingexact} by \eqref{eq:dyadicfactor}. No denominator \(g(c/2^k)\) vanishes: its argument is \(2\pi\ii/2^k\), not a nonzero integer multiple of \(2\pi\ii\).
+
+For the uniform estimate, choose a closed disc about \(c\) of radius less than \(2\pi\). All the functions \(\Up_r\), as well as their locally uniform limit \(\Up\), are nonzero there, since their possible zeros begin at \(\pm4\pi\ii\). The normally convergent logarithmic derivative products are uniformly bounded on a slightly smaller disc. Equivalently, one may split finitely many factors from a uniformly nonvanishing tail. Integration of the logarithmic derivative along the segment from \(c\) to \(c+\epsilon z\) proves the second estimate in \eqref{eq:uniformratios}, uniformly in \(r\). The first follows from analyticity and \(\Up(0)=1\). Finally use the exact tail identity for \(\Up_M\).
+\end{proof}
+
+Formula~\eqref{eq:coalescingexact} isolates the only factor that can accumulate a macroscopic correction: \((1+\epsilon z/c)^r\). In particular, the double-scaling limit is governed by a logarithm, not by an uncontrolled approximation of the original polynomial's exponentially many coefficients.
+
+\subsection{The complete hierarchy}
+\begin{theorem}[Renormalized coalescing-root limits]
+\label{thm:hierarchy}
+Fix an integer \(p\geq0\). Let \(M\to\infty\), let \(r=r_M\geq1\) be integers, and suppose
+\begin{equation}
+ r\epsilon^{p+1}\longrightarrow\lambda\in[0,\infty),
+ \qquad \epsilon=2^{-M}.
+ \label{eq:hierarchyscale}
+\end{equation}
+Define the entire renormalized functions
+\begin{equation}
+ \widetilde\Np^{(p)}_{r,M}(z)=
+ \exp\left(-r\sum_{j=1}^{p}\frac{(-1)^{j-1}}j
+                         \left(\frac{\epsilon z}{c}\right)^j\right)
+ \Np_{r,M}(z),
+ \label{eq:hierarchyrenorm}
+\end{equation}
+with an empty sum when \(p=0\). Then, locally uniformly on \(\C\) and with every fixed derivative,
+\begin{equation}
+ \widetilde\Np^{(p)}_{r,M}(z)
+ \longrightarrow
+ \Up(z)\exp\left(\frac{(-1)^p\lambda}{p+1}
+                         \left(\frac{z}{c}\right)^{p+1}\right).
+ \label{eq:hierarchylimit}
+\end{equation}
+For fixed \(R,p,B\), if \(r\epsilon^{p+1}\leq B\) and \(0\leq\lambda\leq B\), the difference from the right side of \eqref{eq:hierarchylimit}, on \(|z|\leq R\), is
+\begin{equation}
+ O_{R,p,B}\left(\epsilon+|r\epsilon^{p+1}-\lambda|\right).
+ \label{eq:hierarchyerror}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For sufficiently small \(\epsilon\), the Taylor logarithm of \(1+\epsilon z/c\) is defined throughout \(|z|\leq R\). Put \(u=\epsilon z/c\). Taylor's formula, uniformly on that disc, gives
+\[
+ \log(1+u)-\sum_{j=1}^{p}\frac{(-1)^{j-1}u^j}{j}
+ =\frac{(-1)^pu^{p+1}}{p+1}+O_{R,p}(\epsilon^{p+2}).
+\]
+After multiplication by \(r\), the remainder is \(O_{R,p,B}(\epsilon)\), and the leading term differs from
+\( (-1)^p\lambda(z/c)^{p+1}/(p+1)\)
+by \(O_{R,p}(|r\epsilon^{p+1}-\lambda|)\). The exponents are uniformly bounded on the compact disc, so exponentiation preserves this additive error estimate. Multiply by the two uniformly controlled ratios in \eqref{eq:uniformratios} and by \(\Up(z)\). This proves \eqref{eq:hierarchyerror}, including at zeros of \(\Up\): only multiplication by the bounded function \(\Up\), not division by it, was used. Convergence follows immediately. Cauchy's formula on a larger disc gives convergence of all derivatives.
+\end{proof}
+
+\subsection{The Gaussian member and its interpretation}
+The first two levels deserve separate statements.
+
+\begin{corollary}[Drift and Gaussian correction]
+If \(r2^{-M}\to\lambda\), then without further renormalization,
+\begin{equation}
+ \Np_{r,M}(z)\longrightarrow\Up(z)\e^{\lambda z/(2\pi\ii)}.
+ \label{eq:driftlimit}
+\end{equation}
+If instead \(r4^{-M}\to\lambda\), then
+\begin{equation}
+ \e^{-r2^{-M}z/(2\pi\ii)}\Np_{r,M}(z)
+ \longrightarrow\Up(z)\e^{\lambda z^2/(8\pi^2)}.
+ \label{eq:Gaussianlimit}
+\end{equation}
+For \(\lambda\geq0\), the limit in \eqref{eq:Gaussianlimit} is the moment generating function of
+\begin{equation}
+ X+Z_\lambda,\qquad
+ Z_\lambda\sim N\left(0,\frac{\lambda}{4\pi^2}\right),
+ \quad Z_\lambda\text{ independent of }X.
+ \label{eq:Gaussianlaw}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Take \(p=0\) or \(p=1\) in Theorem~\ref{thm:hierarchy}. Since \(c^2=-4\pi^2\), the quadratic exponent is \(\lambda z^2/(8\pi^2)\). A centered normal variable of variance \(\sigma^2\) has moment generating function \(\e^{\sigma^2z^2/2}\), so independence and \eqref{eq:Umgf} prove the last assertion.
+\end{proof}
+
+The distinction between an analytic limit and a probabilistic limit is essential. The finite functions \(\Np_{r,M}\) have complex coefficients in general. The linear exponential renormalization corresponds to a complex displacement, not to centering a sequence of real random variables. The theorem therefore does not invoke a classical central limit theorem or claim weak convergence of positive finite-level laws. Rather, positivity emerges in this particular limiting transform.
+
+Its limiting mean is \(1/2\) and its variance is
+\begin{equation}
+ \frac1{36}+\frac{\lambda}{4\pi^2}.
+\end{equation}
+When \(\lambda>0\), the limiting distribution is the convolution of the compactly supported Fabius density with a Gaussian density, hence has support all of \(\R\).
+
+For \(p=2\), removal of the linear and quadratic terms gives a cubic exponential factor. Higher levels similarly retain the first logarithmic coefficient not removed. No positivity is asserted for these higher limiting transforms.
+
+\subsection{Why the scales matter}
+The exact factorization supplies three qualitatively different regimes. If \(r=o(2^M)\), the head becomes invisible and the ordinary Fabius limit survives. At \(r\asymp2^M\), a nontrivial linear exponential remains. At \(r\asymp4^M\), removal of the linear term leaves a Gaussian correction. More generally, after subtracting \(p\) logarithmic terms, the critical depth is \(r\asymp2^{(p+1)M}\).
+
+These are genuine limits in two independently growing parameters: the root order is \(2^r\), while the number of vanishing factors beyond that root is \(M\). A fixed-root theorem alone cannot detect them. The hierarchy also makes computation feasible: one evaluates a short convergent product and a renormalized logarithm instead of expanding a polynomial of degree \(2^{r+M}-1\).
+
+\section{Cyclotomic aggregation and Fabius-transform quotients}
+\label{sec:aggregation}
+
+\subsection{Multiplying all nontrivial rational profiles}
+Let \(q\geq3\) be odd, \(\zeta_q=\e^{2\pi\ii/q}\), and use a common phase period \(L=\ord_q2\) for the profiles associated with \(\zeta_q^a\), \(1\leq a<q\).
+
+\begin{theorem}[Cyclotomic aggregation identity]
+\label{thm:norm}
+For every phase \(s\),
+\begin{equation}
+ \prod_{a=1}^{q-1}\Hp_{\zeta_q^a,s}(z)
+ =\Rp_q(z),\qquad
+ \Rp_q(z):=\frac{\Up(qz)}{\Up(z)}.
+ \label{eq:cyclotomicnorm}
+\end{equation}
+The apparent quotient extends to an entire function, and the product is independent of \(s\). It has the positive-factor representation
+\begin{equation}
+ \Rp_q(z)=\prod_{k\geq1}
+       \left(\frac1q\sum_{j=0}^{q-1}\e^{jz/2^k}\right).
+ \label{eq:Rpositive}
+\end{equation}
+At finite depth there is also the exact identity
+\begin{equation}
+ \prod_{a=1}^{q-1}\Qp_{m,\zeta_q^a}(z)
+ =\frac{\Up_m(qz)}{\Up_m(z)},
+ \label{eq:finitenorm}
+\end{equation}
+again with removable singularities on the right.
+\end{theorem}
+\begin{proof}
+For a variable \(x\), factorization of \(x^q-1\) yields
+\[
+ \prod_{a=1}^{q-1}(1-\zeta_q^a x)=1+x+\cdots+x^{q-1},
+ \qquad \prod_{a=1}^{q-1}(1-\zeta_q^a)=q.
+\]
+Since multiplication by any power of two permutes the nonzero residues modulo the odd integer \(q\), for every fixed profile factor \(k\) we obtain
+\[
+ \prod_{a=1}^{q-1}
+ \frac{1-\zeta_q^{a2^{s-k}}\e^u}{1-\zeta_q^{a2^{s-k}}}
+ =\frac1q\sum_{j=0}^{q-1}\e^{ju}
+ =\frac{g(qu)}{g(u)}.
+\]
+The middle expression is entire and defines the quotient at its removable singularities. Multiply over \(u=z/2^k\). All products converge normally, so rearrangement of the finitely many profile families is valid. This proves \eqref{eq:cyclotomicnorm} and \eqref{eq:Rpositive}; stopping at \(k=m\) proves \eqref{eq:finitenorm}.
+\end{proof}
+
+The word ``aggregation'' avoids a small but important algebraic ambiguity. When \(q\) is prime, the left side is the full cyclotomic Galois norm of a single profile. When \(q\) is composite, the nonzero residues include nonunits, so the product includes roots of several exact orders and is not one field norm.
+
+\begin{corollary}[Primitive cyclotomic norm]
+For odd \(q>1\),
+\begin{equation}
+ \prod_{\substack{1\leq a<q\\\gcd(a,q)=1}}\Hp_{\zeta_q^a,0}(z)
+ =\prod_{d\mid q}\Up(dz)^{\mu(q/d)},
+ \label{eq:primitivenorm}
+\end{equation}
+where \(\mu\) is the M\"obius function. This meromorphic-looking expression has an entire continuation. For \(q=p^v\), an odd prime power, it reduces to
+\begin{equation}
+ \frac{\Up(p^vz)}{\Up(p^{v-1}z)}=\Rp_p(p^{v-1}z).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Let \(F_q\) denote the primitive product on the left. Sorting the nontrivial roots by exact order gives
+\(\Rp_q=\prod_{d\mid q,\,d>1}F_d\), with \(F_1=1\).
+Multiplicative M\"obius inversion therefore gives
+\(F_q=\prod_{d\mid q}\Rp_d^{\mu(q/d)}\).
+Substitute \(\Rp_d=\Up(dz)/\Up(z)\). Because \(\sum_{d\mid q}\mu(q/d)=0\) for \(q>1\), the common denominator powers cancel, proving \eqref{eq:primitivenorm}. These manipulations first hold near zero, where all factors are nonzero; the primitive product supplies the entire continuation. For a prime power only the two displayed divisors contribute.
+\end{proof}
+No general positivity claim for the primitive norm at composite non-prime-power orders is needed here.
+
+\subsection{Cumulant traces and an independent check}
+Taking logarithms of \eqref{eq:cyclotomicnorm} near zero and using \eqref{eq:Ulog} gives
+\begin{corollary}[Trace of every profile cumulant]
+For all \(n\geq1\),
+\begin{equation}
+ \sum_{a=1}^{q-1}\kappa_{\zeta_q^a,s,n}
+ =\beta_n\frac{q^n-1}{2^n-1}.
+ \label{eq:cumulanttrace}
+\end{equation}
+\end{corollary}
+For example, at \(q=3\), the two second cumulants sum to \(2/9\), while the fourth cumulants sum to \(-2/45\), in agreement with \eqref{eq:omegakappa}. This trace is independent of the phase even though individual odd cumulants need not be.
+
+For comparison, the zeros of \(\Up\) are
+\begin{equation}
+ z=4\pi\ii n,\qquad n\in\Z\setminus\{0\},
+ \quad\text{with multiplicity }1+v_2(n).
+ \label{eq:Uzeros}
+\end{equation}
+Indeed, the \(k\)-th factor \(g(z/2^k)\) vanishes at \(z=2^{k+1}\pi\ii j\), \(j\ne0\); count the contributing factors exactly as in Theorem~\ref{thm:zeros}. This also justifies the zero-free neighborhoods used in the coalescing-root argument. The product identity explains arithmetically how the zeros in the denominator \(\Up(z)\) cancel inside \(\Up(qz)\).
+
+\subsection{A probability law for every integer dilation}
+The expression in \eqref{eq:Rpositive} makes sense for every integer \(q\geq1\), even though the profile aggregation theorem required odd \(q\). Let \(D_1,D_2,\ldots\) be independent, each uniform on \(\{0,1,\ldots,q-1\}\), and define
+\begin{equation}
+ Y_q=\sum_{k\geq1}2^{-k}D_k,\qquad \nu_q=\mathcal L(Y_q).
+ \label{eq:Yq}
+\end{equation}
+The letter \(\mathcal L\) denotes probability law. The series converges absolutely and lies in \([0,q-1]\).
+
+\begin{proposition}[Dilation quotients are digit-series transforms]
+For every integer \(q\geq1\),
+\begin{equation}
+ \Rp_q(z)=\E\e^{zY_q}=\frac{\Up(qz)}{\Up(z)},
+ \label{eq:digittransform}
+\end{equation}
+with an entire interpretation of the quotient. Moreover,
+\begin{equation}
+ \E Y_q=\frac{q-1}{2},\qquad
+ \operatorname{Var}(Y_q)=\frac{q^2-1}{36},\qquad
+ Y_q\overset d=\frac{D+Y_q'}2.
+ \label{eq:Ymoments}
+\end{equation}
+Here \(D\) is an independent uniform digit and \(Y_q'\) is an independent copy of \(Y_q\). The law is symmetric about \((q-1)/2\).
+\end{proposition}
+\begin{proof}
+Independence identifies the moment generating function with \eqref{eq:Rpositive}; bounded support permits passage to the infinite product for all complex \(z\). The elementary identity
+\(q^{-1}\sum_{j=0}^{q-1}\e^{ju}=g(qu)/g(u)\)
+then proves the quotient relation first near zero, and hence everywhere by continuation. The mean follows from \(\E D=(q-1)/2\) and \(\sum2^{-k}=1\). The variance follows from \(\operatorname{Var}(D)=(q^2-1)/12\) and \(\sum4^{-k}=1/3\). Shifting the digit sequence proves the self-similarity equation. Replacing every digit \(D_k\) by \(q-1-D_k\) proves symmetry.
+\end{proof}
+These positive laws should not be confused with the classical Thue--Morse diffraction measure. They arise here from a product of rational-frequency profiles, not from a limit of their squared absolute values.
+
+\section{A sharp singularity and differentiability classification}
+\label{sec:regularity}
+
+The representation \(\Rp_q=\Up(qz)/\Up(z)\) might suggest a smooth function for every \(q\), since \(\Up\) itself is the transform of a smooth density. That suggestion is false. Odd dilation factors produce singular continuous laws. Each additional factor of two contributes a uniform convolution, and the resulting differentiability threshold can be determined exactly.
+
+\begin{theorem}[Regularity determined by the 2-adic part]
+\label{thm:regularity}
+Write \(q=2^rd\), where \(d\) is odd and \(r\geq0\). Then:
+\begin{enumerate}[label=(\roman*)]
+\item If \(q=1\), \(\nu_q\) is the point mass at zero.
+\item If \(r=0\) and \(d\geq3\), \(\nu_q\) is singular continuous.
+\item If \(r\geq1\) and \(d\geq3\), \(\nu_q\) has a density belonging to \(C^{r-1}(\R)\), but no density representative belongs to \(C^r(\R)\).
+\item If \(d=1\) and \(r=1\), \(\nu_q\) is uniform on \([0,1]\) and has no continuous density representative on \(\R\). If \(d=1\) and \(r\geq2\), it has a density in \(C^{r-2}(\R)\), but not in \(C^{r-1}(\R)\).
+\end{enumerate}
+These are global differentiability assertions; they do not specify all local H\"older exponents.
+\end{theorem}
+
+\subsection{Nondecaying Fourier coefficients at odd dilation factors}
+We first prove singularity without making an invalid inference from Fourier nondecay alone. A measure can have both an absolutely continuous part and a singular part, so nondecay by itself would not prove pure singularity.
+
+Let \(d\geq3\) be odd, and write
+\[
+ c_d=\E\e^{2\pi\ii Y_d}
+ =\prod_{k\geq1}\left(\frac1d\sum_{j=0}^{d-1}
+                                \e^{2\pi\ii j/2^k}\right).
+\]
+Every factor is nonzero. Indeed, the geometric sum would vanish precisely if its nontrivial \(2^k\)-th root of unity had \(d\)-th power \(1\), requiring \(2^k\mid d\). The deviations of the factors from \(1\) in the tail are bounded by a constant times \(2^{-k}\). Thus the product converges to a nonzero number:
+\begin{equation}
+ c_d\ne0.
+ \label{eq:cdnonzero}
+\end{equation}
+The digit self-similarity also gives
+\begin{equation}
+ \E\e^{2\pi\ii 2^nY_d}=c_d,\qquad n\geq0.
+\end{equation}
+To promote this average identity to pure singularity we compare almost-sure orbit averages.
+
+\begin{lemma}[Two incompatible full-measure orbit averages]
+For \(\nu_d\)-almost every \(x\),
+\begin{equation}
+ \lim_{N\to\infty}\frac1N\sum_{n=0}^{N-1}\e^{2\pi\ii2^nx}=c_d.
+ \label{eq:nudaverage}
+\end{equation}
+For Lebesgue-almost every \(x\in\R\), the same limit equals zero.
+\end{lemma}
+\begin{proof}
+First consider a random digit sequence. The first \(n\) terms of \(2^nY_d\) are integers, so
+\[
+ \e^{2\pi\ii2^nY_d}
+ =\exp\left(2\pi\ii\sum_{k\geq1}2^{-k}D_{n+k}\right).
+\]
+Truncate the sum on the right after \(K\) terms. The resulting bounded function depends only on \(D_{n+1},\ldots,D_{n+K}\), and its error is at most \(2\pi(d-1)2^{-K}\), uniformly in \(n\) and in the digit sequence. For each fixed residue class of \(n\) modulo \(K\), these blocks are disjoint, hence independent and identically distributed. The strong law of large numbers applied to their real and imaginary parts proves convergence of each residue-class average to the expectation of the truncated function. Combining the finitely many classes gives convergence of the full average. There are only countably many \(K\), so these conclusions hold simultaneously almost surely. Let \(K\to\infty\) and use the uniform truncation bound to obtain \eqref{eq:nudaverage} with expectation \(c_d\).
+
+For the Lebesgue assertion, set
+\(A_N(x)=N^{-1}\sum_{n=0}^{N-1}\e^{2\pi\ii2^nx}\).
+Orthogonality of the distinct integer-frequency exponentials on \([0,1]\) gives
+\[
+ \int_0^1|A_N(x)|^2\dd x=\frac1N.
+\]
+For \(N=j^2\), Chebyshev's inequality and the convergence of \(\sum_jj^{-2}\) imply, by the Borel--Cantelli lemma, that \(A_{j^2}(x)\to0\) almost everywhere. To see convergence rather than only boundedness at one threshold, apply the argument at thresholds \(1,1/2,1/3,\ldots\). If \(j^2\leq N<(j+1)^2\), boundedness of the summands gives
+\[
+ |A_N(x)-A_{j^2}(x)|\leq\frac{2(N-j^2)}N\leq\frac{2(2j+1)}{j^2},
+\]
+which tends to zero uniformly. Thus \(A_N\to0\) for Lebesgue-almost every \(x\in[0,1]\). Periodicity extends the conclusion to \(\R\).
+\end{proof}
+
+Since \(c_d\ne0\), the set where the limit equals \(c_d\) has full \(\nu_d\)-measure and zero Lebesgue measure. This proves that \(\nu_d\) is purely singular.
+
+\subsection{Absence of atoms}
+\begin{lemma}[Odd digit laws have no atoms]
+For odd \(d\geq3\), \(\nu_d(\{x\})=0\) for every real \(x\).
+\end{lemma}
+\begin{proof}
+Represent a uniform digit as a mixture: with probability \(2/d\), select a fair digit from \(\{0,1\}\); with the remaining probability, select uniformly from \(\{2,\ldots,d-1\}\). Choose all mixture selectors and all component digits independently. Each possible digit has probability \(1/d\), so this is the required law.
+
+There are almost surely infinitely many selectors of the first kind. Condition on all selectors and on all digits of the second kind. The remaining randomness is a series of independent fair bits at an infinite set of binary positions. For any fixed value of the series, there are at most two possible full binary expansions, after setting the unselected bit positions to zero. Each particular infinite fair-bit sequence has conditional probability zero, since fixing its first \(J\) active bits has probability \(2^{-J}\). The conditional probability of any specified value is therefore zero, and averaging proves the assertion.
+\end{proof}
+Combining this lemma with the preceding singularity argument proves part (ii) of Theorem~\ref{thm:regularity}.
+
+\subsection{Uniform convolutions and the upper regularity bound}
+Iterating \(\Up(2z)=g(z)\Up(z)\) gives the exact factorization
+\begin{equation}
+ \Rp_{2^rd}(z)=\Rp_d(z)\prod_{j=0}^{r-1}g(d2^jz).
+ \label{eq:smoothingfactor}
+\end{equation}
+Since \(g(\ell z)\) is the moment generating function of a uniform law on \([0,\ell]\), uniqueness of characteristic functions gives
+\begin{equation}
+ \nu_{2^rd}=\nu_d*\lambda_{\ell_0}*\cdots*\lambda_{\ell_{r-1}},
+ \qquad \ell_j=d2^j,
+ \label{eq:convolutionlaw}
+\end{equation}
+where \(\lambda_\ell\) is the uniform probability measure on \([0,\ell]\). For \(d=1\), take \(\nu_1=\delta_0\).
+
+For a subset \(S\subseteq\{0,\ldots,r-1\}\), write
+\(\ell_S=\sum_{j\in S}\ell_j\), and let \(\tau_a\nu\) denote translation of a measure to the right by \(a\). Put \(L_r=\prod_{j=0}^{r-1}\ell_j\). In the sense of distributions,
+\begin{equation}
+ \D^r f_q=
+ \frac1{L_r}\sum_{S\subseteq\{0,\ldots,r-1\}}(-1)^{|S|}\tau_{\ell_S}\nu_d,
+ \label{eq:highestderivative}
+\end{equation}
+where \(f_q\) is a density of \(\nu_q\), which exists when \(r\geq1\). To prove the identity, differentiate each uniform density once:
+\(\D(\mathbf1_{[0,\ell]}/\ell)=(\delta_0-\delta_\ell)/\ell\), and convolve the resulting signed measures.
+
+If \(d\geq3\) is odd, the right side of \eqref{eq:highestderivative} is singular, being supported on a finite union of translates of a Lebesgue-null carrier of \(\nu_d\). It is also nonzero. Otherwise \(\D^rf_q=0\), so \(f_q\), as a distribution, would be a polynomial of degree at most \(r-1\). This elementary distributional fact follows inductively from the fact that a distribution with zero first derivative is constant. But a polynomial distribution with compact support is zero, whereas \(\int f_q=1\). This contradiction proves nonvanishing.
+
+Were there a \(C^r\) density representative, its \(r\)-th distributional derivative would be the ordinary continuous function \(f_q^{(r)}\), hence an absolutely continuous measure on compact sets. It cannot equal a nonzero singular measure. Therefore the density is not \(C^r\).
+
+\subsection{The matching lower bound}
+Let \(F_d(x)=\nu_d(( -\infty,x])\). The absence of atoms makes \(F_d\) continuous when \(d\geq3\) is odd. Integrating \eqref{eq:highestderivative} from \(-\infty\) gives
+\begin{equation}
+ f_q^{(r-1)}(x)=\frac1{L_r}
+       \sum_{S\subseteq\{0,\ldots,r-1\}}(-1)^{|S|}F_d(x-\ell_S).
+ \label{eq:continuousderivative}
+\end{equation}
+The integration constant is zero because the density and the expression vanish sufficiently far to the left. The right side is continuous. More explicitly, a representative of the density is
+\begin{equation}
+ f_q(x)=\frac1{(r-1)!L_r}\sum_S(-1)^{|S|}
+                 \int (x-\ell_S-y)_+^{r-1}\,\nu_d(\dd y),
+ \label{eq:truncatedpowers}
+\end{equation}
+where for \(r=1\) the zero-th truncated power is the indicator of the nonnegative half-line. Repeated convolution of uniform densities, or repeated integration of \eqref{eq:highestderivative}, proves this formula. Differentiating at most \(r-2\) times is justified by bounded support and dominated convergence; the final derivative is the continuous expression \eqref{eq:continuousderivative}. Thus \(f_q\in C^{r-1}(\R)\). Together with the upper bound, this proves part (iii).
+
+When \(d=1\), replace \(F_d\) in \eqref{eq:continuousderivative} by a step function. The subset sums of \(1,2,\ldots,2^{r-1}\) are all distinct, so the resulting piecewise constant function has nonzero jumps. For \(r\geq2\), its integral is continuous, proving that the density is \(C^{r-2}\) but not \(C^{r-1}\). For \(r=1\), the density is exactly \(\mathbf1_{[0,1]}\), up to changes at endpoints, and cannot have a continuous representative on the whole real line. This proves part (iv); part (i) is immediate from the digit definition. The proof of Theorem~\ref{thm:regularity} is complete.
+
+\subsection{Examples and limitations}
+The first cases illustrate why the odd part matters:
+\begin{center}
+\begin{tabular}{cl}
+\toprule
+Dilation \(q\)&Type of the law with transform \(\Up(qz)/\Up(z)\)\\
+\midrule
+2&Uniform density; no continuous representative on \(\R\)\\
+3&Singular continuous\\
+4&Continuous density, not \(C^1\)\\
+6&Continuous density, not \(C^1\)\\
+8&\(C^1\) density, not \(C^2\)\\
+12&\(C^1\) density, not \(C^2\)\\
+24&\(C^2\) density, not \(C^3\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+The power-of-two rows are finite uniform-convolution splines, a classical construction. The other even rows replace the last jump-bearing derivative by a continuous singular distribution function. Their next derivative remains singular, which is why the differentiability threshold is sharp. This argument does not calculate Hausdorff dimensions or establish a multifractal spectrum for the odd laws.
+
+\section{Exact checks, numerical experiments, and reproducibility}
+\label{sec:checks}
+
+\subsection{What was checked exactly}
+The accompanying program \texttt{verify.py} works in the cyclotomic quotient field \(\Q[x]/\Phi_q(x)\), using rational coefficients, rather than substituting floating-point approximations to roots of unity. It independently evaluates the exponential coefficients from their defining differential identity and compares the predicted moments with direct Thue--Morse sums.
+
+For the odd orders \(q=3,5,7,9\), it checks the moment formula for every \(m=0,\ldots,8\) and \(h=0,\ldots,6\): this gives \(4\cdot9\cdot7=252\) exact equalities. For primitive roots of orders \(2^r\), \(r=1,\ldots,4\), and \(M=0,\ldots,5\), it checks all vanishing moments below order \(M\) and the four moments of orders \(M,M+1,M+2,M+3\): this gives another \(156\) exact equalities. All \(408\) passed. The modulo-three table and its four closed formulas were also checked directly on the displayed range.
+
+These tests detect algebraic errors in signs, powers of two, phase conventions, and factorial normalization. They do not constitute formal verification of the quantified theorems. In particular, a computer algebra check in a finite set of cyclotomic fields is not a Lean proof.
+
+\subsection{Convergence after cubic depth correction}
+The numerical part uses \(65\) decimal digits of working precision and \(270\) factors in the normally convergent products. For \(q=3\), \(\zeta=\omega\), \(z=1+\ii/3\), and even \(m\), define
+\[
+ E_m^{(0)}=|\Qp_{m,\omega}(z)-\Hp_{\omega,0}(z)|,
+ \quad
+ E_m^{(3)}=\left|\Qp_{m,\omega}(z)-\Hp_{\omega,0}(z)
+                \sum_{j=0}^3c_{\omega,j}z^j2^{-mj}\right|.
+\]
+The observed errors are:
+\begin{center}
+\begin{tabular}{rrr}
+\toprule
+\(m\)&\(E_m^{(0)}\)&\(E_m^{(3)}\)\\
+\midrule
+4&\(5.60097403435\times10^{-2}\)&\(9.96991319447\times10^{-8}\)\\
+8&\(3.52559385875\times10^{-3}\)&\(1.51299266718\times10^{-12}\)\\
+12&\(2.20446499346\times10^{-4}\)&\(2.30783803001\times10^{-17}\)\\
+16&\(1.37782844844\times10^{-5}\)&\(3.52140445937\times10^{-22}\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+Increasing \(m\) by four reduces the uncorrected error asymptotically by a factor of \(16\), while the cubic correction reduces it by a factor close to \(16^4=65536\). This is the behavior proved in Theorem~\ref{thm:correction}, not a fitted convergence law.
+
+For the tested odd orders \(3,5,7,9,15\), the maximum residual in the exact profile-tail identities was approximately \(2.62\times10^{-65}\). The maximum residual in the cyclotomic aggregation identity was approximately \(1.61\times10^{-60}\). These are floating-point residuals, not interval-arithmetic certificates. The analytic bounds in the proofs, rather than numerical residuals, justify the limiting identities.
+
+\subsection{The Gaussian double-scaling experiment}
+For \(r=4^M\), \(\lambda=1\), and \(z=1+\ii/3\), evaluate the left side of \eqref{eq:Gaussianlimit} using the factorization \eqref{eq:coalescingexact}. The absolute difference from \(\Up(z)\e^{z^2/(8\pi^2)}\) is:
+\begin{center}
+\begin{tabular}{rrr}
+\toprule
+\(M\)&\(r\)&Absolute error\\
+\midrule
+2&16&\(9.09055797472\times10^{-2}\)\\
+3&64&\(4.55831847811\times10^{-2}\)\\
+4&256&\(2.28234397433\times10^{-2}\)\\
+5&1024&\(1.1419588\times10^{-2}\)\\
+6&4096&\(5.71174922749\times10^{-3}\)\\
+7&16384&\(2.85636193939\times10^{-3}\)\\
+8&65536&\(1.42830261560\times10^{-3}\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+The error is consistent with the proved \(O(2^{-M})\) estimate. The data files also include the linear and cubic members \(p=0,2\) of the hierarchy. The largest cubic experiment has \(r=2^{24}\); the product-tail method avoids any attempt to expand \(P_{r+M}\).
+
+\subsection{How to reproduce the calculations}
+The archive contains the complete article source, the compiled PDF, the commented verification program, dependency versions, a build file, and machine-readable result files. From its directory, run
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python verify.py --output results
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  thue_morse_rational_resonances.tex
+\end{verbatim}
+The tested versions were SymPy \(1.14.0\) and mpmath \(1.3.0\). The mathematical formulas are nonrecursive finite sums; the program is free to use a recurrence as an independent way to evaluate those sums. Code and result files are companions to the proofs, not prerequisites for reading them.
+
+\section{Further questions suggested by the results}
+\label{sec:questions}
+
+\subsection{Beyond periodic backward orbits}
+The periodicity of the odd rational orbit supplies a uniform lower bound for \(|1-a_{s,k}|\). More generally, for any sequence \(a_k\) on the unit circle, with \(a_k\ne1\), the condition
+\begin{equation}
+ \sum_{k\geq1}\frac{2^{-k}}{|1-a_k|}<\infty
+ \label{eq:smalldivisor}
+\end{equation}
+implies normal convergence of
+\(\prod_{k\geq1}(1-a_k\e^{z/2^k})/(1-a_k)\).
+Indeed, on \(|z|\leq R\), the sum of the deviations of its factors from \(1\) is bounded by \(R\e^{R/2}\) times \eqref{eq:smalldivisor}. Thus a sufficient small-divisor criterion follows immediately from the proof of Theorem~\ref{thm:profile}.
+
+A more difficult classification problem concerns coherent nonperiodic backward orbits \(a_{k+1}^2=a_k\), especially when their approaches to \(1\) violate this summability condition. Which renormalizations produce entire limits? The coalescing-root hierarchy gives one explicit model of a failure of uniform separation, but it does not settle the general classification.
+
+\subsection{Positivity of primitive cyclotomic norms}
+The all-nontrivial-root product is positive definite on the imaginary axis because each factor in \eqref{eq:Rpositive} is a characteristic function. The primitive-root product \eqref{eq:primitivenorm} has this interpretation for prime powers, but the same factorwise argument does not apply to every composite order: a general cyclotomic polynomial need not have nonnegative coefficients.
+
+It is natural to ask for which odd integers \(q\) the primitive product is itself a probability transform, and, when it is not, what signed or complex object represents it. No complete criterion, or untested prime-power-only conjecture, is asserted here.
+
+\subsection{Minimal recurrences and exact arithmetic complexity}
+Theorem~\ref{thm:depth} gives a universal denominator. Determining its minimal factor after cancellations requires information about equalities between cycle products and about vanishing Bell-polynomial coefficients. The explicit coefficient formula turns this into a finite algebraic problem for each \(q,h,s,b\), but a uniform classification in \(q\) remains to be developed.
+
+There is also an algorithmic question: how much of the moment calculus can be computed in a proper subfield of \(\Q(\zeta_q)\), using conjugation and the trace identity before expanding individual terms? The order-three formulas show the possible simplification, but no optimal bit-complexity bound is claimed.
+
+\subsection{A route toward formalization}
+The results separate naturally into layers. The finite polynomial product, root-of-unity filters, Bell-polynomial coefficient extraction, and cyclotomic exact arithmetic form the first layer. Normal convergence, zero divisors, and the coalescing-root theorem form an analytic second layer. The probability laws and sharp regularity theorem add independent digit sequences, convolution, and distributional derivatives.
+
+This separation suggests a practical formalization order: first certify the finite identities and coefficient formulas, then the compact-uniform product bounds, and finally the probabilistic interpretation. The present archive does not contain a completed Lean formalization of any of these new results.
+
+\section{Conclusion}
+A rational frequency is not just a place to evaluate a Thue--Morse polynomial. It carries an entire local profile, and the binary product makes that profile exactly accessible. The resulting chain of implications is
+\[
+\begin{aligned}
+ \text{finite binary product}
+ &\ \longrightarrow\ \text{rational-frequency profile}\\
+ &\ \longrightarrow\ \text{all twisted moments}\\
+ &\ \longrightarrow\ \text{weighted depth recurrences}.
+\end{aligned}
+\]
+A second chain passes through roots whose orders grow: removal of the dyadic zero gives the Fabius transform, while coalescence of the root toward \(1\) creates a hierarchy of exponential corrections, including a Gaussian factor. A third chain multiplies the rational profiles into a Fabius-transform quotient and identifies a positive digit-series law whose differentiability is governed sharply by its 2-adic dilation.
+
+The strongest proposed extension is the explicitly renormalized coalescing-root hierarchy. The exact profile factorization, moment calculus, zero geometry, and regularity classification provide a coherent surrounding theory and multiple independently checkable consequences. Their proofs, rather than an unqualified priority claim, are the contribution of this article.
+
+\appendix
+\section{Finite formulas for every coefficient}
+\label{app:finite}
+
+The article uses Bell polynomials, Bernoulli numbers, and rational negative-index polylogarithms as convenient names. This appendix makes explicit that no hidden recurrence is required.
+
+\subsection{Eulerian coefficients and rational polylogarithms}
+For integers \(m\geq1\), \(0\leq j<m\), define
+\begin{equation}
+ A(m,j)=\sum_{\ell=0}^{j+1}(-1)^\ell
+                    \binom{m+1}{\ell}(j+1-\ell)^m.
+ \label{eq:Eulerianfinite}
+\end{equation}
+Then, for \(n\geq2\),
+\begin{equation}
+ \Li_{1-n}(w)=
+ \frac{\displaystyle\sum_{j=0}^{n-2}A(n-1,j)w^{j+1}}{(1-w)^n},
+ \qquad \Li_0(w)=\frac{w}{1-w}.
+ \label{eq:Lifinite}
+\end{equation}
+To prove this, begin in \(|w|<1\), where repeated application of \(w\dd/\dd w\) gives \(\Li_{-m}(w)=\sum_{k\geq1}k^mw^k\). Multiplication by \((1-w)^{m+1}\) produces exactly the coefficients in \eqref{eq:Eulerianfinite}. Coefficients beyond degree \(m\) vanish by the \((m+1)\)-st finite difference of a degree-\(m\) polynomial. Both sides are rational functions, so the identity extends to every \(w\ne1\).
+
+\subsection{Bernoulli numbers without a recurrence}
+With the convention \(B_1=-1/2\), one has
+\begin{equation}
+ B_n=\sum_{k=0}^n\frac1{k+1}\sum_{j=0}^k(-1)^j\binom{k}{j}j^n.
+ \label{eq:Bernoullifinite}
+\end{equation}
+The convention \(0^0=1\) applies. Indeed, as a formal power series,
+\[
+ \sum_{k\geq0}\frac{(1-\e^z)^k}{k+1}
+ =\frac{-\log(1-(1-\e^z))}{1-\e^z}
+ =\frac{z}{\e^z-1}.
+\]
+For the coefficient of \(z^n\), only \(k\leq n\) contributes. Expanding the finite binomial sum proves \eqref{eq:Bernoullifinite}. Use \(\beta_1=1/2\), \(\beta_n=B_n/n\) for \(n\geq2\), as in the main text.
+
+\subsection{Bell coefficients as constrained finite sums}
+For any cumulant list \(x_1,\ldots,x_h\),
+\begin{equation}
+ \B_h(x_1,\ldots,x_h)
+ =h!\sum_{\substack{\nu_1,\ldots,\nu_h\geq0\\
+                         \nu_1+2\nu_2+\cdots+h\nu_h=h}}
+         \prod_{j=1}^h\frac1{\nu_j!}
+                              \left(\frac{x_j}{j!}\right)^{\nu_j}.
+ \label{eq:Bellfiniteappendix}
+\end{equation}
+This follows directly by multiplying the exponential series
+\(\prod_{j\geq1}\exp(x_jz^j/j!)\) and extracting the coefficient of \(z^h\). Inserting \eqref{eq:Lifinite}, \eqref{eq:Bernoullifinite}, and the finite cycle sums into \eqref{eq:Bellfiniteappendix} gives literal nested finite sums for every moment and every correction coefficient appearing in the article.
+
+\section{Normalization and logical checkpoints}
+The main identities are sensitive to four conventions. First, \(P_m\) has \(m\) factors and \(2^m\) coefficients; \(P_0=1\). Second, the local window is \(\zeta\e^{z/2^m}\), not \(\zeta\e^{z/2^{m+1}}\). Third, \(\Up\) is the transform of \(X\in[0,1]\), with mean \(1/2\), rather than of its centered or rescaled Rvachev version. Finally, Bell polynomials encode exponential generating coefficients, so the factors \(h!\) and \((M+h)!/h!\) cannot be omitted.
+
+There are also three logical distinctions worth retaining. An entire quotient formula is interpreted through a denominator-free identity or a proved removable continuation. Fourier nondecay does not, on its own, prove pure singularity; the orbit-average argument supplies that missing step. And an analytic Gaussian limit does not imply that the finite complex approximants are probability transforms. These distinctions keep the algebraic, analytic, and probabilistic claims aligned.
+
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{atlas}
+V. Reshetnikov, repository editor,
+\emph{Thue--Morse Atlas and Frontiers}, in the ProveIt repository.
+Online LaTeX source inspected 4 September 2026.\par
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers}
+
+\bibitem{allouche}
+J.-P. Allouche and J. Shallit,
+The ubiquitous Prouhet--Thue--Morse sequence,
+in C. Ding, T. Helleseth, and H. Niederreiter (eds.),
+\emph{Sequences and Their Applications}, Springer, 1999, pp.~1--16.
+\url{https://doi.org/10.1007/978-1-4471-0551-0_1}.
+Author-hosted text: \url{https://cs.uwaterloo.ca/~shallit/Papers/ubiq15.pdf}.
+
+\bibitem{sobolewski}
+B. Sobolewski,
+Cyclotomic properties of polynomials associated with automatic sequences,
+\emph{Advances in Applied Mathematics} \textbf{120} (2020), article 102063.
+Preprint: \url{https://arxiv.org/abs/1909.12052}.
+
+\bibitem{duke}
+W. Duke and H. N. Nguyen,
+Infinite products of cyclotomic polynomials,
+\emph{Bulletin of the Australian Mathematical Society} \textbf{91} (2015), 400--411.
+Author-hosted preprint: \url{https://www.math.ucla.edu/~wdduke/preprints/cyclotomic.pdf}.
+
+\bibitem{fabius}
+J. Fabius,
+A probabilistic example of a nowhere analytic \(C^\infty\)-function,
+\emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete}
+\textbf{5} (1966), 173--174.
+\url{https://doi.org/10.1007/BF00536652}.
+
+\bibitem{baakecoons}
+M. Baake and M. Coons,
+Correlations of the Thue--Morse sequence,
+\emph{Indagationes Mathematicae} \textbf{35} (2024), 914--930.
+\url{https://arxiv.org/abs/2209.07102}.
+
+\bibitem{gohlke}
+P. Gohlke, M. Kesseb\"ohmer, and T. I. Schindler,
+Generalized Thue--Morse measures: spectral and fractal analysis,
+arXiv preprint 2509.22109, version 1, 2025.
+\url{https://arxiv.org/abs/2509.22109}.
+
+\bibitem{cloitre}
+B. Cloitre,
+The Thue--Morse transform,
+arXiv preprint 2604.06243, 2026.
+\url{https://arxiv.org/abs/2604.06243}.
+
+\end{thebibliography}
+\end{document}

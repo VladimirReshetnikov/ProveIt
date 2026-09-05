@@ -288,3 +288,38 @@ The generic Bell multiplicity lemma now carries the common complete human
 proof; the Nörlund section specializes it instead of repeating that argument.
 The source validator's fourteen regression tests pass, including the inherited
 advertised-register-total checks. These are structural checks, not Lean builds.
+
+## Three q-binomial arrivals (2026-09-04)
+
+Three independently written articles arrived on 2026-09-04 in intake commit
+`e20e26434` and are filed here as separate members beside the canonical volume.
+All three extend the coefficient calculus to Gaussian (`q`-binomial)
+coefficients; two name that extension in their own titles.  They have not been
+compared with the canonical volume, with each other, or against its Lean
+register.
+
+- [`q_binomial_coefficient_calculus/`](q_binomial_coefficient_calculus/) —
+  *q-Binomial Coefficient Calculus: An Extension of Combinatorial Coefficient
+  Calculus* (55 pp A4; 2,667 source lines; 32 theorems in 55 sections).
+- [`q_binomial_coefficient_calculus-2/`](q_binomial_coefficient_calculus-2/) —
+  *q-Binomial Coefficient Calculus* (29 pp A4; 1,747 source lines;
+  20 theorems).  Four explicitly distinguished routes into coefficient
+  calculus, a finite partition-sum kernel for arbitrary powers of products of
+  `q`-shifted factorials and their Lagrange–Bürmann inverses, and every
+  derivative of a Gaussian polynomial at every root of unity.
+- [`q_binomial_coefficient_calculus-3/`](q_binomial_coefficient_calculus-3/) —
+  *Gaussian Coefficients in Combinatorial Coefficient Calculus* (35 pp A4;
+  2,567 source lines; 26 theorems).  `q`-Stirling and colored-node formulae,
+  `q`-Worpitzky and Stirling–Eulerian transforms, a divided-difference chain
+  rule for Jackson differentiation, and exact Gaussian extrapolation of
+  moments of geometric-uniform convolutions including the Rvachev half-base
+  case.
+
+All three archives wrapped an inner directory of the same name, so the
+distinct archive stems are the directory names.  Each ships an
+exact-arithmetic verification program; none was rerun at intake.  One archive's
+`SHA256SUMS.txt` was verified and then retired under repository policy.  No
+source loads `docs/fabius-notation.tex`.  None of these manuscripts' proofs is
+a Lean verification.
+
+See [`../MANIFEST.md`](../MANIFEST.md) for the group record.

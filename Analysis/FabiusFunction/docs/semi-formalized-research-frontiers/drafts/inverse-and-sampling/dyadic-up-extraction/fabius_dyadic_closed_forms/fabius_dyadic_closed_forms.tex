@@ -1,0 +1,1441 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,tabularx,longtable}
+\usepackage{xcolor,fancyhdr,listings,xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{inkblue}{RGB}{25,62,102}
+\definecolor{lightgray}{RGB}{247,248,250}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,
+ pdftitle={Recurrence-Free Closed Forms for Dyadic Fabius and Rvachev Values},
+ pdfauthor={Research article prepared for Vladimir Reshetnikov},
+ pdfsubject={Exact rational values, positive compositions, cumulant partitions, binary compression, and finite q-filters}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Recurrence-free Fabius--Rvachev values}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{0.25em}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\Comp}{\mathcal C}
+\newcommand{\Part}{\mathcal P}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\lstset{language=Python,basicstyle=\ttfamily\footnotesize,
+ backgroundcolor=\color{lightgray},frame=single,rulecolor=\color{black!15},
+ breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,
+ aboveskip=1em,belowskip=1em}
+\title{\color{inkblue}\bfseries Recurrence-Free Closed Forms\\[0.2em]
+ for Dyadic Fabius and Rvachev Values\\[0.7em]
+ \large Positive compositions, cumulant partitions, binary compression,\\
+ finite uniform prefixes, and quarter-base \(q\)-filters}
+\author{Research article prepared for Vladimir Reshetnikov}
+\date{4 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Exact rational evaluation of the Fabius function at a dyadic argument is often
+presented using a recurrence for moments or for values at reciprocal powers of two.
+This article removes those recurrences completely.  It develops positive
+ordered-composition sums, Bernoulli and Bernoulli-free multiplicity-partition sums,
+finite-uniform-prefix formulas, and an integer bordered-determinant formula with an
+explicit permutation interpretation.  A binary-block identity reduces the
+argument-dependent part of the evaluation from a Thue--Morse prefix of length
+\(a\) to at most \(n+1\) terms for the argument \(a/2^n\), including the signed
+global extension.  A second, moment-free answer is a finite spline formula with
+Gaussian base \(1/4\); it uses only \(\lfloor n/2\rfloor+1\) prefixes and has no
+limiting operation.  Its exactness is proved from polynomial pieces of finite
+splines, not from an invalid assumption that the Fabius function equals its finite
+Taylor jet.  All evaluation formulas involve only explicitly bounded finite sums,
+products, factorials, integer powers, binary digits, and optional \(q\)-Pochhammer
+symbols.  Proofs, normalization checks, exact examples, and a reproducible
+rational-arithmetic verification program are included.
+\end{abstract}
+\vfill
+\noindent\textbf{Scope.} The bounded Fabius distribution, the compactly supported
+Rvachev bump, and the signed global Fabius extension are kept distinct throughout.
+The results are mathematical derivations; no new Lean verification is claimed.
+\newpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The question and the main answers}
+\label{sec:introduction}
+A finite formula that refers to ``the moments \(c_k\), computed recursively'' is
+not a closed form in the sense used here.  Neither is a limit of explicit rational
+approximations.  The desired endpoint is an expression in which every auxiliary
+quantity itself has a finite, nonrecursive definition.
+
+The reference exposition in the \texttt{ProveIt} repository already contains the
+Thue--Morse moment formula, reciprocal-power path and composition descriptions,
+Bell/cumulant machinery, and half-base Gaussian identities \cite{repo}.
+Arias de Reyna gives the classical dyadic moment formula in his arithmetic paper
+\cite{arias2018}; the earlier paper supplies its analytic setting \cite{arias1982}.
+Reshetnikov's \(q\)-binomial question \cite{reshetnikov2019} and Pinelis's
+finite-convolution construction \cite{pinelis2020} provide useful comparisons.
+The aim below is not to claim priority for these methods, but to derive alternative,
+fully expanded evaluation formulas and show exactly why they terminate.
+
+\subsection{A guide to the formulas}
+There are two particularly useful answers.  The first combines the binary formula
+\eqref{eq:binary} with either the positive composition coefficients
+\eqref{eq:composition} or the partition coefficients \eqref{eq:partition}.
+Its argument-dependent sum has at most \(n+1\) nonzero positions, even when the
+numerator is very large.  Equation \eqref{eq:fully-expanded} writes this answer
+without leaving any moment symbol unresolved.
+
+The second answer is the double sum \eqref{eq:quarter-main}.  It contains no moment,
+cumulant, or derivative symbols at all.  Its outer sum has only
+\(d+1\) terms, where \(d=\lfloor n/2\rfloor\), and its Gaussian base is \(1/4\).
+It is exact, not an extrapolation limit.
+
+Two further representations emphasize different algebra.  Equation
+\eqref{eq:cube-main} uses finitely many uniform coordinates and a finite
+multinomial sum.  Equation \eqref{eq:det-main} uses a single integer determinant;
+\eqref{eq:leibniz} explicitly expands that determinant as an allowed finite
+sum of products.  None requires an auxiliary recurrence.
+
+\subsection{Conventions}
+Throughout, \(n,a\) are nonnegative integers unless a different range is stated,
+and \(\N=\{0,1,2,\ldots\}\).  Write
+\begin{equation}
+ \tau_n=\binom{n+1}{2},\qquad d=\floor{n/2},\qquad
+ \eps_h=(-1)^{s_2(h)},                                    \label{eq:notation}
+\end{equation}
+where \(s_2(h)\) is the number of ones in the binary representation of \(h\).
+This is a digit formula, not a recursively defined sequence.  Empty sums are zero,
+empty products are one, and \(0^0=1\) in the finite polynomial formulas.
+
+For \(k\geq 0\), let \(\Comp_k\) be the finite set of all ordered compositions of
+\(k\) into positive parts, with the empty composition admitted only for \(k=0\).
+For \(\mathbf r=(r_1,\ldots,r_\ell)\in\Comp_k\), put
+\begin{equation}
+ R_j=r_j+r_{j+1}+\cdots+r_\ell.                           \label{eq:suffix}
+\end{equation}
+The finite multiplicity-profile set is
+\begin{equation}
+ \Part_k=\{(m_1,\ldots,m_k)\in\N^k:
+                  m_1+2m_2+\cdots+km_k=k\}.             \label{eq:profiles}
+\end{equation}
+For \(k=0\) this consists of one empty tuple.  Every definition in
+\eqref{eq:notation}--\eqref{eq:profiles} is explicit.
+
+\section{Normalization and the analytic identities used in the proofs}
+\label{sec:foundation}
+\subsection{Three related functions}
+Let \(U_1,U_2,\ldots\) be independent uniform random variables on \([0,1]\), and set
+\begin{equation}
+ X=\sum_{j=1}^{\infty}2^{-j}U_j,\qquad
+ F(x)=\Pp(X\leq x).                                      \label{eq:prob-F}
+\end{equation}
+Thus \(F(x)=0\) for \(x\leq0\), and \(F(x)=1\) for \(x\geq1\).
+Reflection of every coordinate gives \(F(1-x)=1-F(x)\).
+The Rvachev normalization is
+\begin{equation}
+ \Up(y)=F(1-|y|),                                        \label{eq:fold}
+\end{equation}
+so \(\Up\) is even, supported on \([-1,1]\), and \(\Up(0)=1\).
+The signed global extension is
+\begin{equation}
+ \Phi(x)=\sum_{b=0}^{\infty}\eps_b\Up(x-2b-1).            \label{eq:Phi}
+\end{equation}
+Only one summand can be nonzero at a given point.  In particular,
+\begin{equation}
+ \Phi(x)=\eps_b\Up(x-2b-1)\quad(2b\leq x\leq2b+2),
+ \qquad \Phi=F\quad\hbox{on }[0,1].                     \label{eq:block-fold}
+\end{equation}
+The function \(\Phi\), not the bounded \(F\), satisfies the pure dilation equation
+on the whole real line.
+
+\subsection{Density, smoothness, and dilation}
+Put \(V_j=2U_j-1\).  The centered random variable
+\begin{equation}
+ Y=2X-1=\sum_{j=1}^{\infty}2^{-j}V_j                     \label{eq:Y}
+\end{equation}
+has density \(\Up\).  Here is a direct normalization check.  The law of
+\(Y\) is that of \((V+Y')/2\), with \(V\) uniform on \([-1,1]\) and \(Y'\) an
+independent copy of \(Y\).  If \(H\) denotes its distribution function, its density
+is
+\[
+ H(2y+1)-H(2y-1).
+\]
+For \(0\leq y\leq1\), this equals \(1-F(y)=F(1-y)\); for
+\(-1\leq y\leq0\), it equals \(F(1+y)\).  Outside the support it vanishes.
+Convolution with the first two uniform coordinates gives a continuous density.
+The displayed identity then differentiates to
+\begin{equation}
+ \Up'(y)=2\Up(2y+1)-2\Up(2y-1),\qquad
+ F'(x)=2\Up(2x-1).                                      \label{eq:up-dilation}
+\end{equation}
+Repeated differentiation bootstraps continuity to \(C^\infty\).  Compact support
+implies flatness at the endpoints of \(\Up\), and hence flatness of \(\Phi\) at zero.
+Substitution of \eqref{eq:up-dilation} into \eqref{eq:Phi}, with the even and odd
+binary signs separated, gives
+\begin{equation}
+ \Phi'(x)=2\Phi(2x),\qquad
+ \Phi^{(r)}(x)=2^{\tau_r}\Phi(2^r x)\quad(r\geq0).        \label{eq:global-derivatives}
+\end{equation}
+These arguments also show why the Fourier normalization is
+\begin{equation}
+ \widehat{\Up}(\xi)=
+ \prod_{j=1}^{\infty}\frac{\sin(2\pi\xi/2^j)}{2\pi\xi/2^j}
+ =\prod_{k=0}^{\infty}\frac{\sin(\pi\xi/2^k)}{\pi\xi/2^k},
+ \quad
+ \widehat f(\xi)=\int_{\R}f(y)e^{-2\pi i\xi y}\dd y.       \label{eq:fourier-normalization}
+\end{equation}
+No factor of two is absorbed into the definition of \(\Up\).
+
+\subsection{Normalized moments and their generating function}
+Define
+\begin{equation}
+ c_k=\E Y^{2k},\qquad b_k=\frac{c_k}{(2k)!},\qquad
+ M(t)=\E e^{tY}=\sum_{k=0}^{\infty}b_k t^{2k}.            \label{eq:moments}
+\end{equation}
+The support bound \(|Y|\leq1\) makes \(M\) entire.  Independence gives
+\begin{equation}
+ M(t)=\prod_{j=1}^{\infty}
+       \frac{\sinh(t/2^j)}{t/2^j},\qquad
+ M(2t)=\frac{\sinh t}{t}M(t).                            \label{eq:M-product}
+\end{equation}
+The product converges locally uniformly, since its factors are
+\(1+O(4^{-j}|t|^2)\) on bounded sets.  These analytic expressions will be used to
+\emph{prove} finite identities.  They are not required in any final evaluation.
+
+\section{The universal finite dyadic reduction}
+\label{sec:master}
+\begin{theorem}[Moment-to-value transfer]
+\label{thm:master}
+For every \(a,n\geq0\),
+\begin{equation}
+ \boxed{\displaystyle
+ \Phi\!\left(\frac a{2^n}\right)=
+ 2^{-\tau_n}\sum_{h=0}^{a-1}\eps_h
+ \sum_{k=0}^{\floor{n/2}}
+ b_k\frac{(2a-2h-1)^{n-2k}}{(n-2k)!}.}                  \label{eq:master}
+\end{equation}
+For \(0\leq a\leq2^n\), the left side is \(F(a/2^n)\).
+\end{theorem}
+\begin{proof}
+Taylor's integral formula at the flat point zero, applied with order \(n+1\), gives
+\[
+ \Phi(x)=\frac1{n!}\int_0^x(x-t)^n\Phi^{(n+1)}(t)\dd t.
+\]
+Using \eqref{eq:global-derivatives} and changing variable \(v=2^{n+1}t\) yields
+\begin{equation}
+ \Phi(x)=\frac{2^{-\tau_n}}{n!}
+   \int_0^{2^{n+1}x}(2^{n+1}x-v)^n\Phi(v)\dd v.         \label{eq:primitive-master}
+\end{equation}
+At \(x=a/2^n\), the integration interval is exactly \([0,2a]\), a union of
+\(a\) complete signed bump blocks.  Substitute \(v=2h+1+y\) on each block:
+\[
+ \Phi\!\left(\frac a{2^n}\right)=\frac{2^{-\tau_n}}{n!}
+ \sum_{h=0}^{a-1}\eps_h
+ \int_{-1}^{1}(2a-2h-1-y)^n\Up(y)\dd y.
+\]
+Odd moments vanish.  Expanding the power and using
+\(\binom n{2k}c_k/n!=b_k/(n-2k)!\) proves the formula.
+The same argument includes \(n=0\); an empty integration interval covers \(a=0\).
+\end{proof}
+
+This is the familiar dyadic moment identity in normalized coefficients.  Its value
+for the present problem is that only \(b_0,\ldots,b_d\) occur.  The next sections
+replace every one of these coefficients by a finite formula.
+
+\section{Positive ordered-composition formulas}
+\label{sec:composition}
+\begin{theorem}[Positive coefficient formula]
+\label{thm:composition}
+For every \(k\geq0\),
+\begin{equation}
+ \boxed{\displaystyle
+ b_k=\sum_{\mathbf r\in\Comp_k}
+       \prod_{j=1}^{\ell(\mathbf r)}
+       \frac{1}{(2r_j+1)!\,(4^{R_j}-1)}.}                 \label{eq:composition}
+\end{equation}
+In particular, all coefficients are positive rational numbers.
+\end{theorem}
+\begin{proof}
+Expand the product \eqref{eq:M-product}.  To obtain total degree \(2k\), choose
+\(\ell\) occupied scale positions
+\(1\leq j_1<\cdots<j_\ell\) and positive degrees
+\(r_1+\cdots+r_\ell=k\).  Their contribution is
+\[
+ \prod_{i=1}^{\ell}\frac{4^{-j_i r_i}}{(2r_i+1)!}.
+\]
+The coefficients are nonnegative, so regrouping by the occupied positions is
+legitimate.  Write \(g_1=j_1\) and \(g_i=j_i-j_{i-1}\) for \(i>1\).  All gaps
+are positive and
+\[
+ \sum_{i=1}^{\ell}j_i r_i=\sum_{i=1}^{\ell}g_i R_i.
+\]
+Consequently the entire infinite sum over positions is explicitly
+\[
+ \sum_{1\leq j_1<\cdots<j_\ell}4^{-\sum j_i r_i}
+ =\prod_{i=1}^{\ell}\sum_{g=1}^{\infty}4^{-gR_i}
+ =\prod_{i=1}^{\ell}\frac1{4^{R_i}-1}.
+\]
+Only the finite sum over compositions remains.  For \(k=0\), the empty selection
+has weight one.
+\end{proof}
+
+\begin{example}[First coefficients]
+The two compositions of two give
+\[
+ b_1=\frac1{3!(4-1)}=\frac1{18},\qquad
+ b_2=\frac1{5!(16-1)}+
+       \frac1{3!^2(16-1)(4-1)}=\frac{19}{16200}.
+\]
+The four compositions of three give \(b_3=583/42865200\).
+No smaller moment has to be evaluated to compute any of these numbers.
+\end{example}
+
+\begin{corollary}[A positive formula at reciprocal powers]
+For \(n\geq0\),
+\begin{equation}
+ F(2^{-n})=2^{-\tau_n}
+ \sum_{k=0}^{\floor{n/2}}\frac1{(n-2k)!}
+ \sum_{\mathbf r\in\Comp_k}
+ \prod_{j=1}^{\ell(\mathbf r)}
+ \frac1{(2r_j+1)!\,(4^{R_j}-1)}.                          \label{eq:inverse-power-positive}
+\end{equation}
+Every summand is positive.
+\end{corollary}
+\begin{proof}
+Take \(a=1\) in \eqref{eq:master} and substitute \eqref{eq:composition}.
+\end{proof}
+
+\begin{remark}[Relation to triangular recurrences]
+Coefficient comparison in \eqref{eq:M-product} also gives
+\begin{equation}
+ (4^k-1)b_k=\sum_{j=0}^{k-1}\frac{b_j}{(2(k-j)+1)!}
+ \qquad(k\geq1).                                        \label{eq:reference-recurrence}
+\end{equation}
+Unrolling this identity produces a path interpretation of the same composition
+weights.  Equation \eqref{eq:reference-recurrence} is useful as an independent
+check, but it is not part of the evaluation prescription
+\eqref{eq:composition}.  In particular, the latter is not a recurrence disguised
+by a new name.
+\end{remark}
+
+\section{Multiplicity partitions and explicit cumulants}
+\label{sec:partition}
+\subsection{A compact partition formula}
+Define, for \(r\geq1\),
+\begin{equation}
+ \beta_r=\frac{4^r B_{2r}}{(4^r-1)\,2r\,(2r)!},           \label{eq:beta}
+\end{equation}
+where the Bernoulli convention is \(B_1=-1/2\).
+\begin{theorem}[Partition coefficient formula]
+\label{thm:partition}
+For every \(k\geq0\),
+\begin{equation}
+ \boxed{\displaystyle
+ b_k=\sum_{(m_1,\ldots,m_k)\in\Part_k}
+       \prod_{r=1}^{k}\frac{\beta_r^{m_r}}{m_r!}.}         \label{eq:partition}
+\end{equation}
+Thus \eqref{eq:master} with \eqref{eq:partition} is another recurrence-free dyadic
+formula.  Equivalently, the even cumulant of order \(2r\) is \((2r)!\beta_r\),
+and every odd cumulant vanishes.
+\end{theorem}
+\begin{proof}
+Near zero, differentiation of the logarithm gives
+\[
+ \frac{\mathrm d}{\mathrm dt}\log\frac{\sinh t}{t}
+ =\coth t-\frac1t
+ =\sum_{r\geq1}\frac{4^r B_{2r}}{(2r)!}t^{2r-1}.
+\]
+Integration with zero constant term, followed by the geometric sum over the
+scales in \eqref{eq:M-product}, yields
+\begin{equation}
+ \log M(t)=\sum_{r\geq1}\beta_r t^{2r}.                   \label{eq:log-M}
+\end{equation}
+Indeed, \(\sum_{j\geq1}4^{-jr}=1/(4^r-1)\).  Exponentiating and selecting
+\(t^{2k}\) amounts to choosing \(m_r\) copies of \(\beta_r t^{2r}\); this gives
+exactly \eqref{eq:partition}.  The same calculation is valid coefficientwise in
+formal power series, so no analytic evaluation is required.
+\end{proof}
+The first values are
+\begin{equation}
+ \beta_1=\frac1{18},\quad \beta_2=-\frac1{2700},\quad
+ \beta_3=\frac1{178605},\quad \beta_4=-\frac1{9639000}.
+                                                               \label{eq:beta-values}
+\end{equation}
+For example, \(b_2=\beta_2+\beta_1^2/2\), and
+\(b_3=\beta_3+\beta_1\beta_2+\beta_1^3/6\).
+
+\subsection{Removing even the Bernoulli symbols}
+Bernoulli numbers need not be accepted as auxiliary special constants.  They have
+the finite formula
+\begin{equation}
+ B_m=\sum_{v=0}^{m}\frac1{v+1}
+       \sum_{u=0}^{v}(-1)^u\binom vu u^m.                \label{eq:Bernoulli-finite}
+\end{equation}
+To verify it, take exponential generating functions.  The right-hand side sums
+formally to
+\[
+ \sum_{v\geq0}\frac{(1-e^t)^v}{v+1}
+ =\frac{t}{e^t-1}.
+\]
+Only \(v\leq m\) can contribute to the coefficient of \(t^m\), which proves
+\eqref{eq:Bernoulli-finite} as a finite identity.
+
+There is also a Bernoulli-free formula that uses only factorials:
+\begin{equation}
+ \boxed{\displaystyle
+ \beta_r=\frac1{4^r-1}
+ \sum_{\ell=1}^{r}\frac{(-1)^{\ell-1}}{\ell}
+ \sum_{\substack{s_1,\ldots,s_\ell\geq1\\s_1+\cdots+s_\ell=r}}
+       \prod_{j=1}^{\ell}\frac1{(2s_j+1)!}.}             \label{eq:beta-no-B}
+\end{equation}
+This follows by expanding
+\(\log(1+\sum_{s\geq1}t^{2s}/(2s+1)!)\), then summing the scales.
+Either \eqref{eq:Bernoulli-finite} or \eqref{eq:beta-no-B} makes
+\eqref{eq:partition} literally a nested finite rational sum.
+
+\subsection{Why this is a different useful representation}
+The composition formula has \(2^{k-1}\) terms for \(k\geq1\).
+The partition formula has one term per integer partition of \(k\), and is often
+much shorter.  The price is cancellation: the composition terms are all positive,
+whereas the \(\beta_r\) alternate in sign.  Both are exact rational formulas; neither
+requires computing \(b_0,\ldots,b_{k-1}\) before \(b_k\).
+
+For later use, the reciprocal coefficients are equally explicit:
+\begin{equation}
+ \frac1{M(t)}=\sum_{r\geq0}\alpha_r t^{2r},\qquad
+ \alpha_r=\sum_{\mathbf m\in\Part_r}
+               \prod_{j=1}^{r}\frac{(-\beta_j)^{m_j}}{m_j!}.
+                                                               \label{eq:alpha}
+\end{equation}
+For example, \(\alpha_0=1\), \(\alpha_1=-1/18\),
+\(\alpha_2=31/16200\), and \(\alpha_3=-2347/42865200\).
+The reciprocal series is used only locally at zero or on finite-degree
+polynomials; no assertion of its being entire is intended.
+
+\section{Binary compression of the argument-dependent sum}
+\label{sec:binary}
+The master formula has a Thue--Morse prefix of length \(a\).  This is avoidable:
+complete binary blocks can be summed algebraically before any rational arithmetic
+is done.  The resulting identity is useful independently of which closed form is
+chosen for the coefficients \(b_k\).
+
+For each \(i\geq0\), define the following explicit integer quantities:
+\begin{equation}
+ a_i=\floor{a/2^i}-2\floor{a/2^{i+1}},\qquad
+ K_i=2^i+2(a\bmod 2^i),\qquad
+ \eta_i=\eps_{\floor{a/2^{i+1}}}.                         \label{eq:bit-data}
+\end{equation}
+Here \(a_i\in\{0,1\}\) is the \(i\)-th binary digit.  In particular,
+\(a\bmod1=0\), so \(K_0=1\).
+
+\begin{theorem}[Binary closed form]
+For every \(a,n\geq0\), including numerators larger than \(2^n\),
+\begin{equation}
+ \boxed{\displaystyle
+ \Phi\!\left(\frac a{2^n}\right)
+ =2^{-\tau_n}\sum_{i=0}^{n}a_i\eta_i\,2^{\tau_i}
+   \sum_{k=0}^{\floor{(n-i)/2}}
+      \frac{b_k\,4^{ik}K_i^{\,n-i-2k}}{(n-i-2k)!}.}
+                                                               \label{eq:binary}
+\end{equation}
+The coefficients \(b_k\) may be supplied by either \eqref{eq:composition} or
+\eqref{eq:partition}.  Thus the formula is nonrecursive, and its outer sum has at
+most \(n+1\) nonzero positions, independently of the magnitude of \(a\).
+\end{theorem}
+\begin{proof}
+In exponential generating form, the master formula is
+\begin{equation}
+ \Phi(a/2^n)=2^{-\tau_n}\coeff{t}{n}
+       M(t)\sum_{h=0}^{a-1}\eps_h e^{(2a-2h-1)t}.        \label{eq:master-egf}
+\end{equation}
+For each set bit \(a_i=1\), put
+\(P_i=2^{i+1}\floor{a/2^{i+1}}\).  The disjoint blocks
+\[
+ \{P_i,P_i+1,\ldots,P_i+2^i-1\}\qquad(a_i=1)
+\]
+partition \(\{0,\ldots,a-1\}\).  There are no binary carries when a number
+\(r<2^i\) is added to \(P_i\), and hence
+\(\eps_{P_i+r}=\eta_i\eps_r\).  Also,
+\begin{equation}
+ \sum_{r=0}^{2^i-1}\eps_r e^{-2rt}
+       =\prod_{j=0}^{i-1}(1-e^{-2^{j+1}t}).              \label{eq:TM-product}
+\end{equation}
+Iteration of \(M(2t)=(\sinh(t)/t)M(t)\) now gives the exact identity
+\begin{equation}
+ M(t)\prod_{j=0}^{i-1}(1-e^{-2^{j+1}t})
+  =2^{\tau_i}t^i e^{-(2^i-1)t}M(2^i t).                \label{eq:block-M}
+\end{equation}
+Indeed, each factor on the left is
+\(2e^{-2^jt}\sinh(2^jt)\); their powers of two multiply to
+\(2^{i+i(i-1)/2}=2^{\tau_i}\).
+
+The contribution of the \(i\)-th block to \eqref{eq:master-egf} is consequently
+\[
+ \eta_i2^{\tau_i}t^i
+     e^{(2a-2P_i-2^i)t}M(2^it).
+\]
+When \(a_i=1\), write \(a=P_i+2^i+(a\bmod2^i)\); the exponent becomes
+\(K_it\).  Expanding \(M(2^it)=\sum_{k\geq0}b_k4^{ik}t^{2k}\)
+and extracting \(t^n\) proves \eqref{eq:binary}.  A block with \(i>n\) contains
+a factor \(t^i\) and contributes zero.  This explains why even higher binary digits
+are needed only through the explicit signs \(\eta_i\).
+\end{proof}
+
+\subsection{One formula with no unresolved coefficient symbols}
+Combining \eqref{eq:binary} and \eqref{eq:composition} gives the following literal
+finite expression:
+\begin{equation}
+ \boxed{\begin{aligned}
+ \Phi\!\left(\frac a{2^n}\right)
+ &=\sum_{i=0}^{n}a_i\eta_i\,2^{\tau_i-\tau_n}
+   \sum_{k=0}^{\floor{(n-i)/2}}
+       \frac{4^{ik}K_i^{\,n-i-2k}}{(n-i-2k)!}\\[-0.1em]
+ &\quad\times
+   \sum_{\ell=0}^{k}
+   \sum_{\substack{r_1,\ldots,r_\ell\geq1\\r_1+\cdots+r_\ell=k}}
+       \prod_{j=1}^{\ell}
+       \frac{1}{(2r_j+1)!\bigl(4^{r_j+\cdots+r_\ell}-1\bigr)}.
+ \end{aligned}}                                               \label{eq:fully-expanded}
+\end{equation}
+The \(\ell=0\) inner sum is one for \(k=0\), and zero otherwise.  Formula
+\eqref{eq:fully-expanded}, together with the digit definitions
+\eqref{eq:bit-data}, contains no recursively defined constants at all.
+It answers the closed-form requirement using only integer arithmetic, factorials,
+and bounded sums and products.
+
+There are at most
+\[
+ \sum_{i=0}^{n}\bigl(\floor{(n-i)/2}+1\bigr)
+ =(d+1)(n-d+1)
+\]
+argument-dependent monomials after the universal coefficients have been computed.
+This count concerns rational-arithmetic operations, not the bit complexity of
+multiplying large numerators and denominators.
+
+\begin{example}[A two-block evaluation]
+Take \(a=3\), \(n=3\).  The set bits are \(i=0,1\).  Their data are
+\((\eta_0,K_0)=(-1,1)\) and \((\eta_1,K_1)=(1,4)\).  Therefore
+\[
+ F(3/8)=\frac1{64}
+   \left[-\left(\frac16+\frac1{18}\right)
+     +2\left(\frac{4^2}{2}+\frac4{18}\right)\right]
+ =\frac{73}{288}.
+\]
+For \(a=1\), only \(i=0\) survives, recovering the positive endpoint formula
+\eqref{eq:inverse-power-positive}.
+\end{example}
+
+\section{Finite uniform prefixes and a moment-free multinomial formula}
+\label{sec:prefix}
+This section removes the moments by a different device: replace an infinite
+uniform sum by several \emph{finite} sums, and extract a polynomial's constant
+term.  No limit remains in the resulting evaluation formula.
+
+\subsection{The explicit finite-coordinate polynomial}
+For \(N\geq0\), set
+\[
+ Y_N=\sum_{j=1}^{N}2^{-j}V_j,\qquad
+ M_N(t)=\E e^{tY_N}=\frac{M(t)}{M(2^{-N}t)},
+\]
+with \(Y_0=0\).  Define
+\begin{equation}
+ \begin{split}
+ C_{n,N}(A)&=\frac1{n!}\E(A+Y_N)^n\\
+ &=\sum_{\substack{r_0,r_1,\ldots,r_N\geq0\\
+                    r_0+2r_1+\cdots+2r_N=n}}
+       \frac{A^{r_0}}{r_0!}
+       \prod_{j=1}^{N}\frac{4^{-jr_j}}{(2r_j+1)!}.
+ \end{split}                                                  \label{eq:finite-C}
+\end{equation}
+Thus \(C_{n,0}(A)=A^n/n!\).  Every summation index in
+\eqref{eq:finite-C} is bounded by \(n\), and the formula is a finite rational sum
+whenever \(A\) is rational.
+
+For the proof, temporarily write
+\(C_n(A)=\coeff{t}{n}e^{At}M(t)\).  Using the explicit reciprocal coefficients
+\(\alpha_r\) from \eqref{eq:alpha} gives
+\begin{equation}
+ C_{n,N}(A)=\sum_{r=0}^{d}\alpha_r4^{-Nr}C_{n-2r}(A).
+                                                               \label{eq:C-scale}
+\end{equation}
+Consequently, \(C_{n,N}(A)\) is the value at \(z=4^{-N}\) of a polynomial in
+\(z\) of degree at most \(d=\floor{n/2}\), whose constant term is \(C_n(A)\).
+The infinite series in this reasoning has been truncated by coefficient
+extraction, not approximated.
+
+\subsection{Explicit Gaussian weights}
+For \(0<q<1\), use
+\[
+ (q;q)_j=\prod_{r=1}^{j}(1-q^r),\qquad
+ \qbinom{d}{j}{q}=\frac{(q;q)_d}{(q;q)_j(q;q)_{d-j}},
+\]
+and define
+\begin{equation}
+ \boxed{\displaystyle
+ \lambda_{d,j}(q)
+  =\frac{(-1)^{d-j}q^{\tau_{d-j}}}
+        {(q;q)_j(q;q)_{d-j}}
+  =\frac{(-1)^{d-j}q^{\tau_{d-j}}}{(q;q)_d}
+       \qbinom{d}{j}{q},\qquad 0\leq j\leq d.}          \label{eq:weights}
+\end{equation}
+In particular, all these weights are rational when \(q\) is rational.
+
+\begin{lemma}[Finite constant-term extraction]
+For every polynomial \(P\) of degree at most \(d\), and every \(z_0\neq0\),
+\begin{equation}
+ P(0)=\sum_{j=0}^{d}\lambda_{d,j}(q)P(z_0q^j).
+                                                               \label{eq:filter}
+\end{equation}
+Equivalently,
+\begin{equation}
+ \sum_{j=0}^{d}\lambda_{d,j}(q)q^{jr}
+  =\begin{cases}1,&r=0,\\0,&1\leq r\leq d.\end{cases} \label{eq:annihilation}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The value at zero of the \(j\)-th Lagrange cardinal polynomial for the nodes
+\(z_0,z_0q,\ldots,z_0q^d\) is
+\[
+ \prod_{\substack{0\leq\ell\leq d\\\ell\ne j}}
+       \frac{-q^\ell}{q^j-q^\ell}.
+\]
+For \(\ell<j\), the factor is \(1/(1-q^{j-\ell})\); for \(\ell>j\), it is
+\(-q^{\ell-j}/(1-q^{\ell-j})\).  Multiplication gives exactly
+\eqref{eq:weights}.  Lagrange interpolation proves \eqref{eq:filter}, and applying
+it to the monomials gives \eqref{eq:annihilation}.
+\end{proof}
+
+\begin{theorem}[Finite-cube closed form]
+Set \(Q=1/4\) and \(d=\floor{n/2}\).  For every \(a,n\geq0\),
+\begin{equation}
+ \boxed{\displaystyle
+ \Phi\!\left(\frac a{2^n}\right)
+ =2^{-\tau_n}\sum_{h=0}^{a-1}\eps_h
+       \sum_{j=0}^{d}\lambda_{d,j}(Q)
+                 C_{n,j}(2a-2h-1),}                    \label{eq:cube-main}
+\end{equation}
+where \(C_{n,j}\) is the finite multinomial sum \eqref{eq:finite-C}.
+No moment of an infinite distribution is needed in the formula's evaluation.
+\end{theorem}
+\begin{proof}
+Apply \eqref{eq:filter} with \(z_0=1\) to the degree-\(d\) polynomial in
+\eqref{eq:C-scale}, obtaining
+\(C_n(A)=\sum_{j=0}^{d}\lambda_{d,j}(Q)C_{n,j}(A)\).
+Substitute this equality into \eqref{eq:master-egf}.
+\end{proof}
+
+There is also a useful coefficient-only version:
+\begin{equation}
+ \boxed{\displaystyle
+ b_k=\sum_{j=0}^{k}\lambda_{k,j}(1/4)
+       \sum_{\substack{r_1,\ldots,r_j\geq0\\r_1+\cdots+r_j=k}}
+            \prod_{i=1}^{j}\frac{4^{-ir_i}}{(2r_i+1)!}.} \label{eq:prefix-b}
+\end{equation}
+The zero-coordinate inner sum is one for \(k=0\), and zero otherwise.
+This is a third fully explicit formula for the universal coefficients, with neither
+ordered compositions nor Bernoulli numbers.  A common row of degree \(d\geq k\)
+may replace the row of degree \(k\) in \eqref{eq:prefix-b}; the underlying
+polynomial has degree at most \(k\).  Substitution in \eqref{eq:binary} avoids the
+long \(h\)-sum in \eqref{eq:cube-main}.
+
+\subsection{Arbitrary finite prefixes and other bases}
+The consecutive depths \(0,1,\ldots,d\) are convenient, not compulsory.
+For distinct nonnegative integers \(N_0,\ldots,N_d\), put \(z_j=4^{-N_j}\).
+Then
+\begin{equation}
+ C_n(A)=\sum_{j=0}^{d}
+       \left(\prod_{\substack{0\leq\ell\leq d\\\ell\ne j}}
+              \frac{-z_\ell}{z_j-z_\ell}\right)C_{n,N_j}(A).
+                                                               \label{eq:arbitrary-prefix}
+\end{equation}
+If \(N_j=N+Lj\) with integers \(N\geq0\), \(L\geq1\), these weights reduce to
+\(\lambda_{d,j}(4^{-L})\).  Thus the quarter-base formula belongs to a whole
+family of exact finite rational filters.
+
+\section{An exact quarter-base spline formula with no moments}
+\label{sec:spline}
+The previous construction used moments of finite uniform prefixes.  Their
+\emph{densities} give a particularly compact double-sum answer.  The key fact is an
+exact polynomial dependence on \(4^{-N}\) at a fixed dyadic point.
+
+\subsection{The finite spline in explicit form}
+For \(N\geq1\), let \(p_N\) be the density of \(Y_N\), and put
+\(S_N(x)=p_N(x-1)\).  The first \(N\) Fourier factors are
+\[
+ \widehat p_N(\xi)=\prod_{k=0}^{N-1}
+                   \frac{\sin(\pi\xi/2^k)}{\pi\xi/2^k}.
+\]
+Thus a convention that calls the product ending at \(k=m\) by \(\Up_m\)
+has \(p_N=\Up_{N-1}\).  This one-factor indexing shift matters in exact formulas.
+
+Convolution of the \(N\) uniform densities, or direct inclusion--exclusion for a
+weighted cube, gives
+\begin{equation}
+ S_N(x)=\frac{2^{N(N-1)/2}}{(N-1)!}
+       \sum_{h=0}^{2^N-1}\eps_h
+       \left(x-\frac{2h+1}{2^N}\right)_+^{N-1}.         \label{eq:spline-truncated}
+\end{equation}
+For exponent zero, \(t_+^0\) means the indicator of \(t>0\); endpoint values of
+individual densities are immaterial.  No point used below is a knot.
+For completeness, the \(j\)-th centered uniform has width \(2^{1-j}\).
+The product of their reciprocal widths is \(2^{N(N-1)/2}\), and their subset
+shifts, after translation by one, are exactly \((2h+1)/2^N\), with inclusion--
+exclusion sign \(\eps_h\).  This proves the normalization in
+\eqref{eq:spline-truncated}.  Finite-convolution formulas of this type underlie the
+construction discussed by Pinelis \cite{pinelis2020}; the extraction below is what
+removes the limiting step.
+
+At a dyadic point there is an especially simple integer-power form.
+For \(0\leq a\leq2^n\) and \(N\geq n+1\),
+\begin{equation}
+ \boxed{\displaystyle
+ S_N\!\left(\frac a{2^n}\right)
+ =\frac{1}{2^{N(N-1)/2}(N-1)!}
+       \sum_{h=0}^{a2^{N-n-1}-1}\eps_h
+               \bigl(a2^{N-n}-2h-1\bigr)^{N-1}.}       \label{eq:spline-dyadic}
+\end{equation}
+Indeed, \(a2^{N-n}\) is even, so none of the parentheses vanishes.  Precisely the
+first \(a2^{N-n-1}\) terms in \eqref{eq:spline-truncated} are active.  Factoring out
+\(2^{-N(N-1)}\) produces the displayed power of two.
+
+\subsection{Why the scale dependence is a finite polynomial}
+\begin{lemma}[Degree reduction on a dyadic spline cell]
+Fix \(x=a/2^n\), where \(0\leq a\leq2^n\), and let \(N\geq n+1\).
+On the open interval \(|t|<2^{-N}\), the function \(S_N(x+t)\) is a polynomial
+\(P_N(t)\) of degree at most \(n\), even though a general piece of \(S_N\) has
+nominal degree \(N-1\).
+\end{lemma}
+\begin{proof}
+Write \(N=n+1+L\), with \(L\geq0\).  The point \(x\) is the midpoint between
+consecutive knots, and the active indices throughout this cell are
+\(0\leq h<a2^L\).  Split them as \(h=b2^L+r\), where
+\(0\leq b<a\), \(0\leq r<2^L\).  Their signs factor as
+\(\eps_h=\eps_b\eps_r\).
+
+The finite product \eqref{eq:TM-product} has a zero of order \(L\) at zero.
+Differentiating it shows the Prouhet cancellation
+\begin{equation}
+ \sum_{r=0}^{2^L-1}\eps_r r^j=0\qquad(0\leq j<L).      \label{eq:Prouhet}
+\end{equation}
+Each block of the active spline expression is a signed sum of powers
+\((A+t-Br)^{n+L}\), for fixed \(A,B\).  The coefficient of \(t^m\) is a polynomial
+in \(r\) of degree at most \(n+L-m\).  It vanishes after summation when
+\(m>n\), by \eqref{eq:Prouhet}.  Each block, and hence \(P_N\), has degree at most
+\(n\).  The case \(L=0\) requires no cancellations.
+\end{proof}
+
+\begin{theorem}[Exact finite scale law]
+With the same hypotheses, and \(d=\floor{n/2}\),
+\begin{equation}
+ \boxed{\displaystyle
+ S_N(x)=\sum_{r=0}^{d}\alpha_r4^{-Nr}\Phi^{(2r)}(x)
+       =F(x)+\sum_{r=1}^{d}\alpha_r\Phi^{(2r)}(x)4^{-Nr}.}
+                                                               \label{eq:spline-scale}
+\end{equation}
+In particular, the sampled spline value is an exact polynomial in \(4^{-N}\)
+of degree at most \(d\), whose constant coefficient is \(F(x)\).
+\end{theorem}
+\begin{proof}
+The independent tail decomposition is
+\[
+ Y\ \stackrel{\mathrm{law}}=\ Y_N+2^{-N}Y',
+\]
+where \(Y'\) has the law of \(Y\).  Therefore
+\(\Up=p_N*\mathrm{law}(2^{-N}Y')\).  Near the points in question the signed
+function is \(\Phi(x)=\Up(x-1)\); this also identifies all endpoint derivatives.
+For derivative orders \(0\leq s\leq n\leq N-1\), differentiation of the
+convolution is valid using the locally integrable derivatives of \(p_N\).
+There are no atomic terms at these derivative orders: \(p_N\) is a spline of
+order \(N\).  Almost every tail argument lies strictly within the open spline
+cell of the preceding lemma.  It follows that
+\begin{equation}
+ \Phi^{(s)}(x)=\E P_N^{(s)}(-2^{-N}Y'),\qquad 0\leq s\leq n.
+                                                               \label{eq:jet-convolution}
+\end{equation}
+This argument includes \(N=1\), when only the undifferentiated density is used.
+
+Let \(D\) denote differentiation of polynomials in \(t\), and let
+\[
+ J_x(t)=\sum_{s=0}^{n}\frac{\Phi^{(s)}(x)}{s!}t^s
+\]
+be the \emph{finite Taylor jet}.  Since \(P_N\) has degree at most \(n\),
+\eqref{eq:jet-convolution} is the polynomial identity
+\begin{equation}
+ J_x(t)=\E P_N(t-2^{-N}Y')=M(2^{-N}D)P_N(t).           \label{eq:jet-operator}
+\end{equation}
+Evenness of \(M\) removes the minus sign.  On polynomials of degree at most \(n\),
+\(D^{n+1}=0\); thus the reciprocal operator is the finite sum
+\[
+ M(2^{-N}D)^{-1}=\sum_{r=0}^{d}\alpha_r4^{-Nr}D^{2r}.
+\]
+Applying it to \eqref{eq:jet-operator} and evaluating at \(t=0\) proves
+\eqref{eq:spline-scale}.
+\end{proof}
+
+\begin{remark}[A necessary distinction]
+The proof does \emph{not} assert that \(F(x+t)=J_x(t)\) on an interval.  The
+polynomial in the proof is a piece of the \emph{finite spline}, and only finitely
+many derivatives of the convolution at the single point \(x\) are used.
+Replacing the smooth Fabius function by its finite Taylor jet on a neighborhood
+would not be justified.
+\end{remark}
+
+\subsection{The closed double sum}
+\begin{theorem}[Quarter-base dyadic formula]
+For \(n\geq0\), \(0\leq a\leq2^n\), \(d=\floor{n/2}\), and \(Q=1/4\),
+\begin{equation}
+ F(a/2^n)=\sum_{j=0}^{d}\lambda_{d,j}(Q)
+                     S_{n+1+j}(a/2^n).                 \label{eq:quarter-filter}
+\end{equation}
+Equivalently, the following is a closed form containing no moments or derivatives:
+\begin{equation}
+ \boxed{\begin{aligned}
+ F\!\left(\frac a{2^n}\right)
+ =\frac1{(Q;Q)_d}\sum_{j=0}^{d}
+ &\frac{(-1)^{d-j}Q^{\tau_{d-j}}}{2^{\tau_{n+j}}(n+j)!}
+       \qbinom{d}{j}{Q}\\[-0.2em]
+ &\times\sum_{h=0}^{2^j a-1}\eps_h
+                \bigl(2^{j+1}a-2h-1\bigr)^{n+j},
+ \qquad Q=\frac14.
+ \end{aligned}}                                               \label{eq:quarter-main}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply \eqref{eq:filter} to the polynomial in \eqref{eq:spline-scale} at the
+\(d+1\) nodes \(4^{-(n+1)},4^{-(n+2)},\ldots,4^{-(n+1+d)}\).
+Its value at zero is \(F(a/2^n)\).  This gives \eqref{eq:quarter-filter}.
+Substituting \eqref{eq:spline-dyadic} with \(N=n+1+j\), and then
+\eqref{eq:weights}, proves \eqref{eq:quarter-main}.
+\end{proof}
+
+Formula \eqref{eq:quarter-main} uses only \(d+1\) splines, of orders
+\(n+1,\ldots,n+d+1\).  Its largest power is \(n+d\), and the total number of
+signed powers before simplification is
+\begin{equation}
+ \sum_{j=0}^{d}2^ja=a(2^{d+1}-1).                        \label{eq:spline-count}
+\end{equation}
+This formula is attractive when the absence of all auxiliary coefficient sequences
+is more important than minimizing arithmetic.  For large numerators, the binary
+formula is usually the better algebraic organization.
+
+\subsection{Other prefix depths, conditioning, and the half-base comparison}
+For any integers \(N\geq n+1\), \(L\geq1\), the same proof gives
+\begin{equation}
+ F(a/2^n)=\sum_{j=0}^{d}\lambda_{d,j}(4^{-L})
+                         S_{N+Lj}(a/2^n).               \label{eq:spline-stride}
+\end{equation}
+Arbitrary distinct depths at least \(n+1\) are also allowed, using the
+Lagrange weights in \eqref{eq:arbitrary-prefix}.  There is no convergence parameter
+to send to infinity in any of these identities.
+
+The finite \(q\)-binomial theorem gives the exact absolute row sum
+\begin{equation}
+ \sum_{j=0}^{d}|\lambda_{d,j}(q)|
+   =\frac{(-q;q)_d}{(q;q)_d}
+   =\prod_{r=1}^{d}\frac{1+q^r}{1-q^r}.                 \label{eq:weight-norm}
+\end{equation}
+For example, this is bounded uniformly in \(d\) by
+\(\exp(2q/(1-q)^2)\).  Indeed,
+\(\log((1+x)/(1-x))\leq2x/(1-x)\) for \(0\leq x<1\), and the resulting geometric
+sum gives the bound.  This measures only amplification by the \emph{outer filter};
+it does not eliminate cancellation inside the large signed power sums.
+
+The exact polynomial in \eqref{eq:spline-scale} is also a polynomial of degree at
+most \(2d\leq n\) in \(2^{-N}\).  Hence the longer half-base row
+\begin{equation}
+ F(a/2^n)=\sum_{j=0}^{n}\lambda_{n,j}(1/2)
+                         S_{n+1+j}(a/2^n)               \label{eq:half-filter}
+\end{equation}
+is valid too.  Inserting the spline formula and rewriting its power as
+\((-2)^{n+j}(h-2^ja+1/2)^{n+j}\) gives exactly the half-base form
+\begin{equation}
+ \frac{1}{2^{n^2}(1/2;1/2)_n}
+ \sum_{j=0}^{n}\frac{\qbinom{n}{j}{1/2}}{2^{j(j-1)}(n+j)!}
+       \sum_{h=0}^{2^ja-1}\eps_h
+                  (h-2^ja+1/2)^{n+j}.                 \label{eq:classical-half}
+\end{equation}
+This is the formula appearing in Reshetnikov's 2019 question
+\cite{reshetnikov2019}.  The quarter-base row exploits the absence of odd powers of
+\(2^{-N}\) and removes unnecessary samples.  The underlying interpolation
+principle and related quarter-base constructions are already part of the
+repository's broader development \cite{repo}; the point here is the explicit,
+recurrence-free form and a self-contained exactness proof.
+
+\subsection{When the degree is sharp}
+The degree bound \(d\) is attained at every reduced interior dyadic point.
+We record a proof to distinguish a genuinely finite error polynomial from a
+merely convenient upper bound.
+
+First,
+\begin{equation}
+ (-1)^r\alpha_r>0\qquad(r\geq0).                         \label{eq:alpha-sign}
+\end{equation}
+For example, the Euler product for the sine or hyperbolic sine
+\cite[\S4.36]{dlmf} gives, locally at zero,
+\[
+ \frac1{M(iz)}
+ =\prod_{j\geq1}\prod_{m\geq1}
+     \left(1-\frac{z^2}{4^j\pi^2m^2}\right)^{-1}.
+\]
+All coefficients of this product in \(z^2\) are strictly positive.  Comparison
+with \(\sum_r(-1)^r\alpha_rz^{2r}\) proves \eqref{eq:alpha-sign}.
+The products converge locally, so coefficient comparison is legitimate.
+
+Now take \(n\geq1\), \(0<a<2^n\), and \(a\) odd.  For \(0\leq2r\leq n\),
+\[
+ \Phi^{(2r)}(a/2^n)=2^{\tau_{2r}}\Phi(a/2^{n-2r})\ne0.
+\]
+The argument on the right is not an even integer; each open bump block has a
+constant nonzero sign and positive absolute value.  Positivity follows also from
+\eqref{eq:prob-F}: every open subinterval of the support has positive probability.
+Thus every coefficient in \eqref{eq:spline-scale}, including its highest one, is
+nonzero.
+
+Accordingly, \(d+1\) is the required sample count for a universal linear rule
+extracting the constant term from an arbitrary degree-\(d\) polynomial at distinct
+nonzero nodes.  With only \(d\) nodes, their vanishing polynomial has degree \(d\)
+but a nonzero constant term.  This is a statement about universal interpolation,
+not a lower bound against every possible special-purpose formula for one value.
+
+\section{An integer determinant and its explicit permutation sum}
+\label{sec:determinant}
+The composition and partition formulas expose individual coefficients.  A bordered
+matrix packages the entire dyadic value into a single ratio of integers.
+The determinant can then be expanded into a finite sum of products, so no matrix
+inversion or recurrence is part of the mathematical definition.
+
+For \(d=\floor{n/2}\), form the \((d+1)\times(d+1)\) lower-triangular integer
+matrix \(T=(T_{ij})_{0\leq i,j\leq d}\) by
+\begin{equation}
+ T_{00}=1,\qquad
+ T_{ii}=(2i+1)(4^i-1)\quad(i\geq1),\qquad
+ T_{ij}=-\binom{2i+1}{2j}\quad(j<i),                    \label{eq:T}
+\end{equation}
+with \(T_{ij}=0\) for \(j>i\).  Define the explicitly known column vectors
+\begin{equation}
+ e_0=(1,0,\ldots,0)^{\mathsf T},\qquad
+ v_k=\binom n{2k}\sum_{h=0}^{a-1}\eps_h
+                       (2a-2h-1)^{n-2k}\quad(0\leq k\leq d),
+                                                               \label{eq:det-v}
+\end{equation}
+and the \((d+2)\times(d+2)\) bordered matrix
+\begin{equation}
+ A=\begin{pmatrix}T&e_0\\v^{\mathsf T}&0\end{pmatrix}.
+                                                               \label{eq:border}
+\end{equation}
+Every entry of \(A\) is an explicit integer.
+
+\begin{theorem}[Bordered determinant closed form]
+For every \(a,n\geq0\),
+\begin{equation}
+ \boxed{\displaystyle
+ \Phi\!\left(\frac a{2^n}\right)
+  =-\frac{\det A}
+   {2^{\tau_n}n!\displaystyle\prod_{i=1}^{d}(2i+1)(4^i-1)}.}
+                                                               \label{eq:det-main}
+\end{equation}
+In particular, this is a rational closed form without unspecified auxiliary values.
+\end{theorem}
+\begin{proof}
+The moment identity \eqref{eq:reference-recurrence}, after multiplying by
+\((2i+1)!\), becomes
+\[
+ (2i+1)(4^i-1)c_i=\sum_{j=0}^{i-1}\binom{2i+1}{2j}c_j,
+ \qquad c_0=1.
+\]
+Consequently, \(Tc=e_0\), where \(c=(c_0,\ldots,c_d)^{\mathsf T}\).
+This is used only to prove the formula, not to define its evaluation.
+Since \(T\) is triangular,
+\[
+ \det T=\prod_{i=1}^{d}(2i+1)(4^i-1)\ne0.
+\]
+The Schur-complement identity gives
+\(\det A=-\det T\,v^{\mathsf T}T^{-1}e_0=-\det T\,v^{\mathsf T}c\).
+Finally, \eqref{eq:master} states
+\(\Phi(a/2^n)=2^{-\tau_n}v^{\mathsf T}c/n!\).
+\end{proof}
+
+A determinant need not be treated as an extra permitted primitive.  With indices
+\(0,\ldots,d+1\), its Leibniz expansion is
+\begin{equation}
+ \det A=\sum_{\sigma\in\mathfrak S_{d+2}}
+     (-1)^{\#\{(i,j):\,i<j,\ \sigma(i)>\sigma(j)\}}
+       \prod_{i=0}^{d+1}A_{i,\sigma(i)}.                \label{eq:leibniz}
+\end{equation}
+Equations \eqref{eq:T}--\eqref{eq:leibniz} are therefore a finite sum/product answer
+in exactly the requested sense.  Many terms vanish because \(T\) is triangular.
+For numerical implementation, an exact determinant algorithm is preferable to
+literally enumerating all permutations; the formula's closed-form status does not
+require the least efficient evaluation order.
+
+\begin{corollary}[An explicit common denominator]
+Set
+\begin{equation}
+ D_n=2^{\tau_n}n!\prod_{i=1}^{\floor{n/2}}(2i+1)(4^i-1).
+                                                               \label{eq:denominator}
+\end{equation}
+Then \(D_n\Phi(a/2^n)\) is an integer for every nonnegative integer \(a\).
+The same denominator works for all Rvachev values on the grid of spacing \(2^{-n}\).
+\end{corollary}
+This is a convenient denominator, not a claim of minimality or a replacement for
+the sharper arithmetic questions studied in \cite{arias2018}.
+
+\section{Domains, normalizations, and dyadic derivatives}
+\label{sec:domains}
+\subsection{Bounded Fabius and compact Rvachev values}
+The binary, composition, cube, and determinant formulas above are stated for
+\(\Phi(a/2^n)\).  To obtain the bounded distribution \(F\), use the same formulas
+for \(0\leq a\leq2^n\), and use
+\begin{equation}
+ F(a/2^n)=0\quad(a\leq0),\qquad
+ F(a/2^n)=1\quad(a\geq2^n).                             \label{eq:clamp}
+\end{equation}
+The boundary values agree with both prescriptions.
+
+For any integer \(m\), the compactly supported Rvachev value is
+\begin{equation}
+ \boxed{\displaystyle
+ \Up(m/2^n)=
+ \begin{cases}
+  F\bigl((2^n-|m|)/2^n\bigr),&|m|\leq2^n,\\
+  0,&|m|>2^n.
+ \end{cases}}                                               \label{eq:up-dyadic}
+\end{equation}
+Thus every formula for bounded \(F\) immediately gives a closed rational formula
+for \(\Up\), with no new coefficients.  In particular,
+\(\Up(0)=1\), \(\Up(\pm1)=0\), and \(\Up(\pm1/2)=1/2\).
+One can also apply the spline filter directly to the centered densities:
+for \(|m|\leq2^n\),
+\[
+ \Up(m/2^n)=\sum_{j=0}^{d}\lambda_{d,j}(1/4)
+                  p_{n+1+j}(m/2^n).
+\]
+This follows from evenness and \eqref{eq:quarter-filter}, or from the same local
+spline-cell proof.
+
+\subsection{Signed global values and nonreduced fractions}
+For \(x\geq0\), let \(b=\floor{x/2}\).  The fold
+\begin{equation}
+ \Phi(x)=\eps_b F\bigl(1-|x-2b-1|\bigr)                \label{eq:global-fold-final}
+\end{equation}
+reduces every signed-global value to a bounded one.  At shared endpoints the
+right-hand side is zero, so the choice of adjacent block has no effect.
+For \(x<0\), \(\Phi(x)=0\).
+Formula \eqref{eq:binary} performs this reduction implicitly through the high-bit
+signs and works for every nonnegative numerator without a separate fold.
+In particular,
+\begin{equation}
+ \Phi(2b)=0,\qquad \Phi(2b+1)=\eps_b.                  \label{eq:integer-values}
+\end{equation}
+For instance, \(F(3)=1\), whereas \(\Phi(3)=-1\).  The distinction is essential
+when an argument lies outside \([0,1]\).
+
+No result requires \(a/2^n\) to be reduced.  Directly from the proved identities,
+\[
+ \mathcal F_n(a)=\mathcal F_{n+1}(2a),
+\]
+where \(\mathcal F_n(a)\) denotes any of the appropriate closed expressions for the
+same function.  Reducing the denominator merely shortens the sums.  For bounded
+\(F\), the symmetry
+\(F(a/2^n)+F((2^n-a)/2^n)=1\) gives another useful reduction.
+
+\subsection{Closed forms for every dyadic derivative}
+The value formulas immediately cover all derivatives.  For \(a,n\geq0\),
+\begin{equation}
+ \Phi^{(r)}(a/2^n)=
+ \begin{cases}
+  2^{\tau_r}\Phi(a/2^{n-r}),&0\leq r\leq n,\\
+  0,&r\geq n+1.
+ \end{cases}                                               \label{eq:dyadic-derivatives}
+\end{equation}
+For \(r\leq n\), this is \eqref{eq:global-derivatives} with an explicit dyadic
+argument.  For \(r\geq n+1\), the argument \(2^ra/2^n\) is an even integer, so
+\eqref{eq:integer-values} gives zero.
+
+On the interior of \([0,1]\), the derivatives of bounded \(F\) agree with those
+of \(\Phi\).  At \(0\) and \(1\), all positive-order derivatives of bounded \(F\)
+vanish.  For Rvachev derivatives, use the signed extension without an absolute-value
+fold:
+\begin{equation}
+ \Up^{(r)}(m/2^n)
+   =2^{\tau_r}\Phi\!\left(\frac{m+2^n}{2^{n-r}}\right)
+       \quad\bigl(|m|\leq2^n,\ 0\leq r\leq n\bigr),   \label{eq:up-derivatives}
+\end{equation}
+and all higher derivatives vanish at these dyadic points.  Outside the support all
+derivatives vanish too.  Formula \eqref{eq:up-derivatives} includes the endpoint
+flatness; it follows from \(\Up(x)=\Phi(x+1)\) on \([-1,1]\).
+Thus every entry of every dyadic Taylor jet is explicitly rational.  As emphasized
+in Section~\ref{sec:spline}, this does not make that jet equal to the function on an
+interval.
+
+\section{Exact examples and independent arithmetic checks}
+\label{sec:examples}
+\subsection{Universal coefficients and a dyadic table}
+The first even moments, with the normalization \(c_k=(2k)!b_k\), are
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{c@{\qquad}r@{\qquad}r}
+\toprule
+\(k\)&\(b_k\)&\(c_k\)\\
+\midrule
+0&\(1\)&\(1\)\\
+1&\(1/18\)&\(1/9\)\\
+2&\(19/16200\)&\(19/675\)\\
+3&\(583/42865200\)&\(583/59535\)\\
+4&\(132809/1311675120000\)&\(132809/32531625\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+These numbers result independently from the composition, partition, and finite-prefix
+formulas.  They are universal: the dyadic numerator changes only the outer
+polynomial evaluation.
+
+For a compact table of function values, all sixteenths up to the midpoint are
+\begin{center}
+\renewcommand{\arraystretch}{1.22}
+\begin{tabular}{c@{\qquad}r@{\qquad\qquad}c@{\qquad}r}
+\toprule
+\(a\)&\(F(a/16)\)&\(a\)&\(F(a/16)\)\\
+\midrule
+0&\(0\)&5&\(305857/2073600\)\\
+1&\(143/2073600\)&6&\(73/288\)\\
+2&\(1/288\)&7&\(777743/2073600\)\\
+3&\(46657/2073600\)&8&\(1/2\)\\
+4&\(5/72\)&&\\
+\bottomrule
+\end{tabular}
+\end{center}
+The remaining values follow from reflection.  For example,
+\(\Up(11/16)=F(5/16)=305857/2073600\).
+
+\subsection{Two-point and three-point spline extraction}
+For \(d=1\), the quarter-base weights are
+\[
+ (\lambda_{1,0},\lambda_{1,1})=(-1/3,4/3).
+\]
+At \(x=1/4\), \(n=2\), the two finite splines are
+\(S_3(x)=1/16\) and \(S_4(x)=13/192\).  Therefore
+\[
+ F(1/4)=-\frac13\frac1{16}+\frac43\frac{13}{192}
+       =\frac5{72}.
+\]
+Likewise, at \(x=3/8\),
+\[
+ S_4(x)=\frac{97}{384},\qquad S_5(x)=\frac{389}{1536},
+ \qquad F(3/8)=\frac{4S_5(x)-S_4(x)}3=\frac{73}{288}.
+\]
+These are exact equalities, not numerical extrapolations.
+
+For \(d=2\),
+\[
+ (\lambda_{2,0},\lambda_{2,1},\lambda_{2,2})
+       =(1/45,-4/9,64/45).
+\]
+At \(x=5/16\), the relevant values are
+\[
+ S_5(x)=\frac{1205}{8192},\qquad
+ S_6(x)=\frac{289799}{1966080},\qquad
+ S_7(x)=\frac{13917509}{94371840}.
+\]
+Their exact weighted sum is
+\[
+ \frac1{45}S_5(x)-\frac49S_6(x)+\frac{64}{45}S_7(x)
+          =\frac{305857}{2073600}.
+\]
+
+\subsection{Examples with small values and larger denominators}
+The positive formula avoids subtracting large alternating terms when \(a=1\).
+For example,
+\[
+ F(1/1024)=\frac{134926369}{1246394851358539387238350848000}
+          \approx1.082533106205739\cdot10^{-22}.
+\]
+The binary formula also gives, without a prefix sum of length \(173\),
+\begin{equation}
+ \begin{aligned}
+ F(173/4096)&=
+ \frac{1490588447599319294372326859976672988757}
+      {292214732887898713986916575925267070976000000}\\
+ &\approx5.101003747717089\cdot10^{-6}.
+ \end{aligned}                                        \label{eq:large-example}
+\end{equation}
+Only the five set bits of \(173=128+32+8+4+1\) contribute to
+\eqref{eq:binary}.  The decimal displays are for orientation; the fractions are the
+actual outputs of the exact formulas.
+
+\subsection{What was checked computationally}
+The accompanying standard-library Python program performs rational arithmetic with
+\texttt{fractions.Fraction}; no floating-point comparison is used in its assertions.
+It independently implements the positive composition formula, the cumulant partition
+formula with finite Bernoulli sums, the finite-prefix formula, the Thue--Morse master
+formula, the binary formula, the quarter-base spline formula, and the determinant.
+The recorded run verifies the following specific ranges.
+
+The three coefficient calculations agree for \(0\leq k\leq12\), where the third
+comparison is a separately isolated moment-recurrence oracle.  Finite-prefix
+coefficients agree for \(0\leq k\leq6\).  The reciprocal coefficients satisfy the
+exact convolution identity for \(1/M\), and the Gaussian weights satisfy
+\eqref{eq:annihilation} through \(d=6\).
+
+For every \(0\leq n\leq9\) and \(0\leq a\leq2^n\), the binary, Thue--Morse,
+spline, and finite-cube evaluations agree.  These are \(1033\) dyadic
+\emph{representations}, including nonreduced ones, rather than \(1033\) distinct
+rational arguments.  Refinement \((a,n)\mapsto(2a,n+1)\) and reflection are checked
+for the same grid.  The determinant is compared throughout \(0\leq n\leq6\).
+
+A separate test covers all \(388\) representations with \(0\leq n\leq6\) and
+\(0\leq a\leq3\cdot2^n\), comparing the binary formula, the master formula, and
+the signed global fold.  Further cases check nonconsecutive spline depths, larger
+starting depths, and the actual polynomial coefficients in
+\eqref{eq:spline-scale}.  All assertions pass in the supplied output.
+The computations are checks of the proofs, not substitutes for them.  The isolated
+recurrence oracle is not called by any of the closed-form evaluation routines.
+
+\section{How the alternatives compare}
+\label{sec:comparison}
+\subsection{Closed form versus evaluation algorithm}
+An explicit finite formula can be evaluated by loops, memoization, or an exact
+linear-algebra algorithm without ceasing to be a closed form.  What is excluded
+here is a definition that leaves a desired auxiliary constant specified only in
+terms of earlier unknown constants.  For example, storing previously evaluated
+\(b_k\)'s is optional caching, whereas defining \(b_k\) only by
+\eqref{eq:reference-recurrence} would fail the requested criterion.
+
+The composition sum has \(2^{k-1}\) terms for \(k\geq1\).  Computing all
+coefficients through \(d\) by their individual explicit composition sums uses
+\(2^d\) composition terms in total, including \(b_0\), and at most \(d\) factors
+per term.  The partition representation reduces the number of terms to the number
+of integer partitions, but introduces signs.  The finite-prefix representation
+uses only weak compositions and rational Gaussian weights.  Once coefficients are
+available, binary evaluation has at most \((d+1)(n-d+1)\) polynomial terms.
+
+The spline double sum is the most direct answer with no named coefficient sequence:
+it uses only signs, powers, factorials, and a Gaussian row.  Its explicit
+\(a(2^{d+1}-1)\) signed powers are a much larger expression for large numerators,
+and intermediate integers can be enormous.  Exact arithmetic is therefore
+important.  The determinant uses a matrix of order \(d+2\) and immediately supplies
+a common denominator, but its literal permutation expansion is not the preferred
+numerical algorithm.
+
+None of these observations asserts that a nonrecursive formula must outperform a
+well-designed recurrence.  The purpose is to expose exact finite structure and to
+provide independent representations.
+
+\subsection{Relation to the supplied repository and the literature}
+The analytic identities, the Thue--Morse moment formula, and much of the underlying
+coefficient and interpolation machinery already appear in the supplied exposition
+\cite{repo} or the cited literature.  The repository also has related path,
+composition, cumulant, finite-prefix, and quarter-scale developments.  Thus it would
+be misleading to label every formula family in this article as a wholly new
+invention.
+
+The useful alternative presentations assembled here are specific.  The
+occupied-uniform-scale proof gives an all-positive suffix-composition weight for
+each normalized moment.  The binary-block calculation incorporates the moment
+transform directly, eliminating the long numerator-dependent prefix.  The
+finite-coordinate formula substitutes explicit finite cube moments for unknown
+infinite moments.  The parity-reduced spline expression is written as a standalone
+quarter-base double sum, with an exact local-cell proof and a precise factor-count
+convention.  Finally, the integer border converts the moment system into one finite
+permutation sum for the desired value itself.
+
+These statements describe the derivations and their uses, not a comprehensive
+priority claim.  The linked repository was consulted as a living source on
+4 September 2026; no immutable commit identifier was established for that citation.
+No claim is made that the proofs or the included Python verification have been
+translated into Lean.
+
+\section{Conclusion}
+Every dyadic value in question admits multiple recurrence-free rational
+representations.  For practical symbolic evaluation, a useful choice is the binary
+formula \eqref{eq:binary}, with its universal coefficients supplied by the positive
+composition sum \eqref{eq:composition} or the partition sum \eqref{eq:partition}.
+For a single displayed formula containing no coefficient sequence, use
+\eqref{eq:fully-expanded} or the quarter-base spline double sum
+\eqref{eq:quarter-main}.  The finite-cube formula \eqref{eq:cube-main} and the
+bordered permutation formula \eqref{eq:det-main}--\eqref{eq:leibniz} give further
+independent alternatives.
+
+The common mechanism is finite algebra at a dyadic point: binary cancellation,
+finite coefficient extraction, or exact interpolation of a polynomial in the tail
+scale.  Infinite products and probability distributions provide the proofs, but
+neither infinite limits nor auxiliary recurrences survive in the evaluation
+formulas.
+
+\appendix
+\section{A compact nonrecursive exact evaluator}
+\label{app:code}
+The following core implements \eqref{eq:composition} and \eqref{eq:binary} using
+only the Python standard library.  Compositions are enumerated by subsets of the
+\(k-1\) possible cut positions, rather than by recursively generating smaller
+compositions.  The full accompanying file \texttt{verify\_formulas.py} additionally
+implements all the other formula families and the checks in
+Section~\ref{sec:examples}.
+
+\begin{lstlisting}
+from fractions import Fraction
+from functools import lru_cache
+from math import factorial
+
+
+def compositions(k: int):
+    if k < 0:
+        raise ValueError("k must be nonnegative")
+    if k == 0:
+        yield ()
+        return
+    for mask in range(1 << (k - 1)):
+        cuts = [0] + [j for j in range(1, k)
+                      if (mask >> (j - 1)) & 1] + [k]
+        yield tuple(v - u for u, v in zip(cuts, cuts[1:]))
+
+
+@lru_cache(None)
+def coefficient(k: int) -> Fraction:
+    total = Fraction(0)
+    for parts in compositions(k):
+        term, suffix = Fraction(1), k
+        for r in parts:
+            term /= factorial(2*r + 1) * (4**suffix - 1)
+            suffix -= r
+        total += term
+    return total
+
+
+def signed_dyadic(a: int, n: int) -> Fraction:
+    """Signed global Phi(a / 2**n), not the clamped CDF."""
+    if not isinstance(a, int) or not isinstance(n, int):
+        raise TypeError("a and n must be integers")
+    if a < 0 or n < 0:
+        raise ValueError("a and n must be nonnegative")
+    total = Fraction(0)
+    for i in range(n + 1):
+        if not ((a >> i) & 1):
+            continue
+        sign = -1 if (a >> (i + 1)).bit_count() % 2 else 1
+        K = (1 << i) + 2 * (a % (1 << i))
+        inner = sum(
+            (coefficient(k) * 4**(i*k)
+             * Fraction(K**(n-i-2*k), factorial(n-i-2*k))
+             for k in range((n-i)//2 + 1)), Fraction(0))
+        total += sign * 2**(i*(i+1)//2) * inner
+    return total / 2**(n*(n+1)//2)
+
+
+def fabius(x: Fraction) -> Fraction:
+    x = Fraction(x)
+    if x <= 0:
+        return Fraction(0)
+    if x >= 1:
+        return Fraction(1)
+    den = x.denominator
+    if den & (den - 1):
+        raise ValueError("argument must be dyadic")
+    return signed_dyadic(x.numerator, den.bit_length() - 1)
+
+
+def up(x: Fraction) -> Fraction:
+    return fabius(1 - abs(Fraction(x)))
+
+
+assert fabius(Fraction(5, 16)) == Fraction(305857, 2073600)
+assert up(Fraction(11, 16)) == fabius(Fraction(5, 16))
+assert signed_dyadic(3, 0) == -1
+\end{lstlisting}
+Pass exact rational inputs such as \texttt{Fraction(173,4096)}.  Passing a decimal
+floating-point number instead asks for the exact rational represented by that
+binary floating-point value, which may have a much larger denominator than
+intended.  The code uses \texttt{int.bit\_count}, available in Python 3.10 and later.
+
+\section{Notation and reproducibility checklist}
+\begin{center}
+\renewcommand{\arraystretch}{1.22}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Symbol&Meaning\\
+\midrule
+\(F\)&Bounded cumulative distribution, clamped to zero and one.\\
+\(\Phi\)&Signed global extension satisfying \(\Phi'=2\Phi(2\,\cdot)\).\\
+\(\Up\)&Even bump of height one and integral one on \([-1,1]\).\\
+\(c_k, b_k\)&\(c_k=\E Y^{2k}\), \(b_k=c_k/(2k)!\).\\
+\(\beta_r,\alpha_r\)&Coefficients of \(\log M(t)\) and \(1/M(t)\) in even powers.\\
+\(\tau_n,d\)&\(n(n+1)/2\), \(\floor{n/2}\).\\
+\(\eps_h\)&\((-1)^{s_2(h)}\), defined directly from binary digits.\\
+\(p_N,S_N\)&Density of \(N\) centered uniforms; \(S_N(x)=p_N(x-1)\).\\
+\(\lambda_{d,j}(q)\)&Explicit Lagrange constant-term weights, \eqref{eq:weights}.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The archive contains this \LaTeX{} source, the rendered PDF, the complete Python
+verification program, its recorded output, and a short README.  The \LaTeX{} file
+uses its own bibliography and requires no external \texttt{.bib} file or image
+assets.  It can be built by running \texttt{pdflatex} twice, or by
+\texttt{latexmk -pdf}.  The verification program runs with
+\texttt{python verify\_formulas.py} and requires no third-party packages.
+
+\begin{thebibliography}{9}
+\bibitem{repo}
+V. Reshetnikov and contributors,
+\emph{Fabius Function and Rvachev Up}, \texttt{ProveIt} repository,
+\texttt{Analysis/FabiusFunction/docs/Fabius\_Function\_and\_Rvachev\_Up}.
+Living exposition, consulted 4 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up}.
+
+\bibitem{arias2018}
+J. Arias de Reyna,
+\emph{Arithmetic of the Fabius function},
+Integers \textbf{18} (2018), Paper A51, 20 pp.
+\url{https://math.colgate.edu/~integers/s51/s51.pdf}.
+Preprint: \url{https://arxiv.org/abs/1702.06487}.
+
+\bibitem{arias1982}
+J. Arias de Reyna,
+\emph{An infinitely differentiable function with compact support:
+Definition and properties}, English translation (2017) of the author's 1982 paper.
+\url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{reshetnikov2019}
+V. Reshetnikov,
+\emph{Conjectured formula for the Fabius function},
+Mathematics Stack Exchange, question posted 5 July 2019.
+\url{https://math.stackexchange.com/questions/3283519/conjectured-formula-for-the-fabius-function}.
+
+\bibitem{pinelis2020}
+I. Pinelis,
+Answer to \emph{A non-recursive, explicit formula for the Fabius function},
+MathOverflow, January 2020; also cross-posted to Mathematics Stack Exchange.
+\url{https://mathoverflow.net/questions/351004/a-non-recursive-explicit-formula-for-the-fabius-function}.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions,
+\S4.36, \emph{Infinite Products and Partial Fractions}.
+\url{https://dlmf.nist.gov/4.36}.
+\end{thebibliography}
+\end{document}

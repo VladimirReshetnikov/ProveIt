@@ -818,7 +818,38 @@ pending.
 ## Incoming status
 
 No research payload is awaiting intake.  The `incoming/` directory contains
-only its permanent `README.md`.  The ten archives received on 2026-09-02
+only its permanent `README.md`.
+
+The fifteen archives received on 2026-09-04 (intake commits `46e126fcd`,
+`13c6476e3`, `3824b7720`, `e20e26434`, and `cc21b6e81`) were filed the same day
+by a quick archival intake: six Thue--Morse articles to `thue-morse/`, three
+combinatorial-transseries extensions to `series-and-transseries/`, three
+recurrence-free dyadic-value articles to
+`inverse-and-sampling/dyadic-up-extraction/`, and three Gaussian-binomial
+articles to `combinatorial-coefficient-calculus/`.  Every archive passed a CRC
+check with no absolute path, parent-directory traversal, or symlink entry.
+Thirteen wrapped a single top-level directory and two
+(`Thue_Morse_Rational_Resonances.zip`, `fabius_dyadic_closed_forms-2.zip`) did
+not; six wrapper names collided outright as two triples, one more collided
+with a sibling under Windows case-insensitive matching, and one differed from
+its archive stem, so the archive stems -- which are distinct -- name all
+fifteen filed directories uniformly.  All fifteen sources are LF with a final
+newline and were
+filed byte-for-byte; the only normalization is the repository's CRLF-to-LF
+conversion of eight submitted CSV tables in `Thue_Morse_New_Directions/` and
+`Thue_Morse_Rational_Resonances/`, which git applied at commit.  All fifteen
+main PDFs are readable and unencrypted with every font embedded; twelve are A4
+and three Letter, and three carry one to four Type-3 rows inherited from
+Matplotlib figures.  No source loads `docs/fabius-notation.tex`.  Eight
+submitted `SHA256SUMS.txt` or `SHA256SUMS.json` ledgers were verified in full
+(86 of 86 entries matched) before extraction and then retired under repository
+policy; the one purpose-specific `MANIFEST.sha256`, in
+`combinatorial_transseries_and_inverses/`, was verified and remains in its
+filed package.  Historical bytes remain recoverable from Git history.  Claim
+review, comparison, consolidation, and Lean crosswalking of this batch are
+deferred past the intake publication gate.
+
+The ten archives received on 2026-09-02
 (commit `3065a34fe`) were filed the same day by a quick archival intake --
 six dyadic up-extraction/extrapolation reports into
 `inverse-and-sampling/dyadic-up-extraction/`, three articles on reversing
@@ -863,8 +894,36 @@ name, so the archive stems were used as directory names. No source loads
 `docs/fabius-notation.tex`. Quick intake only; claim comparison, deduplication,
 proof checking, numerical reproduction, and Lean crosswalking are deferred.
 
+Six further independently written Thue--Morse articles arrived on 2026-09-04
+and were filed the same day, again as separate members pending comparison and
+merge.  Two of them treat the same object and are the batch's obvious first
+consolidation candidates: `Thue_Morse_Dyadic_Completion/` and
+`thue_morse_research_article/` both complete the Thue--Morse Laplace product
+`P(t) = prod_{j>=0}(1 - e^{-2^j t})` by the Fabius uniform-sum transform, obtain
+the exact functional equation `K(2t) = K(t)/t`, and read off a Mellin kernel
+and consequences for the shifted Thue--Morse Dirichlet function.  A third
+overlap crosses group boundaries: the exact-polynomiality in `4^{-m}` of finite
+spline values at a fixed dyadic argument, proved in `Thue_Morse_Research/`, is
+the same mechanism as the three recurrence-free dyadic-value articles filed
+under `inverse-and-sampling/dyadic-up-extraction/` in this batch.  Directory
+names are the archive stems: `Thue_Morse_Rational_Resonances.zip` shipped no
+wrapping directory, and `thue_morse_research_article.zip` wrapped
+`thue_morse_research/`, which Windows would not distinguish from its sibling
+`Thue_Morse_Research/`.  Four PDFs are A4 and two Letter; every font row is
+embedded, while three files carry one to four Type-3 rows inherited from
+Matplotlib figures and two carry Libertinus faces.  No source loads
+`docs/fabius-notation.tex`.  Quick intake only; claim comparison,
+deduplication, proof checking, numerical reproduction, and Lean crosswalking
+are deferred.
+
 | Directory | Document | Previous path |
 | --- | --- | --- |
+| `Thue_Morse_Boundary_Corrections/` | *Exact Boundary Corrections for Thue--Morse Diffraction* -- identifies the whole sub-cutoff error of the finite Thue--Morse diffraction measure with one signed Stern sequence, `hat mu_m(k) - eta(k) = (-1)^m B_k(-2)/(3N)` for `0 <= k <= N`, and derives a positive density reproducing every limiting Fourier coefficient through `|k| = N`, a two-colored-binary-partition finite-size expansion, alternating Poisson-kernel bounds, sharp negative-Sobolev rates with exponent `sigma = (1/2) log_2((1+sqrt 17)/4)`, and a positivity threshold `a >= -2/3`; 14 theorems, 3 propositions, 5 lemmas, 4 corollaries, 2 definitions in 16 sections. Filed source `Thue_Morse_Boundary_Corrections.tex`, 1{,}690 lines / 72{,}674 bytes, SHA-256 `e34aca09…47a40f`; filed PDF 25 A4 pages / 662{,}110 bytes, SHA-256 `05ab5ef0…41eea1`. `verify.py` and `verification.json` (the abstract claims 19,037 exact rational checks; not replayed at intake), `make_figures.py`, `poisson_data.json`, `poisson_table.tex`, two PDF/PNG figure pairs, and a submitted `PROVENANCE.md` retained as a purpose-specific intake record. | `incoming/Thue_Morse_Boundary_Corrections.zip` |
+| `Thue_Morse_Dyadic_Completion/` | *A Dyadic Completion of the Thue--Morse Product* -- completes `P(t)` by the Fabius uniform-sum transform to `K(t)` with `K(2t) = K(t)/t`, so the Mellin transform obeys `C(s+1) = 2^{s+1} C(s)`; proves a locally uniform all-orders scaling formula for `Gamma(s-m) D(s-m,a)`, transfers nonreal zeros of a periodic factor of `C` to `D(s,a)` by Rouche, and concludes that every positive shift has infinitely many nonreal zeros in the left half-plane; 10 theorems, 8 propositions, 3 lemmas, 4 corollaries and 4 stated questions in 19 sections. Filed source `Thue_Morse_Dyadic_Completion.tex`, 2{,}223 lines / 84{,}303 bytes, SHA-256 `ad03a430…6664cb`; filed PDF 30 A4 pages / 686{,}840 bytes, SHA-256 `04aee030…df31f9`. `code/verify.py`, `code/check_original_mellin.py`, three JSON result files at 60 and 80 decimal digits, and two figures. | `incoming/Thue_Morse_Dyadic_Completion.zip` |
+| `Thue_Morse_New_Directions/` | *Thue--Morse Beyond the Atlas: Boundary Defects, Nonlinear Prouhet Geometry, and Flat Automatic q-Products* -- gives one finite boundary functional for the exact dyadic correlation defect at every order, an exact covering-family identity equating the cancellation order with a hypergraph covering number, and an all-order saddle expansion for `Phi_q(z) = prod_{j>=0}(1-z q^j)^{eps_j}` with an explicit Lambert-`W` parameter whose periodic amplitude is a dyadic uniform-convolution Laplace product; 9 theorems, 4 propositions, 3 lemmas, 8 corollaries, 2 definitions and 3 stated questions in 14 sections; the article states explicitly that no exhaustive novelty claim is made. Filed source `thue_morse_new_directions.tex`, 2{,}067 lines / 85{,}629 bytes, SHA-256 `7e464c50…0b370d`; filed PDF 30 A4 pages / 512{,}455 bytes, SHA-256 `e48420c2…5c9136`. `verify.py`, `verification_results.json`, `verification_run.txt`, `environment.json`, `build.sh`, a submitted `SOURCE_AUDIT.md`, one figure, and four CSV tables normalized from CRLF to LF at commit. | `incoming/Thue_Morse_New_Directions.zip` |
+| `Thue_Morse_Rational_Resonances/` | *Rational Resonances and Coalescing Roots of the Thue--Morse Polynomials* -- studies the local profile of `P_m(w) = prod_{j<m}(1-w^{2^j})` in a window of width `2^{-m}` about each rational frequency: periodic-subsequence limits at odd-order roots, complete Bell coefficients for every correction and twisted moment, the Fabius Laplace transform at dyadic roots, a hierarchy of double-scaling limits whose quadratic member is the Fabius transform times a Gaussian, and the cyclotomic identity making the product of odd-order profiles `Up(qz)/Up(z)`; 11 theorems, 5 propositions, 4 lemmas, 5 corollaries, 1 definition in 14 sections; priority not asserted. Filed source `thue_morse_rational_resonances.tex`, 1{,}427 lines / 80{,}276 bytes, SHA-256 `c0afc4ad…ba2cdf`; filed PDF 30 Letter pages / 348{,}358 bytes, SHA-256 `2e954b51…8fb788`. `verify.py`, `Makefile`, a submitted `SOURCES.md`, `results/verification.json`, and four CSV tables normalized from CRLF to LF at commit. | `incoming/Thue_Morse_Rational_Resonances.zip` |
+| `Thue_Morse_Research/` | *New Deductions from Thue--Morse Cancellation* -- four groups of results drawn from the geometry of the derivative copies: a global all-orders `C^k` correction expansion for finite uniform-convolution splines, with exact leading supremum constants and no knot neighborhoods removed; the exact polynomiality in `4^{-m}` of finite spline values at a fixed dyadic argument, with a finite Richardson formula whose absolute error amplification stays below two at every order; an exact differential conversion formula and uniform local-limit expansion for repeated Thue--Morse summation; and the moments `2^{r(r+1)}` of the normalized Fourier-energy density, shared with a symmetric lognormal density and with explicit discrete theta measures; 11 theorems, 5 propositions, 3 lemmas, 6 corollaries, 1 definition and 3 stated problems in 15 sections. Filed source `Thue_Morse_New_Deductions.tex`, 1{,}927 lines / 72{,}705 bytes, SHA-256 `f16e9e56…053edd`; filed PDF 26 A4 pages / 331{,}660 bytes, SHA-256 `3a865583…b52e4a`. `verify.py` and `verification_results.json`. | `incoming/Thue_Morse_Research.zip` |
+| `thue_morse_research_article/` | *Thue--Morse Mellin Renormalization and Gamma-Tower Uniqueness* -- pairs `Q(t) = prod_{j>=0}(1-e^{-2^j t})` with the Fabius uniform-sum transform `H(z)` so that the product satisfies `W(2t) = W(t)/t`, and derives an all-orders expansion for the derivatives of the entire shifted Thue--Morse Dirichlet function at its negative-integer zeros with coefficients finite in Bernoulli numbers; classifies every completely monotone solution of the dyadic equation by a positive measure on one multiplicative period, exhibits distinct towers agreeing to all orders, and shows that the single boundary condition `-a f'(a) -> 1` as `a` decreases to 0 selects the canonical one; 6 theorems, 4 propositions, 4 lemmas, 4 corollaries in 12 sections; priority not asserted. Filed source `thue_morse_mellin_and_gamma.tex`, 1{,}551 lines / 66{,}101 bytes, SHA-256 `2c4a1073…7c4d3a`; filed PDF 24 Letter pages / 436{,}411 bytes, SHA-256 `20937284…67f940`. `verify_results.py` with independently evaluated results at 48 and 80 decimal digits. | `incoming/thue_morse_research_article.zip` |
 | `thue_morse_diagonal_polynomials/` | *Diagonal Polynomials and Dyadic Block Geometry in Repeated Thue–Morse Summation* — historical synchronized 1,763-line/56,530-byte source and 24-page/778,595-byte A4 PDF; all 22 font rows are embedded/subset, 7 are Libertinus, and none is Type 3; exact B11 hashes and passes above. The earlier 724,035-byte PDF with three figure-inherited Type-3 rows remains historical; 14 theorems, 1 proposition, 1 lemma, 3 corollaries in 15 sections; `experiments.py`, `thue_morse_table.wl`, `verification_report.txt`; submitted checksum ledger retired, with historical bytes recoverable from Git | `incoming/thue_morse_diagonal_polynomials.zip` |
 | `thue_morse_diagonal_polynomials-2/` | *Diagonal Polynomial Laws in Odd Iterated Thue–Morse Summation: Riordan-array structure, 2-adic Bell recurrences, exact arithmetic, and fast Wolfram Language evaluation* — 2,202-line/72,380-byte source, 37-page A4/801,220-byte PDF (fully embedded, Type-3-free, 7 Libertinus rows); 11 theorems, 2 propositions, 7 corollaries, 1 conjecture, 3 definitions in 16 sections; `diagonal_polynomials.py`, `diagonal_polynomials.wl`, `VERIFICATION.txt`; submitted checksum ledger retired, with historical bytes recoverable from Git | `incoming/thue_morse_diagonal_polynomials-2.zip` |
 | `thue_morse_diagonal_polynomials_article_and_code/` | *Diagonal Polynomials and Dyadic Block Geometry in Repeated Thue–Morse Prefix Summation: Exact formulas, denominator laws, rational roots, and fast Wolfram Language evaluation* — 2,136-line/76,590-byte source, 33-page A4/536,235-byte PDF (26 font rows, no Libertinus; 2 Type-3 rows inherited from the Matplotlib figure); 10 theorems, 10 propositions, 1 lemma, 6 corollaries, 1 definition in 14 sections; `diagonal_analysis.py`, `thue_morse_diagonals.wl`, `generated/` (two CSV tables, run log, verification report), `figures/`; submitted `MANIFEST.sha256` retained as a purpose-specific intake record; the two CSV tables received the repository's CRLF-to-LF normalization at commit, so their submitted checksums no longer match the filed bytes | `incoming/thue_morse_diagonal_polynomials_article_and_code.zip` |
@@ -891,8 +950,24 @@ now renders the filed TeX. None of the manuscript proofs is claimed as Lean
 verification; the in-document "Lean formalization register" states the
 formalization status per result.
 
+Three further independently written articles arrived on 2026-09-04 and were
+filed here the same day as separate members beside the canonical volume, not
+merged into it.  All three extend the coefficient calculus to Gaussian
+(`q`-binomial) coefficients, and two name that extension in their own titles.
+All three archives wrapped an inner directory of the same name,
+`q_binomial_coefficient_calculus/`, so the distinct archive stems are the
+directory names.  Each ships one exact-arithmetic verification program;
+none was rerun at intake.  All three PDFs are A4 with every font embedded and
+no Type-3 row; two carry Libertinus faces.  No source loads
+`docs/fabius-notation.tex`.  Quick intake only; claim comparison against the
+canonical volume and against each other, deduplication, proof checking, and
+Lean crosswalking are deferred.
+
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
+| `q_binomial_coefficient_calculus/` | *q-Binomial Coefficient Calculus: An Extension of Combinatorial Coefficient Calculus* -- the longest of the three, 55 sections; develops the Gaussian coefficients as connection coefficients on a geometric grid and works through convolution, inversion, interpolation, and root-of-unity expansions; 32 theorems, 6 propositions, 2 lemmas, 5 corollaries, 1 definition, 5 worked examples. Filed source `q_binomial_coefficient_calculus.tex`, 2{,}667 lines / 111{,}913 bytes, SHA-256 `0f4e540b…3ee062`; filed PDF 55 A4 pages / 780{,}056 bytes, SHA-256 `9ee7d61f…b5dbc6`. `verify_identities.py` with a captured `validation_report.txt`. | `incoming/q_binomial_coefficient_calculus.zip` |
+| `q_binomial_coefficient_calculus-2/` | *q-Binomial Coefficient Calculus* -- places the Gaussian coefficients in coefficient calculus along four explicitly distinguished routes -- symmetric functions on geometric alphabets, convolution structure constants, interpolation matrices on `q`-integer nodes, and polynomials with Bernoulli/Stirling/Bell local expansions; adds a finite partition-sum kernel for arbitrary powers of products of `q`-shifted factorials and their Lagrange--Burmann inverses, weighted `q`-binomial inversion, two Newton interpolation formulas, coupled two-variable inversion, and every derivative of a Gaussian polynomial at every root of unity; explicitly refuses to conflate a factorial-normalization change with a Jackson chain rule, or to identify distinct `q`-Catalan constructions; 20 theorems, 4 propositions, 6 corollaries, 2 definitions in 18 sections. Filed source `q_binomial_coefficient_calculus.tex`, 1{,}747 lines / 77{,}007 bytes, SHA-256 `e8a6444f…2c558b`; filed PDF 29 A4 pages / 473{,}961 bytes, SHA-256 `689816e4…9c9db1`. `verify_identities.py`, `Makefile`, `requirements.txt`, and five JSON verification products (algebra, coefficients, inversion, roots, and a summary report). | `incoming/q_binomial_coefficient_calculus-2.zip` |
+| `q_binomial_coefficient_calculus-3/` | *Gaussian Coefficients in Combinatorial Coefficient Calculus* -- the most explicitly framed as an extension of the canonical volume; derives `q`-Stirling and colored-node formulae from affine changes of geometric nodes, `q`-Worpitzky and Stirling--Eulerian transforms from weighted sorting, and closed coefficients for compositional inverses from ordinary Bell polynomials; handles Jackson differentiation separately from ordinary composition, including a divided-difference chain rule retaining the geometric shifts; distinguishes three asymptotic regimes and applies them to exact Gaussian extrapolation of moments of geometric-uniform convolutions, including the Rvachev half-base case; 26 theorems, 3 propositions, 4 corollaries, 2 definitions in 20 sections; states that the contribution is the integrated extension, not novelty of the classical identities. Filed source `q_binomial_coefficient_calculus.tex`, 2{,}567 lines / 101{,}073 bytes, SHA-256 `1a9e20b4…486f38`; filed PDF 35 A4 pages / 688{,}859 bytes, SHA-256 `04562d1e…feb363`. `verify_identities.py` with a captured `verification_results.txt`. | `incoming/q_binomial_coefficient_calculus-3.zip` |
 | `Combinatorial_Coefficient_Calculus/` | **Canonical, editorial consolidation complete:** *Combinatorial Coefficient Calculus* — the evolving source and retained upstream A4 PDF. Current claim counts and exact formalization boundaries are maintained in the document's generated Lean register, not duplicated here. `UnitSeriesPowerRecurrence.lean` supplies the generic differential-equation recurrence and unit-series specialization for `alg:merged-exp-log-power`. The latest source postdates the retained PDF; no current render parity is claimed, and PDF rebuilding is deferred by user instruction. | Six-source provenance and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip`; `SOURCE_INVENTORY.csv` records immutable Git locators for all six inputs, including the five retired donors. The mutable `SOURCE_CLOSURE.sha256` ledger is retired and no checksum ledger is required. |
 
 ## exponents-and-q-series — `exponents-and-q-series/`
@@ -1176,13 +1251,40 @@ all forty-two articles across `polynomial-logarithmic-transseries/`,
 `lambert-inverse-transseries/`, `transseries-tutorials/`,
 `special-function-inversion/` and `sequence-transseries/` are now the single
 volume `Transseries_And_Inversion/`, and those five directories have been
-deleted after a residue audit.  The paragraphs below record what was filed,
-not what is present; git history is the archive.  The first two overlap enough
-that a later consolidation may merge them, but that comparison has not been
-made, and neither has the comparison between the second and the fourth.
+deleted after a residue audit.  Except for the 2026-09-04 arrivals described
+next, the paragraphs below record what was filed, not what is present; git
+history is the archive.  The first two overlap enough that a later
+consolidation may merge them, but that comparison has not been made, and
+neither has the comparison between the second and the fourth.
+
+Three further independently written articles arrived on 2026-09-04, after that
+consolidation, and were filed here the same day as separate members beside the
+volume.  Each says in its own abstract that it extends the volume's methods to
+complementary families rather than restating them: balanced factorial ratios,
+Fuss--Catalan and central multinomial coefficients, rectangular tableaux,
+fixed-column Stirling and Eulerian numbers, Motzkin, Delannoy and Schroeder
+numbers, involutions, zigzag numbers, connected labeled graphs, necklaces and
+Lyndon words, harmonic-number inversion, and -- in the third -- classical
+group orders, flag counts, `q`-Catalan and Galois numbers whose entire
+exponential-correction generating function comes from theta series of the
+`A_{r-1}` root lattice.  Whether they overlap each other, and how much of each
+is already in the volume, has not been assessed.  All three archives wrapped an
+inner directory named `combinatorial_transseries_extension/`, so the distinct
+archive stems are the directory names; note that two stems and their inner
+file names are crossed, `combinatorial_transseries_and_inverses.zip` shipping
+`combinatorial_transseries_extension.tex` while
+`combinatorial_transseries_extension.zip` ships
+`combinatorial_transseries_and_inverses.tex`.  Two PDFs are A4 from
+pdfTeX and one is Letter from `xdvipdfmx`; all fonts are embedded and no file
+carries a Type-3 row.  No source loads `docs/fabius-notation.tex`.  Quick
+intake only; comparison with the volume, deduplication, proof checking, and
+Lean crosswalking are deferred.
 
 | Directory | Document | Previous path |
 | --- | --- | --- |
+| `combinatorial_transseries_and_inverses/` | *Combinatorial Transseries and Their Inverses: Further Families* -- all-order forward and inverse coefficient formulas for balanced factorial ratios (Fuss--Catalan numbers, central multinomial coefficients, rectangular standard Young tableaux), fixed-column Stirling and Eulerian numbers, Motzkin numbers and central trinomial coefficients, involutions, Euler zigzag numbers, and central Gaussian binomial coefficients at fixed `q > 1`; a common multiplicative inversion theorem writes every sector coefficient with signed Stirling numbers of the first kind and finitely many derivatives; involutions are shown to carry an unbounded inverse correction of order `sqrt(X)/log X` followed by oscillatory sectors of size `exp(-2 sqrt X)`; 9 theorems, 3 propositions in 13 sections; no complete complex Stokes classification and no machine formalization is claimed. Filed source `combinatorial_transseries_extension.tex`, 1{,}519 lines / 85{,}501 bytes, SHA-256 `ae89935b…e2e241`; filed PDF 29 A4 pages / 598{,}498 bytes, SHA-256 `47ef76b6…cbe26c`. `verify.py`, `audit.py`, `coefficients.wl`, `build.sh`, `verification_results.json`, `audit_results.json`, and a submitted `MANIFEST.sha256` retained as a purpose-specific intake record (all ten entries verified before extraction). | `incoming/combinatorial_transseries_and_inverses.zip` |
+| `combinatorial_transseries_extension/` | *Combinatorial Transseries and Their Inverses* -- argues that asymptotic inversion needs the right scale, a chosen or deliberately avoided interpolation, retained subdominant terms, and control of forward-error amplification, then develops that through Catalan and Fuss--Catalan numbers, central multinomial coefficients and rectangular tableaux, both kinds of fixed-column Stirling numbers, Motzkin, Delannoy and large Schroeder numbers, involutions, alternating permutations, connected labeled graphs, necklaces, Lyndon words, and harmonic-number functions; gives general finite coefficient formulas for gamma-quotient and moving-saddle expansions, multiexponential inverses, and inverse sector interactions, and a fixed-order theorem producing every exponential layer of connected-graph enumeration including a vanishing forward layer regenerated by inversion; 10 theorems, 6 propositions, 3 lemmas, 2 corollaries, 1 definition in 15 sections. Filed source `combinatorial_transseries_and_inverses.tex`, 2{,}241 lines / 117{,}447 bytes, SHA-256 `c4d2de54…786a9d`; filed PDF 42 A4 pages / 566{,}596 bytes, SHA-256 `9f74d71a…8e7179`. `verify.py`, `audit_symbolic.py`, `coefficient_tools.wl`, `build.sh`, and captured verification and symbolic-audit reports. | `incoming/combinatorial_transseries_extension.zip` |
+| `combinatorial_transseries_extension-2/` | *Combinatorial Transseries and Their Inverses: q-Products, Finite Fields, Theta Sectors, and Arithmetic Sheets* -- treats families whose exponentially small structure can be computed exactly rather than inferred from a divergent expansion -- general linear, symplectic and unitary group orders, complete and partial flag counts, fixed-rank and proportionally scaled Gaussian binomial coefficients, binomial-version `q`-Catalan and `q`-Fuss--Catalan numbers, and ordinary and generalized Galois numbers, for which an entire generating function for all exponential corrections comes from theta series of the `A_{r-1}` root lattice; an inversion theorem turns an analytic exponential tail on a quadratic or linear phase into a convergent inverse transseries with every coefficient a finite nonrecursive sum, a second construction handles primitive necklaces and irreducible polynomials on fixed-radical subsequences with a leading inverse in `W_{-1}`, and the simultaneous `q -> 1` large-index scaling is shown to change the dominant phase to a dilogarithm; 6 theorems, 3 propositions, 2 lemmas, 2 corollaries in 17 sections. Filed source `combinatorial_transseries_extension.tex`, 1{,}970 lines / 101{,}772 bytes, SHA-256 `8ad6d4fb…aba99b`; filed PDF 39 Letter pages / 261{,}004 bytes, SHA-256 `1d1af99c…118c07`. `verify.py`, `reference_implementation.wl`, and `verification_report.json` (exact enumeration, the theta expansion, inverse coefficients through weight eight, and arithmetic threshold decisions). | `incoming/combinatorial_transseries_extension-2.zip` |
 | `series-and-transseries/Transseries_And_Inversion/` | **Canonical consolidation of the whole `series-and-transseries` group.** *Transseries: the polynomial--logarithmic calculus, series reversal at infinity, and the inversion of rapidly growing functions*. The historical d130 source inventory is 55,015 lines / 2,732,554 bytes / SHA-256 `545d4b5ead18831e37a4df0ab7fb6b74a40e1e598144dc7057e8c62aaaa46799`, with 16 parts, 58 chapters, and 3,111 unique labels. Its two-file root-plus-notation closure is 55,299 lines / 2,744,389 bytes / aggregate SHA-256 `499a045ab45fdea7849c888bc8903db0866a2d4ca27eca3db6f62a9db282af30`. The incoming 702- and 711-page artifacts and their associated source counts remain historical checkpoints. The d130 three-pass 704-page render is historical; the merged source was rebuilt as 721 pages in the merge-28de4e51 register above. Its earlier tuple and warnings remain in the [d130 receipt register](#d130-publication-receipts-and-current-parity-status). The volume merges forty-two independently written articles across five groups and records one genuine duplicate, one strengthening, one missing counterpart, and three non-equivalent same-subject comparisons; its Lagrange--Bürmann comparison distinguishes the near-identity operator form from the classical coefficient form. All absorbed layouts remain recoverable from Git history. | Consolidation of forty-two articles filed 2026-09-01 to -03; all replaced source layouts remain recoverable from Git history. |
 
 The consolidation is complete.  The six arrival packages and their
@@ -1460,8 +1562,30 @@ dyadic-depth theorem is not.  A byte-identical reship of
 `rvachev_q_extrapolation_bundle.zip` had arrived alongside and was deleted
 at intake.
 
+Three further independently written articles arrived on 2026-09-04 and were
+filed in this subgroup the same day as separate members beside the volume.  All
+three answer the same question -- an exact evaluation of `F(a/2^n)` and
+`Up(a/2^n)` in which no auxiliary quantity is defined by a moment recurrence or
+a limiting process -- and all three reach it through the same mechanism as the
+volume: at a dyadic argument of depth `n`, the centered finite-spline values are
+an *exact* polynomial in `4^{-N}` of degree at most `floor(n/2)`, so Lagrange
+evaluation at zero recovers the value from `floor(n/2) + 1` consecutive levels.
+That is the volume's extraction row read as an evaluation formula rather than an
+extraction, which is why they are filed here.  The same statement is proved
+independently in `thue-morse/Thue_Morse_Research/` from this batch.  Directory
+names are the archive stems: `fabius_dyadic_closed_forms-2.zip` shipped no
+wrapping directory, and `fabius_rvachev_recurrence_free_closed_forms.zip`
+wrapped a directory named `fabius_closed_forms/`.  All three PDFs are A4 with
+every font embedded and no Type-3 row; two carry Libertinus faces.  No source
+loads `docs/fabius-notation.tex`; none shipped a checksum ledger.  Quick intake
+only; comparison with the volume and with each other, canonical selection,
+proof checking, numerical reproduction, and Lean crosswalking are deferred.
+
 | Directory | Document | Supporting evidence | Previous path / provenance |
 | --- | --- | --- | --- |
+| `dyadic-up-extraction/fabius_dyadic_closed_forms/` | *Recurrence-Free Closed Forms for Dyadic Fabius and Rvachev Values* -- positive ordered-composition sums, Bernoulli and Bernoulli-free multiplicity-partition sums, finite-uniform-prefix formulas, and an integer bordered-determinant formula with an explicit permutation reading; a binary-block identity cuts the argument-dependent part from a Thue--Morse prefix of length `a` to at most `n+1` terms for `a/2^n`, and a second, moment-free finite spline formula at Gaussian base `1/4` uses only `floor(n/2)+1` prefixes with no limiting operation; the article is explicit that exactness comes from the polynomial pieces of finite splines and not from assuming that `F` equals its finite Taylor jet; 8 theorems, 2 lemmas, 2 corollaries in 15 sections. Filed source `fabius_dyadic_closed_forms.tex`, 1{,}441 lines / 62{,}402 bytes, SHA-256 `f9809389…d6f735`; filed PDF 22 A4 pages / 490{,}000 bytes, SHA-256 `e05d1a91…fdc01a`. | `verify_formulas.py` with a captured `verification_output.txt` | `incoming/fabius_dyadic_closed_forms.zip` |
+| `dyadic-up-extraction/fabius_dyadic_closed_forms-2/` | *Recurrence-Free Dyadic Values of the Fabius and Rvachev Functions* -- expresses `F(m/2^n)` through `floor(n/2)+1` explicitly specified finite Thue--Morse power sums with rational quarter-base interpolation weights, proves the degree is exactly `floor(n/2)` at reduced interior dyadics -- so the sample count is optimal for a rule whose weights work on the whole grid -- and identifies the shrinking spline cell with a finite deconvolution of the dyadic Taylor polynomial; a second formula compresses the arithmetic to one outer summand per nonzero binary digit of the numerator; also gives a certified rounding representation, the Rvachev bump and signed global extension, and an integer-base geometric-uniform generalization; 11 theorems, 4 propositions, 7 lemmas, 2 corollaries in 16 sections; asserts no priority and no Lean formalization of the additional results. Filed source `fabius_dyadic_closed_forms.tex`, 1{,}456 lines / 71{,}737 bytes, SHA-256 `4b5638ee…8991b6`; filed PDF 26 A4 pages / 637{,}900 bytes, SHA-256 `11f0a085…cceb71`. | `verify_closed_forms.py` with `verification_results.json` | `incoming/fabius_dyadic_closed_forms-2.zip` |
+| `dyadic-up-extraction/fabius_rvachev_recurrence_free_closed_forms/` | *Recurrence-Free Dyadic Formulae for the Fabius and Rvachev Functions* -- completes the classical Thue--Morse formula in two ways, by a Bernoulli partition expansion with the Bernoulli numbers themselves expanded into finite power sums and by a positive ordered-composition expansion; adds a binary-digit telescope removing the long Thue--Morse prefix and an integer bordered determinant giving a compact certificate and common denominator; proves the cutoff-polynomial identity and its exact degree at reduced interior dyadics, connects it to the existing half-base formula, and derives analogues for the Rvachev bump, derivatives, iterated primitives, and normalized reciprocal-integer-base uniform series; substituting the finite box-volume formula yields a double finite sum in integers, factorials, Thue--Morse signs, and `q`-Pochhammer symbols at `q = 1/4`; 12 theorems, 2 propositions, 5 lemmas in 14 sections. Filed source `dyadic_closed_forms.tex`, 1{,}681 lines / 68{,}704 bytes, SHA-256 `60c7f944…bfc28d`; filed PDF 23 A4 pages / 711{,}303 bytes, SHA-256 `1bc02691…cc591a`. | `verify.py` with `verification.json`; the article reports exact rational comparison of five formulae on 520 dyadic grid cases plus separate spline, bump, shift, and other-base tests, not replayed at intake | `incoming/fabius_rvachev_recurrence_free_closed_forms.zip` |
 | `dyadic-up-extraction/Dyadic_Up_Extraction/` | **Canonical, consolidation complete:** *Exact Dyadic Extraction of Rvachev's Up-Function from Finite Sinc-Product Splines* — 6{,}491-line/334{,}375-byte source (`1f3d0f03…86e582`) and the 77-page A4 PDF built from it in the same three-pass run (1{,}429{,}227 bytes, `26b967e4…72ede7`) | `verify_dyadic_up_extraction.py` (646 lines, `11f52767…44a322`): exact-arithmetic verifier adapted from the sixth arrival's, opt-in outputs, five added checks; every reduced dyadic point of depth ≤ 7 | Editorial merge (2026-09-03) of the six 2026-09-02 arrivals `Dyadic-Up-Extraction/`, `Exact_Dyadic_Up_Extraction/`, `Exact_Geometric_Tails_Rvachev_Up/`, `dyadic_up_extraction_package/`, `rvachev_q_extrapolation/`, `rvachev_up_dyadic_extrapolation_package/` from intake commit `8f822212d`; absorbed directories deleted, git history is the archive, per-source receipts in the volume's provenance appendix |
 
 ## representations — `representations/`

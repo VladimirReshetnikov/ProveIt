@@ -1,0 +1,1551 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype,booktabs,array,longtable,enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+ urlcolor=blue!45!black,pdftitle={Thue--Morse Mellin Renormalization and Gamma-Tower Uniqueness},
+ pdfauthor={ChatGPT},pdfsubject={Research extension with proofs and reproducible computations}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Thue--Morse Mellin renormalization}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\W}{\mathcal W}
+\newcommand{\CM}{\mathrm{CM}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\eps}{\varepsilon}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\diam}{diam}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\Dprime}[1]{\partial_s D(#1,a)}
+\title{\vspace{-1em}\textbf{Thue--Morse Mellin Renormalization}\\[0.35em]
+\Large Fabius-controlled derivative asymptotics,\\
+positive dyadic solutions, and gamma-tower uniqueness}
+\author{A research extension to the ProveIt Thue--Morse atlas}
+\date{4 September 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+The signed Thue--Morse sequence has a positive Laplace product
+$Q(t)=\prod_{j\ge0}(1-e^{-2^jt})$. We pair it with the Fabius uniform-sum
+Laplace transform
+$H(z)=\prod_{j\ge1}(1-e^{-z/2^j})/(z/2^j)$.
+Their product satisfies the exact equation $\W(2t)=\W(t)/t$.
+This elementary cancellation gives a positive lognormal-type Mellin kernel
+and an all-orders expansion for the derivatives of the entire shifted
+Thue--Morse Dirichlet function at its negative-integer zeros.
+The coefficients are finite expressions in Bernoulli numbers and the shift
+parameter. A global Taylor estimate yields a uniform dyadic
+$q$-Gevrey remainder and a Gaussian-in-order bound after optimal truncation.
+
+We also classify every completely monotone solution of the basic dyadic
+equation by a positive measure on one multiplicative period. This produces
+many positive gamma towers with the same normalization. More strongly,
+distinct towers can have identical formal high-order expansions to every
+order; their discrepancy is beyond all those corrections. Nevertheless,
+the single boundary condition $-a f'(a)\to1$ as $a\downarrow0$ selects the
+canonical solution and its full differential tower.
+Complete proofs, explicit coefficients, positive Hankel consequences, and
+independently evaluated numerical checks are provided. Classical ingredients
+are separated from the results derived here; historical priority of the
+new formulations is not asserted as established.
+\end{abstract}
+\vspace{0.35em}
+\noindent\textbf{Keywords.} Thue--Morse sequence; Fabius function; entire Dirichlet
+series; Mellin transform; completely monotone function; moment problem;
+log-periodicity; beyond-all-orders asymptotics.
+
+\clearpage
+{\linespread{0.94}\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+
+\section{The questions and the main answers}\label{sec:intro}
+
+Let $s_2(n)$ denote the number of ones in the binary expansion of $n$, and put
+\begin{equation}\label{eq:epsilon}
+ \eps_n=(-1)^{s_2(n)},\qquad n=0,1,2,\ldots.
+\end{equation}
+The first terms are $1,-1,-1,1,-1,1,1,-1,\ldots$.
+Rather than attempting another catalogue of word-combinatorial properties,
+we investigate two analytic questions that connect directly with the
+Fabius--Rvachev program: how rapidly do the derivatives of the associated
+entire Dirichlet function grow at negative integers, and what actually
+characterizes its gamma-type hierarchy?
+
+Throughout this article $a>0$ is a real shift, $\lambda=\log 2$, and
+\begin{equation}\label{eq:Dintro}
+ D(s,a)=\sum_{n\ge0}\frac{\eps_n}{(n+a)^s}
+ \qquad(\Rea s>1)
+\end{equation}
+denotes the Dirichlet series and subsequently its entire continuation.
+There are two different limiting parameters: $\rho\to\infty$ describes
+\emph{high negative order}, whereas $a\downarrow0$ describes a
+\emph{boundary of the shift variable}. They should not be conflated.
+
+\subsection{High negative orders are governed by a positive dyadic kernel}
+Define
+\begin{equation}\label{eq:mainquantities}
+ \begin{split}
+ Q(t)&=\prod_{j\ge0}(1-e^{-2^jt}),\qquad
+ H(z)=\prod_{j\ge1}\frac{1-e^{-z/2^j}}{z/2^j},\\
+ \W(t)&=Q(t)H(t),\qquad
+ C_\rho(a)=\int_0^\infty t^{-\rho-1}e^{-at}Q(t)\dd t.
+ \end{split}
+\end{equation}
+Each removable value in the product for $H$ is understood by continuity.
+For an integer $m\ge0$,
+\begin{equation}\label{eq:derivativeintro}
+ \partial_sD(-m,a)=(-1)^m m!\,C_m(a).
+\end{equation}
+The important cancellation is
+\begin{equation}\label{eq:cocycleintro}
+ \W(2t)=\frac{\W(t)}t.
+\end{equation}
+It yields a positive one-periodic amplitude $\Theta$ and coefficient
+polynomials $c_k(a)$ such that
+\begin{equation}\label{eq:expansionintro}
+ \frac{C_\rho(a)}{2^{\rho(\rho-1)/2}\Theta(\rho)}
+ \sim\sum_{k\ge0}c_k(a)2^{-k\rho}.
+\end{equation}
+The expansion is accompanied by an explicit-form remainder bound, not merely
+formal coefficient matching. At integer orders $\Theta(m)=K_0$, where
+\begin{equation}\label{eq:K0intro}
+ K_0=\int_0^\infty \W(t)\frac{\dd t}{t}
+   =0.75072198040787095920970791405063469\ldots.
+\end{equation}
+For example, at the symmetric shift $a=1/2$,
+\begin{equation}\label{eq:centerintro}
+ \frac{C_m(1/2)}{K_0\,2^{m(m-1)/2}}
+ \sim 1-\frac{2^{-2m}}9
+     +\frac{248}{2025}2^{-4m}
+     -\frac{4806656}{2679075}2^{-6m}+\cdots.
+\end{equation}
+All odd corrections vanish. Section~\ref{sec:asymptotics} proves these
+statements, including uniformity and optimal truncation.
+
+\subsection{The dyadic equation has a large positive solution space}
+A function $f:(0,\infty)\to\R$ is \emph{completely monotone} if it is smooth
+and $(-1)^j f^{(j)}(a)\ge0$ for every $j\ge0$.
+We completely describe the functions in this class satisfying
+\begin{equation}\label{eq:basicintro}
+ f(a)=f(a/2)-f((a+1)/2).
+\end{equation}
+They correspond exactly to positive, locally finite measures $\nu$ on
+$(0,\infty)$ invariant under multiplication by two:
+\begin{equation}\label{eq:classintro}
+ f(a)=\int_0^\infty e^{-at}Q(t)\,\nu(\dd t),
+ \qquad \nu(2B)=\nu(B).
+\end{equation}
+The canonical solution $C_0(a)$ corresponds to $\nu(\dd t)=\dd t/t$.
+The normalization $f(1/2)=\log2$ fixes only the mass of one multiplicative
+period, not the distribution of that mass. Even the addition of all formal
+high-order coefficients need not restore uniqueness
+(Section~\ref{sec:ambiguity}).
+
+\subsection{A boundary condition does restore uniqueness}
+Within the completely monotone class, the equation
+\eqref{eq:basicintro} together with
+\begin{equation}\label{eq:boundaryintro}
+ \lim_{a\downarrow0}(-a f'(a))=1
+\end{equation}
+characterizes $f=C_0$ uniquely. The proof identifies the representing
+measure from all dyadic boundary limits. The stronger, convenient condition
+that $f(a)+\log a$ have a finite limit also suffices.
+Together with the differential ladder, this selects the entire gamma tower.
+These are precise characterization statements; they do not claim that an
+arbitrary gamma-like function is uniquely determined without a specified
+function class or boundary condition.
+
+\subsection{Relation to the atlas and the literature}\label{subsec:provenance}
+The supplied atlas~\cite{Atlas} develops finite products, repeated summation,
+Fabius--Rvachev connections, an entire Mellin continuation, and an automatic
+gamma hierarchy. Its ``Automatic Barnes hierarchy'' frontier asks for
+normalizations yielding a uniqueness theorem. The present work gives a
+complete answer within the completely monotone class, and also exhibits a
+specific obstruction to using high-order asymptotics alone.
+
+The analytic study of Thue--Morse Dirichlet series predates this article by
+decades; relevant works include Allouche--Cohen~\cite{AC},
+Allouche--Mend\`es France--Peyri\`ere~\cite{AMP}, and
+Allouche's later survey~\cite{Allouche2015}. Explicit linear-combination
+identities give a complementary direction~\cite{Toth}.
+In particular, the simplicity of the negative-integer zeros is
+\emph{not} offered as a new result.
+The Fabius probability and product background is also classical; see
+Arias de Reyna~\cite{Arias}.
+Log-periodic effects in Mellin analysis and moment indeterminacy of
+lognormal-type laws have established precedents~\cite{FGD,Heyde}.
+
+The contributions developed and proved here are the quantitative
+renormalization theorem with its global remainder, the measure
+classification and boundary characterization, and the construction of
+distinct normalized towers sharing every formal high-order correction.
+The exact product pairing and its subsidiary consequences organize their
+proofs. These are candidate research contributions, not a claim of verified
+historical priority. The targeted comparison did not locate the same main
+statements in the inspected atlas or accessible literature, but it was not
+an exhaustive search. In particular, the author's link to
+Alkauskas's 2001 preprint~\cite{Alkauskas} could not be retrieved; no claim
+about its detailed contents is made. This manuscript was prepared with
+ChatGPT; it has not been peer-reviewed or formalized in Lean.
+
+\section{From binary signs to an entire Mellin transform}\label{sec:background}
+
+\subsection{The product and elementary endpoint bounds}
+The two binary identities
+\begin{equation}\label{eq:binary}
+ \eps_{2n}=\eps_n,\qquad \eps_{2n+1}=-\eps_n
+\end{equation}
+show by induction that
+\begin{equation}\label{eq:finiteproduct}
+ \sum_{n=0}^{2^m-1}\eps_n z^n
+   =\prod_{j=0}^{m-1}(1-z^{2^j}).
+\end{equation}
+For $|z|<1$, both sides converge as $m\to\infty$, so
+\begin{equation}\label{eq:Qgenerating}
+ Q(t)=\sum_{n\ge0}\eps_n e^{-nt}\qquad(t>0).
+\end{equation}
+Although the sum has signs, the product is strictly positive.
+
+\begin{lemma}[Bounds needed for all Mellin operations]\label{lem:Qbounds}
+The product $Q$ is positive and smooth on $(0,\infty)$ and satisfies
+\begin{equation}\label{eq:Qscale}
+ Q(t)=(1-e^{-t})Q(2t).
+\end{equation}
+For every integer $N\ge0$,
+\begin{equation}\label{eq:Qflat}
+ 0<Q(t)\le 2^{N(N-1)/2}t^N\qquad(t>0),
+\end{equation}
+and
+\begin{equation}\label{eq:Qinfty}
+ 0\le1-Q(t)\le\frac{e^{-t}}{1-e^{-t}}.
+\end{equation}
+In particular, $Q$ is smaller than any fixed power at zero and approaches
+one exponentially at infinity.
+\end{lemma}
+\begin{proof}
+Uniform convergence of the product and its differentiated logarithms on
+compact subintervals of $(0,\infty)$ follows from the exponential growth of
+$2^j$. Its factors are positive, and the sum of their deficits is finite.
+The scaling equation follows by shifting the index.
+For \eqref{eq:Qflat}, bound the first $N$ factors by $2^jt$, and the rest
+by one. For \eqref{eq:Qinfty}, use
+$1-\prod_j(1-u_j)\le\sum_j u_j$ for $0\le u_j\le1$, then
+$2^j\ge j+1$.
+\end{proof}
+
+\subsection{Continuation, real zeros, and positive derivative data}
+\begin{proposition}[Entire continuation and real zeros]\label{prop:entire}
+For $a>0$, the function
+\begin{equation}\label{eq:MellinD}
+ M(s,a)=\int_0^\infty t^{s-1}e^{-at}Q(t)\dd t,
+ \qquad D(s,a)=\frac{M(s,a)}{\Gamma(s)},
+\end{equation}
+is entire in $s$ and agrees with \eqref{eq:Dintro} where $\Rea s>1$.
+Its real zeros are exactly $0,-1,-2,\ldots$, and every one is simple.
+Moreover, \eqref{eq:derivativeintro} holds.
+\end{proposition}
+\begin{proof}
+Fix a compact set of $s$-values. At zero, choose $N$ in
+\eqref{eq:Qflat} large enough to dominate
+$t^{\Rea s-1}|\log t|^jQ(t)$ for every derivative order $j$ under
+consideration. At infinity, $e^{-at}$ dominates any such power and
+logarithm. Differentiation under the integral is therefore locally uniform,
+which proves that $M$ is entire.
+
+For $\Rea s>1$, termwise integration of \eqref{eq:Qgenerating} is justified
+by the corresponding absolutely convergent unsigned sum. It gives the
+usual gamma integral for each $(n+a)^{-s}$.
+For real $s$, the integral $M(s,a)$ is strictly positive.
+The reciprocal gamma function has simple zeros precisely at the
+nonpositive integers, with
+\[
+ \left.\frac{\mathrm d}{\mathrm ds}\frac1{\Gamma(s)}
+ \right|_{s=-m}=(-1)^m m!.
+\]
+Multiplication by $M(s,a)$ proves every assertion.
+\end{proof}
+
+It is useful to keep $\rho$ real rather than immediately restrict it to an
+integer. The positive quantities $C_\rho$ in
+\eqref{eq:mainquantities} exist for every real $\rho$, although the
+asymptotic statements below will use $\rho\ge0$.
+For every integer $\ell\ge0$,
+\begin{equation}\label{eq:cmderivatives}
+ (-1)^\ell\partial_a^\ell C_\rho(a)
+  =\int_0^\infty t^{\ell-\rho-1}e^{-at}Q(t)\dd t>0.
+\end{equation}
+Thus every $C_\rho$ is completely monotone. In particular,
+\begin{equation}\label{eq:ladder}
+ C_m'(a)=-C_{m-1}(a)\quad(m\ge1).
+\end{equation}
+Using \eqref{eq:Qscale} and substituting $t=2u$ gives
+\begin{equation}\label{eq:Crhodyadic}
+ C_\rho(a)=2^\rho\left\{C_\rho(a/2)-C_\rho((a+1)/2)\right\}.
+\end{equation}
+All of these identities follow from absolutely convergent integrals;
+regularized sums are unnecessary here.
+
+\subsection{The Fabius uniform-sum transform}
+Let $U_1,U_2,\ldots$ be independent uniform random variables on $[0,1]$, and
+set
+\begin{equation}\label{eq:X}
+ X=\sum_{j\ge1}2^{-j}U_j.
+\end{equation}
+This converges almost surely, takes values in $[0,1]$, and has mean $1/2$.
+The distribution is the standard dyadic uniform-sum realization underlying
+the Fabius function. Explicitly fixing \eqref{eq:X} avoids a possible
+factor-of-two ambiguity among Fabius and Rvachev conventions.
+Independence gives
+\begin{equation}\label{eq:Hprob}
+ H(z)=\E e^{-zX}
+     =\prod_{j\ge1}\psi(z/2^j),
+ \qquad \psi(z)=\frac{1-e^{-z}}z,\quad\psi(0)=1.
+\end{equation}
+Boundedness of $X$ proves that $H$ is entire. Equivalently, the product
+converges locally uniformly since $\psi(z/2^j)=1+O_K(2^{-j})$ on every
+compact set $K$.
+
+The distributional identity $X\overset d=(U+X')/2$, with $X'$ an independent
+copy, gives a direct connection with the usual functional equation.
+If $F(x)=\Pr(X\le x)$ is extended by zero to $x\le0$ and by one to
+$x\ge1$, convolution with the uniform law gives
+\[
+ F'(x)=2\{F(2x)-F(2x-1)\}.
+\]
+Consequently $F'(x)=2F(2x)$ on $0<x<1/2$.
+For every $N\ge2$, the sum of the first $N$ uniform terms has a
+$C^{N-2}$ spline density; convolution with the remaining probability law
+preserves that regularity. Since $N$ is arbitrary, the density is smooth.
+Only the entire transform \eqref{eq:Hprob} is needed below.
+
+\begin{lemma}[Scaling, symmetry, and singularity distance]\label{lem:H}
+The function $H$ satisfies
+\begin{equation}\label{eq:Hscale}
+ H(2z)=\psi(z)H(z),\qquad H(-z)=e^zH(z).
+\end{equation}
+Its zeros are exactly the nonzero integer multiples of $4\pi i$, with
+multiplicities prescribed by the individual factors. The nearest zeros to
+zero, $\pm4\pi i$, are simple. In $|z|<4\pi$,
+\begin{equation}\label{eq:logH}
+ \log H(z)=-\frac z2+\sum_{j\ge1}b_jz^{2j},\qquad
+ b_j=\frac{B_{2j}}{2j(2j)!(4^j-1)}.
+\end{equation}
+Here the logarithm has value zero at the origin.
+\end{lemma}
+\begin{proof}
+The first identity is an index shift. The second follows either from
+$X\overset d=1-X$ or directly from $\psi(-z)=e^z\psi(z)$.
+Each factor has zeros at $z=2^{j+1}\pi i k$, $k\ne0$.
+Away from those zeros, the convergence of the logarithmic tail shows that
+the product is nonzero. This proves the description of all zeros and their
+nearest distance.
+
+The Bernoulli expansion is obtained by integrating the power series for
+$\frac12\coth(z/2)-1/z$:
+\[
+ \log\psi(z)=-\frac z2+
+ \sum_{j\ge1}\frac{B_{2j}}{2j(2j)!}z^{2j},\qquad |z|<2\pi.
+\]
+Substitute $z/2^\ell$ and sum the resulting geometric series over
+$\ell\ge1$. The nearest factor singularity moves the resulting radius to
+$4\pi$, yielding \eqref{eq:logH}.
+\end{proof}
+
+\section{An exact lognormal-type kernel}\label{sec:kernel}
+
+\subsection{The product cancellation and its envelope}
+\begin{theorem}[Exact Mellin renormalization kernel]\label{thm:kernel}
+Let $\W(t)=Q(t)H(t)$. Then $\W>0$ and
+\begin{equation}\label{eq:Wscale}
+ \W(2t)=t^{-1}\W(t),\qquad
+ \W(2^jv)=2^{-j(j-1)/2}v^{-j}\W(v)\quad(j\in\Z).
+\end{equation}
+The function
+\begin{equation}\label{eq:A}
+ A(y)=2^{(y^2-y)/2}\W(2^y)
+\end{equation}
+is positive, smooth, and one-periodic. Hence
+\begin{equation}\label{eq:lognormalW}
+ \W(e^x)=\exp\!\left(-\frac{x^2}{2\lambda}+\frac x2\right)A(x/\lambda).
+\end{equation}
+There are constants $0<A_-\le A_+<\infty$ such that the expression on the
+right with $A$ replaced by $A_-$ or $A_+$ is respectively a lower or an
+upper bound for $\W(e^x)$, for every real $x$.
+\end{theorem}
+\begin{proof}
+From \eqref{eq:Qscale} and \eqref{eq:Hscale},
+\[
+ \W(2t)=\frac{Q(t)}{1-e^{-t}}\,
+         \frac{1-e^{-t}}tH(t)=\frac{\W(t)}t.
+\]
+Iteration gives the second identity for positive integers $j$, and solving
+backwards gives it for negative integers as well.
+Substitution into \eqref{eq:A} gives $A(y+1)=A(y)$.
+Positivity and smoothness follow from those of the two factors.
+The positive minimum and finite maximum of $A$ on $[0,1]$ give the bounds.
+\end{proof}
+
+The word ``lognormal-type'' refers to the Gaussian in $x=\log t$.
+It does \emph{not} assert that $\W(t)\dd t/t$ is itself exactly a lognormal
+law: the periodic factor $A$ remains present.
+
+\subsection{The Mellin recurrence and phase amplitude}
+Define
+\begin{equation}\label{eq:Kdef}
+ K(s)=\int_0^\infty t^{s-1}\W(t)\dd t\qquad(s\in\C).
+\end{equation}
+The two-sided Gaussian envelope proves local uniform absolute convergence
+for every $s$, including every differentiated integral. Thus $K$ is entire
+and is strictly positive on the real axis.
+
+\begin{proposition}[Exact moments and a periodic amplitude]\label{prop:K}
+For $s\in\C$ and $k\in\Z$,
+\begin{equation}\label{eq:Kshift}
+ K(s+1)=2^{s+1}K(s),\qquad
+ K(s+k)=2^{ks+k(k+1)/2}K(s).
+\end{equation}
+In particular, $K(k)=2^{k(k+1)/2}K_0$ for every integer $k$.
+The function
+\begin{equation}\label{eq:Thetadef}
+ \Theta(\rho)=2^{-\rho(\rho-1)/2}K(-\rho)
+\end{equation}
+is entire, one-periodic, and positive for real $\rho$.
+\end{proposition}
+\begin{proof}
+Substitute $t=2u$ in \eqref{eq:Kdef} and use \eqref{eq:Wscale}:
+$K(s)=2^sK(s-1)$. This yields the first recurrence and then its integer
+iterates. Substituting the recurrence in \eqref{eq:Thetadef} proves
+periodicity. The other statements have already been justified by the
+integral.
+\end{proof}
+
+\subsection{Why the Mellin modulation is extremely small}
+The periodic function $A$ has an absolutely convergent Fourier series
+\begin{equation}\label{eq:Afourier}
+ A(y)=\sum_{\ell\in\Z}a_\ell e^{2\pi i\ell y},\qquad
+ a_\ell=\int_0^1 A(y)e^{-2\pi i\ell y}\dd y.
+\end{equation}
+For example, two integrations by parts already give a summable bound on
+its Fourier coefficients. Integrating each Fourier mode against the
+Gaussian in \eqref{eq:lognormalW} gives
+\begin{equation}\label{eq:Kfourier}
+ K(s)=\sqrt{2\pi\lambda}\,
+ e^{\lambda(s+1/2)^2/2}
+ \sum_{\ell\in\Z}a_\ell
+ e^{-2\pi^2\ell^2/\lambda}e^{2\pi i\ell(s+1/2)}.
+\end{equation}
+The identity holds initially for real $s$, where absolute convergence
+justifies all operations, and then for complex $s$ by analytic continuation.
+Consequently,
+\begin{equation}\label{eq:Thetafourier}
+ \Theta(\rho)=\sqrt{2\pi\lambda}\,2^{1/8}
+ \sum_{\ell\in\Z}(-1)^\ell a_\ell
+ e^{-2\pi^2\ell^2/\lambda}e^{-2\pi i\ell\rho}.
+\end{equation}
+Mellin transformation suppresses the $\ell$th oscillatory mode by a
+Gaussian factor in $\ell$. Section~\ref{sec:numerics} finds relative
+variations of $\Theta$ around $10^{-18}$. These numerical observations are
+not used as a proof that $\Theta$ is nonconstant; none of our main theorems
+requires that additional assertion.
+
+\subsection{Two exact expansions from the same periodic factor}
+The identity $Q=\W/H$, together with \eqref{eq:logH}, gives the convergent
+small-$t$ correction formula
+\begin{equation}\label{eq:logQexact}
+ \begin{split}
+ \log Q(t)={}&-\frac{(\log t)^2}{2\lambda}+\frac12\log t
+       +\log A(\log_2t)\\
+ &+\frac t2-\sum_{j\ge1}b_jt^{2j},\qquad 0<t<4\pi.
+ \end{split}
+\end{equation}
+At the other end, expanding $-\log Q(t)$ in exponentials gives
+\begin{equation}\label{eq:logHlarge}
+ \begin{split}
+ \log H(t)={}&-\frac{(\log t)^2}{2\lambda}+\frac12\log t
+       +\log A(\log_2t)\\
+ &+\sum_{n\ge1}\frac{2^{v_2(n)+1}-1}{n}\,e^{-nt},\qquad t>0,
+ \end{split}
+\end{equation}
+where $v_2(n)$ is the exponent of two dividing $n$.
+Indeed, in $\sum_{j\ge0}\sum_{r\ge1}e^{-r2^jt}/r$, the coefficient of
+$e^{-nt}$ is $n^{-1}\sum_{j=0}^{v_2(n)}2^j$.
+All terms are nonnegative, so the rearrangement is justified by Tonelli's
+theorem. Thus the same periodic amplitude links a Bernoulli correction at
+one endpoint to a convergent exponential correction at the other.
+
+\section{All-orders derivative growth with a uniform remainder}\label{sec:asymptotics}
+
+\subsection{Coefficient polynomials}
+Define
+\begin{equation}\label{eq:Rdef}
+ R_a(z)=\frac{e^{-az}}{H(z)}=\sum_{k\ge0}r_k(a)z^k,
+ \qquad c_k(a)=2^{k(k+1)/2}r_k(a).
+\end{equation}
+The Taylor series has radius exactly $4\pi$, since the numerator cannot
+cancel the simple poles at $\pm4\pi i$.
+Put
+\begin{equation}\label{eq:ellcoeffs}
+ L_1=\frac12-a,\qquad L_{2j}=-b_j\ (j\ge1),\qquad
+ L_{2j+1}=0\ (j\ge1).
+\end{equation}
+Then $R_a(z)=\exp(\sum_{\ell\ge1}L_\ell z^\ell)$ near zero, and a finite,
+nonrecursive coefficient formula is
+\begin{equation}\label{eq:finitecoeff}
+ c_k(a)=2^{k(k+1)/2}
+ \sum_{\substack{j_1,\ldots,j_k\ge0\\
+                  j_1+2j_2+\cdots+kj_k=k}}
+ \prod_{\ell=1}^k\frac{L_\ell^{j_\ell}}{j_\ell!},
+ \qquad c_0=1.
+\end{equation}
+For computation, the equivalent recurrence
+\begin{equation}\label{eq:coeffrec}
+ n r_n=\sum_{\ell=1}^n\ell L_\ell r_{n-\ell},\qquad r_0=1,
+\end{equation}
+is often more economical. It is a convenience, not a prerequisite to the
+closed expression \eqref{eq:finitecoeff}.
+
+With $b=a-1/2$, the first coefficients are
+\begin{align}
+ c_0&=1,& c_1&=-2b,\notag\\
+ c_2&=4b^2-\frac19,&
+ c_3&=-\frac{32}{3}b^3+\frac89b,\label{eq:firstcoeff}\\
+ c_4&=\frac8{2025}(10800b^4-1800b^2+31),\notag\\
+ c_5&=-\frac{256b}{2025}(2160b^4-600b^2+31),\notag\\
+ c_6&=\frac{2048}{2679075}
+       (3810240b^6-1587600b^4+164052b^2-2347).\notag
+\end{align}
+Differentiation and reflection give useful independent checks:
+\begin{equation}\label{eq:coeffchecks}
+ c_k'(a)=-2^k c_{k-1}(a),\qquad
+ c_k(1-a)=(-1)^k c_k(a).
+\end{equation}
+For the second identity, use $R_{1-a}(z)=R_a(-z)$.
+
+\subsection{Statement of the uniform theorem}
+For a compact interval $I\subset(0,\infty)$ and $0<r<4\pi$, set
+\begin{equation}\label{eq:tube}
+ \mathcal T_r=\{z\in\C:\dist(z,[0,\infty))\le r\},\qquad
+ M_{I,r}=\sup_{a\in I,\ z\in\mathcal T_r}|R_a(z)|.
+\end{equation}
+The finiteness of this constant is part of the proof below.
+It is a mathematically specified bound; no numerical enclosure for
+$M_{I,r}$ is claimed in the computational tables.
+
+\begin{theorem}[Uniform all-orders expansion]\label{thm:asymptotics}
+For every compact $I\subset(0,\infty)$, every $0<r<4\pi$, every integer
+$N\ge1$, every $a\in I$, and every real $\rho\ge0$,
+\begin{equation}\label{eq:maintheorem}
+ \frac{C_\rho(a)}{2^{\rho(\rho-1)/2}\Theta(\rho)}
+   =\sum_{k=0}^{N-1}c_k(a)2^{-k\rho}+\mathcal R_N(\rho,a),
+\end{equation}
+where
+\begin{equation}\label{eq:mainremainder}
+ |\mathcal R_N(\rho,a)|
+ \le M_{I,r}\,r^{-N}2^{N(N+1)/2-N\rho}.
+\end{equation}
+In particular, for each fixed $N$ the error is uniformly
+$O_{I,N}(2^{-N\rho})$ as $\rho\to\infty$.
+\end{theorem}
+
+The estimate is useful both with fixed $N$ and with $N$ increasing with
+$\rho$. The latter use is the reason for keeping the dependence on $N$
+explicit.
+
+\subsection{Step one: exact finite-level renormalization}
+\begin{lemma}\label{lem:finitelevel}
+Write $\rho=m+\theta$, where $m=\lfloor\rho\rfloor$ and $0\le\theta<1$,
+and set $h=2^{-m}$. Then
+\begin{equation}\label{eq:exactrenorm}
+ C_{m+\theta}(a)
+ =2^{m(m-1)/2+m\theta}
+   \int_0^\infty t^{-\theta-1}\W(t)R_a(ht)\dd t.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Iteration of the product equation gives
+\[
+ Q(2^{-m}t)=Q(t)\prod_{j=1}^m(1-e^{-t/2^j}).
+\]
+Separate each factor into $(t/2^j)\psi(t/2^j)$ and use the product for $H$:
+\begin{equation}\label{eq:Qfinitelevel}
+ Q(2^{-m}t)=2^{-m(m+1)/2}t^mQ(t)\frac{H(t)}{H(2^{-m}t)}.
+\end{equation}
+Substituting the old variable $2^{-m}t$ in the definition of $C_{m+\theta}$
+now gives \eqref{eq:exactrenorm}, with all powers of two displayed.
+\end{proof}
+
+The point of this formula is that the rapidly changing order $m$ has been
+removed from the Mellin weight. It occurs only in the explicit prefactor
+and in the small argument of $R_a$.
+
+\subsection{Step two: a Taylor bound valid on the entire positive axis}
+\begin{lemma}[Boundedness on a pole-free tube]\label{lem:tubebound}
+For $I\subset(0,\infty)$ compact and $r<4\pi$, the constant $M_{I,r}$ in
+\eqref{eq:tube} is finite. Consequently, for every real $x\ge0$,
+\begin{equation}\label{eq:taylorglobal}
+ \left|R_a(x)-\sum_{k=0}^{N-1}r_k(a)x^k\right|
+  \le M_{I,r}r^{-N}x^N\qquad(a\in I).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The tube contains no zero of $H$. Thus $R_a$ is jointly continuous and
+uniformly bounded when $a\in I$ and $z$ stays in a compact portion of the
+tube. It remains to control its unbounded right-hand end.
+
+For real $x>0$, let
+\[
+ \mu_x=\frac{\E[Xe^{-xX}]}{\E[e^{-xX}]}=-\frac{H'(x)}{H(x)}.
+\]
+Logarithmic differentiation of the independent factors gives
+\begin{equation}\label{eq:tiltedmean}
+ \mu_x=\sum_{j\ge1}
+ \left(\frac1x-\frac{2^{-j}}{e^{x2^{-j}}-1}\right).
+\end{equation}
+Each summand is the mean of a uniform variable on $[0,2^{-j}]$ under a
+positive exponential tilt; it lies between zero and $2^{-j}/2$, and is
+also at most $1/x$. The upper bound by the untilted mean follows because
+the derivative of a tilted mean is the negative tilted variance. Splitting at $J=\lfloor\log_2x\rfloor$ for $x\ge1$
+therefore gives
+\begin{equation}\label{eq:tiltedbound}
+ 0\le\mu_x\le\frac{\log_2x+2}{x}.
+\end{equation}
+For $|y|\le r$,
+\[
+ |H(x+iy)-H(x)|
+ \le\E[e^{-xX}|e^{-iyX}-1|]
+ \le |y|\mu_xH(x).
+\]
+The rightmost multiplier is at most $1/2$ for sufficiently large $x$,
+uniformly in $|y|\le r$. Thus $|H(x+iy)|\ge H(x)/2$ there.
+
+Since $Q(x)\le1$, we have $H(x)=\W(x)/Q(x)\ge\W(x)$.
+The lower bound in Theorem~\ref{thm:kernel}, with $a_0=\min I>0$, yields
+\[
+ |R_a(x+iy)|\le\frac{2}{A_-}
+ \exp\!\left[-a_0x+\frac{(\log x)^2}{2\lambda}
+                   -\frac12\log x\right]\longrightarrow0.
+\]
+The remaining part of the tube with negative real part is compact. This
+proves $M_{I,r}<\infty$.
+
+Every closed disc of radius $r$ centered on $[0,\infty)$ lies in the tube.
+Cauchy's estimate gives
+$|R_a^{(N)}(x)|/N!\le M_{I,r}r^{-N}$ for all $x\ge0$.
+Taylor's integral remainder along the real interval from $0$ to $x$ gives
+\eqref{eq:taylorglobal}. Notice that this argument does not require
+$x<4\pi$; the radius restriction is on the complex discs used to control
+derivatives, not on the real argument of the final estimate.
+\end{proof}
+
+\subsection{Step three: integration of the global remainder}
+\begin{proof}[Proof of Theorem~\ref{thm:asymptotics}]
+Insert the finite Taylor polynomial from \eqref{eq:taylorglobal} into
+\eqref{eq:exactrenorm}. The $k$th term integrates to
+$r_k(a)h^kK(k-\theta)$.
+The shift identity gives
+\begin{equation}\label{eq:momentratio}
+ \frac{K(k-\theta)}{K(-\theta)}
+   =2^{-k\theta+k(k+1)/2}.
+\end{equation}
+Also,
+\begin{equation}\label{eq:leadingfactor}
+ 2^{m(m-1)/2+m\theta}K(-\theta)
+   =2^{\rho(\rho-1)/2}\Theta(\rho).
+\end{equation}
+Dividing the finite sum by this leading factor yields
+$c_k(a)2^{-k\rho}$ term by term.
+
+Positivity of the weight $t^{-\theta-1}\W(t)$ permits direct integration
+of the absolute remainder bound. The resulting relative error is at most
+\[
+ M_{I,r}r^{-N}h^N\frac{K(N-\theta)}{K(-\theta)}
+ =M_{I,r}r^{-N}2^{N(N+1)/2-N\rho}.
+\]
+This proves the estimate without interchanging an infinite Taylor series
+and an improper integral.
+\end{proof}
+
+\subsection{Divergence, optimal truncation, and centering}
+The Taylor series for $R_a$ has radius $4\pi$, so
+\begin{equation}\label{eq:rlimsup}
+ \limsup_{k\to\infty}|r_k(a)|^{1/k}=\frac1{4\pi}.
+\end{equation}
+Along an infinite subsequence the additional factor
+$2^{k(k+1)/2}$ forces $|c_k(a)|^{1/k}\to\infty$.
+Hence the formal power series $\sum c_k(a)h^k$ has radius zero for every
+$a>0$. Its use in \eqref{eq:maintheorem} is asymptotic, not convergent.
+For any $r<4\pi$, Cauchy's estimate also gives
+$|c_k(a)|\le M_{I,r}r^{-k}2^{k(k+1)/2}$.
+We call this specific bound \emph{dyadic $q$-Gevrey growth}; the displayed
+formula fixes the convention, rather than relying on differing definitions
+of $q$-Gevrey order in the literature.
+
+Let
+\begin{equation}\label{eq:tau}
+ \tau=\rho+\log_2r-\frac12.
+\end{equation}
+The base-two logarithm of the order-dependent factor in
+\eqref{eq:mainremainder} is
+$\frac12(N-\tau)^2-\frac12\tau^2$.
+If $\tau\ge1$, choose a nearest integer $N\ge1$. Then
+\begin{equation}\label{eq:optimal}
+ |\mathcal R_N(\rho,a)|
+ \le 2^{1/8}M_{I,r}\,2^{-\frac12(\rho+\log_2r-1/2)^2}.
+\end{equation}
+This is an achievable upper bound after a specified truncation, not a
+claim that the true error has exactly this size or that the estimate is
+asymptotically sharp.
+
+When $a=1/2$, the function $R_{1/2}$ is even. Therefore all odd
+coefficients vanish and the small scale in \eqref{eq:centerintro} is
+$4^{-m}$ instead of $2^{-m}$. Fixed-order errors may accordingly be
+improved by retaining the next vanishing odd coefficient before applying
+the theorem. For example, the error after the displayed $2^{-6m}$ term is
+$O(2^{-8m})$.
+
+\subsection{Growth of the entire function and its gamma tower}
+Define the gamma hierarchy by
+\begin{equation}\label{eq:Gammadef}
+ \Gamma_m^{\mathrm{TM}}(a)
+   =\exp\bigl(\partial_sD(-m,a)\bigr)
+   =\exp\bigl((-1)^m m!C_m(a)\bigr).
+\end{equation}
+Thus the expansion describes the \emph{signed logarithms} of these
+functions. Exponentiating a truncated logarithmic expansion without
+tracking the very large factor $m!2^{m(m-1)/2}$ would not automatically
+produce a small relative error for $\Gamma_m^{\mathrm{TM}}$ itself.
+This distinction matters at high order.
+
+\begin{corollary}[Order and type]\label{cor:entiretype}
+For every fixed $a>0$, the entire function $s\mapsto D(s,a)$ has order two
+and type $\lambda/2$. Equivalently, if
+$M_D(R)=\max_{|s|\le R}|D(s,a)|$, then
+\begin{equation}\label{eq:entiretype}
+ \limsup_{R\to\infty}\frac{\log M_D(R)}{R^2}=\frac{\log2}{2}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+For $R\ge2$ and $|s|\le R$, split the Mellin integral at one:
+\[
+ |M(s,a)|\le C_R(a)+\Gamma(R)a^{-R}.
+\]
+Theorem~\ref{thm:asymptotics}, periodic boundedness of $\Theta$, and the
+usual gamma integral estimate give a logarithmic upper bound
+$\lambda R^2/2+O_a(R\log R)$.
+The Weierstrass product for $1/\Gamma(s)$ gives
+$\max_{|s|\le R}|1/\Gamma(s)|\le\exp(O(R\log R))$.
+For completeness, split its product at $n=\lceil2R\rceil$:
+the first part contributes $O(R\log R)$ and
+$\log(1+s/n)-s/n=O(R^2/n^2)$ controls the tail.
+This proves the required upper bound for $D$.
+
+For the reverse bound, Cauchy's estimate on the circle of radius one about
+$-m$ gives
+\[
+ M_D(m+1)\ge|\partial_sD(-m,a)|=m!C_m(a).
+\]
+The main theorem implies
+$\log C_m(a)=\lambda m(m-1)/2+\log K_0+o(1)$.
+Dividing by $(m+1)^2$ proves the matching lower limit superior.
+A positive finite limit superior in \eqref{eq:entiretype} establishes the
+stated order and type.
+\end{proof}
+
+\section{Positive moments, Hankel determinants, and invisible phases}\label{sec:moments}
+
+\subsection{Strict positivity and quantitative Hankel growth}
+The substitution $x=1/t$ in $C_m$ gives
+\begin{equation}\label{eq:Cmoment}
+ C_m(a)=\int_0^\infty x^m w_a(x)\dd x,
+ \qquad w_a(x)=x^{-1}e^{-a/x}Q(1/x)>0.
+\end{equation}
+Every integer moment exists. Thus the following positivity concerns the
+\emph{derivative data} of $D$, not an unrelated Hankel matrix formed
+straight from the signs $\eps_n$.
+
+\begin{proposition}[Strict Hankel positivity]\label{prop:Hankel}
+For integers $n,\ell\ge0$,
+\begin{equation}\label{eq:Hankelpositive}
+ \det[C_{i+j+\ell}(a)]_{i,j=0}^n>0.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:Turan}
+ C_m(a)C_{m+2}(a)>C_{m+1}(a)^2,
+ \qquad
+ \frac{C_m(a)C_{m+2}(a)}{C_{m+1}(a)^2}\longrightarrow2.
+\end{equation}
+More generally, for fixed $n$ as $m\to\infty$,
+\begin{equation}\label{eq:Hankelasympt}
+ \begin{split}
+ \det[C_{m+i+j}(a)]_{i,j=0}^n\sim{}&K_0^{n+1}
+ 2^{\frac{n+1}{2}m(m-1)+mn(n+1)+\frac{n(n+1)(n-1)}3}\\
+ &\times\prod_{0\le i<j\le n}(2^j-2^i).
+ \end{split}
+\end{equation}
+The relative error in \eqref{eq:Hankelasympt} is $O(2^{-m})$ for fixed
+$a,n$, and is $O(2^{-2m})$ at $a=1/2$.
+\end{proposition}
+\begin{proof}
+The matrix in \eqref{eq:Hankelpositive} is the Gram matrix of
+$1,x,\ldots,x^n$ for the strictly positive measure $x^\ell w_a(x)\dd x$.
+A nonzero polynomial cannot vanish almost everywhere for this measure, so
+the matrix is positive definite.
+
+For the asymptotic determinant, apply Theorem~\ref{thm:asymptotics} to its
+finitely many entries. Factor $K_0 2^{m(m-1)/2}$ from each row,
+$2^{mi+i(i-1)/2}$ from row $i$, and
+$2^{mj+j(j-1)/2}$ from column $j$.
+The remaining matrix is $[2^{ij}+O(2^{-m})]$.
+Its limiting determinant is the nonzero Vandermonde product
+$\prod_{i<j}(2^j-2^i)$. Summing the row and column exponents gives
+\eqref{eq:Hankelasympt}; the centered improvement follows from $c_1(1/2)=0$.
+The limiting ratio in \eqref{eq:Turan} follows directly from the leading
+terms of the three entries.
+\end{proof}
+
+\subsection{All integer Mellin moments can miss a periodic perturbation}
+The kernel $\W$ gives a particularly transparent moment-indeterminate
+family. This is a specific realization of a phenomenon familiar from the
+classical lognormal moment problem~\cite{Heyde}, not a claim that moment
+indeterminacy itself is new.
+
+\begin{proposition}[Integer-moment invisibility]\label{prop:invisible}
+Let $p:\R\to\R$ be bounded, measurable, and one-periodic. If
+\begin{equation}\label{eq:pweightedzero}
+ \int_0^\infty \W(t)p(\log_2t)\frac{\dd t}{t}=0,
+\end{equation}
+then, for every integer $k$,
+\begin{equation}\label{eq:allmomentzero}
+ \int_0^\infty t^{k-1}\W(t)p(\log_2t)\dd t=0.
+\end{equation}
+If in addition $p$ is nonzero on a set of positive measure and
+$\|p\|_\infty\le1$, the probability measures
+\begin{equation}\label{eq:stieltjesfamily}
+ \frac{\W(t)}{K_0t}\{1+\eta p(\log_2t)\}\dd t,
+ \qquad -1<\eta<1,
+\end{equation}
+are distinct and have the same moments $2^{k(k+1)/2}$ for every $k\in\Z$.
+\end{proposition}
+\begin{proof}
+Multiplication of $\W(t)$ by $p(\log_2t)$ preserves the scaling equation
+\eqref{eq:Wscale}. Its Mellin transform therefore satisfies the same shift
+recurrence as $K$, by absolute integrability and the same substitution.
+A zero at $s=0$ consequently gives zeros at all integers.
+Positivity, normalization, and the moment formula for
+\eqref{eq:stieltjesfamily} follow immediately. Nontriviality of $p$ makes
+the measures distinct.
+\end{proof}
+
+Nonzero functions satisfying \eqref{eq:pweightedzero} are easy to produce:
+subtract the weighted average from any nonconstant bounded periodic
+function and rescale its sup norm. Later we will impose a second,
+unweighted mean-zero condition to preserve a gamma normalization as well.
+
+\section{Classification of completely monotone dyadic solutions}\label{sec:classification}
+
+\subsection{The measure theorem}
+We use the Bernstein representation theorem: a completely monotone
+function on $(0,\infty)$ is the Laplace transform of a unique positive
+Radon measure on $[0,\infty)$, with finite Laplace transform at every
+positive argument. One reference stating both representation and uniqueness
+is Aguech--Jedidi~\cite[Theorem~1]{AJ}.
+
+\begin{theorem}[All positive dyadic solutions]\label{thm:classification}
+A function $f:(0,\infty)\to\R$ is completely monotone and satisfies
+\begin{equation}\label{eq:dyadicequation}
+ f(a)=f(a/2)-f((a+1)/2)
+\end{equation}
+if and only if there is a positive Radon measure $\nu$ on $(0,\infty)$
+with $\nu(2B)=\nu(B)$ such that
+\begin{equation}\label{eq:frepresent}
+ f(a)=\int_0^\infty e^{-at}Q(t)\,\nu(\dd t).
+\end{equation}
+The measure is unique. It is determined by an arbitrary finite positive
+measure $\nu_0$ on the half-open fundamental interval $[1,2)$, and the
+correspondence is explicitly
+\begin{equation}\label{eq:shellrepresentation}
+ f(a)=\int_{[1,2)}\sum_{j\in\Z}
+          e^{-a2^jv}Q(2^jv)\,\nu_0(\dd v).
+\end{equation}
+The zero measure corresponds to the zero solution.
+\end{theorem}
+\begin{proof}
+Suppose first that $f$ is completely monotone. Write
+$f(a)=\int_{[0,\infty)}e^{-at}\,\mu(\dd t)$ by Bernstein's theorem.
+For a measure $\mu$, denote by $\mu(2\,\dd u)$ the pushforward under
+$t\mapsto t/2$, so it assigns mass $\mu(2B)$ to a Borel set $B$.
+Equation \eqref{eq:dyadicequation} and uniqueness of Laplace transforms give
+\begin{equation}\label{eq:mumeasure}
+ \mu(\dd u)=(1-e^{-u})\mu(2\,\dd u).
+\end{equation}
+This also proves $\mu(\{0\})=0$.
+Since $Q(u)>0$ for $u>0$, define
+$\nu(\dd u)=Q(u)^{-1}\mu(\dd u)$. It is locally finite on $(0,\infty)$.
+Using $Q(u)=(1-e^{-u})Q(2u)$ in \eqref{eq:mumeasure} yields
+$\nu(\dd u)=\nu(2\,\dd u)$, exactly the stated invariance.
+Uniqueness follows from uniqueness of $\mu$.
+
+Conversely, let $\nu$ be positive and invariant. Its mass on $[1,2)$ is
+finite by local finiteness. Partitioning $(0,\infty)$ into the disjoint
+half-open intervals $[2^j,2^{j+1})$ gives \eqref{eq:shellrepresentation}.
+At $j\to-\infty$, the bound \eqref{eq:Qflat} with arbitrarily large $N$
+makes the shell sum converge, even after multiplication by any fixed
+power of $t$. At $j\to+\infty$, the factor $e^{-at}$ dominates every
+power. The convergence is locally uniform for $a>0$ and persists under
+all $a$-derivatives. Thus \eqref{eq:frepresent} is finite and completely
+monotone. The scaling equation of $Q$ and invariance of $\nu$ verify
+\eqref{eq:dyadicequation} directly. Finally, a finite measure on $[1,2)$
+extends uniquely by scaling to such a measure on $(0,\infty)$.
+\end{proof}
+
+This classification includes discrete, absolutely continuous, and singular
+measures. It does not secretly assume that a density with respect to
+$\dd t/t$ exists.
+
+\subsection{Normalization fixes mass, not phase}
+\begin{corollary}[The normalized solution simplex]\label{cor:normalization}
+For the solution in Theorem~\ref{thm:classification},
+\begin{equation}\label{eq:normalization}
+ f(1/2)=\nu_0([1,2)).
+\end{equation}
+Consequently, the normalized solutions $f(1/2)=\lambda$ are exactly the
+mixtures of
+\begin{equation}\label{eq:phasefunctions}
+ f_\theta(a)=\lambda\sum_{j\in\Z}
+      e^{-a2^{j+\theta}}Q(2^{j+\theta}),\qquad 0\le\theta<1.
+\end{equation}
+Distinct phases give distinct functions. Their uniform phase average is
+canonical:
+\begin{equation}\label{eq:canonicalaverage}
+ C_0(a)=\int_0^1 f_\theta(a)\dd\theta.
+\end{equation}
+\end{corollary}
+\begin{proof}
+The identity
+\begin{equation}\label{eq:telescoper}
+ e^{-t/2}Q(t)=Q(t)-Q(t/2)
+\end{equation}
+gives, for every fixed $v>0$,
+\[
+ \sum_{j\in\Z}e^{-2^{j-1}v}Q(2^jv)
+ =\lim_{J\to\infty}\{Q(2^Jv)-Q(2^{-J-1}v)\}=1.
+\]
+Insert this into \eqref{eq:shellrepresentation} and use positivity to
+interchange sum and integral. This proves \eqref{eq:normalization}.
+The extremal measures with mass $\lambda$ are point masses
+$\lambda\delta_{2^\theta}$; the representation is affine and injective,
+so their functions are the extremal normalized solutions.
+Distinct phases have disjoint multiplicative lattices, and uniqueness of
+Laplace transforms distinguishes the functions.
+For the last identity, substitute $t=2^{j+\theta}$ on each shell, so
+$\dd t/t=\lambda\dd\theta$.
+\end{proof}
+
+In particular,
+\begin{equation}\label{eq:canonicalnorms}
+ C_0(1/2)=\lambda,\qquad C_0(1)=\lambda/2,
+ \qquad\Gamma_0^{\mathrm{TM}}(1/2)=2.
+\end{equation}
+Every normalized solution also has $f(1)=\lambda/2$, because the equation
+at $a=1$ reads $f(1)=f(1/2)-f(1)$.
+Thus evaluating only at either of these two points conceals the
+nonuniqueness. The computations below use $a=1/3$ instead.
+
+\subsection{Nonuniqueness persists for entire differential towers}
+Given an invariant positive measure $\nu$, define, for $\rho\in\R$,
+\begin{equation}\label{eq:generalizedC}
+ C_\rho^\nu(a)=\int_0^\infty t^{-\rho}e^{-at}Q(t)\,\nu(\dd t).
+\end{equation}
+The endpoint argument in the classification proof shows that these
+integrals are finite and completely monotone for every fixed $\rho$.
+For integer levels,
+\begin{equation}\label{eq:nutowerlaws}
+ (C_m^\nu)'=-C_{m-1}^\nu\quad(m\ge1),\qquad
+ C_m^\nu(a)=2^m\{C_m^\nu(a/2)-C_m^\nu((a+1)/2)\}.
+\end{equation}
+Thus the phase freedom is compatible with every level of the differential
+ladder and every dyadic equation. Moreover, $C_m^\nu(a)\to0$ as
+$a\to\infty$, by dominated convergence with any fixed positive lower
+bound on $a$. Vanishing at infinity does not eliminate this freedom.
+
+\section{Universal coefficients and beyond-all-orders ambiguity}\label{sec:ambiguity}
+
+\subsection{The same coefficient calculus works for every phase measure}
+For a nonzero invariant positive measure $\nu$, set
+\begin{equation}\label{eq:Knu}
+ K_\nu(s)=\int_0^\infty t^s\W(t)\,\nu(\dd t),\qquad
+ \Theta_\nu(\rho)=2^{-\rho(\rho-1)/2}K_\nu(-\rho).
+\end{equation}
+The Gaussian envelope on each shell proves that $K_\nu$ is entire and
+positive on the real axis. Invariance and \eqref{eq:Wscale} imply
+\begin{equation}\label{eq:Knurecurrence}
+ K_\nu(s+1)=2^{s+1}K_\nu(s).
+\end{equation}
+Consequently $\Theta_\nu$ is one-periodic and positive on the real axis.
+
+\begin{theorem}[Universal high-order coefficients]\label{thm:universal}
+For every nonzero invariant positive measure $\nu$, the expansion
+\begin{equation}\label{eq:universalexp}
+ \frac{C_\rho^\nu(a)}{2^{\rho(\rho-1)/2}\Theta_\nu(\rho)}
+ =\sum_{k=0}^{N-1}c_k(a)2^{-k\rho}+\mathcal R_N^\nu(\rho,a)
+\end{equation}
+has exactly the same coefficient polynomials as in
+Theorem~\ref{thm:asymptotics}, and
+\begin{equation}\label{eq:universalremainder}
+ |\mathcal R_N^\nu(\rho,a)|
+ \le M_{I,r}r^{-N}2^{N(N+1)/2-N\rho}.
+\end{equation}
+In particular, the relative remainder bound is independent of $\nu$.
+\end{theorem}
+\begin{proof}
+Write $\rho=m+\theta$ as before. Scaling by $2^{-m}$ in the invariant
+measure and using \eqref{eq:Qfinitelevel} gives
+\[
+ C_{m+\theta}^\nu(a)
+ =2^{m(m-1)/2+m\theta}
+   \int_0^\infty t^{-\theta}\W(t)R_a(2^{-m}t)\,\nu(\dd t).
+\]
+Apply the global Taylor estimate and replace the $K$-recurrence in the
+proof of Theorem~\ref{thm:asymptotics} by
+\eqref{eq:Knurecurrence}. Positivity permits the same absolute remainder
+estimate. The moment ratios are identical, so no coefficient changes.
+\end{proof}
+
+\subsection{Normalized towers can agree to every formal order}
+\begin{theorem}[Beyond-all-orders nonuniqueness]\label{thm:ambiguity}
+There are infinitely many invariant positive measures $\nu\ne\dd t/t$
+for which
+\begin{equation}\label{eq:ambiguitynormalizations}
+ C_0^\nu(1/2)=\lambda,\qquad K_\nu(0)=K_0.
+\end{equation}
+For each of them and every fixed $a>0$, the two sequences
+$C_m^\nu(a)$ and $C_m(a)$ have the same complete formal expansion in
+powers of $2^{-m}$, with the same leading constant.
+More quantitatively, they may be constructed so that, for every compact
+$I\subset(0,\infty)$, $0<r<4\pi$, and integer $N\ge1$,
+\begin{equation}\label{eq:ambiguitybound}
+ \frac{|C_m^\nu(a)-C_m(a)|}{K_0\,2^{m(m-1)/2}}
+ \le |\eta|M_{I,r}r^{-N}2^{N(N+1)/2-Nm},\qquad a\in I,
+\end{equation}
+where $0<|\eta|<1$ is a freely chosen perturbation parameter.
+The corresponding functions $a\mapsto C_0^\nu(a)$ are nevertheless distinct.
+\end{theorem}
+\begin{proof}
+Choose a nonzero real trigonometric polynomial $p$ of period one satisfying
+\begin{equation}\label{eq:twopconditions}
+ \int_0^1p(y)\dd y=0,\qquad
+ \int_0^\infty\W(t)p(\log_2t)\frac{\dd t}{t}=0,
+ \qquad \|p\|_\infty\le1.
+\end{equation}
+Such choices exist in an infinite-dimensional family. To see this
+concretely, take any finite-dimensional span of nonconstant sines and
+cosines. Every element already has zero ordinary mean; the weighted
+condition imposes at most one linear equation. With two or more
+independent modes there is a nonzero solution, which can be rescaled.
+Increasing the number of modes gives arbitrarily large families.
+
+Define
+\begin{equation}\label{eq:nupperturb}
+ \nu(\dd t)=\{1+\eta p(\log_2t)\}\frac{\dd t}{t},
+ \qquad0<|\eta|<1.
+\end{equation}
+This is positive and dyadically invariant. The first zero mean gives
+$\nu([1,2))=\lambda$; the second gives $K_\nu(0)=K_0$.
+Proposition~\ref{prop:invisible} gives equality of all integer $K$-moments.
+Theorem~\ref{thm:universal}, at integer orders, therefore gives the same
+formal expansion and leading constant.
+
+For the stronger bound, use the exact renormalization of the difference:
+\[
+ C_m^\nu(a)-C_m(a)
+ =\eta\,2^{m(m-1)/2}\int_0^\infty
+       \W(t)p(\log_2t)R_a(2^{-m}t)\frac{\dd t}{t}.
+\]
+Every term of the Taylor polynomial integrates to zero by
+\eqref{eq:allmomentzero}. The global Taylor remainder, $|p|\le1$, and
+$K(N)=2^{N(N+1)/2}K_0$ give \eqref{eq:ambiguitybound}.
+Finally, the Laplace measures $Q(t)\nu(\dd t)$ are different because
+$p$ is nonzero and $Q>0$. Laplace uniqueness implies that the functions
+$C_0^\nu$ are different.
+\end{proof}
+
+Choosing $N$ as in \eqref{eq:tau}--\eqref{eq:optimal}, with $\rho=m$,
+makes the relative difference in \eqref{eq:ambiguitybound} at most
+\begin{equation}\label{eq:ambiguityoptimal}
+ |\eta|2^{1/8}M_{I,r}\,
+       2^{-\frac12(m+\log_2r-1/2)^2}.
+\end{equation}
+This gives a concrete mathematical meaning to ``invisible to all formal
+high-order corrections.'' It does not say that two distinct towers have
+the same exact values. Nor does it rule out characterization by a different
+asymptotic variable: the next section uses $a\downarrow0$ precisely to
+recover the missing information.
+
+\section{A boundary characterization of the canonical tower}\label{sec:uniqueness}
+
+\subsection{A single slope limit selects the invariant measure}
+\begin{theorem}[Boundary uniqueness]\label{thm:uniqueness}
+Let $f$ be completely monotone on $(0,\infty)$ and satisfy
+\eqref{eq:dyadicequation}. Then
+\begin{equation}\label{eq:slopecondition}
+ \lim_{a\downarrow0}(-a f'(a))=1
+\end{equation}
+holds if and only if
+\begin{equation}\label{eq:canonicalunique}
+ f(a)=C_0(a)=\int_0^\infty e^{-at}Q(t)\frac{\dd t}{t}.
+\end{equation}
+No separate point normalization is needed.
+More generally, replacing the limit one by a nonnegative constant $c$
+selects $f=cC_0$.
+\end{theorem}
+\begin{proof}
+Let $\nu$ be the invariant representing measure from
+Theorem~\ref{thm:classification}. Fix $s>0$ and set $a_N=s2^{-N}$.
+Scaling by $2^N$ in the measure gives
+\begin{equation}\label{eq:slopescale}
+ -a_N f'(a_N)
+ =\int_0^\infty st e^{-st}Q(2^Nt)\,\nu(\dd t).
+\end{equation}
+For each fixed $t>0$, $Q(2^Nt)\to1$.
+The dominating kernel $st e^{-st}$ is integrable against $\nu$:
+on shells tending to zero it is $O_s(2^j)$, and on shells tending to
+infinity it has exponential decay. Each shell has the same finite mass.
+Dominated convergence therefore yields
+\begin{equation}\label{eq:slopelimit}
+ \lim_{N\to\infty}(-a_N f'(a_N))
+   =s\int_0^\infty t e^{-st}\,\nu(\dd t).
+\end{equation}
+If \eqref{eq:slopecondition} holds, the right side equals one for every
+$s>0$. Hence the measure $t\nu(\dd t)$ has Laplace transform $1/s$.
+This is the Laplace transform of Lebesgue measure $\dd t$ on
+$(0,\infty)$, and uniqueness gives $t\nu(\dd t)=\dd t$.
+Thus $\nu(\dd t)=\dd t/t$, proving necessity.
+
+For the canonical measure, substitution $u=at$ gives
+\[
+ -aC_0'(a)=a\int_0^\infty e^{-at}Q(t)\dd t
+       =\int_0^\infty e^{-u}Q(u/a)\dd u\longrightarrow1
+\]
+by $0<Q\le1$ and dominated convergence.
+The proof with limit $c$ identifies $t\nu(\dd t)=c\dd t$ in exactly the
+same way, including $c=0$.
+\end{proof}
+
+Equation \eqref{eq:slopelimit} explains the obstruction in the other
+solutions: in general, the dyadic boundary limits retain the phase
+information of $\nu$. A full limit as $a\downarrow0$, rather than a
+limit along one selected dyadic sequence, removes that information.
+The hypothesis genuinely means a limit through \emph{all} positive $a$.
+
+\subsection{A finite-part condition is sufficient}
+\begin{corollary}[Finite-part characterization]\label{cor:finitepart}
+Within the completely monotone solutions of \eqref{eq:dyadicequation},
+the existence of a finite limit
+\begin{equation}\label{eq:finitepartcondition}
+ \lim_{a\downarrow0}\{f(a)+\log a\}\in\R
+\end{equation}
+is equivalent to $f=C_0$. For the canonical function, the limit is
+\begin{equation}\label{eq:kappa}
+ \kappa=-\gamma+
+     \int_0^1\frac{Q(t)}t\dd t+
+     \int_1^\infty\frac{Q(t)-1}t\dd t,
+\end{equation}
+where $\gamma$ is Euler's constant.
+\end{corollary}
+\begin{proof}
+Complete monotonicity implies convexity. For $0<h<1$, the two secant
+bounds around $a$ give
+\begin{equation}\label{eq:convexbounds}
+ \frac{f(a)-f((1+h)a)}h
+ \le -af'(a)
+ \le\frac{f((1-h)a)-f(a)}h.
+\end{equation}
+Under \eqref{eq:finitepartcondition}, the left and right expressions tend,
+as $a\downarrow0$, to $\log(1+h)/h$ and $-\log(1-h)/h$ respectively.
+Letting $h\downarrow0$ proves \eqref{eq:slopecondition}, and
+Theorem~\ref{thm:uniqueness} applies.
+
+For the converse, split the canonical integral as
+\[
+ C_0(a)=\int_0^1e^{-at}\frac{Q(t)}t\dd t
+       +\int_1^\infty e^{-at}\frac{Q(t)-1}t\dd t
+       +\int_1^\infty e^{-at}\frac{\dd t}{t}.
+\]
+The first two integrals converge to their values at $a=0$ by
+Lemma~\ref{lem:Qbounds}. The last is the exponential integral
+$E_1(a)=-\log a-\gamma+o(1)$, which gives \eqref{eq:kappa}.
+\end{proof}
+
+The finite-part hypothesis is stronger than the slope hypothesis as a
+condition on arbitrary functions, but both select exactly the same member
+of the dyadic completely monotone family.
+
+\subsection{Uniqueness of the full differential hierarchy}
+\begin{corollary}[Canonical gamma-tower characterization]\label{cor:towerunique}
+Suppose $f_0,f_1,\ldots$ are completely monotone functions on
+$(0,\infty)$ satisfying
+\begin{equation}\label{eq:toweraxioms}
+ \begin{aligned}
+ f_m(a)&=2^m\{f_m(a/2)-f_m((a+1)/2)\} &&(m\ge0),\\
+ f_m'(a)&=-f_{m-1}(a) &&(m\ge1),
+ \end{aligned}
+\end{equation}
+and $-af_0'(a)\to1$ as $a\downarrow0$.
+Then $f_m=C_m$ for every $m\ge0$. Equivalently, the functions
+$\exp((-1)^m m!f_m)$ are exactly the hierarchy in
+\eqref{eq:Gammadef}.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:uniqueness} gives $f_0=C_0$.
+Inductively, if $f_{m-1}=C_{m-1}$, the differential ladder says that
+$f_m-C_m$ is a constant $d_m$.
+Subtracting the two level-$m$ dyadic equations gives
+$d_m=2^m(d_m-d_m)=0$. This completes the induction.
+\end{proof}
+
+This supplies a normalization and a proof of uniqueness in a precise
+positive class. It does not establish every possible Weierstrass-product
+or complex-analytic assertion one might include in a broader Barnes-type
+program. The two issues should be kept separate.
+
+\section{Reproducible computations and what they verify}\label{sec:numerics}
+
+\subsection{Independent integral evaluation}
+The archive contains \texttt{verify\_results.py} and two JSON reports.
+The coefficient identities were checked exactly with rational symbolic
+arithmetic through $k=12$. The numerical calculations were performed
+with 48 Gauss--Legendre nodes at 60 decimal digits and repeated with
+80 nodes at 80 digits. Both the precision and the quadrature size were
+increased; agreement is not based solely on changing the displayed number
+of digits.
+
+For $K_0$ and $\Theta$, the program evaluates a single multiplicative
+period. Combining \eqref{eq:lognormalW} with $t=2^{y+j}$ gives
+\begin{equation}\label{eq:onecellTheta}
+ \Theta(\rho)=\lambda\,2^{1/8}
+ \int_0^1 A(y)\sum_{j\in\Z}
+ 2^{-(j+y+\rho-1/2)^2/2}\dd y.
+\end{equation}
+Periodicity permits reduction of $\rho$ modulo one.
+The rapidly convergent Gaussian shell sum makes this inexpensive.
+
+The $C_\rho$ checks are evaluated separately from their \emph{original}
+$Q$-integrals, not by inserting the claimed coefficient expansion or the
+$R_a$-renormalization. On logarithmic shells the computation uses
+\begin{equation}\label{eq:onecellC}
+ \begin{split}
+ \frac{C_\rho(a)}{2^{\rho(\rho-1)/2}}
+  =\lambda\int_0^1\sum_{j\in\Z}
+  \exp\bigl(&-\rho\lambda(y+j)-a2^{y+j}\\
+       &+\log Q(2^{y+j})-\tfrac\lambda2\rho(\rho-1)\bigr)\dd y.
+ \end{split}
+\end{equation}
+Small factors are evaluated with \texttt{expm1} to avoid cancellation.
+The shell values of $Q$ use its own product recurrence. This comparison
+can detect an incorrect prefactor or a wrong coefficient in the theorem.
+
+The two runs agree far beyond the digits printed below. For example,
+the reported $K_0$ values agree in the first 49 decimal places; their
+stored difference is less than $4\cdot10^{-51}$.
+The calculations are \emph{not interval-certified}: quadrature stability
+and exact symbolic checks support the implementation, while the proofs
+establish the theorems. The numerical work does not establish a sharp
+constant in the remainder bound or historical novelty.
+
+\subsection{Centered derivative data}
+Let
+\[
+ Z_m=\frac{C_m(1/2)}{K_0\,2^{m(m-1)/2}},\quad
+ P_2=1-\frac{2^{-2m}}9,\quad
+ P_4=P_2+\frac{248}{2025}2^{-4m},\quad
+ P_6=P_4-\frac{4806656}{2679075}2^{-6m}.
+\]
+Table~\ref{tab:centered} compares successive approximations. For fixed
+truncation order the improvement agrees with the even powers predicted by
+symmetry.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rcccc}
+\toprule
+$m$ & $|Z_m-1|$ & $|Z_m-P_2|$ & $|Z_m-P_4|$ & $|Z_m-P_6|$\\
+\midrule
+4  & $4.322382\,10^{-4}$ & $1.789613\,10^{-6}$ & $7.911730\,10^{-8}$ & $2.782223\,10^{-8}$\\
+8  & $1.695392\,10^{-6}$ & $2.850821\,10^{-11}$& $6.353778\,10^{-15}$& $2.031475\,10^{-17}$\\
+12 & $6.622738\,10^{-9}$ & $4.350974\,10^{-16}$& $3.799206\,10^{-22}$& $4.918108\,10^{-27}$\\
+16 & $2.587007\,10^{-11}$& $6.639065\,10^{-21}$& $2.264533\,10^{-29}$& $1.145315\,10^{-36}$\\
+\bottomrule
+\end{tabular}
+\caption{Absolute errors in the normalized centered expansion. The notation
+$x\,10^{-j}$ means $x\times10^{-j}$.}
+\label{tab:centered}
+\end{table}
+
+At $m=4$, the benefit of further terms is already much less spectacular
+than at $m=16$. This is consistent with the fact that the expansion is
+divergent: adding indefinitely many terms at a fixed order is not justified.
+The full data files also include nonsymmetric shifts and noninteger
+orders, for example $a=1$ and $\rho=8.25,8.5,12.75$.
+
+\subsection{The tiny Mellin phase and the visible gamma phase}
+The observed relative modulation of $\Theta$ is shown in
+Table~\ref{tab:theta}. Its small size is consistent with the exact Fourier
+smoothing factor in \eqref{eq:Thetafourier}.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{cc}
+\toprule
+$\theta$ & $\Theta(\theta)/\Theta(0)-1$\\
+\midrule
+$1/4$ & $1.289029564918397699\times10^{-18}$\\
+$1/2$ & $1.296624062281340296\times10^{-18}$\\
+$3/4$ & $7.594497362942597195\times10^{-21}$\\
+\bottomrule
+\end{tabular}
+\caption{Numerical phase variation. Nonconstancy is numerical evidence
+here, not an additional theorem assumed elsewhere.}
+\label{tab:theta}
+\end{table}
+
+For comparison, Table~\ref{tab:phases} gives the explicit extremal
+solutions of \eqref{eq:phasefunctions}. Their differences are much easier
+to see, although all have $f_\theta(1/2)=\lambda$ and
+$f_\theta(1)=\lambda/2$.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{ccc}
+\toprule
+$\theta$ & $f_\theta(1/3)$ & $-a f_\theta'(a)$ at $a=2^{-24}$\\
+\midrule
+$0$   & $0.956669839913615728$ & $1.00000628193280958$\\
+$1/4$ & $0.956669741884495862$ & $0.99999235648832259$\\
+$1/2$ & $0.956665362383835818$ & $0.99999357544426848$\\
+$3/4$ & $0.956665460410626991$ & $1.00000750091845969$\\
+\bottomrule
+\end{tabular}
+\caption{Distinct positive normalized solutions. The canonical value is
+$C_0(1/3)=0.956667601148143600\ldots$. The slope column is a finite-$a$
+evaluation, not a claimed exact limiting value.}
+\label{tab:phases}
+\end{table}
+
+The program also checks the dyadic equation away from these special
+normalization points, using $a=1.3$ and $\theta=0.27$.
+The residual is below $10^{-70}$ in the 80-digit run.
+Agreement at $a=1$ alone would be an inadequate test because that value
+is forced by the normalization.
+
+\subsection{How to reproduce the data}
+From the extracted archive, run
+\begin{verbatim}
+python verify_results.py --dps 60 --nodes 48 --output results_48.json
+python verify_results.py --dps 80 --nodes 80 --output results_80.json
+\end{verbatim}
+The script requires \texttt{mpmath} and \texttt{sympy}, records their
+installed versions, and has no network dependency. It checks the
+coefficient derivative law, reflection law, and centered parity by exact
+symbolic simplification. It does not use numerical differentiation of
+$D$ near its zeros, where cancellation would make a direct approach much
+less stable.
+
+\section{Interpretation and further research directions}\label{sec:outlook}
+
+The principal mechanism is not cancellation among many alternating
+Dirichlet terms. It is a positive product identity. Once $Q$ is paired
+with its dyadic uniform-sum counterpart $H$, the resulting multiplicative
+cocycle makes its Mellin moments exactly solvable. The difficult
+high-order dependence moves into a single analytic function $R_a$ at a
+small argument. This is why explicit coefficients and a global remainder
+can be obtained together.
+
+The classification theorem gives a complementary lesson. The dyadic
+functional equation controls how a measure moves between scales, but it
+does not prescribe the distribution of mass within a scale. One-point
+normalization determines only that scale's total mass. The all-orders
+construction shows that even a full formal expansion at integer orders
+can fail to recover the missing phase information. The boundary slope
+recovers the whole Laplace transform of the invariant measure, and thus
+is strong enough to characterize it.
+
+Several concrete extensions remain worth pursuing. One is to obtain a
+closed Fourier or residue formula for the amplitude $A$, and from it a
+fully explicit proof and bound for the nonconstant modulation of $\Theta$.
+Another is to determine the leading exponentially small discrepancy in
+Theorem~\ref{thm:ambiguity}, rather than only its Gaussian-in-order upper
+bound. The poles of $R_a$ at imaginary multiples of $4\pi$ and the chosen
+phase measure should enter such a refinement, but this article does not
+supply that additional expansion.
+
+A separate quantitative task is to replace the tube supremum $M_{I,r}$ by
+simple computable constants optimized for a given shift interval.
+The proof of Lemma~\ref{lem:tubebound} already separates a compact region
+from a controlled tail, so interval arithmetic could turn it into a
+numerical certificate. The present tables should not be mistaken for that
+certificate.
+
+The positive-measure classification and the proof of the uniform remainder
+also have clear formalization targets: product convergence, pushforward
+identities, the Mellin recurrence, Cauchy estimates on a tube, and Laplace
+uniqueness. None of these targets requires asserting that the results
+already appear in the repository's Lean code. Finally, analogous product
+pairs for other dilation factors may produce related invariant-measure
+classifications; a radix change must be made at the level of the product
+equation rather than by replacing every two in the final formulas without
+checking the underlying sequence.
+
+\appendix
+\section{A compact audit of hypotheses and conclusions}\label{app:audit}
+
+The asymptotic parameter is real $\rho\to\infty$, with $a$ in a fixed
+compact subset of $(0,\infty)$. Uniformity up to $a=0$ is not claimed:
+indeed, $R_0(x)=1/H(x)$ is unbounded as $x\to\infty$, which invalidates
+the tube supremum used in the proof. The restriction is structural rather
+than cosmetic.
+
+The all-orders series has zero convergence radius as a series in
+$h=2^{-\rho}$. A finite expansion with a proved remainder is the intended
+meaning of every $\sim$ symbol in this article. Optimal truncation gives
+an upper bound of Gaussian size in $\rho$, but not a matching lower bound.
+The finite coefficient formula is exact independently of numerical tests.
+
+The uniqueness theorem assumes complete monotonicity, not merely
+positivity of $f$ or of an exponentiated gamma function. This assumption
+makes a positive Laplace measure available and is essential to the stated
+classification proof. The normalized nonunique examples satisfy this
+stronger condition, so they are not counterexamples obtained by leaving
+the proposed positive class.
+
+The ambiguity theorem compares integer-order expansions. In general its
+perturbations need not preserve the entire function
+$\Theta_\nu(\rho)$ at noninteger orders. Equality of every integer Mellin
+moment is weaker than equality of the full Mellin transform, just as the
+explicit Stieltjes family demonstrates.
+
+The term ``gamma tower'' refers exactly to
+$\exp((-1)^m m!C_m(a))$, or its measure-deformed counterpart. The article
+proves a real positive-class characterization; it does not silently assume
+a preferred continuation to all complex $a$, a canonical Weierstrass
+factorization, or an inversion transseries for that tower.
+
+\section{Source and novelty audit}\label{app:sources}
+
+The supplied repository document was read as the public raw LaTeX source
+at the URL in reference~\cite{Atlas}; its consolidated document is dated
+August 2026. The comparison used its Mellin-continuation material, its
+automatic gamma-hierarchy material, and its stated frontier on hierarchy
+normalization. A moving repository URL is not an immutable version pin;
+no unverified commit hash is assigned to it here.
+
+Classical Dirichlet-series facts were checked against the sources listed
+below. The primary text of the complete-monotonicity representation was
+available in~\cite{AJ}; the present measure equation and its classification
+are derived in Section~\ref{sec:classification}, rather than attributed to
+that reference. The general historical statements about Mellin
+log-periodicity and lognormal moment indeterminacy are background only.
+None of those references is being credited with the particular uniform
+remainder theorem or the boundary argument without evidence.
+
+The 2001 Alkauskas preprint was located on its author's bibliography, but
+the linked PDF did not load during this investigation. It is recorded
+because of its potentially relevant subject, not cited as a text that was
+fully examined. Consequently, historical priority remains a separate
+verification task. The claims of this article are the stated mathematical
+theorems and their proofs, supplemented by reproducible but non-interval
+numerical checks.
+
+\clearpage
+\begin{thebibliography}{99}
+\bibitem{Atlas}
+V.~Reshetnikov, \emph{The Thue--Morse Sequence: Formula Atlas and
+Fabius--Rvachev Frontier Results}, ProveIt repository, consolidated
+August 2026, public source consulted 4 September 2026.\\
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers}
+
+\bibitem{AC}
+J.-P.~Allouche and H.~Cohen, Dirichlet series and curious infinite products,
+\emph{Bulletin of the London Mathematical Society} \textbf{17} (1985),
+531--538. \url{https://doi.org/10.1112/blms/17.6.531}.
+
+\bibitem{AMP}
+J.-P.~Allouche, M.~Mend\`es France, and J.~Peyri\`ere,
+Automatic Dirichlet series, \emph{Journal of Number Theory}
+\textbf{81} (2000), 359--373.
+\url{https://doi.org/10.1006/jnth.1999.2487}.
+
+\bibitem{Allouche2015}
+J.-P.~Allouche, Thue, combinatorics on words, and conjectures inspired by
+the Thue--Morse sequence, \emph{Journal de Th\'eorie des Nombres de Bordeaux}
+\textbf{27} (2015), 375--388.
+\url{https://arxiv.org/abs/1401.3727}.
+
+\bibitem{Arias}
+J.~Arias de Reyna, Arithmetic of the Fabius function,
+\emph{Integers} \textbf{18} (2018), Paper A51.
+\url{https://math.colgate.edu/~integers/s51/s51.pdf}.
+
+\bibitem{FGD}
+P.~Flajolet, X.~Gourdon, and P.~Dumas,
+Mellin transforms and asymptotics: harmonic sums,
+\emph{Theoretical Computer Science} \textbf{144} (1995), 3--58.
+\url{https://specfun.inria.fr/dumas/Publications/FlGoDu95.pdf}.
+
+\bibitem{Heyde}
+C.~C.~Heyde, On a property of the lognormal distribution,
+\emph{Journal of the Royal Statistical Society, Series B}
+\textbf{25} (1963), 392--393.
+\url{https://doi.org/10.1111/j.2517-6161.1963.tb00521.x}.
+
+\bibitem{AJ}
+R.~Aguech and W.~Jedidi, New characterizations of completely monotone
+functions and Bernstein functions, a converse to Hausdorff's moment
+characterization theorem, \emph{Arab Journal of Mathematical Sciences}
+\textbf{25} (2019), 57--82. Theorem~1 states the positive Laplace
+representation and uniqueness used here.\\
+\url{https://ajms.ksu.edu.sa/sites/ajms.ksu.edu.sa/files/imce_images/new-characterizations-of-completely-monotone-functions-a_2019_arab-journal-o.pdf}
+
+\bibitem{Toth}
+L.~T\'oth, \emph{Linear Combinations of Dirichlet Series Associated with the
+Thue--Morse Sequence}, arXiv:2211.13570 (2022).
+\url{https://arxiv.org/abs/2211.13570}.
+
+\bibitem{Alkauskas}
+G.~Alkauskas, \emph{Dirichlet series associated with Thue--Morse sequence},
+Vilnius University, preprint 2001-15 (2001). Bibliographic record located
+on the author's page; linked full text not retrieved in this investigation.\\
+\url{https://web.vu.lt/mif/g.alkauskas/math/index.html}.
+\end{thebibliography}
+\end{document}

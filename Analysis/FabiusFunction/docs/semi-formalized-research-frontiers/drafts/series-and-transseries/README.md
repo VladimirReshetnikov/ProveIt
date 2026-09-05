@@ -165,3 +165,44 @@ genuinely missing — the saddle-localization lemma, the certified pole-tail
 bounds, the linear pole budget, and the weighted Fubini polynomials — were
 absorbed before deleting. Numeric residue is sequence values, numerical-table
 mantissas and worked-example integers, none of them a result.
+
+## Three further arrivals (2026-09-04)
+
+Three independently written articles arrived after the consolidation, in intake
+commits `13c6476e3` and `3824b7720`, and are filed as separate members beside
+the volume.  Each states that it extends the volume's methods to complementary
+families rather than restating them; whether they overlap each other, and how
+much of each the volume already contains, has not been assessed.
+
+- [`combinatorial_transseries_and_inverses/`](combinatorial_transseries_and_inverses/)
+  — *Combinatorial Transseries and Their Inverses: Further Families*
+  (29 pp A4; 1,519 source lines; 9 theorems).  Balanced factorial ratios,
+  fixed-column Stirling and Eulerian numbers, Motzkin numbers, involutions,
+  Euler zigzag numbers, and central Gaussian binomials at fixed `q > 1`, with
+  a common multiplicative inversion theorem.
+- [`combinatorial_transseries_extension/`](combinatorial_transseries_extension/)
+  — *Combinatorial Transseries and Their Inverses* (42 pp A4; 2,241 source
+  lines; 10 theorems).  Catalan and Fuss–Catalan numbers, Motzkin, Delannoy
+  and large Schröder numbers, alternating permutations, connected labeled
+  graphs, necklaces and Lyndon words, and harmonic inversion, with a
+  fixed-order theorem for every exponential layer of connected-graph
+  enumeration.
+- [`combinatorial_transseries_extension-2/`](combinatorial_transseries_extension-2/)
+  — *Combinatorial Transseries and Their Inverses: q-Products, Finite Fields,
+  Theta Sectors, and Arithmetic Sheets* (39 pp Letter; 1,970 source lines;
+  6 theorems).  Classical group orders, flag counts, `q`-Catalan and Galois
+  numbers — the last with an entire generating function for all exponential
+  corrections coming from theta series of the `A_{r-1}` root lattice — plus a
+  convergent-inverse-transseries theorem and a `W_{-1}` leading inverse on
+  fixed-radical subsequences.
+
+All three archives wrapped an inner directory named
+`combinatorial_transseries_extension/`, so the distinct archive stems are the
+directory names; two stems and their inner file names are crossed.  One
+archive's purpose-specific `MANIFEST.sha256` was verified and remains in the
+filed package; the other two shipped `SHA256SUMS.txt` ledgers, which were
+verified and then retired under repository policy.  No source loads
+`docs/fabius-notation.tex`.  Comparison with the volume, deduplication, proof
+checking, and Lean crosswalking are deferred.
+
+See [`../MANIFEST.md`](../MANIFEST.md) for the group record.

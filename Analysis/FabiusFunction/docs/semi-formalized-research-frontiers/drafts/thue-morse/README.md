@@ -158,4 +158,64 @@ relocated Part II bundle under `assets/` contains figures and
 reproducibility material only; it no longer contains a standalone TeX or
 PDF manuscript.
 
+## Six further arrivals (2026-09-04)
+
+Six more independently written Thue–Morse articles arrived on 2026-09-04
+(intake commit `cc21b6e81`) and are filed as separate members, not compared,
+deduplicated, or merged into the volume:
+
+- [`Thue_Morse_Boundary_Corrections/`](Thue_Morse_Boundary_Corrections/) —
+  *Exact Boundary Corrections for Thue–Morse Diffraction* (25 pp A4;
+  1,690 source lines; 14 theorems).  Identifies the entire sub-cutoff error of
+  the finite diffraction measure with one signed Stern sequence and derives a
+  corrected positive density exact through the bandwidth, with sharp
+  negative-Sobolev rates.
+- [`Thue_Morse_Dyadic_Completion/`](Thue_Morse_Dyadic_Completion/) —
+  *A Dyadic Completion of the Thue–Morse Product* (30 pp A4; 2,223 source
+  lines; 10 theorems, 4 open questions).  Completes the Laplace product by the
+  Fabius uniform-sum transform, gets `K(2t) = K(t)/t`, and concludes that every
+  positive shift of the Thue–Morse Dirichlet function has infinitely many
+  nonreal zeros in the left half-plane.
+- [`Thue_Morse_New_Directions/`](Thue_Morse_New_Directions/) —
+  *Thue–Morse Beyond the Atlas: Boundary Defects, Nonlinear Prouhet Geometry,
+  and Flat Automatic q-Products* (30 pp A4; 2,067 source lines; 9 theorems).
+  Exact dyadic correlation defects from one finite boundary functional, a
+  hypergraph-covering reading of the cancellation order, and an all-order
+  Lambert-`W` saddle expansion for the automatic geometric product.
+- [`Thue_Morse_Rational_Resonances/`](Thue_Morse_Rational_Resonances/) —
+  *Rational Resonances and Coalescing Roots of the Thue–Morse Polynomials*
+  (30 pp Letter; 1,427 source lines; 11 theorems).  Local profiles in windows
+  of width `2^-m` about each rational frequency, the Fabius Laplace transform
+  at dyadic roots, a hierarchy of double-scaling limits, and a cyclotomic
+  product identity.
+- [`Thue_Morse_Research/`](Thue_Morse_Research/) — *New Deductions from
+  Thue–Morse Cancellation* (26 pp A4; 1,927 source lines; 11 theorems).
+  All-orders `C^k` spline corrections without removing knot neighborhoods, the
+  exact polynomiality of finite spline values in `4^-m` at a fixed dyadic
+  argument, an exact differential conversion formula for repeated summation,
+  and the moments `2^r(r+1)` of the Fourier-energy density.
+- [`thue_morse_research_article/`](thue_morse_research_article/) —
+  *Thue–Morse Mellin Renormalization and Gamma-Tower Uniqueness*
+  (24 pp Letter; 1,551 source lines; 6 theorems).  The same dyadic completion,
+  with an all-orders expansion at the negative-integer zeros and a
+  classification of the completely monotone solutions of the dyadic equation.
+
+Two overlaps are already visible and are the natural first work on this batch.
+`Thue_Morse_Dyadic_Completion/` and `thue_morse_research_article/` build the
+same completion of the Thue–Morse Laplace product by the Fabius transform and
+draw consequences for the same Dirichlet function; they are the obvious
+consolidation pair.  Separately, the exact-polynomiality-in-`4^-m` result of
+`Thue_Morse_Research/` is the mechanism of the three recurrence-free
+dyadic-value articles filed in the same batch under
+[`../inverse-and-sampling/dyadic-up-extraction/`](../inverse-and-sampling/dyadic-up-extraction/).
+
+Directory names are the archive stems throughout: one archive shipped no
+wrapping directory, and `thue_morse_research_article.zip` wrapped
+`thue_morse_research/`, which Windows would not distinguish from its sibling
+`Thue_Morse_Research/`.  Submitted `SHA256SUMS` ledgers were verified in full
+and then retired under repository policy; historical bytes remain recoverable
+from Git.  Eight CSV tables in two of the packages received the repository's
+CRLF-to-LF normalization at commit.  No source loads
+`docs/fabius-notation.tex`.
+
 See [`../MANIFEST.md`](../MANIFEST.md) for titles and the previous paths.

@@ -1,0 +1,1519 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{xcolor,fancyhdr,enumitem,listings,xurl,tocloft}
+\setlength{\cftbeforesecskip}{0.3em}
+\setlength{\cftbeforesubsecskip}{0pt}
+\setlength{\cftparskip}{0pt}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Combinatorial Transseries and Their Inverses: Further Families},pdfauthor={Research extension prepared for Vladimir Reshetnikov},pdfsubject={All-order coefficients, real interpolations, exact exponential sectors, and asymptotic inversion}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\Res}{Res}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\coef}[1]{\left[#1\right]}
+\newcommand{\ExpC}{\mathcal E}
+\newcommand{\LogC}{\mathcal L}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\qbin}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\Sii}[2]{\genfrac{\{}{\}}{0pt}{}{#1}{#2}}
+\newcommand{\sone}[2]{s(#1,#2)}
+\newcommand{\baseid}[1]{\texttt{\detokenize{#1}}}
+\numberwithin{equation}{section}
+\allowdisplaybreaks
+\setlength{\parskip}{0.25em}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=0.2em,topsep=0.35em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Combinatorial transseries and their inverses}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,breaklines=true,showstringspaces=false,frame=single,rulecolor=\color{black!25},keepspaces=true}
+\title{\textbf{Combinatorial Transseries\\and Their Inverses}\\[0.6em]
+\Large Further families: factorial ratios, finite exponential sums,\
+endpoint moments, involutions, alternating permutations,\
+and Gaussian binomial coefficients}
+\author{Research extension prepared for Vladimir Reshetnikov}
+\date{4 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+This article extends the methods of \emph{Transseries: the polynomial--logarithmic calculus and its inversions} to complementary combinatorial families. We give all-order forward and inverse coefficient formulas for balanced factorial ratios, including Fuss--Catalan numbers, central multinomial coefficients, and rectangular standard Young tableaux; fixed-column Stirling and Eulerian numbers; Motzkin numbers and central trinomial coefficients; involutions; Euler zigzag numbers; and central Gaussian binomial coefficients at fixed $q>1$.
+
+The examples distinguish several genuinely different asymptotic mechanisms. Finite exponential sums have convergent inverse expansions with explicitly computable action collisions. Signed moment representations give exact endpoint or saddle blocks before any asymptotic expansion is taken. Involutions exhibit an unbounded inverse correction of order $\sqrt X/\log X$, followed by oscillatory sectors of size $\ee^{-2\sqrt X}$. Gaussian binomial coefficients have a quadratic logarithmic phase and convergent inverse corrections in $\exp(-\sqrt{(\log q)\log y})$.
+
+A common multiplicative inversion theorem expresses every sector coefficient using signed Stirling numbers of the first kind and finitely many derivatives. Each sequence is supplied with an explicit real interpolation or parity-resolved interpolations. Formal identities, Poincar\'e asymptotics, convergent amplitude expansions, and discrete threshold inverses are kept separate. Exact coefficient checks, reproducible numerical tests, and computational implementations accompany the proofs. No claim of a complete complex Stokes classification or of machine formalization is made.
+\end{abstract}
+\newpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{Scope, conventions, and relation to the parent article}
+\label{sec:intro}
+
+\subsection{What is being extended}
+The parent manuscript \cite{parent} organizes inversion around an exactly invertible dominant phase and a nonvanishing normalized slope. We retain that architecture. In particular, its results labelled \baseid{p0:thm:perturbed-inversion}, \baseid{p0:thm:lambert-centered}, \baseid{p0:thm:backward-error}, and \baseid{p0:thm:staircase} are the relevant interfaces. The present paper is standalone: the formulas needed below are stated and proved here, so it requires neither the parent's notation file nor its lengthy consolidated source.
+
+The additional work is in the construction and analysis of new forward blocks, their coefficient formulas, and their inverse sector structure. We do not re-present the parent's individual treatments of partitions, rooted unlabelled trees, Bell and Fubini numbers, double and swing factorials, or its special-function inverse chapters. The source was consulted at the repository's \texttt{main} branch on 4 September 2026; this is an access-date reference, not a claim of a pinned commit or PDF/source parity.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.26\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Family & Forward structure & Large inverse structure\\
+\midrule
+Balanced factorial ratios & $C\ee^{ax}x^b$ times a gamma-ratio block & $W_{-1}$ core when $b<0$; inverse powers of the core\\
+Fixed Stirling columns & A finite sum of $j^x$ & Convergent generalized powers of $y^{-1}$\\
+Fixed Eulerian columns & Polynomial multiples of $j^x$ & Convergent power--logarithmic exponential sectors\\
+Motzkin and trinomial & Two exact moment blocks; relative $3^{-x}\cos\pi x$ & Logarithmic growth plus an oscillatory sector lattice\\
+Involutions & $\ee^{\frac x2(\log x-1)\pm\sqrt x}$; half-power blocks & $W_0$ core, $\sqrt X/\log X$ drift, then $\ee^{-2\sqrt x}$ sectors\\
+Euler zigzag numbers & Gamma growth times an odd-integer Dirichlet series & Centered $W_0$ core and multiplicative odd-integer sectors\\
+Central Gaussian binomials & $q^{x^2}$ times a convergent series in $q^{-x}$ & Square-root-logarithmic core and stretched exponential corrections\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Three meanings of an inverse}
+Throughout, an inverse function means \emph{compositional inversion of the growth interpolation}, not the reciprocal $1/F(x)$ and not the compositional inverse of an ordinary generating function. For an eventually strictly increasing sequence $a_n$, the discrete threshold inverse is
+\begin{equation}
+ N_a(y)=\min\{n\ge n_0:a_n\ge y\}.
+ \label{eq:threshold}
+\end{equation}
+If $F$ is a continuous strictly increasing interpolation with $F(n)=a_n$ for $n\ge n_0$, then
+\begin{equation}
+ N_a(y)=\lceil F^{-1}(y)\rceil.
+ \label{eq:ceiling}
+\end{equation}
+This follows directly from monotonicity: $F(n)\ge y$ is equivalent to $n\ge F^{-1}(y)$. The ceiling cannot be replaced uniformly by an $o(1)$ error.
+
+Interpolation is substantive information. For example, if $F$ is eventually positive with $(\log F)'$ bounded below by a positive constant, then
+\begin{equation}
+ \widetilde F(x)=F(x)\bigl(1+\epsilon\ee^{-cx}\sin\pi x\bigr),\qquad c>0,
+ \label{eq:ambiguity}
+\end{equation}
+agrees with $F$ on the integers and is eventually increasing, but generally has a different exponentially small inverse correction. Every analytic inverse assertion below therefore names the interpolation being inverted.
+
+\subsection{Meaning of the expansions}
+For an algebraic block, $U(x)\sim\sum_{j\ge0}u_jx^{-j}$ means that, for every fixed $M$, the remainder after $j<M$ is $\OO(x^{-M})$. The analogous convention is used for half-powers. No convergence is implied.
+
+A \emph{block transseries} here consists of explicitly defined functions $A_\nu(x)$, carrying specified exponential or oscillatory factors, together with all-order expansions of their amplitudes. Whenever we write an exact identity such as
+\[
+ F(x)=A_+(x)+\cos(\pi x)A_-(x),
+\]
+the blocks are fixed by integrals or products, not merely by their asymptotic coefficients. This is essential: a finite algebraic truncation of $A_+$ usually has an error much larger than $A_-$. Exponentially small inverse sectors are first defined relative to the \emph{exact} dominant block and only then expanded internally.
+
+Oscillatory terms are ordered by their nonoscillatory envelopes. A statement such as $\OO(3^{-2x})$ is meaningful at zeros of $\cos\pi x$; a relative equivalence to $3^{-x}\cos\pi x$ need not be. We use complex harmonics $\ee^{\pm\ii\pi x}$ for coefficient bookkeeping and take real combinations at the end.
+
+\section{Coefficient calculus and two inversion engines}
+\label{sec:engines}
+
+\subsection{Finite partition formulas}
+Let $d_1,d_2,\ldots$ be coefficients over a characteristic-zero field. Define
+\begin{equation}
+ \ExpC_n(d)=
+ \sum_{\substack{k_1,\ldots,k_n\ge0\\\sum j k_j=n}}
+ \prod_{j=1}^n\frac{d_j^{k_j}}{k_j!},\qquad \ExpC_0=1.
+ \label{eq:expcoeff}
+\end{equation}
+Then
+\[
+ \exp\!\left(\sum_{j\ge1}d_jt^j\right)=\sum_{n\ge0}\ExpC_n(d)t^n.
+\]
+For a unit series $1+\sum_{j\ge1}u_jt^j$, put
+\begin{equation}
+ \LogC_n(u)=
+ \sum_{\substack{\sum j k_j=n\\r=\sum k_j}}
+ (-1)^{r-1}(r-1)!\prod_{j=1}^n\frac{u_j^{k_j}}{k_j!}.
+ \label{eq:logcoeff}
+\end{equation}
+It is the coefficient of $t^n$ in the logarithm of that unit series. Both identities follow by expanding the exponential or logarithm and using the multinomial theorem. These are finite formulas; no recurrence is hidden in their definitions. In standard notation, $\ExpC_n=B_n(1!d_1,\ldots,n!d_n)/n!$.
+
+We write $s(r,m)$ for the \emph{signed} Stirling numbers of the first kind, normalized by
+\begin{equation}
+ \fall{z}{r}=\sum_{m=0}^r s(r,m)z^m,
+ \qquad
+ (\log(1+u))^m=m!\sum_{r\ge m}\frac{s(r,m)}{r!}u^r.
+ \label{eq:stirlingsign}
+\end{equation}
+Thus $s(2,1)=-1$. A sign error here changes the inverse sectors.
+
+\subsection{Additive perturbations of an exactly invertible phase}
+\begin{theorem}[Phase-coordinate inversion]
+\label{thm:phase}
+Let $\phi$ and $R$ be analytic near $x_0$, with $\phi'(x_0)\ne0$, let $L=\phi(x_0)$, and write $g=\phi^{-1}$ locally. The solution of
+\[
+ \phi(x)+zR(x)=L,
+\]
+which equals $x_0$ at $z=0$, is analytic for sufficiently small $z$ and satisfies
+\begin{equation}
+ x=g(L)+\sum_{m\ge1}\frac{(-z)^m}{m!}
+ \frac{\dd^{m-1}}{\dd L^{m-1}}
+ \left\{g'(L)R(g(L))^m\right\}.
+ \label{eq:phaseinv}
+\end{equation}
+The same identity holds formally whenever the perturbation is in a complete positive-order ideal and the phase slope is invertible.
+\end{theorem}
+\begin{proof}
+Set $v=\phi(x)$. Then $v=L-zR(g(v))$. The Lagrange--B\"urmann formula for $g(v)$ gives
+\[
+ g(v)=g(L)+\sum_{m\ge1}\frac{(-z)^m}{m!}
+ \partial_L^{m-1}\bigl(g'(L)R(g(L))^m\bigr).
+\]
+Analytic existence follows from the implicit function theorem at $(x,z)=(x_0,0)$. In the formal setting, comparing successive orders determines each new coefficient by a single division by $\phi'(x_0)$; the analytic coefficient identity is a polynomial identity after that division and therefore also proves the formal formula.
+\end{proof}
+
+This is the phase-coordinate specialization of the parent's perturbed inversion theorem, not a new version of Lagrange inversion. The useful extension is the following closed formula for \emph{multiplicative} sectors.
+
+\begin{theorem}[All multiplicative-sector coefficients]
+\label{thm:multi}
+Let $A(x)>0$ on a real tail, let $\phi=\log A$, assume its derivative is nonzero at the chosen base point, and put $g=\phi^{-1}$ locally. For finitely many analytic functions $q_j$, consider
+\begin{equation}
+ F_{\bm z}(x)=A(x)\left(1+\sum_{j=1}^d z_jq_j(x)\right).
+ \label{eq:multifamily}
+\end{equation}
+Write $L=\log y$, $D=\dd/\dd L$, and, for a multi-index $\nu\ne0$, write $r=|\nu|$, $\nu!=\prod_j\nu_j!$, and
+\[
+ Q_\nu(L)=\prod_j q_j(g(L))^{\nu_j}.
+\]
+Then the inverse branch at $\bm z=0$ is
+\begin{equation}
+ \boxed{\quad
+ F_{\bm z}^{-1}(y)=g(L)+
+ \sum_{\nu\ne0}\frac{\bm z^\nu}{\nu!}
+ \sum_{m=1}^{|\nu|}(-1)^m s(|\nu|,m)
+ D^{m-1}\!\left(g'(L)Q_\nu(L)\right).
+ \quad}
+ \label{eq:multiinv}
+\end{equation}
+It is locally convergent in the sector markers and is also a formal identity. Each coefficient is a finite differential expression.
+\end{theorem}
+\begin{proof}
+Apply \cref{thm:phase} to the perturbation
+$R_{\bm z}(x)=\log(1+\sum z_jq_j(x))$, temporarily introducing a second scalar marker for this perturbation. At a fixed degree $r$ in $\bm z$, only terms $m\le r$ contribute. By \eqref{eq:stirlingsign},
+\[
+ \coef{\bm z^\nu}R_{\bm z}(x)^m
+ =\frac{m!s(r,m)}{\nu!}\prod_jq_j(x)^{\nu_j}.
+\]
+Substitution in \eqref{eq:phaseinv} gives \eqref{eq:multiinv}. This coefficientwise derivation is legitimate even when one has not established convergence at the final marker values. Analytic convergence near zero follows independently from the implicit function theorem.
+\end{proof}
+
+For a single correction $q$, the first two orders are
+\begin{equation}
+ x=g-g'q+\frac12\left\{g'q^2+D(g'q^2)\right\}+\OO(q^3)
+ \label{eq:firstmulti}
+\end{equation}
+when the derivatives of $q$ have the same envelope order. Here $q$ is evaluated at $g$. In the $x$ coordinate, the first displacement is
+\begin{equation}
+ -\frac{q(x_0)}{\phi'(x_0)},\qquad x_0=A^{-1}(y).
+ \label{eq:firstdisplacement}
+\end{equation}
+
+\begin{remark}[Convergence at the physical marker]
+A local theorem at $\bm z=0$ does not by itself justify setting every $z_j=1$. In the applications below, the corrections are uniformly small on a fixed complex disk about a large real $x_0$, while $\phi'$ is asymptotic either to a positive constant, to $c\log x_0$, or to $cx_0$. Taylor's formula gives the fixed-point equation
+\[
+ \delta=-\frac{\log(1+\sum z_jq_j(x_0+\delta))
+ +\phi(x_0+\delta)-\phi(x_0)-\phi'(x_0)\delta}{\phi'(x_0)}.
+\]
+On a sufficiently small fixed disk it is a contraction, uniformly for $|z_j|\le2$, once $x_0$ is large. Its analytic fixed point justifies the marker expansion at $z_j=1$. This also gives a geometric remainder in marker degree, with the correction envelope as small parameter. Infinite Dirichlet sums will be treated by absolute local uniform convergence.
+\end{remark}
+
+\subsection{Linear--logarithmic cores and all algebraic corrections}
+Suppose
+\begin{equation}
+ F(x)\sim C\ee^{ax}x^b
+ \exp\!\left(H(1/x)\right),\qquad
+ H(t)=\sum_{j\ge1}d_jt^j,
+ \quad a>0,
+ \label{eq:linlogmodel}
+\end{equation}
+with differentiated finite-order expansions. Set $L=\log(y/C)$. The large solution of $aX+b\log X=L$ is
+\begin{equation}
+ X=
+ \begin{cases}
+ L/a,&b=0,\\[2pt]
+ \dfrac ba W_0\!\left(\dfrac ab\ee^{L/b}\right),&b>0,\\[6pt]
+ \dfrac ba W_{-1}\!\left(\dfrac ab\ee^{L/b}\right),&b<0.
+ \end{cases}
+ \label{eq:linlogcore}
+\end{equation}
+For $b<0$ the large branch has $X>-b/a$. This follows by setting $w=aX/b$ and selecting the real Lambert branch with $X\to\infty$.
+
+Put
+\begin{equation}
+ \Psi(t,u)=-\frac1a\left[b\log(1+tu)+
+ H\!\left(\frac{t}{1+tu}\right)\right].
+ \label{eq:psi}
+\end{equation}
+Then the inverse is
+\begin{equation}
+ F^{-1}(y)\sim X+\sum_{n\ge1}c_nX^{-n},\qquad
+ c_n=\sum_{m=1}^n\frac1m\coef{t^nu^{m-1}}\Psi(t,u)^m.
+ \label{eq:linlogcoeff}
+\end{equation}
+Indeed $u=x-X$ satisfies $u=\Psi(X^{-1},u)$; the fixed-point form of Lagrange inversion gives the formula. The first coefficients are
+\begin{align}
+ c_1&=-\frac{d_1}{a},\nonumber\\
+ c_2&=\frac{bd_1}{a^2}-\frac{d_2}{a},\label{eq:c123}\\
+ c_3&=-\frac{b^2d_1}{a^3}+\frac{bd_2-d_1^2}{a^2}-\frac{d_3}{a}.\nonumber
+\end{align}
+A finite substitution leaves a residual $\OO(X^{-N-1})$ in the logarithmic equation. Since its derivative tends to $a>0$, the inverse error is also $\OO(X^{-N-1})$.
+
+The Lambert core can be eliminated if an expansion in ordinary logarithms is preferred. With $h=\log(L/a)$, the first terms are
+\begin{equation}
+ F^{-1}(y)=\frac1a\left[
+ L-bh+\frac{b^2h-ad_1}{L}
+ +\OO\!\left(\frac{(1+|h|)^2}{L^2}\right)\right].
+ \label{eq:flatten}
+\end{equation}
+The general coefficients follow by substituting this ansatz in the phase, or directly from \eqref{eq:linlogcoeff} and the Lambert expansion. Retaining $X$ is usually simpler and numerically better conditioned.
+
+\subsection{Action collisions and finite computation}
+If $q_j(x)=x^{\beta_j}\ee^{-\lambda_jx}U_j(x)$ with finitely many $\lambda_j>0$, an inverse coefficient of multi-degree $\nu$ carries the action
+\begin{equation}
+ \Lambda_\nu=\sum_j\nu_j\lambda_j.
+ \label{eq:action}
+\end{equation}
+Only finitely many multi-indices lie below any fixed action cutoff, because $|\nu|\le T/\min\lambda_j$. When different multi-indices have the same action, their coefficients must be \emph{added}. Treating them as distinct physical exponentials overcounts the answer. Polynomial and trigonometric amplitude rings are stable under the derivatives in \eqref{eq:multiinv}; no unspecified auxiliary recurrence is needed to generate a coefficient.
+
+\section{Balanced factorial ratios}
+\label{sec:ratios}
+
+\subsection{A general Bernoulli formula}
+\begin{theorem}[Balanced gamma products]
+\label{thm:ratios}
+Let
+\begin{equation}
+ F(x)=K\prod_{i=1}^s\Gamma(a_ix+b_i)^{\epsilon_i},
+ \qquad K>0,\quad a_i>0,
+ \label{eq:gammaratio}
+\end{equation}
+where the exponents and shifts are real and fixed. Assume
+$\sum_i\epsilon_i a_i=0$. Define
+\begin{align}
+ a&=\sum_i\epsilon_i a_i\log a_i,
+ &b&=\sum_i\epsilon_i(b_i-\tfrac12),\nonumber\\
+ C&=K(2\pi)^{\frac12\sum_i\epsilon_i}
+ \prod_i a_i^{\epsilon_i(b_i-1/2)}.
+ \label{eq:ratioparameters}
+\end{align}
+Then, as $x\to+\infty$,
+\begin{equation}
+ \log F(x)\sim ax+b\log x+\log C+
+ \sum_{m\ge1}\frac{d_m}{x^m},
+ \quad
+ d_m=\frac{(-1)^{m+1}}{m(m+1)}
+ \sum_i\frac{\epsilon_i B_{m+1}(b_i)}{a_i^m}.
+ \label{eq:ratioall}
+\end{equation}
+Consequently its forward coefficients are $\ExpC_n(d)$ and, if $a>0$, its eventual real inverse is given to all orders by \eqref{eq:linlogcore}--\eqref{eq:linlogcoeff}.
+\end{theorem}
+\begin{proof}
+The shifted Stirling formula \cite{dlmfgamma} is
+\[
+ \log\Gamma(z+b)\sim(z+b-\tfrac12)\log z-z+
+ \tfrac12\log(2\pi)+
+ \sum_{m\ge1}\frac{(-1)^{m+1}B_{m+1}(b)}{m(m+1)z^m}.
+\]
+Apply it with $z=a_ix$ and sum with weights $\epsilon_i$. The balance condition cancels the $x\log x$ and $-x$ terms. The remaining elementary terms are exactly \eqref{eq:ratioparameters}; the inverse-power terms give \eqref{eq:ratioall}. Exponentiation at each fixed order proves the forward formula. The differentiated Stirling expansion gives $(\log F)'=a+b/x+\OO(x^{-2})$, so $F$ is positive and strictly increasing on a tail when $a>0$. The inverse conclusion follows from the residual argument after \eqref{eq:c123}.
+\end{proof}
+
+\subsection{Fuss--Catalan numbers}
+For an integer $r\ge2$, define
+\begin{equation}
+ C_r(n)=\frac1{(r-1)n+1}\binom{rn}{n},\qquad
+ C_r(x)=\frac{\Gamma(rx+1)}{\Gamma(x+1)\Gamma((r-1)x+2)}.
+ \label{eq:fuss}
+\end{equation}
+The case $r=2$ is the Catalan sequence A000108, and $r=3$ is A001764 \cite{oeiscatalan,oeisfuss}. Their parameters are
+\begin{equation}
+ a_r=\log\frac{r^r}{(r-1)^{r-1}},\qquad
+ b=-\frac32,\qquad
+ C=\frac{\sqrt r}{\sqrt{2\pi}(r-1)^{3/2}}.
+ \label{eq:fussparameters}
+\end{equation}
+Every logarithmic coefficient is explicitly
+\begin{equation}
+ d_m^{(r)}=\frac{(-1)^{m+1}}{m(m+1)}
+ \left[\frac{B_{m+1}(1)}{r^m}-B_{m+1}(1)
+ -\frac{B_{m+1}(2)}{(r-1)^m}\right].
+ \label{eq:fussd}
+\end{equation}
+For example,
+\[
+ d_1^{(r)}=\frac{r^{-1}-1-13/(r-1)}{12},\qquad
+ d_2^{(r)}=\frac1{2(r-1)^2}.
+\]
+Thus, with $L=\log(y/C)$,
+\begin{equation}
+ X=-\frac3{2a_r}W_{-1}\!\left(-\frac{2a_r}{3}\ee^{-2L/3}\right),
+ \qquad
+ C_r^{-1}(y)=X-\frac{d_1^{(r)}}{a_rX}+\OO(X^{-2}).
+ \label{eq:fussinverse}
+\end{equation}
+Equations \eqref{eq:fussd} and \eqref{eq:linlogcoeff} provide all further terms as finite sums.
+
+For ordinary Catalan numbers, $a=\log4$ and
+\begin{align}
+ C_2(x)&\sim\frac{4^x}{\sqrt\pi\,x^{3/2}}
+ \left(1-\frac9{8x}+\frac{145}{128x^2}
+ -\frac{1155}{1024x^3}+\frac{36939}{32768x^4}+\cdots\right),
+ \label{eq:catalanforward}\\
+ C_2^{-1}(y)&=X+\frac9{8aX}
+ +\frac{27-8a}{16a^2X^2}
+ +\frac{3(7a^2-43a+54)}{64a^3X^3}
+ +\OO(X^{-4}).
+ \label{eq:catalaninverse}
+\end{align}
+The $W_{-1}$ branch is indispensable. The $W_0$ branch tends to zero and does not approximate the growth inverse.
+
+\subsection{Central multinomial coefficients}
+For fixed integer $r\ge2$, take
+\begin{equation}
+ M_r(x)=\frac{\Gamma(rx+1)}{\Gamma(x+1)^r}.
+ \label{eq:multinomial}
+\end{equation}
+At integer $n$ this counts words containing $n$ copies of each of $r$ symbols. In \cref{thm:ratios},
+\begin{equation}
+ a=r\log r,\qquad b=-\frac{r-1}{2},\qquad
+ C=\sqrt r(2\pi)^{(1-r)/2},
+ \label{eq:multinomialparameters}
+\end{equation}
+and
+\begin{equation}
+ d_m=\frac{(-1)^{m+1}B_{m+1}(1)}{m(m+1)}(r^{-m}-r).
+ \label{eq:multinomiald}
+\end{equation}
+Only odd $m$ occur. Thus the logarithmic correction has a parity sparsity that the ordinary forward coefficients do not: exponentiating an odd series produces both parities. The inverse is again \eqref{eq:linlogcoeff}, with the parameters above. For $r=2$, this gives central binomial coefficients; for $r=3$, it gives $(3n)!/(n!)^3$.
+
+\subsection{Rectangular standard Young tableaux}
+For fixed integer $r\ge2$, the hook-length formula for the rectangle with $r$ rows of length $n$ gives
+\begin{equation}
+ T_r(n)=\frac{(rn)!\prod_{j=0}^{r-1}j!}{\prod_{j=0}^{r-1}(n+j)!}.
+ \label{eq:tableaux}
+\end{equation}
+The denominator follows directly from the hooks in each column: their product is
+$\prod_{j=0}^{r-1}(n+j)!/j!$. The $r=3$ sequence is A005789 \cite{oeistableaux}. Replace factorials by gamma functions to define $T_r(x)$. Then
+\begin{equation}
+ a=r\log r,\qquad b=-\frac{r^2-1}{2},\qquad
+ C=\sqrt r(2\pi)^{(1-r)/2}\prod_{j=0}^{r-1}j!,
+ \label{eq:tableauxparameters}
+\end{equation}
+with all logarithmic coefficients
+\begin{equation}
+ d_m=\frac{(-1)^{m+1}}{m(m+1)}
+ \left[r^{-m}B_{m+1}(1)-\sum_{j=0}^{r-1}B_{m+1}(j+1)\right].
+ \label{eq:tableauxd}
+\end{equation}
+This family separates exponential rate from power-law prefactor: it has the same exponential rate as the central multinomial family but the exponent $b$ is quadratic rather than linear in $r$. Consequently the coefficient of $\log\log y$ in the flattened inverse changes from $(r-1)/(2r\log r)$ to $(r^2-1)/(2r\log r)$.
+
+\subsection{What is and is not fixed beyond all orders}
+\label{subsec:binet}
+The gamma interpolation in \eqref{eq:gammaratio} is an exact function, not an arbitrary function with a Stirling expansion. A convenient exact completion is Binet's formula \cite{dlmfbinet}:
+\begin{equation}
+ \log\Gamma(z)=(z-\tfrac12)\log z-z+\tfrac12\log(2\pi)
+ +\int_0^\infty\ee^{-zt}
+ \left(\frac12-\frac1t+\frac1{\ee^t-1}\right)\frac{\dd t}{t},
+ \quad z>0.
+ \label{eq:binet}
+\end{equation}
+It fixes the gamma block including its flat remainder. The Taylor expansion of the kernel at zero gives the Stirling coefficients. Its nonzero complex singularities occur at $2\pi\ii\mathbb Z\setminus\{0\}$, which explains factorial divergence, but does \emph{not} authorize assigning an arbitrary real-axis sector $c\ee^{-2\pi x}$.
+
+For computational error control, keep the elementary logarithms in \eqref{eq:binet} unexpanded and truncate the usual Stirling tail at $m=M-1$. With $z_i=a_ix+b_i>0$, the absolute error of the weighted logarithmic product is bounded by
+\begin{equation}
+ \mathcal B_M(x)=\sum_i|\epsilon_i|
+ \frac{|B_{2M}|}{2M(2M-1)z_i^{2M-1}}.
+ \label{eq:binetbound}
+\end{equation}
+This uses the first-omitted-term bound on the positive real axis \cite{dlmfgamma}. It concerns this unexpanded-log evaluation; additional re-expansion errors must be included if one instead evaluates a polynomial in $1/x$.
+
+\section{Finite exponential sums: Stirling and Eulerian columns}
+\label{sec:finite}
+
+\subsection{Fixed-column Stirling numbers of the second kind}
+For a fixed integer $k\ge2$, the number of partitions of an $n$-element set into $k$ nonempty blocks is $\Sii nk$. Inclusion--exclusion for surjections onto a labelled $k$-element set gives the familiar finite formula documented for \texttt{StirlingS2} \cite{wlstirling}. For the real interpolation used here, define
+\begin{equation}
+ S_k(x)=\frac1{k!}\sum_{j=1}^k(-1)^{k-j}\binom kj j^x.
+ \label{eq:stirlinginterp}
+\end{equation}
+It agrees with $\Sii nk$ for positive integers $n$. We only invert its positive, eventually increasing tail. The leading term and its derivative are $k^x/k!$ and $(\log k)k^x/k!$, respectively, whereas all other terms are exponentially smaller. This proves that such a tail exists.
+
+Write
+\begin{equation}
+ a=\log k,\quad X=\frac{\log(k!y)}a,\quad
+ \lambda_j=\log(k/j),\quad \kappa_j=\lambda_j/a,\quad
+ c_j=(-1)^{k-j}\binom kj \qquad(1\le j<k).
+ \label{eq:stirlingparams}
+\end{equation}
+The exact forward transseries is just
+\begin{equation}
+ S_k(x)=\frac{k^x}{k!}\left(1+\sum_{j=1}^{k-1}c_j\ee^{-\lambda_jx}\right).
+ \label{eq:stirlingforward}
+\end{equation}
+There are no missing algebraic correction series in these forward blocks.
+
+\begin{theorem}[Closed coefficients for the Stirling-column inverse]
+\label{thm:stirling}
+For sufficiently large $y$, the following multi-index series is absolutely convergent and equals the large real inverse of \eqref{eq:stirlinginterp}:
+\begin{equation}
+ S_k^{-1}(y)=X-\frac1a\sum_{\nu\in\NN^{k-1}\setminus\{0\}}
+ \frac{\displaystyle\prod_{h=1}^{|\nu|-1}(\kappa\cdot\nu-h)}{\nu!}
+ \prod_{j=1}^{k-1}\left(c_j\ee^{-\lambda_jX}\right)^{\nu_j}.
+ \label{eq:stirlinginverse}
+\end{equation}
+The product over $h$ is $1$ when $|\nu|=1$, and $\nu!=\prod_j\nu_j!$. Thus every coefficient is given by a finite product, without recursive inversion.
+\end{theorem}
+\begin{proof}
+In \cref{thm:multi}, take $A(x)=k^x/k!$ and $q_j(x)=c_j\ee^{-\lambda_jx}$. Then $g=X$, $g'=1/a$, and
+\[
+ D^{m-1}(g'Q_\nu)=\frac1a(-\kappa\cdot\nu)^{m-1}Q_\nu.
+\]
+For $r=|\nu|$ and $K=\kappa\cdot\nu>0$, the signed-Stirling identity implies
+\[
+ \sum_{m=1}^r(-1)^m s(r,m)(-K)^{m-1}
+ =-\frac{\fall Kr}{K}
+ =-\prod_{h=1}^{r-1}(K-h).
+\]
+This yields \eqref{eq:stirlinginverse}. For convergence, set $x=X+\delta$ and regard $t_j=c_j\ee^{-\lambda_jX}$ as independent variables. The equation is
+\[
+ a\delta+\log\left(1+\sum_jt_j\ee^{-\lambda_j\delta}\right)=0.
+\]
+Its derivative in $\delta$ at $(\delta,\bm t)=(0,0)$ is $a\ne0$. The analytic implicit function theorem supplies a convergent power series in a polydisk about $\bm t=0$. The physical $\bm t$ eventually belongs to that polydisk.
+\end{proof}
+
+The exponent of $k!y$ in a term is $-\kappa\cdot\nu$. All terms below a fixed action cutoff form a finite set. If $\kappa\cdot\nu\in\{1,\ldots,|\nu|-1\}$, that particular coefficient vanishes. Such cancellations are structural, not numerical coincidences.
+
+\begin{example}[Two and three blocks]
+For $k=2$, $S_2(x)=2^{x-1}-1$. Here $c_1=-2$, $\kappa_1=1$, and \eqref{eq:stirlinginverse} reduces to
+\[
+ S_2^{-1}(y)=\log_2(2y)+\frac1{\log2}
+ \sum_{r\ge1}\frac{(-1)^{r+1}}{r y^r}
+ =1+\log_2(y+1).
+\]
+For $k=3$,
+\[
+ S_3(x)=\frac{3^x-3\,2^x+3}{6},\qquad X=\log_3(6y).
+\]
+The terms of marker degree one in its inverse are
+\begin{equation}
+ \delta_{[1]}=\frac{3(2/3)^X-3\,3^{-X}}{\log3}.
+ \label{eq:stirling3first}
+\end{equation}
+The contribution with two copies of the $(2/3)^X$ sector is
+\[
+ \frac{9(1-2\log(3/2)/\log3)}{2\log3}(2/3)^{2X}.
+\]
+Marker degree and numerical size are different orderings: a degree-one term with a large action can be smaller than many higher-degree terms with smaller action. Formula \eqref{eq:stirlinginverse} supports either a total-degree truncation or an action-sorted truncation, provided the convention is stated.
+\end{example}
+
+\subsection{Fixed numbers of descents: Eulerian columns}
+Let $A(n,m)$ count permutations of $n$ elements with exactly $m$ descents, with zero-based $m$. The Eulerian triangle is A008292 \cite{oeiseulerian}. For fixed $m\ge1$ define
+\begin{equation}
+ E_m(x)=\sum_{j=0}^m(-1)^j\binom{x+1}{j}(m+1-j)^x.
+ \label{eq:eulerianinterp}
+\end{equation}
+For integer $n\ge1$ this is the standard finite inclusion--exclusion formula for $A(n,m)$. The binomial coefficient in \eqref{eq:eulerianinterp} means the degree-$j$ polynomial $(x+1)x\cdots(x+2-j)/j!$, so there is no ambiguity at real $x$.
+
+Put $a=\log(m+1)$, $X=\log y/a$, and, for $1\le j\le m$, put
+\[
+ P_j(x)=(-1)^j\binom{x+1}{j},\qquad
+ \lambda_j=\log\frac{m+1}{m+1-j}.
+\]
+Then
+\begin{equation}
+ E_m(x)=\ee^{ax}\left(1+\sum_{j=1}^mP_j(x)\ee^{-\lambda_jx}\right).
+ \label{eq:eulerianforward}
+\end{equation}
+This is again exact, and it proves eventual positivity and monotonicity. It also displays a new feature: the subdominant exponential amplitudes are nonconstant polynomials.
+
+\begin{proposition}[All Eulerian inverse sectors]
+For $\nu\in\NN^m\setminus\{0\}$, let $r=|\nu|$, $\Lambda_\nu=\sum_j\nu_j\lambda_j$, and $P_\nu(X)=\prod_jP_j(X)^{\nu_j}$. The contribution of multi-degree $\nu$ to $E_m^{-1}(y)-X$ is
+\begin{equation}
+ \delta_\nu=
+ \frac{\ee^{-\Lambda_\nu X}}{a\nu!}
+ \sum_{\ell=1}^r(-1)^\ell s(r,\ell)a^{1-\ell}
+ (\partial_X-\Lambda_\nu)^{\ell-1}P_\nu(X).
+ \label{eq:eulerianinverse}
+\end{equation}
+The sum of all these terms converges for sufficiently large $y$. Each sector amplitude is a polynomial in $X$, of degree at most $\sum_jj\nu_j$.
+\end{proposition}
+\begin{proof}
+Use \cref{thm:multi} with $g=X$ and $D=a^{-1}\partial_X$. Conjugating differentiation by $\ee^{-\Lambda_\nu X}$ gives
+\[
+ D^{\ell-1}(g'Q_\nu)=a^{-\ell}\ee^{-\Lambda_\nu X}
+ (\partial_X-\Lambda_\nu)^{\ell-1}P_\nu(X).
+\]
+This proves the coefficient formula and the degree bound. On a fixed disk about large $X$, the functions $P_j(X+\delta)\ee^{-\lambda_j(X+\delta)}$ and their derivatives are uniformly exponentially small. The contraction argument after \cref{thm:multi} therefore proves convergence at the physical marker values.
+\end{proof}
+
+For example, $E_1(x)=2^x-x-1$, hence
+\[
+ E_1^{-1}(y)=X+\frac{X+1}{\log2}\,2^{-X}
+ +\OO(X^2 2^{-2X}),\qquad X=\log_2 y.
+\]
+Formula \eqref{eq:eulerianinverse} supplies the complete amplitude at every order, not merely this first correction. After $2^{-X}=y^{-1}$ is substituted, the inverse is a convergent series of polynomials in $\log y$ multiplied by powers of $y^{-1}$. For general $m$, the exponents need not be integers.
+
+\section{Two exact endpoint blocks: Motzkin and central trinomial numbers}
+\label{sec:endpoints}
+
+\subsection{A common moment model}
+The Motzkin and central trinomial sequences are A001006 and A002426 \cite{oeismotzkin,oeistrinomial}. Their elementary finite sums are
+\begin{equation}
+ M_n=\sum_{j=0}^{\lfloor n/2\rfloor}\binom n{2j}\frac1{j+1}\binom{2j}j,
+ \qquad
+ T_n=\sum_{j=0}^{\lfloor n/2\rfloor}\binom n{2j}\binom{2j}j.
+ \label{eq:endpointcounts}
+\end{equation}
+Both fit the signed-support moment identity
+\begin{equation}
+ a_n=C_\alpha\int_{-1}^3 t^n\bigl((3-t)(t+1)\bigr)^\alpha\,\dd t,
+ \quad
+ (\alpha,C_\alpha)=
+ \begin{cases}
+ (\tfrac12,\tfrac1{2\pi}),&a_n=M_n,\\
+ (-\tfrac12,\tfrac1\pi),&a_n=T_n.
+ \end{cases}
+ \label{eq:endpointmoment}
+\end{equation}
+To verify it, set $t=1+s$. For $\alpha=1/2$, the even moments of the normalized semicircle density on $[-2,2]$ are $(j+1)^{-1}\binom{2j}j$; for $\alpha=-1/2$, the even moments of the normalized arcsine density are $\binom{2j}j$. Odd moments vanish. Both even-moment assertions follow by the substitution $s=2\cos\theta$ and a beta integral. Expanding $(1+s)^n$ gives \eqref{eq:endpointcounts}.
+
+For real $x>-1$, define the positive blocks
+\begin{align}
+ A_+(x)&=C_\alpha\int_0^3t^x\bigl((3-t)(t+1)\bigr)^\alpha\,\dd t,\nonumber\\
+ A_-(x)&=C_\alpha\int_0^1t^x\bigl((3+t)(1-t)\bigr)^\alpha\,\dd t,
+ \label{eq:endpointblocks}
+\end{align}
+and specify the real interpolation
+\begin{equation}
+ F_\alpha(x)=A_+(x)+\cos(\pi x)A_-(x).
+ \label{eq:endpointinterp}
+\end{equation}
+This agrees with \eqref{eq:endpointmoment} at every nonnegative integer. The cosine is a deliberate interpolation choice, rather than an assertion that $t^x$ is a real function on the negative half-axis.
+
+\subsection{Exact convergent beta expansions}
+Let $p=\alpha+1$. Direct substitutions $t=3(1-u)$ and $t=1-u$ give
+\begin{align}
+ A_+(x)&=C_\alpha3^{x+p}4^\alpha
+ \sum_{j\ge0}\binom\alpha j(-3/4)^j B(x+1,p+j),\nonumber\\
+ A_-(x)&=C_\alpha4^\alpha
+ \sum_{j\ge0}\binom\alpha j(-1/4)^j B(x+1,p+j).
+ \label{eq:betablocks}
+\end{align}
+Both series are absolutely convergent for $x>-1$. Indeed the binomial series for $(1-cu)^\alpha$ converges absolutely and uniformly on $0\le u\le1$ when $c=3/4$ or $1/4$, and the remaining weight is integrable. Equivalently, each sum is
+\begin{equation}
+ B(x+1,p)\,{}_2F_1(-\alpha,p;x+p+1;c).
+ \label{eq:hyperblock}
+\end{equation}
+These exact formulas fix each block, including its remainder beyond every finite algebraic order. They are also convenient numerical representations.
+
+\subsection{All-order endpoint coefficients}
+For fixed shifts $a,b$, define
+\begin{equation}
+ G_n(a,b)=\ExpC_n\!\left(
+ \left\{\frac{(-1)^{m+1}\bigl(B_{m+1}(a)-B_{m+1}(b)\bigr)}{m(m+1)}\right\}_{m\ge1}
+ \right),\qquad G_0(a,b)=1.
+ \label{eq:gammaratiocoeff}
+\end{equation}
+The shifted Stirling expansion proves
+$\Gamma(x+a)/\Gamma(x+b)\sim x^{a-b}\sum_{n\ge0}G_n(a,b)x^{-n}$.
+For $c\in\{3/4,1/4\}$ set
+\begin{equation}
+ U_n(\alpha,c)=\sum_{j=0}^n\binom\alpha j(-c)^j(p)_j
+ G_{n-j}(1,p+j+1),
+ \label{eq:endpointcoeff}
+\end{equation}
+where $(p)_j=p(p+1)\cdots(p+j-1)$, and define
+\begin{equation}
+ K_+=C_\alpha3^p4^\alpha\Gamma(p),\qquad
+ K_-=C_\alpha4^\alpha\Gamma(p).
+ \label{eq:endpointconstants}
+\end{equation}
+Then the complete algebraic amplitudes are
+\begin{align}
+ A_+(x)&\sim K_+3^x x^{-p}\sum_{n\ge0}U_n(\alpha,3/4)x^{-n},\nonumber\\
+ A_-(x)&\sim K_-x^{-p}\sum_{n\ge0}U_n(\alpha,1/4)x^{-n}.
+ \label{eq:endpointasympt}
+\end{align}
+
+\begin{proof}[Remainder justification]
+For any fixed $N$, Taylor's theorem on $[0,1]$ writes
+\[
+ (1-cu)^\alpha=\sum_{j<N}\binom\alpha j(-cu)^j+u^N R_N(u),
+\]
+with $R_N$ bounded because $1-cu\ge1-c>0$. Its integral remainder is bounded by a constant times $B(x+1,p+N)=\OO(x^{-p-N})$. Each of the finitely many retained beta functions has the gamma-ratio expansion used in \eqref{eq:gammaratiocoeff}; collecting powers yields \eqref{eq:endpointcoeff}. Differentiation in $x$ inserts $\log(1-u)$ after extracting $3^x$ from $A_+$. The same endpoint estimate justifies differentiated expansions. The estimates are uniform for bounded imaginary displacements of $x$, since the absolute value of $(1-u)^x$ is $(1-u)^{\Re x}$. Thus the asymptotics used in inverse error estimates are valid, not merely formal manipulations of \eqref{eq:betablocks}.
+\end{proof}
+
+For Motzkin numbers, $(K_+,K_-)=(3\sqrt3/(2\sqrt\pi),1/(2\sqrt\pi))$; for central trinomial coefficients, $(K_+,K_-)=(\sqrt3/(2\sqrt\pi),1/(2\sqrt\pi))$. The first four coefficients of the unit amplitudes are
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Block & $U_0$ & $U_1$ & $U_2$ & $U_3$\\
+\midrule
+Motzkin $+$ & $1$ & $-39/16$ & $2665/512$ & $-87885/8192$\\
+Motzkin $-$ & $1$ & $-33/16$ & $1945/512$ & $-57435/8192$\\
+Trinomial $+$ & $1$ & $-3/16$ & $1/512$ & $135/8192$\\
+Trinomial $-$ & $1$ & $-5/16$ & $49/512$ & $145/8192$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Since $A_+'(x)/A_+(x)=\log3-p/x+\OO(x^{-2})$ and $A_-/A_+=\OO(3^{-x})$, the function $F_\alpha$ is positive and strictly increasing for all sufficiently large real $x$.
+
+\subsection{The inverse: an algebraic core and an oscillatory lattice}
+First invert $A_+$ exactly and denote that inverse by $g(y)$. Its algebraic expansion is obtained from \eqref{eq:linlogcore}--\eqref{eq:linlogcoeff} using
+\begin{equation}
+ a=\log3,\qquad b=-p,\qquad C=K_+,\qquad
+ d_n=\LogC_n\bigl(U_1(\alpha,3/4),U_2(\alpha,3/4),\ldots\bigr).
+ \label{eq:endpointinverseparams}
+\end{equation}
+In particular, $c_1=39/(16\log3)$ for Motzkin and $c_1=3/(16\log3)$ for central trinomial coefficients. The common Lambert core is the large solution of
+\[
+ (\log3)X-p\log X=\log(y/K_+).
+\]
+
+Now use the exact relative perturbation
+\begin{equation}
+ q(x)=\cos(\pi x)\frac{A_-(x)}{A_+(x)}.
+ \label{eq:endpointq}
+\end{equation}
+In \cref{thm:multi}, take $A=A_+$ and this single $q$. This is a complete, convergent expansion in the marker multiplying the second exact block, at sufficiently large $y$. In particular, with $x_0=g(y)$,
+\begin{equation}
+ F_\alpha^{-1}(y)=x_0-
+ \frac{3^{-x_0-p}}{\log3}\cos(\pi x_0)
+ +\OO(3^{-x_0}/x_0)+\OO(3^{-2x_0}).
+ \label{eq:endpointinversefirst}
+\end{equation}
+The error is an additive envelope estimate; it does not divide by a cosine that might vanish.
+
+At marker degree $r$, the exponential envelope is $3^{-rx_0}$. Differentiating $\cos^r(\pi x_0)$ produces only frequencies
+\[
+ r\pi,(r-2)\pi,\ldots,-r\pi.
+\]
+The quotient of the two unit series in \eqref{eq:endpointasympt}, followed by \eqref{eq:multiinv}, gives every algebraic amplitude of every such harmonic by finite coefficient operations. This describes the full nonlinear interaction lattice for the chosen exact two-block decomposition.
+
+\begin{warning}[An algebraic approximation is not an exact block]
+Replacing $x_0=A_+^{-1}(y)$ by a fixed finite algebraic truncation is adequate for algebraic accuracy. Its error generally exceeds $3^{-x_0}$, however. Formula \eqref{eq:endpointinversefirst} is an exponentially accurate statement only when the dominant block is evaluated exactly or with a remainder controlled to the required exponential scale. The exact beta or hypergeometric representations make that distinction operational.
+\end{warning}
+
+\section{Involutions: half-power saddle blocks and a moving inverse center}
+\label{sec:involutions}
+
+\subsection{An exact real interpolation from Gaussian moments}
+Let $I_n$ be the number of involutions on $n$ letters, A000085 \cite{oeisinvolutions}. Choosing $j$ disjoint transpositions gives
+\begin{equation}
+ I_n=\sum_{j=0}^{\lfloor n/2\rfloor}
+ \frac{n!}{2^j j!(n-2j)!},\qquad
+ \sum_{n\ge0}I_n\frac{z^n}{n!}=\exp(z+z^2/2).
+ \label{eq:involutionexact}
+\end{equation}
+Equivalently $I_n=\mathbb E(1+Z)^n$ for a standard normal variable $Z$, since its moment generating function is $\ee^{z^2/2}$. Splitting the integral at zero produces, for real $x>-1$,
+\begin{equation}
+ J_\sigma(x)=\frac1{\sqrt{2\pi}}\int_0^\infty
+ t^x\ee^{-(t-\sigma)^2/2}\,\dd t,\qquad \sigma\in\{+1,-1\},
+ \label{eq:involutionblocks}
+\end{equation}
+and the interpolation
+\begin{equation}
+ I(x)=J_+(x)+\cos(\pi x)J_-(x).
+ \label{eq:involutioninterp}
+\end{equation}
+Thus $I(n)=I_n$, exactly. Each block has a unique positive saddle
+\begin{equation}
+ r_\sigma(x)=\frac{\sigma+\sqrt{1+4x}}2
+ \label{eq:ivsaddle}
+\end{equation}
+when $x>0$. The two saddles are not an informal guess about the coefficients: they arise from two specified, convergent real integrals.
+
+\subsection{A finite formula for every saddle coefficient}
+Put $\varepsilon=x^{-1/2}$ and define
+\begin{equation}
+ \mu_N=\sum_{j=0}^{\lfloor N/2\rfloor}
+ \frac{N!(1/2)^{N-2j}}{4^j j!(N-2j)!}.
+ \label{eq:ivmu}
+\end{equation}
+This is the $N$th moment of a Gaussian variable with mean $1/2$ and variance $1/2$. Let $a_0=1$, and, for $m\ge1$, set
+\begin{equation}
+ a_m=\sum_{\substack{k_1,\ldots,k_m\ge0\\\sum_{r=1}^m r k_r=m}}
+ \mu_{\sum_{r=1}^m(r+2)k_r}
+ \prod_{r=1}^m\frac{1}{k_r!}
+ \left(\frac{(-1)^{r+1}}{r+2}\right)^{k_r}.
+ \label{eq:ivcoeff}
+\end{equation}
+
+\begin{theorem}[All-order involution blocks]
+\label{thm:ivforward}
+For each fixed integer $M\ge0$, as $x\to+\infty$,
+\begin{equation}
+ J_\sigma(x)=\frac1{\sqrt2}
+ \exp\left(\frac x2(\log x-1)+\sigma\sqrt x-\frac14\right)
+ \left(\sum_{m=0}^M a_m\sigma^m x^{-m/2}
+ +\OO(x^{-(M+1)/2})\right).
+ \label{eq:ivforward}
+\end{equation}
+The expansion may be differentiated a fixed number of times, with the corresponding differentiated asymptotic orders. In particular, the relative small block has the all-order amplitude
+\begin{equation}
+ \frac{J_-(x)}{J_+(x)}\sim
+ \ee^{-2\sqrt x}\frac{A(-x^{-1/2})}{A(x^{-1/2})},
+ \qquad A(t)=\sum_{m\ge0}a_mt^m.
+ \label{eq:ivratio}
+\end{equation}
+The series $A$ in this statement is an asymptotic series, not a claimed convergent representation of the exact integrals.
+\end{theorem}
+\begin{proof}
+Set $t=\sqrt x+v$ in \eqref{eq:involutionblocks}. The exponent becomes
+\begin{align*}
+ x\log t-\frac{(t-\sigma)^2}{2}
+ ={}&\frac x2(\log x-1)+\sigma\sqrt x-\frac12-v^2+\sigma v\\
+ &+\sum_{r\ge1}\frac{(-1)^{r+1}}{r+2}\varepsilon^r v^{r+2}.
+\end{align*}
+Completing the square gives $-v^2+\sigma v=-(v-\sigma/2)^2+1/4$. The Gaussian integral of this leading local factor is $\sqrt\pi$, accounting for $1/\sqrt2$ and $\ee^{-1/4}$ in \eqref{eq:ivforward}. Expanding the last exponential and collecting $\varepsilon^m$ gives a finite sum indexed by $\sum rk_r=m$. The power of $v$ is $N=\sum(r+2)k_r$. Gaussian moments with mean $\sigma/2$ are $\sigma^N\mu_N$, and $N\equiv m\pmod2$. This yields \eqref{eq:ivcoeff} and the sign $\sigma^m$.
+
+Here is the finite-order justification of the local expansion. For fixed $M$, restrict first to $|v|\le x^\eta$, where $\eta>0$ is sufficiently small, depending on $M$. Taylor's theorem for $\log(1+v/\sqrt x)$ has a remainder bounded by a constant times the next power, and the exponent outside its quadratic part is $o(v^2)+\OO(1)$. Expanding to an order larger than $M$ and integrating against a Gaussian majorant bounds the integrated remainder by $\OO(\varepsilon^{M+1})$. On the rest of the positive integration interval, the phase is strictly concave, with second derivative $-x/t^2-1\le-1$; its saddle differs from $\sqrt x$ by a bounded amount. Hence the omitted tails are bounded by a Gaussian tail $\OO(\ee^{-c x^{2\eta}})$ relative to the saddle maximum. This is smaller than any prescribed algebraic power. The lower limit $v=-\sqrt x$ can therefore be replaced by $-\infty$ at finite asymptotic order. Factors $\log t$ introduced by differentiation are treated by the same estimates and local expansion. For a bounded imaginary displacement, center the real integration variable at $\sqrt{\Re x}$ and expand the extra factor $\exp(\ii\Im(x)\log t)$; the same Gaussian bounds give estimates uniform on fixed-width complex neighborhoods of the real tail. Division of the two unit asymptotic series proves \eqref{eq:ivratio}.
+\end{proof}
+
+The first coefficients are
+\begin{align}
+ A(t)={}&1+\frac7{24}t-\frac{119}{1152}t^2
+ -\frac{7933}{414720}t^3+\frac{1967381}{39813120}t^4\nonumber\\
+ &-\frac{57200419}{1337720832}t^5
+ +\frac{6340449533}{687970713600}t^6+\OO(t^7).
+ \label{eq:ivfirstcoeff}
+\end{align}
+For later use put $H(t)=\log A(t)=\sum_{m\ge1}h_mt^m$, interpreted formally. Then $h_m=\LogC_m(a_1,a_2,\ldots)$, and
+\begin{equation}
+ h_1=\frac7{24},\quad h_2=-\frac7{48},\quad
+ h_3=\frac{37}{1920},\quad h_4=\frac5{128},\quad
+ h_5=-\frac{5879}{107520},\quad h_6=\frac{43}{1440}.
+ \label{eq:ivlogcoeff}
+\end{equation}
+These rational coefficients and their recurrence audit are reproduced in the computational supplement and \cref{app:audit}.
+
+\subsection{The inverse correction is not bounded}
+For the positive block $J_+$, introduce
+\begin{equation}
+ L=2\log y+\frac12+\log2,\qquad
+ X=\frac{L}{W_0(L/\ee)},\qquad \lambda=\log X.
+ \label{eq:ivcore}
+\end{equation}
+The carrier satisfies $X(\log X-1)=L$. The positive-block inverse obeys, to every fixed asymptotic order,
+\begin{equation}
+ x(\log x-1)+2\sqrt x+2H(x^{-1/2})=L.
+ \label{eq:ivinveq}
+\end{equation}
+The first residual at $X$ is $2\sqrt X$. Dividing by the slope $\log X$ shows already that the leading correction is $-2\sqrt X/\log X$, which tends to $-\infty$. A fixed-point ansatz $x=X+\OO(X^{-1})$ would therefore fail at its first step.
+
+Set $x=X+\sqrt X\,V$, $\varepsilon=X^{-1/2}$, and define
+$G(u)=(1+u)\log(1+u)-u$. After subtracting the carrier equation and dividing by $\sqrt X$, \eqref{eq:ivinveq} becomes
+\begin{equation}
+ \lambda V+\frac{G(\varepsilon V)}{\varepsilon}
+ +2\sqrt{1+\varepsilon V}
+ +2\varepsilon H\!\left(\varepsilon(1+\varepsilon V)^{-1/2}\right)=0.
+ \label{eq:ivVeq}
+\end{equation}
+The apparent division by $\varepsilon$ is harmless because $G(u)$ starts with $u^2/2$.
+
+\begin{theorem}[All-order inverse coefficients for the dominant involution block]
+There is a unique formal solution
+\begin{equation}
+ V(\varepsilon,\lambda)=\sum_{j\ge0}v_j(\lambda)\varepsilon^j,
+ \qquad v_j\in\QQ(\lambda),\qquad v_0=-2/\lambda.
+ \label{eq:ivV}
+\end{equation}
+It gives the asymptotic expansion of $J_+^{-1}(y)$ through
+$x=X+\sqrt X V(X^{-1/2},\log X)$. To specify every coefficient without recurrence, put $v_0=-2/\lambda$ and
+\begin{align}
+ \Xi(\varepsilon,z)=-\frac1\lambda\Bigg\{&
+ \frac{G(\varepsilon(v_0+z))}{\varepsilon}
+ +2\sqrt{1+\varepsilon(v_0+z)}-2\nonumber\\
+ &+2\varepsilon H\!\left(\varepsilon(1+\varepsilon(v_0+z))^{-1/2}\right)\Bigg\}.
+ \label{eq:ivXi}
+\end{align}
+Then, for $j\ge1$,
+\begin{equation}
+ v_j(\lambda)=\sum_{m=1}^j\frac1m
+ \coef{\varepsilon^j z^{m-1}}\Xi(\varepsilon,z)^m.
+ \label{eq:ivVclosed}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Since $\lambda v_0+2=0$, \eqref{eq:ivVeq} is equivalent to $z=\Xi(\varepsilon,z)$ for $z=V-v_0$. The series $\Xi$ belongs to $\varepsilon\QQ(\lambda)[[\varepsilon,z]]$. Formal Lagrange inversion proves uniqueness and \eqref{eq:ivVclosed}. Only $h_1,\ldots,h_{j-1}$ can enter $v_j$, so the formula is finite when combined with \eqref{eq:ivcoeff} and \eqref{eq:logcoeff}.
+
+For asymptotic validity, use a finite number of terms of \cref{thm:ivforward} in the logarithmic equation and substitute the truncated $V$. Coefficient cancellation leaves a residual of the next half-power order, with rational functions of $\lambda$. For $\lambda=\log X$ large these are bounded by fixed powers of $\lambda$. The derivative of the unscaled logarithmic phase is $\log X+\OO(X^{-1/2})$, bounded below by a positive multiple of $\log X$. The mean value theorem converts the phase residual into the next inverse error. Equivalently, on $|V|\le C/\lambda$, the derivative of the left side of \eqref{eq:ivVeq} in $V$ is $\lambda+\OO(\varepsilon)$, giving a uniform normalized-slope estimate. This proves the expansion in successive powers of $\varepsilon$ with rational-logarithmic coefficients.
+\end{proof}
+
+The first corrections are
+\begin{align}
+ v_0&=-\frac2\lambda,\qquad
+ v_1=\frac{2(\lambda-1)}{\lambda^3},\nonumber\\
+ v_2&=-\frac{7\lambda^4+12\lambda^2-56\lambda+48}{12\lambda^5},\label{eq:ivvfirst}\\
+ v_3&=\frac{7\lambda^6-28\lambda^4-96\lambda^2+320\lambda-240}{24\lambda^7}.
+ \nonumber
+\end{align}
+Thus the first two displacements from $X$ are
+\begin{equation}
+ J_+^{-1}(y)=X-\frac{2\sqrt X}{\log X}
+ +\frac{2(\log X-1)}{(\log X)^3}
+ +\OO\!\left(\frac1{\sqrt X\log X}\right).
+ \label{eq:ivinvfirst}
+\end{equation}
+The last error follows from the displayed $v_2$ and the next-order residual estimate. More generally, truncating \eqref{eq:ivV} through $v_N$ gives, for fixed $N\ge1$, the conservative absolute error $\OO(X^{-N/2})$.
+
+\subsection{The exponentially small inverse lattice}
+The exact dominant-block inverse is now denoted $x_0=J_+^{-1}(y)$. Since
+\[
+ (\log J_+)'(x)=\frac12\log x+\frac1{2\sqrt x}+\OO(x^{-3/2}),
+\]
+and $J_-/J_+=\OO(\ee^{-2\sqrt x})$, the interpolation \eqref{eq:involutioninterp} is eventually positive and strictly increasing. Apply \cref{thm:multi} with
+\begin{equation}
+ q(x)=\cos(\pi x)\frac{J_-(x)}{J_+(x)}.
+ \label{eq:ivq}
+\end{equation}
+It gives the exact analytic marker expansion about $x_0$; its coefficients have the half-power amplitudes obtained from \eqref{eq:ivratio}. The first sector is
+\begin{align}
+ I^{-1}(y)={}&x_0-
+ \frac{2\ee^{-2\sqrt{x_0}}}{\log x_0}\cos(\pi x_0)
+ +\OO\!\left(\frac{\ee^{-2\sqrt{x_0}}}{\sqrt{x_0}\log x_0}\right)\nonumber\\
+ &+\OO\!\left(\frac{\ee^{-4\sqrt{x_0}}}{\log x_0}\right).
+ \label{eq:ivexpinverse}
+\end{align}
+At marker degree $r$, all terms have the envelope $\ee^{-2r\sqrt{x_0}}$ and harmonic frequencies $r\pi,(r-2)\pi,\ldots,-r\pi$. Differentiation also generates powers of $x_0^{-1/2}$ and $(\log x_0)^{-1}$. Formula \eqref{eq:multiinv}, with the exact $q$ in \eqref{eq:ivq}, is an all-sector formula including these interactions.
+
+This is a different transseries scale from the endpoint examples: the small parameter is $\ee^{-2\sqrt{x_0}}$, not $\ee^{-c x_0}$. It is also different from the Gaussian-binomial example below, whose \emph{entire inverse} grows only like $\sqrt{\log y}$. The placement of a square root in the forward phase or in the inverse carrier cannot be interchanged.
+
+\section{Euler zigzag numbers: a gamma block and odd-integer sectors}
+\label{sec:zigzag}
+
+\subsection{Exact parity-resolved continuations}
+Let $Z_n$ denote the Euler zigzag numbers, A000111, normalized by
+\begin{equation}
+ \sum_{n\ge0}Z_n\frac{z^n}{n!}=\sec z+\tan z
+ =\tan(\pi/4+z/2).
+ \label{eq:zigzagegf}
+\end{equation}
+They count permutations with a prescribed alternating orientation; using both orientations would double the values for $n\ge2$ \cite{oeiszigzag}. Set
+\begin{equation}
+ a=\pi/2,\qquad \mathcal G(x)=2\Gamma(x+1)a^{-x-1},\qquad s=x+1.
+ \label{eq:zigzaggamma}
+\end{equation}
+Define, for $x>0$,
+\begin{align}
+ Z_0(x)&=\mathcal G(x)\beta(x+1),\nonumber\\
+ Z_1(x)&=\mathcal G(x)(1-2^{-x-1})\zeta(x+1),
+ \label{eq:zigzaginterp}
+\end{align}
+where $\beta(s)=\sum_{j\ge0}(-1)^j(2j+1)^{-s}$ is Dirichlet beta \cite{wlbeta}. The subscripts $0$ and $1$ refer to even and odd integer arguments, respectively.
+
+\begin{proposition}[Exact odd-integer forward blocks]
+For $n\ge1$,
+$Z_n=Z_0(n)$ when $n$ is even and $Z_n=Z_1(n)$ when $n$ is odd. More generally,
+\begin{equation}
+ Z_\rho(x)=\mathcal G(x)
+ \left(1+\sum_{\substack{d\ge3\\d\ \mathrm{odd}}}
+ \chi_\rho(d)d^{-(x+1)}\right),
+ \quad
+ \chi_0(d)=(-1)^{(d-1)/2},\quad \chi_1(d)=1.
+ \label{eq:zigzagdirichlet}
+\end{equation}
+The Dirichlet series is absolutely convergent for $x>0$, locally uniformly in a complex neighborhood of every sufficiently large real $x$.
+\end{proposition}
+\begin{proof}
+The poles of \eqref{eq:zigzagegf} are $\rho_k=a+2\pi k=a(1+4k)$, with residue $-2$. The regularized partial fraction expansion, obtained by logarithmic differentiation of the sine product or equivalently the cotangent expansion, is
+\[
+ \tan(\pi/4+z/2)=1+
+ 2\sum_{k\in\mathbb Z}\left(\frac1{\rho_k-z}-\frac1{\rho_k}\right).
+\]
+The summands are $\OO(k^{-2})$ on compact sets avoiding poles. For $n\ge1$, extracting $z^n$ yields
+\[
+ Z_n=2n!\sum_{k\in\mathbb Z}\rho_k^{-n-1}.
+\]
+If $n$ is even, the positive odd denominators of residue class $1$ modulo $4$ have positive sign and those of class $3$ have negative sign, giving beta. If $n$ is odd, both signs are positive and all positive odd denominators occur, giving $(1-2^{-s})\zeta(s)$. Absolute local uniform convergence follows by comparison with $\sum d^{-\Re(s)}$.
+\end{proof}
+
+Both $Z_\rho$ are positive and strictly increasing for sufficiently large real $x$. The relative Dirichlet correction and its derivatives tend to zero exponentially, whereas
+$(\log\mathcal G)'(x)=\psi(x+1)-\log a\sim\log(x/a)>0$.
+Here $\psi=\Gamma'/\Gamma$.
+
+\subsection{A centered Lambert carrier}
+The half-shift $z=x+1/2$ eliminates the logarithmic prefactor from the gamma phase:
+\begin{equation}
+ \log\mathcal G(x)\sim z(\log z-1-\log a)+\log4
+ +\sum_{\ell\ge1}\frac{\beta_{2\ell-1}}{z^{2\ell-1}},
+ \quad
+ \beta_{2\ell-1}=\frac{B_{2\ell}(1/2)}{2\ell(2\ell-1)}.
+ \label{eq:zigzagphase}
+\end{equation}
+This is a direct application of the shifted Stirling formula; odd Bernoulli polynomials at $1/2$ vanish. In particular $\beta_1=-1/24$ and $\beta_3=7/2880$.
+
+Put
+\begin{equation}
+ L=\log(y/4),\qquad
+ Z=\frac{L}{W_0(L/(\ee a))},\qquad
+ \lambda=\log(Z/a).
+ \label{eq:zigzagcore}
+\end{equation}
+The large solution is intended. For every finite algebraic order, the exact inverse $\mathcal G^{-1}(y)$ has the form
+\begin{equation}
+ \mathcal G^{-1}(y)\sim Z-\frac12+
+ \sum_{n\ge1}c_n(\lambda)Z^{-n}.
+ \label{eq:zigzagginverse}
+\end{equation}
+An all-order formula follows by putting $t=1/Z$ and
+\begin{equation}
+ \Psi_{\mathrm z}(t,u)=-\frac1\lambda\left\{
+ \frac{(1+tu)\log(1+tu)-tu}{t}
+ +\sum_{\ell\ge1}\beta_{2\ell-1}
+ \left(\frac{t}{1+tu}\right)^{2\ell-1}\right\}.
+ \label{eq:zigzagpsi}
+\end{equation}
+Then
+\begin{equation}
+ c_n(\lambda)=\sum_{m=1}^n\frac1m
+ \coef{t^n u^{m-1}}\Psi_{\mathrm z}(t,u)^m.
+ \label{eq:zigzagcoeff}
+\end{equation}
+Only odd $n$ occur. Indeed if $u(t)$ solves the fixed-point equation, then $-u(-t)$ does too, and uniqueness in $t\QQ(\lambda)[[t]]$ makes $u$ odd. The first terms are
+\begin{equation}
+ \mathcal G^{-1}(y)=Z-\frac12+\frac1{24\lambda Z}
+ -\frac{14\lambda^2+10\lambda+5}{5760\lambda^3 Z^3}
+ +\OO(Z^{-5}),
+ \label{eq:zigzagfirst}
+\end{equation}
+where the error is conservative for large $\lambda=\log(Z/a)$. As with the other gamma examples, \eqref{eq:zigzagginverse} is an algebraic expansion of a specified exact gamma block, not an independently chosen exponentially accurate substitute for it.
+
+\subsection{Complete inverse action collisions as ordered factorizations}
+For this subsection, write $g=g(L)=\mathcal G^{-1}(\ee^L)$, $D=\dd/\dd L$, and $g'=1/(\psi(g+1)-\log a)$. Changing $L$ by the constant $\log4$ used in \eqref{eq:zigzagcore} does not change the differentiation operator.
+
+For an odd integer $N\ge3$ and $r\ge1$, define the finite ordered-factorization coefficient
+\begin{equation}
+ b_{\rho,r}(N)=
+ \sum_{\substack{d_1\cdots d_r=N\\d_j\ge3\ \mathrm{odd}}}
+ \prod_{j=1}^r\chi_\rho(d_j).
+ \label{eq:orderedfactor}
+\end{equation}
+The sum is empty for $r>\lfloor\log_3N\rfloor$. In fact $\chi_0$ is multiplicative on odd positive integers, so $b_{0,r}(N)=\chi_0(N)b_{1,r}(N)$, but it is useful to retain the general form.
+
+\begin{theorem}[Odd-integer inverse sectors]
+For sufficiently large $y$, the parity-resolved inverse is given by the convergent expansion
+\begin{align}
+ Z_\rho^{-1}(y)=g+\sum_{\substack{N\ge3\\N\ \mathrm{odd}}}N^{-(g+1)}
+ \sum_{r=1}^{\lfloor\log_3N\rfloor}\frac{b_{\rho,r}(N)}{r!}
+ \sum_{m=1}^r(-1)^m s(r,m)
+ \left(D-(\log N)g'\right)^{m-1}g'.
+ \label{eq:zigzaginverse}
+\end{align}
+The differential operator is a variable-coefficient operator: successive applications include the derivatives of $g'$. For each $N$, the displayed coefficient is finite.
+\end{theorem}
+\begin{proof}
+Let $q(x)=\sum_{d\ge3,\,d\text{ odd}}\chi_\rho(d)d^{-(x+1)}$. Absolute convergence gives
+\[
+ q(g)^r=\sum_{N\ \mathrm{odd}}b_{\rho,r}(N)N^{-(g+1)}.
+\]
+For any differentiable $f$,
+\[
+ D\bigl(N^{-(g+1)}f\bigr)
+ =N^{-(g+1)}\bigl(D-(\log N)g'\bigr)f.
+\]
+Apply the single-marker form of \eqref{eq:multiinv}, conjugate each derivative as above, and collect equal $N$. This proves the coefficient identity.
+
+For the analytic justification, choose a fixed complex disk about large real $g$. The sums of $d^{-\Re(g+1)+h}(\log d)^j$, for fixed disk width $h$ and every fixed $j$, are finite and exponentially small in $g$. They majorize the correction and its derivatives there. The fixed-point map is therefore analytic and contractive uniformly for the marker in a disk of radius larger than one. Cauchy estimates on a smaller disk provide an absolutely summable majorant for its marker coefficients and the underlying Dirichlet sums. Thus the derivative operations and the regrouping into products $N$ are valid, and the series equals the desired inverse.
+\end{proof}
+
+The first terms illustrate a visible parity distinction:
+\begin{equation}
+ Z_0^{-1}(y)=g+\frac{3^{-(g+1)}}{\psi(g+1)-\log a}
+ +\OO\!\left(\frac{5^{-(g+1)}}{\log g}\right),
+ \label{eq:zigzagevenfirst}
+\end{equation}
+whereas the sign of the displayed correction is negative for $Z_1^{-1}$. The sector $N=9$ receives both the original forward term $d=9$ and a nonlinear product of two $d=3$ terms. It cannot be obtained by independently inverting just the individual Dirichlet summands.
+
+The exact discrete threshold can be reconstructed without imposing a single mixed-parity continuation:
+\begin{equation}
+ N_Z(y)=\min_{\rho\in\{0,1\}}
+ \left\{\rho+2\left\lceil\frac{Z_\rho^{-1}(y)-\rho}{2}\right\rceil\right\}
+ \label{eq:zigzagthreshold}
+\end{equation}
+for sufficiently large $y$. This formula follows by finding the least admissible even index and the least admissible odd index separately.
+
+\section{Central Gaussian binomial coefficients at fixed \texorpdfstring{$q>1$}{q>1}}
+\label{sec:qbinomial}
+
+\subsection{The exact product and its continuation}
+The Gaussian binomial coefficient is documented as \texttt{QBinomial} \cite{wlqbinomial}; its finite product can be written in $q$-Pochhammer notation \cite{wlqpochhammer}. Fix a real $q>1$, set $Q=q^{-1}$, and put
+\begin{equation}
+ \mathcal B_q(n)=\qbin{2n}{n}{q}
+ =q^{n^2}\frac{(Q;Q)_{2n}}{(Q;Q)_n^2},\qquad
+ (a;Q)_n=\prod_{j=0}^{n-1}(1-aQ^j).
+ \label{eq:qbinexact}
+\end{equation}
+For a prime power $q$, this counts $n$-dimensional subspaces of a $2n$-dimensional vector space over $\mathbb F_q$: count ordered independent $n$-tuples and divide by the number of ordered bases in an $n$-space. The quotient is precisely the finite product in \eqref{eq:qbinexact}. Our real-analytic asymptotic result does not require $q$ to be a prime power.
+
+Let
+\begin{equation}
+ P=(Q;Q)_\infty>0,\qquad
+ \mathcal B_q(x)=\frac{q^{x^2}}{P}
+ \frac{(Q^{x+1};Q)_\infty^2}{(Q^{2x+1};Q)_\infty},
+ \qquad x>0.
+ \label{eq:qbininterp}
+\end{equation}
+Since $(Q;Q)_n=P/(Q^{n+1};Q)_\infty$, this interpolation agrees with \eqref{eq:qbinexact} at the nonnegative integers. Its logarithm is real on $x>0$ because all product factors are positive.
+
+\subsection{A convergent forward transseries}
+Write $a=\log q$, $t=Q^x$. Expansion of $\log(1-z)$ in the infinite products gives the exact identity
+\begin{equation}
+ \mathcal B_q(x)=\frac{\ee^{ax^2}}P\exp H(t),\qquad
+ H(t)=-\sum_{m\ge1}\frac{2t^m-t^{2m}}{m(q^m-1)}.
+ \label{eq:qbinH}
+\end{equation}
+The exchanges of the two sums are justified by absolute convergence for $|t|<\sqrt q$, in particular for the physical interval $0<t<1$. The coefficient form is
+\begin{equation}
+ H(t)=\sum_{r\ge1}h_rt^r,\qquad
+ h_r=-\frac2{r(q^r-1)}+
+ \mathbf1_{2\mid r}\frac2{r(q^{r/2}-1)}.
+ \label{eq:qbinh}
+\end{equation}
+Thus $h_1=-2/(q-1)$ and $h_2=q/(q^2-1)$. The complete forward transseries is the genuinely convergent expansion
+\begin{equation}
+ \mathcal B_q(x)=\frac{q^{x^2}}P
+ \sum_{r\ge0}\ExpC_r(h_1,h_2,\ldots)q^{-rx}.
+ \label{eq:qbinforward}
+\end{equation}
+Unlike a Stirling series, this is a Taylor series of an exact analytic amplitude. The first singularity of $H$ in modulus lies at $t=\sqrt q$, coming from a denominator factor; the numerator factors first vanish at modulus $q$. In particular the radius stated above is not just a formal estimate.
+
+The derivative of the logarithm is
+\[
+ (\log\mathcal B_q)'(x)=2ax-atH'(t)=2ax+\OO(q^{-x}),
+\]
+which is positive for large $x$. Hence a unique large real inverse is defined.
+
+\subsection{An all-order inverse with a quadratic phase}
+Set
+\begin{equation}
+ L=\log(yP),\qquad X=\sqrt{L/a},\qquad T=\ee^{-aX},
+ \label{eq:qbincore}
+\end{equation}
+for sufficiently large $y$. The carrier is exact for $q^{x^2}/P$. All remaining inverse corrections are exponentially small in $X$; there is no separate algebraic tail at this stage.
+
+For $1\le m\le n$, define the finite coefficient
+\begin{equation}
+ H_{n,m}=\coef{t^n}H(t)^m
+ =\sum_{\substack{r_1+\cdots+r_m=n\\r_j\ge1}}h_{r_1}\cdots h_{r_m},
+ \label{eq:qHnm}
+\end{equation}
+and the differential operator, acting on functions of $X$,
+\begin{equation}
+ \mathfrak D_n=\frac1{2aX}(\partial_X-an).
+ \label{eq:qoperator}
+\end{equation}
+
+\begin{theorem}[Convergent quadratic-core inverse]
+\label{thm:qbininverse}
+For sufficiently large $y$,
+\begin{equation}
+ \mathcal B_q^{-1}(y)=X+\sum_{n\ge1}d_n(X)T^n,
+ \label{eq:qbininverse}
+\end{equation}
+where
+\begin{equation}
+ d_n(X)=\sum_{m=1}^n\frac{(-1)^m}{m!}H_{n,m}
+ \mathfrak D_n^{m-1}\left(\frac1{2aX}\right).
+ \label{eq:qbininversecoeff}
+\end{equation}
+This is a convergent expansion at the physical $T=\ee^{-aX}$, not merely a formal asymptotic assertion. The coefficients are finite rational expressions in $X$, $a$, and $q$.
+\end{theorem}
+\begin{proof}
+Use \cref{thm:phase} with $\phi(x)=ax^2$ and $R(x)=H(\ee^{-ax})$. Then $g=\sqrt{L/a}=X$, $g'=1/(2aX)$, and $D=(2aX)^{-1}\partial_X$. Expanding $H(T)^m$ using \eqref{eq:qHnm}, observe that
+\[
+ D\bigl(T^n f(X)\bigr)=T^n\mathfrak D_n f(X).
+\]
+Collecting $T^n$ yields \eqref{eq:qbininversecoeff}.
+
+For a direct convergence argument, put $x=X+\delta$ and temporarily regard $T$ as independent of $X$. The equation to solve is
+\[
+ 2aX\delta+a\delta^2+H(T\ee^{-a\delta})=0.
+\]
+At $(T,\delta)=(0,0)$ the slope is $2aX$. On fixed small disks in $T$ and $\delta$, analyticity of $H$ and this growing slope give a contraction for all sufficiently large $X$. Thus the solution is analytic in $T$ with a radius bounded below independently of large $X$. The physical $T$ eventually lies inside it. Uniqueness identifies its Taylor coefficients with the formal coefficients already derived.
+\end{proof}
+
+The first two coefficient functions simplify to
+\begin{align}
+ d_1(X)&=\frac1{a(q-1)X},\nonumber\\
+ d_2(X)&=-\frac{q}{2a(q^2-1)X}
+ -\frac1{a(q-1)^2X^2}
+ -\frac1{2a^2(q-1)^2X^3}.
+ \label{eq:qbind12}
+\end{align}
+It is essential to apply \eqref{eq:qoperator} as a variable-coefficient differential operator. Treating $1/(2aX)$ as a constant at successive differentiations loses the last terms in \eqref{eq:qbind12} and all of their higher-order analogues.
+
+In terms of the target $y$, the basic inverse scale is
+\begin{equation}
+ T=\exp\!\left(-\sqrt{(\log q)\log(yP)}\right).
+ \label{eq:qbinscale}
+\end{equation}
+This is slower than any fixed power $y^{-c}$ but faster than every inverse power of $\log y$. Therefore it is not captured by a power--logarithmic expansion alone.
+
+\begin{warning}[The limit $q\downarrow1$ is not uniform]
+Every theorem in this section holds for fixed $q>1$. The coefficients $h_r$ and $d_n$ contain powers of $(q^r-1)^{-1}$, while $P=(q^{-1};q^{-1})_\infty$ changes rapidly as $q\downarrow1$. Substituting $q=1$ in these formulas does not recover the ordinary central binomial asymptotics. A joint limit must specify how $\log q$ scales with $x$ and rederive the leading phase from the product. This is a different asymptotic problem, not a removable singularity in the fixed-$q$ expansion.
+\end{warning}
+
+\section{Two reusable extension principles}
+\label{sec:principles}
+
+\subsection{General signed-support moment sequences}
+The Motzkin and trinomial construction extends beyond their particular densities. Suppose $a>b>0$, $a>1$, and $w$ is a nonnegative integrable density on $[-b,a]$. Assume that, near the two outer endpoints,
+\begin{align}
+ w(a(1-u))&=u^{p_+-1}\sum_{j\ge0}h_{+,j}u^j,\nonumber\\
+ w(-b(1-u))&=u^{p_--1}\sum_{j\ge0}h_{-,j}u^j,
+ \label{eq:generalendpoints}
+\end{align}
+where $p_\pm>0$, the local amplitude series converge, and $h_{\pm,0}>0$. Define the exact moment blocks
+\[
+ A_+(x)=\int_0^a t^xw(t)\,\dd t,\qquad
+ A_-(x)=\int_0^b t^xw(-t)\,\dd t,
+\]
+and $F(x)=A_+(x)+\cos(\pi x)A_-(x)$. Its integer values are the moments of $w$ on $[-b,a]$.
+
+\begin{proposition}[Endpoint transfer with explicit coefficients]
+Put $K_+=a h_{+,0}\Gamma(p_+)$ and $K_-=b h_{-,0}\Gamma(p_-)$. Then
+\begin{align}
+ A_+(x)&\sim K_+a^xx^{-p_+}\sum_{n\ge0}u_{+,n}x^{-n},\nonumber\\
+ A_-(x)&\sim K_-b^xx^{-p_-}\sum_{n\ge0}u_{-,n}x^{-n},
+ \label{eq:generalmomentblocks}
+\end{align}
+with $u_{\pm,0}=1$ and
+\begin{equation}
+ u_{\pm,n}=\sum_{j=0}^n
+ \frac{h_{\pm,j}}{h_{\pm,0}}(p_\pm)_j
+ G_{n-j}(1,p_\pm+j+1).
+ \label{eq:generalmomentcoeff}
+\end{equation}
+The interpolation is eventually increasing, and its relative small block is
+\begin{equation}
+ \frac{A_-(x)}{A_+(x)}\sim
+ \frac{K_-}{K_+}\left(\frac ba\right)^x
+ x^{p_+-p_-}\frac{\sum u_{-,n}x^{-n}}{\sum u_{+,n}x^{-n}}.
+ \label{eq:generalmomentr}
+\end{equation}
+Its inverse is obtained by \eqref{eq:linlogcoeff} for $A_+$ and \eqref{eq:multiinv} for the exact multiplicative correction. The first displacement, with $x_0=A_+^{-1}(y)$, is
+\begin{equation}
+ -\frac{K_-/K_+}{\log a}
+ \left(\frac ba\right)^{x_0}x_0^{p_+-p_-}\cos(\pi x_0)
+\end{equation}
+up to a relative algebraic amplitude error interpreted additively at cosine zeros, and terms of second exponential order.
+\end{proposition}
+\begin{proof}
+Use $t=a(1-u)$ and $t=b(1-u)$ near the respective endpoints. A finite local Taylor expansion of the density amplitude reduces every retained term to a beta integral, with an error of the next algebraic order as in \cref{sec:endpoints}. The part of either integral a fixed distance from its outer endpoint is exponentially smaller than its own leading block and therefore smaller than each fixed algebraic remainder. Applying the gamma-ratio expansion yields \eqref{eq:generalmomentcoeff}. The dominant logarithmic derivative tends to $\log a>0$, and the relative negative block and its derivative tend to zero exponentially because $b/a<1$. The inverse assertions follow from the two inversion theorems.
+\end{proof}
+
+The exact integrals are part of the statement. The endpoint amplitude coefficients alone need not determine all exponentially small contributions within either block, particularly when the density has additional interior structure. The proposition is a reusable block decomposition and all-order endpoint theorem, not a classification of every complex saddle or every interior singularity.
+
+\subsection{Predicting the size of an inverse drift}
+A second useful principle concerns the scale of the first inverse correction. Consider a phase
+\begin{equation}
+ \Phi_0(x)=c x^\rho(\log x-\eta),\qquad c>0,\quad\rho>0.
+ \label{eq:powerlogphase}
+\end{equation}
+The large solution of $\Phi_0(X)=L$ is
+\begin{equation}
+ X=\left\{\frac{\rho L}{cW_0((\rho/c)\ee^{-\rho\eta}L)}\right\}^{1/\rho}.
+ \label{eq:powerlogcore}
+\end{equation}
+Indeed $w=\rho(\log X-\eta)$ satisfies $w\ee^w=(\rho/c)\ee^{-\rho\eta}L$.
+Suppose the additional phase is
+$R(x)\sim d x^\sigma(\log x)^\tau$ with $0\le\sigma<\rho$, and its derivatives have the corresponding orders. Linearizing gives
+\begin{equation}
+ \delta_1=-\frac{R(X)}{\Phi_0'(X)}
+ \sim-\frac d{c\rho}X^{\sigma-\rho+1}(\log X)^{\tau-1}.
+ \label{eq:driftscale}
+\end{equation}
+The condition $R=o(\Phi_0)$ only guarantees $\delta_1=o(X)$; it does not guarantee $\delta_1=o(1)$. Formula \eqref{eq:driftscale} identifies the correct shift scale before any long coefficient calculation. The involution case has $(c,\rho,\eta,d,\sigma,\tau)=(1/2,1,1,1,1/2,0)$ and recovers $-2\sqrt X/\log X$.
+
+Once the scale is chosen, write $x=X+s(X)V$ with $s(X)$ matching \eqref{eq:driftscale} or its algebraic part, normalize by the phase slope, and apply the fixed-point coefficient extraction used in \eqref{eq:ivVclosed}. The scale must also be small enough relative to $X$ for the normalized Taylor expansion to be asymptotically ordered. This gives a practical extension rule to further combinatorial saddle-point problems with lower-order power--logarithmic phases.
+
+\section{Error control, discrete recovery, and computational checks}
+\label{sec:verification}
+
+\subsection{A residual certificate for an inverse approximation}
+\begin{theorem}[Local inverse certificate]
+\label{thm:certificate}
+Let $F>0$ on $I=[x_*-h,x_*+h]$, let $\Phi=\log F$ be continuously differentiable there, and suppose $\Phi'(x)\ge m>0$ on $I$. If
+\begin{equation}
+ |\Phi(x_*)-\log y|<mh,
+ \label{eq:residualbracket}
+\end{equation}
+then $F(x)=y$ has a unique root $x\in I$, and
+\begin{equation}
+ |x-x_*|\le\frac{|\Phi(x_*)-\log y|}{m}.
+ \label{eq:inversebound}
+\end{equation}
+If only an approximation $\widetilde\Phi(x_*)$ with error at most $\epsilon$ is known, replace the numerator in both tests by
+$|\widetilde\Phi(x_*)-\log y|+\epsilon$.
+\end{theorem}
+\begin{proof}
+Integrating the derivative lower bound to either endpoint shows that the two endpoint residuals have opposite signs under \eqref{eq:residualbracket}. Continuity gives a root, strict monotonicity gives uniqueness, and the mean value theorem gives \eqref{eq:inversebound}. The version with an approximate phase follows from the triangle inequality.
+\end{proof}
+
+This elementary certificate is stronger than checking that the last displayed term is small. A small last term does not bound an uncomputed divergent tail, and a small forward relative error is not automatically a small inverse error unless the logarithmic slope is controlled.
+
+For balanced gamma ratios one may use the Binet/Stirling bound \eqref{eq:binetbound}. For the exact moment blocks, finite beta expansions with Taylor remainder bounds or rigorous integration give a phase enclosure. For zigzag Dirichlet tails, the simple bound
+\begin{equation}
+ \sum_{\substack{d>D\\d\ \mathrm{odd}}}d^{-s}
+ \le D^{-s}+\frac{D^{1-s}}{s-1},\qquad s>1,
+ \label{eq:dirichlettail}
+\end{equation}
+comes from comparison with a decreasing integral; it is intentionally not sharp. Derivative tails can similarly be bounded by integrals of $(\log t)^j t^{-s}$. For the Gaussian-binomial logarithm, Cauchy bounds on a circle $|t|=r<\sqrt q$ or direct absolute sums in \eqref{eq:qbinH} bound the remaining convergent tail. These analytic bounds, together with a derivative lower bound on an explicit interval, can be turned into rigorous inverse enclosures. The numerical tests below do not implement interval arithmetic and are not being presented as such certificates.
+
+\subsection{From inverse enclosures to exact integer indices}
+For any eventual monotone interpolation, \eqref{eq:ceiling} converts the real inverse to the threshold index. A certified interval $[u,v]$ for the inverse determines that index immediately when $\lceil u\rceil=\lceil v\rceil$. If the interval straddles an integer, evaluate the original exact sequence at the few candidate indices and compare it with $y$. At the special targets $y=a_n$, a nearest-integer recovery succeeds whenever the inverse approximation error is less than $1/2$, but that nearest-integer rule is not valid for a general threshold target.
+
+Parity-resolved families require \eqref{eq:zigzagthreshold} rather than an ordinary ceiling of either branch. Integer recovery is consequently a final arithmetic step, not an exponentially small correction to a smooth function.
+
+\subsection{Forward numerical checks}
+The accompanying \texttt{verify.py} computes all rational coefficient formulas with SymPy and evaluates numerical checks with mpmath at $90$ decimal digits. It compares the endpoint blocks with their finite combinatorial sums for $n=0,\ldots,20$, and the Gaussian-binomial product interpolation with its finite product for $n=1,\ldots,12$. The accompanying \texttt{audit.py} checks the zigzag parity formulas for $n=1,\ldots,20$. These are $74$ high-precision identity tests, in addition to the separate Gaussian block check for $I_{100}$. They passed at the tolerances stated in the scripts.
+
+At $n=100$, the measured forward relative errors are:
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}Xcl@{}}
+\toprule
+Family & Last retained index & Relative error\\
+\midrule
+Catalan & $j=5$, powers $n^{-j}$ & $1.130441935\cdot10^{-12}$\\
+Involutions, both exact-block amplitudes & $j=6$, powers $n^{-j/2}$ & $2.760730722\cdot10^{-9}$\\
+Motzkin, both endpoint amplitudes & $j=5$, powers $n^{-j}$ & $8.849657729\cdot10^{-11}$\\
+Central trinomial, both endpoint amplitudes & $j=5$, powers $n^{-j}$ & $2.844260581\cdot10^{-14}$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Here ``both amplitudes'' means both exact blocks are replaced by their stated finite amplitude truncations. It does not mean that those truncated amplitudes have been evaluated as exact functions. At this $n$, the negative endpoint blocks are far below the errors caused by truncating the dominant algebraic amplitude, as the exact-block distinction predicts.
+
+\subsection{Inverse numerical checks}
+The targets below are exact sequence values $y=a_n$, so the true integer index is known independently of root finding. All errors shown are absolute errors of the real inverse approximation.
+\begin{center}
+\small
+\begin{tabular}{@{}llrl@{}}
+\toprule
+Family & Truncation & $n$ & $|x_{\rm approx}-n|$\\
+\midrule
+Catalan & Lambert core only & $100$ & $8.167707070\cdot10^{-3}$\\
+ & through $X^{-1}$ & $100$ & $5.188458858\cdot10^{-5}$\\
+ & through $X^{-2}$ & $100$ & $1.357576716\cdot10^{-7}$\\
+ & through $X^{-4}$ & $100$ & $3.304373394\cdot10^{-11}$\\
+\addlinespace
+Stirling, $k=3$ & logarithmic core only & $30$ & $1.424106365\cdot10^{-5}$\\
+ & total marker degree $\le1$ & $30$ & $2.917192261\cdot10^{-11}$\\
+ & total marker degree $\le2$ & $30$ & $5.561043091\cdot10^{-17}$\\
+ & total marker degree $\le4$ & $30$ & $2.312654479\cdot10^{-27}$\\
+\addlinespace
+Eulerian, $m=1$ & logarithmic core only & $30$ & $4.165204886\cdot10^{-8}$\\
+ & through first sector & $30$ & $5.453038651\cdot10^{-16}$\\
+ & through second sector & $30$ & $9.224385539\cdot10^{-24}$\\
+\addlinespace
+Involutions & Lambert core only & $100$ & $4.334874595$\\
+ & through $v_0$ & $100$ & $6.069814763\cdot10^{-2}$\\
+ & through $v_1$ & $100$ & $1.197099872\cdot10^{-2}$\\
+ & through $v_2$ & $100$ & $4.933553106\cdot10^{-4}$\\
+ & through $v_3$ & $100$ & $1.029749159\cdot10^{-5}$\\
+\addlinespace
+Zigzag, even branch & centered Lambert core & $100$ & $9.969553297\cdot10^{-5}$\\
+ & through $Z^{-1}$ & $100$ & $6.865593829\cdot10^{-10}$\\
+ & through $Z^{-3}$ & $100$ & $2.069198748\cdot10^{-14}$\\
+\addlinespace
+Gaussian binomial, $q=2$ & quadratic core only & $20$ & $6.879303859\cdot10^{-8}$\\
+ & through $T$ & $20$ & $2.526734188\cdot10^{-14}$\\
+ & through $T^2$ & $20$ & $6.434897235\cdot10^{-21}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The Eulerian second-sector coefficient used here, with $a=\log2$ and $X=\log_2 y$, is
+$-(X+1)^2/(2a)+(X+1)/a^2$, multiplying $2^{-2X}$.
+For the involution rows, only the dominant-block algebraic inverse is used; the target is the full exact $I_{100}$. The omitted inverse oscillatory contribution is much smaller than the displayed algebraic errors. The same separation applies to the zigzag rows, where the odd-integer sectors are negligible at the displayed precision.
+
+An additional calculation isolates the involution small block directly from the exact integrals:
+\begin{align}
+ \frac{J_-(100)}{J_+(100)}
+ &=1.944286460629523489640756\cdot10^{-9},\nonumber\\
+ \frac{J_-(100)/J_+(100)}{(\log J_+)'(100)}
+ &=8.264930508117383796848111\cdot10^{-10}.
+ \label{eq:ivsmallnumeric}
+\end{align}
+The second number is the first-order displacement of the positive-block inverse at the target $I_{100}$, with positive sign because $100$ is even and $I_{100}>J_+(100)$. Applying the full inverse sector subtracts that displacement. It is not itself an independently certified root difference, and no such claim is needed for the check.
+
+\section{Synthesis and scope of the extension}
+\label{sec:conclusion}
+The families in this article extend the parent's inversion architecture in several directions at once. Balanced gamma products show how Bernoulli-polynomial data turn a combinatorial factorial formula into all inverse coefficients. Stirling and Eulerian columns show that finite forward exponential sums can have infinite but convergent inverse expansions, with generalized powers and polynomial-logarithmic amplitudes. Endpoint moment sequences show how an oscillatory sector is fixed by an explicit negative-support block. Involutions add a half-power saddle calculus and an unbounded inverse drift before the first exponentially small correction. Zigzag numbers turn inverse action collisions into finite ordered-factorization sums. Gaussian binomial coefficients introduce a quadratic carrier with a convergent inverse expansion in $\exp(-\sqrt{(\log q)\log y})$.
+
+The common computational pattern is to select an exact interpolation, isolate an invertible dominant phase, normalize by its nonzero slope, and use finite coefficient extraction for algebraic corrections and \eqref{eq:multiinv} or \eqref{eq:phaseinv} for nonlinear sector interactions. Residual estimates then connect the symbolic answer to an actual inverse function. For integer sequences, threshold recovery is performed only after this analytic step.
+
+The results are deliberately not described as a universal complex-plane transseries classification. For the gamma and moment families, the exact blocks fix real-axis flat remainders while the displayed algebraic series describe their finite-order amplitudes. Their further complex Stokes data would require additional sectorial analysis. The convergent finite-exponential, Dirichlet, and fixed-$q$ constructions need no such extra convention on the real tail considered here. Within these stated meanings, every family has an explicit forward representation, all-order coefficient formulas, and an all-order inverse construction; the examples do not stop at leading asymptotic equivalents.
+
+\appendix
+\section{An independent involution coefficient audit}
+\label{app:audit}
+The finite Gaussian-moment formula \eqref{eq:ivcoeff} can be checked without using numerical fitting. The exact recurrence
+\[
+ I_n=I_{n-1}+(n-1)I_{n-2}
+\]
+follows by considering whether the last element is fixed or paired. Let $t=n^{-1/2}$, $S(t)=\sum a_jt^j$, and
+\begin{equation}
+ R_k(t)=\exp\left\{
+ \left(\frac1{2t^2}-\frac k2\right)\log(1-kt^2)+\frac k2
+ +\frac{\sqrt{1-kt^2}-1}{t}\right\}.
+ \label{eq:auditR}
+\end{equation}
+Dividing the recurrence by the positive saddle carrier gives the formal identity
+\begin{align}
+ S(t)-tR_1(t)S\!\left(\frac{t}{\sqrt{1-t^2}}\right)
+ -(1-t^2)R_2(t)S\!\left(\frac{t}{\sqrt{1-2t^2}}\right)=0.
+ \label{eq:auditrec}
+\end{align}
+The negative saddle is flat in $t$ on the positive real axis and therefore does not alter this formal algebraic identity. Substituting $a_0,\ldots,a_8$ from \eqref{eq:ivcoeff} makes every coefficient through $t^{10}$ vanish exactly in rational arithmetic. The script \texttt{audit.py} performs this calculation using finite polynomial products.
+
+This audit also identifies a version-specific discrepancy worth recording for reproducibility. The displayed theorem in the HTML rendering of arXiv:2410.16334v1 \cite{ekz} gives the coefficient of $n^{-3}$ as $-562799/47775744$. Formula \eqref{eq:ivcoeff} instead gives
+\[
+ a_6=\frac{6340449533}{687970713600}.
+\]
+Keeping the preceding coefficients fixed and replacing this $a_6$ by the displayed HTML value leaves the nonzero recurrence residual
+\begin{equation}
+ \frac{14444755133}{114661785600}\,t^8+\OO(t^9).
+ \label{eq:auditdiscrepancy}
+\end{equation}
+Later coefficients cannot cancel this term: changing $a_j$ first affects the normalized residual at degree $j+2$. This observation concerns that particular displayed formula, not the paper's separately linked high-order data, software, or any subsequent version. The coefficients used in this article come from the independently proved Gaussian-moment formula rather than from that display.
+
+\section{Computational supplement and Wolfram Language formulas}
+\label{app:code}
+The ZIP contains the self-contained \LaTeX{} source and its rendered PDF, together with \texttt{verify.py}, \texttt{audit.py}, their JSON outputs, and a \texttt{README.md}. The Python scripts use Python 3, SymPy, and mpmath and were executed for this article. No internet access is needed to run them. They recompute exact rational coefficients, then perform the numerical comparisons described in \cref{sec:verification}. They are verification aids, not a formal proof assistant development.
+
+The following Wolfram Language definitions are also included as \texttt{coefficients.wl}. They express the same finite coefficient formulas using symbolic series operations. They were not executed in a Wolfram kernel in preparing this article; the executed checks are the Python ones. \texttt{ProductLog[0,z]} and \texttt{ProductLog[-1,z]} correspond to the Lambert branches used above \cite{wlproductlog}; \texttt{QBinomial}, \texttt{QPochhammer}, and \texttt{StirlingS2} provide direct comparisons with the standard functions \cite{wlqbinomial,wlqpochhammer,wlstirling}.
+\begin{lstlisting}[language=Mathematica]
+(* Exact coefficient formulas. These definitions use no machine literals. *)
+ClearAll[ExpCoefficient, GammaRatioCoefficient, EndpointCoefficient,
+  NormalHalfMoment, InvolutionCoefficient, QLogCoefficient,
+  QInverseCoefficient, StirlingColumnInverse];
+ExpCoefficient[d_List, n_Integer] /; 0 <= n <= Length[d] :=
+ Module[{t}, SeriesCoefficient[
+   Exp[Sum[d[[j]] t^j, {j, 1, n}]], {t, 0, n}]];
+GammaRatioCoefficient[aa_, bb_, n_Integer] /; n >= 0 :=
+ ExpCoefficient[Table[
+   (-1)^(j + 1) (BernoulliB[j + 1, aa] -
+      BernoulliB[j + 1, bb])/(j (j + 1)), {j, 1, n}], n];
+EndpointCoefficient[alpha_, c_, n_Integer] /; n >= 0 :=
+ Total[Table[Binomial[alpha, j] (-c)^j Pochhammer[alpha + 1, j]
+   GammaRatioCoefficient[1, alpha + j + 2, n - j], {j, 0, n}]];
+NormalHalfMoment[n_Integer] /; n >= 0 :=
+ Sum[n! (1/2)^(n - 2 j)/(4^j j! (n - 2 j)!),
+   {j, 0, Floor[n/2]}];
+InvolutionCoefficient[m_Integer] /; m >= 0 :=
+ Module[{t, v, poly},
+  poly = Expand[SeriesCoefficient[
+    Exp[Sum[(-1)^(r + 1) v^(r + 2) t^r/(r + 2), {r, 1, m}]],
+    {t, 0, m}]];
+  Total[Table[Coefficient[poly, v, j] NormalHalfMoment[j],
+    {j, 0, 3 m}]]];
+QLogCoefficient[r_Integer, q_] /; r >= 1 :=
+ -2/(r (q^r - 1)) + If[EvenQ[r], 2/(r (q^(r/2) - 1)), 0];
+QInverseCoefficient[n_Integer, x_Symbol, a_, q_] /; n >= 1 :=
+ Module[{t, hh, apply},
+  hh = Sum[QLogCoefficient[r, q] t^r, {r, 1, n}];
+  apply[f_] := (D[f, x] - a n f)/(2 a x);
+  Simplify[Total[Table[(-1)^m/m! Coefficient[Expand[hh^m], t, n]
+    Nest[apply, 1/(2 a x), m - 1], {m, 1, n}]]]];
+(* Total-degree truncation, exponential cost in k and maxDegree. *)
+StirlingColumnInverse[k_Integer, y_, maxDegree_Integer] /;
+    k >= 2 && maxDegree >= 0 :=
+ Module[{a = Log[k], xx, kap, terms, indices},
+  xx = Log[k! y]/a;
+  kap = Table[Log[k/j]/a, {j, 1, k - 1}];
+  terms = Table[(-1)^(k - j) Binomial[k, j] (j/k)^xx,
+    {j, 1, k - 1}];
+  indices = Select[Tuples[Range[0, maxDegree], k - 1],
+    1 <= Total[#] <= maxDegree &];
+  xx - Total[Map[Function[nu,
+    Product[(kap.nu) - h, {h, 1, Total[nu] - 1}]
+    Product[terms[[j]]^nu[[j]]/nu[[j]]!, {j, 1, k - 1}]],
+    indices]]/a];
+\end{lstlisting}
+
+\clearpage
+{\small
+\begin{thebibliography}{99}
+\setlength{\itemsep}{0.25em}
+\setlength{\parskip}{0pt}
+\bibitem{parent}
+Vladimir Reshetnikov, \emph{Transseries: the polynomial--logarithmic calculus and its inversions}, canonical source and directory in the ProveIt repository, \texttt{main} branch, accessed 4 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/Transseries_And_Inversion}.
+
+\bibitem{dlmfgamma}
+NIST Digital Library of Mathematical Functions, \S5.11, \emph{Asymptotic Expansions}, especially shifted Stirling expansions, gamma ratios, and positive-axis error bounds. \url{https://dlmf.nist.gov/5.11}.
+
+\bibitem{dlmfbinet}
+NIST Digital Library of Mathematical Functions, \S5.9, \emph{Integral Representations}, Binet formulas. \url{https://dlmf.nist.gov/5.9}.
+
+\bibitem{oeiscatalan}
+OEIS Foundation, \emph{A000108: Catalan numbers}. \url{https://oeis.org/A000108}.
+
+\bibitem{oeisfuss}
+OEIS Foundation, \emph{A001764: ternary Fuss--Catalan numbers}. \url{https://oeis.org/A001764}.
+
+\bibitem{oeistableaux}
+OEIS Foundation, \emph{A005789: standard Young tableaux of shape $(n,n,n)$}. \url{https://oeis.org/A005789}.
+
+\bibitem{oeismotzkin}
+OEIS Foundation, \emph{A001006: Motzkin numbers}. \url{https://oeis.org/A001006}.
+
+\bibitem{oeistrinomial}
+OEIS Foundation, \emph{A002426: central trinomial coefficients}. \url{https://oeis.org/A002426}.
+
+\bibitem{oeisinvolutions}
+OEIS Foundation, \emph{A000085: number of involutions}. \url{https://oeis.org/A000085}.
+
+\bibitem{oeiszigzag}
+OEIS Foundation, \emph{A000111: Euler or up/down numbers}. \url{https://oeis.org/A000111}.
+
+\bibitem{oeiseulerian}
+OEIS Foundation, \emph{A008292: triangle of Eulerian numbers}. \url{https://oeis.org/A008292}.
+
+\bibitem{wlstirling}
+Wolfram Research, \emph{StirlingS2}, Wolfram Language Documentation. \url{https://reference.wolfram.com/language/ref/StirlingS2.html}.
+
+\bibitem{wlqbinomial}
+Wolfram Research, \emph{QBinomial}, Wolfram Language Documentation. \url{https://reference.wolfram.com/language/ref/QBinomial.html}.
+
+\bibitem{wlqpochhammer}
+Wolfram Research, \emph{QPochhammer}, Wolfram Language Documentation. \url{https://reference.wolfram.com/language/ref/QPochhammer.html}.
+
+\bibitem{wlbeta}
+Wolfram Research, \emph{DirichletBeta}, Wolfram Language Documentation. \url{https://reference.wolfram.com/language/ref/DirichletBeta.html}.
+
+\bibitem{wlproductlog}
+Wolfram Research, \emph{ProductLog}, Wolfram Language Documentation. \url{https://reference.wolfram.com/language/ref/ProductLog.html}.
+
+\bibitem{wlcatalan}
+Wolfram Research, \emph{CatalanNumber}, Wolfram Language Documentation. \url{https://reference.wolfram.com/language/ref/CatalanNumber.html}.
+
+\bibitem{ekz}
+Shalosh B. Ekhad, Manuel Kauers, and Doron Zeilberger,
+\emph{The $O(1/n^{85})$ Asymptotic expansion of OEIS sequence A85}, arXiv:2410.16334v1, 2024. HTML version consulted for the specific audit in \cref{app:audit}. \url{https://arxiv.org/html/2410.16334v1}.
+\end{thebibliography}
+}
+
+\end{document}

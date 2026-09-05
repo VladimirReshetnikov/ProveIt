@@ -1,0 +1,1747 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\usepackage{booktabs,array,longtable,enumitem,ragged2e,xurl}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,needspace}
+\usepackage[unicode,colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{listings}
+\hypersetup{pdftitle={q-Binomial Coefficient Calculus},pdfauthor={Research extension},pdfsubject={Gaussian binomials, Bell polynomials, interpolation, inversion, and root-of-unity derivatives}}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\qb}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
+\newcommand{\qbb}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\qf}[1]{[#1]_{q}!}
+\newcommand{\qi}[1]{[#1]_{q}}
+\newcommand{\poch}[3]{(#1;#2)_{#3}}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\Ecal}{\mathcal E}
+\newcommand{\Pcal}{\mathcal P}
+\newcommand{\Bhat}{\widehat B}
+\newcommand{\Bq}{\mathcal B^{(q)}}
+\newcommand{\Res}{\mathop{\mathrm{Res}}}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\stir}[2]{\genfrac{\{} {\}}{0pt}{}{#1}{#2}}
+\newcommand{\sone}[2]{s(#1,#2)}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Id}{Id}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape q-Binomial Coefficient Calculus}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\setlength{\parskip}{4pt plus 1pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\setcounter{tocdepth}{2}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,frame=single,showstringspaces=false}
+
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{20mm}
+\begin{center}
+{\small\scshape An extension to Combinatorial Coefficient Calculus}\\[12mm]
+{\Huge\bfseries q-Binomial\\[3mm] Coefficient Calculus}\\[8mm]
+{\Large Gaussian weights, Bell expansions,\\[2mm]
+interpolation, reversion, and root-of-unity jets}\\[12mm]
+{\large September 4, 2026}
+\end{center}
+\vspace{10mm}
+\begin{abstract}
+Gaussian binomial coefficients fit into coefficient calculus in several different,
+noninterchangeable ways: as elementary and complete symmetric functions on geometric
+alphabets, as convolution structure constants, as interpolation matrices on
+$q$-integer nodes, and as polynomials whose local expansions are governed by
+Bernoulli, Stirling, and Bell numbers. This article develops those connections with
+explicit hypotheses and proofs. A finite partition-sum kernel evaluates arbitrary
+powers of products of $q$-shifted factorials, their compositions, and their
+Lagrange--B\"urmann inverses. Further results include weighted $q$-binomial inversion,
+two Newton interpolation formulas, a normalization-specific $q$-Stirling calculus,
+ordinary composition in $q$-divided-power coordinates, coupled two-variable
+inversion, exact geometric extrapolation, and formulas for every derivative of a
+Gaussian polynomial at every root of unity. Classical identities are distinguished
+from the organizing synthesis. In particular, a change of factorial normalization
+is not confused with a Jackson chain rule, and distinct $q$-Catalan constructions
+are not identified. A reproducible exact-arithmetic verification program accompanies
+the source and rendered article; its finite tests supplement, rather than replace,
+the proofs.
+\end{abstract}
+\vfill
+\noindent\textbf{Scope.} A self-contained mathematical extension, not a modification
+of the repository and not a claim of new Lean formalization. All coefficient
+formulas have explicitly finite expansions at each prescribed degree.
+\end{titlepage}
+\tableofcontents
+\newpage
+
+\section{Purpose, source alignment, and algebraic conventions}\label{sec:scope}
+
+\subsection{What is being extended}
+The canonical \emph{Combinatorial Coefficient Calculus} manuscript in the ProveIt
+repository \cite{CCC} connects polynomial basis changes, Bell-polynomial
+composition, binomial inversion, and Lagrange--B\"urmann/Good inversion. The present
+article extends these mechanisms to Gaussian coefficients. It uses the canonical
+\TeX{} source consulted on September 4, 2026, rather than assuming that the
+repository's retained PDF has current source parity; the provenance document
+explicitly warns against that assumption \cite{provenance}.
+
+The point is not to replace every $n!$ by $\qf n$. There are three separate
+operations. One may weight an ordinary combinatorial object by a statistic, change
+the basis used to record an ordinary formal series, or replace the derivative by
+a difference operator. Each produces useful $q$-formulas, but they need not produce
+the same formulas. Keeping these operations separate is essential for correct
+composition and inversion.
+
+The classical $q$-binomial and terminating summation identities are standard
+\cite{DLMF17,DLMF175,DLMF176}. They are proved here because their proofs reveal the
+coefficient mechanisms used later. The principal contribution of this extension
+is the explicit integration of these identities with the source's coefficient
+calculus, together with worked finite-sum consequences. No historical priority
+claim is made for identities obtained by combining standard tools.
+
+\subsection{Coefficient rings and boundary values}
+Throughout, $\N=\{0,1,2,\ldots\}$. Unless stated otherwise, $q$ is an
+indeterminate and computations take place in a
+commutative $\Q(q)$-algebra $R$. Additional commuting parameters may be adjoined.
+The main series variable is $z$, so $R[[z]]$ means formal power series in $z$,
+not in $q$. An identity in $\Z[q]$ can subsequently be specialized at any complex
+$q$, including a root of unity. A rational expression can be specialized only
+where it is defined, or after its removable singularities have been eliminated.
+
+Write
+\begin{equation}\label{eq:definitions}
+ \qi n=1+q+\cdots+q^{n-1},\qquad
+ \qf n=\prod_{j=1}^n\qi j,\qquad
+ D_n=\poch q q n=(1-q)^n\qf n,
+\end{equation}
+with $\qi0=0$, $\qf0=D_0=1$. The shifted factorial and Gaussian coefficient are
+\begin{equation}\label{eq:gauss-def}
+ \poch a q N=\prod_{j=0}^{N-1}(1-aq^j),\qquad
+ \qb nk=\frac{D_n}{D_kD_{n-k}}\quad(0\le k\le n).
+\end{equation}
+For $n\ge0$, put $\qb nk=0$ when $k<0$ or $k>n$. Negative upper entries, when used,
+will receive a separate definition. Empty products are $1$, empty sums are $0$,
+and $0^0=1$ in finite coefficient formulas. Thus every zeroth coefficient below
+is unambiguous. A coefficient of negative degree is zero.
+
+A series $A$ with $A(0)=1$ has the formal powers
+\begin{equation}\label{eq:formal-power}
+ A^\alpha=\exp(\alpha\log A),\qquad
+ \log(1+u)=\sum_{j\ge1}\frac{(-1)^{j-1}}j u^j.
+\end{equation}
+These require a $\Q$-algebra, but no analytic branch. Analytic interpretations are
+stated separately in \cref{sec:analytic}.
+
+\subsection{The ordinary Bell kernel retained throughout}
+For $n\ge0$ let
+\[
+ \Pcal(n)=\{(m_1,\ldots,m_n)\in\N^n:\ \sum_{j=1}^n jm_j=n\}.
+\]
+For $n=0$ this consists of the empty tuple. Define
+\begin{equation}\label{eq:E-kernel}
+ \Ecal_n(L)=\sum_{\bm m\in\Pcal(n)}
+       \prod_{j=1}^n\frac{(L_j/j)^{m_j}}{m_j!}.
+\end{equation}
+The complete exponential Bell polynomial $B_n$ is normalized by
+\begin{equation}\label{eq:Bell-def}
+ \exp\left(\sum_{j\ge1}x_j\frac{z^j}{j!}\right)
+  =\sum_{n\ge0}B_n(x_1,\ldots,x_n)\frac{z^n}{n!}.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:E-Bell}
+ \Ecal_n(L)=\frac1{n!}B_n(0!L_1,1!L_2,\ldots,(n-1)!L_n),\qquad
+ \exp\left(\sum_{j\ge1}\frac{L_j}jz^j\right)
+       =\sum_{n\ge0}\Ecal_n(L)z^n.
+\end{equation}
+Both statements follow by multiplying the individual exponential series. In
+particular, \eqref{eq:E-kernel} is a definition by a finite sum, not by a recurrence.
+The first values provide a useful normalization check:
+\begin{align}\label{eq:E-small}
+ \Ecal_0&=1,&\Ecal_1&=L_1,&
+ \Ecal_2&=\frac{L_1^2+L_2}{2},\\
+ \Ecal_3&=\frac{L_1^3+3L_1L_2+2L_3}{6},&
+ \Ecal_4&=\frac{L_1^4+6L_1^2L_2+3L_2^2+8L_1L_3+6L_4}{24}.
+ \nonumber
+\end{align}
+The $q$-dependence will usually enter through the arguments $L_j$, not through a
+new Bell-polynomial definition.
+
+\section{Gaussian coefficients as coefficient extractors}\label{sec:gaussian}
+
+\subsection{The finite theorem, polynomiality, and symmetry}
+\begin{theorem}[Finite $q$-binomial theorem]\label{thm:finite}
+For $N\ge0$,
+\begin{equation}\label{eq:finite}
+ \prod_{j=0}^{N-1}(1+zq^j)
+ =\sum_{k=0}^{N}q^{\binom k2}\qb Nk z^k.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:subset}
+ \qb Nk=\sum_{0\le i_1<\cdots<i_k<N}
+          q^{i_1+\cdots+i_k-\binom k2}\in\Z_{\ge0}[q].
+\end{equation}
+The $k=0$ sum has one empty term.
+\end{theorem}
+\begin{proof}
+Expanding the product gives the subset sum before division by $q^{\binom k2}$.
+Let $A_{N,k}$ denote that normalized sum. Separating subsets that contain $N-1$
+from those that do not gives
+\[
+ A_{N,k}=A_{N-1,k}+q^{N-k}A_{N-1,k-1}.
+\]
+The quotient in \eqref{eq:gauss-def} satisfies the same identity: after using the
+common denominator $D_kD_{N-k}$, the numerator is
+$D_{N-1}((1-q^{N-k})+q^{N-k}(1-q^k))=D_N$.
+The boundary values agree, so induction proves the identification. Finally,
+$i_j\ge j-1$, hence every exponent in \eqref{eq:subset} is nonnegative.
+\end{proof}
+
+\begin{corollary}[Pascal, symmetry, reciprocity, and classical limit]\label{cor:pascal}
+For the indicated nonnegative indices,
+\begin{align}
+ \qb Nk&=\qb{N-1}k+q^{N-k}\qb{N-1}{k-1}
+       =q^k\qb{N-1}k+\qb{N-1}{k-1},\label{eq:pascal}\\
+ \qb Nk&=\qb N{N-k},\qquad
+ \qbb Nk{q^{-1}}=q^{-k(N-k)}\qb Nk,\label{eq:reciprocity}\\
+ \qbb Nk1&=\binom Nk,\qquad \qbb Nk0=1\quad(0\le k\le N).
+ \label{eq:specializations}
+\end{align}
+For $0\le k\le N$ the degree is $k(N-k)$ and the leading and constant
+coefficients are $1$.
+\end{corollary}
+\begin{proof}
+The first Pascal identity was proved above. Symmetry follows from the factorial
+quotient and gives the second Pascal identity. Replacing each $1-q^{-j}$ by
+$-q^{-j}(1-q^j)$ gives reciprocity. At $q=1$, the subset sum counts $k$-subsets.
+Its smallest exponent, zero, occurs once, and its largest exponent,
+$k(N-k)$, occurs once. This also proves the assertion at zero.
+\end{proof}
+
+Put $\lambda_j=i_j-(j-1)$. Then
+$0\le\lambda_1\le\cdots\le\lambda_k\le N-k$, and the exponent in
+\eqref{eq:subset} is $\sum_j\lambda_j$. Thus $\qb Nk$ enumerates partitions
+inside a $k\times(N-k)$ rectangle by size; see also \cite{DLMF26}. This interpretation
+will justify positivity of coefficients that later emerge from alternating sums.
+
+\subsection{Complete symmetric functions and negative upper entries}
+\begin{theorem}[Reciprocal finite product]\label{thm:reciprocal}
+For $N\ge1$,
+\begin{equation}\label{eq:reciprocal-product}
+ \frac1{\poch z q N}=\sum_{r\ge0}\qb{N+r-1}r z^r.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:complete-symmetric}
+ \qb{N+r-1}r
+ =\sum_{\substack{a_0+\cdots+a_{N-1}=r\\a_j\ge0}}
+       q^{\sum_{j=0}^{N-1}j a_j}
+ =\sum_{0\le i_1\le\cdots\le i_r<N}q^{i_1+\cdots+i_r}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The first finite sum comes from expanding every geometric series. A weakly
+increasing $r$-tuple is carried to a strictly increasing tuple by
+$i_j\mapsto i_j+j-1$. Its entries lie in $\{0,\ldots,N+r-2\}$ and its weight
+increases by $\binom r2$. Applying \eqref{eq:subset} proves the result.
+\end{proof}
+For $N=0$, the reciprocal product is $1$; this case is not encoded by a Gaussian
+coefficient with upper entry $r-1$.
+
+For $M\ge1$ and $r\ge0$ define a negative upper entry by the finite product
+\[
+ \qb{-M}r:=\prod_{j=0}^{r-1}\frac{1-q^{-M-j}}{1-q^{j+1}}.
+\]
+Factoring each numerator gives the explicit conversion
+\begin{equation}\label{eq:negative-upper}
+ \qb{-M}r=(-1)^r q^{-Mr-\binom r2}\qb{M+r-1}r.
+\end{equation}
+Only the upper index has been extended here. This avoids the competing
+conventions that arise when both indices are negative; a broader treatment is
+available in \cite{FormichellaStraub}.
+
+\subsection{Gaussian multinomials and a finite-field interpretation}
+For nonnegative $k_1+\cdots+k_s=N$ set
+\[
+ \qbb{N}{k_1,\ldots,k_s}{q}=\frac{D_N}{D_{k_1}\cdots D_{k_s}}.
+\]
+It is a polynomial because it factors as
+$\qb N{k_1}\qb{N-k_1}{k_2}\cdots\qb{k_s}{k_s}$.
+When $q=Q$ is a prime power, $\qbb NkQ$ counts $k$-dimensional subspaces of
+$\mathbb F_Q^N$: count ordered linearly independent $k$-tuples and divide by the
+number of ordered bases of one such subspace, obtaining
+\[
+ \frac{\prod_{j=0}^{k-1}(Q^N-Q^j)}{\prod_{j=0}^{k-1}(Q^k-Q^j)}
+ =\qbb NkQ.
+\]
+Successively choosing subspaces of prescribed quotient dimensions gives the
+multinomial interpretation as a flag count. This is a distinct interpretation
+from weighting subsets; both evaluate the same polynomial.
+
+\section{Convolution and terminating summation identities}\label{sec:convolutions}
+
+\subsection{Two-block and multiblock Vandermonde identities}
+\begin{theorem}[$q$-Vandermonde]\label{thm:vandermonde}
+For $M,N,r\ge0$,
+\begin{equation}\label{eq:vandermonde}
+ \qb{M+N}r
+ =\sum_k q^{(M-k)(r-k)}\qb Mk\qb N{r-k}.
+\end{equation}
+The sum is over $\max(0,r-N)\le k\le\min(M,r)$.
+More generally, if $N_1+\cdots+N_s=N$, then
+\begin{equation}\label{eq:multivandermonde}
+ \qb Nr=
+ \sum_{\substack{k_1+\cdots+k_s=r\\0\le k_i\le N_i}}
+ q^{\sum_{i<j}(N_i-k_i)k_j}\prod_{i=1}^s\qb{N_i}{k_i}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Split $\poch{-z}q{M+N}$ as $\poch{-z}qM\poch{-zq^M}qN$ and use
+\eqref{eq:finite}. The coefficient with $k$ choices from the first block is
+$q^{\binom k2+\binom{r-k}2+M(r-k)}\qb Mk\qb N{r-k}$.
+Divide by $q^{\binom r2}$ to obtain \eqref{eq:vandermonde}.
+For several blocks, their initial exponents are
+$0,N_1,N_1+N_2,\ldots$. The same calculation subtracts
+$\sum_{i<j}k_i k_j$ from $\sum_{i<j}N_i k_j$, proving
+\eqref{eq:multivandermonde}.
+\end{proof}
+
+\begin{corollary}[Three useful companions]\label{cor:companions}
+For $M,N\ge1$ and $r\ge0$,
+\begin{align}
+ \qb{M+N+r-1}r
+ &=\sum_{k=0}^r q^{M(r-k)}\qb{M+k-1}k\qb{N+r-k-1}{r-k},
+ \label{eq:negative-vander}\\
+ \delta_{r0}
+ &=\sum_{k=0}^{\min(N,r)}(-1)^kq^{\binom k2}
+     \qb Nk\qb{N+r-k-1}{r-k}.\label{eq:orth-product}
+\end{align}
+For $0\le k\le n$,
+\begin{equation}\label{eq:hockey}
+ \sum_{j=k}^n q^{j-k}\qb jk=\qb{n+1}{k+1}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+The first formula compares coefficients in
+$1/\poch zq{M+N}=1/(\poch zqM\poch{zq^M}qN)$.
+The second compares coefficients in
+$\poch zqN/\poch zqN=1$.
+For the third, rearrange the first Pascal identity as
+$q^{j-k}\qb jk=\qb{j+1}{k+1}-\qb j{k+1}$ and telescope.
+\end{proof}
+
+\subsection{The infinite theorem with a precise formal meaning}
+\begin{theorem}[The $q$-binomial series]\label{thm:infinite}
+In $\Q(q,a)[[z]]$ define
+\begin{equation}\label{eq:R-log}
+ R_a(z)=\exp\left(\sum_{j\ge1}\frac{1-a^j}{j(1-q^j)}z^j\right).
+\end{equation}
+Then
+\begin{equation}\label{eq:qbinomial-series}
+ R_a(z)=\sum_{n\ge0}\frac{\poch a q n}{D_n}z^n
+       =\frac{\poch{az}q\infty}{\poch zq\infty}.
+\end{equation}
+The last expression denotes either its coefficientwise $q$-adic interpretation
+or, for $|q|<1$ and $|z|<1$, the convergent analytic product. It is not a limit of
+finite products in the discrete-coefficient $z$-adic topology alone.
+\end{theorem}
+\begin{proof}
+Subtract the logarithm at $qz$ from the logarithm at $z$ in \eqref{eq:R-log}.
+Exponentiation gives
+\[
+ (1-z)R_a(z)=(1-az)R_a(qz).
+\]
+If $c_n=[z^n]R_a$, this implies
+$(1-q^n)c_n=(1-aq^{n-1})c_{n-1}$ for $n\ge1$, with $c_0=1$.
+Multiplying these finitely many ratios yields $c_n=\poch a q n/D_n$.
+Expanding logarithms of the infinite products gives \eqref{eq:R-log}; this
+calculation is valid coefficientwise $q$-adically and in the indicated analytic
+domain. For finite products the coefficient of $z$ contains
+$1+q+\cdots+q^{N-1}$, which does not eventually stabilize in $\Q(q)$.
+This proves the topology warning as well.
+\end{proof}
+
+\begin{proposition}[Cocycle and shifted-factorial convolution]
+\label{prop:cocycle}
+One has $R_a(z)R_b(az)=R_{ab}(z)$ and therefore
+\begin{equation}\label{eq:poch-conv}
+ \sum_{k=0}^n\qb nk\poch a q k\poch b q{n-k}a^{n-k}
+       =\poch{ab}q n.
+\end{equation}
+\end{proposition}
+\begin{proof}
+In the logarithm the summands combine as
+$(1-a^j)+a^j(1-b^j)=1-(ab)^j$. Extracting $z^n$ and multiplying by $D_n$
+proves the convolution.
+\end{proof}
+
+\begin{theorem}[The two terminating $q$-Chu--Vandermonde sums]\label{thm:chu}
+For $n\ge0$, as rational identities in generic parameters,
+\begin{align}
+ \sum_{k=0}^n\frac{\poch{q^{-n}}qk\poch a q k}
+                         {D_k\poch c q k}\,q^k
+ &=a^n\frac{\poch{c/a}q n}{\poch c q n},\label{eq:chu1}\\
+ \sum_{k=0}^n\frac{\poch{q^{-n}}qk\poch a q k}
+                         {D_k\poch c q k}
+                    \left(\frac{cq^n}{a}\right)^k
+ &=\frac{\poch{c/a}q n}{\poch c q n}.\label{eq:chu2}
+\end{align}
+Specializations require the displayed denominators to be nonzero or a separately
+justified cancellation. In \eqref{eq:chu1}, the right side can be read as
+$\prod_{j=0}^{n-1}(a-cq^j)/\poch c q n$, avoiding an artificial singularity at $a=0$.
+\end{theorem}
+\begin{proof}
+In \eqref{eq:poch-conv} replace its parameters by $A,b$, interchange $k$ and
+$n-k$, and divide by $\poch A q n$. Use
+\[
+ \qb nk=\frac{\poch{q^{-n}}qk}{D_k}(-1)^kq^{nk-\binom k2},\qquad
+ \frac{\poch A q{n-k}}{\poch A q n}
+  =\frac{(-A)^{-k}q^{-nk+k(k+1)/2}}
+         {\poch{q^{1-n}/A}qk}.
+\]
+The result is the left side of \eqref{eq:chu1} with $b=a$ and
+$c=q^{1-n}/A$. Reversing the factors in the quotient on the right gives
+$\poch{Aa}q n/\poch A q n=a^n\poch{c/a}q n/\poch c q n$.
+For \eqref{eq:chu2}, replace $(q,a,c)$ by $(q^{-1},a^{-1},c^{-1})$ in
+\eqref{eq:chu1} and use
+\[
+ \poch{x}{q^{-1}}k=(-x)^kq^{-\binom k2}\poch{x^{-1}}qk.
+\]
+The powers remaining in the summand are $(cq^n/a)^k$; those on the right cancel.
+\end{proof}
+
+\section{The master product-to-Bell theorem}\label{sec:master}
+
+\subsection{Geometric power sums}
+For a finite $N\ge0$ define
+\begin{equation}\label{eq:S}
+ S_N(t)=\sum_{j=0}^{N-1}t^j.
+\end{equation}
+This polynomial, rather than $(1-t^N)/(1-t)$, is the preferred expression at
+$t=1$. When $N=\infty$, write $S_\infty(t)=(1-t)^{-1}$ with the formal or
+analytic interpretation of \cref{thm:infinite}.
+
+\begin{theorem}[Ramified shifted-factorial coefficient calculus]\label{thm:master}
+Let $d_r,h_r$ be positive integers, $N_r\in\N\cup\{\infty\}$, and let
+$a_r,\alpha_r$ be commuting parameters, $1\le r\le s$. Set
+\begin{equation}\label{eq:master-P}
+ P(z)=\prod_{r=1}^s\poch{a_r z^{d_r}}{q^{h_r}}{N_r}^{\alpha_r},
+\end{equation}
+and define, by finite sums for each $j\ge1$,
+\begin{equation}\label{eq:master-L}
+ L_j=-\sum_{\substack{1\le r\le s\\d_r\mid j}}
+       d_r\alpha_r a_r^{j/d_r}
+             S_{N_r}\!\left(q^{h_rj/d_r}\right).
+\end{equation}
+Then for every $n\ge0$ and every scalar $\beta$,
+\begin{equation}\label{eq:master-coef}
+ [z^n]P(z)^\beta
+ =\Ecal_n(\beta L)
+ =\sum_{\bm m\in\Pcal(n)}\prod_{j=1}^n
+                   \frac{(\beta L_j/j)^{m_j}}{m_j!}.
+\end{equation}
+Here infinite factors are defined by their logarithms over $\Q(q)$; finite
+factors need no such qualification.
+\end{theorem}
+\begin{proof}
+For one finite factor,
+\[
+ \log\poch{az^d}{q^h}N
+  =-\sum_{\ell\ge1}\frac{a^\ell}{\ell}
+               S_N(q^{h\ell})z^{d\ell}.
+\]
+The same formula defines an infinite factor with $S_\infty$. In degree $j$, a
+factor contributes only if $d\mid j$; writing $\ell=j/d$ makes its contribution
+$-d a^{j/d}S_N(q^{hj/d})/j$. Summing the exponents $\alpha_r$ yields
+$\log P=\sum_{j\ge1}L_jz^j/j$. Equation \eqref{eq:E-Bell} proves
+\eqref{eq:master-coef}. All coefficient extractions use only $L_1,\ldots,L_n$.
+\end{proof}
+
+\begin{corollary}[Gaussian coefficients as explicit Bell sums]\label{cor:gauss-bell}
+For $N\ge1$ and $k\ge0$,
+\begin{align}
+ q^{\binom k2}\qb Nk
+ &=\sum_{\bm m\in\Pcal(k)}\prod_{j=1}^k
+    \frac1{m_j!}\left(\frac{(-1)^{j-1}S_N(q^j)}j\right)^{m_j},
+ \label{eq:elementary-Bell}\\
+ \qb{N+k-1}k
+ &=\sum_{\bm m\in\Pcal(k)}\prod_{j=1}^k
+    \frac1{m_j!}\left(\frac{S_N(q^j)}j\right)^{m_j}.
+ \label{eq:complete-Bell}
+\end{align}
+The first expression is zero for $k>N$.
+\end{corollary}
+\begin{proof}
+Apply \cref{thm:master} to $\poch{-z}qN$ and $1/\poch zqN$, respectively,
+and compare with \cref{thm:finite,thm:reciprocal}.
+\end{proof}
+These are the geometric-alphabet specializations of the source's
+symmetric-function/Bell correspondence. No $q$-Bell polynomial is needed.
+At $q=1$ they become finite Bell-sum formulas for $\binom Nk$ and
+$\binom{N+k-1}k$.
+
+\subsection{Composition, arbitrary powers, and parameter derivatives}
+\begin{corollary}[Composition with a unit product]\label{cor:compose-P}
+If $H(u)=\sum_{k\ge0}h_ku^k$ and $P$ is as in \cref{thm:master}, then
+\begin{equation}\label{eq:compose-P}
+ [z^n]H(P(z)-1)
+ =\sum_{k=0}^n h_k\sum_{j=0}^k(-1)^{k-j}\binom kj\Ecal_n(jL).
+\end{equation}
+If $M(\bm m)=\sum_jm_j$, then
+\begin{equation}\label{eq:beta-derivative}
+ [z^n]P(z)^\beta(\log P(z))^r
+ =\sum_{\bm m\in\Pcal(n)}
+   (M(\bm m))_{\underline r}\,\beta^{M(\bm m)-r}
+   \prod_{j=1}^n\frac{(L_j/j)^{m_j}}{m_j!},
+\end{equation}
+where terms with $M(\bm m)<r$ are zero, so no negative power of $\beta$ is used.
+\end{corollary}
+\begin{proof}
+Expand $(P-1)^k=\sum_{j=0}^k(-1)^{k-j}\binom kjP^j$.
+Since $P-1$ has positive $z$-order, only $k\le n$ can contribute.
+For the second formula differentiate \eqref{eq:master-coef} $r$ times in $\beta$;
+its degree in $\beta$ is at most $n$.
+\end{proof}
+
+For example, put
+\[
+ P(z)=\frac{\poch{-z^2}{q^2}M^\gamma}{\poch{az}qN^\alpha}.
+\]
+The logarithmic inputs are explicitly
+\begin{equation}\label{eq:mixed-example-L}
+ L_j=\alpha a^jS_N(q^j)
+   -\mathbf1_{2\mid j}\,2\gamma(-1)^{j/2}S_M(q^j).
+\end{equation}
+Thus all powers, logarithmic factors, and compositions of this mixed even/ordinary
+product are evaluated by one finite kernel. This example also makes clear why the
+ramification factor $d_r$ in \eqref{eq:master-L} cannot be omitted.
+
+\section{Extracting coefficients in the base parameter}\label{sec:qcoeff}
+The preceding sections treated $q$ as a parameter. We now extract powers of $q$
+itself. These are different coefficient questions.
+
+\begin{theorem}[Divisor-sum formula for Gaussian coefficients]\label{thm:qcoeff}
+Fix $0\le k\le n$ and put
+\begin{equation}\label{eq:divisor-L}
+ A_m(n,k)=\sum_{\substack{1\le d\le k\\d\mid m}}d
+          -\sum_{\substack{n-k+1\le d\le n\\d\mid m}}d.
+\end{equation}
+Then, for every $r\ge0$,
+\begin{equation}\label{eq:qcoeff-Bell}
+ [q^r]\qb nk
+ =\sum_{\bm m\in\Pcal(r)}\prod_{j=1}^r
+                 \frac{(A_j(n,k)/j)^{m_j}}{m_j!}.
+\end{equation}
+In particular the expression vanishes for $r>k(n-k)$.
+\end{theorem}
+\begin{proof}
+As a unit of $\Q[[q]]$,
+\[
+ \qb nk=\frac{\prod_{d=n-k+1}^n(1-q^d)}{\prod_{d=1}^k(1-q^d)}.
+\]
+The coefficient of $q^m$ in its logarithm is $A_m(n,k)/m$, since
+$[q^m]\log(1-q^d)=-d/m$ when $d\mid m$ and is zero otherwise.
+Apply \eqref{eq:E-Bell}, now with $q$ in place of $z$. The degree bound was
+proved in \cref{cor:pascal}.
+\end{proof}
+
+\begin{proposition}[Bounded-part inclusion--exclusion]\label{prop:restricted}
+Let
+\[
+ p_{\le k}(r)=\#\{(a_1,\ldots,a_k)\in\N^k:\ \sum_{j=1}^k ja_j=r\},
+\]
+with value zero for $r<0$, and $p_{\le0}(r)=\delta_{r0}$. Then
+\begin{equation}\label{eq:qcoeff-inclusion}
+ [q^r]\qb nk=
+ \sum_{S\subseteq\{1,\ldots,k\}}(-1)^{|S|}
+ p_{\le k}\!\left(r-\sum_{i\in S}(n-k+i)\right).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Expand the numerator of the product in the preceding proof over subsets $S$.
+The reciprocal denominator has coefficient $p_{\le k}(r)$ by the geometric
+series expansion. Their Cauchy product gives the formula.
+\end{proof}
+
+For example,
+\begin{equation}\label{eq:G42}
+ \qb42=1+q+2q^2+q^3+q^4.
+\end{equation}
+Both \eqref{eq:qcoeff-Bell} and \eqref{eq:qcoeff-inclusion} recover these
+coefficients without a Gaussian recurrence. Their cancellations above degree
+four are exact identities. The subset formula, not the alternating presentation,
+explains why the surviving coefficients are nonnegative integers.
+
+\section{Gaussian convolution and the correct inverse transform}\label{sec:transforms}
+
+\subsection{Divided-power coordinates and two exponentials}
+Define
+\begin{equation}\label{eq:qexp}
+ e_q(z)=\sum_{n\ge0}\frac{z^n}{\qf n},\qquad
+ E_q(z)=\sum_{n\ge0}q^{\binom n2}\frac{z^n}{\qf n}.
+\end{equation}
+Using \cref{thm:infinite} with $a=0$ and the finite theorem followed by its
+coefficientwise limit gives
+\begin{equation}\label{eq:qexp-products}
+ e_q(z)=\frac1{\poch{(1-q)z}q\infty},\qquad
+ E_q(z)=\poch{-(1-q)z}q\infty,
+ \qquad e_q(z)E_q(-z)=1.
+\end{equation}
+For completeness, the coefficientwise limit used for the second equality is
+$q^{\binom n2}/D_n$: in the finite theorem,
+$\qb Nn=\prod_{j=0}^{n-1}(1-q^{N-j})/D_n$ tends $q$-adically to $1/D_n$.
+Thus \eqref{eq:qexp-products} also holds purely formally over $\Q(q)$.
+The functions in \eqref{eq:qexp} use $q$-factorials; a convention with $D_n$ in
+the denominator rescales their argument by $1-q$.
+
+For sequences $a,b$ put
+\begin{equation}\label{eq:qconv}
+ (a\star_q b)_n=\sum_{k=0}^n\qb nk a_kb_{n-k},\qquad
+ \mathscr G_q(a;z)=\sum_{n\ge0}a_n\frac{z^n}{\qf n}.
+\end{equation}
+Multiplication of formal series immediately proves
+\begin{equation}\label{eq:qconv-series}
+ \mathscr G_q(a\star_q b;z)=\mathscr G_q(a;z)\mathscr G_q(b;z).
+\end{equation}
+Hence $\star_q$ is associative and commutative and has identity
+$\epsilon_n=\delta_{n0}$. Alternatively, associativity follows directly from
+$\qb nk\qb kj=\qb nj\qb{n-j}{k-j}$, so it is a polynomial identity and does
+not depend on the invertibility of $q$-factorials after specialization.
+
+\begin{theorem}[Weighted Gaussian inversion]\label{thm:transform}
+Let $c$ be a scalar. The two transforms
+\begin{align}
+ b_n&=\sum_{k=0}^n\qb nk c^{n-k}a_k,\label{eq:transform-forward}\\
+ a_n&=\sum_{k=0}^n(-1)^{n-k}q^{\binom{n-k}2}\qb nk c^{n-k}b_k
+ \label{eq:transform-inverse}
+\end{align}
+are mutually inverse. These are polynomial identities, valid over every
+commutative ring after assigning a value to $q$ and $c$.
+\end{theorem}
+\begin{proof}
+Over $\Q(q)$, the forward transform multiplies the generating series by
+$e_q(cz)$ and the inverse multiplies by $E_q(-cz)$. Their product is $1$.
+For a denominator-free proof, the coefficient of $a_j$ after both transforms is
+\[
+ c^{n-j}\qb nj
+ \sum_{r=0}^{n-j}(-1)^r q^{\binom r2}\qb{n-j}r
+ =c^{n-j}\qb nj\poch1q{n-j}.
+\]
+This is $1$ when $n=j$ and $0$ otherwise. Interchanging the transforms gives the
+same sum, proving both inverse compositions. Since the entire argument is a
+polynomial identity with integer coefficients, arbitrary specialization follows.
+\end{proof}
+
+\subsection{Why ordinary translation fails}
+Let $T_c$ denote \eqref{eq:transform-forward}. Define the homogeneous polynomial
+\[
+ H_r(c,d;q)=\sum_{j=0}^r\qb rj c^j d^{r-j}.
+\]
+Associativity of convolution gives the exact composition law
+\begin{equation}\label{eq:transform-composition}
+ (T_cT_d a)_n=\sum_{k=0}^n\qb nk H_{n-k}(c,d;q)a_k.
+\end{equation}
+For example,
+\[
+ H_2(c,d;q)=c^2+(1+q)cd+d^2,
+\]
+which is not $(c+d)^2$ for generic commuting $c,d$. Thus
+$T_cT_d\ne T_{c+d}$ in general, and $T_{-c}$ is not the inverse of $T_c$.
+The missing factor in the naive inverse is precisely $q^{\binom{n-k}2}$.
+This contrasts with the ordinary weighted-translation theorem in the base article.
+The correct replacement is either \eqref{eq:transform-composition}, or the
+multiplicative cocycle of \cref{prop:cocycle} when shifted-factorial kernels are used.
+
+\subsection{Subspace-lattice M\"obius inversion}
+For a prime power $Q$, let $U\subseteq V$ be finite-dimensional vector spaces and
+$r=\dim(V/U)$. The M\"obius function of their subspace interval is
+\begin{equation}\label{eq:subspace-mobius}
+ \mu(U,V)=(-1)^r Q^{\binom r2}.
+\end{equation}
+Indeed, the sum of this expression over intermediate subspaces of an
+$r$-dimensional quotient is
+$\sum_{j=0}^r\qbb rjQ(-1)^jQ^{\binom j2}=\poch1Qr$.
+It is $1$ for $r=0$ and zero otherwise, exactly the inverse-to-zeta condition.
+Grouping subspace sums by dimension produces \cref{thm:transform} with $c=1$.
+Thus the extra Gaussian inverse weight has a structural explanation: the Boolean
+lattice has M\"obius weight $(-1)^r$, whereas the subspace lattice has the additional
+factor $Q^{\binom r2}$.
+
+\section{Newton interpolation and a \texorpdfstring{$q$}{q}-Stirling basis change}\label{sec:newton}
+
+\subsection{The \texorpdfstring{$q$}{q}-integer lattice: the deformation of ordinary Newton expansion}
+Define the monic polynomials
+\begin{equation}\label{eq:Fk}
+ F_k(x)=\prod_{i=0}^{k-1}(x-\qi i),\qquad F_0(x)=1.
+\end{equation}
+Their normalized versions
+\[
+ N_k(x;q)=\frac{F_k(x)}{q^{\binom k2}\qf k}
+\]
+satisfy $N_k(\qi m;q)=\qb mk$ for $m\ge0$. To see this, use
+$\qi m-\qi i=q^i\qi{m-i}$ and multiply over $i$.
+This basis belongs to the broader setting of quantum integer-valued polynomials
+\cite{HarmanHopkins}; its normalization is stated here explicitly.
+
+\begin{theorem}[Finite $q$-Newton expansion]\label{thm:qnewton}
+For every polynomial $p$ of degree at most $d$ over $R$,
+\begin{align}
+ p(x)&=\sum_{k=0}^d c_k N_k(x;q),\label{eq:qnewton}\\
+ c_k&=\sum_{j=0}^k(-1)^{k-j}q^{\binom{k-j}2}\qb kj p(\qi j).
+ \label{eq:qnewton-coef}
+\end{align}
+At $q=1$ this becomes
+$p(x)=\sum_{k=0}^d\Delta^kp(0)\binom xk$.
+\end{theorem}
+\begin{proof}
+The distinct degrees and unit leading coefficients of $N_0,\ldots,N_d$ make
+them a basis. Evaluate its expansion at $x=\qi m$ for $0\le m\le d$:
+$p(\qi m)=\sum_{k=0}^m\qb mk c_k$. Gaussian inversion gives
+\eqref{eq:qnewton-coef}. At $q=1$, the factors in $N_k$ become
+$(x-i)$, their denominator becomes $k!$, and the sum for $c_k$ is the ordinary
+finite-difference formula. All denominators in this specialization are nonzero.
+\end{proof}
+
+\subsection{A specified pair of \texorpdfstring{$q$}{q}-Stirling arrays}
+\begin{definition}\label{def:qstirling}
+Define $S_q(n,k)$ and $s_q(n,k)$ by
+\begin{equation}\label{eq:qstirling-def}
+ x^n=\sum_{k=0}^nS_q(n,k)F_k(x),\qquad
+ F_n(x)=\sum_{k=0}^n s_q(n,k)x^k.
+\end{equation}
+These definitions, rather than the words ``$q$-Stirling numbers'' alone, fix the
+convention. Both arrays are zero outside $0\le k\le n$ and have entry $1$ at
+$(0,0)$.
+\end{definition}
+
+\begin{theorem}[Finite formulas and inverse matrices]\label{thm:qstirling}
+For $n,k\ge0$ with $k\le n$,
+\begin{align}
+ S_q(n,k)
+ &=\frac1{q^{\binom k2}\qf k}
+   \sum_{j=0}^k(-1)^{k-j}q^{\binom{k-j}2}\qb kj(\qi j)^n,
+ \label{eq:qstirling-explicit}\\
+ s_q(n,k)
+ &=(-1)^{n-k}
+   \sum_{\substack{I\subseteq\{0,\ldots,n-1\}\\|I|=n-k}}
+         \prod_{i\in I}\qi i.\label{eq:qstirling-first}
+\end{align}
+Furthermore,
+\begin{equation}\label{eq:qstirling-inverse}
+ \sum_{j=k}^nS_q(n,j)s_q(j,k)=\delta_{nk},\qquad
+ \sum_{j=k}^ns_q(n,j)S_q(j,k)=\delta_{nk}.
+\end{equation}
+The arrays belong to $\Z[q]$, although \eqref{eq:qstirling-explicit} is displayed
+as a rational function. In fact $S_q(n,k)\in\Z_{\ge0}[q]$.
+\end{theorem}
+\begin{proof}
+Apply \cref{thm:qnewton} to $p(x)=x^n$ to obtain the first formula. Expand the
+product $F_n$ over subsets to obtain the second. Substitution of the two basis
+expansions into each other gives both matrix identities.
+To prove polynomiality without division, note that
+$xF_k=F_{k+1}+\qi k F_k$. Starting from $x^0=F_0$ and multiplying by $x$
+shows that every $S_q(n,k)$ is a sum of products of $q$-integers with nonnegative
+integer coefficients. This argument also yields the check
+\[
+ S_q(n+1,k)=S_q(n,k-1)+\qi k S_q(n,k),
+\]
+but the explicit formula \eqref{eq:qstirling-explicit} does not depend on using
+this recurrence to evaluate earlier rows.
+\end{proof}
+
+A second finite expression is
+\begin{equation}\label{eq:qstirling-h}
+ S_q(n,k)=
+ \sum_{\substack{a_1+\cdots+a_k=n-k\\a_j\ge0}}
+       \prod_{j=1}^k(\qi j)^{a_j},\qquad n\ge k.
+\end{equation}
+To prove it, the coefficient sequence on the right has generating series
+$\prod_{j=1}^k(1-\qi j\,t)^{-1}$. The recurrence in the preceding proof implies,
+for $G_k(t)=\sum_{n\ge k}S_q(n,k)t^{n-k}$, that
+$(1-\qi k\,t)G_k(t)=G_{k-1}(t)$, with $G_0=1$; hence the products agree.
+When $k=0$, \eqref{eq:qstirling-h} means $\delta_{n0}$.
+All three formulas degenerate to the corresponding ordinary Stirling formulas at
+$q=1$. For example, $S_q(3,2)=2+q$.
+
+\subsection{Geometric nodes are different}
+Let $P_k(x)=\prod_{i=0}^{k-1}(x-q^i)$. For $q\ne0$ with the relevant powers
+$q^0,\ldots,q^d$ distinct, every polynomial $p$ of degree at most $d$ has
+\begin{equation}\label{eq:geometric-newton}
+ p(x)=\sum_{k=0}^d A_kP_k(x),\qquad
+ A_k=\sum_{j=0}^k
+       \frac{(-1)^j q^{-kj+j(j+1)/2}}{D_jD_{k-j}}p(q^j).
+\end{equation}
+Indeed,
+$P_k(q^m)=(-1)^kq^{\binom k2}D_k\qb mk$; apply the same triangular inversion.
+Equivalently, $A_k$ is the usual divided difference on the geometric nodes,
+because
+\[
+ \prod_{\substack{0\le i\le k\\i\ne j}}(q^j-q^i)
+   =(-1)^j q^{jk-j(j+1)/2}D_jD_{k-j}.
+\]
+This supplies an independent interpolation proof of \eqref{eq:geometric-newton}.
+
+As $q\to1$, these nodes all coalesce at $1$ and $A_k\to p^{(k)}(1)/k!$;
+thus the limiting expansion is Taylor's formula at $1$, not ordinary Newton
+expansion on the integers. One algebraic proof of the limit is that the monic
+bases $P_k$ tend coefficientwise to $(x-1)^k$; their finite triangular
+change-of-basis matrix has diagonal $1$ and hence a continuously varying inverse.
+The distinction between the two lattices is important in applications.
+
+\section{Ordinary composition in \texorpdfstring{$q$}{q}-divided-power coordinates}\label{sec:composition}
+
+\subsection{A normalized Bell family, with ordinary multiplicities}
+The ordinary partial Bell polynomial is
+\[
+ \Bhat_{n,k}(a_1,a_2,\ldots)
+ =\sum_{\substack{\sum_jm_j=k\\\sum_jjm_j=n}}
+          \frac{k!}{\prod_jm_j!}\prod_ja_j^{m_j}.
+\]
+It satisfies $[z^n](\sum_{j\ge1}a_jz^j)^k=\Bhat_{n,k}(a)$.
+Define $\Bhat_{0,0}=1$ and $\Bhat_{n,0}=0$ for $n>0$.
+
+\begin{definition}\label{def:Bq}
+For ordinary substitution of commuting series, define
+\begin{equation}\label{eq:Bq-def}
+ \Bq_{n,k}(g)
+ =\frac{\qf n}{\qf k}
+   \sum_{\substack{\sum_jm_j=k\\\sum_jjm_j=n}}
+       \frac{k!}{\prod_jm_j!}
+       \prod_j\left(\frac{g_j}{\qf j}\right)^{m_j}.
+\end{equation}
+Boundary values are $\Bq_{0,0}=1$ and $\Bq_{n,0}=0$ for $n>0$.
+\end{definition}
+This is a coordinate-normalized Bell family; it is not asserted to coincide with
+any other family called ``$q$-Bell polynomials.'' Its exact relation to the base
+article's ordinary Bell polynomial is
+\begin{equation}\label{eq:Bq-conversion}
+ \Bq_{n,k}(g)=\frac{\qf n}{\qf k}
+           \Bhat_{n,k}\left(\frac{g_1}{\qf1},\frac{g_2}{\qf2},\ldots\right).
+\end{equation}
+
+\begin{theorem}[Composition rule]\label{thm:qcomposition}
+If
+$F(z)=\sum_{k\ge0}f_kz^k/\qf k$ and
+$G(z)=\sum_{j\ge1}g_jz^j/\qf j$, then
+\begin{equation}\label{eq:qcomposition}
+ \qf n\,[z^n]F(G(z))=\sum_{k=0}^nf_k\Bq_{n,k}(g).
+\end{equation}
+At $q=1$, $\Bq_{n,k}$ becomes the exponential partial Bell polynomial $B_{n,k}$.
+\end{theorem}
+\begin{proof}
+Expand $G^k$ using the ordinary multinomial theorem. Its multiplicity for the
+profile $(m_j)$ is $k!/\prod_jm_j!$; there is no Gaussian weight because the
+factors commute and ordinary substitution is being used. Multiply by
+$f_k/\qf k$, sum over $k$, and multiply by $\qf n$. At $q=1$, cancellation of
+$k!$ yields the usual exponential Bell profile $n!/\prod_jm_j!(j!)^{m_j}$.
+\end{proof}
+
+The first nontrivial examples expose a frequent normalization error:
+\begin{align}
+ \Bq_{3,2}&=\frac{2\qi3}{\qi2}g_1g_2,\label{eq:Bq32}\\
+ \Bq_{4,2}&=\frac{2\qi4}{\qi2}g_1g_3
+             +\frac{\qi4\qi3}{(\qi2)^2}g_2^2,\label{eq:Bq42}\\
+ \Bq_{4,3}&=\frac{3\qi4}{\qi2}g_1^2g_2.
+ \label{eq:Bq43}
+\end{align}
+Also $\Bq_{n,1}=g_n$ and $\Bq_{n,n}=g_1^n$. The rational coefficient
+$2\qi3/\qi2$ is not $\qi3$. It need not be a polynomial in $q$, and it may have a
+pole at a root of unity. This is expected: the coordinate system itself uses
+inverses of $q$-factorials.
+
+\subsection{Riordan matrices as a coordinate change}
+\begin{theorem}[Normalized Riordan composition]\label{thm:riordan}
+Let $A(0)$ and $G'(0)$ be units and $G(0)=0$. Define
+\begin{equation}\label{eq:riordan-def}
+ \mathcal R_q(A,G)_{n,k}=\frac{\qf n}{\qf k}[z^n]A(z)G(z)^k.
+\end{equation}
+Then
+\begin{align}
+ \mathcal R_q(A,G)\mathcal R_q(B,H)
+  &=\mathcal R_q(A\cdot B\circ G,H\circ G),\label{eq:riordan-product}\\
+ \mathcal R_q(A,G)^{-1}
+  &=\mathcal R_q\left(\frac1{A\circ\overline G},\overline G\right),
+ \label{eq:riordan-inverse}
+\end{align}
+where $\overline G$ is the ordinary compositional inverse.
+\end{theorem}
+\begin{proof}
+The matrix acts on the coefficient vector of $F$ by sending its series to
+$A(z)F(G(z))$. Applying this operation twice proves
+\eqref{eq:riordan-product}; substituting $H=\overline G$ and
+$B=1/(A\circ\overline G)$ proves \eqref{eq:riordan-inverse}.
+Equivalently, if $R(A,G)_{n,k}=[z^n]A G^k$, then
+$\mathcal R_q=D R D^{-1}$ for $D=\diag(\qf0,\qf1,\ldots)$.
+Thus this family is a diagonal renormalization of ordinary Riordan matrices,
+not an unexplained new substitution law.
+\end{proof}
+In particular the Gaussian transform is
+$\mathcal R_q(e_q(cz),z)$ and its inverse is
+$\mathcal R_q(E_q(-cz),z)$, recovering \cref{thm:transform}.
+
+\section{Jackson calculus and the noncommuting binomial theorem}\label{sec:jackson}
+
+Define the Jackson derivative and dilation by
+\begin{equation}\label{eq:Jackson}
+ D_qf(z)=\frac{f(z)-f(qz)}{(1-q)z},\qquad T_qf(z)=f(qz).
+\end{equation}
+The numerator has zero constant term, so the quotient is a formal series.
+One has $D_qz^n=\qi n z^{n-1}$, $D_qT_q=qT_qD_q$, and
+\begin{equation}\label{eq:qleibniz1}
+ D_q(fg)=(D_qf)g+(T_qf)(D_qg).
+\end{equation}
+These follow by direct subtraction.
+
+\begin{theorem}[Iterated Jackson product rule]\label{thm:jackson}
+For $n\ge0$,
+\begin{equation}\label{eq:qleibniz}
+ D_q^n(fg)(z)=\sum_{k=0}^n\qb nk
+       (D_q^kf)(q^{n-k}z)(D_q^{n-k}g)(z).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The case $n=0$ is immediate. Differentiate each summand using
+\eqref{eq:qleibniz1}. The derivative falling on its first factor contributes
+$q^{n-k}(D_q^{k+1}f)(q^{n-k}z)D_q^{n-k}g$; the derivative falling on its second
+factor contributes $(D_q^kf)(q^{n-k+1}z)D_q^{n-k+1}g$.
+After reindexing, the coefficient of the new $k$th term is
+$\qb nk+q^{n+1-k}\qb n{k-1}=\qb{n+1}k$ by Pascal's identity.
+\end{proof}
+
+At the origin, $D_q^nf(0)=\qf n[z^n]f$. Consequently
+\cref{thm:qcomposition} gives an exact origin formula for
+$D_q^n(F\circ G)(0)$ when $G(0)=0$. It does \emph{not} imply an ordinary-looking
+Jackson chain rule away from zero. The valid first-order identity is
+\begin{equation}\label{eq:qchain}
+ D_q(F\circ G)(z)=D_qG(z)\,
+       F[G(z),G(qz)],
+\end{equation}
+where $F[u,v]=(F(u)-F(v))/(u-v)$ is the divided difference. Its polynomial or
+formal expansion removes the apparent denominator when $u=v$.
+For $F(w)=w^2$ this is
+$D_qG(z)(G(z)+G(qz))$, not generally $\qi2 G(z)D_qG(z)$.
+For instance $G(z)=z^2$ makes the former second factor $(1+q^2)z^2$.
+
+There is, however, a genuine Gaussian binomial theorem for noncommuting variables.
+\begin{proposition}[Quantum-plane binomial theorem]\label{prop:quantum-plane}
+In an associative algebra with a central parameter $q$ and $YX=qXY$,
+\begin{equation}\label{eq:quantum-plane}
+ (X+Y)^n=\sum_{k=0}^n\qb nk X^{n-k}Y^k.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Right-multiply by $X+Y$ and use $Y^kX=q^kXY^k$.
+The new coefficient is $q^k\qb nk+\qb n{k-1}=\qb{n+1}k$.
+The initial case is $n=0$.
+\end{proof}
+This theorem is consistent with the failure of ordinary scalar translation in
+\cref{sec:transforms}: the Gaussian cross term is produced by a commutation
+relation, not by the ordinary expansion of commuting $c+d$.
+
+\section{Lagrange inversion with shifted-factorial weights}\label{sec:lagrange}
+
+\subsection{A fully explicit coefficient theorem}
+\begin{theorem}[Product-weighted Lagrange--B\"urmann]\label{thm:lagrange}
+Let $\Phi(t)$ be a product of the form \eqref{eq:master-P}, with logarithmic
+inputs $L_j$ from \eqref{eq:master-L}. There is a unique $w(z)\in zR[[z]]$
+satisfying $w=z\Phi(w)$. For integers $n\ge m\ge1$,
+\begin{equation}\label{eq:lagrange-master}
+ [z^n]w(z)^m
+ =\frac mn\Ecal_{n-m}(nL)
+ =\frac mn\sum_{\bm a\in\Pcal(n-m)}\prod_{j=1}^{n-m}
+                      \frac{(nL_j/j)^{a_j}}{a_j!}.
+\end{equation}
+For $H(t)=\sum_{r\ge0}h_rt^r$ and $n\ge1$,
+\begin{equation}\label{eq:lagrange-H}
+ [z^n]H(w(z))=\frac1n\sum_{r=1}^n r h_r\Ecal_{n-r}(nL).
+\end{equation}
+The constant coefficient is $h_0$. For $n<m$ the coefficient of $w^m$ is zero.
+\end{theorem}
+\begin{proof}
+The map $t\mapsto t/\Phi(t)=t+O(t^2)$ has a unique formal inverse, which is
+$w$. Alternatively, iteration from $w=0$ improves the $z$-adic precision at every
+step and proves existence and uniqueness without analytic assumptions.
+For the coefficient formula, make the formal residue substitution
+$z=t/\Phi(t)$:
+\begin{align*}
+ [z^n]w^m
+ &=\Res_{t=0}t^{m-n-1}\Phi(t)^n
+              \left(1-t\frac{\Phi'(t)}{\Phi(t)}\right)\,dt\\
+ &=[t^{n-m}]\Phi^n-\frac1n[t^{n-m-1}](\Phi^n)'
+   =\frac mn[t^{n-m}]\Phi^n.
+\end{align*}
+The residue change is valid for a substitution with linear coefficient $1$;
+it can also be checked on each Laurent monomial, whose derivative has residue
+zero except for the logarithmic differential. Apply \cref{thm:master} to the last
+coefficient. Expanding $H$ and using linearity gives \eqref{eq:lagrange-H}.
+\end{proof}
+This is ordinary Lagrange inversion over a coefficient field containing $q$.
+Neither the prefactor $m/n$ nor the derivative in Lagrange--B\"urmann is replaced
+by a $q$-integer or a Jackson derivative.
+
+\subsection{A finite Gaussian convolution form}
+For $p,N\ge0$ define
+\begin{equation}\label{eq:Cpn}
+ C_r^{(p,N)}(q)=
+ \sum_{\substack{k_1+\cdots+k_p=r\\0\le k_i\le N}}
+       q^{\sum_{i=1}^p\binom{k_i}2}\prod_{i=1}^p\qb N{k_i}
+ =[t^r]\poch{-t}qN^p.
+\end{equation}
+For $p=0$ or $N=0$ this is $\delta_{r0}$. The equality follows by applying the
+finite theorem to each of the $p$ factors; this definition requires no recurrence.
+
+\begin{corollary}[A slot-weighted Fuss family]\label{cor:fuss}
+If $w=z\poch{-w}qN$, then
+\begin{equation}\label{eq:slot-fuss}
+ [z^n]w^m=\frac mn C_{n-m}^{(n,N)}(q)\qquad(n\ge m\ge1).
+\end{equation}
+At $q=1$ this is $\frac mn\binom{Nn}{n-m}$. In particular, for $N\ge1$,
+\begin{equation}\label{eq:fuss-limit}
+ [z^n]w\big|_{q=1}
+ =\frac1n\binom{Nn}{n-1}
+ =\frac1{(N-1)n+1}\binom{Nn}n.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Use \cref{thm:lagrange} in coefficient-extraction form and then
+\eqref{eq:Cpn}. At $q=1$, $\poch{-t}1N=(1+t)^N$; the last equality is an
+ordinary factorial cancellation.
+\end{proof}
+Although \eqref{eq:slot-fuss} contains $m/n$, the case $m=1$ has coefficients in
+$\Z_{\ge0}[q]$. A direct interpretation proves this: a rooted tree vertex has
+$N$ ordered optional slots numbered $0,\ldots,N-1$; occupying slot $j$ contributes
+$q^j$ and attaches a subtree. The root equation is exactly
+$w=z\prod_{j=0}^{N-1}(1+q^jw)$. Only finitely many such trees have a fixed number
+of vertices. Products of these tree series give the corresponding assertion for
+$w^m$.
+
+For $N=2$, ordinary expansion of $(1+t)^n(1+qt)^n$ yields the Narayana formula
+\begin{equation}\label{eq:narayana}
+ [z^n]w=\frac1n\sum_{j=0}^{n-1}\binom nj\binom n{j+1}q^j.
+\end{equation}
+The first four coefficients, starting at $z^1$, are
+\[
+ 1,\quad 1+q,\quad 1+3q+q^2,\quad 1+6q+6q^2+q^3.
+\]
+These are not obtained by replacing the two ordinary binomials in
+\eqref{eq:narayana} by Gaussian binomials.
+
+For a reciprocal example, take
+$w=z/\poch{aw}qN^r$ with integers $r,N\ge1$. Then
+\begin{equation}\label{eq:reciprocal-reversion}
+ [z^n]w^m=\frac mn a^{n-m}
+ \sum_{\substack{k_1+\cdots+k_{rn}=n-m\\k_i\ge0}}
+       \prod_{i=1}^{rn}\qb{N+k_i-1}{k_i}.
+\end{equation}
+Here \cref{thm:reciprocal} replaces the finite theorem. Formula
+\eqref{eq:lagrange-master} continues to apply when $r$ is not an integer, whereas
+\eqref{eq:reciprocal-reversion} uses $rn$ separate factors and therefore does not.
+
+\section{A genuinely shifted equation: the area-type \texorpdfstring{$q$}{q}-Catalan series}\label{sec:qcatalan}
+The equation in \cref{cor:fuss} contains $q$-dependent coefficients but no dilation
+of its unknown series. A true $q$-functional equation behaves differently. The
+existence of several inequivalent $q$-Catalan families is well documented;
+\cite{Cigler} develops a uniform viewpoint. We give a complete derivation of the
+particular normalization needed here.
+
+\begin{theorem}[A quotient solution and a finite coefficient formula]\label{thm:qcat}
+Over $\Q(q)$ define
+\begin{equation}\label{eq:U-Airy}
+ U(z)=\sum_{n\ge0}u_nz^n,\qquad
+ u_n=\frac{(-1)^nq^{n(n-1)}}{D_n}.
+\end{equation}
+Then
+\begin{equation}\label{eq:C-Airy}
+ C(z)=\frac{U(qz)}{U(z)}
+\end{equation}
+is the unique formal solution with constant coefficient $1$ of
+\begin{equation}\label{eq:area-eqn}
+ C(z)=1+zC(z)C(qz).
+\end{equation}
+For each $n\ge0$, its coefficients have the nonrecursive finite expression
+\begin{equation}\label{eq:area-finite}
+ [z^n]C(z)=\sum_{k=0}^n q^k u_k
+   \sum_{\bm m\in\Pcal(n-k)}
+       (-1)^{M(\bm m)}M(\bm m)!
+           \prod_{j=1}^{n-k}\frac{u_j^{m_j}}{m_j!},
+ \qquad M(\bm m)=\sum_jm_j.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The coefficients in \eqref{eq:U-Airy} satisfy, for $n\ge1$,
+$(1-q^n)u_n=-q^{2n-2}u_{n-1}$, as follows immediately by cancelling $D_n$.
+Consequently $U(z)-U(qz)=-zU(q^2z)$. Division by the unit $U(z)$ gives
+\[
+ \frac{U(qz)}{U(z)}=1+z\frac{U(q^2z)}{U(qz)}\frac{U(qz)}{U(z)},
+\]
+which proves \eqref{eq:area-eqn}. Its coefficient of degree $n\ge1$ involves
+only lower-degree coefficients on the right, so the solution is unique.
+Finally expand $1/U=\sum_{r\ge0}(-1)^r(U-1)^r$ by the ordinary multinomial
+theorem and multiply by $U(qz)$. This is exactly \eqref{eq:area-finite}.
+\end{proof}
+
+The first terms are
+\begin{equation}\label{eq:area-first}
+ C(z)=1+z+(1+q)z^2+(1+2q+q^2+q^3)z^3+O(z^4).
+\end{equation}
+Equation \eqref{eq:area-eqn}, or its binary-tree interpretation, shows that every
+coefficient belongs to $\Z_{\ge0}[q]$. Indeed, attach two ordered subtrees to a root
+and give the second subtree an extra factor $q$ for each of its vertices. The
+resulting weight rule is precisely $zC(z)C(qz)$. This proves that singularities
+in the rational summands of \eqref{eq:area-finite} cancel, including at $q=1$.
+At $q=1$ the equation is $C=1+zC^2$, so the usual Catalan sequence is recovered.
+
+The polynomials in \eqref{eq:area-first}, the slot family in \eqref{eq:narayana},
+and the Gaussian quotient $\qb{2n}n/\qi{n+1}$ are not interchangeable.
+For example, their usual Catalan index $n=2$ gives respectively $1+q$,
+$1+q$, and $1+q^2$; at $n=3$ the first two already differ. The implicit equation
+and normalization, not the name ``$q$-Catalan'', must select the intended family.
+
+\section{A two-variable Gaussian inversion theorem}\label{sec:coupled}
+
+\subsection{A closed coupled example}
+\begin{theorem}[Coupled shifted-factorial inverses]\label{thm:coupled}
+Let $M,N\ge0$. The system
+\begin{equation}\label{eq:coupled-system}
+ u=x\poch{-v}qM,\qquad v=y\poch{-u}qN
+\end{equation}
+has a unique formal solution with $u=x+O((x,y)^2)$ and
+$v=y+O((x,y)^2)$. For $m,n\ge1$ and integers $r,s\ge0$ with $m\ge r,n\ge s$,
+\begin{equation}\label{eq:coupled-coef}
+ [x^my^n]u^rv^s
+ =\frac{ms+nr-rs}{mn}
+          C_{m-r}^{(n,N)}(q)C_{n-s}^{(m,M)}(q),
+\end{equation}
+where every $C$ is the finite Gaussian sum in \eqref{eq:Cpn}. The coefficient
+is zero if $m<r$ or $n<s$.
+On the axes the complete boundary formulas are
+\begin{equation}\label{eq:coupled-axes}
+ [x^my^0]u^rv^s=\delta_{s0}\delta_{mr},\qquad
+ [x^0y^n]u^rv^s=\delta_{r0}\delta_{ns}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Writing $A(t)=\poch{-t}qM$, $B(t)=\poch{-t}qN$, eliminate $v$ to get
+$u=xA(yB(u))$. This equation has a unique solution in $x\Q(q)[[y]][[x]]$;
+its coefficients define the same bivariate formal series as joint
+$(x,y)$-adic iteration. Then $v=yB(u)$.
+Ordinary Lagrange--B\"urmann in $x$, with outer function $t^rB(t)^s$, gives
+\[
+ [x^my^n]u^rv^s
+ =\frac1m[t^{m-1}y^{n-s}]
+   \bigl(rt^{r-1}B^s+st^rB^{s-1}B'\bigr)A(yB)^m.
+\]
+Because $[y^{n-s}]A(yB)^m=C_{n-s}^{(m,M)}B^{n-s}$, this becomes
+\[
+ \frac1m C_{n-s}^{(m,M)}
+    [t^{m-r}]\bigl(rB^n+stB^{n-1}B'\bigr).
+\]
+For $n>0$, differentiation of $B^n$ shows
+$[t^{m-r}]tB^{n-1}B'=(m-r)C_{m-r}^{(n,N)}/n$.
+The prefactor therefore equals
+$(r+s(m-r)/n)/m=(ms+nr-rs)/(mn)$.
+Terms with a negative extraction degree are absent. Finally $y=0$ gives
+$(u,v)=(x,0)$ and $x=0$ gives $(u,v)=(0,y)$, proving the boundary formulas.
+\end{proof}
+
+For $r=1,s=0$, the formula simplifies to
+\begin{equation}\label{eq:coupled-u}
+ [x^my^n]u=\frac1m C_{m-1}^{(n,N)}(q)C_n^{(m,M)}(q)
+ \qquad(m,n\ge1).
+\end{equation}
+At $q=1$ this is $m^{-1}\binom{Nn}{m-1}\binom{Mm}n$.
+With $M=1,N=2$, for instance, $[x^2y]u=1+q$.
+The positive integer coefficients also have a two-type rooted-tree interpretation:
+u-vertices have $M$ optional slots for v-subtrees, and v-vertices have $N$
+optional slots for u-subtrees, weighted by the slot numbers. Thus the rational
+prefactor in \eqref{eq:coupled-coef} does not signal nonintegral coefficients.
+
+\subsection{The Good determinant behind the formula}
+For a general system $w_i=z_i\Phi_i(\bm w)$ with unit $\Phi_i$, the ordinary
+multivariate Lagrange--Good formula reads
+\begin{equation}\label{eq:Good}
+ [\bm z^{\bm n}]H(\bm w)
+ =[\bm t^{\bm n}]H(\bm t)\prod_i\Phi_i(\bm t)^{n_i}
+   \det\left(\delta_{ij}-t_j\partial_{t_j}\log\Phi_i(\bm t)\right).
+\end{equation}
+It follows by the formal change of variables $z_i=t_i/\Phi_i(\bm t)$ in the
+multivariate residue: the displayed matrix is exactly the Jacobian on the
+logarithmic differentials $dt_j/t_j$. The residue invariance is the
+multivariate counterpart of the substitution in \cref{thm:lagrange}, and the
+formula is one of the base article's central tools \cite{CCC}.
+
+For \eqref{eq:coupled-system} the determinant is
+\[
+ 1-uv\frac{A'(v)}{A(v)}\frac{B'(u)}{B(u)}.
+\]
+Extracting the two factors gives
+$1-(m-r)(n-s)/(mn)$ times the product of the two $C$ coefficients, which is
+\eqref{eq:coupled-coef}. The preceding proof independently derives this special
+case without invoking a multivariate residue theorem.
+
+More generally, a factor
+$\poch{a\bm t^{\bm\nu}}{q^h}N^\alpha$ has
+\begin{equation}\label{eq:Good-entry}
+ t_j\partial_{t_j}\log\poch{a\bm t^{\bm\nu}}{q^h}N^\alpha
+  =-\alpha\nu_j\sum_{\ell\ge1}
+       a^\ell S_N(q^{h\ell})\bm t^{\ell\bm\nu}.
+\end{equation}
+Here $\bm\nu$ is a nonzero nonnegative integer vector. Thus, after imposing a
+fixed multidegree bound, both the determinant and its product factors have
+explicit finite expansions: expand the determinant over permutations and expand
+the exponential of the logarithmic product over multiplicities indexed by
+$(\bm\nu,\ell)$. Only those with $\ell\bm\nu\le\bm n$ can contribute.
+This gives a direct route from the source's Good theorem to multivariate
+$q$-shifted-factorial identities without changing its Jacobian or introducing
+unjustified Jackson derivatives.
+
+\section{Taylor coefficients at \texorpdfstring{$q=1$}{q=1}: Bernoulli--Bell formulas}
+\label{sec:one-jets}
+
+Let the ordinary Bernoulli numbers $B_j$ be fixed by
+\[
+ \frac{t}{e^t-1}=\sum_{j\ge0}B_j\frac{t^j}{j!},\qquad B_1=-\frac12.
+\]
+These are not the Bell polynomials $B_n(x_1,\ldots,x_n)$; arguments distinguish
+our two conventional notations. The Bernoulli normalization agrees with
+\cite{DLMF24}. Write
+\begin{equation}\label{eq:Delta}
+ \Delta_r(n,k)=\sum_{j=1}^n j^r-\sum_{j=1}^k j^r
+                  -\sum_{j=1}^{n-k}j^r,\qquad K=k(n-k).
+\end{equation}
+These are finite sums. In particular $\Delta_1=K$ and
+$\Delta_2=K(n+1)$.
+
+\begin{theorem}[All exponential-coordinate derivatives at one]\label{thm:one}
+For $0\le k\le n$, define
+\begin{equation}\label{eq:kappa-one}
+ \kappa_1=\frac K2,\qquad
+ \kappa_{2r}=\frac{B_{2r}}{2r}\Delta_{2r}(n,k)\quad(r\ge1),\qquad
+ \kappa_{2r+1}=0\quad(r\ge1).
+\end{equation}
+Then, as a formal Taylor series at $t=0$,
+\begin{align}
+ \qbb nk{e^t}
+ &=\binom nk\exp\left(\sum_{j\ge1}\kappa_j\frac{t^j}{j!}\right),
+ \label{eq:one-exp}\\
+ \left.\frac{d^r}{dt^r}\qbb nk{e^t}\right|_{t=0}
+ &=\binom nk B_r(\kappa_1,\ldots,\kappa_r).
+ \label{eq:one-deriv}
+\end{align}
+Equivalently, its coefficient of $t^r$ is
+\begin{equation}\label{eq:one-finite}
+ \binom nk
+ \sum_{\substack{a+\sum_{j\ge1}2j b_j=r\\a,b_j\ge0}}
+ \frac{(K/2)^a}{a!}
+ \prod_{j=1}^{\lfloor r/2\rfloor}
+       \frac1{b_j!}
+       \left(\frac{B_{2j}\Delta_{2j}(n,k)}{2j(2j)!}\right)^{b_j}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Set $A(t)=(e^t-1)/t$, with $A(0)=1$. Differentiating its formal logarithm and
+using the Bernoulli generating function gives
+\[
+ \frac{d}{dt}\log A(t)
+  =\frac{e^t}{e^t-1}-\frac1t
+  =\frac12+\sum_{r\ge1}\frac{B_{2r}}{(2r)!}t^{2r-1}.
+\]
+Integration with zero constant gives
+\[
+ \log A(t)=\frac t2+\sum_{r\ge1}
+                 \frac{B_{2r}}{2r(2r)!}t^{2r}.
+\]
+In the factorial quotient for $\qbb nk{e^t}$, the factors $-jt$ cancel to
+$\binom nk$. The remaining logarithm is the sum of $\log A(jt)$ for $1\le j\le n$
+minus the two analogous denominator sums. This yields \eqref{eq:kappa-one} and
+\eqref{eq:one-exp}. Bell expansion proves \eqref{eq:one-deriv}, and expanding
+only its linear and even-degree terms proves \eqref{eq:one-finite}.
+\end{proof}
+
+\begin{corollary}[Ordinary derivatives at one]\label{cor:one-ordinary}
+Let $s(r,j)$ be the \emph{ordinary signed} first-kind Stirling numbers defined by
+$x(x-1)\cdots(x-r+1)=\sum_{j=0}^r s(r,j)x^j$. Then
+\begin{equation}\label{eq:ordinary-one-jets}
+ \left.\frac{d^r}{dq^r}\qb nk\right|_{q=1}
+ =\binom nk\sum_{j=0}^r s(r,j)B_j(\kappa_1,\ldots,\kappa_j).
+\end{equation}
+The $j=0$ term uses $B_0=1$.
+\end{corollary}
+\begin{proof}
+For $\Theta=q\,d/dq$, one has
+$q^r(d/dq)^r=\Theta(\Theta-1)\cdots(\Theta-r+1)
+=\sum_js(r,j)\Theta^j$, as is checked on $q^m$ and then by linearity.
+At $q=e^t$, $\Theta=d/dt$. Evaluate at $t=0$ and use \eqref{eq:one-deriv}.
+\end{proof}
+For example,
+\begin{align}
+ \left.\frac d{dq}\qb nk\right|_{q=1}
+ &=\binom nk\frac K2,\label{eq:first-one}\\
+ \left.\frac {d^2}{dq^2}\qb nk\right|_{q=1}
+ &=\binom nk\left(\frac{K^2}{4}-\frac K2+\frac{K(n+1)}{12}\right).
+ \label{eq:second-one}
+\end{align}
+For $\qb42$, these are $12$ and $22$, in agreement with \eqref{eq:G42}.
+
+There is also a probabilistic interpretation that requires no limit theorem.
+Choose a $k$-subset $\{i_1<\cdots<i_k\}$ of $\{0,\ldots,n-1\}$ uniformly and let
+$X=\sum i_j-\binom k2$. Its moment generating function is
+$\qbb nk{e^t}/\binom nk$, by \eqref{eq:subset}. Thus the $\kappa_j$ are its
+cumulants. In particular
+\[
+ \mathbb E X=\frac{k(n-k)}2,\qquad
+ \operatorname{Var}X=\frac{k(n-k)(n+1)}{12},
+\]
+and every odd cumulant above the first vanishes. This is the cumulant form of
+Gaussian reciprocity, since $X$ and $k(n-k)-X$ have the same distribution.
+
+\section{Roots of unity and all local derivatives}\label{sec:roots}
+
+\subsection{Cyclotomic orders and the \texorpdfstring{$q$}{q}-Lucas value}
+Let $\Phi_d(q)$ denote the $d$th cyclotomic polynomial.
+\begin{proposition}[Exact cyclotomic factorization]\label{prop:cyclotomic}
+For $0\le k\le n$,
+\begin{equation}\label{eq:cyclotomic}
+ \qb nk=\prod_{d=1}^n\Phi_d(q)^{e_d(n,k)},\qquad
+ e_d(n,k)=\left\lfloor\frac nd\right\rfloor
+       -\left\lfloor\frac kd\right\rfloor
+       -\left\lfloor\frac{n-k}d\right\rfloor\in\{0,1\}.
+\end{equation}
+Thus a Gaussian polynomial has at most a simple zero at any primitive root
+of any fixed order. In particular $e_1=0$.
+\end{proposition}
+\begin{proof}
+Factor $1-q^j=-(q^j-1)=-\prod_{d\mid j}\Phi_d(q)$ in the quotient
+$D_n/(D_kD_{n-k})$. The signs cancel. Counting multiples of $d$ gives the
+exponent, and $n=k+(n-k)$ shows it is zero or one.
+\end{proof}
+
+\begin{theorem}[$q$-Lucas evaluation]\label{thm:qlucas}
+Let $\zeta$ be a primitive $d$th root of unity, $d\ge1$, and write
+$n=ad+b$, $k=cd+r$ with $0\le b,r<d$ and $0\le k\le n$. Then
+\begin{equation}\label{eq:qlucas}
+ \qbb nk\zeta=\binom ac\qbb br\zeta.
+\end{equation}
+In particular the value is zero when $r>b$. Equivalently,
+$\qb nk\equiv\binom ac\qb br\pmod{\Phi_d(q)}$.
+\end{theorem}
+\begin{proof}
+At $q=\zeta$, the finite product decomposes into full blocks:
+\[
+ \poch{-z}\zeta n=(1-(-z)^d)^a\poch{-z}\zeta b.
+\]
+The coefficient of $z^{cd+r}$ on the right is zero if $r>b$; otherwise it is
+$(-1)^{c(d+1)}\binom ac\zeta^{\binom r2}\qbb br\zeta$.
+On the left it is $\zeta^{\binom k2}\qbb nk\zeta$.
+The phases agree because
+\[
+ \zeta^{\binom{cd+r}2-\binom r2}=(-1)^{c(d+1)}.
+\]
+For odd $d$, the exponent is a multiple of $d$ and both sides are $1$;
+for even $d$, use $\zeta^{d/2}=-1$ and the parity of $c(cd-1)$.
+This proves the value identity. Since it holds at every primitive root, the
+polynomial difference is divisible by the monic polynomial $\Phi_d$ over $\Z$.
+\end{proof}
+The congruence is a standard $q$-Lucas theorem; treatments and extensions appear
+in \cite{HarmanHopkins,FormichellaStraub}. The proof above includes the phase
+factor, which is easy to lose when using the finite theorem at even-order roots.
+For example,
+\begin{equation}\label{eq:minus-one}
+ \qbb nk{-1}=
+ \begin{cases}
+  0,&n\text{ even and }k\text{ odd},\\
+  \displaystyle\binom{\lfloor n/2\rfloor}{\lfloor k/2\rfloor},&\text{otherwise}.
+ \end{cases}
+\end{equation}
+
+\subsection{Regularized logarithms give every derivative}
+The next theorem refines the value formula to a complete local Taylor series.
+Only finite sums and products are needed for any prescribed coefficient.
+It also covers $d=1$, recovering \cref{thm:one}.
+
+Fix $n,k$ and define signed multiplicities
+\begin{equation}\label{eq:epsilon-j}
+ \varepsilon_j=\mathbf1_{j\le n}-\mathbf1_{j\le k}
+                         -\mathbf1_{j\le n-k}\qquad(1\le j\le n).
+\end{equation}
+For an integer $\ell\ge1$ put
+\begin{equation}\label{eq:gell}
+ g_1=\frac12,\qquad g_{2r}=\frac{B_{2r}}{2r}\ (r\ge1),\qquad
+ g_{2r+1}=0\ (r\ge1).
+\end{equation}
+For $a\ne1$ define the finite rational function
+\begin{equation}\label{eq:hell}
+ h_\ell(a)=-\sum_{v=1}^{\ell}\stir\ell v(v-1)!
+                      \left(\frac{a}{1-a}\right)^v,
+\end{equation}
+where the braces are \emph{ordinary} second-kind Stirling numbers.
+
+\begin{theorem}[All-order root-of-unity expansion]\label{thm:root-jets}
+Let $\zeta$ be primitive of order $d$, and let $e=e_d(n,k)\in\{0,1\}$.
+Define the nonzero algebraic constant
+\begin{equation}\label{eq:root-C}
+ C_\zeta=(-1)^e
+       \prod_{\substack{1\le j\le n\\d\mid j}}j^{\varepsilon_j}
+       \prod_{\substack{1\le j\le n\\d\nmid j}}
+                           (1-\zeta^j)^{\varepsilon_j},
+\end{equation}
+and, for $\ell\ge1$,
+\begin{equation}\label{eq:root-kappa}
+ K_\ell=\sum_{\substack{1\le j\le n\\d\mid j}}
+                  \varepsilon_j j^\ell g_\ell
+       +\sum_{\substack{1\le j\le n\\d\nmid j}}
+                  \varepsilon_j j^\ell h_\ell(\zeta^j).
+\end{equation}
+Then in the local coordinate $q=\zeta e^t$,
+\begin{equation}\label{eq:root-expansion}
+ \qbb nk{\zeta e^t}
+   =C_\zeta t^e\exp\left(\sum_{\ell\ge1}K_\ell\frac{t^\ell}{\ell!}\right).
+\end{equation}
+In particular, if $J_j$ denotes the $j$th $t$-derivative at zero, then
+\begin{equation}\label{eq:root-J}
+ J_j=\begin{cases}
+ 0,&j<e,\\
+ \displaystyle C_\zeta\frac{j!}{(j-e)!}
+                    B_{j-e}(K_1,\ldots,K_{j-e}),&j\ge e.
+ \end{cases}
+\end{equation}
+Every ordinary $q$-derivative is therefore given by the finite sum
+\begin{equation}\label{eq:root-ordinary}
+ \left.\frac{d^r}{dq^r}\qb nk\right|_{q=\zeta}
+       =\zeta^{-r}\sum_{j=0}^r s(r,j)J_j.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Use the product $\qb nk=\prod_{j=1}^n(1-q^j)^{\varepsilon_j}$ before taking
+any logarithm. When $d\mid j$, write
+\[
+ 1-e^{jt}=-jt\,\frac{e^{jt}-1}{jt}.
+\]
+The total power of $t$ is $\sum_{d\mid j}\varepsilon_j=e$; the constant factors
+produce the first product in \eqref{eq:root-C}, including its sign.
+When $d\nmid j$, factor out the nonzero number $1-\zeta^j$.
+After removing these constants and $t^e$, the remaining product is a unit with
+constant term $1$, so its formal logarithm is legitimate even when $e=1$.
+
+The $\ell$th derivative at zero of
+$\log((e^t-1)/t)$ is $g_\ell$, by the proof of \cref{thm:one}.
+For the other factors,
+\[
+ \left.\frac{d^\ell}{dt^\ell}\log(1-ae^t)\right|_{t=0}
+   =\left(a\frac d{da}\right)^\ell\log(1-a)=h_\ell(a).
+\]
+To verify the last equality without an infinite polylogarithm series, use
+$(a\partial_a)^\ell=\sum_{v=1}^{\ell}\stir\ell v a^v\partial_a^v$
+and $\partial_a^v\log(1-a)=-(v-1)!/(1-a)^v$.
+Scaling $t$ by $j$ multiplies the derivative by $j^\ell$.
+Summing the signed multiplicities proves \eqref{eq:root-kappa} and
+\eqref{eq:root-expansion}. Expanding the exponential by Bell polynomials gives
+\eqref{eq:root-J}. Finally use
+$q^r\partial_q^r=\sum_js(r,j)(q\partial_q)^j$ at $q=\zeta e^t$ to obtain
+\eqref{eq:root-ordinary}.
+\end{proof}
+
+If $e=0$, $C_\zeta=\qbb nk\zeta$ and \cref{thm:qlucas} supplies its shorter
+value. If $e=1$, the value is zero but
+$\left.\partial_q\qb nk\right|_{q=\zeta}=C_\zeta/\zeta\ne0$.
+For instance $\qb41=1+q+q^2+q^3$ has, at $\zeta=-1$, $e=1$ and
+$C_{-1}=-2$, giving derivative $2$.
+For $d=1$, all factors are in the divisible class, $e=0$,
+$C_1=\binom nk$, and $K_\ell$ equals \eqref{eq:kappa-one}.
+
+This theorem illustrates the full coefficient-calculus chain: cyclotomic
+factorization isolates the zero, Bernoulli and second-kind Stirling numbers
+compute the regular logarithmic derivatives, Bell polynomials exponentiate them,
+and signed first-kind Stirling numbers change from the logarithmic coordinate
+back to ordinary derivatives. Direct substitution into $D_n/(D_kD_{n-k})$ would
+instead produce uninformative $0/0$ expressions.
+
+\section{Exact geometric extrapolation and mode annihilation}\label{sec:extrapolation}
+
+\begin{theorem}[Gaussian extrapolation weights]\label{thm:extrapolation}
+Let $N\ge0$, with $q\ne0$ and $q^j\ne1$ for $1\le j\le N$. Define
+\begin{equation}\label{eq:weights}
+ w_j^{(N)}(q)=
+   \frac{(-1)^{N-j}q^{\binom{N-j+1}2}}{D_jD_{N-j}}
+ =\frac{(-1)^{N-j}q^{\binom{N-j+1}2}}{D_N}\qb Nj,
+ \qquad 0\le j\le N.
+\end{equation}
+Then
+\begin{equation}\label{eq:weight-polynomial}
+ \sum_{j=0}^Nw_j^{(N)}(q)t^j
+       =\frac{\prod_{r=1}^N(t-q^r)}{D_N},
+\end{equation}
+and
+\begin{equation}\label{eq:annihilation}
+ \sum_{j=0}^Nw_j^{(N)}(q)q^{j\ell}
+   =\begin{cases}1,&\ell=0,\\0,&1\le\ell\le N.\end{cases}
+\end{equation}
+Consequently, if $a_j=L+\sum_{\ell=1}^N c_\ell q^{j\ell}$, then
+$L=\sum_{j=0}^Nw_j^{(N)}a_j$ exactly.
+\end{theorem}
+\begin{proof}
+The coefficient of $t^j$ in $\prod_{r=1}^N(t-q^r)$ is
+$(-1)^{N-j}$ times the elementary symmetric polynomial of degree $N-j$ on
+$q,q^2,\ldots,q^N$. By \cref{thm:finite}, this is
+$(-1)^{N-j}q^{\binom{N-j+1}2}\qb Nj$.
+Division by $D_N$ gives \eqref{eq:weight-polynomial}.
+Set $t=1$ to obtain weight sum $1$, and set $t=q^\ell$ to obtain the zero moments.
+The final statement follows by linearity.
+\end{proof}
+
+Equivalently, these are the Lagrange interpolation weights for evaluating a
+polynomial at zero from its values at $1,q,\ldots,q^N$. Thus any polynomial
+$p$ of degree at most $N$ satisfies
+$p(0)=\sum_jw_j^{(N)}p(hq^j)$ for any scalar $h$.
+In particular, for dyadic refinement $q=1/2$ and $N=2$,
+\begin{equation}\label{eq:dyadic-weights}
+ (w_0,w_1,w_2)=\left(\frac13,-2,\frac83\right),\qquad
+ L=\frac13a_0-2a_1+\frac83a_2
+\end{equation}
+whenever $a_j=L+c_1 2^{-j}+c_2 4^{-j}$.
+This is an exact finite-spectrum statement, not an assertion that every
+convergent approximation sequence admits exact extraction from three entries.
+
+For an analytic $f(h)=\sum_{\ell\ge0}c_\ell h^\ell$ and arguments inside its disk
+of convergence, the exact remainder is
+\begin{equation}\label{eq:extrap-error}
+ \sum_{j=0}^Nw_j^{(N)}f(hq^j)-f(0)
+   =\sum_{\ell\ge N+1}c_\ell h^\ell
+       \frac{\prod_{r=1}^N(q^\ell-q^r)}{D_N}.
+\end{equation}
+This follows by applying \eqref{eq:weight-polynomial} termwise to the finite
+weighted sum. It implies an $O(h^{N+1})$ error for fixed $N,q$. It does not claim
+uniformity as $N$ grows or $q$ approaches a forbidden root.
+
+\section{Formal identities, analytic domains, and specialization}\label{sec:analytic}
+
+\subsection{What convergence is, and is not, required}
+Finite Gaussian identities, triangular transforms, and coefficient extraction in
+$R[[z]]$ need no analytic convergence. Formal exponentials, logarithms, and divided
+Lagrange formulas do require the indicated rational denominators. For products
+with infinitely many geometric factors, two valid settings have been used:
+coefficientwise $q$-adic products, or rational logarithmic coefficients such as
+$S_\infty(q^j)=1/(1-q^j)$. Neither should be mislabeled as ordinary $z$-adic
+convergence of the finite products.
+
+For a fixed complex $|q|<1$, $\poch{az}q\infty$ converges locally uniformly in
+$z$: on each compact set, $\sum_{j\ge0}|azq^j|$ converges uniformly. Away from its
+zeros, its reciprocal is analytic. Fractional powers of a unit product have a
+unique analytic branch near $z=0$ with value $1$, agreeing with the formal power
+used here. The logarithm computation is justified in a sufficiently small disk
+by absolute convergence, and the identities elsewhere follow by analytic
+continuation where both sides are defined. These conditions recover the standard
+analytic $q$-binomial theorem \cite{DLMF17,DLMF175}.
+
+If $\Phi$ in \cref{thm:lagrange} is analytic near zero and $\Phi(0)=1$, the
+analytic inverse-function theorem makes its formal solution an analytic germ.
+The displayed coefficient formulas are then its actual Taylor coefficients.
+No claim is made that they converge past the first singularity of that germ.
+The two-variable system has the analogous local analytic interpretation because
+its implicit Jacobian at the origin is the identity.
+
+\subsection{A specialization checklist}
+Polynomial identities such as \eqref{eq:finite}, \eqref{eq:vandermonde},
+\eqref{eq:transform-inverse}, and \eqref{eq:qlucas} survive specialization at any
+$q$. By contrast, three types of rational formulas need attention.
+First, interpolation on geometric or $q$-integer nodes requires distinct nodes;
+colliding nodes require a confluent limit rather than raw substitution.
+Second, $q$-divided-power coordinates need invertible $\qf j$, so a coordinate
+formula can have genuine poles even when a separately defined polynomial family
+does not. Third, infinite-factor logarithms involve $1-q^j$ in denominators,
+and a root-of-unity specialization is not available without a separate limiting
+argument or a proved cancellation in the final coefficients.
+
+The safe procedure for a Gaussian polynomial is to use its subset expansion,
+its cyclotomic factorization, or \cref{thm:root-jets}. The fact that an intermediate
+formula has $0/0$ terms is not evidence that the Gaussian polynomial is undefined.
+Conversely, polynomiality of a Gaussian coefficient does not regularize every
+expression built from reciprocals of $q$-factorials.
+
+\section{Implementation, verification, and integration with the source}\label{sec:verification}
+
+\subsection{Finite algorithms suggested by the formulas}
+The partition kernel \eqref{eq:E-kernel} uses $p(n)$ multiplicity profiles, where
+$p(n)$ is the ordinary partition number. It is often much smaller than expanding
+all ordered compositions, but it is not claimed to be the fastest way to compute
+long coefficient ranges. Product multiplication and triangular recurrences may
+be more efficient for bulk computation. An explicit nonrecursive formula and an
+asymptotically optimal algorithm are different objectives.
+
+For one coefficient, a dependable implementation follows this sequence:
+construct the finitely many logarithmic inputs needed at that degree; enumerate
+integer partitions; evaluate the products in exact rational or symbolic
+arithmetic; and simplify only the completed expression before specializing a
+potentially singular $q$. For \cref{thm:root-jets}, first separate the divisible
+and nondivisible factors, then form $K_1,\ldots,K_r$. No infinite series needs to
+be stored to obtain a derivative of order $r$.
+
+The accompanying \texttt{verify\_identities.py} implements independent checks of
+the displayed identities. Gaussian polynomials are constructed from subset
+weights rather than from the identities being tested. Product expansions are
+compared with partition kernels; fixed-point series are compared with Lagrange
+and coupled formulas; and polynomial derivatives are compared with the
+Bernoulli--Bell and regularized root formulas. The archive includes the actual
+machine-readable test report. The included run passed 2,693 exact assertions in four groups. The finite
+ranges, exact coefficient fields, and per-identity counts are recorded there;
+these are finite regression tests, not an unlimited formal verification.
+
+\Needspace{12\baselineskip}
+\subsection{Normalization audit}
+\begin{longtable}{@{}>{\RaggedRight\arraybackslash}p{0.25\textwidth}>{\RaggedRight\arraybackslash}p{0.34\textwidth}>{\RaggedRight\arraybackslash}p{0.34\textwidth}@{}}
+\toprule
+\textbf{Operation} & \textbf{Correct object} & \textbf{Incorrect shortcut}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Operation} & \textbf{Correct object} & \textbf{Incorrect shortcut}\\
+\midrule
+\endhead
+Finite product & $q^{\binom k2}\qb Nk$ & Omitting $q^{\binom k2}$\\[1mm]
+Gaussian inverse & $(-1)^r q^{\binom r2}\qb nr$ & Replacing the inverse by $T_{-c}$\\[1mm]
+Ordinary composition & Ordinary $k!/\prod m_j!$ inside \eqref{eq:Bq-def} & Replacing every profile multiplicity by a Gaussian multinomial\\[1mm]
+Lagrange--B\"urmann & $m/n$ and an ordinary derivative & Replacing $n$ by $\qi n$ without a new theorem\\[1mm]
+Newton limit & $q$-integer nodes tend to integers & Treating geometric nodes as if they did not coalesce\\[1mm]
+Root-of-unity values & Polynomial evaluation or regularization & Substituting into an uncancelled factorial quotient\\[1mm]
+$q$-Catalan family & Its defining equation and normalization & Assuming all Gaussian and area refinements coincide\\[1mm]
+Infinite product & $q$-adic, logarithmic, or analytic interpretation & Claiming stabilization in the $z$-adic topology over $\Q(q)$\\
+\bottomrule
+\end{longtable}
+
+\subsection{Where the extension attaches}
+The following crosswalk uses labels observed in the canonical source, not its
+mutable page or theorem numbers. Labels are pointers to mathematical interfaces,
+not assertions that the new theorems have existing Lean counterparts.
+\begin{longtable}{@{}>{\RaggedRight\arraybackslash}p{0.36\textwidth}>{\RaggedRight\arraybackslash}p{0.57\textwidth}@{}}
+\toprule
+\textbf{Base-source interface} & \textbf{Extension developed here}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Base-source interface} & \textbf{Extension developed here}\\
+\midrule
+\endhead
+\texttt{thm:newton-\allowbreak{}expansion} & Two node systems, explicit Gaussian interpolation, and the specified $q$-Stirling inverse arrays (\cref{sec:newton}).\\[1mm]
+\texttt{thm:bell-\allowbreak{}symmetric-\allowbreak{}functions} & Geometric-alphabet specialization and the ramified shifted-factorial Bell kernel (\cref{sec:master}).\\[1mm]
+\texttt{thm:merged-\allowbreak{}binomial-\allowbreak{}inversion} & Gaussian inverse weights and subspace-lattice M\"obius interpretation (\cref{sec:transforms}).\\[1mm]
+\texttt{thm:merged-\allowbreak{}weighted-\allowbreak{}binomial-\allowbreak{}translation} & The corrected composition law; the ordinary additive law does not persist (\cref{sec:transforms}).\\[1mm]
+\texttt{eq:merged-\allowbreak{}bell-\allowbreak{}normalization} & Coordinate-specific Bell conversion, with ordinary profile multiplicities retained (\cref{sec:composition}).\\[1mm]
+\texttt{thm:lagrange-\allowbreak{}burmann} & Recurrence-free product-weighted inverse coefficients and coupled inverses (\cref{sec:lagrange,sec:coupled}).\\
+\bottomrule
+\end{longtable}
+
+\subsection{Mathematical and formalization status}
+The classical finite theorem, Vandermonde and Chu--Vandermonde sums,
+Gaussian inversion, and $q$-Lucas evaluation are not presented as discoveries.
+The master kernel and its applications provide a single reproducible route to
+many further finite formulas. The root-of-unity derivative theorem is proved
+here in the precise normalization stated, without claiming historical novelty
+for its regularization method. All proofs are ordinary mathematical proofs.
+No Lean files were added or compiled for this extension. Exact finite tests are
+regression checks, not substitutes for universally quantified proofs.
+
+The formulas also identify a natural formalization order: first polynomial
+Gaussian identities and denominator-free transforms, then finite partition
+kernels, then normalized formal-series composition and Lagrange inversion,
+and finally cyclotomic regularization. This order keeps algebraic prerequisites
+separate from analytic convergence and from singular coordinate changes.
+
+\section{Conclusion}
+Gaussian binomial coefficients are not merely ornamented binomial coefficients.
+They are coefficient extractors for geometric alphabets, structure constants for
+$q$-factorial convolution, and evaluation matrices for $q$-integer Newton bases.
+These roles connect directly with ordinary Bell polynomials, ordinary Stirling
+numbers, and ordinary Lagrange inversion once the coefficient coordinates are
+stated correctly.
+
+The central computational principle is
+\[
+ \text{geometric product}
+ \ \longrightarrow\ \text{finite logarithmic inputs}
+ \ \longrightarrow\ \text{Bell partition sum}.
+\]
+For inversion, the same inputs are multiplied by the Lagrange index; for
+multivariate inversion, they are supplemented by a finite Jacobian determinant.
+At roots of unity, a preliminary cyclotomic factorization removes the zero before
+the Bell mechanism is used. This yields explicit formulas for coefficients,
+compositions, inverse series, and local derivatives while making clear which
+identities extend polynomially to singular parameter values and which do not.
+
+\begin{thebibliography}{99}
+\bibitem{CCC}
+Vladimir Reshetnikov, ProveIt repository,
+\emph{Combinatorial Coefficient Calculus: Stirling, Bell, Eulerian, and
+Bernoulli--Euler Families; Bell-Polynomial and Fa\`a di Bruno Calculus;
+Lagrange--B\"urmann and Multivariate Good Inversion}, canonical \TeX{} source.
+Consulted September 4, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Combinatorial_Coefficient_Calculus}.
+
+\bibitem{provenance}
+ProveIt repository, \emph{Provenance and consolidation boundary},
+\texttt{PROVENANCE.md} in the canonical package cited above.
+Consulted September 4, 2026. This distinguishes the evolving source from retained
+historical PDF renders and from result-specific formalization coverage.
+
+\bibitem{DLMF17}
+NIST Digital Library of Mathematical Functions, \S17.2,
+\emph{Calculus}, especially the $q$-shifted factorials, $q$-binomial coefficients,
+finite and infinite binomial theorems, and Jackson calculus.
+\url{https://dlmf.nist.gov/17.2}. Consulted September 4, 2026.
+
+\bibitem{DLMF175}
+NIST Digital Library of Mathematical Functions, \S17.5,
+\emph{$ {}_0\phi_0,{}_1\phi_0,{}_1\phi_1$ Functions}.
+\url{https://dlmf.nist.gov/17.5}. Consulted September 4, 2026.
+
+\bibitem{DLMF176}
+NIST Digital Library of Mathematical Functions, \S17.6,
+\emph{$ {}_2\phi_1$ Function}, terminating $q$-Chu--Vandermonde sums.
+\url{https://dlmf.nist.gov/17.6}. Consulted September 4, 2026.
+
+\bibitem{DLMF26}
+NIST Digital Library of Mathematical Functions, \S26.9,
+\emph{Integer Partitions: Restricted Number and Part Size}.
+\url{https://dlmf.nist.gov/26.9}. Consulted September 4, 2026.
+
+\bibitem{DLMF24}
+NIST Digital Library of Mathematical Functions, \S24.2,
+\emph{Definitions and Generating Functions} for Bernoulli numbers and polynomials.
+\url{https://dlmf.nist.gov/24.2}. Consulted September 4, 2026.
+
+\bibitem{FormichellaStraub}
+Sam Formichella and Armin Straub,
+\emph{Gaussian binomial coefficients with negative arguments},
+arXiv:1802.02684 (2018).
+\url{https://arxiv.org/abs/1802.02684}.
+
+\bibitem{HarmanHopkins}
+Nate Harman and Sam Hopkins,
+\emph{Quantum integer-valued polynomials},
+arXiv:1601.06110 (2016).
+\url{https://arxiv.org/abs/1601.06110}.
+
+\bibitem{Cigler}
+Johann Cigler,
+\emph{$q$-Catalan numbers and $q$-Narayana polynomials},
+arXiv:math/0507225 (2005).
+\url{https://arxiv.org/abs/math/0507225}.
+\end{thebibliography}
+\end{document}
