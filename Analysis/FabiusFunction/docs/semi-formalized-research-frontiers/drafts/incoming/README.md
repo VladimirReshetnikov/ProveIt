@@ -93,7 +93,10 @@ arriving in five separate deliveries over one day.
   `combinatorial_transseries_extension/`: 2,241-line/117,447-byte source,
   42-page A4/566,596-byte PDF.  `combinatorial_transseries_extension-2.zip` →
   `combinatorial_transseries_extension-2/`: 1,970-line/101,772-byte source,
-  39-page Letter/261,004-byte PDF from `xdvipdfmx`.
+  39-page Letter/261,004-byte PDF from `xdvipdfmx`.  *Superseded the same
+  day:* the three were merged editorially into
+  `../series-and-transseries/Combinatorial_Transseries_Inverses/` and the
+  three directories deleted (git history is the archive).
 - Three recurrence-free dyadic-value articles →
   `../inverse-and-sampling/dyadic-up-extraction/`, beside the consolidated
   volume whose extraction mechanism they share.
@@ -103,7 +106,10 @@ arriving in five separate deliveries over one day.
   1,456-line/71,737-byte source, 26-page A4/637,900-byte PDF; **no wrapping
   directory**.  `fabius_rvachev_recurrence_free_closed_forms.zip` →
   `fabius_rvachev_recurrence_free_closed_forms/`: 1,681-line/68,704-byte source
-  (`dyadic_closed_forms.tex`), 23-page A4/711,303-byte PDF.
+  (`dyadic_closed_forms.tex`), 23-page A4/711,303-byte PDF.  *Superseded the
+  same day:* merged editorially into
+  `../inverse-and-sampling/dyadic-up-extraction/Recurrence_Free_Dyadic_Values/`;
+  the three directories are deleted.
 - Three Gaussian-binomial articles →
   `../combinatorial-coefficient-calculus/`, beside the canonical volume they
   extend.  `q_binomial_coefficient_calculus.zip` →

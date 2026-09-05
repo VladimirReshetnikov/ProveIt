@@ -1,6 +1,8 @@
 # Series and transseries
 
-Everything in this group is now one document.
+This group holds two documents: the canonical volume, and the companion
+volume on combinatorial transseries consolidated from the three arrivals of
+2026-09-04 (see the end of this file).
 
 The authoritative live Lean inventory and zero-gap result are computed by
 `scripts/doc_audit.py` and pinned in `docs/doc_audit_baseline.json`; the
@@ -166,42 +168,90 @@ bounds, the linear pole budget, and the weighted Fubini polynomials — were
 absorbed before deleting. Numeric residue is sequence values, numerical-table
 mantissas and worked-example integers, none of them a result.
 
-## Three further arrivals (2026-09-04)
+## The companion volume: combinatorial transseries (three arrivals of 2026-09-04, consolidated)
 
-Three independently written articles arrived on 2026-09-04, after the
-consolidation, and are filed as separate members beside the volume.  Each states that it extends the volume's methods to complementary
-families rather than restating them; whether they overlap each other, and how
-much of each the volume already contains, has not been assessed.
+[`Combinatorial_Transseries_Inverses/`](Combinatorial_Transseries_Inverses/)
+is *Combinatorial Transseries and Their Inverses: Gamma quotients, finite
+exponential sums, moment sectors, moving saddles, arithmetic sheets, and
+q-products* (127 A4 pages; 5,616 source lines; nine parts, 20 chapters;
+21 theorems, 10 propositions, 4 lemmas, 4 corollaries, every one with a
+proof; loads `docs/fabius-notation.tex`; labels `ct:` for the merge and
+`t1:`, `t2:`, `t3:` for the absorbed sources).  It applies the canonical
+volume's inversion architecture to combinatorial families the volume does
+not treat, with three inversion engines proved once: phase-coordinate
+inversion of an exactly invertible dominant phase with a closed formula for
+every multiplicative-sector coefficient in signed Stirling numbers; a scaled
+Lagrange–Bürmann reversion for corrections that are unbounded but small
+relative to the core; and a convergent inverse-transseries theorem for an
+analytic exponential tail on a quadratic, linear, or logarithmic phase, with
+a finite nonrecursive coefficient formula and a geometric remainder.  The
+families: balanced gamma quotients (Catalan, Fuss–Catalan, central
+multinomials, rectangular tableaux) with the `W_{-1}` core; fixed-column
+Stirling-II and Eulerian numbers (convergent multiexponential inverses) and
+fixed-cycle Stirling-I numbers (nested logarithms); endpoint moment
+sequences (Motzkin and central trinomial at general exponent, Delannoy,
+large Schröder) with exact oscillatory sectors; involutions with two finite
+saddle formulas, the unbounded `sqrt(X)/log X` drift and the `exp(-2 sqrt x)`
+lattice; alternating permutations with odd-integer ordered-factorization
+sectors and prime Euler products; connected labelled graphs with every
+exponential layer and a range inverse; necklaces, Lyndon words and
+irreducible polynomials with the finite-grid obstruction, fixed-radical
+analytic sheets and a two-candidate threshold theorem; the `q`-products of
+finite-field enumeration (general linear, symplectic and unitary orders,
+flags, fixed-rank and scaled Gaussian coefficients, `q`-Catalan numbers,
+Galois numbers with root-lattice theta sectors) and the singular `q → 1`
+transition; harmonic and finite-limit inversion.  Certification, three sets
+of recorded numerical checks, a synthesis, and appendices (coefficient
+table, involution coefficient audit, Wolfram recipes, notation
+reconciliation, provenance) complete it.
 
-- [`combinatorial_transseries_and_inverses/`](combinatorial_transseries_and_inverses/)
-  — *Combinatorial Transseries and Their Inverses: Further Families*
-  (29 pp A4; 1,519 source lines; 9 theorems).  Balanced factorial ratios,
-  fixed-column Stirling and Eulerian numbers, Motzkin numbers, involutions,
-  Euler zigzag numbers, and central Gaussian binomials at fixed `q > 1`, with
-  a common multiplicative inversion theorem.
-- [`combinatorial_transseries_extension/`](combinatorial_transseries_extension/)
-  — *Combinatorial Transseries and Their Inverses* (42 pp A4; 2,241 source
-  lines; 10 theorems).  Catalan and Fuss–Catalan numbers, Motzkin, Delannoy
-  and large Schröder numbers, alternating permutations, connected labeled
-  graphs, necklaces and Lyndon words, and harmonic inversion, with a
-  fixed-order theorem for every exponential layer of connected-graph
-  enumeration.
-- [`combinatorial_transseries_extension-2/`](combinatorial_transseries_extension-2/)
-  — *Combinatorial Transseries and Their Inverses: q-Products, Finite Fields,
-  Theta Sectors, and Arithmetic Sheets* (39 pp Letter; 1,970 source lines;
-  6 theorems).  Classical group orders, flag counts, `q`-Catalan and Galois
-  numbers — the last with an entire generating function for all exponential
-  corrections coming from theta series of the `A_{r-1}` root lattice — plus a
-  convergent-inverse-transseries theorem and a `W_{-1}` leading inverse on
-  fixed-radical subsequences.
+- Source: `Combinatorial_Transseries_Inverses.tex`; PDF built by three
+  `pdflatex` passes with 0 errors, 0 undefined references, 0 overfull boxes.
+- Verification: the three sources' programs and their recorded outputs are
+  retained unchanged under `verification/source1/` (`verify.py`, `audit.py`,
+  `coefficients.wl`), `verification/source2/` (`verify.py`,
+  `audit_symbolic.py`, `coefficient_tools.wl`), `verification/source3/`
+  (`verify.py`, `reference_implementation.wl`); the volume's numerical tables
+  are their recorded runs, which the consolidation did not rerun.
 
-All three archives wrapped an inner directory named
-`combinatorial_transseries_extension/`, so the distinct archive stems are the
-directory names; two stems and their inner file names are crossed.  One
-archive's purpose-specific `MANIFEST.sha256` was verified and remains in the
-filed package; the other two shipped `SHA256SUMS.txt` ledgers, which were
-verified and then retired under repository policy.  No source loads
-`docs/fabius-notation.tex`.  Comparison with the volume, deduplication, proof
-checking, and Lean crosswalking are deferred.
+### Provenance of the companion
+
+Three independently written articles arrived on 2026-09-04 and were filed
+the same day as separate members beside the volume:
+`combinatorial_transseries_and_inverses/` (*Further Families*, 1,519 lines,
+29 pp.), `combinatorial_transseries_extension/` (*Combinatorial Transseries
+and Their Inverses*, 2,241 lines, 42 pp.), and
+`combinatorial_transseries_extension-2/` (*q-Products, Finite Fields, Theta
+Sectors, and Arithmetic Sheets*, 1,970 lines, 39 pp.).  The first two overlap
+on most of their families and on all of their machinery; the third overlaps
+with them only on central Gaussian binomial coefficients and on necklaces.
+Every shared formula was compared symbol by symbol before one statement was
+kept — the Catalan inverse coefficients through `X^{-3}`, the Fuss–Catalan
+constants, the Stirling-column inverse coefficients in falling-factorial and
+generalized-binomial form, the Motzkin block coefficients and first inverse
+displacement, the involution amplitude through `t^5` and the inverse
+coefficients `v_0, v_1, v_2` against `z_0, z_1, z_2`, the zigzag gamma block
+and its first parity sectors, the central Gaussian-binomial logarithmic and
+inverse coefficients — and no discrepancy was found.  Notation was reconciled
+once (the involution blocks `A_±` and amplitude `B(t)`, the zigzag gamma
+block `𝒢`, one spelling per coefficient-extraction and `q`-binomial symbol),
+and the volume's notation chapter records every source variant.  The three
+directories and their arrival PDFs were deleted after a residue audit of
+every titled result (the six titles absent from the volume are all covered
+under other names: the Stirling-column theorem, the sector-transport
+theorem, the local certificate, the Motzkin beta decomposition, the
+involution dominant inverse, and the zigzag Dirichlet factorization); git
+history is the archive, and the volume's provenance chapter records what
+each source contributed.
+
+Nothing in the three articles is contained in the canonical volume, whose
+combinatorial case studies (rooted trees, double and swing factorials,
+partitions, Bell and Fubini numbers) are disjoint from theirs.  The companion
+is kept beside the volume rather than folded in because the volume is under
+concurrent formalization edits; folding it in as further parts is the
+natural follow-up.  Note for future filing: on Windows a directory named
+`Combinatorial_Transseries_And_Inverses/` is the same directory as the
+deleted `combinatorial_transseries_and_inverses/`, which is why the
+companion's directory omits the "And".
 
 See [`../MANIFEST.md`](../MANIFEST.md) for the group record.
