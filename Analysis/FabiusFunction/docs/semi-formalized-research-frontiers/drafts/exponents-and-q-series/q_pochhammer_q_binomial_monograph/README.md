@@ -202,7 +202,8 @@ and log
 Both passed their recorded gates. The merged q-series source is newer than
 every retained receipt, so a fresh synchronized render is pending.
 
-The current source includes exhaustive crosswalks for `QPochhammerEntire`
+The source at that historical checkpoint includes exhaustive crosswalks for
+`QPochhammerEntire`
 (zero definitions
 and five legacy compatibility theorems), `QPochhammerInfinite` (one definition
 and twenty-nine theorems), `QPochhammerDissection` (zero definitions and two
@@ -271,13 +272,16 @@ declarations beyond the historical reciprocity checkpoint 931/11,685. The
 incoming union adds one module and fourteen public declarations: the new
 zero-definition/six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem
 added to `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This made 934 modules and 11,709 public
-declarations an explicitly historical post-Prouhet checkpoint. Subsequent
-source-only transseries/Catalan and Thue--Morse additions made 943/11,791 the
-next historical checkpoint. The finalized one-definition/eleven-theorem
-`TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` gave the historical facade audit 944 modules and
-11,806 public declarations; the merged live census is 1,001/12,447. Ten declarations come from the sibling
+`ThueMorseNewmanSelfSimilarity.lean`. That tranche formed the historical
+934-module/11,709-declaration checkpoint. After the subsequent tranches, the
+earlier audited upstream facade census is 957 modules and 11,920 public
+declarations; retaining the unconditional public
+`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge gives the historical
+semantic-union checkpoint 957/11,921. The residual-existence certificate
+`Fabius.exists_eq_in_residual_interval` is included in the current union
+computed by `scripts/doc_audit.py` and pinned in
+`docs/doc_audit_baseline.json`. Ten
+declarations come from the sibling
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
 `Fabius.geometricLagrangeRichardson_generating`; it does not change this
@@ -416,12 +420,13 @@ dyadic/finite-prefix census 933/11,695.  The incoming union adds one module and
 fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This made 934/11,709 an explicitly
-historical post-Prouhet checkpoint.  Subsequent source-only
-transseries/Catalan and Thue--Morse additions made 943/11,791 the next
-historical checkpoint.  The finalized one-definition/eleven-theorem
-`TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 1,001/12,447.
+`ThueMorseNewmanSelfSimilarity.lean`.  That tranche formed the historical
+934/11,709 checkpoint.  After the subsequent tranches, the earlier audited
+upstream census is 957/11,920; retaining the unconditional public
+q-Pochhammer bridge gives the historical semantic-union checkpoint
+957/11,921, and the residual-existence certificate is included in the current
+census computed by `scripts/doc_audit.py` and pinned in
+`docs/doc_audit_baseline.json`.
 The existing `ProbabilityLaplaceMoments.lean` module now adds exactly the two
 theorems
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
@@ -551,11 +556,12 @@ theorems. Its exhaustive public surface is
 `gaussianBinomial_shifted_fixedColumn_error_isBigO`. This closure additionally
 reuses `norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` and
 `tendsto_gaussianBinomial_add_const_atTop` from the one-definition,
-twenty-seven-theorem `QBinomialTheoremInfinite` module. The rate leaf's first two
-theorems give the generic finite-product defect bounds; the latter seven declarations give the denominator-free
+twenty-seven-theorem `QBinomialTheoremInfinite` module. The imported
+exponential bound and the rate leaf's elementary bound give the generic
+finite-product defect; the latter seven declarations give the denominator-free
 relative estimate, fixed and shifted nonasymptotic additive errors, and all
 four fixed/shifted relative and additive Big-O wrappers. The reused theorem
-supplies the shifted limit. All eleven closure names include `q = 0` at their
+supplies the shifted limit. All ten closure names include `q = 0` at their
 respective `‖q‖ ≤ 1` or `‖q‖ < 1` boundaries; no nonzero-nome premise is hidden.
 
 The latest `ThueMorseSparseProuhet` partition tranche adds no definitions and
@@ -719,7 +725,10 @@ reciprocal-product expansions, the complex upper-parameter series, and the
 generalized q-binomial theorem. The remaining complex-Gaussian property and
 classical-limit rows stay unformalized.
 
-The retained 389-, 391-, 395-, 398-, 401-, 402-, and 405-page
-source/PDF tuples remain synchronized historical evidence for their named
-checkpoints. The merged q-series source is newer than all of them; no current
-source/render parity is claimed and a new render is pending.
+The retained 395-page PDF and source SHA-256
+`4785625c1399558f3ca59481888fc76514e0a327a1faa16945c61851f874f3d5`
+remain synchronized historical evidence for the checkpoint recorded above.
+The retained 398-page PDF is likewise a historical 2026-09-04 receipt. The
+405-page PDF and its named source remain synchronized historical evidence for
+the `b899` checkpoint above; the current merged source has advanced beyond
+that checkpoint, so the changed canonical root is PDF-regeneration-deferred by user approval.

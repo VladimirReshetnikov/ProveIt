@@ -926,14 +926,17 @@ and 11,695 public declarations. The incoming union adds one module and
 fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This made 934 modules and 11,709 public
-declarations an explicitly historical post-Prouhet checkpoint. Subsequent
-source-only transseries/Catalan and Thue--Morse additions made 943/11,791 the
-next historical checkpoint. The finalized one-definition/eleven-theorem
-`TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` gave the historical census 944 modules and
-11,806 public declarations; the merged live census is 1,001/12,447. The census also includes
-the unrelated
+`ThueMorseNewmanSelfSimilarity.lean`. This makes 934 modules and 11,709 public
+declarations a historical checkpoint. Later post-baseline additions add 23
+modules and 211 public declarations, giving 957/11,920; retaining the public
+`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` compatibility theorem gives
+the historical merge-union checkpoint 957/11,921, and the residual-existence
+certificate `Fabius.exists_eq_in_residual_interval` is included in the current
+semantic union computed by `scripts/doc_audit.py` and pinned in
+`docs/doc_audit_baseline.json`. The q-Lucas manuscript row remains Partial
+because Lean proves only primitive-root evaluation, not the polynomial
+congruence modulo the cyclotomic polynomial. The census also includes the
+unrelated
 sibling source-only
 `FabiusFunction.GeometricRichardsonGenerating` module (three definitions and
 seven theorems), whose exact comb-manuscript crosswalk is
@@ -1068,12 +1071,12 @@ dyadic/finite-prefix census 933/11,695.  The incoming union adds one module and
 fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This made 934/11,709 an explicitly
-historical post-Prouhet checkpoint.  Subsequent source-only
-transseries/Catalan and Thue--Morse additions made 943/11,791 the next
-historical checkpoint.  The finalized one-definition/eleven-theorem
-`TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 1,001/12,447.
+`ThueMorseNewmanSelfSimilarity.lean`.  This makes 934/11,709 a historical
+checkpoint. Later post-baseline additions give 957/11,920, and the retained
+public Pochhammer compatibility theorem gives the historical merge-union
+checkpoint 957/11,921. The residual-existence certificate is included in the
+current semantic union computed by `scripts/doc_audit.py` and pinned in
+`docs/doc_audit_baseline.json`.
 
 The existing `FabiusFunction.ProbabilityLaplaceMoments` module adds exactly
 the two theorems

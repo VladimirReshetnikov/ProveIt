@@ -11,14 +11,17 @@ PDF checksum gate.
 | Item | Size | SHA-256 |
 | --- | ---: | --- |
 | `inverse_fabius_theory.tex` | 293 lines; 11,514 bytes | `92fab1fae38bbcf86a45b51bfe7ff34e2801361df9d2f3d6aa3de4dc966eaa3c` |
-| historical ordered 14-file TeX graph | 10,909 lines; 438,542 bytes | `24bdab6491f5ca84fbb9e716f92c7923e8961b6acbc793d9aa5e0faa68852444` |
-| historical first-merge `SOURCE_CLOSURE.sha256` | Purpose-specific source-only record of 23 inputs | `e07cb51f4fe072cd79a014cc891cb8cede62880593d7659b17da9377a21099bc` |
-| historical 137-page PDF | 137 A4 pages; 2,045,463 bytes | `ca403c74e2b46923ce9ac1eda547ab1bcb5e71039b35c8ee394acdd2014c4f8e` |
-| historical final build log | 1,569 lines; 64,081 bytes | `d4aa25579c958e11c59d914c74dfca331fc2bbccf7bba4715dcd18fa050e771f` |
-| historical incoming `b899` recursive TeX closure | 17 files; 10,682 lines; 431,748 bytes | `6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e` |
-| historical incoming `b899` PDF | 137 A4 pages; 2,045,486 bytes | `cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995` |
-| historical closure-file identity | Pre-overlay purpose-specific record | `aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb` |
-| historical earlier PDF | 134 A4 pages; 2,027,726 bytes | `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d` |
+| historical `b899` recursive TeX closure | 17 files; 10,682 lines; 431,748 bytes | `6e4e6fde424fd5046467b1f1cec0c19b6c10eb681fae4ba7cc53e14b6a5bf61e` |
+| `inverse_fabius_theory.pdf` | 137 A4 pages; 2,045,486 bytes | `cee0de894656562fbdb75d6304055fc03fae06203985119419e465a5cd213995` |
+| historical `SOURCE_CLOSURE.sha256` | Pre-overlay purpose-specific record of 23 build inputs | `aedf007c2cd150b1f83de6d8996b4bf31e267b3dbcec2d5cd4720f5d92122bdb` |
+| current regenerated `SOURCE_CLOSURE.sha256` | 23 lexical source-closure entries; all passed | `76ac9fd6fadbf8291fe186a111330d098c2ed12ceda67aa32031d424ba67d611` |
+| historical `inverse_fabius_theory.pdf` | 134 A4 pages; 2,027,726 bytes | `22bc68d855ad04dde9654e9fbd20b3ba7f05a33e3c5df0e5b80bb8991c94b41d` |
+
+The first three rows form the historical synchronized `b899` receipt. The
+fourth row records the older closure-ledger file identity; the fifth records
+the regenerated 23-entry lexical source closure, not a PDF-parity gate. The
+sixth row is the preceding historical PDF checkpoint. The historical rows do
+not form a current source/PDF pair.
 
 Each historical source/PDF tuple is scoped to its named checkpoint. The
 purpose-specific 23-input record is regenerated separately for merged inputs;
@@ -52,7 +55,7 @@ The 23-input source closure consists of:
   `assets/self-sampling/figures/quadrature_weights.png`, and
   `assets/self-sampling/figures/appell_roots.png`.
 
-## Historical incoming `b899` PDF build convergence
+## Historical `b899` PDF build convergence
 
 Exactly three serial halt-on-error passes from absent sidecars produced
 132/137/137 pages and 1,983,313/2,045,485/2,045,486 bytes. The required

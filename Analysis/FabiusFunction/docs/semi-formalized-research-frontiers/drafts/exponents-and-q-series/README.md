@@ -102,9 +102,11 @@ and forbidden checksum basenames both close at zero. The sole retained
 32.5659 pt overfull paragraph at source lines 590–598 is readable and
 unclipped; the final log has zero underfull diagnostics. The merged source has
 advanced beyond this receipt, so the retained PDF is historical and a rebuild
-was then pending; the historical `b899` receipt below followed it.
+was then pending; the historical `b899` receipt below is the retained historical
+build receipt.
 
-The historical `b899` q-series driver has 17,265 lines and 864,659 bytes (SHA-256
+The historical synchronized `b899` q-series driver has 17,265 lines and
+864,659 bytes (SHA-256
 `4dd3f7fb22387d8e3d039e8d49cd870a63ebe0881f7f215c7074854825a27bb9`),
 and its 14-file recursive TeX closure has 26,762 lines and 1,210,902 bytes
 (digest `b567430fdd64f6d50bd24fcb070216c27f7e3e81e8b0c76c3228767ebdf980c6`).
@@ -127,9 +129,8 @@ all of these artifacts, so a synchronized render is pending.
 `QPochhammerDissection.lean` surfaces, together with the subsequent q-series
 module tranches and the zero-definition, three-theorem
 `GeometricPochhammerNormalConvergence.lean` leaf, in its formalization
-crosswalk. That source is a source-only successor to the first-merge artifact
-receipt and requires a later synchronized three-pass build. Retained PDFs under
-its `assets/` tree are
+crosswalk. That source is a source-only successor to the fresh artifact receipt
+and requires a later synchronized three-pass build. Retained PDFs under its `assets/` tree are
 research figures, not alternate manuscript renderings. The Lean audit at the
 historical dyadic/finite-prefix checkpoint contains 933 facade-reachable
 modules and 11,695 public declarations, with no missing module headers or
@@ -140,13 +141,15 @@ reciprocity checkpoint 931/11,685.  The incoming union adds one module and
 fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This made 934 modules and 11,709
-public declarations an explicitly historical post-Prouhet checkpoint.
-Subsequent source-only transseries/Catalan and Thue--Morse additions made
-943/11,791 the next historical checkpoint.  The finalized one-definition/
-eleven-theorem `TransseriesFlat.lean` module and three integer-zpow theorems
-in `TransseriesDifferentialBlock.lean` gave the historical Lean audit 944 modules
-and 11,806 public declarations; the merged live census is 1,001/12,447.
+`ThueMorseNewmanSelfSimilarity.lean`.  That tranche formed the historical
+934-module/11,709-declaration checkpoint.  After the subsequent tranches, the
+earlier audited upstream target is 957 modules and 11,920 public declarations;
+retaining the unconditional public
+`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge gives the historical
+semantic-union checkpoint 957/11,921. The residual-existence certificate
+`Fabius.exists_eq_in_residual_interval` is included in the current union
+computed by `scripts/doc_audit.py` and pinned in
+`docs/doc_audit_baseline.json`.
 
 The sibling source-only `FabiusFunction.GeometricRichardsonGenerating` module
 (three definitions and seven theorems) does not change this q-series package's
@@ -309,12 +312,13 @@ dyadic/finite-prefix census 933/11,695.  The incoming union adds one module and
 fourteen public declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This made 934/11,709 an explicitly
-historical post-Prouhet checkpoint.  Subsequent source-only
-transseries/Catalan and Thue--Morse additions made 943/11,791 the next
-historical checkpoint.  The finalized one-definition/eleven-theorem
-`TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 1,001/12,447.
+`ThueMorseNewmanSelfSimilarity.lean`.  That tranche formed the historical
+934/11,709 checkpoint.  After the subsequent tranches, the earlier audited
+upstream census is 957/11,920; retaining the unconditional public
+q-Pochhammer bridge gives the historical semantic-union checkpoint
+957/11,921, and the residual-existence certificate is included in the current
+census computed by `scripts/doc_audit.py` and pinned in
+`docs/doc_audit_baseline.json`.
 That existing module adds
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
 `integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.
@@ -341,8 +345,8 @@ use exactly the normalized fixed-column error
 `O((q⁻¹)^(n-k+1))`, and the central scale
 `q^(m*m) (q⁻¹;q⁻¹)_∞⁻¹`. Natural subtraction is total, reciprocity is used
 only eventually when `k ≤ n`, and no shifted-central or wider nome-domain
-claim is made. The incoming `b899` q-series and geometric-q PDFs rendered this
-crosswalk at their historical checkpoints; both merged sources are newer.
+claim is made. The `b899` q-series and geometric-q PDFs are now historical
+checkpoints; PDF regeneration for both changed roots is deferred by user approval.
 
 The sibling `DyadicDerivativeFiltration.lean` module has zero definitions and
 exactly six theorems. Its exhaustive surface consists of
@@ -468,9 +472,10 @@ Current packages and retained intake records:
   181 Exact, 79 Partial, 14 None, and 8 interface rows; the source ledger is
   103 Lean-proved, 375 human-proved
   frontier, 60 not
-  applicable, and 9 conjectures. The retained 398-, 401-, 402-, and
-  405-page monograph PDFs are historical; the merged source requires a fresh
-  synchronized render. PDF files retained
+  applicable, and 9 conjectures. The `b899` 405-page monograph PDF and the
+  former 398-page PDF are historical artifacts; a synchronized rebuild of the
+  changed monograph root is deferred by user approval.
+  PDF files retained
   beneath `assets/` are vector research figures, not manuscript builds.
   Manuscript result labels and numerical checks remain
   distinct from Lean verification.
@@ -964,7 +969,8 @@ nonblank-text checks, and representative visuals passed; generated sidecars
 and forbidden checksum basenames both close at zero. The final log has zero
 overfull and 37 underfull diagnostics.
 
-The historical `b899` geometric-q driver has 27,671 lines and 1,275,367 bytes
+The historical synchronized `b899` geometric-q driver has 27,671 lines and
+1,275,367 bytes
 (SHA-256 `d47c0ad93eb359d13e7e9772668f16dbc98bcb4d880f3679366e1d461451bbcd`),
 and its 8-file recursive TeX closure has 27,777 lines and 1,281,413 bytes
 (digest `39f7cd41e706314f2cafb903c2da2e6e83d2b17f5bb0612492204d15c1a28d91`).
@@ -1224,8 +1230,9 @@ volume's Part VII; their figures/data are likewise under `assets/`.)
 
 Canonical forward/inverse publication:
 [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/)
-(historical incoming `b899` TeX/PDF pair with a 405-page A4 PDF; exact
-current-source parity is not claimed) — *q-Series and Inverse q-Analogs:
+(historical synchronized `b899` TeX/PDF checkpoint with a 405-page A4 PDF;
+the changed canonical source is PDF-regeneration-deferred by user approval, and exact current and
+historical details appear above) — *q-Series and Inverse q-Analogs:
 A Proof-Oriented Synthesis*. Its forward backbone proves from first principles
 the shifted-factorial, Gaussian, hypergeometric, theta, partition, Bailey,
 cyclotomic, interpolation, and Fabius--Rvachev machinery consumed by Parts II,

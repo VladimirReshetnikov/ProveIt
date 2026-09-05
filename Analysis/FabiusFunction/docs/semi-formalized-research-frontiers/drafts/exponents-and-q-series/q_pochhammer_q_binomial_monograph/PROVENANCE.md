@@ -126,9 +126,10 @@ and forbidden checksum basenames both close at zero. The sole retained
 32.5659 pt overfull paragraph at source lines 590--598 is readable and
 unclipped; the final log has zero underfull diagnostics. The merged source has
 advanced beyond that receipt, so its PDF is historical; a rebuild was then
-pending. It is followed by the historical `b899` receipt below.
+pending. It is superseded by the later historical `b899` receipt below.
 
-The historical synchronized `b899` driver has 17,265 lines and 864,659 bytes, with
+The historical synchronized `b899` driver has 17,265 lines and 864,659 bytes,
+with
 SHA-256
 `4dd3f7fb22387d8e3d039e8d49cd870a63ebe0881f7f215c7074854825a27bb9`.
 Its 14-file recursive TeX closure has 26,762 lines and 1,210,902 bytes, with
@@ -144,7 +145,18 @@ and none is Type 3. Required log, reference/rerun, metadata, visual, cleanup,
 and forbidden-basename gates passed. The final log has no vertical box and five
 minor horizontal boxes, none above 10.14 pt.
 
-The authoritative merged semantic documentation census is 1,001 facade-reachable\nmodules and 12,447 public declarations, with zero missing module headers and\nzero declaration-documentation gaps. The union retains the public\n`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge.
+At that historical checkpoint the repository-wide semantic documentation
+census was 923 facade-reachable modules and 11,611 public declarations, with
+zero missing module headers and zero declaration-documentation gaps. The
+declaration count was one above that checkpoint's upstream census because the
+union retained the public
+`Fabius.complexQPochhammerInf_eq_qPochhammerInfIn` bridge. The earlier audited
+upstream facade census is 957 modules and 11,920 public declarations;
+retaining that bridge gives the historical semantic-union checkpoint
+957/11,921, and the residual-existence certificate
+`Fabius.exists_eq_in_residual_interval` is included in the current census
+computed by `scripts/doc_audit.py` and pinned in
+`docs/doc_audit_baseline.json`.
 Sibling source-only promotions are recorded here only to delimit this
 q-volume's receipt: `LambertWBranchPairing.lean`,
 `LambertWGapBijection.lean`, and `LambertWBranchSymmetry.lean` have exhaustive
@@ -247,13 +259,13 @@ declarations beyond the historical reciprocity checkpoint 931/11,685. The
 incoming union adds one module and fourteen public declarations: the new
 zero-definition/six-theorem `ProuhetBaseTwoBridge.lean` module, one theorem
 added to `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`. This made 934 modules and 11,709 public
-declarations an explicitly historical post-Prouhet checkpoint. Subsequent
-source-only transseries/Catalan and Thue--Morse additions made 943/11,791 the
-next historical checkpoint. The finalized one-definition/eleven-theorem
-`TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` gave the historical facade audit 944 modules and
-11,806 public declarations; the merged live census is 1,001/12,447. The historical 933/11,695 corpus-wide
+`ThueMorseNewmanSelfSimilarity.lean`. This formed the historical
+934-module/11,709-declaration checkpoint. After the subsequent tranches, the
+earlier audited upstream facade census is 957/11,920; retaining the unconditional
+public `complexQPochhammerInf_eq_qPochhammerInfIn` bridge gives the semantic
+union checkpoint 957/11,921. The residual-existence certificate is included in the current
+union computed by `scripts/doc_audit.py` and pinned in
+`docs/doc_audit_baseline.json`. The historical 933/11,695 corpus-wide
 totals include the q--Chu, Richardson,
 geometric-law barycenter, Lagrange--Rvachev matrix, arbitrary-space geometric
 realization, regular-central-sum, Lambert branch-gap Bernoulli, affine
@@ -301,7 +313,7 @@ negative-odd slice. Even negative integral parameters remain admitted, where
 the field-totalized `qGammaC` quotient is zero in agreement with the product
 side; no holomorphy at a pole is claimed. The
 zero-definition/nine-theorem `GaussianBinomialFixedColumnRate.lean` leaf gives
-the exponential and elementary finite-product defect bounds, the denominator-free relative
+the elementary finite-product defect bound, the denominator-free relative
 Gaussian estimate, fixed and shifted nonasymptotic additive errors, and all
 four fixed/shifted relative/additive Big-O wrappers. The closure reuses
 `norm_finiteQPochhammerIn_pow_sub_one_le_exp_of_norm_le_one` and
@@ -401,12 +413,13 @@ public declarations, making the historical dyadic/finite-prefix census
 declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This made 934/11,709 an explicitly
-historical post-Prouhet checkpoint.  Subsequent source-only
-transseries/Catalan and Thue--Morse additions made 943/11,791 the next
-historical checkpoint.  The finalized one-definition/eleven-theorem
-`TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` gave the historical census 944/11,806; the merged live census is 1,001/12,447.
+`ThueMorseNewmanSelfSimilarity.lean`.  That tranche formed the historical
+934/11,709 checkpoint.  After the subsequent tranches, the earlier audited
+upstream census is 957/11,920; retaining the unconditional public
+q-Pochhammer bridge gives the historical semantic-union checkpoint
+957/11,921, and the residual-existence certificate is included in the current
+census computed by `scripts/doc_audit.py` and pinned in
+`docs/doc_audit_baseline.json`.
 The facade also contains the zero-definition/two-theorem
 `GaussianBinomialGreaterOneAsymptotics.lean` leaf; its exhaustive declarations
 are `gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO` and
@@ -451,13 +464,14 @@ declarations, making the historical dyadic/finite-prefix semantic-union census
 declarations: the new zero-definition/six-theorem
 `ProuhetBaseTwoBridge.lean` module, one theorem added to
 `DyadicBoundaryIdentity.lean`, and seven theorems added to
-`ThueMorseNewmanSelfSimilarity.lean`.  This made the semantic-union census
-checkpoint 934/11,709 explicitly historical.  Subsequent source-only
-transseries/Catalan and Thue--Morse additions made 943/11,791 the next
-historical checkpoint.  The finalized one-definition/eleven-theorem
-`TransseriesFlat.lean` module and three integer-zpow theorems in
-`TransseriesDifferentialBlock.lean` gave the historical census
-944/11,806; the merged live census is 1,001/12,447.  The existing `ProbabilityLaplaceMoments.lean` module now also
+`ThueMorseNewmanSelfSimilarity.lean`.  That tranche formed the historical
+934/11,709 checkpoint.  After the subsequent tranches, the earlier audited
+upstream census is 957/11,920; retaining the unconditional public
+q-Pochhammer bridge gives the historical semantic-union checkpoint
+957/11,921, and the residual-existence certificate is included in the current semantic
+union computed by `scripts/doc_audit.py` and pinned in
+`docs/doc_audit_baseline.json`.  The existing
+`ProbabilityLaplaceMoments.lean` module now also
 contains exactly the two new declarations
 `weightedSumDistribution_real_Ici_eq_rvachevUp_of_nonneg` and
 `integral_pow_weightedSumDistribution_eq_mul_intervalIntegral_rvachevUp`.
@@ -515,9 +529,11 @@ evaluated reciprocity and the finite growth bounds on both sides of `q = 1`;
 the imported positivity theorem is not counted as a declaration of the
 bounds leaf. Its six exported theorems close the exact finite-growth row, while
 the two-theorem greater-than-one leaf closes the remaining fixed-column and
-central asymptotic clauses in their printed normalization. The retained
-398-, 401-, 402-, and 405-page PDFs are historical checkpoints. The merged
-source requires a new synchronized render.
+central asymptotic clauses in their printed normalization. The 405-page PDF
+renders the named `b899` source and remains synchronized historical evidence
+for that checkpoint. The current merged source has advanced beyond it, so the
+changed canonical root is PDF-regeneration-deferred by user approval. The retained 398-page PDF remains a
+historical publication checkpoint.
 
 The former q-Pochhammer/q-binomial monograph arrived in commit
 `47172bc03ec078961d8b023dfe156ecd712efb65`. Its pre-repair source SHA-256 was

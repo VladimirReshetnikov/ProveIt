@@ -130,11 +130,15 @@ A mathematically oriented reader should begin with Sections~\ref{ch:objects}, \r
 \end{boxedremark}
 
 \begin{boxedremark}\textbf{Artifact status (4 September 2026).}\space
-The authoritative live lexical audit of the facade semantic union contains
-exactly 1,001 source modules and 12,447 public declarations.  It finds no
-missing module headers and no public declarations without doc comments.  The
+The authoritative live lexical audit is computed by \path{scripts/doc_audit.py}
+and pinned in \path{docs/doc_audit_baseline.json}. The earlier incoming
+985-module/12,199-declaration checkpoint had no missing module headers or
+public declaration comments. The merged source also retains
+\nolinkurl{exists_eq_in_residual_interval} in \path{MeanValueBracket.lean}. The
 historical 923/11,611 snapshot comprised the merge target's 11,610
-declarations and the retained unconditional public Pochhammer bridge.  The
+declarations and the retained unconditional public Pochhammer bridge.  Later
+branch inventories, including 952/11,884, 967/12,001, 970/12,051,
+976/12,116, and 977/12,133, are historical and overlap.  The
 historical 671/8,859 local checkpoint was the 649/8,698 checkpoint plus 22
 modules and 161 declarations.  The
 Pochhammer ownership census remains
@@ -6172,8 +6176,8 @@ Fixed-nome entire Pochhammer symbol and simple zero lattice & \nolinkurl{hasProd
 Normal convergence of the outer spectral Pochhammer product & \nolinkurl{hasProdLocallyUniformly_geometricSincProduct_complexQPochhammerInf}, \nolinkurl{hasProdLocallyUniformly_rvachevFourierProduct_complexQPochhammerInf}, \nolinkurl{hasProdLocallyUniformly_rvachevFourier_complexQPochhammerInf} & Exhaustive zero-definition/three-theorem surface of \nolinkurl{GeometricPochhammerNormalConvergence.lean}; locally uniform on the full complex plane for \(\lVert q\rVert<1\), including \(q=0\), with dyadic product and bounded-Fabius specializations \\
 Finite q-Pochhammer residue-class dissection & \nolinkurl{finiteQPochhammerIn_dissection}, \nolinkurl{finiteQPochhammerIn_dissection_remainder} & Exhaustive zero-definition/two-theorem surface of \nolinkurl{QPochhammerDissection.lean}; arbitrary commutative ring, all natural \(r,n\), and remainder boundary \(u\le r\), with no hypothesis on \(q\) \\
 Generic infinite q-Pochhammer product & \nolinkurl{qPochhammerInfIn} and the twenty-nine theorems listed exhaustively in the current-tree discussion above & \nolinkurl{QPochhammerInfinite.lean}; total topological-ring definition, complete-normed-ring convergence/concatenation/dissection, multiplicative-norm zero locus, locally compact field continuity, complex entireness, nonzero raw-factor derivatives, and analytic order one, including \(q=0\); distinct from the \nolinkurl{complexQPochhammerInf} compatibility wrapper \\
-Infinite q-binomial theorem and Euler expansions & \nolinkurl{gaussianMajorant}, \nolinkurl{hasSum_qBinomial_theorem}, \nolinkurl{hasSum_euler_product}, \nolinkurl{hasSum_euler_reciprocal} & \nolinkurl{QBinomialTheoremInfinite.lean}; one definition and twenty-seven theorems, listed exhaustively above \\
-Effective fixed-column Gaussian limit and rates & \nolinkurl{tendsto_gaussianBinomial_add_const_atTop}, \nolinkurl{gaussianBinomial_fixedColumn_relativeError_isBigO}, \nolinkurl{gaussianBinomial_shifted_fixedColumn_relativeError_isBigO} & \nolinkurl{GaussianBinomialFixedColumnRate.lean}; zero definitions and nine theorems, listed exhaustively above; with the existing fixed limit this makes \nolinkurl{thm:fixed-column-limit} exact, including \(q=0\) \\
+Infinite q-binomial theorem and Euler expansions & \nolinkurl{gaussianMajorant}, \nolinkurl{hasSum_qBinomial_theorem}, \nolinkurl{hasSum_euler_product}, \nolinkurl{hasSum_euler_reciprocal} & \nolinkurl{QBinomialTheoremInfinite.lean}; one definition and twenty-nine theorems, listed exhaustively above, including exact fixed-column convergence and error rates \\
+Effective fixed-column Gaussian limit and rates & \nolinkurl{norm_finiteQPochhammerIn_pow_sub_one_le}, \nolinkurl{norm_finiteQPochhammerIn_self_mul_gaussianBinomial_sub_one_le}, \nolinkurl{gaussianBinomial_fixedColumn_relativeError_isBigO}, \nolinkurl{gaussianBinomial_shifted_fixedColumn_relativeError_isBigO} & \nolinkurl{GaussianBinomialFixedColumnRate.lean}; zero definitions and nine theorems, listed exhaustively above.  The generalized product bound and arbitrary-shift convergence live upstream in \nolinkurl{QBinomialTheoremInfinite.lean}; together the two modules make \nolinkurl{thm:fixed-column-limit} Exact, including \(q=0\) \\
 Greater-than-one Gaussian asymptotics & \nolinkurl{gaussianBinomial_gt_one_fixedColumn_relativeError_isBigO}, \nolinkurl{gaussianBinomial_gt_one_central_isEquivalent} & Exhaustive zero-definition/two-theorem \nolinkurl{GaussianBinomialGreaterOneAsymptotics.lean} surface; real \(q>1\), exact fixed-column and central normalizations, and \nolinkurl{cor:qgreaterone} Exact together with reciprocity \\
 Thue--Morse GammaLog differential ladder & \nolinkurl{hasDerivAt_mellin_mellinKernel_parameter}, \nolinkurl{hasDerivAt_thueMorseGammaLog_succ}, \nolinkurl{iteratedDeriv_thueMorseGammaLog} & Exhaustive zero-definition/three-theorem \nolinkurl{ThueMorseGammaTowerDifferential.lean} surface.  For \(a>0\) it gives the arbitrary-complex-spectral Mellin parameter shift, \(L_{r+1}'=(r+1)L_r\), and the falling-factorial law for \(k\le r\), making \nolinkurl{p2:thm:gamma-tower} Exact for the chosen GammaLog coordinate; no principal-\nolinkurl{Complex.log} or nonpositive-parameter claim \\
 Jacobi triple product and pentagonal sums & \nolinkurl{thetaExponent}, \nolinkurl{pentagonalExponent}, \nolinkurl{hasSum_jacobi_triple_product}, \nolinkurl{hasSum_pentagonal}, \nolinkurl{hasSum_pentagonal_pairs} & \nolinkurl{JacobiTripleProduct.lean}; two definitions and twenty-five theorems, listed exhaustively above \\
@@ -6693,8 +6697,8 @@ Module & Role in the development \\
 \nolinkurl{GeometricPochhammerNormalConvergence.lean} & Exactly three theorems and no public definitions: locally uniform convergence on the whole complex plane of the outer geometric-sinc Pochhammer product for every strict contraction \(\lVert q\rVert<1\), including \(q=0\), and its dyadic standalone-product and bounded-Fabius specializations. \\
 \nolinkurl{QPochhammerDissection.lean} & Exactly two theorems and no public definitions: finite exact residue-class dissection over every commutative ring, and its remainder form under \(u\le r\), including all empty and \(u=r\) boundaries. \\
 \nolinkurl{QPochhammerInfinite.lean} & One definition and exactly twenty-nine theorems: the total generic \(q\)-Pochhammer \texttt{tprod}; strict-contraction summability, multipliability, finite-prefix convergence, concatenation, factor removal and positive-modulus dissection in complete normed commutative rings; the exact factor-zero locus under a multiplicative norm; locally uniform convergence and continuity over complete locally compact normed fields; complex entireness, nonzero derivatives at raw factor zeros (including \(q=0\)), reciprocal-power derivative formulas for \(q\ne0\), and analytic order one at every zero. \\
-\nolinkurl{QBinomialTheoremInfinite.lean} & One definition and exactly twenty-seven theorems: dominated passage from finite Gaussian coefficients, positivity and nonvanishing controls, quantitative finite-product and fixed-column estimates, the infinite q-binomial theorem, and Euler product and reciprocal expansions. \\
-\nolinkurl{GaussianBinomialFixedColumnRate.lean} & No definitions and exactly nine theorems: two finite-product defect bounds, the denominator-free relative Gaussian bound, fixed and shifted nonasymptotic additive bounds, and four relative/additive geometric \nolinkurl{IsBigO} laws.  The ring layer assumes a normalized multiplicative norm and \(\lVert q\rVert\le1\); the field layer assumes only \(\lVert q\rVert<1\), without completeness or \(q\ne0\). \\
+\nolinkurl{QBinomialTheoremInfinite.lean} & One definition and exactly twenty-nine theorems: dominated passage from finite Gaussian coefficients, positivity and nonvanishing controls, effective fixed-column convergence with arbitrary fixed upper-index shifts and geometric error rates, the infinite q-binomial theorem, and Euler product and reciprocal expansions. \\
+\nolinkurl{GaussianBinomialFixedColumnRate.lean} & No definitions and exactly nine theorems: two finite-product defect bounds, the denominator-free relative Gaussian bound, fixed and shifted nonasymptotic additive bounds, and four relative/additive geometric \nolinkurl{IsBigO} laws.  The generalized product bound and arbitrary-shift convergence are in \nolinkurl{QBinomialTheoremInfinite.lean}.  The ring layer assumes a normalized multiplicative norm and \(\lVert q\rVert\le1\); the field layer assumes only \(\lVert q\rVert<1\), without completeness or \(q\ne0\). \\
 \nolinkurl{GaussianBinomialGreaterOneAsymptotics.lean} & No definitions and exactly two theorems, named in the crosswalk: reciprocity transfers the printed fixed-column rate and central equivalence to every real \(q>1\), making \nolinkurl{cor:qgreaterone} Exact; no shifted-central or wider-domain claim. \\
 \nolinkurl{JacobiTripleProduct.lean} & Two definitions and exactly twenty-five theorems: theta and pentagonal exponents, finite and infinite Jacobi triple products, and Euler pentagonal sums. \\
 \nolinkurl{QPascalSummation.lean} & Exactly four theorems and no public definitions: two finite Gaussian-binomial summations and the left and right commuting q-binomial identities. \\
@@ -7070,9 +7074,9 @@ module headers or declaration comments.  The later 934/11,709 checkpoint
 and both branches' subsequent inventories are historical: the local branch
 reached 961/11,974 and then 970/12,056, while the incoming branch reached
 952/11,884, 967/12,001, 969/12,048, and 970/12,051.
-The live merged audit scans 1,001 modules and 12,447 explicit public
-declarations, with zero missing module headers and zero missing declaration
-comments.  The Legendre-biorthogonality 925/11,619 census remains an explicit
+The later incoming audit scanned 985 modules and 12,199 explicit public
+declarations, with zero documentation gaps. These are historical figures;
+the current census is pinned in \path{docs/doc_audit_baseline.json}.  The Legendre-biorthogonality 925/11,619 census remains an explicit
 historical checkpoint.  At the retained historical
 mainline checkpoint before the latest
 six-module q-series tranche was 623 modules and 8,476 declarations.  Its
@@ -7347,11 +7351,11 @@ new leaves contribute 80 declarations, while three existing declarations
 move from \path{NorlundDiagonal.lean} to \path{ExponentialRescaling.lean},
 for a net increase of 77.  The eight-theorem Stirling leaf is retained.
 The two certificate leaves added nine public theorems at the historical
-979/12,142 checkpoint. Six further leaves and extensions to existing modules
-then added 57 declarations. The incoming BellSetPartitions module adds 34
-more, giving the historical merged inventory of 986/12,233. The current merged
-inventory is 1,001/12,447. No new aggregate-build
-or PDF-parity claim is made.
+979/12,142 checkpoint. The incoming branch recorded a historical 985/12,199 inventory after six
+further leaves added 57 declarations. The authoritative current census is
+computed by \path{scripts/doc_audit.py} and pinned in
+\path{docs/doc_audit_baseline.json}. No new aggregate-build or PDF-parity
+claim is made.
 
 The crosswalk remains conservative: the abstract Fa\`a di Bruno result, the
 ordinary Bell normalization, and the Touchard definition and displayed
@@ -7364,7 +7368,7 @@ bounds, linear-logarithmic inversion, power-logarithmic inversion, remainder
 transport, and staircase inversion remain Partial; the least-term-index row
 is Neighboring.  Every module is reachable from the facade.  No aggregate facade
 build is claimed for this current-tree census.  The title-page pin remains historical; current publication receipts are external.
-The historical present-union snapshot has 983 modules and 12,192 public declarations, with zero
+The present union has 1004 modules and 12,500 public declarations, with zero
 module-header or declaration-comment gaps.  Its QBinomialTheoremInfinite
 surface is 1+29 and GaussianBinomialFixedColumnRate is 0+9, retaining
 compatibility names for the stronger upstream product and shifted-limit APIs.

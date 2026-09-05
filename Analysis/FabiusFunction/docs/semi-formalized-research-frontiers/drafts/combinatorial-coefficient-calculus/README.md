@@ -2,17 +2,14 @@
 
 Canonical consolidation of six combinatorial coefficient-calculus and inversion
 manuscripts received on 2026-09-01. Each arrival supplied one flat LaTeX/PDF
-pair. The ZIP CRCs, member paths, and member types were checked before
-extraction; at intake, the filed source and PDF bytes were identical to their
-ZIP members.
+pair. ZIP CRCs, member paths, and member types were checked before extraction;
+at intake the filed source and PDF bytes were identical to their ZIP members.
 
-**The consolidation is complete.** `Combinatorial_Coefficient_Calculus/` is the
-single surviving package, and the five donor directories have been deleted now
-that every source, topic, and claim row of the disposition ledger carries a
-completed disposition. This was deliberately not a concatenation: 394 labels
-occurred in more than one source, and the common material is retained once,
-with the strongest correct hypotheses and one complete proof. A second proof
-survives only where it exposes a different mechanism.
+The archival consolidation is complete: `Combinatorial_Coefficient_Calculus/`
+is the single surviving package, and the five donor directories were retired
+after all source, topic, and claim disposition rows were completed. The
+mathematical formalization campaign remains open. Its canonical source evolves
+as proofs are repaired, strengthened, and matched with Lean declarations.
 
 The consolidation boundary is recorded in
 [`PROVENANCE.md`](Combinatorial_Coefficient_Calculus/PROVENANCE.md), the six
@@ -29,7 +26,12 @@ publication checkpoint.
 
 | Directory | Document |
 | --- | --- |
-| `Combinatorial_Coefficient_Calculus/` | **Canonical:** *Combinatorial Coefficient Calculus* — the evolving source and the retained upstream A4 PDF |
+| [Canonical TeX](Combinatorial_Coefficient_Calculus/Combinatorial_Coefficient_Calculus.tex) and [PDF](Combinatorial_Coefficient_Calculus/Combinatorial_Coefficient_Calculus.pdf) | Mathematical exposition and the single in-document Lean claim register. |
+| [Campaign status](Combinatorial_Coefficient_Calculus/FORMALIZATION_STATUS.md) | Current compilation, review, rendering, and remaining-work receipts. |
+| [Provenance](Combinatorial_Coefficient_Calculus/PROVENANCE.md) | Consolidation boundary and immutable recovery procedures. |
+| [Source inventory](Combinatorial_Coefficient_Calculus/SOURCE_INVENTORY.csv) | Six original sources and their immutable Git recovery locators. |
+| [Source dispositions](Combinatorial_Coefficient_Calculus/SOURCE_DISPOSITION.csv) | Editorial decisions for source, topic, and claim records. |
+| [Canonical validator](Combinatorial_Coefficient_Calculus/validate_canonical.py) | Structural and provenance checks; this package is expected to pass `--final`. |
 
 Upstream supplied a rebuilt PDF at its checkpoint. The merged source includes
 subsequent Stirling, Nörlund, Bell, and Cauchy-polynomial changes, so that
@@ -46,60 +48,41 @@ and addition laws are now represented, with the latter two valid after
 evaluation in any commutative rational algebra. The analytic convergence and
 branch assertion attached to the generating function remains outside that
 formalized theorem block. The second-kind reverse-row recurrence is now
-machine checked in a division-free integral form, including its zero boundary
-case beyond the range used by the displayed human formula; the separately
-merged unrestricted rational-index source identity is now compiler-checked
-under its collision-free declaration name. The ordinary versus
+machine checked in a division-free integral form and, by transport from the
+integers, over every commutative ring, including its zero boundary case beyond
+the range used by the displayed human formula. The separately merged
+unrestricted rational-index source identity remains pending validation. The ordinary versus
 exponential Bell normalization now has both its rational ratio form and a
 denominator-free commutative-semiring form, together with functoriality and the
 upper variable-support cutoff. The sharpness witness for that cutoff, the
 general Bell near-diagonal reduction, its two-block case, and the higher
 subdiagonals remain human-only or partial as recorded in the register.
 
-## What the final merge changed
+Standalone checksum ledgers are retired. Provenance is preserved in Git and the
+source inventory, and the validator does not maintain or require live-file
+digests. Its checks cover structure, labels, references, citations, proof pairing,
+source coverage, Git object availability, dispositions, and publication layout.
+They do not compile Lean or establish mathematical correctness.
 
-The last pass was driven by a label- and formula-level inventory of all six
-sources rather than by reading order. Chapter `ch:merged-concordance`,
-section "Closure of the merge", carries the in-document record. In summary:
+## Consolidation history
 
-- **The manuscript did not compile.** The shared-notation migration had left
-  eight calls to catalogue macros whose expansion already ends in a script
-  group followed directly by a prime or an exponent — for example
-  `\TouchardPolynomial{n}'`, where the macro expands to
-  `\mathsf{T}^{\mathrm{Tou}}_{n}`. Each is a fatal TeX "Double superscript"
-  error.
-- **A withdrawn claim became a theorem.** All six arrivals asserted
-  `B_n < (0.792 n / log(n+1))^n` for every `n >= 1` without proving either the
-  tail or the finite range, and the consolidation had demoted it to a remark.
-  It is a theorem of Berend and Tassa (2010) and is now proved in both ranges:
-  the tail from a new monotonicity lemma for the coefficient majorant, and
-  `n <= 38` from the inequality between positive integers
-  `B_n A_n^n < (792000 n)^n` with `A_n = ceil(10^6 log(n+1))`, which contains no
-  irrational quantity at all.
-- **An existing proof rested on an unstated fact.** The polygamma series were
-  derived by logarithmically differentiating a Weierstrass product for
-  `1/Gamma` that appeared nowhere else in the manuscript. Euler's limit and
-  that product are now proved from the integral definition of `Gamma`, via the
-  Beta integral.
-- **Thirteen further donor-only results were merged**, each with a proof
-  written for this text and each checked against an independent symbolic or
-  exact-integer computation before insertion.
-- **Notation was made uniform.** Around 180 further sites still spelled
-  catalogue symbols by hand, including an italic imaginary unit next to an
-  upright `e` inside one exponent. The document now follows
-  `FabiusFunction_Mathematical_Notation_Catalogue` throughout.
+The consolidation used a label- and formula-level inventory of all six inputs.
+The inventory found 394 labels occurring in more than one source. Closely
+related material was grouped, common statements retained once, and alternate
+proofs preserved where they explain a different mechanism. The manuscript's
+concordance chapter contains the mathematical contribution map.
 
-## Current source-only Stirling overlay
+The historical consolidation also repaired fatal TeX superscript errors left
+by the notation migration, expanded the Bell upper-bound proof and its finite
+verification, supplied missing analytic prerequisites for the polygamma
+discussion, integrated thirteen donor-only results, and normalized notation.
+These editorial and human-proof changes do not by themselves constitute Lean
+formalization.
 
-The fixed-column second-kind Stirling theorem `thm:second-ogf` now separates
-its formal-power-series content from scalar rational evaluation. Its
-coefficient identity explicitly assumes `n >= k`; the formal proof identifies
-two inverses of the same finite product, extracts the coefficient of the
-finite product of geometric series, and then proves
-`x^(k+1) * (1/x)↓(k+1) = ∏_{j=1}^k (1-jx)`. The falling-factorial spelling at
-a scalar requires `x != 0`, and its reciprocal form also requires every
-factor `1-jx` to be nonzero. The `k = 0`, `n = 0` empty-product case is
-included.
+## Current coefficient-calculus campaign
+
+The six new leaves contain **25 public theorems: five compiled and twenty
+pending compilation**. `NewtonReciprocal` has passed focused compilation.
 
 The compiled zero-definition/eight-theorem
 `StirlingCompleteHomogeneous.lean` surface contributes
@@ -132,40 +115,19 @@ complete human proofs and exact declaration crosswalks. Three private rational
 helpers in `FinitePrefixThueMorseCollapse` were replaced by the shared API; that
 caller refactor has now passed its own direct Lean check as well.
 
-The document's generated register is the single source of current row counts
-and Lean/partial/none classifications. Its inherited formal-power, Stirling,
-Newton, and certificate checkpoints are not a fresh compilation of the whole
-corpus. The final structural/provenance validator checks the advertised totals
-against the actual rows as well as adjacent proofs, the 27 disposition records,
-and six original-source inventory rows. PDF building remains skipped for this
-source-only synchronization.
+At that earlier checkpoint, the merged register contained 207 rows: 68 marked Lean, 35 partial, and 104
+without a compiler-verified counterpart. The grid and CRT certificates, the
+Bell set-partition interpretation, and the retained Bell, Cauchy, and reverse-row
+crosswalks contribute compiler-backed entries alongside the incoming
+classifications; this is not a fresh build of the whole corpus. The source-level
+validator accounts for 210 adjacent proofs, 27 disposition records, and six
+original-source inventory rows. The retained PDF is historical; this merge follows the
+user-requested PDF deferral, so current render parity is not claimed.
 
-The same-day upstream crosswalk connects the Bell normalization and unit-series
-coefficient formulas to `UnitSeriesBellCoefficients`. The subsequent incoming
-`BellSetPartitions` independently supplies the weighted labelled-set
-interpretation and the Stirling block-count specialization; its compiled
-status is recorded by upstream commit `dd554e5a8`, not a fresh local replay.
-The prescribed-block-size type count remains a separate obligation.
-
-## Coefficient-calculus campaign (2026-09-04)
-
-Four new leaf modules supply seventeen public theorem statements, with complete
-human proofs and exact declaration names in the manuscript. `NewtonReciprocal`
-has passed focused Lean compilation, including the actual truncated update.
-`StirlingSymmetricFunctions`, `LagrangeInversionUniqueness`, and
-`StirlingSecondReverseRowIdentity` have now passed direct Lean checks; the
-register records their compiler-checked declarations. The full affected
-dependency closure was checked in dependency order, while no aggregate build
-is claimed.
-The two second-kind symmetric-function formulas are shared with the compiled
-upstream `StirlingCompleteHomogeneous` module; their duplicate implementations
-were removed from this campaign's leaf.
-
-The campaign also repairs the Laplace theorem with explicit analytic endpoint
-hypotheses and full remainder estimates, removes contradictory duplicate
-crosswalks, and corrects boundary cases and coefficient-ring assumptions.
-The brief [campaign status](Combinatorial_Coefficient_Calculus/FORMALIZATION_STATUS.md)
-records remaining obligations without duplicating the canonical claim register.
+The Bell normalization and unit-series coefficient formulas are connected to
+`UnitSeriesBellCoefficients`; `BellSetPartitions` separately supplies the exact
+weighted labelled-set partition interpretation. The finer per-type coefficient
+count remains outside that theorem, as recorded in the register.
 
 ## Formal-power recurrence (2026-09-04)
 
@@ -182,6 +144,76 @@ then separates the constant-coefficient term of the Cauchy product. The
 canonical source includes that complete argument, including the constant
 term and inductive uniqueness of the resulting coefficient sequence. This
 is formal algebra; no analytic branch choice or convergence claim is made.
+
+## Formal-power recurrence (2026-09-04)
+
+`UnitSeriesPowerRecurrence` supplies three checked theorems. Over any
+commutative ring, the differential equation `A C' = α A' C` implies
+`n a₀ cₙ = Σ_{j=1}^n ((α+1)j−n) aⱼ cₙ₋ⱼ`, without assuming `a₀` is
+invertible. Over a commutative rational algebra with `a₀=1`, formal binomial
+substitution gives `C=A^α`, satisfies that differential equation, and yields
+the manuscript's triangular coefficient algorithm. Its proof and crosswalk
+now cover all three clauses of `alg:merged-exp-log-power` exactly.
+
+The proof uses the Euler derivative `z d/dz` to keep degree indices aligned,
+then separates the constant-coefficient term of the Cauchy product. The
+canonical source includes that complete argument, including the constant
+term and inductive uniqueness of the resulting coefficient sequence. This
+is formal algebra; no analytic branch choice or convergence claim is made.
+
+## Coefficient-calculus campaign (2026-09-04)
+
+The new leaf modules supply the public theorem statements listed in the
+register, with complete human proofs and exact declaration names in the
+manuscript. Upstream focused receipts record direct sequential compilation of
+`NewtonReciprocal`, `StirlingSymmetricFunctions`, `LagrangeInversionUniqueness`,
+and `StirlingSecondReverseRowIdentity`, including the actual truncated Newton
+update and the integer-transport reverse-row identity. This merge does not rerun
+those Lean commands; the register preserves the more precise claim-level
+boundaries. The two second-kind symmetric-function formulas are shared with the
+compiled upstream `StirlingCompleteHomogeneous` module, and their duplicate
+implementations were removed from this campaign's leaf.
+
+The first Lagrange uniqueness compilation attempt reached the default heartbeat
+limit while inferring an inverse witness. The correction supplies explicit
+proof data and awaits retry; the statement and heartbeat limit are unchanged.
+Separately, thirteen existing helper/existence theorems in `LagrangeInversion`
+now have weaker coefficient-ring assumptions and have passed direct compilation.
+They are not counted among the twenty-five new theorems.
+
+The manuscript currently contains 210 theorem-like entries: **77 `Lean`,
+53 `partial`, and 80 `none`**. The latest claim audit corrected overclaims in
+the Abel and Fréchet crosswalks and confirmed the second-kind Stirling
+set-partition counting interpretation through
+`BellSetPartitions.card_setPartitions`. That correspondence uses upstream
+validation evidence; this campaign has not freshly compiled the counting
+module. The in-document register remains authoritative, and a compiled source
+module does not automatically certify every assertion in a broader theorem.
+
+The campaign repairs the Laplace theorem's analytic assumptions and remainder
+proof, removes contradictory duplicate crosswalks, and corrects boundary and
+coefficient-ring assumptions. Detailed statements, proofs, and declaration
+names belong in the TeX exposition. The status file tracks the still-open
+analytic and combinatorial interpretation work without maintaining a second
+claim register.
+
+## Formal-power recurrence (2026-09-04)
+
+`UnitSeriesPowerRecurrence` supplies three checked theorems. Over any
+commutative ring, the differential equation `A C' = α A' C` implies
+`n a₀ cₙ = Σ_{j=1}^n ((α+1)j−n) aⱼ cₙ₋ⱼ`, without assuming `a₀` is
+invertible. Over a commutative rational algebra with `a₀=1`, formal binomial
+substitution gives `C=A^α`, satisfies that differential equation, and yields
+the manuscript's triangular coefficient algorithm. Its proof and crosswalk
+now cover all three clauses of `alg:merged-exp-log-power` exactly.
+
+The proof uses the Euler derivative `z d/dz` to keep degree indices aligned,
+then separates the constant-coefficient term of the Cauchy product. The
+canonical source includes that complete argument, including the constant
+term and inductive uniqueness of the resulting coefficient sequence. This
+is formal algebra; no analytic branch choice or convergence claim is made.
+
+## Additional formal-series checkpoints (2026-09-04)
 
 ## Additional formal-series checkpoints (2026-09-04)
 
@@ -202,13 +234,32 @@ and the complete affected-dependent closure have passed direct Lean checks.
 Independent source reviews remain distinct from compiler receipts, and the
 register records only the checked declarations.
 
-`GridEvaluationCertificate` and `IntegerCRTCertificate` supply nine compiled
-public theorems, each with only the standard project axioms. Their full human
-statements and proofs remain grouped in the two existing certificate theorems:
-grid uniqueness over any integral domain, and product-divisibility plus
-zero/equality certificates for signed pairwise-coprime integer moduli.
-The zero test uses the stronger full-product bound. The adjacent discussion now
-distinguishes probabilistic identity testing from exact grid certificates.
+## Inherited focused-validation receipts
+
+These are receipts from their named source checkpoints, not a fresh aggregate
+build of the current merged corpus. The campaign status preserves the pinned
+merge and validation history.
+
+| Source surface | Recorded receipt and scope |
+| --- | --- |
+| `AppellSequence` | Eleven public lemmas passed direct sequential compilation; the caller refactor in `FinitePrefixThueMorseCollapse` also passed its own direct check. |
+| `StirlingCompleteHomogeneous` | Eight public theorems passed focused compilation. The campaign's duplicate second-kind evaluation formulas were removed in favor of this shared API. |
+| `ExponentialRescaling` | Four public lemmas passed focused compilation; existing `NorlundDiagonal` helper names were retained through the shared API. |
+| `AbelPolynomialSeries` | A focused source build passed. Coverage of the entire canonical Abel statement remains subject to its current claim audit. |
+| `GridEvaluationCertificate`, `IntegerCRTCertificate` | Nine public theorems compiled with the standard project axiom set; their human statements and proofs are grouped in the manuscript's two certificate theorems. |
+| `BernoulliFormalLog`, `NorlundGeneralized` extensions | Source/API reviews were recorded; their compilation and affected-dependent closure remain separate outstanding work. |
+
+The moment-cumulant crosswalk retains its normalization and degree boundaries.
+The second-kind Stirling set-partition cardinality bridge is established;
+weighted per-profile interpretations, surjections, cycles, and descents retain
+their separate formalization obligations.
+The Nörlund and Bernoulli discussions distinguish formal coefficient algebra,
+coefficient-ring transport, multiplicity interpretations, and analytic
+convergence. The certificate discussion distinguishes deterministic
+certificates from probabilistic testing. These boundaries are maintained in
+the exposition and must be preserved through later coverage upgrades.
+The following source-review notes add the latest reusable-series detail without
+changing the receipt classifications above.
 
 The human moment-cumulant proof now states its normalization and positive-degree
 boundaries explicitly, with formal logarithm identities separated from the
