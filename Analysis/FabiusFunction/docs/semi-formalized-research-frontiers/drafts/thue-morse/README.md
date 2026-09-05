@@ -14,46 +14,56 @@ register](../MANIFEST.md#merge-28de4e51-publication-receipts)):
   tail calculus, q-Richardson weights; formerly
   `Fabius_Rvachev_Thue_Morse_Frontier_Results/`, its figures and
   reproducibility bundle under `assets/`).
+- **Part III** — *Diagonal Laws of Repeated Thue–Morse Summation*
+  (the polynomial on every diagonal of the repeated weighted summation
+  table, its Riordan-array and Sheffer structure, exact denominators and
+  rational roots, the complete half-integer zero criterion, the dyadic
+  block geometry of every summation order, the exact crosswalk to the
+  Lean approximation polynomials, and exact algorithms; folded in on
+  2026-09-05 from the companion `Thue_Morse_Diagonal_Laws/`, itself the
+  same-day consolidation of the three `thue_morse_diagonal_polynomials*`
+  arrivals of 2026-09-03; its verification bundle and figures are under
+  `assets/diagonal-laws/`).
 
-## Diagonal-laws companion volume (three arrivals, 2026-09-03; merged 2026-09-05)
+## Diagonal laws (three arrivals, 2026-09-03; merged and folded 2026-09-05)
 
 Three independently written articles on one question arrived together on
-2026-09-03 and were filed here as separate members.  On 2026-09-05 they were
-merged editorially into one companion volume, filed beside the atlas rather
-than folded into it because the atlas is under concurrent editing:
+2026-09-03 and were filed here as separate members
+(`thue_morse_diagonal_polynomials/`, `thue_morse_diagonal_polynomials-2/`,
+`thue_morse_diagonal_polynomials_article_and_code/`).  On 2026-09-05 they
+were merged editorially into one companion volume,
+`Thue_Morse_Diagonal_Laws/` (64 pp), and later the same day that companion
+was folded into the atlas as **Part III**, its prefix chapter replaced by
+references to Part I's exact-prefix, iterated-prefix, terminal-zero-run and
+signed-reversal theorems, and its notation moved onto the repository's
+notation catalogue (`ThueMorseSign`, `BinaryDigitSum`, `TwoAdicValuation`,
+`Floor`/`Ceiling`, `RisingFactorial`, `UnsignedStirlingFirstKind`,
+`CoefficientExtraction`, the number-system commands, `RvachevUp` and
+`FabiusBounded`; Part I's `S^{(k)}_n` for the iterated prefix; two declared
+local hats for the Sheffer normalizations).  The catalogue gained entries
+for the iterated prefixes, the summation table `s_{n,k}`, the diagonal
+polynomials `D_r` and the dyadic block polynomials `Q_h`, with the Lean
+crosswalk of the approximation side.  The shared object is the table built
+from the signed Thue–Morse prefix row by `s_{n,k} = Σ_{j<k} (k−j)
+s_{n−1,j}`; Part III proves `s_{n,k} = S^{(2n+1)}_{k−n−1}`, the polynomial
+on every diagonal from `Σ_r D_r(x) z^r = E(z²)/(1−z)^{2x}`, the Riordan-array
+structure and a general subdiagonal theorem, the Sheffer half-step, 2-adic
+ruler/Bell, translation, differential and addition laws and the diagonal
+Mahler equation, the primitive normalization with the exact common
+denominator and the rational-root restriction to `½ℤ`, the complete
+nonnegative half-integer zero criterion, the negative half-lattice formula
+and an infinite family of negative integer roots, the complete finite-block
+theorem for every summation order and its row specialization, the exact
+identification of the row blocks with the Lean approximation polynomials
+`p_{2n}` whose corrected samples converge to `up` and to the Fabius function
+(cited by declaration name), and exact algorithms including an
+`O(n² log r)` prefix-moment evaluator.  The three verification programs and
+generated data are unchanged under `Thue_Morse_Atlas_and_Frontiers/assets/diagonal-laws/`.
+The three arrival directories and the companion directory are deleted; Git
+history retains them.  No Lean proof was added; Part III's closing section
+lists the formalization targets.
 
-- [`Thue_Morse_Diagonal_Laws/`](Thue_Morse_Diagonal_Laws/) — *Thue–Morse
-  Diagonal Laws: Diagonal Polynomials and Dyadic Block Geometry in Repeated
-  Thue–Morse Summation* (64 pp A4; 3,700 source lines; 15 chapters and four
-  appendices).  The shared object is the table `s(n,k)` built from the
-  signed Thue–Morse prefix row by the weighted recurrence
-  `s(n,k) = Σ_{j<k} (k−j) s(n−1,j)`; the volume proves its identification
-  `s(n,k) = T^{(2n+1)}_{k−n−1}` with the odd iterated prefix sums, the
-  polynomial on every diagonal from `Σ_r D_r(x) z^r = E(z²)/(1−z)^{2x}`
-  (exact degree, Stirling monomial coefficients, root moments), the
-  Riordan-array structure and a general subdiagonal theorem, the Sheffer
-  half-step, 2-adic ruler/Bell, translation, differential and addition
-  laws and the diagonal Mahler equation, the primitive normalization
-  `r! D_r / 2^{⌈r/2⌉}` with the exact common denominator and the
-  rational-root restriction to `½ℤ`, the complete nonnegative half-integer
-  zero criterion by residue of `r` modulo `2^{m+1}`, the negative
-  half-lattice formula, an infinite family of negative integer roots, the
-  complete finite-block theorem for every summation order (support,
-  reflection, complement, plateau, maximum, mass, moments, distinct values)
-  and its specialization to the rows, the exact identification of the row
-  blocks with the level-`2n` Rvachev histogram and the up/Fabius limits,
-  and exact algorithms including an `O(n² log r)` prefix-moment evaluator.
-  The three retained verification programs (Python and Wolfram Language)
-  and the generated data are under `verification/`; the provenance appendix
-  gives the notation dictionary between the three reports.  The three
-  arrival directories `thue_morse_diagonal_polynomials/`,
-  `thue_morse_diagonal_polynomials-2/` and
-  `thue_morse_diagonal_polynomials_article_and_code/` were deleted (Git
-  history retains them).  No Lean crosswalking was done; Chapter 15 lists
-  the formalization targets.  The atlas's own Prouhet and prefix-sum
-  material is the natural fold-in target.
-
-Both parts carry extensive inline Lean crosswalks. As of 2026-08-28,
+Parts I and II carry extensive inline Lean crosswalks, and Part III cites the prefix and approximation modules by declaration name. As of 2026-08-28,
 `ThueMorseComplexProductBridge.lean` supplies the finite-product core in total
 complex form at every level: the sinc and negative-Laplace block equalities
 include the removable origin, with quotient normalizations away from zero and

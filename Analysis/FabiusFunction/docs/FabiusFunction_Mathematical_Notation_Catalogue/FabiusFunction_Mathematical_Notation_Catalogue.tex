@@ -1863,6 +1863,148 @@ $C\,h^{m}2^{\binom m2}$ when $|f^{(m)}|\le C$ there.}
 \lean{abs_thueMorseBlockSum_le}, all in \modulepath{ThueMorseCubature.lean}.}
 \end{catalogueentry}
 
+\begin{catalogueentry}{thue-morse-iterated-prefix}{Exclusive and iterated inclusive
+Thue--Morse prefixes}
+\entryfield{Exclusive prefix}{$S(N)\DefinitionEquals\sum_{n=0}^{N-1}\ThueMorseSign n$
+for $N\in\NaturalNumbers$, so $S(0)=0$; it is the weight-one case $S_N(1)$ of the
+arbitrary prefix in the \hyperlink{notation:dyadic-prefix}{dyadic-prefix entry}.  Pair
+cancellation gives $S(2q)=0$ and $S(2q+1)=\ThueMorseSign q$.}
+\entryfield{Iterated inclusive prefix}{For $k,n\in\NaturalNumbers$,
+\[
+ S^{(0)}_n\DefinitionEquals\ThueMorseSign n,
+ \qquad
+ S^{(k+1)}_n\DefinitionEquals\sum_{j=0}^{n}S^{(k)}_j,
+\]
+an integer sequence with inclusive upper limit; the superscript is the number of
+summations and the subscript the position.  For $k\ge1$,
+$S^{(k)}_n=\sum_{j=0}^{n}\binom{n-j+k-1}{k-1}\ThueMorseSign j$, and the ordinary
+generating function is $\sum_{n\ge0}S^{(k)}_nz^n=E(z)/(1-z)^{k}$ with
+$E(z)=\sum_n\ThueMorseSign n\,z^n=\prod_{j\ge0}(1-z^{2^j})$ in $\IntegerNumbers[[z]]$.
+The exclusive prefix is not $S^{(1)}$: $S(N)=S^{(1)}_{N-1}$ for $N\ge1$.}
+\entryfield{Dyadic facts}{For $1\le k\le r$ the run $S^{(k)}_{2^r-k+i}=0$, $0\le i<k$,
+with $S^{(k)}_{2^r-k-1}=(-1)^{r-k}$ and $S^{(k)}_{2^r}=-1$; and the signed reversal
+$S^{(k)}_{2^r-k-1-d}=(-1)^{r-k}S^{(k)}_d$ for $k+d<2^r$.}
+\entryfield{Collision}{The Thue--Morse atlas writes these as $S(N)$ and $S^{(k)}_n$ in
+Parts~I and~III; the three diagonal-polynomial reports it absorbed wrote
+$T^{(h)}_r$, $S^{(\ell)}_r$ and $\sigma_h(r)$ for the same object.  The letter $S$ retains
+its other uses (support, Stieltjes transform, random series) under the collision
+register; the superscript in parentheses is what marks the iterated prefix.}
+\entryfield{Status}{Lean-proved.}
+\entryfield{Lean crosswalk}{The definition is \lean{iteratedPrefix}, with arguments in
+the order $k$, $n$, and the binomial convolution is
+\leanline{iteratedPrefix_convolution}
+both in \modulepath{ThueMorsePrefix.lean}, which also holds the dyadic theorems
+\leanline{iteratedPrefix_dyadic_zero_run}
+\leanline{iteratedPrefix_before_dyadic_run}
+\leanline{iteratedPrefix_at_dyadic}
+\leanline{iteratedPrefix_dyadic_reverse_window}
+The exclusive collapse is the declaration
+\leanline{sum_thueMorseSign_range}
+of \modulepath{ThueMorseEulerTransform.lean}, and the generating identity below every
+dyadic truncation is
+\leanline{coeff_thueMorseBlockPolynomial_mul_invOneSubPow_eq_iteratedPrefix}
+of \modulepath{ThueMorseGenerating.lean}.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{thue-morse-summation-table}{The repeated weighted summation
+table \(s_{n,k}\)}
+\entryfield{Definition}{For $n,k\in\NaturalNumbers$, the table is defined by the row
+$s_{0,k}=S(k)$ (the exclusive prefix) and, for $n\ge1$, the weighted recurrence
+$s_{n,k}=\sum_{j=0}^{k-1}(k-j)\,s_{n-1,j}$, so that $s_{n,k}=0$ for $k\le n$.  Row
+$n$ is an integer sequence indexed by $k$; the subscripts are always in the order
+(row, column).}
+\entryfield{Identification}{$s_{n,k}=S^{(2n+1)}_{k-n-1}$ for $k\ge n+1$: row $n$ is the
+$(2n+1)$-fold inclusive prefix shifted right by $n+1$ columns.  The row generating
+function is $A_n(z)=\sum_ks_{n,k}z^k=z^{n+1}E(z^2)/(1-z)^{2n}=z^{n+1}E(z)/(1-z)^{2n+1}$,
+and the shifted array $(s_{n,n+1+r})_{n,r}$ is the proper Riordan array
+$\bigl(E(z^2),\,z/(1-z)^2\bigr)$.}
+\entryfield{Diagonal coordinate}{$r\DefinitionEquals k-n-1\ge0$ is the offset from the
+first nonzero entry of the row; the originating program's ``diagonal'' $d=k-n$ is $r+1$.}
+\entryfield{Status}{Frontier-derived (Part~III of the Thue--Morse atlas).  The prefix
+side of the identification is Lean-proved through the previous entry; the table
+recurrence itself has no Lean definition.}
+\entryfield{Scope}{The letters $s_{n,k}$, $A_n(z)$, and $r$ are local to Part~III of the
+Thue--Morse atlas and to its retained verification programs.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{thue-morse-diagonal-polynomial}{Diagonal polynomials of repeated
+Thue--Morse summation}
+\entryfield{Definition}{For $r\in\NaturalNumbers$, $D_r\in\RationalNumbers[x]$ is
+\[
+ D_r(x)\DefinitionEquals\sum_{q=0}^{\Floor{r/2}}
+ \ThueMorseSign q\binom{2x+r-2q-1}{r-2q}
+ =\CoefficientExtraction{z}{r}\,\frac{E(z^2)}{(1-z)^{2x}},
+\]
+where $\binom{2x+r-2q-1}{r-2q}=\RisingFactorial{2x}{r-2q}/(r-2q)!$ is a polynomial in
+$x$ and the generating function is expanded in $\RationalNumbers[x][[z]]$.  Then
+$s_{n,k}=D_{k-n-1}(n)$ for $k\ge n+1$; $D_r$ has exact degree $r$, leading coefficient
+$2^r/r!$, and $D_0=1$.}
+\entryfield{Normalizations}{Two document-local rescalings carry their own accents.  The
+Sheffer normalization is $r!\,D_r(x)$, printed with a wide hat over $D$ by the
+document-local command in the
+\hyperlink{notation:local-hat-ThueMorseDiagonalSheffer}{accent register}; it is a
+Sheffer sequence for the pair $\bigl(E(z^2),\,-2\log(1-z)\bigr)$ and satisfies the
+half-step law $D_r(x)-D_r(x-\tfrac12)=D_{r-1}(x)$.  The primitive normalization is
+$r!\,D_r(x)/2^{\Ceiling{r/2}}$, printed with a wide tilde over $D$; it is a primitive
+polynomial in $\IntegerNumbers[x]$, so the exact common denominator of the coefficients
+of $D_r$ is $r!/2^{\min(\TwoAdicValuation(r!),\,\Ceiling{r/2})}$.  Neither accent is a
+Fourier transform.}
+\entryfield{Attached local symbols}{$G_x(z)\DefinitionEquals\sum_{r\ge0}D_r(x)z^r$
+(diagonal generating function); the ruler cumulants
+$\lambda_m(x)\DefinitionEquals2x+2-2^{\TwoAdicValuation(m)+1}$ for $m\ge1$, with
+$\log G_x(z)=\sum_{m\ge1}\lambda_m(x)z^m/m$; and the systematic nonnegative factor
+$\Phi_r(x)\DefinitionEquals\prod(2x-m)$ over those $m\ge0$ with
+$r\bmod2^{m+1}\ge2^{m+1}-(m+1)$.  Index letters $r$, $m$, $q$ for the diagonal are
+interchangeable in Part~III of the atlas; the polynomial is the same.}
+\entryfield{Exceptional cases}{$D_r(m/2)=S^{(m+1)}_r$ for $m\in\NaturalNumbers$, so every
+nonnegative half-integer value is an iterated prefix; $D_r(m/2)=0$ if and only if
+$r\bmod2^{m+1}\ge2^{m+1}-(m+1)$; every rational zero of $D_r$ lies in
+$\tfrac12\IntegerNumbers$.}
+\entryfield{Status}{Frontier-derived (Part~III of the Thue--Morse atlas); no Lean
+definition of $D_r$ exists.  The half-integer values inherit the Lean-proved prefix
+facts.}
+\entryfield{Collision}{$D$ elsewhere denotes derivatives, dilations, and dyadic
+denominators; the diagonal polynomial always carries the subscript $r$ (or $m$, $q$)
+and a polynomial argument.}
+\end{catalogueentry}
+
+\begin{catalogueentry}{thue-morse-block-polynomial}{Dyadic block polynomials of iterated
+prefixes}
+\entryfield{Definition}{For $h\in\PositiveIntegers$,
+\[
+ Q_h(z)\DefinitionEquals\prod_{j=1}^{h-1}\bigl(1+z+\cdots+z^{2^j-1}\bigr)
+ =\sum_{a=0}^{2^h-h-1}q_{h,a}z^a\in\IntegerNumbers[z],
+\]
+an empty product at $h=1$.  Its coefficients are positive on $0\le a\le2^h-h-1$, the
+degree is $L-h-1$ with $L\DefinitionEquals2^h$, the mass is $Q_h(1)=2^{\binom h2}$, and
+the maximum coefficient is $M_h\DefinitionEquals2^{\binom{h-1}2}$, attained on the central
+plateau of exactly $h$ positions.}
+\entryfield{Block law}{$S^{(h)}_{aL+b}=\ThueMorseSign a\,q_{h,b}$ for $0\le b<L$ (with
+$q_{h,b}=0$ for $b>L-h-1$): the $h$-fold prefix is a signed repetition of one
+nonnegative block.  In row $n$ of the summation table the block is
+$B_n(z)\DefinitionEquals Q_{2n+1}(z)$ with coefficients $b_{n,a}$, length $L_n=2^{2n+1}$,
+and maximum $M_n=2^{\binom{2n}2}$.}
+\entryfield{Approximation layer}{$Q_k$ is the integer approximation polynomial
+$p_{k-1}$ of the Lean development, and $q_{k,m}/2^{\binom{k-1}2}$ is the step-approximant
+value at the centered cell $m$; for $k=2n+1$ these are the level-$2n$ Rvachev histogram
+samples whose corrected dyadic-floor samples converge to $\RvachevUp(2x-1)$ and, after
+the substitution $x\mapsto x/2$, to $\FabiusBounded(x)$.}
+\entryfield{Status}{Definition, and Lean-proved on the approximation side by the
+declarations
+\leanline{thueMorseBlockPolynomial_mul_invOneSubPow_eq_approximationPolynomialInt}
+\leanline{iteratedPrefix_eq_approximationPolynomial_coeff_all}
+\leanline{correctedPrefixCoefficient_eq_stepApproximant_all}
+\leanline{correctedPrefixGridSample_tendsto_rvachevUp}
+\leanline{correctedPrefixGridSample_tendsto_fabius}
+in \modulepath{ThueMorseApproximation.lean}.  The plateau, reflection, complement,
+multiplicity and distinct-value statements are frontier-derived in Part~III of the
+atlas.}
+\entryfield{Collision}{The three absorbed reports wrote $Q_h$, $H_{h-1}$ and
+$\mathcal A_h$ for this product; $Q$ elsewhere is the rational field, a Fabius
+quantile, or a quadrature rule, and $B_n$ elsewhere is a dyadic index block.  Both
+letters carry the order subscript and the variable $z$ when they mean the block.}
+\end{catalogueentry}
+
 \begin{catalogueentry}{padic-valuation}{\(p\)-adic and \(2\)-adic valuations}
 \entryfield{Nonzero integers}{Fix a prime $p$.  Every nonzero
 $n\in\IntegerNumbers$ has a unique factorization
@@ -6561,11 +6703,14 @@ polynomial family, matrix, and optimization functional. & Use $\FabiusBounded$ a
 $\FabiusGlobal$ for the two Fabius functions, normalization-labelled Fourier commands
 for transforms, and $\DecayOptimizationObjective{n}$ for the decay objective.  A local
 $F_a$, $F_m$, or matrix $F_N$ retains its typed subscript and declaration.\\
-$Q$ & Rational numbers, Fabius quantile, quadrature rule, polynomial, matrix, and a
-$q$-dependent quantity. & Use $\RationalNumbers$ for the number field and
+$Q$ & Rational numbers, Fabius quantile, quadrature rule, polynomial, matrix, a
+$q$-dependent quantity, and the dyadic block polynomial $Q_h(z)$ of iterated
+Thue--Morse prefixes. & Use $\RationalNumbers$ for the number field and
 $\FabiusQuantile$ or $\FabiusClampedQuantile$ for inverses.  Quadrature is $Q_N$ only
 inside its declared numerical-analysis scope; the base of a $q$-series is lower-case
-$q$ and always explicit.\\
+$q$ and always explicit; the block polynomial carries its order subscript and the
+variable $z$ (\hyperlink{notation:thue-morse-block-polynomial}{block-polynomial
+entry}).\\
 $N$ & Natural-number type, positive-integer type, truncation level, matrix size, node
 count, and asymptotic parameter. & Use $\NaturalNumbers$ or $\PositiveIntegers$ for
 sets.  A local $N$ carries a declaration such as $N\in\PositiveIntegers$ and one role;
@@ -6575,9 +6720,13 @@ $\DyadicSigmaField_n$ for the canonical dyadic filtration.  An event is typed
 $A\in\mathscr A$, a matrix has dimensions, and an Appell polynomial has a degree
 subscript and preferably a semantic superscript.\\
 $D$ & Derivative, differential operator, dilation, denominator, determinant-derived
-sequence, and domain. & The upright differential is $\Differential$; derivatives are
+sequence, domain, and the diagonal polynomial $D_r(x)$ of repeated Thue--Morse
+summation. & The upright differential is $\Differential$; derivatives are
 $f'$ or $D^nf$ after declaring $D$.  Dilations use $D_a$ or $D_A$, and dyadic
-denominators retain the superscript $D_n^{\mathrm{dyad}}$.\\
+denominators retain the superscript $D_n^{\mathrm{dyad}}$.  The diagonal polynomial
+always carries its index subscript and a polynomial argument, and its hatted and
+tilde-accented normalizations are declared in the
+\hyperlink{notation:thue-morse-diagonal-polynomial}{diagonal-polynomial entry}.\\
 $E$ & Expectation, event, energy, error, and exponential generating function. & Use
 $\Expectation$ for expectation.  Events are roman-labelled or typed in the event
 $\sigma$-field; energies and errors retain descriptive subscripts; an EGF is labelled
@@ -6613,9 +6762,13 @@ $R$ & Real-number type, radius, residue, resolvent, recurrence polynomial, remai
 and Reshetnikov integer. & Use $\RealNumbers$ and $\ResidueOperator$ for the first two
 semantic roles.  Resolvents are $R_T(z)$, remainders carry an error superscript, and the
 arithmetic integer is $R_n^{\mathrm{Res}}$.\\
-$S$ & Sum, support, Stieltjes transform, saddle action, spline space, and random series. &
+$S$ & Sum, support, Stieltjes transform, saddle action, spline space, random series,
+and the Thue--Morse prefixes $S(N)$ and $S^{(k)}_n$. &
 Use $\SupportOf{f}$ for support and $S_\mu$ for Stieltjes transforms.  Saddle actions,
-spline spaces, and random series carry semantic subscripts and declared domains.\\
+spline spaces, and random series carry semantic subscripts and declared domains.  The
+exclusive prefix has a parenthesized argument and the iterated inclusive prefix a
+parenthesized order superscript
+(\hyperlink{notation:thue-morse-iterated-prefix}{iterated-prefix entry}).\\
 $T$ & Translation, transformation, Toeplitz matrix, random time, Thue--Morse object, and
 truncation. & Translations are $T_b$, Toeplitz matrices are $T_N(a)$, and the sign
 sequence uses $\ThueMorseSign{n}$.  A dynamical map $T:X\to X$ is typed at first use.\\
@@ -6955,8 +7108,8 @@ first.}
 \label{sec:local-non-fourier-hats}
 
 This register inventories every distinct command named by an active
-\texttt{LOCAL-NON-FOURIER-HAT:} declaration.  There are 35 marked declarations
-and 35 distinct command names; each is declared in exactly one active document scope.
+\texttt{LOCAL-NON-FOURIER-HAT:} declaration.  There are 32 marked declarations
+and 32 distinct command names; each is declared in exactly one active document scope.
 The phrase \emph{prints a wide hat over \(X\)} describes literal output
 without reintroducing a generic accent command.  TeX arguments, mathematical arguments,
 and scripts appended by a caller are distinguished explicitly.  These commands are
@@ -8156,6 +8309,39 @@ later decoration must state whether it records branch, iteration, precision,
 or another numerical parameter.}
 \end{catalogueentry}
 
+\subsubsection{Diagonal-law and Riordan Sheffer normalizations}
+
+\Needspace{14\baselineskip}
+\paragraph{\localaccentname{ThueMorseDiagonalSheffer}}
+\hypertarget{notation:local-hat-ThueMorseDiagonalSheffer}{}%
+TeX arity is zero; the command prints a wide hat over \(D\), and the caller
+appends the diagonal index as a subscript and the argument in parentheses.
+Its mathematical value is the factorial-normalized diagonal polynomial of
+the \hyperlink{notation:thue-morse-diagonal-polynomial}{diagonal-polynomial
+entry},
+\[
+ r!\,D_r(x)\in\RationalNumbers[x],\qquad r\in\NaturalNumbers,
+\]
+the Sheffer sequence for the pair \(\bigl(E(z^2),\,-2\log(1-z)\bigr)\), so that
+\(\sum_{r\ge0}r!\,D_r(x)\,z^r/r!=E(z^2)(1-z)^{-2x}\) and the delta operator
+\(1-\EulerE^{-\partial_x/2}\) lowers the index by one.  The scope is Part~III of
+the Thue--Morse atlas.  The hat means factorial normalization and never a
+Fourier transform; the tilde-accented primitive normalization
+\(r!\,D_r(x)/2^{\Ceiling{r/2}}\) of the same part is a different
+polynomial and is not a hat.
+
+\Needspace{12\baselineskip}
+\paragraph{\localaccentname{RiordanSubdiagonalSheffer}}
+TeX arity is zero; the command prints a wide hat over \(P\), and the caller
+appends the subdiagonal index \(m\) as a subscript.  Its mathematical value is
+\(m!\,P_m(x)\), where \(P_m(x)=\CoefficientExtraction{z}{m}\,g(z)\phi(z)^{x}\) is the
+formal continuation of the \(m\)-th subdiagonal of a proper Riordan array
+\((g(z),\,z\phi(z))\) with \(g(0)\ne0\) and \(\phi(0)\ne0\), as declared in the
+Riordan section of Part~III of the Thue--Morse atlas.  The hatted sequence is
+Sheffer for \((g,\log\phi)\); at \(g(z)=E(z^2)\), \(\phi(z)=(1-z)^{-2}\) it is
+the previous entry.  The scope is that section.  The hat means factorial
+normalization and never a Fourier transform.
+
 \subsection{Local alphabet register}
 
 The following roles are intentionally local because assigning them global commands would
@@ -8906,6 +9092,21 @@ two-scale endpoint coefficient algebra.  No exact current Lean definition of
 $\ThueMorseSign{n}$ & \lean{thueMorseSign} in \modulepath{Arithmetic.lean} & Integer-valued
 sign sequence on \lean{Nat}; digit, recurrence, and product identities live in their
 named Thue--Morse modules.\\
+$S^{(k)}_n$ & \lean{iteratedPrefix} with \lean{iteratedPrefix_convolution},
+\lean{iteratedPrefix_dyadic_zero_run}, and
+\lean{iteratedPrefix_dyadic_reverse_window} in \modulepath{ThueMorsePrefix.lean} &
+Argument order is (order, position); the generating identity is formal only below each
+dyadic truncation (\modulepath{ThueMorseGenerating.lean}).  The summation table
+$s_{n,k}$ and the diagonal polynomials $D_r$ built on it have no Lean definition.\\
+$Q_k(z)$, $q_{k,m}/2^{\binom{k-1}2}$ &
+\lean{approximationPolynomialInt}, \lean{correctedPrefixCoefficient},
+\lean{correctedPrefixGridSample},
+\lean{iteratedPrefix_eq_}\allowbreak\lean{approximationPolynomial_}\allowbreak\lean{coeff_all},
+\lean{correctedPrefixGridSample_}\allowbreak\lean{tendsto_rvachevUp}, and
+\lean{correctedPrefixGridSample_}\allowbreak\lean{tendsto_fabius} in
+\modulepath{ThueMorseApproximation.lean} &
+The block coefficients below the cutoff $m<2^k$ are those of $p_{k-1}$; the
+convergence theorems retain \lean{IsFabius} and assert no rate.\\
 Prime-power Pascal-row valuations & \lean{primePowerChoose_padicValNat_add},
 \lean{primePowerChoose_padicValNat}, and \lean{twoPowChoose_padicValNat} in
 \modulepath{PrimePowerBinomialValuation.lean} & Arbitrary-prime formulas include
@@ -9113,12 +9314,12 @@ At shared-contract version \FabiusNotationVersion:
       decay objectives, and pointwise/topological support have distinct printed forms.
 \item The retired-alias index is exhaustive with respect to the audit's retired-command
       registry.  Ambiguous aliases map only after semantic classification.
-\item The active corpus has 30 validated \texttt{LOCAL-NON-FOURIER-HAT:}
-      marker/declaration pairs representing 30 distinct document-local command names
-      (re-derived on 2026-09-03 from the audit's registry after the transseries
-      consolidation retired four document-local hats whose macros no longer exist;
-      the register held 34 rows before that retirement, so the previously stated
-      35 was already stale by one).
+\item The active corpus has 32 validated \texttt{LOCAL-NON-FOURIER-HAT:}
+      marker/declaration pairs representing 32 distinct document-local command names
+      (re-derived on 2026-09-05 from the audit's registry: the 30 that remained after
+      the transseries consolidation of 2026-09-03 retired four document-local hats,
+      plus the two Sheffer-normalization hats declared by Part~III of the Thue--Morse
+      atlas when the diagonal-laws companion was folded in).
       Every distinct name occurs exactly once in the exhaustive accent register, and the
       whole-corpus audit rejects missing, extra, or duplicate registry metadata.
 \item Symbols not promoted to the shared API remain governed by the local declaration
