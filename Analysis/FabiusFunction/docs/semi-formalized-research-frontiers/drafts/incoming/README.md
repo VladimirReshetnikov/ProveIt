@@ -119,7 +119,9 @@ arriving in five separate deliveries over one day.
   A4/473,961-byte PDF, with five JSON verification products.
   `q_binomial_coefficient_calculus-3.zip` →
   `q_binomial_coefficient_calculus-3/`: 2,567-line/101,073-byte source,
-  35-page A4/688,859-byte PDF.
+  35-page A4/688,859-byte PDF.  *Superseded the same day:* merged editorially into
+  `../combinatorial-coefficient-calculus/Gaussian_Coefficient_Calculus/`;
+  the three directories are deleted.
 
 Every archive passed a CRC check with no absolute path, parent-directory
 traversal, or symlink entry.  Thirteen wrapped a single top-level directory and

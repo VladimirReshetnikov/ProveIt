@@ -950,23 +950,21 @@ verification; the in-document "Lean formalization register" states the
 formalization status per result.
 
 Three further independently written articles arrived on 2026-09-04 and were
-filed here the same day as separate members beside the canonical volume, not
-merged into it.  All three extend the coefficient calculus to Gaussian
-(`q`-binomial) coefficients, and two name that extension in their own titles.
-All three archives wrapped an inner directory of the same name,
-`q_binomial_coefficient_calculus/`, so the distinct archive stems are the
-directory names.  Each ships one exact-arithmetic verification program;
-none was rerun at intake.  All three PDFs are A4 with every font embedded and
-no Type-3 row; two carry Libertinus faces.  No source loads
-`docs/fabius-notation.tex`.  Quick intake only; claim comparison against the
-canonical volume and against each other, deduplication, proof checking, and
-Lean crosswalking are deferred.
+filed here the same day beside the canonical volume; the same day they were
+merged editorially into one companion volume,
+`Gaussian_Coefficient_Calculus/`, and the three arrival directories were
+deleted (Git history retains them).  All three extended the coefficient
+calculus to Gaussian (`q`-binomial) coefficients and overlapped on a large
+classical core; the merge keeps one statement and one proof per shared
+result and adds each report's unique layer in one notation.  The three
+exact-arithmetic verification programs are retained unchanged under the
+package's `verification/`.  The canonical volume was not modified: it is
+under concurrent editing, so folding the companion into it is a recorded
+follow-up.  No Lean crosswalking was done.
 
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
-| `q_binomial_coefficient_calculus/` | *q-Binomial Coefficient Calculus: An Extension of Combinatorial Coefficient Calculus* -- the longest of the three, 55 sections; develops the Gaussian coefficients as connection coefficients on a geometric grid and works through convolution, inversion, interpolation, and root-of-unity expansions; 32 theorems, 6 propositions, 2 lemmas, 5 corollaries, 1 definition, 5 worked examples. Filed source `q_binomial_coefficient_calculus.tex`, 2{,}667 lines / 111{,}913 bytes; filed PDF 55 A4 pages / 780{,}056 bytes. `verify_identities.py` with a captured `validation_report.txt`. | `incoming/q_binomial_coefficient_calculus.zip` |
-| `q_binomial_coefficient_calculus-2/` | *q-Binomial Coefficient Calculus* -- places the Gaussian coefficients in coefficient calculus along four explicitly distinguished routes -- symmetric functions on geometric alphabets, convolution structure constants, interpolation matrices on `q`-integer nodes, and polynomials with Bernoulli/Stirling/Bell local expansions; adds a finite partition-sum kernel for arbitrary powers of products of `q`-shifted factorials and their Lagrange--Burmann inverses, weighted `q`-binomial inversion, two Newton interpolation formulas, coupled two-variable inversion, and every derivative of a Gaussian polynomial at every root of unity; explicitly refuses to conflate a factorial-normalization change with a Jackson chain rule, or to identify distinct `q`-Catalan constructions; 20 theorems, 4 propositions, 6 corollaries, 2 definitions in 18 sections. Filed source `q_binomial_coefficient_calculus.tex`, 1{,}747 lines / 77{,}007 bytes; filed PDF 29 A4 pages / 473{,}961 bytes. `verify_identities.py`, `Makefile`, `requirements.txt`, and five JSON verification products (algebra, coefficients, inversion, roots, and a summary report). | `incoming/q_binomial_coefficient_calculus-2.zip` |
-| `q_binomial_coefficient_calculus-3/` | *Gaussian Coefficients in Combinatorial Coefficient Calculus* -- the most explicitly framed as an extension of the canonical volume; derives `q`-Stirling and colored-node formulae from affine changes of geometric nodes, `q`-Worpitzky and Stirling--Eulerian transforms from weighted sorting, and closed coefficients for compositional inverses from ordinary Bell polynomials; handles Jackson differentiation separately from ordinary composition, including a divided-difference chain rule retaining the geometric shifts; distinguishes three asymptotic regimes and applies them to exact Gaussian extrapolation of moments of geometric-uniform convolutions, including the Rvachev half-base case; 26 theorems, 3 propositions, 4 corollaries, 2 definitions in 20 sections; states that the contribution is the integrated extension, not novelty of the classical identities. Filed source `q_binomial_coefficient_calculus.tex`, 2{,}567 lines / 101{,}073 bytes; filed PDF 35 A4 pages / 688{,}859 bytes. `verify_identities.py` with a captured `verification_results.txt`. | `incoming/q_binomial_coefficient_calculus-3.zip` |
+| `Gaussian_Coefficient_Calculus/` | *Gaussian Coefficient Calculus: q-Binomial Kernels, Newton Bases, Bell Polynomials, Parameter Jets, Inversion, and Asymptotics* -- consolidated companion volume, 89 pp A4, 4,760 source lines, 19 chapters and three appendices; loads `docs/fabius-notation.tex`; provenance appendix records the sources and the notation dictionary between them. | Merged 2026-09-04 from the three same-day arrivals `q_binomial_coefficient_calculus/` (55 pp, the spine), `q_binomial_coefficient_calculus-2/` (29 pp) and `q_binomial_coefficient_calculus-3/` (35 pp), all deleted; their verifiers live on under `verification/source1..3/`. |
 | `Combinatorial_Coefficient_Calculus/` | **Canonical, editorial consolidation complete:** *Combinatorial Coefficient Calculus* — the evolving source and retained upstream A4 PDF. Current claim counts and exact formalization boundaries are maintained in the document's generated Lean register, not duplicated here. `UnitSeriesPowerRecurrence.lean` supplies the generic differential-equation recurrence and unit-series specialization for `alg:merged-exp-log-power`. The latest source postdates the retained PDF; no current render parity is claimed, and PDF rebuilding is deferred by user instruction. | Six-source provenance and disposition records in the package; original non-suffixed arrival was `incoming/Combinatorial_Coefficient_Calculus.zip`; `SOURCE_INVENTORY.csv` records immutable Git locators for all six inputs, including the five retired donors. The mutable `SOURCE_CLOSURE.sha256` ledger is retired and no checksum ledger is required. |
 
 ## exponents-and-q-series — `exponents-and-q-series/`

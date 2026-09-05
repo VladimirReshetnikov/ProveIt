@@ -289,37 +289,34 @@ proof; the Nörlund section specializes it instead of repeating that argument.
 The source validator's fourteen regression tests pass, including the inherited
 advertised-register-total checks. These are structural checks, not Lean builds.
 
-## Three q-binomial arrivals (2026-09-04)
+## Gaussian companion volume (2026-09-04)
 
-Three independently written articles arrived on 2026-09-04 and are filed here
-as separate members beside the canonical volume.
-All three extend the coefficient calculus to Gaussian (`q`-binomial)
-coefficients; two name that extension in their own titles.  They have not been
-compared with the canonical volume, with each other, or against its Lean
-register.
+Three independently written articles extending the coefficient calculus to
+Gaussian (`q`-binomial) coefficients arrived on 2026-09-04 and were filed
+here as separate members.  The same day they were merged editorially into
+one companion volume, filed beside the canonical volume rather than folded
+into it because the canonical source is under concurrent editing:
 
-- [`q_binomial_coefficient_calculus/`](q_binomial_coefficient_calculus/) —
-  *q-Binomial Coefficient Calculus: An Extension of Combinatorial Coefficient
-  Calculus* (55 pp A4; 2,667 source lines; 32 theorems in 55 sections).
-- [`q_binomial_coefficient_calculus-2/`](q_binomial_coefficient_calculus-2/) —
-  *q-Binomial Coefficient Calculus* (29 pp A4; 1,747 source lines;
-  20 theorems).  Four explicitly distinguished routes into coefficient
-  calculus, a finite partition-sum kernel for arbitrary powers of products of
-  `q`-shifted factorials and their Lagrange–Bürmann inverses, and every
-  derivative of a Gaussian polynomial at every root of unity.
-- [`q_binomial_coefficient_calculus-3/`](q_binomial_coefficient_calculus-3/) —
-  *Gaussian Coefficients in Combinatorial Coefficient Calculus* (35 pp A4;
-  2,567 source lines; 26 theorems).  `q`-Stirling and colored-node formulae,
-  `q`-Worpitzky and Stirling–Eulerian transforms, a divided-difference chain
-  rule for Jackson differentiation, and exact Gaussian extrapolation of
-  moments of geometric-uniform convolutions including the Rvachev half-base
-  case.
+- [`Gaussian_Coefficient_Calculus/`](Gaussian_Coefficient_Calculus/) —
+  *Gaussian Coefficient Calculus: q-Binomial Kernels, Newton Bases, Bell
+  Polynomials, Parameter Jets, Inversion, and Asymptotics* (89 pp A4;
+  4,760 source lines; 19 chapters, three appendices).  One statement and
+  one proof per shared result; the unique layers of all three reports
+  (ramified master kernel, weighted transforms, area-type `q`-Catalan,
+  Good-determinant entries; general node calculus and affine-geometric
+  connection, colored and type-B `q`-Stirling arrays, `q`-Dobinski,
+  `q`-Worpitzky and Stirling–Eulerian transforms, path chain rule, three
+  asymptotic regimes, geometric-uniform moments with the Rvachev case;
+  Dilcher identities, linearization, filters with full error and noise
+  analysis, multinomial ratio criteria) in one notation.  The three exact
+  verification programs are retained unchanged under its `verification/`.
 
-All three archives wrapped an inner directory of the same name, so the
-distinct archive stems are the directory names.  Each ships an
-exact-arithmetic verification program; none was rerun at intake.  One archive's
-`SHA256SUMS.txt` was verified and then retired under repository policy.  No
-source loads `docs/fabius-notation.tex`.  None of these manuscripts' proofs is
-a Lean verification.
+The three arrival directories (`q_binomial_coefficient_calculus/`,
+`q_binomial_coefficient_calculus-2/`, `q_binomial_coefficient_calculus-3/`)
+were deleted after a residue audit; Git history retains them.  The merged
+volume's chapter 19 crosswalk names the canonical labels the extension
+attaches to, all of which exist in the current manuscript; folding the
+companion into the canonical volume and Lean crosswalking are follow-ups.
+None of the volume's proofs is a Lean verification.
 
 See [`../MANIFEST.md`](../MANIFEST.md) for the group record.
