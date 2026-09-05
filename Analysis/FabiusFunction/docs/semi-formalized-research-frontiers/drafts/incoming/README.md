@@ -243,7 +243,9 @@ consolidated volume.
   2,202-line/72,380-byte source, 37-page A4/801,220-byte PDF.
 - `thue_morse_diagonal_polynomials_article_and_code.zip` →
   `thue_morse_diagonal_polynomials_article_and_code/`: 2,136-line/76,590-byte
-  source, 33-page A4/536,235-byte PDF, with `generated/` and `figures/` trees.
+  source, 33-page A4/536,235-byte PDF, with `generated/` and `figures/` trees.  *Superseded on 2026-09-05:* the three were merged editorially into
+  `../thue-morse/Thue_Morse_Diagonal_Laws/`; the three directories are
+  deleted.
 
 Every archive passed a CRC check with no absolute path, parent-directory
 traversal, or symlink entry. **All three wrapped an inner directory of the

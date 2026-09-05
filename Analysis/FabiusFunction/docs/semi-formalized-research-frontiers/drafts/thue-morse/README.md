@@ -15,43 +15,43 @@ register](../MANIFEST.md#merge-28de4e51-publication-receipts)):
   `Fabius_Rvachev_Thue_Morse_Frontier_Results/`, its figures and
   reproducibility bundle under `assets/`).
 
-## Diagonal polynomials of repeated Thue–Morse summation (three arrivals, 2026-09-03)
+## Diagonal-laws companion volume (three arrivals, 2026-09-03; merged 2026-09-05)
 
-Three independently written articles on one question arrived together and
-are filed as separate members, not yet compared or merged into the volume:
+Three independently written articles on one question arrived together on
+2026-09-03 and were filed here as separate members.  On 2026-09-05 they were
+merged editorially into one companion volume, filed beside the atlas rather
+than folded into it because the atlas is under concurrent editing:
 
-- [`thue_morse_diagonal_polynomials/`](thue_morse_diagonal_polynomials/) —
-  *Diagonal Polynomials and Dyadic Block Geometry in Repeated Thue–Morse
-  Summation* (24 pp A4; 14 theorems; Wolfram Language table code, Python
-  verification, one profile figure). Its current 1,763-line, 56,530-byte
-  source has SHA-256
-  `eee5751653bb19ec04042f51ded34d74bf8862f5b06b49d47e68ea78bb689c45`.
-  Three serial halt-on-error passes from absent auxiliaries produced
-  23 pages/768,048 bytes, 24 pages/778,598 bytes, and a final 24-page,
-  778,595-byte PDF with SHA-256
-  `8db0c4e0a4fcf682bd3e1311f7d8197ea04dcca56e102236b52494267d99cbbe`.
-  The final log, metadata, A4/rotation-zero, all-page render/text, and
-  representative visual gates passed; all 22 font rows are embedded/subset,
-  seven are Libertinus, none is Type 3, and generated sidecars are absent.
-- [`thue_morse_diagonal_polynomials-2/`](thue_morse_diagonal_polynomials-2/) —
-  *Diagonal Polynomial Laws in Odd Iterated Thue–Morse Summation* (37 pp A4;
-  11 theorems, 1 conjecture; Riordan-array structure and 2-adic Bell
-  recurrences; exact Python and Wolfram Language implementations).
-- [`thue_morse_diagonal_polynomials_article_and_code/`](thue_morse_diagonal_polynomials_article_and_code/) —
-  *Diagonal Polynomials and Dyadic Block Geometry in Repeated Thue–Morse Prefix
-  Summation* (33 pp A4; 10 theorems, 10 propositions; denominator laws and
-  rational roots; generated CSV tables and a verification report).
-
-The shared object is the table `s(n,k)` built from the signed Thue–Morse
-prefix row by the weighted recurrence `s(n,k) = Σ_{j<k} (k−j) s(n−1,j)`; all
-three identify it with the odd iterated prefix sums, `s(n,k) = σ_{2n+1}(k−n−1)`,
-and derive the polynomial on every diagonal from the generating identity
-`Σ_m D_m(x) z^m = TM(z²)/(1−z)^{2x}`, `TM(z) = Π_j (1 − z^{2^j})`. None of the
-three loads `docs/fabius-notation.tex`. Cross-package comparison, canonical
-selection, proof checking, numerical reproduction, and Lean crosswalking remain
-deferred; the first package alone now has the synchronized publication receipt
-above. The volume's own Prouhet and prefix-sum material is the natural merge
-target.
+- [`Thue_Morse_Diagonal_Laws/`](Thue_Morse_Diagonal_Laws/) — *Thue–Morse
+  Diagonal Laws: Diagonal Polynomials and Dyadic Block Geometry in Repeated
+  Thue–Morse Summation* (64 pp A4; 3,700 source lines; 15 chapters and four
+  appendices).  The shared object is the table `s(n,k)` built from the
+  signed Thue–Morse prefix row by the weighted recurrence
+  `s(n,k) = Σ_{j<k} (k−j) s(n−1,j)`; the volume proves its identification
+  `s(n,k) = T^{(2n+1)}_{k−n−1}` with the odd iterated prefix sums, the
+  polynomial on every diagonal from `Σ_r D_r(x) z^r = E(z²)/(1−z)^{2x}`
+  (exact degree, Stirling monomial coefficients, root moments), the
+  Riordan-array structure and a general subdiagonal theorem, the Sheffer
+  half-step, 2-adic ruler/Bell, translation, differential and addition
+  laws and the diagonal Mahler equation, the primitive normalization
+  `r! D_r / 2^{⌈r/2⌉}` with the exact common denominator and the
+  rational-root restriction to `½ℤ`, the complete nonnegative half-integer
+  zero criterion by residue of `r` modulo `2^{m+1}`, the negative
+  half-lattice formula, an infinite family of negative integer roots, the
+  complete finite-block theorem for every summation order (support,
+  reflection, complement, plateau, maximum, mass, moments, distinct values)
+  and its specialization to the rows, the exact identification of the row
+  blocks with the level-`2n` Rvachev histogram and the up/Fabius limits,
+  and exact algorithms including an `O(n² log r)` prefix-moment evaluator.
+  The three retained verification programs (Python and Wolfram Language)
+  and the generated data are under `verification/`; the provenance appendix
+  gives the notation dictionary between the three reports.  The three
+  arrival directories `thue_morse_diagonal_polynomials/`,
+  `thue_morse_diagonal_polynomials-2/` and
+  `thue_morse_diagonal_polynomials_article_and_code/` were deleted (Git
+  history retains them).  No Lean crosswalking was done; Chapter 15 lists
+  the formalization targets.  The atlas's own Prouhet and prefix-sum
+  material is the natural fold-in target.
 
 Both parts carry extensive inline Lean crosswalks. As of 2026-08-28,
 `ThueMorseComplexProductBridge.lean` supplies the finite-product core in total

@@ -153,7 +153,7 @@ In the driver column, `DOC` abbreviates `Analysis/FabiusFunction/docs` and
 | `DRAFT/spectra-and-arithmetic/Fabius_Rvachev_Carleman_Frontiers_2026-08-30/fabius_carleman_frontiers.tex` | 24 | 973,424 | Retained verified pair from `69b447f7c`; source/input/PDF unchanged |
 | `DRAFT/spectra-and-arithmetic/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.tex` | 35 | 1,009,221 | Retained verified pair from `69b447f7c`; source/input/PDF unchanged |
 | `DRAFT/spectra-and-arithmetic/Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex` | *(pending)* | *(pending)* | *(pending)* |
-| `DRAFT/thue-morse/thue_morse_diagonal_polynomials/thue_morse_diagonal_polynomials.tex` | 24 | 778,595 | Retained verified pair from `69b447f7c`; source/input/PDF unchanged |
+| `DRAFT/thue-morse/Thue_Morse_Diagonal_Laws/Thue_Morse_Diagonal_Laws.tex` | *(pending)* | *(pending)* | Consolidated 2026-09-05 from the three diagonal-polynomial arrivals; the earlier `thue_morse_diagonal_polynomials/` pair (24 pp, 778,595 bytes, from `69b447f7c`) is superseded and deleted |
 | `DOC/semi-formalized-research-frontiers/semi-formalized-research-frontiers.tex` | *(pending)* | *(pending)* | *(pending)* |
 | `DRAFT/combinatorial-coefficient-calculus/Combinatorial_Coefficient_Calculus/Combinatorial_Coefficient_Calculus.tex` | *(pending)* | *(pending)* | *(pending)* |
 
@@ -882,16 +882,31 @@ historical pin. See the group README for its title and status.
 
 ## thue-morse — `thue-morse/`
 
-Besides the consolidated volume, the group holds three independently written
+Besides the consolidated volume, the group held three independently written
 articles on one question, filed 2026-09-03 from `incoming/` as separate
-members pending comparison and merge: the two-dimensional table obtained by
-repeated weighted prefix summation of the signed Thue–Morse sequence, its
-identification `s(n,k) = σ_{2n+1}(k−n−1)` with the odd iterated prefix sums,
-and the diagonal polynomials `D_r` with generating function
-`TM(z²)/(1−z)^{2x}`. All three archives wrapped an inner directory of the same
-name, so the archive stems were used as directory names. No source loads
-`docs/fabius-notation.tex`. Quick intake only; claim comparison, deduplication,
-proof checking, numerical reproduction, and Lean crosswalking are deferred.
+members: the two-dimensional table obtained by repeated weighted prefix
+summation of the signed Thue–Morse sequence, its identification
+`s(n,k) = T^{(2n+1)}_{k−n−1}` with the odd iterated prefix sums, and the
+diagonal polynomials `D_r` with generating function `E(z²)/(1−z)^{2x}`.  On
+2026-09-05 they were merged editorially into one companion volume,
+`Thue_Morse_Diagonal_Laws/`, and the three arrival directories were deleted
+(Git history retains them).  All three proved the same core (table
+identification, row and bivariate generating functions, sparse
+rising-factorial formula, monomial coefficients, half-step/differential/
+addition laws, 2-adic recurrence, nonnegative half-integer root criterion,
+negative half-grid formula, finite-block factorization); each such result
+is stated once in the first report's notation, and the second and third
+reports' unique layers (Riordan-array structure, primitive normalization
+and exact denominators, rational-root restriction, prefix-moment evaluator;
+root moments, diagonal Mahler equation, half-grid transposition, complete
+nonnegative-root description, trailing-ones negative roots, exact
+row–histogram identification) are added as chapters or sections.  The
+three verification programs and generated data are retained unchanged
+under the package's `verification/`; the third report's `MANIFEST.sha256`
+was dropped with its source.  The cross-checks made before deduplicating
+found no discrepancy.  The atlas was not modified; folding the companion
+into its Prouhet and prefix-sum material is a recorded follow-up.  No Lean
+crosswalking was done.
 
 Six further independently written Thue--Morse articles arrived on 2026-09-04
 and were filed the same day as separate members; on 2026-09-04/05 they were
@@ -917,9 +932,7 @@ and not acted on.  No Lean crosswalking was done.
 | Directory | Document | Previous path |
 | --- | --- | --- |
 | `Thue_Morse_Frontier_Deductions/` | *Thue--Morse Frontier Deductions: Boundary Corrections, Dyadic Completion and Mellin Renormalization, Rational Resonances, Spline and Lattice Corrections, and Nonlinear Prouhet Geometry* -- consolidated companion volume, 199 pp A4, 9,800 source lines, a common preliminaries chapter, five parts (67 chapters) and nine appendices; loads `docs/fabius-notation.tex`; the two dyadic-completion reports are merged into one part in one notation, the other four keep their notation with the shared preliminaries stated once; provenance appendix records the sources, the notation dictionary of the merge and the six retained verifiers. | Merged 2026-09-04/05 from the six same-day arrivals `Thue_Morse_Boundary_Corrections/` (Part I), `Thue_Morse_Dyadic_Completion/` and `thue_morse_research_article/` (Part II), `Thue_Morse_Rational_Resonances/` (Part III), `Thue_Morse_Research/` (Part IV) and `Thue_Morse_New_Directions/` (correlation chapter in Part I, remainder Part V), all deleted; their verifiers, figures and generated table live on under `verification/source1..6/`, `figures/` and `tables/`. |
-| `thue_morse_diagonal_polynomials/` | *Diagonal Polynomials and Dyadic Block Geometry in Repeated Thue–Morse Summation* — historical synchronized 1,763-line/56,530-byte source and 24-page/778,595-byte A4 PDF; all 22 font rows are embedded/subset, 7 are Libertinus, and none is Type 3; exact B11 hashes and passes above. The earlier 724,035-byte PDF with three figure-inherited Type-3 rows remains historical; 14 theorems, 1 proposition, 1 lemma, 3 corollaries in 15 sections; `experiments.py`, `thue_morse_table.wl`, `verification_report.txt`; submitted checksum ledger retired, with historical bytes recoverable from Git | `incoming/thue_morse_diagonal_polynomials.zip` |
-| `thue_morse_diagonal_polynomials-2/` | *Diagonal Polynomial Laws in Odd Iterated Thue–Morse Summation: Riordan-array structure, 2-adic Bell recurrences, exact arithmetic, and fast Wolfram Language evaluation* — 2,202-line/72,380-byte source, 37-page A4/801,220-byte PDF (fully embedded, Type-3-free, 7 Libertinus rows); 11 theorems, 2 propositions, 7 corollaries, 1 conjecture, 3 definitions in 16 sections; `diagonal_polynomials.py`, `diagonal_polynomials.wl`, `VERIFICATION.txt`; submitted checksum ledger retired, with historical bytes recoverable from Git | `incoming/thue_morse_diagonal_polynomials-2.zip` |
-| `thue_morse_diagonal_polynomials_article_and_code/` | *Diagonal Polynomials and Dyadic Block Geometry in Repeated Thue–Morse Prefix Summation: Exact formulas, denominator laws, rational roots, and fast Wolfram Language evaluation* — 2,136-line/76,590-byte source, 33-page A4/536,235-byte PDF (26 font rows, no Libertinus; 2 Type-3 rows inherited from the Matplotlib figure); 10 theorems, 10 propositions, 1 lemma, 6 corollaries, 1 definition in 14 sections; `diagonal_analysis.py`, `thue_morse_diagonals.wl`, `generated/` (two CSV tables, run log, verification report), `figures/`; submitted `MANIFEST.sha256` retained as a purpose-specific intake record; the two CSV tables received the repository's CRLF-to-LF normalization at commit, so their submitted checksums no longer match the filed bytes | `incoming/thue_morse_diagonal_polynomials_article_and_code.zip` |
+| `Thue_Morse_Diagonal_Laws/` | *Thue–Morse Diagonal Laws: Diagonal Polynomials and Dyadic Block Geometry in Repeated Thue–Morse Summation* — consolidated companion volume, 64 pp A4, 3,700 source lines, 15 chapters and four appendices (theorem dictionary, factor table through m = 31, formula sheet, provenance and notation dictionary); loads `docs/fabius-notation.tex`; `figures/` (two profile figures), `verification/source1..3/` retaining the three reports' Python and Wolfram Language programs, reports and generated CSV tables unchanged | `thue_morse_diagonal_polynomials/`, `thue_morse_diagonal_polynomials-2/`, `thue_morse_diagonal_polynomials_article_and_code/` (all deleted 2026-09-05; from `incoming/thue_morse_diagonal_polynomials.zip`, `incoming/thue_morse_diagonal_polynomials-2.zip`, `incoming/thue_morse_diagonal_polynomials_article_and_code.zip`) |
 | `Thue_Morse_Atlas_and_Frontiers/` | *The Thue–Morse Sequence: Formula Atlas and Fabius–Rvachev Frontier Results* (historical synchronized `b899` pair: 10,553-line/481,614-byte source, SHA-256 `cced4128c359ec467baaf1a55c21c68424397f783a39ea7fe2af5a94975b9dd5`; 144-page/1,739,884-byte A4 PDF, SHA-256 `1c81863b0976017fab1b7f5972c50cd541b3ffb05306bf85994548a56a782fc0`; the retained 137-page PDF remains historical; this merge changes the atlas TeX closure, so the fresh synchronized render is recorded in the merge-28de4e51 register above) — consolidation (2026-08-28) of the former `Thue_Morse_Formula_Atlas/` (*A Unified Formula Atlas for the Thue–Morse Sequence*) and `Fabius_Rvachev_Thue_Morse_Frontier_Results/` (*A Finite-Block Calculus for the Fabius–Rvachev–Thue–Morse System*, heavily Lean-crosswalked); assets under `assets/`, provenance with SHA-256 in the document | absorbed drafts deleted; git history is the archive |
 
 ## combinatorial coefficient calculus — `combinatorial-coefficient-calculus/`
