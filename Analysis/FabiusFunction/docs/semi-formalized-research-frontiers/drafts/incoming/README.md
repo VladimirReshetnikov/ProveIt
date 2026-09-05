@@ -85,7 +85,9 @@ arriving in five separate deliveries over one day.
   source (`Thue_Morse_New_Deductions.tex`), 26-page A4/331,660-byte PDF.
   `thue_morse_research_article.zip` → `thue_morse_research_article/`:
   1,551-line/66,101-byte source (`thue_morse_mellin_and_gamma.tex`), 24-page
-  Letter/436,411-byte PDF.
+  Letter/436,411-byte PDF.  *Superseded on 2026-09-04/05:* the six were merged editorially into
+  `../thue-morse/Thue_Morse_Frontier_Deductions/`; the six directories
+  are deleted.
 - Three combinatorial-transseries extensions → `../series-and-transseries/`
   (two deliveries), filed as separate members beside the consolidated volume.  `combinatorial_transseries_and_inverses.zip` →
   `combinatorial_transseries_and_inverses/`: 1,519-line/85,501-byte source,
