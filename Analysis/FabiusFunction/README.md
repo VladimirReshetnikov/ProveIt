@@ -81,6 +81,10 @@ and as a [rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_
 That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
+The [asymptotic PDF refresh audit](docs/ASYMPTOTIC_PDF_REFRESH.json) records
+the September 2026 source repairs, three-pass PDF builds, effective input hashes,
+and validation limits for articles collected by the Asymptotic project.
+
 > **Artifact status (2026-09-04).**  The authoritative live lexical census and
 > zero-gap result are recorded in the [documentation audit](docs/DOCUMENTATION_AUDIT.md#findings)
 > and pinned in `docs/doc_audit_baseline.json`; this overview does not duplicate

@@ -53,13 +53,6 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{status}[theorem]{Status note}
 
-\DeclareMathOperator{Var}{Var}
-\DeclareMathOperator{Cov}{Cov}
-\DeclareMathOperator{supp}{supp}
-\DeclareMathOperator{sgn}{sgn}
-\DeclareMathOperator{Li}{Li}
-\DeclareMathOperator{Res}{Res}
-\DeclareMathOperator{erfc}{erfc}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\cP}{\mathcal P}
 \newcommand{\cA}{\mathcal A}
@@ -80,7 +73,7 @@ and phase-aware Lambert--$W$ inversion}
 
 \begin{abstract}
 This report begins with a recursive full-text audit of the \texttt{*.tex} corpus in
-\texttt{Analysis/FabiusFunction/docs} at repository commit \RepoCommit.  Its purpose is
+\nolinkurl{Analysis/FabiusFunction/docs} at repository commit \RepoCommit.  Its purpose is
 not to repackage the substantial material already present there, but to develop a
 coherent collection of results that are new relative to that snapshot and that connect
 several of its recurring themes in a different way.
@@ -1331,7 +1324,10 @@ norm.
 
 \begin{proof}[Proof sketch]
 A $k$-fold Legendre integration-by-parts estimate has the form
-$|a_n|\le C^k n^{-k+O(1)}\max_{j\le k}\|h_b^{(j)}\|$; the exact polynomial factors in
+\[
+ |a_n|\le C^k n^{-k+O(1)}\max_{j\le k}\|h_b^{(j)}\|;
+\]
+the exact polynomial factors in
 $n$ do not affect the leading log-squared term.  By
 \cref{thm:sharp-derivative-growth}, the derivative contribution is
 $\exp((\log b)k^2/2+O_b(k))$.  Choosing
