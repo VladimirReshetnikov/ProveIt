@@ -39205,7 +39205,7 @@ fallen to $\lambda$ by the far end.  Same quantity, two roles, and only the
 second is essential.
 \end{remark}
 
-\begin{remark}[Formal residual certificate]\label{p0:rem:backward-error-lean}
+\begin{remark}[Formal residual certificate]\label{p0:rem:backward-residual-certificate-lean}
 The ``moreover'' clause is machine-checked by
 \lean{Fabius.exists_eq_in_residual_interval} in
 \lean{MeanValueBracket.lean}.  The Lean theorem is slightly stronger and more
@@ -41071,7 +41071,10 @@ K_\epsilon(\sqrt\rho+\epsilon)^{r}$.  With $\binom rm\le r^{m}$ the claim follow
 \begin{remark}[A dedup]
 \label{p1:rem:single-sum}
 \textsf{S1} (its $\ell_m$) and \textsf{S3} (its $\Coef{s^m}R(\rho(1-s))$) both give the
-\emph{double} sum $(-1)^m\sum_{k\ge2}\frac1k\sum_{n\ge1}a_n\binom{kn}{m}\rho^{kn}$.
+\emph{double} sum
+\[
+ (-1)^m\sum_{k\ge2}\frac1k\sum_{n\ge1}a_n\binom{kn}{m}\rho^{kn}.
+\]
 \Cref{p1:eq:Rhat} is the same number after the inner divisor collection of
 \cref{p1:lem:R-coefficients}, and is one sum rather than two.  The two forms were checked
 against each other numerically to $70$ digits for $0\le m\le30$.
@@ -42513,12 +42516,12 @@ and $\e^{-\lambda\nu_0/2}=C^{1/2}y^{-1/2}\nu_0^{-3/4}$, so
 the amplitude being $\sqrt C\cdot\bigl(-B^-_0/(\lambda C)\bigr)$ with $-B^-_0/(\lambda
 C)=0.22906811038403197857\ldots$.  The phase is
 \begin{equation}
- \pi\nu_0(y)=\frac{\pi}{\lambda}\log y
- +\frac{3\pi}{2\lambda}\log\log y+\bigO(1),
- \qquad
- \frac{\pi}{\lambda}=2.89879642973397873771\ldots,
- \quad
- \frac{3\pi}{2\lambda}=4.34819464460096810657\ldots,
+ \begin{aligned}
+ \pi\nu_0(y)&=\frac{\pi}{\lambda}\log y
+ +\frac{3\pi}{2\lambda}\log\log y+\bigO(1),\\
+ \frac{\pi}{\lambda}&=2.89879642973397873771\ldots,\\
+ \frac{3\pi}{2\lambda}&=4.34819464460096810657\ldots,
+ \end{aligned}
  \label{p1:eq:minus-phase}
 \end{equation}
 so the first nonperturbative correction to the inverse has envelope $y^{-1/2}(\log y)^{-3/4}$
@@ -51709,11 +51712,13 @@ $b_n:=e_{n+1}$ one has, for every fixed $N\ge0$,
 and $G_+^{-1}(y)=1+\mathcal{B}(y)$.  With
 $E_{n-1}=\sum_{j<n}e_jq^{j}$ they are computed by
 \begin{equation}\label{p6:eq:barnes-recurrence}
- e_n(\lambda)=-\frac1{2\lambda}\Coef{q^{n}}
- \Bigl[\mathcal{K}_{\lambda}(E_{n-1})-2\lambda E_{n-1}
- +2\alpha q(1+E_{n-1})
- +2bq^{2}\bigl(\lambda+1+\log(1+E_{n-1})\bigr)
- +2\!\!\sum_{2k+2\le n}\!\!c_kq^{2k+2}(1+E_{n-1})^{-2k}\Bigr],
+ \begin{aligned}
+ e_n(\lambda)={}&-\frac1{2\lambda}\Coef{q^{n}}
+ \Bigl[\mathcal{K}_{\lambda}(E_{n-1})-2\lambda E_{n-1}\\
+ &\qquad+2\alpha q(1+E_{n-1})
+ +2bq^{2}\bigl(\lambda+1+\log(1+E_{n-1})\bigr)\\
+ &\qquad+2\!\!\sum_{2k+2\le n}\!\!c_kq^{2k+2}(1+E_{n-1})^{-2k}\Bigr],
+ \end{aligned}
 \end{equation}
 they obey the parity rule
 \begin{equation}\label{p6:eq:barnes-parity}
