@@ -58,6 +58,12 @@ Banach algebras:
   the forms `Zₙ = (1/n) ∑_w c(w) R(w)` (`bchHom_eq_dynkin`) and
   `Zₙ = (1/n) ∑_k (-1)^{k-1}/k ∑ R(X^{r₁}Y^{s₁}⋯X^{r_k}Y^{s_k}) / ∏ rᵢ!sᵢ!`
   (`bchHom_eq_dynkin_blocks`);
+* `BCH.Main`      — **Theorem 1.1, the Baker–Campbell–Hausdorff formula itself**, in both
+  settings: `bch_formula_formal` (equation (1.2): each `Zₙ` is homogeneous, is a Lie
+  polynomial, and equals `(1/n) ∑_w c(w) R(w)` with `c(w)` the explicit word coefficients)
+  and `bch_formula` (equation (1.1): absolute convergence for `‖X‖ + ‖Y‖ < log 2`,
+  `e^Z = e^X e^Y`, uniqueness of the small logarithm, membership of every `Zₙ` and of `Z` in
+  every closed Lie subalgebra containing `X` and `Y`, and `Z₁, Z₂, Z₃`);
 * `BCH.CentralMany` — Corollary 9.3: if every `⁅Xᵢ, Xⱼ⁆` commutes with every `X_k`, the
   ordered product of exponentials is `exp(∑ⱼ Xⱼ + ½ ∑_{i<j} ⁅Xᵢ, Xⱼ⁆)`
   (`exp_prod_range_of_central`);
@@ -104,6 +110,7 @@ import BCH.Formal.WordCut
 import BCH.Formal.Dynkin
 import BCH.Trace
 import BCH.DynkinSeries
+import BCH.Main
 import BCH.CentralMany
 import BCH.LinearY
 import BCH.Symmetric

@@ -40,13 +40,6 @@ section Eval
 variable {𝕂 : Type*} [RCLike 𝕂] {L : Type*} [NormedAddCommGroup L] [NormedSpace 𝕂 L]
   [Bracket L L]
 
-/-- The right-nested bracket `[x_{a₁}, [x_{a₂}, …, [x_{a_{n-1}}, x_{aₙ}]]]` of a list of letters,
-evaluated at `x : Fin 2 → L`. -/
-def rbEval (x : Fin 2 → L) : List (Fin 2) → L
-  | [] => 0
-  | [i] => x i
-  | i :: j :: rest => ⁅x i, rbEval x (j :: rest)⁆
-
 /-- The degree-`n` part of Dynkin's series, evaluated at `x 0, x 1`:
 `(1/n) ∑_{k<n} (-1)^k/(k+1) ∑_{rs ∈ blockTuples (k+1) n} (∏ rᵢ!sᵢ!)⁻¹ R(word rs)`. -/
 noncomputable def dynkinTerm (x : Fin 2 → L) (n : ℕ) : L :=
@@ -320,22 +313,6 @@ theorem tsum_dynkinNormSum_tail_le_of_lt (X Y : 𝔸) {ρ : ℝ} (hρ : 1 < ρ)
   have := tsum_dynkinNormSum_tail_le ![X, Y] two_pos norm_lie_le_two_mul hρ h2 N
   simpa only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, mul_neg,
     mul_assoc] using this
-
-attribute [local instance 100] LieRing.ofAssociativeRing in
-/-- The evaluated right-nested bracket of a list is the evaluation of the formal one. -/
-lemma evalHom_rbList (X Y : 𝔸) : ∀ l : List (Fin 2),
-    evalHom X Y (rbList 𝕂 l) = rbEval ![X, Y] l
-  | [] => by simp [rbList, rbEval]
-  | [i] => by
-    simp only [rbList, rbEval, gen, evalHom, MonoidAlgebra.lift_single, one_smul,
-      FreeMonoid.lift_eval_of]
-  | i :: j :: rest => by
-    have ih := evalHom_rbList X Y (j :: rest)
-    simp only [rbList, rbEval]
-    rw [Ring.lie_def, map_sub, map_mul, map_mul, ih, Ring.lie_def]
-    have hg : evalHom X Y (gen 𝕂 i) = ![X, Y] i := by
-      simp only [gen, evalHom, MonoidAlgebra.lift_single, one_smul, FreeMonoid.lift_eval_of]
-    rw [hg]
 
 /-- **Dynkin's formula, evaluated** (Theorem 4.1 in a normed algebra): for `n ≥ 1`,
 `Zₙ(X, Y)` is the degree-`n` part of Dynkin's series `dynkinTerm ![X, Y] n`. -/

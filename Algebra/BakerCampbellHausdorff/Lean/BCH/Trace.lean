@@ -52,6 +52,26 @@ lemma bchHom_eq_evalHom (X Y : 𝔸) (n : ℕ) :
     bchHom 𝕂 X Y n = evalHom X Y (bchHom 𝕂 (genX 𝕂) (genY 𝕂) n) := by
   rw [map_bchHom, evalHom_genX, evalHom_genY]
 
+/-- The evaluated right-nested bracket of a list is the evaluation of the formal one. -/
+lemma evalHom_rbList (X Y : 𝔸) : ∀ l : List (Fin 2),
+    evalHom X Y (rbList 𝕂 l) = rbEval ![X, Y] l
+  | [] => by simp [rbList, rbEval]
+  | [i] => by
+    simp only [rbList, rbEval, gen, evalHom, MonoidAlgebra.lift_single, one_smul,
+      FreeMonoid.lift_eval_of]
+  | i :: j :: rest => by
+    have ih := evalHom_rbList X Y (j :: rest)
+    simp only [rbList, rbEval]
+    rw [Ring.lie_def, map_sub, map_mul, map_mul, ih, Ring.lie_def]
+    have hg : evalHom X Y (gen 𝕂 i) = ![X, Y] i := by
+      simp only [gen, evalHom, MonoidAlgebra.lift_single, one_smul, FreeMonoid.lift_eval_of]
+    rw [hg]
+
+/-- The evaluated right-nested bracket of a word. -/
+lemma evalHom_rb (X Y : 𝔸) (w : FreeMonoid (Fin 2)) :
+    evalHom X Y (rb 𝕂 w) = rbEval ![X, Y] (FreeMonoid.toList w) :=
+  evalHom_rbList X Y _
+
 /-- A tracial linear functional kills the evaluation of every right-nested bracket of a word
 of length `≥ 2`. -/
 lemma tracial_rb {τ : 𝔸 →ₗ[𝕂] 𝕂} (hτ : ∀ a b : 𝔸, τ (a * b) = τ (b * a))

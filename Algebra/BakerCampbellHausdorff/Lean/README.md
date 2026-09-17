@@ -6,6 +6,15 @@ statement is meant to coincide with the article's statement, in the
 article's setting of real or complex unital Banach algebras, with no
 additional hypotheses. Appendix D of the article records the correspondence.
 
+## The main statement
+
+`BCH/Main.lean` states the Baker–Campbell–Hausdorff formula itself, Theorem 1.1
+of the article, in both of its settings: `bch_formula_formal` (the formal form,
+equation (1.2)) and `bch_formula` (the analytic form, equation (1.1)). Those two
+theorems are the goal of the library; the modules below prove them and the
+surrounding results. The library is complete in the sense that no proof anywhere
+in it is left open: there is no `sorry`.
+
 ## Modules
 
 - `BCH/Commuting.lean` — Proposition 9.1: `[X,Y] = 0 ⇒ e^X e^Y = e^{X+Y}`.
@@ -77,6 +86,10 @@ additional hypotheses. Appendix D of the article records the correspondence.
   polynomials of degree `n` (`R_of_mem_lieGen`), and **Theorem 4.1 (Dynkin's formula)**
   `Zₙ = (1/n) Σ_w c(w) R(w)` (`bchHom_eq_dynkin`) and its all-terms form
   `Zₙ = (1/n) Σ_k (-1)^{k-1}/k Σ R(X^{r₁}Y^{s₁}⋯)/∏ rᵢ!sᵢ!` (`bchHom_eq_dynkin_blocks`).
+- `BCH/Main.lean` — **Theorem 1.1, the Baker–Campbell–Hausdorff formula itself**, collected in
+  both settings: `bch_formula_formal` (formal form (1.2)) and `bch_formula` (analytic form
+  (1.1)). Nothing is proved there; it assembles the results of the other modules into the two
+  statements the article makes precise.
 - `BCH/CentralMany.lean` — **Corollary 9.3 (several factors with central pairwise
   commutators)**: `e^{X₀} ⋯ e^{X_{m-1}} = exp(Σⱼ Xⱼ + ½ Σ_{i<j} ⁅Xᵢ,Xⱼ⁆)`
   (`exp_prod_range_of_central`), by induction on the number of factors from the two-factor

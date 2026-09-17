@@ -45,6 +45,13 @@ lemma gen_zero : gen 𝕂 0 = genX 𝕂 := rfl
 
 lemma gen_one : gen 𝕂 1 = genY 𝕂 := rfl
 
+/-- The right-nested bracket `[x_{a₁}, [x_{a₂}, …, [x_{a_{n-1}}, x_{aₙ}]]]` of a list of
+letters, evaluated at a pair `x : Fin 2 → L` in any type with a bracket and a zero. -/
+def rbEval {L : Type*} [Zero L] [Bracket L L] (x : Fin 2 → L) : List (Fin 2) → L
+  | [] => 0
+  | [i] => x i
+  | i :: j :: rest => ⁅x i, rbEval x (j :: rest)⁆
+
 /-- The right-nested bracket of a word, on lists of letters. -/
 noncomputable def rbList : List (Fin 2) → FreeTwo 𝕂
   | [] => 0

@@ -23,6 +23,44 @@ where $Z_n$ has total degree $n$. A principal matrix logarithm, a continued
 branch of a logarithm, and a convergent BCH series are related but distinct
 objects.
 
+For definiteness we state at the outset, in both settings, the assertion that
+the rest of the article proves and extends. Here $Z_n(X,Y)$ is the
+homogeneous component of total degree $n$ produced by the degree recursion
+\eqref{eq:degreerec}, and a \emph{closed Lie subalgebra} of a Banach algebra
+is a closed linear subspace closed under the commutator.
+
+\begin{theorem}[Baker--Campbell--Hausdorff]\label{thm:bch}
+\begin{enumerate}[label=(\alph*)]
+\item \emph{(Formal form, \eqref{eq:formalbch}.)} In the free associative
+algebra $\kk\langle X,Y\rangle$ over a field $\kk$ of characteristic zero,
+for every $n\geq1$ the element $Z_n$ is homogeneous of degree $n$, is a Lie
+polynomial in $X$ and $Y$, and satisfies
+\[
+ Z_n=\sum_{|w|=n}\coeff{w}Z_n\;w
+ =\frac1n\sum_{|w|=n}\coeff{w}Z_n\;R(w),
+\]
+where $R$ is the right-nested bracket \eqref{eq:rightbracket} and the
+coefficients $\coeff{w}Z_n=c(w)$ are given by the finite sum
+\eqref{eq:wordblocks}.
+\item \emph{(Analytic form, \eqref{eq:main}.)} Let $\cA$ be a unital Banach
+algebra over $\kk=\R$ or $\C$ with submultiplicative norm, and let
+$X,Y\in\cA$ satisfy $\norm X+\norm Y<\log2$. Then $\sum_{n\geq1}Z_n(X,Y)$
+converges absolutely; its sum $Z$ satisfies $e^Z=e^Xe^Y$ and is the only
+element of norm less than $\log2$ with that property; every $Z_n(X,Y)$, and
+therefore $Z$ itself, lies in every closed Lie subalgebra of $\cA$ that
+contains $X$ and $Y$; and
+\[
+ Z_1=X+Y,\qquad Z_2=\tfrac12[X,Y],\qquad
+ Z_3=\tfrac1{12}[X,[X,Y]]+\tfrac1{12}[Y,[Y,X]].
+\]
+\end{enumerate}
+\end{theorem}
+
+Part (a) is \cref{thm:wordcut,thm:formalbch,thm:dynkin}, part (b) is
+\cref{thm:convergence,prop:uniquelog,prop:closedlie,prop:lowdegree}; the
+proofs are given there. Neither part asserts that $Z$ is a principal
+logarithm, and neither is claimed outside its stated setting.
+
 \subsection{Coverage target and what is not claimed}
 The coverage target is the English Wikipedia article
 \emph{Baker--Campbell--Hausdorff formula} in the revision with identifier
