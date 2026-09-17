@@ -69,6 +69,48 @@ lemma ad_smul (t : 𝕂) (X : 𝔸) : ad 𝕂 (t • X) = t • ad 𝕂 X := by
 lemma ad_neg (X : 𝔸) : ad 𝕂 (-X) = -ad 𝕂 X := by
   ext Y; rw [ContinuousLinearMap.neg_apply, ad_apply, ad_apply, lie_neg_left']
 
+/-- Left and right multiplication operators commute. -/
+lemma commute_mul_flip (X : 𝔸) :
+    Commute (ContinuousLinearMap.mul 𝕂 𝔸 X) ((ContinuousLinearMap.mul 𝕂 𝔸).flip X) := by
+  ext Y; simp [mul_apply_eq_comp, mul_assoc]
+
+/-- **Identity (5.2):** the entirely associative version of the iterated commutator,
+`ad_Xⁿ Y = ∑ⱼ (-1)ʲ (n choose j) X^{n-j} Y X^j`. -/
+theorem ad_pow_apply (X Y : 𝔸) (n : ℕ) :
+    (ad 𝕂 X ^ n) Y = ∑ j ∈ Finset.range (n + 1),
+      ((-1 : 𝕂) ^ j * (n.choose j : 𝕂)) • (X ^ (n - j) * Y * X ^ j) := by
+  set L := ContinuousLinearMap.mul 𝕂 𝔸 X with hL
+  set R := (ContinuousLinearMap.mul 𝕂 𝔸).flip X with hR
+  have hLR : Commute L (-R) := (commute_mul_flip X).neg_right
+  have hLpow : ∀ (m : ℕ) (Z : 𝔸), (L ^ m) Z = X ^ m * Z := by
+    intro m Z
+    induction m with
+    | zero => simp
+    | succ m ih => rw [pow_succ', mul_apply_eq_comp, ih, hL, ContinuousLinearMap.mul_apply',
+        pow_succ', mul_assoc]
+  have hRpow : ∀ (m : ℕ) (Z : 𝔸), (R ^ m) Z = Z * X ^ m := by
+    intro m Z
+    induction m with
+    | zero => simp
+    | succ m ih => rw [pow_succ', mul_apply_eq_comp, ih, hR, ContinuousLinearMap.flip_apply,
+        ContinuousLinearMap.mul_apply', pow_succ, mul_assoc]
+  have had : ad 𝕂 X = L + -R := by rw [ad, sub_eq_add_neg]
+  rw [had, hLR.add_pow]
+  -- evaluate the finite sum of operators at `Y`
+  rw [← ContinuousLinearMap.apply_apply (𝕜 := 𝕂) Y, map_sum]
+  simp only [ContinuousLinearMap.apply_apply]
+  -- reflect the summation index `m ↦ n - m`
+  conv_lhs => rw [← Finset.sum_range_reflect]
+  refine Finset.sum_congr rfl fun j hj => ?_
+  have hjn : j ≤ n := Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)
+  have hcast : ((n.choose j : ℕ) : 𝔸 →L[𝕂] 𝔸) = ((n.choose j : ℕ) : 𝕂) • (1 : 𝔸 →L[𝕂] 𝔸) := by
+    rw [Nat.cast_smul_eq_nsmul 𝕂 (n.choose j) (1 : 𝔸 →L[𝕂] 𝔸), nsmul_eq_mul, mul_one]
+  rw [Nat.add_sub_cancel, Nat.sub_sub_self hjn, Nat.choose_symm hjn, ← neg_one_smul 𝕂 R,
+    smul_pow, hcast]
+  simp only [mul_smul_comm, smul_mul_assoc, smul_smul, mul_one, smul_apply, mul_apply_eq_comp,
+    hRpow, hLpow]
+  rw [mul_comm, mul_assoc]
+
 /-- `‖ad_X‖ ≤ 2 ‖X‖`. -/
 lemma norm_ad_le (X : 𝔸) : ‖ad 𝕂 X‖ ≤ 2 * ‖X‖ := by
   refine ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun Y => ?_

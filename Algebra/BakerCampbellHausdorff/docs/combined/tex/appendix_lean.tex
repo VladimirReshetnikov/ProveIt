@@ -49,6 +49,11 @@ Article & Lean declaration (namespace \texttt{BCH}) \\
 \Cref{thm:campbell}, \eqref{eq:campbell} & \texttt{campbell},
  \texttt{exp\_smul\_ad\_apply\_eq\_tsum} (series form) \\
 \Cref{thm:campbell}, norm bound & \texttt{tsum\_norm\_ad\_pow\_le} \\
+\eqref{eq:adbinomial} & \texttt{ad\_pow\_apply} \\
+\Cref{prop:mercator} & \texttt{norm\_mlog\_le}, \texttt{exp\_mlog}
+ (series \texttt{mlog}, terms \texttt{mlogTerm}, summability \texttt{summable\_mlogTerm}) \\
+\Cref{cor:bchlog} & \texttt{exp\_mlog\_exp\_mul\_exp}; bounds
+ \texttt{norm\_exp\_sub\_one\_le}, \texttt{norm\_exp\_mul\_exp\_sub\_one\_le} \\
 \eqref{eq:conjexp}, \eqref{eq:braiding} & \texttt{exp\_mul\_exp\_mul\_exp\_neg},\newline
  \texttt{exp\_mul\_exp\_eq\_exp\_exp\_ad\_mul} \\
 \Cref{thm:eigen}, $e^{tX}Ye^{-tX}=e^{st}Y$ & \texttt{conj\_of\_lie\_eq\_smul} \\
@@ -81,10 +86,13 @@ $s\mapsto e^{-sY}e^{-sX}e^{s(X+Y)}e^{s^2D}$ with $D+D=C$,
 and \eqref{eq:campbell} from that of
 $\sigma\mapsto e^{-\sigma\ad_X}\bigl(e^{\sigma X}Ye^{-\sigma X}\bigr)$.
 Statements with a general scalar parameter $t$ are deduced from the case
-$t=1$ applied to $tX$ and $tY$.
+$t=1$ applied to $tX$ and $tY$. The proof of \cref{prop:mercator} in the
+article is the one used in the formalization (\texttt{exp\_mlog}); the
+chain rule along commuting curves it requires is
+\texttt{hasDerivAt\_exp\_comp\_of\_commute}.
 
 The formal power-series parts of the article (\cref{sec:formal,sec:hopf,sec:dynkin}),
-the convergence estimates of \cref{sec:convergence}, and the later sections
+the homogeneous form of \cref{thm:convergence}, and the later sections
 are not yet formalized; the finite exact computations of
 \cref{sec:computation} remain the machine check of the coefficient
 tables.

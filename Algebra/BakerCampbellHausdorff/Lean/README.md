@@ -13,6 +13,10 @@ additional hypotheses. Appendix D of the article records the correspondence.
 - `BCH/Campbell.lean` — Theorem 5.1: `e^{sX} Y e^{-sX} = e^{s ad_X} Y`, the
   series form, the norm bound, and the braiding identities (5.3), (5.4).
 - `BCH/Eigen.lean` — Theorem 9.4: `[X,Y] = sY`; identities (9.5)–(9.7).
+- `BCH/Log.lean` — Proposition 7.1 (Mercator logarithm): for `‖U‖ < 1`,
+  `log(1+U) = Σ (-1)^{k-1} U^k / k` converges, `‖log(1+U)‖ ≤ -log(1-‖U‖)`,
+  and `exp(log(1+U)) = 1 + U`; Corollary 7.2: for `‖X‖ + ‖Y‖ < log 2`,
+  `Z = log(e^X e^Y)` satisfies `e^Z = e^X e^Y` and `‖Z‖ ≤ -log(2 - e^{‖X‖+‖Y‖})`.
 
 ## Building
 
