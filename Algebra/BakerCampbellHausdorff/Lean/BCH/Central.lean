@@ -204,8 +204,8 @@ lemma central_aux (X Y D : 𝔸) (hX : Commute X ⁅X, Y⁆) (hY : Commute Y ⁅
         rw [lie_neg_left']; exact hX.neg_left.neg_right
       have h0 := exp_smul_mul_eq (-X) Y hX' s
       rw [lie_neg_left' X Y, show s • -⁅X, Y⁆ = -(s • ⁅X, Y⁆) from smul_neg s ⁅X, Y⁆,
-        ← sub_eq_add_neg, ← hBdef] at h0
-      rw [← mul_assoc, h0, sub_mul, smul_mul_assoc, mul_assoc, mul_assoc]
+        ← sub_eq_add_neg, ← hBdef, ← hC] at h0
+      rw [← mul_assoc, h0, mul_assoc, sub_mul, smul_mul_assoc]
     have hD0 : (((-Y) * A * B + A * ((-X) * B)) * E + A * B * ((X + Y) * E)) * F
           + A * B * E * (s • (F * C)) = 0 := by
       calc (((-Y) * A * B + A * ((-X) * B)) * E + A * B * ((X + Y) * E)) * F
@@ -214,7 +214,7 @@ lemma central_aux (X Y D : 𝔸) (hX : Commute X ⁅X, Y⁆) (hY : Commute Y ⁅
             + s • (C * (A * (B * (E * F)))) := by
             simp only [neg_mul, mul_neg, add_mul, mul_add, mul_assoc, mul_smul_comm,
               smul_mul_assoc, hXB, hBY, hYA, hCA, hCB, hCE, hCF, mul_sub, sub_mul]
-            simp only [add_mul, sub_mul, smul_mul_assoc, mul_assoc]
+            try simp only [add_mul, sub_mul, smul_mul_assoc, mul_assoc]
             abel
         _ = 0 := by abel
     refine h.congr_deriv ?_
