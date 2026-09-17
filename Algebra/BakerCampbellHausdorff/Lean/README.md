@@ -30,6 +30,9 @@ additional hypotheses. Appendix D of the article records the correspondence.
   product formula `(e^{tX/n} e^{tY/n})^n → e^{t(X+Y)}`, the exact expansion
   `(e^{tX/n} e^{tY/n})^n = exp(t(X+Y) + Σ_{k≥2} t^k n^{1-k} Z_k(X,Y))`, and the
   explicit `O(1/n)` error bound (for `‖1‖ = 1`).
+- `BCH/Unique.lean` — Proposition 7.4: `log(e^W) = W` for `‖W‖ < log 2` (Mercator
+  logarithm), hence for `‖X‖+‖Y‖ < log 2` and `‖Z₀‖ < log 2`: `e^{Z₀} = e^X e^Y` iff
+  `Z₀ = Σ Zₙ(X,Y)`.
 
 ## Building
 

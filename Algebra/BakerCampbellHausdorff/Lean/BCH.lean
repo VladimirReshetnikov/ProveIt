@@ -27,7 +27,9 @@ Banach algebras:
 * `BCH.Trotter`   — Lemma 11.1 (tail bounds `c₀ σ²`, `c₀' σ³`) and Theorem 11.2: the
   Lie–Trotter formula `(e^{tX/n} e^{tY/n})^n → e^{t(X+Y)}` with its complete
   logarithmic error `∑_{k ≥ 2} t^k n^{1-k} Zₖ(X, Y)` and the explicit `O(1/n)`
-  bound.
+  bound;
+* `BCH.Unique`    — Proposition 7.4: `log(e^W) = W` for `‖W‖ < log 2`, and the BCH
+  sum is the unique logarithm `Z₀` of `e^X e^Y` with `‖Z₀‖ < log 2`.
 -/
 import BCH.Commuting
 import BCH.Central
@@ -38,3 +40,4 @@ import BCH.Series
 import BCH.LowDegree
 import BCH.Remainder
 import BCH.Trotter
+import BCH.Unique
