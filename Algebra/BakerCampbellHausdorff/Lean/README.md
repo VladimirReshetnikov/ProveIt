@@ -77,6 +77,10 @@ additional hypotheses. Appendix D of the article records the correspondence.
   polynomials of degree `n` (`R_of_mem_lieGen`), and **Theorem 4.1 (Dynkin's formula)**
   `Zₙ = (1/n) Σ_w c(w) R(w)` (`bchHom_eq_dynkin`) and its all-terms form
   `Zₙ = (1/n) Σ_k (-1)^{k-1}/k Σ R(X^{r₁}Y^{s₁}⋯)/∏ rᵢ!sᵢ!` (`bchHom_eq_dynkin_blocks`).
+- `BCH/CentralMany.lean` — **Corollary 9.3 (several factors with central pairwise
+  commutators)**: `e^{X₀} ⋯ e^{X_{m-1}} = exp(Σⱼ Xⱼ + ½ Σ_{i<j} ⁅Xᵢ,Xⱼ⁆)`
+  (`exp_prod_range_of_central`), by induction on the number of factors from the two-factor
+  central identity.
 - `BCH/LinearY.lean` — **Corollary 6.4 (all single-`Y` terms)**: for `‖X‖ + ‖Y‖` small,
   `t ↦ Z(X, tY)` is differentiable at `0` with derivative `β(ad_X) Y = Σₙ (Bₙ⁺/n!) ad_Xⁿ Y`
   (`exists_delta_hasDerivAt_bch_linearY`), from the logarithmic ODE at `t = 0` and the

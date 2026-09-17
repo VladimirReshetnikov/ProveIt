@@ -58,6 +58,9 @@ Banach algebras:
   the forms `Zₙ = (1/n) ∑_w c(w) R(w)` (`bchHom_eq_dynkin`) and
   `Zₙ = (1/n) ∑_k (-1)^{k-1}/k ∑ R(X^{r₁}Y^{s₁}⋯X^{r_k}Y^{s_k}) / ∏ rᵢ!sᵢ!`
   (`bchHom_eq_dynkin_blocks`);
+* `BCH.CentralMany` — Corollary 9.3: if every `⁅Xᵢ, Xⱼ⁆` commutes with every `X_k`, the
+  ordered product of exponentials is `exp(∑ⱼ Xⱼ + ½ ∑_{i<j} ⁅Xᵢ, Xⱼ⁆)`
+  (`exp_prod_range_of_central`);
 * `BCH.LinearY` — Corollary 6.4: the part of `Z(X, Y)` linear in `Y` is `β(ad_X) Y`, in the
   analytic form `d/dt Z(X, tY)|_{t=0} = ∑ₙ (Bₙ⁺/n!) ad_Xⁿ Y`
   (`exists_delta_hasDerivAt_bch_linearY`);
@@ -101,5 +104,6 @@ import BCH.Formal.WordCut
 import BCH.Formal.Dynkin
 import BCH.Trace
 import BCH.DynkinSeries
+import BCH.CentralMany
 import BCH.LinearY
 import BCH.Symmetric
