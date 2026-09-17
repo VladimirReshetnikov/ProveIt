@@ -68,9 +68,11 @@ Article & Lean declaration (namespace \texttt{BCH}), continued \\
  recursion), \texttt{sum\_antidiagonal\_phiCoeffQ\_bplus} ($\beta\phi=1$),
  \texttt{abs\_bplus\_le\_one}; the operator $\beta(\ad_A)$ is \texttt{betaAd}, with
  \texttt{phiAd\_mul\_betaAd}, \texttt{betaAd\_mul\_phiAd} \\
-\Cref{thm:ode}, \eqref{eq:ode} (analytic, direct half) & \texttt{exists\_delta\_bch\_ode}:
+\Cref{thm:ode}, \eqref{eq:ode} (analytic) & \texttt{exists\_delta\_bch\_ode}:
  for $\norm X+\norm Y<\delta$, $Z(t)=\log(e^Xe^{tY})$ has $Z(0)=X$ and
- $Z'(t)=\beta(\ad_{Z(t)})Y$ for $|t|\leq1$ \\
+ $Z'(t)=\beta(\ad_{Z(t)})Y$ for $|t|\leq1$; \texttt{bch\_ode\_unique}: a solution
+ of \eqref{eq:ode} with $\norm{Z(t)}<\tfrac12$ on a disc of radius $>1$ equals
+ $\log(e^Xe^{tY})$ when $\norm X+\norm Y<\log2$ \\
 \Cref{prop:mercator} & \texttt{norm\_mlog\_le}, \texttt{exp\_mlog}
  (series \texttt{mlog}, terms \texttt{mlogTerm}, summability \texttt{summable\_mlogTerm}) \\
 \Cref{cor:bchlog} & \texttt{exp\_mlog\_exp\_mul\_exp}; bounds
@@ -156,8 +158,11 @@ $t\mapsto\log(e^Xe^{tY})$ is obtained from the inverse function theorem
 applied to $\exp$ (strictly differentiable, with the invertible differential
 of \cref{thm:dexp}) together with the uniqueness of the small logarithm
 (\cref{prop:uniquelog}), and the neighborhood of $(0,0)$ is not made
-explicit. The converse (uniqueness) half of \cref{thm:ode} and
-\cref{thm:poincare} are not formalized.
+explicit. The converse half of \cref{thm:ode} is proved as in the article:
+if $Z$ solves \eqref{eq:ode}, then $e^{Z(t)}e^{-tY}$ has zero derivative by
+\cref{thm:dexp} and $\phi(\ad_Z)\beta(\ad_Z)=\id$, so $e^{Z(t)}=e^Xe^{tY}$,
+and \cref{prop:uniquelog} identifies $Z(t)$. \Cref{thm:poincare} is not
+formalized.
 
 The hypothesis $\norm I=1$ of \cref{sec:splitting} is the Mathlib class
 \texttt{NormOneClass}; \cref{thm:trotter} is stated with a scalar $t\in\kk$

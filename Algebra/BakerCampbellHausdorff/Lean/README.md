@@ -44,7 +44,8 @@ additional hypotheses. Appendix D of the article records the correspondence.
 - `BCH/ODE.lean` — Theorem 6.1 (logarithmic differential equation): there is `δ > 0` such
   that for `‖X‖ + ‖Y‖ < δ` the curve `Z(t) = log(e^X e^{tY})` satisfies `Z(0) = X` and
   `Z'(t) = β(ad_{Z(t)}) Y` for `|t| ≤ 1` (via the inverse function theorem and
-  Proposition 7.4).
+  Proposition 7.4); conversely (`bch_ode_unique`) a solution of this initial value
+  problem with `‖Z(t)‖ < 1/2` on a disc of radius `> 1` equals `log(e^X e^{tY})`.
 
 ## Building
 

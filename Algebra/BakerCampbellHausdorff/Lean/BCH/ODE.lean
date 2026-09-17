@@ -69,6 +69,15 @@ section ODE
 
 variable {𝕂 𝔸 : Type*} [RCLike 𝕂] [NormedRing 𝔸] [NormedAlgebra 𝕂 𝔸] [CompleteSpace 𝔸]
 
+lemma half_lt_log_two : (1 : ℝ) / 2 < Real.log 2 := by
+  rw [Real.lt_log_iff_exp_lt two_pos]
+  have h := Real.add_one_lt_exp (by norm_num : (-(1 / 2 : ℝ)) ≠ 0)
+  have hpos : 0 < Real.exp (-(1 / 2 : ℝ)) := Real.exp_pos _
+  have hinv : Real.exp (1 / 2) = (Real.exp (-(1 / 2 : ℝ)))⁻¹ := by
+    rw [Real.exp_neg, inv_inv]
+  rw [hinv, inv_lt_comm₀ hpos two_pos]
+  linarith
+
 /-- **Theorem 6.1 (logarithmic differential equation)**: there is `δ > 0` such that for
 `‖X‖ + ‖Y‖ < δ` the curve `Z(t) = log(e^X e^{tY})` satisfies `Z(0) = X` and
 `Z'(t) = β(ad_{Z(t)}) Y` for `‖t‖ ≤ 1`. -/
@@ -132,14 +141,7 @@ theorem exists_delta_bch_ode :
               Real.exp_lt_exp.mpr (by linarith)
           _ = 1 + ε := Real.exp_log (by linarith)
       linarith
-  have hhalf : (1 : ℝ) / 2 < Real.log 2 := by
-    rw [Real.lt_log_iff_exp_lt two_pos]
-    have h := Real.add_one_lt_exp (by norm_num : (-(1 / 2 : ℝ)) ≠ 0)
-    have hpos : 0 < Real.exp (-(1 / 2 : ℝ)) := Real.exp_pos _
-    have hinv : Real.exp (1 / 2) = (Real.exp (-(1 / 2 : ℝ)))⁻¹ := by
-      rw [Real.exp_neg, inv_inv]
-    rw [hinv, inv_lt_comm₀ hpos two_pos]
-    linarith
+  have hhalf : (1 : ℝ) / 2 < Real.log 2 := half_lt_log_two
   -- identification of `Z(t)` with the local inverse
   have hZ : ∀ t : 𝕂, ‖t‖ < 2 →
       mlog 𝕂 (exp X * exp (t • Y) - 1) = e.symm (exp X * exp (t • Y)) := by
@@ -192,6 +194,60 @@ theorem exists_delta_bch_ode :
     show (dexpEquiv A' hlt : 𝔸 ≃L[𝕂] 𝔸).symm (exp X * (exp (t • Y) * Y)) = betaAd 𝕂 A' Y
     rw [dexpEquiv_symm_apply, ← mul_assoc (exp X), ← hexpA', ← mul_assoc, exp_neg_mul_exp,
       one_mul]
+
+/-- **Theorem 6.1, converse (uniqueness)**: if `Z` solves `Z'(t) = β(ad_{Z(t)}) Y` with
+`Z(0) = X` on a disc `‖t‖ < r`, `r > 1`, with `‖Z(t)‖ < 1/2` there, and `‖X‖ + ‖Y‖ < log 2`,
+then `Z(t) = log(e^X e^{tY})` for `‖t‖ ≤ 1`. -/
+theorem bch_ode_unique {X Y : 𝔸} {Z : 𝕂 → 𝔸} {r : ℝ} (hr : 1 < r)
+    (hZ : ∀ t : 𝕂, ‖t‖ < r → HasDerivAt Z (betaAd 𝕂 (Z t) Y) t)
+    (hZ0 : Z 0 = X) (hsmall : ∀ t : 𝕂, ‖t‖ < r → ‖Z t‖ < 1 / 2)
+    (hXY : ‖X‖ + ‖Y‖ < Real.log 2) :
+    ∀ t : 𝕂, ‖t‖ ≤ 1 → Z t = mlog 𝕂 (exp X * exp (t • Y) - 1) := by
+  let +nondep : NormedAlgebra ℚ 𝔸 := .restrictScalars ℚ 𝕂 𝔸
+  set B : Set 𝕂 := Metric.ball (0 : 𝕂) r with hB
+  have hBopen : IsOpen B := Metric.isOpen_ball
+  have hBconn : IsPreconnected B := (convex_ball (0 : 𝕂) r).isPreconnected
+  have hmem : ∀ t : 𝕂, t ∈ B ↔ ‖t‖ < r := fun t => by
+    rw [hB, Metric.mem_ball, dist_zero_right]
+  -- `H(t) = e^{Z(t)} e^{-tY}` has zero derivative
+  let H : 𝕂 → 𝔸 := fun t => exp (Z t) * exp (t • (-Y))
+  have hH : ∀ t ∈ B, HasDerivAt H 0 t := by
+    intro t ht
+    rw [hmem] at ht
+    have h1 : HasDerivAt (fun s => exp (Z s)) (exp (Z t) * Y) t := by
+      have := hasDerivAt_exp_comp (𝕂 := 𝕂) (hZ t ht)
+      rwa [dexp_apply, phiAd_betaAd_apply (hsmall t ht)] at this
+    have h2 : HasDerivAt (fun s : 𝕂 => exp (s • (-Y))) (exp (t • (-Y)) * -Y) t :=
+      hasDerivAt_exp_smul_const (-Y) t
+    refine (h1.mul h2).congr_deriv ?_
+    have hc : exp (t • (-Y)) * Y = Y * exp (t • (-Y)) :=
+      ((((Commute.refl Y).neg_right).smul_right t).exp_right).eq.symm
+    calc exp (Z t) * Y * exp (t • (-Y)) + exp (Z t) * (exp (t • (-Y)) * -Y)
+        = exp (Z t) * (Y * exp (t • (-Y))) - exp (Z t) * (exp (t • (-Y)) * Y) := by
+          noncomm_ring
+      _ = 0 := by rw [hc, sub_self]
+  have hdiff : DifferentiableOn 𝕂 H B :=
+    fun t ht => (hH t ht).differentiableAt.differentiableWithinAt
+  have hd0 : B.EqOn (deriv H) 0 := fun t ht => (hH t ht).deriv
+  have h0B : (0 : 𝕂) ∈ B := by rw [hmem, norm_zero]; linarith
+  have hH0 : H 0 = exp X := by
+    simp only [H, hZ0, zero_smul, exp_zero, mul_one]
+  intro t ht
+  have htB : t ∈ B := by rw [hmem]; linarith
+  have hconst : H t = H 0 := hBopen.is_const_of_deriv_eq_zero hBconn hdiff hd0 htB h0B
+  rw [hH0] at hconst
+  have hconst' : exp (Z t) * exp (t • (-Y)) = exp X := hconst
+  have hexp : exp (Z t) = exp X * exp (t • Y) := by
+    calc exp (Z t) = exp (Z t) * exp (t • (-Y)) * exp (t • Y) := by
+          rw [mul_assoc, smul_neg, exp_neg_mul_exp, mul_one]
+      _ = exp X * exp (t • Y) := by rw [hconst']
+  have hn : ‖X‖ + ‖t • Y‖ < Real.log 2 := by
+    rw [norm_smul]
+    have : ‖t‖ * ‖Y‖ ≤ ‖Y‖ := mul_le_of_le_one_left (norm_nonneg _) ht
+    linarith
+  have hZt : ‖Z t‖ < Real.log 2 := (hsmall t ((hmem t).mp htB)).trans half_lt_log_two
+  rw [← tsum_bchHom_eq_mlog hn]
+  exact eq_tsum_bchHom_of_exp_eq hn hZt hexp
 
 end ODE
 
