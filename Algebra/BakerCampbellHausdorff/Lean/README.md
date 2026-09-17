@@ -77,6 +77,12 @@ additional hypotheses. Appendix D of the article records the correspondence.
   polynomials of degree `n` (`R_of_mem_lieGen`), and **Theorem 4.1 (Dynkin's formula)**
   `Zₙ = (1/n) Σ_w c(w) R(w)` (`bchHom_eq_dynkin`) and its all-terms form
   `Zₙ = (1/n) Σ_k (-1)^{k-1}/k Σ R(X^{r₁}Y^{s₁}⋯)/∏ rᵢ!sᵢ!` (`bchHom_eq_dynkin_blocks`).
+- `BCH/Symmetric.lean` — **Proposition 11.3 (symmetric splitting)**: two nested applications
+  of the BCH theorem give `L = Z(Z(A,B), A)` with `e^L = e^A e^B e^A` and
+  `‖L - (2A + B)‖ ≤ c₂ (‖A‖+‖B‖)³` (the degree-two terms cancel; `symmetric_log_bound`,
+  using `-log(2 - e^σ) ≤ 2σ` for `σ ≤ 1/4`), hence
+  `S₂(t/n)^n = exp(t(X+Y) + Eₙ)` with `‖Eₙ‖ ≤ c₂|t|³a³/n²` (`symmetric_expansion`), the
+  explicit `O(n⁻²)` error bound (`symmetric_error`) and the limit (`symmetric_limit`).
 - `BCH/DynkinSeries.lean` — **Theorem 7.3 (iii), (iv) (absolute convergence of Dynkin's Lie
   series)**: the right-nested brackets `rbEval` evaluated in a normed space with a bracket
   bound `‖⁅u,v⁆‖ ≤ κ‖u‖‖v‖`, the estimate `‖[x₁,[x₂,…,xₙ]]‖ ≤ κ^{n-1} ∏‖xᵢ‖`, the Dynkin

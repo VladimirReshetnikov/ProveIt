@@ -87,7 +87,14 @@ followed by the Dynkin projection. For bounded $X,Y$ and $n>|t|a/\log2$,
  S_2(t/n)^n=\exp\Bigl(t(X+Y)+\sum_{j\geq1}\frac{t^{2j+1}}{n^{2j}}E_{2j+1}\Bigr)
  =e^{t(X+Y)}+O(n^{-2}),
 \end{equation}
-uniformly for $t$ in compact sets.
+uniformly for $t$ in compact sets. Explicitly, for $n>6|t|a/\log2$ one has
+$S_2(t/n)^n=\exp\bigl(t(X+Y)+E_n\bigr)$ with
+$\norm{E_n}\leq c_2|t|^3a^3/n^2$, where $c_2=c_0+28c_0'$ with the constants
+of \cref{lem:tail}, and hence, when $\norm I=1$,
+\begin{equation}\label{eq:S2error}
+ \bigl\|S_2(t/n)^n-e^{t(X+Y)}\bigr\|
+ \leq e^{|t|a+c_2|t|^3a^3/n^2}\,\frac{c_2|t|^3a^3}{n^2}.
+\end{equation}
 \end{proposition}
 \begin{proof}
 Since $(e^{A})^{-1}=e^{-A}$ and inversion reverses products,
@@ -133,6 +140,24 @@ degree at least $3$ of $n\log S_2(t/n)$, so \cref{lem:tail} gives
 $\norm{E_n'}\leq nc_0'(|t|a/n)^3=O(n^{-2})$ for $n>2|t|a/\log2$, and the
 exponential difference estimate finishes the proof exactly as in
 \cref{thm:trotter}.
+
+The explicit constant is obtained without the multifactor expansion, by two
+applications of the two-factor theorem. Put $A=tX/(2n)$, $B=tY/n$,
+$\sigma=\norm A+\norm B\leq|t|a/n<\tfrac16\log2$, $W=\BCH(A,B)$ and
+$L=\BCH(W,A)$, so that $e^L=e^We^A=e^Ae^Be^A=S_2(t/n)$. Since
+$\sigma\leq\tfrac14$, the Mercator bound gives
+$\norm W\leq-\log(2-e^{\sigma})\leq2\sigma$ (using $e^\sigma-1\leq\sigma+\sigma^2$
+and $-\log(1-u)\leq u/(1-u)$), so $\norm W+\norm A\leq3\sigma<\tfrac12\log2$.
+Write $W=A+B+V$ with $V=Z_2(A,B)+T$ the part of degree $\geq2$ and $T$ the
+part of degree $\geq3$, and $L=W+A+Z_2(W,A)+T'$ with $T'$ the part of degree
+$\geq3$ of $\BCH(W,A)$. Then $Z_2(W,A)=\tfrac12[A+B,A]+\tfrac12[V,A]$ and
+$Z_2(A,B)+\tfrac12[A+B,A]=0$, so $L=2A+B+T+\tfrac12[V,A]+T'$, and
+\cref{lem:tail} gives $\norm T\leq c_0'\sigma^3$, $\norm V\leq c_0\sigma^2$,
+$\norm{T'}\leq c_0'(3\sigma)^3$; hence
+$\norm{L-(2A+B)}\leq(c_0+28c_0')\sigma^3=c_2\sigma^3$. Raising $e^L$ to the
+$n$th power gives $S_2(t/n)^n=\exp(t(X+Y)+E_n)$ with $E_n=n(L-2A-B)$,
+$\norm{E_n}\leq nc_2(|t|a/n)^3=c_2|t|^3a^3/n^2$, and \eqref{eq:expdifference}
+yields \eqref{eq:S2error}.
 \end{proof}
 If $[X,Y]$ is central, \eqref{eq:centralbch} shows that already
 $S_2(t)=e^{t(X+Y)}$ exactly.

@@ -136,6 +136,11 @@ $Z_n(X,Y)$, \eqref{eq:degreerec}, \cref{rem:evaluation} & \texttt{bchHom}
  $\kk\langle X,Y\rangle\to\cA$ is \texttt{evalHom} \\
 \Cref{lem:tail} (two factors) & \texttt{tsum\_norm\_bchHom\_tail\_two\_le},
  \texttt{tsum\_norm\_bchHom\_tail\_three\_le} (constants \texttt{trotterC}$_0$, \texttt{trotterC}$_0'$) \\
+\Cref{prop:symmetric}, \eqref{eq:S2all} (exponent with $\norm{E_n}\leq
+ c_2|t|^3a^3/n^2$), \eqref{eq:S2error}, and the limit &
+ \texttt{symmetric\_expansion}, \texttt{symmetric\_error},
+ \texttt{symmetric\_limit} (constant $c_2=$ \texttt{symC}); the cancellation
+ of the degree-two terms is \texttt{symmetric\_log\_bound} \\
 \Cref{thm:trotter}, \eqref{eq:trotter} & \texttt{trotter\_limit} \\
 \Cref{thm:trotter}, \eqref{eq:trotterall} & \texttt{trotter\_expansion}; the $O(n^{-1})$
  bound $e^{|t|a+c_0t^2a^2/n}\,c_0t^2a^2/n$ of the proof is \texttt{trotter\_error} \\
@@ -213,7 +218,19 @@ solution of the differential equation inside $\g$ has to be constructed.
 The hypothesis $\norm I=1$ of \cref{sec:splitting} is the Mathlib class
 \texttt{NormOneClass}; \cref{thm:trotter} is stated with a scalar $t\in\kk$
 and the product $(e^{tX/n}e^{tY/n})^n$ written with $n$-fold multiplication,
-and the uniformity in $t$ is expressed by the explicit bound.
+and the uniformity in $t$ is expressed by the explicit bound. The
+second-order error of the symmetric splitting, \cref{prop:symmetric}, is
+formalized without the multifactor expansion: with $A=tX/(2n)$, $B=tY/n$,
+$W=\BCH(A,B)$ and $L=\BCH(W,A)$ one has $e^L=e^Ae^Be^A$, and the identity
+$L=2A+B+T+\tfrac12[V,A]+T'$, where $V$, $T$ are the parts of degree
+$\geq2$, $\geq3$ of $\BCH(A,B)$ and $T'$ the part of degree $\geq3$ of
+$\BCH(W,A)$, exhibits the cancellation $Z_2(A,B)+\tfrac12[A+B,A]=0$; the
+bounds of \cref{lem:tail} (with $\norm W\leq2(\norm A+\norm B)$, from
+$-\log(2-e^{\sigma})\leq2\sigma$ for $\sigma\leq\tfrac14$) give
+$\norm{L-(2A+B)}\leq c_2(\norm A+\norm B)^3$ with $c_2=c_0+28c_0'$
+(\texttt{symmetric\_log\_bound}), and the rest of the argument is that of
+\cref{thm:trotter}. The oddness of the formal logarithm and the formula for
+$E_3$ in \eqref{eq:S2log} are not formalized.
 
 \subsection*{The formal BCH theorem}
 The Lie nature of the homogeneous components (\cref{thm:formalbch}) is

@@ -58,6 +58,10 @@ Banach algebras:
   the forms `Zₙ = (1/n) ∑_w c(w) R(w)` (`bchHom_eq_dynkin`) and
   `Zₙ = (1/n) ∑_k (-1)^{k-1}/k ∑ R(X^{r₁}Y^{s₁}⋯X^{r_k}Y^{s_k}) / ∏ rᵢ!sᵢ!`
   (`bchHom_eq_dynkin_blocks`);
+* `BCH.Symmetric` — Proposition 11.3, the symmetric (Strang) splitting: for
+  `n > 6 |t| a / log 2`, `(e^{tX/(2n)} e^{tY/n} e^{tX/(2n)})^n = exp(t(X+Y) + Eₙ)` with
+  `‖Eₙ‖ ≤ c₂ |t|³ a³ / n²` (`symmetric_expansion`; the degree-two terms cancel,
+  `symmetric_log_bound`), the error bound `symmetric_error`, and the limit `symmetric_limit`;
 * `BCH.DynkinSeries` — Theorem 7.3 (iii), (iv): in a normed space with a bracket satisfying
   `‖⁅u, v⁆‖ ≤ κ ‖u‖ ‖v‖` (a normed Lie algebra; `κ = 2` for associative algebras), the
   right-nested commutator summands of Dynkin's formula are absolutely summable when
@@ -94,3 +98,4 @@ import BCH.Formal.WordCut
 import BCH.Formal.Dynkin
 import BCH.Trace
 import BCH.DynkinSeries
+import BCH.Symmetric
