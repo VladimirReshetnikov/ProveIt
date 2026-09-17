@@ -86,6 +86,8 @@ Article & Lean declaration (namespace \texttt{BCH}), continued \\
 \Cref{thm:dynkin}, \eqref{eq:dynkinword} & \texttt{bchHom\_eq\_dynkin}
  ($Z_n=\frac1n\sum_w c(w)R(w)$ with $c(w)$ the coefficients of $Z_n$);
  operator form $Z_n=\frac1nR(Z_n)$, \texttt{bchHom\_eq\_inv\_smul\_R} \\
+\Cref{thm:dynkin}, \eqref{eq:dynkin} (degree-$n$ part) &
+ \texttt{bchHom\_eq\_dynkin\_blocks} \\
 \Cref{prop:closedlie} & \texttt{exists\_delta\_mlog\_mem} (closed Lie subalgebras are
  \texttt{IsClosedLieSubalgebra}; the Lipschitz estimate is
  \texttt{norm\_betaAd\_apply\_sub\_le}); homogeneous components:
@@ -96,6 +98,13 @@ Article & Lean declaration (namespace \texttt{BCH}), continued \\
  \texttt{norm\_exp\_sub\_one\_le}, \texttt{norm\_exp\_mul\_exp\_sub\_one\_le} \\
 $Z_n(X,Y)$, \eqref{eq:degreerec}, \cref{rem:evaluation} & \texttt{bchHom}
  (with \texttt{expBlock} $=E_d$, \texttt{uBlock} $=U_d$, \texttt{powBlock} $=P_k(n)$) \\
+\Cref{thm:wordcut}, \eqref{eq:homblocks} & \texttt{bchHom\_eq\_sum\_blockTuples}
+ (in any algebra; the tuples $(r_i,s_i)$ are \texttt{blockTuples}, characterized by
+ \texttt{mem\_blockTuples}, the words $X^{r_1}Y^{s_1}\cdots$ are \texttt{blockWord},
+ the weights $\prod_i(r_i!s_i!)^{-1}$ are \texttt{blockWeight}) \\
+\Cref{thm:wordcut}, \eqref{eq:wordcut} in the form \eqref{eq:wordblocks} &
+ \texttt{coeff\_bchHom}, \texttt{wordCoeff\_eq} ($c(w)=$ \texttt{wordCoeff});
+ $Z_n=\sum_{|w|=n}c(w)w$ is \texttt{coeff\_bchHom\_eq\_wordCoeff} \\
 \Cref{thm:convergence}(i) & \texttt{bch\_convergence}, combining
  \texttt{summable\_norm\_bchHom}, \texttt{tsum\_pow\_mul\_norm\_bchHom\_le}
  (second line of \eqref{eq:majorant}), \texttt{tsum\_bchHom\_eq\_mlog}
@@ -237,9 +246,22 @@ statement is propagated through the Lie span componentwise, using the
 grading of the Lie polynomials. Combined with \cref{thm:formalbch} this
 gives Dynkin's formula in the form \eqref{eq:dynkinword},
 $Z_n=\frac1n\sum_{|w|=n}c(w)R(w)$ (\texttt{bchHom\_eq\_dynkin}), where
-$c(w)$ are the coefficients of the formal $Z_n$; the explicit values
-\eqref{eq:wordcut} of these coefficients, hence the form \eqref{eq:dynkin},
-are not formalized. The trace identity \eqref{eq:trace} follows from these
+$c(w)$ are the coefficients of the formal $Z_n$. The explicit values of
+these coefficients, \cref{thm:wordcut}, are formalized in the block form
+\eqref{eq:wordblocks}: the $k$-tuples of blocks $(r_i,s_i)$ with
+$r_i+s_i>0$ and $\sum_i(r_i+s_i)=n$ form the finite set
+\texttt{blockTuples k n}, defined by recursion on $k$ and characterized by
+\texttt{mem\_blockTuples}; unfolding the recursion \eqref{eq:degreerec}
+gives $P_k(n)=\sum(\prod_ir_i!s_i!)^{-1}X^{r_1}Y^{s_1}\cdots X^{r_k}Y^{s_k}$
+over these tuples (\texttt{powBlock\_eq\_sum\_blockTuples}), hence
+\eqref{eq:homblocks} in any algebra (\texttt{bchHom\_eq\_sum\_blockTuples}),
+and reading off the coefficient of a word $w$ in the free algebra gives
+\eqref{eq:wordblocks} (\texttt{coeff\_bchHom}). Applying $R$ termwise then
+yields the degree-$n$ part of the all-terms form \eqref{eq:dynkin}
+(\texttt{bchHom\_eq\_dynkin\_blocks}). The version of \eqref{eq:wordcut}
+indexed by cuts $0=i_0<\dots<i_k=n$ with the weight $a$ of
+\eqref{eq:weight} is not separately formalized; it differs from
+\eqref{eq:wordblocks} only by the vanishing terms. The trace identity \eqref{eq:trace} follows from these
 two theorems exactly as in the proof of \cref{prop:trace}: $Z_n$ for
 $n\geq2$ is a homogeneous Lie polynomial, so $Z_n=\frac1n\sum_wc(w)R(w)$
 with every $R(w)$ a commutator, and a tracial functional kills commutators
@@ -247,8 +269,10 @@ with every $R(w)$ a commutator, and a tracial functional kills commutators
 which needs $\det e^A=e^{\tr A}$, is not formalized.
 
 The remaining formal power-series parts of the article
-(\cref{sec:formal,sec:hopf,sec:dynkin}: the word-cut formula, the Hopf
-structure, the explicit coefficients in Dynkin's formula), degrees five and six of
+(\cref{sec:formal,sec:hopf,sec:dynkin}: the multifactor formula
+\eqref{eq:manyexp}, the Hopf structure, the bidegree form
+\eqref{eq:bidegreeproj} and the vanishing criterion for Dynkin summands),
+degrees five and six of
 \cref{prop:lowdegree}, the word-level majorant in the first
 line of \eqref{eq:majorant}, parts (iii) and (iv) of \cref{thm:convergence},
 the multifactor case of \cref{lem:tail}, and the later sections are not yet

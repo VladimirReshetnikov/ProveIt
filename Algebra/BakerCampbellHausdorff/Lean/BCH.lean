@@ -49,9 +49,15 @@ Banach algebras:
   BCH theorem**: in the free algebra `𝕂⟨X, Y⟩` every homogeneous component `Zₙ(X, Y)` is a
   Lie polynomial (`bchHom_mem_lieGen`), proved from the analytic Lie-series property through
   the truncated regular representation and the grading of the Lie polynomials;
+* `BCH.Formal.WordCut` — Theorem 2.2: the nonrecursive block expansion
+  `Zₙ = ∑_k (-1)^{k-1}/k ∑ X^{r₁}Y^{s₁}⋯X^{r_k}Y^{s_k} / ∏ rᵢ!sᵢ!` in any algebra
+  (`bchHom_eq_sum_blockTuples`) and the word-coefficient formula `c(w) = ∑_k (-1)^{k-1}/k
+  ∑_{cuts of w into blocks} ∏ (rᵢ!sᵢ!)⁻¹` (`coeff_bchHom`, `wordCoeff_eq`);
 * `BCH.Formal.Dynkin` — Lemma 3.4 (Dynkin–Specht–Wever), `R(P) = n P` for homogeneous Lie
   polynomials `P` of degree `n` (`R_of_mem_lieGen`), and Theorem 4.1 (Dynkin's formula) in
-  the form `Zₙ = (1/n) ∑_w c(w) R(w)` (`bchHom_eq_dynkin`);
+  the forms `Zₙ = (1/n) ∑_w c(w) R(w)` (`bchHom_eq_dynkin`) and
+  `Zₙ = (1/n) ∑_k (-1)^{k-1}/k ∑ R(X^{r₁}Y^{s₁}⋯X^{r_k}Y^{s_k}) / ∏ rᵢ!sᵢ!`
+  (`bchHom_eq_dynkin_blocks`);
 * `BCH.Trace`     — Proposition 7.5: a tracial linear functional vanishes on `Zₙ(X, Y)` for
   `n ≥ 2` (`tracial_bchHom`), so `τ(Z) = τ X + τ Y` for continuous tracial functionals
   whenever the series converges (`tracial_tsum_bchHom`); for matrices,
@@ -77,5 +83,6 @@ import BCH.LieCoeff
 import BCH.Formal.Free
 import BCH.Formal.Trunc
 import BCH.Formal.LieSeries
+import BCH.Formal.WordCut
 import BCH.Formal.Dynkin
 import BCH.Trace

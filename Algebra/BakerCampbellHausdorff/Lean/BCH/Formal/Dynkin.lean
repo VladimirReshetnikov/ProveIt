@@ -13,7 +13,9 @@ This file formalizes, in the free algebra `𝕂⟨X, Y⟩` of `BCH.Formal.Free`:
   polynomial `P` of degree `n`, `R(P) = n P` (`R_of_mem_lieGen`);
 * **Theorem 4.1 (Dynkin's formula)**, equation (4.2): `Zₙ = (1/n) R(Zₙ)
   = (1/n) ∑_w c(w) R(w)` with `c(w)` the word coefficients of `Zₙ`
-  (`bchHom_eq_inv_smul_R`, `bchHom_eq_dynkin`).
+  (`bchHom_eq_inv_smul_R`, `bchHom_eq_dynkin`), and equation (4.1), the
+  all-terms form `Zₙ = (1/n) ∑_k (-1)^{k-1}/k ∑ R(X^{r₁}Y^{s₁}⋯X^{r_k}Y^{s_k}) / ∏ rᵢ!sᵢ!`
+  (`bchHom_eq_dynkin_blocks`).
 
 The proof of the lemma is the classical one: `φ` restricted to the Lie
 polynomials is the adjoint representation `ad` (both are Lie homomorphisms
@@ -24,6 +26,7 @@ the statement is propagated along the Lie span componentwise, using that the
 Lie polynomials are graded.
 -/
 import BCH.Formal.LieSeries
+import BCH.Formal.WordCut
 
 open Finset
 
@@ -267,6 +270,21 @@ theorem bchHom_eq_dynkin {n : ℕ} (hn : 0 < n) :
       (n : 𝕂)⁻¹ • (bchHom 𝕂 (genX 𝕂) (genY 𝕂) n).coeff.sum (fun w c => c • rb 𝕂 w) := by
   rw [← R_apply]
   exact bchHom_eq_inv_smul_R hn
+
+/-- **Theorem 4.1, equation (4.1)** (Dynkin's all-terms formula), degree-`n` part:
+`Zₙ = (1/n) ∑_{k=1}^{n} (-1)^{k-1}/k ∑_{(rᵢ,sᵢ)} R(X^{r₁}Y^{s₁}⋯X^{r_k}Y^{s_k}) / ∏ᵢ rᵢ!sᵢ!`,
+the inner sum over the `k`-tuples of blocks of positive degree and total degree `n`. -/
+theorem bchHom_eq_dynkin_blocks {n : ℕ} (hn : 0 < n) :
+    bchHom 𝕂 (genX 𝕂) (genY 𝕂) n =
+      (n : 𝕂)⁻¹ • ∑ k ∈ range n, ((-1 : 𝕂) ^ k * ((k + 1 : ℕ) : 𝕂)⁻¹) •
+        ∑ rs ∈ blockTuples (k + 1) n, blockWeight 𝕂 rs • R (blockWord (genX 𝕂) (genY 𝕂) rs) := by
+  rw [bchHom_eq_inv_smul_R hn]
+  congr 1
+  rw [bchHom_eq_sum_blockTuples, map_sum]
+  refine sum_congr rfl fun k _ => ?_
+  rw [map_smul, map_sum]
+  refine congrArg _ (sum_congr rfl fun rs _ => ?_)
+  rw [map_smul]
 
 end Dynkin
 

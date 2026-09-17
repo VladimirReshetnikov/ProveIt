@@ -65,11 +65,17 @@ additional hypotheses. Appendix D of the article records the correspondence.
 - `BCH/Formal/LieSeries.lean` — **Theorem 3.6 (formal BCH theorem)**: every `Zₙ(X,Y)` is a
   Lie polynomial (`bchHom_mem_lieGen`), deduced from Proposition 8.1 in the operator algebra
   of the truncated representation.
+- `BCH/Formal/WordCut.lean` — **Theorem 2.2 (every associative BCH coefficient)**: the
+  tuples of blocks `blockTuples k n` (`mem_blockTuples`), the block words and weights, the
+  nonrecursive expansion `Zₙ = Σ_k (-1)^{k-1}/k Σ X^{r₁}Y^{s₁}⋯X^{r_k}Y^{s_k}/∏ rᵢ!sᵢ!` in any
+  algebra (`bchHom_eq_sum_blockTuples`), and the word coefficients `c(w)` of the formal `Zₙ`
+  as a finite sum over cuts of `w` into blocks (`coeff_bchHom`, `wordCoeff_eq`).
 - `BCH/Formal/Dynkin.lean` — the right Dynkin operator `R` (right-nested bracketing of
   words), the identity `R(ab) = φ(a) R(b) + ε(b) R(a)` with `φ` the adjoint representation of
   the free algebra, **Lemma 3.4 (Dynkin–Specht–Wever)** `R(P) = n P` for homogeneous Lie
   polynomials of degree `n` (`R_of_mem_lieGen`), and **Theorem 4.1 (Dynkin's formula)**
-  `Zₙ = (1/n) Σ_w c(w) R(w)` (`bchHom_eq_dynkin`).
+  `Zₙ = (1/n) Σ_w c(w) R(w)` (`bchHom_eq_dynkin`) and its all-terms form
+  `Zₙ = (1/n) Σ_k (-1)^{k-1}/k Σ R(X^{r₁}Y^{s₁}⋯)/∏ rᵢ!sᵢ!` (`bchHom_eq_dynkin_blocks`).
 - `BCH/Trace.lean` — **Proposition 7.5 (trace identity)**: the evaluation homomorphism
   `evalHom` of `𝕂⟨X,Y⟩`, vanishing of any tracial linear functional on `Zₙ(X,Y)` for `n ≥ 2`
   (`tracial_bchHom`, via Dynkin–Specht–Wever), `τ(Σ Zₙ) = τ X + τ Y` for continuous tracial

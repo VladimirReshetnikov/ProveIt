@@ -124,6 +124,15 @@ For every nonempty word $w=a_1\cdots a_n$,
    \prod_{j=1}^{k}a\bigl(a_{i_{j-1}+1}\cdots a_{i_j}\bigr).
 \end{aligned}
 \end{equation}
+Since $a$ vanishes off the block words, only the cuts all of whose pieces
+are of the form $X^rY^s$ contribute, and each such cut is the same thing as
+a $k$-tuple of blocks $(r_i,s_i)$ with $r_i+s_i>0$ and
+$X^{r_1}Y^{s_1}\cdots X^{r_k}Y^{s_k}=w$; thus, equivalently,
+\begin{equation}\label{eq:wordblocks}
+ c(w)=\sum_{k=1}^{n}\frac{(-1)^{k-1}}{k}
+ \sum_{\substack{r_i+s_i>0\ (1\leq i\leq k)\\X^{r_1}Y^{s_1}\cdots X^{r_k}Y^{s_k}=w}}
+ \frac1{\prod_{i=1}^kr_i!s_i!}.
+\end{equation}
 Consequently
 \begin{equation}\label{eq:homblocks}
  Z_n=\sum_{w\in\{X,Y\}^n}c(w)\,w
