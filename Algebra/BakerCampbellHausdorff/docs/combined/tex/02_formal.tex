@@ -134,7 +134,16 @@ Consequently
 \end{equation}
 Both formulas are finite and nonrecursive, and every coefficient is rational.
 For a word of length $n$ there are exactly $2^{n-1}$ cut patterns before zero
-terms are discarded.
+terms are discarded. Equivalently, in terms of the degree parts
+$E_d=\sum_{r+s=d}X^rY^s/(r!s!)$ of $e^Xe^Y$ (so $E_0=1$ and
+$U=e^Xe^Y-1=\sum_{d\geq1}E_d$), the degree-$n$ part $P_k(n)$ of $U^k$ is
+given by the Cauchy product rule of \cref{sec:formal},
+\begin{equation}\label{eq:degreerec}
+ P_0(n)=\delta_{n,0},\qquad
+ P_{k+1}(n)=\sum_{d=1}^{n}E_d\,P_k(n-d),\qquad
+ Z_n=\sum_{k=1}^{n}\frac{(-1)^{k-1}}{k}\,P_k(n),
+\end{equation}
+and $P_k(n)=0$ for $n<k$.
 \end{theorem}
 \begin{proof}
 Write $U=e^Xe^Y-1\in F^1\widehat T$. Its coefficient on a nonempty word $v$
@@ -155,8 +164,24 @@ breaks. Choosing a subset of the $n-1$ gaps between consecutive letters is
 the same as choosing a cut pattern, which gives the count $2^{n-1}$.
 Expanding each permitted block as $X^{r_i}Y^{s_i}$ in \eqref{eq:wordcut}
 and summing over words of length $n$ gives \eqref{eq:homblocks}, which is
-the degree-$n$ part of \eqref{eq:blocks}.
+the degree-$n$ part of \eqref{eq:blocks}. Finally, $U^{k+1}=U\cdot U^k$ and
+the degree-$n$ part of a product is $\sum_{d+m=n}(\cdot)_d(\cdot)_m$; since
+$U$ has no constant term this is the recursion \eqref{eq:degreerec}, and
+expanding each product $E_{d_1}\cdots E_{d_k}$ into monomials recovers the
+block sum in \eqref{eq:homblocks}. As every block has degree at least one,
+$U^k$ has no part of degree below $k$.
 \end{proof}
+
+\begin{remark}[Evaluation in an associative algebra]\label{rem:evaluation}
+For elements $X,Y$ of any unital associative $\kk$-algebra $\cA$, in
+particular of a Banach algebra, $Z_n(X,Y)\in\cA$ denotes the image of the
+noncommutative polynomial $Z_n$ under the substitution homomorphism
+$\kk\langle X,Y\rangle\to\cA$. Because substitution is an algebra
+homomorphism, $Z_n(X,Y)$ is computed in $\cA$ by the same finite formulas
+\eqref{eq:homblocks} and \eqref{eq:degreerec}, with $E_d$ and $P_k(n)$ now
+elements of $\cA$. The recursion \eqref{eq:degreerec} is the form in which
+$Z_n(X,Y)$ is defined in the formalization of \cref{app:lean}.
+\end{remark}
 
 \begin{example}
 For $w=XY$ the one-piece contribution is $a(XY)=1$ and the two-piece

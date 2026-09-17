@@ -54,6 +54,13 @@ Article & Lean declaration (namespace \texttt{BCH}) \\
  (series \texttt{mlog}, terms \texttt{mlogTerm}, summability \texttt{summable\_mlogTerm}) \\
 \Cref{cor:bchlog} & \texttt{exp\_mlog\_exp\_mul\_exp}; bounds
  \texttt{norm\_exp\_sub\_one\_le}, \texttt{norm\_exp\_mul\_exp\_sub\_one\_le} \\
+$Z_n(X,Y)$, \eqref{eq:degreerec}, \cref{rem:evaluation} & \texttt{bchHom}
+ (with \texttt{expBlock} $=E_d$, \texttt{uBlock} $=U_d$, \texttt{powBlock} $=P_k(n)$) \\
+\Cref{thm:convergence}(i) & \texttt{bch\_convergence}, combining
+ \texttt{summable\_norm\_bchHom}, \texttt{tsum\_pow\_mul\_norm\_bchHom\_le}
+ (second line of \eqref{eq:majorant}), \texttt{tsum\_bchHom\_eq\_mlog}
+ ($Z=\log(e^Xe^Y)$), \texttt{exp\_tsum\_bchHom} ($e^Z=e^Xe^Y$) \\
+\Cref{thm:convergence}(ii), \eqref{eq:remainder} & \texttt{norm\_tsum\_bchHom\_sub\_sum\_le} \\
 \eqref{eq:conjexp}, \eqref{eq:braiding} & \texttt{exp\_mul\_exp\_mul\_exp\_neg},\newline
  \texttt{exp\_mul\_exp\_eq\_exp\_exp\_ad\_mul} \\
 \Cref{thm:eigen}, $e^{tX}Ye^{-tX}=e^{st}Y$ & \texttt{conj\_of\_lie\_eq\_smul} \\
@@ -89,10 +96,20 @@ Statements with a general scalar parameter $t$ are deduced from the case
 $t=1$ applied to $tX$ and $tY$. The proof of \cref{prop:mercator} in the
 article is the one used in the formalization (\texttt{exp\_mlog}); the
 chain rule along commuting curves it requires is
-\texttt{hasDerivAt\_exp\_comp\_of\_commute}.
+\texttt{hasDerivAt\_exp\_comp\_of\_commute}. \Cref{thm:convergence}(i) is
+proved as in the article: the majorant of $\norm{Z_n}$ is obtained by running
+the recursion \eqref{eq:degreerec} on the real numbers $\norm X,\norm Y$
+(the Lean definitions are generic in the algebra, so the majorant is the same
+definition instantiated with $\mathcal A=\R$), the generic statement
+``the degree parts of $U^k$ sum absolutely to $U^k$'' gives
+$\sum_n P_k(n)(\norm X,\norm Y)=(e^{s}-1)^k$, the double series
+$\sum_k\sum_n\frac1kP_k(n)$ is summed in either order because its terms are
+nonnegative, and the same rearrangement, justified by absolute convergence,
+identifies $\sum_nZ_n$ with the Mercator logarithm of \cref{prop:mercator}.
 
-The formal power-series parts of the article (\cref{sec:formal,sec:hopf,sec:dynkin}),
-the homogeneous form of \cref{thm:convergence}, and the later sections
-are not yet formalized; the finite exact computations of
-\cref{sec:computation} remain the machine check of the coefficient
-tables.
+The formal power-series parts of the article (\cref{sec:formal,sec:hopf,sec:dynkin},
+including the Lie nature of the $Z_n$), the word-level majorant in the first
+line of \eqref{eq:majorant}, the estimate \eqref{eq:expremainder}, parts
+(iii) and (iv) of \cref{thm:convergence}, and the later sections are not yet
+formalized; the finite exact computations of \cref{sec:computation} remain
+the machine check of the coefficient tables.

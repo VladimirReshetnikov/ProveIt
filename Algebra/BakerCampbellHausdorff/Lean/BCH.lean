@@ -14,10 +14,15 @@ Banach algebras:
   (9.5)–(9.7);
 * `BCH.Log`       — Proposition 7.1 (the Mercator logarithm `log(1 + U)` for
   `‖U‖ < 1`, `exp(log(1 + U)) = 1 + U`) and Corollary 7.2 (the BCH logarithm
-  `Z = log(e^X e^Y)` with `e^Z = e^X e^Y` for `‖X‖ + ‖Y‖ < log 2`).
+  `Z = log(e^X e^Y)` with `e^Z = e^X e^Y` for `‖X‖ + ‖Y‖ < log 2`);
+* `BCH.Series`    — the homogeneous BCH series `Zₙ(X, Y)` and Theorem 7.3 (i), (ii):
+  for `‖X‖ + ‖Y‖ < log 2` the series `∑ₙ Zₙ(X, Y)` converges absolutely with
+  the majorant `-log(2 - e^{ρ s})`, its sum `Z` satisfies `e^Z = e^X e^Y`, and
+  the tail after degree `N` is at most `ρ^{-(N+1)} (-log(2 - e^{ρ s}))`.
 -/
 import BCH.Commuting
 import BCH.Central
 import BCH.Campbell
 import BCH.Eigen
 import BCH.Log
+import BCH.Series

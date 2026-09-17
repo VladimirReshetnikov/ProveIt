@@ -17,6 +17,10 @@ additional hypotheses. Appendix D of the article records the correspondence.
   `log(1+U) = Σ (-1)^{k-1} U^k / k` converges, `‖log(1+U)‖ ≤ -log(1-‖U‖)`,
   and `exp(log(1+U)) = 1 + U`; Corollary 7.2: for `‖X‖ + ‖Y‖ < log 2`,
   `Z = log(e^X e^Y)` satisfies `e^Z = e^X e^Y` and `‖Z‖ ≤ -log(2 - e^{‖X‖+‖Y‖})`.
+- `BCH/Series.lean` — the homogeneous BCH components `Zₙ(X,Y)` (`bchHom`, by the
+  degree recursion (2.7) of the article) and Theorem 7.3 (i), (ii): for
+  `‖X‖ + ‖Y‖ < log 2`, `∑ ‖Zₙ‖ < ∞`, `∑ ρⁿ ‖Zₙ‖ ≤ -log(2 - e^{ρ(‖X‖+‖Y‖)})`,
+  `∑ Zₙ = log(e^X e^Y)` (Mercator), `exp(∑ Zₙ) = e^X e^Y`, and the tail bound (7.4).
 
 ## Building
 
