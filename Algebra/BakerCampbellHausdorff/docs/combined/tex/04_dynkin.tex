@@ -1,0 +1,249 @@
+\section{Dynkin's formula, every bidegree, and the polynomial through degree six}\label{sec:dynkin}
+\subsection{Dynkin's complete commutator formula}
+The structural theorem becomes completely explicit by applying the Dynkin
+operator to the associative logarithm. The classical coefficient formula is
+due to Dynkin \cite{dynkin}; modern computational treatments include
+\cite{casasmurua}. The proof below derives its coefficients directly.
+
+\begin{theorem}[Dynkin's all-terms formula]\label{thm:dynkin}
+With $d=\sum_{i=1}^k(r_i+s_i)$,
+\begin{equation}\label{eq:dynkin}
+ \boxed{\displaystyle
+ Z(X,Y)=\sum_{k\geq1}\frac{(-1)^{k-1}}{k}
+ \sum_{\substack{r_i,s_i\geq0\\r_i+s_i>0\ (1\leq i\leq k)}}
+ \frac{R\bigl(X^{r_1}Y^{s_1}\cdots X^{r_k}Y^{s_k}\bigr)}
+      {d\,\prod_{i=1}^k r_i!s_i!}.}
+\end{equation}
+Equivalently, in terms of the word coefficients \eqref{eq:wordcut},
+\begin{equation}\label{eq:dynkinword}
+ Z_n=\frac1n\sum_{|w|=n}c(w)\,R(w),
+\end{equation}
+and, separating the bidegrees,
+\begin{equation}\label{eq:bidegreeproj}
+ \boxed{\displaystyle
+ Z_{p,q}=\frac1{p+q}
+ \sum_{\substack{w\in\{X,Y\}^{p+q}\\\#_Xw=p,\ \#_Yw=q}}
+ c(w)\,R(w),\qquad p+q\geq1.}
+\end{equation}
+In each total degree the sums are finite. A summand of \eqref{eq:dynkin}
+vanishes if $s_k>1$, or if $s_k=0$ and $r_k>1$.
+\end{theorem}
+\begin{proof}
+By \cref{thm:formalbch}, each $Z_n$ is a homogeneous primitive element of
+degree $n$. \Cref{lem:dsw} therefore gives $Z_n=\frac1nD(Z_n)$. Since $D$ is
+linear and $D(w)=R(w)$ on words, applying $D/n$ to the word expansion
+$Z_n=\sum_{|w|=n}c(w)w$ of \eqref{eq:homblocks} gives \eqref{eq:dynkinword}.
+Applying it instead to the block form of \eqref{eq:homblocks} replaces each
+block word $X^{r_1}Y^{s_1}\cdots X^{r_k}Y^{s_k}$ by its right-nested bracket
+and divides by its length $d=n$; summing over $n$ gives \eqref{eq:dynkin}.
+Finally, $Z_n=\sum_{p+q=n}Z_{p,q}$ and the operator $D$ preserves bidegree
+(it maps a word to a combination of words with the same letters), so the
+bidegree-$(p,q)$ part of \eqref{eq:dynkinword} is \eqref{eq:bidegreeproj}.
+If $s_k>1$ the two innermost letters of the bracketed word are $Y,Y$, and
+if $s_k=0$, $r_k>1$ they are $X,X$; in either case the innermost bracket
+$[a_{d-1},a_d]$ vanishes and so does the whole nested bracket.
+\end{proof}
+The two vanishing tests are sufficient but not necessary: a run of equal
+letters may continue across a block boundary, for instance in the block word
+$X\cdot XY$ followed by the block $Y$. Notice also that one must project a
+\emph{whole homogeneous Lie polynomial}; replacing an arbitrary associative
+polynomial by $D/n$ generally changes it. The right-nested brackets form a
+spanning family of $\cL_n$, not a basis, so different displays can represent
+the same Lie element by Jacobi identities. This is redundancy in the
+representation, not ambiguity in $Z$. Formula \eqref{eq:bidegreeproj},
+combined with the finite cut formula \eqref{eq:wordcut}, is a particularly
+compact answer to the request for \emph{all} terms: there are no unspecified
+coefficients or auxiliary recurrences.
+
+\subsection{Symmetries, associativity, and functoriality}
+\begin{proposition}\label{prop:symmetry}
+As universal formal series, with $T$ a third letter,
+\begin{align}
+ Z(Y,X)&=-Z(-X,-Y),\label{eq:swap}\\
+ Z_n(Y,X)&=(-1)^{n+1}Z_n(X,Y),\label{eq:parity}\\
+ \rev\bigl(Z_n(X,Y)\bigr)&=(-1)^{n+1}Z_n(X,Y),
+ \qquad\text{that is,}\qquad c(\rev w)=(-1)^{|w|+1}c(w),\label{eq:reversal}\\
+ Z\bigl(Z(X,Y),T\bigr)&=Z\bigl(X,Z(Y,T)\bigr),\label{eq:assoc}\\
+ Z(X,0)&=Z(0,X)=X,\qquad Z(X,-X)=0.\label{eq:unitinverse}
+\end{align}
+Here $\rev$ reverses every word. Moreover, every Lie-algebra homomorphism
+$f:\g\to\h$ satisfies $f(Z_n(x,y))=Z_n(fx,fy)$ for all $n$, and hence
+commutes with the BCH series wherever formal substitution or analytic
+convergence is valid.
+\end{proposition}
+\begin{proof}
+Taking inverses in $e^{-X}e^{-Y}=e^{Z(-X,-Y)}$ gives
+$e^Ye^X=(e^{Z(-X,-Y)})^{-1}=e^{-Z(-X,-Y)}$, using $(e^A)^{-1}=e^{-A}$ from
+\cref{lem:explog}. Since also $e^Ye^X=e^{Z(Y,X)}$, uniqueness of the formal
+logarithm gives \eqref{eq:swap}. Replacing $(X,Y)$ by $(-X,-Y)$ multiplies
+the degree-$n$ part by $(-1)^n$, so comparing homogeneous parts in
+\eqref{eq:swap} gives \eqref{eq:parity}. Word reversal $\rev$ is an
+antiautomorphism of $\widehat T$: $\rev(uv)=\rev(v)\rev(u)$. It fixes $X$
+and $Y$, hence $\rev(e^X)=e^X$, $\rev(e^Y)=e^Y$, and
+$\rev(e^Xe^Y)=e^Ye^X$. Because $\rev$ is linear, continuous, and
+multiplicative on powers of a single element, it commutes with the
+logarithm series: $\rev(\log(1+U))=\log(1+\rev U)$. Therefore
+$\rev(Z(X,Y))=\log(e^Ye^X)=Z(Y,X)$, and \eqref{eq:parity} gives
+\eqref{eq:reversal}; the coefficient statement is its coordinate form.
+
+For \eqref{eq:assoc}, work in the completion of the free algebra on three
+letters $X,Y,T$. Both sides exponentiate to $e^Xe^Ye^T$: the left side
+because $e^{Z(Z(X,Y),T)}=e^{Z(X,Y)}e^T=e^Xe^Ye^T$, the right side
+similarly; here we use that $Z(A,B)$ for positive-degree $A,B$ is defined
+by substitution into the universal series and satisfies $e^{Z(A,B)}=e^Ae^B$
+by the substitution homomorphism. Uniqueness of the logarithm proves
+\eqref{eq:assoc}. The identities \eqref{eq:unitinverse} follow in the same
+way from $e^Xe^0=e^X$ and $e^Xe^{-X}=1$.
+
+A Lie homomorphism $f$ preserves every iterated bracket, hence every
+right-nested bracket $R(w)$ evaluated at $(x,y)$, hence every $Z_n$ by
+\eqref{eq:dynkinword}. In a convergent analytic setting a continuous linear
+map preserves the limit of the series; a linear map between
+finite-dimensional spaces is automatically continuous.
+\end{proof}
+Both the swap symmetry and the reversal symmetry provide useful independent
+checks on large coefficient tables, and they are used as such in
+\cref{sec:computation}.
+
+\subsection{Every term through degree six}
+With the right-nesting convention \eqref{eq:rightbracket}, the terms printed
+on the source page are exactly
+\begin{align}
+ Z_1={}&X+Y,\label{eq:z1}\\
+ Z_2={}&\tfrac12\Rb{XY}=\tfrac12[X,Y],\label{eq:z2}\\
+ Z_3={}&\tfrac1{12}\bigl(\Rb{XXY}+\Rb{YYX}\bigr)
+       =\tfrac1{12}[X,[X,Y]]+\tfrac1{12}[Y,[Y,X]],\label{eq:z3}\\
+ Z_4={}&-\tfrac1{24}\Rb{YXXY}=-\tfrac1{24}[Y,[X,[X,Y]]],\label{eq:z4}\\
+ Z_5={}&-\tfrac1{720}\bigl(\Rb{YYYYX}+\Rb{XXXXY}\bigr)
+       +\tfrac1{360}\bigl(\Rb{XYYYX}+\Rb{YXXXY}\bigr)
+       \notag\\
+     &+\tfrac1{120}\bigl(\Rb{YXYXY}+\Rb{XYXYX}\bigr),\label{eq:z5}\\
+ Z_6={}&\tfrac1{240}\Rb{XYXYXY}
+       +\tfrac1{720}\bigl(\Rb{XYXXXY}-\Rb{XXYYXY}\bigr)
+       \notag\\
+     &+\tfrac1{1440}\bigl(\Rb{XYYYXY}-\Rb{XXYXXY}\bigr).\label{eq:z6}
+\end{align}
+For example $\Rb{XYXXXY}=[X,[Y,[X,[X,[X,Y]]]]]$. There is no omitted term
+of any of these degrees; equations \eqref{eq:wordcut} and
+\eqref{eq:dynkin} define every subsequent degree.
+
+For direct comparison with associative matrix multiplication, the first
+four degrees are
+\begin{align}
+ Z_2={}&\tfrac12(XY-YX),\label{eq:assoc2}\\
+ Z_3={}&\tfrac1{12}\bigl(X^2Y+XY^2-2XYX+Y^2X+YX^2-2YXY\bigr),\label{eq:assoc3}\\
+ Z_4={}&\tfrac1{24}\bigl(X^2Y^2-2XYXY-Y^2X^2+2YXYX\bigr).\label{eq:assoc4}
+\end{align}
+
+To turn displayed brackets into word coefficients we use the following
+explicit expansion. For $w=a_1\cdots a_n$ and a subset
+$S\subseteq\{1,\ldots,n-1\}$, let $w_S$ be the subword of $a_1\cdots a_{n-1}$
+at the positions in $S$ and $w_{S^c}$ the subword at the remaining positions
+of $\{1,\ldots,n-1\}$. Then
+\begin{equation}\label{eq:bracketexpand}
+ R(w)=\sum_{S\subseteq\{1,\ldots,n-1\}}(-1)^{n-1-|S|}\,w_S\,a_n\,\rev(w_{S^c}).
+\end{equation}
+\begin{proof}[Proof of \eqref{eq:bracketexpand}]
+Induct on $n$; the case $n=1$ reads $R(a_1)=a_1$. For $n\geq2$,
+$R(w)=a_1R(a_2\cdots a_n)-R(a_2\cdots a_n)a_1$. By the induction hypothesis
+each term of $R(a_2\cdots a_n)$ has the form
+$\pm(\text{subword of }a_2\cdots a_{n-1})\,a_n\,(\text{reversed complementary
+subword})$. Placing $a_1$ on the left adds position $1$ to $S$ and keeps the
+sign; placing $a_1$ on the right, with a minus sign, appends $a_1$ at the end
+of the reversed complement, which is exactly where position $1$ belongs in
+$\rev(w_{S^c})$ when $1\notin S$, and changes the sign, matching the factor
+$(-1)^{n-1-|S|}$ because $|S^c|$ has increased by one.
+\end{proof}
+
+\begin{proposition}\label{prop:lowdegree}
+Equations \eqref{eq:z1}--\eqref{eq:z6} are the homogeneous components of
+degrees one through six of $Z(X,Y)$, and \eqref{eq:assoc2}--\eqref{eq:assoc4}
+are their associative expansions.
+\end{proposition}
+\begin{proof}
+Degree one is \cref{thm:formalbch}. For degree two, \eqref{eq:wordcut}
+gives $c(XY)=\tfrac12$ and $c(YX)=-\tfrac12$, while
+$c(XX)=a(XX)-\tfrac12a(X)a(X)=\tfrac12-\tfrac12=0$ and likewise
+$c(YY)=0$. Hence $Z_2=\tfrac12(XY-YX)=\tfrac12[X,Y]$, which is
+\eqref{eq:z2} and \eqref{eq:assoc2}.
+
+For degree three the cut formula gives the following values. For $XXY$ we
+computed $\tfrac1{12}$; by reversal symmetry \eqref{eq:reversal} with the
+sign $(-1)^{4}=+1$, $c(YXX)=\tfrac1{12}$, and by swap symmetry
+\eqref{eq:parity}, $c(YYX)=c(XYY)=\tfrac1{12}$. For $XYX$ we computed
+$-\tfrac16$, and by swap, $c(YXY)=-\tfrac16$. For $XXX$: the one-piece
+contribution is $\tfrac16$, the two cuts contribute
+$-\tfrac12(\tfrac12+\tfrac12)=-\tfrac12$, and the three-piece cut
+contributes $\tfrac13$; the sum is zero, and likewise $c(YYY)=0$. Thus
+\[
+ Z_3=\tfrac1{12}\bigl(XXY+YXX+YYX+XYY-2XYX-2YXY\bigr),
+\]
+which is \eqref{eq:assoc3}. On the other hand, expanding the brackets,
+\[
+ [X,[X,Y]]=X^2Y-2XYX+YX^2,\qquad
+ [Y,[Y,X]]=Y^2X-2YXY+XY^2,
+\]
+and $\tfrac1{12}$ times their sum is the same polynomial. This proves
+\eqref{eq:z3}.
+
+For degree four, direct evaluation of \eqref{eq:wordcut} on the sixteen
+words gives nonzero values only for
+\[
+ c(XXYY)=\tfrac1{24},\quad c(XYXY)=-\tfrac1{12},\quad
+ c(YXYX)=\tfrac1{12},\quad c(YYXX)=-\tfrac1{24},
+\]
+and zero on the remaining twelve words. We verify one representative of
+each type. For $XXYY$: one piece gives $a(XXYY)=\tfrac14$; the three
+two-piece cuts $X\mid XYY,\ XX\mid YY,\ XXY\mid Y$ give
+$-\tfrac12(\tfrac12+\tfrac14+\tfrac12)=-\tfrac58$; the three three-piece cuts
+$X\mid X\mid YY,\ X\mid XY\mid Y,\ XX\mid Y\mid Y$ give
+$\tfrac13(\tfrac12+1+\tfrac12)=\tfrac23$; the four-piece cut gives
+$-\tfrac14$; the sum is $\tfrac14-\tfrac58+\tfrac23-\tfrac14=\tfrac1{24}$.
+For $XYXY$: one piece gives $0$; two-piece cuts $X\mid YXY$ ($0$),
+$XY\mid XY$ ($1$), $XYX\mid Y$ ($0$) give $-\tfrac12$; three-piece cuts
+$X\mid Y\mid XY$, $X\mid YX\mid Y$, $XY\mid X\mid Y$ give
+$\tfrac13(1+0+1)=\tfrac23$; four pieces give $-\tfrac14$; the sum is
+$-\tfrac12+\tfrac23-\tfrac14=-\tfrac1{12}$. The values at $YYXX$ and $YXYX$
+follow by reversal symmetry with sign $(-1)^5=-1$. For a word with zero
+coefficient, take $XXXY$: one piece gives $a(XXXY)=\tfrac16$; the two-piece
+cuts $X\mid XXY$, $XX\mid XY$, $XXX\mid Y$ give
+$-\tfrac12(\tfrac12+\tfrac12+\tfrac16)=-\tfrac7{12}$; the three-piece cuts
+$X\mid X\mid XY$ ($1$), $X\mid XX\mid Y$ ($\tfrac12$), $XX\mid X\mid Y$
+($\tfrac12$) give $\tfrac13\cdot2=\tfrac23$; four pieces give $-\tfrac14$;
+the sum is $\tfrac16-\tfrac7{12}+\tfrac23-\tfrac14=0$. The
+remaining zero coefficients are checked in the same way; the eleven other
+words are $XXXX$, $YYYY$, $XXYX$, $XYXX$, $YXXX$, $XYYY$, $YXYY$, $YYXY$,
+$YYYX$, $XYYX$, $YXXY$, and each cut sum vanishes (for the last two, for
+example, the contributions are $0-\tfrac12(0+0+\tfrac12)+\tfrac13(0+\tfrac12+1)
+-\tfrac14=0$ and $0-\tfrac12(\tfrac12+0+0)+\tfrac13(1+\tfrac12+0)-\tfrac14=0$,
+the cuts being listed from left to right by the position of the first break).
+Thus \eqref{eq:assoc4} holds. Expanding the bracket,
+\[
+ [Y,[X,[X,Y]]]=[Y,\,X^2Y-2XYX+YX^2]
+ =2XYXY-2YXYX+Y^2X^2-X^2Y^2,
+\]
+and $-\tfrac1{24}$ times this is \eqref{eq:assoc4}. This proves
+\eqref{eq:z4}.
+
+For degrees five and six we give a finite coefficientwise certificate.
+Expand each right-nested bracket in \eqref{eq:z5} and \eqref{eq:z6} by
+\eqref{eq:bracketexpand} and collect the coefficient of every word $w$ of
+length five or six. Independently, evaluate the finite cut sum
+\eqref{eq:wordcut} for every such word. \Cref{app:tables} prints all nonzero
+values of $c(w)$ through degree six (there are $30$ nonzero coefficients in
+degree five and $28$ in degree six), and both computations give zero on
+every word absent from the table. Thus the two polynomials agree in every
+one of the $32$ and $64$ coordinates respectively. An equality of
+noncommutative polynomials is fully determined by these word coefficients,
+so the displayed formulas are identities in the free associative algebra,
+hence in every associative specialization. The accompanying exact-arithmetic
+program performs this comparison, including the zero coefficients, and
+additionally recomputes both sides from the differential recursions of
+\cref{sec:integral}.
+\end{proof}
+These displays do not select a linearly independent basis of the free Lie
+algebra; for instance $[X,[Y,[X,Y]]]=[Y,[X,[X,Y]]]$, since the difference is
+$[[X,Y],[X,Y]]=0$ by \eqref{eq:derivation}. The coefficient of $X^4Y$ in
+$Z_5$ is $-\tfrac1{720}=B_4^+/4!$, and that of $X^5Y$ in $Z_6$ is
+$0=B_5^+/5!$, as the single-$Y$ Bernoulli coefficients of
+\cref{cor:linearY} predict.

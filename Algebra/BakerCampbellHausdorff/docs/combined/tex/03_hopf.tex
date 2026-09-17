@@ -1,0 +1,290 @@
+\section{Hopf structure, primitive elements, and why the logarithm is a Lie series}\label{sec:hopf}
+We prove the primitive-element characterization used by the source page
+rather than treating it as a black box. The proof simultaneously constructs
+the projection that produces Dynkin's formula.
+
+\subsection{The coproduct must take values in a completion}
+The relevant target of the coproduct on infinite series is the
+\emph{completed} tensor product
+\[
+ \widehat T\ot\widehat T
+ =\prod_{n\geq0}\bigoplus_{p+q=n}V^{\otimes p}\otimes V^{\otimes q},
+\]
+with multiplication and infinite sums interpreted by total degree exactly as
+in $\widehat T$. The ordinary algebraic tensor product
+$\widehat T\otimes\widehat T$ is generally too small: we show in
+\cref{app:pbw} that already the coproduct of the one-variable series
+$\sum_{n\geq0}X^n$ is not a finite sum of separated tensors. Define the
+continuous algebra homomorphism
+\begin{equation}\label{eq:coproduct}
+ \Delta:\widehat T\longrightarrow\widehat T\ot\widehat T,
+ \qquad
+ \Delta X=X\otimes1+1\otimes X,\quad
+ \Delta Y=Y\otimes1+1\otimes Y.
+\end{equation}
+Since $\widehat T$ is the completion of the free algebra on $X,Y$, an
+algebra homomorphism on $T(V)$ is determined freely by the images of $X$ and
+$Y$; and because $\Delta$ raises neither total degree nor lowers it, it
+extends uniquely by continuity to $\widehat T$. For a word
+$w=a_1\cdots a_n$ and a subset $I\subseteq\{1,\ldots,n\}$ let $w_I$ be the
+subword formed by the letters at the positions in $I$, in their original
+order, with $w_\varnothing=1$. Then
+\begin{equation}\label{eq:unshuffle}
+ \Delta w=\sum_{I\subseteq\{1,\ldots,n\}}w_I\otimes w_{I^c}.
+\end{equation}
+This \emph{unshuffle} formula follows by multiplying out the $n$ factors
+$a_j\otimes1+1\otimes a_j$: each choice of one term from each factor
+assigns every letter to the left or right tensor factor, the letters
+assigned to the left concatenate in their original order to $w_I$, and those
+assigned to the right concatenate to $w_{I^c}$. Coassociativity,
+$(\Delta\otimes\id)\Delta=(\id\otimes\Delta)\Delta$, follows in the same way:
+either iterated coproduct assigns each letter independently to one of three
+tensor factors, and the resulting sum over assignments does not depend on
+the order in which the two splittings are performed. The counit
+$\eps:\widehat T\to\kk$ extracts the constant term; the identities
+$(\eps\otimes\id)\Delta=\id=(\id\otimes\eps)\Delta$ hold on words by
+\eqref{eq:unshuffle}, since the only term with $w_I=1$ is $I=\varnothing$.
+
+Define the antipode on words by
+\begin{equation}\label{eq:antipode}
+ S(a_1\cdots a_n)=(-1)^n a_n\cdots a_1,\qquad S(1)=1,
+\end{equation}
+extended linearly and continuously. It is an antiautomorphism:
+$S(uv)=S(v)S(u)$, since reversing a concatenation reverses the factors in
+the opposite order and the signs multiply. For linear maps $f,g$ on
+$\widehat T$ the \emph{convolution} is $f*g=m(f\otimes g)\Delta$, where $m$
+is multiplication; by coassociativity convolution is associative, with unit
+$\eta\eps$, where $\eta$ inserts scalars.
+
+\begin{lemma}[Antipode identities]\label{lem:antipode}
+$\id*S=S*\id=\eta\eps$, that is, for every word $w$,
+\begin{equation}\label{eq:antipodeidentities}
+ m(\id\otimes S)\Delta w=m(S\otimes\id)\Delta w=\eps(w)1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $\Delta v=\sum v_{(1)}\otimes v_{(2)}$ in the finite notation of
+\eqref{eq:unshuffle} and put $K(v)=\sum v_{(1)}S(v_{(2)})$. For a letter $a$
+and a word $v$, the unshuffle formula for $av$ splits according to whether
+the first letter is assigned to the left or the right factor:
+\[
+ \Delta(av)=\sum av_{(1)}\otimes v_{(2)}+\sum v_{(1)}\otimes av_{(2)}.
+\]
+Using $S(av_{(2)})=-S(v_{(2)})a$ we obtain
+\[
+ K(av)=a\sum v_{(1)}S(v_{(2)})-\sum v_{(1)}S(v_{(2)})a=aK(v)-K(v)a.
+\]
+Since $K(1)=1\cdot S(1)=1$, we get $K(a)=a-a=0$ for every letter, and then
+inductively $K(w)=0$ for every nonempty word. This proves the first identity.
+For the second, put $K'(v)=\sum S(v_{(1)})v_{(2)}$ and split the coproduct of
+$va$ according to the position of the last letter $a$:
+$\Delta(va)=\sum v_{(1)}a\otimes v_{(2)}+\sum v_{(1)}\otimes v_{(2)}a$, whence
+$K'(va)=-aK'(v)+K'(v)a$, and the same induction applies.
+\end{proof}
+Thus $T(V)$, and continuously its completion, carries the asserted Hopf
+algebra structure, with no appeal to an external structure theorem.
+
+\begin{definition}
+A series $P\in\widehat T$ is \emph{primitive} if
+$\Delta P=P\otimes1+1\otimes P$. A series $G\in1+F^1\widehat T$ is
+\emph{group-like} if $\Delta G=G\otimes G$.
+\end{definition}
+The normalization of the constant term is part of the definition of a
+group-like element: the zero series satisfies $\Delta0=0\otimes0$ but does not
+belong to a group. A primitive element has zero constant term, since a
+primitive scalar $c$ would satisfy $c\otimes1=2c\otimes1$.
+
+\begin{lemma}[Exponentials of primitives]\label{lem:grouplike}
+Let $P\in F^1\widehat T$. Then $P$ is primitive if and only if $e^P$ is
+group-like. The group-like elements form a group under multiplication.
+\end{lemma}
+\begin{proof}
+Since $\Delta$ is a continuous algebra homomorphism, it commutes with the
+exponential series: $\Delta(e^P)=e^{\Delta P}$. If $P$ is primitive, then
+$\Delta P=P\otimes1+1\otimes P$ is a sum of two commuting elements, because
+$(P\otimes1)(1\otimes P)=P\otimes P=(1\otimes P)(P\otimes1)$. By
+\cref{lem:explog} applied in $\widehat T\ot\widehat T$,
+\[
+ \Delta(e^P)=e^{P\otimes1+1\otimes P}=e^{P\otimes1}e^{1\otimes P}
+ =(e^P\otimes1)(1\otimes e^P)=e^P\otimes e^P.
+\]
+Conversely, if $G=e^P$ is group-like, then
+$\Delta G=G\otimes G=(G\otimes1)(1\otimes G)$ is a product of two commuting
+elements of $1+F^1(\widehat T\ot\widehat T)$, and the commuting-logarithm
+rule of \cref{lem:explog} gives
+\[
+ \Delta P=\log(\Delta G)=\log(G\otimes1)+\log(1\otimes G)
+ =P\otimes1+1\otimes P,
+\]
+where $\log(G\otimes1)=(\log G)\otimes1$ because $A\mapsto A\otimes1$ is a
+continuous algebra homomorphism. Finally, if $G,H$ are group-like then
+$\Delta(GH)=(G\otimes G)(H\otimes H)=GH\otimes GH$, and $G$ is invertible by
+its geometric series, with
+$\Delta(G^{-1})=(\Delta G)^{-1}=(G\otimes G)^{-1}=G^{-1}\otimes G^{-1}$.
+\end{proof}
+
+\subsection{An explicit projection: the Dynkin--Specht--Wever identity}
+Let $N$ be the degree operator, $N(w)=|w|\,w$ and $N(1)=0$. It is a
+derivation of $T(V)$, because degrees add under concatenation. Consider the
+convolution
+\begin{equation}\label{eq:dynkinoperator}
+ D=N*S=m(N\otimes S)\Delta.
+\end{equation}
+The order of the two convolution factors is what produces
+\emph{right}-nested rather than left-nested brackets.
+
+\begin{lemma}[Right Dynkin operator]\label{lem:dsw}
+For every nonempty word $w$, $D(w)=R(w)$. If $P$ is a homogeneous primitive
+element of degree $n\geq1$, then
+\begin{equation}\label{eq:dsw}
+ R(P)=D(P)=nP,\qquad\text{that is,}\qquad
+ P=\frac1n\sum_{|w|=n}\coeff{w}P\,R(w).
+\end{equation}
+\end{lemma}
+\begin{proof}
+From the definitions, $D(1)=N(1)S(1)=0$ and, for a letter $a$,
+$D(a)=N(a)S(1)+N(1)S(a)=a$. Let $a$ be a letter and $w$ a nonempty word, and
+split $\Delta(aw)$ as in the proof of \cref{lem:antipode}:
+$\Delta(aw)=\sum aw_{(1)}\otimes w_{(2)}+\sum w_{(1)}\otimes aw_{(2)}$.
+Using $N(aw_{(1)})=aw_{(1)}+aN(w_{(1)})$ (derivation property with
+$N(a)=a$) and $S(aw_{(2)})=-S(w_{(2)})a$, we get
+\begin{align*}
+ D(aw)
+ &=\sum aw_{(1)}S(w_{(2)})+\sum aN(w_{(1)})S(w_{(2)})
+   -\sum N(w_{(1)})S(w_{(2)})a\\
+ &=aK(w)+aD(w)-D(w)a,
+\end{align*}
+where $K(w)=\sum w_{(1)}S(w_{(2)})=\eps(w)1=0$ for nonempty $w$ by
+\cref{lem:antipode}. Hence $D(aw)=[a,D(w)]$, and induction on the length
+starting from $D(a)=a$ gives $D(a_1\cdots a_n)=[a_1,D(a_2\cdots a_n)]
+=\cdots=R(a_1\cdots a_n)$.
+
+If $P$ is homogeneous primitive of degree $n$, then its coproduct has only
+the two terms $P\otimes1$ and $1\otimes P$, and
+\[
+ D(P)=m(N\otimes S)(P\otimes1+1\otimes P)=N(P)S(1)+N(1)S(P)=nP+0.
+\]
+Since $D$ is linear and $D(w)=R(w)$ on words, $D(P)=\sum_w\coeff{w}P\,R(w)$,
+which gives the second form of \eqref{eq:dsw} after division by $n$.
+\end{proof}
+
+Let $\cL=\cL(X,Y)\subseteq T(V)$ be the Lie subalgebra generated by $X,Y$
+under the commutator bracket, and $\cL_n=\cL\cap V^{\otimes n}$. Since
+$X,Y$ are homogeneous, $\cL$ is spanned by homogeneous bracket monomials, so
+$\cL=\bigoplus_n\cL_n$; we write $\widehat\cL=\prod_{n\geq1}\cL_n$.
+
+\begin{theorem}[Friedrichs' characterization; Dynkin--Specht--Wever]\label{thm:friedrichs}
+A homogeneous element $P\in V^{\otimes n}$, $n\geq1$, is primitive if and
+only if $P\in\cL_n$. For such $P$, \eqref{eq:dsw} holds, so $D/n$ is an
+idempotent projection of $V^{\otimes n}$ onto $\cL_n$ whose kernel consists
+of the degree-$n$ elements annihilated by $D$. The primitive elements of
+$\widehat T$ are exactly the elements of $\widehat\cL$, the formal
+degreewise sums of Lie polynomials:
+\begin{equation}\label{eq:friedrichs}
+ \Prim(\widehat T)=\prod_{n\geq1}\cL_n.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The generators $X,Y$ are primitive by definition of $\Delta$. If $P,Q$ are
+primitive, then
+\[
+ \Delta[P,Q]=[\Delta P,\Delta Q]
+ =[P\otimes1+1\otimes P,\ Q\otimes1+1\otimes Q]
+ =[P,Q]\otimes1+1\otimes[P,Q],
+\]
+because the mixed terms cancel: $(P\otimes1)(1\otimes Q)=P\otimes Q
+=(1\otimes Q)(P\otimes1)$, and similarly with $P$ and $Q$ interchanged.
+Hence every bracket monomial in $X,Y$ is primitive, every Lie polynomial is
+primitive by linearity, and every degreewise-convergent sum of Lie
+polynomials is primitive by continuity of $\Delta$.
+
+Conversely, let $P\in\widehat T$ be primitive. Its constant term vanishes,
+as noted above. Since $\Delta$ preserves total degree, comparing the
+degree-$n$ parts of $\Delta P=P\otimes1+1\otimes P$ shows that each
+homogeneous component $P_n$ is primitive. By \cref{lem:dsw},
+$P_n=\frac1n\sum_{|w|=n}\coeff{w}P_n\,R(w)$ is a linear combination of
+right-nested brackets, hence an element of $\cL_n$. Division by $n$ is
+exactly where characteristic zero is used. This proves the homogeneous
+characterization and \eqref{eq:friedrichs}.
+
+Finally, since $D$ always takes values in $\cL$ (its value on any word is a
+nested bracket) and every element of $\cL_n$ is primitive with $D(P)=nP$,
+we have $D(D(Q))=nD(Q)$ for every $Q\in V^{\otimes n}$; so $D/n$ is
+idempotent with image $\cL_n$.
+\end{proof}
+
+\begin{theorem}[Formal BCH theorem]\label{thm:formalbch}
+There is a unique $Z\in F^1\widehat T$ with $e^Z=e^Xe^Y$. Every homogeneous
+component $Z_n$ is a Lie polynomial with rational coefficients, $Z_1=X+Y$,
+and $Z-X-Y$ belongs degreewise to the Lie ideal of $\cL$ generated by
+$[X,Y]$.
+\end{theorem}
+\begin{proof}
+Existence and uniqueness follow from \cref{lem:explog}. Since $X$ and $Y$
+are primitive, $e^X$ and $e^Y$ are group-like by \cref{lem:grouplike}, their
+product $e^Xe^Y$ is group-like because group-like elements form a group, and
+$Z=\log(e^Xe^Y)$ is primitive by \cref{lem:grouplike} again. By
+\cref{thm:friedrichs} each $Z_n$ lies in $\cL_n$. Rationality follows from
+\eqref{eq:wordcut}, whose ingredients are factorials and the coefficients
+$(-1)^{k-1}/k$. Taking degree one in \eqref{eq:blocks} gives $Z_1=X+Y$.
+
+For the ideal assertion, let $J$ be the Lie ideal of $\cL$ generated by
+$[X,Y]$, and consider the quotient Lie algebra $\cL/J$. Its two generators
+commute, so every bracket of length at least two of elements of $\cL/J$
+vanishes and $\cL/J$ is abelian. Alternatively and more concretely: a
+right-nested bracket $R(w)$ with $|w|\geq2$ has innermost bracket
+$[a_{n-1},a_n]$, which is either zero or $\pm[X,Y]$, and an iterated bracket
+whose innermost factor lies in the ideal $J$ lies in $J$; since each $Z_n$
+with $n\geq2$ is a combination of such brackets by \eqref{eq:dsw}, it lies
+in $J$.
+\end{proof}
+The phrase ``every term beyond $X+Y$ contains $[X,Y]$'' is thus an
+ideal-theoretic statement; it does not mean that an arbitrary display of
+$Z_n$ must visibly show $[X,Y]$ as the innermost bracket of every summand.
+
+\subsection{Universality and enveloping algebras}\label{sec:universal}
+A homogeneous Lie polynomial can be evaluated at any pair of elements of any
+Lie algebra $\g$ over $\kk$. The identification of $\cL(X,Y)$ with the
+abstract free Lie algebra, and the fact that the free associative algebra is
+its universal enveloping algebra, rest on the injectivity of $\g\to U(\g)$,
+which is proved in \cref{app:pbw} by the ordered Poincar\'e--Birkhoff--Witt
+theorem (\cref{thm:pbw}). The argument is as follows. Given $x,y\in\g$, the
+associative homomorphism $T(V)\to U(\g)$ determined by $X\mapsto x$,
+$Y\mapsto y$ sends every iterated commutator of $X,Y$ to the corresponding
+iterated bracket of $x,y$, which lies in the image of $\g$. Its restriction
+to $\cL$ is therefore a Lie homomorphism $\cL\to\g$, and it is the unique
+one sending $X,Y$ to $x,y$ because $X,Y$ generate $\cL$. This is exactly the
+universal property of the free Lie algebra. Consequently an associative
+polynomial identity between Lie polynomials in $X,Y$, verified as an
+equality of word coefficients in $T(V)$, is an identity valid under
+substitution in \emph{every} Lie algebra.
+
+\begin{proposition}[Enveloping algebra of the free Lie algebra]\label{prop:enveloping}
+The universal enveloping algebra of $\cL(X,Y)$ is canonically $T(V)$, and
+the Hopf structure of \cref{sec:hopf} is the enveloping Hopf structure
+determined by $\Delta u=u\otimes1+1\otimes u$, $\eps(u)=0$, $S(u)=-u$ for
+$u\in\cL$. The same formulas define a Hopf algebra structure on $U(\g)$ for
+every Lie algebra $\g$.
+\end{proposition}
+\begin{proof}
+The inclusion $\cL\to T(V)$ is a Lie homomorphism into the commutator
+algebra of $T(V)$, so by the universal property of $U(\cL)$ it extends to an
+associative homomorphism $\alpha:U(\cL)\to T(V)$. The assignment
+$X\mapsto X$, $Y\mapsto Y$ into $U(\cL)$ extends, by freeness of $T(V)$, to
+an associative homomorphism $\beta:T(V)\to U(\cL)$. Both composites
+$\alpha\beta$ and $\beta\alpha$ fix $X$ and $Y$; since $X,Y$ generate
+$T(V)$ as an algebra and generate $U(\cL)$ as an algebra (because they
+generate $\cL$ as a Lie algebra and $\cL$ generates $U(\cL)$), both
+composites are identities. The Hopf assertion for general $\g$ is proved in
+\cref{app:pbw}; on generators the two structures agree, and each is
+determined by its values on generators.
+\end{proof}
+For an arbitrary Lie algebra $\g$ without a topology, the unambiguous
+universal statement is
+\[
+ \BCH(tx,ty)=\sum_{n\geq1}t^nZ_n(x,y)\in t\,\g[[t]],
+\]
+obtained by evaluating in $U(\g)[[t]]$. An infinite sum at $t=1$ in the
+untopologized vector space $\g$ has no meaning until nilpotence
+(\cref{sec:nilpotent}), a complete filtration, or a convergence argument
+(\cref{sec:convergence}) has been supplied.

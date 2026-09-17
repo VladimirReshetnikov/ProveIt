@@ -1,0 +1,450 @@
+\section{The integral formula and every order in either variable}\label{sec:integral}
+\subsection{The differential equation and the Poincar\'e integral}
+\begin{theorem}[Logarithmic differential equation]\label{thm:ode}
+In the degree completion, and analytically for $X,Y$ in a sufficiently
+small neighborhood of $(0,0)$ in a Banach algebra or a finite-dimensional
+Lie algebra, the function $Z(t)=\BCH(X,tY)=\log(e^Xe^{tY})$ is
+characterized by
+\begin{equation}\label{eq:ode}
+ Z'(t)=\beta(\ad_{Z(t)})Y,\qquad Z(0)=X.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $G(t)=e^Xe^{tY}$. Its left logarithmic derivative is
+$G^{-1}G'=e^{-tY}e^{-X}e^Xe^{tY}Y=Y$. Since $G(t)=e^{Z(t)}$,
+\eqref{eq:leftdexp} gives $G^{-1}G'=\phi(\ad_{Z})Z'$, hence
+$\phi(\ad_Z)Z'=Y$. Formally, $\ad_Z$ raises total degree in $X,Y$, so
+$\beta(\ad_Z)=\sum_n\bplus{n}\ad_Z^n$ is a well-defined operator on
+$\widehat T$ and $\beta(\ad_Z)\phi(\ad_Z)=\id$ because $\beta\phi=1$ as
+scalar power series. Applying $\beta(\ad_Z)$ to both sides gives
+\eqref{eq:ode}; $Z(0)=\log e^X=X$. Analytically, for $Z$ small
+$\norm{\ad_Z}\leq2\norm Z<2\pi$ and $\phi(\ad_Z)$ is invertible with inverse
+$\beta(\ad_Z)$ given by its convergent Taylor series, so the same
+manipulation is valid; in a finite-dimensional Lie algebra the intrinsic
+version of \eqref{eq:leftdexp} proved in \cref{sec:liegroups} is used.
+
+Conversely, if $Z(t)$ solves \eqref{eq:ode}, then $e^{Z(t)}$ has left
+logarithmic derivative $\phi(\ad_Z)Z'=\phi(\ad_Z)\beta(\ad_Z)Y=Y$ and
+initial value $e^X$. The equation $G'=GY$, $G(0)=e^X$, has a unique
+solution: formally, comparing coefficients of $t^n$ determines $G$
+recursively; analytically, a difference $\Delta G$ of two solutions
+satisfies $\Delta G'=\Delta G\,Y$ and $\Delta G(0)=0$, so
+$\Delta G(t)=\Delta G(0)e^{tY}=0$ (differentiate $\Delta G(t)e^{-tY}$ to
+see it is constant). Hence $e^{Z(t)}=e^Xe^{tY}$ and $Z(t)=\BCH(X,tY)$ by
+uniqueness of the formal, or of the local analytic, logarithm.
+\end{proof}
+This differential equation is a useful independent mechanism for
+constructing the BCH series: its right-hand side involves only iterated
+Lie brackets, and no appeal to the Hopf algebra structure is needed for the
+recursions derived from it below.
+
+\begin{theorem}[Poincar\'e integral formula]\label{thm:poincare}
+With the same interpretations,
+\begin{equation}\label{eq:poincare}
+ \boxed{\displaystyle
+ \BCH(X,Y)=X+\int_0^1\psi\bigl(e^{\ad_X}e^{t\ad_Y}\bigr)Y\,\dd t,\qquad
+ \psi(x)=\frac{x\log x}{x-1},}
+\end{equation}
+where $\psi$ of an operator $E$ near the identity is defined by the series
+\eqref{eq:psi} in $I-E$. In the formal setting the integral means
+termwise integration of the polynomial coefficients in $t$.
+\end{theorem}
+\begin{proof}
+By \cref{thm:campbell} and the multiplicativity of $\Ad$,
+\[
+ e^{\ad_{Z(t)}}=\Ad_{e^{Z(t)}}=\Ad_{e^Xe^{tY}}
+ =\Ad_{e^X}\Ad_{e^{tY}}=e^{\ad_X}e^{t\ad_Y}.
+\]
+Formally, $\ad_{Z(t)}$ has positive degree, so substituting it into the
+scalar identity $\psi(e^z)=\beta(z)$ of \eqref{eq:psibeta} gives
+$\psi(e^{\ad_{Z(t)}})=\beta(\ad_{Z(t)})$ as operators on $\widehat T$; here
+$\psi(e^{\ad_Z})$ is computed by substituting the positive-degree operator
+$I-e^{\ad_Z}$ into \eqref{eq:psi}. Analytically, for small $X,Y$ the
+operator $E(t)=e^{\ad_X}e^{t\ad_Y}$ satisfies $\norm{E(t)-I}<1$, its
+logarithm series converges to $\ad_{Z(t)}$ (the unique small logarithm),
+and again $\psi(E(t))=\beta(\ad_{Z(t)})$. Hence \eqref{eq:ode} reads
+$Z'(t)=\psi\bigl(e^{\ad_X}e^{t\ad_Y}\bigr)Y$, and integrating from $0$ to
+$1$ with $Z(0)=X$ and $Z(1)=\BCH(X,Y)$ gives \eqref{eq:poincare}. In the
+formal setting each fixed-degree coefficient of the integrand is a
+polynomial in $t$, so integration is termwise and no interchange of limits
+is involved.
+\end{proof}
+No invertibility of $\ad_Z$ is needed in this argument: it uses an identity
+of endomorphisms, not recovery of $Z$ from $\ad_Z$. Likewise $\psi(E)$ near
+$E=I$ is defined by its power series in $E-I$, not by multiplication by a
+nonexistent inverse of $E-I$.
+
+\subsection{An explicit all-bidegree formula without an unevaluated integral}
+Put $A=\ad_X$ and $B=\ad_Y$ and recall that $Z_{p,q}$ denotes the component
+of $Z$ with $p$ letters $X$ and $q$ letters $Y$.
+\begin{theorem}[Operator-block expansion of every bidegree]\label{thm:operatorblock}
+The full BCH series is
+\begin{equation}\label{eq:operatorblock}
+ \boxed{\displaystyle
+ Z=X+Y+\sum_{k\geq1}\frac{(-1)^{k+1}}{k(k+1)}
+ \sum_{\substack{r_i,s_i\geq0\\r_i+s_i>0\ (1\leq i\leq k)}}
+ \frac{A^{r_1}B^{s_1}\cdots A^{r_k}B^{s_k}Y}
+ {\bigl(1+\sum_is_i\bigr)\prod_ir_i!s_i!}.}
+\end{equation}
+Consequently $Z_{1,0}=X$, $Z_{0,1}=Y$, $Z_{p,0}=Z_{0,p}=0$ for $p\geq2$, and
+for $q\geq1$, $p+q\geq2$,
+\begin{equation}\label{eq:bidegree}
+ \boxed{\displaystyle
+ Z_{p,q}=\frac1q\sum_{k=1}^{p+q-1}\frac{(-1)^{k+1}}{k(k+1)}
+ \sum_{\substack{r_i,s_i\geq0,\ r_i+s_i>0\\
+                   \sum_ir_i=p,\ \sum_is_i=q-1}}
+ \frac{A^{r_1}B^{s_1}\cdots A^{r_k}B^{s_k}Y}{\prod_ir_i!s_i!}.}
+\end{equation}
+At fixed total degree all sums are finite; every summand with $s_k>0$
+vanishes, and so does every summand with $p=0$ and $k\geq1$.
+\end{theorem}
+\begin{proof}
+Set $E(t)=e^Ae^{tB}-I$. Expanding the two exponentials,
+\[
+ E(t)=\sum_{\substack{r,s\geq0\\r+s>0}}\frac{t^s}{r!s!}A^rB^s,
+\]
+so $E(t)^k$ is the sum over $k$-tuples of nonempty blocks of
+$\frac{t^{\sum s_i}}{\prod r_i!s_i!}A^{r_1}B^{s_1}\cdots A^{r_k}B^{s_k}$.
+By \eqref{eq:psi} with $1-x$ replaced by $-E(t)$,
+\[
+ \psi(I+E(t))=I-\sum_{k\geq1}\frac{(-E(t))^k}{k(k+1)}
+ =I+\sum_{k\geq1}\frac{(-1)^{k+1}}{k(k+1)}E(t)^k.
+\]
+Insert this into \eqref{eq:poincare}. The term $I$ integrates to $Y$. A
+block term carries $t^{\sum_is_i}$, whose integral over $[0,1]$ is
+$1/(1+\sum_is_i)$; since the operator is applied to a final letter $Y$, the
+number of letters $Y$ in the result is $q=1+\sum_is_i$ and the number of
+letters $X$ is $p=\sum_ir_i$. This proves \eqref{eq:operatorblock} and, on
+collecting the terms of bidegree $(p,q)$, \eqref{eq:bidegree}; the upper
+limit $k\leq p+q-1$ holds because every block has positive degree and the
+total degree of the blocks is $p+q-1$. A summand with $s_k>0$ ends with
+$BY=[Y,Y]=0$ and vanishes; if $p=0$ every block has $r_i=0$, so $s_k>0$ and
+the summand vanishes, which gives $Z_{0,q}=0$ for $q\geq2$. Finally
+$Z_{p,0}=0$ for $p\geq2$ because $\BCH(X,0)=X$ by \eqref{eq:unitinverse}.
+\end{proof}
+For example, for $(p,q)=(1,2)$ the only block tuples with
+$\sum r_i=1$, $\sum s_i=1$, and $s_k=0$ are $(B)(A)$ with $k=2$, giving
+$\frac{1}{2}\cdot\frac{-1}{6}BAY=-\frac1{12}[Y,[X,Y]]$, in agreement with
+\eqref{eq:z3}. Unlike a finite display with an unspecified remainder,
+\eqref{eq:bidegree} gives every term with three, four, or arbitrarily many
+occurrences of $Y$.
+
+\subsection{The part linear in \texorpdfstring{$Y$}{Y} and a triangular recursion}
+\begin{corollary}[All single-$Y$ terms]\label{cor:linearY}
+The complete part of $Z(X,Y)$ that is linear in $Y$ is
+\begin{equation}\label{eq:linearY}
+ \beta(\ad_X)Y=\frac{\ad_X}{1-e^{-\ad_X}}Y
+ =\frac{\ad_X}{2}\Bigl(1+\coth\frac{\ad_X}{2}\Bigr)Y
+ =Y+\tfrac12[X,Y]+\tfrac1{12}[X,[X,Y]]-\tfrac1{720}\ad_X^4Y
+   +\tfrac1{30240}\ad_X^6Y-\cdots,
+\end{equation}
+so that $Z(X,Y)=X+\beta(\ad_X)Y+O(Y^2)$, and the coefficient of $\ad_X^nY$
+is $B_n^+/n!$.
+\end{corollary}
+\begin{proof}
+Replace $Y$ by $\eps Y$ in \eqref{eq:ode}: $\frac{\dd}{\dd t}Z(X,t\eps Y)
+=\eps\beta(\ad_{Z})Y$. The coefficient of $\eps^1$ in $Z(X,\eps Y)$ is
+obtained by integrating the coefficient of $\eps^1$ on the right from
+$t=0$ to $1$; since $Z=X+O(\eps)$, that coefficient is $\beta(\ad_X)Y$.
+Alternatively, the terms with $q=1$ in \eqref{eq:bidegree} are those with
+all $s_i=0$, that is $Z_{p,1}=\sum_{k}\frac{(-1)^{k+1}}{k(k+1)}
+\sum_{r_1+\cdots+r_k=p,\ r_i\geq1}\frac{A^pY}{\prod r_i!}$, which is the
+coefficient of $z^p$ in $\psi(e^z)=\beta(z)$ expanded by \eqref{eq:psi}.
+The hyperbolic form is \eqref{eq:coth}.
+\end{proof}
+This proves both versions of the source page's linear-in-$Y$ formula. The
+quotients and the product with $\coth$ denote the regular function $\beta$;
+neither expression calls for an inverse of $\ad_X$ at zero. The remainder
+$O(Y^2)$ means membership in the subspace of terms with at least two
+occurrences of $Y$, not an unspecified bound on $\norm X$. The linear
+formula by itself is not an exact BCH formula unless a further relation
+annihilates all higher-$Y$ terms, as in \cref{thm:eigen}.
+
+The remainder can be resolved at every order. Write
+\begin{equation}\label{eq:Hqdef}
+ Z(X,\eps Y)=\sum_{q\geq0}\eps^qH_q(X;Y),\qquad H_0=X,\qquad H_1=\beta(A)Y,
+\end{equation}
+where $H_q$ is a formal series in $X$ homogeneous of degree $q$ in $Y$.
+\begin{proposition}[Triangular recursion in the number of $Y$'s]\label{prop:Hqrec}
+For every $q\geq1$,
+\begin{equation}\label{eq:Hqrec}
+ \boxed{\displaystyle
+ qH_q=\sum_{m\geq0}\bplus{m}
+ \sum_{\substack{j_1,\ldots,j_m\geq0\\j_1+\cdots+j_m=q-1}}
+ \ad_{H_{j_1}}\cdots\ad_{H_{j_m}}Y,}
+\end{equation}
+where for $m=0$ the inner term is $Y$ if $q=1$ and zero otherwise. Every
+index $j_i$ is less than $q$, and in every fixed total degree the sum is
+finite. In particular the complete quadratic part is
+\begin{equation}\label{eq:H2}
+ H_2=\frac12\sum_{m\geq1}\bplus{m}\sum_{r=0}^{m-1}A^r\bigl[H_1,A^{m-1-r}Y\bigr].
+\end{equation}
+The nonrecursive alternative is $H_q=\sum_{p\geq0}Z_{p,q}$ with
+\eqref{eq:bidegree}.
+\end{proposition}
+\begin{proof}
+Differentiate \eqref{eq:Hqdef} with respect to $\eps$. By
+\cref{thm:ode} applied to $Z(X,\eps Y)$ as a function of $\eps$,
+$\partial_\eps Z=\beta(\ad_Z)Y$. Expand
+$\ad_Z=A+\sum_{k\geq1}\eps^k\ad_{H_k}$ and each power
+$\ad_Z^m=\sum_{j_1,\ldots,j_m\geq0}\eps^{j_1+\cdots+j_m}
+\ad_{H_{j_1}}\cdots\ad_{H_{j_m}}$ without changing the order of the
+factors. The coefficient of $\eps^{q-1}$ on the right is the double sum
+in \eqref{eq:Hqrec}, and on the left it is $qH_q$. An index $j_i=q-1$
+forces all others to be zero, so only $H_j$ with $j\leq q-1$ occur. Although
+there are arbitrarily many factors $\ad_{H_0}=A$, each raises the total
+degree, so at fixed total degree only finitely many $m$ contribute. For
+$q=2$ exactly one index equals $1$ and the rest are $0$; summing over its
+position $r$ gives \eqref{eq:H2}. The last assertion is
+\cref{thm:operatorblock} summed over $p$.
+\end{proof}
+
+\subsection{A bivariate generating function for the complete quadratic term}
+\begin{theorem}[Quadratic kernel]\label{thm:kernel}
+Let
+\begin{equation}\label{eq:K}
+ K(u,v)=\frac{\beta(u)}{2u}\bigl(\beta(u+v)-\beta(v)\bigr)
+ =\sum_{p,q\geq0}k_{pq}u^pv^q,
+\end{equation}
+where the quotient is the regular divided difference
+$(\beta(u+v)-\beta(v))/u=\sum_m\bplus{m}\sum_{r=0}^{m-1}(u+v)^rv^{m-1-r}$.
+Then
+\begin{equation}\label{eq:H2kernel}
+ \boxed{\displaystyle
+ H_2=\sum_{p,q\geq0}k_{pq}\,[A^pY,A^qY],\qquad
+ k_{pq}=\frac12\sum_{a=0}^{p}\bplus{a}\,\bplus{p+q+1-a}
+ \binom{p+q+1-a}{p+1-a}.}
+\end{equation}
+Thus every coefficient of the quadratic part of $Z$ is an explicit finite
+sum of products of two Bernoulli coefficients.
+\end{theorem}
+\begin{proof}
+Define a linear map $\Phi$ from formal power series in two commuting
+variables $u,v$ to $\widehat T$ by $\Phi(u^av^b)=[A^aY,A^bY]$. By the
+derivation rule \eqref{eq:derivation},
+$A[A^aY,A^bY]=[A^{a+1}Y,A^bY]+[A^aY,A^{b+1}Y]$, that is,
+$A\,\Phi(P)=\Phi\bigl((u+v)P\bigr)$ for every series $P$, and therefore
+$A^r\Phi(P)=\Phi((u+v)^rP)$. Since $H_1=\beta(A)Y=\sum_a\bplus aA^aY$,
+\[
+ [H_1,A^{m-1-r}Y]=\sum_a\bplus a[A^aY,A^{m-1-r}Y]=\Phi\bigl(\beta(u)v^{m-1-r}\bigr).
+\]
+Hence \eqref{eq:H2} becomes
+\[
+ H_2=\frac12\sum_{m\geq1}\bplus m\sum_{r=0}^{m-1}
+ \Phi\bigl((u+v)^r\beta(u)v^{m-1-r}\bigr)
+ =\frac12\,\Phi\Bigl(\beta(u)\sum_{m\geq1}\bplus m\frac{(u+v)^m-v^m}{u}\Bigr),
+\]
+using the finite geometric identity
+$\sum_{r=0}^{m-1}(u+v)^rv^{m-1-r}=\bigl((u+v)^m-v^m\bigr)/u$. The sum over
+$m\geq1$ equals $(\beta(u+v)-\beta(v))/u$, since the $m=0$ term vanishes.
+This proves $H_2=\Phi(K)$, which is the first part of \eqref{eq:H2kernel}.
+For the coefficients, expand
+$(u+v)^m-v^m=\sum_{j\geq1}\binom mju^jv^{m-j}$, so
+\[
+ K(u,v)=\frac12\sum_{a\geq0}\bplus au^a\sum_{m\geq1}\bplus m
+ \sum_{j=1}^{m}\binom mju^{j-1}v^{m-j}.
+\]
+The coefficient of $u^pv^q$ collects the terms with $a+j-1=p$ and $m-j=q$,
+that is $j=p+1-a$ and $m=p+q+1-a$, with $0\leq a\leq p$; this is the stated
+finite sum.
+\end{proof}
+Because brackets are antisymmetric, $K$ may be replaced by its
+antisymmetrization $\frac12(K(u,v)-K(v,u))$ without changing $\Phi(K)$. For
+orientation, the first terms grouped by the number of $X$'s are
+\begin{equation}\label{eq:H2first}
+ H_2=-\frac1{12}[Y,AY]-\frac1{24}[Y,A^2Y]-\frac1{180}[Y,A^3Y]
+ -\frac1{120}[AY,A^2Y]+O_X(4),
+\end{equation}
+where $O_X(4)$ means at least four $X$'s and exactly two $Y$'s. For
+example, $k_{01}=\frac12\bplus0\bplus2\binom21=\frac1{12}$ and
+$k_{10}=\frac12\bigl(\bplus0\bplus2\binom22+\bplus1\bplus1\binom11\bigr)
+=\frac12\bigl(\frac1{12}+\frac14\bigr)=\frac16$, so the coefficient of
+$[Y,AY]$ is $k_{01}-k_{10}=-\frac1{12}$, in agreement with the term
+$\frac1{12}[Y,[Y,X]]$ of \eqref{eq:z3}. The kernel \eqref{eq:K}, not this
+short display, is the full expansion.
+
+\subsection{Analytic meaning when \texorpdfstring{$X$}{X} is not close to zero}\label{sec:regularX}
+The recursion \eqref{eq:Hqrec} is a formal identity in the total-degree
+completion. When $X$ is a fixed element of a finite-dimensional Lie algebra
+$\g$ that is not small, the Bernoulli series $\beta(\ad_X)$ may diverge
+even though the local expansion of $\log(e^Xe^{\eps Y})$ around $\eps=0$
+exists. The following finite-at-each-order replacement gives the actual
+local analytic expansion.
+
+Let $A=\ad_X$, complexified if $\g$ is real, and assume the
+\emph{regularity condition}
+\begin{equation}\label{eq:regular}
+ \spec(A)\cap\bigl(2\pi\ii\Z\setminus\{0\}\bigr)=\varnothing.
+\end{equation}
+By triangularization the eigenvalues of $\phi(A)$ are the values
+$\phi(\lambda)$ at the eigenvalues $\lambda$ of $A$, and $\phi$ vanishes
+exactly at $2\pi\ii\Z\setminus\{0\}$; so \eqref{eq:regular} holds if and
+only if $\phi(A)$ is invertible (see \cref{prop:coframe} for the detailed
+argument). Then $\beta(A)$ \emph{means} the inverse $\phi(A)^{-1}$, which
+by holomorphic functional calculus equals
+$\frac1{2\pi\ii}\oint_\Gamma\beta(z)(zI-A)^{-1}\dd z$ for any finite union
+$\Gamma$ of positively oriented contours enclosing $\spec(A)$ and avoiding
+the poles of $\beta$; it is not necessarily the Taylor series at zero.
+Since $(\dd\exp)_X(H)=e^X\phi(A)H$ by \eqref{eq:leftdexp} (in a Lie group,
+by the intrinsic version in \cref{sec:liegroups}), the differential of the
+exponential at $X$ is invertible, and the inverse function theorem provides
+an exponential chart centered at $X$; thus $\log(e^Xe^{\eps Y})$ has a
+unique analytic branch $Z(\eps)$ with $Z(0)=X$ for $|\eps|$ small, and it
+satisfies \eqref{eq:ode} in the form $Z'(\eps)=\phi(\ad_{Z(\eps)})^{-1}Y$.
+
+For operators $E_1,\ldots,E_m$ on $\g_\C$ define
+\begin{equation}\label{eq:frechet}
+ T_m(A)[E_1,\ldots,E_m]
+ =\frac1{2\pi\ii}\oint_\Gamma\beta(z)\,R(z)E_1R(z)E_2\cdots E_mR(z)\,\dd z,
+ \qquad R(z)=(zI-A)^{-1}.
+\end{equation}
+The symmetrization $\sum_{\pi\in S_m}T_m(A)[E_{\pi(1)},\ldots,E_{\pi(m)}]$
+is the $m$th Fr\'echet derivative $D^m\beta(A)[E_1,\ldots,E_m]$ of the
+holomorphic matrix function $\beta$, but the unsymmetrized form is what the
+recursion needs.
+\begin{theorem}[Local expansion at a regular base point]\label{thm:Hqanalytic}
+Under \eqref{eq:regular}, $Z(\eps)=\sum_{q\geq0}\eps^qH_q$ converges for
+$|\eps|$ small, with $H_0=X$, $H_1=\beta(A)Y$, and for $q\geq2$
+\begin{equation}\label{eq:Hqanalytic}
+ \boxed{\displaystyle
+ qH_q=\sum_{m=1}^{q-1}\ \sum_{\substack{j_1,\ldots,j_m\geq1\\j_1+\cdots+j_m=q-1}}
+ T_m(A)\bigl[\ad_{H_{j_1}},\ldots,\ad_{H_{j_m}}\bigr]Y.}
+\end{equation}
+Both sums are finite, and only earlier $H_j$ occur. In particular
+$2H_2=T_1(A)[\ad_{\beta(A)Y}]Y$. For a real Lie algebra all $H_q$ are real.
+\end{theorem}
+\begin{proof}
+For an operator $E$ with $\norm E\,\sup_{z\in\Gamma}\norm{R(z)}<1$, the
+resolvent of $A+E$ exists on $\Gamma$ and is given by the Neumann series
+\[
+ (zI-A-E)^{-1}=\bigl(R(z)^{-1}(I-R(z)E)\bigr)^{-1}
+ =\sum_{k\geq0}\bigl(R(z)E\bigr)^kR(z),
+\]
+converging uniformly on $\Gamma$. For such $E$ the spectrum of $A+E$ lies
+inside $\Gamma$ (a point $z\in\Gamma$ or outside is in the resolvent set by
+the same Neumann series, and the interior of $\Gamma$ contains
+$\spec(A)$ together with a neighborhood on which the estimate persists), so
+by the holomorphic functional calculus
+\[
+ \beta(A+E)=\frac1{2\pi\ii}\oint_\Gamma\beta(z)(zI-A-E)^{-1}\dd z
+ =\sum_{k\geq0}\frac1{2\pi\ii}\oint_\Gamma\beta(z)R(z)\bigl(ER(z)\bigr)^k\dd z,
+\]
+and $\beta(A+E)=\phi(A+E)^{-1}$ because $\phi\beta=1$ and functional
+calculus is multiplicative. Now take $E=E(\eps)=\sum_{j\geq1}\eps^j\ad_{H_j}$,
+where the $H_j$ are the Taylor coefficients of the analytic branch
+$Z(\eps)$; for $|\eps|$ small the norm condition holds. Substituting into
+the uniformly convergent double series and collecting the coefficient of
+$\eps^{q-1}$ gives
+\[
+ \coeff{\eps^{q-1}}\beta(\ad_{Z(\eps)})
+ =\sum_{m\geq0}\ \sum_{\substack{j_1,\ldots,j_m\geq1\\j_1+\cdots+j_m=q-1}}
+ T_m(A)\bigl[\ad_{H_{j_1}},\ldots,\ad_{H_{j_m}}\bigr],
+\]
+where the $m=0$ term is $\beta(A)$ when $q=1$ and zero otherwise, and
+$m\leq q-1$ because each $j_i\geq1$. The differential equation
+$Z'(\eps)=\beta(\ad_{Z(\eps)})Y$ holds for the analytic branch by the
+argument of \cref{thm:ode} (the left logarithmic derivative of
+$e^Xe^{\eps Y}$ is $Y$, and $\phi(\ad_{Z(\eps)})$ is invertible for small
+$\eps$ by continuity of the spectrum), so comparing Taylor coefficients
+gives $qH_q=\coeff{\eps^{q-1}}\beta(\ad_{Z(\eps)})Y$, which is
+\eqref{eq:Hqanalytic}. Convergence of the Taylor series of $Z(\eps)$
+follows from analyticity of the local inverse of the exponential map. For a
+real Lie algebra, complex conjugation on $\g_\C$ commutes with $\beta(\ad_Z)$
+for real $Z$ (the contour may be chosen symmetric and $\beta$ has real
+Taylor coefficients), so the uniquely determined coefficients $H_q$ are
+real.
+\end{proof}
+This separates the all-orders local expansion around a regular base point
+$X$ from the total-degree expansion around $(0,0)$: in the former one must
+not evaluate the infinite Bernoulli sum in \eqref{eq:Hqrec} literally when
+that series diverges.
+
+\subsection{Two finite all-order recursions by total degree}\label{sec:homrec}
+There is also a recursive proof of Lie-series existence that uses neither
+the primitive-element theorem nor the Poincar\'e integral. Let
+$G(t)=e^{tX}e^{tY}$, $Z(t)=\log G(t)=\sum_{n\geq1}t^nZ_n$, and
+\begin{equation}\label{eq:Vj}
+ V(t)=X+e^{t\ad_X}Y=\sum_{j\geq0}t^jV_j,\qquad
+ V_0=X+Y,\qquad V_j=\frac{\ad_X^jY}{j!}\ (j\geq1).
+\end{equation}
+\begin{theorem}[Total-degree Bernoulli recursion]\label{thm:homrec}
+For $n\geq1$,
+\begin{equation}\label{eq:homrec}
+ \boxed{\displaystyle
+ nZ_n=\sum_{m=0}^{n-1}\bminus{m}
+ \sum_{\substack{k_0\geq0,\ k_1,\ldots,k_m\geq1\\
+                   k_0+k_1+\cdots+k_m=n-1}}
+ \ad_{Z_{k_1}}\cdots\ad_{Z_{k_m}}V_{k_0},}
+\end{equation}
+where for $m=0$ the inner expression means $V_{n-1}$. Every $Z_{k_i}$ on
+the right has index less than $n$; hence $Z_1=X+Y$ and, by induction, every
+$Z_n$ is a Lie polynomial with rational coefficients. Equivalently, with
+$S=X+Y$ and $D=X-Y$,
+\begin{equation}\label{eq:compactode}
+ Z'(t)=S+\tfrac12[D,Z]+\sum_{p\geq1}\bplus{2p}\ad_Z^{2p}S,
+\end{equation}
+so that for $n\geq2$
+\begin{equation}\label{eq:compactrec}
+ nZ_n=\tfrac12[D,Z_{n-1}]
+ +\sum_{p=1}^{\lfloor(n-1)/2\rfloor}\bplus{2p}
+ \sum_{\substack{i_1+\cdots+i_{2p}=n-1\\i_j\geq1}}
+ \ad_{Z_{i_1}}\cdots\ad_{Z_{i_{2p}}}S.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The right logarithmic derivative of $G$ is
+$G'G^{-1}=Xe^{tX}e^{tY}e^{-tY}e^{-tX}+e^{tX}Ye^{tY}e^{-tY}e^{-tX}
+=X+e^{tX}Ye^{-tX}=X+e^{t\ad_X}Y=V(t)$ by \cref{thm:campbell}. On the other
+hand \eqref{eq:rightdexp} gives $G'G^{-1}=\phi(-\ad_Z)Z'$. Formally,
+$\ad_{Z(t)}$ has positive degree in $t$, so $\gamma(\ad_Z)=\beta(-\ad_Z)
+=\sum_m\bminus m\ad_Z^m$ is a well-defined operator inverting
+$\phi(-\ad_Z)$, and
+\begin{equation}\label{eq:homode}
+ Z'(t)=\gamma(\ad_{Z(t)})V(t).
+\end{equation}
+Expand $\ad_Z^m=\sum t^{k_1+\cdots+k_m}\ad_{Z_{k_1}}\cdots\ad_{Z_{k_m}}$
+over $k_i\geq1$, multiply by $V(t)$, and compare the coefficients of
+$t^{n-1}$: the left side gives $nZ_n$ and the right side gives
+\eqref{eq:homrec}. All indices $k_i$ are at least $1$ and sum to at most
+$n-1$, so each is less than $n$. Starting from $Z_1=V_0=X+Y$, induction
+shows that every $Z_n$ is a rational Lie polynomial. The series so
+constructed satisfies \eqref{eq:homode}, hence $e^{Z(t)}$ has right
+logarithmic derivative $V(t)$ and value $1$ at $t=0$, so it equals
+$G(t)$ by uniqueness for $G'=VG$ (compare coefficients of $t$); thus it
+coincides with the logarithmic construction \eqref{eq:Zdef} at $t=1$.
+
+For the compact form, note that $e^{\ad_Z}=\Ad_{e^Z}=\Ad_{e^{tX}}\Ad_{e^{tY}}
+=e^{t\ad_X}e^{t\ad_Y}$ and $e^{t\ad_Y}Y=Y$, so $e^{\ad_Z}Y=e^{t\ad_X}Y$ and
+$V=X+e^{\ad_Z}Y$. Since $\gamma(z)e^z=ze^z/(e^z-1)=\beta(z)$,
+\eqref{eq:homode} becomes $Z'=\gamma(\ad_Z)X+\beta(\ad_Z)Y$. The two scalar
+functions satisfy $\gamma(z)+\beta(z)=2\sum_{p\geq0}\bplus{2p}z^{2p}$ (their
+odd parts cancel because $\gamma(z)=\beta(-z)$) and
+$\beta(z)-\gamma(z)=z$ (their odd part is $\bplus1z=z/2$ each, with
+opposite signs, and $\bplus{2p+1}=0$ for $p\geq1$). Writing
+$X=\frac12(S+D)$ and $Y=\frac12(S-D)$,
+\[
+ Z'=\tfrac12(\gamma+\beta)(\ad_Z)S+\tfrac12(\gamma-\beta)(\ad_Z)D
+ =\sum_{p\geq0}\bplus{2p}\ad_Z^{2p}S-\tfrac12\ad_ZD,
+\]
+which is \eqref{eq:compactode}. Comparing coefficients of $t^{n-1}$ gives
+\eqref{eq:compactrec}.
+\end{proof}
+The recursion \eqref{eq:homrec} gives $2Z_2=V_1+\bminus1[Z_1,V_0]
+=[X,Y]-\tfrac12[X+Y,X+Y]=[X,Y]$ and
+\[
+ 3Z_3=V_2+\bminus1\bigl([Z_1,V_1]+[Z_2,V_0]\bigr)+\bminus2[Z_1,[Z_1,V_0]]
+ =\tfrac12[X,[X,Y]]-\tfrac12[X+Y,[X,Y]]+\tfrac14[X+Y,[X,Y]]
+ =\tfrac14[X,[X,Y]]-\tfrac14[Y,[X,Y]],
+\]
+which is \eqref{eq:z3}. The compact form \eqref{eq:compactrec} with
+$C=[X,Y]$ gives $2Z_2=\tfrac12[D,S]=C$, $3Z_3=\tfrac14[D,C]$ (since
+$\ad_S^2S=0$), and
+\[
+ 4Z_4=\tfrac12[D,Z_3]+\bplus2[S,[Z_2,S]]
+ =\tfrac1{24}[D,[D,C]]-\tfrac1{24}[S,[S,C]]
+ =-\tfrac16[Y,[X,C]],
+\]
+using $[X,[Y,C]]=[Y,[X,C]]$; this reproduces \eqref{eq:z4}. Eichler's
+associativity-based argument \cite{eichler} proves the same structural
+theorem by a different route; no claim that his recursion coincides with
+\eqref{eq:homrec} is needed here.

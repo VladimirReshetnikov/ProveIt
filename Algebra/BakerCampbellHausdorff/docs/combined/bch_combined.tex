@@ -1,0 +1,154 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array}
+\usepackage{placeins}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\definecolor{linkblue}{RGB}{27,57,94}
+\usepackage[colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue]{hyperref}
+\usepackage{bookmark}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={The Baker--Campbell--Hausdorff Formula: A Unified Treatment with Complete Proofs, All-Order Expansions, and Analytic Qualifications},
+ pdfauthor={},
+ pdfsubject={BCH formula, Dynkin formula, free Lie algebras, Zassenhaus formula, exponential coordinates, Weyl relations},
+ pdfkeywords={Baker--Campbell--Hausdorff, Dynkin, Zassenhaus, Bernoulli numbers, Lie groups, Weyl relations}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small The Baker--Campbell--Hausdorff formula}
+\fancyhead[R]{\small A unified treatment}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=2pt,topsep=4pt}
+\allowdisplaybreaks[2]
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Ad}{Ad}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\BCH}{BCH}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\spec}{spec}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\rev}{rev}
+\DeclareMathOperator{\Prim}{Prim}
+\DeclareMathOperator{\Dom}{Dom}
+\newcommand{\kk}{\mathbb{K}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ot}{\,\widehat{\otimes}\,}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\coeff}[1]{\bigl[#1\bigr]}
+\newcommand{\Rb}[1]{R(\mathrm{#1})}
+\newcommand{\Lb}[1]{L(\mathrm{#1})}
+\newcommand{\ket}[1]{\lvert#1\rangle}
+\newcommand{\bra}[1]{\langle#1\rvert}
+\newcommand{\braket}[2]{\langle#1\mid#2\rangle}
+\newcommand{\bplus}[1]{b^{+}_{#1}}
+\newcommand{\bminus}[1]{b^{-}_{#1}}
+\newcommand{\word}[1]{\texttt{#1}}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,breaklines=true,frame=single,
+ framerule=0.3pt,rulecolor=\color{black!30},showstringspaces=false,
+ commentstyle=\itshape\color{black!60}}
+\title{\textbf{The Baker--Campbell--Hausdorff Formula}\\[0.4em]
+\large A Unified Treatment with Complete Proofs,\\All-Order Expansions, and Analytic Qualifications}
+\author{}
+\date{16 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+This article consolidates three independent proof-based treatments of the
+mathematical content of the Wikipedia article on the Baker--Campbell--Hausdorff
+formula into one self-contained account, keeping the strongest argument
+available for each result. The formal logarithm of $e^Xe^Y$ is first computed
+coefficient by coefficient in a completed free associative algebra, giving a
+finite nonrecursive formula for every associative word coefficient. A direct
+proof of the Dynkin--Specht--Wever identity establishes Friedrichs'
+characterization of primitive elements and yields Dynkin's complete commutator
+expansion together with a finite formula for every bidegree. An independent
+differential route proves the Campbell conjugation identity, the differential
+of the exponential, the Poincar\'e integral formula, complete Bernoulli
+recurrences and partial fractions, an all-orders expansion in the number of
+occurrences of one variable with an explicit bivariate kernel for its quadratic
+part, and a finite-at-each-order analytic expansion around a regular base
+point. We prove quantitative convergence and remainder bounds, the trace
+identity with its branch restriction, and a complete classification of the
+logarithms in the article's nonconvergence example. Lie-group consequences
+include exponential coordinates, the local Lie correspondence, integration
+from simply connected groups, and the polynomial group law of nilpotent
+algebras. Central and eigenvector commutator relations are resummed globally.
+For the Zassenhaus factorization we prove existence and uniqueness, three
+recursive constructions, a finite nonrecursive weighted-tree formula for every
+exponent, a globally convergent ordered-simplex expansion, and a quantitative
+convergence criterion. Trotter, symmetric, and recursively higher-order
+product formulas follow with complete logarithmic error series. The
+infinitesimal formulas are developed into all-order coframe, pullback-metric,
+and volume-density expansions, with the corrections needed in the source's
+geometric paragraph. Finally the Weyl and displacement-operator identities are
+proved in the Schr\"odinger and Bargmann--Fock representations, with operator
+domains made explicit and a counterexample showing why a dense-domain
+commutator alone does not suffice. Exact rational computations through degree
+twelve accompany the proofs.
+\end{abstract}
+\vspace{0.5em}
+\noindent\textbf{Keywords.} Free Lie algebra; noncommutative power series;
+Dynkin formula; Bernoulli numbers; Zassenhaus factorization; Trotter and
+Suzuki product formulas; exponential coordinates; Killing form; Weyl relations;
+displacement operators.
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+\input{tex/01_scope}
+\input{tex/02_formal}
+\input{tex/03_hopf}
+\input{tex/04_dynkin}
+\input{tex/05_differential}
+\input{tex/06_integral}
+\input{tex/07_convergence}
+\input{tex/08_liegroups}
+\input{tex/09_special}
+\input{tex/10_zassenhaus}
+\input{tex/11_splitting}
+\input{tex/12_geometry}
+\input{tex/13_quantum}
+\input{tex/14_computation}
+\appendix
+\input{tex/appendix_pbw}
+\input{tex/appendix_tables}
+\FloatBarrier
+\input{tex/appendix_coverage}
+\input{tex/references}
+\end{document}

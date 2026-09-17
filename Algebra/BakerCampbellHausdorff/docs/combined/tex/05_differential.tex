@@ -1,0 +1,256 @@
+\section{Conjugation, the differential of the exponential, and Bernoulli series}\label{sec:differential}
+This section opens a second route to the BCH series, independent of the Hopf
+algebra argument. It also proves the Campbell identity and every
+infinitesimal identity used later. Parameter differentiation of exponentials
+is treated systematically in \cite{wilcox}; all formulas required here are
+derived in full.
+
+\subsection{Campbell's conjugation identity and the braiding formulas}
+\begin{theorem}[Campbell--Hadamard identity]\label{thm:campbell}
+In the formal setting, where $X,Y$ have positive degree and $s$ is a formal
+or scalar parameter, and for all $X,Y$ in a Banach algebra and all scalars
+$s$,
+\begin{equation}\label{eq:campbell}
+ e^{sX}Ye^{-sX}=e^{s\ad_X}Y=\sum_{n\geq0}\frac{s^n}{n!}\ad_X^nY.
+\end{equation}
+For invertible elements write $\Ad_AY=AYA^{-1}$; then
+$\Ad_{e^X}=e^{\ad_X}$. The Banach-algebra series converges absolutely for
+every $X,Y,s$, with
+$\sum_n|s|^n\norm{\ad_X^nY}/n!\leq e^{2|s|\norm X}\norm Y$.
+An entirely associative version is
+\begin{equation}\label{eq:adbinomial}
+ \ad_X^nY=\sum_{j=0}^{n}(-1)^j\binom nj X^{n-j}YX^j.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $L_X$ and $R_X$ denote left and right multiplication by $X$. They
+commute, since $L_XR_XA=XAX=R_XL_XA$, and $\ad_X=L_X-R_X$. The binomial
+theorem for commuting operators gives
+$\ad_X^n=\sum_j(-1)^j\binom njL_X^{n-j}R_X^j$, which applied to $Y$ is
+\eqref{eq:adbinomial}.
+
+Set $F(s)=e^{sX}Ye^{-sX}$. In a Banach algebra $F$ is differentiable with
+$F'(s)=Xe^{sX}Ye^{-sX}-e^{sX}Ye^{-sX}X=\ad_XF(s)$ and $F(0)=Y$, by the
+product rule and $\frac{\dd}{\dd s}e^{sX}=Xe^{sX}=e^{sX}X$. The map
+$\ad_X$ is a bounded linear operator with $\norm{\ad_X}\leq2\norm X$, so the
+linear differential equation $F'=\ad_XF$ has the unique solution
+$F(s)=e^{s\ad_X}Y=\sum_ns^n\ad_X^nY/n!$; uniqueness holds because a
+difference $G$ of two solutions satisfies
+$\norm{G(s)}\leq2\norm X\int_0^s\norm{G}$, hence vanishes by Gr\"onwall's
+inequality. The norm bound follows from $\norm{\ad_X^nY}\leq(2\norm X)^n\norm Y$.
+Formally, both sides of \eqref{eq:campbell} are power series in $s$ with
+coefficients in $\widehat T$; using \eqref{eq:adbinomial}, the coefficient
+of $s^n$ on the left is
+$\sum_{j}X^{n-j}Y(-X)^j/((n-j)!j!)=\frac1{n!}\sum_j\binom nj(-1)^jX^{n-j}YX^j
+=\ad_X^nY/n!$, which is the coefficient on the right. (This direct comparison
+also gives a second, purely algebraic proof in the Banach case.) Setting
+$s=1$ gives $\Ad_{e^X}=e^{\ad_X}$.
+\end{proof}
+
+Conjugation $A\mapsto e^XAe^{-X}$ is an algebra automorphism, continuous in
+the Banach case and degree-preserving in the formal case, so it commutes with
+the exponential series. Therefore
+\begin{align}
+ e^Xe^Ye^{-X}&=\exp\bigl(e^XYe^{-X}\bigr)=\exp\bigl(e^{\ad_X}Y\bigr),\label{eq:conjexp}\\
+ e^Xe^Y&=\exp\Bigl(\sum_{n\geq0}\frac{\ad_X^nY}{n!}\Bigr)e^X.\label{eq:braiding}
+\end{align}
+The second follows from the first by multiplying on the right by $e^X$. These
+are the general braiding identities of the source page, including the
+iterated-commutator notation $[X,Y]_n=\ad_X^nY$ there. Unlike a general BCH
+series, the adjoint exponential in \eqref{eq:braiding} is an entire series
+for bounded operators and requires no smallness.
+
+\subsection{The differential of the exponential}
+\begin{theorem}[Duhamel differential]\label{thm:dexp}
+Let $A(t)$ be a differentiable curve in a Banach algebra, with $H=A'(t)$,
+or a formal power series in $t$ with coefficients in $F^1\widehat T$. Then
+\begin{align}
+ (\dd\exp)_A(H):=\frac{\dd}{\dd t}e^{A(t)}
+ &=\sum_{p,q\geq0}\frac{A^pHA^q}{(p+q+1)!}
+ =\int_0^1e^{(1-s)A}He^{sA}\,\dd s,\label{eq:duhamel}\\
+ e^{-A}\frac{\dd}{\dd t}e^{A}
+ &=\int_0^1e^{-s\ad_A}H\,\dd s
+ =\sum_{n\geq0}\frac{(-1)^n}{(n+1)!}\ad_A^nH=\phi(\ad_A)H,\label{eq:leftdexp}\\
+ \Bigl(\frac{\dd}{\dd t}e^{A}\Bigr)e^{-A}
+ &=\int_0^1e^{s\ad_A}H\,\dd s
+ =\sum_{n\geq0}\frac{1}{(n+1)!}\ad_A^nH=\phi(-\ad_A)H.\label{eq:rightdexp}
+\end{align}
+All series converge absolutely for arbitrary bounded $A,H$.
+\end{theorem}
+\begin{proof}
+The product rule, applied without moving any factor, gives
+$\frac{\dd}{\dd t}A^n=\sum_{j=0}^{n-1}A^jHA^{n-1-j}$; in the Banach case the
+exponential series may be differentiated term by term because
+$\sum_n\norm{\frac{\dd}{\dd t}A^n}/n!\leq\sum_nn\norm A^{n-1}\norm H/n!$
+converges uniformly on compact parameter sets, and in the formal case the
+statement is coefficientwise. Collecting terms, the coefficient of $A^pHA^q$
+in $\frac{\dd}{\dd t}e^A$ is $1/(p+q+1)!$, which is the first equality in
+\eqref{eq:duhamel}. Expanding the two exponentials in the integral, the
+coefficient of $A^pHA^q$ is
+\[
+ \frac1{p!q!}\int_0^1(1-s)^ps^q\,\dd s=\frac{1}{(p+q+1)!}.
+\]
+The beta integral is evaluated by induction on $p$: for $p=0$ it is
+$1/(q+1)$, and integration by parts gives
+$\int_0^1(1-s)^ps^q\dd s=\frac{p}{q+1}\int_0^1(1-s)^{p-1}s^{q+1}\dd s$, so
+$\int_0^1(1-s)^ps^q\dd s=\frac{p!}{(q+1)(q+2)\cdots(q+p)}\cdot\frac1{q+p+1}
+=\frac{p!q!}{(p+q+1)!}$. This proves \eqref{eq:duhamel}; interchanging sum
+and integral is justified by the absolutely convergent majorant
+$e^{(1-s)\norm A}\norm He^{s\norm A}$.
+
+Multiplying \eqref{eq:duhamel} on the left by $e^{-A}$ gives
+$\int_0^1e^{-sA}He^{sA}\dd s$, and \cref{thm:campbell} with $X=A$ and
+parameter $-s$ turns the integrand into $e^{-s\ad_A}H$. Integrating the
+absolutely convergent series $\sum_n(-s)^n\ad_A^nH/n!$ term by term gives
+$\sum_n(-1)^n\ad_A^nH/(n+1)!$, which is \eqref{eq:leftdexp}. Multiplying
+\eqref{eq:duhamel} on the right by $e^{-A}$ gives
+$\int_0^1e^{(1-s)A}He^{-(1-s)A}\dd s=\int_0^1e^{u\ad_A}H\,\dd u$, and the same
+integration gives \eqref{eq:rightdexp}.
+\end{proof}
+The quotient in $\phi(z)=(1-e^{-z})/z$ is notation for an entire function
+with $\phi(0)=1$; \eqref{eq:leftdexp} does not require $\ad_A$ to be
+invertible. The same statements hold intrinsically for finite-dimensional
+Lie groups, where multiplication by $e^{-A}$ means left or right translation
+of tangent vectors; an intrinsic derivation is given in \cref{sec:liegroups}.
+In particular $(\dd\exp)_0=\id$.
+
+\subsection{Bernoulli coefficients, including the convention at degree one}
+The formal reciprocal of $\phi$ is
+\begin{equation}\label{eq:betadef}
+ \beta(z)=\frac{z}{1-e^{-z}}=\sum_{n\geq0}\bplus{n}z^n,\qquad
+ \bplus{n}=\frac{B_n^+}{n!},
+\end{equation}
+which defines the Bernoulli numbers $B_n^+$ in the convention
+$B_1^+=+\tfrac12$ used in the note of the source page. The other common
+convention is generated by $\gamma(z)=z/(e^z-1)=\beta(-z)=\sum\bminus{n}z^n$,
+with $\bminus{n}=(-1)^n\bplus{n}$ and $B_1^-=-\tfrac12$.
+
+\begin{proposition}[Complete Bernoulli coefficients]\label{prop:bernoulli}
+$\bplus{0}=1$, and for $n\geq1$ the coefficients are determined by the
+recursion
+\begin{equation}\label{eq:bernrec}
+ \bplus{n}=-\sum_{j=1}^{n}\frac{(-1)^j}{(j+1)!}\,\bplus{n-j},
+\end{equation}
+and by the finite nonrecursive formula
+\begin{equation}\label{eq:bernfinite}
+ \bplus{n}=\sum_{k=1}^{n}(-1)^{n+k}
+ \sum_{\substack{j_1+\cdots+j_k=n\\j_i\geq1}}\ \prod_{i=1}^{k}\frac1{(j_i+1)!}.
+\end{equation}
+Moreover
+\begin{equation}\label{eq:coth}
+ \beta(z)=\frac z2\Bigl(1+\coth\frac z2\Bigr)
+ =1+\frac z2+\frac{z^2}{12}-\frac{z^4}{720}+\frac{z^6}{30240}
+ -\frac{z^8}{1209600}+\cdots,
+\end{equation}
+so $\bplus{2m+1}=0$ for $m\geq1$; the even coefficients are
+\begin{equation}\label{eq:bernzeta}
+ \bplus{2m}=\frac{2(-1)^{m-1}\zeta(2m)}{(2\pi)^{2m}}\qquad(m\geq1),
+\end{equation}
+where $\zeta(2m)=\sum_{k\geq1}k^{-2m}$; and the Taylor series of $\beta$ has
+radius of convergence exactly $2\pi$.
+\end{proposition}
+\begin{proof}
+Write $\phi(z)=\sum_{j\geq0}\phi_jz^j$ with $\phi_j=(-1)^j/(j+1)!$, so
+$\phi_0=1$. Comparing the coefficient of $z^n$, $n\geq1$, in
+$\phi(z)\beta(z)=1$ gives $\sum_{j=0}^n\phi_j\bplus{n-j}=0$, which is
+\eqref{eq:bernrec}. For \eqref{eq:bernfinite}, write $\phi=1+A$ with
+$A(z)=\sum_{j\geq1}\phi_jz^j$ of positive order and expand
+$\beta=(1+A)^{-1}=\sum_{k\geq0}(-A)^k$, a formally convergent geometric
+series. The coefficient of $z^n$ in $(-A)^k$ is
+$(-1)^k\sum_{j_1+\cdots+j_k=n}\prod_i\phi_{j_i}
+=(-1)^k(-1)^n\sum\prod_i1/(j_i+1)!$, and summing over $k$ from $1$ to $n$
+(no $k>n$ contributes because each $j_i\geq1$) gives \eqref{eq:bernfinite}.
+
+Multiplying numerator and denominator of $\beta$ by $e^{z/2}$,
+\[
+ \beta(z)=\frac{ze^{z/2}}{e^{z/2}-e^{-z/2}}
+ =\frac z2\cdot\frac{e^{z/2}+e^{-z/2}+(e^{z/2}-e^{-z/2})}{e^{z/2}-e^{-z/2}}
+ =\frac z2\Bigl(\coth\frac z2+1\Bigr).
+\]
+The function $\frac z2\coth\frac z2=\beta(z)-\frac z2$ is even in $z$ and
+regular at zero, so all its odd Taylor coefficients vanish; this proves
+$\bplus{2m+1}=0$ for $m\geq1$. The displayed numerical coefficients follow
+from \eqref{eq:bernrec}: $\bplus1=\tfrac12$, $\bplus2=\tfrac1{12}$,
+$\bplus4=-\tfrac1{720}$, $\bplus6=\tfrac1{30240}$,
+$\bplus8=-\tfrac1{1209600}$; for instance
+$\bplus1=-\phi_1\bplus0=\tfrac12$ and
+$\bplus2=-\bigl(\phi_1\bplus1+\phi_2\bplus0\bigr)
+=-\bigl(-\tfrac12\cdot\tfrac12+\tfrac16\bigr)=\tfrac1{12}$.
+
+For the even coefficients we derive the partial fraction expansion of
+$\coth$ from an elementary Fourier series. Fix a real $z>0$ and let $g$ be
+the $1$-periodic extension of $u\mapsto\cosh(z(u-\tfrac12))$ from $[0,1]$;
+it is continuous, since $g(0)=g(1)=\cosh(z/2)$, and piecewise smooth. Its
+Fourier coefficients are
+\begin{align*}
+ c_k&=\int_0^1\cosh\bigl(z(u-\tfrac12)\bigr)e^{-2\pi\ii ku}\,\dd u
+ =\frac12e^{-z/2}\int_0^1e^{(z-2\pi\ii k)u}\dd u
+  +\frac12e^{z/2}\int_0^1e^{-(z+2\pi\ii k)u}\dd u\\
+ &=\frac{e^{z/2}-e^{-z/2}}{2(z-2\pi\ii k)}
+  +\frac{e^{z/2}-e^{-z/2}}{2(z+2\pi\ii k)}
+ =\frac{2z\sinh(z/2)}{z^2+4\pi^2k^2},
+\end{align*}
+using $e^{\pm2\pi\ii k}=1$. Since $c_k=O(k^{-2})$, the Fourier series
+$\sum_{k\in\Z}c_ke^{2\pi\ii ku}$ converges absolutely and uniformly to a
+continuous function with the same Fourier coefficients as $g$; by uniqueness
+of Fourier coefficients for continuous functions, its sum is $g$. Evaluating
+at $u=0$,
+\[
+ \cosh\frac z2=\frac{2\sinh(z/2)}{z}+\sum_{k\geq1}\frac{4z\sinh(z/2)}{z^2+4\pi^2k^2},
+ \qquad\text{so}\qquad
+ \coth\frac z2=\frac2z+4z\sum_{k\geq1}\frac1{z^2+4\pi^2k^2}.
+\]
+Both sides are meromorphic functions of $z\in\C$; the right side converges
+normally on compact sets avoiding the points $\pm2\pi\ii k$, so the identity
+proved for real $z>0$ extends to all $z$ away from the poles by the identity
+theorem. Substituting into \eqref{eq:coth},
+\begin{equation}\label{eq:partialfractions}
+ \beta(z)=1+\frac z2+2z^2\sum_{k\geq1}\frac1{z^2+4\pi^2k^2}.
+\end{equation}
+For $|z|<2\pi$ expand each term geometrically,
+$\frac{1}{z^2+4\pi^2k^2}=\sum_{m\geq0}\frac{(-1)^mz^{2m}}{(2\pi k)^{2m+2}}$;
+the double series converges absolutely because
+$\sum_k\sum_m|z|^{2m}/(2\pi k)^{2m+2}=\sum_k1/(4\pi^2k^2-|z|^2)<\infty$, so
+the order of summation may be interchanged, giving
+$\beta(z)=1+\frac z2+\sum_{m\geq0}\frac{2(-1)^m\zeta(2m+2)}{(2\pi)^{2m+2}}z^{2m+2}$,
+which is \eqref{eq:bernzeta}. Finally, $1-e^{-z}$ vanishes exactly at
+$2\pi\ii\Z$; at $z=0$ the zero of the denominator is cancelled by the
+numerator, while at $\pm2\pi\ii$ the numerator is nonzero, so $\beta$ has
+genuine poles there and nowhere closer to the origin. The Taylor radius is
+therefore exactly $2\pi$. (Equivalently, \eqref{eq:bernzeta} gives
+$|\bplus{2m}|^{1/2m}\to1/(2\pi)$ because $\zeta(2m)\to1$.)
+\end{proof}
+Functional notation such as $\beta(\ad_X)$ does not require $\ad_X$ to be
+invertible. It means the formal series, or the analytic functional calculus in
+a domain avoiding the poles; in a finite-dimensional space the latter is
+defined whenever $\spec(\ad_X)$ avoids the nonzero points $2\pi\ii\ell$
+(\cref{sec:regularX}).
+
+\subsection{The function \texorpdfstring{$\psi$}{psi} and its complete expansion}
+The other scalar function on the source page is
+\begin{equation}\label{eq:psi}
+ \psi(x)=\frac{x\log x}{x-1}=1-\sum_{n\geq1}\frac{(1-x)^n}{n(n+1)},
+ \qquad|1-x|<1,\qquad \psi(1)=1,
+\end{equation}
+and, with the logarithm branch satisfying $\log(e^z)=z$ near $z=0$,
+\begin{equation}\label{eq:psibeta}
+ \psi(e^z)=\beta(z)=\sum_{n\geq0}B_n^+\frac{z^n}{n!}.
+\end{equation}
+\begin{proof}[Proof of \eqref{eq:psi} and \eqref{eq:psibeta}]
+Put $u=1-x$ and use $\log(1-u)=-\sum_{j\geq1}u^j/j$ for $|u|<1$. Then
+\[
+ \psi(1-u)=\frac{(1-u)\log(1-u)}{-u}
+ =(1-u)\sum_{j\geq1}\frac{u^{j-1}}{j}
+ =\sum_{j\geq1}\frac{u^{j-1}}{j}-\sum_{j\geq1}\frac{u^{j}}{j}
+ =1+\sum_{n\geq1}\Bigl(\frac1{n+1}-\frac1n\Bigr)u^n,
+\]
+and $\frac1{n+1}-\frac1n=-\frac1{n(n+1)}$. The same computation is valid as
+an identity of formal power series in $u$. Substituting $x=e^z$ into
+$x\log x/(x-1)$ gives $ze^z/(e^z-1)=z/(1-e^{-z})=\beta(z)$; as a formal
+identity, substitute the positive-order series $u=1-e^z$ into
+\eqref{eq:psi}.
+\end{proof}
+Equation \eqref{eq:psibeta} must not be read as a branch-independent
+identity for arbitrary complex $z$; it is an identity of power series at
+$z=0$, and analytically it holds wherever the logarithm branch used in
+$\psi$ satisfies $\log(e^z)=z$.

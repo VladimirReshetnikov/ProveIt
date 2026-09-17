@@ -1,0 +1,147 @@
+\section{Scope, conventions, and the three meanings of BCH}\label{sec:scope}
+The question that organizes this article is elementary to state: given two
+quantities $X,Y$ whose products need not commute, can the product $e^Xe^Y$ be
+written as a single exponential, and what exactly is its exponent? The central
+answer is
+\begin{equation}\label{eq:main}
+ e^Xe^Y=e^{Z(X,Y)},\qquad
+ Z(X,Y)=X+Y+\tfrac12[X,Y]+\tfrac1{12}[X,[X,Y]]+\tfrac1{12}[Y,[Y,X]]+\cdots.
+\end{equation}
+The substantive assertion is not the existence of a formal logarithm, which is
+immediate in a completed free associative algebra. It is that every homogeneous
+part of that logarithm is a \emph{Lie polynomial}, a linear combination of
+nested commutators, and that its coefficients can be specified completely.
+
+The equation $e^Xe^Y=e^Z$ is not, by itself, a definition of a unique
+logarithm. The exponential can fail to be injective, and a product of
+exponentials need not be an exponential \emph{in the specified Lie algebra}.
+What is universal is the formal series
+\begin{equation}\label{eq:formalbch}
+ Z(X,Y)=\BCH(X,Y)=\log(e^Xe^Y)=\sum_{n\geq1}Z_n(X,Y),
+\end{equation}
+where $Z_n$ has total degree $n$. A principal matrix logarithm, a continued
+branch of a logarithm, and a convergent BCH series are related but distinct
+objects.
+
+\subsection{Coverage target and what is not claimed}
+The coverage target is the English Wikipedia article
+\emph{Baker--Campbell--Hausdorff formula} in the revision with identifier
+\texttt{1368909113}, last edited on 11 August 2026 and consulted on
+16 September 2026 \cite{wiki}. Every displayed mathematical identity and every
+mathematical assertion stated in its main text or its mathematical notes is
+addressed in this article; \cref{app:coverage} gives a claim-by-claim
+concordance. The article is used as a list of questions, not as a substitute
+for proofs. Historical priority statements and application surveys are
+bibliographical claims rather than theorems. A theorem merely named in a link,
+such as the Stone--von Neumann uniqueness theorem or the Golden--Thompson
+inequality, is not thereby stated on the page and is not part of the coverage
+target; the actual quantum-mechanical exponential formulas on the page are
+proved directly in \cref{sec:quantum}.
+
+Several assertions on the page require correction or explicit hypotheses
+rather than proof as written. The coframe matrix in exponential coordinates
+is $W=\phi(\ad_X)$ and not the adjoint matrix $\ad_X$, which is always
+singular in positive dimension; a Killing form need not be a metric; an
+arbitrary pullback can be degenerate; the trace identity concerns the BCH
+branch of the logarithm; and a commutator relation on a dense domain does not
+by itself imply exponentiated Weyl relations. In each case we prove the valid
+statement and exhibit a counterexample to the unqualified one.
+
+The present article combines three earlier treatments of the same coverage
+target that were prepared independently. Where those treatments proved the
+same result by different routes, we keep the route that is most complete or
+most elementary; where one contained a construction absent from the others,
+that construction is included here. All proofs are written out in full.
+
+\subsection{Three distinct settings}
+Conflating the following settings is the source of most apparent paradoxes
+surrounding the formula.
+\begin{description}[leftmargin=1.5em,style=nextline]
+\item[Formal algebra.] $X$ and $Y$ have positive degree in a graded algebra
+over a field $\kk$ of characteristic zero. Every identity is an identity of
+formal series, and every fixed-degree coefficient is a finite sum. No numerical
+convergence is intended or asserted.
+\item[Local analysis.] $X,Y$ belong to a real or complex unital Banach algebra
+$\cA$ with a submultiplicative norm, or to a finite-dimensional Lie algebra,
+and are sufficiently small. The series converges and specifies the logarithm
+branch issuing from zero. Finite matrices are the principal example.
+\item[Global identities under special relations.] Commutation relations may
+allow the series to terminate or to be replaced by a closed expression. An
+independent differential argument can then prove an exponential identity far
+beyond the convergence domain of its Taylor series. Such an identity need not
+identify a principal logarithm, and for unbounded operators domains cannot be
+suppressed.
+\end{description}
+A matrix may have logarithms even though its BCH series diverges; a closed
+expression may continue the local BCH logarithm without making the original
+series convergent; and a logarithm need not belong to the Lie algebra generated
+by its two inputs. Each of these phenomena is exhibited by an explicit example
+below.
+
+\subsection{Conventions}
+Throughout, $[A,B]=AB-BA$ in an associative algebra, $\ad_AB=[A,B]$, and
+compositions of adjoint maps are read from right to left. Associativity alone
+gives antisymmetry and the Jacobi identity: expanding
+$[A,[B,C]]+[B,[C,A]]+[C,[A,B]]$ produces each of the six ordered products
+$ABC,ACB,BAC,BCA,CAB,CBA$ twice with opposite signs. Two consequences used
+constantly are the derivation rule and its adjoint form,
+\begin{equation}\label{eq:derivation}
+ [A,[B,C]]=[[A,B],C]+[B,[A,C]],\qquad [\ad_A,\ad_B]=\ad_{[A,B]}.
+\end{equation}
+For a nonempty word $w=a_1\cdots a_n$ in the letters $X,Y$ its
+\emph{right-nested bracket} is
+\begin{equation}\label{eq:rightbracket}
+ \Rb{a_1\cdots a_n}=[a_1,[a_2,\ldots,[a_{n-1},a_n]\ldots]],
+ \qquad \Rb{a}=a,\qquad R(1)=0.
+\end{equation}
+Thus $\Rb{XXY}=[X,[X,Y]]=\ad_X^2Y$ and $\Rb{YYX}=\ad_Y^2X$. A symbol such as
+$X^rY^s$ inside $R(\cdot)$ describes a word with $r$ letters $X$ followed by
+$s$ letters $Y$, not a commutator of associative powers; empty runs are
+omitted. We write $Z_n$ for the part of $Z$ of total degree $n$, and $Z_{p,q}$
+for the part of degree $p$ in $X$ and $q$ in $Y$. For an associative
+polynomial $P$ and a word $w$, $\coeff{w}P$ denotes the coefficient of $w$ in
+$P$; it is never a commutator. The notation $O_{\deg}(m)$ denotes terms of
+total degree at least $m$, and $O(Y^m)$ denotes terms containing at least $m$
+occurrences of $Y$, with no claim of uniformity as $X$ varies.
+
+The scalar functions that organize the entire subject are
+\begin{equation}\label{eq:scalarfunctions}
+ \phi(z)=\frac{1-e^{-z}}{z},\qquad
+ \phi(-z)=\frac{e^{z}-1}{z},\qquad
+ \beta(z)=\frac{z}{1-e^{-z}},\qquad
+ \gamma(z)=\beta(-z)=\frac{z}{e^z-1},\qquad
+ \psi(x)=\frac{x\log x}{x-1}.
+\end{equation}
+The first two are entire, with value $1$ at zero. The functions $\beta$ and
+$\gamma$ are meromorphic with a removable singularity at zero and simple poles
+at the nonzero points of $2\pi\ii\Z$. The function $\psi$ is used near $x=1$,
+with the logarithm branch analytic there and $\psi(1)=1$. An expression such
+as $\phi(M)$ or $\beta(\ad_X)$ always denotes functional calculus, formal or
+analytic, and never presupposes that $M$ or $\ad_X$ is invertible.
+
+Bernoulli numbers appear in the convention $B_1^+=+\tfrac12$ of the source
+page; we write $\bplus{n}=B_n^+/n!$ for the Taylor coefficients of $\beta$ and
+$\bminus{n}=(-1)^n\bplus{n}=B_n^-/n!$ for those of $\gamma$.
+
+\subsection{A guide to the results}
+Sections \ref{sec:formal}--\ref{sec:dynkin} establish the algebraic theorem
+and every coefficient: a finite formula for each associative word coefficient,
+Dynkin's commutator formula, a finite formula for each bidegree, and the
+complete polynomial through degree six with a finite certificate. Sections
+\ref{sec:differential}--\ref{sec:integral} give the differential
+constructions: the Campbell identity, the differential of the exponential,
+Bernoulli coefficients, the Poincar\'e integral, every order in the number of
+occurrences of $Y$, and two total-degree recursions.
+\Cref{sec:convergence} proves quantitative convergence estimates, the trace
+identity, and the nonconvergence example. \Cref{sec:liegroups} treats Lie
+groups, and \cref{sec:special} the exactly summable cases.
+\Cref{sec:zassenhaus,sec:splitting} treat the Zassenhaus factorization and the
+product formulas. \Cref{sec:geometry,sec:quantum} treat exponential
+coordinates and the quantum-mechanical identities. \Cref{sec:computation}
+describes the exact computations. The appendices contain the ordered
+Poincar\'e--Birkhoff--Witt theorem, coefficient certificates and further
+complete degrees, and the coverage concordance.
+
+A reader interested chiefly in coefficients can use the nonrecursive formulas
+\eqref{eq:wordcut}, \eqref{eq:dynkin}, \eqref{eq:bidegree},
+\eqref{eq:operatorblock}, and \eqref{eq:treeformula} directly.
