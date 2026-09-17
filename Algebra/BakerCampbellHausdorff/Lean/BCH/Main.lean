@@ -18,8 +18,9 @@ one is for `𝕂 = ℝ` or `ℂ`.
   by the finite word-cut sum. Together these say that `log(e^X e^Y)` is a Lie
   series with completely specified coefficients.
 * `bch_formula`, the analytic statement (1.1): in a Banach algebra, for
-  `‖X‖ + ‖Y‖ < log 2` the series `∑ₙ Zₙ(X, Y)` converges absolutely, its sum
-  its sum `Z` satisfies `e^Z = e^X e^Y`, an element of norm `< log 2` has that
+  `‖X‖ + ‖Y‖ < log 2` the series `∑ₙ Zₙ(X, Y)` converges absolutely, its sum `Z`
+  is the Mercator logarithm of `e^X e^Y` and satisfies `e^Z = e^X e^Y`, an
+  element of norm `< log 2` has that
   property exactly when it equals `Z`, every `Zₙ` lies in every closed Lie
   subalgebra containing `X` and `Y`, and the first three terms are `X + Y`,
   `½⁅X, Y⁆`, `1/12⁅X, ⁅X, Y⁆⁆ + 1/12⁅Y, ⁅Y, X⁆⁆`.
@@ -79,7 +80,8 @@ variable {𝕂 𝔸 : Type*} [RCLike 𝕂] [NormedRing 𝔸] [NormedAlgebra 𝕂
 (1.1)). For `X, Y` in a Banach algebra over `ℝ` or `ℂ` with `‖X‖ + ‖Y‖ < log 2`:
 
 * the series `∑ₙ Zₙ(X, Y)` converges absolutely;
-* its sum `Z` satisfies `e^Z = e^X e^Y`;
+* its sum `Z` is the Mercator logarithm
+  `log(e^X e^Y) = ∑_{k ≥ 1} (-1)^{k-1} (e^X e^Y - 1)^k / k` and satisfies `e^Z = e^X e^Y`;
 * an element `Z₀` with `‖Z₀‖ < log 2` satisfies `e^{Z₀} = e^X e^Y` exactly when `Z₀ = Z`
   (the theorem does not assert `‖Z‖ < log 2`, which is false near the edge of the domain);
 * every `Zₙ(X, Y)` lies in every closed Lie subalgebra of `𝔸` containing `X` and `Y`
@@ -89,6 +91,7 @@ variable {𝕂 𝔸 : Type*} [RCLike 𝕂] [NormedRing 𝔸] [NormedAlgebra 𝕂
 -/
 theorem bch_formula {X Y : 𝔸} (hs : ‖X‖ + ‖Y‖ < Real.log 2) :
     (Summable fun n => ‖bchHom 𝕂 X Y n‖) ∧
+    (∑' n, bchHom 𝕂 X Y n) = mlog 𝕂 (exp X * exp Y - 1) ∧
     exp (∑' n, bchHom 𝕂 X Y n) = exp X * exp Y ∧
     (∀ Z₀ : 𝔸, ‖Z₀‖ < Real.log 2 →
       (exp Z₀ = exp X * exp Y ↔ Z₀ = ∑' n, bchHom 𝕂 X Y n)) ∧
@@ -97,7 +100,7 @@ theorem bch_formula {X Y : 𝔸} (hs : ‖X‖ + ‖Y‖ < Real.log 2) :
     bchHom 𝕂 X Y 1 = X + Y ∧
     bchHom 𝕂 X Y 2 = (2 : 𝕂)⁻¹ • ⁅X, Y⁆ ∧
     bchHom 𝕂 X Y 3 = (12 : 𝕂)⁻¹ • ⁅X, ⁅X, Y⁆⁆ + (12 : 𝕂)⁻¹ • ⁅Y, ⁅Y, X⁆⁆ := by
-  refine ⟨summable_norm_bchHom hs, exp_tsum_bchHom hs,
+  refine ⟨summable_norm_bchHom hs, tsum_bchHom_eq_mlog hs, exp_tsum_bchHom hs,
     fun Z₀ hZ => exp_eq_iff_eq_tsum_bchHom hs hZ, fun 𝔤 h𝔤 hX hY => ⟨fun n => ?_, ?_⟩,
     bchHom_one X Y, bchHom_two_lie X Y, bchHom_three_lie X Y⟩
   · exact bchHom_mem h𝔤 hX hY n
