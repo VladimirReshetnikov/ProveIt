@@ -144,6 +144,13 @@ lemma summable_betaAd_term {A : 𝔸} (hA : ‖A‖ < 1 / 2) :
   Summable.of_norm (f := fun n : ℕ => ((bplus n : ℚ) : 𝕂) • ad 𝕂 A ^ n)
     (summable_norm_betaAd_term hA)
 
+/-- `β(ad_A) H = ∑ₙ b⁺ₙ ad_Aⁿ H`. -/
+theorem betaAd_apply {A : 𝔸} (hA : ‖A‖ < 1 / 2) (H : 𝔸) :
+    betaAd 𝕂 A H = ∑' n : ℕ, ((bplus n : ℚ) : 𝕂) • (ad 𝕂 A ^ n) H := by
+  rw [betaAd, ← ContinuousLinearMap.apply_apply (𝕜 := 𝕂) H,
+    ContinuousLinearMap.map_tsum _ (summable_betaAd_term hA)]
+  simp only [ContinuousLinearMap.apply_apply, smul_apply]
+
 /-- The Cauchy product of the series `φ(ad_A)` and `β(ad_A)` is the identity. -/
 theorem phiAd_mul_betaAd {A : 𝔸} (hA : ‖A‖ < 1 / 2) : phiAd 𝕂 A * betaAd 𝕂 A = 1 := by
   have hprod := tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm

@@ -90,9 +90,7 @@ theorem bplus_eq_bernoulli' (n : ℕ) : bplus n = bernoulli' n / n.factorial := 
     rw [← h6]
     refine sum_congr rfl fun p _ => ?_
     rw [hB, hΦ, coeff_mk, bernoulli'PowerSeries, coeff_mk]
-    first
-      | simp only [Algebra.algebraMap_self_apply]
-      | simp only [algebraMap_self_apply]
+    simp only [Algebra.algebraMap_self_apply]
     ring
   exact (eq_bplus_of_sum_antidiagonal (c := fun k => bernoulli' k / k.factorial) hc n).symm
 

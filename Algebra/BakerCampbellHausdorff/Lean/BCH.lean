@@ -39,7 +39,10 @@ Banach algebras:
   identifies `b⁺ₙ = B⁺ₙ/n!` with Mathlib's Bernoulli numbers `bernoulli'`;
 * `BCH.ODE`       — Theorem 6.1 (logarithmic differential equation): for `X, Y` small,
   `Z(t) = log(e^X e^{tY})` satisfies `Z'(t) = β(ad_{Z(t)}) Y`, `Z(0) = X`, and conversely
-  a small solution of this initial value problem is `log(e^X e^{tY})`.
+  a small solution of this initial value problem is `log(e^X e^{tY})`;
+* `BCH.LieClosed` — Proposition 8.1: for `X, Y` small in a closed Lie subalgebra `𝔤` of
+  `𝔸` (closed subspace closed under the commutator), `log(e^X e^Y) ∈ 𝔤`; in particular the
+  local BCH multiplication law of matrix Lie algebras.
 -/
 import BCH.Commuting
 import BCH.Central
@@ -56,3 +59,4 @@ import BCH.DuhamelSeries
 import BCH.Bernoulli
 import BCH.BernoulliNumbers
 import BCH.ODE
+import BCH.LieClosed

@@ -80,10 +80,11 @@ lemma half_lt_log_two : (1 : ℝ) / 2 < Real.log 2 := by
 
 /-- **Theorem 6.1 (logarithmic differential equation)**: there is `δ > 0` such that for
 `‖X‖ + ‖Y‖ < δ` the curve `Z(t) = log(e^X e^{tY})` satisfies `Z(0) = X` and
-`Z'(t) = β(ad_{Z(t)}) Y` for `‖t‖ ≤ 1`. -/
+`Z'(t) = β(ad_{Z(t)}) Y` for `‖t‖ ≤ 1` (and, as recorded for later use, `‖Z(t)‖ < 1/8`). -/
 theorem exists_delta_bch_ode :
     ∃ δ : ℝ, 0 < δ ∧ ∀ X Y : 𝔸, ‖X‖ + ‖Y‖ < δ →
       mlog 𝕂 (exp X * exp ((0 : 𝕂) • Y) - 1) = X ∧
+      (∀ t : 𝕂, ‖t‖ ≤ 1 → ‖mlog 𝕂 (exp X * exp (t • Y) - 1)‖ < 1 / 8) ∧
       ∀ t : 𝕂, ‖t‖ ≤ 1 →
         HasDerivAt (fun t : 𝕂 => mlog 𝕂 (exp X * exp (t • Y) - 1))
           (betaAd 𝕂 (mlog 𝕂 (exp X * exp (t • Y) - 1)) Y) t := by
@@ -106,11 +107,11 @@ theorem exists_delta_bch_ode :
     rwa [hecoe, exp_zero] at this
   -- a ball around `1` inside the target on which `‖e.symm y‖ < 1/2`
   obtain ⟨ε, hε, hball⟩ : ∃ ε > 0, ∀ y : 𝔸, dist y 1 < ε →
-      y ∈ e.target ∧ ‖e.symm y‖ < 1 / 2 := by
+      y ∈ e.target ∧ ‖e.symm y‖ < 1 / 8 := by
     have h1 : e.target ∈ 𝓝 (1 : 𝔸) := e.open_target.mem_nhds h1tgt
-    have h2 : {y : 𝔸 | ‖e.symm y‖ < 1 / 2} ∈ 𝓝 (1 : 𝔸) := by
+    have h2 : {y : 𝔸 | ‖e.symm y‖ < 1 / 8} ∈ 𝓝 (1 : 𝔸) := by
       have hcont : ContinuousAt e.symm 1 := e.continuousAt_symm h1tgt
-      have hb : Metric.ball (0 : 𝔸) (1 / 2) ∈ 𝓝 (e.symm 1) := by
+      have hb : Metric.ball (0 : 𝔸) (1 / 8) ∈ 𝓝 (e.symm 1) := by
         rw [hsymm1]; exact Metric.ball_mem_nhds _ (by norm_num)
       have := hcont.preimage_mem_nhds hb
       simpa only [Set.preimage, Metric.mem_ball, dist_zero_right] using this
@@ -152,12 +153,18 @@ theorem exists_delta_bch_ode :
       have := e.right_inv htgt
       rwa [hecoe] at this
     rw [← tsum_bchHom_eq_mlog hn]
-    exact (eq_tsum_bchHom_of_exp_eq hn (hlt.trans hhalf) hexp).symm
-  refine ⟨?_, ?_⟩
+    exact (eq_tsum_bchHom_of_exp_eq hn (hlt.trans (by linarith)) hexp).symm
+  refine ⟨?_, ?_, ?_⟩
   · rw [zero_smul, exp_zero, mul_one]
     have h := (hsmall 0 (by simp)).1
     rw [zero_smul, norm_zero, add_zero] at h
     exact mlog_exp_sub_one h
+  · intro t ht
+    have ht2 : ‖t‖ < 2 := by linarith
+    obtain ⟨hn, hd⟩ := hsmall t ht2
+    obtain ⟨htgt, hlt⟩ := hball _ hd
+    rw [hZ t ht2]
+    exact hlt
   · intro t ht
     have ht2 : ‖t‖ < 2 := by linarith
     have hcurve : HasDerivAt (fun t : 𝕂 => exp X * exp (t • Y))
@@ -170,8 +177,9 @@ theorem exists_delta_bch_ode :
     have hexpA' : exp A' = exp X * exp (t • Y) := by
       have := e.right_inv htgt
       rwa [hecoe] at this
+    have hlt2 : ‖A'‖ < 1 / 2 := by rw [hA']; linarith
     have hstrict : HasStrictFDerivAt exp
-        ((dexpEquiv A' hlt : 𝔸 ≃L[𝕂] 𝔸) : 𝔸 →L[𝕂] 𝔸) A' :=
+        ((dexpEquiv A' hlt2 : 𝔸 ≃L[𝕂] 𝔸) : 𝔸 →L[𝕂] 𝔸) A' :=
       hasStrictFDerivAt_exp A'
     have hleft : ∀ᶠ x in 𝓝 A', e.symm (exp x) = x := by
       filter_upwards [e.open_source.mem_nhds hA'src] with x hx
@@ -191,7 +199,7 @@ theorem exists_delta_bch_ode :
       exact hZ s hs2
     refine (hcomp.congr_of_eventuallyEq heq).congr_deriv ?_
     rw [hZ t ht2, ← hA']
-    show (dexpEquiv A' hlt : 𝔸 ≃L[𝕂] 𝔸).symm (exp X * (exp (t • Y) * Y)) = betaAd 𝕂 A' Y
+    show (dexpEquiv A' hlt2 : 𝔸 ≃L[𝕂] 𝔸).symm (exp X * (exp (t • Y) * Y)) = betaAd 𝕂 A' Y
     rw [dexpEquiv_symm_apply, ← mul_assoc (exp X), ← hexpA', ← mul_assoc, exp_neg_mul_exp,
       one_mul]
 

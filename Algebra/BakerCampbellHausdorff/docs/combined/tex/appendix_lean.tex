@@ -75,6 +75,9 @@ Article & Lean declaration (namespace \texttt{BCH}), continued \\
  $Z'(t)=\beta(\ad_{Z(t)})Y$ for $|t|\leq1$; \texttt{bch\_ode\_unique}: a solution
  of \eqref{eq:ode} with $\norm{Z(t)}<\tfrac12$ on a disc of radius $>1$ equals
  $\log(e^Xe^{tY})$ when $\norm X+\norm Y<\log2$ \\
+\Cref{prop:closedlie} & \texttt{exists\_delta\_mlog\_mem} (closed Lie subalgebras are
+ \texttt{IsClosedLieSubalgebra}; the Lipschitz estimate is
+ \texttt{norm\_betaAd\_apply\_sub\_le}) \\
 \Cref{prop:mercator} & \texttt{norm\_mlog\_le}, \texttt{exp\_mlog}
  (series \texttt{mlog}, terms \texttt{mlogTerm}, summability \texttt{summable\_mlogTerm}) \\
 \Cref{cor:bchlog} & \texttt{exp\_mlog\_exp\_mul\_exp}; bounds
@@ -164,7 +167,10 @@ explicit. The converse half of \cref{thm:ode} is proved as in the article:
 if $Z$ solves \eqref{eq:ode}, then $e^{Z(t)}e^{-tY}$ has zero derivative by
 \cref{thm:dexp} and $\phi(\ad_Z)\beta(\ad_Z)=\id$, so $e^{Z(t)}=e^Xe^{tY}$,
 and \cref{prop:uniquelog} identifies $Z(t)$. \Cref{thm:poincare} is not
-formalized.
+formalized. The proof of \cref{prop:closedlie} follows the text: the
+differential inequality for $\operatorname{dist}(Z(t),\g)$ is fed into
+Mathlib's Gronwall inequality for upper right Dini derivatives, and no
+solution of the differential equation inside $\g$ has to be constructed.
 
 The hypothesis $\norm I=1$ of \cref{sec:splitting} is the Mathlib class
 \texttt{NormOneClass}; \cref{thm:trotter} is stated with a scalar $t\in\kk$

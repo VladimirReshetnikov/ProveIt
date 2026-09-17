@@ -16,6 +16,47 @@ the solution is unique (differentiate $g(t)e^{-tX}$), so the Lie-group
 exponential is the ordinary matrix exponential. This proves the matrix
 statements of the source page.
 
+For matrix Lie algebras, and more generally for closed Lie subalgebras of a
+Banach algebra, the fact that the BCH logarithm lies in the Lie algebra can
+be obtained directly from the differential equation of \cref{thm:ode},
+without the formal theory of \cref{sec:hopf}.
+\begin{proposition}[The BCH logarithm in a closed Lie subalgebra]\label{prop:closedlie}
+Let $\cA$ be a real or complex unital Banach algebra. There is $\delta>0$
+such that for every closed linear subspace $\g\subseteq\cA$ that is closed
+under the commutator $[a,b]=ab-ba$, and all $X,Y\in\g$ with
+$\norm X+\norm Y<\delta$, the logarithm $Z=\log(e^Xe^Y)$ of
+\cref{cor:bchlog}, that is, the sum of the BCH series, lies in $\g$. In
+particular, for a matrix Lie algebra $\g\subseteq\mathfrak{gl}_d$ and $X,Y\in\g$
+sufficiently small, $e^Xe^Y=e^Z$ with $Z\in\g$.
+\end{proposition}
+\begin{proof}
+Take $\delta$ as in \cref{thm:ode}, shrunk so that $Z(t)=\log(e^Xe^{tY})$
+satisfies $\norm{Z(t)}\leq\tfrac18$ for $|t|\leq1$; then $Z(0)=X$ and
+$Z'(t)=F(Z(t))$ with $F(W)=\beta(\ad_W)Y$. The map $F$ sends $\g$ into
+itself: $\ad_W^nY$ is an iterated commutator of elements of $\g$, and $\g$
+is closed, so the series $\sum_n\bplus n\ad_W^nY$ lies in $\g$. Moreover $F$
+is Lipschitz on the ball $\norm W\leq\tfrac38$: with
+$\norm{\ad_W}\leq2\norm W\leq\tfrac34$, one has
+$\norm{\ad_W^{n}-\ad_{W'}^{n}}\leq n(\tfrac34)^{n-1}\norm{\ad_W-\ad_{W'}}
+\leq2n(\tfrac34)^{n-1}\norm{W-W'}$, and $|\bplus n|\leq1$ by
+\eqref{eq:bernrec}, so $\norm{F(W)-F(W')}\leq K\norm Y\,\norm{W-W'}$ with
+$K=2\sum_{n\geq1}n(\tfrac34)^{n-1}$.
+
+Let $d(t)=\operatorname{dist}(Z(t),\g)$, a continuous function on $[0,1]$
+with $d(0)=0$. For $w\in\g$ with $\norm{Z(t)-w}$ close to $d(t)$ (so that
+$\norm w\leq\tfrac38$) and $h>0$, the element $w+hF(w)$ lies in $\g$, hence
+\begin{align*}
+ d(t+h)&\leq\norm{Z(t+h)-w-hF(w)}\\
+ &\leq\norm{Z(t+h)-Z(t)-hF(Z(t))}+\norm{Z(t)-w}+h\norm{F(Z(t))-F(w)}\\
+ &\leq o(h)+(1+hK\norm Y)\norm{Z(t)-w}.
+\end{align*}
+Taking the infimum over $w$ gives $d(t+h)\leq(1+hK\norm Y)d(t)+o(h)$, so
+the upper right Dini derivative of $d$ is at most $K\norm Y\,d(t)$.
+Gronwall's inequality yields $d\equiv0$ on $[0,1]$, and since $\g$ is
+closed, $Z=Z(1)\in\g$. A matrix Lie algebra is finite-dimensional, hence
+closed, and closed under the commutator, so the last assertion follows.
+\end{proof}
+
 \subsection{The Maurer--Cartan form and an intrinsic differential of the exponential}
 None of the assertions on the page requires a matrix embedding. For an
 arbitrary finite-dimensional real or complex Lie group $G$ with Lie algebra

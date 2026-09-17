@@ -48,6 +48,11 @@ additional hypotheses. Appendix D of the article records the correspondence.
   `Z'(t) = β(ad_{Z(t)}) Y` for `|t| ≤ 1` (via the inverse function theorem and
   Proposition 7.4); conversely (`bch_ode_unique`) a solution of this initial value
   problem with `‖Z(t)‖ < 1/2` on a disc of radius `> 1` equals `log(e^X e^{tY})`.
+- `BCH/LieClosed.lean` — Proposition 8.1 (the BCH logarithm is a Lie element, analytic
+  form): there is `δ > 0` such that for every closed `𝕂`-subspace `𝔤 ⊆ 𝔸` closed under
+  the commutator and all `X, Y ∈ 𝔤` with `‖X‖ + ‖Y‖ < δ`, `log(e^X e^Y) ∈ 𝔤` (Lipschitz
+  estimate for `W ↦ β(ad_W) Y`, invariance of `𝔤` under it, and Gronwall's inequality
+  for `dist(Z(t), 𝔤)`); for matrix Lie algebras this is the local BCH multiplication law.
 
 ## Building
 
