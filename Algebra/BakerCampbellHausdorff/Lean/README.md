@@ -53,6 +53,9 @@ additional hypotheses. Appendix D of the article records the correspondence.
   the commutator and all `X, Y ∈ 𝔤` with `‖X‖ + ‖Y‖ < δ`, `log(e^X e^Y) ∈ 𝔤` (Lipschitz
   estimate for `W ↦ β(ad_W) Y`, invariance of `𝔤` under it, and Gronwall's inequality
   for `dist(Z(t), 𝔤)`); for matrix Lie algebras this is the local BCH multiplication law.
+- `BCH/LieCoeff.lean` — Proposition 8.1, homogeneous form: for every closed Lie subalgebra
+  `𝔤` and all `X, Y ∈ 𝔤`, every component `Zₙ(X,Y)` lies in `𝔤` (no smallness): scaling and
+  extraction of the coefficients of `t ↦ Σ tⁿ Zₙ(X,Y) ∈ 𝔤` (`mem_of_tsum_smul_mem`).
 
 ## Building
 

@@ -27,7 +27,9 @@ under the commutator $[a,b]=ab-ba$, and all $X,Y\in\g$ with
 $\norm X+\norm Y<\delta$, the logarithm $Z=\log(e^Xe^Y)$ of
 \cref{cor:bchlog}, that is, the sum of the BCH series, lies in $\g$. In
 particular, for a matrix Lie algebra $\g\subseteq\mathfrak{gl}_d$ and $X,Y\in\g$
-sufficiently small, $e^Xe^Y=e^Z$ with $Z\in\g$.
+sufficiently small, $e^Xe^Y=e^Z$ with $Z\in\g$. Moreover, for all
+$X,Y\in\g$, without any smallness assumption, every homogeneous component
+$Z_n(X,Y)$ lies in $\g$.
 \end{proposition}
 \begin{proof}
 Take $\delta$ as in \cref{thm:ode}, shrunk so that $Z(t)=\log(e^Xe^{tY})$
@@ -54,7 +56,18 @@ Taking the infimum over $w$ gives $d(t+h)\leq(1+hK\norm Y)d(t)+o(h)$, so
 the upper right Dini derivative of $d$ is at most $K\norm Y\,d(t)$.
 Gronwall's inequality yields $d\equiv0$ on $[0,1]$, and since $\g$ is
 closed, $Z=Z(1)\in\g$. A matrix Lie algebra is finite-dimensional, hence
-closed, and closed under the commutator, so the last assertion follows.
+closed, and closed under the commutator, so the matrix assertion follows.
+
+For the homogeneous components, let $X,Y\in\g$ be arbitrary and choose
+$r>0$ with $r(\norm X+\norm Y)<\min(\delta,\log2)$. For scalars $t$ with
+$0<|t|<r$ the first part applies to $tX,tY\in\g$, and by homogeneity
+$f(t):=\log(e^{tX}e^{tY})=\sum_nt^nZ_n(X,Y)\in\g$, with
+$\sum_nr^n\norm{Z_n(X,Y)}<\infty$. The coefficients of such a series lie in
+the closed subspace $\g$: if $Z_i\in\g$ for $i<n$, then
+$t^{-n}\bigl(f(t)-\sum_{i<n}t^iZ_i\bigr)=Z_n+t\sum_{m>n}t^{m-n-1}Z_m$ lies in
+$\g$ for $0<|t|<r$ and tends to $Z_n$ as $t\to0$, the tail being bounded by
+$|t|\sum_{m>n}(r/2)^{m-n-1}\norm{Z_m}$ for $|t|\leq r/2$; hence $Z_n\in\g$ by
+induction on $n$.
 \end{proof}
 
 \subsection{The Maurer--Cartan form and an intrinsic differential of the exponential}

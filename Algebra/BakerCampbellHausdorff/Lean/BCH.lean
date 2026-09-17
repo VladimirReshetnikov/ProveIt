@@ -42,7 +42,9 @@ Banach algebras:
   a small solution of this initial value problem is `log(e^X e^{tY})`;
 * `BCH.LieClosed` — Proposition 8.1: for `X, Y` small in a closed Lie subalgebra `𝔤` of
   `𝔸` (closed subspace closed under the commutator), `log(e^X e^Y) ∈ 𝔤`; in particular the
-  local BCH multiplication law of matrix Lie algebras.
+  local BCH multiplication law of matrix Lie algebras;
+* `BCH.LieCoeff`  — Proposition 8.1, homogeneous form: `Zₙ(X, Y) ∈ 𝔤` for all `X, Y ∈ 𝔤`
+  and all `n`, without smallness (coefficient extraction from `∑ₙ tⁿ Zₙ(X, Y) ∈ 𝔤`).
 -/
 import BCH.Commuting
 import BCH.Central
@@ -60,3 +62,4 @@ import BCH.Bernoulli
 import BCH.BernoulliNumbers
 import BCH.ODE
 import BCH.LieClosed
+import BCH.LieCoeff
