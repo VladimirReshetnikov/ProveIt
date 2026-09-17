@@ -16,7 +16,7 @@ are identified as such.
 
 ## Contents
 
-- `bch_combined.pdf` — the compiled article (77 pages).
+- `bch_combined.pdf` — the compiled article (78 pages).
 - `bch_combined.tex` — main LaTeX file; the sections are in `tex/`.
 - `tex/01_scope.tex` … `tex/14_computation.tex` — the fourteen sections.
 - `tex/appendix_pbw.tex` — ordered PBW theorem, enveloping Hopf algebras,

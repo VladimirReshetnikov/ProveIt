@@ -32,6 +32,12 @@ operator \texttt{BCH.ad K X}, a continuous $\kk$-linear map
 $\mathcal A\to\mathcal A$, and $e^{s\ad_X}$ is the exponential in the
 Banach algebra of bounded operators.
 
+No proof in the development is left open: the sources contain no
+\texttt{sorry}, and for both parts of \cref{thm:bch} the command
+\texttt{\#print axioms} reports only Lean's three standard axioms
+\texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}, so in
+particular neither statement depends on \texttt{sorryAx}.
+
 \subsection*{Correspondence}
 {\small
 \renewcommand{\arraystretch}{1.25}
@@ -46,7 +52,8 @@ Article & Lean declaration (namespace \texttt{BCH}), continued \\
 \endhead
 \bottomrule
 \endlastfoot
-\Cref{thm:bch}(a), \eqref{eq:formalbch} & \texttt{bch\_formula\_formal} \\
+\Cref{thm:bch}(a), \eqref{eq:formalbch} & \texttt{bch\_formula\_formal}
+ (for $\kk=\R$ or $\C$; see below) \\
 \Cref{thm:bch}(b), \eqref{eq:main} & \texttt{bch\_formula} \\
 \Cref{prop:commuting} & \texttt{exp\_mul\_exp\_of\_lie\_eq\_zero} \\
 \Cref{thm:central}, \eqref{eq:centralconj} & \texttt{central\_conj} \\
@@ -248,6 +255,15 @@ $\norm{L-(2A+B)}\leq c_2(\norm A+\norm B)^3$ with $c_2=c_0+28c_0'$
 $E_3$ in \eqref{eq:S2log} are not formalized.
 
 \subsection*{The formal BCH theorem}
+Throughout the formalization the coefficient field is $\kk=\R$ or $\C$, so
+the Lean form of \cref{thm:bch}(a) and of \cref{thm:formalbch} is the case
+$\kk=\R$ or $\C$ of the statement in the text, which holds over any field of
+characteristic zero. The restriction is a consequence of the route taken:
+the Lean proof passes through the analytic \cref{prop:closedlie} rather than
+through Friedrichs' criterion, as described below. Since all the
+coefficients involved are rational, the general case follows from the case
+$\kk=\Q$ by base change, which is not formalized.
+
 The Lie nature of the homogeneous components (\cref{thm:formalbch}) is
 formalized in the free algebra $\kk\langle X,Y\rangle$, modelled as the
 monoid algebra of the free monoid on two letters (\texttt{FreeTwo}, with

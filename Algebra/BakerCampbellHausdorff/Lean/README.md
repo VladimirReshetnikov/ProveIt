@@ -13,7 +13,15 @@ of the article, in both of its settings: `bch_formula_formal` (the formal form,
 equation (1.2)) and `bch_formula` (the analytic form, equation (1.1)). Those two
 theorems are the goal of the library; the modules below prove them and the
 surrounding results. The library is complete in the sense that no proof anywhere
-in it is left open: there is no `sorry`.
+in it is left open: there is no `sorry`, and
+
+```
+#print axioms BCH.bch_formula
+#print axioms BCH.bch_formula_formal
+```
+
+report only `[propext, Classical.choice, Quot.sound]`, Lean's three standard
+axioms, for both statements.
 
 ## Modules
 
