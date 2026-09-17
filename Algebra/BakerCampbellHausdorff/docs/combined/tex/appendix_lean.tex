@@ -108,6 +108,12 @@ $Z_n(X,Y)$, \eqref{eq:degreerec}, \cref{rem:evaluation} & \texttt{bchHom}
 \Cref{prop:uniquelog}(i) & \texttt{mlog\_exp\_sub\_one} \\
 \Cref{prop:uniquelog}(ii) & \texttt{exp\_eq\_iff\_eq\_tsum\_bchHom},
  \texttt{eq\_tsum\_bchHom\_of\_exp\_eq} \\
+\Cref{prop:trace}, \eqref{eq:trace} & \texttt{tracial\_bchHom} ($\tau(Z_n)=0$
+ for $n\geq2$ and any tracial linear functional $\tau$ on any algebra, hence
+ also for the formal series), \texttt{tracial\_tsum\_bchHom} (continuous
+ tracial $\tau$, whenever $\sum_nZ_n$ converges), \texttt{trace\_tsum\_bchHom}
+ (matrices, $\ell^\infty$-operator norm); the evaluation homomorphism
+ $\kk\langle X,Y\rangle\to\cA$ is \texttt{evalHom} \\
 \Cref{lem:tail} (two factors) & \texttt{tsum\_norm\_bchHom\_tail\_two\_le},
  \texttt{tsum\_norm\_bchHom\_tail\_three\_le} (constants \texttt{trotterC}$_0$, \texttt{trotterC}$_0'$) \\
 \Cref{thm:trotter}, \eqref{eq:trotter} & \texttt{trotter\_limit} \\
@@ -233,7 +239,12 @@ gives Dynkin's formula in the form \eqref{eq:dynkinword},
 $Z_n=\frac1n\sum_{|w|=n}c(w)R(w)$ (\texttt{bchHom\_eq\_dynkin}), where
 $c(w)$ are the coefficients of the formal $Z_n$; the explicit values
 \eqref{eq:wordcut} of these coefficients, hence the form \eqref{eq:dynkin},
-are not formalized.
+are not formalized. The trace identity \eqref{eq:trace} follows from these
+two theorems exactly as in the proof of \cref{prop:trace}: $Z_n$ for
+$n\geq2$ is a homogeneous Lie polynomial, so $Z_n=\frac1n\sum_wc(w)R(w)$
+with every $R(w)$ a commutator, and a tracial functional kills commutators
+(\texttt{tracial\_bchHom}); the branch statement \eqref{eq:tracebranch},
+which needs $\det e^A=e^{\tr A}$, is not formalized.
 
 The remaining formal power-series parts of the article
 (\cref{sec:formal,sec:hopf,sec:dynkin}: the word-cut formula, the Hopf

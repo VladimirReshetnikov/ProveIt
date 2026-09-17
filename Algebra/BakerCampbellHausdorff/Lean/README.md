@@ -70,6 +70,11 @@ additional hypotheses. Appendix D of the article records the correspondence.
   the free algebra, **Lemma 3.4 (Dynkin–Specht–Wever)** `R(P) = n P` for homogeneous Lie
   polynomials of degree `n` (`R_of_mem_lieGen`), and **Theorem 4.1 (Dynkin's formula)**
   `Zₙ = (1/n) Σ_w c(w) R(w)` (`bchHom_eq_dynkin`).
+- `BCH/Trace.lean` — **Proposition 7.5 (trace identity)**: the evaluation homomorphism
+  `evalHom` of `𝕂⟨X,Y⟩`, vanishing of any tracial linear functional on `Zₙ(X,Y)` for `n ≥ 2`
+  (`tracial_bchHom`, via Dynkin–Specht–Wever), `τ(Σ Zₙ) = τ X + τ Y` for continuous tracial
+  functionals when the series converges (`tracial_tsum_bchHom`), and the matrix case
+  `tr Z(X,Y) = tr X + tr Y` (`trace_tsum_bchHom`, ℓ∞-operator norm).
 
 ## Building
 

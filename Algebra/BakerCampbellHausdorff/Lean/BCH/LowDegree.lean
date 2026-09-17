@@ -23,7 +23,7 @@ open NormedSpace Finset Finset.Nat
 
 namespace BCH
 
-variable {𝕂 : Type*} {𝔸 : Type*} [RCLike 𝕂] [NormedRing 𝔸] [NormedAlgebra 𝕂 𝔸]
+variable {𝕂 : Type*} {𝔸 : Type*} [RCLike 𝕂] [Ring 𝔸] [Algebra 𝕂 𝔸]
 
 lemma expBlock_one (X Y : 𝔸) : expBlock 𝕂 X Y 1 = X + Y := by
   simp [expBlock, Finset.Nat.sum_antidiagonal_succ, add_comm]

@@ -51,7 +51,11 @@ Banach algebras:
   the truncated regular representation and the grading of the Lie polynomials;
 * `BCH.Formal.Dynkin` — Lemma 3.4 (Dynkin–Specht–Wever), `R(P) = n P` for homogeneous Lie
   polynomials `P` of degree `n` (`R_of_mem_lieGen`), and Theorem 4.1 (Dynkin's formula) in
-  the form `Zₙ = (1/n) ∑_w c(w) R(w)` (`bchHom_eq_dynkin`).
+  the form `Zₙ = (1/n) ∑_w c(w) R(w)` (`bchHom_eq_dynkin`);
+* `BCH.Trace`     — Proposition 7.5: a tracial linear functional vanishes on `Zₙ(X, Y)` for
+  `n ≥ 2` (`tracial_bchHom`), so `τ(Z) = τ X + τ Y` for continuous tracial functionals
+  whenever the series converges (`tracial_tsum_bchHom`); for matrices,
+  `tr Z(X, Y) = tr X + tr Y` (`trace_tsum_bchHom`).
 -/
 import BCH.Commuting
 import BCH.Central
@@ -74,3 +78,4 @@ import BCH.Formal.Free
 import BCH.Formal.Trunc
 import BCH.Formal.LieSeries
 import BCH.Formal.Dynkin
+import BCH.Trace
