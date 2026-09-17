@@ -1,0 +1,64 @@
+\section{Exact computation, additional terms, and reproducibility}\label{sec:computation}
+The all-order assertions in this paper are proved algebraically or analytically; a finite computation is not their substitute. Computation is useful for certifying transcription, signs, bracket conventions, and the additional explicit terms. The accompanying implementation uses only Python's standard library and exact rational arithmetic.
+
+\subsection{Representation and independently organized calculations}
+An associative polynomial is stored as a dictionary from words in $\{X,Y\}$ to rational coefficients. The empty word represents $1$. Multiplication concatenates words and discards degrees beyond a requested bound. Exponential and logarithm are then evaluated by their defining series, which become finite under this truncation. Because no relation is imposed on the two generators, equality of the resulting dictionaries is equality in the truncated free associative algebra, not a test on selected numerical matrices.
+
+The implementation \texttt{code/verify\_bch.py} performs the following distinct constructions. The reference BCH expansion is the ordinary logarithm of the product of the two exponential series. The word-cut formula is evaluated by a dynamic program over all contiguous cuts of each word, including words with zero final coefficient. Independently, the Poincar\'e expansion is assembled by repeated application of $e^{\ad_X}e^{t\ad_Y}-I$ and exact integration of powers of $t$. The Dynkin projection, the Bernoulli linear part, and the quadratic kernel are expanded separately and compared with the same associative coefficients. Finally the primitive-element condition is checked by explicitly computing the reduced unshuffle coproduct.
+
+Zassenhaus exponents are calculated twice: by residual-product extraction \cref{eq:zass-residual} and by the finite Lie recurrence \cref{eq:zass-finite-Lie}. The ordered product is then reconstructed. The source article's displayed degree-one through degree-six BCH expressions and degree-two through degree-four Zassenhaus expressions are entered independently as nested brackets and compared coefficient by coefficient. The symmetric splitting is checked for oddness and for its cubic coefficient.
+
+For the supplied run, all exported expansions are through total degree $12$. The independent word-cut, Poincar\'e, coproduct, quadratic-kernel, Dynkin-projection, and dual Zassenhaus-construction comparisons run through degree $10$. Exponential/logarithm reconstruction, all exported commutator-table reconstructions, linear-in-$Y$ coefficients, the interchange parity, the ordered Zassenhaus product, and the symmetric-splitting parity are checked through degree $12$. The machine-readable report records \textbf{30 passed checks}, including grouped checks over whole degree ranges. These are exact finite algebraic verifications, not floating-point tolerance tests and not a claim of formal proof-assistant certification.
+
+\subsection{Two different commutator encodings}
+The right-nested data use precisely $R(w)$ from \cref{eq:right-word}:
+\begin{equation}
+ Z_n=\sum_{|w|=n}\frac{c(w)}n R(w).
+\end{equation}
+This encoding is redundant. In particular, every word ending in two equal letters represents zero, and such rows are omitted. Remaining rows are not claimed to be linearly independent.
+
+For compact additional tables, we use the conventional standard Lyndon bracketing. Order the alphabet by $X<Y$ and words lexicographically, with a proper prefix preceding its extension. A nonempty word is Lyndon if it precedes every nonempty proper suffix. Define $L(X)=X$, $L(Y)=Y$; if $w$ has length greater than one, write $w=uv$ with $v$ its longest proper Lyndon suffix and set
+\begin{equation}\label{eq:lyndon-definition}
+ L(w)=[L(u),L(v)].
+\end{equation}
+In the table-generation algorithm this recursion is applied to the resulting shorter words, so every entry is an explicitly specified bracket polynomial. For example,
+\begin{equation}
+ L(XXY)=[X,[X,Y]],\qquad
+ L(XYY)=[[X,Y],Y].
+\end{equation}
+Thus $L(XYY)$ is \emph{not} $R(XYY)$, which is zero. Confusing the two conventions would corrupt many coefficients.
+
+No theorem about a Lyndon basis is needed to verify these tables. The program selects coefficients by triangular elimination of expanded bracket polynomials and requires the entire residual associative polynomial to be zero. It then reconstructs each exported table once more and compares every coefficient with the original polynomial. A table is therefore a certificate for an explicit finite commutator identity whether or not one invokes the general basis theorem. The counts in \cref{tab:counts} are numbers of nonzero entries in these encodings, not dimensions of homogeneous free Lie spaces.
+
+\subsection{Included files and regeneration}
+The principal data files are summarized in \cref{tab:data-files}. In an associative file a row means the coefficient of the literal word. In a Lyndon file it means the coefficient multiplying $L(w)$; in the right-commutator file it multiplies $R(w)$. Numerator and denominator are separate integers, and missing rows have coefficient zero.
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}p{0.46\textwidth}p{0.48\textwidth}@{}}
+\toprule
+File in \texttt{data/} & Meaning \\
+\midrule
+\texttt{bch\_associative.csv} & Every nonzero BCH word coefficient through degree 12.\\
+\texttt{bch\_right\_commutators.csv} & Dynkin-projection coefficients, with identically zero right brackets omitted.\\
+\texttt{bch\_lyndon.csv} & Compact BCH commutator expansion through degree 12.\\
+\texttt{zassenhaus\_associative.csv} & Associative coefficients of each $C_n$, $2\leq n\leq12$.\\
+\texttt{zassenhaus\_lyndon.csv} & Compact commutator expansions of the same $C_n$.\\
+\texttt{strang\_lyndon.csv} & Logarithm of $e^{X/2}e^Ye^{X/2}$ through degree 12.\\
+\texttt{bernoulli\_plus.csv} & The coefficients $b_n^+=B_n^+/n!$ through degree 12.\\
+\texttt{verification\_report.json} & Parameters, exact check outcomes, counts, and elapsed time.\\
+\bottomrule
+\end{tabular}
+\caption{The machine-readable companion expansions.}\label{tab:data-files}
+\end{table}
+From the archive's root directory, the supplied data and table appendix can be regenerated with
+\begin{lstlisting}
+python code/verify_bch.py --degree 12 --check-degree 10
+python code/make_tables.py
+\end{lstlisting}
+The first command requires Python 3.9 or later and no third-party package. Larger degrees are supported but have rapidly increasing cost because the number of words is exponential. The finite coefficient formulas and recurrences in the paper, rather than the chosen degree limit, specify all orders.
+
+The typeset paper can be rebuilt with
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error paper.tex
+\end{lstlisting}
+or by running \texttt{pdflatex paper.tex} repeatedly until references and the table of contents stabilize. A standard TeX installation with the packages listed in the preamble is sufficient. The archive includes the main source and every input file; no external bibliography database or downloaded mathematical source is needed for compilation.

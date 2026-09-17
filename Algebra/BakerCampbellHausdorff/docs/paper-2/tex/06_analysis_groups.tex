@@ -1,0 +1,166 @@
+\section{Convergence, logarithm branches, and local Lie groups}\label{sec:convergence}
+Formal equality does not by itself authorize substituting large matrices. Conversely, failure of a Taylor series to converge does not rule out a useful analytic continuation of its sum. This distinction is central to the examples in \cite{BiagiBonfiglioliMatone}. We establish elementary quantitative results sufficient for every convergence claim in the source article.
+
+\subsection{Two useful convergence thresholds}
+\begin{theorem}[Absolute convergence and a remainder bound]\label{thm:convergence}
+Let $X,Y$ belong to a unital Banach algebra, and put $s=\norm X+\norm Y$.
+If $s<\log2$, the associative expansion \cref{eq:associative-all} is absolutely convergent, the homogeneous BCH series converges absolutely, and its sum satisfies $e^Z=e^Xe^Y$. More precisely, for every $r>0$ with $rs<\log2$,
+\begin{equation}\label{eq:majorant}
+ \sum_{n\geq1}r^n\norm{Z_n(X,Y)}
+ \leq M_s(r):=-\log(2-e^{rs}).
+\end{equation}
+If $1<r<\log2/s$, then for $Z^{[N]}=\sum_{n=1}^NZ_n$,
+\begin{align}
+ \norm{Z-Z^{[N]}}&\leq r^{-(N+1)}M_s(r),\label{eq:remainder}\\
+ \norm{e^{Z^{[N]}}-e^Xe^Y}
+ &\leq e^{M_s(1)}r^{-(N+1)}M_s(r).\label{eq:exp-remainder}
+\end{align}
+The ungrouped individual nested-commutator terms in Dynkin's formula are absolutely summable under the more conservative condition
+\begin{equation}\label{eq:dynkin-radius}
+ \norm X+\norm Y<\frac{\log2}{2}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Expanding into nonempty words gives
+\[
+ \norm{e^Xe^Y-1}\leq e^s-1.
+\]
+For $s<\log2$ this is less than one, so the logarithm series converges. If every term in its block expansion is replaced by its norm bound, its sum is at most
+\[
+ \sum_{k\geq1}\frac{(e^s-1)^k}{k}=-\log(2-e^s).
+\]
+Replacing $X,Y$ by $rX,rY$ proves \cref{eq:majorant}. Absolute convergence permits grouping by total degree, and the formal exponential-logarithm identity then evaluates to $e^Z=e^Xe^Y$.
+
+The tail satisfies
+$\sum_{n>N}\norm{Z_n}\leq r^{-(N+1)}\sum_{n>N}r^n\norm{Z_n}$,
+which proves \cref{eq:remainder}. The identity
+\[
+ e^A-e^B=\int_0^1e^{(1-u)A}(A-B)e^{uB}\,\dd u
+\]
+follows by differentiating $e^{(1-u)A}e^{uB}$. Expanding the two exponentials around the middle factor gives
+$\norm{e^A-e^B}\leq e^{\max(\norm A,\norm B)}\norm{A-B}$.
+Both $Z$ and $Z^{[N]}$ have norm at most $M_s(1)$, proving \cref{eq:exp-remainder}.
+
+For a right-nested bracket of length $n$,
+\[
+ \norm{R(a_1\cdots a_n)}\leq2^{n-1}\prod_{j=1}^n\norm{a_j}.
+\]
+Thus the absolute sum of the individual Dynkin terms is bounded by
+\[
+ \frac12\sum_{k\geq1}\frac{(e^{2s}-1)^k}{k}
+ =-\frac12\log(2-e^{2s}),
+\]
+where we discarded the helpful factor $1/n$. It is finite under \cref{eq:dynkin-radius}.
+\end{proof}
+All coefficient bounds use only nonempty products and submultiplicativity. Thus the thresholds apply to any submultiplicative matrix norm, including an unnormalized Hilbert--Schmidt norm. The distinction between $\log2$ and $(\log2)/2$ is not a contradiction: the latter estimate controls a particular redundant commutator expansion term by term. Neither bound is asserted to be optimal.
+
+The extra condition $\norm Z<\log2$ displayed next to the associative formula in the source article is a sufficient condition for taking the power-series logarithm of $e^Z$ when $Z$ is given in advance. It is not needed to \emph{define} $Z=\log(e^Xe^Y)$ by the convergent logarithm above. In particular, one should not silently infer an additional norm bound on this constructed $Z$; \cref{eq:majorant} is the bound actually proved.
+
+For an arbitrary finite-dimensional normed Lie algebra, choose $\kappa>0$ with
+$\norm{[U,V]}\leq\kappa\norm U\norm V$. The same proof replaces $2^{n-1}$ by $\kappa^{n-1}$, so Dynkin's Lie series converges whenever
+$\kappa(\norm X+\norm Y)<\log2$. This proves a small-neighborhood convergence assertion without embedding the Lie algebra into matrices.
+
+\subsection{The trace identity and its precise scope}
+\begin{proposition}\label{prop:trace}
+For the formal BCH series, and whenever its homogeneous series converges in a matrix algebra,
+\begin{equation}\label{eq:trace-bch}
+ \tr Z(X,Y)=\tr X+\tr Y.
+\end{equation}
+For an arbitrary complex matrix logarithm $L$ satisfying $e^L=e^Xe^Y$, one only has the branch-independent conclusion
+\begin{equation}\label{eq:trace-branch}
+ \tr L-\tr X-\tr Y\in2\pi\ii\mathbb Z.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The cyclic identity $\tr(AB)=\tr(BA)$ follows directly by interchanging the two indices in the matrix-entry sum. Every bracket therefore has trace zero. By the formal BCH theorem all $Z_n$, $n\geq2$, are sums of brackets. This proves \cref{eq:trace-bch} degree by degree, and continuity of trace proves it for a convergent sum.
+
+To prove \cref{eq:trace-branch}, triangularize a complex matrix $A$. Its exponential has diagonal entries $e^{\lambda_j}$, where $\lambda_j$ are the diagonal entries of $A$, so $\det(e^A)=e^{\tr A}$. Determinants in $e^L=e^Xe^Y$ give
+$e^{\tr L-\tr X-\tr Y}=1$, which is equivalent to \cref{eq:trace-branch}.
+\end{proof}
+For a scalar counterexample to unrestricted use of the principal logarithm, take
+$X=Y=3\pi\ii/4$. Then $e^Xe^Y=-\ii$ has principal logarithm $-\pi\ii/2$, whereas $X+Y=3\pi\ii/2$. The difference is $-2\pi\ii$. When all three logarithms are real matrices, the real trace difference in \cref{eq:trace-branch} must, of course, be zero.
+
+\subsection{The article's nonconvergence example: all logarithms classified}
+\begin{theorem}\label{thm:sl2-example}
+Let
+\begin{equation}\label{eq:sl2-example}
+ X=\begin{pmatrix}0&\pi\ii\\\pi\ii&0\end{pmatrix},
+ \qquad Y=\begin{pmatrix}0&1\\0&0\end{pmatrix}.
+\end{equation}
+Then
+\begin{equation}\label{eq:sl2-product}
+ e^Xe^Y=\begin{pmatrix}-1&-1\\0&-1\end{pmatrix}=-I-Y.
+\end{equation}
+All of its complex matrix logarithms are
+\begin{equation}\label{eq:all-logs-example}
+ L=(2k+1)\pi\ii\,I+Y,\qquad k\in\mathbb Z.
+\end{equation}
+None belongs to $\mathfrak{sl}_2(\CC)$. In particular the homogeneous BCH series at this pair does not converge, even conditionally.
+\end{theorem}
+\begin{proof}
+Since $X^2=-\pi^2I$, separating even and odd terms of its exponential gives
+$e^X=\cos\pi\,I+(\sin\pi/\pi)X=-I$.
+Since $Y^2=0$, $e^Y=I+Y$, proving \cref{eq:sl2-product}.
+
+Any matrix commutes with its exponential, so a logarithm $L$ commutes with $-I-Y$ and hence with $Y$. Solving $LY=YL$ entry by entry gives $L=aI+bY$. Therefore
+$e^L=e^a(I+bY)$.
+Equality with $-I-Y$ forces $e^a=-1$ and $b=1$, proving \cref{eq:all-logs-example}. Their traces are $2(2k+1)\pi\ii$, never zero.
+
+It remains to justify the conclusion about a possibly conditional BCH sum. Suppose $\sum_{n\geq1}Z_n(X,Y)$ converged to $L$. Its coefficients would be bounded, so $\sum t^nZ_n$ would be analytic for $|t|<1$. Near $t=0$ its exponential is $e^{tX}e^{tY}$; the identity theorem extends that equality throughout $|t|<1$. Abel's limit theorem gives $\sum t^nZ_n\to L$ as real $t\uparrow1$. For clarity, this theorem follows here from
+\[
+ \sum_{n\geq1}t^nZ_n=(1-t)\sum_{n\geq1}t^nS_n,
+ \qquad S_n=\sum_{j=1}^nZ_j,
+\]
+by splitting off a finite number of $S_n$ and bounding the tail of $S_n-L$.
+Continuity of the exponential would give $e^L=-I-Y$. But all $Z_n$ are traceless, so their limit is traceless, contradicting the classification of logarithms.
+\end{proof}
+The obstruction is not that this invertible complex matrix has no logarithm. It has infinitely many. The obstruction is that it has no logarithm in the specified traceless Lie algebra.
+
+\subsection{Exponential coordinates in an arbitrary Lie group}\label{sec:local-groups}
+For a finite-dimensional Lie group $G$, identify its Lie algebra with the tangent space at the identity and define the bracket by left-invariant vector fields. The adjoint action is the differential of conjugation. Differentiating the one-parameter group of conjugations gives
+\[
+ \frac{\dd}{\dd t}\Ad_{\exp(tX)}=\ad_X\Ad_{\exp(tX)},
+ \qquad\Ad_{\exp(0X)}=I,
+\]
+so $\Ad_{\exp X}=e^{\ad_X}$ intrinsically as well.
+
+The differential of the exponential has the same form as \cref{eq:left-dexp}. One intrinsic derivation is useful. Let
+$F(s,t)=\exp(s(X+tH))$, let $\theta$ be the left Maurer--Cartan form, and put
+$U(s)=\theta(\partial_tF(s,0))$.
+The velocity in the $s$ direction is $X+tH$. The Maurer--Cartan identity, proved in \cref{sec:geometry}, gives
+\[
+ U'(s)=H-[X,U(s)],\qquad U(0)=0.
+\]
+Its solution is $U(1)=\int_0^1e^{-u\ad_X}H\,\dd u=f(\ad_X)H$.
+In particular $(\dd\exp)_0=I$. The inverse function theorem provides neighborhoods $U\subset\gfrak$ of zero and $V\subset G$ of the identity on which $\exp:U\to V$ is a diffeomorphism.
+
+For sufficiently small $X,Y$, the curve $\log(\exp X\exp(tY))$ in this chart satisfies exactly \cref{eq:y-ode}. The convergent universal Lie series also satisfies that equation, by termwise differentiation on a smaller neighborhood. Uniqueness of the ordinary differential equation identifies them. Thus
+\begin{equation}\label{eq:local-law}
+ \exp X\exp Y=\exp\bigl(\BCH(X,Y)\bigr)
+\end{equation}
+in every finite-dimensional Lie group for sufficiently small $X,Y$. This proves both local exponential parametrization and determination of the local multiplication by the Lie bracket.
+
+\begin{proposition}[Local and simply connected integration]\label{prop:integration}
+A Lie algebra homomorphism $\phi:\gfrak\to\hhh$ induces the local group homomorphism
+\begin{equation}\label{eq:local-hom}
+ \exp_GX\longmapsto\exp_H(\phi X).
+\end{equation}
+If $G$ is connected and simply connected, this local homomorphism extends uniquely to a smooth homomorphism $G\to H$ with differential $\phi$.
+\end{proposition}
+\begin{proof}
+Since $\phi$ preserves every iterated bracket, it preserves every $Z_n$, and hence the convergent BCH sum. Equation \cref{eq:local-law} therefore proves local multiplicativity of \cref{eq:local-hom} whenever the factors and their product lie in a sufficiently small exponential neighborhood.
+
+Here is the extension argument. For a path $\gamma$ from the identity to $g$, partition its parameter interval so finely that every increment
+$\gamma(t_{j-1})^{-1}\gamma(t_j)$ lies in that neighborhood. Define the candidate image of $g$ as the ordered product of the local images of these increments. Refining a sufficiently fine partition does not change the product, by local multiplicativity. In a homotopy of paths, choose a rectangular grid fine enough that all increments and all products within each grid cell stay in the same neighborhood. The two routes across a cell have the same local image, because the corresponding group increments have the same product. Cancelling internal edges shows that the products for the two boundary paths agree. Simple connectedness therefore makes the result independent of the path.
+
+Concatenating a path to $g$ with the left translate by $g$ of a path to $h$ proves multiplicativity. Near any point the construction is a translate of the original smooth local map, so it is smooth with differential $\phi$. Uniqueness holds because a homomorphism with that differential agrees on one-parameter subgroups, hence on a neighborhood of the identity; a connected group is generated by every identity neighborhood.
+\end{proof}
+This gives the representation-theoretic implication mentioned in the source article by taking $H=\GL(V)$. Simple connectedness matters for the global extension: local Lie-algebra information alone does not determine a general group's topology. For example $(\RR,+)$ and the circle group have the same one-dimensional abelian Lie algebra but are not isomorphic, since the latter is compact and the former is not.
+
+\subsection{Nilpotence gives an exact polynomial group law}\label{sec:nilpotent}
+If a Lie algebra has nilpotency class at most $c$, all brackets of length greater than $c$ vanish, so $Z_n=0$ for $n>c$. The finite polynomial $X*Y=\BCH(X,Y)$ then defines a group law on its underlying vector space. To verify associativity, use formal exponentials in three free variables:
+\[
+ e^{\BCH(\BCH(X,Y),Z)}=e^Xe^Ye^Z
+ =e^{\BCH(X,\BCH(Y,Z))}.
+\]
+Formal logarithms give the identity, which evaluates as a finite identity in the nilpotent algebra. Likewise $0$ is the identity and $-X$ is the inverse of $X$. Smoothness is polynomial, the vector space is simply connected, and the leading term of the group commutator is $ts[X,Y]$, so its Lie algebra is the original one. Since $(tX)*(uX)=(t+u)X$, the exponential map in this group is the identity in these coordinates. Applying \cref{prop:integration} in both directions shows that any simply connected Lie group with this nilpotent Lie algebra is isomorphic to this polynomial group. In particular its exponential map is a global diffeomorphism.

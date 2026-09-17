@@ -1,0 +1,136 @@
+\section{Exponential coordinates, coframes, and metrics to all orders}\label{sec:geometry}
+The differential identity has an intrinsic geometric meaning. This section also isolates the corrections needed in the geometric paragraph of the source article.
+
+\subsection{The Maurer--Cartan form and its complete coordinate expansion}
+Let $G$ be a finite-dimensional Lie group, with basis $e_1,\ldots,e_d$ of $\gfrak$ and structure constants
+\begin{equation}
+ [e_i,e_j]=f_{ij}{}^k e_k.
+\end{equation}
+Repeated upper--lower indices are summed. The left Maurer--Cartan form is the $\gfrak$-valued one-form $\theta_g=(L_{g^{-1}})_*$; in a matrix group it is $g^{-1}\dd g$. For $g=\exp X$, where $X=X^i e_i$, \cref{eq:left-dexp} gives
+\begin{align}
+ \theta&=\sum_{n=0}^{\infty}\frac{(-1)^n}{(n+1)!}\ad_X^n(\dd X)
+       =e_a W^a{}_j(X)\,\dd X^j,\label{eq:theta-all}\\
+ M^a{}_j&=X^i f_{ij}{}^a,\qquad
+ W=f(M)=\sum_{n=0}^{\infty}\frac{(-1)^nM^n}{(n+1)!}.
+ \label{eq:W-all}
+\end{align}
+The first terms are, with all contractions visible,
+\begin{equation}\label{eq:theta-first}
+ \theta=\dd X^i e_i
+ -\tfrac12 X^i\dd X^j f_{ij}{}^k e_k
+ +\tfrac16 X^iX^j\dd X^k f_{jk}{}^\ell f_{i\ell}{}^m e_m
+ -\cdots.
+\end{equation}
+For arbitrary $n\geq1$ the contraction in the $n$th term is specified by
+\begin{equation}
+ (M^n)^a{}_j=
+ X^{i_1}\cdots X^{i_n}
+ f_{i_nj}{}^{b_1}f_{i_{n-1}b_1}{}^{b_2}\cdots
+ f_{i_1b_{n-1}}{}^a,
+\end{equation}
+with the evident interpretation when $n=1$. Thus \cref{eq:theta-all} is an all-terms formula, not merely an instruction to continue a pattern.
+
+The notation
+\begin{equation}\label{eq:W-quotient}
+ W=\frac{I-e^{-M}}{M}
+\end{equation}
+means the entire function $f(M)$, not multiplication by an existing inverse of $M$. In fact
+\begin{equation}\label{eq:M-singular}
+ M X=\ad_X X=0,\qquad M(0)=0,\qquad W(0)=I.
+\end{equation}
+In positive dimension $M$ is therefore always singular. The matrix supplying the coframe in exponential coordinates is \emph{$W$, not $M$}. Near the identity its dual frame has coefficient matrix $W^{-1}=h(M)$. More generally,
+\begin{equation}\label{eq:W-invertibility}
+ W\text{ is invertible}\quad\Longleftrightarrow\quad
+ \spec(M)\cap\{2\pi\ii k:k\in\mathbb Z\setminus\{0\}\}=\varnothing.
+\end{equation}
+Indeed, complex triangularization makes the eigenvalues of $f(M)$ equal to $f(\lambda)$, counted with algebraic multiplicity. The zeros of $f$ are precisely the indicated nonzero points. This argument also explains why the zero eigenvalue forced by \cref{eq:M-singular} is harmless for $W$.
+
+\begin{proposition}[Maurer--Cartan equation]\label{prop:maurer-cartan}
+The form $\theta$ satisfies
+\begin{equation}\label{eq:maurer-cartan}
+ \dd\theta+\tfrac12[\theta,\theta]=0.
+\end{equation}
+Here $\tfrac12[\theta,\theta](U,V)=[\theta(U),\theta(V)]$.
+\end{proposition}
+\begin{proof}
+On left-invariant vector fields $U,V$, both $\theta(U)$ and $\theta(V)$ are constant, so the definition of exterior differentiation gives
+$\dd\theta(U,V)=-\theta([U,V])=-[\theta(U),\theta(V)]$.
+Left-invariant vectors span each tangent space, proving the identity. In a matrix realization the same proof is the calculation
+$\dd(g^{-1})=-g^{-1}(\dd g)g^{-1}$ and
+$\dd(g^{-1}\dd g)=-(g^{-1}\dd g)\wedge(g^{-1}\dd g)$.
+\end{proof}
+In particular, for a two-parameter map $g(s,t)$, writing
+$A=\theta(\partial_sg)$ and $U=\theta(\partial_tg)$ gives
+$\partial_sU-\partial_tA+[A,U]=0$. This is the mixed-variation identity used in \cref{sec:local-groups}; it involves no matrix embedding assumption.
+
+\subsection{Pullback tensors: the necessary Jacobian and nondegeneracy condition}
+Let $B$ be a symmetric bilinear form on $\gfrak$. Left translation defines a symmetric tensor on $G$ by
+$\langle u,v\rangle_g=B(\theta_g u,\theta_g v)$.
+It is a pseudo-Riemannian metric exactly when $B$ is nondegenerate. Given a smooth map $\varphi:N\to G$, use coordinates $q^\alpha$ and write locally
+$\varphi(q)=\exp(X(q))$. Set
+\begin{equation}\label{eq:pullback-frame}
+ E^a{}_\alpha=W^a{}_j(X(q))\,\partial_\alpha X^j.
+\end{equation}
+The pullback tensor is
+\begin{equation}\label{eq:pullback-metric}
+ g_{\alpha\beta}(q)=B_{ab}E^a{}_\alpha E^b{}_\beta.
+\end{equation}
+This is immediate by applying the definition of the pullback to the coordinate vectors. For an arbitrary, rather than left-invariant, metric on $G$, its coefficients $B_{ab}$ in the left-invariant frame depend on $\varphi(q)$; the same formula holds with this dependence retained. Only when the coordinates themselves are $q^i=X^i$ does the Jacobian disappear and the expression reduce to $g_{ij}=B_{ab}W^a{}_iW^b{}_j$.
+
+Three distinct qualifications are important. An arbitrary pullback need not be nondegenerate: a constant map gives the zero tensor. If $B$ is positive definite, an immersion has a positive-definite pullback; for indefinite $B$, even an immersion can have a degenerate pullback. For example, the immersion $t\mapsto(t,t)$ into $(\RR^2,\dd x^2-\dd y^2)$ pulls the metric back to zero. Finally, the Killing form
+\begin{equation}\label{eq:killing}
+ B_K(U,V)=\tr(\ad_U\ad_V)
+\end{equation}
+need not be nondegenerate. In an abelian Lie algebra it vanishes identically. Consequently, choosing it does not automatically give a metric or a vielbein construction.
+
+For completeness, the Killing form is symmetric by cyclicity of trace, and it is infinitesimally invariant:
+\begin{equation}\label{eq:B-invariant}
+ B_K([X,U],V)+B_K(U,[X,V])=0.
+\end{equation}
+To verify this, use $\ad_{[X,U]}=[\ad_X,\ad_U]$ and combine the four trace terms into the trace of a commutator. The latter identity for adjoint maps is the Jacobi identity. This proves the invariance used next without assuming nondegeneracy.
+
+\subsection{All-order metric and volume formulas}
+Put $U_\alpha=\partial_\alpha X$. Substituting \cref{eq:W-all} in \cref{eq:pullback-metric} gives the complete expansion
+\begin{equation}\label{eq:metric-double}
+ g_{\alpha\beta}
+ =\sum_{r,s\geq0}\frac{(-1)^{r+s}}{(r+1)!(s+1)!}
+ B(M^rU_\alpha,M^sU_\beta).
+\end{equation}
+In finite dimension this double series converges absolutely for every $M$ and all vectors, regardless of whether the tensor it defines is nondegenerate.
+
+\begin{proposition}[Invariant-form simplification]\label{prop:metric-even}
+Suppose $B([X,U],V)=-B(U,[X,V])$. Then
+\begin{align}
+ g_{\alpha\beta}
+ &=B\left(U_\alpha,\frac{2(\cosh M-I)}{M^2}\,U_\beta\right)\label{eq:metric-entire}\\
+ &=\sum_{m=0}^{\infty}\frac{2}{(2m+2)!}
+ B(U_\alpha,M^{2m}U_\beta).\label{eq:metric-all}
+\end{align}
+The quotient denotes its entire extension. The first coefficients are $1$, $1/12$, $1/360$, $1/20160$, and so on.
+\end{proposition}
+\begin{proof}
+Move each $M$ in the first argument across $B$, picking up a minus sign. Thus
+$B(f(M)U,f(M)V)=B(U,f(-M)f(M)V)$.
+The scalar identity
+$f(-z)f(z)=(e^z+e^{-z}-2)/z^2$
+then proves both formulas by power-series multiplication.
+\end{proof}
+Notice that all odd orders disappear only under the stated invariance condition; no such cancellation was assumed in \cref{eq:metric-double}.
+
+When $B$ is nondegenerate and $X^1,\ldots,X^d$ are valid exponential coordinates, the metric matrix is $W^TBW$. Its volume density is consequently
+\begin{equation}\label{eq:volume}
+ \sqrt{\abs{\det g}}=\abs{\det W}\sqrt{\abs{\det B}},\qquad
+ \det W=\prod_{\lambda\in\spec M}\frac{1-e^{-\lambda}}{\lambda},
+\end{equation}
+where the factor at zero is $1$ and multiplicities are included. Near $M=0$ its logarithm has a second complete expansion:
+\begin{equation}\label{eq:log-volume}
+ \log\det W=-\tfrac12\tr M+
+ \sum_{m=1}^{\infty}\frac{b^+_{2m}}{2m}\tr(M^{2m}).
+\end{equation}
+For instance the first even terms are $(\tr M^2)/24-(\tr M^4)/2880$.
+To prove this, differentiate the scalar logarithm:
+\begin{equation}
+ \frac{\dd}{\dd z}\log f(z)
+ =-\tfrac12+\sum_{m\geq1}b^+_{2m}z^{2m-1}.
+\end{equation}
+Integration and $f(0)=1$ give its Taylor series; triangularization and summing over eigenvalues yield \cref{eq:log-volume}. For example, $\norm M<2\pi$ is a sufficient condition for this Taylor series. The determinant formula \cref{eq:volume} itself has no Taylor-radius restriction.

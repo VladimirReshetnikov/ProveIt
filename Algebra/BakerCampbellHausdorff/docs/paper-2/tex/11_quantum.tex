@@ -1,0 +1,172 @@
+\section{Weyl operators and displacement operators with domains under control}\label{sec:quantum}
+Central commutators make the algebra short, but they do not remove the domain questions for unbounded operators. We prove the identities in two explicit representations. The background connections to quantum optics and parameter differentiation are discussed in \cite{Glauber,Wilcox}; the calculations here require neither the uniqueness theorem for canonical commutation relations nor a formal use of BCH outside its domain.
+
+\subsection{Position, momentum, and an exact symmetric factorization}
+On $L^2(\RR)$, let $\hbar>0$ and consider
+\begin{equation}
+ (Q\psi)(x)=x\psi(x),\qquad (P\psi)(x)=-\ii\hbar\psi'(x).
+\end{equation}
+On the common invariant domain $\mathcal S(\RR)$ of Schwartz functions, direct differentiation gives
+\begin{equation}\label{eq:CCR}
+ [Q,P]\psi=\ii\hbar\psi.
+\end{equation}
+The self-adjoint multiplication and differentiation operators define, for real $a,b$, unitary operators
+\begin{equation}\label{eq:UV-actions}
+ (U(a)\psi)(x)=e^{\ii ax}\psi(x),\qquad
+ (V(b)\psi)(x)=\psi(x+b\hbar).
+\end{equation}
+They are $e^{\ii aQ}$ and $e^{\ii bP}$, respectively; the second assertion follows by diagonalizing $P$ with the Fourier transform. Comparing the two actions immediately proves the Weyl relation
+\begin{equation}\label{eq:Weyl-braid}
+ U(a)V(b)=e^{-\ii ab\hbar}V(b)U(a).
+\end{equation}
+
+Define
+\begin{equation}\label{eq:Weyl-action}
+ (W(a,b)\psi)(x)=e^{\ii a(x+b\hbar/2)}\psi(x+b\hbar).
+\end{equation}
+For fixed $a,b$, the operators $W(ta,tb)$ form a strongly continuous one-parameter unitary group: substitution in \cref{eq:Weyl-action} verifies the group law, and continuity follows first on smooth compactly supported functions and then by density. Its derivative at zero on $\mathcal S(\RR)$ is $\ii(aQ+bP)$. This determines the exponential of the self-adjoint closure of $aQ+bP$. One can also verify essential self-adjointness directly: for $b\ne0$, multiplication by
+$\exp(-\ii ax^2/(2b\hbar))$ conjugates $bP$ to $aQ+bP$ and preserves Schwartz space. The case $b=0$ is multiplication. Accordingly,
+\begin{equation}\label{eq:W-is-exp}
+ W(a,b)=e^{\ii\overline{aQ+bP}}.
+\end{equation}
+Here and below an exponential of a real linear combination denotes this self-adjoint closure.
+
+\begin{theorem}[Canonical BCH identities]\label{thm:weyl}
+For all real $a,b$,
+\begin{align}
+ e^{\ii aQ}e^{\ii bP}
+ &=e^{-\ii ab\hbar/2}e^{\ii(aQ+bP)}
+  =\exp\left(\ii\left(aQ+bP-\tfrac12ab\hbar I\right)\right),
+ \label{eq:canonical-BCH}\\
+ e^{\ii(aQ+bP)}
+ &=e^{\ii aQ/2}e^{\ii bP}e^{\ii aQ/2}.
+ \label{eq:canonical-symmetric}
+\end{align}
+\end{theorem}
+\begin{proof}
+The product in the first line acts as $e^{\ii ax}\psi(x+b\hbar)$; comparison with \cref{eq:Weyl-action} gives the scalar phase. The symmetric product acts as
+$e^{\ii ax/2}e^{\ii a(x+b\hbar)/2}\psi(x+b\hbar)$,
+which is exactly \cref{eq:Weyl-action}. Both proofs hold on all of $L^2$, since only bounded unitary operators occur in the final identities.
+\end{proof}
+Thus the second-order symmetric splitting becomes exact for this central commutator. More generally, for any finite sequence of real pairs,
+\begin{equation}\label{eq:Weyl-many}
+ \prod_{j=1}^m W(a_j,b_j)
+ =\exp\left(-\frac{\ii\hbar}{2}
+    \sum_{j<k}(a_jb_k-b_ja_k)\right)
+ W\left(\sum_j a_j,\sum_j b_j\right).
+\end{equation}
+For two pairs this follows by composing \cref{eq:Weyl-action}; induction gives the displayed sum. It is the full central-commutator expansion: all commutators of length three and above vanish.
+
+\subsection{Why a commutator on a dense domain is not enough}
+The preceding explicit proof is essential to the scope of the result. On $L^2(0,1)$ let $Q$ again be multiplication by $x$, and let $P=-\ii\dd/\dd x$ have periodic self-adjoint boundary conditions. On the dense common invariant domain $C_c^\infty(0,1)$ one has $[Q,P]=\ii I$. Nevertheless $e^{\ii P}=I$, since the eigenvalues of $P$ are $2\pi n$. A Weyl relation inferred solely from this commutator would give
+\begin{equation}
+ e^{\ii aQ}=e^{-\ii a}e^{\ii aQ},
+\end{equation}
+which is false for general $a$. The failure is a domain/integrability issue, not an error in the formal central-commutator calculation.
+
+There cannot instead be a pair of bounded operators in a unital Banach algebra satisfying $[A,B]=I$. Indeed, the derivation rule gives $[A,B^n]=nB^{n-1}$. No power of $B$ can vanish, since its least vanishing power would contradict that identity. Therefore
+\begin{equation}
+ n\norm{B^{n-1}}\leq2\norm A\norm{B^n}
+ \leq2\norm A\norm B\norm{B^{n-1}}
+\end{equation}
+implies $n\leq2\norm A\norm B$ for every positive integer $n$, an impossibility. Finite-dimensional matrices are ruled out even more quickly by taking traces. These observations explain why the bounded-operator BCH theorem cannot be applied directly to $Q,P$.
+
+\subsection{Bargmann--Fock realization and normal ordering}
+Consider the Hilbert space of entire functions with
+\begin{equation}
+ \norm f^2=\frac1\pi\int_{\CC}\abs{f(z)}^2e^{-\abs z^2}\,\dd^2z<\infty.
+\end{equation}
+The functions $e_n(z)=z^n/\sqrt{n!}$ form an orthonormal basis. Orthogonality and norms follow by polar integration; expanding an entire function in its Taylor series and integrating first on circles gives
+$\norm{\sum c_nz^n}^2=\sum n!\abs{c_n}^2$, proving completeness as well.
+On the dense polynomial domain define
+\begin{equation}
+ af=f',\qquad a^\dagger f=zf.
+\end{equation}
+Then $ae_n=\sqrt n\,e_{n-1}$, $a^\dagger e_n=\sqrt{n+1}\,e_{n+1}$, and
+\begin{equation}\label{eq:ladder-CCR}
+ [a,a^\dagger]=I,\qquad [a^\dagger,a]=-I.
+\end{equation}
+The notation $\dagger$ is justified by these matrix elements and the usual closed adjoint realizations.
+
+For $v\in\CC$ define a bounded operator by its action
+\begin{equation}\label{eq:displacement-action}
+ (D(v)f)(z)=e^{vz-\abs v^2/2}f(z-\overline v).
+\end{equation}
+A change of variables $z=w+\overline v$ gives the exact weight identity
+\begin{equation}
+ \abs{e^{vz-\abs v^2/2}}^2e^{-\abs z^2}=e^{-\abs w^2}.
+\end{equation}
+Thus $D(v)$ is an isometry, with inverse $D(-v)$, hence unitary. Strong continuity follows on the dense set of polynomials from the formula and a Gaussian integrable majorant locally in $v$, and then on the whole space by unitarity. The family $D(tv)$, $t\in\RR$, has derivative $v a^\dagger-\overline v a$ on polynomials and obeys its one-parameter group law. Consequently
+\begin{equation}\label{eq:D-exponential}
+ D(v)=\exp\bigl(\overline{v a^\dagger-\overline v a}\bigr),
+\end{equation}
+where the outer bar denotes operator closure, not complex conjugation.
+To justify that it is the closure, rather than an unspecified extension, note that every polynomial is an analytic vector for this skew-symmetric operator. For a polynomial of degree at most $m$, its $k$th power has norm at most
+$C(2\abs v)^k\sqrt{(m+k)!}$, by the raising/lowering rules. Division by $k!$ makes the exponential series convergent for every fixed parameter. Here is a direct justification of the core assertion. Write $T=v a^\dagger-\overline v a$ on polynomials and let $G$ be the skew-adjoint generator of $D(tv)$, so $T\subset G$. The same bounds for $T^{k+1}$ allow termwise differentiation of $\sum t^kT^kp/k!$ in the graph norm of $G$; uniqueness of the group differential equation identifies this series with $D(tv)p$. If a vector $f$ is orthogonal to $(\lambda I-T)$ applied to all polynomials, for $\lambda=1$ or $-1$, then
+$\langle f,T^kp\rangle=\lambda^k\langle f,p\rangle$ and hence
+$\langle f,D(tv)p\rangle=e^{\lambda t}\langle f,p\rangle$.
+The left side is bounded for all real $t$, so $\langle f,p\rangle=0$ and $f=0$. Thus both $(I-T)$ and $(I+T)$ have dense range. For the closure $\overline T$, skew symmetry gives
+$\norm{(I\pm\overline T)x}^2=\norm x^2+\norm{\overline T x}^2$,
+so these ranges are also closed and therefore surjective. Since $\overline T\subset G$ and $I-\overline T$ is surjective, for any $y\in D(G)$ choose $x\in D(\overline T)$ with $(I-\overline T)x=(I-G)y$. Then $(I-G)(y-x)=0$; skew adjointness of $G$ implies that $I-G$ is injective, so $y=x$. Thus $\overline T=G$, establishing the stated closure.
+
+\begin{theorem}[Normal ordering and composition]\label{thm:displacement}
+On polynomials, with bounded extension understood for the whole product,
+\begin{equation}\label{eq:normal-order}
+ D(v)=e^{v a^\dagger}e^{-\overline v a}e^{-\abs v^2/2}.
+\end{equation}
+As an identity of bounded operators on the entire Fock space,
+\begin{equation}\label{eq:D-product}
+ D(v)D(u)=D(v+u)
+ \exp\left(\frac{v\overline u-u\overline v}{2}\right).
+\end{equation}
+\end{theorem}
+\begin{proof}
+On a polynomial, the Taylor sum for $e^{-\overline v a}$ is finite and gives translation by $-\overline v$. The exponential of $v a^\dagger$ gives multiplication by $e^{vz}$; its series converges in Fock norm on any polynomial. Thus the right side of \cref{eq:normal-order} is exactly \cref{eq:displacement-action} on a dense domain, and has the stated unitary extension. This assertion does not declare its two individual unbounded factors to be everywhere defined.
+
+To prove composition, apply the action twice. The multiplier is
+$\exp(vz-\abs v^2/2+u(z-\overline v)-\abs u^2/2)$,
+and the argument is $z-\overline v-\overline u$. Dividing by the multiplier for $D(v+u)$ leaves exactly the scalar in \cref{eq:D-product}. Since its exponent is purely imaginary, it is a phase. This also proves the one-parameter group law used above by taking $u,v$ to be real multiples of the same complex number.
+\end{proof}
+Equivalently, with $A(v)=v a^\dagger-\overline v a$,
+$[A(v),A(u)]=(v\overline u-u\overline v)I$ on the polynomial domain. This explains the central BCH phase but is not needed to justify the bounded identity. Iterating it gives the complete finite-product formula
+\begin{equation}\label{eq:D-many}
+ \prod_{j=1}^m D(v_j)
+ =\exp\left(\frac12\sum_{j<k}
+ (v_j\overline{v_k}-v_k\overline{v_j})\right)
+ D\left(\sum_jv_j\right).
+\end{equation}
+
+\subsection{Full state and matrix-element expansions}
+Writing $\ket n=e_n$, the vacuum formula is the convergent all-terms expansion
+\begin{equation}\label{eq:coherent}
+ \ket v:=D(v)\ket0
+ =e^{-\abs v^2/2}\sum_{n=0}^{\infty}\frac{v^n}{\sqrt{n!}}\ket n,
+ \qquad \norm{\ket v}=1.
+\end{equation}
+The norm follows by summing the scalar exponential, and taking the inner product gives
+\begin{equation}\label{eq:coherent-overlap}
+ \braket uv=\exp\left(-\frac{\abs u^2+\abs v^2}{2}+\overline u v\right).
+\end{equation}
+There is also an exact finite coefficient formula for every matrix element:
+\begin{equation}\label{eq:D-matrix}
+ \bra n D(v)\ket m
+ =e^{-\abs v^2/2}\sqrt{n!m!}
+ \sum_{k=0}^{\min(n,m)}
+ \frac{v^{n-k}(-\overline v)^{m-k}}
+ {(n-k)!(m-k)!k!}.
+\end{equation}
+Indeed, in the normal-ordered expression first lower $m$ to $k$, producing
+$(-\overline v)^{m-k}\sqrt{m!/k!}/(m-k)!$,
+and then raise $k$ to $n$, producing
+$v^{n-k}\sqrt{n!/k!}/(n-k)!$. Summing over the possible intermediate levels proves the formula.
+For $n\geq m$ it can equivalently be written
+\begin{equation}
+ \bra n D(v)\ket m
+ =e^{-\abs v^2/2}\sqrt{\frac{m!}{n!}}\,
+ v^{n-m}L_m^{(n-m)}(\abs v^2),
+\end{equation}
+where the polynomial is defined, with no additional identity assumed, by
+$L_m^{(\alpha)}(x)=\sum_{j=0}^m\binom{m+\alpha}{m-j}(-x)^j/j!$.
+Substituting $j=m-k$ in \cref{eq:D-matrix} proves the equivalence. The case $m\geq n$ follows in the same way or by adjunction with $D(v)^*=D(-v)$.
+
+Finally, finitely many independent modes are handled by tensoring these representations. All cross-mode commutators vanish; consequently every scalar product $v\overline u$ in the phase formulas is replaced by $\sum_\ell v_\ell\overline{u_\ell}$, and the vacuum and matrix-element formulas factor by mode. No further BCH terms appear. The resulting central-extension multiplication is the Heisenberg group law, and its commutator subgroup is central, explicitly exhibiting its two-step nilpotence.

@@ -1,0 +1,169 @@
+\section{Conjugation, differentiation, and the integral formula}\label{sec:differential}
+This section gives a second route to BCH. It also proves the Campbell identity and every infinitesimal identity used later. Parameter differentiation of exponentials is treated systematically in \cite{Wilcox}; all formulas required here are derived below.
+
+\subsection{The Campbell conjugation identity}
+\begin{theorem}[Conjugation by an exponential]\label{thm:campbell}
+In the formal setting, and for all $X,Y$ in a Banach algebra,
+\begin{equation}\label{eq:campbell}
+ e^{sX}Ye^{-sX}=e^{s\ad_X}Y
+ =\sum_{n\geq0}\frac{s^n}{n!}\ad_X^nY.
+\end{equation}
+For matrices this says $\Ad_{e^X}=e^{\ad_X}$, where $\Ad_A Y=AYA^{-1}$. Consequently,
+\begin{align}
+ e^Xe^Ye^{-X}&=\exp(e^{\ad_X}Y),\label{eq:conjugate-exponential}\\
+ e^Xe^Y&=\exp\!\left(\sum_{n\geq0}\frac{\ad_X^nY}{n!}\right)e^X.\label{eq:braid-general}
+\end{align}
+\end{theorem}
+\begin{proof}
+Let $F(s)=e^{sX}Ye^{-sX}$. Differentiation gives
+\[
+ F'(s)=XF(s)-F(s)X=\ad_X F(s),\qquad F(0)=Y.
+\]
+The unique formal solution, obtained by comparing powers of $s$, is the series in \cref{eq:campbell}. In the Banach setting it is the unique solution of a bounded linear differential equation, and
+\[
+ \sum_{n\geq0}\frac{|s|^n}{n!}\norm{\ad_X^nY}
+ \leq e^{2|s|\norm X}\norm Y.
+\]
+Thus it converges without a smallness restriction. Conjugation preserves every power of $Y$, so it preserves its exponential series. This proves \cref{eq:conjugate-exponential}; multiplying on the right by $e^X$ proves \cref{eq:braid-general}.
+\end{proof}
+A useful purely associative version is
+\begin{equation}\label{eq:ad-binomial}
+ \ad_X^nY=\sum_{j=0}^{n}(-1)^j\binom nj X^{n-j}YX^j.
+\end{equation}
+Indeed, left multiplication by $X$ commutes with right multiplication by $X$, so their difference satisfies the binomial theorem. This also supplies a second direct verification of \cref{eq:campbell}.
+
+\subsection{The derivative of the exponential}
+For a differentiable path $X(t)$, write $H=X'(t)$. Differentiating the absolutely convergent exponential, or differentiating degree by degree formally, gives
+\begin{equation}\label{eq:dexp-double}
+ (\dd\exp)_X(H)
+ =\sum_{p,q\geq0}\frac{X^pHX^q}{(p+q+1)!}
+ =\int_0^1 e^{(1-u)X}He^{uX}\,\dd u.
+\end{equation}
+The integral identity follows by expanding its two exponentials and using
+$\int_0^1(1-u)^p u^q\dd u=p!q!/(p+q+1)!$. That beta integral follows by $p$ integrations by parts, beginning with $\int_0^1u^q\dd u=1/(q+1)$.
+
+Multiplying \cref{eq:dexp-double} on the left or right and applying \cref{eq:campbell} yields the complete formulas
+\begin{align}
+ e^{-X}(\dd\exp)_X(H)
+ &=\int_0^1e^{-u\ad_X}H\,\dd u
+ =\sum_{n\geq0}\frac{(-1)^n}{(n+1)!}\ad_X^nH,\label{eq:left-dexp}\\
+ (\dd\exp)_X(H)e^{-X}
+ &=\sum_{n\geq0}\frac{1}{(n+1)!}\ad_X^nH.\label{eq:right-dexp}
+\end{align}
+Define the entire functions
+\begin{equation}\label{eq:f-def}
+ f(z)=\frac{1-e^{-z}}{z}=\sum_{n\geq0}\frac{(-1)^nz^n}{(n+1)!},
+ \qquad f(-z)=\frac{e^z-1}{z},\qquad f(0)=1.
+\end{equation}
+Then \cref{eq:left-dexp,eq:right-dexp} are $f(\ad_X)H$ and $f(-\ad_X)H$, respectively. The quotient is notation for an entire function; it does not require the operator $\ad_X$ to be invertible.
+
+\subsection{Bernoulli functions, coefficients, and their full expansions}\label{sec:bernoulli}
+The formal reciprocal of $f$ is
+\begin{equation}\label{eq:h-def}
+ h(z)=\frac{z}{1-e^{-z}}=\sum_{n\geq0}b_n^+z^n,
+ \qquad b_n^+=\frac{B_n^+}{n!}.
+\end{equation}
+We use $B_1^+=+1/2$, the convention employed in the source article. The more usual convention with $B_1^-=-1/2$ is obtained from
+$h(-z)=z/(e^z-1)=\sum b_n^-z^n$, where $b_n^-=(-1)^n b_n^+$.
+
+\begin{proposition}\label{prop:bernoulli}
+The coefficients in \cref{eq:h-def} are determined at every order by
+\begin{equation}\label{eq:bernoulli-recursion}
+ b_0^+=1,\qquad
+ b_n^+=-\sum_{j=0}^{n-1}\frac{(-1)^{n-j}}{(n-j+1)!}\,b_j^+
+ \quad(n\geq1).
+\end{equation}
+They also have the nonrecursive description
+\begin{equation}\label{eq:bernoulli-zeta}
+ b_1^+=\tfrac12,\qquad b_{2m+1}^+=0\ (m\geq1),\qquad
+ b_{2m}^+=\frac{2(-1)^{m-1}\zeta(2m)}{(2\pi)^{2m}}\ (m\geq1).
+\end{equation}
+The Taylor series of $h$ has radius $2\pi$, and
+\begin{equation}\label{eq:h-coth}
+ h(z)=\frac z2\left(1+\coth\frac z2\right)
+ =1+\frac z2+\frac{z^2}{12}-\frac{z^4}{720}
+   +\frac{z^6}{30240}-\frac{z^8}{1209600}+\cdots .
+\end{equation}
+Every coefficient after the displayed terms is specified by \cref{eq:bernoulli-recursion,eq:bernoulli-zeta}.
+\end{proposition}
+\begin{proof}
+Equating coefficients in $f(z)h(z)=1$ gives \cref{eq:bernoulli-recursion}. Elementary manipulation gives \cref{eq:h-coth}; its part after subtracting $z/2$ is even, proving the odd-coefficient assertion.
+
+For completeness, the partial fraction expansion needed for the even coefficients can be derived from an elementary Fourier series. Initially take real $z>0$ and periodically extend $u\mapsto\cosh(z(u-1/2))$ from $[0,1]$. Twice integrating its Fourier coefficients by parts gives
+\[
+ \int_0^1\cosh(z(u-1/2))e^{-2\pi\ii ku}\,\dd u
+ =\frac{2z\sinh(z/2)}{z^2+4\pi^2k^2}.
+\]
+The coefficients are $O(k^{-2})$, so the Fourier series converges absolutely to the continuous periodic function. Evaluating at $u=0$ and dividing by $\sinh(z/2)$ gives
+\[
+ \coth(z/2)=\frac2z+4z\sum_{k\geq1}\frac1{z^2+4\pi^2k^2}.
+\]
+Both sides are meromorphic, and the normally convergent right side extends the identity away from their poles. Consequently
+\begin{equation}\label{eq:h-partial-fractions}
+ h(z)=1+\frac z2+2z^2\sum_{k\geq1}\frac1{z^2+4\pi^2k^2}.
+\end{equation}
+For $|z|<2\pi$ each denominator can be expanded geometrically; absolute convergence justifies interchanging the sums and gives \cref{eq:bernoulli-zeta}. The nearest nonremovable poles of $h$ are $\pm2\pi\ii$, proving that the Taylor radius is exactly $2\pi$.
+\end{proof}
+
+The other scalar function on the source page is
+\begin{equation}\label{eq:psi}
+ \psi(x)=\frac{x\log x}{x-1}
+ =1-\sum_{n\geq1}\frac{(1-x)^n}{n(n+1)},\qquad |1-x|<1,
+\end{equation}
+with $\psi(1)=1$. To prove its expansion, put $w=1-x$ and use
+$\log(1-w)=-\sum_{j\geq1}w^j/j$. Multiplication by $(1-w)/(-w)$ gives the stated coefficients. Near $z=0$, with the logarithm branch satisfying $\log(e^z)=z$,
+\begin{equation}\label{eq:psi-h}
+ \psi(e^z)=h(z)=\sum_{n\geq0}B_n^+\frac{z^n}{n!}.
+\end{equation}
+The equality is formal as well. It must not be interpreted as a branch-independent identity for arbitrary complex $z$.
+
+\subsection{The logarithmic differential equation and the Poincar\'e integral}
+\begin{theorem}[Integral BCH formula]\label{thm:integral}
+Formally, and analytically in a sufficiently small neighborhood of $(0,0)$,
+\begin{equation}\label{eq:poincare}
+ \boxed{\displaystyle
+ Z(X,Y)=X+\int_0^1
+ \psi\!\left(e^{\ad_X}e^{t\ad_Y}\right)Y\,\dd t.}
+\end{equation}
+The operator function $\psi$ is evaluated by its series at the identity. Equivalently, for $Z(t)=\log(e^Xe^{tY})$,
+\begin{equation}\label{eq:y-ode}
+ Z'(t)=h(\ad_{Z(t)})Y,\qquad Z(0)=X.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $g(t)=e^Xe^{tY}=e^{Z(t)}$. Its left logarithmic derivative is $g^{-1}g'=Y$. Equation \cref{eq:left-dexp} gives
+$f(\ad_Z)Z'=Y$. Its formal inverse is $h(\ad_Z)$, and analytically it is invertible near $Z=0$, proving \cref{eq:y-ode}.
+
+By the Campbell identity,
+\[
+ e^{\ad_Z}=\Ad_{e^Z}=\Ad_{e^Xe^{tY}}
+ =e^{\ad_X}e^{t\ad_Y}.
+\]
+For the formal series, $\log(e^{\ad_Z})=\ad_Z$ because $\ad_Z$ raises total degree. For small operators the same equality holds for the local analytic logarithm. Applying \cref{eq:psi-h} therefore identifies $h(\ad_Z)$ with the operator in \cref{eq:poincare}. Integrating from zero to one proves the formula.
+\end{proof}
+This argument does not require the adjoint representation to be injective: it uses a formal identity of endomorphisms, not recovery of $Z$ from $\ad_Z$.
+
+\subsection{A finite all-order recurrence by total degree}\label{sec:homogeneous-recursion}
+There is also a recursive proof of Lie-series existence that does not use the primitive-element theorem. Start with the associative logarithm of $e^{tX}e^{tY}$, and write
+\[
+ Z(t)=\sum_{n\geq1}t^n Z_n,
+ \qquad V(t)=X+e^{t\ad_X}Y=\sum_{j\geq0}t^jV_j,
+\]
+where
+\begin{equation}\label{eq:Vj}
+ V_0=X+Y,\qquad V_j=\frac{\ad_X^jY}{j!}\quad(j\geq1).
+\end{equation}
+The right logarithmic derivative of $e^{tX}e^{tY}$ is $V(t)$. Equation \cref{eq:right-dexp} consequently gives
+\[
+ Z'(t)=h(-\ad_{Z(t)})V(t).
+\]
+Comparing coefficients yields
+\begin{equation}\label{eq:total-recursion}
+ \boxed{\displaystyle
+ nZ_n=\sum_{m=0}^{n-1}b_m^-
+ \sum_{\substack{k_0\geq0,\ k_1,\ldots,k_m\geq1\\
+                   k_0+k_1+\cdots+k_m=n-1}}
+ \ad_{Z_{k_1}}\cdots\ad_{Z_{k_m}}V_{k_0}.}
+\end{equation}
+For $m=0$ the inner expression means $V_{n-1}$. Every $Z_{k_i}$ on the right has index less than $n$. Thus $Z_1=X+Y$, and induction shows that every $Z_n$ is a rational Lie polynomial. This is an independent recursive existence proof, of the same general type of conclusion as the concise existence result discussed in \cite{Eichler}, though no use of Eichler's argument is required here. It is also a complete computational specification of every homogeneous term. For example it gives $2Z_2=[X,Y]$ and
+$3Z_3=([X,[X,Y]]-[Y,[X,Y]])/4$.
