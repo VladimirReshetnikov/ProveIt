@@ -44,7 +44,11 @@ Banach algebras:
   `𝔸` (closed subspace closed under the commutator), `log(e^X e^Y) ∈ 𝔤`; in particular the
   local BCH multiplication law of matrix Lie algebras;
 * `BCH.LieCoeff`  — Proposition 8.1, homogeneous form: `Zₙ(X, Y) ∈ 𝔤` for all `X, Y ∈ 𝔤`
-  and all `n`, without smallness (coefficient extraction from `∑ₙ tⁿ Zₙ(X, Y) ∈ 𝔤`).
+  and all `n`, without smallness (coefficient extraction from `∑ₙ tⁿ Zₙ(X, Y) ∈ 𝔤`);
+* `BCH.Formal.Free`, `BCH.Formal.Trunc`, `BCH.Formal.LieSeries` — **Theorem 3.5, the formal
+  BCH theorem**: in the free algebra `𝕂⟨X, Y⟩` every homogeneous component `Zₙ(X, Y)` is a
+  Lie polynomial (`bchHom_mem_lieGen`), proved from the analytic Lie-series property through
+  the truncated regular representation and the grading of the Lie polynomials.
 -/
 import BCH.Commuting
 import BCH.Central
@@ -63,3 +67,6 @@ import BCH.BernoulliNumbers
 import BCH.ODE
 import BCH.LieClosed
 import BCH.LieCoeff
+import BCH.Formal.Free
+import BCH.Formal.Trunc
+import BCH.Formal.LieSeries

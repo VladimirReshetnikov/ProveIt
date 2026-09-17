@@ -56,6 +56,15 @@ additional hypotheses. Appendix D of the article records the correspondence.
 - `BCH/LieCoeff.lean` — Proposition 8.1, homogeneous form: for every closed Lie subalgebra
   `𝔤` and all `X, Y ∈ 𝔤`, every component `Zₙ(X,Y)` lies in `𝔤` (no smallness): scaling and
   extraction of the coefficients of `t ↦ Σ tⁿ Zₙ(X,Y) ∈ 𝔤` (`mem_of_tsum_smul_mem`).
+- `BCH/Formal/Free.lean` — the free algebra `𝕂⟨X,Y⟩` as the monoid algebra of the free
+  monoid on two letters (`FreeTwo`, generators `genX`, `genY`), homogeneity, the degree
+  projections, homogeneity of the formal `Zₙ`, and the grading of the Lie polynomials
+  `lieGen` (`proj_mem_lieSpan`).
+- `BCH/Formal/Trunc.lean` — the truncated regular representation `rho` of `𝕂⟨X,Y⟩` on the
+  finite-dimensional space of words of length `≤ N`, faithful in degrees `≤ N`.
+- `BCH/Formal/LieSeries.lean` — **Theorem 3.5 (formal BCH theorem)**: every `Zₙ(X,Y)` is a
+  Lie polynomial (`bchHom_mem_lieGen`), deduced from Proposition 8.1 in the operator algebra
+  of the truncated representation.
 
 ## Building
 
