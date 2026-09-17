@@ -1,0 +1,340 @@
+\section{Lie groups: exponential coordinates, the local--global distinction, and nilpotent group laws}\label{sec:liegroups}
+\subsection{Matrix groups}
+For a matrix Lie group $G\subseteq\GL_d$, its Lie algebra $\g$ is the
+tangent space at the identity. The left-invariant vector field associated
+with $X\in\g$ is $X^L(g)=gX$. Regarding these as vector fields on the open
+subset $\GL_d$ of the vector space of matrices, the bracket of two vector
+fields $U,V$ is $[U,V](g)=DV(g)[U(g)]-DU(g)[V(g)]$, and since
+$DX^L(g)[H]=HX$,
+\[
+ [X^L,Y^L](g)=(gX)Y-(gY)X=g(XY-YX)=[X,Y]^L(g).
+\]
+Thus the Lie bracket of $\g$, defined through left-invariant fields, is the
+matrix commutator. The integral curve of $X^L$ through $I$ solves
+$g'=gX$, $g(0)=I$; the matrix exponential $e^{tX}$ solves this equation, and
+the solution is unique (differentiate $g(t)e^{-tX}$), so the Lie-group
+exponential is the ordinary matrix exponential. This proves the matrix
+statements of the source page.
+
+\subsection{The Maurer--Cartan form and an intrinsic differential of the exponential}
+None of the assertions on the page requires a matrix embedding. For an
+arbitrary finite-dimensional real or complex Lie group $G$ with Lie algebra
+$\g$, define the left Maurer--Cartan form by
+$\theta_g=(L_{g^{-1}})_*:T_gG\to T_eG=\g$; in a matrix group it is
+$g^{-1}\dd g$. On a left-invariant field it takes the constant value
+$\theta(U^L)=U$.
+
+\begin{proposition}[Maurer--Cartan equation]\label{prop:MC}
+The $\g$-valued one-form $\theta$ satisfies
+\begin{equation}\label{eq:MC}
+ \dd\theta+\tfrac12[\theta,\theta]=0,\qquad
+ \tfrac12[\theta,\theta](U,V):=[\theta(U),\theta(V)].
+\end{equation}
+Consequently, for a smooth two-parameter map $g(s,t)$ into $G$, the
+left-trivialized partial derivatives
+$\alpha=\theta(\partial_sg)$ and $\beta=\theta(\partial_tg)$ satisfy the
+mixed-variation identity
+\begin{equation}\label{eq:mixedvariation}
+ \partial_s\beta-\partial_t\alpha+[\alpha,\beta]=0.
+\end{equation}
+\end{proposition}
+\begin{proof}
+For a one-form $\omega$ and vector fields $U,V$ one has
+$\dd\omega(U,V)=U(\omega(V))-V(\omega(U))-\omega([U,V])$. Evaluate on
+left-invariant fields $U^L,V^L$: the functions $\theta(V^L)=V$ and
+$\theta(U^L)=U$ are constant, so the first two terms vanish, and
+$[U^L,V^L]=[U,V]^L$ by definition of the Lie algebra bracket; hence
+$\dd\theta(U^L,V^L)=-\theta([U,V]^L)=-[U,V]$. On the other hand
+$\frac12[\theta,\theta](U^L,V^L)=[\theta(U^L),\theta(V^L)]=[U,V]$. Both
+sides of \eqref{eq:MC} are tensorial (bilinear over functions) and
+left-invariant fields span every tangent space, so \eqref{eq:MC} holds
+identically. In a matrix group the same result is the direct computation
+$\dd(g^{-1})=-g^{-1}(\dd g)g^{-1}$, whence
+$\dd(g^{-1}\dd g)=-g^{-1}\dd g\wedge g^{-1}\dd g$.
+
+For \eqref{eq:mixedvariation}, pull $\theta$ back by $g$:
+$g^*\theta=\alpha\,\dd s+\beta\,\dd t$. Pullback commutes with $\dd$ and
+with the bracket of forms, so \eqref{eq:MC} gives
+$\dd(g^*\theta)=-[\alpha,\beta]\,\dd s\wedge\dd t$, while directly
+$\dd(\alpha\,\dd s+\beta\,\dd t)=(\partial_s\beta-\partial_t\alpha)\,\dd s\wedge\dd t$.
+Comparing coefficients gives \eqref{eq:mixedvariation}. (In a matrix group:
+$\partial_s(g^{-1}\partial_tg)=-\alpha\beta+g^{-1}\partial_s\partial_tg$ and
+$\partial_t(g^{-1}\partial_sg)=-\beta\alpha+g^{-1}\partial_t\partial_sg$;
+subtracting gives $-[\alpha,\beta]$.)
+\end{proof}
+
+\begin{proposition}[Intrinsic differential of the exponential]\label{prop:intrinsicdexp}
+For $X,H\in\g$,
+\begin{equation}\label{eq:intrinsicdexp}
+ (L_{\exp(-X)})_*(\dd\exp)_X(H)=\phi(\ad_X)H=\int_0^1e^{-u\ad_X}H\,\dd u,
+\end{equation}
+and similarly $(R_{\exp(-X)})_*(\dd\exp)_X(H)=\phi(-\ad_X)H$. In
+particular $(\dd\exp)_0=\id_\g$, and $\Ad_{\exp X}=e^{\ad_X}$ intrinsically.
+\end{proposition}
+\begin{proof}
+Put $g(s,t)=\exp\bigl(s(X+tH)\bigr)$. For fixed $t$, $s\mapsto g(s,t)$ is
+the one-parameter subgroup with velocity $X+tH$, so its left-trivialized
+velocity is $\alpha(s,t)=\theta(\partial_sg)=X+tH$. Let
+$\beta(s,t)=\theta(\partial_tg)$; then $\beta(0,t)=0$ because $g(0,t)=e$
+for all $t$. By \eqref{eq:mixedvariation},
+$\partial_s\beta=\partial_t\alpha-[\alpha,\beta]=H-[X+tH,\beta]$. At $t=0$
+this is the linear equation $\partial_s\beta=H-\ad_X\beta$ with
+$\beta(0)=0$, whose unique solution is
+$\beta(s)=\int_0^se^{-(s-u)\ad_X}H\,\dd u$ (check by differentiation:
+$\partial_s\beta=H-\ad_X\beta$). At $s=1$, substituting $v=1-u$,
+$\beta(1,0)=\int_0^1e^{-v\ad_X}H\,\dd v=\phi(\ad_X)H$ by the termwise
+integration of \cref{thm:dexp}. Since $\beta(1,0)=\theta(\partial_tg(1,0))
+=(L_{\exp(-X)})_*(\dd\exp)_X(H)$, this is \eqref{eq:intrinsicdexp}. The
+right-trivialized version follows by applying the same argument to the
+right Maurer--Cartan form, or from
+$(R_{\exp(-X)})_*=\Ad_{\exp X}\circ(L_{\exp(-X)})_*$ together with
+$\Ad_{\exp X}\phi(\ad_X)=e^{\ad_X}\phi(\ad_X)=\phi(-\ad_X)$. At $X=0$ the
+formula gives $(\dd\exp)_0(H)=H$. Finally, differentiating the
+one-parameter group of automorphisms $t\mapsto\Ad_{\exp(tX)}$ gives
+$\frac{\dd}{\dd t}\Ad_{\exp(tX)}=\ad_X\Ad_{\exp(tX)}$ with
+$\Ad_{\exp(0)}=I$, whose unique solution is $e^{t\ad_X}$; this is the
+intrinsic Campbell identity.
+\end{proof}
+
+\subsection{Local exponential coordinates and the local BCH law}
+\begin{theorem}[Local BCH multiplication]\label{thm:local}
+Let $G$ be a finite-dimensional real or complex Lie group. There is a
+neighborhood $U$ of $0$ in $\g$ on which $\exp$ is a diffeomorphism onto a
+neighborhood of the identity. After shrinking $U$, for all $X,Y\in U$,
+\begin{equation}\label{eq:localproduct}
+ \exp X\exp Y=\exp\bigl(\BCH(X,Y)\bigr),
+\end{equation}
+where the universal series converges absolutely in $\g$. Hence the local
+multiplication law of $G$ is determined entirely by the Lie bracket.
+\end{theorem}
+\begin{proof}
+By \cref{prop:intrinsicdexp}, $(\dd\exp)_0=\id$, so the inverse function
+theorem provides the chart. Choose a norm on $\g$ and $\kappa$ with
+$\norm{[u,v]}\leq\kappa\norm u\norm v$. By \cref{thm:convergence}(iv), for
+$\kappa(\norm X+\norm Y)<\log2$ the series $Z(t)=\BCH(X,tY)=\sum_nZ_n(X,tY)$
+converges absolutely, uniformly for $t\in[0,1]$, and so does the series
+with $X,Y$ replaced by $rX,rY$ for some $r>1$, provided $X,Y$ are small
+enough. Consequently $Z(t)$ is given by a power series in $t$ with radius
+greater than $1$, and it may be differentiated termwise in $t$. The
+differential equation \eqref{eq:ode}, $Z'(t)=\beta(\ad_{Z(t)})Y$, holds in
+the formal setting coefficient by coefficient in $t$ (each coefficient
+being a Lie polynomial identity in $X,Y$, valid in $\g$ by universality,
+\cref{sec:universal}); for $\norm{Z(t)}$ small enough that
+$\norm{\ad_{Z(t)}}<2\pi$, the right side is a convergent series in $t$ with
+the same coefficients, so the equation holds analytically.
+
+Now let $L(t)=\log(\exp X\exp(tY))$ in the exponential chart, defined for
+small $X,Y$ and $t\in[0,1]$ after shrinking $U$ so that the relevant
+products stay in the chart. Its left-trivialized derivative is
+$\theta\bigl(\tfrac{\dd}{\dd t}\exp X\exp(tY)\bigr)=Y$ (the curve
+$t\mapsto\exp X\exp(tY)$ is the left translate by $\exp X$ of a
+one-parameter subgroup). By \cref{prop:intrinsicdexp} the same
+left-trivialized derivative equals $\phi(\ad_{L(t)})L'(t)$. For $L$ small,
+$\phi(\ad_L)$ is invertible with inverse $\beta(\ad_L)$, so
+$L'=\beta(\ad_L)Y$ with $L(0)=X$. The map $L\mapsto\beta(\ad_L)Y$ is
+analytic on a neighborhood of $0$, so the initial value problem has a
+unique solution by the Picard--Lindel\"of theorem. Both $L(t)$ and $Z(t)$
+solve it; hence $L(1)=Z(1)=\BCH(X,Y)$, which is \eqref{eq:localproduct}
+since $\exp$ is injective on $U$.
+\end{proof}
+The local assertion is not a global classification. The additive group
+$\R$ and the circle group $S^1=\{e^{\ii t}\}$ have the same one-dimensional
+abelian Lie algebra, but one is noncompact and the other compact, so they
+are not isomorphic as Lie groups; they differ in topology, not in local
+structure. The identity map of their Lie algebras integrates from $\R$ to
+$S^1$ as $t\mapsto e^{\ii t}$, but not from $S^1$ to $\R$: a continuous
+homomorphism from the compact group $S^1$ to $\R$ has compact image, which is
+a compact subgroup of $\R$, hence $\{0\}$, so its differential is zero.
+
+\subsection{Homomorphisms, representations, and integration}
+\begin{theorem}[Local Lie correspondence]\label{thm:localcorr}
+Let $f:\g\to\h$ be a homomorphism of Lie algebras of Lie groups $G,H$. Then
+\begin{equation}\label{eq:localhom}
+ F(\exp_GX)=\exp_H(fX)
+\end{equation}
+defines a smooth map on an identity neighborhood of $G$ which is a local
+homomorphism: $F(gh)=F(g)F(h)$ whenever $g,h,gh$ lie in a suitable smaller
+neighborhood. Conversely, the differential at the identity of a smooth
+local homomorphism preserves Lie brackets, and a local homomorphism is
+determined near the identity by that differential.
+\end{theorem}
+\begin{proof}
+On the exponential neighborhood of \cref{thm:local}, \eqref{eq:localhom}
+defines a smooth map, being the composition $\exp_H\circ f\circ\log_G$. By
+\cref{prop:symmetry}, $f$ preserves every $Z_n$, and by continuity it
+preserves the convergent sum: $f(\BCH(X,Y))=\BCH(fX,fY)$. Hence, for $X,Y$
+small enough that \eqref{eq:localproduct} applies in both groups,
+\[
+ F(\exp X\exp Y)=F\bigl(\exp\BCH(X,Y)\bigr)=\exp_H\bigl(\BCH(fX,fY)\bigr)
+ =\exp_H(fX)\exp_H(fY)=F(\exp X)F(\exp Y).
+\]
+For the converse, let $F$ be a smooth local homomorphism with differential
+$A=(\dd F)_e$. Differentiating $F(g\exp(tX))=F(g)F(\exp(tX))$ at $t=0$
+shows that $F$ relates the left-invariant field $X^L$ on $G$ to the field
+$(AX)^L$ on $H$, wherever both are defined. Related vector fields have
+related brackets (a standard consequence of the chain rule applied to
+$F_*$), so $[X^L,Y^L]=[X,Y]^L$ is related to $[(AX)^L,(AY)^L]=[AX,AY]^L$;
+evaluating at $e$ gives $A[X,Y]=[AX,AY]$. Finally, since $F$ maps the
+one-parameter subgroup $\exp(tX)$ to a local one-parameter subgroup of $H$
+with initial velocity $AX$, uniqueness of integral curves gives
+$F(\exp(tX))=\exp_H(tAX)$ for small $t$; as $\exp$ is onto an identity
+neighborhood, $F$ is determined near $e$ by $A$.
+\end{proof}
+
+\begin{theorem}[Integration from a simply connected group]\label{thm:integration}
+If $G$ is connected and simply connected and $H$ is a Lie group, every Lie
+algebra homomorphism $f:\g\to\h$ integrates to a unique smooth homomorphism
+$F:G\to H$ with $(\dd F)_e=f$. In particular every finite-dimensional
+representation of $\g$ integrates to a representation of $G$.
+\end{theorem}
+\begin{proof}
+Let $F_0$ be the local homomorphism of \cref{thm:localcorr}, defined and
+multiplicative on an open identity neighborhood $W$ in the sense that
+$F_0(uv)=F_0(u)F_0(v)$ whenever $u,v,uv\in W$. Choose a smaller symmetric
+identity neighborhood $W_1$ with $W_1W_1\subseteq W$.
+
+\emph{Step 1: paths.} Let $\gamma:[0,1]\to G$ be a continuous path with
+$\gamma(0)=e$ and $\gamma(1)=g$. By uniform continuity there is a partition
+$0=t_0<t_1<\cdots<t_m=1$ such that every increment
+$u_j=\gamma(t_{j-1})^{-1}\gamma(t_j)$ lies in $W_1$. Define
+\[
+ F_\gamma(g)=F_0(u_1)F_0(u_2)\cdots F_0(u_m).
+\]
+This does not depend on the partition. Inserting one additional point $t'$
+between $t_{j-1}$ and $t_j$ replaces $u_j$ by the product $u'u''$ of two
+increments; if the partition is fine enough that $u',u''\in W_1$, then
+$u'u''=u_j\in W$ and $F_0(u_j)=F_0(u')F_0(u'')$ by local multiplicativity,
+so the product is unchanged. Any two sufficiently fine partitions have a
+common refinement obtained by inserting points one at a time, so
+$F_\gamma(g)$ is well defined.
+
+\emph{Step 2: homotopy invariance.} Let $\Gamma:[0,1]^2\to G$ be a
+continuous homotopy with $\Gamma(\cdot,0)=\gamma_0$, $\Gamma(\cdot,1)=\gamma_1$,
+$\Gamma(0,\cdot)=e$, $\Gamma(1,\cdot)=g$. By uniform continuity there is a
+rectangular grid so fine that for any two grid points $p,q$ of the same
+closed cell, $\Gamma(p)^{-1}\Gamma(q)\in W_1$. Around a single cell with
+corners $a,b,c,d$ (in cyclic order), the four increments
+$u=\Gamma(a)^{-1}\Gamma(b)$, $v=\Gamma(b)^{-1}\Gamma(c)$,
+$u'=\Gamma(a)^{-1}\Gamma(d)$, $v'=\Gamma(d)^{-1}\Gamma(c)$ satisfy
+$uv=u'v'=\Gamma(a)^{-1}\Gamma(c)\in W_1$, so local multiplicativity gives
+$F_0(u)F_0(v)=F_0(uv)=F_0(u')F_0(v')$. Hence the products of $F_0$ along the
+two edge paths of the cell from $a$ to $c$ coincide. Sweeping across the
+grid one cell at a time, replacing the lower-right edge pair of a cell by
+its upper-left pair, converts the grid path along the bottom and right
+boundary into the path along the left and top boundary without changing the
+product. The left and right boundary edges are constant paths (at $e$ and
+at $g$) and contribute factors $F_0(e)=e$. The bottom and top boundary
+paths are $\gamma_0$ and $\gamma_1$ evaluated at the grid points, whose
+increments form fine partitions in the sense of Step 1. Therefore
+$F_{\gamma_0}(g)=F_{\gamma_1}(g)$.
+
+\emph{Step 3: definition of $F$.} Since $G$ is simply connected, any two
+paths from $e$ to $g$ are homotopic with fixed endpoints, and since $G$ is
+connected such paths exist. Define $F(g)=F_\gamma(g)$ for any such path.
+
+\emph{Step 4: multiplicativity, smoothness, differential.} Given paths
+$\gamma$ from $e$ to $g$ and $\delta$ from $e$ to $h$, the concatenation of
+$\gamma$ with the left translate $g\delta$ is a path from $e$ to $gh$. The
+increments of $g\delta$ are $(g\delta(t_{j-1}))^{-1}g\delta(t_j)
+=\delta(t_{j-1})^{-1}\delta(t_j)$, the original increments of $\delta$.
+Hence $F(gh)=F(g)F(h)$. For $u\in W_1$, appending to a path to $g$ the
+short path $t\mapsto g\exp(t\log u)$ from $g$ to $gu$ gives
+$F(gu)=F(g)F_0(u)$; thus $F$ agrees near $g$ with the smooth map
+$u\mapsto F(g)F_0(u)$, so $F$ is smooth, and at $g=e$ it agrees with $F_0$,
+so $(\dd F)_e=f$.
+
+\emph{Step 5: uniqueness.} Any homomorphism $F'$ with differential $f$
+satisfies $F'(\exp X)=\exp_H(fX)$ (it maps one-parameter subgroups to
+one-parameter subgroups with the given initial velocity), so $F'=F_0=F$ on
+the exponential neighborhood. The set where $F'=F$ is a subgroup
+containing an identity neighborhood, hence an open subgroup; its cosets
+are open, so it is also closed; connectedness makes it all of $G$.
+
+Taking $H=\GL(E)$ for a finite-dimensional vector space $E$ gives the
+statement about representations.
+\end{proof}
+Without simple connectedness the path construction can yield a
+nontrivial value around a loop; this is the precise global obstruction
+absent from the local BCH law. Descent from a simply connected covering
+group to a specified quotient requires the covering kernel to act trivially.
+
+\subsection{Nilpotent Lie algebras and the polynomial group law}\label{sec:nilpotent}
+Write $\g^1=\g$ and $\g^{r+1}=[\g,\g^r]$ for the lower central series. The
+algebra is nilpotent of class at most $c$ if $\g^{c+1}=0$.
+\begin{theorem}[Termination and the nilpotent group law]\label{thm:nilpotent}
+In a nilpotent Lie algebra of class at most $c$, every $Z_n$ with $n>c$
+vanishes identically, and
+\begin{equation}\label{eq:nilpotentlaw}
+ X*Y=\BCH(X,Y)=\sum_{n=1}^{c}Z_n(X,Y)
+\end{equation}
+is a polynomial group law on the vector space $\g$ with identity $0$ and
+inverse $-X$. For finite-dimensional real $\g$ this makes $\g$ a connected,
+simply connected Lie group whose Lie algebra is $\g$ with its original
+bracket and whose exponential map is the identity of $\g$. Any connected
+simply connected Lie group with Lie algebra $\g$ is isomorphic to it, and
+in every Lie group with Lie algebra $\g$ the identity
+$\exp X\exp Y=\exp\BCH(X,Y)$ holds for all $X,Y\in\g$.
+\end{theorem}
+\begin{proof}
+By the Jacobi identity in the form \eqref{eq:derivation}, induction on $r$
+gives $[\g^r,\g^s]\subseteq\g^{r+s}$: for $r=1$ this is the definition,
+and if it holds for $r$ then for $x\in\g$, $y\in\g^r$, $z\in\g^s$,
+$[[x,y],z]=[x,[y,z]]-[y,[x,z]]\in[\g,\g^{r+s}]+[\g^r,\g^{s+1}]\subseteq\g^{r+s+1}$.
+Hence every bracket monomial of degree $n$ in elements of $\g$ lies in
+$\g^n$, and vanishes for $n>c$. Every $Z_n$ is such a combination, so
+$Z_n=0$ for $n>c$.
+
+The formal identities \eqref{eq:assoc} and \eqref{eq:unitinverse} are
+identities between Lie series in three free variables. Evaluating them in
+$\g$ turns both sides into finite polynomial identities, because all Lie
+monomials of degree greater than $c$ vanish, including those produced by
+substituting one polynomial into another. Thus
+$(X*Y)*T=X*(Y*T)$, $X*0=0*X=X$, and $X*(-X)=0$ hold for all $X,Y,T\in\g$,
+not merely near zero. So $(\g,*)$ is a group, with polynomial multiplication
+and inversion; it is a Lie group whose underlying manifold is a vector
+space, hence connected and simply connected.
+
+Its Lie algebra is computed from the group commutator. Write $a=sX$,
+$b=tY$, and let $O(3)$ denote terms of total degree at least three in
+$s,t$. Using $u*v=u+v+\frac12[u,v]+O(3)$ three times,
+\begin{align*}
+ (a*b)*(-a)&=\bigl(a+b+\tfrac12[a,b]\bigr)-a+\tfrac12[a+b,-a]+O(3)
+ =b+[a,b]+O(3),\\
+ \bigl((a*b)*(-a)\bigr)*(-b)&=\bigl(b+[a,b]\bigr)-b+\tfrac12[b,-b]+O(3)
+ =[a,b]+O(3)=st[X,Y]+O(3).
+\end{align*}
+The mixed second derivative $\partial_s\partial_t$ at $s=t=0$ of the group
+commutator $g_sh_tg_s^{-1}h_t^{-1}$ of two one-parameter subgroups is the
+Lie bracket of their initial velocities in the Lie algebra of any Lie
+group, so the bracket of $(\g,*)$ is the original bracket of $\g$.
+(Alternatively, the left-invariant field of $X$ is $g\mapsto\frac{\dd}{\dd t}
+g*(tX)|_{t=0}$, and computing brackets of these polynomial fields gives the
+same result.) Since $Z(sX,tX)=(s+t)X$ (all brackets of multiples of $X$
+vanish), the one-parameter subgroups are $t\mapsto tX$, so the exponential
+map is the identity.
+
+If $G$ is a connected simply connected Lie group with Lie algebra $\g$,
+\cref{thm:integration} integrates the identity map of $\g$ in both
+directions, giving homomorphisms $(\g,*)\to G$ and $G\to(\g,*)$ whose
+composites have differential the identity, hence are the identity by the
+uniqueness part; so they are inverse isomorphisms. In particular the
+exponential map of $G$ is a global diffeomorphism. For an arbitrary Lie
+group $G'$ with Lie algebra $\g$, the homomorphism $(\g,*)\to G'$
+integrating the identity map sends $X$ to $\exp_{G'}X$ (it maps
+one-parameter subgroups to one-parameter subgroups), and multiplicativity
+reads $\exp_{G'}(X*Y)=\exp_{G'}X\exp_{G'}Y$.
+\end{proof}
+Termination is a statement about Lie brackets, not about matrix powers: a
+nilpotent Lie algebra may be represented by matrices that are not
+themselves nilpotent.
+
+For a basis $P,Q,C$ with $[P,Q]=C$ and all other brackets zero (the
+Heisenberg algebra, of class two), \eqref{eq:nilpotentlaw} reads
+\begin{equation}\label{eq:heisenberglaw}
+ (x,y,z)*(x',y',z')=\bigl(x+x',\,y+y',\,z+z'+\tfrac12(xy'-yx')\bigr)
+\end{equation}
+in coordinates $xP+yQ+zC$, since $\frac12[xP+yQ,x'P+y'Q]=\frac12(xy'-yx')C$.
+A concrete matrix instance is $P=E_{12}$, $Q=E_{23}$, $C=E_{13}$ in the
+strictly upper triangular $3\times3$ matrices, where both sides of
+$e^Xe^Y=e^{X+Y+[X,Y]/2}$ are finite matrix polynomials. This group law
+underlies the Weyl and displacement identities of \cref{sec:quantum}.
