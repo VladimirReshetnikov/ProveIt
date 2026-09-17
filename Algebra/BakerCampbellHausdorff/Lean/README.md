@@ -77,6 +77,14 @@ additional hypotheses. Appendix D of the article records the correspondence.
   polynomials of degree `n` (`R_of_mem_lieGen`), and **Theorem 4.1 (Dynkin's formula)**
   `Zₙ = (1/n) Σ_w c(w) R(w)` (`bchHom_eq_dynkin`) and its all-terms form
   `Zₙ = (1/n) Σ_k (-1)^{k-1}/k Σ R(X^{r₁}Y^{s₁}⋯)/∏ rᵢ!sᵢ!` (`bchHom_eq_dynkin_blocks`).
+- `BCH/DynkinSeries.lean` — **Theorem 7.3 (iii), (iv) (absolute convergence of Dynkin's Lie
+  series)**: the right-nested brackets `rbEval` evaluated in a normed space with a bracket
+  bound `‖⁅u,v⁆‖ ≤ κ‖u‖‖v‖`, the estimate `‖[x₁,[x₂,…,xₙ]]‖ ≤ κ^{n-1} ∏‖xᵢ‖`, the Dynkin
+  series `dynkinTerm` and the sum of the norms of its summands `dynkinNormSum`; absolute
+  summability with the bound `κ⁻¹[-log(2 - e^{κs})]` and tails `ρ^{-(N+1)} κ⁻¹[-log(2 - e^{κρs})]`
+  (`tsum_dynkinNormSum_le`, `tsum_dynkinNormSum_tail_le`); the associative case `κ = 2` with
+  `M_D(s) = -½ log(2 - e^{2s})` (`tsum_dynkinNormSum_le_of_lt`), and `Zₙ = dynkinTerm ![X,Y] n`
+  (`bchHom_eq_dynkinTerm`).
 - `BCH/Trace.lean` — **Proposition 7.5 (trace identity)**: the evaluation homomorphism
   `evalHom` of `𝕂⟨X,Y⟩`, vanishing of any tracial linear functional on `Zₙ(X,Y)` for `n ≥ 2`
   (`tracial_bchHom`, via Dynkin–Specht–Wever), `τ(Σ Zₙ) = τ X + τ Y` for continuous tracial

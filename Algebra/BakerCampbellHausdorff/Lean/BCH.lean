@@ -58,6 +58,13 @@ Banach algebras:
   the forms `Zₙ = (1/n) ∑_w c(w) R(w)` (`bchHom_eq_dynkin`) and
   `Zₙ = (1/n) ∑_k (-1)^{k-1}/k ∑ R(X^{r₁}Y^{s₁}⋯X^{r_k}Y^{s_k}) / ∏ rᵢ!sᵢ!`
   (`bchHom_eq_dynkin_blocks`);
+* `BCH.DynkinSeries` — Theorem 7.3 (iii), (iv): in a normed space with a bracket satisfying
+  `‖⁅u, v⁆‖ ≤ κ ‖u‖ ‖v‖` (a normed Lie algebra; `κ = 2` for associative algebras), the
+  right-nested commutator summands of Dynkin's formula are absolutely summable when
+  `κ (‖X‖ + ‖Y‖) < log 2`, with absolute sum at most `κ⁻¹ [-log (2 - e^{κ s})]` and tails
+  `ρ^{-(N+1)} κ⁻¹ [-log (2 - e^{κ ρ s})]` (`tsum_dynkinNormSum_le`, `tsum_dynkinNormSum_tail_le`,
+  `tsum_dynkinNormSum_le_of_lt` with `M_D(s) = -½ log (2 - e^{2s})`), and `Zₙ(X, Y)` is the
+  degree-`n` part of the evaluated Dynkin series (`bchHom_eq_dynkinTerm`);
 * `BCH.Trace`     — Proposition 7.5: a tracial linear functional vanishes on `Zₙ(X, Y)` for
   `n ≥ 2` (`tracial_bchHom`), so `τ(Z) = τ X + τ Y` for continuous tracial functionals
   whenever the series converges (`tracial_tsum_bchHom`); for matrices,
@@ -86,3 +93,4 @@ import BCH.Formal.LieSeries
 import BCH.Formal.WordCut
 import BCH.Formal.Dynkin
 import BCH.Trace
+import BCH.DynkinSeries

@@ -114,6 +114,17 @@ $Z_n(X,Y)$, \eqref{eq:degreerec}, \cref{rem:evaluation} & \texttt{bchHom}
  the bounds $\norm{e^C}\leq\norm I e^{\norm C}$ and
  $\norm{e^B-e^A}\leq\norm I^2e^{\max(\norm A,\norm B)}\norm{B-A}$ of the proof are
  \texttt{norm\_exp\_le}, \texttt{norm\_exp\_sub\_exp\_le} \\
+\Cref{thm:convergence}(iii), \eqref{eq:dynkinradius} &
+ \texttt{tsum\_dynkinNormSum\_le\_of\_lt} (summability and the bound $M_D(s)$),
+ tail \texttt{tsum\_dynkinNormSum\_tail\_le\_of\_lt}; the evaluated Dynkin
+ summands are \texttt{dynkinTerm}, their norm sum \texttt{dynkinNormSum}, and
+ $Z_n=$ \texttt{dynkinTerm} is \texttt{bchHom\_eq\_dynkinTerm} \\
+\Cref{thm:convergence}(iv) & \texttt{summable\_dynkinNormSum},
+ \texttt{tsum\_dynkinNormSum\_le}, \texttt{tsum\_dynkinNormSum\_tail\_le},
+ \texttt{summable\_dynkinTerm} (any normed space with a bracket satisfying
+ $\norm{[u,v]}\leq\kappa\norm u\norm v$); the bracket estimate
+ $\norm{R(a_1\cdots a_n)}\leq\kappa^{n-1}\prod_j\norm{a_j}$ is
+ \texttt{norm\_rbEval\_le} \\
 \Cref{prop:uniquelog}(i) & \texttt{mlog\_exp\_sub\_one} \\
 \Cref{prop:uniquelog}(ii) & \texttt{exp\_eq\_iff\_eq\_tsum\_bchHom},
  \texttt{eq\_tsum\_bchHom\_of\_exp\_eq} \\
@@ -268,12 +279,29 @@ with every $R(w)$ a commutator, and a tracial functional kills commutators
 (\texttt{tracial\_bchHom}); the branch statement \eqref{eq:tracebranch},
 which needs $\det e^A=e^{\tr A}$, is not formalized.
 
+Parts (iii) and (iv) of \cref{thm:convergence} are formalized together, in
+a normed space with an arbitrary bracket satisfying
+$\norm{[u,v]}\leq\kappa\norm u\norm v$ with $\kappa>0$ (no Lie axioms are
+needed for the bound, and finite-dimensionality is used in the text only
+to guarantee the existence of $\kappa$). The right-nested brackets are
+evaluated directly on lists of letters (\texttt{rbEval}), the estimate
+$\norm{R(a_1\cdots a_n)}\leq\kappa^{n-1}\prod_j\norm{a_j}$ is
+\texttt{norm\_rbEval\_le}, and the sum of the norms of the degree-$n$
+summands of \eqref{eq:dynkin} is bounded by $\kappa^{-1}$ times the
+majorant of \cref{thm:convergence}(i) evaluated at $\kappa\norm X$,
+$\kappa\norm Y$ (\texttt{dynkinNormSum\_le}), exactly as in the proof of
+(iii); summing gives the bounds, and the tail estimate uses the scaling
+\texttt{bchMaj\_mul} of the majorant. In an associative algebra the
+evaluated summands coincide with those of \texttt{bchHom\_eq\_dynkin\_blocks}
+(\texttt{evalHom\_rbList}), which gives $Z_n=$ \texttt{dynkinTerm}
+(\texttt{bchHom\_eq\_dynkinTerm}) and the constant $\kappa=2$ of (iii).
+
 The remaining formal power-series parts of the article
 (\cref{sec:formal,sec:hopf,sec:dynkin}: the multifactor formula
 \eqref{eq:manyexp}, the Hopf structure, the bidegree form
 \eqref{eq:bidegreeproj} and the vanishing criterion for Dynkin summands),
 the word-level majorant in the first
-line of \eqref{eq:majorant}, parts (iii) and (iv) of \cref{thm:convergence},
+line of \eqref{eq:majorant},
 the multifactor case of \cref{lem:tail}, and the later sections are not yet
 formalized; the finite exact computations of \cref{sec:computation} remain
 the machine check of the coefficient tables.
