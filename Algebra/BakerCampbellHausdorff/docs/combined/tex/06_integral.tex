@@ -133,10 +133,12 @@ occurrences of $Y$.
 \begin{corollary}[All single-$Y$ terms]\label{cor:linearY}
 The complete part of $Z(X,Y)$ that is linear in $Y$ is
 \begin{equation}\label{eq:linearY}
- \beta(\ad_X)Y=\frac{\ad_X}{1-e^{-\ad_X}}Y
- =\frac{\ad_X}{2}\Bigl(1+\coth\frac{\ad_X}{2}\Bigr)Y
- =Y+\tfrac12[X,Y]+\tfrac1{12}[X,[X,Y]]-\tfrac1{720}\ad_X^4Y
+\begin{aligned}
+ \beta(\ad_X)Y&=\frac{\ad_X}{1-e^{-\ad_X}}Y
+ =\frac{\ad_X}{2}\Bigl(1+\coth\frac{\ad_X}{2}\Bigr)Y\\
+ &=Y+\tfrac12[X,Y]+\tfrac1{12}[X,[X,Y]]-\tfrac1{720}\ad_X^4Y
    +\tfrac1{30240}\ad_X^6Y-\cdots,
+\end{aligned}
 \end{equation}
 so that $Z(X,Y)=X+\beta(\ad_X)Y+O(Y^2)$, and the coefficient of $\ad_X^nY$
 is $B_n^+/n!$.
@@ -298,10 +300,12 @@ For operators $E_1,\ldots,E_m$ on $\g_\C$ define
  =\frac1{2\pi\ii}\oint_\Gamma\beta(z)\,R(z)E_1R(z)E_2\cdots E_mR(z)\,\dd z,
  \qquad R(z)=(zI-A)^{-1}.
 \end{equation}
-The symmetrization $\sum_{\pi\in S_m}T_m(A)[E_{\pi(1)},\ldots,E_{\pi(m)}]$
-is the $m$th Fr\'echet derivative $D^m\beta(A)[E_1,\ldots,E_m]$ of the
-holomorphic matrix function $\beta$, but the unsymmetrized form is what the
-recursion needs.
+The symmetrization
+\[
+ D^m\beta(A)[E_1,\ldots,E_m]=\sum_{\pi\in S_m}T_m(A)\bigl[E_{\pi(1)},\ldots,E_{\pi(m)}\bigr]
+\]
+is the $m$th Fr\'echet derivative of the holomorphic matrix function
+$\beta$, but the unsymmetrized form is what the recursion needs.
 \begin{theorem}[Local expansion at a regular base point]\label{thm:Hqanalytic}
 Under \eqref{eq:regular}, $Z(\eps)=\sum_{q\geq0}\eps^qH_q$ converges for
 $|\eps|$ small, with $H_0=X$, $H_1=\beta(A)Y$, and for $q\geq2$
@@ -431,11 +435,11 @@ which is \eqref{eq:compactode}. Comparing coefficients of $t^{n-1}$ gives
 \end{proof}
 The recursion \eqref{eq:homrec} gives $2Z_2=V_1+\bminus1[Z_1,V_0]
 =[X,Y]-\tfrac12[X+Y,X+Y]=[X,Y]$ and
-\[
- 3Z_3=V_2+\bminus1\bigl([Z_1,V_1]+[Z_2,V_0]\bigr)+\bminus2[Z_1,[Z_1,V_0]]
- =\tfrac12[X,[X,Y]]-\tfrac12[X+Y,[X,Y]]+\tfrac14[X+Y,[X,Y]]
+\begin{align*}
+ 3Z_3&=V_2+\bminus1\bigl([Z_1,V_1]+[Z_2,V_0]\bigr)+\bminus2[Z_1,[Z_1,V_0]]\\
+ &=\tfrac12[X,[X,Y]]-\tfrac12[X+Y,[X,Y]]+\tfrac14[X+Y,[X,Y]]
  =\tfrac14[X,[X,Y]]-\tfrac14[Y,[X,Y]],
-\]
+\end{align*}
 which is \eqref{eq:z3}. The compact form \eqref{eq:compactrec} with
 $C=[X,Y]$ gives $2Z_2=\tfrac12[D,S]=C$, $3Z_3=\tfrac14[D,C]$ (since
 $\ad_S^2S=0$), and

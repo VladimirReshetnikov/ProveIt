@@ -1,0 +1,215 @@
+\section{Trotter, symmetric, and higher-order product formulas with complete error series}\label{sec:splitting}
+The source page mentions the Suzuki--Trotter decomposition as a consequence
+of the Zassenhaus formula without displaying a particular version. We prove
+the basic product limit, the symmetric second-order formula, and a
+recursive construction of arbitrarily high even order, each with its
+complete logarithmic error series. All analytic statements in this section
+concern bounded elements $X,Y$ of a unital Banach algebra with $\norm I=1$;
+they do not assert a product theorem for unbounded semigroup generators,
+for which the classical sources \cite{trotter} require additional
+hypotheses. Throughout $a=\norm X+\norm Y$ and $S=X+Y$.
+
+We first record the multifactor version of \cref{thm:convergence}(i):
+for bounded $A_1,\ldots,A_m$ with $\sum_i\norm{A_i}=\sigma<\log2$, the
+Mercator logarithm of $\prod_ie^{A_i}$ converges absolutely, equals the
+sum of the homogeneous parts of \eqref{eq:manyexp}, exponentiates to the
+product, and the sum of the norms of its terms of degree at least $N+1$ is
+at most $\rho^{-(N+1)}\bigl[-\log(2-e^{\rho\sigma})\bigr]$ for any
+$\rho>1$ with $\rho\sigma<\log2$. The proof is identical: the sum of the
+norms of the nonempty words of $\prod e^{A_i}-I$ is at most $e^{\sigma}-1$.
+
+\begin{lemma}\label{lem:tail}
+If $\sigma<\tfrac12\log2$, the terms of degree at least $2$ in the
+logarithm of $\prod_ie^{A_i}$ have total norm at most $c_0\sigma^2$, and
+those of degree at least $3$ have total norm at most $c_0'\sigma^3$, with
+absolute constants $c_0=4(\log2)^{-2}\log\frac1{2-\sqrt2}$ and
+$c_0'=8(\log2)^{-3}\log\frac1{2-\sqrt2}$.
+\end{lemma}
+\begin{proof}
+Take $\rho=\log2/(2\sigma)>1$, so $e^{\rho\sigma}=\sqrt2$ and
+$-\log(2-e^{\rho\sigma})=\log\frac1{2-\sqrt2}$. The tail bound with $N=1$
+gives $\rho^{-2}\log\frac1{2-\sqrt2}=\frac{4\sigma^2}{(\log2)^2}\log\frac1{2-\sqrt2}$,
+and with $N=2$ it gives the cubic bound.
+\end{proof}
+
+\subsection{The Lie--Trotter product formula}
+\begin{theorem}[Lie--Trotter formula and its complete logarithmic error]\label{thm:trotter}
+For every fixed scalar $t$,
+\begin{equation}\label{eq:trotter}
+ \lim_{n\to\infty}\bigl(e^{tX/n}e^{tY/n}\bigr)^n=e^{t(X+Y)}
+\end{equation}
+in norm, with error $O(n^{-1})$ uniformly for $t$ in compact sets. For all
+$n>|t|a/\log2$ one has the exact convergent expansion
+\begin{equation}\label{eq:trotterall}
+ \bigl(e^{tX/n}e^{tY/n}\bigr)^n
+ =\exp\Bigl(t(X+Y)+\sum_{k\geq2}\frac{t^k}{n^{k-1}}Z_k(X,Y)\Bigr),
+\end{equation}
+so every term of the logarithmic error is explicitly available from
+\eqref{eq:wordcut} or Dynkin's formula.
+\end{theorem}
+\begin{proof}
+For $n>|t|a/\log2$ the pair $(tX/n,tY/n)$ satisfies the hypothesis of
+\cref{thm:convergence}(i), so $L_n:=\log(e^{tX/n}e^{tY/n})=\sum_kZ_k(tX/n,tY/n)
+=\sum_k(t/n)^kZ_k(X,Y)$ converges absolutely, using homogeneity of $Z_k$, and
+$e^{L_n}=e^{tX/n}e^{tY/n}$. Powers of a single exponential satisfy
+$(e^{L})^n=e^{nL}$ by \cref{lem:explog} (in its analytic form), so the
+$n$th power equals $\exp(nL_n)=\exp\bigl(tS+\sum_{k\geq2}t^kn^{1-k}Z_k\bigr)$,
+which is \eqref{eq:trotterall}. Let $E_n=\sum_{k\geq2}t^kn^{1-k}Z_k
+=n\sum_{k\geq2}Z_k(tX/n,tY/n)$. For $n\geq2|t|a/\log2$, \cref{lem:tail}
+with $\sigma=|t|a/n$ gives $\norm{E_n}\leq nc_0(|t|a/n)^2=c_0t^2a^2/n$.
+By the exponential difference estimate \eqref{eq:expdifference} with
+$\norm I=1$,
+\[
+ \bigl\|(e^{tX/n}e^{tY/n})^n-e^{tS}\bigr\|=\norm{e^{tS+E_n}-e^{tS}}
+ \leq e^{|t|a+\norm{E_n}}\norm{E_n}\leq e^{|t|a+c_0t^2a^2/n}\,\frac{c_0t^2a^2}{n},
+\]
+which is $O(n^{-1})$ uniformly for $|t|$ bounded.
+\end{proof}
+Thus the Zassenhaus viewpoint explains which correction factors are
+discarded, while BCH provides the most direct proof of the limit and of
+all corrections to its effective exponent.
+
+\subsection{Symmetry removes every even degree}
+Put
+\begin{equation}\label{eq:S2}
+ S_2(t)=e^{tX/2}e^{tY}e^{tX/2}.
+\end{equation}
+\begin{proposition}[Symmetric splitting]\label{prop:symmetric}
+The formal logarithm of $S_2(t)$ is odd in $t$:
+\begin{equation}\label{eq:S2log}
+ \log S_2(t)=t(X+Y)+\sum_{j\geq1}t^{2j+1}E_{2j+1},\qquad
+ E_3=-\frac1{24}[X,[X,Y]]-\frac1{12}[Y,[X,Y]].
+\end{equation}
+Every $E_{2j+1}$ is a Lie polynomial given by the finite multifactor
+word-cut formula \eqref{eq:manyexp} with $(A_1,A_2,A_3)=(X/2,Y,X/2)$,
+followed by the Dynkin projection. For bounded $X,Y$ and $n>|t|a/\log2$,
+\begin{equation}\label{eq:S2all}
+ S_2(t/n)^n=\exp\Bigl(t(X+Y)+\sum_{j\geq1}\frac{t^{2j+1}}{n^{2j}}E_{2j+1}\Bigr)
+ =e^{t(X+Y)}+O(n^{-2}),
+\end{equation}
+uniformly for $t$ in compact sets.
+\end{proposition}
+\begin{proof}
+Since $(e^{A})^{-1}=e^{-A}$ and inversion reverses products,
+$S_2(-t)=e^{-tX/2}e^{-tY}e^{-tX/2}=S_2(t)^{-1}$. Let $L(t)=\log S_2(t)$ be
+the formal logarithm, a series in $\widehat T$ whose degree-$n$ part is
+$t^n$ times a polynomial. Then $e^{L(-t)}=S_2(-t)=S_2(t)^{-1}=e^{-L(t)}$,
+and uniqueness of the formal logarithm gives $L(-t)=-L(t)$; hence only odd
+powers of $t$ occur. By \cref{cor:manyexp} and \cref{thm:friedrichs}
+applied to the three-letter alphabet (the product of exponentials of
+primitives is group-like), each homogeneous part is a Lie polynomial given
+by the finite cut sum.
+
+For $E_3$ we compute by two applications of BCH through degree three. Put
+$A=tX/2$ and $B=tY$, so that $S_2=e^Ae^Be^A$. By
+\eqref{eq:z1}--\eqref{eq:z3},
+\[
+ W:=\BCH(A,B)=A+B+\tfrac12[A,B]+\tfrac1{12}[A,[A,B]]+\tfrac1{12}[B,[B,A]]+O(t^4).
+\]
+Then $\log S_2=\BCH(W,A)=W+A+\tfrac12[W,A]+\tfrac1{12}[W,[W,A]]+\tfrac1{12}[A,[A,W]]+O(t^4)$.
+Writing $W=W_1+W_2+W_3+O(t^4)$ with $W_1=A+B$, $W_2=\tfrac12[A,B]$,
+$W_3=\tfrac1{12}[A,[A,B]]+\tfrac1{12}[B,[B,A]]$, the degree-two part is
+$W_2+\tfrac12[W_1,A]=\tfrac12[A,B]+\tfrac12[B,A]=0$, as oddness predicts.
+The degree-three part is
+\[
+ W_3+\tfrac12[W_2,A]+\tfrac1{12}[W_1,[W_1,A]]+\tfrac1{12}[A,[A,W_1]],
+\]
+and the four pieces are, respectively,
+$\tfrac1{12}[A,[A,B]]+\tfrac1{12}[B,[B,A]]$;
+$\tfrac14[[A,B],A]=-\tfrac14[A,[A,B]]$;
+$\tfrac1{12}[A+B,[B,A]]=-\tfrac1{12}[A,[A,B]]+\tfrac1{12}[B,[B,A]]$; and
+$\tfrac1{12}[A,[A,B]]$. Collecting, the coefficient of $[A,[A,B]]$ is
+$\tfrac1{12}-\tfrac14-\tfrac1{12}+\tfrac1{12}=-\tfrac16$ and that of
+$[B,[B,A]]$ is $\tfrac1{12}+\tfrac1{12}=\tfrac16$. Substituting
+$A=tX/2$, $B=tY$: $-\tfrac16\cdot\tfrac{t^3}4[X,[X,Y]]+\tfrac16\cdot\tfrac{t^3}2[Y,[Y,X]]
+=-\tfrac{t^3}{24}[X,[X,Y]]-\tfrac{t^3}{12}[Y,[X,Y]]$, which is $E_3$.
+
+For \eqref{eq:S2all}, apply the multifactor convergence statement to the
+three factors of $S_2(t/n)$, whose norms sum to $|t|a/n$; the logarithm
+converges for $n>|t|a/\log2$, and raising to the $n$th power multiplies
+it by $n$, giving the displayed exponent by homogeneity. The error
+exponent $E_n'=n\sum_{j\geq1}(t/n)^{2j+1}E_{2j+1}$ consists of the terms of
+degree at least $3$ of $n\log S_2(t/n)$, so \cref{lem:tail} gives
+$\norm{E_n'}\leq nc_0'(|t|a/n)^3=O(n^{-2})$ for $n\geq2|t|a/\log2$, and the
+exponential difference estimate finishes the proof exactly as in
+\cref{thm:trotter}.
+\end{proof}
+If $[X,Y]$ is central, \eqref{eq:centralbch} shows that already
+$S_2(t)=e^{t(X+Y)}$ exactly.
+
+\subsection{Arbitrarily high even order by a five-factor recursion}
+The recursive symmetric construction below is Suzuki's fractal
+decomposition \cite{suzuki1990,suzuki1991}; its order conditions follow
+directly from BCH.
+\begin{theorem}[Symmetric product formulas of every even order]\label{thm:suzuki}
+For $k\geq2$ set
+\begin{equation}\label{eq:suzukip}
+ p_k=\frac1{4-4^{1/(2k-1)}},
+\end{equation}
+and define recursively, starting from \eqref{eq:S2},
+\begin{equation}\label{eq:suzuki}
+ S_{2k}(t)=S_{2k-2}(p_kt)^2\,S_{2k-2}\bigl((1-4p_k)t\bigr)\,S_{2k-2}(p_kt)^2.
+\end{equation}
+Then $S_{2k}(-t)=S_{2k}(t)^{-1}$ and
+\begin{equation}\label{eq:suzukiorder}
+ \log S_{2k}(t)=t(X+Y)+O(t^{2k+1}),\qquad
+ S_{2k}(t/n)^n=e^{t(X+Y)}+O(n^{-2k})
+\end{equation}
+for fixed $k$ and $t$; the first statement is formal and locally analytic,
+the second is a norm statement for bounded $X,Y$. Every term of the local
+logarithm of $S_{2k}$ is a Lie polynomial with an explicit finite
+multifactor word-cut expansion.
+\end{theorem}
+\begin{proof}
+We prove by induction on $k\geq1$ that $S_{2k}(-t)=S_{2k}(t)^{-1}$ and
+$\log S_{2k}(t)=tS+t^{2k+1}E^{(k)}+O(t^{2k+3})$ for some Lie polynomial
+$E^{(k)}$, where the logarithm is the formal one. The case $k=1$ is
+\cref{prop:symmetric}. Assume the statement for $k-1\geq1$ and abbreviate
+$p=p_k$, $c=(p,p,1-4p,p,p)$. Symmetry: since inversion reverses the order
+of a product and $S_{2k-2}(-ct)=S_{2k-2}(ct)^{-1}$,
+\begin{align*}
+ S_{2k}(-t)&=S_{2k-2}(pt)^{-2}\,S_{2k-2}((1-4p)t)^{-1}\,S_{2k-2}(pt)^{-2}\\
+ &=\bigl(S_{2k-2}(pt)^2\,S_{2k-2}((1-4p)t)\,S_{2k-2}(pt)^2\bigr)^{-1}=S_{2k}(t)^{-1},
+\end{align*}
+using that the list $c$ is palindromic. Hence $\log S_{2k}$ is odd in $t$,
+by the uniqueness argument of \cref{prop:symmetric}.
+
+Order: the five factors are exponentials of
+$W_i=c_itS+c_i^{2k-1}t^{2k-1}E^{(k-1)}+O(t^{2k+1})$, $i=1,\ldots,5$. By
+the formal BCH theorem for several factors (\cref{cor:manyexp} together
+with \cref{thm:friedrichs}), $\log\prod_ie^{W_i}=\sum_iW_i+(\text{Lie
+polynomials of degree at least two in the }W_i)$. A bracket in which every
+argument is a multiple of $tS$ vanishes, since $[S,S]=0$; a bracket
+containing at least one factor of order $t^{2k-1}$ and at least one other
+factor has order at least $t^{2k}$. Therefore
+\[
+ \log S_{2k}(t)=tS\sum_ic_i+t^{2k-1}E^{(k-1)}\sum_ic_i^{2k-1}+O(t^{2k}).
+\]
+Now $\sum_ic_i=4p+(1-4p)=1$. From \eqref{eq:suzukip},
+$4-4^{1/(2k-1)}=1/p$, so $1-4p=-4^{1/(2k-1)}p$ and
+$(1-4p)^{2k-1}=-4p^{2k-1}$; hence $\sum_ic_i^{2k-1}=4p^{2k-1}+(1-4p)^{2k-1}=0$.
+Thus $\log S_{2k}(t)=tS+O(t^{2k})$, and oddness removes the degree-$2k$
+term, leaving $tS+t^{2k+1}E^{(k)}+O(t^{2k+3})$ with $E^{(k)}$ a Lie
+polynomial. This completes the induction and proves the first part of
+\eqref{eq:suzukiorder}; the finite word-cut description of every term
+follows from \cref{cor:manyexp} applied to the $5^{k-1}\cdot3$ exponential
+factors of $S_{2k}$ with their scalar weights.
+
+For the $n$-step estimate, $S_{2k}(t/n)$ is a finite product of
+exponentials whose norms sum to $\sigma_n=\lambda_k|t|a/n$, where
+$\lambda_k=\prod_{j=2}^k(4p_j+|1-4p_j|)$ accounts for the (possibly
+negative) substeps. For $n$ large, $\sigma_n<\tfrac12\log2$ and the
+multifactor logarithm converges; $n\log S_{2k}(t/n)=tS+E_n''$ where
+$E_n''$ consists of the terms of degree at least $2k+1$ of
+$n\log S_{2k}(t/n)$, hence has norm at most
+$n\rho^{-(2k+1)}\log\frac1{2-\sqrt2}$ with $\rho=\log2/(2\sigma_n)$, that
+is $O(n\sigma_n^{2k+1})=O(n^{-2k})$. The exponential difference estimate
+then gives the second part of \eqref{eq:suzukiorder}.
+\end{proof}
+The middle coefficient $1-4p_k$ is negative (for $k=2$,
+$p_2=1/(4-4^{1/3})\approx0.4145$ and $1-4p_2\approx-0.658$). Negative
+substeps are harmless for bounded operators and for unitary groups but can
+be a genuine obstruction for one-sided unbounded semigroups; the
+boundedness hypothesis of this section is therefore part of the result, not
+an optional technicality. The proof asserts nothing about convergence as
+$k\to\infty$ at fixed $t$.

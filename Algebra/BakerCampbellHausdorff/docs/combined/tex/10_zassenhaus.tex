@@ -1,0 +1,475 @@
+\section{Zassenhaus factorization: every exponent, three recursions, a tree formula, and convergence}\label{sec:zassenhaus}
+BCH combines a product of exponentials into one exponential. Zassenhaus
+factorization performs the ordered operation in the opposite direction:
+it writes the exponential of a sum as an ordered product of exponentials of
+homogeneous Lie corrections. The order of the factors is part of the
+statement. Recursive constructions are central in the computational
+literature \cite{casasmuruanadinic}; explicit reorganizations are
+considered in \cite{kimura}. We prove existence and uniqueness, three
+recursive constructions, a finite nonrecursive formula for every exponent,
+a globally convergent ordered-integral expansion, and a quantitative
+convergence theorem for the product.
+
+\subsection{Existence, uniqueness, and the residual algorithm}
+\begin{theorem}[Formal Zassenhaus factorization]\label{thm:zassenhaus}
+There is a unique sequence of homogeneous Lie polynomials $C_n(X,Y)$ of
+degree $n$, $n\geq2$, such that
+\begin{equation}\label{eq:zassenhaus}
+ \boxed{\displaystyle
+ e^{t(X+Y)}=e^{tX}e^{tY}\prod_{n=2}^{\infty}e^{t^nC_n(X,Y)}
+ =e^{tX}e^{tY}e^{t^2C_2}e^{t^3C_3}e^{t^4C_4}\cdots.}
+\end{equation}
+The infinite product is ordered by increasing $n$ from left to right and is
+well defined coefficientwise in $t$: modulo $t^{N+1}$ only the factors
+through $C_N$ matter. Define
+\begin{equation}\label{eq:R1}
+ R_1(t)=e^{-tY}e^{-tX}e^{t(X+Y)},
+\end{equation}
+and recursively, for $n\geq2$,
+\begin{equation}\label{eq:residual}
+ C_n=\coeff{t^n}R_{n-1}(t)=\coeff{t^n}\log R_{n-1}(t),\qquad
+ R_n(t)=e^{-t^nC_n}R_{n-1}(t).
+\end{equation}
+Then $R_n(t)=I+O(t^{n+1})$ for every $n\geq1$, and \eqref{eq:residual}
+computes all the exponents.
+\end{theorem}
+\begin{proof}
+Work in $\widehat T[[t]]$, or equivalently in $\widehat T$ with $t$ tracking
+total degree. The coefficient of $t^1$ in $R_1$ is $-Y-X+(X+Y)=0$, so
+$R_1=I+O(t^2)$. Suppose inductively that $R_{n-1}=I+t^nC_n+O(t^{n+1})$.
+Then $\log R_{n-1}=t^nC_n+O(t^{n+1})$, which gives the second expression
+for $C_n$ in \eqref{eq:residual}, and
+$R_n=e^{-t^nC_n}R_{n-1}=(I-t^nC_n+O(t^{2n}))(I+t^nC_n+O(t^{n+1}))
+=I+O(t^{n+1})$. Thus the recursion removes one degree at a time.
+
+Each residual is group-like in the completed Hopf algebra of
+\cref{sec:hopf} (extended by the central scalar $t$): $R_1$ is a product of
+exponentials of the primitive elements $-tY$, $-tX$, $t(X+Y)$, hence
+group-like by \cref{lem:grouplike}; and if $R_{n-1}$ is group-like and
+$C_n$ is a Lie polynomial, then $e^{-t^nC_n}$ is group-like and so is the
+product $R_n$. To see that $C_n$ is a Lie polynomial, compare the
+coefficients of $t^n$ in $\Delta R_{n-1}=R_{n-1}\otimes R_{n-1}$: on the
+left it is $\Delta C_n$; on the right, since
+$R_{n-1}=I+t^nC_n+O(t^{n+1})$ has no terms of $t$-degree between $1$ and
+$n-1$, it is $C_n\otimes1+1\otimes C_n$. Hence $C_n$ is primitive, and by
+\cref{thm:friedrichs} it is a Lie polynomial; it is homogeneous of degree
+$n$ in the letters because every input has matching degree in $t$ and in
+$X,Y$. This completes the induction.
+
+Undoing the residuals, $R_1=e^{t^2C_2}e^{t^3C_3}\cdots e^{t^NC_N}R_N$ with
+$R_N=I+O(t^{N+1})$, so modulo $t^{N+1}$ the product of the first $N-1$
+factors equals $R_1$; multiplying by $e^{tX}e^{tY}$ on the left proves
+\eqref{eq:zassenhaus} degree by degree. For uniqueness, suppose
+$e^{t(X+Y)}=e^{tX}e^{tY}\prod_ne^{t^nC_n'}$ with homogeneous $C_n'$ of
+degree $n$. Then $\prod_{n\geq2}e^{t^nC_n'}=R_1$. If $C_j'=C_j$ for
+$j<n$, then multiplying on the left by the inverses of the first factors
+gives $\prod_{j\geq n}e^{t^jC_j'}=R_{n-1}$, and comparing coefficients of
+$t^n$ gives $C_n'=C_n$. Induction proves uniqueness.
+\end{proof}
+When the identity is written as $e^{-tX}e^{t(X+Y)}=\prod_{n\geq1}e^{t^nC_n}$,
+as on the source page, the convention \emph{must} be $C_1=Y$; the notation
+would otherwise omit a necessary first-degree factor. Extracting $t^n$
+from $R_{n-1}=e^{-t^{n-1}C_{n-1}}\cdots e^{-t^2C_2}R_1$ gives the finite
+coefficient recurrence
+\begin{equation}\label{eq:zassfinitecoeff}
+ C_n=\sum_{\substack{k_2,\ldots,k_{n-1},a,b,c\geq0\\
+                 \sum_{j=2}^{n-1}jk_j+a+b+c=n}}
+ \Bigl(\prod_{j=n-1}^{2}\frac{(-C_j)^{k_j}}{k_j!}\Bigr)
+ \frac{(-Y)^a}{a!}\frac{(-X)^b}{b!}\frac{(X+Y)^c}{c!},
+\end{equation}
+in which the product over $j$ is taken in \emph{descending} order of $j$
+from left to right. It involves associative products, but the result is a
+Lie polynomial by the theorem, and \eqref{eq:dsw} converts it into nested
+commutators.
+
+\subsection{A recursion consisting entirely of commutators}
+Define the right logarithmic derivatives $F_n(t)=R_n'(t)R_n(t)^{-1}$.
+\begin{proposition}[Differential Zassenhaus algorithm]\label{prop:zassdiff}
+\begin{align}
+ F_1(t)&=e^{-t\ad_Y}\bigl(e^{-t\ad_X}-I\bigr)Y
+ =\sum_{k\geq1}t^kf_{1,k},\qquad
+ f_{1,k}=(-1)^k\sum_{j=1}^{k}\frac{\ad_Y^{k-j}\ad_X^{j}Y}{(k-j)!\,j!},
+ \label{eq:F1}\\
+ C_n&=\frac1n\coeff{t^{n-1}}F_{n-1}(t),\qquad
+ F_n(t)=e^{-t^n\ad_{C_n}}\bigl(F_{n-1}(t)-nt^{n-1}C_n\bigr)\quad(n\geq2).
+ \label{eq:Frec}
+\end{align}
+Writing $F_n=\sum_{k\geq0}t^kf_{n,k}$, with $f_{n,k}=0$ for $k<0$, the
+coefficients satisfy the fully finite update
+\begin{equation}\label{eq:frec}
+ \boxed{\displaystyle
+ f_{n,k}=\sum_{j=0}^{\lfloor k/n\rfloor}\frac{(-1)^j}{j!}
+ \ad_{C_n}^{\,j}f_{n-1,k-nj}-nC_n\,\delta_{k,n-1},\qquad
+ C_n=\frac{f_{n-1,n-1}}{n}.}
+\end{equation}
+Only previously computed homogeneous Lie polynomials occur; this is a
+Lie-only algorithm at every degree.
+\end{proposition}
+\begin{proof}
+For a product $ABC$ of differentiable invertible curves,
+$(ABC)'(ABC)^{-1}=A'A^{-1}+A(B'B^{-1})A^{-1}+AB(C'C^{-1})B^{-1}A^{-1}$.
+With $A=e^{-tY}$, $B=e^{-tX}$, $C=e^{t(X+Y)}$ we have $A'A^{-1}=-Y$,
+$B'B^{-1}=-X$, $C'C^{-1}=X+Y$, and conjugations are adjoint exponentials
+by \cref{thm:campbell}:
+\begin{align*}
+ F_1&=-Y-e^{-t\ad_Y}X+e^{-t\ad_Y}e^{-t\ad_X}(X+Y)\\
+ &=-Y-e^{-t\ad_Y}X+e^{-t\ad_Y}X+e^{-t\ad_Y}e^{-t\ad_X}Y
+ =e^{-t\ad_Y}\bigl(e^{-t\ad_X}-I\bigr)Y,
+\end{align*}
+using $e^{-t\ad_X}X=X$ and $e^{-t\ad_Y}Y=Y$. Expanding both adjoint
+exponentials gives the double series
+$\sum_{i\geq0,j\geq1}(-1)^{i+j}t^{i+j}\ad_Y^i\ad_X^jY/(i!j!)$, and
+collecting $t^k$ gives $f_{1,k}$.
+
+Since $R_{n-1}=I+t^nC_n+O(t^{n+1})$, we have
+$R_{n-1}'=nt^{n-1}C_n+O(t^n)$ and $R_{n-1}^{-1}=I+O(t^n)$, so
+$F_{n-1}=nt^{n-1}C_n+O(t^n)$; in particular $f_{n-1,k}=0$ for $k<n-1$
+and $f_{n-1,n-1}=nC_n$, the first part of \eqref{eq:Frec}. Differentiating
+$R_n=e^{-t^nC_n}R_{n-1}$,
+\[
+ F_n=\Bigl(\frac{\dd}{\dd t}e^{-t^nC_n}\Bigr)e^{t^nC_n}
+ +e^{-t^nC_n}F_{n-1}e^{t^nC_n}
+ =-nt^{n-1}C_n+e^{-t^n\ad_{C_n}}F_{n-1},
+\]
+because $t^nC_n$ commutes with its derivative and conjugation by
+$e^{-t^nC_n}$ is $e^{-t^n\ad_{C_n}}$. As $e^{-t^n\ad_{C_n}}C_n=C_n$, the
+correction may be moved inside the operator exponential, giving the second
+part of \eqref{eq:Frec}. Expanding
+$e^{-t^n\ad_{C_n}}=\sum_j(-1)^jt^{nj}\ad_{C_n}^j/j!$ and extracting the
+coefficient of $t^k$ gives \eqref{eq:frec}; the term $-nt^{n-1}C_n$ is
+annihilated by $\ad_{C_n}^j$ for $j\geq1$ and contributes only through
+$j=0$.
+\end{proof}
+
+\subsection{The exponents displayed on the source page}
+\begin{proposition}\label{prop:zassdisplayed}
+\begin{align}
+ C_2&=-\tfrac12[X,Y],\label{eq:c2}\\
+ C_3&=\tfrac16[X,[X,Y]]+\tfrac13[Y,[X,Y]]
+     =\tfrac16[X,[X,Y]]-\tfrac13[[X,Y],Y],\label{eq:c3}\\
+ C_4&=-\tfrac1{24}[X,[X,[X,Y]]]-\tfrac18[Y,[X,[X,Y]]]-\tfrac18[Y,[Y,[X,Y]]]
+ \label{eq:c4}\\
+    &=-\tfrac1{24}\bigl([[[X,Y],X],X]+3[[[X,Y],X],Y]+3[[[X,Y],Y],Y]\bigr).
+ \label{eq:c4left}
+\end{align}
+\end{proposition}
+\begin{proof}
+From \eqref{eq:F1},
+\begin{align*}
+ f_{1,1}&=-[X,Y],\\
+ f_{1,2}&=\ad_Y\ad_XY+\tfrac12\ad_X^2Y=[Y,[X,Y]]+\tfrac12[X,[X,Y]],\\
+ f_{1,3}&=-\tfrac12\ad_Y^2\ad_XY-\tfrac12\ad_Y\ad_X^2Y-\tfrac16\ad_X^3Y.
+\end{align*}
+By \eqref{eq:frec}, $C_2=f_{1,1}/2=-\tfrac12[X,Y]$. Next,
+$f_{2,2}=f_{1,2}-\ad_{C_2}f_{1,0}=f_{1,2}$ since $f_{1,0}=0$, so
+$C_3=f_{2,2}/3$, which is \eqref{eq:c3}; the second form uses
+$[Y,[X,Y]]=-[[X,Y],Y]$. Then
+$f_{2,3}=f_{1,3}-\ad_{C_2}f_{1,1}=f_{1,3}+\tfrac12[[X,Y],[X,Y]]=f_{1,3}$,
+and $f_{3,3}=f_{2,3}-\ad_{C_3}f_{2,0}=f_{2,3}$, so $C_4=f_{1,3}/4$, which is
+\eqref{eq:c4}. For \eqref{eq:c4left}, antisymmetry gives
+$[[X,Y],X]=-[X,[X,Y]]$, hence $[[[X,Y],X],X]=[X,[X,[X,Y]]]$,
+$[[[X,Y],X],Y]=[Y,[X,[X,Y]]]$, and $[[[X,Y],Y],Y]=[Y,[Y,[X,Y]]]$.
+Substituting these into \eqref{eq:c4} gives \eqref{eq:c4left}, exactly the
+left-nested form on the source page. Since the corrections at each step
+were computed exactly, no higher-order approximation has been left implicit.
+\end{proof}
+The complete fifth and sixth exponents are printed in \cref{app:tables}
+(\cref{tab:zass56}), and all exponents through degree twelve accompany the
+article as data. There is also a left-oriented companion factorization:
+replacing $t$ by $-t$ in \eqref{eq:zassenhaus} and inverting both sides
+reverses the factor order and gives
+\begin{equation}\label{eq:zassleft}
+ e^{t(X+Y)}=\cdots e^{t^4\widehat C_4}e^{t^3\widehat C_3}e^{t^2\widehat C_2}e^{tY}e^{tX},
+ \qquad \widehat C_n=(-1)^{n+1}C_n,
+\end{equation}
+since $(e^{(-t)^nC_n})^{-1}=e^{(-1)^{n+1}t^nC_n}$.
+
+\subsection{A finite nonrecursive formula using weighted trees}
+The previous algorithms determine the exponents recursively. For a finite
+nonrecursive expression at every fixed order, first define the explicit
+associative polynomials
+\begin{equation}\label{eq:An}
+ A_n=\coeff{t^n}R_1(t)=\sum_{a+b+c=n}\frac{(-1)^{a+b}}{a!\,b!\,c!}\,Y^aX^b(X+Y)^c
+ \qquad(n\geq0),
+\end{equation}
+where $(X+Y)^c$ is the sum of all $2^c$ words of length $c$; $A_0=I$ and
+$A_1=0$. Coefficient extraction from the ordered product
+$R_1=\prod_{j\geq2}e^{t^jC_j}$ gives the forward partition recurrence
+\begin{equation}\label{eq:Cpartitions}
+ C_n=A_n-\sum_{\substack{k_2,\ldots,k_{n-1}\geq0\\\sum_{j=2}^{n-1}jk_j=n}}
+ \frac{C_2^{k_2}C_3^{k_3}\cdots C_{n-1}^{k_{n-1}}}{k_2!\,k_3!\cdots k_{n-1}!},
+\end{equation}
+with the factors in \emph{increasing} order of degree. Indeed, choosing
+from each factor $e^{t^jC_j}$ the term $t^{jk_j}C_j^{k_j}/k_j!$ with
+$\sum jk_j=n$ gives all contributions to $t^n$; the unique choice with
+$k_n=1$ contributes $C_n$, and every other choice has $k_n=0$ and at
+least two factors. The sum is empty for $n=2,3$.
+
+\begin{definition}\label{def:trees}
+Let $\cT_n$ be the set of finite plane rooted trees with a positive integer
+weight at each vertex, subject to: the root has weight $n$; every weight is
+at least $2$; and each internal vertex $v$ of weight $n_v$ has $r\geq2$
+ordered children whose weights $2\leq j_1\leq j_2\leq\cdots\leq j_r$ are
+weakly increasing from left to right and sum to $n_v$. Leaves carry no
+further restriction. Let $I(T)$ be the number of internal vertices, let
+$m_{v,j}$ be the number of children of weight $j$ at the internal vertex
+$v$, and let $\ell_1,\ldots,\ell_q$ be the weights of the leaves read from
+left to right in planar order. Define
+\begin{equation}\label{eq:treeweight}
+ \omega(T)=\frac{(-1)^{I(T)}}{\prod_{v\ \mathrm{internal}}\prod_{j\geq2}m_{v,j}!},
+ \qquad
+ A(T)=A_{\ell_1}A_{\ell_2}\cdots A_{\ell_q}.
+\end{equation}
+Children of equal weight are distinct ordered slots whose subtrees may
+differ; interchanging two unequal subtrees changes $A(T)$ in general,
+because the $A_j$ do not commute.
+\end{definition}
+
+\begin{theorem}[All-terms Zassenhaus tree formula]\label{thm:tree}
+For every $n\geq2$, $\cT_n$ is finite and
+\begin{equation}\label{eq:treeformula}
+ \boxed{\displaystyle C_n=\sum_{T\in\cT_n}\omega(T)\,A(T).}
+\end{equation}
+This is a finite formula involving only factorials, sums, and products of
+$X$ and $Y$. An explicitly nested-commutator version is
+\begin{equation}\label{eq:treelie}
+ C_n=\frac1n\sum_{T\in\cT_n}\omega(T)\sum_{w\in\{X,Y\}^n}\coeff{w}A(T)\,R(w).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Finiteness: the leaf weights are at least $2$ and sum to $n$ (every
+internal vertex's weight is the sum of its children's weights, so by
+induction the root weight is the sum of the leaf weights), so there are at
+most $\lfloor n/2\rfloor$ leaves; since every internal vertex has at least
+two children, a plane tree with $q$ leaves has fewer than $q$ internal
+vertices; and each vertex weight is an integer in $[2,n]$. Hence only
+finitely many shapes and weight assignments occur.
+
+We prove \eqref{eq:treeformula} by strong induction on $n$. For $n=2,3$
+the sum in \eqref{eq:Cpartitions} is empty, $C_n=A_n$, and $\cT_n$ consists
+of the single-vertex tree (a root of weight $n$ with no children, since
+no weakly increasing list of at least two integers $\geq2$ sums to $2$ or
+$3$), for which $\omega=1$ and $A(T)=A_n$. For $n\geq4$, assume the formula
+for all degrees below $n$. In \eqref{eq:Cpartitions}, a choice of exponents
+$(k_2,\ldots,k_{n-1})$ with $\sum jk_j=n$ corresponds bijectively to the
+weakly increasing list of child weights of a root of weight $n$, namely
+$k_2$ copies of $2$, then $k_3$ copies of $3$, and so on; the product
+$C_2^{k_2}\cdots C_{n-1}^{k_{n-1}}$ is the ordered product of $C_{j_i}$
+over this list, and the coefficient $-1/\prod_jk_j!$ is exactly the root's
+contribution $(-1)\prod_j1/m_{\mathrm{root},j}!$ to $\omega$. Substituting
+the induction hypothesis $C_{j_i}=\sum_{T_i\in\cT_{j_i}}\omega(T_i)A(T_i)$
+for each factor and expanding the product gives a sum over all tuples
+$(T_1,\ldots,T_r)$ of subtrees, one in each child slot, of
+$(-1)\prod_j\frac1{m_{\mathrm{root},j}!}\prod_i\omega(T_i)\prod_iA(T_i)$.
+Attaching $T_1,\ldots,T_r$ in order to the root produces exactly one tree
+$T\in\cT_n$ with at least one internal vertex; conversely every such tree
+arises exactly once (remove the root). For that tree,
+$\omega(T)=(-1)\prod_j\frac1{m_{\mathrm{root},j}!}\prod_i\omega(T_i)$
+(the internal vertices of $T$ are the root and those of the $T_i$), and
+$A(T)=\prod_iA(T_i)$ because the leaves of $T$ in planar order are the
+leaves of $T_1$, then of $T_2$, and so on. The remaining term $A_n$ is the
+contribution of the single-vertex tree. This proves \eqref{eq:treeformula}.
+Finally, $C_n$ is a homogeneous Lie polynomial of degree $n$ by
+\cref{thm:zassenhaus}, hence primitive, so \cref{lem:dsw} gives
+$C_n=\frac1nD(C_n)=\frac1n\sum_w\coeff{w}C_n\,R(w)$; substituting the word
+expansion of \eqref{eq:treeformula} gives \eqref{eq:treelie}.
+\end{proof}
+For orientation, the first instances are
+\begin{equation}\label{eq:CinA}
+\begin{aligned}
+ C_2&=A_2,\qquad C_3=A_3,\qquad C_4=A_4-\tfrac12A_2^2,\qquad
+ C_5=A_5-A_2A_3,\\
+ C_6&=A_6-A_2A_4-\tfrac12A_3^2+\tfrac13A_2^3,\qquad
+ C_7=A_7-A_2A_5-A_3A_4+\tfrac12A_2^2A_3+\tfrac12A_3A_2^2.
+\end{aligned}
+\end{equation}
+The coefficient $\tfrac13$ of $A_2^3$ in $C_6$ is
+$\tfrac12-\tfrac16$: the tree with root children $(2,4)$ and the child of
+weight $4$ split into $(2,2)$ contributes $(-1)^2\cdot\frac1{2!}=\frac12$,
+and the tree with root children $(2,2,2)$ contributes $-\frac1{3!}$. In
+$C_7$ the two terms $A_2^2A_3$ and $A_3A_2^2$ are different polynomials:
+the first collects the tree with root list $(2,5)$ and $5\to(2,3)$
+(weight $+1$) and the tree with root list $(2,2,3)$ (weight $-\tfrac1{2!}$),
+while the second comes from the root list $(3,4)$ with $4\to(2,2)$
+(weight $+\tfrac1{2!}$). This illustrates why an unordered product would
+lose information. The data file \texttt{zassenhaus\_tree\_polynomials.json}
+lists these polynomials in the $A_j$ through degree ten, and the
+verification program of \cref{sec:computation} confirms that
+\eqref{eq:treeformula} agrees with the two recursive constructions through
+that degree.
+
+\subsection{A globally convergent ordered-simplex expansion}
+There is another useful all-terms expansion, a sum of ordered products
+rather than a product of exponentials; its convergence is therefore a
+separate and easier question than Zassenhaus convergence.
+\begin{theorem}[Ordered-simplex expansion]\label{thm:simplex}
+For bounded $X,Y$ in a unital Banach algebra and every scalar $t$,
+\begin{equation}\label{eq:simplex}
+\begin{split}
+ e^{t(X+Y)}=e^{tX}\Biggl[I+\sum_{k\geq1}\ \sum_{n_1,\ldots,n_k\geq0}
+ &\frac{(-1)^{n_1+\cdots+n_k}\,t^{k+n_1+\cdots+n_k}}
+ {\displaystyle\prod_{j=1}^{k}n_j!\ \prod_{j=1}^{k}\bigl(n_j+n_{j+1}+\cdots+n_k+k-j+1\bigr)}\\[-4pt]
+ &\qquad\cdot\bigl(\ad_X^{n_1}Y\bigr)\bigl(\ad_X^{n_2}Y\bigr)\cdots\bigl(\ad_X^{n_k}Y\bigr)\Biggr],
+\end{split}
+\end{equation}
+and the multiple series is absolutely convergent, with the sum of the norms
+of its terms bounded by $\exp\bigl(|t|\norm Ye^{2|t|\norm X}\bigr)$.
+\end{theorem}
+\begin{proof}
+Put $H(t)=e^{-tX}e^{t(X+Y)}$. Differentiating,
+$H'(t)=-Xe^{-tX}e^{t(X+Y)}+e^{-tX}(X+Y)e^{t(X+Y)}=e^{-tX}Ye^{t(X+Y)}
+=\bigl(e^{-tX}Ye^{tX}\bigr)H(t)=B(t)H(t)$ with $B(t)=e^{-t\ad_X}Y$ by
+\cref{thm:campbell}, and $H(0)=I$. First take real $t\geq0$. Integrating,
+$H(t)=I+\int_0^tB(s)H(s)\dd s$, and substituting this expression for $H(s)$
+repeatedly $N$ times gives
+\begin{align*}
+ H(t)=I&+\sum_{k=1}^{N}\int_{0<t_k<\cdots<t_1<t}B(t_1)\cdots B(t_k)\,\dd t_k\cdots\dd t_1\\
+ &+\int_{0<t_{N+1}<\cdots<t_1<t}B(t_1)\cdots B(t_{N+1})H(t_{N+1})\,\dd t_{N+1}\cdots\dd t_1.
+\end{align*}
+With $b=\sup_{0\leq s\leq t}\norm{B(s)}\leq\norm Ye^{2t\norm X}$ and
+$\norm{H(s)}\leq\norm Ie^{2s\norm X+s\norm{X+Y}}$ bounded on $[0,t]$, the
+remainder has norm at most $b^{N+1}t^{N+1}/(N+1)!$ times that bound, since
+the ordered simplex has volume $t^{N+1}/(N+1)!$. Hence the remainder tends
+to zero and $H(t)=I+\sum_{k\geq1}\int_{\text{simplex}}B(t_1)\cdots B(t_k)$.
+Now expand $B(s)=\sum_{n\geq0}(-s)^n\ad_X^nY/n!$ in each factor. The
+resulting multiple series of monomials is absolutely convergent: the sum of
+the norms of the terms of $B(s)$ is at most
+$\sum_n s^n(2\norm X)^n\norm Y/n!=\norm Ye^{2s\norm X}\leq b$, so the sum
+of the norms of all monomials in the $k$th ordered integral is at most
+$b^kt^k/k!$, and summing over $k$ gives the bound $e^{bt}$. Absolute
+convergence justifies integrating term by term. The iterated monomial
+integral is evaluated from the inside out: integrating $t_k^{n_k}$ from $0$
+to $t_{k-1}$ gives $t_{k-1}^{n_k+1}/(n_k+1)$; then
+$t_{k-1}^{n_{k-1}+n_k+1}$ integrates to $t_{k-2}^{n_{k-1}+n_k+2}/(n_{k-1}+n_k+2)$;
+continuing,
+\[
+ \int_{0<t_k<\cdots<t_1<t}\prod_{j=1}^kt_j^{n_j}\,\dd t_k\cdots\dd t_1
+ =\frac{t^{k+n_1+\cdots+n_k}}{\prod_{j=1}^{k}(n_j+n_{j+1}+\cdots+n_k+k-j+1)}.
+\]
+This proves the coefficients in \eqref{eq:simplex} for real $t\geq0$.
+For complex $t$, parametrize the segment from $0$ to $t$ by $s=tu$,
+$0\leq u\leq1$; the same Picard iteration and the same integrals, now with
+the factor $t^{k+\sum n_j}$ pulled out, give the identical formula and the
+bound with $|t|$. Multiplying by $e^{tX}$ gives \eqref{eq:simplex}.
+\end{proof}
+
+\subsection{An elementary sufficient convergence condition for the product}
+Formal stabilization of a product does not automatically imply analytic
+convergence. The following bound supplies a concrete domain; it is
+deliberately elementary and is not asserted to be optimal.
+\begin{theorem}[Convergence of the ordered Zassenhaus product]\label{thm:zconv}
+Let $X,Y$ be elements of a unital Banach algebra with $\norm I=1$ and put
+$a=\norm X+\norm Y$. Let $r>0$ satisfy
+\begin{equation}\label{eq:zconv}
+ h(r):=e^{2ar}-1-2ar<2\log2-1.
+\end{equation}
+Then $\sum_{n\geq2}r^n\norm{C_n}<\infty$, the ordered product in
+\eqref{eq:zassenhaus} converges in norm uniformly for $|t|\leq r$, and the
+identity \eqref{eq:zassenhaus} holds there. Condition \eqref{eq:zconv} is
+satisfied whenever $ar<u_*/2=0.38349\ldots$, where $u_*=0.76699\ldots$ is
+the positive solution of $e^{u}-1-u=2\log2-1$; a particularly simple
+sufficient condition is $a|t|\leq\tfrac14$.
+\end{theorem}
+\begin{proof}
+\emph{Majorant.} Expanding the three exponentials in \eqref{eq:R1}, the
+sum of the norms of all terms of degree $n$ in $t$ is at most the
+coefficient of $t^n$ in $e^{t\norm Y}e^{t\norm X}e^{t(\norm X+\norm Y)}
+=e^{2at}$, so $\norm{A_n}\leq(2a)^n/n!$ for $n\geq2$, and
+$h(z)=\sum_{n\geq2}(2a)^nz^n/n!$ is a nonnegative-coefficient majorant of
+$R_1-I$. Define a scalar formal series $c(z)=\sum_{n\geq2}c_nz^n$ by
+\begin{equation}\label{eq:zmajorant}
+ c=h+\bigl(e^{c}-1-c\bigr).
+\end{equation}
+Since $c$ has order $2$, the expression $e^c-1-c=\sum_{m\geq2}c^m/m!$ has
+its degree-$n$ coefficient determined by $c_2,\ldots,c_{n-2}$; so
+\eqref{eq:zmajorant} determines the $c_n$ recursively, and they are
+nonnegative because all ingredients are. In the commutative scalar algebra,
+$\prod_{j\geq2}e^{c_jz^j}=e^{c(z)}$, whose coefficient of $z^n$ is
+$\sum_{\sum jk_j=n}\prod_jc_j^{k_j}/k_j!$; the choice $k_n=1$ contributes
+$c_n$, and the remaining choices, all with at least two factors, contribute
+exactly $\coeff{z^n}(e^c-1-c)$. Comparing with \eqref{eq:Cpartitions} and
+using the triangle inequality and submultiplicativity,
+\[
+ \norm{C_n}\leq\norm{A_n}+\sum_{\substack{\sum jk_j=n\\k_n=0}}
+ \prod_j\frac{\norm{C_j}^{k_j}}{k_j!}
+ \leq h_n+\sum_{\substack{\sum jk_j=n\\k_n=0}}\prod_j\frac{c_j^{k_j}}{k_j!}=c_n,
+\]
+where the middle inequality uses the induction hypothesis
+$\norm{C_j}\leq c_j$ for $j<n$ and monotonicity in the $c_j\geq0$.
+
+\emph{Convergence of the majorant.} The function $q(d)=2d-e^d+1$ is
+strictly increasing on $[0,\log2)$, since $q'(d)=2-e^d>0$ there, from
+$q(0)=0$ to $q(\log2)=2\log2-1$. Since $h$ is increasing and continuous and
+\eqref{eq:zconv} is strict, choose $R>r$ with $h(R)<2\log2-1$, and then
+$d\in[0,\log2)$ with $q(d)=h(R)$. Let $\mathcal B$ be the Banach space of
+functions holomorphic on $|z|<R$ and continuous on $|z|\leq R$ with the
+supremum norm, and let $\mathcal B_d$ be its closed ball of radius $d$.
+For $f\in\mathcal B_d$ define $\mathcal F(f)(z)=h(z)+e^{f(z)}-1-f(z)$.
+Since $h$ has nonnegative coefficients, $|h(z)|\leq h(R)$ on the closed
+disk, and $|e^{f}-1-f|\leq\sum_{m\geq2}|f|^m/m!\leq e^d-1-d$; hence
+$\norm{\mathcal F(f)}\leq h(R)+e^d-1-d=q(d)+e^d-1-d=d$, so $\mathcal F$
+maps $\mathcal B_d$ into itself. For $f,g\in\mathcal B_d$,
+$e^{f}-f-(e^{g}-g)=\int_0^1(e^{g+\tau(f-g)}-1)\,\dd\tau\,(f-g)$, so
+$\norm{\mathcal F(f)-\mathcal F(g)}\leq(e^d-1)\norm{f-g}$ with
+$e^d-1<1$. By the contraction mapping theorem $\mathcal F$ has a unique
+fixed point $f_*\in\mathcal B_d$. Its Taylor coefficients satisfy
+\eqref{eq:zmajorant} (coefficient extraction is continuous and
+$e^{f_*}-1-f_*$ has the same coefficient recursion), $f_*$ has order at
+least $2$ because $h$ does and $e^{f}-1-f$ has order at least twice that of
+$f$, and the formal solution of \eqref{eq:zmajorant} is unique; hence
+$f_*(z)=\sum_nc_nz^n$ on $|z|<R$. As $c_n\geq0$ and $r<R$,
+\[
+ \sum_{n\geq2}r^n\norm{C_n}\leq\sum_{n\geq2}c_nr^n=f_*(r)\leq d<\log2.
+\]
+
+\emph{Convergence of the product.} Let $P_N(t)=\prod_{n=2}^Ne^{t^nC_n}$.
+For $|t|\leq r$ and $M>N$, $P_M-P_N=P_N\bigl(\prod_{n=N+1}^Me^{t^nC_n}-I\bigr)$.
+Expanding each factor as $I+(e^{t^nC_n}-I)$ and multiplying out, every term
+other than $I$ contains at least one factor $e^{t^nC_n}-I$ of norm at most
+$e^{r^n\norm{C_n}}-1$, so
+$\norm{\prod_{n=N+1}^Me^{t^nC_n}-I}\leq\exp\bigl(\sum_{n>N}r^n\norm{C_n}\bigr)-1$,
+which tends to zero as $N\to\infty$; and $\norm{P_N}\leq\exp(\sum_nr^n\norm{C_n})\leq e^d$.
+Hence $(P_N)$ is uniformly Cauchy on $|t|\leq r$ and converges uniformly to
+a limit $P(t)$, continuous on the closed disk and analytic on $|t|<r$ as a
+uniform limit of entire functions. For $n\leq N$ the coefficient of $t^n$ in
+$P_N$ does not depend on $N$ (the omitted factors contribute only degrees
+above $N$), and by the Cauchy coefficient formula uniform convergence gives
+$\coeff{t^n}P=\coeff{t^n}P_N$. The formal identity of \cref{thm:zassenhaus}
+says that $\coeff{t^n}\bigl(e^{tX}e^{tY}P_N(t)\bigr)=\coeff{t^n}e^{t(X+Y)}$
+for $n\leq N$. Thus the analytic functions $e^{tX}e^{tY}P(t)$ and
+$e^{t(X+Y)}$ have the same Taylor coefficients at $0$, so they agree on
+$|t|<r$, and by continuity on $|t|\leq r$.
+
+\emph{The numerical conditions.} The function $u\mapsto e^u-1-u$ is
+strictly increasing on $[0,\infty)$ from $0$, so $e^{u}-1-u=2\log2-1
+=0.386294\ldots$ has a unique positive solution $u_*$; evaluating,
+$e^{0.767}-1-0.767=0.38629\ldots$ and $e^{0.766}-1-0.766=0.38514\ldots$, so
+$u_*=0.7669980\ldots$ and \eqref{eq:zconv} holds exactly when
+$2ar<u_*$. In particular $ar\leq\tfrac14$ gives
+$h(r)\leq e^{1/2}-\tfrac32<1.6488-1.5=0.1488<0.386$.
+\end{proof}
+The assumption $\norm I=1$ was used only in the bound $\norm{P_N}\leq e^d$;
+for a general submultiplicative norm a fixed factor $\norm I$ appears and
+nothing else changes.
+
+\subsection{Entire resummation in the eigenvector case}
+When $[X,Y]=sY$, the factorization \eqref{eq:eigenfactor} with $c=1$ gives
+$e^{t(X+Y)}=e^{tX}e^{q_s(t)Y}$, hence
+\[
+ R_1(t)=e^{-tY}e^{-tX}e^{tX}e^{q_s(t)Y}=e^{(q_s(t)-t)Y},\qquad
+ q_s(t)-t=\sum_{n\geq2}\frac{(-1)^{n-1}s^{n-1}}{n!}t^n.
+\]
+All exponents are multiples of the same $Y$ and commute, so by
+\cref{lem:explog}
+\[
+ e^{(q_s(t)-t)Y}=\prod_{n\geq2}\exp\Bigl(\frac{(-1)^{n-1}s^{n-1}}{n!}\,t^nY\Bigr),
+\]
+and uniqueness in \cref{thm:zassenhaus} yields the all-orders closed form
+\begin{equation}\label{eq:eigenzass}
+ \boxed{\displaystyle C_n=\frac{(-1)^{n-1}s^{n-1}}{n!}\,Y\qquad(n\geq2).}
+\end{equation}
+This product converges for every finite $s$ and $t$, a useful contrast with
+the Bernoulli BCH series \eqref{eq:eigenseries}, whose radius in $s$ is only
+$2\pi$. If instead the commutator $C=[X,Y]$ is central, \eqref{eq:centralt}
+gives $e^{t(X+Y)}=e^{tX}e^{tY}e^{-t^2C/2}$, so $C_2=-\tfrac12[X,Y]$ and
+$C_n=0$ for every $n\geq3$.

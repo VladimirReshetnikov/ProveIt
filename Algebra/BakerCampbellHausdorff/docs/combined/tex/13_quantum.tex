@@ -1,0 +1,384 @@
+\section{Quantum-mechanical identities with explicit operator domains}\label{sec:quantum}
+The formal central-commutator calculation of \cref{thm:central} predicts
+the exponential formulas on the source page. For operators on a Hilbert
+space, however, unboundedness and domains cannot be suppressed: we first
+prove the identities directly in the Schr\"odinger and Bargmann--Fock
+realizations, and then exhibit why a commutator identity on a dense domain
+alone is insufficient. This avoids the Stone--von Neumann classification
+theorem, which is mentioned but not stated on the page; background on these
+realizations may be found in \cite{hall,glauber,wilcox}. Inner products are
+linear in the second argument, and $\ket n,\bra n$ denote basis vectors and
+functionals.
+
+\subsection{Position, momentum, and the Weyl relations}
+On $L^2(\R,\dd x)$ fix $\hbar>0$ and define, on the Schwartz space
+$\cS(\R)$,
+\begin{equation}\label{eq:QP}
+ (Qf)(x)=xf(x),\qquad (Pf)(x)=-\ii\hbar f'(x).
+\end{equation}
+Both map $\cS$ into itself, and direct differentiation gives
+$(QPf)(x)-(PQf)(x)=-\ii\hbar xf'(x)+\ii\hbar(xf)'(x)=\ii\hbar f(x)$, that is,
+\begin{equation}\label{eq:CCR}
+ [Q,P]f=\ii\hbar f\qquad(f\in\cS(\R)).
+\end{equation}
+Both operators are symmetric on $\cS$ (integration by parts for $P$, with
+boundary terms vanishing by decay). Their self-adjoint realizations are the
+maximal multiplication operator $\overline Q$ on
+$\{f:xf\in L^2\}$ and $\overline P=\mathcal F^{-1}(\hbar k)\mathcal F$, the
+Fourier conjugate of multiplication by $\hbar k$, on $\{f:k\hat f\in L^2\}$;
+these agree with \eqref{eq:QP} on $\cS$, since the Fourier transform of
+$-\ii\hbar f'$ is $\hbar k\hat f$ for $f\in\cS$. Schwartz space is a core
+for each. For multiplication by a real function $m$ (here $m(x)=x$ or, after
+Fourier transform, $m(k)=\hbar k$, and $\mathcal F$ maps $\cS$ onto $\cS$)
+this follows from the basic criterion: a symmetric operator $A$ is
+essentially self-adjoint iff $(A\pm\ii)\Dom A$ are dense; if $g\perp(m\pm\ii)f$
+for all $f\in\cS$, then $\int(m\mp\ii)\bar gf=0$ for all $f\in\cS$, so the
+locally integrable function $(m\mp\ii)\bar g$ vanishes almost everywhere,
+and since $m\mp\ii\neq0$ we get $g=0$.
+
+The unitary groups are concrete:
+\begin{equation}\label{eq:UV}
+ (U(a)f)(x)=(e^{\ii aQ}f)(x)=e^{\ii ax}f(x),\qquad
+ (V(b)f)(x)=(e^{\ii bP}f)(x)=f(x+b\hbar),\qquad a,b\in\R.
+\end{equation}
+The first is the spectral calculus of the multiplication operator. For the
+second, $e^{\ii b\overline P}=\mathcal F^{-1}e^{\ii b\hbar k}\mathcal F$, and
+multiplication of $\hat f$ by $e^{\ii b\hbar k}$ is the Fourier transform
+of the translate $f(\cdot+b\hbar)$. Both families are unitary by a change
+of variables and strongly continuous: for $f\in C_c^\infty$,
+$\norm{V(b)f-f}\to0$ by uniform continuity, and this extends to $L^2$ by
+density and the uniform bound $\norm{V(b)}=1$; similarly for $U$.
+
+\begin{theorem}[Weyl relations and exact symmetric splitting]\label{thm:weyl}
+For real $a,b$, the operator $aQ+bP$ on $\cS(\R)$ is essentially
+self-adjoint, and the unitary group of its closure acts by
+\begin{equation}\label{eq:sumaction}
+ \bigl(e^{\ii(aQ+bP)}f\bigr)(x)=e^{\ii a(x+b\hbar/2)}f(x+b\hbar)=:(\mathcal W(a,b)f)(x).
+\end{equation}
+Consequently, as identities between bounded operators on all of $L^2(\R)$,
+\begin{align}
+ e^{\ii aQ}e^{\ii bP}&=e^{-\ii ab\hbar/2}\,e^{\ii(aQ+bP)}
+ =\exp\bigl(\ii(aQ+bP-\tfrac12ab\hbar I)\bigr),\label{eq:weylbch}\\
+ e^{\ii(aQ+bP)}&=e^{\ii aQ/2}e^{\ii bP}e^{\ii aQ/2},\label{eq:weylsym}\\
+ e^{\ii aQ}e^{\ii bP}&=e^{-\ii ab\hbar}\,e^{\ii bP}e^{\ii aQ},\label{eq:weylcomm}\\
+ \mathcal W(a,b)\mathcal W(c,d)&=e^{\ii\hbar(bc-ad)/2}\,\mathcal W(a+c,b+d).\label{eq:weylgroup}
+\end{align}
+\end{theorem}
+\begin{proof}
+Let $b\neq0$ and let $T$ be multiplication by $\tau(x)=e^{\ii ax^2/(2b\hbar)}$,
+a unitary operator preserving $\cS$. For $f\in\cS$, since
+$\tau'=(\ii ax/(b\hbar))\tau$,
+\[
+ T^{-1}(bP)Tf=\tau^{-1}(-\ii\hbar b)(\tau f)'
+ =(-\ii\hbar b)\Bigl(\frac{\ii ax}{b\hbar}f+f'\Bigr)=axf-\ii\hbar bf'=(aQ+bP)f.
+\]
+Thus $aQ+bP$ on $\cS$ is unitarily equivalent to $bP$ on $\cS$, which is
+essentially self-adjoint with closure $b\overline P$; hence $aQ+bP$ is
+essentially self-adjoint with closure $T^{-1}b\overline PT$, and its unitary
+group is $T^{-1}e^{\ii tbP}T=T^{-1}V(tb)T$. Evaluating,
+\begin{align*}
+ (T^{-1}V(b)Tf)(x)&=e^{-\ii ax^2/(2b\hbar)}e^{\ii a(x+b\hbar)^2/(2b\hbar)}f(x+b\hbar)\\
+ &=e^{\ii a(2xb\hbar+b^2\hbar^2)/(2b\hbar)}f(x+b\hbar)=e^{\ii a(x+b\hbar/2)}f(x+b\hbar),
+\end{align*}
+which is \eqref{eq:sumaction}; for $b=0$ the statement is the multiplication
+case $U(a)$, also of the form \eqref{eq:sumaction}. (One can also verify
+directly that $\mathcal W(ta,tb)$ is a strongly continuous one-parameter
+unitary group whose derivative at $t=0$ on $\cS$ is $\ii(aQ+bP)$.)
+
+Now compute with \eqref{eq:UV}: $(U(a)V(b)f)(x)=e^{\ii ax}f(x+b\hbar)
+=e^{-\ii ab\hbar/2}(\mathcal W(a,b)f)(x)$, which is \eqref{eq:weylbch}; the
+second form holds because the scalar $-\tfrac12ab\hbar I$ commutes with
+everything. Next, $(U(a/2)V(b)U(a/2)f)(x)=e^{\ii ax/2}e^{\ii a(x+b\hbar)/2}f(x+b\hbar)
+=e^{\ii a(x+b\hbar/2)}f(x+b\hbar)$, which is \eqref{eq:weylsym}. Further,
+$(V(b)U(a)f)(x)=e^{\ii a(x+b\hbar)}f(x+b\hbar)=e^{\ii ab\hbar}(U(a)V(b)f)(x)$,
+which is \eqref{eq:weylcomm}. Finally,
+\[
+ (\mathcal W(a,b)\mathcal W(c,d)f)(x)
+ =e^{\ii a(x+b\hbar/2)}e^{\ii c(x+b\hbar+d\hbar/2)}f(x+(b+d)\hbar),
+\]
+and the phase of $\mathcal W(a+c,b+d)f$ is $e^{\ii(a+c)(x+(b+d)\hbar/2)}$;
+the difference of exponents is
+$\ii\hbar\bigl(\tfrac{ab}2+cb+\tfrac{cd}2-\tfrac{(a+c)(b+d)}2\bigr)=\ii\hbar\tfrac{bc-ad}2$,
+which proves \eqref{eq:weylgroup}. All four identities involve only
+bounded unitary operators and hold on all of $L^2(\R)$.
+\end{proof}
+The formal central-commutator calculation agrees: $[\ii aQ,\ii bP]=-ab\cdot\ii\hbar I
+=-\ii ab\hbar I$ is central, so \eqref{eq:centralbch} predicts exactly the
+correction $-\tfrac12\ii ab\hbar I$ in \eqref{eq:weylbch}, and the symmetric
+splitting of \cref{thm:central} becomes exact. The direct proof establishes
+that the formal calculation is legitimate for the chosen self-adjoint
+realizations; \eqref{eq:weylbch} has not been justified by substituting
+unbounded operators into a norm-convergent series. Induction in
+\eqref{eq:weylgroup} gives the complete finite-factor formula
+\begin{equation}\label{eq:weylmulti}
+ \prod_{j=1}^m\mathcal W(a_j,b_j)
+ =\exp\Bigl(\frac{\ii\hbar}{2}\sum_{j<k}(b_ja_k-a_jb_k)\Bigr)\,
+ \mathcal W\Bigl(\sum_ja_j,\sum_jb_j\Bigr),
+\end{equation}
+which is \eqref{eq:centralmany} in its unitary Heisenberg representation,
+with no omitted higher-order terms.
+
+\subsection{Why the infinitesimal commutator is not enough}
+\begin{proposition}\label{prop:ccrcounter}
+A relation $[Q,P]=\ii I$ on a dense common invariant domain, even for
+self-adjoint $Q$ and $P$, does not by itself imply the Weyl relations.
+\end{proposition}
+\begin{proof}
+On $L^2(0,1)$ let $Q$ be multiplication by $x$, a bounded self-adjoint
+operator, and let $P=-\ii\,\dd/\dd x$ with the periodic domain
+$\{f\in H^1(0,1):f(0)=f(1)\}$. Under the Fourier series isomorphism
+$L^2(0,1)\cong\ell^2(\Z)$ given by the orthonormal basis $e^{2\pi\ii nx}$,
+$P$ becomes multiplication by the real sequence $2\pi n$ on its maximal
+domain; so $P$ is self-adjoint, with $e^{\ii P}$ acting as multiplication by
+$e^{2\pi\ii n}=1$, that is, $e^{\ii P}=I$. The dense subspace
+$C_c^\infty(0,1)$ lies in the domains of $Q$ and $P$, is invariant under
+both, and satisfies $[Q,P]=\ii I$ there by differentiation. If the Weyl
+relation \eqref{eq:weylcomm} (with $\hbar=1$) held for all real $a$ and
+$b=1$, it would give $e^{\ii aQ}=e^{-\ii a}e^{\ii aQ}$, hence $e^{-\ii a}=1$,
+which is false unless $a\in2\pi\Z$.
+\end{proof}
+The subspace $C_c^\infty(0,1)$ is not a core for the periodic derivative,
+and the periodic domain is not preserved by multiplication by $e^{\ii ax}$:
+that is exactly where a naive exponentiation argument breaks down. The
+failure is a domain and integrability issue, not an error in the formal
+central-commutator algebra.
+
+There cannot even be bounded operators $A,B$ on a Banach space with
+$[A,B]=I$. Indeed, induction gives $[A,B^n]=nB^{n-1}$: if it holds for
+$n$, then $[A,B^{n+1}]=[A,B^n]B+B^n[A,B]=nB^{n-1}B+B^n=(n+1)B^n$. No power
+of $B$ vanishes: if $B^m=0$ with $m\geq1$ minimal, then
+$0=[A,B^m]=mB^{m-1}$ forces $B^{m-1}=0$, contradicting minimality unless
+$m=1$, and $B=0$ contradicts $[A,B]=I$. Hence
+$n\norm{B^{n-1}}\leq2\norm A\norm{B^n}\leq2\norm A\norm B\norm{B^{n-1}}$
+with $\norm{B^{n-1}}\neq0$, so $n\leq2\norm A\norm B$ for every $n$, which
+is impossible. (For finite matrices, taking traces gives the contradiction
+$0=\tr[A,B]=\tr I=d$ immediately.) Some unboundedness is therefore
+intrinsic to the canonical relation, and the bounded-operator convergence
+theorems of \cref{sec:convergence} cannot be applied directly to $Q,P$.
+
+\subsection{Creation and annihilation operators in Bargmann--Fock space}
+Let $\cF$ be the space of entire functions $F$ on $\C$ with
+\begin{equation}\label{eq:focknorm}
+ \norm F_{\cF}^2=\frac1\pi\int_{\C}|F(z)|^2e^{-|z|^2}\,\dd^2z<\infty.
+\end{equation}
+Polar integration gives $\langle z^m,z^n\rangle=\frac1\pi\int_0^\infty\!\!\int_0^{2\pi}
+\rho^{m+n}e^{\ii(n-m)\varphi}e^{-\rho^2}\rho\,\dd\varphi\,\dd\rho=\delta_{mn}\,2\int_0^\infty\rho^{2n+1}e^{-\rho^2}\dd\rho=\delta_{mn}n!$,
+so
+\begin{equation}\label{eq:fockbasis}
+ \ket n=e_n(z)=\frac{z^n}{\sqrt{n!}}\qquad(n\geq0)
+\end{equation}
+is an orthonormal family. It is complete: expanding an entire $F$ in its
+Taylor series $\sum c_nz^n$, which converges uniformly on each circle,
+integrating first over the angle (where the cross terms vanish) and then
+over the radius by monotone convergence gives
+$\norm F^2=\sum_nn!|c_n|^2$, so $F=\sum_nc_n\sqrt{n!}\,\ket n$ in norm and
+polynomials are dense. Conversely $\sum n!|c_n|^2<\infty$ implies that
+$\sum c_nz^n$ is entire, by Cauchy--Schwarz with
+$\sum|z|^{2n}/n!=e^{|z|^2}$; the same estimate gives
+\begin{equation}\label{eq:pointeval}
+ |F(z)|\leq\Bigl(\sum_nn!|c_n|^2\Bigr)^{1/2}\Bigl(\sum_n\frac{|z|^{2n}}{n!}\Bigr)^{1/2}
+ =\norm F_{\cF}\,e^{|z|^2/2},
+\end{equation}
+so norm convergence in $\cF$ implies locally uniform pointwise convergence.
+On the dense polynomial domain $\mathcal P$ define
+\begin{equation}\label{eq:creation}
+\begin{gathered}
+ aF=F',\qquad a^\dagger F=zF,\qquad
+ [a,a^\dagger]=I,\qquad[a^\dagger,a]=-I,\\
+ a\ket n=\sqrt n\,\ket{n-1},\qquad a^\dagger\ket n=\sqrt{n+1}\,\ket{n+1}.
+\end{gathered}
+\end{equation}
+The ladder formulas are differentiation and multiplication of $z^n/\sqrt{n!}$;
+the commutator is $(zF)'-zF'=F$. The ladder formulas show
+$\langle a^\dagger F,G\rangle=\langle F,aG\rangle$ for $F,G\in\mathcal P$,
+which justifies the notation $\dagger$ (the maximal closed realizations are
+Hilbert-space adjoints of each other).
+
+\begin{theorem}[Displacement operators, generator, and normal ordering]\label{thm:displacement}
+For $v\in\C$ the formula
+\begin{equation}\label{eq:Daction}
+ (D(v)F)(z)=e^{-|v|^2/2+vz}\,F(z-\bar v)
+\end{equation}
+defines a unitary operator on $\cF$. For fixed $v$, $t\mapsto D(tv)$
+$(t\in\R)$ is a strongly continuous one-parameter unitary group whose
+skew-adjoint generator is the closure of the operator
+$T_v=va^\dagger-\bar va$ defined on $\mathcal P$; in this precise sense
+\begin{equation}\label{eq:normalorder}
+ D(v)=e^{va^\dagger-\bar va}=e^{va^\dagger}e^{-\bar va}e^{-|v|^2/2},
+\end{equation}
+where the right-hand product is defined on $\mathcal P$ (the middle factor
+by a finite sum, the left factor by a norm-convergent series) and extends by
+continuity to the unitary operator \eqref{eq:Daction}.
+\end{theorem}
+\begin{proof}
+\emph{Unitarity.} Substitute $z=w+\bar v$ in \eqref{eq:focknorm}: using
+$\operatorname{Re}(v\bar v)=|v|^2$ and
+$|w+\bar v|^2=|w|^2+2\operatorname{Re}(vw)+|v|^2$,
+\[
+ \bigl|e^{-|v|^2/2+vz}\bigr|^2e^{-|z|^2}
+ =e^{-|v|^2+2\operatorname{Re}(vw)+2|v|^2-|w|^2-2\operatorname{Re}(vw)-|v|^2}
+ =e^{-|w|^2}.
+\]
+Hence
+$\norm{D(v)F}=\norm F$, and $D(v)F$ is entire, so $D(v)$ is an isometry of
+$\cF$. Direct substitution shows $D(-v)D(v)=I=D(v)D(-v)$, so $D(v)$ is
+unitary.
+
+\emph{Group law and continuity.} For real $s,t$, applying
+\eqref{eq:Daction} twice,
+$(D(tv)D(sv)F)(z)=e^{-t^2|v|^2/2+tvz}e^{-s^2|v|^2/2+sv(z-t\bar v)}F(z-(t+s)\bar v)
+=e^{-(t+s)^2|v|^2/2+(t+s)vz}F(z-(t+s)\bar v)$, since
+$-t^2|v|^2/2-s^2|v|^2/2-ts|v|^2=-(t+s)^2|v|^2/2$; thus $D(tv)D(sv)=D((t+s)v)$.
+For a polynomial $F$ of degree $m$ and $|t|\leq1$, the integrand of
+$\norm{D(tv)F-F}^2$ is bounded by $C(1+|z|)^{2m}e^{2|v||z|-|z|^2}$, which is
+integrable, and converges pointwise to $0$ as $t\to0$; dominated convergence
+gives $\norm{D(tv)F-F}\to0$. For general $F$, approximate by polynomials and
+use $\norm{D(tv)}=1$. By Stone's theorem the group has a skew-adjoint
+generator $G$.
+
+\emph{The exponential series on polynomials.} On the span of
+$\ket0,\ldots,\ket j$, the ladder formulas give $\norm a\leq\sqrt j$ and
+$\norm{a^\dagger}\leq\sqrt{j+1}$, and $T_v$ maps this span into the span of
+$\ket0,\ldots,\ket{j+1}$ with norm at most $|v|(\sqrt j+\sqrt{j+1})\leq2|v|\sqrt{j+1}$.
+Iterating from a polynomial $F$ of degree at most $m$,
+\begin{equation}\label{eq:analyticvectors}
+ \norm{T_v^kF}\leq(2|v|)^k\sqrt{\frac{(m+k)!}{m!}}\,\norm F,
+\end{equation}
+so $\sum_k|t|^k\norm{T_v^kF}/k!$ converges for every $t$ (the ratio of
+consecutive terms is $2|v||t|\sqrt{m+k+1}/(k+1)\to0$). Define
+$E(t)F=\sum_kt^kT_v^kF/k!$, a norm-convergent series. We claim
+$E(t)F=D(tv)F$. As a differential operator on entire functions,
+$T_v=vz-\bar v\,\partial_z$. For a polynomial $F$ and fixed $z$, direct
+differentiation of \eqref{eq:Daction} gives
+\begin{align*}
+ \frac{\dd}{\dd t}\bigl(D(tv)F\bigr)(z)
+ &=e^{-t^2|v|^2/2+tvz}\bigl[(vz-t|v|^2)F(z-t\bar v)-\bar vF'(z-t\bar v)\bigr]\\
+ &=e^{-t^2|v|^2/2+tvz}\bigl[v(z-t\bar v)F(z-t\bar v)-\bar vF'(z-t\bar v)\bigr]
+ =\bigl(D(tv)(T_vF)\bigr)(z).
+\end{align*}
+Since $T_vF$ is again a polynomial, induction gives
+$\frac{\dd^k}{\dd t^k}(D(tv)F)(z)=(D(tv)T_v^kF)(z)$, and at $t=0$ this is
+$(T_v^kF)(z)$. The function $t\mapsto(D(tv)F)(z)$ is entire in $t$ (a
+product of entire functions), so it equals its Taylor series:
+$(D(tv)F)(z)=\sum_kt^k(T_v^kF)(z)/k!$. By \eqref{eq:pointeval}, the
+norm-convergent series $E(t)F$ converges pointwise to the same sum. Two
+elements of $\cF$ that agree pointwise are equal; hence $E(t)F=D(tv)F$.
+
+\emph{Identification of the generator.} From the norm-convergent power
+series, $t\mapsto D(tv)F=E(t)F$ is norm-differentiable at $t=0$ with
+derivative $T_vF$; thus $\mathcal P\subseteq\Dom G$ and $G|_{\mathcal P}=T_v$,
+that is $T_v\subseteq G$. As $G$ is closed, $T_v$ is closable with
+$\overline{T_v}\subseteq G$. We show that $(I-T_v)\mathcal P$ is dense. If
+$h\perp(I-T_v)\mathcal P$, then $\langle h,T_vF\rangle=\langle h,F\rangle$
+for every polynomial $F$, and applying this to $T_v^{k-1}F$ gives
+$\langle h,T_v^kF\rangle=\langle h,F\rangle$ for all $k$. Therefore
+\[
+ \langle h,D(tv)F\rangle=\langle h,E(t)F\rangle
+ =\sum_k\frac{t^k}{k!}\langle h,T_v^kF\rangle=e^{t}\langle h,F\rangle
+ \qquad(t\in\R),
+\]
+and the left side is bounded by $\norm h\norm F$ for all $t$, so letting
+$t\to+\infty$ forces $\langle h,F\rangle=0$; density of $\mathcal P$ gives
+$h=0$. The same argument with $e^{-t}$ and $t\to-\infty$ shows that
+$(I+T_v)\mathcal P$ is dense. Now $\overline{T_v}$ is skew-symmetric, so
+$\norm{(I\mp\overline{T_v})x}^2=\norm x^2+\norm{\overline{T_v}x}^2$; hence
+$I-\overline{T_v}$ is bounded below and, being closed, has closed range,
+which contains the dense set $(I-T_v)\mathcal P$ and is therefore all of
+$\cF$. Given $y\in\Dom G$, choose $x\in\Dom\overline{T_v}$ with
+$(I-\overline{T_v})x=(I-G)y$; since $\overline{T_v}\subseteq G$ this reads
+$(I-G)x=(I-G)y$, and $I-G$ is injective because $G$ is skew-adjoint
+($\norm{(I-G)u}^2=\norm u^2+\norm{Gu}^2$). Thus $y=x\in\Dom\overline{T_v}$,
+proving $\overline{T_v}=G$: the closure of $T_v$ is exactly the generator,
+with $\mathcal P$ as a core, and $D(v)=e^{\overline{T_v}}$.
+
+\emph{Normal ordering.} For a polynomial $F$, the series
+$e^{-\bar va}F=\sum_k(-\bar v)^kF^{(k)}/k!$ is a finite sum equal to
+$F(z-\bar v)$ by Taylor's formula for polynomials. The series
+$e^{va^\dagger}G=\sum_kv^kz^kG/k!$ converges in $\cF$ for every polynomial
+$G$: for $G=\sum_jg_jz^j$, $\norm{z^kz^j}=\sqrt{(k+j)!}$ and
+$\sum_k|v|^k\sqrt{(k+j)!}/k!<\infty$, and its sum is the entire function
+$e^{vz}G(z)$, again by \eqref{eq:pointeval}. Hence
+$e^{va^\dagger}e^{-\bar va}e^{-|v|^2/2}F=e^{-|v|^2/2}e^{vz}F(z-\bar v)=D(v)F$
+on $\mathcal P$, and the bounded extension is $D(v)$.
+\end{proof}
+Although the ordered product in \eqref{eq:normalorder} has a unitary
+extension, its two nonscalar factors are separately unbounded; the identity
+does not assert that each is everywhere defined.
+
+\begin{theorem}[Composition law and all matrix elements]\label{thm:Dcomposition}
+For $u,v\in\C$,
+\begin{equation}\label{eq:Dproduct}
+ D(v)D(u)=\exp\Bigl(\frac{v\bar u-u\bar v}{2}\Bigr)D(v+u),
+\end{equation}
+and for any finite list $v_1,\ldots,v_m$,
+\begin{equation}\label{eq:Dmany}
+ \prod_{j=1}^mD(v_j)=\exp\Bigl(\frac12\sum_{j<k}(v_j\bar v_k-v_k\bar v_j)\Bigr)
+ D\Bigl(\sum_jv_j\Bigr).
+\end{equation}
+The full normally ordered expansion, its number-state matrix elements, and
+the coherent states are
+\begin{align}
+ D(v)&=e^{-|v|^2/2}\sum_{r,s\geq0}\frac{v^r(-\bar v)^s}{r!\,s!}(a^\dagger)^ra^s
+ \qquad\text{on }\mathcal P,\label{eq:Dall}\\
+ \bra mD(v)\ket n&=e^{-|v|^2/2}\sqrt{m!\,n!}
+ \sum_{k=0}^{\min(m,n)}\frac{v^{m-k}(-\bar v)^{n-k}}{k!\,(m-k)!\,(n-k)!},\label{eq:Dmatrix}\\
+ \ket v:=D(v)\ket0&=e^{-|v|^2/2}\sum_{n\geq0}\frac{v^n}{\sqrt{n!}}\ket n,
+ \qquad\braket uv=\exp\Bigl(-\frac{|u|^2+|v|^2}2+\bar uv\Bigr),\qquad\norm{\ket v}=1.
+ \label{eq:coherent}
+\end{align}
+For $m\geq n$, equivalently,
+\begin{equation}\label{eq:laguerre}
+ \bra mD(v)\ket n=e^{-|v|^2/2}\sqrt{\frac{n!}{m!}}\,v^{m-n}L_n^{(m-n)}(|v|^2),
+ \qquad L_n^{(\alpha)}(x):=\sum_{j=0}^n\binom{n+\alpha}{n-j}\frac{(-x)^j}{j!},
+\end{equation}
+and the case $n\geq m$ follows from $D(v)^*=D(-v)$.
+\end{theorem}
+\begin{proof}
+Applying \eqref{eq:Daction} twice,
+\begin{align*}
+ (D(v)D(u)F)(z)&=e^{-|v|^2/2+vz}e^{-|u|^2/2+u(z-\bar v)}F(z-\bar v-\bar u),\\
+ (D(v+u)F)(z)&=e^{-|v+u|^2/2+(v+u)z}F(z-\bar v-\bar u).
+\end{align*}
+The difference of the exponents is
+$-\tfrac{|v|^2}2-\tfrac{|u|^2}2-u\bar v+\tfrac{|v|^2+|u|^2+v\bar u+u\bar v}2
+=\tfrac{v\bar u-u\bar v}2$, which is purely imaginary (it equals
+$\ii\operatorname{Im}(v\bar u)$), proving \eqref{eq:Dproduct}; the factor is
+a phase. Induction on $m$, exactly as in \cref{cor:centralmany}, gives
+\eqref{eq:Dmany}: the new phase from $D(v_1+\cdots+v_{m-1})D(v_m)$ is
+$\frac12\sum_{j<m}(v_j\bar v_m-v_m\bar v_j)$.
+
+Expanding the two exponentials in \eqref{eq:normalorder} on a polynomial
+(the $a$-series is finite and the $a^\dagger$-series converges in norm)
+gives \eqref{eq:Dall}. Acting on $\ket n$: the term $a^s$ with $s=n-k$
+lowers $\ket n$ to $\sqrt{n!/k!}\,\ket k$, and $(a^\dagger)^r$ with $r=m-k$
+raises $\ket k$ to $\sqrt{m!/k!}\,\ket m$; the product of the ladder factors
+is $\sqrt{m!n!}/k!$, and summing over the admissible intermediate levels
+$0\leq k\leq\min(m,n)$ gives \eqref{eq:Dmatrix}. Setting $n=0$ (only $k=0$)
+gives $\bra mD(v)\ket0=e^{-|v|^2/2}v^m/\sqrt{m!}$, which is the first
+formula in \eqref{eq:coherent}; equivalently
+$D(v)\ket0=e^{-|v|^2/2}e^{vz}$ by \eqref{eq:Daction}. Its norm squared is
+$e^{-|v|^2}\sum|v|^{2n}/n!=1$, and
+$\braket uv=e^{-(|u|^2+|v|^2)/2}\sum_n\bar u^nv^n/n!$ gives the overlap.
+For \eqref{eq:laguerre} with $m\geq n$, substitute $j=n-k$ in
+\eqref{eq:Dmatrix}: $v^{m-k}(-\bar v)^{n-k}=v^{m-n}(-|v|^2)^j$ and
+\begin{align*}
+ \sqrt{\frac{n!}{m!}}\,L_n^{(m-n)}(|v|^2)
+ &=\sqrt{\frac{n!}{m!}}\sum_{j=0}^{n}\frac{m!}{(n-j)!\,(m-n+j)!}\frac{(-|v|^2)^j}{j!}\\
+ &=\sqrt{m!\,n!}\sum_{j=0}^{n}\frac{(-|v|^2)^j}{(n-j)!\,(m-n+j)!\,j!},
+\end{align*}
+which matches \eqref{eq:Dmatrix} term by term with $k=n-j$. Since
+$D(v)^*=D(v)^{-1}=D(-v)$, $\bra mD(v)\ket n=\overline{\bra nD(-v)\ket m}$
+handles $n\geq m$.
+\end{proof}
+Algebraically, $[T_v,T_u]=(v\bar u-u\bar v)I$ on $\mathcal P$, which is
+central and purely imaginary, and all triple commutators vanish: this is
+the class-two nilpotent Heisenberg structure of \eqref{eq:heisenberglaw}
+behind \eqref{eq:Dproduct}. The representation-level proof above
+establishes the identity globally, without an unjustified interchange of
+unbounded-operator series. Finitely many independent modes are handled by
+tensoring these representations: all cross-mode commutators vanish, every
+scalar product $v\bar u$ in the phase formulas is replaced by
+$\sum_\ell v_\ell\bar u_\ell$, and the vacuum and matrix-element formulas
+factor by mode; no further BCH terms appear. These formulas provide all
+terms of the oscillator applications on the source page, with no asymptotic
+truncation remaining.

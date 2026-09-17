@@ -1,0 +1,303 @@
+\section{Exponential coordinates, coframes, and metrics to all orders}\label{sec:geometry}
+The differential identity \eqref{eq:leftdexp} has an intrinsic geometric
+meaning. This section develops it into complete coordinate expansions and
+isolates the corrections needed in the geometric paragraph of the source
+page.
+
+\subsection{The infinitesimal formula and its full component expansion}
+Let $G$ be a finite-dimensional Lie group with Lie algebra $\g$, basis
+$e_1,\ldots,e_d$, and structure constants
+\begin{equation}\label{eq:structure}
+ [e_i,e_j]=f_{ij}{}^{k}e_k,\qquad X=X^ie_i,
+\end{equation}
+with repeated upper--lower indices summed. For a differentiable
+$\g$-valued function $X$ on a manifold, applying \eqref{eq:leftdexp}
+(intrinsically, \cref{prop:intrinsicdexp}) to every tangent vector gives
+the complete infinitesimal identity
+\begin{equation}\label{eq:infinitesimal}
+\begin{aligned}
+ e^{-X}\dd e^X:=\exp(X)^*\theta&=\phi(\ad_X)\,\dd X
+ =\sum_{n\geq0}\frac{(-1)^n}{(n+1)!}\ad_X^n(\dd X)\\
+ &=\dd X-\tfrac12[X,\dd X]+\tfrac16[X,[X,\dd X]]-\cdots,
+\end{aligned}
+\end{equation}
+an equality of $\g$-valued one-forms; in a matrix group the left side is
+literally $g^{-1}\dd g$ with $g=e^X$. Inserting \eqref{eq:structure} into
+the successive commutators gives the component terms displayed on the
+source page,
+\begin{equation}\label{eq:components}
+ e^{-X}\dd e^X=e_k\,\dd X^k-\tfrac12X^i\dd X^jf_{ij}{}^ke_k
+ +\tfrac16X^iX^j\dd X^kf_{jk}{}^{\ell}f_{i\ell}{}^me_m-\cdots,
+\end{equation}
+whose indices and signs are fixed by the bracket convention rather than
+guessed. Define the matrix of $\ad_X$ and the coframe matrix by
+\begin{equation}\label{eq:MW}
+ M^a{}_b=X^if_{ib}{}^a,\qquad
+ W(X)=\phi(M)=\sum_{n\geq0}\frac{(-1)^n}{(n+1)!}M^n=\int_0^1e^{-uM}\,\dd u,
+\end{equation}
+so that $\ad_Xe_b=M^a{}_be_a$. Then every component at every order is
+specified by
+\begin{equation}\label{eq:thetaW}
+\begin{gathered}
+ e^{-X}\dd e^X=e_a\,W^a{}_b(X)\,\dd X^b,\\
+ (M^n)^a{}_b=\sum_{i_1,\ldots,i_n}\ \sum_{c_1,\ldots,c_{n-1}}
+ X^{i_1}\cdots X^{i_n}\,f_{i_1c_{n-1}}{}^{a}f_{i_2c_{n-2}}{}^{c_{n-1}}\cdots f_{i_nb}{}^{c_1},
+\end{gathered}
+\end{equation}
+which is ordinary matrix multiplication written out; for $n=1$ it reads
+$X^if_{ib}{}^a$, and for $n=2$ it reproduces the third term of
+\eqref{eq:components} after renaming dummy indices. The factorial series
+in \eqref{eq:MW} converges for every finite matrix $M$, and the integral
+form follows from \eqref{eq:leftdexp}.
+
+\subsection{Which matrix is the vielbein?}
+\begin{proposition}[The coframe and its regularity]\label{prop:coframe}
+In exponential coordinates $X^1,\ldots,X^d$ near the identity, the one-forms
+$\theta^a=W^a{}_b\,\dd X^b$ form a coframe (the components of the left
+Maurer--Cartan form), and the dual frame has coefficient matrix $W^{-1}$.
+The matrix $M=\ad_X$ is not this coframe: in positive dimension it is
+\emph{always singular}, whereas $W(0)=I$. More precisely,
+\begin{equation}\label{eq:Wcriterion}
+ W(X)\text{ is invertible}\quad\Longleftrightarrow\quad
+ \spec(\ad_X)\cap\bigl(2\pi\ii\Z\setminus\{0\}\bigr)=\varnothing,
+\end{equation}
+the spectrum being computed after complexification for a real Lie algebra,
+and on this set $W^{-1}=\beta(M)$ by holomorphic functional calculus (not
+necessarily by a convergent Taylor series about $M=0$).
+\end{proposition}
+\begin{proof}
+Equation \eqref{eq:thetaW} identifies $\theta^a$ with the components of
+the pullback of $\theta$ under $\exp$, and since $\exp$ is a local
+diffeomorphism at $0$ (\cref{thm:local}) and $W(0)=I$, the $\theta^a$ are
+linearly independent near $0$: they form a coframe, and the dual frame is
+given by the inverse matrix. If $X\neq0$ then $MX=[X,X]=0$ with $X\neq0$,
+so $M$ has a nontrivial kernel; if $X=0$ then $M=0$. Hence $M$ is singular
+in every positive-dimensional Lie algebra and cannot be a frame or coframe
+matrix. Over $\C$ triangularize $M$; a power series in a triangular matrix
+is triangular with diagonal entries equal to the scalar function evaluated
+at the diagonal entries, so $\det W=\prod_{\lambda\in\spec M}\phi(\lambda)$
+with multiplicities. The zeros of the entire function $\phi(z)=(1-e^{-z})/z$
+are exactly the nonzero points of $2\pi\ii\Z$ ($1-e^{-z}=0$ iff
+$z\in2\pi\ii\Z$, and at $z=0$ the value is $1$). This proves
+\eqref{eq:Wcriterion}; in particular the eigenvalue $0$ forced by
+$MX=0$ is harmless for $W$. Where no zero is present, the analytic
+identity $\phi\beta=1$ and multiplicativity of functional calculus give
+$W^{-1}=\beta(M)$.
+\end{proof}
+Some authors reserve ``vielbein'' for the dual vector frame rather than
+the coframe; with that convention the frame coefficients are $W^{-1}$,
+still not $M$. The quotient $(I-e^{-M})M^{-1}$ used on the source page is a
+shorthand for the entire function $\phi(M)$; a literal inverse of $M$ does
+not exist in this setting. This is a correction of a mathematical
+misidentification on the page, not an alternative sign convention. The
+defining differential relation of the coframe is the Maurer--Cartan
+equation of \cref{prop:MC} in components,
+\begin{equation}\label{eq:structureequation}
+ \dd\theta^a=-\tfrac12f_{bc}{}^a\,\theta^b\wedge\theta^c,
+\end{equation}
+obtained by writing $\theta=e_a\theta^a$ and
+$\frac12[\theta,\theta]=\frac12\theta^b\wedge\theta^c[e_b,e_c]$.
+
+\subsection{Pullback tensors: the Jacobian and the nondegeneracy hypotheses}
+Let $B$ be a symmetric bilinear form on $\g$ with matrix
+$B_{ab}=B(e_a,e_b)$. Left translation defines a left-invariant symmetric
+tensor $g_G$ on $G$ by $g_G(u,v)=B(\theta u,\theta v)$; it is a
+pseudo-Riemannian metric exactly when $B$ is nondegenerate, and Riemannian
+when $B$ is positive definite. No invariance of $B$ under the adjoint
+action is needed for left invariance.
+
+\begin{theorem}[Pullback formula with its hypotheses]\label{thm:pullback}
+Let $F:N\to G$ be smooth. Near a point $q_0\in N$, after a fixed left
+translation (which does not change the pullback of a left-invariant
+tensor), write $F(q)=\exp X(q)$ with $X(q)=X^b(q)e_b$ in coordinates
+$q^\mu$ on $N$, and set
+\begin{equation}\label{eq:E}
+ E^a{}_\mu(q)=W^a{}_b\bigl(X(q)\bigr)\,\partial_\mu X^b(q).
+\end{equation}
+Then
+\begin{equation}\label{eq:pullback}
+ (F^*\theta)^a=E^a{}_\mu\,\dd q^\mu,\qquad
+ (F^*g_G)_{\mu\nu}=B_{ab}\,E^a{}_\mu E^b{}_\nu.
+\end{equation}
+In exponential coordinates themselves, $X^b=q^b$, the Jacobian is the
+identity and
+\begin{equation}\label{eq:metricW}
+ g_{ij}=B_{ab}W^a{}_iW^b{}_j,\qquad g=W^{\mathsf T}BW.
+\end{equation}
+If $B$ is positive definite, $F^*g_G$ is a Riemannian metric on $N$ if and
+only if $F$ is an immersion. If $B$ is indefinite, $F^*g_G$ is a
+pseudo-Riemannian metric if and only if $F$ is an immersion and $B$
+restricted to $\theta(\dd F(T_qN))$ is nondegenerate at every $q$.
+\end{theorem}
+\begin{proof}
+The chain rule applied to \eqref{eq:thetaW} gives
+$F^*\theta=(\exp\circ X)^*\theta=e_aW^a{}_b(X)\,\dd X^b
+=e_aW^a{}_b(X)\partial_\mu X^b\,\dd q^\mu$, the first identity. By
+definition of the pullback of a bilinear form,
+$(F^*g_G)(\partial_\mu,\partial_\nu)=B(\theta F_*\partial_\mu,\theta F_*\partial_\nu)
+=B(e_aE^a{}_\mu,e_bE^b{}_\nu)=B_{ab}E^a{}_\mu E^b{}_\nu$. If $B$ is
+positive definite, then $(F^*g_G)(v,v)=B(\theta F_*v,\theta F_*v)\geq0$
+with equality iff $F_*v=0$, so the pullback is positive definite iff
+$\dd F$ is injective at every point. If $B$ is indefinite, the pullback is
+the restriction of the nondegenerate form $B$ to the subspace
+$\theta(\dd F(T_qN))$ transported by the linear map $\theta\circ\dd F$,
+which is an isomorphism onto that subspace iff $\dd F$ is injective; the
+transported form is nondegenerate iff the restriction is.
+\end{proof}
+Three distinct qualifications follow. An arbitrary smooth map does not
+induce a metric: a constant map has zero pullback. For an indefinite $B$
+even an immersion can have a degenerate pullback: the immersion
+$q\mapsto(q,q)$ into $(\R^2,\dd x^2-\dd y^2)$ pulls the metric back to
+$(1-1)\dd q^2=0$. And an arbitrary previously specified metric on $N$
+cannot be asserted to be such a pullback without additional data. The
+Jacobian factors in \eqref{eq:E} are indispensable unless the coordinates
+on $N$ are the exponential coordinates $X^i$ themselves.
+
+The Killing form is
+\begin{equation}\label{eq:killing}
+ B_K(u,v)=\tr(\ad_u\ad_v),\qquad (B_K)_{ab}=f_{ac}{}^df_{bd}{}^c,
+\end{equation}
+the second expression being the trace of the product of the two adjoint
+matrices. It is symmetric by $\tr(AB)=\tr(BA)$, and it is invariant:
+\begin{align*}
+ B_K([x,u],v)+B_K(u,[x,v])
+ &=\tr\bigl([\ad_x,\ad_u]\ad_v+\ad_u[\ad_x,\ad_v]\bigr)\\
+ &=\tr\bigl(\ad_x\ad_u\ad_v-\ad_u\ad_x\ad_v+\ad_u\ad_x\ad_v-\ad_u\ad_v\ad_x\bigr)\\
+ &=\tr[\ad_x,\ad_u\ad_v]=0,
+\end{align*}
+using $\ad_{[x,u]}=[\ad_x,\ad_u]$ from \eqref{eq:derivation}. But the
+Killing form need not be nondegenerate: in an abelian Lie algebra every
+adjoint map is zero and $B_K\equiv0$, and more generally it vanishes on
+the center of any Lie algebra. (By Cartan's criterion, which is not needed
+here, $B_K$ is nondegenerate exactly for semisimple Lie algebras; and for
+compact semisimple algebras it is negative definite, so even then it is
+$-B_K$ that is Riemannian.) Consequently calling its pullback a ``metric'' without a
+nondegeneracy hypothesis is not a valid general assertion, and it is not a
+universal choice of Riemannian metric; an arbitrary positive definite inner
+product at the identity always gives a left-invariant Riemannian metric
+instead. When $B_K$ is nondegenerate it may be used as $B$ in
+\cref{thm:pullback}, with its signature respected. Formula
+\eqref{eq:metricW} is valid regardless of whether it defines a metric or
+only a possibly degenerate tensor.
+
+\subsection{All-orders metric coefficients, their even resummation, and the volume density}
+Without assuming invariance, substituting \eqref{eq:MW} into
+\eqref{eq:metricW} gives the absolutely convergent double series
+\begin{equation}\label{eq:metricdouble}
+ g_{ij}=\sum_{p,q\geq0}\frac{(-1)^{p+q}}{(p+1)!\,(q+1)!}\,B_{ab}(M^p)^a{}_i(M^q)^b{}_j,
+\end{equation}
+valid for every $M$. If $B$ is invariant the answer is considerably
+simpler.
+\begin{theorem}[Complete invariant-metric expansion]\label{thm:metric}
+Suppose $B([X,u],v)+B(u,[X,v])=0$ for all $u,v$ (for example $B=B_K$).
+Then
+\begin{align}
+ g=W^{\mathsf T}BW&=B\,\phi(-M)\phi(M)
+ =B\,\frac{e^M+e^{-M}-2I}{M^2}
+ =B\,\frac{2(\cosh M-I)}{M^2}
+ =B\Bigl(\frac{\sinh(M/2)}{M/2}\Bigr)^2\label{eq:metricclosed}\\
+ &=B\sum_{n\geq0}\frac{2M^{2n}}{(2n+2)!}
+ =B\Bigl(I+\frac{M^2}{12}+\frac{M^4}{360}+\frac{M^6}{20160}+\cdots\Bigr).
+ \label{eq:metriceven}
+\end{align}
+All quotients denote entire functions with their removable values at
+zero; no inverse of $M$ or $M^2$ is assumed. If moreover $B$ and $W$ are
+invertible, $g^{-1}=\beta(M)B^{-1}\beta(M)^{\mathsf T}$.
+\end{theorem}
+\begin{proof}
+In components, invariance reads $B_{ab}M^a{}_cu^cv^b=-B_{ab}u^aM^b{}_cv^c$
+for all $u,v$, that is $M^{\mathsf T}B=-BM$. Induction gives
+$(M^{\mathsf T})^nB=(-1)^nBM^n$: if it holds for $n$, then
+$(M^{\mathsf T})^{n+1}B=M^{\mathsf T}(-1)^nBM^n=(-1)^{n+1}BM^{n+1}$. Hence
+\[
+ W^{\mathsf T}B=\sum_n\frac{(-1)^n}{(n+1)!}(M^{\mathsf T})^nB
+ =B\sum_n\frac{M^n}{(n+1)!}=B\,\phi(-M),
+\]
+and $W^{\mathsf T}BW=B\,\phi(-M)\phi(M)$. The scalar identity
+\[
+ \phi(-z)\phi(z)=\frac{(e^z-1)(1-e^{-z})}{z^2}=\frac{e^z+e^{-z}-2}{z^2}
+ =\frac{2(\cosh z-1)}{z^2}=\frac{4\sinh^2(z/2)}{z^2}
+ =\sum_{n\geq0}\frac{2z^{2n}}{(2n+2)!}
+\]
+holds between entire functions (expand $\cosh z-1=\sum_{m\geq1}z^{2m}/(2m)!$),
+and since all the matrix functions involved are power series in the single
+matrix $M$, they commute and the scalar identity transfers to $M$. The
+coefficients are $2/2!=1$, $2/4!=\tfrac1{12}$, $2/6!=\tfrac1{360}$,
+$2/8!=\tfrac1{20160}$. The resulting matrix is symmetric because it was
+obtained as $W^{\mathsf T}BW$. Finally
+$g^{-1}=W^{-1}B^{-1}(W^{\mathsf T})^{-1}=\beta(M)B^{-1}\beta(M)^{\mathsf T}$
+when the inverses exist.
+\end{proof}
+Note that all odd orders disappear only under the invariance hypothesis;
+no such cancellation occurs in \eqref{eq:metricdouble}.
+
+When $B$ is nondegenerate and the $X^i$ are exponential coordinates, the
+metric matrix is $W^{\mathsf T}BW$, so its volume density is
+\begin{equation}\label{eq:volume}
+ \sqrt{\abs{\det g}}=\abs{\det W}\sqrt{\abs{\det B}},\qquad
+ \det W=\prod_{\lambda\in\spec M}\phi(\lambda),
+\end{equation}
+with the factor $1$ at $\lambda=0$ and multiplicities included, by the
+triangularization used in \cref{prop:coframe}. If the spectral radius of
+$M$ is less than $2\pi$, then
+\begin{equation}\label{eq:logvolume}
+ \det W=\exp\Bigl(-\tfrac12\tr M+\sum_{m\geq1}\frac{\bplus{2m}}{2m}\tr\bigl(M^{2m}\bigr)\Bigr)
+ =\exp\Bigl(-\tfrac12\tr M+\frac{\tr M^2}{24}-\frac{\tr M^4}{2880}+\cdots\Bigr).
+\end{equation}
+\begin{proof}[Proof of \eqref{eq:logvolume}]
+For $|z|<2\pi$, $\phi(z)\neq0$ and
+\[
+ \frac{\dd}{\dd z}\log\phi(z)=\frac{e^{-z}}{1-e^{-z}}-\frac1z
+ =\frac1{e^z-1}-\frac1z=\frac{\gamma(z)-1}{z}
+ =\sum_{m\geq1}\bminus{m}z^{m-1}=-\frac12+\sum_{m\geq1}\bplus{2m}z^{2m-1},
+\]
+using $\bminus1=-\tfrac12$ and $\bminus{2m}=\bplus{2m}$, $\bminus{2m+1}=0$
+for $m\geq1$. Integrating with $\log\phi(0)=0$ gives
+$\log\phi(z)=-\tfrac z2+\sum_{m\geq1}\tfrac{\bplus{2m}}{2m}z^{2m}$, a
+series with radius $2\pi$ (the nearest zeros of $\phi$). Hence
+$\phi(\lambda_j)=\exp(-\tfrac{\lambda_j}2+\sum_m\tfrac{\bplus{2m}}{2m}\lambda_j^{2m})$
+for every eigenvalue $\lambda_j$ with $|\lambda_j|<2\pi$; multiplying over
+$j$ and using $\sum_j\lambda_j^{k}=\tr M^k$ (absolute convergence allows
+the interchange of the sums over $j$ and $m$) gives \eqref{eq:logvolume}.
+The first coefficients are $\bplus2/2=\tfrac1{24}$ and
+$\bplus4/4=-\tfrac1{2880}$.
+\end{proof}
+The determinant formula \eqref{eq:volume} itself has no radius restriction.
+
+\subsection{A concrete three-dimensional resummation}
+Identify the rotation Lie algebra $\mathfrak{so}(3)$ with $\R^3$ and the
+bracket with the cross product, $[x,v]=x\times v$. Then $Mv=x\times v$ and,
+with $r=|x|$, the vector triple-product identity gives
+$M^2v=x\times(x\times v)=x(x\cdot v)-r^2v$ and hence
+$M^3v=x\times\bigl(x(x\cdot v)-r^2v\bigr)=-r^2\,x\times v$, that is
+$M^3=-r^2M$. Consequently $M^{2k+1}=(-r^2)^kM$ and $M^{2k+2}=(-r^2)^kM^2$
+for $k\geq0$, and summing the exponential series,
+\[
+ e^{-sM}=I+\sum_{k\geq0}\frac{(-s)^{2k+1}(-r^2)^k}{(2k+1)!}M
+ +\sum_{k\geq0}\frac{(-s)^{2k+2}(-r^2)^k}{(2k+2)!}M^2
+ =I-\frac{\sin(sr)}{r}M+\frac{1-\cos(sr)}{r^2}M^2,
+\]
+which is Rodrigues' formula. Integrating over $s\in[0,1]$ by
+\eqref{eq:MW} gives the complete coframe
+\begin{equation}\label{eq:so3W}
+ W=I-\frac{1-\cos r}{r^2}M+\frac{r-\sin r}{r^3}M^2,
+\end{equation}
+with the Taylor values $\tfrac12$ and $\tfrac16$ of the two coefficients at
+$r=0$. The Euclidean dot product is invariant, since
+$(x\times u)\cdot v+u\cdot(x\times v)=0$. For $r>0$ let
+$P_\parallel=xx^{\mathsf T}/r^2$ and $P_\perp=I-P_\parallel$; then $M=0$ on
+the range of $P_\parallel$ and $M^2=-r^2I$ on the range of $P_\perp$ (the
+plane orthogonal to $x$, where $x\cdot v=0$). Formula
+\eqref{eq:metricclosed} with $B=I$ therefore gives
+\begin{equation}\label{eq:so3metric}
+ W^{\mathsf T}W=P_\parallel+\frac{2(1-\cos r)}{r^2}P_\perp
+ =P_\parallel+\Bigl(\frac{\sin(r/2)}{r/2}\Bigr)^2P_\perp,
+ \qquad
+ \det W=\Bigl(\frac{\sin(r/2)}{r/2}\Bigr)^2,
+\end{equation}
+the determinant following either from the eigenvalues $0,\ii r,-\ii r$ of
+$M$ and $\phi(\ii r)\phi(-\ii r)=|1-e^{-\ii r}|^2/r^2=(2-2\cos r)/r^2$, or
+directly from \eqref{eq:so3W}. Thus the coordinate coframe of the rotation
+group in exponential coordinates is singular exactly at the radii
+$r=2\pi,4\pi,\ldots$, precisely as \eqref{eq:Wcriterion} predicts; at
+$r=0$ the whole expression has the unambiguous limit $I$.

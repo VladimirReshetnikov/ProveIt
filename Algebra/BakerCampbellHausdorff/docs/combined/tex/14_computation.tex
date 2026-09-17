@@ -1,0 +1,143 @@
+\section{Exact computation, additional terms, and reproducibility}\label{sec:computation}
+The all-order assertions of this article are proved algebraically or
+analytically; a finite computation is not their substitute. Computation is
+nevertheless useful for certifying transcription, signs, bracket
+conventions, and the additional explicit terms, and for detecting errors in
+the finite displays. This section describes the exact computations that
+accompany the article.
+
+\subsection{Representation and independently organized calculations}
+An associative polynomial is stored as a dictionary from words in $\{X,Y\}$
+to exact rational numbers (Python's \texttt{fractions.Fraction}); the empty
+word represents $1$. Multiplication concatenates words and discards
+degrees beyond a requested cutoff. Exponential and logarithm are evaluated
+by their defining series, which become finite under this truncation.
+Because no relation is imposed on the two generators, equality of the
+resulting dictionaries is equality in the truncated free associative
+algebra, not a test on selected numerical matrices in which independent
+commutators might collapse.
+
+The three source treatments each supplied a standard-library Python
+verifier, and all three are retained unchanged in the repository
+(\texttt{paper-1/code}, \texttt{paper-2/code}, \texttt{paper-3/code}). Between
+them they perform the following independently organized calculations, each
+compared coefficient by coefficient with the reference expansion
+$\log(e^Xe^Y)$:
+\begin{itemize}
+\item the finite word-cut formula \eqref{eq:wordcut} evaluated by a dynamic
+program over all contiguous cuts of every word, including words with zero
+coefficient (through degree $10$; $2046$ words);
+\item the Poincar\'e operator-block expansion \eqref{eq:operatorblock},
+assembled by repeated application of $e^{\ad_X}e^{t\ad_Y}-I$ with exact
+integration of powers of $t$ (through degree $10$);
+\item the right Dynkin projection \eqref{eq:dynkinword}, verified to fix
+every homogeneous component (through degree $12$);
+\item the total-degree Bernoulli recursion \eqref{eq:homrec} (through
+degree $10$), the single-$Y$ Bernoulli series \eqref{eq:linearY} (through
+degree $12$), and the quadratic kernel \eqref{eq:H2kernel} (through degree
+$10$);
+\item the primitive coproduct condition, by explicit computation of the
+reduced unshuffle coproduct (through degree $10$);
+\item the exchange parity \eqref{eq:parity} and word-reversal parity
+\eqref{eq:reversal} (through degree $12$), and three-letter associativity
+\eqref{eq:assoc} (through degree $6$);
+\item the displayed terms \eqref{eq:z1}--\eqref{eq:z6}, entered
+independently as nested brackets and expanded by \eqref{eq:bracketexpand};
+\item the Zassenhaus exponents computed three ways, by residual extraction
+\eqref{eq:residual}, by the Lie recurrence \eqref{eq:frec}, and by the
+forward partition recurrence \eqref{eq:Cpartitions}, compared with each
+other and with the explicit enumeration of the weighted-tree formula
+\eqref{eq:treeformula} (through degree $10$), followed by reconstruction of
+the ordered product and comparison with $e^{t(X+Y)}$ (through degree
+$12$), and by the displayed $C_2,C_3,C_4$;
+\item the ordered-simplex expansion \eqref{eq:simplex} (through degree
+$10$), the symmetric splitting's oddness and cubic coefficient
+\eqref{eq:S2log} (through degree $12$), Campbell's conjugation series
+\eqref{eq:campbell}, the Bernoulli inverse identity $\phi\beta=1$, and the
+invariant-metric even-series identity \eqref{eq:metriceven} (through degree
+$10$).
+\end{itemize}
+The supplied runs report $20$, $30$, and $26$ passed named checks
+respectively; the script \texttt{code/run\_all\_verifiers.py} in the
+article's directory reruns all three and records their reports. These are
+exact finite algebraic verifications, not floating-point tolerance tests
+and not a claim of formal proof-assistant certification. Finite-degree
+agreement does not prove an all-orders identity, an analytic convergence
+theorem, or a domain statement for an unbounded operator; those are
+established by the proofs above.
+
+\subsection{Two commutator encodings}
+The right-nested data use exactly $R(w)$ of \eqref{eq:rightbracket}, so
+that $Z_n=\sum_{|w|=n}\frac{c(w)}nR(w)$. This encoding is redundant: every
+word ending in two equal letters represents zero, and the remaining brackets
+are not claimed to be linearly independent.
+
+For compact tables we use the standard Lyndon bracketing. Order the
+alphabet by $X<Y$ and words lexicographically, a proper prefix preceding
+its extensions. A nonempty word is \emph{Lyndon} if it is strictly smaller
+than each of its nonempty proper suffixes. Define $L(X)=X$, $L(Y)=Y$, and
+for a Lyndon word $w$ of length at least two write $w=uv$ with $v$ its
+longest proper suffix that is Lyndon, and set
+\begin{equation}\label{eq:lyndon}
+ L(w)=[L(u),L(v)].
+\end{equation}
+(The standard factorization theorem guarantees that $u$ is again Lyndon;
+the table generator applies the recursion to $u$ and $v$ in any case, so
+every entry is an explicitly specified bracket polynomial.) For example
+$L(\mathrm{XXY})=[X,[X,Y]]$ and $L(\mathrm{XYY})=[[X,Y],Y]$. Thus
+$L(\mathrm{XYY})$ is \emph{not} $R(\mathrm{XYY})$, which is zero; confusing
+the two conventions would corrupt many coefficients. No theorem about
+Lyndon bases is needed to verify the tables: the generator expands each
+tabulated bracket polynomial into words and requires the result to equal
+the associative polynomial exactly. A table is therefore a certificate for
+an explicit finite commutator identity whether or not one invokes the
+general basis theorem. The counts in \cref{tab:counts} are numbers of
+nonzero entries in these encodings, not dimensions of homogeneous free Lie
+algebras and not counts of terms in a minimal basis.
+
+\subsection{Data files and regeneration}
+The principal machine-readable files in the article's \texttt{data/}
+directory are listed in \cref{tab:files}. In an associative file a row
+gives the coefficient of the literal word; in a \texttt{lyndon} file it
+multiplies $L(w)$, and in the right-commutator file it multiplies $R(w)$.
+Numerators and denominators are separate integers, and missing rows have
+coefficient zero. The tree-polynomial file gives each $C_n$ as a polynomial
+in the $A_j$ of \eqref{eq:An}; a key such as \texttt{2 3} denotes the
+ordered product $A_2A_3$.
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}p{0.42\textwidth}p{0.52\textwidth}@{}}
+\toprule
+File & Meaning\\
+\midrule
+\texttt{bch\_associative.csv} & Every nonzero BCH word coefficient $c(w)$ through degree 12.\\
+\texttt{bch\_right\_commutators.csv} & Dynkin-projection coefficients $c(w)/n$, with identically zero right brackets omitted.\\
+\texttt{bch\_lyndon.csv} & Compact BCH commutator expansion through degree 12.\\
+\texttt{zassenhaus\_associative.csv} & Associative coefficients of each $C_n$, $2\leq n\leq12$.\\
+\texttt{zassenhaus\_lyndon.csv} & Compact commutator expansions of the same $C_n$.\\
+\texttt{zassenhaus\_tree\_polynomials.json} & Each $C_n$, $2\leq n\leq10$, as a polynomial in the ordered $A_j$.\\
+\texttt{strang\_lyndon.csv} & $\log(e^{X/2}e^Ye^{X/2})$ through degree 12.\\
+\texttt{bernoulli\_plus.csv} & The coefficients $\bplus n=B_n^+/n!$ through $n=12$.\\
+\bottomrule
+\end{tabular}
+\caption{Machine-readable companion expansions (exact rationals).}\label{tab:files}
+\end{table}
+
+The coefficient appendix (\cref{app:tables}) is generated from these
+files by \texttt{code/make\_tables.py}, which independently recomputes every
+printed degree-one to degree-six coefficient by the cut formula
+\eqref{eq:wordcut} and by expansion of the displayed brackets, reconstructs
+every printed Lyndon table from its brackets, and refuses to write the
+appendix if any comparison fails. From the article's directory:
+\begin{lstlisting}[language=bash]
+python code/make_tables.py            # regenerate tex/appendix_tables.tex with checks
+python code/run_all_verifiers.py      # rerun the three exact verifiers
+latexmk -pdf -interaction=nonstopmode -halt-on-error bch_combined.tex
+\end{lstlisting}
+Python 3.10 or later with the standard library suffices; a standard TeX
+installation with the packages named in the preamble compiles the source
+without a bibliography processor, shell escape, or external files. The
+verifiers accept larger cutoffs, but the number of words grows
+exponentially with the degree; the finite coefficient formulas and
+recurrences of this article, not the chosen degree limit, specify all
+orders.
