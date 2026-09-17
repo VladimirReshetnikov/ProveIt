@@ -54,7 +54,7 @@ namespace BCH
 
 section Defs
 
-variable (𝕂 : Type*) {𝔸 : Type*} [RCLike 𝕂] [NormedRing 𝔸] [NormedAlgebra 𝕂 𝔸]
+variable (𝕂 : Type*) {𝔸 : Type*} [RCLike 𝕂] [Ring 𝔸] [Algebra 𝕂 𝔸]
 
 /-- The degree-`d` part `∑_{r + s = d} X^r Y^s / (r! s!)` of `e^X e^Y`. -/
 noncomputable def expBlock (X Y : 𝔸) (d : ℕ) : 𝔸 :=
@@ -154,6 +154,39 @@ lemma bchHom_smul (c : 𝕂) (X Y : 𝔸) (n : ℕ) :
   rw [powBlock_smul, smul_comm]
 
 end Defs
+
+/-! ### Naturality under algebra homomorphisms -/
+
+section Map
+
+variable {𝕂 : Type*} [RCLike 𝕂] {𝔸 𝔹 : Type*} [Ring 𝔸] [Algebra 𝕂 𝔸] [Ring 𝔹] [Algebra 𝕂 𝔹]
+  (φ : 𝔸 →ₐ[𝕂] 𝔹)
+
+lemma map_expBlock (X Y : 𝔸) (d : ℕ) : φ (expBlock 𝕂 X Y d) = expBlock 𝕂 (φ X) (φ Y) d := by
+  simp [expBlock, map_sum, map_smul, map_mul, map_pow]
+
+lemma map_uBlock (X Y : 𝔸) (d : ℕ) : φ (uBlock 𝕂 X Y d) = uBlock 𝕂 (φ X) (φ Y) d := by
+  unfold uBlock
+  split_ifs
+  · simp
+  · exact map_expBlock φ X Y d
+
+lemma map_powBlock (X Y : 𝔸) :
+    ∀ k n : ℕ, φ (powBlock 𝕂 X Y k n) = powBlock 𝕂 (φ X) (φ Y) k n
+  | 0, n => by
+    rw [powBlock_zero, powBlock_zero]
+    split_ifs <;> simp
+  | k + 1, n => by
+    rw [powBlock_succ, powBlock_succ, map_sum]
+    refine sum_congr rfl fun p _ => ?_
+    rw [map_mul, map_uBlock, map_powBlock X Y k]
+
+/-- The homogeneous components are natural: `φ(Zₙ(X, Y)) = Zₙ(φ X, φ Y)` for an algebra
+homomorphism `φ`. -/
+theorem map_bchHom (X Y : 𝔸) (n : ℕ) : φ (bchHom 𝕂 X Y n) = bchHom 𝕂 (φ X) (φ Y) n := by
+  simp [bchHom, map_sum, map_smul, map_powBlock]
+
+end Map
 
 /-! ### The real majorant -/
 
