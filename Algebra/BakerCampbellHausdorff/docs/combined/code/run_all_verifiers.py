@@ -89,7 +89,7 @@ def main() -> int:
         'total_passed_checks': sum(r['passed_checks'] for r in results),
     }
     target = COMBINED / 'data' / 'verification_summary.json'
-    target.write_text(json.dumps(summary, indent=2), encoding='utf-8')
+    target.write_text(json.dumps(summary, indent=2) + '\n', encoding='utf-8', newline='\n')
     print(f"Summary written to {target}: {summary['total_passed_checks']} passed checks, "
           f"all_passed={summary['all_passed']}")
     return 0 if summary['all_passed'] else 1

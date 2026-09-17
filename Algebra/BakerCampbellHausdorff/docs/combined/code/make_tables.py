@@ -420,7 +420,7 @@ degree-one Zassenhaus factor $e^{Y}$ is separated from the exponents $C_n$,
 $n\geq2$.}\label{tab:counts}
 \end{table}
 ''')
-    OUT.write_text('\n'.join(text), encoding='utf-8')
+    OUT.write_text('\n'.join(text) + '\n', encoding='utf-8', newline='\n')
     print(f'Wrote {OUT}')
 
 
