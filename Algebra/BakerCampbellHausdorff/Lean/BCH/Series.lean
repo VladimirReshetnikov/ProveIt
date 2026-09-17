@@ -54,7 +54,7 @@ namespace BCH
 
 section Defs
 
-variable (𝕂 : Type*) {𝔸 : Type*} [RCLike 𝕂] [Ring 𝔸] [Algebra 𝕂 𝔸]
+variable (𝕂 : Type*) {𝔸 : Type*} [Field 𝕂] [Ring 𝔸] [Algebra 𝕂 𝔸]
 
 /-- The degree-`d` part `∑_{r + s = d} X^r Y^s / (r! s!)` of `e^X e^Y`. -/
 noncomputable def expBlock (X Y : 𝔸) (d : ℕ) : 𝔸 :=
@@ -159,7 +159,7 @@ end Defs
 
 section Map
 
-variable {𝕂 : Type*} [RCLike 𝕂] {𝔸 𝔹 : Type*} [Ring 𝔸] [Algebra 𝕂 𝔸] [Ring 𝔹] [Algebra 𝕂 𝔹]
+variable {𝕂 : Type*} [Field 𝕂] {𝔸 𝔹 : Type*} [Ring 𝔸] [Algebra 𝕂 𝔸] [Ring 𝔹] [Algebra 𝕂 𝔹]
   (φ : 𝔸 →ₐ[𝕂] 𝔹)
 
 lemma map_expBlock (X Y : 𝔸) (d : ℕ) : φ (expBlock 𝕂 X Y d) = expBlock 𝕂 (φ X) (φ Y) d := by

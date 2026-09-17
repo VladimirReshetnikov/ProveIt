@@ -3,8 +3,11 @@
 
 This library accompanies the article in `docs/combined`. It formalizes,
 in Lean 4 with Mathlib, results of the article with statements matching
-the article's own, in the article's setting of real or complex unital
-Banach algebras:
+the article's own: the formal statements over an arbitrary field of
+characteristic zero, the analytic ones in the article's setting of real or
+complex unital Banach algebras. The goal of the library is `BCH.Main`, the
+Baker–Campbell–Hausdorff formula itself (Theorem 1.1); the other modules
+prove it and the surrounding results:
 
 * `BCH.Commuting` — Proposition 9.1 (commuting case);
 * `BCH.Central`   — Theorem 9.2 (central commutator), identities (9.2)–(9.4);
@@ -49,6 +52,9 @@ Banach algebras:
   BCH theorem**: in the free algebra `𝕂⟨X, Y⟩` every homogeneous component `Zₙ(X, Y)` is a
   Lie polynomial (`bchHom_mem_lieGen`), proved from the analytic Lie-series property through
   the truncated regular representation and the grading of the Lie polynomials;
+* `BCH.Formal.CharZero` — the same over an arbitrary field of characteristic zero
+  (`bchHom_mem_lieGen_charZero`, `bchHom_eq_dynkin_charZero`), by base change from `ℚ` along
+  the coefficientwise map `mapCoeff`, using that `R a` is a Lie polynomial for every `a`;
 * `BCH.Formal.WordCut` — Theorem 2.2: the nonrecursive block expansion
   `Zₙ = ∑_k (-1)^{k-1}/k ∑ X^{r₁}Y^{s₁}⋯X^{r_k}Y^{s_k} / ∏ rᵢ!sᵢ!` in any algebra
   (`bchHom_eq_sum_blockTuples`) and the word-coefficient formula `c(w) = ∑_k (-1)^{k-1}/k
@@ -59,8 +65,9 @@ Banach algebras:
   `Zₙ = (1/n) ∑_k (-1)^{k-1}/k ∑ R(X^{r₁}Y^{s₁}⋯X^{r_k}Y^{s_k}) / ∏ rᵢ!sᵢ!`
   (`bchHom_eq_dynkin_blocks`);
 * `BCH.Main`      — **Theorem 1.1, the Baker–Campbell–Hausdorff formula itself**, in both
-  settings: `bch_formula_formal` (equation (1.2): each `Zₙ` is homogeneous, is a Lie
-  polynomial, and equals `(1/n) ∑_w c(w) R(w)` with `c(w)` the explicit word coefficients)
+  settings: `bch_formula_formal` (equation (1.2), over any field of characteristic zero: each
+  `Zₙ` is homogeneous, is a Lie polynomial, and equals `(1/n) ∑_w c(w) R(w)` with `c(w)` the
+  explicit word coefficients)
   and `bch_formula` (equation (1.1): absolute convergence for `‖X‖ + ‖Y‖ < log 2`,
   `e^Z = e^X e^Y`, uniqueness of the small logarithm, membership of every `Zₙ` and of `Z` in
   every closed Lie subalgebra containing `X` and `Y`, and `Z₁, Z₂, Z₃`);
@@ -106,6 +113,7 @@ import BCH.LieCoeff
 import BCH.Formal.Free
 import BCH.Formal.Trunc
 import BCH.Formal.LieSeries
+import BCH.Formal.CharZero
 import BCH.Formal.WordCut
 import BCH.Formal.Dynkin
 import BCH.Trace

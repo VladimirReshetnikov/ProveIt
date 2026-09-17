@@ -83,6 +83,12 @@ axioms, for both statements.
 - `BCH/Formal/LieSeries.lean` — **Theorem 3.6 (formal BCH theorem)**: every `Zₙ(X,Y)` is a
   Lie polynomial (`bchHom_mem_lieGen`), deduced from Proposition 8.1 in the operator algebra
   of the truncated representation.
+- `BCH/Formal/CharZero.lean` — the formal BCH theorem and Dynkin's formula **over an
+  arbitrary field of characteristic zero** (`bchHom_mem_lieGen_charZero`,
+  `bchHom_eq_dynkin_charZero`): the coefficientwise ring map `mapCoeff` induced by a
+  homomorphism of coefficient fields commutes with `bchHom` and with the Dynkin operator `R`,
+  so the identity `Zₙ = (1/n) R(Zₙ)` descends from `ℝ` to `ℚ` (injectivity) and rises from `ℚ`
+  to any characteristic-zero field; `R_mem_lieGen` then gives the Lie property.
 - `BCH/Formal/WordCut.lean` — **Theorem 2.2 (every associative BCH coefficient)**: the
   tuples of blocks `blockTuples k n` (`mem_blockTuples`), the block words and weights, the
   nonrecursive expansion `Zₙ = Σ_k (-1)^{k-1}/k Σ X^{r₁}Y^{s₁}⋯X^{r_k}Y^{s_k}/∏ rᵢ!sᵢ!` in any
@@ -95,8 +101,8 @@ axioms, for both statements.
   `Zₙ = (1/n) Σ_w c(w) R(w)` (`bchHom_eq_dynkin`) and its all-terms form
   `Zₙ = (1/n) Σ_k (-1)^{k-1}/k Σ R(X^{r₁}Y^{s₁}⋯)/∏ rᵢ!sᵢ!` (`bchHom_eq_dynkin_blocks`).
 - `BCH/Main.lean` — **Theorem 1.1, the Baker–Campbell–Hausdorff formula itself**, collected in
-  both settings: `bch_formula_formal` (formal form (1.2)) and `bch_formula` (analytic form
-  (1.1)). Nothing is proved there; it assembles the results of the other modules into the two
+  both settings: `bch_formula_formal` (formal form (1.2), over any field of characteristic
+  zero) and `bch_formula` (analytic form (1.1), over `ℝ` or `ℂ`). Nothing is proved there; it assembles the results of the other modules into the two
   statements the article makes precise.
 - `BCH/CentralMany.lean` — **Corollary 9.3 (several factors with central pairwise
   commutators)**: `e^{X₀} ⋯ e^{X_{m-1}} = exp(Σⱼ Xⱼ + ½ Σ_{i<j} ⁅Xᵢ,Xⱼ⁆)`

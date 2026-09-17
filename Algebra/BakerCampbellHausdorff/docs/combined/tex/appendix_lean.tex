@@ -52,8 +52,7 @@ Article & Lean declaration (namespace \texttt{BCH}), continued \\
 \endhead
 \bottomrule
 \endlastfoot
-\Cref{thm:bch}(a), \eqref{eq:formalbch} & \texttt{bch\_formula\_formal}
- (for $\kk=\R$ or $\C$; see below) \\
+\Cref{thm:bch}(a), \eqref{eq:formalbch} & \texttt{bch\_formula\_formal} \\
 \Cref{thm:bch}(b), \eqref{eq:main} & \texttt{bch\_formula} \\
 \Cref{prop:commuting} & \texttt{exp\_mul\_exp\_of\_lie\_eq\_zero} \\
 \Cref{thm:central}, \eqref{eq:centralconj} & \texttt{central\_conj} \\
@@ -92,17 +91,22 @@ Article & Lean declaration (namespace \texttt{BCH}), continued \\
  \texttt{exists\_delta\_hasDerivAt\_bch\_linearY} (the derivative of
  $t\mapsto Z(X,tY)$ at $t=0$ is $\sum_n(B_n^+/n!)\ad_X^nY$, with the
  Bernoulli identification of \eqref{eq:betadef}) \\
-\Cref{thm:formalbch}, every $Z_n$ is a Lie polynomial & \texttt{bchHom\_mem\_lieGen}
- (in \texttt{FreeTwo} $=\kk\langle X,Y\rangle$, with \texttt{lieGen} the Lie
- polynomials); grading of the Lie polynomials \texttt{proj\_mem\_lieSpan} \\
+\Cref{thm:formalbch}, every $Z_n$ is a Lie polynomial &
+ \texttt{bchHom\_mem\_lieGen\_charZero} for any field of characteristic zero,
+ \texttt{bchHom\_mem\_lieGen} for $\kk=\R$ or $\C$ (in \texttt{FreeTwo}
+ $=\kk\langle X,Y\rangle$, with \texttt{lieGen} the Lie polynomials); grading
+ of the Lie polynomials \texttt{proj\_mem\_lieSpan} \\
 \Cref{lem:dsw}, \eqref{eq:dsw}, $R(P)=nP$ (in the Lie form of
  \cref{thm:friedrichs}: $P\in\cL_n$) & \texttt{R\_of\_mem\_lieGen}
  (the right Dynkin operator is \texttt{R}, with \texttt{R\_apply} $=$
  $\sum_w\coeff wP\,R(w)$; the identity $R(ab)=\phi(a)R(b)+\eps(b)R(a)$ of
  the proof is \texttt{R\_mul}) \\
-\Cref{thm:dynkin}, \eqref{eq:dynkinword} & \texttt{bchHom\_eq\_dynkin}
+\Cref{thm:dynkin}, \eqref{eq:dynkinword} &
+ \texttt{bchHom\_eq\_dynkin\_charZero} for any field of characteristic zero,
+ \texttt{bchHom\_eq\_dynkin} for $\kk=\R$ or $\C$
  ($Z_n=\frac1n\sum_w c(w)R(w)$ with $c(w)$ the coefficients of $Z_n$);
- operator form $Z_n=\frac1nR(Z_n)$, \texttt{bchHom\_eq\_inv\_smul\_R} \\
+ operator form $Z_n=\frac1nR(Z_n)$, \texttt{bchHom\_eq\_inv\_smul\_R\_charZero},
+ \texttt{bchHom\_eq\_inv\_smul\_R} \\
 \Cref{thm:dynkin}, \eqref{eq:dynkin} (degree-$n$ part) &
  \texttt{bchHom\_eq\_dynkin\_blocks} \\
 \Cref{prop:closedlie} & \texttt{exists\_delta\_mlog\_mem} (closed Lie subalgebras are
@@ -255,14 +259,24 @@ $\norm{L-(2A+B)}\leq c_2(\norm A+\norm B)^3$ with $c_2=c_0+28c_0'$
 $E_3$ in \eqref{eq:S2log} are not formalized.
 
 \subsection*{The formal BCH theorem}
-Throughout the formalization the coefficient field is $\kk=\R$ or $\C$, so
-the Lean form of \cref{thm:bch}(a) and of \cref{thm:formalbch} is the case
-$\kk=\R$ or $\C$ of the statement in the text, which holds over any field of
-characteristic zero. The restriction is a consequence of the route taken:
-the Lean proof passes through the analytic \cref{prop:closedlie} rather than
-through Friedrichs' criterion, as described below. Since all the
-coefficients involved are rational, the general case follows from the case
-$\kk=\Q$ by base change, which is not formalized.
+The analytic statements are formalized over $\kk=\R$ or $\C$, which is their
+setting in the text. The formal statements \cref{thm:bch}(a),
+\cref{thm:formalbch} and \cref{thm:dynkin} are formalized over an arbitrary
+field of characteristic zero, as in the text, although the Lean proof of the
+Lie property passes through the analytic \cref{prop:closedlie} and therefore
+first gives only $\kk=\R$. The general case is obtained by base change, using
+that all the coefficients involved are rational. The bridge is the operator
+form $Z_n=\frac1nR(Z_n)$ of \cref{thm:dynkin}: since $R(a)$ is by definition a
+linear combination of right-nested brackets of the generators, $R(a)$ is a Lie
+polynomial for \emph{every} $a$ (\texttt{R\_mem\_lieGen}), so that identity
+alone yields the theorem. A homomorphism $f$ of coefficient fields induces a
+ring homomorphism $\kk_1\langle X,Y\rangle\to\kk_2\langle X,Y\rangle$ acting on
+coefficients (\texttt{mapCoeff}) that fixes the generators and commutes with
+$Z_n$ and with $R$ (\texttt{mapCoeff\_bchHom}, \texttt{mapCoeff\_R}); applying
+it to the injective $f\colon\Q\to\R$ brings the identity down to $\kk=\Q$, and
+applying it to the unique $\Q\to\kk$ pushes it up to any field of
+characteristic zero. Friedrichs' criterion itself (\cref{thm:friedrichs}) is
+not formalized.
 
 The Lie nature of the homogeneous components (\cref{thm:formalbch}) is
 formalized in the free algebra $\kk\langle X,Y\rangle$, modelled as the

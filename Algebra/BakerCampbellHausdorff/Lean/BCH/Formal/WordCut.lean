@@ -28,7 +28,7 @@ namespace BCH
 
 section Blocks
 
-variable (𝕂 : Type*) [RCLike 𝕂]
+variable (𝕂 : Type*) [Field 𝕂]
 
 /-- The `k`-tuples of blocks `(rᵢ, sᵢ)`, each of positive degree `rᵢ + sᵢ`, of total degree
 `n`, defined by recursion on `k`. -/
@@ -188,7 +188,7 @@ end Blocks
 
 section Coefficients
 
-variable {𝕂 : Type*} [RCLike 𝕂]
+variable {𝕂 : Type*} [Field 𝕂]
 
 instance : DecidableEq (FreeMonoid (Fin 2)) := fun a b =>
   decidable_of_iff (FreeMonoid.toList a = FreeMonoid.toList b)
@@ -211,7 +211,7 @@ lemma coeff_blockWord_gen {k : ℕ} (rs : Fin k → ℕ × ℕ) (w : FreeMonoid 
   rw [blockWord_gen, MonoidAlgebra.coeff_single, Finsupp.single_apply]
 
 /-- The word coefficient `c(w)` of the BCH series: the coefficient of `w` in `Z_{|w|}(X, Y)`. -/
-noncomputable def wordCoeff (𝕂 : Type*) [RCLike 𝕂] (w : FreeMonoid (Fin 2)) : 𝕂 :=
+noncomputable def wordCoeff (𝕂 : Type*) [Field 𝕂] (w : FreeMonoid (Fin 2)) : 𝕂 :=
   (bchHom 𝕂 (genX 𝕂) (genY 𝕂) (FreeMonoid.length w)).coeff w
 
 /-- **Theorem 2.2, equation (2.wordcut)**: the coefficient of a word `w` in `Zₙ(X, Y)` is

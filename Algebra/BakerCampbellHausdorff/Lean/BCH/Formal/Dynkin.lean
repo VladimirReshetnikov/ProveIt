@@ -36,7 +36,7 @@ namespace BCH
 
 section Dynkin
 
-variable (𝕂 : Type*) [RCLike 𝕂]
+variable (𝕂 : Type*) [Field 𝕂]
 
 /-- The generator of index `i` (`gen 0 = X`, `gen 1 = Y`). -/
 noncomputable def gen (i : Fin 2) : FreeTwo 𝕂 := MonoidAlgebra.single (FreeMonoid.of i) 1
@@ -259,6 +259,17 @@ theorem R_of_mem_lieGen {n : ℕ} {P : FreeTwo 𝕂} (hP : P ∈ lieGen 𝕂) (h
   have h := R_proj_of_mem_lieGen hP n
   rwa [proj_of_isHomogeneous hn] at h
 
+/-! ### Dynkin's formula
+
+The consequences below use the formal BCH theorem `bchHom_mem_lieGen`, which
+`BCH.Formal.LieSeries` proves for `𝕂 = ℝ` or `ℂ`; `BCH.Formal.CharZero` removes that
+restriction and restates them over an arbitrary field of characteristic zero.
+-/
+
+section RCLike
+
+variable {𝕂 : Type*} [RCLike 𝕂]
+
 /-- **Dynkin's formula**, operator form: `R(Zₙ) = n Zₙ`. -/
 theorem R_bchHom (n : ℕ) :
     R (bchHom 𝕂 (genX 𝕂) (genY 𝕂) n) = (n : 𝕂) • bchHom 𝕂 (genX 𝕂) (genY 𝕂) n :=
@@ -292,6 +303,8 @@ theorem bchHom_eq_dynkin_blocks {n : ℕ} (hn : 0 < n) :
   rw [map_smul, map_sum]
   refine congrArg _ (sum_congr rfl fun rs _ => ?_)
   rw [map_smul]
+
+end RCLike
 
 end Dynkin
 
