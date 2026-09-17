@@ -1,0 +1,90 @@
+\section{Formalization in Lean}\label{app:lean}
+The repository directory \texttt{lean/} contains a Lean~4 library
+(\texttt{BCH}, built against Mathlib) that formalizes some of the theorems
+of this article. Each formal statement is designed to coincide with the
+statement printed here, with no additional hypotheses; where the article's
+wording needed to be made precise for this purpose, the article was
+adjusted rather than the formal statement weakened. This appendix records
+the correspondence and the conventions.
+
+\subsection*{Setting and conventions}
+A ``real or complex unital Banach algebra with a submultiplicative norm''
+is rendered by the Mathlib hypotheses
+\begin{center}
+\texttt{[RCLike $\mathbb K$] [NormedRing $\mathbb A$]
+[NormedAlgebra $\mathbb K$ $\mathbb A$] [CompleteSpace $\mathbb A$]},
+\end{center}
+where \texttt{RCLike $\mathbb K$} means $\kk=\R$ or $\kk=\C$,
+\texttt{NormedRing} is a unital ring with $\norm{ab}\leq\norm a\norm b$ (no
+normalization $\norm1=1$ is assumed, in agreement with
+\cref{sec:convergence}), and \texttt{CompleteSpace} is completeness. The
+Lean bracket $[\![X,Y]\!]$ is the ring commutator $XY-YX$ of
+\cref{sec:scope}, scalars act by $t\bullet X$, and \texttt{exp} is
+Mathlib's \texttt{NormedSpace.exp}, the sum of the series $\sum_nX^n/n!$.
+Mathlib defines this exponential through the unique $\Q$-algebra structure
+of $\mathcal A$; inside proofs that structure, and where needed an
+$\R$-algebra structure, is obtained by restriction of scalars from $\kk$,
+so that no extra instance hypothesis appears in any statement. When the
+scalar field does not occur in a statement (\cref{prop:commuting} and the
+group-commutator identity of \cref{thm:central}), it is an explicit
+argument of the Lean theorem. The adjoint action $\ad_X$ is the bounded
+operator \texttt{BCH.ad K X}, a continuous $\kk$-linear map
+$\mathcal A\to\mathcal A$, and $e^{s\ad_X}$ is the exponential in the
+Banach algebra of bounded operators.
+
+\subsection*{Correspondence}
+\begin{center}\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}p{0.34\textwidth}p{0.6\textwidth}@{}}
+\toprule
+Article & Lean declaration (namespace \texttt{BCH}) \\
+\midrule
+\Cref{prop:commuting} & \texttt{exp\_mul\_exp\_of\_lie\_eq\_zero} \\
+\Cref{thm:central}, \eqref{eq:centralconj} & \texttt{central\_conj} \\
+\Cref{thm:central}, \eqref{eq:centralt} & \texttt{central\_exp\_mul\_exp} \\
+\Cref{thm:central}, \eqref{eq:centralbch}, four identities &
+ \texttt{exp\_mul\_exp\_of\_central}, \texttt{exp\_add\_eq\_of\_central},
+ \texttt{exp\_half\_mul\_exp\_mul\_exp\_half}, \texttt{exp\_group\_commutator} \\
+\Cref{thm:campbell}, $\Ad_{e^X}=e^{\ad_X}$ & \texttt{exp\_mul\_mul\_exp\_neg\_eq\_exp\_ad} \\
+\Cref{thm:campbell}, \eqref{eq:campbell} & \texttt{campbell},
+ \texttt{exp\_smul\_ad\_apply\_eq\_tsum} (series form) \\
+\Cref{thm:campbell}, norm bound & \texttt{tsum\_norm\_ad\_pow\_le} \\
+\eqref{eq:conjexp}, \eqref{eq:braiding} & \texttt{exp\_mul\_exp\_mul\_exp\_neg},\newline
+ \texttt{exp\_mul\_exp\_eq\_exp\_exp\_ad\_mul} \\
+\Cref{thm:eigen}, $e^{tX}Ye^{-tX}=e^{st}Y$ & \texttt{conj\_of\_lie\_eq\_smul} \\
+\Cref{thm:eigen}, \eqref{eq:eigenfactor} & \texttt{exp\_smul\_add\_smul\_eq} \\
+\Cref{thm:eigen}, \eqref{eq:eigenbch} & \texttt{exp\_mul\_exp\_of\_lie\_eq\_smul} \\
+\Cref{thm:eigen}, \eqref{eq:eigenbraid} & \texttt{exp\_mul\_exp\_mul\_exp\_neg\_of\_lie\_eq\_smul},
+ \texttt{exp\_mul\_exp\_eq\_of\_lie\_eq\_smul} \\
+\bottomrule
+\end{tabular}
+\end{center}
+The functions $q_s$, $\phi$, and $\beta$ of \cref{thm:eigen} are the Lean
+definitions \texttt{qs}, \texttt{phi}, \texttt{beta}, with the removable
+values $\phi(0)=\beta(0)=1$ built in. The hypothesis
+$s\notin2\pi\ii\Z\setminus\{0\}$ of \eqref{eq:eigenbch} is stated as
+``$s=0$ or $e^{-s}\neq1$'', which is equivalent over $\C$ and vacuous over
+$\R$; the article's statement carries this equivalent form.
+
+\subsection*{Proof method in the formalization}
+The article proves the exponential identities of \cref{sec:special} and
+\cref{thm:campbell} by uniqueness for linear differential equations. The
+formal proofs use an equivalent device that needs only the theorem that a
+differentiable function on $\R$ or $\C$ with zero derivative is constant
+(Mathlib's \texttt{is\_const\_of\_deriv\_eq\_zero}): an auxiliary
+function is exhibited whose derivative vanishes identically and whose
+values at $0$ and $1$ are the two sides of the identity. For instance,
+\eqref{eq:centralconj} follows from the constancy of
+$\sigma\mapsto e^{\sigma X}(Y+(s-\sigma)C)e^{-\sigma X}$,
+\eqref{eq:centralt} from that of
+$s\mapsto e^{-sY}e^{-sX}e^{s(X+Y)}e^{s^2D}$ with $D+D=C$,
+and \eqref{eq:campbell} from that of
+$\sigma\mapsto e^{-\sigma\ad_X}\bigl(e^{\sigma X}Ye^{-\sigma X}\bigr)$.
+Statements with a general scalar parameter $t$ are deduced from the case
+$t=1$ applied to $tX$ and $tY$.
+
+The formal power-series parts of the article (\cref{sec:formal,sec:hopf,sec:dynkin}),
+the convergence estimates of \cref{sec:convergence}, and the later sections
+are not yet formalized; the finite exact computations of
+\cref{sec:computation} remain the machine check of the coefficient
+tables.

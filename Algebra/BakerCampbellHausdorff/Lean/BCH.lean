@@ -9,8 +9,11 @@ Banach algebras:
 * `BCH.Commuting` — Proposition 9.1 (commuting case);
 * `BCH.Central`   — Theorem 9.2 (central commutator), identities (9.2)–(9.4);
 * `BCH.Campbell`  — Theorem 5.1 (Campbell's identity) and the braiding
-  identities (5.3), (5.4).
+  identities (5.3), (5.4);
+* `BCH.Eigen`     — Theorem 9.4 (the relation `[X, Y] = sY`), identities
+  (9.5)–(9.7).
 -/
 import BCH.Commuting
 import BCH.Central
 import BCH.Campbell
+import BCH.Eigen
