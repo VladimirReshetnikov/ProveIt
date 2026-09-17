@@ -22,8 +22,9 @@ additional hypotheses. Appendix D of the article records the correspondence.
   `‖X‖ + ‖Y‖ < log 2`, `∑ ‖Zₙ‖ < ∞`, `∑ ρⁿ ‖Zₙ‖ ≤ -log(2 - e^{ρ(‖X‖+‖Y‖)})`,
   `∑ Zₙ = log(e^X e^Y)` (Mercator), `exp(∑ Zₙ) = e^X e^Y`, and the tail bound (7.4).
 - `BCH/LowDegree.lean` — `Z₁ = X + Y`, `Z₂ = ½[X,Y]`, `Z₃ = 1/12([X,[X,Y]] + [Y,[Y,X]])`,
-  `Z₄ = -1/24 [Y,[X,[X,Y]]]` and their associative expansions (Proposition 4.3,
-  degrees one to four).
+  `Z₄ = -1/24 [Y,[X,[X,Y]]]` and their associative expansions, and the nested-commutator
+  forms of `Z₅` (six brackets) and `Z₆` (five brackets) (Proposition 4.3, degrees one to
+  six; `bchHom_five_lie`, `bchHom_six_lie`).
 - `BCH/Remainder.lean` — `‖e^C‖ ≤ ‖1‖ e^{‖C‖}`, `‖e^B - e^A‖ ≤ ‖1‖² e^{max(‖A‖,‖B‖)} ‖B - A‖`,
   and the exponential remainder estimate (7.5) of Theorem 7.3 (ii).
 - `BCH/Trotter.lean` — Lemma 11.1 (two factors) and Theorem 11.2: the Lie–Trotter
