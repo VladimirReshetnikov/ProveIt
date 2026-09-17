@@ -29,7 +29,10 @@ Banach algebras:
   logarithmic error `∑_{k ≥ 2} t^k n^{1-k} Zₖ(X, Y)` and the explicit `O(1/n)`
   bound;
 * `BCH.Unique`    — Proposition 7.4: `log(e^W) = W` for `‖W‖ < log 2`, and the BCH
-  sum is the unique logarithm `Z₀` of `e^X e^Y` with `‖Z₀‖ < log 2`.
+  sum is the unique logarithm `Z₀` of `e^X e^Y` with `‖Z₀‖ < log 2`;
+* `BCH.Duhamel`, `BCH.DuhamelSeries` — Theorem 5.2 (Duhamel): `exp` is Fréchet
+  differentiable with `(dexp)_A = e^A ∘ φ(ad_A)`, `d/dt e^{A(t)} = (dexp)_{A(t)}(A'(t))`,
+  and the three series forms (5.5)–(5.7).
 -/
 import BCH.Commuting
 import BCH.Central
@@ -41,3 +44,5 @@ import BCH.LowDegree
 import BCH.Remainder
 import BCH.Trotter
 import BCH.Unique
+import BCH.Duhamel
+import BCH.DuhamelSeries

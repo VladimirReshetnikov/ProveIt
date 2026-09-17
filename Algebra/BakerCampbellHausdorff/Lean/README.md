@@ -33,6 +33,11 @@ additional hypotheses. Appendix D of the article records the correspondence.
 - `BCH/Unique.lean` — Proposition 7.4: `log(e^W) = W` for `‖W‖ < log 2` (Mercator
   logarithm), hence for `‖X‖+‖Y‖ < log 2` and `‖Z₀‖ < log 2`: `e^{Z₀} = e^X e^Y` iff
   `Z₀ = Σ Zₙ(X,Y)`.
+- `BCH/Duhamel.lean`, `BCH/DuhamelSeries.lean` — Theorem 5.2 (Duhamel differential):
+  `exp` is Fréchet differentiable at every `A` with differential `(dexp)_A = e^A ∘ φ(ad_A)`,
+  `φ(ad_A) = Σ (-1)^n/(n+1)! ad_A^n`; the chain rule `d/dt e^{A(t)} = (dexp)_{A(t)}(A'(t))`;
+  and the series forms `(dexp)_A H = Σ_{p,q} A^p H A^q/(p+q+1)!`,
+  `e^{-A} (dexp)_A H = φ(ad_A) H`, `(dexp)_A H e^{-A} = φ(-ad_A) H`.
 
 ## Building
 
