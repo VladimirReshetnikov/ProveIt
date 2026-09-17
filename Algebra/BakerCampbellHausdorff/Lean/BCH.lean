@@ -23,7 +23,11 @@ Banach algebras:
   equations (4.9)–(4.12), (4.15)–(4.17));
 * `BCH.Remainder` — `‖e^C‖ ≤ ‖1‖ e^{‖C‖}`, the Lipschitz estimate
   `‖e^B - e^A‖ ≤ ‖1‖² e^{max(‖A‖,‖B‖)} ‖B - A‖`, and the exponential remainder
-  estimate (7.5) of Theorem 7.3 (ii).
+  estimate (7.5) of Theorem 7.3 (ii);
+* `BCH.Trotter`   — Lemma 11.1 (tail bounds `c₀ σ²`, `c₀' σ³`) and Theorem 11.2: the
+  Lie–Trotter formula `(e^{tX/n} e^{tY/n})^n → e^{t(X+Y)}` with its complete
+  logarithmic error `∑_{k ≥ 2} t^k n^{1-k} Zₖ(X, Y)` and the explicit `O(1/n)`
+  bound.
 -/
 import BCH.Commuting
 import BCH.Central
@@ -33,3 +37,4 @@ import BCH.Log
 import BCH.Series
 import BCH.LowDegree
 import BCH.Remainder
+import BCH.Trotter

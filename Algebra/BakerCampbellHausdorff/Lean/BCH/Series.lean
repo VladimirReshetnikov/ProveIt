@@ -502,12 +502,12 @@ theorem bch_convergence {X Y : 𝔸} (hs : ‖X‖ + ‖Y‖ < Real.log 2) :
   ⟨summable_norm_bchHom hs, fun _ hρ hρs => tsum_pow_mul_norm_bchHom_le X Y hρ hρs,
     exp_tsum_bchHom hs⟩
 
-/-- **Remainder estimate** (Theorem 7.3 (ii), equation (7.4)): if `1 < ρ` and
-`ρ (‖X‖ + ‖Y‖) < log 2`, then the tail after degree `N` of the BCH series has norm at most
-`ρ^{-(N+1)} · (-log(2 - e^{ρ (‖X‖ + ‖Y‖)}))`. -/
-theorem norm_tsum_bchHom_sub_sum_le (X Y : 𝔸) {ρ : ℝ} (hρ : 1 < ρ)
+omit [CompleteSpace 𝔸] in
+/-- **Tail estimate, sum-of-norms form** (Theorem 7.3 (ii)): if `1 < ρ` and
+`ρ (‖X‖ + ‖Y‖) < log 2`, then `∑_{n > N} ‖Zₙ(X, Y)‖ ≤ ρ^{-(N+1)} · (-log(2 - e^{ρ (‖X‖ + ‖Y‖)}))`. -/
+theorem tsum_norm_bchHom_tail_le (X Y : 𝔸) {ρ : ℝ} (hρ : 1 < ρ)
     (hs : ρ * (‖X‖ + ‖Y‖) < Real.log 2) (N : ℕ) :
-    ‖∑' n, bchHom 𝕂 X Y n - ∑ n ∈ range (N + 1), bchHom 𝕂 X Y n‖ ≤
+    ∑' i, ‖bchHom 𝕂 X Y (i + (N + 1))‖ ≤
       (ρ ^ (N + 1))⁻¹ * -Real.log (2 - Real.exp (ρ * (‖X‖ + ‖Y‖))) := by
   have hρ0 : 0 < ρ := zero_lt_one.trans hρ
   have hs1 : ‖X‖ + ‖Y‖ < Real.log 2 := by
@@ -515,8 +515,7 @@ theorem norm_tsum_bchHom_sub_sum_le (X Y : 𝔸) {ρ : ℝ} (hρ : 1 < ρ)
     have h1 : ‖X‖ + ‖Y‖ ≤ ρ * (‖X‖ + ‖Y‖) := le_mul_of_one_le_left h0 hρ.le
     linarith
   have hZn := summable_norm_bchHom (𝕂 := 𝕂) hs1
-  have hZ := hZn.of_norm
-  -- the weighted series and its tail
+  -- the weighted series
   have hM := hasSum_bchMaj (mul_nonneg hρ0.le (norm_nonneg X)) (mul_nonneg hρ0.le (norm_nonneg Y))
     (by rw [← mul_add]; exact hs)
   have hw : ∀ n, ρ ^ n * ‖bchHom 𝕂 X Y n‖ ≤ bchMaj (ρ * ‖X‖) (ρ * ‖Y‖) n := fun n => by
@@ -526,11 +525,8 @@ theorem norm_tsum_bchHom_sub_sum_le (X Y : 𝔸) {ρ : ℝ} (hρ : 1 < ρ)
     Summable.of_nonneg_of_le (fun n => mul_nonneg (pow_nonneg hρ0.le n) (norm_nonneg _)) hw
       hM.summable
   have hbound := tsum_pow_mul_norm_bchHom_le (𝕂 := 𝕂) X Y hρ0 hs
-  -- tail of the series
-  rw [← hZ.sum_add_tsum_nat_add (N + 1), add_sub_cancel_left]
   have htail : Summable fun i => ‖bchHom 𝕂 X Y (i + (N + 1))‖ :=
     (summable_nat_add_iff (N + 1) (f := fun n => ‖bchHom 𝕂 X Y n‖)).2 hZn
-  refine (norm_tsum_le_tsum_norm htail).trans ?_
   -- `‖Z_{n}‖ ≤ ρ^{-(N+1)} ρ^n ‖Z_n‖` for `n ≥ N + 1`
   have hshift : ∀ i, ‖bchHom 𝕂 X Y (i + (N + 1))‖ ≤
       (ρ ^ (N + 1))⁻¹ * (ρ ^ (i + (N + 1)) * ‖bchHom 𝕂 X Y (i + (N + 1))‖) := fun i => by
@@ -551,6 +547,24 @@ theorem norm_tsum_bchHom_sub_sum_le (X Y : 𝔸) {ρ : ℝ} (hρ : 1 < ρ)
   rw [← hwn.sum_add_tsum_nat_add (N + 1)]
   exact le_add_of_nonneg_left
     (Finset.sum_nonneg fun n _ => mul_nonneg (pow_pos hρ0 n).le (norm_nonneg _))
+
+/-- **Remainder estimate** (Theorem 7.3 (ii), equation (7.4)): if `1 < ρ` and
+`ρ (‖X‖ + ‖Y‖) < log 2`, then the tail after degree `N` of the BCH series has norm at most
+`ρ^{-(N+1)} · (-log(2 - e^{ρ (‖X‖ + ‖Y‖)}))`. -/
+theorem norm_tsum_bchHom_sub_sum_le (X Y : 𝔸) {ρ : ℝ} (hρ : 1 < ρ)
+    (hs : ρ * (‖X‖ + ‖Y‖) < Real.log 2) (N : ℕ) :
+    ‖∑' n, bchHom 𝕂 X Y n - ∑ n ∈ range (N + 1), bchHom 𝕂 X Y n‖ ≤
+      (ρ ^ (N + 1))⁻¹ * -Real.log (2 - Real.exp (ρ * (‖X‖ + ‖Y‖))) := by
+  have hs1 : ‖X‖ + ‖Y‖ < Real.log 2 := by
+    have h0 : 0 ≤ ‖X‖ + ‖Y‖ := add_nonneg (norm_nonneg _) (norm_nonneg _)
+    have h1 : ‖X‖ + ‖Y‖ ≤ ρ * (‖X‖ + ‖Y‖) := le_mul_of_one_le_left h0 hρ.le
+    linarith
+  have hZn := summable_norm_bchHom (𝕂 := 𝕂) hs1
+  have hZ := hZn.of_norm
+  have htail : Summable fun i => ‖bchHom 𝕂 X Y (i + (N + 1))‖ :=
+    (summable_nat_add_iff (N + 1) (f := fun n => ‖bchHom 𝕂 X Y n‖)).2 hZn
+  rw [← hZ.sum_add_tsum_nat_add (N + 1), add_sub_cancel_left]
+  exact (norm_tsum_le_tsum_norm htail).trans (tsum_norm_bchHom_tail_le X Y hρ hs N)
 
 end Main
 

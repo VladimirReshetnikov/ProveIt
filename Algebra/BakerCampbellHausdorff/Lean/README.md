@@ -26,6 +26,10 @@ additional hypotheses. Appendix D of the article records the correspondence.
   degrees one to four).
 - `BCH/Remainder.lean` — `‖e^C‖ ≤ ‖1‖ e^{‖C‖}`, `‖e^B - e^A‖ ≤ ‖1‖² e^{max(‖A‖,‖B‖)} ‖B - A‖`,
   and the exponential remainder estimate (7.5) of Theorem 7.3 (ii).
+- `BCH/Trotter.lean` — Lemma 11.1 (two factors) and Theorem 11.2: the Lie–Trotter
+  product formula `(e^{tX/n} e^{tY/n})^n → e^{t(X+Y)}`, the exact expansion
+  `(e^{tX/n} e^{tY/n})^n = exp(t(X+Y) + Σ_{k≥2} t^k n^{1-k} Z_k(X,Y))`, and the
+  explicit `O(1/n)` error bound (for `‖1‖ = 1`).
 
 ## Building
 

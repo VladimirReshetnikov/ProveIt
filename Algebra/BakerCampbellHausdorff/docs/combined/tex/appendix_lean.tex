@@ -65,6 +65,11 @@ $Z_n(X,Y)$, \eqref{eq:degreerec}, \cref{rem:evaluation} & \texttt{bchHom}
  the bounds $\norm{e^C}\leq\norm I e^{\norm C}$ and
  $\norm{e^B-e^A}\leq\norm I^2e^{\max(\norm A,\norm B)}\norm{B-A}$ of the proof are
  \texttt{norm\_exp\_le}, \texttt{norm\_exp\_sub\_exp\_le} \\
+\Cref{lem:tail} (two factors) & \texttt{tsum\_norm\_bchHom\_tail\_two\_le},
+ \texttt{tsum\_norm\_bchHom\_tail\_three\_le} (constants \texttt{trotterC}$_0$, \texttt{trotterC}$_0'$) \\
+\Cref{thm:trotter}, \eqref{eq:trotter} & \texttt{trotter\_limit} \\
+\Cref{thm:trotter}, \eqref{eq:trotterall} & \texttt{trotter\_expansion}; the $O(n^{-1})$
+ bound $e^{|t|a+c_0t^2a^2/n}\,c_0t^2a^2/n$ of the proof is \texttt{trotter\_error} \\
 \Cref{prop:lowdegree}, \eqref{eq:z1}--\eqref{eq:z4}, \eqref{eq:assoc2}--\eqref{eq:assoc4} &
  \texttt{bchHom\_one}, \texttt{bchHom\_two}, \texttt{bchHom\_two\_lie},
  \texttt{bchHom\_three}, \texttt{bchHom\_three\_lie}, \texttt{bchHom\_four},
@@ -121,9 +126,15 @@ are obtained by expanding the recursion \eqref{eq:degreerec} and normalizing
 the resulting linear combinations of words; the bracket forms
 \eqref{eq:z2}--\eqref{eq:z4} then follow by expanding the commutators.
 
+The hypothesis $\norm I=1$ of \cref{sec:splitting} is the Mathlib class
+\texttt{NormOneClass}; \cref{thm:trotter} is stated with a scalar $t\in\kk$
+and the product $(e^{tX/n}e^{tY/n})^n$ written with $n$-fold multiplication,
+and the uniformity in $t$ is expressed by the explicit bound.
+
 The formal power-series parts of the article (\cref{sec:formal,sec:hopf,sec:dynkin},
 including the Lie nature of the $Z_n$), degrees five and six of
 \cref{prop:lowdegree}, the word-level majorant in the first
 line of \eqref{eq:majorant}, parts (iii) and (iv) of \cref{thm:convergence},
-and the later sections are not yet formalized; the finite exact computations
-of \cref{sec:computation} remain the machine check of the coefficient tables.
+the multifactor case of \cref{lem:tail}, and the later sections are not yet
+formalized; the finite exact computations of \cref{sec:computation} remain
+the machine check of the coefficient tables.
