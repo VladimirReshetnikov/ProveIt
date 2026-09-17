@@ -35,7 +35,8 @@ Banach algebras:
   and the three series forms (5.5)–(5.7);
 * `BCH.Bernoulli` — the coefficients `b⁺ₙ` of `β(z) = z/(1 - e^{-z})` by the recursion of
   Proposition 5.3, their bound `|b⁺ₙ| ≤ 1`, and the operator identities
-  `φ(ad_A) β(ad_A) = β(ad_A) φ(ad_A) = 1` for `‖A‖ < 1/2`;
+  `φ(ad_A) β(ad_A) = β(ad_A) φ(ad_A) = 1` for `‖A‖ < 1/2`; `BCH.BernoulliNumbers`
+  identifies `b⁺ₙ = B⁺ₙ/n!` with Mathlib's Bernoulli numbers `bernoulli'`;
 * `BCH.ODE`       — Theorem 6.1 (logarithmic differential equation): for `X, Y` small,
   `Z(t) = log(e^X e^{tY})` satisfies `Z'(t) = β(ad_{Z(t)}) Y`, `Z(0) = X`, and conversely
   a small solution of this initial value problem is `log(e^X e^{tY})`.
@@ -53,4 +54,5 @@ import BCH.Unique
 import BCH.Duhamel
 import BCH.DuhamelSeries
 import BCH.Bernoulli
+import BCH.BernoulliNumbers
 import BCH.ODE

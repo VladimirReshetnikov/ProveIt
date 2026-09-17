@@ -41,6 +41,8 @@ additional hypotheses. Appendix D of the article records the correspondence.
 - `BCH/Bernoulli.lean` — the coefficients `b⁺ₙ = B⁺ₙ/n!` of `β(z) = z/(1-e^{-z})` defined by
   the recursion of Proposition 5.3, `|b⁺ₙ| ≤ 1`, and `φ(ad_A) β(ad_A) = β(ad_A) φ(ad_A) = 1`
   for `‖A‖ < 1/2`.
+- `BCH/BernoulliNumbers.lean` — `bplus n = bernoulli' n / n!`: the recursion-defined
+  coefficients are the Bernoulli numbers (convention `B⁺₁ = +1/2`) divided by `n!`.
 - `BCH/ODE.lean` — Theorem 6.1 (logarithmic differential equation): there is `δ > 0` such
   that for `‖X‖ + ‖Y‖ < δ` the curve `Z(t) = log(e^X e^{tY})` satisfies `Z(0) = X` and
   `Z'(t) = β(ad_{Z(t)}) Y` for `|t| ≤ 1` (via the inverse function theorem and
