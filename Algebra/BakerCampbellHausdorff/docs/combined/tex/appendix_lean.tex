@@ -61,6 +61,14 @@ $Z_n(X,Y)$, \eqref{eq:degreerec}, \cref{rem:evaluation} & \texttt{bchHom}
  (second line of \eqref{eq:majorant}), \texttt{tsum\_bchHom\_eq\_mlog}
  ($Z=\log(e^Xe^Y)$), \texttt{exp\_tsum\_bchHom} ($e^Z=e^Xe^Y$) \\
 \Cref{thm:convergence}(ii), \eqref{eq:remainder} & \texttt{norm\_tsum\_bchHom\_sub\_sum\_le} \\
+\Cref{thm:convergence}(ii), \eqref{eq:expremainder} & \texttt{norm\_exp\_sum\_bchHom\_sub\_le};
+ the bounds $\norm{e^C}\leq\norm I e^{\norm C}$ and
+ $\norm{e^B-e^A}\leq\norm I^2e^{\max(\norm A,\norm B)}\norm{B-A}$ of the proof are
+ \texttt{norm\_exp\_le}, \texttt{norm\_exp\_sub\_exp\_le} \\
+\Cref{prop:lowdegree}, \eqref{eq:z1}--\eqref{eq:z4}, \eqref{eq:assoc2}--\eqref{eq:assoc4} &
+ \texttt{bchHom\_one}, \texttt{bchHom\_two}, \texttt{bchHom\_two\_lie},
+ \texttt{bchHom\_three}, \texttt{bchHom\_three\_lie}, \texttt{bchHom\_four},
+ \texttt{bchHom\_four\_lie} \\
 \eqref{eq:conjexp}, \eqref{eq:braiding} & \texttt{exp\_mul\_exp\_mul\_exp\_neg},\newline
  \texttt{exp\_mul\_exp\_eq\_exp\_exp\_ad\_mul} \\
 \Cref{thm:eigen}, $e^{tX}Ye^{-tX}=e^{st}Y$ & \texttt{conj\_of\_lie\_eq\_smul} \\
@@ -106,10 +114,16 @@ $\sum_n P_k(n)(\norm X,\norm Y)=(e^{s}-1)^k$, the double series
 $\sum_k\sum_n\frac1kP_k(n)$ is summed in either order because its terms are
 nonnegative, and the same rearrangement, justified by absolute convergence,
 identifies $\sum_nZ_n$ with the Mercator logarithm of \cref{prop:mercator}.
+For \eqref{eq:expremainder} the integral \eqref{eq:expdifference} is replaced
+by the mean value inequality applied to $u\mapsto e^{(1-u)A}e^{uB}$ on
+$[0,1]$, which gives the same bound. The closed forms of $Z_1,\ldots,Z_4$
+are obtained by expanding the recursion \eqref{eq:degreerec} and normalizing
+the resulting linear combinations of words; the bracket forms
+\eqref{eq:z2}--\eqref{eq:z4} then follow by expanding the commutators.
 
 The formal power-series parts of the article (\cref{sec:formal,sec:hopf,sec:dynkin},
-including the Lie nature of the $Z_n$), the word-level majorant in the first
-line of \eqref{eq:majorant}, the estimate \eqref{eq:expremainder}, parts
-(iii) and (iv) of \cref{thm:convergence}, and the later sections are not yet
-formalized; the finite exact computations of \cref{sec:computation} remain
-the machine check of the coefficient tables.
+including the Lie nature of the $Z_n$), degrees five and six of
+\cref{prop:lowdegree}, the word-level majorant in the first
+line of \eqref{eq:majorant}, parts (iii) and (iv) of \cref{thm:convergence},
+and the later sections are not yet formalized; the finite exact computations
+of \cref{sec:computation} remain the machine check of the coefficient tables.

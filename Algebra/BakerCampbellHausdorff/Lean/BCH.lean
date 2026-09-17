@@ -18,7 +18,12 @@ Banach algebras:
 * `BCH.Series`    — the homogeneous BCH series `Zₙ(X, Y)` and Theorem 7.3 (i), (ii):
   for `‖X‖ + ‖Y‖ < log 2` the series `∑ₙ Zₙ(X, Y)` converges absolutely with
   the majorant `-log(2 - e^{ρ s})`, its sum `Z` satisfies `e^Z = e^X e^Y`, and
-  the tail after degree `N` is at most `ρ^{-(N+1)} (-log(2 - e^{ρ s}))`.
+  the tail after degree `N` is at most `ρ^{-(N+1)} (-log(2 - e^{ρ s}))`;
+* `BCH.LowDegree` — the components `Z₁, …, Z₄` in closed form (Proposition 4.3,
+  equations (4.9)–(4.12), (4.15)–(4.17));
+* `BCH.Remainder` — `‖e^C‖ ≤ ‖1‖ e^{‖C‖}`, the Lipschitz estimate
+  `‖e^B - e^A‖ ≤ ‖1‖² e^{max(‖A‖,‖B‖)} ‖B - A‖`, and the exponential remainder
+  estimate (7.5) of Theorem 7.3 (ii).
 -/
 import BCH.Commuting
 import BCH.Central
@@ -26,3 +31,5 @@ import BCH.Campbell
 import BCH.Eigen
 import BCH.Log
 import BCH.Series
+import BCH.LowDegree
+import BCH.Remainder

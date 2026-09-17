@@ -21,6 +21,11 @@ additional hypotheses. Appendix D of the article records the correspondence.
   degree recursion (2.7) of the article) and Theorem 7.3 (i), (ii): for
   `‖X‖ + ‖Y‖ < log 2`, `∑ ‖Zₙ‖ < ∞`, `∑ ρⁿ ‖Zₙ‖ ≤ -log(2 - e^{ρ(‖X‖+‖Y‖)})`,
   `∑ Zₙ = log(e^X e^Y)` (Mercator), `exp(∑ Zₙ) = e^X e^Y`, and the tail bound (7.4).
+- `BCH/LowDegree.lean` — `Z₁ = X + Y`, `Z₂ = ½[X,Y]`, `Z₃ = 1/12([X,[X,Y]] + [Y,[Y,X]])`,
+  `Z₄ = -1/24 [Y,[X,[X,Y]]]` and their associative expansions (Proposition 4.3,
+  degrees one to four).
+- `BCH/Remainder.lean` — `‖e^C‖ ≤ ‖1‖ e^{‖C‖}`, `‖e^B - e^A‖ ≤ ‖1‖² e^{max(‖A‖,‖B‖)} ‖B - A‖`,
+  and the exponential remainder estimate (7.5) of Theorem 7.3 (ii).
 
 ## Building
 
