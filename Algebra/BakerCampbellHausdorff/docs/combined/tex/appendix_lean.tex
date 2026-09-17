@@ -78,6 +78,14 @@ Article & Lean declaration (namespace \texttt{BCH}), continued \\
 \Cref{thm:formalbch}, every $Z_n$ is a Lie polynomial & \texttt{bchHom\_mem\_lieGen}
  (in \texttt{FreeTwo} $=\kk\langle X,Y\rangle$, with \texttt{lieGen} the Lie
  polynomials); grading of the Lie polynomials \texttt{proj\_mem\_lieSpan} \\
+\Cref{lem:dsw}, \eqref{eq:dsw}, $R(P)=nP$ (in the Lie form of
+ \cref{thm:friedrichs}: $P\in\cL_n$) & \texttt{R\_of\_mem\_lieGen}
+ (the right Dynkin operator is \texttt{R}, with \texttt{R\_apply} $=$
+ $\sum_w\coeff wP\,R(w)$; the identity $R(ab)=\phi(a)R(b)+\eps(b)R(a)$ of
+ the proof is \texttt{R\_mul}) \\
+\Cref{thm:dynkin}, \eqref{eq:dynkinword} & \texttt{bchHom\_eq\_dynkin}
+ ($Z_n=\frac1n\sum_w c(w)R(w)$ with $c(w)$ the coefficients of $Z_n$);
+ operator form $Z_n=\frac1nR(Z_n)$, \texttt{bchHom\_eq\_inv\_smul\_R} \\
 \Cref{prop:closedlie} & \texttt{exists\_delta\_mlog\_mem} (closed Lie subalgebras are
  \texttt{IsClosedLieSubalgebra}; the Lipschitz estimate is
  \texttt{norm\_betaAd\_apply\_sub\_le}); homogeneous components:
@@ -205,9 +213,31 @@ degree-$n$ component of $L$ and therefore a Lie polynomial. This route proves
 the formal theorem from the analytic one, the reverse of the order in the
 text.
 
+The Dynkin--Specht--Wever identity \eqref{eq:dsw} is formalized without the
+Hopf-algebraic convolution $D=N*S$: the right Dynkin operator \texttt{R} is
+defined directly as the linear extension of the right-nested bracketing of
+words, and the identity $R(P)=nP$ is proved for homogeneous Lie
+polynomials $P$ of degree $n$ (\texttt{R\_of\_mem\_lieGen}), which by
+\cref{thm:friedrichs} is the same class as the homogeneous primitives of
+\cref{lem:dsw} (the equivalence itself, Friedrichs' criterion, is not
+formalized). The proof is the classical one: the algebra
+homomorphism $\phi\colon\kk\langle X,Y\rangle\to\End\kk\langle X,Y\rangle$
+with $\phi(X)=\ad_X$, $\phi(Y)=\ad_Y$ (\texttt{adRep}) satisfies
+$R(ab)=\phi(a)R(b)+\eps(b)R(a)$ (\texttt{R\_mul}) and agrees with the
+adjoint representation on Lie polynomials (\texttt{adRep\_eq\_ad\_of\_mem}),
+so for homogeneous Lie polynomials $A,B$ of degrees $p,q\geq1$ with
+$R(A)=pA$, $R(B)=qB$ one gets $R([A,B])=q[A,B]-p[B,A]=(p+q)[A,B]$; the
+statement is propagated through the Lie span componentwise, using the
+grading of the Lie polynomials. Combined with \cref{thm:formalbch} this
+gives Dynkin's formula in the form \eqref{eq:dynkinword},
+$Z_n=\frac1n\sum_{|w|=n}c(w)R(w)$ (\texttt{bchHom\_eq\_dynkin}), where
+$c(w)$ are the coefficients of the formal $Z_n$; the explicit values
+\eqref{eq:wordcut} of these coefficients, hence the form \eqref{eq:dynkin},
+are not formalized.
+
 The remaining formal power-series parts of the article
 (\cref{sec:formal,sec:hopf,sec:dynkin}: the word-cut formula, the Hopf
-structure, Dynkin's formula), degrees five and six of
+structure, the explicit coefficients in Dynkin's formula), degrees five and six of
 \cref{prop:lowdegree}, the word-level majorant in the first
 line of \eqref{eq:majorant}, parts (iii) and (iv) of \cref{thm:convergence},
 the multifactor case of \cref{lem:tail}, and the later sections are not yet

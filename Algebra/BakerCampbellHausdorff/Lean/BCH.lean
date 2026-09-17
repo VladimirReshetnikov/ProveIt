@@ -45,10 +45,13 @@ Banach algebras:
   local BCH multiplication law of matrix Lie algebras;
 * `BCH.LieCoeff`  — Proposition 8.1, homogeneous form: `Zₙ(X, Y) ∈ 𝔤` for all `X, Y ∈ 𝔤`
   and all `n`, without smallness (coefficient extraction from `∑ₙ tⁿ Zₙ(X, Y) ∈ 𝔤`);
-* `BCH.Formal.Free`, `BCH.Formal.Trunc`, `BCH.Formal.LieSeries` — **Theorem 3.5, the formal
+* `BCH.Formal.Free`, `BCH.Formal.Trunc`, `BCH.Formal.LieSeries` — **Theorem 3.6, the formal
   BCH theorem**: in the free algebra `𝕂⟨X, Y⟩` every homogeneous component `Zₙ(X, Y)` is a
   Lie polynomial (`bchHom_mem_lieGen`), proved from the analytic Lie-series property through
-  the truncated regular representation and the grading of the Lie polynomials.
+  the truncated regular representation and the grading of the Lie polynomials;
+* `BCH.Formal.Dynkin` — Lemma 3.4 (Dynkin–Specht–Wever), `R(P) = n P` for homogeneous Lie
+  polynomials `P` of degree `n` (`R_of_mem_lieGen`), and Theorem 4.1 (Dynkin's formula) in
+  the form `Zₙ = (1/n) ∑_w c(w) R(w)` (`bchHom_eq_dynkin`).
 -/
 import BCH.Commuting
 import BCH.Central
@@ -70,3 +73,4 @@ import BCH.LieCoeff
 import BCH.Formal.Free
 import BCH.Formal.Trunc
 import BCH.Formal.LieSeries
+import BCH.Formal.Dynkin

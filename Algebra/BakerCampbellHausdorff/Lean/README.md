@@ -62,9 +62,14 @@ additional hypotheses. Appendix D of the article records the correspondence.
   `lieGen` (`proj_mem_lieSpan`).
 - `BCH/Formal/Trunc.lean` — the truncated regular representation `rho` of `𝕂⟨X,Y⟩` on the
   finite-dimensional space of words of length `≤ N`, faithful in degrees `≤ N`.
-- `BCH/Formal/LieSeries.lean` — **Theorem 3.5 (formal BCH theorem)**: every `Zₙ(X,Y)` is a
+- `BCH/Formal/LieSeries.lean` — **Theorem 3.6 (formal BCH theorem)**: every `Zₙ(X,Y)` is a
   Lie polynomial (`bchHom_mem_lieGen`), deduced from Proposition 8.1 in the operator algebra
   of the truncated representation.
+- `BCH/Formal/Dynkin.lean` — the right Dynkin operator `R` (right-nested bracketing of
+  words), the identity `R(ab) = φ(a) R(b) + ε(b) R(a)` with `φ` the adjoint representation of
+  the free algebra, **Lemma 3.4 (Dynkin–Specht–Wever)** `R(P) = n P` for homogeneous Lie
+  polynomials of degree `n` (`R_of_mem_lieGen`), and **Theorem 4.1 (Dynkin's formula)**
+  `Zₙ = (1/n) Σ_w c(w) R(w)` (`bchHom_eq_dynkin`).
 
 ## Building
 
