@@ -32,7 +32,12 @@ Banach algebras:
   sum is the unique logarithm `Z₀` of `e^X e^Y` with `‖Z₀‖ < log 2`;
 * `BCH.Duhamel`, `BCH.DuhamelSeries` — Theorem 5.2 (Duhamel): `exp` is Fréchet
   differentiable with `(dexp)_A = e^A ∘ φ(ad_A)`, `d/dt e^{A(t)} = (dexp)_{A(t)}(A'(t))`,
-  and the three series forms (5.5)–(5.7).
+  and the three series forms (5.5)–(5.7);
+* `BCH.Bernoulli` — the coefficients `b⁺ₙ` of `β(z) = z/(1 - e^{-z})` by the recursion of
+  Proposition 5.3, their bound `|b⁺ₙ| ≤ 1`, and the operator identities
+  `φ(ad_A) β(ad_A) = β(ad_A) φ(ad_A) = 1` for `‖A‖ < 1/2`;
+* `BCH.ODE`       — Theorem 6.1 (logarithmic differential equation): for `X, Y` small,
+  `Z(t) = log(e^X e^{tY})` satisfies `Z'(t) = β(ad_{Z(t)}) Y`, `Z(0) = X`.
 -/
 import BCH.Commuting
 import BCH.Central
@@ -46,3 +51,5 @@ import BCH.Trotter
 import BCH.Unique
 import BCH.Duhamel
 import BCH.DuhamelSeries
+import BCH.Bernoulli
+import BCH.ODE

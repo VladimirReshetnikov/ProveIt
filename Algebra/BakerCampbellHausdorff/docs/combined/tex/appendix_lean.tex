@@ -33,12 +33,19 @@ $\mathcal A\to\mathcal A$, and $e^{s\ad_X}$ is the exponential in the
 Banach algebra of bounded operators.
 
 \subsection*{Correspondence}
-\begin{center}\small
+{\small
 \renewcommand{\arraystretch}{1.25}
-\begin{tabular}{@{}p{0.34\textwidth}p{0.6\textwidth}@{}}
+\begin{longtable}{@{}p{0.34\textwidth}p{0.6\textwidth}@{}}
 \toprule
 Article & Lean declaration (namespace \texttt{BCH}) \\
 \midrule
+\endfirsthead
+\toprule
+Article & Lean declaration (namespace \texttt{BCH}), continued \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
 \Cref{prop:commuting} & \texttt{exp\_mul\_exp\_of\_lie\_eq\_zero} \\
 \Cref{thm:central}, \eqref{eq:centralconj} & \texttt{central\_conj} \\
 \Cref{thm:central}, \eqref{eq:centralt} & \texttt{central\_exp\_mul\_exp} \\
@@ -57,6 +64,13 @@ Article & Lean declaration (namespace \texttt{BCH}) \\
 \Cref{thm:dexp}, \eqref{eq:duhamel} (series) & \texttt{dexp\_apply\_eq\_tsum} \\
 \Cref{thm:dexp}, \eqref{eq:leftdexp} (series) & \texttt{exp\_neg\_mul\_dexp} \\
 \Cref{thm:dexp}, \eqref{eq:rightdexp} (series) & \texttt{dexp\_mul\_exp\_neg} \\
+\Cref{prop:bernoulli}, recursion \eqref{eq:bernrec} & \texttt{bplus} (defined by the
+ recursion), \texttt{sum\_antidiagonal\_phiCoeffQ\_bplus} ($\beta\phi=1$),
+ \texttt{abs\_bplus\_le\_one}; the operator $\beta(\ad_A)$ is \texttt{betaAd}, with
+ \texttt{phiAd\_mul\_betaAd}, \texttt{betaAd\_mul\_phiAd} \\
+\Cref{thm:ode}, \eqref{eq:ode} (analytic, direct half) & \texttt{exists\_delta\_bch\_ode}:
+ for $\norm X+\norm Y<\delta$, $Z(t)=\log(e^Xe^{tY})$ has $Z(0)=X$ and
+ $Z'(t)=\beta(\ad_{Z(t)})Y$ for $|t|\leq1$ \\
 \Cref{prop:mercator} & \texttt{norm\_mlog\_le}, \texttt{exp\_mlog}
  (series \texttt{mlog}, terms \texttt{mlogTerm}, summability \texttt{summable\_mlogTerm}) \\
 \Cref{cor:bchlog} & \texttt{exp\_mlog\_exp\_mul\_exp}; bounds
@@ -91,9 +105,7 @@ $Z_n(X,Y)$, \eqref{eq:degreerec}, \cref{rem:evaluation} & \texttt{bchHom}
 \Cref{thm:eigen}, \eqref{eq:eigenbch} & \texttt{exp\_mul\_exp\_of\_lie\_eq\_smul} \\
 \Cref{thm:eigen}, \eqref{eq:eigenbraid} & \texttt{exp\_mul\_exp\_mul\_exp\_neg\_of\_lie\_eq\_smul},
  \texttt{exp\_mul\_exp\_eq\_of\_lie\_eq\_smul} \\
-\bottomrule
-\end{tabular}
-\end{center}
+\end{longtable}}
 The functions $q_s$, $\phi$, and $\beta$ of \cref{thm:eigen} are the Lean
 definitions \texttt{qs}, \texttt{phi}, \texttt{beta}, with the removable
 values $\phi(0)=\beta(0)=1$ built in. The hypothesis
@@ -135,6 +147,17 @@ $[0,1]$, which gives the same bound. The closed forms of $Z_1,\ldots,Z_4$
 are obtained by expanding the recursion \eqref{eq:degreerec} and normalizing
 the resulting linear combinations of words; the bracket forms
 \eqref{eq:z2}--\eqref{eq:z4} then follow by expanding the commutators.
+
+For \cref{thm:ode} the coefficients $\bplus n$ are defined in Lean by the
+recursion \eqref{eq:bernrec} (which is the identity $\beta\phi=1$), and
+$\beta(\ad_Z)$ is the resulting operator series, convergent for
+$\norm{\ad_Z}<1$ because $|\bplus n|\leq1$; the differentiability of
+$t\mapsto\log(e^Xe^{tY})$ is obtained from the inverse function theorem
+applied to $\exp$ (strictly differentiable, with the invertible differential
+of \cref{thm:dexp}) together with the uniqueness of the small logarithm
+(\cref{prop:uniquelog}), and the neighborhood of $(0,0)$ is not made
+explicit. The converse (uniqueness) half of \cref{thm:ode} and
+\cref{thm:poincare} are not formalized.
 
 The hypothesis $\norm I=1$ of \cref{sec:splitting} is the Mathlib class
 \texttt{NormOneClass}; \cref{thm:trotter} is stated with a scalar $t\in\kk$
