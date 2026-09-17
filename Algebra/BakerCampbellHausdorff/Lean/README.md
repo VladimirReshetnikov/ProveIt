@@ -77,6 +77,10 @@ additional hypotheses. Appendix D of the article records the correspondence.
   polynomials of degree `n` (`R_of_mem_lieGen`), and **Theorem 4.1 (Dynkin's formula)**
   `Zₙ = (1/n) Σ_w c(w) R(w)` (`bchHom_eq_dynkin`) and its all-terms form
   `Zₙ = (1/n) Σ_k (-1)^{k-1}/k Σ R(X^{r₁}Y^{s₁}⋯)/∏ rᵢ!sᵢ!` (`bchHom_eq_dynkin_blocks`).
+- `BCH/LinearY.lean` — **Corollary 6.4 (all single-`Y` terms)**: for `‖X‖ + ‖Y‖` small,
+  `t ↦ Z(X, tY)` is differentiable at `0` with derivative `β(ad_X) Y = Σₙ (Bₙ⁺/n!) ad_Xⁿ Y`
+  (`exists_delta_hasDerivAt_bch_linearY`), from the logarithmic ODE at `t = 0` and the
+  Bernoulli identification.
 - `BCH/Symmetric.lean` — **Proposition 11.3 (symmetric splitting)**: two nested applications
   of the BCH theorem give `L = Z(Z(A,B), A)` with `e^L = e^A e^B e^A` and
   `‖L - (2A + B)‖ ≤ c₂ (‖A‖+‖B‖)³` (the degree-two terms cancel; `symmetric_log_bound`,

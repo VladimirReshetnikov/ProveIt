@@ -58,6 +58,9 @@ Banach algebras:
   the forms `Zₙ = (1/n) ∑_w c(w) R(w)` (`bchHom_eq_dynkin`) and
   `Zₙ = (1/n) ∑_k (-1)^{k-1}/k ∑ R(X^{r₁}Y^{s₁}⋯X^{r_k}Y^{s_k}) / ∏ rᵢ!sᵢ!`
   (`bchHom_eq_dynkin_blocks`);
+* `BCH.LinearY` — Corollary 6.4: the part of `Z(X, Y)` linear in `Y` is `β(ad_X) Y`, in the
+  analytic form `d/dt Z(X, tY)|_{t=0} = ∑ₙ (Bₙ⁺/n!) ad_Xⁿ Y`
+  (`exists_delta_hasDerivAt_bch_linearY`);
 * `BCH.Symmetric` — Proposition 11.3, the symmetric (Strang) splitting: for
   `n > 6 |t| a / log 2`, `(e^{tX/(2n)} e^{tY/n} e^{tX/(2n)})^n = exp(t(X+Y) + Eₙ)` with
   `‖Eₙ‖ ≤ c₂ |t|³ a³ / n²` (`symmetric_expansion`; the degree-two terms cancel,
@@ -98,4 +101,5 @@ import BCH.Formal.WordCut
 import BCH.Formal.Dynkin
 import BCH.Trace
 import BCH.DynkinSeries
+import BCH.LinearY
 import BCH.Symmetric
