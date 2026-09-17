@@ -64,10 +64,10 @@ lemma ad_apply' (X Y : 𝔸) : ad 𝕂 X Y = X * Y - Y * X := by
   simp [ad]
 
 lemma ad_smul (t : 𝕂) (X : 𝔸) : ad 𝕂 (t • X) = t • ad 𝕂 X := by
-  ext Y; rw [ContinuousLinearMap.smul_apply, ad_apply, ad_apply, lie_smul_left']
+  ext Y; rw [smul_apply, ad_apply, ad_apply, lie_smul_left']
 
 lemma ad_neg (X : 𝔸) : ad 𝕂 (-X) = -ad 𝕂 X := by
-  ext Y; rw [ContinuousLinearMap.neg_apply, ad_apply, ad_apply, lie_neg_left']
+  ext Y; rw [neg_apply, ad_apply, ad_apply, lie_neg_left']
 
 /-- Left and right multiplication operators commute. -/
 lemma commute_mul_flip (X : 𝔸) :
@@ -107,7 +107,7 @@ theorem ad_pow_apply (X Y : 𝔸) (n : ℕ) :
     rw [Nat.cast_smul_eq_nsmul 𝕂 (n.choose j) (1 : 𝔸 →L[𝕂] 𝔸), nsmul_eq_mul, mul_one]
   rw [Nat.add_sub_cancel, Nat.sub_sub_self hjn, Nat.choose_symm hjn, ← neg_one_smul 𝕂 R,
     smul_pow, hcast]
-  simp only [mul_smul_comm, smul_mul_assoc, smul_smul, mul_one, smul_apply, mul_apply_eq_comp,
+  simp only [mul_smul_comm, smul_smul, mul_one, smul_apply, mul_apply_eq_comp,
     hRpow, hLpow]
   rw [mul_comm, mul_assoc]
 

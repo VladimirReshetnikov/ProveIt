@@ -70,6 +70,18 @@ theorem bch_formula_formal {n : ℕ} (hn : 0 < n) :
     coeff_bchHom_eq_wordCoeff n,
     wordCoeff_eq⟩
 
+omit [CharZero 𝕂] in
+/-- **The model is the free algebra.** The algebra `FreeTwo 𝕂` in which `bch_formula_formal`
+is phrased, namely the monoid algebra of the free monoid on two letters, is `𝕂`-algebra
+isomorphic to Mathlib's free algebra on two generators, by an isomorphism carrying the two
+generators to `X` and `Y`. This certifies that `𝕂⟨X, Y⟩` of the article is the algebra the
+theorem speaks about. -/
+theorem exists_freeAlgebra_equiv :
+    ∃ e : FreeAlgebra 𝕂 (Fin 2) ≃ₐ[𝕂] FreeTwo 𝕂,
+      e (FreeAlgebra.ι 𝕂 0) = genX 𝕂 ∧ e (FreeAlgebra.ι 𝕂 1) = genY 𝕂 := by
+  refine ⟨FreeAlgebra.equivMonoidAlgebraFreeMonoid, ?_, ?_⟩ <;>
+    simp [FreeAlgebra.equivMonoidAlgebraFreeMonoid, genX, genY, MonoidAlgebra.of_apply]
+
 end Formal
 
 section Analytic

@@ -98,6 +98,7 @@ main theorems they are obtained by restriction of scalars from `𝕂`. -/
 variable {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [NormedAlgebra ℚ 𝔸]
   [CompleteSpace 𝔸]
 
+omit [NormedAlgebra ℚ 𝔸] in
 /-- Campbell's identity when `[X, Y]` commutes with `X`, real parameter:
 `e^{sX} Y e^{-sX} = Y + s [X, Y]`. -/
 lemma exp_smul_mul_mul_exp_smul_neg (X Y : 𝔸) (hX : Commute X ⁅X, Y⁆) (s : ℝ) :

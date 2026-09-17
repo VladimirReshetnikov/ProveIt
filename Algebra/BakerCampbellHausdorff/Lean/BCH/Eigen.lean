@@ -183,7 +183,7 @@ theorem exp_smul_add_smul_eq {X Y : 𝔸} {s : 𝕂} (hXY : ⁅X, Y⁆ = s • Y
           = -(A * (X * B) * F) - c • (A * (Y * B) * F) + A * (X * B) * F
             + (c * exp (t • (-s))) • (A * (B * Y) * F) := by
             rw [neg_mul, hWA, hFY]
-            simp only [mul_add, add_mul, neg_add, mul_neg, neg_mul, mul_smul_comm,
+            simp only [mul_add, add_mul, neg_add, neg_mul, mul_smul_comm,
               smul_mul_assoc, mul_assoc]
             abel
         _ = -(A * (X * B) * F) - c • (A * (Y * B) * F) + A * (X * B) * F

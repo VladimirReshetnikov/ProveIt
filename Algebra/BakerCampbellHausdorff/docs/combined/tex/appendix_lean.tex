@@ -32,6 +32,13 @@ operator \texttt{BCH.ad K X}, a continuous $\kk$-linear map
 $\mathcal A\to\mathcal A$, and $e^{s\ad_X}$ is the exponential in the
 Banach algebra of bounded operators.
 
+The free associative algebra $\kk\langle X,Y\rangle$ of \cref{thm:bch}(a) is
+modelled as \texttt{FreeTwo} $=$ \texttt{MonoidAlgebra $\kk$ (FreeMonoid
+(Fin 2))}, the $\kk$-span of the words in two letters. That this is the free
+algebra is not left to inspection: \texttt{exists\_freeAlgebra\_equiv}
+exhibits a $\kk$-algebra isomorphism from Mathlib's \texttt{FreeAlgebra
+$\kk$ (Fin 2)} onto it carrying the two generators to $X$ and $Y$.
+
 No proof in the development is left open: the sources contain no
 \texttt{sorry}, and for both parts of \cref{thm:bch} the command
 \texttt{\#print axioms} reports only Lean's three standard axioms
