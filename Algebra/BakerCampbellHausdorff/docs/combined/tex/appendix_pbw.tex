@@ -41,12 +41,30 @@ and the result is a linear combination of ordered words (words with no
 inverted adjacent pair). This proves that ordered words span $U(\h)$.
 
 We prove that the final result does not depend on the choices made
-(confluence), by induction on the measure of the starting word $w$. If two
-different first steps are available for $w$ at disjoint adjacent pairs,
-performing the other one next in either case leads to the same linear
-combination, whose words all have smaller measure than $w$; by the
-induction hypothesis each of those words has a unique normal form, hence
-so does the combination, and both first choices lead to it. If the two
+(confluence), by induction on the measure of the starting word $w$. Suppose
+two different first steps are available for $w$ at disjoint adjacent pairs
+$A$ and $B$. Write $\sigma_A(w)$ for the word obtained by swapping the pair
+$A$ and $\beta_A(w)$ for the bracket term produced (a linear combination of
+words shorter than $w$), so that the step at $A$ replaces $w$ by
+$\sigma_A(w)+\beta_A(w)$, and similarly for $B$. Performing $A$ first and
+then $B$ on the swapped word gives
+$\sigma_B\sigma_A(w)+\beta_B(\sigma_A(w))+\beta_A(w)$, whereas performing
+$B$ first and then $A$ gives
+$\sigma_A\sigma_B(w)+\beta_A(\sigma_B(w))+\beta_B(w)$. The swapped words
+agree, $\sigma_B\sigma_A(w)=\sigma_A\sigma_B(w)$, because the pairs are
+disjoint. The remaining terms are not literally equal: $\beta_A(w)$ still
+contains the unswapped pair $B$ while $\beta_A(\sigma_B(w))$ contains it
+swapped. But $\beta_A(w)$ and $\beta_A(\sigma_B(w))$ differ exactly by
+applying the rule at the pair $B$ inside each word of $\beta_A(w)$ (with
+the bracket term $\beta_B(\beta_A(w))$ appearing with the opposite sign),
+and likewise for $\beta_B(w)$ versus $\beta_B(\sigma_A(w))$; the two
+correction terms $\beta_B(\beta_A(w))$ and $\beta_A(\beta_B(w))$ coincide,
+both being the word with both pairs replaced by their brackets. Thus the
+two linear combinations differ by a combination of instances of the rule
+\eqref{eq:rewrite} applied inside words strictly shorter than $w$, and by
+the induction hypothesis (which gives every word of smaller measure a
+unique normal form, and gives the two sides of a rule instance the same
+normal form) they have the same normal form. If the two
 available first steps overlap, the overlap is a factor $e_ke_je_i$ with
 $k>j>i$ inside $w=p\,e_ke_je_i\,q$. Reducing the left pair first and then
 continuing to order the three original letters gives, before any
@@ -159,8 +177,8 @@ since $X^{p+q}$ has $\binom{p+q}p$ subsets of positions of size $p$. The
 leading $(N+1)\times(N+1)$ block of this coefficient matrix is
 $C=(\binom{p+q}p)_{0\leq p,q\leq N}$. By Vandermonde's identity,
 $\binom{p+q}p=\sum_k\binom pk\binom qk$ (compare coefficients of $t^p$ in
-$(1+t)^p(1+t)^q=(1+t)^{p+q}$, using $\binom{q}{p-k}=\binom q{q-p+k}$ and
-reindexing), so $C=PP^{\mathsf T}$ with $P_{pk}=\binom pk$ for $k\leq p$ and
+$(1+t)^p(1+t)^q=(1+t)^{p+q}$ to get $\binom{p+q}p=\sum_k\binom p{p-k}\binom qk$,
+then use $\binom p{p-k}=\binom pk$), so $C=PP^{\mathsf T}$ with $P_{pk}=\binom pk$ for $k\leq p$ and
 $P_{pk}=0$ otherwise. Since $P$ is lower triangular with diagonal entries
 $1$, $\det C=(\det P)^2=1$, so $C$ has rank $N+1$ for every $N$. On the
 other hand, if $\Delta F$ were a finite sum $\sum_{j=1}^mA_j\otimes B_j$ of

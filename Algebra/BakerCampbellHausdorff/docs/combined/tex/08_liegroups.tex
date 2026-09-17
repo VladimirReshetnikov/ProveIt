@@ -2,7 +2,7 @@
 \subsection{Matrix groups}
 For a matrix Lie group $G\subseteq\GL_d$, its Lie algebra $\g$ is the
 tangent space at the identity. The left-invariant vector field associated
-with $X\in\g$ is $X^L(g)=gX$. Regarding these as vector fields on the open
+with $X\in\g$ is $X^L(g)=gX$, and the right-invariant field is $X^R(g)=Xg$. Regarding these as vector fields on the open
 subset $\GL_d$ of the vector space of matrices, the bracket of two vector
 fields $U,V$ is $[U,V](g)=DV(g)[U(g)]-DU(g)[V(g)]$, and since
 $DX^L(g)[H]=HX$,
@@ -32,10 +32,10 @@ The $\g$-valued one-form $\theta$ satisfies
 \end{equation}
 Consequently, for a smooth two-parameter map $g(s,t)$ into $G$, the
 left-trivialized partial derivatives
-$\alpha=\theta(\partial_sg)$ and $\beta=\theta(\partial_tg)$ satisfy the
+$\alpha=\theta(\partial_sg)$ and $\eta=\theta(\partial_tg)$ satisfy the
 mixed-variation identity
 \begin{equation}\label{eq:mixedvariation}
- \partial_s\beta-\partial_t\alpha+[\alpha,\beta]=0.
+ \partial_s\eta-\partial_t\alpha+[\alpha,\eta]=0.
 \end{equation}
 \end{proposition}
 \begin{proof}
@@ -53,14 +53,14 @@ $\dd(g^{-1})=-g^{-1}(\dd g)g^{-1}$, whence
 $\dd(g^{-1}\dd g)=-g^{-1}\dd g\wedge g^{-1}\dd g$.
 
 For \eqref{eq:mixedvariation}, pull $\theta$ back by $g$:
-$g^*\theta=\alpha\,\dd s+\beta\,\dd t$. Pullback commutes with $\dd$ and
+$g^*\theta=\alpha\,\dd s+\eta\,\dd t$. Pullback commutes with $\dd$ and
 with the bracket of forms, so \eqref{eq:MC} gives
-$\dd(g^*\theta)=-[\alpha,\beta]\,\dd s\wedge\dd t$, while directly
-$\dd(\alpha\,\dd s+\beta\,\dd t)=(\partial_s\beta-\partial_t\alpha)\,\dd s\wedge\dd t$.
+$\dd(g^*\theta)=-[\alpha,\eta]\,\dd s\wedge\dd t$, while directly
+$\dd(\alpha\,\dd s+\eta\,\dd t)=(\partial_s\eta-\partial_t\alpha)\,\dd s\wedge\dd t$.
 Comparing coefficients gives \eqref{eq:mixedvariation}. (In a matrix group:
-$\partial_s(g^{-1}\partial_tg)=-\alpha\beta+g^{-1}\partial_s\partial_tg$ and
-$\partial_t(g^{-1}\partial_sg)=-\beta\alpha+g^{-1}\partial_t\partial_sg$;
-subtracting gives $-[\alpha,\beta]$.)
+$\partial_s(g^{-1}\partial_tg)=-\alpha\eta+g^{-1}\partial_s\partial_tg$ and
+$\partial_t(g^{-1}\partial_sg)=-\eta\alpha+g^{-1}\partial_t\partial_sg$;
+subtracting gives $-[\alpha,\eta]$.)
 \end{proof}
 
 \begin{proposition}[Intrinsic differential of the exponential]\label{prop:intrinsicdexp}
@@ -75,15 +75,15 @@ particular $(\dd\exp)_0=\id_\g$, and $\Ad_{\exp X}=e^{\ad_X}$ intrinsically.
 Put $g(s,t)=\exp\bigl(s(X+tH)\bigr)$. For fixed $t$, $s\mapsto g(s,t)$ is
 the one-parameter subgroup with velocity $X+tH$, so its left-trivialized
 velocity is $\alpha(s,t)=\theta(\partial_sg)=X+tH$. Let
-$\beta(s,t)=\theta(\partial_tg)$; then $\beta(0,t)=0$ because $g(0,t)=e$
+$\eta(s,t)=\theta(\partial_tg)$; then $\eta(0,t)=0$ because $g(0,t)=e$
 for all $t$. By \eqref{eq:mixedvariation},
-$\partial_s\beta=\partial_t\alpha-[\alpha,\beta]=H-[X+tH,\beta]$. At $t=0$
-this is the linear equation $\partial_s\beta=H-\ad_X\beta$ with
-$\beta(0)=0$, whose unique solution is
-$\beta(s)=\int_0^se^{-(s-u)\ad_X}H\,\dd u$ (check by differentiation:
-$\partial_s\beta=H-\ad_X\beta$). At $s=1$, substituting $v=1-u$,
-$\beta(1,0)=\int_0^1e^{-v\ad_X}H\,\dd v=\phi(\ad_X)H$ by the termwise
-integration of \cref{thm:dexp}. Since $\beta(1,0)=\theta(\partial_tg(1,0))
+$\partial_s\eta=\partial_t\alpha-[\alpha,\eta]=H-[X+tH,\eta]$. At $t=0$
+this is the linear equation $\partial_s\eta=H-\ad_X\eta$ with
+$\eta(0)=0$, whose unique solution is
+$\eta(s)=\int_0^se^{-(s-u)\ad_X}H\,\dd u$ (check by differentiation:
+$\partial_s\eta=H-\ad_X\eta$). At $s=1$, substituting $v=1-u$,
+$\eta(1,0)=\int_0^1e^{-v\ad_X}H\,\dd v=\phi(\ad_X)H$ by the termwise
+integration of \cref{thm:dexp}. Since $\eta(1,0)=\theta(\partial_tg(1,0))
 =(L_{\exp(-X)})_*(\dd\exp)_X(H)$, this is \eqref{eq:intrinsicdexp}. The
 right-trivialized version follows by applying the same argument to the
 right Maurer--Cartan form, or from

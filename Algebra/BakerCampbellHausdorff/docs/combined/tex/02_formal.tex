@@ -161,7 +161,8 @@ the degree-$n$ part of \eqref{eq:blocks}.
 \begin{example}
 For $w=XY$ the one-piece contribution is $a(XY)=1$ and the two-piece
 contribution is $-\tfrac12a(X)a(Y)=-\tfrac12$, so $c(XY)=\tfrac12$. For
-$w=YX$ the one-piece contribution is $a(YX)=0$, so $c(YX)=-\tfrac12$. For
+$w=YX$ the one-piece contribution is $a(YX)=0$ and the two-piece cut
+$Y\mid X$ contributes $-\tfrac12a(Y)a(X)=-\tfrac12$, so $c(YX)=-\tfrac12$. For
 $w=XXY$ the one-piece contribution is $a(XXY)=\tfrac12$; the two cuts
 $X\mid XY$ and $XX\mid Y$ contribute $-\tfrac12(1\cdot1+\tfrac12\cdot1)
 =-\tfrac34$; the three-piece cut contributes $\tfrac13$. Their sum is
@@ -186,10 +187,11 @@ $|\rho|=\sum_{j,i}r_{ji}$. Then
  =\sum_{k\geq1}\frac{(-1)^{k-1}}{k}
    \sum_{\rho}\frac{w(\rho)}{\prod_{j,i}r_{ji}!},
 \end{equation}
-and the coefficient of a given word $w$ is the finite sum over cuts of $w$
-into $k$ nonempty pieces of the product of the block weights
-$a_m(w_i)$, where $a_m(A_1^{r_1}\cdots A_m^{r_m})=(r_1!\cdots r_m!)^{-1}$
-and $a_m$ vanishes on every other word.
+and the coefficient of a given word $w$ is
+$\sum_{k=1}^{|w|}\frac{(-1)^{k-1}}{k}\sum_{w=w_1\cdots w_k}\prod_ia_m(w_i)$,
+the inner sum being over cuts of $w$ into $k$ nonempty pieces, where
+$a_m(A_1^{r_1}\cdots A_m^{r_m})=(r_1!\cdots r_m!)^{-1}$ for $\sum r_i>0$ and
+$a_m$ vanishes on every other nonempty word.
 Equivalently, with $t$ a formal scalar,
 \begin{equation}\label{eq:multibch}
  \log\Bigl(\prod_{i=1}^{m}e^{tA_i}\Bigr)
@@ -203,10 +205,10 @@ whose nonempty words are exactly the products $A_1^{r_1}\cdots A_m^{r_m}$
 with coefficient $(r_1!\cdots r_m!)^{-1}$. The scalar $t$ simply counts
 total degree.
 \end{proof}
-If the factors are of the form $e^{\alpha_jX}$ or $e^{\beta_jY}$ with the
+If the factors are of the form $e^{\lambda_jX}$ or $e^{\mu_jY}$ with the
 letters $X,Y$ repeated in different positions, one first uses a distinct
 letter for each factor and then substitutes; the resulting coefficients are
-finite polynomials in the scalar weights $\alpha_j,\beta_j$. After
+finite polynomials in the scalar weights $\lambda_j,\mu_j$. After
 \cref{sec:hopf} it will follow that each homogeneous part of
 \eqref{eq:manyexp} is a Lie polynomial and that each word $w(\rho)$ may be
 replaced by $R(w(\rho))/|\rho|$. This observation supplies every order, not

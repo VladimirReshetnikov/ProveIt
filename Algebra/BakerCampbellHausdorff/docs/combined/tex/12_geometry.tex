@@ -16,7 +16,7 @@ $\g$-valued function $X$ on a manifold, applying \eqref{eq:leftdexp}
 the complete infinitesimal identity
 \begin{equation}\label{eq:infinitesimal}
 \begin{aligned}
- e^{-X}\dd e^X:=\exp(X)^*\theta&=\phi(\ad_X)\,\dd X
+ e^{-X}\dd e^X:=(\exp^*\theta)_X&=\phi(\ad_X)\,\dd X
  =\sum_{n\geq0}\frac{(-1)^n}{(n+1)!}\ad_X^n(\dd X)\\
  &=\dd X-\tfrac12[X,\dd X]+\tfrac16[X,[X,\dd X]]-\cdots,
 \end{aligned}
@@ -41,12 +41,15 @@ specified by
 \begin{gathered}
  e^{-X}\dd e^X=e_a\,W^a{}_b(X)\,\dd X^b,\\
  (M^n)^a{}_b=\sum_{i_1,\ldots,i_n}\ \sum_{c_1,\ldots,c_{n-1}}
- X^{i_1}\cdots X^{i_n}\,f_{i_1c_{n-1}}{}^{a}f_{i_2c_{n-2}}{}^{c_{n-1}}\cdots f_{i_nb}{}^{c_1},
+ X^{i_1}\cdots X^{i_n}\prod_{t=1}^{n}f_{i_tc_{n-t}}{}^{c_{n-t+1}},
+ \qquad c_0:=b,\quad c_n:=a,
 \end{gathered}
 \end{equation}
-which is ordinary matrix multiplication written out; for $n=1$ it reads
-$X^if_{ib}{}^a$, and for $n=2$ it reproduces the third term of
-\eqref{eq:components} after renaming dummy indices. The factorial series
+which is ordinary matrix multiplication
+$(M^n)^a{}_b=M^a{}_{c_{n-1}}M^{c_{n-1}}{}_{c_{n-2}}\cdots M^{c_1}{}_b$
+written out; for $n=1$ it reads $X^if_{ib}{}^a$, and for $n=2$ it
+reproduces the third term of \eqref{eq:components} after renaming dummy
+indices. The factorial series
 in \eqref{eq:MW} converges for every finite matrix $M$, and the integral
 form follows from \eqref{eq:leftdexp}.
 

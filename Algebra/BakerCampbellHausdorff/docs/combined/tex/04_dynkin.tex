@@ -44,10 +44,11 @@ if $s_k=0$, $r_k>1$ they are $X,X$; in either case the innermost bracket
 $[a_{d-1},a_d]$ vanishes and so does the whole nested bracket.
 \end{proof}
 The two vanishing tests are sufficient but not necessary: a run of equal
-letters may continue across a block boundary, for instance in the block word
-$X\cdot XY$ followed by the block $Y$. Notice also that one must project a
-\emph{whole homogeneous Lie polynomial}; replacing an arbitrary associative
-polynomial by $D/n$ generally changes it. The right-nested brackets form a
+letters may continue across a block boundary, for instance for the three
+blocks $X$, $XY$, $Y$, whose concatenation $XXYY$ has innermost bracket
+$[Y,Y]=0$ although $s_k=1$. Notice also that one must project a
+\emph{whole homogeneous Lie polynomial}; applying $D/n$ to an arbitrary
+associative polynomial generally changes it. The right-nested brackets form a
 spanning family of $\cL_n$, not a basis, so different displays can represent
 the same Lie element by Jacobi identities. This is redundancy in the
 representation, not ambiguity in $Z$. Formula \eqref{eq:bidegreeproj},
@@ -139,7 +140,8 @@ To turn displayed brackets into word coefficients we use the following
 explicit expansion. For $w=a_1\cdots a_n$ and a subset
 $S\subseteq\{1,\ldots,n-1\}$, let $w_S$ be the subword of $a_1\cdots a_{n-1}$
 at the positions in $S$ and $w_{S^c}$ the subword at the remaining positions
-of $\{1,\ldots,n-1\}$. Then
+of $\{1,\ldots,n-1\}$; in contrast with \eqref{eq:unshuffle}, the index set
+here omits the last position. Then
 \begin{equation}\label{eq:bracketexpand}
  R(w)=\sum_{S\subseteq\{1,\ldots,n-1\}}(-1)^{n-1-|S|}\,w_S\,a_n\,\rev(w_{S^c}).
 \end{equation}
@@ -195,8 +197,8 @@ words gives nonzero values only for
 and zero on the remaining twelve words. We verify one representative of
 each type. For $XXYY$: one piece gives $a(XXYY)=\tfrac14$; the three
 two-piece cuts $X\mid XYY,\ XX\mid YY,\ XXY\mid Y$ give
-$-\tfrac12(\tfrac12+\tfrac14+\tfrac12)=-\tfrac58$; the three three-piece cuts
-$X\mid X\mid YY,\ X\mid XY\mid Y,\ XX\mid Y\mid Y$ give
+$-\tfrac12(\tfrac12+\tfrac14+\tfrac12)=-\tfrac58$; the three cuts into three pieces,
+$X\mid X\mid YY,\ X\mid XY\mid Y,\ XX\mid Y\mid Y$, give
 $\tfrac13(\tfrac12+1+\tfrac12)=\tfrac23$; the four-piece cut gives
 $-\tfrac14$; the sum is $\tfrac14-\tfrac58+\tfrac23-\tfrac14=\tfrac1{24}$.
 For $XYXY$: one piece gives $0$; two-piece cuts $X\mid YXY$ ($0$),
@@ -236,9 +238,11 @@ every word absent from the table. Thus the two polynomials agree in every
 one of the $32$ and $64$ coordinates respectively. An equality of
 noncommutative polynomials is fully determined by these word coefficients,
 so the displayed formulas are identities in the free associative algebra,
-hence in every associative specialization. The accompanying exact-arithmetic
-program performs this comparison, including the zero coefficients, and
-additionally recomputes both sides from the differential recursions of
+hence in every associative specialization. Only the cut-formula side is
+printed in \cref{app:tables}; the bracket-expansion side is reproduced,
+coefficient by coefficient including the zeros, by the table generator and
+by the verifiers described in \cref{sec:computation}, which additionally
+recompute both sides from the differential recursions of
 \cref{sec:integral}.
 \end{proof}
 These displays do not select a linearly independent basis of the free Lie

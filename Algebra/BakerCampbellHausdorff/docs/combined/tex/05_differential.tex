@@ -7,9 +7,9 @@ derived in full.
 
 \subsection{Campbell's conjugation identity and the braiding formulas}
 \begin{theorem}[Campbell--Hadamard identity]\label{thm:campbell}
-In the formal setting, where $X,Y$ have positive degree and $s$ is a formal
-or scalar parameter, and for all $X,Y$ in a Banach algebra and all scalars
-$s$,
+Let either $X,Y$ have positive degree in $\widehat T$ with $s$ a formal or
+scalar parameter, or let $X,Y$ lie in a Banach algebra with $s$ an
+arbitrary scalar. Then
 \begin{equation}\label{eq:campbell}
  e^{sX}Ye^{-sX}=e^{s\ad_X}Y=\sum_{n\geq0}\frac{s^n}{n!}\ad_X^nY.
 \end{equation}
@@ -35,9 +35,9 @@ product rule and $\frac{\dd}{\dd s}e^{sX}=Xe^{sX}=e^{sX}X$. The map
 $\ad_X$ is a bounded linear operator with $\norm{\ad_X}\leq2\norm X$, so the
 linear differential equation $F'=\ad_XF$ has the unique solution
 $F(s)=e^{s\ad_X}Y=\sum_ns^n\ad_X^nY/n!$; uniqueness holds because a
-difference $G$ of two solutions satisfies
-$\norm{G(s)}\leq2\norm X\int_0^s\norm{G}$, hence vanishes by Gr\"onwall's
-inequality. The norm bound follows from $\norm{\ad_X^nY}\leq(2\norm X)^n\norm Y$.
+difference $G$ of two solutions satisfies $G(0)=0$ and
+$\norm{G(s)}\leq2\norm X\bigl|\int_0^s\norm{G(\sigma)}\,\dd\sigma\bigr|$ on
+every compact interval, hence vanishes by Gr\"onwall's inequality. The norm bound follows from $\norm{\ad_X^nY}\leq(2\norm X)^n\norm Y$.
 Formally, both sides of \eqref{eq:campbell} are power series in $s$ with
 coefficients in $\widehat T$; using \eqref{eq:adbinomial}, the coefficient
 of $s^n$ on the left is
@@ -47,9 +47,11 @@ also gives a second, purely algebraic proof in the Banach case.) Setting
 $s=1$ gives $\Ad_{e^X}=e^{\ad_X}$.
 \end{proof}
 
-Conjugation $A\mapsto e^XAe^{-X}$ is an algebra automorphism, continuous in
-the Banach case and degree-preserving in the formal case, so it commutes with
-the exponential series. Therefore
+Conjugation $A\mapsto e^XAe^{-X}$ is an algebra automorphism; it is
+continuous in the Banach case, and in the formal case it preserves the
+filtration ($e^XF^m\widehat Te^{-X}\subseteq F^m\widehat T$, since $e^{\pm X}$
+have constant term $1$) and is therefore continuous for the degree
+topology. Hence it commutes with the exponential series. Therefore
 \begin{align}
  e^Xe^Ye^{-X}&=\exp\bigl(e^XYe^{-X}\bigr)=\exp\bigl(e^{\ad_X}Y\bigr),\label{eq:conjexp}\\
  e^Xe^Y&=\exp\Bigl(\sum_{n\geq0}\frac{\ad_X^nY}{n!}\Bigr)e^X.\label{eq:braiding}

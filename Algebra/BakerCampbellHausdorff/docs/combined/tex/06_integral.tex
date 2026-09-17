@@ -285,8 +285,10 @@ only if $\phi(A)$ is invertible (see \cref{prop:coframe} for the detailed
 argument). Then $\beta(A)$ \emph{means} the inverse $\phi(A)^{-1}$, which
 by holomorphic functional calculus equals
 $\frac1{2\pi\ii}\oint_\Gamma\beta(z)(zI-A)^{-1}\dd z$ for any finite union
-$\Gamma$ of positively oriented contours enclosing $\spec(A)$ and avoiding
-the poles of $\beta$; it is not necessarily the Taylor series at zero.
+$\Gamma$ of positively oriented contours whose interior contains $\spec(A)$
+and no point of $2\pi\ii\Z\setminus\{0\}$, so that $\Gamma$ winds zero
+times about every pole of $\beta$; it is not necessarily the Taylor series
+at zero.
 Since $(\dd\exp)_X(H)=e^X\phi(A)H$ by \eqref{eq:leftdexp} (in a Lie group,
 by the intrinsic version in \cref{sec:liegroups}), the differential of the
 exponential at $X$ is invertible, and the inverse function theorem provides
@@ -318,17 +320,19 @@ Both sums are finite, and only earlier $H_j$ occur. In particular
 $2H_2=T_1(A)[\ad_{\beta(A)Y}]Y$. For a real Lie algebra all $H_q$ are real.
 \end{theorem}
 \begin{proof}
-For an operator $E$ with $\norm E\,\sup_{z\in\Gamma}\norm{R(z)}<1$, the
-resolvent of $A+E$ exists on $\Gamma$ and is given by the Neumann series
+Let $\Omega$ be the closed exterior of $\Gamma$, that is, the complement of
+the interior of $\Gamma$. The function $z\mapsto\norm{R(z)}$ is continuous
+on $\Omega$ (which contains no point of $\spec(A)$) and tends to $0$ as
+$|z|\to\infty$, so $\kappa_\Gamma:=\sup_{z\in\Omega}\norm{R(z)}<\infty$. For
+an operator $E$ with $\norm E\,\kappa_\Gamma<1$, the resolvent of $A+E$
+exists at every $z\in\Omega$ and is given by the Neumann series
 \[
  (zI-A-E)^{-1}=\bigl(R(z)^{-1}(I-R(z)E)\bigr)^{-1}
  =\sum_{k\geq0}\bigl(R(z)E\bigr)^kR(z),
 \]
-converging uniformly on $\Gamma$. For such $E$ the spectrum of $A+E$ lies
-inside $\Gamma$ (a point $z\in\Gamma$ or outside is in the resolvent set by
-the same Neumann series, and the interior of $\Gamma$ contains
-$\spec(A)$ together with a neighborhood on which the estimate persists), so
-by the holomorphic functional calculus
+converging uniformly on $\Omega$, and in particular on $\Gamma$. Hence
+$\spec(A+E)$ lies in the interior of $\Gamma$, and by the holomorphic
+functional calculus
 \[
  \beta(A+E)=\frac1{2\pi\ii}\oint_\Gamma\beta(z)(zI-A-E)^{-1}\dd z
  =\sum_{k\geq0}\frac1{2\pi\ii}\oint_\Gamma\beta(z)R(z)\bigl(ER(z)\bigr)^k\dd z,
@@ -336,7 +340,8 @@ by the holomorphic functional calculus
 and $\beta(A+E)=\phi(A+E)^{-1}$ because $\phi\beta=1$ and functional
 calculus is multiplicative. Now take $E=E(\eps)=\sum_{j\geq1}\eps^j\ad_{H_j}$,
 where the $H_j$ are the Taylor coefficients of the analytic branch
-$Z(\eps)$; for $|\eps|$ small the norm condition holds. Substituting into
+$Z(\eps)$; for $|\eps|$ small the condition $\norm{E(\eps)}\kappa_\Gamma<1$
+holds. Substituting into
 the uniformly convergent double series and collecting the coefficient of
 $\eps^{q-1}$ gives
 \[
