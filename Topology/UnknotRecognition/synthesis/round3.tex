@@ -8,7 +8,7 @@ asymptotic behaviour. This section records what was gained, what was tried and
 rejected, and an episode about measurement that changed how every number below
 was obtained. All verdicts and ranks are exact and identical to those of 0.2
 (the deciding step can differ: the Reidemeister III help below settles some
-unknots before the scan): 40 unit tests pass, and \texttt{crosscheck.py} compares the ranks by homological degree
+unknots before the scan): 41 unit tests pass, and \texttt{crosscheck.py} compares the ranks by homological degree
 of the new default scanner with the generic 0.2 scanner and the 0.1 set algebra
 on random braid closures (400 closures with 2 to 5 strands, no mismatch).
 
@@ -267,6 +267,25 @@ Conway knot) on every short invocation and $0.86$ on the half-second stress
 scan. My first two such comparisons showed no difference and were invalid:
 \texttt{python -m} puts the current directory first on the module path and both
 arms ran from the working tree, which was thus compared with itself.
+
+Profiling \texttt{recognize} by cumulative time, rather than the scanner by own
+time, then found four more things of the same unglamorous kind. The Jones
+filter paid for the bookkeeping of a shape cache it never uses (9\% of a
+recognition of the Conway knot); the reduction rebuilt and revalidated the
+diagram even when no move applied (12\%); the dart involution of an immutable
+diagram was recomputed seven times per recognition; and on the commonest input
+of all, a reducible closure that the Alexander filter decides, a quarter of the
+time went into validating the reduced diagram from scratch, although the moves
+can only break its topology, which is now checked directly on the darts (one
+traversal through every crossing twice, $n+2$ faces; of 282 deliberately
+corrupted structures 273 are rejected and the other 9 also pass the full
+validation). Against the code before: recognition of the Conway knot $0.765$
+$[0.733, 0.794]$, of $T(3,61)$ $0.759$, of Conway\#Conway\#Conway $0.731$, and
+of the random 5-strand closure $0.865$ and then $0.796$ $[0.772, 0.831]$, with
+status, deciding step, reduced size and rank identical on 700 diagrams and
+reduced diagrams and traces identical on 1500. The \texttt{tail} option was
+re-tested on the present scanner and stays at 0: one crossing of tail is a wash
+($0.94$ to $1.01$), two or three are worse, up to three times.
 
 Two remarks. First, the closing sentence of the previous section, that on an
 unknot diagram no filter can decide the Python accelerations change nothing,
