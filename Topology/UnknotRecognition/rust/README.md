@@ -28,8 +28,9 @@ invalid input, 3 for `UNKNOWN`.
 
 Options of `recognize`: `--no-reduction`, `--no-descending`, `--no-factor`,
 `--no-modular`, `--no-jones`, `--jones-max-states N`, `--lifo`, `--tail N`,
-`--max-objects N`, `--seconds S`, `--no-r3`, `--race N`. Options of `khovanov`:
-`--factor`, `--lifo`, `--tail N`, `--max-objects N`, `--seconds S`, `--race N`.
+`--max-objects N`, `--seconds S`, `--no-r3`, `--race N`, `--race-after MS`.
+Options of `khovanov`: `--factor`, `--lifo`, `--tail N`, `--max-objects N`,
+`--seconds S`, `--race N`, `--race-after MS`.
 
 ## Pipeline
 
@@ -91,6 +92,25 @@ against 1.18, 1.27 against 1.28, 2.11 against 2.06, 1.71 against 1.70), so it
 is contention in the hardware of this machine (12 logical cores, 1.7 GHz
 nominal), and will differ elsewhere. The default is therefore `--race 1`; use
 `--race 2` when scans are long or a bad order would hurt.
+
+**A head start for the default order (`--race-after MS`, default 0).** The idea:
+let the competitors start only after the default order has run for a while, so
+that scans finishing within the head start pay nothing. It works as designed
+but is not a better default. On the 17 inputs whose single scan is under 100 ms
+(nine interleaved rounds): no head start 1.10 of single (median 1.15), 50 ms
+1.10 (median 1.07, since most of these scans last 50 to 100 ms), 200 ms 1.01
+(median 1.006). On all 40 inputs (five rounds) the totals were 0.514 without,
+0.572 with 50 ms and 0.604 with 200 ms, because a head start gives away wins on
+scans of 100 ms to 1 s (0.78 of single without, 0.87 and 0.98 with) to protect
+scans where at most 15 ms are at stake. Those totals carry a run-to-run noise
+of about 0.1: the same setting on the same inputs gave 0.650 in the first
+experiment and 0.514 in the second, a few multi-second inputs dominating.
+(`results/race_head_start.json` predates the fix described next;
+`results/race_head_start_short.json` is after it.) A first implementation let
+the late starters poll with `sleep(1 ms)`, which on Windows lasts up to a timer
+tick of about 15 ms and held up the return of the scope: scans that never
+started a competitor cost 1.04 (worst 1.13) instead of 1.00. They now wait on a
+channel that the first order closes when it is done.
 
 Cancellation needed the clock and the flag to be looked at while a crossing is
 being added, not only between cancellations, so the transfer loop now checks

@@ -45,6 +45,8 @@ struct Options {
     r3: bool,
     /// number of scan orders raced on separate threads (1 = no race)
     race: usize,
+    /// head start of the default order in a race, in milliseconds
+    race_after: f64,
 }
 
 const R3_DEPTH: usize = 4;
@@ -71,7 +73,8 @@ fn scan(pd: &[[u32; 4]], o: &Options, deadline: Option<Instant>) -> (Result<scan
     }
     let candidates = prep::race_orders(pd, tries, o.race);
     let names: Vec<String> = candidates.iter().map(|(t, _)| format!("{:?}", t)).collect();
-    let (result, winner) = scan::race(pd, candidates.into_iter().map(|(_, order)| order).collect(), scan_options(o, deadline));
+    let (result, winner) = scan::race(pd, candidates.into_iter().map(|(_, order)| order).collect(), scan_options(o, deadline),
+                                      Duration::from_secs_f64(o.race_after / 1000.0));
     (result, names[winner].clone())
 }
 
@@ -216,6 +219,7 @@ fn main() {
         factor_rank: false,
         r3: true,
         race: 1,
+        race_after: 0.0,
     };
     let mut i = 2;
     let number = |i: &mut usize| -> f64 {
@@ -241,6 +245,7 @@ fn main() {
             "--repeat" => o.repeat = number(&mut i) as usize,
             "--no-r3" => o.r3 = false,
             "--race" => o.race = (number(&mut i) as usize).max(1),
+            "--race-after" => o.race_after = number(&mut i).max(0.0),
             other => {
                 eprintln!("unknown option {}", other);
                 std::process::exit(2);
@@ -356,7 +361,7 @@ mod tests {
 
     fn defaults() -> Options {
         Options { reduction: true, descending: true, factor: true, modular: true, jones: true, jones_max_states: 4096,
-                  minfill: true, tail: 0, max_objects: None, seconds: None, repeat: 1, factor_rank: false, r3: true, race: 1 }
+                  minfill: true, tail: 0, max_objects: None, seconds: None, repeat: 1, factor_rank: false, r3: true, race: 1, race_after: 0.0 }
     }
 
     /// A small deterministic generator, so that the tests need no dependency.
@@ -436,14 +441,14 @@ mod tests {
             }
             let orders: Vec<Vec<usize>> = candidates.into_iter().map(|(_, o)| o).collect();
             let count = orders.len();
-            let (result, winner) = scan::race(&d.pd, orders, ScanOptions::default());
+            let (result, winner) = scan::race(&d.pd, orders, ScanOptions::default(), Duration::ZERO);
             assert_eq!(result.ok().unwrap().rank / 2, expected);
             assert!(winner < count);
         }
         // a limit that every competitor hits is reported; verdicts do not depend on racing
         let big = braid(3, &[1, 2].repeat(10));
         let orders: Vec<Vec<usize>> = prep::race_orders(&big.pd, 12, 3).into_iter().map(|(_, o)| o).collect();
-        let (result, _) = scan::race(&big.pd, orders, ScanOptions { max_objects: Some(2), ..ScanOptions::default() });
+        let (result, _) = scan::race(&big.pd, orders, ScanOptions { max_objects: Some(2), ..ScanOptions::default() }, Duration::from_millis(2));
         assert!(matches!(result, Err(ScanError::Limit(_))));
         for d in random_knot_braids(13, 30, 5, 16) {
             let single = recognize(&d, &defaults());

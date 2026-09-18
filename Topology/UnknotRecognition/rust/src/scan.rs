@@ -935,25 +935,44 @@ pub fn khovanov_rank(pd: &[[u32; 4]], order: Vec<usize>, options: ScanOptions) -
 /// Rank and ranks by degree do not depend on the order, so the result is the same whoever wins;
 /// `order` and `stats` are the winner's.  A competitor that hits a resource limit does not end
 /// the race (limits such as `max_objects` depend on the order); the limit is reported only if
-/// every competitor hits one.  Returns the result and the index of the winning order.
-pub fn race(pd: &[[u32; 4]], orders: Vec<Vec<usize>>, options: ScanOptions) -> (Result<RankResult, ScanError>, usize) {
+/// every competitor hits one.  Competitors other than the first start after `head_start`.
+/// Returns the result and the index of the winning order.
+pub fn race(pd: &[[u32; 4]], orders: Vec<Vec<usize>>, options: ScanOptions, head_start: Duration) -> (Result<RankResult, ScanError>, usize) {
     if orders.len() == 1 {
         return (khovanov_rank(pd, orders.into_iter().next().unwrap(), options), 0);
     }
     let cancel = Arc::new(AtomicBool::new(false));
     let (sender, receiver) = std::sync::mpsc::channel();
     let competitors = orders.len();
+    // The late starters wait on a channel, not on a sleep: when the first order finishes, its end of
+    // the channel is dropped and they wake at once.  (Polling with sleep(1 ms) cost up to a timer
+    // tick, about 15 ms on Windows, before the scope could return: 4 to 13% on scans under 100 ms.)
+    let (wake, waiters): (Vec<_>, Vec<_>) = (1..competitors).map(|_| std::sync::mpsc::channel::<()>()).unzip();
+    let mut wake = Some(wake);
+    let mut waiters = waiters.into_iter();
     std::thread::scope(|scope| {
         for (k, order) in orders.into_iter().enumerate() {
             let sender = sender.clone();
             let mut mine = options.clone();
             mine.cancel = Some(cancel.clone());
             let cancel = cancel.clone();
+            let held = if k == 0 { wake.take() } else { None };
+            let waiter = if k == 0 { None } else { waiters.next() };
             scope.spawn(move || {
+                // The first order gets a head start: most scans finish within it and then pay nothing
+                // for the race, while a late start costs a long scan next to nothing.
+                if let Some(waiter) = waiter {
+                    let _ = waiter.recv_timeout(head_start);        // a timeout, or the first order is done
+                    if cancel.load(Ordering::Relaxed) {
+                        let _ = sender.send((k, Err(ScanError::Cancelled)));
+                        return;
+                    }
+                }
                 let result = khovanov_rank(pd, order, mine);
                 if result.is_ok() {
                     cancel.store(true, Ordering::Relaxed);
                 }
+                drop(held);                                          // wakes the late starters
                 let _ = sender.send((k, result));
             });
         }
