@@ -101,7 +101,8 @@ def normalize(p: Poly) -> Poly:
     return p
 
 
-def alexander_matrix(diagram: Diagram) -> list[list[Poly]]:
+def alexander_rows(diagram: Diagram) -> list[dict[int, Poly]]:
+    """The Alexander matrix by rows, nonzero entries only (at most three per row)."""
     n = diagram.crossings
     arcs = DisjointSet(2 * n)
     for _, b, _, d in diagram.pd:
@@ -113,15 +114,31 @@ def alexander_matrix(diagram: Diagram) -> list[list[Poly]]:
     signs = diagram.signs()
     slots = diagram.incoming_slots()
     one_minus_t, t, minus_one = [1, -1], [0, 1], [-1]
-    matrix = [[[] for _ in range(n)] for _ in range(n)]
+    rows: list[dict[int, Poly]] = [{} for _ in range(n)]
     for i, row in enumerate(diagram.pd):
         u_slot = slots[i][0]
         o = column[arcs.find(row[1])]
         u, v = column[arcs.find(row[u_slot])], column[arcs.find(row[(u_slot + 2) % 4])]
         entries = ((o, one_minus_t), (u, t), (v, minus_one)) if signs[i] > 0 else                   ((o, one_minus_t), (u, minus_one), (v, t))
+        sparse = rows[i]
         for col, value in entries:
-            matrix[i][col] = add(matrix[i][col], value)
+            total = add(sparse.get(col, []), value)      # arcs can coincide at a kink
+            if total:
+                sparse[col] = total
+            else:
+                sparse.pop(col, None)
+    return rows
+
+
+def alexander_matrix(diagram: Diagram) -> list[list[Poly]]:
+    n = diagram.crossings
+    matrix: list[list[Poly]] = [[[] for _ in range(n)] for _ in range(n)]
+    for i, sparse in enumerate(alexander_rows(diagram)):
+        for col, value in sparse.items():
+            matrix[i][col] = value
     return matrix
+
+
 
 
 def alexander_polynomial(diagram: Diagram) -> Poly:

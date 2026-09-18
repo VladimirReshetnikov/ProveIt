@@ -20,7 +20,7 @@ from __future__ import annotations
 
 from typing import Callable
 
-from .alexander import alexander_matrix
+from .alexander import alexander_rows
 from .diagram import Diagram
 from .geometry import SMOOTHINGS
 from .ordering import best_scan_order
@@ -79,10 +79,18 @@ def alexander_obstruction(diagram: Diagram) -> dict | None:
     n = diagram.crossings
     if n == 0:
         return None
-    matrix = alexander_matrix(diagram)
+    rows = alexander_rows(diagram)[:-1]          # sparse: at most three nonzero entries per row
     for value in (-1, ALEXANDER_T):
-        # a row has at most three nonzero entries: evaluate those only
-        minor = [[_evaluate(x, value, PRIME) if x else 0 for x in row[:-1]] for row in matrix[:-1]]
+        cache: dict = {}                         # the entries are a handful of distinct polynomials
+        minor = [[0] * (n - 1) for _ in rows]
+        for i, sparse in enumerate(rows):
+            for col, poly in sparse.items():
+                if col < n - 1:
+                    key = tuple(poly)
+                    number = cache.get(key)
+                    if number is None:
+                        number = cache[key] = _evaluate(poly, value, PRIME)
+                    minor[i][col] = number
         det = determinant_mod(minor, reduced=True)
         units, term = set(), 1
         for _ in range(n):

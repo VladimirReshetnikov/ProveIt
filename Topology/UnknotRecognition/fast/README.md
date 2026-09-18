@@ -178,6 +178,13 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   return values on 500 random closures (350 witnesses with equal bracket, peak
   states and transitions; 122 inconclusive; 28 identical budget failures; 48
   diagrams with loop edges). `filters._glue` is kept as the reference.
+* The Alexander matrix is now built by sparse rows (`alexander_rows`); the dense
+  `alexander_matrix` of the exact path derives from it, and the modular filter
+  fills a zero matrix directly, evaluating each distinct entry polynomial once:
+  `recognize T(3,61)` 0.69 (interval 0.62..0.72) on top of the 0.60 above, no
+  claim on the small diagrams. Output-preserving: dense matrices, filter
+  results and exact polynomials identical on 500 random closures (35 with
+  kinks, where entries of one row coincide and can cancel).
 * `seconds=` fidelity: the default scanner overshot a 1 s budget by up to
   0.24 s because a crossing was added without checking the clock; with a check
   every 512 objects the overshoot is at most 0.03 s on the same runs.
