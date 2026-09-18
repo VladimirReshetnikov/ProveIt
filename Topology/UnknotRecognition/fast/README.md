@@ -57,6 +57,9 @@ python -m fastunknot jones examples/kinoshita_terasaka.json
 python -m fastunknot alexander examples/figure_eight.json
 python -m unittest discover -s tests -v
 python ablation.py        # about 40 minutes: the LIFO rows hit their 300 s caps
+python crosscheck.py 400  # default scanner against the generic and the 0.1 scanners on random closures
+python ab.py HEAD         # interleaved A/B timing of the working tree against a git revision
+python perf.py label      # sequential best-of-N timing with a control loop; see the caveat below
 ```
 
 Exit codes: 0 for either exact verdict, 2 for invalid input, 3 for `UNKNOWN`.
@@ -102,6 +105,29 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
 * `results/ablation.json` is the per-idea ablation (see the report). It takes
   about 40 minutes because the LIFO configurations on the stress case run into
   the 300 s cap; shorten the list in `ablation.py` if that matters.
+* `python crosscheck.py 400 7`: 400 random braid closures (2 to 5 strands),
+  ranks by degree of the default scanner (with `tail` 0 to 2 and `check_d_squared`
+  on every fourth) equal to those of the generic scanner, 0 mismatches.
+* **Timing caveat, learnt the hard way on 18 September 2026.** On this desktop
+  the speed of pure Python drifted by more than a factor of two inside a single
+  one-minute run (background applications, clock throttling): a fixed control
+  loop went from 5.3 ms to 12 ms. Sequential before/after runs of `perf.py` are
+  therefore not evidence. `perf.py` times that control loop next to every case
+  and marks a run `SUSPECT` when the control spreads by more than 10%; three
+  rows of `results/perf_log.json` are flagged as contaminated. Use `ab.py`,
+  which times old and new alternately in one process and claims a gain only
+  when the whole interquartile range of the paired ratios is below 1
+  (`results/ab_log.json`). Deterministic counters (`stats["compositions"]`,
+  object counts) are immune to this and are the better yardstick for
+  algorithmic changes.
+* Post-0.2 scanner work (commits 24b6111, 2e3fef7, e34c9e8), `perf.py` totals:
+  1022 ms (0.2) to 602 ms (`FastScan`) to 412 ms (integer geometry). Those six
+  runs predate the control loop; what supports them is that the one case the
+  changes did not touch (`jones braid5_36`) stayed within 2.63 to 2.73 ms
+  throughout. The later geometry refinements are 7 to 13% on small scans by
+  `ab.py` and **not measurable on the large scans**. One idea was measured and
+  rejected: queuing only the cheapest pivot candidate per source object cut
+  queue traffic but raised compositions on the stress case from 29k to 42k.
 * Same-machine comparison with the nine proposals:
   `../synthesis/data/proposals_bench*.json`.
 * Pitfall for anyone writing random tests: a braid word of even length on an
@@ -115,6 +141,9 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
 (heap-based greedy scan order), `factor.py` (visible connected sums),
 `filters.py` (modular Alexander and Jones tests), `alexander.py` (exact
 polynomial), `geometry.py` (matchings, gluing a crossing), `algebra.py`
-(bit-packed cobordism algebra), `scan.py` (scanner), `scan_reference.py` (the
+(bit-packed cobordism algebra), `scan.py` (entry point `khovanov_rank` and the
+generic scanner used by the ablation configurations), `scan_fast.py` (the
+default scanner: list storage, interned matchings, bucket-queue min-fill),
+`planar.py` (its integer geometry and compiled plans), `scan_reference.py` (the
 0.1 scanner, unchanged), `recognize.py` (pipeline), `__main__.py` (CLI).
 MIT-0, see the repository root.
