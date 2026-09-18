@@ -8,7 +8,7 @@ asymptotic behaviour. This section records what was gained, what was tried and
 rejected, and an episode about measurement that changed how every number below
 was obtained. All verdicts and ranks are exact and identical to those of 0.2
 (the deciding step can differ: the Reidemeister III help below settles some
-unknots before the scan): 38 unit tests pass, and \texttt{crosscheck.py} compares the ranks by homological degree
+unknots before the scan): 40 unit tests pass, and \texttt{crosscheck.py} compares the ranks by homological degree
 of the new default scanner with the generic 0.2 scanner and the 0.1 set algebra
 on random braid closures (400 closures with 2 to 5 strands, no mismatch).
 
@@ -246,6 +246,27 @@ inputs finish inside the head start, where nothing is started and the ratio
 must be 1, yet they read $0.80$ to $1.43$ with three rounds each. Measured with
 61 interleaved pairs, an armed race that starts nothing costs $1.010$
 $[0.984, 1.041]$ against an A/A control of $1.042$, that is, nothing.
+
+\paragraph{Start-up, the largest gain for a command-line user.} Everything above
+saves well under a millisecond on a small diagram, while a whole
+\texttt{python -m fastunknot recognize} process took 115 ms, 29.5 of them for
+the bare interpreter. Importing the package cost 56 ms: 25 for
+\texttt{dataclasses}, which loads \texttt{inspect}, \texttt{re}, \texttt{dis},
+\texttt{ast} and \texttt{tokenize}, used for five simple records (now written
+out by hand with the same constructors, equality, hashing, immutability and
+\texttt{repr}); 9 for \texttt{subprocess} and \texttt{json}, needed only when a
+race starts; 5 for \texttt{typing}, used only in annotations that are never
+evaluated. Then \texttt{argparse}: 55 to 59 ms in Python 3.14, where it loads
+\texttt{\_colorize}, \texttt{dataclasses} again and \texttt{shutil}. The
+options are now one table feeding a small direct parser for the well-formed
+common case and, on demand, the real \texttt{argparse} parser for everything
+else, so help and error messages are unchanged; tests check that the two agree
+wherever the fast one accepts. With 41 interleaved pairs of whole processes a
+run takes $0.52$ of the time ($0.510$ to $0.541$; 115.5 to 60.9 ms for the
+Conway knot) on every short invocation and $0.86$ on the half-second stress
+scan. My first two such comparisons showed no difference and were invalid:
+\texttt{python -m} puts the current directory first on the module path and both
+arms ran from the working tree, which was thus compared with itself.
 
 Two remarks. First, the closing sentence of the previous section, that on an
 unknot diagram no filter can decide the Python accelerations change nothing,

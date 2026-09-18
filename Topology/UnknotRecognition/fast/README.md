@@ -62,6 +62,7 @@ python ablation.py        # about 40 minutes: the LIFO rows hit their 300 s caps
 python crosscheck.py 400  # default scanner against the generic and the 0.1 scanners on random closures
 python ab.py HEAD         # interleaved A/B timing of the working tree against a git revision
 python perf.py label      # sequential best-of-N timing with a control loop; see the caveat below
+python cli_ab.py HEAD     # whole-process timing of the command line against a git revision
 python hard_unknots.py    # scrambled unknot braids that no filter decides (pipeline timing inputs)
 ```
 
@@ -99,9 +100,9 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
 
 ## Test and benchmark status (last observed 18 September 2026)
 
-* `python -m unittest discover -s tests`: 38 tests, OK (about 9 s; one test starts race processes), about 3 s (CPython
+* `python -m unittest discover -s tests`: 40 tests, OK (about 9 s; one test starts race processes), about 3 s (CPython
   3.14.4, Windows 11). 19 are the 0.1 tests (three expectations updated because
-  a filter now decides before Khovanov does), 19 are new and compare every new
+  a filter now decides before Khovanov does), 21 are new and compare every new
   code path with the 0.1 implementation.
 * `results/benchmark_0.1.json` is the 0.1 benchmark, kept as a record; its
   36-crossing 5-strand row is the 600 s timeout that motivated 0.2.
@@ -377,6 +378,35 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   it (120 of 120; 180 of 180 with heavier scrambling). `SURVIVORS` lists unknot
   diagrams of 11 to 16 crossings found by random search that survive I, II, the
   default III search and every filter; they are the honest scan-decided inputs.
+* **Start-up: a whole command-line run takes 0.52 of the time** (`python cli_ab.py`,
+  41 interleaved pairs of whole processes, `results/cli_ab_log.json`): `recognize
+  conway.json` 115.5 to 60.9 ms (interval 0.510..0.541), `hard_unknot_8` 0.523,
+  `unknot_braid40` 0.530, `khovanov trefoil` 0.523, and still 0.856 on the
+  half-second stress scan. The bare interpreter is 29.5 ms of that, so the
+  package's own start-up went from about 86 to about 31 ms; for a command-line
+  user that is more than every scanner optimization above, which save well
+  under a millisecond on such inputs. Where it went: `import fastunknot` took
+  56 ms, 25 of them for `dataclasses` (it loads `inspect`, `re`, `dis`, `ast`,
+  `tokenize`) used for five simple records, now written out by hand with the
+  same constructors, equality, hashing, immutability and `repr` (and they
+  pickle and deep-copy); 9 ms for `subprocess` and `json`, needed only when a
+  race starts; 5 ms for `typing`, used only in annotations that are never
+  evaluated; the 0.1 reference scanner, needed only by the ablation
+  configurations, is imported on demand. Then `argparse`: 55 to 59 ms in Python
+  3.14, where it loads `_colorize`, `dataclasses` again and `shutil`
+  (`color=False` does not help). The options are now one table that feeds a
+  small direct parser for the well-formed common case and, on demand, the real
+  `argparse` parser for everything else (help, errors, abbreviated flags,
+  `--flag=value`, values that look like flags), so messages and help are
+  argparse's own; tests check that the two agree wherever the fast one
+  accepts, and that start-up loads none of those modules.
+  Two measurement notes. My first two whole-process comparisons showed "no
+  difference" and were invalid: `python -m` puts the current directory first on
+  `sys.path`, and both arms ran from the working tree, so the working tree was
+  compared with itself; `cli_ab.py` runs each arm from its own directory and
+  checks which package it imports. And the absolute milliseconds of different
+  rows are not comparable: the same command read 61 ms and, ten minutes later,
+  100 ms; only the paired ratio within a row is robust.
 * `seconds=` fidelity: the default scanner overshot a 1 s budget by up to
   0.24 s because a crossing was added without checking the clock; with a check
   every 512 objects the overshoot is at most 0.03 s on the same runs.

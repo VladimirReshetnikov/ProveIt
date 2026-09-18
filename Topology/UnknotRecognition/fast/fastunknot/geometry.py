@@ -5,7 +5,6 @@ A matching is a frozenset of frozenset({p, q}) pairs of boundary edge labels.
 from __future__ import annotations
 
 from collections import defaultdict
-from dataclasses import dataclass, field
 from functools import lru_cache
 
 SMOOTHINGS = (((0, 1), (2, 3)), ((0, 3), (1, 2)))  # 0: (a,b),(c,d)   1: (a,d),(b,c)
@@ -46,13 +45,26 @@ def circles(a: Matching, b: Matching) -> dict:
     return {p: keys[dsu_find(parent, p)] for p in parent}
 
 
-@dataclass
 class Glued:
     """Result of attaching one smoothing of a crossing to a matching."""
-    points: frozenset
-    matching: Matching
-    closed: int                                  # number of closed circles created
-    arc_of: dict = field(default_factory=dict)   # arc id -> ('new', pair) | ('closed', index)
+
+    def __init__(self, points: frozenset, matching: Matching, closed: int, arc_of: dict | None = None):
+        self.points = points
+        self.matching = matching
+        self.closed = closed                                   # number of closed circles created
+        self.arc_of = {} if arc_of is None else arc_of         # arc id -> ('new', pair) | ('closed', index)
+
+    def _fields(self):
+        return (self.points, self.matching, self.closed, self.arc_of)
+
+    def __eq__(self, other):
+        return self._fields() == other._fields() if other.__class__ is self.__class__ else NotImplemented
+
+    __hash__ = None
+
+    def __repr__(self):
+        return (f"Glued(points={self.points!r}, matching={self.matching!r}, closed={self.closed!r}, "
+                f"arc_of={self.arc_of!r})")
 
 
 def glue_uncached(m: Matching, smoothing_index: int, points: frozenset, slots: tuple) -> Glued:

@@ -21,9 +21,10 @@ running time is exponential in the crossing number; it is not quasi-polynomial.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 from time import monotonic
-from typing import Any
+TYPE_CHECKING = False            # annotations only: importing typing costs 4.6 ms at start-up
+if TYPE_CHECKING:
+    from typing import Any
 
 from .alexander import alexander_polynomial, evaluate, format_polynomial
 from .diagram import Diagram
@@ -34,14 +35,29 @@ from .scan import ScanLimit, khovanov_rank
 from .simplify import descending_start, simplify
 
 
-@dataclass
 class Result:
-    status: str                  # UNKNOT, KNOTTED, UNKNOWN
-    method: str
-    input_crossings: int
-    reduced_crossings: int
-    seconds: float
-    evidence: dict[str, Any] = field(default_factory=dict)
+    """The outcome of ``recognize``: a mutable record with value equality."""
+
+    def __init__(self, status: str, method: str, input_crossings: int, reduced_crossings: int, seconds: float,
+                 evidence: dict[str, Any] | None = None):
+        self.status = status                  # UNKNOT, KNOTTED, UNKNOWN
+        self.method = method
+        self.input_crossings = input_crossings
+        self.reduced_crossings = reduced_crossings
+        self.seconds = seconds
+        self.evidence = {} if evidence is None else evidence
+
+    def _fields(self):
+        return (self.status, self.method, self.input_crossings, self.reduced_crossings, self.seconds, self.evidence)
+
+    def __eq__(self, other):
+        return self._fields() == other._fields() if other.__class__ is self.__class__ else NotImplemented
+
+    __hash__ = None
+
+    def __repr__(self):
+        return (f"Result(status={self.status!r}, method={self.method!r}, input_crossings={self.input_crossings!r}, "
+                f"reduced_crossings={self.reduced_crossings!r}, seconds={self.seconds!r}, evidence={self.evidence!r})")
 
     @property
     def is_unknot(self) -> bool | None:

@@ -13,7 +13,9 @@ from __future__ import annotations
 
 from collections import defaultdict
 from heapq import heapify, heappop, heappush
-from typing import Callable
+TYPE_CHECKING = False            # annotations only: importing typing costs 4.6 ms at start-up
+if TYPE_CHECKING:
+    from typing import Callable
 
 
 def validate_order(n: int, order) -> list[int]:

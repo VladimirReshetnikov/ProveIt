@@ -10,8 +10,9 @@ pass over horizontals).
 from __future__ import annotations
 
 from collections import Counter, defaultdict
-from dataclasses import dataclass
-from typing import Any, Iterable, Sequence
+TYPE_CHECKING = False            # annotations only: importing typing costs 4.6 ms at start-up
+if TYPE_CHECKING:
+    from typing import Any, Iterable, Sequence
 
 
 class DiagramError(ValueError):
@@ -51,10 +52,30 @@ def cycles(permutation: Sequence[int]) -> list[tuple[int, ...]]:
     return result
 
 
-@dataclass(frozen=True)
 class Diagram:
-    """A normalized PD code (labels 0..2n-1) with cached face and strand data."""
-    pd: tuple[tuple[int, int, int, int], ...]
+    """A normalized PD code (labels 0..2n-1) with cached face and strand data.
+
+    An immutable record with value equality and hashing (written out by hand:
+    importing ``dataclasses`` alone took 25 of the 56 ms of ``import fastunknot``).
+    """
+
+    def __init__(self, pd: tuple[tuple[int, int, int, int], ...]):
+        object.__setattr__(self, "pd", pd)
+
+    def __setattr__(self, name, value):
+        raise AttributeError(f"cannot assign to field {name!r}: Diagram is immutable")
+
+    def __delattr__(self, name):
+        raise AttributeError(f"cannot delete field {name!r}: Diagram is immutable")
+
+    def __eq__(self, other):
+        return self.pd == other.pd if other.__class__ is self.__class__ else NotImplemented
+
+    def __hash__(self):
+        return hash((self.pd,))
+
+    def __repr__(self):
+        return f"Diagram(pd={self.pd!r})"
 
     @property
     def crossings(self) -> int:

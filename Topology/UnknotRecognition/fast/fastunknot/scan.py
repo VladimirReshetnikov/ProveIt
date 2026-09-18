@@ -18,29 +18,40 @@ ablation.  The worst case remains exponential.
 """
 from __future__ import annotations
 
-import json
 import os
-import subprocess
 import sys
 from collections import defaultdict
 from heapq import heappop, heappush
 from itertools import product
 from time import monotonic
-from typing import Any, Iterable
+TYPE_CHECKING = False            # annotations only: importing typing costs 4.6 ms at start-up
+if TYPE_CHECKING:
+    from typing import Any, Iterable
 
-from . import scan_reference as _ref
 from .algebra import BitAlgebra
 from .geometry import Matching, ScanLimit
 from .ordering import TIE_RULES, best_scan_order, order_profile, repeated_stages, scan_order, validate_order
 from .scan_fast import FastScan
 
 # set-based helpers kept for compatibility and tests
-compose, identity, is_unit = _ref.compose, _ref.identity, _ref.is_unit
+
+
+def _reference():
+    """The unchanged 0.1 scanner, needed only by the ablation configurations and as a test oracle.
+    Imported on demand: it pulls in ``dataclasses``, 25 of the 56 ms that ``import fastunknot`` took."""
+    from . import scan_reference
+    return scan_reference
+
+
+def __getattr__(name):                      # compose, identity, is_unit: the set-based helpers of 0.1
+    if name in ("compose", "identity", "is_unit"):
+        return getattr(_reference(), name)
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
 def inverse(f, m: Matching):
     """Set-based inverse of a unit of End(m): over F2 a unit is an involution."""
-    if not is_unit(f):
+    if not _reference().is_unit(f):
         raise ValueError("not a unit")
     return set(f)
 
@@ -63,16 +74,16 @@ class SetAlgebra:
 
     def compose(self, f, g, a, b, c):
         self.stats["compose_calls"] += 1
-        return _ref.compose(f, g, a, b, c)
+        return _reference().compose(f, g, a, b, c)
 
     def inverse(self, f, m):
-        return set(f) if self.self_inverse else _ref.inverse(set(f), m)
+        return set(f) if self.self_inverse else _reference().inverse(set(f), m)
 
     def gluing(self, m, i, points, slots):
-        return _ref.glue(m, i, points, slots)
+        return _reference().glue(m, i, points, slots)
 
     def crossing_entries(self, a, b, f, i_src, i_tgt, points, slots):
-        gs, gt, entries = _ref.crossing_entries(a, b, set(f), i_src, i_tgt, points, slots)
+        gs, gt, entries = _reference().crossing_entries(a, b, set(f), i_src, i_tgt, points, slots)
         return gs, gt, tuple((ls, lt, value) for (ls, lt), value in entries.items())
 
 
@@ -333,6 +344,8 @@ class _Race:
                 raise _RaceWon(result)
 
     def launch(self) -> None:
+        import json                       # with subprocess, 12 ms of import time that only a race needs
+        import subprocess
         self.launched = True
         package_parent = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         environment = dict(os.environ)
@@ -357,6 +370,7 @@ class _Race:
 
     @staticmethod
     def _collect(rule: str, process):
+        import json
         try:
             data = process.stdout.read()
             process.stdout.close()
@@ -373,6 +387,7 @@ class _Race:
         """After the default order has hit a limit: a competitor may still succeed."""
         for rule, process in list(self.running):
             timeout = None if self.deadline is None else max(0.0, self.deadline - monotonic()) + 1.0
+            import subprocess
             try:
                 process.wait(timeout)
             except subprocess.TimeoutExpired:

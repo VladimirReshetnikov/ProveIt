@@ -229,6 +229,37 @@ class FilterTests(unittest.TestCase):
         self.assertEqual((r.status, r.method), ("KNOTTED", "reduced-khovanov-F2-scan"))
 
 
+class CommandLineTests(unittest.TestCase):
+    def test_fast_parser_agrees_with_argparse_or_declines(self):
+        from fastunknot.__main__ import OPTIONS, _fast_parse, _parser
+        parser = _parser()
+        accepted = [["recognize", "f.json"], ["khovanov", "f.json"], ["jones", "f.json"], ["alexander", "f.json"],
+                    ["recognize", "--tail", "2", "f.json", "--pivot", "lifo", "--algebra", "sets", "--output", "o.json"],
+                    ["khovanov", "f.json", "--factor", "--race", "2", "--race-after", "0.5", "--check-d2"]]
+        everything = ["recognize", "f.json"]              # every option of the table once
+        for flag, kind, default, choices, _ in OPTIONS["recognize"]:
+            everything += [flag] if kind is None else [flag, str(choices[-1] if choices else kind(3))]
+        accepted.append(everything)
+        for argv in accepted:
+            fast = _fast_parse(argv)
+            self.assertIsNotNone(fast, argv)
+            self.assertEqual(vars(fast), vars(parser.parse_args(argv)), argv)
+        declined = [[], ["recognise", "f"], ["recognize"], ["recognize", "a", "b"], ["recognize", "f", "--help"],
+                    ["recognize", "f", "-h"], ["recognize", "f", "--tail"], ["recognize", "f", "--tail", "x"],
+                    ["recognize", "f", "--tail=2"], ["recognize", "f", "--pivot", "fifo"], ["recognize", "f", "--tai", "2"],
+                    ["recognize", "f", "--seconds", "-1"], ["khovanov", "f", "--no-jones"], ["jones", "f", "--tail", "1"]]
+        for argv in declined:                             # these go to argparse, with its own messages
+            self.assertIsNone(_fast_parse(argv), argv)
+
+    def test_start_up_stays_light(self):
+        import subprocess
+        code = ("import sys, fastunknot, fastunknot.__main__; "
+                "print([m for m in ('argparse', 'dataclasses', 'typing', 'subprocess', 'inspect', "
+                "'fastunknot.scan_reference') if m in sys.modules])")
+        out = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, cwd=ROOT).stdout.strip()
+        self.assertEqual(out, "[]")
+
+
 class ExactAlexanderTests(unittest.TestCase):
     def test_exact_polynomial_only_when_the_modular_test_did_not_run(self):
         import hard_unknots

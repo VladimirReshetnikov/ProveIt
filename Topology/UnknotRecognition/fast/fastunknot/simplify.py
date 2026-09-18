@@ -6,15 +6,33 @@ unchanged, and neither produces a knottedness verdict.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
 
 from .diagram import Diagram, DisjointSet
 
 
-@dataclass(frozen=True)
 class Move:
-    kind: str
-    crossings: tuple[int, ...]
+    """An immutable record (kind, crossings) with value equality and hashing."""
+
+    def __init__(self, kind: str, crossings: tuple[int, ...]):
+        object.__setattr__(self, "kind", kind)
+        object.__setattr__(self, "crossings", crossings)
+
+    def __setattr__(self, name, value):
+        raise AttributeError(f"cannot assign to field {name!r}: Move is immutable")
+
+    def __delattr__(self, name):
+        raise AttributeError(f"cannot delete field {name!r}: Move is immutable")
+
+    def __eq__(self, other):
+        if other.__class__ is not self.__class__:
+            return NotImplemented
+        return (self.kind, self.crossings) == (other.kind, other.crossings)
+
+    def __hash__(self):
+        return hash((self.kind, self.crossings))
+
+    def __repr__(self):
+        return f"Move(kind={self.kind!r}, crossings={self.crossings!r})"
 
     def to_json(self) -> dict:
         return {"kind": self.kind, "crossings": list(self.crossings)}

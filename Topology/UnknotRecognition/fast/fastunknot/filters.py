@@ -18,7 +18,9 @@ merely skips the filter.  Both were proposed by the acceleration proposals.
 """
 from __future__ import annotations
 
-from typing import Callable
+TYPE_CHECKING = False            # annotations only: importing typing costs 4.6 ms at start-up
+if TYPE_CHECKING:
+    from typing import Callable
 
 from .alexander import alexander_rows
 from .diagram import Diagram

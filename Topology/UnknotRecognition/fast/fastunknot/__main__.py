@@ -1,7 +1,6 @@
 """Command line: python -m fastunknot recognize FILE [options]."""
 from __future__ import annotations
 
-import argparse
 import json
 import sys
 
@@ -31,50 +30,120 @@ def _scan_worker() -> int:
     return 0
 
 
-def main(argv: list[str] | None = None) -> int:
-    if (sys.argv[1:2] if argv is None else argv[:1]) == ["_scan"]:
-        return _scan_worker()
+# One table for both parsers.  (flag, type or None for a switch, default, choices, help)
+OPTIONS = {
+    "recognize": [
+        ("--max-objects", int, None, None, "ceiling on objects of the scanning complex (UNKNOWN when exceeded)"),
+        ("--seconds", float, None, None, "cooperative time budget"),
+        ("--no-reduction", None, False, None, None),
+        ("--no-descending", None, False, None, None),
+        ("--no-alexander", None, False, None, "disable both Alexander stages"),
+        ("--no-r3", None, False, None, "no Reidemeister III search before the Khovanov scan"),
+        ("--exact-alexander", None, False, None,
+         "also compute the exact Alexander polynomial after the modular test passed"),
+        ("--no-modular", None, False, None, "disable only the modular Alexander stage"),
+        ("--no-jones", None, False, None, None),
+        ("--no-factor", None, False, None, "do not split visible connected sums"),
+        ("--jones-max-states", int, 4096, None, None),
+        ("--pivot", str, "minfill", ("minfill", "lifo"), None),
+        ("--algebra", str, "bits", ("bits", "sets"), None),
+        ("--tail", int, 0, None, None),
+        ("--check-d2", None, False, None, "verify d^2=0 after every crossing"),
+        ("--race", int, 1, None,
+         "scan N greedy orders in separate processes, first to finish wins (default 1: no race)"),
+        ("--race-after", float, 1.0, None, "seconds the default order runs alone before competitors are started"),
+        ("--output", str, None, None, "write the JSON result to this file"),
+    ],
+    "khovanov": [
+        ("--check-d2", None, False, None, None),
+        ("--factor", None, False, None, "multiply ranks over visible connected summands"),
+        ("--pivot", str, "minfill", ("minfill", "lifo"), None),
+        ("--algebra", str, "bits", ("bits", "sets"), None),
+        ("--tail", int, 0, None, None),
+        ("--race", int, 1, None, "scan N greedy orders in separate processes"),
+        ("--race-after", float, 1.0, None, "head start of the default order in seconds"),
+    ],
+    "jones": [],
+    "alexander": [],
+}
+COMMAND_HELP = {"recognize": "decide whether a knot diagram is the unknot",
+                "khovanov": "total F2 Khovanov rank by scanning",
+                "jones": "one-sided modular Kauffman bracket test", "alexander": "Alexander polynomial"}
+
+
+class _Namespace:
+    def __init__(self, **values):
+        self.__dict__.update(values)
+
+
+def _attribute(flag: str) -> str:
+    return flag[2:].replace("-", "_")
+
+
+def _parser():
+    """The real parser, built from the table.  Importing and setting up ``argparse`` takes 55 ms
+    (in Python 3.14 it loads ``_colorize``, ``dataclasses`` and ``shutil``), half of the run time of
+    a whole ``recognize`` process, so it is used only when ``_fast_parse`` declines."""
+    import argparse
     parser = argparse.ArgumentParser(prog="fastunknot", description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
-    rec = sub.add_parser("recognize", help="decide whether a knot diagram is the unknot")
-    rec.add_argument("file")
-    rec.add_argument("--max-objects", type=int, default=None,
-                     help="ceiling on objects of the scanning complex (UNKNOWN when exceeded)")
-    rec.add_argument("--seconds", type=float, default=None, help="cooperative time budget")
-    rec.add_argument("--no-reduction", action="store_true")
-    rec.add_argument("--no-descending", action="store_true")
-    rec.add_argument("--no-alexander", action="store_true", help="disable both Alexander stages")
-    rec.add_argument("--no-r3", action="store_true",
-                     help="no Reidemeister III search before the Khovanov scan")
-    rec.add_argument("--exact-alexander", action="store_true",
-                     help="also compute the exact Alexander polynomial after the modular test passed")
-    rec.add_argument("--no-modular", action="store_true", help="disable only the modular Alexander stage")
-    rec.add_argument("--no-jones", action="store_true")
-    rec.add_argument("--no-factor", action="store_true", help="do not split visible connected sums")
-    rec.add_argument("--jones-max-states", type=int, default=4096)
-    rec.add_argument("--pivot", choices=("minfill", "lifo"), default="minfill")
-    rec.add_argument("--algebra", choices=("bits", "sets"), default="bits")
-    rec.add_argument("--tail", type=int, default=0)
-    rec.add_argument("--check-d2", action="store_true", help="verify d^2=0 after every crossing")
-    rec.add_argument("--race", type=int, default=1,
-                     help="scan N greedy orders in separate processes, first to finish wins (default 1: no race)")
-    rec.add_argument("--race-after", type=float, default=1.0,
-                     help="seconds the default order runs alone before competitors are started")
-    rec.add_argument("--output", help="write the JSON result to this file")
-    kh = sub.add_parser("khovanov", help="total F2 Khovanov rank by scanning")
-    kh.add_argument("file")
-    kh.add_argument("--check-d2", action="store_true")
-    kh.add_argument("--factor", action="store_true", help="multiply ranks over visible connected summands")
-    kh.add_argument("--pivot", choices=("minfill", "lifo"), default="minfill")
-    kh.add_argument("--algebra", choices=("bits", "sets"), default="bits")
-    kh.add_argument("--tail", type=int, default=0)
-    kh.add_argument("--race", type=int, default=1, help="scan N greedy orders in separate processes")
-    kh.add_argument("--race-after", type=float, default=1.0, help="head start of the default order in seconds")
-    jo = sub.add_parser("jones", help="one-sided modular Kauffman bracket test")
-    jo.add_argument("file")
-    al = sub.add_parser("alexander", help="Alexander polynomial")
-    al.add_argument("file")
-    args = parser.parse_args(argv)
+    for command, options in OPTIONS.items():
+        one = sub.add_parser(command, help=COMMAND_HELP[command])
+        one.add_argument("file")
+        for flag, kind, default, choices, text in options:
+            if kind is None:
+                one.add_argument(flag, action="store_true", help=text)
+            elif choices:
+                one.add_argument(flag, choices=choices, default=default, help=text)
+            else:
+                one.add_argument(flag, type=kind, default=default, help=text)
+    return parser
+
+
+def _fast_parse(argv: list[str]):
+    """The well-formed common case, or None to let ``argparse`` handle it: help, errors, abbreviated
+    flags, ``--flag=value``, values that look like flags.  Same attributes as the ``argparse`` namespace."""
+    if not argv or argv[0] not in OPTIONS:
+        return None
+    table = {flag: (kind, choices) for flag, kind, _, choices, _ in OPTIONS[argv[0]]}
+    values = {_attribute(flag): default for flag, _, default, _, _ in OPTIONS[argv[0]]}
+    values["command"] = argv[0]
+    i, files = 1, []
+    while i < len(argv):
+        token = argv[i]
+        if not token.startswith("-"):
+            files.append(token)
+        elif token not in table:
+            return None
+        else:
+            kind, choices = table[token]
+            if kind is None:
+                values[_attribute(token)] = True
+            else:
+                i += 1
+                if i >= len(argv) or argv[i].startswith("-"):
+                    return None
+                try:
+                    value = kind(argv[i])
+                except ValueError:
+                    return None
+                if choices and value not in choices:
+                    return None
+                values[_attribute(token)] = value
+        i += 1
+    if len(files) != 1:
+        return None
+    values["file"] = files[0]
+    return _Namespace(**values)
+
+
+def main(argv: list[str] | None = None) -> int:
+    argv = sys.argv[1:] if argv is None else list(argv)
+    if argv[:1] == ["_scan"]:
+        return _scan_worker()
+    args = _fast_parse(argv)
+    if args is None:
+        args = _parser().parse_args(argv)
     try:
         diagram = load(args.file)
     except (DiagramError, ValueError, OSError) as exc:
