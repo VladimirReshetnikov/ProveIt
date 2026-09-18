@@ -4,8 +4,9 @@ Included: every file tracked by git (so untracked files and .git are left
 out), including this script, except
   * dot files and dot directories at the repository root (.gitignore, ...),
   * PDFs that can be regenerated, i.e. a foo.pdf that sits next to a foo.tex
-    (the synthesized report and the six archive reports). The talk, the arXiv
-    preprint and its figure PDFs have no source of the same name and stay in.
+    (the synthesized report, the six archive reports and the arXiv preprint).
+    The talk and the preprint's figure PDFs have no source of the same name
+    and stay in.
 
 Options:
   --all-pdf    keep every tracked *.pdf, including the regenerable ones

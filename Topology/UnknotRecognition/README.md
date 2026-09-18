@@ -62,11 +62,11 @@ or rebuild it with `pdflatex` (twice):
 | `reports/04/docs/report.pdf` | `reports/04/docs/report.tex` | likewise |
 | `reports/05/docs/report.pdf` | `reports/05/docs/report.tex` | likewise |
 | `reports/06/docs/technical-report.pdf` | `reports/06/docs/technical-report.tex` | likewise |
+| `docs/arXiv-2607.23350v1/algorithm-incompressible-250726.pdf` | `docs/arXiv-2607.23350v1/algorithm-incompressible-250726.tex` (with its `.bbl` and figure PDFs) | `pdflatex algorithm-incompressible-250726.tex` (twice) |
 
 PDFs without a same-name source are always included: the talk
-`docs/quasipolynomial-talk.pdf`, and the arXiv preprint with its figure PDFs
-in `docs/arXiv-2607.23350v1/` (the preprint could also be rebuilt from its
-`.tex`, `.bbl` and figures, but it is kept as delivered).
+`docs/quasipolynomial-talk.pdf` and the preprint's figure PDFs in
+`docs/arXiv-2607.23350v1/`.
 
 ## Test status (last observed 18 September 2026, commit 72b15eb)
 

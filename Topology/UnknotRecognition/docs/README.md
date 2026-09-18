@@ -22,7 +22,7 @@ Map of the talk (physical pages):
 * `arXiv-2607.23350v1/`: the arXiv source and PDF of the related preprint,
   Marc Lackenby, *Incompressible surfaces, hierarchies and unknot
   recognition*, 25 July 2026, 54 pages (`algorithm-incompressible-250726.tex`,
-  `2607.23350v1.pdf`, figures). Section 9, "The number of steps", is the part
+  `algorithm-incompressible-250726.pdf`, the arXiv PDF renamed to match its source, figures). Section 9, "The number of steps", is the part
   that matters for the running-time question: it gives the iteration bound
   `L(g+1)^L` and states that the steps are not specified precisely enough for
   a running-time estimate and that `g` and `L` are not bounded there.
