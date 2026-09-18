@@ -40,7 +40,14 @@ def _graph(pd):
     return neighbours, loops
 
 
-def _greedy(neighbours, loops, start: int) -> list[int]:
+def _greedy(neighbours, loops, start: int, bound: tuple | None = None):
+    """Greedy order from ``start`` and its (maximal, total) boundary profile.
+
+    The boundary grows by 4 - 2*shared - 2*loops when a crossing is added, so the
+    profile costs O(1) per step.  With ``bound`` (the best profile so far) the
+    candidate is abandoned, returning None, as soon as it cannot be strictly
+    smaller: both components only grow along the order.
+    """
     n = len(neighbours)
     active = [True] * n
     shared = [0] * n
@@ -49,6 +56,8 @@ def _greedy(neighbours, loops, start: int) -> list[int]:
     heapify(heap)
     order = []
     current = start
+    size = worst = total = 0
+    best_worst, best_total = bound if bound is not None else (None, None)
     while len(order) < n:
         if order:
             while True:
@@ -57,11 +66,17 @@ def _greedy(neighbours, loops, start: int) -> list[int]:
                     break
         order.append(current)
         active[current] = False
+        size += 4 - 2 * shared[current] - 2 * loops[current]
+        if size > worst:
+            worst = size
+        total += size
+        if best_worst is not None and (worst > best_worst or (worst == best_worst and total >= best_total)):
+            return None
         for other in neighbours[current]:
             if active[other]:
                 shared[other] += 1
                 heappush(heap, (-2 * shared[other], -2 * loops[other], other))
-    return order
+    return order, (worst, total)
 
 
 def scan_order(pd, start: int | None = None) -> list[int]:
@@ -72,7 +87,7 @@ def scan_order(pd, start: int | None = None) -> list[int]:
     if type(start) is not int or not 0 <= start < len(pd):
         raise ValueError("invalid starting crossing")
     neighbours, loops = _graph(pd)
-    return _greedy(neighbours, loops, start)
+    return _greedy(neighbours, loops, start)[0]
 
 
 def order_profile(pd, order) -> tuple[int, int]:
@@ -102,8 +117,7 @@ def best_scan_order(pd, tries: int | None = None, check: Callable[[], None] | No
     for start in starts:
         if check is not None:
             check()
-        order = _greedy(neighbours, loops, start)
-        profile = order_profile(pd, order)
-        if best_profile is None or profile < best_profile:
-            best, best_profile = order, profile
+        found = _greedy(neighbours, loops, start, best_profile)
+        if found is not None:                     # otherwise abandoned: not strictly better
+            best, best_profile = found
     return best

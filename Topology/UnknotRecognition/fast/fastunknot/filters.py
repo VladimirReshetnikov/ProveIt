@@ -47,9 +47,10 @@ def _evaluate(poly, value: int, p: int) -> int:
     return result
 
 
-def determinant_mod(matrix, p: int = PRIME) -> int:
+def determinant_mod(matrix, p: int = PRIME, reduced: bool = False) -> int:
+    """Determinant modulo p.  ``reduced`` promises entries already in [0, p); the matrix is consumed."""
     n = len(matrix)
-    a = [[x % p for x in row] for row in matrix]
+    a = matrix if reduced else [[x % p for x in row] for row in matrix]
     det = 1
     for k in range(n):
         pivot_row = next((i for i in range(k, n) if a[i][k]), None)
@@ -79,8 +80,9 @@ def alexander_obstruction(diagram: Diagram) -> dict | None:
         return None
     matrix = alexander_matrix(diagram)
     for value in (-1, ALEXANDER_T):
-        minor = [[_evaluate(x, value, PRIME) for x in row[:-1]] for row in matrix[:-1]]
-        det = determinant_mod(minor)
+        # a row has at most three nonzero entries: evaluate those only
+        minor = [[_evaluate(x, value, PRIME) if x else 0 for x in row[:-1]] for row in matrix[:-1]]
+        det = determinant_mod(minor, reduced=True)
         units, term = set(), 1
         for _ in range(n):
             units.add(term)

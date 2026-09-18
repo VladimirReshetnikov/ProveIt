@@ -115,9 +115,19 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   therefore not evidence. `perf.py` times that control loop next to every case
   and marks a run `SUSPECT` when the control spreads by more than 10%; three
   rows of `results/perf_log.json` are flagged as contaminated. Use `ab.py`,
-  which times old and new alternately in one process and claims a gain only
-  when the whole interquartile range of the paired ratios is below 1
-  (`results/ab_log.json`). Deterministic counters are immune to this, but each
+  which times old and new alternately in one process (`results/ab_log.json`).
+  Its first criterion, "interquartile range of new/old entirely below 1", was
+  too lenient and **gave false claims in both directions**: a change confined
+  to order selection, which is 0.2 to 1.8% of the affected scans and was
+  measured on its own as 32 to 58% faster with identical output, was reported
+  as 14% slower on one input and 4% faster on another. `ab.py` now also times
+  the old code twice per round (an A/A control; on mid-sized scans identical
+  code differed by 20 to 30% between adjacent runs) and claims a difference
+  only if the order-statistic 95% confidence interval of the median excludes 1
+  and the median lies outside the A/A interquartile range. `python ab.py OLD
+  NEW` compares two revisions; the earlier "7 to 13% on small scans" claim
+  below was re-tested that way and holds (0.87 to 0.92, intervals within
+  0.87..0.95; no claim on the large scans). Deterministic counters are immune to this, but each
   sees only part of the work: `stats["compositions"]` counts elimination work
   and `stats["entries"]` the differential entries written while adding
   crossings. Neither alone predicts time: on the 41-crossing 4-strand closure
@@ -151,6 +161,14 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   Only 30 to 53% of the cancellations are between the two smoothings of one old
   object, the kind that could be predicted before writing any entries; the rest
   are between different old objects.
+* Outside the scanner (`ab.py`, strict criterion, against c9572d2): the modular
+  Alexander filter now evaluates only the nonzero matrix entries, at most three
+  per row (`recognize T(3,61)` 0.60, interval 0.53..0.67; `recognize conway`
+  0.92); the boundary profile of a greedy scan order is tracked inside the
+  greedy in O(1) per step and a candidate start is abandoned once it cannot
+  win (`scan chain256` 0.78, interval 0.73..0.82). Both are output-preserving:
+  same determinants, and identical greedy orders, profiles and selected orders
+  on 600 random diagrams (19993 start orders, 34 diagrams with loop edges).
 * `seconds=` fidelity: the default scanner overshot a 1 s budget by up to
   0.24 s because a crossing was added without checking the clock; with a check
   every 512 objects the overshoot is at most 0.03 s on the same runs.
