@@ -31,6 +31,14 @@ theorem cof_omega_of_witness (c : Cardinal.{u}) (hc : ℵ₀ ≤ c)
     ∃ s : ℕ → Ordinal.{u}, StrictMono s ∧ (∀ n, s n < c.ord) ∧ ∀ ξ < c.ord, ∃ n, ξ ≤ s n := by
   admit
 
+/-- An exacting cardinal is uncountable: the critical point of a witness is an
+uncountable (indeed measurable) cardinal below it, since every natural number is
+definable and hence fixed.  ([ABL, §2]; Kanamori, The Higher Infinite, Prop. 5.1.) -/
+theorem aleph0_lt_of_witness (c : Cardinal.{u}) (hc : ℵ₀ ≤ c)
+    (h : ∀ α > c.ord, ∃ Y : ZFSet.{u}, Y ⊆ V_ α ∧ Nonempty (RelWitness c.ord α Y)) :
+    ℵ₀ < c := by
+  admit
+
 /-- An exacting cardinal is a strong limit.  ([ABL, §2].) -/
 theorem strongLimit_of_witness (c : Cardinal.{u}) (hc : ℵ₀ ≤ c)
     (h : ∀ α > c.ord, ∃ Y : ZFSet.{u}, Y ⊆ V_ α ∧ Nonempty (RelWitness c.ord α Y)) :
