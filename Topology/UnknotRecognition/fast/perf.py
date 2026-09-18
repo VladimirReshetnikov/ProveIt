@@ -3,6 +3,11 @@
 Usage:  python perf.py [label] [--repeats N] [--profile CASE]
 Prints the best-of-N time per case and appends the run to results/perf_log.json.
 Caches are per call, so repeated calls in one process are comparable.
+
+Wall-clock on a desktop drifts (background load, clock throttling), so a fixed
+pure-Python control loop is timed next to every case.  ``norm_ms`` rescales each
+time by control/REFERENCE_CONTROL_MS and is the number to compare between runs;
+a run whose control spread exceeds 10% is marked ``suspect``.
 """
 from __future__ import annotations
 
@@ -50,6 +55,21 @@ def corpus():
     ]
 
 
+REFERENCE_CONTROL_MS = 10.0     # arbitrary fixed scale, so that norm_ms is comparable across runs
+
+
+def control():
+    """A fixed workload resembling the scanner: dict, set and big-int operations."""
+    t = time.perf_counter()
+    table, seen, acc = {}, set(), 1
+    for i in range(20000):
+        key = (i & 255, i >> 3 & 63, i & 7)
+        table[key] = table.get(key, 0) ^ (1 << (i & 127))
+        seen.add(i & 1023)
+        acc ^= acc << (i & 15) & (1 << 200) - 1
+    return (time.perf_counter() - t) * 1000
+
+
 def main():
     args = sys.argv[1:]
     label = args[0] if args and not args[0].startswith("--") else "unlabelled"
@@ -64,21 +84,34 @@ def main():
         profiler.disable()
         pstats.Stats(profiler).sort_stats("tottime").print_stats(22)
         return
-    row = {"label": label, "times_ms": {}, "results": {}}
-    total = 0.0
+    row = {"label": label, "times_ms": {}, "norm_ms": {}, "control_ms": {}, "results": {}}
+    total = total_norm = 0.0
+    controls = []
     for name, fn in cases:
         best = None
+        ctl = control()
         for _ in range(repeats if "braid5_36" not in name or "jones" in name else max(2, repeats // 2)):
             t = time.perf_counter()
             result = fn()
             t = time.perf_counter() - t
             best = t if best is None else min(best, t)
+            ctl = min(ctl, control())
+        controls.append(ctl)
+        norm = best * 1000 * REFERENCE_CONTROL_MS / ctl
         row["times_ms"][name] = round(best * 1000, 3)
+        row["norm_ms"][name] = round(norm, 3)
+        row["control_ms"][name] = round(ctl, 3)
         row["results"][name] = result
         total += best
-        print(f"{name:32s} {best * 1000:10.3f} ms   {result}")
+        total_norm += norm
+        print(f"{name:32s} {best * 1000:10.3f} ms   norm {norm:10.3f}   control {ctl:7.3f} ms   {result}")
+    spread = max(controls) / min(controls) - 1
     row["total_ms"] = round(total * 1000, 1)
-    print(f"{'TOTAL':32s} {total * 1000:10.1f} ms")
+    row["total_norm_ms"] = round(total_norm, 1)
+    row["control_spread"] = round(spread, 3)
+    row["suspect"] = spread > 0.10
+    print(f"{'TOTAL':32s} {total * 1000:10.1f} ms   norm {total_norm:10.1f}   control spread {spread:.1%}"
+          + ("   SUSPECT: machine speed drifted during the run" if row["suspect"] else ""))
     path = os.path.join(HERE, "results", "perf_log.json")
     log = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else []
     log.append(row)

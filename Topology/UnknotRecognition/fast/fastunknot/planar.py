@@ -14,18 +14,54 @@ This module does the same computations with
 * transfers memoized per monomial, since morphisms between the same two
   matchings share their monomials.
 
-The plans have the format of ``algebra.evaluate`` and the bit conventions of
+The plans follow ``algebra.evaluate`` and the bit conventions of
 ``algebra`` (bit ``mask`` of a morphism is the coefficient of the monomial
 ``mask``; bit ``i`` of a monomial is a dot on circle ``i``).  Circle numbering
 differs from ``BitAlgebra``, so values of the two must not be mixed.
 """
 from __future__ import annotations
 
-from .algebra import evaluate
 from .geometry import SMOOTHINGS
 
 MATE = tuple({s: t for arc in sm for s, t in (arc, arc[::-1])} for sm in SMOOTHINGS)      # other end of the arc
 ARC_OF = tuple({s: j for j, arc in enumerate(sm) for s in arc} for sm in SMOOTHINGS)      # arc containing a slot
+
+
+def evaluate(components, f: int, g: int = 0) -> int:
+    """Value of a pair of monomials on a compiled genus-zero surface.
+
+    A component is (left mask, right mask, boundary mask, extra dots, choices):
+    a sphere with holes carrying one dot evaluates to all its boundary circles
+    dotted, and without a dot to the sum over leaving one boundary circle
+    undotted (``choices``); a closed sphere needs exactly one dot.  Monomials
+    of different components live on disjoint circles, so multiplying a
+    bit-packed sum by a monomial ``c`` is the shift ``<< c``.
+    """
+    result = 1
+    for left, right, boundary, extra, choices in components:
+        dots = (f & left).bit_count() + (g & right).bit_count() + extra
+        if dots >= 2:
+            return 0
+        if dots:
+            result <<= boundary
+        elif not boundary:
+            return 0
+        else:
+            nxt = 0
+            for choice in choices:
+                nxt ^= result << choice
+            result = nxt
+    return result
+
+
+def component(left: int, right: int, boundary: int, extra: int) -> tuple:
+    choices = []
+    rest = boundary
+    while rest:
+        low = rest & -rest
+        choices.append(boundary ^ low)
+        rest ^= low
+    return (left, right, boundary, extra, tuple(choices))
 
 
 def find(parent: list, x: int) -> int:
@@ -201,7 +237,7 @@ class Planar:
             if twice_genus:
                 components = None
                 break
-            components.append((left[root], right[root], boundary[root], 0))
+            components.append(component(left[root], right[root], boundary[root], 0))
         result = None if components is None else (tuple(components), {})
         self.compose_plans[key] = result
         return result
@@ -231,7 +267,13 @@ class Planar:
 
     # ----- the crossing ---------------------------------------------------------
     def transfer_plan(self, a: int, b: int, i_src: int, i_tgt: int):
-        """((source label offset, target label offset, components), ...) and a memo dictionary."""
+        """Compiled transfer of Hom(a, b) through the crossing.
+
+        Only the circles through consumed labels and the crossing itself form
+        nontrivial components; every other circle just changes its number.
+        Returns (plans, touched input mask, {old bit: new bit}, memo) with
+        plans = ((source label offset, target label offset, components), ...).
+        """
         key = (a, b, i_src, i_tgt)
         found = self.transfer_plans.get(key)
         if found is not None:
@@ -239,67 +281,77 @@ class Planar:
         self.stats["plans"] += 1
         ga, closed_src, closed_of_src = self.glue(a, i_src)
         gb, closed_tgt, closed_of_tgt = self.glue(b, i_tgt)
-        owner, k = self.basis(a, b)
+        owner, _ = self.basis(a, b)
         new_owner, _ = self.basis(ga, gb)
         saddle = i_src != i_tgt
-        arc_of = ARC_OF[i_src]
-        n = k + (1 if saddle else 2)
-        parent = list(range(n))
-        gluings_at = []
+        arc_of = (0, 0, 0, 0) if saddle else ARC_OF[i_src]
+        parent = [0] if saddle else [0, 1]           # local discs: the crossing first, then touched circles
+        local: dict = {}
+        circle_of = [-1] * len(parent)
+        glued_at = []
+        twin = self.twin
         for j, label in enumerate(self.slots):
+            y = arc_of[j]
             if self.inside[j]:
-                x, y = owner[label], k + (0 if saddle else arc_of[j])
-            elif self.twin[j] > j:
-                x, y = k + (0 if saddle else arc_of[j]), k + (0 if saddle else arc_of[self.twin[j]])
+                d = owner[label]
+                x = local.get(d)
+                if x is None:
+                    x = local[d] = len(parent)
+                    parent.append(x)
+                    circle_of.append(d)
+            elif twin[j] > j:
+                x = arc_of[twin[j]]
             else:
                 continue
-            gluings_at.append(x)
+            glued_at.append(x)
             rx, ry = find(parent, x), find(parent, y)
             if rx != ry:
                 parent[rx] = ry
-        touched = sorted({find(parent, d) for d in range(k, n)})
-        index = {root: t for t, root in enumerate(touched)}
-        count = len(touched)
+        n = len(parent)
+        index: dict = {}
+        comp = [0] * n
+        for x in range(n):
+            comp[x] = index.setdefault(find(parent, x), len(index))
+        count = len(index)
         chi, boundary, inputs = [0] * count, [0] * count, [0] * count
-        for d in range(n):
-            t = index.get(find(parent, d))
-            if t is not None:
-                chi[t] += 1
-                if d < k:
-                    inputs[t] |= 1 << d
-        for x in gluings_at:
-            chi[index[find(parent, x)]] -= 1
+        touched_mask = 0
+        for x in range(n):
+            chi[comp[x]] += 1
+            d = circle_of[x]
+            if d >= 0:
+                inputs[comp[x]] |= 1 << d
+                touched_mask |= 1 << d
+        for x in glued_at:
+            chi[comp[x]] -= 1
         consumed = self.consumed
-        untouched = []                                    # circles that only change their number
-        done = set()
+        renumber: dict = {}
         for p, d in owner.items():
-            if p in consumed:
-                continue
-            t = index.get(find(parent, d))
-            if t is not None:
-                boundary[t] |= 1 << new_owner[p]
-            elif d not in done:
-                done.add(d)
-                untouched.append((1 << d, 0, 1 << new_owner[p], 0))
+            if p not in consumed:
+                x = local.get(d)
+                if x is None:
+                    renumber[1 << d] = 1 << new_owner[p]
+                else:
+                    boundary[comp[x]] |= 1 << new_owner[p]
         for j, label in self.fresh:
-            boundary[index[find(parent, k + (0 if saddle else arc_of[j]))]] |= 1 << new_owner[label]
+            boundary[comp[arc_of[j]]] |= 1 << new_owner[label]
         comp_src = [0] * closed_src
         comp_tgt = [0] * closed_tgt
-        for t2 in (0, 1):
-            if closed_of_src[t2] >= 0:
-                comp_src[closed_of_src[t2]] = index[find(parent, k + (0 if saddle else t2))]
-            if closed_of_tgt[t2] >= 0:
-                comp_tgt[closed_of_tgt[t2]] = index[find(parent, k + (0 if saddle else t2))]
+        for t in (0, 1):
+            x = 0 if saddle else t
+            if closed_of_src[t] >= 0:
+                comp_src[closed_of_src[t]] = comp[x]
+            if closed_of_tgt[t] >= 0:
+                comp_tgt[closed_of_tgt[t]] = comp[x]
         plans = []
         for ls in range(1 << closed_src):
             for lt in range(1 << closed_tgt):
                 euler, extra = chi[:], [0] * count
-                for j, comp in enumerate(comp_src):
-                    euler[comp] += 1
-                    extra[comp] += ls >> j & 1            # label x on a source circle: dotted cup
-                for j, comp in enumerate(comp_tgt):
-                    euler[comp] += 1
-                    extra[comp] += 1 - (lt >> j & 1)      # coefficient of 1 on a target circle: dotted cap
+                for j, c in enumerate(comp_src):
+                    euler[c] += 1
+                    extra[c] += ls >> j & 1               # label x on a source circle: dotted cup
+                for j, c in enumerate(comp_tgt):
+                    euler[c] += 1
+                    extra[c] += 1 - (lt >> j & 1)         # coefficient of 1 on a target circle: dotted cap
                 components = []
                 for t in range(count):
                     twice_genus = 2 - euler[t] - boundary[t].bit_count()
@@ -307,15 +359,15 @@ class Planar:
                         raise ArithmeticError("impossible surface component at a crossing")
                     if twice_genus or extra[t] >= 2:
                         break
-                    components.append((inputs[t], 0, boundary[t], extra[t]))
+                    components.append(component(inputs[t], 0, boundary[t], extra[t]))
                 else:
-                    plans.append((ls, lt, tuple(components) + tuple(untouched)))
-        found = self.transfer_plans[key] = (tuple(plans), {})
+                    plans.append((ls, lt, tuple(components)))
+        found = self.transfer_plans[key] = (tuple(plans), touched_mask, renumber, {})
         return found
 
     def transfer(self, a: int, b: int, f: int, i_src: int, i_tgt: int) -> tuple:
         """Entries of f tensor the crossing after delooping: ((source offset, target offset, value), ...)."""
-        plans, memo = self.transfer_plan(a, b, i_src, i_tgt)
+        plans, touched_mask, renumber, memo = self.transfer_plan(a, b, i_src, i_tgt)
         if not plans:
             return ()
         total = [0] * len(plans)
@@ -323,9 +375,16 @@ class Planar:
             low = f & -f
             monomial = low.bit_length() - 1
             f ^= low
-            values = memo.get(monomial)
+            core = monomial & touched_mask
+            values = memo.get(core)
             if values is None:
-                values = memo[monomial] = [evaluate(components, monomial) for _, _, components in plans]
+                values = memo[core] = [evaluate(components, core) for _, _, components in plans]
+            rest = monomial ^ core
+            shift = 0
+            while rest:
+                low = rest & -rest
+                shift |= renumber[low]
+                rest ^= low
             for t, value in enumerate(values):
-                total[t] ^= value
+                total[t] ^= value << shift               # disjoint circles: OR of masks is a shift
         return tuple((plan[0], plan[1], value) for plan, value in zip(plans, total) if value)
