@@ -31,11 +31,12 @@ CAP = 256     # Markowitz costs below this use bucket lists, the rest a heap
 
 
 class FastScan:
-    def __init__(self, max_objects: int | None = None, deadline: float | None = None):
+    def __init__(self, max_objects: int | None = None, deadline: float | None = None,
+                 shape_cache: bool = True):
         if max_objects is not None and (type(max_objects) is not int or max_objects < 0):
             raise ValueError("max_objects must be a nonnegative integer")
         self.max_objects, self.deadline = max_objects, deadline
-        self.algebra = Planar()                       # interned matchings and gluing plans
+        self.algebra = Planar(shape_cache=shape_cache)   # interned matchings and gluing plans
         self.mid: list = [0]                          # object -> matching id (None when cancelled)
         self.deg: list = [0]                          # object -> homological degree
         self.out: list = [{}]                         # object -> {target: value}

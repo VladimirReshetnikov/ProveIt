@@ -96,9 +96,9 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
 
 ## Test and benchmark status (last observed 18 September 2026)
 
-* `python -m unittest discover -s tests`: 33 tests, OK, about 6 s (CPython
+* `python -m unittest discover -s tests`: 35 tests, OK, about 3 s (CPython
   3.14.4, Windows 11). 19 are the 0.1 tests (three expectations updated because
-  a filter now decides before Khovanov does), 14 are new and compare every new
+  a filter now decides before Khovanov does), 16 are new and compare every new
   code path with the 0.1 implementation.
 * `results/benchmark_0.1.json` is the 0.1 benchmark, kept as a record; its
   36-crossing 5-strand row is the 600 s timeout that motivated 0.2.
@@ -185,6 +185,33 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   claim on the small diagrams. Output-preserving: dense matrices, filter
   results and exact polynomials identical on 500 random closures (35 with
   kinks, where entries of one row coincide and can cancel).
+* **Cross-stage plan cache (`shape_cache`, on by default; a trade-off, not a free
+  win).** Every crossing brings new edge labels, so a per-stage cache never
+  hits across stages, yet a long braid compiles the same few pictures at every
+  crossing (at boundary 6 there are 5 matchings, and about 35 transfer plans
+  were compiled per crossing of T(3,n)). Transfer plans are now also cached
+  under a label-independent key (matchings and crossing slots relabelled by
+  rank). This is sound because relabelling by rank is monotone and the circle
+  numbering is by minimal label whichever matching is walked first (tested on
+  random matchings, and on 20000 pairs while developing). Reuse: 80% of the
+  plans of T(3,11), 94% of T(3,31), 72% of T(4,9), 99% of the kink chain, 38%
+  and 19% of the random 3- and 4-strand closures, but 1% of the stress closure
+  and 0% of the Conway knot, Kinoshita-Terasaka and Conway#Conway. `ab.py`,
+  three runs agreeing: `scan T(3,11)` 0.61 (interval 0.59..0.66), `scan
+  chain256` 0.78, `scan braid3_40` 0.97; **`scan conway` 1.06 (interval
+  1.04..1.07 with 301 pairs) and `recognize hard_unknot_8` 1.07, slower**; no
+  claim on the large scans. The cost was decomposed by timing partial variants
+  against HEAD (A/A 0.999): ranking the boundary each stage +1.5%, building the
+  key and looking it up +3.0%, storing +1.3%. Two explanations I had offered
+  first were wrong and are recorded as such: hashing of nested tuples
+  (interning shapes as integers changed nothing) and the cyclic garbage
+  collector (same ratio with it disabled). Inlining the lookup changed nothing
+  either; `shape_cache=False` restores the old speed exactly (1.003). An
+  automatic switch was considered and dropped on evidence: inputs that profit
+  get their first hit only after 35 to 150 lookups, the stress closure gets 12
+  hits in its first 64 and then none, so an early hit count predicts the wrong
+  way. Kept on because the gains are several milliseconds and the losses below
+  0.2 ms on the corpus; turn it off for many small irregular diagrams.
 * `seconds=` fidelity: the default scanner overshot a 1 s budget by up to
   0.24 s because a crossing was added without checking the clock; with a check
   every 512 objects the overshoot is at most 0.03 s on the same runs.

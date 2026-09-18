@@ -100,6 +100,44 @@ class ScannerTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             khovanov_rank(Diagram.from_braid(2, [1, 1, 1]).pd, order=[0, 1])
 
+    def test_shape_cache_is_transparent(self):
+        configs = [dict(shape_cache=False), dict(shape_cache=True, check_d_squared=True), dict(shape_cache=True, tail=2)]
+        inputs = list(random_knot_braids(23, 25)) + [Diagram.from_braid(3, [1, 2] * 7), Diagram.from_braid(4, [1, 2, 3] * 5),
+                                                     Diagram.from_braid(9, list(range(1, 9)))]
+        for d in inputs:
+            expected = scan_reference.khovanov_rank(d.pd)
+            for config in configs:
+                got = khovanov_rank(d.pd, **config)
+                self.assertEqual((got["rank"], got["by_degree"]), (expected["rank"], expected["by_degree"]), config)
+        torus = Diagram.from_braid(3, [1, 2] * 7).pd
+        self.assertGreater(khovanov_rank(torus)["stats"]["shape_hits"], 0)          # the cache is really used
+        self.assertEqual(khovanov_rank(torus, shape_cache=False)["stats"]["shape_hits"], 0)
+
+    def test_circle_numbering_is_canonical(self):
+        # The cross-stage plan cache needs: numbering by minimal label, whichever matching is walked
+        # first, and compatible with monotone relabelling.
+        from fastunknot.planar import Planar
+        rng = random.Random(24)
+
+        def matching(labels):
+            if not labels:
+                return []
+            j = rng.randrange(1, len(labels), 2)
+            return [(labels[0], labels[j])] + matching(labels[1:j]) + matching(labels[j + 1:])
+
+        for _ in range(400):
+            labels = sorted(rng.sample(range(60), rng.choice((2, 4, 6, 8, 10))))
+            a, b = tuple(sorted(matching(labels))), tuple(sorted(matching(labels)))
+            first, second, moved = Planar(), Planar(), Planar()
+            owner, count = first.basis(first.intern(a), first.intern(b))
+            self.assertEqual(second.basis(second.intern(b), second.intern(a)), (owner, count))
+            minima = [min(p for p in owner if owner[p] == c) for c in range(count)]
+            self.assertEqual(minima, sorted(minima))
+            f = {p: 5 * p + 3 for p in labels}
+            shifted, _ = moved.basis(moved.intern(tuple((f[p], f[q]) for p, q in a)),
+                                     moved.intern(tuple((f[p], f[q]) for p, q in b)))
+            self.assertEqual(shifted, {f[p]: c for p, c in owner.items()})
+
     def test_stress_case_that_timed_out_in_0_1(self):
         result = khovanov_rank(load("stress_braid5_36.json").pd)
         self.assertEqual(result["reduced_rank"], 2949)

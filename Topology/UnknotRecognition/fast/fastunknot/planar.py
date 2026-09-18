@@ -64,6 +64,9 @@ def component(left: int, right: int, boundary: int, extra: int) -> tuple:
     return (left, right, boundary, extra, tuple(choices))
 
 
+SHAPE_CACHE = 200_000      # entries of the cross-stage plan cache before it is emptied
+
+
 def find(parent: list, x: int) -> int:
     root = x
     while parent[root] != root:
@@ -76,11 +79,14 @@ def find(parent: list, x: int) -> int:
 class Planar:
     """Interned matchings and per-stage plan caches."""
 
-    def __init__(self):
+    def __init__(self, shape_cache: bool = True):
+        self.shape_cache = shape_cache    # reuse transfer plans across stages by label-independent shape
         self.ids: dict = {(): 0}          # sorted tuple of sorted pairs -> id
         self.pairs: list = [()]
         self.partner: list = [{}]
-        self.stats = {"plans": 0}
+        self.stats = {"plans": 0, "shape_hits": 0}
+        self.shape_plans: dict = {}       # label-independent transfer plans, kept across stages
+        self.shape_ids: dict = {}         # relabelled pairs (or slots) -> small integer
         self.stage(frozenset(), (0, 0, 0, 0))
 
     def intern(self, pairs: tuple) -> int:
@@ -111,13 +117,45 @@ class Planar:
         self.glued: dict = {}
         self.compose_plans: dict = {}
         self.transfer_plans: dict = {}
+        # Shapes recur from stage to stage under new labels (a long braid compiles the
+        # same few pictures at every crossing).  Relabelling by rank is monotone, and
+        # everything a plan depends on is equivariant under monotone maps: the sorted
+        # pair tuples, the gluing, and the circle numbering (see ``basis``).
+        # Shapes are interned as integers once per matching and stage, so that the
+        # key of a plan is five small integers: tuples do not cache their hashes, and
+        # hashing two nested pair tuples per plan cost 6% on diagrams without repeats.
+        if not self.shape_cache:
+            return
+        rank = {label: r for r, label in enumerate(sorted(points.union(slots)))}
+        self.rank = rank
+        if len(self.shape_plans) > SHAPE_CACHE:
+            self.shape_plans.clear()
+            self.shape_ids.clear()
+        self.shape_slots = self.shape_ids.setdefault(("slots",) + tuple(rank[label] for label in slots),
+                                                     len(self.shape_ids))
+        self.shapes: dict = {}                     # matching id -> id of its pairs relabelled by rank
+
+    def shape(self, m: int) -> int:
+        found = self.shapes.get(m)
+        if found is None:
+            rank = self.rank
+            pairs = tuple((rank[p], rank[q]) for p, q in self.pairs[m])
+            found = self.shapes[m] = self.shape_ids.setdefault(pairs, len(self.shape_ids))
+        return found
 
     def new_points(self) -> frozenset:
         return (self.points - self.consumed) | frozenset(label for _, label in self.fresh)
 
     # ----- circles of a u b~ -------------------------------------------------
     def basis(self, a: int, b: int):
-        """(owner: label -> circle index, number of circles); shared by (a, b) and (b, a)."""
+        """(owner: label -> circle index, number of circles); shared by (a, b) and (b, a).
+
+        Circles are numbered by increasing minimal label, whichever matching is
+        walked first: pairs are stored sorted, the minimal label of a circle starts
+        a pair in both matchings, and a partner is always owned before it is
+        visited.  So the numbering depends on the unordered pair only and commutes
+        with monotone relabelling; the cross-stage plan cache relies on this.
+        """
         key = (a, b)
         found = self.bases.get(key)
         if found is None:
@@ -278,6 +316,20 @@ class Planar:
         found = self.transfer_plans.get(key)
         if found is not None:
             return found
+        shape_key = None
+        if self.shape_cache:
+            shapes = self.shapes
+            sa, sb = shapes.get(a), shapes.get(b)        # inline: a method call per plan is measurable
+            if sa is None:
+                sa = self.shape(a)
+            if sb is None:
+                sb = self.shape(b)
+            shape_key = (sa, sb, self.shape_slots, i_src, i_tgt)
+            found = self.shape_plans.get(shape_key)
+            if found is not None:
+                self.stats["shape_hits"] += 1
+                self.transfer_plans[key] = found
+                return found
         self.stats["plans"] += 1
         ga, closed_src, closed_of_src = self.glue(a, i_src)
         gb, closed_tgt, closed_of_tgt = self.glue(b, i_tgt)
@@ -363,6 +415,8 @@ class Planar:
                 else:
                     plans.append((ls, lt, tuple(components)))
         found = self.transfer_plans[key] = (tuple(plans), touched_mask, renumber, {})
+        if shape_key is not None:
+            self.shape_plans[shape_key] = found
         return found
 
     def transfer(self, a: int, b: int, f: int, i_src: int, i_tgt: int) -> tuple:
