@@ -100,9 +100,9 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
 
 ## Test and benchmark status (last observed 18 September 2026)
 
-* `python -m unittest discover -s tests`: 40 tests, OK (about 9 s; one test starts race processes), about 3 s (CPython
+* `python -m unittest discover -s tests`: 41 tests, OK (about 9 s; one test starts race processes), about 3 s (CPython
   3.14.4, Windows 11). 19 are the 0.1 tests (three expectations updated because
-  a filter now decides before Khovanov does), 21 are new and compare every new
+  a filter now decides before Khovanov does), 22 are new and compare every new
   code path with the 0.1 implementation.
 * `results/benchmark_0.1.json` is the 0.1 benchmark, kept as a record; its
   36-crossing 5-strand row is the 600 s timeout that motivated 0.2.
@@ -420,6 +420,19 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   random 5-strand closure 0.865, hard unknot 0.896, scrambled unknot 0.906; no
   claim on the three scan-dominated survivors. Status, method, reduced size and
   rank identical to the previous code on 700 diagrams.
+* The most common input, a reducible closure that the Alexander filter decides:
+  `simplify` was half of `recognize` there, and half of that was
+  `Diagram.from_pd` validating the rebuilt diagram from scratch. What the moves
+  could break is the topology, so `rebuild` now checks that directly on the
+  darts (one traversal through every crossing twice; the face walk closing into
+  n + 2 faces) and builds the diagram from rows that are normalized by
+  construction. Reduced diagrams and traces identical to the previous code on
+  1500 diagrams in both modes; of 282 deliberately corrupted dart structures
+  273 are rejected and the other 9 also pass the full validation (a random
+  reconnection is sometimes a legitimate diagram). Also, the Alexander rows skip
+  the polynomial addition when a slot is empty, the usual case. `ab.py`
+  (strict): `recognize` random 5-strand closure 0.796 (0.772..0.831), hard
+  unknot 0.913; no claim where nothing is reduced.
 * `tail` re-tested on the current scanner (41 interleaved pairs per input, 15 on the
   stress closure, ratio to `tail=0`, ranks by degree asserted equal): `tail=1`
   0.94 to 1.01 on eight inputs, the interval excluding 1 on two of them (Conway

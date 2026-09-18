@@ -344,6 +344,30 @@ class SimplifyTests(unittest.TestCase):
             self.assertEqual(simplify(d, r3_budget=None)[0].crossings, simplify(d)[0].crossings)
             self.assertEqual(simplify(d, r3_budget=0)[0].pd, simplify(d, r3=False)[0].pd)
 
+    def test_rebuild_checks_the_topology(self):
+        # rebuild no longer calls Diagram.from_pd: it must agree with it, and still reject what moves could break
+        from fastunknot.simplify import _Darts
+        rng = random.Random(30)
+        rejected = accepted = 0
+        for d in random_knot_braids(30, 120, strands=(3, 4, 5), lengths=(6, 20)):
+            self.assertEqual(_Darts(d).rebuild().pd, Diagram.from_pd(_Darts(d).rebuild().pd).pd)
+            state = _Darts(d)
+            alpha = state.alpha
+            x, y = rng.sample(range(len(alpha)), 2)
+            if alpha[x] == y:
+                continue
+            ax, ay = alpha[x], alpha[y]
+            alpha[x], alpha[ay] = ay, x                  # reconnect two edges the other way round
+            alpha[y], alpha[ax] = ax, y
+            try:
+                rebuilt = state.rebuild()
+            except ArithmeticError:
+                rejected += 1
+            else:
+                Diagram.from_pd(rebuilt.pd)              # accepted: then the full validation accepts it too
+                accepted += 1
+        self.assertGreater(rejected, 80)
+
     def test_reidemeister_three(self):
         from fastunknot.simplify import _Darts
         rng = random.Random(27)

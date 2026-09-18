@@ -224,17 +224,52 @@ class _Darts:
         return self._splice(through)
 
     def rebuild(self) -> Diagram:
+        """The diagram of the crossings that are left, checked for what the moves could break.
+
+        ``Diagram.from_pd`` validates from scratch (label types, every label twice, renaming,
+        components, genus) and took a quarter of ``recognize`` on a typical knotted closure.
+        Here the labels are integers used twice and numbered in order of first appearance by
+        construction, so only the topology is checked, directly on the darts: one traversal
+        must pass through every crossing twice, and the face walk must close into n + 2 faces.
+        """
         rows, label = [], {}
-        for i, alive in enumerate(self.alive):
-            if not alive:
+        alpha, alive = self.alpha, self.alive
+        for i, living in enumerate(alive):
+            if not living:
                 continue
             row = []
             for j in range(4):
                 d = 4 * i + j
-                key = min(d, self.alpha[d])
+                key = min(d, alpha[d])
                 row.append(label.setdefault(key, len(label)))
-            rows.append(row)
-        return Diagram.from_pd(rows)
+            rows.append(tuple(row))
+        n = len(rows)
+        if n == 0:
+            return Diagram(())
+        start = 4 * alive.index(True)
+        current, steps = start, 0
+        while True:
+            current = alpha[current ^ 2]                  # through the crossing, then along the edge
+            steps += 1
+            if current == start or steps > 2 * n:
+                break
+        if current != start or steps != 2 * n or len(label) != 2 * n:
+            raise ArithmeticError("Reidemeister moves left a diagram that is not one closed curve")
+        seen = bytearray(4 * len(alive))
+        faces = 0
+        for i, living in enumerate(alive):
+            if not living:
+                continue
+            for d in range(4 * i, 4 * i + 4):
+                if not seen[d]:
+                    faces += 1
+                    while not seen[d]:
+                        seen[d] = 1
+                        e = alpha[d]
+                        d = e - e % 4 + (e + 1) % 4
+        if faces != n + 2:
+            raise ArithmeticError("Reidemeister moves left a diagram that is not spherical")
+        return Diagram(tuple(rows))
 
 
 def _unlock(state: _Darts, depth: int, darts, undo_of, path: list, check_faces: bool):

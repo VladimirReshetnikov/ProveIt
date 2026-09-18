@@ -122,7 +122,10 @@ def alexander_rows(diagram: Diagram) -> list[dict[int, Poly]]:
         entries = ((o, one_minus_t), (u, t), (v, minus_one)) if signs[i] > 0 else                   ((o, one_minus_t), (u, minus_one), (v, t))
         sparse = rows[i]
         for col, value in entries:
-            total = add(sparse.get(col, []), value)      # arcs can coincide at a kink
+            if col not in sparse:                        # the usual case: nothing to add to
+                sparse[col] = list(value)
+                continue
+            total = add(sparse[col], value)              # arcs can coincide at a kink
             if total:
                 sparse[col] = total
             else:
