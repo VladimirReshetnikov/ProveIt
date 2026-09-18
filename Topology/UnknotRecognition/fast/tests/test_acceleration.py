@@ -245,12 +245,15 @@ class FactorTests(unittest.TestCase):
         self.assertEqual([f["method"] for f in r.evidence["factors"]], ["reidemeister-reduction"] * 2)
         self.assertEqual(recognize(double, use_r3=False).evidence["factors"][0]["method"], "reduced-khovanov-F2-scan")
         # ... and of two unknot diagrams that survive Reidemeister I, II and the III search
-        tough = [2, -1, 2, -3, -1, 3, -1, -2, -1, 1, 3, -2, 3]
+        easy = [2, -1, 2, -3, -1, 3, -1, -2, -1, 1, 3, -2, 3]          # falls to two III moves in a row
+        self.assertEqual([simplify(Diagram.from_braid(4, easy), r3_depth=k)[0].crossings for k in (1, 2)], [9, 0])
+        tough = [-3, -2, 3, 3, 1, 2, -2, 2, -3, 1, 1, -2, -2, -2, -2, -1, 3, 2, 2]
         self.assertEqual(simplify(Diagram.from_braid(4, tough))[0].crossings, 9)
         double = Diagram.from_braid(7, tough + [g + 3 * (1 if g > 0 else -1) for g in tough])
-        self.assertEqual(len(visible_factors(simplify(double)[0])[0]), 2)
+        self.assertEqual(len(visible_factors(simplify(double, r3=False)[0])[0]), 2)     # what recognize factors
         r = recognize(double)
         self.assertEqual((r.status, r.method), ("UNKNOT", "connected-sum-all-factors-trivial"))
+        self.assertEqual([f["method"] for f in r.evidence["factors"]], ["reduced-khovanov-F2-scan"] * 2)
 
 
 class SimplifyTests(unittest.TestCase):
@@ -271,6 +274,13 @@ class SimplifyTests(unittest.TestCase):
             replay(d, [{"kind": "R1", "crossings": [0]}])
         with self.assertRaises(ValueError):
             replay(d, [{"kind": "R3", "crossings": [0, 1, 2]}])          # a bigon chain has no triangle
+        with self.assertRaises(ValueError):
+            simplify(d, r3_depth=0)
+        # the search is budgeted: no budget, the default and a tiny one agree where a sequence exists,
+        # and a budget of zero trials is the plain I/II reduction
+        for d in random_knot_braids(28, 60, strands=(4, 5), lengths=(12, 24)):
+            self.assertEqual(simplify(d, r3_budget=None)[0].crossings, simplify(d)[0].crossings)
+            self.assertEqual(simplify(d, r3_budget=0)[0].pd, simplify(d, r3=False)[0].pd)
 
     def test_reidemeister_three(self):
         from fastunknot.simplify import _Darts

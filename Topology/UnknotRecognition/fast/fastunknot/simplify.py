@@ -219,25 +219,74 @@ class _Darts:
         return Diagram.from_pd(rows)
 
 
-def simplify(diagram: Diagram, r3: bool = True, check_faces: bool = True) -> tuple[Diagram, list[Move]]:
+def _unlock(state: _Darts, depth: int, darts, undo_of, path: list, check_faces: bool):
+    """Depth-first search for at most ``depth`` Reidemeister III moves after which a I/II move
+    exists.  The moves are left applied and listed in ``path``; returns the darts to look at,
+    or None with the structure restored.  After the first move only triangles next to it are
+    tried, and never the inverse of the move just made."""
+    seen = set()
+    for d in darts:
+        if state.trials >= state.budget:
+            return None
+        triangle = state.triangle_at(d)
+        if triangle is None or min(triangle) in seen:
+            continue
+        seen.add(min(triangle))
+        if undo_of is not None and set(triangle) == undo_of:
+            continue
+        if depth == 1 and check_faces and not state.r3_can_help(triangle):
+            continue
+        if state.apply_r3(triangle) is None:
+            continue
+        state.trials += 1
+        around = [4 * (x // 4) + j for x in triangle for j in range(4)]
+        path.append(triangle)
+        if any(state.move_at(x) is not None for x in around):
+            return around
+        if depth > 1:
+            crossings = {x // 4 for x in around} | {state.alpha[x] // 4 for x in around}
+            near = [4 * c + j for c in sorted(crossings) for j in range(4)]
+            found = _unlock(state, depth - 1, near, {x ^ 2 for x in triangle}, path, check_faces)
+            if found is not None:
+                return found + around
+        path.pop()
+        state.apply_r3(state.triangle_at(triangle[0] ^ 2))               # undo: the move is an involution
+    return None
+
+
+def simplify(diagram: Diagram, r3: bool = True, check_faces: bool = True,
+             r3_depth: int = 4, r3_budget: int | None = 10) -> tuple[Diagram, list[Move]]:
     """Crossing-decreasing Reidemeister I/II moves until none applies, helped by Reidemeister III.
 
     Incremental version (idea from acceleration proposal 02).  Moves in the
     trace name crossings by their index in the *input* diagram; ``replay``
     checks a trace.  The result is revalidated once at the end.
 
-    With ``r3``, when no I/II move is left every triangle that admits a
-    Reidemeister III move is inverted on trial; the move is kept if it creates
-    a I/II move and undone otherwise (it is an involution).  The scan is
-    exponential in the size of what is left, so this matters most for the
-    diagrams that nothing but the scan decides.  Never increases the number of
-    crossings; ``r3=False`` is the previous behaviour.  ``check_faces=False``
-    tries every triangle instead of only those next to a small face (slower, same
-    result; kept for the test of that shortcut).
+    With ``r3``, when no I/II move is left, sequences of at most ``r3_depth``
+    Reidemeister III moves (inversions of a triangular face) are tried, shortest
+    first and the later moves next to the first; a sequence is kept if it
+    creates a I/II move and undone otherwise.  The scan is exponential in the
+    size of what is left, so this matters most for the diagrams that nothing
+    but the scan decides.  Never increases the number of crossings; ``r3=False``
+    is the behaviour of 0.2.  The search is introspective about its own cost:
+    deeper sequences are tried only while fewer than ``r3_budget`` trial moves
+    per crossing of the input have been made (None: no limit), because a diagram
+    full of triangles that lead nowhere makes depth 4 cost a hundred times depth
+    1 (measured on T(3,61): 2, 10, 44 and 189 ms; 10 ms with a budget of 5), while
+    useful sequences are found early: on 117 unknot diagrams that depth 1 cannot
+    touch, budgets of 5, 15, 40 and none all reduce 97, 109 and 110 of them to
+    nothing at depths 2, 3 and 4.
+    ``check_faces=False`` tries every triangle as the
+    last move of a sequence instead of only those next to a small face (slower,
+    same result; kept for the test of that shortcut).
     """
     if not diagram.crossings:
         return diagram, []
+    if type(r3_depth) is not int or r3_depth < 1:
+        raise ValueError("r3_depth must be a positive integer")
     state = _Darts(diagram)
+    state.trials = 0
+    state.budget = float("inf") if r3_budget is None else r3_budget * diagram.crossings
     trace: list[Move] = []
     stack = list(range(4 * diagram.crossings - 1, -1, -1))
     while True:
@@ -250,20 +299,13 @@ def simplify(diagram: Diagram, r3: bool = True, check_faces: bool = True) -> tup
                 stack.append(d)
         if not r3 or state.remaining < 3:
             break
-        for d in range(4 * len(state.alive)):
-            triangle = state.triangle_at(d)
-            if triangle is None or d != min(triangle):
-                continue
-            if check_faces and not state.r3_can_help(triangle):
-                continue
-            if state.apply_r3(triangle) is None:
-                continue
-            around = [4 * (x // 4) + j for x in triangle for j in range(4)]
-            if any(state.move_at(x) is not None for x in around):
-                trace.append(Move("R3", tuple(sorted(x // 4 for x in triangle))))
-                stack = around
+        for depth in range(1, r3_depth + 1):
+            path: list = []
+            found = _unlock(state, depth, range(4 * len(state.alive)), None, path, check_faces)
+            if found is not None:
+                trace.extend(Move("R3", tuple(sorted(x // 4 for x in triangle))) for triangle in path)
+                stack = found
                 break
-            state.apply_r3(state.triangle_at(triangle[0] ^ 2))       # no use: undo
         else:
             break
     return state.rebuild(), trace

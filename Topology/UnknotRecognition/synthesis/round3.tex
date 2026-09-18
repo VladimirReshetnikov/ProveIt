@@ -175,6 +175,46 @@ removed (3.4 on average) the scan work is $0.43$ of what it was, cheaper on 44
 and dearer on 10, with per-diagram ratios from $0.03$ to $7.3$; over all 117 it
 is $0.69$.
 
+\emph{Depth, and a budget.} One move of lookahead left those 117 unknots
+untouched. Sequences of two moves, the second next to the first, reduce 97 of
+them to nothing, three moves 109 and four moves 110, without a violation at any
+depth. What costs is a search that fails: on $T(3,61)$, full of triangles that
+lead nowhere, depths 1 to 4 take 2, 10, 44 and 189 ms. Useful sequences are
+found early, so the search watches its own cost and deepens only while fewer
+than a fixed number of trial moves per crossing have been made; budgets of 5,
+15, 40 and none give the same 97, 109 and 110, and a budget of 5 caps the
+$T(3,61)$ case at 10 ms. With the defaults (depth 4, budget 10) only 15 of
+60\,000 random closures are unknots that survive the reduction, the largest
+with 16 crossings.
+
+\paragraph{Introspective selection and racing (two suggestions of the user).}
+The first suggestion was to choose algorithms from a runtime profile, as
+introsort does. It works where a cheap signal separates the populations and
+switching is free, and three parts of the package are now of that kind: the
+shape cache chosen from the scan order, result sharing enabled by the first
+reused plan, and the budgeted deepening just described. For scan \emph{orders}
+it fails with the rules at hand, in both forms tried. Restarting with another
+tie-break rule when a growing work budget is overrun was simulated exactly on
+the saved work of three rules on 81 diagrams: all 27 policies cost $1.4$ to
+$4.8$ times the default. Introsort can switch because heapsort carries a
+guarantee and recursion depth signals degeneracy; here no rule has a
+guarantee, expensive is not degenerate, and an abandoned scan is lost. Without
+restarts (the previous stage is never mutated, so tied candidates can each be
+tried from the same state and the smallest real complex kept) the cost with all
+trial work counted is $0.41$ on the scrambled unknots but $1.44$ to $1.52$ on
+random closures and about $1.4$ overall: the size of the complex now does not
+predict the cost of the choice later.
+
+The second suggestion, racing two algorithms on separate cores, is where the
+same data does promise something, because by wall clock a race costs only the
+winner's time: the better of two rules needs $0.75$ of the default on the
+expensive inputs, and $0.07$, $0.24$ and $0.30$ on single ones. In Python a
+competitor has to be a process, and starting one costs 30 ms bare, 76 ms with
+the package imported and 111 ms for a complete scan of the trefoil from the
+command line, against scans that mostly finish within 300 ms. Following the
+user's instruction for that case, the race is built in the Rust version, where
+a thread costs microseconds.
+
 Two remarks. First, the closing sentence of the previous section, that on an
 unknot diagram no filter can decide the Python accelerations change nothing,
 was true of 0.1 against 0.2 and is no longer true: that case is now 1.4 times

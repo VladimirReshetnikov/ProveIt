@@ -99,7 +99,7 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
 
 ## Test and benchmark status (last observed 18 September 2026)
 
-* `python -m unittest discover -s tests`: 37 tests, OK, about 3 s (CPython
+* `python -m unittest discover -s tests`: 37 tests, OK (about 5 s), about 3 s (CPython
   3.14.4, Windows 11). 19 are the 0.1 tests (three expectations updated because
   a filter now decides before Khovanov does), 18 are new and compare every new
   code path with the 0.1 implementation.
@@ -305,11 +305,48 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   from 2081 to 3277. Over the 54 of 117 survivors where crossings are removed
   (3.4 on average) the scan work is 0.43 of before, cheaper on 44 and dearer on
   10, per-diagram ratios 0.03 to 7.3; over all 117 it is 0.69.
+* **Deeper III search, budgeted.** One move of lookahead left 117 unknot
+  diagrams (of 40000 random closures) untouched; sequences of two moves, the
+  second next to the first, reduce 97 of them to nothing, three moves 109, four
+  moves 110, with no violation at any depth (no I/II move left, traces replay,
+  Alexander polynomial and unknot rank preserved). A failing search is what
+  costs: on T(3,61), full of triangles that lead nowhere, depths 1 to 4 take
+  2, 10, 44 and 189 ms. Useful sequences are found early, so the search is
+  introspective about its own cost: it deepens only while fewer than
+  `r3_budget` trial moves per crossing have been made. Budgets of 5, 15, 40 and
+  none give the same 97 / 109 / 110, while a budget of 5 caps the T(3,61) case
+  at 10 ms. Defaults: depth 4, budget 10. With them only 15 of 60000 random
+  closures are unknots that survive the reduction (largest: 16 crossings).
+* **Introspective algorithm selection (the introsort idea), measured.** It
+  works where a cheap signal separates the populations and switching is free,
+  and three parts of the package now are of that kind: the shape cache chosen
+  from the scan order, result sharing enabled by the first plan hit, and the
+  budgeted deepening above. For scan *orders* it does not work with the rules
+  at hand, in either form. (a) Run the default order under a work budget, on
+  overrun restart with another tie-break rule, grow the budget: simulated
+  exactly on the saved work of three rules on 81 diagrams, 27 policies, every
+  one costs 1.4 to 4.8 times the default. Introsort can switch because heapsort
+  has a guarantee and recursion depth signals degeneracy; here no rule has a
+  guarantee, expensive is not degenerate (on the 8 inputs with 86% of the work
+  all rules are within a factor two), and an abandoned scan is lost. (b) No
+  restart: `add_crossing` does not mutate the previous stage, so tied greedy
+  candidates can each be tried from the same state and the smallest real
+  complex kept. With all trial work counted: 0.41 on the scrambled unknots
+  (median per diagram 1.02, dearer on 21 of 36) but 1.44 to 1.52 on random
+  closures, 1.40 to 1.47 overall. The size of the complex now does not predict
+  the cost of the choice later.
+* **Racing orders in parallel** is where that data does promise something: by
+  wall clock on separate cores the race costs the winner's time, and the best
+  of two rules is 0.75 of the default on the expensive inputs (single inputs
+  0.07, 0.24, 0.30). Not in Python, though: a competitor must be a process, and
+  starting one costs 30 ms bare, 76 ms with the package imported, 111 ms for a
+  complete CLI scan of the trefoil, against scans that mostly finish within
+  300 ms. It belongs in the Rust version, where a thread costs microseconds.
 * `hard_unknots.py`: the scrambled family turned out weak, since its rewriting
   consists of Reidemeister III moves and the helped reduction undoes all of
   it (120 of 120; 180 of 180 with heavier scrambling). `SURVIVORS` lists unknot
-  diagrams of 17 to 21 crossings found by random search that survive I, II and
-  the III search and every filter; they are the honest scan-decided inputs now.
+  diagrams of 11 to 16 crossings found by random search that survive I, II, the
+  default III search and every filter; they are the honest scan-decided inputs.
 * `seconds=` fidelity: the default scanner overshot a 1 s budget by up to
   0.24 s because a crossing was added without checking the clock; with a check
   every 512 objects the overshoot is at most 0.03 s on the same runs.
