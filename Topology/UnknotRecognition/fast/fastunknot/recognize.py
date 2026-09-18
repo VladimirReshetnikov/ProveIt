@@ -29,6 +29,7 @@ from .alexander import alexander_polynomial, evaluate, format_polynomial
 from .diagram import Diagram
 from .factor import convolve, visible_factors
 from .filters import FilterLimit, alexander_obstruction, jones_obstruction
+from .ordering import best_scan_order
 from .scan import ScanLimit, khovanov_rank
 from .simplify import descending_start, simplify
 
@@ -100,10 +101,13 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
         if witness is not None:
             evidence["alexander_modular"] = witness
             return "KNOTTED", "alexander-modular"
+    order = None
     if use_jones:
+        # the Jones scan and the Khovanov scan use the same greedy order: compute it once
+        order = best_scan_order(diagram.pd, tries=min(diagram.crossings, 12), check=check)
         try:
             witness = jones_obstruction(diagram, max_states=jones_max_states,
-                                        max_transitions=jones_max_transitions, check=check)
+                                        max_transitions=jones_max_transitions, order=order, check=check)
         except FilterLimit as exc:
             evidence["jones"] = f"skipped: {exc}"
         else:
@@ -127,7 +131,7 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
         if poly != [1]:
             return "KNOTTED", "alexander-polynomial"
     remaining = None if deadline is None else max(0.0, deadline - monotonic())
-    kh = khovanov_rank(diagram.pd, max_objects=max_objects, seconds=remaining,
+    kh = khovanov_rank(diagram.pd, order=order, max_objects=max_objects, seconds=remaining,
                        check_d_squared=check_d_squared, **scan_options)
     evidence["khovanov"] = {"field": "F2", "unreduced_rank": kh["rank"], "reduced_rank": kh["reduced_rank"],
                             "unreduced_rank_by_cube_degree": kh["by_degree"], "scan_stats": kh["stats"],

@@ -247,6 +247,21 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   cannot reach. 301 pairs gave 1.006 (1.000..1.015). With some 15 comparisons
   per run at 95%, expect an occasional false flag on sub-millisecond cases and
   confirm a flag with a few hundred pairs before acting on it.
+* Tried and reverted: computing the fill-in terms of a pivot once per kind of
+  source. Between 5 and 52% of the sources of a pivot share matching and value
+  with another source (52% on the stress closure), so their terms coincide.
+  With 151 interleaved pairs it was slower on every input: 1.075 (scrambled
+  unknot, 25 crossings), 1.031, 1.043, 1.019, and 1.026 on the stress closure,
+  all intervals above 1. Building the lists costs more than the sharing saves.
+* `recognize` computes the greedy scan order once and hands it to both the Jones
+  scan and the Khovanov scan, which used to compute the same order twice.
+  Results identical to the previous code on 400 diagrams, evidence records
+  included. 151 pairs: 0.943 (0.923..0.964) and 0.945 (0.936..0.955) on two
+  scrambled unknots of about 10 ms; on a 40 ms one 1.029 against an A/A of 1.019
+  in the same run, i.e. no difference (the change removes about 0.7% there).
+  That A/A reading is itself a lesson: the second run of the old code comes last
+  in every round and can be biased by a percent or two, so compare a ratio with
+  its own A/A, not with 1.
 * `seconds=` fidelity: the default scanner overshot a 1 s budget by up to
   0.24 s because a crossing was added without checking the clock; with a check
   every 512 objects the overshoot is at most 0.03 s on the same runs.
