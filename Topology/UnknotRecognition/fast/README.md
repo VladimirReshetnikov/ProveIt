@@ -117,9 +117,29 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   rows of `results/perf_log.json` are flagged as contaminated. Use `ab.py`,
   which times old and new alternately in one process and claims a gain only
   when the whole interquartile range of the paired ratios is below 1
-  (`results/ab_log.json`). Deterministic counters (`stats["compositions"]`,
-  object counts) are immune to this and are the better yardstick for
-  algorithmic changes.
+  (`results/ab_log.json`). Deterministic counters are immune to this, but each
+  sees only part of the work: `stats["compositions"]` counts elimination work
+  and `stats["entries"]` the differential entries written while adding
+  crossings. Neither alone predicts time: on the 41-crossing 4-strand closure
+  the scan order with the fewest compositions (1565 against 4164, equal peak
+  size) was not the faster one.
+* Measured and left unchanged (deterministic counters, ranks identical in every
+  variant). Pivot rule: the product cost (out-1)(in-1) with last-in-first-out
+  inside a cost bucket is best or within 2% on four inputs; first-in-first-out
+  needs 64% more compositions on the stress case and the sum cost is worse on
+  all four. Scan-order selection: scoring greedy orders by the sum of
+  2^(boundary/2) selects the same start crossing as the current (maximum,
+  total) rule on all four inputs. On the 31-crossing 6-strand closure another
+  start needs a tenth of the compositions, but its boundary profile is worse
+  than the selected one, so no boundary-based score can find it. On the stress
+  case 16 of the 36 greedy starts finish within 4 s; starts 14 to 16 tie for the
+  least work (23710 compositions) and the default, which scores every third
+  start, selects 15. The score is a fragile predictor: start 0 has profile
+  (8, 230) against the winners' (8, 226) and needs 895182 compositions, 38
+  times more, with 2.6 times the peak size.
+* `seconds=` fidelity: the default scanner overshot a 1 s budget by up to
+  0.24 s because a crossing was added without checking the clock; with a check
+  every 512 objects the overshoot is at most 0.03 s on the same runs.
 * Post-0.2 scanner work (commits 24b6111, 2e3fef7, e34c9e8), `perf.py` totals:
   1022 ms (0.2) to 602 ms (`FastScan`) to 412 ms (integer geometry). Those six
   runs predate the control loop; what supports them is that the one case the

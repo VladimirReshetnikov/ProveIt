@@ -45,7 +45,7 @@ class FastScan:
         self.composed: dict = {}
         self.small: list = [[] for _ in range(CAP)]   # bucket queue of eliminate(), empty between calls
         self.stats = {"max_objects_before_elimination": 0, "max_objects_after_elimination": 0,
-                      "eliminations": 0, "max_boundary": 0, "compositions": 0}
+                      "eliminations": 0, "max_boundary": 0, "compositions": 0, "entries": 0}
 
     def _check(self) -> None:
         if self.deadline is not None and monotonic() > self.deadline:
@@ -85,9 +85,12 @@ class FastScan:
         inc = [set() for _ in range(total)]
         saddles: dict = {}
         transfers: dict = {}
+        deadline = self.deadline
         for o, ma in enumerate(old_mid):
             if ma is None:
                 continue
+            if deadline is not None and not o & 511:
+                self._check()                 # a single crossing can dominate the budget
             b0, b1 = base[o]
             entries = saddles.get(ma)
             if entries is None:
@@ -110,6 +113,7 @@ class FastScan:
         self.mid, self.deg, self.out, self.inc, self.live = mid, deg, out, inc, total
         self.points = new_points = alg.new_points()
         stats = self.stats
+        stats["entries"] += sum(map(len, out))        # deterministic measure of the transfer work
         if total > stats["max_objects_before_elimination"]:
             stats["max_objects_before_elimination"] = total
         if len(new_points) > stats["max_boundary"]:
