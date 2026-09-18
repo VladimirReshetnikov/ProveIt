@@ -223,7 +223,7 @@ recompute the stress case (rank 2949, with and without the tail).
 \label{sec:rust}
 
 \subsection{Design}
-\code{rust/} is a dependency-free crate (about 1900 lines) implementing the 0.2
+\code{rust/} is a dependency-free crate (about 2500 lines) implementing the 0.2
 pipeline except the exact Alexander polynomial over $\mathbb Z[t]$, which
 would need big integers and on which exactness never depended. It was designed
 for Rust rather than transliterated:
@@ -234,8 +234,9 @@ for Rust rather than transliterated:
   and boxed words otherwise;
 \item composition and transfer plans are a few integer masks per surface
   component, evaluated with popcounts;
-\item memo tables use an Fx-style multiplicative hasher; with the standard
-  SipHash, hashing dominated the profile;
+\item memo tables use an Fx-style multiplicative hasher; measured against the
+  standard SipHash it is worth 22\% on the stress case (65 ms against 86 ms)
+  and 18\% on two Conway summands;
 \item objects live in flat vectors, the min-fill queue is a binary heap, and
   field arithmetic modulo $2^{61}-1$ uses 128-bit products;
 \item factored ranks such as $33^{16}$ use a small base-$10^9$ integer.
@@ -259,4 +260,51 @@ identical inputs. Larger random braid closures, raw scan, one run each with a
 \IfFileExists{tables/rust_scaling.tex}{\input{tables/rust_scaling.tex}}{(table pending)}
 \end{center}
 
-\RUSTPROSE
+What the profile shows:
+\begin{itemize}
+\item On identical inputs the Rust scanner is 10 to 17 times faster than
+  Python 0.2 (Conway 0.59 ms against 8.4 ms, the 40-crossing 3-braid 6.9 ms
+  against 84 ms, the stress case 68 ms against 691 ms) and recognition takes
+  between 5 and 200 microseconds. Against version 0.1 the stress case went from
+  more than 600 s to 0.068 s.
+\item Time splits roughly evenly between adding crossings (gluing, delooping,
+  transfer plans) and cancellation, except when fill-in dominates: with LIFO
+  pivots the stress case takes 2.1 s in Rust, 2.03 s of it in cancellation,
+  against 0.068 s with min-fill. The pivot rule matters as much in Rust as in
+  Python; on the other inputs it is again neutral.
+\item One uncancelled tail crossing saves 5 to 20\% in Rust as well.
+\item \textbf{The exponential wall is still there.} A random 3-strand closure
+  with 80 crossings has reduced rank 5189 and takes 0.23 s; with 160 crossings
+  the scan exhausted 300 s. A 4-strand closure with 61 crossings (rank 643)
+  takes 0.11 s; with 81 crossings it exhausted 300 s. The scan width is 6 or
+  8 throughout, so this is the multiplicity factor of Section \ref{sec:fast}
+  and not the boundary: the rank of the homology itself grows exponentially
+  with the length of a random braid word, and any algorithm that writes the
+  homology down inherits that. (Both runs overshot their cooperative deadline
+  by 40 to 70 seconds, because the deadline is checked between cancellations.)
+  For \emph{recognition} these inputs are easy, since the Alexander test
+  rejects them in microseconds; the hard inputs for recognition are diagrams
+  of the unknot and of knots with trivial Alexander and Jones values at our
+  evaluation points, where the scan must run to completion.
+\end{itemize}
+
+\subsection{Where the three versions stand}
+\begin{center}\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Task & Python 0.1 & Python 0.2 & Rust \\
+\midrule
+Scan, stress closure (36 crossings, rank 2949) & $>600$ s & 0.69 s & 0.068 s \\
+Scan, Conway knot & 34 ms & 8.4 ms & 0.59 ms \\
+Recognize Conway knot & 59 ms & 1.3 ms & 0.055 ms \\
+Recognize Conway\#Conway\#Conway & 58 s & 2.5 ms & 0.099 ms \\
+Recognize $T(3,61)$ & 4.7 s & 8.8 ms & 0.19 ms \\
+Rank of eight Conway summands ($33^8$) & $>120$ s & 21 ms & 1.9 ms \\
+Recognize the 8-crossing hard unknot & 2.8 ms & 2.8 ms & 0.056 ms \\
+\bottomrule
+\end{tabular}
+\end{center}
+The last row is the honest one for the original question: on an unknot diagram
+that no filter can decide, the accelerations of the Python version change
+nothing, because the Khovanov scan still has to run; only the constant factor
+of the Rust port helps.

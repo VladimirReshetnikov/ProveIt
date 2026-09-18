@@ -70,13 +70,16 @@ or rebuild it with `pdflatex` (twice):
 | `reports/06/docs/technical-report.pdf` | `reports/06/docs/technical-report.tex` | likewise |
 | `docs/arXiv-2607.23350v1/algorithm-incompressible-250726.pdf` | `docs/arXiv-2607.23350v1/algorithm-incompressible-250726.tex` (with its `.bbl` and figure PDFs) | `pdflatex algorithm-incompressible-250726.tex` (twice) |
 
+The report PDFs inside `proposals/01` .. `09` are omitted by the same rule
+(each has its `.tex` beside it).
+
 PDFs without a same-name source are always included: the talk
 `docs/quasipolynomial-talk.pdf` and the preprint's figure PDFs in
 `docs/arXiv-2607.23350v1/`.
 
-## Test status (last observed 18 September 2026, commit 72b15eb)
+## Test status (last observed 18 September 2026)
 
-All unit-test suites are green on CPython 3.14.4 / Windows 11:
+All unit-test suites are green on CPython 3.14.4 and rustc 1.96.1 / Windows 11:
 
 | Suite | Tests | Result | Wall time |
 |---|---|---|---|
@@ -86,13 +89,18 @@ All unit-test suites are green on CPython 3.14.4 / Windows 11:
 | `reports/04` | 62 | OK | ~3 s |
 | `reports/05` | 58 | OK | ~1 s |
 | `reports/06` | 45 | OK | ~4 s |
-| `fast` | 19 | OK | ~2 s |
+| `fast` (0.2) | 33 | OK | ~6 s |
+| `rust` (`cargo test --release`) | 4 | OK | ~25 s including the build |
+| `rust/cross_check.py 200` (Rust against Python) | 200 closures | 0 problems | ~1 min |
 
-The experiments (cross-validation scripts, benchmark) have a more nuanced
-status; see `synthesis/README.md` and `fast/README.md` before rerunning any
-of them. In short: everything reported in `synthesis/report.pdf` comes from
-completed runs, but two experiments are long-running (hours) and one
-benchmark input hits a 600 s cap.
+The six archive suites were last run at commit 72b15eb and have not changed
+since. The test suites shipped inside `proposals/01` .. `09` were not run.
+
+The experiments (cross-validation, benchmarks, ablation, profile) have a more
+nuanced status; see `synthesis/README.md`, `fast/README.md` and
+`rust/README.md` before rerunning any of them. Everything reported in
+`synthesis/report.pdf` comes from completed runs; several experiments are
+long-running because old configurations run into their time caps on purpose.
 
 ## Status of the quasi-polynomial target
 

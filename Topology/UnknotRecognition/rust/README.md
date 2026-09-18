@@ -55,7 +55,7 @@ it, since the Khovanov scan decides whatever the filters leave open.
   evaluating a monomial is popcounts and ORs.
 * **Memoization with a fast hasher.** Composition results and crossing
   transfers are cached per stage in hash maps using an Fx-style multiplicative
-  hasher (SipHash dominated the profile otherwise).
+  hasher (measured: the standard SipHash is 18 to 32% slower on the scanner).
 * **Flat object storage and a binary heap** for the lazy min-fill (Markowitz)
   pivot queue; units over F2 are involutions, so a pivot needs no inversion.
 * **Arithmetic modulo 2^61 − 1** with `u128` products for both filters.
@@ -68,3 +68,17 @@ LIFO pivots, tails 0 to 2, mirrors), input validation, one-sidedness of the
 filters on unknot diagrams, and the recognition pipeline. `cross_check.py`
 compares ranks by cube degree and verdicts with the Python package on random
 braid closures. Measured results are in `results/` and in the synthesis report.
+
+## Test and profile status (last observed 18 September 2026, rustc 1.96.1, Windows 11)
+
+* `cargo test --release`: 4 tests, OK.
+* `python cross_check.py 200`: 200 random braid closures, 0 problems (about a minute).
+* `python profile.py`: completed in about 13 minutes. Almost all of that is two
+  scaling inputs (a 160-crossing 3-strand closure and an 81-crossing 4-strand
+  closure) that exhaust their 300 s budgets, and overshoot them by 40 to 70 s
+  because the deadline is only checked between cancellations. Everything else
+  finishes in seconds. Remove those two rows from `profile.py` for a quick run.
+* Headline numbers (`results/profile.json`): the 36-crossing stress closure scans
+  in 68 ms (Python 0.2: 0.69 s; Python 0.1: more than 600 s); recognition of the
+  Conway knot takes 55 microseconds; the scanner is 10 to 17 times faster than
+  Python 0.2 on identical inputs.

@@ -7,7 +7,8 @@ D = 'data/'
 
 
 def esc(s):
-    return str(s).replace('_', r'\_').replace('%', r'\%').replace('&', r'\&')
+    return (str(s).replace('_', r'\_').replace('%', r'\%').replace('&', r'\&').replace('#', r'\#')
+            .replace('^2', r'$^2$'))
 
 
 def table(header, spec, rows, tail=''):
@@ -144,10 +145,11 @@ if abl:
     for i in range(0, len(rest), 2):
         a, b = rest[i], rest[i + 1]
         ratio = (b['seconds'] / a['seconds']) if 'seconds' in a and 'seconds' in b else None
-        ratio = f"{ratio:.0f}$\times$" if ratio and ratio >= 10 else f"{ratio:.1f}$\times$" if ratio else "censored"
+        times = "$" + chr(92) + "times$"
+        ratio = f"{ratio:.0f}{times}" if ratio and ratio >= 10 else f"{ratio:.1f}{times}" if ratio else "censored"
         rows.append(f"{esc(a['case'])} & {esc(a['config'])}: {ms(a)} & {esc(b['config'])}: {ms(b)} & {ratio} \\\\")
     open('tables/ablation_other.tex', 'w').write(
-        table("Task & new (ms) & old (ms) & ratio", "@{}p{0.30\linewidth}p{0.25\linewidth}p{0.27\linewidth}r@{}", rows))
+        table("Task & new (ms) & old (ms) & ratio", "@{}p{0.36\linewidth}p{0.23\linewidth}p{0.27\linewidth}r@{}", rows))
 
 if rust:
     rows = []

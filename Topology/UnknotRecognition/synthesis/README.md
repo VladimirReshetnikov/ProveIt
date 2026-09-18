@@ -2,7 +2,7 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
-* `report.tex`, `report.pdf`: the report (12 pages). Sections: sources and
+* `report.tex`, `acceleration.tex`, `report.pdf`: the report. Sections: sources and
   outcome; the six archives; code review; cross-validation; what is missing
   for `n^O(log n)`; the `fastunknot` recognizer; assessment.
 * `build.sh`: regenerates the tables and runs `pdflatex` twice.
@@ -37,7 +37,10 @@ of them was deliberately stopped.
 | `scan_stress.py` | first three sections completed; last section never ran | ~2 min for the completed part | 120 random braids vs. archive 04 (0 mismatches), Atlas knots, unknot family: all in `scan_stress_output.txt`. The final "random 4-braid" section as committed generates **even-length words on four strands, which can never close to a knot**, so its loop spins forever; the run was killed. Use odd lengths (as `profile4.py` does) before rerunning. |
 | `profile4.py` | completed | ~1 s | odd-length 4-braid closures, step-by-step; output `profile4_output.txt` |
 | `scan_smoke.py` | completed | seconds | first agreement check of the scanner with archive 04 |
-| `../fast/benchmark.py` | completed | ~11 min | one input (random 36-letter 5-braid) hit the 600 s cap and is recorded as `timeout`; see `../fast/README.md` |
+| `../fast/benchmark.py` (version 0.1) | completed | ~11 min | recorded as `../fast/results/benchmark_0.1.json`; one input (random 36-letter 5-braid) hit the 600 s cap. Under 0.2 that input takes under a second |
+| `proposals_bench.py` | completed | ~50 min for all engines | every engine (0.1 baseline, nine proposals, 0.2) on 20 tasks, fresh process each, 120 s cap. Long because the baseline and the proposals without min-fill pivots or without factorization run into the cap. Outputs: `proposals_bench_proposals.json` (the nine), `proposals_bench_base_new.json`, `proposals_bench_rank_rerun.json` (rank task through factored APIs). **Ignore the `base` rows inside `proposals_bench_proposals.json`**: during that run `base` pointed at the working tree, which was being edited; the valid baseline rows are in `proposals_bench_base_new.json`, measured against the byte-identical 0.1 copy in `../proposals/01/baseline` |
+| `../fast/ablation.py` | completed | ~40 min | per-idea ablation of 0.2; the LIFO rows on the stress case hit the 300 s cap on purpose |
+| `../rust/profile.py` | completed | see `../rust/README.md` | timings and phase split of the Rust binary |
 
 Everything cited in `report.pdf` comes from completed runs; the two
 interrupted ones contributed nothing beyond what is listed as completed.
