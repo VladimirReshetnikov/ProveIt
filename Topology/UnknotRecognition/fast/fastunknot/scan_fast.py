@@ -23,8 +23,8 @@ from collections import defaultdict
 from heapq import heapify, heappop, heappush
 from time import monotonic
 
-from .algebra import BitAlgebra, bits, evaluate
 from .geometry import ScanLimit
+from .planar import Planar
 
 
 CAP = 256     # Markowitz costs below this use bucket lists, the rest a heap
@@ -35,9 +35,7 @@ class FastScan:
         if max_objects is not None and (type(max_objects) is not int or max_objects < 0):
             raise ValueError("max_objects must be a nonnegative integer")
         self.max_objects, self.deadline = max_objects, deadline
-        self.algebra = BitAlgebra(self._check)
-        self.matchings: list = [frozenset()]          # id -> matching
-        self.ids: dict = {frozenset(): 0}             # matching -> id
+        self.algebra = Planar()                       # interned matchings and gluing plans
         self.mid: list = [0]                          # object -> matching id (None when cancelled)
         self.deg: list = [0]                          # object -> homological degree
         self.out: list = [{}]                         # object -> {target: value}
@@ -53,30 +51,19 @@ class FastScan:
         if self.deadline is not None and monotonic() > self.deadline:
             raise ScanLimit("time budget exhausted")
 
-    def _intern(self, matching) -> int:
-        ident = self.ids.get(matching)
-        if ident is None:
-            ident = self.ids[matching] = len(self.matchings)
-            self.matchings.append(matching)
-        return ident
-
     # ----- one crossing --------------------------------------------------
     def add_crossing(self, slots: tuple, reduce_now: bool = True) -> None:
         self._check()
-        alg, matchings, points = self.algebra, self.matchings, self.points
-        alg.clear()
+        alg = self.algebra
+        alg.stage(self.points, slots)
         self.composed = {}
         old_mid, old_deg, old_out = self.mid, self.deg, self.out
         glued: dict = {}
-        count = 0
-        new_points = None
         for ma in set(old_mid):
-            if ma is None:
-                continue
-            g0 = alg.gluing(matchings[ma], 0, points, slots)
-            g1 = alg.gluing(matchings[ma], 1, points, slots)
-            glued[ma] = (self._intern(g0.matching), 1 << g0.closed, self._intern(g1.matching), 1 << g1.closed)
-            new_points = g0.points
+            if ma is not None:
+                nm0, closed0, _ = alg.glue(ma, 0)
+                nm1, closed1, _ = alg.glue(ma, 1)
+                glued[ma] = (nm0, 1 << closed0, nm1, 1 << closed1)
         if self.max_objects is not None:
             count = sum(glued[ma][1] + glued[ma][3] for ma in old_mid if ma is not None)
             if count > self.max_objects:
@@ -104,8 +91,7 @@ class FastScan:
             b0, b1 = base[o]
             entries = saddles.get(ma)
             if entries is None:
-                m = matchings[ma]
-                entries = saddles[ma] = self._pack(alg.crossing_entries(m, m, 1, 0, 1, points, slots)[2])
+                entries = saddles[ma] = alg.transfer(ma, ma, 1, 0, 1)
             for ls, lt, value in entries:
                 out[b0 + ls][b1 + lt] = value
                 inc[b1 + lt].add(b0 + ls)
@@ -113,10 +99,7 @@ class FastScan:
                 key = (ma, old_mid[o2], f)
                 both = transfers.get(key)
                 if both is None:
-                    m, m2 = matchings[ma], matchings[key[1]]
-                    both = transfers[key] = (
-                        self._pack(alg.crossing_entries(m, m2, f, 0, 0, points, slots)[2]),
-                        self._pack(alg.crossing_entries(m, m2, f, 1, 1, points, slots)[2]))
+                    both = transfers[key] = (alg.transfer(ma, key[1], f, 0, 0), alg.transfer(ma, key[1], f, 1, 1))
                 c0, c1 = base[o2]
                 for ls, lt, value in both[0]:
                     out[b0 + ls][c0 + lt] = value
@@ -125,9 +108,7 @@ class FastScan:
                     out[b1 + ls][c1 + lt] = value
                     inc[c1 + lt].add(b1 + ls)
         self.mid, self.deg, self.out, self.inc, self.live = mid, deg, out, inc, total
-        if new_points is None:
-            new_points = glue_points(points, slots)
-        self.points = new_points
+        self.points = new_points = alg.new_points()
         stats = self.stats
         if total > stats["max_objects_before_elimination"]:
             stats["max_objects_before_elimination"] = total
@@ -138,24 +119,12 @@ class FastScan:
             if self.live > stats["max_objects_after_elimination"]:
                 stats["max_objects_after_elimination"] = self.live
 
-    @staticmethod
-    def _pack(entries) -> tuple:
-        """Delooping labels as offsets inside the block of an old object."""
-        return tuple((sum(bit << j for j, bit in enumerate(ls)), sum(bit << j for j, bit in enumerate(lt)), value)
-                     for ls, lt, value in entries)
-
     # ----- composition -----------------------------------------------------
     def _compose(self, key) -> int:
         """Cache miss of g o f; key = (id a, id b, id c, f, g)."""
-        a, b, c, f, g = key
-        matchings = self.matchings
-        plan = self.algebra.plan(matchings[a], matchings[b], matchings[c])
-        result = 0
-        if plan is not None:
-            for tf in bits(f):
-                for tg in bits(g):
-                    result ^= evaluate(plan, tf, tg)
-        self.composed[key] = result
+        if self.deadline is not None:
+            self._check()
+        result = self.composed[key] = self.algebra.compose(*key)
         return result
 
     # ----- Gaussian elimination -------------------------------------------
@@ -322,22 +291,15 @@ class FastScan:
         return dict(sorted(counts.items()))
 
     def check_d_squared(self) -> None:
-        alg, matchings, mid, out = self.algebra, self.matchings, self.mid, self.out
+        alg, mid, out = self.algebra, self.mid, self.out
         for a, row in enumerate(out):
             if not row:
                 continue
             acc: dict = {}
-            ma = matchings[mid[a]]
             for b, f in row.items():
-                mb = matchings[mid[b]]
                 for c, g in out[b].items():
-                    acc[c] = acc.get(c, 0) ^ alg.compose(f, g, ma, mb, matchings[mid[c]])
+                    acc[c] = acc.get(c, 0) ^ alg.compose(mid[a], mid[b], mid[c], f, g)
             for c, value in acc.items():
                 if value:
                     raise ArithmeticError(f"d^2 != 0 between objects {a} and {c}")
 
-
-def glue_points(points: frozenset, slots: tuple) -> frozenset:
-    """Boundary labels after attaching a crossing (used only when the complex is empty)."""
-    once = {label for label in slots if slots.count(label) == 1}
-    return frozenset((points - once) | (once - points))
