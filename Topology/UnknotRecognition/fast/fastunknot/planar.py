@@ -84,9 +84,10 @@ class Planar:
         self.ids: dict = {(): 0}          # sorted tuple of sorted pairs -> id
         self.pairs: list = [()]
         self.partner: list = [{}]
-        self.stats = {"plans": 0, "shape_hits": 0}
+        self.stats = {"plans": 0, "shape_hits": 0, "result_hits": 0}
         self.shape_plans: dict = {}       # label-independent transfer plans, kept across stages
         self.shape_ids: dict = {}         # relabelled pairs (or slots) -> small integer
+        self.shape_results: dict = {}     # label-independent transfer and composition results (scanner)
         self.stage(frozenset(), (0, 0, 0, 0))
 
     def intern(self, pairs: tuple) -> int:
@@ -128,12 +129,26 @@ class Planar:
             return
         rank = {label: r for r, label in enumerate(sorted(points.union(slots)))}
         self.rank = rank
-        if len(self.shape_plans) > SHAPE_CACHE:
+        if len(self.shape_plans) + len(self.shape_results) > SHAPE_CACHE:
             self.shape_plans.clear()
+            self.shape_results.clear()
             self.shape_ids.clear()
         self.shape_slots = self.shape_ids.setdefault(("slots",) + tuple(rank[label] for label in slots),
                                                      len(self.shape_ids))
         self.shapes: dict = {}                     # matching id -> id of its pairs relabelled by rank
+        self.shapes_after: dict = {}               # the same for matchings on the new boundary
+        self.rank_after = None
+
+    def shape_after(self, m: int) -> int:
+        """Shape of a matching on the boundary after this crossing (ranks among the new points)."""
+        found = self.shapes_after.get(m)
+        if found is None:
+            rank = self.rank_after
+            if rank is None:
+                rank = self.rank_after = {label: r for r, label in enumerate(sorted(self.new_points()))}
+            pairs = tuple((rank[p], rank[q]) for p, q in self.pairs[m])
+            found = self.shapes_after[m] = self.shape_ids.setdefault(pairs, len(self.shape_ids))
+        return found
 
     def shape(self, m: int) -> int:
         found = self.shapes.get(m)

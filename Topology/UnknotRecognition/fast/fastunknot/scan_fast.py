@@ -86,6 +86,9 @@ class FastScan:
         inc = [set() for _ in range(total)]
         saddles: dict = {}
         transfers: dict = {}
+        # Results can only be shared if some plan of this scan was already met under other
+        # labels; until then (always, on diagrams without repeats) the lookups are skipped.
+        shared = alg.shape_results if alg.stats["shape_hits"] else None
         deadline = self.deadline
         for o, ma in enumerate(old_mid):
             if ma is None:
@@ -103,7 +106,17 @@ class FastScan:
                 key = (ma, old_mid[o2], f)
                 both = transfers.get(key)
                 if both is None:
-                    both = transfers[key] = (alg.transfer(ma, key[1], f, 0, 0), alg.transfer(ma, key[1], f, 1, 1))
+                    if shared is None:
+                        both = (alg.transfer(ma, key[1], f, 0, 0), alg.transfer(ma, key[1], f, 1, 1))
+                    else:                 # the same picture under other labels, from an earlier crossing?
+                        shape_key = (alg.shape(ma), alg.shape(key[1]), alg.shape_slots, f)
+                        both = shared.get(shape_key)
+                        if both is None:
+                            both = shared[shape_key] = (alg.transfer(ma, key[1], f, 0, 0),
+                                                        alg.transfer(ma, key[1], f, 1, 1))
+                        else:
+                            alg.stats["result_hits"] += 1
+                    transfers[key] = both
                 c0, c1 = base[o2]
                 for ls, lt, value in both[0]:
                     out[b0 + ls][c0 + lt] = value
@@ -129,7 +142,18 @@ class FastScan:
         """Cache miss of g o f; key = (id a, id b, id c, f, g)."""
         if self.deadline is not None:
             self._check()
-        result = self.composed[key] = self.algebra.compose(*key)
+        alg = self.algebra
+        if not alg.stats["shape_hits"]:
+            result = self.composed[key] = alg.compose(*key)
+            return result
+        a, b, c, f, g = key
+        shape_key = (alg.shape_after(a), alg.shape_after(b), alg.shape_after(c), f, g, None)
+        result = alg.shape_results.get(shape_key)
+        if result is None:
+            result = alg.shape_results[shape_key] = alg.compose(*key)
+        else:
+            alg.stats["result_hits"] += 1
+        self.composed[key] = result
         return result
 
     # ----- Gaussian elimination -------------------------------------------
