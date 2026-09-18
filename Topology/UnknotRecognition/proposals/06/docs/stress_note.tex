@@ -1,0 +1,14 @@
+The three tested tail choices agree in every cube degree. A separate run
+reduces the same input from 36 to 24 crossings using the retained legal
+Reidemeister moves, then recomputes its rank from that different PD.
+The optimized backend again returns reduced rank 2,949. Its cube-degree
+counts shift down by six, exactly matching the change from 16 to 10
+negative crossings; after the usual homological shift every dimension
+agrees. This changed diagram takes 25.13 seconds in the validation run,
+illustrating that fewer crossings do not guarantee a faster scan.
+The baseline on that changed diagram is also inconclusive at its separate
+30-second validation limit. Thus the large rank has multiple internal
+cross-checks, but is not independently verified by a completed baseline
+or third-party homology computation. The complete transformed PD, move
+trace and observations are retained in
+\texttt{results/stress\_validation.json}.

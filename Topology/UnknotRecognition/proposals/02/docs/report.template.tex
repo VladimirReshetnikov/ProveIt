@@ -1,0 +1,813 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,longtable,tabularx,array,listings,xcolor}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Accelerating Exact Unknot Recognition},
+ pdfauthor={Technical report prepared for Vladimir Reshetnikov},
+ pdfsubject={Implementation, correctness arguments, and reproducible benchmarks},
+ pdfkeywords={unknot recognition, Khovanov homology, Jones polynomial, optimization}}
+\usepackage{fancyhdr}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Accelerating exact unknot recognition}
+\fancyhead[R]{\small Technical report}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Kh}{\operatorname{Kh}}
+\newcommand{\rKh}{\widetilde{\operatorname{Kh}}}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,keepspaces=true,
+  breaklines=true,frame=single,framerule=0.3pt,showstringspaces=false,
+  aboveskip=10pt,belowskip=10pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+%%METRICS%%
+\title{Accelerating Exact Unknot Recognition\\[5pt]
+\large Incremental preprocessing, modular obstructions,\\and sparse cobordism elimination}
+\author{Technical report prepared for Vladimir Reshetnikov}
+\date{18 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We modify the pure-Python recognizer in the supplied \code{Knots.zip/fast/}
+rather than substitute an unrelated package. The resulting implementation is
+complete when its optional resource limits are disabled, retains the scanning
+Khovanov backend over $\F_2$, and has no third-party runtime dependencies.
+The changes comprise incremental Reidemeister reductions and scan ordering,
+a linear-time descending-diagram test, two sound modular rejection tests,
+cached cobordism topology, characteristic-two algebraic shortcuts, and
+sparsity-aware Gaussian cancellation. The supplied 36-crossing benchmark now
+has reduced Khovanov rank $2949$ computed in \HardTime\ seconds (median of
+three cold-cache runs); the unchanged baseline reaches our \TimeLimit-second
+limit on the same host. This is a raw homology computation, not merely a
+prefilter verdict. All \TestCount\ tests pass, including independent cube
+calculations and differential checks. Some tiny inputs become slower, and the
+full benchmark tables include them. We prove asymptotic improvements for
+several subroutines, but do \emph{not} claim a quasi-polynomial worst-case
+bound for the complete recognizer. We explain precisely why the hierarchy
+materials do not transfer such a bound to this implementation.
+\end{abstract}
+\vspace{0.5em}
+
+\section{Deliverable and scope}
+
+The input is a validated, one-component planar knot diagram with $n$ crossings.
+The package accepts the original planar-diagram (PD), closed-braid, and grid
+JSON formats. The result is \code{UNKNOT}, \code{KNOTTED}, or \code{UNKNOWN}.
+The last result means that a requested resource ceiling was reached, not that
+an invariant was trivial. With no time or Khovanov-object ceiling, the pipeline
+is a decision procedure. Internal Jones-filter ceilings merely abandon that
+filter and continue to the complete backend.
+
+The implementation is in \code{fastunknot/}; the unmodified supplied Python
+package is preserved in \code{baseline/fastunknot/}. The files
+\code{diagram.py} and \code{alexander.py} are unchanged. The new
+\code{filters.py} contains the modular algorithms. The main changes to
+\code{scan.py}, \code{simplify.py}, and \code{recognize.py} are described below.
+Tests, fixed benchmark inputs, an isolated-process comparison driver, raw
+results, and the sources for this report are included. The existing MIT
+No Attribution license is retained. The archive manifest records file hashes;
+provenance metadata identifies the supplied archive and the unchanged sources.
+
+This is not an implementation of Lackenby's hierarchy algorithm. Its strongest
+achieved result is a substantial practical improvement to the supplied exact
+algorithm, together with genuine better asymptotic bounds for preprocessing
+and order construction. The worst-case envelope for the complete implementation
+remains $2^{\OO(n)}$. The rank routine computes total rank and cube-degree
+ranks, not the full quantum-graded Poincar\'e polynomial or integral torsion.
+
+\section{What the hierarchy materials establish}
+\label{sec:lackenby}
+
+The supplied talk's main theorem slide, physical page 14, explicitly announces
+an $n^{\OO(\log n)}$ unknot algorithm and labels the result ``L 2021''
+\cite{lackenby-talk}. The supplied July 2026 paper presents a hierarchy-based
+algorithm for incompressibility and obtains unknot recognition as a special
+case \cite{lackenby-paper}. Its introduction describes further speed-up as
+future work. Section 9 deliberately gives only a crude iteration estimate;
+Section 10 refines the construction using interior parallelity bundles and
+controls hierarchy length in terms of the initial complexity. These are
+important distinctions: an announcement, a terminating algorithm, and a
+particular implementation with a proved running-time bound are different
+objects.
+
+In the notation of Section 9, one relevant bound is
+\begin{equation}\label{eq:hierarchy}
+  \text{number of iterations}\ \leq L(g+1)^L,
+\end{equation}
+where $L$ bounds hierarchy length and $g$ bounds a surface complexity.
+A linear bound on $L$ in an initial input-complexity parameter is not, by
+itself, a logarithmic bound. Nor is an iteration count a bit-complexity
+bound until representation sizes and the operations inside an iteration
+are controlled.
+
+\paragraph{A quantitative implementation target.}
+For the \emph{crude bound} \eqref{eq:hierarchy}, the hypothetical conditions
+$L\leq a\log n$, $g\leq n^b$, and $n^c$ work per iteration would imply
+\[
+  n^c L(g+1)^L
+  \leq n^c a\log n\,(n^b+1)^{a\log n}
+  =\exp\bigl(\OO((\log n)^2)\bigr).
+\]
+This is a sufficient set of conditions, not a claim that these bounds have
+been established for the supplied hierarchy procedure, or that every route
+to quasi-polynomial time must use them. A different sufficient contract would
+be a recurrence
+\[
+ T(N)\leq N^a T(\rho N)+N^b,\qquad 0<\rho<1,
+\]
+with polynomial-size encodings and polynomially bounded branching. Its
+$\OO(\log N)$ levels give the same quasi-polynomial envelope.
+
+Turning either contract into code would require more than a normal-surface
+search called behind an opaque interface. A useful implementation boundary
+would consist of the following concrete data and operations: an incidence
+encoding of handle structures and boundary patterns; binary multiplicities
+for families of parallel normal pieces; splitting and regluing operations on
+these compressed families; recognition and removal of parallelity bundles;
+and hierarchical multi-surfaces with explicitly tracked complexity. Each
+operation needs an invariant explaining what manifold and boundary pattern
+its output represents. The balancing or Cheeger-region step must construct
+an admissible surface and prove the required decrease, rather than merely
+return a graph separator. Finally, the number of operations and the bit
+length of every multiplicity need bounds in the original $n$.
+
+None of those geometric operations is supplied by the Khovanov engine.
+A small scan boundary, a small cache, or a successful numerical experiment
+cannot fill that gap. This work therefore improves the available engine
+instead of labeling an incomplete hierarchy interface a quasi-polynomial
+implementation.
+
+\section{Pipeline and its decision invariant}
+
+The optimized pipeline is
+\[
+ \begin{gathered}
+ \text{R1/R2 simplification}\ \longrightarrow\ \text{descending test}\\
+ \longrightarrow\ \text{modular determinant}\ \longrightarrow\
+ \text{bounded modular bracket}\\
+ \longrightarrow\ \text{exact Alexander polynomial}\ \longrightarrow\
+ \text{scanning Khovanov rank over }\F_2.
+ \end{gathered}
+\]
+The first two stages may establish triviality. The next three may establish
+nontriviality. Only the last stage is a complete invariant test for this
+purpose. A modular residue that matches the unknot is never interpreted as
+an unknot verdict. In particular, the implementation does not assume that
+the Jones polynomial detects the unknot.
+
+\begin{theorem}[Decision rule]
+Assume the input satisfies the package's knot-diagram validation conditions
+and the implemented cobordism operations represent the stated Khovanov chain
+operations. Every completed pipeline verdict is sound. In the absence of
+user-imposed time and object limits, the pipeline terminates with a verdict.
+\end{theorem}
+\begin{proof}
+Crossing-decreasing Reidemeister moves preserve the represented knot, and a
+descending diagram represents the unknot. Sections~\ref{sec:det} and
+\ref{sec:jones} prove the modular implications. The inherited exact Alexander
+stage rejects only a normalized polynomial different from $1$.
+
+For the final stage, Shumakovitch's splitting over $\F_2$ implies
+\[
+ \dim_{\F_2}\Kh(K;\F_2)=2\dim_{\F_2}\rKh(K;\F_2)
+\]
+\cite[Corollary 3.2.C]{shumakovitch}. Universal coefficients imply that the
+rational reduced rank is at most the reduced rank over $\F_2$; the former
+is nonzero. Kronheimer--Mrowka's theorem identifies reduced rational rank
+one with the unknot \cite{kronheimer-mrowka}. Thus reduced $\F_2$ rank one
+implies triviality, while the unknot itself has reduced $\F_2$ rank one.
+
+The finite cube of resolutions and exact finite-dimensional algebra give a
+terminating fallback. The bounded Jones stage cannot prevent reaching it.
+Every earlier successful stage makes a sound decision, so the composition
+has the same property.
+\end{proof}
+
+This theorem states the mathematical contract, not a machine-checked proof
+of every Python line. The implementation is validated by the independent
+and differential tests in Section~\ref{sec:validation}. The JSON evidence
+contains the input digest, simplification trace, residues or polynomial,
+and, when applicable, scan order and rank data. A homology result is a
+reproducible computation, not a short independently verified certificate.
+
+\section{Incremental preprocessing}
+\label{sec:preprocessing}
+
+\subsection{A mutable dart involution for R1 and R2}
+
+Give each crossing four permanent dart identifiers $4c,\ldots,4c+3$.
+The involution $\alpha$ pairs darts along edges, while
+$\sigma(4c+i)=4c+(i+1\bmod4)$ rotates counterclockwise around a crossing.
+Faces are orbits of $F=\sigma\alpha$. Therefore a removable monogon is
+recognized by $F(d)=d$. A candidate bigon satisfies $F^2(d)=d$ with its
+two darts at distinct crossings; the additional parity test checks that
+one strand is over at both crossings. Odd ports are over-passes in the
+inherited PD convention.
+
+The old implementation searches all faces and rebuilds the complete diagram
+after each move. The new one stores legal local candidates in a heap. When
+one or two crossings are removed, their opposite ports are joined through
+the deleted region. At most eight deleted darts need inspection; only a
+constant number of external involution entries change. Every newly created
+monogon or bigon must meet that changed neighborhood. Rechecking all four
+darts of every affected external crossing therefore finds every newly legal
+move. Stale heap entries are discarded on extraction.
+
+Heap keys use move kind followed by permanent crossing identifiers, retaining
+the old R1-before-R2 and lexicographic policy. Permanent identifiers retain
+relative order after deletion. A Fenwick tree converts them to indices in
+the \emph{current} diagram for the original replayable \code{Move} format.
+This avoids rebuilding or renumbering the surviving diagram after every
+move. A final reconstruction calls the original validator once.
+
+\begin{proposition}
+The incremental simplifier produces the same move sequence as the baseline
+policy, up to harmless edge-label renaming, and uses $\OO(n\log n)$ word
+operations and $\OO(n)$ space.
+\end{proposition}
+\begin{proof}
+The initial candidates are exhaustive. Locality of the face successor map
+establishes the candidate invariant after every deletion. Permanent ordering
+agrees with current ordering, and the Fenwick prefix sum gives its exact
+current rank; hence each chosen valid move is the baseline's first legal
+move. There are at most $n$ deletions, each creates a bounded number of
+heap entries, and both heap and prefix-sum work cost $\OO(\log n)$ per
+operation. The initial and final passes are at most $\OO(n\log n)$.
+\end{proof}
+
+Here ``word operations'' treats normalized labels and indices of
+$\OO(\log n)$ bits as machine words. The statement does not assert constant
+cost for arbitrary-precision integers of unbounded length. The old repeated
+full-diagram work has a quadratic lower bound on the family of successive
+curls used in the preprocessing benchmark.
+
+\subsection{Descending diagrams by interval coverage}
+
+Fix an oriented traversal with $2n$ visits. For a crossing let $o$ be its
+over-visit position and $u$ its under-visit position. The cyclic starting
+positions for which this crossing is encountered underneath first form
+exactly the interval $(o,u]$. Add all such intervals to a circular difference
+array. A zero in the prefix sum is a start for which every crossing is first
+encountered over. Repeat for the reverse orientation.
+
+\begin{proposition}
+A descending basepoint, when one exists in either traversal direction, is
+found in $\OO(n)$ time and space.
+\end{proposition}
+\begin{proof}
+A start is valid exactly when it belongs to none of the forbidden intervals.
+Each interval is represented by at most two ordinary intervals, hence a
+constant number of difference-array updates. Two prefix scans and two
+traversals suffice. The returned dart identifies the actual basepoint; the
+algorithm is not merely a boolean relaxation.
+\end{proof}
+
+\section{A modular determinant before polynomial arithmetic}
+\label{sec:det}
+
+The inherited Alexander implementation computes an exact polynomial using
+fraction-free elimination. That is useful but unnecessary for many negative
+instances. At $t=-1$, a Wirtinger Fox row has the form
+\[
+ 2x_{\mathrm{over}}-x_{\mathrm{under},1}-x_{\mathrm{under},2}=0.
+\]
+Over-passing edge segments are joined by disjoint-set union to construct the
+Wirtinger arcs. Remove one row and one column of the resulting matrix, and
+compute its determinant in $\F_p$, with the fixed prime
+$p=1\,000\,000\,007$. Sparse dictionaries represent rows; among candidate
+pivots in a column the algorithm picks a row with the fewest nonzero
+entries. Row swaps and pivot products are retained, so the computation is
+a determinant, not just a rank test.
+
+\begin{proposition}
+If the computed residue is neither $1$ nor $-1$ modulo $p$, the input knot
+is nontrivial.
+\end{proposition}
+\begin{proof}
+The Fox minor evaluates to $\Delta_K(-1)$ up to sign; multiplication of the
+Alexander polynomial by $\pm t^k$ also gives only a sign at $t=-1$. For the
+unknot the normalized Alexander polynomial is $1$, so every allowed signed
+value is $\pm1$. Reduction modulo $p$ preserves equality. A different
+residue therefore contradicts triviality.
+\end{proof}
+
+This filter is deterministic and one-sided. A nontrivial determinant can
+be congruent to $\pm1$; that is an inconclusive result, not an error. The
+worst-case cost is $\OO(n^3)$ field operations and $\OO(n^2)$ stored field
+elements. The prime is fixed, so coefficient swell is eliminated at this
+stage. The exact polynomial remains available for cases that pass both
+modular filters.
+
+\section{A bounded, independent Jones-bracket engine}
+\label{sec:jones}
+
+\subsection{Normalization and soundness}
+
+For ports $(a,b,c,d)$ in the inherited counterclockwise PD convention, use
+smoothings $0=((a,b),(c,d))$ and $1=((a,d),(b,c))$ with coefficients $A$ and
+$A^{-1}$. Set $\delta=-A^2-A^{-2}$. It is convenient to count \emph{every}
+closed circle, including the first, giving the all-loops bracket
+\begin{equation}\label{eq:bracket}
+ B_D(A)=\sum_{s\in\{0,1\}^n} A^{n-2|s|}\delta^{c(s)},
+\end{equation}
+where $c(s)$ is the number of circles in state $s$ and an empty PD denotes
+one crossingless circle. This differs by a factor $\delta$ from the common
+normalization assigning bracket $1$ to a single circle.
+
+The writhe $w(D)$ is computed from the incoming ports of \emph{both} strands.
+If $u\in\{0,2\}$ and $o\in\{1,3\}$ are the incoming under- and over-ports,
+the sign used here is $+1$ when $o-u\equiv3\pmod4$ and $-1$ otherwise.
+The inherited \code{Diagram.signs()} is appropriate to its local Fox-row
+convention; it is not a safe substitute for this writhe computation after
+arbitrary half-turns of PD rows. That function is left unchanged to avoid
+altering the Alexander backend.
+
+A positive curl contributes $-A^3$: indeed,
+$A\delta^2+A^{-1}\delta=-A^3\delta$. The other curl contributes $-A^{-3}$.
+Thus the relevant unknot identity is
+\begin{equation}\label{eq:unknot-bracket}
+ B_D(A)=\delta(-A^3)^{w(D)}\qquad\text{when }D\text{ represents the unknot}.
+\end{equation}
+This is the bracket normalization underlying the Jones invariant
+\cite{kauffman}. To see directly why no sign is being guessed, in the local
+Temperley--Lieb algebra write $R=A1+A^{-1}e$ and
+$R^{-1}=A^{-1}1+Ae$. Then
+$RR^{-1}=1+(A^2+A^{-2}+\delta)e=1$, proving the R2 identity. The relations
+$e_i^2=\delta e_i$ and $e_i e_{i+1}e_i=e_i$ give the R3 identity; the two
+curl calculations give R1 after writhe normalization.
+
+Evaluate \eqref{eq:bracket} at $A=2$ in $\F_p$. A discrepancy from
+\eqref{eq:unknot-bracket} proves knottedness. The code never divides by
+$\delta$; $A$ and $-A^3$ are nonzero, so negative exponents are well-defined.
+The same routine supports any integer $A\not\equiv0\pmod p$ for testing.
+There is no probability of a false positive from modular arithmetic. A
+collision can only cause the filter to pass the knot on to later stages.
+
+\subsection{Frontier dynamic programming}
+
+At each crossing, the frontier consists of edges with exactly one processed
+endpoint. A smoothing state of the processed part induces a perfect matching
+of these boundary labels; every closed component is already accounted for
+by a factor $\delta$. The table maps each canonical matching to the sum of
+its coefficients in $\F_p$.
+
+For each table entry and each smoothing, an independent disjoint-set
+computation joins the old matching arcs to the two new smoothing arcs.
+A connected component with no remaining boundary endpoints contributes a
+factor $\delta$; a component with two endpoints contributes a new matching
+pair. Components with any other number of endpoints signal an invariant
+violation. Equal output pairings are merged by field addition and zero
+coefficients are removed. Unlike the Khovanov routine, this implementation
+uses no dotted-cobordism composition, no delooping matrices, and no homology
+cancellation. Its independent structure is useful for testing.
+
+\begin{proposition}
+After every scan prefix, each table coefficient is exactly the sum of
+partial bracket-state weights inducing that boundary matching. Therefore
+the final empty-matching coefficient is \eqref{eq:bracket} modulo $p$,
+independently of the scan order.
+\end{proposition}
+\begin{proof}
+Initially the empty matching has coefficient one. Attaching a crossing
+partitions full extensions uniquely by their previous state and one of
+the two local smoothings. The union-find computation detects precisely
+the circles closed by that attachment and the surviving pairs. Multiplying
+by the local smoothing coefficient and $\delta$ for each such circle gives
+the correct extended weight. Summing identical matchings is valid because
+all future attachments depend only on those matchings. Induction completes
+the proof; the crossingless input is handled separately as one circle.
+\end{proof}
+
+If the maximum frontier size is $w$, the number of possible pairings is at
+most $(w-1)!!$, with $(-1)!!=1$. Thus a conservative uncapped bound is
+\[
+ \OO\!\left(n\,\operatorname{poly}(w)\,(w-1)!!\right)
+ = n\,2^{\OO(w\log w)}
+\]
+field operations, plus scan-order construction. An arbitrary processed
+region need not be a disk with all endpoints on one cyclic boundary, so
+we do not silently replace this bound by a Catalan number. The default
+limits are $50\,000$ live states and $1\,000\,000$ transitions. Reaching
+either is an instruction to skip this filter, not to decide the knot.
+
+The Conway and Kinoshita--Terasaka examples both have Alexander polynomial
+one in the supplied data and are accepted by the first modular filter.
+The new bracket test rejects both without computing their reduced
+Khovanov rank $33$. Their raw residues and scan statistics are included
+in the benchmark output. This is a genuine extension of the early-decision
+coverage beyond Alexander-only preprocessing.
+
+\section{Accelerating the Khovanov backend itself}
+\label{sec:kh}
+
+\subsection{The unchanged mathematical representation}
+
+The scanner attaches one crossing at a time. Objects are boundary matchings
+with a homological cube degree. A closed circle is delooped into two copies.
+For matchings $a,b$, glue $a$ to the reflected $b$; each resulting circle
+labels a dot variable. A morphism is a sum over $\F_2$ of square-free
+monomials in those variables, represented by a set of dot-subsets. This is
+the local dotted-cobordism method, with Gaussian cancellation after every
+attachment \cite{bar-natan}.
+
+We retain this representation. In particular, isomorphic matching types
+are \emph{not} merged into a single chain object: their multiplicities,
+cube degrees, and maps can carry essential homology. Quantum grading is
+forgotten because total rank suffices for recognition, but the ordinary
+chain-complex degree and differential are preserved.
+
+\subsection{Units are self-inverse over the square-zero algebra}
+
+For a matching with $k$ arcs, its endomorphism algebra has the form
+\[
+ R_k=\F_2[x_1,\ldots,x_k]/(x_1^2,\ldots,x_k^2).
+\]
+The unit test used by the scanner is the presence of the constant monomial.
+
+\begin{lemma}\label{lem:unit}
+Every element $u\in R_k$ with constant term $1$ satisfies $u^2=1$.
+\end{lemma}
+\begin{proof}
+Write $u=1+v$, with $v$ a sum of nonconstant square-free monomials.
+In characteristic two, all cross terms in $v^2$ vanish. Every remaining
+monomial square contains some $x_i^2$ and hence vanishes. Therefore
+$(1+v)^2=1$.
+\end{proof}
+
+The inverse routine consequently returns the same morphism instead of
+forming a nilpotent geometric series. The tests exhaust all $128$ units
+of $R_3$, using both the old and new multiplication. This shortcut depends
+on the coefficient field and relations; it must not be copied unchanged
+to integral or deformed Khovanov theories.
+
+Multiplication in an endomorphism ring is also specialized: multiply two
+monomials only when their dot sets are disjoint, take their union, and
+XOR repeated outputs. Exact identity morphisms use an even shorter path.
+General source/intermediate/target matching triples still use the complete
+surface-composition routine.
+
+\subsection{Compile topology separately from coefficients}
+
+For $f:a\to b$ and $g:b\to c$, the connected surface components, their
+Euler characteristics, output boundary circles, and assignment of input
+dot-circles to components depend on $(a,b,c)$, not on the coefficients in
+$f$ and $g$. The old implementation reconstructs this topology on every
+composition. The new \code{\_composition\_plan} caches it, after which each
+pair of monomials supplies only dot counts to the existing expansion rules.
+Repeated images of differential entries under the same crossing attachment
+are cached separately by \code{\_crossing\_entries}.
+
+Four LRU caches have finite capacities of $16\,384$ entries each. Cached
+coefficient collections are immutable; the public crossing-entry wrapper
+returns mutable copies where mutation is needed. Caches are cleared at
+entry and in a \code{finally} block at exit from each nonempty rank
+calculation. This removes reliance on warm caches and prevents unbounded
+retention across unrelated jobs. Entry counts are not byte limits: an
+individual morphism or topological key can still be large. Internal cached
+geometry is treated as read-only by the engine.
+
+\subsection{Sparse pivot selection and Schur complements}
+
+Suppose a differential entry $\phi:b\to c$ is an isomorphism. For any other
+source $a\to c$ and target $b\to d$, cancellation replaces the corresponding
+map by
+\begin{equation}\label{eq:schur}
+ d'_{a,d}=d_{a,d}+d_{b,d}\,\phi^{-1}\,d_{a,c}.
+\end{equation}
+The plus sign is subtraction over $\F_2$. In block form this is the Schur
+complement, obtained by invertible row and column operations followed by
+removing the contractible pair. Consequently pivot order affects work and
+fill-in but not homology.
+
+The baseline takes available unit entries from a last-in-first-out list.
+The new engine uses the approximate Markowitz cost
+\[
+  (\#\operatorname{incoming}(c)-1)
+  (\#\operatorname{outgoing}(b)-1),
+\]
+namely the number of possible correction pairs in \eqref{eq:schur}. A heap
+favors sparse pivots, especially zero-correction pivots. Entries are checked
+again when popped; stale or no-longer-invertible entries are discarded,
+and changed costs are reinserted. This is a \emph{lazy heuristic}, not a
+claim that every chosen pivot globally minimizes the current fill cost.
+Stale keys of other heap entries may delay a better candidate.
+
+The implementation factors $\phi^{-1}d_{a,c}$ once for each incoming source
+and reuses it for all outgoing targets. Lemma~\ref{lem:unit} removes inverse
+expansion. If either side is empty, no correction compositions are needed.
+The extra heap overhead can lose on easy cases; the benchmark measures
+rather than assumes a net gain.
+
+The \code{compositions} statistic now counts actual composition calls.
+The baseline used a different counter convention, so cross-version ratios
+of that field would be misleading. Wall-clock time, computed ranks,
+maximum live objects, and scan boundaries have directly comparable meanings.
+The new \code{correction\_pairs} and cache-hit fields are diagnostic only.
+
+\section{Incremental scan-order construction}
+
+Let $s_i$ be the number of edges from a remaining crossing $i$ into the
+processed region, and let $\ell_i$ be its number of self-loops. At a fixed
+step with boundary size $B$, the old greedy score is
+\[
+ \bigl(s_i,-(B+4-2s_i-2\ell_i),-i\bigr).
+\]
+Lexicographically, this is equivalent to $(s_i,\ell_i,-i)$. The common
+$B$ need not be recomputed for every candidate. A heap maintains the
+negated score; when a crossing is added, only its remaining neighbors
+need updates. Each nonloop edge raises a remaining neighbor's shared-edge
+count once. Old heap records are ignored when their shared count is stale.
+
+\begin{proposition}
+For a fixed starting crossing, the new order is exactly the baseline's
+greedy order and takes $\OO(n\log n)$ time and $\OO(n)$ space instead of
+quadratic candidate rescanning.
+\end{proposition}
+\begin{proof}
+Score equivalence gives identical tie breaking. The crossing graph has
+bounded degree, so the total number of initial and updated heap records
+is $\OO(n)$. Each extraction or insertion takes $\OO(\log n)$ time.
+\end{proof}
+
+The production calls preserve the baseline's approximate sampling policy
+with \code{tries=12}. This is a \emph{target}, not a strict maximum number
+of starts: the inherited integer-step rule can sample as many as $23$.
+It is nevertheless a fixed constant, so choosing the best sampled order
+still takes $\OO(n\log n)$. Calling \code{best\_scan\_order(tries=None)}
+tries all $n$ starts and instead takes $\OO(n^2\log n)$. The implementation
+and tests retain that public behavior.
+
+Explicit orders now must be permutations of \emph{all} crossing indices.
+The baseline did not enforce that condition; an empty supplied order on a
+nonempty input could bypass the entire computation. Duplicate, omitted,
+out-of-range, and boolean indices are rejected. This validation is important
+when experimenting with alternative order heuristics.
+
+\section{Complexity: the improvement and the remaining exponential}
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}lXX@{}}
+\toprule
+Stage & Supplied implementation & New implementation\\
+\midrule
+R1/R2 cleanup & Repeated full searches and rebuilds; quadratic lower bound on curls
+ & $\OO(n\log n)$ word operations\\
+Descending test & Quadratic worst-case traversal search & $\OO(n)$ word operations\\
+One greedy order & $\OO(n^2)$ candidate work & $\OO(n\log n)$ word operations\\
+Determinant prefilter & Not a separate early stage & $\OO(n^3)$ fixed-field operations\\
+Jones prefilter & Absent & $n2^{\OO(w\log w)}$ uncapped; bounded by work caps in production\\
+Complete Kh fallback & Exponential & Exponential; less repeated algebra and fill\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The $2^{\OO(n)}$ envelope for the complete fallback is deliberately coarse.
+There are $2^n$ smoothing states, each with $\OO(n)$ circles and hence at
+most $2^{\OO(n)}$ enhanced states. Finite matrix operations on exponentially
+many generators remain within an exponential envelope over a fixed field.
+Polynomial preprocessing and bounded optional filters do not change that
+worst-case classification. No smaller exponential base is proved here.
+
+\paragraph{Boundary width does not bound homology multiplicity.}
+Counting boundary matchings alone is not a running-time proof for the
+Khovanov scanner. Consider a connected sum of $m$ trefoils, arranged as a
+sequence of fixed-size tangle blocks. A left-to-right scan has constant
+frontier width. Over a field, the reduced connected-sum complex is the
+tensor product of the reduced complexes, so the reduced ranks multiply.
+The reduced trefoil rank is $3$, and the sum has rank $3^m$ at $n=3m$
+crossings. An explicit minimal complex consequently has exponentially
+many generators despite constant width. The tensor-product assertion can
+also be seen directly by marking the connected-sum arc: after fixing its
+label in the reduced complex, smoothing choices and the differential split
+between the two factors; field-valued K\"unneth then multiplies ranks.
+
+This example is about the explicit homology representation, not a lower
+bound for every unknot decision algorithm. Our modular determinant rejects
+that family cheaply. It explains why algebraic caching, width reduction,
+and geometric separator intuition cannot on their own establish a
+quasi-polynomial guarantee for the current fallback.
+
+\section{Validation and reproducible measurements}
+\label{sec:validation}
+
+\subsection{Correctness checks actually executed}
+
+The original suite passes all $19$ tests against the unchanged baseline.
+The distributed suite has \TestCount\ passing tests. The legacy tests are
+retained; their pipeline-method assertions explicitly disable the two new
+filters, and the old resource-limit CLI check adds \code{--no-filters} so
+it still reaches the stage it is intended to test. This compatibility
+adjustment is documented rather than presented as an unmodified test suite.
+
+The added checks include: exact scan-order comparisons on $100$ generated
+knots and every possible starting crossing; $250$ comparisons of complete
+simplification traces with independent replay; $300$ comparisons of the
+linear descending test with the old brute-force search; and $400$ morphism
+composition comparisons on planar boundary matchings. All $128$ units in
+the three-variable endomorphism algebra are tested against the old algebra.
+
+The modular bracket is checked against an independent full state sum for
+$100$ random knots at two evaluation points and arbitrary scan orders.
+The state-sum reference uses graph traversal rather than the frontier
+union-find routine. Other checks compare $120$ determinant residues with
+the exact Alexander polynomial, test half-turns and mirrors on $80$ inputs,
+check normalized bracket invariance under available R1/R2 moves on $80$
+inputs, and test $60$ guaranteed unknots generated by braid conjugation
+and Markov stabilization. Mocked inconclusive residues verify that filter
+collisions cannot create a false unknot verdict.
+
+For homology, every one-component three-strand braid word of lengths $2$
+and $4$ over $\{\sigma_1^{\pm1},\sigma_2^{\pm1}\}$ is checked: exactly
+$168$ words. Their reduced ranks are compared with a separate dense reduced
+cube implementation. Another $100$ randomly generated knots up to nine
+crossings receive the same comparison. The inherited tests include further
+small cube checks. Intermediate $d^2=0$ checks are enabled in the new
+exhaustive and random rank tests. Tests also cover malformed orders,
+invalid resource options, budget propagation, and cache cleanup.
+
+\paragraph{Hard-case cross-check.}
+%%HARDVERIFICATION%%
+
+These are substantial regression checks, not a formal verification of the
+implementation or an exhaustive validation at $36$ crossings. In particular,
+agreement between scan orders still shares the same cobordism algebra;
+the independent dense-cube checks cover small inputs, not this entire
+large case. Random tests use fixed seeds recorded in the source.
+
+\subsection{Methodology}
+
+The comparison uses the same interpreter and host for both packages:
+\PythonVersion\ on \HostPlatform. The reported processor is
+\CpuModel. Each engine/input pair runs in a separate process, engines
+run sequentially, and their order alternates by case. Each successful
+measurement is the median of three calls with explicit algebra-cache
+clearing and garbage collection before the timed region. Imports and input
+construction are excluded. Raw samples and process peak RSS, when available,
+are retained in \code{results/benchmark.json}. RSS is a process high-water
+mark, not a per-call allocation measurement.
+
+The corpus contains \emph{all} $25$ raw scan inputs and all $10$ pipeline
+examples from the supplied benchmark, plus $10$ larger preprocessing-only
+measurements. Every generated braid word is frozen in
+\code{tools/corpus.json}. Raw scan measurements bypass reductions,
+descending tests, and both old and new invariant filters. Pipeline
+measurements use the defaults of each version. Therefore a pipeline
+speedup and a raw homology speedup are not conflated.
+
+Each call has a \TimeLimit-second cooperative limit and a $500\,000$
+Khovanov-object ceiling. A parent-process timeout backs up cooperative
+limits. A timed-out run is not assigned a fictitious completion time or a
+median of three successful runs: its first limit event is recorded and
+repetitions stop. Reported speedup lower bounds use the time limit divided
+by the optimized median. The original archive's Windows/Python timing of
+$600$ seconds for the hard case is preserved as historical data, but is
+\emph{not} used to compute a same-machine speedup.
+
+\subsection{Raw Khovanov results}
+
+%%SCAN_TABLE%%
+
+All successfully completed baseline/optimized comparisons agree on rank.
+The hard case has \HardRank\ reduced generators and \HardUnreduced\
+unreduced generators. Its optimized maximum object count before elimination
+is \HardPeakObjects, and its maximum frontier contains \HardWidth\ edges.
+These counts emphasize that the improvement does not arise from secretly
+replacing the hard diagram by a lower-crossing representative in the raw
+benchmark. The scan order is the baseline's own selected order.
+
+\subsection{Full pipeline results}
+
+%%PIPELINE_TABLE%%
+
+The measurements were made on a shared container host; scheduling noise can
+also produce non-monotone individual timings. No asymptotic exponent is fitted
+to these samples. The easiest examples may be slower because the new bookkeeping, input digest,
+and modular-stage dispatch have fixed overhead. Sub-millisecond differences
+should not be overinterpreted. The determinant-one examples are more
+informative: they demonstrate that the bracket stage can avoid the complete
+homology calculation on cases where the Alexander stage cannot decide.
+The supplied grid example is also retained rather than choosing only named
+low-crossing knots.
+
+\subsection{Preprocessing scaling}
+
+%%SCALING_TABLE%%
+
+These runs use the closure of
+$\sigma_1\sigma_2\cdots\sigma_n$ on $n+1$ strands. For order construction,
+only \code{best\_scan\_order(tries=12)} is timed. For reduction, only the
+simplifier is timed, and both versions remove every crossing. The family
+has $n$ crossings and linear PD size; braid construction is outside the
+timed region. The measurements illustrate the proved subroutine bounds,
+not a new asymptotic theorem about unknot recognition.
+
+\clearpage
+\section{Using and extending the package}
+
+From the extracted archive root, Python $3.10$ or later is sufficient.
+There are no runtime packages to install:
+\begin{lstlisting}
+python -m fastunknot recognize examples/conway.json
+python -m fastunknot khovanov examples/conway.json --check-d2
+python -m unittest discover -s tests -v
+python tools/benchmark.py --limit 30 --repeats 3
+python tools/verify_hard_case.py
+\end{lstlisting}
+The installed \code{fastunknot} console command is also available after
+\code{python -m pip install .}. For a direct Python call:
+\begin{lstlisting}[language=Python]
+from fastunknot import Diagram, recognize
+
+diagram = Diagram.from_braid(2, [1, 1, 1])
+result = recognize(diagram, seconds=30, max_objects=100_000)
+print(result.status, result.method)
+\end{lstlisting}
+
+\code{--no-filters} disables both new modular stages while keeping the
+accelerated simplifier and Khovanov engine. \code{--no-alexander} disables
+only the full symbolic Alexander calculation; it does not disable the
+modular determinant. \code{--no-reduction} and \code{--no-descending}
+control the old positive-decision shortcuts. The \code{khovanov} subcommand
+bypasses every preprocessing stage. The \code{jones} subcommand reports a
+modular comparison, not a complete unknot verdict. Exit code $0$ means a
+completed exact recognition result (either kind), $2$ means invalid input
+or options, and $3$ means a resource limit. Inspect the JSON status rather
+than treating every nonzero return as knottedness.
+
+Time limits are cooperative. A large Python operation, input validation,
+order construction, or the inherited exact Alexander calculation can
+overshoot a requested deadline. The object ceiling counts chain objects,
+not bytes, dictionary entries, morphism terms, or cache payload. Untrusted
+large jobs should run in a separately supervised process with operating-
+system memory and wall-time limits. Cache clearing is safe for algebraic
+correctness but concurrent calls sharing a process can disrupt each
+other's cache-hit statistics and performance; the benchmark uses isolated
+sequential processes.
+
+The highest-value next optimization experiment would be compact integer
+bitsets for dot monomials and interned local matching identifiers. It must
+preserve the coefficient/topology separation and the multiplicity of chain
+objects. Componentwise or connected-sum decomposition could avoid materializing
+some product homologies, but such a change needs a correct decomposition
+certificate and must not be inferred from repeated matching types alone.
+Neither direction is included in the claimed measurements or complexity
+improvements of this release.
+
+\section{Conclusion}
+
+The requested quasi-polynomial target is not established by this code.
+The fallback goal is achieved in two independent ways: several preprocessing
+subroutines have better proved asymptotic costs, and the complete supplied
+homology engine is substantially faster on the measured corpus. A previously
+unfinished $36$-crossing homology computation now completes, while a bounded
+bracket stage provides fast certified rejection of determinant-one examples.
+The decisive distinction is between reducing repeated work and fill-in,
+which is implemented and measured here, and compressing the geometric
+recognition problem enough to prove $n^{\OO(\log n)}$, which requires a
+different set of invariants and algorithmic bounds.
+
+\begin{thebibliography}{9}
+\bibitem{lackenby-talk}
+M. Lackenby, \emph{Unknot recognition in quasi-polynomial time}, talk slides,
+main theorem labeled 2021, 109 pages. Supplied as
+\code{docs/quasipolynomial-talk.pdf}. Online copy accessed 18 September 2026.
+\url{https://people.maths.ox.ac.uk/lackenby/quasipolynomial-talk.pdf}.
+
+\bibitem{lackenby-paper}
+M. Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition},
+arXiv:2607.23350v1, 25 July 2026. Sections 9--10 and introduction.
+The supplied source is in \code{docs/arXiv-2607.23350v1/}.
+\url{https://arxiv.org/abs/2607.23350}.
+
+\bibitem{bar-natan}
+D. Bar-Natan, \emph{Fast Khovanov homology computations},
+Journal of Knot Theory and Its Ramifications \textbf{16} (2007), 243--255.
+arXiv:math/0606318; delooping and Gaussian elimination are Lemmas 4.1 and
+4.2 in the arXiv version.
+\url{https://arxiv.org/abs/math/0606318}.
+
+\bibitem{kronheimer-mrowka}
+P. B. Kronheimer and T. S. Mrowka, \emph{Khovanov homology is an
+unknot-detector}, Publications Math\'ematiques de l'IH\'ES \textbf{113}
+(2011), 97--208. \url{https://arxiv.org/abs/1005.4346}.
+
+\bibitem{shumakovitch}
+A. N. Shumakovitch, \emph{Torsion of the Khovanov homology},
+arXiv:math/0405474v2, 2018. Corollary 3.2.C.
+\url{https://arxiv.org/abs/math/0405474}.
+
+\bibitem{kauffman}
+L. H. Kauffman, \emph{State models and the Jones polynomial},
+Topology \textbf{26} (1987), 395--407.
+\url{https://doi.org/10.1016/0040-9383(87)90009-7}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,873 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.95in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,float}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+  urlcolor=blue!45!black,pdftitle={Accelerating an Exact Unknot Recognizer},
+  pdfauthor={Technical implementation report}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Accelerating an exact unknot recognizer}
+\fancyhead[R]{\small fastunknot 0.2.0}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{0.35em}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+  keepspaces=true,frame=single,rulecolor=\color{black!20},
+  xleftmargin=0.5em,xrightmargin=0.5em,showstringspaces=false}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Kh}{\operatorname{Kh}}
+\newcommand{\rKh}{\widetilde{\operatorname{Kh}}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\poly}{\operatorname{poly}}
+\title{Accelerating an Exact Unknot Recognizer\\[0.35em]
+\large Cached Cobordisms, Deferred Elimination,\\and Visible Connected-Sum Factorization}
+\author{Technical implementation report}
+\date{18 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We modify the Python recognizer supplied in the \texttt{fast/} directory of
+\texttt{Knots.zip}, rather than replace it with a speculative hierarchy oracle.
+The complete fallback still computes Khovanov homology over $\F_2$ and has
+exponential worst-case complexity. The implemented changes are immutable
+stage-local cobordism caches, algebraic fast paths, scalar bitset elimination
+at closure, a configurable deferred crossing tail, certified visible
+connected-sum factorization, and a bounded exact modular Jones obstruction.
+On fresh-process, same-machine comparisons, Conway recognition improves from
+33.94 to 1.95 milliseconds and Kinoshita--Terasaka recognition from 42.44 to
+2.16 milliseconds. A 36-crossing rank computation finishes in a median
+7.885 seconds, while the supplied backend reaches its 60-second limit;
+a three-crossing tail reduces the median to 5.528 seconds at higher memory cost.
+A genuine restricted-class bound is obtained: with largest visible factor size
+$b$, the rank backend costs $\poly(n)+n2^{O(b)}$. This gives quasi-polynomial
+time when $b=O(\log^2 n)$, but does not give a general quasi-polynomial
+recognizer. The package contains runnable code, an untouched baseline,
+41 test methods, complete benchmark inputs, raw observations, and this report.
+\end{abstract}
+\clearpage
+\setcounter{tocdepth}{2}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{Outcome and scope}
+The delivered \texttt{fast/} is a working replacement for the corresponding
+directory in the supplied archive. It retains the input formats and the
+standard-library-only runtime. The original implementation is separately
+preserved under \texttt{baseline/fast/}. The comparison is therefore against
+actual supplied source, not a reconstructed description of it.
+
+There are three distinct outcomes. First, the recognition pipeline becomes
+much faster on the supplied Alexander-trivial Conway and
+Kinoshita--Terasaka examples, because a cheap exact obstruction avoids the
+homology calculation. Second, the homology backend itself becomes faster on
+several substantial examples, including a previously timed-out case.
+Third, a factorized representation gives a provable asymptotic improvement
+on explicitly decomposable diagrams. These are different claims and are
+measured separately below.
+
+\paragraph{What is not claimed.}
+No algorithm in this package is asserted to recognize all $n$-crossing knots
+in $n^{O(\log n)}$ time. There is no implementation of all the multi-surface,
+Cheeger-region, and hierarchy simplification operations in Lackenby's talk.
+The solution does not confuse a modular invariant with a complete unknot
+test, does not treat a timeout as a negative answer, and does not infer a
+worst-case theorem from the benchmark results.
+
+\paragraph{Input model.}
+The mathematical input is a spherical, one-component planar diagram (PD)
+with $n$ crossings. Each crossing is a cyclically counterclockwise row
+$(a,b,c,d)$, with $a,c$ on the under-strand and $b,d$ on the over-strand.
+Each edge label occurs twice. The implementation checks one-component
+connectivity and the genus-zero rotation system, and normalizes labels.
+An empty PD denotes one crossing-free circle. Braid and grid inputs are
+converted to this model; $n$ throughout the complexity analysis denotes
+the resulting number of crossings, not necessarily the grid size.
+Label parsing also costs time in the bit length of the supplied labels.
+
+\section{What the supplied Lackenby sources establish}
+The attached slide deck is dated February 2021. Its final flowchart involves
+hierarchical multi-surfaces, cutting, Cheeger regions, weak reduction, and
+simplification \cite{LackenbyTalk}. The accompanying paper is
+\emph{Incompressible surfaces, hierarchies and unknot recognition},
+arXiv:2607.23350v1, dated 25 July 2026. It presents an incompressibility
+algorithm, an unknot-recognition corollary, and certificate results; its
+introduction leaves speed-up to future work \cite{Lackenby2026}.
+
+Section 9 of the paper bounds the number of iterations by
+\begin{equation}\label{eq:hierarchy}
+                 L(g+1)^L,
+\end{equation}
+where $L$ bounds hierarchy length and $g$ bounds surface pattern-complexity.
+That section explicitly separates iteration counting from the costs of
+steps whose implementation details have not yet been bounded.
+The later refinements control hierarchy construction for the paper's
+certificate arguments. They do not turn the supplied scanning program
+into a quasi-polynomial algorithm \cite{Lackenby2026}.
+
+There is a useful implementation lesson in \eqref{eq:hierarchy}. Its logarithm
+is $\log L+L\log(g+1)$. To deduce a quasi-polynomial time bound from a proposed
+implementation, one would need, for example,
+\[
+ L\log(g+1)=O((\log n)^2)
+\]
+\emph{and} quasi-polynomial bounds on encoded state size and the work in each
+iteration. A lexicographically decreasing complexity alone is insufficient:
+its numerical range can be exponentially large even when its bit length is
+small. Similarly, polynomial-time verification of a proposed certificate
+is not a polynomial-time method of finding that certificate.
+
+A replacement hierarchy backend would need concrete encodings of cut
+3-manifolds, boundary patterns and multi-surfaces, exact transformation
+routines preserving their topological meaning, termination potentials,
+and accounting for compressed-coordinate bit lengths. Supplying placeholder
+functions for these operations would not improve the delivered recognizer.
+This implementation instead makes independently justified changes at
+bottlenecks that are present and executable in the supplied source.
+
+\section{Baseline architecture and the central bottleneck}
+The original pipeline performs decreasing Reidemeister moves of types I and
+II, a descending-diagram test, and an Alexander-polynomial obstruction. If
+these do not decide the input, it uses incremental Bar--Natan scanning over
+$\F_2$, an approach based on delooping and Gaussian elimination of isomorphic
+summands \cite{BarNatan}.
+
+At a partial scan boundary, an object consists of a matching $m$ of exposed
+edge labels and a homological cube degree $h$. Closed circles are delooped
+into the two labels $1$ and $X$ of the Frobenius algebra
+\[
+ A=\F_2[X]/(X^2),\qquad
+ \Delta(1)=1\otimes X+X\otimes1,\qquad
+ \Delta(X)=X\otimes X.
+\]
+The differential is a sparse directed graph between objects. Each edge is
+a sum of dotted cobordisms, represented as a set of dot-subsets; symmetric
+difference implements addition modulo two. A crossing is tensored in,
+closed circles are delooped, and invertible differential entries are canceled.
+
+The baseline repeatedly constructs the topology of the same compositions
+and crossing maps. More importantly, a categorical cancellation can create
+many new edges: an invertible entry with $u$ other incoming edges and $v$
+other outgoing edges can require $uv$ Schur-complement updates. It can be
+expensive to eliminate a penultimate tangle even when its eventual closure
+has only scalar coefficients. Reducing the number of objects as early as
+possible is therefore not always the fastest schedule.
+
+\subsection{Why boundary width is not enough}
+Let $w$ be the largest number of exposed endpoints along a chosen crossing
+order. A small $w$ limits the geometry of individual matchings and morphisms.
+It does \emph{not} bound the multiplicity of repeated matching objects in the
+complex. This distinction matters for both optimization and honest complexity
+claims.
+
+For example, a visible chain of $k$ trefoils has a scan order of bounded
+boundary width: process the factors consecutively. Its reduced Khovanov rank
+over $\F_2$ is $3^k$, as proved using the tensor-product argument in
+Section~\ref{sec:sums}. The supplied backend explicitly retains $2\cdot3^k$
+final unreduced generators. Thus a bound of the form
+$\poly(n)2^{O(w)}$ for that explicit-object algorithm would be false even on
+this simple family. Counting possible matchings and forgetting their
+multiplicities is not a valid state-count argument.
+
+\section{Immutable cobordisms and algebraic fast paths}\label{sec:algebra}
+The module \texttt{reference\_algebra.py} preserves the original surface
+formulas. The optimized module retains their mathematical representation
+but makes nonzero morphisms immutable \texttt{frozenset} values. A composition
+cache is keyed by its two coefficient values and its three boundary
+matchings. A separate topology cache is keyed only by the three matchings.
+Crossing-map entries are cached by the two matchings, coefficient, smoothing
+choices, boundary labels, and crossing slots.
+
+\subsection{Unit inversion collapses to the identity map on units}
+For a matching $m$ with $r$ arcs, its ungraded dotted endomorphism algebra is
+\begin{equation}\label{eq:ring}
+ E_m=\F_2[x_1,\ldots,x_r]/(x_1^2,\ldots,x_r^2).
+\end{equation}
+The constant monomial represents the identity cobordism. A basis monomial
+is indexed by the subset of arcs carrying dots.
+
+\begin{lemma}\label{lem:unit}
+An element of $E_m$ is a unit exactly when its constant coefficient is one.
+Every unit $u$ satisfies $u^{-1}=u$.
+\end{lemma}
+\begin{proof}
+Write $u=c+\nu$, where $c\in\F_2$ and every monomial of $\nu$ is nonconstant.
+Each such monomial squares to zero, and characteristic two kills all cross
+terms in the square of their sum. Hence $\nu^2=0$. If $c=1$, then
+$(1+\nu)^2=1$, giving the stated inverse. If $c=0$, the element is
+square-zero and cannot be invertible. Equivalently, its augmentation in
+$\F_2$ vanishes.
+\end{proof}
+
+The implementation therefore replaces iterative inversion by a constant
+logical operation: verify that the empty dot-subset is present and return
+the immutable value itself. Endomorphism multiplication also avoids
+surface reconstruction. Multiply two basis dot-subsets by taking their
+union if they are disjoint, and return zero if they overlap; add equal
+unions by parity. Identity and zero compositions are handled immediately.
+
+\subsection{Topology is separated from coefficients}
+For general $m_0\to m_1\to m_2$, the connected components, boundary circles
+and Euler-characteristic bookkeeping of the composite depend only on
+$(m_0,m_1,m_2)$. They do not depend on which basis terms carry dots. The
+optimized implementation compiles this topology once and evaluates dot
+counts against it. This is particularly useful when Gaussian elimination
+changes coefficients without changing boundary types.
+
+\begin{proposition}
+The cache, identity, inverse and endomorphism changes preserve the value of
+every differential coefficient computed by the supplied surface formulas.
+\end{proposition}
+\begin{proof}
+The compiled topology is the same disjoint-set gluing computation as in
+the original formula, moved outside the loops over coefficient terms.
+Every original term still contributes the same dot counts to the same
+components, followed by the same Frobenius evaluation. Memoization only
+reuses results with identical complete keys. The fast paths are the zero
+and identity laws or the multiplication and inverse laws of
+\eqref{eq:ring}, established above. Immutable coefficient values prevent
+a later symmetric-difference update from corrupting an earlier cached value.
+\end{proof}
+
+There are at most 16,384 entries in each of the five bounded caches:
+composition plans, compositions, crossing maps, doubled matching circles,
+and gluing. They are cleared at each crossing insertion. This avoids the
+original indefinitely growing geometry caches. The bound is on
+\emph{entry count}, not bytes; a single coefficient or key can still be
+large. Geometry helpers remain shared with the reference module, so the
+reference comparison is a differential test, not an independent formal
+verification of the underlying topology.
+
+\section{Deferred elimination and bit-packed closure}\label{sec:tail}
+\subsection{Why cancellation may be postponed}
+The elimination rule removes an invertible differential block
+$\phi:B\to C$ and updates the remaining block by the Schur complement
+\[
+                   d'_{a,f}=d_{a,f}+d_{B,f}\phi^{-1}d_{a,C}
+                   \quad\text{over }\F_2.
+\]
+This is a chain-homotopy equivalence. Tensoring with another crossing
+complex preserves the equivalence. Consequently, performing a valid
+cancellation immediately or keeping the uncanceled complex and closing it
+later gives the same final homology \cite{BarNatan}.
+
+The new parameter \texttt{tail\_crossings}$=t$ retains the final $t$ crossing
+insertions without categorical elimination between them. At the final
+closure it uses scalar linear algebra. The default $t=2$ skips only the
+penultimate categorical elimination. The choice $t=1$ still performs every
+nonclosed categorical reduction, while larger values trade additional
+chain generators for fewer expensive surface compositions.
+
+\begin{proposition}
+For every positive $t$, every valid full crossing order, and every completed
+run, the deferred-tail algorithm returns the same homology dimensions as
+the supplied scan.
+\end{proposition}
+\begin{proof}
+All crossing tensor products and delooping maps are unchanged. Each
+intermediate reduction that is performed is a chain-homotopy equivalence.
+Not performing a reduction leaves the exact preceding complex intact.
+After every crossing has been inserted, the resulting complex is therefore
+chain-homotopy equivalent to the full Khovanov complex, regardless of which
+optional reductions were performed. Its homology is computed exactly by
+the scalar method below.
+\end{proof}
+
+Starting with $M$ objects immediately before a $t$-crossing tail, a crude
+bound on the number of objects after expansion is $8^tM$: there are two
+smoothings per crossing, and at most two newly closed circles, each with
+two labels. This is not a bound on the ratio to the fully reduced
+baseline at the same position. The latter may already have canceled most
+of its objects. Large $t$ can therefore be a poor choice under a memory
+ceiling even when it saves arithmetic.
+
+\subsection{Closed differentials are matrices over \texorpdfstring{$\F_2$}{F2}}
+At an empty boundary there is only the empty matching. Every nonzero
+coefficient between its copies is the scalar one. Let $c_h$ be the number
+of generators in cube degree $h$, and let $D_h$ be the matrix of
+$d:C^h\to C^{h+1}$. Then
+\begin{equation}\label{eq:betti}
+ \beta_h=c_h-\rank D_h-\rank D_{h-1}.
+\end{equation}
+Instead of using categorical Schur updates to diagonalize these matrices,
+the program stores a column as a Python integer: its $j$th bit records the
+$j$th matrix entry. Gaussian elimination uses highest nonzero bits as
+pivots and XOR as column addition.
+
+\begin{lemma}
+The bitset elimination computes $\rank D_h$ exactly, and
+\eqref{eq:betti} gives the dimension of homology in degree $h$.
+\end{lemma}
+\begin{proof}
+Every XOR is an elementary addition of one column to another over $\F_2$,
+which preserves the column span. A stored pivot column has a largest
+nonzero row not shared by any earlier reduced pivot. The pivot columns
+are therefore independent. A reduced zero column lies in their span;
+a nonzero reduced column adds one new basis vector. Induction over input
+columns proves that the number of pivots is the matrix rank. Since
+$d^2=0$, $\operatorname{im}D_{h-1}\subseteq\ker D_h$, so rank-nullity yields
+\eqref{eq:betti}.
+\end{proof}
+
+The implementation checks that all closed coefficients are the scalar
+one, that their degrees are adjacent, and that computed homology dimensions
+are nonnegative. With \texttt{--check-d2}, it also checks $d^2=0$ before
+discarding the closed complex and at nonclosed scan stages. It rejects an
+attempt to extend a completed closed complex.
+
+For a closed complex with $K$ generators, a conservative dense bound is
+$O(K^3)$ bit operations for elimination, with word-parallel XOR reducing
+practical cost. A more informative word model gives the usual cubic
+term divided by the number of bits processed per word, plus matrix
+construction and bookkeeping. This is not a new asymptotic matrix-rank
+algorithm. Its advantages here are avoiding cobordism dispatch and sparse
+Schur fill, and using optimized integer arithmetic.
+
+Finally, only the numbers $\beta_h$ are retained. The program does not
+allocate one indistinguishable object for every surviving homology class.
+This output compression is separate from, and complementary to, the
+connected-sum factorization below.
+
+\section{An exact bounded modular Jones obstruction}\label{sec:jones}
+A nontrivial Alexander polynomial proves knottedness, but some important
+knots have Alexander polynomial one. Computing full Khovanov homology on
+every such input can be unnecessary. We insert a deterministic,
+one-sided obstruction based on the Kauffman bracket \cite{Kauffman}.
+
+Fix
+\[
+ p=1{,}000{,}000{,}007,\qquad a=2\in\F_p,\qquad
+ \delta=-a^2-a^{-2}=-17/4\ne0.
+\]
+For each smoothing state $s\in\{0,1\}^n$, let $\ell(s)$ be its number of
+closed circles. With the implementation's cyclic PD and crossing-sign
+conventions, define
+\begin{equation}\label{eq:jones}
+ J_p(D)=(-a^3)^{-w(D)}
+          \sum_s a^{n-2|s|}\delta^{\ell(s)-1}.
+\end{equation}
+This is an exact residue of the writhe-normalized bracket. The crossing-free
+unknot is assigned value one directly. Equivalently, the frontier scan
+accumulates $Z=\sum_s a^{n-2|s|}\delta^{\ell(s)}$ and finally multiplies
+by $\delta^{-1}(-a^3)^{-w(D)}$.
+
+\subsection{Frontier dynamic programming}
+The state table maps boundary matchings to coefficients in $\F_p$. For each
+crossing, extend each matching through both smoothings. Smoothing zero has
+weight $a$, smoothing one has weight $a^{-1}$, and closing $c$ circles adds
+$\delta^c$. Contributions to an equal matching are added modulo $p$;
+zero coefficients are deleted. The boundary point set is determined by
+the processed crossings, independently of smoothing choices.
+
+\begin{lemma}
+After any prefix, each table coefficient equals the sum of all smoothing
+weights of that prefix that induce its matching, including the factors
+for every already closed circle.
+\end{lemma}
+\begin{proof}
+Initially the empty prefix has the empty matching with coefficient one.
+Every extension chooses exactly one of the next crossing's two smoothings.
+Gluing determines the new matching and the number of new circles, giving
+exactly the corresponding multiplicative weight. Equal resulting matchings
+are collected by addition. Induction proves the claim. At closure the
+normalization in \eqref{eq:jones} follows.
+\end{proof}
+
+If all coefficients vanish at an intermediate stage, the partial skein
+value is zero. Every remaining extension is linear, so the final value is
+also zero and can be reported immediately.
+
+\begin{theorem}[One-sided soundness]
+If a completed modular evaluation has $J_p(D)\ne1$, then $D$ is not an
+unknot diagram. If the value is one, or the evaluation exceeds its state
+cap, no conclusion is drawn.
+\end{theorem}
+\begin{proof}
+The bracket skein rules with $\delta=-a^2-a^{-2}$ are invariant under
+Reidemeister moves II and III. A type-I move multiplies the bracket by
+$-a^{3}$ or $-a^{-3}$, exactly canceled by the writhe factor. Thus
+\eqref{eq:jones} is an ambient-isotopy invariant with value one on the
+unknot \cite{Kauffman}. Reducing the integer Laurent-polynomial identity
+modulo $p$ and substituting the unit $a$ preserves it. A different residue
+therefore contradicts unknottedness. No converse is used.
+\end{proof}
+
+This is not a probabilistic identity test. The modulus and evaluation point
+are fixed; there is no false-positive probability to estimate. Collisions
+can make a knotted diagram inconclusive, but cannot make an unknot return
+a value different from one when the implementation is correct.
+
+\subsection{Bounded overhead}
+The default cap is $B=4096$ states. During insertion, attempting to retain
+more than $B$ nonzero matchings aborts the filter, not the recognizer. It is
+acceptable to abort even if later cancellation could shrink the table:
+this only loses an opportunity for a fast obstruction.
+There are at most $2nB$ completed transition attempts before normal
+termination, apart from the single overflowing insertion. A matching and
+its gluing can be processed in polynomial time in $n$. Greedy ordering is
+also polynomial. Thus, with fixed $B$, this filter has polynomially bounded
+work and storage and cannot add an exponential preliminary phase.
+The unlimited standalone filter remains an exact but potentially
+exponential invariant computation.
+
+\subsection{A necessary PD-orientation correction}
+The supplied crossing-sign routine effectively assumed that the incoming
+under-strand always occupied slot zero. A legal half-turn of a PD row
+changes that slot to two. For the Jones normalization, the true oriented
+writhe must be invariant under this representation change.
+
+Let $u\in\{0,2\}$ and $o\in\{1,3\}$ be the incoming under- and over-slots
+obtained by following the knot. The corrected convention is
+\[
+ \varepsilon=+1\ \text{if }o-u\equiv3\pmod4,
+ \qquad \varepsilon=-1\ \text{otherwise}.
+\]
+Adding two to both slots preserves the sign. Reversing the orientation of
+the whole knot also adds two to both and preserves it. The Alexander
+matrix now uses the actual incoming under-arc together with these signs;
+this preserves the original Fox-row meaning. This correction is essential
+to safely reuse writhe in a new invariant. It is not presented as evidence
+that the original recognizer's Alexander verdicts were wrong.
+
+\section{Visible connected sums and compressed homology}\label{sec:sums}
+\subsection{Finding and verifying a splitting sphere}
+Let $G$ be the connected four-valent projection graph embedded in the
+sphere. Its face cycles are already available from the PD rotation system.
+Two distinct edges in its embedded dual joining the same two distinct
+faces form a simple dual two-cycle. The corresponding Jordan curve meets
+the knot projection in exactly two edge interiors. Lifting it to a
+splitting sphere gives a visible connected-sum decomposition.
+
+The implementation groups primal edges by the unordered pair of their
+incident faces. A parallel dual pair supplies a candidate $(e,f)$.
+The verifier removes these two primal edges, checks disconnection, and
+checks that each removed edge crosses between the two sides. The graph is
+connected and all degrees are even, so it has no bridge. A disconnecting
+pair is therefore a bond with two connected sides. In a spherical
+embedding, its dual is a simple cycle. Both sides must contain crossings;
+they are closed by joining their two dangling endpoints with a fresh
+edge label and independently validated as one-component spherical PDs.
+
+This construction recognizes \emph{visible} sums, including diagrams with
+nugatory factors. It need not find a factorization hidden by isotopy, and
+a leaf is not claimed to be a prime knot.
+
+\subsection{Replayable certificates}
+The decomposition is an iterative tree traversal, not Python recursion.
+Each internal certificate node records its normalized PD, two removed
+edges, and two child indices; each leaf records a factor index. The
+verifier reconstructs every cut and checks the child diagrams, reachability,
+absence of repeated children, and consecutive factor numbering.
+This certifies the topological decomposition. It does not certify the
+subsequent homology arithmetic independently of the rank routine.
+
+There are at most $n$ nonempty leaves and fewer than $2n$ tree nodes.
+Naively storing each node's diagram takes $O(n^2\log n)$ bits. With ordinary
+map operations, face grouping and each cut are linear after normalization;
+repeated sorted-label normalization gives a conservative polynomial total
+bound, for example $O(n^2\log n)$ comparison-model work. No exponentially
+large prime-decomposition search is present.
+
+\subsection{The tensor-product formula}
+\begin{proposition}\label{prop:kun}
+For visible connected-sum diagrams $D=D_1\#D_2$,
+\[
+ \rKh(D;\F_2)\cong\rKh(D_1;\F_2)\otimes_{\F_2}\rKh(D_2;\F_2)
+\]
+as homologically graded vector spaces, with cube degrees adding.
+Consequently the total reduced dimensions multiply.
+\end{proposition}
+\begin{proof}
+Choose the reduction basepoints on the two arcs used for the connected sum.
+A smoothing of $D$ is a pair of smoothings of $D_1,D_2$. The two marked
+circles are joined to form one marked circle, and all unmarked circles
+are unchanged. In the reduced complex the marked circle has its fixed
+$X$ label. The labels on all other circles identify the reduced generators
+of $D$ with pairs of reduced generators of its factors.
+
+A differential changes one crossing in exactly one factor. Away from the
+marked circle its multiplication or comultiplication is unchanged. At the
+marked circle, multiplication satisfies $X\cdot1=X$, $X\cdot X=0$,
+and splitting satisfies $\Delta(X)=X\otimes X$, so the same identification
+also respects those terms. In characteristic two there is no tensor-sign
+issue. Hence the reduced chain complex itself is the tensor product of
+the two reduced complexes. Over a field each finite complex splits into
+its homology with zero differential and contractible two-term pieces.
+Tensoring this splitting proves the homology formula. A smoothing's cube
+degree is the sum of its two factor degrees, proving the grading statement.
+\end{proof}
+
+The scanner computes unreduced dimensions. The characteristic-two splitting
+of unreduced into two quantum shifts of reduced Khovanov homology gives
+\begin{equation}\label{eq:split}
+ \dim_{\F_2}\Kh^h(D)=2\dim_{\F_2}\rKh^h(D),
+\end{equation}
+when quantum degree is forgotten \cite[Corollary 3.2.C]{Shumakovitch}.
+Thus every factor's unreduced degree counts are halved, convolved as
+ordinary integer coefficient polynomials, and doubled at the end.
+The program checks evenness before halving.
+
+If $P_i(z)=\sum_h\dim\rKh^h(D_i)z^h$, the returned degree polynomial is
+$2\prod_iP_i(z)$. A memo table reuses a rank computation only for exactly
+equal normalized factor PDs; it does not assume that arbitrary isotopic
+factors can be cheaply recognized as equal. Even without such reuse,
+factorwise scanning gives the bound in the next section.
+
+\section{Correctness and complexity of the complete recognizer}
+\subsection{Exactness of the final test}
+Kronheimer and Mrowka prove that reduced Khovanov homology detects the
+unknot \cite{KM}. In particular, a nontrivial knot has reduced rational
+homology of total rank greater than one. The universal coefficient theorem
+implies that its total reduced dimension over $\F_2$ is at least the rational
+rank. For the unknot the reduced dimension over $\F_2$ is one. Therefore
+\begin{equation}\label{eq:detector}
+       D\text{ is an unknot}\quad\Longleftrightarrow\quad
+       \dim_{\F_2}\rKh(D)=1.
+\end{equation}
+The code obtains the reduced dimension through \eqref{eq:split}.
+
+\begin{theorem}[Correctness, assuming the standard Khovanov construction]
+Without resource limits, the delivered algorithm terminates on every valid
+finite classical knot diagram and returns its correct unknot status.
+With resource limits, every completed \texttt{UNKNOT} or \texttt{KNOTTED}
+verdict has the same mathematical meaning; exhaustion may instead produce
+\texttt{UNKNOWN}.
+\end{theorem}
+\begin{proof}
+The retained Reidemeister reductions preserve knot type, and a descending
+diagram is unknotted. A nontrivial Alexander polynomial is a valid
+obstruction. Section~\ref{sec:jones} proves the added Jones filter one-sided
+sound. An inconclusive filter falls through rather than deciding.
+Sections~\ref{sec:algebra} and \ref{sec:tail} prove that the optimized scan
+preserves the exact final homology. Section~\ref{sec:sums} proves correctness
+of optional factorization and recombination. The final test is
+\eqref{eq:detector}. Each scan has finitely many crossings and finite chain
+spaces; each categorical cancellation removes two objects. Hence the
+unlimited computation terminates. Resource exceptions are caught as
+\texttt{UNKNOWN}, not interpreted as a mathematical verdict.
+\end{proof}
+
+This is a mathematical correctness argument for the transformations, not a
+machine-checked proof of the Python program or a reproof of the deep
+unknot-detection theorem. The baseline construction, input topology,
+integer operations and implementation details remain part of the trusted
+software base. The tests in Section~\ref{sec:validation} exercise these
+assumptions in several different ways.
+
+\subsection{The general exponential bound}
+\begin{proposition}\label{prop:exp}
+For normalized $n$-crossing PD inputs, fixed tail parameter, and no resource
+ceilings, the delivered complete algorithm admits a bound $2^{O(n)}$ on
+worst-case time and space. No better general bound is established here.
+\end{proposition}
+\begin{proof}
+A crossing insertion has two smoothings and at most two newly closed
+circles. Thus the number of object copies ever created is bounded by a
+constant to the power $n$, even without intermediate cancellations.
+There are at most exponentially many source-target pairs. A morphism
+between two matchings has at most exponentially many dot-subset basis
+terms, since the number of boundary circles is $O(n)$. Each gluing plan
+has polynomial-size topological bookkeeping, and a direct term expansion
+has $2^{O(n)}$ work. There are at most exponentially many pivots, and at
+most exponentially many Schur updates per pivot. A product of this fixed
+number of exponential bounds is still $2^{O(n)}$.
+
+The final bitset matrices have at most exponentially many rows and columns,
+so polynomial-time linear algebra in their dimension is also $2^{O(n)}$.
+The bounded Jones filter and the other preliminary operations add only
+polynomial work in their explicit input size. Factorization performs at
+most $n$ such scans on smaller inputs. Its output coefficients have $O(n)$
+bits, because even the original full cube has only exponentially many
+generators. Integer convolution and certificate processing are polynomial
+outside the factor scans. These observations give the stated coarse bound.
+\end{proof}
+
+This bound is deliberately coarse; it is not an assertion that Python
+constants or memory behavior are benign. In particular, a bounded number
+of cache entries does not make coefficients small, and final output
+compression alone does not prevent large intermediate matrices.
+
+\subsection{A restricted quasi-polynomial guarantee}
+\begin{theorem}\label{thm:factorbound}
+Suppose the implemented visible-cut procedure decomposes a diagram into
+factors with crossing counts $n_1,\ldots,n_k$, and put
+$b=\max_i n_i$. Then its factored rank computation takes
+\begin{equation}\label{eq:factorbound}
+       \poly(n)+\sum_{i=1}^k2^{O(n_i)}
+       \ \le\ \poly(n)+n2^{O(b)}.
+\end{equation}
+In particular it is polynomial for $b=O(\log n)$ and quasi-polynomial for
+$b=O((\log n)^2)$.
+\end{theorem}
+\begin{proof}
+Splitting adds no crossings, so $\sum_i n_i=n$ and $k\le n$ for nonempty
+factors. Decomposition and certificate construction are polynomial.
+Apply Proposition~\ref{prop:exp} to each factor and sum the bounds.
+Reduced degree polynomials have degree at most $n$ and coefficients of
+$O(n)$ bits, so their naive convolution adds only polynomial work.
+Identical-factor memoization can decrease the sum but is not needed for
+the inequality. Substitute the stated bounds on $b$ to obtain the two
+special cases.
+\end{proof}
+
+For $k$ trefoils, Proposition~\ref{prop:kun} gives reduced rank $3^k$.
+The original explicit-object backend has an $\Omega(3^k)$ output-state
+lower bound, whereas the delivered factorized backend stores $3^k$ in
+$O(k)$ bits and runs in polynomial time on the visible chain diagrams.
+This is a real asymptotic improvement of the exact rank computation.
+It is not an exponential-to-polynomial claim for the default recognition
+pipeline on trefoil sums: their Alexander polynomial already obstructs
+unknottedness cheaply. Nor does \eqref{eq:factorbound} settle general
+recognition, since a prime or hidden-factor input can have $b=n$.
+
+\section{Validation and reproducible performance}\label{sec:validation}
+\subsection{Test coverage}
+The final release passes 41 \texttt{unittest} methods on CPython 3.13.5.
+The supplied suite contributes 19 methods. Its three changed expectations
+are narrowly tied to the new filter: a default Conway result now names
+\texttt{modular-jones}, and two tests intended to reach a Khovanov resource
+ceiling explicitly disable the new Jones shortcut. No test was deleted;
+the untouched originals remain with the baseline.
+
+The new tests include the following independent and differential checks.
+A full smoothing-cube Jones evaluator uses its own edge-label disjoint-set
+implementation, not scan matchings or surface gluing. It agrees on 120
+seeded random knots and every supplied example with at most 12 crossings.
+Further tests cover 60 reduction-invariance cases, 40 random half-turned
+row representations with Alexander and writhe checks, 30 crossing-order
+and relabeling cases, 25 third-Reidemeister braid relations, 30 mirror
+relations, and families of positive and negative curls.
+
+There are 6,000 sampled surface-composition comparisons on all five planar
+matchings of six endpoints, every unit in a three-arc endomorphism algebra,
+and crossing-map comparisons for zero through four old boundary labels.
+These are comparisons against retained original formulas; shared geometry
+helpers limit their independence.
+
+For homology, 35 additional random knots are checked against the original
+independent dense reduced cube using each of three tail choices and random
+full crossing orders, with $d^2$ checking enabled. The original suite has
+its own dense-cube checks. Mixed connected sums are compared both to the
+unfactored scan and to the dense cube, including agreement in every cube
+degree. Tests replay and tamper with certificates, check reuse of 16
+trefoil factors, reject malformed crossing orders, and exercise resource
+limits. Mocking a Jones value of one on Conway is explicitly tested to
+ensure that the program still falls through to an exact knotted verdict.
+
+These tests are not exhaustive over all diagrams, and seeded random braids
+are not a uniform sample of knot types. No Lean formalization or independent
+large-scale knot-library verification is claimed. Raw test output is in
+\texttt{results/tests.txt}.
+
+\subsection{Benchmark protocol}
+The driver \texttt{tools/benchmark.py} launches each observation in a fresh
+process, sequentially, with the same interpreter and
+\texttt{PYTHONHASHSEED=0}. Inputs are retained verbatim in
+\texttt{results/fixtures.json}. The baseline imports the untouched
+\texttt{baseline/fast/}; the optimized variant imports the replacement
+\texttt{fast/}. The driver compares completed exact ranks in every cube
+degree, not only their sum, and checks recognition-verdict agreement.
+
+The recorded machine is an x86-64 Linux container reporting an
+AMD EPYC 9V74 80-Core Processor, using CPython 3.13.5. This does not mean
+80 cores were used: each worker is single-process and the trials were
+run sequentially. No CPU pinning or operating-system noise isolation was
+performed. The 146 observations cover 25 fixtures. Ordinary variants have
+three runs; the censored stress baseline and the $t=4$ stress variant
+have one. Reported values are medians unless stated otherwise.
+
+The timer surrounds the API call. It excludes Python startup and initial
+JSON-to-\texttt{Diagram} parsing; the new rank API's internal PD validation
+is included. Microsecond-scale cases are correspondingly noisy and their
+ratios should not be overinterpreted. The composition statistic now counts actual optimized composition calls; it is
+not normalized against the original counter, which counted some calls twice.
+Every worker has a 60-second
+cooperative algorithm budget and a 65-second outer process limit.
+The stress baseline returned \texttt{UNKNOWN} after 60.061 seconds, rather
+than completing. No exact speedup factor is inferred from a timed-out
+completion. The original archive also contains Windows timing data;
+none of the ratios below compare our Linux runs with that different
+machine's measurements.
+
+\input{benchmark_tables.tex}
+
+\subsection{Interpretation, including regressions}
+The full pipeline improves Conway by $17.44\times$ and Kinoshita--Terasaka
+by $19.67\times$ in the retained observations. Both are detected by the
+modular Jones obstruction, so this is primarily a decision-pipeline gain,
+not a claim that their homology was computed 20 times faster.
+The raw rank comparisons show backend gains independently: the random
+3-braid and 4-braid cases improve by $3.72\times$ and $3.39\times$,
+respectively. Their reduced ranks are 321 and 109.
+
+On the 36-crossing stress case the default two-crossing tail returns
+unreduced rank 5,898, hence reduced rank 2,949, in 7.885 seconds.
+The baseline is censored at 60 seconds. The ratio of that budget to the
+optimized median is 7.61; it is a budget-relative comparison, not a
+measured baseline completion ratio. The three-crossing tail reaches the
+same degree distribution in 5.528 seconds, with a budget-relative ratio
+10.85. The larger tail has 117,318 peak generators instead of 74,046.
+At $t=4$ memory and bitset fill increase further and the computation slows
+again. Thus $t=3$ is useful for this case, not established as a universally
+better default.
+
+The hard 8-crossing unknot is a documented regression: raw rank rises from
+2.15 to 2.48 milliseconds, and full recognition from 1.65 to 2.44
+milliseconds. A Jones value of one supplies no shortcut there; filter and
+validation overhead plus the deferred expansion dominate a tiny problem.
+Several other easy examples differ by only microseconds. The improved
+version is not uniformly faster on every input or under every object cap.
+
+Visible sums display a different effect. Eight trefoil factors improve
+from 1.348 seconds to 0.002148 seconds, about $628\times$, for exact rank.
+Thirty-two factors have reduced rank
+$3^{32}=1{,}853{,}020{,}188{,}851{,}841$, returned in 0.015 seconds without
+materializing that many objects. The baseline was not run at 16 or 32
+factors, and the tables say so.
+
+\paragraph{Large-case cross-check.}
+\input{stress_note.tex}
+
+\section{Using and extending the implementation}
+\subsection{Commands}
+From the delivered \texttt{fast/} directory:
+\begin{lstlisting}
+python -m fastunknot recognize examples/conway.json
+python -m fastunknot khovanov examples/kinoshita_terasaka.json
+python -m fastunknot jones examples/trefoil.json
+python -m unittest discover -s tests -v
+\end{lstlisting}
+To force the exact backend rather than allow either polynomial obstruction:
+\begin{lstlisting}
+python -m fastunknot recognize examples/conway.json \
+  --no-alexander --no-jones
+\end{lstlisting}
+To tune the tail or impose cooperative limits:
+\begin{lstlisting}
+python -m fastunknot khovanov examples/conway.json --tail-crossings 3
+python -m fastunknot recognize examples/conway.json \
+  --seconds 30 --max-objects 100000
+\end{lstlisting}
+From the archive root, reproduce the comparisons and regenerate the tables:
+\begin{lstlisting}
+python tools/benchmark.py --repeats 3 --timeout 60
+python tools/report_tables.py
+python tools/validate_stress.py
+sh docs/build.sh
+\end{lstlisting}
+The last step requires a LaTeX installation; the runtime and tests require
+only Python. The PDF already included in the ZIP requires no build.
+
+\subsection{API and output contracts}
+\texttt{recognize} returns \texttt{UNKNOT}, \texttt{KNOTTED}, or
+\texttt{UNKNOWN}, with evidence and a method name. Its JSON explicitly says
+\texttt{quasipolynomial\_guarantee: false}. The added controls are
+\texttt{use\_jones}, \texttt{jones\_max\_states}, \texttt{decompose},
+and \texttt{tail\_crossings}. The original reduction, descending and
+Alexander controls remain.
+
+\texttt{khovanov\_rank} returns total and reduced dimensions, dimensions
+by original cube degree, statistics, and scan order. It does not perform
+Reidemeister preprocessing. Cube degrees are not the usual writhe-shifted
+homological degrees; under simplification, a degree shift can occur.
+Quantum degrees and integral torsion are not computed. When factorization
+is used, there is no single global scan order: the result records an empty
+global order, individual factor results and local orders, and the splitting
+certificate. An explicitly supplied order bypasses factorization and must
+be a full permutation of the crossing indices.
+
+The standalone \texttt{jones} command returns an evaluation, not an unknot
+verdict. A successful command exit does not make a value of one a
+recognition certificate. The CLI uses exit 2 for invalid input, 3 for
+resource exhaustion or a capped standalone Jones evaluation, and 4 for
+internal arithmetic inconsistency.
+
+\subsection{Resource and trust boundaries}
+Time checks are cooperative. A long sort, allocation, polynomial operation
+or integer operation can overrun a requested deadline before the next
+check. The object ceiling is a generator count, not a hard byte limit;
+some expansion bookkeeping is constructed before its size is tested.
+For strict containment, run the command under a separate process with
+operating-system memory and wall-time controls. Python's global caches can
+be cleared by another concurrent call; this affects reuse, not mathematical
+values, but per-process workers are preferable for reproducible timings.
+
+The reference surface formulas remain in the release for regression tests.
+A practical next development step would be profiling-guided elimination
+scheduling based on measured Schur fill and estimated closure size, rather
+than a fixed tail. Such a scheduler would still need conservative memory
+accounting. It is not implemented or used to justify these benchmarks.
+A truly different general complexity bound would require an additional
+structural theorem or a different complete backend, not merely adjusting
+the cache size or declaring scan width logarithmic.
+
+\section{Delivered artifacts and provenance}
+\begin{center}\small
+\begin{tabular}{@{}p{0.29\linewidth}p{0.64\linewidth}@{}}\toprule
+Path & Contents \\\midrule
+\texttt{fast/} & Improved package, input examples, original compatibility benchmark, and expanded tests.\\
+\texttt{baseline/fast/} & Untouched supplied implementation, tests, examples, and original historical timing files.\\
+\texttt{docs/} & This article, PDF, generated tables, large-case validation note, and build script.\\
+\texttt{tools/} & Fresh-process benchmark driver and worker, table generator, and stress validation driver.\\
+\texttt{results/} & Complete fixtures, all current raw benchmark observations, validation output, and final test logs.\\
+\texttt{README.md} & Entry-point commands, measured outcomes and limitations.\\
+\bottomrule\end{tabular}
+\end{center}
+The supplied license is preserved. The two scholarly sources in the original
+\texttt{docs/} were read as input; third-party paper and slide PDFs are not
+redistributed in this replacement package. Bibliographic identifiers below
+refer to the inspected versions. All performance claims in this article
+refer to the current retained observations, not to the older archive's
+benchmark log.
+
+\begin{thebibliography}{9}
+\bibitem{LackenbyTalk}
+M. Lackenby, \emph{Unknot recognition in quasi-polynomial time},
+quasi-polynomial algorithm talk slides, February 2021,
+109-page slide deck supplied as \texttt{quasipolynomial-talk.pdf}.
+\url{https://people.maths.ox.ac.uk/lackenby/quasipolynomial-talk.pdf}.
+
+\bibitem{Lackenby2026}
+M. Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition},
+arXiv:2607.23350v1, 25 July 2026. In particular, Introduction,
+Section 9, Proposition 9.1, and the refinements in Sections 10--14.
+\url{https://arxiv.org/abs/2607.23350v1}.
+
+\bibitem{BarNatan}
+D. Bar--Natan, \emph{Fast Khovanov homology computations},
+Journal of Knot Theory and Its Ramifications \textbf{16}(3) (2007),
+243--255. arXiv:math/0606318.
+\url{https://www.math.toronto.edu/drorbn/papers/FastKh/}.
+
+\bibitem{Kauffman}
+L. H. Kauffman, \emph{State models and the Jones polynomial},
+Topology \textbf{26}(3) (1987), 395--407.
+\url{https://doi.org/10.1016/0040-9383(87)90009-7}.
+
+\bibitem{Shumakovitch}
+A. Shumakovitch, \emph{Torsion of the Khovanov homology},
+arXiv:math/0405474v2, 19 June 2018; especially Corollary 3.2.C.
+\url{https://arxiv.org/abs/math/0405474}.
+
+\bibitem{KM}
+P. B. Kronheimer and T. S. Mrowka,
+\emph{Khovanov homology is an unknot-detector},
+Publications Math\'ematiques de l'IH\'ES \textbf{113} (2011), 97--208.
+arXiv:1005.4346.
+\url{https://arxiv.org/abs/1005.4346}.
+\end{thebibliography}
+\end{document}
