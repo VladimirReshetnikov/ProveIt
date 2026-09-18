@@ -137,6 +137,20 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   start, selects 15. The score is a fragile predictor: start 0 has profile
   (8, 230) against the winners' (8, 226) and needs 895182 compositions, 38
   times more, with 2.6 times the peak size.
+  Scoring all greedy starts instead of 12 was tried on 40 random closures (25 to
+  39 crossings, 3 to 6 strands; work = entries + compositions): a different
+  order in 18, of which 8 with equal work, 6 cheaper, 4 dearer, ratios from
+  0.29 to 6.69, total 0.952. Not adopted: the total is carried by three inputs
+  and would change sign without one of them. The weak point is the score, not
+  the number of starts. A matchings-only simulation cannot replace it: the
+  38-fold gap above occurs at equal boundary size (at most 14 matchings), so it
+  is all multiplicity, i.e. homology of the partial tangle.
+* Where the transfer work goes (four inputs): 74 to 83% of the differential
+  entries are incident to a cancelled pair when it is cancelled (an
+  overestimate, since fill-in entries are counted but not in the denominator).
+  Only 30 to 53% of the cancellations are between the two smoothings of one old
+  object, the kind that could be predicted before writing any entries; the rest
+  are between different old objects.
 * `seconds=` fidelity: the default scanner overshot a 1 s budget by up to
   0.24 s because a crossing was added without checking the clock; with a check
   every 512 objects the overshoot is at most 0.03 s on the same runs.
