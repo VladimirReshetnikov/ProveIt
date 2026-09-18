@@ -13,3 +13,4 @@ import Cardinals.Width
 import Cardinals.HODBoundary
 import Cardinals.Ultraexacting
 import Cardinals.Range
+import Cardinals.FiniteLabel
