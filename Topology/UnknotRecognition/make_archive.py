@@ -1,8 +1,7 @@
 """Zip the tracked contents of this repository at maximum compression.
 
 Included: every file tracked by git (so untracked files and .git are left
-out), except
-  * this script,
+out), including this script, except
   * dot files and dot directories at the repository root (.gitignore, ...),
   * PDFs that can be regenerated, i.e. a foo.pdf that sits next to a foo.tex
     (the synthesized report and the six archive reports). The talk, the arXiv
@@ -25,7 +24,6 @@ import sys
 import zipfile
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-SELF = os.path.basename(__file__)
 
 
 def tracked_files() -> list[str]:
@@ -43,7 +41,7 @@ def select(files: list[str], all_pdf: bool) -> list[str]:
     tracked = set(files)
     chosen = []
     for f in files:
-        if f == SELF or f.split("/", 1)[0].startswith("."):
+        if f.split("/", 1)[0].startswith("."):
             continue
         if not all_pdf and regenerable_pdf(f, tracked):
             continue

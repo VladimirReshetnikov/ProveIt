@@ -45,8 +45,8 @@ python make_archive.py            # writes Knots.zip at the root
 python make_archive.py --all-pdf  # same, but keeps every PDF
 ```
 
-The script zips every git-tracked file at maximum compression and leaves out
-`.git`, untracked files, dot files at the root, and the script itself.
+The script zips every git-tracked file (itself included) at maximum
+compression and leaves out `.git`, untracked files, and dot files at the root.
 
 **By default it also leaves out the PDFs that can be rebuilt**, namely every
 `foo.pdf` that has a `foo.tex` next to it. If you unpack the archive and a
