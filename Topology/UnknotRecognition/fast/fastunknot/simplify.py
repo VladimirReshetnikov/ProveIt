@@ -99,15 +99,20 @@ class _Darts:
         return a - a % 4 + (a + 1) % 4
 
     def move_at(self, d: int):
-        """A legal move whose face contains dart d, or None."""
-        if not self.alive[d // 4]:
+        """A legal move whose face contains dart d, or None.  (The face walk is written out with
+        bit operations: this is called for every dart, 168 times in a typical recognition.)"""
+        if not self.alive[d >> 2]:
             return None
-        e = self.nxt(d)
+        alpha = self.alpha
+        a = alpha[d]
+        e = (a & -4) | ((a + 1) & 3)                       # nxt(d)
         if e == d:
-            return ("R1", (d // 4,), (d,))
-        if e // 4 != d // 4 and self.nxt(e) == d:
-            if d % 2 == self.alpha[d] % 2 and e % 2 == self.alpha[e] % 2:
-                return ("R2", tuple(sorted((d // 4, e // 4))), (d, e))
+            return ("R1", (d >> 2,), (d,))
+        if e >> 2 != d >> 2:
+            b = alpha[e]
+            # a bigon, each side over at both ends or under at both ends
+            if (b & -4) | ((b + 1) & 3) == d and not (d ^ a) & 1 and not (e ^ b) & 1:
+                return ("R2", tuple(sorted((d >> 2, e >> 2))), (d, e))
         return None
 
     # ----- Reidemeister III ---------------------------------------------------

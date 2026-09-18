@@ -433,6 +433,10 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   the polynomial addition when a slot is empty, the usual case. `ab.py`
   (strict): `recognize` random 5-strand closure 0.796 (0.772..0.831), hard
   unknot 0.913; no claim where nothing is reduced.
+* Kept but not claimed: the face walk written out with bit operations in
+  `move_at` (called 168 times in a typical recognition). Identical reduced
+  diagrams and traces on 1500 diagrams; `ab.py` medians 0.98 to 0.99, every
+  interval reaching 1.
 * `tail` re-tested on the current scanner (41 interleaved pairs per input, 15 on the
   stress closure, ratio to `tail=0`, ranks by degree asserted equal): `tail=1`
   0.94 to 1.01 on eight inputs, the interval excluding 1 on two of them (Conway
