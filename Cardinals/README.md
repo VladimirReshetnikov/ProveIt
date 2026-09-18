@@ -71,7 +71,7 @@ Theorem 3.6 is *not* admitted: it is re-derived as `no_CEx_above_extendible`.
 | Theorem 8.1, Cor. 8.2 | `proj_OD`, `sups_OD`, `projection_width`, `card_family_ge` | **proved** from ABL Thm 2.10 (definability by explicit formulas) |
 | Prop. 8.3, Theorem 10.7 (1)–(4) | `HODBoundary.lean` | proved from ABL Thm 2.10 |
 | Lemma 9.1(b), Theorem 9.4 | `FiniteCycles.no_equivariant_selectors`, `Ultraexacting.no_preserved_finite_family` | **proved** over the elementarity facts used (hypotheses) |
-| Theorem 9.8 core | `FiniteCycles.label_fixed` | proved |
+| Lemma 9.7, Theorem 9.8, Cor. 9.9 (core) | `FiniteLabel.image_realize`, `disjoint_realize`, `exists_fixed_label`, `invariant_subset_of_transitive_perm`, `FiniteCycles.label_fixed` | **proved** over the elementarity facts used; uniform construction `a_i = {κ_n + π⁻ⁿ(i)}` |
 | Theorem 9.10 | `Ultraexacting.no_finite_valued_transversal` | **proved** over the elementarity facts used |
 | Lemma 10.3 (invariance) | `Ultraexacting.cloud_index_eq` | proved |
 | Theorem 11.2, Cor. 11.3 | `Range.no_internal_unbounded_range`, `final_segment_not_in_range` | **proved** from the published HKP lemma (hypothesis) |
@@ -82,7 +82,8 @@ Theorem 3.6 is *not* admitted: it is re-derived as `no_CEx_above_extendible`.
   obtained through Route S instead; these statements are covered by the admitted
   Blue–Goldberg inputs.
 * The derivation of the elementarity facts of §9 from a formal definition of
-  ultraexactingness (Lemmas 9.2, 9.3, 9.7 and the coding of Theorem 9.6).
+  ultraexactingness (Lemmas 9.2, 9.3, the flat coding before Lemma 9.7, and the coding of
+  Theorem 9.6, whose combinatorial core is again `no_preserved_finite_family`).
 * Theorem 10.1 (cover exactingness from `I3_wf(0)`) beyond the invariance of the cloud:
   the internalization tree argument and the Prikry-forcing localization.
 * All equiconsistency statements (Cor. 10.5, 10.6, Theorem 10.7 as a whole): they are
