@@ -38,6 +38,26 @@ cd fast && python -m fastunknot recognize examples/conway.json
 cd synthesis && sh build.sh
 ```
 
+## Test status (last observed 18 September 2026, commit 72b15eb)
+
+All unit-test suites are green on CPython 3.14.4 / Windows 11:
+
+| Suite | Tests | Result | Wall time |
+|---|---|---|---|
+| `reports/01` | 40 | OK | ~4 s |
+| `reports/02` | 64 | OK | ~2 s |
+| `reports/03` | 49 | OK | ~4 s |
+| `reports/04` | 62 | OK | ~3 s |
+| `reports/05` | 58 | OK | ~1 s |
+| `reports/06` | 45 | OK | ~4 s |
+| `fast` | 19 | OK | ~2 s |
+
+The experiments (cross-validation scripts, benchmark) have a more nuanced
+status; see `synthesis/README.md` and `fast/README.md` before rerunning any
+of them. In short: everything reported in `synthesis/report.pdf` comes from
+completed runs, but two experiments are long-running (hours) and one
+benchmark input hits a 600 s cap.
+
 ## Status of the quasi-polynomial target
 
 Open. Section 5 of the synthesized report lists what a proof-carrying

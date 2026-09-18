@@ -24,6 +24,24 @@ The synthesized report on the six archives and on the new recognizer.
     for the review; the preprint's source is in `../docs/arXiv-2607.23350v1/`
     (Section 9, "The number of steps", is the relevant part).
 
+## Experiment status (last observed 18 September 2026)
+
+Read this before rerunning anything: two of the scripts take hours, and one
+of them was deliberately stopped.
+
+| Script | Status | Wall time | Notes |
+|---|---|---|---|
+| `khovanov_xval.py` | completed | ~1 min | 44 inputs, five packages, 0 disagreements; output `khovanov_xval.json` |
+| `pattern_xval.py` | completed | ~2 s | 2000 random + 6 named patterns, six testers, 0 disagreements; output `pattern_xval.json` |
+| `grid_xval.py` | **stopped after size 9** | ~2 h | sizes 2–6 exhaustive (3 s), size 7 (7 s), size 8 (39 s), size 9 (**6775 s**, one grid needed 900 863 search states). Size 10 was never run: the script was killed and `grid_xval.json` was assembled from the completed lines of `grid_xval_output.txt`. Rerunning as-is will attempt size 10 (60 grids) and may take a day; lower the sizes first. The cost is in archive 01's search, not in the Khovanov side, which is capped at 14 crossings. |
+| `scan_stress.py` | first three sections completed; last section never ran | ~2 min for the completed part | 120 random braids vs. archive 04 (0 mismatches), Atlas knots, unknot family: all in `scan_stress_output.txt`. The final "random 4-braid" section as committed generates **even-length words on four strands, which can never close to a knot**, so its loop spins forever; the run was killed. Use odd lengths (as `profile4.py` does) before rerunning. |
+| `profile4.py` | completed | ~1 s | odd-length 4-braid closures, step-by-step; output `profile4_output.txt` |
+| `scan_smoke.py` | completed | seconds | first agreement check of the scanner with archive 04 |
+| `../fast/benchmark.py` | completed | ~11 min | one input (random 36-letter 5-braid) hit the 600 s cap and is recorded as `timeout`; see `../fast/README.md` |
+
+Everything cited in `report.pdf` comes from completed runs; the two
+interrupted ones contributed nothing beyond what is listed as completed.
+
 The cross-validation scripts import the archives' packages side by side; they
 were run from a scratch directory containing copies of `reports/0k/<package>`
 renamed to `kh02`, `kh03`, `kh04`, `kh05`, `kh06` and `grid01`. To rerun

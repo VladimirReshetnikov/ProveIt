@@ -93,6 +93,26 @@ exponential.
   120 random braid closures and the Atlas 10- and 11-crossing PD codes
   (see `../synthesis/`).
 
+## Test and benchmark status (last observed 18 September 2026)
+
+* `python -m unittest discover -s tests`: 19 tests, OK, about 2 s (CPython
+  3.14.4, Windows 11). Two test expectations were corrected while writing the
+  suite (a braid word that closes to a trefoil, not an unknot, and a word that
+  closes to a link); no source file changed after the suite went green.
+* `python benchmark.py`: completed in about 11 minutes. Every input finished
+  within a few seconds except a random 36-letter closure on five strands,
+  which hit the 600 s per-input cap (`timed_rank(..., seconds=600)`) and is
+  recorded as `timeout` in `results/benchmark.json`. A 31-letter closure on
+  six strands took about a second, so the cost is driven by the size of the
+  intermediate minimal complexes, not by the strand count. Expect the same
+  timeout on rerun; raise the cap or drop that input if 10 minutes matter.
+* Pitfall for anyone extending the benchmark or writing new random tests: a
+  braid word of even length on an even number of strands induces an even
+  permutation and therefore never closes to a knot. A "draw until
+  one-component" loop with such parameters never terminates. Two earlier
+  experiment runs were lost to exactly this; `benchmark.py` now uses odd
+  lengths for 4 and 6 strands.
+
 ## Layout
 
 `fastunknot/diagram.py` (validation, braids, grids), `simplify.py`
