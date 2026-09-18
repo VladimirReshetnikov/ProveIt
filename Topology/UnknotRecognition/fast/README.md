@@ -169,6 +169,15 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   win (`scan chain256` 0.78, interval 0.73..0.82). Both are output-preserving:
   same determinants, and identical greedy orders, profiles and selected orders
   on 600 random diagrams (19993 start orders, 34 diagrams with loop edges).
+* The Jones frontier scan now uses the interned matchings and strand-following
+  gluing of `planar.py` instead of a union-find over labels per transition:
+  0.67 (interval 0.46..0.72, 10 rounds) on the 36-crossing closure, where the
+  scan is a few milliseconds. **No measurable effect on any `recognize` case of
+  the corpus**, including the Conway knot, which this filter decides: with 11
+  crossings the filter is a small part of 0.6 ms. Output-preserving: identical
+  return values on 500 random closures (350 witnesses with equal bracket, peak
+  states and transitions; 122 inconclusive; 28 identical budget failures; 48
+  diagrams with loop edges). `filters._glue` is kept as the reference.
 * `seconds=` fidelity: the default scanner overshot a 1 s budget by up to
   0.24 s because a crossing was added without checking the clock; with a check
   every 512 objects the overshoot is at most 0.03 s on the same runs.

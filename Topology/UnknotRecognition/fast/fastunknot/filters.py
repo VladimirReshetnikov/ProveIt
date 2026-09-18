@@ -24,6 +24,7 @@ from .alexander import alexander_matrix
 from .diagram import Diagram
 from .geometry import SMOOTHINGS
 from .ordering import best_scan_order
+from .planar import Planar
 
 PRIME = (1 << 61) - 1      # a Mersenne prime
 # Evaluation points.  They are deliberately NOT small integers: 2 has
@@ -94,7 +95,11 @@ def alexander_obstruction(diagram: Diagram) -> dict | None:
 
 
 def _glue(matching: tuple, slots: tuple, smoothing: int, boundary: set):
-    """New boundary matching and the number of closed circles after one smoothing."""
+    """New boundary matching and the number of closed circles after one smoothing.
+
+    Reference implementation (union-find over labels); the scan below uses
+    ``planar.Planar.glue`` on interned matchings and is tested against this.
+    """
     parent: dict = {}
     for p, q in matching:
         parent[p] = p
@@ -146,23 +151,21 @@ def jones_obstruction(diagram: Diagram, *, max_states: int | None = 4096,
     delta = (-a * a - inv_a * inv_a) % p
     delta_powers = [1, delta, delta * delta % p, pow(delta, 3, p), pow(delta, 4, p)]
     order = best_scan_order(pd, tries=min(len(pd), 12)) if order is None else list(order)
-    states: dict = {(): 1}
-    boundary: set = set()
+    geometry = Planar()                  # matchings are interned: a state is an integer, 0 the empty matching
+    glue = geometry.glue
+    states: dict = {0: 1}
+    boundary: frozenset = frozenset()
     peak, transitions = 1, 0
     for index in order:
         check()
-        slots = pd[index]
-        for e in slots:
-            if e in boundary:
-                boundary.remove(e)
-            else:
-                boundary.add(e)
-        # a loop edge (both ends at this crossing) toggles twice and correctly stays out
+        slots = tuple(pd[index])
+        geometry.stage(boundary, slots)
+        boundary = geometry.new_points()
         new: dict = {}
         for matching, coefficient in states.items():
             for smoothing, weight in ((0, a), (1, inv_a)):
                 transitions += 1
-                target, closed = _glue(matching, slots, smoothing, boundary)
+                target, closed, _ = glue(matching, smoothing)
                 value = (new.get(target, 0) + coefficient * weight * delta_powers[closed]) % p
                 if value:
                     new[target] = value
@@ -176,7 +179,7 @@ def jones_obstruction(diagram: Diagram, *, max_states: int | None = 4096,
         peak = max(peak, len(states))
     if boundary or any(states):
         raise ArithmeticError("the bracket scan ended with an open boundary")
-    bracket = states.get((), 0)
+    bracket = states.get(0, 0)
     writhe = diagram.writhe()
     expected = delta * pow((-pow(a, 3, p)) % p, writhe % (p - 1), p) % p
     if bracket == expected:

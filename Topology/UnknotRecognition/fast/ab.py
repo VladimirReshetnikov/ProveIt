@@ -77,6 +77,9 @@ def corpus(pkg):
         "recognize conway (exact only)": rec(example("conway.json"), **exact),
         "recognize conway": rec(example("conway.json")),
         "recognize T(3,61)": rec(D.from_braid(3, [1, 2] * 61)),
+        "recognize conway_sum_3": rec(example("conway_sum_3.json")),
+        "jones braid5_36": (lambda d=D.from_braid(5, words["random 5-braid", 36]):
+                            pkg.filters.jones_obstruction(d)),
     }
 
 
@@ -117,7 +120,7 @@ def main():
         new, old = corpus(new_pkg), corpus(load_base(rev, where))
         rows = []
         for name in new:
-            n = max(9, pairs // 2) if "braid5_36" in name else pairs
+            n = max(9, pairs // 2) if name == "scan braid5_36" else pairs      # the one slow case
             ratios, control = [], []
             for k in range(n):
                 arms = [("old", old[name]), ("new", new[name]), ("old2", old[name])]
