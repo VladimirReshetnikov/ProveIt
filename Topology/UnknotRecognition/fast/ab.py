@@ -80,9 +80,11 @@ def corpus(pkg):
         "recognize conway": rec(example("conway.json")),
         "recognize T(3,61)": rec(D.from_braid(3, [1, 2] * 61)),
         "recognize conway_sum_3": rec(example("conway_sum_3.json")),
-        "recognize unknot 4/38 (27)": rec(D.from_braid(4, hard_unknots.make(4, seed=38))),
-        "recognize unknot 4/11 (25)": rec(D.from_braid(4, hard_unknots.make(4, seed=11))),
-        "recognize unknot 4/20 (25)": rec(D.from_braid(4, hard_unknots.make(4, seed=20))),
+        "recognize survivor 21a": rec(D.from_braid(*hard_unknots.SURVIVORS[0][1:])),
+        "recognize survivor 21b": rec(D.from_braid(*hard_unknots.SURVIVORS[1][1:])),
+        "recognize survivor 20": rec(D.from_braid(*hard_unknots.SURVIVORS[2][1:])),
+        "recognize scrambled 4/38": rec(D.from_braid(4, hard_unknots.make(4, seed=38))),
+        "recognize random 5-braid 36": rec(D.from_braid(5, words["random 5-braid", 36])),
         "jones braid5_36": (lambda d=D.from_braid(5, words["random 5-braid", 36]):
                             pkg.filters.jones_obstruction(d)),
     }

@@ -6,8 +6,9 @@ After version 0.2 the Rust work was paused and the Python package was
 optimized further, with no change to the mathematics, the verdicts or the
 asymptotic behaviour. This section records what was gained, what was tried and
 rejected, and an episode about measurement that changed how every number below
-was obtained. All results are exact and identical to those of 0.2: 36 unit
-tests pass, and \texttt{crosscheck.py} compares the ranks by homological degree
+was obtained. All verdicts and ranks are exact and identical to those of 0.2
+(the deciding step can differ: the Reidemeister III help below settles some
+unknots before the scan): 37 unit tests pass, and \texttt{crosscheck.py} compares the ranks by homological degree
 of the new default scanner with the generic 0.2 scanner and the 0.1 set algebra
 on random braid closures (400 closures with 2 to 5 strands, no mismatch).
 
@@ -136,6 +137,43 @@ so verdicts cannot change. It now runs only when the modular test did not. Over
 720 diagrams the two modes never disagree, and the exact stage decided nothing
 once the modular test had passed. Recognition of the 55 scan-decided scrambled
 unknots is faster on all 55: median ratio $0.81$, range $0.53$ to $0.93$.
+
+\paragraph{Reidemeister III, the one algorithmic gain of this round.} The scan
+is exponential in what the reduction leaves, and the reduction used to stop
+wherever a Reidemeister III move was needed. On the dart structure of the
+reduction a triangular face is a 3-cycle of the face walk through three
+distinct crossings; it can be inverted if and only if some side passes over at
+both ends; and inverting it only reverses the order in which each of the three
+strands meets the other two, a relinking of at most twelve darts that keeps
+every crossing's slots and the direction of both strands through it, hence its
+sign. When no I/II move is left, each such triangle is inverted on trial, kept
+if that creates a I/II move and undone otherwise (the move is an involution).
+The move was tested on its own before it was used: 150 random moves give valid
+spherical diagrams with the same Alexander polynomial, writhe and Khovanov ranks
+by degree, and a second move restores the structure exactly (300 of 300). On
+1500 random closures the helped reduction never leaves more crossings than I/II
+alone, leaves no I/II move, replays from its trace, and preserves the Alexander
+polynomial and the Khovanov rank; 26\% of the diagrams shrink further and
+$0.80$ of the crossings remain. The 8-crossing ``hard unknot'' used throughout
+this report goes from 6 crossings to none, and so do all 120 scrambled unknots
+above, which is no surprise, their scrambling being made of such moves. Honest
+hard inputs had to be found by search: 117 closures among 40\,000 random words
+that survive I, II, the III search and the Alexander filter, and are unknots by
+reduced Khovanov rank 1, with up to 21 crossings. Verdicts with and without the
+search agree on 900 diagrams.
+
+Two lessons came with it. \emph{Placement:} run together with the first
+reduction, the search cost 58\% on $T(3,61)$, 20\% on a random 5-strand closure
+and 4 to 6\% on the Conway knot, inputs that a filter decides a moment later.
+It now runs only after every filter has failed, immediately before the scan;
+then no slowdown can be claimed on those inputs, while recognition of the hard
+unknot takes $0.48$ and of a scrambled unknot of 27 crossings $0.18$ of the
+time. \emph{Fewer crossings is not always less work:} one survivor was flagged
+$1.43$ times slower, correctly, since the help takes it from 22 to 20 crossings
+and its scan work from 2081 to 3277. Over the 54 survivors where crossings are
+removed (3.4 on average) the scan work is $0.43$ of what it was, cheaper on 44
+and dearer on 10, with per-diagram ratios from $0.03$ to $7.3$; over all 117 it
+is $0.69$.
 
 Two remarks. First, the closing sentence of the previous section, that on an
 unknot diagram no filter can decide the Python accelerations change nothing,

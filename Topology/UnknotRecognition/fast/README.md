@@ -18,7 +18,9 @@ port is in `../rust/`.
 1. **Validation.** One component, spherical rotation system. Inputs: PD code,
    braid word, or rectangular (grid) diagram.
 2. **Reidemeister I/II reduction**, incremental: O(1) work per move on a
-   mutable dart structure, one revalidation at the end.
+   mutable dart structure, one revalidation at the end. (A search for
+   Reidemeister III moves that unlock further I/II moves runs later, between
+   steps 7 and 8, when no filter has decided.)
 3. **Descending-diagram test**, linear time; sufficient for `UNKNOT`.
 4. **Visible connected sums.** Two edges bordering the same two faces cut the
    diagram into summands. A sum is trivial exactly when every summand is, so
@@ -97,9 +99,9 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
 
 ## Test and benchmark status (last observed 18 September 2026)
 
-* `python -m unittest discover -s tests`: 36 tests, OK, about 3 s (CPython
+* `python -m unittest discover -s tests`: 37 tests, OK, about 3 s (CPython
   3.14.4, Windows 11). 19 are the 0.1 tests (three expectations updated because
-  a filter now decides before Khovanov does), 17 are new and compare every new
+  a filter now decides before Khovanov does), 18 are new and compare every new
   code path with the 0.1 implementation.
 * `results/benchmark_0.1.json` is the 0.1 benchmark, kept as a record; its
   36-crossing 5-strand row is the 600 s timeout that motivated 0.2.
@@ -274,6 +276,40 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   first finishes costs three times the winner, 0.94 on the unknots and 2.2
   overall, because 8 of the 81 inputs carry 86% of the work and there the
   rules are within a factor two. Only a predictor would collect that prize.
+* **Reidemeister III help for the reduction (`simplify(d, r3=True)`,
+  `recognize(use_r3=True)`, `--no-r3`).** The scan is exponential in what the
+  reduction leaves, and the reduction stopped wherever a Reidemeister III move
+  was needed. A triangular face is a 3-cycle of the face walk through three
+  crossings; it can be inverted iff some side is over at both ends; inverting
+  it reverses the order in which each of the three strands meets the other two,
+  a relinking of at most twelve darts that keeps every crossing's slots and the
+  direction of both strands through it, hence its sign. When no I/II move is
+  left, each such triangle is inverted on trial, kept if that creates a I/II
+  move and undone otherwise (the move is an involution); triangles with no
+  small face across a side are skipped, which never changes the result (2120
+  diagrams, identical traces). Tested on its own: 150 random moves give valid
+  spherical diagrams with the same Alexander polynomial, writhe and Khovanov
+  ranks by degree, and a second move restores the dart structure exactly (300
+  of 300). On 1500 random closures: never more crossings than I/II alone, no
+  I/II move left, every trace replays, Alexander polynomial and Khovanov rank
+  unchanged; 26% of the diagrams shrink further, 0.80 of the crossings remain.
+  `hard_unknot_8` goes from 6 crossings to 0. Verdicts with and without it
+  agree on 900 diagrams.
+  *Placement matters.* Run with the first reduction it cost 58% on T(3,61), 20%
+  on a random 5-strand closure and 4 to 6% on the Conway knot, inputs a filter
+  decides a moment later. It now runs only after every filter has failed,
+  just before the scan: no claim of any slowdown on those inputs, `recognize
+  hard_unknot_8` 0.48, a scrambled unknot of 27 crossings 0.18.
+  *Fewer crossings is not always less work.* One survivor was flagged 1.43
+  slower, correctly: R3 help takes it from 22 to 20 crossings and its scan work
+  from 2081 to 3277. Over the 54 of 117 survivors where crossings are removed
+  (3.4 on average) the scan work is 0.43 of before, cheaper on 44 and dearer on
+  10, per-diagram ratios 0.03 to 7.3; over all 117 it is 0.69.
+* `hard_unknots.py`: the scrambled family turned out weak, since its rewriting
+  consists of Reidemeister III moves and the helped reduction undoes all of
+  it (120 of 120; 180 of 180 with heavier scrambling). `SURVIVORS` lists unknot
+  diagrams of 17 to 21 crossings found by random search that survive I, II and
+  the III search and every filter; they are the honest scan-decided inputs now.
 * `seconds=` fidelity: the default scanner overshot a 1 s budget by up to
   0.24 s because a crossing was added without checking the clock; with a check
   every 512 objects the overshoot is at most 0.03 s on the same runs.

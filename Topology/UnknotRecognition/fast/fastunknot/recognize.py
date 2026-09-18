@@ -88,7 +88,7 @@ def factored_khovanov_rank(diagram: Diagram, **options) -> dict[str, Any]:
 
 
 def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_jones, use_alexander,
-                          use_exact_alexander,
+                          use_exact_alexander, use_r3, use_descending,
                           jones_max_states, jones_max_transitions, max_objects, deadline,
                           check_d_squared, scan_options) -> tuple[str, str]:
     """Verdict and method for one summand (already simplified by the caller)."""
@@ -130,6 +130,21 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
         evidence["determinant"] = abs(evaluate(poly, -1))
         if poly != [1]:
             return "KNOTTED", "alexander-polynomial"
+    if use_r3:
+        # Every filter has failed, so the exponential scan is next: now it pays to look for
+        # Reidemeister III moves that unlock further I/II reductions.  (Done earlier, the search
+        # cost up to 58% on diagrams that the Alexander test decides a moment later.)
+        check()
+        reduced, trace = simplify(diagram, r3=True)
+        if reduced.crossings < diagram.crossings:
+            evidence["reidemeister_three"] = {"crossings_before": diagram.crossings,
+                                              "crossings_after": reduced.crossings,
+                                              "trace": [m.to_json() for m in trace]}
+            if reduced.crossings == 0:
+                return "UNKNOT", "reidemeister-reduction"
+            if use_descending and descending_start(reduced) is not None:
+                return "UNKNOT", "descending-diagram"
+            diagram, order = reduced, None
     remaining = None if deadline is None else max(0.0, deadline - monotonic())
     kh = khovanov_rank(diagram.pd, order=order, max_objects=max_objects, seconds=remaining,
                        check_d_squared=check_d_squared, **scan_options)
@@ -141,7 +156,7 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
 
 def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: bool = True,
               use_factorization: bool = True, use_modular: bool = True, use_jones: bool = True,
-              use_alexander: bool = True, use_exact_alexander: bool | None = None,
+              use_alexander: bool = True, use_exact_alexander: bool | None = None, use_r3: bool = True,
               jones_max_states: int | None = 4096,
               jones_max_transitions: int | None = 200_000, max_objects: int | None = None,
               seconds: float | None = None, check_d_squared: bool = False,
@@ -151,7 +166,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
     original = diagram
     evidence: dict[str, Any] = {}
     if use_reduction:
-        diagram, trace = simplify(diagram)
+        diagram, trace = simplify(diagram, r3=False)      # Reidemeister III waits until the filters have failed
         evidence["reidemeister_trace"] = [m.to_json() for m in trace]
     if diagram.crossings == 0:
         return Result("UNKNOT", "reidemeister-reduction", original.crossings, 0, monotonic() - start, evidence)
@@ -167,7 +182,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         if cuts:
             evidence["connected_sum_cuts"] = cuts
     options = dict(use_modular=use_modular and use_alexander, use_jones=use_jones, use_alexander=use_alexander,
-                   use_exact_alexander=use_exact_alexander,
+                   use_exact_alexander=use_exact_alexander, use_r3=use_r3 and use_reduction,
+                   use_descending=use_descending,
                    jones_max_states=jones_max_states, jones_max_transitions=jones_max_transitions,
                    max_objects=max_objects, deadline=deadline, check_d_squared=check_d_squared,
                    scan_options=dict(pivot=pivot, algebra=algebra, tail=tail))
@@ -181,7 +197,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
             for factor in sorted(factors, key=lambda d: d.crossings):
                 sub: dict[str, Any] = {"crossings": factor.crossings}
                 reports.append(sub)
-                reduced, trace = simplify(factor) if use_reduction else (factor, [])
+                reduced, trace = simplify(factor, r3=False) if use_reduction else (factor, [])
                 if reduced.crossings == 0 or (use_descending and descending_start(reduced) is not None):
                     sub["status"], sub["method"] = "UNKNOT", "reduction-or-descending"
                     continue

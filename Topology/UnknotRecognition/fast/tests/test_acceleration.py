@@ -201,8 +201,11 @@ class FilterTests(unittest.TestCase):
 class ExactAlexanderTests(unittest.TestCase):
     def test_exact_polynomial_only_when_the_modular_test_did_not_run(self):
         import hard_unknots
-        d = Diagram.from_braid(4, hard_unknots.make(4, seed=38))          # a 27-crossing unknot no filter decides
-        default, forced = recognize(d), recognize(d, use_exact_alexander=True)
+        # an unknot diagram of 27 crossings that Reidemeister I/II cannot reduce and no filter decides
+        d = simplify(Diagram.from_braid(4, hard_unknots.make(4, seed=38)), r3=False)[0]
+        self.assertEqual(d.crossings, 27)
+        default = recognize(d, use_reduction=False)
+        forced = recognize(d, use_reduction=False, use_exact_alexander=True)
         self.assertEqual((default.status, default.method), ("UNKNOT", "reduced-khovanov-F2-scan"))
         self.assertEqual((forced.status, forced.method), ("UNKNOT", "reduced-khovanov-F2-scan"))
         self.assertTrue(default.evidence["alexander_polynomial"].startswith("not computed"))
@@ -232,9 +235,19 @@ class FactorTests(unittest.TestCase):
         self.assertTrue(r.method.startswith("connected-sum-factor"))
         self.assertEqual(recognize(load("conway_sum_3.json"), use_jones=False, use_factorization=False,
                                    max_objects=500).status, "UNKNOWN")
-        # a connected sum of two unknot diagrams that R1/R2 cannot reduce
+        # a connected sum of two unknot diagrams that R1/R2 cannot reduce; R3 help undoes it entirely
         hard = [-2, -2, -2, 2, 1, 1, 2, 1]
         double = Diagram.from_braid(5, hard + [g + 2 * (1 if g > 0 else -1) for g in hard])
+        self.assertEqual(len(visible_factors(simplify(double, r3=False)[0])[0]), 2)
+        self.assertEqual(simplify(double)[0].crossings, 0)
+        r = recognize(double)       # factored first; each factor then falls to the late Reidemeister III search
+        self.assertEqual((r.status, r.method), ("UNKNOT", "connected-sum-all-factors-trivial"))
+        self.assertEqual([f["method"] for f in r.evidence["factors"]], ["reidemeister-reduction"] * 2)
+        self.assertEqual(recognize(double, use_r3=False).evidence["factors"][0]["method"], "reduced-khovanov-F2-scan")
+        # ... and of two unknot diagrams that survive Reidemeister I, II and the III search
+        tough = [2, -1, 2, -3, -1, 3, -1, -2, -1, 1, 3, -2, 3]
+        self.assertEqual(simplify(Diagram.from_braid(4, tough))[0].crossings, 9)
+        double = Diagram.from_braid(7, tough + [g + 3 * (1 if g > 0 else -1) for g in tough])
         self.assertEqual(len(visible_factors(simplify(double)[0])[0]), 2)
         r = recognize(double)
         self.assertEqual((r.status, r.method), ("UNKNOT", "connected-sum-all-factors-trivial"))
@@ -243,15 +256,48 @@ class FactorTests(unittest.TestCase):
 class SimplifyTests(unittest.TestCase):
     def test_incremental_reduction(self):
         for d in random_knot_braids(25, 120, strands=(2, 3, 4, 5), lengths=(1, 12)):
-            reduced, trace = simplify(d)
-            self.assertEqual(legal_moves(reduced), [])
-            self.assertEqual(replay(d, trace).pd, reduced.pd)
-            self.assertEqual(reduced.crossings, d.crossings - sum(len(m.crossings) for m in trace))
-            self.assertEqual(alexander_polynomial(reduced), alexander_polynomial(d))
-            self.assertEqual(reduced.crossings == 0, simplify_reference(d)[0].crossings == 0)
+            plain, plain_trace = simplify(d, r3=False)
+            self.assertEqual(plain.crossings == 0, simplify_reference(d)[0].crossings == 0)
+            self.assertTrue(all(m.kind in ("R1", "R2") for m in plain_trace))
+            for reduced, trace in ((plain, plain_trace), simplify(d)):
+                self.assertEqual(legal_moves(reduced), [])
+                self.assertEqual(replay(d, trace).pd, reduced.pd)
+                self.assertEqual(reduced.crossings,
+                                 d.crossings - sum(len(m.crossings) for m in trace if m.kind != "R3"))
+                self.assertEqual(alexander_polynomial(reduced), alexander_polynomial(d))
+                self.assertLessEqual(reduced.crossings, plain.crossings)
         d = Diagram.from_braid(2, [1, 1, 1])
         with self.assertRaises(ValueError):
             replay(d, [{"kind": "R1", "crossings": [0]}])
+        with self.assertRaises(ValueError):
+            replay(d, [{"kind": "R3", "crossings": [0, 1, 2]}])          # a bigon chain has no triangle
+
+    def test_reidemeister_three(self):
+        from fastunknot.simplify import _Darts
+        rng = random.Random(27)
+        moves = 0
+        for d in random_knot_braids(27, 150, strands=(3, 4, 5), lengths=(6, 16)):
+            state = _Darts(d)
+            triangles = [t for t in (state.triangle_at(x) for x in range(4 * d.crossings)) if t]
+            if not triangles:
+                continue
+            triangle, before = rng.choice(triangles), None
+            before = list(state.alpha)
+            self.assertIsNotNone(state.apply_r3(triangle))
+            moved = state.rebuild()                       # validates: one component, spherical
+            moves += 1
+            self.assertEqual(alexander_polynomial(moved), alexander_polynomial(d))
+            self.assertEqual(moved.writhe(), d.writhe())
+            self.assertEqual(khovanov_rank(moved.pd)["by_degree"], khovanov_rank(d.pd)["by_degree"])
+            inverted = state.triangle_at(triangle[0] ^ 2)
+            self.assertEqual(set(inverted), {x ^ 2 for x in triangle})
+            state.apply_r3(inverted)
+            self.assertEqual(state.alpha, before)         # the move is an involution
+        self.assertGreater(moves, 60)
+        # the 8-crossing example needs a Reidemeister III move; the helped reduction finds it
+        self.assertEqual(simplify(load("hard_unknot_8.json"), r3=False)[0].crossings, 6)
+        reduced, trace = simplify(load("hard_unknot_8.json"))
+        self.assertEqual((reduced.crossings, sum(m.kind == "R3" for m in trace) > 0), (0, True))
 
     def test_long_chain(self):
         d = Diagram.from_braid(513, list(range(1, 513)))

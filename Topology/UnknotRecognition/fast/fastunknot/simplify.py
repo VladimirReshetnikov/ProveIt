@@ -92,6 +92,80 @@ class _Darts:
                 return ("R2", tuple(sorted((d // 4, e // 4))), (d, e))
         return None
 
+    # ----- Reidemeister III ---------------------------------------------------
+    def triangle_at(self, d: int):
+        """The darts (d0, d1, d2) of a triangular face through dart d that admits an R3 move, or None.
+
+        The face walk d -> nxt(d) follows the edge of d to the next crossing and turns to the
+        next slot, so side k is the edge (d_k, alpha[d_k]) from crossing C_k to C_{k+1}.  A slot
+        is on the over-strand iff it is odd.  The triangle can be inverted iff some side is over
+        at both ends (then another is under at both and the third is the middle strand); the
+        other possibility, every side over at one end and under at the other, is not an R3
+        configuration.
+        """
+        if not self.alive[d // 4]:
+            return None
+        e = self.nxt(d)
+        f = self.nxt(e)
+        if self.nxt(f) != d or len({d // 4, e // 4, f // 4}) != 3:
+            return None
+        alpha = self.alpha
+        if not any(x % 2 == 1 and alpha[x] % 2 == 1 for x in (d, e, f)):
+            return None
+        return (d, e, f)
+
+    def r3_can_help(self, triangle) -> bool:
+        """Necessary for the inverted triangle to create a I/II move: inverting takes one edge
+        from each face across a side of the triangle (and gives one to each face at a vertex),
+        so a new bigon needs a triangle across some side, and a new monogon a bigon."""
+        alpha = self.alpha
+        for d in triangle:
+            start = alpha[d]                      # this dart lies in the face across the side of d
+            x, size = self.nxt(start), 1
+            while x != start and size < 4:
+                x, size = self.nxt(x), size + 1
+            if x == start and size <= 3:
+                return True
+        return False
+
+    def apply_r3(self, triangle) -> list[int] | None:
+        """Invert the triangle: every strand meets the other two in the opposite order.
+
+        Strand k runs  P_k - [o_k C_k d_k] - [i_k C_{k+1} x_k] - Q_k  with i_k = alpha[d_k] and
+        o_k, x_k the slots opposite to d_k, i_k.  Afterwards it runs
+        P_k - [i_k C_{k+1} x_k] - [o_k C_k d_k] - Q_k: each crossing keeps its slots and the
+        direction of both strands through it, hence its sign.  Outside neighbours that are
+        themselves outer darts of the triangle (two of the strands are consecutive pieces of
+        the knot) are redirected to the new entry or exit of that strand.  Returns the darts
+        whose faces changed, or None if the configuration is degenerate (nothing is modified).
+        """
+        alpha = self.alpha
+        inner = [alpha[d] for d in triangle]
+        entry_old = [d ^ 2 for d in triangle]            # o_k: opposite slot, same crossing
+        exit_old = [i ^ 2 for i in inner]                # x_k
+        moved = {}
+        for k in range(3):
+            moved[entry_old[k]] = inner[k]               # the strand now enters at i_k ...
+            moved[exit_old[k]] = triangle[k]             # ... and leaves at d_k
+        if len(moved) != 6:
+            return None
+        links = []
+        for x, new_x in moved.items():
+            y = alpha[x]
+            new_y = moved.get(y, y)
+            if new_y == new_x:
+                return None
+            links.append((new_x, new_y))
+        for k in range(3):
+            links.append((exit_old[k], entry_old[k]))    # the three sides of the inverted triangle
+        for x, y in links:
+            alpha[x] = y
+            alpha[y] = x
+        touched = []
+        for x, y in links:
+            touched.extend((x, y))
+        return touched
+
     def _splice(self, through: dict) -> list[int]:
         """Remove the crossings owning the darts in ``through`` (a fixed-point-free
         involution: the strand entering the removed region at x leaves it at through[x])."""
@@ -145,25 +219,53 @@ class _Darts:
         return Diagram.from_pd(rows)
 
 
-def simplify(diagram: Diagram) -> tuple[Diagram, list[Move]]:
-    """Crossing-decreasing Reidemeister I/II moves until none applies.
+def simplify(diagram: Diagram, r3: bool = True, check_faces: bool = True) -> tuple[Diagram, list[Move]]:
+    """Crossing-decreasing Reidemeister I/II moves until none applies, helped by Reidemeister III.
 
     Incremental version (idea from acceleration proposal 02).  Moves in the
     trace name crossings by their index in the *input* diagram; ``replay``
     checks a trace.  The result is revalidated once at the end.
+
+    With ``r3``, when no I/II move is left every triangle that admits a
+    Reidemeister III move is inverted on trial; the move is kept if it creates
+    a I/II move and undone otherwise (it is an involution).  The scan is
+    exponential in the size of what is left, so this matters most for the
+    diagrams that nothing but the scan decides.  Never increases the number of
+    crossings; ``r3=False`` is the previous behaviour.  ``check_faces=False``
+    tries every triangle instead of only those next to a small face (slower, same
+    result; kept for the test of that shortcut).
     """
     if not diagram.crossings:
         return diagram, []
     state = _Darts(diagram)
     trace: list[Move] = []
     stack = list(range(4 * diagram.crossings - 1, -1, -1))
-    while stack and state.remaining:
-        move = state.move_at(stack.pop())
-        if move is None:
-            continue
-        trace.append(Move(move[0], move[1]))
-        for d in state.apply(move):
-            stack.append(d)
+    while True:
+        while stack and state.remaining:
+            move = state.move_at(stack.pop())
+            if move is None:
+                continue
+            trace.append(Move(move[0], move[1]))
+            for d in state.apply(move):
+                stack.append(d)
+        if not r3 or state.remaining < 3:
+            break
+        for d in range(4 * len(state.alive)):
+            triangle = state.triangle_at(d)
+            if triangle is None or d != min(triangle):
+                continue
+            if check_faces and not state.r3_can_help(triangle):
+                continue
+            if state.apply_r3(triangle) is None:
+                continue
+            around = [4 * (x // 4) + j for x in triangle for j in range(4)]
+            if any(state.move_at(x) is not None for x in around):
+                trace.append(Move("R3", tuple(sorted(x // 4 for x in triangle))))
+                stack = around
+                break
+            state.apply_r3(state.triangle_at(triangle[0] ^ 2))       # no use: undo
+        else:
+            break
     return state.rebuild(), trace
 
 
@@ -177,12 +279,21 @@ def replay(diagram: Diagram, trace) -> Diagram:
             if not 0 <= c < len(state.alive) or not state.alive[c]:
                 raise ValueError("the trace removes a crossing that is not present")
             for j in range(4):
+                if kind == "R3":
+                    triangle = state.triangle_at(4 * c + j)
+                    if triangle is not None and tuple(sorted(x // 4 for x in triangle)) == tuple(sorted(crossings)):
+                        found = triangle
+                    continue
                 move = state.move_at(4 * c + j)
                 if move is not None and move[0] == kind and move[1] == tuple(sorted(crossings)):
                     found = move
         if found is None:
             raise ValueError("the trace contains an illegal move")
-        state.apply(found)
+        if kind == "R3":
+            if state.apply_r3(found) is None:
+                raise ValueError("the trace contains a degenerate Reidemeister III move")
+        else:
+            state.apply(found)
     return state.rebuild()
 
 
