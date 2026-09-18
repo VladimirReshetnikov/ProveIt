@@ -407,6 +407,19 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   checks which package it imports. And the absolute milliseconds of different
   rows are not comparable: the same command read 61 ms and, ten minutes later,
   100 ms; only the paired ratio within a row is robust.
+* Three small things found by profiling `recognize` on the Conway knot by
+  cumulative time: the Jones filter's `Planar` paid for shape-cache bookkeeping
+  it never uses (9% of the call); `simplify` rebuilt and revalidated the diagram
+  even when no move applied (12%; an unreduced diagram now keeps its own edge
+  labels, where the rebuild renamed them by first appearance, and `replay` does
+  the same for an empty trace); `Diagram.alpha()` was recomputed seven times
+  per recognition although the diagram is immutable (now cached with `faces`
+  and `traversal`; callers get copies, the caches are not pickled and do not
+  affect equality). `ab.py`, strict criterion, against 3a86e0c: `recognize`
+  Conway 0.765 (0.733..0.794), T(3,61) 0.759, Conway#Conway#Conway 0.731,
+  random 5-strand closure 0.865, hard unknot 0.896, scrambled unknot 0.906; no
+  claim on the three scan-dominated survivors. Status, method, reduced size and
+  rank identical to the previous code on 700 diagrams.
 * `tail` re-tested on the current scanner (41 interleaved pairs per input, 15 on the
   stress closure, ratio to `tail=0`, ranks by degree asserted equal): `tail=1`
   0.94 to 1.01 on eight inputs, the interval excluding 1 on two of them (Conway

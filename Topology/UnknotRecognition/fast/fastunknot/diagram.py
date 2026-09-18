@@ -238,7 +238,23 @@ class Diagram:
         return cls.from_grid(list(zip(x, o)))
 
     # ----- derived data -------------------------------------------------
+    def _cached(self, name: str, compute):
+        """Derived data of an immutable diagram, computed once (``recognize`` asked for ``alpha``
+        seven times).  Stored beside ``pd`` without touching equality, hashing or pickling."""
+        found = self.__dict__.get(name)
+        if found is None:
+            found = compute()
+            object.__setattr__(self, name, found)
+        return found
+
+    def __getstate__(self):
+        return {"pd": self.pd}
+
     def alpha(self) -> list[int]:
+        """The dart involution; a fresh list on every call, because callers modify it."""
+        return list(self._cached("_alpha", self._alpha))
+
+    def _alpha(self) -> tuple:
         n = self.crossings
         where: dict[int, list[int]] = defaultdict(list)
         for i, row in enumerate(self.pd):
@@ -247,17 +263,23 @@ class Diagram:
         alpha = [0] * (4 * n)
         for a, b in where.values():
             alpha[a], alpha[b] = b, a
-        return alpha
+        return tuple(alpha)
 
     def faces(self) -> list[tuple[int, ...]]:
-        alpha = self.alpha()
-        return cycles([4 * (alpha[d] // 4) + (alpha[d] + 1) % 4 for d in range(4 * self.crossings)])
+        return list(self._cached("_faces", self._faces))
+
+    def _faces(self) -> tuple:
+        alpha = self._cached("_alpha", self._alpha)
+        return tuple(tuple(face) for face in cycles([4 * (alpha[d] // 4) + (alpha[d] + 1) % 4 for d in range(4 * self.crossings)]))
 
     def traversal(self) -> list[int]:
         """Incoming darts of an oriented traversal starting on the under-port of crossing 0."""
+        return list(self._cached("_traversal", self._traversal))
+
+    def _traversal(self) -> tuple:
         if not self.pd:
-            return []
-        alpha = self.alpha()
+            return ()
+        alpha = self._cached("_alpha", self._alpha)
         walk, current = [], 0
         for _ in range(2 * self.crossings):
             walk.append(current)
@@ -265,7 +287,7 @@ class Diagram:
             current = alpha[opposite]
         if current != 0:
             raise DiagramError("internal traversal error")
-        return walk
+        return tuple(walk)
 
     def incoming_slots(self) -> list[tuple[int, int]]:
         """(incoming under slot, incoming over slot) of every crossing for the traversal."""

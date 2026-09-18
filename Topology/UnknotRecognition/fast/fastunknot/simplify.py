@@ -326,11 +326,17 @@ def simplify(diagram: Diagram, r3: bool = True, check_faces: bool = True,
                 break
         else:
             break
+    if not trace:
+        # nothing applied: no need to rebuild and revalidate (the rebuild would also rename the edges
+        # in order of first appearance; an unreduced diagram now keeps its own labels)
+        return diagram, []
     return state.rebuild(), trace
 
 
 def replay(diagram: Diagram, trace) -> Diagram:
     """Re-apply a trace produced by ``simplify``, checking that every move is legal."""
+    if not trace:
+        return diagram                        # as ``simplify``: an unreduced diagram keeps its labels
     state = _Darts(diagram)
     for item in trace:
         kind, crossings = (item.kind, tuple(item.crossings)) if isinstance(item, Move) else             (item["kind"], tuple(item["crossings"]))

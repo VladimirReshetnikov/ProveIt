@@ -161,7 +161,8 @@ def jones_obstruction(diagram: Diagram, *, max_states: int | None = 4096,
     delta = (-a * a - inv_a * inv_a) % p
     delta_powers = [1, delta, delta * delta % p, pow(delta, 3, p), pow(delta, 4, p)]
     order = best_scan_order(pd, tries=min(len(pd), 12)) if order is None else list(order)
-    geometry = Planar()                  # matchings are interned: a state is an integer, 0 the empty matching
+    # matchings are interned: a state is an integer, 0 the empty matching (no plans here, so no shape cache)
+    geometry = Planar(shape_cache=False)
     glue = geometry.glue
     states: dict = {0: 1}
     boundary: frozenset = frozenset()
