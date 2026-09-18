@@ -6,7 +6,7 @@ After version 0.2 the Rust work was paused and the Python package was
 optimized further, with no change to the mathematics, the verdicts or the
 asymptotic behaviour. This section records what was gained, what was tried and
 rejected, and an episode about measurement that changed how every number below
-was obtained. All results are exact and identical to those of 0.2: 33 unit
+was obtained. All results are exact and identical to those of 0.2: 35 unit
 tests pass, and \texttt{crosscheck.py} compares the ranks by homological degree
 of the new default scanner with the generic 0.2 scanner and the 0.1 set algebra
 on random braid closures (400 closures with 2 to 5 strands, no mismatch).
@@ -77,6 +77,33 @@ together about $0.41$; the chain of 256 kinks $0.78$ $[0.73, 0.82]$; the Jones
 scan of the stress closure $0.67$ $[0.46, 0.72]$; recognition of the Conway
 knot $0.92$ $[0.89, 0.93]$. Four later sequential runs were all rejected by the
 control rule and are not used; they are flagged in \texttt{perf\_log.json}.
+
+\paragraph{A cache that is a trade-off.} The last change is not a free win and
+is reported as such. Every crossing brings new edge labels, so plans cached per
+stage are never reused across stages, although a long braid compiles the same
+few pictures at every crossing: at boundary size 6 there are five matchings,
+and about 35 transfer plans were compiled per crossing of $T(3,n)$. Transfer
+plans are now also cached under a label-independent key, the matchings and the
+crossing relabelled by rank. This is sound because the relabelling is monotone
+and circles are numbered by their minimal label whichever matching is walked
+first (tested on random matchings). The reuse is 80\% of the plans for
+$T(3,11)$, 94\% for $T(3,31)$, 99\% for the chain of kinks, 38\% and 19\% for
+the random 3- and 4-strand closures, but 1\% for the stress closure and none
+for the Conway knot. Three agreeing A/B runs: scan of $T(3,11)$ $0.61$
+$[0.59, 0.66]$, chain of kinks $0.78$, 40-crossing 3-strand closure $0.97$;
+\emph{scan of the Conway knot $1.06$ $[1.04, 1.07]$ and recognition of the hard
+unknot $1.07$, slower}; no claim on the large scans. Timing partial variants
+against the old code (A/A ratio $0.999$) splits the cost into ranking the
+boundary at each stage ($+1.5\%$), building and looking up the key ($+3.0\%$)
+and storing ($+1.3\%$). Two explanations offered first were wrong: interning
+the shapes as integers, against the hashing of nested tuples, changed nothing,
+and the ratio was the same with the cyclic garbage collector disabled. An
+automatic switch was dropped on evidence: the inputs that profit get their
+first hit only after 35 to 150 lookups, while the stress closure gets 12 hits
+in its first 64 lookups and then none, so an early hit count predicts the wrong
+way. The cache is on by default, because on the corpus the gains are
+milliseconds and the losses below 0.2 ms, and \texttt{shape\_cache=False}
+restores the previous speed exactly ($1.003$ $[0.999, 1.007]$).
 
 Two remarks. First, the closing sentence of the previous section, that on an
 unknot diagram no filter can decide the Python accelerations change nothing,
