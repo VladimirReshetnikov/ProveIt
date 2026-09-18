@@ -79,7 +79,12 @@ else:
         for name in inspect.signature(khovanov_rank).parameters:
             if name in ("factor", "factor_connected", "decompose"):
                 kwargs[name] = False
-    t = time.perf_counter(); r = khovanov_rank(d.pd, **kwargs); t = time.perf_counter() - t
+    import fastunknot as _pkg
+    factored = getattr(_pkg, "factored_khovanov_rank", None) or getattr(_pkg, "factorized_khovanov_rank", None)
+    if job["mode"] == "rank" and factored is not None:
+        t = time.perf_counter(); r = factored(d); t = time.perf_counter() - t      # rank as a product over visible summands
+    else:
+        t = time.perf_counter(); r = khovanov_rank(d.pd, **kwargs); t = time.perf_counter() - t
     out = {"seconds": t, "reduced_rank": str(r["reduced_rank"]),
            "max_objects_after": (r.get("stats") or {}).get("max_objects_after_elimination")}
 print(json.dumps(out))

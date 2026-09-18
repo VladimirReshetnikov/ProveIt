@@ -3,7 +3,8 @@
 This repository collects six independently produced attempts to implement the
 `n^O(log n)` unknot recognition algorithm announced in Marc Lackenby's
 February 2021 talk, a synthesized review of them with cross-validation, and a
-seventh, faster exact recognizer written on top of their ideas.
+seventh, faster exact recognizer written on top of their ideas, nine
+proposals for accelerating it, the integrated result, and a Rust port.
 
 **Bottom line.** No archive, and not the new package either, implements a
 recognizer with a proved quasi-polynomial bound. The accelerated hierarchy
@@ -21,7 +22,9 @@ in `synthesis/report.pdf`.
 | `docs/` | the source material: the 109-page talk `quasipolynomial-talk.pdf`, and the arXiv source and PDF of Lackenby's July 2026 preprint *Incompressible surfaces, hierarchies and unknot recognition* (arXiv:2607.23350v1) in `docs/arXiv-2607.23350v1/` |
 | `reports/` | the six original archives (`*.zip`) and their extracted contents in `01/` .. `06/` |
 | `synthesis/` | the synthesized report (`report.tex`, `report.pdf`), the cross-validation scripts and data, and the table generator |
-| `fast/` | `fastunknot`: Alexander-polynomial filter plus a scanning (Bar-Natan) Khovanov backend; tests, examples, benchmark |
+| `fast/` | `fastunknot` 0.2 (Python): polynomial and width-bounded filters plus a scanning (Bar-Natan) Khovanov backend; tests, examples, ablation |
+| `proposals/` | nine independently produced proposals for accelerating `fastunknot` 0.1, extracted into `01/` .. `09/`, with a comparison of their ideas |
+| `rust/` | a Rust implementation of the 0.2 pipeline, with tests, a Python cross-check and a profile |
 
 ## Quick start
 
@@ -33,6 +36,9 @@ cd reports/04 && python -m unittest discover -s tests -v
 
 # run the new recognizer
 cd fast && python -m fastunknot recognize examples/conway.json
+
+# the Rust version (needs cargo)
+cd rust && cargo build --release && target/release/fastunknot recognize ../fast/examples/conway.json
 
 # rebuild the synthesized report (needs pdflatex)
 cd synthesis && sh build.sh

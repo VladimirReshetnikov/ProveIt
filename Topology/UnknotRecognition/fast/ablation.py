@@ -120,12 +120,15 @@ def main():
             rows.append(row)
             print(row, flush=True)
     chain = {"braid": {"strands": 2049, "word": list(range(1, 2049))}}
+    # a chain with one crossing flipped in the middle is not descending, and the 0.1 test
+    # walks far from most starts before it finds the offending crossing
+    flipped = {"braid": {"strands": 2049, "word": [g if g != 1024 else -g for g in range(1, 2049)]}}
     conway3 = example("conway_sum_3.json")
     others = [
         ("order", "greedy order, 2048 crossings", "heap O(n log n)", {"kind": "order", "input": chain, "options": {"heap": True}}),
         ("order", "greedy order, 2048 crossings", "0.1 rescoring O(n^2)", {"kind": "order", "input": chain, "options": {"heap": False}}),
-        ("descending", "descending test, 2048 crossings", "linear sweep", {"kind": "descending", "input": chain, "options": {"linear": True}}),
-        ("descending", "descending test, 2048 crossings", "0.1 quadratic", {"kind": "descending", "input": chain, "options": {"linear": False}}),
+        ("descending", "descending test, 2048 crossings", "linear sweep", {"kind": "descending", "input": flipped, "options": {"linear": True}}),
+        ("descending", "descending test, 2048 crossings", "0.1 quadratic", {"kind": "descending", "input": flipped, "options": {"linear": False}}),
         ("simplify", "R1/R2 reduction, 2048 crossings", "incremental", {"kind": "simplify", "input": chain, "options": {"incremental": True}}),
         ("simplify", "R1/R2 reduction, 2048 crossings", "0.1 rebuild per move", {"kind": "simplify", "input": chain, "options": {"incremental": False}}),
         ("alexander", "T(3,61) rejection, 122 crossings", "modular minor", {"kind": "alexander", "input": {"braid": {"strands": 3, "word": [1, 2] * 61}}, "options": {"modular": True}}),

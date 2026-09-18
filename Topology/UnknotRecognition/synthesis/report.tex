@@ -24,7 +24,7 @@
 \title{Six attempts at quasi-polynomial unknot recognition:\\
 synthesis, cross-validation, and a faster exact recognizer}
 \author{Synthesis report prepared with Claude Code}
-\date{17 September 2026}
+\date{17--18 September 2026}
 
 \begin{document}
 \maketitle
@@ -48,8 +48,14 @@ and Gaussian elimination) preceded by an Alexander-polynomial filter. It is
 still exponential in the worst case, but its cost is governed by the width of
 a scan through the diagram rather than by the crossing number: the
 80-crossing unknot family on which every cube implementation needs $2^{80}$
-states is decided in eleven milliseconds. The $\qp$ target remains open; the
-final sections state precisely what is missing.
+states is decided in eleven milliseconds. Nine further runs then proposed
+accelerations of that recognizer. We extracted and measured all nine on one
+machine, integrated every idea with a measurable effect into version 0.2 (the
+input that timed out at 600 seconds now takes under a second, and recognition
+of the Conway knot went from 59 ms to 1.3 ms), recorded a per-idea ablation,
+and wrote a Rust implementation that is faster again by an order of
+magnitude. The $\qp$ target remains open; Section \ref{sec:missing} states
+precisely what is missing, and nothing in the accelerations touches it.
 \end{abstract}
 
 \tableofcontents
@@ -63,7 +69,9 @@ whether an $n$-crossing knot diagram represents the unknot in time $\qp$.
 The present task was to unpack the six resulting archives, read their reports,
 review their code, and synthesize what was achieved and what obstacles remain.
 A second task was added mid-way: write the asymptotically fastest algorithm
-possible, trying to reach $\qp$.
+possible, trying to reach $\qp$. A third task followed: unpack nine proposals
+for accelerating that algorithm, compare their ideas, incorporate those that
+give a measurable speedup, and write an optimized Rust implementation.
 
 \subsection{The talk}
 The supplied file \code{docs/quasipolynomial-talk.pdf} has 109 pages including
@@ -421,7 +429,7 @@ polynomial iteration count does not bound work per iteration; expanding a
 compressed normal surface loses the compression; $b_1=0$ is not ball
 recognition; a Jones or Alexander test does not detect the unknot.
 
-\section{A faster exact recognizer: \code{fastunknot}}
+\section{A faster exact recognizer: \code{fastunknot} 0.1}
 \label{sec:fast}
 
 \subsection{Design}
@@ -541,9 +549,12 @@ evidence.
 
 One case timed out: a random 36-letter closure on five strands exceeded the
 600-second budget, while a 31-letter closure on six strands took about a
-second. Both scans have boundary at most ten edges; the difference is the
-size of the minimal complexes of the intermediate tangles, the multiplicity
-factor discussed above, which is exactly the unproved part of the cost.
+second. When this section was first written we attributed the difference to
+the size of the minimal complexes of the intermediate tangles.
+\textbf{That explanation was wrong.} Section \ref{sec:proposals} shows that the
+minimal complexes of this input never exceed 5898 objects; the time went into
+fill-in caused by cancelling pivots in last-in-first-out order, and with
+min-fill pivots the same scan takes under a second.
 
 Two comparisons with the archives' cubes on identical inputs: the
 Kinoshita--Terasaka knot (11 crossings, 2048 states, 11\,559 generators) takes
@@ -561,10 +572,14 @@ grid-like the width is $\Theta(\sqrt n)$ at best and the minimal complexes can
 be large. It does not produce a spanning disc or a Reidemeister sequence. And,
 to repeat, it is not quasi-polynomial.
 
+\input{acceleration.tex}
+
 \section{Assessment and recommendations}
 
 \paragraph{What was achieved.}
-Seven mutually consistent exact recognizers; a verified and cross-validated
+Seven mutually consistent exact recognizers, the seventh now in an
+accelerated Python version and a Rust version that agree with each other and
+with nine independently accelerated variants; a verified and cross-validated
 body of code for the terminal ball-pattern test and for cocycle-dual normal
 surfaces; a precise, sourced statement of the conditional
 $L(g+1)^L$ accounting and of everything a $\qp$ implementation would still
@@ -585,8 +600,9 @@ bound, which is exactly what all six archives refused to deliver.
 the refined Section 10 algorithm with an explicit cost model, would change the
 picture. (2) Settle the move-set question of Section \ref{sec:grid} from
 Dynnikov's paper, or add shared-corner exchanges to archive 01 and re-run its
-exhaustive validation. (3) Port the scanning recognizer to a compiled
-language and replace the greedy order by a tree-decomposition-based one; the
+exhaustive validation. (3) The scanning recognizer now exists in Rust (Section \ref{sec:rust});
+the next step there is to replace the greedy order by a
+tree-decomposition-based one; the
 planar separator theorem gives width $O(\sqrt n)$ for the projection graph,
 which would make the empirical behaviour subexponential even if unproved.
 (4) Use the archives' exact recognizers as oracles for any future geometric
@@ -598,6 +614,7 @@ implementation, as several of their reports suggest.
 \bibitem{km} P.~B. Kronheimer and T.~S. Mrowka, \emph{Khovanov homology is an unknot-detector}, Publ.\ Math.\ IH\'ES 113 (2011), 97--208.
 \bibitem{barnatan} Dror Bar-Natan, \emph{Khovanov's homology for tangles and cobordisms}, Geom.\ Topol.\ 9 (2005), 1443--1499; and \emph{Fast Khovanov homology computations}, J.\ Knot Theory Ramifications 16 (2007), 243--255.
 \bibitem{dynnikov} Ivan Dynnikov, \emph{Arc-presentations of links: monotonic simplification}, Fund.\ Math.\ 190 (2006), 29--76, arXiv:math/0208153.
+\bibitem{markowitz} Harry M. Markowitz, \emph{The elimination form of the inverse and its application to linear programming}, Management Science 3 (1957), 255--269.
 \bibitem{khovanov} Mikhail Khovanov, \emph{A categorification of the Jones polynomial}, Duke Math.\ J.\ 101 (2000), 359--426.
 \end{thebibliography}
 
@@ -609,7 +626,14 @@ implementation, as several of their reports suggest.
   \code{synthesis/make\_tables.py} regenerates the tables from
   \code{synthesis/data/*.json}; the cross-validation scripts are in
   \code{synthesis/data/}.
-\item \code{fast/}: the \code{fastunknot} package, tests, examples,
-  \code{benchmark.py} and \code{results/benchmark.json}.
+\item \code{fast/}: the \code{fastunknot} package (version 0.2), tests, examples,
+  \code{ablation.py}, \code{results/ablation.json}, and the 0.1 benchmark kept
+  as \code{results/benchmark\_0.1.json}.
+\item \code{proposals/01} -- \code{proposals/09}: the nine acceleration
+  proposals, with \code{proposals/README.md} comparing their ideas.
+\item \code{rust/}: the Rust crate, \code{cross\_check.py}, \code{profile.py}
+  and \code{results/profile.json}.
+\item \code{synthesis/data/proposals\_bench.py} and its JSON outputs: the
+  same-machine comparison of all engines.
 \end{itemize}
 \end{document}

@@ -1,0 +1,15 @@
+[package]
+name = "fastunknot"
+version = "0.2.0"
+edition = "2021"
+description = "Exact unknot recognition: polynomial and width-bounded filters plus a scanning F2 Khovanov backend (exponential worst case)"
+license = "MIT-0"
+
+[dependencies]
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+debug = false
