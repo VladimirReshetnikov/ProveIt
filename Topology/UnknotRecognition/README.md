@@ -24,7 +24,7 @@ in `synthesis/report.pdf`.
 | `synthesis/` | the synthesized report (`report.tex`, `report.pdf`), the cross-validation scripts and data, and the table generator |
 | `fast/` | `fastunknot` 0.2 (Python): polynomial and width-bounded filters plus a scanning (Bar-Natan) Khovanov backend; tests, examples, ablation |
 | `proposals/` | nine independently produced proposals for accelerating `fastunknot` 0.1, extracted into `01/` .. `09/`, with a comparison of their ideas |
-| `rust/` | a Rust implementation of the 0.2 pipeline, with tests, a Python cross-check and a profile |
+| `rust/` | a Rust implementation of the 0.2 pipeline, with tests, a Python cross-check and a profile; since September 2026 also the Reidemeister III search and a race of scan orders on threads (`--race N`) |
 
 ## Quick start
 

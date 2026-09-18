@@ -212,8 +212,23 @@ expensive inputs, and $0.07$, $0.24$ and $0.30$ on single ones. In Python a
 competitor has to be a process, and starting one costs 30 ms bare, 76 ms with
 the package imported and 111 ms for a complete scan of the trefoil from the
 command line, against scans that mostly finish within 300 ms. Following the
-user's instruction for that case, the race is built in the Rust version, where
-a thread costs microseconds.
+user's instruction for that case, the race was built in the Rust version, where
+a thread costs microseconds, together with a port of the Reidemeister III
+search: up to three greedy orders (ties by crossing index, by longest wait, by
+most recent touch) are scanned on separate threads and the first to finish
+stops the others through a flag; the rank does not depend on the order, so the
+result is the same whoever wins. On 40 random closures of 34 to 55 crossings
+whose single scan takes 30 ms to 8 s, with the settings interleaved over five
+rounds, racing two orders needs $0.650$ of the total time and racing three
+$0.689$. The gain is insurance against the heavy tail and not uniform: per
+input the ratio runs from $0.05$ to $1.68$; 6.8 s become 0.34 s and 890 ms
+become 140 ms, but on the half of the inputs where the default order was the
+best anyway the race costs 10 to 60\%. I first blamed the shared heap for that
+premium and was wrong: two or three separate processes running the same single
+scan at once slow each other down exactly as much as the racing threads
+($1.15$ against $1.18$, $2.11$ against $2.06$), so it is contention in the
+hardware of this machine and will differ elsewhere. The race is therefore an
+option (\texttt{--race 2}), not the default.
 
 Two remarks. First, the closing sentence of the previous section, that on an
 unknot diagram no filter can decide the Python accelerations change nothing,

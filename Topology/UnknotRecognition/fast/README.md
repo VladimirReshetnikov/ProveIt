@@ -341,7 +341,13 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   0.07, 0.24, 0.30). Not in Python, though: a competitor must be a process, and
   starting one costs 30 ms bare, 76 ms with the package imported, 111 ms for a
   complete CLI scan of the trefoil, against scans that mostly finish within
-  300 ms. It belongs in the Rust version, where a thread costs microseconds.
+  300 ms. So it was built in the Rust version (`../rust`, `--race N`), where a
+  thread costs microseconds. Measured there on 40 random closures with single
+  scans of 30 ms to 8 s: racing two orders takes 0.650 of the total time, three
+  0.689; per input 0.05 to 1.68 (6.8 s becomes 0.34 s), faster on half and 10
+  to 60% slower where the default order was best anyway. That premium is
+  hardware contention, not the allocator: separate processes slow each other
+  just as much as threads. Details in `../rust/README.md`.
 * `hard_unknots.py`: the scrambled family turned out weak, since its rewriting
   consists of Reidemeister III moves and the helped reduction undoes all of
   it (120 of 120; 180 of 180 with heavier scrambling). `SURVIVORS` lists unknot
