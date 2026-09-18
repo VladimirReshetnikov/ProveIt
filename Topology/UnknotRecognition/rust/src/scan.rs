@@ -19,6 +19,8 @@ use crate::util::{Dsu, FxMap, FxSet};
 use std::cmp::Reverse;
 use std::collections::{BTreeMap, BinaryHeap};
 use std::rc::Rc;
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::Arc;
 use std::time::{Duration, Instant};
 
 pub type Pair = (u32, u32);
@@ -592,16 +594,19 @@ struct Obj {
     alive: bool,
 }
 
+#[derive(Clone)]
 pub struct ScanOptions {
     pub minfill: bool,
     pub tail: usize,
     pub max_objects: Option<usize>,
     pub deadline: Option<Instant>,
+    /// Set by the winner of a race; a scan that sees it stops with `ScanError::Cancelled`.
+    pub cancel: Option<Arc<AtomicBool>>,
 }
 
 impl Default for ScanOptions {
     fn default() -> Self {
-        ScanOptions { minfill: true, tail: 0, max_objects: None, deadline: None }
+        ScanOptions { minfill: true, tail: 0, max_objects: None, deadline: None, cancel: None }
     }
 }
 
@@ -615,6 +620,7 @@ pub struct RankResult {
 
 pub enum ScanError {
     Limit(String),
+    Cancelled,
 }
 
 struct Complex {
@@ -640,6 +646,11 @@ impl Complex {
     }
 
     fn check(&self) -> Result<(), ScanError> {
+        if let Some(flag) = &self.options.cancel {
+            if flag.load(Ordering::Relaxed) {
+                return Err(ScanError::Cancelled);
+            }
+        }
         match self.options.deadline {
             Some(d) if Instant::now() > d => Err(ScanError::Limit("time budget exhausted".into())),
             _ => Ok(()),
@@ -680,6 +691,9 @@ impl Complex {
         for (o, obj) in old_objs.iter().enumerate() {
             if !obj.alive {
                 continue;
+            }
+            if o & 1023 == 1023 {
+                self.check()?;                 // one crossing can dominate the budget
             }
             let m = obj.matching;
             let circles = self.alg.basis(m, m).count;
@@ -914,4 +928,45 @@ pub fn khovanov_rank(pd: &[[u32; 4]], order: Vec<usize>, options: ScanOptions) -
     let mut stats = complex.alg.stats.clone();
     stats.matchings = complex.alg.matchings.len();
     Ok(RankResult { rank, by_degree, stats, order })
+}
+
+
+/// Race several scan orders on separate threads; the first to finish wins and cancels the rest.
+/// Rank and ranks by degree do not depend on the order, so the result is the same whoever wins;
+/// `order` and `stats` are the winner's.  A competitor that hits a resource limit does not end
+/// the race (limits such as `max_objects` depend on the order); the limit is reported only if
+/// every competitor hits one.  Returns the result and the index of the winning order.
+pub fn race(pd: &[[u32; 4]], orders: Vec<Vec<usize>>, options: ScanOptions) -> (Result<RankResult, ScanError>, usize) {
+    if orders.len() == 1 {
+        return (khovanov_rank(pd, orders.into_iter().next().unwrap(), options), 0);
+    }
+    let cancel = Arc::new(AtomicBool::new(false));
+    let (sender, receiver) = std::sync::mpsc::channel();
+    let competitors = orders.len();
+    std::thread::scope(|scope| {
+        for (k, order) in orders.into_iter().enumerate() {
+            let sender = sender.clone();
+            let mut mine = options.clone();
+            mine.cancel = Some(cancel.clone());
+            let cancel = cancel.clone();
+            scope.spawn(move || {
+                let result = khovanov_rank(pd, order, mine);
+                if result.is_ok() {
+                    cancel.store(true, Ordering::Relaxed);
+                }
+                let _ = sender.send((k, result));
+            });
+        }
+        drop(sender);
+        let mut limit = None;
+        for _ in 0..competitors {
+            match receiver.recv() {
+                Ok((k, Ok(result))) => return (Ok(result), k),
+                Ok((k, Err(ScanError::Limit(reason)))) => limit = Some((ScanError::Limit(reason), k)),
+                Ok((_, Err(ScanError::Cancelled))) | Err(_) => {}
+            }
+        }
+        let (error, k) = limit.unwrap_or((ScanError::Cancelled, 0));
+        (Err(error), k)
+    })
 }

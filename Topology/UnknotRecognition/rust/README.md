@@ -28,8 +28,8 @@ invalid input, 3 for `UNKNOWN`.
 
 Options of `recognize`: `--no-reduction`, `--no-descending`, `--no-factor`,
 `--no-modular`, `--no-jones`, `--jones-max-states N`, `--lifo`, `--tail N`,
-`--max-objects N`, `--seconds S`. Options of `khovanov`: `--factor`, `--lifo`,
-`--tail N`, `--max-objects N`, `--seconds S`.
+`--max-objects N`, `--seconds S`, `--no-r3`, `--race N`. Options of `khovanov`:
+`--factor`, `--lifo`, `--tail N`, `--max-objects N`, `--seconds S`, `--race N`.
 
 ## Pipeline
 
@@ -40,6 +40,65 @@ frontier scan; exact F2 Khovanov rank by scanning with delooping and
 Gaussian elimination. The exact Alexander polynomial over Z[t] of the Python
 pipeline is omitted: it needs big integers, and exactness never depended on
 it, since the Khovanov scan decides whatever the filters leave open.
+
+## Reidemeister III help (ported from the Python package, September 2026)
+
+When every filter has failed and the exponential scan is next, `recognize` looks
+for sequences of up to four Reidemeister III moves (inversions of a triangular
+face, the later moves next to the first) after which a Reidemeister I or II
+move exists, keeps such a sequence and reduces further; sequences that lead
+nowhere are undone. The search deepens only while fewer than 10 trial moves per
+crossing have been made. `prep::simplify_r3` is a port of `simplify` in
+`../fast/fastunknot/simplify.py`, where the move and the search were verified
+(see `../fast/README.md`); here the tests check that it never leaves more
+crossings than I/II alone, leaves no I/II move, preserves the reduced Khovanov
+rank and the Alexander test on 150 random closures, and agrees with Python on
+the named examples (the 8-crossing "hard unknot" falls to one III move, one
+unknot needs two in a row, one survives depth 4 with 9 crossings). `--no-r3`
+turns it off.
+
+## Racing scan orders on threads (`--race N`)
+
+The scan is sequential, but its cost depends wildly on the order of the
+crossings, and the greedy rule's ways of breaking ties are incomparable: on 81
+diagrams each rule is better on about as many inputs as it is worse, with work
+ratios from 0.01 to 28 (`../fast/README.md`). No cheap predictor was found, and
+restarting or trying candidates costs more than it saves. Racing does not need
+a predictor: `--race N` scans up to three orders (ties broken by crossing
+index, by longest wait, by most recent touch) on separate threads; the first to
+finish sets a flag that the others see at their next check and stop. Rank and
+ranks by degree do not depend on the order, so the result is the same whoever
+wins; a competitor that hits `--max-objects` does not end the race. The race
+lives here and not in the Python package because a Python competitor must be a
+process, which costs 76 to 111 ms to start, against scans of mostly under
+300 ms.
+
+Measured (`python race_eval.py`, results in `results/race_eval.json`): 40 random
+closures of 34 to 55 crossings on 4 to 7 strands whose single scan takes 30 ms
+to 8 s, five rounds with the three settings interleaved, medians.
+
+| | total time | per-input ratio: median, min, max | faster / slower |
+|---|---|---|---|
+| `--race 2` | 0.650 of single | 1.06, 0.05, 1.43 | 19 / 21 |
+| `--race 3` | 0.689 of single | 0.98, 0.05, 1.68 | 20 / 18 |
+
+So it is insurance against the heavy tail, not a uniform gain: 6.8 s becomes
+0.34 s, 6.3 s becomes 1.4 s, 890 ms becomes 140 ms, but when the default order
+was the best one anyway the race costs 10 to 60%. That premium is not the
+allocator: two or three *separate processes* running the same single scan at
+once slow each other down exactly as much as the racing threads do (1.15
+against 1.18, 1.27 against 1.28, 2.11 against 2.06, 1.71 against 1.70), so it
+is contention in the hardware of this machine (12 logical cores, 1.7 GHz
+nominal), and will differ elsewhere. The default is therefore `--race 1`; use
+`--race 2` when scans are long or a bad order would hurt.
+
+Cancellation needed the clock and the flag to be looked at while a crossing is
+being added, not only between cancellations, so the transfer loop now checks
+every 1024 objects. With a budget of 1 s on closures of 71 to 83 crossings the
+overshoot is at most 0.08 s, process start included, with and without a race.
+The overshoots of 40 to 70 s recorded below were on 300 s budgets with far
+larger complexes; those runs were not repeated, so whether this check removes
+them is not known.
 
 ## What is Rust-specific
 
@@ -71,7 +130,8 @@ braid closures. Measured results are in `results/` and in the synthesis report.
 
 ## Test and profile status (last observed 18 September 2026, rustc 1.96.1, Windows 11)
 
-* `cargo test --release`: 4 tests, OK.
+* `cargo test --release`: 6 tests, OK (18 September 2026, after the III search and the race were added;
+  the profile numbers below predate both and were not re-measured).
 * `python cross_check.py 200`: 200 random braid closures, 0 problems (about a minute).
 * `python profile.py`: completed in about 13 minutes. Almost all of that is two
   scaling inputs (a 160-crossing 3-strand closure and an 81-crossing 4-strand

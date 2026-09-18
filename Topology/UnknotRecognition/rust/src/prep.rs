@@ -86,6 +86,74 @@ impl Darts {
         removed.len()
     }
 
+    // ----- Reidemeister III ---------------------------------------------------
+
+    /// The darts of a triangular face through `d` that admits an R3 move.  Side k is the edge
+    /// (d_k, alpha[d_k]); a slot is on the over-strand iff it is odd; the triangle can be
+    /// inverted iff some side is over at both ends.
+    fn triangle_at(&self, d: u32) -> Option<[u32; 3]> {
+        if !self.alive[(d / 4) as usize] {
+            return None;
+        }
+        let e = self.next(d);
+        let f = self.next(e);
+        if self.next(f) != d || d / 4 == e / 4 || e / 4 == f / 4 || d / 4 == f / 4 {
+            return None;
+        }
+        let t = [d, e, f];
+        if t.iter().any(|&x| x % 2 == 1 && self.alpha[x as usize] % 2 == 1) { Some(t) } else { None }
+    }
+
+    /// Necessary for the inverted triangle to create a I/II move: a face across some side has
+    /// at most three edges (inverting takes one edge from each of those faces).
+    fn r3_can_help(&self, t: &[u32; 3]) -> bool {
+        t.iter().any(|&d| {
+            let start = self.alpha[d as usize];
+            let (mut x, mut size) = (self.next(start), 1);
+            while x != start && size < 4 {
+                x = self.next(x);
+                size += 1;
+            }
+            x == start && size <= 3
+        })
+    }
+
+    /// Invert the triangle: every strand meets the other two in the opposite order, each crossing
+    /// keeps its slots and the direction of both strands, hence its sign.  An involution.
+    /// Returns false, changing nothing, in a degenerate configuration.
+    fn apply_r3(&mut self, t: &[u32; 3]) -> bool {
+        let inner = [self.alpha[t[0] as usize], self.alpha[t[1] as usize], self.alpha[t[2] as usize]];
+        let mut moved = [(0u32, 0u32); 6];
+        for k in 0..3 {
+            moved[2 * k] = (t[k] ^ 2, inner[k]);          // the strand now enters at i_k ...
+            moved[2 * k + 1] = (inner[k] ^ 2, t[k]);      // ... and leaves at d_k
+        }
+        for a in 0..6 {
+            for b in a + 1..6 {
+                if moved[a].0 == moved[b].0 {
+                    return false;
+                }
+            }
+        }
+        let mut links = [(0u32, 0u32); 9];
+        for (k, &(x, new_x)) in moved.iter().enumerate() {
+            let y = self.alpha[x as usize];
+            let new_y = moved.iter().find(|m| m.0 == y).map_or(y, |m| m.1);
+            if new_y == new_x {
+                return false;
+            }
+            links[k] = (new_x, new_y);
+        }
+        for k in 0..3 {
+            links[6 + k] = (inner[k] ^ 2, t[k] ^ 2);      // the sides of the inverted triangle
+        }
+        for &(x, y) in &links {
+            self.alpha[x as usize] = y;
+            self.alpha[y as usize] = x;
+        }
+        true
+    }
+
     fn rebuild(&self) -> Diagram {
         let mut label: FxMap<u32, i64> = FxMap::default();
         let mut rows = Vec::with_capacity(self.remaining);
@@ -128,6 +196,100 @@ pub fn simplify(diagram: &Diagram) -> (Diagram, usize) {
         }
     }
     (state.rebuild(), moves)
+}
+
+fn around(t: &[u32; 3]) -> Vec<u32> {
+    t.iter().flat_map(|&x| (0..4).map(move |j| (x & !3) | j)).collect()
+}
+
+/// Depth-first search for at most `depth` R3 moves after which a I/II move exists.  On success the
+/// moves stay applied and `found` holds the darts to look at; otherwise the structure is restored.
+/// After the first move only triangles next to it are tried, never the inverse of the last move.
+fn unlock(state: &mut Darts, depth: usize, darts: &[u32], undo_of: Option<[u32; 3]>, trials: &mut usize, budget: usize,
+          kept: &mut usize, found: &mut Vec<u32>) -> bool {
+    let mut seen: Vec<u32> = Vec::new();
+    for &d in darts {
+        if *trials >= budget {
+            return false;
+        }
+        let Some(t) = state.triangle_at(d) else { continue };
+        let low = *t.iter().min().unwrap();
+        if seen.contains(&low) {
+            continue;
+        }
+        seen.push(low);
+        if let Some(u) = undo_of {
+            if t.iter().all(|x| u.contains(x)) {
+                continue;
+            }
+        }
+        if depth == 1 && !state.r3_can_help(&t) {
+            continue;
+        }
+        if !state.apply_r3(&t) {
+            continue;
+        }
+        *trials += 1;
+        let near = around(&t);
+        if near.iter().any(|&x| state.move_at(x).is_some()) {
+            *kept += 1;
+            found.extend_from_slice(&near);
+            return true;
+        }
+        if depth > 1 {
+            let mut crossings: Vec<u32> = near.iter().flat_map(|&x| [x / 4, state.alpha[x as usize] / 4]).collect();
+            crossings.sort_unstable();
+            crossings.dedup();
+            let next: Vec<u32> = crossings.iter().flat_map(|&c| (0..4).map(move |j| 4 * c + j)).collect();
+            if unlock(state, depth - 1, &next, Some([t[0] ^ 2, t[1] ^ 2, t[2] ^ 2]), trials, budget, kept, found) {
+                *kept += 1;
+                found.extend_from_slice(&near);
+                return true;
+            }
+        }
+        let back = state.triangle_at(t[0] ^ 2).expect("the inverted triangle is a triangle");
+        state.apply_r3(&back);
+    }
+    false
+}
+
+/// I/II reduction helped by Reidemeister III: when no I/II move is left, sequences of at most
+/// `depth` R3 moves are tried, shortest first, and kept if they create a I/II move.  Deeper
+/// sequences are tried only while fewer than `budget` trial moves per crossing were made (a
+/// diagram full of useless triangles makes depth 4 cost a hundred times depth 1, while useful
+/// sequences are found early).  Returns the diagram, the I/II moves and the R3 moves kept.
+pub fn simplify_r3(diagram: &Diagram, depth: usize, budget: usize) -> (Diagram, usize, usize) {
+    let n = diagram.crossings();
+    if n == 0 {
+        return (diagram.clone(), 0, 0);
+    }
+    let mut state = Darts { alpha: diagram.alpha(), alive: vec![true; n], remaining: n };
+    let mut stack: Vec<u32> = (0..4 * n as u32).rev().collect();
+    let all: Vec<u32> = (0..4 * n as u32).collect();
+    let (mut moves, mut kept, mut trials) = (0, 0, 0);
+    let mut touched = Vec::with_capacity(4);
+    loop {
+        while let Some(d) = stack.pop() {
+            if state.remaining == 0 {
+                break;
+            }
+            if let Some(mv) = state.move_at(d) {
+                touched.clear();
+                state.apply(&mv, &mut touched);
+                moves += 1;
+                stack.extend_from_slice(&touched);
+            }
+        }
+        if state.remaining < 3 {
+            break;
+        }
+        let mut found = Vec::new();
+        if !(1..=depth).any(|k| unlock(&mut state, k, &all, None, &mut trials, budget * n, &mut kept, &mut found)) {
+            break;
+        }
+        stack = found;
+    }
+    (state.rebuild(), moves, kept)
 }
 
 // ---------------------------------------------------------------------------
@@ -192,19 +354,34 @@ pub fn order_profile(pd: &[[u32; 4]], order: &[usize]) -> (usize, usize) {
     (worst, total)
 }
 
-fn greedy(neighbours: &[Vec<u32>], loops: &[u32], start: usize) -> Vec<usize> {
+/// How the greedy rule breaks ties between crossings with equally many edges into the processed
+/// region.  The rules are incomparable: on 81 test diagrams each is better on about as many
+/// inputs as it is worse, with per-diagram work ratios from 0.01 to 28.  That is what a race uses.
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub enum Ties {
+    /// smallest crossing index (the rule of the Python package)
+    Index,
+    /// the crossing that has been waiting longest since it first touched the processed region
+    Oldest,
+    /// the crossing touched most recently
+    Recent,
+}
+
+fn greedy(neighbours: &[Vec<u32>], loops: &[u32], start: usize, ties: Ties) -> Vec<usize> {
     let n = neighbours.len();
     let mut active = vec![true; n];
     let mut shared = vec![0u32; n];
-    // max shared, then max loops, then min index
-    let mut heap: BinaryHeap<(u32, u32, Reverse<usize>)> = (0..n).map(|i| (0, loops[i], Reverse(i))).collect();
+    let mut tie = vec![0u32; n];
+    // max shared, then max loops, then the tie rule, then min index
+    let mut heap: BinaryHeap<(u32, u32, u32, Reverse<usize>)> = (0..n).map(|i| (0, loops[i], 0, Reverse(i))).collect();
     let mut order = Vec::with_capacity(n);
     let mut current = start;
+    let mut clock = 0u32;
     while order.len() < n {
         if !order.is_empty() {
             loop {
-                let (s, _, Reverse(i)) = heap.pop().expect("heap exhausted");
-                if active[i] && s == shared[i] {
+                let (s, _, t, Reverse(i)) = heap.pop().expect("heap exhausted");
+                if active[i] && s == shared[i] && t == tie[i] {
                     current = i;
                     break;
                 }
@@ -212,23 +389,29 @@ fn greedy(neighbours: &[Vec<u32>], loops: &[u32], start: usize) -> Vec<usize> {
         }
         order.push(current);
         active[current] = false;
+        clock += 1;
         for &other in &neighbours[current] {
             let o = other as usize;
             if active[o] {
                 shared[o] += 1;
-                heap.push((shared[o], loops[o], Reverse(o)));
+                match ties {
+                    Ties::Index => {}
+                    Ties::Oldest => {
+                        if tie[o] == 0 {
+                            tie[o] = u32::MAX - clock;      // earlier first touch = larger key
+                        }
+                    }
+                    Ties::Recent => tie[o] = clock,
+                }
+                heap.push((shared[o], loops[o], tie[o], Reverse(o)));
             }
         }
     }
     order
 }
 
-/// Greedy small-boundary orders from up to `tries` starts; the best boundary profile wins.
-pub fn best_scan_order(pd: &[[u32; 4]], tries: usize) -> Vec<usize> {
+fn graph(pd: &[[u32; 4]]) -> (Vec<Vec<u32>>, Vec<u32>) {
     let n = pd.len();
-    if n == 0 {
-        return Vec::new();
-    }
     let mut owner = vec![u32::MAX; 2 * n];
     let mut neighbours: Vec<Vec<u32>> = vec![Vec::new(); n];
     let mut loops = vec![0u32; n];
@@ -245,11 +428,25 @@ pub fn best_scan_order(pd: &[[u32; 4]], tries: usize) -> Vec<usize> {
             }
         }
     }
+    (neighbours, loops)
+}
+
+/// Greedy small-boundary orders from up to `tries` starts; the best boundary profile wins.
+pub fn best_scan_order(pd: &[[u32; 4]], tries: usize) -> Vec<usize> {
+    best_scan_order_with(pd, tries, Ties::Index)
+}
+
+pub fn best_scan_order_with(pd: &[[u32; 4]], tries: usize, ties: Ties) -> Vec<usize> {
+    let n = pd.len();
+    if n == 0 {
+        return Vec::new();
+    }
+    let (neighbours, loops) = graph(pd);
     let step = if tries >= n { 1 } else { (n / tries).max(1) };
     let mut best: Option<(Vec<usize>, (usize, usize))> = None;
     let mut start = 0;
     while start < n {
-        let order = greedy(&neighbours, &loops, start);
+        let order = greedy(&neighbours, &loops, start, ties);
         let profile = order_profile(pd, &order);
         if best.as_ref().map_or(true, |(_, p)| profile < *p) {
             best = Some((order, profile));
@@ -257,6 +454,22 @@ pub fn best_scan_order(pd: &[[u32; 4]], tries: usize) -> Vec<usize> {
         start += step;
     }
     best.unwrap().0
+}
+
+/// Up to `count` distinct orders for a race: the three tie rules, in the order in which they did
+/// best in the experiments (index, oldest, recent).  The first is always the default order.
+pub fn race_orders(pd: &[[u32; 4]], tries: usize, count: usize) -> Vec<(Ties, Vec<usize>)> {
+    let mut orders: Vec<(Ties, Vec<usize>)> = Vec::new();
+    for ties in [Ties::Index, Ties::Oldest, Ties::Recent] {
+        if orders.len() >= count.max(1) {
+            break;
+        }
+        let order = best_scan_order_with(pd, tries, ties);
+        if !orders.iter().any(|(_, o)| *o == order) {
+            orders.push((ties, order));
+        }
+    }
+    orders
 }
 
 // ---------------------------------------------------------------------------
