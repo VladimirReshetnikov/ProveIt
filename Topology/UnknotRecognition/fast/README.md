@@ -407,6 +407,11 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   checks which package it imports. And the absolute milliseconds of different
   rows are not comparable: the same command read 61 ms and, ten minutes later,
   100 ms; only the paired ratio within a row is robust.
+* `tail` re-tested on the current scanner (41 interleaved pairs per input, 15 on the
+  stress closure, ratio to `tail=0`, ranks by degree asserted equal): `tail=1`
+  0.94 to 1.01 on eight inputs, the interval excluding 1 on two of them (Conway
+  0.947, stress 0.971) and no A/A control behind it; `tail=2` 0.98 to 1.60;
+  `tail=3` 1.03 to 3.04. The default stays 0, as after the 0.2 ablation.
 * `seconds=` fidelity: the default scanner overshot a 1 s budget by up to
   0.24 s because a crossing was added without checking the clock; with a check
   every 512 objects the overshoot is at most 0.03 s on the same runs.
