@@ -1,0 +1,612 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=24mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Six attempts at quasi-polynomial unknot recognition: synthesis, cross-validation, and a faster exact recognizer}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{nosep,leftmargin=*}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}[proposition]{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}[proposition]{Remark}
+\newcommand{\F}{\mathbb{F}_2}
+\newcommand{\Kh}{\widetilde{\mathrm{Kh}}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\qp}{n^{O(\log n)}}
+
+\title{Six attempts at quasi-polynomial unknot recognition:\\
+synthesis, cross-validation, and a faster exact recognizer}
+\author{Synthesis report prepared with Claude Code}
+\date{17 September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Six independently produced archives each tried to implement the $\qp$ unknot
+recognition algorithm announced in Marc Lackenby's February 2021 talk. This
+report extracts them into numbered directories, reads their reports, reviews
+their code, re-runs their test suites, and cross-validates them against each
+other on shared inputs. All six reach the same honest conclusion: the
+quasi-polynomial algorithm was not implemented, because the accelerated
+hierarchy operations named on the last slide have no published algorithmic
+specification with cost bounds. What they deliver instead is consistent and
+correct as far as we can test: five reduced-Khovanov recognizers agree on 44
+shared inputs, six ball-pattern testers agree on 2000 random spherical
+patterns, and the grid-diagram search of archive 01 agrees with Khovanov
+homology on every rectangular diagram we checked. Building on their ideas we
+add a seventh recognizer, \code{fastunknot}, whose exact part is a scanning
+computation of Khovanov homology (Bar-Natan's local algorithm with delooping
+and Gaussian elimination) preceded by an Alexander-polynomial filter. It is
+still exponential in the worst case, but its cost is governed by the width of
+a scan through the diagram rather than by the crossing number: the
+80-crossing unknot family on which every cube implementation needs $2^{80}$
+states is decided in eleven milliseconds. The $\qp$ target remains open; the
+final sections state precisely what is missing.
+\end{abstract}
+
+\tableofcontents
+
+\section{Task, sources, and outcome}
+
+\subsection{What was asked}
+The original request to each of the six runs was an implementation of the
+main theorem of the supplied talk \cite{slides}: an algorithm that decides
+whether an $n$-crossing knot diagram represents the unknot in time $\qp$.
+The present task was to unpack the six resulting archives, read their reports,
+review their code, and synthesize what was achieved and what obstacles remain.
+A second task was added mid-way: write the asymptotically fastest algorithm
+possible, trying to reach $\qp$.
+
+\subsection{The talk}
+The supplied file \code{docs/quasipolynomial-talk.pdf} has 109 pages including
+progressive-reveal duplicates. Its logical content is short:
+\begin{itemize}
+\item pp.~11--14: the theorem, $\qp$ for an $n$-crossing diagram;
+\item pp.~15--30: hierarchies, boundary patterns, essential patterns (a proper
+  disc meeting the pattern at most three times must cut off an empty disc, an
+  arc, or a tripod), and the Waldhausen--Johannson characterization: the knot
+  is nontrivial iff the exterior admits an essential hierarchy ending in balls;
+\item pp.~38--53: simplification of an inessential hierarchy by a violating disc
+  (compress or pattern-compress the last surface the disc runs over, discard
+  later surfaces), and the basic algorithm as a flowchart;
+\item pp.~54--65: termination by a lexicographic complexity $(g(S_1),\dots,g(S_\ell))$,
+  with the warning that ``genus'' may mean $\chi_-$ or a pattern-sensitive
+  variant, and the estimate ``running time at most $Lg^L$'' if every surface
+  has complexity at most $g$ and hierarchies have length at most $L$;
+\item pp.~66--74: the four speed-ups needed for $\qp$: (1) surfaces with
+  $g\le O(n^2)$, (2) compressed hierarchy encodings (Agol--Hass--Thurston),
+  (3) multi-surfaces, (4) generalised Heegaard splittings and Cheeger regions,
+  ``the effect of this is to ensure that $L\le O(\log n)$'';
+\item pp.~75--108: sketches of each speed-up, including the Cheeger-region
+  condition $g(\partial M_i)\le\frac13\min\{g(H_i),g(H)-g(H_i)\}$;
+\item p.~109: the final flowchart with the boxes \textsc{Build hierarchical
+  multi-surface}, \textsc{Cut along surface}, \textsc{Use Cheeger region},
+  \textsc{Haken's lemma}, \textsc{Weakly reduce}, \textsc{Simplify
+  multi-surface}, and the terminal test ``does the graph dual to the boundary
+  pattern have a violating cycle?''.
+\end{itemize}
+The slides describe the strategy; they contain no data structures, no
+algorithms for the boxes, and no proof of the depth bound.
+
+\subsection{The 2026 preprint}
+All six archives located Lackenby's July 2026 preprint \cite{lackenby2026}
+(``Incompressible surfaces, hierarchies and unknot recognition'', 54 pages).
+We downloaded it and read Section 9 (``The number of steps'') ourselves. It
+opens: ``There are various steps in the algorithm from Theorem 1.3 that are
+not described with enough precision to be able to estimate their running
+time. So, we will initially content ourselves with an analysis of the number
+of times that the algorithm goes through any of the steps'', in terms of the
+maximal hierarchy length $L$ and the maximal pattern-complexity $g$, and ``At
+present, we will not attempt to bound these two quantities.'' Proposition 9.1
+then gives the iteration bound $L(g+1)^L$ using exactly the base-$(g+1)$
+digit argument that the talk sketches in base $g$. Section 10 refines the
+algorithm to obtain a bound on $L$ that is \emph{linear} in the initial
+$q$-complexity of the handle structure, not logarithmic in $n$. The preprint
+also supplies two facts the archives use: Proposition 2.6 (a pattern on a
+3-ball is essential iff it is empty, a circle, or a connected graph whose
+planar dual is simple and 4-connected or $K_3$ or $K_4$) and Definition 3.4
+(pattern-complexity $\chi_P(S)=-4\chi(S)+|S\cap P|$).
+
+So the accelerated, logarithmic-depth algorithm of the talk is, as of
+September 2026, announced but not specified in any source available to us.
+This is the single obstacle behind every ``partial'' verdict below, and it is
+mathematical, not an engineering shortfall.
+
+\subsection{Outcome in one paragraph}
+None of the six archives, and not the new package either, implements a
+recognizer with a proved $\qp$ bound. Each archive contains a complete exact
+recognizer with an exponential bound, plus genuinely implemented polynomial
+pieces of the hierarchy strategy (the terminal ball-pattern test, cocycle-dual
+normal coordinates, the potential arithmetic), and each report says so
+without hedging. We verified every test suite, cross-validated the archives
+against each other and against independent computations, found no incorrect
+verdict, and identified one gap in a correctness argument (Section
+\ref{sec:grid}). The new package \code{fastunknot} improves the exact part
+substantially in practice (Section \ref{sec:fast}); its worst case is still
+$2^{O(n)}$.
+
+\section{The six archives}
+
+\subsection{Extraction}
+The six ZIP files in \code{reports/} were extracted into \code{reports/01}
+through \code{reports/06}, each with the single wrapper directory removed, in
+the order of the archive modification times:
+
+\begin{center}\footnotesize
+\begin{tabular}{@{}lllrr@{}}
+\toprule
+Dir & archive & package & Python lines & tests \\
+\midrule
+01 & \code{unknot\_recognition\_implementation.zip} & \code{unknot} (grid search) & 1753 & 40 \\
+02 & \code{unknot\_recognition\_partial\_implementation.zip} & \code{unknotlab} & 1939 & 64 \\
+03 & \code{unknot\_workbench.zip} & \code{unknot\_lab} & 1431 & 49 \\
+04 & \code{unknot\_recognition\_partial.zip} & \code{unknot} & 1422 & 62 \\
+05 & \code{unknot\_recognition\_partial\_implementation (1).zip} & \code{unknot\_recognition} & 1882 & 58 \\
+06 & \code{unknot-recognition-implementation.zip} & \code{unknot} & 1278 & 45 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every archive contains a README, a LaTeX report with PDF, examples, recorded
+results, and a standard-library-only Python package. All six test suites were
+re-run here on CPython 3.14.4 under Windows (the archives recorded CPython
+3.13.5 on Linux) and pass with exactly the claimed number of tests.
+
+\subsection{What each archive delivers}
+
+\paragraph{Archive 01: rectangular diagrams and Dynnikov moves.}
+The only archive that does not use Khovanov homology. It represents knots as
+grid diagrams, searches the finite space of grids reachable by
+non-increasing moves (exchanges and destabilizations, modulo cyclic shifts)
+and relies on Dynnikov's monotonic simplification theorem
+\cite{dynnikov}: an unknot reaches the $2\times2$ grid, a knot is certified by
+a state set closed under all moves. Certificates (positive path, non-unit
+determinant, closed set) are replayed by a verifier that enumerates moves
+independently. Bound $2^{O(g\log g)}$ in the grid size $g$; the report is
+careful that $g$ is not the crossing number. It validated all 44\,719
+connected grids of size $\le6$ (1285 shift orbits). It also contains the
+pattern test, exact rational $H^1$ of a simplicial complex, cocycle-dual
+normal coordinates, and the potential arithmetic.
+
+\paragraph{Archive 02: Khovanov cube with fast certificates.}
+Descending-diagram test (a diagram traversed meeting every crossing first on
+its over-strand is trivial), Fox determinant, then the full reduced Khovanov
+complex over $\F$. Its normal-surface module accepts genuine face-pairing
+triangulations, checks orientability and sphere/disc vertex links, and
+computes cocycle-dual normal coordinates without expanding discs. Six
+braid/determinant pairs were checked against Wolfram \code{KnotData}.
+
+\paragraph{Archive 03: workbench with an explicit exponential lower bound.}
+Khovanov cube with default resource ceilings (65\,536 states), a
+bond-enumeration pattern test with checkable witnesses, and a
+\code{bound} command for the conditional $L(g+1)^L$ arithmetic. Its report
+proves that its own implementation is not quasi-polynomial: on the unknot
+$\widehat{\sigma_1\sigma_2\cdots\sigma_n}$ the cube has $2^n$ states and
+$3^n$ generators, and the determinant filter cannot help since the
+determinant is 1.
+
+\paragraph{Archive 04: Khovanov cube with Knot Atlas fixtures.}
+Khovanov cube, dual-4-connectivity pattern test, potential arithmetic. It
+checks $10_{124}=T(3,5)$ from an Atlas PD code and contains a clean
+chain-level proof that the unreduced $\F$ complex is two copies of the
+reduced one, which justifies reading reduced ranks off published unreduced
+tables.
+
+\paragraph{Archive 05: Khovanov cube with Reidemeister preprocessing.}
+Crossing-decreasing Reidemeister I/II moves with replayable traces,
+determinant filter, Khovanov cube; bond-enumeration pattern test;
+simplicial normal coordinates with manifold validation; the
+pattern-complexity $-4\chi+|S\cap P|$ of the preprint. It exhausts all 682
+two-strand words of odd length $\le9$ and gives an independent braid-theoretic
+proof that its eight-crossing ``hard unknot'' is trivial.
+
+\paragraph{Archive 06: Khovanov cube with 11-crossing tests.}
+Khovanov cube, bond-enumeration pattern test, a \code{verify} command that
+recomputes a report with $d^2=0$ checks. Its fixtures include the
+Kinoshita--Terasaka and Conway knots (Alexander polynomial 1, reduced rank
+33). Its source audit notes that a 34-page Oxford version of the slides uses
+the factor $1/10$ instead of $1/3$ in the Cheeger condition and displays
+$O((\log n)^2)$ for the hierarchy length; substituting that depth into the
+digit count would give $n^{O((\log n)^2)}$.
+
+\subsection{Common structure of the six reports}
+Read side by side, the reports agree on every substantive point, which is
+itself evidence since they were produced independently:
+\begin{enumerate}
+\item The requested bound is not established; the delivered recognizer is a
+  different, exponential algorithm; resource limits return \code{UNKNOWN}
+  and never a verdict.
+\item The Khovanov route is justified by Kronheimer--Mrowka \cite{km} plus a
+  universal-coefficient argument: $\dim_{\F}\Kh(K;\F)\ge\operatorname{rank}\Kh(K;\mathbb Z)$,
+  and the rational reduced homology is nonzero because its Euler
+  characteristic is the reduced Jones polynomial, so $\F$-rank one forces
+  rational rank one.
+\item Determinant one is never a positive certificate ($T(3,5)$ and the
+  Kinoshita--Terasaka knot are the standard witnesses).
+\item The talk's ``base $g$'' digit argument needs base $g+1$ when the digit
+  $g$ is allowed, since $(1,0)$ and $(0,g)$ have the same base-$g$ value; all
+  six use base $g+1$, as does Proposition 9.1 of the preprint.
+\item The terminal pattern test is implemented only under an explicit
+  ``already a 3-ball'' hypothesis, and $b_1=0$ is not ball recognition
+  ($S^2\times I$ is the standard counterexample).
+\item The missing operations are listed by name: initial layered handle
+  structure of the exterior, compressed cutting with provenance,
+  hierarchical multi-surfaces with the pattern-sensitive quadratic bound,
+  lifting a violating dual cycle to a disc in an earlier stage, Cheeger-region
+  detection and Heegaard modification, Haken's lemma and weak reduction, and
+  an end-to-end bit-cost proof including restarts.
+\end{enumerate}
+
+\section{Code review}
+
+\subsection{The Khovanov recognizers (02--06)}
+All five have the same architecture, evidently converged upon rather than
+copied (variable names, data layouts and gradings differ): enumerate the
+$2^n$ resolutions with a disjoint-set structure, encode a reduced generator as
+a bit mask over the unmarked circles with the marked circle fixed to $x$,
+build each differential column as a Python integer (XOR arithmetic over
+$\F$), and compute ranks by pivot elimination. Points checked in the review:
+\begin{itemize}
+\item Input validation is uniformly careful: one component, spherical rotation
+  system via $V-E+F=2$ on the ribbon graph (so virtual diagrams are rejected,
+  not misclassified), labels normalized, \code{\{"pd": []\}} defined as one circle.
+\item The Frobenius algebra tables ($m(x\otimes x)=0$, $\Delta(1)=1\otimes x+x\otimes1$,
+  $\Delta(x)=x\otimes x$) are identical everywhere, and every implementation
+  checks that the marked circle keeps its $x$ label.
+\item $d^2=0$ is available as an exhaustive optional check in all five and
+  is exercised by their tests.
+\item Gradings are deliberately unnormalized; only the total rank is used, so
+  writhe shifts are irrelevant. This is correct for recognition.
+\item Resource semantics are consistent (\code{UNKNOWN}, exit code 2 or 3;
+  the codes differ between archives, which is a minor interoperability wart).
+\item Archive 03 imposes default ceilings, so its default invocation is
+  incomplete above 16 crossings; the README says so.
+\end{itemize}
+We found no correctness problem. The determinant filters (Fox colouring
+matrix, Bareiss elimination with exact-division checks) are also equivalent.
+
+\subsection{The pattern testers (all six)}
+Three different criteria are implemented for ``is this cubic spherical
+pattern essential on a ball'': dual simple and 4-connected with the $K_3$,
+$K_4$ exceptions (01, 04), no dual loop, parallel pair or non-facial dual
+triangle (02), and no bond of size 1 or 2 and no three-edge bond with more
+than one vertex on each side (03, 05, 06). Each report proves its own
+criterion from the definition. The proofs are correct; the bond argument in
+archive 06 (the cycle rank of a side with $k$ vertices and $r$ cut edges is
+$(k-r+2)/2$) is the cleanest. Input conventions differ (darts $2e,2e+1$;
+signed edge ends; positional darts; edge identifiers occurring twice), which
+is why a converter was needed for cross-validation.
+
+\subsection{Normal coordinates and potentials}
+Archives 01, 02 and 05 compute integral cocycles spanning $H^1(\,\cdot\,;\mathbb Q)$
+in a spanning-tree gauge and convert a cocycle to normal coordinates by
+half-integral level sets of local vertex heights. The constructions agree
+(seven coordinates per tetrahedron, matching equations checked, Euler
+characteristic without disc expansion). All are honest that this is not a
+saturated $\mathbb Z$-basis, not a connected surface, and not a cut. The four
+potential modules implement the same base-$(g+1)$ lemma and differ only in
+interface.
+
+\subsection{The grid search of archive 01}
+\label{sec:grid}
+This is the one place where the review found a gap in an argument. The
+recognizer's negative certificate is a set of grids closed under all
+implemented moves; soundness needs the implemented move set to be exactly a
+set for which monotonic simplification holds. The report states that
+``rows sharing an endpoint are not accepted by this implementation's
+exchange rule'' and cites Dynnikov's Proposition 6, but does not argue that
+Dynnikov's theorem still holds when exchanges of two adjacent rows (or
+columns) with a common corner column are excluded. Depending on the reading
+of Dynnikov's definition of interleaving, that exclusion may remove legal
+moves, in which case a closed set could exist for an unknot. We could not
+settle this from the sources at hand, so we tested it: Section
+\ref{sec:xval-grid} compares the search verdict with Khovanov homology on
+every grid of size $\le6$ and on random larger grids, and found no
+disagreement. The gap is in the proof, not (as far as tested) in the answers.
+
+Everything else in archive 01 checked out: the move implementation, the
+Booth canonicalization, the independent verifier, and the exhaustive counts
+($g!(g-1)!/2$ connected grids per size).
+
+\section{Cross-validation}
+None of the archives compared itself with another; each ran its own tests.
+We wrote three scripts (in \code{synthesis/data/}) that load the packages
+side by side.
+
+\subsection{Five Khovanov implementations on shared inputs}
+The same braid words and Knot Atlas PD codes were passed to all five packages
+(after converting label conventions). Reduced $\F$ ranks:
+
+\begin{center}\small
+\input{tables/khovanov_xval.tex}
+\end{center}
+
+All 44 inputs agree, including the two Alexander-polynomial-one 11-crossing
+knots and 30 random closures whose ranks range from 1 to 13.
+
+\subsection{Six pattern testers on random spherical patterns}
+Random perfect matchings of the darts of $V$ trivalent vertices were kept
+when every component's rotation system is spherical, converted to the six
+input formats, and classified by all six testers (400 distinct systems per
+vertex count) together with six named patterns:
+
+\begin{center}\small
+\input{tables/pattern_xval.tex}\\[6pt]
+\input{tables/pattern_named.tex}
+\end{center}
+
+No disagreement among 2006 patterns and three different criteria. (Random
+matchings on many vertices are almost always inessential because short bonds
+are common; the named cube and dodecahedron are the essential large examples.)
+
+\subsection{Grid search versus Khovanov homology}
+\label{sec:xval-grid}
+We wrote an independent grid-to-PD converter (traversal of the grid, crossing
+signs from the directions of the vertical and horizontal strands) and compared
+archive 01's search (determinant filter disabled) with archive 04's Khovanov
+rank:
+
+\begin{center}\small
+\IfFileExists{tables/grid_xval.tex}{\input{tables/grid_xval.tex}}{(table pending)}
+\end{center}
+
+The knotted orbits of size 5 are the two trefoils (grid number 5) and those of
+size 6 are 26 trefoil presentations and one figure-eight, exactly as the
+grid-number theory predicts. No disagreement was found, which supports but
+does not prove the completeness of the restricted move set.
+
+\subsection{What the cross-validation does and does not show}
+Agreement of five independently written cubes is strong evidence that all
+five compute the same invariant, and agreement with the published ranks
+(trefoil 3, figure-eight 5, $T(3,5)$ 7, $K11n34$ and $K11n42$ 33) ties that
+invariant to reduced Khovanov homology. It says nothing about the
+quasi-polynomial question, and all runs are on diagrams of at most 14
+crossings because the cubes cannot go further.
+
+\section{What is missing for \texorpdfstring{$\qp$}{n\^{}O(log n)}}
+\label{sec:missing}
+Consolidating the six audits with our own reading of the sources, an
+implementation with a proved $\qp$ bound would require the following, none
+of which exists in any archive or, to our knowledge, in print.
+
+\begin{enumerate}
+\item \textbf{A representation.} A layered handle structure of the knot
+  exterior with a Morse function, boundary-pattern labels, the ambient
+  embedding in $S^3$ (used by the generalised Seifert construction of
+  pp.~75--78), compressed normal-surface data, and regluing maps, with a
+  proved bound on the bit size of all of this after arbitrarily many
+  operations. The archives' normal-coordinate modules are local ingredients
+  only.
+\item \textbf{Bounded multi-surfaces.} An algorithm producing independent
+  relative homology classes with embedded representatives whose
+  \emph{pattern-sensitive} complexity is $O(n^2)$, and a proof that
+  compression and pattern-compression preserve the invariants that allow
+  later surfaces to be kept. A rational $H^1$ basis is not this.
+\item \textbf{Compressed cutting.} Cutting, component extraction, Euler
+  characteristic, orientation and pattern transport on compressed data
+  without expanding parallel discs, with provenance sufficient to lift a
+  violating dual cycle in a terminal ball to a disc in the correct earlier
+  stage. Agol--Hass--Thurston orbit counting is a tool, not this procedure.
+\item \textbf{Cheeger regions and weak reduction.} Recognition of the
+  Heegaard--Morse hypotheses, construction of the modified generalised
+  splitting, Haken's lemma and weak reduction, and a global progress measure
+  bounding restarts. The inequality $3g(\partial M_i)\le\min\{g(H_i),g(H)-g(H_i)\}$
+  is a test on three integers, not the operation.
+\item \textbf{The depth bound.} A proof that the executable process, after
+  every rebuild and restart, has hierarchy length $O(\log n)$ (the talk) or
+  $O((\log n)^2)$ (the Oxford version cited by archive 06), together with
+  polynomial digit bounds. The preprint's Section 10 gives a linear bound in
+  the initial $q$-complexity, and its Section 9 explicitly declines to bound
+  $g$ and $L$.
+\item \textbf{The cost accounting.} Only after all of the above does the
+  conditional lemma proved in every archive, $L(g+1)^L$ iterations times a
+  polynomial cost per iteration times polynomially many restarts, become a
+  running-time theorem: $\log\bigl((g+1)^L\bigr)=O((\log n)^2)$.
+\end{enumerate}
+
+The archives also list, and we agree with, the substitutions that do not
+work: an exponential search with a time cap is not a total algorithm; a
+polynomial iteration count does not bound work per iteration; expanding a
+compressed normal surface loses the compression; $b_1=0$ is not ball
+recognition; a Jones or Alexander test does not detect the unknot.
+
+\section{A faster exact recognizer: \code{fastunknot}}
+\label{sec:fast}
+
+\subsection{Design}
+Since the geometric route cannot be completed from the available sources,
+the second task was addressed by making the \emph{exact} route as fast as we
+could while keeping every verdict provable. The package \code{fast/fastunknot}
+(standard library only, Python $\ge3.10$) runs:
+\begin{enumerate}
+\item validation (PD codes, braid closures, or grid diagrams in the archive-01
+  convention, converted by the traversal of Section \ref{sec:xval-grid});
+\item crossing-decreasing Reidemeister I/II moves, as in archive 05;
+\item the descending-diagram test of archive 02;
+\item the \emph{Alexander polynomial}, computed exactly by fraction-free
+  Bareiss elimination over $\mathbb Z[t]$ on a first minor of the Fox matrix
+  of the Wirtinger presentation (rows $(1-t)x_o+tx_u-x_v$ at positive and
+  $(1-t)x_o-x_u+tx_v$ at negative crossings, with signs from the traversal);
+  $\Delta\ne1$ certifies knottedness and strictly dominates the determinant
+  filter of the archives ($T(3,5)$ and all torus knots are now rejected in
+  polynomial time; the Kinoshita--Terasaka and Conway knots are not);
+\item reduced Khovanov rank over $\F$ by \emph{scanning}.
+\end{enumerate}
+
+\subsection{The scanning computation}
+This is Bar-Natan's local algorithm \cite{barnatan} specialised to $\F$ and
+implemented directly in terms of the arc-algebra description of morphisms.
+The crossings are processed one at a time in a greedy order chosen (from up to
+twelve starting crossings) to keep the boundary of the processed region small.
+After $k$ crossings the partial complex has:
+\begin{itemize}
+\item objects: perfect matchings of the boundary edges, each with a
+  homological degree; closed circles are delooped, one object with a circle
+  becoming two objects (labels $1$ and $x$);
+\item morphisms $a\to b$: $\F$-combinations of dot-subsets of the circles of
+  $a\cup\bar b$, i.e.\ elements of $A^{\otimes\text{circles}}$ with
+  $A=\F[x]/(x^2)$.
+\end{itemize}
+Composition is the two-dimensional TQFT of the glued surface: a component of
+genus $\ge1$ or with two dots is zero (because the handle operator
+$m\circ\Delta=2x$ and $x^2$ vanish), a closed component is $1$ exactly when it
+carries one dot, and a planar component with $\beta$ boundary circles and
+$d\in\{0,1\}$ dots is $\Delta^{(\beta-1)}(x^d)$, which over $\F$ is
+$x\otimes\cdots\otimes x$ for $d=1$ and the sum over one undotted position for
+$d=0$. Delooping is the same computation with a cup on the source circle
+(dotted for label $x$) and a cap on the target circle (dotted to extract the
+coefficient of $1$, since the dual basis of $\{1,x\}$ under the counit is
+$\{\varepsilon(x\,\cdot\,),\varepsilon\}$). After every crossing all invertible
+entries are cancelled: an entry $b\to c$ between equal matchings is a unit of
+the local ring $\operatorname{End}(a)\cong A^{\otimes k}$ iff its expansion
+contains the undotted term, its inverse is the finite geometric series of the
+nilpotent part, and Bar-Natan's cancellation lemma replaces
+$\varepsilon$ by $\varepsilon-\gamma\varphi^{-1}\delta$. When the last crossing is
+added the boundary is empty, every morphism is a scalar, so a minimal complex
+has zero differential and its number of objects is the unreduced total rank;
+the reduced rank is half of it (archive 04's two-copies lemma) and equals 1
+exactly for the unknot.
+
+\begin{proposition}[Correctness]
+On a validated one-component diagram, \code{fastunknot} returns \code{UNKNOT}
+iff the knot is trivial, unless a user-selected ceiling stops it, in which
+case it returns \code{UNKNOWN}.
+\end{proposition}
+\begin{proof}
+Steps 2--3 are isotopies and a sufficient triviality criterion; step 4 uses
+$\Delta_{\text{unknot}}=1$. Step 5 computes the homology of the Khovanov
+complex: the tensor product of crossing complexes in Bar-Natan's category,
+delooping, and Gaussian elimination are chain homotopy equivalences, and the
+closed complex is the standard one. The decision rule is the detection theorem
+with the universal-coefficient argument of the archives.
+\end{proof}
+
+\begin{proposition}[Cost]
+Steps 1--4 are polynomial in $n$. Step 5 is $2^{O(n)}$ in the worst case.
+\end{proposition}
+\begin{proof}
+The Alexander determinant is $O(n^3)$ polynomial operations of degree
+$\le n$ with polynomially bounded coefficients. In step 5 the objects before
+elimination after crossing $k$ number at most $2\cdot2^{c}$ times the objects
+after crossing $k-1$, where $c\le2$ closed circles can appear, so the whole
+computation is dominated by the cube; compositions cost polynomial time in the
+boundary size.
+\end{proof}
+
+The interesting quantity is the size after elimination. Empirically it stays
+close to (number of crossingless matchings of the boundary) $\times$ (a
+multiplicity that grows with the tangle's homology), i.e.\ roughly
+$2^{O(w)}\cdot\mathrm{poly}$ for scan width $w$. \textbf{We have no proof of
+this}, and there cannot be one in general for the multiplicity: the reduced rank
+of $\#_k\,K11n34$ is $33^k$ with Alexander polynomial 1, so any method that
+outputs the full homology is exponential on such inputs, whatever the scan
+width. A subexponential unknot recognizer along these lines would have to
+detect ``rank $>1$'' without finishing the computation; we do not know how.
+
+\subsection{Validation}
+The package has 19 unit tests (polynomial arithmetic; Alexander polynomials
+of the trefoil, figure-eight, $5_2$, $T(3,5)$, $\Delta=1$ for the two
+11-crossing knots and two hard unknots; symmetry $\Delta(t)=\Delta(t^{-1})$,
+$|\Delta(1)|=1$, mirror invariance and odd determinant on 40 random braids;
+Reidemeister moves; the local endomorphism ring; $d^2=0$ after every
+crossing; independence of the processing order; resource-limit semantics;
+known ranks; an independent dense reduced-cube computation on 25 random
+braids; the command line). Beyond the tests, the scanner agrees with archive
+04's cube on 120 random braid closures (3--5 strands, 6--13 letters, with
+random processing orders), and reproduces the Atlas ranks 33, 33 and 7.
+
+\subsection{Measurements}
+Timings are on the same Windows machine as everything else in this report;
+they illustrate the dependence on scan width and are not complexity
+evidence.
+
+\begin{center}\small
+\IfFileExists{tables/benchmark.tex}{\input{tables/benchmark.tex}}{(table pending)}
+\end{center}
+
+\begin{center}\small
+\IfFileExists{tables/pipeline.tex}{\input{tables/pipeline.tex}}{(table pending)}
+\end{center}
+
+One case timed out: a random 36-letter closure on five strands exceeded the
+600-second budget, while a 31-letter closure on six strands took about a
+second. Both scans have boundary at most ten edges; the difference is the
+size of the minimal complexes of the intermediate tangles, the multiplicity
+factor discussed above, which is exactly the unproved part of the cost.
+
+Two comparisons with the archives' cubes on identical inputs: the
+Kinoshita--Terasaka knot (11 crossings, 2048 states, 11\,559 generators) takes
+0.24--0.31 s in the cubes and 0.07 s in the scan with a boundary of six edges
+and at most 66 objects after elimination; the unknot
+$\widehat{\sigma_1\cdots\sigma_n}$, archive 03's explicit exponential family,
+needs $2^n$ states in every cube and is decided by the scan in 0.011 s for
+$n=80$ with two objects after every elimination.
+
+\subsection{Limits of the new package}
+It is a reference implementation in pure Python; a compiled implementation of
+the same algorithm (as in Bar-Natan's or the KnotJob programs) would be far
+faster. Its scan-order heuristic is greedy; for diagrams whose Tait graph is
+grid-like the width is $\Theta(\sqrt n)$ at best and the minimal complexes can
+be large. It does not produce a spanning disc or a Reidemeister sequence. And,
+to repeat, it is not quasi-polynomial.
+
+\section{Assessment and recommendations}
+
+\paragraph{What was achieved.}
+Seven mutually consistent exact recognizers; a verified and cross-validated
+body of code for the terminal ball-pattern test and for cocycle-dual normal
+surfaces; a precise, sourced statement of the conditional
+$L(g+1)^L$ accounting and of everything a $\qp$ implementation would still
+need; and one recognizer whose practical reach is well beyond the
+$2^n$-state cubes.
+
+\paragraph{Obstacles that remain.}
+The six items of Section \ref{sec:missing}. They are research problems in
+3-manifold topology and algorithm design, not coding tasks: the specification
+of the accelerated hierarchy exists only as a sketch on slides, and the one
+detailed paper on the subject states that its steps are not specified
+precisely enough for a running-time estimate. Until that changes, any
+``$\qp$ implementation'' would be an exponential search with a mislabelled
+bound, which is exactly what all six archives refused to deliver.
+
+\paragraph{If work continues.}
+(1) Track the published record: a full version of the 2021 announcement, or
+the refined Section 10 algorithm with an explicit cost model, would change the
+picture. (2) Settle the move-set question of Section \ref{sec:grid} from
+Dynnikov's paper, or add shared-corner exchanges to archive 01 and re-run its
+exhaustive validation. (3) Port the scanning recognizer to a compiled
+language and replace the greedy order by a tree-decomposition-based one; the
+planar separator theorem gives width $O(\sqrt n)$ for the projection graph,
+which would make the empirical behaviour subexponential even if unproved.
+(4) Use the archives' exact recognizers as oracles for any future geometric
+implementation, as several of their reports suggest.
+
+\begin{thebibliography}{9}\small
+\bibitem{slides} Marc Lackenby, \emph{Unknot recognition in quasi-polynomial time}, slides, February 2021, 109 pages, supplied as \code{docs/quasipolynomial-talk.pdf}.
+\bibitem{lackenby2026} Marc Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition}, arXiv:2607.23350v1, 25 July 2026, 54 pages. \url{https://arxiv.org/abs/2607.23350}.
+\bibitem{km} P.~B. Kronheimer and T.~S. Mrowka, \emph{Khovanov homology is an unknot-detector}, Publ.\ Math.\ IH\'ES 113 (2011), 97--208.
+\bibitem{barnatan} Dror Bar-Natan, \emph{Khovanov's homology for tangles and cobordisms}, Geom.\ Topol.\ 9 (2005), 1443--1499; and \emph{Fast Khovanov homology computations}, J.\ Knot Theory Ramifications 16 (2007), 243--255.
+\bibitem{dynnikov} Ivan Dynnikov, \emph{Arc-presentations of links: monotonic simplification}, Fund.\ Math.\ 190 (2006), 29--76, arXiv:math/0208153.
+\bibitem{khovanov} Mikhail Khovanov, \emph{A categorification of the Jones polynomial}, Duke Math.\ J.\ 101 (2000), 359--426.
+\end{thebibliography}
+
+\appendix
+\section{Files produced}
+\begin{itemize}
+\item \code{reports/01} -- \code{reports/06}: the extracted archives (flat, one level).
+\item \code{synthesis/report.tex}, \code{synthesis/report.pdf}: this report;
+  \code{synthesis/make\_tables.py} regenerates the tables from
+  \code{synthesis/data/*.json}; the cross-validation scripts are in
+  \code{synthesis/data/}.
+\item \code{fast/}: the \code{fastunknot} package, tests, examples,
+  \code{benchmark.py} and \code{results/benchmark.json}.
+\end{itemize}
+\end{document}
