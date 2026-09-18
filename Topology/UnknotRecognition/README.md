@@ -38,6 +38,36 @@ cd fast && python -m fastunknot recognize examples/conway.json
 cd synthesis && sh build.sh
 ```
 
+## Packaging the repository as a ZIP
+
+```sh
+python make_archive.py            # writes Knots.zip at the root
+python make_archive.py --all-pdf  # same, but keeps every PDF
+```
+
+The script zips every git-tracked file at maximum compression and leaves out
+`.git`, untracked files, dot files at the root, and the script itself.
+
+**By default it also leaves out the PDFs that can be rebuilt**, namely every
+`foo.pdf` that has a `foo.tex` next to it. If you unpack the archive and a
+PDF is missing, open the `.tex` file of the same name in the same directory,
+or rebuild it with `pdflatex` (twice):
+
+| Missing PDF | Source in the archive | Rebuild |
+|---|---|---|
+| `synthesis/report.pdf` | `synthesis/report.tex` | `cd synthesis && sh build.sh` |
+| `reports/01/docs/report.pdf` | `reports/01/docs/report.tex` | `pdflatex report.tex` (twice) |
+| `reports/02/docs/implementation_report.pdf` | `reports/02/docs/implementation_report.tex` | likewise |
+| `reports/03/docs/implementation_report.pdf` | `reports/03/docs/implementation_report.tex` | likewise |
+| `reports/04/docs/report.pdf` | `reports/04/docs/report.tex` | likewise |
+| `reports/05/docs/report.pdf` | `reports/05/docs/report.tex` | likewise |
+| `reports/06/docs/technical-report.pdf` | `reports/06/docs/technical-report.tex` | likewise |
+
+PDFs without a same-name source are always included: the talk
+`docs/quasipolynomial-talk.pdf`, and the arXiv preprint with its figure PDFs
+in `docs/arXiv-2607.23350v1/` (the preprint could also be rebuilt from its
+`.tex`, `.bbl` and figures, but it is kept as delivered).
+
 ## Test status (last observed 18 September 2026, commit 72b15eb)
 
 All unit-test suites are green on CPython 3.14.4 / Windows 11:
