@@ -18,6 +18,10 @@ ablation.  The worst case remains exponential.
 """
 from __future__ import annotations
 
+import json
+import os
+import subprocess
+import sys
 from collections import defaultdict
 from heapq import heappop, heappush
 from itertools import product
@@ -27,7 +31,7 @@ from typing import Any, Iterable
 from . import scan_reference as _ref
 from .algebra import BitAlgebra
 from .geometry import Matching, ScanLimit
-from .ordering import best_scan_order, order_profile, repeated_stages, scan_order, validate_order
+from .ordering import TIE_RULES, best_scan_order, order_profile, repeated_stages, scan_order, validate_order
 from .scan_fast import FastScan
 
 # set-based helpers kept for compatibility and tests
@@ -286,10 +290,112 @@ class ScanComplex:
                     raise ArithmeticError(f"d^2 != 0 between objects {a} and {c}")
 
 
+class _RaceWon(Exception):
+    """Raised inside the scan of the default order when a competitor has finished first."""
+
+    def __init__(self, result: dict):
+        super().__init__("a competing scan order finished first")
+        self.result = result
+
+
+class _Race:
+    """Competing scans of other greedy orders in separate processes.
+
+    The scan is sequential, its cost varies wildly with the order (work ratios of 0.01 to 28
+    between tie rules that no cheap score can rank), and rank and ranks by degree do not depend on
+    the order.  So other orders can be raced against the default one and the first to finish
+    wins.  In Python a competitor must be a process, which costs about 0.1 s to start; therefore
+    nothing is started before the default order has run for ``after`` seconds.  Short scans, the
+    vast majority, never notice the race, and long ones get insurance against a bad order.
+    Competitors run ``python -m fastunknot _scan`` with JSON over pipes (no multiprocessing: on
+    Windows that would import the caller's main module again).
+    """
+
+    def __init__(self, pd, order, competitors: int, after: float, deadline, options: dict):
+        self.pd, self.order, self.count, self.after = pd, order, competitors, after
+        self.deadline, self.options = deadline, options
+        self.started = monotonic()
+        self.launched = False
+        self.running: list = []                 # (rule, process)
+
+    def poll(self) -> None:
+        if not self.launched:
+            if monotonic() - self.started >= self.after:
+                self.launch()
+            return
+        for item in list(self.running):
+            rule, process = item
+            if process.poll() is None:
+                continue
+            self.running.remove(item)
+            result = self._collect(rule, process)
+            if result is not None:
+                raise _RaceWon(result)
+
+    def launch(self) -> None:
+        self.launched = True
+        package_parent = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        environment = dict(os.environ)
+        environment["PYTHONPATH"] = package_parent + os.pathsep + environment.get("PYTHONPATH", "")
+        seen = [self.order]
+        for rule in [r for r in TIE_RULES if r != "index"][:self.count]:
+            order = best_scan_order(self.pd, tries=min(len(self.pd), 12), ties=rule)
+            if order in seen:
+                continue
+            seen.append(order)
+            job = dict(self.options, pd=self.pd, order=order,
+                       seconds=None if self.deadline is None else max(0.0, self.deadline - monotonic()))
+            process = subprocess.Popen([sys.executable, "-m", "fastunknot", "_scan"], stdin=subprocess.PIPE,
+                                       stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, env=environment)
+            try:
+                process.stdin.write(json.dumps(job).encode())
+                process.stdin.close()
+            except OSError:
+                process.kill()
+                continue
+            self.running.append((rule, process))
+
+    @staticmethod
+    def _collect(rule: str, process):
+        try:
+            data = process.stdout.read()
+            process.stdout.close()
+            if process.returncode != 0:
+                return None
+            result = json.loads(data)
+        except (OSError, ValueError):
+            return None
+        result["by_degree"] = {int(h): v for h, v in result["by_degree"].items()}
+        result["race_winner"] = rule
+        return result
+
+    def wait(self):
+        """After the default order has hit a limit: a competitor may still succeed."""
+        for rule, process in list(self.running):
+            timeout = None if self.deadline is None else max(0.0, self.deadline - monotonic()) + 1.0
+            try:
+                process.wait(timeout)
+            except subprocess.TimeoutExpired:
+                continue
+            self.running.remove((rule, process))
+            result = self._collect(rule, process)
+            if result is not None:
+                return result
+        return None
+
+    def close(self) -> None:
+        for _, process in self.running:
+            process.kill()
+            process.wait()
+            process.stdout.close()
+        self.running = []
+
+
 def khovanov_rank(pd: Iterable[Iterable[int]], *, order: list[int] | None = None,
                   max_objects: int | None = None, seconds: float | None = None,
                   check_d_squared: bool = False, pivot: str = "minfill", algebra: str = "bits",
-                  self_inverse: bool = True, tail: int = 0, shape_cache: bool | None = None) -> dict[str, Any]:
+                  self_inverse: bool = True, tail: int = 0, shape_cache: bool | None = None,
+                  race: int = 1, race_after: float = 1.0) -> dict[str, Any]:
     """Total unreduced F2 Khovanov rank of a validated PD code by scanning.
 
     ``tail`` crossings at the end are added without cancellation and the closed
@@ -300,7 +406,10 @@ def khovanov_rank(pd: Iterable[Iterable[int]], *, order: list[int] | None = None
     diagrams without repeats; results are identical.  ``None`` decides from the
     scan order: on when the diagram has at least 16 crossings and at least n/8 of
     them are met in a picture seen before (``ordering.repeated_stages``), which
-    is necessary for any reuse.
+    is necessary for any reuse.  ``race`` > 1 starts ``race - 1`` competing scans of
+    other greedy orders in separate processes once the default order has run for
+    ``race_after`` seconds; the first to finish wins (``race_winner`` in the
+    result).  Rank and ranks by degree are the same whoever wins.
     """
     pd = [tuple(c) for c in pd]
     if type(tail) is not int or tail < 0:
@@ -320,12 +429,29 @@ def khovanov_rank(pd: Iterable[Iterable[int]], *, order: list[int] | None = None
     else:                         # ablation configurations
         complex_ = ScanComplex(max_objects=max_objects, deadline=deadline, pivot=pivot,
                                algebra=algebra, self_inverse=self_inverse)
+    if type(race) is not int or race < 1 or race_after < 0:
+        raise ValueError("race must be a positive integer and race_after nonnegative")
+    runner = None
+    if race > 1 and isinstance(complex_, FastScan):
+        runner = _Race(pd, order, race - 1, race_after, deadline, dict(max_objects=max_objects, tail=tail))
+        complex_.hook = runner.poll
     n = len(order)
-    for position, index in enumerate(order):
-        reduce_now = position < n - tail
-        complex_.add_crossing(pd[index], reduce_now=reduce_now)
-        if check_d_squared:
-            complex_.check_d_squared()
+    try:
+        for position, index in enumerate(order):
+            reduce_now = position < n - tail
+            complex_.add_crossing(pd[index], reduce_now=reduce_now)
+            if check_d_squared:
+                complex_.check_d_squared()
+    except _RaceWon as won:
+        return dict(won.result, pivot=pivot, algebra=algebra, tail=tail)
+    except ScanLimit:
+        result = runner.wait() if runner is not None else None
+        if result is None:
+            raise
+        return dict(result, pivot=pivot, algebra=algebra, tail=tail)
+    finally:
+        if runner is not None:
+            runner.close()
     if tail:
         by_degree = complex_.linear_ranks()
         rank = sum(by_degree.values())
@@ -336,5 +462,8 @@ def khovanov_rank(pd: Iterable[Iterable[int]], *, order: list[int] | None = None
         raise ArithmeticError("odd unreduced F2 rank for a knot")
     stats = dict(complex_.stats)
     stats.update({k: v for k, v in complex_.algebra.stats.items()})
-    return {"rank": rank, "reduced_rank": rank // 2, "by_degree": by_degree, "stats": stats,
-            "order": order, "pivot": pivot, "algebra": algebra, "tail": tail}
+    result = {"rank": rank, "reduced_rank": rank // 2, "by_degree": by_degree, "stats": stats,
+              "order": order, "pivot": pivot, "algebra": algebra, "tail": tail}
+    if runner is not None:
+        result["race_winner"] = "index"
+    return result

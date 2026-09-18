@@ -8,7 +8,7 @@ asymptotic behaviour. This section records what was gained, what was tried and
 rejected, and an episode about measurement that changed how every number below
 was obtained. All verdicts and ranks are exact and identical to those of 0.2
 (the deciding step can differ: the Reidemeister III help below settles some
-unknots before the scan): 37 unit tests pass, and \texttt{crosscheck.py} compares the ranks by homological degree
+unknots before the scan): 38 unit tests pass, and \texttt{crosscheck.py} compares the ranks by homological degree
 of the new default scanner with the generic 0.2 scanner and the 0.1 set algebra
 on random braid closures (400 closures with 2 to 5 strands, no mismatch).
 
@@ -229,6 +229,23 @@ scan at once slow each other down exactly as much as the racing threads
 ($1.15$ against $1.18$, $2.11$ against $2.06$), so it is contention in the
 hardware of this machine and will differ elsewhere. The race is therefore an
 option (\texttt{--race 2}), not the default.
+
+Dismissing a race in Python was, on reflection, a wrong comparison: the cost of
+starting a process was set against the typical scan, while a race only matters
+on the heavy tail, where Python scans take seconds to minutes. The Python
+package therefore has it too, in the form the two suggestions combine to: the
+default order runs alone for a head start of one second, and only then are
+other greedy orders started as separate processes, which the scanner polls
+where it looks at the clock; the first to finish wins. On 26 random closures
+with single scans of 0.15 to 3.6 s the total is $0.910$ of single with two
+orders and $0.925$ with three. That total consists of two inputs on which a
+competitor wins in every round (3.22 s to 1.74 s, 3.55 s to 1.56 s) and of a
+cost of 10 to 20\% on scans of 1 to 3 s that the default order wins. The other
+per-input ratios of that experiment are noise, and the data says so itself: 18
+inputs finish inside the head start, where nothing is started and the ratio
+must be 1, yet they read $0.80$ to $1.43$ with three rounds each. Measured with
+61 interleaved pairs, an armed race that starts nothing costs $1.010$
+$[0.984, 1.041]$ against an A/A control of $1.042$, that is, nothing.
 
 Two remarks. First, the closing sentence of the previous section, that on an
 unknot diagram no filter can decide the Python accelerations change nothing,

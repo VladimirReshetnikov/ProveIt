@@ -9,7 +9,7 @@ from .alexander import alexander_polynomial, format_polynomial
 from .diagram import Diagram, DiagramError
 from .filters import FilterLimit, jones_obstruction
 from .recognize import factored_khovanov_rank, recognize
-from .scan import khovanov_rank
+from .scan import ScanLimit, khovanov_rank
 
 EXIT = {"UNKNOT": 0, "KNOTTED": 0, "UNKNOWN": 3}
 
@@ -19,7 +19,21 @@ def load(path: str) -> Diagram:
     return Diagram.from_json(data)
 
 
+def _scan_worker() -> int:
+    """Competitor of a race (see ``scan._Race``): a scan job as JSON on stdin, the result on stdout."""
+    job = json.load(sys.stdin)
+    try:
+        result = khovanov_rank([tuple(row) for row in job["pd"]], order=job["order"],
+                               max_objects=job.get("max_objects"), seconds=job.get("seconds"), tail=job.get("tail", 0))
+    except ScanLimit:
+        return 3
+    json.dump({key: result[key] for key in ("rank", "reduced_rank", "by_degree", "stats", "order")}, sys.stdout)
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
+    if (sys.argv[1:2] if argv is None else argv[:1]) == ["_scan"]:
+        return _scan_worker()
     parser = argparse.ArgumentParser(prog="fastunknot", description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
     rec = sub.add_parser("recognize", help="decide whether a knot diagram is the unknot")
@@ -42,6 +56,10 @@ def main(argv: list[str] | None = None) -> int:
     rec.add_argument("--algebra", choices=("bits", "sets"), default="bits")
     rec.add_argument("--tail", type=int, default=0)
     rec.add_argument("--check-d2", action="store_true", help="verify d^2=0 after every crossing")
+    rec.add_argument("--race", type=int, default=1,
+                     help="scan N greedy orders in separate processes, first to finish wins (default 1: no race)")
+    rec.add_argument("--race-after", type=float, default=1.0,
+                     help="seconds the default order runs alone before competitors are started")
     rec.add_argument("--output", help="write the JSON result to this file")
     kh = sub.add_parser("khovanov", help="total F2 Khovanov rank by scanning")
     kh.add_argument("file")
@@ -50,6 +68,8 @@ def main(argv: list[str] | None = None) -> int:
     kh.add_argument("--pivot", choices=("minfill", "lifo"), default="minfill")
     kh.add_argument("--algebra", choices=("bits", "sets"), default="bits")
     kh.add_argument("--tail", type=int, default=0)
+    kh.add_argument("--race", type=int, default=1, help="scan N greedy orders in separate processes")
+    kh.add_argument("--race-after", type=float, default=1.0, help="head start of the default order in seconds")
     jo = sub.add_parser("jones", help="one-sided modular Kauffman bracket test")
     jo.add_argument("file")
     al = sub.add_parser("alexander", help="Alexander polynomial")
@@ -65,6 +85,7 @@ def main(argv: list[str] | None = None) -> int:
                            use_descending=not args.no_descending,
                            use_alexander=not args.no_alexander, use_modular=not args.no_modular,
                            use_exact_alexander=True if args.exact_alexander else None, use_r3=not args.no_r3,
+                           race=args.race, race_after=args.race_after,
                            use_jones=not args.no_jones, use_factorization=not args.no_factor,
                            jones_max_states=args.jones_max_states, pivot=args.pivot,
                            algebra=args.algebra, tail=args.tail, max_objects=args.max_objects,
@@ -76,7 +97,8 @@ def main(argv: list[str] | None = None) -> int:
         print(text)
         return EXIT[result["status"]]
     if args.command == "khovanov":
-        options = dict(check_d_squared=args.check_d2, pivot=args.pivot, algebra=args.algebra, tail=args.tail)
+        options = dict(check_d_squared=args.check_d2, pivot=args.pivot, algebra=args.algebra, tail=args.tail,
+                       race=args.race, race_after=args.race_after)
         result = factored_khovanov_rank(diagram, **options) if args.factor else khovanov_rank(diagram.pd, **options)
         print(json.dumps(result, indent=1))
         return 0

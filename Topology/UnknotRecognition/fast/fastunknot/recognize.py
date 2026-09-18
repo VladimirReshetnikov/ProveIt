@@ -151,6 +151,8 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
     evidence["khovanov"] = {"field": "F2", "unreduced_rank": kh["rank"], "reduced_rank": kh["reduced_rank"],
                             "unreduced_rank_by_cube_degree": kh["by_degree"], "scan_stats": kh["stats"],
                             "scan_order": kh["order"]}
+    if "race_winner" in kh:
+        evidence["khovanov"]["race_winner"] = kh["race_winner"]
     return ("UNKNOT" if kh["reduced_rank"] == 1 else "KNOTTED"), "reduced-khovanov-F2-scan"
 
 
@@ -160,7 +162,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               jones_max_states: int | None = 4096,
               jones_max_transitions: int | None = 200_000, max_objects: int | None = None,
               seconds: float | None = None, check_d_squared: bool = False,
-              pivot: str = "minfill", algebra: str = "bits", tail: int = 0) -> Result:
+              pivot: str = "minfill", algebra: str = "bits", tail: int = 0,
+              race: int = 1, race_after: float = 1.0) -> Result:
     start = monotonic()
     deadline = None if seconds is None else start + seconds
     original = diagram
@@ -186,7 +189,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                    use_descending=use_descending,
                    jones_max_states=jones_max_states, jones_max_transitions=jones_max_transitions,
                    max_objects=max_objects, deadline=deadline, check_d_squared=check_d_squared,
-                   scan_options=dict(pivot=pivot, algebra=algebra, tail=tail))
+                   scan_options=dict(pivot=pivot, algebra=algebra, tail=tail, race=race, race_after=race_after))
     method = "reduced-khovanov-F2-scan"
     try:
         if len(factors) == 1:

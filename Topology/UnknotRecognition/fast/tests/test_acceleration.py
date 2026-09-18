@@ -148,6 +148,37 @@ class ScannerTests(unittest.TestCase):
                                      moved.intern(tuple((f[p], f[q]) for p, q in b)))
             self.assertEqual(shifted, {f[p]: c for p, c in owner.items()})
 
+    def test_tie_rules_and_race(self):
+        for d in random_knot_braids(29, 30, strands=(3, 4, 5), lengths=(6, 18)):
+            pd = [tuple(c) for c in d.pd]
+            expected = khovanov_rank(pd)
+            for rule in ordering.TIE_RULES:
+                order = ordering.best_scan_order(pd, 12, ties=rule)
+                self.assertEqual(sorted(order), list(range(len(pd))))
+                got = khovanov_rank(pd, order=order)
+                self.assertEqual((got["rank"], got["by_degree"]), (expected["rank"], expected["by_degree"]))
+            self.assertEqual(ordering.best_scan_order(pd, 12, ties="index"), ordering.best_scan_order(pd, 12))
+        with self.assertRaises(ValueError):
+            ordering.best_scan_order([(0, 1, 1, 0)], 1, ties="newest")
+        with self.assertRaises(ValueError):
+            khovanov_rank(load("conway.json").pd, race=0)
+        # no competitor is started within the head start, and the result says who won
+        quiet = khovanov_rank(load("conway.json").pd, race=3, race_after=60.0)
+        self.assertEqual((quiet["race_winner"], quiet["reduced_rank"]), ("index", 33))
+        self.assertNotIn("race_winner", khovanov_rank(load("conway.json").pd))
+        # competitors started at once: whoever wins, the result is the same, and nothing is left running
+        pd = load("stress_braid5_36.json").pd
+        expected = khovanov_rank(pd)
+        raced = khovanov_rank(pd, race=3, race_after=0.0)
+        self.assertIn(raced["race_winner"], ordering.TIE_RULES)
+        self.assertEqual((raced["rank"], raced["by_degree"]), (expected["rank"], expected["by_degree"]))
+        # a competitor wins when the default order is handicapped by a deliberately bad explicit order
+        bad = list(range(len(pd)))[::2] + list(range(len(pd)))[1::2]
+        raced = khovanov_rank(pd, order=bad, race=2, race_after=0.0, seconds=120)
+        self.assertEqual((raced["rank"], raced["by_degree"]), (expected["rank"], expected["by_degree"]))
+        self.assertEqual(raced["race_winner"], "oldest")
+        self.assertEqual(recognize(load("hard_unknot_8.json"), use_r3=False, race=2, race_after=0.0).status, "UNKNOT")
+
     def test_stress_case_that_timed_out_in_0_1(self):
         result = khovanov_rank(load("stress_braid5_36.json").pd)
         self.assertEqual(result["reduced_rank"], 2949)

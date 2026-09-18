@@ -99,9 +99,9 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
 
 ## Test and benchmark status (last observed 18 September 2026)
 
-* `python -m unittest discover -s tests`: 37 tests, OK (about 5 s), about 3 s (CPython
+* `python -m unittest discover -s tests`: 38 tests, OK (about 9 s; one test starts race processes), about 3 s (CPython
   3.14.4, Windows 11). 19 are the 0.1 tests (three expectations updated because
-  a filter now decides before Khovanov does), 18 are new and compare every new
+  a filter now decides before Khovanov does), 19 are new and compare every new
   code path with the 0.1 implementation.
 * `results/benchmark_0.1.json` is the 0.1 benchmark, kept as a record; its
   36-crossing 5-strand row is the 600 s timeout that motivated 0.2.
@@ -348,6 +348,30 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   to 60% slower where the default order was best anyway. That premium is
   hardware contention, not the allocator: separate processes slow each other
   just as much as threads. Details in `../rust/README.md`.
+* **A race in Python after all (`race=N`, `race_after=1.0`; `--race`,
+  `--race-after`; off by default).** Dismissing it because a process costs 0.1 s
+  to start compared that cost with the typical scan; but the race only matters
+  on the heavy tail, where Python scans take seconds to minutes. So the default
+  order runs alone for `race_after` seconds, and only then are other greedy
+  orders (tie rules `oldest`, `recent`; `ordering.best_scan_order(ties=...)`)
+  started as `python -m fastunknot _scan` processes with JSON over pipes (no
+  `multiprocessing`, which on Windows imports the caller's main module again).
+  The scanner polls them where it looks at the clock; the first to finish wins,
+  the rest are killed, and rank and ranks by degree are the same whoever wins
+  (tested, including a win of a competitor against a handicapped default order,
+  and that no worker is left running).
+  Measured on 26 random closures with single scans of 0.15 to 3.6 s, three
+  interleaved rounds (`results/race_eval_python.json`): total 0.910 of single
+  with two orders, 0.925 with three. What that total is made of: a competitor
+  won on 2 inputs, 3.22 s to 1.74 s and 3.55 s to 1.56 s, in every round and
+  under both settings; on scans of 1 to 3 s that the default order wins the
+  race costs 10 to 20%, the hardware contention seen in Rust. The other
+  per-input ratios are noise and the data shows it: 18 inputs finish inside the
+  head start, where nothing is started and the ratio must be 1, and they read
+  0.80 to 1.43. Measured properly (61 interleaved pairs on the 0.25 s stress
+  scan) an armed race that starts nothing costs 1.010, interval 0.984..1.041,
+  with the A/A control at 1.042: nothing. It is insurance against a bad order on
+  long scans; use `race=2`.
 * `hard_unknots.py`: the scrambled family turned out weak, since its rewriting
   consists of Reidemeister III moves and the helped reduction undoes all of
   it (120 of 120; 180 of 180 with heavier scrambling). `SURVIVORS` lists unknot

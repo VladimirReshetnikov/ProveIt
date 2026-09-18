@@ -36,6 +36,7 @@ class FastScan:
         if max_objects is not None and (type(max_objects) is not int or max_objects < 0):
             raise ValueError("max_objects must be a nonnegative integer")
         self.max_objects, self.deadline = max_objects, deadline
+        self.hook = None                  # called wherever the clock is looked at
         self.algebra = Planar(shape_cache=shape_cache)   # interned matchings and gluing plans
         self.mid: list = [0]                          # object -> matching id (None when cancelled)
         self.deg: list = [0]                          # object -> homological degree
@@ -49,6 +50,8 @@ class FastScan:
                       "eliminations": 0, "max_boundary": 0, "compositions": 0, "entries": 0}
 
     def _check(self) -> None:
+        if self.hook is not None:
+            self.hook()                   # a race polls its competitors here and may raise
         if self.deadline is not None and monotonic() > self.deadline:
             raise ScanLimit("time budget exhausted")
 
@@ -89,7 +92,7 @@ class FastScan:
         # Results can only be shared if some plan of this scan was already met under other
         # labels; until then (always, on diagrams without repeats) the lookups are skipped.
         shared = alg.shape_results if alg.stats["shape_hits"] else None
-        deadline = self.deadline
+        deadline = self.deadline if self.hook is None else 0.0        # not None: look at the clock
         for o, ma in enumerate(old_mid):
             if ma is None:
                 continue
@@ -181,7 +184,7 @@ class FastScan:
         heapify(large)
         lo = 0
         eliminations = compositions = 0
-        deadline = self.deadline
+        deadline = self.deadline if self.hook is None else 0.0        # not None: look at the clock
         while True:
             while lo < CAP and not small[lo]:
                 lo += 1
