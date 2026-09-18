@@ -1,0 +1,794 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=13pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+% newpxtext selects TeX Gyre Heros (qhv), scaled to .94, for sans serif.
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Forest}{HTML}{30392C}
+\definecolor{Olive}{HTML}{687144}
+\definecolor{Muted}{HTML}{65685F}
+\definecolor{Sage}{HTML}{CBD0BC}
+\definecolor{Pale}{HTML}{F2F4EB}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{pdftitle={Finite choice at the ultraexacting boundary},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Finite-family selection obstructions and an I0-calibrated consistency separation},pdfkeywords={ultraexacting, finite choice, elementary embeddings, I0, ordinal definability, HOD}}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Forest}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Forest}}{\thesubsection}{.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Forest}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}FINITE CHOICE AT THE ULTRAEXACTING BOUNDARY}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}18 SEP 2026}
+\fancyfoot[L]{\small\color{Muted}Research continuation: finite-choice obstructions}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}Research continuation: finite-choice obstructions}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\tcbset{colback=Pale,colframe=Sage,colbacktitle=Sage,coltitle=Forest,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\AC}{\mathsf{AC}}
+\newcommand{\DC}{\mathsf{DC}}
+\newcommand{\HOD}{\mathrm{HOD}}
+\newcommand{\OD}{\mathrm{OD}}
+\newcommand{\HH}{\mathsf{HH}}
+\newcommand{\Ex}{\operatorname{Ex}}
+\newcommand{\UEx}{\operatorname{UEx}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\SC}{\operatorname{SC}}
+\newcommand{\CEx}{\operatorname{CEx}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\crit}{\operatorname{crit}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\ot}{\operatorname{ot}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\Card}{\mathrm{Card}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\Izero}{\mathrm{I0}}
+\newcommand{\Ione}{\mathrm{I1}}
+\newcommand{\Itwo}{\mathrm{I2}}
+\newcommand{\Ithree}{\mathrm{I3}}
+\newcommand{\Isharp}{\mathrm{I0}^{\#}}
+\newcommand{\Status}[1]{\textbf{Status.} #1}
+\newcommand{\Priority}[1]{\textbf{Research priority.} #1}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:\nolinkurl{#1}}}
+
+\newcommand{\Sel}{\operatorname{Sel}}
+\newcommand{\Fin}{\operatorname{Fin}}
+\newcommand{\FSel}{\mathsf{FSel}}
+\newcommand{\FCF}{\mathsf{FCF}}
+\newcommand{\Lcm}{\operatorname{lcm}}
+\newcommand{\Code}{\operatorname{code}}
+\newcommand{\bd}{\mathrm{bd}}
+\newcommand{\cof}{\mathrm{cof}}
+\newcommand{\Dlam}{D_\lambda}
+\newcommand{\Qlam}{Q_\lambda}
+\newcommand{\FF}{\mathscr F}
+\newcommand{\NFC}{\mathsf{NFC}}
+\newcommand{\Tbd}{T_{\mathrm{boundary}}}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{question}[definition]{Question}
+\begin{document}
+\thispagestyle{empty}
+{\sffamily\bfseries\small\color{Olive}SET THEORY\quad /\quad RESEARCH CONTINUATION}
+
+\vspace{13pt}
+{\fontsize{28}{31}\selectfont\bfseries\color{Forest}Finite choice at the\\ ultraexacting boundary\par}
+\vspace{10pt}
+{\fontsize{14}{18}\selectfont A finite-orbit inconsistency theorem and an\\ I0-calibrated consistency separation\par}
+\vspace{14pt}
+{\color{Muted}Prepared for Vladimir Reshetnikov\hfill 18 September 2026\par}
+\vspace{3pt}
+{\color{Sage}\hrule height .6pt}
+\vspace{12pt}
+
+\textbf{Main result.} Let $\lambda$ be ultraexacting, and let $Q_\lambda$ be the quotient, modulo finite symmetric difference, of the cofinal subsets of $\lambda$ of order type $\omega$. For every $1\leq r<n<\omega$, there is \emph{no nonempty finite family}, ordinal definable from parameters in $V_\lambda$, of functions that select exactly $r$ members of each $n$-element subset of $Q_\lambda$.
+
+The finite family is allowed to be definable without any individual member being definable. The proof handles that ambiguity rather than choosing a member and pretending that it is fixed. An elementary embedding rotates residue classes of its critical sequence. Passing to a sufficiently long cycle defeats every possible permutation of the finite family.
+
+\begin{assessment}{Two precise outcomes}
+\textbf{An incompatibility proved in ZFC.} Ultraexactingness contradicts the stated finite-family definable-selection principle. This is a theorem about an explicit strengthened theory, not a refutation of bare ultraexactingness.
+
+\textbf{A derived equiconsistency.} Relative to $\Izero$, the obstruction can coexist with $V_\lambda\subseteq\HOD$ and an ordinal-definable well-order of the corresponding quotient of \emph{bounded} countable subsets. This boundary theory and $\ZFC+\Izero$ are equiconsistent. The consistency calibration uses established results; the quotient separation is proved here.
+\end{assessment}
+
+\textbf{Relationship to the supplied report.} This continues its programme of identifying exactly which definable information an embedding cannot preserve. The new argument uses finite permutation symmetry instead of a stationary-partition transfer. It also gives a forbidden coding condition for strong Icarus enrichments.
+
+\textbf{Status and attribution.} Complete conventional proofs are supplied for the deductions developed here. The underlying even/odd critical-sequence trick is already in the literature. Historical novelty of the finite-family formulation has not been established; no priority claim or machine-verified large-cardinal proof is made.
+
+\clearpage
+\tableofcontents
+\vspace{8pt}
+\begin{assessment}{Logical status at a glance}
+\textbf{Imported:} the high-critical-point characterization of ultraexactingness; the rank-$\mu+2$ Kunen obstruction; the ultraexacting/$\Izero$ equiconsistency; and preservation while coding $V_\lambda$ into HOD.
+
+\textbf{Proved below:} the finite-family cycle obstruction, its low-rank-parameter definability consequence, the selector-coded Icarus obstruction, and the bounded/cofinal quotient separation.
+
+\textbf{Not claimed:} inconsistency of $\Izero$, ultraexactingness, exactingness above an extendible, cover exactingness above a strongly compact, or a canonical sharp enrichment.
+\end{assessment}
+
+\clearpage
+\section{From the original programme to a finite obstruction}\label{sec:programme}
+
+The supplied report \cite{unified} distinguishes an axiom from an additional closure, definability, or correctness condition. Its ultraexacting discussion emphasizes the requirement
+\[
+ e=j\restr V_\lambda\in X
+\]
+for a witness $j:X\to V_\zeta$. Its Icarus discussion asks whether selected extra information supplies an obstruction that the unenriched domain lacks. We pursue those two themes, retaining their distinction between ambient existence and internal or definable availability.
+
+The guiding object is not a well-order of an entire rank. It is the much more limited task of choosing an element of each pair of certain equivalence classes. More generally, we allow the selection of $r$ elements from every $n$-element set. Ambient Choice supplies all these functions. The question is whether one function, or even a finite unresolved collection of candidate functions, can be definable from low-rank parameters.
+
+\subsection{The antecedent and the extension}
+
+Goldberg's July 2026 notes, reporting joint work with Blue, use the even and odd terms of a critical sequence to obstruct a linear order on a quotient modulo finite difference in a Berkeley context \cite[Remark~2.4]{cover}. We use that cyclic mechanism, not a newly discovered version of the Kunen theorem. The extension has three parts: arbitrary finite cycles, finite families of selectors that may be permuted, and a transfer to ultraexacting witnesses using their internal restriction clause.
+
+A first calculation gives the divisibility condition
+\[
+ \frac{n}{\gcd(n,r)}\mid |\FF|.
+\]
+That calculation alone does \emph{not} exclude every finite family. The essential additional step is to lengthen the critical-sequence cycle to $n\Lcm(1,\ldots,|\FF|)$. An appropriate power fixes every member of $\FF$ while rotating an $n$-element input transitively. A proper nonempty selected subset cannot survive that rotation.
+
+\subsection{What kind of inconsistency is obtained?}
+
+For a precisely defined principle $\FSel_{n,r}(\lambda)$, the conclusion will be
+\begin{equation}\label{eq:mainneg}
+ \ZFC\vdash
+ \UEx(\lambda)\ \longrightarrow\ \neg\FSel_{n,r}(\lambda)
+ \qquad(1\leq r<n<\omega).
+\end{equation}
+The additional principle requires a finite nonempty family of selectors to be ordinal definable from a parameter in $V_\lambda$. It does not follow from $\AC$. Thus \eqref{eq:mainneg} exposes a specific boundary of definable choice without contradicting the ambient ZFC universe.
+
+The subsequent consistency result is calibrated rather than inflated. The existing ultraexacting/$\Izero$ comparison and coding theorem give its upper and lower bounds \cite[Proposition~3.9 and Theorem~4.5]{abgl}. Our contribution to that comparison is the explicit configuration of quotients and selection failures that those bounds can support.
+
+\section{Definitions and the exact imported ingredients}\label{sec:definitions}
+
+\subsection{Cofinal sequences modulo finite changes}
+
+Work in ZFC unless another background is explicitly specified. For a cardinal $\lambda$ of cofinality $\omega$, put
+\begin{align}
+ D_\lambda&=\{a\subseteq\lambda:\ot(a)=\omega\text{ and }\sup a=\lambda\},\\
+ a\mathrel{E_{\Fin}}b&\quad\Longleftrightarrow\quad |a\mathbin{\triangle}b|<\omega,\\
+ Q_\lambda&=D_\lambda/E_{\Fin}.
+ \label{eq:quotient}
+\end{align}
+The equivalence class of $a$ is denoted $[a]$. The restriction to order type $\omega$ is intentional: every member has its increasing enumeration with domain $\omega$. A finite modification of a member of $D_\lambda$ is still a member of $D_\lambda$.
+
+For a set $Q$ and $1\leq r<n<\omega$, let
+\begin{equation}\label{eq:sel}
+ \Sel_{n,r}(Q)=
+ \{f:[Q]^n\to[Q]^r:\forall B\in[Q]^n\;f(B)\subseteq B\}.
+\end{equation}
+Here $[Q]^k$ means the set of $k$-element subsets of $Q$. Our convention makes a binary choice function take values in singletons. Passing between this convention and a function selecting an element is definable and harmless.
+
+\begin{definition}[Finite definable selection]\label{def:fsel}
+Write $\FSel_{n,r}(\lambda)$ when there is a nonempty finite set
+\[
+ \FF\subseteq\Sel_{n,r}(Q_\lambda)
+ \quad\text{with}\quad \FF\in\OD_{V_\lambda}.
+\]
+The notation $\OD_{V_\lambda}$ means ordinal definability with finitely many additional parameters belonging to $V_\lambda$. These parameters can be combined into one $p\in V_\lambda$. The definition concerns the family $\FF$, not the definability of each $f\in\FF$.
+\end{definition}
+
+Let $\NFC(\lambda)$ abbreviate the assertion that $\FSel_{n,r}(\lambda)$ fails for every pair of positive integers $r<n$. It is an ordinary first-order set-theoretic property, using the usual definability of $\OD_p$. No predicate for the truth of the whole universe is added.
+
+\subsection{Ultraexactingness and high critical points}
+
+\begin{definition}[Ultraexacting]\label{def:uex}
+A cardinal $\lambda$ is ultraexacting if, for every rank height $\zeta>\lambda$, there are $X\prec V_\zeta$ and an elementary embedding $j:X\to V_\zeta$ such that
+\[
+ V_\lambda\cup\{\lambda\}\subseteq X,
+ \qquad j(\lambda)=\lambda,
+ \qquad j\restr\lambda\ne\id,
+ \qquad j\restr V_\lambda\in X.
+\]
+This is the all-height formulation of the cited characterization.
+\end{definition}
+
+The following two established facts are the only large-cardinal inputs to the main incompatibility proof.
+
+\begin{theorem}[Imported witness characterization]\label{thm:highcrit}
+If $\lambda$ is ultraexacting, then for every sufficiently large $\zeta$ and every $\alpha<\lambda$, the witness in Definition~\ref{def:uex} can be chosen with $j\restr\alpha=\id$. Consequently, it can be chosen to fix any prescribed $p\in V_\lambda$ by placing its critical point above $\rank(p)$.
+\end{theorem}
+
+This is the specialization of Aguilera--Bagaria--L\"ucke's Lemma~3.2 to the empty distinguished parameter, together with their ultraexacting characterization \cite{abl}. The standard critical-point fact used in the last sentence is that such an embedding fixes $V_\kappa$ pointwise, where $\kappa=\crit(j\restr V_\lambda)$.
+
+\begin{theorem}[Imported rank obstruction]\label{thm:kunen}
+In ZFC there is no nontrivial elementary self-embedding of $V_{\mu+2}$. In particular, if $\lambda$ is an infinite cardinal and $e:V_\lambda\to V_\lambda$ is nontrivial and elementary, its critical sequence has supremum $\lambda$.
+\end{theorem}
+
+The first assertion is the local Kunen obstruction \cite{kunen,hkp}. For the consequence, let $\mu$ be the critical-sequence supremum. If $\mu<\lambda$, its sequence belongs to $V_\lambda$, so $e(\mu)=\mu$. Since $\lambda$ is a cardinal and $\mu<\lambda$, also $\mu+2<\lambda$. Relativizing elementarity to $V_{\mu+2}$ gives the prohibited restriction. This also establishes $\cf(\lambda)=\omega$ in our setting.
+
+\subsection{Height, rank, and nontransitivity conventions}
+
+All ultraexacting witnesses below are taken with $\zeta>\lambda+\omega$ and with the additional finite reflection requirements specified in the proof. This safely contains the quotients, function graphs, and finite families that occur. The source $X$ need not be transitive. We use $X\prec V_\zeta$ to obtain uniquely defined objects and finite closure; we never infer $X$ is closed under arbitrary ambient countable sequences.
+
+An elementary $j:X\to V_\zeta$ has an elementary restriction $e:V_\lambda\to V_\lambda$: the rank $V_\lambda$ is definable from $\lambda$, the source includes all its elements, and $j(\lambda)=\lambda$. The assertions $e\in X$ and $j(e)=e$ are different. Only the former is assumed. The main incompatibility proof uses set-sized embeddings throughout. Proper-class embeddings appear only in the explicitly qualified inner-model application and in the standard formalizations of the cited consistency comparisons; no elementarity for formulas mentioning $j$ is added.
+
+\section{The finite permutation calculation}\label{sec:finite}
+
+The algebraic part of the proof is independent of set theory. It is useful to separate it from the construction of the critical-sequence classes.
+
+\subsection{A single input and a divisibility test}
+
+\begin{lemma}[Equivariant evaluation]\label{lem:divisibility}
+Let $A=\{q_0,\ldots,q_{n-1}\}$ carry the cycle $\tau(q_i)=q_{i+1\bmod n}$. Let $\FF$ be a nonempty finite set equipped with a permutation $\sigma$, and let $v:\FF\to[A]^r$ satisfy
+\[
+ v(\sigma(f))=\tau``v(f),\qquad 1\leq r<n.
+\]
+Then every $\sigma$-orbit has length divisible by $n/\gcd(n,r)$. In particular,
+\[
+ \frac{n}{\gcd(n,r)}\mid |\FF|.
+\]
+\end{lemma}
+
+\begin{proof}
+If $f$ has orbit length $d$, iterating the displayed identity gives
+$\tau^d``v(f)=v(f)$. The permutation $\tau^d$ has $\gcd(n,d)$ orbits, each of length $n/\gcd(n,d)$. An invariant $r$-element set is a union of those orbits. Thus
+\[
+ \frac{n}{\gcd(n,d)}\mid r
+ \quad\Longleftrightarrow\quad n\mid rd
+ \quad\Longleftrightarrow\quad \frac{n}{\gcd(n,r)}\mid d.
+\]
+The orbit lengths sum to $|\FF|$.
+\end{proof}
+
+\begin{remark}[The arithmetic bound alone is sharp]\label{rem:sharp}
+Set $g=\gcd(n,r)$, $d=n/g$, and $e=r/g$. In $\mathbb Z/n\mathbb Z$, the set
+\[
+ U=\{i+kd:0\leq i<e,\ 0\leq k<g\}
+\]
+has size $r$ and is invariant under translation by $d$. Its least positive translation period is exactly $d$: any period $t$ must satisfy $n\mid rt$, hence $d\mid t$. Its translation orbit therefore gives an equivariant map with a $d$-element source. Disjoint copies give multiples of $d$. This sharpness concerns the finite lemma, not the existence of definable selector families at an ultraexacting cardinal.
+\end{remark}
+
+For example, a binary selector gives the necessary condition that the family have even size. It is invalid to stop there and claim that every finite size is excluded. The next lemma supplies the missing argument.
+
+\subsection{Longer cycles eliminate finite ambiguity}
+
+For $m\geq1$, write
+\[
+ L_m=\Lcm(1,2,\ldots,m).
+\]
+Every permutation of an $m$-element set has order dividing $L_m$.
+
+\begin{lemma}[Finite-family amplification]\label{lem:amplification}
+Fix $m\geq1$ and $1\leq r<n$. Let $A$ have $N=nL_m$ elements and let $\tau$ act on $A$ as a single $N$-cycle. There are no data consisting of an $m$-element set $\FF$, a permutation $\sigma$ of $\FF$, and maps
+\[
+ v_f:[A]^n\to[A]^r\qquad(f\in\FF)
+\]
+such that $v_f(B)\subseteq B$ and
+\begin{equation}\label{eq:equivariance}
+ v_{\sigma(f)}(\tau``B)=\tau``v_f(B)
+ \qquad(f\in\FF,\ B\in[A]^n).
+\end{equation}
+The maps $v_f$ are not required to be distinct.
+\end{lemma}
+
+\begin{proof}
+Iterating \eqref{eq:equivariance} $L_m$ times, and using $\sigma^{L_m}=\id$, gives
+\[
+ v_f(\tau^{L_m}``B)=\tau^{L_m}``v_f(B).
+\]
+Number the elements of $A$ as $q_i$ for $i<N$, with $\tau(q_i)=q_{i+1\bmod N}$. Choose
+\[
+ B_0=\{q_{kL_m}:0\leq k<n\}.
+\]
+The power $\tau^{L_m}$ preserves $B_0$ and acts on it as one $n$-cycle. Therefore
+\[
+ v_f(B_0)=\tau^{L_m}``v_f(B_0).
+\]
+A transitive finite cycle has only two invariant subsets: the empty set and the full set. This contradicts $|v_f(B_0)|=r$ with $0<r<n$.
+\end{proof}
+
+\begin{remark}[What is being iterated]
+Only permutations of finite sets are iterated in this lemma. Its later application does not require $j[X]\subseteq X$, a global iterate of an ultraexacting witness, a direct limit, or any iterability hypothesis.
+\end{remark}
+
+The distinction is already visible with two binary selectors. On a two-point cycle the selectors can be exchanged, so the divisibility test permits a family of size two. On a four-point cycle, squaring fixes the two selectors but swaps each antipodal pair. No selector can preserve that swap. This is the case $n=2$, $m=2$, $L_m=2$ of the lemma.
+
+\section{Critical-sequence cycles inside the witness domain}\label{sec:cycles}
+
+\begin{lemma}[An internal sequence from the restriction clause]\label{lem:sequence}
+Let $j:X\to V_\zeta$ be an ultraexacting witness at $\lambda$, with $\zeta>\lambda+\omega$, and put $e=j\restr V_\lambda\in X$. Then $X$ contains
+\[
+ \vec\kappa=\langle\kappa_t:t<\omega\rangle,
+ \qquad \kappa_0=\crit(e),\quad \kappa_{t+1}=e(\kappa_t),
+\]
+and $\sup_t\kappa_t=\lambda$.
+\end{lemma}
+
+\begin{proof}
+The least ordinal moved by $e$ is uniquely definable from $e$ and $\lambda$. The recursive $\omega$-sequence starting there is likewise uniquely definable from these parameters. It exists in $V_\zeta$: its graph has rank $\lambda$ once its supremum is $\lambda$, and in any case has rank at most $\lambda$. Since $e,\lambda\in X\prec V_\zeta$, the critical point and the sequence belong to $X$. The supremum assertion follows from Theorem~\ref{thm:kunen} applied to $e$.
+\end{proof}
+
+\begin{lemma}[Arbitrarily long finite cycles]\label{lem:cycles}
+For every positive integer $N$, there is a finite set
+\[
+ A_N=\{q_0,\ldots,q_{N-1}\}\in X,
+ \qquad A_N\subseteq Q_\lambda,
+\]
+whose elements all belong to $X$, such that $j(q_i)=q_{i+1\bmod N}$. In particular, $j(A_N)=A_N$.
+\end{lemma}
+
+\begin{proof}
+Using the sequence from Lemma~\ref{lem:sequence}, define
+\[
+ a_i=\{\kappa_{Nk+i}:k<\omega\},\qquad q_i=[a_i],\qquad i<N.
+\]
+Each $a_i$ and its increasing enumeration belong to $X$ by unique definability from $\vec\kappa,N,i$. The sets $a_i$ are cofinal of order type $\omega$ and are pairwise disjoint, so their equivalence classes are distinct.
+
+If $s_i:\omega\to a_i$ is the increasing enumeration, elementarity gives an enumeration $j(s_i)$ of $j(a_i)$. Every integer is fixed, hence
+\[
+ j(s_i)(k)=j(s_i(k))=j(\kappa_{Nk+i})=\kappa_{Nk+i+1}.
+\]
+Consequently,
+\begin{equation}\label{eq:residues}
+ j(a_i)=
+ \begin{cases}
+ a_{i+1},&i<N-1,\\
+ a_0\setminus\{\kappa_0\},&i=N-1.
+ \end{cases}
+\end{equation}
+This is a justified instance of $j(a_i)=j``a_i$: the source contains an enumeration with fixed domain $\omega$.
+
+At the chosen height, the quotient $Q_\lambda$ and the operation $a\mapsto[a]$ are the actual ambient ones. They are definable from $\lambda$, so $Q_\lambda\in X$, $j(Q_\lambda)=Q_\lambda$, and
+\[
+ j([a_i])=[j(a_i)].
+\]
+Equation~\eqref{eq:residues} gives the claimed cycle. Finite closure of $X$ yields $A_N\in X$ and $j(A_N)=j``A_N=A_N$.
+\end{proof}
+
+\subsection{Why the quotient is necessary}
+
+The critical sequence itself is shifted, not fixed. Its last residue class is sent to the first with one initial point removed. Passing to $E_{\Fin}$ removes exactly this defect, producing a genuine finite cycle. Nothing is asserted about a cycle of representatives under equality.
+
+The quotient classes have higher rank than the representatives. This is harmless for the ultraexacting witness because its target height was chosen above $\lambda+\omega$, but it must be respected in a rank-$\lambda+1$ coding argument. Section~\ref{sec:icarus} handles that issue explicitly.
+
+\subsection{A local obstruction that does not require definability}
+
+\begin{proposition}[No preserved finite family]\label{prop:fixedfamily}
+For a witness as in Lemma~\ref{lem:sequence}, there is no nonempty finite family
+\[
+ \FF\in X,\qquad \FF\subseteq\Sel_{n,r}(Q_\lambda),
+ \qquad j(\FF)=\FF,
+ \qquad 1\leq r<n.
+\]
+\end{proposition}
+
+\begin{proof}
+Let $m=|\FF|$. Since $\FF$ is finite and belongs to $X$, all its members belong to $X$. For example, a bijection $m\to\FF$ can be found in $X$ by elementarity, and all elements of its domain belong to $X$. Moreover, $j(\FF)=j``\FF$, so $\sigma=j\restr\FF$ is a permutation.
+
+Set $N=nL_m$ and take $A=A_N$ from Lemma~\ref{lem:cycles}; let $\tau=j\restr A$. Every finite subset of $A$ belongs to $X$. For $f\in\FF$ and $B\in[A]^n$, the value $f(B)$ is an element of $X$, is a finite subset of $B$, and obeys
+\[
+ j(f)(j(B))=j(f(B)).
+\]
+Since $j(B)=\tau``B$ and $j(f(B))=\tau``f(B)$, the restrictions $v_f=f\restr[A]^n$ satisfy \eqref{eq:equivariance}. Lemma~\ref{lem:amplification} gives a contradiction.
+\end{proof}
+
+This proposition identifies the entire local obstruction. Definability is one way to obtain a family that is preserved; it is not needed once that preservation has been supplied. Also, only the finite restrictions of the selectors are used. Distinct global selectors may have identical restrictions, which is why Lemma~\ref{lem:amplification} allows that possibility.
+
+\section{Eliminating ordinal parameters and proving the main theorem}\label{sec:main}
+
+The definability step requires care. A given ordinal-definable family may have been defined using ordinals that the chosen embedding moves. We cannot simply assert that it is fixed.
+
+\subsection{Canonicalization followed by finite reflection}
+
+\begin{lemma}[A fixed definable witness]\label{lem:canonical}
+Let $\lambda$ be ultraexacting, let $p\in V_\lambda$, and let $\Phi(z,p,\lambda,\bar k)$ be a first-order property, where $\bar k$ is a finite tuple of natural numbers. If some $z\in\OD_p$ satisfies $\Phi$, then there is such a witness $z_*$ and an ultraexacting witness $j:X\to V_\zeta$ with
+\[
+ z_*\in X,\qquad j(z_*)=z_*.
+\]
+The height can be chosen above any prescribed rank bound needed for these objects.
+\end{lemma}
+
+\begin{proof}
+The class $\OD_p$ has its usual canonical definable well-order, obtained by ordering ordinal-definition codes. One implementation uses the least rank height supporting a definition over a set $V_\theta$, followed by a fixed ordering of formula numbers and finite tuples of ordinal parameters. Satisfaction for $V_\theta$ is a set-theoretic relation. This supplies a set-like well-order of the codes and hence a canonical least code for each $\OD_p$ object.
+
+Choose the least $\OD_p$ witness to $\Phi$ in this order. The resulting $z_*$ is uniquely definable from $p,\lambda,\bar k$; the original ordinal parameters no longer need to be fixed individually. Let $\Psi(z,p,\lambda,\bar k)$ be a formula expressing this unique definition.
+
+Apply reflection to the finite collection of formulas expressing $\Psi$, its uniqueness, and $\Phi$, with the indicated parameters. Choose $\zeta$ beyond the required rank bound such that $V_\zeta$ recognizes the same unique $z_*$ and the required assertion $\Phi(z_*,p,\lambda,\bar k)$. This does not claim that all formulas, all ordinal definitions, or the full truth of $V$ are reflected at one height.
+
+Use Theorem~\ref{thm:highcrit} to obtain a witness at that height with critical point above $\rank(p)$. Then $j(p)=p$, $j(\lambda)=\lambda$, and $j(\bar k)=\bar k$. Since $X\prec V_\zeta$, uniqueness gives $z_*\in X$. Applying $j$ to its definition inside $X$ gives $V_\zeta\models\Psi(j(z_*),p,\lambda,\bar k)$. The same uniqueness yields $j(z_*)=z_*$.
+\end{proof}
+
+\begin{theorem}[Finite-family definable-selection obstruction]\label{thm:main}
+If $\lambda$ is ultraexacting, then $\NFC(\lambda)$ holds. Explicitly, for every $1\leq r<n<\omega$, there is no nonempty finite $\FF\in\OD_{V_\lambda}$ with
+\[
+ \FF\subseteq\Sel_{n,r}(Q_\lambda).
+\]
+\end{theorem}
+
+\begin{proof}
+Suppose $\FF$ is such a family, let $m=|\FF|$, and choose $p\in V_\lambda$ with $\FF\in\OD_p$. Apply Lemma~\ref{lem:canonical} to the property that $z$ is an $m$-element subset of $\Sel_{n,r}(Q_\lambda)$. Take the height above $\lambda+\omega$, so the selector property is interpreted on the actual quotient. We obtain an actual family $\FF_*$ of the same size and an ultraexacting witness with
+\[
+ \FF_*\in X,\qquad j(\FF_*)=\FF_*.
+\]
+Proposition~\ref{prop:fixedfamily} is a contradiction.
+\end{proof}
+
+\begin{corollary}[A precisely delimited inconsistent extension]\label{cor:inconsistent}
+For every fixed $1\leq r<n<\omega$, the following theory is inconsistent:
+\[
+ \ZFC+\exists\lambda\,
+ \bigl(\UEx(\lambda)\wedge\FSel_{n,r}(\lambda)\bigr).
+\]
+The uniform version allowing $n$ and $r$ to be existentially quantified is inconsistent as well.
+\end{corollary}
+
+The corollary is a deduction in ZFC, not a claim conditional on the HOD Hypothesis, a strongly compact cardinal, or the existence of an extendible. Its additional assumption is exactly the stated definable-selection principle.
+
+\subsection{Immediate consequences and their limits}
+
+\begin{corollary}\label{cor:orders}
+At an ultraexacting $\lambda$:
+\begin{enumerate}
+\item No $\OD_{V_\lambda}$ function selects $r$ elements from every $n$-element subset of $Q_\lambda$, for $0<r<n$.
+\item There is no nonempty finite $\OD_{V_\lambda}$ family of linear orders of $Q_\lambda$.
+\item There is no nonempty finite $\OD_{V_\lambda}$ family of choice functions on all nonempty finite subsets of $Q_\lambda$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+For (1), take the singleton family. For (2), send each order to its binary selector choosing the smaller element, as a singleton. The image of the family is finite, nonempty, and definable from it and $Q_\lambda$. Theorem~\ref{thm:main} rules it out. For (3), restrict each function to the pairs and replace its value by a singleton. The image is again a finite nonempty definable family. Injectivity of the restriction operation is not needed.
+\end{proof}
+
+In particular, $\Sel_{n,r}(Q_\lambda)$ is an ordinal-definable nonempty set, because it is definable from $\lambda,n,r$ and nonempty by ambient Choice. Yet it has no nonempty finite subset in $\OD_{V_\lambda}$. This is the precise sense in which finite definable ambiguity does not restore choice here.
+
+The result is not an assertion that $Q_\lambda$ has no linear order in $V$, or that finite choice fails in $V$. Every such order or selector supplied by $\AC$ simply lies outside the prohibited definability class. Nor does the proof establish the same conclusion from ordinary exactingness: its internal construction of the critical sequence used $e\in X$ essentially.
+
+\section{A forbidden enrichment for strong Icarus embeddings}\label{sec:icarus}
+
+The original report asks for specific coding information that cannot be absorbed into an invariant Icarus domain. We can now name such information without requiring a well-order of all of $V_{\lambda+1}$.
+
+\subsection{The full-base version of the obstruction}
+
+\begin{theorem}[Preserved finite families over a full base]\label{thm:fullbase}
+In an ambient ZFC universe, let $\lambda$ be an infinite cardinal, and let $N$ be a transitive inner model of ZF containing all of $V_{\lambda+1}$. Suppose
+\[
+ j:N\to N,
+ \qquad \crit(j)<\lambda,
+ \qquad j(\lambda)=\lambda,
+ \qquad \sup_{t<\omega}j^t(\crit(j))=\lambda.
+\]
+Assume that the indicated set restrictions and critical sequence of $j$ exist in the ambient formalization. Then there is no nonempty finite family
+\[
+ \FF\in N,\qquad \FF\subseteq\Sel_{n,r}(Q_\lambda),
+ \qquad j(\FF)=\FF,
+ \qquad 0<r<n.
+\]
+\end{theorem}
+
+\begin{proof}
+The external critical sequence has rank $\lambda$, so its graph belongs to $V_{\lambda+1}\subseteq N$. The residue sets and their enumerations therefore belong to $N$. All subsets of $\lambda$, and all graphs of maps from $\omega$ into $\lambda$, belong to $N$. Thus $N$ computes $D_\lambda$, finite equivalence, and $Q_\lambda$ correctly. Separation and Replacement in $N$ form the same equivalence classes and quotient as in $V$.
+
+The calculations of Lemma~\ref{lem:cycles} now take place with source $N$. For $m=|\FF|$, they produce an $nL_m$-cycle. The preserved family supplies a finite permutation, and evaluation supplies \eqref{eq:equivariance}. Lemma~\ref{lem:amplification} gives the contradiction. No axiom of Choice inside $N$ is needed.
+\end{proof}
+
+The critical sequence is available here for a different reason than in the ultraexacting argument. It belongs to the \emph{full base rank}. We do not assume that $j\in N$ or that $N$ itself recognizes a class embedding of its universe.
+
+\subsection{Coding a selector at the allowed rank}
+
+For $f\in\Sel_{n,r}(Q_\lambda)$, define a predicate $E_f\subseteq V_{\lambda+1}$ as follows. For an $n$-tuple $\vec a=(a_0,\ldots,a_{n-1})$ of members of $D_\lambda$ with distinct equivalence classes, and $i<n$, set
+\begin{equation}\label{eq:code}
+ \Code(\vec a,i)=
+ \{\langle0,i\rangle\}\ \cup\
+ \{\langle k+1,\alpha\rangle:k<n,\ \alpha\in a_k\}.
+\end{equation}
+Using the ordinary Kuratowski pair, all pairs on the right lie in $V_\lambda$. The code is a subset of $V_\lambda$, hence an element of $V_{\lambda+1}$. Put
+\begin{equation}\label{eq:ef}
+ E_f=\{\Code(\vec a,i):[a_i]\in f(\{[a_0],\ldots,[a_{n-1}]\})\}.
+\end{equation}
+The marker with first coordinate $0$ records $i$; the other sections recover the representatives. In particular, decoding is unique. The rank of $E_f$ is at most $\lambda+1$, so $E_f\in V_{\lambda+2}$, as required for an Icarus-type enrichment.
+
+\begin{lemma}[Recoverability]\label{lem:decode}
+If $N\models\ZF$ is transitive, contains $V_{\lambda+1}$, and contains $E_f$, then $f\in N$ and $f$ is uniquely definable there from $E_f,\lambda,n,r$.
+\end{lemma}
+
+\begin{proof}
+For $B\in[Q_\lambda]^n$, choose any finite enumeration of its elements and representatives $a_i$. Such finite choices require no global Choice, and the representatives and tuple codes all belong to $N$. The predicate $E_f$ identifies exactly the $r$ selected classes. By construction this answer is independent of the enumeration and the representatives. Consequently the graph of $f$ is uniquely specified by a formula using $E_f,\lambda,n,r$. Separation on the appropriate product of finite-subset spaces, or Replacement using the unique output for each $B$, forms that graph in $N$.
+\end{proof}
+
+\begin{corollary}[Selector-coded strong Icarus is inconsistent]\label{cor:icarus}
+There is no elementary embedding
+\[
+ j:L(V_{\lambda+1},E_f)\to L(V_{\lambda+1},E_f)
+\]
+with $\crit(j)<\lambda$, $j(\lambda)=\lambda$, and $j(E_f)=E_f$, where $f\in\Sel_{n,r}(Q_\lambda)$ and $0<r<n$.
+More generally, a fixed enrichment cannot define, from fixed parameters, a nonempty finite family of these selectors.
+\end{corollary}
+
+\begin{proof}
+The restriction to $V_\lambda$ and Theorem~\ref{thm:kunen} ensure that the critical-sequence supremum is $\lambda$. Lemma~\ref{lem:decode} and elementarity give $j(f)=f$. Apply Theorem~\ref{thm:fullbase} to the singleton $\{f\}$. For the more general assertion, apply that theorem directly to the uniquely defined finite family.
+\end{proof}
+
+\subsection{What the coding corollary does not say}
+
+This is a forbidden \emph{information condition} on a strong enrichment, not a refutation of unspecified Icarus sets or of $\Izero^{\#}$. Nothing here proves that a canonical sharp supplies $E_f$, supplies a preserved selector, or makes the relevant finite family definable. Establishing one of those implications would be an additional theorem.
+
+It is also essential that the enrichment be fixed, or that the particular decoded family otherwise be preserved. Mere membership of a selector in the domain is not the hypothesis of Theorem~\ref{thm:fullbase}. An embedding may move it. The rank calculation \eqref{eq:code} avoids a different error: the quotient classes themselves are not elements of $V_{\lambda+1}$, so a predicate on that base must code their representatives rather than silently place the classes one rank too low.
+
+\section{A bounded/cofinal separation calibrated by I0}\label{sec:consistency}
+
+We now show that the obstruction is compatible with substantial positive definability immediately below $\lambda$. This provides both a relative-consistency result and a control on overinterpreting the negative theorem.
+
+\subsection{The bounded comparison space}
+
+Define
+\begin{align}
+ D^\bd_\lambda
+ &=\{a\subseteq\lambda:|a|=\aleph_0\text{ and }\sup a<\lambda\},\\
+ Q^\bd_\lambda&=D^\bd_\lambda/E_{\Fin}.
+\end{align}
+Here we allow all countably infinite bounded subsets, including order types other than $\omega$. Finite modifications remain in this domain. This quotient should not be identified with $Q_\lambda$: its members have bounded representatives, whereas every representative used in $Q_\lambda$ is cofinal.
+
+\begin{proposition}[Bounded quotient in HOD]\label{prop:bounded}
+If $\lambda$ is an uncountable cardinal and $V_\lambda\subseteq\HOD$, then $Q^\bd_\lambda\in\HOD$. In particular, $Q^\bd_\lambda$ has an ordinal-definable well-order and ordinal-definable $r$-of-$n$ selectors for every $0<r<n$.
+\end{proposition}
+
+\begin{proof}
+Every $a\in D^\bd_\lambda$ has rank less than $\lambda$, so $a\in\HOD$. The set $D^\bd_\lambda$ is ordinal definable from $\lambda$ and its members are hereditarily ordinal definable, hence $D^\bd_\lambda\in\HOD$.
+
+For each $a$, the actual equivalence class $[a]_{\bd}$ is definable from $a$ and $\lambda$. Since $a\in\HOD$, this class is ordinal definable; all its members belong to $\HOD$, so the class itself belongs to $\HOD$. This argument does not assert that the whole class has rank below $\lambda$: its finite variants can reach arbitrarily high ordinals below $\lambda$.
+
+The quotient $Q^\bd_\lambda$ is ordinal definable from $\lambda$, and all of its elements are in HOD. Thus it is in HOD. Choice in the transitive inner model HOD supplies a well-order belonging to HOD. Such a relation is an actual well-order in $V$: its HOD isomorphism with an ordinal remains an isomorphism externally. Being in HOD, the relation is ordinal definable in $V$. Selecting the first $r$ elements of each $n$-element set gives the required selectors.
+\end{proof}
+
+\subsection{The imported consistency machinery}
+
+We use two precise results of Aguilera--Bagaria--Goldberg--L\"ucke \cite{abgl}:
+\begin{align}
+ \Con(\ZFC+\exists\lambda\,\UEx(\lambda))
+ &\longleftrightarrow\Con(\ZFC+\Izero),\label{eq:importeq}\\
+ \UEx(\lambda)&\Longrightarrow
+ \text{a forcing extension with }\UEx(\lambda)
+ \text{ and }V_\lambda\subseteq\HOD.\label{eq:importforce}
+\end{align}
+These are their Theorem~4.5 and Proposition~3.9. The latter allows the forcing to be $\gamma$-directed closed for any specified cardinal $\gamma>\lambda$. We use the theorem as a preservation-and-coding result, not as a claim that arbitrary coding forcing preserves ultraexactingness.
+
+\begin{definition}[Boundary theory]\label{def:boundary}
+Let $\Tbd$ be ZFC plus the assertion that there is a cardinal $\lambda$ such that
+\begin{enumerate}
+\item $\lambda$ is ultraexacting and $V_\lambda\subseteq\HOD$;
+\item $Q^\bd_\lambda$ has an ordinal-definable well-order;
+\item $\NFC(\lambda)$ holds: no nonempty finite $\OD_{V_\lambda}$ family of $r$-of-$n$ selectors on $Q_\lambda$ exists, for any $0<r<n<\omega$.
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}[Derived equiconsistency]\label{thm:equiconsistency}
+\begin{equation}\label{eq:boundaryeq}
+ \boxed{\quad
+ \Con(\Tbd)\ \longleftrightarrow\ \Con(\ZFC+\Izero).
+ \quad}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For the forward implication, a model of $\Tbd$ is a model of ZFC with an ultraexacting cardinal. Apply the established consistency comparison \eqref{eq:importeq}.
+
+For the reverse implication, \eqref{eq:importeq} supplies the consistency of ZFC with an ultraexacting $\lambda$. Apply \eqref{eq:importforce} to obtain, in the usual relative-consistency sense, an extension in which $\lambda$ is still ultraexacting and $V_\lambda\subseteq\HOD$. Proposition~\ref{prop:bounded} gives clause~(2), and Theorem~\ref{thm:main} gives clause~(3). Hence this is a model of $\Tbd$.
+\end{proof}
+
+\begin{remark}[No extra transitive-model premise]
+The model language in the proof abbreviates the standard syntactic relative-consistency and forcing arguments underlying the imported theorems. We do not strengthen $\Con(T)$ to the existence of a transitive set model of $T$. Nor is \eqref{eq:boundaryeq} a same-universe implication that every ultraexacting cardinal carries an $\Izero$ embedding.
+\end{remark}
+
+\subsection{The separation expressed without large-cardinal shorthand}
+
+The resulting ZFC model has an ordinal-definable well-order on the bounded quotient, yet no ordinal-definable binary selector, even up to a nonempty finite definable family, on the cofinal quotient. Ambient selectors exist on both. Moreover, in this model every $p\in V_\lambda$ is ordinal definable, so allowing such $p$ as an extra parameter does not enlarge OD. The low-rank-parameter prohibition therefore has an especially direct interpretation there.
+
+The new clauses do not add consistency strength to the already known theory of an ultraexacting $\lambda$ with $V_\lambda\subseteq\HOD$: they follow from it. Thus Theorem~\ref{thm:equiconsistency} is a \emph{derived boundary comparison}, not a new lower bound or a new proof of the deep comparison \eqref{eq:importeq}. Its content is the explicit coexistence pattern, including the finite-family obstruction.
+
+\section{Proof audit and limits of the conclusion}\label{sec:audit}
+
+\subsection{The dependencies that matter}
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{@{}P{.25\textwidth}P{.68\textwidth}@{}}
+\toprule
+\textbf{Step}&\textbf{Exact justification}\\
+\midrule\endfirsthead
+\toprule\textbf{Step}&\textbf{Exact justification}\\\midrule\endhead
+Fixing a low-rank parameter & The imported high-critical-point characterization; not a claim about every witness.\\[4pt]
+Fixing an OD family & Canonicalize among suitable $\OD_p$ families, then reflect the one definition and its uniqueness. The original ordinal parameters need not be fixed.\\[4pt]
+Putting the critical sequence in $X$ & Unique recursion from $e=j\restr V_\lambda\in X$. No ambient countable closure of $X$ is assumed.\\[4pt]
+Identifying the supremum & The local Kunen obstruction, after restricting a hypothetical lower critical-sequence limit to two more ranks.\\[4pt]
+Computing $j(a_i)$ pointwise & An increasing enumeration with domain $\omega$ belongs to the source. Pointwise image is not asserted for arbitrary infinite sets.\\[4pt]
+Producing a true finite cycle & Quotienting the missing first critical point by finite symmetric difference.\\[4pt]
+Permuting the family & Finite source sets contain all their elements; $j(\FF)=\FF$ yields a finite permutation, not pointwise fixedness.\\[4pt]
+Amplifying the contradiction & Use $N=nL_m$ classes. Only permutations of finite sets and the evaluation identity are iterated.\\[4pt]
+Computing the quotient & In the ultraexacting proof, use $\zeta>\lambda+\omega$. In the inner-model proof, use all of $V_{\lambda+1}\subseteq N$.\\[4pt]
+Obtaining equiconsistency & Invoke the two cited ABGL theorems, then prove the quotient properties. No new preservation theorem is assumed.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\Needspace{245pt}
+\subsection{The rank ledger}
+
+For the cofinal quotient, the following bounds hold with the usual encodings. They explain why the large target height is convenient and why the representative coding in Section~\ref{sec:icarus} is needed.
+\begin{center}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}P{.47\textwidth}Y@{}}
+\toprule
+\textbf{Object}&\textbf{Rank bound or location}\\\midrule
+Cofinal $a\subseteq\lambda$ of order type $\omega$ & $\rank(a)=\lambda$; $a\in V_{\lambda+1}$.\\
+Critical-sequence graph and tuple code & Rank at most $\lambda$; members of $V_{\lambda+1}$.\\
+Equivalence class $[a]$ & Rank $\lambda+1$; in $V_{\lambda+2}$.\\
+The quotient $Q_\lambda$ & Rank $\lambda+2$; in $V_{\lambda+3}$.\\
+Finite subset of $Q_\lambda$ & Rank at most $\lambda+2$.\\
+An $r$-of-$n$ selector graph & Rank at most $\lambda+5$.\\
+A finite family of selector graphs & Rank at most $\lambda+6$.\\
+The selector predicate $E_f$ & A subset of $V_{\lambda+1}$; in $V_{\lambda+2}$.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Nothing depends on the optimal finite offsets in the last function-graph bounds. The uniform choice $\zeta>\lambda+\omega$ avoids any hidden rank compression. In the bounded quotient, equivalence classes can have representatives of unbounded ranks below $\lambda$, even though each individual representative lies in $V_\lambda$; Proposition~\ref{prop:bounded} did not overlook this.
+
+\subsection{Why this does not settle the other tracks}
+
+The global cardinal-preserving problem requires a transfer of external stationarity or comparable information. Our finite-cycle calculation supplies no such transfer. The cover-exacting/strongly compact question requires a new definability or covering implication, and none is asserted here. Ordinary exactingness lacks the internal restriction clause used to create the critical sequence in a nontransitive source.
+
+For canonical Icarus enrichments, the missing statement is now explicit: show that the particular enrichment defines a preserved finite family of selectors of the indicated kind. A code for a truth-related object does not by itself establish that statement. The same caution applies to adding a smaller extendible cardinal: no part of this proof shows that extendibility supplies the forbidden selector.
+
+\begin{assessment}{The actual gain over the original diagnostic}
+One now has a reusable obstruction with no stationary-set correctness premise. Its input is a preserved finite family of selection operations; its mechanism is an arbitrarily long finite cycle of critical-sequence classes. Its main application establishes a low-rank definability prohibition for ultraexacting cardinals, and its consistency control shows precisely how that prohibition can coexist with strong bounded definability.
+\end{assessment}
+
+\section{Further questions with explicit missing steps}\label{sec:questions}
+
+These questions are proposed research directions, not steps concealed inside the proofs.
+
+\begin{question}[Ordinary exactingness]
+Does ordinary exactingness already rule out an $\OD_{V_\lambda}$ binary selector on $Q_\lambda$? If not, can an exacting model with such a selector be constructed?
+\end{question}
+
+The present proof cannot simply delete the prefix ``ultra''. One would need a different reason for the relevant critical subsequences and their enumerations to lie in the chosen source, or an alternative embedding acting on the full base.
+
+\begin{question}[Infinite definable families]
+What is the least possible size of a nonempty $\OD_{V_\lambda}$ subfamily of $\Sel_{n,r}(Q_\lambda)$ at an ultraexacting $\lambda$? In particular, can such a family be countable?
+\end{question}
+
+The full selector space is ordinal definable and nonempty, so the question is not whether some definable family exists. Finiteness was used twice: to place every family member in the source, and to obtain a common finite exponent for its permutation. Neither step is automatic for an externally countable family. Thus the amplification argument does not answer this question by replacing $m$ with $\omega$.
+
+\begin{question}[Canonical enrichment versus selection]
+For a specified canonical Icarus enrichment $E$, is there a selector predicate $E_f$ definable in $L(V_{\lambda+1},E)$ from parameters fixed by its embedding? More generally, can a finite nonempty selector family be so defined?
+\end{question}
+
+A positive answer would activate Corollary~\ref{cor:icarus}; a negative theorem identifying why that definition is unavailable would explain part of the consistency boundary. Both require an analysis of the actual enrichment, not its name.
+
+\begin{question}[Preservation of the boundary]
+Which forcings preserve the finite-family selection prohibition without preserving full ultraexactingness?
+\end{question}
+
+Theorem~\ref{thm:main} guarantees preservation whenever ultraexactingness survives, but that is only a sufficient condition. A weaker preservation theorem could isolate the finite-cycle property as an independently useful principle. No general assertion about arbitrary closed or homogeneous forcing follows from the one imported coding construction.
+
+\section{Conclusion and novelty statement}\label{sec:conclusion}
+
+The main theorem excludes finite definable selection families at an ultraexacting cardinal. The nontrivial finite-family step is to let the embedding permute the candidates, take a common exponent of that permutation, and construct a longer critical-sequence cycle on which the same exponent still acts nontrivially. This avoids both a false fixed-member argument and an unsupported iteration of the whole embedding.
+
+Together with explicit representative coding, the theorem gives a prohibited strong-Icarus enrichment. Together with established forcing and consistency comparisons, it yields an $\Izero$-calibrated model in which the bounded quotient is ordinal-definably well-orderable while the cofinal quotient has no finite definable family of binary selectors.
+
+These are \emph{proved deductions from the stated imported theorems}. The basic cyclic obstruction has a clear antecedent in Goldberg's notes, and the underlying ultraexacting and forcing machinery belongs to the cited authors. The particular finite-family amplification and boundary formulation are additions to the supplied report. A targeted literature check did not identify this precise combined formulation, but that is not an exhaustive priority determination. The manuscript should be treated as a research continuation subject to expert checking, not as an announcement of a resolved major large-cardinal inconsistency.
+
+\clearpage
+\appendix
+\section{Reproducible finite checks}\label{app:checks}
+
+The archive includes \nolinkurl{finite_orbit_check.py} and the output \nolinkurl{finite_checks.json}. They use only Python's standard library and can be rerun with
+\begin{quote}\ttfamily\small
+python finite\_orbit\_check.py --output finite\_checks.json
+\end{quote}
+The checks are deliberately confined to the finite algebra. They do not produce finite models of ZFC or verify any existence statement about elementary embeddings.
+
+The script exhaustively checks the period divisibility calculation for all $32{,}738$ nonempty proper subsets of cycles of lengths $2$ through $14$. It also checks all $91$ sharp-period constructions in Remark~\ref{rem:sharp} in that range, and $132$ exponent-amplification instances with $1\leq m\leq12$ and $2\leq n\leq12$. All assertions passed.
+
+For an additional independent view, a binary selector on a finite set is a tournament orientation. The script enumerates every such selector for cycles of lengths $2$ through $6$, then computes its orbit under conjugation by the cyclic permutation. The results are:
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{}rrY@{}}
+\toprule
+\textbf{Cycle size}&\textbf{Selectors}&\textbf{Orbit length: number of orbits}\\\midrule
+2 & 2 & $2:1$\\
+3 & 8 & $1:2$, $3:2$\\
+4 & 64 & $4:16$\\
+5 & 1,024 & $1:4$, $5:204$\\
+6 & 32,768 & $2:16$, $6:5{,}456$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The four-point row illustrates why a preserved family of two binary selectors is impossible on the amplified cycle. The six-point row illustrates why inspecting just one arbitrary longer cycle is not enough: there really are two-element orbits of binary selectors there. The proof chooses the specific length $nL_m$, rather than assuming every cycle length works.
+
+No Lean or other proof-assistant verification of the set-theoretic results was performed. The analytic proofs in the main text, their explicit use of the imported theorems, and the finite test suite are distinct forms of evidence; the computation is supplementary, not a substitute for those proofs.
+
+\clearpage
+\section{Provenance and reproducibility}\label{app:provenance}
+
+The starting document was \nolinkurl{Large_Cardinals_Unified_Report.tex}, supplied with the request. Its definitions, warnings about ambient versus internal information, and ultraexacting/Icarus research programme determined the scope of this continuation. Its Palatino-style \texttt{newpxtext}/\texttt{newpxmath} typography, page geometry, theorem presentation, headings, and Forest--Olive--Sage palette are retained. The source report is not silently revised.
+
+The external inputs were checked against the stated versions of the primary sources on 18 September 2026. The July 2026 material is identified as lecture notes, and the equiconsistency and preservation claims are attributed to the ABGL preprint rather than represented as new results of this manuscript. No withdrawn inconsistency claim is used.
+
+The \LaTeX{} source is self-contained apart from standard packages. Compile with \texttt{latexmk -pdf} or run \texttt{pdflatex} sufficiently many times to resolve the table of contents and cross-references. No external figures, bibliography database, custom font files, network access, or executable shell escape are needed.
+
+\vspace{10pt}
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{99}
+\small
+\setlength{\itemsep}{7pt}
+\setlength{\parskip}{1pt}
+
+\bibitem{unified}
+\emph{Large cardinals at the inconsistency frontier: A unified assessment of ZFC-compatible hypotheses, their obstructions, and the evidence on both sides}.
+Supplied research report, 18 September 2026.
+\nolinkurl{Large_Cardinals_Unified_Report.tex}.
+Sections 8, 9, and 13 provide the principal ultraexacting, Icarus, and research-programme starting points. The present manuscript is a separate continuation.
+
+\bibitem{kunen}
+K.~Kunen. \emph{Elementary embeddings and infinitary combinatorics}.
+Journal of Symbolic Logic \textbf{36}(3) (1971), 407--413.
+\doi{10.2307/2269948}.
+
+\bibitem{hkp}
+J.~D.~Hamkins, G.~Kirmayer, and N.~L.~Perlmutter.
+\emph{Generalizations of the Kunen inconsistency}.
+Annals of Pure and Applied Logic \textbf{163} (2012), 1872--1890.
+\arxiv{1106.1951v2}.
+Used for the scope of Kunen-type obstructions and the care required with external embeddings and class formulations.
+
+\bibitem{abl}
+J.~P.~Aguilera, J.~Bagaria, and P.~L\"ucke.
+\emph{Large cardinals, structural reflection, and the HOD Conjecture}.
+\arxiv{2411.11568v4}, 16 September 2025.
+Lemma~3.2 and Definition~3.3 supply the high-critical-point ultraexacting witness characterization. Section~3.5 gives related definable partition consequences. We do not attribute the finite-family theorem of this continuation to that paper.
+
+\bibitem{abgl}
+J.~P.~Aguilera, J.~Bagaria, G.~Goldberg, and P.~L\"ucke.
+\emph{Large cardinals beyond HOD}.
+\arxiv{2509.10254v1}, 12 September 2025.
+Proposition~3.9 supplies preservation with $V_\lambda\subseteq\HOD$; Theorem~4.5 supplies the equiconsistency of ultraexacting existence and $\Izero$. These are the two imported inputs to Theorem~\ref{thm:equiconsistency}.
+
+\bibitem{cover}
+G.~Goldberg. \emph{Consistency beyond the Kunen inconsistency}.
+Lecture notes dated 1 July 2026, reporting joint work with D.~Blue.
+\url{https://math.berkeley.edu/~goldberg/Slides/CoverExact.pdf}.
+Remark~2.4 gives the even/odd critical-sequence obstruction on a quotient modulo finite difference, the direct antecedent of the cyclic method used here. Cited as lecture notes.
+
+\end{thebibliography}
+\end{document}

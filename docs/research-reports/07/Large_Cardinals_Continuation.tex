@@ -1,0 +1,958 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=13pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+% newpxtext selects TeX Gyre Heros (qhv), scaled to .94, for sans serif.
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Forest}{HTML}{30392C}
+\definecolor{Olive}{HTML}{687144}
+\definecolor{Muted}{HTML}{65685F}
+\definecolor{Sage}{HTML}{CBD0BC}
+\definecolor{Pale}{HTML}{F2F4EB}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{pdftitle={Large cardinals at the inconsistency frontier: local coding and finite symmetry},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Conditional inconsistency, complete definability, and an I0-calibrated consistency result},pdfkeywords={large cardinals, cover exacting, ultraexacting, HCD, finite symmetry, conditional inconsistency}}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Forest}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Forest}}{\thesubsection}{.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Forest}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}LARGE CARDINALS AT THE INCONSISTENCY FRONTIER}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}18 SEP 2026}
+\fancyfoot[L]{\small\color{Muted}Research continuation: coding and symmetry}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}Research continuation: coding and symmetry}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\tcbset{colback=Pale,colframe=Sage,colbacktitle=Sage,coltitle=Forest,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\AC}{\mathsf{AC}}
+\newcommand{\DC}{\mathsf{DC}}
+\newcommand{\HOD}{\mathrm{HOD}}
+\newcommand{\OD}{\mathrm{OD}}
+\newcommand{\HH}{\mathsf{HH}}
+\newcommand{\Ex}{\operatorname{Ex}}
+\newcommand{\UEx}{\operatorname{UEx}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\SC}{\operatorname{SC}}
+\newcommand{\CEx}{\operatorname{CEx}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\crit}{\operatorname{crit}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\ot}{\operatorname{ot}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\Card}{\mathrm{Card}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\Izero}{\mathrm{I0}}
+\newcommand{\Ione}{\mathrm{I1}}
+\newcommand{\Itwo}{\mathrm{I2}}
+\newcommand{\Ithree}{\mathrm{I3}}
+\newcommand{\Isharp}{\mathrm{I0}^{\#}}
+\newcommand{\Status}[1]{\textbf{Status.} #1}
+\newcommand{\Priority}[1]{\textbf{Research priority.} #1}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:\nolinkurl{#1}}}
+
+\newtheorem{remark}[definition]{Remark}
+\newcommand{\CD}{\mathrm{CD}}
+\newcommand{\HCD}{\mathrm{HCD}}
+\newcommand{\UF}{\mathrm{UF}}
+\newcommand{\TC}{\operatorname{TC}}
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\Sym}{\mathfrak S}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\PP}{\mathcal P}
+\newcommand{\CC}{\mathcal C}
+\newcommand{\QQ}{\mathcal Q}
+\newcommand{\DD}{\mathcal D}
+\newcommand{\LS}{\mathsf{LS}}
+\newcommand{\NSel}{\mathsf{NSel}}
+\newcommand{\fineq}{\mathrel{=^{*}}}
+\newcommand{\Code}{\operatorname{Code}}
+\newcommand{\cfN}[2]{\operatorname{cf}^{#1}(#2)}
+\newcommand{\powersmall}[3]{[#1]^{<#2}_{#3}}
+\newcommand{\blackbox}{\textbf{Imported result.} }
+\begin{document}
+\thispagestyle{empty}
+{\sffamily\bfseries\small\color{Olive}SET THEORY\quad /\quad RESEARCH CONTINUATION}
+
+\vspace{13pt}
+{\fontsize{28}{31}\selectfont\bfseries\color{Forest}Large cardinals at the\\ inconsistency frontier\par}
+\vspace{10pt}
+{\fontsize{14}{18}\selectfont Local complete-definability barriers, finite symmetry,\\ and an $\Izero$-calibrated consistency result\par}
+\vspace{14pt}
+{\color{Muted}Prepared for Vladimir\hfill 18 September 2026\par}
+\vspace{3pt}
+{\color{Sage}\hrule height .6pt}
+\vspace{12pt}
+
+\textbf{Main advance.} The cover-exacting programme can be sharpened to an explicit local incompatibility. If $\lambda$ is $\gamma$-cover exacting, then
+\[
+  \lambda\text{ is regular in }\HCD(\gamma^+),
+\]
+where $\HCD(\eta)$ is the inner model of sets hereditarily definable from $\eta$-complete ultrafilters on ordinals. If a strongly compact $\delta$ lies below $\lambda$, there is instead a cofinal set
+\[
+ a\in\HCD(\delta)\setminus\HCD(\gamma^+),
+ \qquad a\subseteq\lambda,\qquad \ot(a)<\delta.
+\]
+Consequently, even a restricted agreement of these two inner models on their small subsets of $\lambda$ is inconsistent with that configuration. The extra agreement assumption is stated exactly; it is not inferred from strong compactness.
+
+\begin{assessment}{Results and their logical scope}
+\textbf{Conditional inconsistency.} A $\gamma$-cover-exacting cardinal above a strongly compact $\delta$ cannot satisfy the local complete-definability stability principle in Definition~\ref{def:local-stability}. A separate small-ground version is proved as well.
+
+\textbf{Definable-choice obstruction.} At an ultraexacting $\lambda$, no ordinal-definable rule chooses a prescribed nonempty proper subfamily from every finite family of distinct cofinal $\omega$-sets modulo finite difference. Even a finite-valued transversal of this equivalence relation is impossible.
+
+\textbf{Consistency calibration.} These failures coexist with $V_\lambda\subseteq\HOD$ and with no exacting cardinal below $\lambda$, at the consistency strength of $\Izero$, by combining the new deductions with established forcing and equiconsistency theorems.
+\end{assessment}
+
+\textbf{Status.} This is a proof-oriented continuation, not a claimed refutation of bare cover exactingness, ultraexactingness, or $\Izero$. The proofs below are ordinary mathematical arguments, not machine-checked set-theoretic proofs. The results are refinements beyond the supplied report; their publication priority has not been established. The equiconsistency calibration uses known large-cardinal comparison theorems rather than claiming a new consistency-strength separation.
+
+\clearpage
+\tableofcontents
+\vspace{10pt}
+\begin{assessment}{Reading routes}
+For the conditional inconsistency, read Sections~\ref{sec:framework}--\ref{sec:jump}. For the definable-choice results, read Sections~\ref{sec:quotient}--\ref{sec:finite}. Section~\ref{sec:consistency} gives the consistency comparison. The final audit distinguishes inherited results, deductions proved here, and unresolved implications.
+\end{assessment}
+
+\clearpage
+\section{From research priorities to explicit theorems}\label{sec:overview}
+
+The supplied \emph{Unified Report} proposes several mechanisms rather than claiming a contradiction: importing a short cofinal set into a definability model, making an internally stationary set externally stationary, or strengthening the information preserved by an elementary embedding. Its cover-exacting and ultraexacting tracks are the starting points here \cite{unified}. We pursue two of these mechanisms and retain the cardinal-preserving track as an audit of an initially promising but already known argument.
+
+The first question is quantitative. A cover bound $\gamma$ supplies stationary many predicates of size at most $\gamma$. How complete must an ultrafilter be for those predicates to recover it? The answer needed here is $\gamma^+$-completeness, with the convention that an $\eta$-complete ultrafilter is closed under intersections of fewer than $\eta$ sets. This produces regularity in $\HCD(\gamma^+)$, not just regularity in HOD.
+
+The second question concerns finite symmetry. The supplied report emphasizes that ultraexactingness preserves any one ordinal-definable predicate on $V_{\lambda+1}$. We use a predicate coding a proposed rule on cofinal countable subsets of $\lambda$. The critical sequence then realizes finite permutations modulo finite error. A finite output that cannot be fixed by one of those permutations yields a contradiction.
+
+\subsection{What is and is not claimed to be new}
+
+The following distinctions govern the paper.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\textwidth}{@{}P{.25\textwidth}Y@{}}
+\toprule
+\textbf{Item}&\textbf{Attribution and scope}\\\midrule
+Cover/exacting interfaces & Goldberg's 2026 notes supply the stationary-predicate characterization and definability transfer. They are used as imported results.\\[4pt]
+Ultrafilter recognition & The underlying trace-recognition idea is in those notes. We prove the precise completeness endpoint and its parameter-sensitive application.\\[4pt]
+Local stability obstruction & The regularity theorem and the short cofinal witness separating two $\HCD$ levels are proved below. They yield a stated strengthened-theory inconsistency.\\[4pt]
+Finite-symmetry obstruction & The odd/even critical-sequence idea has a precedent. We give the general finite-permutation formulation, rank-correct coding, and finite-valued-transversal consequence.\\[4pt]
+$\Izero$ comparison & The basic comparison and coding forcing are due to Aguilera--Bagaria--Goldberg--L\"ucke. Our conclusion calibrates the additional combinatorial assertions.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The precise refinements were not located in the sources checked for this continuation. That observation is not a priority claim. In particular, deriving a useful corollary of recent work does not make the underlying technique or its large-cardinal consistency theorem new.
+
+\subsection{The strongest conditional conclusion}
+
+For cardinals $\delta<\lambda\leq\gamma$, put
+\[
+ W=\HCD(\delta),\qquad N=\HCD(\gamma^+).
+\]
+Our local stability assertion says only that every subset of $\lambda$ which belongs to $W$ and has $W$-cardinality below $\delta$ also belongs to $N$. It is much weaker than requiring $W=N$. Nevertheless,
+\begin{equation}\label{eq:headline-inconsistency}
+ \ZFC\vdash
+ \neg\bigl[\SC(\delta)\wedge\delta<\lambda\leq\gamma
+       \wedge\CEx_\gamma(\lambda)
+       \wedge\LS_{\delta,\gamma^+}(\lambda)\bigr].
+\end{equation}
+The proof does not assume the HOD Hypothesis. It identifies a concrete failure of complete-definability stability that any model of the unstrengthened coexistence theory would have to exhibit.
+
+\subsection{Why the comparison remains a conditional result}
+
+There is no proof here that $\SC(\delta)$ forces $\LS_{\delta,\gamma^+}(\lambda)$. Strong compactness supplies the \emph{low-completeness} covering model. The cover-exacting argument constrains the \emph{high-completeness} model. Passing between them is precisely the missing step. Thus \eqref{eq:headline-inconsistency} is not an answer to the unrestricted strongly compact/cover-exacting coexistence question posed in Goldberg's notes \cite[Problem 5.2]{cover}.
+
+The finite-choice results have a different scope. They are consequences of ultraexactingness alone, not contradictions with ambient Choice. Ordinary choice functions exist in the ambient ZFC universe; what fails is their ordinal definability together with the prescribed invariance under finite modification.
+
+\section{Framework and imported interfaces}\label{sec:framework}
+
+We work in ZFC. All embeddings used in the new proofs are \emph{sets}: maps between rank segments or elementary substructures of rank segments. Their finite iterates and critical sequences therefore exist by ordinary Replacement with set parameters. We do not assume elementarity for formulas containing an embedding predicate, or a definable global embedding of $V$.
+
+\subsection{Exacting and cover-exacting hypotheses}
+
+\begin{definition}\label{def:exacting}
+A cardinal $\lambda$ is \emph{exacting} if, for every cardinal $\zeta>\lambda$, there are $X\prec V_\zeta$ and an elementary $j:X\to V_\zeta$ such that
+\[
+ V_\lambda\cup\{\lambda\}\subseteq X,
+ \qquad j(\lambda)=\lambda,
+ \qquad j\restr\lambda\neq\id.
+\]
+It is \emph{ultraexacting} if the witnesses may additionally satisfy $j\restr V_\lambda\in X$.
+\end{definition}
+
+These are the conventions of the supplied report \cite{unified}. In particular, $V_\lambda\subseteq X$ is not merely the assertion $V_\lambda\in X$, and $X$ need not be transitive.
+
+For a predicate $Y\subseteq V_\alpha$, a relative witness is an elementary map
+\[
+ j:(X,X\cap Y)\longrightarrow(V_\alpha,Y),
+ \qquad (X,X\cap Y)\prec(V_\alpha,Y),
+\]
+with the same base and fixed-point requirements. We use the source's phrase \emph{$\lambda$ is exacting relative to $Y$} for the corresponding all-height property, above the ranks needed to contain the predicate. Writing the property only above a larger fixed height gives the same applications below.
+
+\begin{definition}\label{def:cover}
+A cardinal $\lambda$ is \emph{$\gamma$-cover exacting}, written $\CEx_\gamma(\lambda)$, if for every $\alpha>\lambda$ and $y\in V_\alpha$, some $Y\subseteq V_\alpha$ satisfies $y\in Y$, $|Y|\leq\gamma$, and admits a relative $\lambda$-exacting witness.
+\end{definition}
+
+The cover bound is fixed outside both quantifiers. Throughout our results, $\gamma$ is a cardinal and $\gamma\geq\lambda$.
+
+We use the following two interfaces from the lecture notes \cite[Lemma 3.3 and Proposition 3.4]{cover}:
+\begin{equation}\label{eq:transfer}
+ \lambda\text{ exacting relative to }Y,
+ Z\in\OD_{\{Y\}}
+ \quad\Longrightarrow\quad
+ \lambda\text{ exacting relative to }Z;
+\end{equation}
+\begin{equation}\label{eq:stationary-interface}
+ \CEx_\gamma(\lambda)\quad\Longrightarrow\quad
+ \{\sigma\in\PP_{\gamma^+}(V_\alpha):
+        \lambda\text{ is exacting relative to }\sigma\}
+ \text{ is stationary.}
+\end{equation}
+Here $\PP_\tau(A)=\{u\subseteq A:|u|<\tau\}$, and stationarity is in the \emph{ambient} universe. Ordinal parameters are permitted in \eqref{eq:transfer}; one must use the source's definability-transfer result rather than assert that an arbitrary witness fixes all such parameters. These two interfaces are dependencies of the cover branch, not theorems newly attributed to this paper.
+
+\subsection{Complete definability, with the parameters exposed}
+
+\begin{definition}\label{def:CD}
+For an infinite cardinal $\eta$, let $\UF_\eta(\Ord)$ be the class of proper $\eta$-complete ultrafilters on ordinals. Define $\CD(\eta)$ to consist of sets definable in $V$ from finitely many ordinal parameters and finitely many individual ultrafilters in $\UF_\eta(\Ord)$. Put
+\[
+ \HCD(\eta)=\{x:\TC(\{x\})\subseteq\CD(\eta)\}.
+\]
+Completeness always refers to ambient families of fewer than $\eta$ sets. We are not merely assuming completeness computed in a smaller inner model.
+\end{definition}
+
+Goldberg's finite-product coding identifies this definition with the usual one using a single ultrafilter parameter; $\HCD(\eta)$ is an inner model of ZF \cite[Propositions 4.2--4.3]{unique}. The notation does not mean definability from an arbitrary class predicate in place of those individual parameters.
+
+Two elementary observations will be used repeatedly:
+\begin{equation}\label{eq:monotone}
+ \eta\leq\tau\quad\Longrightarrow\quad
+ \CD(\tau)\subseteq\CD(\eta),\qquad
+ \HCD(\tau)\subseteq\HCD(\eta);
+\end{equation}
+\begin{equation}\label{eq:ordsets}
+ a\text{ a set of ordinals}\quad\Longrightarrow\quad
+ \bigl[a\in\CD(\eta)\iff a\in\HCD(\eta)\bigr].
+\end{equation}
+The first follows by weakening completeness. For the second, every object in the transitive closure of a set of ordinals, other than that set itself, is an ordinal; all ordinals are ordinal definable.
+
+\blackbox If $\delta$ is strongly compact, $\HCD(\delta)$ satisfies ZFC and has the $\delta$-cover property relative to $V$: every ambient set of fewer than $\delta$ elements of $\HCD(\delta)$ is contained in a set of $\HCD(\delta)$ of internal cardinality below $\delta$ \cite[Corollary 4.7 and Theorem 4.14]{unique}. This is the only deep strong-compactness input to our local separation theorem.
+
+\subsection{The ultraexacting interface}
+
+\blackbox A cardinal $\lambda$ is ultraexacting exactly when every ordinal-definable predicate $A\subseteq V_{\lambda+1}$ admits an elementary self-embedding of $(V_{\lambda+1},A)$ with critical point below $\lambda$ \cite[Theorem B / Theorem 3.1]{abgl}.
+
+The quantifiers are $\forall A\exists e_A$. All subsequent finite-symmetry arguments select \emph{one} predicate encoding the proposed rule, then use \emph{one} embedding preserving it. No uniform embedding preserving all ordinal-definable predicates is assumed.
+
+\section{A rank-local cofinality obstruction}\label{sec:cofinal}
+
+This section supplies the elementary obstruction used by both branches. The one non-elementary ingredient in its proof is the classical local Kunen theorem excluding a nontrivial elementary self-embedding of $V_{\mu+2}$ in ZFC \cite{kunen,hkp}.
+
+\begin{lemma}[Critical-sequence normalization]\label{lem:normalization}
+Let $\lambda$ be an uncountable cardinal, and suppose either that $e:V_\lambda\to V_\lambda$ is elementary with a critical point, or that $e:V_{\lambda+1}\to V_{\lambda+1}$ is elementary with $\crit(e)<\lambda$. Write
+\[
+ \kappa=\crit(e),\qquad \kappa_n=e^n(\kappa).
+\]
+Then $\sup_{n<\omega}\kappa_n=\lambda$. Every ordinal in $[\kappa,\lambda)$ is moved upwards by $e$.
+\end{lemma}
+
+\begin{proof}
+Let $\mu=\sup_{n<\omega}\kappa_n\leq\lambda$. Suppose $\mu<\lambda$. The critical sequence, its supremum, and the rank segment $V_{\mu+2}$ are available below $\lambda$: a finite rank increase above an ordinal below the uncountable initial ordinal $\lambda$ remains below $\lambda$. Elementarity applied to the countable sequence gives $e(\mu)=\mu$, since $e$ fixes $\omega$ and shifts that sequence. Thus $e\restr V_{\mu+2}$ is a nontrivial elementary self-embedding of $V_{\mu+2}$, contrary to local Kunen inconsistency. Hence $\mu=\lambda$.
+
+If $\kappa\leq\xi<\lambda$, choose $n$ with $\kappa_n\leq\xi<\kappa_{n+1}$. Then
+\[
+ e(\xi)\geq e(\kappa_n)=\kappa_{n+1}>\xi.
+\]
+This proves the second assertion.
+\end{proof}
+
+The critical point is an uncountable cardinal, and the $\kappa_n$ are cardinals. For example, a bijection from an ordinal below the critical point onto it would be fixed pointwise on its domain and range values, contradicting the movement of its range. The usual cardinality definitions below $\lambda$ are absolute to the rank structures in use. In particular, finite offsets above distinct $\kappa_n$ do not overlap, a fact used later.
+
+\begin{lemma}[No invariant short cofinal set]\label{lem:cofinal-predicate}
+Let $\lambda$ be a cardinal and $a\subseteq\lambda$ be cofinal with $\ot(a)<\lambda$. Then $\lambda$ is not exacting relative to the predicate $a$.
+\end{lemma}
+
+\begin{proof}
+Assume otherwise and choose a relative witness at a height large enough to contain $a$, its order type, its increasing enumeration, and the relevant rank structures. Denote it by
+\[
+ j:(X,X\cap a)\longrightarrow(V_\alpha,a).
+\]
+In the expanded structure the set $a$ is uniquely defined as the set of objects satisfying the predicate. Consequently $a\in X$ and $j(a)=a$. Let $\rho=\ot(a)<\lambda$. Uniqueness of the order type and of the increasing enumeration gives
+\[
+ \rho\in X,\quad j(\rho)=\rho,\quad
+ h:\rho\longrightarrow a,\quad h\in X,\quad j(h)=h.
+\]
+The restriction $e=j\restr V_\lambda$ is an elementary self-embedding of $V_\lambda$ with critical point $\kappa<\lambda$. Lemma~\ref{lem:normalization} implies that no ordinal in $[\kappa,\lambda)$ is fixed. Since $\rho$ is fixed, $\rho<\kappa$.
+
+For every $\xi<\rho$ we therefore have
+\[
+ j(h(\xi))=j(h)(j(\xi))=h(\xi).
+\]
+Thus all elements of the cofinal set $a$ are fixed, contradicting the movement of every ordinal in $[\kappa,\lambda)$. Notice that we did not assume an arbitrarily high critical point for the chosen witness: the fixedness of $\rho$ forced $\rho<\kappa$.
+\end{proof}
+
+\begin{remark}[Why an ambient critical sequence is harmless by itself]
+An exacting witness supplies a countable cofinal set in $V$, but it does not thereby preserve that set as a predicate. Lemma~\ref{lem:cofinal-predicate} becomes applicable only after a separate definability or membership argument supplies the preserved predicate. This is the same distinction emphasized in the supplied report, now isolated as a reusable lemma.
+\end{remark}
+
+\section{Ultrafilter traces and the exact completeness threshold}\label{sec:ultrafilter}
+
+Let $\tau$ be uncountable regular. A set $x$ will be called \emph{$\tau$-club definable at height $\alpha$} if it is ordinal definable in $(V_\alpha,\sigma)$ for every $\sigma$ in some club of $\PP_\tau(V_\alpha)$. The definition allows the ordinal parameters to depend on $\sigma$. It does not require a single uniform list of ordinals to work on the club.
+
+The following proof makes explicit the trace-recognition mechanism appearing in Goldberg's notes \cite[p.~10]{cover}. The endpoint is important: substructures of size \emph{less than $\tau$} are handled by $\tau$-completeness itself, not by an unexplained stronger completeness assumption.
+
+\begin{lemma}[Recognition from a small trace]\label{lem:recognition}
+Let $U$ be a proper $\tau$-complete ultrafilter on a nonzero ordinal $d$. For sufficiently large $\alpha$, there is a club of $\sigma\in\PP_\tau(V_\alpha)$ such that $U$ is ordinal definable in $(V_\alpha,\sigma)$.
+\end{lemma}
+
+\begin{proof}
+Choose $\alpha$ so that $U$, $d$, all subsets of $d$, and the sets required to test ultrafilters on $d$ belong to $V_\alpha$. Let $C$ be the club of elementary substructures $\sigma\prec V_\alpha$ of size less than $\tau$ with $U,d\in\sigma$. One obtains unboundedness by closing a small set under Skolem functions for the set structure; regularity of $\tau$ keeps the hull small. Unions of increasing chains of length less than $\tau$ give closure. The Skolem functions are only used to produce an ambient club; they are not asserted to be ordinal definable.
+
+Fix $\sigma\in C$. Completeness and properness give
+\[
+ \bigcap(U\cap\sigma)\neq\varnothing.
+\]
+Let $b$ be its least member. If $x\in\sigma\cap\PP(d)$, then $d\setminus x\in\sigma$ by elementarity. Exactly one of $x,d\setminus x$ belongs to $U$, so
+\begin{equation}\label{eq:trace}
+ x\in U\quad\Longleftrightarrow\quad b\in x
+ \qquad(x\in\sigma\cap\PP(d)).
+\end{equation}
+
+We claim that $U$ is the unique $W\in\sigma$ such that $W$ is an ultrafilter on $d$ and
+\[
+ \forall x\in\sigma\cap\PP(d)\ (x\in W\leftrightarrow b\in x).
+\]
+It satisfies this condition by \eqref{eq:trace}. If $W\in\sigma$ were a different ultrafilter with the same trace, the statement that $W$ and $U$ disagree on some subset of $d$ has a witness in $\sigma$, by elementarity. That witness contradicts equality of the traces. This establishes uniqueness.
+
+The displayed definition uses only the predicate $\sigma$ and the ordinal parameters $b,d$. The parameters $U,W$ were used in the proof of uniqueness, not in the final definition of $U$.
+\end{proof}
+
+\begin{proposition}[Finite ultrafilter parameters become club definitions]\label{prop:club-CD}
+If $x\in\CD(\tau)$ and $\tau$ is uncountable regular, then at some sufficiently large height $\alpha$, the set $x$ is $\tau$-club definable.
+\end{proposition}
+
+\begin{proof}
+Fix a definition of $x$ using a finite tuple of $\tau$-complete ultrafilters $U_0,\ldots,U_{k-1}$ and a finite tuple of ordinals. Choose $\alpha$ above all their ranks so that this particular definition and its uniqueness reflect correctly to $V_\alpha$. This uses reflection for a fixed finite list of formulas, not a truth predicate for $V$.
+
+Take the club of elementary $\sigma\prec V_\alpha$ of size less than $\tau$ containing the finite list of relevant objects. Lemma~\ref{lem:recognition} defines every $U_i$ in $(V_\alpha,\sigma)$ from ordinals $b_i,d_i$. Substituting these definitions into the reflected definition of $x$ gives an ordinal definition of $x$ in that expanded structure. The finite tuple of $b_i$ may vary with $\sigma$, exactly as allowed by club definability.
+\end{proof}
+
+\begin{theorem}[Complete-definability regularity]\label{thm:CD-regular}
+Suppose $\lambda$ is $\gamma$-cover exacting, where $\gamma\geq\lambda$ is a cardinal, and put $\tau=\gamma^+$. Then no cofinal $a\subseteq\lambda$ with $\ot(a)<\lambda$ belongs to $\CD(\tau)$. In particular,
+\begin{equation}\label{eq:HCDreg}
+ \cf^{\HCD(\gamma^+)}(\lambda)=\lambda.
+\end{equation}
+The same regularity conclusion holds in $\HCD(\eta)$ for every cardinal $\eta\geq\gamma^+$.
+\end{theorem}
+
+\begin{proof}
+Suppose $a\in\CD(\tau)$ is a short cofinal subset of $\lambda$. By Proposition~\ref{prop:club-CD}, choose a sufficiently large $\alpha$ and a club $C\subseteq\PP_\tau(V_\alpha)$ such that $a$ is ordinal definable in $(V_\alpha,\sigma)$ for all $\sigma\in C$.
+
+The stationary interface \eqref{eq:stationary-interface} gives some $\sigma\in C$ relative to which $\lambda$ is exacting. A definition over the set structure $(V_\alpha,\sigma)$ is also a definition in $V$ from the set parameter $\sigma$ and ordinal parameters: $V_\alpha$ is recovered from $\alpha$, and satisfaction for that set structure is definable. Therefore $a\in\OD_{\{\sigma\}}$.
+
+Apply \eqref{eq:transfer}. It follows that $\lambda$ is exacting relative to $a$, contradicting Lemma~\ref{lem:cofinal-predicate}. This proves the first assertion.
+
+The inner model $N=\HCD(\tau)$ contains all ordinals and satisfies ZF. The ambient cardinal $\lambda$ is also a cardinal in $N$. If $N$ contained a cofinal function $f:\rho\to\lambda$ with $\rho<\lambda$, its range would belong to $N\subseteq\CD(\tau)$ and have order type below $\lambda$. To see the last point without assuming Choice in $N$, use the least preimage of each range element to inject the range into the ordinal $\rho$; for wellordered sets this bounds its cardinality, hence its order type below the initial ordinal $\lambda$. This is impossible by the first assertion. Thus $N$ regards $\lambda$ as regular.
+
+Finally, \eqref{eq:monotone} gives $\CD(\eta)\subseteq\CD(\tau)$ for $\eta\geq\tau$, so the same argument applies at every higher completeness level.
+\end{proof}
+
+\begin{assessment}{What supplies each part of the contradiction?}
+The cover bound gives stationarity on $\PP_{\gamma^+}(V_\alpha)$. The ultrafilter parameter gives recognition on a club there. Their intersection gives one predicate $\sigma$ with global relative exactingness. Definability transfer, rather than an assumption that all ordinal parameters are fixed, supplies the final cofinal predicate. No stationarity computed in an inner model is substituted for ambient stationarity.
+\end{assessment}
+
+\subsection{Why the successor in the threshold cannot simply be removed}
+
+A typical $\sigma\in\PP_{\gamma^+}(V_\alpha)$ can have size exactly $\gamma$. The intersection $\bigcap(U\cap\sigma)$ may consequently involve $\gamma$ many members of $U$. Mere $\gamma$-completeness, under the fewer-than convention, does not justify that intersection. The proof therefore does \emph{not} establish regularity in $\HCD(\gamma)$.
+
+This is a proof threshold, not a proof of optimality. An improvement to $\gamma$ would require a different recognition argument, a smaller stationary-cover interface, or an additional property of the ultrafilter. None is assumed implicitly here.
+
+\section{A local inconsistency above a strongly compact cardinal}\label{sec:jump}
+
+For an inner model $W$ of ZFC and cardinals $\delta,\lambda$ of the ambient universe, define
+\[
+ \powersmall{\lambda}{\delta}{W}
+   =\{a\in W:W\models a\subseteq\lambda\text{ and }|a|<\delta\}.
+\]
+The size bound is computed in $W$. This notation is not interchangeable with ambient smallness for arbitrary sets.
+
+\begin{definition}[Local complete-definability stability]\label{def:local-stability}
+For cardinals $\delta\leq\tau$ and $\lambda>\delta$, let
+\begin{equation}\label{eq:LS}
+ \LS_{\delta,\tau}(\lambda):\quad
+ \powersmall{\lambda}{\delta}{\HCD(\delta)}
+       \subseteq\HCD(\tau).
+\end{equation}
+When applying this principle below, $\delta$ is strongly compact, so $\HCD(\delta)$ is a model of ZFC and the internal size notation has its ordinary meaning.
+\end{definition}
+
+The principle concerns a single ordinal and a restricted family of its subsets. It neither asserts equality of the two inner models nor asserts that either of them is HOD.
+
+\begin{theorem}[A short witness to a complete-definability drop]\label{thm:jump}
+Assume $\SC(\delta)$ and $\delta<\lambda\leq\gamma$, with $\CEx_\gamma(\lambda)$. Then
+\begin{align}
+ \cf^{\HCD(\delta)}(\lambda)&<\delta,\label{eq:lowcf}\\
+ \cf^{\HCD(\gamma^+)}(\lambda)&=\lambda.\label{eq:highcf}
+\end{align}
+More precisely, there is a cofinal $a\subseteq\lambda$ such that
+\begin{equation}\label{eq:separation}
+ a\in\powersmall{\lambda}{\delta}{\HCD(\delta)},\qquad
+ \ot(a)<\delta,\qquad
+ a\notin\CD(\gamma^+).
+\end{equation}
+In particular, $a\notin\HCD(\eta)$ for every $\eta\geq\gamma^+$.
+\end{theorem}
+
+\begin{proof}
+Cover exactingness implies exactingness. Restrict an exacting witness to $V_\lambda$ and use Lemma~\ref{lem:normalization}; its critical sequence supplies an ambient countable cofinal set $c\subseteq\lambda$.
+
+Let $W=\HCD(\delta)$. Every member of $c$ is an ordinal and hence belongs to $W$. By Goldberg's $\delta$-cover theorem stated in Section~\ref{sec:framework}, choose $b\in W$ with $c\subseteq b$ and $|b|^W<\delta$. Put $a=b\cap\lambda$. Then $a\in W$, $|a|^W<\delta$, and $a$ is cofinal in $\lambda$.
+
+Since $\delta$ is a cardinal of $V$, it is also a cardinal of $W$. The increasing order type of $a$ is therefore below $\delta$. All of these order statements are absolute between the transitive models. As $W$ satisfies Choice, its increasing enumeration of $a$ witnesses \eqref{eq:lowcf}.
+
+Theorem~\ref{thm:CD-regular} supplies \eqref{eq:highcf} and excludes $a$ from $\CD(\gamma^+)$. Monotonicity then excludes $a$ from every higher $\HCD$ level.
+\end{proof}
+
+\begin{corollary}[Conditional inconsistency]\label{cor:local-inconsistency}
+ZFC rules out
+\[
+ \SC(\delta),\qquad \delta<\lambda\leq\gamma,\qquad
+ \CEx_\gamma(\lambda),\qquad
+ \LS_{\delta,\gamma^+}(\lambda)
+\]
+holding simultaneously. It also rules out the same configuration with the stronger hypothesis
+\[
+ \HCD(\delta)\cap\PP(\lambda)
+       \subseteq\HCD(\gamma^+)\cap\PP(\lambda).
+\]
+\end{corollary}
+
+\begin{proof}
+The set $a$ in \eqref{eq:separation} belongs to the domain of the asserted inclusion but not its target, by \eqref{eq:ordsets}. The stronger inclusion implies the local one.
+\end{proof}
+
+\subsection{The exact missing theorem in the strongly compact case}
+
+The output is more informative than saying that a short cofinal set would be useful. Such a set already exists in the concrete, definable inner model $\HCD(\delta)$, and it can be chosen with order type \emph{below $\delta$}, not merely below $\lambda$. The missing assertion is that at least one such witness admits a definition from sufficiently complete ultrafilters.
+
+A proof of local stability would do more than is strictly necessary: it would promote \emph{every} internally small subset of $\lambda$. A weaker sufficient target is promotion of one cofinal $a$ obtained from covering. Conversely, a positive coexistence construction must make that promotion fail, and Theorem~\ref{thm:jump} says how to locate a witness to the failure.
+
+Nothing in the proof identifies a $\delta$-complete ultrafilter with a $\gamma^+$-complete one. Strong compactness extends filters with their specified completeness; it does not increase the completeness of an arbitrary ultrafilter parameter coding a set.
+
+\subsection{Recovery of the known extendible boundary}
+
+\blackbox Goldberg proves that an extendible $\delta$ satisfies
+\[
+ \HCD(\delta)=\HCD,
+ \qquad \HCD=\bigcap_{\eta\in\Ord}\HCD(\eta)
+\]
+\cite[Theorem 4.15]{unique}. For $\tau\geq\delta$, monotonicity then gives $\HCD(\delta)=\HCD(\tau)$. Extendibility also implies strong compactness. Thus Corollary~\ref{cor:local-inconsistency} recovers the prohibition of cover-exacting cardinals above an extendible, already established in the Blue--Goldberg result recorded in the notes \cite[Theorem 3.6]{cover}.
+
+This is a consistency check on the argument, not a new proof credited as a discovery of that boundary. The local formulation shows precisely which part of the extendible stabilization is sufficient: agreement on $\powersmall{\lambda}{\delta}{\HCD(\delta)}$.
+
+\subsection{A source refinement relevant to the original programme}
+
+The notes state a supercompact sufficient hypothesis for the small-ground result in their overview. The more general strongly compact ground and cover theorems are available in Goldberg's March 2024 author manuscript \cite[Theorems 4.10, 4.14 and Proposition 4.11]{unique}. We use that version, with its numbering, rather than infer a strongly compact statement by weakening the notes ourselves. The gap in the present application is consequently not the existence of the low-completeness covering model; it is its comparison with the high-completeness level.
+
+\section{An independent small-ground formulation}\label{sec:ground}
+
+The cofinality argument admits a second interface that does not require a strongly compact cardinal or a specially named inner model.
+
+\begin{lemma}[Possible values of a name]\label{lem:small-ground}
+Let $W$ be a transitive inner model of ZFC and $V=W[G]$, where $G$ is generic for a set forcing $\mathbb P\in W$. Let $\nu$ be an infinite cardinal of $W$ with $|\mathbb P|^W\leq\nu$. Suppose $\lambda$ is an ambient cardinal, $\nu<\lambda$, and $\cf^V(\lambda)=\omega$. Then there is a cofinal $a\subseteq\lambda$, belonging to $W$, with $|a|^W\leq\nu$ and $\ot(a)<\lambda$.
+\end{lemma}
+
+\begin{proof}
+Take a name $\dot c\in W$ and $p\in G$ such that $p$ forces that $\dot c:\omega\to\lambda$ is cofinal. Inside $W$, form
+\[
+ a=\{\xi<\lambda:\exists n<\omega\ \exists q\leq p\
+                      q\Vdash_W\dot c(n)=\xi\}.
+\]
+For each pair $(q,n)$, at most one ordinal is forced as the value. Therefore $|a|^W\leq|\mathbb P\times\omega|^W\leq\nu$. Every actual value of $c=\dot c_G$ is decided by some condition in $G$ below $p$, so $\ran(c)\subseteq a$. Hence $a$ is cofinal in $\lambda$.
+
+The ground-model bound also bounds the ambient cardinality by an ordinal below $\lambda$. Since $\lambda$ is an ambient initial ordinal and $a$ is wellordered by membership, $\ot(a)<\lambda$.
+\end{proof}
+
+\begin{theorem}[Small-ground definability obstruction]\label{thm:ground}
+Assume $\CEx_\gamma(\lambda)$ with $\gamma\geq\lambda$. Suppose $V=W[G]$ as in Lemma~\ref{lem:small-ground}, with $\nu<\lambda$. Then there is a cofinal set $a\subseteq\lambda$ of $W$-cardinality at most $\nu$ which is not in $\CD(\gamma^+)$. Consequently the additional assumption
+\begin{equation}\label{eq:ground-rep}
+ \forall a\in W\ 
+ \bigl[a\subseteq\lambda\wedge |a|^W\leq\nu
+                  \ \Longrightarrow\ a\in\CD(\gamma^+)\bigr]
+\end{equation}
+is inconsistent with the configuration.
+\end{theorem}
+
+\begin{proof}
+Exactingness gives $\cf^V(\lambda)=\omega$. Apply Lemma~\ref{lem:small-ground} and then Theorem~\ref{thm:CD-regular}.
+\end{proof}
+
+This result does not say that small forcing creates or destroys cover exactingness. It says that \emph{when} a universe with a cover-exacting cardinal is presented as a sufficiently small forcing extension, its ground must contain a particular kind of set that escapes high-completeness definability. The representation assumption is evaluated in the extension: the ultrafilters used by $\CD(\gamma^+)$ are the extension's ultrafilters. Ground-model completeness is not substituted for ambient completeness.
+
+For the strongly compact application, the direct covering proof of Theorem~\ref{thm:jump} is preferable: it produces the stronger order-type bound $\ot(a)<\delta$ without estimating the forcing size.
+
+\section{A quotient where ordinal-definable finite choice fails}\label{sec:quotient}
+
+We now change from cover exactingness to ultraexactingness. No complete-definability stability principle is assumed in this branch.
+
+\begin{definition}\label{def:quotient}
+For a cardinal $\lambda$ of countable cofinality, let
+\[
+ \CC_\lambda=\{a\subseteq\lambda:\ot(a)=\omega,
+                                  \sup a=\lambda\}.
+\]
+For $a,b\in\CC_\lambda$, write $a\fineq b$ if $a\mathbin\triangle b$ is finite, and let
+\[
+ \QQ_\lambda=\CC_\lambda/{=^*}.
+\]
+All quotient sets and all choice functions on them in this paper are ambient sets. They are not assumed to belong to $V_{\lambda+1}$.
+\end{definition}
+
+For $m\geq1$, let $\DD_m(\lambda)$ be the collection of tuples $(a_0,\ldots,a_{m-1})$ from $\CC_\lambda$ whose equivalence classes are pairwise distinct. In displayed formulas these are ordinary external tuples; the next lemma gives the actual codes on which an embedding can act.
+
+\subsection{Flat coding, rather than a high-rank tuple}
+
+\begin{lemma}[Coding a finite-labelled rule at the permitted rank]\label{lem:flatcode}
+Let $m,k<\omega$ and $L:\DD_m(\lambda)\to k$ be ordinal definable. There is an ordinal-definable predicate $A_L\subseteq V_{\lambda+1}$ such that every elementary
+\[
+ e:(V_{\lambda+1},A_L)\longrightarrow(V_{\lambda+1},A_L),
+ \qquad \crit(e)<\lambda,
+\]
+satisfies
+\begin{equation}\label{eq:preserve-label}
+ L(e(a_0),\ldots,e(a_{m-1}))=L(a_0,\ldots,a_{m-1})
+ \qquad(\vec a\in\DD_m(\lambda)).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For $t<k$, use the flattened code
+\begin{equation}\label{eq:flat-code}
+ \Code_m(\vec a,t)=
+ \{\langle i,\xi\rangle:i<m,\ \xi\in a_i\}
+          \cup\{\langle m,t\rangle\}.
+\end{equation}
+Every Kuratowski pair $\langle i,\xi\rangle$ occurring here has rank below $\lambda$, because $i$ is finite and $\xi<\lambda$, while $\lambda$ is an uncountable cardinal. Thus the entire code is a subset of $V_\lambda$ and belongs to $V_{\lambda+1}$. The final row is a disjoint tag, so the decoding is unique. Let
+\[
+ A_L=\{\Code_m(\vec a,t):\vec a\in\DD_m(\lambda),\ t=L(\vec a)\}.
+\]
+This is an ordinal-definable subset of $V_{\lambda+1}$, even when the usual graph of $L$ has higher rank.
+
+For any $a\in\CC_\lambda$, its increasing $\omega$-enumeration has a graph in $V_{\lambda+1}$. Since $e$ fixes every natural number, elementarity gives
+\begin{equation}\label{eq:countable-image}
+ e(a)=e``a.
+\end{equation}
+This assertion uses countability; it is not asserted for arbitrary subsets of $\lambda$. Finite modification and cofinality in $\lambda$ are preserved. Also $e(\lambda)=\lambda$, since $\lambda$ is the largest ordinal in $V_{\lambda+1}$.
+
+The same row coding, or the countable enumeration of its graph, now gives
+\[
+ e(\Code_m(\vec a,t))=
+       \Code_m((e(a_i))_{i<m},t).
+\]
+Preservation of $A_L$ and uniqueness of the output label yield \eqref{eq:preserve-label}.
+\end{proof}
+
+\begin{remark}[Two rank errors avoided]
+A cofinal set $a\subseteq\lambda$ has rank $\lambda$, so a conventional pair of two such sets can have rank above the permitted level. Nor is the equivalence class $[a]_{=^*}$ itself a permissible parameter merely because each representative is in $V_{\lambda+1}$. Formula~\eqref{eq:flat-code} uses only finite tags attached to ordinals; no embedding is applied to a quotient class or to the usual high-rank graph of a choice function.
+\end{remark}
+
+\subsection{Every finite permutation is realized modulo finite error}
+
+\begin{lemma}[Finite-permutation realization]\label{lem:finite-orbits}
+Let $e:V_{\lambda+1}\to V_{\lambda+1}$ be elementary with critical point below $\lambda$, where $\lambda$ is a cardinal. For every $m\geq1$ and every permutation $\pi$ of $m$, there is a tuple $\vec a\in\DD_m(\lambda)$ of pairwise disjoint sets such that
+\begin{equation}\label{eq:orbit-realization}
+ e(a_i)\fineq a_{\pi(i)}\qquad(i<m).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let $\kappa_n=e^n(\crit(e))$. By Lemma~\ref{lem:normalization}, this sequence is cofinal in $\lambda$. Decompose $\pi$ into disjoint cycles. Assign a different natural-number offset $t$ to each cycle. For a cycle
+\[
+ i_0\longmapsto i_1\longmapsto\cdots
+             \longmapsto i_{\ell-1}\longmapsto i_0,
+\]
+put
+\begin{equation}\label{eq:cycle-formula}
+ a_{i_r}=\{\kappa_{\ell n+r}+t:n<\omega\}
+ \qquad(0\leq r<\ell).
+\end{equation}
+Each set has order type $\omega$ and is cofinal. Distinct residues in one cycle give disjoint sets. Distinct offsets give disjoint sets across cycles, since the $\kappa_n$ are increasing infinite cardinals and finite offsets above them cannot overlap.
+
+Elementarity fixes $t$ and commutes with addition by this finite ordinal. Using \eqref{eq:countable-image}, for $r<\ell-1$ we obtain
+\[
+ e(a_{i_r})=a_{i_{r+1}},
+\]
+whereas
+\[
+ e(a_{i_{\ell-1}})=a_{i_0}\setminus\{\kappa_0+t\}.
+\]
+This includes cycles of length one. Thus \eqref{eq:orbit-realization} holds in every cycle. Pairwise disjoint infinite sets determine distinct classes modulo finite difference.
+\end{proof}
+
+For a single cycle, the construction is the residue-class version of splitting the critical sequence into its even and odd subsequences. The corresponding odd/even order obstruction for Berkeley cardinals is recorded in Goldberg's notes \cite[Remark 2.4]{cover}. The finite-offset construction realizes several cycles at once and will let us test any finite permutation of an output problem.
+
+\section{The finite-symmetry obstruction}\label{sec:finite}
+
+Write $\Sym_m$ for the symmetric group on $m=\{0,\ldots,m-1\}$. Its left action on tuples is
+\[
+ (\pi\cdot\vec a)_i=a_{\pi^{-1}(i)}.
+\]
+Let $F$ be a finite $\Sym_m$-set. We code its underlying set by natural numbers and its action by a finite table, so every object in this finite code is fixed by the embeddings under discussion.
+
+\begin{definition}
+A function $L:\DD_m(\lambda)\to F$ is \emph{modification invariant} if replacing each $a_i$ by a finite modification does not change $L$. It is \emph{equivariant} if
+\[
+ L(\pi\cdot\vec a)=\pi\cdot L(\vec a)
+ \qquad(\pi\in\Sym_m).
+\]
+\end{definition}
+
+\begin{theorem}[Finite-label obstruction]\label{thm:finite-label}
+Suppose $\lambda$ is ultraexacting and $F$ is a finite $\Sym_m$-set. If there is an ordinal-definable, modification-invariant, equivariant function
+\[
+ L:\DD_m(\lambda)\longrightarrow F,
+\]
+then every permutation $\pi\in\Sym_m$ fixes at least one element of $F$:
+\begin{equation}\label{eq:finite-fixedpoint}
+ \Fix_F(\pi)\neq\varnothing\qquad(\pi\in\Sym_m).
+\end{equation}
+Equivalently, the existence of one permutation with no fixed label rules out such an ordinal-definable function.
+\end{theorem}
+
+\begin{proof}
+Form the ordinal-definable predicate $A_L$ from Lemma~\ref{lem:flatcode}. The ultraexacting interface provides an elementary $e$ preserving $A_L$ with critical point below $\lambda$. Thus $L(e\vec a)=L(\vec a)$ for every admissible tuple, where $e\vec a$ denotes $(e(a_i))_{i<m}$.
+
+Fix any $\pi\in\Sym_m$ and choose $\vec a$ from Lemma~\ref{lem:finite-orbits}. Coordinatewise,
+\[
+ e\vec a\fineq(a_{\pi(i)})_{i<m}=\pi^{-1}\cdot\vec a.
+\]
+Using first preservation, then modification invariance, then equivariance, gives
+\[
+ L(\vec a)=L(e\vec a)
+        =L(\pi^{-1}\cdot\vec a)
+        =\pi^{-1}\cdot L(\vec a).
+\]
+Hence $L(\vec a)$ is fixed by $\pi^{-1}$, and therefore by $\pi$. The tuple may depend on $\pi$; the embedding need not be changed.
+\end{proof}
+
+\subsection{Selections from finite families of quotient classes}
+
+\begin{corollary}[No ordinal-definable fixed-size proper selection]\label{cor:finite-selection}
+Suppose $\lambda$ is ultraexacting. For every $m\geq2$ and every $r$ with $1\leq r<m$, there is no ordinal-definable function
+\[
+ s:[\QQ_\lambda]^m\longrightarrow[\QQ_\lambda]^r
+ \qquad\text{such that }s(B)\subseteq B\text{ for every }B.
+\]
+\end{corollary}
+
+\begin{proof}
+If such $s$ existed, define
+\[
+ L(a_0,\ldots,a_{m-1})
+    =\{i<m:[a_i]_{=^*}\in s(\{[a_j]_{=^*}:j<m\})\}.
+\]
+This is an ordinal-definable, modification-invariant, equivariant function with values in the finite $\Sym_m$-set $[m]^r$. A full $m$-cycle fixes no nonempty proper subset of $m$: membership of one element would force membership of its entire orbit, which is all of $m$. Theorem~\ref{thm:finite-label} gives a contradiction.
+\end{proof}
+
+\begin{corollary}[No ordinal-definable orientation or order]\label{cor:no-order}
+At an ultraexacting $\lambda$, $\QQ_\lambda$ has no ordinal-definable tournament, and in particular no ordinal-definable strict linear order. It has no ordinal-definable injection into an ordinal.
+\end{corollary}
+
+\begin{proof}
+An orientation of every unordered pair chooses exactly one member of each pair, contradicting Corollary~\ref{cor:finite-selection} with $m=2,r=1$. A strict linear order supplies such a choice by taking the smaller member. An injection into an ordinal pulls back its strict order.
+\end{proof}
+
+\subsection{Even finitely many representatives per class are impossible}
+
+\begin{theorem}[No ordinal-definable finite-valued transversal]\label{thm:transversal}
+If $\lambda$ is ultraexacting, there is no ordinal-definable $T\subseteq\CC_\lambda$ such that
+\begin{equation}\label{eq:finite-transversal}
+ 0<|T\cap[a]_{=^*}|<\omega
+ \qquad(a\in\CC_\lambda).
+\end{equation}
+In particular, there is no ordinal-definable transversal selecting exactly one representative from every class.
+\end{theorem}
+
+\begin{proof}
+Regard $T$ as an ordinal-definable unary predicate on $V_{\lambda+1}$. Choose an elementary self-embedding $e$ of the expanded structure with $\crit(e)<\lambda$. Let
+\[
+ a=\{\kappa_n:n<\omega\},\qquad
+ \kappa_n=e^n(\crit(e)).
+\]
+Then $a\in\CC_\lambda$ and $e(a)=a\setminus\{\kappa_0\}$.
+
+The ambient set $B=T\cap[a]_{=^*}$ is finite and nonempty. For $b\in B$, preservation of the predicate gives $e(b)\in T$. Preservation of finite modification and $e(a)\fineq a$ give $e(b)\fineq a$. Thus the injective map $b\mapsto e(b)$ sends $B$ into itself. Being an injection of a finite set to itself, it is a permutation.
+
+Choose $b\in B$. Some positive integer $p$ satisfies $e^p(b)=b$. Countability gives $(e^p)``b=b$. The restriction of $e^p$ to the wellordered set $b$ is consequently an increasing bijection of a set of order type $\omega$ onto itself, so it fixes every member of $b$. But $e^p$ moves every ordinal in $[\crit(e),\lambda)$ upwards, and $b$ is cofinal in $\lambda$. This contradiction proves the theorem.
+
+At no point was $e(B)$ or $e([a]_{=^*})$ formed. Only the action of $e$ on the finitely many individual representatives was needed.
+\end{proof}
+
+\subsection{Why these statements do not contradict Choice}
+
+The quotient $\QQ_\lambda$ is a set in ZFC, so it admits a wellorder, a tournament, and all the finite-selection functions excluded above from \emph{ordinal-definability}. Also, Choice gives an ordinary transversal. Those externally chosen objects need not define permitted predicates for the ultraexacting interface.
+
+There is an even more pointed control. The unquotiented collection $\CC_\lambda$ has an ordinal-definable lexicographic strict linear order: for distinct $a,b$, compare their characteristic functions at the least ordinal in $a\triangle b$. Thus choosing the least of a finite family of \emph{actual representatives} causes no problem. That rule is not invariant under finite modifications. Removing modification invariance from Corollary~\ref{cor:finite-selection} would make the conclusion false.
+
+Similarly, an arbitrary set parameter cannot replace ordinal parameters in the theorem. A wellorder can itself be used as a parameter to define choices. The preserved-predicate theorem applies to ordinal-definable predicates, not to every predicate supplied by ambient Choice.
+
+\subsection{The finite fixed-point test is necessary, not sufficient}
+
+Theorem~\ref{thm:finite-label} does not say that $F$ has a point fixed by the whole group. For example, let $\Sym_3$ act on the disjoint union of its natural three-point action and its two-point sign action. Every permutation fixes some point: a transposition fixes a point in the natural action; a three-cycle fixes the two sign labels. Yet no point is fixed by all of $\Sym_3$.
+
+Nor have we proved the converse that a fixed point for each permutation guarantees an ordinal-definable $L$. Different permutations in the proof may use different tuples. Establishing a common finite configuration for several independently acting embeddings would require additional coherence not supplied here.
+
+\section{Consistency calibration at the \texorpdfstring{$\Izero$}{I0} level}\label{sec:consistency}
+
+Let $\NSel(\lambda)$ abbreviate the conjunction of the finite-selection failures in Corollary~\ref{cor:finite-selection} for all finite $m,r$ and the finite-valued-transversal failure in Theorem~\ref{thm:transversal}. These assertions are expressible in set theory: their quotient objects are sets and ordinal definability is expressed by the usual rank-satisfaction definition. The abbreviation does not add a truth predicate to the theory.
+
+We import two results of Aguilera--Bagaria--Goldberg--L\"ucke: existence of an ultraexacting cardinal is equiconsistent with $\Izero$, and an ultraexacting $\lambda$ can be preserved by a forcing that makes $V_\lambda\subseteq\HOD$ \cite[Theorem A and Proposition 3.9]{abgl}. We also use the established regularity of an exacting cardinal in HOD \cite[Theorem 2.10]{abl}.
+
+\begin{theorem}[A calibrated definable-choice failure]\label{thm:equiconsistency}
+The following theories are equiconsistent:
+\begin{align*}
+ T_0={}&\ZFC+\Izero;\\
+ T_1={}&\ZFC+\exists\lambda\,\bigl[
+       \UEx(\lambda)\wedge V_\lambda\subseteq\HOD
+       \wedge\NSel(\lambda)\\[-2pt]
+     &\hspace{112pt}\wedge\ \forall\mu<\lambda\ \neg\Ex(\mu)\bigr].
+\end{align*}
+The existential quantifier and the reference to $\Ex(\mu)$ are understood to range over cardinals where appropriate.
+\end{theorem}
+
+\begin{proof}
+For the forward direction, the imported equiconsistency theorem gives a model with an ultraexacting cardinal. Apply the imported forcing result to obtain an extension in which a cardinal $\lambda$ remains ultraexacting and $V_\lambda\subseteq\HOD$. Applying the theorems of Section~\ref{sec:finite} \emph{in that extension} yields $\NSel(\lambda)$ there.
+
+Suppose an exacting cardinal $\mu<\lambda$ remained. Its ambient critical sequence gives a cofinal $\omega$-sequence in $\mu$ whose code has rank below $\lambda$. Because $V_\lambda\subseteq\HOD$, that code belongs to HOD. This contradicts the established HOD-regularity of the exacting $\mu$. Thus no exacting cardinal lies below $\lambda$ in the extension.
+
+For the reverse direction, a model of $T_1$ has an ultraexacting cardinal. Forget the other clauses and apply the imported equiconsistency with $\Izero$.
+\end{proof}
+
+The argument is a standard formalizable relative-consistency argument. Its model language does not assume that consistency alone supplies a transitive model; equivalently one may use the proof transformations and forcing interpretations underlying the cited results.
+
+\subsection{What this calibration explains}
+
+One can have complete hereditary ordinal definability strictly below $\lambda$ and still have the strong definable-choice failures at rank $\lambda+1$. A cofinal subset of $\lambda$ has rank $\lambda$ and is not an element of $V_\lambda$, so the low-rank coding assertion does not place those representatives into HOD.
+
+The consistency strength of $\Izero$ is not new here. The clauses $\NSel(\lambda)$ are consequences of ultraexactingness, and the other clauses come from known preservation work. The contribution is the explicit combinatorial enrichment and its compatibility with the low-rank coding model. In particular, we do not establish that $\NSel(\lambda)$ \emph{alone} has $\Izero$ strength.
+
+The theorem does not construct an ultraexacting cardinal above a strongly compact or extendible cardinal. Nor does it assert that $\Izero$ holds at the same ordinal $\lambda$ in the resulting universe. These stronger conclusions do not follow by dropping the word ``equiconsistent.''
+
+\section{The cardinal-preserving route: a rejected novelty claim}\label{sec:cp-audit}
+
+The original report's forward embedding problem remains an important control. For a putative cardinal-preserving $j:V\to M$, let $\lambda$ be the critical-sequence supremum and $\theta=\lambda^+$. The standard stationary partition at this fixed regular cardinal produces internally stationary image cells that need not remain stationary in $V$ \cite{unified,goldbergcp}.
+
+An initially attractive refinement is to split the countable-cofinality ordinals below $\theta$ into $\theta$ many stationary cells and try to recover $j``\theta$ from the externally stationary cells of the image partition. This is already part of Hamkins--Kirmayer--Perlmutter's stationary-range analysis \cite[Theorem 12 and its proof]{hkp}. It is therefore not counted among the results of this continuation.
+
+Even that reconstruction does not supply the missing stationary correctness. A definition in $V$ using a parameter from $M$ need not be a definition that $M$ evaluates correctly. In particular, external stationarity is exactly the feature that the target may miscompute. Likewise, cardinal agreement does not place an externally constructed closure-point club into $M$.
+
+This audit matters because a correct rederivation of an established theorem can look like progress while leaving the decisive interface unchanged. The two principal branches of the present paper avoid that trap differently: the cover branch intersects a genuinely ambient stationary set with an ambient club, and the finite branch uses no stationarity at all.
+
+\section{Research consequences and limits}\label{sec:limits}
+
+\subsection{A smaller target for the cover-exacting programme}
+
+The strongest remaining target suggested by Theorem~\ref{thm:jump} is not a full HOD conjecture. It is a restricted promotion statement:
+\[
+ \begin{gathered}
+ \delta\text{ strongly compact},\quad
+ \delta<\lambda\leq\gamma,\quad\CEx_\gamma(\lambda)\\
+ \Longrightarrow\quad
+ \text{some cofinal }a\in\powersmall{\lambda}{\delta}{\HCD(\delta)}
+       \text{ belongs to }\CD(\gamma^+).
+ \end{gathered}
+\]
+Proving this implication would close the contradiction. It is not proved here. A proof would have to exploit more than the already available $\delta$-cover property, because that property alone yields only membership in $\HCD(\delta)$.
+
+The corresponding positive-model diagnostic is equally explicit. In any proposed coexistence model, extract the small cofinal cover in $\HCD(\delta)$ and analyze why it lacks a high-completeness presentation. A construction that accidentally stabilizes the indicated small-subset family cannot work.
+
+\subsection{A concrete boundary for definable selection}
+
+The finite-symmetry theorem suggests studying equivariant output structures with a fixed point for each single permutation but no global fixed point. Our five-label $\Sym_3$ example is the smallest example examined computationally here, not a claimed minimal example. The single-embedding argument does not decide whether such an output rule can exist.
+
+A further direction is to identify which larger families of cofinal sets admit partial ordinal-definable selectors. Our results concern total selectors on the specified quotient, and finite nonempty sections of a transversal. They do not prove that every partial selector, every countable-valued selector, or every definable relation on the quotient is impossible.
+
+\subsection{Logical status of the outcome}
+
+The work yields a conditional inconsistency theorem with an explicit local stability axiom; a sharpened inner-model cofinality separation; a general finite-symmetry obstruction; and an $\Izero$-calibrated consistency corollary. It does not derive a contradiction from the unstrengthened coexistence theory, and does not claim a new unconditional inconsistency of a standard large-cardinal axiom.
+
+The main proofs are written out, while their deeper imported interfaces are identified by exact source locators. This is more than a list of speculative approaches, but it is not a formal verification or an external specialist review. In particular, publication novelty and the correctness of the imported lecture-note interfaces are separate matters from checking the elementary deductions made from them here.
+
+\clearpage
+\appendix
+\section{Dependency and parameter audit}\label{app:audit}
+
+\small
+\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{@{}P{.26\textwidth}P{.67\textwidth}@{}}
+\toprule
+\textbf{Conclusion}&\textbf{Dependencies and checks}\\\midrule\endfirsthead
+\toprule\textbf{Conclusion}&\textbf{Dependencies and checks}\\\midrule\endhead
+Critical-sequence normalization & Set-sized embedding, ordinary recursion, and local Kunen inconsistency. The rank restriction is made only after a fixed smaller supremum has been shown to exist.\\[5pt]
+No short cofinal predicate & The predicate defines its underlying set at a sufficiently high rank. Fixed order type lies below the critical point; the enumeration is then pointwise fixed.\\[5pt]
+Ultrafilter recognition & Ambient $\tau$-completeness; $|\sigma|<\tau$; complements and distinguishing witnesses belong to the elementary substructure. Only ordinal parameters remain in the definition.\\[5pt]
+Regularity in $\HCD(\gamma^+)$ & Goldberg's relative-definability and stationary-cover interfaces, followed by the proved recognition and cofinality lemmas. Club and stationarity are both ambient.\\[5pt]
+Local incompatibility & Goldberg's strongly compact $\HCD(\delta)$ cover theorem and the preceding regularity. The extra local-stability hypothesis is never inferred from strong compactness.\\[5pt]
+Small-ground obstruction & A forcing name and its possible values, with the size bound computed in the ground. Definability in the conclusion is computed in the extension.\\[5pt]
+Finite-label obstruction & ABGL's ordinal-definable predicate characterization, flat rank-$\lambda$ codes, countable-image equality, and finite-permutation realization. No quotient class is passed through an embedding.\\[5pt]
+Finite-valued transversal & Preservation of one unary predicate; an injective self-map of a finite external family; absence of periodic cofinal representatives.\\[5pt]
+Equiconsistency & ABGL's known $\Izero$ comparison and coding forcing, ABL's HOD-regularity, and the new finite-selection consequences evaluated in the final model.\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\subsection{Where ordinal parameters are allowed to move}
+
+The $b_i$ used to recognize ultrafilters need not be fixed by the final relative exacting witness. Their role is to establish membership in $\OD_{\{\sigma\}}$. The global definability-transfer interface then does the required work. It would be incorrect to replace that interface by a claim that a witness preserving $\sigma$ fixes all ordinal parameters used in a definition.
+
+For the ultraexacting branch, ordinal parameters in the ambient definition of $L$ may lie above $\lambda$. We do not put them into the rank structure or require them to be fixed. Instead, the entire permitted predicate $A_L$ is chosen first, and the characterization supplies an embedding preserving that predicate.
+
+\subsection{The rank ledger}
+
+For $\xi<\lambda$ and finite $i,t$, the objects $\xi$, $\langle i,\xi\rangle$, and $\kappa_n+t$ have rank below $\lambda$. A cofinal representative $a$, its countable enumeration graph, and a flattened labelled code have rank at most $\lambda$ and belong to $V_{\lambda+1}$. A usual tuple of such representatives, the full selector graph, and a quotient class may have higher rank. The proofs do not apply the embedding to these latter objects.
+
+A predicate $\sigma\subseteq V_\alpha$ used by the cover branch need not itself be an element of $V_\alpha$. The stationary interface supplies \emph{global} relative exactingness for the set $\sigma$. Its role as a later set parameter and the conversion of a definition over $(V_\alpha,\sigma)$ into an ordinal definition from $\sigma$ are therefore legitimate at larger ranks.
+
+\section{Finite computational checks}\label{app:checks}
+
+The archive includes \nolinkurl{finite_symmetry_checks.py}, a standard-library Python program. It verifies finite algebra and indexing conventions, not the existence or nonexistence of elementary embeddings. It has no Lean dependency and no set-theoretic proof has been machine-checked.
+
+The executed default run produced:
+\begin{center}
+\renewcommand{\arraystretch}{1.13}
+\begin{tabularx}{\textwidth}{@{}Yr@{}}
+\toprule
+\textbf{Check}&\textbf{Instances}\\\midrule
+All permutations of degrees $1$ through $7$ & $5{,}913$\\
+Affine critical-sequence index-shift identities & $483{,}828$\\
+Nonempty proper subsets moved by full cycles, degrees $2$ through $12$ & $8{,}166$\\
+Two-label orientation actions & $6$\\
+Five-label $\Sym_3$ boundary example & all $6$ permutations\\
+\bottomrule
+\end{tabularx}
+\end{center}
+All checks passed. The exact JSON output is supplied as \nolinkurl{finite_checks.json}.
+
+For each permutation, the program decomposes it into cycles and checks the arithmetic behind \eqref{eq:cycle-formula}:
+\[
+ \ell n+r+1=
+ \begin{cases}
+  \ell n+(r+1),&r<\ell-1,\\
+  \ell(n+1),&r=\ell-1.
+ \end{cases}
+\]
+It also checks the inverse in the left-action convention, and exhaustively verifies that a full cycle has no invariant subset of the prohibited sizes. These are useful error checks, but checking finitely many indices is not the proof of the all-$n$ identity; that proof is the displayed arithmetic and Lemma~\ref{lem:finite-orbits}.
+
+The five-label example prevents an overstatement of Theorem~\ref{thm:finite-label}. Its per-permutation fixed-label sets are all nonempty, while their common intersection is empty. Thus even at a completely finite level, the necessary condition cannot be rewritten as a common fixed-point conclusion.
+
+To rerun the tests:
+\begin{verbatim}
+python3 finite_symmetry_checks.py --output finite_checks.json
+\end{verbatim}
+The optional \texttt{--max-m} argument increases the exhaustive permutation bound, with factorial running time. It does not increase the logical strength of the mathematical proof.
+
+\section{Source and reproducibility notes}\label{app:sources}
+
+The supplied \nolinkurl{Large_Cardinals_Unified_Report.tex} was read as the basis for the research priorities and visual design. This continuation does not purport to edit or correct every part of that report. The mathematical additions are concentrated in the explicitly numbered results above.
+
+Primary-source checks were made against ABGL's arXiv version~1, ABL's arXiv version~4, Goldberg's July 2026 cover-exacting notes, and the March 2024 author manuscript of \emph{The uniqueness of elementary embeddings}. The latter matters because its numbering differs from the older arXiv manuscript. In particular, the cover theorem used here is Theorem~4.14 in the March 2024 manuscript. The lecture notes remain lecture notes; they are not described as a separately formalized or refereed proof.
+
+The finite-symmetry proofs and the local cofinality calculations were checked in prose and with the finite tests just described. No automated theorem prover was used. The result statements should be assessed with their source dependencies intact, and the absence of a matching statement in the sources checked should not be treated as evidence of historical priority.
+
+The source compiles with pdfLaTeX. The typography uses \texttt{newpxtext} and \texttt{newpxmath}. The sans-serif headers, geometry, theorem styling, and Forest/Olive/Sage palette follow the supplied report. Font files are not included in the archive. The mathematical bibliography is embedded in the \texttt{.tex} file; no external bibliography database or downloaded illustrations are needed.
+
+\Needspace{120pt}
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{99}
+\small
+\setlength{\itemsep}{6pt}
+\setlength{\parskip}{1pt}
+
+\bibitem{unified}
+\emph{Large cardinals at the inconsistency frontier: a unified assessment of ZFC-compatible hypotheses, their obstructions, and the evidence on both sides}.
+Supplied research report, 18 September 2026, filename
+\nolinkurl{Large_Cardinals_Unified_Report.tex}.
+Its cover-exacting, cardinal-preserving, ultraexacting, and research-programme sections provide the starting mechanisms. This is the user-supplied basis, not an independent primary publication.
+
+\bibitem{kunen}
+K.~Kunen. \emph{Elementary embeddings and infinitary combinatorics}.
+Journal of Symbolic Logic \textbf{36}(3) (1971), 407--413.
+\doi{10.2307/2269948}.
+
+\bibitem{hkp}
+J.~D.~Hamkins, G.~Kirmayer, and N.~L.~Perlmutter.
+\emph{Generalizations of the Kunen inconsistency}.
+Annals of Pure and Applied Logic \textbf{163} (2012), 1872--1890.
+\arxiv{1106.1951v2}.
+Theorem~12 and its proof contain the stationary-range reconstruction discussed in Section~\ref{sec:cp-audit}; it is not claimed as a new result here.
+
+\bibitem{cover}
+G.~Goldberg. \emph{Consistency beyond the Kunen inconsistency}.
+Lecture notes, 1 July 2026, 13 pages, reporting joint work with D.~Blue.
+\url{https://math.berkeley.edu/~goldberg/Slides/CoverExact.pdf}.
+Definition~3.1, Lemma~3.3, Proposition~3.4, Theorem~3.6, and Problem~5.2; ultrafilter trace recognition on page~10; the odd/even order obstruction in Remark~2.4. Results are cited with the status of lecture notes.
+
+\bibitem{unique}
+G.~Goldberg. \emph{The uniqueness of elementary embeddings}.
+Journal of Symbolic Logic \textbf{89}(4) (2024), 1430--1454.
+Author manuscript dated 3 March 2024:
+\url{https://math.berkeley.edu/~goldberg/Papers/UniquenessOfElementaryEmbeddings.pdf}.
+The locators in this paper refer to that manuscript: Propositions~4.2--4.3; Corollary~4.7; Theorem~4.10; Proposition~4.11; Theorems~4.14--4.15. The older \arxiv{2103.13961v2} has different numbering and is not used as the locator reference.
+
+\bibitem{abgl}
+J.~P.~Aguilera, J.~Bagaria, G.~Goldberg, and P.~L\"ucke.
+\emph{Large cardinals beyond HOD}.
+\arxiv{2509.10254v1}, 12 September 2025.
+Theorem~A gives the $\Izero$ equiconsistency; Theorem~B / Theorem~3.1 gives the ordinal-definable predicate characterization; Proposition~3.9 and Corollary~3.10 give the coding-forcing and least-exacting consequences used in the calibration.
+
+\bibitem{abl}
+J.~P.~Aguilera, J.~Bagaria, and P.~L\"ucke.
+\emph{Large cardinals, structural reflection, and the HOD Conjecture}.
+\arxiv{2411.11568v4}, revised 16 September 2025.
+Theorem~2.10 supplies HOD-regularity of exacting cardinals.
+
+\bibitem{goldbergcp}
+G.~Goldberg. \emph{A note on cardinal preserving embeddings}.
+\arxiv{2103.00072}.
+Author manuscript dated 12 May 2021:
+\url{https://math.berkeley.edu/~goldberg/Papers/OnCardinalPreservingEmbeddings.pdf}.
+Used only as background for the forward-embedding audit, not as a source for a new inconsistency assertion.
+
+\end{thebibliography}
+\end{document}
