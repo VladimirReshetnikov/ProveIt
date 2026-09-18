@@ -263,10 +263,10 @@ class ScanAlgebraTests(unittest.TestCase):
         d = Diagram.from_braid(3, [1, 2] * 5)
         with self.assertRaises(Exception):
             khovanov_rank(d.pd, max_objects=3)
-        result = recognize(d, max_objects=3, use_alexander=False)
+        result = recognize(d, max_objects=3, use_alexander=False, use_jones=False)
         self.assertEqual(result.status, "UNKNOWN")
         self.assertIsNone(result.is_unknot)
-        self.assertEqual(recognize(d, seconds=0.0, use_alexander=False).status, "UNKNOWN")
+        self.assertEqual(recognize(d, seconds=0.0, use_alexander=False, use_jones=False).status, "UNKNOWN")
 
 
 class RankTests(unittest.TestCase):
@@ -303,10 +303,14 @@ class PipelineTests(unittest.TestCase):
                          "descending-diagram")
         # (sigma_1 sigma_2)^2 closes to a trefoil, not an unknot
         self.assertEqual(recognize(Diagram.from_braid(3, [1, 2, 1, 2])).status, "KNOTTED")
-        self.assertEqual(recognize(Diagram.from_braid(2, [1, 1, 1])).method, "alexander-polynomial")
+        self.assertEqual(recognize(Diagram.from_braid(2, [1, 1, 1])).method, "alexander-modular")
+        self.assertEqual(recognize(Diagram.from_braid(2, [1, 1, 1]), use_modular=False, use_jones=False).method,
+                         "alexander-polynomial")
         r = recognize(load("torus_3_5.json"))
-        self.assertEqual((r.status, r.method), ("KNOTTED", "alexander-polynomial"))
+        self.assertEqual((r.status, r.method), ("KNOTTED", "alexander-modular"))
         r = recognize(load("conway.json"))
+        self.assertEqual((r.status, r.method), ("KNOTTED", "jones-modular"))
+        r = recognize(load("conway.json"), use_jones=False)
         self.assertEqual((r.status, r.method), ("KNOTTED", "reduced-khovanov-F2-scan"))
         r = recognize(load("hard_unknot_8.json"), use_reduction=False, use_descending=False)
         self.assertEqual((r.status, r.method), ("UNKNOT", "reduced-khovanov-F2-scan"))
@@ -319,7 +323,8 @@ class PipelineTests(unittest.TestCase):
         out = run("recognize", os.path.join(EXAMPLES, "trefoil.json"))
         self.assertEqual(out.returncode, 0)
         self.assertEqual(json.loads(out.stdout)["status"], "KNOTTED")
-        out = run("recognize", os.path.join(EXAMPLES, "conway.json"), "--no-alexander", "--max-objects", "2")
+        out = run("recognize", os.path.join(EXAMPLES, "conway.json"), "--no-alexander", "--no-jones",
+                  "--max-objects", "2")
         self.assertEqual(out.returncode, 3)
         self.assertEqual(json.loads(out.stdout)["status"], "UNKNOWN")
         self.assertEqual(run("recognize", os.path.join(EXAMPLES, "missing.json")).returncode, 2)

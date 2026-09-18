@@ -246,14 +246,27 @@ class Diagram:
             raise DiagramError("internal traversal error")
         return walk
 
-    def signs(self) -> list[int]:
-        """Crossing signs for the traversal orientation (+1 right-handed)."""
-        incoming_over = {}
+    def incoming_slots(self) -> list[tuple[int, int]]:
+        """(incoming under slot, incoming over slot) of every crossing for the traversal."""
+        under = [0] * self.crossings
+        over = [1] * self.crossings
         for dart in self.traversal():
-            if dart % 2 == 1:
-                incoming_over[dart // 4] = dart % 4
-        # over-strand entering at d (slot 3) and leaving at b: positive
-        return [1 if incoming_over[i] == 3 else -1 for i in range(self.crossings)]
+            if dart % 2:
+                over[dart // 4] = dart % 4
+            else:
+                under[dart // 4] = dart % 4
+        return list(zip(under, over))
+
+    def signs(self) -> list[int]:
+        """Crossing signs (+1 right-handed) for the traversal orientation.
+
+        Both incoming ports are used, so the result does not depend on which of
+        the two under-ports a PD row happens to start with (0.1 assumed that the
+        row starts at the incoming under-port, as its own converters guarantee).
+        With slots counterclockwise, the crossing is positive exactly when the
+        over-strand enters one slot clockwise of the incoming under-slot.
+        """
+        return [1 if (o - u) % 4 == 3 else -1 for u, o in self.incoming_slots()]
 
     def writhe(self) -> int:
         return sum(self.signs())

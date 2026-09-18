@@ -3,7 +3,7 @@
 Polynomials in ``t`` are lists of integer coefficients, lowest degree first.
 The Alexander matrix has a row for every crossing: with over-arc ``o``,
 incoming under-arc ``u`` and outgoing under-arc ``v`` the row is
-``(1 - t) x_o + t x_u - x_v`` at a positive crossing and
+``(1 - t) x_o + t x_u - x_v`` at a positive crossing (u, v in traversal order) and
 ``(1 - t) x_o - x_u + t x_v`` at a negative crossing.  Deleting one row and one
 column and taking a fraction-free determinant over Z[t] gives the Alexander
 polynomial up to a unit, which is normalized to have positive constant term.
@@ -111,12 +111,14 @@ def alexander_matrix(diagram: Diagram) -> list[list[Poly]]:
         raise ArithmeticError("unexpected number of Wirtinger arcs")
     column = {root: i for i, root in enumerate(roots)}
     signs = diagram.signs()
+    slots = diagram.incoming_slots()
     one_minus_t, t, minus_one = [1, -1], [0, 1], [-1]
     matrix = [[[] for _ in range(n)] for _ in range(n)]
-    for i, (a, b, c, _) in enumerate(diagram.pd):
-        o, u, v = column[arcs.find(b)], column[arcs.find(a)], column[arcs.find(c)]
-        entries = ((o, one_minus_t), (u, t), (v, minus_one)) if signs[i] > 0 else \
-                  ((o, one_minus_t), (u, minus_one), (v, t))
+    for i, row in enumerate(diagram.pd):
+        u_slot = slots[i][0]
+        o = column[arcs.find(row[1])]
+        u, v = column[arcs.find(row[u_slot])], column[arcs.find(row[(u_slot + 2) % 4])]
+        entries = ((o, one_minus_t), (u, t), (v, minus_one)) if signs[i] > 0 else                   ((o, one_minus_t), (u, minus_one), (v, t))
         for col, value in entries:
             matrix[i][col] = add(matrix[i][col], value)
     return matrix
