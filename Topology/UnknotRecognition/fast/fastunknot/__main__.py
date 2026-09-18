@@ -30,6 +30,8 @@ def main(argv: list[str] | None = None) -> int:
     rec.add_argument("--no-reduction", action="store_true")
     rec.add_argument("--no-descending", action="store_true")
     rec.add_argument("--no-alexander", action="store_true", help="disable both Alexander stages")
+    rec.add_argument("--exact-alexander", action="store_true",
+                     help="also compute the exact Alexander polynomial after the modular test passed")
     rec.add_argument("--no-modular", action="store_true", help="disable only the modular Alexander stage")
     rec.add_argument("--no-jones", action="store_true")
     rec.add_argument("--no-factor", action="store_true", help="do not split visible connected sums")
@@ -60,6 +62,7 @@ def main(argv: list[str] | None = None) -> int:
         result = recognize(diagram, use_reduction=not args.no_reduction,
                            use_descending=not args.no_descending,
                            use_alexander=not args.no_alexander, use_modular=not args.no_modular,
+                           use_exact_alexander=True if args.exact_alexander else None,
                            use_jones=not args.no_jones, use_factorization=not args.no_factor,
                            jones_max_states=args.jones_max_states, pivot=args.pivot,
                            algebra=args.algebra, tail=args.tail, max_objects=args.max_objects,

@@ -87,6 +87,7 @@ def factored_khovanov_rank(diagram: Diagram, **options) -> dict[str, Any]:
 
 
 def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_jones, use_alexander,
+                          use_exact_alexander,
                           jones_max_states, jones_max_transitions, max_objects, deadline,
                           check_d_squared, scan_options) -> tuple[str, str]:
     """Verdict and method for one summand (already simplified by the caller)."""
@@ -110,7 +111,15 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
                 evidence["jones"] = witness
                 return "KNOTTED", "jones-modular"
             evidence["jones"] = "inconclusive"
-    if use_alexander:
+    # The exact polynomial over Z[t] can only say KNOTTED, and only if the polynomial is not a
+    # unit, which the modular test has just failed to see at t = -1 and at a generic point of
+    # F_p.  On filter-undecided unknot diagrams of 15 to 27 crossings it took a median 24% (up
+    # to 63%) of the whole recognition, so by default it runs only when the modular test did not.
+    exact = use_alexander and (not use_modular if use_exact_alexander is None else use_exact_alexander)
+    if use_alexander and not exact:
+        evidence["alexander_polynomial"] = ("not computed: the first minor is a unit at t = -1 and at a "
+                                            "generic point of F_p (use_exact_alexander=True computes it)")
+    if exact:
         check()
         poly = alexander_polynomial(diagram)
         evidence["alexander_polynomial"] = format_polynomial(poly)
@@ -128,7 +137,8 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
 
 def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: bool = True,
               use_factorization: bool = True, use_modular: bool = True, use_jones: bool = True,
-              use_alexander: bool = True, jones_max_states: int | None = 4096,
+              use_alexander: bool = True, use_exact_alexander: bool | None = None,
+              jones_max_states: int | None = 4096,
               jones_max_transitions: int | None = 200_000, max_objects: int | None = None,
               seconds: float | None = None, check_d_squared: bool = False,
               pivot: str = "minfill", algebra: str = "bits", tail: int = 0) -> Result:
@@ -153,6 +163,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         if cuts:
             evidence["connected_sum_cuts"] = cuts
     options = dict(use_modular=use_modular and use_alexander, use_jones=use_jones, use_alexander=use_alexander,
+                   use_exact_alexander=use_exact_alexander,
                    jones_max_states=jones_max_states, jones_max_transitions=jones_max_transitions,
                    max_objects=max_objects, deadline=deadline, check_d_squared=check_d_squared,
                    scan_options=dict(pivot=pivot, algebra=algebra, tail=tail))

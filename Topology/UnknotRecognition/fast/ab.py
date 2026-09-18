@@ -35,6 +35,8 @@ import tempfile
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import hard_unknots  # noqa: E402
 
 
 def load_base(rev: str, where: str, name: str = "fastunknot_base"):
@@ -78,6 +80,9 @@ def corpus(pkg):
         "recognize conway": rec(example("conway.json")),
         "recognize T(3,61)": rec(D.from_braid(3, [1, 2] * 61)),
         "recognize conway_sum_3": rec(example("conway_sum_3.json")),
+        "recognize unknot 4/38 (27)": rec(D.from_braid(4, hard_unknots.make(4, seed=38))),
+        "recognize unknot 4/11 (25)": rec(D.from_braid(4, hard_unknots.make(4, seed=11))),
+        "recognize unknot 4/20 (25)": rec(D.from_braid(4, hard_unknots.make(4, seed=20))),
         "jones braid5_36": (lambda d=D.from_braid(5, words["random 5-braid", 36]):
                             pkg.filters.jones_obstruction(d)),
     }

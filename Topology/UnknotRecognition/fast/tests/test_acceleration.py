@@ -198,6 +198,22 @@ class FilterTests(unittest.TestCase):
         self.assertEqual((r.status, r.method), ("KNOTTED", "reduced-khovanov-F2-scan"))
 
 
+class ExactAlexanderTests(unittest.TestCase):
+    def test_exact_polynomial_only_when_the_modular_test_did_not_run(self):
+        import hard_unknots
+        d = Diagram.from_braid(4, hard_unknots.make(4, seed=38))          # a 27-crossing unknot no filter decides
+        default, forced = recognize(d), recognize(d, use_exact_alexander=True)
+        self.assertEqual((default.status, default.method), ("UNKNOT", "reduced-khovanov-F2-scan"))
+        self.assertEqual((forced.status, forced.method), ("UNKNOT", "reduced-khovanov-F2-scan"))
+        self.assertTrue(default.evidence["alexander_polynomial"].startswith("not computed"))
+        self.assertEqual((forced.evidence["alexander_polynomial"], forced.evidence["determinant"]), ("1", 1))
+        trefoil = Diagram.from_braid(2, [1, 1, 1])
+        self.assertEqual(recognize(trefoil, use_modular=False, use_jones=False).method, "alexander-polynomial")
+        self.assertNotIn("alexander_polynomial", recognize(trefoil, use_alexander=False, use_jones=False).evidence)
+        for other in random_knot_braids(31, 40, lengths=(4, 16)):
+            self.assertEqual(recognize(other).status, recognize(other, use_exact_alexander=True).status)
+
+
 class FactorTests(unittest.TestCase):
     def test_conway_sums(self):
         for k in (2, 3, 8):

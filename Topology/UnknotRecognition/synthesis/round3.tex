@@ -6,7 +6,7 @@ After version 0.2 the Rust work was paused and the Python package was
 optimized further, with no change to the mathematics, the verdicts or the
 asymptotic behaviour. This section records what was gained, what was tried and
 rejected, and an episode about measurement that changed how every number below
-was obtained. All results are exact and identical to those of 0.2: 35 unit
+was obtained. All results are exact and identical to those of 0.2: 36 unit
 tests pass, and \texttt{crosscheck.py} compares the ranks by homological degree
 of the new default scanner with the generic 0.2 scanner and the 0.1 set algebra
 on random braid closures (400 closures with 2 to 5 strands, no mismatch).
@@ -120,6 +120,22 @@ scans. Against the code before any of this, with 301 interleaved pairs: scan of
 $T(3,11)$ $0.505$ $[0.486, 0.508]$, Conway knot $1.008$ $[1.005, 1.010]$, hard
 unknot $1.007$; on the corpus, $T(3,11)$ $0.51$, chain of kinks $0.81$, and
 nothing slower.
+
+\paragraph{A stage that was not needed.} The benchmark corpus contained one
+input that no filter decides, the hard unknot with 8 crossings, and that hid
+the cost of a whole stage. A generator of scrambled unknot braids
+(\texttt{hard\_unknots.py}: the closure of $v\,\sigma_1\cdots\sigma_{n-1}v^{-1}$
+rewritten by random braid relations) gives diagrams of which about half survive
+the Reidemeister I/II reduction with 15 to 27 crossings and pass every filter.
+On 26 of them the exact Alexander polynomial over $\mathbb Z[t]$ took a median
+24\%, and up to 63\%, of the recognition. That stage can only answer
+\textsc{knotted}, and only for a polynomial that is not a unit, which the
+modular test has just failed to see at $t=-1$ and at a generic point of
+$\mathbb F_p$; and whatever it might still catch, the exact scan decides anyway,
+so verdicts cannot change. It now runs only when the modular test did not. Over
+720 diagrams the two modes never disagree, and the exact stage decided nothing
+once the modular test had passed. Recognition of the 55 scan-decided scrambled
+unknots is faster on all 55: median ratio $0.81$, range $0.53$ to $0.93$.
 
 Two remarks. First, the closing sentence of the previous section, that on an
 unknot diagram no filter can decide the Python accelerations change nothing,

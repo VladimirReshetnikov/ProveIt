@@ -60,6 +60,7 @@ python ablation.py        # about 40 minutes: the LIFO rows hit their 300 s caps
 python crosscheck.py 400  # default scanner against the generic and the 0.1 scanners on random closures
 python ab.py HEAD         # interleaved A/B timing of the working tree against a git revision
 python perf.py label      # sequential best-of-N timing with a control loop; see the caveat below
+python hard_unknots.py    # scrambled unknot braids that no filter decides (pipeline timing inputs)
 ```
 
 Exit codes: 0 for either exact verdict, 2 for invalid input, 3 for `UNKNOWN`.
@@ -96,9 +97,9 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
 
 ## Test and benchmark status (last observed 18 September 2026)
 
-* `python -m unittest discover -s tests`: 35 tests, OK, about 3 s (CPython
+* `python -m unittest discover -s tests`: 36 tests, OK, about 3 s (CPython
   3.14.4, Windows 11). 19 are the 0.1 tests (three expectations updated because
-  a filter now decides before Khovanov does), 16 are new and compare every new
+  a filter now decides before Khovanov does), 17 are new and compare every new
   code path with the 0.1 implementation.
 * `results/benchmark_0.1.json` is the 0.1 benchmark, kept as a record; its
   36-crossing 5-strand row is the 600 s timeout that motivated 0.2.
@@ -225,6 +226,27 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   1.023..1.029). Against the code before any of this (1ca6a5d), 301 pairs:
   `scan T(3,11)` 0.505 (0.486..0.508), Conway 1.008 (1.005..1.010), hard
   unknot 1.007; `ab.py`: T(3,11) 0.51, `scan chain256` 0.81, nothing slower.
+* **The exact Alexander polynomial is no longer computed after the modular test
+  has passed** (`use_exact_alexander=None`; `True` or `--exact-alexander`
+  restores it; with `use_modular=False` it still runs). It can only say
+  `KNOTTED`, and only for a polynomial that is not a unit, which the modular
+  test has just failed to see at two points; whatever it would have caught the
+  exact scan decides anyway, so verdicts cannot change. The corpus had a single
+  filter-undecided input, of 8 crossings, which hid this stage's cost:
+  `hard_unknots.py` now generates scrambled unknot braids, about half of which
+  survive R1/R2 with 15 to 27 crossings and pass every filter. On 26 of them
+  the exact polynomial took a median 24% (up to 63%) of `recognize`. Over 720
+  diagrams (600 random closures, 120 scrambled unknots) the two modes never
+  disagree and the exact stage decided nothing once the modular test had
+  passed. `recognize` on the 55 scan-decided scrambled unknots: faster on all
+  55, median 0.81, range 0.53 to 0.93; `ab.py`: 0.62, 0.84, 0.85 on three of
+  them, `hard_unknot_8` 0.86. The evidence record says "not computed" instead
+  of giving the polynomial and the determinant.
+* A caveat on `ab.py` even with the strict criterion: that run flagged
+  `recognize conway` as 1.05 slower (interval 1.005..1.254), a path this change
+  cannot reach. 301 pairs gave 1.006 (1.000..1.015). With some 15 comparisons
+  per run at 95%, expect an occasional false flag on sub-millisecond cases and
+  confirm a flag with a few hundred pairs before acting on it.
 * `seconds=` fidelity: the default scanner overshot a 1 s budget by up to
   0.24 s because a crossing was added without checking the clock; with a check
   every 512 objects the overshoot is at most 0.03 s on the same runs.
