@@ -10,7 +10,7 @@ recognizer with a proved quasi-polynomial bound. The accelerated hierarchy
 operations on the last slide of the talk have no published algorithmic
 specification with cost bounds (Lackenby's July 2026 preprint, Section 9,
 says its steps "are not described with enough precision to be able to
-estimate their running time"). What exists is exact, exponential, mutually
+estimate their running time"; the preprint is in `docs/arXiv-2607.23350v1/`). What exists is exact, exponential, mutually
 consistent, and well tested. Details and the list of remaining obstacles are
 in `synthesis/report.pdf`.
 
@@ -18,7 +18,7 @@ in `synthesis/report.pdf`.
 
 | Path | Contents |
 |---|---|
-| `docs/` | the source material: the 109-page talk `quasipolynomial-talk.pdf` |
+| `docs/` | the source material: the 109-page talk `quasipolynomial-talk.pdf`, and the arXiv source and PDF of Lackenby's July 2026 preprint *Incompressible surfaces, hierarchies and unknot recognition* (arXiv:2607.23350v1) in `docs/arXiv-2607.23350v1/` |
 | `reports/` | the six original archives (`*.zip`) and their extracted contents in `01/` .. `06/` |
 | `synthesis/` | the synthesized report (`report.tex`, `report.pdf`), the cross-validation scripts and data, and the table generator |
 | `fast/` | `fastunknot`: Alexander-polynomial filter plus a scanning (Bar-Natan) Khovanov backend; tests, examples, benchmark |
