@@ -20,15 +20,33 @@ lake env lean Cardinals/Audit.lean     # prints the axioms behind each main theo
 Only results from the literature are admitted, each closed by the tactic `admit` with its
 source in the docstring.  There are 18 of them; nothing else uses `sorry`.
 
-| File | Admitted statements |
-|---|---|
-| `Published.lean` | `cof_omega_of_witness`, `aleph0_lt_of_witness`, `strongLimit_of_witness` (Kunen; ABL §2) · `not_REx_shortCofinal` (BG Obs. 1) · `REx_transfer` (BG Lemma 3.3) · `le_of_CEx` (BG) · `stationary_of_CEx` (BG Prop. 3.4) · `isClub_elemSub`, `ODfrom_trans`, `SC_of_extendible` (Jech) · `HCD_isInnerModelZF`, `HCD_isInnerModelZFC`, `HCD_cover`, `HCD_stabilizes` (Goldberg 2024, §4) |
-| `Above.lean` | `HCD_isGround` (Goldberg 2024, Thm 4.10) · `cc_preserves_regular` (Jech, Thm 15.3) |
-| `Width.lean` | `no_short_cofinal_OD` (ABL Thm 2.10) |
-| `HODBoundary.lean` | `HOD_isInnerModelZF` (Jech, Thm 13.26) |
+| File | Admitted statement | Reference |
+|---|---|---|
+| `Published.lean` | `cof_omega_of_witness`, `strongLimit_of_witness` | ABL, remark after Def. 2.4; Kunen 1971; Kanamori Cor. 23.14 |
+| | `aleph0_lt_of_witness` | ABL §2 (restriction is an I3 embedding); Kanamori §5, §24 |
+| | `not_REx_shortCofinal` | BG, Observation 1(2) |
+| | `REx_transfer` | BG, Lemma 3.3 |
+| | `le_of_CEx` | BG, remark after Def. 3.1 |
+| | `stationary_of_CEx` | BG, Proposition 3.4 (1)⇒(3) |
+| | `isClub_elemSub` | Jech Ch. 8 (clubs in P_κ(A)) and Ch. 12; Kanamori §25 |
+| | `ODfrom_trans` | Jech Ch. 13 (ordinal-definable sets), Thm 12.14 (reflection) |
+| | `SC_of_extendible` | Kanamori Prop. 23.6, §22; Jech Ch. 20 |
+| | `HCD_isInnerModelZF`, `HCD_isInnerModelZFC`, `HCD_cover`, `HCD_stabilizes` | Goldberg, arXiv:2103.13961v2, Prop. 4.2, Thm 4.3, Thm 4.13, Thm 4.14 |
+| `Above.lean` | `HCD_isGround` | Goldberg, arXiv:2103.13961v2, Thm 4.9 |
+| | `cc_preserves_regular` | Kunen 1980, Ch. VII Lemma 6.9; Jech Ch. 15 |
+| `Width.lean` | `no_short_cofinal_OD` | ABL, arXiv:2411.11568v4, Thm 2.10 |
+| `HODBoundary.lean` | `HOD_isInnerModelZF` | Jech, Thm 13.26 |
 
-BG = the Blue–Goldberg lecture notes of July 2026 (not refereed); the barrier is derived
-from their stationary characterization (the synthesis' "Route S").  Blue–Goldberg's
+ABL = Aguilera–Bagaria–Lücke, arXiv:2411.11568v4.  BG = Goldberg (with Blue), *Consistency
+beyond the Kunen inconsistency*, lecture notes, 1 July 2026,
+<https://math.berkeley.edu/~goldberg/Slides/CoverExact.pdf>.  Goldberg = *The uniqueness of
+elementary embeddings*, JSL 89 (2024); the numbers are those of arXiv v2 (the journal
+version is reported to be shifted by one in §4).  Full bibliographic data is in the header
+of `Published.lean` and in each doc comment.  The numbers for ABL, BG and Goldberg were
+checked against the PDFs on 18 September 2026; textbook citations are at chapter/section
+level where the exact number was not checked.
+
+The barrier is derived from BG's stationary characterization (the synthesis' "Route S").  Blue–Goldberg's
 Theorem 3.6 is *not* admitted: it is re-derived as `no_CEx_above_extendible`.
 
 `Audit.lean` confirms that the fully proved theorems depend only on `propext`,

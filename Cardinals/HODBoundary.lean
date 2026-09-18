@@ -32,7 +32,10 @@ theorem HOD.od {x : ZFSet.{u}} (h : HOD x) : OD x := by
 
 namespace Published
 
-/-- `HOD` is an inner model of ZF (indeed of ZFC).  ([Jech, Theorem 13.26].) -/
+/-- `HOD` is an inner model of ZF (indeed of ZFC).
+
+Reference: T. Jech, "Set Theory", 3rd millennium ed., Springer 2003, Theorem 13.26:
+"`HOD` is a transitive model of ZFC." -/
 theorem HOD_isInnerModelZF : IsInnerModelZF (HOD.{u}) := by
   admit
 

@@ -27,7 +27,11 @@ namespace Published
 
 /-- An exacting cardinal `lam` is regular in `HOD_{V_lam}`; in set form: no short
 cofinal subset of `lam` is ordinal definable from parameters in `V_lam`.
-([ABL, Theorem 2.10].) -/
+
+Reference: J. P. Aguilera, J. Bagaria, P. Lücke, "Large cardinals, structural reflection,
+and the HOD Conjecture", arXiv:2411.11568v4, Theorem 2.10: "If `λ` is an exacting cardinal,
+then `λ` is a regular cardinal in `HOD_{V_λ}`."  A short cofinal `OD_{V_λ}` subset of `λ` is
+a set of ordinals, hence belongs to `HOD_{V_λ}` and would singularize `λ` there. -/
 theorem no_short_cofinal_OD (c : Cardinal.{u}) (hc : ℵ₀ ≤ c) (h : Ex c.ord)
     (a : ZFSet.{u}) (ha : ODfrom (fun p => p ∈ V_ c.ord) a) : ¬ ShortCofinal a c.ord := by
   admit

@@ -87,14 +87,22 @@ def CCIn (W : ZFSet.{u} → Prop) (P le : ZFSet.{u}) (lam : Ordinal.{u}) : Prop 
 namespace Published
 
 /-- Goldberg's ground theorem: if `κ` is strongly compact, `HCD(κ)` is a ground of `V`.
-([G24, Theorem 4.10].) -/
+
+Reference: G. Goldberg, "The uniqueness of elementary embeddings", J. Symb. Log. 89 (2024)
+1430-1454, arXiv:2103.13961v2, Theorem 4.9: "If `κ` is strongly compact, then `HCD(κ)` is a
+ground of `V`" (with Theorem 4.3 for ZFC and Proposition 4.10 for the size of the
+forcing). -/
 theorem HCD_isGround (κ : Cardinal.{u}) (hκ : SC κ) : IsGround (HCD κ) := by
   admit
 
 /-- Forcing with the `lam`-chain condition preserves the regularity of `lam`:
 if `lam = c.ord` is regular uncountable in the ground `W` and `V = W[G]` for a forcing
 that is `lam`-cc in `W`, then `V` has no short cofinal subset of `lam`.
-([Jech, Theorem 15.3 and Lemma 15.4]; synthesis Lemma 7.1.) -/
+
+Reference: K. Kunen, "Set Theory: An Introduction to Independence Proofs", North-Holland
+1980, Chapter VII, Lemma 6.9 (a `κ`-c.c. forcing, `κ` regular, preserves cofinalities
+`≥ κ`); also T. Jech, "Set Theory", 3rd millennium ed., Springer 2003, Chapter 15 (chain
+conditions and preservation of cardinals).  (Synthesis Lemma 7.1.) -/
 theorem cc_preserves_regular (W : ZFSet.{u} → Prop) (P le G : ZFSet.{u})
     (hpres : IsForcingPresentation W P le G) (hW : IsInnerModelZFC W)
     (c : Cardinal.{u}) (hc : ℵ₀ < c) (hreg : RegularIn W c.ord) (hcc : CCIn W P le c.ord) :
