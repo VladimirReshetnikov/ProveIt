@@ -206,12 +206,25 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   first were wrong and are recorded as such: hashing of nested tuples
   (interning shapes as integers changed nothing) and the cyclic garbage
   collector (same ratio with it disabled). Inlining the lookup changed nothing
-  either; `shape_cache=False` restores the old speed exactly (1.003). An
-  automatic switch was considered and dropped on evidence: inputs that profit
-  get their first hit only after 35 to 150 lookups, the stress closure gets 12
-  hits in its first 64 and then none, so an early hit count predicts the wrong
-  way. Kept on because the gains are several milliseconds and the losses below
-  0.2 ms on the corpus; turn it off for many small irregular diagrams.
+  either; `shape_cache=False` restores the old speed exactly (1.003).
+  **Correction, same day.** I first wrote here that an automatic switch was
+  impossible, having tested one predictor: an early hit count predicts the
+  wrong way (inputs that profit get their first hit after 35 to 150 lookups,
+  the stress closure gets 12 hits in its first 64 and then none). A different
+  predictor works. A plan can only be reused in a stage whose picture (the
+  position of the four crossing slots among the boundary points, up to monotone
+  relabelling) occurred before, and that is known from the scan order alone:
+  `ordering.repeated_stages` gives 0 for the Conway knot, Kinoshita-Terasaka
+  and Conway#Conway, 1 of 36 for the stress closure, 4 of 31 and 11 of 41 for
+  the 6- and 4-strand closures, 16 of 40 for the 3-strand closure, 16 of 22
+  for T(3,11). `shape_cache=None`, now the default, turns the cache on when the
+  diagram has at least 16 crossings and at least an eighth of them repeat.
+  Transfer and composition *results* are shared across stages as well, but only
+  after the first plan-shape hit of the scan, since before that a shared
+  result cannot exist (ungated this cost a further 2.6%, intervals
+  1.023..1.029). Against the code before any of this (1ca6a5d), 301 pairs:
+  `scan T(3,11)` 0.505 (0.486..0.508), Conway 1.008 (1.005..1.010), hard
+  unknot 1.007; `ab.py`: T(3,11) 0.51, `scan chain256` 0.81, nothing slower.
 * `seconds=` fidelity: the default scanner overshot a 1 s budget by up to
   0.24 s because a crossing was added without checking the clock; with a check
   every 512 objects the overshoot is at most 0.03 s on the same runs.

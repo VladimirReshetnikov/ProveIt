@@ -109,9 +109,19 @@ class ScannerTests(unittest.TestCase):
             for config in configs:
                 got = khovanov_rank(d.pd, **config)
                 self.assertEqual((got["rank"], got["by_degree"]), (expected["rank"], expected["by_degree"]), config)
-        torus = Diagram.from_braid(3, [1, 2] * 7).pd
-        self.assertGreater(khovanov_rank(torus)["stats"]["shape_hits"], 0)          # the cache is really used
+        torus = Diagram.from_braid(3, [1, 2] * 11).pd
+        self.assertGreater(khovanov_rank(torus)["stats"]["shape_hits"], 0)          # chosen automatically and used
+        self.assertGreater(khovanov_rank(torus)["stats"]["result_hits"], 0)
         self.assertEqual(khovanov_rank(torus, shape_cache=False)["stats"]["shape_hits"], 0)
+        self.assertEqual(khovanov_rank(load("conway.json").pd)["stats"]["shape_hits"], 0)      # no repeats: left off
+        conway = [tuple(c) for c in load("conway.json").pd]
+        self.assertEqual(ordering.repeated_stages(conway, ordering.best_scan_order(conway, 12)), 0)
+        self.assertGreaterEqual(ordering.repeated_stages(torus, ordering.best_scan_order(torus, 12)), 8)
+        # a chain of kinks settles into one picture once the boundary has its steady size:
+        # n kinks repeat n - 3 times (none for three kinks, whose three stages all differ)
+        for n, expected in ((3, 0), (5, 2), (8, 5), (12, 9)):
+            kinks = [tuple(c) for c in Diagram.from_braid(n + 1, list(range(1, n + 1))).pd]
+            self.assertEqual(ordering.repeated_stages(kinks, ordering.best_scan_order(kinks, 12)), expected)
 
     def test_circle_numbering_is_canonical(self):
         # The cross-stage plan cache needs: numbering by minimal label, whichever matching is walked

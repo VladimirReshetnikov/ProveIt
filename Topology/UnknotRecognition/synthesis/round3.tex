@@ -78,8 +78,8 @@ scan of the stress closure $0.67$ $[0.46, 0.72]$; recognition of the Conway
 knot $0.92$ $[0.89, 0.93]$. Four later sequential runs were all rejected by the
 control rule and are not used; they are flagged in \texttt{perf\_log.json}.
 
-\paragraph{A cache that is a trade-off.} The last change is not a free win and
-is reported as such. Every crossing brings new edge labels, so plans cached per
+\paragraph{A cache that began as a trade-off.} The last change was at first not
+a free win; how it became nearly one is told in order. Every crossing brings new edge labels, so plans cached per
 stage are never reused across stages, although a long braid compiles the same
 few pictures at every crossing: at boundary size 6 there are five matchings,
 and about 35 transfer plans were compiled per crossing of $T(3,n)$. Transfer
@@ -89,7 +89,7 @@ and circles are numbered by their minimal label whichever matching is walked
 first (tested on random matchings). The reuse is 80\% of the plans for
 $T(3,11)$, 94\% for $T(3,31)$, 99\% for the chain of kinks, 38\% and 19\% for
 the random 3- and 4-strand closures, but 1\% for the stress closure and none
-for the Conway knot. Three agreeing A/B runs: scan of $T(3,11)$ $0.61$
+for the Conway knot. With the cache always on, three agreeing A/B runs: scan of $T(3,11)$ $0.61$
 $[0.59, 0.66]$, chain of kinks $0.78$, 40-crossing 3-strand closure $0.97$;
 \emph{scan of the Conway knot $1.06$ $[1.04, 1.07]$ and recognition of the hard
 unknot $1.07$, slower}; no claim on the large scans. Timing partial variants
@@ -97,13 +97,29 @@ against the old code (A/A ratio $0.999$) splits the cost into ranking the
 boundary at each stage ($+1.5\%$), building and looking up the key ($+3.0\%$)
 and storing ($+1.3\%$). Two explanations offered first were wrong: interning
 the shapes as integers, against the hashing of nested tuples, changed nothing,
-and the ratio was the same with the cyclic garbage collector disabled. An
-automatic switch was dropped on evidence: the inputs that profit get their
-first hit only after 35 to 150 lookups, while the stress closure gets 12 hits
-in its first 64 lookups and then none, so an early hit count predicts the wrong
-way. The cache is on by default, because on the corpus the gains are
-milliseconds and the losses below 0.2 ms, and \texttt{shape\_cache=False}
-restores the previous speed exactly ($1.003$ $[0.999, 1.007]$).
+and the ratio was the same with the cyclic garbage collector disabled;
+\texttt{shape\_cache=False} restores the previous speed exactly ($1.003$
+$[0.999, 1.007]$).
+
+A first attempt at an automatic switch failed, and I concluded too early that
+none was possible: an early hit count predicts the wrong way, since the inputs
+that profit get their first hit only after 35 to 150 lookups, while the stress
+closure gets 12 hits in its first 64 lookups and then none. A different
+predictor works. A plan can be reused only in a stage whose picture, the
+position of the four crossing slots among the boundary points up to monotone
+relabelling, has occurred before, and that is known from the scan order alone,
+before the scan. The number of such stages is 0 for the Conway knot, the
+Kinoshita--Terasaka knot and Conway\#Conway, 1 of 36 for the stress closure,
+4 of 31 and 11 of 41 for the 6- and 4-strand closures, 16 of 40 for the
+3-strand closure and 16 of 22 for $T(3,11)$. The default now turns the cache on
+when the diagram has at least 16 crossings and an eighth of its stages repeat.
+Transfer and composition \emph{results} are shared across stages too, but only
+after the first reused plan of a scan, because before that no shared result can
+exist; without that gate they cost a further $2.6\%$ on the small irregular
+scans. Against the code before any of this, with 301 interleaved pairs: scan of
+$T(3,11)$ $0.505$ $[0.486, 0.508]$, Conway knot $1.008$ $[1.005, 1.010]$, hard
+unknot $1.007$; on the corpus, $T(3,11)$ $0.51$, chain of kinks $0.81$, and
+nothing slower.
 
 Two remarks. First, the closing sentence of the previous section, that on an
 unknot diagram no filter can decide the Python accelerations change nothing,

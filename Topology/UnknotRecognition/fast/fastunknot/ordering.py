@@ -121,3 +121,30 @@ def best_scan_order(pd, tries: int | None = None, check: Callable[[], None] | No
         if found is not None:                     # otherwise abandoned: not strictly better
             best, best_profile = found
     return best
+
+
+def repeated_stages(pd, order) -> int:
+    """Number of crossings met in a picture already seen along ``order``.
+
+    The picture of a stage is the position of the four crossing slots among the
+    boundary points, up to monotone relabelling.  A transfer plan can only be
+    reused across stages (``planar.Planar`` with ``shape_cache``) in a stage whose
+    picture occurred before, so zero means that cache cannot help at all.
+    """
+    points: set = set()
+    seen: set = set()
+    repeats = 0
+    for index in order:
+        slots = pd[index]
+        rank = {label: r for r, label in enumerate(sorted(points.union(slots)))}
+        key = (tuple(rank[label] for label in slots), tuple(sorted(rank[label] for label in points)))
+        if key in seen:
+            repeats += 1
+        else:
+            seen.add(key)
+        for label in slots:
+            if label in points:
+                points.remove(label)
+            else:
+                points.add(label)
+    return repeats
