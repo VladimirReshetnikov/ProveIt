@@ -1,0 +1,157 @@
+% Third round: CPython-level work on fastunknot after 0.2, and how it was measured.
+\section{A third round: constant factors in Python, and how to measure them}
+\label{sec:round3}
+
+After version 0.2 the Rust work was paused and the Python package was
+optimized further, with no change to the mathematics, the verdicts or the
+asymptotic behaviour. This section records what was gained, what was tried and
+rejected, and an episode about measurement that changed how every number below
+was obtained. All results are exact and identical to those of 0.2: 33 unit
+tests pass, and \texttt{crosscheck.py} compares the ranks by homological degree
+of the new default scanner with the generic 0.2 scanner and the 0.1 set algebra
+on random braid closures (400 closures with 2 to 5 strands, no mismatch).
+
+\subsection{What changed}
+A profile of 0.2 on the stress closure showed that the cobordism algebra was no
+longer the bottleneck: of 1.6 s under the profiler, the scanner's own
+bookkeeping (method calls per differential entry, tuple-keyed dictionaries,
+hashing of nested frozensets, a heap of pivot candidates) took most of it.
+\begin{itemize}
+\item \textbf{A scanner written for CPython} (\texttt{scan\_fast.py}). Objects
+  of a stage are numbered $0,\dots,N-1$ and live in lists; the objects created
+  from one old object form a contiguous block, so a delooping label is an
+  offset; matchings are interned as integers, so every cache key is a tuple of
+  small integers; transfers of an edge are cached per (source matching, target
+  matching, value) for both smoothings at once; cancellation is one inlined
+  loop. The generic scanner of 0.2 is kept for the ablation configurations.
+\item \textbf{A bucket queue for pivots.} On the stress closure 114\,197 unit
+  entries are candidates but only 16\,884 are used; the rest die when a
+  neighbour is cancelled. Markowitz costs are tiny, so one list per small cost
+  plus a heap for the rare large ones replaces the heap.
+\item \textbf{Integer planar geometry} (\texttt{planar.py}). Circles of
+  $a\cup\bar b$ are found by walking partners alternately; a crossing is glued
+  by following the at most four strands through it; a transfer plan is compiled
+  only over the crossing and the circles it touches, the other circles being
+  renumbered; and since monomials of different components live on disjoint
+  circles, multiplying a bit-packed sum by a monomial $c$ is the shift
+  \texttt{<{}< c}.
+\item \textbf{Outside the scanner.} The modular Alexander filter builds the
+  matrix by sparse rows (at most three nonzero entries per row) and evaluates
+  each distinct entry once; the boundary profile of a greedy scan order is
+  tracked inside the greedy in $O(1)$ per step and a losing start is abandoned
+  early; the Jones frontier scan uses the interned matchings and the
+  strand-following gluing. Each was checked to be output-preserving against the
+  previous implementation on 500 to 600 random diagrams, including diagrams
+  with kinks.
+\end{itemize}
+
+\subsection{Results}
+Same harness on both sides (\texttt{perf.py}: in one process, best of $N$,
+timers around the call only), so the columns are comparable with each other
+but \emph{not} with the fresh-process medians of the previous section.
+\begin{center}\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Task (milliseconds) & 0.2 & after the scanner work & ratio \\
+\midrule
+Scan, stress closure (36 crossings, rank 2949) & 575.4 & 216.8 & 2.65 \\
+Scan, 41-crossing 4-strand closure & 135.3 & 51.1 & 2.65 \\
+Scan, 40-crossing 3-strand closure & 71.0 & 26.2 & 2.71 \\
+Scan, 31-crossing 6-strand closure & 59.3 & 21.4 & 2.77 \\
+Scan, Conway\#Conway (unfactored) & 114.9 & 41.7 & 2.75 \\
+Scan, $T(3,11)$ & 22.8 & 8.7 & 2.61 \\
+Scan, Conway knot & 7.7 & 3.0 & 2.54 \\
+Scan, chain of 256 kinks & 15.9 & 10.9 & 1.47 \\
+Recognize the 8-crossing hard unknot & 1.26 & 0.90 & 1.41 \\
+Recognize Conway knot, exact steps only & 7.8 & 3.2 & 2.43 \\
+\midrule
+Total of the 14 cases of \texttt{perf.py} & 1022.2 & 394.6 & 2.59 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The right-hand column is a run whose control loop (see below) spread by 4.8\%.
+The changes outside the scanner came later and were measured as paired ratios
+new/old with 95\% confidence intervals, which do not need a quiet machine:
+recognition of $T(3,61)$ $0.60$ $[0.53, 0.67]$ and then $0.69$ $[0.62, 0.72]$,
+together about $0.41$; the chain of 256 kinks $0.78$ $[0.73, 0.82]$; the Jones
+scan of the stress closure $0.67$ $[0.46, 0.72]$; recognition of the Conway
+knot $0.92$ $[0.89, 0.93]$. Four later sequential runs were all rejected by the
+control rule and are not used; they are flagged in \texttt{perf\_log.json}.
+
+Two remarks. First, the closing sentence of the previous section, that on an
+unknot diagram no filter can decide the Python accelerations change nothing,
+was true of 0.1 against 0.2 and is no longer true: that case is now 1.4 times
+faster, because the scan itself is. Second, the gain is a constant factor:
+between 2.5 and 2.8 on every scan in the table except the chain of kinks (1.5),
+where fixed work per crossing dominates. Nothing here touches the exponential
+growth, and the Rust port remains several times faster still.
+
+\subsection{Measured and not adopted}
+All of these were decided with deterministic counters (compositions performed
+during cancellation, differential entries written while adding crossings), and
+the ranks were identical in every variant.
+\begin{itemize}
+\item \emph{One queued pivot candidate per source object.} Fewer queue
+  operations, but 42\,197 instead of 29\,347 compositions on the stress closure:
+  the queued candidate goes stale. Rejected.
+\item \emph{Other pivot rules.} First-in-first-out inside a cost bucket needs
+  64\% more compositions on the stress closure; the cost
+  $(\mathrm{out}-1)+(\mathrm{in}-1)$ is worse on all four inputs tried. The
+  product cost with last-in-first-out stays.
+\item \emph{Another score for scan orders.} Scoring greedy orders by
+  $\sum 2^{|\partial|/2}$ selects the same start as the current rule (maximal,
+  then total boundary size) on all four inputs.
+\item \emph{Scoring all greedy starts instead of twelve.} On 40 random closures
+  the order changed in 18: equal work in 8, less in 6, more in 4, with ratios
+  from $0.29$ to $6.69$. The total, $0.952$, is carried by three inputs and
+  changes sign without one of them. Not adopted.
+\item \emph{Cancelling saddle isomorphisms before writing their entries.}
+  Between 74 and 83\% of the entries written are incident to a cancelled pair
+  when it is cancelled, but only 30 to 53\% of the cancellations are between
+  the two smoothings of one old object, the predictable kind, and they account
+  for 24 to 36\% of the entries. That bounds the gain near 15\% on the stress
+  closure before the cost of the extra code. Not pursued.
+\item \emph{A fast path for single-entry transfers.} It would apply to 13\% of
+  the edges of the stress closure: too little to measure. Not written.
+\end{itemize}
+The experiments on scan orders have a positive content. The score is the weak
+point, not the number of candidates: on the stress closure the greedy starts
+14 to 16 need 23\,710 compositions and have boundary profile $(8, 226)$, while
+start 0, with profile $(8, 230)$, needs 895\,182, that is 38 times more, with
+2.6 times the peak size; 20 of the 36 starts do not finish in 4 s. A
+matchings-only simulation cannot replace the score, because the gap occurs at
+equal boundary size, where there are at most 14 matchings: it is all
+multiplicity, i.e.\ homology of the partial tangle, which is what the
+computation computes. A cheap predictor of that multiplicity would be worth
+more than everything in this section.
+
+\subsection{An episode about measurement}
+Midway, a benchmark run showed everything 40\% slower, including code that had
+not been touched. No process of ours was running; the desktop's own load had
+changed. A fixed pure-Python control loop, added to the harness, went from
+5.3 ms to 12 ms \emph{inside one run}. Sequential before/after timing was
+therefore abandoned for decisions: \texttt{perf.py} now times the control next
+to every case and rejects a run whose control spreads by more than 10\% (eight
+of the fifteen logged runs are rejected), and \texttt{ab.py} times the old and
+the new code alternately in one process.
+
+The first criterion of \texttt{ab.py}, ``the interquartile range of the paired
+ratios lies below 1'', was then caught making false claims in both directions.
+A change confined to order selection, which is 0.2 to 1.8\% of the scans
+concerned and was measured on its own as 32 to 58\% faster with identical
+output, was reported as 14\% slower on one input and 4\% faster on another.
+The bound came from asking what share of the run time the change could touch
+at all. The tool now times the old code twice per round; on mid-sized scans
+this A/A control shows identical code differing by 20 to 30\% between adjacent
+runs. A difference is claimed only if the order-statistic 95\% confidence
+interval of the median ratio excludes 1 \emph{and} the median lies outside the
+interquartile range of the A/A ratios. The one claim that had been published
+under the lenient criterion (7 to 13\% from the refinements of the geometry on
+small scans, no claim on large ones) was re-tested between the two revisions
+under the strict criterion and holds: $0.87$ to $0.92$ with intervals inside
+$[0.87, 0.95]$, no claim on the large scans.
+
+A smaller finding of the same kind: the new scanner at first overshot a time
+budget of 1 s by up to 0.24 s (the generic scanner: 0.01 s), because a single
+crossing was added without looking at the clock. With a check every 512
+objects the overshoot is at most 0.03 s on the same runs.
