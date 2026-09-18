@@ -1,0 +1,836 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=13pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Forest}{HTML}{30392C}
+\definecolor{Olive}{HTML}{687144}
+\definecolor{Muted}{HTML}{65685F}
+\definecolor{Sage}{HTML}{CBD0BC}
+\definecolor{Pale}{HTML}{F2F4EB}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\PassOptionsToPackage{obeyspaces}{url}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{pdftitle={Large cardinals at the inconsistency frontier: synthesis of the continuation reports},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Deduplicated results of nine research continuations on cover-exacting, exacting and ultraexacting cardinals},pdfkeywords={large cardinals, cover exacting, ultraexacting, HCD, strongly compact, Ground Axiom, I0, I3}}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Forest}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Forest}}{\thesubsection}{.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Forest}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}LARGE CARDINALS AT THE INCONSISTENCY FRONTIER}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}SYNTHESIS\quad 18 SEP 2026}
+\fancyfoot[L]{\small\color{Muted}Synthesis of the nine continuation reports}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}Synthesis of the nine continuation reports}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\tcbset{colback=Pale,colframe=Sage,colbacktitle=Sage,coltitle=Forest,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{question}[definition]{Question}
+\newtheorem{inputthm}{Input}
+\renewcommand{\theinputthm}{\Alph{inputthm}}
+\numberwithin{equation}{section}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\AC}{\mathsf{AC}}
+\newcommand{\GA}{\mathsf{GA}}
+\newcommand{\HOD}{\mathrm{HOD}}
+\newcommand{\OD}{\mathrm{OD}}
+\newcommand{\CD}{\mathrm{CD}}
+\newcommand{\HCD}{\mathrm{HCD}}
+\newcommand{\UF}{\mathrm{UF}}
+\newcommand{\Ex}{\operatorname{Ex}}
+\newcommand{\UEx}{\operatorname{UEx}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\SC}{\operatorname{SC}}
+\newcommand{\CEx}{\operatorname{CEx}}
+\newcommand{\REx}{\operatorname{REx}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\crit}{\operatorname{crit}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\ot}{\operatorname{ot}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\Izero}{\mathrm{I0}}
+\newcommand{\Itwo}{\mathrm{I2}}
+\newcommand{\Ithree}{\mathrm{I3}}
+\newcommand{\Iwf}{\mathrm{I3}_{\mathrm{wf}}(0)}
+\newcommand{\Sel}{\operatorname{Sel}}
+\newcommand{\FF}{\mathcal F}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\src}[1]{\unskip\ {\normalfont\small\sffamily\color{Olive}[#1]}\ }
+\newcommand{\R}[1]{\textsf{R#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}{>{\centering\arraybackslash}p{.034\textwidth}}
+\newcommand{\yes}{$\bullet$}
+\newcommand{\prt}{$\circ$}
+\newcommand{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:\nolinkurl{#1}}}
+
+\begin{document}
+\thispagestyle{empty}
+{\sffamily\bfseries\small\color{Olive}SET THEORY\quad /\quad RESEARCH SYNTHESIS}
+
+\vspace{13pt}
+{\fontsize{28}{31}\selectfont\bfseries\color{Forest}Large cardinals at the\\ inconsistency frontier:\\ a synthesis\par}
+\vspace{10pt}
+{\fontsize{14}{18}\selectfont Deduplicated results of the nine continuation reports on\\ cover-exacting, exacting, and ultraexacting cardinals\par}
+\vspace{14pt}
+{\color{Muted}Prepared for Vladimir Reshetnikov\hfill 18 September 2026\par}
+\vspace{3pt}
+{\color{Sage}\hrule height .6pt}
+\vspace{12pt}
+
+\textbf{Purpose.} Nine independent continuation reports (\R1--\R9, in \nolinkurl{docs/research-reports/01}--\nolinkurl{09}) were written from the same research plan, the \emph{Unified Report}. Seven of them prove essentially the same central theorem with different names, thresholds, and proof routes; the remaining material consists of four further lines of work. This document merges them. Each result is stated once, in the strongest form reached by any report, with a compact proof and a source tag such as {\small\sffamily\color{Olive}[R1, R6]}. Section~\ref{sec:compare} compares the reports and records the discrepancies found.
+
+\begin{assessment}{The five result groups}
+\textbf{A. Completeness barrier} (\R1--\R4, \R6--\R8). If $\lambda$ is $\gamma$-cover exacting then $\lambda$ is regular in $\HCD(\gamma^+)$, and in $\HCD(\gamma)$ when $\gamma$ is singular, although $\cf^V(\lambda)=\omega$. A strongly compact cardinal \emph{below} $\lambda$ forces a small, explicit witness to non-stabilization of the $\HCD$ hierarchy; a strongly compact \emph{above} $\gamma$ forces a proper ground and contradicts the Ground Axiom.
+
+\textbf{B. Exacting cardinals} (\R9). No $\OD_{V_\lambda}$ family of fewer than $\lambda$ short cofinal maps exists.
+
+\textbf{C. Ultraexacting cardinals} (\R5, \R7). Definable finite choice fails on the quotient of cofinal $\omega$-subsets of $\lambda$ modulo finite difference: no finite $\OD_{V_\lambda}$ family of selectors, no ordinal-definable finite-valued transversal, and a forbidden Icarus enrichment.
+
+\textbf{D. Consistency} (\R1--\R3, \R5, \R7--\R9). $\Con(\ZFC+\Iwf)$ implies the consistency of a $\lambda$-cover-exacting $\lambda$; and one $\Izero$-equiconsistent theory carries all the boundary phenomena of groups A--C simultaneously.
+
+\textbf{E. Class embeddings} (\R3). For $j:V\to M$ and a fixed regular $\theta$, no unbounded subset of $j``\theta$ belongs to $M$.
+\end{assessment}
+
+\textbf{Status.} Nothing here is an unconditional inconsistency of a standard large-cardinal hypothesis; all nine reports agree on that. The open problem of a cover-exacting cardinal above a strongly compact cardinal remains open. The proofs are conventional, unrefereed, and not machine-checked. The synthesis re-derived the arguments while merging them, but did not re-verify the external sources; theorem numbers for imported results are those quoted by the reports. Priority is not claimed for any statement.
+
+\newpage
+\tableofcontents
+
+\newpage
+\section{The source reports}\label{sec:sources}
+
+The original archive folders had colliding names (several were called \nolinkurl{Large_Cardinals_Research_Continuation}, with browser-style suffixes). They were renamed to numbered directories in order of file modification time, and one redundant level of nesting was removed.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\textwidth}{@{}lP{.37\textwidth}Y@{}}
+\toprule
+&\textbf{Title (main file)}&\textbf{Distinctive content}\\\midrule
+\R1&\emph{Frontier II: Cofinality barriers for cover-exacting cardinals} (\nolinkurl{Large_Cardinals_Continuation})&Barrier for all $\eta>\gamma$; promotion principle $\mathsf{LP}$; ground theorem with forcing-size bound; failed-stationarity certificate; $\Itwo$ calibration.\\
+\R2&\emph{Cover exactingness, definability, and conditional inconsistency} (\nolinkurl{Cover_Exacting_Definability_Followup})&No-small-cover form of the gap; weak covering principle $\mathsf{Cov}$; first $\Izero$ boundary package.\\
+\R3&\emph{Local barriers at the large-cardinal frontier} (\nolinkurl{Large_Cardinals_Research_Continuation})&Chain-condition form of the ground obstruction; internal unbounded-range theorem for $j:V\to M$; first-HOD-gap theory.\\
+\R4&\emph{Cover-exacting cardinals and the Ground Axiom} (\nolinkurl{Large_Cardinals_Research_Continuation})&Barrier proved \emph{without} the stationary characterization (uniform covers, envelopes, absorption); ultrafilter-code promotion failure.\\
+\R5&\emph{Finite choice at the ultraexacting boundary} (\nolinkurl{Large_Cardinals_Finite_Choice_Continuation})&Finite-family selector obstruction with cycle amplification; selector-coded Icarus corollary; bounded/cofinal quotient separation; finite checks (Python).\\
+\R6&\emph{Cover-exacting cardinals and high-completeness cores} (\nolinkurl{Cover_Exacting_High_Completeness_Cores})&Singular endpoint $q(\gamma)$; proof of $\gamma\ge\lambda$; cofinal-refinement principle; first-regularization theorem.\\
+\R7&\emph{Local complete-definability barriers, finite symmetry, and an $\Izero$-calibrated consistency result} (\nolinkurl{Large_Cardinals_Continuation})&Finite-label symmetry theorem; finite-valued transversal theorem; small-ground formulation; finite checks (Python).\\
+\R8&\emph{Cover-exacting cardinals and completely definable grounds} (\nolinkurl{Large_Cardinals_Continuation})&$\lambda$ strongly inaccessible in the ground; rank-embedding witnesses escape $\CD(\gamma^+)$; first-disagreement profile.\\
+\R9&\emph{Frontier: a Prikry consistency refinement and local definability obstructions} (\nolinkurl{Large_Cardinals_Research_Continuation})&Prikry construction of a cover-exacting cardinal from $\Iwf$; projection-width theorem for exacting cardinals.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+A result-by-report concordance is given in Appendix~\ref{app:concordance}.
+
+\section{Conventions and imported results}\label{sec:setup}
+
+\subsection{Conventions}
+
+We work in $\ZFC$. Unadorned cardinalities, completeness, clubs and stationarity are computed in $V$; $|x|^N$ and $\cf^N$ are computed in an inner model $N$. For an inner model $N\models\ZF$, ``$\cf^N(\lambda)=\lambda$'' means that $N$ contains no cofinal map from an ordinal below $\lambda$ into $\lambda$; no Choice in $N$ is needed. All embeddings in Sections~\ref{sec:core}--\ref{sec:uex} are sets, and elementarity is expressed through satisfaction for set structures.
+
+\begin{definition}[Exacting, ultraexacting]\label{def:ex}
+A cardinal $\lambda$ is \emph{exacting}, $\Ex(\lambda)$, if for every cardinal $\zeta>\lambda$ there are $X\prec V_\zeta$ with $V_\lambda\cup\{\lambda\}\subseteq X$ and an elementary $j:X\to V_\zeta$ with $j(\lambda)=\lambda$ and $j\restr\lambda\neq\id$. It is \emph{ultraexacting}, $\UEx(\lambda)$, if moreover $j\restr V_\lambda\in X$ can be arranged. The domain $X$ need not be transitive.
+\end{definition}
+
+\begin{definition}[Relative and cover exactingness]\label{def:cex}
+For $\alpha>\lambda$ and $Y\subseteq V_\alpha$, a \emph{relative $\lambda$-exacting witness} is an elementary $j:(X,\in,X\cap Y)\to(V_\alpha,\in,Y)$ with $(X,\in,X\cap Y)\prec(V_\alpha,\in,Y)$, $V_\lambda\cup\{\lambda\}\subseteq X$, $\crit(j)<\lambda$, $j(\lambda)=\lambda$. For a set $Y$, write $\REx(\lambda,Y)$ if such witnesses exist at every $\alpha>\lambda$ with $Y\subseteq V_\alpha$. For infinite cardinals $\lambda\le\gamma$, $\lambda$ is \emph{$\gamma$-cover exacting}, $\CEx_\gamma(\lambda)$, if
+\[
+\forall\alpha>\lambda\ \forall y\in V_\alpha\ \exists Y\subseteq V_\alpha\ \bigl(y\in Y\wedge|Y|\le\gamma\wedge\text{there is a relative witness for }(V_\alpha,Y)\bigr).
+\]
+The bound $\gamma$ is fixed before $\alpha$ and $y$; the condition is $y\in Y$, not $y\subseteq Y$; the witness need not fix $y$.
+\end{definition}
+
+Some reports define $\REx$ only at all sufficiently large heights. By Lemma~\ref{lem:descent} the two conventions agree for every use below.
+
+\begin{definition}[Complete definability]\label{def:hcd}
+Let $\UF_\eta(\Ord)$ be the class of proper $\eta$-complete ultrafilters on ordinals (closed under intersections of fewer than $\eta$ members). $\CD(\eta)$ is the class of sets definable from finitely many ordinals and finitely many members of $\UF_\eta(\Ord)$, and $\HCD(\eta)=\{x:\operatorname{tc}(\{x\})\subseteq\CD(\eta)\}$; $\HCD=\bigcap_\eta\HCD(\eta)$. For $\eta\le\xi$,
+\begin{equation}\label{eq:mono}
+\CD(\xi)\subseteq\CD(\eta),\qquad\HCD(\xi)\subseteq\HCD(\eta),
+\end{equation}
+and for a set of ordinals $a$: $a\in\CD(\eta)\iff a\in\HCD(\eta)$.
+\end{definition}
+
+Put $q(\gamma)=\gamma$ if $\gamma$ is singular and $q(\gamma)=\gamma^+$ otherwise. A \emph{ground} is an inner model $W\models\ZFC$ with $V=W[G]$ for a set forcing $\PP\in W$; the \emph{Ground Axiom} $\GA$ says there is no proper ground.
+
+\subsection{Imported results}
+
+\begin{inputthm}[Local Kunen]\label{in:kunen}
+In $\ZFC$ there is no nontrivial elementary $V_{\mu+2}\to V_{\mu+2}$. \cite{kunen,hkp}
+\end{inputthm}
+
+\begin{inputthm}[Goldberg's $\HCD$ theorems]\label{in:hcd}
+$\HCD(\eta)\models\ZF$ for every infinite cardinal $\eta$. If $\delta$ is strongly compact, then $\HCD(\delta)\models\ZFC$, it is a ground of $V$ by a forcing of size below $(2^{2^\delta})^+$, and it has the $\delta$-cover and $\delta$-approximation properties in $V$. If $\delta$ is extendible, $\HCD(\delta)=\HCD$. \cite[Prop.~4.2--4.3, Thm.~4.4, 4.10, Prop.~4.11, Thm.~4.14--4.15]{unique}
+\end{inputthm}
+
+Several reports stress that the ground and covering statements need only \emph{strong compactness}; the supercompact hypothesis in the shorter lecture-note summary is not needed. \R1 notes that the arXiv~v2 numbering is shifted by one relative to the author version used here.
+
+\begin{inputthm}[Blue--Goldberg cover-exacting notes]\label{in:bg}
+(i) $\CEx_\gamma(\lambda)$ implies $\gamma\ge\lambda$. (ii) Lemma~3.3: $\REx(\lambda,Y)$ and $Z\in\OD_{\{Y\}}$ imply $\REx(\lambda,Z)$. (iii) Proposition~3.4: $\CEx_\gamma(\lambda)$ iff every set belongs to some $Y$ with $|Y|\le\gamma$ and $\REx(\lambda,Y)$, iff $\{\sigma\in P_{\gamma^+}(V_\alpha):\REx(\lambda,\sigma)\}$ is stationary for all large $\alpha$. (iv) Theorem~3.5: $\Con(\ZFC+\Itwo)\Rightarrow\Con(\ZFC+\exists\lambda\,\CEx_\lambda(\lambda))$. (v) Theorem~3.6: no $\gamma$-cover-exacting cardinal lies above an extendible. (vi) Problem~5.2: can one lie above a strongly compact? \cite{cover}
+\end{inputthm}
+
+Items (i)--(iii) are lecture-note results; \R4 and \R6 reprove everything needed from them (Section~\ref{sec:hulls}), so group~A depends on the notes only through the definitions.
+
+\begin{inputthm}[Exacting and ultraexacting cardinals]\label{in:abl}
+(i) An exacting $\lambda$ is a strong limit of cofinality $\omega$ and is regular in $\HOD_{V_\lambda}$ \cite[Thm.~2.10]{abl}. (ii) Ultraexacting witnesses can be chosen with critical point above any $\alpha<\lambda$ \cite[Lemma~3.2]{abl}. (iii) $\lambda$ is ultraexacting iff every ordinal-definable $A\subseteq V_{\lambda+1}$ admits an elementary $e:(V_{\lambda+1},A)\to(V_{\lambda+1},A)$ with $\crit(e)<\lambda$ \cite[Thm.~B/3.1]{abgl}. (iv) $\ZFC+\exists\lambda\,\UEx(\lambda)$ and $\ZFC+\Izero$ are equiconsistent \cite[Thm.~A/4.5]{abgl}. (v) An ultraexacting $\lambda$ is preserved by a $\chi$-directed closed forcing (any $\chi>\lambda$) forcing $V_\lambda\subseteq\HOD$; then no exacting cardinal lies below $\lambda$ \cite[Prop.~3.9, Cor.~3.10]{abgl}.
+\end{inputthm}
+
+\begin{inputthm}[Iteration interface for $\Iwf$]\label{in:iter}
+For $j:V_\Lambda\to V_\Lambda$ with critical sequence $\langle\kappa_n\rangle$, finite iterates $j_{m,n}$, direct limit $M^j_\omega$ with well-founded part $W^j_\omega$: $j$ is an $\Iwf$-embedding if $j_{0,\omega}[\kappa_0^+]\subseteq W^j_\omega$. Then $V_\Lambda\cup\{\Lambda\}\subseteq W^j_\omega$; $j^+(j_{0,\omega}(A))=j_{0,\omega}(A)$ for $A\in V_{\kappa_0+1}$; if $j^+(E)=E\subseteq\Lambda^2$ then $j\restr\Lambda$ is elementary on $(\Lambda,E)$; and $A\in j_{0,\omega}(U_0)$ iff $A$ contains a tail of $\langle\kappa_n\rangle$, for $A\in\Pow(\Lambda)\cap W^j_\omega$. Moreover $\Itwo$ is strictly stronger than $\Iwf$, and $\exists\lambda\,\Ex(\lambda)$ is strictly stronger than $\Ithree$, in consistency strength. \cite[\S3]{ad}, \cite[Prop.~5.1, Def.~5.2, Thm.~5.4, 5.10, Cor.~5.11]{abgl}
+\end{inputthm}
+
+\section{Core lemmas on exacting witnesses}\label{sec:core}
+
+\begin{lemma}[Critical-sequence normalization]\label{lem:crit}\src{R1--R8}
+Let $\lambda$ be an uncountable cardinal and let $e$ be a nontrivial elementary self-embedding of $V_\lambda$, or of $V_{\lambda+1}$ with $\crit(e)<\lambda$. With $\kappa_n=e^n(\crit(e))$ we have $\sup_n\kappa_n=\lambda$, and $e(\xi)>\xi$ for every $\xi\in[\kappa_0,\lambda)$. In particular every exacting witness $j$ restricts to such an $e=j\restr V_\lambda$, so $\cf^V(\lambda)=\omega$ and every ordinal below $\lambda$ fixed by $j$ lies below $\crit(j)$.
+\end{lemma}
+
+\begin{proof}
+If $\mu=\sup_n\kappa_n<\lambda$, the sequence lies in $V_\lambda$, $e(\mu)=\mu$, and $e\restr V_{\mu+2}$ contradicts Input~\ref{in:kunen}. For $\kappa_n\le\xi<\kappa_{n+1}$, $e(\xi)\ge\kappa_{n+1}>\xi$. The restriction $j\restr V_\lambda$ is elementary because $V_\lambda$ is definable from the fixed parameter $\lambda$ and $V_\lambda\subseteq X$; transitivity of $X$ is not used.
+\end{proof}
+
+\begin{lemma}[No preserved short cofinal set]\label{lem:short}\src{R1, R2, R4, R6, R7}
+If $a\subseteq\lambda$ is cofinal with $\ot(a)<\lambda$, then $\REx(\lambda,a)$ fails.
+\end{lemma}
+
+\begin{proof}
+In $(V_\alpha,\in,a)$ the set $a$ is definable from its predicate, so $a\in X$ and $j(a)=a$; hence $\tau=\ot(a)$ and the increasing enumeration $h:\tau\to a$ are in $X$ and fixed. By Lemma~\ref{lem:crit}, $\tau<\crit(j)$, so $j(h(\xi))=j(h)(j(\xi))=h(\xi)$ for all $\xi<\tau$. Thus the cofinal set $a$ consists of fixed ordinals, contradicting Lemma~\ref{lem:crit}.
+\end{proof}
+
+\begin{lemma}[Predicate bookkeeping]\label{lem:descent}\src{R4, R6}
+Let $j$ be a relative witness for $(V_\theta,Y)$ with $Y\in V_\theta$. (a) $Y\in X$ and $j(Y)=Y$; members of $Y$ need not be fixed. (b) If $\cf(\theta)>\omega$, there are relative witnesses for $(V_\beta,Y)$ at every $\beta<\theta$ with $\beta>\lambda$ and $Y\subseteq V_\beta$.
+\end{lemma}
+
+\begin{proof}
+(a) $Y$ is the unique $z$ with $\forall u(u\in z\leftrightarrow Y(u))$. (b) Existence of a witness at a height $\beta<\theta$ is computed correctly in $V_\theta$. The least failing $\beta$ is definable from $\lambda$ and $Y$, hence lies in $X$ and is fixed; restricting $j$ to $X\cap V_\beta$ gives a witness at $\beta$.
+\end{proof}
+
+\begin{lemma}[Definability transfer]\label{lem:transfer}\src{R4, R6; focused form R1--R3, R8}
+If $\REx(\lambda,Y)$ and $Z\in\OD_{\{Y\}}$, then $\REx(\lambda,Z)$. In particular no cofinal subset of $\lambda$ of order type below $\lambda$ belongs to $\OD_{\{Y\}}$, and $\lambda$ is regular in $\HOD_{\{Y\}}$.
+\end{lemma}
+
+\begin{proof}
+Let $Z$ be the least counterexample in the canonical well-order of $\OD_{\{Y\}}$ and $\beta$ its least failing height; both are definable from $\lambda$ and $Y$ \emph{without further ordinal parameters}. Take a witness for $Y$ at a height $\theta$ reflecting these definitions. Then $Z,\beta\in X$ are fixed, the predicate $u\in Z$ is a definitional expansion, and restriction to $V_\beta$ gives the excluded witness. The second assertion follows from Lemma~\ref{lem:short}.
+\end{proof}
+
+\begin{assessment}{The parameter issue, as every report records it}
+An arbitrary ordinal parameter in a definition need not be fixed by an exacting embedding. All proofs therefore first pass to a canonical least object definable from the fixed pair $(Y,\lambda)$ and only then choose a witness at a reflecting height. The same device reappears in Lemma~\ref{lem:canonical} for ultraexacting cardinals.
+\end{assessment}
+
+\begin{lemma}[The cover bound]\label{lem:bound}\src{R6; known from the notes}
+$\CEx_\gamma(\lambda)$ implies $\gamma\ge\lambda$.
+\end{lemma}
+
+\begin{proof}
+If $\gamma<\lambda$, take a cofinal $c:\omega\to\lambda$, a height $\alpha$ with $\cf(\alpha)>\gamma$, and a cover $Y\ni c$ with witness $j$. Then $Y\in V_\alpha$ is fixed, $\nu=|Y|<\crit(j)$, and a bijection $f:\nu\to Y$ in $X$ shows $Y\subseteq X$ and $j``Y=Y$. Let $c_n\in Y$ be the $n$-fold preimage of $c$; then $c(k)=e^n(c_n(k))$ with $e=j\restr V_\lambda$. Choosing $c(k)\ge\crit(j)$ and $n$ with $e^n(\crit(j))>c(k)$ gives a contradiction, since $e^n$ maps ordinals below $\crit(j)$ below $\crit(j)$ and the others to at least $e^n(\crit(j))$.
+\end{proof}
+
+\section{From covers to small exact hulls}\label{sec:hulls}
+
+The reports use two routes to obtain a small elementary substructure $\sigma\prec V_\alpha$ that is simultaneously (i) of size at most $\gamma$, (ii) a container for prescribed parameters, and (iii) a predicate with $\REx(\lambda,\sigma)$.
+
+\textbf{Route S} (\R1--\R3, \R7, \R8) imports the stationary characterization, Input~\ref{in:bg}(iii), and intersects the stationary set with the club of elementary hulls containing the parameters.
+
+\textbf{Route H} (\R4, \R6) proves the required hull directly from Definition~\ref{def:cex}:
+
+\begin{lemma}[Persistent small covers]\label{lem:persist}\src{R4, R6}
+$\CEx_\gamma(\lambda)$ holds iff every set $y$ belongs to a set $Y$ with $|Y|\le\gamma$ and $\REx(\lambda,Y)$.
+\end{lemma}
+
+\begin{proof}
+($\Rightarrow$) If $y$ has no such cover, let $b(Y)$ be the least failing height of each candidate $Y$, and let $F(\eta)$ bound $b(Y)+\omega$ over candidates $Y\subseteq V_\eta$; this uses Replacement on sets only. A continuous recursion of length $\gamma^+$ gives $\theta$ with $\cf(\theta)=\gamma^+$ closed under $F$. Cover exactingness at $\theta$ yields $Y\ni y$; since $|Y|<\cf(\theta)$, $Y\in V_\beta$ for some $\beta<\theta$, so $b(Y)<\theta$, and Lemma~\ref{lem:descent}(b) gives a witness at $b(Y)$. ($\Leftarrow$) Use $Z=Y\cap V_\alpha\in\OD_{\{Y\}}$ and Lemma~\ref{lem:transfer}.
+\end{proof}
+
+\begin{lemma}[Exact hulls]\label{lem:hull}\src{R4, R6}
+Assume $\CEx_\gamma(\lambda)$. For every sufficiently large limit $\alpha$ and finite $A\subseteq V_\alpha$ there is $\sigma$ with $A\subseteq\sigma\prec V_\alpha$, $|\sigma|\le\gamma$, and $\REx(\lambda,\sigma)$.
+\end{lemma}
+
+\begin{proof}
+Code a Skolem system for $V_\alpha$ (with constants for $A$) as one function $f$, cover $f$ by a persistent $Y$ (Lemma~\ref{lem:persist}), and let $\sigma$ be the closure of $\omega$ under \emph{all} functions $V_\alpha^{<\omega}\to V_\alpha$ that belong to $Y$. Then $|\sigma|\le\gamma$, $\sigma\prec V_\alpha$, and $\sigma$ is definable from $Y$ and $\alpha$ alone, so Lemma~\ref{lem:transfer} applies. The individually chosen $f$ is not a parameter of the definition.
+\end{proof}
+
+\begin{lemma}[Trace reconstruction]\label{lem:trace}\src{R1--R4, R6--R8}
+Let $U$ be an $\eta$-complete ultrafilter on an ordinal $\tau$, and let $U,\tau\in\sigma\prec V_\alpha$ with $|\sigma|<\eta$ and $\alpha$ large. Then $U\in\OD_{\{\sigma\}}$. Hence for $x\in\CD(\eta)$ with $\eta$ regular uncountable, there is a club $C\subseteq P_\eta(V_\alpha)$ with $x\in\OD_{\{\sigma\}}$ for all $\sigma\in C$.
+\end{lemma}
+
+\begin{proof}
+Let $\beta=\min\bigcap(U\cap\sigma)$, which exists by completeness. For $A\in\sigma\cap\Pow(\tau)$ we get $A\in U\iff\beta\in A$, using that $\tau\setminus A\in\sigma$. $U$ is the \emph{unique} ultrafilter $W\in\sigma$ on $\tau$ with this trace: two such candidates would be separated by a set in $\sigma$, by elementarity. The definition uses only $\sigma$ and the ordinals $\tau,\beta,\alpha$. The seed $\beta$ need not belong to $\sigma$, $U$ need not be principal, and uniqueness is among candidates \emph{inside} $\sigma$ only.
+\end{proof}
+
+The mechanism is the one in the proof of Theorem~3.7 of the Blue--Goldberg notes; the reports' addition is the exact inequality $|\sigma|\le\gamma<\eta$.
+
+\begin{lemma}[The singular endpoint]\label{lem:singular}\src{R6}
+If $\gamma$ is singular, every $\gamma$-complete filter is $\gamma^+$-complete; hence $\CD(\gamma)=\CD(\gamma^+)$ and $\HCD(\gamma)=\HCD(\gamma^+)$.
+\end{lemma}
+
+\begin{proof}
+Split an index set of size $\gamma$ into $\cf(\gamma)$ pieces of size below $\gamma$ and intersect in two stages.
+\end{proof}
+
+\section{The completeness barrier}\label{sec:barrier}
+
+\begin{theorem}[Completeness barrier]\label{thm:barrier}\src{R1--R4, R6--R8}
+Assume $\CEx_\gamma(\lambda)$ and put $\rho=q(\gamma)$.
+\begin{enumerate}
+\item \emph{Absorption.} $\REx(\lambda,x)$ for every $x\in\CD(\rho)$.\src{R4, R6}
+\item No cofinal $a\subseteq\lambda$ with $\ot(a)<\lambda$ (equivalently $|a|<\lambda$) belongs to $\CD(\rho)$.
+\item $\cf^V(\lambda)=\omega$, while $\cf^{\HCD(\eta)}(\lambda)=\lambda$ for every cardinal $\eta\ge\rho$.
+\item Every cofinal $b\subseteq\lambda$ in $\HCD(\rho)$, or in any inner model contained in it, has $\ot(b)=\lambda=|b|^V$. Thus a countable cofinal $c\subseteq\lambda$ satisfies $\min\{|a|^V:a\in\HCD(\rho),\,c\subseteq a\subseteq\lambda\}=\lambda$.\src{R2, R4, R6}
+\end{enumerate}
+In particular $\CEx_\lambda(\lambda)$ implies that $\lambda$ is regular in $\HCD(\lambda)$.\src{R6}
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:singular} we may take $\rho=\gamma^+$. (1) Let $x$ be definable from $\gamma^+$-complete $U_0,\dots,U_{m-1}$ and ordinals. By Lemma~\ref{lem:hull} (Route~H), or by stationarity (Route~S), choose $\sigma\prec V_\alpha$ containing the $U_i$ with $|\sigma|\le\gamma$ and $\REx(\lambda,\sigma)$. Lemma~\ref{lem:trace} gives $x\in\OD_{\{\sigma\}}$, and Lemma~\ref{lem:transfer} gives $\REx(\lambda,x)$. (2) follows from (1) and Lemma~\ref{lem:short}. (3) $\lambda$ remains a cardinal in $N=\HCD(\eta)$; a cofinal $f:\mu\to\lambda$ in $N$ with $\mu<\lambda$ has range of $V$-cardinality below $\lambda$, hence of order type below $\lambda$, and this range lies in $\CD(\rho)$ by \eqref{eq:mono}. (4) The order type of $b$ is at most $\lambda$ and cannot be smaller.
+\end{proof}
+
+\begin{remark}[Threshold]
+\R1, \R3 and \R8 state the barrier for all $\eta>\gamma$, \R2, \R4 and \R7 at $\gamma^+$, and \R6 at $q(\gamma)$; by \eqref{eq:mono} and Lemma~\ref{lem:singular} the last is the strongest. The successor cannot be dropped for regular $\gamma$ by this proof: $\sigma$ may have size exactly $\gamma$, and a uniform $\gamma$-complete ultrafilter on $\gamma$ contains all $\gamma\setminus\{\xi\}$, whose intersection is empty \R1. No report claims the threshold is optimal.
+\end{remark}
+
+\begin{corollary}[What escapes the high-completeness models]\label{cor:escape}\src{R3, R8}
+Assume $\CEx_\gamma(\lambda)$ and $\eta\ge q(\gamma)$. No strictly increasing cofinal $c:\omega\to\lambda$ is ordinal definable from an $\eta$-complete ultrafilter on an ordinal, however large its underlying ordinal. No nontrivial elementary $e:V_\lambda\to V_\lambda$ belongs to $\CD(\eta)$.
+\end{corollary}
+
+\begin{proof}
+$\ran(c)$ is a short cofinal set. From $e$ one defines its critical sequence, which is cofinal by Lemma~\ref{lem:crit}.
+\end{proof}
+
+\begin{corollary}[Certificate of failed cover exactingness]\label{cor:cert}\src{R1}
+If $\lambda\le\gamma<\eta$ and some cofinal $a\subseteq\lambda$ of size below $\lambda$ lies in $\CD(\eta)$, then for all large $\alpha$ a club of elementary hulls in $P_{\gamma^+}(V_\alpha)$ is disjoint from $\{\sigma:\REx(\lambda,\sigma)\}$; so $\CEx_\gamma(\lambda)$ fails.
+\end{corollary}
+
+\begin{corollary}[Lower covering and approximation fail]\label{cor:approx}\src{R1--R4, R6, R8}
+Assume $\CEx_\gamma(\lambda)$, let $W\models\ZF$ be an inner model with $W\subseteq\HCD(q(\gamma))$, and let $c\subseteq\lambda$ be cofinal of order type $\omega$. Then $c\notin W$, but $c\cap b$ is finite and belongs to $W$ whenever $b\in W$ is well-orderable in $W$ with $|b|^W<\lambda$. Consequently $(W,V)$ fails the $\theta$-cover and $\theta$-approximation size tests for every uncountable cardinal $\theta\le\lambda$.
+\end{corollary}
+
+\begin{proof}
+$\lambda$ is regular in $W$, so $b\cap\lambda$ is bounded, and a cofinal $\omega$-sequence has finitely many terms below a bound.
+\end{proof}
+
+This is compatible with Input~\ref{in:hcd}: when $W=\HCD(\kappa)$ for a strongly compact $\kappa>\gamma$, approximation and covering hold at $\kappa$, where the test set $b=\lambda$ is allowed and $c\cap\lambda=c\notin W$.
+
+\section{A strongly compact cardinal below \texorpdfstring{$\lambda$}{lambda}}\label{sec:below}
+
+\begin{theorem}[Small-witness separation]\label{thm:sep}\src{R1--R4, R6--R8}
+Suppose $\delta<\lambda\le\gamma$, $\SC(\delta)$ and $\CEx_\gamma(\lambda)$; let $\rho=q(\gamma)$. There is a cofinal $a\subseteq\lambda$ with
+\[
+a\in\HCD(\delta),\qquad|a|^{\HCD(\delta)}<\delta,\qquad\ot(a)<\delta,\qquad a\notin\textstyle\bigcup_{\eta\ge\rho}\CD(\eta).
+\]
+Hence $\cf^{\HCD(\delta)}(\lambda)<\delta<\lambda=\cf^{\HCD(\eta)}(\lambda)$ for all $\eta\ge\rho$, and $\Pow(\lambda)\cap\HCD(\rho)\subsetneq\Pow(\lambda)\cap\HCD(\delta)$. Moreover:
+\begin{enumerate}
+\item every $b\in\HCD(\rho)$ with $a\subseteq b$ has $|b|^V\ge\lambda$;\src{R2}
+\item no cofinal $b\subseteq a$ belongs to $\HCD(\rho)$;\src{R6}
+\item some $\delta$-complete ultrafilter $U$ on an ordinal satisfies $U\notin\CD(\rho)$.\src{R4}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Cover a countable cofinal $c\subseteq\lambda$ by $b_0\in\HCD(\delta)$ of internal size below $\delta$ (Input~\ref{in:hcd}) and let $a=b_0\cap\lambda$. Its order type is below the cardinal $\delta$ and its enumeration lies in $\HCD(\delta)$. Theorem~\ref{thm:barrier}(2),(4) give the rest; for (3), take $U$ with $a\in\OD_{\{U\}}$ and compose definitions.
+\end{proof}
+
+The witness $a$ need not be countable, even in $V$: strong compactness supplies a small \emph{cover} of an $\omega$-sequence, not the sequence. The forcing-size bound of Input~\ref{in:hcd} gives an independent proof of the weaker conclusion $\cf^{\HCD(\delta)}(\lambda)<\lambda$, since a forcing of size below the strong limit $\lambda$ cannot singularize a regular $\lambda$ \R1.
+
+\subsection{The conditional inconsistency, in all its reported forms}
+
+Each report names a slightly different additional principle. For $\delta<\lambda\le\gamma$ and $\rho=q(\gamma)$:
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{@{}lYl@{}}
+\toprule
+&\textbf{Principle}&\textbf{Source}\\\midrule
+$\mathsf P_1$&$\Pow(\lambda)\cap\HCD(\delta)=\Pow(\lambda)\cap\HCD(\rho)$ \ (local stabilization)&\R3, \R4, \R6, \R8\\
+$\mathsf P_2$&$[\lambda]^{<\delta}\cap\HCD(\delta)\subseteq\HCD(\rho)$, sizes ambient \ (local promotion $\mathsf{LP}$)&\R1, \R2, \R3\\
+$\mathsf P_3$&as $\mathsf P_2$ with size computed in $\HCD(\delta)$ \ ($\mathsf{LS}$)&\R7\\
+$\mathsf P_4$&every $x\in[\lambda]^{<\delta}\cap\HCD(\delta)$ is covered by some $b\in\HCD(\rho)$ with $|b|^V<\lambda$ \ ($\mathsf{Cov}$)&\R2\\
+$\mathsf P_5$&every cofinal $x\in\HCD(\delta)$ with $\ot(x)<\delta$ has a cofinal subset in $\HCD(\rho)$ \ ($\mathsf{CR}$)&\R6\\
+$\mathsf P_6$&every $\delta$-complete ultrafilter on an ordinal lies in $\CD(\rho)$&\R4\\
+$\mathsf P_7$&some cofinal $x\subseteq\lambda$ with $|x|<\lambda$ lies in $\CD(\rho)$&\R1, \R4, \R7\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{corollary}[Conditional inconsistency below $\lambda$]\label{cor:cond}\src{R1--R4, R6--R8}
+$\ZFC$ refutes $\SC(\delta)\wedge\delta<\lambda\le\gamma\wedge\CEx_\gamma(\lambda)\wedge\mathsf P_i$ for each $i\le6$, and refutes $\CEx_\gamma(\lambda)\wedge\mathsf P_7$ outright. The implications are
+$\mathsf P_6\Rightarrow\mathsf P_1\Rightarrow\mathsf P_2\Leftrightarrow\mathsf P_3$, $\ \mathsf P_2\Rightarrow\mathsf P_4$, $\ \mathsf P_2\Rightarrow\mathsf P_5$, and under the hypotheses each of $\mathsf P_4,\mathsf P_5$ yields $\mathsf P_7$.
+\end{corollary}
+
+\begin{proof}
+Apply each principle to the set $a$ of Theorem~\ref{thm:sep}. For $\mathsf P_2\Leftrightarrow\mathsf P_3$: a subset of $\lambda$ in $\HCD(\delta)$ of ambient size below $\delta$ has order type below $\delta$, so its enumeration in $\HCD(\delta)\models\ZFC$ makes it internally small; the converse is trivial. $\mathsf P_6\Rightarrow\mathsf P_1$ holds for sets of ordinals by composing definitions.
+\end{proof}
+
+None of the principles is derived from strong compactness. The equivalence $\mathsf P_2\Leftrightarrow\mathsf P_3$ is an observation of this synthesis; it shows that the reports' differing size conventions do not produce different theorems.
+
+\begin{corollary}[The extendible boundary recovered]\label{cor:ext}\src{R1--R4, R6--R8}
+If $\delta<\lambda$ is extendible, then $\neg\CEx_\gamma(\lambda)$ for every $\gamma$.
+\end{corollary}
+
+\begin{proof}
+$\HCD(\delta)=\HCD\subseteq\HCD(\rho)\subseteq\HCD(\delta)$, so $\mathsf P_1$ holds; extendibles are strongly compact. For $\gamma<\lambda$ use Lemma~\ref{lem:bound}.
+\end{proof}
+
+This is Blue--Goldberg's Theorem~3.6, not a new result. The factorization shows what each hypothesis contributes: strong compactness supplies the short cofinal set in the low model; extendibility supplies the promotion to high completeness.
+
+\begin{theorem}[First regularization]\label{thm:first}\src{R6}
+For an ambient cardinal $\lambda$ let $r(\lambda)$ be the least infinite cardinal $\eta$ with $\cf^{\HCD(\eta)}(\lambda)=\lambda$, if one exists. The map $\eta\mapsto\cf^{\HCD(\eta)}(\lambda)$ is nondecreasing. If $\CEx_\gamma(\lambda)$ then $r(\lambda)\le q(\gamma)$; if also $\SC(\delta)$ for some $\delta<\lambda$ then $r(\lambda)>\delta$. If $\CEx_\lambda(\lambda)$ and $\lambda$ is a limit of strongly compact cardinals, then $r(\lambda)=\lambda$ exactly.
+\end{theorem}
+
+The consistency of the last hypothesis is not asserted. The theorem does not show $\HCD(\lambda)=\bigcap_{\eta<\lambda}\HCD(\eta)$, and no single short cofinal set need lie in all the lower models.
+
+\section{A strongly compact cardinal above \texorpdfstring{$\gamma$}{gamma}: grounds}\label{sec:above}
+
+\begin{lemma}[Singularizing forcing is not $\lambda$-cc]\label{lem:cc}\src{R3, R4, R6, R8; size form R1, R2, R7}
+Let $W\models\ZFC$ be an inner model in which $\lambda$ is regular uncountable, and let $V=W[G]$ for $\PP\in W$ with $\cf^V(\lambda)=\omega$ and $\lambda$ a cardinal of $V$. Then $\PP$ is not $\lambda$-cc in $W$; it has an antichain of $W$-size $\lambda$, no dense subset of $W$-size below $\lambda$, and $|\PP|^V\ge\lambda$. Without the regularity assumption: if $|\PP|^W\le\nu<\lambda$ for an infinite $\nu$, then $W$ contains a cofinal $a\subseteq\lambda$ with $|a|^W\le\nu$.
+\end{lemma}
+
+\begin{proof}
+If $\PP$ were $\lambda$-cc, the sets $B_n$ of values of a name $\dot c(n)$ decided by maximal antichains have $W$-size below $\lambda$, so $\bigcup_nB_n$ is bounded in $\lambda$ by regularity in $W$, contradicting forced cofinality. For the last part take all values forced by some $q\le p$.
+\end{proof}
+
+\begin{theorem}[Proper canonical ground]\label{thm:ground}\src{R1--R4, R6, R8}
+Suppose $\lambda\le\gamma<\kappa$, $\CEx_\gamma(\lambda)$ and $\SC(\kappa)$. Then $W=\HCD(\kappa)$ is a \emph{proper} ground of $V$ with
+\[
+W\models\text{``$\lambda$ is strongly inaccessible''},\qquad\cf^V(\lambda)=\omega.
+\]
+Every $\PP\in W$ with $V=W[G]$ satisfies the conclusions of Lemma~\ref{lem:cc}, and $(W,V)$ fails $\theta$-covering and $\theta$-approximation for every uncountable $\theta\le\lambda$ while satisfying both at $\kappa$.
+\end{theorem}
+
+\begin{proof}
+$\kappa\ge\gamma^+\ge q(\gamma)$, so $W\subseteq\HCD(q(\gamma))$ and $\lambda$ is regular in $W$ by Theorem~\ref{thm:barrier}; $W$ is a ground by Input~\ref{in:hcd}. For the strong-limit clause \R8: an injection $\lambda\to\Pow^W(\mu)$ in $W$ with $\mu<\lambda$ would contradict $2^\mu<\lambda$ in $V$. The rest is Lemma~\ref{lem:cc} and Corollary~\ref{cor:approx}.
+\end{proof}
+
+\begin{corollary}[Ground Axiom obstruction]\label{cor:ga}\src{R1--R4, R6, R8}
+The theory $\ZFC+\GA+\exists\lambda\le\gamma<\kappa\,[\CEx_\gamma(\lambda)\wedge\SC(\kappa)]$ is inconsistent. Under $\GA$, every strongly compact cardinal is at most every cover bound of every cover-exacting cardinal; and $\ZFC+\GA+{}$``there is a proper class of strongly compact cardinals'' proves that no cardinal is cover exacting for any set-sized bound. No outer model of $\ZFC+\GA$ can preserve both $\CEx_\gamma(\lambda)$ and a strongly compact $\kappa>\gamma$.
+\end{corollary}
+
+The inequality $\kappa>\gamma$, not merely $\kappa>\lambda$, is essential: for $\lambda<\kappa\le\gamma$ monotonicity does not place $\HCD(\kappa)$ inside $\HCD(\gamma^+)$ \R4. Nothing here excludes $\GA+\CEx_\gamma(\lambda)$ with a single strongly compact below $\lambda$: then $V=\HCD(\delta)$ and the gap of Section~\ref{sec:below} remains \R3. The theorem is consonant with the known positive constructions, which are Prikry extensions.
+
+\begin{corollary}[General ground obstruction]\label{cor:gengound}\src{R1, R3, R7}
+Assume $\CEx_\gamma(\lambda)$. If $W\models\ZFC$ is an inner model with $W\subseteq\HCD(q(\gamma))$ and $V=W[G]$, then the forcing is not $\lambda$-cc in $W$. If instead $V=W[G]$ for an arbitrary ground $W$ with $|\PP|^W\le\nu<\lambda$, then $W$ contains a cofinal $a\subseteq\lambda$ with $|a|^W\le\nu$ and $a\notin\CD(q(\gamma))$; so the assumption that all such small sets of $W$ lie in $\CD(q(\gamma))$ is contradictory.
+\end{corollary}
+
+\begin{corollary}[Two strongly compacts]\label{cor:sandwich}\src{R1, R6, R8}
+If $\delta<\lambda\le\gamma<\kappa$ with $\SC(\delta)$, $\SC(\kappa)$, $\CEx_\gamma(\lambda)$, then both $\HCD(\kappa)$ and $\HCD(\delta)$ are grounds and
+\[
+\underbrace{\HCD(\kappa)}_{\lambda\text{ inaccessible}}\subseteq\underbrace{\HCD(q(\gamma))}_{\lambda\text{ regular}}\subsetneq\underbrace{\HCD(\delta)}_{\cf(\lambda)<\delta}\subseteq V,
+\]
+the strict inclusion being witnessed on $[\lambda]^{<\delta}$. $\HCD(\delta)$ has $\delta$-approximation while $\HCD(\kappa)$ fails it. Nothing prevents $\HCD(\delta)=V$.
+\end{corollary}
+
+\section{Exacting cardinals: definable families of cofinal maps}\label{sec:width}
+
+This section uses only Input~\ref{in:abl}(i). Write $N=\HOD_{V_\lambda}$. An $\OD_{V_\lambda}$ set need not belong to $N$, but an $\OD_{V_\lambda}$ set of ordinals, or graph between ordinals, does.
+
+\begin{theorem}[Projection width]\label{thm:width}\src{R9}
+Let $\lambda$ be exacting, $0<\mu<\lambda$, and let $F\in\OD_{V_\lambda}$ be a nonempty set of cofinal maps $\mu\to\lambda$. Then for some $\xi<\mu$ the projection $P_\xi=\{f(\xi):f\in F\}$ is unbounded in $\lambda$, and for every such $\xi$, $\ot(P_\xi)=\lambda=|P_\xi|^V$; hence $|F|^V\ge\lambda$. If all $f\in F$ are increasing this holds from some coordinate onward.
+\end{theorem}
+
+\begin{proof}
+All $P_\xi$ are defined uniformly from one definition of $F$, so $\xi\mapsto\sup\{\beta+1:\beta\in P_\xi\}$ lies in $N$. If every $P_\xi$ were bounded, regularity of $\lambda$ in $N$ would bound this function below $\lambda$, and then every $f\in F$ would be bounded. An unbounded $P_\xi\in N$ has order type $\lambda$, again by regularity.
+\end{proof}
+
+No member of $F$ is assumed definable and no choice is made inside $N$.
+
+\begin{corollary}\label{cor:odcover}\src{R9}
+If $\lambda$ is exacting, there is no $\OD_{V_\lambda}$ family $F$ with $0<|F|<\lambda$ of cofinal maps from a fixed $\mu<\lambda$ into $\lambda$. If $c:\omega\to\lambda$ is cofinal, every $A\in\OD_{V_\lambda}$ with $c\in A$ has $|A|\ge\lambda$; thus the principle ``every $x\in V_{\lambda+1}$ lies in an $\OD_{V_\lambda}$ set of size below $\lambda$'' fails.
+\end{corollary}
+
+\begin{proposition}[Fresh cofinal set]\label{prop:fresh}\src{R9; HOD form R2, R3, R8}
+If $\lambda$ is exacting and $c\subseteq\lambda$ is cofinal of order type $\omega$, then $c\notin\HOD_{V_\lambda}$, but $c\cap a$ is finite and in $\HOD_{V_\lambda}$ for every $a\in\HOD_{V_\lambda}$ that injects there into an ordinal below $\lambda$.
+\end{proposition}
+
+The cloud of Section~\ref{sec:i3} does not contradict Corollary~\ref{cor:odcover}: it may have size exactly $\lambda$, and its definition uses the generic sequence and a name, not parameters in $V_\lambda$.
+
+\section{Ultraexacting cardinals: failure of definable finite choice}\label{sec:uex}
+
+For $\cf(\lambda)=\omega$ let $D_\lambda=\{a\subseteq\lambda:\ot(a)=\omega,\ \sup a=\lambda\}$, let $a=^*b$ mean $|a\triangle b|<\omega$, and $Q_\lambda=D_\lambda/{=^*}$. For $1\le r<n<\omega$ let $\Sel_{n,r}(Q)=\{f:[Q]^n\to[Q]^r:f(B)\subseteq B\}$. The even/odd splitting of a critical sequence is in the Blue--Goldberg notes (Remark~2.4); the reports extend it in two complementary ways, through two different imported interfaces.
+
+\subsection{Finite cycles and finite families (interface: Input~\ref{in:abl}(ii))}
+
+\begin{lemma}[Finite algebra]\label{lem:algebra}\src{R5}
+Let $\tau$ be an $N$-cycle on $A$, $\sigma$ a permutation of a finite set $\FF$ with $|\FF|=m$, and $v_f:[A]^n\to[A]^r$ with $v_f(B)\subseteq B$ and $v_{\sigma(f)}(\tau``B)=\tau``v_f(B)$. (a) If $N=n$, every $\sigma$-orbit has length divisible by $n/\gcd(n,r)$, and this bound is sharp. (b) If $N=n\cdot\lcm(1,\dots,m)$, no such data exist.
+\end{lemma}
+
+\begin{proof}
+(b) With $L=\lcm(1,\dots,m)$, $\sigma^L=\id$, so $v_f$ commutes with $\tau^L$, which acts on $B_0=\{q_{kL}:k<n\}$ as a single $n$-cycle; a transitive cycle has no invariant subset of size $0<r<n$.
+\end{proof}
+
+Part (a) alone does \emph{not} exclude finite families (two binary selectors can be swapped on a 2-cycle); the amplification (b) is the essential step.
+
+\begin{lemma}[Internal cycles]\label{lem:cycles}\src{R5}
+Let $j:X\to V_\zeta$ be an ultraexacting witness with $\zeta>\lambda+\omega$. Then the critical sequence $\vec\kappa$ of $e=j\restr V_\lambda$ belongs to $X$, and for every $N\ge1$ the classes $q_i=[\{\kappa_{Nk+i}:k<\omega\}]$, $i<N$, lie in $X$ and satisfy $j(q_i)=q_{i+1\bmod N}$.
+\end{lemma}
+
+\begin{proof}
+$\vec\kappa$ is definable from $e\in X$. Since enumerations with domain $\omega$ are in $X$, $j(a_i)=j``a_i$, which is $a_{i+1}$, or $a_0\setminus\{\kappa_0\}$ for $i=N-1$; the quotient removes exactly this defect.
+\end{proof}
+
+\begin{lemma}[Fixed canonical witnesses]\label{lem:canonical}\src{R5}
+If $\lambda$ is ultraexacting, $p\in V_\lambda$, and some $z\in\OD_p$ satisfies a first-order property $\Phi(z,p,\lambda,\bar k)$, then there are such a $z_*$ and an ultraexacting witness $j$ with $z_*\in X$ and $j(z_*)=z_*$.
+\end{lemma}
+
+\begin{proof}
+Take the $\OD_p$-least witness, reflect its definition, and use Input~\ref{in:abl}(ii) to choose $\crit(j)>\rank(p)$.
+\end{proof}
+
+\begin{theorem}[No finite definable family of selectors]\label{thm:fsel}\src{R5}
+If $\lambda$ is ultraexacting and $1\le r<n<\omega$, there is no nonempty finite $\FF\in\OD_{V_\lambda}$ with $\FF\subseteq\Sel_{n,r}(Q_\lambda)$. More generally, no ultraexacting witness $j$ has a nonempty finite $\FF\in X$, $\FF\subseteq\Sel_{n,r}(Q_\lambda)$, with $j(\FF)=\FF$.
+\end{theorem}
+
+\begin{proof}
+For the second statement: $\FF\subseteq X$ and $j\restr\FF$ is a permutation $\sigma$; restrict the selectors to the $n\lcm(1,\dots,|\FF|)$-cycle of Lemma~\ref{lem:cycles} and apply Lemma~\ref{lem:algebra}(b). The first statement follows by Lemma~\ref{lem:canonical}. Only permutations of finite sets are iterated; no iterability of $j$ is used.
+\end{proof}
+
+The family may be definable with no definable member. Note that $\Sel_{n,r}(Q_\lambda)$ itself is ordinal definable and nonempty, yet has no nonempty finite $\OD_{V_\lambda}$ subset. \R7 proves the singleton, ordinal-parameter case by a different route (Corollary~\ref{cor:label-sel}).
+
+\begin{corollary}\label{cor:orders}\src{R5, R7}
+At an ultraexacting $\lambda$ there is no nonempty finite $\OD_{V_\lambda}$ family of linear orders of $Q_\lambda$, of tournaments on $Q_\lambda$, or of choice functions on its finite subsets; and no ordinal-definable injection of $Q_\lambda$ into the ordinals.
+\end{corollary}
+
+\begin{theorem}[Selector-coded Icarus enrichment]\label{thm:icarus}\src{R5}
+Let $N\models\ZF$ be a transitive inner model with $V_{\lambda+1}\subseteq N$ and $j:N\to N$ elementary with $\crit(j)<\lambda=\sup_nj^n(\crit j)$. Then no nonempty finite $\FF\in N$, $\FF\subseteq\Sel_{n,r}(Q_\lambda)$, has $j(\FF)=\FF$. For $f\in\Sel_{n,r}(Q_\lambda)$ let $E_f\subseteq V_{\lambda+1}$ code $f$ on representatives by flat codes $\{\langle0,i\rangle\}\cup\{\langle k+1,\alpha\rangle:\alpha\in a_k\}$. Then there is no elementary $j:L(V_{\lambda+1},E_f)\to L(V_{\lambda+1},E_f)$ with $\crit(j)<\lambda$ and $j(E_f)=E_f$.
+\end{theorem}
+
+This is a forbidden \emph{information condition}, not a refutation of $\Izero^\#$ or of unspecified Icarus sets: nothing shows that a canonical enrichment defines such a selector. The quotient classes have rank $\lambda+1$, which is why representatives must be coded.
+
+\subsection{Finite labels and transversals (interface: Input~\ref{in:abl}(iii))}
+
+Let $D_m(\lambda)$ be the set of $m$-tuples from $D_\lambda$ with pairwise distinct classes. A rule $L:D_m(\lambda)\to k$ is coded by the predicate $A_L=\{\{\langle i,\xi\rangle:\xi\in a_i\}\cup\{\langle m,t\rangle\}:t=L(\vec a)\}\subseteq V_{\lambda+1}$, and every elementary $e$ of $(V_{\lambda+1},A_L)$ with $\crit(e)<\lambda$ satisfies $L(e(\vec a))=L(\vec a)$, using $e(a)=e``a$ for countable $a$ \R7.
+
+\begin{lemma}[Finite-permutation realization]\label{lem:perm}\src{R7}
+For $e:V_{\lambda+1}\to V_{\lambda+1}$ with $\crit(e)<\lambda$, every $m$, and every $\pi\in S_m$, there is a pairwise disjoint $\vec a\in D_m(\lambda)$ with $e(a_i)=^*a_{\pi(i)}$: on a cycle $(i_0\dots i_{\ell-1})$ with offset $t$, put $a_{i_s}=\{\kappa_{\ell n+s}+t:n<\omega\}$.
+\end{lemma}
+
+\begin{theorem}[Finite-label obstruction]\label{thm:label}\src{R7}
+Let $\lambda$ be ultraexacting, $F$ a finite $S_m$-set, and $L:D_m(\lambda)\to F$ ordinal definable, invariant under finite modification of each coordinate, and $S_m$-equivariant. Then every $\pi\in S_m$ fixes some element of $F$.
+\end{theorem}
+
+\begin{proof}
+With $e$ preserving $A_L$ and $\vec a$ from Lemma~\ref{lem:perm}: $L(\vec a)=L(e\vec a)=L(\pi^{-1}\cdot\vec a)=\pi^{-1}\cdot L(\vec a)$.
+\end{proof}
+
+\begin{corollary}\label{cor:label-sel}\src{R7}
+At an ultraexacting $\lambda$ there is no ordinal-definable $s\in\Sel_{m,r}(Q_\lambda)$ for $1\le r<m$ (an $m$-cycle fixes no proper nonempty subset of $m$).
+\end{corollary}
+
+The test is necessary, not sufficient: $S_3$ acting on the disjoint union of its natural 3-point action and the 2-point sign action has a fixed point for each permutation but no common fixed point; whether such an $L$ can exist is open \R7.
+
+\begin{theorem}[No finite-valued transversal]\label{thm:transversal}\src{R7}
+If $\lambda$ is ultraexacting there is no ordinal-definable $T\subseteq D_\lambda$ with $0<|T\cap[a]|<\omega$ for every $a\in D_\lambda$.
+\end{theorem}
+
+\begin{proof}
+Take $e$ preserving $T$ and $a=\{\kappa_n\}$, so $e(a)=a\setminus\{\kappa_0\}$. Then $e$ injects the finite set $B=T\cap[a]$ into itself, so $e^p(b)=b$ for some $b\in B$, $p\ge1$. Then $e^p\restr b$ is an increasing bijection of a set of order type $\omega$, hence the identity, while $e^p$ moves every ordinal in $[\crit e,\lambda)$ and $b$ is cofinal.
+\end{proof}
+
+\begin{remark}[Parameters in $V_\lambda$; observation of the synthesis]
+Theorem~\ref{thm:transversal} extends to $T\in\OD_{V_\lambda}$ by the method of \R5: Lemma~\ref{lem:canonical} gives a fixed $T_*$ and a witness $j$ with $a=\ran(\vec\kappa)\in X$ (Lemma~\ref{lem:cycles}); $B=T_*\cap[a]$ is a finite member of $X$ with $j(B)=T_*\cap[j(a)]=B$, so $j$ permutes $B\subseteq X$, and the same periodicity argument applies since $j(b)=j``b$ for $b\in B$.
+\end{remark}
+
+\begin{remark}[Controls]\label{rem:controls}
+None of this contradicts Choice: every excluded object exists in $V$ and merely fails to be definable. Modification invariance is essential, since $D_\lambda$ itself carries an ordinal-definable lexicographic linear order \R7. The argument does not apply to ordinary exacting cardinals, whose witnesses need not contain the critical sequence \R5. And under $V_\lambda\subseteq\HOD$ the quotient $Q^{\mathrm{bd}}_\lambda$ of \emph{bounded} countable subsets of $\lambda$ modulo finite difference lies in $\HOD$ and has an ordinal-definable well-order \R5.
+\end{remark}
+
+\section{Consistency results}\label{sec:cons}
+
+\subsection{Cover exactingness from \texorpdfstring{$\Iwf$}{I3wf(0)}}\label{sec:i3}
+
+\begin{theorem}\label{thm:i3}\src{R9}
+Let $j:V_\Lambda\to V_\Lambda$ be an $\Iwf$-embedding, $\kappa=\crit(j)$, $U_0=\{A\subseteq\kappa:\kappa\in j(A)\}$. Then $\mathbf 1_{\PP_{U_0}}\Vdash\CEx_{\check\kappa}(\check\kappa)$ for Prikry forcing $\PP_{U_0}$. Consequently there is a countable transitive model of $\ZFC+\exists\lambda\,\CEx_\lambda(\lambda)$, and
+\[
+\Con(\ZFC+\Iwf)\Longrightarrow\Con(\ZFC+\exists\lambda\,\CEx_\lambda(\lambda)).
+\]
+\end{theorem}
+
+The proof combines three lemmas, the first two of which are reusable.
+
+\begin{lemma}[Enumerated-domain internalization]\label{lem:internal}\src{R9}
+Let $W$ be a transitive set model of enough of $\ZFC$, $e:W\to W$ an \emph{external} elementary map, $\lambda$ a cardinal of $W$, and $c=\langle\nu_n\rangle\in W$ increasing cofinal in $\lambda$ with $e(\lambda)=\lambda$, $e(\nu_n)=\nu_{n+1}$, $\omega<\nu_0$. Assume $V_\lambda\subseteq W$, $W\models|V_\lambda|=\lambda$, and $\alpha,Y\in W$ with $Y\subseteq V^W_\alpha$, $e(\alpha)=\alpha$, $e(Y)=Y$. Then $W$ contains a relative $\lambda$-exacting witness for $(V_\alpha^W,Y)$. It is not assumed that $e$ or $e\restr V_\lambda$ is in $W$.
+\end{lemma}
+
+\begin{proof}
+In $W$ take $X\prec(V^W_\alpha,\in,Y)$ of size $\lambda$ containing $V_\lambda\cup\{\lambda\}$, a bijection $f:\lambda\to X$, and put $Z=e(X)$, $g=e(f)$. The maps $e\restr f``\nu_n$ equal $g\circ(e\restr\nu_n)\circ f^{-1}$ and belong to $W$ because $e\restr\nu_n\in V_\lambda$. In $W$ form the tree of coherent finite lists of partial elementary maps $f``\nu_m\to g``\nu_{m+1}$ sending $\lambda\mapsto\lambda$, $\nu_0\mapsto\nu_1$. It has an external branch, so by absoluteness of well-foundedness it has a branch in $W$, whose union is the required embedding $X\to Z\prec V^W_\alpha$.
+\end{proof}
+
+\begin{lemma}[Finite-change cloud]\label{lem:cloud}\src{R9}
+Let $c$ be Prikry generic over a transitive $N$ for a normal measure $D\in N$ on $\lambda$, $W=N[G_c]$, and $\tau\in N$ a name forced into $V_\alpha$. Let $Y_{\tau,c}=\{\tau^{G_h}:h\text{ increasing},\ |\ran h\triangle\ran c|<\omega\}$. Then $\tau^{G_c}\in Y_{\tau,c}\subseteq V^W_\alpha$, $Y_{\tau,c}\in W$, $|Y_{\tau,c}|^W\le\lambda$, and any elementary $e:W\to W$ fixing $\lambda,\PP^N_D,\tau,\alpha$ with $e(c)=c^-$ (the tail) satisfies $e(Y_{\tau,c})=Y_{\tau,c}$.
+\end{lemma}
+
+The value $\tau^{G_c}$ itself may move; cover exactingness tolerates exactly this motion inside an invariant small family.
+
+\begin{lemma}[Localization]\label{lem:local}\src{R9, after ABGL Thm.~5.4}
+Let $N_0$ be transitive of size $\kappa$, $V_\kappa\cup\{\kappa,U_0\cap N_0\}\subseteq N_0$, modelling enough of $\ZFC$. With $J=j_{0,\omega}$: $N=J(N_0)$ is well-founded, there is an elementary $i:N\to N$ with $i\restr\Lambda=j\restr\Lambda$ and $i(J(a))=J(a)$ for \emph{every} $a\in N_0$, the critical sequence $c$ is Prikry generic over $N$ for $J(U_0\cap N_0)$, and $i$ lifts to $e:N[G_c]\to N[G_c]$ with $e(c)=c^-$.
+\end{lemma}
+
+\begin{proof}[Proof of Theorem~\ref{thm:i3}]
+Otherwise, by cone homogeneity of Prikry forcing, some $\alpha$ and name $\tau$ have $\mathbf1\Vdash$``no $Y\ni\tau$ of size $\le\kappa$ admits a relative witness at $\alpha$''. Collapse a hull $H\prec V_\zeta$ of size $\kappa$ containing $V_\kappa\cup\{U_0,\alpha,\tau\}$ to $N_0$ and apply Lemma~\ref{lem:local}; the images $a=J(\bar\alpha)$, $t=J(\bar\tau)$ are fixed by $e$. In $W=N[G_c]$ the cloud $Y_{t,c}$ is a set of size at most $\Lambda$ containing $t^{G_c}$ with $e(Y_{t,c})=Y_{t,c}$ (Lemma~\ref{lem:cloud}), so Lemma~\ref{lem:internal} yields a relative witness in $W$, contradicting the transferred forcing statement. For the transitive model, note $V_\Lambda[G]=V[G]_\Lambda$ and pass to a countable elementary submodel of $V_\Lambda$.
+\end{proof}
+
+\begin{corollary}[Strength interval]\label{cor:strength}\src{R9}
+In consistency strength, $\Itwo>\Iwf\ge\exists\lambda\,\CEx_\lambda(\lambda)\ge\exists\lambda\,\Ex(\lambda)>\Ithree$; the strict comparisons are those of Input~\ref{in:iter}. No equiconsistency is claimed, and the ultraexacting clause cannot be read into the construction.
+\end{corollary}
+
+This lowers the $\Itwo$ upper bound of Input~\ref{in:bg}(iv). \R9 notes that the Blue--Goldberg notes anticipate cover variants of related constructions, so no priority is claimed. The construction does not preserve a prescribed strongly compact below $\kappa$ and so does not touch Problem~5.2.
+
+\begin{corollary}[Calibration of the barrier]\label{cor:calib}\src{R1; with R6, R9}
+$\Con(\ZFC+\Itwo)$, and by Theorem~\ref{thm:i3} already $\Con(\ZFC+\Iwf)$, implies
+\[
+\Con\bigl(\ZFC+\exists\lambda\,[\CEx_\lambda(\lambda)\wedge\cf^V(\lambda)=\omega\wedge\cf^{\HCD(\lambda)}(\lambda)=\lambda]\bigr).
+\]
+\end{corollary}
+
+This adds no strength: the extra clauses are theorems about every such model (Theorem~\ref{thm:barrier}). Its role is to confirm that the barrier is a non-contradictory structural feature. The combination of \R1, \R6 and \R9 in the displayed form is made here.
+
+\subsection{One \texorpdfstring{$\Izero$}{I0}-equiconsistent boundary theory}
+
+Five reports each derive an ``equiconsistency package'' from Input~\ref{in:abl}(iv),(v). Since every clause is a consequence of $\UEx(\lambda)\wedge V_\lambda\subseteq\HOD$, they merge into one statement.
+
+\begin{theorem}[Merged boundary package]\label{thm:i0}\src{R2, R3, R5, R7, R8}
+Let $T_{\partial}$ be $\ZFC$ plus the existence of a cardinal $\lambda$ with $\UEx(\lambda)$ and $V_\lambda\subseteq\HOD$. Then $\Con(T_\partial)\Leftrightarrow\Con(\ZFC+\Izero)$, and $T_\partial$ proves all of the following for that $\lambda$ and every cofinal $c\subseteq\lambda$ of order type $\omega$:
+\begin{enumerate}
+\item $\lambda$ is the least exacting cardinal.\src{known: ABGL Cor.~3.10}
+\item $V^{\HOD}_\lambda=V_\lambda$; $\Pow(\alpha)^{\HOD}=\Pow(\alpha)$ and $\cf^{\HOD}(\alpha)=\cf(\alpha)$ for all $\alpha<\lambda$.\src{R3, R8}
+\item $\cf(\lambda)=\omega$ while $\HOD\models$ ``$\lambda$ is strongly inaccessible''; $c\in V_{\lambda+1}\setminus\HOD$, so $\lambda$ is the first ordinal of cofinality or powerset disagreement and $\lambda+1$ the first rank of disagreement.\src{R2, R3, R8}
+\item $c\cap a$ is finite and in $\HOD$ whenever $a\in\HOD$, $|a|^{\HOD}<\lambda$; every $b\in\HOD$ with $c\subseteq b$ has $|b|^V\ge\lambda$; so $(\HOD,V)$ fails $\theta$-approximation and $\theta$-covering for all uncountable $\theta\le\lambda$.\src{R2, R3, R8}
+\item $Q^{\mathrm{bd}}_\lambda\in\HOD$ has an ordinal-definable well-order, whereas the conclusions of Theorems~\ref{thm:fsel}, \ref{thm:label}, \ref{thm:transversal} and Corollary~\ref{cor:orders} hold for $Q_\lambda$.\src{R5, R7}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Equiconsistency is Input~\ref{in:abl}(iv),(v). For (1): a smaller exacting $\mu$ would have a cofinal $\omega$-sequence of rank $\mu<\lambda$, hence in $\HOD$, contradicting Input~\ref{in:abl}(i). For (2): the relevant subsets and cofinal maps have rank below $\lambda$. (3),(4): $\HOD$-regularity is Input~\ref{in:abl}(i); strong limit as in Theorem~\ref{thm:ground}; the rest as in Corollary~\ref{cor:approx}. (5): Remark~\ref{rem:controls} and Section~\ref{sec:uex}.
+\end{proof}
+
+The equiconsistency compares consistency statements; it does not say that $\Izero$ holds at the same ordinal, and it is not a new proof of the ABGL comparison. Its use is as a \emph{control}: total agreement with $\HOD$ below $\lambda$ does not supply the one countable sequence that would be fatal, so no negative argument may import covering at $\lambda$ from rank agreement below $\lambda$.
+
+\section{Class embeddings: the internal unbounded-range obstruction}\label{sec:range}
+
+Let $j:V\to M$ be a nontrivial elementary embedding into a transitive inner model (in a class theory where the needed restrictions exist), $\kappa=\crit(j)$, and let $\theta>\kappa$ be regular uncountable with $j(\theta)=\theta$. For $\lambda=\sup_nj^n(\kappa)$, $\theta=\lambda^+$ is such a cardinal \emph{without} any cardinal-correctness assumption: $j(\theta)=(\lambda^+)^M\le\lambda^+\le j(\theta)$ \R3. Let $C_j=\{\beta<\theta:j``\beta\subseteq\beta\}$, a club whose points of cofinality $\omega$ are fixed by $j$; fix a partition $\vec S$ of $E^\theta_\omega$ into $\theta$ stationary sets and let $\vec T=j(\vec S)$.
+
+\begin{lemma}[Stationarity spectrum; known]\label{lem:spectrum}\src{HKP; proof in R3}
+$\{\xi<\theta:T_\xi\text{ is stationary in }V\}=j``\theta$, and the single club $C_j$ is disjoint from every $T_\xi$ with $\xi\notin j``\theta$.
+\end{lemma}
+
+\R2, \R6 and \R7 each examined this reconstruction as a candidate result and rejected it as already contained in Hamkins--Kirmayer--Perlmutter \cite[Thm.~11--12]{hkp}; \R3 attributes it the same way and adds:
+
+\begin{theorem}[No internal unbounded part of the range]\label{thm:range}\src{R3}
+No $A\in M$ with $A\subseteq j``\theta$ is unbounded in $\theta$.
+\end{theorem}
+
+\begin{proof}
+Let $f\in M$ enumerate such an $A$ increasingly. Since $A=j``B$ with $B$ unbounded, $f(\xi)=j(b_\xi)\ge j(\xi)$. So the $M$-club $D_f=\{\beta:f``\beta\subseteq\beta\}$ is contained in $C_j$. But $T_\kappa$ is stationary in $M$ and $\kappa\notin j``\theta$, so $D_f\cap T_\kappa\ne\varnothing=C_j\cap T_\kappa$.
+\end{proof}
+
+\begin{corollary}\label{cor:losses}\src{R3}
+Every unbounded $B\subseteq\theta$ in $M$ contains $\theta$ many labels $\xi$ with $T_\xi$ stationary in $M$ but not in $V$. The ambient nonstationary ideal on $\theta$ is not amenable to $M$. (The set of surviving labels is nevertheless stationary in $V$: abundance in $V$ and availability in $M$ are different.)
+\end{corollary}
+
+\begin{remark}[A sanity control added in the synthesis]
+The proof shows that $M$ contains no club subset of $C_j$, so no function in $M$ dominates $j\restr\theta$. One may check this on the ultrapower by a normal measure on $\kappa$ with $\theta>\kappa$ inaccessible. The $M$-definable set of $M$-strong-limit cardinals of cofinality $\omega$ is \emph{not} contained in $C_j$: if $\alpha>\kappa$ is a $V$-strong limit of cofinality $\kappa$, then $\sup j``\alpha=\alpha<j(\alpha)$ and $j(\alpha)$ is an $M$-strong limit, so the least $M$-strong limit $\beta'$ above $\alpha$ satisfies $\alpha<\beta'\le j(\alpha)$ and is not closed under $j$. The familiar fixed points (the $V$-strong limits of cofinality $\omega$) do not form a set in $M$.
+\end{remark}
+
+The result is a conditional inconsistency for a strengthened embedding theory. It uses no cardinal correctness, so the global cardinal-preserving problem of the research plan still lacks the implication from $\mathrm{Card}^M=\mathrm{Card}^V$ to any internal selection of externally stationary cells.
+
+\section{Comparison of the reports}\label{sec:compare}
+
+\subsection{Agreement}
+
+The seven group-A reports agree on every mathematical conclusion they share. All nine agree on status: no unconditional inconsistency, no resolution of Problem~5.2, no priority claim, no formal verification. No contradiction between any two reports was found.
+
+\subsection{Differences that matter}
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.18}
+\begin{longtable}{@{}P{.2\textwidth}P{.75\textwidth}@{}}
+\toprule
+\textbf{Topic}&\textbf{Finding}\\\midrule\endfirsthead
+\toprule
+\textbf{Topic}&\textbf{Finding}\\\midrule\endhead
+Dependence on lecture notes&\R1--\R3, \R8 import the stationary characterization (Prop.~3.4) and prove a focused transfer lemma; \R7 imports both Lemma~3.3 and Prop.~3.4; \R4 and \R6 prove persistent covers, exact hulls and general transfer from the definition. Route~H therefore removes the barrier's dependence on unrefereed results other than definitions, and should be preferred.\\
+Threshold&$\eta>\gamma$ (\R1, \R3, \R8), $\gamma^+$ (\R2, \R4, \R7), $q(\gamma)$ (\R6). Only \R6 notices the singular endpoint, which gives the clean statement ``$\CEx_\lambda(\lambda)\Rightarrow\lambda$ regular in $\HCD(\lambda)$''.\\
+Extra hypothesis below $\lambda$&Seven formulations $\mathsf P_1$--$\mathsf P_7$; all are instances of one argument, and the two size conventions coincide (Corollary~\ref{cor:cond}). The weakest uniform principles are $\mathsf P_4$ (\R2) and $\mathsf P_5$ (\R6), which are not comparable on their face.\\
+Forcing lower bound&\R1, \R2 bound $|\PP|$; \R3, \R4, \R6, \R8 prove failure of the $\lambda$-chain condition, which is stronger and also yields density $\ge\lambda$. \R4 stresses the bound is $\lambda$, not $\lambda^+$.\\
+Ground profile&Only \R8 proves that $\lambda$ is strongly inaccessible (not merely regular) in the ground; the same argument is reused for $\HOD$ in Theorem~\ref{thm:i0}(3).\\
+Finite choice&\R5 and \R7 use different interfaces. \R5 (witnesses with high critical point and $j\restr V_\lambda\in X$) gets finite families and parameters in $V_\lambda$; \R7 (one preserved $\OD$ predicate on $V_{\lambda+1}$) gets the general label theorem and the transversal theorem, with ordinal parameters only. \R7's selector corollary is the singleton case of \R5's theorem; \R7's other results are not covered by \R5.\\
+$\Izero$ packages&Five overlapping packages ($\mathsf{Bdry}$, $T_{\mathrm{first}}$, $\mathrm{Profile}$, $T_1$, $T_{\mathrm{bd}}$); all are corollaries of $\UEx(\lambda)\wedge V_\lambda\subseteq\HOD$ and merge into Theorem~\ref{thm:i0}.\\
+Stationary track&Consistent: three reports discard the HKP reconstruction as known; \R3 also credits it to HKP and contributes only the strengthening, Theorem~\ref{thm:range}.\\
+Citations&The $\UEx$/$\Izero$ equiconsistency is cited as ``Theorem~A'' (\R3, \R7) and ``Theorem~4.5'' (\R2, \R5, \R8) of \cite{abgl}; the $\delta$-cover theorem as Thm.~4.14, with Cor.~4.7 added in \R7; the trace argument as ``proof of Thm.~3.7'' or ``p.~10'' of \cite{cover}. These appear to be the same items under introduction and body numbering, but were not re-checked against the sources here.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{Relative reliability}
+
+The group-A, B and E arguments are short and were re-derived during the merge without difficulty; the only external mathematics they use are Inputs~\ref{in:kunen}, \ref{in:hcd} and \ref{in:abl}(i). The group-C arguments are elementary once the two imported interfaces are granted; \R5 and \R7 include Python scripts that exhaustively check only the finite algebra (Lemma~\ref{lem:algebra}, Lemma~\ref{lem:perm}, the $S_3$ example) and are not evidence for the set-theoretic steps. Theorem~\ref{thm:i3} is the most delicate result: it is the only new forcing construction, it depends on the precise form of the ABGL well-founded-part localization (Input~\ref{in:iter}, Lemma~\ref{lem:local}), and it appears in a single report. Its two new lemmas (\ref{lem:internal}, \ref{lem:cloud}) were re-derived here and appear sound; the imported interface was not checked. It should be the first target of specialist review.
+
+\section{What remains open}\label{sec:open}
+
+\begin{question}[Promotion; all group-A reports]
+Assume $\delta<\lambda\le\gamma$, $\SC(\delta)$, $\CEx_\gamma(\lambda)$. Do these hypotheses (or a named strengthening of strong compactness short of extendibility) imply $\mathsf P_4$, $\mathsf P_5$, or $\mathsf P_7$ for one of the sets $a$ of Theorem~\ref{thm:sep}? A positive answer refutes the configuration of Problem~5.2. The entire unproved step is raising the completeness of an ultrafilter code from $\delta$ to $q(\gamma)$; strong compactness extends filters at their given completeness and does not do this.
+\end{question}
+
+\begin{question}[Positive side]
+Can a cover-exacting construction preserve a prescribed strongly compact $\delta$ below the cover-exacting cardinal? Any such model must exhibit the separation of Theorem~\ref{thm:sep}, must fail $\mathsf P_1$--$\mathsf P_6$, and, if it has a strongly compact above $\gamma$, must have the proper ground of Theorem~\ref{thm:ground}; it cannot satisfy $\GA$ in that case.
+\end{question}
+
+\begin{question}[\R9]
+Can the $\Iwf$ upper bound for $\exists\lambda\,\CEx_\lambda(\lambda)$ be lowered, or does cover exactingness carry an iteration lower bound beyond that of exactingness? Under a smaller strongly compact, is there an $\OD_{V_\lambda}$ family of fewer than $\lambda$ candidates containing a short cofinal map (which would contradict Corollary~\ref{cor:odcover})?
+\end{question}
+
+\begin{question}[\R5, \R7]
+Does ordinary exactingness already exclude an $\OD_{V_\lambda}$ binary selector on $Q_\lambda$? What is the least size of a nonempty $\OD_{V_\lambda}$ subfamily of $\Sel_{n,r}(Q_\lambda)$ at an ultraexacting $\lambda$; can it be countable? Does a canonical Icarus enrichment define a preserved selector? Can a modification-invariant equivariant $\OD$ rule exist for a finite $S_m$-set with elementwise but no global fixed points?
+\end{question}
+
+\begin{question}[\R3]
+Does $\mathrm{Card}^M=\mathrm{Card}^V$ for $j:V\to M$ yield an unbounded subset of $j``\theta$ in $M$, or amenability of the ambient nonstationary ideal? Either would refute cardinal-preserving embeddings by Theorem~\ref{thm:range}.
+\end{question}
+
+Not addressed by any report: ordinary exacting cardinals above an extendible, the HOD Conjecture fork, HOD-Berkeley cardinals, and the choiceless hypotheses of the research plan.
+
+\appendix
+\section{Concordance}\label{app:concordance}
+
+\yes\ = stated and proved in the report; \prt\ = used, imported, or proved only in a weaker or special form.
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{@{}P{.47\textwidth}CCCCCCCCC@{}}
+\toprule
+\textbf{Result}&\R1&\R2&\R3&\R4&\R5&\R6&\R7&\R8&\R9\\\midrule\endfirsthead
+\toprule
+\textbf{Result}&\R1&\R2&\R3&\R4&\R5&\R6&\R7&\R8&\R9\\\midrule\endhead
+Lemma~\ref{lem:crit} critical-sequence normalization&\yes&\yes&\yes&\yes&\prt&\yes&\yes&\yes&\\
+Lemma~\ref{lem:short} short cofinal predicate&\yes&\yes&\prt&\yes&&\yes&\yes&\prt&\\
+Lemma~\ref{lem:transfer} transfer (general form)&\prt&\prt&\prt&\yes&&\yes&\prt&\prt&\\
+Lemma~\ref{lem:bound} $\gamma\ge\lambda$&&&&&&\yes&&&\\
+Lemmas~\ref{lem:persist}--\ref{lem:hull} persistent covers, exact hulls&&&&\yes&&\yes&&&\\
+Lemma~\ref{lem:trace} trace reconstruction&\yes&\yes&\yes&\yes&&\yes&\yes&\yes&\\
+Lemma~\ref{lem:singular} singular endpoint&&&&&&\yes&&&\\
+Theorem~\ref{thm:barrier}(2),(3) barrier&\yes&\yes&\yes&\yes&&\yes&\yes&\yes&\\
+Theorem~\ref{thm:barrier}(1) absorption&&&&\yes&&\yes&&&\\
+Theorem~\ref{thm:barrier}(4) cover gap&&\yes&&\yes&&\yes&&&\\
+Corollary~\ref{cor:escape} sequences/embeddings escape&&&\prt&&&&&\yes&\\
+Corollary~\ref{cor:cert} failed-stationarity certificate&\yes&&&&&&&&\\
+Corollary~\ref{cor:approx} cover/approximation failure&\yes&\prt&\yes&\prt&&\prt&&\yes&\\
+Theorem~\ref{thm:sep} separation below $\lambda$&\yes&\yes&\yes&\yes&&\yes&\yes&\yes&\\
+\quad item (1) no small cover / (2) no refinement / (3) ultrafilter&&(1)&&(3)&&(2)&&&\\
+Corollary~\ref{cor:cond} conditional inconsistency&\yes&\yes&\yes&\yes&&\yes&\yes&\yes&\\
+Corollary~\ref{cor:ext} extendible recovery&\yes&\yes&\yes&\yes&&\yes&\yes&\yes&\\
+Theorem~\ref{thm:first} first regularization&&&&&&\yes&&&\\
+Lemma~\ref{lem:cc} ($\lambda$-cc form)&\prt&\prt&\yes&\yes&&\yes&\prt&\yes&\\
+Theorem~\ref{thm:ground} proper ground&\yes&\yes&\yes&\yes&&\yes&&\yes&\\
+\quad $\lambda$ strongly inaccessible in the ground&&&&&&&&\yes&\\
+Corollary~\ref{cor:ga} Ground Axiom obstruction&\yes&\yes&\yes&\yes&&\yes&&\yes&\\
+Corollary~\ref{cor:gengound} general / small-ground form&\yes&&\yes&&&&\yes&&\\
+Corollary~\ref{cor:sandwich} two strongly compacts&\yes&&&&&\yes&&\yes&\\
+Theorem~\ref{thm:width}, Corollary~\ref{cor:odcover} projection width&&&&&&&&&\yes\\
+Proposition~\ref{prop:fresh} fresh cofinal set&&\prt&\prt&&&&&\prt&\yes\\
+Theorem~\ref{thm:fsel} finite selector families&&&&&\yes&&\prt&&\\
+Theorem~\ref{thm:icarus} Icarus enrichment&&&&&\yes&&&&\\
+Theorem~\ref{thm:label} finite labels&&&&&&&\yes&&\\
+Theorem~\ref{thm:transversal} finite-valued transversal&&&&&&&\yes&&\\
+Theorem~\ref{thm:i3} $\Iwf\Rightarrow\CEx$&&&&&&&&&\yes\\
+Corollary~\ref{cor:calib} calibration&\yes&&&&&\prt&&&\prt\\
+Theorem~\ref{thm:i0} $\Izero$ package&&\yes&\yes&&\yes&&\yes&\yes&\\
+Theorem~\ref{thm:range} internal unbounded range&&&\yes&&&&&&\\
+HKP reconstruction audited as known&&\yes&\prt&&&\yes&\yes&&\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\section{Directory map}\label{app:map}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}lY@{}}
+\toprule
+\textbf{New}&\textbf{Original location under \nolinkurl{docs/research-reports/}}\\\midrule
+\nolinkurl{01/}&\nolinkurl{Large_Cardinals_Continuation (1)/Large_Cardinals_Continuation/}\\
+\nolinkurl{02/}&\nolinkurl{Large_Cardinals_Research_Followup/}\\
+\nolinkurl{03/}&\nolinkurl{Large_Cardinals_Research_Continuation/}\\
+\nolinkurl{04/}&\nolinkurl{Large_Cardinals_Research_Continuation(1) (1)/Large_Cardinals_Research_Continuation/}\\
+\nolinkurl{05/}&\nolinkurl{Large_Cardinals_Research_Continuation (1)/Large_Cardinals_Research_Continuation/}\\
+\nolinkurl{06/}&\nolinkurl{Large_Cardinals_Research_Continuation (2)/}\\
+\nolinkurl{07/}&\nolinkurl{Large_Cardinals_Continuation/}\\
+\nolinkurl{08/}&\nolinkurl{Large_Cardinals_Continuation(1)/Large_Cardinals_Continuation/}\\
+\nolinkurl{09/}&\nolinkurl{Large_Cardinals_Research_Continuation(1)/Large_Cardinals_Research_Continuation/}\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{99}
+\small
+\setlength{\itemsep}{6pt}
+
+\bibitem{plan}
+\emph{Large cardinals at the inconsistency frontier: a unified assessment of ZFC-compatible hypotheses, their obstructions, and the evidence on both sides}. Research plan, 18 September 2026; \nolinkurl{docs/research-plan/Large_Cardinals_Unified_Report.tex}.
+
+\bibitem{cover}
+G.~Goldberg, reporting joint work with D.~Blue. \emph{Consistency beyond the Kunen inconsistency}. Lecture notes, Warsaw Inner Model Theory Meeting, 1 July 2026. \url{https://math.berkeley.edu/~goldberg/Slides/CoverExact.pdf}. Definitions~2.6, 3.1--3.2; Remark~2.4; Lemma~3.3; Proposition~3.4; Theorems~3.5--3.8; Problem~5.2.
+
+\bibitem{unique}
+G.~Goldberg. The uniqueness of elementary embeddings. \emph{J.\ Symbolic Logic} \textbf{89}(4) (2024), 1430--1454. \doi{10.1017/jsl.2024.60}. Author version used for numbering; earlier preprint \arxiv{2103.13961} (numbering shifted).
+
+\bibitem{abl}
+J.~P.~Aguilera, J.~Bagaria, P.~L\"ucke. \emph{Large cardinals, structural reflection, and the HOD Conjecture}. \arxiv{2411.11568v4}, 2025.
+
+\bibitem{abgl}
+J.~P.~Aguilera, J.~Bagaria, G.~Goldberg, P.~L\"ucke. \emph{Large cardinals beyond HOD}. \arxiv{2509.10254v1}, 2025.
+
+\bibitem{ad}
+A.~Andretta, V.~Dimonte. \emph{The iterability hierarchy above $\mathrm{I3}$}. \arxiv{1712.03877v2}.
+
+\bibitem{kunen}
+K.~Kunen. Elementary embeddings and infinitary combinatorics. \emph{J.\ Symbolic Logic} \textbf{36}(3) (1971), 407--413. \doi{10.2307/2269948}.
+
+\bibitem{hkp}
+J.~D.~Hamkins, G.~Kirmayer, N.~L.~Perlmutter. Generalizations of the Kunen inconsistency. \emph{Ann.\ Pure Appl.\ Logic} \textbf{163} (2012), 1872--1890. \arxiv{1106.1951}.
+
+\bibitem{reitz}
+J.~Reitz. The Ground Axiom. \emph{J.\ Symbolic Logic} \textbf{72}(4) (2007), 1299--1317. \doi{10.2178/jsl/1203350787}.
+
+\end{thebibliography}
+\end{document}
