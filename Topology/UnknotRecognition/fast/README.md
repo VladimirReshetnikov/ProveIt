@@ -262,6 +262,18 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
   That A/A reading is itself a lesson: the second run of the old code comes last
   in every round and can be biased by a percent or two, so compare a ratio with
   its own A/A, not with 1.
+* Scan orders again, now on 81 diagrams (36 scrambled unknots, 45 random
+  closures of 20 to 35 crossings) and with work = entries + compositions.
+  The greedy rule breaks ties by crossing index. Breaking them towards the most
+  recently touched crossing costs 1.09 (unknots) and 1.05 (random) of the
+  current total; towards the longest-waiting one 1.52 and 1.57. Not adopted.
+  Per diagram the ratios run from 0.01 to 28, better on about as many inputs
+  as worse: the rules are incomparable, not ranked. A portfolio does not
+  rescue this: the best of the three rules per diagram would need 0.31 of the
+  work on the unknots and 0.74 overall, but running them interleaved until the
+  first finishes costs three times the winner, 0.94 on the unknots and 2.2
+  overall, because 8 of the 81 inputs carry 86% of the work and there the
+  rules are within a factor two. Only a predictor would collect that prize.
 * `seconds=` fidelity: the default scanner overshot a 1 s budget by up to
   0.24 s because a crossing was added without checking the clock; with a check
   every 512 objects the overshoot is at most 0.03 s on the same runs.

@@ -89,7 +89,7 @@ All unit-test suites are green on CPython 3.14.4 and rustc 1.96.1 / Windows 11:
 | `reports/04` | 62 | OK | ~3 s |
 | `reports/05` | 58 | OK | ~1 s |
 | `reports/06` | 45 | OK | ~4 s |
-| `fast` (0.2) | 33 | OK | ~6 s |
+| `fast` (0.2 plus the later scanner and pipeline work) | 36 | OK | ~3 s |
 | `rust` (`cargo test --release`) | 4 | OK | ~25 s including the build |
 | `rust/cross_check.py 200` (Rust against Python) | 200 closures | 0 problems | ~1 min |
 
