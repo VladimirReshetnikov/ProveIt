@@ -28,6 +28,7 @@ from . import scan_reference as _ref
 from .algebra import BitAlgebra
 from .geometry import Matching, ScanLimit
 from .ordering import best_scan_order, order_profile, scan_order, validate_order
+from .scan_fast import FastScan
 
 # set-based helpers kept for compatibility and tests
 compose, identity, is_unit = _ref.compose, _ref.identity, _ref.is_unit
@@ -305,8 +306,11 @@ def khovanov_rank(pd: Iterable[Iterable[int]], *, order: list[int] | None = None
     deadline = None if seconds is None else monotonic() + seconds
     if order is None:
         order = best_scan_order(pd, tries=min(len(pd), 12))
-    complex_ = ScanComplex(max_objects=max_objects, deadline=deadline, pivot=pivot,
-                           algebra=algebra, self_inverse=self_inverse)
+    if pivot == "minfill" and algebra == "bits" and self_inverse:
+        complex_ = FastScan(max_objects=max_objects, deadline=deadline)
+    else:                         # ablation configurations
+        complex_ = ScanComplex(max_objects=max_objects, deadline=deadline, pivot=pivot,
+                               algebra=algebra, self_inverse=self_inverse)
     n = len(order)
     for position, index in enumerate(order):
         reduce_now = position < n - tail
