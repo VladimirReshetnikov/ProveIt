@@ -1,0 +1,71 @@
+# Lean formalization of the synthesis
+
+Lean 4 (v4.32.0) + Mathlib (v4.32.0) formalization of
+`docs/research-synthesis/Large_Cardinals_Synthesis.tex`.  Set theory is done inside
+Mathlib's model `ZFSet` of ZFC; first-order syntax, the ZF axioms and the Choice formula
+come from the sibling repository `C:\ProveIt` (libraries `FirstOrder`, `ZF`,
+`BoundedZFCConsistency`), which is required by path in `lakefile.toml`.
+
+## Build
+
+```sh
+# once: share ProveIt's package cache instead of re-downloading/rebuilding Mathlib
+powershell -Command "New-Item -ItemType Junction -Path .lake\packages -Target C:\ProveIt\.lake\packages"
+lake build
+lake env lean Cardinals/Audit.lean     # prints the axioms behind each main theorem
+```
+
+## Policy on admitted statements
+
+Only results from the literature are admitted, each closed by the tactic `admit` with its
+source in the docstring.  There are 18 of them; nothing else uses `sorry`.
+
+| File | Admitted statements |
+|---|---|
+| `Published.lean` | `cof_omega_of_witness`, `aleph0_lt_of_witness`, `strongLimit_of_witness` (Kunen; ABL §2) · `not_REx_shortCofinal` (BG Obs. 1) · `REx_transfer` (BG Lemma 3.3) · `le_of_CEx` (BG) · `stationary_of_CEx` (BG Prop. 3.4) · `isClub_elemSub`, `ODfrom_trans`, `SC_of_extendible` (Jech) · `HCD_isInnerModelZF`, `HCD_isInnerModelZFC`, `HCD_cover`, `HCD_stabilizes` (Goldberg 2024, §4) |
+| `Above.lean` | `HCD_isGround` (Goldberg 2024, Thm 4.10) · `cc_preserves_regular` (Jech, Thm 15.3) |
+| `Width.lean` | `no_short_cofinal_OD` (ABL Thm 2.10) |
+| `HODBoundary.lean` | `HOD_isInnerModelZF` (Jech, Thm 13.26) |
+
+BG = the Blue–Goldberg lecture notes of July 2026 (not refereed); the barrier is derived
+from their stationary characterization (the synthesis' "Route S").  Blue–Goldberg's
+Theorem 3.6 is *not* admitted: it is re-derived as `no_CEx_above_extendible`.
+
+`Audit.lean` confirms that the fully proved theorems depend only on `propext`,
+`Classical.choice`, `Quot.sound`, and that the others add only `sorryAx`.
+
+## Coverage
+
+| Synthesis | Lean | Status |
+|---|---|---|
+| Def. 2.1–2.3 | `Foundations/Basic.lean`, `Foundations/Exacting.lean` | concrete definitions in `ZFSet` (`RelWitness`, `REx`, `CEx`, `Ex`, `CD`, `HCD`, `SC`, `Extendible`, clubs in `P_κ(A)`, inner models) |
+| Lemma 3.1 (dynamics), 3.2 (last step) | `OrdinalLemmas.moved_above_crit`, `no_fixed_cofinal_set` | proved; the statements about witnesses themselves are admitted as known |
+| Lemma 4.3 trace reconstruction | `trace_reconstruction`, `ElemSub.diff_mem`, `ElemSub.separate`, `Completeness.exists_seed`, `unique_of_trace` | **proved**, with the explicit defining formula |
+| Lemma 4.4 singular endpoint | `Completeness.isComplete_succ_of_isSingular`, `IsCompleteUF.succ_of_isSingular` | **proved** (type level and `ZFSet` level) |
+| Theorem 5.1 (1)–(4), Cor. 5.3 | `absorption`, `barrier`, `barrier_above`, `regular_in_HCD`, `cover_gap`, `barrier_singular`, `regular_in_HCD_self` | proved from admitted inputs |
+| Cor. 5.5 | `finite_trace_of_regularIn`, `OrdinalLemmas.finite_inter_of_bounded` | proved |
+| Theorem 6.1 + refinements | `separation`, `separation_no_small_cover`, `separation_no_refinement`, `separation_ultrafilter`, `cofinality_gap` | proved from admitted inputs |
+| Cor. 6.2 | `P1 … P7`, `conditional_inconsistency`, `not_P4`, `not_P5`, `not_P7` | proved |
+| Cor. 6.3 | `no_CEx_above_extendible` | proved (not admitted) |
+| Theorem 6.4 | `first_regularization`, `RegularIn_HCD_mono`, `not_RegularIn_HCD_of_le` | proved |
+| Lemma 7.1 | `OrdinalLemmas.countable_union_bounded` (core); `Published.cc_preserves_regular` | core proved; forcing theorem admitted as textbook |
+| Theorem 7.2, Cor. 7.3–7.5 | `proper_ground`, `groundAxiom_obstruction`, `SC_le_cover_bound_of_GA`, `no_CEx_of_GA_of_class_SC`, `general_ground_obstruction`, `HCD_ground_not_cc`, `strongLimit_in_class`, `two_strongly_compacts` | proved from admitted inputs; forcing, grounds and `GA` are defined concretely |
+| Theorem 8.1, Cor. 8.2 | `proj_OD`, `sups_OD`, `projection_width`, `card_family_ge` | **proved** from ABL Thm 2.10 (definability by explicit formulas) |
+| Prop. 8.3, Theorem 10.7 (1)–(4) | `HODBoundary.lean` | proved from ABL Thm 2.10 |
+| Lemma 9.1(b), Theorem 9.4 | `FiniteCycles.no_equivariant_selectors`, `Ultraexacting.no_preserved_finite_family` | **proved** over the elementarity facts used (hypotheses) |
+| Theorem 9.8 core | `FiniteCycles.label_fixed` | proved |
+| Theorem 9.10 | `Ultraexacting.no_finite_valued_transversal` | **proved** over the elementarity facts used |
+| Lemma 10.3 (invariance) | `Ultraexacting.cloud_index_eq` | proved |
+| Theorem 11.2, Cor. 11.3 | `Range.no_internal_unbounded_range`, `final_segment_not_in_range` | **proved** from the published HKP lemma (hypothesis) |
+
+### Not formalized
+
+* Lemmas 3.3–3.5, 4.1–4.2 (Route H: persistent covers and exact hulls).  The barrier is
+  obtained through Route S instead; these statements are covered by the admitted
+  Blue–Goldberg inputs.
+* The derivation of the elementarity facts of §9 from a formal definition of
+  ultraexactingness (Lemmas 9.2, 9.3, 9.7 and the coding of Theorem 9.6).
+* Theorem 10.1 (cover exactingness from `I3_wf(0)`) beyond the invariance of the cloud:
+  the internalization tree argument and the Prikry-forcing localization.
+* All equiconsistency statements (Cor. 10.5, 10.6, Theorem 10.7 as a whole): they are
+  metamathematical and imported from the literature.
