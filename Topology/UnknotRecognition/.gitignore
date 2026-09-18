@@ -2,9 +2,10 @@
 
 # --- LaTeX build products ---------------------------------------------------
 # Rebuilt PDFs (synthesis/report.pdf, the archives' reports, the preprint) are
-# tracked on purpose; only auxiliary files are ignored.  No *.log file is
-# ignored: the archives' recorded test/benchmark logs, fast/results/benchmark.log
-# and the LaTeX build logs are all tracked.
+# tracked on purpose; only auxiliary files are ignored.  LaTeX build logs are
+# ignored only in the directories where documents are compiled; the recorded
+# evidence logs (reports/*/results, reports/*/validation, fast/results) stay
+# tracked.
 *.aux
 *.bbl
 *.bcf
@@ -25,6 +26,9 @@
 *.xdv
 *-blx.bib
 *.dvi
+synthesis/*.log
+docs/arXiv-2607.23350v1/*.log
+reports/*/docs/*.log
 
 # --- Python -----------------------------------------------------------------
 __pycache__/
