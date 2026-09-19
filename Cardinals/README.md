@@ -36,6 +36,7 @@ source in the docstring.  There are 18 of them; nothing else uses `sorry`.
 | | `cc_preserves_regular` | Kunen 1980, Ch. VII Lemma 6.9; Jech Ch. 15 |
 | `Sandwich.lean` | `amenable_dichotomy` | Goldberg, *Strongly compact cardinals and ordinal definability*, JML 24(1) 2024, arXiv:2107.00513v1, Lemma 2.7 (with §2.2) |
 | | `ground_not_eventually_measurable` | Jech, Thm 15.3 (chain condition preserves cardinals) with Lemma 10.4 (measurables are inaccessible), applied in the ground |
+| `Foundations/Witness.lean` | `critSeq_cofinal` | ABL §2 (restriction of an exact embedding is an I3 embedding); Kunen 1971; Kanamori Cor. 23.14 |
 | `Width.lean` | `no_short_cofinal_OD` | ABL, arXiv:2411.11568v4, Thm 2.10 |
 | `HODBoundary.lean` | `HOD_isInnerModelZF` | Jech, Thm 13.26 |
 
@@ -85,12 +86,23 @@ Theorem 3.6 is *not* admitted: it is re-derived as `no_CEx_above_extendible`.
 | Theorem 7.11 (amenable grounds cover), 7.12 (no sandwich), Cor. 7.13(a) | `amenable_ground_cover`, `countableCover_contra`, `amenable_ground_cof`, `no_sandwich`, `no_SC_above`; `ThirdRound.card_le_of_disjoint_meeting` | proved from Goldberg's Lemma 2.7 (admitted) with the amenability of `HCD(η)` (Lemma 7.10) as a **hypothesis**; shows that the hypotheses of `two_strongly_compacts` are inconsistent |
 | Theorem 13.2, 13.3 (tail decisions, normality; cores) | `ThirdRound.orbit_mem_iff`, `orbit_decided`, `orbit_value_const`, `small_range_const`, `regressive_const_on_critical_sequence`, `tail_ultra` | **proved** (combinatorial core) |
 | Theorem 13.9 (charges; cores) | `ThirdRound.phase_balance`, `no_two_valued_phase`, `mean_shift`, `tail_mean_indep` | **proved** |
+| **Actual embedding:** elementarity for `Form`; Lemma 3.1 | `Bridge.realize_toLex`, `RelWitness.sat_j`, `elem`, `tarski_vaught`, `definable`, `definable_fixed`; `jOrd`, `crit`, `critSeq`, `le_jOrd`, `moved`, `fixed_iff_lt_crit` | **proved** from the definition of a witness (cofinality of the critical sequence admitted) |
+| Lemma 8.4(a),(b) for the actual embedding | `RelWitness.fixed_small_subset`, `no_small_fixed_family` (with `exists_surj`, `least_surj_fixed`, `surj_iff`, `card_sUnion_le`) | **proved**; (b) for families with a common size bound `ν < λ`, which covers subfamilies of `D_λ` |
+| Lemma 12.1(2) orbits | `RelWitness.IsUltra`, `orb`, `orb_mem_X`, `jv_eq_image`, `jv_orb`, `cofinalIn_orb`, `orb_locally_finite` | **proved** from `j ↾ V_λ ∈ X` |
+| Theorem 12.3 / Cor. 12.4(1) zero-or-full traces, for sets fixed by `j` | `RelWitness.zero_or_full` (with `agree_iff`, `agree_in_X`, `evAgree_orb_shift`) | **proved**; the class is represented by eventual agreement with the orbit, which coincides with `=*` on `D_λ` |
+| Theorem 13.2 for the actual embedding | `RelWitness.tail_decision`, `regressive_const` | **proved** |
 
 The numbering refers to the third edition of the synthesis, in which all earlier numbers
 are unchanged; Sections 12 and 13 and the appended parts of Sections 7 and 8 are otherwise
 not formalized.
 
 ### Not formalized
+
+* The passage from *ordinal definable from `V_λ ∪ {q}`* to *fixed by `j`* (height
+  correctness, the minimal-rank-parameter device, the canonical least counterexample).
+  `zero_or_full`, `no_small_fixed_family` and `tail_decision` are stated for sets `T ∈ X`
+  with `j(T) = T`; `RelWitness.definable_fixed` supplies this for every set definable over
+  `V_α` from fixed parameters.
 
 * Lemma 7.10 (amenability of `HCD(η)`): it needs the first-order definability of the class
   `HCD(η)` via reflection.  It enters `no_sandwich` as the hypothesis

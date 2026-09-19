@@ -181,4 +181,140 @@ theorem interF_spec (hA : IsTransitive A) (e : ℕ → Carrier A) (i j k : ℕ) 
     show d.1 ∈ (e i).1 ↔ d.1 ∈ (e j).1 ∧ d.1 ∈ (e k).1
     rw [h, mem_inter]
 
+/-- `v_i = insert v_j v_k`. -/
+def insertF (i j k : ℕ) : Form :=
+  fAll (SetTheory.fIff (fMem 0 (i + 1)) (fOr (fEq 0 (j + 1)) (fMem 0 (k + 1))))
+
+theorem insertF_spec (hA : IsTransitive A) (e : ℕ → Carrier A) (i j k : ℕ) :
+    Sat (memOn A) e (insertF i j k) ↔ (e i).1 = insert (e j).1 (e k).1 := by
+  unfold insertF
+  simp only [Sat, SetTheory.Sat_fIff]
+  constructor
+  · intro h
+    ext t
+    rw [mem_insert_iff]
+    constructor
+    · intro ht
+      rcases (h ⟨t, hA.subset_of_mem (e i).2 ht⟩).mp ht with h1 | h1
+      · exact Or.inl (congrArg Subtype.val h1)
+      · exact Or.inr h1
+    · rintro (rfl | ht)
+      · exact (h (e j)).mpr (Or.inl rfl)
+      · exact (h ⟨t, hA.subset_of_mem (e k).2 ht⟩).mpr (Or.inr ht)
+  · intro h d
+    show d.1 ∈ (e i).1 ↔ d = e j ∨ d.1 ∈ (e k).1
+    rw [h, mem_insert_iff]
+    exact or_congr ⟨fun h1 => Subtype.ext h1, fun h1 => congrArg Subtype.val h1⟩ Iff.rfl
+
+/-- `v_i` is nonempty. -/
+def nonemptyF (i : ℕ) : Form := fEx (fMem 0 (i + 1))
+
+theorem nonemptyF_spec (hA : IsTransitive A) (e : ℕ → Carrier A) (i : ℕ) :
+    Sat (memOn A) e (nonemptyF i) ↔ ∃ t, t ∈ (e i).1 := by
+  unfold nonemptyF
+  simp only [Sat]
+  constructor
+  · rintro ⟨d, hd⟩
+    exact ⟨d.1, hd⟩
+  · rintro ⟨t, ht⟩
+    exact ⟨⟨t, hA.subset_of_mem (e i).2 ht⟩, ht⟩
+
+/-! ### Closure under a relation, and orbits -/
+
+/-- `v_r ∈ v_b`, and `v_b` is closed under the relation `v_e`. -/
+def closedF (b r e : ℕ) : Form :=
+  fAnd (fMem r b)
+    (fAll (fImp (fMem 0 (b + 1)) (fAll (fImp (pairMemF 1 0 (e + 2)) (fMem 0 (b + 2))))))
+
+/-- The meaning of `closedF`. -/
+def ClosedSem (A b r e : ZFSet.{u}) : Prop :=
+  r ∈ b ∧ ∀ u ∈ b, ∀ v ∈ A, pair u v ∈ e → v ∈ b
+
+theorem closedF_spec (hA : IsTransitive A) (hP : PairClosed A) (env : ℕ → Carrier A)
+    (b r e : ℕ) :
+    Sat (memOn A) env (closedF b r e) ↔ ClosedSem A (env b).1 (env r).1 (env e).1 := by
+  unfold closedF ClosedSem
+  simp only [Sat]
+  refine and_congr Iff.rfl ?_
+  constructor
+  · intro h u hu v hv hp
+    exact h ⟨u, hA.subset_of_mem (env b).2 hu⟩ hu ⟨v, hv⟩
+      ((pairMemF_spec hA hP _ 1 0 (e + 2)).mpr hp)
+  · intro h d hd d' hp
+    exact h d.1 hd d'.1 d'.2 ((pairMemF_spec hA hP _ 1 0 (e + 2)).mp hp)
+
+/-- `v_i` is the intersection of all sets containing `v_r` and closed under `v_e`. -/
+def orbF (i r e : ℕ) : Form :=
+  fAll (SetTheory.fIff (fMem 0 (i + 1)) (fAll (fImp (closedF 0 (r + 2) (e + 2)) (fMem 1 0))))
+
+theorem orbF_spec (hA : IsTransitive A) (hP : PairClosed A) (env : ℕ → Carrier A)
+    (i r e : ℕ) :
+    Sat (memOn A) env (orbF i r e) ↔
+      ∀ z ∈ A, z ∈ (env i).1 ↔ ∀ b ∈ A, ClosedSem A b (env r).1 (env e).1 → z ∈ b := by
+  unfold orbF
+  simp only [Sat, SetTheory.Sat_fIff]
+  constructor
+  · intro h z hz
+    refine (h ⟨z, hz⟩).trans ⟨fun h1 b hb hcl => ?_, fun h1 d hcl => ?_⟩
+    · exact h1 ⟨b, hb⟩ ((closedF_spec hA hP _ 0 (r + 2) (e + 2)).mpr hcl)
+    · exact h1 d.1 d.2 ((closedF_spec hA hP _ 0 (r + 2) (e + 2)).mp hcl)
+  · intro h d
+    refine (h d.1 d.2).trans ⟨fun h1 d' hcl => ?_, fun h1 b hb hcl => ?_⟩
+    · exact h1 d'.1 d'.2 ((closedF_spec hA hP _ 0 (r + 2) (e + 2)).mp hcl)
+    · exact h1 ⟨b, hb⟩ ((closedF_spec hA hP _ 0 (r + 2) (e + 2)).mpr hcl)
+
+/-! ### Eventual agreement below `v_lam` -/
+
+/-- `v_b` and `v_a` agree on `v_lam` outside some element of `v_lam`. -/
+def evF (b a lam : ℕ) : Form :=
+  fEx (fAnd (fMem 0 (lam + 1))
+    (fAll (fImp (fMem 0 (lam + 2)) (fImp (fImp (fMem 0 1) fBot)
+      (SetTheory.fIff (fMem 0 (b + 2)) (fMem 0 (a + 2)))))))
+
+/-- The meaning of `evF`. -/
+def EvAgreeZ (lam b a : ZFSet.{u}) : Prop :=
+  ∃ η ∈ lam, ∀ z ∈ lam, z ∉ η → (z ∈ b ↔ z ∈ a)
+
+theorem evF_spec (hA : IsTransitive A) (env : ℕ → Carrier A) (b a lam : ℕ) :
+    Sat (memOn A) env (evF b a lam) ↔ EvAgreeZ (env lam).1 (env b).1 (env a).1 := by
+  unfold evF EvAgreeZ
+  simp only [Sat, SetTheory.Sat_fIff]
+  constructor
+  · rintro ⟨d, hd, h⟩
+    exact ⟨d.1, hd, fun z hz hzd => h ⟨z, hA.subset_of_mem (env lam).2 hz⟩ hz hzd⟩
+  · rintro ⟨η, hη, h⟩
+    exact ⟨⟨η, hA.subset_of_mem (env lam).2 hη⟩, hη, fun d hd hdη => h d.1 hd hdη⟩
+
+/-- `v_i = {b ∈ v_T : b agrees eventually with v_a below v_lam}`. -/
+def agreeF (i T a lam : ℕ) : Form :=
+  fAll (SetTheory.fIff (fMem 0 (i + 1)) (fAnd (fMem 0 (T + 1)) (evF 0 (a + 1) (lam + 1))))
+
+theorem agreeF_spec (hA : IsTransitive A) (env : ℕ → Carrier A) (i T a lam : ℕ) :
+    Sat (memOn A) env (agreeF i T a lam) ↔
+      (env i).1 = ZFSet.sep (fun b => EvAgreeZ (env lam).1 b (env a).1) (env T).1 := by
+  unfold agreeF
+  simp only [Sat, SetTheory.Sat_fIff]
+  constructor
+  · intro h
+    ext t
+    rw [mem_sep]
+    constructor
+    · intro ht
+      obtain ⟨h1, h2⟩ := (h ⟨t, hA.subset_of_mem (env i).2 ht⟩).mp ht
+      exact ⟨h1, (evF_spec hA _ 0 (a + 1) (lam + 1)).mp h2⟩
+    · rintro ⟨h1, h2⟩
+      exact (h ⟨t, hA.subset_of_mem (env T).2 h1⟩).mpr
+        ⟨h1, (evF_spec hA _ 0 (a + 1) (lam + 1)).mpr h2⟩
+  · intro h d
+    constructor
+    · intro hd
+      have hd0 : d.1 ∈ (env i).1 := hd
+      rw [h, mem_sep] at hd0
+      exact ⟨hd0.1, (evF_spec hA _ 0 (a + 1) (lam + 1)).mpr hd0.2⟩
+    · rintro ⟨h1, h2⟩
+      have : d.1 ∈ ZFSet.sep (fun b => EvAgreeZ (env lam).1 b (env a).1) (env T).1 :=
+        mem_sep.mpr ⟨h1, (evF_spec hA _ 0 (a + 1) (lam + 1)).mp h2⟩
+      have h' : d.1 ∈ (env i).1 := h ▸ this
+      exact h'
+
 end Cardinals

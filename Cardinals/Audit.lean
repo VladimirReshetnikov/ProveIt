@@ -23,6 +23,10 @@ open Cardinals
 #print axioms ThirdRound.phase_balance
 #print axioms ThirdRound.tail_mean_indep
 #print axioms countableCover_contra
+#print axioms Bridge.realize_toLex
+#print axioms RelWitness.definable_fixed
+#print axioms RelWitness.le_jOrd
+#print axioms card_sUnion_le
 
 -- proved from the admitted published results (`sorryAx` expected)
 #print axioms barrier
@@ -33,6 +37,12 @@ open Cardinals
 #print axioms general_ground_obstruction
 #print axioms no_sandwich
 #print axioms no_SC_above
+#print axioms RelWitness.fixed_small_subset
+#print axioms RelWitness.no_small_fixed_family
+#print axioms RelWitness.orb_mem_X
+#print axioms RelWitness.jv_orb
+#print axioms RelWitness.zero_or_full
+#print axioms RelWitness.regressive_const
 #print axioms first_regularization
 #print axioms projection_width
 #print axioms no_smaller_exacting
