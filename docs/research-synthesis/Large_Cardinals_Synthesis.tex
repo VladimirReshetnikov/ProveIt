@@ -22,7 +22,7 @@
 \PassOptionsToPackage{obeyspaces}{url}
 \usepackage{xurl}
 \usepackage[colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
-\hypersetup{pdftitle={Large cardinals at the inconsistency frontier: synthesis of the continuation reports},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Deduplicated results of nine research continuations on cover-exacting, exacting and ultraexacting cardinals},pdfkeywords={large cardinals, cover exacting, ultraexacting, HCD, strongly compact, Ground Axiom, I0, I3}}
+\hypersetup{pdftitle={Large cardinals at the inconsistency frontier: synthesis of the continuation reports},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Deduplicated results of eighteen research continuations on cover-exacting, exacting and ultraexacting cardinals},pdfkeywords={large cardinals, cover exacting, ultraexacting, HCD, strongly compact, Ground Axiom, I0, I3}}
 \urlstyle{same}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{5.1pt plus 1pt minus .4pt}
@@ -42,11 +42,11 @@
 \fancyhf{}
 \fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}LARGE CARDINALS AT THE INCONSISTENCY FRONTIER}
 \fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}SYNTHESIS\quad 18 SEP 2026}
-\fancyfoot[L]{\small\color{Muted}Synthesis of the nine continuation reports}
+\fancyfoot[L]{\small\color{Muted}Synthesis of the continuation reports}
 \fancyfoot[R]{\small\color{Muted}\thepage}
 \renewcommand{\headrulewidth}{.35pt}
 \renewcommand{\footrulewidth}{0pt}
-\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}Synthesis of the nine continuation reports}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}Synthesis of the continuation reports}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
 \tcbset{colback=Pale,colframe=Sage,colbacktitle=Sage,coltitle=Forest,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
 \newtcolorbox{assessment}[1]{title={#1}}
 \theoremstyle{definition}
@@ -93,6 +93,11 @@
 \newcommand{\Sel}{\operatorname{Sel}}
 \newcommand{\FF}{\mathcal F}
 \newcommand{\PP}{\mathbb P}
+\newcommand{\Clam}{\mathcal C_\lambda}
+\newcommand{\Rig}{\operatorname{Rig}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\ch}{\operatorname{ind}}
+\newcommand{\CF}{\mathsf{CF}}
 \newcommand{\src}[1]{\unskip\ {\normalfont\small\sffamily\color{Olive}[#1]}\ }
 \newcommand{\R}[1]{\textsf{R#1}}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
@@ -110,28 +115,30 @@
 \vspace{13pt}
 {\fontsize{28}{31}\selectfont\bfseries\color{Forest}Large cardinals at the\\ inconsistency frontier:\\ a synthesis\par}
 \vspace{10pt}
-{\fontsize{14}{18}\selectfont Deduplicated results of the nine continuation reports on\\ cover-exacting, exacting, and ultraexacting cardinals\par}
+{\fontsize{14}{18}\selectfont Deduplicated results of the eighteen continuation reports on\\ cover-exacting, exacting, and ultraexacting cardinals\par}
 \vspace{14pt}
 {\color{Muted}Prepared for Vladimir Reshetnikov\hfill 18 September 2026\par}
 \vspace{3pt}
 {\color{Sage}\hrule height .6pt}
 \vspace{12pt}
 
-\textbf{Purpose.} Nine independent continuation reports (\R1--\R9, in \nolinkurl{docs/research-reports/01}--\nolinkurl{09}) were written from the same research plan, the \emph{Unified Report}. Seven of them prove essentially the same central theorem with different names, thresholds, and proof routes; the remaining material consists of four further lines of work. This document merges them. Each result is stated once, in the strongest form reached by any report, with a compact proof and a source tag such as {\small\sffamily\color{Olive}[R1, R6]}. Section~\ref{sec:compare} compares the reports and records the discrepancies found.
+\textbf{Purpose.} Eighteen independent continuation reports were written in two rounds. The first nine (\R1--\R9, in \nolinkurl{docs/research-reports/01}--\nolinkurl{09}) continue the research plan, the \emph{Unified Report}; seven of them prove essentially the same central theorem with different names, thresholds, and proof routes. The second nine (\R{10}--\R{18}, in \nolinkurl{10}--\nolinkurl{18}) continue the first edition of this synthesis; all nine prove the same sharp-width theorem for definable sections of the cofinal quotient, again with different refinements. This document merges them. Each result is stated once, in the strongest form reached by any report, with a compact proof and a source tag such as {\small\sffamily\color{Olive}[R1, R6]}. Section~\ref{sec:compare} compares the reports and records the discrepancies found.
 
-\begin{assessment}{The five result groups}
+\begin{assessment}{The six result groups}
 \textbf{A. Completeness barrier} (\R1--\R4, \R6--\R8). If $\lambda$ is $\gamma$-cover exacting then $\lambda$ is regular in $\HCD(\gamma^+)$, and in $\HCD(\gamma)$ when $\gamma$ is singular, although $\cf^V(\lambda)=\omega$. A strongly compact cardinal \emph{below} $\lambda$ forces a small, explicit witness to non-stabilization of the $\HCD$ hierarchy; a strongly compact \emph{above} $\gamma$ forces a proper ground and contradicts the Ground Axiom.
 
-\textbf{B. Exacting cardinals} (\R9). No $\OD_{V_\lambda}$ family of fewer than $\lambda$ short cofinal maps exists.
+\textbf{B. Exacting cardinals} (\R9; \R{10}, \R{14}, \R{17}, \R{18}). No $\OD_{V_\lambda}$ family of fewer than $\lambda$ short cofinal subsets of $\lambda$ exists; small definable families of subsets of $V_\lambda$ are separated at a bounded rank; no definable countably additive law on cofinal sequences exists.
 
 \textbf{C. Ultraexacting cardinals} (\R5, \R7). Definable finite choice fails on the quotient of cofinal $\omega$-subsets of $\lambda$ modulo finite difference: no finite $\OD_{V_\lambda}$ family of selectors, no ordinal-definable finite-valued transversal, and a forbidden Icarus enrichment.
 
 \textbf{D. Consistency} (\R1--\R3, \R5, \R7--\R9). $\Con(\ZFC+\Iwf)$ implies the consistency of a $\lambda$-cover-exacting $\lambda$; and one $\Izero$-equiconsistent theory carries all the boundary phenomena of groups A--C simultaneously.
 
 \textbf{E. Class embeddings} (\R3). For $j:V\to M$ and a fixed regular $\theta$, no unbounded subset of $j``\theta$ belongs to $M$.
+
+\textbf{F. Sections of the cofinal quotient} (\R{10}--\R{18}). At an ultraexacting $\lambda$ there are at least $\lambda$ \emph{rigid} classes $q$ of cofinal $\omega$-sets modulo finite difference: every set of representatives definable from $q$ and parameters in $V_\lambda$ meets $q$ in $0$ or $\lambda$ points. Hence every definable complete section has $\lambda$ fibres of full size $\lambda$, and the definable width of the quotient is exactly $\lambda$. The equivariant finite-label problem of group~C is solved exactly: a definable rule exists iff every single permutation fixes a label (\R{13}). With a strongly compact cardinal below $\lambda$, an inner model in which $\lambda$ is regular has its successor of $\lambda$ collapsed or a canonical stationary set destroyed (\R{14}).
 \end{assessment}
 
-\textbf{Status.} Nothing here is an unconditional inconsistency of a standard large-cardinal hypothesis; all nine reports agree on that. The open problem of a cover-exacting cardinal above a strongly compact cardinal remains open. The proofs are conventional, unrefereed, and not machine-checked. The synthesis re-derived the arguments while merging them, but did not re-verify the external sources; theorem numbers for imported results are those quoted by the reports. Priority is not claimed for any statement.
+\textbf{Status.} Nothing here is an unconditional inconsistency of a standard large-cardinal hypothesis; all eighteen reports agree on that. The open problem of a cover-exacting cardinal above a strongly compact cardinal remains open. The proofs are conventional, unrefereed, and not machine-checked. The synthesis re-derived the arguments while merging them, but did not re-verify the external sources; theorem numbers for imported results are those quoted by the reports (those used in the Lean formalization were later checked against the sources; see \nolinkurl{Cardinals/README.md}). Priority is not claimed for any statement. \emph{Second edition:} Sections~\ref{sec:above}, \ref{sec:width}, \ref{sec:cons}, \ref{sec:compare} and \ref{sec:open} were amended and Section~\ref{sec:quot} is new; the numbering of all first-edition statements is unchanged.
 
 \newpage
 \tableofcontents
@@ -156,6 +163,27 @@ The original archive folders had colliding names (several were called \nolinkurl
 \R7&\emph{Local complete-definability barriers, finite symmetry, and an $\Izero$-calibrated consistency result} (\nolinkurl{Large_Cardinals_Continuation})&Finite-label symmetry theorem; finite-valued transversal theorem; small-ground formulation; finite checks (Python).\\
 \R8&\emph{Cover-exacting cardinals and completely definable grounds} (\nolinkurl{Large_Cardinals_Continuation})&$\lambda$ strongly inaccessible in the ground; rank-embedding witnesses escape $\CD(\gamma^+)$; first-disagreement profile.\\
 \R9&\emph{Frontier: a Prikry consistency refinement and local definability obstructions} (\nolinkurl{Large_Cardinals_Research_Continuation})&Prikry construction of a cover-exacting cardinal from $\Iwf$; projection-width theorem for exacting cardinals.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The second round arrived as nine zip archives with overlapping internal folder names (three of them contained a folder \nolinkurl{Cardinals3_Continuation} or \nolinkurl{Cardinals_Continuation}). They were extracted into \nolinkurl{10}--\nolinkurl{18}, again in order of source modification time and without the extra nesting level.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\textwidth}{@{}lP{.33\textwidth}Y@{}}
+\toprule
+&\textbf{Title (main file)}&\textbf{Distinctive content}\\\midrule
+\R{10}&\emph{Beyond finite choice} (\nolinkurl{Beyond_Finite_Choice})&Small invariant families at \emph{exacting} cardinals; no conversion of classes into short cofinal information; probability laws and kernels; bounded-separation characterization.\\
+\R{11}&\emph{Quotient parameters and sharp uniformization barriers} (\nolinkurl{Large_Cardinals_Quotient_Continuation})&The models $N_q$; classes that do and do not reveal cofinality; $\lambda$ recodings with the same $N_q$; minimum-order-type compression.\\
+\R{12}&\emph{Maximal-width uniformization} (\nolinkurl{Maximal_Width_Uniformization})&Roots and orbits of $e$; coordinate width; integer phase spectrum; envelopes and edit budgets; two sharpness examples. Finite checks (Python).\\
+\R{13}&\emph{Cyclic symmetry at the ultraexacting boundary} (\nolinkurl{Cyclic_Symmetry_Ultraexacting})&Exact finite-label classification via cyclic stabilizers of incidence words; the five-label rule; both output types occur $\lambda$ times. Finite checks (Python).\\
+\R{14}&\emph{Small definable sections and stationary-correctness barriers} (\nolinkurl{Cardinals_Continuation})&Small collections of sections; successor stationary-set obstruction; $(\lambda^+)$-chain-condition bound; localization of the destroyed stationary set.\\
+\R{15}&\emph{Orbit saturation} (\nolinkurl{Orbit_Saturation})&Zero-or-full width for small families of \emph{partial} sections; thin covers; choiceless inner models; classification and count of periodic classes; $|Q_\lambda|=2^\lambda$.\\
+\R{16}&\emph{Small fibres at the ultraexacting boundary} (\nolinkurl{Small_Fibres_Ultraexacting})&Tail-invariant hulls; ordinal colourings; coarser equivalence relations; predicate-expanded $\mathrm{I1}$ embeddings.\\
+\R{17}&\emph{Thin sections and simultaneous saturation} (\nolinkurl{Thin_Sections_and_Saturation})&One set of $\lambda$ classes works for \emph{all} $\OD_{V_\lambda}$ sets at once; fixed bijection $\lambda\to V_\lambda$; sharpness of the parameter rank.\\
+\R{18}&\emph{Cofinal-orbit rigidity} (\nolinkurl{Cofinal_Orbit_Rigidity})&Rigidity relative to the class $q$ itself as a parameter; the minimal-rank-parameter device; homomorphisms into relations with small classes.\\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -458,6 +486,41 @@ If $\delta<\lambda\le\gamma<\kappa$ with $\SC(\delta)$, $\SC(\kappa)$, $\CEx_\ga
 the strict inclusion being witnessed on $[\lambda]^{<\delta}$. $\HCD(\delta)$ has $\delta$-approximation while $\HCD(\kappa)$ fails it. Nothing prevents $\HCD(\delta)=V$.
 \end{corollary}
 
+\subsection{A successor stationary-set obstruction (second round)}\label{sec:stat}
+
+Lemma~\ref{lem:cc} bounds a singularizing forcing at $\lambda$. With a strongly compact cardinal \emph{below} $\lambda$ the bound moves to the successor, and a specific stationary set must be lost. The mechanism (non-reflection after Prikry-type singularization versus reflection from strong compactness) is classical; \R{14} frees it from any assumption that $V$ is a forcing extension.
+
+\begin{lemma}[Reflection]\label{lem:screfl}\src{R14; classical}
+If $\delta$ is strongly compact, $\theta>\delta$ is regular and $S\subseteq E^\theta_\omega$ is stationary, then $S\cap\alpha$ is stationary in some $\alpha<\theta$ with $\omega<\cf(\alpha)<\delta$.
+\end{lemma}
+
+\begin{proof}
+Let $j:V\to M$ come from a fine $\delta$-complete ultrafilter on $\Pow_\delta(\theta)$ and $\beta=\sup j``\theta<j(\theta)$; then $\theta\le\cf^M(\beta)<j(\delta)$. Given a club $C\subseteq\beta$ in $M$, interleave $C$ with $j``\theta$ and take $\alpha\in S$ closed under the interleaving function; $\cf(\alpha)=\omega$ gives $j(\alpha)=\sup j``\alpha\in C\cap j(S)$. So $M$ thinks $j(S)$ reflects at $\beta$; apply elementarity.
+\end{proof}
+
+\begin{theorem}[Collapse or destroy]\label{thm:successor}\src{R14}
+Let $W\subseteq V$ be an inner model of $\ZFC$, $\lambda$ a cardinal of $V$ that is regular in $W$ with $\cf^V(\lambda)=\omega$, and let some $\delta<\lambda$ be strongly compact in $V$. Put $\theta=(\lambda^+)^W$ and $S=(E^\theta_\lambda)^W$. Then either $|\theta|^V=\lambda$, or $\theta=(\lambda^+)^V$ and the $W$-stationary set $S$ is nonstationary in $V$.
+\end{theorem}
+
+\begin{proof}
+Assume $\theta=(\lambda^+)^V$. $S$ is stationary in $W$ and $S\subseteq(E^\theta_\omega)^V$. If $\cf^V(\alpha)>\omega$ then $\cf^W(\alpha)<\lambda$, and a continuous cofinal sequence of length $\cf^W(\alpha)$ in $W$ is a club of $\alpha$ avoiding $S$; so $S$ reflects nowhere in $V$, and Lemma~\ref{lem:screfl} makes it nonstationary.
+\end{proof}
+
+\begin{corollary}[Successor chain-condition bound]\label{cor:succcc}\src{R14}
+In the situation of Theorem~\ref{thm:successor}, if $V=W[G]$ for $\PP\in W$ then $\PP$ is not $(\lambda^+)^W$-cc in $W$; every dense subset of $\PP$ in $W$ has $W$-size at least $(\lambda^+)^W$. (A $\theta$-cc forcing preserves $\theta$ and every stationary subset of $\theta$.)
+\end{corollary}
+
+\begin{corollary}\label{cor:statapps}\src{R14}
+(a) If $\lambda$ is exacting and some $\delta<\lambda$ is strongly compact, then $(\lambda^+)^{\HOD}$ is collapsed or $(E^{(\lambda^+)^{\HOD}}_\lambda)^{\HOD}$ is nonstationary in $V$.
+(b) If $\delta<\lambda\le\gamma<\kappa$ with $\SC(\delta)$, $\SC(\kappa)$ and $\CEx_\gamma(\lambda)$, then every presentation of $V$ over $W=\HCD(\kappa)$ has an antichain of $W$-size $(\lambda^+)^W$, and $(\lambda^+)^W$ is collapsed or $S=(E^{(\lambda^+)^W}_\lambda)^W$ is nonstationary in $V$. If $(\lambda^+)^W=(\lambda^+)^V$, then $S$ is already nonstationary in $\HCD(\delta)$: some club $C\in\HCD(\delta)\setminus W$ avoids it.
+\end{corollary}
+
+\begin{proof}
+(a) $W=\HOD$ and Input~\ref{in:abl}(i). (b) Theorem~\ref{thm:ground} and Corollary~\ref{cor:succcc}. For the last sentence, $V$ is an extension of $U=\HCD(\delta)$ by a forcing of size below $(2^{2^\delta})^+<\lambda$ (Input~\ref{in:hcd}; $\lambda$ is a strong limit), which is $\theta$-cc in $U$ and so preserves stationary subsets of $\theta$; since $S$ is nonstationary in $V$, it is nonstationary in $U$, and a club of $U$ avoiding $S$ cannot lie in $W$.
+\end{proof}
+
+Part (b) strengthens the $\lambda$-cc bound of Theorem~\ref{thm:ground} to $\lambda^+$ when there is also a strongly compact cardinal below $\lambda$. It is an obstruction of the same conditional kind: it is incompatible with a $(\lambda^+)$-cc presentation, or with preservation of one named stationary set, not with the configuration itself.
+
 \section{Exacting cardinals: definable families of cofinal maps}\label{sec:width}
 
 This section uses only Input~\ref{in:abl}(i). Write $N=\HOD_{V_\lambda}$. An $\OD_{V_\lambda}$ set need not belong to $N$, but an $\OD_{V_\lambda}$ set of ordinals, or graph between ordinals, does.
@@ -481,6 +544,52 @@ If $\lambda$ is exacting and $c\subseteq\lambda$ is cofinal of order type $\omeg
 \end{proposition}
 
 The cloud of Section~\ref{sec:i3} does not contradict Corollary~\ref{cor:odcover}: it may have size exactly $\lambda$, and its definition uses the generic sequence and a name, not parameters in $V_\lambda$.
+
+\subsection{Small families of short cofinal sets, bounded separation, and laws (second round)}\label{sec:smallfam}
+
+Write $\Clam$ for the set of cofinal $a\subseteq\lambda$ with $|a|<\lambda$ (equivalently $\ot(a)<\lambda$); so $D_\lambda\subseteq\Clam$ in the notation of Section~\ref{sec:uex}.
+
+\begin{lemma}[Fixed small sets]\label{lem:fixedsmall}\src{R10, R12, R14--R18}
+Let $j:X\to V_\zeta$ be an exacting witness at $\lambda$ with $\kappa=\crit(j)$.
+(a) If $S\in X$, $S\subseteq\lambda$, $j(S)=S$ and $|S|<\lambda$, then $S\subseteq\kappa$.
+(b) There is no $\FF\in X$ with $j(\FF)=\FF$, $\varnothing\ne\FF\subseteq\Clam$ and $|\FF|<\lambda$. The members of $\FF$ may have different, unbounded, order types and need not be fixed.
+\end{lemma}
+
+\begin{proof}
+(a) $\mu=|S|$ is a fixed ordinal below $\lambda$, so $\mu<\kappa$; a bijection $f:\mu\to S$ in $X$ gives $j``S=\ran j(f)=S$, and an order-preserving bijection of a set of ordinals onto itself is the identity. So $S$ consists of fixed ordinals, which lie below $\kappa$ by Lemma~\ref{lem:crit}. (b) Let $\tau$ be the least order type of a member of $\FF$ and $u=\bigcup\{b\in\FF:\ot(b)=\tau\}$. Then $u$ is cofinal, $|u|\le|\FF|\cdot|\tau|<\lambda$, and $u$ is definable from $\FF$, hence fixed, contradicting (a).
+\end{proof}
+
+The compression to the minimal order type \R{11} is what removes any uniform bound: a plain union could have size $\lambda$ when the sizes of the members are unbounded. For subfamilies of $D_\lambda$ the plain union \R{13}, \R{16} or the coordinate projections \R{12}, \R{14} serve equally.
+
+\begin{theorem}[No small definable family of short cofinal sets]\label{thm:smallC}\src{R10; parameter device R18}
+If $\lambda$ is exacting, every nonempty $A\in\OD_{V_\lambda}$ with $A\subseteq\Clam$ has $|A|\ge\lambda$.
+\end{theorem}
+
+\begin{proof}
+Otherwise let $\rho$ be the least rank of a parameter $p\in V_\lambda$ for which some counterexample lies in $\OD_p$. At a sufficiently correct height, $\rho$ is definable from $\lambda$, hence fixed by any witness $j$, hence $\rho<\crit(j)$; so such a $p$ lies in $V_{\crit(j)}$ and is fixed. The least counterexample in the canonical well-order of $\OD_p$ is then fixed, contradicting Lemma~\ref{lem:fixedsmall}(b).
+\end{proof}
+
+The \emph{minimal-rank-parameter device} of \R{18} is worth isolating: no ordinal or low-rank parameter of the original definition is assumed fixed, and no witness with a prescribed high critical point is needed. \R{10} and \R{14}--\R{17} instead use Input~\ref{in:abl}(ii) to raise the critical point above the rank of a given parameter; both routes are correct. Theorem~\ref{thm:smallC} contains Input~\ref{in:abl}(i) (take $A=\{a\}$), Corollary~\ref{cor:odcover}, and the version of the latter for maps with varying domains below $\lambda$ \R{18}.
+
+\begin{theorem}[Bounded-rank separation]\label{thm:pinning}\src{R10, R14, R17}
+Let $\lambda$ be an uncountable cardinal with $|V_\alpha|<\lambda$ for all $\alpha<\lambda$. Then $\lambda$ is regular in $\HOD_{V_\lambda}$ iff every $A\in\OD_{V_\lambda}$ with $A\subseteq V_{\lambda+1}$ and $|A|<\lambda$ is separated at a bounded rank, i.e.\ $x\mapsto x\cap V_\alpha$ is injective on $A$ for some $\alpha<\lambda$. In that case $A\in\HOD_{V_\lambda}$, $A\subseteq\HOD_{V_\lambda}$, and $\HOD_{V_\lambda}$ computes $|A|$ correctly. In particular this holds at every exacting $\lambda$, where for $\OD_{V_\lambda}$ sets $A\subseteq V_{\lambda+1}$: $|A|<\lambda$ iff $A$ is separated at a bounded rank.
+\end{theorem}
+
+\begin{proof}
+($\Rightarrow$) The set of first-difference ranks $\{d(x,y):x\ne y\in A\}$ is an $\OD_{V_\lambda}$ set of fewer than $\lambda$ ordinals, hence bounded. Each $x\in A$ is then definable from $A$ and $x\cap V_\alpha\in V_\lambda$. ($\Leftarrow$) If $b\in\HOD_{V_\lambda}$ is short cofinal, $\{b\cap\beta:\beta\in b\}$ is not separated at any bounded rank.
+\end{proof}
+
+The threshold is sharp ($A=\lambda$). The argument does not reach selectors on $[Q_\lambda]^n$, whose codes are subsets, not elements, of $V_{\lambda+1}$ \R{10}.
+
+\begin{theorem}[Laws on cofinal sequences]\label{thm:laws}\src{R10}
+Let $\cf(\lambda)=\omega$ and let $m$ be a countably additive probability measure on the $\sigma$-algebra on $S\subseteq D_\lambda$ generated by the sets $\{a\in S:a(n)<\alpha\}$. Then the medians $\min\{\alpha:m(\{a:a(n)<\alpha\})>\tfrac12\}$, $n<\omega$, form a cofinal set of order type $\omega$, definable from $S$ and $m$. Consequently, if $\lambda$ is exacting there is no nonempty $\OD_{V_\lambda}$ family of fewer than $\lambda$ such laws on $D_\lambda$.
+\end{theorem}
+
+\begin{proof}
+The medians exist by continuity from below and are nondecreasing. If bounded by $\beta$, the sets $\{a:a(n)<\beta\}$ decrease to $\varnothing$ but all have measure above $\tfrac12$, contradicting continuity from above. The family of median sets contradicts Theorem~\ref{thm:smallC}.
+\end{proof}
+
+Countable additivity is essential: a nonprincipal ultrafilter on the tails of one sequence gives a finitely additive law with no medians \R{10}.
 
 \section{Ultraexacting cardinals: failure of definable finite choice}\label{sec:uex}
 
@@ -554,7 +663,7 @@ With $e$ preserving $A_L$ and $\vec a$ from Lemma~\ref{lem:perm}: $L(\vec a)=L(e
 At an ultraexacting $\lambda$ there is no ordinal-definable $s\in\Sel_{m,r}(Q_\lambda)$ for $1\le r<m$ (an $m$-cycle fixes no proper nonempty subset of $m$).
 \end{corollary}
 
-The test is necessary, not sufficient: $S_3$ acting on the disjoint union of its natural 3-point action and the 2-point sign action has a fixed point for each permutation but no common fixed point; whether such an $L$ can exist is open \R7.
+The test does not ask for a label fixed by the whole group: $S_3$ acting on the disjoint union of its natural 3-point action and the 2-point sign action has a fixed point for each permutation but no common fixed point. \R7 left open whether a rule $L$ exists for such a target. \R{13} settles this: the elementwise test is also \emph{sufficient} (Theorem~\ref{thm:classification}).
 
 \begin{theorem}[No finite-valued transversal]\label{thm:transversal}\src{R7}
 If $\lambda$ is ultraexacting there is no ordinal-definable $T\subseteq D_\lambda$ with $0<|T\cap[a]|<\omega$ for every $a\in D_\lambda$.
@@ -624,9 +733,9 @@ This adds no strength: the extra clauses are theorems about every such model (Th
 
 \subsection{One \texorpdfstring{$\Izero$}{I0}-equiconsistent boundary theory}
 
-Five reports each derive an ``equiconsistency package'' from Input~\ref{in:abl}(iv),(v). Since every clause is a consequence of $\UEx(\lambda)\wedge V_\lambda\subseteq\HOD$, they merge into one statement.
+Five first-round reports, and all nine second-round reports, each derive an ``equiconsistency package'' from Input~\ref{in:abl}(iv),(v). Since every clause is a consequence of $\UEx(\lambda)\wedge V_\lambda\subseteq\HOD$, they merge into one statement.
 
-\begin{theorem}[Merged boundary package]\label{thm:i0}\src{R2, R3, R5, R7, R8}
+\begin{theorem}[Merged boundary package]\label{thm:i0}\src{R2, R3, R5, R7, R8; R10--R18}
 Let $T_{\partial}$ be $\ZFC$ plus the existence of a cardinal $\lambda$ with $\UEx(\lambda)$ and $V_\lambda\subseteq\HOD$. Then $\Con(T_\partial)\Leftrightarrow\Con(\ZFC+\Izero)$, and $T_\partial$ proves all of the following for that $\lambda$ and every cofinal $c\subseteq\lambda$ of order type $\omega$:
 \begin{enumerate}
 \item $\lambda$ is the least exacting cardinal.\src{known: ABGL Cor.~3.10}
@@ -634,11 +743,12 @@ Let $T_{\partial}$ be $\ZFC$ plus the existence of a cardinal $\lambda$ with $\U
 \item $\cf(\lambda)=\omega$ while $\HOD\models$ ``$\lambda$ is strongly inaccessible''; $c\in V_{\lambda+1}\setminus\HOD$, so $\lambda$ is the first ordinal of cofinality or powerset disagreement and $\lambda+1$ the first rank of disagreement.\src{R2, R3, R8}
 \item $c\cap a$ is finite and in $\HOD$ whenever $a\in\HOD$, $|a|^{\HOD}<\lambda$; every $b\in\HOD$ with $c\subseteq b$ has $|b|^V\ge\lambda$; so $(\HOD,V)$ fails $\theta$-approximation and $\theta$-covering for all uncountable $\theta\le\lambda$.\src{R2, R3, R8}
 \item $Q^{\mathrm{bd}}_\lambda\in\HOD$ has an ordinal-definable well-order, whereas the conclusions of Theorems~\ref{thm:fsel}, \ref{thm:label}, \ref{thm:transversal} and Corollary~\ref{cor:orders} hold for $Q_\lambda$.\src{R5, R7}
+\item Every conclusion of Section~\ref{sec:quot} holds, with $\OD$ in place of $\OD_{V_\lambda}$ since the two coincide: at least $\lambda$ rigid classes $q$, for which moreover $H_q=\HOD_{\{q\}}\models\ZFC$ agrees with $V$ below $\lambda$, regards $\lambda$ as inaccessible, and contains no member of $q$; full-width fibres for every $\OD$ complete section; the exact finite-label classification, including an $\OD$ choice-or-orientation rule on triples although neither pure rule is $\OD$; no $\OD$ probability kernel. The bounded quotient has an $\OD$ transversal.\src{R10--R18}
 \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-Equiconsistency is Input~\ref{in:abl}(iv),(v). For (1): a smaller exacting $\mu$ would have a cofinal $\omega$-sequence of rank $\mu<\lambda$, hence in $\HOD$, contradicting Input~\ref{in:abl}(i). For (2): the relevant subsets and cofinal maps have rank below $\lambda$. (3),(4): $\HOD$-regularity is Input~\ref{in:abl}(i); strong limit as in Theorem~\ref{thm:ground}; the rest as in Corollary~\ref{cor:approx}. (5): Remark~\ref{rem:controls} and Section~\ref{sec:uex}.
+Equiconsistency is Input~\ref{in:abl}(iv),(v). For (1): a smaller exacting $\mu$ would have a cofinal $\omega$-sequence of rank $\mu<\lambda$, hence in $\HOD$, contradicting Input~\ref{in:abl}(i). For (2): the relevant subsets and cofinal maps have rank below $\lambda$. (3),(4): $\HOD$-regularity is Input~\ref{in:abl}(i); strong limit as in Theorem~\ref{thm:ground}; the rest as in Corollary~\ref{cor:approx}. (5): Remark~\ref{rem:controls} and Section~\ref{sec:uex}. (6): Section~\ref{sec:quot}; under $V_\lambda\subseteq\HOD$ every parameter in $V_\lambda$, in particular a well-order of the reals, is ordinal definable.
 \end{proof}
 
 The equiconsistency compares consistency statements; it does not say that $\Izero$ holds at the same ordinal, and it is not a new proof of the ABGL comparison. Its use is as a \emph{control}: total agreement with $\HOD$ below $\lambda$ does not supply the one countable sequence that would be fatal, so no negative argument may import covering at $\lambda$ from rank agreement below $\lambda$.
@@ -671,6 +781,162 @@ The proof shows that $M$ contains no club subset of $C_j$, so no function in $M$
 
 The result is a conditional inconsistency for a strengthened embedding theory. It uses no cardinal correctness, so the global cardinal-preserving problem of the research plan still lacks the implication from $\mathrm{Card}^M=\mathrm{Card}^V$ to any internal selection of externally stationary cells.
 
+\section{Sections of the cofinal quotient}\label{sec:quot}
+
+This section merges the second round of reports. Throughout, $\lambda$ has cofinality $\omega$, $D_\lambda$ is the set of cofinal subsets of $\lambda$ of order type $\omega$, $a=^*b$ means $|a\triangle b|<\omega$, $[a]$ is the class of $a$ and $Q_\lambda=D_\lambda/{=^*}$, as in Section~\ref{sec:uex}; $\Clam\supseteq D_\lambda$ is the set of short cofinal subsets of $\lambda$ (Section~\ref{sec:smallfam}). A \emph{complete section} is a set $T\subseteq D_\lambda$ meeting every class; it is \emph{thin} if $|T\cap q|<\lambda$ for every $q$, and a \emph{transversal} if $|T\cap q|=1$. No bound below $\lambda$ uniform in $q$ is ever assumed. $\OD_{V_\lambda\cup\{q\}}$ allows ordinals, finitely many parameters in $V_\lambda$, and the class $q$ as \emph{one} set parameter --- not its members. All cardinalities are computed in $V$.
+
+Every class has exactly $\lambda$ members ($d\mapsto a\triangle d$ is a bijection from $[\lambda]^{<\omega}$), so $\lambda$ is the largest possible fibre; and $|Q_\lambda|=2^\lambda$ for a strong limit $\lambda$ of cofinality $\omega$ \R{15}.
+
+\subsection{Fixed classes}
+
+\begin{lemma}[Orbits and offsets]\label{lem:orbits}\src{R12, R15; R13, R14, R17; R10, R16, R18}
+Let $j:X\to V_\zeta$ be an ultraexacting witness with $\zeta>\lambda+\omega$, $e=j\restr V_\lambda\in X$, $\kappa=\crit(j)$, $\kappa_n=e^n(\kappa)$.
+\begin{enumerate}
+\item The set of \emph{roots} $R_e=[\kappa,\lambda)\setminus e``[\kappa,\lambda)$ has size $\lambda$, and the forward orbits $a_r=\{e^n(r):n<\omega\}$, $r\in R_e$, partition $[\kappa,\lambda)$ into members of $D_\lambda$.
+\item Each $a_r$ and $q_r=[a_r]$ belong to $X$, and $j(a_r)=a_r\setminus\{r\}$, so $j(q_r)=q_r$. The classes $q_r$ are pairwise distinct.
+\item In particular this holds for the critical sequence ($r=\kappa$) and for the offsets $a_t=\{\kappa_n+t:n<\omega\}$, $t<\kappa$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+$e$ maps $[\kappa_{n-1},\kappa_n)$ into $[\kappa_n,\kappa_{n+1})$, which has size $\kappa_{n+1}$, so $\kappa_{n+1}$ roots lie there. Every ordinal in $[\kappa,\lambda)$ has only finitely many $e$-predecessors (Lemma~\ref{lem:crit}), hence lies on a unique orbit. Orbits are definable from $e\in X$ and $r\in V_\lambda\subseteq X$; enumerations with domain $\omega$ are mapped pointwise.
+\end{proof}
+
+This is the only place where ultraexactingness, rather than exactingness, is used in this section: an exacting witness need not contain any fixed class. All nine reports record the question whether exactingness suffices as open.
+
+\subsection{Rigid classes}
+
+\begin{definition}[Rigidity]\label{def:rigid}\src{R18}
+A class $q\in Q_\lambda$ is \emph{rigid}, $\Rig(\lambda,q)$, if every nonempty $A\in\OD_{V_\lambda\cup\{q\}}$ with $A\subseteq\Clam$ has $|A|\ge\lambda$.
+\end{definition}
+
+\begin{theorem}[Rigid classes exist]\label{thm:rigid}\src{R18; with R12, R15, R17}
+Let $\lambda$ be ultraexacting and let $j:X\to V_\zeta$ be an ultraexacting witness at a sufficiently correct height. Then every $q\in X\cap Q_\lambda$ with $j(q)=q$ is rigid. Consequently at least $\lambda$ classes, with pairwise disjoint representatives, are rigid; and the bound in Definition~\ref{def:rigid} is attained, by $A=q$.
+\end{theorem}
+
+\begin{proof}
+Exactly as for Theorem~\ref{thm:smallC}, with $q$ as an additional fixed parameter: minimize the rank of the $V_\lambda$-parameter (so that it falls below $\crit(j)$ and is fixed), take the least counterexample in the canonical well-order, and contradict Lemma~\ref{lem:fixedsmall}(b). Lemma~\ref{lem:orbits} supplies $\lambda$ fixed classes.
+\end{proof}
+
+\R{18} proves rigidity of the critical-sequence class; \R{17} obtains $\lambda$ classes that are saturated for all $\OD_{V_\lambda}$ sets simultaneously, using instead a bijection $b:\lambda\to V_\lambda$ in $X$ with $j(b)=b$ (so that $\OD_{V_\lambda}\subseteq\OD_b$) and a uniform bounded-rank correctness lemma. Applying the device of \R{18} to each orbit class of \R{12}, \R{15} gives both conclusions at once; this combination is made here.
+
+\begin{corollary}[What rigidity gives]\label{cor:rigid}\src{R11, R15, R17, R18}
+Let $q$ be rigid.
+\begin{enumerate}
+\item \emph{Zero-or-full traces.} $|T\cap q|\in\{0,\lambda\}$ for every $T\subseteq D_\lambda$ in $\OD_{V_\lambda\cup\{q\}}$.
+\item \emph{Small families.} The same holds for every member $T$ of any family $\mathcal T\subseteq\Pow(D_\lambda)$ in $\OD_{V_\lambda\cup\{q\}}$ with $|\mathcal T|<\lambda$, and for all values $F(x,\alpha)$ of a definable $F:V_\lambda\times\theta\to\Pow(D_\lambda)$. The members need not be definable.
+\item \emph{Cofinal summaries.} If $R\in\OD_{V_\lambda\cup\{q\}}$ assigns to each class a subset of $\Clam$, then $R(q)=\varnothing$ or $|R(q)|\ge\lambda$.
+\item \emph{The model $N_q=\HOD_{V_\lambda\cup\{q\}}$.} $\cf^{N_q}(\lambda)=\lambda$; $q\notin N_q$ and $q\cap N_q=\varnothing$; every $\OD_{V_\lambda\cup\{q\}}$ set containing a member of $q$ has size at least $\lambda$; and the projection-width theorem~\ref{thm:width} holds relative to $q$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+(1) $T\cap q$ is a definable subfamily of $D_\lambda\subseteq\Clam$. (2) For $T\in\mathcal T$ with $0<|T\cap q|<\lambda$ the union $u_T=\bigcup(T\cap q)$ is cofinal of size below $\lambda$; the set of all such $u_T$ is a definable subfamily of $\Clam$ of size at most $|\mathcal T|<\lambda$, hence empty. Each value $F(x,\alpha)$ is itself definable from $x$ and $\alpha$, so (1) applies to it. (3), (4) are instances of the definition.
+\end{proof}
+
+\begin{corollary}[Sharp width of definable sections]\label{cor:sharpwidth}\src{R10--R18}
+Let $\lambda$ be ultraexacting.
+\begin{enumerate}
+\item Every complete section $T\in\OD_{V_\lambda}$ has at least $\lambda$ classes with $|T\cap q|=\lambda$, and one set of $\lambda$ classes serves all such $T$ \R{17}. For arbitrary $T\subseteq D_\lambda$ in $\OD_{V_\lambda}$, at least $\lambda$ fibres are empty or full \R{13}.
+\item There is no thin complete section in $\OD_{V_\lambda}$: the \emph{definable width} $\min\{\sup_q|T\cap q|:T\in\OD_{V_\lambda}\text{ complete}\}$ is exactly $\lambda$. This contains Theorem~\ref{thm:transversal}.
+\item No nonempty $\OD_{V_\lambda}$ family of fewer than $\lambda$ thin complete sections exists (in particular no countable definable family of transversals), and no such family of thin \emph{partial} sections has complete union \R{15}. Every $\OD_{V_\lambda}$ set having a thin complete section as a member has size at least $\lambda$ \R{12}, \R{15}.
+\item Even the local demand fails: it is not the case that every class $q$ has some $T\in\OD_{V_\lambda}$ with $0<|T\cap q|<\lambda$ \R{17}.
+\end{enumerate}
+\end{corollary}
+
+\begin{remark}[Sharpness]\label{rem:sharpquot}
+(a) $T=D_\lambda$ is ordinal definable with all fibres of size $\lambda$; thin transversals exist by Choice. (b) The parameter rank cannot be raised: no class is saturated for all $\OD_{V_{\lambda+1}}$ sets (use $T=\{a\}$, $a\in q$) \R{17}. (c) The family bound cannot be raised in the local lemma: a fixed class is itself a fixed family of size $\lambda$ \R{10}. (d) Not every class is rigid: for each increasing cofinal $c$ there is a redundantly coded class $q_c$ from which $c$ is ordinal definable, so $\cf^{N_{q_c}}(\lambda)=\omega$ \R{11}. (e) For every class $q$ there are $\lambda$ distinct classes $q_t$ mutually ordinal definable with $q$, hence with $N_{q_t}=N_q$; so $\lambda$ distinct rigid classes can share one model \R{11}.
+\end{remark}
+
+\subsection{The structure of a full fibre}
+
+For $a=^*b$ let $\ch_a(b)=|b\setminus a|-|a\setminus b|\in\mathbb Z$; then $\ch_a(c)=\ch_a(b)+\ch_b(c)$ and $\ch_{a\setminus\{\min a\}}=\ch_a+1$. For $B\subseteq[a]$ put $\Spec_a(B)=\{\ch_a(b):b\in B\}$ and $P_n(B)=\{b(n):b\in B\}$.
+
+\begin{theorem}[Coordinate width and full phase]\label{thm:phase}\src{R12}
+Let $j$ be an ultraexacting witness, $a\in D_\lambda\cap X$ with $j(a)=a\setminus\{\min a\}$, and $\varnothing\ne B\subseteq[a]$ with $B\in X$, $j(B)=B$. Then there is $n_0$ such that for every $r\in\mathbb Z$ and $n\ge n_0$ the phase $B_r=\{b\in B:\ch_a(b)=r\}$ has $P_n(B_r)$ cofinal in $\lambda$ of size $\lambda$. In particular $\Spec_a(B)=\mathbb Z$ and every phase has size $\lambda$. Hence every complete section $T\in\OD_{V_\lambda}$ has these properties on at least $\lambda$ classes.
+\end{theorem}
+
+\begin{proof}
+$\Spec_a(B)=\Spec_{j(a)}(j(B))=\Spec_a(B)+1$, so the nonempty spectrum is $\mathbb Z$. The cardinals $\theta_r=|B_r|$ satisfy $j(\theta_r)=\theta_{r-1}$; a two-sided orbit of ordinals $\le\lambda$ is constant, with value $\lambda$ or below $\kappa$, and the latter would make $B$ a fixed family of size below $\lambda$. A fixed small $P_n(B)$ would lie below $\kappa$ by Lemma~\ref{lem:fixedsmall}(a).
+\end{proof}
+
+\begin{corollary}\label{cor:phasecons}\src{R12}
+At an ultraexacting $\lambda$ no complete section in $\OD_{V_\lambda}$ (i) misses an integer phase in every class, or a residue class of phases modulo $m$; (ii) has in every class a pointwise bound $g_q:\omega\to\lambda$ on its members; or (iii) has in every class a finite bound on the number of points inserted, or deleted, relative to some reference representative. The two conditions are independent: there is a complete section with all fibres of size $\lambda$ and a single phase, and one with countable fibres and full spectrum.
+\end{corollary}
+
+\begin{corollary}[Colourings, coarser relations, homomorphisms]\label{cor:colour}\src{R14--R18}
+Let $\lambda$ be ultraexacting.
+(a) For every rigid $q$, every $f:D_\lambda\to\mathrm{Ord}$ in $\OD_{V_\lambda}$ and every $\xi$, $|q\cap f^{-1}\{\xi\}|\in\{0,\lambda\}$; so there is no $\OD_{V_\lambda}$ assignment of a well-order to each class that is constant on classes.
+(b) If $E\in\OD_{V_\lambda}$ is an equivalence relation on $D_\lambda$ with $a\mathrel E(a\setminus\{\min a\})$ for all $a$, every $\OD_{V_\lambda}$ set meeting every $E$-class meets some $E$-class in at least $\lambda$ points.
+(c) If $E\in\OD_{V_\lambda}$ has all classes of size below $\lambda$, there is no nonempty $\OD_{V_\lambda}$ family of fewer than $\lambda$ maps $f:D_\lambda\to D_\lambda$ with $a=^*b\Rightarrow f(a)\mathrel E f(b)$; for instance when $E$ is the orbit relation of a definable action of a group of size below $\lambda$.
+\end{corollary}
+
+\subsection{Rules with cofinal output and randomized selection}
+
+\begin{theorem}\label{thm:conversion}\src{R10, R11, R16, R18}
+If $\lambda$ is ultraexacting, there is no nonempty $\OD_{V_\lambda}$ family of fewer than $\lambda$ rules $R$ on $Q_\lambda$ with $\varnothing\ne R(q)\subseteq\Clam$ and $|R(q)|<\lambda$ for every $q$. The outputs need not represent, or be related to, the input class. Equivalently there is no such tail-invariant rule on $D_\lambda$; in particular no $\OD_{V_\lambda}$ map $Q_\lambda\to\Clam$.
+\end{theorem}
+
+\begin{proof}
+Let $q$ be rigid and let $u(B)$ denote the least-order-type compression of Lemma~\ref{lem:fixedsmall}. For a family $\mathcal F$ as described, $\{u(R(q)):R\in\mathcal F\}$ is a nonempty subfamily of $\Clam$ of size below $\lambda$, definable from $\mathcal F$ and $q$, contradicting rigidity.
+\end{proof}
+
+\begin{corollary}[No definable randomized selection]\label{cor:kernel}\src{R10}
+If $\lambda$ is ultraexacting there is no nonempty $\OD_{V_\lambda}$ family of fewer than $\lambda$ \emph{probability kernels}, i.e.\ assignments to each class $q$ of a countably additive probability law on $q$ (on the $\sigma$-algebra of Theorem~\ref{thm:laws}). Dirac kernels exist by Choice.
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{thm:laws} converts a kernel into the rule $q\mapsto$ median set of $K(q)$.
+\end{proof}
+
+\subsection{The exact finite-label classification}\label{sec:class}
+
+In the setting of Theorem~\ref{thm:label}, let $\Gamma\le S_m$ act on a finite nonempty set $F$, call a rule $L:D_m(\lambda)\to F$ \emph{admissible} if it is invariant under finite modification of the coordinates and $\Gamma$-equivariant, and let $\CF(\Gamma,F)$ say that every single $g\in\Gamma$ fixes some element of $F$.
+
+\begin{lemma}[Cyclic stabilizers]\label{lem:cyclic}\src{R13}
+To $\vec a\in D_m(\lambda)$ assign its \emph{incidence word} $w_{\vec a}(n)=\{i<m:\delta_n\in a_i\}$, where $\langle\delta_n\rangle$ enumerates $\bigcup_ia_i$; finite modifications change $w$ only up to \emph{shift-tail equivalence} ($w(r+n)=v(s+n)$ for all $n$), and $w_{g\cdot\vec a}=g\cdot w_{\vec a}$. For every word $w$ in which each label occurs infinitely often and any two labels are separated infinitely often, the stabilizer in $\Gamma$ of the shift-tail class of $w$ is cyclic.
+\end{lemma}
+
+\begin{proof}
+$G_w=\{(d,g)\in\mathbb Z\times\Gamma:w(n+d)=g\cdot w(n)\text{ for all large }n\}$ is a subgroup whose projection to $\mathbb Z$ is injective (if $(0,g)\in G_w$ and $g$ moves $i$, the labels $i$ and $g^{-1}i$ are not separated infinitely often). So $G_w$ is cyclic, and the stabilizer is its image in $\Gamma$.
+\end{proof}
+
+\begin{theorem}[Classification]\label{thm:classification}\src{R13; necessity R7}
+Let $\lambda$ be ultraexacting. An admissible rule $L:D_m(\lambda)\to F$ in $\OD_{V_\lambda}$ exists if and only if $\CF(\Gamma,F)$. For sufficiency ultraexactingness is not needed: for every uncountable $\lambda$ of cofinality $\omega$ the rule is definable from a well-order of $\Pow(\omega)$, a parameter in $V_{\omega+10}$; it is $\OD$ if the reals have an $\OD$ well-order, in particular if $V_\lambda\subseteq\HOD$.
+\end{theorem}
+
+\begin{proof}
+Necessity is Theorem~\ref{thm:label}. For sufficiency, the rule factors through shift-tail classes of words, which are coded by reals. In each $\Gamma$-orbit of classes take the class of the least coded word $v$; its stabilizer is cyclic (Lemma~\ref{lem:cyclic}), a generator fixes some label by $\CF$, and so the whole stabilizer fixes the least such label $f$; put $L(g\cdot v)=g\cdot f$.
+\end{proof}
+
+\begin{corollary}\label{cor:five}\src{R13}
+(a) At an ultraexacting $\lambda$ there is an $\OD_{V_\lambda}$ rule assigning to every unordered triple of classes \emph{either} a distinguished member \emph{or} a cyclic orientation, although no $\OD_{V_\lambda}$ rule always does the first and none always does the second; every such mixed rule uses each output type on at least $\lambda$ triples. (b) The five-element $S_3$-set of Section~\ref{sec:uex} is, up to isomorphism, the smallest $S_3$-set satisfying $\CF$ without a global fixed point. (c) A finite group admits a finite set with $\CF$ and no global fixed point iff it is not cyclic. (d) If strictly increasing maps $f$ satisfy $f``a_i=^*a_{\pi_f(i)}$ on one common tuple, the $\pi_f$ generate a cyclic group: several embeddings cannot realize a noncyclic relabelling group on one tuple, which is why the elementwise test cannot be upgraded to a whole-group test.
+\end{corollary}
+
+This settles the question left open in the first edition after Theorem~\ref{thm:label}, and shows that the obstruction of Section~\ref{sec:uex} is exactly the cyclic one.
+
+\subsection{Preserved-predicate versions}
+
+\begin{theorem}\label{thm:preserved}\src{R10--R13, R15--R18}
+(a) Let $e:(V_{\lambda+1},\in,T)\to(V_{\lambda+1},\in,T)$ be elementary with $\crit(e)<\lambda$ and $T\subseteq D_\lambda$. Then $|T\cap[a]|\in\{0,\lambda\}$ for the critical-sequence set $a$ and for each offset $a_t$, $t<\crit(e)$; so $T$ is not a thin complete section.
+(b) Let $N\models\ZF$ be a transitive inner model with $V_{\lambda+1}\subseteq N$ and $j:N\to N$ elementary with $\crit(j)<\lambda=\sup_nj^n(\crit j)$ and set-sized restrictions. If $\mathcal T\in N$, $j(\mathcal T)=\mathcal T$, $\mathcal T\subseteq\Pow(D_\lambda)$ and $|\mathcal T|^V<\lambda$, then $|T\cap q|^V\in\{0,\lambda\}$ for all $T\in\mathcal T$ and all $\lambda$ orbit classes $q$; likewise Theorem~\ref{thm:phase} holds for a fixed complete section, and no $f:Q_\lambda\to D_\lambda$ in $N$ is fixed. No Choice in $N$ is used, and all sizes are ambient.
+(c) Hence for a thin (or phase-proper) complete section $T$, or for the code $A_f$ of a map $f:Q_\lambda\to D_\lambda$, there is no elementary $j:L(V_{\lambda+1},T)\to L(V_{\lambda+1},T)$ with $\crit(j)<\lambda$ and $j(T)=T$.
+\end{theorem}
+
+\begin{proof}
+(a) The fibre is a subset, not an element, of $V_{\lambda+1}$; one applies $e$ to the elements $\bigcup(T\cap[a])$ \R{13} or $P_n(T\cap[a])$ \R{16} of $V_{\lambda+1}$, which are fixed and would be small. (b), (c) as in Theorems~\ref{thm:icarus} and~\ref{thm:rigid}, the orbits now being available because $V_{\lambda+1}\subseteq N$.
+\end{proof}
+
+These extend Theorem~\ref{thm:icarus} from finite families of selectors to thin sections. As there, they are forbidden \emph{information conditions}: no report shows that a canonical Icarus enrichment defines a thin section.
+
+\subsection{Periodic classes of one embedding}
+
+\begin{proposition}\label{prop:periodic}\src{R15}
+For $e:V_\lambda\to V_\lambda$ let $\bar e([a])=[e``a]$. A class is fixed by $\bar e^{\,r}$ iff it has a representative that is a finite nonempty union of forward $e^r$-orbits in $[\kappa,\lambda)$. There are exactly $\lambda$ classes of each least period $r\ge1$, hence exactly $\lambda$ periodic classes, out of $2^\lambda$; every periodic class lies in $X$, and Corollary~\ref{cor:rigid}(1),(2) holds at each of them for families fixed by $j$.
+\end{proposition}
+
+So a single witness cannot give more than $\lambda$ test classes; whether a definable complete section must have more than $\lambda$ full fibres is open.
+
 \section{Comparison of the reports}\label{sec:compare}
 
 \subsection{Agreement}
@@ -699,9 +965,31 @@ Citations&The $\UEx$/$\Izero$ equiconsistency is cited as ``Theorem~A'' (\R3, \R
 \end{longtable}
 \endgroup
 
+\subsection{The second round}
+
+The nine reports \R{10}--\R{18} were written independently from the first edition of this synthesis, and all nine prove Corollary~\ref{cor:sharpwidth}(2). No contradiction among them, or with the first round, was found. They differ as follows.
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.18}
+\begin{longtable}{@{}P{.2\textwidth}P{.75\textwidth}@{}}
+\toprule
+\textbf{Topic}&\textbf{Finding}\\\midrule\endfirsthead
+\toprule
+\textbf{Topic}&\textbf{Finding}\\\midrule\endhead
+Local lemma&Three equivalent devices turn a small fixed family into a small fixed set of ordinals: the union (\R{13}, \R{16}; only for families of countable sets), coordinate projections (\R{12}, \R{14}), and compression to the least order type (\R{10}, \R{11}, \R{18}; works for arbitrary short cofinal sets). Only the last gives Lemma~\ref{lem:fixedsmall}(b) in full.\\
+Fixing the definable object&\R{10}, \R{12}--\R{17} raise the critical point above the rank of the parameter (Input~\ref{in:abl}(ii)); \R{11}, \R{13} use the predicate form (Input~\ref{in:abl}(iii)); \R{18} minimizes the rank of the parameter, which needs neither and is uniform in the parameter. \R{17} achieves uniformity differently, through a fixed bijection $\lambda\to V_\lambda$.\\
+How many classes&One (\R{10}, \R{11}, \R{16}, \R{18}); $\kappa$ offsets per witness, hence $\lambda$ (\R{13}, \R{14}, \R{17}); $\lambda$ orbits of one witness (\R{12}, \R{15}). \R{15} shows $\lambda$ is the most one witness can give.\\
+Strength of the statement&Single section (\R{11}, \R{13}, \R{16}); small families of complete sections (\R{10}, \R{12} with a uniform bound, \R{14}, \R{17}); small families of partial sections (\R{15}); all $\OD_{V_\lambda}$ sets at once (\R{17}); definability from $q$ itself (\R{11} for single sets, \R{18} for families). Theorem~\ref{thm:rigid} and Corollary~\ref{cor:rigid} are the common upper bound. \R{12}'s Proposition on small clouds is the weakest form and is subsumed.\\
+Beyond cardinality&Only \R{12} analyses the inside of a full fibre (coordinates, phases). Only \R{13} treats finite labels, and it is the only second-round report that answers a question posed in the first edition. Only \R{14} returns to cover exactingness. Only \R{10} treats measures.\\
+$\Izero$ packages&Nine more, all corollaries of $\UEx(\lambda)\wedge V_\lambda\subseteq\HOD$; merged into Theorem~\ref{thm:i0}(6).\\
+Relation to the Lean development&The abstract theorem \nolinkurl{no_finite_valued_transversal} is the finite case of Lemma~\ref{lem:fixedsmall}(b); the second-round results are not yet formalized.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
 \subsection{Relative reliability}
 
-The group-A, B and E arguments are short and were re-derived during the merge without difficulty; the only external mathematics they use are Inputs~\ref{in:kunen}, \ref{in:hcd} and \ref{in:abl}(i). The group-C arguments are elementary once the two imported interfaces are granted; \R5 and \R7 include Python scripts that exhaustively check only the finite algebra (Lemma~\ref{lem:algebra}, Lemma~\ref{lem:perm}, the $S_3$ example) and are not evidence for the set-theoretic steps. Theorem~\ref{thm:i3} is the most delicate result: it is the only new forcing construction, it depends on the precise form of the ABGL well-founded-part localization (Input~\ref{in:iter}, Lemma~\ref{lem:local}), and it appears in a single report. Its two new lemmas (\ref{lem:internal}, \ref{lem:cloud}) were re-derived here and appear sound; the imported interface was not checked. It should be the first target of specialist review.
+The group-A, B and E arguments are short and were re-derived during the merge without difficulty; the only external mathematics they use are Inputs~\ref{in:kunen}, \ref{in:hcd} and \ref{in:abl}(i). The group-C arguments are elementary once the two imported interfaces are granted; \R5 and \R7 include Python scripts that exhaustively check only the finite algebra (Lemma~\ref{lem:algebra}, Lemma~\ref{lem:perm}, the $S_3$ example) and are not evidence for the set-theoretic steps. Theorem~\ref{thm:i3} is the most delicate result: it is the only new forcing construction, it depends on the precise form of the ABGL well-founded-part localization (Input~\ref{in:iter}, Lemma~\ref{lem:local}), and it appears in a single report. Its two new lemmas (\ref{lem:internal}, \ref{lem:cloud}) were re-derived here and appear sound; the imported interface was not checked. It should be the first target of specialist review. The second-round arguments are short and uniform: everything rests on Lemma~\ref{lem:fixedsmall}, Lemma~\ref{lem:orbits} and the canonical-counterexample device, all re-derived here. The two places that needed care are the choice of a height correct for the definability class \emph{before} the witness (and hence the fixed class) is chosen, which \R{17} and \R{18} treat explicitly, and the rank bookkeeping in Theorem~\ref{thm:preserved}(a). Lemma~\ref{lem:cyclic} is elementary and was checked in full. \R{12} and \R{13} include Python checks of finite combinatorics only.
 
 \section{What remains open}\label{sec:open}
 
@@ -718,7 +1006,11 @@ Can the $\Iwf$ upper bound for $\exists\lambda\,\CEx_\lambda(\lambda)$ be lowere
 \end{question}
 
 \begin{question}[\R5, \R7]
-Does ordinary exactingness already exclude an $\OD_{V_\lambda}$ binary selector on $Q_\lambda$? What is the least size of a nonempty $\OD_{V_\lambda}$ subfamily of $\Sel_{n,r}(Q_\lambda)$ at an ultraexacting $\lambda$; can it be countable? Does a canonical Icarus enrichment define a preserved selector? Can a modification-invariant equivariant $\OD$ rule exist for a finite $S_m$-set with elementwise but no global fixed points?
+Does ordinary exactingness already exclude an $\OD_{V_\lambda}$ binary selector on $Q_\lambda$? What is the least size of a nonempty $\OD_{V_\lambda}$ subfamily of $\Sel_{n,r}(Q_\lambda)$ at an ultraexacting $\lambda$; can it be countable? Does a canonical Icarus enrichment define a preserved selector, thin section, or map $Q_\lambda\to D_\lambda$ (Theorem~\ref{thm:preserved})? (The first edition also asked whether a modification-invariant equivariant rule can exist for a finite $S_m$-set with elementwise but no global fixed points; Theorem~\ref{thm:classification} answers yes.)
+\end{question}
+
+\begin{question}[\R{10}--\R{18}]
+(i) Does ordinary exactingness exclude an $\OD_{V_\lambda}$ thin complete section? The local lemma needs only exactingness; the missing step is a fixed class in the domain. (ii) Can the thin complete sections, the kernels, or the maps $Q_\lambda\to D_\lambda$ have a nonempty $\OD_{V_\lambda}$ subfamily of size exactly $\lambda$? (iii) Must an $\OD_{V_\lambda}$ complete section have more than $\lambda$ full fibres, perhaps $2^\lambda$? (iv) Is there an intrinsic combinatorial characterization of the rigid classes, and are there more than $\lambda$ of them, or more than one model $N_q$? (v) In Corollary~\ref{cor:statapps}(b), must $(\lambda^+)^{\HCD(\kappa)}$ be collapsed?
 \end{question}
 
 \begin{question}[\R3]
@@ -778,6 +1070,49 @@ HKP reconstruction audited as known&&\yes&\prt&&&\yes&\yes&&\\
 \end{longtable}
 \endgroup
 
+\subsection*{Second round}
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{@{}P{.47\textwidth}CCCCCCCCC@{}}
+\toprule
+\textbf{Result}&\R{10}&\R{11}&\R{12}&\R{13}&\R{14}&\R{15}&\R{16}&\R{17}&\R{18}\\\midrule\endfirsthead
+\toprule
+\textbf{Result}&\R{10}&\R{11}&\R{12}&\R{13}&\R{14}&\R{15}&\R{16}&\R{17}&\R{18}\\\midrule\endhead
+Lemma~\ref{lem:fixedsmall}(a) fixed small sets of ordinals&\yes&\yes&\yes&\yes&\yes&\yes&\yes&\yes&\yes\\
+Lemma~\ref{lem:fixedsmall}(b) for arbitrary short cofinal sets&\yes&\yes&&&&&&&\yes\\
+\quad for families in $D_\lambda$&\yes&\yes&\yes&\prt&\yes&\yes&\yes&\yes&\yes\\
+Theorem~\ref{thm:smallC} (exacting)&\yes&&&&\prt&&&\prt&\yes\\
+\quad minimal-rank-parameter device&&&&&&&&&\yes\\
+Theorem~\ref{thm:pinning} bounded separation&\yes&&&&\yes&&&\yes&\\
+Theorem~\ref{thm:laws}, Cor.~\ref{cor:kernel} laws and kernels&\yes&&&&&&&&\\
+Theorem~\ref{thm:successor}, Cor.~\ref{cor:succcc}, \ref{cor:statapps}&&&&&\yes&&&&\\
+Lemma~\ref{lem:orbits} roots and orbits&&&\yes&&&\yes&&&\\
+\quad offsets $\kappa_n+t$&&&&\yes&\yes&&&\yes&\\
+\quad critical-sequence class only&\yes&\yes&&&&&\yes&&\yes\\
+Theorem~\ref{thm:rigid} rigidity from $q$ as parameter&&\prt&&&&&&&\yes\\
+Cor.~\ref{cor:rigid}(1) for all $\OD_{V_\lambda}$ sets at once&&&&&&&&\yes&\yes\\
+Cor.~\ref{cor:rigid}(2) small families, partial sections&&&&&\prt&\yes&&\prt&\yes\\
+Cor.~\ref{cor:rigid}(4) the model $N_q$&&\yes&&&&&&&\prt\\
+Cor.~\ref{cor:sharpwidth}(2) no thin complete section&\yes&\yes&\yes&\yes&\yes&\yes&\yes&\yes&\yes\\
+\quad $\lambda$ full fibres&&&\yes&\yes&\yes&\yes&&\yes&\\
+\quad small families of thin sections&\yes&&\prt&\prt&\yes&\yes&\prt&\yes&\yes\\
+Remark~\ref{rem:sharpquot}(b) parameter-rank cutoff&&&&&&&&\yes&\\
+Remark~\ref{rem:sharpquot}(d),(e) recoverable classes, recodings&&\yes&&&&&&&\\
+Theorem~\ref{thm:phase}, Cor.~\ref{cor:phasecons} width and phase&&&\yes&&&&&&\\
+Cor.~\ref{cor:colour}(a) colourings&&&&&&\yes&\yes&\yes&\\
+Cor.~\ref{cor:colour}(b) coarser relations&&&&&\yes&&\yes&&\\
+Cor.~\ref{cor:colour}(c) homomorphisms&&&&&&&&&\yes\\
+Theorem~\ref{thm:conversion} cofinal-output rules&\yes&\yes&&&&&\yes&&\yes\\
+Lemma~\ref{lem:cyclic}, Theorem~\ref{thm:classification}, Cor.~\ref{cor:five}&&&&\yes&&&&&\\
+Theorem~\ref{thm:preserved}(a) $V_{\lambda+1}$ with predicate&&&&\yes&&&\yes&&\\
+Theorem~\ref{thm:preserved}(b),(c) inner models, Icarus&\yes&\yes&\yes&\prt&&\yes&\yes&\yes&\yes\\
+Proposition~\ref{prop:periodic} periodic classes; $|Q_\lambda|=2^\lambda$&&&&&&\yes&&&\\
+Theorem~\ref{thm:i0}(6) $\Izero$ package&\yes&\yes&\yes&\yes&\yes&\yes&\yes&\yes&\yes\\
+\bottomrule
+\end{longtable}
+\endgroup
+
 \section{Directory map}\label{app:map}
 
 \begin{center}
@@ -785,7 +1120,7 @@ HKP reconstruction audited as known&&\yes&\prt&&&\yes&\yes&&\\
 \renewcommand{\arraystretch}{1.12}
 \begin{tabularx}{\textwidth}{@{}lY@{}}
 \toprule
-\textbf{New}&\textbf{Original location under \nolinkurl{docs/research-reports/}}\\\midrule
+\textbf{New}&\textbf{Original location under \nolinkurl{docs/research-reports/} (folder, or archive : folder)}\\\midrule
 \nolinkurl{01/}&\nolinkurl{Large_Cardinals_Continuation (1)/Large_Cardinals_Continuation/}\\
 \nolinkurl{02/}&\nolinkurl{Large_Cardinals_Research_Followup/}\\
 \nolinkurl{03/}&\nolinkurl{Large_Cardinals_Research_Continuation/}\\
@@ -795,6 +1130,15 @@ HKP reconstruction audited as known&&\yes&\prt&&&\yes&\yes&&\\
 \nolinkurl{07/}&\nolinkurl{Large_Cardinals_Continuation/}\\
 \nolinkurl{08/}&\nolinkurl{Large_Cardinals_Continuation(1)/Large_Cardinals_Continuation/}\\
 \nolinkurl{09/}&\nolinkurl{Large_Cardinals_Research_Continuation(1)/Large_Cardinals_Research_Continuation/}\\
+\nolinkurl{10/}&\nolinkurl{Cardinals_Research_Continuation.zip} : \nolinkurl{Cardinals_Continuation/}\\
+\nolinkurl{11/}&\nolinkurl{Cardinals3_Research_Continuation.zip} : \nolinkurl{Cardinals3/}\\
+\nolinkurl{12/}&\nolinkurl{Large_Cardinals_Maximal_Width.zip} : \nolinkurl{Large_Cardinals_Maximal_Width/}\\
+\nolinkurl{13/}&\nolinkurl{Cardinals3_Continuation.zip} : \nolinkurl{Cardinals3_Continuation/}\\
+\nolinkurl{14/}&\nolinkurl{Cardinals_Continuation.zip} : \nolinkurl{Cardinals_Continuation/}\\
+\nolinkurl{15/}&\nolinkurl{Large_Cardinals_Orbit_Saturation.zip} : \nolinkurl{Orbit_Saturation_Report/}\\
+\nolinkurl{16/}&\nolinkurl{Cardinals_Continuation_Small_Fibres.zip} : \nolinkurl{Cardinals_Continuation_Small_Fibres/}\\
+\nolinkurl{17/}&\nolinkurl{Large_Cardinals_Thin_Sections.zip} : \nolinkurl{Large_Cardinals_Thin_Sections/}\\
+\nolinkurl{18/}&\nolinkurl{Cardinals3_Cofinal_Orbit_Rigidity.zip} : \nolinkurl{Cardinals3_Continuation/}\\
 \bottomrule
 \end{tabularx}
 \end{center}

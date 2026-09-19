@@ -1,0 +1,811 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=13pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Forest}{HTML}{30392C}
+\definecolor{Olive}{HTML}{687144}
+\definecolor{Muted}{HTML}{65685F}
+\definecolor{Sage}{HTML}{CBD0BC}
+\definecolor{Pale}{HTML}{F2F4EB}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\PassOptionsToPackage{obeyspaces}{url}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{pdftitle={Beyond finite choice: sharp width and randomized-selection obstructions},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Research continuation on exacting and ultraexacting cardinals},pdfkeywords={ultraexacting, exacting, I0, conditional inconsistency, definability, transversal, probability kernel}}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Forest}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Forest}}{\thesubsection}{.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Forest}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}LARGE CARDINALS AT THE INCONSISTENCY FRONTIER}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}CONTINUATION\quad 18 SEP 2026}
+\fancyfoot[L]{\small\color{Muted}Beyond finite choice}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}Beyond finite choice}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\tcbset{colback=Pale,colframe=Sage,colbacktitle=Sage,coltitle=Forest,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{question}[definition]{Question}
+\newtheorem{inputthm}{Input}
+\renewcommand{\theinputthm}{\Alph{inputthm}}
+\numberwithin{equation}{section}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\HOD}{\mathrm{HOD}}
+\newcommand{\HCD}{\mathrm{HCD}}
+\newcommand{\OD}{\mathrm{OD}}
+\newcommand{\Ex}{\operatorname{Ex}}
+\newcommand{\UEx}{\operatorname{UEx}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\crit}{\operatorname{crit}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\ot}{\operatorname{ot}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\Izero}{\mathrm{I0}}
+\newcommand{\D}{D_\lambda}
+\newcommand{\Q}{Q_\lambda}
+\newcommand{\C}{\mathcal C_\lambda}
+\newcommand{\FF}{\mathcal F}
+\newcommand{\NN}{\HOD_{V_\lambda}}
+\newcommand{\Sym}{\mathbin{\triangle}}
+\newcommand{\Med}{\operatorname{Med}}
+\newcommand{\qnt}{\operatorname{qnt}}
+\newcommand{\Thin}{\mathcal T_{<\lambda}}
+\newcommand{\Ker}{\mathcal K_\lambda}
+\newcommand{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:\nolinkurl{#1}}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\begin{document}
+\thispagestyle{empty}
+{\sffamily\bfseries\small\color{Olive}SET THEORY\quad /\quad RESEARCH CONTINUATION}
+\vspace{13pt}
+
+{\fontsize{28}{31}\selectfont\bfseries\color{Forest}Beyond finite choice:\\ sharp width and randomized\\selection obstructions\par}
+\vspace{10pt}
+{\fontsize{14}{18}\selectfont Small invariant families, tail-equivalence classes,\\ and conditional inconsistency at ultraexacting cardinals\par}
+\vspace{14pt}
+{\color{Muted}Prepared for Vladimir Reshetnikov\hfill 18 September 2026\par}
+\vspace{3pt}
+{\color{Sage}\hrule height .6pt}
+\vspace{12pt}
+
+\textbf{Abstract.} We continue the supplied research on exacting and ultraexacting cardinals. Let $D_\lambda$ consist of the cofinal subsets of $\lambda$ of order type $\omega$, and quotient it by finite symmetric difference. At an ultraexacting $\lambda$, every $\OD_{V_\lambda}$ complete section of this quotient has a fiber of size exactly $\lambda$, the largest possible fiber size. More strongly, no nonempty $\OD_{V_\lambda}$ family of fewer than $\lambda$ thin complete sections exists, even when its members are not individually definable and their fiber bounds vary. A second obstruction rules out such small definable families of countably additive probability kernels on the equivalence classes. Its key lemma extracts a cofinal sequence canonically from any probability law on increasing cofinal sequences. We also prove a bounded-separation characterization of regularity in $\HOD_{V_\lambda}$, and an obstruction to preserving a cofinal-output code in an Icarus enrichment. A package including these conclusions and a least exacting, ultraexacting cardinal is equiconsistent with $\Izero$, using the published ultraexacting/$\Izero$ calibration.
+
+\begin{assessment}{Main advance over the supplied synthesis}
+\textbf{Finite is replaced by $<\lambda$.} The complete-section obstruction is sharpened from finite fibers to all fibers smaller than $\lambda$. The endpoint is sharp: every full equivalence class has size $\lambda$.
+
+\textbf{Randomization does not repair definable selection.} Even a countably additive law on the coordinate-generated $\sigma$-algebra is enough to recover forbidden short cofinal information.
+
+\textbf{Small families, not just single definitions.} The arguments allow a definable family with nondefinable members; no member is selected by an unstated well-order.
+\end{assessment}
+
+\textbf{Status.} These are proposed, fully proved research extensions relative to the supplied reports, not a claim of priority in the literature. The main results are conditional inconsistency theorems for explicitly strengthened hypotheses. They do not refute bare exactingness, ultraexactingness, $\Izero$, or cover-exacting/strongly-compact coexistence. The proofs are conventional and have not been independently refereed or machine-checked.
+
+\newpage
+\tableofcontents
+\vspace{15pt}
+\begin{assessment}{Reading guide}
+The core argument is in Sections~\ref{sec:local}--\ref{sec:width}. Section~\ref{sec:prob} gives the randomized-selection application. Section~\ref{sec:pinning} is an independent exacting-cardinal consequence. Section~\ref{sec:icarus} isolates the enrichment obstruction, and Section~\ref{sec:consistency} gives the precise consistency calibration. The final audit separates proved conclusions from the questions left open.
+\end{assessment}
+
+\newpage
+\section{What is being extended}\label{sec:baseline}
+
+The archive \nolinkurl{Cardinals2.zip} contains the \emph{Unified Report} and the \emph{Synthesis} \cite{plan,synthesis}. We pursue the definable-choice track rather than repeat its high-completeness-core or ground-model arguments. In the Synthesis, Section~9 proves finite-family obstructions for selectors on finite subsets of a quotient and excludes finite-valued complete sections of that quotient. Its Section~8 treats small definable families of cofinal maps. The two mechanisms can be joined: a fixed quotient class supplies an invariant argument, and small cofinal information cannot survive evaluation at that argument.
+
+The additional ingredient is a small-family lemma that permits \emph{varying} order types below $\lambda$. At a singular cardinal, merely taking the union of fewer than $\lambda$ small sets need not produce a small set. Our proof does not make that mistake. It first uses the embedding to bound the set of order types uniformly. This is what makes the infinite-family extension work.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{@{}P{.27\textwidth}P{.29\textwidth}Y@{}}
+\toprule
+\textbf{Topic}&\textbf{Supplied result}&\textbf{Extension here}\\\midrule
+Complete sections&No definable finite-valued section&Some fiber has size $\lambda$; no small definable family of everywhere-thin sections\\
+Cofinal information&Small families of maps with a fixed short domain&Small invariant families of cofinal sets with varying short order types\\
+Randomized selection&Not treated&No small definable family of countably additive kernels, already on coordinate $\sigma$-algebras\\
+Rank-$\lambda+1$ families&Projection-width obstruction&Smallness is equivalent to uniformly bounded rank separation for definable families\\
+Icarus parameters&A preserved finite-selector code is forbidden&A preserved code for any map $Q_\lambda\to D_\lambda$ is forbidden\\
+Consistency&An $\Izero$-equiconsistent boundary package&The package can include all of the new obstructions without added strength\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The last row is a calibration, not a new improvement in the consistency strength of ultraexactingness. Likewise, the present paper does \emph{not} answer the Synthesis's question about a countable definable family of binary selectors on $[Q_\lambda]^2$. Selecting a quotient class and selecting short cofinal ordinal information are different operations; Section~\ref{sec:limits} explains the distinction.
+
+\section{Setting, definitions, and external inputs}\label{sec:setting}
+
+\subsection{Ambient cardinalities and definability}
+
+Except in the explicitly marked inner-model section, we work in $\ZFC$ and compute every cardinality in $V$. A set belongs to $\OD_{V_\lambda}$ when it is definable using finitely many ordinal parameters and finitely many parameters from $V_\lambda$. The latter can be combined into one parameter $p\in V_\lambda$, since $\lambda$ is a limit ordinal. We write $\OD_p$ for this fixed-parameter version. A definable set need not have definable members.
+
+Put $N=\NN$. This is the hereditary version of the same definability class. In particular, a set of ordinals in $\OD_{V_\lambda}$ belongs to $N$, and $V_\lambda\subseteq N$. The assertion that $\lambda$ is regular in $N$ means that $N$ has no cofinal map from an ordinal below $\lambda$ into $\lambda$.
+
+All embeddings used to prove the main results are set-sized maps between set structures. Their elementarity is therefore expressible using the ordinary satisfaction relation for a set structure. We choose rank heights sufficiently large for the sets, power sets, enumerations, and definitions used in a proof. No satisfaction predicate for the whole universe is used.
+
+\begin{definition}[Exacting and ultraexacting]\label{def:exacting}
+An uncountable cardinal $\lambda$ is \emph{exacting} if for every cardinal $\zeta>\lambda$ there are $X\prec V_\zeta$ and an elementary map $j:X\to V_\zeta$ such that
+\[
+ V_\lambda\cup\{\lambda\}\subseteq X,\qquad
+ j(\lambda)=\lambda,\qquad j\restr\lambda\ne\id.
+\]
+It is \emph{ultraexacting} if these witnesses can also satisfy $j\restr V_\lambda\in X$. The substructure $X$ is not assumed transitive.
+\end{definition}
+
+These are the definitions used in the supplied reports. We use the following published interfaces, with the versions and theorem numbers checked against the source texts.
+
+\begin{inputthm}[Local Kunen]\label{in:kunen}
+In $\ZFC$, a rank segment $V_{\mu+2}$ has no nontrivial elementary self-embedding. See Kunen and the treatment in Hamkins--Kirmayer--Perlmutter \cite{kunen,hkp}.
+\end{inputthm}
+
+\begin{inputthm}[High critical points]\label{in:high}
+For exacting or ultraexacting $\lambda$, the corresponding witnesses can have critical point above any prescribed $\alpha<\lambda$, at every sufficiently correct cardinal height above $\lambda$. This is the witness form of Aguilera--Bagaria--Goldberg--L\"ucke, Proposition~2.4 \cite{abgl}.
+\end{inputthm}
+
+\begin{inputthm}[Consistency and coding]\label{in:consistency}
+Over $\ZFC$, the existence of an ultraexacting cardinal is equiconsistent with $\Izero$. Moreover, an ultraexacting $\lambda$ can be preserved while forcing $V_\lambda\subseteq\HOD$, without changing $V_\lambda$. These are Theorem~A/4.5 and Proposition~3.9 of \cite{abgl}.
+\end{inputthm}
+
+The known regularity theorem for $\NN$ is due to Aguilera--Bagaria--L\"ucke, Theorem~2.10 \cite{abl}. We supply the short proof needed here in Corollary~\ref{cor:hodregular}. The external results in Input~\ref{in:consistency} are used only for the final calibration, not for the inconsistency arguments.
+
+\subsection{The quotient and short cofinal sets}
+
+For an uncountable cardinal $\lambda$ of cofinality $\omega$, define
+\begin{align}
+ \D&=\{a\subseteq\lambda:\ot(a)=\omega,\ \sup a=\lambda\},\label{eq:D}\\
+ \C&=\{a\subseteq\lambda:\sup a=\lambda,\ \ot(a)<\lambda\},\label{eq:C}\\
+ a=^*b&\quad\Longleftrightarrow\quad |a\Sym b|<\omega,
+ \qquad \Q=\D/{=^*}.\label{eq:Q}
+\end{align}
+For subsets of the cardinal $\lambda$, having order type below $\lambda$ is equivalent to having cardinality below $\lambda$. Thus $\C$ is precisely the collection of short cofinal subsets. Write $[a]$ for the class of $a\in\D$.
+
+\begin{lemma}[Exact class size]\label{lem:classsize}
+Every $q\in\Q$ has cardinality exactly $\lambda$.
+\end{lemma}
+\begin{proof}
+Choose $a\in q$. The map
+\[
+ [\lambda]^{<\omega}\longrightarrow q,\qquad s\longmapsto a\Sym s
+\]
+is a bijection. Every finite modification of $a$ is still cofinal, and it still has only finitely many elements below each fixed $\alpha<\lambda$; consequently its order type is $\omega$. Conversely, every member of $q$ is obtained by a unique finite symmetric difference. Finally, $|[\lambda]^{<\omega}|=\lambda$ for an infinite cardinal in $\ZFC$.
+\end{proof}
+
+A \emph{complete section} is a set $T\subseteq\D$ meeting every $q\in\Q$. We call it \emph{thin} if
+\begin{equation}\label{eq:thin}
+ 0<|T\cap q|<\lambda\qquad(q\in\Q).
+\end{equation}
+Let $\Thin$ be the set of thin complete sections. It is ordinal definable from $\lambda$ and nonempty by the Axiom of Choice. A one-point transversal is a special case. Definability, not ordinary existence in $V$, is the issue.
+
+\section{The local small-family obstruction}\label{sec:local}
+
+\subsection{Normalization and fixed ordinals}
+
+\begin{lemma}[Critical sequence]\label{lem:critical}
+Let $j:X\to V_\zeta$ be an exacting witness at the cardinal $\lambda$, at a sufficiently large height. Set $e=j\restr V_\lambda$, $\kappa=\crit(e)$, and $\kappa_n=e^n(\kappa)$. Then
+\[
+ \sup_{n<\omega}\kappa_n=\lambda,
+ \qquad j(\xi)>\xi\quad(\kappa\le\xi<\lambda).
+\]
+In particular, an ordinal below $\lambda$ is fixed exactly when it is below $\kappa$. Also, $\lambda$ is a limit of strongly inaccessible cardinals, so
+\begin{equation}\label{eq:rankbounds}
+ |V_\alpha|<\lambda\quad(\alpha<\lambda),\qquad |V_\lambda|=\lambda.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Because $V_\lambda$ is definable from $\lambda$, $V_\lambda\in X$ and $j(V_\lambda)=V_\lambda$. Relativizing formulas to this set shows that $e$ is elementary on all of $V_\lambda$. This uses $V_\lambda\subseteq X$, not transitivity of $X$.
+
+The sequence $\langle\kappa_n:n<\omega\rangle$ is strictly increasing. If its supremum were $\mu<\lambda$, the sequence would belong to $V_\lambda$, and elementarity would give $e(\mu)=\mu$. Since $\lambda$ is an infinite cardinal and $\mu<\lambda$, we have $\mu+2<\lambda$. Restriction would give a nontrivial elementary self-embedding of $V_{\mu+2}$, contrary to Input~\ref{in:kunen}. Thus the supremum is $\lambda$. If $\kappa_n\le\xi<\kappa_{n+1}$, then
+\[
+ j(\xi)=e(\xi)\ge e(\kappa_n)=\kappa_{n+1}>\xi.
+\]
+
+For completeness, the critical point is strongly inaccessible. The embedding fixes $V_\kappa$ pointwise, by induction on rank. A bijection from an ordinal $\eta<\kappa$ onto $\kappa$, or a cofinal map from such an $\eta$ into $\kappa$, would be sent to a map with the same pointwise values but with the required range, or cofinal range, in $e(\kappa)>\kappa$. This is impossible. Since $e(\omega)=\omega$, this proves that $\kappa$ is an uncountable regular cardinal. If $2^\eta\ge\kappa$ for some $\eta<\kappa$, choose a surjection $f:\Pow(\eta)\to\kappa$. It belongs to $V_\lambda$. Since $e$ fixes $\Pow(\eta)$ pointwise, $e(f)$ again has the same values as $f$ but is asserted to surject onto $e(\kappa)$, another contradiction. Hence $\kappa$ is strong limit. These properties are correctly computed in $V_\lambda$ at each ordinal below $\lambda$ relevant here, so elementarity makes every $\kappa_n$ strongly inaccessible in $V$.
+
+For any $\alpha<\lambda$, choose $n$ with $\alpha<\kappa_n$. Then $|V_\alpha|<\kappa_n<\lambda$. The union of the $\lambda$ many ranks below $\lambda$ has cardinality $\lambda$, giving \eqref{eq:rankbounds}.
+\end{proof}
+
+\begin{lemma}[Small fixed ordinal sets are bounded]\label{lem:fixedsmall}
+If $s\in X$, $s\subseteq\lambda$, $|s|<\lambda$, and $j(s)=s$, then $s\subseteq\kappa$ and $\sup s<\kappa$.
+\end{lemma}
+\begin{proof}
+Let $\tau=\ot(s)<\lambda$ and let $h:\tau\to s$ be its increasing enumeration. Both are uniquely definable from $s$, hence belong to $X$ and are fixed by $j$. Since $\tau<\lambda$ is fixed, Lemma~\ref{lem:critical} gives $\tau<\kappa$. For every $\xi<\tau$,
+\[
+ j(h(\xi))=j(h)(j(\xi))=h(\xi).
+\]
+Thus every member of $s$ is below $\kappa$. Its supremum is at most $\kappa$, is below $\lambda$, and is itself fixed because it is definable from $s$. It cannot equal the moved ordinal $\kappa$, so it is below $\kappa$. The empty set causes no exception.
+\end{proof}
+
+\begin{corollary}[No fixed short cofinal set]\label{cor:noshort}
+No $s\in X\cap\C$ satisfies $j(s)=s$.
+\end{corollary}
+
+\subsection{Varying short order types}
+
+\begin{theorem}[Small invariant families]\label{thm:localfamily}
+Let $j:X\to V_\zeta$ be as above. There is no $\FF\in X$ such that
+\[
+ j(\FF)=\FF,\qquad
+ \varnothing\ne\FF\subseteq\C,\qquad |\FF|<\lambda.
+\]
+The members of $\FF$ may have different order types, with no bound below $\lambda$ assumed in advance.
+\end{theorem}
+\begin{proof}
+Suppose such an $\FF$ exists. Form the set of order types
+\[
+ R=\{\ot(a):a\in\FF\}.
+\]
+This set is uniquely definable from $\FF$, so $R\in X$ and $j(R)=R$. We have $R\subseteq\lambda$ and $|R|\le|\FF|<\lambda$. By Lemma~\ref{lem:fixedsmall}, $\rho=\sup R<\kappa$. Put $\nu=\max(\omega,|\rho|)$. Every $a\in\FF$ has size at most $\nu<\lambda$. Consequently, using Choice in the ambient universe,
+\[
+ \left|\bigcup\FF\right|
+ \le |\FF|\cdot\nu
+ =\max(|\FF|,\nu)<\lambda.
+\]
+The union is cofinal in $\lambda$ because $\FF$ is nonempty, and it is fixed by $j$ because $\FF$ is fixed. It belongs to $X$ by definable closure. This contradicts Corollary~\ref{cor:noshort}.
+\end{proof}
+
+\begin{assessment}{The singular-cardinal step}
+The inequality $|\bigcup\FF|<\lambda$ is used only \emph{after} bounding the order types by $\rho<\kappa$. It is not inferred from $|\FF|<\lambda$ and $|a|<\lambda$ alone. A countable union of sets of increasing sizes cofinal in a singular $\lambda$ can have size $\lambda$.
+\end{assessment}
+
+\subsection{Definable witnesses without fixed ordinal parameters}
+
+\begin{lemma}[Canonical fixed witness]\label{lem:canonical}
+Let $\lambda$ be exacting, respectively ultraexacting, and let $p\in V_\lambda$. Suppose some $z\in\OD_p$ satisfies a fixed first-order property $\Phi(z,p,\lambda)$. Then there is such a witness $z_*$ and an exacting, respectively ultraexacting, witness $j:X\to V_\zeta$ with
+\[
+ z_*\in X,\qquad j(z_*)=z_*,\qquad j(p)=p.
+\]
+The height can be chosen large enough for any specified finite collection of correctness requirements used in the proof.
+\end{lemma}
+\begin{proof}
+Use the canonical, set-like definable well-order of $\OD_p$ and let $z_*$ be its least member satisfying $\Phi$. One construction orders codes for unique definitions over rank segments, consisting of a rank height, a formula number, and a finite ordinal tuple; satisfaction for each rank segment is a set relation. Minimizing a code gives a definable well-order of the coded objects. Thus $z_*$ is uniquely definable from $p$ and $\lambda$, without retaining the arbitrary ordinal parameters of the original witness.
+
+Reflect the finitely many formulas expressing this definition, its uniqueness, and the required properties to a sufficiently correct cardinal height $\zeta$ containing the relevant sets. By Input~\ref{in:high}, choose a witness at that height with critical point greater than $\rank(p)$. It fixes $p$ and $\lambda$. Since $X\prec V_\zeta$, the unique object satisfying the definition belongs to $X$; by elementarity its image is the same unique object. Hence $j(z_*)=z_*$.
+\end{proof}
+
+This argument does not assert that arbitrary ordinal parameters are fixed. It also does not choose a member of a definable family. When $z_*$ is a family, it is the whole family that is fixed.
+
+\begin{corollary}[Global small-family exclusion]\label{cor:globalfamily}
+If $\lambda$ is exacting, no nonempty $\FF\in\OD_{V_\lambda}$ with $\FF\subseteq\C$ has cardinality below $\lambda$.
+\end{corollary}
+\begin{proof}
+A counterexample can be made a fixed counterexample by Lemma~\ref{lem:canonical}. Theorem~\ref{thm:localfamily} then applies.
+\end{proof}
+
+\begin{corollary}[Known HOD regularity, with proof]\label{cor:hodregular}
+If $\lambda$ is exacting, then $\cf^V(\lambda)=\omega$ but $\lambda$ is regular in $\NN$.
+\end{corollary}
+\begin{proof}
+The first conclusion is Lemma~\ref{lem:critical}. If $N=\NN$ had a cofinal map $f:\eta\to\lambda$ with $\eta<\lambda$, its range $a$ would belong to $N$, hence to $\OD_{V_\lambda}$, and would have ambient cardinality below $\lambda$. Then $\{a\}$ would contradict Corollary~\ref{cor:globalfamily}. This recovers the theorem credited to \cite[Theorem~2.10]{abl}.
+\end{proof}
+
+\section{A fixed class and the no-conversion principle}\label{sec:conversion}
+
+\begin{lemma}[Internal tail class]\label{lem:fixedclass}
+Let $j:X\to V_\zeta$ be an ultraexacting witness, with $\zeta>\lambda+\omega$. Then some $q\in X\cap\Q$ satisfies $j(q)=q$.
+\end{lemma}
+\begin{proof}
+The map $e=j\restr V_\lambda$ belongs to $X$. Its critical sequence $c=\langle\kappa_n:n<\omega\rangle$ is uniquely definable from $e$, so $c\in X$. Let $a=\{\kappa_n:n<\omega\}$. Lemma~\ref{lem:critical} gives $a\in\D$, and $a\in X$. Since the enumeration has domain $\omega$, fixed pointwise by $j$,
+\[
+ j(c)(n)=j(c(n))=\kappa_{n+1},\qquad
+ j(a)=a\setminus\{\kappa_0\}.
+\]
+The sets $\D$, $\Q$, and the quotient operation are definable from $\lambda$ at this height. Hence $q=[a]\in X$ and
+\[
+ j(q)=[j(a)]=[a]=q.
+\]
+Only the ordinary finite iterates of the set map $e$ on its critical point are used. There is no iterability assumption about $j$.
+\end{proof}
+
+\begin{remark}[Rank ledger]\label{rem:rank}
+A cofinal $a\subseteq\lambda$ has rank $\lambda$; its equivalence class $[a]$ has rank $\lambda+1$, and $Q_\lambda$ has rank $\lambda+2$. Thus $[a]\notin V_{\lambda+1}$. The proof works in the larger elementary substructure $X$ and does not pretend that quotient classes are elements of the rank-$\lambda+1$ structure. The critical sequence is in $X$ because of the ultraexacting clause, not merely because each of its entries is in $X$.
+\end{remark}
+
+\begin{theorem}[No conversion to short cofinal information]\label{thm:conversion}
+Suppose $\lambda$ is ultraexacting. There is no nonempty family
+\[
+ \FF\in\OD_{V_\lambda},\qquad
+ \FF\subseteq{}^{\Q}\C,\qquad |\FF|<\lambda.
+\]
+More generally, the same conclusion holds for a definable class of rules $r$ equipped with a fixed first-order extraction operation $E(r,q)\in\C$ for every $q\in\Q$. The definition of the operation may use $\lambda$ and a fixed parameter $p\in V_\lambda$.
+\end{theorem}
+\begin{proof}
+First consider functions. If a counterexample exists, choose a parameter $p\in V_\lambda$ coding its low-rank parameters. Lemma~\ref{lem:canonical} supplies a counterexample $\FF_*\in X$ fixed by an ultraexacting witness that fixes $p$. Choose $q\in X\cap\Q$ fixed by that witness using Lemma~\ref{lem:fixedclass}. Then
+\[
+ A=\{f(q):f\in\FF_*\}
+\]
+is a member of $X$, is fixed by $j$, is nonempty, is contained in $\C$, and has cardinality at most $|\FF_*|<\lambda$. This contradicts Theorem~\ref{thm:localfamily}.
+
+For general rules, replace $f(q)$ by $E(r,q)$ in the displayed definition. Because the extraction formula and its parameters are fixed, elementarity again gives $j(A)=A$. No individual rule has to be fixed, and no enumeration of the family is used.
+\end{proof}
+
+\begin{corollary}\label{cor:Dconversion}
+At an ultraexacting $\lambda$, there is no $\OD_{V_\lambda}$ function $\Q\to\D$, and no nonempty $\OD_{V_\lambda}$ family of fewer than $\lambda$ such functions.
+\end{corollary}
+
+Even though a constant function $q\mapsto a_0$ exists for every $a_0\in\D$, it cannot have the permitted definability. The conclusion is stronger than saying that a function cannot choose a representative of its argument: its output need not belong to that equivalence class at all.
+
+\section{Sharp width for complete sections}\label{sec:width}
+
+\begin{theorem}[Thin sections, including small families]\label{thm:thin}
+If $\lambda$ is ultraexacting, there is no nonempty $\FF\in\OD_{V_\lambda}$ such that
+\[
+ \FF\subseteq\Thin\qquad\text{and}\qquad |\FF|<\lambda.
+\]
+Neither the members of $\FF$ nor their individual fibers are assumed definable. The cardinal bounds on the fibers may depend on both the section and the class.
+\end{theorem}
+\begin{proof}
+For a thin complete section $T$ and $q\in\Q$, define
+\[
+ E(T,q)=\bigcup(T\cap q).
+\]
+The fiber is nonempty, and each of its members is cofinal in $\lambda$. Hence $E(T,q)$ is cofinal. Every member of the fiber is countable, so
+\[
+ |E(T,q)|\le |T\cap q|\cdot\aleph_0<\lambda.
+\]
+Thus $E(T,q)\in\C$. The extraction is uniform and definable from $\lambda$. Theorem~\ref{thm:conversion} excludes the asserted family.
+\end{proof}
+
+\begin{corollary}[Sharp fiber-width theorem]\label{cor:sharp}
+Let $\lambda$ be ultraexacting and $T\in\OD_{V_\lambda}$ a complete section of $\Q$. Then
+\begin{equation}\label{eq:sharp}
+ \exists q\in\Q\quad |T\cap q|=\lambda.
+\end{equation}
+This bound is sharp: every fiber has size at most $\lambda$, and $T=\D$ is an ordinal-definable complete section whose fibers all have size $\lambda$.
+\end{corollary}
+\begin{proof}
+If every fiber had size below $\lambda$, then $T\in\Thin$ and $\{T\}$ would violate Theorem~\ref{thm:thin}. By Lemma~\ref{lem:classsize}, no fiber can have size greater than $\lambda$. The final assertion follows by taking the entire domain.
+\end{proof}
+
+\begin{corollary}[Explicit conditional inconsistency]\label{cor:thincons}
+The following theory is inconsistent:
+\[
+ \ZFC+\exists\lambda\,\exists T\,\Bigl[
+ \UEx(\lambda)\ \wedge\ T\in\OD_{V_\lambda}\ \wedge\ T\subseteq\D
+ \ \wedge\ \forall q\in\Q\ (0<|T\cap q|<\lambda)\Bigr].
+\]
+Replacing the single section by a nonempty definable family of fewer than $\lambda$ thin complete sections remains inconsistent.
+\end{corollary}
+
+\subsection{Two useful distinctions}
+
+First, the sharpness assertion concerns the \emph{fiber width}. The theorem also gives a lower bound $\lambda$ on the size of a nonempty definable family of thin sections, but it does not construct such a family of size exactly $\lambda$. Those are different spectra.
+
+Second, the local small-family threshold really does stop at $\lambda$. In the proof of Lemma~\ref{lem:fixedclass}, the fixed class $q$ itself is a fixed family of members of $\D\subseteq\C$ of size exactly $\lambda$. Thus one cannot strengthen Theorem~\ref{thm:localfamily} to exclude all fixed families of size at most $\lambda$.
+
+\begin{proposition}[Multivalued cofinal-output rules]\label{prop:multi}
+Suppose $\lambda$ is ultraexacting. There is no nonempty $\OD_{V_\lambda}$ family of size below $\lambda$ of rules $R$ satisfying
+\[
+ R(q)\in\Pow(\D)\setminus\{\varnothing\},\qquad |R(q)|<\lambda
+ \qquad(q\in\Q).
+\]
+No requirement $R(q)\subseteq q$ is needed.
+\end{proposition}
+\begin{proof}
+Use $E(R,q)=\bigcup R(q)$ and Theorem~\ref{thm:conversion}.
+\end{proof}
+
+The proof identifies precisely what has become inconsistent: a low-parameter definable rule, or small family of rules, converting each quotient class into nonempty short cofinal information. It is not the existence of representatives in the ambient universe.
+
+\section{Probability laws and randomized selection}\label{sec:prob}
+
+\subsection{The coordinate measurable space}
+
+For $a\in\D$, let $a(n)$ denote its $n$th element in increasing order. For a nonempty set $S\subseteq\D$, put
+\[
+ B_S(n,\alpha)=\{a\in S:a(n)<\alpha\}
+ \qquad(n<\omega,\ \alpha<\lambda).
+\]
+Let $\mathscr B(S)$ be the $\sigma$-algebra on $S$ generated by these sets. This construction is uniform and first-order definable. A \emph{coordinate probability law} on $S$ is a countably additive probability measure on $\mathscr B(S)$. Theorems below also apply to measures defined on larger $\sigma$-algebras, including the full power set, by restriction. No assumption about real-valued measurable cardinals is being made.
+
+\begin{lemma}[Cofinal quantile extraction]\label{lem:median}
+Suppose $\cf(\lambda)=\omega$, $\varnothing\ne S\subseteq\D$, and $m$ is a coordinate probability law on $S$. Define
+\begin{equation}\label{eq:median}
+ \qnt_m(n)=\min\{\alpha<\lambda:m(B_S(n,\alpha))>\tfrac12\}.
+\end{equation}
+This minimum exists for every $n$. The sequence $\langle\qnt_m(n):n<\omega\rangle$ is nondecreasing and cofinal in $\lambda$. In particular,
+\[
+ \Med(S,m)=\{\qnt_m(n):n<\omega\}\in\D.
+\]
+The set $\Med(S,m)$ is uniformly definable from $S$, $m$, and $\lambda$.
+\end{lemma}
+\begin{proof}
+Fix an increasing cofinal sequence $\langle\gamma_k:k<\omega\rangle$ in $\lambda$. For each $n$, the sets $B_S(n,\gamma_k)$ increase to $S$. Countable additivity gives continuity from below, hence
+\[
+ \lim_{k\to\infty}m(B_S(n,\gamma_k))=m(S)=1.
+\]
+At least one of these values is greater than $1/2$, proving existence in \eqref{eq:median}. The least such ordinal exists because ordinals are well-ordered; no choice of a sample point is involved.
+
+Since $a(n)\le a(n+1)$ for every $a\in S$,
+\[
+ B_S(n+1,\alpha)\subseteq B_S(n,\alpha).
+\]
+Therefore $\qnt_m(n)\le\qnt_m(n+1)$.
+
+Suppose the quantiles were bounded. Choose $\beta<\lambda$ strictly larger than all of them. Then the measurable sets $E_n=B_S(n,\beta)$ decrease with $n$, and every $m(E_n)>1/2$. On the other hand, their intersection is empty: an increasing cofinal sequence cannot have all of its entries below $\beta$. Continuity from above for a finite measure now yields
+\[
+ 0=m\left(\bigcap_{n<\omega}E_n\right)
+   =\lim_{n\to\infty}m(E_n)\ge\tfrac12,
+\]
+a contradiction. Thus the quantiles are cofinal. The distinct values of a nondecreasing cofinal $\omega$-sequence form a set of order type $\omega$, proving the final claim.
+
+Both continuity assertions follow directly from countable additivity: write an increasing union as the disjoint union of its successive differences, and obtain the decreasing case by taking complements in $S$. These are the only measure-theoretic facts used.
+\end{proof}
+
+\begin{remark}
+The cofinal sequence $\langle\gamma_k\rangle$ is used only to prove existence of the minima. It is not a parameter in their definition. Replacing $1/2$ by any fixed rational $t$ with $0<t<1$ gives the same conclusion.
+\end{remark}
+
+\subsection{An obstruction already at ordinary exacting cardinals}
+
+\begin{theorem}[No small definable family of cofinal-sequence laws]\label{thm:globallaws}
+Let $\lambda$ be exacting. There is no nonempty $\FF\in\OD_{V_\lambda}$ of coordinate probability laws on $\D$ with $|\FF|<\lambda$. In particular, no such single law belongs to $\OD_{V_\lambda}$.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:critical}, $\cf^V(\lambda)=\omega$. From a purported family form
+\[
+ A=\{\Med(\D,m):m\in\FF\}.
+\]
+It is nonempty, belongs to $\OD_{V_\lambda}$, is contained in $\D\subseteq\C$, and has cardinality below $\lambda$. This contradicts Corollary~\ref{cor:globalfamily}.
+\end{proof}
+
+This is a probabilistic consequence of the exacting cofinality obstruction, not an independent increase in large-cardinal strength. Its point is that a law, even with no named atom, canonically carries the forbidden ordinal information.
+
+\subsection{Kernels on tail-equivalence classes}
+
+\begin{definition}
+A \emph{coordinate probability kernel} on $\Q$ is a function $K$ with domain $\Q$ assigning to each $q$ a coordinate probability law $K(q)$ on $q$. No extra measurable structure on $\Q$ is required. Let $\Ker$ denote the set of these kernels.
+\end{definition}
+
+\begin{theorem}[No small definable family of randomized selections]\label{thm:kernels}
+If $\lambda$ is ultraexacting, there is no nonempty family
+\[
+ \FF\in\OD_{V_\lambda},\qquad
+ \FF\subseteq\Ker,\qquad |\FF|<\lambda.
+\]
+In particular, ultraexactingness is inconsistent with a single $\OD_{V_\lambda}$ countably additive probability kernel on the tail-equivalence classes.
+\end{theorem}
+\begin{proof}
+For $K\in\Ker$ and $q\in\Q$, set
+\[
+ E(K,q)=\Med(q,K(q)).
+\]
+By Lemma~\ref{lem:median}, this is a member of $\D\subseteq\C$. The extraction is uniform, including the construction of its measurable cylinders. Apply Theorem~\ref{thm:conversion}.
+\end{proof}
+
+An equivalent direct proof fixes a candidate family and the critical tail class $q$ inside an ultraexacting witness, and evaluates all of its kernels at $q$. Their median sets form a fixed short family of cofinal subsets, contradicting Theorem~\ref{thm:localfamily}. The proof never assumes $j(K)=K$ for each individual member of a fixed family.
+
+\begin{corollary}[Explicit randomized-choice incompatibility]\label{cor:kernelcons}
+The theory
+\[
+ \ZFC+\exists\lambda\,[\UEx(\lambda)\wedge
+          (\Ker\cap\OD_{V_\lambda}\ne\varnothing)]
+\]
+is inconsistent. The stronger small-family formulation in Theorem~\ref{thm:kernels} is inconsistent as well.
+\end{corollary}
+
+\subsection{Controls: Choice and finite additivity}
+
+\begin{proposition}[Ordinary existence is not excluded]\label{prop:dirac}
+For every $\lambda$ of cofinality $\omega$, Choice supplies a thin complete section and a coordinate probability kernel on $\Q$.
+\end{proposition}
+\begin{proof}
+Choose $a_q\in q$ for every $q\in\Q$. Then $T=\{a_q:q\in\Q\}$ is a one-point transversal, and
+\[
+ K(q)(A)=\begin{cases}1,&a_q\in A,\\0,&a_q\notin A\end{cases}
+\]
+is a countably additive Dirac probability measure, even on $\Pow(q)$. The theorems show that these objects cannot be defined with the restricted parameters at an ultraexacting $\lambda$.
+\end{proof}
+
+\begin{proposition}[Why countable additivity matters]\label{prop:finiteadd}
+The quantile-extraction lemma fails for finitely additive probabilities.
+\end{proposition}
+\begin{proof}
+Choose $a=\{\gamma_n:n<\omega\}\in\D$, increasingly enumerated, and a nonprincipal ultrafilter $U$ on $\omega$. Let $a_k=\{\gamma_n:n\ge k\}$ and $q=[a]$. Define, for every $A\subseteq q$,
+\[
+ m(A)=1\ \Longleftrightarrow\ \{k:a_k\in A\}\in U,
+ \qquad m(A)=0\text{ otherwise}.
+\]
+This is a finitely additive probability measure. For every fixed $n$ and $\alpha<\lambda$, only finitely many $k$ satisfy $a_k(n)=\gamma_{k+n}<\alpha$. Therefore
+\[
+ m(B_q(n,\alpha))=0
+ \quad\text{for all }\alpha<\lambda,
+\]
+so no quantile in \eqref{eq:median} exists. Each singleton $\{a_k\}$ has measure zero but the countable set $\{a_k:k<\omega\}$ has measure one, displaying the failure of countable additivity.
+\end{proof}
+
+This control does not construct a definable global finitely additive kernel. It only shows that the proved extraction mechanism cannot discard its countable-additivity hypothesis.
+
+\section{Small definable families are separated at bounded rank}\label{sec:pinning}
+
+This section gives a second extension, using ordinary exactingness only. It concerns sets whose members are subsets of $V_\lambda$, rather than higher-rank selectors or kernels.
+
+\begin{theorem}[Bounded-separation characterization]\label{thm:pinning}
+Let $\lambda$ be an uncountable cardinal such that $|V_\alpha|<\lambda$ for every $\alpha<\lambda$, and put $N=\NN$. The following are equivalent.
+\begin{enumerate}
+\item $\lambda$ is regular in $N$.
+\item Every $A\in\OD_{V_\lambda}$ with $A\subseteq V_{\lambda+1}$ and $|A|<\lambda$ admits an $\alpha<\lambda$ such that
+\[
+ x\longmapsto x\cap V_\alpha
+ \quad\text{is injective on }A.
+\]
+\end{enumerate}
+When these conditions hold, such an $A$ belongs to $N$, every member of $A$ belongs to $N$, and $N$ contains an injection of $A$ into some ordinal below $\lambda$.
+\end{theorem}
+\begin{proof}
+Assume (1). For distinct $x,y\in A$, define
+\[
+ d(x,y)=\min\{\alpha<\lambda:x\cap V_\alpha\ne y\cap V_\alpha\}.
+\]
+This exists because $x$ and $y$ are subsets of $V_\lambda$. Set
+\[
+ R_A=\{d(x,y):x,y\in A,\ x\ne y\}.
+\]
+It is an $\OD_{V_\lambda}$ set of ordinals, hence is in $N$. Its ambient size is at most $|A|^2<\lambda$ (with the finite cases immediate).
+
+An unbounded subset $R\subseteq\lambda$ belonging to $N$ must have order type $\lambda$: its increasing enumeration belongs to $N$, so a smaller order type would contradict regularity there. Its ambient cardinality would consequently be $\lambda$. Applied to $R_A$, this shows that $R_A$ is bounded. Choose $\alpha<\lambda$ greater than all of its members. Restriction to $V_\alpha$ is then injective on $A$.
+
+For each $x\in A$, put $u=x\cap V_\alpha$. The parameter $u$ belongs to $V_\lambda$, and $x$ is the unique member of $A$ with this restriction. Since $A\in\OD_{V_\lambda}$, it follows that $x\in\OD_{V_\lambda}$. All elements in the transitive closure below $x$ are in $V_\lambda$, and therefore are also permitted low-rank parameters. Hence $x\in N$. The same hereditary check, using the definability of $A$, gives $A\in N$.
+
+The restriction graph belongs to $N$ as well. Its codomain $\Pow(V_\alpha)$ has ambient size below $\lambda$, since $\Pow(V_\alpha)=V_{\alpha+1}$ and $\alpha+1<\lambda$. Choose an ambient bijection from some ordinal $\nu<\lambda$ onto that codomain. Its rank is below $\lambda$, so it belongs to $V_\lambda\subseteq N$. Composing the restriction map with its inverse gives the asserted injection in $N$.
+
+Conversely, suppose $\lambda$ is singular in $N$. Let $b\in N$ be a cofinal subset of $\lambda$ of ambient cardinality below $\lambda$, obtained as the range of a short cofinal map in $N$. Define
+\[
+ A=\{b\cap\beta:\beta\in b\}.
+\]
+Then $A\in\OD_{V_\lambda}$, $A\subseteq V_{\lambda+1}$, and $|A|\le|b|<\lambda$. For any $\alpha<\lambda$, choose $\beta_0<\beta_1$ in $b$ above $\alpha$. The distinct members $b\cap\beta_0$ and $b\cap\beta_1$ have the same intersection with $V_\alpha$, namely $b\cap\alpha$. Thus no bounded rank separates $A$, contradicting (2).
+\end{proof}
+
+\begin{corollary}[Exacting specialization]\label{cor:pinningex}
+If $\lambda$ is exacting and $A\in\OD_{V_\lambda}$ is a subset of $V_{\lambda+1}$, then
+\[
+ |A|<\lambda
+ \quad\Longleftrightarrow\quad
+ \exists\alpha<\lambda\ 
+ (x\mapsto x\cap V_\alpha\text{ is injective on }A).
+\]
+In this case $A\in\NN$, and its smallness is witnessed in $\NN$.
+\end{corollary}
+\begin{proof}
+Use Lemma~\ref{lem:critical}, Corollary~\ref{cor:hodregular}, and Theorem~\ref{thm:pinning} for the forward implication. Conversely, an injective restriction maps $A$ into $\Pow(V_\alpha)=V_{\alpha+1}$, whose ambient cardinality is below $\lambda$.
+\end{proof}
+
+The threshold is sharp for bounded separation: the definable family $A=\lambda$ of all ordinals below $\lambda$ has size $\lambda$, and for each $\alpha<\lambda$ all larger ordinals have the same restriction to $V_\alpha$, namely $\alpha$.
+
+\begin{remark}[Why this does not settle small families of selectors]
+The restriction argument requires members of $A$ to be subsets of $V_\lambda$, hence elements of $V_{\lambda+1}$. A selector on finite subsets of $Q_\lambda$ has substantially higher rank. Even a flat code for its graph is generally a \emph{subset of} $V_{\lambda+1}$, not an \emph{element of} $V_{\lambda+1}$. Moving up that extra rank would be an additional theorem, not a notational simplification.
+\end{remark}
+
+\section{A forbidden cofinal-output enrichment}\label{sec:icarus}
+
+The following argument isolates a conditional inconsistency for an Icarus-style enrichment. Here $M$ is a transitive inner model of $\ZF$ in an ambient $\ZFC$ universe, and an elementary $j:M\to M$ may be external. We explicitly assume that its critical sequence is an ambient set with supremum $\lambda$. No claim that $j$ belongs to $M$ is made.
+
+\begin{theorem}[No preserved cofinal-output map]\label{thm:inner}
+Suppose $V_{\lambda+1}\subseteq M$, $j:M\to M$ is elementary, $\crit(j)<\lambda$, $j(\lambda)=\lambda$, and
+\[
+ \lambda=\sup_{n<\omega}j^n(\crit(j)).
+\]
+There is no $f\in M$ such that $f:Q_\lambda\to D_\lambda$ and $j(f)=f$.
+\end{theorem}
+\begin{proof}
+The critical sequence, as a graph on $\omega$ with ordinal values below $\lambda$, has rank $\lambda$ and belongs to $V_{\lambda+1}\subseteq M$. Its range $a$ is therefore in $M$. The model has all subsets of $\lambda$, and the increasing enumeration of every member of $D_\lambda$ is also coded in $V_{\lambda+1}$. Thus $D_\lambda$ and its finite-difference equivalence relation are computed correctly in $M$, and so are its classes and quotient.
+
+As in Lemma~\ref{lem:fixedclass}, $q=[a]\in M$ and $j(q)=q$. Hence $b=f(q)$ would satisfy $j(b)=b$. Its increasing enumeration $h:\omega\to b$ belongs to $M$ and is uniquely definable from $b$, so $j(h)=h$. Every value $h(n)$ is then a fixed ordinal below $\lambda$. But all ordinals in $[\crit(j),\lambda)$ are moved: the interval argument with the cofinal critical sequence is the same as in Lemma~\ref{lem:critical}. This contradicts cofinality of $b$.
+\end{proof}
+
+\subsection{Coding below the next power-set level}
+
+For $a\in D_\lambda$ and $\beta<\lambda$, use the flat code
+\[
+ \operatorname{code}(a,\beta)
+ =\{\langle0,\xi\rangle:\xi\in a\}\cup\{\langle1,\beta\rangle\}.
+\]
+Every ordered pair here lies in $V_\lambda$, so the code is a subset of $V_\lambda$, hence an element of $V_{\lambda+1}$. It uniformly recovers $a$ and $\beta$. For a function $f:Q_\lambda\to D_\lambda$, define
+\begin{equation}\label{eq:code}
+ A_f=\{\operatorname{code}(a,\beta):a\in D_\lambda,\ \beta\in f([a])\}
+ \subseteq V_{\lambda+1}.
+\end{equation}
+
+\begin{corollary}[Cofinal-output-coded Icarus obstruction]\label{cor:icarus}
+For every $f:Q_\lambda\to D_\lambda$, there is no elementary map
+\[
+ j:L(V_{\lambda+1},A_f)\longrightarrow L(V_{\lambda+1},A_f)
+\]
+with $\crit(j)<\lambda$, $j(\lambda)=\lambda$, $\lambda$ equal to the supremum of its critical sequence, and $j(A_f)=A_f$.
+\end{corollary}
+\begin{proof}
+Inside $M=L(V_{\lambda+1},A_f)$, the code reconstructs, for each $a\in D_\lambda$, the set of $\beta$ satisfying \eqref{eq:code}. The reconstructed value depends only on $[a]$. Separation and Replacement reconstruct the function $f$ itself. This uses no choice in $M$. Since the decoding is uniform from $A_f$ and $\lambda$, preservation of those parameters gives $j(f)=f$. Theorem~\ref{thm:inner} applies.
+\end{proof}
+
+A probability kernel $K$ yields such a code by putting $f(q)=\Med(q,K(q))$. Thus preservation of just its \emph{median-output information} is already forbidden; preservation of the full measure-valued function is unnecessary. Conversely, this does not rule out an embedding of the unexpanded pure membership model that moves $A_f$. The fixed-parameter clause is indispensable.
+
+This is an information obstruction, not a refutation of an unspecified canonical sharp or premouse enrichment. To apply it to one of those hypotheses, one must still prove that the proposed enrichment defines and preserves a map of the displayed kind.
+
+\section{An exactly calibrated consistency package}\label{sec:consistency}
+
+Let $\mathsf{B}(\lambda)$ be the conjunction of the following assertions, all evaluated in the ambient universe:
+\begin{enumerate}
+\item $\lambda$ is ultraexacting, $V_\lambda\subseteq\HOD$, and no exacting cardinal is below $\lambda$.
+\item Every $\OD_{V_\lambda}$ complete section $T\subseteq D_\lambda$ has a fiber of size $\lambda$.
+\item Neither $\Thin$ nor $\Ker$ has a nonempty $\OD_{V_\lambda}$ subfamily of size below $\lambda$; the same exclusion holds for ${}^{Q_\lambda}\mathcal C_\lambda$.
+\item The bounded-separation conclusion of Corollary~\ref{cor:pinningex} holds for every $\OD_{V_\lambda}$ family $A\subseteq V_{\lambda+1}$.
+\end{enumerate}
+These statements are first-order set-theoretic assertions: ordinal definability is expressed by codes for definitions over set ranks, and the rules, measures, and families in question are sets.
+
+\begin{theorem}[Boundary-package equiconsistency]\label{thm:equiconsistency}
+The theories
+\[
+ \ZFC+\Izero
+ \qquad\text{and}\qquad
+ \ZFC+\exists\lambda\,\mathsf B(\lambda)
+\]
+are equiconsistent.
+\end{theorem}
+\begin{proof}
+Assume $\Con(\ZFC+\Izero)$. By Input~\ref{in:consistency}, the theory with an ultraexacting cardinal is consistent. Apply the coding forcing from the same input. In the resulting model, $\lambda$ remains ultraexacting and $V_\lambda\subseteq\HOD$.
+
+There is no exacting $\mu<\lambda$ in that model. Indeed, if such a $\mu$ existed, its countable cofinal sequence would have rank below $\lambda$ and would therefore belong to $V_\lambda\subseteq\HOD$. This would make $\mu$ singular in $\HOD_{V_\mu}$, contradicting Corollary~\ref{cor:hodregular}. Thus clause (1) holds. Clauses (2)--(4) follow respectively from Corollary~\ref{cor:sharp}, Theorems~\ref{thm:thin}, \ref{thm:kernels}, \ref{thm:conversion}, and Corollary~\ref{cor:pinningex}, all applied in the extension. Hence $\Con(\ZFC+\exists\lambda\,\mathsf B(\lambda))$.
+
+Conversely, a model of the boundary package has an ultraexacting cardinal. The other direction of the published equiconsistency in Input~\ref{in:consistency} gives $\Con(\ZFC+\Izero)$.
+
+This is the usual formal relative-consistency argument using the forcing theorem and the cited consistency reductions. It does not infer the existence of a transitive model from an arithmetical consistency statement, nor does it claim that an arbitrary model with an ultraexacting cardinal itself satisfies $\Izero$.
+\end{proof}
+
+\begin{assessment}{What the calibration establishes}
+The new obstructions are compatible with ultraexacting existence at exactly its known $\Izero$ consistency strength. The extra clauses do not increase that strength. The new contribution is the explicit conditional inconsistency and sharp-width content, not a newly lowered upper bound for $\Izero$ or cover exactingness.
+\end{assessment}
+
+\subsection{A bounded-versus-cofinal contrast}
+
+In a model of $\mathsf B(\lambda)$, the quotient of \emph{bounded} countable subsets of $\lambda$ by finite difference has an ordinal-definable one-point transversal and a corresponding ordinal-definable full-power-set Dirac kernel. To see this, let $D^{\mathrm{bd}}$ be the bounded countable subsets. Each member has rank below $\lambda$ and hence belongs to $\HOD$. The set $D^{\mathrm{bd}}$ is itself ordinal definable, so it belongs hereditarily to $\HOD$. Its quotient and a well-order of the quotient's members can therefore be formed in $\HOD$. Choosing the least representative in each class produces the required transversal. In contrast, Corollary~\ref{cor:sharp} and Theorem~\ref{thm:kernels} apply to cofinal classes. The distinction is the location of the critical tail sequence, not the bare use of a quotient.
+
+\clearpage
+\section{Proof audit and remaining boundaries}\label{sec:limits}
+
+\subsection{Dependency ledger}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.19}
+\begin{tabularx}{\textwidth}{@{}P{.31\textwidth}Y@{}}
+\toprule
+\textbf{Conclusion}&\textbf{Essential dependencies}\\\midrule
+Local small-family theorem&Local Kunen; elementary definable closure; ambient cardinal arithmetic; uniform bound on order types\\
+Definable no-conversion theorem&Local theorem; high-critical-point canonicalization; internal critical sequence from ultraexactingness\\
+Sharp complete-section width&No-conversion theorem; union of one small fiber; exact class size $\lambda$\\
+Probability-kernel obstruction&No-conversion theorem; elementary quantile extraction; countable additivity\\
+Bounded-separation characterization&Regularity in $\HOD_{V_\lambda}$; first-difference ranks; $|V_\alpha|<\lambda$\\
+Cofinal-output Icarus obstruction&Full $V_{\lambda+1}$ in the inner model; fixed code; cofinal critical sequence\\
+$\Izero$ calibration&Published equiconsistency and coding forcing; the preceding theorems\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+No theorem here uses the Synthesis's more delicate proposed $\mathrm{I3}_{\mathrm{wf}}(0)$ cover-exacting construction, its $\HCD$ promotion principles, or a stationarity-transfer assumption. The imported source claims needed for the selected track were checked directly in the primary texts. That check is not an independent verification of the entire archived research programme.
+
+\subsection{Specific error traps avoided}
+
+\textbf{A fixed family is not pointwise fixed.} We form the definable set of outputs of the whole family, and then use its invariance. We never select a supposedly definable member.
+
+\textbf{An elementary substructure is not transitive.} The increasing enumerations have domains below the critical point, or equal to $\omega$, which are contained in $X$. Evaluation is justified from those domain elements. Definable constructions are first made as objects of the ambient rank and then lie in $X$ by elementarity.
+
+\textbf{Shortness is ambient.} In the small-family theorem, each order type is genuinely below the ambient cardinal $\lambda$. The argument does not substitute an inner model's cardinal arithmetic for this hypothesis.
+
+\textbf{A small union at a singular cardinal needs a bound.} The set of order types is fixed and small, hence bounded below the critical point. This precedes, rather than follows from, the small-union estimate.
+
+\textbf{Probability laws need countable additivity.} The quantile minima can fail to exist for finitely additive laws, as shown explicitly in Proposition~\ref{prop:finiteadd}.
+
+\textbf{The extra rank is real.} A quotient class has rank $\lambda+1$. A code that is a subset of $V_{\lambda+1}$ is not thereby an element of $V_{\lambda+1}$. The bounded-separation theorem is not applied to such higher-rank codes.
+
+\textbf{The fixed-code condition is explicit.} An enrichment parameter may be moved by a pure-membership embedding. The Icarus corollary forbids the stated fixed-code theory, not every theory with that constructible domain.
+
+\subsection{Questions not answered by the proofs}
+
+\begin{question}[Binary selectors]
+Can a nonempty countable $\OD_{V_\lambda}$ family of binary selectors on $[Q_\lambda]^2$ exist at an ultraexacting $\lambda$?
+\end{question}
+The present no-conversion theorem does not answer this inherited question. A binary selector outputs a quotient class, not an actual short cofinal subset of $\lambda$. Taking the union of all representatives in the selected class gives a set of size $\lambda$, not a member of $\mathcal C_\lambda$. An additional extraction argument would be needed.
+
+\begin{question}[Ordinary exactingness]
+Does ordinary exactingness alone exclude a definable thin complete section or a probability kernel on $Q_\lambda$?
+\end{question}
+The global-law obstruction in Theorem~\ref{thm:globallaws} needs only exactingness, but the classwise argument uses an internally available critical sequence. A bare exacting witness does not provide it. No removal of that hypothesis is claimed.
+
+\begin{question}[Endpoint family spectra]
+At an ultraexacting $\lambda$, can $\Thin$, $\Ker$, or ${}^{Q_\lambda}D_\lambda$ have a nonempty $\OD_{V_\lambda}$ subfamily of size exactly $\lambda$?
+\end{question}
+The lower bounds proved here do not determine these endpoint spectra. They should not be confused with the completely determined fiber-width endpoint in Corollary~\ref{cor:sharp}.
+
+The original cover-exacting/strongly-compact problem and the general cardinal-preserving-embedding problem also remain outside the new conclusions. Nothing in a no-conversion proof supplies the missing ultrafilter-code promotion or stationary-set preservation required by those tracks.
+
+\section{Conclusion}
+
+The main strengthening is an optimal obstruction to definable thinning of tail-equivalence classes: an ultraexacting cardinal forces some fiber of every admissibly definable complete section to retain all $\lambda$ available representatives in cardinality. The same local argument excludes small definable families of thin sections, and the cofinal-quantile lemma extends the obstruction to genuine countably additive randomized selection. The proofs isolate a common mechanism: the quotient supplies a fixed class, whereas any short cofinal ordinal output, even inside a small invariant family, is impossible.
+
+The results therefore provide new conditional inconsistency statements with detailed hypotheses and a positive consistency calibration. Their scope is deliberately exact: they strengthen the supplied finite-choice boundary without converting that boundary into an unsupported refutation of a standard large-cardinal axiom.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{99}
+\small
+\setlength{\itemsep}{6pt}
+
+\bibitem{plan}
+\emph{Large cardinals at the inconsistency frontier: a unified assessment of ZFC-compatible hypotheses, their obstructions, and the evidence on both sides}.
+User-supplied research report, 18 September 2026.
+\nolinkurl{Large_Cardinals_Unified_Report.tex} in \nolinkurl{Cardinals2.zip}.
+
+\bibitem{synthesis}
+\emph{Large cardinals at the inconsistency frontier: a synthesis. Deduplicated results of the nine continuation reports on cover-exacting, exacting, and ultraexacting cardinals}.
+User-supplied research synthesis, 18 September 2026.
+\nolinkurl{Large_Cardinals_Synthesis.tex} in \nolinkurl{Cardinals2.zip}.
+Relevant baseline: Sections 3, 8, 9, 10.2, and 13.
+
+\bibitem{kunen}
+K.~Kunen. Elementary embeddings and infinitary combinatorics.
+\emph{Journal of Symbolic Logic} \textbf{36}(3) (1971), 407--413.
+\doi{10.2307/2269948}.
+
+\bibitem{hkp}
+J.~D.~Hamkins, G.~Kirmayer, and N.~L.~Perlmutter.
+Generalizations of the Kunen inconsistency.
+\emph{Annals of Pure and Applied Logic} \textbf{163} (2012), 1872--1890.
+\arxiv{1106.1951}.
+
+\bibitem{abl}
+J.~P.~Aguilera, J.~Bagaria, and P.~L\"ucke.
+\emph{Large cardinals, structural reflection, and the HOD Conjecture}.
+\arxiv{2411.11568v4}, 2025.
+Theorem~2.10 is the regularity theorem used and reproved here.
+
+\bibitem{abgl}
+J.~P.~Aguilera, J.~Bagaria, G.~Goldberg, and P.~L\"ucke.
+\emph{Large cardinals beyond HOD}.
+\arxiv{2509.10254v1}, 2025.
+Proposition~2.4; Theorem~A/4.5; Proposition~3.9; Corollary~3.10.
+
+\bibitem{cover}
+G.~Goldberg, reporting joint work with D.~Blue.
+\emph{Consistency beyond the Kunen inconsistency}.
+Lecture notes, Warsaw Inner Model Theory Meeting, 1 July 2026.
+\url{https://math.berkeley.edu/~goldberg/Slides/CoverExact.pdf}.
+Remark~2.4 provides the finite-difference critical-sequence background discussed in the supplied synthesis; no cover-exacting theorem from these notes is needed for the new proofs.
+
+\end{thebibliography}
+\end{document}
