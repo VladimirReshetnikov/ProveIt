@@ -16,6 +16,7 @@ import Cardinals.Virtual.Core
 import Cardinals.Virtual.Extras
 import Cardinals.Virtual.Restriction
 import Cardinals.Virtual.Regularity
+import Cardinals.Virtual.Constructible
 import Cardinals.ObservationOne
 import Cardinals.CoverBound
 import Cardinals.Published

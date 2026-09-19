@@ -35,6 +35,7 @@ Observation 1(2)) and `le_of_CEx`.  Their only admitted ingredient is `critSeq_c
 | | `HCD_isInnerModelZF`, `HCD_isInnerModelZFC`, `HCD_cover`, `HCD_stabilizes` | Goldberg, arXiv:2103.13961v2, Prop. 4.2, Thm 4.3, Thm 4.13, Thm 4.14 |
 | `Above.lean` | `HCD_isGround` | Goldberg, arXiv:2103.13961v2, Thm 4.9 |
 | | `cc_preserves_regular` | Kunen 1980, Ch. VII Lemma 6.9; Jech Ch. 15 |
+| `Virtual/Constructible.lean` | `lExacting_absolute` | Jech Thm 25.20 (Shoenfield absoluteness), applied to the `Σ¹₂` statement "some countable ordinal is L-exacting" |
 | `Virtual/Restriction.lean` | `exists_vonNeumann_formula` | Jech Ch. 6 and Ch. 12 (the cumulative hierarchy is definable and absolute for transitive models of ZF); Kunen 1980, Ch. IV §3 |
 | `Virtual/Extras.lean` | `kunen_in_model` | Kunen 1971; Kanamori Cor. 23.14, applied inside a transitive model of ZFC |
 | `Sandwich.lean` | `amenable_dichotomy` | Goldberg, *Strongly compact cardinals and ordinal definability*, JML 24(1) 2024, arXiv:2107.00513v1, Lemma 2.7 (with §2.2) |
@@ -97,6 +98,9 @@ Theorem 3.6 is *not* admitted: it is re-derived as `no_CEx_above_extendible`.
 | Research note, Theorem 6.1(3) and Prop. 7.1 (cores) | `TWitness.restrictTo`, `no_fixed_point_of_minimal`, `exists_root` (`Virtual/Extras.lean`) | **proved** |
 | Research note, Theorem 3.1(4) (the restriction to `V_lam^A` is elementary) | `relTo`, `relTo_spec` (relativization of a `Form` to a variable), `TWitness.vA_fixed`, `vA_lam_fixed`, `fixed_below_crit`, `restriction_elementary`, `restriction_moves_crit` (`Virtual/Restriction.lean`) | **proved**, one admitted input (definability of the cumulative hierarchy).  No satisfaction predicate inside `A` is needed: elementarity is formula-by-formula, so `relTo` suffices |
 | Research note, Theorem 5.1(3) (`lam` regular in the definable model) | `no_short_cofinal_low_rank`, `no_small_family_low_rank`, `TWitness.fixed_param`, `least_ordinal_fixed` with `leastF`/`leastF_spec` (`Virtual/Regularity.lean`) | **proved** for parameters of rank below `lam` (which includes every ordinal `< lam`) and `lam` itself; nothing admitted in the file, but it inherits the hierarchy input through `fixed_below_crit`.  A witness is chosen *after* the parameter (`HasHighWitnesses`), which makes the parameter fixed.  `least_ordinal_fixed` is the least-counterexample device and is itself free of admitted statements; it fixes an ordinal parameter of *any* size |
+| Research note, Theorem 4.1(1) (virtually exacting cardinals in `L`) | `SilverData` (the interface: levels of `L`, Silver indiscernibles, hulls, shift embeddings, each field cited), `SilverData.witness`, `witness_crit`, `witness_critSeq`, `witness_cofinalType`, `virtually_exacting_cofinal`, `hasHighWitnesses`, `crit_inaccessible_in_L`, `no_short_cofinal_in_L` (`Virtual/Constructible.lean`) | **derived** from the interface, nothing further admitted (`no_short_cofinal_in_L` inherits the hierarchy input through Theorem 5.1(3)).  Assuming `SilverData` is assuming `0^#`.  Theorem 4.1(2) (bounded type at `i_γ`, `γ > ω`) is not derived: the interface is specialized to `λ = i_ω`; the consistency statement 4.1(3) is metamathematical |
+| Research note, Theorem 6.1(2),(4) | `StableData` (least stable ordinal + `Σ₁`-reflection, cited), `StableData.least_LExacting_lt_stable`, `LExacting_of_silver`, `LExacting` | **derived** from the interface |
+| Research note, Theorem 6.1(1) | `TWitness.HasGraphIn`, `Published.lExacting_absolute` | admitted (Shoenfield absoluteness), with the complexity computation left to the reader |
 | Research note, Prop. 5.3 | `TWitness.IsUltra`, `cofinalType_of_ultra` (`Virtual/Extras.lean`) | proved from the admitted in-model Kunen inconsistency |
 | Section 15, Proposition 15.3 (Baire-measurable classification at λ = ω) | `Countable.zero_one` (topological zero-one law), `generic_const`, `fixed_label`, `Cantor.transitive`, `Cantor.global_fixed_point`, `Klein.separation` (`Countable/GenericErgodicity.lean`) | **proved**, nothing admitted; uses Mathlib's Baire category library |
 | Research note *Exacting embeddings of countable structures*, Theorem 3.1 (Kunen-free core) and Prop. 7.1 | `RelWitness.crit_regular`, `cof_iff`, `interleave` (`KunenFree.lean`); with `jOrd_nat`, `jOrd_omega`, `jv_subset_fixed`, `no_surj_pow_crit`, `slSem_critSeq` | **proved**, and the audit shows no dependence on `critSeq_cofinal`: the critical points of a witness are inaccessible without the Kunen inconsistency, so the proofs apply to virtual witnesses |
@@ -116,10 +120,15 @@ not formalized.
 
 ### Not formalized
 
-* Theorems 4.1 and 6.1 of the research note (virtually exacting cardinals in `L` from
-  `0^#`; the least `L`-exacting ordinal below the least stable ordinal).  They quantify
-  over the constructible hierarchy, Silver indiscernibles and stable ordinals; neither
-  Mathlib nor ProveIt has `L`, so the statements cannot be written down here.
+* The constructible hierarchy itself.  Neither Mathlib nor ProveIt has `L`, so
+  `Virtual/Constructible.lean` supplies an *interface* -- the structures `SilverData`
+  and `StableData`, whose fields are the published facts about `L`, the Silver
+  indiscernibles and the least stable ordinal, each with its citation -- and derives
+  Theorems 4.1(1) and 6.1(2),(4) of the note from it.  Building `L` and proving those
+  fields is a separate project.
+* Theorem 4.1(2) of the note (witnesses of bounded type at `i_γ` for limit `γ > ω`):
+  the interface is specialized to `λ = i_ω`.  Theorem 4.1(3) is a consistency
+  statement, hence metamathematical.
 * The absoluteness step of Lemma 2.3 of the note (a branch of a tree exists in the
   smaller model): a metatheorem about two models of ZFC, not expressible inside one.
 

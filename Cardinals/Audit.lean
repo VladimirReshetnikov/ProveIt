@@ -55,6 +55,14 @@ open Cardinals
 #print axioms no_short_cofinal_low_rank
 #print axioms no_small_family_low_rank
 #print axioms TWitness.least_ordinal_fixed
+-- Theorem 4.1 and 6.1: derived from the constructibility interface
+#print axioms SilverData.witness_crit
+#print axioms SilverData.witness_critSeq
+#print axioms SilverData.witness_cofinalType
+#print axioms SilverData.virtually_exacting_cofinal
+#print axioms SilverData.hasHighWitnesses
+#print axioms LExacting_of_silver
+#print axioms StableData.least_LExacting_lt_stable
 #print axioms RelWitness.trace_fixed_of
 #print axioms FourthRound.finiteChange_realize_insert
 #print axioms FourthRound.shift_ne
@@ -81,6 +89,8 @@ open Cardinals
 #print axioms TWitness.vA_fixed
 #print axioms TWitness.fixed_below_crit
 #print axioms TWitness.restriction_elementary
+#print axioms SilverData.no_short_cofinal_in_L
+#print axioms SilverData.crit_inaccessible_in_L
 #print axioms RelWitness.fixed_small_subset
 #print axioms RelWitness.no_small_fixed_family
 #print axioms RelWitness.orb_mem_X

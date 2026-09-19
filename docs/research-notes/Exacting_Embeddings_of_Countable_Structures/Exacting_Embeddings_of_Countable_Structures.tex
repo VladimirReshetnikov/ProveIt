@@ -296,11 +296,13 @@ The Lean development in \nolinkurl{Cardinals/Virtual/} verifies the parts of thi
 \]
 with \emph{no} requirement that $j\in A$. A genuine witness is the special case $A=V_\alpha$ (\nolinkurl{RelWitness.toTWitness}), with the same critical point and critical sequence. Since $A$ may be countable, all notions of size are taken internal to $A$: ``small'' means ``the image of an ordinal below $\lambda$ under a function belonging to $A$'', and the power set is $\Pow^A(y)=\Pow(y)\cap A$.
 
-\begin{center}\small
+\begingroup\small
 \renewcommand{\arraystretch}{1.2}
-\begin{tabularx}{\textwidth}{@{}P{.26\textwidth}P{.36\textwidth}Y@{}}
+\begin{longtable}{@{}P{.24\textwidth}P{.34\textwidth}P{.34\textwidth}@{}}
 \toprule
-\textbf{Statement}&\textbf{Lean}&\textbf{Status}\\\midrule
+\textbf{Statement}&\textbf{Lean}&\textbf{Status}\\\midrule\endfirsthead
+\toprule
+\textbf{Statement}&\textbf{Lean}&\textbf{Status}\\\midrule\endhead
 Definitions~\ref{def:virtual}, \ref{def:Lex}&\nolinkurl{TWitness}, \nolinkurl{CofinalType}, \nolinkurl{toTWitness}&definitions; genuine witnesses are the case $A=V_\alpha$\\
 Theorem~\ref{thm:free}(1)&\nolinkurl{jOrd_nat}, \nolinkurl{jOrd_omega}, \nolinkurl{omega_le_crit}&proved\\
 Theorem~\ref{thm:free}(2)&\nolinkurl{jv_subset_fixed}&proved\\
@@ -312,10 +314,17 @@ Lemma~\ref{lem:abs}&\nolinkurl{elementary_iff_assignment}, \nolinkurl{exists_fre
 Proposition~\ref{prop:ultra}&\nolinkurl{IsUltra}, \nolinkurl{cofinalType_of_ultra}&proved from an admitted in-model Kunen inconsistency (\nolinkurl{Published.kunen_in_model}, referenced to Kunen 1971 and Kanamori Cor.~23.14)\\
 Theorem~\ref{thm:ordinal}(3)&\nolinkurl{restrictTo}, \nolinkurl{no_fixed_point_of_minimal}&proved: a fixed point of $j$ above $\crit(j)$ carries a witness, so at a least witnessed ordinal nothing above the critical point is fixed\\
 Propositions~\ref{prop:interleave}, \ref{prop:root}&\nolinkurl{interleave}, \nolinkurl{exists_root}&proved\\
-Theorems~\ref{thm:sharp}, \ref{thm:ordinal}(1),(2),(4)&---&not formalized: they quantify over $L$, $0^\#$, Silver indiscernibles and stable ordinals, and neither Mathlib nor ProveIt has the constructible hierarchy\\
+Theorem~\ref{thm:sharp}(1)&\nolinkurl{SilverData}, \nolinkurl{SilverData.witness}, \nolinkurl{witness_crit}, \nolinkurl{witness_critSeq}, \nolinkurl{witness_cofinalType}, \nolinkurl{virtually_exacting_cofinal}, \nolinkurl{hasHighWitnesses}, \nolinkurl{crit_inaccessible_in_L}, \nolinkurl{no_short_cofinal_in_L}&derived from the interface below, nothing further admitted; \nolinkurl{no_short_cofinal_in_L} inherits the hierarchy input of Theorem~\ref{thm:free}(4) through Theorem~\ref{thm:cofinal}(3)\\
+Theorem~\ref{thm:sharp}(2)&---&not derived: the interface is specialized to $\lambda=i_\omega$\\
+Theorem~\ref{thm:sharp}(3)&\nolinkurl{crit_inaccessible_in_L}&only the mathematical content; the consistency statement is metamathematical\\
+Theorem~\ref{thm:ordinal}(1)&\nolinkurl{HasGraphIn}, \nolinkurl{lExacting_absolute}&admitted: Shoenfield absoluteness, applied to the $\Sigma^1_2$ statement in question; the complexity computation is left to the reader\\
+Theorem~\ref{thm:ordinal}(2)&\nolinkurl{StableData}, \nolinkurl{least_LExacting_lt_stable}&derived from the interface\\
+Theorem~\ref{thm:ordinal}(4)&\nolinkurl{LExacting_of_silver}, \nolinkurl{LExacting}&derived from the interface\\
 \bottomrule
-\end{tabularx}
-\end{center}
+\end{longtable}
+\endgroup
+
+\emph{The constructible hierarchy.} Theorems~\ref{thm:sharp} and~\ref{thm:ordinal} quantify over $L$, the Silver indiscernibles and the least stable ordinal, and neither Mathlib nor ProveIt has the constructible hierarchy, so their statements could not even be written down. \nolinkurl{Cardinals/Virtual/Constructible.lean} supplies the missing layer as an \emph{interface}: the structures \nolinkurl{SilverData} and \nolinkurl{StableData}, whose fields are precisely the published facts used by the proofs --- the levels $L_\alpha$ and their transitivity, the increasing continuous enumeration of the indiscernibles, the Skolem hulls with their elementary inclusions, Silver's theorem that shifting the indiscernibles induces an elementary embedding, the fact that everything of rank below $i_\omega$ lies in the hull, and $\Sigma_1$-reflection to the least stable ordinal --- each carrying its citation to Jech or Kanamori. Assuming a \nolinkurl{SilverData} is assuming $0^\#$; we take the machinery itself as the hypothesis rather than introducing an opaque constant for $0^\#$. The theorems are then \emph{derived}: assembling the witness from the hull and the shift, computing that its critical point is $i_m$ and its critical sequence $i_m,i_{m+1},\dots$, and checking cofinality in $i_\omega$. As a by-product the interface discharges the hypothesis \nolinkurl{HasHighWitnesses} of Section~\ref{sec:cofinal}, so Theorem~\ref{thm:cofinal}(3) applies verbatim at $i_\omega$ inside $L$ (\nolinkurl{no_short_cofinal_in_L}). Building $L$ and proving the fields of the interface is a separate project, and is what remains between this and a self-contained formalization.
 
 Two devices made the last two clauses possible, and neither needs a satisfaction predicate inside $A$ --- which is what the first version of this note reported as the obstruction.
 
