@@ -1,0 +1,37 @@
+DRAFT FOR EDITORIAL REVIEW -- NOT SUBMITTED
+Target: A228143, growth conjecture attributed to Vaclav Kotesovec,
+September 13, 2026. This does not concern the other arithmetic conjectures.
+
+Suggested mathematical update:
+
+Let C=(1+sqrt(2))^4 and lambda=C/4. Then
+log(a(n)) = n*(n+1)*log(lambda) + O(n).
+In particular, a(n)^(1/n^2) tends to lambda.
+
+Proof outline:
+
+Edgar's positive moment-density theorem gives A_k=int_0^C x^k phi(x) dx,
+with total mass 1. Write c=1/C. The density is positive on (0,c) and (c,C),
+is logarithmically divergent at 0, has square-root vanishing at C, and has
+one-sided Frobenius leading order among 0,1/2,1 at c. Hence, for some eta>0,
+phi(x)>=eta*((x-c)*(x-C))^2 almost everywhere.
+
+Let h_k be the minimum squared norm of a monic degree-k polynomial for this
+measure. Gram factorization gives a(n)=prod_(k=0)^n h_k and h_0=1.
+The monic Chebyshev trial polynomial gives h_k<=4*lambda^(2k), k>=1.
+Multiplying any monic degree-k polynomial by (x-c)*(x-C) and comparing with
+the monic Legendre norm gives
+h_k>=eta*C^(2k+5)/((2k+5)*binomial(2k+4,k+2)^2)
+   >=eta*C*lambda^4*lambda^(2k).
+The last inequality uses (2j+1)*binomial(2j,j)^2<=16^j.
+Multiplication over k=1,...,n proves the stated logarithmic estimate.
+
+Known source:
+G. A. Edgar, The Apery Numbers as a Stieltjes Moment Sequence,
+arXiv:2005.10733v2 (2020), Theorem 1, Proposition 4, Notation 6,
+Propositions 25-26 and Corollary 27.
+https://arxiv.org/abs/2005.10733
+
+The accompanying article includes the full argument and stronger results for
+shifted/dilated determinants. This draft is intended for mathematical and
+editorial review before any submission; it does not claim worldwide priority.

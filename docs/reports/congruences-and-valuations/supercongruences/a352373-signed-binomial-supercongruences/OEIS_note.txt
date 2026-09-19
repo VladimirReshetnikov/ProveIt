@@ -1,0 +1,35 @@
+PROPOSED NOTE — NOT SUBMITTED
+Research draft dated 18 September 2026. Independent review is recommended
+before posting this note as an accepted correction to an OEIS entry.
+
+Relevant entry: A352373. Related entries: A348410, A351856, A351857.
+
+For r,s in Z and t a nonnegative integer, put
+  a(r,s,t;n) = [x^(t*n)] ((1+x)^r (1-x)^s)^n.
+Then for all positive integers m,h,
+  a(r,s,t;m*p^h) == a(r,s,t;m*p^(h-1)) (mod p^(3*h))
+for every prime p>=5. At p=3 the same assertion holds modulo 3^(3*h-1).
+The t=1 assertion is the family conjecture recorded in A352373.
+
+Proof reference within the accompanying package:
+  signed_binomial_supercongruence.pdf, Sections 2–4.
+
+The proof expands [x^K](1-x)^A(1+x)^B into a signed binomial convolution,
+where p^h divides A,B,K. Terms with p|j descend individually by Jacobsthal's
+congruence. The other terms contain the factor A*B and reduce modulo p^(3h)
+to a weighted alternating reciprocal-square sum. One-digit descent of the
+two complementary binomial weights, together with cancellation on each
+complete block of length p^ell, makes that sum divisible by p^h.
+
+The classical input, including negative upper binomial entries, is:
+  Armin Straub, Multivariate Apéry numbers and supercongruences of rational
+  functions, Algebra & Number Theory 8 (2014), 1985–2008, Lemma 5.1.
+  https://arxiv.org/abs/1401.0854v2
+
+The technique is related to the established binomial/block-descent method in:
+  Robert Osburn, Brundaban Sahu, Armin Straub, Supercongruences for sporadic
+  sequences, Proc. Edinburgh Math. Soc. (2) 59 (2016), 503–518.
+  https://arxiv.org/abs/1312.2195v2
+
+No first-publication claim is made. In particular, A234839 is an already
+proved special case, not a new result of this note.

@@ -1,0 +1,35 @@
+Proposed correction note for OEIS A000364
+Prepared 19 September 2026; NOT submitted to the OEIS.
+
+The conjecture in the comment dated May 8 2023 is false as written:
+phi(27) = 18, but a(1) = 1 and
+  a(19) = 23489580527043108252017828576198947741 = 10 (mod 27).
+
+A correct replacement is:
+
+For every positive integer m, (a(n) mod m) is eventually periodic with
+least eventual period dividing phi(m). It is purely periodic for n >= 1
+if and only if the odd part of m is cube-free. Thus 27 is the smallest
+exceptional modulus.
+
+More explicitly, for odd primes p and exponents e >= 1, the least
+eventual period is
+  d(p^e) = p^(e-1) * lcm(2, (p-1)/2),
+and the first periodic index, indexing from a(0), is
+  s(p^e) = 1 + max { 0 <= n < ceil(e/2) : 2*n + v_p(a(n)) < e }.
+For powers of two the sequence is purely periodic from n=0, with least
+period 1 for moduli 2 and 4, and 2^(b-1) modulo 2^b for b >= 3.
+For general m, take the least common multiple of the local periods and
+the maximum of the local first periodic indices.
+
+The initial defect has the congruence
+  a(n+phi(m)) - a(n) = -(-1)^((p-1)/2)*p^(2*n)*a(n) (mod p^e)
+whenever p^e divides m and p is odd. This is consistent with classical
+Kummer congruences, including the Euler factor; see Metsankyla (2014),
+page 161. The attached research report supplies detailed proofs and
+additional references, including recent work by Gulec on the full
+up/down sequence.
+
+Before submitting this note, independently check the report and the
+priority of the period formula. Do not present the classical congruences
+or the finite-moment identity as new results.

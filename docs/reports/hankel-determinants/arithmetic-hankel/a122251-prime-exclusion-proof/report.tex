@@ -1,0 +1,928 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{xurl}
+\definecolor{Ink}{HTML}{172D44}
+\definecolor{Accent}{HTML}{176B72}
+\definecolor{Pale}{HTML}{F0F5F7}
+\usepackage[colorlinks=true,linkcolor=Ink,citecolor=Accent,urlcolor=Accent,
+  pdftitle={Prime-supported numerators of arithmetic Hankel determinants},
+  pdfauthor={AI-assisted research note},pdfsubject={OEIS A122249 and A122251}]{hyperref}
+\titleformat{\section}{\large\bfseries\color{Ink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{Accent}}{\thesubsection}{0.65em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{Ink}Arithmetic Hankel determinants}
+\fancyhead[R]{\small\color{Accent}Research note}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep,leftmargin=1.6em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\num}{\operatorname{num}}
+\newcommand{\den}{\operatorname{den}}
+\newcommand{\sfac}{F}
+\newcommand{\HH}{\mathcal H}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\freepart}[2]{\left[#1\right]_{\perp #2}}
+\newcommand{\supported}[2]{\left[#1\right]_{#2}}
+\begin{document}
+\thispagestyle{empty}
+{\small\bfseries\color{Accent}OEIS CONJECTURE ATTACK \hfill 18 SEPTEMBER 2026\par}
+\vspace{8mm}
+{\LARGE\bfseries\color{Ink}Prime-supported numerators of\\[2mm]
+arithmetic Hankel determinants\par}
+\vspace{4mm}
+{\large A proof of the formulas recorded in OEIS A122249 and A122251,\\
+with exact denominator valuations and a sharp gcd theorem\par}
+\vspace{5mm}
+{\small AI-assisted research note. Complete English proofs and exact computational artifacts.\par}
+\vspace{6mm}
+\begin{tcolorbox}[colback=Pale,colframe=Accent,boxrule=0.5pt,arc=1mm,
+  left=3mm,right=3mm,top=2mm,bottom=2mm]
+\textbf{Abstract.}
+For positive integers $d,b$ with $\gcd(d,b)=1$, let
+\[
+ D_m(d,b)=\det_{0\le i,j<m}\frac1{b+d(i+j)},\qquad
+ \sfac_m=\prod_{j=0}^{m-1}j!.
+\]
+We prove that the numerator of $D_m(d,b)$ in lowest terms is
+\[
+ \boxed{\num D_m(d,b)=
+ \prod_{\ell\mid d}\ell^{\,v_\ell(d)m(m-1)+2v_\ell(\sfac_m)}.}
+\]
+Here $\ell$ ranges over primes and $v_\ell$ denotes prime valuation.
+This numerator is a square and is independent of the coprime shift $b$. For prime $d=p$ and $m=n+1$, the formula is exactly the conjecture
+recorded in OEIS A122251 and its binary special case A122249.
+The proof reduces cancellation to a finite count of pairs in residue classes.
+We also determine every denominator valuation, prove that the gcd of all
+coprime-shift denominators is the $d$-coprime part of the inverse Hilbert
+determinant, and construct two shifts realizing that gcd. Further results
+cover inverse-matrix denominators, unequal arithmetic steps, and noncoprime
+parameters. Exact computations check the proofs' formulas independently of
+the numerator prediction.
+\end{tcolorbox}
+\vspace{2mm}
+\textbf{Outcome.} The selected formula is proved, not refuted. The
+counterexamples in Section~\ref{sec:boundaries} concern only tempting
+extensions of its hypotheses, not the OEIS conjecture itself.
+
+\textbf{Priority qualification.} The retrieved OEIS entries still label the
+claims as conjectural. This note supplies a self-contained proof of those
+claims and extensions. It does not certify that no equivalent result has
+previously appeared elsewhere; the underlying Cauchy determinant identity
+is classical.
+\vfill
+{\small\color{Accent}Companion files: \texttt{code/arithmetic\_hankel.py},
+\texttt{code/verify.py}, exact data, and an OEIS submission draft.}
+\newpage
+\tableofcontents
+\newpage
+
+\section{The selected problem and its status}
+\label{sec:problem}
+
+For a rational sequence $(a_k)_{k\ge0}$, use the Hankel-transform convention
+\[
+ h_n=\det(a_{i+j})_{0\le i,j\le n}.
+\]
+Thus the term indexed by $n$ is an $(n+1)\times(n+1)$ determinant, not an
+$n\times n$ determinant. This distinction matters for all exponents below.
+
+OEIS A122251, contributed by Paul Barry on 27 August 2006, records the
+following general conjecture for prime $p$~\cite{oeis251}:
+\begin{equation}
+ \num\det_{0\le i,j\le n}\frac1{p(i+j)+1}
+  =(p^2)^{S_p(n)},\qquad
+ S_p(n)=\sum_{k=1}^n\sum_{a=0}^{n}\floor{\frac{k}{p^a}}.
+ \label{eq:oeis}
+\end{equation}
+The entry itself displays the case $p=3$. The binary case is recorded in
+A122249, which retains a request for a proof~\cite{oeis249}.
+
+The internal records retrieved for this investigation carried revision tags
+\texttt{\#2 Mar 30 2012} for A122251 and
+\texttt{\#6 Oct 27 2024} for A122249. These are the entry revision tags,
+not the encyclopedia-wide update date printed in the page footer. Both
+retrieved records retain the conjectural status language. This is evidence
+for choosing the problem as a currently recorded OEIS conjecture; it is not
+a comprehensive literature certification of global openness.
+
+The obstruction in proving~\eqref{eq:oeis} is not evaluating the determinant
+as a rational product. Cauchy's determinant formula does that immediately.
+The real question is whether all prime factors other than $p$ cancel from
+the unreduced numerator. Checking only its $p$-adic valuation would leave
+that question unanswered. Our proof explicitly treats every other prime.
+
+The successful approach introduces a general positive step $d$ and shift
+$b$. This makes the cancellation mechanism more visible, rather than
+making the problem harder. The original conjecture follows as a special
+case of a complete reduced-numerator formula.
+
+\section{The general theorem and the generating-function setting}
+\label{sec:main}
+
+For $m\ge0$ and positive integers $d,b$, define
+\begin{equation}
+ H_m(d,b)=\left(\frac1{b+d(i+j)}\right)_{0\le i,j<m},
+ \qquad D_m(d,b)=\det H_m(d,b),
+ \label{eq:matrix}
+\end{equation}
+with $D_0(d,b)=1$. Write $D_m(d,b)=N_m(d,b)/B_m(d,b)$ in lowest terms,
+where numerator and denominator are positive. Positivity will also follow
+from the product evaluation below.
+
+For a positive integer $u$, write
+\[
+ \supported{u}{d}=\prod_{\ell\mid d}\ell^{v_\ell(u)},
+ \qquad
+ \freepart{u}{d}=\frac{u}{\supported{u}{d}}.
+\]
+The products run over prime divisors of $d$. Thus
+$\supported{u}{d}$ is the part supported on those primes, whereas
+$\freepart{u}{d}$ is the largest divisor of $u$ coprime to $d$.
+For $d=1$, these quantities are $1$ and $u$, respectively. Finally, set
+\[
+ \sfac_m=\prod_{j=0}^{m-1}j!,\qquad
+ P_m(d,b)=\prod_{i,j=0}^{m-1}\bigl(b+d(i+j)\bigr).
+\]
+Empty products are one.
+
+\begin{theorem}[Complete numerator and denominator]
+\label{thm:main}
+If $d,b\ge1$, $\gcd(d,b)=1$, and $m\ge0$, then
+\begin{align}
+ N_m(d,b)
+   &=d^{m(m-1)}\supported{\sfac_m}{d}^{\,2}
+     =\prod_{\ell\mid d}
+       \ell^{v_\ell(d)m(m-1)+2v_\ell(\sfac_m)},
+       \label{eq:num-main}\\
+ B_m(d,b)
+   &=\frac{P_m(d,b)}{\freepart{\sfac_m}{d}^{\,2}}\ \in\Z_{>0}.
+       \label{eq:den-main}
+\end{align}
+In particular, $N_m(d,b)$ is independent of $b$, is a perfect square, and
+has no prime divisor outside those of $d$. Moreover, $B_m(d,b)$ is coprime
+to $d$.
+\end{theorem}
+
+The integrality in~\eqref{eq:den-main} is a substantive assertion. It is
+proved below rather than assumed when writing the quotient. Once that
+integrality is known, the two quantities are automatically coprime, because
+the numerator is supported on primes dividing $d$ while the denominator is
+not.
+
+\begin{corollary}[The recorded OEIS conjectures]
+\label{cor:oeis}
+Formula~\eqref{eq:oeis} holds for every prime $p$ and every $n\ge0$.
+Consequently it proves the displayed formulas in both A122249 and A122251.
+\end{corollary}
+\begin{proof}
+Set $d=p$, $b=1$, and $m=n+1$ in Theorem~\ref{thm:main}.
+Counting prime-power divisors of a factorial gives
+\[
+ v_p(k!)=\sum_{a\ge1}\floor{\frac{k}{p^a}}.
+\]
+Therefore
+\begin{align*}
+ v_p(N_{n+1}(p,1))
+ &=n(n+1)+2\sum_{k=1}^n v_p(k!)\\
+ &=2\sum_{k=1}^n\left(k+\sum_{a\ge1}\floor{\frac{k}{p^a}}\right)
+ =2S_p(n).
+\end{align*}
+The sum over $a$ can be truncated at $n$, because every later term vanishes.
+No other prime survives by the theorem.
+\end{proof}
+
+\subsection{Why these are generating-function determinants}
+The sequence behind~\eqref{eq:matrix} has ordinary generating function
+\begin{equation}
+ A_{d,b}(z)=\sum_{k\ge0}\frac{z^k}{b+dk}
+ =\int_0^1\frac{t^{b-1}}{1-zt^d}\,\dd t
+ =\frac1b\,{}_2F_1\left(1,\frac bd;1+\frac bd;z\right),
+ \qquad |z|<1.
+ \label{eq:gf-moment}
+\end{equation}
+The integral follows by expanding the geometric series; the hypergeometric
+identity follows from
+$(b/d)_k/(1+b/d)_k=b/(b+dk)$. Also,
+\[
+ \frac1{b+d(i+j)}=\int_0^1 t^{b-1}t^{di}t^{dj}\,\dd t.
+\]
+Thus $H_m(d,b)$ is a Gram matrix of linearly independent monomials for a
+positive weight. This explains positivity and places the problem within
+moment sequences and Hankel transforms, rather than only matrix arithmetic.
+
+\section{Cauchy's identity and the cancellation lemma}
+\label{sec:proof}
+
+\subsection{The algebraic evaluation}
+\begin{lemma}[Cauchy's double alternant]
+\label{lem:cauchy}
+For distinct $x_i$, distinct $y_j$, and nonzero $x_i+y_j$,
+\begin{equation}
+ \det_{0\le i,j<m}\frac1{x_i+y_j}
+ =\frac{\displaystyle\prod_{i<j}(x_j-x_i)(y_j-y_i)}
+        {\displaystyle\prod_{i,j}(x_i+y_j)}.
+ \label{eq:cauchy}
+\end{equation}
+\end{lemma}
+\begin{proof}
+After multiplication by the denominator on the right, the determinant is a
+polynomial alternating separately in the $x$'s and in the $y$'s. Hence it
+is divisible by both Vandermonde products. Its total degree is at most
+$m^2-m$, precisely the degree of their product, so the quotient is a
+constant. Multiply the claimed identity by $x_{m-1}+y_{m-1}$ and substitute
+$x_{m-1}=-y_{m-1}$. On the determinant side only the last-row, last-column
+cofactor remains. On the product side the cross factors cancel in pairs,
+leaving the same identity of size $m-1$. The constant is therefore unchanged
+when $m$ decreases by one. It equals one when $m=1$.
+\end{proof}
+This is a classical identity; see, for example, equation (2.7) in
+Krattenthaler's survey~\cite{krattenthaler}. The short proof is included to
+make the argument self-contained.
+
+Taking $x_i=di$ and $y_j=b+dj$, and using
+$\prod_{i<j}(j-i)=\prod_{j=0}^{m-1}j!=\sfac_m$, gives
+\begin{equation}
+ D_m(d,b)=\frac{d^{m(m-1)}\sfac_m^2}{P_m(d,b)}.
+ \label{eq:raw}
+\end{equation}
+In particular, this is an unreduced expression with positive numerator and
+denominator. The remaining issue is its exact cancellation.
+
+\subsection{A finite combinatorial identity}
+For a modulus $h\ge1$, write $m=qh+r$ with $0\le r<h$. For
+$0\le c<h$, define
+\[
+ E_{h,r}(c)=\#\{(u,v):0\le u,v<r,\ u+v\equiv c\pmod h\}.
+\]
+
+\begin{lemma}[Residue-count excess]
+\label{lem:excess}
+For the preceding parameters,
+\begin{equation}
+ \#\{(i,j):0\le i,j<m,\ i+j\equiv c\pmod h\}
+ -2\sum_{j=0}^{m-1}\floor{\frac jh}
+ =hq+E_{h,r}(c)\ge0.
+ \label{eq:excess}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The residue $u$ occurs among $0,\ldots,m-1$ exactly
+$q+\mathbf1_{\{u<r\}}$ times. Consequently the pair count is
+\begin{align*}
+ \sum_{u\bmod h}
+ (q+\mathbf1_{\{u<r\}})
+ (q+\mathbf1_{\{c-u\bmod h<r\}})
+ =hq^2+2qr+E_{h,r}(c).
+\end{align*}
+On the other hand, the values $0,\ldots,q-1$ each occur $h$ times in the
+list of quotients $\floor{j/h}$, and the value $q$ occurs $r$ times. Thus
+\[
+ 2\sum_{j=0}^{m-1}\floor{\frac jh}=hq(q-1)+2qr.
+\]
+Subtracting gives~\eqref{eq:excess}. Its right side is nonnegative because
+it is a sum of nonnegative integers.
+\end{proof}
+
+The crucial feature is uniformity in the residue $c$. There is no need to
+know where the denominator progression hits zero modulo $h$; every residue
+has enough occurrences to cancel the corresponding factorial contribution.
+
+\subsection{Proof of the main theorem}
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+The case $m=0$ is immediate. Assume $m\ge1$ and fix a prime $\ell$.
+If $\ell\mid d$, then $\ell\nmid b$ by coprimality, and hence
+$\ell\nmid P_m(d,b)$. Formula~\eqref{eq:raw} gives
+\begin{equation}
+ v_\ell(D_m(d,b))=v_\ell(d)m(m-1)+2v_\ell(\sfac_m).
+ \label{eq:bad-prime}
+\end{equation}
+This is nonnegative.
+
+Now suppose $\ell\nmid d$. For each $a\ge1$, put $h=\ell^a$ and let
+$c_h$ be the least nonnegative residue of $-b d^{-1}$ modulo $h$.
+Then
+\[
+ h\mid b+d(i+j)\quad\Longleftrightarrow\quad i+j\equiv c_h\pmod h.
+\]
+Counting prime powers in the denominator product and in the factorials,
+and then applying Lemma~\ref{lem:excess}, yields
+\begin{align}
+ v_\ell(D_m(d,b))
+ &=\sum_{a\ge1}\left(
+ 2\sum_{j=0}^{m-1}\floor{\frac j{\ell^a}}
+ -\#\{(i,j):\ell^a\mid b+d(i+j)\}\right)\notag\\
+ &=-\sum_{a\ge1}\left(
+ \ell^a\floor{\frac m{\ell^a}}
+ +E_{\ell^a,\,m\bmod\ell^a}(c_{\ell^a})\right)
+ \le0.
+ \label{eq:good-prime}
+\end{align}
+All sums are finite: sufficiently large prime powers divide neither the
+positive entry denominators nor any factorial factor.
+
+Thus no prime outside $d$ can occur in the reduced numerator, whereas every
+prime dividing $d$ has exactly the exponent in~\eqref{eq:bad-prime}.
+This proves~\eqref{eq:num-main}. Dividing~\eqref{eq:raw} by this numerator
+proves~\eqref{eq:den-main}, including its integrality. Its factors involve
+no prime dividing $d$. Finally, $m(m-1)$ is even, so every exponent in the
+numerator is even, proving the square assertion.
+\end{proof}
+
+\section{Exact denominator valuations}
+\label{sec:den}
+
+The proof gives more information than numerator cancellation. Define
+\[
+ T_r(s)=\max\{0,\ r-|s-(r-1)|\}.
+\]
+For integer $s$, this is the number of pairs in $\{0,\ldots,r-1\}^2$
+with ordinary sum $s$, including the convention $T_0(s)=0$.
+Because $0\le u+v\le2r-2<2h$, we have
+\begin{equation}
+ E_{h,r}(c)=T_r(c)+T_r(c+h),\qquad 0\le c<h.
+ \label{eq:triangle}
+\end{equation}
+
+\begin{theorem}[Explicit local denominator]
+\label{thm:den}
+Under the hypotheses of Theorem~\ref{thm:main}, $v_\ell(B_m(d,b))=0$
+for $\ell\mid d$. If $\ell\nmid d$, then
+\begin{equation}
+ v_\ell(B_m(d,b))=
+ \sum_{a\ge1}\left[
+ \ell^a\floor{\frac m{\ell^a}}
+ +T_{r_a}(c_a)+T_{r_a}(c_a+\ell^a)\right],
+ \label{eq:den-local}
+\end{equation}
+where $r_a=m\bmod\ell^a$ and
+$c_a=(-bd^{-1})\bmod\ell^a$ is in $[0,\ell^a)$.
+For $m\ge1$, the sum can be truncated once
+$\ell^a>b+2d(m-1)$.
+\end{theorem}
+\begin{proof}
+For $\ell\nmid d$, the reduced numerator has zero $\ell$-valuation.
+Hence the denominator valuation is the negative of~\eqref{eq:good-prime}.
+Apply~\eqref{eq:triangle}. Beyond the stated bound no entry denominator
+is divisible by $\ell^a$, and the same bound is at least $m$; both parts
+of the difference in~\eqref{eq:good-prime} therefore vanish.
+\end{proof}
+
+\begin{example}
+For $m=3,d=3,b=1$, the raw product is
+\[
+ D_3(3,1)
+ =\frac{3^6(0!1!2!)^2}{1\cdot4^2\cdot7^3\cdot10^2\cdot13}
+ =\frac{729}{1783600}.
+\]
+The factor $4$ from the squared superfactorial cancels completely, while
+the power $3^6$ does not cancel at all. For $d=6$ at the same size, the only
+prime factor of $2!$ divides $d$, so the factor $4$ does not cancel and the
+numerator is $6^6\cdot4=186624$.
+\end{example}
+
+\section{A sharp universal divisor and the exact gcd of denominators}
+\label{sec:gcd}
+
+Let
+\begin{equation}
+ \HH_m=\prod_{j=0}^{m-1}(2j+1)\binom{2j}{j}^{\!2}.
+ \label{eq:hilbert}
+\end{equation}
+This is the reciprocal of the ordinary Hilbert determinant
+$D_m(1,1)$ and is the sequence A005249~\cite{oeis5249}.
+For completeness, dividing~\eqref{eq:raw} at sizes $j+1$ and $j$
+with $d=b=1$ gives
+\[
+ \frac{D_{j+1}(1,1)}{D_j(1,1)}
+ =\frac1{(2j+1)\binom{2j}{j}^2},
+\]
+which proves~\eqref{eq:hilbert} by multiplication.
+
+\begin{lemma}[The least tail count]
+\label{lem:min-tail}
+For $0\le r<h$,
+\[
+ E_{h,r}(c)\ge\max(0,2r-h)
+ \quad\text{for every }c,
+ \qquad E_{h,r}(h-1)=\max(0,2r-h).
+\]
+\end{lemma}
+\begin{proof}
+In the cyclic group $\Z/h\Z$, let $A=\{0,\ldots,r-1\}$. Then
+$E_{h,r}(c)=|A\cap(c-A)|$. Both sets have size $r$, so their intersection
+has size at least $2r-h$, as well as being nonnegative. When $c=h-1$,
+the only possible ordinary sum is $h-1$, and the pairs realizing it number
+$\max(0,2r-h)$.
+\end{proof}
+
+\begin{theorem}[Exact gcd over all primitive shifts]
+\label{thm:gcd}
+For each $d\ge1$ and $m\ge0$,
+\begin{equation}
+ \boxed{\gcd_{\substack{b\ge1\\\gcd(b,d)=1}} B_m(d,b)
+       =\freepart{\HH_m}{d}.}
+ \label{eq:gcd}
+\end{equation}
+In particular, $\freepart{\HH_m}{d}$ divides every such denominator.
+\end{theorem}
+\begin{proof}
+The case $m=0$ is immediate. For a prime $\ell\nmid d$, combine
+Theorem~\ref{thm:den} and Lemma~\ref{lem:min-tail}. The result is
+\begin{equation}
+ v_\ell(B_m(d,b))\ge
+ \sum_{a\ge1}\left[
+ \ell^a\floor{\frac m{\ell^a}}+
+ \max(0,2(m\bmod\ell^a)-\ell^a)\right]
+ =v_\ell(\HH_m).
+ \label{eq:universal-bound}
+\end{equation}
+The equality follows by applying the exact formula to $d=b=1$, when
+$c_a=\ell^a-1$ achieves the minimum at every level. Primes dividing $d$
+never occur in $B_m(d,b)$. This proves the divisibility statement.
+
+It remains to show sharpness, rather than merely a lower bound. Fix
+$\ell\nmid d$ and choose $A\ge1$ such that $\ell^A>2m-1$.
+By the Chinese remainder theorem, there is a positive $b$ satisfying
+\[
+ b\equiv d\pmod{\ell^A},\qquad b\equiv1\pmod d.
+\]
+The second congruence ensures $\gcd(b,d)=1$. For every $0\le i,j<m$,
+\[
+ b+d(i+j)\equiv d(1+i+j)\pmod{\ell^A}.
+\]
+Since $1\le1+i+j\le2m-1<\ell^A$ and $\ell\nmid d$, neither side is
+zero modulo $\ell^A$. Their $\ell$-valuations are therefore equal:
+\[
+ v_\ell\bigl(b+d(i+j)\bigr)=v_\ell(1+i+j).
+\]
+Subtracting the same factorial valuation in~\eqref{eq:raw} shows
+$v_\ell(B_m(d,b))=v_\ell(\HH_m)$. Each prime not dividing $d$ therefore
+attains the stated minimum for some admissible shift. Taking the minimum
+valuation prime by prime proves the exact gcd formula.
+\end{proof}
+
+\begin{corollary}[Two shifts suffice, constructively]
+\label{cor:two}
+The gcd in~\eqref{eq:gcd} is already the gcd of the denominators at $b=1$
+and at one explicitly constructible positive coprime shift $b=b_*$.
+\end{corollary}
+\begin{proof}
+Let $\mathcal P$ be the finite set of primes dividing $B_m(d,1)$.
+For each $\ell\in\mathcal P$, choose $A_\ell$ with
+$\ell^{A_\ell}>2m-1$, and set
+$M=\prod_{\ell\in\mathcal P}\ell^{A_\ell}$.
+All these primes are coprime to $d$. Choose $b_*$ by
+\[
+ b_*\equiv d\pmod M,\qquad b_*\equiv1\pmod d.
+\]
+The preceding sharpness argument now applies simultaneously to every prime
+of $B_m(d,1)$. Thus the gcd with $B_m(d,b_*)$ has exactly the valuations
+in~\eqref{eq:gcd}. No other prime can enter that two-integer gcd.
+\end{proof}
+
+This is not a claim that one shift always has the smallest denominator
+itself. It is a statement about divisibility and gcd. For example,
+\[
+ B_2(2,1)=45,\qquad B_2(2,17)=128877,
+ \qquad\gcd(45,128877)=3=\freepart{\HH_2}{2}.
+\]
+The code also implements the Chinese-remainder construction, producing
+exact two-shift certificates rather than relying on a finite search prefix.
+
+\section{A second proof through inverse-matrix integrality}
+\label{sec:inverse}
+
+There is a complementary structural explanation of why only primes dividing
+$d$ can survive in the determinant numerator. In fact, the entire inverse
+matrix has denominators supported on those primes.
+
+Write $\Z[1/d]$ for the rational numbers whose reduced denominators have
+no prime divisor outside those dividing $d$.
+
+\begin{lemma}[Rational binomial integrality away from the denominator]
+\label{lem:binom}
+If $\alpha\in\Z[1/d]$ and $k\ge0$, then
+$\binom{\alpha}{k}\in\Z[1/d]$.
+\end{lemma}
+\begin{proof}
+Represent $\alpha=u/v$ with every prime of $v$ dividing $d$.
+If any factor in $\alpha(\alpha-1)\cdots(\alpha-k+1)$ is zero, the
+assertion is immediate. Otherwise fix a prime $\ell\nmid d$.
+For each power $h=\ell^a$, the integers $u-vt$ for $0\le t<k$
+contain at least $\floor{k/h}$ multiples of $h$, because $v$ is invertible
+modulo $h$ and every block of $h$ consecutive $t$'s contains exactly one.
+The numerator product has valuation at least
+$\sum_{a\ge1}\floor{k/\ell^a}=v_\ell(k!)$.
+Division by $v^k k!$ cannot introduce a denominator factor $\ell$.
+This holds for every $\ell\nmid d$.
+\end{proof}
+
+\begin{theorem}[Inverse entries]
+\label{thm:inverse}
+For all positive integers $d,b$ and all $m\ge1$,
+$H_m(d,b)^{-1}$ has entries in $\Z[1/d]$.
+No coprimality assumption on $d,b$ is needed for this assertion.
+\end{theorem}
+\begin{proof}
+Put $\alpha=b/d$ and $G=(1/(\alpha+i+j))_{0\le i,j<m}$, so
+$H_m(d,b)=d^{-1}G$. A cofactor calculation using
+Lemma~\ref{lem:cauchy} gives
+\begin{equation}
+ (G^{-1})_{ij}
+ =\frac{(-1)^{i+j}
+   \displaystyle\prod_{k=0}^{m-1}(\alpha+i+k)
+   \displaystyle\prod_{k=0}^{m-1}(\alpha+j+k)}
+  {(\alpha+i+j)\,i!j!(m-1-i)!(m-1-j)!}.
+ \label{eq:inverse-product}
+\end{equation}
+Indeed, removing row $j$ and column $i$ from the Cauchy determinant removes
+the corresponding two strings of denominator factors, with their common
+factor restored once. The Vandermonde ratios give the four factorials,
+and the cofactor sign is $(-1)^{i+j}$.
+
+Rearranging the finite products in~\eqref{eq:inverse-product} gives
+\begin{align}
+ (G^{-1})_{ij}
+ &=(-1)^{i+j}(\alpha+i+j)
+ \binom{m+\alpha+i-1}{m-j-1}
+ \binom{m+\alpha+j-1}{m-i-1}\notag\\[-1mm]
+ &\hspace{28mm}\cdot
+ \binom{\alpha+i+j-1}{i}
+ \binom{\alpha+i+j-1}{j}.
+ \label{eq:inverse-binomial}
+\end{align}
+Every lower binomial argument is nonnegative, and every upper argument lies
+in $\Z[1/d]$. Lemma~\ref{lem:binom} proves that each factor belongs to
+that ring. Hence $H_m(d,b)^{-1}=dG^{-1}$ does as well.
+\end{proof}
+
+Since $\det H_m(d,b)^{-1}=1/D_m(d,b)$, the theorem alone proves that the
+reduced numerator of $D_m(d,b)$ is supported on primes dividing $d$.
+When $\gcd(d,b)=1$, its exact valuations at those primes then follow
+from~\eqref{eq:raw}. This supplies a second route to the numerator theorem.
+The residue-count proof remains useful because it also yields the exact
+denominators and their sharp gcd.
+
+\section{An extension to unequal arithmetic steps}
+\label{sec:two-steps}
+
+The cancellation phenomenon is not limited to symmetric Hankel matrices.
+For positive integers $a,b,c$, define
+\[
+ C_m(a,b,c)=\det_{0\le i,j<m}\frac1{c+ai+bj}.
+\]
+
+\begin{theorem}[Two-step prime support and denominator divisibility]
+\label{thm:two-step}
+The reduced numerator of $C_m(a,b,c)$ has no prime divisor outside those
+of $ab$. Its reduced denominator is divisible by
+$\freepart{\HH_m}{ab}$.
+\end{theorem}
+\begin{proof}
+Cauchy's identity gives
+\[
+ C_m(a,b,c)
+ =\frac{(ab)^{\binom m2}\sfac_m^2}
+ {\prod_{i,j}(c+ai+bj)}.
+\]
+Fix $\ell\nmid ab$, put $h=\ell^s$, and write $m=qh+r$.
+Because multiplication by $a$ and by $b$ permutes residues modulo $h$,
+the residues of $ai$ occur $q$ times each plus one extra occurrence on a
+set $A$ of size $r$. Similarly the residues of $bj$ have an extra occurrence
+on a set $B$ of size $r$. Thus the count of pairs satisfying
+$c+ai+bj\equiv0\pmod h$ is
+\[
+ hq^2+2qr+|A\cap(-c-B)|.
+\]
+Subtracting the factorial contribution gives
+$hq+|A\cap(-c-B)|\ge hq+\max(0,2r-h)$.
+Summing over $s\ge1$ proves
+$v_\ell(C_m(a,b,c))\le-v_\ell(\HH_m)$, just as in
+\eqref{eq:universal-bound}. This excludes $\ell$ from the numerator and
+proves the claimed denominator divisibility at every prime outside $ab$.
+\end{proof}
+
+This theorem deliberately does not assert a shift-independent formula for
+primes dividing only one of $a,b$. The uniform residue argument applies at
+primes where both steps are units; the common-step coprime-shift case is
+special because its other primes never divide any entry denominator.
+
+\section{Boundary cases and exact counterexamples to false extensions}
+\label{sec:boundaries}
+
+\subsection{Replacing a prime by a composite in the OEIS exponent fails}
+The theorem permits composite $d$, but the original expression involving
+powers $p^a$ cannot be generalized by simply replacing every $p$ by $d$.
+For $d=4$, $n=2$, the naive expression predicts
+\[
+ (4^2)^{\sum_{k=1}^2\sum_{a\ge0}\floor{k/4^a}}
+ =16^3=4096.
+\]
+In fact,
+\[
+ D_3(4,1)=\frac{16384}{52360425}.
+\]
+The missing factor is $4$, coming from $(2!)^2$: its prime is still $2$,
+although no positive $k\le2$ reaches the first composite modulus $4$.
+Formula~\eqref{eq:num-main}, using prime valuations rather than powers of a
+composite base, gives the correct answer.
+
+\subsection{Noncoprime parameters require a scaling correction}
+Let $g=\gcd(d,b)$, $d_0=d/g$, and $b_0=b/g$. Then
+\[
+ H_m(d,b)=g^{-1}H_m(d_0,b_0),\qquad
+ D_m(d,b)=g^{-m}D_m(d_0,b_0).
+\]
+If the primitive determinant is $N_0/B_0$ in lowest terms, then
+\begin{equation}
+ \num D_m(d,b)=\frac{N_0}{\gcd(N_0,g^m)},\qquad
+ \den D_m(d,b)=\frac{g^m B_0}{\gcd(N_0,g^m)}.
+ \label{eq:nonprimitive}
+\end{equation}
+These fractions are reduced because $\gcd(N_0,B_0)=1$.
+This gives a complete formula for all positive $d,b$, not only primitive
+pairs. For example,
+\[
+ D_2(2,2)=\frac1{48},\qquad
+ D_3(4,2)=\frac{32}{496125}.
+\]
+The first numerator is not the primitive-step prediction $4$; the second
+is not a square. Thus neither shift independence nor the square assertion
+should be stated without the coprimality hypothesis.
+
+\subsection{Arbitrary sparse minors need not have the same prime support}
+Consecutive index intervals are also important. Even with the ordinary
+Hilbert kernel, taking both row and column index sets to be $\{0,2\}$ gives
+\[
+ \det\begin{pmatrix}1&1/3\\1/3&1/5\end{pmatrix}=\frac4{45}.
+\]
+The ambient step is one, yet a prime survives in the numerator. The
+Vandermonde differences of the sparse sets introduce additional factors.
+This does not contradict Theorem~\ref{thm:two-step}: this particular minor
+itself has row and column steps $a=b=2$, which correctly allow the prime $2$.
+
+These examples delimit the established theorem. None refutes the original
+prime-step conjecture, which is true.
+
+\section{Exponent generating functions and fast evaluation}
+\label{sec:algorithms}
+
+The exponent sequences in the binary and ternary cases are themselves
+recorded in A122247 and A122250~\cite{oeis247,oeis250}. We include their
+general-prime derivation because it connects the result directly to
+generating functions and produces a fast exact implementation.
+
+Write $S_p(n)$ as in~\eqref{eq:oeis}, allowing the inner sum to run over all
+$a\ge0$. Its first difference is
+\[
+ S_p(n)-S_p(n-1)=\sum_{a\ge0}\floor{\frac n{p^a}}.
+\]
+For any integer $q\ge1$,
+\[
+ \sum_{n\ge0}\floor{\frac nq}z^n
+ =\frac{z^q}{(1-z)(1-z^q)}.
+\]
+This follows by expressing $\floor{n/q}$ as the number of positive
+multiples of $q$ not exceeding $n$ and interchanging the two sums.
+Consequently
+\begin{equation}
+ \mathcal S_p(z):=\sum_{n\ge0}S_p(n)z^n
+ =\frac1{(1-z)^2}\sum_{a\ge0}\frac{z^{p^a}}{1-z^{p^a}}.
+ \label{eq:lambert}
+\end{equation}
+Every coefficient receives only finitely many contributions, so the
+identity is valid formally, as well as analytically for $|z|<1$.
+Separating the $a=0$ term yields the functional equation
+\begin{equation}
+ (1-z)^2\mathcal S_p(z)
+ =\frac z{1-z}+(1-z^p)^2\mathcal S_p(z^p).
+ \label{eq:mahler}
+\end{equation}
+These formulas concern the exponent sequence; they are not generating
+functions for the much faster-growing numerator sequence itself.
+
+For exact computation at a large individual index, no coefficient expansion
+and no determinant are needed. If $h=p^a$ and $m=q_a h+r_a$, then
+\begin{equation}
+ v_p(\sfac_m)=\sum_{a\ge1}
+ \left[\frac{p^a q_a(q_a-1)}2+q_a r_a\right].
+ \label{eq:fast}
+\end{equation}
+Only powers $p^a<m$ contribute. This uses $O(\log_p m)$ arithmetic
+iterations after the prime is known. For composite $d$, factor $d$ and
+apply~\eqref{eq:fast} once for each prime divisor; the implementation never
+factors a large determinant numerator or denominator.
+
+The iteration bound is not a constant-time or logarithmic bit-complexity
+claim for printing the answer. For fixed $d>1$, the numerator contains
+$d^{m(m-1)}$ and has quadratically many bits in $m$. Its large-integer
+construction and output must pay that cost. The factorization of a varying
+input $d$ is likewise a separate computational cost.
+
+For an independently computed sequence of complete determinants, the
+Cauchy product gives the ratio
+\begin{equation}
+ \frac{D_{j+1}(d,b)}{D_j(d,b)}
+ =\frac{d^{2j}(j!)^2}
+ {(b+2dj)\displaystyle\prod_{k=j}^{2j-1}(b+dk)^2}.
+ \label{eq:ratio}
+\end{equation}
+The test suite uses this formula without invoking the predicted numerator,
+then asks whether exact fraction reduction produces that numerator.
+
+\section{Exact computational audit and reproducibility}
+\label{sec:verification}
+
+All tests use Python integers and \texttt{fractions.Fraction}; there is no
+floating-point determinant computation. The mathematical proofs establish
+all-parameter statements. The finite tests serve to catch indexing errors,
+incorrect exponents, inverse formulas, implementation bugs, and falsely
+stated boundary cases.
+
+There are three independent levels of calculation. Direct rational Gaussian
+elimination starts from the matrix entries and uses no determinant identity.
+The Cauchy product and size-ratio evaluator reduce exact rational products
+without using the numerator theorem. The predicted numerator is computed
+only from prime factors of $d$ and factorial valuations. Agreement among
+these is checked explicitly.
+
+The executed test ranges and counts are shown in
+Table~\ref{tab:checks}. Matrix size $m=0$ is included where stated. The
+product-ratio range overlaps the direct range, so these counts should not
+be interpreted as disjoint samples.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}p{.42\linewidth}r p{.40\linewidth}@{}}
+\toprule
+Check & Count & Range or interpretation\\
+\midrule
+Direct primitive determinants & 3,231 & $1\le d,b\le24$, $(d,b)=1$, $0\le m\le8$\\
+Primitive product-ratio cases & 35,244 & $1\le d,b\le40$, $(d,b)=1$, $0\le m\le35$\\
+Direct nonprimitive determinants & 847 & $1\le d,b\le18$, $(d,b)>1$, $0\le m\le6$\\
+Residue-count identities & 34,255 & $2\le h\le32$, $0\le m\le64$, every residue\\
+Denominator prime valuations & 20,240 & Primitive $d,b\le13$, $m\le7$, primes $<80$\\
+Constructed two-shift gcds & 180 & $1\le d\le20$, $0\le m\le8$\\
+Full inverse matrices & 720 & $1\le d,b\le12$, $1\le m\le5$\\
+Inverse entry checks & 7,920 & Exact matrix product and denominator support\\
+Two-step support cases & 4,374 & $1\le a,b,c\le9$, $0\le m\le5$\\
+Direct two-step determinants & 2,916 & The preceding range restricted to $m\le3$\\
+Superfactorial valuations & 605 & $m\le120$, $p=2,3,5,7,11$\\
+Published initial terms & 14 & Seven each for the binary and ternary sequences\\
+False-extension regressions & 5 & Exact examples from Section~\ref{sec:boundaries}\\
+\bottomrule
+\end{tabular}
+\caption{All listed exact checks passed. Counts are also stored in
+\texttt{data/verification\_summary.json}.}
+\label{tab:checks}
+\end{table}
+
+The complete inverse test multiplies the matrix by the claimed inverse and
+checks every entry of the identity matrix. The gcd tests construct the
+second shift using Corollary~\ref{cor:two}, rather than merely taking a gcd
+of a convenient short list of shifts. The local-valuation tests compare
+prime-power counting with direct valuations of reduced denominators.
+
+A few small cases are useful for immediate inspection:
+\begin{center}
+\begin{tabular}{@{}rrr@{\qquad}l@{}}
+\toprule
+$m$ & $d$ & $b$ & $D_m(d,b)$ in lowest terms\\
+\midrule
+2&2&1&$4/45$\\
+3&2&1&$256/496125$\\
+2&3&1&$9/112$\\
+3&3&1&$729/1783600$\\
+3&4&1&$16384/52360425$\\
+3&6&1&$186624/971568325$\\
+2&2&2&$1/48$\\
+3&4&2&$32/496125$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+To reproduce the computational audit, run
+\begin{quote}\ttfamily
+python3 code/verify.py
+\end{quote}
+from the package directory, or invoke the script by its absolute path.
+Python 3.10 or later is sufficient and no third-party modules are required.
+The audit executed for this note used Python 3.13.5. The script writes the
+summary, selected exact determinants, numerator tables, and two-shift
+certificates to \texttt{data/}. The source can be rebuilt with the included
+\texttt{build.sh} on a TeX installation with the packages named in the
+preamble.
+
+\section{Conclusion and scope of the result}
+
+The prime-step numerator conjecture recorded in A122251 is true for all
+primes and all indices. Its binary special case in A122249 is covered by
+the same proof. More generally, coprime changes of the shift leave the
+reduced numerator unchanged, and its prime factors and exponents are
+completely determined by the arithmetic step and a superfactorial.
+
+The strongest additional conclusion is the exact gcd theorem
+\eqref{eq:gcd}, together with the constructive two-shift realization.
+It separates the denominator's unavoidable Hilbert contribution from the
+additional factors created by a particular shift. The inverse-matrix and
+two-step results show that the cancellation phenomenon has a broader
+arithmetic explanation.
+
+The report provides ordinary mathematical proofs, not a proof-assistant
+formalization or a peer-reviewed priority determination. No external
+submission or OEIS edit has been made. The included submission text is a
+draft for review.
+
+\appendix
+\section{Compact proof suitable for an OEIS-linked note}
+\label{sec:compact}
+
+Let $p$ be prime and $m=n+1$. Cauchy's formula gives
+\[
+ D=\det_{0\le i,j<m}\frac1{1+p(i+j)}
+ =\frac{p^{m(m-1)}\prod_{j=0}^{m-1}(j!)^2}
+ {\prod_{i,j=0}^{m-1}(1+p(i+j))}.
+\]
+The denominator is coprime to $p$, so the exact $p$-valuation of $D$ is
+$m(m-1)+2\sum_{j<m}v_p(j!)=2S_p(n)$.
+
+To rule out every other numerator prime $\ell$, let $h=\ell^a$ and
+$m=qh+r$, $0\le r<h$. Because $p$ is invertible modulo $h$, the number
+of pairs with $h\mid1+p(i+j)$ is the number with $i+j$ in one specified
+residue class. Every residue among $0,\ldots,m-1$ occurs $q$ times, with
+one extra occurrence on a set of $r$ residues. Thus the pair count is
+$hq^2+2qr+E$ for some $E\ge0$. The contribution of $h$ to the squared
+factorial product is $hq(q-1)+2qr$. Their difference, denominator minus
+numerator, is $hq+E\ge0$. Sum over $a\ge1$.
+
+Hence $v_\ell(D)\le0$ for every $\ell\ne p$. Its reduced numerator is
+therefore $p^{2S_p(n)}$, exactly the claimed formula. This proves the
+binary and ternary entries and the stated general-prime conjecture.
+
+\begin{thebibliography}{9}
+\bibitem{oeis251}
+The OEIS Foundation Inc., \emph{A122251: Numerators of Hankel transform of
+$1/(3n+1)$ (conjecture)}, entry contributed by Paul Barry, 27 August 2006.
+\url{https://oeis.org/A122251}; internal record
+\url{https://oeis.org/A122251/internal}. Consulted 18 September 2026,
+America/Los\_Angeles.
+
+\bibitem{oeis249}
+The OEIS Foundation Inc., \emph{A122249: Numerators of Hankel transform of
+$1/(2n+1)$}, entry contributed by Paul Barry, 27 August 2006.
+\url{https://oeis.org/A122249}; internal record
+\url{https://oeis.org/A122249/internal}. Consulted 18 September 2026.
+
+\bibitem{krattenthaler}
+C. Krattenthaler, \emph{Advanced Determinant Calculus}, S\'eminaire
+Lotharingien de Combinatoire \textbf{42} (1999), Article B42q, 67 pp.
+Equation (2.7), Cauchy's double alternant.
+\url{https://arxiv.org/abs/math/9902004}; accessible full text
+\url{https://arxiv.org/html/math/9902004v3}.
+
+\bibitem{oeis5249}
+The OEIS Foundation Inc., \emph{A005249: Determinant of inverse Hilbert
+matrix}. \url{https://oeis.org/A005249}. Consulted 18 September 2026.
+
+\bibitem{oeis247}
+The OEIS Foundation Inc., \emph{A122247: Partial sums of A005187}, entry
+contributed by Paul Barry, 27 August 2006.
+\url{https://oeis.org/A122247}. Consulted 18 September 2026.
+
+\bibitem{oeis250}
+The OEIS Foundation Inc., \emph{A122250: Partial sums of A004128}, entry
+contributed by Paul Barry, 27 August 2006.
+\url{https://oeis.org/A122250}. Consulted 18 September 2026.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,920 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem,fancyhdr,titlesec}
+\usepackage{hyperref,bookmark}
+\usepackage{listings}
+\definecolor{Ink}{HTML}{18354A}
+\definecolor{Accent}{HTML}{116A75}
+\definecolor{Pale}{HTML}{F0F6F7}
+\hypersetup{colorlinks=true,linkcolor=Accent,citecolor=Accent,urlcolor=Accent,
+ pdftitle={A Sharp Convergence Theorem for the q-Newton Series of Subcritical Tetration},
+ pdfauthor={OpenAI},bookmarksdepth=2,pdfsubject={Tetration, q-series, analytic iteration and complete monotonicity}}
+\titleformat{\section}{\large\bfseries\color{Ink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{Accent}}{\thesubsection}{0.65em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{Ink}Subcritical tetration and $q$-Newton interpolation}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\qb}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{\!q}}
+\newcommand{\qp}[2]{(#1;q)_{#2}}
+\newcommand{\Ree}{\operatorname{Re}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\PhiQ}{\Phi_q}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\Bnd}{\mathcal B}
+\numberwithin{equation}{section}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{Accent},backgroundcolor=\color{Pale}}
+\begin{document}
+\begin{titlepage}
+\vspace*{0.45in}
+{\color{Accent}\large ANALYTIC ITERATION \enspace / \enspace $q$-SERIES}\par
+\vspace{0.25in}
+{\color{Ink}\Huge\bfseries A Sharp Convergence Theorem\par for the $q$-Newton Series\par of Subcritical Tetration}\par
+\vspace{0.30in}
+{\Large Positive coefficients, boundary behavior,\par and real-variable uniqueness}\par
+\vspace{0.35in}
+{\large Research prepared for Vladimir Reshetnikov}\par
+{\normalsize 19 September 2026}\par
+\vspace{0.35in}
+\begin{tcolorbox}[colback=Pale,colframe=Accent,boxrule=0.6pt,arc=1mm]
+\textbf{Result.} For every $1<a<\ee^{1/\ee}$, the $q$-Newton series proposed in the 2017 MathOverflow question converges absolutely and locally uniformly precisely in $\Ree z>-2$. On $\Ree z=-2$ it converges conditionally except at the periodic logarithmic singularities; on $\Ree z<-2$ its terms fail to tend to zero. The limiting tetration has a strictly completely monotone derivative and is unique even under an eventual log-convexity condition on its deficit from the attracting fixed point.
+\end{tcolorbox}
+\vspace{0.2in}
+\begin{abstract}
+We investigate the explicit $q$-binomial interpolation series for fractional tetration posed by Reshetnikov in 2017. A constructive Koenigs linearization of $g(u)=1-\ee^{-qu}$ produces an inverse $H$ with strictly positive Taylor coefficients. Its exact convergence radius is determined by the orbit of $1$, and its unique dominant singularity is logarithmic. These facts identify the interpolation series with the normalized Schr\"oder tetration, establish complete monotonicity, and yield asymptotics for its divided differences. In particular, the boundary of convergence can be classified completely, including logarithmic divergence of the partial sums at the real boundary point. Two independent uniqueness arguments are supplied: one through compact moment determinacy and one through eventual convexity of the logarithmic deficit. Executable Python code, exact rational identities, high-precision checks, and raw numerical tables accompany the proofs.
+\end{abstract}
+\vfill
+{\small\color{Ink}\textbf{Claim boundary.} This is a proof-bearing research attempt, not a claim of independent peer review or priority. Classical Schr\"oder iteration and earlier positivity arguments are credited. The principal contribution claimed within this report is the fully detailed sharp interpolation theorem and its consequences. No result for base $2$, base $\ee$, the critical base, or arbitrary higher hyperoperations is asserted.}
+\end{titlepage}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{The selected problem and its status}
+
+For a fixed real $a>1$, integer-height tetration is defined by
+\begin{equation}\label{eq:towers}
+ t_{-1}=0,\qquad t_0=1,\qquad t_{n+1}=a^{t_n}\quad(n\geq -1).
+\end{equation}
+The relevant problem is not evaluating a large integer tower. It is determining whether a particular interpolation of these integer samples gives a well-defined analytic fractional-height tower.
+
+Reshetnikov's 2017 MathOverflow question \cite{MO2017} proposed a $q$-binomial series and conjectured convergence in $\Ree z>-2$, complete monotonicity of its derivative, and uniqueness under that condition. Its discussion contains useful Schr\"oder-iteration and interpolation ideas, but the displayed convergence argument is conditional on convergence; a proposed uniqueness proof was subsequently acknowledged to have a gap. The earlier 2016 discussion \cite{MSE2016} already develops the inverse-Schr\"oder positivity approach. We do not claim that approach as new.
+
+The sources were checked on 19 September 2026. No complete proof of the sharp boundary theorem below was located in the examined sources. This is a limited literature-status statement, not a proof that no other publication contains the result. Classical analytic iteration goes back to Koenigs \cite{Koenigs}; we give the needed construction instead of taking global continuation properties for granted.
+
+The narrow research target is therefore:
+\begin{tcolorbox}[colback=Pale,colframe=Accent,title={Selected problem},fonttitle=\bfseries]
+Prove convergence of the specified $q$-Newton series for every subcritical base, identify its sum, and determine whether the proposed half-plane is sharp. Resolve the associated real-variable uniqueness question without the unsupported assertion that a periodic perturbation must destroy complete monotonicity.
+\end{tcolorbox}
+
+\section{Notation and the main results}
+
+\subsection{A multiplier parametrization}
+Throughout the article,
+\begin{equation}\label{eq:param}
+ 0<q<1,\qquad L=\ee^q,\qquad a=\exp(q\ee^{-q}),\qquad
+ \ell=-\log q>0,\qquad K=\frac{L}{q}=\frac1{\log a}.
+\end{equation}
+The map $q\mapsto q\ee^{-q}$ has positive derivative $(1-q)\ee^{-q}$ on $(0,1)$ and range $(0,1/\ee)$. Thus this parametrization covers exactly $1<a<\ee^{1/\ee}$. Moreover, $a^L=L$ and the multiplier of $x\mapsto a^x$ at $L$ is $L\log a=q$.
+
+Set
+\begin{equation}\label{eq:poch}
+ (p;q)_n=\prod_{j=0}^{n-1}(1-pq^j),\qquad
+ (p;q)_\infty=\prod_{j=0}^{\infty}(1-pq^j),
+\end{equation}
+with an empty product equal to $1$. For an arbitrary complex $z$ and a nonnegative integer $n$, define
+\begin{equation}\label{eq:qbin}
+ \qb zn=\frac{\prod_{j=0}^{n-1}(1-q^{z-j})}{(q;q)_n},
+ \qquad q^z=\exp(z\log q).
+\end{equation}
+For integer $0\leq k\leq n$, this agrees with the Gaussian binomial coefficient $(q;q)_n/((q;q)_k(q;q)_{n-k})$.
+
+Define the finite transforms and partial sums
+\begin{align}
+ \beta_n&=\sum_{k=0}^{n}(-1)^{n-k}q^{\binom{n-k}{2}}\qb nk\,t_k,
+ \label{eq:beta}\\
+ P_N(z)&=\sum_{n=0}^{N}\qb zn\,\beta_n.
+ \label{eq:PN}
+\end{align}
+The infinite series always means the outer sum of these finite inner sums. Absolute convergence below refers to that grouped series, not to an arbitrary rearrangement of the triangular array of individual summands.
+
+\begin{theorem}[Sharp interpolation theorem]\label{thm:main}
+For the parameters in \eqref{eq:param}, the following statements hold.
+\begin{enumerate}[label=(\roman*)]
+\item The series $\sum_{n\geq0}\qb zn\beta_n$ converges absolutely and locally uniformly on $\Ree z>-2$ to a holomorphic function $T$ satisfying
+\begin{equation}\label{eq:FE}
+ T(-1)=0,\qquad T(0)=1,\qquad T(z+1)=a^{T(z)}.
+\end{equation}
+\item Its period group is generated by $\tau=2\pi\ii/\ell$. On the boundary $\Ree z=-2$, its only singularities are logarithmic branch points at $-2+k\tau$, $k\in\mathbb Z$. The series converges conditionally at every other boundary point, to the analytic continuation of $T$ there.
+\item At every $z=-2+k\tau$,
+\begin{equation}\label{eq:boundarydiv}
+ P_N(z)=-\frac{\log N}{\log a}+B_q+O(N^{-1})
+\end{equation}
+for a finite real constant $B_q$. If $\Ree z<-2$, the grouped series terms do not tend to zero.
+\item There are strictly positive $d_m$ such that
+\begin{equation}\label{eq:spectralmain}
+ T(z)=L-\sum_{m\geq1}d_m q^{mz},\qquad
+ d_m=\frac{q^{2m}}{m\log a}+O(\sigma^m)
+\end{equation}
+for some $0<\sigma<q^2$ depending on $q$. The series in \eqref{eq:spectralmain} is absolutely convergent on $\Ree z>-2$.
+\item For every integer $j\geq1$ and real $x>-2$,
+\begin{equation}\label{eq:strictCM}
+ (-1)^{j-1}T^{(j)}(x)>0.
+\end{equation}
+In particular, $T'$ is strictly completely monotone.
+\end{enumerate}
+\end{theorem}
+
+The first assertion settles the precise convergence conjecture selected above. The boundary classification and coefficient asymptotics strengthen it. The proof occupies Sections~\ref{sec:koenigs}--\ref{sec:boundary}; complete monotonicity and uniqueness are then consequences of the same positive series.
+
+\begin{theorem}[A weaker uniqueness condition]\label{thm:unique-main}
+Let $S:(-2,\infty)\to\R$ satisfy $S(-1)=0$ and $S(x+1)=a^{S(x)}$ for all $x>-2$. Suppose that, for all sufficiently large $x$, $L-S(x)>0$ and $x\mapsto\log(L-S(x))$ is convex. Then $S(x)=T(x)$ everywhere on $(-2,\infty)$.
+
+Consequently, $T$ is the unique normalized real solution with completely monotone derivative, even if complete monotonicity is imposed only on a sufficiently far-right half-line. Analyticity of a competing solution need not be assumed.
+\end{theorem}
+
+\section{A constructive linearizing coordinate}\label{sec:koenigs}
+
+\subsection{Passing to the deficit}
+The normalized deficit $u=(L-t)/L$ transforms exponentiation into
+\begin{equation}\label{eq:g}
+ g(u)=1-\ee^{-qu}.
+\end{equation}
+Indeed, $L-a^{L(1-u)}=L(1-\ee^{-qu})$. For $u>0$,
+\begin{equation}\label{eq:contract}
+ 0<g(u)<qu,
+\end{equation}
+so $u_n=g^{\circ n}(u)$ tends to zero and $u_n\leq q^n u$. The integer towers have deficits
+\begin{equation}\label{eq:towerdeficit}
+ \frac{L-t_n}{L}=g^{\circ(n+1)}(1)\qquad(n\geq-1).
+\end{equation}
+This also proves directly that $t_n\uparrow L$.
+
+\begin{lemma}[Koenigs limit and explicit tail bounds]\label{lem:phi}
+For every $u\geq0$, the limit
+\begin{equation}\label{eq:philimit}
+ \PhiQ(u)=\lim_{n\to\infty}q^{-n}g^{\circ n}(u)
+\end{equation}
+exists. It is positive for $u>0$, real analytic on $[0,\infty)$, and satisfies
+\begin{equation}\label{eq:phife}
+ \PhiQ(g(u))=q\PhiQ(u),\qquad \PhiQ(0)=0,\qquad \PhiQ'(0)=1.
+\end{equation}
+If $u_n=g^{\circ n}(u)$ and $\phi_n=u_n/q^n$, then
+\begin{equation}\label{eq:phibounds}
+ \phi_n\exp\left(-\frac{q u_n}{2(1-q)}\right)
+ \leq\PhiQ(u)\leq\phi_n.
+\end{equation}
+Furthermore,
+\begin{equation}\label{eq:phiprime}
+ \PhiQ'(u)=\exp\left(-q\sum_{j=0}^{\infty}g^{\circ j}(u)\right)>0.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+By \eqref{eq:contract}, $\phi_n$ is decreasing and nonnegative. For $v\geq0$,
+\[
+ \frac{1-\ee^{-v}}v=\int_0^1\ee^{-tv}\dd t\geq\ee^{-v/2},
+\]
+where the inequality follows from convexity of the exponential, and the ratio is at most $1$. Consequently
+\[
+ 0\leq-\log\frac{g(u_j)}{qu_j}\leq\frac{qu_j}{2}.
+\]
+The sum of these upper bounds is finite because $u_j\leq q^j u$. Multiplying the ratios proves positivity of the limit. Summing only from $j=n$ onward gives \eqref{eq:phibounds}.
+
+For local holomorphy, choose a real number $\eta$ with $q<\eta<\sqrt q$. On a sufficiently small complex disk about zero there is a constant $M$ such that
+\[
+ |g(v)|\leq\eta|v|,\qquad |g(v)-qv|\leq M|v|^2.
+\]
+The differences of the normalized iterates satisfy
+\[
+ \left|\frac{g^{\circ(n+1)}(v)}{q^{n+1}}-
+       \frac{g^{\circ n}(v)}{q^n}\right|
+ \leq \frac{M|v|^2}{q}\left(\frac{\eta^2}{q}\right)^n.
+\]
+Their sum converges normally. Its limit is holomorphic, has derivative $1$ at zero, and satisfies \eqref{eq:phife}. For any fixed positive $u$, a sufficiently large iterate lies in this disk; the identity
+\[
+ \PhiQ(u)=q^{-N}\PhiQ(g^{\circ N}(u))
+\]
+then defines an analytic continuation to a neighborhood of $u$, consistent with the real limit.
+
+Finally, direct differentiation gives
+\[
+ \frac{\dd}{\dd u}\left(q^{-n}g^{\circ n}(u)\right)
+ =\prod_{j=0}^{n-1}\ee^{-qg^{\circ j}(u)}.
+\]
+This converges uniformly on compact real intervals, since the exponent series is bounded there by a geometric series. Passage to the derivative limit proves \eqref{eq:phiprime}.
+\end{proof}
+
+\subsection{The finite endpoint of the coordinate}
+Since $g(u)\to1$ as $u\to\infty$, \eqref{eq:phife} gives
+\begin{equation}\label{eq:R}
+ R:=\lim_{u\to\infty}\PhiQ(u)=\frac{\PhiQ(1)}q\in(0,\infty).
+\end{equation}
+The function $\PhiQ$ is therefore a strictly increasing bijection from $[0,\infty)$ onto $[0,R)$. Write
+\begin{equation}\label{eq:Hdef}
+ H=\PhiQ^{-1},\qquad C=q\PhiQ(1)=q^2R.
+\end{equation}
+The inverse $H$ is real analytic on $[0,R)$, $H'(s)>0$, and $H(s)\to\infty$ as $s\uparrow R$. Its functional equation is
+\begin{equation}\label{eq:Hfe}
+ H(qs)=1-\ee^{-qH(s)},\qquad
+ qH(s)=-\log(1-H(qs)).
+\end{equation}
+Both identities first hold near zero and then on the whole real interval $0\leq s<R$. In particular,
+\begin{equation}\label{eq:Hspecial}
+ H(qR)=1,\qquad H(q^2R)=1-\ee^{-q}.
+\end{equation}
+
+\section{Positive inverse coefficients and the exact radius}\label{sec:positive}
+
+\begin{lemma}[Strict positivity and a quadratic recurrence]\label{lem:coeff}
+The local inverse has a convergent expansion
+\begin{equation}\label{eq:Hseries}
+ H(s)=\sum_{n\geq1}h_ns^n,\qquad h_1=1,
+\end{equation}
+with $h_n>0$ for every $n$. For $n\geq2$,
+\begin{equation}\label{eq:hrec}
+ h_n=\frac{\displaystyle\sum_{j=1}^{n-1}(n-j)h_{n-j}h_jq^j}
+ {n(1-q^{n-1})}.
+\end{equation}
+For example,
+\begin{equation}\label{eq:firstcoeff}
+ h_2=\frac{q}{2(1-q)},\qquad
+ h_3=\frac{q^2(q+2)}{6(1-q)(1-q^2)}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Local existence of the analytic inverse follows from $\PhiQ'(0)=1$. Differentiating the logarithmic identity in \eqref{eq:Hfe} yields
+\[
+ H'(s)(1-H(qs))=H'(qs).
+\]
+The coefficient of $s^{n-1}$ is
+\[
+ n(1-q^{n-1})h_n=\sum_{j=1}^{n-1}(n-j)h_{n-j}h_jq^j.
+\]
+Every denominator is positive. Induction, beginning at $h_1=1$, proves strict positivity and the recurrence.
+\end{proof}
+
+\begin{theorem}[Exact radius]\label{thm:radius}
+The Taylor series \eqref{eq:Hseries} has radius of convergence exactly $R$ from \eqref{eq:R}.
+\end{theorem}
+
+\begin{proof}
+Let its radius be $r>0$. If $r>R$, the power series would be bounded in a neighborhood of $R$, contrary to $H(s)\to\infty$ as $s\uparrow R$. Thus $r\leq R$.
+
+Suppose $r<R$. On the positive interval $[0,r)$ the Taylor series equals the real inverse already constructed. Since $qr<r$, $H(qr)$ is defined by the series; continuity of the real inverse and \eqref{eq:Hfe} imply
+\[
+ H(qr)=1-\ee^{-qH(r)}<1,
+\]
+where $H(r)$ on the right is the finite real inverse value. By continuity, choose $\varepsilon>0$ such that $q(r+\varepsilon)<r$ and $H(q(r+\varepsilon))<1$. Positivity of the coefficients gives
+\[
+ |H(qs)|\leq H(q|s|)<1\qquad(|s|<r+\varepsilon).
+\]
+Hence $-q^{-1}\Log(1-H(qs))$, with the logarithm given by its Taylor series, is holomorphic in that larger disk. It agrees with $H$ near zero, contradicting the definition of $r$. Therefore $r=R$.
+\end{proof}
+
+This argument is worth distinguishing from an unjustified appeal to continuation along the positive axis. Analytic continuation along an interval alone does not determine a Taylor radius. Here positivity controls every point of a complex disk and makes the radius argument valid.
+
+\subsection{Normalization of the fractional tower}
+Define
+\begin{equation}\label{eq:Tconstruct}
+ T(z)=L\bigl(1-H(Cq^z)\bigr),\qquad \Ree z>-2.
+\end{equation}
+The domain is exactly $|Cq^z|<R$, because $C=q^2R$. Equations \eqref{eq:Hspecial} give $T(-1)=0$ and $T(0)=1$. The functional equation follows algebraically:
+\begin{align*}
+ T(z+1)&=L\bigl(1-H(qCq^z)\bigr)
+ =L\exp(-qH(Cq^z))\\
+ &=\exp\bigl(q(1-H(Cq^z))\bigr)=a^{T(z)}.
+\end{align*}
+The identity for $H$ used here holds throughout its disk by the identity theorem. Therefore $T(n)=t_n$ at every integer $n\geq-1$.
+
+Putting $d_m=Lh_mC^m$ proves the positive spectral representation. Equivalently, with
+\begin{equation}\label{eq:bdef}
+ E(v)=H(Rv)=\sum_{m\geq1}b_mv^m,\qquad b_m=h_mR^m>0,
+\end{equation}
+we have the numerically convenient formula
+\begin{equation}\label{eq:Tscaled}
+ T(z)=L\left(1-\sum_{m\geq1}b_m q^{m(z+2)}\right).
+\end{equation}
+
+\section{The dominant logarithmic singularity}\label{sec:singularity}
+
+\begin{theorem}[A logarithm plus an analytic remainder]\label{thm:logsing}
+There exist $R_1>R$ and a function $J$ holomorphic in a neighborhood of the closed disk $|s|\leq R_1$ such that, for $|s|<R$,
+\begin{equation}\label{eq:logsplit}
+ H(s)=-\frac1q\Log(1-s/R)+J(s).
+\end{equation}
+Consequently
+\begin{equation}\label{eq:hasympt}
+ h_m=\frac{1}{qmR^m}+O(R_1^{-m}),\qquad
+ b_m=\frac{1}{qm}+O(\theta^m),\quad \theta=R/R_1<1.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The function $H(qs)$ is holomorphic for $|s|<R/q$. Suppose $H(qs)=1$ for $|s|\leq R$. Positivity gives
+\[
+ 1=|H(qs)|\leq H(q|s|)\leq H(qR)=1.
+\]
+Strict monotonicity forces $|s|=R$. Equality in the triangle inequality forces all terms of $H(qs)$ to have the positive-real argument of their sum. In particular, its nonzero linear and quadratic terms force $s/R=1$. Thus $s=R$ is the only zero of $1-H(qs)$ on the closed disk. It is simple, since
+\[
+ \frac{\dd}{\dd s}(1-H(qs))\big|_{s=R}=-qH'(qR)\neq0.
+\]
+The quotient
+\[
+ G(s)=\frac{1-H(qs)}{1-s/R}
+\]
+therefore extends holomorphically across $R$, with $G(R)=qRH'(qR)>0$, and is nonzero on $|s|\leq R$. Compactness and analyticity provide a slightly larger closed disk, still inside $|s|<R/q$, on a neighborhood of which $G$ is nonzero. Choose $R_1>R$ inside it.
+
+A nonvanishing holomorphic function on a disk has a holomorphic logarithm. Use the one with $\Log G(0)=0$ and set $J(s)=-q^{-1}\Log G(s)$. The logarithmic functional equation proves \eqref{eq:logsplit} near zero, hence throughout $|s|<R$. Cauchy's estimate for the coefficients of $J$ proves \eqref{eq:hasympt}.
+\end{proof}
+
+Multiplying \eqref{eq:hasympt} by $LC^m$ yields
+\begin{equation}\label{eq:dasympt}
+ d_m=K\frac{q^{2m}}m+O\bigl((\theta q^2)^m\bigr).
+\end{equation}
+Thus the leading coefficient asymptotics do not contain the normalization constant $R$. The normalization cancels because the nearest singularity in the variable $w=q^z$ occurs exactly at $w=q^{-2}$.
+
+Write
+\begin{equation}\label{eq:Fdef}
+ F(w)=L(1-H(Cw))=L-\sum_{m\geq1}d_mw^m,
+ \qquad |w|<r_0:=q^{-2}.
+\end{equation}
+The logarithmic decomposition says
+\begin{equation}\label{eq:Flog}
+ F(w)=K\Log(1-q^2w)+L-LJ(Cw).
+\end{equation}
+It follows that $F$ extends holomorphically across every point of $|w|=r_0$ except $w=r_0$; there it has a logarithmic branch point, not a pole. Composition with $q^z$ gives the boundary singularities of $T$ asserted in Theorem~\ref{thm:main}.
+
+The imaginary period $\tau=2\pi\ii/\ell$ is immediate. To see that there are no additional periods, use
+\[
+ T(z)=L-d_1q^z+O(q^{2\Ree z})\quad(\Ree z\to\infty)
+\]
+for a fixed imaginary part. If $p$ is a period wherever both sides are defined, comparison as $z\to+\infty$ gives $q^p=1$, hence $p\in\tau\mathbb Z$.
+
+\section{Why the proposed series is Newton interpolation}\label{sec:newton}
+
+The distinction between a formal transform and a convergent interpolation procedure is essential. We first establish a finite algebraic identity; no infinite-series interchange is involved.
+
+\begin{lemma}[Finite $q$-binomial identity]\label{lem:qbinfinite}
+For every $n\geq0$,
+\begin{equation}\label{eq:qbinfinite}
+ \prod_{j=0}^{n-1}(X-q^j)
+ =\sum_{k=0}^{n}(-1)^{n-k}q^{\binom{n-k}{2}}\qb nk X^k.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The case $n=0$ is $1=1$. Multiplication by $X-q^n$ and comparison of coefficients proves the next case, using the finite-product recurrence for Gaussian binomials. Alternatively, the coefficient of $X^k$ is $(-1)^{n-k}$ times the elementary symmetric function of degree $n-k$ in $1,q,\ldots,q^{n-1}$; its product formula is $q^{\binom{n-k}{2}}\qb n{n-k}$. The same induction proves that formula.
+\end{proof}
+
+Let
+\begin{equation}\label{eq:Bpoly}
+ B_n(w)=\prod_{j=0}^{n-1}(w-q^j),\qquad
+ D_n=B_n(q^n)=(-1)^nq^{\binom n2}(q;q)_n.
+\end{equation}
+Then \eqref{eq:qbin} is exactly
+\begin{equation}\label{eq:basis}
+ \qb zn=\frac{B_n(q^z)}{D_n}.
+\end{equation}
+
+\begin{proposition}[The finite interpolation identity]\label{prop:interpolation}
+The polynomial $\mathcal P_N(w)$ defined by $P_N(z)=\mathcal P_N(q^z)$ is the unique polynomial of degree at most $N$ interpolating $F$ at $1,q,\ldots,q^N$. More precisely,
+\begin{equation}\label{eq:Newton}
+ \mathcal P_N(w)=F(1)+\sum_{n=1}^{N}A_nB_n(w),\qquad
+ A_n=F[1,q,\ldots,q^n]=\frac{\beta_n}{D_n}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+At a node $w=q^j$, \eqref{eq:basis} vanishes for $n>j$ and equals $\qb jn$ otherwise. Substituting \eqref{eq:beta}, the coefficient of $t_k$ in $P_j(j)$ is
+\[
+ \qb jk\sum_{r=0}^{j-k}(-1)^r q^{\binom r2}\qb{j-k}{r}.
+\]
+By \eqref{eq:qbinfinite} at $X=1$, the sum is zero when $j>k$ and one when $j=k$. Here we used the factorial identity $\qb jn\qb nk=\qb jk\qb{j-k}{n-k}$. Thus $P_N(j)=t_j$ for $0\leq j\leq N$. Distinctness of the nodes proves uniqueness of the interpolating polynomial. Its expansion in the monic Newton basis has coefficients equal to the usual divided differences, proving \eqref{eq:Newton}.
+\end{proof}
+
+\begin{remark}
+At $z=j+k\tau$ with $j\in\N\cup\{0\}$, the grouped series terminates after $n=j$. These are the only finite-height terminating points. They must be excluded from nonzero asymptotic-equivalence formulas for the tail.
+\end{remark}
+
+\section{Absolute convergence and quantitative interior bounds}\label{sec:convergence}
+
+\begin{theorem}[Normal convergence in the disk]\label{thm:normal}
+Let $0<r<\rho<r_0$ with $\rho>1$, and let $M_\rho=\max_{|\zeta|=\rho}|F(\zeta)|$. Then, for $|w|\leq r$ and $n\geq1$,
+\begin{equation}\label{eq:termbound}
+ |A_nB_n(w)|\leq
+ M_\rho\frac{(-1/r;q)_\infty}{(1/\rho;q)_\infty}
+ \left(\frac r\rho\right)^n.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:errorbound}
+ |F(w)-\mathcal P_N(w)|\leq
+ \frac{\rho M_\rho}{\rho-r}
+ \frac{(-1/r;q)_\infty}{(1/\rho;q)_\infty}
+ \left(\frac r\rho\right)^{N+1}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The contour formula for divided differences follows from residues at the distinct nodes:
+\[
+ A_n=\frac1{2\pi\ii}\int_{|\zeta|=\rho}
+ \frac{F(\zeta)}{\prod_{j=0}^{n}(\zeta-q^j)}\dd\zeta.
+\]
+On that circle the denominator has absolute value at least
+\[
+ \rho^{n+1}\prod_{j=0}^{n}(1-q^j/\rho)
+ \geq\rho^{n+1}(1/\rho;q)_\infty.
+\]
+Also
+\[
+ |B_n(w)|\leq\prod_{j=0}^{n-1}(r+q^j)
+ \leq r^n(-1/r;q)_\infty.
+\]
+Combining the two bounds gives \eqref{eq:termbound}.
+
+For completeness, the interpolation remainder itself is
+\[
+ F(w)-\mathcal P_N(w)=\frac1{2\pi\ii}\int_{|\zeta|=\rho}
+ \frac{F(\zeta)}{\zeta-w}
+ \prod_{j=0}^{N}\frac{w-q^j}{\zeta-q^j}\dd\zeta.
+\]
+This identity follows by taking the residue at $\zeta=w$ and the residues at the nodes; it extends to nodes by continuity. The same estimates, together with $|\zeta-w|\geq\rho-r$, prove \eqref{eq:errorbound}.
+\end{proof}
+
+For any compact subset of $|w|<r_0$, admissible $r,\rho$ exist. Thus the Newton series converges absolutely and normally to $F$. Since $w=q^z$ maps $\Ree z>-2$ into this disk, Theorem~\ref{thm:main}(i) follows.
+
+The constant $M_\rho$ also admits the positive-series bound
+\[
+ M_\rho\leq L\bigl(1+H(C\rho)\bigr).
+\]
+This is an analytic error estimate. Turning it into a machine-certified numerical bound would additionally require controlled evaluation of $H(C\rho)$ and interval or directed-rounding arithmetic; the supplied floating-point implementation does not claim that certification.
+
+\section{Divided-difference asymptotics and the boundary}\label{sec:boundary}
+
+\subsection{Divided differences of monomials}
+Let $\cH_k(x_0,\ldots,x_n)$ be the complete homogeneous symmetric polynomial, defined by
+\[
+ \sum_{k\geq0}\cH_k(x_0,\ldots,x_n)t^k
+ =\prod_{j=0}^{n}(1-x_jt)^{-1}.
+\]
+For $m\geq n$,
+\begin{equation}\label{eq:monomialdd}
+ [x_0,\ldots,x_n](w^m)=\cH_{m-n}(x_0,\ldots,x_n),
+\end{equation}
+and the divided difference is zero for $m<n$. One proof takes the divided difference of $(1-wt)^{-1}$: partial fractions give $t^n/\prod_j(1-x_jt)$, and coefficients of $t^m$ give \eqref{eq:monomialdd}.
+
+At geometric nodes,
+\begin{equation}\label{eq:homogq}
+ \cH_k(1,q,\ldots,q^n)=\qb{n+k}{k}
+ =\frac{(q^{n+1};q)_k}{(q;q)_k}.
+\end{equation}
+The first equality follows by expanding $\prod_{j=0}^{n}(1-q^jt)^{-1}$; multiplication by $1-q^nt$ proves the formula inductively in $n$. In particular,
+\begin{equation}\label{eq:homogbounds}
+ 0<\cH_k(1,q,\ldots,q^n)\leq\frac1{(q;q)_k}
+ \leq\frac1{(q;q)_\infty}.
+\end{equation}
+
+Applying a finite divided-difference functional to the normally convergent series for $F$ is legitimate, and gives
+\begin{equation}\label{eq:Apositive}
+ A_n=-\sum_{k\geq0}d_{n+k}\qb{n+k}{k}<0\qquad(n\geq1).
+\end{equation}
+In particular, $\operatorname{sgn}\beta_n=(-1)^{n+1}$ for $n\geq1$.
+
+\subsection{The decisive asymptotic estimate}
+\begin{theorem}[Asymptotics of the Newton coefficients]\label{thm:Aasympt}
+For fixed $q\in(0,1)$,
+\begin{equation}\label{eq:Aasympt}
+ A_n=-\frac{K}{(q^2;q)_\infty}\frac{q^{2n}}n
+ +O\left(\frac{q^{2n}}{n^2}\right).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Insert \eqref{eq:dasympt} into \eqref{eq:Apositive}. The exponentially smaller remainder contributes $O(\sigma^n)$ by \eqref{eq:homogbounds}. For the leading part, write
+\[
+ S_n=\sum_{k\geq0}\frac{q^{2k}}{n+k}\frac{(q^{n+1};q)_k}{(q;q)_k}.
+\]
+The elementary inequality $0\leq1-\prod_j(1-x_j)\leq\sum_jx_j$ for $0\leq x_j\leq1$ gives, uniformly in $k$,
+\[
+ 0\leq1-(q^{n+1};q)_k\leq\frac{q^{n+1}}{1-q}.
+\]
+Also $|1/(n+k)-1/n|\leq k/n^2$. Therefore
+\[
+ S_n=\frac1n\sum_{k\geq0}\frac{q^{2k}}{(q;q)_k}
+ +O(n^{-2})+O(q^n/n).
+\]
+Finally,
+\begin{equation}\label{eq:eulerq}
+ \sum_{k\geq0}\frac{t^k}{(q;q)_k}=\frac1{(t;q)_\infty}\qquad(|t|<1).
+\end{equation}
+For a direct proof, the series on the left, say $Q(t)$, satisfies $(1-t)Q(t)=Q(qt)$ by coefficient comparison and $Q(0)=1$. Iterating this relation and using $q^Nt\to0$ gives the infinite product. Taking $t=q^2$ finishes the proof.
+\end{proof}
+
+\begin{corollary}[Asymptotics of an individual grouped term]\label{cor:term}
+For a fixed $w\neq0$ that is not one of $1,q,q^2,\ldots$,
+\begin{equation}\label{eq:termasympt}
+ A_nB_n(w)=
+ -\frac{K(1/w;q)_\infty}{(q^2;q)_\infty}
+ \frac{(q^2w)^n}{n}
+ +O\left(\frac{|q^2w|^n}{n^2}\right).
+\end{equation}
+The constants may depend on $w$ and $q$. The estimate is uniform on compact annuli away from zero, with the evident analytic expression for the leading coefficient.
+\end{corollary}
+\begin{proof}
+Since $B_n(w)=w^n(1/w;q)_n$, and
+\[
+ (1/w;q)_n=(1/w;q)_\infty+O(q^n)
+\]
+on such compact sets, the conclusion follows from \eqref{eq:Aasympt}. The limiting product is nonzero precisely when $w$ is not a geometric interpolation node.
+\end{proof}
+
+\subsection{Exact convergence classification}
+If $|w|>q^{-2}$, the leading coefficient in \eqref{eq:termasympt} is nonzero and the terms grow exponentially in absolute value, up to the factor $1/n$. Thus convergence is impossible.
+
+On $|w|=q^{-2}$, put $\omega=q^2w$. If $\omega\neq1$, the leading series in \eqref{eq:termasympt} is a constant multiple of $\sum_{n\geq1}\omega^n/n$, which converges by summation by parts because its geometric partial sums are bounded and $1/n\downarrow0$. The remainder is absolutely summable. On the other hand,
+\[
+ |A_nB_n(w)|\sim
+ \frac{K|(1/w;q)_\infty|}{(q^2;q)_\infty}\frac1n,
+\]
+so the series is not absolutely convergent.
+
+The boundary sum equals the continuation of $F$. To justify this identification rather than just convergence, apply \eqref{eq:termasympt} on a compact annular neighborhood of the chosen boundary point, intersected with $|w|\leq q^{-2}$. After subtracting its logarithmic leading series, the remainders are uniformly bounded by a summable multiple of $n^{-2}$. The leading series has its continuous radial limit away from $\omega=1$. Thus the full series has the radial limit of $F$, which is its analytic continuation there by \eqref{eq:Flog}.
+
+At $w=q^{-2}$, the product constants cancel, and
+\begin{equation}\label{eq:boundaryterm}
+ A_nB_n(q^{-2})=-\frac Kn+O(n^{-2}).
+\end{equation}
+Consequently the series of differences $A_nB_n(q^{-2})+K/n$ converges absolutely, and
+\[
+ B_q:=1-K\gamma+\sum_{n=1}^{\infty}
+ \left(A_nB_n(q^{-2})+\frac Kn\right)
+\]
+is finite. Here $\gamma$ is Euler's constant. The harmonic-number estimate $\sum_{n=1}^{N}n^{-1}=\log N+\gamma+O(N^{-1})$ and the $O(N^{-1})$ remainder tail prove \eqref{eq:boundarydiv}. This completes the sharp convergence assertions of Theorem~\ref{thm:main}.
+
+\subsection{A sharp interior error equivalent}
+For fixed $w\neq0$ inside the disk, excluding interpolation nodes, let $\omega=q^2w$. Summing \eqref{eq:termasympt} from $n=N+1$ onward yields
+\begin{equation}\label{eq:tailasympt}
+ F(w)-\mathcal P_N(w)\sim
+ -\frac{K(1/w;q)_\infty}{(q^2;q)_\infty}
+ \frac{\omega^{N+1}}{(N+1)(1-\omega)}.
+\end{equation}
+Indeed, $\sum_{n>N}\omega^n/n=\omega^{N+1}/((N+1)(1-\omega))(1+O(N^{-1}))$ for fixed $0<|\omega|<1$, and the remainder is smaller by a factor $O(N^{-1})$. At a node the exact finite interpolation property replaces this nonzero equivalent.
+
+\section{Complete monotonicity and moment structure}\label{sec:CM}
+
+\begin{definition}
+A real $C^\infty$ function $f$ on an interval is completely monotone if $(-1)^jf^{(j)}\geq0$ for every integer $j\geq0$. The adjective ``strict'' means all of these quantities are positive.
+\end{definition}
+
+The positive spectral series can be differentiated termwise on compact subsets of $\Ree z>-2$. For real $x>-2$ and $j\geq1$,
+\begin{equation}\label{eq:derivatives}
+ (-1)^{j-1}T^{(j)}(x)
+ =\sum_{m\geq1}d_m(m\ell)^j\ee^{-m\ell x}>0.
+\end{equation}
+This proves \eqref{eq:strictCM}. The deficit $D(x)=L-T(x)$ is itself strictly completely monotone, with the explicit discrete Laplace representation
+\begin{equation}\label{eq:laplace}
+ D(x)=\int_0^\infty\ee^{-xs}\dd\mu(s),\qquad
+ \mu=\sum_{m\geq1}d_m\delta_{m\ell}.
+\end{equation}
+The integral is finite exactly when $x>-2$. On $x\geq0$, $\mu$ is a finite measure of total mass $L-1$.
+
+\subsection{Strict log-convexity}
+An immediate computation gives
+\begin{equation}\label{eq:logconvex}
+ D(x)D''(x)-D'(x)^2
+ =\frac12\sum_{m,n\geq1}d_md_n(m-n)^2\ell^2
+ \ee^{-(m+n)\ell x}>0.
+\end{equation}
+Thus $\log D$ is strictly convex. Strictness follows, for example, from the terms $(m,n)=(1,2)$ and $(2,1)$. The same argument applies to every alternating derivative of $D$, including $T'$.
+
+\subsection{The integer samples are compact moments}
+Let $\delta_n=L-t_n$ for $n\geq0$. Then
+\begin{equation}\label{eq:moments}
+ \delta_n=\sum_{m\geq1}d_m(q^m)^n.
+\end{equation}
+These are moments of a positive finite measure on $[0,1]$, supported at $q,q^2,\ldots$. In particular,
+\begin{equation}\label{eq:differences}
+ (-1)^r\Delta^r\delta_n
+ =\sum_{m\geq1}d_m(1-q^m)^r(q^m)^n>0
+\end{equation}
+for all nonnegative integers $r,n$. The increments $t_{n+1}-t_n$ have the same property, with weights $d_m(1-q^m)$. This supplies the discrete complete-monotonicity conclusion considered in \cite{MSE2016}, with its representing measure made explicit.
+
+\section{Two rigorous uniqueness arguments}\label{sec:unique}
+
+\subsection{Uniqueness from compact moment determinacy}
+We use the Bernstein representation theorem: a completely monotone function $f$ on $(0,\infty)$ that has a finite limit at zero is the Laplace transform of a unique finite positive measure on $[0,\infty)$. This classical theorem is stated here with its finiteness hypothesis; see \cite{BernsteinBook}, Chapter~1. Only this subsection needs that representation theorem. The stronger dynamical uniqueness proof in the next subsection does not.
+
+\begin{lemma}[Integer samples determine a finite Laplace transform]\label{lem:momunique}
+If two completely monotone functions $f,g$ on $(0,\infty)$ are continuous at $0$ and satisfy $f(n)=g(n)$ for every nonnegative integer $n$, then $f(x)=g(x)$ for every $x\geq0$.
+\end{lemma}
+\begin{proof}
+Write their finite Laplace measures and push them forward by $s\mapsto r=\ee^{-s}$. Regard the resulting measures as finite measures on $[0,1]$ with zero mass added at $0$. Equality at every integer says that all moments $\int r^n\dd\nu$ agree, including total mass at $n=0$. Hence the integrals of every polynomial agree. Polynomials are uniformly dense in $C([0,1])$, so the integrals of every continuous function agree, and the finite measures are equal. Integrating $r^x$ proves the result for $x>0$; $x=0$ was already included.
+\end{proof}
+
+Now let $S$ be a normalized real solution with $S'$ completely monotone on a tail. Choose an integer $M$ in that tail. Monotonicity gives
+\[
+ t_n=S(n)\leq S(x)\leq S(n+1)=t_{n+1}\qquad(n\leq x\leq n+1,\ n\geq M),
+\]
+so $S(x)\to L$. The deficit $L-S(x)$ is nonnegative on the tail, and its derivative signs show it is completely monotone there. Apply Lemma~\ref{lem:momunique} to $L-S(M+x)$ and $L-T(M+x)$. Their integer samples agree. Therefore $S=T$ on a half-line. For any earlier $x>-2$, choose an integer $j$ with $x+j$ in that half-line. Since $y\mapsto a^y$ is injective on $\R$, equality at $x+j$ can be pulled backward $j$ times, yielding $S(x)=T(x)$.
+
+This proof avoids both an unproved assertion about periodic factors and any assumption that composition with a monotone function must preserve failure of complete monotonicity.
+
+\subsection{Uniqueness from eventual log-convexity alone}
+We now prove Theorem~\ref{thm:unique-main} directly.
+
+\begin{lemma}[Convex functions between convergent integer samples]\label{lem:convex}
+If a real convex function $h$ is defined on a half-line and $h(n)\to c$ along integers, then $h(x)\to c$ as $x\to\infty$, uniformly between consecutive integers.
+\end{lemma}
+\begin{proof}
+For $n\leq x\leq n+1$, convexity and monotonicity of secant slopes give
+\[
+ h(n)+(x-n)(h(n)-h(n-1))\leq h(x)
+ \leq(1-x+n)h(n)+(x-n)h(n+1).
+\]
+Both bounds converge uniformly to $c$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:unique-main}]
+On the prescribed tail put $U(x)=(L-S(x))/L>0$. The functional equation becomes $U(x+1)=g(U(x))$, while normalization forces the integer samples in \eqref{eq:towerdeficit}. By \eqref{eq:phife},
+\[
+ \PhiQ(U(n))=q^{n+1}\PhiQ(1)=Cq^n.
+\]
+Since $\PhiQ(u)/u\to1$ at zero, $U(n)/q^n\to C$. The function
+\[
+ h(x)=\log U(x)-x\log q
+\]
+is convex on a half-line and $h(n)\to\log C$. Lemma~\ref{lem:convex} therefore gives
+\begin{equation}\label{eq:asymptphase}
+ U(x)\sim Cq^x\qquad(x\to\infty).
+\end{equation}
+For a fixed $x$ in that tail and integers $j\to\infty$,
+\[
+ \PhiQ(U(x))=q^{-j}\PhiQ(U(x+j))
+ \longrightarrow Cq^x.
+\]
+The expression on the left is independent of $j$, so it equals $Cq^x$. Injectivity of $\PhiQ$ gives $U(x)=H(Cq^x)$, hence $S(x)=T(x)$ on the tail. Backward injectivity of exponentiation gives equality everywhere.
+
+The constructed $T$ satisfies the hypothesis by \eqref{eq:logconvex}. A completely monotone positive deficit is log-convex by its Laplace representation and Cauchy--Schwarz, so the stated consequence follows as well; the preceding subsection already proves it independently.
+\end{proof}
+
+\section{Consequences for ordinary and fractional towers}\label{sec:consequences}
+
+\subsection{All-orders large-height expansions}
+The spectral representation is a convergent series in $q^z$, not merely a formal asymptotic expansion. For every fixed $M\geq1$,
+\begin{equation}\label{eq:heightasympt}
+ L-T(x)=\sum_{m=1}^{M}d_mq^{mx}+O(q^{(M+1)x})
+ \qquad(x\to+\infty).
+\end{equation}
+In particular,
+\begin{equation}\label{eq:logheight}
+ \log(L-T(x))=x\log q+\log(LC)
+ +\frac{qC}{2(1-q)}q^x+O(q^{2x}).
+\end{equation}
+The leading constant has the convergent product representation
+\begin{equation}\label{eq:Cproduct}
+ C=q\prod_{j=0}^{\infty}\frac{1-\ee^{-qu_j}}{qu_j},
+ \qquad u_0=1,\quad u_{j+1}=1-\ee^{-qu_j}.
+\end{equation}
+The tail enclosure \eqref{eq:phibounds} makes this representation effective. A related large-height error estimate was asked in \cite{MSE2014}; \eqref{eq:logheight} gives it with the exact geometric scale and a next correction term.
+
+\subsection{Behavior at the first real singularity}
+Since $T(-1)=0$ and $T'(-1)>0$, the functional equation gives, for $\varepsilon\downarrow0$,
+\begin{equation}\label{eq:realboundary}
+ T(-2+\varepsilon)
+ =\frac{\log\varepsilon+\log T'(-1)}{\log a}+O(\varepsilon).
+\end{equation}
+This is the continuous counterpart of the logarithmic growth of $-P_N(-2)$ in \eqref{eq:boundarydiv}. The common coefficient $1/\log a$ is forced by one backward logarithm.
+
+\subsection{An inverse-height formula}
+On the real interval $(-2,\infty)$, $T$ increases from $-\infty$ to $L$. Consequently it has a real inverse on $(-\infty,L)$. From the construction,
+\begin{equation}\label{eq:inverse}
+ T^{-1}(y)=\frac{\log\left(\PhiQ((L-y)/L)/C\right)}{\log q},
+ \qquad y<L.
+\end{equation}
+There is no branch ambiguity in this real formula: both the numerator's argument and $C$ are positive. This inverse gives a compatible real fractional iteration of exponentiation: $f^{\circ t}(y)=T(T^{-1}(y)+t)$ whenever $y<L$ and $T^{-1}(y)+t>-2$. In particular, all nonnegative iteration times are allowed on $(-\infty,L)$.
+
+\subsection{Higher-order coefficient asymptotics}
+The proof of Theorem~\ref{thm:Aasympt} yields a full expansion. Define
+\[
+ M_j=\sum_{k\geq0}\frac{k^j q^{2k}}{(q;q)_k},\qquad j\geq0,
+\]
+where $0^0=1$ for $j=0$. All sums converge. For every fixed integer $p\geq1$,
+\begin{equation}\label{eq:Aallorders}
+ A_n=-Kq^{2n}\left(\sum_{j=0}^{p-1}\frac{(-1)^jM_j}{n^{j+1}}
+ +O(n^{-p-1})\right).
+\end{equation}
+To prove this, use the finite expansion of $1/(n+k)$ with remainder bounded by $k^p/n^{p+1}$ and the exponentially small bound for $1-(q^{n+1};q)_k$. The exponentially smaller spectral remainder can be absorbed into every displayed algebraic order. Thus $M_0=(q^2;q)_\infty^{-1}$ and
+\[
+ M_1=\frac1{(q^2;q)_\infty}\sum_{j=0}^{\infty}\frac{q^{j+2}}{1-q^{j+2}}.
+\]
+The last identity follows by logarithmically differentiating \eqref{eq:eulerq}. It can improve boundary acceleration without changing the exact convergence classification.
+
+\section{Reproducible computations}\label{sec:computations}
+
+\subsection{What is implemented}
+The accompanying Python module uses \texttt{mpmath}. It computes a numerical Koenigs enclosure from \eqref{eq:phibounds}; obtains $R$; and generates $b_n=h_nR^n$ by the positive quadratic recurrence
+\begin{equation}\label{eq:brec}
+ b_1=R,\qquad
+ b_n=\frac{\sum_{j=1}^{n-1}(n-j)b_{n-j}b_jq^j}{n(1-q^{n-1})}.
+\end{equation}
+The arithmetic-operation count for $M$ coefficients is $O(M^2)$, with $O(M)$ stored coefficients. This count is not a bit-complexity claim; the cost of high-precision operations is additional. Convergence is not uniform as $q\uparrow1$, and both iteration counts and numerical conditioning worsen there.
+
+For Newton evaluation the module avoids forming very small $A_n$ followed by very large products. It computes the scaled positive sum
+\begin{equation}\label{eq:scaledA}
+ \frac{A_n}{q^{2n}}=-L\sum_{k\geq0}b_{n+k}q^{2k}\qb{n+k}{k}
+\end{equation}
+and then multiplies by $(q^{z+2})^n(q^{-z};q)_n$. The included routine for the original double sum is deliberately separate and cancellation-prone; it is used only for independent comparisons at moderate orders.
+
+\subsection{Numerical samples}
+The test run used 110 decimal digits, 700 spectral coefficients, and a Koenigs relative truncation target of $10^{-95}$. The original double sum was separately recomputed with 420 decimal digits. Rounded samples are:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+$q$ & $a$ & $T(1/2)$\\
+\midrule
+$1/2$ & $1.35427374603456278227$ & $1.21589633461259631925$\\
+$\log2$ & $\sqrt2$ & $1.24362162766852180430$\\
+$0.9$ & $1.44182935646886517166$ & $1.25590667042116959776$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These decimal values are experimental evaluations, not interval-certified digits. The proofs do not depend on them.
+
+For $z=1/2$, the observed absolute differences between the $N$th Newton partial sum and the 700-term high-precision spectral reference are:
+\begin{center}
+\begin{tabular}{@{}rlll@{}}
+\toprule
+$N$ & $q=1/2$ & $q=\log2$ & $q=0.9$\\
+\midrule
+4 & $1.2131\times10^{-5}$ & $2.0306\times10^{-4}$ & $1.4003\times10^{-3}$ \\
+8 & $6.4917\times10^{-9}$ & $2.4353\times10^{-6}$ & $1.3916\times10^{-4}$ \\
+16 & $3.3763\times10^{-15}$ & $8.6564\times10^{-10}$ & $5.7503\times10^{-6}$ \\
+32 & $1.6146\times10^{-27}$ & $2.0400\times10^{-16}$ & $3.9650\times10^{-8}$ \\
+64 & $6.8586\times10^{-52}$ & $1.9871\times10^{-29}$ & $4.9860\times10^{-12}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The fixed-$z$ prediction is an error of order $q^{(z+2)(N+1)}/(N+1)$ times the explicit factor in \eqref{eq:tailasympt}. At sufficiently large $N$ the numerical normalization error or spectral truncation error dominates; for instance, the $q=1/2$, $N=128$ run reaches approximately $3.84\times10^{-96}$ rather than resolving the still smaller exact interpolation error.
+
+The coefficient asymptotics predict
+\[
+ qnb_n\longrightarrow1,\qquad
+ -\frac{nA_n(q^2;q)_\infty}{Kq^{2n}}\longrightarrow1.
+\]
+For $q=1/2$, the second normalized quantity was approximately
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$n$ & $32$ & $64$ & $128$ & $256$\\
+\midrule
+Normalized coefficient & $0.9820521754$ & $0.9907821528$ & $0.9953268255$ & $0.9976469089$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The slower $1/n$ approach in this quantity is expected; the spectral coefficient ratio $qnb_n$ has exponentially small asymptotic error.
+
+\subsection{Boundary behavior}
+For $q=1/2$, the renormalized partial sums at the real singularity illustrate \eqref{eq:boundarydiv}:
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$N$ & $P_N(-2)$ & $P_N(-2)+K\log N$\\
+\midrule
+$32$ & $-10.3179800503$ & $1.1100849528$\\
+$64$ & $-12.5487235554$ & $1.1649544484$\\
+$128$ & $-14.8063794798$ & $1.1929115247$\\
+$256$ & $-17.0778777551$ & $1.2070262500$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Conditional convergence at nonreal boundary points can have a very large prefactor when $q$ is close to $1$, because $(q^2;q)_\infty$ can be small. Large finite partial sums there do not contradict eventual convergence. The raw boundary data include such behavior at $q=0.9$ rather than silently omitting it.
+
+\subsection{Checks performed and what they establish}
+The verification script completed 58 aggregate checks. They include 312 exact rational instances of the monomial $q$-Newton identity, using $q=1/2,2/3,3/4$; positivity of 700 spectral coefficients for each numerical base; negativity of 256 Newton coefficients; 12 functional-equation comparisons; 24 derivative-sign checks; and 12 independent comparisons with the original double sum at $N=4,8,16,24$.
+
+The exact rational identities test algebra without roundoff. The other checks are numerical consistency tests. Neither kind substitutes for the arguments for all $n$, all complex heights in the stated domain, or all $q\in(0,1)$. All recorded comparisons passed; the raw values and environment information are in \texttt{data/verification.json}.
+
+\subsection{Cancellation in the original formula}
+The inner transform $\beta_n$ is an alternating sum of quantities of ordinary size, whereas
+\begin{equation}\label{eq:betascale}
+ \beta_n=D_nA_n
+ \sim(-1)^{n+1}K(1-q)\frac{q^{n(n-1)/2+2n}}n.
+\end{equation}
+Here $(q;q)_\infty/(q^2;q)_\infty=1-q$. Thus roughly $\tfrac12n^2\log_{10}(1/q)$ decimal digits can be lost before the outer basis factor restores the scale. A fixed ordinary machine precision is therefore inappropriate for evaluating large truncations of the double sum. The positive scaled method avoids this particular cancellation, though it is still subject to truncation and roundoff errors.
+
+\section{Scope, limitations, and next research questions}
+
+The report establishes convergence, sharp boundary behavior, complete monotonicity, and uniqueness for the \emph{subcritical real-base} family. It does not settle every proposal for fractional tetration. In particular, $a=2$ and $a=\ee$ are outside the range, and the critical endpoint $a=\ee^{1/\ee}$ corresponds to $q=1$, where the construction's geometric estimates and coefficient denominators degenerate.
+
+The global continuation problem also remains distinct. We have proved the location and type of singularities on the first boundary line, and continuation across its other points. We have not proved a classification of every branch point on every sheet obtained by repeated logarithms. Accordingly, the full global-singularity assertion in the original discussion is not claimed here.
+
+Several precise follow-on questions arise from the proved formulas. The first is a uniform transition theory as $q\uparrow1$: the geometric scale $q^{z+2}$ should be matched to a parabolic scaling, but that requires estimates uniform in $q$, not simply substitution of $q=1$. The second is a global description of zeros of $1-H(qs)$ beyond the first zero-free disk and their effect on continuation. The third is an interval-certified implementation of the positive recurrences and interpolation remainder, including practical bounds for finite spectral tails near the boundary. These are additional research directions, not missing hypotheses in the theorems proved above.
+
+\section{Conclusion}
+
+The proposed $q$-series is best understood as ordinary Newton interpolation in the variable $w=q^z$. That observation becomes a proof only after the analytic target and its convergence radius have been constructed. The positive inverse of a contracting deficit map supplies both. Its nearest singularity is a single logarithm; this controls the spectral coefficients, the divided differences, the exact half-plane of convergence, and the boundary divergence constant.
+
+The uniqueness issue has a similarly direct resolution. Complete monotonicity turns integer samples into determinate compact moments, while a still weaker eventual log-convexity condition eliminates the possible asymptotic phase freedom through convexity and the Koenigs coordinate. Neither argument requires an unproved principle about periodic perturbations.
+
+The resulting theorem is deliberately specific: a complete analytic treatment of the subcritical $q$-Newton tetration series, with a sharp boundary theorem and reproducible computational checks. Its relationship to earlier work and the limits of the novelty search are stated separately from the mathematical proof.
+
+\appendix
+\section{A compact dependency guide}
+The logical sequence is
+\[
+\begin{gathered}
+ \text{contracting deficit map}
+ \;\Longrightarrow\;\PhiQ
+ \;\Longrightarrow\;H\text{ with positive coefficients}\\
+ \;\Longrightarrow\;\text{exact radius and logarithm}
+ \;\Longrightarrow\;\text{Newton coefficient asymptotics}.
+\end{gathered}
+\]
+The convergence theorem does not depend on the uniqueness theorem. The positivity and exact-radius arguments do not depend on numerical data. The eventual log-convexity uniqueness proof does not depend on the Bernstein representation theorem. The general Bernstein theorem is used only for the alternative moment proof and for a convenient general implication from complete monotonicity to log-convexity.
+
+\section{Running the accompanying code}
+From the extracted archive directory:
+\begin{lstlisting}
+python -m pip install -r code/requirements.txt
+python code/verify.py
+\end{lstlisting}
+An example evaluation is:
+\begin{lstlisting}[language=Python]
+import sys
+sys.path.insert(0, "code")
+from mpmath import mp
+from tetration import TetrationModel
+
+mp.dps = 100
+model = TetrationModel.build(mp.log(2), terms=500)
+print(model.evaluate(mp.mpf("0.5")))
+# Approximately 1.2436216276685218042950989836094029
+\end{lstlisting}
+The number of terms is an explicit user-controlled truncation, not an automatic error guarantee. Increase both working precision and the number of coefficients when testing accuracy. \texttt{evaluate} rejects $\Ree z\leq-2$, because its positive power-series formula does not converge there. \texttt{newton\_partial\_sums}, by contrast, evaluates a finite polynomial and is allowed on the boundary and outside it; returning a finite polynomial value there is not a claim that the infinite series converges.
+
+To rebuild the article, run \texttt{./build.sh}. The bibliography and numerical table are embedded in this standalone source. No network access is required to compile the PDF once a normal LaTeX installation with the listed packages is available.
+
+\begin{thebibliography}{9}
+\bibitem{MO2017}
+V. Reshetnikov,
+\emph{An explicit series representation for the analytic tetration with complex height},
+MathOverflow, question 259278, 10 January 2017, with answers and comments.
+\url{https://mathoverflow.net/questions/259278/}.
+Accessed 19 September 2026.
+
+\bibitem{MSE2016}
+V. Reshetnikov, with answers by Sheldon L and comments by G. Helms,
+\emph{Complete monotonicity of a sequence related to tetration},
+Mathematics Stack Exchange, question 1987944, 27 October 2016.
+\url{https://math.stackexchange.com/questions/1987944/}.
+Accessed 19 September 2026.
+
+\bibitem{Koenigs}
+G. Koenigs,
+\emph{Recherches sur les int\'egrales de certaines \'equations fonctionnelles},
+Annales scientifiques de l'\'Ecole Normale Sup\'erieure, series 3, volume 1 (1884), supplement, 3--41.
+DOI: \href{https://doi.org/10.24033/asens.247}{10.24033/asens.247}.
+\url{https://www.numdam.org/item/ASENS_1884_3_1__S3_0/}.
+
+\bibitem{BernsteinBook}
+R. L. Schilling, R. Song, and Z. Vondra\v{c}ek,
+\emph{Bernstein Functions: Theory and Applications},
+second revised and extended edition, De Gruyter Studies in Mathematics 37,
+De Gruyter, 2012. See Chapter 1 for the Bernstein representation theorem.
+Authors' book page:
+\url{https://www.motapa.de/bernstein_functions/}.
+
+\bibitem{MSE2014}
+V. Reshetnikov,
+\emph{Convergence of power towers},
+Mathematics Stack Exchange, question 800862, 18 May 2014, with answers and comments.
+\url{https://math.stackexchange.com/questions/800862/}.
+Accessed 19 September 2026.
+\end{thebibliography}
+\end{document}

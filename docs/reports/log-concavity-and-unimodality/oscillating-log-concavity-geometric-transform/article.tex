@@ -1,0 +1,1310 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{newtxtext}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxmath}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem,fancyhdr,titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\definecolor{OliveInk}{HTML}{49523A}
+\definecolor{WarmPaper}{HTML}{F4F3EA}
+\definecolor{RuleGray}{HTML}{B7B9A8}
+\hypersetup{colorlinks=true,linkcolor=OliveInk,citecolor=OliveInk,urlcolor=OliveInk,
+ pdftitle={Oscillating Log-Concavity in Geometric Generating Functions},
+ pdfauthor={Research manuscript prepared with ChatGPT},
+ pdfsubject={Heim--Neuhauser Challenges 2 and 3; INVERT transform; Lambert series}}
+\urlstyle{same}
+\titleformat{\section}{\large\bfseries\color{OliveInk}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{OliveInk}}{\thesubsection}{0.7em}{}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt minus 1pt}
+\setlength{\emergencystretch}{2em}
+\linespread{1.035}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{OliveInk}Oscillating log-concavity}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Delt}{\Delta}
+\newcommand{\sig}{\sigma}
+\newcommand{\ii}{\mathrm i}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\DeclareMathOperator{\disc}{disc}
+\DeclareMathOperator{\Gal}{Gal}
+\newtcolorbox{summarybox}{enhanced,breakable,colback=WarmPaper,colframe=RuleGray,
+ boxrule=0.5pt,arc=1.5pt,left=9pt,right=9pt,top=7pt,bottom=7pt}
+\setlist{nosep,leftmargin=1.8em,topsep=4pt}
+\numberwithin{equation}{section}
+
+\title{\vspace{-1.5em}\color{OliveInk}\textbf{Oscillating Log-Concavity in\\Geometric Generating Functions}\\[0.6em]
+\large Two Heim--Neuhauser challenges, a general pole criterion,\\
+and the INVERT transform of squares}
+\author{\normalsize A research manuscript prepared for Vladimir Reshetnikov}
+\date{19 September 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+Heim and Neuhauser asked whether the geometric transforms of the square
+sequence and of each divisor-sum sequence have infinitely many failures of
+log-concavity. We prove both assertions, in stronger forms. A general
+meromorphic criterion shows that, after a unique positive dominant pole,
+a first subdominant circle containing no positive real pole forces both
+signs of the adjacent Tur\'an determinant to occur with bounded gaps.
+For divisor weights, a parity identity and elementary radial asymptotics
+produce a negative pole inside the unit disk. This proves the conclusion
+for every real divisor exponent and every positive composition weight.
+For integer power weights, Eulerian-polynomial reciprocity gives a complete
+qualitative classification: exponents zero and one are eventually
+log-linear and strictly log-concave, respectively, whereas every exponent
+at least two exhibits both signs with bounded gaps.
+
+For square weights, the determinant itself satisfies a third-order integer
+recurrence. We prove that it never vanishes, that every four consecutive
+indices contain both signs, and that each sign has density one-half within
+every arithmetic progression. The density proof uses an irrational root
+angle certified by the Galois group of a cubic of discriminant $-107$.
+The archive includes a dependency-free exact-arithmetic verification program,
+100,000 computed signs, and rational certificates for sample Lambert-series
+inequalities. No finite computation is used to justify an infinite conclusion.
+\end{abstract}
+
+\begin{summarybox}
+\textbf{Proven statements and bibliographical status.}
+The targets are precisely Challenges 2 and 3 in Section 3 of
+\cite{HN23}, arXiv:2302.13327v1, dated 26 February 2023.
+That version and its challenge page were inspected directly. A targeted
+search on 19 September 2026 did not locate a prior resolution; this is not
+an exhaustive certification of priority. The manuscript supplies complete
+arguments for the stated assertions, but has not undergone independent
+peer review or formal proof-assistant verification. The known generating
+function and recurrence of OEIS A033453 are explicitly credited rather
+than presented as new.
+\end{summarybox}
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The questions and the resulting theorems}
+\label{sec:questions}
+
+For a positive sequence $(a_n)_{n\ge0}$, write
+\begin{equation}\label{eq:delta}
+\Delt_n=a_n^2-a_{n-1}a_{n+1}\qquad(n\ge1).
+\end{equation}
+Thus $\Delt_n>0$ means strict log-concavity at $n$, while $\Delt_n<0$
+means strict log-convexity there. Following the terminology of
+Heim and Neuhauser, a negative determinant is an \emph{exception} to
+log-concavity. Their two geometric families are
+\begin{align}
+\sum_{n\ge0}q^{\psi_d}(n)z^n
+ &=\frac{1}{1-\sum_{k\ge1}k^d z^k},\label{eq:original-power}\\
+\sum_{n\ge0}q^{\sig_d}(n)z^n
+ &=\frac{1}{1-\sum_{k\ge1}\sig_d(k)z^k},
+ &\sig_d(k)&=\sum_{\ell\mid k}\ell^d.\label{eq:original-divisor}
+\end{align}
+The constant coefficient in both definitions is $1$.
+
+Challenge 2 of \cite{HN23} predicts infinitely many exceptions and
+non-exceptions for $q^{\psi_2}$. Challenge 3 predicts infinitely many
+exceptions for $q^{\sig_d}$, for every integer $d\ge0$.
+These are questions with $d$ fixed and $n$ tending to infinity. They differ
+from the main large-$d$, fixed-$n$ results in that paper. We do not address
+the separate exponential/product-generating-function Challenge 1.
+
+It is useful to retain an additional positive parameter $u$. Set
+\begin{align}
+A^\psi_{d,u}(z)&=\frac{1}{1-u\sum_{k\ge1}k^d z^k},
+ &a^\psi_{d,u}(n)&=[z^n]A^\psi_{d,u}(z),\label{eq:power-family}\\
+A^\sig_{s,u}(z)&=\frac{1}{1-u\sum_{k\ge1}\sig_s(k)z^k},
+ &a^\sig_{s,u}(n)&=[z^n]A^\sig_{s,u}(z),\label{eq:divisor-family}
+\end{align}
+where $d$ is a nonnegative integer, $s$ may be any real number, and $u>0$.
+The use of a positive parameter in this type of geometric transform is
+already part of the framework in \cite{HN21}. For integer $s=d\ge0$ and
+integer $u>0$, these are integer sequences with a colored-composition
+interpretation. Allowing real $s$ or $u$ gives positive real sequences.
+
+\begin{definition}
+A set $S\subseteq\N$ has \emph{eventually bounded gaps} if there are integers
+$N,L\ge1$ such that each block $\{n,n+1,\ldots,n+L-1\}$ with $n\ge N$
+contains an element of $S$.
+\end{definition}
+This is stronger than infinitude, and it implies positive lower natural
+density. The constants $N,L$ below are allowed to depend on the fixed
+parameters; no uniformity in $d,s,u$ is asserted.
+
+\begin{theorem}[Divisor weights]\label{thm:divisor-main}
+For every $s\in\R$ and $u>0$, the sequence $a^\sig_{s,u}(n)$ has strict
+log-concavity and strict log-convexity at sets of indices that both have
+eventually bounded gaps. In particular, Challenge 3 of \cite{HN23} holds
+for every $d\ge0$, and infinitely many strict non-exceptions occur as well.
+\end{theorem}
+
+\begin{theorem}[Classification for integer power weights]\label{thm:power-main}
+For $u>0$, let $\Delt_n$ be the determinant of $a^\psi_{d,u}(n)$.
+Then
+\begin{equation}\label{eq:classification}
+\begin{array}{c|c|c}
+ d & \Delt_1 & \text{behavior for }n\ge2\\ \hline
+ 0 & -u & \Delt_n=0\\
+ 1 & -2u & \Delt_n=u^2\\
+ d\ge2 & -u\,2^d & \text{both strict signs have eventually bounded gaps.}
+\end{array}
+\end{equation}
+Consequently, Challenge 2 holds, and its infinitude conclusion extends
+to every integer power exponent $d\ge2$ and every $u>0$.
+\end{theorem}
+The entry $\Delt_1=-u2^d$ follows directly from
+$a_0=1$, $a_1=u$, and $a_2=u^2+u2^d$.
+
+\begin{theorem}[Sharp square-weighted conclusions]\label{thm:square-main}
+Let $a_n=a^\psi_{2,1}(n)$ and define $\Delt_n$ by \eqref{eq:delta}.
+Then:
+\begin{enumerate}[label=(\roman*)]
+\item $\Delt_1=-4$, and $\Delt_n$ is odd for every $n\ge2$.
+In particular, equality never occurs.
+\item Every four consecutive positive indices contain both a positive
+and a negative determinant. Runs of three of either sign do occur, so
+this four-index block length is optimal.
+\item For every modulus $m\ge1$ and residue class $r\pmod m$, each strict
+sign has relative natural density $1/2$ among the positive indices in
+that class. Equivalently,
+\begin{equation}\label{eq:AP-density}
+\lim_{X\to\infty}\frac{1}{X}
+ \#\{1\le n\le X:n\equiv r\pmod m,\ \Delt_n>0\}
+ =\frac{1}{2m},
+\end{equation}
+and the same limit holds with $\Delt_n<0$.
+\end{enumerate}
+The sign sequence is not eventually periodic.
+\end{theorem}
+
+Theorems \ref{thm:divisor-main} and \ref{thm:power-main} are proved in
+Sections \ref{sec:lambert} and \ref{sec:power}, using the general analytic
+criterion of Section \ref{sec:criterion}. The stronger square-case
+statements occupy Section \ref{sec:squares}.
+
+\section{Geometric transforms and the dominant pole}
+\label{sec:framework}
+
+Let
+\begin{equation}\label{eq:general-transform}
+G(z)=\sum_{k\ge1}g_kz^k,\qquad
+A(z)=\frac{1}{1-uG(z)}=\sum_{n\ge0}a_nz^n,
+\end{equation}
+where all $g_k>0$ and $u>0$. Comparing coefficients in
+$(1-uG)A=1$ gives the exact convolution recurrence
+\begin{equation}\label{eq:convolution}
+a_0=1,\qquad a_n=u\sum_{k=1}^n g_ka_{n-k}\quad(n\ge1).
+\end{equation}
+Alternatively, expanding $A=\sum_{j\ge0}u^jG^j$ gives
+\begin{equation}\label{eq:compositions}
+a_n=\sum_{\substack{k_1+\cdots+k_j=n\\j\ge1,\ k_i\ge1}}
+ u^j\prod_{i=1}^j g_{k_i}\qquad(n\ge1).
+\end{equation}
+For integer weights, a part of size $k$ has $g_k$ possible colors, with
+an additional $u$ choices per part. Formula \eqref{eq:compositions} also
+makes positivity transparent.
+
+\begin{lemma}[Unique positive dominant pole]\label{lem:dominant}
+Suppose $G$ is analytic in $|z|<b$ and $G(x)\to+\infty$ as $x\uparrow b$,
+where $0<b<\infty$. There is a unique $\rho\in(0,b)$ with
+$uG(\rho)=1$. The function $A$ is meromorphic in $|z|<b$, and its only
+pole in $|z|\le\rho$ is the simple pole at $\rho$. Its principal part can
+be written
+\begin{equation}\label{eq:C}
+\frac{C}{1-z/\rho},\qquad C=\frac{1}{u\rho G'(\rho)}>0.
+\end{equation}
+In particular, for some $r>\rho$,
+\begin{equation}\label{eq:dominant-asymptotic}
+a_n=C\rho^{-n}+O(r^{-n}),\qquad
+\rho^na_n\longrightarrow C,\qquad
+\frac{a_n}{a_{n-1}}\longrightarrow\rho^{-1}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Strict positivity of the coefficients makes $G(x)$ strictly increasing
+on $(0,b)$, with $G(0)=0$ and the stated divergent limit. This gives the
+unique $\rho$ and $G'(\rho)>0$.
+
+If $|z|<\rho$, then $|uG(z)|\le uG(|z|)<1$, so there is no pole.
+If $|z|=\rho$ and $uG(z)=1$, equality holds in the triangle inequality
+for $\sum_{k\ge1}g_kz^k$. All its nonzero summands must have the same
+argument. In particular, the terms in $z$ and $z^2$ have the same argument,
+so $z/\rho=1$. Thus the dominant circle has just the positive pole.
+Expanding $1-uG(z)$ at $z=\rho$ gives \eqref{eq:C}.
+
+After subtracting \eqref{eq:C}, the pole is removed. Zeros of a nonzero
+analytic function are isolated; hence the difference is analytic on a
+disk of radius larger than $\rho$. Cauchy's coefficient estimate gives
+\eqref{eq:dominant-asymptotic}.
+\end{proof}
+
+The leading term alone does not decide log-concavity. A geometric
+sequence has identically zero determinant:
+\begin{equation}\label{eq:leading-cancellation}
+(C\rho^{-n})^2-(C\rho^{-(n-1)})(C\rho^{-(n+1)})=0.
+\end{equation}
+Consequently, an exponentially small correction to $a_n$ can determine
+the entire sign pattern of $\Delt_n$. The decisive information is often
+the first \emph{subdominant} pole or group of poles, rather than a sharper
+estimate of the positive leading constant.
+
+\section{A general pole criterion for both signs}
+\label{sec:criterion}
+
+The next result is the common mechanism behind the two challenges.
+We first give a short qualitative argument, then a quantitative-in-form
+argument proving bounded gaps. Neither requires the subdominant poles
+to be simple or to form a single conjugate pair.
+
+\subsection{A short proof of infinitude using coefficient positivity}
+
+We use the following elementary form of Pringsheim's principle.
+
+\begin{lemma}[Positive coefficients force a positive singularity]
+\label{lem:pringsheim}
+A power series with eventually nonnegative real coefficients and finite,
+positive radius of convergence $R$ is singular at the positive real point $R$.
+\end{lemma}
+\begin{proof}
+Subtracting a polynomial reduces to nonnegative coefficients
+$F(z)=\sum_{n\ge0}f_nz^n$. Suppose $F$ were analytic at $R$, with a
+continuation to $|z-R|<\delta$. Choose $\varepsilon>0$ so small that
+$3\varepsilon<\delta$ and $r=R-\varepsilon>0$.
+The Taylor series of the continuation at $r$ converges at
+$r+2\varepsilon=R+\varepsilon$. Its derivatives at $r$ equal the derivatives
+of the original series. Nonnegativity permits interchange of the sums:
+\begin{align*}
+\sum_{k\ge0}\frac{F^{(k)}(r)}{k!}(2\varepsilon)^k
+&=\sum_{n\ge0}f_n\sum_{k=0}^n\binom nk r^{n-k}(2\varepsilon)^k\\
+&=\sum_{n\ge0}f_n(R+\varepsilon)^n<\infty.
+\end{align*}
+This contradicts the radius of convergence.
+\end{proof}
+
+\begin{proposition}[Qualitative pole obstruction]\label{prop:qualitative}
+Let $A(z)=\sum a_nz^n$ have positive real coefficients and a unique
+smallest-modulus pole $\rho>0$, simple, with principal part
+$C/(1-z/\rho)$ and $C>0$. Suppose the remainder
+\begin{equation}\label{eq:H}
+H(z)=A(z)-\frac{C}{1-z/\rho}
+\end{equation}
+has finite radius of convergence $R>\rho$ but is analytic at the positive
+point $R$. Then $\Delt_n$ is strictly positive infinitely often and strictly
+negative infinitely often.
+\end{proposition}
+\begin{proof}
+The pole expansion gives \eqref{eq:dominant-asymptotic}. If the determinants
+were eventually nonnegative, the ratios $a_n/a_{n-1}$ would eventually
+be decreasing to $\rho^{-1}$. Therefore $b_n=\rho^na_n$ would eventually
+be increasing to $C$, so $b_n\le C$ eventually. The coefficients of
+$-H$ would consequently be eventually nonnegative. Lemma
+\ref{lem:pringsheim} would force a singularity at $R$, a contradiction.
+
+If the determinants were eventually nonpositive, the ratios would be
+increasing to $\rho^{-1}$, and $b_n$ would be decreasing to $C$.
+Then $H$, rather than $-H$, would have eventually nonnegative coefficients,
+giving the same contradiction. These two exclusions prove both strict
+infinitude statements.
+\end{proof}
+
+This proof already resolves the infinitude questions once a suitable
+secondary pole is found. The next theorem extracts more from the same
+analytic situation.
+
+\subsection{A bounded-gap theorem}
+
+\begin{theorem}[Subdominant poles force both signs with bounded gaps]
+\label{thm:spectral}
+Let $A(z)=\sum_{n\ge0}a_nz^n$ be real at real regular points and meromorphic
+in $|z|<B$. Suppose:
+\begin{enumerate}[label=(\alph*)]
+\item its unique pole of smallest modulus is a simple pole $\rho>0$,
+with principal part $C/(1-z/\rho)$, where $C>0$;
+\item there is at least one other pole in $|z|<B$;
+\item if $R>\rho$ is the smallest modulus of these other poles, then
+$A$ has no pole at the positive real point $R$.
+\end{enumerate}
+Then there are $N,L\ge1$ such that every block of $L$ indices beginning
+at $n\ge N$ contains both a strict positive and a strict negative value
+of $a_n^2-a_{n-1}a_{n+1}$.
+\end{theorem}
+
+\begin{proof}
+\textbf{Step 1: isolate the first subdominant terms.}
+There are finitely many poles on $|z|=R$. Let $m$ be their greatest
+order, and list the poles of this order as
+$r_j=Re^{\ii\theta_j}$, $1\le j\le J$. There is no $\theta_j$ congruent
+to zero modulo $2\pi$, by hypothesis (c).
+Subtracting all principal parts on and inside this circle leaves a
+function analytic on a strictly larger disk. The coefficient identity
+\[
+[z^n](1-z/r)^{-k}=\binom{n+k-1}{k-1}r^{-n}
+\]
+therefore yields
+\begin{equation}\label{eq:subdominant}
+a_n=C\rho^{-n}+n^{m-1}R^{-n}\bigl(T_n+o(1)\bigr),
+\qquad T_n=\sum_{j=1}^J c_je^{-\ii n\theta_j}.
+\end{equation}
+Here each $c_j$ is nonzero, and conjugate poles have conjugate constants,
+so $T_n$ is real. The $o(1)$ consists of lower powers of $n$ and
+exponentially smaller terms. In particular it remains $o(1)$ after
+shifting $n$ by either $1$ or $-1$.
+
+\textbf{Step 2: compute the first surviving determinant term.}
+Put $a_n=C\rho^{-n}+e_n$. Direct expansion gives
+\begin{equation}\label{eq:delta-cross}
+\Delt_n=C\rho^{-n}
+ \bigl(2e_n-\rho e_{n+1}-\rho^{-1}e_{n-1}\bigr)
+ +e_n^2-e_{n-1}e_{n+1}.
+\end{equation}
+Substituting \eqref{eq:subdominant}, and using
+$(n\pm1)^{m-1}/n^{m-1}=1+O(1/n)$, gives
+\begin{equation}\label{eq:delta-asymptotic}
+\Delt_n=C(\rho R)^{-n}n^{m-1}\bigl(U_n+o(1)\bigr),
+\end{equation}
+where
+\begin{equation}\label{eq:U}
+U_n=\sum_{j=1}^J v_je^{-\ii n\theta_j},
+\qquad
+v_j=c_j\left(2-\frac{\rho}{r_j}-\frac{r_j}{\rho}\right).
+\end{equation}
+The quadratic remainder in \eqref{eq:delta-cross}, divided by the
+positive scale in \eqref{eq:delta-asymptotic}, is
+$O(n^{m-1}(\rho/R)^n)$, which tends to zero.
+No $v_j$ vanishes: $2-x-x^{-1}=0$ implies $x=1$, whereas
+$r_j\ne\rho$.
+
+\textbf{Step 3: a nonzero finite oscillation cannot keep one sign on
+arbitrarily long blocks.}
+Write $\omega_j=e^{-\ii\theta_j}$. The frequencies are distinct,
+$|\omega_j|=1$, and none equals $1$. For every fixed $\omega\ne1$,
+\begin{equation}\label{eq:geometric-average}
+\left|\frac1L\sum_{n=M}^{M+L-1}\omega^n\right|
+\le\frac{2}{L|1-\omega|},
+\end{equation}
+uniformly in the starting index $M$. Hence the mean of $U_n$ over such
+blocks tends to zero uniformly in $M$.
+Because $U_n$ is real and the list is closed under conjugation, the
+constant term in $U_n^2$ is
+\begin{equation}\label{eq:variance}
+V=\sum_{j=1}^J|v_j|^2>0.
+\end{equation}
+Every other frequency in the square again has uniformly vanishing
+block average by \eqref{eq:geometric-average}. Thus
+\begin{equation}\label{eq:uniform-moments}
+\frac1L\sum_{n=M}^{M+L-1}U_n\longrightarrow0,
+\qquad
+\frac1L\sum_{n=M}^{M+L-1}U_n^2\longrightarrow V,
+\end{equation}
+uniformly in $M$. Real poles at $-R$ cause no difficulty: their frequency
+is $-1$, and its square correctly contributes to $V$.
+
+Let $K=\sum_j|v_j|$, so $|U_n|\le K$, and choose
+$\eta=V/(8K)>0$. Fix $L$ large enough that every length-$L$ block has
+mean $U$ of absolute value at most $\eta$ and mean $U^2$ at least $V/2$.
+If all values on one block were at most $\eta$, their positive parts
+would have mean at most $\eta$. Consequently
+\[
+\operatorname{mean}(U^2)
+\le K\operatorname{mean}|U|
+=K\bigl(2\operatorname{mean}U_+-\operatorname{mean}U\bigr)
+\le3K\eta=3V/8,
+\]
+a contradiction. Applying the same argument to $-U$ shows that every
+such block contains a value above $\eta$ and one below $-\eta$.
+
+Finally choose $N$ so that the error in \eqref{eq:delta-asymptotic} has
+absolute value below $\eta/2$ for $n\ge N$. Its prefactor is positive,
+so the two values in each block retain their respective signs in
+$\Delt_n$.
+\end{proof}
+
+\begin{remark}[What the hypotheses do and do not say]
+The theorem does not require that the nearest subdominant pole be negative
+real. A nearer complex pole is equally useful. It does require exclusion
+of a \emph{positive} pole on the first subdominant circle: such a pole
+would contribute a nonoscillating term to $U_n$, potentially dominating
+the sign. The power-weighted case $d=1$ below is a concrete example of
+that different behavior.
+\end{remark}
+
+\section{Divisor weights: a negative pole for every real exponent}
+\label{sec:lambert}
+
+Put
+\begin{equation}\label{eq:Lambert}
+L_s(z)=\sum_{n\ge1}\sig_s(n)z^n
+      =\sum_{k\ge1}\frac{k^s z^k}{1-z^k},\qquad |z|<1.
+\end{equation}
+The equality follows by expanding each geometric denominator and grouping
+terms with the same product of indices. Absolute convergence is justified
+by the polynomial bound
+$\sig_s(n)\le n^{1+\max(s,0)}$.
+Since $\sig_s(n)\ge1$, $L_s(x)\ge x/(1-x)$ for $0<x<1$.
+Lemma \ref{lem:dominant} therefore applies to
+$A^\sig_{s,u}=1/(1-uL_s)$ with $b=1$.
+
+It remains to find a second pole before reaching $|z|=1$.
+A negative real pole will suffice. The central observation is that,
+despite the alternating signs of its Taylor expansion on $(-1,0)$,
+$L_s(z)$ tends to \emph{positive} infinity as $z\to-1$ radially.
+
+\subsection{An exact parity identity}
+
+\begin{lemma}\label{lem:parity}
+For real $s$, with $\sig_s(n/2)$ interpreted as zero when $n$ is odd,
+\begin{equation}\label{eq:sigma-even}
+\sig_s(2n)=(1+2^s)\sig_s(n)-2^s\sig_s(n/2).
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:Lambert-parity}
+L_s(-z)=-L_s(z)+(2+2^{s+1})L_s(z^2)-2^{s+1}L_s(z^4).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $n=2^a m$ with $m$ odd, and put $q=2^s$.
+Then $\sig_s(n)=(1+q+\cdots+q^a)\sig_s(m)$.
+The identity of finite geometric sums
+\[
+1+q+\cdots+q^{a+1}
+=(1+q)(1+q+\cdots+q^a)-q(1+q+\cdots+q^{a-1})
+\]
+proves \eqref{eq:sigma-even}, including $a=0$ when the final sum is empty.
+This argument also covers $s=0$, so no division by $2^s-1$ is needed.
+
+The even-indexed part of $L_s(z)$ is
+$(1+2^s)L_s(z^2)-2^sL_s(z^4)$ by \eqref{eq:sigma-even}.
+Twice this part minus the whole series is $L_s(-z)$, yielding
+\eqref{eq:Lambert-parity}.
+\end{proof}
+
+\subsection{Positive radial asymptotics}
+
+\begin{lemma}\label{lem:positive-radial}
+As $t\downarrow0$,
+\begin{equation}\label{eq:positive-radial}
+L_s(e^{-t})=
+\begin{cases}
+\Gamma(s+1)\zeta(s+1)t^{-s-1}(1+o(1)),&s>0,\\
+t^{-1}\log(1/t)+O(t^{-1}),&s=0,\\
+\zeta(1-s)t^{-1}(1+o(1)),&s<0.
+\end{cases}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $s>0$, write
+\[
+t^{s+1}L_s(e^{-t})
+=t\sum_{k\ge1}\frac{(kt)^s}{e^{kt}-1}.
+\]
+This is a Riemann sum for the integrable function
+$f_s(x)=x^s/(e^x-1)$ on $(0,\infty)$.
+For completeness, near zero one has $f_s(x)\le x^{s-1}$ and
+$\sum_{k\le M}k^{s-1}=O_s(M^s)$; hence the portion $kt\le\varepsilon$
+is $O_s(\varepsilon^s)$ uniformly as $t\downarrow0$.
+The far tail is uniformly controlled by exponential decay, and the
+remaining compact interval is handled by ordinary Riemann sums.
+Finally, nonnegative-term integration gives
+\[
+\int_0^\infty\frac{x^s}{e^x-1}\,dx
+=\sum_{j\ge1}\int_0^\infty x^se^{-jx}\,dx
+=\Gamma(s+1)\zeta(s+1).
+\]
+
+For $s=0$, take $M=\lfloor1/t\rfloor$. Uniformly for $0<x\le1$,
+$(e^x-1)^{-1}=x^{-1}+O(1)$, so
+\[
+t\sum_{k\le M}\frac{1}{e^{kt}-1}
+=\sum_{k\le M}\frac1k+O(tM)=\log(1/t)+O(1).
+\]
+For $k>M$, the bound
+$(e^{kt}-1)^{-1}\le e^{-kt}/(1-e^{-1})$ gives a contribution $O(1)$
+to $tL_0(e^{-t})$. This proves the middle case.
+
+For $s<0$, use
+\[
+tL_s(e^{-t})
+=\sum_{k\ge1}k^{s-1}\frac{kt}{e^{kt}-1}.
+\]
+The factor on the right lies in $(0,1)$ and tends to $1$ for each fixed
+$k$. Since $\sum k^{s-1}=\zeta(1-s)<\infty$, dominated convergence proves
+the last case.
+\end{proof}
+
+\subsection{The negative radial limit and the pole}
+
+\begin{proposition}\label{prop:negative-radial}
+For every real $s$,
+\begin{equation}\label{eq:negative-radial}
+L_s(-e^{-t})=
+\begin{cases}
+2^{-s-1}\Gamma(s+1)\zeta(s+1)t^{-s-1}(1+o(1)),&s>0,\\
+\frac12t^{-1}\log(1/t)+O(t^{-1}),&s=0,\\
+2^{s-1}\zeta(1-s)t^{-1}(1+o(1)),&s<0.
+\end{cases}
+\end{equation}
+In particular, $L_s(-r)\to+\infty$ as $r\uparrow1$.
+\end{proposition}
+\begin{proof}
+Insert $z=e^{-t}$ into \eqref{eq:Lambert-parity} and apply
+\eqref{eq:positive-radial} at $t,2t,4t$.
+When $s>0$, the coefficient of the leading term is
+\[
+-1+(2+2^{s+1})2^{-s-1}-2^{s+1}4^{-s-1}=2^{-s-1}.
+\]
+When $s<0$, it is
+\[
+-1+\tfrac12(2+2^{s+1})-\tfrac14 2^{s+1}=2^{s-1}.
+\]
+For $s=0$, the coefficient of $t^{-1}\log(1/t)$ is
+$-1+4/2-2/4=1/2$; replacing $\log(1/t)$ by
+$\log(1/(2t))$ or $\log(1/(4t))$ only changes the $O(t^{-1})$ term.
+All displayed leading constants are strictly positive.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:divisor-main}]
+Fix $s\in\R$ and $u>0$. The function $L_s(-r)$ is continuous for
+$0\le r<1$, starts at zero, and tends to positive infinity.
+Thus some $\beta\in(0,1)$ satisfies $uL_s(-\beta)=1$.
+Since the numerator of $A^\sig_{s,u}$ is $1$, this zero of its denominator
+is a genuine pole, of whatever finite order it may have.
+
+Lemma \ref{lem:dominant} supplies the unique dominant pole $\rho>0$,
+and also gives $\rho<\beta$. If $R$ is the smallest modulus of a
+nondominant pole, then $\rho<R\le\beta<1$.
+There is no positive pole at $R$, because $L_s(x)$ is strictly increasing
+on $(0,1)$ and crosses $1/u$ exactly once.
+Theorem \ref{thm:spectral}, with $B=1$, now proves the result.
+\end{proof}
+
+\begin{remark}
+We did not prove that $-\beta$ is the nearest nondominant pole, or even
+that the negative solution is unique. Neither assertion is needed.
+This avoids a potentially difficult global zero-location problem for
+Lambert series. Also, the argument does not prove the stronger empirical
+odd/even pattern reported for small nonnegative integer exponents in
+\cite{HN23}; it proves the stated infinitude challenge and the bounded-gap
+strengthening without relying on that pattern.
+\end{remark}
+
+\section{Power weights: a complete integer-exponent classification}
+\label{sec:power}
+
+For an integer $d\ge1$, define the Eulerian polynomial $E_d(z)$ by
+\begin{equation}\label{eq:Eulerian-GF}
+\sum_{n\ge1}n^d z^n=\frac{zE_d(z)}{(1-z)^{d+1}}.
+\end{equation}
+We need only a few elementary properties, which we record with a proof.
+
+\begin{lemma}\label{lem:Eulerian}
+The polynomial $E_d$ has degree $d-1$, strictly positive coefficients,
+$E_d(1)=d!$, and
+\begin{equation}\label{eq:Eulerian-reciprocal}
+E_d(z)=z^{d-1}E_d(1/z).
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:Eulerian-rec}
+E_1(z)=1,\qquad
+E_{d+1}(z)=(1+dz)E_d(z)+z(1-z)E'_d(z).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The case $d=1$ is $\sum n z^n=z/(1-z)^2$.
+Applying $z\,d/dz$ to \eqref{eq:Eulerian-GF} proves
+\eqref{eq:Eulerian-rec} and the next generating function.
+If $E_d(z)=\sum_{j=0}^{d-1}e_{d,j}z^j$, its coefficient recurrence is
+\[
+e_{d+1,j}=(j+1)e_{d,j}+(d-j+1)e_{d,j-1},
+\]
+with out-of-range entries zero. Starting from $e_{1,0}=1$, this proves
+positivity, the degree, and symmetry under $j\mapsto d-j$ for $E_{d+1}$
+by induction. The symmetry is \eqref{eq:Eulerian-reciprocal}.
+Putting $z=1$ in \eqref{eq:Eulerian-rec} gives
+$E_{d+1}(1)=(d+1)E_d(1)$, so $E_d(1)=d!$.
+\end{proof}
+
+The geometric transform becomes the rational function
+\begin{equation}\label{eq:power-rational}
+A^\psi_{d,u}(z)=\frac{(1-z)^{d+1}}{D_{d,u}(z)},\qquad
+D_{d,u}(z)=(1-z)^{d+1}-uzE_d(z).
+\end{equation}
+The denominator has degree $d+1$, constant coefficient $1$, and leading
+coefficient $(-1)^{d+1}$. Its value at $1$ is $-ud!\ne0$.
+The numerator therefore shares no zero with the denominator: every root
+of $D_{d,u}$ is a genuine pole. In particular, $z=1$ is a zero of the
+rational function, not an extra pole.
+
+There is a unique positive pole $\rho\in(0,1)$, and it is the unique
+smallest-modulus pole, by Lemma \ref{lem:dominant} applied inside the
+unit disk. To invoke Theorem \ref{thm:spectral}, we inspect possible
+positive poles outside it.
+
+\subsection{Even exponents at least two}
+
+For even $d\ge2$ and real $x>1$, the numerator $xE_d(x)$ is positive
+and $(1-x)^{d+1}$ is negative. Thus the rational continuation of
+$\sum n^d z^n$ is negative at $x$, and
+\[
+1-u\frac{xE_d(x)}{(1-x)^{d+1}}>0.
+\]
+There is no positive pole beyond $1$. Since $D_{d,u}$ has degree
+$d+1\ge3$ and the positive pole $\rho$ is simple, other poles exist,
+but none of them is positive. Theorem \ref{thm:spectral} applies to this
+rational function in a disk large enough to include its first
+nondominant circle.
+
+\subsection{Odd exponents at least three}
+
+For odd $d$, $d+1$ is even and \eqref{eq:Eulerian-reciprocal} gives
+\begin{equation}\label{eq:D-reciprocal}
+D_{d,u}(z)=z^{d+1}D_{d,u}(1/z).
+\end{equation}
+The roots are therefore closed under inversion, with multiplicities.
+The only positive root below $1$ is $\rho$, so the only positive root
+above $1$ is $1/\rho$; there is no root at $1$.
+Remove these two simple roots. When $d\ge3$, at least two roots remain,
+and their multiset is still closed under inversion. At least one of them
+has modulus at most $1$; otherwise its reciprocal would violate the same
+claim. Consequently the nearest nondominant modulus satisfies
+\[
+\rho<R\le1<1/\rho.
+\]
+The positive root $1/\rho$ cannot lie on that circle, and there are no
+other positive roots. Again Theorem \ref{thm:spectral} applies.
+
+This argument permits multiple roots and roots on the unit circle.
+No numerical information about the zeros of Eulerian polynomials is
+required, and we have not used their stronger real-rootedness property.
+
+\subsection{The two exceptional low exponents}
+
+For $d=0$,
+\[
+A^\psi_{0,u}(z)=\frac{1-z}{1-(1+u)z},\qquad
+a_0=1,\quad a_n=u(1+u)^{n-1}\quad(n\ge1).
+\]
+Thus $\Delt_1=-u$ and $\Delt_n=0$ for $n\ge2$.
+
+For $d=1$,
+\begin{equation}\label{eq:d1}
+A^\psi_{1,u}(z)=\frac{(1-z)^2}{1-(u+2)z+z^2}
+=1+\frac{uz}{1-(u+2)z+z^2}.
+\end{equation}
+The coefficients $a_n$ for $n\ge1$, extended by the auxiliary value
+$\widetilde a_0=0$, satisfy
+\[
+\widetilde a_1=u,\qquad
+\widetilde a_n=(u+2)\widetilde a_{n-1}-\widetilde a_{n-2}
+\quad(n\ge2).
+\]
+For any sequence $x_{n+1}=h x_n-x_{n-1}$, the expression
+$x_n^2-x_{n-1}x_{n+1}$ is invariant under shifting $n$: substitution
+on both sides gives the same quadratic form.
+Its value at the auxiliary index $1$ here is $u^2$. Hence the actual
+$\Delt_n=u^2$ for $n\ge2$. At $n=1$, the actual $a_0=1$ instead gives
+$\Delt_1=-2u$.
+Together with the preceding two subsections, this proves
+Theorem \ref{thm:power-main}.
+
+\section{Square weights: exact recurrence, sharp gaps, and density}
+\label{sec:squares}
+
+We now fix $d=2$ and $u=1$. This is the original Challenge 2 sequence.
+It is especially suitable for a detailed analysis because its generating
+function has a cubic denominator.
+
+\subsection{The known sequence and an indexing precaution}
+
+From $E_2(z)=1+z$,
+\begin{equation}\label{eq:square-gf}
+A(z)=\frac{(1-z)^3}{1-4z+2z^2-z^3}
+=1+\frac{z(1+z)}{1-4z+2z^2-z^3}.
+\end{equation}
+The coefficients begin
+\[
+(a_n)_{n\ge0}=1,1,5,18,63,221,776,2725,9569,33602,117995,\ldots.
+\]
+OEIS A033453 \cite{OEIS} starts at offset $0$ with
+$1,5,18,63,221,\ldots$. Thus the precise relationship is
+\begin{equation}\label{eq:OEIS-shift}
+a_n=\mathrm{A033453}(n-1)\quad(n\ge1),\qquad a_0=1.
+\end{equation}
+The OEIS entry already gives the shifted generating function and the
+recurrence with signature $(4,-2,1)$, as well as the interpretation by
+compositions whose parts of size $k$ have $k^2$ colors.
+These are established background facts, not claims of novelty here.
+
+In our indexing,
+\begin{equation}\label{eq:a-recurrence}
+a_0=1,\ a_1=1,\ a_2=5,\ a_3=18,\qquad
+a_n=4a_{n-1}-2a_{n-2}+a_{n-3}\quad(n\ge4).
+\end{equation}
+The starting index matters: applying the last recurrence at $n=3$ with
+the actual $a_0=1$ would incorrectly give $19$.
+The rational series $(z+z^2)/(1-4z+2z^2-z^3)$ has auxiliary coefficient
+$0$ at $n=0$ and agrees with $a_n$ for $n\ge1$.
+That auxiliary sequence satisfies the homogeneous recurrence from $n=3$.
+
+\subsection{An exact determinant recurrence}
+
+\begin{proposition}\label{prop:delta-recurrence}
+The square-weighted determinant satisfies
+\begin{align}
+\Delt_1&=-4,&\Delt_2&=7,&\Delt_3&=9,&\Delt_4&=-9,\label{eq:delta-initial}\\
+\Delt_n&=2\Delt_{n-1}-4\Delt_{n-2}+\Delt_{n-3}
+&&&&(n\ge5).\label{eq:delta-recurrence}
+\end{align}
+Equivalently,
+\begin{equation}\label{eq:delta-gf}
+\sum_{n\ge2}\Delt_nz^{n-2}
+=\frac{7-5z+z^2}{1-2z+4z^2-z^3}.
+\end{equation}
+Every $\Delt_n$ with $n\ge2$ is odd.
+\end{proposition}
+
+\begin{proof}
+Let $\lambda,\beta,\overline\beta$ be the roots of
+\begin{equation}\label{eq:f}
+f(x)=x^3-4x^2+2x-1.
+\end{equation}
+The discriminant is $-107$, so the roots are distinct, with one real root
+and one nonreal conjugate pair. Since $f(7/2)=-1/8$ and $f(4)=7$,
+the real root satisfies $7/2<\lambda<4$.
+Partial fractions in \eqref{eq:square-gf} give
+\begin{equation}\label{eq:Binet}
+a_n=\sum_{\xi\in\{\lambda,\beta,\overline\beta\}}c_\xi\xi^n,
+\qquad c_\xi=\frac{\xi+1}{f'(\xi)},\qquad n\ge1.
+\end{equation}
+The same formula gives the auxiliary value $0$, not the actual $1$, at
+$n=0$. None of its coefficients is zero.
+
+For a sum $x_n=\sum_i c_i\xi_i^n$, pairwise expansion gives
+\begin{equation}\label{eq:Cassini}
+x_n^2-x_{n-1}x_{n+1}
+=-\sum_{i<j}c_ic_j(\xi_i-\xi_j)^2(\xi_i\xi_j)^{n-1}.
+\end{equation}
+Indeed the diagonal terms cancel, while a pair contributes
+$c_ic_j(\xi_i\xi_j)^{n-1}(2\xi_i\xi_j-\xi_i^2-\xi_j^2)$.
+For the actual $a_n$, this formula is valid for $n\ge2$.
+
+Vieta's formulas for \eqref{eq:f} give
+\[
+\lambda+\beta+\overline\beta=4,\quad
+\lambda\beta+\lambda\overline\beta+\beta\overline\beta=2,\quad
+\lambda\beta\overline\beta=1.
+\]
+The three pair-products in \eqref{eq:Cassini} therefore have elementary
+symmetric functions $2,4,1$. Their polynomial is
+$x^3-2x^2+4x-1$, proving \eqref{eq:delta-recurrence} for $n\ge5$.
+Direct substitution of the initial $a_n$ gives \eqref{eq:delta-initial};
+coefficient multiplication then gives \eqref{eq:delta-gf}.
+Finally, reducing \eqref{eq:delta-recurrence} modulo $2$ gives
+$\Delt_n\equiv\Delt_{n-3}\pmod2$. The three starting values
+$\Delt_2,\Delt_3,\Delt_4$ are odd, proving the parity assertion.
+\end{proof}
+
+Some small exact values are useful both as a check and as a warning
+against guessing eventual alternation.
+\begin{center}
+\begin{tabular}{rrrrrr}
+\toprule
+$n$ & $a_n$ & $\Delt_n$ & $n$ & $a_n$ & $\Delt_n$\\
+\midrule
+1&1&$-4$&7&2725&81\\
+2&5&7&8&9569&311\\
+3&18&9&9&33602&249\\
+4&63&$-9$&10&117995&$-665$\\
+5&221&$-47$&11&414345&$-2015$\\
+6&776&$-49$&12&1454992&$-1121$\\
+\bottomrule
+\end{tabular}
+\end{center}
+In particular, equality is absent at every positive index, not merely
+eventually.
+
+\subsection{A single oscillatory term with a decaying positive correction}
+
+Write $\beta=a+\ii b$ with $b>0$. The preceding identities yield
+\begin{equation}\label{eq:beta-properties}
+a=\frac{4-\lambda}{2}>0,\qquad
+|\beta|^2=\beta\overline\beta=\lambda^{-1}.
+\end{equation}
+Put
+\begin{align}
+\rho&=\lambda^{-1},&\nu&=\lambda\beta,&|\nu|&=\sqrt\lambda,\label{eq:nu}\\
+K&=-c_\lambda c_\beta(\lambda-\beta)^2,&
+K_0&=4|c_\beta|^2b^2>0.\label{eq:Ks}
+\end{align}
+Here $K\ne0$ and $c_\lambda>0$.
+Formula \eqref{eq:Cassini} becomes the exact expression
+\begin{equation}\label{eq:delta-exact}
+\Delt_n=2\Rea(K\nu^{n-1})+K_0\rho^{n-1}\qquad(n\ge2).
+\end{equation}
+Let $\theta=\arg\beta=\arg\nu$ and $\phi=\arg K$. Dividing by a
+positive factor gives
+\begin{equation}\label{eq:cosine}
+\frac{\Delt_n}{2|K|\lambda^{(n-1)/2}}
+=\cos\bigl((n-1)\theta+\phi\bigr)
+ +\frac{K_0}{2|K|}\lambda^{-3(n-1)/2}.
+\end{equation}
+Thus the determinant is governed by a rotation angle, with an
+exponentially decaying perturbation.
+
+For orientation only, rounded numerical values are
+\begin{align*}
+\lambda&\approx3.511547141694532,&\rho&\approx0.284774761564910,\\
+\beta&\approx0.244226429152734+0.474476778007327\ii,\\
+\nu&\approx0.857612619217545+1.666147573612060\ii,\\
+\theta&\approx1.095435949104736,&\theta/\pi&\approx0.348688092281161.
+\end{align*}
+The subsequent proofs use exact inequalities and algebraic identities,
+not these decimal approximations.
+
+\subsection{The sharp four-index block bound}
+
+\begin{lemma}[Four equally spaced circle points]\label{lem:four-points}
+Suppose $\pi/3<\theta<\pi/2$, and put
+$\delta=-\cos(3\theta/2)>0$.
+For every real $\alpha$, among
+$\cos(\alpha+j\theta)$, $j=0,1,2,3$, there is a value at least $\delta$
+and one at most $-\delta$.
+\end{lemma}
+\begin{proof}
+The four circle points have circular gaps
+$\theta,\theta,\theta,2\pi-3\theta$.
+The largest gap is $2\pi-3\theta$ because $\theta<\pi/2$.
+Every point of the circle is within angular distance at most
+$\pi-3\theta/2$ of one of the four sample points.
+Apply this to angles $0$ and $\pi$. Their nearest sample points have
+cosines at least $\cos(\pi-3\theta/2)=\delta$ and at most $-\delta$,
+respectively.
+\end{proof}
+
+\begin{proposition}\label{prop:four-block}
+Every four consecutive indices $n\ge1$ contain both determinant signs.
+The maximum possible length of a run of either sign is exactly three.
+\end{proposition}
+\begin{proof}
+By \eqref{eq:beta-properties},
+\begin{equation}\label{eq:cos-theta}
+x:=\cos\theta=\frac{(4-\lambda)\sqrt\lambda}{2}.
+\end{equation}
+The function on the right is decreasing for $\lambda>4/3$.
+Since $7/2<\lambda<4$, we obtain
+$0<x<\sqrt{14}/8<1/2$, hence $\pi/3<\theta<\pi/2$.
+For $0<x<1/2$ the function $4x^3-3x$ is decreasing. Therefore
+\begin{equation}\label{eq:delta-margin}
+\delta^2=\frac{1+\cos3\theta}{2}
+=\frac{1+4x^3-3x}{2}
+>\frac{64-17\sqrt{14}}{128}>\frac1{400}.
+\end{equation}
+The last inequality is exact: it is equivalent to
+$17\sqrt{14}<1592/25$, which follows on squaring from
+$4046<2534464/625$.
+Thus $\delta>1/20$.
+
+We also need a coarse bound on the correction in \eqref{eq:cosine}.
+Because $f'(\lambda)=|\lambda-\beta|^2$ and
+$|f'(\beta)|=2b|\lambda-\beta|$, the constants simplify to
+\begin{equation}\label{eq:correction-ratio}
+\frac{K_0}{2|K|}
+=\frac{b|\beta+1|}{(\lambda+1)|\lambda-\beta|}
+<\frac{|\beta|(1+|\beta|)}{(\lambda+1)(\lambda-|\beta|)}.
+\end{equation}
+Here $|\beta|=\lambda^{-1/2}<3/5$ and $\lambda>7/2$, so
+\[
+\frac{K_0}{2|K|}
+<\frac{(3/5)(8/5)}{(9/2)(29/10)}
+=\frac{32}{435}<\frac1{10}.
+\]
+For every $n\ge2$, the perturbation in \eqref{eq:cosine} is consequently
+strictly less than $1/20$, since $\lambda^{-3/2}<1/2$.
+
+On any block beginning at $n\ge2$, Lemma \ref{lem:four-points} gives
+one cosine at least $\delta>1/20$ and one at most $-\delta<-1/20$.
+The perturbations cannot destroy either corresponding sign.
+The remaining block beginning at $n=1$ already contains
+$\Delt_1=-4$ and $\Delt_2=7$.
+Finally, $\Delt_4,\Delt_5,\Delt_6$ are negative, while
+$\Delt_7,\Delt_8,\Delt_9$ are positive. Both possible run lengths of
+three are attained, so the bound is sharp.
+\end{proof}
+
+This gives a particularly elementary proof of the infinitude assertion
+in Challenge 2. The density conclusion requires one further fact:
+the rotation angle is irrational relative to $\pi$.
+
+\subsection{Certifying irrationality of the root angle}
+
+\begin{lemma}\label{lem:irrational-angle}
+For the roots of \eqref{eq:f}, $\theta/\pi$ is irrational.
+\end{lemma}
+\begin{proof}
+The only possible rational roots of the monic cubic $f$ are $1$ and $-1$;
+neither is a root. Hence $f$ is irreducible over $\Q$.
+Its discriminant is
+\[
+(-4)^2 2^2-4\cdot2^3-4(-4)^3(-1)-27(-1)^2
++18(-4)\cdot2\cdot(-1)=-107.
+\]
+The splitting field $F$ therefore has Galois group $S_3$:
+an irreducible cubic has a transitive subgroup of $S_3$, and a nonsquare
+discriminant excludes its subgroup $A_3$.
+The quadratic subfield fixed by $A_3$ is $\Q(\sqrt{-107})$.
+
+Suppose $\theta/\pi$ were rational. Then
+$\zeta=\beta/\overline\beta=e^{2\ii\theta}$ would be a root of unity
+in $F$. The cyclotomic extension $\Q(\zeta)/\Q$ is Galois and abelian,
+so the restriction homomorphism from $S_3$ to its Galois group kills
+the commutator subgroup $A_3$. Thus
+\[
+\Q(\zeta)\subseteq\Q(\sqrt{-107}).
+\]
+A quadratic field can contain a root of unity of order $m$ only if
+$\varphi(m)\le2$, giving $m=1,2,3,4,6$. The nonreal possibilities generate
+$\Q(\sqrt{-3})$ or $\Q(\ii)$, neither of which equals
+$\Q(\sqrt{-107})$. Hence $\zeta\in\{1,-1\}$.
+But $\zeta=1$ would make $\beta$ real, while $\zeta=-1$ would make
+$\beta+\overline\beta=0$, forcing $\lambda=4$ contrary to $f(4)=7$.
+This contradiction proves the lemma.
+\end{proof}
+
+\subsection{Half-density in every arithmetic progression}
+
+\begin{lemma}[Irrational rotation and a vanishing perturbation]
+\label{lem:density}
+Suppose $\theta/(2\pi)$ is irrational, $\phi\in\R$, and $\varepsilon_n\to0$.
+Then the sets where
+$\cos(n\theta+\phi)+\varepsilon_n$ is positive and negative each have
+natural density $1/2$. The same relative-density conclusion holds after
+restricting $n$ to any infinite arithmetic progression.
+\end{lemma}
+\begin{proof}
+For every nonzero integer $k$,
+\[
+\frac1N\sum_{n=1}^N e^{\ii k(n\theta+\phi)}\longrightarrow0
+\]
+by the finite geometric-sum formula, since $e^{\ii k\theta}\ne1$.
+Approximating continuous periodic functions by trigonometric polynomials,
+and then approximating interval indicators from above and below, shows
+that $n\theta+\phi$ is uniformly distributed modulo $2\pi$.
+
+Fix $\eta>0$. Once $|\varepsilon_n|<\eta$, the perturbed sign agrees
+with the cosine sign whenever $|\cos(n\theta+\phi)|>\eta$.
+Uniform distribution gives the density of this exceptional strip as its
+normalized angular length, which tends to zero as $\eta\downarrow0$.
+The positive and negative cosine regions each have length $\pi$.
+Squeezing between the regions with thresholds $\eta$ and $-\eta$ proves
+the two densities.
+
+On the progression $n=r+jm$, replace $\theta$ by $m\theta$ and the phase
+by $r\theta+\phi$. Irrationality persists, and the restricted perturbation
+still tends to zero. The same proof applies.
+\end{proof}
+
+Apply Lemma \ref{lem:density} to \eqref{eq:cosine}, using
+Lemma \ref{lem:irrational-angle}. This proves
+\eqref{eq:AP-density} and the corresponding negative-density formula.
+Together with Propositions \ref{prop:delta-recurrence} and
+\ref{prop:four-block}, it proves all three parts of
+Theorem \ref{thm:square-main}.
+If the sign sequence had an eventual period $m$, it would be eventually
+constant on each residue class modulo $m$, contradicting density $1/2$
+for both signs within that class.
+
+Notice what has not been needed: no Diophantine lower bound on how closely
+the angle can approach a zero of the cosine is required. The density
+argument discards a shrinking-boundary issue using fixed strips and then
+lets the strip width tend to zero. It does not assert that the cosine
+and determinant signs agree at every sufficiently large individual index.
+
+\section{Exact computation and reproducibility}
+\label{sec:computation}
+
+The program \texttt{verify.py} uses only the Python standard library
+and runs with Python 3.9 or later. It makes no network calls and uses
+integers or rational numbers for every asserted coefficient, determinant,
+or certified sign. Its default run was executed with Python 3.13.5.
+The output is included in \texttt{verification-output.txt} and in the
+\texttt{data/} directory.
+
+\subsection{Independent checks rather than one implementation twice}
+
+The square coefficients are generated in two ways: by the convolution
+\eqref{eq:convolution} with weights $k^2$, and by coefficient extraction
+from the rational function \eqref{eq:square-gf}. They agree through
+$a_{601}$. Direct adjacent determinants from those coefficients agree
+with the independent determinant recurrence \eqref{eq:delta-recurrence}
+through $\Delt_{600}$.
+
+The same convolution-versus-rational comparison is performed for
+$d=0,\ldots,12$ and $u=1,2,3$, through coefficient $a_{121}$.
+Eulerian symmetry, positivity, $E_d(1)=d!$, and the relevant denominator
+identities are checked through $d=30$.
+For divisor weights, a sieve is compared with direct divisor enumeration,
+and \eqref{eq:sigma-even} is checked for $d=0,\ldots,10$ and
+$n=1,\ldots,300$.
+These finite checks are useful for catching normalization and indexing
+errors, especially the exceptional actual value $a_0=1$ in the square
+and linear-power formulas.
+
+The long square computation uses only three live determinant integers,
+updated by \eqref{eq:delta-recurrence}. This avoids computing a small
+relative difference of two enormous, nearly equal floating-point products.
+The integers grow exponentially in magnitude, so constant \emph{number}
+of live integers does not mean constant bit-space. The algorithm uses
+$O(N)$ bits of working integer storage up to index $N$, excluding saved
+output, and $O(N)$ recurrence steps with increasing operand lengths.
+
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+Range $1\le n\le N$ & $\Delt_n>0$ & $\Delt_n<0$ & $\Delt_n=0$ & Positive fraction\\
+\midrule
+100&50&50&0&0.500000\\
+1,000&501&499&0&0.501000\\
+10,000&5,003&4,997&0&0.500300\\
+100,000&50,000&50,000&0&0.500000\\
+\bottomrule
+\end{tabular}
+\end{center}
+The exact equality of the last two counts is a property of this finite
+cutoff, not a claimed formula at every cutoff. The universal density
+statement is established by the irrational-rotation proof.
+The longest observed runs have length three, agreeing with the proven
+sharp four-index block bound. The archive also contains counts in every
+residue class for moduli $1$ through $12$.
+
+\subsection{Rational certificates for negative Lambert values}
+
+For sample nonnegative integer exponents, the program certifies
+$L_d(-9/10)>1$ without trusting floating-point evaluation of an alternating
+series. Let $0<r<1$, let
+\[
+S_N=\sum_{n=1}^N\sig_d(n)(-r)^n,
+\qquad q=r\left(\frac{N+2}{N+1}\right)^{d+1}<1.
+\]
+Since $\sig_d(n)\le n^{d+1}$ and the ratios of successive majorant terms
+$n^{d+1}r^n$ decrease with $n$, the remainder obeys
+\begin{equation}\label{eq:tail-certificate}
+|L_d(-r)-S_N|
+\le\frac{(N+1)^{d+1}r^{N+1}}{1-q}=:T_N.
+\end{equation}
+For rational $r$, both $S_N$ and $T_N$ are exact rational numbers.
+The assertion $S_N-T_N>1$ is then a finite, exact certificate of a
+negative-side crossing of $1$.
+
+With $r=9/10$ and $N=600$, this succeeds for all $d=0,\ldots,10$.
+For example, the following numbers are rounded displays of the exact
+certificates saved in the JSON file:
+\begin{center}
+\begin{tabular}{rrr}
+\toprule
+$d$ & $S_{600}$, approximately & $T_{600}$, approximately\\
+\midrule
+0 & $7.09052786658$ & $1.93\times10^{-24}$\\
+1 & $32.3413228274$ & $1.18\times10^{-21}$\\
+2 & $255.356970620$ & $7.18\times10^{-19}$\\
+5 & $1.39444495497\times10^6$ & $1.64\times10^{-10}$\\
+10 & $9.98138686366\times10^{13}$ & $1.40\times10^4$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Even the coarse final absolute error is negligible relative to that
+partial sum and still gives a rigorous lower bound greater than $1$.
+These certificates are independent numerical corroboration of the
+analytic pole mechanism. The proof for arbitrary real $s$ and positive
+$u$ uses \eqref{eq:negative-radial}, not a finite grid of examples.
+
+\subsection{Rebuilding the archive contents}
+
+From the unpacked directory, run
+\begin{verbatim}
+python verify.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The first command regenerates the CSV, JSON, and sign data. The two LaTeX
+runs resolve the table of contents and cross-references. A standard TeX
+Live installation with the packages listed in the preamble suffices;
+no external fonts are bundled. A shorter exploratory run is available
+through \texttt{python verify.py --limit 10000}.
+An optional \texttt{numeric\_square.py} script uses \texttt{mpmath} to
+reproduce the rounded root and amplitude values; it is not needed for
+any exact check or proof.
+
+\section{Scope, priority, and remaining questions}
+\label{sec:scope}
+
+\subsection{What has been established}
+
+The original two targets have affirmative proofs. In the divisor family,
+the argument establishes both strict signs, with bounded gaps, for
+all real exponents and all positive composition weights. In the power
+family it classifies every nonnegative integer exponent, again for every
+positive weight. In the unweighted square case, the exact recurrence,
+nonvanishing, optimal four-index block bound, and half-density on every
+arithmetic progression give a substantially more explicit description
+than infinitude alone.
+
+The general pole theorem is deliberately formulated to survive repeated
+secondary poles, ties in modulus, and rational dependencies between
+angles. The square density argument is more specialized: it uses the
+single conjugate pair and a verified irrational angle. One should not
+transfer its precise density $1/2$ to every parameter in the larger
+families merely from the bounded-gap theorem.
+
+\subsection{What is background, and what priority is being claimed}
+
+The geometric-transform definition, colored-composition interpretation,
+Eulerian generating functions, partial fractions, Pringsheim's principle,
+and irrational-rotation equidistribution are standard tools or are
+explicitly present in the cited sources. They are not presented as new
+mathematical concepts. The A033453 generating function and recurrence are
+already recorded in the OEIS. The contribution developed here is the
+proof of the specified challenges and the accompanying stronger sign
+statements and classification.
+
+The bibliographical audit was focused rather than exhaustive. The arXiv
+record inspected lists the 2023 first version; its Section 3 expressly
+poses the two questions. The publisher metadata identifies a journal
+publication with DOI \texttt{10.1142/S1793042124500192}; the revised
+publisher full text was not available for direct comparison in this
+session. The challenge numbering in this manuscript therefore refers
+unambiguously to the inspected arXiv version, not to an uninspected
+revision. Searches for the paper, its identifier, its authors with
+geometric log-concavity, and A033453 did not surface a prior proof of
+these specific assertions. Search coverage was uneven, so this absence
+is evidence for choosing the problem, not a proof of originality.
+
+A 2026 paper by Alzer and Volkmer \cite{AV26} was also inspected because
+its title combines Lambert series and inequalities. Its main
+log-concavity statement concerns the real-variable function
+$t\mapsto L_0(1-e^{-t})$, not the coefficients of $1/(1-uL_s(z))$.
+That functional inequality is a different question and does not supply
+the coefficient-sign conclusions proved here.
+
+\subsection{Questions naturally left by the proof}
+
+For small nonnegative integer divisor exponents, the computational
+odd/even pattern is much stronger than mere infinitude. Establishing
+such an exact parity pattern, where it is valid, would require more
+specific information about the competing poles or a different direct
+inequality. The present proof deliberately avoids assuming it.
+
+For the larger parameter families, explicit optimal gap bounds and exact
+sign densities would require understanding the first subdominant spectrum.
+Theorem \ref{thm:spectral} provides a route to a computable bound from
+certified pole locations and residues, but does not compute such constants
+uniformly in the parameters. Changes in which poles have smallest
+nondominant modulus can create transitions in the oscillatory pattern.
+
+Finally, higher-order adjacent Hankel or Tur\'an determinants provide a
+natural extension. Their leading geometric contributions cancel even
+more extensively. A corresponding analysis would have to identify the
+first nonvanishing combination of several pole contributions, rather
+than simply reuse the two-term cross expression \eqref{eq:delta-cross}.
+These are further problems, not premises needed by the results above.
+
+\appendix
+\section{Proof dependencies and verification boundaries}
+
+The main analytic route is
+\[
+\text{positive weights}
+\ \Longrightarrow\ \text{unique simple positive dominant pole}
+\ \Longrightarrow\ \text{subdominant analysis}.
+\]
+For divisor weights, the missing nondominant pole is supplied by
+\[
+\text{divisor parity identity}
+\ \Longrightarrow\ L_s(-r)\to+\infty
+\ \Longrightarrow\ \text{a negative pole inside }|z|<1.
+\]
+For power weights, it is supplied by
+\[
+\text{Eulerian rational function}
+\ \Longrightarrow\ \text{sign or reciprocal-root analysis}
+\ \Longrightarrow\ \text{a nonpositive first subdominant circle}.
+\]
+The last phrase means that the circle contains \emph{no pole on the
+positive real axis}; it does not mean every pole is a nonpositive real number.
+The common spectral theorem then proves bounded gaps for both signs.
+
+The square-specific route is algebraic:
+\[
+\text{cubic denominator}
+\ \Longrightarrow\ \text{pair-product determinant recurrence}
+\ \Longrightarrow\ \text{parity and exact cosine formula}.
+\]
+Root bounds and four-point circle geometry prove the sharp gap bound.
+The Galois group $S_3$ proves irrationality of the angle, and irrational
+rotation proves the density theorem.
+
+All numerical roots in the text are illustrative approximations.
+No root isolation obtained numerically is substituted for the exact
+inequalities $7/2<\lambda<4$, the discriminant calculation, or the
+Galois argument. The Python tests do not constitute a formalization of
+complex analysis or Galois theory; they are independent exact checks of
+the algebraic identities and finite data used to audit the manuscript.
+
+\begin{thebibliography}{9}
+
+\bibitem{HN23}
+B.~Heim and M.~Neuhauser,
+\emph{Log-Concavity of Infinite Product and Infinite Sum Generating Functions},
+arXiv:2302.13327v1, 26 February 2023.
+Challenges 2 and 3 occur in Section 3, printed page 10.
+\url{https://arxiv.org/abs/2302.13327}.
+Journal publication DOI: \url{https://doi.org/10.1142/S1793042124500192}.
+The proof targets are cited to the inspected arXiv version.
+
+\bibitem{HN21}
+B.~Heim and M.~Neuhauser,
+\emph{Horizontal and vertical log-concavity},
+Research in Number Theory \textbf{7}, article 18 (2021).
+\url{https://doi.org/10.1007/s40993-021-00245-1}.
+
+\bibitem{OEIS}
+The OEIS Foundation Inc.,
+\emph{The On-Line Encyclopedia of Integer Sequences}, entry A033453,
+``INVERT transform of squares.''
+\url{https://oeis.org/A033453}.
+Accessed 19 September 2026. The entry's offset is $0$ and its first
+term corresponds to $a_1$ in this manuscript.
+
+\bibitem{AV26}
+H.~Alzer and H.~W.~Volkmer,
+\emph{Inequalities for the Lambert series},
+The Ramanujan Journal \textbf{70}, article 1 (2026), published 10 April 2026.
+\url{https://doi.org/10.1007/s11139-026-01365-x}.
+Cited to distinguish functional log-concavity from the coefficient
+problem studied here.
+
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,1110 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxtext,newpxmath}
+\usepackage{microtype,mathtools}
+\usepackage[margin=1in,top=0.85in,bottom=0.9in]{geometry}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\definecolor{InkGreen}{HTML}{3F513C}
+\definecolor{PaleGreen}{HTML}{F2F5EF}
+\definecolor{RuleGreen}{HTML}{C3CEBC}
+\hypersetup{colorlinks=true,linkcolor=InkGreen,citecolor=InkGreen,urlcolor=InkGreen,
+ pdftitle={Phase-shift classification for integer tetration},
+ pdfauthor={ChatGPT; prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{InkGreen}Integer tetration: phase-shift classification}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{0.3em}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\APS}{\operatorname{APS}}
+\newcommand{\MPS}{\operatorname{MPS}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\vp}[2]{v_{#1}(#2)}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\Eset}{\mathcal E}
+\newcommand{\Uset}{\mathcal U}
+\newtcolorbox{resultbox}{colback=PaleGreen,colframe=RuleGreen,boxrule=.6pt,
+ arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,breakable}
+\title{\color{InkGreen}\LARGE Phase-shift classification\par for integer tetration\par
+\vspace{0.5em}\large A proof of the 21-value conjecture, its even-base refinement,\par
+and the related 28-value modular classification}
+\author{ChatGPT\\\small Prepared for Vladimir Reshetnikov}
+\date{19 September 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+Integer power towers become extraordinarily large, but the first decimal digit
+that changes between successive heights has a small and rigid eventual dynamics.
+Marco Rip\`a's phase-shift conjecture, stated in the appendix of his 2025 paper
+and in OEIS A376842, predicts exactly 21 possible phase words when the cycle is
+anchored at the first height of permanently constant congruence speed.
+We give a self-contained elementary proof under the height-one convention
+explicitly recorded in OEIS A371074. The proof separates the 2-adic and 5-adic
+valuations of consecutive tower differences. Their competition determines whether
+the phase is always 5, follows multiplication in $\F_5^\times$, or belongs to a
+balanced family $a=1+10^v c$. The balanced family accounts for precisely four
+additional words. We also prove the conjectured 14-word restriction for even
+bases, the 28-word classification at the alternative anchor of OEIS A376446,
+and natural density $1/900$ for each of the four words arising from balanced
+valuations. Explicit onset formulas, an unbounded sharp-onset family, a
+polynomial-time computation argument, and independently cross-checked exact
+integer programs accompany the proofs. A source audit identifies a height-zero
+indexing ambiguity and an apparent erroneous value at base 21; neither is used
+as a substitute for proving the conjecture.
+\end{abstract}
+\begin{resultbox}
+\textbf{Status of this document.} This is a proof-bearing research draft, not a
+refereed publication or a formally verified development. The universal claims
+below rest on the written arguments, not on a finite search. The consulted
+sources still state the target as a conjecture; no earlier proof of the complete
+classification was located in the targeted literature check. That search does
+not establish priority. Existing congruence-speed results are explicitly
+credited and rederived where needed.
+\end{resultbox}
+\clearpage
+\begingroup
+\setlength{\parskip}{0pt}
+\small
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{The selected problem and its provenance}
+
+Fix an integer base $a>1$ and define the right-associated power tower
+\begin{equation}\label{eq:tower}
+ T_0=1,\qquad T_{b+1}=a^{T_b}\quad(b\geq0).
+\end{equation}
+Thus $T_b=a\uparrow\uparrow b$ for positive integer $b$. This article concerns
+integer tetration and modular arithmetic, not an analytic interpolation in the
+height. Higher up-arrow expressions often supply enormous tower heights, but
+nothing in the proof requires writing those heights or towers in decimal.
+
+The selected problem is an explicit, finite-valued conjecture rather than a
+newly invented question. Rip\`a asked a 23-value version on MathOverflow in
+October 2024 \cite{mo}. The appendix of the 2025 paper gives the sharper
+21-value version and an additional 14-value restriction for even bases
+\cite{ripa2025}. The OEIS A376842 entry, revision 39 dated 30 March 2026,
+still labels the 21-value statement a conjecture \cite{oeis842}. We address
+that formulation. The older 23-value set contains two extra rotations,
+$1397$ and $1793$, which do not occur at the intended anchor.
+
+The general stabilization of trailing digits and formulas for their rate of
+stabilization are established topics: see Rip\`a's 2020 and 2021 papers and the
+2022 paper with Onnis \cite{ripa2020,ripa2021,ripaonnis}. Those results should
+not be confused with the phase-word classification. The present proof derives
+the particular valuation identities it uses, then supplies the missing
+classification and its anchoring argument.
+
+\subsection{The observable}
+Put
+\begin{equation}\label{eq:difference}
+ D_b=T_{b+1}-T_b>0\quad(b\geq0),\qquad
+ k_b=\min\{v_2(D_b),v_5(D_b)\}\quad(b\geq1).
+\end{equation}
+For a nonzero integer $n$, $v_p(n)$ is the largest $e\geq0$ with $p^e\mid n$.
+We also write $v_{10}(n)=\min\{v_2(n),v_5(n)\}$, although 10 is not prime.
+The number $k_b$ counts the trailing decimal positions in which $T_b$ and
+$T_{b+1}$ agree, allowing leading zeroes. Their first differing position is
+$k_b+1$, counted from the right.
+
+\begin{definition}[Phase and speed]\label{def:phase}
+For $b\geq1$, define the phase digit by
+\begin{equation}\label{eq:phase}
+ s_b\equiv-\frac{D_b}{10^{k_b}}\pmod {10},\qquad 1\leq s_b\leq9.
+\end{equation}
+Define the congruence speeds by
+\begin{equation}\label{eq:speed}
+ V_1=k_1,\qquad V_b=k_b-k_{b-1}\quad(b\geq2).
+\end{equation}
+When these speeds are eventually constant, write $v$ for the eventual value and
+\begin{equation}\label{eq:onsetdef}
+ B=\min\{b\geq1:V_j=v\text{ for every }j\geq b\}.
+\end{equation}
+The word $\APS(a)$ is the four digits $s_Bs_{B+1}s_{B+2}s_{B+3}$, reduced to two
+digits when the two halves agree, and then to one digit when those two digits
+agree. Words are written as integers, as in the OEIS convention.
+\end{definition}
+
+The negative sign in \eqref{eq:phase} is intentional: the original digit minus
+the corresponding next-height digit is being measured. Since the lower $k_b$
+digits agree, reducing $(T_b-T_{b+1})/10^{k_b}$ modulo 10 gives exactly that
+digit difference, including any borrow automatically.
+
+\subsection{A convention that changes the answer}\label{sec:convention}
+The convention $V_1=k_1$ is not optional bookkeeping. It is explicitly stated
+in OEIS A371074: the number of matching trailing digits of $a$ and $a^a$ is the
+congruence speed at height one, with leading zeroes included \cite{oeis1074}.
+It also makes $k_b=\sum_{j=1}^b V_j$, as in Equation (1) of
+Rip\`a--Onnis \cite{ripaonnis}.
+
+Although $T_0=1$ is useful for algebra, we \emph{do not} define
+$V_1=k_1-v_{10}(a-1)$. That alternative shifts the starting point for some
+cycles. In particular it would replace $\APS(901)=19$ by $91$.
+Section~\ref{sec:audit} records the ambiguity in the source formulations and
+checks it against their explicit examples. Below, $k_0^*=0$ will mean only the
+artificial initial total used in \eqref{eq:speed}; it is not an assertion about
+$v_{10}(D_0)$.
+
+\subsection{Examples before the proof}
+For $a=3$, the first towers are $3,27,3^{27},\ldots$. One obtains
+$k_b=b-1$, $V_1=0$, $V_b=1$ for $b\geq2$, and $B=2$. The phases from height two
+are $4,6,4,6,\ldots$, so $\APS(3)=46$.
+
+For $a=57$, $k_b=3b$ and $B=1$. The successive phases are
+$2,6,8,4,2,6,8,4,\ldots$. Thus a three-digit stabilization speed coexists with
+a four-step phase period: $\APS(57)=2684$. The speed and the phase period are
+different invariants.
+
+\section{Main classification}
+Define the following sets of words:
+\begin{align}
+ \Eset={}&\{2,4,6,8,28,46,64,82,\notag\\[-2pt]
+ &\hspace{1.2em}2486,2684,4268,4862,6248,6842,8426,8624\},\label{eq:Eset}\\
+ \Uset={}&\{9,19,3971,7931\}.\label{eq:Uset}
+\end{align}
+
+\begin{theorem}[The 21-value classification]\label{thm:main}
+Let $a>1$ be an integer not divisible by 10, and use
+Definition~\ref{def:phase}. The speeds become permanently constant at a finite
+height $B$, with $v>0$. The phases are periodic from that very height, with
+least period dividing 4, and
+\begin{equation}\label{eq:mainset}
+ \APS(a)\in \Eset\cup\{5\}\cup\Uset.
+\end{equation}
+Every one of these 21 words occurs. More precisely, exactly one of the
+following alternatives holds at every height $b\geq B$:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2em,itemsep=2pt]
+\item $v_2(D_b)<v_5(D_b)$, and $s_b=5$.
+\item $v_5(D_b)<v_2(D_b)$, and $s_b$ is the even lift of a geometric
+      progression in $\F_5^\times$.
+\item $a=1+10^v c$ with $v\geq2$ and $\gcd(c,10)=1$. In this case
+      $B=2$, $k_b=(b+1)v$, and
+      \begin{equation}\label{eq:balancedphase}
+      s_b\equiv-c^{b+1}\pmod {10}\qquad(b\geq1).
+      \end{equation}
+\end{enumerate}
+In alternative \textup{(iii)}, residues $c\equiv1,3,7,9\pmod {10}$ give,
+respectively, the words $9,3971,7931,19$.
+\end{theorem}
+
+\begin{theorem}[The even-base refinement]\label{thm:even}
+For even $a>1$ with $5\nmid a$, the exact range is
+\begin{equation}\label{eq:evenset}
+ \{2,4,6,8,28,46,64,82,2486,4268,4862,6248,6842,8426\}.
+\end{equation}
+In particular, the two even-digit words $2684$ and $8624$ occur for odd bases
+but never for even bases at the minimal-speed anchor.
+\end{theorem}
+
+The important qualification is ``from that very height.'' Merely proving that
+the phases eventually become periodic would not settle the conjecture:
+$\APS(a)$ is anchored at the \emph{first} permanently constant speed. The
+valuation comparison in Section~\ref{sec:onset} closes that gap.
+
+\section{Elementary valuation tools}
+
+The basic identity connecting adjacent differences is
+\begin{equation}\label{eq:diffrec}
+ D_b=T_b\bigl(a^{D_{b-1}}-1\bigr)\quad(b\geq1).
+\end{equation}
+Indeed, $T_{b+1}/T_b=a^{T_b-T_{b-1}}=a^{D_{b-1}}$. This identity is an equality
+of ordinary integers; no infinite tower or $p$-adic analytic continuation is
+being assumed.
+
+\begin{lemma}[The 5-adic lifting calculation]\label{lem:five}
+If $x=1+5^r u$ with $r\geq1$ and $5\nmid u$, then for every positive integer $n$,
+\begin{equation}\label{eq:fiveLTE}
+ v_5(x^n-1)=r+v_5(n),\qquad
+ \frac{x^n-1}{5^{r+v_5(n)}}\equiv
+ u\frac{n}{5^{v_5(n)}}\pmod5.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For an exponent $w$ coprime to 5, the binomial theorem gives
+$(1+5^r u)^w\equiv1+w5^r u\pmod {5^{r+1}}$. Raising a number
+$1+5^j z$ to its fifth power gives $1+5^{j+1}z'$ with $z'\equiv z\pmod5$:
+the terms of binomial degree at least two are divisible by $5^{j+2}$.
+Write $n=5^e w$, apply this fifth-power step $e$ times, and then the coprime
+exponent calculation. The displayed residue is nonzero, proving the exact
+valuation as well as the congruence.
+\end{proof}
+
+\begin{lemma}[The 2-adic lifting calculation]\label{lem:two}
+For odd $a>1$ put
+\begin{equation}\label{eq:At}
+ A=v_2(a-1),\qquad t=v_2(a-1)+v_2(a+1)-1
+                  =\max\{v_2(a-1),v_2(a+1)\}.
+\end{equation}
+Then $t\geq2$. For positive even $n$,
+\begin{equation}\label{eq:twoLTE}
+ v_2(a^n-1)=t+v_2(n).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Exactly one of $a-1,a+1$ is divisible by 4, and the other has valuation one.
+For odd $w$, the factorizations of $a^w-1$ and $a^w+1$ show that their
+2-adic valuations equal those of $a-1$ and $a+1$, respectively. If
+$n=2^e w$ with $e\geq1$, factor the successive differences of squares.
+After the first factorization, each extra factor is $a^{2^j w}+1$ with
+$j\geq1$, which is congruent to 2 modulo 8. Hence the valuation is
+$v_2(a-1)+v_2(a+1)+(e-1)=t+e$.
+\end{proof}
+
+For $5\nmid a$, set
+\begin{equation}\label{eq:or}
+ o=\ord_5(a)\in\{1,2,4\},\qquad r=v_5(a^o-1)\geq1.
+\end{equation}
+The value of $r$ is $v_5(a-1)$, $v_5(a+1)$, or $v_5(a^2+1)$ according as
+$o=1,2,4$. In the latter two cases the other factor of $a^o-1$ is a 5-adic unit.
+Whenever $o\mid n$, Lemma~\ref{lem:five} yields
+\begin{equation}\label{eq:orderLTE}
+ v_5(a^n-1)=r+v_5(n).
+\end{equation}
+If $o\nmid n$, this valuation is zero.
+
+\section{Exact local valuations of tower differences}\label{sec:valuations}
+Write $x_b=v_2(D_b)$ and $y_b=v_5(D_b)$.
+
+\begin{proposition}[Odd bases coprime to 5]\label{prop:oddprofiles}
+For odd $a>1$ with $5\nmid a$, and every $b\geq1$,
+\begin{equation}\label{eq:oddprofiles}
+ x_b=A+bt,\qquad y_b=(b+\varepsilon)r,
+\end{equation}
+where
+\begin{equation}\label{eq:epsilonodd}
+\varepsilon=\begin{cases}
+ 1,&o=1,\\
+ 0,&o=2,\\
+ 0,&o=4\text{ and }a\equiv1\pmod4,\\
+ -1,&o=4\text{ and }a\equiv3\pmod4.
+\end{cases}
+\end{equation}
+In particular, $k_b=\min\{A+bt,(b+\varepsilon)r\}$ exactly, not just
+asymptotically.
+\end{proposition}
+\begin{proof}
+All $D_b$ are even and $T_b$ is odd. Start with $v_2(D_0)=A$ and apply
+\eqref{eq:diffrec} and Lemma~\ref{lem:two}; each step increases the valuation
+by $t$.
+
+For the 5-adic part, when $o=1$, $v_5(D_0)=v_5(a-1)=r$, and
+\eqref{eq:orderLTE} applies immediately and at every subsequent step.
+When $o=2$, $D_0$ is even and is not divisible by 5, so $y_1=r$; each later
+step adds $r$. When $o=4$ and $a\equiv1\pmod4$, $4\mid D_0$ and again
+$y_1=r$.
+
+Finally suppose $o=4$ and $a\equiv3\pmod4$. Then $D_0\equiv2\pmod4$, so
+$y_1=0$. Every odd-base tower $T_b$ with $b\geq1$ is congruent to $a$ modulo 4:
+its exponent is odd. Consequently $4\mid D_b$ for $b\geq1$. Thus $y_2=r$,
+and all subsequent steps add $r$. These four initial conditions give the four
+lines of \eqref{eq:epsilonodd}.
+\end{proof}
+
+\begin{proposition}[Even bases]\label{prop:evenprofiles}
+For even $a$ with $5\nmid a$, put $e=v_2(a)$. For all $b\geq1$,
+\begin{equation}\label{eq:evenprofiles}
+ x_b=eT_{b-1},\qquad y_b=\max\{0,(b+\varepsilon)r\},
+\end{equation}
+where
+\begin{equation}\label{eq:epsiloneven}
+\varepsilon=\begin{cases}
+1,&o=1,\\
+-1,&o=2,\\
+-1,&o=4\text{ and }4\mid a,\\
+-2,&o=4\text{ and }a\equiv2\pmod4.
+\end{cases}
+\end{equation}
+Moreover, $x_b>y_b$ for every $b\geq2$.
+\end{proposition}
+\begin{proof}
+The second factor in \eqref{eq:diffrec} is odd, so
+$x_b=v_2(T_b)=eT_{b-1}$. If $o=1$, the 5-adic calculation starts with
+$v_5(D_0)=r$. If $o=2$, $D_0$ is odd, so $y_1=0$; $D_1$ is even, so
+$y_2=r$. For $o=4$, $D_0$ is odd, and
+$D_1=T_2-a\equiv-a\pmod4$ because $4\mid T_2$. If $4\mid a$ this gives
+$y_2=r$; otherwise $y_2=0$ and $y_3=r$, since $4\mid D_2$. Thereafter each
+step adds $r$.
+
+It remains to prove strict dominance, rather than merely eventual dominance.
+For $o=1$, $a\geq5^r+1>3r$, so $x_2=ea>3r=y_2$. For $o=2$,
+$a\geq5^r-1>r=y_2$. For $o=4$, the elementary inequality
+$5^a>a^2+1$ for $a\geq2$ implies $r<a$, so $x_2>r\geq y_2$.
+The inequality $5^a>a^2+1$ follows by induction from $a=2$.
+
+Also $T_{j+1}=a^{T_j}\geq2T_j$, since $2^n\geq2n$ for every positive
+integer $n$. Therefore $x_b\geq2^{b-2}x_2$. In the first case
+$3\cdot2^{b-2}\geq b+1$; in the other cases $2^{b-2}\geq b-1$.
+The displayed strict inequalities persist for all $b\geq2$.
+\end{proof}
+
+\begin{proposition}[Bases ending in 5]\label{prop:fiveprofiles}
+For odd $a$ divisible by 5, put $f=v_5(a)$ and retain $A,t$ from
+\eqref{eq:At}. Then
+\begin{equation}\label{eq:fiveprofiles}
+ x_b=A+bt,\qquad y_b=fT_{b-1}\qquad(b\geq1).
+\end{equation}
+If $a\geq15$, $y_b>x_b$ for all $b\geq2$. If $a=5$, this strict inequality
+holds for $b\geq3$, and
+\begin{equation}\label{eq:fiveexception}
+ k_1=1,\quad k_2=5,\quad k_b=2b+2\ (b\geq3),\qquad B=4.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The 2-adic calculation is unchanged. The factor $a^{D_{b-1}}-1$ in
+\eqref{eq:diffrec} is prime to 5, giving the formula for $y_b$.
+For $a\geq15$ we have $a>3t\geq A+2t$: for $t=2,3$ this is immediate;
+for $t\geq4$ use $a\geq2^t-1>3t$. Thus $y_2=fa>x_2$.
+The same doubling argument as above preserves strict dominance over the
+linear function $x_b$. For $a=5$, direct substitution gives $k_1=1$, $k_2=5$, and
+$y_3=3125>x_3=8$; doubling then preserves $y_b>x_b$ for all $b\geq3$,
+giving the displayed $k_b$ values. The speeds are $1,4,3,2,2,\ldots$, proving $B=4$.
+\end{proof}
+
+\section{Why the minimal speed anchor is already safe}\label{sec:onset}
+
+For nonunit bases, the preceding propositions immediately give exact onsets:
+\begin{equation}\label{eq:Beven}
+ B=\begin{cases}
+2,&a\text{ even},\ o=1,\ e\geq2r,\\
+3,&a\text{ even},\ o=1,\ e<2r,\\
+3,&a\text{ even},\ o=4,\ a\equiv2\pmod4,\\
+2,&a\text{ even in the remaining cases}.
+\end{cases}
+\end{equation}
+Indeed, in the first two lines $k_1=\min(e,2r)$ and $k_b=(b+1)r$ for
+$b\geq2$. The other lines follow from their zero-valued initial 5-adic
+profiles. None has $B=1$.
+
+For $5\mid a$, $a\geq15$, the onset is
+\begin{equation}\label{eq:Bfive}
+ B=\begin{cases}2,&k_1=A+t,\\3,&k_1<A+t,\end{cases}
+ \qquad k_1=\min(A+t,f).
+\end{equation}
+Together with $B(5)=4$, these formulas place the anchor strictly inside the
+2-adically dominant regime. No tie remains at the anchor.
+
+For odd bases coprime to 5 we need to understand the minimum of two affine
+functions. This small point is central to the argument.
+
+\begin{lemma}[No isolated valuation tie at the anchor]\label{lem:anchor}
+For the profiles in Proposition~\ref{prop:oddprofiles}, let $v=\min(t,r)$.
+The speeds are eventually $v$. If $t\ne r$, the line with smaller slope is
+\emph{strictly} lower at every integer $b\geq B$. If $t=r$, the two lines are
+either strictly ordered everywhere or identical everywhere.
+\end{lemma}
+\begin{proof}
+Suppose first $t>r$. Set
+$\delta_b=x_b-y_b=A-\varepsilon r+b(t-r)$, which is strictly increasing.
+For $b\geq2$, direct subtraction of the two possible minima shows
+\begin{equation}\label{eq:criterion}
+ V_b=r\quad\Longleftrightarrow\quad\delta_{b-1}\geq0.
+\end{equation}
+If $\delta_{b-1}<0$ and the smaller branch changes during the step, then
+$V_b=r-\delta_{b-1}>r$; if it does not change, $V_b=t>r$.
+Consequently $B\geq2$ implies $\delta_B>0$, and the inequality only strengthens.
+If $B=1$, then $k_1=r$. A tie there would require
+$x_1=A+t=r$, impossible since $A\geq1$ and $t>r$. So this case is strict too.
+
+If $t<r$, exchange the two lines: set
+$\delta_b=y_b-x_b=\varepsilon r-A+b(r-t)$. The analogue of
+\eqref{eq:criterion} is $V_b=t$ if and only if $\delta_{b-1}\geq0$.
+The same proof gives strictness when $B\geq2$. In fact $B=1$ cannot occur in
+this case: if the lower-slope line is already minimal at height one, then
+$k_1=A+t>t$; otherwise some later increment is not $t$.
+
+Finally, if $t=r$ the difference $x_b-y_b=A-\varepsilon t$ is constant.
+\end{proof}
+
+Identical lines require $A=\varepsilon t$. Since $A>0$ and
+$\varepsilon\in\{-1,0,1\}$, this is equivalent to
+\begin{equation}\label{eq:balancecondition}
+ \varepsilon=1,\qquad A=t=r.
+\end{equation}
+Thus $a\equiv1\pmod{20}$ and
+$v_2(a-1)=v_5(a-1)=v\geq2$. Equivalently,
+$a=1+10^v c$ with $\gcd(c,10)=1$. These are exactly the balanced bases.
+For them $k_1=2v$ and $V_b=v$ for $b\geq2$, so $B=2$.
+
+\subsection{Closed onset formula for odd units}\label{sec:closedB}
+The proof gives a compact exact formula useful in computation. If $t=r$, then
+$B=1$ when $k_1=t$, and $B=2$ otherwise. If $t\ne r$, define
+\begin{equation}\label{eq:Cq}
+ (C,q)=\begin{cases}(A-\varepsilon r,t-r),&t>r,\\
+                         (\varepsilon r-A,r-t),&t<r.
+          \end{cases}
+\end{equation}
+Here $q>0$ and $\delta_b=C+bq$. Then
+\begin{equation}\label{eq:Bclosed}
+ B=\begin{cases}
+ 1,&k_1=v\text{ and }C+q\geq0,\\
+ \max\bigl\{2,1+\lceil-C/q\rceil\bigr\},&\text{otherwise}.
+ \end{cases}
+\end{equation}
+This formula does not infer an onset from a finite run of equal speeds; it
+proves that every later speed agrees.
+
+\section{The phase dynamics in the three regimes}\label{sec:dynamics}
+
+\subsection{The 2-adic regime}
+If $x_b<y_b$, then $k_b=x_b$ and $D_b/10^{k_b}$ is odd and divisible by 5.
+Its residue modulo 10 is therefore 5, and so is its negative. Hence $s_b=5$.
+The anchor lemma and the nonunit calculations show that this conclusion holds
+for \emph{all} $b\geq B$ whenever this is the eventual regime.
+
+\subsection{The 5-adic regime: a four-element group}\label{sec:F5}
+Suppose $y_b<x_b$ for all $b\geq B$. The base is prime to 5 and the constant
+speed is $r$. Every $s_b$ is even and nonzero modulo 5. Let
+\begin{equation}\label{eq:C5}
+ u=\frac{a^o-1}{5^r},\qquad
+ C_5=\begin{cases}a^a\pmod5,&a\text{ odd},\\1,&a\text{ even},\end{cases}
+ \qquad \lambda=C_5u\,o^{-1}2^{-r}\in\F_5^\times.
+\end{equation}
+All inverses in this formula are taken in $\F_5$, so they exist.
+
+For $b\geq B$, we have $o\mid D_b$. For odd bases this follows from
+$4\mid D_b$ at every positive height; for even bases $B\geq2$ and
+$4\mid D_b$ at those heights. Also $T_{b+1}=a^{T_b}\equiv C_5\pmod5$:
+$T_b\equiv a\pmod4$ for odd bases and $T_b\equiv0\pmod4$ for even bases
+at the relevant heights.
+
+Apply Lemma~\ref{lem:five} to $a^{D_b}=(a^o)^{D_b/o}$ and use
+$D_{b+1}=T_{b+1}(a^{D_b}-1)$. Since $k_{b+1}=k_b+r$, division by
+$10^{k_b+r}$ gives
+\begin{equation}\label{eq:geometric}
+ \frac{D_{b+1}}{10^{k_{b+1}}}
+ \equiv C_5u\,o^{-1}2^{-r}\frac{D_b}{10^{k_b}}\pmod5,
+ \qquad s_{b+1}\equiv\lambda s_b\pmod5.
+\end{equation}
+The factor $2^{-r}$ is essential: the normalization removes powers of 10,
+not just powers of 5.
+
+Let $\ell:\F_5^\times\to\{2,4,6,8\}$ be the unique even representative
+modulo 10; explicitly $\ell(1)=6$, $\ell(2)=2$, $\ell(3)=8$, and
+$\ell(4)=4$. We have
+\begin{equation}\label{eq:lift}
+ s_{B+j}=\ell(s_B\lambda^j\bmod5).
+\end{equation}
+The multiplicative group $\F_5^\times$ has order 4. Multipliers $1,4,2,3$
+have orders $1,2,4,4$, respectively. As the initial nonzero residue varies,
+the resulting words are exactly the 16 members of $\Eset$ in
+\eqref{eq:Eset}. This proves both the period bound and the complete
+\emph{allowable} even-digit list. Actual witnesses are supplied below.
+
+\subsection{Balanced valuations: the four exceptional words}
+
+\begin{lemma}[A decimal first-order lifting identity]\label{lem:decimal}
+Let $a=1+10^v c$, $v\geq2$, $\gcd(c,10)=1$. Then for every $b\geq0$,
+\begin{equation}\label{eq:decimalunits}
+ D_b\equiv10^{(b+1)v}c^{b+1}\pmod {10^{(b+1)v+1}}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The valuation identities already show
+$v_2(D_b)=v_5(D_b)=(b+1)v$, including $b=0$.
+The congruence starts with $D_0=10^v c$. Expand
+\begin{equation}\label{eq:binomial}
+ a^{D_b}-1=D_b10^v c+
+     \sum_{j=2}^{D_b}\binom{D_b}{j}10^{jv}c^j.
+\end{equation}
+For $p=2,5$, the integer identity
+$j\binom{D_b}{j}=D_b\binom{D_b-1}{j-1}$ gives
+\[
+ v_p\!\binom{D_b}{j}\geq v_p(D_b)-v_p(j).
+\]
+Every term with $j\geq2$ therefore has $p$-adic valuation at least
+\[
+ (b+2)v+(j-1)v-v_p(j)\geq(b+2)v+1.
+\]
+The last inequality holds because $v\geq2$ and $v_p(j)\leq j-1$.
+Thus all nonlinear terms disappear modulo $10^{(b+2)v+1}$.
+Multiply by $T_{b+1}\equiv1\pmod{10}$ in \eqref{eq:diffrec}, divide by
+$10^{(b+2)v}$, and conclude that the normalized leading residue is multiplied
+by $c$ at each step. Induction proves \eqref{eq:decimalunits}.
+\end{proof}
+
+Since $B=2$, the four possible words start with $-c^3$, not with $-c^2$.
+They are
+\begin{center}
+\begin{tabular}{cccl}
+\toprule
+$c\bmod10$ & first four phase digits & reduced word & example base\\
+\midrule
+1 & $9,9,9,9$ & $9$ & $101$\\
+3 & $3,9,7,1$ & $3971$ & $301$\\
+7 & $7,9,3,1$ & $7931$ & $701$\\
+9 & $1,9,1,9$ & $19$ & $901$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The anchor, the sign convention, and the use of base 10 all matter in this table.
+In particular, arbitrary rotations of these words need not be attainable at
+$B$.
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}, except for the explicit witnesses]
+Propositions~\ref{prop:oddprofiles}--\ref{prop:fiveprofiles} give eventual
+positive speed. Section~\ref{sec:onset} proves that precisely one of strict
+2-adic dominance, strict 5-adic dominance, or identical affine valuations
+holds from the minimal anchor onward. The three calculations in this section
+give the word $5$, one of the 16 words of $\Eset$, or one of the four words
+of $\Uset$, respectively. In each case the phase period divides 4.
+The witness table in Section~\ref{sec:witnesses} proves that none of the
+21 possibilities is superfluous.
+\end{proof}
+
+\section{Why even bases allow only fourteen words}\label{sec:evenproof}
+The finite-group argument alone permits all 16 even-digit words. The even-base
+restriction comes from the initial residue and cannot be deduced just from
+$B\leq3$.
+
+For even $a$, $C_5=1$, so $\lambda=u\,o^{-1}2^{-r}$. The first phase residue
+at the minimal anchor satisfies the following exact table, entirely in
+$\F_5$:
+\begin{center}
+\begin{tabular}{@{}llcc@{}}
+\toprule
+Condition & additional condition & $B$ & $s_B\pmod5$\\
+\midrule
+$o=1$ & $e\geq2r$ & 2 & $-\lambda^3$\\
+$o=1$ & $e<2r$ & 3 & $-\lambda^4$\\
+$o=2$ & & 2 & $3\lambda$\\
+$o=4$ & $4\mid a$, $a\equiv2\pmod5$ & 2 & $\lambda$\\
+$o=4$ & $4\mid a$, $a\equiv3\pmod5$ & 2 & $2\lambda$\\
+$o=4$ & $a\equiv2\pmod4$ & 3 & $3\lambda$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+To verify the first two rows, when $o=1$ the normalized 5-adic residue obeys
+$D_b/5^{(b+1)r}\equiv u^{b+1}\pmod5$. Hence, once $k_b=(b+1)r$,
+$s_b\equiv-\lambda^{b+1}$. Formula~\eqref{eq:Beven} gives the two values of
+$B$.
+
+In the next three rows, $B=2$, $T_2\equiv1\pmod5$, and
+$D_1\equiv1-a\pmod5$. The lifting calculation gives
+$s_2\equiv\lambda(a-1)$. This is $3\lambda$ when $a\equiv4\pmod5$,
+$\lambda$ when $a\equiv2\pmod5$, and $2\lambda$ when $a\equiv3\pmod5$.
+In the last row, $T_2\equiv-1\pmod5$ while $T_3\equiv1\pmod5$, so
+$D_2\equiv2\pmod5$. Thus $s_3\equiv-2\lambda=3\lambda$.
+
+For $\lambda=2$, the table permits initial residues $1,2,4$, but not 3.
+The missing start gives exactly the word $8624$. For $\lambda=3$, it permits
+$1,3,4$, but not 2; the missing start gives $2684$. For $\lambda=1$ all four
+constant phases remain possible, and for $\lambda=4$ all four period-two
+words remain possible. This proves the 14-word upper bound. The even-base
+witnesses in the next section prove equality, completing
+Theorem~\ref{thm:even}.
+
+\section{Explicit witnesses and exact certificates}\label{sec:witnesses}
+The following table gives a base for each of the 21 words and, when it exists,
+an even base with the same word. The values $B$, $k_B$, and $s_B$ refer to the
+base in the second column. The companion file \texttt{data/witnesses.csv}
+also contains the two tower residues modulo $10^{k_B+1}$, which provide small
+exact certificates for the first phase. Later phases follow from the proved
+recurrence, not from extrapolation.
+
+\begin{center}
+\begin{tabular}{rrrrrrr}
+\toprule
+word & base $a$ & $B$ & $v$ & $k_B$ & $s_B$ & even witness\\
+\midrule
+2&9&1&1&1&2&48\\
+4&11&2&1&3&4&36\\
+5&5&4&2&10&5&---\\
+6&52&2&1&1&6&52\\
+8&2&3&1&1&8&2\\
+9&101&2&2&6&9&---\\
+19&901&2&2&6&1&---\\
+28&18&3&2&2&2&18\\
+46&3&2&1&1&4&12\\
+64&16&2&1&3&6&16\\
+82&39&1&1&1&8&88\\
+2486&21&2&1&3&2&72\\
+2684&7&2&2&2&2&---\\
+3971&301&2&2&6&3&---\\
+4268&6&3&1&4&4&6\\
+4862&19&1&1&1&4&28\\
+6248&4&2&1&1&6&4\\
+6842&8&2&1&1&6&8\\
+7931&701&2&2&6&7&---\\
+8426&31&2&1&3&8&32\\
+8624&77&1&1&1&8&---\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For example, base 7 has $o=4$, $r=2$, $A=1$, $t=3$, $B=2$, and $k_B=2$.
+The residues $T_2\equiv543$ and $T_3\equiv343\pmod{1000}$ give $s_B=2$.
+Furthermore $C_5=3$, $u\equiv1$, and $\lambda=3$, so
+$2\mapsto6\mapsto8\mapsto4\mapsto2$. This independently yields $2684$.
+
+For base 21, $T_2\equiv4421$ and $T_3\equiv2421\pmod{10000}$ give
+$s_2=2$, and $\lambda=2$, hence $2486$. The significance of this example for
+the currently listed OEIS values is discussed in Section~\ref{sec:audit}.
+
+\section{The related 28-value conjecture}\label{sec:modular}
+OEIS A376446 uses the prescribed anchor
+\begin{equation}\label{eq:H}
+ H=\nu(a)+2,\qquad
+ \nu(a)=\begin{cases}r,&5\nmid a,\\t,&5\mid a,\end{cases}
+\end{equation}
+instead of $B$ \cite{oeis446}. Denote its reduced phase word by $\MPS(a)$.
+The distinction is an actual rotation of a cycle, not a different notion of
+phase.
+
+\begin{lemma}[The prescribed anchor is safe]\label{lem:safeH}
+For every admissible base, $B\leq H$.
+\end{lemma}
+\begin{proof}
+Even bases have $B\leq3\leq r+2$. Bases ending in 5 have $B\leq t+2$ by
+\eqref{eq:Bfive} and \eqref{eq:fiveexception}. For odd units with $t=r$,
+$B\leq2$. If $t>r$, the increasing difference
+$A-\varepsilon r+b(t-r)$ is nonnegative by $b=\max(1,r-1)$, so
+\eqref{eq:Bclosed} gives $B\leq\max(2,r)\leq r+2$.
+
+If $t<r$ and $\varepsilon=-1$, then $a\equiv3\pmod4$, so $A=1$ and the
+difference is $-r-1+b(r-t)$; it is nonnegative by $b=r+1$.
+If $\varepsilon=0$, it is $-A+b(r-t)$ with $A\leq t<r$, again nonnegative
+by $r+1$. If $\varepsilon=1$, it is already positive at $b=0$, since
+$r>A$. Formula~\eqref{eq:Bclosed} finishes the proof.
+\end{proof}
+
+\begin{theorem}[The 28-value modular classification]\label{thm:modular}
+The exact range of $\MPS$ is
+\begin{equation}\label{eq:MPSrange}
+\Eset\cup\{5,9,19,91,1397,1793,3179,3971,7139,7931,9317,9713\}.
+\end{equation}
+This is the 28-value set conjectured in OEIS A376446.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:safeH}, strict 2-adic and 5-adic regimes still give $5$ and
+words in $\Eset$. For a balanced base $a=1+10^v c$ we have $H=v+2$ and
+\begin{equation}\label{eq:MPSbalanced}
+ s_{H+j}\equiv-c^{v+3+j}\pmod {10}.
+\end{equation}
+If $c\equiv1$, this is always $9$. If $c\equiv9$, the parity of $v$ gives
+$19$ or $91$. If $c\equiv3$ or 7, the four residues of $v$ modulo 4 give all
+four rotations of the corresponding four-cycle. These account for exactly the
+11 odd unit words in \eqref{eq:MPSrange}.
+
+All of them are attained by $a=1+c10^v$ with $c\in\{1,3,7,9\}$ and
+$2\leq v\leq5$. The words of $\Eset$, in the order shown in
+\eqref{eq:Eset}, are attained by bases
+\[
+9,11,52,2,33,16,3,18,4,32,6,13,19,27,7,28,
+\]
+respectively; $a=5$ gives $5$. These are exact finite modular evaluations, also
+recorded and checked in \texttt{data/modular\_witnesses.csv}.
+\end{proof}
+
+\section{A density consequence}
+\begin{corollary}\label{cor:density}
+Each of the four sets
+\[
+ \{a:\APS(a)=9\},\quad \{a:\APS(a)=19\},\quad
+ \{a:\APS(a)=3971\},\quad\{a:\APS(a)=7931\}
+\]
+has natural density $1/900$ in the positive integers. Their union has density
+$1/225$.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:main} makes the balanced family necessary as well as
+sufficient. For a specified residue $c_0\in\{1,3,7,9\}$ and a specified
+$v\geq2$, the relevant bases form the single arithmetic progression
+\[
+ a\equiv1+c_0 10^v\pmod {10^{v+1}},
+\]
+with density $10^{-(v+1)}$. These progressions are disjoint as $v$ varies,
+since $v=v_{10}(a-1)$ is determined by $a$. The union over $v\geq N$ is
+contained in $a\equiv1\pmod{10^N}$, so its upper density is at most $10^{-N}$.
+This bound justifies passage from finite sums to the infinite union. Therefore
+\[
+ \sum_{v=2}^\infty10^{-(v+1)}=\frac{1}{900}
+\]
+is the natural density for each specified word. Summing the four disjoint
+families gives $1/225$.
+\end{proof}
+
+Thus the rarity of odd non-5 phase words has an exact arithmetic explanation.
+The finite test through base $100000$ found 111 instances of each of these
+four words. This count is a check on the formulas; the density proof does not
+rely on it.
+
+\section{Unbounded onset and a sharp family}\label{sec:sharp}
+The phase alphabet is finite, but the minimal-speed onset is unbounded. A
+uniform search through a fixed number of heights is therefore not a proof of
+stabilization.
+
+\begin{proposition}[A constructive sharp-onset family]\label{prop:sharp}
+For every integer $r\geq3$, let $a_r$ be the least positive representative of the
+Chinese remainder conditions
+\begin{align}
+ a_r&\equiv2^{r-1}-1\pmod {2^r},\label{eq:crt2}\\
+ a_r&\equiv2^{5^{r-1}}\pmod {5^{r+1}}.\label{eq:crt5}
+\end{align}
+Then
+\begin{equation}\label{eq:sharp}
+ B(a_r)=r+2,\qquad v(a_r)=r-1,\qquad \APS(a_r)=5.
+\end{equation}
+Hence the general sufficient bound $B\leq r+2$ for odd units is sharp.
+\end{proposition}
+\begin{proof}
+Condition \eqref{eq:crt2} gives $A=1$ and $t=r-1$. The other condition gives
+$a_r\equiv2\pmod5$, so $o=4$, and $a_r\equiv3\pmod4$, so
+$\varepsilon=-1$.
+
+Put $n=5^{r-1}$, which is odd. Applying Lemma~\ref{lem:five} to
+$(-4)^n-1=-(4^n+1)$ gives
+\[
+ v_5(4^{5^{r-1}}+1)=v_5((-4)-1)+(r-1)=r.
+\]
+The residue modulo $5^{r+1}$ in \eqref{eq:crt5} therefore ensures
+$v_5(a_r^2+1)=r$ exactly. The two affine valuations are
+\[
+ x_b=1+b(r-1),\qquad y_b=(b-1)r,
+ \qquad y_b-x_b=b-r-1.
+\]
+They are equal at $b=r+1$, and 2-adic dominance starts strictly at $b=r+2$.
+The increment into the tied height is still $r$; the increment out is $r-1$.
+Thus the first permanently constant speed is at $r+2$, where all subsequent
+phases are 5.
+\end{proof}
+
+For example $r=3$ gives $a_3=1307$, $B=5$, and speed 2. One tested member
+with $r=32$ is
+\[
+ a_{32}=311423787862411847003581666295807,
+\]
+whose onset is 34 and whose speed is 31. At that onset $k_B=1055$, so its first
+phase can be independently checked using residues modulo $10^{1056}$, despite
+the inaccessible size of the actual tower. The bound itself is known in the
+congruence-speed literature \cite{ripaonnis}; the point here is the explicit
+CRT construction and the exact explanation of its crossing height.
+
+\section{Exact computation without constructing towers}\label{sec:algorithm}
+
+\subsection{The main algorithm}
+For a given admissible base, compute $A,t$ when $a$ is odd, and $o,r$ when
+$5\nmid a$. Propositions~\ref{prop:oddprofiles}--\ref{prop:fiveprofiles} and
+\eqref{eq:Beven}, \eqref{eq:Bfive}, \eqref{eq:Bclosed} give $B$, $v$, and $k_B$.
+If the 2-adic valuation is smaller, return $5$. If they are equal at $B$, use
+the balanced formula. Otherwise compute a single phase $s_B$ by modular
+tetration modulo $10^{k_B+1}$ and propagate it with the multiplier
+\eqref{eq:C5}. Four direct phase evaluations are included as an independent
+internal check, rather than being needed by the mathematical algorithm.
+
+A nonunit local valuation such as $v_2(a)T_{b-1}$ must not be constructed when
+it is enormous. To compare it with a known integer $y$, it suffices to compute
+$\min\{T_{b-1},\lfloor y/v_2(a)\rfloor+1\}$. This preserves the smaller
+valuation and detects equality exactly.
+
+\subsection{A reliable modular-tower routine}
+The supplied \texttt{Tower.mod} handles moduli $m=2^u5^w$. For each prime power
+$p^e\mid m$ there are two cases. If $p\nmid a$, reduce the exponent modulo
+$\varphi(p^e)$ and recurse on the lower-height tower. If $p\mid a$, compute
+the exponent only up to $\lceil e/v_p(a)\rceil$: at or above this threshold the
+residue is zero; below it the exponent is small and known exactly. Combine
+the two prime-power residues by the Chinese remainder theorem.
+
+The recursion terminates because the height decreases. Every new modulus is
+again 2,5-smooth. The exponent reduction in the unit case is justified by
+Euler's theorem; in the nonunit case no unjustified exponent reduction is
+made.
+
+The base cases are $T_0=1$ and $\min\{T_h,1\}=1$.
+For $h\geq1$ and $M>1$, to compute $\min\{T_h,M\}$, let $q$ be the least nonnegative integer with
+$a^q\geq M$, compute $\min\{T_{h-1},q\}$ recursively, and return $M$ when
+the threshold is reached. Otherwise evaluate the small exact power. All of
+this uses integers, with no floating-point logarithms.
+
+\begin{corollary}[Polynomial-time computability]\label{cor:complexity}
+The word $\APS(a)$ can be computed in time polynomial in the bit length of $a$.
+\end{corollary}
+\begin{proof}
+Write $L$ for that bit length. The valuations $A,t,r$ are $O(L)$, since they
+are taken on $a\pm1$ or $a^o-1$ with $o\leq4$. The onset bound gives
+$B=O(L)$ and the local profiles give $k_B=O(L^2)$. Thus the required modulus
+has $O(L^2)$ bits, not a tower-sized representation.
+
+In a memoized modular recursion a state is specified by a height at most
+$B+1$ and the two exponents of its smooth modulus. Those exponents remain
+$O(L^2)$; hence even the coarse bound on the number of possible states is
+polynomial in $L$. Each state uses polynomial-size integer arithmetic,
+modular exponentiation, and at most two recursive prime-power branches.
+The capped-tower calculations also use polynomial-size integers and bounded
+recursion depth. Standard multiplication and repeated squaring therefore
+suffice for a polynomial-time algorithm. No optimal complexity bound is
+claimed here.
+\end{proof}
+
+\subsection{A second algorithm used for checking}
+The verification program also implements full-modulus Euler reduction with
+exponent lifting. It computes $T_h\pmod m$ by reducing the exponent modulo
+$\varphi(m)$ and adding $\varphi(m)$ when the actual exponent is at least that
+large. If it is smaller, it uses the exact exponent instead.
+
+For a prime power dividing $m$, an exponent at least $\varphi(m)$ is large
+enough to force the nonunit residue to zero, since
+$\varphi(m)\geq\varphi(p^e)\geq e$. In the unit factors, adding
+$\varphi(m)$ does not change the residue. This algorithm does not split the
+answer into prime-power residues and reconstruct it by CRT, so it exercises
+a different reduction path. It shares only the capped-tower helper, which is
+separately checked against directly constructed small towers.
+
+\section{Reproducible verification and source audit}\label{sec:audit}
+
+\subsection{What was actually checked}
+The included program was executed with Python 3.13.5, using standard-library
+integer arithmetic only. The saved run records:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Check & count or range\\
+\midrule
+Admissible bases in $2\leq a\leq100000$ & $89999$\\
+Post-onset phase positions checked & $719992$\\
+Direct-integer residue, cap, and valuation checks & $3006$\\
+Independent Euler-algorithm comparisons & $107$\\
+Structured sharp-onset examples & $7$\\
+Largest structured onset & $34$\\
+Distinct minimal-anchor words & $21$\\
+Distinct even-base minimal-anchor words & $14$\\
+Distinct prescribed-anchor words & $28$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For each sequentially tested base, the program checked eight post-onset
+phases, the exact increment at each tested height, and the failure of the
+limiting increment immediately before the proposed onset when $B>1$.
+It also compared the four directly computed phases with the structural
+prediction from one phase and its multiplier, or with the balanced formula.
+The source code and its assertions make the scope of these tests explicit.
+
+The sequential count excludes 1 and multiples of 10; it is therefore $89999$,
+not $90000$. The elapsed time in the saved successful run was 28.344 seconds
+on the execution environment used here. It is not a hardware-independent
+performance guarantee. The JSON report and CSV files contain the exact
+results, including the discrepancy described next.
+
+\subsection{The value currently listed at base 21}
+The accessed A376842 entry lists $6248$ at base 21 \cite{oeis842}. With the
+height-one convention of A371074, the calculation is instead
+\begin{equation}\label{eq:21calc}
+ A=t=2,\quad r=1,\quad\varepsilon=1,\quad
+ k_b=b+1\ (b\geq1),\quad V_1=2,\quad B=2.
+\end{equation}
+The onset $B(21)=2$ is independently the value listed in OEIS A372490
+\cite{oeis2490}. From the exact residues
+\[
+ T_2\equiv4421,\qquad T_3\equiv2421\pmod {10000}
+\]
+and the multiplier $\lambda=2$ follows
+\begin{equation}\label{eq:21answer}
+ \APS(21)=2486.
+\end{equation}
+The phase at height one is 6, so $6248$ is the same cycle started one height
+earlier. It is therefore consistent with an anchoring slip rather than a
+failure of the periodicity or the 21-value range. The supplied checker records
+this mismatch explicitly; it does not silently modify the source data.
+Every other admissible listed value from base 2 through base 59 agrees with
+the calculation.
+
+\subsection{The height-zero ambiguity}
+Definitions phrased uniformly as a difference between the numbers of stable
+digits at heights $b$ and $b-1$ invite substituting $T_0=1$ at $b=1$.
+The height-one convention recorded in A371074 instead counts the matching
+digits of $a$ and $a^a$ directly. This is the convention used throughout this
+paper, and it matches the examples $\APS(301)=3971$ and $\APS(901)=19$ in
+Section 3 of Rip\`a's 2025 paper \cite{ripa2025}.
+
+For a balanced base, substituting $v_{10}(a-1)=v$ as an initial count would
+make $B=1$, not 2, and would give
+\[
+ 9,\quad1397,\quad1793,\quad91
+\]
+for $c\equiv1,3,7,9$, respectively. These are different anchored invariants.
+Thus $901$ is not a counterexample to the intended 21-value conjecture; it
+only exposes why the convention must be fixed. We resolve this ambiguity
+before stating the theorem rather than relying on an accidental rotation.
+
+\subsection{The base-5 length convention}
+Some discussions count only physically written digits at height two, assigning
+four stable digits to $5^5=3125$ even though its congruence with the next tower
+holds modulo $10^5$. Here we consistently use the exact modular count
+$k_2=5$. Either choice has $B(5)=4$ and $\APS(5)=5$, so it does not affect the
+classification. It does affect the short initial list of speeds and should
+not be left implicit.
+
+\subsection{Literature status and limits of the claim}
+The target conjecture was checked in the original MathOverflow question, the
+2025 arXiv PDF including its appendix, and the current OEIS entry. The PDF
+appendix matters: the HTML rendering consulted does not display that final
+appendix as completely as the PDF. The 2022 valuation paper was checked
+separately to distinguish existing speed results from the phase problem.
+A targeted search for the sequence identifier and phase-shift terminology
+located no subsequent proof of the complete classification.
+
+This evidence supports selecting the problem as an explicitly outstanding
+conjecture in the consulted sources. It does not establish an exhaustive
+bibliographic negative or guarantee novelty of every lemma and corollary.
+No assertion of external peer review, Lean formalization, or Wolfram
+verification is made. The calculations reported here were performed locally
+in Python; the mathematical argument is supplied in full above.
+
+\section{Interpretation and further questions}
+The tower's size is largely irrelevant to its first changing decimal digit.
+The relevant mechanism is a comparison of two local divisibility profiles.
+When one profile is strictly smaller, normalization kills the contribution
+from the other prime. What remains is either the single residue 5 or a
+multiplicative orbit in the four-element group $\F_5^\times$. Exactly balanced
+profiles retain a decimal unit, and the anchor fixes which rotation of its
+orbit is seen.
+
+The same reasoning explains why an arbitrary later height has the same first
+changing digit relative to \emph{any} further tower. For $b\geq B$ and $h>b$,
+\[
+ T_h-T_b=\sum_{j=b}^{h-1}D_j\equiv D_b\pmod {10^{k_b+1}},
+\]
+because every $D_j$ with $j>b$ is divisible by $10^{k_b+v}$ and $v\geq1$.
+Thus the phase really describes the first permanently unsettled digit, not
+merely a coincidental difference between two isolated heights.
+
+There are natural extensions that this article does not assert as proved.
+One is a full density distribution over all 21 words, rather than the four
+balanced ones. Another is a comparable classification in other radices,
+where more local primes or nontrivial prime-power weights can change the
+finite-state dynamics. A third is a machine-checked formalization of the
+anchor lemma and the valuation-to-phase reduction. These are separate tasks;
+they are not gaps in the decimal classification proved here.
+
+\begin{resultbox}
+\textbf{Conclusion.} Under the documented height-one convention, the
+21-value conjecture and its 14-value even-base refinement follow from exact
+local valuation formulas and a finite-group recurrence. The prescribed-height
+28-value conjecture follows as a rotation classification. The most delicate
+step is not computing enormous towers: it is proving that the first constant
+speed occurs strictly after any isolated tie between the local valuations.
+\end{resultbox}
+
+\appendix
+\section{Archive contents and reproduction}
+The archive contains the complete \LaTeX{} source and compiled PDF, together
+with the following files:
+\begin{center}
+\begin{tabular}{@{}p{0.44\linewidth}p{0.50\linewidth}@{}}
+\toprule
+File & purpose\\
+\midrule
+\texttt{code/phase\_tetration.py} & Exact smooth-modulus towers, valuations,
+onsets, phase words, and the sharp CRT family.\\
+\texttt{code/verify.py} & Sequential, direct-integer, independent-reduction,
+structured, and published-data checks.\\
+\texttt{data/verification.json} & Machine-readable results of the successful run.\\
+\texttt{data/verification.txt} & Human-readable copy of that result.\\
+\texttt{data/witnesses.csv} & All 21 witnesses, onsets, speeds, and exact
+first-phase residue certificates.\\
+\texttt{data/modular\_witnesses.csv} & Witnesses for all 28 prescribed-anchor words.\\
+\texttt{data/sharp\_onsets.csv} & Structured examples including onset 34.\\
+\texttt{README.md} & Commands, conventions, and the limits of the computational checks.\\
+\texttt{SOURCE\_STATUS.md} & Sources, versions, and the initial-height/data audit.\\
+\texttt{build.sh}, \texttt{build.ps1} & PDF build commands for common environments.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+From the extracted directory, use Python 3.9 or later:
+\begin{verbatim}
+python code/phase_tetration.py 57
+python code/phase_tetration.py 901
+python code/verify.py --max-base 100000
+\end{verbatim}
+Do not use Python's \texttt{-O} option, which disables assertions. No Python
+packages beyond the standard library are required. The saved run used Python
+3.13.5; the code targets Python 3.9+ syntax and APIs, but was not executed on
+every intervening interpreter version.
+
+Build the document with a \TeX{} installation containing \texttt{newpxtext},
+\texttt{newpxmath}, \texttt{tcolorbox}, and the usual AMS packages:
+\begin{verbatim}
+pdflatex -interaction=nonstopmode -halt-on-error \
+  tetration_phase_classification.tex
+pdflatex -interaction=nonstopmode -halt-on-error \
+  tetration_phase_classification.tex
+\end{verbatim}
+The bibliography is self-contained in the source, so Bib\TeX{} is not required.
+No font files or copies of third-party papers are included.
+
+\begin{thebibliography}{99}
+\bibitem{ripa2020}
+Marco Rip\`a, \emph{On the constant congruence speed of tetration},
+Notes on Number Theory and Discrete Mathematics \textbf{26}(3) (2020), 245--260.
+\href{https://doi.org/10.7546/nntdm.2020.26.3.245-260}{doi:10.7546/nntdm.2020.26.3.245-260}.
+
+\bibitem{ripa2021}
+Marco Rip\`a, \emph{The congruence speed formula},
+Notes on Number Theory and Discrete Mathematics \textbf{27}(4) (2021), 43--61.
+\href{https://doi.org/10.7546/nntdm.2021.27.4.43-61}{doi:10.7546/nntdm.2021.27.4.43-61}.
+
+\bibitem{ripaonnis}
+Marco Rip\`a and Luca Onnis, \emph{Number of stable digits of any integer tetration},
+Notes on Number Theory and Discrete Mathematics \textbf{28}(3) (2022), 441--457.
+\href{https://doi.org/10.7546/nntdm.2022.28.3.441-457}{doi:10.7546/nntdm.2022.28.3.441-457}.
+Consulted preprint: \url{https://arxiv.org/pdf/2210.07956}.
+
+\bibitem{ripa2025}
+Marco Rip\`a, \emph{Graham's number stable digits: An exact solution},
+Notes on Number Theory and Discrete Mathematics \textbf{31}(3) (2025), 607--616.
+\href{https://doi.org/10.7546/nntdm.2025.31.3.607-616}{doi:10.7546/nntdm.2025.31.3.607-616}.
+Consulted arXiv version 2, 12 September 2025:
+\url{https://arxiv.org/pdf/2411.00015v2}; see Definition 3.2 and the appendix
+on preprint page 9 for the target conjectures.
+
+\bibitem{mo}
+Marco Rip\`a, \emph{A new Conjecture at OEIS sequence A376842},
+MathOverflow question 481090, 22 October 2024.
+\url{https://mathoverflow.net/questions/481090/}.
+Accessed 19 September 2026; the retrieved question displayed no answer.
+
+\bibitem{oeis842}
+OEIS Foundation Inc., \emph{A376842}, entry by Marco Rip\`a.
+\url{https://oeis.org/A376842/internal}.
+Accessed 19 September 2026; revision 39, 30 March 2026.
+
+\bibitem{oeis446}
+OEIS Foundation Inc., \emph{A376446}, entry by Marco Rip\`a.
+\url{https://oeis.org/A376446/internal}.
+Accessed 19 September 2026; revision 40, 13 December 2025.
+
+\bibitem{oeis1074}
+OEIS Foundation Inc., \emph{A371074}, entry by Marco Rip\`a.
+\url{https://oeis.org/A371074}.
+Accessed 19 September 2026. The comments explicitly identify the total
+height-one matching-digit count with the height-one speed.
+
+\bibitem{oeis2490}
+OEIS Foundation Inc., \emph{A372490}, entry by Marco Rip\`a.
+\url{https://oeis.org/A372490}; table
+\url{https://oeis.org/A372490/b372490.txt}.
+Accessed 19 September 2026; used to cross-check the onset at base 21.
+\end{thebibliography}
+\end{document}

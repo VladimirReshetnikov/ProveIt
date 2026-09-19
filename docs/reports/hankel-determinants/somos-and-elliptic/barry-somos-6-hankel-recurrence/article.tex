@@ -1,0 +1,1005 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor,booktabs,array,longtable}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{19354A}
+\definecolor{accent}{HTML}{226E78}
+\definecolor{pale}{HTML}{EEF5F6}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={A proof of Barry's Hankel--Somos-6 conjecture},
+ pdfauthor={AI-assisted research note},pdfsubject={Hankel determinants, generating functions, Somos recurrences}}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{0.65em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{ink}Barry's Hankel--Somos-6 conjecture}
+\fancyhead[R]{\small Research note}
+\fancyfoot[C]{\small\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.15em}
+\setlength{\emergencystretch}{1.5em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\K}{\mathbb K}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\Norm}{\operatorname{N}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Hank}{\operatorname{H}}
+\newcommand{\ct}{\operatorname{ct}}
+\newcommand{\Res}{\operatorname{Res}}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{accent},backgroundcolor=\color{pale},
+ showstringspaces=false,xleftmargin=0.3em,xrightmargin=0.3em}
+\setcounter{tocdepth}{1}
+
+\begin{document}
+\thispagestyle{empty}
+\begin{center}
+{\small\sffamily\color{accent}GENERATING FUNCTIONS\quad /\quad INTEGER SEQUENCES\quad /\quad EXACT PROOFS}\par
+\vspace{1.1cm}
+{\LARGE\bfseries\color{ink}A proof of Barry's\par Hankel--Somos-6 conjecture}\par
+\vspace{0.45cm}
+{\large Polynomial specialization, a homogeneous family,\par and reproducible exact verification}\par
+\vspace{0.7cm}
+{AI-assisted research note}\par
+{19 September 2026}
+\end{center}
+\vspace{0.7cm}
+\begin{abstract}
+Conjecture 7 of Paul Barry's 2022 paper proposes a three-parameter family of
+quadratic algebraic generating functions whose Hankel determinants satisfy a
+Somos-6 recurrence with its middle coefficient zero. We prove the claimed
+bilinear identity and its homogeneous four-parameter form. The decisive
+observation is a constant square completion: the apparent cubic remainder in
+the associated sextic discriminant becomes linear. This identifies the
+recurrence coefficients with the invariants in van der Poorten's 2005
+continued-fraction theorem. We give an algebraic derivation of the needed
+local identity and the Hankel correspondence.
+
+A genuine technical issue is that the original family has an exceptional
+initial complete quotient, and some parameter values produce zero Hankel
+determinants. We handle both by embedding the family in a polynomial
+seven-parameter deformation. An explicit Catalan specialization proves that
+all its generic Hankel determinants are nonzero. The resulting identity is
+then specialized without division. Consequently the final statement holds
+over every commutative coefficient ring, including at singular parameters.
+The accompanying programs independently compute determinants and verify
+10,248 recurrence residuals in 1,128 test cases, with additional example and
+symbolic checks.
+\end{abstract}
+\vspace{0.4cm}
+\begin{tcolorbox}[colback=pale,colframe=accent,boxrule=0.6pt,arc=1mm]
+\textbf{Main coefficient simplification.} For Barry's parameters,
+\[
+ \alpha=t^2(r+2)^2,\qquad
+ \gamma=t^3\bigl((s+t)(r+s+t+2)^2+t(r+2)^3\bigr).
+\]
+The second expression expands to the polynomial in Conjecture 7.
+\end{tcolorbox}
+\vfill
+\begingroup\noindent\small\textbf{Status and attribution.}
+This is an unrefereed research manuscript, not a machine-checked formalization.
+The genus-two continued-fraction identity is due to van der Poorten; it is not
+claimed as a new result here. The contribution is the explicit reduction,
+the complete specialization argument, and a proof of the named conjecture.
+A targeted literature search did not locate an earlier direct resolution of
+Conjecture 7, but does not establish a priority claim.\par\endgroup
+\newpage
+\tableofcontents
+\vspace{0.6cm}
+\begin{tcolorbox}[colback=white,colframe=accent,boxrule=0.4pt,title=Reading guide,
+ coltitle=white,colbacktitle=accent]
+The problem and answer are in Sections 1--2. Section 4 isolates the algebraic
+observation that makes the problem tractable. Sections 5--7 contain the
+all-index proof, including the handling of zero determinants. Sections 8--10
+provide examples, consequences, and a reproducibility audit.
+\end{tcolorbox}
+
+\section{The selected problem and its status}
+
+Let $G(x)=\sum_{n\geq0}g_nx^n$ be the formal power series with $G(0)=1$ determined by
+\begin{equation}\label{eq:barry}
+ G(x)=\frac{1}{1-x\dfrac{1+rx}{1-x}
+                    -x^2\dfrac{1+sx}{1-x}-tx^3G(x)}.
+\end{equation}
+Barry \cite[Conjecture 7, p.~7]{Barry2022} conjectured that the Hankel transform
+of its coefficients is an $(\alpha,0,\gamma)$ Somos-6 sequence. The absence of
+the middle term means that the identity has only three terms, despite its
+index width being six. In the general Somos-6 recurrence there is an
+additional term $\beta H_{N-2}H_{N-4}$; the conjecture asserts $\beta=0$.
+
+We use matrix size as the determinant index:
+\begin{equation}\label{eq:hdef}
+ H_0=1,\qquad H_N=\det(g_{i+j})_{0\leq i,j<N}\quad(N\geq1).
+\end{equation}
+Barry's indexing is $h_n=H_{n+1}$. Keeping this shift explicit avoids a common
+source of mistakes in comparisons of Hankel recurrences.
+
+\begin{theorem}[Barry's Conjecture 7, in polynomial form]\label{thm:barry}
+For the series \eqref{eq:barry}, the determinants \eqref{eq:hdef} satisfy
+\begin{equation}\label{eq:barryrec}
+ H_NH_{N-6}=\alpha H_{N-1}H_{N-5}+\gamma H_{N-3}^2
+ \qquad(N\geq6),
+\end{equation}
+where
+\begin{equation}\label{eq:barrycoeff}
+ \alpha=t^2(r+2)^2,\qquad
+ \gamma=t^3\bigl((s+t)(r+s+t+2)^2+t(r+2)^3\bigr).
+\end{equation}
+This is an identity in $\Z[r,s,t]$ and hence remains true under every
+specialization into a commutative ring. Over a field, whenever $H_{N-6}\ne0$,
+\eqref{eq:barryrec} is the usual quotient-form Somos recurrence.
+\end{theorem}
+
+With $h_n=H_{n+1}$, the conjectured identity follows for $n\geq6$. The theorem
+also supplies the preceding boundary relation corresponding to $N=6$, with
+the empty determinant $H_0=1$.
+
+\subsection{What was checked in the literature}
+The source problem is a specific displayed conjecture, not an artificially
+constructed question. Wang and Zhang \cite{WangZhang2024} proved the four
+Somos-4 conjectures numbered 2--5 in Barry's paper; their Corollaries 4--7
+identify those numbers explicitly. That result should not be mistaken for a
+proof of the Somos-6 conjecture considered here.
+
+The central earlier theorem is van der Poorten's width-six relation
+\cite[Theorems 3.1--3.2]{vdP2005}. Hone's treatment
+\cite[Section 4 and Theorem 5.4]{Hone2021} places continued fractions and
+Hankel determinants in a broader hyperelliptic framework. Those results
+made the problem a plausible target: the missing task was to identify the
+particular curve and determinant normalization, rather than to create an
+entire theory of Somos sequences.
+
+The search was checked against recent related work as well. The stated
+applications in Chang--Liu \cite{ChangLiu2026} concern bilateral Somos-4 and
+Somos-5, and Scheuerle's September 2026 preprint \cite{Scheuerle2026} concerns
+Somos-4. No direct resolution of Barry's Conjecture 7 was located. This is a
+bounded literature-search statement, not a certification that no unpublished
+or differently phrased proof exists. The proof below stands independently
+of that bibliographic uncertainty.
+
+\section{A homogeneous formulation of the answer}
+
+It is convenient to replace $r+2$ and $s+t$ by independent parameters and to
+allow a scale parameter $u$. Define
+\begin{equation}\label{eq:D}
+ D(x)=1-2ux+(u^2-R)x^2+(t-B)x^3
+\end{equation}
+and let $F(x)=\sum_{n\geq0}f_nx^n$, $f_0=1$, solve
+\begin{equation}\label{eq:mainGF}
+ D(x)F(x)=1-ux+tx^3(1-ux)F(x)^2.
+\end{equation}
+The coefficient of the new unknown $f_n$ is always $1$, so this equation
+uniquely defines $F$ over $\Z[u,R,B,t]$, or over any ring after specialization.
+Write $H_N(F)=\det(f_{i+j})_{0\leq i,j<N}$ and $H_0(F)=1$.
+
+\begin{theorem}[Homogeneous Hankel--Somos-6 identity]\label{thm:main}
+For all $N\geq6$,
+\begin{equation}\label{eq:mainrec}
+ \begin{split}
+ H_N(F)H_{N-6}(F)
+ ={}&t^2R^2H_{N-1}(F)H_{N-5}(F)\\
+ &+t^3\bigl(B(B+uR)^2+tR^3\bigr)H_{N-3}(F)^2.
+ \end{split}
+\end{equation}
+The equality holds in $\Z[u,R,B,t]$ without any nonvanishing hypotheses.
+\end{theorem}
+
+The substitution
+\begin{equation}\label{eq:originalspec}
+ u=1,\qquad R=r+2,\qquad B=s+t
+\end{equation}
+turns \eqref{eq:mainGF} into \eqref{eq:barry}, after multiplication by $1-x$.
+Thus \cref{thm:main} proves \cref{thm:barry}.
+
+Some useful initial values are
+\begin{align}
+ f_0&=1,\qquad f_1=u,\qquad f_2=u^2+R,\notag\\
+ f_3&=u^3+3uR+B,\qquad f_4=u^4+6u^2R+R^2+3uB.
+\end{align}
+Direct determinants give
+\begin{align}\label{eq:initialH}
+ H_0&=H_1=1,\qquad H_2=R,\qquad H_3=-B(B+uR),\\
+ H_4&=-t\bigl(B(B+uR)^2+tR^3\bigr).\notag
+\end{align}
+These formulas already show why it would be incorrect to assume that all
+specialized determinants are nonzero or positive.
+
+The fourth parameter is a homogeneous extension, not a claim of an
+independent new moduli direction: when $u$ is invertible, it can be removed
+by scaling $x$. Its inclusion makes the weights and the exceptional case
+$u=0$ transparent.
+
+\section{Formal coefficients and a combinatorial interpretation}
+
+\subsection{A triangular coefficient recurrence}
+Set $f_j=0$ for $j<0$ and
+\[
+ C_m(F)=\sum_{j=0}^{m}f_jf_{m-j}\quad(m\geq0),\qquad C_m(F)=0\quad(m<0).
+\]
+Equating coefficients in \eqref{eq:mainGF} yields
+\begin{equation}\label{eq:momrec}
+ \begin{split}
+ f_n={}&\mathbf1_{n=0}-u\mathbf1_{n=1}+2uf_{n-1}
+ +(R-u^2)f_{n-2}+(B-t)f_{n-3}\\
+ &\hspace{2em}+tC_{n-3}(F)-utC_{n-4}(F).
+ \end{split}
+\end{equation}
+For $n\geq1$, only previously determined coefficients occur. In particular,
+all moments and all Hankel determinants are integer polynomials in the
+parameters. This elementary observation will ultimately permit division-free
+specialization of the more complicated continued-fraction argument.
+
+\subsection{A finite Catalan formula}
+Let $C(z)=\sum_{j\geq0}C_jz^j$ be the Catalan series, characterized formally by
+$C(z)=1+zC(z)^2$, where $C_j=\frac{1}{j+1}\binom{2j}{j}$. Substitution into
+\eqref{eq:mainGF} gives
+\begin{equation}\label{eq:catalanF}
+ F(x)=\frac{1-ux}{D(x)}\,
+ C\!\left(\frac{tx^3(1-ux)^2}{D(x)^2}\right).
+\end{equation}
+No square-root branch or analytic convergence convention is needed. The
+Catalan form in Barry's original problem is also displayed in
+\cite[Conjecture 7]{Barry2022}.
+
+For example, \eqref{eq:catalanF} gives the finite coefficient formula
+\begin{equation}\label{eq:finitecoef}
+ f_n=\sum_{j=0}^{\lfloor n/3\rfloor}C_jt^j
+       [x^{n-3j}]\frac{(1-ux)^{2j+1}}{D(x)^{2j+1}}.
+\end{equation}
+One can remove coefficient extraction entirely. In the following expression,
+$m=2j+1$ and $(m)_L=m(m+1)\cdots(m+L-1)$, with $(m)_0=1$:
+\begin{equation}\label{eq:multinomial}
+ \begin{split}
+ f_n={}&\sum_{j=0}^{\lfloor n/3\rfloor}C_jt^j
+ \sum_{\substack{0\leq q\leq m,\ \ell_1,\ell_2,\ell_3\geq0\\
+ q+\ell_1+2\ell_2+3\ell_3=n-3j}}
+ \binom{m}{q}(-u)^q
+ \frac{(m)_{\ell_1+\ell_2+\ell_3}}{\ell_1!\ell_2!\ell_3!}\\
+ &\hspace{9em}\cdot(2u)^{\ell_1}(R-u^2)^{\ell_2}(B-t)^{\ell_3}.
+ \end{split}
+\end{equation}
+This follows by expanding the numerator binomially and the denominator by
+the negative multinomial theorem. The displayed factorial ratio is an
+integer multinomial coefficient. Thus this is also a direct finite formula
+for the integer sequences in the family.
+
+\subsection{Colored unary--binary trees for the original parameters}
+The original equation can be written in a particularly simple form:
+\begin{equation}\label{eq:treegrammar}
+ G=1+W(x)G+tx^3G^2,\qquad
+ W(x)=x+(r+2)x^2+(r+s+2)\frac{x^3}{1-x}.
+\end{equation}
+For nonnegative integers $r,s,t$, interpret a tree recursively as an empty
+object, a unary root with one subtree, or a binary root with two ordered
+subtrees. A binary root has size $3$ and one of $t$ colors. A unary root of
+size $1$ has one color; one of size $2$ has $r+2$ colors; one of any size
+$\ell\geq3$ has $r+s+2$ colors. The total size is the sum of root sizes.
+All nonempty roots have positive size, so every coefficient counts a finite
+set of objects. The recursive construction has exactly
+\eqref{eq:treegrammar} as its generating equation.
+
+This gives a concrete combinatorial source of the moments. It does not make
+the Hankel determinants positive: determinants involve signs, and the
+negative values in \eqref{eq:initialH} are entirely compatible with positive
+moment counts. The verification code also expands \eqref{eq:treegrammar}
+independently and compares it with \eqref{eq:momrec}.
+
+\section{The decisive square completion}
+
+Put $X=x^{-1}$ and introduce the cubic
+\begin{equation}\label{eq:S}
+ S(X)=X^3-2uX^2+(u^2-R)X-B+t.
+\end{equation}
+The discriminant of the quadratic equation for $F$ corresponds to the
+sextic
+\begin{equation}\label{eq:sextic}
+ Y^2=S(X)^2-4tX(X-u)^2.
+\end{equation}
+At first sight, the remainder next to the square is cubic. The appropriate
+square, however, is not $S^2$. Set
+\begin{equation}\label{eq:A}
+ A(X)=S(X)-2t
+ =X^3-2uX^2+(u^2-R)X-B-t.
+\end{equation}
+A direct expansion gives
+\begin{equation}\label{eq:squarecomplete}
+ \boxed{\ S(X)^2-4tX(X-u)^2=A(X)^2-4t(RX+B).\ }
+\end{equation}
+Indeed, $S(X)-X(X-u)^2=-RX-B+t$, so subtracting the two
+squares leaves $-4t(RX+B)$.
+
+Generically, put $v=tR$ and $w=-B/R$. Then the same curve is
+\begin{equation}\label{eq:curve}
+ Y^2=A(X)^2-4v(X-w),\qquad
+ Z=\frac{A+Y}{2},\qquad Z^2-AZ+v(X-w)=0.
+\end{equation}
+The invariant coefficients in the width-six continued-fraction identity are
+$v^2$ and $-v^3A(w)$. In our case,
+\begin{equation}\label{eq:invariants}
+ v^2=t^2R^2,\qquad
+ -v^3A(w)=t^3\bigl(B(B+uR)^2+tR^3\bigr).
+\end{equation}
+This explains both the compact coefficient formula and the disappearance of
+the middle Somos-6 term. The curve is generically of genus two, but no
+smoothness assumption is required in the final polynomial identity.
+
+There is also an explicit identification of the moment function. Choose
+$Y=A+O(X^{-2})$ at infinity (the square-root branch with leading term $X^3$), and put $M(X)=X^{-1}F(X^{-1})$. The quadratic
+formula, or direct substitution, gives
+\begin{equation}\label{eq:Mcurve}
+ M(X)=\frac{S-Y}{2t(X-u)}=\frac{X(X-u)}{Z+t}.
+\end{equation}
+For the second equality, use the norm identity
+\begin{equation}\label{eq:initialnorm}
+ (Z+t)(\overline Z+t)=t(A+t)+t(RX+B)=tX(X-u)^2.
+\end{equation}
+Here the bar denotes the other root of the quadratic equation; it is not
+complex conjugation.
+
+The natural initial complete quotient is therefore
+\[
+ \frac1M=\frac{Z+t}{X(X-u)}.
+\]
+Its numerator correction is constant. In the customary notation
+$P_0=d_0(X+e_0)$, this is a limiting situation with $d_0=0$ rather than an
+ordinary generic initial value. One must not simply invoke a theorem that
+assumes all the $d_j$ are nonzero and then silently ignore this issue.
+Moreover, $w=-B/R$ is undefined when $R=0$. The next two sections resolve
+both problems by proving a polynomial identity in a larger family first.
+
+\section{A polynomial Hankel form of the genus-two identity}
+
+Work initially over the polynomial ring
+\[
+ \mathcal S=\Z[a,b,c,p,k,\lambda,\mu].
+\]
+Define
+\begin{equation}\label{eq:univpolys}
+ A=X^3+aX^2+bX+c,\qquad P=pX+k,\qquad Q=X^2+\lambda X+\mu.
+\end{equation}
+Divide the polynomial $P(A+P)$ by the monic polynomial $Q$ and write the
+result as
+\begin{equation}\label{eq:division}
+ P(A+P)+vX+m=QL.
+\end{equation}
+Thus $-(vX+m)$ is the remainder, and $L=pX^2+\ell_1X+\ell_0$ is the quotient.
+Everything in \eqref{eq:division} is polynomial over $\mathcal S$. For
+implementation, convenient formulas are
+\begin{align}\label{eq:univcoeffs}
+ \ell_1&=ap+k-\lambda p,\\
+ \ell_0&=ak-a\lambda p+bp-k\lambda+\lambda^2p-\mu p+p^2,\notag\\
+ v&=\ell_1\mu+\ell_0\lambda-cp-bk-2pk,\notag\\
+ m&=\ell_0\mu-ck-k^2.\notag
+\end{align}
+
+Let $\Phi(x)=\sum_{n\geq0}\phi_nx^n$, $\phi_0=1$, be defined by
+\begin{equation}\label{eq:univGF}
+ \begin{split}
+ \bigl(1+ax+(b+2p)x^2+(c+2k)x^3\bigr)\Phi
+  ={}&1+\lambda x+\mu x^2\\
+  &+x^2(p+\ell_1x+\ell_0x^2)\Phi^2.
+ \end{split}
+\end{equation}
+Equivalently, $\mathcal M(X)=X^{-1}\Phi(X^{-1})$ is the unique Laurent series
+$X^{-1}+O(X^{-2})$ satisfying
+\begin{equation}\label{eq:univM}
+ Q-(A+2P)\mathcal M+L\mathcal M^2=0.
+\end{equation}
+
+\begin{theorem}[Polynomial Hankel--Somos identity]\label{thm:universal}
+Let $K_N=\det(\phi_{i+j})_{0\leq i,j<N}$ and $K_0=1$. For every $N\geq6$,
+\begin{equation}\label{eq:univH}
+ K_NK_{N-6}=v^2K_{N-1}K_{N-5}+\Gamma K_{N-3}^2,
+\end{equation}
+where
+\begin{equation}\label{eq:Gamma}
+ \Gamma=m^3-avm^2+bv^2m-cv^3.
+\end{equation}
+The identity is valid in $\mathcal S$, and hence after any commutative-ring
+specialization. No nonvanishing assumption belongs to the conclusion.
+\end{theorem}
+
+The generic continued-fraction identity behind this theorem is van der
+Poorten's \cite{vdP2005}. The polynomial family and the argument below make
+its use at exceptional initial data explicit. In particular, the proof does
+not assume, without verification, that Barry's smaller family meets a
+suitable generic open set.
+
+\section{Proof of the polynomial theorem}
+
+\subsection{A single specialization proves generic nonvanishing}
+Every $\phi_n$, and therefore every $K_N$, belongs to $\mathcal S$ by the
+triangular coefficient recursion in \eqref{eq:univGF}. To prove that none of
+these polynomials is identically zero, specialize
+\begin{equation}\label{eq:catalanspec}
+ (a,b,c,p,k,\lambda,\mu)=(0,-3,0,1,0,0,-1).
+\end{equation}
+Here $L=X^2-1$, $v=0$, and $m=1$. Equation \eqref{eq:univGF} becomes
+\[
+ (1-x^2)\Phi=(1-x^2)+x^2(1-x^2)\Phi^2,
+\]
+so $\Phi=C(x^2)$.
+
+For completeness, all Hankel determinants of the interleaved Catalan
+sequence are $1$. Let $J$ be the adjacency matrix of the path on vertices
+$0,1,2,\ldots$. Products of this infinite matrix are harmless here: all
+vectors used have finite support. A walk of length $2j$ from $0$ back to $0$
+is a Dyck path, so
+\[
+ (J^{2j})_{00}=C_j,\qquad (J^{2j+1})_{00}=0.
+\]
+Define monic polynomials $\pi_0=1$, $\pi_1=X$, and
+$\pi_{n+1}=X\pi_n-\pi_{n-1}$. Induction gives $\pi_n(J)e_0=e_n$.
+For the moment functional $\mathcal L(q)=e_0^{\mathsf T}q(J)e_0$, symmetry of
+$J$ now gives
+\[
+ \mathcal L(\pi_i\pi_j)=\delta_{ij}.
+\]
+The change from monomials to the monic $\pi_i$ is unit lower triangular.
+Consequently the Gram determinant in the monomial basis is also $1$.
+This proves $K_N=1$ under \eqref{eq:catalanspec}, for every $N$.
+
+It follows that each $K_N$ is nonzero in the fraction field
+$\mathcal K=\Q(a,b,c,p,k,\lambda,\mu)$. Notice that the specialization has
+$v=0$; that is no obstacle. Its sole purpose is to prove that the Hankel
+polynomials are nonzero. The polynomial $v$ itself is not identically zero,
+as is evident from \eqref{eq:univcoeffs}, so $v$ is invertible in $\mathcal K$.
+No positivity assertion is being made for generic moments.
+
+\subsection{The Jacobi coefficients are Hankel ratios}
+We recall the precise formal correspondence, with the indexing required here.
+Suppose $\mathcal M=X^{-1}\sum_{j\geq0}\phi_jX^{-j}$ and all $K_N$ are nonzero.
+Define a functional by $\mathcal L(X^j)=\phi_j$. The linear equations for the
+monic degree-$n$ polynomial orthogonal to $1,X,\ldots,X^{n-1}$ have coefficient
+matrix with determinant $K_n$, so they have a unique solution $\pi_n$.
+If $\nu_n=\mathcal L(\pi_n^2)$, a monic change of basis in the Gram determinant
+gives
+\[
+ \nu_n=\frac{K_{n+1}}{K_n}.
+\]
+Multiplication by $X$ is symmetric for this bilinear form. Orthogonality and
+degree therefore imply a three-term recurrence
+\begin{equation}\label{eq:orthrec}
+ \pi_{n+1}=(X-\beta_n)\pi_n-b_n\pi_{n-1},\qquad
+ b_n=\frac{\nu_n}{\nu_{n-1}}
+     =\frac{K_{n-1}K_{n+1}}{K_n^2}\quad(n\geq1).
+\end{equation}
+There is no analytic measure assumption.
+
+The same recurrence gives the convergents to the formal Jacobi fraction
+\begin{equation}\label{eq:Jfrac}
+ \mathcal M=
+ \cfrac{1}{X-\beta_0-
+   \cfrac{b_1}{X-\beta_1-
+   \cfrac{b_2}{X-\beta_2-\cdots}}}.
+\end{equation}
+For detail, let $\rho_n$ be the polynomial part of $\mathcal M\pi_n$.
+Then $\rho_0=0$ and $\rho_1=1$. For $n\geq1$, the coefficient of $X^{-1}$
+in $\mathcal M\pi_n$ is $\mathcal L(\pi_n)=0$. Taking polynomial parts in
+\eqref{eq:orthrec} therefore shows that the $\rho_n$ satisfy the same
+three-term recurrence as the $\pi_n$. Consequently $\rho_n/\pi_n$ are the
+continued-fraction convergents in \eqref{eq:Jfrac}.
+Furthermore, all coefficients of $X^{-1},\ldots,X^{-n}$ in
+$\mathcal M\pi_n$ vanish by orthogonality. Dividing the remaining tail by
+the monic polynomial $\pi_n$ shows that
+$\mathcal M-\rho_n/\pi_n=O(X^{-2n-1})$.
+Agreement to arbitrarily high order proves the formal identity.
+This also establishes that all polynomial partial quotients are linear.
+These are the classical formulas discussed in \cite[Theorem 4.1]{Hone2021};
+the argument above fixes the index shift explicitly.
+
+\subsection{Polynomial complete quotients}
+Set
+\begin{equation}\label{eq:Zuniv}
+ Z=\frac{Q}{\mathcal M}-P.
+\end{equation}
+Using \eqref{eq:division} and \eqref{eq:univM}, direct substitution gives
+\begin{equation}\label{eq:Zquad}
+ Z^2-AZ+vX+m=0.
+\end{equation}
+The chosen branch has $Z=A+O(X^{-2})$; its conjugate is
+$\overline Z=A-Z=O(X^{-2})$. The initial quotient is
+\[
+ F_0=\frac1{\mathcal M}=\frac{Z+P_0}{Q_0},\qquad P_0=P,\quad Q_0=Q.
+\]
+Ordinary polynomial continued-fraction division produces
+\begin{equation}\label{eq:CFstep}
+ F_n=\frac{Z+P_n}{Q_n}=a_n+\frac1{F_{n+1}},\qquad
+ P_{n+1}=a_nQ_n-A-P_n,
+\end{equation}
+with
+\begin{equation}\label{eq:CFnorm}
+ Q_nQ_{n+1}=-\bigl(P_{n+1}(A+P_{n+1})+vX+m\bigr).
+\end{equation}
+The first norm divisibility is \eqref{eq:division}. Subsequent divisibility
+follows inductively by reducing the norm modulo $Q_n$ and using
+$A+P_{n+1}\equiv-P_n\pmod{Q_n}$.
+
+Starting with $Q_0$ of degree two and $P_0$ of degree one, the formula for
+$P_{n+1}$ cancels the terms of degrees three and two, so $\deg P_{n+1}\leq1$.
+The norm formula then gives $\deg Q_{n+1}\leq2$. Since the next quotient has
+numerator of degree three and has a linear polynomial part, its denominator
+must have degree exactly two. This proves the degree assertions inductively.
+Write
+\begin{equation}\label{eq:normal}
+ P_n=d_n(X+e_n),\qquad
+ Q_n=u_nq_n,\qquad q_n=X^2+\lambda_nX+\mu_n,
+ \qquad u_0=1.
+\end{equation}
+Here the $u_n$ are local normalization constants and are unrelated to the
+homogeneous parameter $u$ in \cref{thm:main}. Comparison of leading
+coefficients in \eqref{eq:CFnorm} gives
+\begin{equation}\label{eq:unprod}
+ u_{n-1}u_n=-d_n\qquad(n\geq1).
+\end{equation}
+In particular $d_n\ne0$. If a numerator correction had vanished in degree
+one, the next denominator would have degree below two and the next partial
+quotient would not be linear. This cannot occur in the generic moment
+problem just established.
+
+The polynomial part is
+$a_n=(X+a-\lambda_n)/u_n$. Rescaling adjacent levels of the continued
+fraction with \eqref{eq:unprod} changes its numerators to $-d_n$. Comparison
+with \eqref{eq:Jfrac} therefore yields the essential identification
+\begin{equation}\label{eq:dH}
+ \boxed{\quad d_n=\frac{K_{n-1}K_{n+1}}{K_n^2}\quad(n\geq1).\quad}
+\end{equation}
+For example, the beginning of the rescaled fraction is
+\[
+ \mathcal M=\cfrac{1}{X+a-\lambda_0-
+            \cfrac{d_1}{X+a-\lambda_1-
+            \cfrac{d_2}{X+a-\lambda_2-\cdots}}}.
+\]
+There is no extra factor of $2$ or $4$ in this normalization, because $Z$,
+not $Y=2Z-A$, is used throughout.
+
+\subsection{A local proof of van der Poorten's identity}
+Set $w=-m/v$, so $vX+m=v(X-w)$. We now derive the needed width-six identity
+using only polynomial division and evaluations. This is the identity in
+\cite[Theorem 3.1]{vdP2005}, with the $X^2$ coefficient of $A$ retained.
+
+The normalized Euclidean and norm relations are
+\begin{align}\label{eq:E}
+ P_n+P_{n+1}&=(X+a-\lambda_n)q_n-A,\\
+ d_nq_{n-1}q_n&=P_n(A+P_n)+v(X-w).\label{eq:N}
+\end{align}
+Reducing the second relation modulo $q_n$, and using the first, shows that
+$P_nP_{n+1}-v(X-w)$ is divisible by $q_n$. Its degree is two and its leading
+coefficient is $d_nd_{n+1}$. Hence
+\begin{equation}\label{eq:cross}
+ d_nd_{n+1}q_n=P_nP_{n+1}-v(X-w).
+\end{equation}
+This simple remainder identity is the main algebraic tool.
+
+We first show that
+\begin{equation}\label{eq:qeval}
+ q_n(-e_n)=-d_{n-1}.
+\end{equation}
+For full detail, the coefficients of $X^3$ and $X^2$ in \eqref{eq:N} give
+\begin{align}
+ \lambda_{n-1}+\lambda_n&=a+e_n,\label{eq:coeff3}\\
+ \lambda_{n-1}\lambda_n+\mu_{n-1}+\mu_n&=b+ae_n+d_n.\label{eq:coeff2}
+\end{align}
+The coefficient of $X$ in \eqref{eq:E} at index $n-1$ is
+\begin{equation}\label{eq:coeff1}
+ d_{n-1}+d_n=\mu_{n-1}+a\lambda_{n-1}-\lambda_{n-1}^2-b.
+\end{equation}
+Eliminating $\mu_{n-1}$ between these equations gives
+\[
+ d_{n-1}=(a-\lambda_{n-1})e_n-\mu_n
+         =\lambda_ne_n-e_n^2-\mu_n=-q_n(-e_n),
+\]
+as claimed.
+
+Evaluate \eqref{eq:cross} at $X=-e_n$. Since $P_n(-e_n)=0$,
+\eqref{eq:qeval} yields
+\begin{equation}\label{eq:triple}
+ T_n:=d_{n-1}d_nd_{n+1}=-v(e_n+w).
+\end{equation}
+All the $d_j$ in use are nonzero, so $e_n+w\ne0$ in the fraction field.
+On the other hand, evaluating \eqref{eq:cross} at $X=w$ gives
+\begin{equation}\label{eq:qw}
+ q_n(w)=(e_n+w)(e_{n+1}+w).
+\end{equation}
+The norm relation \eqref{eq:N}, also evaluated at $w$ and divided by $d_n$,
+is
+\[
+ q_{n-1}(w)q_n(w)=(e_n+w)\bigl(A(w)+d_n(e_n+w)\bigr).
+\]
+Substituting \eqref{eq:qw} and canceling the nonzero factor $e_n+w$ gives
+\begin{equation}\label{eq:ecubic}
+ (e_{n-1}+w)(e_n+w)(e_{n+1}+w)=A(w)+d_n(e_n+w).
+\end{equation}
+Multiply by $-v^3$ and use \eqref{eq:triple} at three consecutive indices.
+The result is
+\begin{equation}\label{eq:Tlocal}
+ T_{n-1}T_nT_{n+1}=v^2d_nT_n-v^3A(w),
+\end{equation}
+or, explicitly,
+\begin{equation}\label{eq:vdp}
+ d_{n-2}d_{n-1}^2d_n^3d_{n+1}^2d_{n+2}
+ =v^2d_{n-1}d_n^2d_{n+1}-v^3A(w).
+\end{equation}
+This proof explains why retaining the $X^2$ term in $A$ causes no problem:
+only coefficient comparisons and evaluations of the full cubic have been
+used. For our subsequent application, $n\geq3$, so no negative-index
+continued-fraction data are required.
+
+\subsection{Telescoping and removal of all denominators}
+Substitution of \eqref{eq:dH} gives two telescoping identities:
+\begin{align}\label{eq:telescope1}
+ d_{n-1}d_n^2d_{n+1}&=\frac{K_{n-2}K_{n+2}}{K_n^2},\\
+ d_{n-2}d_{n-1}^2d_n^3d_{n+1}^2d_{n+2}
+ &=\frac{K_{n-3}K_{n+3}}{K_n^2}.\label{eq:telescope2}
+\end{align}
+Multiplying \eqref{eq:vdp} by $K_n^2$ and setting $N=n+3$ gives the desired
+Hankel relation in $\mathcal K$, with coefficient $-v^3A(w)$. But
+\begin{equation}\label{eq:clearinvariant}
+ -v^3A(-m/v)=m^3-avm^2+bv^2m-cv^3=\Gamma
+\end{equation}
+is already polynomial. Thus both sides of \eqref{eq:univH} belong to
+$\mathcal S$ and are equal in its fraction field. The injection
+$\mathcal S\hookrightarrow\mathcal K$ proves their equality in
+$\mathcal S$ itself.
+
+Finally, apply any ring homomorphism from $\mathcal S$ into a commutative
+ring. The specialized moments are still the unique coefficients defined by
+\eqref{eq:univGF}, since its triangular recursion never divided by a
+parameter. Determinants and all terms of \eqref{eq:univH} specialize as
+polynomials. This proves the theorem even when $v$, $p$, a normalization
+constant, or one or more Hankel determinants become zero. It also proves
+validity in positive characteristic.\hfill$\square$
+
+\section{Specialization: completion of the conjecture's proof}
+
+In the universal theorem make the substitution
+\begin{equation}\label{eq:bigSpec}
+ \begin{gathered}
+ a=-2u,\qquad b=u^2-R,\qquad c=-B-t,\\
+ p=0,\qquad k=t,\qquad\lambda=-u,\qquad\mu=0.
+ \end{gathered}
+\end{equation}
+Then
+\[
+ A=X^3-2uX^2+(u^2-R)X-B-t,\qquad P=t,\qquad Q=X(X-u).
+\]
+The division identity becomes
+\[
+ t(A+t)+tRX+tB=tX(X-u)^2,
+\]
+so
+\begin{equation}\label{eq:Lspec}
+ L=t(X-u),\qquad v=tR,\qquad m=tB.
+\end{equation}
+Putting these expressions into \eqref{eq:univGF} gives precisely
+\eqref{eq:mainGF}.
+
+The invariant \eqref{eq:Gamma} specializes to
+\begin{align}
+ \Gamma
+ &=t^3\bigl(B^3+2uRB^2+(u^2-R)R^2B+(B+t)R^3\bigr)\notag\\
+ &=t^3\bigl(B^3+2uRB^2+u^2R^2B+tR^3\bigr)\notag\\
+ &=t^3\bigl(B(B+uR)^2+tR^3\bigr).\label{eq:gammaspec}
+\end{align}
+Equation \eqref{eq:univH} is therefore \eqref{eq:mainrec}. This proves
+\cref{thm:main}, including the exceptional specialization $p=0$.
+Using \eqref{eq:originalspec} proves \cref{thm:barry}.
+
+To compare with the exact expression printed by Barry, expansion of the
+bracket in \eqref{eq:barrycoeff} gives
+\begin{equation}\label{eq:expandedgamma}
+ \begin{split}
+ \gamma/t^3={}&r^3t+r^2(s+7t)
+ +2r\bigl(s^2+2(t+1)s+t(t+8)\bigr)\\
+ &+s^3+s^2(3t+4)+s(t+2)(3t+2)+t(t^2+4t+12).
+ \end{split}
+\end{equation}
+The notation on the left means the polynomial bracket, not a required
+division when $t=0$. This is the coefficient in Conjecture 7. Thus the result
+is a proof of the proposed formula, not a nearby recurrence with adjusted
+parameters.
+
+For another normalization check, the first complete quotient in the smaller
+family has polynomial part $X-u$ and
+\[
+ P_1=RX+B,\qquad Q_1=-(RX+B)(X-u).
+\]
+Its leading numerator coefficient is $d_1=R$, exactly as required by
+$H_0H_2/H_1^2=R$. This check is not needed for the specialization proof, but
+it catches possible sign and index errors in the curve identification.
+
+\section{Examples, singular cases, and a source correction}
+
+\subsection{A positive moment sequence with signed Hankel determinants}
+For $r=s=t=1$,
+\[
+ G(x)=1+x+4x^2+12x^3+34x^4+103x^5+309x^6+934x^7+\cdots.
+\]
+The determinants, with the empty determinant included, start as
+\[
+ 1,\ 1,\ 3,\ -10,\ -77,\ -807,\ 437,\ 468332,\ 2665431,\ 183243907,\ldots.
+\]
+The coefficients are $(\alpha,\gamma)=(9,77)$. The first two instances of
+\eqref{eq:barryrec} are checked by
+\begin{align*}
+ 437&=9(-807)+77(-10)^2,\\
+ 468332&=9\cdot437\cdot3+77(-77)^2.
+\end{align*}
+These checks illustrate the normalization; the theorem, not these examples,
+proves every subsequent relation.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Some original-family examples; entries are exact direct determinants.}
+\label{tab:examples}
+\begin{tabular}{@{}rrrrrrrr@{}}
+\toprule
+$r$&$s$&$t$&$\alpha$&$\gamma$&$H_2$&$H_3$&$H_4$\\
+\midrule
+0&0&1&4&17&2&$-3$&$-17$\\
+1&1&1&9&77&3&$-10$&$-77$\\
+$-3$&$-2$&1&1&$-5$&$-1$&$-2$&5\\
+$-2$&$-2$&1&0&$-1$&0&$-1$&1\\
+2&2&2&64&3072&4&$-32$&$-768$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{What happens when a determinant vanishes}
+At $(r,s,t)=(-2,-2,1)$, the directly computed beginning is
+\[
+ (H_N)_{N\geq0}=1,1,0,-1,1,0,-1,-1,0,1,-1,\ldots,
+\]
+and the identity is
+\[
+ H_NH_{N-6}=-H_{N-3}^2.
+\]
+For $N=8$, the expression $H_8=(-H_5^2)/H_2$ would be $0/0$ and is not a
+recurrence that can be evaluated by division. The polynomial identity is
+nevertheless the valid equation $0=0$. The determinants supply a canonical
+sequence through this singularity; the bilinear relation alone need not
+uniquely determine a continuation from singular initial data.
+
+Likewise, when $R=0$ in the homogeneous family, $H_2=0$ and $w=-B/R$ cannot
+be used, but the final coefficients $\alpha=0$ and $\gamma=t^3B^3$ are
+perfectly well defined. The polynomial proof is doing real work here.
+
+When $t=0$, $F=(1-ux)/D$ is rational. Its moments satisfy an order-at-most-three
+constant-coefficient recurrence from index $3$ onward. Every fourth Hankel
+column is a linear combination of the preceding three, so $H_N=0$ for
+$N\geq4$. Both Somos coefficients also vanish, consistently with the theorem.
+
+\subsection{A parameter typo in Barry's Example 8}
+The source labels Example 8 with $(r,s,t)=(-2,-2,1)$ but prints a moment
+sequence beginning $1,1,0,-3,-7,-9,\ldots$ and coefficients
+$(\alpha,\gamma)=(1,-5)$ \cite[p.~7]{Barry2022}. Those data instead correspond
+to $(r,s,t)=(-3,-2,1)$. The discrepancy is already visible in
+\[
+ g_2=r+3:
+\]
+it equals $1$ at $r=-2$ and $0$ at $r=-3$. Direct calculation at the corrected
+parameters gives
+\[
+ (H_N)_{N\geq0}=1,1,-1,-2,5,17,-3,-122,1201,-2980,\ldots,
+\]
+which matches the source's displayed Hankel transform after removing $H_0$.
+This is an example-label correction, not a counterexample to Conjecture 7.
+The coefficient identity itself is correct.
+
+\section{Consequences and simple transformations}
+
+\subsection{Integrality without a Laurent-phenomenon hypothesis}
+For integer parameters the moments are integers by \eqref{eq:momrec}, and
+so are the Hankel determinants. Thus the quotient Somos recurrence, whenever
+defined, produces integers along this determinant family. No separate
+Laurent-phenomenon theorem, or assumption that all six initial values are
+units, is required for this conclusion. Integrality here is immediate from
+the determinant representation and should not be advertised as a new
+integrality theorem for arbitrary Somos-6 initial data.
+
+\subsection{Binomial translations preserve the entire Hankel sequence}
+Let $z$ be a new parameter and define
+\[
+ \widetilde f_n=\sum_{j=0}^{n}\binom nj z^{n-j}f_j,
+ \qquad
+ \widetilde F(x)=\frac1{1-zx}F\!\left(\frac{x}{1-zx}\right).
+\]
+The corresponding $N\times N$ Hankel matrices are related by
+\[
+ \widetilde{\mathcal H}_N=T_N\mathcal H_NT_N^{\mathsf T},\qquad
+ (T_N)_{ij}=\begin{cases}\binom ij z^{i-j},&j\leq i,\\0,&j>i.\end{cases}
+\]
+To check an entry, use the Vandermonde identity
+$\sum_{p+q=j}\binom ip\binom kq=\binom{i+k}j$. Since $T_N$ has diagonal
+entries $1$, all Hankel determinants are unchanged. Consequently the same
+Somos recurrence holds for every binomial translate. This is a standard
+Hankel invariance; the short proof is included to show exactly what happens
+to this family.
+
+\subsection{Scaling and weights}
+Replacing $f_n$ by $\rho^nf_n$ multiplies $H_N$ by
+$\rho^{N(N-1)}$, by factoring $\rho^i$ from row $i$ and $\rho^j$ from column
+$j$. The two recurrence coefficients therefore scale by $\rho^{10}$ and
+$\rho^{18}$, respectively. In \cref{thm:main}, the parameter weights are
+\[
+ \operatorname{wt}(u)=1,\quad \operatorname{wt}(R)=2,\quad
+ \operatorname{wt}(B)=\operatorname{wt}(t)=3.
+\]
+Both coefficient formulas have exactly the predicted weights. This provides
+an additional structural check on the exponents in the result.
+
+More explicitly, for invertible $u$, the homogeneous series is
+$F(x)=G(ux)$ with the original parameters
+\[
+ r=R/u^2-2,\qquad s=(B-t)/u^3,\qquad \tau=t/u^3
+\]
+in place of $(r,s,t)$. The polynomial theorem additionally covers $u=0$,
+where this rescaling is unavailable.
+
+\section{Reproducible exact computations}
+
+The mathematical proof is symbolic and valid for all indices. Computation
+was used to select the target, detect normalization errors, and audit the
+finished formulas. It is deliberately independent of the proposed Somos
+recurrence.
+
+\subsection{What the programs actually do}
+The standard-library program \texttt{code/verify.py} generates moments from
+the quadratic defining equation, constructs each Hankel matrix separately,
+and evaluates its determinant by fraction-free Bareiss elimination with row
+pivoting. Every integer division is checked for exactness. It never generates
+a test determinant from the Somos recurrence. For rational parameter tests,
+exact \texttt{Fraction} arithmetic is used. Small determinant computations
+are also checked against the permutation definition of the determinant.
+
+The full deterministic run uses seed $20260919$ and the following test groups:
+\begin{center}
+\small\setlength{\tabcolsep}{4.5pt}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Group & Parameter cases & Maximum matrix size\\
+\midrule
+Original family, $(r,s,t)\in\{-3,\ldots,3\}^3$ &343&14\\
+Homogeneous family, $(u,R,B,t)\in\{-2,\ldots,2\}^4$&625&14\\
+Seven-parameter polynomial family, seeded integers&128&14\\
+Larger-matrix tests in the polynomial family&16&24\\
+Homogeneous family with rational parameters&16&10\\
+\midrule
+Total&1128&24\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The saved run reports $10{,}248$ zero recurrence residuals in these cases.
+Among the $1{,}128$ cases, $553$ contain at least one zero Hankel determinant
+of size at least two; there are $3{,}465$ such zero determinant values in the
+test records. Thus the test set does not silently exclude the singular
+specializations that require care in the proof. There are also $84$
+small-matrix determinant cross-checks, $343$ independent original-family
+moment-recursion comparisons, and $25$ Catalan-specialization determinants
+$H_0,\ldots,H_{24}$, all equal to $1$.
+
+Five additional named examples are recorded through $H_{20}$ and through
+moment $g_{38}$, adding $75$ recurrence checks. These are reported separately
+from the $10{,}248$ main-suite residuals. The exact output and all parameters
+are in \texttt{data/verification\_summary.json} and
+\texttt{data/verification\_cases.json}; the example values are also supplied
+as CSV files.
+
+\subsection{Finite symbolic certificates}
+The optional program \texttt{code/symbolic\_certificates.py} uses SymPy to
+verify $16$ explicit algebraic identities. They include the square
+completion, the initial norm factorization, the equality of the expanded
+and compact gamma formulas, the universal polynomial division, all essential
+specialization formulas, the coefficient elimination proving
+$q_n(-e_n)=-d_{n-1}$, both Hankel telescoping identities, and the symbolic
+initial determinants $H_2,H_3,H_4$. The saved run used SymPy $1.14.0$.
+
+These finite checks are not described as a proof of an infinite recurrence.
+The all-index step is the local polynomial identity in Section 6.4, followed
+by telescoping and polynomial specialization. No Lean or other proof-assistant
+verification is claimed.
+
+\subsection{Commands and complexity}
+From the archive root, run
+\begin{lstlisting}
+python code/verify.py
+python code/symbolic_certificates.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The first command requires only Python 3.10 or later. The second requires
+SymPy; an optional requirements file is included. A smaller numerical run is
+available with \texttt{python code/verify.py --quick}.
+
+The direct verification method uses $O(N^2)$ arithmetic operations to obtain
+moments through order $2N$ by a quadratic convolution recursion, and
+$O(N^3)$ operations for one $N\times N$ determinant. Computing every
+$H_0,\ldots,H_N$ separately therefore takes $O(N^4)$ arithmetic operations.
+These are operation counts, not bit-complexity estimates; exact integers can
+grow rapidly. Once the theorem is proved, a nonzero Hankel sequence can be
+extended much faster by its Somos recurrence, but doing that in the verifier
+would make the numerical evidence circular. Singular cases should continue
+to be evaluated from moments and determinants unless a separate justified
+singularity-handling method is supplied.
+
+\section{Conclusion and scope of the result}
+
+The selected conjecture is resolved by the polynomial identity
+\eqref{eq:barryrec}. The key reduction is not an accidental match of initial
+terms: the sextic discriminant is exactly a cubic square plus a linear
+remainder, and its two curve invariants reproduce the conjectured
+coefficients for every parameter value. The seven-parameter deformation
+provides a rigorous route from generic continued fractions to exceptional
+initial data and zero determinants.
+
+The result does not prove Barry's Somos-8 conjectures, classify arbitrary
+Somos-6 initial-value problems, establish positivity of the Hankel
+polynomials, or assert that all sequences satisfying the bilinear relation
+have this determinant representation. Those would be separate questions.
+The principal mathematical ingredient belongs to the existing work of
+van der Poorten and the established Hankel/continued-fraction correspondence.
+What this manuscript adds is an explicit application with every normalization
+and specialization step made checkable.
+
+Independent expert review remains appropriate before making a publication
+or priority claim. The archive is designed to facilitate that review: it
+contains the editable proof, its compiled version, a bounded literature
+status note, and reproducible computations rather than only an assertion
+that a conjecture has been solved.
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{Barry2022}
+P. Barry, \emph{Conjectures on Somos 4, 6 and 8 sequences using Riordan arrays
+and the Catalan numbers}, arXiv:2211.12637v1 (2022).
+Conjecture 7 and Example 8 are on p.~7.
+\url{https://arxiv.org/abs/2211.12637}.
+
+\bibitem{vdP2005}
+A. J. van der Poorten, \emph{Curves of Genus 2, Continued Fractions, and
+Somos Sequences}, Journal of Integer Sequences \textbf{8} (2005), Article 05.3.4.
+\url{https://cs.uwaterloo.ca/journals/JIS/VOL8/Poorten2/vdp89.pdf}.
+
+\bibitem{Hone2021}
+A. N. W. Hone, \emph{Continued fractions and Hankel determinants from
+hyperelliptic curves}, Communications on Pure and Applied Mathematics
+\textbf{74} (2021), 2310--2347. arXiv:1907.05204.
+\url{https://arxiv.org/abs/1907.05204}.
+
+\bibitem{WangZhang2024}
+Y. Wang and Z. Zhang, \emph{Sufficient condition for $(\alpha,\beta)$ Somos 4
+Hankel determinants}, Discrete Mathematics \textbf{347} (2024), 113937.
+Preprint arXiv:2305.05995v2 (2023).
+\url{https://arxiv.org/abs/2305.05995}.
+
+\bibitem{ChangLiu2026}
+X.-K. Chang and J. Liu, \emph{Hankel Determinants from Quadratic Orthogonal
+Pairs for Hyperelliptic Functions and Their Applications},
+arXiv:2603.11670v4 (2026).
+\url{https://arxiv.org/abs/2603.11670}.
+
+\bibitem{Scheuerle2026}
+T. Scheuerle, \emph{Direct Generation of a Somos-4 Sequence from an Algebraic
+Generating Function}, arXiv:2609.15754v1 (2026).
+\url{https://arxiv.org/abs/2609.15754}.
+\end{thebibliography}
+\end{document}

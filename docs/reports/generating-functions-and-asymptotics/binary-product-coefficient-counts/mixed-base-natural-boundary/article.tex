@@ -1,0 +1,819 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.95in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem,fancyhdr,titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{aliascnt}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{Ink}{HTML}{17324D}
+\definecolor{Accent}{HTML}{167D8D}
+\definecolor{Pale}{HTML}{EEF6F7}
+\definecolor{Muted}{HTML}{546674}
+\hypersetup{colorlinks=true,linkcolor=Ink,citecolor=Accent,urlcolor=Accent,
+ pdftitle={When Rational Exponents Produce Non-D-Finite Coefficient Counts},
+ pdfauthor={Research developed with ChatGPT},pdfsubject={A counterexample to a general rationality question}}
+\titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{Ink}}{\thesubsection}{0.65em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{Muted}Rational exponents, non-D-finite counts}
+\fancyhead[R]{\small\color{Muted}Research note}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep,leftmargin=1.6em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\crefname{lemma}{lemma}{lemmas}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\crefname{proposition}{proposition}{propositions}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\crefname{corollary}{corollary}{corollaries}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\crefname{definition}{definition}{definitions}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\crefname{example}{example}{examples}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{remark}{remark}{remarks}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\fracpart}[1]{\left\{#1\right\}}
+\newcommand{\ind}[1]{\mathbf 1_{\{#1\}}}
+\DeclareMathOperator{\supp}{supp}
+\newtcolorbox{resultbox}{enhanced,breakable,colback=Pale,colframe=Accent,
+ boxrule=0.5pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
+ breaklines=true,frame=single,rulecolor=\color{Muted!40},backgroundcolor=\color{black!2},
+ showstringspaces=false,keywordstyle=\color{Ink}\bfseries,commentstyle=\color{Muted}}
+
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{0.3in}
+{\sffamily\bfseries\color{Accent}\large GENERATING FUNCTIONS \; / \; INTEGER SEQUENCES\par}
+\vspace{0.35in}
+{\Huge\bfseries\color{Ink}When Rational Exponents\par Produce Non-D-Finite\par Coefficient Counts\par}
+\vspace{0.28in}
+{\Large An explicit negative answer to a general\par rationality question of Richard Stanley\par}
+\vspace{0.35in}
+{\large A research note prepared for Vladimir Reshetnikov\par}
+{\color{Muted}September 19, 2026\par}
+\vspace{0.4in}
+\begin{abstract}
+A 2022 MathOverflow question asks whether a positive integer sequence with a rational generating function necessarily gives rational generating functions for the numbers of coefficients equal to a fixed positive integer in its successive subset-sum products. We give a negative answer already for coefficients equal to one. The exponent sequence interleaves powers of two and three. Its generating function is rational, but if $a_n$ counts the coefficients equal to one after $2n$ factors, then
+\[
+ a_0=1,\qquad a_1=2,\qquad
+ a_n=2^{\lfloor(n+1)(1-\log_3 2)\rfloor}\quad(n\ge2).
+\]
+We prove that these counts are not P-recursive and that their generating function has a natural boundary. More generally, interleaving powers of two and an integer $b\ge3$ gives a rational coefficient-count generating function if and only if $b$ is a power of two; in every other case it is not D-finite. All enumerative formulas follow from an elementary interval-cover argument and an exact analysis of digital carries. The package includes a standard-library Python verifier, independent polynomial and interval-sweep calculations, and integer sequence data.
+\end{abstract}
+\vfill
+\begin{resultbox}
+\textbf{Status and scope.} The general question displayed no posted answers when checked on September 19, 2026. The negative answer below is supported by complete proofs, not merely a failed recurrence search. This is an unrefereed research manuscript; priority has not been established, and no formal proof-assistant verification is claimed. The construction meets the stated assumption $G_n\to\infty$, but its exponents are not monotone. No conclusion about a separately imposed monotonicity hypothesis is asserted.
+\end{resultbox}
+\end{titlepage}
+
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{The question and the main conclusions}\label{sec:intro}
+
+\subsection{A precise target}
+In September 2022, Richard Stanley asked the following general question on MathOverflow \cite{StanleyQuestion}. Let $(G_i)_{i\ge1}$ be positive integers tending to infinity, and suppose that $\sum_{i\ge1}G_i z^i$ is rational. Define
+\begin{equation}\label{eq:product}
+ P_N(x)=\prod_{i=1}^N(1+x^{G_i}),\qquad P_0(x)=1,
+\end{equation}
+and, for a fixed positive integer $k$, let
+\begin{equation}\label{eq:count}
+ \nu_k(N)=\#\{j\ge0:[x^j]P_N(x)=k\}.
+\end{equation}
+Must $\sum_{N\ge0}\nu_k(N)z^N$ be rational? The question also allows factors $1+x^{G_i}+\cdots+x^{rG_i}$ for fixed $r\ge1$. Thus a counterexample with $r=k=1$ answers its universal rationality part negatively.
+
+The related Fibonacci question has posted solutions establishing eventual linearity of its fixed-coefficient counts \cite{StanleyFibonacci}. Stanley's papers on Stern-type and Fibonacci products provide additional background, especially for sums of powers of coefficients \cite{StanleyStern,StanleyProducts}. These are distinct statistics: a theorem about $\sum_j([x^j]P_N)^r$ does not by itself settle the number of coefficients equal to a particular integer.
+
+\subsection{The counterexample}
+Set
+\begin{equation}\label{eq:G3}
+ G_{2j+1}=2^j,\qquad G_{2j+2}=3^j\qquad(j\ge0).
+\end{equation}
+The sequence begins
+\[
+ 1,1,2,3,4,9,8,27,16,81,32,243,\ldots.
+\]
+It satisfies all the stated hypotheses. In particular,
+\begin{equation}\label{eq:GGF}
+ \sum_{i\ge1}G_i z^i
+ =\frac{z}{1-2z^2}+\frac{z^2}{1-3z^2},
+\end{equation}
+and equivalently
+\begin{equation}\label{eq:Grec}
+ G_{i+4}=5G_{i+2}-6G_i\qquad(i\ge1).
+\end{equation}
+Both parity subsequences tend to infinity, so the full sequence does too.
+
+Write
+\[
+ a_n=\nu_1(2n),\qquad A(t)=\sum_{n\ge0}a_n t^n,
+ \qquad F(z)=\sum_{N\ge0}\nu_1(N)z^N,
+\]
+and put
+\begin{equation}\label{eq:delta}
+ \delta=1-\log_3 2,\qquad \lambda=2^\delta.
+\end{equation}
+Here $0<\delta<1$, and $\delta$ is irrational: a rational value of $\log_3 2$ would imply an equality between a positive power of three and a positive power of two.
+
+\begin{theorem}[Binary--ternary counterexample]\label{thm:main}
+For the exponent sequence \eqref{eq:G3},
+\begin{equation}\label{eq:floorformula}
+ a_0=1,\qquad a_1=2,\qquad
+ a_n=2^{\lfloor(n+1)\delta\rfloor}\quad(n\ge2).
+\end{equation}
+The sequence $(a_n)$ is not P-recursive. Neither $A$ nor $F$ is D-finite, and in particular neither is rational. More strongly, $A$ has the natural boundary $|t|=\lambda^{-1}$, while $F$ has the natural boundary $|z|=\lambda^{-1/2}$.
+\end{theorem}
+
+A rational ordinary generating function corresponds to an eventual linear recurrence with constant coefficients. A P-recursive sequence satisfies an eventual linear recurrence with polynomial coefficients. A D-finite power series satisfies a nonzero linear differential equation with polynomial coefficients. The last two notions are equivalent under passage between a series and its coefficient sequence \cite[Theorem~1.5]{StanleyDFinite}. We give the recurrence obstruction directly in \cref{sec:rigidity}, and prove the natural-boundary assertion independently in \cref{sec:boundary}.
+
+\subsection{A classified infinite family}
+Replace three by any integer $b\ge3$:
+\begin{equation}\label{eq:Gb}
+ G^{(b)}_{2j+1}=2^j,\qquad G^{(b)}_{2j+2}=b^j.
+\end{equation}
+Use $\nu^{(b)}_1(N)$, $a^{(b)}_n$, $A_b(t)$ and $F_b(z)$ for the corresponding counts and generating functions.
+
+\begin{theorem}[Rationality classification]\label{thm:classification}
+For every integer $b\ge3$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $b$ is a power of two;
+\item $A_b(t)$ is rational;
+\item $A_b(t)$ is D-finite;
+\item $F_b(z)$ is rational;
+\item $F_b(z)$ is D-finite.
+\end{enumerate}
+If $b=2^d$ with $d\ge2$, then
+\begin{equation}\label{eq:rationalfamily}
+ a_n^{(2^d)}=2^{n-\lfloor n/d\rfloor},\qquad
+ A_{2^d}(t)=\frac{\displaystyle\sum_{r=0}^{d-1}2^r t^r}
+ {1-2^{d-1}t^d}.
+\end{equation}
+\end{theorem}
+
+Thus the counterexample is not an isolated numerical anomaly. It belongs to an explicit family in which rationality is controlled exactly by multiplicative dependence of the two bases.
+
+\section{Subset-sum products as interval covers}\label{sec:interval}
+
+\subsection{The dense factor}
+For $m\ge0$, uniqueness of binary expansion gives
+\begin{equation}\label{eq:binary}
+ \prod_{j=0}^{m-1}(1+x^{2^j})
+ =1+x+\cdots+x^{2^m-1}.
+\end{equation}
+For $b\ge3$ and $n\ge0$, define
+\begin{equation}\label{eq:digitset}
+ S_{b,n}=\left\{\sum_{j=0}^{n-1}\varepsilon_j b^j:
+ \varepsilon_j\in\{0,1\}\right\}.
+\end{equation}
+All $2^n$ sums are distinct, again by uniqueness of positional representation. Therefore
+\begin{equation}\label{eq:digital}
+ \prod_{j=0}^{n-1}(1+x^{b^j})=\sum_{s\in S_{b,n}}x^s.
+\end{equation}
+It follows that
+\begin{equation}\label{eq:mixedproduct}
+ Q_{m,n}^{(b)}(x)
+ :=\prod_{j=0}^{m-1}(1+x^{2^j})\prod_{j=0}^{n-1}(1+x^{b^j})
+ =\sum_{s\in S_{b,n}}x^s(1+x+\cdots+x^{M-1}),\quad M=2^m.
+\end{equation}
+The coefficient of $x^u$ is consequently the number of integer intervals
+\[
+ [s,s+M-1]\cap\Z,\qquad s\in S_{b,n},
+\]
+that contain $u$. In particular, coefficients equal to one correspond exactly to positions covered by one interval.
+
+This conversion is the main enumerative simplification. It replaces an exponentially long polynomial by ordered interval starts and their successive gaps.
+
+\subsection{An exclusive-length formula}
+\begin{lemma}[One interval's exclusive contribution]\label{lem:exclusive}
+Let $s_0<s_1<\cdots<s_{L-1}$ be integers and let $M\ge1$. For an interior start $s_i$, write
+\[
+ d_i=s_i-s_{i-1},\qquad d_{i+1}=s_{i+1}-s_i.
+\]
+The number of integer positions covered by $[s_i,s_i+M-1]$ and by no other interval of the same length is
+\begin{equation}\label{eq:exclusive}
+ E_i=\max\bigl(0,\min(M,d_i)+\min(M,d_{i+1})-M\bigr).
+\end{equation}
+The first interval contributes $\min(M,d_1)$, and the last contributes $\min(M,d_{L-1})$. If $L=1$, its contribution is $M$.
+\end{lemma}
+\begin{proof}
+An integer $u$ in the $i$th interval is covered by no earlier interval precisely when
+\[
+ u\ge s_{i-1}+M,
+\]
+unless this is already guaranteed by $u\ge s_i$. The immediately preceding interval has the largest right endpoint among all preceding intervals, so no other earlier interval needs to be checked. Similarly, avoiding every later interval is equivalent to $u\le s_{i+1}-1$.
+
+Thus the exclusive positions are the integers between
+\[
+ \max(s_i,s_{i-1}+M)
+ \quad\hbox{and}\quad
+ \min(s_i+M-1,s_{i+1}-1).
+\]
+Subtract the lower endpoint from the upper endpoint and add one; if the result is negative, replace it by zero. This gives \eqref{eq:exclusive}. The endpoint formulas follow by omitting the nonexistent neighbor.
+\end{proof}
+
+\begin{remark}
+The argument does not assume that at most two intervals overlap. Many intervals may cover an interior point. Equal interval lengths ensure that the nearest neighbor on each side detects the entire union on that side.
+\end{remark}
+
+\section{Digital carries and an exact counting formula}\label{sec:gaps}
+
+\subsection{All gaps, with their multiplicities}
+Write the elements of $S_{b,n}$ in increasing order as
+\[
+ s_0<s_1<\cdots<s_{2^n-1}.
+\]
+For $r\ge0$, set
+\begin{equation}\label{eq:gammadef}
+ \gamma_r^{(b)}
+ =b^r-\sum_{j=0}^{r-1}b^j
+ =\frac{(b-2)b^r+1}{b-1}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:gammarec}
+ \gamma_0^{(b)}=1,\qquad
+ \gamma_{r+1}^{(b)}=b\gamma_r^{(b)}-1.
+\end{equation}
+
+\begin{lemma}[Carry-gap lemma]\label{lem:carry}
+For $1\le i<2^n$,
+\begin{equation}\label{eq:gapv2}
+ s_i-s_{i-1}=\gamma_{v_2(i)}^{(b)},
+\end{equation}
+where $v_2(i)$ is the exponent of two in $i$. Consequently, $\gamma_r^{(b)}$ occurs exactly $2^{n-r-1}$ times for $0\le r\le n-1$.
+\end{lemma}
+\begin{proof}
+The order on $S_{b,n}$ is the lexicographic order of the binary digit strings, read from the most significant position. Indeed, a change in digit $r$ outweighs the sum of all smaller digits because $b^r>\sum_{j<r}b^j$.
+
+Increasing the binary index from $i-1$ to $i$ changes exactly $r=v_2(i)$ trailing ones into zeros and changes the next zero into a one. Reinterpreting those digits in base $b$ changes the represented number by
+\[
+ b^r-(1+b+\cdots+b^{r-1})=\gamma_r^{(b)}.
+\]
+There are exactly $2^{n-r-1}$ indices $i$ with $1\le i<2^n$ and $v_2(i)=r$.
+\end{proof}
+
+For example, at $b=3,n=3$, the starts are
+\[
+ 0,1,3,4,9,10,12,13,
+\]
+and the gaps are
+\[
+ 1,2,1,5,1,2,1.
+\]
+The general pattern alternates a gap of one with a larger gap. More precisely, each interior start has one neighboring gap equal to $\gamma_0^{(b)}=1$. For $n\ge1$, the first and last gaps are both one.
+
+\subsection{Counting isolated positions}
+Assume now that $m,n\ge1$, so that $M=2^m\ge2$. At an interior start, one adjacent gap is one. If the other gap is $d$, \cref{lem:exclusive} gives
+\[
+ E_i=\max(0,1+\min(M,d)-M)
+ =\begin{cases}1,&d\ge M,\\0,&d<M.\end{cases}
+\]
+Each gap $d\ge M$ has two adjacent starts and contributes one exclusive position on each side. These contributions do not overlap: no two such gaps are adjacent, because alternate gaps are one. The first and last intervals contribute one position each.
+
+\begin{proposition}[Exact two-parameter enumeration]\label{prop:U}
+For $b\ge3$ and $m\ge1$, define
+\begin{equation}\label{eq:rdef}
+ r_b(m)=\min\{r\ge0:\gamma_r^{(b)}\ge2^m\}.
+\end{equation}
+Let $U_b(m,n)$ be the number of coefficients equal to one in $Q_{m,n}^{(b)}$. For $m,n\ge1$,
+\begin{align}
+ U_b(m,n)
+ &=2+2\sum_{r=0}^{n-1}2^{n-r-1}\ind{\gamma_r^{(b)}\ge2^m}\label{eq:Usum}\\
+ &=2^{\,1+\max(0,n-r_b(m))}.\label{eq:Uclosed}
+\end{align}
+The degenerate cases are $U_b(0,n)=2^n$ and $U_b(m,0)=2^m$.
+\end{proposition}
+\begin{proof}
+The preceding exclusive-position argument and \cref{lem:carry} prove \eqref{eq:Usum}. The gaps $\gamma_r^{(b)}$ increase strictly. If $r_b(m)\ge n$, the sum is empty. Otherwise its geometric sum equals $2^{n-r_b(m)}-1$, giving \eqref{eq:Uclosed}. The degenerate cases follow from \cref{eq:binary,eq:digital}.
+\end{proof}
+
+\subsection{Even prefixes and finite ratios}
+Because $b\ge3$ and $\gamma_r^{(b)}\ge1$,
+\begin{equation}\label{eq:gapdoubling}
+ \gamma_{r+1}^{(b)}=b\gamma_r^{(b)}-1
+ \ge2\gamma_r^{(b)}.
+\end{equation}
+Hence $\gamma_n^{(b)}\ge2^n$ and $1\le r_b(n)\le n$ for $n\ge1$. Applying \cref{prop:U} with $m=n$ gives
+\begin{equation}\label{eq:abthreshold}
+ a_0^{(b)}=1,\qquad
+ a_n^{(b)}=2^{n-r_b(n)+1}\quad(n\ge1).
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:increment}
+ r_b(n+1)-r_b(n)\in\{0,1\}\qquad(n\ge1),
+\end{equation}
+since doubling the target requires at most one further gap level. Therefore
+\begin{equation}\label{eq:quotients}
+ \frac{a_{n+1}^{(b)}}{a_n^{(b)}}\in\{1,2\}\qquad(n\ge0).
+\end{equation}
+The assertion at $n=0$ uses $a_0^{(b)}=1$ and $a_1^{(b)}=2$.
+
+The exact formula for the gaps also yields
+\begin{equation}\label{eq:thresholdasymp}
+ r_b(n)=n\log_b2+O_b(1),\qquad
+ \frac{\log_2 a_n^{(b)}}{n}\longrightarrow1-\log_b2.
+\end{equation}
+For completeness, with $c=(b-2)/(b-1)>0$, the bounds
+$c b^r\le\gamma_r^{(b)}\le b^r$ imply
+\[
+ n\log_b2\le r_b(n)\le\ceil{n\log_b2+\log_b(1/c)},
+\]
+which prove the stated asymptotics.
+
+\section{The exact binary--ternary staircase}\label{sec:ternary}
+For $b=3$, the gap formula simplifies to
+\begin{equation}\label{eq:ternarygaps}
+ \gamma_r^{(3)}=\frac{3^r+1}{2}.
+\end{equation}
+Thus $r_3(n)$ is the least $r$ satisfying
+\begin{equation}\label{eq:ternarythreshold}
+ 3^r\ge2^{n+1}-1.
+\end{equation}
+
+\begin{lemma}\label{lem:ternarythreshold}
+For $n\ge2$,
+\begin{equation}\label{eq:ceilformula}
+ r_3(n)=\ceil{(n+1)\log_3 2}.
+\end{equation}
+At $n=1$, $r_3(1)=1$.
+\end{lemma}
+\begin{proof}
+For $n\ge2$, the integer $2^{n+1}-1$ is congruent to $7$ modulo $8$, whereas every nonnegative power of three is congruent to $1$ or $3$ modulo $8$. Equality in \eqref{eq:ternarythreshold} is therefore impossible.
+
+Since both sides are integers, $3^r\ge2^{n+1}-1$ is then equivalent to $3^r\ge2^{n+1}$. Taking logarithms gives \eqref{eq:ceilformula}. For $n=1$, the threshold is $3^r\ge3$, whose smallest solution is $r=1$.
+\end{proof}
+
+Substituting into \eqref{eq:abthreshold} and using $m-\ceil{x}=\floor{m-x}$ for an integer $m$ gives
+\[
+ a_n=2^{n+1-\lceil(n+1)\log_3 2\rceil}
+ =2^{\lfloor(n+1)\delta\rfloor}\qquad(n\ge2).
+\]
+The two initial values follow directly. This proves the enumerative part of \cref{thm:main}.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{rrrr@{\hspace{1.5em}}rrrr}
+\toprule
+$n$&$r_3(n)$&$a_n$&$\nu_1(2n+1)$&$n$&$r_3(n)$&$a_n$&$\nu_1(2n+1)$\\
+\midrule
+0&0&1&2&11&8&16&8\\
+1&1&2&2&12&9&16&16\\
+2&2&2&2&13&9&32&16\\
+3&3&2&2&14&10&32&16\\
+4&4&2&2&15&11&32&32\\
+5&4&4&2&16&11&64&32\\
+6&5&4&2&17&12&64&64\\
+7&6&4&4&18&12&128&64\\
+8&6&8&4&19&13&128&64\\
+9&7&8&8&20&14&128&128\\
+10&7&16&8&&&&\\
+\bottomrule
+\end{tabular}
+\caption{Initial counts for the binary--ternary example. The value $r_3(0)=0$ is the natural threshold convention, but $a_0=1$ is handled separately because the product is empty.}
+\label{tab:counts}
+\end{table}
+
+\section{Finite-quotient rigidity and non-P-recursiveness}\label{sec:rigidity}
+This section supplies an elementary algebraic obstruction. It neither guesses recurrences from data nor invokes a theorem on zeros of recurrence sequences.
+
+\begin{definition}
+A sequence $(u_n)$ is \emph{eventually C-finite} if there exist constants $c_0,\ldots,c_s$, not all zero, such that
+$\sum_{j=0}^s c_j u_{n+j}=0$ for all sufficiently large $n$. It is \emph{P-recursive} if the same holds with polynomials $p_j(n)$ in place of constants. Finite modifications of a sequence do not change either property.
+\end{definition}
+
+\begin{theorem}[Finite-quotient rigidity]\label{thm:rigidity}
+Let $(u_n)$ be an eventually nonzero complex sequence whose adjacent quotients $u_{n+1}/u_n$ lie in a fixed finite set. The following properties are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $(u_n)$ is P-recursive;
+\item $(u_n)$ is eventually C-finite;
+\item the quotient sequence $u_{n+1}/u_n$ is eventually periodic.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Discard an initial segment so that all terms used are nonzero.
+
+\textbf{P-recursive implies C-finite.}
+Suppose
+\begin{equation}\label{eq:Prec}
+ \sum_{j=0}^s p_j(n)u_{n+j}=0
+\end{equation}
+for all sufficiently large $n$, with some $p_j$ nonzero. The normalized vector
+\[
+ V_n=\left(1,\frac{u_{n+1}}{u_n},\ldots,\frac{u_{n+s}}{u_n}\right)
+\]
+takes only finitely many values: each coordinate is a product of at most $s$ members of the finite quotient set.
+
+For each possible vector $v=(v_0,\ldots,v_s)$, form the polynomial
+\[
+ q_v(X)=\sum_{j=0}^s p_j(X)v_j.
+\]
+If $q_v$ is not identically zero, it has only finitely many integer roots. Since there are only finitely many vectors $v$, there exists $N_0$ larger than every nonnegative integer root of every such nonzero $q_v$.
+
+For $n\ge N_0$, equation \eqref{eq:Prec} says $q_{V_n}(n)=0$; hence $q_{V_n}$ must be the zero polynomial. Let $d=\max_j\deg p_j$, and let $c_j$ be the coefficient of $X^d$ in $p_j$. At least one $c_j$ is nonzero. Comparing coefficients of $X^d$ in $q_{V_n}=0$ gives
+\[
+ \sum_{j=0}^s c_j\frac{u_{n+j}}{u_n}=0,
+\]
+so $\sum c_j u_{n+j}=0$ eventually. This is a constant-coefficient recurrence.
+
+\textbf{C-finite implies eventually periodic quotients.}
+Choose an eventual constant-coefficient recurrence with largest nonzero index $s$ and $c_s\ne0$. Necessarily $s\ge1$, since the terms are nonzero. If $s=1$, the quotient is eventually the constant $-c_0/c_1$.
+
+For $s\ge2$, consider
+\[
+ W_n=\left(1,\frac{u_{n+1}}{u_n},\ldots,\frac{u_{n+s-1}}{u_n}\right).
+\]
+Again the set of possible states is finite. The recurrence determines $u_{n+s}/u_n$ from $W_n$. Dividing all shifted coordinates by $u_{n+1}/u_n$ then determines $W_{n+1}$ from $W_n$. Thus the actual sequence of states follows a deterministic map on a finite set. Its trajectory is eventually periodic, and its second coordinate is the adjacent quotient.
+
+\textbf{Eventually periodic quotients imply C-finite.}
+If the quotients have eventual period $p$, let $C$ be the product of the quotients in one period. Then $u_{n+p}=Cu_n$ eventually. This is a constant-coefficient recurrence, and therefore a polynomial-coefficient recurrence as well.
+\end{proof}
+
+\begin{corollary}\label{cor:slope}
+Let $u_n>0$, with $u_{n+1}/u_n\in\{1,2\}$ eventually. If
+\[
+ \lim_{n\to\infty}\frac{\log_2u_n}{n}
+\]
+exists and is irrational, then $(u_n)$ is not P-recursive.
+\end{corollary}
+\begin{proof}
+If the quotients were eventually periodic with period $p$ and exactly $q$ doublings in each period, the displayed limit would be $q/p$. Apply \cref{thm:rigidity}.
+\end{proof}
+
+For the binary--ternary counts, \eqref{eq:quotients} gives the finite quotient set, and \eqref{eq:thresholdasymp} gives the irrational slope $\delta$. This proves directly that $(a_n)$ is not P-recursive.
+
+\subsection{Passing to every second term}
+We record the needed closure fact with a proof, rather than assuming that irrational behavior in a subsequence automatically transfers to the full sequence.
+
+\begin{lemma}[Arithmetic subsequences]\label{lem:decimation}
+If $(u_N)$ is P-recursive, then $(u_{dn+r})_{n\ge0}$ is P-recursive for fixed integers $d\ge1$, $r\ge0$. If $(u_N)$ is eventually C-finite, so is every such subsequence.
+\end{lemma}
+\begin{proof}
+An order-zero recurrence forces the sequence to be eventually zero, in which case the assertion is immediate. Otherwise, an order-$s$ polynomial-coefficient recurrence with $s\ge1$ can be written, away from the finitely many integer zeros of its leading coefficient, as
+\[
+ X_{N+1}=M(N)X_N,
+ \qquad X_N=(u_N,\ldots,u_{N+s-1})^{\mathsf T},
+\]
+where the entries of $M(N)$ are rational functions of $N$. Sampling at $N=dn+r$ gives a first-order system
+\[
+ Y_{n+1}=B(n)Y_n
+\]
+of the same dimension with entries rational in $n$. The first coordinates of $Y_n,Y_{n+1},\ldots,Y_{n+s}$ are $s+1$ linear forms in the $s$ coordinates of $Y_n$, with coefficients in $\C(n)$. They are linearly dependent over $\C(n)$. Clearing denominators yields a nonzero polynomial-coefficient recurrence for the sampled scalar sequence. For constant $M$, the matrix $B=M^d$ is constant, and the same argument uses constant coefficients.
+\end{proof}
+
+Consequently the full coefficient-count sequence in \cref{thm:main} cannot be P-recursive, because its even subsequence is not. This completes the algebraic proof of the negative answer and of the non-D-finiteness assertion.
+
+\section{Classification of the binary/base-\texorpdfstring{$b$}{b} family}\label{sec:classification}
+
+\subsection{The non-power-of-two case}
+The exponents \eqref{eq:Gb} have rational generating function
+\begin{equation}\label{eq:GbGF}
+ \sum_{i\ge1}G_i^{(b)}z^i
+ =\frac{z}{1-2z^2}+\frac{z^2}{1-bz^2}
+\end{equation}
+and satisfy
+\begin{equation}\label{eq:Gbrec}
+ G_{i+4}^{(b)}=(b+2)G_{i+2}^{(b)}-2bG_i^{(b)}.
+\end{equation}
+The same gap analysis gave \cref{eq:quotients,eq:thresholdasymp}. If $b$ is not a power of two, then $\log_b2$ is irrational. Indeed, if $\log_b2=p/q$ for positive integers $p,q$, then $b^p=2^q$, forcing every prime divisor of $b$ to be two. Conversely, a power of two clearly gives a rational logarithm ratio.
+
+It follows from \cref{cor:slope} that $(a_n^{(b)})$ is not P-recursive whenever $b$ is not a power of two. By \cref{lem:decimation}, the full sequence $(\nu_1^{(b)}(N))$ is not P-recursive either.
+
+\subsection{The power-of-two case}
+Let $b=2^d$, $d\ge2$. We claim that for $n\ge1$,
+\begin{equation}\label{eq:powerthreshold}
+ r_b(n)=\floor{n/d}+1.
+\end{equation}
+Write $n=qd+s$ with $0\le s<d$. If $q\ge1$, then
+\[
+ \gamma_q^{(b)}<b^q=2^{qd}\le2^n.
+\]
+If $q=0$, the same needed strict inequality is $\gamma_0=1<2^n$.
+On the other hand,
+\[
+ \gamma_{q+1}^{(b)}
+ \ge\frac{b-2}{b-1}b^{q+1}
+ \ge\frac{b^{q+1}}{2}
+ =2^{qd+d-1}\ge2^{qd+s}.
+\]
+The last two inequalities use $b\ge4$ and $s\le d-1$. This proves \eqref{eq:powerthreshold}. Substitution in \eqref{eq:abthreshold} gives
+\[
+ a_n^{(2^d)}=2^{n-\lfloor n/d\rfloor},
+\]
+also valid at $n=0$. Splitting $n=qd+r$ with $0\le r<d$ proves \eqref{eq:rationalfamily}. In particular,
+\begin{equation}\label{eq:powerrec}
+ a_{n+d}^{(2^d)}=2^{d-1}a_n^{(2^d)}\qquad(n\ge0).
+\end{equation}
+
+\subsection{An exact relation between odd and even prefixes}
+\begin{proposition}\label{prop:parity}
+For all $b\ge3$,
+\begin{equation}\label{eq:parityidentity}
+ F_b(z)=A_b(z^2)+\frac{A_b(z^2)-1}{2z}+E_b(z),
+\end{equation}
+where
+\begin{equation}\label{eq:correction}
+ E_b(z)=z+\ind{b\le4}z^3+\ind{b=3}(z^5+z^7).
+\end{equation}
+The apparent division by $z$ is harmless because $A_b(z^2)-1$ is divisible by $z^2$ as a formal power series.
+\end{proposition}
+\begin{proof}
+For $n\ge1$, an odd prefix has $m=n+1$ binary factors and $n$ base-$b$ factors. Let $r=r_b(n+1)$. Since $r\le n+1$, \cref{prop:U} gives
+\[
+ \nu_1^{(b)}(2n+1)=
+ \begin{cases}
+ a_{n+1}^{(b)}/2,&r\le n,\\
+ 2,&r=n+1.
+ \end{cases}
+\]
+In the second case, $a_{n+1}^{(b)}/2=1$, so the correction is exactly one. The condition $r=n+1$ is equivalent to $\gamma_n^{(b)}<2^{n+1}$. It holds at $n=1$ precisely for $b=3,4$, at $n=2,3$ precisely for $b=3$, and at no $n\ge4$. To see the last assertion, note that $\gamma_4^{(3)}=41\ge32$, that the gaps increase with $b$, and that \eqref{eq:gapdoubling} propagates the inequality.
+
+At $n=0$, the first product is $1+x$, so $\nu_1^{(b)}(1)=2$ while $a_1^{(b)}/2=1$, giving the correction $z$. Summing the even and odd contributions proves \eqref{eq:parityidentity}.
+\end{proof}
+
+For $b=2^d$, \cref{eq:rationalfamily,eq:parityidentity} make $F_b$ rational explicitly. Together with the non-P-recursiveness result for all other $b$, this proves every implication in \cref{thm:classification}. For illustration,
+\[
+ A_4(t)=\frac{1+2t}{1-2t^2},\qquad
+ A_8(t)=\frac{1+2t+4t^2}{1-4t^3},\qquad
+ A_{16}(t)=\frac{1+2t+4t^2+8t^3}{1-8t^4}.
+\]
+
+\section{A natural boundary for the binary--ternary example}\label{sec:boundary}
+The finite-quotient argument is already sufficient to answer the original question. We now prove a stronger analytic statement. This proof exposes the irrational rotation hidden in the enumeration.
+
+\subsection{A general irrational-floor series}
+Let $0<\theta<1$ be irrational and $q>1$. Define
+\begin{equation}\label{eq:Btheta}
+ B_{\theta,q}(t)=\sum_{n\ge0}q^{\lfloor n\theta\rfloor}t^n,
+ \qquad \Lambda=q^\theta.
+\end{equation}
+Then
+\[
+ H(z):=B_{\theta,q}(z/\Lambda)
+ =\sum_{n\ge0}q^{-\{n\theta\}}z^n.
+\]
+Its coefficients lie between $q^{-1}$ and $1$, so its radius of convergence is one.
+
+\begin{lemma}[Rotation averages and Abel means]\label{lem:abel}
+If $\theta$ is irrational and $h$ is a bounded Riemann-integrable function of period one, then
+\begin{equation}\label{eq:rotation}
+ \frac1N\sum_{n=0}^{N-1}h(n\theta)\longrightarrow\int_0^1h(x)\,dx.
+\end{equation}
+If a bounded sequence $(c_n)$ has Ces\`aro mean $L$, then
+\begin{equation}\label{eq:abelmean}
+ (1-r)\sum_{n\ge0}c_n r^n\longrightarrow L\qquad(r\uparrow1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $h(x)=e^{2\pi i kx}$ with $k\ne0$, the average in \eqref{eq:rotation} is a geometric sum divided by $N$. Its absolute value is at most $2/(N|1-e^{2\pi i k\theta}|)$, and hence tends to zero. For $k=0$ the average is one. Linear combinations prove the result for trigonometric polynomials. Uniform approximation proves it for continuous periodic functions. Upper and lower continuous approximations in integral then prove it for bounded Riemann-integrable real functions; apply this separately to real and imaginary parts. Equivalently, one may use interval approximations after the continuous case to obtain equidistribution, followed by Riemann sums.
+
+For the second assertion, put $S_N=\sum_{n=0}^{N-1}(c_n-L)$, so $S_N=o(N)$. Summation by parts gives
+\[
+ (1-r)\sum_{n\ge0}(c_n-L)r^n
+ =(1-r)^2\sum_{N\ge1}S_Nr^{N-1}.
+\]
+For any $\varepsilon>0$, the sufficiently large $N$ terms satisfy $|S_N|\le\varepsilon N$; their contribution is at most $\varepsilon$, since $\sum_{N\ge1}Nr^{N-1}=(1-r)^{-2}$. The finitely many remaining terms tend to zero. This proves \eqref{eq:abelmean}.
+\end{proof}
+
+\begin{theorem}[Natural boundary for an irrational-floor series]\label{thm:floorboundary}
+The circle $|t|=q^{-\theta}$ is a natural boundary of $B_{\theta,q}(t)$. More precisely, for every integer $k$, with $\zeta_k=e^{-2\pi i k\theta}$,
+\begin{equation}\label{eq:radial}
+ \lim_{r\uparrow1}(1-r)H(r\zeta_k)
+ =\frac{1-q^{-1}}{\log q+2\pi i k}\ne0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+On $0\le x<1$, let $f(x)=q^{-x}$ and extend periodically. For fixed $k$, the function $f(x)e^{-2\pi i kx}$ is bounded and Riemann integrable. Irrational rotation averages give
+\begin{align*}
+ \frac1N\sum_{n=0}^{N-1}q^{-\{n\theta\}}e^{-2\pi i kn\theta}
+ &\longrightarrow\int_0^1q^{-x}e^{-2\pi i kx}\,dx\\
+ &=\frac{1-q^{-1}}{\log q+2\pi i k}.
+\end{align*}
+Applying the Abel-mean part of \cref{lem:abel} yields \eqref{eq:radial}.
+
+If $H$ extended holomorphically through $\zeta_k$, it would be bounded on a sufficiently short inward radial segment ending at $\zeta_k$, forcing the limit in \eqref{eq:radial} to be zero. Hence each $\zeta_k$ is a singular point. These points are dense on the unit circle because $\theta$ is irrational. Any extension through a point of the circle would provide extension through a small arc, which is impossible because that arc contains some $\zeta_k$. Thus the unit circle is a natural boundary for $H$, and rescaling proves the assertion for $B_{\theta,q}$.
+\end{proof}
+
+The proof uses explicit Fourier averages, not a merely formal Fourier expansion whose convergence at a discontinuity could introduce a gap.
+
+\subsection{Transfer to the coefficient counts}
+For the binary--ternary example, put
+\[
+ B(t)=B_{\delta,2}(t)=\sum_{m\ge0}2^{\lfloor m\delta\rfloor}t^m.
+\]
+The initial values in \eqref{eq:floorformula} imply the exact identity
+\begin{equation}\label{eq:AB}
+ A(t)=\frac{B(t)-1}{t}+t.
+\end{equation}
+Indeed, the coefficient at $t^n$ in $(B(t)-1)/t$ is $2^{\lfloor(n+1)\delta\rfloor}$; it agrees with $a_n$ except at $n=1$, where it is one instead of two. The added $t$ corrects precisely that term.
+
+By \cref{thm:floorboundary}, $B$ has the natural boundary $|t|=\lambda^{-1}$. Equation \eqref{eq:AB} transfers the same natural boundary to $A$. Equation \eqref{eq:parityidentity} at $b=3$ becomes
+\begin{equation}\label{eq:F3}
+ F(z)=\left(1+\frac1{2z}\right)A(z^2)-\frac1{2z}
+       +z+z^3+z^5+z^7.
+\end{equation}
+The radius of convergence is $\lambda^{-1/2}$. At any point $z_0$ on that circle, $z_0\ne0$, the map $z\mapsto z^2$ has a local analytic inverse, and the coefficient $1+1/(2z_0)$ is nonzero. Its only zero is $-1/2$, strictly inside this circle. A holomorphic extension of $F$ through $z_0$ would therefore produce a holomorphic extension of $A$ through $z_0^2$, a contradiction. This finishes the natural-boundary proof in \cref{thm:main}.
+
+In particular, the obstruction is much stronger than the absence of a rational expression. An analytic germ satisfying a linear differential equation with polynomial coefficients can have finite-plane singularities only at the finitely many zeros of its leading polynomial. A full circle of unavoidable singularities excludes D-finiteness.
+
+\section{Growth, fluctuations, and an exact nonlinear recurrence}\label{sec:growth}
+
+\subsection{Exponential growth without a constant leading factor}
+For $n\ge2$, the exact formula reads
+\begin{equation}\label{eq:fluctuation}
+ a_n=\lambda^{n+1}2^{-\{(n+1)\delta\}}.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:growthbounds}
+ \frac12\lambda^{n+1}<a_n<\lambda^{n+1},\qquad
+ \lim_{n\to\infty}a_n^{1/n}=\lambda.
+\end{equation}
+Numerically, for orientation only,
+\[
+ \delta\approx0.3690702464,\qquad \lambda\approx1.2915202343.
+\]
+All exact computations in the package avoid evaluating these logarithms.
+
+Irrational rotation is dense, so
+\begin{equation}\label{eq:limsup}
+ \liminf_{n\to\infty}\frac{a_n}{\lambda^{n+1}}=\frac12,
+ \qquad
+ \limsup_{n\to\infty}\frac{a_n}{\lambda^{n+1}}=1.
+\end{equation}
+Thus there is no positive constant $C$ such that $a_n\sim C\lambda^n$. The failure is a persistent bounded oscillation, not a smaller-order error that vanishes with $n$.
+
+There is nevertheless a precise distribution of these fluctuations. For $1/2\le y\le1$, equidistribution gives
+\begin{equation}\label{eq:distribution}
+ \lim_{N\to\infty}\frac1N\#\left\{2\le n<N:
+ \frac{a_n}{\lambda^{n+1}}\le y\right\}=1+\log_2 y.
+\end{equation}
+The limiting density is $1/(y\log2)$ on $(1/2,1)$, and the mean normalized amplitude is
+\[
+ \int_0^1 2^{-x}\,dx=\frac1{2\log2}.
+\]
+These claims follow by applying \cref{lem:abel}'s rotation-average assertion to indicator functions and to $2^{-x}$.
+
+\subsection{The doubling word}
+For $n\ge2$,
+\[
+ \log_2\frac{a_{n+1}}{a_n}
+ =\floor{(n+2)\delta}-\floor{(n+1)\delta}\in\{0,1\}.
+\]
+This is a coding of an irrational rotation: a doubling occurs exactly when $\{(n+1)\delta\}\ge1-\delta$. The limiting proportion of doublings is $\delta$, by telescoping the floor differences. No eventually periodic binary word has an irrational proportion of ones. This gives a particularly transparent interpretation of the recurrence obstruction.
+
+\subsection{Exact computation needs no logarithms}
+Non-P-recursiveness does not imply difficulty of computation. For fixed $b\ge3$, put
+\[
+ r_n=r_b(n),\qquad h_n=\gamma_{r_n}^{(b)}.
+\]
+Start at
+\[
+ r_1=1,\qquad h_1=b-1,\qquad a_1^{(b)}=2.
+\]
+Then the exact update is
+\begin{equation}\label{eq:nonlinearrec}
+ (r_{n+1},h_{n+1},a_{n+1}^{(b)})=
+ \begin{cases}
+ (r_n+1,bh_n-1,a_n^{(b)}),&h_n<2^{n+1},\\
+ (r_n,h_n,2a_n^{(b)}),&h_n\ge2^{n+1}.
+ \end{cases}
+\end{equation}
+This follows from \eqref{eq:increment}. A single comparison decides whether the next threshold crosses a new gap level.
+
+For fixed $b$, a streaming computation of $a_0^{(b)},\ldots,a_N^{(b)}$ uses $O(N)$ integer updates and $O(N)$ bits of working storage. Each integer has $O(N)$ bits, and multiplication by the fixed base, addition, comparison, and doubling have linear bit cost. Summed over the prefix, this gives $O(N^2)$ bit operations in a standard bit-cost model. Writing every result in binary already uses $\Theta(N^2)$ bits because \eqref{eq:thresholdasymp} has a positive limiting slope. The simplicity of this nonlinear threshold recurrence is fully compatible with the impossibility of a linear polynomial-coefficient recurrence.
+
+\section{Exact verification and reproducibility}\label{sec:verification}
+
+\subsection{Independent checks actually executed}
+The attached program \texttt{verify.py} uses only the Python standard library. It was run under Python 3.13.5 in full mode. All assertions passed. The file \texttt{verification.json} records the run; the observed runtime is recorded there and is not a hardware-independent benchmark.
+
+The independent dense computation repeatedly multiplies by $1+x^{G_i}$ using exact integer coefficient arrays. It does not use the gap lemma or a floor formula. The independent interval sweep enumerates all digit sums, adds interval-start and interval-end events, and computes the complete positive-multiplicity histogram. It does not use the threshold formula. The latter check can handle very large polynomial degrees without storing every coefficient.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}p{0.30\textwidth}Xr@{}}
+\toprule
+Check & Executed range & Cases\\
+\midrule
+Full polynomial multiplication & $b=3$, all prefixes $0\le N\le28$; largest degree $2{,}407{,}867$ &29\\
+Independent interval-sweep grid & $3\le b\le12$, $0\le m,n\le10$ &1,210\\
+Seeded interval-sweep cases & $3\le b\le40$, $0\le m\le30$, $0\le n\le15$ &150\\
+Explicit ordered-gap check & $3\le b\le15$, $1\le n\le12$ &156\\
+Ternary closed-form check & $0\le n\le2000$; two exact threshold formulations &2,001\\
+Family threshold and ratio checks & $3\le b\le64$, $1\le n\le300$ &18,600\\
+Rational-subfamily formulas & $b=2^d$, $2\le d\le10$, $0\le n\le600$ &5,409\\
+\bottomrule
+\end{tabularx}
+\caption{Finite verification performed for this manuscript. In addition, the parity identity was checked for all $3\le b\le64$, $0\le N\le600$, and the exponent recurrence was checked on the first 80 terms of each of those bases.}
+\label{tab:verification}
+\end{table}
+
+The interval checks also verify conservation of total coefficient mass:
+\[
+ \sum_{k\ge1}k\cdot\#\{j:[x^j]Q_{m,n}^{(b)}=k\}=2^{m+n}.
+\]
+This catches both missed intervals and off-by-one endpoint errors. The verification includes the degenerate cases $m=0$ or $n=0$, even though the principal exclusive-position formula assumes both are positive.
+
+\subsection{Why floating-point floors are avoided}
+A formula involving $\floor{n\delta}$ should not be implemented by an unguarded floating-point logarithm when exact values are required. The distance of $n\delta$ from an integer may be small. The program instead compares integer powers, using
+\[
+ r_b(m)=\min\{r:\gamma_r^{(b)}\ge2^m\}.
+\]
+For the ternary closed-form cross-check, it separately computes the least $s$ with $3^s\ge2^{n+1}$. No numerical approximation to a logarithm enters a correctness assertion.
+
+\subsection{Files and commands}
+The distribution contains the manuscript source and PDF, the executable verifier, a streaming implementation of \eqref{eq:nonlinearrec}, a concise standalone solution note, and the following data:
+\begin{itemize}
+\item \texttt{data/binary\_ternary\_counts.csv}: the full prefix sequence through $N=400$;
+\item \texttt{data/even\_counts\_b3.txt}: $a_n$ through $n=1000$, in an OEIS-style two-column format;
+\item \texttt{data/base\_comparison.csv}: even-prefix counts for bases $3,4,5,8,9,16$ through $n=100$.
+\end{itemize}
+No OEIS identifier is assigned or claimed for these generated data. To reproduce the verification and the PDF, run:
+\begin{lstlisting}[language=bash]
+python3 verify.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+A \texttt{Makefile} provides corresponding targets. The proofs do not depend on a particular maximum test index; computation is a check on the formulas and implementation, not the source of the universal conclusions.
+
+\section{What has been settled, and what has not}\label{sec:scope}
+
+\subsection{The exact negative conclusion}
+The universal rationality assertion in the stated general question is false. The counterexample uses positive integer exponents tending to infinity, a rational exponent generating function of very small denominator degree, binomial factors only, and the smallest positive coefficient value $k=1$. The resulting count series is not only nonrational but non-D-finite, and in the binary--ternary case has a natural boundary. No search through enormous exceptional indices is needed to witness the failure: the obstruction is the irrational frequency of exact doublings.
+
+The family classification further shows that an elementary arithmetic distinction between bases governs the behavior. Interleaving two geometric sequences preserves C-finiteness of the exponents, but the operation ``count coefficients equal to one'' need not preserve even P-recursiveness.
+
+\subsection{A limitation that matters: monotonicity}
+The exponents are not nondecreasing. For instance, $G_6=9$ and $G_7=8$. This is not a violation of the question's stated hypotheses, which require only positivity and divergence. It would, however, violate a different hypothesis requiring monotonicity.
+
+Sorting the exponents is not an innocuous repair. Although the product for a fixed finite multiset does not depend on factor order, the successive prefixes do depend on that order. Moreover, sorting the union of two geometric sequences does not preserve the displayed rational generating function for the exponent sequence. Accordingly, this paper does not resolve the same universal question under an additional monotonicity assumption, nor a version restricted to a single simple dominant characteristic root or to recurrences with prescribed positive coefficients.
+
+\subsection{Further research directions}
+For fixed $k>1$, the interval-cover model still counts positions of multiplicity $k$, but an exclusive-neighbor argument alone is no longer enough. The event-sweep verifier already computes these histograms and gives a concrete starting point for deriving exact formulas. It is not claimed here that every fixed-$k$ series in this family has the same rationality classification.
+
+A separate question is to classify exponent recurrences for which all fixed-coefficient counts are rational. The present family provides a necessary warning for any proposed general theorem: rationality of the exponent series, by itself, is too weak. A useful sufficient condition would have to control the relative digit scales or the possible carry states, not merely the existence of a linear recurrence for the exponents.
+
+\subsection{Novelty and verification status}
+The question used as the target was publicly visible with no posted answers on the date of this manuscript. A targeted search did not locate this binary--ternary counterexample. These observations justify treating it as a candidate answer to an open posted question; they do not establish historical priority. Standard ingredients such as interval counting, finite-state recurrence arguments, and irrational rotation averages are not claimed as new. The intended contribution is their explicit combination into the counterexample, the exact enumeration, and the base-family classification proved here.
+
+The manuscript has not been independently refereed or formally verified. Every finite computational check reported in \cref{sec:verification} was actually executed. The complete negative answer is the mathematical conclusion of the displayed proofs, while the broader classification of all allowable exponent sequences remains outside this paper's scope.
+
+\begin{thebibliography}{9}
+\bibitem{StanleyQuestion}
+Richard Stanley, \emph{A conjectured rational generating function}, MathOverflow question 431075, September 23, 2022. Accessed September 19, 2026.
+\url{https://mathoverflow.net/questions/431075/a-conjectured-rational-generating-function}.
+
+\bibitem{StanleyFibonacci}
+Richard Stanley, \emph{Number of coefficients equal to $k$ in certain ``Fibonacci polynomials''}, MathOverflow question 430741, September 19, 2022; see also the posted answers and corrections. Accessed September 19, 2026.
+\url{https://mathoverflow.net/questions/430741/}.
+
+\bibitem{StanleyStern}
+Richard P. Stanley, \emph{Some linear recurrences motivated by Stern's diatomic array}, American Mathematical Monthly \textbf{127} (2020), 99--111.
+Preprint: \url{https://arxiv.org/abs/1901.04647}.
+
+\bibitem{StanleyProducts}
+Richard P. Stanley, \emph{Theorems and conjectures on some rational generating functions}, European Journal of Combinatorics \textbf{119} (2024), article 103814.
+\url{https://doi.org/10.1016/j.ejc.2023.103814}.
+Preprint: \url{https://arxiv.org/abs/2101.02131}.
+
+\bibitem{StanleyDFinite}
+Richard P. Stanley, \emph{Differentiably finite power series}, European Journal of Combinatorics \textbf{1} (1980), 175--188.
+Author-hosted copy: \url{https://math.mit.edu/~rstan/pubs/pubfiles/45.pdf}.
+\end{thebibliography}
+
+\end{document}

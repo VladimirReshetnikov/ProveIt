@@ -1,0 +1,1355 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools,amsthm}
+\usepackage{newtxtext,newtxmath}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{hyperref}
+\definecolor{inkblue}{HTML}{173B57}
+\definecolor{muted}{HTML}{526576}
+\definecolor{lightblue}{HTML}{F1F5F8}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,
+ pdftitle={Shifted Catalan Hankel Polynomials: Exact Coefficients and Sharp Recurrences},
+ pdfauthor={OpenAI ChatGPT},pdfsubject={A proof of a denominator conjecture and an indexing correction}}
+\titleformat{\section}{\large\bfseries\color{inkblue}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{inkblue}}{\thesubsection}{0.7em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{muted}Shifted Catalan Hankel polynomials}
+\fancyhead[R]{\small\color{muted}Research note \textbar\ September 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\NN}{\mathbb N_0}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\D}[2]{D_{#1}^{(#2)}}
+\newcommand{\HH}[2]{H_{#1}^{(#2)}}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\hyp}[4]{{}_2F_1\!\left(\begin{matrix}#1,#2\\#3\end{matrix};#4\right)}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{muted},backgroundcolor=\color{lightblue},
+ keepspaces=true,showstringspaces=false}
+
+\begin{document}
+\thispagestyle{empty}
+\begin{center}
+{\small\sffamily\bfseries\color{muted}EXACT ENUMERATION \quad / \quad GENERATING FUNCTIONS \quad / \quad ASYMPTOTICS}\par
+\vspace{10mm}
+{\LARGE\bfseries\color{inkblue}Shifted Catalan Hankel Polynomials}\par
+\vspace{3mm}
+{\Large Exact coefficients, sharp recurrences,\par and a denominator conjecture}\par
+\vspace{7mm}
+{A research note prepared with OpenAI ChatGPT}\par
+{19 September 2026}
+\end{center}
+\vspace{5mm}
+\begin{abstract}
+For the Catalan numbers $C_n$, consider the size-$N$ determinant
+$D_N^{(m)}(a,b)=\det(aC_{i+j+m}+bC_{i+j+m+1})_{0\leq i,j<N}$.
+We give a self-contained proof of the denominator-exponent conjecture stated
+in Paul Barry's 2020 note on this family.  With $d=\binom m2$, the generating
+function is $P_m(t)/(1-(a+2b)t+b^2t^2)^{d+1}$.  The denominator is minimal
+whenever $b\ne0$, $a\ne0$, and $a\ne-4b$.  We determine every exceptional
+case, prove that $\deg P_m=(m-1)^2$ for $b\ne0$, and establish a reciprocal
+symmetry of the numerator.  An explicit positive-integer coefficient formula
+also identifies and repairs a one-unit shift in the source's separate
+Conjecture~2.  The essential degree reduction is a Vandermonde cancellation
+in confluent Christoffel minors.  It yields an exact sum of two exponentials
+with polynomial coefficients, a finite full asymptotic expansion, and an
+explicit first correction.  Independent integer and rational computations,
+including direct determinants and polynomial-identity certificates at fixed
+sizes, accompany the proofs.
+\end{abstract}
+\vspace{3mm}
+\noindent\colorbox{lightblue}{\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
+\textbf{Main result.} For all nonexceptional complex parameters,
+\[
+\boxed{\ \text{minimal constant-coefficient recurrence order}
+       =m(m-1)+2.\ }
+\]
+The proof is uniform in the determinant size and the Catalan shift.
+}}\par
+\vspace{5mm}
+\noindent\textbf{Status and scope.}
+This is an unrefereed, AI-assisted mathematical manuscript, not a formalized
+proof.  Its theorems are supported by explicit arguments, not inferred from
+finite tests.  The target is a conjecture in a specified source version;
+no claim of first discovery or exhaustive verification of present-day
+open status is made.  Classical Christoffel formulas and the known general
+rationality theory are credited, rather than presented as new.
+\vfill
+\noindent\textbf{Reproducibility.} The accompanying archive contains this
+\LaTeX\ source, the PDF, a standard-library-only Python implementation,
+an independently organized verification suite, and exact machine-readable
+data.  No external mathematical software is needed to rerun the tests.
+
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{The problem and the contribution}\label{sec:problem}
+
+Let
+\begin{equation}\label{eq:catalan}
+ C_n=\frac{1}{n+1}\binom{2n}{n}\qquad(n\in\NN)
+\end{equation}
+be the Catalan numbers.  We use determinant size, rather than the last row
+index, throughout:
+\begin{equation}\label{eq:D}
+ \D{N}{m}(a,b)=\det_{0\leq i,j<N}
+       \bigl(aC_{i+j+m}+bC_{i+j+m+1}\bigr),
+ \qquad \D{0}{m}=1.
+\end{equation}
+Here $m,N\in\NN$, and the parameters may be indeterminates or complex
+numbers.  Define the ordinary generating function
+\begin{equation}\label{eq:F}
+ F_m(t;a,b)=\sum_{N\geq0}\D{N}{m}(a,b)t^N.
+\end{equation}
+All generating-function identities below first make sense as identities of
+formal power series.  Assertions about poles concern the associated
+rational functions.
+
+Barry's preprint~\cite{Barry2020}, version~1, explicitly conjectures on
+page~4 that the exponent of the quadratic generating-function denominator
+is $\binom m2+1$.  The same page contains a more complicated coefficient
+conjecture.  These are distinct statements: the denominator claim is
+correct in the uniform sense proved here, whereas the printed coefficient
+formula uses a shift one smaller than its accompanying determinant.
+Appendix~\ref{app:barry} makes the translation precise.
+
+There is substantial prior theory.  Dougherty, French, Saderholm, and
+Qian~\cite{Dougherty2011} studied recurrences for linear combinations of
+Catalan numbers.  Krattenthaler~\cite{Krattenthaler2023} gives a detailed
+account of the Christoffel-type determinant identity, confluence, and
+constant-coefficient recurrences; his Section~8 also records Elouafi's
+prior proof of general Catalan recurrence assertions.  For a multiplier
+of degree $r$, that general construction supplies an order at most $2^r$.
+Consequently, rationality by itself is \emph{not} the research claim here.
+For the special multiplier $x^m(a+bx)$, the objective is the exact,
+much smaller order, together with its sharp parameter classification.
+
+The article separates two useful calculations.  Jacobi orthogonality
+immediately exposes the individual coefficients.  A confluent determinant,
+on the other hand, exposes the dependence on $N$ and explains the precise
+recurrence order.  Their independent implementations provide a useful
+check against indexing and normalization errors.
+
+\subsection{A notation guide}
+We shall repeatedly use
+\begin{equation}\label{eq:notation}
+ d=\binom m2,\qquad e=d+1,\qquad K=(m-1)^2,\qquad
+ q(t)=1-(a+2b)t+b^2t^2.
+\end{equation}
+The shifted pure Catalan determinant and its leading coefficient are
+\begin{align}
+ \HH{N}{m}&=\det_{0\leq i,j<N}(C_{i+j+m})
+ =\prod_{1\leq j\leq i<m}\frac{2N+i+j}{i+j},\label{eq:Hproduct}\\
+ h_m&=\prod_{1\leq j\leq i<m}\frac{2}{i+j}.
+ \label{eq:h}
+\end{align}
+Every empty product and empty determinant equals~$1$.  In particular,
+$H_N^{(0)}=H_N^{(1)}=1$ and $h_0=h_1=1$.  We prove
+\eqref{eq:Hproduct} rather than assuming it.  As a polynomial in $N$,
+$H_N^{(m)}$ has degree $d$ and leading coefficient $h_m$.
+The notation $(u)_k=u(u+1)\cdots(u+k-1)$ denotes a rising factorial,
+with $(u)_0=1$.
+
+\section{Statements of the main theorems}\label{sec:main}
+
+\begin{theorem}[Explicit coefficients]\label{thm:coeff}
+For every $N,m\in\NN$,
+\begin{equation}\label{eq:coeff}
+ \D{N}{m}(a,b)=\sum_{k=0}^N c_{N,m,k}a^k b^{N-k},\qquad
+ c_{N,m,k}=\HH{N}{m+1}\binom Nk
+       \frac{(N+m+1)_k}{4^k(m+\tfrac12)_k}.
+\end{equation}
+All the coefficients $c_{N,m,k}$ are positive integers.  Equivalently,
+\begin{equation}\label{eq:coeff-factorial}
+ c_{N,m,k}=\HH{N}{m+1}\binom Nk
+ \frac{(N+m+k)!(2m)!(m+k)!}
+ {(N+m)!(2m+2k)!m!}.
+\end{equation}
+They can be generated without evaluating any determinant:
+\begin{equation}\label{eq:coeff-update}
+ c_{N,m,0}=\HH{N}{m+1},\qquad
+ \frac{c_{N,m,k+1}}{c_{N,m,k}}=
+ \frac{(N-k)(N+m+1+k)}{2(k+1)(2m+2k+1)}.
+\end{equation}
+\end{theorem}
+
+\begin{theorem}[Uniform rational form and sharp denominator]\label{thm:main}
+For every $m\in\NN$ there is a polynomial $P_m\in\ZZ[a,b,t]$ such that
+\begin{equation}\label{eq:mainGF}
+ F_m(t;a,b)=\frac{P_m(t;a,b)}{q(t)^{d+1}}.
+\end{equation}
+It satisfies $P_m(0;a,b)=1$ and $\deg_t P_m\leq K$.
+If $b\ne0$, then $\deg_t P_m=K$ and
+\begin{equation}\label{eq:reciprocity}
+ P_m(t;a,b)=s_m(bt)^K P_m\!\left(\frac{1}{b^2t};a,b\right),
+ \qquad s_m=(-1)^{(m-1)(m-2)/2}.
+\end{equation}
+In particular, $[t^K]P_m=s_m b^K$.
+If $b\ne0$, $a\ne0$, and $a\ne-4b$, the representation
+\eqref{eq:mainGF} is reduced over $\CC[t]$.  The sequence has minimal
+constant-coefficient recurrence characteristic polynomial
+\begin{equation}\label{eq:charpoly}
+ \bigl(X^2-(a+2b)X+b^2\bigr)^{d+1},
+\end{equation}
+and hence minimal order $2d+2=m(m-1)+2$.
+\end{theorem}
+
+Here ``minimal'' refers even to recurrences allowed to start after a
+finite initial segment.  Thus minimality is not an artifact of the
+empty-determinant convention.  The polynomial numerator in
+\eqref{eq:mainGF} remains the \emph{uniform, possibly unreduced} numerator
+at exceptional parameters.
+
+\begin{theorem}[Every exceptional denominator]\label{thm:exceptional}
+For fixed complex $a,b$, the reduced denominator of $F_m$, normalized to
+have constant term $1$, is exactly the following:
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Parameter condition & Reduced denominator\\
+\midrule
+$a=b=0$ & $1$\\
+$b=0$, $a\ne0$ & $(1-at)^{\binom m2+1}$\\
+$a=0$, $b\ne0$ & $(1-bt)^{\binom{m+1}{2}+1}$\\
+$a=-4b$, $b\ne0$ & $(1+bt)^{\binom m2+2}$\\
+$b\ne0$, $a(a+4b)\ne0$ & $q(t)^{\binom m2+1}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{theorem}
+
+\begin{theorem}[Finite asymptotic expansion]\label{thm:asymp}
+Let $a,b>0$ be fixed and put
+\begin{equation}\label{eq:positive-roots}
+ r=\frac{a/b+2+\sqrt{(a/b)(a/b+4)}}2>1,\qquad
+ \lambda_+=br,\quad \lambda_-=b/r.
+\end{equation}
+There are explicit degree-$d$ polynomials $B_+(N),B_-(N)$ such that
+\begin{equation}\label{eq:two-exp-statement}
+ \D{N}{m}(a,b)=B_+(N)\lambda_+^N+B_-(N)\lambda_-^N
+ \qquad(N\geq0).
+\end{equation}
+In particular,
+\begin{align}
+ \D{N}{m}(a,b)
+ &=A_m N^d\lambda_+^N
+ \left(1+\frac{d\left(\frac m2-\frac1{r-1}\right)}{N}
+       +O(N^{-2})+O(r^{-2N})\right),\label{eq:asymp}\\
+ A_m&=h_m\frac{r^{m+1}}{(r-1)^m(r+1)}.\label{eq:A}
+\end{align}
+The entire algebraic expansion terminates after $N^{-d}$; the second
+exponential is also multiplied by a polynomial of degree~$d$.
+For $d=0$, there are no algebraic correction terms at all.
+\end{theorem}
+
+\subsection{The scale of the improvement}
+For a degree-$(m+1)$ multiplier the general $2^{m+1}$ construction need
+not be minimal.  The theorem determines the actual order in this family.
+The first values are:
+\begin{center}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$m$ & Exponent $e$ & Exact order $2e$ & Numerator degree $K$ & $2^{m+1}$\\
+\midrule
+0 & 1 & 2 & 1 & 2\\
+1 & 1 & 2 & 0 & 4\\
+2 & 2 & 4 & 1 & 8\\
+3 & 4 & 8 & 4 & 16\\
+4 & 7 & 14 & 9 & 32\\
+5 & 11 & 22 & 16 & 64\\
+6 & 16 & 32 & 25 & 128\\
+8 & 29 & 58 & 49 & 512\\
+10 & 46 & 92 & 81 & 2048\\
+\bottomrule
+\end{tabular}
+\end{center}
+The reduction is not obtained by fitting a shorter recurrence to a long
+initial segment.  It comes from a cancellation of polynomial degree in a
+family of minors, proved in Section~\ref{sec:degree}.
+
+\section{Moments, orthogonality, and the coefficient formula}\label{sec:coeffproof}
+
+\subsection{Catalan moments and a normalized Jacobi polynomial}
+For $m\in\NN$ define a positive measure on $(0,4)$ by
+\begin{equation}\label{eq:measure}
+ \dd\mu_m(x)=\frac1{2\pi}x^{m-1/2}(4-x)^{1/2}\,\dd x.
+\end{equation}
+The beta integral, after $x=4t$, gives
+\begin{equation}\label{eq:moments}
+ \int_0^4 x^n\,\dd\mu_m(x)
+ =\frac{4^{n+m+1}}{2\pi}B(n+m+\tfrac12,\tfrac32)
+ =C_{n+m}.
+\end{equation}
+Consequently every moment matrix is positive definite, so its determinant
+is nonzero and its monic orthogonal polynomials are well-defined.
+
+\begin{lemma}[The monic polynomial]\label{lem:Jacobi}
+The degree-$N$ monic orthogonal polynomial for $\mu_m$ is
+\begin{equation}\label{eq:Jacobi}
+ p_N^{(m)}(x)=(-1)^N
+ \frac{4^N(m+\tfrac12)_N}{(N+m+1)_N}
+ \hyp{-N}{N+m+1}{m+\tfrac12}{x/4}.
+\end{equation}
+The hypergeometric series terminates after $N+1$ terms.
+\end{lemma}
+\begin{proof}
+Write $\alpha=m-\tfrac12$, $\beta=\tfrac12$, so both are greater than $-1$.
+A Rodrigues representation on $0<t<1$ is
+\begin{equation}\label{eq:Rodrigues}
+ \frac{t^{-\alpha}(1-t)^{-\beta}}{(\alpha+1)_N}
+ \frac{\dd^N}{\dd t^N}
+       \left(t^{N+\alpha}(1-t)^{N+\beta}\right)
+ =\hyp{-N}{N+\alpha+\beta+1}{\alpha+1}{t}.
+\end{equation}
+Leibniz's rule gives the polynomial on the right, including its
+normalization at $t=0$.  Multiplying the left side by
+$t^j t^\alpha(1-t)^\beta$ and integrating by parts $N$ times yields
+zero for $0\leq j<N$.  Every boundary term vanishes: after at most
+$N-1$ derivatives, the endpoint exponents that can occur are at least
+$\alpha+1>0$ and $\beta+1>0$.  The final derivative of $t^j$ is zero.
+
+The coefficient of $t^N$ on the right is
+$(-1)^N(N+\alpha+\beta+1)_N/(\alpha+1)_N$.
+Replacing $t$ by $x/4$ and normalizing this leading coefficient gives
+\eqref{eq:Jacobi}.  This also identifies the polynomial with the standard
+Jacobi family; see the conventional hypergeometric representation in
+DLMF~\cite{DLMF}, Eq.~18.5.7.
+\end{proof}
+
+\subsection{A characteristic-polynomial determinant identity}
+The following elementary identity will be used twice.
+
+\begin{lemma}\label{lem:characteristic}
+Let $\nu_j$ be the moments of a positive measure, let
+$H_N=\det(\nu_{i+j})_{0\leq i,j<N}$, and let $p_N$ be its monic orthogonal
+polynomial.  Then
+\begin{equation}\label{eq:characteristic}
+ \det_{0\leq i,j<N}(\nu_{i+j+1}-z\nu_{i+j})
+   =(-1)^N H_Np_N(z).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The monic polynomial is represented by
+\[
+ p_N(z)=\frac1{H_N}
+ \det\begin{pmatrix}
+ \nu_0&\nu_1&\cdots&\nu_N\\
+ \nu_1&\nu_2&\cdots&\nu_{N+1}\\
+ \vdots&\vdots&&\vdots\\
+ \nu_{N-1}&\nu_N&\cdots&\nu_{2N-1}\\
+ 1&z&\cdots&z^N
+ \end{pmatrix}.
+\]
+Its leading coefficient is one, and integrating it against any power
+$z^j$, $j<N$, creates a repeated row.  Thus it is indeed $p_N$.
+Starting with the last column and moving left, replace
+$\mathrm{col}_j$ by $\mathrm{col}_j-z\,\mathrm{col}_{j-1}$.
+The last row becomes $(1,0,\ldots,0)$.  Expansion along it gives
+\eqref{eq:characteristic}, with sign $(-1)^N$.
+\end{proof}
+
+Applying the lemma to $\mu_m$ and $z=-a/b$ gives, for $b\ne0$,
+\begin{equation}\label{eq:characteristicD}
+ \D{N}{m}(a,b)=(-b)^N\HH{N}{m}\,p_N^{(m)}(-a/b).
+\end{equation}
+
+\subsection{A proof of the shifted Catalan product}
+For $m=0$, \eqref{eq:Jacobi} reduces to
+\begin{equation}\label{eq:p0}
+ p_n^{(0)}(x)=\sum_{j=0}^n(-1)^{n-j}\binom{n+j}{2j}x^j.
+\end{equation}
+Its initial values and recurrence are
+\begin{equation}\label{eq:p0rec}
+ p_0^{(0)}=1,\quad p_1^{(0)}=x-1,\quad
+ p_{n+2}^{(0)}=(x-2)p_{n+1}^{(0)}-p_n^{(0)}.
+\end{equation}
+These follow directly by comparing the binomial coefficients in
+\eqref{eq:p0}.  If $\eta_n$ denotes the squared norm of $p_n^{(0)}$, the
+coefficient $1$ of $p_{n-1}^{(0)}$ in $xp_n^{(0)}$ implies
+$\eta_n=\eta_{n-1}$.  Indeed, the two ways of writing
+$\langle xp_n^{(0)},p_{n-1}^{(0)}\rangle$
+give $\eta_{n-1}$ and $\eta_n$, respectively.  Since
+$\eta_0=C_0=1$, all these norms equal~$1$.  Changing from monomials to
+monic orthogonal polynomials is unitriangular, and therefore
+$H_N^{(0)}=\prod_{n=0}^{N-1}\eta_n=1$.
+
+Next set $z=0$ in \eqref{eq:characteristic} and use
+\eqref{eq:Jacobi}.  We obtain
+\begin{equation}\label{eq:Hratio}
+ \frac{\HH{N}{m+1}}{\HH{N}{m}}
+ =(-1)^Np_N^{(m)}(0)
+ =\frac{4^N(m+\tfrac12)_N}{(N+m+1)_N}
+ =\prod_{j=1}^{m}\frac{2N+m+j}{m+j}.
+\end{equation}
+For completeness, the middle expression equals
+\[
+ \frac{(2m+2N)!\,m!\,(N+m)!}
+      {(m+N)!\,(2m)!\,(2N+m)!}
+ =\frac{(2N+2m)!\,m!}{(2m)!\,(2N+m)!},
+\]
+which is the last product.  Induction on $m$, beginning with
+$H_N^{(0)}=1$, proves \eqref{eq:Hproduct}.
+
+\subsection{Completion of the coefficient proof}
+Insert \eqref{eq:Jacobi} into \eqref{eq:characteristicD}.
+The constant factor is $H_N^{(m+1)}$ by \eqref{eq:Hratio}.
+In each summand, $(-N)_k(-1)^k/k!=\binom Nk$.  This gives exactly
+\eqref{eq:coeff}.  The formula is a polynomial identity for $b\ne0$,
+so it holds for $b=0$ as well.  The duplication identity for a rising
+half-integer factorial, or direct cancellation, gives
+\eqref{eq:coeff-factorial}.  Taking adjacent coefficient ratios gives
+\eqref{eq:coeff-update}.
+
+All factors in \eqref{eq:coeff} are positive rational numbers.  The
+left side is a determinant with entries in $\ZZ[a,b]$, so its
+coefficients are integers.  This proves positivity and integrality
+simultaneously and completes Theorem~\ref{thm:coeff}.
+In particular,
+\begin{equation}\label{eq:extremalcoeff}
+ c_{N,m,0}=\HH{N}{m+1},\qquad c_{N,m,N}=\HH{N}{m}.
+\end{equation}
+
+\subsection{Real roots and coefficient inequalities}
+\begin{corollary}\label{cor:roots}
+For $N\geq1$, the polynomial $a\mapsto D_N^{(m)}(a,1)$ has exactly $N$
+simple real roots, all in $(-4,0)$.  For $N\geq2$, its normalized
+coefficients $u_k=c_{N,m,k}/\binom Nk$ satisfy
+\begin{equation}\label{eq:ultra}
+ u_k^2>u_{k-1}u_{k+1}\qquad(1\leq k<N).
+\end{equation}
+\end{corollary}
+\begin{proof}
+A degree-$N$ orthogonal polynomial for a strictly positive density on
+$(0,4)$ has $N$ simple roots in that interval.  One elementary proof
+is to multiply it by the product of its distinct sign-changing roots
+in $(0,4)$.  If there were fewer than $N$ such roots, that product
+would have degree below $N$, while the integral of its product with
+the orthogonal polynomial would have constant nonzero sign.  This
+contradicts orthogonality.  Equation~\eqref{eq:characteristicD} now
+negates the roots.
+
+Alternatively, the coefficient inequality follows without any root
+theory.  Theorem~\ref{thm:coeff} gives
+\[
+ \frac{u_{k+1}}{u_k}
+ =\frac{N+m+1+k}{4(m+\tfrac12+k)}.
+\]
+This is strictly decreasing in $k$, because the numerator's constant
+term exceeds the denominator's unscaled constant term by $N+1/2$.
+The decrease is equivalent to \eqref{eq:ultra}.
+\end{proof}
+
+\section{A fixed-size confluent determinant}\label{sec:confluent}
+
+The explicit coefficient formula grows in length with $N$.  To understand
+the recurrence order, we need a representation whose determinant size
+depends only on $m$.
+Define
+\begin{equation}\label{eq:R}
+ R_n(y)=(-1)^np_n^{(0)}(-y)
+       =\sum_{i=0}^n\binom{n+i}{2i}y^i.
+\end{equation}
+Thus
+\begin{equation}\label{eq:Rrec}
+ R_0(y)=1,\quad R_1(y)=y+1,\quad
+ R_{n+2}(y)=(y+2)R_{n+1}(y)-R_n(y).
+\end{equation}
+Extend $R_n$ to all integer indices using this recurrence.  Since
+$R_{-1}=R_0=1$, it also satisfies the reflection identity
+\begin{equation}\label{eq:Rreflection}
+ R_{-n-1}(y)=R_n(y)\qquad(n\in\ZZ).
+\end{equation}
+The reversed form of the polynomials is convenient because it eliminates
+unnecessary signs from Christoffel's identity.
+
+\begin{lemma}[Christoffel determinant in the present normalization]
+\label{lem:Christoffel}
+For pairwise distinct $y_1,\ldots,y_r$,
+\begin{equation}\label{eq:Christoffel}
+ \det_{0\leq i,j<N}\int_0^4 x^{i+j}
+        \prod_{\ell=1}^r(x+y_\ell)\,\dd\mu_0(x)
+ =\frac{\det\bigl[R_{N+j}(y_i)\bigr]_{\substack{1\leq i\leq r\\0\leq j<r}}}
+        {\prod_{1\leq i<j\leq r}(y_j-y_i)}.
+\end{equation}
+The quotient extends polynomially when some $y_i$ coincide.
+\end{lemma}
+\begin{proof}
+Here is a proof that also verifies the normalization.  Write
+$\Delta(x_1,\ldots,x_N)=\det[x_i^{j-1}]_{1\leq i,j\leq N}$.
+Expanding two determinants and integrating termwise gives the identity
+\[
+ \frac1{N!}\int\cdots\int
+ \det[f_i(x_j)]\det[g_i(x_j)]\prod_j\dd\mu_0(x_j)
+ =\det\left[\int f_i(x)g_j(x)\,\dd\mu_0(x)\right].
+\]
+No analytic interchange difficulty occurs here: the sums are finite and
+all polynomials are integrable on a bounded interval.
+
+For external variables $z_1,\ldots,z_r$ we have
+\[
+ \Delta(x,z)=\Delta(x)\Delta(z)
+            \prod_{i=1}^N\prod_{\ell=1}^r(z_\ell-x_i).
+\]
+In the determinant defining $\Delta(x,z)$, replace monomials by the
+monic polynomials $p_j^{(0)}$; the determinant is unchanged.  Expand
+along its first $N$ rows and integrate against $\Delta(x)$.  By
+orthogonality, every choice of columns vanishes except columns of
+degrees $0,\ldots,N-1$.  That surviving integral equals
+$N!H_N^{(0)}=N!$.  The remaining minor is
+$\det[p_{N+j}^{(0)}(z_i)]$.  Dividing by $\Delta(z)$ yields the identity
+for the multiplier $\prod_\ell(z_\ell-x)$.
+
+Finally put $z_\ell=-y_\ell$ and use
+$p_{N+j}^{(0)}(-y)=(-1)^{N+j}R_{N+j}(y)$.  The signs from the multiplier,
+column factors, and Vandermonde cancel, giving \eqref{eq:Christoffel}.
+The numerator is alternating in the $y_i$, hence divisible by their
+Vandermonde as a polynomial.  This proves the extension statement.
+This is the classical fixed-size identity discussed in
+\cite{Krattenthaler2023}; its inclusion here is a normalization proof,
+not a novelty claim.
+\end{proof}
+
+Take $r=m+1$, let the first $m$ variables tend to zero, and put the last
+one equal to $y=a/b\ne0$.  Dividing by the Vandermonde and taking the
+limit replaces those first rows by Taylor coefficients.  Since
+$[y^i]R_{N+j}(y)=\binom{N+j+i}{2i}$, we obtain:
+
+\begin{proposition}[Confluent representation]\label{prop:confluent}
+If $ab\ne0$, then
+\begin{equation}\label{eq:smallD}
+ \D{N}{m}(a,b)=b^Ny^{-m}
+ \det\begin{pmatrix}
+ \binom{N+j+i}{2i}\ \ (0\leq i<m,\ 0\leq j\leq m)\\[2pt]
+ R_{N+j}(y)\ \ (0\leq j\leq m)
+ \end{pmatrix},\qquad y=a/b.
+\end{equation}
+The upper block has $m$ rows and the lower block has one row.  For $m=0$
+the formula simply reads $D_N^{(0)}=b^NR_N(a/b)$.
+\end{proposition}
+
+Define the $m\times m$ minors
+\begin{equation}\label{eq:M}
+ M_{m,\ell}(N)=
+ \det_{\substack{0\leq i<m\\j\in J_\ell}}
+       \binom{N+j+i}{2i},\qquad
+ J_\ell=\{0,1,\ldots,m\}\setminus\{\ell\},
+\end{equation}
+where columns are in increasing order and $0\leq\ell\leq m$.
+Expansion of \eqref{eq:smallD} along its last row gives
+\begin{equation}\label{eq:minor-expansion}
+ \D{N}{m}(a,b)=b^Ny^{-m}
+ \sum_{\ell=0}^{m}(-1)^{m+\ell}M_{m,\ell}(N)R_{N+\ell}(y).
+\end{equation}
+Although a naive degree bound for $M_{m,\ell}$ is $m(m-1)=2d$, its
+actual degree is only $d$.  This is the key point.
+
+\section{The degree cancellation and its first correction}\label{sec:degree}
+
+\begin{lemma}[Sharp minor degree]\label{lem:minor-degree}
+For $0\leq\ell\leq m$, $M_{m,\ell}(N)$ is a polynomial of degree
+$d=\binom m2$ with leading coefficient
+\begin{equation}\label{eq:minor-leading}
+ [N^d]M_{m,\ell}(N)=h_m\binom m\ell.
+\end{equation}
+For $d\geq1$, the next coefficient is
+\begin{equation}\label{eq:minor-subleading}
+ [N^{d-1}]M_{m,\ell}(N)
+ =h_m\binom m\ell
+   \left(\frac{d(m+2)}2-\frac{(m-1)\ell}{2}\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $f_i(x)=\binom{x+i}{2i}$, so $f_i$ has degree $2i$ and leading
+coefficient $1/(2i)!$.  The determinant $\det[f_i(x_j)]_{0\leq i,j<m}$
+is alternating in its $m$ independent variables.  It is divisible by
+$\Delta(x)=\prod_{p<q}(x_q-x_p)$, whose degree is $d$.  The determinant
+has total degree at most $\sum_i2i=2d$; its quotient by $\Delta$ therefore
+has total degree at most~$d$.  Substituting $x_j=N+j$ for
+$j\in J_\ell$ makes $\Delta$ a nonzero constant.  Hence the degree in
+$N$ is at most~$d$.
+
+To obtain the leading coefficient, expand $f_i(N+j)$ in Taylor
+powers of $j$.  The first possible nonzero determinant uses distinct
+Taylor orders $0,1,\ldots,m-1$; these have the least possible sum $d$.
+The coefficient of $N^d$ is
+\begin{equation}\label{eq:Taylorleading}
+ \frac{\det[\binom{2i}{r}]_{0\leq i,r<m}}{\prod_{i=0}^{m-1}(2i)!}
+       \Delta(J_\ell)
+ =\frac{2^d\Delta(J_\ell)}{\prod_{i=0}^{m-1}(2i)!}.
+\end{equation}
+To see the second equality, regard $\binom{2i}{r}$ as a polynomial
+of degree $r$ in $i$ with leading coefficient $2^r/r!$ and evaluate
+its determinant at $i=0,\ldots,m-1$.  The Vandermonde is
+$\prod_{r=1}^{m-1}r!$, so these factorials cancel.
+Removing $\ell$ from $0,\ldots,m$ also gives
+\begin{equation}\label{eq:deletedVand}
+ \Delta(J_\ell)=\binom m\ell\prod_{r=1}^{m-1}r!.
+\end{equation}
+Since
+\[
+ h_m=\frac{2^d\prod_{r=1}^{m-1}r!}{\prod_{i=0}^{m-1}(2i)!}
+ \qquad(m\geq1),
+\]
+we obtain \eqref{eq:minor-leading}.  It is nonzero, proving the degree
+assertion.  The case $m=0$ is the empty determinant and is immediate.
+
+For the next coefficient, observe the symmetric factorization
+\begin{equation}\label{eq:centered-binomial}
+ f_i(x)=\frac1{(2i)!}\prod_{r=1}^{i}
+          \left((x+\tfrac12)^2-(r-\tfrac12)^2\right).
+\end{equation}
+Thus $f_i(x)=(x+\tfrac12)^{2i}/(2i)!$ plus terms of degree at most
+$2i-2$.  Replacing one or more rows by those lower-degree terms
+reduces the total degree by at least two.  The same alternating
+argument then bounds their degree after translation by $d-2$.
+The leading two terms are consequently obtained from
+\begin{equation}\label{eq:evenVand}
+ \det\left[\frac{(N+j+\tfrac12)^{2i}}{(2i)!}\right]_
+           {0\leq i<m,\ j\in J_\ell}
+ =\frac{\displaystyle\prod_{\substack{p<q\\p,q\in J_\ell}}
+        (q-p)(2N+p+q+1)}{\prod_{i=0}^{m-1}(2i)!}.
+\end{equation}
+The relative coefficient of $N^{d-1}$ is
+\[
+ \frac12\sum_{\substack{p<q\\p,q\in J_\ell}}(p+q+1)
+ =\frac12\left((m-1)\left(\frac{m(m+1)}2-\ell\right)+d\right),
+\]
+which simplifies to \eqref{eq:minor-subleading}.  If $d=1$, the
+putative remainder of degree $d-2=-1$ is identically zero.
+\end{proof}
+
+It is useful to collect the minors in a polynomial in an auxiliary
+variable $r$:
+\begin{equation}\label{eq:Q}
+ Q_m(N;r)=\sum_{\ell=0}^{m}(-1)^{m+\ell}M_{m,\ell}(N)r^\ell.
+\end{equation}
+By the binomial theorem,
+\begin{equation}\label{eq:Q-leading}
+ [N^d]Q_m(N;r)=h_m(r-1)^m.
+\end{equation}
+When $r\ne1$ and $d\geq1$, the relative next coefficient is
+\begin{equation}\label{eq:Q-subleading}
+ \frac{[N^{d-1}]Q_m(N;r)}{[N^d]Q_m(N;r)}
+ =\frac{d(m+2)}2-d\frac{r}{r-1}
+ =d\left(\frac m2-\frac1{r-1}\right).
+\end{equation}
+Indeed, applying $r\,\dd/\dd r$ to $(r-1)^m$ sums the terms weighted
+by $\ell$ in \eqref{eq:minor-subleading}.  The exact value $d$, rather
+than an upper bound $2d$, is what makes the denominator exponent sharp.
+
+\section{Two exponentials and the minimal recurrence}\label{sec:recurrence}
+
+Suppose first that $b\ne0$ and $a(a+4b)\ne0$.  Set $y=a/b$ and choose
+one ordering of the two roots
+\begin{equation}\label{eq:rroots}
+ r_\pm=\frac{y+2\pm\sqrt{y(y+4)}}2,
+ \qquad r_+r_-=1.
+\end{equation}
+They are distinct and nonzero.  Solving the recurrence
+\eqref{eq:Rrec} with its two initial values gives
+\begin{equation}\label{eq:Rclosed}
+ R_n(y)=\frac{(r_+-1)r_+^n-(r_--1)r_-^n}{r_+-r_-}.
+\end{equation}
+Write
+\begin{equation}\label{eq:lambda}
+ \lambda_\pm=br_\pm
+    =\frac{a+2b\pm\sqrt{a(a+4b)}}2.
+\end{equation}
+Substitution in \eqref{eq:minor-expansion} gives the exact identity
+\begin{equation}\label{eq:exactbranches}
+ \D{N}{m}(a,b)=
+ \frac{(r_+-1)Q_m(N;r_+)\lambda_+^N
+       -(r_--1)Q_m(N;r_-)\lambda_-^N}
+      {y^m(r_+-r_-)}.
+\end{equation}
+In particular, both polynomial coefficients in this two-exponential
+representation have degree \emph{exactly} $d$: neither $r_+$ nor $r_-$
+can equal $1$, since $y\ne0$.
+
+\begin{lemma}[Minimal annihilator of an exponential polynomial]
+\label{lem:minimal}
+If $\lambda_1,\ldots,\lambda_s$ are distinct nonzero complex numbers
+and the nonzero polynomials $A_i(N)$ have degrees $d_i$, then
+$u_N=\sum_i A_i(N)\lambda_i^N$ has minimal constant-coefficient
+annihilator
+\begin{equation}\label{eq:generalminimal}
+ \prod_{i=1}^s(E-\lambda_i)^{d_i+1},\qquad Eu_N=u_{N+1}.
+\end{equation}
+Its generating function has poles of orders $d_i+1$ at
+$t=1/\lambda_i$.
+\end{lemma}
+\begin{proof}
+On $A(N)\lambda^N$, the operator $E-\lambda$ is
+$\lambda^{N+1}(A(N+1)-A(N))$; it lowers the polynomial degree by
+exactly one until the result vanishes.  For $\mu\ne\lambda$,
+$E-\mu$ preserves that degree, multiplying the leading coefficient
+by $\lambda-\mu$.  The generalized eigenspaces for distinct eigenvalues
+are independent: polynomial projectors from the Chinese remainder
+identity isolate each one.  Thus every annihilator needs the stated
+multiplicity at every eigenvalue.  This argument remains valid after
+any finite shift in $N$.
+
+Equivalently, applying $(z\,\dd/\dd z)^k$ to $1/(1-z)$ shows that
+$\sum_{N\geq0}N^k z^N$ has a pole of exact order $k+1$ at $z=1$,
+with nonzero leading pole coefficient $k!$.  Distinct pole locations
+cannot cancel.  This proves the generating-function assertion too.
+\end{proof}
+
+Applying the lemma to \eqref{eq:exactbranches} proves the minimal
+characteristic polynomial \eqref{eq:charpoly}.  It also proves that
+$q^{d+1}F_m$ is a polynomial of degree at most $2d+1=2e-1$ for these
+parameters.  Section~\ref{sec:numerator} sharpens its degree to $K$.
+
+\subsection{Why the identity extends to all parameters}
+Each $D_N^{(m)}$ is a polynomial in $a,b$ with integer coefficients.
+The coefficients of $q^{d+1}F_m$ are therefore such polynomials too.
+Every coefficient that vanishes for all $b\ne0$ and $a(a+4b)\ne0$
+vanishes identically: a polynomial cannot be nonzero and vanish on
+that nonempty open set.  Hence the uniform rational identity,
+and its coefficient integrality, extend to every $a,b$, even where
+its displayed denominator is not reduced.  This argument is
+coefficientwise in a formal series and does not require a convergence
+limit in $t$.
+
+\subsection{Proof of the exceptional classification}
+When $b=0$,
+\begin{equation}\label{eq:bzero}
+ \D{N}{m}(a,0)=a^N\HH{N}{m}.
+\end{equation}
+For $a\ne0$, the polynomial $H_N^{(m)}$ has degree $d$, so
+Lemma~\ref{lem:minimal} gives denominator $(1-at)^{d+1}$.
+When $a=0$ and $b\ne0$,
+\begin{equation}\label{eq:azero}
+ \D{N}{m}(0,b)=b^N\HH{N}{m+1},
+\end{equation}
+whose polynomial degree is $\binom{m+1}{2}$.
+
+At the remaining collision $a=-4b$, with $b\ne0$, the recurrence gives
+\begin{equation}\label{eq:Rminus4}
+ R_n(-4)=(-1)^n(2n+1).
+\end{equation}
+Inserting this into \eqref{eq:minor-expansion} and tracking the signs
+produces
+\begin{align}
+ \D{N}{m}(-4b,b)&=(-b)^N E_m(N),\label{eq:endpoint}\\
+ E_m(N)&=4^{-m}\sum_{\ell=0}^{m}(2N+2\ell+1)M_{m,\ell}(N).
+ \label{eq:E}
+\end{align}
+By \eqref{eq:minor-leading}, its degree is exactly $d+1$, with
+\begin{equation}\label{eq:E-leading}
+ [N^{d+1}]E_m(N)=4^{-m}\,2h_m\sum_{\ell=0}^m\binom m\ell
+              =2^{1-m}h_m\ne0.
+\end{equation}
+Thus the reduced denominator is $(1+bt)^{d+2}$.
+Finally, if $a=b=0$, every nonempty determinant vanishes and $F_m=1$.
+Together with the nonexceptional result, this proves
+Theorem~\ref{thm:exceptional}.
+
+The two root-collision lines have different pole orders.  This is
+not a contradiction: $x=0$ and $x=4$ are inequivalent endpoints of the
+weight $x^{m-1/2}(4-x)^{1/2}$.  In particular, blindly substituting
+$a=0$ into a generic minimal-order statement would be incorrect.
+
+\section{The numerator degree and reciprocal symmetry}\label{sec:numerator}
+
+A rational function can have a denominator of large degree and a
+surprisingly short numerator.  Here the explanation is a string of
+zero values in the natural bilateral extension of the determinant.
+
+For the moment retain the nonexceptional hypotheses.  Define $D_N$ for
+all $N\in\ZZ$ by the right side of \eqref{eq:smallD}.  The upper rows
+are interpreted through their polynomial binomial coefficients; this
+agrees with the Taylor coefficients of $R_n$ at zero, including
+negative $n$, because
+\[
+ \binom{-n-1+i}{2i}=\binom{n+i}{2i}.
+\]
+It also agrees with the unique bilateral extension supplied by
+\eqref{eq:exactbranches}.
+
+\begin{lemma}[Reflection and a zero interval]\label{lem:bilateral}
+Let $\sigma_m=(-1)^{\binom{m+1}{2}}$.  Then
+\begin{align}
+ D_{-N-m-1}&=\sigma_m b^{-2N-m-1}D_N\qquad(N\in\ZZ),
+       \label{eq:Dreflect}\\
+ D_{-1}=D_{-2}=\cdots=D_{-m}&=0.
+       \label{eq:Dzeros}
+\end{align}
+The second statement is empty for $m=0$.
+\end{lemma}
+\begin{proof}
+The index change $N\mapsto-N-m-1$, followed by
+$R_{-n-1}=R_n$, reverses all $m+1$ columns of the determinant.
+The sign of that reversal is $\sigma_m$.  Comparing its prefactor
+$b^N$ on the two sides gives \eqref{eq:Dreflect}.
+If $N=-s$ with $1\leq s\leq m$, columns $j=s-1$ and $j=s$ correspond
+to $R_{-1}$ and $R_0$, respectively, which are the same polynomial.
+Their values and all needed Taylor coefficients coincide, so the
+determinant vanishes.
+\end{proof}
+
+\begin{lemma}[The expansion at infinity]\label{lem:infinity}
+For a sequence of exponential-polynomial form with nonzero characteristic
+roots and its bilateral extension, its proper rational generating
+function satisfies
+\begin{equation}\label{eq:infinity}
+ F(t)=-\sum_{r\geq1}D_{-r}t^{-r}
+\end{equation}
+as a formal Laurent expansion at infinity.
+\end{lemma}
+\begin{proof}
+For $D_N=\lambda^N$ the assertion is simply
+$(1-\lambda t)^{-1}=-\sum_{r\geq1}\lambda^{-r}t^{-r}$.
+Apply powers of $t\,\dd/\dd t$ to obtain the assertion for
+$D_N=N^k\lambda^N$, and then use linearity.
+\end{proof}
+
+Combining \eqref{eq:Dzeros}, \eqref{eq:Dreflect}, and $D_0=1$ yields
+\begin{equation}\label{eq:leadinginfinity}
+ F_m(t)=-\sigma_m b^{-m-1}t^{-m-1}+O(t^{-m-2})
+ \qquad(t\longrightarrow\infty).
+\end{equation}
+Since $q^e$ has degree $2e$ and leading coefficient $b^{2e}$, the
+numerator has degree
+\begin{equation}\label{eq:degreeK}
+ 2e-m-1=m(m-1)+2-m-1=(m-1)^2=K
+\end{equation}
+and leading coefficient $-\sigma_m b^{2e-m-1}=s_m b^K$.
+The identity $s_m=-\sigma_m$ follows because the difference of the two
+exponents $\binom{m+1}{2}$ and $(m-1)(m-2)/2$ is $2m-1$, an odd integer.
+This calculation proves the sharp degree assertion, including $m=0$.
+
+The full reflection identity yields more than the leading term.
+Putting $1/(b^2t)$ into \eqref{eq:infinity} and reindexing with
+\eqref{eq:Dreflect}, we find
+\begin{equation}\label{eq:Freflect}
+ F_m\!\left(\frac1{b^2t}\right)
+ =s_m b^{m+1}t^{m+1}F_m(t).
+\end{equation}
+But $q(1/(b^2t))=q(t)/(b^2t^2)$.  Substitution into
+\eqref{eq:Freflect} gives exactly \eqref{eq:reciprocity}.
+After denominators in $b$ are cleared, each of these numerator identities
+is polynomial in $a,b$.  Thus they extend to the exceptional parameters;
+for $b\ne0$ the leading coefficient remains nonzero.  This completes the
+proof of Theorem~\ref{thm:main}.
+
+\subsection{An explicit finite prescription for the numerator}
+No uncomputed infinite series is needed to determine $P_m$.  Expand
+\begin{equation}\label{eq:qcoeffs}
+ q(t)^e=\sum_{j=0}^{2e}q_jt^j.
+\end{equation}
+For example, its coefficients have the finite expression
+\begin{equation}\label{eq:qexplicit}
+ q_j=\sum_{v=\max(0,j-e)}^{\lfloor j/2\rfloor}
+ \frac{e!}{(j-2v)!v!(e-j+v)!}
+       (-(a+2b))^{j-2v}b^{2v}.
+\end{equation}
+Then
+\begin{equation}\label{eq:Pcompute}
+ P_m(t)=\sum_{\ell=0}^{K}
+ \left(\sum_{j=0}^{\min(\ell,2e)}q_j\D{\ell-j}{m}(a,b)\right)t^\ell,
+\end{equation}
+where every determinant in the right side is given by
+Theorem~\ref{thm:coeff}.  Equations~\eqref{eq:qexplicit} and
+\eqref{eq:Pcompute} therefore constitute a finite sum/product formula
+for every numerator coefficient.  All coefficients of $q^eF_m$ after
+degree $K$ vanish.
+
+The usual recurrence is
+\begin{equation}\label{eq:recurrence}
+ \sum_{j=0}^{2e}q_j\D{N-j}{m}(a,b)=0\qquad(N\geq2e).
+\end{equation}
+In fact the truncated convolution already vanishes for $N>K$ when
+negative-index terms are taken as zero for the purpose of multiplying
+ordinary power series.  Those artificial zeros should not be confused
+with the distinct bilateral extension used in the proof above.
+
+\section{Exact exponential expansions and asymptotics}\label{sec:asymptotics}
+
+Equation~\eqref{eq:exactbranches} supplies every coefficient of the two
+polynomials in Theorem~\ref{thm:asymp}.  Explicitly,
+\begin{equation}\label{eq:Bpolys}
+ B_+(N)=\frac{(r_+-1)Q_m(N;r_+)}{y^m(r_+-r_-)},\qquad
+ B_-(N)=-\frac{(r_--1)Q_m(N;r_-)}{y^m(r_+-r_-)}.
+\end{equation}
+These formulas are valid for arbitrary nonexceptional complex parameters;
+the assumption $a,b>0$ is only needed to select a strictly dominant real
+exponential for the asymptotic statement.
+
+For $a,b>0$, write $r=r_+$, so $r_-=r^{-1}$ and
+\begin{equation}\label{eq:yparam}
+ y=r+r^{-1}-2=\frac{(r-1)^2}{r}.
+\end{equation}
+Using \eqref{eq:Q-leading}, the coefficient of $N^d$ in $B_+$ is
+\[
+ \frac{h_m(r-1)^{m+1}}{y^m(r-r^{-1})}
+ =h_m\frac{r^{m+1}}{(r-1)^m(r+1)}=A_m.
+\]
+Its relative next coefficient is exactly \eqref{eq:Q-subleading}.
+Also $\lambda_-/\lambda_+=r^{-2}$.  Division of
+\eqref{eq:exactbranches} by $A_mN^d\lambda_+^N$ proves
+\eqref{eq:asymp}.
+
+One may write the complete answer in the finite form
+\begin{equation}\label{eq:fullfinite}
+ \D{N}{m}=\lambda_+^N\sum_{j=0}^{d}\beta_j^+N^{d-j}
+          +\lambda_-^N\sum_{j=0}^{d}\beta_j^-N^{d-j},
+\end{equation}
+where
+\begin{equation}\label{eq:allbetas}
+ \beta_j^+=\frac{r_+-1}{y^m(r_+-r_-)}[N^{d-j}]Q_m(N;r_+),\qquad
+ \beta_j^-=-\frac{r_--1}{y^m(r_+-r_-)}[N^{d-j}]Q_m(N;r_-).
+\end{equation}
+Thus the ``full asymptotic expansion'' is particularly strong here:
+it is an exact expression, with no uncomputed remainder once both
+finite sectors are retained.  No assertion of asymptotic convergence
+or summability is needed.  The leading coefficient ratio of the two
+sectors is
+\begin{equation}\label{eq:branchratio}
+ \frac{\beta_0^-}{\beta_0^+}=(-1)^m r^{-(m+1)}.
+\end{equation}
+
+These estimates are for fixed $m,a,b$.  They are not claimed to be
+uniform when $a\to0$, when the two roots coalesce, or when $m$ grows
+with $N$.  In such regimes the exact finite formula remains valid
+away from the collision itself, but a different uniform asymptotic
+analysis would be required.  At a collision, use the exact exceptional
+formulas from Section~\ref{sec:recurrence} instead.
+
+\section{Worked examples and integer sequences}\label{sec:examples}
+
+\subsection{Small shifts}
+The first uniform generating functions are
+\begin{align}
+ F_0(t)&=\frac{1-bt}{q(t)},&
+ F_1(t)&=\frac1{q(t)},\label{eq:low01}\\
+ F_2(t)&=\frac{1+bt}{q(t)^2},&
+ F_3(t)&=\frac{(1-b^2t^2)(1+(a+6b)t+b^2t^2)}{q(t)^4}.
+ \label{eq:low23}
+\end{align}
+They can be obtained directly from \eqref{eq:Pcompute}.  Notice that
+$m=0$ is a genuine boundary case: its numerator has degree $1$, not $0$.
+For $m=3$, the numerator is anti-reciprocal; for $m=2$, it is reciprocal.
+This is the pattern described uniformly by $s_m$.
+
+For $m=2$, put $A=a+2b$.  The recurrence becomes
+\begin{equation}\label{eq:m2rec}
+ D_N=2A D_{N-1}-(A^2+2b^2)D_{N-2}
+         +2Ab^2D_{N-3}-b^4D_{N-4}\qquad(N\geq4).
+\end{equation}
+The initial polynomials are
+\begin{align*}
+ D_0&=1,\\
+ D_1&=2a+5b,\\
+ D_2&=3a^2+14ab+14b^2,\\
+ D_3&=4a^3+27a^2b+54ab^2+30b^3.
+\end{align*}
+The recurrence is minimal outside the exceptional lines; displaying
+only a valid order-four relation would not by itself prove that fact.
+
+\subsection{The specialization \texorpdfstring{$a=b=1$}{a=b=1}}
+The first sequences, all beginning with the empty determinant, are
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}r rrrrrrr@{}}
+\toprule
+$m\backslash N$ & 0 & 1 & 2 & 3 & 4 & 5 & 6\\
+\midrule
+0 & 1 & 2 & 5 & 13 & 34 & 89 & 233\\
+1 & 1 & 3 & 8 & 21 & 55 & 144 & 377\\
+2 & 1 & 7 & 31 & 115 & 390 & 1254 & 3893\\
+3 & 1 & 19 & 170 & 1075 & 5580 & 25529 & 107036\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first two are $F_{2N+1}$ and $F_{2N+2}$, respectively, as follows
+from their common recurrence $u_{N+2}=3u_{N+1}-u_N$ and initial values.
+They connect the family to the odd and even Fibonacci subsequences in
+OEIS A001519 and A001906~\cite{OEISfib}; Catalan numbers themselves are
+A000108~\cite{OEIScat}.  The higher rows and their coefficient triangles
+are natural OEIS-style objects, but the archive does not assert that
+any particular row is absent from OEIS.
+
+For every fixed shift, the dominant exponential is
+\[
+ \lambda_+=\frac{3+\sqrt5}{2},
+\]
+while its polynomial prefactor has degree $\binom m2$.  Thus increasing
+the shift changes the power of $N$, not the exponential growth constant.
+For $m=2$, the first relative asymptotic correction equals
+$1-1/(r-1)=(3-\sqrt5)/2$ with $r=(3+\sqrt5)/2$.
+
+\subsection{Rational characteristic roots: \texorpdfstring{$a=1,b=2$}{a=1,b=2}}
+This specialization gives $r_+=2$, $r_-=1/2$ and
+$\lambda_+=4$, $\lambda_-=1$.  Therefore the exact formulas have
+rational polynomial coefficients and no radicals:
+\begin{align}
+ \D{N}{0}(1,2)&=\frac{2\cdot4^N+1}{3},\label{eq:example0}\\
+ \D{N}{1}(1,2)&=\frac{4\cdot4^N-1}{3},\label{eq:example1}\\
+ \D{N}{2}(1,2)&=\frac{8N\,4^N+N+3}{3},\label{eq:example2}\\
+ \D{N}{3}(1,2)&=
+ \frac{(32N^3+48N^2+16N+96)4^N
+       -(2N^3+21N^2+73N+78)}{18}.
+ \label{eq:example3}
+\end{align}
+For example, the $m=2$ sequence starts
+$1,12,87,514,2733,13656,\ldots$.  Its dominant polynomial is
+$(8/3)N$ with no constant term.  This vanishing agrees with the
+first-correction formula $d(m/2-1/(r-1))=1(1-1)=0$; the entire
+correction is the smaller exponential sector $(N+3)/3$.
+For $m=3$, the relative coefficient of $N^{-1}$ in the dominant sector
+is $3/2$, again exactly as predicted.
+
+\subsection{An endpoint example}
+For $m=2$, \eqref{eq:E} simplifies to
+\[
+ E_2(N)=\frac{(N+1)(N+2)}2.
+\]
+Hence
+\begin{equation}\label{eq:endpointexample}
+ \D{N}{2}(-4b,b)=(-b)^N\frac{(N+1)(N+2)}2,
+ \qquad F_2(t;-4b,b)=\frac1{(1+bt)^3}.
+\end{equation}
+This also follows by cancelling $1+bt$ from
+$(1+bt)/(1+bt)^4$, the uniform form of $F_2$.
+At the other collision, $a=0$, one instead obtains
+$F_2(t;0,b)=(1+bt)/(1-bt)^4$.  These explicit cases illustrate why the
+reduced denominator needs a separate classification.
+
+\section{Algorithms, exact experiments, and reproducibility}\label{sec:code}
+
+\subsection{Implementation choices}
+The file \texttt{code/catalan\_hankel.py} implements the coefficient
+formula, pure shifted product, homogeneous polynomial evaluation,
+fixed-size determinant, and uniform and reduced denominators.  All
+numerical parameters in its public computation interface are integers;
+internal fractions use Python's exact \texttt{Fraction}.  The
+mathematical theorems have the broader complex-parameter scope stated
+above.  No floating-point arithmetic enters the tests.
+
+For a coefficient row, first compute the triangular product
+$H_N^{(m+1)}$ and then apply \eqref{eq:coeff-update} successively.
+The number of arithmetic operations is $O(m^2+N)$; this is an
+\emph{arithmetic-operation count}, not a bit-complexity claim.
+Every division in the update is checked for exactness.  Homogeneous
+Horner evaluation avoids division by $a$ or $b$, so zero parameters
+are handled without special numerical limits.
+
+The independent determinant path uses a fraction-free Bareiss algorithm
+on the original matrix of Catalan moments, including pivoting when a
+diagonal pivot vanishes.  This matters for signed parameters: an
+implementation tested only on positive definite examples can conceal
+pivot failures.  The source-indexing formula is implemented separately,
+not obtained by calling the corrected coefficient routine.
+
+For many consecutive values at fixed $m$, it is also possible to use
+\eqref{eq:recurrence} after producing the first $2e$ values.  For very
+large isolated indices, powering the companion matrix or reducing
+$X^N$ modulo \eqref{eq:charpoly} provides standard recurrence-based
+methods.  These methods are consequences of the theorem; the supplied
+reference implementation prioritizes transparent exact verification
+rather than optimized large-integer throughput.
+
+\subsection{Verification that was actually run}
+The included \texttt{data/verification.json} records \texttt{PASS} for
+all checks in the following table.  The report is generated by the test
+program, not manually written.
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.17}
+\begin{tabular}{@{}p{0.68\textwidth}r@{}}
+\toprule
+Check & Count\\
+\midrule
+Direct determinant versus coefficient evaluation & 1,183\\
+Additional direct signed/degenerate parameter evaluations & 810\\
+Printed source formula versus corrected shift & 990\\
+Confluent fixed-size determinant evaluations & 364\\
+Minor polynomials exactly interpolated and checked & 36\\
+Generating-function/recurrence coefficient identities & 2,816\\
+Numerator reciprocal coefficient identities & 604\\
+Nonexceptional numerator--denominator gcd checks & 44\\
+Exceptional reduced-denominator checks & 44\\
+Exact two-exponential evaluations & 168\\
+Strict normalized log-concavity inequalities & 5,655\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The first 1,183 evaluations cover every pair $0\leq N,m\leq12$,
+using $a=0,1,\ldots,N$ and $b=1$.  At each fixed $(N,m)$, both sides
+are polynomials of degree at most $N$ in $a$.  Equality at $N+1$
+distinct points certifies that particular polynomial identity exactly.
+Thus this part certifies 169 full coefficient polynomials, not merely
+169 evaluations.  It still does not prove the result for untested
+values of $N$ or $m$; the proof in Section~\ref{sec:coeffproof} does that.
+
+For $0\leq m\leq7$, the minor tests interpolate using $2d+2$ points,
+more than enough for the elementary degree bound $2d$.  They verify
+the drop to degree $d$, both leading coefficients from
+Lemma~\ref{lem:minor-degree}, and additional negative-index values.
+The recurrence checks include $0\leq m\leq10$ and four nonexceptional
+parameter pairs, while separate tests examine every exceptional class.
+The exact two-exponential tests use $(a,b)=(1,2)$, $m\leq7$, and
+$0\leq N\leq20$.  These tests check different parts of the derivation,
+but are not represented as formal proof certificates for arbitrary
+parameters.
+
+\subsection{How to reproduce the package}
+From the archive's top directory, run:
+\begin{lstlisting}
+python3 code/verify.py --out data
+python3 code/catalan_hankel.py 8 3 --a 2 --b 3 --direct
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+Use Python 3.10 or later and do not pass \texttt{-O}, because the
+verification suite deliberately uses assertions.  The script writes
+coefficient rows, generating functions, minor polynomials, exact
+exponential-sector polynomials, and integer sequence tables in JSON or
+CSV.  Rational polynomial coefficients are stored as strings such as
+\texttt{"8/3"}, in ascending power order, to avoid any loss of exactness
+when imported into other systems.  The included README documents every
+file and its indexing convention.
+
+\section{What has been resolved, and what has not}\label{sec:status}
+
+The all-shift denominator formula is proved here, with a stronger
+minimality assertion and a complete description of the degenerate
+parameters.  The coefficient expression is likewise proved for all
+$N,m$; comparison with the exact formula printed in the target source
+requires the explicit indexing correction in the next appendix.
+The reciprocal numerator and finite exponential expansions are proved
+from the same structural determinant calculation.
+
+These are substantive mathematical conclusions about the selected
+conjectural family.  They are not evidence that the Christoffel identity,
+Jacobi representation, Catalan shifted product, or general rationality
+are new.  A literature search was performed against the source title,
+arXiv identifier, denominator phrase, and related recurrence work.
+The cited version still labels the sharp exponent conjectural, and the
+retrieved sources did not supply an explicit statement of this full
+sharp classification.  That is a bounded search result, not a proof
+that no earlier equivalent theorem exists.  Before a priority claim
+or submission, the exact formulas should be checked against the wider
+orthogonal-polynomial and determinant literature and by a human referee.
+
+Several natural extensions remain separate from the theorem.  One may
+seek a direct combinatorial interpretation of the individual positive
+integers $c_{N,m,k}$, or a product formula for the minors
+$M_{m,\ell}(N)$ beyond their first two coefficients.  Multiple distinct
+linear factors in the multiplier lead to more exponential sectors and
+new collision patterns.  A joint limit with growing $m$ or a parameter
+approaching $a=0$ would require uniform, rather than fixed-parameter,
+asymptotics.  None of these extensions is assumed in the present proofs.
+
+\appendix
+\section{The precise correction to the printed conjecture}\label{app:barry}
+
+This appendix distinguishes two kinds of index.  The source uses a
+size-$(n+1)$ determinant.  We write $N=n+1$.  To avoid silently
+identifying incompatible shift conventions, write $s$ for the source's
+symbol in its displayed coefficient formula, and reserve $m$ for
+our actual Catalan shift.
+
+For $s\geq2$ and $0\leq k\leq n+1$, the coefficient expression printed
+in Conjecture~2 of~\cite{Barry2020} can be written as
+\begin{align}
+ T_{n,k,s}
+ &=\frac{C_s}{2s-2}
+   \binom{s+k-2}{s-2}\binom{n+k+2s-2}{2k+2s-3}\nonumber\\[-1pt]
+ &\quad\times
+  \prod_{j=0}^{\lfloor(s-1)/2\rfloor-1}
+       \frac{\binom{2n+2s-2j-1}{2s-4j-5}}
+            {\binom{2s-2j-1}{2s-4j-5}}
+  \prod_{j=0}^{s-3}\frac{2s-j-2}{n+k+2s-j-2}.
+ \label{eq:BarryT}
+\end{align}
+Only the natural, nonambiguous range $s\geq2$ is needed here.  Empty
+products have value~$1$.
+
+\begin{proposition}[Correct shift]\label{prop:Barry}
+For $N\geq1$, $s\geq2$, and $0\leq k\leq N$,
+\begin{equation}\label{eq:Barrycorrect}
+ T_{N-1,k,s}=c_{N,s-1,k}.
+\end{equation}
+Consequently, the polynomial using $T_{N-1,k,s}$ is
+$D_N^{(s-1)}(a,b)$, not $D_N^{(s)}(a,b)$.  Equivalently, to use that
+printed expression for an actual shift $m\geq1$, replace its shift
+symbol by $s=m+1$.
+\end{proposition}
+\begin{proof}
+Taking a ratio of successive terms in \eqref{eq:BarryT} and cancelling
+factorials gives
+\begin{equation}\label{eq:Tkratio}
+ \frac{T_{n,k+1,s}}{T_{n,k,s}}
+ =\frac{(n+1-k)(n+k+s+1)}{2(k+1)(2k+2s-1)}.
+\end{equation}
+This agrees with \eqref{eq:coeff-update} after $N=n+1$ and $m=s-1$.
+It remains to match the initial coefficient.
+Putting $n=N-1$, $k=0$, and simplifying the factorials gives
+\begin{equation}\label{eq:TB0}
+ T_{N-1,0,s}=C_s\frac{(N+s-1)!}{N!s!}
+ \prod_{j=0}^{p-1}
+ \frac{\binom{2N+2s-2j-3}{2s-4j-5}}
+      {\binom{2s-2j-1}{2s-4j-5}},
+ \qquad p=\left\lfloor\frac{s-1}{2}\right\rfloor.
+\end{equation}
+At $N=1$ this is $C_s=H_1^{(s)}$.  Its ratio at successive $N$ is
+\begin{align}
+ \frac{T_{N,0,s}}{T_{N-1,0,s}}
+ &=\frac{N+s}{N+1}
+   \prod_{j=0}^{p-1}
+   \frac{(2N+2s-2j-1)(2N+2s-2j-2)}
+        {(2N+2j+4)(2N+2j+3)}\nonumber\\
+ &=\frac{(2N+2s)!(2N+1)!}
+         {(2N+s)!(2N+s+1)!}.
+ \label{eq:TNr}
+\end{align}
+In the product, the numerator factors form a consecutive interval of
+integers, as do the denominator factors; the last equality holds for
+either parity of $s$.  The shifted-product formula gives the identical
+ratio
+\[
+ \frac{H_{N+1}^{(s)}}{H_N^{(s)}}
+ =\prod_{i=1}^{s-1}
+     \frac{(2N+2i+1)(2N+2i+2)}{(2N+i+1)(2N+i+2)}
+ =\frac{(2N+2s)!(2N+1)!}{(2N+s)!(2N+s+1)!}.
+\]
+Induction in $N$ therefore proves $T_{N-1,0,s}=H_N^{(s)}$.
+The ratio \eqref{eq:Tkratio} then proves \eqref{eq:Barrycorrect}
+for every $k$.
+\end{proof}
+
+The discrepancy is visible in the smallest nontrivial instance.
+With $N=1$ and $s=2$, the printed expression is
+\[
+ T_{0,0,2}b+T_{0,1,2}a=2b+a,
+\]
+whereas the determinant with the stated shift $s=2$ is
+\[
+ D_1^{(2)}(a,b)=aC_2+bC_3=2a+5b.
+\]
+At $a=b=1$, these are $3$ and $7$.  The expression $a+2b$ is exactly
+$D_1^{(1)}(a,b)$, so the correction is systematic rather than an isolated
+numerical exception.  The original PDF page was inspected as well as
+its HTML rendering; this is not an artifact of an HTML conversion.
+The denominator-exponent statement is separate and uses the actual
+shift $m$ correctly.
+
+\section{Compact reference and archive conventions}\label{app:reference}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}p{0.22\textwidth}p{0.72\textwidth}@{}}
+\toprule
+Symbol & Meaning\\
+\midrule
+$N$ & Determinant size, with $D_0=1$\\
+$m$ & Actual Catalan shift in $aC_{i+j+m}+bC_{i+j+m+1}$\\
+$H_N^{(m)}$ & Pure shifted Catalan determinant\\
+$d,e,K$ & $\binom m2$, $\binom m2+1$, and $(m-1)^2$\\
+$P_m$ & Uniform numerator, not automatically reduced at exceptions\\
+$q$ & $1-(a+2b)t+b^2t^2$\\
+$M_{m,\ell}$ & Minor with column $\ell$ deleted from the binomial block\\
+$Q_m(N;r)$ & Signed generating polynomial of those minors\\
+$r_\pm$ & Roots of $r^2-(a/b+2)r+1$\\
+$\lambda_\pm$ & $br_\pm$, the characteristic roots in determinant size\\
+$s$ in Appendix A & Source shift symbol, equal to actual shift plus one\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The JSON files use ascending polynomial powers.  In
+\texttt{coefficient\_rows.json}, position $k$ is the coefficient of
+$a^kb^{N-k}$.  In \texttt{minor\_polynomials.json}, position $j$ is the
+coefficient of $N^j$.  In \texttt{two\_branch\_polynomials.json}, the
+arrays \texttt{P\_plus} and \texttt{P\_minus} describe the polynomial
+multipliers of $4^N$ and $1^N$ for $(a,b)=(1,2)$; they are not the
+ordinary-generating-function numerator $P_m$.
+
+The source audit records exact URLs, source versions, and search
+limitations.  The tests establish reproducibility of the computation,
+not priority or formal verification.  The archive intentionally contains
+no third-party article PDFs, no font files, no compiler auxiliaries,
+and no Python bytecode.
+
+\clearpage
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{Barry2020}
+P.~Barry,
+\emph{Notes on the Hankel transform of linear combinations of consecutive
+pairs of Catalan numbers}, arXiv:2011.10827v1 (21 November 2020), 29 pp.
+The denominator conjecture and Conjecture~2 are on p.~4.
+\url{https://arxiv.org/abs/2011.10827}.
+
+\bibitem{Dougherty2011}
+M.~Dougherty, C.~French, B.~Saderholm, and W.~Qian,
+Hankel transforms of linear combinations of Catalan numbers,
+\emph{Journal of Integer Sequences} \textbf{14} (2011), Article 11.5.1.
+\url{https://cs.uwaterloo.ca/journals/JIS/VOL14/French/french2.html}.
+
+\bibitem{Krattenthaler2023}
+C.~Krattenthaler,
+Hankel determinants of linear combinations of moments of orthogonal
+polynomials, II,
+\emph{The Ramanujan Journal} \textbf{61} (2023), 597--627;
+published online 22 November 2021.
+\url{https://doi.org/10.1007/s11139-021-00514-8}.
+See the determinant formula, the confluence discussion, and Section~8
+for existing general recurrence theory and its earlier sources.
+
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions,
+Section~18.5, Eq.~18.5.7, Jacobi polynomial hypergeometric representation.
+\url{https://dlmf.nist.gov/18.5.E7}.
+
+\bibitem{OEIScat}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences},
+A000108 (Catalan numbers).
+\url{https://oeis.org/A000108}.
+
+\bibitem{OEISfib}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences},
+A001519 and A001906 (Fibonacci subsequences).
+\url{https://oeis.org/A001519}; \url{https://oeis.org/A001906}.
+
+\end{thebibliography}
+\noindent\small\textit{Online sources checked on 19 September 2026.
+All theorem numbering in the body refers to the present manuscript,
+unless a source is explicitly named.}
+\end{document}

@@ -1,0 +1,1137 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxtext,newpxmath}
+\usepackage{microtype}
+\usepackage{mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem,aliascnt}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\definecolor{OliveInk}{HTML}{46523B}
+\definecolor{MutedInk}{HTML}{62675D}
+\definecolor{SoftOlive}{HTML}{F1F3EB}
+\definecolor{RuleOlive}{HTML}{B6BEA5}
+\usepackage[colorlinks=true,linkcolor=OliveInk,citecolor=OliveInk,urlcolor=OliveInk,
+ pdfauthor={Research report prepared for Vladimir Reshetnikov},
+ pdftitle={A sharp order-five threshold for log-concavity of higher-order Stirling subset numbers}]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\titleformat{\section}{\normalfont\Large\bfseries\color{OliveInk}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries\color{OliveInk}}{\thesubsection}{0.6em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{MutedInk}Higher-order Stirling log-concavity}
+\fancyhead[R]{\small\color{MutedInk}Research manuscript}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.32em}
+\setlength{\parindent}{1.25em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\crefname{lemma}{lemma}{lemmas}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\crefname{proposition}{proposition}{propositions}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\crefname{corollary}{corollary}{corollaries}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\crefname{definition}{definition}{definitions}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\crefname{example}{example}{examples}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{remark}{remark}{remarks}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\lc}{\operatorname{LC}}
+\newcommand{\Snum}[3]{S^{(#1)}_{#2,#3}}
+\newcommand{\Cnum}[3]{C^{(#1)}_{#2,#3}}
+\newcommand{\assocS}[3]{\genfrac\{\}{0pt}{}{#1}{#2}_{\!\ge #3}}
+\newcommand{\assocC}[3]{\genfrac[]{0pt}{}{#1}{#2}_{\!\ge #3}}
+\newcommand{\Turan}{Tur\'an}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
+ breaklines=true,frame=single,rulecolor=\color{RuleOlive},
+ backgroundcolor=\color{SoftOlive},showstringspaces=false,tabsize=4}
+\tcbset{colback=SoftOlive,colframe=RuleOlive,boxrule=0.5pt,arc=1mm,
+ left=3mm,right=3mm,top=2mm,bottom=2mm}
+
+\begin{document}
+\begin{center}
+{\small\scshape\color{MutedInk}Combinatorics \quad / \quad Integer sequences \quad / \quad Recurrences}\par
+\vspace{0.6cm}
+{\LARGE\bfseries\color{OliveInk}A sharp order-five threshold for\par
+log-concavity of higher-order\par Stirling subset numbers}\par
+\vspace{0.45cm}
+{\large An elementary recurrence proof, explicit inequalities,\par
+and applications to Stirling cycle triangles}\par
+\vspace{0.45cm}
+{\small Research report prepared for Vladimir Reshetnikov\par
+19 September 2026}
+\end{center}
+\vspace{0.3cm}
+\begin{abstract}
+For an integer $r\ge1$, let $S^{(r)}_{n,k}$ count partitions of an
+$(n+(r-1)k)$-element set into $k$ blocks, each of size at least $r$.
+We prove that all rows of this diagonal-shifted Stirling triangle are
+log-concave if and only if $1\le r\le5$. The positive-support interior
+inequalities are strict. This establishes the log-concavity assertion
+of Deb--Sokal's Conjecture~1.4(c), including its cases $r=3,4,5$.
+The proof reduces a two-term recurrence to a quadratic form. For
+$r=5$, a factored discriminant proves positivity and supplies an explicit
+lower bound for each \Turan{} difference. The converse follows from an
+exact counterexample at $(r,n,k)=(6,4,2)$ and a decreasing factorial
+ratio that gives counterexamples in row three for every $r\ge7$.
+The same method proves log-concavity for the cycle triangles of orders
+three and four and for a continuous family of interpolating recurrences.
+We also exhibit a precise obstruction to extending the method to the
+fifth-order cycle triangle; that separate conjectural case is not settled
+here. All arguments are given in ordinary mathematical form. An accompanying
+standard-library Python package checks the polynomial identities exactly
+and independently verifies the number arrays by coefficient extraction.
+\end{abstract}
+
+\begin{tcolorbox}
+\textbf{Scope and verification.} The selected subset-number assertion has a
+complete proof below; the claim is not based on a numerical search.
+The originating preprint still states it as a conjecture in the version
+accessed for this report. A targeted literature check did not locate a later
+resolution, but this does not certify priority. This manuscript has not
+undergone independent peer review or proof-assistant verification.
+\end{tcolorbox}
+\newpage
+\tableofcontents
+\vspace{0.9cm}
+\begin{tcolorbox}[title={\bfseries Reading guide},colbacktitle=SoftOlive,
+ coltitle=OliveInk]
+The proof of the selected conjecture is in Sections~2--6.
+Section~3 isolates the local inequality, and Section~4 contains the
+order-five factorization. Sections~7--9 give the cycle-number extensions,
+an exact obstruction, and an asymptotic explanation. Sections~10--11
+supply generating functions, sequence data, and the computational audit.
+The appendices collect the polynomial formulas and source-status details.
+\end{tcolorbox}
+\newpage
+
+\section{The problem and the results}\label{sec:results}
+
+Deb and Sokal introduce higher-order Stirling triangles and conjecture
+row log-concavity through order five in
+\cite[Conjectures~1.3(c) and 1.4(c)]{DebSokal}.
+The cycle-number cases $r=3,4,5$ also appear as Problem~30.9 in the
+BCC30 problem collection \cite{Cameron}. We select the subset-number
+assertion because its recurrence has a particularly useful linear
+coefficient. The second-order instance is the Ward triangle, recorded
+as OEIS~A134991 after removing the zero column \cite{OEIS}.
+
+Write $\assocS{N}{k}{r}$ for the number of set partitions of $[N]$ into
+$k$ blocks of size at least $r$, and $\assocC{N}{k}{r}$ for the number
+of permutations of $[N]$ with $k$ cycles of length at least $r$.
+Here $[N]=\{1,\ldots,N\}$ and the empty structure has size zero.
+The arrays of interest are
+\begin{equation}\label{eq:definitions}
+ \Snum r n k=\assocS{n+(r-1)k}{k}{r},\qquad
+ \Cnum r n k=\assocC{n+(r-1)k}{k}{r}.
+\end{equation}
+Their initial row is $(1,0,0,\ldots)$, and entries outside $0\le k\le n$
+are zero. In every nonzero row, the positive entries are precisely those
+with $1\le k\le n$.
+
+\begin{definition}
+A nonnegative sequence $(a_k)$ is \emph{log-concave} if
+$a_k^2\ge a_{k-1}a_{k+1}$ at every relevant index. For a finite sequence
+we extend it by zeros. We say it is \emph{strictly log-concave on the
+interior of its positive support} when the inequality is strict whenever
+all three entries are positive.
+\end{definition}
+
+\begin{theorem}[Sharp subset-number classification]\label{thm:main}
+For a positive integer $r$, the following are equivalent:
+\begin{enumerate}[label=(\roman*),nosep]
+\item Every row of $S^{(r)}$ is log-concave.
+\item $1\le r\le5$.
+\end{enumerate}
+For these five orders, and for every $n\ge3$ and $2\le k\le n-1$,
+\begin{equation}\label{eq:main-strict}
+ (\Snum r n k)^2>\Snum r n {k-1}\,\Snum r n {k+1}.
+\end{equation}
+For $r=6$ the first failing row is $n=4$. For every $r\ge7$ the first
+failing row is $n=3$.
+\end{theorem}
+
+\begin{theorem}[Cycle-number consequence]\label{thm:cycles}
+Every row of $C^{(r)}$ is log-concave for $1\le r\le4$, with strict
+inequalities on the interior of the positive support. In particular,
+the log-concavity cases $r=3,4$ of Deb--Sokal's Conjecture~1.3(c) hold.
+\end{theorem}
+
+These theorems concern the log-concavity clauses only. The same numbered
+conjectures in \cite{DebSokal} contain other assertions; no claim about
+all their clauses follows from this manuscript. In particular, we do not
+settle the order-five cycle case, the general total positivity of the
+triangles, or their Hankel-total-positivity questions.
+
+A crucial distinction is that $n$ in \eqref{eq:definitions} is \emph{not}
+the cardinality of the underlying set. Moving right in a fixed row changes
+that cardinality by $r-1$. Thus a theorem about a fixed-$N$ row of ordinary
+associated Stirling numbers would not, by itself, solve this problem.
+
+\subsection{What makes the proof work}
+
+The proof has three ingredients. First, a geometric rescaling removes the
+factorial denominator from the subset recurrence. Second, three elementary
+consequences of log-concavity reduce the next-row inequality to a quadratic
+form in two adjacent entries of the previous row. Finally, the triangular
+index restriction bounds its mixed coefficient. Orders three and four then
+follow from nonnegative coefficients. At order five the mixed coefficient
+can be negative, so it must be controlled rather than discarded.
+
+This is closely related to Sagan's recurrence criterion
+\cite[Theorem~1]{Sagan}, whose nonnegative mixed-term hypothesis is sufficient
+for some of the lower-order cases. Our local calculation retains the
+positive square terms and allows a negative mixed term. We do not claim
+that the general quadratic-form observation is historically new; the
+specific application and factorization are what establish the selected
+assertion here. A more recent paper of Shankar \cite{Shankar} studies
+other sufficient conditions for triangular recurrences. Its principal
+power-of-affine-coefficients family is different from the falling-factorial
+weight used below.
+
+\section{Recurrences, normalization, and boundary values}\label{sec:recurrence}
+
+Set $d=r-1$, and define the falling-factorial polynomial
+\begin{equation}\label{eq:P}
+ P_d(t)=\prod_{j=0}^{d-1}(t-j),\qquad P_0(t)=1.
+\end{equation}
+The two recurrences in \cite[Lemma~1.1]{DebSokal} can be derived directly
+from the distinguished largest label, as follows.
+
+\begin{proposition}\label{prop:recurrences}
+For $n\ge1$, $1\le k\le n$, and $t=n+dk-1$,
+\begin{align}
+ \Snum r n k
+   &=\binom{t}{d}\Snum r {n-1}{k-1}+k\Snum r {n-1}k,
+       \label{eq:Srec}\\
+ \Cnum r n k
+   &=P_d(t)\Cnum r {n-1}{k-1}+t\Cnum r {n-1}k.
+       \label{eq:Crec}
+\end{align}
+\end{proposition}
+\begin{proof}
+Let $N=n+dk$. In a partition counted by $\assocS Nk r$, the block
+containing $N$ either has exactly $r$ elements or has more than $r$.
+In the first case choose its $r-1$ other elements and partition the remaining
+$N-r$ elements into $k-1$ admissible blocks. In the second case remove $N$;
+there is an admissible partition of $N-1$ elements and a choice of one of its
+$k$ blocks in which to reinsert $N$. Hence
+\[
+ \assocS Nk r=\binom{N-1}{r-1}\assocS{N-r}{k-1}r
+                 +k\assocS{N-1}kr.
+\]
+For permutations, a cycle of size exactly $r$ has $(r-1)!$ cyclic
+orderings once its elements have been chosen. Otherwise, removing $N$
+leaves a permutation into whose cycles $N$ can be reinserted after any
+of the $N-1$ remaining labels. The corresponding weights are therefore
+$(r-1)!\binom{N-1}{r-1}$ and $N-1$.
+Finally,
+$N-r=(n-1)+d(k-1)$ and $N-1=(n-1)+dk$, giving the stated recurrences.
+\end{proof}
+
+For the subset array define
+\begin{equation}\label{eq:normalization}
+ T^{(r)}_{n,k}=(d!)^k\Snum r n k.
+\end{equation}
+Then \eqref{eq:Srec} becomes
+\begin{equation}\label{eq:Trec}
+ T^{(r)}_{n,k}=P_d(n+dk-1)T^{(r)}_{n-1,k-1}
+                      +kT^{(r)}_{n-1,k}.
+\end{equation}
+This normalization leaves log-concavity unchanged, since
+\begin{equation}\label{eq:scale-difference}
+ (T^{(r)}_{n,k})^2-T^{(r)}_{n,k-1}T^{(r)}_{n,k+1}
+  =(d!)^{2k}\bigl[(\Snum r n k)^2-\Snum r n{k-1}\Snum r n{k+1}\bigr].
+\end{equation}
+The cycle array already has the same first weight $P_d(t)$; only its
+second weight differs.
+
+For later checks, direct counting gives, for $n\ge1$,
+\begin{align}
+ \Snum r n1&=1,&
+ \Snum r nn&=\frac{(rn)!}{n!(r!)^n},\label{eq:Sboundary}\\
+ \Cnum r n1&=(n+r-2)!,&
+ \Cnum r nn&=\frac{(rn)!}{n!r^n}.\label{eq:Cboundary}
+\end{align}
+In particular $C^{(r)}_{1,1}=(r-1)!$; for $r>2$ this is not one.
+These values also make the support assertions immediate from the recurrences.
+The rows $n=0,1,2$ have at most two positive entries, so their
+log-concavity is automatic.
+
+\section{A sharp local quadratic-form criterion}\label{sec:criterion}
+
+Let $(x_j)$ be a nonnegative log-concave sequence with no internal zeros.
+At a fixed index $k$ suppose $x_{k-1}>0$ and $x_k>0$, and put
+\[
+ w=x_{k-2},\qquad u=x_{k-1},\qquad v=x_k,\qquad z=x_{k+1}.
+\]
+Log-concavity implies
+\begin{equation}\label{eq:three-slacks}
+ wv\le u^2,\qquad uz\le v^2,\qquad wz\le uv.
+\end{equation}
+The third inequality follows by multiplying the first two and dividing by
+$uv>0$. It remains true if $w$ or $z$ is zero.
+
+Consider nonnegative coefficients and the local transform
+\begin{equation}\label{eq:local-transform}
+ y_j=a_jx_{j-1}+b_jx_j\qquad (j=k-1,k,k+1).
+\end{equation}
+Use the abbreviations $a=a_k$, $a_-=a_{k-1}$, $a_+=a_{k+1}$ and similarly
+for $b$. Define
+\begin{equation}\label{eq:ABH}
+ A=a^2-a_-a_+,\qquad B=b^2-b_-b_+,\qquad
+ H=2ab-a_-b_+-b_-a_+.
+\end{equation}
+
+\begin{lemma}[Exact slack decomposition]\label{lem:slacks}
+With the preceding notation,
+\begin{align}
+ y_k^2-y_{k-1}y_{k+1}
+  ={}& Au^2+Huv+Bv^2 \notag\\
+    &+a_-a_+(u^2-wv)+b_-b_+(v^2-uz)
+       +a_-b_+(uv-wz).\label{eq:slack-identity}
+\end{align}
+Consequently,
+\begin{equation}\label{eq:quadratic-bound}
+ y_k^2-y_{k-1}y_{k+1}\ge Au^2+Huv+Bv^2.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Expand $(au+bv)^2-(a_-w+b_-u)(a_+v+b_+z)$ and collect terms.
+This gives \eqref{eq:slack-identity} exactly. Each of the three remaining
+brackets is nonnegative by \eqref{eq:three-slacks}, and each multiplier
+is nonnegative.
+\end{proof}
+
+\begin{proposition}[Local preservation criterion]\label{prop:copositive}
+The quadratic form $Au^2+Huv+Bv^2$ is nonnegative for every $u,v>0$
+if and only if
+\begin{equation}\label{eq:copositive}
+ A\ge0,\qquad B\ge0,\qquad H\ge-2\sqrt{AB}.
+\end{equation}
+Thus these conditions imply the next-row log-concavity inequality.
+They are also necessary if the transform is required to satisfy that
+inequality for every positive log-concave four-term input.
+\end{proposition}
+\begin{proof}
+If \eqref{eq:copositive} holds, write
+\[
+ Au^2+Huv+Bv^2=(\sqrt A\,u-\sqrt B\,v)^2
+                         +(H+2\sqrt{AB})uv\ge0.
+\]
+Conversely, sending $v/u$ to zero or infinity forces $A\ge0$ and $B\ge0$.
+For $A,B>0$, choosing $v/u=\sqrt{A/B}$ forces the third condition.
+If $A=0$ or $B=0$, the same condition, now $H\ge0$, follows by taking
+an appropriately small or large positive ratio.
+
+For necessity as a preservation criterion, take the four input values
+\[
+ (w,u,v,z)=(u^2/v,\ u,\ v,\ v^2/u).
+\]
+They form a positive geometric progression, so all three slacks in
+\eqref{eq:slack-identity} vanish. The next-row difference is exactly the
+quadratic form. Extending this four-term sequence by zeros produces
+no difficulty at the support boundaries.
+\end{proof}
+
+Only nonnegativity on the positive quadrant is needed, not positive
+semidefiniteness on all of $\R^2$. In matrix terminology this is
+copositivity of a $2\times2$ symmetric matrix. For the hard subset case we
+will use the stronger, more easily certified condition
+$4AB-H^2>0$ after replacing $H$ by a suitable lower bound.
+
+\begin{remark}[Why a negative mixed term is not fatal]
+Sagan's sufficient condition corresponds to $A,B,H\ge0$.
+If $H<0$, rejecting the recurrence at once loses the positive contributions
+$Au^2$ and $Bv^2$. The exact square-completion threshold in
+\eqref{eq:copositive} is what allows us to handle the fifth-order subset
+array and the fourth-order cycle array.
+\end{remark}
+
+\section{Proof of subset log-concavity through order five}\label{sec:subset-proof}
+
+Fix an interior index $2\le k\le n-1$ in row $n\ge3$, and set
+\begin{equation}\label{eq:domain}
+ d=r-1,\qquad t=n+dk-1.
+\end{equation}
+For \eqref{eq:Trec}, the local weights are
+\[
+ a=P_d(t),\quad a_-=P_d(t-d),\quad a_+=P_d(t+d),\qquad
+ b=k,\quad b_-=k-1,\quad b_+=k+1.
+\]
+Notice that the step in $t$ between \emph{adjacent columns of one row} is
+$d$, not $d+1$. The latter number enters a different way: since $n\ge k+1$,
+\begin{equation}\label{eq:triangular-bound}
+ t\ge(d+1)k,\qquad k\le\frac{t}{d+1},\qquad t\ge2(d+1).
+\end{equation}
+
+Let
+\begin{align}
+ A_d(t)&=P_d(t)^2-P_d(t-d)P_d(t+d),\label{eq:Ad}\\
+ H_d(t,k)&=2kP_d(t)-(k+1)P_d(t-d)-(k-1)P_d(t+d).
+                                                       \label{eq:Hd}
+\end{align}
+The remaining quadratic coefficient is simply $B=1$.
+
+\subsection{Two elementary properties of the falling factorial}
+
+\begin{lemma}\label{lem:falling}
+For $d\ge1$ and $t>2d-1$, $A_d(t)>0$. For $d\ge2$ in the same domain,
+\[
+ \Delta_d(t):=P_d(t-d)+P_d(t+d)-2P_d(t)>0.
+\]
+For $d=0,1$, the centered second difference is zero.
+\end{lemma}
+\begin{proof}
+For $d\ge1$,
+\[
+ P_d(t-d)P_d(t+d)=\prod_{j=0}^{d-1}\bigl((t-j)^2-d^2\bigr).
+\]
+Every factor is positive and strictly smaller than $(t-j)^2$, because
+$t>2d-1$. Comparing products proves $A_d(t)>0$.
+
+For $d\ge2$, $P_d''(s)>0$ whenever $s>d-1$: differentiate the product
+twice, obtaining a sum of positive products of the remaining $d-2$
+factors. Thus $P_d$ is strictly convex on the interval $[t-d,t+d]$,
+and its centered second difference is positive. The polynomials
+$P_0=1$ and $P_1=t$ have zero centered second difference.
+\end{proof}
+
+Rewrite the mixed coefficient as
+\begin{equation}\label{eq:Hdecreasing}
+ H_d(t,k)=P_d(t+d)-P_d(t-d)-k\Delta_d(t).
+\end{equation}
+For fixed $t$ it is nonincreasing in $k$. Hence \eqref{eq:triangular-bound}
+yields the crucial lower bound
+\begin{equation}\label{eq:Lbound}
+ H_d(t,k)\ge L_d(t):=H_d\!\left(t,\frac{t}{d+1}\right).
+\end{equation}
+The argument $t/(d+1)$ need not be an integer; $H_d(t,k)$ is affine in $k$,
+so this substitution is legitimate.
+
+\subsection{The orders $r=1,2,3,4$}
+
+Direct expansion gives
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\begin{tabular}{ccl}
+\toprule
+$r$ & $d$ & $L_d(t)$\\
+\midrule
+1 & 0 & $0$\\
+2 & 1 & $2$\\
+3 & 2 & $\dfrac43(4t-3)$\\
+4 & 3 & $\dfrac32(3t^2-15t+44)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $d=0$, $A_0=0$, $H_0=0$, and the quadratic lower bound is $v^2>0$.
+For $d=1$, $A_1=1$ and $H_1=2$, so it is $(u+v)^2>0$.
+For $d=2$, the mixed coefficient is positive because $t\ge6$.
+For $d=3$, positivity follows even without the domain restriction from
+\[
+ 3t^2-15t+44=3(t-5/2)^2+101/4>0.
+\]
+In the latter two cases $A_d>0$ by \cref{lem:falling}, so the quadratic
+form is strictly positive for $u,v>0$.
+
+\subsection{The order $r=5$}
+
+Here $d=4$, $t\ge10$, and
+\begin{align}
+ P_4(t)&=t(t-1)(t-2)(t-3),\label{eq:P4}\\
+ A_4(t)&=32\bigl(2t^6-18t^5+17t^4+168t^3
+                      -55t^2-834t-630\bigr),\label{eq:A4}\\
+ L_4(t)&=-\frac{16}{5}\bigl(2t^3+9t^2-161t+255\bigr).
+                                                       \label{eq:L4}
+\end{align}
+The decisive identity is
+\begin{equation}\label{eq:main-factor}
+\boxed{\begin{aligned}
+ 4A_4(t)-L_4(t)^2
+   =\frac{384}{25}(t-5)(2t^2-6t+9)\,
+                    (7t^3-31t^2-126t+1080).
+\end{aligned}}
+\end{equation}
+It is a polynomial identity, not an approximation. Its right-hand side is
+strictly positive for every $t\ge10$. Indeed, $t-5>0$,
+\[
+ 2t^2-6t+9=2(t-3/2)^2+9/2>0,
+\]
+and, on writing $t=10+s$ with $s\ge0$, the final factor is
+\begin{equation}\label{eq:positive-cubic}
+ 7s^3+179s^2+1354s+3720>0.
+\end{equation}
+For complete auditability, the factorization and all expansions are
+checked by coefficient equality in the accompanying \texttt{certificates.py}.
+They can also be verified by ordinary multiplication.
+
+By \eqref{eq:Lbound}, for $u,v>0$,
+\begin{align}
+ A_4(t)u^2+H_4(t,k)uv+v^2
+ &\ge A_4(t)u^2+L_4(t)uv+v^2\notag\\
+ &=\left(v+\frac{L_4(t)}2u\right)^2
+       +\frac{4A_4(t)-L_4(t)^2}{4}\,u^2
+ >0.\label{eq:hard-square}
+\end{align}
+Thus the negative mixed term is more than compensated for by the two
+square terms.
+
+\subsection{Completing the induction, including the edges}
+
+The rows $n=0,1,2$ are log-concave. Assume row $n-1$ is log-concave.
+For $2\le k\le n-1$, both $u=T^{(r)}_{n-1,k-1}$ and
+$v=T^{(r)}_{n-1,k}$ are positive. At $k=2$, $w=0$; at $k=n-1$, $z=0$.
+Neither zero causes a problem in \cref{lem:slacks}. The preceding calculations
+show that its quadratic lower bound is strictly positive for every order
+$r\le5$. Hence all the positive-support interior inequalities in row $n$
+are strict. At either endpoint of the positive support one neighboring
+entry is zero, and outside the support the inequalities are trivial.
+This completes the induction for $T^{(r)}$. Equation
+\eqref{eq:scale-difference} transfers the result to $S^{(r)}$.
+
+We have proved the sufficiency direction of \cref{thm:main}, including the strict
+inequalities, without using real-rootedness or a finite verification bound.
+
+\section{An explicit fifth-order \Turan{} inequality}\label{sec:quantitative}
+
+The square-completion proof gives more than the sign of a difference.
+Let
+\begin{equation}\label{eq:Theta}
+ \Theta(t)=(t-5)(2t^2-6t+9)(7t^3-31t^2-126t+1080).
+\end{equation}
+
+\begin{corollary}\label{cor:quantitative}
+For $n\ge3$, $2\le k\le n-1$, and $t=n+4k-1$,
+\begin{equation}\label{eq:quantitative}
+ (\Snum5nk)^2-\Snum5n{k-1}\Snum5n{k+1}
+ \ge\frac{\Theta(t)}{150}\,(\Snum5{n-1}{k-1})^2>0.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Drop the nonnegative square in \eqref{eq:hard-square} and the nonnegative
+slacks in \eqref{eq:slack-identity}. By \eqref{eq:main-factor}, the difference
+for the normalized row is at least
+$(96/25)\Theta(t)(T^{(5)}_{n-1,k-1})^2$.
+Now divide by $24^{2k}$ and use
+$T^{(5)}_{n-1,k-1}=24^{k-1}S^{(5)}_{n-1,k-1}$.
+The remaining constant is $96/(25\cdot24^2)=1/150$.
+\end{proof}
+
+For instance, the nonzero portion of row three is
+\[
+ (S^{(5)}_{3,1},S^{(5)}_{3,2},S^{(5)}_{3,3})=(1,462,126126).
+\]
+Its middle difference is $462^2-126126=87318$.
+The lower bound in \eqref{eq:quantitative}, with $t=10$, is $18476$.
+It is not asserted to be optimal; its point is to make strict positivity
+uniform and explicit.
+
+The result also has immediate shape consequences. In a positive row,
+\eqref{eq:main-strict} is equivalent to strict decrease of successive
+ratios:
+\begin{equation}\label{eq:ratio-monotonicity}
+ \frac{S^{(r)}_{n,k}}{S^{(r)}_{n,k-1}}
+ >\frac{S^{(r)}_{n,k+1}}{S^{(r)}_{n,k}}.
+\end{equation}
+Therefore every such row is unimodal. There is either a unique maximum or
+two adjacent equal maxima; strict log-concavity does not exclude the latter.
+Multiplying entries by $q^k$, for any $q>0$, preserves the theorem.
+Normalizing these weighted entries by their sum gives a log-concave
+probability mass function on the column index. This is a distribution over
+a row of the shifted array, not over partitions of a single fixed set size.
+
+\section{Why order five is the exact cutoff}\label{sec:sharpness}
+
+\subsection{The sixth-order counterexample}
+
+In row four of $S^{(6)}$,
+\begin{align*}
+ S^{(6)}_{4,1}&=1,\\
+ S^{(6)}_{4,2}&=\binom{14}{6}+\frac12\binom{14}{7}=4719,\\
+ S^{(6)}_{4,3}&=\frac{19!}{2!(6!)^2\,7!}=23279256.
+\end{align*}
+The second entry counts block-size patterns $(6,8)$ and $(7,7)$; the third
+counts $(6,6,7)$. Consequently,
+\begin{equation}\label{eq:r6-counterexample}
+ (S^{(6)}_{4,2})^2-S^{(6)}_{4,1}S^{(6)}_{4,3}
+ =4719^2-23279256=-1010295<0.
+\end{equation}
+Row three has positive part $(1,1716,2858856)$ and
+$1716^2-2858856=85800>0$. Thus row four is the first failure for $r=6$.
+
+\subsection{A row-three counterexample for every $r\ge7$}
+
+The nonzero part of row three has a uniform closed form:
+\begin{equation}\label{eq:row3}
+ S^{(r)}_{3,1}=1,\qquad
+ S^{(r)}_{3,2}=\binom{2r+1}{r},\qquad
+ S^{(r)}_{3,3}=\frac{(3r)!}{6(r!)^3}.
+\end{equation}
+The two-block case has block sizes $r,r+1$, and the three-block case
+has three blocks of size $r$.
+Define the ratio that decides log-concavity in this row:
+\begin{equation}\label{eq:Fr}
+ F(r)=\frac{\binom{2r+1}{r}^{\!2}}{(3r)!/[6(r!)^3]}.
+\end{equation}
+Cancellation of consecutive factorials gives
+\begin{equation}\label{eq:F-ratio}
+ \frac{F(r+1)}{F(r)}
+  =\frac{4(r+1)^2(2r+3)^2}{3(r+2)^2(3r+2)(3r+1)}.
+\end{equation}
+The denominator minus the numerator is
+\begin{equation}\label{eq:ratio-gap}
+ 11r^4+55r^3+74r^2+12r-12>0\qquad(r\ge1).
+\end{equation}
+For a coefficientwise positivity certificate, substitute $r=1+s$; the
+polynomial becomes
+\[
+ 11s^4+99s^3+305s^2+369s+140.
+\]
+Thus $F(r)$ is strictly decreasing on the positive integers. At $r=7$,
+\[
+ \binom{15}{7}^2=6435^2=41409225<66512160
+             =\frac{21!}{6(7!)^3}.
+\]
+Therefore $F(r)<1$ for every $r\ge7$, proving a failure in row three.
+No earlier row can fail because it has at most two positive entries.
+Together with \eqref{eq:r6-counterexample}, this proves necessity and
+completes \cref{thm:main}.
+
+\section{Cycle triangles and an interpolating family}\label{sec:cycle-proof}
+
+For the cycle recurrence, the first quadratic coefficient is the same
+$A_d(t)$, but
+\[
+ b=t,\quad b_-=t-d,\quad b_+=t+d,\quad B=d^2.
+\]
+The mixed coefficient is
+\begin{equation}\label{eq:Md}
+ M_d(t)=2tP_d(t)-(t+d)P_d(t-d)-(t-d)P_d(t+d).
+\end{equation}
+For $d=1,2,3$ it is
+\begin{align}
+ M_1(t)&=2,\label{eq:M1}\\
+ M_2(t)&=8(t-1),\label{eq:M2}\\
+ M_3(t)&=-18(3t-11).\label{eq:M3}
+\end{align}
+The first two cases have a positive mixed coefficient. For $d=3$, use
+\begin{equation}\label{eq:cycle4-discriminant}
+ 4\cdot9A_3(t)-M_3(t)^2
+      =972(t-3)^2(t-1)(t+3)>0\qquad(t\ge8).
+\end{equation}
+Since $A_3(t)>0$ and $B=9$, the quadratic form is positive definite.
+This proves strict log-concavity for orders $r=2,3,4$ by the same induction
+and boundary argument as in \cref{sec:subset-proof}.
+
+For completeness, ordinary cycle numbers ($r=1$, $d=0$) can also be
+handled without a real-rootedness theorem. The recurrence has $a=1$ and
+$b=n-1$, independent of $k$, so $A=B=M=0$. The first slack in
+\eqref{eq:slack-identity} nevertheless supplies strictness. For $k=2$,
+$w=0$ and $u>0$, hence $u^2-wv>0$. For $k>2$, strict log-concavity in
+row $n-1$ at index $k-1$ gives the same inequality. The base row with two
+positive entries is automatic. This completes \cref{thm:cycles}.
+
+\subsection{A continuous extension}
+
+The subset and cycle results of orders at most four fit into a single
+family. The coefficients below need not be integers.
+
+\begin{theorem}\label{thm:interpolation}
+Let $1\le d\le3$, let $\rho,\sigma\ge0$ with $\rho+\sigma>0$, and define
+an array $U$ with initial row $U_{0,k}=\delta_{0k}$, zero entries outside
+$0\le k\le n$, and recurrence
+\begin{equation}\label{eq:interpolating}
+ U_{n,k}=P_d(n+dk-1)U_{n-1,k-1}
+       +\bigl[\rho(n+dk-1)+\sigma k\bigr]U_{n-1,k}
+\end{equation}
+for $1\le k\le n$, with $U_{n,0}=0$ for $n\ge1$.
+Every row is strictly log-concave on the interior of its positive support.
+\end{theorem}
+\begin{proof}
+All entries on $1\le k\le n$ are positive. At a fixed interior index,
+write $t=n+dk-1$. The first quadratic coefficient remains $A_d(t)$.
+Since the second weight is affine in $k$ with slope $\rho d+\sigma$,
+\[
+ B=(\rho d+\sigma)^2,\qquad
+ H=\rho M_d(t)+\sigma H_d(t,k).
+\]
+Our preceding calculations give
+\[
+ M_d(t)>-2d\sqrt{A_d(t)},\qquad
+ H_d(t,k)>-2\sqrt{A_d(t)}
+\]
+for $d=1,2,3$ in the triangular interior. Multiplying by $\rho,\sigma$
+and adding yields
+\[
+ H>-2(\rho d+\sigma)\sqrt{A_d(t)}=-2\sqrt{A_d(t)B}.
+\]
+The local criterion proves strict positivity of the quadratic form, and
+induction completes the proof.
+\end{proof}
+
+The choice $(\rho,\sigma)=(0,1)$ is the normalized subset array, and
+$(1,0)$ is the cycle array. This theorem is a genuine parameter extension,
+not a convex-combination assertion about already computed rows: the
+parameters are inserted in the recurrence at every step.
+
+\section{A rigorous obstruction in the fifth-order cycle case}\label{sec:obstruction}
+
+The preceding method does not automatically settle the remaining cycle
+case. In fact, universal preservation of log-concavity is false for its
+row operator. At $d=4$,
+\begin{equation}\label{eq:M4}
+ M_4(t)=-32(t-2)(2t^2+4t-51),
+\end{equation}
+and
+\begin{equation}\label{eq:cycle5-discriminant}
+ \boxed{64A_4(t)-M_4(t)^2
+       =-9216(t-4)(t+4)(2t-9)(2t^2-6t+9).}
+\end{equation}
+For $t\ge10$ the right-hand side is negative and $M_4(t)<0$.
+Thus the necessary local preservation condition fails.
+
+Here is an exact witness that also respects the support of a preceding
+triangular row. Let $n=5$, $q=7350$, and take the artificial input
+\[
+ (x_0,x_1,x_2,x_3,x_4,x_5)=(0,1,q,q^2,q^3,0).
+\]
+It is log-concave. Apply the fifth-order cycle row operator
+\[
+ y_j=P_4(4+4j)x_{j-1}+(4+4j)x_j\qquad(1\le j\le5).
+\]
+The three relevant output entries are
+\begin{equation}\label{eq:witness-values}
+ y_2=100080,\qquad y_3=1185408000,\qquad y_4=14223043800000,
+\end{equation}
+and their \Turan{} difference is
+\begin{equation}\label{eq:witness-negative}
+ y_3^2-y_2y_4=-18250097040000000<0.
+\end{equation}
+The choice of $q$ is not arbitrary. At this index $t=16$, the quadratic
+form $A_4u^2+M_4uv+16v^2$ is minimized as a function of $v/u$ at
+\[
+ \frac vu=-\frac{M_4(16)}{32}
+       =(16-2)\bigl(2\cdot16^2+4\cdot16-51\bigr)=7350.
+\]
+The geometric input makes every slack zero and realizes the negative
+quadratic value exactly.
+
+\begin{tcolorbox}
+\textbf{What this does and does not show.}
+The artificial input is not a row of $C^{(5)}$.
+Equation~\eqref{eq:witness-negative} disproves only the claim that this
+operator preserves \emph{all} log-concave inputs. It does not disprove
+log-concavity of the actual fifth-order Stirling cycle rows.
+That case remains unresolved by this report.
+\end{tcolorbox}
+
+There is a concrete next invariant to investigate. For the actual previous
+row, retain the three nonnegative slacks in \eqref{eq:slack-identity}
+and seek a lower bound on their weighted sum that dominates the possible
+negative part of $A_4u^2+M_4uv+16v^2$. Alternatively, prove a restriction
+on the actual adjacent ratio $v/u$ that excludes the dangerous interval
+between the two positive roots of
+\[
+ 16q^2+M_4(t)q+A_4(t)=0.
+\]
+Either approach would use information specific to the array, which
+ordinary row log-concavity alone cannot supply. These are proposed
+extensions, not additional proved statements.
+
+\section{A leading-order explanation of the cutoff}\label{sec:asymptotics}
+
+The exact proof is polynomial, but its structure has a useful asymptotic
+interpretation. Fix $d\ge1$ and let $t\to\infty$. Since
+$P_d(t)=t^d+O(t^{d-1})$, centered Taylor expansions give
+\begin{align}
+ P_d(t+d)-P_d(t-d)&=2d^2t^{d-1}+O(t^{d-2}),\label{eq:asym-diff}\\
+ \Delta_d(t)&=d^3(d-1)t^{d-2}+O(t^{d-3}).\label{eq:asym-second}
+\end{align}
+For $d=1$ the centered second difference is exactly zero, as this formula
+permits. Comparing the leading terms in $P_d^2-P_d(t-d)P_d(t+d)$ gives
+\begin{equation}\label{eq:asym-A}
+ A_d(t)=d^3t^{2d-2}+O(t^{2d-3}).
+\end{equation}
+For example, this also follows from
+$\log P_d(t-d)+\log P_d(t+d)-2\log P_d(t)
+=-d^3/t^2+O(t^{-3})$.
+Combining \eqref{eq:asym-diff}--\eqref{eq:asym-second} with
+$L_d=P_d(t+d)-P_d(t-d)-t\Delta_d/(d+1)$ yields
+\begin{equation}\label{eq:asym-L}
+ L_d(t)=\frac{d^2(-d^2+3d+2)}{d+1}\,t^{d-1}+O(t^{d-2}).
+\end{equation}
+Hence the normalized mixed coefficient has limit
+\begin{equation}\label{eq:asym-subset-ratio}
+ \frac{L_d(t)}{2\sqrt{A_d(t)}}
+ \longrightarrow \frac{\sqrt d\,(-d^2+3d+2)}{2(d+1)}.
+\end{equation}
+At $d=4$ this is $-2/5$, safely above the local threshold $-1$.
+At $d=5$ it is $-2\sqrt5/3<-1$. Thus the elementary preservation
+mechanism naturally changes between orders five and six. The exact
+counterexamples in \cref{sec:sharpness}, rather than this asymptotic
+observation alone, prove the cutoff for the actual arrays.
+
+For cycles, \eqref{eq:Md} can be written as
+$M_d=d(P_d(t+d)-P_d(t-d))-t\Delta_d$. Therefore
+\begin{equation}\label{eq:asym-M}
+ M_d(t)=d^3(3-d)t^{d-1}+O(t^{d-2}),\qquad
+ \frac{M_d(t)}{2d\sqrt{A_d(t)}}\longrightarrow
+                         \frac{\sqrt d(3-d)}2.
+\end{equation}
+At $d=4$ the latter limit is exactly $-1$, on the boundary.
+The leading terms of $64A_4$ and $M_4^2$ cancel; their difference begins
+with $-36864t^5$. This explains why the fifth-order cycle operator is
+more delicate than its subset counterpart, and why keeping lower-order
+terms is essential.
+
+\section{Generating functions and reproducible sequence data}\label{sec:gf}
+
+\subsection{An independent coefficient formula}
+
+Define formal power series
+\begin{equation}\label{eq:fg}
+ f_r(z)=\sum_{j\ge0}\frac{z^j}{(r+j)!},\qquad
+ g_r(z)=\sum_{j\ge0}\frac{z^j}{r+j}.
+\end{equation}
+For each fixed $k$, counting ordered collections of $k$ blocks and then
+dividing by $k!$ gives
+\begin{align}
+ \sum_{N\ge0}\assocS Nkr\frac{z^N}{N!}
+  &=\frac1{k!}\left(\sum_{m\ge r}\frac{z^m}{m!}\right)^k,
+                                                       \label{eq:associated-S-egf}\\
+ \sum_{N\ge0}\assocC Nkr\frac{z^N}{N!}
+  &=\frac1{k!}\left(\sum_{m\ge r}\frac{z^m}{m}\right)^k.
+                                                       \label{eq:associated-C-egf}
+\end{align}
+For cycles, the coefficient $1/m$ is $(m-1)!/m!$.
+Substituting $N=n+(r-1)k$ and factoring out $z^{rk}$ gives
+\begin{align}
+ \Snum rnk&=\frac{(n+(r-1)k)!}{k!}[z^{n-k}]f_r(z)^k,
+                                                       \label{eq:S-coefficient}\\
+ \Cnum rnk&=\frac{(n+(r-1)k)!}{k!}[z^{n-k}]g_r(z)^k.
+                                                       \label{eq:C-coefficient}
+\end{align}
+These formulas are useful independent checks because they do not use the
+two-term recurrence. Only degrees through $n-k$ need be retained.
+They reproduce the first-column and diagonal formulas immediately.
+
+\subsection{Row-polynomial operators}
+
+Let $\vartheta=x\,d/dx$, and write
+$T^{(r)}_n(x)=\sum_kT^{(r)}_{n,k}x^k$ and
+$C^{(r)}_n(x)=\sum_kC^{(r)}_{n,k}x^k$.
+Summing the recurrences, with multiplication by $x$ performed \emph{after}
+the differential operator, gives
+\begin{align}
+ T^{(r)}_n(x)
+ &=xP_d(n+d-1+d\vartheta)T^{(r)}_{n-1}(x)
+                         +\vartheta T^{(r)}_{n-1}(x),\label{eq:Toperator}\\
+ C^{(r)}_n(x)
+ &=xP_d(n+d-1+d\vartheta)C^{(r)}_{n-1}(x)
+                    +(n-1+d\vartheta)C^{(r)}_{n-1}(x).
+                                                       \label{eq:Coperator}
+\end{align}
+Here a polynomial in $\vartheta$ acts diagonally on monomials:
+$P_d(n+d-1+d\vartheta)x^j=P_d(n+d-1+dj)x^j$.
+Thus the order and indexing of the operator are unambiguous.
+These formulas offer a compact generating-polynomial description, but the
+proof above does not require an analysis of polynomial zeros.
+
+\subsection{Small rows}
+
+Table~\ref{tab:rows} displays a few of the rows covered by the conjectural
+cases. Empty places denote entries outside the triangle, not omitted data.
+The zero column has been suppressed.
+
+\begin{table}[htbp]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{ccrrrr}
+\toprule
+$r$ & $n$ & $S_{n,1}^{(r)}$ & $S_{n,2}^{(r)}$ & $S_{n,3}^{(r)}$ & $S_{n,4}^{(r)}$\\
+\midrule
+3 & 2 & 1 & 10 & &\\
+3 & 3 & 1 & 35 & 280 &\\
+3 & 4 & 1 & 91 & 2100 & 15400\\
+\addlinespace
+4 & 2 & 1 & 35 & &\\
+4 & 3 & 1 & 126 & 5775 &\\
+4 & 4 & 1 & 336 & 45045 & 2627625\\
+\addlinespace
+5 & 2 & 1 & 126 & &\\
+5 & 3 & 1 & 462 & 126126 &\\
+5 & 4 & 1 & 1254 & 1009008 & 488864376\\
+\bottomrule
+\end{tabular}
+\caption{Higher-order subset rows, computed exactly from \eqref{eq:Srec}
+and checked independently using \eqref{eq:S-coefficient}.}\label{tab:rows}
+\end{table}
+
+For $r=3$, the first six subset row sums, starting at $n=0$, are
+\[
+ 1,\ 1,\ 11,\ 316,\ 17592,\ 1612206.
+\]
+For $r=4$ they are
+\[
+ 1,\ 1,\ 36,\ 5902,\ 2673007,\ 2582136349,
+\]
+and for $r=5$,
+\[
+ 1,\ 1,\ 127,\ 126589,\ 489874639,\ 5201522272948.
+\]
+The archive includes row sums through $n=30$ and complete small triangles
+through $n=12$ for both kinds and $1\le r\le8$. These are reproducible
+integer-sequence data; no assertion is made about whether each sequence
+already has a separate OEIS entry.
+
+\section{Exact computational audit}\label{sec:verification}
+
+The mathematical proof is finite algebra plus induction over all rows.
+The computations serve two distinct purposes: checking those finite
+algebraic certificates, and testing for implementation or indexing mistakes
+in the number arrays. Neither numerical root finding nor floating-point
+inequalities are used.
+
+\subsection{Polynomial certificates}
+
+The script \texttt{certificates.py} implements elementary polynomial
+addition, multiplication, scalar division, and substitution over $\Q$.
+Polynomials are tuples of rational coefficients in ascending degree.
+All identities are checked by exact equality of the coefficient tuples,
+not by evaluation at finitely many points. The recorded run verified
+45 identities or shifted-coefficient positivity certificates, as well as
+24 leading-coefficient checks for $d=1,\ldots,8$.
+
+In particular it verifies \eqref{eq:main-factor},
+\eqref{eq:positive-cubic}, \eqref{eq:cycle4-discriminant},
+\eqref{eq:cycle5-discriminant}, and \eqref{eq:ratio-gap}; it also checks
+every polynomial listed in \cref{sec:polynomial-table}. The shifted
+polynomials used for positivity have nonnegative coefficients and positive
+constant term. Their positivity on a nonnegative half-line is therefore
+immediate. The full coefficient arrays are written to
+\texttt{data/certificates.json}.
+
+\subsection{Independent integer-array checks}
+
+The script \texttt{verify.py} streams rows using \eqref{eq:Srec} and
+\eqref{eq:Crec}. With its default settings, it checks all $n\le200$ for
+$1\le r\le5$, both subset and cycle triangles. For each of the ten
+triangles there are
+\[
+ \sum_{n=3}^{200}(n-2)=19701
+\]
+positive-support interior inequalities, giving $197010$ exact strict
+inequalities in total. All passed. The order-five subset lower bound
+\eqref{eq:quantitative} was also checked at all $19701$ such indices.
+The order-five cycle run is explicitly marked \emph{experimental} in the
+output; it is not part of the proved theorem.
+
+As a structurally independent check, the script computes
+\eqref{eq:S-coefficient} and \eqref{eq:C-coefficient} by truncated
+convolution of rational coefficient lists. It compares every entry with
+the recurrence computation for $n\le12$, $1\le r\le8$, and both kinds:
+$1456$ entries in total, all agreeing. First-column formulas, diagonal
+formulas, the exact counterexamples, and the operator obstruction are
+also checked.
+
+Deb and Sokal already report finite log-concavity testing through
+$n=1000$ for the cases $r=3,4,5$ \cite[Appendix~C, Tables~1--2]{DebSokal}.
+Our smaller independent run is therefore not a claim to improve that
+computational range. Its purpose is to audit this implementation and the
+newly derived quantitative bound; the all-$n$ result is supplied by the
+proof.
+
+\subsection{Reproduction and trust boundary}
+
+Both scripts require only Python 3.9 or later and its standard library:
+\begin{lstlisting}
+python certificates.py
+python verify.py
+\end{lstlisting}
+A longer finite run is available explicitly:
+\begin{lstlisting}
+python verify.py --max-n 500
+\end{lstlisting}
+No external package installation, network request, hidden data file, or
+computer algebra service is required. The assertions are implemented as
+explicit checks and are not disabled by Python's \texttt{-O} flag.
+
+The recurrence computation uses $O(N^2)$ integer-arithmetic operations and
+stores $O(N)$ entries when rows are streamed, for fixed order $r$ and
+maximum row $N$. These are arithmetic-operation counts, not bit-complexity
+claims: the integers grow with $N$. The independent convolution check is
+intentionally restricted to small rows, where exact rational arithmetic is
+cheap and implementation independence is more valuable than speed.
+
+The scripts are not a proof-assistant formalization. Their trust boundary
+is ordinary Python integer/rational arithmetic and the small supplied
+polynomial implementation. The paper's proofs do not logically depend on
+executing the scripts: all identities, factor signs, support conditions,
+and induction steps are written out.
+
+\section{Conclusion}\label{sec:conclusion}
+
+The chosen problem has a clean resolution: the higher-order Stirling
+subset triangle has log-concave rows exactly for orders one through five.
+The proof is short at its core. Normalize the recurrence, keep all terms
+in the local quadratic bound, use $k\le t/(d+1)$, and factor one
+discriminant. A single sixth-order counterexample plus a decreasing
+factorial ratio supplies the sharp converse.
+
+The method also settles the third- and fourth-order cycle cases and yields
+a continuous interpolating family. Its failure at the fifth-order cycle
+operator is genuine and explicitly certified, not merely a failure to
+find a convenient factorization. Any extension to that remaining case
+must exploit a stronger property of the actual preceding rows. The
+present report separates that open continuation from the completed
+subset-number proof.
+
+\appendix
+\section{Polynomial identities in one place}\label{sec:polynomial-table}
+
+This appendix collects the low-degree expressions used in the proof.
+The independent variable is $t$, and $H_d(t,k)$ is affine in $k$.
+The notation matches the main text; the code uses \texttt{C0} and
+\texttt{C1} for the constant and linear-in-$k$ parts of $H_d$.
+
+\subsection{Pure-square coefficient}
+\begin{align*}
+ A_0(t)&=0,\\
+ A_1(t)&=1,\\
+ A_2(t)&=4(2t^2-2t-3),\\
+ A_3(t)&=9(3t^4-12t^3-9t^2+42t+40),\\
+ A_4(t)&=32(2t^6-18t^5+17t^4+168t^3-55t^2-834t-630).
+\end{align*}
+
+\subsection{Subset mixed coefficient and its lower bound}
+\begin{align*}
+ H_0(t,k)&=0,\\
+ H_1(t,k)&=2,\\
+ H_2(t,k)&=4(-2k+2t-1),\\
+ H_3(t,k)&=6(-9kt+9k+3t^2-6t+11),\\
+ H_4(t,k)&=16(-12kt^2+36kt-54k+2t^3-9t^2+43t-51).
+\end{align*}
+The substitution $k=t/(d+1)$ gives
+\begin{align*}
+ L_0(t)&=0,\qquad L_1(t)=2,\\
+ L_2(t)&=\frac43(4t-3),\\
+ L_3(t)&=\frac32(3t^2-15t+44),\\
+ L_4(t)&=-\frac{16}{5}(2t^3+9t^2-161t+255).
+\end{align*}
+
+\subsection{Cycle mixed coefficient}
+\begin{align*}
+ M_0(t)&=0,\qquad M_1(t)=2,\\
+ M_2(t)&=8(t-1),\\
+ M_3(t)&=-18(3t-11),\\
+ M_4(t)&=-32(t-2)(2t^2+4t-51).
+\end{align*}
+
+\subsection{A direct expansion check for the main discriminant}
+
+For readers checking \eqref{eq:main-factor} without software, both sides
+expand to
+\begin{align*}
+ 4A_4-L_4^2={}&\frac1{25}\bigl(
+ 5376t^6-66816t^5+198528t^4+1018368t^3\\
+ &\hspace{20mm}{}-7986816t^2+18351360t-18662400\bigr).
+\end{align*}
+This displayed coefficient form is itself included in the certificate
+checks in the distributed version. The factored form is preferable for
+proving its sign, because it separates the domain condition $t\ge10$
+from the algebraic identity.
+
+\section{Source and status notes}\label{sec:status}
+
+The problem identification uses the specific version
+\texttt{arXiv:2507.18959v1}. The conjecture and recurrence were checked in
+both its HTML and PDF renderings. On the report date the arXiv abstract
+page showed only the July 2025 version in its submission history.
+Searches for the exact paper identifier, the phrase ``higher-order Stirling''
+with log-concavity, and relevant arXiv author/topic combinations did not
+locate a subsequent resolution. The BCC30 statement and the recent
+triangular-recurrence paper \cite{Shankar} were checked separately.
+This is a documented search, not proof of absence from all literature.
+
+The mathematical claims established here can therefore be assessed
+independently of any priority judgment. The result-to-source map is:
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.56\textwidth}}
+\toprule
+Source assertion & Result in this manuscript\\
+\midrule
+Deb--Sokal 1.4(c), row log-concavity & All stated orders $1\le r\le5$;
+strictness and sharp converse also proved.\\
+Deb--Sokal 1.3(c), row log-concavity & Orders $1\le r\le4$ proved;
+order five not settled.\\
+BCC30 Problem 30.9 & Cycle orders three and four proved;
+order five not settled.\\
+Other clauses of those conjectures & Not claimed as consequences of the results here.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{thebibliography}{9}
+\bibitem{DebSokal}
+Bishal Deb and Alan D. Sokal,
+\emph{Higher-order Stirling cycle and subset triangles: Total positivity,
+continued fractions and real-rootedness},
+\href{https://arxiv.org/abs/2507.18959}{arXiv:2507.18959v1}, 2025.
+See Lemma~1.1, Conjectures~1.3(c) and 1.4(c), and Appendix~C.
+
+\bibitem{Cameron}
+Peter Cameron (editor), \emph{Problems from BCC30},
+\href{https://arxiv.org/abs/2409.07216}{arXiv:2409.07216v1}, 2024.
+Problem~30.9, presented by Bishal Deb.
+
+\bibitem{Sagan}
+Bruce E. Sagan, \emph{Inductive and injective proofs of log concavity results},
+Discrete Mathematics \textbf{68} (1988), 281--292.
+\href{https://doi.org/10.1016/0012-365X(88)90120-3}{doi:10.1016/0012-365X(88)90120-3}.
+See Theorem~1 and its inductive proof.
+
+\bibitem{Shankar}
+Umesh Shankar, \emph{Log-concavity of rows of triangular arrays satisfying
+a certain super-recurrence},
+\href{https://arxiv.org/abs/2508.12467}{arXiv:2508.12467v1}, 2025.
+See Theorems~1.2--1.4 for recurrence criteria and their relationship.
+
+\bibitem{OEIS}
+The OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences},
+\href{https://oeis.org/A134991}{entry A134991: Triangle of Ward numbers},
+accessed 19 September 2026.
+\end{thebibliography}
+\end{document}

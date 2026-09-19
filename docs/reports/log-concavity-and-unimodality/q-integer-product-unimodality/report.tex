@@ -1,0 +1,989 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage[scaled=0.93]{sourcesanspro}
+\usepackage[a4paper,margin=25mm,headheight=15pt,footskip=13mm]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array,enumitem}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr,lastpage,titlesec}
+\usepackage{hyperref}
+\usepackage{listings}
+\definecolor{Ink}{HTML}{16354A}
+\definecolor{Teal}{HTML}{176B77}
+\definecolor{Pale}{HTML}{EFF6F7}
+\definecolor{Muted}{HTML}{566773}
+\hypersetup{colorlinks=true,linkcolor=Teal,citecolor=Teal,urlcolor=Teal,
+  pdftitle={A counterexample and a sharp spacing-three criterion for products of q-integers},
+  pdfauthor={Research note prepared with ChatGPT},pdfsubject={Unimodality; q-integers; exact counterexample}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\small\color{Muted}Q-INTEGER UNIMODALITY}
+\fancyhead[R]{\sffamily\small\color{Muted}Counterexample and exact criteria}
+\fancyfoot[C]{\sffamily\small\color{Muted}\thepage\ / \pageref*{LastPage}}
+\renewcommand{\headrulewidth}{0.3pt}
+\titleformat{\section}{\Large\sffamily\bfseries\color{Ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\sffamily\bfseries\color{Ink}}{\thesubsection}{0.7em}{}
+\titlespacing*{\section}{0pt}{2.2ex plus .7ex minus .2ex}{1.1ex}
+\titlespacing*{\subsection}{0pt}{1.7ex plus .5ex minus .2ex}{.8ex}
+\newtheoremstyle{research}{8pt}{8pt}{\itshape}{}{
+  \sffamily\bfseries\color{Ink}}{.}{.5em}{}
+\theoremstyle{research}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\qi}[1]{[#1]_q}
+\newcommand{\qir}[2]{[#1]_{q^{#2}}}
+\newcommand{\coef}[2]{[q^{#1}]\,#2}
+\newcommand{\SU}{\textup{SU}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\DeclareMathOperator{\supp}{supp}
+\numberwithin{equation}{section}
+\setlength{\parskip}{3.5pt}
+\setlength{\parindent}{1em}
+\setlist{itemsep=3pt,topsep=5pt}
+\tcbset{resultbox/.style={enhanced,breakable,colback=Pale,colframe=Teal,
+  boxrule=.6pt,arc=1.5mm,left=3mm,right=3mm,top=2mm,bottom=2mm,
+  fonttitle=\sffamily\bfseries,coltitle=white}}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,keepspaces=true,
+  breaklines=true,frame=single,rulecolor=\color{Muted},showstringspaces=false,
+  xleftmargin=3pt,xrightmargin=3pt}
+\emergencystretch=1.5em
+
+\begin{document}
+\thispagestyle{plain}
+\begin{center}
+  {\sffamily\small\bfseries\color{Teal}RESEARCH NOTE \quad / \quad 18 SEPTEMBER 2026}\par
+  \vspace{7pt}
+  {\sffamily\bfseries\color{Ink}\LARGE A counterexample and a sharp\par
+  spacing-three criterion\par
+  for products of \boldmath$q$\unboldmath-integers}\par
+  \vspace{8pt}
+  {\small Prepared with ChatGPT; self-contained proofs and exact computational checks}
+\end{center}
+
+\begin{abstract}
+We attack Conjecture 5.4 of Connelly, Ito, Martinez, Shevchenko, and Yang,
+\emph{Unimodality of $q$-Fibonomial coefficients for small cases},
+arXiv:2605.12822v1. Its necessity assertion is false:
+$(1+q)^6(1+q^3)$ is unimodal but violates the proposed condition.
+We then prove the conjectured sufficient condition for every spacing $r\ge2$.
+For spacing three we obtain a complete replacement: if no $a_i$ is divisible
+by three, then
+\[
+ \left(\prod_i\qi{a_i}\right)\qir{b}{3}\text{ is unimodal}
+ \quad\Longleftrightarrow\quad
+ b\le 1+\sum_i\left\lfloor\frac{a_i}{3}\right\rfloor
+       +2\left\lfloor\frac{\#\{i:a_i\equiv2\pmod3\}}{6}\right\rfloor.
+\]
+A failed inequality produces a specified first-half coefficient drop of
+exactly one. We also establish a general necessary degree bound, settle the
+spacing-two criterion, and prove the sharp two-shift threshold
+$(1+q)^n(1+q^r)$ unimodal if and only if $n\ge r^2-3$.
+The arguments are finite and algebraic; computations are supplementary.
+The main $q$-Fibonomial unimodality conjecture is not resolved here.
+\end{abstract}
+
+\begin{tcolorbox}[resultbox,title=The counterexample at a glance]
+\[
+ (1+q)^6(1+q^3)
+ =1+6q+15q^2+21q^3+21q^4+21q^5+21q^6+15q^7+6q^8+q^9.
+\]
+Here $r=3$, $b=2$, and $a_1=\cdots=a_6=2$.
+No $a_i$ is divisible by $3$, and
+$1+\sum_i\lfloor a_i/3\rfloor=1<2$.
+Nevertheless, the displayed coefficient sequence is weakly unimodal.
+\end{tcolorbox}
+
+\noindent\textbf{Status.} The statements below are accompanied by proofs and
+reproducible integer-arithmetic tests. They have not been independently
+refereed or checked by a proof assistant. The counterexample refutes the
+specified source statement; historical priority of the counterexample and
+the stronger theorems has not been established by an exhaustive literature review.
+
+\section{The selected conjecture and the result}
+\label{sec:target}
+For a positive integer $a$, put
+\[
+ \qi{a}=1+q+\cdots+q^{a-1}.
+\]
+Throughout, $q$ is a formal indeterminate, $r\ge2$, $k\ge1$, and
+$a_1,\ldots,a_k,b$ are positive integers. We study
+\begin{equation}\label{eq:product}
+ P_{\boldsymbol a,b,r}(q)
+   =\left(\prod_{i=1}^{k}\qi{a_i}\right)\qir{b}{r}.
+\end{equation}
+Its coefficients are nonnegative integers, its constant and leading
+coefficients are one, and its degree is
+\begin{equation}\label{eq:degree}
+ D=S+r(b-1),\qquad S=\sum_{i=1}^k(a_i-1).
+\end{equation}
+Every factor is symmetric, so $P$ is symmetric.
+
+The source of the attack is \cite[Conjecture 5.4, p.~14]{CIMSY}.
+For brevity write its proposed condition as
+\begin{equation}\label{eq:condition}
+ \mathcal C_r(\boldsymbol a,b):\quad
+ (\exists i\colon r\mid a_i)
+ \quad\text{or}\quad
+ b\le 1+\sum_i\left\lfloor\frac{a_i}{r}\right\rfloor.
+\end{equation}
+The conjecture asserts that \eqref{eq:condition} is sufficient, and also
+necessary when $k\le3$ \emph{or} $r\le3$.
+The distinction between ``or'' and ``and'' matters: the case
+$k=6,r=3$ lies inside the asserted necessity range.
+The source reports tests with $k\le5$, $r\le6$, and
+$\max\{a_i,b\}\le15$ \cite[p.~14]{CIMSY}.
+
+\begin{proposition}[Exact disproof]\label{prop:counterexample}
+The necessity assertion in \cite[Conjecture 5.4]{CIMSY} is false.
+\end{proposition}
+\begin{proof}
+Take $r=3$, $b=2$, and $a_i=2$ for $1\le i\le6$.
+The binomial theorem gives the coefficient list
+\[
+ (1,6,15,21,21,21,21,15,6,1).
+\]
+It increases weakly to its central plateau and then decreases weakly.
+On the other hand, $3\nmid2$ and
+$b=2>1+6\lfloor2/3\rfloor=1$, so \eqref{eq:condition} fails.
+Since $r=3$, the claimed necessity applies to this example.
+\end{proof}
+
+This is a counterexample to an auxiliary product criterion, not to the
+main $q$-Fibonomial conjecture in \cite{CIMSY}.
+Our stronger conclusions, proved below, are summarized in
+Table~\ref{tab:results}. All appearances of ``unimodal'' allow equal
+consecutive coefficients.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}p{.25\linewidth}p{.64\linewidth}@{}}
+\toprule
+Setting & Conclusion proved in this note \\
+\midrule
+Every $r\ge2$ & The condition $\mathcal C_r$ is sufficient. With no divisible
+factor, unimodality also requires $b\le1+\lfloor S/r\rfloor$. \\
+$r=2$ & The original condition $\mathcal C_2$ is necessary and sufficient. \\
+$r=3$ & With no divisible factor, the exact upper bound on $b$ is
+$1+\sum_i\lfloor a_i/3\rfloor+2\lfloor t/6\rfloor$,
+where $t=\#\{i:a_i\equiv2\pmod3\}$. \\
+Two shifted binomial rows & $(1+q)^n(1+q^r)$ is unimodal exactly when
+$n\ge r^2-3$, for $r\ge2$, $n\ge0$. \\
+\bottomrule
+\end{tabular}
+\caption{Mathematical results, rather than extrapolations from the finite tests.}
+\label{tab:results}
+\end{table}
+
+\section{Elementary tools for symmetric unimodality}
+\label{sec:tools}
+A finite nonnegative sequence $(c_0,\ldots,c_D)$ is \emph{unimodal} if,
+for some index $m$, it is weakly increasing up to $m$ and weakly decreasing
+after $m$. It is \emph{symmetric} if $c_j=c_{D-j}$.
+For a symmetric sequence, unimodality is equivalent to
+\begin{equation}\label{eq:firsthalf}
+ c_j-c_{j-1}\ge0\qquad
+ 0\le j\le\lfloor D/2\rfloor,
+ \qquad c_{-1}=0.
+\end{equation}
+We abbreviate ``symmetric and unimodal'' by $\SU$.
+All coefficient sequences are extended by zero outside their support.
+
+A shifted sequence $q^sH(q)$ has its center shifted by $s$.
+In a sum of shifted polynomials, symmetry is understood about the
+\emph{specified common center}, not automatically half the largest
+exponent of each summand. This convention is essential in the decomposition
+used below.
+
+\begin{lemma}[Centered intervals and closure]\label{lem:closure}
+Products of $\SU$ polynomials with nonnegative coefficients are $\SU$.
+Nonnegative sums of $\SU$ coefficient sequences with the same center are
+also $\SU$.
+\end{lemma}
+\begin{proof}
+If $F(q)=\sum_{j=0}^D f_jq^j$ is $\SU$, let
+$\alpha_j=f_j-f_{j-1}$ for $0\le j\le\lfloor D/2\rfloor$, with
+$f_{-1}=0$. Then $\alpha_j\ge0$ and
+\begin{equation}\label{eq:intervals}
+ F(q)=\sum_{j=0}^{\lfloor D/2\rfloor}
+          \alpha_j q^j\qi{D-2j+1}.
+\end{equation}
+To verify the identity, the coefficient at $q^m$ on the right is
+$\sum_{j=0}^{\min(m,D-m)}\alpha_j=f_{\min(m,D-m)}=f_m$.
+Each summand is the indicator sequence of an interval centered at $D/2$.
+
+For positive $u,v$, the coefficients of $\qi{u}\qi{v}$ at exponents
+$0\le\ell\le u+v-2$ are
+\[
+ \min\{\ell+1,u,v,u+v-1-\ell\}.
+\]
+They form a symmetric triangular or trapezoidal sequence.
+Apply \eqref{eq:intervals} to two factors of degrees $D$ and $E$.
+Every product of two interval summands is $\SU$ with center $(D+E)/2$.
+On the left of this center, each first difference is nonnegative, so the
+same is true of their sum. Symmetry supplies the right half. This also
+proves the assertion about sums with a common center.
+\end{proof}
+
+\begin{lemma}[A divisible factor]\label{lem:divisible}
+If $r\mid a_i$ for some $i$, then $P_{\boldsymbol a,b,r}$ is unimodal for
+every positive integer $b$.
+\end{lemma}
+\begin{proof}
+Write $a_i=rA$. The identity
+\[
+ \qi{rA}=\qi r\qir A r
+\]
+shows that the relevant two factors are
+\[
+ \qi r\qir A r\qir b r.
+\]
+The polynomial $[A]_z[b]_z$ has an $\SU$ coefficient sequence in $z$.
+Replacing $z$ by $q^r$ and multiplying by $\qi r$ repeats each coefficient
+exactly $r$ times. Repetition preserves symmetry and unimodality.
+The remaining factors are ordinary $q$-integers, so
+Lemma~\ref{lem:closure} finishes the proof.
+\end{proof}
+
+\section{A centered identity proves the sufficient condition}
+\label{sec:sufficiency}
+The following identity removes one block of length $r$ from an ordinary
+factor and one term from the spaced factor, without changing the center
+of the residual sequence.
+
+\begin{lemma}[Centered peeling]\label{lem:peeling}
+For integers $a>r$ and $b\ge2$,
+\begin{equation}\label{eq:peeling}
+ \qi a\qir b r
+ =\qi{a+r(b-1)}+q^r\qi{a-r}\qir{b-1}{r}.
+\end{equation}
+Both terms on the right, with zero padding, are symmetric about the
+center of the polynomial on the left.
+\end{lemma}
+\begin{proof}
+Multiply \eqref{eq:peeling} by $(1-q)(1-q^r)$. The identity becomes
+\begin{align*}
+ (1-q^a)(1-q^{rb})
+ &= (1-q^{a+r(b-1)})(1-q^r)\\
+ &\quad +q^r(1-q^{a-r})(1-q^{r(b-1)}),
+\end{align*}
+which follows on expansion. The left side of \eqref{eq:peeling} has
+polynomial degree
+\[
+ d=a-1+r(b-1).
+\]
+The first term on the right has degree $d$. The unshifted residual
+polynomial has degree $d-2r$, so its shift by $q^r$ has center
+$r+(d-2r)/2=d/2$.
+\end{proof}
+
+\begin{theorem}[Sufficiency for every spacing]\label{thm:sufficient}
+For every $r\ge2$ and every number $k$ of ordinary factors,
+$\mathcal C_r(\boldsymbol a,b)$ implies unimodality of
+$P_{\boldsymbol a,b,r}$.
+\end{theorem}
+\begin{proof}
+A divisible factor is covered by Lemma~\ref{lem:divisible}. Assume there
+is none, and write
+\[
+ Q=\sum_i\left\lfloor\frac{a_i}{r}\right\rfloor.
+\]
+We prove sufficiency of $b\le Q+1$ by induction on $b$.
+For $b=1$, the spaced factor equals one and the product of ordinary
+$q$-integers is $\SU$ by Lemma~\ref{lem:closure}.
+
+Let $b\ge2$. Then $Q\ge1$, so at least one $a_i$ is greater than $r$:
+equality is impossible because there is no divisible factor.
+Apply \eqref{eq:peeling} to this factor and multiply by all the others.
+The first summand is a product of ordinary $q$-integers, hence $\SU$.
+In the residual product, $a_i$ is replaced by $a_i-r$ and $b$ by $b-1$.
+No new divisible factor appears, the floor sum becomes $Q-1$, and
+\[
+ b-1\le Q=(Q-1)+1.
+\]
+The induction hypothesis makes the residual product $\SU$.
+Lemma~\ref{lem:peeling} shows that the shifted residual and the first
+summand have the same center, even after multiplication by the other
+factors. Their sum is therefore $\SU$ by Lemma~\ref{lem:closure}.
+\end{proof}
+
+\begin{corollary}[Reduction to small residues]\label{cor:core}
+Suppose no $a_i$ is divisible by $r$, and write
+\[
+ a_i=rA_i+s_i,\quad 1\le s_i\le r-1,\qquad Q=\sum_i A_i.
+\]
+If $b>Q+1$ and
+\begin{equation}\label{eq:core}
+ \left(\prod_i\qi{s_i}\right)\qir{b-Q}{r}
+\end{equation}
+is $\SU$, then $P_{\boldsymbol a,b,r}$ is $\SU$.
+\end{corollary}
+\begin{proof}
+Apply \eqref{eq:peeling} a total of $Q$ times, subtracting $r$ from
+some $a_i$ at each step. The spaced parameter never drops below two,
+since its final value is $b-Q\ge2$. The final residual is
+\eqref{eq:core}. Reversing the steps, each step adds an $\SU$ product of
+ordinary $q$-integers at the same center as the shifted residual.
+\end{proof}
+
+Corollary~\ref{cor:core} is a sufficient reduction, not an assertion that
+residue reduction preserves unimodality in both directions for every $r$.
+That converse will be obtained for $r=3$ by a separate obstruction argument.
+
+\section{Periodic coefficient differences and a necessary bound}
+\label{sec:residues}
+Let
+\[
+ F(q)=\prod_i\qi{a_i}=\sum_{j=0}^S f_jq^j,
+ \qquad R_s=\sum_{\substack{0\le j\le S\\j\equiv s\ (r)}}f_j,
+ \quad 0\le s<r.
+\]
+The $R_s$ are the total coefficient masses in the residue classes modulo
+$r$. Put $\delta_s=R_s-R_{s-1}$, with subscripts interpreted modulo $r$.
+As a formal power series, define
+\begin{equation}\label{eq:u-general}
+ U(q)=\frac{F(q)}{1-q^r}=\sum_{n\ge0}u_nq^n,
+ \qquad u_n=\sum_{\ell\ge0}f_{n-r\ell}.
+\end{equation}
+As usual, coefficients outside their support are zero.
+
+\begin{lemma}[The periodic tail]\label{lem:tail}
+If $n\ge\max\{1,S-r+2\}$, then
+$u_n-u_{n-1}=\delta_{n\bmod r}$.
+If also $n<rb$, the same difference occurs in
+$P=F\qir b r$:
+\begin{equation}\label{eq:taildiff}
+ \coef nP-\coef{n-1}P=\delta_{n\bmod r}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For the stated $n$, the next possible omitted indices in the residue
+classes of $n$ and $n-1$ are $n+r>S$ and $n-1+r>S$.
+Consequently $u_n=R_{n\bmod r}$ and $u_{n-1}=R_{(n-1)\bmod r}$.
+Finally,
+\[
+ P(q)=(1-q^{rb})U(q),
+\]
+so its coefficients agree with those of $U$ below exponent $rb$.
+\end{proof}
+
+\begin{theorem}[A necessary degree bound for every spacing]\label{thm:degreebound}
+Suppose no $a_i$ is divisible by $r$. If $P_{\boldsymbol a,b,r}$ is
+unimodal, then
+\begin{equation}\label{eq:necessarydegree}
+ r(b-1)\le S,
+ \qquad\text{equivalently}\qquad
+ b\le1+\left\lfloor\frac Sr\right\rfloor.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $\zeta$ be a primitive $r$th root of unity.
+Every factor
+\[
+ \qi{a_i}\big|_{q=\zeta}=
+       \frac{1-\zeta^{a_i}}{1-\zeta}
+\]
+is nonzero, so $F(\zeta)\ne0$. The $R_s$ cannot all be equal, since
+otherwise $F(\zeta)=R_0(1+\zeta+\cdots+\zeta^{r-1})=0$.
+The differences $\delta_s$ sum to zero and are not all zero, so at least
+one is negative.
+
+Choose an integer $n$ in the $r$-term interval
+\[
+ S-r+2\le n\le S+1
+\]
+whose residue has a negative difference. Such an $n$ is automatically
+positive. Indeed, if the interval includes nonpositive integers then
+$S\le r-2$; at $n=0$ the difference is $R_0-R_{r-1}=f_0>0$,
+and for any negative $n$ in this interval both relevant residue masses
+vanish.
+Thus Lemma~\ref{lem:tail} applies.
+
+Suppose for a contradiction that $L=r(b-1)>S$.
+Then $n\le S+1<rb$. If $L\ge S+2$, we also have
+$n\le S+1\le\lfloor(S+L)/2\rfloor$. Equation~\eqref{eq:taildiff}
+gives a negative first-half difference, contradicting unimodality.
+
+The remaining possibility is $L=S+1$. In that case
+$S\equiv-1\pmod r$. Symmetry of $F$ implies $R_0=R_{r-1}$, hence
+$\delta_0=0$. The selected negative difference cannot be at $n=S+1$,
+whose residue is zero. Therefore $n\le S=\lfloor(S+L)/2\rfloor$,
+and again \eqref{eq:taildiff} contradicts unimodality.
+\end{proof}
+
+Together, Theorems~\ref{thm:sufficient} and \ref{thm:degreebound} give a
+useful sandwich. When there is no divisible factor,
+\begin{equation}\label{eq:sandwich}
+ b\le1+\sum_i\left\lfloor\frac{a_i}{r}\right\rfloor
+ \ \Longrightarrow\ P\text{ unimodal}\
+ \ \Longrightarrow\
+ b\le1+\left\lfloor\frac{\sum_i(a_i-1)}r\right\rfloor.
+\end{equation}
+The residue classes decide what happens in the possible gap.
+
+\section{Spacing two: the original criterion is exact}
+\label{sec:r2}
+\begin{theorem}[Complete spacing-two criterion]\label{thm:r2}
+The polynomial $(\prod_i\qi{a_i})\qir b2$ is unimodal if and only if some
+$a_i$ is even or
+\[
+ b\le1+\sum_i\left\lfloor\frac{a_i}{2}\right\rfloor.
+\]
+\end{theorem}
+\begin{proof}
+Sufficiency follows from Theorem~\ref{thm:sufficient}.
+If all $a_i$ are odd, write $a_i=2A_i+1$ and $Q=\sum_iA_i$.
+Then $S=2Q$, so Theorem~\ref{thm:degreebound} gives the same necessary
+bound $b\le Q+1$.
+\end{proof}
+
+There is also an exact failure certificate. With all $a_i$ odd,
+$F(-1)=1$, so the even residue mass exceeds the odd residue mass by one.
+For $b\ge Q+2$, the index $n=S+1=2Q+1$ lies below $2b$ and no later than
+the center $Q+b-1$. Lemma~\ref{lem:tail} gives
+\[
+ \coef{2Q+1}P-\coef{2Q}P=-1.
+\]
+This argument also covers factors $a_i=1$.
+
+\section{Spacing three: a complete replacement theorem}
+\label{sec:r3}
+Assume initially that no $a_i$ is divisible by three. Define
+\begin{equation}\label{eq:Qt}
+ a_i=3A_i+s_i,\quad s_i\in\{1,2\},\qquad
+ Q=\sum_iA_i,\qquad t=\#\{i:s_i=2\}.
+\end{equation}
+Then
+\begin{equation}\label{eq:SQt}
+ S=3Q+t.
+\end{equation}
+
+\begin{theorem}[Sharp spacing-three criterion]\label{thm:r3}
+The polynomial $P_{\boldsymbol a,b,3}$ is unimodal if and only if
+\begin{equation}\label{eq:r3criterion}
+ (\exists i\colon3\mid a_i)
+ \quad\text{or}\quad
+ b\le1+Q+2\left\lfloor\frac t6\right\rfloor,
+\end{equation}
+where $Q,t$ are as in \eqref{eq:Qt} in the absence of a divisible factor.
+If no $a_i$ is divisible by three and the inequality fails, write
+$t=6h+v$, $0\le v\le5$, and $M=Q+2h$. At the explicit index
+\begin{equation}\label{eq:dropindex}
+ n_0=3M+\left\lfloor\frac{v+3}{2}\right\rfloor
+\end{equation}
+we have
+\begin{equation}\label{eq:unitdrop}
+ n_0\le\lfloor D/2\rfloor,\qquad
+ \coef{n_0}P-\coef{n_0-1}P=-1.
+\end{equation}
+\end{theorem}
+
+The proof has two independent parts. A binomial-prefix lemma proves
+sufficiency. A six-case residue table proves necessity, including the
+unit-drop certificate.
+
+\subsection{The binomial-prefix lemma}
+\begin{lemma}[Enough ordinary binary factors]\label{lem:binomialcomb}
+For integers $B\ge1$ and $t\ge0$, the polynomial
+\[
+ (1+q)^t\qir B3
+\]
+is unimodal whenever $t\ge6\lfloor B/2\rfloor$.
+\end{lemma}
+\begin{proof}
+For $B=1$ this is an ordinary binomial polynomial. Suppose $B\ge2$,
+put $m=\lfloor B/2\rfloor$ and $K=6m$, and first take $t=K$.
+Thus $B=2m$ or $B=2m+1$.
+Let
+\[
+ f_j=\binom Kj,\qquad
+ u_n=\sum_{\ell\ge0}f_{n-3\ell},\qquad d_n=u_n-u_{n-1},
+\]
+with $f_j=0$ outside $0\le j\le K$ and $u_n=d_n=0$ for $n<0$.
+Let $R_0,R_1,R_2$ be the full residue masses of $(1+q)^K$.
+
+Modulo $\Phi_3(q)=1+q+q^2$, one has $(1+q)^3\equiv-1$ and hence
+$(1+q)^6\equiv1$. Since $6\mid K$,
+\[
+ R_0+R_1q+R_2q^2\equiv1\pmod{\Phi_3(q)}.
+\]
+Two polynomials of degree at most two congruent modulo $\Phi_3$ differ
+by a constant multiple of $\Phi_3$. It follows that $R_0-R_1=1$ and
+$R_1=R_2$. Since $R_0+R_1+R_2=2^K$,
+\begin{equation}\label{eq:binomialresidues}
+ R_0=\frac{2^K+2}{3},\qquad
+ R_1=R_2=\frac{2^K-1}{3}.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:deltasK}
+ (\delta_0,\delta_1,\delta_2)=(1,-1,0).
+\end{equation}
+
+Symmetry $f_j=f_{K-j}$ gives a useful reflection identity.
+The terms of residue $n$ omitted from $u_n$ have indices
+$n+3,n+6,\ldots$. Reflecting these indices about $K/2$ gives
+\[
+ u_n=R_{n\bmod3}-u_{K-n-3}\qquad(n\ge-1).
+\]
+Subtract the same identity at $n-1$. For $n\ge0$ this yields
+\begin{equation}\label{eq:reflection}
+ d_n=\delta_{n\bmod3}+d_{K-n-2}.
+\end{equation}
+
+For $0\le n\le K/2$,
+\[
+ d_n=\sum_{\ell\ge0}\bigl(f_{n-3\ell}-f_{n-1-3\ell}\bigr)\ge1.
+\]
+Every summand is nonnegative because the binomial coefficients increase
+up to $K/2$: explicitly, $f_j/f_{j-1}=(K-j+1)/j>1$ for
+$1\le j\le K/2$. The summand with $\ell=0$ is a positive integer.
+For $K/2<n\le K-2$, the reflected index $K-n-2$ lies between zero and
+$K/2$. Equations~\eqref{eq:deltasK}--\eqref{eq:reflection} therefore give
+$d_n\ge-1+1=0$.
+At the last two indices,
+\[
+ d_{K-1}=\delta_2=0,\qquad d_K=\delta_0=1.
+\]
+We have proved
+\begin{equation}\label{eq:prefixmonotone}
+ d_n\ge0\qquad(0\le n\le K).
+\end{equation}
+
+Now
+\[
+ (1+q)^K\qir B3=(1-q^{3B})\sum_{n\ge0}u_nq^n.
+\]
+If $B=2m$, its degree is $2K-3$, its left-middle index is $K-2$,
+and $3B=K$. If $B=2m+1$, its degree is $2K$, its middle index is $K$,
+and $3B=K+3$. In either case the coefficients through the center agree
+with $u_n$, and their differences are nonnegative by
+\eqref{eq:prefixmonotone}. Symmetry proves unimodality for $t=K$.
+Finally, multiplication by $(1+q)^{t-K}$ preserves $\SU$, proving the
+claim for every $t\ge K$.
+\end{proof}
+
+\subsection{Sufficiency of the corrected criterion}
+\begin{proof}[Proof of Theorem~\ref{thm:r3}, sufficient direction]
+A divisible factor is handled by Lemma~\ref{lem:divisible}.
+Otherwise assume the right-hand inequality in \eqref{eq:r3criterion}.
+For $b\le Q+1$, Theorem~\ref{thm:sufficient} applies.
+For $b>Q+1$, use Corollary~\ref{cor:core} with $r=3$.
+The residue product is
+\[
+ (1+q)^t\qir{b-Q}{3}.
+\]
+Set $B=b-Q$. The assumed inequality says
+$B\le1+2\lfloor t/6\rfloor$, which implies
+$t\ge6\lfloor B/2\rfloor$.
+Lemma~\ref{lem:binomialcomb} proves that the residue product is $\SU$,
+and Corollary~\ref{cor:core} lifts this back to the original product.
+\end{proof}
+
+\subsection{Necessity and the coefficient-drop certificate}
+\begin{proof}[Proof of Theorem~\ref{thm:r3}, necessary direction]
+Suppose no $a_i$ is divisible by three, and write
+$t=6h+v$, $0\le v\le5$, and $M=Q+2h$.
+Then $S=3M+v$ by \eqref{eq:SQt}.
+
+Let $R_0,R_1,R_2$ be the residue masses of
+$F=\prod_i\qi{a_i}$ modulo three. Complete blocks of three terms vanish
+modulo $\Phi_3(q)=1+q+q^2$, so
+\begin{equation}\label{eq:corecongruence}
+ F(q)\equiv\prod_i\qi{s_i}=(1+q)^t
+       \equiv(1+q)^v\pmod{\Phi_3(q)}.
+\end{equation}
+The degree-at-most-two residue polynomials of $F$ and $(1+q)^v$
+are congruent modulo $\Phi_3$, so they differ by a constant multiple
+of $\Phi_3$. Their corresponding residue differences are therefore equal.
+The binomial theorem for $v=0,\ldots,5$ gives
+Table~\ref{tab:residues}.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rrrrrrr@{}}
+\toprule
+$v$ & $\delta_0$ & $\delta_1$ & $\delta_2$
+ & $e=\lfloor(v+3)/2\rfloor$ & $n_0\bmod3$ & $n_0-S$ \\
+\midrule
+0 &  1 & -1 &  0 & 1 & 1 &  1 \\
+1 &  1 &  0 & -1 & 2 & 2 &  1 \\
+2 &  0 &  1 & -1 & 2 & 2 &  0 \\
+3 & -1 &  1 &  0 & 3 & 0 &  0 \\
+4 & -1 &  0 &  1 & 3 & 0 & -1 \\
+5 &  0 & -1 &  1 & 4 & 1 & -1 \\
+\bottomrule
+\end{tabular}
+\caption{The residue class selected by $n_0=3M+e$ always has difference $-1$.}
+\label{tab:residues}
+\end{table}
+
+If the bound in \eqref{eq:r3criterion} fails, then $b\ge M+2$.
+Choose $n_0$ from \eqref{eq:dropindex}.
+The table shows $n_0\ge S-1$ and $n_0\ge1$.
+Moreover,
+\[
+ n_0\le3M+4<3M+6\le3b.
+\]
+Thus Lemma~\ref{lem:tail} applies at $n_0$, and the selected table entry
+gives the exact difference $-1$.
+Finally,
+\begin{align*}
+ \left\lfloor\frac{D}{2}\right\rfloor
+ &=\left\lfloor\frac{3M+v+3(b-1)}{2}\right\rfloor\\
+ &\ge\left\lfloor\frac{6M+v+3}{2}\right\rfloor
+ =3M+\left\lfloor\frac{v+3}{2}\right\rfloor=n_0.
+\end{align*}
+The negative difference occurs in the first half of the symmetric
+sequence, contradicting \eqref{eq:firsthalf}.
+This proves both necessity and \eqref{eq:unitdrop}.
+\end{proof}
+
+\subsection{Consequences, minimality, and the missing sixth factor}
+\begin{corollary}[A two-parameter infinite family]\label{cor:binomialexact}
+For $t\ge0$ and $B\ge1$,
+\begin{equation}\label{eq:binomialexact}
+ (1+q)^t\qir B3\text{ is unimodal}
+ \quad\Longleftrightarrow\quad
+ t\ge6\left\lfloor\frac B2\right\rfloor.
+\end{equation}
+\end{corollary}
+\begin{proof}
+For $t\ge1$, take $t$ ordinary factors $a_i=2$ in
+Theorem~\ref{thm:r3}, so $Q=0$. The condition becomes
+$B\le1+2\lfloor t/6\rfloor$, equivalent to \eqref{eq:binomialexact}.
+For $t=0$, the spaced polynomial is unimodal only for $B=1$;
+for $B\ge2$ its first coefficients include $1,0$ and a later $1$.
+\end{proof}
+
+Every pair $B\ge2$, $t\ge6\lfloor B/2\rfloor$ supplies a counterexample
+to the original necessity assertion: the source condition would require
+$B\le1$. Thus the degree-nine example is not an isolated coincidence.
+
+\begin{corollary}[Minimality in the spacing-three branch]\label{cor:minimal}
+Among counterexamples to the original necessity assertion with $r=3$,
+at least six nontrivial ordinary factors are required, and the total
+polynomial degree is at least nine. Both bounds are attained by
+$(1+q)^6(1+q^3)$.
+\end{corollary}
+\begin{proof}
+A counterexample has no divisible factor and satisfies
+\[
+ Q+1<b\le Q+1+2\lfloor t/6\rfloor.
+\]
+Hence $t\ge6$, so there are at least six factors of residue two, each
+nontrivial. Also $S=3Q+t\ge6$ and $b\ge2$, whence
+$D=S+3(b-1)\ge9$. The displayed example realizes equality.
+\end{proof}
+
+For $k\le5$, one necessarily has $t\le5$, so the correction
+$2\lfloor t/6\rfloor$ vanishes. The corrected theorem therefore agrees
+exactly with the old spacing-three criterion throughout that range.
+This explains the relevance of the source's reported cutoff of five
+ordinary factors \cite[p.~14]{CIMSY}; it is not a numerical accident.
+The minimality assertion here is restricted to the $r=3$ branch and is
+not a claim about every possible spacing.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}lrrrrl@{}}
+\toprule
+Ordinary factors & $Q$ & $t$ & Old bound & Exact bound & Extra admissible $b$ \\
+\midrule
+$\qi2^6$  & 0 & 6  & 1 & 3 & $2,3$ \\
+$\qi2^{12}$ & 0 & 12 & 1 & 5 & $2,3,4,5$ \\
+$\qi5^6$ & 6 & 6 & 7 & 9 & $8,9$ \\
+$\qi2^5\qi4$ & 1 & 5 & 2 & 2 & None \\
+\bottomrule
+\end{tabular}
+\caption{The exact bound means the largest $b$ for which the product with $\qir b3$ is unimodal.}
+\label{tab:examples}
+\end{table}
+
+The mechanism is arithmetic: modulo $\Phi_3$, a residue-two factor is
+$1+q$, whose sixth power is one. Each complete group of six such factors
+allows two additional terms in the spaced factor. In contrast, for
+$r=2$ the only nonzero residue is one, so no analogous correction exists.
+
+\section{An additional exact theorem: two shifted binomial rows}
+\label{sec:twoshift}
+The smallest counterexample suggests isolating the family with $b=2$.
+For this family there is a closed threshold for every spacing.
+The proof in this section is independent of the spacing-three residue
+table; it provides a further check on the special value six.
+
+\begin{theorem}[Sharp two-shift threshold]\label{thm:twoshift}
+For integers $r\ge2$ and $n\ge0$,
+\begin{equation}\label{eq:twoshift}
+ (1+q)^n(1+q^r)\text{ is unimodal}
+ \quad\Longleftrightarrow\quad n\ge r^2-3.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Multiplication by $1+q$ preserves $\SU$ by Lemma~\ref{lem:closure}.
+It is consequently enough to prove unimodality at $n=r^2-3$ and failure
+at $n=r^2-4$. A unimodal polynomial at a smaller exponent would, on
+multiplication by a suitable power of $1+q$, contradict the latter failure.
+For $r=2$, the two boundary polynomials are respectively
+$1+q+q^2+q^3$ and $1+q^2$, so the claim follows directly.
+Assume henceforth that $r\ge3$.
+
+For an exponent $n$, put $N=n+1$ and define
+\begin{equation}\label{eq:H}
+ H_n(j)=\binom nj-\binom n{j-1}
+       =\frac{N-2j}{N}\binom Nj.
+\end{equation}
+Binomial coefficients outside their natural range are zero. Then
+$H_n(N-j)=-H_n(j)$.
+The coefficient difference at $j$ in $(1+q)^n(1+q^r)$ is
+\begin{equation}\label{eq:twoshiftdiff}
+ H_n(j)+H_n(j-r).
+\end{equation}
+
+\medskip\noindent\textbf{Unimodality at $n=r^2-3$.}
+Here $N=r^2-2$ and the polynomial degree $n+r$ is odd.
+For a first-half index $j\le N/2$, both terms of
+\eqref{eq:twoshiftdiff} are nonnegative.
+For the remaining first-half indices, define
+\[
+ s=N+r-2j,\qquad
+ u=j-r=\frac{N-r-s}{2},\qquad
+ v=N-j=\frac{N-r+s}{2}.
+\]
+Because $j>N/2$ and $j\le(n+r-1)/2$, the integer $s$ is even and
+satisfies $2\le s<r$. Furthermore $0\le u<v<N/2$, so $H_n(u),H_n(v)>0$.
+By reflection, \eqref{eq:twoshiftdiff} is $H_n(u)-H_n(v)$.
+It remains to prove
+\begin{equation}\label{eq:ratio}
+ R_s:=\frac{H_n(u)}{H_n(v)}
+ =\frac{r+s}{r-s}
+   \frac{\binom N{(N-r-s)/2}}{\binom N{(N-r+s)/2}}
+ \ge1.
+\end{equation}
+
+At $s=2$,
+\[
+ R_2=\frac{(r+2)(N-r)(N-r+2)}
+           {(r-2)(N+r)(N+r+2)}=1,
+\]
+because the numerator minus the denominator is
+\begin{equation}\label{eq:ratio-base}
+ 4N(N-r^2+2)=0.
+\end{equation}
+For an even $s$ with $s+2<r$, the adjacent ratio is
+\begin{equation}\label{eq:ratio-step}
+ \frac{R_{s+2}}{R_s}
+ =\frac{(r+s+2)(r-s)(N-r-s)(N-r+s+2)}
+        {(r+s)(r-s-2)(N+r+s+2)(N+r-s)}.
+\end{equation}
+All factors in the denominator are positive. Expanding the numerator
+minus the denominator gives
+\begin{equation}\label{eq:ratio-positive}
+ 4Nr(N-r^2+s^2+2s+2)=4Nr\,s(s+2)>0,
+\end{equation}
+where the equality uses $N=r^2-2$.
+Starting with $R_2=1$, induction over the even values of $s$ proves
+\eqref{eq:ratio}. All first-half differences are nonnegative, and
+symmetry gives unimodality.
+
+\medskip\noindent\textbf{Failure at $n=r^2-4$.}
+Now $N=r^2-3$ and the polynomial degree is even.
+At its central index
+\[
+ j=\frac{n+r}{2},\qquad u=j-r=\frac{N-r-1}{2},
+\]
+reflection turns \eqref{eq:twoshiftdiff} into $H_n(u)-H_n(u+1)$.
+Using \eqref{eq:H} and
+$\binom N{u+1}=\binom Nu(N-u)/(u+1)$, this difference is
+\begin{align}
+ H_n(u)-H_n(u+1)
+ &=\frac{\binom Nu}{N}
+   \left((r+1)-(r-1)\frac{N+r+1}{N-r+1}\right)\notag\\
+ &=-\frac{4\binom Nu}{N(N-r+1)}<0.\label{eq:centralnegative}
+\end{align}
+The denominator is positive for $r\ge3$.
+Thus unimodality fails at the previous exponent. The initial closure
+argument proves the full threshold \eqref{eq:twoshift}.
+\end{proof}
+
+For $r=3$, Theorem~\ref{thm:twoshift} gives the threshold $n=6$,
+in agreement with Corollary~\ref{cor:binomialexact} for $B=2$.
+Historical priority of Theorem~\ref{thm:twoshift} is not asserted here;
+its proof is included because it arose naturally from the counterexample
+and strengthens the resulting family analysis.
+
+\section{Exact computations and reproducibility}
+\label{sec:verification}
+The proofs above establish the infinite statements. The accompanying
+\texttt{verify.py} separately checks finite cases using Python integers,
+without floating-point arithmetic or external packages.
+The run recorded in \texttt{verification\_results.json} passed every
+check in Table~\ref{tab:tests}.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}p{.69\linewidth}r@{}}
+\toprule
+Check & Number of cases \\
+\midrule
+Independent schoolbook versus optimized multiplication & 1,000 \\
+Centered peeling identity on an integer grid & 3,003 \\
+Exhaustive spacing-three multiset products & 30,539 \\
+Deterministic random spacing-three products, no divisible factor & 30,000 \\
+Spacing-three products with a divisible factor & 2,000 \\
+General-spacing sufficient condition & 10,000 \\
+General-spacing necessary degree bound & 10,000 \\
+Spacing-two necessary-and-sufficient criterion & 5,000 \\
+Two-shift boundary polynomials, $2\le r\le60$ & 177 \\
+Exact two-shift negative central-difference formula & 58 \\
+Spacing-three binomial-comb threshold samples & 237 \\
+\bottomrule
+\end{tabular}
+\caption{Finite checks actually executed. Some families overlap; the counts are not
+numbers of distinct mathematical theorems or independent proofs.}
+\label{tab:tests}
+\end{table}
+
+\subsection{What was checked}
+The exhaustive spacing-three test considers all multisets of ordinary
+parameters from $\{1,2,4,5,7,8\}$, with zero through eight factors,
+and all $b$ from one through the corrected bound plus two.
+The zero-factor cases check the harmless empty-product boundary.
+In this finite collection, 938 products violate the old necessity
+condition while satisfying the corrected theorem.
+Every predicted nonunimodal case is also checked at the explicit index
+\eqref{eq:dropindex}; the drop is exactly $-1$, not merely negative.
+
+The separate random spacing-three experiment uses seed 1977, chooses
+$k$ uniformly from $1,\ldots,16$, chooses each $a_i$ from the integers
+$1,\ldots,69$ not divisible by three, and chooses $b$ uniformly from
+one through the corrected bound plus eight. The seed is reset for this
+experiment so it is independent of how many preliminary tests are run.
+
+The small counterexample is expanded by three different routes:
+sliding convolution, the binomial theorem, and direct enumeration of
+all $2^7=128$ choices of six weights one and one weight three.
+The generic unimodality checker tests the entire rise-then-fall pattern;
+it does not assume symmetry. A second checker uses symmetry and
+first-half differences.
+
+A separate Wolfram Language evaluation, using the connected
+Wolfram kernel reporting version \texttt{15.0.1}, confirmed the
+counterexample coefficients, the peeling identity, the residue table,
+the polynomial identities \eqref{eq:ratio-base} and
+\eqref{eq:ratio-positive}, and the two-shift boundary tests for
+$2\le r\le16$. The exact input and returned text are included as
+\texttt{verify.wl} and \texttt{wolfram\_output.txt}.
+This is an independent computational check, not proof-assistant
+verification of the arguments.
+
+\subsection{Reproduction commands and output}
+Use Python 3.10 or later:
+\begin{lstlisting}
+python3 verify.py --full --out verification_results.json
+\end{lstlisting}
+The command writes a JSON run summary, the small counterexample
+certificate, and a CSV table of spacing-three binomial thresholds.
+It returns a nonzero exit code if any check fails.
+For a shorter smoke test, omit \texttt{--full} and choose a different
+output filename to preserve the recorded full run.
+
+Build this report with the supplied \texttt{Makefile} or run
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+A TeX installation with the packages listed in the preamble is needed.
+No custom font files or proprietary packages are distributed.
+
+\subsection{Closed-form decision versus coefficient expansion}
+Theorem~\ref{thm:r3} gives a decision procedure requiring $O(k)$
+integer-arithmetic operations: test divisibility, compute $Q$ and $t$,
+and compare $b$ with the bound. If the answer is negative,
+\eqref{eq:dropindex} gives the witness index directly.
+No expansion of the polynomial is needed to decide the question.
+The actual bit complexity depends on the sizes of the input integers.
+
+The positive proof uses induction and the centered identity.
+Literally unrolling all $Q$ peeling steps can be long when the parameters
+are encoded in binary; no claim of a uniformly short expanded
+certificate is being made. The full finite verifier expands coefficients
+because it is intended as an independent check, not as the fastest
+implementation of the classification theorem.
+
+\section{Scope and further targets}
+\label{sec:scope}
+The exact counterexample disposes of the stated necessity assertion.
+The stronger results retain and prove its sufficient half, classify all
+spacing-two and spacing-three products, and identify a precise residue
+obstruction rather than a merely numerical discrepancy.
+The proofs explain both the first counterexample and the complete family
+that it begins.
+
+The source's main $q$-Fibonomial question is different. This note neither
+proves nor disproves that main conjecture, and it does not challenge the
+source's established small-case theorems.
+For $r\ge4$, a general classification of
+$(\prod_i\qi{a_i})\qir b r$ is not obtained here. In particular, the
+necessity question for two or three ordinary factors at those spacings
+is not settled by the present arguments.
+
+A concrete continuation is to combine the centered reduction with the
+full vector of residue differences at larger $r$.
+Lemma~\ref{lem:tail} gives exact obstruction indices whenever the
+periodic tail enters the first half. Corollary~\ref{cor:core} gives
+positive constructions from residue products.
+For $r=3$, these two mechanisms meet exactly because
+$(1+q)^6\equiv1\pmod{\Phi_3(q)}$.
+For larger $r$, the residual factors $\qi{s_i}$ range over more than
+$1$ and $1+q$, so the same one-parameter six-case reduction is no longer
+available. Determining when the positive and negative tests meet is a
+specific next task, not a conclusion asserted in this note.
+
+\appendix
+\section{A short standalone certificate}
+The disproof itself does not depend on any of the stronger theorems.
+The following elementary Python fragment checks it using only the
+binomial theorem.
+\begin{lstlisting}[language=Python]
+from math import comb
+
+c = [
+    (comb(6, j) if 0 <= j <= 6 else 0)
+    + (comb(6, j-3) if 0 <= j-3 <= 6 else 0)
+    for j in range(10)
+]
+assert c == [1, 6, 15, 21, 21, 21, 21, 15, 6, 1]
+assert c == c[::-1]
+assert all(c[j-1] <= c[j] for j in range(1, 5))
+a, b, r = [2]*6, 2, 3
+assert not any(x % r == 0 for x in a)
+assert b > 1 + sum(x//r for x in a)
+assert len(a) <= 3 or r <= 3
+\end{lstlisting}
+The distributed full verifier uses explicit exceptions instead of
+\texttt{assert}, so running Python with optimization does not disable its
+checks. The fragment above is only a compact readable certificate.
+
+\begin{thebibliography}{1}
+\bibitem{CIMSY}
+Brendan B. Connelly, Ezekiel Ito, Thomas C. Martinez,
+Olha Shevchenko, and Kacey Yang.
+\newblock \emph{Unimodality of $q$-Fibonomial coefficients for small cases}.
+\newblock arXiv:2605.12822v1 [math.CO], 2026.
+\newblock \href{https://arxiv.org/abs/2605.12822v1}{Version-pinned arXiv record};
+\href{https://arxiv.org/html/2605.12822v1}{HTML};
+\href{https://arxiv.org/pdf/2605.12822v1}{PDF}.
+\newblock Conjecture 5.4 and the adjacent testing statement, p.~14.
+\end{thebibliography}
+\end{document}

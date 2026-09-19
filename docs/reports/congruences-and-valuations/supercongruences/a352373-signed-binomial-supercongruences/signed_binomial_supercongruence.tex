@@ -1,0 +1,719 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{newpxtext}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newpxmath}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr,tcolorbox}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Signed binomial supercongruences and OEIS A352373},
+ pdfauthor={Research note prepared with ChatGPT}]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{Ink}{HTML}{21394D}
+\definecolor{Accent}{HTML}{176B68}
+\definecolor{Pale}{HTML}{F1F6F7}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{Ink}Signed binomial supercongruences}
+\fancyhead[R]{\small\color{Ink}Research note \textbullet\ 18 September 2026}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4.5pt plus 1pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheoremstyle{research}{7pt}{7pt}{\itshape}{}{
+\color{Ink}\bfseries}{.}{0.5em}{}
+\theoremstyle{research}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Zloc}{\mathbb Z_{(p)}}
+\newcommand{\vp}{v_p}
+\newcommand{\coeff}[2]{[x^{#1}]\,#2}
+\newcommand{\CC}{\mathcal C}
+\newcommand{\dd}{\delta_p}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\oeis}[1]{\href{https://oeis.org/#1}{\texttt{#1}}}
+\newcommand{\status}{\textsc{Unrefereed research draft}}
+
+\begin{document}
+\thispagestyle{empty}
+{\large\color{Accent}\textsc{Combinatorics \& arithmetic generating functions}\par}
+\vspace{6mm}
+{\huge\bfseries\color{Ink}Signed binomial supercongruences\par}
+\vspace{2mm}
+{\Large A proof of the conjecture recorded in OEIS A352373\par}
+\vspace{5mm}
+{\normalsize Research note prepared with ChatGPT\hfill 18 September 2026\par}
+\vspace{4mm}
+\begin{abstract}
+The OEIS entry A352373 records a conjecture that every sequence
+$a_{r,s}(n)=[x^n](1+x)^{rn}(1-x)^{sn}$, with arbitrary integer $r,s$,
+satisfies the two-term congruences modulo $p^{3h}$ for primes $p\ge5$.
+We give a proof, allowing the coefficient index to be any nonnegative
+integer multiple $tn$. The argument separates indices divisible by $p$
+from the remaining indices. Jacobsthal's binomial congruence treats the
+first part; a multiscale alternating reciprocal-square cancellation treats
+the second. The same proof gives modulus $3^{3h-1}$ at $p=3$.
+We derive four OEIS specializations, a denominator restriction for a
+M\"obius transform, and formal Lambert-series and trilogarithm expansions.
+Exact computations check 13,690 family congruences and 15,154 proof-component
+instances. The proof uses a precisely cited classical congruence; it has
+not been independently refereed or formally verified, and publication
+priority is not claimed.
+\end{abstract}
+
+\begin{tcolorbox}[colback=Pale,colframe=Accent,boxrule=0.6pt,arc=0pt,
+ left=3mm,right=3mm,top=2mm,bottom=2mm]
+\textbf{Main result.} For $r,s\in\Z$, $t\in\Z_{\ge0}$, and
+$a(n)=[x^{tn}](1+x)^{rn}(1-x)^{sn}$,
+\[
+ \boxed{\quad a(mp^h)\equiv a(mp^{h-1})\pmod{p^{3h}}
+ \quad(p\ge5).\quad}
+\]
+Here $m,h\ge1$ are arbitrary integers; in particular, $p\nmid m$ is
+\emph{not} required. Negative exponents are interpreted as formal power
+series. The conjecture in A352373 is exactly the case $t=1$.
+\end{tcolorbox}
+
+\section{The selected problem and the theorem}
+\label{sec:problem}
+The entry \oeis{A352373}, authored by Peter Bala, records both an individual
+supercongruence conjecture and its two-parameter extension \cite{A352373}.
+The individual sequence is
+\begin{equation}\label{eq:selected}
+ a(n)=[x^n]\frac{1}{(1-x)^{2n}(1-x^2)^n}
+     =[x^n](1+x)^{-n}(1-x)^{-3n}.
+\end{equation}
+The general assertion concerns the same congruence for every integer pair
+$(r,s)$ in $[x^n](1+x)^{rn}(1-x)^{sn}$. In the entry retrieved for this
+note, that assertion is still explicitly marked as a conjecture.
+
+Rather than finding a counterexample, the exact tests suggested a uniform
+proof. We work with the larger family
+\begin{equation}\label{eq:family}
+ a_{r,s,t}(n):=[x^{tn}](1+x)^{rn}(1-x)^{sn},
+ \qquad r,s\in\Z,\quad t,n\in\Z_{\ge0}.
+\end{equation}
+All of these coefficients are integers, including when $r$ or $s$ is
+negative. Put
+\begin{equation}\label{eq:delta}
+ \delta_p=\begin{cases}1,&p=3,\\0,&p\ge5,\end{cases}
+ \qquad\text{for odd primes }p.
+\end{equation}
+
+\begin{theorem}\label{thm:family}
+For every odd prime $p$, all integers $r,s$, all nonnegative integers $t$,
+and all positive integers $m,h$,
+\begin{equation}\label{eq:main}
+ a_{r,s,t}(mp^h)\equiv a_{r,s,t}(mp^{h-1})
+                  \pmod{p^{3h-\delta_p}}.
+\end{equation}
+\end{theorem}
+
+A homogeneous coefficient statement, proved in \cref{sec:proof}, implies
+this theorem immediately. The proof uses the classical Jacobsthal
+congruence in the version allowing negative integer upper entries
+\cite[Lemma 5.1]{Straub}. Its organization follows the established
+binomial-descent and block-cancellation approach to supercongruences
+\cite[Section 2]{OSS}. The purpose here is the explicit application to the
+whole coefficient family, not a claim that those proof techniques are new.
+
+The distinction between a conjectural entry and a new theorem matters:
+\oeis{A234839}, the case $(r,s,t)=(1,2,1)$, already has this
+supercongruence, as recorded in the entry and in
+\cite[Example 3.3]{OSS}. We do not count that special case as a new result
+\cite{A234839}. The limited literature check underlying the present note
+is described in \cref{sec:status} and in the accompanying source log.
+
+\section{Elementary preliminaries and the classical input}
+\label{sec:prelim}
+For an integer $u$ and a nonnegative integer $k$, use
+\[
+ \binom uk=\frac{u(u-1)\cdots(u-k+1)}{k!},\qquad \binom u0=1.
+\]
+In particular, for $v\ge1$,
+\begin{equation}\label{eq:negative}
+ \binom{-v}{k}=(-1)^k\binom{v+k-1}{k}\in\Z.
+\end{equation}
+If $u\ge0$ and $k>u$, the coefficient is zero. We never need binomial
+coefficients with negative lower entries in the proof.
+
+Let $\Zloc$ be the ring of rational numbers whose reduced denominators
+are not divisible by $p$. A congruence in this ring means divisibility by
+the indicated power of $p$ inside $\Zloc$. Thus all reciprocal squares
+$1/j^2$ with $p\nmid j$ are legitimate. We set $v_p(0)=+\infty$.
+No convergence of infinite $p$-adic series will be needed.
+
+\begin{lemma}[One-digit binomial descent]\label[lemma]{lem:descent}
+Let $p$ be any prime, $h\ge1$, $p^h\mid U$, and $k\ge0$. Then
+\begin{equation}\label{eq:descent}
+ \binom{U-1}{k}\equiv
+ (-1)^{k-\floor{k/p}}
+ \binom{U/p-1}{\floor{k/p}}\pmod{p^h}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Splitting the product into indices divisible and not divisible by $p$
+gives the exact identity in $\Q$
+\[
+ \binom{U-1}{k}
+ =\binom{U/p-1}{\floor{k/p}}
+   \prod_{\substack{1\le i\le k\\p\nmid i}}\frac{U-i}{i}.
+\]
+Each factor in the product is congruent to $-1$ modulo $p^h$ in $\Zloc$.
+There are $k-\floor{k/p}$ such factors. The remaining binomial coefficient
+is an integer, even for negative $U$, so multiplication preserves the
+congruence. This argument also allows a vanishing remaining coefficient.
+\end{proof}
+This standard descent identity also appears as \cite[Lemma 2.4]{OSS}.
+
+\begin{lemma}[Jacobsthal; imported classical theorem]\label[lemma]{lem:jacobsthal}
+Let $p$ be an odd prime, let $X,Y$ be integers with $Y\ge0$ and $p\mid X,Y$, and
+suppose $\binom{X/p}{Y/p}\ne0$. If $XY(X-Y)\ne0$, then
+\begin{equation}\label{eq:jacobsthal}
+ \frac{\binom XY}{\binom{X/p}{Y/p}}-1
+ \in p^{v_p(XY(X-Y))-\delta_p}\Zloc.
+\end{equation}
+In the remaining nonvanishing cases $Y=0$ or $X=Y$, the ratio equals one.
+\end{lemma}
+
+This is the odd-prime part of \cite[Lemma 5.1]{Straub}: the exponent there
+is $v_p(XY(X-Y)/12)$. Its loss is one at $p=3$ and zero at $p\ge5$.
+That reference includes negative upper entries. The familiar
+$p\ge5$ valuation form is also stated in \cite[Lemma 2.1]{OSS}.
+We invoke this known theorem, rather than claim a new proof of it.
+
+There is no use of a ratio $0/0$. If $\binom{X/p}{Y/p}=0$, then
+$X\ge0$ and $Y>X$, and $\binom XY=0$ as well. Conversely, a zero fine
+coefficient has a zero coarse coefficient. These support conditions are
+unchanged by division of both entries by $p$.
+
+\begin{lemma}[Alternating reciprocal-square blocks]\label[lemma]{lem:blocks}
+Let $p$ be an odd prime, $\ell\ge1$, and $q\ge0$. Then
+\begin{equation}\label{eq:blocks}
+ H_{\ell,q}:=
+ \sum_{\substack{qp^\ell\le j<(q+1)p^\ell\\p\nmid j}}
+       \frac{(-1)^j}{j^2}
+ \equiv0\pmod{p^\ell}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $P=p^\ell$. Within the block, pair $j=qP+a$ with
+$j'=qP+P-a$, for $1\le a<P$ and $p\nmid a$. The pairing has no fixed
+point since $P$ is odd. We have $j'\equiv-j\pmod P$ and
+$(-1)^{j'}=-(-1)^j$. Their reciprocal-square contributions cancel modulo
+$P$. All denominators involved are units modulo $P$.
+\end{proof}
+
+\section{The weighted cancellation that supplies the third power}
+\label{sec:weighted}
+The difficult part is not the unweighted congruence in
+\cref{lem:blocks}, but retaining it in the presence of binomial weights.
+The following lemma makes the necessary compatibility explicit. Its
+telescoping step is a finite-block version of the weighted congruence
+method; compare \cite[Lemma 5.6]{Straub}.
+
+\begin{lemma}[Complementary-weight cancellation]\label[lemma]{lem:weighted}
+Let $p$ be an odd prime, $h\ge1$, and $A,B,K\in\Z$ with $K>0$ and
+$p^h\mid A,B,K$. Then
+\begin{equation}\label{eq:weighted}
+ W:=\sum_{\substack{1\le j<K\\p\nmid j}}
+       \frac{(-1)^j}{j^2}
+       \binom{A-1}{j-1}\binom{B-1}{K-j-1}
+       \equiv0\pmod{p^h}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $1\le\ell\le h$ and $0\le q<K/p^\ell$, define integer weights
+\begin{equation}\label{eq:weights}
+ U_\ell(q)=
+ \binom{A/p^\ell-1}{q}
+ \binom{B/p^\ell-1}{K/p^\ell-1-q}.
+\end{equation}
+All lower entries are nonnegative; negative upper entries cause no
+integrality problem by \eqref{eq:negative}.
+
+\textbf{The first descent has a minus sign.}
+For $p\nmid j$ write $j=pq+a$ with $1\le a<p$. Because $p\mid K$,
+\[
+ \floor{(j-1)/p}=q,\qquad
+ \floor{(K-j-1)/p}=K/p-1-q.
+\]
+Applying \cref{lem:descent} to both binomial coefficients, modulo $p^h$,
+produces a sign with exponent
+\[
+ (j-1)+(K-j-1)-\bigl(q+(K/p-1-q)\bigr)=K-K/p-1.
+\]
+The difference $K-K/p=(p-1)K/p$ is even. Consequently,
+\begin{equation}\label{eq:firstsign}
+ \binom{A-1}{j-1}\binom{B-1}{K-j-1}
+ \equiv- U_1(\floor{j/p})\pmod{p^h}.
+\end{equation}
+Introduce the sums
+\begin{equation}\label{eq:T}
+ T_\ell=
+ \sum_{\substack{1\le j<K\\p\nmid j}}
+ \frac{(-1)^j}{j^2}\,U_\ell(\floor{j/p^\ell}).
+\end{equation}
+Equation \eqref{eq:firstsign} says $W\equiv-T_1\pmod{p^h}$.
+
+\textbf{Every subsequent descent has a plus sign.}
+Suppose $1\le\ell<h$ and put $L=K/p^\ell$. Since $p\mid L$,
+\[
+ \floor{q/p}+\floor{(L-1-q)/p}=L/p-1.
+\]
+Both upper parameters $A/p^\ell$ and $B/p^\ell$ are divisible by
+$p^{h-\ell}$. Another application of \cref{lem:descent} gives
+\begin{equation}\label{eq:weightdescent}
+ U_\ell(q)\equiv U_{\ell+1}(\floor{q/p})
+                   \pmod{p^{h-\ell}}.
+\end{equation}
+Indeed, the combined sign exponent is $(L-1)-(L/p-1)=L-L/p$,
+which is even. This is why the complementary lower entries in
+\eqref{eq:weights} are useful.
+
+\textbf{Block cancellation compensates for the declining precision.}
+Group the difference $T_\ell-T_{\ell+1}$ by $q=\floor{j/p^\ell}$.
+Since $K$ is a multiple of $p^\ell$, all blocks are complete, and
+\begin{equation}\label{eq:telescoping}
+ T_\ell-T_{\ell+1}
+ =\sum_{q=0}^{K/p^\ell-1}
+   \left(U_\ell(q)-U_{\ell+1}(\floor{q/p})\right)H_{\ell,q}.
+\end{equation}
+The bracket belongs to $p^{h-\ell}\Z$ by
+\eqref{eq:weightdescent}, while $H_{\ell,q}\in p^\ell\Zloc$ by
+\cref{lem:blocks}. Every product in \eqref{eq:telescoping} therefore
+belongs to $p^h\Zloc$.
+
+At the last level, each weight is constant on a block of length $p^h$:
+\[
+ T_h=\sum_{q=0}^{K/p^h-1}U_h(q)H_{h,q}\equiv0\pmod{p^h}.
+\]
+Thus $T_1\equiv T_2\equiv\cdots\equiv T_h\equiv0\pmod{p^h}$,
+and $W\equiv0\pmod{p^h}$ follows. If $h=1$, only the first and last
+steps are needed.
+\end{proof}
+
+\begin{remark}
+The proof does not replace a weight by a constant modulo $p^h$ across an
+entire block of length $p^h$ in a single step. At level $\ell$ it has only
+$p^{h-\ell}$ precision; the block sum supplies exactly the missing
+$p^\ell$. Ignoring this precision bookkeeping would leave a gap.
+\end{remark}
+
+\section{Proof of the coefficient supercongruence}
+\label{sec:proof}
+Define, for $A,B\in\Z$ and $K\ge0$,
+\begin{equation}\label{eq:localcoefficient}
+ \CC(A,B;K):=[x^K](1-x)^A(1+x)^B
+ =\sum_{j=0}^K(-1)^j\binom Aj\binom B{K-j}.
+\end{equation}
+The finite convolution is valid for negative as well as positive
+exponents in the ring of formal power series.
+
+\begin{lemma}[Descent of the multiple indices]\label[lemma]{lem:multiples}
+Let $p$ be an odd prime, $h\ge1$, $K\ge0$, and $p^h\mid A,B,K$.
+For $0\le j\le K$ with $p\mid j$,
+\begin{equation}\label{eq:multiples}
+ \binom Aj\binom B{K-j}
+ \equiv
+ \binom{A/p}{j/p}\binom{B/p}{(K-j)/p}
+ \pmod{p^{3h-\delta_p}}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+If one coarse binomial coefficient is zero, its fine counterpart is
+zero as well, so both products vanish. Assume otherwise. Put
+\[
+ e=\min\{h,v_p(j)\}.
+\]
+This is an integer between $1$ and $h$, with $e=h$ when $j=0$.
+Both $j$ and $K-j$ are divisible by $p^e$. Applying
+\cref{lem:jacobsthal} to each factor gives
+\begin{equation}\label{eq:productratio}
+ \binom Aj\binom B{K-j}
+ =\binom{A/p}{j/p}\binom{B/p}{(K-j)/p}\,(1+E),
+ \qquad E\in p^{h+2e-\delta_p}\Zloc.
+\end{equation}
+For example, $v_p(Aj(A-j))\ge h+2e$ whenever the three factors are
+nonzero. Endpoint ratios equal one, so they satisfy the same error
+bound without invoking a valuation of a nonzero product.
+
+If $e<h$, then $v_p(j)=v_p(K-j)=e$, since $p^h\mid K$.
+The identity
+\[
+ \binom uv=\frac uv\binom{u-1}{v-1}\qquad(v>0)
+\]
+shows that each coarse coefficient in \eqref{eq:productratio} is
+divisible by $p^{h-e}$. Its upper entry is divisible by $p^{h-1}$,
+and its lower entry has valuation $e-1$. If $e=h$, the same conclusion
+means only that the coefficients are integers. Their product is
+therefore always divisible by $p^{2(h-e)}$.
+
+Subtracting the coarse product from \eqref{eq:productratio}, the
+valuation of the difference is at least
+\[
+ (h+2e-\delta_p)+2(h-e)=3h-\delta_p.
+\]
+Since the difference is an integer, this proves the claimed ordinary
+integer congruence.
+\end{proof}
+
+\begin{theorem}[Homogeneous coefficient theorem]\label{thm:homogeneous}
+For an odd prime $p$, $h\ge1$, and integers $A,B,K$ with $K\ge0$ and
+$p^h\mid A,B,K$,
+\begin{equation}\label{eq:homogeneous}
+ \CC(A,B;K)\equiv\CC(A/p,B/p;K/p)
+                         \pmod{p^{3h-\delta_p}}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $K=0$ both sides are one. Assume $K>0$ and split
+\eqref{eq:localcoefficient} into the terms $p\mid j$ and $p\nmid j$.
+
+For the first part, \cref{lem:multiples} applies term by term.
+Because $p$ is odd, $(-1)^j=(-1)^{j/p}$ whenever $p\mid j$.
+Consequently,
+\begin{equation}\label{eq:regularsum}
+ \sum_{\substack{0\le j\le K\\p\mid j}}
+ (-1)^j\binom Aj\binom B{K-j}
+ \equiv\CC(A/p,B/p;K/p)\pmod{p^{3h-\delta_p}}.
+\end{equation}
+
+For the second part, both $j$ and $K-j$ are units in $\Zloc$.
+The exact binomial identity yields
+\begin{equation}\label{eq:offexact}
+ \binom Aj\binom B{K-j}
+ =\frac{AB}{j(K-j)}\binom{A-1}{j-1}\binom{B-1}{K-j-1}.
+\end{equation}
+Also,
+\[
+ \frac1{j(K-j)}+\frac1{j^2}
+   =\frac K{j^2(K-j)}\in p^h\Zloc.
+\]
+As $AB\in p^{2h}\Z$, summing \eqref{eq:offexact} over the unit indices
+with signs gives
+\begin{equation}\label{eq:offsum}
+ \sum_{\substack{1\le j<K\\p\nmid j}}
+ (-1)^j\binom Aj\binom B{K-j}
+ \equiv -AB\,W\equiv0\pmod{p^{3h}},
+\end{equation}
+where the last congruence is \cref{lem:weighted}. If $A$ or $B$ is
+zero, \eqref{eq:offexact} remains valid and the entire sum is zero.
+Combining \eqref{eq:regularsum} and \eqref{eq:offsum} proves
+\eqref{eq:homogeneous}.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:family}]
+Take $A=smp^h$, $B=rmp^h$, and $K=tmp^h$ in
+\cref{thm:homogeneous}. By definition,
+$\CC(A,B;K)=a_{r,s,t}(mp^h)$, and its scaled counterpart is
+$a_{r,s,t}(mp^{h-1})$.
+\end{proof}
+
+\begin{remark}[Additional common divisibility]
+If $m=p^v m_0$ with $p\nmid m_0$, the same theorem at height $h+v$
+gives the stronger modulus $p^{3(h+v)-\delta_p}$. More generally,
+\cref{thm:homogeneous} permits any common power of $p$ dividing all
+three parameters $A,B,K$.
+\end{remark}
+
+A concrete check illustrates why cancellation is indispensable. For
+\oeis{A352373} at $n=5$, the local parameters are
+$(A,B,K)=(-15,-5,5)$. The $j=1$ summand is $1050=42\cdot5^2$,
+not a multiple of $5^3$. The sum of the four nonmultiple-index terms is
+$-8250=-66\cdot5^3$. Thus the extra power comes from their sum, not
+from an unjustified termwise estimate.
+
+\section{Consequences for the selected OEIS entries}
+\label{sec:oeis}
+The following substitutions are immediate from $1-x^2=(1-x)(1+x)$.
+Each of these four entries explicitly records the $p^{3h}$
+congruence as conjectural in the version consulted for this note
+\cite{A352373,A348410,A351856,A351857}.
+\begin{center}
+\renewcommand{\arraystretch}{1.16}
+\begin{tabular}{@{}lrrrc@{}}
+\toprule
+Sequence & $r$ & $s$ & $t$ & Defining coefficient \\
+\midrule
+\oeis{A352373} & $-1$ & $-3$ & $1$ & $[x^n](1-x)^{-2n}(1-x^2)^{-n}$ \\
+\oeis{A348410} & $-1$ & $-2$ & $1$ & $[x^n](1-x)^{-n}(1-x^2)^{-n}$ \\
+\oeis{A351856} & $-1$ & $-2$ & $2$ & $[x^{2n}](1-x)^{-n}(1-x^2)^{-n}$ \\
+\oeis{A351857} & $-2$ & $-4$ & $1$ & $[x^n](1-x)^{-2n}(1-x^2)^{-2n}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The coefficient-index extension $t\ge0$ is particularly useful for
+\oeis{A351856}; its displayed coefficient representation requires $t=2$, beyond the
+index used in the OEIS family conjecture.
+
+For the selected sequence \eqref{eq:selected}, expanding the two
+negative-binomial factors also gives the positive sum
+\begin{equation}\label{eq:positivesum}
+ a(n)=\sum_{k=0}^{\floor{n/2}}
+       \binom{3n-2k-1}{n-2k}\binom{n+k-1}{k},\qquad n\ge1.
+\end{equation}
+For instance $a(1)=2$, $a(3)=74$, $a(5)=3252$, and $a(7)=154352$.
+The theorem proves both
+\[
+ a(mp^h)\equiv a(mp^{h-1})\pmod{p^{3h}}\quad(p\ge5)
+\]
+and the additional relation
+\[
+ a(m3^h)\equiv a(m3^{h-1})\pmod{3^{3h-1}}.
+\]
+The latter assertion is a consequence of the weaker classical
+Jacobsthal exponent at $p=3$, not an inference from finite examples.
+
+\section{A generating-function consequence}
+\label{sec:generating}
+For any fixed $(r,s,t)$ let $a_n=a_{r,s,t}(n)$ and define
+\begin{equation}\label{eq:mobius}
+ b_n=\frac1{n^3}\sum_{d\mid n}\mu(d)a_{n/d},\qquad n\ge1,
+\end{equation}
+where $\mu$ is the M\"obius function.
+
+\begin{proposition}\label[proposition]{prop:mobius}
+For every $n\ge1$,
+\begin{equation}\label{eq:denominator}
+ b_n\in\Z[1/6],\qquad\text{and more precisely}\qquad
+ 3b_n\in\Z[1/2].
+\end{equation}
+In particular, $b_n$ is an integer when $\gcd(n,6)=1$.
+The following identities hold as formal power series over $\Q$:
+\begin{align}
+ \sum_{n\ge1}a_nz^n
+   &=\sum_{n\ge1}n^3b_n\frac{z^n}{1-z^n},\label{eq:lambert}\\
+ \sum_{n\ge1}\frac{a_n}{n^3}z^n
+   &=\sum_{n\ge1}b_n\Li_3(z^n),
+ \qquad \Li_3(z)=\sum_{k\ge1}\frac{z^k}{k^3}.\label{eq:trilog}
+\end{align}
+\end{proposition}
+\begin{proof}
+Fix an odd prime divisor $p$ of $n$ and write $n=p^h m$ with
+$p\nmid m$. Terms for which $p^2\mid d$ vanish in the M\"obius sum,
+so its numerator equals
+\[
+ \sum_{e\mid m}\mu(e)
+ \left(a_{(m/e)p^h}-a_{(m/e)p^{h-1}}\right).
+\]
+By \cref{thm:family}, this is divisible by $p^{3h-\delta_p}$.
+Dividing by $n^3$ proves $v_p(b_n)\ge0$ for $p\ge5$, and
+$v_3(b_n)\ge-1$. The reduced denominator of $b_n$ divides $n^3$,
+so no other odd primes can occur. This proves \eqref{eq:denominator}
+and the assertion for $\gcd(n,6)=1$.
+
+M\"obius inversion of \eqref{eq:mobius} gives
+$a_n=\sum_{d\mid n}d^3b_d$. The coefficient of $z^n$ on the right of
+\eqref{eq:lambert} is precisely this divisor sum. The coefficient on
+the right of \eqref{eq:trilog} is $n^{-3}$ times the same divisor sum.
+For each degree only finitely many divisors contribute, so no analytic
+convergence assumption is required.
+\end{proof}
+
+For \oeis{A352373}, the first seven $b_n$ are
+\[
+ 2,\quad \frac54,\quad\frac83,\quad\frac{59}{8},\quad26,
+ \quad\frac{308}{3},\quad450.
+\]
+This illustrates both the integrality away from $2,3$ and the genuine
+possibility of a factor $3$ in the denominator. The transformation itself
+is ordinary M\"obius inversion; the content supplied by the theorem is
+its denominator restriction.
+
+\section{Sharpness and failed generalizations}
+\label{sec:boundaries}
+The chosen conjecture survives; the following are counterexamples only
+to \emph{stronger or broader} statements.
+
+\textbf{The uniform exponent cannot be increased.}
+For the selected sequence,
+\[
+ a(5)-a(1)=3252-2=3250=26\cdot5^3.
+\]
+It is not divisible by $5^4$. Thus a universal modulus $p^{3h+1}$,
+and a fortiori $p^{4h}$, is false even within \oeis{A352373}.
+This example establishes uniform sharpness; it does not assert that
+equality of valuations holds for every prime or every height.
+
+\textbf{The full exponent cannot be extended to $p=3$ or $p=2$.}
+The same sequence gives
+\[
+ a(3)-a(1)=72=8\cdot3^2,\qquad a(2)-a(1)=10.
+\]
+The first is not divisible by $3^3$ and shows that the one-power loss
+at $p=3$ is necessary in a uniform statement. The second is not
+divisible by $2^3$. No general $2$-adic strengthening is claimed here.
+
+\textbf{An arbitrary integer polynomial does not suffice.}
+Consider instead $c(n)=[x^n](1+x+x^2)^n$. Direct expansion gives
+$c(1)=1$ and
+\[
+ c(5)=\binom50\binom00+\binom52\binom21+
+       \binom54\binom42=1+20+30=51.
+\]
+Consequently $c(5)-c(1)=50$ is not divisible by $5^3$. Even a
+palindromic quadratic with constant coefficient one need not satisfy
+the theorem. The opposite signs in $(1-x)^A(1+x)^B$ enable the specific
+alternating cancellation used in the proof.
+
+\section{Reproducible computation and proof audit}
+\label{sec:computation}
+The archive contains a standard-library-only Python program,
+\texttt{code/verify.py}, together with its complete output
+\texttt{results/verification.json} and a row-level record
+\texttt{results/family\_cases.csv}. Run
+\begin{verbatim}
+python code/verify.py --output results
+\end{verbatim}
+The recorded run used Python 3.13.5. All checks passed.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Test collection & Checks \\
+\midrule
+Parameter grid, primes at least five & 9,295 \\
+Parameter grid, prime three with exponent $3h-1$ & 4,225 \\
+Seeded additional family tests & 150 \\
+Focused higher-height tests & 20 \\
+\midrule
+Total family congruences & 13,690 \\
+Individual proof-component congruences & 15,154 \\
+M\"obius-transform denominator checks & 500 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The grid uses $-6\le r,s\le6$ and $0\le t\le4$, with the explicitly
+listed $(p,h,m)$ cases stored in the JSON file. The focused tests include
+height four at $p=5$, height five at $p=3$, and indices as large as
+$11^3=1331$. There are 10,050 family cases with a nonzero difference;
+the other 3,640 include legitimate zero or constant cases and are not
+hidden in the totals. Randomized tests have the fixed seed 352373.
+
+Two independent exact evaluators are compared whenever a sequence value
+is computed. The first expands the binomial convolution. For the second,
+write $F(x)=(1+x)^R(1-x)^S=\sum c_kx^k$. Logarithmic differentiation
+and coefficient comparison give
+\begin{equation}\label{eq:recurrence}
+ (1-x^2)F'(x)=((R-S)-(R+S)x)F(x),\qquad
+ k c_k=(R-S)c_{k-1}+(k-2-R-S)c_{k-2},
+\end{equation}
+with $c_{-1}=0$ and $c_0=1$. This uses $O(K)$ integer-arithmetic steps to
+obtain $c_K$, with varying integer sizes. Each division is checked to be
+exact. It is \emph{not} a modular recurrence that divides by a possible
+nonunit $k$.
+
+The proof-component tests include the first-descent minus sign, every
+subsequent weighted transition, the terminal blocks, support-zero cases,
+and the stronger $p^{3h}$ vanishing of the off-multiple sum even at $p=3$.
+They test arithmetic instances of the proof, not just its conclusion.
+They are still finite tests, not a formal verification of the universally
+quantified theorem.
+
+For a further transparent check, the selected sequence gives the
+following valuations; full differences are recorded in the JSON file.
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$p$ & $h$ & $v_p(a(p^h)-a(p^{h-1}))$ & Guaranteed exponent \\
+\midrule
+5 & 1 & 3 & 3 \\
+5 & 2 & 6 & 6 \\
+5 & 3 & 9 & 9 \\
+7 & 1 & 3 & 3 \\
+3 & 1 & 2 & 2 \\
+3 & 2 & 5 & 5 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Status, attribution, and what has actually been established}
+\label{sec:status}
+This note supplies an all-parameter argument for
+\cref{thm:family}, not merely evidence for a small case. The only
+non-elementary imported result is the classical congruence in
+\cref{lem:jacobsthal}; all subsequent deductions, including the full
+weighted cancellation, are given above. No unproved auxiliary
+conjecture is used.
+
+The source check covered the relevant OEIS entries and the two primary
+papers cited for the congruence machinery. The general assertion remains
+labelled conjectural in A352373 as retrieved on 18 September 2026.
+An already-proved special case was explicitly separated from the target.
+This is not an exhaustive literature review, and an equivalent general
+result could exist in a different formulation. Accordingly, the claim is
+\emph{a proof of the recorded assertion and its stated extensions}, not
+verified priority for a new discovery.
+
+The document is an unrefereed AI-assisted research draft. Neither an
+independent mathematician's review nor a proof-assistant check was
+performed. The arithmetic tests are reproducible but cannot replace
+such review. The accompanying \texttt{PROOF\_AUDIT.md} identifies the
+valuation, sign, boundary, and dependency checks that are especially
+important for independent scrutiny. The proposed OEIS note in the
+archive is a draft only; nothing has been submitted to OEIS.
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{A352373}
+P.~Bala and OEIS contributors.
+\emph{A352373: $a(n)=[x^n]((1-x)^{-2}(1-x^2)^{-1})^n$}.
+The On-Line Encyclopedia of Integer Sequences.
+\url{https://oeis.org/A352373}.
+Entry author date: 14 March 2022. Consulted 18 September 2026.
+
+\bibitem{A348410}
+C.~E.~Lozada and OEIS contributors.
+\emph{A348410: nonnegative integer solutions with an even-coordinate
+restriction}.
+The On-Line Encyclopedia of Integer Sequences.
+\url{https://oeis.org/A348410}. Consulted 18 September 2026.
+
+\bibitem{A351856}
+P.~Bala and OEIS contributors.
+\emph{A351856: the coefficient $[x^{2n}]((1-x)(1-x^2))^{-n}$}.
+The On-Line Encyclopedia of Integer Sequences.
+\url{https://oeis.org/A351856}. Consulted 18 September 2026.
+
+\bibitem{A351857}
+P.~Bala and OEIS contributors.
+\emph{A351857: the coefficient $[x^n]((1-x)(1-x^2))^{-2n}$}.
+The On-Line Encyclopedia of Integer Sequences.
+\url{https://oeis.org/A351857}. Consulted 18 September 2026.
+
+\bibitem{A234839}
+V.~Kotesovec and OEIS contributors.
+\emph{A234839: $\sum_{k=0}^n(-1)^k\binom nk\binom{2n}k$}.
+The On-Line Encyclopedia of Integer Sequences.
+\url{https://oeis.org/A234839}. Consulted 18 September 2026.
+
+\bibitem{OSS}
+R.~Osburn, B.~Sahu, and A.~Straub.
+\emph{Supercongruences for sporadic sequences}.
+Proceedings of the Edinburgh Mathematical Society (2) \textbf{59}
+(2016), no.~2, 503--518.
+\href{https://doi.org/10.1017/S0013091515000255}{doi:10.1017/S0013091515000255}.
+\href{https://arxiv.org/abs/1312.2195v2}{arXiv:1312.2195v2} (2014).
+
+\bibitem{Straub}
+A.~Straub.
+\emph{Multivariate Ap\'ery numbers and supercongruences of rational functions}.
+Algebra \& Number Theory \textbf{8} (2014), 1985--2008.
+\href{https://doi.org/10.2140/ant.2014.8.1985}{doi:10.2140/ant.2014.8.1985}.
+\href{https://arxiv.org/abs/1401.0854v2}{arXiv:1401.0854v2}.
+\end{thebibliography}
+\end{document}

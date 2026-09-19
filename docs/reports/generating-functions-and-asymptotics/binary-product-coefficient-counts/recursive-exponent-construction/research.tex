@@ -1,0 +1,873 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage[letterpaper,margin=1.03in,headheight=15pt]{geometry}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem,fancyhdr,titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{Ink}{HTML}{17374A}
+\definecolor{Accent}{HTML}{176B78}
+\definecolor{Pale}{HTML}{EEF5F6}
+\hypersetup{colorlinks=true,linkcolor=Ink,citecolor=Accent,urlcolor=Accent,
+ pdftitle={Rational exponents, nonrational coefficient counts},
+ pdfauthor={Research manuscript prepared with ChatGPT}}
+\titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{Ink}}{\thesubsection}{0.7em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{Ink}Rational exponents, nonrational coefficient counts}
+\fancyhead[R]{\small September 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.15em}
+\setcounter{tocdepth}{1}
+\setlist{itemsep=2pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}\newcommand{\C}{\mathbb C}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\nuone}{\nu_1}
+\newcommand{\GF}{\mathcal G}
+\newcommand{\F}{\mathcal F}
+\newcommand{\ee}{\mathrm e}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{Accent!35},showstringspaces=false}
+\newtcolorbox{resultbox}[1][]{colback=Pale,colframe=Accent,boxrule=0.6pt,
+ arc=1mm,left=9pt,right=9pt,top=7pt,bottom=7pt,breakable,#1}
+
+\title{\vspace{-1.2cm}\color{Ink}\textbf{Rational exponents,\\nonrational coefficient counts}\\[0.5em]
+\large An explicit negative answer to a question of Richard Stanley}
+\author{Research manuscript prepared with ChatGPT}
+\date{September 19, 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Can a rational generating function for positive integer exponents force rationality of the generating function that counts coefficients equal to a fixed positive integer in successive binomial products? We give an explicit counterexample, already for coefficients equal to~$1$. The exponents satisfy a constant-coefficient recurrence of order eight and tend to infinity. Nevertheless, their coefficient-counting sequence is bounded and not eventually periodic: after the initial terms, every odd-indexed count is~$4$, while every even-indexed count is $4$ or~$8$ according to the sign of the integer recurrence $a_n=a_{n-1}-2a_{n-2}$. We prove the exact counting formula by a finite-support convolution argument. Irrational rotation then proves nonrationality. A Fourier--Abel argument strengthens this to a natural boundary on the unit circle, so the series is neither algebraic nor D-finite. We also derive exponent asymptotics, frequency and correlation formulas, a general sign-coding theorem, and reproducible exact-arithmetic checks.
+\end{abstract}
+
+\begin{resultbox}
+\textbf{Scope.} This manuscript answers the universal rationality part of the question negatively. The exponents are positive and tend to infinity, but they are not eventually increasing. It does not classify the increasing-exponent case or all possible exponent sequences.
+
+\textbf{Status.} The arguments below are mathematical proofs, not recurrence guesses. The manuscript has not undergone independent peer review. A targeted literature search located the original unanswered question but did not locate a prior resolution of this particular formulation; that search does not establish priority conclusively.
+\end{resultbox}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\makeatletter
+\renewcommand{\l@section}[2]{\@dottedtocline{1}{0em}{1.8em}{\bfseries #1}{#2}}
+\makeatother
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{The source question and the result}
+
+In a MathOverflow question posted on September 23, 2022, Richard Stanley considers positive integers $G_m$ tending to infinity whose ordinary generating function is rational. He asks whether, for fixed positive $k$, the number of coefficients equal to $k$ in successive products $\prod_{i=1}^m(1+x^{G_i})$ must itself have a rational generating function. He also allows factors $1+x^{G_i}+\cdots+x^{rG_i}$ with fixed $r$~\cite{StanleyQuestion}.
+
+We address the binomial case $r=1$ and the multiplicity $k=1$. Throughout,
+\begin{equation}\label{eq:definitionP}
+ P_0(x)=1,\qquad P_m(x)=\prod_{i=1}^m(1+x^{G_i}),\qquad
+ \nuone(m)=\#\{j\geq0:[x^j]P_m(x)=1\}.
+\end{equation}
+The count is of coefficients equal to $1$ \emph{as integers}, not of odd coefficients or coefficients in a finite field. Its generating function is
+\begin{equation}\label{eq:Fdef}
+ \F(z)=\sum_{m\geq0}\nuone(m)z^m.
+\end{equation}
+The index $m$ counts factors. We reserve $n$ for a pair of consecutive factors; $x$ is the polynomial variable and $z$ or $t$ is a generating-function variable.
+
+The original post followed a more specialized question about Fibonacci exponents~\cite{StanleyFibonacci}. Stanley's related paper develops rational-generating-function phenomena for products involving Fibonacci and related sequences~\cite{StanleyPaper}. Those settings motivate the question but do not imply the unrestricted assertion considered here.
+
+\begin{theorem}[Explicit counterexample]\label{thm:main}
+Define
+\begin{equation}\label{eq:trace}
+ a_0=2,\qquad a_1=1,\qquad a_n=a_{n-1}-2a_{n-2}\quad(n\geq2),
+\end{equation}
+and, recursively,
+\begin{equation}\label{eq:mainexp}
+ T_0=0,\qquad b_n=T_{n-1}+2^n-1+a_n,\qquad T_n=T_{n-1}+b_n.
+\end{equation}
+Set
+\begin{equation}\label{eq:interleave}
+ G_{2n-1}=2^{n-1},\qquad G_{2n}=b_n\qquad(n\geq1).
+\end{equation}
+Then every $G_m$ is a positive integer, $G_m\to\infty$, and
+\begin{equation}\label{eq:Gfull}
+ \GF(z):=\sum_{m\geq1}G_mz^m
+ =\frac{z+2z^2-3z^3-8z^4+4z^5+16z^6-4z^7-8z^8}
+ {1-5z^2+10z^4-12z^6+8z^8}.
+\end{equation}
+For the products in \eqref{eq:definitionP},
+\begin{equation}\label{eq:exactcounts}
+ \begin{gathered}
+ \nuone(0)=1,\qquad \nuone(1)=2,\qquad \nuone(2)=4,\\
+ \nuone(2n-1)=4,\qquad
+ \nuone(2n)=4+4\ind_{\{a_n>0\}}\quad(n\geq2).
+ \end{gathered}
+\end{equation}
+The series $\F(z)$ is not rational. In fact, its radius of convergence is~$1$ and the unit circle is a natural boundary. Consequently, $\F(z)$ is transcendental over $\C(z)$ and is not D-finite.
+\end{theorem}
+
+Here ``natural boundary'' means that the analytic function defined in $|z|<1$ has no analytic continuation through any point of $|z|=1$. The natural-boundary conclusion is stronger than needed to answer the source question.
+
+The proof separates into three parts. First we verify the arithmetic and rational generating function of the exponents. Next we count the unit coefficients exactly by understanding a sliding interval over a sparse weighted support. Finally we show that the resulting binary sign pattern is an irrational rotation coding.
+
+\subsection{What was checked about open status}
+
+The source page was retrieved on September 19, 2026 and displayed no posted answer. Searches for its exact title and for combinations of the author, coefficient counts, rationality, and counterexamples did not locate a previous proof or disproof of this general statement. This is narrower than a claim that all related work has been exhausted. In particular, the theorem below should be assessed by its proof, independently of any priority claim.
+
+The original hypothesis does \emph{not} require the $G_m$ to be increasing. This matters: after a large even-indexed exponent, the following odd-indexed exponent is a substantially smaller power of two. Both subsequences still tend to infinity, exactly as the hypothesis requires.
+
+\section{Arithmetic of the exponent sequence}
+
+\subsection{A small oscillating recurrence}
+
+The first trace values are
+\[
+ 2,\ 1,\ -3,\ -5,\ 1,\ 11,\ 9,\ -13,\ -31,\ -5,\ 57,\ 67,\ -47,\ldots.
+\]
+The characteristic roots of \eqref{eq:trace} are
+\begin{equation}\label{eq:alpha}
+ \alpha=\frac{1+i\sqrt7}{2},\qquad \overline\alpha=\frac{1-i\sqrt7}{2}.
+\end{equation}
+They have absolute value $\sqrt2$. Write
+\begin{equation}\label{eq:theta}
+ \alpha=\sqrt2\,\ee^{i\theta},\qquad
+ \cos\theta=\frac{1}{2\sqrt2},\qquad 0<\theta<\pi.
+\end{equation}
+Solving the recurrence gives
+\begin{equation}\label{eq:acos}
+ a_n=\alpha^n+\overline\alpha^{\,n}
+     =2^{n/2+1}\cos(n\theta).
+\end{equation}
+The closed form is useful in proofs, but exact integer recurrence evaluation is preferable in software: no numerical approximation of $n\theta$ is needed to determine a sign.
+
+\begin{lemma}[Parity and bounds]\label{lem:bounds}
+Every $a_n$ with $n\geq1$ is odd. Moreover,
+\begin{equation}\label{eq:abounds}
+ |a_n|\leq2^n-1\quad(n\geq1),\qquad
+ |a_n|\leq2^n-3\quad(n\geq3).
+\end{equation}
+In particular, none of these trace values is zero.
+\end{lemma}
+\begin{proof}
+Modulo $2$, the recurrence reads $a_n\equiv a_{n-1}$, and $a_1=1$. For the inequalities, $a_1=1$, $a_2=-3$, and $a_3=-5$ give the small cases. Equation~\eqref{eq:acos} gives $|a_n|\leq2^{n/2+1}$. If $n\geq4$, then
+\[
+ 2^{n/2+1}\leq2^{n-1}\leq2^n-3.
+\]
+This proves both bounds.
+\end{proof}
+
+\subsection{Positive exponents and separated main supports}
+
+The main exponents begin
+\[
+ b_1,b_2,b_3,\ldots=2,2,6,26,78,186,414,938,2158,4890,\ldots,
+\]
+and the complete exponent sequence begins
+\begin{equation}\label{eq:Ginitial}
+ 1,2,2,2,4,6,8,26,16,78,32,186,64,414,128,938,\ldots.
+\end{equation}
+The difference
+\begin{equation}\label{eq:gaps}
+ g_n:=b_n-T_{n-1}=2^n-1+a_n
+\end{equation}
+will be the gap between two copies of a polynomial support. For $n\geq3$, \cref{lem:bounds} yields
+\begin{equation}\label{eq:gapbounds}
+ 2\leq g_n\leq2^{n+1}-4.
+\end{equation}
+Thus $b_n>T_{n-1}=b_1+\cdots+b_{n-1}$ for $n\geq3$. The exceptional equality $b_2=b_1=2$ is intentional; it supplies a useful initial coefficient of multiplicity two.
+
+The first two $b_n$ are positive. Thereafter positivity follows from $b_n>T_{n-1}\geq0$. Also $g_n\geq2^n-1-2^{n/2+1}\to\infty$, so $b_n\to\infty$. Since $G_{2n-1}=2^{n-1}\to\infty$, the full sequence tends to infinity. Each $b_n$ is even: this follows inductively from \eqref{eq:mainexp}, since $T_{n-1}$ is even and $2^n-1+a_n$ is even.
+
+\subsection{Rational generating functions, with derivation}
+
+Let
+\[
+ A(t)=\sum_{n\geq0}a_nt^n,\qquad A_+(t)=A(t)-2,
+ \qquad B(t)=\sum_{n\geq1}b_nt^n.
+\]
+Multiplying the trace recurrence by $t^n$ and summing gives
+\begin{equation}\label{eq:Agf}
+ A(t)=\frac{2-t}{1-t+2t^2},\qquad
+ A_+(t)=\frac{t-4t^2}{1-t+2t^2}.
+\end{equation}
+Because $T_{n-1}=\sum_{j<n}b_j$, summing \eqref{eq:mainexp} gives
+\[
+ B(t)=\frac{t}{1-t}B(t)+\frac{2t}{1-2t}-\frac{t}{1-t}+A_+(t).
+\]
+Rearranging produces the useful general identity
+\begin{equation}\label{eq:Bcontrol}
+ B(t)=\frac{t}{(1-2t)^2}+\frac{1-t}{1-2t}A_+(t).
+\end{equation}
+Substitution of \eqref{eq:Agf} now gives
+\begin{equation}\label{eq:Bgf}
+ B(t)=\frac{2t-8t^2+16t^3-8t^4}
+ {(1-2t)^2(1-t+2t^2)}.
+\end{equation}
+Finally,
+\[
+ \GF(z)=\frac{z}{1-2z^2}+B(z^2),
+\]
+which simplifies to \eqref{eq:Gfull}. Its denominator factors as
+\begin{equation}\label{eq:Dfactor}
+ 1-5z^2+10z^4-12z^6+8z^8
+ =(1-2z^2)^2(1-z^2+2z^4).
+\end{equation}
+These are formal-power-series identities; no analytic convergence argument is necessary.
+
+\begin{corollary}[Explicit constant-coefficient recurrences]\label{cor:recurrences}
+The initial values in \eqref{eq:Ginitial} together with
+\begin{equation}\label{eq:Grecur}
+ G_m=5G_{m-2}-10G_{m-4}+12G_{m-6}-8G_{m-8}\quad(m\geq9)
+\end{equation}
+define the same exponent sequence. The main subsequence satisfies
+\begin{equation}\label{eq:Brecur}
+ b_n=5b_{n-1}-10b_{n-2}+12b_{n-3}-8b_{n-4}\quad(n\geq5),
+\end{equation}
+with $b_1,b_2,b_3,b_4=2,2,6,26$.
+\end{corollary}
+\begin{proof}
+Multiply the relevant generating function by its denominator and compare coefficients beyond the degree of the numerator.
+\end{proof}
+
+A sequence satisfying an eventual linear recurrence with constant coefficients is called \emph{C-finite}. Equivalently, its ordinary generating function is rational: summing the recurrence gives one implication, and multiplying a rational series by its denominator gives the other.
+
+The recurrence coefficients in \eqref{eq:Grecur} have both signs, but the \emph{terms} $G_m$ are positive. These are different requirements, and only positivity of the terms is part of the question.
+
+\section{A sliding-window lemma for unit coefficients}
+
+\subsection{Binary padding and weighted atoms}
+
+Define
+\begin{equation}\label{eq:DQ}
+ D_n(x)=\prod_{j=1}^n(1+x^{2^{j-1}})
+       =1+x+\cdots+x^{2^n-1},\qquad
+ Q_n(x)=\prod_{j=1}^n(1+x^{b_j}),
+\end{equation}
+with $Q_0=1$. The identity for $D_n$ is the uniqueness of binary expansion, or follows by telescoping $(1-x)D_n=1-x^{2^n}$.
+
+Reordering the factors of an individual product gives
+\begin{equation}\label{eq:factorization}
+ P_{2n-1}=D_nQ_{n-1},\qquad P_{2n}=D_nQ_n.
+\end{equation}
+This reordering is only inside each fixed polynomial. We do not reorder the infinite exponent sequence.
+
+Think of a polynomial $Q(x)=\sum_s q_sx^s$ with nonnegative integer coefficients as weighted atoms at the integers $s$ for which $q_s>0$. Multiplication by
+\[
+ D_L(x):=1+x+\cdots+x^{L-1}
+\]
+amounts to moving a window of $L$ consecutive integers over these atoms:
+\begin{equation}\label{eq:window}
+ [x^j]D_L(x)Q(x)=\sum_{s=j-L+1}^j q_s.
+\end{equation}
+Consequently, the coefficient is $1$ precisely when the window contains one atom of weight $1$ and no other atom.
+
+\begin{lemma}[No isolated interior unit atom]\label{lem:window}
+Suppose $Q$ has degree $T\geq4$, nonnegative integer coefficients, and the following properties:
+\begin{enumerate}[label=(\roman*)]
+ \item Its endpoint coefficients are $q_0=q_T=1$; its atoms at $2$ and $T-2$ have weight at least $2$, and there are no atoms strictly between $0$ and $2$ or between $T-2$ and $T$.
+ \item Each atom of weight $1$ has an atom of weight at least $2$ at distance exactly $2$ on at least one side.
+ \item Every gap between consecutive atoms is at most $L-2$, where $L\geq4$.
+\end{enumerate}
+Then $D_LQ$ has exactly four coefficients equal to $1$, at exponents
+\begin{equation}\label{eq:fourpositions}
+ 0,\quad1,\quad T+L-2,\quad T+L-1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+A window giving coefficient $1$ must isolate a unit-weight atom. First consider an interior atom at $s$, and let $s_-<s<s_+$ be its neighboring atoms. One of the neighboring gaps is at most $2$, by~(ii), and the other is at most $L-2$, by~(iii). Hence
+\[
+ s_+-s_-\leq L.
+\]
+Any interval of consecutive integers avoiding both neighbors while containing $s$ is contained in $\{s_-+1,\ldots,s_+-1\}$, which has at most $L-1$ elements. It therefore cannot be a window of $L$ consecutive integers. No interior unit atom can be isolated.
+
+For the atom at $0$, a window containing it but avoiding the atom at $2$ corresponds exactly to coefficient positions $j=0,1$. At the other end, a window containing $T$ but avoiding $T-2$ corresponds exactly to $j=T+L-2,T+L-1$. These positions do give unit coefficients by~(i). A window containing an atom of weight at least two cannot contribute a unit coefficient, so the list is complete.
+\end{proof}
+
+\subsection{Why the main products satisfy the lemma}
+
+The initial main product is
+\begin{equation}\label{eq:Q2}
+ Q_2(x)=(1+x^2)^2=1+2x^2+x^4.
+\end{equation}
+For $j\geq3$, the inequality $b_j>T_{j-1}=\deg Q_{j-1}$ gives
+\[
+ Q_j(x)=Q_{j-1}(x)+x^{b_j}Q_{j-1}(x)
+\]
+as a union of two disjoint translated supports. Coefficient weights do not change, and the new gap is $g_j=b_j-T_{j-1}$. By induction, for every $m\geq2$:
+\begin{equation}\label{eq:Qstructure}
+ \begin{gathered}
+ \text{all nonzero coefficients of $Q_m$ belong to $\{1,2\}$;}\\
+ \text{every unit atom belongs to a translate of the pattern $(1,2,1)$;}\\
+ \text{its internal support gaps belong to $\{2,g_3,\ldots,g_m\}$.}
+ \end{gathered}
+\end{equation}
+The pattern is situated at three positions $s,s+2,s+4$. Distinct translated copies do not overlap because each later duplication separates the entire previous support.
+
+For $Q_{n-1}$ and $L=2^n$, each earlier gap satisfies
+\[
+ g_j\leq2^{j+1}-4\leq2^n-4<L-2\qquad(3\leq j\leq n-1),
+\]
+and the base gap $2$ is also at most $L-2$. Thus \cref{lem:window} applies whenever $n\geq3$.
+
+\section{The exact coefficient-counting formula}
+
+\subsection{Odd-indexed products}
+
+We first establish the odd half of \eqref{eq:exactcounts}. For $n\geq3$, apply \cref{lem:window} to $P_{2n-1}=D_nQ_{n-1}$. Writing
+\begin{equation}\label{eq:Sodd}
+ S=\deg P_{2n-1}=T_{n-1}+2^n-1,
+\end{equation}
+we find that its unit coefficients occur exactly at
+\begin{equation}\label{eq:oddpositions}
+ 0,1,S-1,S.
+\end{equation}
+For $n=2$, direct multiplication gives
+\[
+ P_3(x)=(1+x)(1+x^2)^2
+       =1+x+2x^2+2x^3+x^4+x^5,
+\]
+so the same statement holds. Hence
+\begin{equation}\label{eq:oddcount}
+ \nuone(2n-1)=4\qquad(n\geq2).
+\end{equation}
+Notice also that every coefficient of $P_{2n-1}$ at positions $0,1,\ldots,2^n-1$ is positive: the constant term of $Q_{n-1}$ together with the binary-padding polynomial $D_n$ already contributes one there.
+
+\subsection{A positive trace separates two copies}
+
+The next exponent is, by definition,
+\begin{equation}\label{eq:bvsdegree}
+ b_n=S+a_n.
+\end{equation}
+If $a_n>0$, then $b_n>S$, so the supports of $P_{2n-1}$ and $x^{b_n}P_{2n-1}$ are disjoint. The new product is their sum, and therefore
+\[
+ \nuone(2n)=2\nuone(2n-1)=8\qquad(n\geq2,\ a_n>0).
+\]
+The amount of separation is irrelevant: any positive value of $a_n$ gives the same count.
+
+\subsection{A negative trace destroys four inner unit contributions}
+
+Suppose instead that $a_n<0$, and put $d=-a_n$. By \cref{lem:bounds},
+\begin{equation}\label{eq:dbound}
+ 1\leq d\leq2^n-1,\qquad b_n=S-d.
+\end{equation}
+Let $c_j=[x^j]P_{2n-1}$, with $c_j=0$ outside the support. The coefficients of $P_{2n}$ are $c_j+c_{j-b_n}$. Since the coefficients are nonnegative integers, a new unit coefficient must come from a unit coefficient in exactly one of the two copies, with a zero coefficient in the other. A coefficient of size at least two cannot become one by adding a nonnegative number.
+
+Each copy has four unit coefficients, by \eqref{eq:oddpositions}. The four \emph{inner contributions} are those at $S-1,S$ in the first copy and at $b_n,b_n+1$ in the translated copy. These need not be four distinct positions; for example, two pairs coincide when $d=1$. What matters is that all four contributions are destroyed by overlap.
+
+Indeed, $c_d,c_{d-1}>0$ by the positivity of the first $2^n$ coefficients. The polynomial $P_{2n-1}$ is palindromic, because each factor is palindromic, so $c_j=c_{S-j}$. Thus
+\[
+ \begin{array}{c|c}
+ \text{unit contribution}&\text{positive coefficient from the other copy}\\ \hline
+ S&c_{S-b_n}=c_d\\
+ S-1&c_{S-1-b_n}=c_{d-1}\\
+ b_n&c_{b_n}=c_{S-d}=c_d\\
+ b_n+1&c_{b_n+1}=c_{S-(d-1)}=c_{d-1}.
+ \end{array}
+\]
+Every indicated resulting coefficient is at least two. The remaining four candidates are the outside positions
+\[
+ 0,1,b_n+S-1,b_n+S.
+\]
+They remain unit coefficients, since $b_n\geq2$. There are no other candidates. We conclude that
+\[
+ \nuone(2n)=4\qquad(n\geq2,\ a_n<0).
+\]
+The parity lemma excludes $a_n=0$, so both cases together prove the even part of \eqref{eq:exactcounts}. Finally, $P_0=1$, $P_1=1+x$, and $P_2=(1+x)(1+x^2)$ give the three initial values.
+
+\begin{remark}[The overlap detector]
+The exact formula may be written
+\begin{equation}\label{eq:deficit}
+ 2\nuone(2n-1)-\nuone(2n)=4\ind_{\{a_n<0\}}\qquad(n\geq2).
+\end{equation}
+An exponentially small oscillatory perturbation of the main exponent, relative to its total size, decides whether two polynomial supports overlap. The count of unit coefficients records that decision without recording the magnitude of the perturbation.
+\end{remark}
+
+\section{Irrational rotation and nonrationality}
+
+\subsection{The angle is irrational in units of a full turn}
+
+\begin{lemma}\label{lem:irrational}
+The number $\theta/\pi$ in \eqref{eq:theta} is irrational.
+\end{lemma}
+\begin{proof}
+Set $\beta=\alpha/\overline\alpha=\ee^{2i\theta}$. Since $\alpha\overline\alpha=2$ and $a_2=-3$,
+\[
+ \beta+\beta^{-1}
+ =\frac{\alpha^2+\overline\alpha^{\,2}}{\alpha\overline\alpha}
+ =-\frac32.
+\]
+If $\theta/\pi$ were rational, then $\beta$ would be a root of unity. Both $\beta$ and $\beta^{-1}$ would be algebraic integers, and so would their sum. But a rational algebraic integer is an integer, whereas $-3/2$ is not. This contradiction proves the claim.
+\end{proof}
+
+For completeness, the last elementary fact follows by writing a rational root of a monic integer polynomial as $p/q$ in lowest terms: clearing denominators forces $q\mid p^{\deg f}$, hence $q=1$.
+
+\subsection{Equidistribution in the precise form needed}
+
+We record the rotation fact used both here and later.
+
+\begin{lemma}[Irrational rotation averages]\label{lem:rotation}
+If $\omega/(2\pi)$ is irrational and $f$ is a bounded, piecewise continuous $2\pi$-periodic function with finitely many discontinuities, then
+\begin{equation}\label{eq:equidistribution}
+ \frac1N\sum_{n=1}^N f(n\omega+\phi)
+ \longrightarrow\frac1{2\pi}\int_0^{2\pi}f(u)\,du
+\end{equation}
+for every real $\phi$.
+\end{lemma}
+\begin{proof}
+For any nonzero integer $h$, the geometric-sum identity gives
+\[
+ \frac1N\sum_{n=1}^N\ee^{ih(n\omega+\phi)}
+ =\frac{\ee^{ih(\phi+\omega)}(1-\ee^{ihN\omega})}
+ {N(1-\ee^{ih\omega})}\longrightarrow0.
+\]
+The denominator is nonzero by irrationality. The average of the constant function is one, so \eqref{eq:equidistribution} holds for trigonometric polynomials. Uniform approximation by trigonometric polynomials extends it to continuous periodic functions.
+
+To pass to $f$, surround its finitely many discontinuities by intervals of arbitrarily small total length. Outside those intervals the function can be approximated uniformly by a continuous function; the error inside is bounded by a fixed constant times the indicator of those intervals. Continuous majorants of the indicators can have arbitrarily small integrals. Applying the continuous case to the approximants and majorants, then shrinking the intervals and the uniform error, proves the result. Apply the argument separately to real and imaginary parts if necessary.
+\end{proof}
+
+Define
+\begin{equation}\label{eq:epsilon}
+ \eps_n=\ind_{\{a_n>0\}}=\ind_{\{\cos(n\theta)>0\}}\qquad(n\geq1).
+\end{equation}
+For every fixed arithmetic progression $n=r+qj$ with $q\geq1$, the angle step $q\theta$ is still irrational modulo $2\pi$. Applying \cref{lem:rotation} to the positive and negative semicircles shows that each sign has relative density $1/2$ along that progression. In particular, both signs occur infinitely often on every progression.
+
+\begin{corollary}\label{cor:nonperiodic}
+The sign sequence $(\eps_n)$ is not eventually periodic.
+\end{corollary}
+\begin{proof}
+An eventual period $q$ would make each residue class modulo $q$ eventually constant. The preceding paragraph gives infinitely many zeros and infinitely many ones in every such class.
+\end{proof}
+
+\subsection{Why bounded rational sequences must be eventually periodic}
+
+\begin{lemma}[Finite-state recurrence argument]\label{lem:boundedrational}
+A sequence with values in a finite subset of $\C$ has a rational ordinary generating function if and only if it is eventually periodic.
+\end{lemma}
+\begin{proof}
+For a rational generating function, multiplication by a denominator with nonzero constant term gives an eventual recurrence
+\[
+ u_{m+d}=c_{d-1}u_{m+d-1}+\cdots+c_0u_m.
+\]
+The state $(u_m,\ldots,u_{m+d-1})$ belongs to a finite set. Once the recurrence applies, its successor is determined by the state. Two states must eventually repeat, and determinism then makes the subsequent sequence periodic. A polynomial generating function gives an eventually zero sequence and is included in the same conclusion.
+
+Conversely, an eventually periodic sequence is a finite initial polynomial plus finitely many geometric series with common ratio $z^q$, where $q$ is a period. Its generating function is rational.
+\end{proof}
+
+By \eqref{eq:exactcounts}, the sequence $\nuone(m)$ has a finite range. If it were eventually periodic, its even-indexed subsequence would be eventually periodic, and therefore so would $\eps_n=(\nuone(2n)-4)/4$ for $n\geq2$. This contradicts \cref{cor:nonperiodic}. The finite-state lemma proves that $\F$ is not rational, completing the negative answer without using any complex-analytic natural-boundary theorem.
+
+\section{A natural boundary and stronger nonrecurrence results}
+
+\subsection{An exact representation by a rotation series}
+
+Let
+\begin{equation}\label{eq:Edef}
+ E(t)=\sum_{n\geq1}\eps_nt^n.
+\end{equation}
+Since $\eps_1=1$, the exact coefficient formula rearranges to
+\begin{equation}\label{eq:Frotation}
+ \boxed{\displaystyle
+ \F(z)=1+2z+\frac{4z^3}{1-z}+4E(z^2).}
+\end{equation}
+For example, the $z^2$ coefficient comes from $4E(z^2)$, whereas the baseline value $4$ for every degree $m\geq3$ comes from $4z^3/(1-z)$. This checks the easily missed initial-term correction.
+
+The coefficients of $\F$ are bounded and at least four for $m\geq2$, so its radius of convergence is exactly one. The same is true of $E$, since its coefficients belong to $\{0,1\}$ and ones occur infinitely often.
+
+\subsection{Fourier coefficients of the semicircle indicator}
+
+Put $f(u)=\ind_{\{\cos u>0\}}$, interpreted periodically. For $\ell\in\Z$, its Fourier coefficient is
+\begin{equation}\label{eq:fourier}
+ c_\ell:=\frac1{2\pi}\int_0^{2\pi}f(u)\ee^{-i\ell u}\,du
+ =\begin{cases}
+ 1/2,&\ell=0,\\[2pt]
+ \dfrac{\sin(\ell\pi/2)}{\pi\ell},&\ell\ne0.
+ \end{cases}
+\end{equation}
+Indeed, one can integrate over $-\pi/2<u<\pi/2$. The coefficient $c_\ell$ is nonzero for every odd integer $\ell$. Applying \cref{lem:rotation} to $f(u)\ee^{-i\ell u}$ yields
+\begin{equation}\label{eq:weightedmean}
+ \frac1N\sum_{n=1}^N\eps_n\ee^{-i\ell n\theta}\longrightarrow c_\ell.
+\end{equation}
+No pointwise Fourier-series convergence is being assumed here: only the elementary integral and the rotation-average lemma are used.
+
+\begin{lemma}[Ces\`aro averages imply radial Abel limits]\label{lem:abel}
+If $(w_n)$ is bounded and $N^{-1}\sum_{n=1}^Nw_n\to c$, then
+\begin{equation}\label{eq:abellimit}
+ (1-r)\sum_{n\geq1}w_nr^n\longrightarrow c\qquad(r\uparrow1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $W_N=\sum_{n=1}^Nw_n=cN+o(N)$. Summation by parts gives
+\[
+ \sum_{n\geq1}w_nr^n=(1-r)\sum_{N\geq1}W_Nr^N.
+\]
+After multiplication by $1-r$, the contribution of $cN$ is $cr\to c$. For any $\delta>0$, choose $N_0$ such that $|W_N-cN|\leq\delta N$ for $N\geq N_0$. The finite initial portion tends to zero after multiplication by $(1-r)^2$, and the tail is bounded by $\delta r$. Letting $\delta\downarrow0$ proves the limit.
+\end{proof}
+
+\begin{theorem}[Dense radial singularities]\label{thm:natural}
+For each odd integer $\ell$, set $\zeta_\ell=\ee^{-i\ell\theta}$. Then
+\begin{equation}\label{eq:Esingular}
+ \lim_{r\uparrow1}(1-r)E(r\zeta_\ell)=c_\ell\ne0.
+\end{equation}
+The unit circle is a natural boundary for both $E$ and $\F$.
+\end{theorem}
+\begin{proof}
+Combine \eqref{eq:weightedmean} with \cref{lem:abel}, taking $w_n=\eps_n\ee^{-i\ell n\theta}$. This proves \eqref{eq:Esingular}. A nonzero limit forces $E(r\zeta_\ell)$ to be unbounded as $r\uparrow1$, so $E$ cannot extend analytically through $\zeta_\ell$.
+
+The points $\ee^{-i(2j+1)\theta}$ are dense in the unit circle, because the rotation with step $2\theta$ is irrational. An analytic continuation through any boundary point would give continuation across a small open arc and hence through some $\zeta_\ell$ in that arc, a contradiction. Thus the circle is a natural boundary for $E$.
+
+For $\F$, take any $\eta$ with $\eta^2=\zeta_\ell$. Since $\ell\ne0$ and $\theta/\pi$ is irrational, $\eta\ne1$. The rational part of \eqref{eq:Frotation} is analytic near $\eta$, while
+\begin{equation}\label{eq:Fsingular}
+ \lim_{r\uparrow1}(1-r^2)\F(r\eta)=4c_\ell\ne0.
+\end{equation}
+This follows from \eqref{eq:Esingular} with radial parameter $r^2$. The preimages of the dense set $\{\zeta_\ell:\ell\text{ odd}\}$ under $\eta\mapsto\eta^2$ are dense on the unit circle. The same arc argument proves the natural boundary for $\F$.
+\end{proof}
+
+\subsection{Consequences for algebraic and differential equations}
+
+A power series is \emph{D-finite} if it satisfies a nonzero homogeneous linear differential equation with polynomial coefficients. This is the framework studied in Stanley's foundational paper~\cite{StanleyDFinite}. We give the particular consequences needed here explicitly.
+
+\begin{corollary}\label{cor:dfinite}
+The series $\F$ is not D-finite and is not algebraic over $\C(z)$. The coefficient sequence $\nuone(m)$ satisfies no nontrivial eventual linear recurrence whose coefficients are polynomials in~$m$.
+\end{corollary}
+\begin{proof}
+If $\F$ satisfied a linear differential equation with polynomial coefficients, its highest-derivative coefficient would vanish at only finitely many finite points. At every other point, the usual local existence theorem for analytic linear differential equations continues a solution analytically from nearby initial values. Choosing a unit-circle point outside the finite exceptional set contradicts \cref{thm:natural}. The order-zero case would force $\F=0$, also impossible.
+
+An algebraic function in characteristic zero is D-finite. To see this directly, if $y$ is algebraic of degree $d$ over $\C(z)$, the finite-dimensional field $\C(z,y)$ is closed under differentiation: differentiating its minimal polynomial expresses $y'$ in that field, and the usual quotient rule does the rest. Therefore $y,y',\ldots,y^{(d)}$ are linearly dependent over $\C(z)$. Clearing denominators gives a polynomial-coefficient linear differential equation. The first part rules out algebraicity of $\F$.
+
+Finally, a polynomial-coefficient recurrence for $u_m$ can be multiplied by $z^m$ and summed. Powers of $m$ become powers of the operator $z\,d/dz$; shifts of $m$ become powers of $z$ and finite initial corrections. Thus the generating function satisfies a linear differential equation with polynomial coefficients and a polynomial right-hand side. Applying sufficiently many derivatives annihilates that right-hand side. This gives D-finiteness, contradicting the first part.
+\end{proof}
+
+This corollary concerns \emph{linear} differential equations and \emph{linear} recurrences with polynomial coefficients. It does not assert differential transcendence or rule out nonlinear differential equations.
+
+\section{Asymptotics, frequencies, and correlations}
+
+\subsection{Explicit asymptotics for the exponents}
+
+Introduce the companion recurrence
+\[
+ u_0=0,\quad u_1=1,\quad u_n=u_{n-1}-2u_{n-2}.
+\]
+Its generating function and closed form are
+\[
+ \sum_{n\geq0}u_nt^n=\frac{t}{1-t+2t^2},\qquad
+ u_n=\frac{\alpha^n-\overline\alpha^{\,n}}{i\sqrt7}
+     =\frac{2^{n/2+1}}{\sqrt7}\sin(n\theta).
+\]
+Partial fractions in \eqref{eq:Bgf} give, for $n\geq1$,
+\begin{align}
+ b_n&=(2n-1)2^{n-2}+\frac{5a_n+7u_n}{8}\label{eq:bclosed}\\
+    &=(2n-1)2^{n-2}
+      +\frac{2^{n/2}}4\bigl(5\cos(n\theta)+\sqrt7\sin(n\theta)\bigr).
+ \nonumber
+\end{align}
+For example, one may verify this without guessing by observing that
+\[
+ B(t)=\frac{t}{(1-2t)^2}-\frac{t}{2(1-2t)}
+      +\frac{5A_+(t)+7t/(1-t+2t^2)}8.
+\]
+The oscillating remainder in \eqref{eq:bclosed} has absolute value at most $2^{(n+1)/2}$. Hence
+\begin{equation}\label{eq:basymptotic}
+ b_n=(2n-1)2^{n-2}+O(2^{n/2}),\qquad
+ \frac{b_n}{2^{n-1}}=n-\frac12+O(2^{-n/2}).
+\end{equation}
+
+Let $S_n=\deg P_{2n}=T_n+2^n-1$. Summing a pair of exponents gives
+\[
+ S_0=0,\qquad S_n=2S_{n-1}+2^n+a_n.
+\]
+The corresponding exact expression is
+\begin{equation}\label{eq:Sclosed}
+ S_n=\left(n-\frac12\right)2^n+\frac{a_n+7u_n}{4}
+    =\left(n-\frac12\right)2^n+O(2^{n/2}).
+\end{equation}
+Thus even a product with only $2n$ factors quickly has degree of order $n2^n$, while its count of unit coefficients stays at four or eight.
+
+The perturbation that controls overlap is $a_n=O(2^{n/2})$. Relative to $b_n=\Theta(n2^n)$, it is only $O(2^{-n/2}/n)$. The exact coefficient-counting operation detects its sign despite this relative smallness.
+
+\subsection{Densities and mean values}
+
+By \cref{lem:rotation},
+\begin{equation}\label{eq:signfreq}
+ \#\{1\leq n\leq N:a_n>0\}=\frac N2+o(N).
+\end{equation}
+Combining this with the exact counts gives
+\begin{equation}\label{eq:frequencies}
+ \begin{aligned}
+ \lim_{M\to\infty}\frac{\#\{0\leq m\leq M:\nuone(m)=4\}}{M+1}&=\frac34,\\
+ \lim_{M\to\infty}\frac{\#\{0\leq m\leq M:\nuone(m)=8\}}{M+1}&=\frac14.
+ \end{aligned}
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:meanvariance}
+ \frac1{M+1}\sum_{m=0}^M\nuone(m)\longrightarrow5,\qquad
+ \frac1{M+1}\sum_{m=0}^M(\nuone(m)-5)^2\longrightarrow3.
+\end{equation}
+Equivalently, the summatory function is $5M+o(M)$. These are averaging statements; the individual terms do not converge.
+
+Applying \cref{lem:abel} at the positive real boundary point gives
+\begin{equation}\label{eq:realradial}
+ \lim_{r\uparrow1}(1-r)\F(r)=5.
+\end{equation}
+This one radial limit does not make the function meromorphic at $1$: dense singularities still obstruct analytic continuation through every boundary arc.
+
+\subsection{An exact correlation formula}
+
+Put $\sigma_n=2\eps_n-1\in\{-1,1\}$. For a fixed nonnegative integer $h$, define
+\[
+ \delta_h=\min_{j\in\Z}|h\theta-2\pi j|\in[0,\pi].
+\]
+The signs of $\cos u$ and $\cos(u+h\theta)$ disagree on a set of total length $2\delta_h$ in a full circle. Applying \cref{lem:rotation} to their product yields
+\begin{equation}\label{eq:correlation}
+ \lim_{N\to\infty}\frac1N\sum_{n=1}^N\sigma_n\sigma_{n+h}
+ =1-\frac{2\delta_h}{\pi}.
+\end{equation}
+This follows by integrating the value $+1$ on the agreement set and $-1$ on the disagreement set. Equivalently, the overlap of the two positive semicircles has length $\pi-\delta_h$, giving
+\[
+ \lim_{N\to\infty}\frac1N\sum_{n=1}^N\eps_n\eps_{n+h}
+ =\frac12-\frac{\delta_h}{2\pi}.
+\]
+Since $\nuone(2n)=6+2\sigma_n$ for $n\geq2$, the centered even-indexed count has covariance
+\begin{equation}\label{eq:evencorrelation}
+ \lim_{N\to\infty}\frac1N\sum_{n=1}^N
+  \bigl(\nuone(2n)-6\bigr)\bigl(\nuone(2n+2h)-6\bigr)
+ =4-\frac{8\delta_h}{\pi}.
+\end{equation}
+The exceptional initial term has no effect on the limit. Thus the apparently irregular output has explicit deterministic correlations, not independent random fluctuations.
+
+\section{A general sign-coding theorem}
+
+The support argument is more general than the particular quadratic recurrence. It isolates exactly which properties were used.
+
+\begin{theorem}[Admissible controls]\label{thm:coding}
+Let $(c_n)_{n\geq1}$ be integers satisfying
+\begin{equation}\label{eq:controlconditions}
+ c_1=1,\quad c_2=-3,\quad
+ c_n\text{ odd and }|c_n|\leq2^n-3\quad(n\geq3).
+\end{equation}
+Use $c_n$ in place of $a_n$ in \eqref{eq:mainexp} and \eqref{eq:interleave}. Then all exponents are positive and tend to infinity, and the resulting products satisfy
+\[
+ \nuone(2n-1)=4,\qquad
+ \nuone(2n)=4+4\ind_{\{c_n>0\}}\qquad(n\geq2),
+\]
+with the same three initial counts. Moreover:
+\begin{enumerate}[label=(\roman*)]
+ \item The exponent generating function is rational if and only if $\sum_{n\geq1}c_nt^n$ is rational.
+ \item The coefficient-counting generating function is rational if and only if the sign sequence $\ind_{\{c_n>0\}}$ is eventually periodic.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The seed still gives $b_1=b_2=2$. Thereafter the main gap is $2^n-1+c_n$, lying between $2$ and $2^{n+1}-4$. Therefore all support and window arguments in Sections 3 and 4 apply verbatim. Positivity follows as before. To see divergence without assuming that the gaps themselves tend to infinity, use $T_n\geq2T_{n-1}+2$ for $n\geq3$ and $T_2=4$. It follows that $T_n+2\geq6\cdot2^{n-2}$, so $b_n\geq T_{n-1}+2\to\infty$.
+
+Let $C(t)=\sum_{n\geq1}c_nt^n$. The formal summation used for \eqref{eq:Bcontrol} gives
+\begin{equation}\label{eq:generalB}
+ B(t)=\frac{t}{(1-2t)^2}+\frac{1-t}{1-2t}C(t).
+\end{equation}
+Thus $B$ is rational if and only if $C$ is rational. Also $\GF(z)=z/(1-2z^2)+B(z^2)$, so rationality of $B$ implies rationality of $\GF$. Conversely, if $\GF$ is rational then $B(z^2)$ is an even rational function and hence is rational in $z^2$. One elementary verification is to multiply numerator and denominator by the denominator with $z$ replaced by $-z$ and then take the even numerator; both resulting polynomials are even. Thus $B$ is rational. This proves~(i).
+
+The exact count formula and \cref{lem:boundedrational} give~(ii): the counts are eventually periodic exactly when the even-indexed sign coding is eventually periodic.
+\end{proof}
+
+The theorem is an explicit distinction between a linear operation and a nonlinear one. The map from the control series $C$ to the exponent series $\GF$ consists only of rational operations and a substitution $t=z^2$. In contrast, the count extracts the sign of $c_n$. A constant-coefficient recurrence can have a nonperiodic sign pattern, as the quadratic trace sequence demonstrates.
+
+For arbitrary prescribed binary data from index $3$ onward, choosing $c_n=1$ or $-1$ encodes that data in the even counts. Such a control need not be C-finite, so this observation alone would not answer Stanley's question. The essential additional step is selecting a \emph{C-finite} control with nonperiodic signs.
+
+\begin{corollary}[Integer rescaling]\label{cor:scaling}
+For every positive integer $d$, replacing $G_m$ by $dG_m$ gives another positive C-finite exponent sequence with the same coefficient counts and the same nonrational counting series.
+\end{corollary}
+\begin{proof}
+The new product is $P_m(x^d)$. This changes the exponents of its nonzero terms but not their coefficient values. The exponent generating function is simply $d\GF(z)$.
+\end{proof}
+
+\section{Exact computation and reproducibility}
+
+\subsection{Initial values}
+
+\Cref{tab:blocks} gives both the exponents and their coefficient counts. The trace sign, rather than its magnitude, decides the even count.
+
+\begin{table}[htbp]
+\centering\small
+\setlength{\tabcolsep}{7pt}
+\begin{tabular}{rrrrrrr}
+\toprule
+$n$&$a_n$&$G_{2n-1}$&$b_n=G_{2n}$&$\deg P_{2n}$&$\nuone(2n-1)$&$\nuone(2n)$\\
+\midrule
+1 & 1 & 1 & 2 & 3 & 2 & 4 \\
+2 & -3 & 2 & 2 & 7 & 4 & 4 \\
+3 & -5 & 4 & 6 & 17 & 4 & 4 \\
+4 & 1 & 8 & 26 & 51 & 4 & 8 \\
+5 & 11 & 16 & 78 & 145 & 4 & 8 \\
+6 & 9 & 32 & 186 & 363 & 4 & 8 \\
+7 & -13 & 64 & 414 & 841 & 4 & 4 \\
+8 & -31 & 128 & 938 & 1907 & 4 & 4 \\
+9 & -5 & 256 & 2158 & 4321 & 4 & 4 \\
+10 & 57 & 512 & 4890 & 9723 & 4 & 8 \\
+11 & 67 & 1024 & 10814 & 21561 & 4 & 8 \\
+12 & -47 & 2048 & 23562 & 47171 & 4 & 4 \\
+13 & -181 & 4096 & 51086 & 102353 & 4 & 4 \\
+14 & -87 & 8192 & 110458 & 221003 & 4 & 4 \\
+15 & 275 & 16384 & 237662 & 475049 & 4 & 8 \\
+16 & 449 & 32768 & 508266 & 1016083 & 4 & 8 \\
+\bottomrule
+\end{tabular}
+\caption{Exact values. The two count columns were checked against independent polynomial multiplication through these indices and beyond.}\label{tab:blocks}
+\end{table}
+
+\subsection{Independent implementations}
+
+The accompanying program \texttt{code/verify.py} does not use the count formula when producing its independent checks. It implements two different combinatorial computations.
+
+The first directly multiplies the binomials, updating a dense coefficient vector by
+\[
+ q_j=p_j+p_{j-G_m}.
+\]
+The default implementation uses arbitrary-precision Python integers. An optional NumPy implementation uses signed 64-bit integers, with the total coefficient sum $P_m(1)=2^m$ checked at each step. This sum is also an a priori upper bound on every coefficient, so fewer than $63$ factors prevent integer overflow in that implementation.
+
+The second builds the weighted support of $Q_n$ as a dictionary of exact subset-sum multiplicities. Each atom of weight $w$ at $s$ contributes $w$ throughout the integer interval $[s,s+2^n-1]$ after convolution with $D_n$. An event sweep adds $w$ at $s$ and subtracts $w$ at $s+2^n$, then totals the lengths of intervals on which the active weight is exactly one. This method uses neither the isolation lemma nor the sign formula to count coefficients.
+
+After either independent count has been produced, it is compared with \eqref{eq:exactcounts}. The recorded run established:
+\begin{itemize}
+ \item direct arbitrary-precision multiplication through $28$ factors, and independent exact 64-bit multiplication through $38$ factors;
+ \item weighted-support event sweeps through $34$ factors;
+ \item exact recurrence, parity, bound, and generating-function coefficient checks through $4{,}000$ exponents, plus all $256$ choices of the eight controls $c_3,\ldots,c_{10}\in\{-1,1\}$ with the fixed initial controls.
+\end{itemize}
+At $38$ factors the degree was $9{,}698{,}329$ and the largest polynomial coefficient was $34{,}368$. A separate streaming integer computation found $49{,}998$ positive and $50{,}002$ negative trace values among $a_1,\ldots,a_{100000}$. These frequency counts are checks, not substitutes for the proof of density $1/2$.
+
+The optional script \texttt{code/symbolic\_verify.py} uses SymPy to verify the rational-function identities, partial-fraction formulas, and denominator factorization by exact cancellation. All displayed differences simplify to zero, and the numerator and denominator of \eqref{eq:Gfull} have polynomial gcd~$1$.
+
+\subsection{Commands and data provenance}
+
+From the archive's root directory, the standard-library checks are run with
+\begin{lstlisting}
+python3 code/verify.py
+\end{lstlisting}
+The larger check used for the recorded run is
+\begin{lstlisting}
+python3 code/verify.py --numpy-dense 19
+python3 code/symbolic_verify.py
+\end{lstlisting}
+The optional commands require NumPy and SymPy, respectively. The recorded environment used Python 3.13.5 and SymPy 1.14.0. These are descriptions of the executed environment, not claims about the newest available releases.
+
+The files \texttt{data/verification.json} and \texttt{data/symbolic\_verification.json} record the results. The archive also includes exact b-file-style lists for the exponents, trace values, and counts, together with a CSV block table. The long count list is generated \emph{from the proved formula}; only the explicitly stated initial ranges were checked by polynomial multiplication. No OEIS identifiers have been assigned or assumed for these lists.
+
+\subsection{Computational complexity and what finite checks cannot show}
+
+Dense multiplication must handle $\Theta(n2^n)$ coefficient positions by the end of block $n$. The structural formula avoids this exponential-size polynomial. Computing the first $n$ trace values, main exponents, and counts takes $O(n)$ additions or multiplications by fixed integers. The relevant integers have $O(n)$ bits, so a straightforward implementation uses $O(n^2)$ bit operations, rather than unit-cost linear time. Streaming the trace and current totals requires only $O(n)$ bits of working storage, apart from retained output.
+
+No finite collection of values proves that a sequence has no eventual period: a finite word can always be extended periodically. Nor does failure to guess a recurrence prove nonrationality. Those conclusions here come from irrational rotation and the exact counting identity. Similarly, the natural boundary is established by the dense family of nonzero radial limits, not by a plot or a numerical approximation.
+
+\section{Interpretation and remaining questions}
+
+The result gives a negative answer to the unrestricted rationality question under its stated assumptions. The input exponents are specified either by a short recursive construction or by the fixed recurrence \eqref{eq:Grecur}; they are not defined by reference to their own coefficient counts. Their ordinary generating function is explicitly rational. Yet an exact fixed coefficient multiplicity produces a sequence with no polynomial-coefficient linear recurrence at all.
+
+The construction relies on two components. Binary padding supplies a contiguous window, so small differences in the main exponent are visible to the product. The duplicated initial main exponent supplies weight-two atoms, ensuring that the only surviving unit coefficients are controlled boundary terms. Without the padding, negative displacement need not cause any overlap of a sparse support. Without the weight-two seed, other isolated unit atoms could contribute unwanted counts. Both pieces are used in the proof.
+
+Several narrower problems remain outside this result. It does not decide whether an eventually strictly increasing positive C-finite exponent sequence must have rational fixed-multiplicity counts. It also does not settle versions in which the exponent recurrence is required to have nonnegative coefficients. The general classification requested in the source question remains broader than the negative answer given here. Finally, this manuscript does not classify $\nu_k(m)$ for $k>1$ for the constructed sequence, nor does it claim a counterexample for each fixed higher-degree factor length~$r$.
+
+There is also a precise distinction between effective computation and a simple generating function. The count sequence is easy to compute exactly using a second-order recurrence and a sign test, despite having a natural boundary. Nonrationality is not synonymous with computational intractability.
+
+\begin{resultbox}[breakable=false]
+\textbf{Conclusion.} Positive exponents tending to infinity can have a rational ordinary generating function while their exact unit-coefficient counts have a natural boundary. In the explicit example,
+\[
+ \nuone(2n-1)=4,\qquad
+ \nuone(2n)=4+4\ind_{\{a_n>0\}},\qquad
+ a_n=a_{n-1}-2a_{n-2}\quad(n\geq2),
+\]
+with the stated initial conditions. The obstruction is the nonperiodic sign pattern of a C-finite sequence, transmitted by a controlled support overlap.
+\end{resultbox}
+
+\appendix
+\section{A compact independent verifier}
+
+The following small standard-library program checks the original products directly through $20$ factors. It is included to make the core finite verification easy to inspect. It does not prove the infinite statement; the full proofs are in the preceding sections.
+
+\begin{lstlisting}[language=Python]
+def check(blocks=10):
+    if not 1 <= blocks <= 15:
+        raise ValueError("choose 1..15 blocks for this dense checker")
+    a0, a1 = 2, 1
+    main_total = 0
+    polynomial = [1]
+    observed = [1]
+    predicted = [1]
+
+    for n in range(1, blocks + 1):
+        a = a1
+        b = main_total + 2**n - 1 + a
+        assert b > 0
+        for exponent in (2**(n - 1), b):
+            next_polynomial = [0] * (len(polynomial) + exponent)
+            for j, coefficient in enumerate(polynomial):
+                next_polynomial[j] += coefficient
+                next_polynomial[j + exponent] += coefficient
+            polynomial = next_polynomial
+            observed.append(polynomial.count(1))
+
+        predicted.extend((2 if n == 1 else 4,
+                          4 if n == 1 else 4 + 4 * (a > 0)))
+        main_total += b
+        a0, a1 = a1, a1 - 2*a0
+
+    assert observed == predicted
+    return observed
+
+if __name__ == "__main__":
+    print(check())
+\end{lstlisting}
+
+\section{Proof audit: dependencies and boundary cases}
+
+The rationality of the exponents follows from summing their defining recurrence, independently of any coefficient experiment. Positivity is checked separately, rather than inferred from the rational expression, whose numerator and denominator have signed coefficients.
+
+The count formula uses the special initial equality $b_1=b_2=2$. Strict support separation is asserted only from $b_3$ onward. Odd products at $n=2$ are checked directly, while those at $n\geq3$ use the window lemma. The values at $m=0,1,2$ are kept separate throughout.
+
+In the negative-trace case, the proof counts contributions from two copies before combining them. Two inner positions can coincide, so the argument explicitly destroys four \emph{contributions}, not necessarily four distinct positions. It then identifies four distinct outside positions that remain. The bound $1\leq -a_n\leq2^n-1$ ensures that both overlap witnesses $c_{-a_n}$ and $c_{-a_n-1}$ exist and are positive.
+
+The nonperiodicity proof concerns every tail, not just the full sequence from its first term. Each arithmetic progression sees both signs infinitely often, which rules out all eventual periods. The natural-boundary proof uses odd Fourier modes, whose coefficients are nonzero, and it avoids the rational term's exceptional point $z=1$ when transferring singularities from $E(z^2)$ to $\F(z)$.
+
+The strong final consequence is non-D-finiteness, not the stronger assertion of differential transcendence. The numerical range of verification and the theorem-derived range of the supplied count table are distinguished in the data descriptions.
+
+\begin{thebibliography}{9}
+
+\bibitem{StanleyQuestion}
+Richard Stanley,
+\emph{A conjectured rational generating function},
+MathOverflow question 431075, September 23, 2022.
+\url{https://mathoverflow.net/questions/431075/}.
+Accessed September 19, 2026. Source of the universal rationality question answered here.
+
+\bibitem{StanleyFibonacci}
+Richard Stanley,
+\emph{Number of coefficients equal to $k$ in certain ``Fibonacci polynomials''},
+MathOverflow question 430741, September 19, 2022.
+\url{https://mathoverflow.net/questions/430741/}.
+Accessed September 19, 2026. Earlier specialized question; not the statement disproved here.
+
+\bibitem{StanleyPaper}
+Richard P. Stanley,
+\emph{Theorems and conjectures on some rational generating functions},
+arXiv:2101.02131, version 3, September 30, 2021.
+\url{https://arxiv.org/abs/2101.02131v3}.
+Background on coefficient statistics of products with recurrent exponents.
+
+\bibitem{StanleyDFinite}
+Richard P. Stanley,
+\emph{Differentiably finite power series},
+European Journal of Combinatorics \textbf{1} (1980), no.~2, 175--188.
+\url{https://www.sciencedirect.com/science/article/pii/S0195669880800515}.
+Background for D-finite series and polynomial-coefficient recurrences; the obstruction used in this manuscript is proved directly.
+
+\end{thebibliography}
+\end{document}

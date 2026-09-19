@@ -1,0 +1,1239 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array,tabularx,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem,fancyhdr,titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\definecolor{ink}{HTML}{153247}
+\definecolor{accent}{HTML}{176B75}
+\definecolor{pale}{HTML}{F0F6F7}
+\hypersetup{colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,
+ pdftitle={Elliptic addition and Jacobi continued fractions},
+ pdfauthor={Research report prepared with ChatGPT},
+ pdfsubject={An explicit proof of Barry's corrected elliptic continued-fraction conjecture}}
+\titleformat{\section}{\large\bfseries\color{ink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{ink}}{\thesubsection}{0.65em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Elliptic addition and Jacobi fractions}
+\fancyhead[R]{\small\color{ink}Research report}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\K}{K}
+\newcommand{\OO}{\mathcal{O}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\coef}[2]{[z^{#1}]\,#2}
+\newcommand{\inv}{\mathcal{I}}
+\newcommand{\starh}{h^{*}}
+\newcommand{\dd}{\delta}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Frac}{Frac}
+\newtcolorbox{resultbox}{colback=pale,colframe=accent,boxrule=0.6pt,
+ arc=1mm,left=9pt,right=9pt,top=7pt,bottom=7pt,breakable}
+
+\begin{document}
+\begin{center}
+{\small\sffamily\color{accent}INTEGER SEQUENCES\quad /\quad GENERATING FUNCTIONS\quad /\quad ELLIPTIC CURVES}\par
+\vspace{15pt}
+{\LARGE\bfseries\color{ink}Elliptic addition and\par Jacobi continued fractions}\par
+\vspace{9pt}
+{\large An explicit proof of a conjectured correspondence,\par with indexing and torsion corrections}\par
+\vspace{13pt}
+{\normalsize Research report prepared with ChatGPT}\par
+{\small 19 September 2026}
+\end{center}
+\vspace{8pt}
+\begin{abstract}
+Paul Barry's 2023 paper \emph{Integer sequences from elliptic curves}
+conjectures that the Jacobi continued-fraction coefficients of a particular
+algebraic generating function are given by coordinates of successive
+multiples of a point on an elliptic curve. We give an explicit algebraic proof
+of a consistently indexed, non-torsion formulation of that assertion.
+The main construction is a closed expression for every normalized complete
+quotient. A factorization shows that deleting one continued-fraction layer
+is exactly translation by the distinguished elliptic-curve point, after a
+rational change of coordinates. No inference from finitely many coefficients
+is used in the proof.
+
+The corresponding formulas for both coordinates in terms of Hankel and
+modified Hankel determinants follow from a self-contained moment argument.
+We also derive the associated Somos-4 recurrence and recover the
+already-known division-polynomial identity, explicitly crediting the
+2026 proof of Liu, Wang, and Zhang. Torsion specializations explain an essential
+missing hypothesis: a zero Hankel determinant need not cause all later ones
+to vanish. In fact, the generating function is nonrational whenever the
+parameter $b$ is nonzero, even in these exceptional cases. Exact computations
+on 106 nonsingular curves, sixteen symbolic identities, and four worked
+examples accompany the article. The literature audit identifies the precise
+conjecture addressed and distinguishes the present proof from previously
+established results; priority is not asserted.
+\end{abstract}
+\vspace{3pt}
+\begin{resultbox}
+\textbf{Central correspondence.} On
+$Y^2+aXY+bY=X^3+cX^2+dX$, write $mP=(X_m,Y_m)$ for $P=(0,0)$.
+For the generating function defined in Section~\ref{sec:setup}, the regular
+Jacobi coefficients are
+\[
+ \alpha_0=1,\quad\alpha_1=-1,\quad\beta_1=1,\qquad
+ \alpha_m=\frac{bY_m}{X_m}-d-1,\quad
+ \beta_m=-b^2X_m\quad(m\ge2).
+\]
+The proof constructs all the tails, rather than merely guessing these coefficients.
+\end{resultbox}
+\clearpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+
+\section{The problem and the literature boundary}\label{sec:status}
+
+\subsection{The published conjecture}
+Barry associates an integer-coefficient generating function to a generalized
+Weierstrass equation with a specified integral point. In Section~3 of
+\cite{Barry2023}, Conjecture~2 concerns its Hankel transform and an elliptic
+division sequence; Conjecture~3 expresses point coordinates through Hankel
+determinants; Conjecture~4 proposes a Jacobi continued fraction in the reverse
+direction. We take the last assertion as the main target, with the coordinate
+formulas as its natural consequence.
+
+This is a tractable kind of sequence problem because the generating function
+has degree two over a rational-function field. Its continued-fraction tails
+can plausibly remain in the same quadratic extension. The difficulty is not
+computing a few tails: it is finding a closed family stable under the
+continued-fraction transformation and proving that its parameter evolution
+agrees with the elliptic group law.
+
+\subsection{What was already known by the research date}
+The current literature matters here. Liu, Wang, and Zhang's preprint
+\cite{LWZ2026}, submitted in August 2026, explicitly lists Barry's 2023
+Conjecture~2 among the assertions it proves. Its Theorems~5.4--5.5 give the
+Somos-4 recurrence and the normalized Hankel/division-polynomial identity.
+Those are therefore \emph{not} claimed as new results in this report.
+
+The general relationship among continued fractions, elliptic translation,
+orthogonal polynomials, and Hankel determinants is older. Hone's work
+\cite{Hone2021} provides a broad treatment, including higher genus.
+Barry's 2025 paper \cite{Barry2025} develops related lattice-path and
+continued-fraction correspondences, and Chang and Liu \cite{CL2026}
+treat further issues involving hyperelliptic functions and bilateral Somos
+sequences. The present calculation belongs to this established framework;
+it is not a discovery of the general connection.
+
+The specific deliverable here is a directly checkable complete-quotient
+formula in the four parameters of \cite{Barry2023}, together with a proof
+that it yields the intended assertions of Conjectures~3--4. The sources
+inspected did not supply this exact proof in this normalization. That is a
+bounded literature observation, not a guarantee that no equivalent result
+or unpublished proof exists. Thus the report proves a precise version of a
+published conjectural statement, but does not certify a first-in-the-literature
+resolution of a still-open problem as of September 2026.
+
+\subsection{Two necessary corrections}
+There are two different issues, which should not be conflated.
+
+First, the sentence immediately before Conjecture~4 in \cite{Barry2023}
+identifies $(x_n,y_n)$ with $n(0,0)$, while its displayed formulas use
+$\beta_{n+1}=-b^2x_n$ and
+$\alpha_n=by_{n-1}/x_{n-1}-d-1$. Taken literally, the first nontrivial
+coefficient would involve $x_1=0$, and $\alpha_2$ would contain $0/0$.
+The same paper's coordinate formulas initialize $(x_0,y_0)=(0,0)$.
+The consistent interpretation is
+\begin{equation}\label{eq:indexing}
+ (x_n,y_n)=((n+1)P),\qquad n\ge0,
+\end{equation}
+not $nP$. We instead write $(X_m,Y_m)=mP$ throughout, reserving the
+point at infinity $\OO$ for $0P$. This removes the ambiguity.
+
+Second, a point can be torsion. Then some multiples reach $\OO$ or
+$-P=(0,-b)$, and the displayed affine ratios cease to exist. An infinite
+\emph{regular} Jacobi fraction consequently requires a nondegeneracy
+hypothesis. Infinite order of $P$ supplies exactly what is needed here.
+Section~\ref{sec:torsion} explains what remains valid at torsion points.
+A typographical indexing contradiction alone would be an uninteresting
+``counterexample''; our goal is to prove the substantive intended formula.
+
+\section{Normalization and the main theorem}\label{sec:setup}
+
+Let $\K$ be a field of characteristic zero. Consider the nonsingular curve
+\begin{equation}\label{eq:curve}
+ E:\quad Y^2+aXY+bY=X^3+cX^2+dX,
+ \qquad P=(0,0),\qquad b\ne0.
+\end{equation}
+The coefficients $a,b,c,d$ lie in $\K$. Write $mP=(X_m,Y_m)$ whenever
+$mP\ne\OO$. Introduce
+\begin{align}
+ \delta&=abd-b^2c+d^2,& \kappa&=b^4,\label{eq:parameters1}\\
+ s&=ab+2d+2,& r&=s-1,& L&=\delta+r.\label{eq:parameters2}
+\end{align}
+In particular,
+\[
+ L=(d+1)^2+ab(d+1)-b^2c.
+\]
+The letter $\delta$ does not denote the discriminant of $E$.
+
+Define the quadratic polynomial and quartic polynomial
+\begin{equation}\label{eq:quartic}
+ M(z)=1+sz+Lz^2,\qquad
+ \D(z)=M(z)^2-4\kappa z^3(1+rz).
+\end{equation}
+There is a unique $W(z)\in\K[[z]]$ with
+\begin{equation}\label{eq:W}
+ W(z)^2=\D(z),\qquad W(0)=1.
+\end{equation}
+Comparing the first four coefficients gives
+\begin{equation}\label{eq:Wleading}
+ W(z)=1+sz+Lz^2-2\kappa z^3+O(z^4).
+\end{equation}
+
+The series $q(z)$ and the moment generating function $G(z)$ are
+\begin{align}
+ q(z)&=\frac{M(z)-W(z)}{2\kappa z^3},\label{eq:qradical}\\
+ G(z)&=\frac{1}{1-z-z^2q(z)}
+      =\frac{2\kappa z}{W(z)+2\kappa z(1-z)-M(z)}.
+      \label{eq:G}
+\end{align}
+The apparent powers of $z$ in the denominators cancel. In particular,
+$q(0)=G(0)=1$. Equivalently, $q$ is the unique solution with constant term
+one of
+\begin{equation}\label{eq:qequation}
+ M(z)q(z)-\kappa z^3q(z)^2=1+rz.
+\end{equation}
+This compact normalization is also compatible with the quadratic-series
+form used in \cite[Section~5.2]{LWZ2026}. Appendix~\ref{app:normalization}
+checks it against Barry's expanded coefficients.
+
+\begin{definition}
+A regular Jacobi continued fraction is a formal expansion
+\begin{equation}\label{eq:J}
+ \cfrac{1}{1-\alpha_0z-
+ \cfrac{\beta_1z^2}{1-\alpha_1z-
+ \cfrac{\beta_2z^2}{1-\alpha_2z-\cdots}}},
+ \qquad \beta_j\ne0\quad(j\ge1).
+\end{equation}
+Its value is the coefficientwise, or $z$-adic, limit of its finite
+truncations. This definition involves no analytic convergence assertion.
+\end{definition}
+
+\begin{theorem}[Corrected elliptic Jacobi-fraction formula]\label{thm:main}
+Assume that $P$ has infinite order on \eqref{eq:curve}. The generating
+function \eqref{eq:G} has the regular Jacobi expansion \eqref{eq:J} with
+\begin{equation}\label{eq:coeffs}
+ \alpha_0=1,\qquad \alpha_1=-1,\qquad \beta_1=1,
+\end{equation}
+and, for every $m\ge2$,
+\begin{equation}\label{eq:ellipticcoeffs}
+ \boxed{\quad
+ \alpha_m=\frac{bY_m}{X_m}-d-1,\qquad
+ \beta_m=-b^2X_m.\quad}
+\end{equation}
+These formulas are the consistently indexed version of Barry's
+Conjecture~4. The expansion is unique among regular Jacobi fractions.
+\end{theorem}
+
+The proof is given in Sections~\ref{sec:map}--\ref{sec:proof}. Its core is
+an elementary factorization, not a determinant calculation.
+
+\subsection{Why all denominators exist}
+If $P$ has infinite order, then $mP\ne\OO$ for every positive integer $m$.
+The only points on \eqref{eq:curve} with $X=0$ are
+$P=(0,0)$ and $-P=(0,-b)$. If $mP$ were either of these for $m\ge2$,
+then $(m-1)P=\OO$ or $(m+1)P=\OO$, a contradiction. Consequently
+\begin{equation}\label{eq:nonzeroX}
+ X_m\ne0\quad(m\ge2).
+\end{equation}
+In particular $\beta_m\ne0$. This simple observation is the exact place
+where the infinite-order hypothesis enters the infinite construction.
+
+\subsection{Integer coefficients without elliptic divisions}\label{subsec:recurrences}
+Write
+\[
+ q(z)=\sum_{n\ge0}q_nz^n,\qquad
+ G(z)=\sum_{n\ge0}\mu_nz^n.
+\]
+Equation~\eqref{eq:qequation} gives $q_0=1$, $q_1=-1$, and for $n\ge2$,
+\begin{equation}\label{eq:qrec}
+ q_n=-s q_{n-1}-Lq_{n-2}
+      +\kappa\sum_{i=0}^{n-3}q_iq_{n-3-i},
+\end{equation}
+where a sum with negative upper limit is zero. The outer fraction gives
+$\mu_0=1$ and
+\begin{equation}\label{eq:murec}
+ \mu_n=\mu_{n-1}+\sum_{i=0}^{n-2}q_i\mu_{n-2-i}\qquad(n\ge1).
+\end{equation}
+Thus all $q_n$ and $\mu_n$ belong to $\Z[a,b,c,d]$. The rational
+elliptic coefficients in \eqref{eq:ellipticcoeffs} produce polynomial
+moments; this is a consequence of the algebraic series identity, not an
+assumption about cancellation.
+
+For example,
+\begin{align*}
+ (q_0,q_1,q_2,q_3)&=(1,-1,1-\delta,\delta(s+1)-1+\kappa),\\
+ (\mu_0,\ldots,\mu_5)&=(1,1,2,2,4-\delta,
+                         4+\kappa+(s-1)\delta).
+\end{align*}
+The recurrences remain well-defined when the Jacobi formula degenerates.
+
+\section{Elliptic addition as a rational map}\label{sec:map}
+
+\subsection{Coordinates adapted to the fraction}
+For a point $Q=(X,Y)$ with $X\ne0$, set
+\begin{equation}\label{eq:uv}
+ u=\frac{bY}{X}-d-1,\qquad v=-b^2X.
+\end{equation}
+The inverse transformation is
+\begin{equation}\label{eq:uvinverse}
+ X=-\frac{v}{b^2},\qquad
+ Y=-\frac{v(u+d+1)}{b^3}.
+\end{equation}
+
+\begin{lemma}[Invariant cubic]\label{lem:invariant}
+The point $Q$ lies on $E$ if and only if
+\begin{equation}\label{eq:invariant}
+ \inv(u,v):=v^2+(u^2+su+L)v-\kappa(u+1)=0.
+\end{equation}
+Here the equivalence is on the open set $v\ne0$.
+\end{lemma}
+\begin{proof}
+Put $T=u+d+1$. Substitution of \eqref{eq:uvinverse} into the left side
+minus the right side of \eqref{eq:curve}, followed by multiplication by
+$b^6/v$, gives
+\[
+ v^2+v(T^2+abT-b^2c)-b^4(T-d).
+\]
+The identities
+\[
+ T^2+abT-b^2c=u^2+su+L,\qquad T-d=u+1
+\]
+turn this expression into \eqref{eq:invariant}.
+\end{proof}
+
+\subsection{The translation law}
+The line through $P=(0,0)$ and $Q=(X,Y)$ has slope $t=Y/X$.
+Substitution of $Y=tX$ into \eqref{eq:curve} shows that the three
+intersection abscissas, with multiplicity, satisfy
+\[
+ X\bigl(X^2+(c-t^2-at)X+(d-bt)\bigr)=0.
+\]
+The group law negates the third intersection point. Hence, if
+$Q+P=(X',Y')$,
+\begin{equation}\label{eq:elladdition}
+ X'=t^2+at-c-X,\qquad Y'=-(t+a)X'-b.
+\end{equation}
+This formula includes tangent intersections when multiplicities occur.
+
+\begin{lemma}[Conjugate translation map]\label{lem:map}
+Under \eqref{eq:uv}, translation $Q\mapsto Q+P$ becomes
+\begin{align}
+ v'&=-v-u^2-su-L=-\frac{\kappa(u+1)}{v},\label{eq:vnext}\\
+ u'&=\frac{\kappa}{v'}-s-u,\label{eq:unext}
+\end{align}
+whenever $v$ and $v'$ are nonzero.
+\end{lemma}
+\begin{proof}
+Multiply the first formula in \eqref{eq:elladdition} by $-b^2$ and use
+$b t=u+d+1$. This yields the first expression for $v'$ in
+\eqref{eq:vnext}. The second follows by dividing
+\eqref{eq:invariant} by $v$.
+
+For the ordinate,
+\[
+ \frac{bY'}{X'}-d-1
+ =-b(t+a)-\frac{b^2}{X'}-d-1
+ =-u-s+\frac{\kappa}{v'},
+\]
+which is \eqref{eq:unext}. Invariance of \eqref{eq:invariant} follows
+already from the group law; it can also be checked by direct substitution.
+\end{proof}
+
+Thus the geometric orbit provides a sequence
+\[
+ (u_m,v_m)=(\alpha_m,\beta_m),\qquad m\ge2,
+\]
+satisfying
+\begin{align}
+ v_{m+1}+v_m&=-(u_m^2+su_m+L),\label{eq:sumv}\\
+ u_{m+1}+u_m&=\frac{\kappa}{v_{m+1}}-s.\label{eq:sumu}
+\end{align}
+The next section shows that these same relations govern the tails of $G$.
+
+\subsection{The starting point is \texorpdfstring{$2P$}{2P}}
+Implicit differentiation of \eqref{eq:curve} at $P$ gives tangent slope
+$d/b$. Consequently
+\begin{equation}\label{eq:2P}
+ X_2=\frac{\delta}{b^2},\qquad
+ Y_2=-\left(\frac db+a\right)X_2-b.
+\end{equation}
+Under the infinite-order hypothesis, $\delta\ne0$ by
+\eqref{eq:nonzeroX}. Substitution into \eqref{eq:uv} gives
+\begin{equation}\label{eq:initialuv}
+ v_2=-\delta,\qquad u_2=-r-\frac{\kappa}{\delta}.
+\end{equation}
+This initialization is another direct check of the required index shift.
+
+\section{Explicit complete quotients}\label{sec:tails}
+
+\begin{definition}
+For a pair $(u,v)$ satisfying \eqref{eq:invariant}, with $v\ne0$, define
+\begin{equation}\label{eq:F}
+ F_{u,v}(z)=
+ \frac{1+sz+(L+2v)z^2-W(z)}
+ {2vz^2\bigl(1+(\kappa/v-u)z\bigr)}.
+\end{equation}
+This is a normalized complete quotient, meaning a tail with constant term one.
+\end{definition}
+
+By \eqref{eq:Wleading}, its numerator begins $2vz^2+2\kappa z^3$.
+The apparent division by $z^2$ is therefore harmless and
+\begin{equation}\label{eq:Fleading}
+ F_{u,v}(z)=1+uz+O(z^2).
+\end{equation}
+
+\begin{lemma}[The factorization]\label{lem:factor}
+Let $N_v(z)=1+sz+(L+2v)z^2$ and $\gamma=\kappa/v-u$.
+On the invariant cubic,
+\begin{equation}\label{eq:factor}
+ N_v(z)^2-W(z)^2
+ =4vz^2(1+\gamma z)(1+(s+u)z).
+\end{equation}
+In particular,
+\begin{equation}\label{eq:Finverse}
+ \frac1{F_{u,v}(z)}=
+ \frac{N_v(z)+W(z)}{2(1+(s+u)z)}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Since $N_v=M+2vz^2$, subtraction using \eqref{eq:quartic} gives
+\begin{align*}
+ N_v^2-W^2
+ &=4vz^2M+4v^2z^4+4\kappa z^3(1+rz)\\
+ &=4vz^2\left(1+\left(s+\frac{\kappa}{v}\right)z+
+            \left(L+v+\frac{\kappa r}{v}\right)z^2\right).
+\end{align*}
+The two proposed linear factors have the correct linear coefficient.
+Their quadratic coefficient is correct precisely when
+\[
+ \left(\frac{\kappa}{v}-u\right)(s+u)
+       =L+v+\frac{\kappa(s-1)}{v}.
+\]
+After multiplication by $v$, this equality is equivalent to
+\eqref{eq:invariant}. This proves \eqref{eq:factor}.
+Multiplying numerator and denominator of the reciprocal of
+\eqref{eq:F} by $N_v+W$ now proves \eqref{eq:Finverse}.
+All cancelled factors are nonzero formal series or explicit powers of $z$.
+\end{proof}
+
+\begin{theorem}[One translation deletes one layer]\label{thm:stripping}
+Suppose $(u,v)$ satisfies \eqref{eq:invariant}, and $(u,v)$ and $(u',v')$ are related by
+\eqref{eq:vnext}--\eqref{eq:unext}, with $v,v'\ne0$. Then
+\begin{equation}\label{eq:stripping}
+ \boxed{\qquad
+ F_{u,v}(z)=\frac1{1-uz-v'z^2F_{u',v'}(z)}.
+ \qquad}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Equation~\eqref{eq:unext} gives
+\[
+ \frac{\kappa}{v'}-u'=s+u.
+\]
+Thus the denominator of $v'z^2F_{u',v'}$ is
+$2(1+(s+u)z)$. By \eqref{eq:Finverse}, the numerator of
+$1-uz-1/F_{u,v}$ over that same denominator is
+\begin{align*}
+ &2(1-uz)(1+(s+u)z)-N_v(z)-W(z)\\
+ &\hspace{15pt}=1+sz+
+       \bigl(-2u(s+u)-L-2v\bigr)z^2-W(z)\\
+ &\hspace{15pt}=1+sz+(L+2v')z^2-W(z).
+\end{align*}
+The last equality is exactly \eqref{eq:vnext}. This is the numerator of
+$v'z^2F_{u',v'}$, proving the identity.
+\end{proof}
+
+\begin{remark}
+The construction is local and algebraic. The proof of
+\cref{thm:stripping} needs the invariant cubic, the displayed rational map,
+and nonzero denominators; it does not require an independent theorem about
+elliptic functions or a prior Somos recurrence. Nonsingularity and infinite
+order are used to identify and continue the geometric orbit globally.
+\end{remark}
+
+\section{Proof of the continued-fraction theorem}\label{sec:proof}
+
+\subsection{The initial two layers}
+By rationalizing \eqref{eq:qradical},
+\begin{equation}\label{eq:qinv}
+ \frac1{q(z)}=\frac{M(z)+W(z)}{2(1+rz)}.
+\end{equation}
+For the initial pair \eqref{eq:initialuv}, one has
+\[
+ \frac{\kappa}{v_2}-u_2=r.
+\]
+Hence \eqref{eq:F} specializes to
+\begin{equation}\label{eq:F2}
+ F_{u_2,v_2}(z)=
+ \frac{W(z)-1-sz+(\delta-r)z^2}{2\delta z^2(1+rz)}.
+\end{equation}
+Direct substitution into \eqref{eq:qinv} gives
+\begin{equation}\label{eq:qtail}
+ q(z)=\frac1{1+z+\delta z^2F_{u_2,v_2}(z)}
+     =\frac1{1-\alpha_1z-\beta_2z^2F_{u_2,v_2}(z)}.
+\end{equation}
+The definition of $G$ supplies the outer layer,
+\begin{equation}\label{eq:Gtail}
+ G(z)=\frac1{1-\alpha_0z-\beta_1z^2q(z)},
+ \qquad \alpha_0=1,\quad\beta_1=1.
+\end{equation}
+This proves all the special initial values and links the algebraic series
+to the first geometric tail.
+
+\subsection{Iteration and formal convergence}
+For every $m\ge2$, put $F_m=F_{u_m,v_m}$, where
+$(u_m,v_m)$ is obtained from $mP$. Lemma~\ref{lem:map} and
+Theorem~\ref{thm:stripping} give
+\begin{equation}\label{eq:Fm}
+ F_m=\frac1{1-\alpha_mz-\beta_{m+1}z^2F_{m+1}}.
+\end{equation}
+All tails exist by \eqref{eq:nonzeroX}. Iterating \eqref{eq:Fm} inside
+\eqref{eq:qtail} and \eqref{eq:Gtail} gives the proposed fraction.
+
+For completeness, define
+\[
+ T_{A,B}(H)=\frac1{1-Az-Bz^2H}.
+\]
+If $H$ and $\widetilde H$ are formal series with constant term one, then
+\begin{equation}\label{eq:valuation}
+ T_{A,B}(H)-T_{A,B}(\widetilde H)
+ =\frac{Bz^2(H-\widetilde H)}
+ {(1-Az-Bz^2H)(1-Az-Bz^2\widetilde H)}.
+\end{equation}
+Each denominator is a unit. Therefore each surrounding layer increases
+an error's order by at least two. Replacing $F_m$ by $1$ makes an
+$O(z)$ error at that level, hence an $O(z^{2m+1})$ error in $G$.
+The finite expressions stabilize coefficientwise, and their limit is
+exactly $G$. This proves existence in \cref{thm:main}.
+
+\subsection{Uniqueness}
+If $F=1+f_1z+f_2z^2+\cdots$ is a normalized tail, then any regular
+representation $F=(1-Az-Bz^2H)^{-1}$ forces
+\[
+ A=-[z]F^{-1},\qquad B=-[z^2]F^{-1},\qquad
+ H=\frac{1-Az-F^{-1}}{Bz^2}.
+\]
+Thus the coefficient pair and next tail are uniquely determined whenever
+$B\ne0$. Induction proves uniqueness of the entire regular fraction.
+Together with the preceding subsections, this completes the proof of
+\cref{thm:main}.
+
+\section{Hankel determinants and both point coordinates}\label{sec:hankel}
+
+Let $\mu_n=[z^n]G(z)$. Define
+\begin{equation}\label{eq:h}
+ h_n=\det(\mu_{i+j})_{0\le i,j\le n},\qquad h_{-1}=1.
+\end{equation}
+The modified determinant $h_n^*$ has the same first $n$ rows as $h_n$,
+but its last row is shifted one place:
+\begin{equation}\label{eq:hstar}
+ h_n^*=\det A^{(n)},\qquad
+ A^{(n)}_{ij}=\begin{cases}
+ \mu_{i+j},&i<n,\\
+ \mu_{n+j+1},&i=n,
+ \end{cases}\qquad 0\le i,j\le n.
+\end{equation}
+Set $h_{-1}^*=0$. In particular $h_0=1$ and $h_0^*=\mu_1=1$.
+The star does not mean that every entry in the matrix has been shifted;
+that different convention would give a different determinant.
+
+\subsection{The formal moment lemma}
+\begin{lemma}[Jacobi coefficients from determinants]\label{lem:hankel}
+For a regular fraction \eqref{eq:J}, with moment sequence $\mu_n$,
+\begin{align}
+ h_n&=\prod_{j=1}^{n}\beta_j^{\,n+1-j},\label{eq:hproduct}\\
+ \beta_n&=\frac{h_nh_{n-2}}{h_{n-1}^2}\qquad(n\ge1),\label{eq:betaH}\\
+ \alpha_n&=\frac{h_n^*}{h_n}-\frac{h_{n-1}^*}{h_{n-1}}
+                 \qquad(n\ge0).\label{eq:alphaH}
+\end{align}
+For $n=1$, formula \eqref{eq:betaH} uses $h_{-1}=1$.
+\end{lemma}
+\begin{proof}
+We give a formal proof, so positivity and analytic moment measures are
+unnecessary. Let $V$ be the vector space with basis $e_0,e_1,\ldots$, and
+let $J$ be the tridiagonal operator
+\[
+ Je_n=e_{n+1}+\alpha_ne_n+\beta_ne_{n-1},
+ \qquad \beta_0e_{-1}:=0.
+\]
+The coefficient of $e_0$ in $J^ke_0$ is the total weight of all length-$k$
+paths on the nonnegative integers starting and ending at zero. An up-step
+has weight one, a horizontal step at height $n$ has weight $\alpha_n$,
+and a down-step from height $n$ has weight $\beta_n$.
+Decomposing paths at their first horizontal step or first up-and-down
+excursion gives \eqref{eq:J}. Consequently that coefficient is $\mu_k$.
+
+Set $w_0=1$ and $w_n=\beta_1\cdots\beta_n$. Give $V$ the symmetric
+bilinear form $\langle e_i,e_j\rangle=w_i\mathbf1_{i=j}$. Then $J$ is
+self-adjoint because $w_{n+1}=\beta_{n+1}w_n$. Let
+\[
+ \mathcal{L}(f)=\langle f(J)e_0,e_0\rangle;
+ \qquad \mathcal{L}(t^k)=\mu_k.
+\]
+Define monic polynomials by $p_0=1$, $p_1=t-\alpha_0$, and
+\[
+ p_{n+1}=(t-\alpha_n)p_n-\beta_np_{n-1}.
+\]
+Induction gives $p_n(J)e_0=e_n$. Self-adjointness therefore implies
+\[
+ \mathcal{L}(p_ip_j)=w_i\mathbf1_{i=j}.
+\]
+The basis change from $1,t,\ldots,t^n$ to $p_0,\ldots,p_n$ is
+unitriangular. The Gram determinant in the monomial basis is $h_n$,
+whereas in the polynomial basis it is $\prod_{j=0}^n w_j$.
+This proves \eqref{eq:hproduct}, and its adjacent ratios give
+\eqref{eq:betaH}.
+
+Finally, the coefficient of $t^n$ in $p_{n+1}$ is
+$-\sum_{j=0}^n\alpha_j$ by the three-term recurrence. The determinant
+formula for the monic polynomial orthogonal to $1,t,\ldots,t^n$ is
+\[
+ p_{n+1}(t)=\frac1{h_n}
+ \begin{vmatrix}
+ \mu_0&\mu_1&\cdots&\mu_{n+1}\\
+ \mu_1&\mu_2&\cdots&\mu_{n+2}\\
+ \vdots&\vdots&&\vdots\\
+ \mu_n&\mu_{n+1}&\cdots&\mu_{2n+1}\\
+ 1&t&\cdots&t^{n+1}
+ \end{vmatrix}.
+\]
+Indeed it is monic, and applying $\mathcal L(t^j\cdot)$ for $j\le n$
+creates two equal rows. Expansion along the last row shows that its
+$t^n$ coefficient is $-h_n^*/h_n$: the relevant minor is the transpose
+of \eqref{eq:hstar}. Thus $h_n^*/h_n=\sum_{j=0}^n\alpha_j$.
+Subtracting the formula at $n-1$ proves \eqref{eq:alphaH}.
+\end{proof}
+
+\subsection{The coordinate theorem}
+\begin{corollary}[Corrected form of Barry's Conjecture 3]\label{cor:coordinates}
+Under the hypotheses of \cref{thm:main}, all $h_n$ are nonzero. For $m\ge2$,
+\begin{align}
+ X_m&=-\frac1{b^2}\frac{h_{m-2}h_m}{h_{m-1}^2},\label{eq:XH}\\
+ Y_m&=-\frac1{b^3}\frac{h_{m-2}h_m}{h_{m-1}^2}
+ \left(\frac{h_m^*}{h_m}-\frac{h_{m-1}^*}{h_{m-1}}+d+1\right).
+ \label{eq:YH}
+\end{align}
+Together with $(X_1,Y_1)=(0,0)$, these recover all positive multiples of $P$.
+\end{corollary}
+\begin{proof}
+Nonvanishing follows from \eqref{eq:hproduct}. Combine
+\eqref{eq:ellipticcoeffs} with \eqref{eq:betaH} and \eqref{eq:alphaH},
+and then solve the first equation in \eqref{eq:uv} for $Y_m$.
+\end{proof}
+
+Replacing $m$ by $n+1$ gives the intended formulas in
+\cite[Conjecture~3]{Barry2023}. The star determinants are necessary to
+recover the ordinate with its sign; the unmodified Hankel ratios alone
+recover only the abscissa.
+
+\section{The known Somos and division-polynomial consequences}\label{sec:somos}
+
+This section gives an independent route from the complete-quotient proof
+to results already established in \cite[Theorems~5.4--5.5]{LWZ2026}.
+It is included to connect the proof to integer sequences and to control
+exceptional specializations, not to claim a new Somos-4 theorem.
+
+\subsection{A second-order recurrence for the Jacobi numerators}
+\begin{proposition}\label{prop:betasomos}
+For the nondegenerate orbit, the numerator coefficients satisfy
+\begin{equation}\label{eq:betasomos}
+ v_{m-1}v_m^2v_{m+1}=\kappa^2(v_m+\delta),\qquad m\ge3.
+\end{equation}
+The lower bound $m\ge3$ is essential: the exceptional value $\beta_1=1$
+is not a member of the geometric orbit beginning at $2P$.
+\end{proposition}
+\begin{proof}
+Write $u=u_m$, $v=v_m$, and use \eqref{eq:sumu} at $m-1$:
+\[
+ u_{m-1}=\frac{\kappa}{v}-s-u.
+\]
+Since $v_{m-1}v=-\kappa(u_{m-1}+1)$,
+\[
+ v_{m-1}=\frac{\kappa(s+u-1)}{v}-\frac{\kappa^2}{v^2},
+ \qquad v_{m+1}=-\frac{\kappa(u+1)}v.
+\]
+Multiplication gives
+\[
+ v_{m-1}v^2v_{m+1}
+ =\kappa^2\left(-(u+1)(s+u-1)+\frac{\kappa(u+1)}v\right).
+\]
+By \eqref{eq:invariant}, the last fraction is $v+u^2+su+L$.
+The bracket simplifies to $v+L-s+1=v+\delta$.
+\end{proof}
+
+\subsection{The bilinear recurrence and its normalization}
+Using \eqref{eq:betaH}, the left side of \eqref{eq:betasomos}, with
+$m=n-1$, is
+\[
+ \frac{h_nh_{n-4}}{h_{n-2}^2}.
+\]
+Therefore, for $n\ge4$,
+\begin{equation}\label{eq:hSomos}
+ h_nh_{n-4}=b^8h_{n-1}h_{n-3}+b^8\delta h_{n-2}^2.
+\end{equation}
+Define
+\begin{equation}\label{eq:S}
+ S_n=b^{-n^2+2n}h_n.
+\end{equation}
+The differences between the quadratic exponents on the two sides are
+six and eight, respectively. Hence
+\begin{equation}\label{eq:SSomos}
+ S_nS_{n-4}=b^2S_{n-1}S_{n-3}+\delta S_{n-2}^2.
+\end{equation}
+The first four values are
+\begin{equation}\label{eq:Sinit}
+ S_0=1,\quad S_1=b,\quad S_2=-\delta,\quad
+ S_3=-b\bigl((s-2)\delta+\kappa\bigr).
+\end{equation}
+Indeed $h_0=h_1=1$, $h_2=v_2=-\delta$, and
+$h_3=v_2^2v_3=-\kappa((s-2)\delta+\kappa)$ by
+\eqref{eq:initialuv} and \eqref{eq:vnext}.
+
+\subsection{Identification with division polynomials}
+Let $\psi_n$ be the standard division polynomials of \eqref{eq:curve},
+and put $D_n=\psi_n(P)$. The initial values needed here are
+\begin{equation}\label{eq:Dinit}
+ D_0=0,\quad D_1=1,\quad D_2=b,\quad D_3=-\delta,\quad
+ D_4=-b\bigl((s-2)\delta+\kappa\bigr).
+\end{equation}
+For example, in the standard Weierstrass invariants,
+$b_4=ab+2d=s-2$, $b_6=b^2$, and $b_8=-\delta$.
+Thus $D_3=b_8$ and $D_4=b(b_4b_8-b_6^2)$.
+The classical division-polynomial addition identity, recorded in
+\cite[Equation~(5.5)]{LWZ2026}, yields
+\begin{equation}\label{eq:DSomos}
+ D_{j+2}D_{j-2}=b^2D_{j+1}D_{j-1}+\delta D_j^2.
+\end{equation}
+
+\begin{corollary}[Known identity, recovered here]\label{cor:division}
+For every $n\ge0$,
+\begin{equation}\label{eq:division}
+ \boxed{\qquad b^{-n^2+2n}h_n=\psi_{n+1}(P).\qquad}
+\end{equation}
+The identity holds for arbitrary characteristic-zero specializations with
+$b\ne0$; nonsingularity is required only when interpreting it as a
+statement about the elliptic group law.
+\end{corollary}
+\begin{proof}
+First work over the generic field $\Q(a,b,c,d)$. The generic point $P$
+is non-torsion: a hypothetical generic identity $NP=\OO$ would force
+$\psi_N(P)$ to be the zero polynomial, contrary to its specialization at
+$E:Y^2+Y=X^3-X$, whose point $(0,0)$ has infinite order as shown in
+Section~\ref{subsec:small}. The standard characterization
+$\psi_j(P)=0$ if and only if $jP=\OO$ is used here.
+
+All terms are therefore nonzero in the generic field. Equations
+\eqref{eq:SSomos} and \eqref{eq:DSomos}, with the matching initial
+values \eqref{eq:Sinit}--\eqref{eq:Dinit}, identify $S_n$ with $D_{n+1}$
+by induction. This proves \eqref{eq:division} generically.
+
+Both sides belong to $\Q[a,b,b^{-1},c,d]$: the moments and their
+Hankel determinants are polynomials by \eqref{eq:qrec}--\eqref{eq:murec},
+and division polynomials are polynomials in the Weierstrass coefficients
+and point coordinates. Equality in the fraction field is consequently
+an identity in this ring. It specializes at every $b\ne0$, even when
+some later $D_j$ or $h_j$ vanish. No division by a specialized zero is
+performed in this argument.
+\end{proof}
+
+The proof above also explains why the division-free form
+\eqref{eq:hSomos} specializes safely, whereas solving it for $h_n$ by
+dividing by $h_{n-4}$ need not do so. This distinction is important at
+torsion points.
+
+\section{Torsion, vanishing determinants, and nonrationality}\label{sec:torsion}
+
+\subsection{A complete description of the zero locations}
+\begin{corollary}\label{cor:torsion}
+Assume $E$ is nonsingular and $b\ne0$. If $P$ has finite order $N$, then
+$N\ge3$ and
+\begin{equation}\label{eq:zeros}
+ h_n=0\quad\Longleftrightarrow\quad N\mid n+1.
+\end{equation}
+Thus the first zero is $h_{N-1}$, but the next determinant $h_N$ is nonzero.
+If $P$ has infinite order, no $h_n$ vanishes.
+\end{corollary}
+\begin{proof}
+Since $-P=(0,-b)\ne P$, the point $P$ is not of order two, and it is
+not $\OO$. Apply \eqref{eq:division} and the vanishing characterization
+of division polynomials.
+\end{proof}
+
+At order $N$, the point $(N-1)P=-P$ has abscissa zero. Formally the
+numerator value $-b^2X_{N-1}$ is therefore zero, but the ordinate ratio
+$bY_{N-1}/X_{N-1}$ is undefined. There is no valid ordinary Jacobi tail
+with these specialized scalar coefficients. It would be incorrect to
+interpret the zero numerator by itself as a terminating fraction.
+
+\subsection{Why the fraction cannot terminate}\label{subsec:nonrational}
+\begin{proposition}\label{prop:nonrational}
+For every characteristic-zero parameter choice with $b\ne0$, the series
+$q(z)$ and $G(z)$ in \eqref{eq:qradical}--\eqref{eq:G} are nonrational
+over $\K(z)$. This conclusion does not require nonsingularity or
+infinite order.
+\end{proposition}
+\begin{proof}
+If $W(z)$ were rational, the equality $W^2=\D\in\K[z]$ would force
+$W\in\K[z]$: in a reduced fraction, a nonconstant denominator cannot
+have its square divide the square of the numerator. Since $\deg\D\le4$,
+one would then have $\deg W\le2$.
+
+But \eqref{eq:Wleading} has cubic coefficient $-2\kappa=-2b^4\ne0$.
+This is impossible. Thus $W$ is not rational. Equation~\eqref{eq:qradical}
+shows that rationality of $q$ is equivalent to rationality of $W$.
+Equation~\eqref{eq:G} shows that rationality of $G$ would imply that of
+$q=(1-z-G^{-1})/z^2$. Both series are therefore nonrational.
+\end{proof}
+
+A finite ordinary Jacobi fraction is rational. Hence
+\cref{prop:nonrational} gives a second, independent reason why torsion
+specializations cannot be handled by naive termination. Equivalently, for
+$b\ne0$ the moment sequence cannot satisfy any eventual homogeneous
+linear recurrence with constant coefficients in $\K$: multiplying a
+rational generating function by its denominator gives such a recurrence,
+and conversely such a recurrence makes the generating function rational.
+
+\subsection{Two explicit torsion examples}
+For
+\begin{equation}\label{eq:order3}
+ E_3:\quad Y^2+Y=X^3,
+\end{equation}
+we have $(a,b,c,d)=(0,1,0,0)$, $\delta=0$, and curve discriminant
+$-27\ne0$. The tangent at $P$ is $Y=0$, which meets the cubic three
+times at $P$. Thus $3P=\OO$. The moment and Hankel sequences begin
+\begin{align*}
+ (\mu_n)&=(1,1,2,2,4,5,6,15,6,35,25,17,185,\ldots),\\
+ (h_n)&=(1,1,0,-1,-1,0,1,1,0,\ldots).
+\end{align*}
+Here $h_2=0$ but $h_3=-1$. If one set $\beta_2=0$ and truncated after
+$\alpha_1=-1$, one would obtain
+\[
+ \frac1{1-z-z^2/(1+z)}=\frac{1+z}{1-2z^2},
+\]
+whose coefficient of $z^5$ is $4$, while the actual coefficient is
+$\mu_5=5$. The failed specialization is visible at a very small index.
+
+For
+\begin{equation}\label{eq:order4}
+ E_4:\quad Y^2+XY+Y=X^3+X^2,
+\end{equation}
+we have $2P=(-1,0)$, which is a nonidentity point of order two. Thus $P$
+has order four. The curve discriminant is $-15$ and
+\[
+ (h_n)=(1,1,1,0,-1,-1,-1,0,1,\ldots).
+\]
+Again the isolated zero does not propagate to every later determinant.
+These examples refute the unqualified extension of the ordinary
+nondegenerate fraction to all nonsingular curves; they do not refute
+\cref{thm:main}.
+
+\section{Worked non-torsion examples}\label{sec:examples}
+
+\subsection{A small example and a certificate of infinite order}\label{subsec:small}
+Take
+\begin{equation}\label{eq:small}
+ E:\quad Y^2+Y=X^3-X,\qquad P=(0,0).
+\end{equation}
+Then $\delta=\kappa=1$, $s=0$, $r=-1$, $L=0$, and
+\begin{equation}\label{eq:smallG}
+ W(z)=\sqrt{1-4z^3+4z^4},\qquad
+ q(z)=\frac{1-W(z)}{2z^3},\qquad
+ G(z)=\frac{2z}{W(z)+2z-2z^2-1}.
+\end{equation}
+The discriminant is $37$, so the curve is nonsingular.
+
+There are elementary certificates that $P$ has infinite order.
+For a direct certificate using computed point coordinates, the change
+of variables
+\[
+ U=4X,\qquad V=8Y+4
+\]
+transforms \eqref{eq:small} into $V^2=U^3-16U+16$.
+The first few additions give $7P=(-5/9,8/27)$, so its transformed
+abscissa is $-20/9$. The Nagell--Lutz theorem says that rational torsion
+points on an integral short Weierstrass equation have integral
+coordinates; see \cite[Theorem~24.21]{Sutherland2013}. Therefore $7P$,
+and hence $P$, has infinite order. This uses a theorem with explicit
+hypotheses, not an inference from a long list of nonzero multiples.
+
+The same conclusion can be checked through good reduction:
+$\#E(\mathbb F_3)=7$ and $\#E(\mathbb F_5)=8$.
+The rational torsion subgroup injects into these good reductions, so its
+order divides both numbers and is one; see
+\cite[Corollary~24.19]{Sutherland2013}. The verification script counts
+these finite sets directly.
+
+\begin{table}[ht]
+\centering
+\renewcommand{\arraystretch}{1.16}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$m$ & $X_m$ & $Y_m$ & $\alpha_m$ & $\beta_m$\\
+\midrule
+2 & $1$ & $0$ & $0$ & $-1$\\
+3 & $-1$ & $-1$ & $1$ & $1$\\
+4 & $2$ & $-3$ & $-3/2$ & $-2$\\
+5 & $1/4$ & $-5/8$ & $-5/2$ & $-1/4$\\
+6 & $6$ & $14$ & $7/3$ & $-6$\\
+7 & $-5/9$ & $8/27$ & $-8/15$ & $5/9$\\
+8 & $21/25$ & $-69/125$ & $-23/35$ & $-21/25$\\
+\bottomrule
+\end{tabular}
+\caption{Exact elliptic coordinates and continued-fraction coefficients for
+$Y^2+Y=X^3-X$. The special outer values are
+$\alpha_0=1$, $\alpha_1=-1$, and $\beta_1=1$.}
+\label{tab:small}
+\end{table}
+
+The moments and determinants begin
+\begin{align*}
+ (\mu_n)&=(1,1,2,2,3,4,4,6,7,6,11,10,6,\ldots),\\
+ (h_n)&=(1,1,-1,1,2,-1,-3,-5,7,-4,-23,\ldots),\\
+ (h_n^*)&=(1,0,0,1,-1,3,2,6,-13,-5,45,\ldots).
+\end{align*}
+For example, the coordinate formulas at $m=4$ give
+\[
+ X_4=-\frac{h_2h_4}{h_3^2}=2,\qquad
+ Y_4=X_4\left(\frac{h_4^*}{h_4}-\frac{h_3^*}{h_3}\right)
+     =2\left(-\frac12-1\right)=-3.
+\]
+Here $d+1=0$, so there is no additional constant in the ordinate bracket.
+
+\subsection{Barry's larger numerical example}
+Barry's motivating example \cite[Section~2]{Barry2023} uses
+\[
+ (a,b,c,d)=(2,5,4,9),\qquad
+ E:Y^2+2XY+5Y=X^3+4X^2+9X.
+\]
+The discriminant is $-38091$, and direct counting gives
+$\#E(\mathbb F_5)=8$ and $\#E(\mathbb F_7)=6$. Both reductions are good,
+so the rational torsion subgroup has order dividing two. Since
+$-P=(0,-5)\ne P$, the point $P$ cannot be torsion.
+Our normalization gives
+\[
+ \delta=71,\quad\kappa=625,\quad s=30,\quad r=29,\quad L=100,
+\]
+and hence
+\begin{equation}\label{eq:barryG}
+ G(z)=\frac{1250z}
+ {\sqrt{1+60z+1100z^2+3500z^3-62500z^4}
+       +1220z-1350z^2-1}.
+\end{equation}
+The initial elliptic values are
+\[
+ 2P=\left(\frac{71}{25},-\frac{1974}{125}\right),\qquad
+ \alpha_2=-\frac{2684}{71},\qquad \beta_2=-71.
+\]
+These agree with direct stripping of the moment series. The next point is
+\[
+ 3P=\left(\frac{65325}{5041},\frac{14724605}{357911}\right),
+\]
+which gives
+\[
+ \alpha_3=\frac{1089691}{185523},\qquad
+ \beta_3=-\frac{1633125}{5041}.
+\]
+The relatively complicated rational coefficients nevertheless generate the
+integer moment sequence
+\[
+ 1,1,2,2,-67,2688,-73696,1856194,-44867225,1067747230,\ldots.
+\]
+Its normalized Hankel sequence is
+\[
+ 1,5,-71,-13065,-1275214,2876558965,11607013366079,\ldots.
+\]
+The example is included as a normalization check against the original
+paper; all the displayed values are also recomputed independently in the
+accompanying files. The main proof is not based on this example.
+
+\section{Exact verification and reproducibility}\label{sec:verification}
+
+\subsection{Independent computational routes}
+The file \texttt{verify.py} uses Python's standard library only. Its
+calculations use arbitrary-precision integers and exact fractions; no
+floating-point tests or numerical tolerances occur. The following routes
+are deliberately separate.
+
+The moment series is generated from the division-free quadratic
+recurrences \eqref{eq:qrec}--\eqref{eq:murec}. Elliptic multiples are computed
+with the generalized Weierstrass chord-and-tangent formulas, not by the
+rational map \eqref{eq:vnext}--\eqref{eq:unext}. Jacobi coefficients are
+extracted from the moment series by formal reciprocal and coefficient
+stripping, not by substituting elliptic coordinates. Hankel and modified
+Hankel determinants are computed by fraction-free Bareiss elimination with
+row pivoting. Division-polynomial values are computed with the classical
+odd-index and doubling recurrences, whose only scalar divisor after
+evaluation at $P$ is $D_2=b$. They remain usable when later terms vanish.
+
+The default exhaustive parameter set is
+\begin{equation}\label{eq:testgrid}
+ a,c,d\in\{-1,0,1\},\qquad b\in\{-2,-1,1,2\}.
+\end{equation}
+It contains $108$ curves; the two singular ones are explicitly skipped
+for the group-law tests. For the remaining $106$ curves, the script
+checks all nondegenerate layers up to $m=8$, for a total of $544$
+layer checks. It checks \eqref{eq:division} for every $0\le n\le9$
+on each of the $106$ curves, including torsion cases.
+
+The four named examples are additionally exported through $\mu_{40}$,
+$h_{12}$, $h_{12}^*$, and $12P$. Their division-polynomial identities
+are checked through $n=12$. The finite Catalan coefficient formula in
+Appendix~\ref{app:coefficients} is independently checked for
+$0\le n\le20$ in all four examples, giving $84$ finite-sum checks.
+All these tests passed in the delivered run.
+
+\subsection{Symbolic checks and their scope}
+The optional file \texttt{verify\_symbolic.py}, tested with SymPy~1.14.0,
+verifies sixteen rational-function or polynomial identities. These include
+the conversion of Barry's quartic coefficients, the birational invariant
+cubic, the complete-quotient factorization, the one-step numerator identity,
+the initial tail identity, and the Somos relation for the numerator
+coefficients. The program reduces identities on the invariant curve by
+substituting
+\[
+ L=\frac{\kappa(u+1)}v-v-u^2-su,
+\]
+which is valid on the same open set $v\ne0$ used in the proof.
+Every symbolic check passed.
+
+The numerical and symbolic tests are audits of the written argument, not
+proof substitutes. They cannot establish novelty, check every future
+specialization by enumeration, or replace the nonvanishing and formal-limit
+arguments in Sections~\ref{sec:setup} and~\ref{sec:proof}. No Lean or other
+proof-assistant formalization is claimed.
+
+\subsection{Running the package}
+From the extracted archive's main directory, run
+\begin{verbatim}
+python verify.py --output data
+python verify_symbolic.py       # optional: requires sympy
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The first command regenerates the exact data and a machine-readable
+verification summary. The optional symbolic audit does not affect the
+standard-library verification. The two LaTeX runs resolve the contents,
+cross-references, and bibliography. A \texttt{Makefile} supplies the same
+actions. The bibliography is embedded in \texttt{article.tex}, so a BibTeX
+run or network connection is not required.
+
+The quadratic recurrences need $O(N^2)$ arithmetic operations for the first
+$N$ moments using direct convolution. Computing all determinants individually
+through index $N$ with cubic-time elimination uses $O(N^4)$ arithmetic
+operations. These are arithmetic-operation counts, not bit-complexity
+claims: integer and rational numerators can become large. The code prioritizes
+transparent independent verification rather than a new fastest algorithm.
+
+\section{Conclusion: what has been established}\label{sec:conclusion}
+
+The main result is a proof of the naturally corrected, non-torsion version
+of the elliptic Jacobi-fraction formula stated as Conjecture~4 in
+\cite{Barry2023}. Its decisive ingredient is the explicit tail
+$F_{u,v}$ in \eqref{eq:F}. The invariant equation of the elliptic curve
+factors its algebraic norm; that factorization makes continued-fraction
+stripping identical to elliptic translation. The argument proves all
+coefficients at once and supplies the formal convergence justification.
+
+The Hankel formulas recover both coordinates, giving the correspondingly
+indexed form of Conjecture~3. The same calculation recovers the known
+Somos-4 and division-polynomial statements, while the universal polynomial
+identity explains exactly what survives at torsion specializations. Such
+specializations expose a genuine domain issue: ordinary regular Jacobi
+fractions break down, but the algebraic generating function remains defined
+and nonrational, and Hankel determinants resume being nonzero after an
+isolated zero.
+
+The mathematical claim and the historical claim have different scopes.
+The complete algebraic proof and its tests are provided here. The broader
+elliptic/continued-fraction theory and the normalized Hankel identity are
+already part of the literature. Establishing bibliographic priority for
+this particular explicit proof would require further specialist review;
+it is not inferred merely from the word ``conjecture'' in an older paper.
+
+\appendix
+\section{Matching the original expanded generating function}\label{app:normalization}
+
+Barry's generating function is written as
+\[
+ g(z)=\frac{2b^4z}{\sqrt{Az^4+Bz^3+Cz^2+D_1z+1}+Fz^2+G_1z-1}.
+\]
+The present parameters give the much shorter coefficient list
+\begin{align}
+ A&=L^2-4\kappa r,& B&=2sL-4\kappa,\label{eq:AB}\\
+ C&=s^2+2L,&D_1&=2s,\label{eq:CD}\\
+ F&=-(L+2\kappa),&G_1&=2\kappa-s.\label{eq:FG}
+\end{align}
+For example,
+\begin{align*}
+ L^2-4\kappa r
+ ={}&a^2b^2(d+1)^2
+ -2ab\bigl(2b^4+b^2c(d+1)-(d+1)^3\bigr)\\
+ &+b^4\bigl(c^2-4(2d+1)\bigr)
+ -2b^2c(d+1)^2+(d+1)^4,
+\end{align*}
+which is Barry's coefficient $A$. The other identities follow by direct
+expansion and are included in the symbolic audit. Thus the proof concerns
+the original generating function, not merely another series sharing a
+few initial coefficients.
+
+\section{Finite coefficient formulas from Catalan numbers}\label{app:coefficients}
+
+Let
+\[
+ C(t)=\sum_{k\ge0}C_kt^k=\frac{1-\sqrt{1-4t}}{2t},\qquad
+ C_k=\frac1{k+1}\binom{2k}{k}.
+\]
+Factoring $M$ out of \eqref{eq:qradical} gives the formal identity
+\begin{equation}\label{eq:qcat}
+ q(z)=\frac{1+rz}{M(z)}
+ C\!\left(\frac{\kappa z^3(1+rz)}{M(z)^2}\right)
+ =\sum_{k\ge0}C_k\kappa^kz^{3k}
+   (1+rz)^{k+1}M(z)^{-2k-1}.
+\end{equation}
+No convergence condition is needed: the argument of $C$ has order three.
+To extract a completely finite expression, put
+\begin{equation}\label{eq:T}
+ T_{k,m}(s,L)=
+ \sum_{\ell=0}^{\lfloor m/2\rfloor}
+ (-1)^{m-\ell}
+ \binom{2k+m-\ell}{m-\ell}
+ \binom{m-\ell}{\ell}s^{m-2\ell}L^\ell.
+\end{equation}
+Then
+\begin{equation}\label{eq:qclosed}
+ q_n=\sum_{k=0}^{\lfloor n/3\rfloor}C_k\kappa^k
+ \sum_{j=0}^{\min(k+1,n-3k)}
+ \binom{k+1}{j}r^j T_{k,n-3k-j}(s,L).
+\end{equation}
+To verify \eqref{eq:T}, expand $(1+sz+Lz^2)^{-2k-1}$ using the negative
+binomial theorem. If $\ell$ factors contribute $Lz^2$, the total number
+of nonconstant factors is $m-\ell$, and the remaining $m-2\ell$
+contribute $sz$. This gives exactly the displayed summand. Equation
+\eqref{eq:qclosed} now follows from \eqref{eq:qcat}.
+
+There is also a finite composition expression for each moment. From
+\eqref{eq:G},
+\[
+ G(z)=\sum_{j\ge0}\frac{z^{2j}q(z)^j}{(1-z)^{j+1}}.
+\]
+For $n\ge0$, this implies
+\begin{equation}\label{eq:muclosed}
+ \mu_n=1+
+ \sum_{j=1}^{\lfloor n/2\rfloor}
+ \sum_{\substack{k_1,\ldots,k_j\ge0\\k_1+\cdots+k_j\le n-2j}}
+ \binom{n-j-(k_1+\cdots+k_j)}{j}
+ \prod_{i=1}^j q_{k_i}.
+\end{equation}
+Substituting \eqref{eq:qclosed} removes the auxiliary sequence entirely.
+These formulas provide recurrence-free finite sums for the moments, but
+\eqref{eq:qrec}--\eqref{eq:murec} are usually more convenient for computation.
+
+\section{Verification details and boundary conventions}\label{app:verification}
+
+The standard-library verifier uses the following division-polynomial
+recurrences after evaluation at $P$:
+\begin{align*}
+ D_{2m+1}&=D_{m+2}D_m^3-D_{m-1}D_{m+1}^3\qquad(m\ge2),\\
+ bD_{2m}&=D_m\bigl(D_{m-1}^2D_{m+2}-D_{m-2}D_{m+1}^2\bigr)
+ \qquad(m\ge3),
+\end{align*}
+with the base values \eqref{eq:Dinit}. These are distinct from the
+Somos recurrence used in the proof and do not divide by a possibly zero
+$D_{m-2}$. Consequently they provide a useful independent test in the
+torsion cases.
+
+The curve discriminant used to exclude singular inputs is
+\[
+ \Delta_E=-b_2^2b_8-8b_4^3-27b_6^2+9b_2b_4b_6,
+\]
+where
+\[
+ b_2=a^2+4c,\qquad b_4=ab+2d,\qquad b_6=b^2,\qquad b_8=-\delta.
+\]
+There is no extra factor of $1728$ in this formula. The parameters
+$\Delta_E$ and $\delta$ are kept separate in the code.
+
+In the point-data CSV files, the row $m=0$ is explicitly the point at
+infinity. Rows with $X_m=0$ mark the coordinate ratio as undefined; the
+special outer Jacobi values $\alpha_0$, $\alpha_1$, and $\beta_1$ are
+not inferred from those rows. A stopping point in series stripping is
+reported only as a failure of regular scalar stripping at that depth,
+not as a claim that the full generating function terminates.
+
+The archive includes the source, compiled article, verification programs,
+logs, JSON summaries, and exact CSV tables. It does not include external
+paper PDFs, installed fonts, or generated LaTeX auxiliary files.
+
+\begin{thebibliography}{9}
+\bibitem{Barry2023}
+P. Barry,
+\emph{Integer sequences from elliptic curves},
+arXiv:2306.05025v2, 3 November 2023.
+Sections 2--3, especially Conjectures 2--4.
+\url{https://arxiv.org/abs/2306.05025v2}.
+
+\bibitem{LWZ2026}
+F. Liu, Y. Wang, and Z. Zhang,
+\emph{Hankel Transform and $(\alpha,\beta)$ Somos-4 Sequences},
+arXiv:2608.08703v1, submitted 9 August 2026.
+Section 5.2, Theorems 5.4--5.5 and Equation (5.5).
+\url{https://arxiv.org/abs/2608.08703v1}.
+
+\bibitem{Hone2021}
+A. N. W. Hone,
+\emph{Continued fractions and Hankel determinants from hyperelliptic curves},
+Communications on Pure and Applied Mathematics \textbf{74} (2021),
+2310--2347. DOI: 10.1002/cpa.21923.
+Preprint arXiv:1907.05204v3.
+\url{https://arxiv.org/abs/1907.05204v3}.
+
+\bibitem{Barry2025}
+P. Barry,
+\emph{Elliptic Curves, Riordan arrays and Lattice Paths},
+arXiv:2507.16765v1, 22 July 2025.
+\url{https://arxiv.org/abs/2507.16765v1}.
+
+\bibitem{CL2026}
+X.-K. Chang and J. Liu,
+\emph{Hankel determinants from quadratic orthogonal pairs for hyperelliptic
+functions and their applications},
+arXiv:2603.11670v1, 2026.
+\url{https://arxiv.org/abs/2603.11670v1}.
+
+\bibitem{Sutherland2013}
+A. V. Sutherland,
+\emph{18.782 Introduction to Arithmetic Geometry, Lecture 24},
+Massachusetts Institute of Technology, 3 December 2013.
+Corollary 24.19 and Theorem 24.21.
+\url{https://math.mit.edu/classes/18.782/2013fa/LectureNotes24.pdf}.
+\end{thebibliography}
+\end{document}

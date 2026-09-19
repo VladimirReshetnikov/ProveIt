@@ -17,6 +17,10 @@ The two are mathematically independent.  They do share a technical layer: both u
 `ProveIt`'s first-order syntax (`SetTheory.Form`, `Sat`) and, on the set-theoretic
 side, its internal-satisfaction machinery.
 
+Alongside them, `docs/reports/` collects sixty-four further research reports on
+unrelated topics, with no Lean counterpart; see [Other research
+reports](#other-research-reports).
+
 ## Large cardinals
 
 Thirty-six continuation reports, delivered in four rounds of nine, on cover-exacting,
@@ -39,6 +43,16 @@ Turing degree, the coarse instance of Question 7 of Gerdes — which is false.
 `CoarseDegrees/` proves `¬ C1`, `¬ C1Uniform` and a third independent route through
 dyadic codes, and formalizes report 10 on coarse hyperdegrees and the failure of
 Martin's cone theorem for the coarse degrees.  See `CoarseDegrees/README.md`.
+
+## Other research reports
+
+`docs/reports/` holds sixty-four independent reports that belong to neither project
+and are not formalized here: ordinals and well-quasi-orders, Hankel determinants,
+supercongruences, tetration and digit stabilization, log-concavity, graphs,
+enumerative combinatorics, and generating-function asymptotics.  Most attack a
+specific conjecture from the literature or from an OEIS entry; about a quarter are
+counterexamples rather than proofs.  `docs/reports/manifest.pdf` catalogues all
+sixty-four, and `docs/reports/README.md` is the index.
 
 ## Building
 

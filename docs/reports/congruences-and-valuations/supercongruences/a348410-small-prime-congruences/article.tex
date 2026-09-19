@@ -1,0 +1,1387 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{HTML}{16324F}
+\definecolor{accent}{HTML}{19647E}
+\definecolor{pale}{HTML}{EFF5F8}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={Small-prime congruences for A348410},
+ pdfauthor={ChatGPT},pdfsubject={Binary supercongruences, Mobius transforms, and a sharp denominator theorem}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Small-prime congruences for A348410}}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\CT}{\operatorname{CT}}
+\newcommand{\vp}{v_p}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\A}{A_{\alpha,\beta}}
+\newcommand{\B}{B_{\alpha,\beta}}
+\newcommand{\dd}{\,\mathrm d}
+\DeclareMathOperator{\Res}{Res}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,
+ frame=single,rulecolor=\color{ink!25},backgroundcolor=\color{pale},
+ xleftmargin=0.5em,xrightmargin=0.5em,aboveskip=1em,belowskip=1em}
+
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{11mm}
+{\color{accent}\large\scshape Combinatorics and arithmetic of integer sequences\par}
+\vspace{10mm}
+{\color{ink}\LARGE\bfseries Completing the small-prime\par
+congruences of OEIS A348410\par}
+\vspace{6mm}
+{\Large A binary defect formula and a sharp\par denominator-12 theorem\par}
+\vspace{10mm}
+{\large Research article prepared with ChatGPT\par}
+{19 September 2026\par}
+\vspace{9mm}
+\hrule
+\vspace{5mm}
+\begin{abstract}
+Let $a(n)=[x^n]((1-x)(1-x^2))^{-n}$. An OEIS comment of Peter Bala
+conjectures the cubic congruence $a(mp^r)\equiv a(mp^{r-1})\pmod{p^{3r}}$
+for primes $p\ge5$. A source audit located a prior elementary proof candidate
+for that assertion and a two-parameter extension; we therefore do not present
+the odd-prime result as a new resolution. Instead, we investigate the binary
+case explicitly left untreated in that source.
+
+For $\A(n)=[x^n](1-x)^{-\alpha n}(1+x)^{-\beta n}$, with arbitrary
+integer parameters, we prove an explicit first-defect congruence modulo
+$2^{3r-2}$. It gives a sharp universal modulus $2^{3r-3}$, improved to
+$2^{3r-2}$ when $\alpha\beta$ is even. Combining this with a self-contained
+odd-prime proof gives $12n^{-3}\sum_{d\mid n}\mu(d)a(n/d)\in\Z$ for every
+$n\ge1$. The constant $12$ is the smallest possible common denominator.
+We also obtain a primitive-necklace divisibility theorem, explain the failure
+of an overbroad periodic-coefficient argument, derive algebraic generating
+functions and two correction terms in the asymptotic expansion, and provide
+exact reproducible checks. Mathematical completeness of the written proofs
+and global priority are separate matters: no claim of exhaustive novelty
+verification or external peer review is made.
+\end{abstract}
+\vfill
+\noindent\small
+\textbf{Archive contents.} This article in \LaTeX\ and PDF; three verification
+programs; exact CSV tables; test reports; build instructions; a source and
+priority audit; and a draft OEIS comment. No computational conjecture is used
+as a premise of a theorem.
+\end{titlepage}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{The problem, the source boundary, and the results}
+\label{sec:intro}
+
+\subsection{Why the target changed during the investigation}
+The sequence A348410 counts nonnegative integer solutions of
+\begin{equation}\label{eq:baskets}
+ n=\sum_{i=1}^n (u_i+2v_i).
+\end{equation}
+Equivalently, $n$ indistinguishable objects are distributed among $n$ labelled
+white baskets and $n$ labelled black baskets, and the black occupancies are
+even. We set $a(0)=1$. The OEIS entry records the coefficient formula
+\begin{equation}\label{eq:an}
+ a(n)=[x^n]\frac1{(1-x)^n(1-x^2)^n}
+\end{equation}
+and, in a comment dated 21 February 2022, Bala's conjecture
+\begin{equation}\label{eq:bala}
+ a(mp^r)-a(mp^{r-1})\in p^{3r}\Z
+ \qquad(p\ge5\text{ prime},\ m,r\ge1).
+\end{equation}
+The live entry still labels this a conjecture in the version inspected for
+this article \cite{oeis348410}.
+
+That label is not a reliable certificate of present-day openness. In
+particular, the 2026 articles of Niu and Prodinger already discuss the
+algebraic generating function \cite{niu,prodinger}. More importantly for
+this investigation, a public repository note, \emph{A cubic tower for a
+two-parameter coefficient family}, contains an elementary proof candidate
+for \eqref{eq:bala}, for its full integer-parameter analogue, and for a
+$3^{3r-1}$ ternary bound \cite{prior}. Its parameter convention is
+$[x^n]((1+x)^u(1-x)^v)^n$; ours corresponds to $(u,v)=(-\beta,-\alpha)$.
+The full odd-prime parameter conjecture is also stated on A352373
+\cite{oeis352373}. The repository source explicitly leaves the binary case
+without an assertion.
+
+The research question used here is therefore the following more precise
+completion problem, not a claim that the odd-prime conjecture had no prior
+proof.
+
+\begin{problem}[Binary completion]\label{prob:binary}
+For the integer-parameter family
+\begin{equation}\label{eq:family}
+ \A(n)=[x^n](1-x)^{-\alpha n}(1+x)^{-\beta n},
+ \qquad \alpha,\beta\in\Z,
+\end{equation}
+does cubic growth of the divisibility exponent persist at $p=2$, with a
+fixed loss independent of the level? Can one determine the first possible
+binary defect and obtain an optimal common denominator for the cubic
+M\"obius transform?
+\end{problem}
+
+The sources checked did not supply the binary formula or the denominator
+conclusions below. This is a statement about the checked source boundary,
+not an exhaustive claim about all mathematical literature. The odd-prime
+result is credited to the prior proof candidate and reproved here to make
+the new completion independent of an external unreviewed argument.
+
+\subsection{Main theorems}
+All binomial coefficients with an integer upper argument use the generalized
+convention
+\begin{equation}\label{eq:genbinomial}
+ \binom{z}{k}=\frac{z(z-1)\cdots(z-k+1)}{k!},\qquad k\ge0.
+\end{equation}
+In particular, this is an integer when $z$ is a negative integer.
+
+\begin{theorem}[First binary defect]\label{thm:binary}
+Let $\alpha,\beta\in\Z$, let $m\ge1$ be odd, and let $r\ge2$. Then
+\begin{align}\label{eq:binary-defect}
+ &\A(m2^r)-\A(m2^{r-1})\notag\\
+ &\quad\equiv
+ 2^{3r-3}\alpha\beta
+ \binom{(\alpha+\beta+1)m-1}{m-1}
+ \pmod{2^{3r-2}}.
+\end{align}
+Consequently the difference is always divisible by $2^{3r-3}$, and is
+divisible by $2^{3r-2}$ whenever $\alpha\beta$ is even. If both parameters
+are odd and $m=1$, then its valuation is exactly $3r-3$, at every $r\ge2$.
+\end{theorem}
+
+The first lift $r=1$ is deliberately not included in the displayed defect
+formula. It always satisfies the elementary congruence modulo $2$ proved
+below. The distinction prevents a common error: extrapolating a later-level
+binary estimate to the first lift.
+
+\begin{theorem}[All primes for the basket sequence]\label{thm:allprime}
+For every prime $p$ and all $m,r\ge1$,
+\begin{equation}\label{eq:all-prime}
+ v_p\bigl(a(mp^r)-a(mp^{r-1})\bigr)
+ \ge 3r-v_p(12).
+\end{equation}
+Thus the moduli are $p^{3r}$ for $p\ge5$, $3^{3r-1}$ for $p=3$, and
+$2^{3r-2}$ for $p=2$. Each of these uniform losses is necessary.
+\end{theorem}
+
+For a zero difference, its valuation is interpreted as $+\infty$.
+
+\begin{theorem}[Sharp common denominators]\label{thm:denom}
+Define
+\begin{equation}\label{eq:Bn}
+ \B(n)=\frac1{n^3}\sum_{d\mid n}\mu(d)\A(n/d),\qquad
+ B(n)=B_{2,1}(n).
+\end{equation}
+Then $24\B(n)\in\Z$ for all integer parameters and all $n\ge1$.
+If $\alpha\beta$ is even, $12\B(n)\in\Z$. In particular,
+\begin{equation}\label{eq:denom12}
+ \boxed{\quad
+ \frac{12}{n^3}\sum_{d\mid n}\mu(d)a(n/d)\in\Z_{\ge0}
+ \quad(n\ge1).\quad}
+\end{equation}
+The constant $12$ is minimal for the single sequence $a(n)$. The constant
+$24$ is minimal for the unrestricted integer-parameter family.
+\end{theorem}
+
+For the combinatorial interpretation, let $P_n$ be the number of primitive
+cyclic words of length $n$ in the weighted alphabet of pairs $(u,v)$ of
+nonnegative integers, where $(u,v)$ has weight $u+2v$, and the total word
+weight is $n$. ``Primitive'' means that no shorter word is repeated to form
+it. Cyclic rotations are identified.
+
+\begin{corollary}[Primitive-orbit divisibility]\label{cor:necklace}
+For every $n\ge1$,
+\begin{equation}\label{eq:necklace-div}
+ P_n=\frac1n\sum_{d\mid n}\mu(d)a(n/d),\qquad
+ \frac{n^2}{\gcd(n^2,12)}\mid P_n.
+\end{equation}
+\end{corollary}
+
+\subsection{What is proved, and what is not claimed}
+The binary theorem and denominator theorem have complete elementary proofs
+in Sections~\ref{sec:binary} and~\ref{sec:mobius}. The odd-prime proof in
+Section~\ref{sec:odd} is included as a self-contained alternative to the
+prior repository argument. The algebraic generating function and leading
+asymptotic are not claimed as new: both are already documented in the OEIS
+and related literature. The correction coefficients and the general
+Gaussian-moment expression are derived explicitly here, without a priority
+claim. A stronger exact valuation pattern at powers of two is labelled as
+conjectural in Section~\ref{sec:frontiers}.
+
+The proofs have been checked algebraically and by independent exact
+computations, but have not been externally refereed or formalized in Lean.
+The code is a reproducibility aid, not a substitute for the arguments.
+
+\section{Counting formulas and exact coefficient computation}
+\label{sec:coeff}
+
+\subsection{A positive binomial sum}
+A single white basket contributes $(1-x)^{-1}$ and a black basket contributes
+$(1-x^2)^{-1}$. Multiplying over the labelled baskets proves
+\eqref{eq:an}. Expanding the two factors separately gives, for $n\ge1$,
+\begin{equation}\label{eq:positive-sum}
+ a(n)=\sum_{k=0}^{\lfloor n/2\rfloor}
+ \binom{2n-2k-1}{n-2k}\binom{n+k-1}{k}.
+\end{equation}
+The first terms are
+\[
+ 1,\ 1,\ 5,\ 19,\ 85,\ 376,\ 1715,\ 7890,\ 36693,\ 171820,\ 809380.
+\]
+This positive sum gives an independent check on the faster coefficient
+recurrence below. It also makes integrality and nonnegativity immediate for
+the target sequence.
+
+For arbitrary integer parameters, generalized binomial expansion shows that
+\begin{equation}\label{eq:signed-sum}
+ \A(n)=\sum_{k=0}^n(-1)^k
+ \binom{\beta n+k-1}{k}
+ \binom{\alpha n+n-k-1}{n-k}\qquad(n\ge1).
+\end{equation}
+This formula includes zero and negative parameters without any change of
+convention. We put $\A(0)=1$.
+
+\subsection{A two-step recurrence in the coefficient index}
+Fix $n$ and write
+\[
+ F(x)=(1-x)^{-\alpha n}(1+x)^{-\beta n}
+      =\sum_{k\ge0}f_kx^k.
+\]
+Logarithmic differentiation gives
+\[
+ (1-x^2)F'(x)=n\bigl((\alpha-\beta)+(\alpha+\beta)x\bigr)F(x).
+\]
+Consequently, with $f_{-1}=0$ and $f_0=1$,
+\begin{equation}\label{eq:coefficient-recurrence}
+ kf_k=n(\alpha-\beta)f_{k-1}
+      +\bigl(n(\alpha+\beta)+k-2\bigr)f_{k-2},\qquad k\ge1.
+\end{equation}
+The desired output is $f_n$. This is a recurrence in $k$ \emph{with $n$
+fixed}, not a recurrence relating successive diagonal values $\A(n)$.
+
+The algorithm uses $O(n)$ exact arithmetic operations and two live integer
+coefficients. The integers grow with $n$, so this is not a claim of linear
+bit complexity. Every division by $k$ is checked for exactness in the
+supplied implementation. Large datasets are computed without floating-point
+arithmetic.
+
+\subsection{Small-prime boundaries visible in the first terms}
+For the target sequence,
+\begin{align*}
+ a(2)-a(1)&=4,\\
+ a(3)-a(1)&=18=2\cdot3^2,\\
+ a(4)-a(2)&=80=5\cdot2^4,\\
+ a(5)-a(1)&=375=3\cdot5^3,\\
+ a(7)-a(1)&=7889=23\cdot7^3.
+\end{align*}
+These examples already show that $p=2$ and $p=3$ cannot simply be inserted
+into Bala's stated modulus. They also prove the necessity of the fixed
+losses in Theorem~\ref{thm:allprime}: at $p=2$ use level $r=2$, and at
+$p=3$ use level $r=1$. At $p=5$ there is no extra uniform power available.
+
+\section{Local arithmetic and the odd-prime theorem}
+\label{sec:odd}
+
+This section proves the odd-prime result independently. It overlaps in scope
+with the prior coefficient-framing theorem \cite{prior}; the direct
+coefficient-valuation argument below avoids dependence on the general
+rational-framing statement discussed in Section~\ref{sec:boundary}.
+
+\subsection{The local ring and a coefficient estimate}
+For a prime $p$, let
+\[
+ R_p=\Z_{(p)}=\{u/v\in\Q:p\nmid v\}.
+\]
+Congruence modulo $p^h$ in this ring means that the difference has valuation
+at least $h$. A formal power-series congruence is always coefficientwise.
+All exponentials and logarithms are formal over $\Q$; at a fixed degree only
+finitely many terms contribute.
+
+Set
+\begin{equation}\label{eq:phi-log}
+ \Phi(x)=(1-x)^{-\alpha}(1+x)^{-\beta},\qquad
+ L(x)=\log\Phi(x)=\sum_{j\ge1}\frac{c_j}{j}x^j,
+ \qquad c_j=\alpha+\beta(-1)^j.
+\end{equation}
+
+\begin{lemma}[Valuation of a coefficient]\label{lem:gcoef}
+Let $M\ge1$ and write $g_j=[x^j]\Phi(x)^M$. Then $g_j\in\Z$, $g_0=1$,
+and for $j\ge1$,
+\begin{equation}\label{eq:gvaluation}
+ v_p(g_j)\ge\max\{0,v_p(M)-v_p(j)\}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Integrality follows from generalized binomial expansion. Differentiating
+$\Phi(x)^M$ and multiplying by $x$ yields
+\[
+ jg_j=M\sum_{i=1}^j c_i g_{j-i}.
+\]
+The sum on the right is an integer. Thus $v_p(g_j)\ge v_p(M)-v_p(j)$,
+and integrality gives the additional lower bound zero.
+\end{proof}
+
+\subsection{A reciprocal-square cancellation}
+For odd $p$, put
+\[
+ \eps_p=\begin{cases}1,&p=3,\\0,&p\ge5.\end{cases}
+\]
+
+\begin{lemma}[Reduced reciprocal squares]\label{lem:squares}
+If $s>0$, $p\mid s$, and $t=v_p(s)$, then
+\begin{equation}\label{eq:Hs}
+ H_p(s)=\sum_{\substack{1\le j<s\\p\nmid j}}\frac1{j^2}
+ \in p^{t-\eps_p}R_p.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Reduce denominators modulo $p^t$ and partition the summation interval into
+complete blocks of length $p^t$. It is enough to consider
+$U_t=\sum_{u\in(\Z/p^t\Z)^\times}u^{-2}$.
+
+For $p\ge5$, multiplication by $2$ permutes the units and gives
+$U_t\equiv 2^{-2}U_t\pmod{p^t}$. Hence $3U_t\equiv0\pmod{p^t}$; since
+$3$ is invertible, $U_t\equiv0$.
+
+For $p=3$, induction proves $U_t\equiv0\pmod{3^{t-1}}$. The case $t=1$
+has modulus $1$. For $t\ge2$, each unit modulo $3^{t-1}$ has three lifts,
+so $U_t\equiv3U_{t-1}\pmod{3^{t-1}}$. The induction hypothesis finishes
+the proof. The same bounds hold for the full block sum.
+\end{proof}
+
+For odd $p$, parity is preserved by multiplication by $p$, so $c_{pj}=c_j$.
+The reduced logarithm
+\begin{equation}\label{eq:Dp}
+ D_p(x)=L(x)-\frac1pL(x^p)
+       =\sum_{\substack{j\ge1\\p\nmid j}}\frac{c_j}{j}x^j
+\end{equation}
+belongs to $xR_p[[x]]$ and has no monomial whose exponent is divisible by
+$p$.
+
+\begin{lemma}[Quadratic-tail estimate]\label{lem:quadratic}
+If $s>0$ is divisible by the odd prime $p$, then
+\begin{equation}\label{eq:Tvaluation}
+ T_p(s):=[x^s]D_p(x)^2\in p^{v_p(s)-\eps_p}R_p.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $t=v_p(s)$. Since $p\mid s$, both $j$ and $s-j$ are units whenever
+$p\nmid j$. Thus
+\[
+ T_p(s)=\sum_{\substack{1\le j<s\\p\nmid j}}
+ \frac{c_jc_{s-j}}{j(s-j)}
+ \equiv-\sum_{\substack{1\le j<s\\p\nmid j}}
+ \frac{c_jc_{s-j}}{j^2}\pmod{p^t}.
+\]
+If $s$ is odd, the weight $c_jc_{s-j}=\alpha^2-\beta^2$ is constant, so
+Lemma~\ref{lem:squares} applies directly.
+
+If $s$ is even, the weights are $(\alpha+\beta)^2$ for even $j$ and
+$(\alpha-\beta)^2$ for odd $j$. The weighted reciprocal-square sum is
+exactly
+\[
+ (\alpha-\beta)^2H_p(s)+\alpha\beta H_p(s/2).
+\]
+Indeed, the excess even weight is $4\alpha\beta$, while replacing $j$ by
+$2k$ divides the reciprocal square by $4$. Since $p$ is odd,
+$v_p(s/2)=t$. Applying Lemma~\ref{lem:squares} to both terms proves the
+claim.
+\end{proof}
+
+\subsection{Proof of the full odd-prime tower}
+\begin{theorem}[Odd-prime coefficient tower]\label{thm:odd}
+For every $\alpha,\beta\in\Z$, odd prime $p$, and $N>0$ divisible by $p$,
+write $r=v_p(N)$. Then
+\begin{equation}\label{eq:odd-tower}
+ \A(N)-\A(N/p)\in p^{3r-\eps_p}\Z.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Put $N=pM$. From \eqref{eq:Dp} one obtains the exact identity
+\begin{equation}\label{eq:factor}
+ \Phi(x)^N=\Phi(x^p)^M\exp\bigl(ND_p(x)\bigr).
+\end{equation}
+The factorial valuation bounds imply
+\begin{equation}\label{eq:exp-trunc}
+ \exp(ND_p)\equiv1+ND_p+\frac{N^2}{2}D_p^2
+ \pmod{p^{3r-\eps_p}R_p[[x]]}.
+\end{equation}
+Here are explicit bounds, including the small exponential degrees. For
+$p\ge5$ and $k=3$, $v_p(k!)=0$. For $k\ge4$,
+$v_p(k!)\le(k-1)/4\le k-3$, so $kr-v_p(k!)\ge3r$.
+For $p=3$ and $k\ge3$,
+$v_3(k!)\le(k-1)/2\le k-2$, and $kr-v_3(k!)\ge3r-1$.
+These estimates justify every discarded term of the formal exponential.
+
+Extract degree $N$. The constant term of the exponential gives $\A(M)$.
+The linear contribution is zero: $\Phi(x^p)^M$ is supported on exponents
+divisible by $p$, whereas $D_p$ is supported away from them. Therefore
+\begin{equation}\label{eq:quadratic-reduction}
+ \A(N)-\A(M)\equiv
+ \frac{N^2}{2}[x^N]\Phi(x^p)^M D_p(x)^2
+ \pmod{p^{3r-\eps_p}}.
+\end{equation}
+Writing $g_j=[x^j]\Phi(x)^M$, the remaining coefficient is
+\begin{equation}\label{eq:tail-sum}
+ \sum_{j=0}^{M-1}g_j T_p\bigl(p(M-j)\bigr).
+\end{equation}
+We claim that each summand belongs to $p^{r-\eps_p}R_p$.
+For $j=0$, this follows directly from Lemma~\ref{lem:quadratic} at $s=N$.
+For $j>0$ with $v_p(j)<r-1$, the equality $v_p(M)=r-1$ gives
+$v_p(M-j)=v_p(j)$. Lemmas~\ref{lem:gcoef} and~\ref{lem:quadratic} then
+supply, respectively,
+\[
+ r-1-v_p(j)\quad\hbox{and}\quad 1+v_p(j)-\eps_p,
+\]
+whose sum is $r-\eps_p$.
+For $v_p(j)\ge r-1$, we have $v_p(M-j)\ge r-1$, and the quadratic-tail
+bound alone supplies $r-\eps_p$.
+
+Finally, $v_p(N^2/2)=2r$ because $p$ is odd. Inserting the valuation of
+\eqref{eq:tail-sum} into \eqref{eq:quadratic-reduction} proves
+\eqref{eq:odd-tower}. The difference is an ordinary integer, so its local
+divisibility is ordinary integer divisibility.
+\end{proof}
+
+For $N=mp^r$ with $p\mid m$, the exact valuation $v_p(N)$ is larger than
+the displayed level. The theorem therefore implies the usual formulation
+without any coprimality restriction on $m$.
+
+\section{The binary defect: proof and sharpness}
+\label{sec:binary}
+
+At $p=2$, the equality $c_{pj}=c_j$ used in \eqref{eq:Dp} fails. The correct
+replacement is a reflection argument. It separates the even and odd parts
+before any exponential is truncated.
+
+\subsection{An exact odd-harmonic normalization}
+Work in $R_2=\Z_{(2)}$ and define
+\begin{equation}\label{eq:U}
+ U(x)=\sum_{\substack{j\ge1\\j\text{ odd}}}\frac{x^j}{j}
+     =\frac12\log\frac{1+x}{1-x}.
+\end{equation}
+The factor $1/2$ in the logarithmic expression is harmless: the displayed
+odd-power series has coefficients in $R_2$.
+
+\begin{lemma}[Odd harmonic sums are exactly normalized]\label{lem:binary-H}
+For every positive even $T$, let
+\[
+ h(T)=\sum_{\substack{1\le j<T\\j\text{ odd}}}\frac1j.
+\]
+Then
+\begin{equation}\label{eq:h-exact}
+ v_2(h(T))=2v_2(T)-2.
+\end{equation}
+In particular, $h(2j)/j^2$ is an odd element of $R_2$ for every $j\ge1$.
+\end{lemma}
+\begin{proof}
+Write $T=2^e q$ with $q$ odd. First,
+\begin{equation}\label{eq:unit2}
+ \sum_{\substack{1\le u<2^e\\u\text{ odd}}}u^{-2}
+ \equiv2^{e-1}\pmod{2^e}.
+\end{equation}
+For $e=1$ this is immediate. For $e\ge2$, the two lifts $u$ and
+$u+2^{e-1}$ of an odd residue modulo $2^{e-1}$ have equal inverse squares
+modulo $2^e$. Indeed their squares differ by a multiple of $2^e$.
+Thus the sum at level $e$ is twice the sum at level $e-1$ modulo $2^e$,
+which proves \eqref{eq:unit2} by induction.
+
+Partitioning the interval $1\le j<T$ into $q$ blocks now shows that
+$\sum_{j\text{ odd}}j^{-2}\equiv2^{e-1}\pmod{2^e}$. Pair $j$ with
+$T-j$ to obtain the exact identity
+\[
+ h(T)=\frac T2
+ \sum_{\substack{1\le j<T\\j\text{ odd}}}\frac1{j(T-j)}.
+\]
+Modulo $2^e$, the sum on the right is the negative of the reciprocal-square
+sum. It consequently has valuation exactly $e-1$. The prefactor $T/2$
+has valuation $e-1$ as well, proving \eqref{eq:h-exact}.
+\end{proof}
+
+The even power series $U(x)^2$ satisfies
+\[
+ [x^{2j}]U(x)^2
+ =\sum_{\substack{1\le k<2j\\k\text{ odd}}}\frac1{k(2j-k)}
+ =\frac{h(2j)}j.
+\]
+Define
+\begin{equation}\label{eq:K}
+ K(t)=\sum_{j\ge1}\frac{h(2j)}{j^2}t^j\in tR_2[[t]],
+ \qquad V(t)=U(\sqrt t)^2.
+\end{equation}
+Here $U(\sqrt t)^2$ denotes the integer-exponent series obtained from the
+even series $U(x)^2$ by replacing $x^2$ with $t$; no choice of an analytic
+square root is involved. The identities we need are
+\begin{equation}\label{eq:K-identities}
+ V(t)=tK'(t),\qquad
+ U(t)^2=\frac t2\frac{\mathrm d}{\mathrm dt}K(t^2),\qquad
+ K(t)\equiv\frac{t}{1-t}\pmod2.
+\end{equation}
+The first two follow by coefficient comparison. The last follows from the
+oddness assertion of Lemma~\ref{lem:binary-H}. This final residue, not just
+a divisibility bound, will determine the leading binary digit.
+
+\subsection{Separating the two coefficient problems}
+Set
+\[
+ S=\alpha+\beta,\qquad \delta=\alpha-\beta.
+\]
+Let $M$ be even, put $s=v_2(M)\ge1$, and define
+\[
+ g(t)=(1-t)^{-SM}.
+\]
+The logarithmic identities
+\begin{align*}
+ \Phi(x)^{2M}&=(1-x^2)^{-SM}\exp\bigl(2\delta M U(x)\bigr),\\
+ \Phi(t)^M&=g(t)\exp\bigl(-2\beta M U(t)\bigr)
+\end{align*}
+are exact. Only the even part of the first exponential contributes to degree
+$2M$. Consequently
+\begin{align}\label{eq:binary-factor}
+ \A(2M)&=[t^M]g(t)\cosh\bigl(2\delta M U(\sqrt t)\bigr),\notag\\
+ \A(M)&=[t^M]g(t)\exp\bigl(-2\beta M U(t)\bigr).
+\end{align}
+The hyperbolic cosine is interpreted as its even formal Taylor series,
+so every exponent of $t$ in \eqref{eq:binary-factor} is an integer.
+
+Since $v_2(k!)\le k-1$, for $k\ge3$ we have
+\[
+ v_2\left(\frac{(2M)^k}{k!}\right)\ge ks+1\ge3s+1.
+\]
+The same estimate applies to all even degrees $k\ge4$ in the cosine.
+Thus modulo $2^{3s+1}$ we need only three coefficient expressions:
+\begin{equation}\label{eq:I-def}
+ I_1=[t^M]gU,\qquad I_2=[t^M]gU^2,\qquad J=[t^M]gV.
+\end{equation}
+Writing $\Delta=\A(2M)-\A(M)$, expansion of
+\eqref{eq:binary-factor} gives
+\begin{equation}\label{eq:delta-start}
+ \Delta\equiv
+ 2\beta M I_1+2\delta^2M^2J-2\beta^2M^2I_2
+ \pmod{2^{3s+1}}.
+\end{equation}
+
+\subsection{Reflection converts the linear term into a quadratic one}
+The apparent obstacle in \eqref{eq:delta-start} is the linear term $I_1$.
+Because $M$ is even and $U$ is odd,
+\[
+ [t^M]g(-t)U(t)=-I_1.
+\]
+Also
+\[
+ \frac{g(-t)}{g(t)}=
+ \left(\frac{1-t}{1+t}\right)^{SM}
+ =\exp\bigl(-2SMU(t)\bigr).
+\]
+Combining these identities yields
+\begin{equation}\label{eq:reflection}
+ I_1=\frac12[t^M]g(t)U(t)
+       \left(1-\exp\bigl(-2SMU(t)\bigr)\right).
+\end{equation}
+The first exponential term in \eqref{eq:reflection} is $SMI_2$.
+Every remaining term has a scalar coefficient with valuation at least
+$2s$: for $k\ge2$,
+\[
+ v_2\left(\frac{(2SM)^k}{2k!}\right)
+ \ge k(s+1)-1-v_2(k!)\ge ks\ge2s.
+\]
+Hence
+\begin{equation}\label{eq:I1-reduction}
+ I_1\equiv SMI_2\pmod{2^{2s}R_2}.
+\end{equation}
+Multiplication by $2\beta M$ makes the error divisible by $2^{3s+1}$.
+Substituting in \eqref{eq:delta-start} and using $\beta S-\beta^2=\alpha\beta$
+therefore gives
+\begin{equation}\label{eq:delta-quadratic}
+ \Delta\equiv2M^2\bigl(\alpha\beta I_2+\delta^2J\bigr)
+ \pmod{2^{3s+1}}.
+\end{equation}
+This reflection is the step that replaces the odd-prime support cancellation.
+It is valid because $M$ is even; this is exactly why the first binary lift
+was separated from the theorem.
+
+\subsection{Formal integration by parts supplies the third power}
+For any $K_0(t)\in R_2[[t]]$, coefficient differentiation gives
+\begin{equation}\label{eq:ibp}
+ [t^M]g(t)tK_0'(t)
+ =M[t^M]g(t)K_0(t)\left(1-\frac{St}{1-t}\right).
+\end{equation}
+Indeed, $[t^M]t(gK_0)'=M[t^M]gK_0$ and
+$tg'/g=SMt/(1-t)$.
+
+Using \eqref{eq:K-identities} in \eqref{eq:ibp} shows
+\begin{equation}\label{eq:IJ-div}
+ J\in MR_2,\qquad
+ I_2=\frac M2 C,
+\end{equation}
+where
+\begin{equation}\label{eq:C}
+ C=[t^M](1-t)^{-SM}K(t^2)
+       \left(1-\frac{St}{1-t}\right)\in R_2.
+\end{equation}
+Thus the $J$ term in \eqref{eq:delta-quadratic} is already zero modulo
+$2^{3s+1}$, and we obtain the particularly useful congruence
+\begin{equation}\label{eq:delta-C}
+ \Delta\equiv\alpha\beta M^3 C\pmod{2^{3s+1}}.
+\end{equation}
+It immediately proves the universal valuation bound $3s$ and its one-bit
+improvement when $\alpha\beta$ is even.
+
+It remains to compute $C$ modulo $2$ when both parameters are odd.
+In this case $S$ is even. Write $M=2^s m$ with $m$ odd.
+Over $\mathbb F_2[[t]]$, generalized integer powers and the Frobenius identity
+give
+\[
+ (1-t)^{-SM}\equiv(1-t^{2^s})^{-Sm},\qquad
+ 1-\frac{St}{1-t}\equiv1,
+\]
+while $K(t^2)\equiv t^2/(1-t^2)$. Since $2^s\ge2$, extraction of $t^M$
+then gives
+\begin{align}\label{eq:C-binomial}
+ C&\equiv\sum_{j=0}^{m-1}\binom{Sm+j-1}{j}\notag\\
+  & =\binom{(S+1)m-1}{m-1}\pmod2.
+\end{align}
+The last identity is the generalized hockey-stick identity, obtained by
+multiplying $(1-z)^{-Sm}$ by $(1-z)^{-1}$ and extracting degree $m-1$.
+It holds for every integer $S$, including negative values.
+
+If $\alpha\beta$ is even, both sides of the desired leading-bit formula
+vanish regardless of $C$. If $\alpha\beta$ is odd, insert
+\eqref{eq:C-binomial} into \eqref{eq:delta-C}. Finally,
+$M^3=2^{3s}m^3\equiv2^{3s}\pmod{2^{3s+1}}$.
+Taking $s=r-1$ proves Theorem~\ref{thm:binary} in full. For $m=1$ the binomial
+coefficient in \eqref{eq:binary-defect} equals $1$, so odd parameters give
+an odd leading quotient and exact valuation $3r-3$.
+
+\subsection{First lift, optimal losses, and the all-prime statement}
+For any $\Phi\in1+x\Z[[x]]$,
+\[
+ \Phi(x)^2\equiv\Phi(x^2)\pmod2.
+\]
+Raising this to $m$ and extracting degree $2m$ proves
+\begin{equation}\label{eq:firstlift}
+ \A(2m)\equiv\A(m)\pmod2.
+\end{equation}
+For $(\alpha,\beta)=(2,1)$, the improved binary bound of
+Theorem~\ref{thm:binary} is $3r-2$ for $r\ge2$, and
+\eqref{eq:firstlift} supplies exactly the claimed lower bound $1$ at $r=1$.
+If $m$ is even, apply the theorem at the larger exact binary level.
+Together with Theorem~\ref{thm:odd}, this proves
+Theorem~\ref{thm:allprime}. The examples in Section~\ref{sec:coeff} prove
+its uniform sharpness.
+
+There is a distinction between uniform sharpness and eventual sharpness.
+For the target sequence, equality occurs at $r=2$, but later powers of two
+show more divisibility. The theorem does not assert equality at every level.
+For the unrestricted family, in contrast, odd parameters and $m=1$ attain
+the general bound $3r-3$ at every level $r\ge2$.
+
+\section{M\"obius transforms, common denominators, and cyclic words}
+\label{sec:mobius}
+
+\subsection{From a prime-power tower to a denominator theorem}
+For any sequence $A(n)$, set
+\[
+ T_A(n)=\sum_{d\mid n}\mu(d)A(n/d).
+\]
+If $n=p^r n_0$ with $p\nmid n_0$, separating divisors according as they
+contain $p$ gives the exact identity
+\begin{equation}\label{eq:mobius-group}
+ T_A(n)=\sum_{d\mid n_0}\mu(d)
+ \left(A(p^r n_0/d)-A(p^{r-1}n_0/d)\right).
+\end{equation}
+Only squarefree divisors matter, so there are no terms containing a higher
+power of $p$ in the divisor itself.
+
+Apply \eqref{eq:mobius-group} to the basket sequence. Theorem~\ref{thm:allprime}
+implies, for every prime $p\mid n$,
+\[
+ v_p(T_a(n))\ge3v_p(n)-v_p(12).
+\]
+Therefore $n^3\mid12T_a(n)$, proving the integrality part of
+\eqref{eq:denom12}.
+
+For the general family, the odd-prime bounds are unchanged and the binary
+bound loses at most three powers. At level one the needed general estimate
+is merely valuation at least zero. Consequently
+\[
+ n^3\mid24T_{\A}(n).
+\]
+If $\alpha\beta$ is even, the improved binary estimate and
+\eqref{eq:firstlift} reduce $24$ to $12$. This proves all the integrality
+assertions of Theorem~\ref{thm:denom}.
+
+The constants cannot be reduced. For the target sequence,
+\begin{equation}\label{eq:denom-sharp}
+ B(3)=\frac{19-1}{27}=\frac23,
+ \qquad B(4)=\frac{85-5}{64}=\frac54.
+\end{equation}
+Every integer clearing all denominators must thus be divisible by both $3$
+and $4$. Their least common multiple is $12$. For the unrestricted family,
+$(\alpha,\beta)=(1,1)$ gives
+\[
+ B_{1,1}(4)=\frac{10-2}{64}=\frac18,
+\]
+and the target example at $n=3$ forces a factor $3$, so a universal clearing
+integer must be divisible by $24$. Even the single parameter pair $(1,3)$
+requires $24$: its values at $n=3$ and $n=4$ are $-8/3$ and $59/8$.
+
+\subsection{Primitive cyclic words and positivity}
+Let $\mathcal A=\{(u,v):u,v\in\Z_{\ge0}\}$, with weight $u+2v$.
+A word of length $n$ and total weight $n$ corresponds exactly to a solution
+of \eqref{eq:baskets}. Although the alphabet is infinite, the weight
+constraint permits only finitely many letters at each fixed $n$.
+
+A word of length $n$ whose least period is $d\mid n$ is the repetition of
+a primitive block of length $d$. Its total weight is $n$ precisely when the
+block weight is $d$. A primitive cyclic orbit of such blocks has exactly
+$d$ distinct linear representatives. Therefore
+\begin{equation}\label{eq:period}
+ a(n)=\sum_{d\mid n}dP_d.
+\end{equation}
+M\"obius inversion proves the first formula of \eqref{eq:necklace-div} and
+also proves $P_n\ge0$. Since $B(n)=P_n/n^2$, nonnegativity in
+Theorem~\ref{thm:denom} follows. Integrality of $12P_n/n^2$ is equivalent
+to the second assertion of \eqref{eq:necklace-div}.
+
+The first values illustrate that this is stronger than the ordinary
+integrality of a necklace count:
+\begin{center}
+\begin{tabular}{r r r r}
+\toprule
+$n$ & $P_n$ & $B(n)=P_n/n^2$ & $12B(n)$\\
+\midrule
+1&1&$1$&12\\
+2&2&$1/2$&6\\
+3&6&$2/3$&8\\
+4&20&$5/4$&15\\
+5&75&$3$&36\\
+6&282&$47/6$&94\\
+7&1127&$23$&276\\
+8&4576&$143/2$&858\\
+\bottomrule
+\end{tabular}
+\end{center}
+For example, $P_7=49\cdot23$, and $P_6$ is divisible by
+$36/\gcd(36,12)=3$. The individual counts need not be multiples of $n^2$;
+small-prime denominators are genuine.
+
+\subsection{Lambert series and an Euler product}
+Let $H(z)=\sum_{n\ge0}a(n)z^n$. Equation~\eqref{eq:period} gives the formal
+Lambert expansion
+\begin{equation}\label{eq:Lambert}
+ H(z)-1=\sum_{n\ge1}nP_n\frac{z^n}{1-z^n}
+       =\sum_{n\ge1}n^3B(n)\frac{z^n}{1-z^n}.
+\end{equation}
+All operations are valid formally because only finitely many divisors
+contribute to a fixed coefficient. The denominator theorem can be stated
+as follows: the cubic Lambert coefficients of $12(H-1)$ are nonnegative
+integers, and $12$ is the least positive integer with this property.
+
+A related Euler product will follow from the Lagrange series in the next
+section:
+\begin{equation}\label{eq:euler-product}
+ \frac{y(z)}z=\prod_{n\ge1}(1-z^n)^{-P_n}.
+\end{equation}
+To verify it directly, take formal logarithms. The coefficient of $z^k$
+on the right is $k^{-1}\sum_{n\mid k}nP_n=a(k)/k$, exactly the logarithm
+on the left derived below.
+
+\section{Algebraic generating functions}
+\label{sec:gf}
+
+The main generating-function identities are established facts for A348410
+\cite{oeis348410,niu,prodinger}. We include a short derivation because it
+connects the coefficient-power definition, the Euler product, and the
+asymptotic analysis.
+
+\subsection{Lagrange reversion for the full parameter family}
+Let $y(z)$ be the unique series in $z\Z[[z]]$ satisfying
+\begin{equation}\label{eq:reversion}
+ y=z\Phi(y).
+\end{equation}
+Existence and uniqueness follow recursively from $\Phi(0)=1$. Write
+$H_{\alpha,\beta}(z)=\sum_{n\ge0}\A(n)z^n$.
+Lagrange inversion, applied to $\log\Phi(y)$, gives
+\begin{align*}
+ [z^n]\log\Phi(y(z))
+ &=\frac1n[x^{n-1}]L'(x)\Phi(x)^n\\
+ &=\frac1{n^2}[x^{n-1}]\frac{\mathrm d}{\mathrm dx}\Phi(x)^n
+ =\frac{\A(n)}n.
+\end{align*}
+Since $y/z=\Phi(y)$, it follows that
+\begin{equation}\label{eq:log-y}
+ \log\frac{y(z)}z=\sum_{n\ge1}\frac{\A(n)}n z^n.
+\end{equation}
+Differentiating and using \eqref{eq:reversion} yields
+\begin{equation}\label{eq:Hparam}
+ H_{\alpha,\beta}(z)=\frac{zy'(z)}{y(z)}
+ =\frac{1-y^2}
+ {1-(\alpha-\beta)y-(\alpha+\beta+1)y^2}.
+\end{equation}
+For integer parameters, $\Phi$ is rational. Thus \eqref{eq:reversion}
+becomes a polynomial equation after clearing denominators, and
+$H_{\alpha,\beta}$ is algebraic.
+
+\subsection{The target quartic}
+For $(\alpha,\beta)=(2,1)$,
+\begin{equation}\label{eq:target-param}
+ z=y(1-y)^2(1+y),\qquad
+ H(z)=\frac{1-y^2}{1-y-4y^2}.
+\end{equation}
+Eliminating $y$ gives
+\begin{equation}\label{eq:quartic}
+ \begin{split}
+ z^2(4H-1)^4
+ +zH(107H^3-107H^2+36H-4)\\
+ +32H^3(1-H)=0.
+ \end{split}
+\end{equation}
+Substitution of \eqref{eq:target-param} verifies the identity directly.
+The partial derivative of the left side with respect to $H$, at
+$(z,H)=(0,1)$, is $-32$. Thus the formal implicit-function theorem singles
+out the unique branch with $H(0)=1$. In particular, no ambiguous choice of
+an algebraic root is hidden in the generating-function description.
+
+The symbolic verification program checks both the elimination and the
+series identity through degree $20$. The coefficient recurrence
+\eqref{eq:coefficient-recurrence} is used for that series check, so it does
+not merely substitute one rearranged symbolic expression into another.
+
+\section{A boundary test for periodic-coefficient arguments}
+\label{sec:boundary}
+
+\subsection{What the logarithmic method actually requires}
+The odd-prime proof used two different ingredients: the equality $c_{pj}=c_j$
+and the much stronger quadratic cancellation in Lemma~\ref{lem:quadratic}.
+The first does not imply the second.
+
+More generally, let $\Phi\in1+xR_p[[x]]$, and suppose
+\[
+ \log\Phi(x)=\sum_{j\ge1}c_jx^j/j,\qquad c_j\in R_p,\qquad c_{pj}=c_j.
+\]
+Define $A(n)=[x^n]\Phi(x)^n$ and $D_p$ as in \eqref{eq:Dp}. The
+factorization and the vanishing linear term still hold. For odd $p$, all
+terms of degree at least two in the exponential have valuation at least
+$2v_p(N)$, so they yield a quadratic tower. A cubic tower requires an
+additional estimate on the coefficients of $D_p^2$.
+
+At the first layer and for $p\ge5$, this gives a particularly transparent
+necessary and sufficient residue condition:
+\begin{equation}\label{eq:obstruction}
+ A(p)-A(1)\equiv
+ -\frac{p^2}{2}\sum_{j=1}^{p-1}\frac{c_jc_{p-j}}{j^2}
+ \pmod{p^3}.
+\end{equation}
+Indeed, the quadratic coefficient at degree $p$ is unaffected by positive
+powers of $x^p$ from $\Phi(x^p)$, and
+$1/(j(p-j))\equiv-1/j^2\pmod p$. This proves the formula without any
+periodicity assumption beyond $c_{pj}=c_j$.
+
+\subsection{A spacing-three counterexample}
+Replace the even-occupancy restriction by occupancy divisible by $3$:
+\begin{equation}\label{eq:bn-boundary}
+ b(n)=[x^n](1-x)^{-n}(1-x^3)^{-n}.
+\end{equation}
+Its logarithmic coefficients are
+$c_j=1+3\mathbf1_{3\mid j}$. They have period three and satisfy $c_{5j}=c_j$.
+Nevertheless,
+\begin{align*}
+ b(1)&=1,\\
+ b(5)&=\binom95+5\binom62=126+75=201,\\
+ b(5)-b(1)&=200\not\equiv0\pmod{125}.
+\end{align*}
+The obstruction in \eqref{eq:obstruction} is exactly
+\begin{equation}\label{eq:weighted-counterexample}
+ \sum_{j=1}^4\frac{c_jc_{5-j}}{j^2}
+ =1+\frac44+\frac49+\frac1{16}
+ =\frac{361}{144}\equiv4\pmod5.
+\end{equation}
+Equation~\eqref{eq:obstruction} predicts the residue $75$ modulo $125$,
+which agrees with $200\bmod125$.
+
+Thus the success of period two is structural, not an automatic consequence
+of rationality, periodicity, or Frobenius invariance. In the period-two
+proof, the weighted square sum collapses to two ordinary reciprocal-square
+sums. That special collapse is absent here.
+
+\subsection{Scope of the literature correction}
+M\"uller's arXiv version 1 of \emph{Wolstenholme Type Congruences and Framing
+of Rational 2-Functions} states a general periodic weighted-harmonic bound
+in Theorems 1.2 and 6.2 and a corresponding precise cubic framing bound in
+Theorem 1.1 \cite{muller}. The value \eqref{eq:weighted-counterexample}
+contradicts the printed harmonic bound at period $3$ and prime $5$.
+
+The coefficient counterexample also fits the printed number-field
+hypotheses, not merely a superficial formal analogy. Take
+$K=\Q(\sqrt{-3})$, whose discriminant is $-3$, and
+\[
+ V(x)=\frac{x}{1-x}+\frac{3x^3}{1-x^3}.
+\]
+At every unramified rational prime $p\ne3$, its rational coefficients
+satisfy $c_{mp^r}=c_{mp^{r-1}}$ exactly. Thus it is a rational 2-function
+in the convention of that preprint. Formula (5.3) there identifies the
+coefficient of its plus-framing with parameter one as
+$[x^n]\exp(n\int V)=b(n)$, where the formal integration sends $x^j$ to
+$x^j/j$. Prime $5$ is unramified and does not divide the period. The
+precise bound in Theorem 1.1 would therefore give divisibility by $125$,
+contrary to $b(5)-b(1)=200$.
+
+A different period-four counterexample is already documented by the same
+repository that supplied the prior odd-prime proof \cite{priorcounter}.
+Accordingly, the discovery of a problem in the general framing statement is
+not claimed as new here. The spacing-three example is a compact independent
+boundary witness. The criticism is specifically of the printed uniform
+bounds in version 1. A single exceptional prime does not refute a weaker
+assertion that permits an unspecified finite set of additional exceptional
+primes, and it says nothing by itself about unrelated framing results.
+None of the proofs in this article uses the disputed statements.
+
+\section{Asymptotic expansion of the basket sequence}
+\label{sec:asymptotic}
+
+The leading asymptotic is recorded in the OEIS entry, attributed to
+Kotesovec \cite{oeis348410}. Here we derive it together with two explicit
+correction terms and an all-order coefficient formula. The method is the
+standard saddle-point approach to large powers of generating functions
+\cite[Chapter VIII]{flajolet}.
+
+\subsection{The saddle and exponential growth}
+For this section only, put
+\[
+ \Phi(x)=\frac1{(1-x)(1-x^2)}.
+\]
+The positive saddle $\tau\in(0,1)$ satisfies
+\[
+ \tau\frac{\Phi'(\tau)}{\Phi(\tau)}=1.
+\]
+Since $x\Phi'/\Phi=x/(1-x)+2x^2/(1-x^2)$, this is equivalent to
+$4\tau^2+\tau-1=0$. Hence
+\begin{equation}\label{eq:saddle}
+ \tau=\frac{\sqrt{17}-1}{8},\qquad
+ \rho=\frac{\tau}{\Phi(\tau)}
+ =\frac{51\sqrt{17}-107}{512},\qquad
+ \lambda=\rho^{-1}=\frac{107+51\sqrt{17}}{64}.
+\end{equation}
+Numerically, $\lambda=4.9574747954140732506\ldots$.
+Define the logarithmic cumulants
+\begin{equation}\label{eq:kappa}
+ \kappa_j=\left.
+ \left(x\frac{\mathrm d}{\mathrm dx}\right)^j\log\Phi(x)
+ \right|_{x=\tau}.
+\end{equation}
+Then $\kappa_1=1$ and
+\begin{align}\label{eq:kappas}
+ \kappa_2&=\frac{51-5\sqrt{17}}{16},&
+ \kappa_3&=\frac{435-69\sqrt{17}}{32},\notag\\
+ \kappa_4&=\frac{10731-2125\sqrt{17}}{128},&
+ \kappa_5&=\frac{91545-20175\sqrt{17}}{128},\notag\\
+ \kappa_6&=\frac{4008567-929185\sqrt{17}}{512}.&&
+\end{align}
+
+\begin{theorem}[Two correction terms]\label{thm:asymptotic}
+As $n\to\infty$ through positive integers,
+\begin{equation}\label{eq:asymptotic}
+ a(n)=\frac{\lambda^n}{\sqrt{2\pi\kappa_2n}}
+ \left(1+\frac{c_1}{n}+\frac{c_2}{n^2}+O(n^{-3})\right),
+\end{equation}
+where
+\begin{equation}\label{eq:c1c2}
+ c_1=\frac{-1683+95\sqrt{17}}{9248},\qquad
+ c_2=\frac{119821-28605\sqrt{17}}{5030912}.
+\end{equation}
+The leading amplitude is equivalently
+\begin{equation}\label{eq:amplitude}
+ \frac1{\sqrt{2\pi\kappa_2}}=
+ \frac{\sqrt{3+5/\sqrt{17}}}{4\sqrt\pi}.
+\end{equation}
+\end{theorem}
+
+\subsection{Derivation, including control of the remainder}
+Cauchy's coefficient formula on the circle $|x|=\tau$ gives
+\begin{equation}\label{eq:cauchy}
+ a(n)=\frac{\lambda^n}{2\pi}
+ \int_{-\pi}^{\pi}
+ \exp\left(n\left\{
+ \log\frac{\Phi(\tau e^{i\theta})}{\Phi(\tau)}-i\theta
+ \right\}\right)\dd\theta.
+\end{equation}
+The coefficients of $\Phi$ are positive and its support contains $0$ and
+$1$. Equality in the triangle inequality
+$|\Phi(\tau e^{i\theta})|\le\Phi(\tau)$ therefore requires
+$e^{i\theta}=1$. On every closed subinterval bounded away from zero, the
+integrand is exponentially smaller than the central contribution.
+
+Near zero, choose the analytic logarithm agreeing with the real logarithm
+at $\tau$. The saddle condition cancels the linear term, and the exponent
+inside braces is
+\begin{equation}\label{eq:local-exponent}
+ -\frac{\kappa_2\theta^2}{2}
+ +\sum_{k\ge3}\frac{\kappa_k(i\theta)^k}{k!}.
+\end{equation}
+In particular, its real part is at most $-c\theta^2$ for sufficiently small
+$|\theta|$ and some $c>0$.
+
+Set $u=\sqrt{n\kappa_2}\,\theta$. The central integral becomes a Gaussian
+integral multiplied by
+\[
+ \exp\left(\sum_{k\ge3}
+ \frac{\kappa_k i^k u^k}
+ {k!\kappa_2^{k/2}}n^{1-k/2}\right).
+\]
+Expanding this expression and integrating term by term is justified at any
+fixed order by analytic Taylor remainder estimates and Gaussian domination.
+For specificity, split a small fixed central interval at
+$|\theta|=n^{-2/5}$. Outside that shrinking interval the bound
+$e^{-cn\theta^2}$ is exponentially small in $n^{1/5}$. Inside it, Taylor
+expansion to sufficiently high finite degree has a uniform remainder;
+rescaling and integrating its polynomial bounds against a slightly wider
+Gaussian gives the stated power remainder. Odd powers have zero symmetric
+Gaussian moment. Carrying the expansion two orders further than the last
+retained even power bounds the relative remainder by $O(n^{-3})$ in
+\eqref{eq:asymptotic}. The same argument works to every fixed order.
+
+Using
+\[
+ \frac1{\sqrt{2\pi}}\int_{\R}u^{2\ell}e^{-u^2/2}\dd u=(2\ell-1)!!,
+\]
+one obtains
+\begin{align}\label{eq:cumulant-corrections}
+ c_1={}&\frac{\kappa_4}{8\kappa_2^2}
+       -\frac{5\kappa_3^2}{24\kappa_2^3},\notag\\
+ c_2={}&-\frac{\kappa_6}{48\kappa_2^3}
+ +\frac{7\kappa_3\kappa_5}{48\kappa_2^4}
+ +\frac{35\kappa_4^2}{384\kappa_2^4}\notag\\
+ &-\frac{35\kappa_3^2\kappa_4}{64\kappa_2^5}
+ +\frac{385\kappa_3^4}{1152\kappa_2^6}.
+\end{align}
+Substitution of \eqref{eq:kappas} simplifies to \eqref{eq:c1c2}; elementary
+rationalization gives \eqref{eq:amplitude}. This proves the theorem.
+
+\subsection{An explicit all-order coefficient formula}
+The same calculation gives a finite expression for every correction
+coefficient. For $j\ge0$, sum over nonnegative integers
+$m_3,\ldots,m_{2j+2}$ satisfying
+\[
+ \sum_{k=3}^{2j+2}(k-2)m_k=2j,
+ \qquad K=\sum_{k=3}^{2j+2}km_k.
+\]
+The integer $K$ is even. Then
+\begin{equation}\label{eq:allorder}
+ c_j=\sum
+ (-1)^{K/2}(K-1)!!\,\kappa_2^{-K/2}
+ \prod_{k=3}^{2j+2}\frac{\kappa_k^{m_k}}{m_k!(k!)^{m_k}}.
+\end{equation}
+For $j=0$, the empty product and $(-1)!!$ are both $1$, giving $c_0=1$.
+The constraint comes from collecting the exponent of $n^{-1/2}$ in the
+expanded exponential; the double factorial comes from its Gaussian moment.
+This is a direct finite enumeration formula, not a recurrence with unknown
+initial correction terms.
+
+Numerically, $c_1\approx-0.1396307272454933$ and
+$c_2\approx0.0003736029529450764$. The cancellation in $c_2$ is substantial,
+so exact symbolic simplification is preferable to low-precision arithmetic.
+The supplied numerical checks use 90 decimal digits. For illustration,
+the signed relative error of the approximation through $c_2$ is about
+$-9.6264\cdot10^{-9}$ at $n=100$ and $-6.1254\cdot10^{-10}$ at $n=250$.
+Those numerical comparisons are checks, not the proof of the remainder.
+
+\section{Reproducible computation and proof audit}
+\label{sec:verification}
+
+\subsection{What the programs compute}
+The archive separates exact integer checks from optional symbolic and
+high-precision checks. The program \texttt{verify.py} uses only the Python
+standard library and implements \eqref{eq:coefficient-recurrence}; it
+cross-checks against \eqref{eq:positive-sum} and \eqref{eq:signed-sum}.
+The program \texttt{binary\_checks.py} tests the complete leading-defect
+formula, the harmonic-unit lemma, and both common-denominator assertions.
+The program \texttt{symbolic\_checks.py} uses SymPy and mpmath for
+elimination, Gaussian coefficient enumeration, and asymptotic comparisons.
+
+The recorded run produced the following exact checks. Each count is a finite
+coverage statement, not an extrapolation to all indices.
+\begin{center}
+\small
+\begin{tabular}{p{0.70\textwidth}r}
+\toprule
+Check & Cases\\
+\midrule
+Initial target terms &15\\
+Target recurrence versus positive binomial sum &208\\
+Signed parameter recurrence versus binomial sum &1,519\\
+Target odd-prime congruences &420\\
+Two-parameter odd-prime congruences &3,136\\
+Odd-prime quadratic-tail tests &918\\
+Original M\"obius/orbit checks &300\\
+Original boundary witnesses &5\\
+\midrule
+Complete binary leading-defect formula &5,808\\
+Binary first-lift congruence &1,936\\
+Exact binary harmonic-unit normalization &400\\
+Target denominator-12 and orbit divisibility &1,000\\
+General denominator-24 / conditional denominator-12 &4,900\\
+Binary sharpness and minimal-denominator witnesses &290\\
+\bottomrule
+\end{tabular}
+\end{center}
+All these checks passed. The binary leading-defect grid covers
+$-5\le\alpha,\beta\le5$, odd $1\le m\le15$, and $2\le r\le7$, with
+$m2^r\le2000$. The target odd-prime run uses odd primes at most $97$,
+multipliers at most $12$ coprime to the prime, and indices at most $3000$.
+The general odd-prime grid uses parameters from $-3$ to $3$, primes
+$3,5,7,11,13$, and indices at most $350$.
+
+The symbolic run additionally verifies the logarithmic derivative, the
+quartic resultant, its parametrization, its power series through degree
+$20$, the saddle point, the growth constant, the leading amplitude, and the
+Gaussian formulas for $c_1$ and $c_2$. These tests used Python 3.13.5,
+SymPy 1.14.0, and mpmath 1.3.0 in the recorded environment; the exact scripts
+are not tied to those library versions.
+
+\subsection{Reproduction commands and output data}
+From the archive directory, run
+\begin{lstlisting}
+python verify.py
+python binary_checks.py
+python -m pip install -r requirements-optional.txt
+python symbolic_checks.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+Only the third and fourth commands need optional Python packages. No network
+access is used by any of the checking programs themselves. The integer
+checker accepts command-line coverage parameters; see \texttt{python
+verify.py --help}.
+
+The CSV files contain target terms through $1000$, the exact prime-power
+valuation checks, the full binary parameter grid, primitive-orbit and
+M\"obius values, and asymptotic comparisons. The reports preserve the actual
+check counts. There are no randomized tests and no unrecorded dependence on
+an external computer-algebra session.
+
+\subsection{Independent points of possible failure}
+Several interfaces deserve explicit scrutiny in any independent review.
+First, a recurrence in the coefficient index must not be mistaken for a
+recurrence in the diagonal index. Second, the odd-prime exponential has a
+vanishing linear term, but the binary one does not; the latter is handled
+by reflection, not by reusing the former proof. Third, the $1/2$ in formal
+integration by parts at the binary prime is retained throughout and is
+responsible for one of the losses. Fourth, the Möbius grouping is performed
+at the exact prime-power exponent of $n$, not merely at a prime dividing
+$n$. Finally, the finer binary valuation table is not used to justify any
+of the uniform bounds.
+
+The article uses only elementary formal series, local rational arithmetic,
+coefficient extraction, and the stated saddle-point analysis. It does not
+invoke the disputed periodic framing bound or any unverified asymptotic
+recurrence from an OEIS comment.
+
+\section{Further questions after the binary completion}
+\label{sec:frontiers}
+
+The uniform small-prime completion is proved, but it does not determine
+all exceptional extra divisibility. For the basket sequence, the observed
+valuations at $n=2^r$ are
+\begin{center}
+\begin{tabular}{r r r r r r r r r}
+\toprule
+$r$&1&2&3&4&5&6&7&8\\
+\midrule
+$v_2(a(2^r)-a(2^{r-1}))$&2&4&8&13&16&19&22&25\\
+\bottomrule
+\end{tabular}
+\end{center}
+The recorded exact computation continues this pattern through $r=15$.
+
+\begin{conjecture}[A finer target valuation, not used above]\label{conj:finer}
+For every $r\ge4$,
+\[
+ v_2\bigl(a(2^r)-a(2^{r-1})\bigr)=3r+1.
+\]
+\end{conjecture}
+
+This is not a consequence of Theorem~\ref{thm:binary}, whose leading residue
+vanishes for $(\alpha,\beta)=(2,1)$. Proving it would require following the
+reflection calculation several binary digits further, including the next
+residues of $K(t)$ and additional exponential terms. The statement for a
+fixed odd multiplier is more varied: at $m=5$ the values from $r=4$ onward
+in the checked range are $3r+3$, while at $m=7$ they are $3r+2$.
+
+A second question is to characterize the periodic logarithmic coefficient
+sequences for which the cubic tail estimate holds. Formula
+\eqref{eq:obstruction} gives an immediate first-level obstruction, but
+vanishing at the first level alone does not establish all higher levels.
+The spacing-three example shows why a condition stronger than periodicity
+and Frobenius invariance is needed. A useful classification would separate
+identities forced by symmetry from congruences that depend on the prime.
+
+A third question is to refine the common denominator for a fixed parameter
+pair. The bounds $24$ and $12$ are optimal uniformly over the stated classes,
+but special pairs can have smaller denominators. The exact first binary
+residue already detects one such improvement. An analogous explicit
+ternary residue could identify further parameter-dependent reductions.
+
+These questions are distinct from the completed claims. In particular,
+the remaining uncertainty about the finer valuation pattern does not limit
+the proof of the universal denominator-12 theorem.
+
+\section{Conclusion}
+
+The initial OEIS label led to a useful but necessary correction of the
+research target: a prior odd-prime proof candidate already existed. The
+binary completion proved here uses a different mechanism, converting a
+linear exponential contribution into a quadratic one by reflection and
+then extracting an extra index factor by formal integration by parts.
+An exact odd-harmonic normalization identifies the first possible binary
+bit, not just a lower bound.
+
+For A348410 the completed all-prime estimate is naturally encoded by the
+single integer $12$. It clears every denominator of the cubic M\"obius
+transform and is forced by the first few terms. The resulting primitive
+cyclic-word divisibility gives a combinatorial expression of the same
+arithmetic fact. The archive contains the full proofs and reproducible
+checks; priority beyond the audited sources and external validation of the
+new binary argument remain matters for further review.
+
+\appendix
+\section{A minimal exact evaluator}
+The following code is the computational core; the full scripts add input
+validation, independent formula checks, report generation, and CSV output.
+\begin{lstlisting}[language=Python]
+def coefficient_diagonal(n: int, alpha: int = 2,
+                         beta: int = 1) -> int:
+    if n < 0:
+        raise ValueError("n must be nonnegative")
+    f_minus_two, f_minus_one = 0, 1
+    for k in range(1, n + 1):
+        numerator = n * (alpha - beta) * f_minus_one
+        numerator += (n * (alpha + beta) + k - 2) * f_minus_two
+        current, remainder = divmod(numerator, k)
+        if remainder:
+            raise ArithmeticError("coefficient division was not exact")
+        f_minus_two, f_minus_one = f_minus_one, current
+    return f_minus_one
+\end{lstlisting}
+The running names refer to the two previously available coefficients at the
+start of each iteration. At $n=0$ the function correctly returns $1$.
+
+\section{Notation and dependency map}
+\begin{center}
+\small
+\begin{tabular}{p{0.20\textwidth}p{0.73\textwidth}}
+\toprule
+Symbol & Meaning\\
+\midrule
+$\A(n)$ & Integer-parameter coefficient diagonal in \eqref{eq:family}.\\
+$a(n)$ & The specialization $A_{2,1}(n)$, OEIS A348410.\\
+$R_p$ & Rationals with denominator prime to $p$.\\
+$D_p$ & Reduced odd-prime logarithm in \eqref{eq:Dp}.\\
+$H_p(s)$ & Reduced reciprocal-square sum; not the generating function.\\
+$h(T)$ & Sum of reciprocals of the positive odd integers less than $T$.\\
+$U,K,V$ & Binary series in \eqref{eq:U} and \eqref{eq:K}.\\
+$B(n)$ & Cubic M\"obius transform $n^{-3}\sum_{d\mid n}\mu(d)a(n/d)$.\\
+$P_n$ & Primitive cyclic-word count, equal to $n^2B(n)$.\\
+$H(z)$ & Ordinary generating function of $a(n)$.\\
+$\kappa_j$ & Saddle cumulants in \eqref{eq:kappa}.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The proof dependencies are short. Lemmas~\ref{lem:gcoef}--\ref{lem:quadratic}
+imply Theorem~\ref{thm:odd}. Lemma~\ref{lem:binary-H}, reflection, and
+\eqref{eq:ibp} imply Theorem~\ref{thm:binary}. These two theorems plus the
+first binary lift imply Theorem~\ref{thm:allprime}. Grouping M\"obius divisors
+then proves Theorem~\ref{thm:denom}; periodic word decomposition gives
+Corollary~\ref{cor:necklace}. The generating-function and asymptotic sections
+are independent checks and complementary structure, not premises of the
+arithmetic proofs.
+
+\begin{thebibliography}{99}
+\bibitem{oeis348410}
+OEIS Foundation Inc., \emph{A348410: Number of nonnegative integer solutions
+to $n=\sum_{i=1}^n(a_i+b_i)$, with $b_i$ even}. Includes P.~Bala's
+21 February 2022 coefficient formulas and supercongruence conjecture,
+and V.~Kotesovec's leading asymptotic.
+\url{https://oeis.org/A348410}. Inspected 19 September 2026.
+
+\bibitem{oeis352373}
+OEIS Foundation Inc., \emph{A352373}. Related parameterized
+coefficient-power congruence.
+\url{https://oeis.org/A352373}. Inspected 19 September 2026.
+
+\bibitem{prior}
+GitHub repository \texttt{rbajaj5/a183068-supercongruence},
+\emph{A cubic tower for a two-parameter coefficient family},
+\texttt{related-results/CoefficientFramingCubicTower.md}.
+Public proof candidate; pinned repository snapshot
+\texttt{3085b46fdbce} (full hash in the linked URL).
+\href{https://github.com/rbajaj5/a183068-supercongruence/blob/3085b46fdbce945d156d2b5b8b9d1a66627b4375/related-results/CoefficientFramingCubicTower.md}{Permanent link to the inspected note}.
+Inspected 19 September 2026. The source states no binary assertion.
+
+\bibitem{priorcounter}
+GitHub repository \texttt{rbajaj5/a183068-supercongruence},
+\emph{Counterexample to the rational-framing theorem},
+\texttt{related-results/RationalFramingCounterexample.md}, same pinned
+snapshot as \cite{prior}.
+\href{https://github.com/rbajaj5/a183068-supercongruence/blob/3085b46fdbce945d156d2b5b8b9d1a66627b4375/related-results/RationalFramingCounterexample.md}{Permanent link to the period-four counterexample}.
+Inspected 19 September 2026; also cross-checked against the source's
+result index and coefficient-framing discussion.
+
+\bibitem{niu}
+T.~Niu, \emph{An explicit algebraic generating function for OEIS A348410},
+arXiv:2605.16553, 2026.
+\url{https://arxiv.org/abs/2605.16553}.
+
+\bibitem{prodinger}
+H.~Prodinger, \emph{The generating function of A348410 in OEIS using the
+diagonal method and another sequence (A001008) from OEIS},
+arXiv:2605.21255, version 2, 23 May 2026.
+\url{https://arxiv.org/abs/2605.21255}.
+
+\bibitem{muller}
+L.~Felipe M\"uller, \emph{Wolstenholme Type Congruences and Framing of Rational
+2-Functions}, arXiv:2104.10754, version 1, April 2021.
+\url{https://arxiv.org/abs/2104.10754}.
+The criticism in Section~\ref{sec:boundary} concerns the precise printed
+bounds of Theorems 1.1, 1.2, and 6.2 in this version, not all framing theory.
+
+\bibitem{flajolet}
+P.~Flajolet and R.~Sedgewick, \emph{Analytic Combinatorics}, Cambridge
+University Press, 2009, especially Chapter VIII.
+Authors' book site: \url{https://ac.cs.princeton.edu/home/}.
+\end{thebibliography}
+\end{document}

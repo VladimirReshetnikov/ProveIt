@@ -1,0 +1,1344 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxtext,newpxmath}
+\usepackage[margin=1in,headheight=16pt]{geometry}
+\usepackage{microtype}
+\usepackage{mathtools}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{booktabs,tabularx,array}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{aliascnt}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{InkBlue}{HTML}{173C59}
+\definecolor{Teal}{HTML}{176B71}
+\definecolor{LightBlue}{HTML}{EFF5F8}
+\hypersetup{colorlinks=true,linkcolor=InkBlue,citecolor=Teal,urlcolor=Teal,
+ pdftitle={Reciprocity and Matrix Duality for Preorder Polytopes},
+ pdfauthor={Research manuscript prepared with ChatGPT},
+ pdfsubject={Proofs of three conjectures of Athanasiadis and Chapoton}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Preorder polytopes}}
+\fancyhead[R]{\small Reciprocity and matrix duality}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.2em}
+\setcounter{tocdepth}{2}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\zero}{\mathbf 0}
+\newcommand{\bvec}{\mathbf b}
+\newcommand{\pvec}{\mathbf p}
+\newcommand{\qvec}{\mathbf q}
+\newcommand{\avec}{\mathbf a}
+\newcommand{\xvec}{\mathbf x}
+\newcommand{\yvec}{\mathbf y}
+\newcommand{\cvec}{\mathbf c}
+\newcommand{\JJ}{\mathcal J}
+\newcommand{\WW}{\mathcal W}
+\newcommand{\DD}{\mathcal D}
+\newcommand{\QQ}{\mathcal Q}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\FF}{\mathbb F}
+\newcommand{\ds}{\boldsymbol\Delta}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\Int}{int}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\des}{des}
+\DeclareMathOperator{\Max}{Max}
+\DeclareMathOperator{\Vol}{Vol}
+\newcommand{\card}[1]{\lvert #1\rvert}
+\newcommand{\sumv}[1]{\lvert #1\rvert}
+\newtcolorbox{resultbox}[1][]{colback=LightBlue,colframe=InkBlue,
+ boxrule=0.6pt,arc=1pt,left=9pt,right=9pt,top=7pt,bottom=7pt,#1}
+
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+{\color{Teal}\large\textsc{Research in finite order theory}}\par
+\vspace{1.05cm}
+{\color{InkBlue}\Huge\bfseries Reciprocity and Matrix Duality\par
+\vspace{0.15cm}for Preorder Polytopes\par}
+\vspace{0.65cm}
+{\Large Proofs of three conjectures\par}
+\vspace{0.25cm}
+{\large Interior translation, colored arrays, and generalized permutohedra\par}
+\vspace{1.0cm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\normalsize Research manuscript prepared with ChatGPT\par}
+{\normalsize September 19, 2026\par}
+\vspace{0.9cm}
+\begin{abstract}
+We investigate conjectures on the polytopes attached to finite preorders by
+Athanasiadis and Chapoton. The central observation is that subtracting the
+all-ones vector identifies the interior lattice points of their two-parameter
+polytope with the lattice points obtained by decreasing both parameters by one.
+Ordinary Ehrhart--Macdonald reciprocity along integer rays then proves their
+Conjecture~7.2. We establish an $(n+1)$-parameter strengthening and a second,
+falling-binomial formula for the lattice enumerator. This proves their
+Conjecture~4.4 on the $h^*$-polynomial and the ordinary, $q=1$ specialization of
+Conjecture~4.9.
+
+A separate construction replaces the two color classes of the preorder's
+bipartite graph by independently prescribed numbers of copies. Postnikov's
+lattice-point formula yields a heterogeneous array duality, which specializes
+to the matrix Ehrhart--zeta duality of Conjecture~4.2. Detailed proofs, examples,
+sign and boundary checks, and an exact-arithmetic verification program are
+provided. The program checks every labeled preorder on one through four
+elements. No conjectured shellability or real-rootedness is used.
+\end{abstract}
+\vfill
+\begin{resultbox}
+\textbf{Status.} The results are proved in this manuscript relative to the two
+explicitly stated classical theorems. The work has not been externally reviewed
+or formally verified. The selected statements are conjectures in the public
+version of arXiv:2605.26916 examined on September 19, 2026; the literature search
+does not establish priority against unpublished work.
+\end{resultbox}
+\end{titlepage}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The selected problem and the outcome}\label{sec:overview}
+
+A finite preorder is a reflexive, transitive relation. Antisymmetry is not
+required, so equivalence classes may contain several elements. The operation
+of reversing this relation is a natural order-theoretic duality. The question
+studied here is how that duality interacts with integer vectors constrained by
+order ideals.
+
+The starting point is Conjecture~7.2 of Athanasiadis and Chapoton
+\cite{AC26}, in the first public version dated May~26, 2026. For a preorder
+$\tau$ on an $n$-element set $E$, write
+\begin{equation}\label{eq:uniform-def}
+ \QQ_\tau(r,s)=
+ \left\{\xvec\in\R_{\geq0}^{E}:
+       x(I)\leq r\card I+s\text{ for every nonempty order ideal }I\right\},
+ \qquad x(I):=\sum_{e\in I}x_e.
+\end{equation}
+For $r,s\in\N$, its lattice-point count is a polynomial
+$\EE_\tau(r,s)$ of total degree $n$. Their conjecture asks whether
+\begin{equation}\label{eq:target}
+ \boxed{\EE_\tau(-u,-v)=(-1)^n\EE_\tau(u-1,v-1).}
+\end{equation}
+Here and throughout, $\N=\{0,1,2,\ldots\}$. Negative arguments refer to
+\emph{polynomial evaluation}, not to negative dilations interpreted as feasible
+sets.
+
+\subsection{What is proved}
+The main results have two independent mechanisms. Interior translation proves
+\eqref{eq:target} and its fully weighted extension. A bipartite graph with
+independently replicated vertices proves the matrix duality. A binomial
+specialization of the first result yields the word formula.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.21\textwidth}X p{0.22\textwidth}@{}}
+\toprule
+Statement in \cite{AC26} & Result here & Location \\
+\midrule
+Conjecture 7.2 & Double Ehrhart reciprocity, with a stronger multivariate identity & \Cref{sec:reciprocity} \\
+Conjecture 4.2 & Matrix Ehrhart--zeta duality, with heterogeneous copy counts & \Cref{sec:matrix} \\
+Conjecture 4.4 & Descent interpretation of the $h^*$-polynomial & \Cref{sec:words} \\
+Equation (22) in Conjecture 4.9 & Ordinary zeta evaluation at $-1$ & \Cref{cor:zeta} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The full $q$-identity in Conjecture~4.9 is \emph{not} proved here. Nor do we
+claim to settle the paper's questions about shellability, real-rootedness,
+$\gamma$-positivity, or support enumerators. Three conjectures are proved, but
+one of the three is a consequence of another; these are not three unrelated
+breakthroughs.
+
+\subsection{The shortest proof of the original target}
+For positive integers $r,s$, the map
+\[
+ \xvec\longmapsto\xvec-\one
+\]
+is a bijection
+\begin{equation}\label{eq:short-bijection}
+ \Int\QQ_\tau(r,s)\cap\Z^E
+ \ \longleftrightarrow\
+ \QQ_\tau(r-1,s-1)\cap\Z^E.
+\end{equation}
+Indeed, integrality changes each strict upper inequality into
+$x(I)\leq r\card I+s-1$, and subtracting one in each coordinate removes
+$\card I$ from its left-hand side. Coordinate positivity becomes
+nonnegativity. Apply ordinary Ehrhart reciprocity to the \emph{fixed} lattice
+polytope $\QQ_\tau(r,s)$, using
+$t\QQ_\tau(r,s)=\QQ_\tau(tr,ts)$. This proves \eqref{eq:target} on all
+positive integer pairs, hence as a polynomial identity. The rest of the
+article verifies the hypotheses, extends the argument, and develops its
+consequences.
+
+\subsection{Provenance and the scope of the novelty claim}
+The version history and the statements of Conjectures~4.2, 4.4, and~7.2 in
+\cite{AC26} were checked directly, including the rendered PDF pages.
+Focused public searches did not locate a resolution. This supports selecting
+them as research targets; it does not certify the absence of private or
+unindexed proofs. The underlying counting and reciprocity tools are classical.
+The contribution of this manuscript is the specialization, the explicit
+translation and cloning constructions, and the resulting proofs and extensions.
+
+\section{Notation and the two classical inputs}\label{sec:tools}
+
+\subsection{Preorders, ideals, and finite downsets}
+Fix a nonempty finite set $E$, with $n=\card E$, and a preorder
+$\leq_\tau$. Its dual $\tau^*$ is defined by
+$e\leq_{\tau^*}f$ if and only if $f\leq_\tau e$. An order ideal is a subset
+closed downwards. An order filter is closed upwards. Write $\JJ(\tau)$ for
+the family of all order ideals, including the empty ideal. In displayed
+polytope inequalities we use only the nonempty ideals.
+
+For $S\subseteq E$, let
+\[
+ D_\tau(S)=\{e:e\leq_\tau f\text{ for some }f\in S\},\qquad
+ U_\tau(S)=\{f:e\leq_\tau f\text{ for some }e\in S\}.
+\]
+Abbreviate $U_\tau(\{e\})$ to $U_\tau(e)$. Reflexivity and transitivity ensure
+that these are respectively the ideal and filter generated by $S$.
+For any vector $\bvec$, let $b(S)=\sum_{e\in S}b_e$ and
+$\sumv{\bvec}=b(E)$.
+
+Define
+\begin{equation}\label{eq:basic-P}
+ \QQ_\tau:=\QQ_\tau(1,0),\qquad
+ P_\tau:=\QQ_\tau\cap\Z^E,
+ \qquad B_\tau:=\{\avec\in P_\tau:\sumv{\avec}=n\}.
+\end{equation}
+The order on $P_\tau$ is coordinatewise comparison. It is a finite downset
+in $\N^E$. In particular, if $\avec\in P_\tau$, then the interval
+$[\zero,\avec]$ is the product of chains
+$\prod_{e\in E}\{0,1,\ldots,a_e\}$.
+
+\begin{lemma}\label{lem:maximal}
+The maximal elements of $P_\tau$ are precisely $B_\tau$.
+\end{lemma}
+\begin{proof}
+An element of coordinate sum $n$ cannot be increased because the ideal $E$
+provides the bound $x(E)\leq n$. Conversely, suppose that $\avec\in P_\tau$
+has $\sumv{\avec}<n$ and cannot be increased in any coordinate. For each
+$e\in E$, failure of $\avec+\mathbf e_e$ to be feasible gives an ideal
+$I_e$ containing $e$ with $a(I_e)=\card{I_e}$. Such an ideal is called tight.
+
+The union of two tight ideals is tight. To see this, use additivity to write
+\[
+ a(I\cup J)+a(I\cap J)=a(I)+a(J)=\card I+\card J
+ =\card{I\cup J}+\card{I\cap J}.
+\]
+The two summands on the left are each at most the corresponding cardinalities
+on the right. Equality of the sums forces equality for both summands. This
+also covers the empty intersection. Repeating the union operation shows that
+$\bigcup_{e\in E}I_e=E$ is tight, contradicting $\sumv{\avec}<n$.
+Thus some coordinate can be increased, as required.
+\end{proof}
+
+\subsection{Ehrhart--Macdonald reciprocity}
+If $K\subset\R^d$ is a full-dimensional lattice polytope, its Ehrhart
+polynomial $L_K(t)$ satisfies
+\begin{equation}\label{eq:EM}
+ L_K(t)=\#(tK\cap\Z^d)\quad(t\in\N),\qquad
+ L_K(-t)=(-1)^d\#(\Int(tK)\cap\Z^d)\quad(t\geq1).
+\end{equation}
+We use this classical theorem in the form developed in Stanley's treatment
+of Ehrhart--Macdonald reciprocity \cite[Section~6]{Stanley74}. We do not need a
+separate multivariate reciprocity theorem: restricting a polynomial to each
+positive integer ray is sufficient.
+
+For a full-dimensional $n$-dimensional lattice polytope $K$, define its
+$h^*$-polynomial by
+\begin{equation}\label{eq:hstar-def}
+ \sum_{m\geq0}L_K(m)t^m=\frac{h^*(K,t)}{(1-t)^{n+1}}.
+\end{equation}
+The finite-difference relation implicit in this definition will be enough
+for the computations below.
+
+\subsection{Postnikov's lattice-point formula}
+This is the other substantive imported theorem. Let $R$ be a finite set of
+size $d+1$, and let $I_0,I_1,\ldots,I_m$ be nonempty subsets of $R$, with
+$I_0=R$. Associate to them a bipartite graph with one left vertex for each
+$I_i$, right vertex set $R$, and adjacency given by membership. A vector
+$\alpha=(\alpha_0,\ldots,\alpha_m)\in\N^{m+1}$ is \emph{draconian} when
+\begin{equation}\label{eq:draconian}
+ \sum_{i=0}^m\alpha_i=d,\qquad
+ \sum_{i\in A}\alpha_i\leq\card{\bigcup_{i\in A}I_i}-1
+ \quad\text{for every nonempty }A\subseteq\{0,\ldots,m\}.
+\end{equation}
+Here $\Delta_I=\conv\{\mathbf e_j:j\in I\}$ is a simplex in
+$\R^R$, without an additional origin.
+
+\begin{theorem}[Postnikov]\label{thm:Postnikov}
+For nonnegative integers $y_0,\ldots,y_m$,
+\begin{equation}\label{eq:Postnikov}
+ \#\left(\left(\sum_{i=0}^m y_i\Delta_{I_i}\right)\cap\Z^R\right)
+ =\sum_{\alpha\text{ draconian}}
+     \binom{y_0+\alpha_0}{\alpha_0}
+     \prod_{i=1}^m\binom{y_i+\alpha_i-1}{\alpha_i}.
+\end{equation}
+\end{theorem}
+This is the untrimmed form of \cite[Theorem~11.3]{Postnikov09}, obtained by
+increasing by one the coefficient of the full simplex. It is also the form
+used in \cite[Theorem~2.1]{AC26}. Repeated neighborhoods are permitted, as are
+zero coefficients. The offset in the $i=0$ factor is essential.
+
+All binomial coefficients in polynomial identities mean
+\begin{equation}\label{eq:polynomial-binom}
+ \binom zk=\frac{z(z-1)\cdots(z-k+1)}{k!}\quad(k\in\N),\qquad
+ \binom z0=1.
+\end{equation}
+In particular, setting a coefficient $y_i=0$ annihilates its factors with
+$\alpha_i>0$ when $i\ne0$, but setting $y_0=0$ does not annihilate the
+$\alpha_0$ factor.
+
+\section{Weighted preorder polytopes}\label{sec:weighted}
+
+\subsection{A Minkowski-sum description with independent capacities}
+For $S\subseteq E$, write
+$\ds_S=\conv(\{\zero\}\cup\{\mathbf e_e:e\in S\})$ in $\R^E$;
+thus $\ds_\varnothing=\{\zero\}$. The bold simplex includes the origin,
+unlike $\Delta_I$ in \Cref{thm:Postnikov}.
+
+For $\bvec\in\R_{\geq0}^E$ and $s\geq0$, define
+\begin{equation}\label{eq:weighted-def}
+ \QQ_\tau(\bvec;s)=
+ \{\xvec\geq\zero:x(I)\leq b(I)+s
+                    \text{ for all }\varnothing\ne I\in\JJ(\tau)\}.
+\end{equation}
+The uniform family is $\QQ_\tau(r,s)=\QQ_\tau(r\one;s)$.
+
+\begin{proposition}\label{prop:minkowski}
+For arbitrary nonnegative real parameters,
+\begin{equation}\label{eq:weighted-minkowski}
+ \QQ_\tau(\bvec;s)=\sum_{e\in E}b_e\ds_{U_\tau(e)}+s\ds_E.
+\end{equation}
+Consequently, this is a lattice polytope when the parameters are integers.
+\end{proposition}
+\begin{proof}
+Denote the right-hand side by $M$. If $I$ is an ideal, the summand indexed by
+$e$ can contribute to a coordinate in $I$ only if $e\in I$. Its total
+contribution to $x(I)$ is at most $b_e$. The last summand contributes at most
+$s$. Therefore $M\subseteq\QQ_\tau(\bvec;s)$.
+
+For the reverse containment we compare linear functionals. Both sets are
+closed under decreasing nonnegative coordinates. Hence it suffices to
+consider a functional with nonnegative coefficients $\cvec$; for a general
+functional, replace its coefficients by their positive parts and note that
+the support function of $M$ does not change.
+
+For $t>0$ let $S_t=\{f\in E:c_f\geq t\}$. For a feasible point,
+whenever $S_t\ne\varnothing$,
+\[
+ x(S_t)\leq x(D_\tau(S_t))\leq b(D_\tau(S_t))+s.
+\]
+Integrate over $0<t\leq\max_f c_f$. The elementary layer-cake identity gives
+\begin{align*}
+ \cvec\cdot\xvec
+ &=\int_0^{\max c_f}x(S_t)\,dt\\
+ &\leq\sum_{e\in E}b_e\max_{f\in U_\tau(e)}c_f+s\max_{f\in E}c_f.
+\end{align*}
+The last expression is exactly the maximum of $\cvec\cdot\xvec$ on $M$,
+since each simplex summand can choose a coordinate attaining its own maximum.
+Thus no linear functional separates a feasible point from $M$; compact
+convex separation proves the desired containment. Boundedness follows from
+the ideal $E$.
+
+For integer parameters the right-hand side is a Minkowski sum of lattice
+polytopes, hence is the convex hull of integer sums of their vertices.
+It is therefore a lattice polytope.
+\end{proof}
+
+\begin{remark}\label{rem:ideals}
+At $s=0$ some inequalities for disconnected ideals are sums of inequalities
+for their components. This is not a license to omit those ideals when
+$s>0$: summing component bounds would add the slack $s$ several times.
+We keep every nonempty ideal throughout.
+\end{remark}
+
+\subsection{The multivariate lattice enumerator}
+Introduce the graph with left and right copies of $E\sqcup\{0\}$ and
+neighborhoods
+\[
+ I_0=E\sqcup\{0\},\qquad I_e=U_\tau(e)\sqcup\{0\}\quad(e\in E).
+\]
+The projection dropping coordinate~$0$ identifies the corresponding
+Minkowski sum, with weights $y_0=s$ and $y_e=b_e$, with
+\eqref{eq:weighted-minkowski}. For integer parameters, its inverse on the
+fixed-sum hyperplane is
+$x_0=\sumv{\bvec}+s-\sumv{\xvec}$, so the projection preserves the affine
+integer lattices.
+
+The following identification is \cite[Lemma~4.1]{AC26}; we recall its
+proof to make the dual orientation explicit.
+
+\begin{lemma}\label{lem:draconian-preorder}
+A vector $(a_0,(a_e)_{e\in E})$ is draconian for this graph if and only if
+$\avec\in P_{\tau^*}$ and $a_0=n-\sumv{\avec}$.
+\end{lemma}
+\begin{proof}
+The total-sum condition gives the asserted value of $a_0$. A subset of left
+vertices containing $0$ has all $n+1$ right vertices as neighbors, so its
+inequality follows from nonnegativity and the total sum $n$. For a nonempty
+subset $A\subseteq E$, the neighborhood inequality is
+\[
+ a(A)\leq\card{U_\tau(A)}.
+\]
+If $A$ itself is a filter, this is $a(A)\leq\card A$. Conversely, the
+inequalities for all filters imply the inequality for an arbitrary $A$,
+since $a(A)\leq a(U_\tau(A))\leq\card{U_\tau(A)}$. Filters of $\tau$
+are ideals of $\tau^*$. The condition for the filter $E$ also guarantees
+$a_0\geq0$.
+\end{proof}
+
+\begin{proposition}\label{prop:F}
+There is a polynomial $\FF_\tau(\bvec,s)$ of total degree $n$ such that
+\[
+ \FF_\tau(\bvec,s)=\#(\QQ_\tau(\bvec;s)\cap\Z^E)
+ \qquad(\bvec\in\N^E,\ s\in\N).
+\]
+It is given by
+\begin{equation}\label{eq:rising}
+ \boxed{\FF_\tau(\bvec,s)=
+ \sum_{\avec\in P_{\tau^*}}
+   \binom{s+n-\sumv{\avec}}{n-\sumv{\avec}}
+   \prod_{e\in E}\binom{b_e+a_e-1}{a_e}.}
+\end{equation}
+In particular, $\EE_\tau(u,v)=\FF_\tau(u\one,v)$.
+\end{proposition}
+\begin{proof}
+Apply \Cref{thm:Postnikov} and \Cref{lem:draconian-preorder}. Every summand
+has total degree at most $n$. The degree is exactly $n$, because setting
+$\bvec=\zero$ leaves
+$\FF_\tau(\zero,s)=\binom{s+n}{n}$, the lattice count of $s\ds_E$.
+Uniqueness follows because polynomials agreeing on $\N^{n+1}$ agree
+identically; this can be proved one variable at a time.
+\end{proof}
+
+\section{Reciprocity by interior translation}\label{sec:reciprocity}
+
+\begin{lemma}[Interior translation]\label{lem:translation}
+Suppose $b_e\geq1$ for every $e\in E$ and $s\geq1$, all integers. Then
+$\QQ_\tau(\bvec;s)$ is full dimensional, and translation by $-\one$ gives
+a bijection
+\begin{equation}\label{eq:weighted-translation}
+ \Int\QQ_\tau(\bvec;s)\cap\Z^E
+ \ \longleftrightarrow\
+ \QQ_\tau(\bvec-\one;s-1)\cap\Z^E.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The point $\one$ satisfies all coordinate inequalities strictly and all
+nonempty ideal inequalities strictly, since
+$\card I<b(I)+s$. There are finitely many inequalities, so a sufficiently
+small Euclidean ball about $\one$ lies in the polytope. This proves full
+dimension.
+
+For a full-dimensional polytope described by finitely many inequalities with
+nonzero normals, a point is interior exactly when every defining inequality
+is strict. Redundant inequalities cause no problem: equality in any valid
+inequality with nonzero normal prevents a full ball around the point. Thus an
+integer point $\xvec$ is interior if and only if
+\[
+ x_e\geq1\quad(e\in E),\qquad
+ x(I)\leq b(I)+s-1\quad(\varnothing\ne I\in\JJ(\tau)).
+\]
+Put $\yvec=\xvec-\one$. The coordinate conditions become $y_e\geq0$, and
+\[
+ y(I)\leq b(I)-\card I+s-1=(\bvec-\one)(I)+(s-1).
+\]
+These are exactly the inequalities on the right of
+\eqref{eq:weighted-translation}. All transformations are reversible over
+$\Z^E$.
+\end{proof}
+
+\begin{theorem}[Multivariate reciprocity]\label{thm:reciprocity}
+For every finite preorder on $n\geq1$ elements,
+\begin{equation}\label{eq:weighted-reciprocity}
+ \boxed{\FF_\tau(-\bvec,-s)=(-1)^n\FF_\tau(\bvec-\one,s-1)}
+\end{equation}
+as an identity in $\Q[(b_e)_{e\in E},s]$.
+\end{theorem}
+\begin{proof}
+First fix positive integer parameters $\bvec,s$. The polytope
+$K=\QQ_\tau(\bvec;s)$ is a full-dimensional lattice polytope by
+\Cref{prop:minkowski,lem:translation}. For every nonnegative integer $t$,
+\[
+ tK=\QQ_\tau(t\bvec;ts),\qquad
+ L_K(t)=\FF_\tau(t\bvec,ts).
+\]
+Both sides of the second equality are polynomials in $t$, so they agree
+also at $t=-1$. Ehrhart--Macdonald reciprocity therefore gives
+\begin{align*}
+ \FF_\tau(-\bvec,-s)
+ &=L_K(-1)\\
+ &=(-1)^n\#(\Int K\cap\Z^E)\\
+ &=(-1)^n\FF_\tau(\bvec-\one,s-1),
+\end{align*}
+where the last equality is \Cref{lem:translation}.
+
+The difference between the two sides of
+\eqref{eq:weighted-reciprocity} is a polynomial vanishing on every tuple of
+positive integers. Fix all variables but one: the remaining univariate
+polynomial has infinitely many roots. Repeat this observation for the
+coefficient polynomials in the remaining variables. The difference is zero
+identically.
+\end{proof}
+
+\begin{corollary}[Conjecture 7.2 of \cite{AC26}]\label{cor:double}
+For all indeterminates $u,v$,
+\[
+ \EE_\tau(-u,-v)=(-1)^n\EE_\tau(u-1,v-1).
+\]
+\end{corollary}
+\begin{proof}
+Set $b_e=u$ for every $e$ in \Cref{thm:reciprocity}.
+\end{proof}
+
+\subsection{Why the polynomial step matters}
+We intentionally proved the lattice bijection only when every parameter is
+positive. For example, $\QQ_\tau(\zero;0)$ is a point, not a full-dimensional
+polytope. The identity at zero or negative parameters follows from the
+polynomial continuation, not from applying an interior formula to a
+lower-dimensional or nonexistent feasible set. Similarly, no assertion
+about the interior of a Minkowski sum being a sum of interiors is needed.
+The direct inequalities avoid that issue entirely.
+
+\begin{corollary}[Centered parity]\label{cor:parity}
+Define
+\[
+ H_\tau(\bvec,s)=\FF_\tau(\bvec-\tfrac12\one,s-\tfrac12).
+\]
+Then $H_\tau(-\bvec,-s)=(-1)^n H_\tau(\bvec,s)$. Consequently, only
+monomials whose total degree has the same parity as $n$ occur in $H_\tau$.
+For the double polynomial, if $E_j(u,v)$ is its homogeneous part of degree
+$j$, then
+\begin{equation}\label{eq:coeff-identity}
+ E_{n-1}(u,v)=\tfrac12(\partial_u+\partial_v)E_n(u,v).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Substitute $\bvec+\tfrac12\one,s+\tfrac12$ into
+\eqref{eq:weighted-reciprocity}. A monomial of degree $j$ changes by
+$(-1)^j$ under simultaneous negation. For the last identity, write
+$\EE_\tau(u,v)=H(u+\tfrac12,v+\tfrac12)$, where $H$ has no homogeneous
+part of degree $n-1$. The degree-$n-1$ terms come solely from translating
+its degree-$n$ part, giving \eqref{eq:coeff-identity}.
+\end{proof}
+
+\section{A second binomial formula and the word conjecture}\label{sec:words}
+
+Athanasiadis and Chapoton already explain in \cite[Remark~7.3]{AC26}
+that Conjecture~7.2 implies their word conjecture, and in
+\cite[Remark~4.10(a)]{AC26} that the word conjecture implies the ordinary
+zeta evaluation. We include these deductions in full, with an independent
+proof of the elementary word identity. The multivariate falling-binomial
+formula below strengthens the uniform specialization used there.
+
+\subsection{The falling-binomial form}
+
+\begin{theorem}\label{thm:falling}
+For every finite preorder,
+\begin{equation}\label{eq:falling}
+ \boxed{\FF_\tau(\bvec,s)=
+ \sum_{\avec\in P_{\tau^*}}
+       \binom{s}{n-\sumv{\avec}}
+       \prod_{e\in E}\binom{b_e+1}{a_e}.}
+\end{equation}
+In particular,
+\begin{equation}\label{eq:bases-formula}
+ \FF_\tau(\bvec,0)=\sum_{\avec\in B_{\tau^*}}
+                      \prod_{e\in E}\binom{b_e+1}{a_e},
+ \qquad
+ L_{\QQ_\tau}(m)=\sum_{\avec\in B_{\tau^*}}
+                      \prod_{e\in E}\binom{m+1}{a_e}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+By \Cref{thm:reciprocity},
+$\FF_\tau(\bvec,s)=(-1)^n\FF_\tau(-\bvec-\one,-s-1)$.
+Apply \eqref{eq:rising} to the latter expression. Put
+$a_0=n-\sumv{\avec}$. The polynomial identities
+\[
+ \binom{-s-1+a_0}{a_0}=(-1)^{a_0}\binom{s}{a_0},\qquad
+ \binom{-b_e+a_e-2}{a_e}=(-1)^{a_e}\binom{b_e+1}{a_e}
+\]
+show that the sign of each summand is
+$(-1)^{a_0+\sum_e a_e}=(-1)^n$. It cancels the external sign. This yields
+\eqref{eq:falling}. At $s=0$, the factor $\binom0{a_0}$ is nonzero exactly
+when $a_0=0$. The surviving vectors form $B_{\tau^*}$ by
+\Cref{lem:maximal}.
+\end{proof}
+
+For nonnegative parameters, \eqref{eq:falling} has a simple counting
+interpretation. Take disjoint sets of sizes $s$ and $b_e+1$ for $e\in E$.
+Choose a total of $n$ objects, with the vector of choices from the
+$E$-indexed sets lying in $P_{\tau^*}$. Their number is
+$\FF_\tau(\bvec,s)$. This interpretation counts sets without repetitions,
+whereas \eqref{eq:rising} uses selections with repetitions. The equality is
+an enumerative consequence of reciprocity; we do not assert a canonical
+bijection between these two models.
+
+\subsection{A self-contained multiset-word identity}
+Fix any total order on $E$, independently of the preorder. If
+$\sumv{\avec}=n$, let $\mathfrak S_\avec$ be the words of content $\avec$.
+For $w=w_1\cdots w_n$ define
+$\des(w)=\#\{i\in\{1,\ldots,n-1\}:w_i>w_{i+1}\}$.
+
+\begin{lemma}\label{lem:word}
+For any $\avec\in\N^E$ of coordinate sum $n\geq1$,
+\begin{equation}\label{eq:word-identity}
+ \sum_{m\geq0}\left(\prod_{e\in E}\binom{m+1}{a_e}\right)t^m
+ =\frac{\displaystyle\sum_{w\in\mathfrak S_\avec}
+                          t^{n-1-\des(w)}}{(1-t)^{n+1}}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For each letter $e$, choose $a_e$ distinct levels from
+$\{0,1,\ldots,m\}$. At each level, list its selected letters in strictly
+\emph{decreasing} order, then concatenate the levels in increasing order.
+This produces a word $w$ of content $\avec$, together with a weakly
+increasing sequence of levels attached to its positions.
+
+Two adjacent positions may share a level only when they are a strict
+descent in $w$. Thus a strict increase of levels is required at precisely
+the $d=n-1-\des(w)$ non-descent positions. Conversely, such a level
+assignment reconstructs the subsets of levels: within an equal-level block
+the letters are strictly decreasing, so no letter occurs there twice.
+
+Subtract, from each level, the number of required strict increases before
+that position. This leaves a weakly increasing $n$-tuple with entries in
+$\{0,\ldots,m-d\}$. Its number is
+$\binom{m-d+n}{n}$ when $m\geq d$ and zero otherwise. Summing over $m$
+yields
+\[
+ \sum_{m\geq d}\binom{m-d+n}{n}t^m
+ =\frac{t^d}{(1-t)^{n+1}}.
+\]
+Finally sum over $w\in\mathfrak S_\avec$.
+\end{proof}
+
+\begin{theorem}[Conjecture 4.4 of \cite{AC26}]\label{thm:hstar}
+Let $\WW_\tau$ be the words of length $n$ on the totally ordered alphabet
+$E$ for which every order ideal $I$ of $\tau$ contributes at least
+$\card I$ letters. Then
+\begin{equation}\label{eq:hstar-word}
+ \boxed{h^*(\QQ_\tau,t)=\sum_{w\in\WW_\tau}t^{n-1-\des(w)}.}
+\end{equation}
+\end{theorem}
+\begin{proof}
+A content vector $\avec$ of total sum $n$ belongs to $B_{\tau^*}$ if and
+only if $a(F)\leq\card F$ for every filter $F$ of $\tau$. Complementing
+$F$ converts these inequalities into $a(I)\geq\card I$ for every ideal
+$I$. Hence
+$\WW_\tau=\bigsqcup_{\avec\in B_{\tau^*}}\mathfrak S_\avec$.
+Sum \eqref{eq:word-identity} over $B_{\tau^*}$, use
+\eqref{eq:bases-formula}, and compare the result with
+\eqref{eq:hstar-def}.
+\end{proof}
+
+\subsection{Extremal coefficients, volume, and zeta evaluation}
+The proof immediately gives
+\begin{equation}\label{eq:extremal}
+ h_0^*(\QQ_\tau)=1,\qquad h_n^*(\QQ_\tau)=0,\qquad
+ h_{n-1}^*(\QQ_\tau)=\#B_{\tau^*}.
+\end{equation}
+For the constant coefficient, a word with $n-1$ descents is the unique
+strictly decreasing listing of all $n$ letters. For the coefficient at
+$n-1$, each admissible content has exactly one weakly increasing word.
+The total number of admissible words is
+\begin{equation}\label{eq:volume}
+ n!\Vol(\QQ_\tau)=\sum_{\avec\in B_{\tau^*}}
+                          \frac{n!}{\prod_{e\in E}a_e!}.
+\end{equation}
+This follows either from the leading coefficient in
+\eqref{eq:bases-formula} or by setting $t=1$ in the numerator.
+
+The absence of interior lattice points in $\QQ_\tau$ can also be seen
+directly: such a point would have every coordinate at least one, while
+strictness of the inequality for $E$ would force their sum below $n$.
+The point $\one$ is interior to $2\QQ_\tau$. Thus the smallest positive
+dilation with an interior lattice point is exactly two, consistently with
+$\deg h^*=n-1$.
+
+For $k\geq1$, count the $k$-multichains in $P_\tau$ by their top element.
+Each coordinate gives a weakly increasing sequence ending at $a_e$, so
+\begin{equation}\label{eq:zeta}
+ Z(P_\tau,k+1)=\sum_{\avec\in P_\tau}
+                      \prod_{e\in E}\binom{k+a_e-1}{a_e}.
+\end{equation}
+This equation defines its polynomial continuation. Comparing with
+\eqref{eq:rising} at $s=0$ gives
+$Z(P_\tau,t)=L_{\QQ_{\tau^*}}(t-1)$.
+
+\begin{corollary}[Ordinary part of Conjecture 4.9]\label{cor:zeta}
+For every preorder on $n$ elements,
+\begin{equation}\label{eq:zeta-minus-one}
+ Z(P_\tau,-1)=(-1)^n\#\Max(P_\tau).
+\end{equation}
+Equivalently,
+$\#(\Int(2\QQ_{\tau^*})\cap\Z^E)=\#\Max(P_\tau)$.
+\end{corollary}
+\begin{proof}
+Apply \eqref{eq:bases-formula} to $\tau^*$ at $m=-2$. Since
+$\binom{-1}{a_e}=(-1)^{a_e}$ and every base has sum $n$,
+\[
+ Z(P_\tau,-1)=L_{\QQ_{\tau^*}}(-2)
+ =\sum_{\avec\in B_\tau}\prod_e\binom{-1}{a_e}
+ =(-1)^n\#B_\tau.
+\]
+Use \Cref{lem:maximal} for the first assertion and
+\eqref{eq:EM} for the second.
+\end{proof}
+The source's refined conjecture assigns powers of $q$ to covers of maximal
+elements. None of the preceding equalities transports that statistic. The
+ordinary specialization therefore must not be reported as a proof of the
+full refined conjecture.
+
+\section{Colored arrays and matrix Ehrhart--zeta duality}\label{sec:matrix}
+
+The preceding reciprocity proof is independent of this section. Here the
+key idea is to replicate \emph{both} color classes in the preorder graph.
+The two replication counts need not be equal, or even constant over $E$.
+
+\subsection{The heterogeneous enumeration problem}
+For $\pvec,\qvec\in\N^E$, let
+\[
+ R_{\qvec}=\{(e,j):e\in E,\ 1\leq j\leq q_e\}.
+\]
+Define $C_\tau(\pvec,\qvec)$ as the number of arrays
+$(x_{e,j})_{(e,j)\in R_{\qvec}}\in\N^{R_{\qvec}}$ satisfying
+\begin{equation}\label{eq:colored-constraints}
+ \sum_{e\in I}\sum_{j=1}^{q_e}x_{e,j}\leq p(I)
+ \qquad(I\in\JJ(\tau)).
+\end{equation}
+Empty groups of coordinates are permitted. The empty array contributes one
+when all $q_e=0$.
+
+Aggregating by $a_e=\sum_jx_{e,j}$ gives the explicit finite sum
+\begin{equation}\label{eq:colored-sum}
+ C_\tau(\pvec,\qvec)=
+ \sum_{\substack{\avec\in\N^E\\a(I)\leq p(I)\ (I\in\JJ(\tau))}}
+             \prod_{e\in E}\binom{q_e+a_e-1}{a_e}.
+\end{equation}
+For $q_e=0$, the factor is one for $a_e=0$ and zero for $a_e>0$, as it
+should be. The ideal $E$ bounds $\sumv{\avec}$ by $\sumv{\pvec}$, so the
+sum is finite.
+
+\begin{theorem}[Heterogeneous array duality]\label{thm:colored}
+For every finite preorder and all nonnegative integer vectors
+$\pvec,\qvec$,
+\begin{equation}\label{eq:colored-duality}
+ \boxed{C_\tau(\pvec,\qvec)=C_{\tau^*}(\qvec,\pvec).}
+\end{equation}
+\end{theorem}
+We prove this by identifying the two sides with the lattice count and the
+draconian count of one bipartite graph. The graph-duality phenomenon itself
+is classical in Postnikov's theory \cite[Corollary~11.8]{Postnikov09}; the
+point here is the exact encoding of the preorder constraints and of two
+independently varying multiplicity vectors.
+
+\subsection{The copied graph and its polytope}
+Let the left vertices be
+\[
+ L=\{0_L\}\sqcup\{(e,i)_L:e\in E,\ 1\leq i\leq p_e\}
+\]
+and the right vertices be
+\[
+ R=\{0_R\}\sqcup\{(f,j)_R:f\in E,\ 1\leq j\leq q_f\}.
+\]
+Join $0_L$ to every right vertex and every left vertex to $0_R$.
+For the other vertices, put an edge precisely when
+\begin{equation}\label{eq:copy-edge}
+ (e,i)_L\sim(f,j)_R\quad\Longleftrightarrow\quad e\leq_\tau f.
+\end{equation}
+Denote this graph by $G_\tau(\pvec,\qvec)$. Its left neighborhoods are
+nonempty because they all contain $0_R$, and the neighborhood of $0_L$
+is all of $R$.
+
+Let $K$ be the projection, dropping coordinate $0_R$, of
+\begin{equation}\label{eq:copy-minkowski}
+ \sum_{\lambda\in L\setminus\{0_L\}}\Delta_{N(\lambda)}.
+\end{equation}
+Equivalently, with
+$S_e=\{(f,j):e\leq_\tau f,\ 1\leq j\leq q_f\}$,
+\[
+ K=\sum_{e\in E}p_e\ds_{S_e}\subseteq\R^{R_{\qvec}}.
+\]
+The coefficient of the full simplex indexed by $0_L$ is zero.
+
+\begin{lemma}\label{lem:colored-polytope}
+The polytope $K$ is precisely the nonnegative real solution set of
+\eqref{eq:colored-constraints}. Hence $\#(K\cap\Z^{R_{\qvec}})
+=C_\tau(\pvec,\qvec)$.
+\end{lemma}
+\begin{proof}
+Any summand associated with $e$ can contribute to coordinates with labels
+in an ideal $I$ only if $e\in I$. This proves that points in $K$ satisfy
+\eqref{eq:colored-constraints}.
+
+For the converse, repeat the support-function proof of
+\Cref{prop:minkowski}, now on copied coordinates. Given nonnegative
+coefficients $c_{f,j}$, take a level set of copied coordinates and let $T_t$
+be the set of their original labels. Its downward closure $D_\tau(T_t)$ is
+an ideal. The sum of the selected coordinates is at most the sum of all
+coordinates with labels in this ideal, and hence at most $p(D_\tau(T_t))$.
+Integration over levels bounds the functional by
+\[
+ \sum_{e\in E}p_e\max\bigl(\{c_{f,j}:e\leq_\tau f,\ 1\leq j\leq q_f\}
+                             \cup\{0\}\bigr).
+\]
+This is the support function of $K$. The extra $0$ handles empty
+neighborhoods after projection. Downward closure handles negative
+coefficients, and convex separation completes the proof, just as before.
+\end{proof}
+
+The unprojected polytope in \eqref{eq:copy-minkowski} lies in the hyperplane
+with coordinate sum $\sumv{\pvec}$. Projection preserves integer points:
+the missing coordinate is
+$\sumv{\pvec}-\sum_{(f,j)\in R_{\qvec}}x_{f,j}$.
+Thus \Cref{thm:Postnikov} can count $K$.
+
+\subsection{Reading the draconian inequalities on the other side}
+Apply \eqref{eq:Postnikov} with coefficient zero at $0_L$ and coefficient
+one at every other left vertex. Every summand in that formula equals one:
+\[
+ \binom{\alpha_0}{\alpha_0}=1,\qquad
+ \binom{1+\alpha_\lambda-1}{\alpha_\lambda}=1.
+\]
+Consequently,
+\begin{equation}\label{eq:count-draconian}
+ C_\tau(\pvec,\qvec)=\#\{G_\tau(\pvec,\qvec)\text{-draconian vectors}\}.
+\end{equation}
+
+Let $Q=\sumv{\qvec}$, so that the right color class has $Q+1$ vertices.
+A draconian vector has coordinates
+$\alpha_0$ and $\alpha_{e,i}$, with
+\begin{equation}\label{eq:copy-total}
+ \alpha_0+\sum_{e\in E}\sum_{i=1}^{p_e}\alpha_{e,i}=Q.
+\end{equation}
+For a nonempty set $A$ of non-root left vertices, let $S$ be its set of
+original labels. Its neighborhood has size
+$1+q(U_\tau(S))$, so its inequality is
+\begin{equation}\label{eq:copy-subset}
+ \alpha(A)\leq q(U_\tau(S)).
+\end{equation}
+These inequalities are equivalent to
+\begin{equation}\label{eq:copy-filter}
+ \sum_{e\in F}\sum_{i=1}^{p_e}\alpha_{e,i}\leq q(F)
+ \qquad(F\text{ an order filter of }\tau).
+\end{equation}
+Here is a detailed check, including zero multiplicities. Given a filter $F$,
+take $A$ to be all the existing left copies with labels in $F$. If $A$ is
+empty, \eqref{eq:copy-filter} is automatic. Otherwise its label set $S$
+satisfies $U_\tau(S)\subseteq F$, and
+\eqref{eq:copy-subset} implies \eqref{eq:copy-filter}. Conversely, for an
+arbitrary nonempty $A$, its coordinates are a subset of all left copies
+whose labels lie in the filter $U_\tau(S)$. Nonnegativity and
+\eqref{eq:copy-filter} imply \eqref{eq:copy-subset}.
+
+Sets of left vertices containing $0_L$ have the whole right color class as
+neighborhood, so their inequalities follow from \eqref{eq:copy-total}.
+The filter $E$ in \eqref{eq:copy-filter} makes
+\[
+ \alpha_0=Q-\sum_{e,i}\alpha_{e,i}
+\]
+nonnegative and determines it uniquely. Therefore the draconian vectors
+are in bijection with nonnegative arrays on the $p_e$ left copies satisfying
+\eqref{eq:copy-filter}. Since filters of $\tau$ are ideals of $\tau^*$,
+these arrays are exactly those counted by
+$C_{\tau^*}(\qvec,\pvec)$. Combined with
+\eqref{eq:count-draconian}, this proves \Cref{thm:colored}.
+
+\subsection{Returning to multichains}
+Let $\nabla_\tau(k,\ell)$ denote the number of $k$-multichains in the
+coordinatewise ordered lattice points of $\ell\QQ_\tau$. A multichain
+has $k$ entries; the empty multichain is counted once when $k=0$.
+
+For $k\geq1$, convert a multichain
+$\xvec^{(1)}\leq\cdots\leq\xvec^{(k)}$ into its coordinate increments:
+\[
+ y_{e,1}=x_e^{(1)},\qquad
+ y_{e,j}=x_e^{(j)}-x_e^{(j-1)}\quad(2\leq j\leq k).
+\]
+These are nonnegative. Since $\ell\QQ_\tau$ is a downset, all the
+multichain entries are feasible exactly when its last entry is feasible.
+The latter condition says
+\[
+ \sum_{e\in I}\sum_{j=1}^k y_{e,j}\leq\ell\card I.
+\]
+Partial sums provide the inverse map. Thus, including $k=0$,
+\begin{equation}\label{eq:matrix-C}
+ \nabla_\tau(k,\ell)=C_\tau(\ell\one,k\one).
+\end{equation}
+
+\begin{corollary}[Conjecture 4.2 of \cite{AC26}]\label{cor:matrix}
+For every preorder and all $k,\ell\in\N$,
+\begin{equation}\label{eq:matrix-duality}
+ \boxed{\nabla_\tau(k,\ell)=\nabla_{\tau^*}(\ell,k).}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Use \eqref{eq:matrix-C}, then \Cref{thm:colored}, then
+\eqref{eq:matrix-C} again with $\tau^*$.
+\end{proof}
+
+When either parameter is zero, both sides are one. No argument with
+fractional dilations of a copied preorder is involved. All coefficients
+in the copied Minkowski sum are zero or one, even though its ambient
+dimension varies with $\pvec,\qvec$.
+
+Self-duality of the preorder is sufficient for symmetry of $\nabla_\tau$,
+but symmetry is not asserted in general. Nor does
+\eqref{eq:colored-duality} say that $C_\tau$ is jointly a polynomial of
+bounded degree in the entries of both vectors. Already for a singleton,
+$C(p,q)=\binom{p+q}{p}$.
+
+\section{Worked examples}\label{sec:examples}
+
+\subsection{Antichains and a single equivalence class}
+For an $n$-element antichain, $\QQ_\tau=[0,1]^n$ and
+$P_\tau=\{0,1\}^n$. Formula \eqref{eq:falling} yields
+\begin{equation}\label{eq:antichain-double}
+ \EE_\tau(r,s)=\sum_{j=0}^n\binom nj\binom{s}{n-j}(r+1)^j.
+\end{equation}
+Indeed, at a fixed support of size $j$, the only vector in $P_\tau$ with
+that support has all its nonzero entries equal to one. The heterogeneous
+array count factors coordinate by coordinate:
+\[
+ C_\tau(\pvec,\qvec)=\prod_{e\in E}\binom{p_e+q_e}{p_e},\qquad
+ \nabla_\tau(k,\ell)=\binom{k+\ell}{k}^{\!n}.
+\]
+Both dualities are visibly symmetric here.
+
+At the other extreme, suppose every two elements of $E$ are equivalent.
+There is only one nonempty ideal, namely $E$. Then
+\[
+ \QQ_\tau(\bvec;s)=(\sumv{\bvec}+s)\ds_E,\qquad
+ \FF_\tau(\bvec,s)=\binom{\sumv{\bvec}+s+n}{n},
+\]
+and
+\[
+ C_\tau(\pvec,\qvec)=\binom{\sumv{\pvec}+\sumv{\qvec}}{\sumv{\pvec}},
+ \qquad
+ \nabla_\tau(k,\ell)=\binom{n(k+\ell)}{nk}.
+\]
+These examples confirm that the cardinality $n$ counts elements, not
+preorder equivalence classes.
+
+\subsection{The two-element chain}
+Let $1<_{\tau}2$. Its inequalities are
+$x_1\leq r+s$ and $x_1+x_2\leq2r+s$, with nonnegative coordinates.
+Direct summation gives
+\begin{align*}
+ \EE_\tau(r,s)
+ &=\sum_{x_1=0}^{r+s}(2r+s-x_1+1)\\
+ &=\frac{(r+s+1)(3r+s+2)}2.
+\end{align*}
+After centering,
+\[
+ \EE_\tau(u-\tfrac12,v-\tfrac12)=\frac{(u+v)(3u+v)}2,
+\]
+which has the even parity predicted by \Cref{cor:parity}. At $s=0$,
+$L_{\QQ_\tau}(r)=(r+1)(3r+2)/2$ and $h^*(\QQ_\tau,t)=1+2t$.
+
+\subsection{A non-self-dual pair of three-element posets}
+Let $V$ be the poset with $1<2$ and $1<3$, and let $\Lambda=V^*$.
+Its two Ehrhart polynomials are
+\begin{align}
+ L_{\QQ_V}(m)&=\frac{(m+1)(13m^2+17m+6)}6,\label{eq:forkL}\\
+ L_{\QQ_\Lambda}(m)&=(m+1)^2(2m+1).
+\end{align}
+Consequently,
+\[
+ h^*(\QQ_V,t)=1+8t+4t^2,\qquad
+ h^*(\QQ_\Lambda,t)=1+8t+3t^2.
+\]
+Both posets of lattice points have $12$ elements, but their Ehrhart and
+$h^*$-polynomials differ. This is not a conflict with matrix duality:
+that theorem exchanges the two parameters as well as the preorder.
+
+In fact the initial matrices, with rows indexed by $k=0,1,2,3$ and columns
+by $\ell=0,1,2,3$, are
+\begin{equation}\label{eq:fork-matrices}
+ \nabla_V=
+ \begin{pmatrix}
+ 1&1&1&1\\
+ 1&12&46&116\\
+ 1&45&436&2235\\
+ 1&112&2200&20010
+ \end{pmatrix},\qquad
+ \nabla_\Lambda=
+ \begin{pmatrix}
+ 1&1&1&1\\
+ 1&12&45&112\\
+ 1&46&436&2200\\
+ 1&116&2235&20010
+ \end{pmatrix}.
+\end{equation}
+They are transposes, and neither is symmetric. A heterogeneous example is
+\[
+ C_V((1,2,1),(2,1,3))
+ =C_\Lambda((2,1,3),(1,2,1))=58.
+\]
+
+For the double polynomial of $V$, direct enumeration or
+\eqref{eq:rising} gives
+\[
+ \EE_V(u,v)=\frac{(u+v+1)(13u^2+8uv+17u+v^2+5v+6)}6.
+\]
+Its centered form is particularly transparent:
+\[
+ \EE_V(u-\tfrac12,v-\tfrac12)
+ =\frac{(u+v)(26u^2+16uv+2v^2+1)}{12}.
+\]
+Only degrees three and one occur.
+
+There are three maximal elements of $P_V$:
+$(0,1,2),(0,2,1),(1,1,1)$. There are four in $P_\Lambda$:
+$(1,1,1),(2,0,1),(2,1,0),(3,0,0)$. Thus the respective leading nonzero
+$h^*$ coefficients are four and three, as
+\eqref{eq:extremal} predicts. The corresponding zeta evaluations are
+$Z(P_V,-1)=-3$ and $Z(P_\Lambda,-1)=-4$.
+
+\subsection{A mixed preorder with an equivalence class}
+On $E=\{a,b,c,d,e\}$ let $a$ and $c$ be equivalent, let both lie below
+$e$, and impose $b<d$ and $b<e$. No further comparisons are imposed except
+those forced by reflexivity and transitivity. The exact enumeration gives
+\[
+ \#P_\tau=92,\qquad \#\Max(P_\tau)=18,
+\]
+\[
+ L_{\QQ_\tau}(m)
+ =\frac{(m+1)^2(2m+1)(19m^2+21m+6)}6,
+\]
+\[
+ h^*(\QQ_\tau,t)=1+86t+393t^2+260t^3+20t^4.
+\]
+The maximal-element count of the dual is $20$, while
+$Z(P_\tau,-1)=-18$. This provides a check on both the dual orientation and
+the distinction between the two maximal-element counts. The entire double
+polynomial, in exact Newton-basis form, is supplied in the accompanying
+JSON data.
+
+\section{Exact verification and reproducible artifacts}\label{sec:verification}
+
+\subsection{Independent enumeration routes}
+The program \texttt{code/verify.py} uses only the Python standard library
+and exact integers. It exhausts all reflexive binary relations on
+$\{0,\ldots,n-1\}$ and keeps precisely those satisfying transitivity.
+Thus it includes all labeled preorders, not merely naturally labeled
+partial orders or representatives of a few Hasse-diagram shapes.
+
+Lattice points are generated directly from nonnegative vectors whose total
+sum is bounded by the ideal $E$, then tested against every nonempty ideal.
+The program compares this count with both binomial formulas. The word
+formula is checked by enumerating all $n^n$ words and testing the lower-ideal
+conditions directly. Maximal elements are found by pairwise coordinatewise
+comparison, independently of the coordinate-sum criterion.
+
+For matrix and heterogeneous duality, the program evaluates
+\eqref{eq:colored-sum} separately for $\tau$ and $\tau^*$. This is not an
+implementation of the graph argument. For interior translation it compares
+actual finite sets, not only their cardinalities.
+
+\subsection{Polynomial checking rather than isolated evaluations}
+For each preorder, the double polynomial is reconstructed from direct
+lattice counts at
+\[
+ (r,s)\in\N^2,\qquad r+s\leq n.
+\]
+In the Newton basis it is
+\begin{equation}\label{eq:newton}
+ \EE_\tau(u,v)=\sum_{i+j\leq n}c_{i,j}\binom ui\binom vj,
+\end{equation}
+where
+\[
+ c_{i,j}=\sum_{a=0}^i\sum_{b=0}^j
+       (-1)^{i+j-a-b}\binom ia\binom jb\EE_\tau(a,b).
+\]
+This triangular grid is unisolvent for polynomials of total degree at most
+$n$: order its points by total degree and note that a Newton basis element
+vanishes at earlier grid points and equals one at its own point. The
+reciprocity difference, also of degree at most $n$, is tested on the
+translated triangular grid $(r+1,s+1)$. For each fixed preorder, these
+checks certify that difference as a polynomial, given the proved degree
+bound. They do not replace the proof for arbitrary preorders.
+
+\subsection{Recorded run}
+The supplied run covers $1,4,29,355$ labeled preorders of sizes
+$1,2,3,4$, respectively: $389$ in total. Its results are:
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}Xr@{}}
+\toprule
+Check & Number \\
+\midrule
+Direct lattice-count grid points, compared with both formulas & 5,642 \\
+Unisolvent-grid reciprocity tests & 5,642 \\
+Interior translation: equality of actual point sets & 1,556 \\
+Maximal-element characterizations & 389 \\
+Full $h^*$ vectors versus direct word histograms & 389 \\
+Ordinary zeta evaluations at $-1$ & 389 \\
+Matrix duality, $0\leq k,\ell\leq3$ & 6,224 \\
+Heterogeneous array duality cases & 3,112 \\
+Heterogeneous reciprocity cases & 3,112 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+Every check passed. The heterogeneous tests use eight seeded parameter
+choices per preorder; they are not exhaustive over all multiplicity vectors.
+Their seed is $20260919$. Each nonempty size class is exhausted without
+random sampling of the relations. The source already reports larger finite
+checks for some of its conjectures \cite[Sections~4 and~7]{AC26}.
+Our run is an independent regression test of the formulas and their
+implementation, not a claim to improve those enumeration bounds.
+
+Run the checks from the package root with
+\begin{verbatim}
+python3 code/verify.py --max-n 4 --out data/verification.json
+\end{verbatim}
+The default run took about $19$ seconds in the execution environment used
+for this manuscript. This timing is descriptive, not a benchmark guarantee.
+The JSON records the measured time, all check totals, and exact data for the
+worked examples. Repeated runs can differ in timing but should not differ
+in any mathematical output. The \texttt{--max-n 5} option is available but
+was not run for this report and can be substantially more expensive.
+
+\subsection{Complexity and limitations of the checker}
+The relation generator examines $2^{n(n-1)}$ reflexive relations before
+filtering for transitivity. For a bound $B$ on the coordinate sum, the raw
+candidate lattice vectors number $\binom{B+n}{n}$. These are deliberately
+simple exhaustive algorithms, not efficient methods for large preorders.
+The exact formulas often give faster counts after $P_{\tau^*}$ is available,
+but the independent brute-force route is useful for detecting sign,
+orientation, and indexing mistakes.
+
+No floating-point geometric test, numerical root finder, or external
+computer-algebra system is used in verification. A passing finite run is
+supporting evidence; the general results rest on the proofs in
+\Cref{sec:weighted,sec:reciprocity,sec:words,sec:matrix}.
+
+\section{Proof audit, boundaries, and further questions}\label{sec:audit}
+
+\subsection{Dependencies and delicate points}
+The main dependencies can be summarized without assuming any of the
+conjectures under investigation:
+\[
+ \begin{gathered}
+ \text{Minkowski description + Postnikov}
+       \ \Longrightarrow\ \text{polynomial }\FF_\tau;\\
+ \text{interior translation + Ehrhart reciprocity}
+       \ \Longrightarrow\ \text{multivariate reciprocity};\\
+ \text{reciprocity + binomial sign identity}
+       \ \Longrightarrow\ \text{falling formula}
+       \ \Longrightarrow\ \text{word formula};\\
+ \text{copied graph + Postnikov}
+       \ \Longrightarrow\ \text{heterogeneous duality}
+       \ \Longrightarrow\ \text{matrix duality}.
+ \end{gathered}
+\]
+The classical theorems are stated explicitly and credited. Their proofs are
+not claimed as new, nor is their full theory reproduced.
+
+\paragraph{Dimension.}
+Interior reciprocity is applied only to a full-dimensional lattice polytope
+with strictly positive integer parameters. Degenerate boundary parameters
+are reached by polynomial identity, not by changing the reciprocity sign
+or invoking the relative interior of a different-dimensional polytope.
+
+\paragraph{The all-ones shift.}
+The amount removed from $x(I)$ is exactly $\card I$, not the number of
+preorder classes in $I$. This is why equivalence classes of size greater
+than one are covered by the same proof. The slack parameter must decrease
+by one as well; forgetting this shift produces a false formula.
+
+\paragraph{Signs.}
+In deriving the falling formula, the outer sign is $(-1)^n$ and each
+summand has the same inner sign because
+$a_0+\sum_ea_e=n$. The signs cancel only after both are present. In
+particular,
+$\EE_\tau(m,0)=(-1)^n\EE_\tau(-m-1,-1)$, with the sign retained when
+$n$ is odd.
+
+\paragraph{Dual orientation.}
+The neighborhood of a left vertex is an \emph{upper} set. Consequently the
+associated draconian vectors satisfy upper-set bounds, and therefore lie
+in the polytope of the \emph{dual} preorder. The non-self-dual example in
+\Cref{eq:fork-matrices} detects a missing reversal.
+
+\paragraph{Copies and the root coordinate.}
+In the heterogeneous argument the total sum of a draconian vector is
+$\sumv{\qvec}$, one less than the number of right vertices, not
+$\sumv{\pvec}$. Its root coordinate is a uniquely determined slack.
+Zero copies are handled explicitly in the equivalence between subset and
+filter inequalities.
+
+\paragraph{What computations certify.}
+For each enumerated preorder the exact interpolation checks a whole double
+polynomial, not just a few unrelated evaluations. No finite list, however,
+proves the statement for all preorders. That quantifier is handled by the
+geometric and graph arguments.
+
+\subsection{Consequences that should not be overclaimed}
+A nonnegative word expansion does not by itself imply real-rootedness of
+$h^*$: sums of real-rooted polynomials need not be real-rooted without
+additional structure. Our proof supplies neither a compatible family nor
+an interlacing argument. It also does not construct a shelling of the
+lattice-point poset.
+
+The support enumerator
+$\sum_{\avec\in P_\tau}t^{\#\supp(\avec)}$ is different from
+$h^*(\QQ_\tau,t)$. The source's conjectures about the former must not be
+inferred from our theorem about the latter. Finally, the $q$-zeta refinement
+requires control of a weight statistic that is absent from the unweighted
+interior and graph counts.
+
+\subsection{Concrete directions left by these proofs}
+The graph proof counts draconian vectors but does not produce a simple,
+canonical map directly between the two array sets. One can investigate
+whether a particular triangulation in Postnikov's duality yields a useful
+explicit algorithm. Such a construction would be stronger than the
+cardinality identity, even though the latter is now proved here.
+
+The two binomial expansions suggest looking for a direct bijection between
+the multiset model in \eqref{eq:rising} and the subset model in
+\eqref{eq:falling}. A bijection preserving additional statistics could be
+relevant to the refined zeta question. We do not assume that such a
+statistic-preserving bijection exists.
+
+The centered-parity identity also provides a smaller space of possible
+coefficients for double Ehrhart computations. It can be exploited to reduce
+interpolation costs, although the included checker intentionally does not
+assume it while reconstructing the polynomial.
+
+\section{Conclusion}
+The selected open problem has a short mechanism: a strict ideal inequality
+becomes a weak one after subtracting the all-ones vector and reducing the
+slack by one. Ehrhart reciprocity along integer rays turns that mechanism
+into the desired identity on the entire parameter space. The same method
+works with an independent capacity at each element and gives a useful
+falling-binomial expansion.
+
+A second mechanism, independent copying on the two sides of a bipartite
+preorder graph, proves the full matrix duality and a heterogeneous
+strengthening. Together these arguments prove Conjectures~7.2, 4.2, and~4.4
+as formulated in \cite{AC26}, and the ordinary specialization of
+Conjecture~4.9. The proofs have been audited for degenerate parameters,
+equivalence classes, signs, and reversal of the order, and are accompanied
+by exact reproducible checks. Their external validation and their priority
+relative to other work remain separate questions.
+
+\appendix
+\section{A reusable interior-shift principle}\label{app:general}
+The shortest argument is not specific to preorders. The following statement
+isolates its scope and also explains why integrality cannot simply be
+omitted.
+
+\begin{proposition}\label{prop:general-shift}
+Let $A$ be an integer matrix with $n$ columns and no zero rows, and define
+\[
+ K(\bvec;s)=\{\xvec\in\R_{\geq0}^n:A\xvec\leq A\bvec+s\one\}.
+\]
+Suppose this family has a polynomial lattice enumerator $F(\bvec,s)$ for
+nonnegative integer parameters, and that for all positive integer
+parameters it is a bounded full-dimensional lattice polytope. Then
+\[
+ F(-\bvec,-s)=(-1)^n F(\bvec-\one,s-1)
+\]
+as a polynomial identity.
+\end{proposition}
+\begin{proof}
+Full dimensionality and the absence of zero normals mean that interior
+points satisfy precisely the strict versions of all the defining
+inequalities. At integer points, strictness of the upper constraints is
+$A\xvec\leq A\bvec+(s-1)\one$. Substituting
+$\xvec=\yvec+\one$ yields
+$A\yvec\leq A(\bvec-\one)+(s-1)\one$, and strict coordinate positivity
+yields $\yvec\geq\zero$. Apply the same raywise reciprocity and polynomial
+identity argument as in \Cref{thm:reciprocity}.
+\end{proof}
+
+For preorder polytopes, $A$ consists of the indicator rows of nonempty
+ideals. The substantive additional input is not the translation itself but
+the lattice-polytope and polynomiality properties, proved using the
+Minkowski representation. For arbitrary systems of $0$--$1$ inequalities,
+those properties may fail. Thus the interior-shift calculation alone does
+not justify a general polynomial identity for every set system.
+
+\section{Artifact inventory and source audit}\label{app:inventory}
+The archive contains the editable \texttt{article.tex}, its compiled PDF,
+a build script, the exact verification program, the recorded JSON data and
+console log, a referee-oriented checklist, and a source-audit note.
+No external font files or third-party article PDFs are redistributed.
+
+The bibliography cites the public source version used to identify the
+conjectures, Postnikov's theorem in its original paper, and Stanley's
+classical reciprocity treatment. The source-audit note records the access
+date and identifies the exact proposition and conjecture numbers relevant
+to the proofs. The ordinary reciprocal identity and its word consequence
+are attributed to the source as conjectures; the proofs and weighted
+extensions in this manuscript are presented separately from those source
+statements.
+
+\begin{thebibliography}{9}
+
+\bibitem{AC26}
+Christos A. Athanasiadis and Fr\'ed\'eric Chapoton,
+\emph{Polytopes and posets associated to preorders},
+arXiv:2605.26916v1, May 26, 2026.
+\url{https://arxiv.org/abs/2605.26916}.
+Public version and PDF examined September 19, 2026.
+Relevant items: Proposition~3.3, Theorem~2.1, Lemma~4.1,
+Conjectures~4.2, 4.4, 4.9, Proposition~7.1, Conjecture~7.2,
+and Remarks~4.10(a) and~7.3.
+
+\bibitem{Postnikov09}
+Alexander Postnikov,
+\emph{Permutohedra, associahedra, and beyond},
+International Mathematics Research Notices \textbf{2009} (2009), 1026--1106.
+Preprint arXiv:math/0507163.
+\url{https://arxiv.org/abs/math/0507163}.
+Theorem~11.3 and Corollary~11.8.
+
+\bibitem{Stanley74}
+Richard P. Stanley,
+\emph{Combinatorial reciprocity theorems},
+Advances in Mathematics \textbf{14} (1974), 194--253.
+\url{https://math.mit.edu/~rstan/pubs/pubfiles/22.pdf}.
+Section~6: the Ehrhart--Macdonald law of reciprocity.
+
+\end{thebibliography}
+\end{document}

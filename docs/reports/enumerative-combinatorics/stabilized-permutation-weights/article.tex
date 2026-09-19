@@ -1,0 +1,1112 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[scaled=0.92]{sourcesanspro}
+\usepackage{microtype}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{Olive}{HTML}{526347}
+\definecolor{PaleOlive}{HTML}{F1F3EA}
+\definecolor{Ink}{HTML}{263126}
+\definecolor{Muted}{HTML}{5E675D}
+\definecolor{Rule}{HTML}{C6CDBD}
+\hypersetup{colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,
+  pdftitle={Rationality and growth of stabilized permutation-weight series},
+  pdfauthor={OpenAI ChatGPT},pdfsubject={Exact generating functions and recurrences}}
+\titleformat{\section}{\Large\sffamily\bfseries\color{Olive}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\sffamily\bfseries\color{Ink}}{\thesubsection}{0.65em}{}
+\titlespacing*{\section}{0pt}{2.2ex plus .7ex}{1ex}
+\titlespacing*{\subsection}{0pt}{1.8ex plus .5ex}{.8ex}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{Muted}Stabilized permutation-weight series}
+\fancyhead[R]{\small\sffamily\color{Muted}September 2026}
+\fancyfoot[C]{\small\sffamily\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{1.25em}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}[theorem]{Problem}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\A}{A}
+\newcommand{\Spec}{\Lambda}
+\newcommand{\coef}[2]{[#1]#2}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\res}{\operatorname{Res}}
+\newcommand{\des}{\operatorname{des}}
+\newcommand{\wt}{\operatorname{wt}}
+\newtcolorbox{resultbox}[1][]{enhanced,breakable,colback=PaleOlive,colframe=Rule,
+  boxrule=.5pt,arc=1.3mm,left=3mm,right=3mm,top=2mm,bottom=2mm,#1}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
+  frame=single,rulecolor=\color{Rule},backgroundcolor=\color{PaleOlive},
+  breaklines=true,showstringspaces=false,aboveskip=10pt,belowskip=10pt}
+
+\begin{document}
+\thispagestyle{empty}
+\begin{center}
+  {\small\sffamily\bfseries\color{Olive}EXACT COMBINATORICS \quad / \quad GENERATING FUNCTIONS}\par
+  \vspace{12pt}
+  {\LARGE\bfseries Rationality and growth of stabilized\\[3pt]
+  permutation-weight series}\par
+  \vspace{9pt}
+  {\large Finite spectra, integer recurrences, and an explicit two-descent formula}\par
+  \vspace{12pt}
+  {\sffamily Research report prepared for Vladimir Reshetnikov}\par
+  \vspace{4pt}
+  {\small September 19, 2026}
+\end{center}
+\vspace{8pt}
+\begin{abstract}
+The permutation-weight $q$-Eulerian polynomials have stabilized leading
+coefficients $a_{d,k}$ when the number of descents $d$ is fixed. Earlier work
+proved stabilization and investigated an initial agreement with the partition
+triangle OEIS A256193. We pursue the complete-series problem: can the entire
+series $W_d(t)=\sum_{k\ge0}a_{d,k}t^k$, including the coefficients beyond that
+agreement, be described by a finite exact formula?
+
+Starting from the published polynomial recurrence, we prove that every $W_d$
+is rational. The key is a finite exponential spectrum indexed by partitions
+of integers at most $d+1$. We give an explicit universal denominator, an
+exact construction of the numerator, and a practical symbolic algorithm.
+We also prove that the radius of convergence is exactly
+$(d+1)^{-1/d}$, with a periodic leading asymptotic term. For $d=2$ we obtain
+closed formulas involving only $3^m$, $2^m$, and Fibonacci numbers.
+In contrast, the fixed-$d$ diagonal series of A256193 is nonrational and
+has radius~$1$. Exact computations for $1\le d\le6$ are independently checked
+against the original recurrence through deficit~$40$; the archive contains
+all code, certificates, rational functions, and coefficient data.
+\end{abstract}
+
+\begin{resultbox}
+\small
+\textbf{Scope and status.}
+The stabilization theorem itself is known, and the earlier near-diagonal
+partition correspondence is not claimed as new. The problem selected here
+is a precise generating-function continuation of the request for further
+coefficients in Huang--Tang: determine each \emph{whole} stabilized series by
+finite algebraic data. The rationality theorem, denominator construction,
+and growth analysis below were derived in this investigation and were not
+found in the three primary papers reviewed. This is a proved research
+result within the report, not an exhaustive certification of novelty or a
+claim of peer review. The English proofs do not depend on numerical fitting
+or on an unproved conjecture.
+\end{resultbox}
+
+\vspace{3pt}
+\begin{center}
+\small\sffamily
+Companion files: \texttt{code/derive.py}, \texttt{code/verify.py},
+\texttt{data/rational\_series.json}.
+\end{center}
+
+\newpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\vspace{4pt}
+\begin{resultbox}[breakable=false]
+\textbf{The principal conclusions at a glance.}
+For every fixed integer $d\ge1$,
+\[
+ W_d(t)\in\Q(t)\cap\Z_{\ge0}[[t]],\qquad
+ \operatorname{rad}(W_d)=(d+1)^{-1/d},\qquad
+ \limsup_{k\to\infty}a_{d,k}^{1/k}=(d+1)^{1/d}.
+\]
+For the two-descent sequence, with $F_0=0$, $F_1=1$,
+\begin{align*}
+ a_{2,2m}&=45\,3^m+8\,2^m-F_{2m+10}+m+3,\\
+ a_{2,2m+1}&=81\,3^m+8\,2^m-F_{2m+11}+m+4.
+\end{align*}
+These identities hold for every $m\ge0$, not merely over a tested range.
+\end{resultbox}
+\clearpage
+
+\section{The selected problem and its provenance}
+\subsection{A specific family, not an arbitrary \texorpdfstring{$q$}{q}-Eulerian convention}
+There are several inequivalent $q$-analogues of Eulerian polynomials.
+Here the family is the permutation-weight family introduced by
+Dugan, Glennon, Gunnells, and Steingr\'imsson \cite{DGGs}.
+Its terms enumerate permutations by descents and a recursively defined
+weight arising from maxmin trees. To remove any ambiguity about the
+statistic or normalization, we take the recurrence established by
+Agrawal, Choi, and Sun \cite[Theorem 4.1]{ACS} as the exact algebraic
+specification:
+\begin{equation}\label{eq:original}
+\begin{split}
+ E_0(x,q)&=1,\\
+ E_n(x,q)&=E_{n-1}(qx,q)\\
+ &\quad+x\sum_{i=1}^{n-1}\binom{n-1}{i}
+              E_i(x,q)E_{n-i-1}(qx,q)\qquad(n\ge1).
+\end{split}
+\end{equation}
+Write
+\begin{equation}\label{eq:Adefinition}
+ A_{n,d}(q)=[x^d]E_n(x,q),\qquad D(n,d)=d(n-d-1).
+\end{equation}
+For $n\ge d+1$, the degree of $A_{n,d}$ is $D(n,d)$ and its
+leading coefficient is~$1$. Reversing the polynomial gives
+\begin{equation}\label{eq:Rdefinition}
+ R_{n,d}(t)=t^{D(n,d)}A_{n,d}(t^{-1}).
+\end{equation}
+The coefficient of $t^k$ counts weight deficit $k$ below the largest weight
+available at length $n$ and descent count~$d$.
+
+The coefficients stabilize as $n$ increases. In fact, the coefficient of
+$t^k$ is fixed from $n=d+k+1$ onward. Define
+\begin{equation}\label{eq:Wdefinition}
+ a_{d,k}=[t^k]R_{d+k+1,d}(t),\qquad
+ W_d(t)=\sum_{k\ge0}a_{d,k}t^k\qquad(d\ge1).
+\end{equation}
+This stabilization is due to Agrawal--Choi--Sun \cite{ACS}.
+We reproduce a short proof in \cref{sec:stabilization}, both to make the
+argument self-contained from \eqref{eq:original} and to justify the
+independent verification algorithm.
+
+\subsection{What was already known, and what is investigated here}
+Dugan et al. observed stabilization and a partial agreement with the
+partition triangle A256193 \cite[Section 6.12]{DGGs}. Agrawal et al. proved
+stabilization and proposed a recurrence relating certain near-diagonal
+coefficients \cite[Section 6]{ACS}. Huang and Tang subsequently gave a
+maxmin-tree treatment of the partition connection; their final discussion
+asks for ways to reach further coefficients when more complicated tree
+structures enter \cite[Section 5]{HT}. Thus it would be incorrect to
+present stabilization or the original partition correspondence as an
+unresolved conjecture in this report.
+
+The question pursued here is a more specific continuation:
+\begin{problem}\label{prob:whole}
+For fixed $d$, determine whether the \emph{entire} stabilized sequence
+$(a_{d,k})_{k\ge0}$ satisfies a finite constant-coefficient linear
+recurrence. If it does, construct one exactly, and determine its
+exponential growth.
+\end{problem}
+This formulation is ours; it is not attributed to the earlier authors
+as a verbatim named conjecture. It asks for information substantially
+stronger than computing a finite prefix from \eqref{eq:original}.
+The answer will be affirmative for every~$d$.
+
+\section{Leading terms and stabilization}\label{sec:stabilization}
+Taking the coefficient of $x^d$ in \eqref{eq:original} gives
+\begin{equation}\label{eq:Arecurrence}
+ A_{n,d}=q^d A_{n-1,d}
+ +\sum_{i=1}^{n-1}\binom{n-1}{i}
+       \sum_{a+b=d-1}q^b A_{i,a}A_{n-i-1,b}.
+\end{equation}
+All omitted arguments are $q$. We use $A_{0,0}=1$, $A_{0,d}=0$ for $d>0$,
+and $A_{n,d}=0$ outside $0\le d\le n-1$ when $n\ge1$.
+
+\begin{lemma}\label{lem:degree}
+For $n\ge d+1$ and $d\ge1$, $A_{n,d}$ has nonnegative integer
+coefficients, degree $D(n,d)$, and leading coefficient~$1$.
+Also $A_{n,0}=1$ for every $n\ge0$.
+\end{lemma}
+\begin{proof}
+Positivity and the assertion for $d=0$ follow immediately by induction.
+The support bound $d\le n-1$ also follows from \eqref{eq:Arecurrence}.
+At $n=d+1$, the only nonzero convolution term is
+$i=d$, $a=d-1$, and an empty right factor, so $A_{d+1,d}=1$.
+
+For the degree comparison, let $m=n-i-1$. First suppose $m>0$.
+For a nonzero term write
+\[
+ i=a+1+u,\quad m=b+1+v,\quad u,v\ge0,\quad a+b=d-1.
+\]
+The difference between $D(n,d)$ and the maximal degree of
+$q^bA_{i,a}A_{m,b}$ is
+\begin{equation}\label{eq:gap}
+ \Delta=a+1+(b+1)u+(a+1)v.
+\end{equation}
+This is positive. If $m=0$, then $b=0$, $a=d-1$, and the same difference is
+\begin{equation}\label{eq:emptygap}
+ \Delta=n-d-1.
+\end{equation}
+For $n>d+1$ this is again positive. On the other hand,
+$q^dA_{n-1,d}$ has degree exactly $D(n,d)$ and leading coefficient~$1$.
+It is therefore the unique contribution to the leading term.
+\end{proof}
+
+\begin{proposition}[Known stabilization, reproved]\label{prop:stabilization}
+For $n\ge d+2$,
+\begin{equation}\label{eq:stabilization}
+ R_{n,d}(t)-R_{n-1,d}(t)\in t^{n-d-1}\Z_{\ge0}[t].
+\end{equation}
+Consequently $[t^k]R_{n,d}$ is independent of $n$ for $n\ge d+k+1$.
+\end{proposition}
+\begin{proof}
+After reversal, the first term of \eqref{eq:Arecurrence} is exactly
+$R_{n-1,d}$. A nonempty-right convolution term becomes a product of
+reversed polynomials multiplied by $t^\Delta$, where \eqref{eq:gap} gives
+\[
+ \Delta-(n-d-1)
+ =\bigl(a+1+(b+1)u+(a+1)v\bigr)-(1+u+v)
+ =a+bu+av\ge0.
+\]
+An empty-right term has exactly the shift in \eqref{eq:emptygap}.
+All coefficients are nonnegative. Thus the increment at length $n$
+vanishes in degrees below $n-d-1$. Once $n=d+k+1$ has been reached,
+every subsequent increment starts in degree at least $k+1$.
+\end{proof}
+
+The limit $R_{n,d}\to W_d$ is a \emph{formal} power-series limit:
+each fixed coefficient eventually stops changing. No numerical value of
+$t$, analytic convergence, or interchange of infinite analytic sums is
+needed at this stage.
+
+\section{The finite exponential spectrum}\label{sec:spectrum}
+\subsection{The differential hierarchy}
+Introduce exponential generating functions in the length variable:
+\begin{equation}\label{eq:egf}
+ \mathcal F(z,x,q)=\sum_{n\ge0}E_n(x,q)\frac{z^n}{n!},\qquad
+ f_d(z,q)=[x^d]\mathcal F(z,x,q).
+\end{equation}
+All calculations in this section are over the field $K=\Q(q)$.
+The binomial convolution in \eqref{eq:original} becomes multiplication:
+\begin{equation}\label{eq:functionalegf}
+ \partial_z\mathcal F(z,x,q)
+ =\bigl(1+x(\mathcal F(z,x,q)-1)\bigr)\mathcal F(z,qx,q).
+\end{equation}
+Hence $f_0=e^z$, while, for $d\ge1$,
+\begin{equation}\label{eq:ode}
+ \partial_z f_d=q^d f_d+g_d,\qquad f_d(0,q)=0,
+\end{equation}
+where
+\begin{equation}\label{eq:g}
+ g_d(z,q)=\sum_{a+b=d-1}q^b f_a(z,q)f_b(z,q)
+                    -q^{d-1}f_{d-1}(z,q).
+\end{equation}
+The subtracted term is essential: it removes the forbidden empty left
+factor in the original recurrence. Omitting it produces a different
+sequence.
+
+\subsection{A partition-indexed set of possible frequencies}
+\begin{definition}\label{def:spectrum}
+For $d\ge0$, let
+\begin{equation}\label{eq:spectrum}
+ \Spec_d=\left\{
+ \lambda_{\boldsymbol c}(q)=\sum_{j=0}^{d}c_jq^j:
+ c_j\in\Z_{\ge0},\quad 1\le\sum_{j=0}^{d}(j+1)c_j\le d+1
+ \right\}.
+\end{equation}
+The integer $\sum(j+1)c_j$ is the cost of the frequency.
+Write $M_d=|\Spec_d|$.
+\end{definition}
+A vector $\boldsymbol c$ of cost $r$ is exactly a partition of $r$ with
+$c_j$ parts of size $j+1$. Distinct vectors give distinct polynomials in
+$q$. Therefore
+\begin{equation}\label{eq:count}
+ M_d=\sum_{r=1}^{d+1}p(r),
+\end{equation}
+where $p(r)$ is the ordinary partition number. The first values are
+$M_0,M_1,\ldots,M_6=1,3,6,11,18,29,44$.
+
+For example,
+\begin{align*}
+ \Spec_1&=\{1,2,q\},\\
+ \Spec_2&=\{1,2,3,q,q+1,q^2\},\\
+ \Spec_3&=\{1,2,3,4,q,q+1,q+2,2q,q^2,q^2+1,q^3\}.
+\end{align*}
+The only frequency in $\Spec_d$ of degree $d$ is $q^d$.
+Every other frequency has degree at most $d-1$.
+
+\begin{theorem}[Finite-spectrum theorem]\label{thm:spectrum}
+For every $d\ge0$, there are rational functions
+$c_{d,\lambda}(q)\in\Q(q)$ such that
+\begin{equation}\label{eq:expansion}
+ f_d(z,q)=\sum_{\lambda\in\Spec_d}c_{d,\lambda}(q)e^{\lambda(q)z}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:powers}
+ A_{n,d}(q)=\sum_{\lambda\in\Spec_d}c_{d,\lambda}(q)\lambda(q)^n
+ \qquad(n\ge0).
+\end{equation}
+Some allowed coefficients may be zero; the theorem does not assert
+that every allowed frequency occurs for every~$d$.
+\end{theorem}
+\begin{proof}
+For $d=0$, $f_0=e^z$ and $\Spec_0=\{1\}$.
+Suppose the assertion holds at every smaller descent count.
+If $a+b=d-1$, a frequency from $f_af_b$ is a sum
+$\lambda+\mu$ of costs at most $(a+1)+(b+1)=d+1$.
+It belongs to $\Spec_d$. Frequencies from $f_{d-1}$ also belong to
+$\Spec_d$. None of these has degree $d$: both factors in a product
+have descent count at most $d-1$.
+
+Write $g_d=\sum_\lambda h_{d,\lambda}e^{\lambda z}$ after collecting
+equal frequencies. Solving \eqref{eq:ode} gives the finite expression
+\begin{equation}\label{eq:solveode}
+ f_d(z,q)=\sum_\lambda
+       \frac{h_{d,\lambda}(q)}{\lambda(q)-q^d}
+       \bigl(e^{\lambda(q)z}-e^{q^dz}\bigr).
+\end{equation}
+Every denominator is nonzero in $\Q(q)$, because $\deg\lambda<d$.
+The only new frequency is $q^d$, whose cost is $d+1$.
+This proves \eqref{eq:expansion}; coefficient extraction in $z$ gives
+\eqref{eq:powers}.
+\end{proof}
+
+Distinct exponentials over $K$ are linearly independent: comparing the
+first $M_d$ derivatives at $z=0$ gives a Vandermonde matrix with nonzero
+determinant. Thus the collected coefficients in \eqref{eq:expansion}
+are unique. The absence of resonance in \eqref{eq:solveode} is an identity
+in the indeterminate $q$, not an assertion that particular numerical
+specializations of $q$ can never produce coincident frequencies.
+
+\section{Rationality and a universal integer denominator}\label{sec:rationality}
+Let
+\begin{equation}\label{eq:C}
+ C_d(q)=c_{d,q^d}(q).
+\end{equation}
+The coefficient $C_d$ is distinguished by degree, not by ordering
+frequencies at a particular real value of~$q$.
+
+\begin{theorem}[Rationality of the complete stabilized series]\label{thm:rationality}
+For every integer $d\ge1$,
+\begin{equation}\label{eq:mainW}
+ \boxed{\displaystyle W_d(t)=t^{-d(d+1)}C_d(t^{-1}).}
+\end{equation}
+Consequently $W_d\in\Q(t)\cap\Z_{\ge0}[[t]]$.
+\end{theorem}
+\begin{proof}
+Substitute \eqref{eq:powers} into \eqref{eq:Rdefinition}:
+\begin{equation}\label{eq:limit}
+ R_{n,d}(t)=t^{-d(d+1)}
+ \sum_{\lambda\in\Spec_d}c_{d,\lambda}(t^{-1})
+                  \bigl(t^d\lambda(t^{-1})\bigr)^n.
+\end{equation}
+For $\lambda=q^d$, the parenthesized factor is~$1$.
+For every other frequency it is a polynomial divisible by $t$,
+since $\deg\lambda\le d-1$.
+Each rational amplitude, viewed in $\Q((t))$, has a finite Laurent
+principal part. Multiplication by the $n$th power of a polynomial of
+positive $t$-adic order therefore tends coefficientwise to zero.
+There are finitely many frequencies, so only the $q^d$ term survives.
+By \cref{prop:stabilization}, the limit on the left is $W_d$.
+Its integrality, nonnegativity, and regularity at $t=0$ were already
+established directly from the recurrence.
+\end{proof}
+
+\subsection{A denominator requiring no guesswork}
+Define
+\begin{equation}\label{eq:univden}
+ \mathcal D_d(t)=
+ \prod_{\lambda\in\Spec_d\setminus\{q^d\}}
+       \left(1-t^d\lambda(t^{-1})\right).
+\end{equation}
+Every factor is an integer polynomial with constant coefficient~$1$.
+
+\begin{theorem}[Explicit denominator and finite numerator]\label{thm:denominator}
+For every $d\ge1$, there is a polynomial $\mathcal P_d(t)\in\Z[t]$ with
+\begin{equation}\label{eq:univrepr}
+ W_d(t)=\frac{\mathcal P_d(t)}{\mathcal D_d(t)}.
+\end{equation}
+The numerator can be constructed from the finitely many polynomials
+$A_{0,d},\ldots,A_{M_d-1,d}$ as follows. Put
+\begin{equation}\label{eq:annihilator}
+ B_d(u,q)=\prod_{\lambda\in\Spec_d\setminus\{q^d\}}(u-\lambda(q))
+            =\sum_{j=0}^{M_d-1}b_{d,j}(q)u^j,
+\end{equation}
+then set
+\begin{equation}\label{eq:numeratorformula}
+\begin{split}
+ N_d(q)&=\sum_{j=0}^{M_d-1}b_{d,j}(q)A_{j,d}(q),\\
+ \mathcal P_d(t)&=t^{d(M_d-1)-d(d+1)}N_d(t^{-1}).
+\end{split}
+\end{equation}
+Although the last expression is initially written as a Laurent
+polynomial, all its negative powers cancel.
+\end{theorem}
+\begin{proof}
+Apply the polynomial $B_d$ to the power-sum representation
+\eqref{eq:powers} at $n=0$. It annihilates every frequency except $q^d$:
+\[
+ N_d(q)=C_d(q)B_d(q^d,q).
+\]
+Thus
+\begin{equation}\label{eq:Cformula}
+ C_d(q)=\frac{N_d(q)}{
+          \prod_{\lambda\ne q^d}(q^d-\lambda(q))}.
+\end{equation}
+Substitution into \eqref{eq:mainW} gives \eqref{eq:univrepr} and
+\eqref{eq:numeratorformula}. All $b_{d,j}$ and $A_{j,d}$ are integer
+polynomials, so the expression for $\mathcal P_d$ is a Laurent
+polynomial with integer coefficients. But
+$\mathcal P_d=\mathcal D_dW_d$, with $\mathcal D_d\in\Z[t]$ and
+$W_d\in\Z[[t]]$. It has no negative powers, proving the claim.
+\end{proof}
+
+\begin{corollary}[An explicit constant-coefficient recurrence]\label{cor:recurrence}
+Write $\mathcal D_d(t)=1+\delta_1t+\cdots+\delta_Lt^L$.
+Then, for every $k>\deg\mathcal P_d$,
+\begin{equation}\label{eq:coeffrecurrence}
+ a_{d,k}+\sum_{j=1}^{L}\delta_j a_{d,k-j}=0,
+\end{equation}
+where coefficients with negative indices are set equal to zero.
+In particular, a conventional recurrence in the preceding $L$ terms
+holds once $k\ge\max(L,\deg\mathcal P_d+1)$.
+\end{corollary}
+\begin{proof}
+Compare coefficients in $\mathcal D_dW_d=\mathcal P_d$.
+\end{proof}
+
+This is a constructive answer to \cref{prob:whole}. The order bound
+$L\le d(M_d-1)$ is finite and explicit. It need not be minimal: cancellation
+already occurs at $d=4$. For computation, the sparse differential
+construction \eqref{eq:solveode} is considerably more economical than
+forming every $A_{j,d}$ required by \eqref{eq:numeratorformula}.
+The latter formula is especially useful as a proof of the denominator
+bound and as a conceptually independent construction.
+
+\section{Explicit results for small descent counts}\label{sec:examples}
+\subsection{One descent}
+At $d=1$, the differential equation is
+$f_1'=qf_1+e^{2z}-e^z$. Hence
+\[
+ f_1(z,q)=\frac{e^{2z}-e^{qz}}{2-q}
+          -\frac{e^z-e^{qz}}{1-q},\qquad
+ C_1(q)=\frac{1}{(q-1)(q-2)}.
+\]
+Therefore
+\begin{equation}\label{eq:W1}
+ W_1(t)=\frac{1}{(1-t)(1-2t)},\qquad a_{1,k}=2^{k+1}-1.
+\end{equation}
+This elementary case also checks the reversal exponent in
+\eqref{eq:mainW}.
+
+\subsection{Two descents: the complete sequence in closed form}
+The next forcing term is
+\[
+ g_2(z,q)=\bigl((q+1)e^z-q\bigr)f_1(z,q).
+\]
+For a fully explicit extraction, write
+\[
+ f_1=\frac{e^z}{q-1}-\frac{e^{2z}}{q-2}
+           +\frac{e^{qz}}{(q-1)(q-2)}.
+\]
+The five forcing frequencies are $1,2,3,q,q+1$. Their amplitudes are,
+in that order,
+\[
+ -\frac q{q-1},\quad
+ \frac{q+1}{q-1}+\frac q{q-2},\quad
+ -\frac{q+1}{q-2},\quad
+ -\frac q{(q-1)(q-2)},\quad
+ \frac{q+1}{(q-1)(q-2)}.
+\]
+Summing each amplitude divided by $q^2-\lambda$, as prescribed by
+\eqref{eq:solveode}, and simplifying gives
+\[
+ C_2(q)=\frac{q^3+2q^2-3q-2}
+ {(q-1)^2(q+1)(q^2-2)(q^2-3)(q^2-q-1)}.
+\]
+Consequently
+\begin{equation}\label{eq:W2}
+ \boxed{\displaystyle
+ W_2(t)=\frac{1+2t-3t^2-2t^3}
+ {(1-t)^2(1+t)(1-2t^2)(1-3t^2)(1-t-t^2)}.}
+\end{equation}
+No interpolation of initial sequence values is used to obtain this
+expression: it is the exact result of solving the two differential
+levels.
+
+A useful partial-fraction identity is
+\begin{equation}\label{eq:W2apart}
+\begin{split}
+ W_2(t)={}&\frac{8(1+t)}{1-2t^2}
+       +\frac{9(5+9t)}{1-3t^2}
+       -\frac{55+34t}{1-t-t^2}\\
+       &-\frac{1}{4(1+t)}+\frac{11}{4(1-t)}
+        +\frac{1}{2(1-t)^2}.
+\end{split}
+\end{equation}
+It can be checked simply by multiplication by the denominator in
+\eqref{eq:W2}.
+
+\begin{theorem}[Exact two-descent formula]\label{thm:W2closed}
+Let $F_0=0$, $F_1=1$, and $F_{n+2}=F_{n+1}+F_n$. For every $m\ge0$,
+\begin{align}
+ a_{2,2m}&=45\,3^m+8\,2^m-F_{2m+10}+m+3,\label{eq:even}\\
+ a_{2,2m+1}&=81\,3^m+8\,2^m-F_{2m+11}+m+4.\label{eq:odd}
+\end{align}
+\end{theorem}
+\begin{proof}
+The first two terms of \eqref{eq:W2apart} contribute $8\,2^m$ in both
+parities, and respectively $45\,3^m$ and $81\,3^m$.
+The coefficient of the third term is
+$-55F_{k+1}-34F_k=-F_{k+10}$, using the Fibonacci addition identity.
+The last three terms contribute
+\[
+ -\frac{(-1)^k}{4}+\frac{11}{4}+\frac{k+1}{2},
+\]
+which is $m+3$ for $k=2m$ and $m+4$ for $k=2m+1$.
+\end{proof}
+
+The expanded denominator is
+\[
+ Q_2(t)=1-2t-6t^2+13t^3+11t^4-28t^5-6t^6+23t^7-6t^9.
+\]
+Thus the ordinary recurrence of order nine is
+\begin{equation}\label{eq:W2recurrence}
+\begin{split}
+ a_{2,k}={}&2a_{2,k-1}+6a_{2,k-2}-13a_{2,k-3}-11a_{2,k-4}\\
+ &+28a_{2,k-5}+6a_{2,k-6}-23a_{2,k-7}+6a_{2,k-9},
+ \qquad k\ge9.
+\end{split}
+\end{equation}
+Its initial values are
+\[
+ (a_{2,0},\ldots,a_{2,8})=(1,4,11,31,65,157,298,661,1196).
+\]
+The order is minimal. Indeed, the numerator in \eqref{eq:W2} is nonzero
+at $t=1,-1$; modulo $1-2t^2$, $1-3t^2$, and $1-t-t^2$ its remainders are,
+respectively, $t-\tfrac12$, $\tfrac43t$, and $t$.
+None shares a zero with its corresponding quadratic. Therefore numerator
+and denominator are coprime, and no smaller eventual constant-coefficient
+recurrence can have this rational generating function.
+
+An immediate asymptotic consequence is
+\begin{equation}\label{eq:W2asymptotic}
+ a_{2,2m}\sim45\,3^m,\qquad a_{2,2m+1}\sim81\,3^m.
+\end{equation}
+The Fibonacci error is smaller because $\varphi^2=(3+\sqrt5)/2<3$.
+In particular, $a_{2,k}^{1/k}\to\sqrt3$, but consecutive-term ratios do
+\emph{not} converge:
+\[
+ \frac{a_{2,2m+1}}{a_{2,2m}}\longrightarrow\frac95,
+ \qquad
+ \frac{a_{2,2m+2}}{a_{2,2m+1}}\longrightarrow\frac53.
+\]
+A single-ratio numerical extrapolation would obscure this parity effect.
+
+\subsection{Three descents and beyond}
+For $d=3$ no cancellation of the universal denominator occurs. One obtains
+$W_3=P_3/Q_3$, where
+\begin{equation}\label{eq:Q3}
+\begin{split}
+ Q_3(t)={}&(1-t)(1-t^2)(1-2t^2)
+ (1-t^3)(1-2t^3)(1-3t^3)(1-4t^3)\\
+ &\quad\cdot(1-t^2-t^3)(1-t^2-2t^3)(1-t-t^3),
+\end{split}
+\end{equation}
+\begin{equation}\label{eq:P3}
+\begin{split}
+ P_3(t)={}&1+3t+2t^2-15t^3-23t^4-17t^5+71t^6+74t^7\\
+ &+23t^8-117t^9-86t^{10}-26t^{11}+54t^{12}+44t^{13}+24t^{14}.
+\end{split}
+\end{equation}
+The resulting recurrence has order~$26$.
+Large expanded polynomials become less readable at higher $d$, so their
+complete coefficient arrays are supplied in the companion JSON rather
+than typeset as several pages of integers.
+
+\begin{table}[htbp]
+\centering
+\caption{Exact symbolic results. $Q_d$ is the reduced denominator with
+$Q_d(0)=1$; $P_d$ is its coprime numerator.}
+\label{tab:degrees}
+\begin{tabular}{rrrrr}
+\toprule
+$d$ & $M_d$ & $\deg\mathcal D_d$ & $\deg Q_d$ & $\deg P_d$\\
+\midrule
+1 & 3  & 2   & 2   & 0\\
+2 & 6  & 9   & 9   & 3\\
+3 & 11 & 26  & 26  & 14\\
+4 & 18 & 60  & 57  & 37\\
+5 & 29 & 124 & 121 & 91\\
+6 & 44 & 233 & 223 & 181\\
+\bottomrule
+\end{tabular}
+\end{table}
+The exact canceled factors for the last three rows are
+\begin{align*}
+ \mathcal D_4/Q_4=\mathcal D_5/Q_5&=(1+t)(1+t^2),\\
+ \mathcal D_6/Q_6&=(1+t)^4(1+t^2)(1-t+t^2)(1+t+t^2).
+\end{align*}
+These cancellations are why the universal denominator should not be
+advertised as the minimal denominator in general.
+
+\section{The exact radius of convergence}\label{sec:growth}
+Rationality gives a finite set of possible poles. We next locate the
+nearest ones and prove that the positive real candidate does not cancel.
+Put
+\begin{equation}\label{eq:rho}
+ r_d=(d+1)^{1/d},\qquad \rho_d=r_d^{-1}.
+\end{equation}
+
+\begin{lemma}[Spectral separation at the first candidate pole]\label{lem:separation}
+For $\lambda\in\Spec_d\setminus\{q^d\}$,
+\[
+ \lambda(r_d)\le d+1.
+\]
+Equality holds only for the constant frequency $\lambda=d+1$.
+Consequently every factor of $\mathcal D_d(t)$ is nonzero for
+$|t|<\rho_d$. On $|t|=\rho_d$, the only possible zeros arise from
+$1-(d+1)t^d$.
+\end{lemma}
+\begin{proof}
+The function $\log(1+x)/x$ is strictly decreasing for $x>0$.
+Indeed, its derivative has the sign of
+$x/(1+x)-\log(1+x)<0$; the latter inequality follows by integrating
+$1/(1+u)>1/(1+x)$ on $0<u<x$.
+Thus, for $1\le j<d$,
+\[
+ r_d^j=(d+1)^{j/d}<j+1.
+\]
+For $j=0$, equality $r_d^0=1$ holds.
+A frequency other than $q^d$ has $c_d=0$, hence
+\[
+ \lambda(r_d)=\sum_{j<d}c_jr_d^j
+       \le\sum_{j<d}(j+1)c_j\le d+1.
+\]
+Equality requires that only $c_0$ be nonzero and $c_0=d+1$.
+
+For complex $t$ with $|t|\le\rho_d$, the triangle inequality gives
+\[
+ |t^d\lambda(t^{-1})|
+ \le\sum_{j<d}c_j|t|^{d-j}
+ \le r_d^{-d}\lambda(r_d)\le1.
+\]
+The inequality is strict in the open disk, and also on its boundary
+unless $\lambda=d+1$. This proves the pole assertion.
+\end{proof}
+
+\subsection{Why the positive pole survives}
+Let $h_j(q)$ be the coefficient of $e^{(j+1)z}$ in $f_j(z,q)$.
+The finite-spectrum construction gives $h_0=1$ and
+\begin{equation}\label{eq:hrecurrence}
+ h_j(q)=\frac{H_j(q)}{j+1-q^j},\qquad
+ H_j(q)=\sum_{a+b=j-1}q^b h_a(q)h_b(q)\quad(j\ge1).
+\end{equation}
+To see this, a product $f_af_b$ has constant frequency $j+1$ only when
+its factors use their largest constant frequencies $a+1$ and $b+1$.
+The subtracted term in \eqref{eq:g} has no such frequency.
+
+\begin{lemma}[Noncancellation]\label{lem:noncancel}
+$C_d(q)$ has a simple pole at $q=r_d$, with residue
+\begin{equation}\label{eq:residue}
+ \res_{q=r_d}C_d(q)=\frac{H_d(r_d)}{d\,r_d^{d-1}}>0.
+\end{equation}
+Equivalently, the rational function
+\begin{equation}\label{eq:L}
+ L_d(t)=\bigl(1-(d+1)t^d\bigr)W_d(t)
+\end{equation}
+is regular at $t=\rho_d$ and
+\begin{equation}\label{eq:Lpositive}
+ L_d(\rho_d)=r_d^{d^2}H_d(r_d)>0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $j<d$, the denominator $j+1-r_d^j$ in \eqref{eq:hrecurrence}
+is positive. Induction gives $h_j(r_d)>0$, so $H_d(r_d)>0$.
+It follows that $h_d(q)$ has a simple pole at $q=r_d$, of residue
+$-H_d(r_d)/(d r_d^{d-1})$.
+
+On the other hand, \eqref{eq:Cformula} and
+\cref{lem:separation} show that $C_d$ has at most a simple pole there:
+only the denominator factor $q^d-(d+1)$ vanishes, and its derivative is
+$d r_d^{d-1}\ne0$.
+
+The singular parts of the terms
+$C_d(q)e^{q^dz}$ and $h_d(q)e^{(d+1)z}$ must cancel.
+Here is a justification that also allows collisions among other
+frequencies. Every Taylor coefficient of $f_d$ in $z$ is a polynomial
+in $q$, so the coefficient of $(q-r_d)^{-1}$ in its finite exponential
+representation is identically zero. For any other frequency, that
+Laurent coefficient is a polynomial in $z$ times
+$e^{\lambda(r_d)z}$, obtained by finitely many Taylor terms of the
+exponential. All these exponents satisfy $\lambda(r_d)<d+1$.
+Polynomials times exponentials at distinct exponents are linearly
+independent: applying sufficiently high powers of
+$\partial_z-\lambda(r_d)$ annihilates each unwanted exponent and
+leaves a nonzero multiple of the remaining one. Therefore the
+coefficient of $e^{(d+1)z}$ must vanish separately. Since the two
+relevant amplitudes have at most simple poles, their residues sum to
+zero. This proves \eqref{eq:residue}.
+
+Finally, use $q=t^{-1}$ and
+$q^d-(d+1)=t^{-d}(1-(d+1)t^d)$ in \eqref{eq:mainW}.
+The finite limiting value is exactly \eqref{eq:Lpositive}.
+\end{proof}
+
+\begin{theorem}[Exact exponential growth]\label{thm:radius}
+For every $d\ge1$, the radius of convergence of $W_d(t)$ is exactly
+$\rho_d=(d+1)^{-1/d}$, and
+\begin{equation}\label{eq:limsup}
+ \limsup_{k\to\infty} a_{d,k}^{1/k}=(d+1)^{1/d}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+By \cref{thm:denominator,lem:separation}, there are no poles in
+$|t|<\rho_d$. By \cref{lem:noncancel}, $t=\rho_d$ is an actual pole.
+The radius is therefore exactly $\rho_d$.
+The coefficient formula for the radius of convergence gives
+\eqref{eq:limsup}.
+\end{proof}
+
+\subsection{The periodic leading term}
+The same argument provides more than a limsup. Let
+$\zeta_j=e^{2\pi i j/d}$ and $u_j=\rho_d\zeta_j$.
+The function $L_d$ in \eqref{eq:L} is regular at all $u_j$:
+\cref{lem:separation} leaves at most the single simple factor
+$1-(d+1)t^d$ on this circle.
+
+\begin{corollary}[Residue-class asymptotics]\label{cor:periodic}
+There is a number $R>\rho_d$ such that
+\begin{equation}\label{eq:periodicasymptotic}
+ a_{d,k}=\rho_d^{-k}\mathcal A_{d,k\bmod d}+O(R^{-k}),
+\end{equation}
+where
+\begin{equation}\label{eq:amplitudes}
+ \mathcal A_{d,r}=\frac1d\sum_{j=0}^{d-1}L_d(u_j)\zeta_j^{-r}
+ \quad(0\le r<d).
+\end{equation}
+Every $\mathcal A_{d,r}$ is real and nonnegative, and
+$\sum_r\mathcal A_{d,r}=L_d(\rho_d)>0$.
+\end{corollary}
+\begin{proof}
+At $t=u_j$, the contribution of the simple pole is
+\[
+ \frac{L_d(u_j)}{d}\,\frac{1}{1-t/u_j}.
+\]
+Subtracting these contributions removes all singularities on the first
+pole circle. Since the function is rational, the remainder is analytic
+in a strictly larger disk. A coefficient bound on an intermediate
+circle gives the error term in \eqref{eq:periodicasymptotic}.
+Extracting the simple-pole coefficients yields
+\eqref{eq:amplitudes}. Along each residue class,
+$\rho_d^k a_{d,k}$ tends to $\mathcal A_{d,r}$; nonnegativity of the
+coefficients makes each limit nonnegative. Summing the discrete Fourier
+formula over $r$ leaves only the term $j=0$.
+\end{proof}
+
+The theorem deliberately states a limsup for general $d$. Strict
+positivity of every residue-class amplitude has not been proved here.
+Nor is convergence of the consecutive-term ratio asserted; the explicit
+$d=2$ formula shows that such a ratio limit can fail.
+
+\section{The OEIS partition connection: a structural contrast}\label{sec:partitions}
+Let $T(n,d)$ denote the A256193 partition triangle \cite{OEIS}.
+The convention matters: after writing the parts of an ordinary partition
+in nonincreasing order, choose exactly $d$ \emph{positions} to mark.
+Different markings of equal-part positions are distinct. Equivalently,
+\begin{equation}\label{eq:Tdefinition}
+ T(n,d)=\sum_{\lambda\vdash n}\binom{\ell(\lambda)}{d},
+\end{equation}
+where $\ell(\lambda)$ is the number of parts. Its two-variable generating
+function is
+\begin{equation}\label{eq:Tgf}
+ \sum_{n,d\ge0}T(n,d)x^ny^d
+       =\prod_{m\ge1}\frac{1}{1-(1+y)x^m}.
+\end{equation}
+Indeed, a block of $r$ equal parts of size $m$ has marking polynomial
+$(1+y)^r$, and summing over $r$ gives the $m$th geometric factor.
+
+The initial diagonal agreement with $W_d$ does not extend to the
+complete series. For example,
+\begin{center}
+\begin{tabular}{r|rrrrrrrr}
+\toprule
+$k$ & 0&1&2&3&4&5&6&7\\
+\midrule
+$a_{2,k}$ &1&4&11&31&65&157&298&661\\
+$T(k+2,2)$&1&4&11&24&49&89&158&262\\
+\bottomrule
+\end{tabular}
+\end{center}
+The following result explains a global analytic distinction, without
+requiring a combinatorial interpretation of each discrepancy.
+
+\begin{theorem}[The partition diagonals are nonrational]\label{thm:partitioncontrast}
+For every fixed $d\ge1$, put
+\begin{equation}\label{eq:V}
+ V_d(t)=\sum_{k\ge0}T(d+k,d)t^k.
+\end{equation}
+Then $V_d$ has radius of convergence~$1$ and is not rational. Moreover,
+\begin{equation}\label{eq:growthcontrast}
+ \limsup_{k\to\infty}
+ \left(\frac{a_{d,k}}{T(d+k,d)}\right)^{1/k}=(d+1)^{1/d}>1.
+\end{equation}
+\end{theorem}
+\begin{proof}
+There are elementary bounds
+\begin{equation}\label{eq:partitionbounds}
+ p(k)\le T(d+k,d)\le(d+k)^d p(d+k).
+\end{equation}
+For the lower bound, append $d$ marked singleton parts to any unmarked
+partition of $k$, placing them after the unmarked singleton parts.
+This is injective. For the upper bound, each partition of $d+k$ has
+at most $d+k$ positions available for marking.
+
+For completeness, $p(n)$ is subexponential without needing a sharp
+partition asymptotic. For any fixed $0<x<1$,
+\[
+ \sum_{n\ge0}p(n)x^n=\prod_{m\ge1}(1-x^m)^{-1}<\infty,
+\]
+since
+\[
+ \sum_{m\ge1}-\log(1-x^m)
+ \le\sum_{m\ge1}\frac{x^m}{1-x^m}
+ \le\frac{x}{(1-x)^2}.
+\]
+Thus $\limsup p(n)^{1/n}\le x^{-1}$; letting $x\uparrow1$ and using
+$p(n)\ge1$ gives $p(n)^{1/n}\to1$. By \eqref{eq:partitionbounds},
+$T(d+k,d)^{1/k}\to1$, proving the radius assertion and, together with
+\cref{thm:radius}, \eqref{eq:growthcontrast}.
+
+It remains to prove nonrationality. Partition numbers cannot have a
+polynomial upper bound. If $p(n)=O(n^B)$, choose an integer $s>B+1$.
+Taking each multiplicity of parts $1,\ldots,s$ independently from
+$0,\ldots,M$ produces $(M+1)^s$ different partitions, each of total size
+at most $N=Ms(s+1)/2$. But the assumed bound would imply
+\[
+ (M+1)^s\le\sum_{n=0}^{N}p(n)=O(N^{B+1})=O(M^{B+1}),
+\]
+a contradiction as $M\to\infty$.
+By \eqref{eq:partitionbounds}, the coefficients of $V_d$ likewise admit
+no polynomial upper bound. A rational series of radius~$1$ does have
+such a bound: partial fractions express its coefficients as a finite
+sum of polynomial factors times exponential factors of modulus at
+most~$1$. Therefore $V_d$ cannot be rational.
+\end{proof}
+
+In particular, $W_d-V_d$ is nonrational and is not a polynomial.
+The difference cannot be repaired by changing finitely many coefficients.
+The earlier near-diagonal agreement concerns a finite initial region
+for fixed $d$; the full tails belong to different generating-function
+classes and have different exponential scales.
+This conclusion does not claim an eventual coefficientwise inequality
+for every $k$: \eqref{eq:growthcontrast} is the precise statement proved.
+
+\section{Algorithms and independent exact verification}\label{sec:computation}
+\subsection{Constructing the rational functions}
+The program \texttt{code/derive.py} implements
+\eqref{eq:g}--\eqref{eq:solveode}. A spectrum is a dictionary whose key is
+the coefficient vector $(c_0,c_1,\ldots)$ of a frequency and whose value
+is an exact rational function in $q$. Multiplication adds keys and
+multiplies amplitudes; equal frequencies are combined before solving
+the next differential equation.
+
+At each level the program verifies, in $\Q(q)$, both the differential
+identity and the initial condition:
+\[
+ (\lambda-q^d)c_{d,\lambda}=h_{d,\lambda},\qquad
+ \sum_\lambda c_{d,\lambda}=0.
+\]
+It extracts $C_d$, reverses its numerator and denominator directly,
+checks coprimality, and verifies that the resulting reduced denominator
+divides the universal denominator. Direct coefficient reversal avoids
+the expression swell of substituting $q=1/t$ into a large expanded
+rational expression.
+
+The finite frequency count $M_d$ is not by itself a bit-complexity bound.
+Rational-function numerator and denominator sizes also grow, and
+cancellation can be expensive. No polynomial-time claim in $d$ is made.
+For a fixed derived denominator of degree $L$, however, successive tail
+coefficients take $O(L)$ integer arithmetic operations each. Producing
+$K$ coefficients takes $O(KL)$ such operations, apart from integer bit
+costs. Standard polynomial reduction for a linear recurrence also permits
+an isolated distant term to be computed in $O(L^2\log K)$ arithmetic
+operations using naive polynomial multiplication.
+
+\subsection{An independent path from the original recurrence}
+The verifier \texttt{code/verify.py} uses only Python's standard library.
+It does not call SymPy and does not reconstruct the finite spectra.
+Instead it evaluates the original recurrence after reversal, truncating
+in deficit degree. The degree gaps in \cref{sec:stabilization} show that
+all shifts are nonnegative, so discarding higher deficit coefficients
+cannot affect lower ones.
+
+For every $1\le d\le6$ and $0\le k\le40$, it compares the rational-series
+coefficient against the original recurrence at three lengths:
+\[
+ n=d+k+1,\qquad n=d+k+2,\qquad n=48.
+\]
+These are $6\cdot41\cdot3=738$ exact integer comparisons.
+The first length is the proved stabilization boundary; the other two
+check that the same coefficient persists. In addition, all 251 exported
+coefficients of $W_1$ and $W_2$ are checked against their independent
+closed formulas. No floating-point arithmetic is involved.
+
+\begin{table}[htbp]
+\centering\small
+\caption{A prefix recomputed by both methods. Entries are $a_{d,k}$.}
+\label{tab:prefix}
+\begin{tabular}{r|rrrrrr}
+\toprule
+$k$ & $d=1$ & $d=2$ & $d=3$ & $d=4$ & $d=5$ & $d=6$\\
+\midrule
+0 &1&1&1&1&1&1\\
+1 &3&4&5&6&7&8\\
+2 &7&11&16&22&29&37\\
+3 &15&31&41&63&92&129\\
+4 &31&65&112&155&247&376\\
+5 &63&157&244&393&590&966\\
+6 &127&298&542&869&1404&2258\\
+7 &255&661&1155&1863&3079&5140\\
+8 &511&1196&2288&3886&6471&11078\\
+9 &1023&2516&4552&7863&13216&22921\\
+10&2047&4434&8852&15217&26354&46011\\
+11&4095&9002&16403&29134&50977&90269\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The symbolic formulas prove statements for all indices. The finite
+comparisons serve a different purpose: they guard against transcription,
+normalization, implementation, and indexing errors. The computations are
+not used as a substitute for the general arguments.
+
+\subsection{Reproduction and files}
+From the archive root, the following commands reproduce the exact results:
+\begin{lstlisting}
+python -m pip install -r requirements.txt
+python code/derive.py --max-d 6 --check-only
+python code/verify.py --max-k 40 --export-count 251
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The derivation was run with SymPy 1.14.0. The independent verifier needs
+Python 3.9 or later and no third-party package. The data directory contains
+normalized numerator and denominator arrays in ascending degree order,
+exact spectral certificates, CSV tables, individual coefficient files,
+and the actual verification logs. No Lean or other proof-assistant
+formalization is claimed.
+
+\section{What is settled, and what remains}\label{sec:conclusion}
+The whole-series rationality problem has a uniform affirmative answer,
+with explicit finite algebraic data. The proof depends only on the exact
+recurrence \eqref{eq:original}. It establishes an integer recurrence for
+every descent count, an exact radius of convergence, and periodic
+residue-class asymptotics. The two-descent case is completely explicit
+in elementary sequences.
+
+Several sharper questions remain beyond this report. A general rule for
+the cancellations in $\mathcal D_d$ would determine minimal recurrence
+orders without symbolic gcd computations. A proof that every
+$\mathcal A_{d,r}$ is strictly positive would upgrade the general limsup
+to an ordinary $k$th-root limit. A direct combinatorial explanation of the
+rational numerators or the complete discrepancy $a_{d,k}-T(d+k,d)$ could
+make the algebra more transparent. Finally, the growth and structure of
+the bivariate series $\sum_{d\ge1}u^dW_d(t)$ is a separate problem; fixed-$d$
+rationality does not imply its rationality in two variables.
+
+The useful outcome of this investigation is therefore not a fitted
+recurrence or a large computational prefix. It is a finite-spectrum
+mechanism that determines each complete stabilized generating function,
+together with a precise distinction between those series and the OEIS
+partition diagonals that originally suggested them.
+
+\appendix
+\section{The spectral construction in pseudocode}\label{app:algorithm}
+In the following pseudocode, dictionary keys are polynomials in $q$ and
+values lie in $\Q(q)$. Zero entries are removed after every collection.
+The single-symbol key $q^d$ refers to a frequency, not to its amplitude.
+\begin{lstlisting}
+F[0] := { 1 : 1 }
+for d := 1, ..., D:
+    G := empty dictionary
+    for a := 0, ..., d-1:
+        b := d-1-a
+        for (lambda, c) in F[a]:
+            for (mu, e) in F[b]:
+                G[lambda+mu] += q^b * c * e
+    for (lambda, c) in F[d-1]:
+        G[lambda] -= q^(d-1) * c
+
+    F[d] := empty dictionary
+    for (lambda, h) in G:
+        F[d][lambda] := h / (lambda-q^d)
+    F[d][q^d] := -sum(values of F[d])
+
+    C[d](q) := F[d][q^d]
+    W[d](t) := t^(-d*(d+1)) * C[d](1/t)
+    cancel and normalize the denominator to have constant term 1
+\end{lstlisting}
+The decisive invariant is $\deg\lambda<d$ for every key in $G$.
+It guarantees that the division is legal over $\Q(q)$ and that the
+$q^d$ mode is the unique mode surviving the formal leading-tail limit.
+
+\section{A compact audit of claims}\label{app:audit}
+\begin{longtable}{@{}p{0.27\textwidth}p{0.65\textwidth}@{}}
+\toprule
+Claim & Basis and qualification\\
+\midrule
+\endhead
+Definition of the polynomial family & The published recurrence
+\cite[Theorem 4.1]{ACS}, reproduced as \eqref{eq:original}.\\[4pt]
+Existence of $W_d$ & Known stabilization result \cite{ACS}; independently
+proved from the recurrence in \cref{prop:stabilization}.\\[4pt]
+Rationality for every $d$ & General proof in
+\cref{thm:spectrum,thm:rationality,thm:denominator}; not inferred from
+experiments.\\[4pt]
+Exact growth radius & Pole exclusion and a noncancellation proof in
+\cref{lem:separation,lem:noncancel,thm:radius}.\\[4pt]
+Closed formulas for $d=2$ & Exact differential calculation, rational
+identity, and coefficient extraction in \cref{sec:examples}.\\[4pt]
+Denominator degrees through $d=6$ & Exact rational-function arithmetic,
+coprimality checks, and retained machine-readable results.\\[4pt]
+Coefficient verification & 738 comparisons with the original recurrence,
+plus closed-form checks; all passed. This is an implementation audit,
+not proof-assistant verification.\\[4pt]
+Novelty & No all-$d$ rationality theorem was found in the three primary
+papers reviewed. No claim is made that the entire literature has been
+exhaustively checked.\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{9}
+\bibitem{DGGs}
+W. Dugan, S. Glennon, P. E. Gunnells, and E. Steingr\'imsson,
+\emph{Tiered trees, weights, and $q$-Eulerian numbers},
+Journal of Combinatorial Theory, Series A \textbf{164} (2019), 24--49.
+\href{https://arxiv.org/abs/1702.02446}{arXiv:1702.02446}.
+The motivating discussion of stabilized series and partition diagonals
+is Section~6.12.
+
+\bibitem{ACS}
+A. Agrawal, C. Choi, and N. Sun,
+\emph{On Permutation Weights and $q$-Eulerian Polynomials},
+Annals of Combinatorics \textbf{24} (2020), 363--378.
+\href{https://doi.org/10.1007/s00026-020-00493-5}{doi:10.1007/s00026-020-00493-5}.
+\href{https://arxiv.org/abs/1809.07398}{arXiv:1809.07398}, version~4.
+
+\bibitem{HT}
+E. Huang and R. Tang,
+\emph{Minimum Decomposition on Maxmin Trees},
+\href{https://arxiv.org/abs/2310.14385}{arXiv:2310.14385} (2023), version~2.
+The end of Section~5 discusses the challenge of reaching coefficients
+beyond the near-diagonal partition correspondence.
+
+\bibitem{OEIS}
+The OEIS Foundation Inc.,
+\href{https://oeis.org/A256193}{A256193: Number $T(n,k)$ of partitions of $n$
+into two sorts of parts having exactly $k$ parts of the second sort},
+The On-Line Encyclopedia of Integer Sequences.
+The marking convention is made explicit in \eqref{eq:Tdefinition}.
+\end{thebibliography}
+\noindent\small\color{Muted}Primary sources and the OEIS entry were consulted on
+September 19, 2026. All displayed new formulas and computational tables
+were derived or recomputed for this report.
+\end{document}

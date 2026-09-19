@@ -1,0 +1,1359 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{newpxtext,newpxmath}
+\usepackage{microtype}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{aliascnt}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{InkBlue}{HTML}{173D5D}
+\definecolor{PaleBlue}{HTML}{F0F5F9}
+\definecolor{Muted}{HTML}{52636F}
+\hypersetup{colorlinks=true,linkcolor=InkBlue,citecolor=InkBlue,urlcolor=InkBlue,
+  pdftitle={Ordinal Order Maps and Finitary Powersets of Ordinal--Finite Grids},
+  pdfauthor={Research manuscript prepared with ChatGPT}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{Muted}Ordinal order maps and finitary powersets}
+\fancyhead[R]{\small\color{Muted}Research draft}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{1.3em}
+\setlength{\parskip}{3pt}
+\setcounter{tocdepth}{2}
+\emergencystretch=1.8em
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\newaliascnt{problem}{theorem}
+\newtheorem{problem}[problem]{Problem}
+\aliascntresetthe{problem}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{lemma}{lemma}{lemmas}
+\crefname{proposition}{proposition}{propositions}
+\crefname{corollary}{corollary}{corollaries}
+\crefname{definition}{definition}{definitions}
+\crefname{example}{example}{examples}
+\crefname{problem}{problem}{problems}
+\crefname{remark}{remark}{remarks}
+\newcommand{\Mon}{\operatorname{Mon}}
+\newcommand{\Pf}{\mathsf{P}_{\!f}}
+\newcommand{\Grid}{\mathcal{G}}
+\newcommand{\otype}{\operatorname{o}}
+\newcommand{\height}{\operatorname{h}}
+\newcommand{\width}{\operatorname{w}}
+\newcommand{\rk}{\operatorname{rk}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\Id}{\mathcal{J}}
+\newcommand{\Ups}{\mathcal{U}}
+\newcommand{\Nrep}[2]{\left[#1\right]_{#2}}
+\newcommand{\CNF}{\operatorname{CNF}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\card}[1]{\lvert #1\rvert}
+\newcommand{\set}[1]{\{#1\}}
+\newtcolorbox{resultbox}{colback=PaleBlue,colframe=InkBlue,boxrule=0.6pt,
+  arc=1pt,left=9pt,right=9pt,top=7pt,bottom=7pt,breakable}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,
+  columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{Muted},
+  backgroundcolor=\color{PaleBlue},showstringspaces=false}
+\title{\color{InkBlue}\LARGE\bfseries Ordinal Order Maps and Finitary Powersets\\[4pt]
+  of Ordinal--Finite Grids\\[10pt]
+  \large\normalfont An exact calculation toward an open extension problem}
+\author{Research manuscript prepared with ChatGPT}
+\date{19 September 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+For a finite poset $Q$ and an arbitrary ordinal $\beta$, let
+$\Mon(Q,\beta)$ be the pointwise ordered set of isotone maps from $Q$ to
+$\beta$. We establish an explicit finite Cantor-normal-form expression for its
+maximal order type. If
+$\beta=\omega^{\gamma_0}+\cdots+\omega^{\gamma_{m-1}}$, with the exponents
+nonincreasing and repetitions retained, the expression is
+\[
+ \otype\bigl(\Mon(Q,\beta)\bigr)
+ =\bigoplus_{s\in\Mon(Q,m)}
+      \omega^{\bigoplus_{q\in Q}\gamma_{s(q)}}.
+\]
+We also prove that the rank of a map is the natural sum of its coordinates,
+and give closed forms for the height. Finitely generated downsets of
+$\alpha\times P$, for finite $P$, are identified with
+$\Mon(P^{\op},1+\alpha)$; the formulas therefore compute the corresponding
+finitary Hoare-powerset invariants. A three-element fork and its dual have
+identical finite order-map counts but different transfinite profiles. More
+strongly, for each fixed size $n$, a single explicit probe ordinal below
+$\omega^\omega$ encodes the entire maximal-order-type profile for all ordinal
+targets. Complete proofs, two exact calculation algorithms, and reproducible
+finite checks accompany the manuscript.
+\end{abstract}
+
+\begin{resultbox}
+\textbf{Status and scope.}
+The motivating published question asks for extensions of a computable class
+of well-quasi-orders. This manuscript settles a concrete family of
+calculations in that direction, not the full extension program. The
+mathematical arguments are intended as proofs; they have not been formally
+verified or independently refereed. A targeted literature search did not
+establish priority for these particular formulas. The software checks are
+supporting tests, not proofs of the transfinite statements.
+\end{resultbox}
+
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{The selected problem and the precise outcome}
+
+\subsection{A published open direction}
+Abriola, Halfon, Lopez, Schmitz, Schnoebelen, and Vialard study ordinal
+invariants of finitary powersets and give an exact calculus for a selected
+family of well-quasi-orders. Their concluding section asks how to enlarge
+that family while preserving computability of the invariants
+\cite[Section~6, ``Elementary wqos'']{AHLLSSV}.
+The question is a research direction rather than a single numerical
+conjecture. We choose the following explicit subproblem within that direction.
+
+\begin{problem}[Ordinal--finite grid calculation]\label{prob:grid}
+Given an ordinal $\alpha$ and a finite poset $P$, compute the maximal order
+type and well-founded height of finite subsets of $\alpha\times P$ under
+Hoare domination, identifying mutually dominating subsets.
+\end{problem}
+
+The product in this problem is the \emph{Cartesian product order}:
+\[
+ (\xi,p)\leq(\eta,q)
+ \quad\Longleftrightarrow\quad \xi\leq\eta\ \text{and}\ p\leq_Pq.
+\]
+No lexicographic order is intended. The finite factor is arbitrary: it need
+not be a chain, antichain, tree, or series--parallel poset.
+
+The reason this family is approachable is structural. A finitely generated
+downset has, above each point of $P$, either an empty ordinal fiber or an
+initial segment with a largest point. Thus an infinite set-theoretic problem
+reduces to finitely many ordinal coordinates linked by monotonicity
+constraints. The remaining difficulty is not cardinality: a linear extension
+can place different infinite coordinate patterns in different ordinal
+positions, and ordinal addition can erase earlier terms.
+
+\subsection{What is proved here}
+The main formula is \cref{thm:block}, whose proof works for every ordinal
+$\beta$. Its key ingredient is the pure-monomial calculation
+\[
+ \otype\bigl(\Mon(Q,\omega^\delta)\bigr)
+ =\omega^{\Nrep{\delta}{|Q|}},
+\]
+where $\Nrep{\delta}{n}$ is the natural sum of $n$ copies of $\delta$.
+It is essential that this exponent is generally \emph{not} the ordinary
+product $\delta\cdot n$.
+
+The rank formula in \cref{thm:rank} is independent of the maximal-order-type
+argument. The exact downset representation in \cref{thm:reduction} transfers
+both results to \cref{prob:grid}. The fork example in \cref{sec:fork} shows
+why finite order-map counts alone lose relevant information. Finally,
+\cref{thm:probe} identifies a finite ordered-fiber signature and proves that
+one carefully chosen ordinal target recovers it completely.
+
+This is a complete calculation for the stated family, but it does not
+compute arbitrary iterated finitary powersets or the ordinal antichain width
+of all these map spaces. In particular, it does not turn the larger
+published extension question into a solved problem merely by adding a new
+symbol to a grammar.
+
+\section{Conventions and standard ingredients}
+
+\subsection{Orders, ranks, and linear extensions}
+A poset is a \emph{well partial order} (wpo) if every infinite sequence has
+an increasing pair. All orders considered below are sets, and the
+mathematical arguments are in ZFC. An ordinal is identified with its
+well-order of predecessors.
+
+For a well-founded poset $X$, define the point rank and height by
+\begin{equation}\label{eq:rankdef}
+ r_X(x)=\sup_{y<x}\bigl(r_X(y)+1\bigr),
+ \qquad
+ \height(X)=\sup_{x\in X}\bigl(r_X(x)+1\bigr).
+\end{equation}
+Thus $\height(\varnothing)=0$, while a singleton has height $1$.
+For a wpo $X$, its maximal order type $\otype(X)$ is the maximum of the
+order types of its linear extensions. This maximum exists by the
+maximal-linearization theorem of de Jongh and Parikh
+\cite{deJonghParikh}; see also \cite[Theorem~3.4]{DSS}.
+
+We use the following standard identities, with $\sqcup$ denoting disjoint
+union with no cross-comparabilities:
+\begin{equation}\label{eq:standard}
+ \otype(X\sqcup Y)=\otype(X)\oplus\otype(Y),
+ \qquad
+ \otype(X\times Y)=\otype(X)\otimes\otype(Y).
+\end{equation}
+The product identity is the Cartesian-product theorem, not a theorem about
+lexicographic products \cite[Theorem~3.5]{deJonghParikh};
+\cite[Lemmas~4.2 and~4.5]{DSS}. Induced subposets cannot have larger maximal
+order type. Adding comparisons on a fixed underlying set also cannot
+increase maximal order type: every linear extension of the augmented order
+is already a linear extension of the original one.
+
+For the small examples where width is used, $\width(X)$ denotes the rank
+of the tree of finite sequences of pairwise incomparable elements. If
+antichains have maximum finite size $k$, this ordinal width is exactly $k$.
+We do not confuse ordinal width with a supremum of antichain cardinalities
+when the latter is unbounded.
+
+\subsection{Ordinary and natural arithmetic}
+Ordinary ordinal sum and product are written $+$ and $\cdot$.
+Hessenberg natural sum and product are written $\oplus$ and $\otimes$.
+If ordinals are written over a common decreasing sequence of exponents,
+\[
+ a=\sum_i\omega^{\delta_i}a_i,
+ \qquad b=\sum_i\omega^{\delta_i}b_i,
+\]
+then $a\oplus b=\sum_i\omega^{\delta_i}(a_i+b_i)$. Natural product is
+polynomial multiplication with natural addition of exponents:
+\[
+ \left(\sum_i\omega^{\delta_i}a_i\right)
+ \otimes
+ \left(\sum_j\omega^{\varepsilon_j}b_j\right)
+ =\bigoplus_{i,j}\omega^{\delta_i\oplus\varepsilon_j}(a_i b_j).
+\]
+Both operations are commutative and associative; natural sum is strictly
+increasing in either argument. All natural sums used in our formulas are
+finite.
+
+To make finite repetition unambiguous, define
+\begin{equation}\label{eq:repeat}
+ \Nrep{\delta}{n}
+ :=\underbrace{\delta\oplus\cdots\oplus\delta}_{n\text{ copies}}
+ =\delta\otimes n,
+ \qquad \Nrep{\delta}{0}=0.
+\end{equation}
+Thus $\Nrep{\omega+1}{2}=\omega\cdot2+2$, whereas
+$(\omega+1)\cdot2=\omega\cdot2+1$.
+For finite exponents, natural and ordinary finite sums coincide.
+
+Every nonzero ordinal has a finite Cantor normal form. We often expand
+its finite coefficients into repetitions:
+\begin{equation}\label{eq:beta}
+ \beta=\omega^{\gamma_0}+\cdots+\omega^{\gamma_{m-1}},
+ \qquad \gamma_0\geq\cdots\geq\gamma_{m-1}.
+\end{equation}
+For $\beta=0$, take $m=0$. The exponents may be arbitrary ordinals; no
+assumption such as $\beta<\varepsilon_0$ is made in the mathematics.
+
+\subsection{Map posets and finite powersets}
+For a finite poset $Q$, let
+\[
+ \Mon(Q,\beta)
+ =\{f:Q\to\beta: p\leq_Qq\Rightarrow f(p)\leq f(q)\},
+\]
+ordered pointwise. It is an induced subposet of $\beta^{|Q|}$ and hence a
+wpo. If $Q$ is empty, there is exactly one map, including when $\beta=0$.
+If $Q$ is nonempty and $\beta=0$, there are no maps.
+
+For a poset $A$, let $\Pf(A)$ include the empty finite subset and equip it
+with the Hoare relation
+\begin{equation}\label{eq:Hoare}
+ S\leq_H T
+ \quad\Longleftrightarrow\quad
+ \forall s\in S\ \exists t\in T\ (s\leq_A t).
+\end{equation}
+This is a quasi-order. Write $S\equiv_H T$ if both directions hold, and
+put
+\[
+ \Grid(\alpha,P):=\Pf(\alpha\times P)/{\equiv_H}.
+\]
+All powerset invariants in this manuscript refer to this quotient, or
+equivalently to the quasi-order with equivalent points identified.
+
+\section{Finitely generated downsets are ordinal order maps}
+
+\begin{lemma}\label{lem:downsetquotient}
+For finite subsets $S,T$ of any poset $A$,
+\[
+ S\leq_HT\quad\Longleftrightarrow\quad\downarrow S\subseteq\downarrow T.
+\]
+Consequently $\Pf(A)/{\equiv_H}$ is isomorphic to the inclusion order on
+finitely generated downsets of $A$.
+\end{lemma}
+\begin{proof}
+If $S\leq_HT$ and $x\leq s\in S$, choose $t\in T$ with $s\leq t$.
+Then $x\leq t$, proving inclusion. Conversely, if the downset inclusion
+holds, every $s\in S$ lies below a generator in $T$. Equality of generated
+downsets is therefore exactly mutual Hoare domination.
+\end{proof}
+
+\begin{theorem}[Endpoint representation]\label{thm:reduction}
+For every ordinal $\alpha$ and every finite poset $P$,
+\begin{equation}\label{eq:reduction}
+ \boxed{\Grid(\alpha,P)\cong\Mon(P^{\op},1+\alpha).}
+\end{equation}
+The $1+$ on the right is ordinary ordinal addition on the left of
+$\alpha$.
+\end{theorem}
+\begin{proof}
+Let $D=\downarrow S\subseteq\alpha\times P$, where $S$ is finite. For
+$p\in P$, consider
+\[
+ D_p:=\{\xi<\alpha:(\xi,p)\in D\}.
+\]
+The fiber $D_p$ is the union of the finitely many principal initial
+segments generated by coordinates $\eta$ for which $(\eta,q)\in S$ and
+$p\leq_Pq$. If there are no such generators, it is empty. Otherwise the
+finite set of these coordinates has a maximum $a_p$, and
+$D_p=[0,a_p]$.
+
+Introduce the ordered alphabet $B_\alpha=\{\bot\}+\alpha$, with a new
+least element $\bot$. It has order type $1+\alpha$. Encode $D$ by the map
+$e_D:P\to B_\alpha$ that sends an empty fiber to $\bot$ and a nonempty
+fiber to its largest point $a_p$. If $p\leq_Pq$, downward closure gives
+$D_q\subseteq D_p$, so $e_D(q)\leq e_D(p)$. Thus $e_D$ is antitone on
+$P$, or isotone on $P^{\op}$.
+
+Conversely, given an antitone map $e:P\to B_\alpha$, let
+\[
+ D(e)=\{(\xi,p): e(p)\ne\bot\text{ and }\xi\leq e(p)\}.
+\]
+This is a downset: if $(\xi,p)$ belongs to it and
+$(\eta,q)\leq(\xi,p)$, then $q\leq_Pp$ implies
+$e(q)\geq e(p)\geq\xi\geq\eta$. Moreover it is generated by the finite
+set of pairs $(e(p),p)$ for which $e(p)\ne\bot$.
+
+The two constructions are inverse. Fiberwise inclusion is precisely
+pointwise comparison in $B_\alpha$, proving the order isomorphism.
+\end{proof}
+
+For finite $\alpha=k$, the target alphabet has $k+1$ elements. For infinite
+$\alpha$, one has $1+\alpha=\alpha$. The distinction is not cosmetic:
+for example $\Grid(1,P)$ is the finite ideal lattice of $P$, whereas
+$\Mon(P^{\op},1)$ is only a singleton. Also, maximal elements $\omega$
+in a fiber of $(\omega+1)\times P$ must not be deleted by replacing
+$\omega+1$ with $\omega$.
+
+The representation already explains the dual appearing throughout the
+paper. A set of positions with a \emph{smaller} endpoint is upward closed
+in $P$. Replacing these filters by ideals of $P$ would interchange the
+fork examples later and give the wrong answer.
+
+\section{The pure-monomial calculation}
+
+\subsection{A lexicographic construction for one exponent term}
+\begin{lemma}\label{lem:lex}
+Let $Q$ have $n$ elements, and let $\delta>0$. There is a linear extension
+of $\Mon(Q,\omega^\delta)$ of order type
+$(\omega^\delta)^n=\omega^{\delta\cdot n}$.
+\end{lemma}
+\begin{proof}
+Choose a topological listing $q_1,\ldots,q_n$ of $Q$: if $q_i<_Qq_j$,
+then $i<j$. Compare maps lexicographically in the coordinate sequence
+$f(q_1),\ldots,f(q_n)$, with the earliest differing coordinate decisive.
+A pointwise strict comparison is respected, so this is a linear extension.
+
+After any admissible prefix, the next coordinate must be at least the
+maximum value at its already assigned strict predecessors. There are no
+constraints from unassigned predecessors, because the listing is
+topological. All values in the resulting tail $[b,\omega^\delta)$ are
+allowed, and every such prefix has a completion. The tail has order type
+$\omega^\delta$, since this ordinal is additively indecomposable and
+$\delta>0$.
+
+Induct backward on the number of remaining coordinates. With no remaining
+coordinates there is one completion. If every completion fiber after the
+next choice has type $(\omega^\delta)^k$, their lexicographic concatenation
+over the tail of possible next values has type
+$(\omega^\delta)^k\cdot\omega^\delta=(\omega^\delta)^{k+1}$.
+At the empty prefix the order type is $(\omega^\delta)^n$.
+\end{proof}
+
+The construction is not always maximal. For two coordinates and
+$\delta=\omega+1$, it gives $\omega^{\omega\cdot2+1}$, whereas the
+maximal type will be $\omega^{\omega\cdot2+2}$. The missing term comes
+from the lower-order part of the exponent. This is why merely sorting
+coordinates is insufficient.
+
+\subsection{Splitting the exponent rather than taking a limit}
+\begin{theorem}[Monomial theorem]\label{thm:monomial}
+For every finite poset $Q$ of size $n$ and every ordinal $\delta$,
+\begin{equation}\label{eq:monomial}
+ \boxed{\otype\bigl(\Mon(Q,\omega^\delta)\bigr)
+       =\omega^{\Nrep{\delta}{n}}.}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Since the map space is an induced subposet of $(\omega^\delta)^n$ with
+its Cartesian product order, \eqref{eq:standard} gives
+\[
+ \otype\bigl(\Mon(Q,\omega^\delta)\bigr)
+ \leq\underbrace{\omega^\delta\otimes\cdots\otimes\omega^\delta}_{n}
+ =\omega^{\Nrep{\delta}{n}}.
+\]
+It remains to construct a linear extension attaining the bound. If $n=0$
+or $\delta=0$, the map space is a singleton and the assertion follows.
+Assume henceforth that $n>0$ and $\delta>0$.
+
+We induct on the number of \emph{distinct terms in the Cantor normal form
+of $\delta$}, proving the assertion simultaneously for all finite posets.
+If $\delta=\omega^\rho c$ has only one term, where $c$ is a positive
+integer, then
+\[
+ \delta\cdot n=\omega^\rho(cn)=\Nrep{\delta}{n}.
+\]
+The extension in \cref{lem:lex} therefore attains the upper bound.
+
+Suppose $\delta$ has at least two terms. Write
+\[
+ \delta=\eta+\lambda,
+ \qquad \lambda=\omega^\rho c,
+\]
+where $\lambda$ is its last term and every exponent occurring in the
+Cantor normal form of $\eta$ is strictly larger than $\rho$. Set
+\[
+ \mu=\omega^\eta,\qquad \nu=\omega^\lambda.
+\]
+Then $\omega^\delta=\mu\cdot\nu$. Every coordinate value has a unique
+representation $\mu u+v$ with $u<\nu$ and $v<\mu$.
+
+If $f\in\Mon(Q,\mu\nu)$, its quotient coordinates $u_f(q)$ form an
+isotone map $u_f:Q\to\nu$. Fix one such quotient map $u$. Define a finite
+poset $Q_u$ on the same underlying set as $Q$ by retaining exactly the
+relations
+\[
+ p\leq_{Q_u}q
+ \quad\Longleftrightarrow\quad
+ p\leq_Qq\ \text{and}\ u(p)=u(q).
+\]
+This is the disjoint union of the induced subposets on the equal-value
+fibers of $u$. It still has $n$ elements.
+
+For coordinates with distinct quotient values, the order of the ordinal
+blocks already decides the comparison, regardless of the remainders.
+For equal quotient values, the original comparison is equivalent to a
+comparison of remainders. Consequently the fiber over $u$ is isomorphic to
+$\Mon(Q_u,\mu)$. The induction hypothesis applies to $\eta$, which has
+one fewer Cantor term, and gives the same maximal type for every fiber:
+\[
+ A=\omega^{\Nrep{\eta}{n}}.
+\]
+Choose an attaining linear extension in each fiber. There are only
+finitely many possible relations $Q_u$, so such choices can also be made
+by first choosing an extension for each possible finite relation.
+
+By the one-term case, the outer map space $\Mon(Q,\nu)$ has a linear
+extension of type
+\[
+ B=\omega^{\Nrep{\lambda}{n}}.
+\]
+Concatenate the chosen fiber extensions in that outer order. If $f\leq g$
+in the original map poset, then $u_f\leq u_g$ pointwise. Distinct quotient
+fibers are therefore placed in a compatible order, and comparisons inside
+a fiber are respected by construction. Hence this concatenation is a
+linear extension of the full map poset, with type
+\[
+ A\cdot B
+ =\omega^{\Nrep{\eta}{n}+\Nrep{\lambda}{n}}
+ =\omega^{\Nrep{\delta}{n}}.
+\]
+The last equality holds because the Cantor supports of $\eta$ and
+$\lambda$ occupy disjoint, correctly ordered exponent ranges. This matches
+the upper bound and completes the induction.
+\end{proof}
+
+\begin{remark}[Why this handles arbitrary ordinals]
+The proof uses the finite length of the Cantor normal form of the exponent,
+not a hereditary notation system and not a cofinal sequence. It therefore
+also applies to uncountable exponents and to fixed points such as
+$\varepsilon_0$. There is no appeal to an unproved continuity law for
+natural sum. Indeed,
+$\sup_{k<\omega}(k\oplus k)=\omega$ but
+$\omega\oplus\omega=\omega\cdot2$.
+\end{remark}
+
+\begin{example}[A mixed exponent]\label{ex:mixed}
+For any two-element poset $Q$ and
+$\beta=\omega^{\omega+1}=\omega^\omega\cdot\omega$,
+\[
+ \otype(\Mon(Q,\beta))=\omega^{\omega\cdot2+2}.
+\]
+The quotient maps into $\omega$ can be linearized in type $\omega^2$.
+Every remainder fiber, regardless of the retained finite relation, has
+maximal type $\omega^{\omega\cdot2}$. Their concatenation has type
+$\omega^{\omega\cdot2}\cdot\omega^2$, giving the asserted exponent.
+\end{example}
+
+\section{The finite Cantor-block formula}
+
+\begin{theorem}[Order-map formula]\label{thm:block}
+Let $Q$ be finite and write $\beta$ as in \eqref{eq:beta}. For an isotone
+block assignment $s:Q\to m$, define
+\[
+ E(s)=\bigoplus_{q\in Q}\gamma_{s(q)}.
+\]
+Then
+\begin{equation}\label{eq:main}
+ \boxed{\otype\bigl(\Mon(Q,\beta)\bigr)
+       =\bigoplus_{s\in\Mon(Q,m)}\omega^{E(s)}.}
+\end{equation}
+The usual empty-map and empty-sum conventions make this valid also when
+$Q=\varnothing$ or $\beta=0$.
+\end{theorem}
+\begin{proof}
+Let $b_j=\sum_{i<j}\omega^{\gamma_i}$. Every value in the $j$th ordinal
+block has a unique representation $b_j+v$ with $v<\omega^{\gamma_j}$.
+An isotone map $f:Q\to\beta$ therefore determines an isotone map $s_f:Q\to m$
+recording its block indices.
+
+For a fixed block assignment $s$, the fiber $X_s$ is isomorphic to
+\begin{equation}\label{eq:blockfiber}
+ X_s\cong
+ \prod_{j<m}\Mon\bigl(Q|_{s^{-1}(j)},\omega^{\gamma_j}\bigr).
+\end{equation}
+Indeed, an original comparison within one block constrains the remainder
+coordinates, and a comparison between distinct blocks is already decided.
+The monomial theorem and the Cartesian-product identity give
+\[
+ \otype(X_s)
+ =\bigotimes_{j<m}\omega^{\Nrep{\gamma_j}{|s^{-1}(j)|}}
+ =\omega^{E(s)}.
+\]
+
+If all comparisons between distinct fibers are deleted, one obtains their
+finite disjoint union. Adding the actual cross-fiber comparisons cannot
+increase maximal order type, so
+\[
+ \otype(\Mon(Q,\beta))
+ \leq\bigoplus_{s\in\Mon(Q,m)}\omega^{E(s)}.
+\]
+An upper bound alone is not sufficient: it remains to show that the fibers
+can be ordered without ordinal absorption.
+
+If $s\leq t$ pointwise, then $\gamma_{s(q)}\geq\gamma_{t(q)}$ for every
+$q$, because the block exponents are nonincreasing. Hence
+\begin{equation}\label{eq:reverseweight}
+ s\leq t\quad\Longrightarrow\quad E(s)\geq E(t).
+\end{equation}
+List the finitely many block assignments in decreasing order of $E$.
+Within a group with the same $E$, choose a linear extension of their
+induced pointwise order. This listing respects every pointwise comparison
+of block assignments by \eqref{eq:reverseweight}.
+
+Now concatenate maximal linear extensions of $X_s$ in that listing.
+A comparison $f\leq g$ across different fibers implies $s_f\leq s_g$,
+so the concatenation respects it. Its order type is the ordinary sum of
+the monomials $\omega^{E(s)}$ in nonincreasing exponent order. Such an
+ordinary sum equals their natural sum. Thus the upper bound is attained.
+\end{proof}
+
+\begin{corollary}[Exact grid formula]\label{cor:gridformula}
+Write $1+\alpha=\sum_{j<m}\omega^{\gamma_j}$ with repeated nonincreasing
+exponents. Then
+\begin{equation}\label{eq:gridformula}
+ \otype(\Grid(\alpha,P))
+ =\bigoplus_{s\in\Mon(P^{\op},m)}
+       \omega^{\bigoplus_{p\in P}\gamma_{s(p)}}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Apply \cref{thm:reduction,thm:block}.
+\end{proof}
+
+\subsection{Extremal checks and the leading term}
+For a chain $C_n$ and an antichain $A_n$ of size $n$,
+\begin{align}
+ \otype(\Mon(C_n,\beta))
+ &=\bigoplus_{a_0+\cdots+a_{m-1}=n}
+      \omega^{\bigoplus_{j<m}\Nrep{\gamma_j}{a_j}},\label{eq:chain}\\
+ \otype(\Mon(A_n,\beta))&=\beta^{\otimes n}.\label{eq:anti}
+\end{align}
+The first formula has one assignment per histogram, because a weakly
+increasing sequence is determined by the multiplicities of its values.
+The second is the Cartesian-product formula. Imposing a total order
+extending $Q$ gives the lower bound, and deleting all comparisons gives
+the upper bound
+\begin{equation}\label{eq:bounds}
+ \otype(\Mon(C_n,\beta))
+ \leq\otype(\Mon(Q,\beta))\leq\beta^{\otimes n}.
+\end{equation}
+
+Let $\Omega_Q(c)=|\Mon(Q,c)|$ for a finite chain $c$. If the leading term
+of a nonzero $\beta$ is $\omega^\gamma c$ and $n>0$, then the leading term
+of \eqref{eq:main} is
+\begin{equation}\label{eq:leading}
+ \omega^{\Nrep{\gamma}{n}}\cdot\Omega_Q(c).
+\end{equation}
+Exactly the assignments using only the $c$ leading equal-exponent blocks
+have the largest exponent. Assigning even one coordinate to a strictly
+smaller exponent strictly lowers the natural sum. This also covers finite
+$\beta$, where the full result is the finite ordinal $\Omega_Q(\beta)$.
+
+\section{Point ranks and exact height}
+
+The maximal-order-type formula retains detailed information about the
+finite poset. Height is strikingly simpler: it depends only on the number
+of coordinates and the target ordinal. The essential point is an exact
+rank formula, not merely the existence of a cofinal diagonal.
+
+\begin{theorem}[Rank of an isotone map]\label{thm:rank}
+For every finite $Q$, ordinal $\beta$, and $f\in\Mon(Q,\beta)$,
+\begin{equation}\label{eq:rankformula}
+ \boxed{r(f)=\bigoplus_{q\in Q}f(q).}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Write $R(f)=\bigoplus_q f(q)$ and induct on this ordinal. If $g<f$
+pointwise, strict monotonicity of natural sum gives $R(g)<R(f)$.
+Therefore all such $g$ are covered by the induction hypothesis and
+\[
+ r(f)=\sup_{g<f}\bigl(R(g)+1\bigr)\leq R(f).
+\]
+The zero map has rank $0$. Suppose that at least one coordinate is nonzero.
+Choose the smallest trailing Cantor exponent $\delta$ among all nonzero
+values $f(q)$. Choose one value $a$ with trailing exponent $\delta$, and
+choose $q$ minimal in its equal-value fiber $f^{-1}(a)$. Every strict
+predecessor of $q$ then has value strictly below $a$: isotonicity gives
+at most $a$, and equality is excluded by minimality.
+
+Because there are finitely many predecessors, their values have a common
+bound $b<a$; when there are none, take $b=0$. Replacing only $f(q)=a$ by
+any $a'$ with $b\leq a'<a$ preserves isotonicity. Comparisons from
+predecessors remain valid, and comparisons to successors remain valid
+because their values were at least $a$.
+
+If $\delta=0$, the ordinal $a$ is a successor. Replace it by its
+predecessor. This is at least $b$, and subtracts exactly one from the
+finite coefficient of the total natural sum. Thus there is $g<f$ with
+$R(g)+1=R(f)$, proving the required lower bound.
+
+Suppose $\delta>0$. Write
+\[
+ a=A+\omega^\delta c,\qquad c>0,
+\]
+where $A$ has only exponents larger than $\delta$. For $\eta<\omega^\delta$
+put
+\[
+ a_\eta'=A+\omega^\delta(c-1)+\eta.
+\]
+These values are cofinal in $a$, so all sufficiently large choices satisfy
+$a_\eta'\geq b$. Since no other nonzero coordinate has a term below
+$\delta$, the total sum has the form
+\[
+ R(f)=B+\omega^\delta C,\qquad C>0,
+\]
+and the modified map $g_\eta$ satisfies
+\[
+ R(g_\eta)=B+\omega^\delta(C-1)+\eta.
+\]
+Consequently
+$\sup_\eta(R(g_\eta)+1)=R(f)$, even after restricting to the sufficiently
+large admissible $\eta$. By induction $r(g_\eta)=R(g_\eta)$, so
+$r(f)\geq R(f)$. This proves equality in all cases.
+\end{proof}
+
+\begin{theorem}[Height formula]\label{thm:height}
+Let $n=|Q|>0$. Then
+\begin{equation}\label{eq:heightsup}
+ \boxed{\height(\Mon(Q,\beta))
+       =\sup_{\xi<\beta}\bigl(\Nrep{\xi}{n}+1\bigr).}
+\end{equation}
+In particular:
+\begin{align}
+ \height(\Mon(Q,0))&=0,\label{eq:hzero}\\
+ \height(\Mon(Q,\zeta+1))&=\Nrep{\zeta}{n}+1,\label{eq:hsucc}\\
+ \height(\Mon(Q,\rho+\omega^\delta))
+   &=\Nrep{\rho}{n}+\omega^\delta
+       \quad(\delta>0),\label{eq:hlimit}
+\end{align}
+where in \eqref{eq:hlimit} $\omega^\delta$ is one copy of the last Cantor
+monomial of the nonzero limit target. For $n=0$, the height is always $1$.
+\end{theorem}
+\begin{proof}
+Every map $f$ has a largest coordinate value $\xi<\beta$, and then
+$R(f)\leq\Nrep{\xi}{n}$. Conversely, for every $\xi<\beta$ the constant
+map with value $\xi$ is isotone and has rank $\Nrep{\xi}{n}$. Equation
+\eqref{eq:heightsup} follows from \cref{thm:rank}. For a successor target,
+the supremum is attained at $\zeta$, proving \eqref{eq:hsucc}.
+
+For a nonzero limit, write its last term as $\omega^\delta c$ with
+$\delta>0$, and put the first $c-1$ copies into $\rho$. Values
+$\rho+\eta$, $\eta<\omega^\delta$, are cofinal in the target. All
+exponents in $\rho$ are at least $\delta$, whereas those in $\eta$ are
+strictly smaller. Hence
+\[
+ \Nrep{\rho+\eta}{n}=\Nrep{\rho}{n}+\Nrep{\eta}{n}.
+\]
+For $0<n<\omega$, each $\Nrep{\eta}{n}<\omega^\delta$, and these
+ordinals are cofinal in $\omega^\delta$ because
+$\Nrep{\eta}{n}\geq\eta$. Taking the supremum after adding $1$ proves
+\eqref{eq:hlimit}.
+\end{proof}
+
+For example, with $n=3$ and any three-element poset $Q$,
+\[
+\begin{array}{c|c}
+\beta&\height(\Mon(Q,\beta))\\\hline
+\omega&\omega\\
+\omega+1&\omega\cdot3+1\\
+\omega\cdot2&\omega\cdot4\\
+\omega^2+\omega\cdot2&\omega^2\cdot3+\omega\cdot4
+\end{array}
+\]
+The apparently unusual coefficient $4$ in the third row is correct:
+$\xi=\omega+k$ gives rank $\omega\cdot3+3k$, whose successors are cofinal
+in $\omega\cdot4$.
+
+Combining \cref{thm:reduction,thm:height} computes
+$\height(\Grid(\alpha,P))$ by substituting $\beta=1+\alpha$. For finite
+$\alpha=k$ and $|P|=n>0$, the answer is $nk+1$, agreeing with the height
+of the ideal lattice of a finite $nk$-element grid.
+
+\section{Specializations and a small separation example}
+
+\subsection{Repeated equal monomials}
+If $\beta=\omega^\delta\cdot c$ for a positive integer $c$, every block
+assignment has exponent $\Nrep{\delta}{n}$. Thus
+\begin{equation}\label{eq:equal}
+ \otype(\Mon(Q,\omega^\delta\cdot c))
+ =\omega^{\Nrep{\delta}{n}}\cdot\Omega_Q(c).
+\end{equation}
+The coefficient is an ordinary finite order-map count. A total order
+extending $Q$ and the unconstrained antichain give
+\[
+ \binom{c+n-1}{n}\leq\Omega_Q(c)\leq c^n.
+\]
+The lower count enumerates weakly increasing sequences of length $n$ from
+$c$ values; the upper count enumerates all functions.
+
+For $\delta>0$, the same expression computes
+$\otype(\Grid(\omega^\delta\cdot c,P))$ with $Q=P^{\op}$.
+The counts $\Omega_P(c)$ and $\Omega_{P^{\op}}(c)$ agree: compose a map
+with the reversal $j\mapsto c-1-j$. When $\delta=0$ and the grid ordinal
+is finite, one must instead use the target $c+1$.
+
+\subsection{Filters at the first successor of a limit}
+For a finite poset $P$ of size $n$, define its filter-size polynomial by
+\begin{equation}\label{eq:filterpoly}
+ U_P(t)=\sum_{F\in\Ups(P)}t^{|F|}
+       =\sum_{k=0}^n u_k t^k,
+\end{equation}
+where $\Ups(P)$ includes both the empty filter and all of $P$.
+
+\begin{corollary}\label{cor:omegaone}
+For $|P|=n$,
+\begin{equation}\label{eq:omegaone}
+ \boxed{\otype(\Grid(\omega+1,P))
+ =\omega^n u_n+\omega^{n-1}u_{n-1}+\cdots+\omega u_1+u_0.}
+\end{equation}
+For $n>0$, its height is $\omega\cdot n+1$.
+\end{corollary}
+\begin{proof}
+The two blocks of $\omega+1$ have exponents $1$ and $0$. An isotone
+assignment from $P^{\op}$ to $2$ is determined by its zero-fiber, which
+is an ideal in $P^{\op}$, hence a filter $F$ in $P$. The exponent weight
+is exactly $|F|$. Group the main formula by this size. The height follows
+from \eqref{eq:hsucc}.
+\end{proof}
+
+For a chain, $u_k=1$ for every $k$. For an antichain,
+$u_k=\binom nk$. Thus the formulas interpolate between
+$\omega^n+\cdots+\omega+1$ and the natural power
+$(\omega+1)^{\otimes n}$.
+
+\subsection{The fork and its dual}\label{sec:fork}
+Let $V$ have elements $a,b,c$ with $a<b$ and $a<c$, and no comparison
+between $b$ and $c$. Let $\Lambda=V^{\op}$.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95,every node/.style={font=\small}]
+\node (a) at (0,0) {$a$}; \node (b) at (-.7,1) {$b$};
+\node (c) at (.7,1) {$c$};
+\draw (a)--(b) (a)--(c);
+\node at (0,-.55) {$V$};
+\node (aa) at (4,1) {$a$}; \node (bb) at (3.3,0) {$b$};
+\node (cc) at (4.7,0) {$c$};
+\draw (aa)--(bb) (aa)--(cc);
+\node at (4,-.55) {$\Lambda=V^{\op}$};
+\end{tikzpicture}
+\end{center}
+
+The filters of $V$ are
+$\varnothing,\{b\},\{c\},\{b,c\},\{a,b,c\}$. Those of $\Lambda$ are
+$\varnothing,\{a\},\{a,b\},\{a,c\},\{a,b,c\}$. Hence
+\[
+ U_V(t)=1+2t+t^2+t^3,
+ \qquad U_\Lambda(t)=1+t+2t^2+t^3,
+\]
+and \cref{cor:omegaone} yields
+\begin{align}
+ \otype(\Grid(\omega+1,V))
+ &=\omega^3+\omega^2+\omega\cdot2+1,\label{eq:forkV}\\
+ \otype(\Grid(\omega+1,\Lambda))
+ &=\omega^3+\omega^2\cdot2+\omega+1.\label{eq:forkL}
+\end{align}
+Their heights are both $\omega\cdot3+1$.
+
+\begin{proposition}\label{prop:separation}
+The two underlying grids $(\omega+1)\times V$ and
+$(\omega+1)\times\Lambda$ have the same triple of standard invariants,
+\[
+ (\otype,\height,\width)=(\omega\cdot3+3,\ \omega+2,\ 3),
+\]
+but their finitary Hoare powersets have different maximal order types.
+Moreover $\Omega_V(k)=\Omega_\Lambda(k)$ for every finite $k$.
+\end{proposition}
+\begin{proof}
+Any three-element finite poset has maximal order type $3$. The Cartesian
+product formula gives
+$(\omega+1)\otimes3=\omega\cdot3+3$ for both grids. Each finite fork has
+height $2$. The rank in a Cartesian product is the natural sum of its
+point ranks \cite[Lemma~4.6]{DSS}. The largest grid point rank is therefore
+$\omega\oplus1=\omega+1$, and the height is $\omega+2$.
+
+Each grid is the union of three ordinal chains, one over each point of
+the finite factor, so an antichain has at most three points. More
+generally, if $p_1,\ldots,p_n$ is a topological listing of a finite $P$,
+the points $(n-i,p_i)$, $1\leq i\leq n$, are pairwise incomparable in
+$\omega\times P$. A comparison in the finite factor forces the ordinal
+coordinates to run in the opposite direction. This proves that both
+widths here are exactly $3$.
+
+The powerset types differ by \eqref{eq:forkV}--\eqref{eq:forkL}. Finally,
+value reversal gives a bijection between isotone maps from a finite poset
+and its dual to a finite chain. In this example the common count is
+\[
+ \Omega_V(k)=\sum_{a=0}^{k-1}(k-a)^2
+ =\sum_{j=1}^k j^2.
+\]
+The formula follows by choosing the value at the minimum and then choosing
+the two upper values independently.
+\end{proof}
+
+Thus equality of all finite order-map counts does not determine the
+transfinite maximal-order-type profile. This is not presented as the first
+nonfunctionality phenomenon for finitary powersets; such nonfunctionality
+is already established in the motivating paper \cite{AHLLSSV}. The point
+here is the explicit separation inside a uniform ordinal--finite grid
+family, together with identification of exactly which finite data survive.
+
+\subsection{An infinite family of separations}
+For $n\geq2$, let $V_n$ consist of one minimum below $n-1$ incomparable
+points, and let $\Lambda_n=V_n^{\op}$. The filter polynomials are
+\[
+ U_{V_n}(t)=(1+t)^{n-1}+t^n,
+ \qquad U_{\Lambda_n}(t)=1+t(1+t)^{n-1}.
+\]
+Indeed, a filter in $V_n$ either omits the minimum and is an arbitrary
+subset of the top antichain, or contains everything. In the dual, a
+nonempty filter must contain the unique maximum and may contain any
+subset of the other points.
+
+For every $n\geq3$, their coefficients of $t$ differ. Their powerset
+types at $\omega+1$ consequently differ, although all finite order-map
+counts agree by duality. The underlying grids have the common invariant
+triple
+\[
+ (\omega\cdot n+n,\ \omega+2,\ n),
+\]
+by the same proof as \cref{prop:separation}.
+
+\section{A finite signature and a universal ordinal probe}
+
+\subsection{Ordered fiber sizes retain the missing information}
+A composition of a positive integer $n$ is an ordered tuple
+$a=(a_1,\ldots,a_\ell)$ of positive integers summing to $n$.
+Define
+\begin{equation}\label{eq:signature}
+ c_Q(a_1,\ldots,a_\ell)
+ :=\#\{s\in\Mon(Q,\ell): |s^{-1}(j-1)|=a_j\text{ for all }j\}.
+\end{equation}
+These maps are surjective. We call this finite collection of integers the
+\emph{ordered-fiber signature}. There are $2^{n-1}$ compositions of $n$.
+For a chain every entry is $1$; for an antichain the entry is the
+multinomial coefficient $n!/(a_1!\cdots a_\ell!)$.
+
+The same number counts chains of ideals
+\[
+ \varnothing=I_0\subsetneq I_1\subsetneq\cdots\subsetneq I_\ell=Q,
+ \qquad |I_j\setminus I_{j-1}|=a_j.
+\]
+This follows by taking cumulative sublevel sets of the map. Thus the
+signature is also a collection of flag counts in the finite ideal lattice;
+no transfinite object is needed to compute it.
+
+For a fixed number of blocks $m$, introduce the polynomial
+\[
+ K_{Q,m}(x_0,\ldots,x_{m-1})
+ =\sum_{s\in\Mon(Q,m)}\prod_{q\in Q}x_{s(q)}.
+\]
+It remembers the ordered histogram of each map, whereas
+$\Omega_Q(m)=K_{Q,m}(1,\ldots,1)$ forgets that information. The main theorem
+is evaluation of this polynomial at $x_j=\omega^{\gamma_j}$, using natural
+sum and natural product for its polynomial operations.
+
+The ordinary order-map counts have the expansion
+\begin{equation}\label{eq:orderpoly}
+ \Omega_Q(k)=\sum_{a\vDash n}c_Q(a)\binom{k}{\ell(a)}.
+\end{equation}
+To see this, choose the $\ell(a)$ used colors from the $k$ available colors
+and then choose the compressed surjection counted by $c_Q(a)$. This proves
+polynomiality directly. It also locates the loss of information: for each
+length $\ell$, the polynomial retains only the sum of signature entries
+of that length, not their separate ordered fiber sizes.
+
+\begin{proposition}[Signature evaluation]\label{prop:signatureeval}
+For $n>0$ and $\beta$ as in \eqref{eq:beta},
+\begin{equation}\label{eq:signatureeval}
+ \otype(\Mon(Q,\beta))
+ =\bigoplus_{a\vDash n}\ 
+   \bigoplus_{0\leq j_1<\cdots<j_\ell<m}
+   \omega^{\bigoplus_{r=1}^{\ell}\Nrep{\gamma_{j_r}}{a_r}}
+       \cdot c_Q(a),
+\end{equation}
+where $a=(a_1,\ldots,a_\ell)$ and $a\vDash n$ means that $a$ is a
+composition of $n$.
+\end{proposition}
+\begin{proof}
+Every block assignment has an ordered set of nonempty blocks
+$j_1<\cdots<j_\ell$. Compressing these labels to $0,\ldots,\ell-1$
+produces a surjective isotone map. Its ordered fiber sizes form a
+composition $a$, and there are exactly $c_Q(a)$ such maps. Conversely,
+any such surjection can be expanded into the chosen block labels. Grouping
+the terms of \eqref{eq:main} by these data gives the formula.
+\end{proof}
+
+The fork has entries
+\[
+ c_V(3)=1,\quad c_V(2,1)=2,\quad c_V(1,2)=1,
+ \quad c_V(1,1,1)=2.
+\]
+For the dual, the middle two entries are interchanged. The final entry in
+any poset is the number of linear extensions, while two-part entries
+record ideal counts of specified sizes.
+
+\subsection{One target suffices for all ordinal targets}
+\begin{theorem}[Universal probe]\label{thm:probe}
+Fix $n>0$, put $B=n+1$, and define
+\begin{equation}\label{eq:probe}
+ \Theta_n=\sum_{j=0}^{n-1}\omega^{B^{n-1-j}}
+ =\omega^{B^{n-1}}+\cdots+\omega.
+\end{equation}
+For $n=1$, this means $\Theta_1=\omega$. For any two $n$-element posets
+$Q$ and $R$, the following conditions are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.3em]
+\item $\otype(\Mon(Q,\beta))=\otype(\Mon(R,\beta))$ for every ordinal $\beta$;
+\item $\otype(\Mon(Q,\Theta_n))=\otype(\Mon(R,\Theta_n))$;
+\item $c_Q(a)=c_R(a)$ for every composition $a$ of $n$.
+\end{enumerate}
+In particular, a single ordinal value below $\omega^\omega$ encodes the
+entire maximal-order-type profile of an $n$-element poset over arbitrary
+ordinal targets.
+\end{theorem}
+\begin{proof}
+Condition (i) implies (ii). To prove that (ii) implies (iii), apply the
+main theorem at $\Theta_n$. A block assignment has histogram
+$(h_0,\ldots,h_{n-1})$, where $0\leq h_j\leq n$ and $\sum_j h_j=n$.
+Its exponent is the finite integer
+\begin{equation}\label{eq:basecode}
+ E=\sum_{j=0}^{n-1}h_jB^{n-1-j}.
+\end{equation}
+Because $h_j<B$, these are precisely base-$B$ digits, and distinct
+histograms give distinct exponents. The coefficient of $\omega^E$ in
+the output Cantor normal form therefore counts exactly the isotone maps
+with that histogram; no collisions between different histograms occur.
+
+For a composition $a=(a_1,\ldots,a_\ell)$, read the coefficient at the
+exponent with digits
+$(a_1,\ldots,a_\ell,0,\ldots,0)$. Its value is $c_Q(a)$. Hence equality
+of the two probe outputs forces equality of all signature entries.
+Finally, (iii) implies (i) by \cref{prop:signatureeval}, for every number
+of blocks and every choice of ordinal exponents.
+
+All exponents in \eqref{eq:probe} and \eqref{eq:basecode} are finite.
+Both the probe and its output maximal type are therefore below
+$\omega^\omega$.
+\end{proof}
+
+\begin{corollary}[A single grid probe]\label{cor:gridprobe}
+For finite posets $P,R$ of the same positive size $n$, equality
+\[
+ \otype(\Grid(\Theta_n,P))=\otype(\Grid(\Theta_n,R))
+\]
+holds if and only if
+$\otype(\Grid(\alpha,P))=\otype(\Grid(\alpha,R))$ for every ordinal
+$\alpha$.
+\end{corollary}
+\begin{proof}
+The probe is infinite, so $1+\Theta_n=\Theta_n$. Apply
+\cref{thm:reduction,thm:probe} to $P^{\op}$ and $R^{\op}$. Equality of
+the signatures implies equality at every target $1+\alpha$, including
+finite ones. The converse follows by taking $\alpha=\Theta_n$.
+\end{proof}
+
+This theorem does not assert that the signature determines the poset up
+to isomorphism. Its conclusion is exactly about the ordinal profile.
+It also does not make an arbitrary uncountable ordinal computable; rather,
+it isolates all dependence on the finite poset in a finite collection of
+integers.
+
+\section{Algorithms and reproducible verification}
+
+\subsection{Direct block enumeration}
+Given the strict comparison relation of $Q$ and the expanded exponents of
+$\beta$, enumerate all maps $s:Q\to m$, keep the isotone ones, and collect
+the monomials $\omega^{E(s)}$. The procedure is exact by
+\cref{thm:block}. It performs at most $m^n$ candidate-map tests, each using
+at most $n^2$ comparisons, in addition to the cost of ordinal arithmetic
+and expression storage. Equal resulting exponents are combined into
+finite Cantor coefficients.
+
+This is useful as a reference implementation: its logic follows the
+formula directly and differs substantially from the ideal-chain method.
+It is not intended to be fast on arbitrary large finite posets.
+
+\subsection{Dynamic programming on ideals}
+Let $\Id(Q)$ be the finite lattice of ideals. A block assignment corresponds
+to a weak chain
+\[
+ \varnothing=I_0\subseteq I_1\subseteq\cdots\subseteq I_m=Q,
+ \qquad s^{-1}(j)=I_{j+1}\setminus I_j.
+\]
+Empty blocks are allowed and correspond to equal consecutive ideals.
+Initialize $D_0(\varnothing)=1$ and all other states to $0$. For the $j$th
+block exponent use
+\begin{equation}\label{eq:DP}
+ D_{j+1}(J)=
+ \bigoplus_{\substack{I\in\Id(Q)\\I\subseteq J}}
+ D_j(I)\otimes\omega^{\Nrep{\gamma_j}{|J\setminus I|}}.
+\end{equation}
+The result is $D_m(Q)$.
+
+\begin{proposition}\label{prop:DP}
+The recurrence \eqref{eq:DP} returns
+$\otype(\Mon(Q,\beta))$.
+\end{proposition}
+\begin{proof}
+After $j$ blocks, a state $I$ records the elements already assigned to
+those blocks. The ideal condition is exactly what isotonicity requires
+of a cumulative sublevel set. Extending $I$ to $J$ assigns the new block
+to $J\setminus I$ and adds
+$\Nrep{\gamma_j}{|J\setminus I|}$ to the exponent. Natural multiplication
+of monomials performs that addition. Summing all predecessor states counts
+every ideal chain once, hence every block assignment once. At the final
+state all elements have been assigned.
+\end{proof}
+
+There are at most $2^n$ ideal states and at most $3^n$ ordered pairs
+$I\subseteq J$ of subsets. Consequently the recurrence uses at most
+$m3^n$ state transitions. This bound does \emph{not} include the cost or
+size growth of symbolic ordinal expressions. The supplied implementation
+precomputes the list of comparable ideal pairs by a simple quadratic scan
+of the ideal list, so its preprocessing may take $O(4^n)$ subset tests;
+it does not claim an overall $O(m3^n)$ bit-complexity bound.
+
+For repeated evaluations on a fixed $Q$, the ordered-fiber signature is
+another reusable representation. Formula \eqref{eq:signatureeval} then
+separates the finite-poset computation from the ordinal substitution.
+
+\subsection{Executable representation and limits}
+The archive includes standard-library Python code. Its ordinal datatype
+uses canonical hereditary Cantor normal forms and thus represents ordinals
+below $\varepsilon_0$. A finite ordinal is a nonnegative JSON integer;
+a general represented ordinal has the form
+\begin{lstlisting}
+{"cnf": [[exponent, positive_coefficient], ...]}
+\end{lstlisting}
+with recursively encoded, strictly decreasing exponents. For example,
+$\omega+1$ is
+\begin{lstlisting}
+{"cnf": [[1, 1], [0, 1]]}
+\end{lstlisting}
+and $\omega^{\omega+1}$ is
+\begin{lstlisting}
+{"cnf": [[{"cnf": [[1, 1], [0, 1]]}, 1]]}
+\end{lstlisting}
+The theorem applies to more ordinals than this finite notation language.
+The software is therefore an exact implementation on a specified domain,
+not a universal notation system for all ordinals.
+
+The main module validates the finite relation, closes a supplied acyclic
+edge relation transitively, rejects malformed Cantor forms and negative
+coefficients, and imposes explicit size limits on exponential calculations.
+In grid mode it takes $P$ and $\alpha$ as input and performs the dualization
+and $1+\alpha$ conversion internally. Users should not dualize the input
+again.
+
+\subsection{Checks actually performed}
+The recorded verification run used Python 3.13.5 on 19 September 2026.
+It enumerated all naturally labeled transitive posets on at most five
+vertices: comparisons are allowed only from a smaller label to a larger
+label. The counts by size $0,1,\ldots,5$ were
+\[
+ 1,\ 1,\ 2,\ 7,\ 40,\ 357,
+\]
+for a total of $408$. These are not counts of isomorphism classes or of
+all arbitrary labelings. Every poset of the relevant size has at least one
+such topological labeling.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Check category & Recorded count\\
+\midrule
+Finite map spaces, targets of sizes $0$ through $4$ & 2,040\\
+Individual finite-map ranks recomputed from predecessors & 130,736\\
+Symbolic direct-formula versus ideal-DP comparisons & 2,040\\
+Finite Hoare quotient cases & 153\\
+Finite subsets enumerated in those cases & 11,483\\
+Distinct generated-downset classes in those cases & 2,043\\
+Random ordinal-arithmetic triples, fixed seed & 400\\
+Universal-probe decodings & 408\\
+Recovered signature coefficients checked & 6,066\\
+Signature-evaluation versus ideal-DP comparisons & 2,040\\
+Failed assertions & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For the rank tests, the code explicitly enumerated all predecessor maps
+and computed their finite ranks recursively; it did not merely compare
+two copies of the stated rank formula. For the Hoare tests, it enumerated
+all subsets of small finite grids, formed their generated downsets, and
+compared inclusion with the endpoint-map order.
+
+The symbolic test targets included $\omega$, $\omega+1$, $\omega\cdot2$,
+$\omega^2+\omega+1$, and a target with exponent $\omega+1$. The additional
+profile tests used different targets, including
+$\omega^2\cdot2+\omega+1$. Arithmetic checks tested associativity,
+commutativity where appropriate, distributivity, monotonicity, and encoding
+round trips. The JSON logs state the limits of these checks explicitly.
+
+No finite test establishes the arbitrary-ordinal monomial theorem, the
+existence of maximal linear extensions, or novelty in the literature.
+Those matters must be judged from the mathematical proofs and source
+comparison, not from a count of passing assertions.
+
+\section{What the attack resolves, and what remains}
+
+\subsection{The mathematical conclusion}
+The chosen ordinal--finite family admits exact finite expressions for
+both maximal order type and height. The finite factor enters the former
+through its ordered-fiber signature, while the latter depends only on the
+number of elements. The universal-probe theorem gives a precise
+sufficiency-and-necessity statement: the signature is exactly the data
+needed to recover all the maximal-order-type calculations in this family.
+
+Three points make this more than a collection of examples. First, the
+monomial proof handles mixed and arbitrary ordinal exponents rather than
+only powers with finite exponents. Second, the block proof constructs a
+compatible order of the fibers, so no unjustified replacement of ordinary
+sum by natural sum occurs. Third, the signature theorem identifies the
+finite information that the ordinary order polynomial discards.
+
+\subsection{Boundaries of the result}
+The motivating paper also considers ordinal width and broader closure
+constructions \cite{AHLLSSV}. Neither a full width formula for our map
+spaces nor a closure theorem under arbitrary iterations of $\Pf$ is
+proved here. Computing $\otype(\Grid(\alpha,P))$ does not by itself give
+$\otype(\Pf(\Grid(\alpha,P)))$: the second application need not be an
+ordinal--finite grid.
+
+Similarly, the finite signature is intrinsic to the finite factor, not an
+intrinsic replacement for all weakened invariants on arbitrary wqos. An
+attempt to promote it to a general invariant would need an additional
+representation theorem beyond what is established here.
+
+\subsection{Concrete next problems}
+A first sharply delimited extension is to determine
+$\width(\Mon(Q,\beta))$ from $Q$ and the Cantor blocks of $\beta$.
+Even where maximal order type is unchanged by a monotonicity constraint,
+width may be sensitive to it. The proof of the present main theorem does
+not compute antichain-tree ranks.
+
+A second problem is to identify further wpos whose finitely generated
+downsets have a finite-coordinate representation with tractable fibers.
+The successful ingredients here are a finite block index poset, explicit
+pure-block maximal types, and an exponent weight that reverses the
+pointwise order of block indices. Without an analogue of that last
+compatibility, a disjoint-union upper bound need not be attained.
+
+A third problem is to classify finite posets with the same ordered-fiber
+signature, or to find smaller separating probe ordinals under additional
+structural assumptions. The universal probe is designed for collision-free
+encoding, not for minimality. Its base-$n+1$ exponents can be very large
+finite integers; this is harmless mathematically but may be unnecessary
+for particular families.
+
+\subsection{Literature and priority assessment}
+The source check on the manuscript date located the motivating extension
+question and the standard maximal-order-type ingredients. Targeted searches
+for maximal order types of isotone maps, finite-poset ordinal maps, and
+finitary ordinal--finite grids did not establish an earlier occurrence of
+the exact package of formulas proved here. Such a search is not a proof of
+novelty. This manuscript supplies a detailed solution to the selected calculation
+problem, not the broader extension program. Priority remains unconfirmed.
+
+\appendix
+\section{A worked three-block calculation}\label{app:worked}
+Let $Q=V$ be the fork as a \emph{domain of isotone maps}, not as the finite
+factor of a grid, and take
+\[
+ \beta=\omega^2+\omega+1.
+\]
+The three block exponents are $2,1,0$. If the minimum $a$ has block value
+$0$, each of $b,c$ independently has one of the three block values. Their
+weight contributions are $2,1,0$ and the contribution from $a$ is $2$.
+The nine assignments therefore have total weights
+\[
+ 6\ (1\text{ time}),\quad
+ 5\ (2),\quad 4\ (3),\quad 3\ (2),\quad 2\ (1).
+\]
+If $a$ has block value $1$, both upper elements have block value $1$ or
+$2$, giving total weights $3$ once, $2$ twice, and $1$ once. If $a$ has
+block value $2$, there is a single assignment of total weight $0$.
+Collecting all $14$ assignments gives
+\begin{equation}\label{eq:workedV}
+ \otype(\Mon(V,\omega^2+\omega+1))
+ =\omega^6+\omega^5\cdot2+\omega^4\cdot3+
+   \omega^3\cdot3+\omega^2\cdot3+\omega+1.
+\end{equation}
+The height is independent of the fork relation. The target is a successor
+of $\omega^2+\omega$, so
+\[
+ \height(\Mon(V,\omega^2+\omega+1))
+ =\omega^2\cdot3+\omega\cdot3+1.
+\]
+For the corresponding grid with finite factor $\Lambda=V^{\op}$, the
+same formulas apply, since the endpoint representation dualizes the finite
+factor and $1+\beta=\beta$.
+
+For the universal probe at size three,
+$\Theta_3=\omega^{16}+\omega^4+\omega$, the output for $V$ is
+\begin{align*}
+ \otype(\Mon(V,\Theta_3))={}&
+ \omega^{48}+\omega^{36}\cdot2+\omega^{33}\cdot2+
+ \omega^{24}+\omega^{21}\cdot2+\omega^{18}\\
+ &+\omega^{12}+\omega^9\cdot2+\omega^6+\omega^3.
+\end{align*}
+For instance, the exponent with base-$4$ digits $(2,1,0)$ is
+$2\cdot16+1\cdot4=36$, and its coefficient $2$ is $c_V(2,1)$.
+The digits $(1,2,0)$ give exponent $24$ and coefficient $1$, recovering
+$c_V(1,2)$. The digits $(1,1,1)$ give exponent $21$ and coefficient $2$,
+the number of linear extensions of $V$.
+
+\section{Proof dependencies and audit points}
+
+The proof dependencies are short enough to state explicitly. The
+endpoint representation uses only finite maxima and downset inclusion.
+The monomial theorem uses the standard Cartesian-product upper bound and
+an explicit attaining linear extension. The general block theorem uses
+the monomial theorem, the finite disjoint-union identity, and the
+reverse-weight compatibility \eqref{eq:reverseweight}. The rank theorem
+uses none of these maximal-order-type calculations. The height theorem
+uses the rank theorem. The signature and probe theorems use the block
+formula and elementary finite counting.
+
+For an independent audit, the following are the points where a seemingly
+plausible shortcut could otherwise introduce an error.
+\begin{enumerate}[leftmargin=2em,itemsep=5pt]
+\item \textbf{Product convention.} All wpo products in the formulas are
+Cartesian. The construction inside the monomial proof concatenates
+explicit extensions; it invokes no general maximal-order-type formula
+for arbitrary lexicographic products.
+\item \textbf{Mixed exponents.} The induction is on the number of Cantor
+terms of $\delta$. Ordinary multiplication $\delta n$ is used only in
+the one-term case, where it equals $\Nrep{\delta}{n}$.
+\item \textbf{Fiber compatibility.} In the block theorem, earlier
+comparable block assignments have larger or equal exponent weight. This
+is what permits a decreasing-exponent listing that is also a linear
+extension of all cross-fiber comparisons.
+\item \textbf{Rank lower bound.} The coordinate that is decreased is
+minimal in its equal-value fiber. Without that choice, a predecessor
+with the same value could violate isotonicity after the decrease.
+\item \textbf{Finite versus infinite grids.} The target is $1+\alpha$,
+not $\alpha+1$, and simplifies to $\alpha$ only when $\alpha$ is infinite.
+The empty generated downset is retained.
+\item \textbf{Dual orientation.} The coordinate maps are antitone on
+$P$, hence isotone on $P^{\op}$. In the $\omega+1$ calculation the
+coefficients count filters of $P$.
+\item \textbf{Probe decoding.} Histogram digits are at most $n$, strictly
+less than the base $n+1$. The uniqueness argument would fail without a
+collision-free choice of weights.
+\end{enumerate}
+
+\section{Archive contents and commands}
+The source archive contains this \LaTeX{} file and its compiled PDF,
+\texttt{README.md}, a research-status ledger, source locators, a
+\texttt{Makefile}, executable Python modules, example JSON input, and the
+recorded verification data. No third-party font files or copies of the
+cited papers are included.
+
+From the archive's top-level directory, run
+\begin{lstlisting}
+python code/ordinal_maps.py --demo
+python code/ordinal_maps.py data/fork_grid_input.json
+python code/verify.py
+python code/profiles.py
+\end{lstlisting}
+The two verification scripts write their machine-readable results to
+\texttt{data/}. To rebuild the paper with a suitable TeX installation,
+run \texttt{make pdf}, or invoke \texttt{pdflatex} on
+\texttt{ordinal\_order\_maps.tex} three times. The document uses standard
+TeX packages, including \texttt{newpx}, \texttt{tcolorbox}, and
+\texttt{tikz}.
+
+\begin{thebibliography}{9}
+\bibitem{AHLLSSV}
+Sergio Abriola, Simon Halfon, Aliaume Lopez, Sylvain Schmitz,
+Philippe Schnoebelen, and Isa Vialard.
+\emph{Measuring well-quasi-ordered finitary powersets}.
+arXiv:2312.14587v2, 2024.
+\url{https://arxiv.org/abs/2312.14587v2}.
+The motivating open direction appears in Section~6, under
+``Elementary wqos.''
+
+\bibitem{deJonghParikh}
+D.~H.~J. de Jongh and Rohit Parikh.
+Well-partial orderings and hierarchies.
+\emph{Indagationes Mathematicae} \textbf{39}(3) (1977), 195--207.
+\href{https://doi.org/10.1016/1385-7258(77)90067-1}
+{doi:10.1016/1385-7258(77)90067-1}.
+
+\bibitem{DSS}
+Mirna D\v{z}amonja, Sylvain Schmitz, and Philippe Schnoebelen.
+On ordinal invariants in well quasi orders and finite antichain orders.
+In \emph{Well Quasi-Orders in Computation, Logic, Language and Reasoning},
+Trends in Logic \textbf{53}, Springer, 2020, pp.~29--54.
+Consulted preprint: arXiv:1711.00428v3, 2024.
+\url{https://arxiv.org/abs/1711.00428v3}.
+The standard ingredients used here are Theorem~3.4 and Lemmas~4.2,
+4.5, and~4.6; no lexicographic-product identity is imported.
+\end{thebibliography}
+\end{document}

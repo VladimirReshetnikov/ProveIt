@@ -1,0 +1,51 @@
+PROPOSED MATHEMATICAL NOTES — not submitted to OEIS
+
+Notation: a_l(n) = n! [x^n] A_l(x), where A_l=x exp(A_l^{compose l}).
+Proofs are in article.tex/article.pdf (September 19, 2026 report).
+
+A396803 (l=3)
+The parity and modulo-3 conjectures follow from the general formulas
+  a_l(n) = n (mod 2),
+  a_l(3q)=0, a_l(3q+1)=1, a_l(3q+2)=2(1+l)^q (mod 3), q>=0.
+
+A396804 (l=4)
+Parity agrees with n for all n, and a_4(n)=n (mod 4).
+The corrected modulo-3 pattern 1,2,0,1,1,0 is valid for every n>=1.
+The older three-term modulo-3 proposal was already disproved in the entry.
+For modulo 5, write n=5q+r. At q=0, r=1,2,3,4 gives 1,2,2,0.
+For q>0, use the following table (columns q=1,2,3,0 modulo 4):
+ r=0: 0 0 0 0
+ r=1: 1 1 1 1
+ r=2: 0 0 0 0
+ r=3: 4 4 0 1
+ r=4: 0 1 2 0
+Thus residue 3 modulo 5 never occurs.
+
+A396805 (l=5)
+Parity agrees with n, and the modulo-3 pattern from n=3 is 0,1,0 repeating.
+The conjecture a_5(n)=n (mod 5) is false, first at n=23. The b-file already
+contains a_5(23)=516114659489378430688740267292635767160672734031357,
+whose residue is 2 rather than 3.
+Complete correction:
+  a_5(n)=2 (mod 5) for n=20j+3 or 20j+4 with j>=1;
+  a_5(n)=n (mod 5) at every other positive index.
+Ordinary residue g.f. over F_5:
+  sum_{n>=1} a_5(n) z^n = z/(1-z)^2 - (z^23+2z^24)/(1-z^20).
+The least eventual period is 20, with onset n=5. Exception density is 1/10.
+
+A396806 (l=6)
+Parity and agreement with n modulo 3 hold for all n. Hence agreement modulo
+6 holds for every n.
+
+GENERAL RESULTS
+For m=p^alpha, write n=mq+r, 0<=r<m. Let T_l(r) be rooted labelled trees
+with root type 1 and allowed child types l,...,l+t-1 under a parent of type t.
+Let S(T) be the sum of all vertex types. Then
+  a_l(n)=0 (mod m) if r=0;
+  a_l(n)=sum_{T in T_l(r)} S(T)^(p^(alpha-1) q) (mod m) otherwise.
+Use 0^0=1. Hence a_l(n+m(p-1))=a_l(n) (mod m) for n>=m.
+For any M>=2: a_{l+M^2}(n)=a_l(n) (mod M) for every n.
+For prime p, agreement a_l(n)=n (mod p) for all n holds exactly when:
+  p=2: any l;
+  p=3: 3 divides l;
+  p>=5: p^2 divides l.

@@ -1,0 +1,1159 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{aliascnt}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{Olive}{HTML}{596446}
+\definecolor{Ink}{HTML}{253029}
+\definecolor{Pale}{HTML}{F2F4EC}
+\definecolor{Muted}{HTML}{62685E}
+\hypersetup{colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,
+ pdftitle={Friendly Order Types Through Incomparability Components},
+ pdfauthor={Research manuscript prepared with ChatGPT},
+ pdfsubject={Finite friendly ranks, successor defects, and disjoint sums}}
+\titleformat{\section}{\large\bfseries\color{Olive}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{Ink}}{\thesubsection}{0.6em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{Muted}Friendly order types}
+\fancyhead[R]{\small\color{Muted}Incomparability components and finite tails}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.15em}
+\setlist{itemsep=3pt,topsep=5pt}
+\emergencystretch=1.5em
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\crefname{lemma}{lemma}{lemmas}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\crefname{proposition}{proposition}{propositions}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\crefname{corollary}{corollary}{corollaries}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\crefname{definition}{definition}{definitions}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\crefname{example}{example}{examples}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{remark}{remark}{remarks}
+\DeclareMathOperator{\mot}{o}
+\DeclareMathOperator{\fot}{f}
+\DeclareMathOperator{\str}{str}
+\DeclareMathOperator{\Bad}{Bad}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\Max}{Max}
+\newcommand{\core}[1]{{#1}^{\circ}}
+\newcommand{\tail}[1]{T(#1)}
+\newcommand{\inc}{\mathbin{\perp}}
+\newcommand{\ds}{\mathbin{\sqcup}}
+\newcommand{\Mr}{\mathcal M^{r}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\smallstatus}[1]{\par\noindent\colorbox{Pale}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\small #1}}\par}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,frame=single,
+ rulecolor=\color{Olive},backgroundcolor=\color{Pale},columns=fullflexible,
+ keepspaces=true,showstringspaces=false}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{13mm}
+{\color{Olive}\large ORDER THEORY / RESEARCH MANUSCRIPT\par}
+\vspace{9mm}
+{\huge\bfseries\color{Ink}Friendly Order Types Through\par
+Incomparability Components\par}
+\vspace{5mm}
+{\Large Finite ranks, successor defects,\par and corrected disjoint-sum laws\par}
+\vspace{10mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\normalsize 19 September 2026\par}
+\vspace{10mm}
+\begin{abstract}
+The friendly order type of a well-partial order is the rank of its tree of bad
+sequences whose successive choices retain an incomparable witness. We attack
+the problem of computing this invariant structurally and compositionally.
+For every finite poset $P$, we prove
+\[
+\fot(P)=|P|-c(P),
+\]
+where $c(P)$ is the number of connected components of its incomparability
+graph. The proof gives an optimal witness sequence and a polynomial-time
+algorithm. For an infinite incomparability-connected well-partial order, we
+prove that the friendly order type is either its maximal order type or, when
+that type is a successor, its immediate predecessor. A canonical finite
+upper tail and a saturation test on the remaining core decide between the
+two cases. This yields exact disjoint-sum laws, including equality with
+maximal order type whenever both summands are infinite.
+
+We also give a direct counterexample to a disjoint-sum identity printed in a
+2023 paper. More strongly, two explicit countable orders have identical
+maximal order type, height, width, and friendly order type, but adjoining an
+incomparable singleton gives different friendly order types. Thus those four
+invariants do not support a general disjoint-sum calculation. The archive
+includes independent finite-rank and graph implementations, checked on all
+101,660 naturally labeled posets with at most seven vertices.
+\end{abstract}
+\vfill
+\smallstatus{\textbf{Status.} This is a research manuscript with detailed proofs,
+not a peer-reviewed or proof-assistant-verified publication. The finite and
+explicit counterexample arguments are elementary. The general transfinite
+classification uses an identified, previously published limit-floor bound.
+No claim of independently established priority is made. The broader problem
+of effective computation for arbitrary presented well-partial orders is not
+claimed to be settled.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+\section{The problem and the outcome}\label{sec:problem}
+
+Vialard's 2024 thesis asks: ``Can we compute the fot compositionally?''\
+\cite[p.~109]{Vialard2024}. Here \emph{fot} means
+\emph{friendly order type}. The invariant had appeared in the author's MFCS
+2023 work, where it determines the ordinal width of the multiset ordering
+\cite[Theorem~3.4]{Vialard2023}.
+
+We extract a definite, tractable part of that research direction: find an
+intrinsic finite formula, determine the obstruction at infinite successor
+ranks, and understand disjoint sums. We also ask whether the standard three
+ordinal invariants, augmented by the friendly order type itself, contain
+enough information for such a calculation. This last question has a negative
+answer, witnessed by concrete countable orders below. The structural question
+has a positive answer in terms of incomparability components, maximal order
+types, and a single bit attached to an infinite core.
+
+The most useful conclusions are the following. First, a finite friendly rank
+is simply the number of edges in a spanning forest of the incomparability
+graph. Second, an infinite connected component has a defect of at most one
+from maximal order type; the defect is completely classified. Third,
+disjoint sums of two infinite orders have no defect at all. Fourth, adding
+one isolated-in-the-order point can distinguish inputs that agree in all
+four familiar ordinal invariants.
+
+These assertions are not all new definitions of special-purpose ranks: the
+rank being calculated is exactly Vialard's friendly order type. We write
+$\fot(P)$ instead of $\mot_{\perp}(P)$ to keep the formulas readable.
+
+\subsection{What is and is not an open-status claim}
+
+The documented source poses a broad research question, not the exact finite
+equality proved here as a separately numbered conjecture. We do not relabel
+our extracted subproblem as a previously published conjecture. The current
+check covered the author's thesis and publication page, the published MFCS
+paper, and targeted searches for later work on the friendly order type. No
+matching component-and-core formula was located. Search coverage and the
+absence of a located result do not establish priority.
+
+There is a relevant version distinction. Proposition~4.1(2) of the 2023
+published paper prints an unrestricted disjoint-sum identity. The 2024 thesis
+instead gives a sufficient limit-ordinal condition in Theorem~5.4.8(2).
+Section~\ref{sec:printed} supplies a direct counterexample to the earlier
+printed identity; it is not presented as contradicting the later conditional
+statement. The rest of the manuscript provides replacement formulas and
+makes clear which prior results are used.
+
+\section{Definitions, ranks, and arithmetic}\label{sec:definitions}
+
+All orders are sets, and the ambient foundational setting is ZFC. A
+\emph{well-partial order}, or wpo, is a partial order having no infinite bad
+sequence. A finite sequence $x_0,\ldots,x_{k-1}$ is \emph{bad} when
+$x_i\not\leq x_j$ for every $i<j$. For $x\in P$, put
+\[
+\uparrow_P x=\{y\in P:x\leq y\},\qquad
+P_x=P\setminus\uparrow_P x.
+\]
+Thus selecting $x$ in a bad sequence removes $x$ and all its successors,
+not its predecessors. For a finite history $s$, the residual is
+$P_s=P\setminus\bigcup_{x\in s}\uparrow_Px$.
+
+The rank of a node in a well-founded tree is the supremum of the ranks of
+its immediate successors plus one. A leaf has rank zero. The maximal order
+type $\mot(P)$ is the rank of the bad-sequence tree, equivalently the maximum
+order type of a linear extension. The existence of a maximizing linear
+extension and the standard finite-sum laws are established wpo theory
+\cite{deJonghParikh1977,DSS2020}. In particular,
+\begin{equation}\label{eq:mot-rec}
+\mot(P)=\sup_{x\in P}\bigl(\mot(P_x)+1\bigr),\qquad
+\mot(A\ds B)=\mot(A)\oplus\mot(B).
+\end{equation}
+Here $A\ds B$ is a disjoint sum: every element of $A$ is incomparable to
+every element of $B$. By contrast, $A+B$ is an ordinal sum, with every
+element of $A$ below every element of $B$.
+
+The symbol $+$ denotes ordinary ordinal addition. The symbol $\oplus$
+denotes Hessenberg, or natural, sum: write the two Cantor normal forms using
+a common decreasing list of exponents and add corresponding finite
+coefficients. In particular,
+\[
+\alpha\oplus n=\alpha+n\quad(n<\omega),\qquad
+\omega\oplus\omega=\omega\cdot2.
+\]
+Every infinite ordinal has a unique expression $\lambda+n$ with $\lambda$
+a nonzero limit ordinal and $n<\omega$. Whenever a finite correction is
+subtracted in this manuscript, it is subtracted \emph{inside that finite
+coefficient}: $\lambda+(n-1)$, not an unspecified ordinal subtraction.
+
+\subsection{Friendly sequences}
+
+Two elements $x,y$ are \emph{friends} when $x\inc y$, that is, they are
+incomparable. Following Vialard's definition, a bad sequence is
+\emph{friendly}, or \emph{open-ended}, if at each choice the selected element
+has a friend in the residual immediately before that choice
+\cite[Definition~3.3]{Vialard2023}. A friend need not be selected later, and
+one friend may witness several successive choices.
+
+The corresponding tree rank satisfies
+\begin{equation}\label{eq:f-rec}
+\boxed{\displaystyle
+\fot(P)=\sup_{\substack{x\in P\\\exists y\in P\ (x\inc y)}}
+             \bigl(\fot(P_x)+1\bigr).}
+\end{equation}
+The empty supremum is zero. For a finite poset, this rank is exactly the
+maximum length of a friendly sequence. For an infinite wpo, taking the
+supremum of those finite lengths is generally \emph{not} the tree rank.
+
+Let $G(P)$ be the simple incomparability graph on $P$. Define
+\[
+\str(P)=\{x\in P:\exists y\in P\ (x\inc y)\}.
+\]
+These are precisely the nonisolated vertices of $G(P)$.
+
+\begin{lemma}\label{lem:strip}
+For every wpo $P$,
+\[
+\fot(P)=\fot(\str(P))\leq\mot(\str(P))\leq\mot(P).
+\]
+The friendly rank is monotone under passage to an induced subposet.
+\end{lemma}
+\begin{proof}
+A friendly sequence never selects a globally friendless element. Moreover,
+every friend of one of its selected elements lies in $\str(P)$, since the
+friendship relation is symmetric. Consequently the friendly trees of $P$
+and $\str(P)$ have exactly the same sequences. The first inequality follows
+by viewing this tree as a subtree of the bad-sequence tree on $\str(P)$.
+For monotonicity, a friendly sequence in an induced subposet retains all its
+witness friends when considered in the larger order. The same subtree
+argument proves monotonicity of maximal order type.
+\end{proof}
+
+We will use the following established consequence of the published bound
+for friendly rank. Its role is isolated so that the transfinite dependence
+is explicit.
+
+\begin{lemma}[Known limit-floor bound]\label{lem:floor}
+If $\mot(\str(P))=\lambda+n$, where $\lambda$ is a nonzero limit ordinal and
+$n<\omega$, then
+\[
+\lambda\leq\fot(P)\leq\lambda+n.
+\]
+In particular, $\mot(\str(P))=\lambda$ implies $\fot(P)=\lambda$.
+\end{lemma}
+
+This follows from the stronger bound
+$\lambda+\lfloor n/2\rfloor\leq\fot(P)$ in
+\cite[Theorem~4.5]{Vialard2023}, also stated in
+\cite[Theorem~5.4.4]{Vialard2024}. We use neither the unrestricted disjoint-sum
+identity in the former paper nor a deduction from that identity.
+
+\section{The incomparability graph and ordinal sums}\label{sec:graph}
+
+\begin{lemma}[Components are ordinally ordered]\label{lem:components}
+The connected components of $G(P)$ are the factors in a canonical ordinal
+sum decomposition
+\[
+P=\sum_{\xi<\kappa} C_\xi
+\]
+for an ordinal $\kappa$.
+\end{lemma}
+\begin{proof}
+Elements in different components are comparable. If $a\inc b$ and $z$ lies
+outside their component, the direction of comparison with $z$ must agree:
+$a<z<b$ or $b<z<a$ would contradict $a\inc b$. Propagating this observation
+along finite incomparability paths shows that every comparison between two
+distinct components has the same direction. The resulting component order
+is linear. An infinite descending sequence of components would yield an
+infinite descending sequence in $P$ by choosing representatives, contrary
+to the wpo property. Hence the component order is a well-order.
+\end{proof}
+
+\begin{theorem}[Transfinite ordinal-sum additivity]\label{thm:sum}
+For any ordinal-indexed family of wpos $(A_\xi)_{\xi<\kappa}$,
+\begin{equation}\label{eq:sum}
+\fot\left(\sum_{\xi<\kappa}A_\xi\right)
+   =\sum_{\xi<\kappa}\fot(A_\xi).
+\end{equation}
+Empty factors are permitted. The sum on the right is ordinary ordinal sum.
+\end{theorem}
+\begin{proof}
+The ordinal sum is a wpo: a bad sequence cannot move to a strictly higher
+factor, and an infinite nonincreasing sequence of ordinal indices is
+eventually constant. An infinite bad sequence would therefore produce one
+inside a factor.
+
+Prove the formula by induction on the maximal order type of the entire
+sum $P$. A selected $x\in A_\eta$ has a friend in $P$ exactly when it has a
+friend in $A_\eta$. Its residual is
+\[
+P_x=\left(\sum_{\xi<\eta}A_\xi\right)+(A_\eta)_x.
+\]
+By \eqref{eq:mot-rec}, $\mot(P_x)<\mot(P)$, so the induction hypothesis
+applies to this residual sum. Write
+$\theta_\eta=\sum_{\xi<\eta}\fot(A_\xi)$. Then \eqref{eq:f-rec} gives
+\[
+\fot(P)=
+\sup_{\substack{\eta<\kappa\\x\text{ has a friend in }A_\eta}}
+\left(\theta_\eta+\fot((A_\eta)_x)+1\right).
+\]
+For a factor of positive friendly rank, continuity of addition in its
+right argument makes the supremum over $x$ equal to
+$\theta_\eta+\fot(A_\eta)$. A zero-rank factor contributes no terms. Taking
+the supremum over the positive-rank factors gives precisely the ordinal sum
+on the right of \eqref{eq:sum}; intervening or terminal zero terms do not
+change it. If every factor has rank zero, both sides are zero.
+\end{proof}
+
+The binary case is already stated in the literature
+\cite[Proposition~4.1(1)]{Vialard2023}. The proof above also treats limit
+indices and zero-rank components, which will matter in applications.
+
+\subsection{A maximal-vertex lemma}
+
+A cut vertex of a connected graph is a vertex whose deletion leaves at
+least two connected components. An isolated singleton is not a cut vertex.
+The next elementary fact drives both the finite and infinite arguments.
+
+\begin{lemma}[At most one cut maximum]\label{lem:cut}
+In an incomparability-connected poset, at most one maximal element is a cut
+vertex of the incomparability graph.
+\end{lemma}
+\begin{proof}
+Suppose distinct maximal elements $u,v$ were both cut vertices. Choose a
+component $D$ of $G(P)-u$ not containing $v$. Connectivity of the original
+graph gives an $a\in D$ adjacent to $u$. There is no edge from $a$ to $v$,
+so maximality of $v$ gives $a<v$.
+
+Similarly choose a component $E$ of $G(P)-v$ not containing $u$, with a
+vertex $b\in E$ adjacent to $v$. Then $b<u$. Since $b\inc v$, the vertex
+$b$ cannot belong to $D$: otherwise its edge to $v$ would join $D$ to $v$
+in $G(P)-u$. Thus $a$ and $b$ are in different components of $G(P)-u$, and
+must be comparable. If $a<b$, then $a<b<u$, contrary to $a\inc u$. If
+$b<a$, then $b<a<v$, contrary to $b\inc v$. Both alternatives are impossible.
+\end{proof}
+
+\begin{corollary}\label{cor:finite-noncut}
+A finite incomparability-connected poset with at least two elements has a
+maximal element whose deletion leaves the incomparability graph connected.
+\end{corollary}
+\begin{proof}
+A finite poset with a unique maximal element has a greatest element: every
+element lies below some maximal element. A greatest element is isolated in
+the incomparability graph. The present poset therefore has at least two
+maximal elements, and \cref{lem:cut} applies.
+\end{proof}
+
+\section{An exact formula for every finite poset}\label{sec:finite}
+
+Write $c(P)$ for the number of components of $G(P)$ and set $c(\varnothing)=0$.
+
+\begin{theorem}[Finite component formula]\label{thm:finite}
+For every finite poset $P$,
+\begin{equation}\label{eq:finite}
+\boxed{\fot(P)=|P|-c(P).}
+\end{equation}
+There exists a friendly sequence attaining this length.
+\end{theorem}
+\begin{proof}
+First let $C$ be a connected nonempty component with $r$ vertices. Any
+friendly sequence selects distinct elements. Its final selected element
+has an incomparable friend, and that friend survives the final deletion.
+Thus at least one element of $C$ is left unselected, so its length is at
+most $r-1$.
+
+For the reverse inequality, if $r>1$, use
+\cref{cor:finite-noncut} to select a maximal non-cut vertex $x$. It has a
+friend because the graph is connected and nontrivial. Maximality makes
+$C_x=C\setminus\{x\}$, still connected. Repeating this procedure leaves one
+vertex after exactly $r-1$ friendly selections. The singleton case has rank
+zero, as required.
+
+Finally decompose $P$ into its finitely many ordinally ordered components.
+By \cref{thm:sum},
+\[
+\fot(P)=\sum_C\fot(C)=\sum_C(|C|-1)=|P|-c(P).
+\]
+Witness sequences can be concatenated in descending component order. Once
+we move to a lower component, a deletion may also remove the unused
+singletons in higher components, but it does not remove the friends still
+needed in the current lower component.
+\end{proof}
+
+\begin{corollary}[Graphic interpretation]\label{cor:forest}
+For finite $P$, $\fot(P)$ equals the number of edges in any spanning forest
+of $G(P)$, equivalently the rank of its graphic matroid.
+\end{corollary}
+\begin{proof}
+A spanning tree of a component with $r$ vertices has $r-1$ edges. Summing
+over the components gives \eqref{eq:finite}.
+\end{proof}
+
+The finite invariant is consequently unchanged by reversing every order
+comparison: $P$ and its dual have the same incomparability graph. Every
+value $r\in\{0,\ldots,n-1\}$ occurs on an $n$-element nonempty poset, for
+example on $\Gamma_{r+1}+[n-r-1]$, where $\Gamma_k$ is a $k$-element
+antichain and $[k]$ a $k$-element chain.
+
+\subsection{Algorithm and certificate}
+
+If the order relation is supplied as a reflexive transitive $n\times n$
+matrix, form an incomparability edge exactly when neither direction of
+comparison holds. A graph traversal counts its components in $O(n^2)$
+time. The value of the rank then follows from a single subtraction. A Hasse
+diagram input may first be transitively closed; the elementary dense method
+costs $O(n^3)$.
+
+A witness is constructed component by component, from highest to lowest:
+\begin{lstlisting}
+for C in incomparability_components_in_descending_order(P):
+    while C contains more than one vertex:
+        choose a maximal x in C for which G(C - {x}) is connected
+        append x to the sequence
+        C = C - {x}
+\end{lstlisting}
+
+At most two maximal candidates need to be tested at each stage, by
+\cref{lem:cut}. Recomputing maxima and connectivity from a dense matrix
+therefore gives an $O(n^3)$ witness algorithm. A separate checker verifies
+the certificate by maintaining the actual residual of the original poset,
+checking a surviving friend, and deleting the selected element's upset.
+The archive implements this checker independently of the formula.
+
+\begin{example}[Three scalar invariants already fail in the finite case]
+The posets $\Gamma_2+\Gamma_2$ and $[2]\ds[2]$ both have four elements,
+height two, and width two. Their incomparability graphs have respectively
+two components and one component. Their friendly ranks are therefore two
+and three. The stronger failure involving all four invariants in
+\cref{thm:nonfunctional} requires infinite examples.
+\end{example}
+
+\section{The canonical finite upper tail}\label{sec:tail}
+
+\begin{definition}\label{def:tail}
+For a wpo $P$, define its \emph{finite upper tail} and \emph{core} by
+\[
+\tail{P}=\{x\in P:|\uparrow_Px|<\omega\},\qquad
+\core{P}=P\setminus\tail{P}.
+\]
+The word ``tail'' does not assert that every core element lies below every
+tail element. The set $T(P)$ is an upset, but generally not an ordinal-sum
+factor of $P$.
+\end{definition}
+
+\begin{lemma}[Finiteness and stability]\label{lem:tailfinite}
+The set $T(P)$ is a finite upset. For every finite subset $F\subseteq P$,
+\[
+T(P\setminus F)=T(P)\setminus F.
+\]
+The core has no maximal elements.
+\end{lemma}
+\begin{proof}
+If $x\leq y$ and $\uparrow x$ is finite, then
+$\uparrow y\subseteq\uparrow x$ is finite, proving upward closure.
+Suppose $T(P)$ were infinite. An infinite subset of a wpo contains an
+infinite strictly increasing sequence of distinct elements. To see this
+last fact, enumerate a countable subset and apply the infinite Ramsey
+theorem to the three possibilities for each pair of indices: increasing,
+decreasing, or incomparable. The last two homogeneous possibilities are
+excluded by the wpo property. An increasing sequence in $T(P)$ contradicts
+the finiteness of the upset of its first element. Thus $T(P)$ is finite.
+
+Removing finitely many points from an infinite upset does not make it
+finite, and removing them from a finite upset leaves it finite. This proves
+the stability identity. Finally, each $x\in\core{P}$ has infinitely many
+successors in $P$; all but finitely many remain in the core. In particular
+it has a strict successor there.
+\end{proof}
+
+\begin{lemma}[Removing a maximal element]\label{lem:maxdelete}
+If $x$ is a maximal element of a wpo $P$, then
+\[
+\mot(P)=\mot(P\setminus\{x\})+1.
+\]
+\end{lemma}
+\begin{proof}
+Put $Q=P\setminus\{x\}$. A maximizing linear extension of $Q$, followed
+by $x$, is a linear extension of $P$, giving the lower bound. Forgetting
+all comparisons between $x$ and $Q$ gives the disjoint sum $Q\ds1$.
+Every bad sequence in $P$ is bad in that weaker order. Hence
+\[
+\mot(P)\leq\mot(Q\ds1)=\mot(Q)\oplus1=\mot(Q)+1.
+\]
+\end{proof}
+
+\begin{proposition}[The finite coefficient is intrinsic]\label{prop:tailtype}
+If $P$ is infinite and $n=|T(P)|$, then
+\begin{equation}\label{eq:tailtype}
+\mot(P)=\lambda+n,\qquad\lambda=\mot(\core{P}),
+\end{equation}
+where $\lambda$ is a nonzero limit ordinal. Thus $n$ is exactly the finite
+coefficient at the end of the Cantor normal form of $\mot(P)$.
+\end{proposition}
+\begin{proof}
+The core is infinite because only finitely many points have been removed.
+It has no maximal element. A linear extension of a poset with no maximal
+elements has no last element, so a maximizing linear extension of the core
+has nonzero limit type $\lambda$.
+
+If the tail is nonempty, choose a maximal element in that finite upset. It
+is maximal in $P$ because the tail is upward closed. Delete it and continue.
+After $n$ such deletions the residual is exactly the core. Repeated use of
+\cref{lem:maxdelete} gives \eqref{eq:tailtype}.
+\end{proof}
+
+This identifies the finite coefficient without selecting any particular
+maximal linear extension. For instance, the core of $\omega\ds1$ is the
+chain $\omega$, whereas the core of $(\omega\ds\omega)\ds1$ consists of two
+incomparable infinite chains.
+
+\subsection{When full successor rank is possible}
+
+\begin{lemma}[Full rank forces maximal moves]\label{lem:fullmax}
+Let $\mot(P)=\lambda+n$, with $\lambda$ a nonzero limit ordinal and
+$0<n<\omega$. If $\fot(P)=\lambda+n$, there is an eligible maximal element
+$x$ such that
+\[
+\fot(P\setminus\{x\})=\mot(P\setminus\{x\})=\lambda+(n-1).
+\]
+Consequently full rank implies $\fot(\core{P})=\lambda$.
+\end{lemma}
+\begin{proof}
+A supremum equal to a successor ordinal is attained by one of its terms.
+Equation~\eqref{eq:f-rec} therefore gives an eligible $x$ with
+$\fot(P_x)=\lambda+(n-1)$. Since
+$\fot(P_x)\leq\mot(P_x)<\mot(P)$, the maximal order type of $P_x$ must have
+the same value.
+
+Suppose $x<y$. No point of $P_x$ lies above $x$ or above $y$. A maximizing
+linear extension of $P_x$, followed by $x$ and then $y$, is therefore a
+linear extension of the induced subposet $P_x\cup\{x,y\}$. It follows that
+\[
+\mot(P)\geq\mot(P_x)+2=\lambda+(n+1),
+\]
+a contradiction. Thus $x$ is maximal, so $P_x=P\setminus\{x\}$.
+
+Repeat this argument $n$ times. Every deleted point has a finite original
+upset: at its deletion all its original strict successors have already
+been deleted. The deleted set is therefore contained in $T(P)$ and has
+its full cardinality $n$. The remaining order is the core and has friendly
+rank $\lambda$.
+\end{proof}
+
+\section{The successor-defect theorem}\label{sec:connected}
+
+The finite result loses one unit per connected component. In the infinite
+case that unit may disappear through ordinal limit behavior. The theorem
+below says precisely when it disappears.
+
+\begin{lemma}[The exceptional cut maximum]\label{lem:unique-cut}
+Let $C$ be an infinite incomparability-connected wpo with a unique maximal
+element $u$. If $u$ is a cut vertex, then $C\setminus\{u\}$ has no maximal
+elements, and $\mot(C)=\lambda+1$ for a nonzero limit $\lambda$.
+\end{lemma}
+\begin{proof}
+Every component of $G(C)-u$ has a vertex adjacent to $u$, since the original
+graph is connected. Suppose $z$ were maximal in $C\setminus\{u\}$. If
+$z\inc u$, then $z$ would be a second maximal element of $C$. Hence $z<u$.
+The component containing $z$ must be the last component of
+$C\setminus\{u\}$ under \cref{lem:components}, since otherwise any point of
+a later component would be above $z$.
+
+There are at least two components after deleting the cut vertex. Choose
+an earlier component $D$. Every $d\in D$ satisfies $d<z<u$, so no vertex
+of $D$ is adjacent to $u$, a contradiction. Thus the remainder has no
+maximal element. Its maximal order type is a nonzero limit, as in
+\cref{prop:tailtype}, and \cref{lem:maxdelete} finishes the proof.
+\end{proof}
+
+\begin{lemma}[Deleting the tail without breaking connectivity]\label{lem:peel}
+Let $C$ be infinite and incomparability-connected, with
+$\mot(C)=\lambda+n$ and $1\leq n<\omega$. If $n\geq2$, a maximal vertex can be deleted while
+preserving incomparability connectivity. Consequently one can delete
+$n-1$ tail elements through friendly moves, leaving a connected order
+$D$ with $\mot(D)=\lambda+1$. The final tail point of $D$ is also eligible,
+and deleting it leaves $\core{C}$.
+\end{lemma}
+\begin{proof}
+There is a maximal element because $n>0$ and $T(C)$ is nonempty. If there
+are two or more maximal elements, \cref{lem:cut} supplies a non-cut one.
+If there is only one, it cannot be a cut vertex when $n\geq2$, by
+\cref{lem:unique-cut} and uniqueness of the finite coefficient. Each chosen
+vertex has a friend because the current graph is infinite and connected.
+Deleting it removes only that vertex and reduces the finite coefficient by
+one. Tail stability keeps the core unchanged.
+
+After $n-1$ deletions the remaining connected order has a tail consisting
+of one point. That point is maximal and still has a friend. Its deletion
+leaves the original core. No assertion that the core remains connected is
+needed or intended.
+\end{proof}
+
+\begin{definition}[Core defect bit]\label{def:epsilon}
+For an infinite wpo $P$, let $\lambda=\mot(\core{P})$ and define
+\[
+\eps(P)=
+\begin{cases}
+0,&\mot(\str(\core{P}))=\lambda,\\
+1,&\mot(\str(\core{P}))<\lambda.
+\end{cases}
+\]
+The stripping operation is performed \emph{after} the finite tail is removed.
+\end{definition}
+
+\begin{theorem}[Connected successor-defect classification]\label{thm:connected}
+Let $C$ be a nonempty incomparability-connected wpo.
+If $C$ is finite, then $\fot(C)=|C|-1$.
+If $C$ is infinite, put $\lambda=\mot(\core{C})$ and $n=|T(C)|$. Then
+\begin{equation}\label{eq:connected}
+\boxed{\fot(C)=\lambda+\bigl(n-\eps(C)\bigr).}
+\end{equation}
+Here $\eps(C)\leq n$. In particular, if $n=0$ then
+$\fot(C)=\mot(C)=\lambda$. If $n>0$, the only possible values are
+$\lambda+(n-1)$ and $\lambda+n$.
+\end{theorem}
+\begin{proof}
+The finite case is \cref{thm:finite}. If $n=0$, then
+$\core{C}=C=\str(C)$, since an infinite connected graph has no isolated
+vertex. The limit-floor bound gives $\fot(C)=\lambda$ and $\eps(C)=0$.
+
+Suppose $n\geq1$. Apply \cref{lem:peel}, making $n-1$ friendly moves to a
+connected order $D$ of maximal order type $\lambda+1$. Since
+$\str(D)=D$, \cref{lem:floor} gives $\fot(D)\geq\lambda$. Each previously
+made move adds one on the right to this lower bound. Hence
+\begin{equation}\label{eq:two-values}
+\lambda+(n-1)\leq\fot(C)\leq\lambda+n.
+\end{equation}
+There is no ordinal strictly between these two bounds.
+
+If $\eps(C)=0$, then $\mot(\str(\core{C}))=\lambda$, and
+\cref{lem:floor} gives $\fot(\core{C})=\lambda$. All $n$ deletions of the
+tail described in \cref{lem:peel} are friendly, so
+$\fot(C)\geq\lambda+n$, establishing equality with the upper bound.
+
+Conversely, equality with that upper bound forces
+$\fot(\core{C})=\lambda$ by \cref{lem:fullmax}. By \cref{lem:strip},
+\[
+\lambda=\fot(\core{C})
+\leq\mot(\str(\core{C}))\leq\mot(\core{C})=\lambda.
+\]
+Thus full rank is possible only when $\eps(C)=0$. If $\eps(C)=1$, the
+lower value in \eqref{eq:two-values} must occur.
+\end{proof}
+
+\begin{remark}[Why connectedness cannot be dropped]
+An infinite chain has friendly rank zero and maximal order type equal to
+its own order type. Its defect can therefore be arbitrarily large. The
+connected theorem applies to each incomparability component, not to an
+arbitrary order without first decomposing it.
+\end{remark}
+
+\begin{corollary}[A structural formula for all wpos]\label{cor:all}
+Let $P=\sum_{\xi<\kappa}C_\xi$ be its incomparability-component decomposition.
+For finite $C_\xi$, set $d_\xi=|C_\xi|-1$. For infinite $C_\xi$, set
+\[
+d_\xi=\mot(\core{C_\xi})+
+          \bigl(|T(C_\xi)|-\eps(C_\xi)\bigr).
+\]
+Then $\fot(P)=\sum_{\xi<\kappa}d_\xi$.
+\end{corollary}
+\begin{proof}
+Combine \cref{thm:sum,thm:connected}.
+\end{proof}
+
+The formula is intrinsic, but it is not a uniform decision procedure for
+arbitrary presentations of infinite orders. It still requires maximal order
+types of specified suborders and an equality test on the stripped core.
+
+\section{Exact disjoint-sum laws}\label{sec:disjoint}
+
+The incomparability graph of $A\ds B$, for nonempty $A,B$, is connected:
+each vertex on one side is adjacent to every vertex on the other side.
+Its tail and core satisfy
+\begin{equation}\label{eq:sumcore}
+T(A\ds B)=T(A)\ds T(B),\qquad
+\core{(A\ds B)}=\core{A}\ds\core{B}.
+\end{equation}
+These identities follow immediately from the equality of the principal
+upsets in a summand and in the disjoint sum.
+
+\begin{theorem}[Disjoint sums, all cases]\label{thm:disjoint}
+Let $A,B$ be nonempty wpos.
+\begin{enumerate}[label=(\roman*)]
+\item If both are finite, then
+$\fot(A\ds B)=|A|+|B|-1$.
+\item If both are infinite, then
+\begin{equation}\label{eq:two-infinite}
+\boxed{\fot(A\ds B)=\mot(A)\oplus\mot(B)=\mot(A\ds B).}
+\end{equation}
+There is no hypothesis that either maximal order type is a limit ordinal.
+\item If $A$ is infinite and $B$ is finite of size $m>0$, write
+$\mot(A)=\lambda+n$, with $\lambda=\mot(\core{A})$. Then
+\begin{equation}\label{eq:mixed}
+\boxed{\fot(A\ds B)=\lambda+\bigl(n+m-\eps(A)\bigr).}
+\end{equation}
+The symmetric rule applies when $A$ is finite and $B$ infinite.
+\end{enumerate}
+If one summand is empty, the result is simply the friendly rank of the
+other summand.
+\end{theorem}
+\begin{proof}
+The finite case follows from connectedness and \cref{thm:finite}.
+
+If both summands are infinite, both cores in \eqref{eq:sumcore} are nonempty.
+Every core element has a friend in the other core, so the stripped core is
+the entire core. Its defect bit is zero. Apply \cref{thm:connected} and the
+standard maximal-order-type law \eqref{eq:mot-rec}.
+
+In the mixed case, the core of the disjoint sum is precisely $\core{A}$,
+its tail has $n+m$ points, and its core defect bit is $\eps(A)$. Again apply
+\cref{thm:connected}.
+\end{proof}
+
+The mixed formula depends on the \emph{cardinality} of the finite summand,
+not on its internal comparisons. This is stronger than merely giving bounds
+between consecutive ordinals. It also explains why information about the
+infinite core, rather than just the total rank, is necessary.
+
+\begin{corollary}[Finitely many nonempty summands]\label{cor:manysums}
+For a finite disjoint family with at least two infinite summands, the
+friendly rank is the natural sum of the maximal order types of all the
+summands. With exactly one infinite summand $A$ and a positive total of
+$m$ elements in the finite summands, formula~\eqref{eq:mixed} applies.
+With all summands finite and at least two summands, the rank is one less
+than their total cardinality.
+\end{corollary}
+\begin{proof}
+With at least two infinite summands, their nonempty cores supply friends
+to each other, even after all finite tails and finite summands are removed.
+The core is therefore fully stripped. The other cases are applications of
+\cref{thm:disjoint} after grouping the finite summands.
+\end{proof}
+
+\section{Explicit counterexamples and independent calculations}\label{sec:counterexamples}
+
+The results in this section can be checked from the residual recurrence
+and finite arguments without using the limit-floor bound. This gives a
+separate check on the main examples.
+
+\subsection{An ordinal and finitely many incomparable points}
+
+\begin{proposition}\label{prop:ordinal-antichain}
+For every ordinal $\alpha$ and every positive integer $m$,
+\begin{equation}\label{eq:ordinal-antichain}
+\fot(\alpha\ds\Gamma_m)=\alpha+(m-1).
+\end{equation}
+In particular $\fot(\alpha\ds1)=\alpha$.
+\end{proposition}
+\begin{proof}
+For $\alpha=0$ this is the finite antichain formula. For $m=1$ and
+$\alpha>0$, selecting $\beta<\alpha$ leaves $\beta\ds1$; selecting the
+isolated point leaves the chain $\alpha$, whose friendly rank is zero.
+Transfinite induction gives
+\[
+\fot(\alpha\ds1)=\sup\left(\{\beta+1:\beta<\alpha\}\cup\{1\}\right)
+=\alpha.
+\]
+For $m\geq2$ and $\alpha>0$, induct on $\alpha$, with an inner induction on
+$m$. A move in the antichain leaves $\alpha\ds\Gamma_{m-1}$ and contributes
+$\alpha+(m-1)$ to the rank recurrence. A move at $\beta<\alpha$ in the
+chain contributes $\beta+m$. The latter values are at most
+$\alpha+(m-1)$: for successor $\alpha=\gamma+1$ their maximum is
+$\gamma+m$, and for limit $\alpha$ their supremum is $\alpha$. The antichain
+move attains the required bound.
+\end{proof}
+
+\subsection{A counterexample to the earlier printed identity}\label{sec:printed}
+
+Proposition~4.1(2) in the published 2023 paper states
+\begin{equation}\label{eq:printed}
+\fot(A\ds B)=1+(\mot(A)-1)\oplus(\mot(B)-1).
+\end{equation}
+Take $A=\omega\ds\omega$ and $B=1$. We compute the actual left-hand side
+explicitly.
+
+For $k\geq1$, let $g_k=\fot(\omega\ds[k])$, and set $g_0=0$. A move in the
+infinite chain leaves a finite chain disjoint from $[k]$. The corresponding
+rank contributions have supremum $\omega$, by the finite formula. A move
+at position $j$ in the finite chain leaves $\omega\ds[j]$. Thus
+\[
+g_k=\max\left(\omega,\max_{0\leq j<k}(g_j+1)\right)
+=\omega+(k-1).
+\]
+Selecting position $k$ in either chain of $\omega\ds\omega$ leaves the
+other infinite chain disjoint from $[k]$. Hence
+\begin{equation}\label{eq:two-chains-direct}
+\fot(\omega\ds\omega)=\sup_{k<\omega}(g_k+1)=\omega\cdot2.
+\end{equation}
+
+Now select the third, incomparable singleton. This is a friendly maximal
+move, and the residual is $\omega\ds\omega$. Therefore
+\[
+\fot\bigl((\omega\ds\omega)\ds1\bigr)\geq\omega\cdot2+1.
+\]
+The maximal order type of that order is $\omega\cdot2+1$, so equality holds.
+On the other hand, the right-hand side of \eqref{eq:printed} is
+\[
+1+(\omega\cdot2-1)\oplus(1-1)=1+\omega\cdot2=\omega\cdot2,
+\]
+using the infinite-ordinal subtraction convention also used in the source.
+The limit ordinal $\omega\cdot2$ makes the discrepancy independent of any
+choice about how to decrement a successor ordinal's finite coefficient.
+
+\begin{proposition}\label{prop:printed-counterexample}
+The unrestricted identity \eqref{eq:printed} fails for
+$A=\omega\ds\omega$ and $B=1$. The actual value is $\omega\cdot2+1$, not
+$\omega\cdot2$.
+\end{proposition}
+
+The 2024 thesis does not repeat \eqref{eq:printed}; its stated disjoint-sum
+condition concerns two limit maximal order types. Accordingly this is an
+explicit correction to the printed formula, not a claim about whether the
+author had already recognized its limitation.
+
+\subsection{All four invariant values still do not suffice}
+
+Let
+\[
+L=\sum_{k<\omega}\Gamma_2,\qquad
+A=L+\Gamma_2,\qquad B=(\omega+1)\ds1.
+\]
+The order $L$ consists of an $\omega$-sequence of two-point antichain levels;
+every point at one level lies below every point at every later level.
+
+The ordinary ordinal height $h(P)$ is the rank of the decreasing-sequence
+tree, and ordinal width $w(P)$ is the rank of the antichain-sequence tree.
+In the present examples every antichain has at most two elements and one
+has two, so the ordinal width is exactly two. A maximal chain in $L$ has
+type $\omega$, and a maximal chain in $A$ or $B$ has type $\omega+1$.
+By \cref{thm:sum,thm:finite},
+\[
+\mot(L)=2\cdot\omega=\omega,\qquad
+\fot(L)=1\cdot\omega=\omega.
+\]
+The following table records the resulting values; the two rightmost columns
+also locate the information that is lost by those four invariants.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.18}
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+Order & $\mot$ & $h$ & $w$ & $\fot$ & $|T|$ & $\eps$\\
+\midrule
+$A=L+\Gamma_2$ & $\omega+2$ & $\omega+1$ & $2$ & $\omega+1$ & $2$ & $0$\\
+$B=(\omega+1)\ds1$ & $\omega+2$ & $\omega+1$ & $2$ & $\omega+1$ & $2$ & $1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The formula for $\fot(B)$ is also an immediate instance of
+\cref{prop:ordinal-antichain}. Both orders have exactly two maximal elements,
+so adjoining the number of maximal elements to the list would not separate
+them either.
+
+\begin{theorem}[Failure of four-invariant compositionality]\label{thm:nonfunctional}
+The friendly order type of $P\ds Q$ is not determined by the values of
+$\mot,h,w,\fot$ on the two summands. Specifically,
+\begin{equation}\label{eq:nonfunctional}
+\fot(A\ds1)=\omega+3,\qquad
+\fot(B\ds1)=\omega+2,
+\end{equation}
+although $A$ and $B$ agree in all four invariants.
+\end{theorem}
+\begin{proof}
+For $A\ds1$, delete the two points of its top $\Gamma_2$ one at a time,
+then delete the new incomparable singleton. All three moves are friendly:
+the singleton witnesses the first two, and a point of $L$ witnesses the
+third. Only the chosen point is removed at each step. The residual is $L$,
+whose friendly rank is $\omega$. Thus $\fot(A\ds1)\geq\omega+3$; its
+maximal order type is $\omega+3$, proving equality.
+
+On the other side, $B\ds1=(\omega+1)\ds\Gamma_2$. Formula
+\eqref{eq:ordinal-antichain} gives $\fot(B\ds1)=(\omega+1)+1=\omega+2$.
+The input invariant values coincide, including those of the common
+singleton summand, while the outputs differ. No rule depending only on
+those input values can therefore compute the output in every case.
+\end{proof}
+
+The obstruction is not an exotic large ordinal. It occurs at the first
+infinite ordinal, with width bounded by two and only two maximal elements.
+In $A$, deleting the finite tail leaves an infinite supply of internal
+friendships. In $B$, deleting the finite tail leaves a linear order with
+none. The core defect bit records exactly this distinction.
+
+\section{Consequences and worked families}\label{sec:applications}
+
+\subsection{Finite multisets}
+
+For completeness, the multiset ordering $\Mr(P)$ consists of finite
+multisets over $P$, with
+\[
+m\leq_r n\quad\Longleftrightarrow\quad
+m=n\ \text{or}\ 
+\forall x\in m\setminus(m\cap n)\ 
+\exists y\in n\setminus(m\cap n)\ (x<y).
+\]
+Intersection and subtraction respect multiplicities. This is the
+Dershowitz--Manna-style multiset ordering, not the injective multiset
+embedding order. Vialard's theorem gives
+\begin{equation}\label{eq:multiset}
+w(\Mr(P))=\omega^{\fot(P)}
+\end{equation}
+\cite[Theorem~3.4]{Vialard2023}. Applying the formulas proved above yields
+\[
+\boxed{w(\Mr(P))=\omega^{|P|-c(P)}\quad\text{for finite }P.}
+\]
+Even when $P$ is empty, this is correct: its multiset order contains just
+the empty multiset and has width one. For two infinite wpos,
+\[
+w(\Mr(A\ds B))=\omega^{\mot(A)\oplus\mot(B)}.
+\]
+The four-invariant example also yields
+$w(\Mr(A\ds1))=\omega^{\omega+3}$ but
+$w(\Mr(B\ds1))=\omega^{\omega+2}$.
+
+\subsection{Finite rectangular grids}
+
+\begin{proposition}\label{prop:grids}
+For $m,n\geq2$, with the product order on $[m]\times[n]$,
+\[
+\fot([m]\times[n])=mn-3,
+\qquad
+w(\Mr([m]\times[n]))=\omega^{mn-3}.
+\]
+\end{proposition}
+\begin{proof}
+The bottom corner $(0,0)$ and top corner $(m-1,n-1)$ are isolated in the
+incomparability graph. Put $a=(0,n-1)$ and $b=(m-1,0)$; they are adjacent.
+Every other noncorner vertex $(i,j)$ is adjacent to $a$ when
+$i>0$ and $j<n-1$, or to $b$ when $i<m-1$ and $j>0$. The union of these two
+conditions excludes only the bottom and top corners. Thus all noncorner
+vertices form one component, giving exactly three components in total.
+Apply \cref{thm:finite} and \eqref{eq:multiset}.
+\end{proof}
+
+If either factor is a singleton, the product is a chain and the rank is
+zero; the displayed grid formula must not be used in that case.
+
+\subsection{Ordinal sums of finite blocks}
+
+For finite nonempty blocks $F_\xi$,
+\[
+\fot\left(\sum_{\xi<\kappa}F_\xi\right)
+=\sum_{\xi<\kappa}\bigl(|F_\xi|-c(F_\xi)\bigr).
+\]
+This realizes genuinely transfinite ranks from finite graph calculations.
+For instance,
+\[
+\fot\left(\sum_{k<\omega}\Gamma_2\right)=\omega,
+\qquad
+\fot\left(\sum_{\xi<\omega^2}\Gamma_3\right)
+=2\cdot\omega^2=\omega^2.
+\]
+A block that is a chain contributes zero, regardless of its finite length.
+The order of the blocks matters because ordinal addition is not
+commutative. For example,
+\[
+\fot(L+\Gamma_3)=\omega+2,
+\qquad
+\fot(\Gamma_3+L)=2+\omega=\omega.
+\]
+These examples illustrate both finite losses and their absorption at a
+later limit.
+
+\subsection{Two successor behaviors}
+
+Both $\omega\ds1$ and $(\omega\ds\omega)\ds1$ are connected and have one
+point in the finite upper tail. In the first, the core is a chain, so the
+friendly rank is the predecessor $\omega$ of its maximal order type
+$\omega+1$. In the second, the core remains connected and fully stripped,
+so the friendly rank retains the final successor:
+\[
+\fot((\omega\ds\omega)\ds1)=\omega\cdot2+1.
+\]
+This is precisely the distinction that a blanket ``subtract one'' rule
+cannot capture.
+
+\section{Computation and proof audit}\label{sec:audit}
+
+\subsection{What was checked by execution}
+
+The program \texttt{code/verify.py} enumerates naturally labeled posets on
+$\{0,\ldots,n-1\}$: every strict comparison points from a smaller integer to
+a larger integer. The generator adds a new largest label, choosing any
+downset of the existing poset as its predecessor set. Every such poset is
+generated exactly once. Every finite isomorphism class has at least one
+natural labeling, but an isomorphism class can occur more than once.
+
+For each generated poset, the program computes the rank independently by
+memoizing the defining residual recurrence on vertex masks. It then checks
+agreement with $n-c(P)$, constructs a witness by maximal non-cut deletions,
+checks the witness against the original residual semantics, and tests the
+at-most-one-cut-maximum assertion whenever the graph is connected.
+
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+Vertices & Naturally labeled posets checked & Connected graphs\\
+\midrule
+0 & 1 & 0\\
+1 & 1 & 1\\
+2 & 2 & 1\\
+3 & 7 & 4\\
+4 & 40 & 27\\
+5 & 357 & 275\\
+6 & 4,824 & 4,070\\
+7 & 96,428 & 86,278\\
+\midrule
+Total & 101,660 & 90,656\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+There were no failures. The verifier additionally checked all 25 grids with
+$2\leq m,n\leq6$ using the residual-rank oracle. The machine-readable output
+includes the full rank distributions, elapsed times, Python version, and
+execution timestamp. The associated unit tests also exercise scrambled
+vertex labels, invalid relations, empty orders, chains, antichains, ordinal
+sums, disjoint sums, and invalid witness sequences.
+
+\subsection{What finite checking cannot establish}
+
+The exhaustive computations do not verify an infinite tree rank. For
+example, finite suborders $[k]\ds[k]$ have friendly ranks $2k-1$, whose
+supremum is only $\omega$, while \eqref{eq:two-chains-direct} gives
+$\fot(\omega\ds\omega)=\omega\cdot2$. The additional successor in the
+three-summand counterexample is even less visible from finite truncation.
+The transfinite statements depend on the mathematical proofs, not on
+extrapolation from the finite data.
+
+\subsection{Dependency boundaries}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.32\linewidth}p{0.62\linewidth}@{}}
+\toprule
+Result & Dependencies and verification status\\
+\midrule
+Finite component formula & Elementary component and cut-vertex lemmas;
+rank recurrence; exhaustive finite check.\\[3pt]
+Canonical finite tail & Standard wpo chain property, maximal linear
+extensions, natural-sum law, and the supplied deletion proof.\\[3pt]
+Connected classification & Supplied graph and tail arguments plus the
+previously published limit-floor bound.\\[3pt]
+General disjoint-sum laws & Connected classification and the explicit
+core identities.\\[3pt]
+Printed-identity counterexample & Direct recurrences for finite and
+infinite chains; no use of the disputed identity or the limit-floor bound.\\[3pt]
+Four-invariant counterexample & Finite formula, transfinite ordinal-sum
+additivity, and direct ordinal-plus-antichain calculation.\\[3pt]
+Multiset consequences & The supplied rank calculations and Vialard's
+multiset-width theorem.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The new proofs are ordinary mathematical arguments rather than formal
+proof objects. In particular, a future formalization should preserve three
+points that are easy to obscure: every friend belongs to the \emph{current}
+residual; every full-rank successor step is forced to select a maximal
+element; and the core need not remain connected after the last tail point
+is deleted.
+
+\section{What remains to investigate}\label{sec:future}
+
+The results answer the finite problem completely and give an exact
+structural classification for all incomparability components. They also
+supply a general disjoint-sum law once the core defect bit is available.
+The countable example proves that unrestricted four-invariant
+compositionality is not a viable substitute for that extra information.
+
+A concrete next question is whether a useful class of presentations admits
+compositional calculation of
+\[
+P\longmapsto\bigl(\mot(P),\ |T(P)|,\
+                  \mot(\str(\core{P}))\bigr).
+\]
+For example, one can ask this for orders built from ordinal constants,
+finite posets, ordinal sums, disjoint sums, and Cartesian products. The
+present paper settles the friendly-rank step once those data and the
+component decomposition are known, but does not provide every transition
+rule for that presentation language.
+
+Another question is whether other common operations preserve a tractable
+core-saturation predicate. The disjoint sum of two infinite orders forces
+saturation automatically; an infinite order plus a finite disjoint summand
+preserves the defect bit of the infinite core. Products and higher-order
+constructions may require additional structural information. The finite
+grid calculation is an exact result for one product family, not a claimed
+classification of arbitrary products.
+
+Finally, the elementary proofs of the two explicit counterexamples are
+small enough to make good formalization targets. A verified library of
+well-founded tree ranks and ordinal sums could certify them independently
+before attempting the more general connected-component classification.
+
+\appendix
+\section{Reproducing the artifacts}\label{sec:reproduce}
+
+The Python implementation uses only the standard library and is written
+for Python 3.9 or later. From the archive's top directory, run:
+\begin{lstlisting}
+python code/verify.py --max-n 7 --grid-max 6 \
+    --output results/verification.json
+python -m unittest discover -s code -v
+\end{lstlisting}
+The reference rank implementation can be exponential in the number of
+vertices; it is intentionally retained as an independent oracle. The
+component formula is the efficient method. Increasing the exhaustive
+bound increases the number of generated posets rapidly.
+
+To rebuild the PDF, run \texttt{python build.py}, or use:
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+    friendly_order_types.tex
+\end{lstlisting}
+The source uses the freely available \texttt{newpx} LaTeX packages for text
+and mathematics. Font binaries and third-party papers are not included.
+The archive also contains a source-status note and a short proof-audit
+checklist. The supplied \texttt{.bib} file and \texttt{.bbl} file allow both
+normal BibTeX builds and inspection of the rendered references.
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

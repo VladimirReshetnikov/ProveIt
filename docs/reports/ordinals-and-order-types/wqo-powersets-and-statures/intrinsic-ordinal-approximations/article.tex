@@ -1,0 +1,985 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxtext,newpxmath}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype,mathtools,booktabs,array,longtable}
+\usepackage{enumitem,fancyhdr,titlesec,listings}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{DeepTeal}{HTML}{15565C}
+\definecolor{Ink}{HTML}{22323B}
+\definecolor{PaleTeal}{HTML}{EDF5F5}
+\definecolor{Muted}{HTML}{5F6C72}
+\hypersetup{colorlinks=true,linkcolor=DeepTeal,citecolor=DeepTeal,urlcolor=DeepTeal,
+ pdftitle={Intrinsic ordinal approximations for finitary powersets},
+ pdfauthor={Research note prepared with ChatGPT},pdfsubject={Well-partial-orders, ideal completions, ordinal height, Milner--Rado sums}}
+\titleformat{\section}{\Large\bfseries\color{DeepTeal}}{\thesection}{.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{DeepTeal}}{\thesubsection}{.7em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{Muted}Intrinsic ordinal approximations}
+\fancyhead[R]{\small\color{Muted}Research note\;\textbullet\;19 September 2026}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\setlength{\parskip}{.35em}
+\setlength{\parindent}{1.2em}
+\setcounter{tocdepth}{2}
+\setlist{nosep,leftmargin=1.8em}
+\newtheoremstyle{teal}{8pt}{7pt}{\itshape}{}{\bfseries\color{DeepTeal}}{.}{.5em}{}
+\theoremstyle{teal}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newtcolorbox{resultbox}[1][]{enhanced,breakable,colback=PaleTeal,colframe=DeepTeal,
+ boxrule=.5pt,arc=1mm,left=10pt,right=10pt,top=7pt,bottom=7pt,#1}
+\newcommand{\Pf}{\mathsf P_{\!f}}
+\newcommand{\Df}{\mathcal D_{\!f}}
+\newcommand{\Down}{\mathcal D}
+\newcommand{\Idl}{\operatorname{Idl}}
+\newcommand{\Comp}{\operatorname{K}}
+\newcommand{\hgt}{\operatorname{h}}
+\newcommand{\mot}{\operatorname{o}}
+\newcommand{\wid}{\operatorname{w}}
+\newcommand{\ao}{\mathfrak a_o}
+\newcommand{\ah}{\mathfrak a_h}
+\newcommand{\aw}{\mathfrak a_w}
+\newcommand{\emb}{\hookrightarrow}
+\newcommand{\W}{\mathsf W}
+\newcommand{\M}{\mathsf M}
+\newcommand{\LI}{\mathsf{LI}}
+\newcommand{\nsum}{\mathbin{\#}}
+\newcommand{\MR}{\mathbin{\odot}}
+\newcommand{\rank}{\operatorname{rk}}
+\newcommand{\up}{\mathord\uparrow}
+\newcommand{\dn}{\mathord\downarrow}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\cl}[1]{\overline{#1}}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{Muted},showstringspaces=false,upquote=true}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{.7in}
+{\sffamily\small\color{DeepTeal}\MakeUppercase{Order theory / ordinal combinatorics / research attempt}\par}
+\vspace{.35in}
+{\fontsize{29}{35}\selectfont\bfseries\color{Ink}Intrinsic ordinal approximations\par for finitary powersets\par}
+\vspace{.25in}
+{\Large\color{Muted}Ideal completions, exact product formulas,\par and a finite-cap obstruction\par}
+\vspace{.5in}
+{\large Research note prepared with ChatGPT\par}
+{19 September 2026\par}
+\vspace{.45in}
+\begin{resultbox}
+\textbf{Outcome.} An intrinsic ideal-embedding invariant is proved to recover the height of the finitary Hoare powerset on a substantial, structurally defined class of well-partial-orders. The class contains all ordinals and all finite posets, and is closed under the standard finite-product, word, multiset, and finitary-powerset constructions. Exact ordinal formulas and a sharp family of counterexamples delimit the result.
+
+\textbf{Scope.} This is a partial resolution of the intrinsic-invariant question in \cite[Section~6]{AHLLSSV}, not a claim to settle every question posed there. The proofs are presented for mathematical review; neither independent refereeing nor proof-assistant verification has been performed. Priority of the independently developed results has not been established.
+\end{resultbox}
+\vfill
+{\small\color{Muted}The archive includes the complete \LaTeX\ source, the compiled article, exact ordinal-arithmetic code, exhaustive finite checks, their output, and a proof-audit guide. No external data or proprietary software is needed to run the checks.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\begin{abstract}
+The height of a finitary powerset can be sensitive to details of a well-partial-order that its usual ordinal invariants do not retain. Motivated by a published question about replacing syntactic approximations with intrinsic ones, define
+\[
+ \ao(A)=\sup\{\mot(B)+1:\Idl(B)\emb A\},
+\]
+where $B$ ranges over well-partial-orders and $\Idl(B)$ is the poset of nonempty directed downsets. We prove $\ao(A)\leq\hgt(\Pf(A))$ for every well-partial-order. Equality holds whenever each finite subset of $A$ is contained in a downward-closed subposet isomorphic to an ideal completion. This locality condition is equivalent to every finitely generated downset being an algebraic directed-complete poset; it yields the pointwise formula $\rank_{\Pf(A)}(D)=\mot(\Comp(D))$.
+
+The locality condition is preserved by finite disjoint unions, Cartesian products, finite words, finite multisets under injective embedding, and finitary Hoare powersets. It holds for all ordinal chains and finite posets. Thus the invariant is intrinsic and agrees with the published weakened maximal order type on elementary well-quasi-orders. For products of arbitrary ordinal chains we obtain an exact supremum formula; for powers of $\omega$ it reduces to $\omega^{\beta_1\MR\cdots\MR\beta_d}$, with $\MR$ the Milner--Rado sum. Mixed endpoint variants give the same numerical values as certain known topological pigeonhole numbers.
+
+The unrestricted equality is false. For an infinite limit ordinal $\lambda$ and a nonempty finite poset $F$, we prove $\ao(\lambda+F)=\lambda+\max_{x\in F}|\up_Fx|$ while $\hgt(\Pf(\lambda+F))=\lambda+|F|$. Equality holds exactly when $F$ has a least element. This refutes a natural extension proposed in this note, not a conjecture asserted in the source paper.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{The selected problem and the precise contribution}
+\subsection{A documented question, rather than an invented conjecture}
+Abriola, Halfon, Lopez, Schmitz, Schnoebelen, and Vialard introduce syntactically defined weakened ordinal invariants for elementary well-quasi-orders. Their conclusion asks whether the approximation relation can be made intrinsic and extended beyond that class \cite[Section~6]{AHLLSSV}. We focus on the weakened maximal order type and its relationship with the height of the finitary powerset.
+
+The version used here is arXiv:2312.14587v2, dated 17 July 2024 \cite{AHLLSSV}. A targeted search of the arXiv record, the authors' research pages \cite{VialardPage}, and relevant ideal-completion literature did not locate a later resolution of this particular question. This is a limited status check as of 19 September 2026, not a proof that no unpublished or differently phrased solution exists. The source's question is genuinely broader than what will be proved here.
+
+There is a useful reason to expect progress. The source's lower-bound argument already uses ideal completions, while a finitely generated downset is a local object determined by finitely many generators. The present attack replaces an inductive approximation grammar by actual embeddings of ideal completions. The main issue is then not an ordinal calculation but an order-theoretic locality property.
+
+\subsection{What is established}
+The results proved below have four layers.
+
+First, an ideal-completion identity converts maximal order type into powerset height. Second, downward-closed local ideal representations make this lower bound exact and recover individual ranks. Third, the locality condition survives all the constructors needed for the original elementary class, with substantially more general base posets. Fourth, products of ordinal chains and finite caps over a limit chain provide exact positive and negative calculations.
+
+The central comparison with the source is
+\begin{equation}\label{eq:agreement-intro}
+ \ao(E)=\hgt(\Pf(E))=\underline{\mot}(E)
+ \qquad\text{for every elementary $E$}.
+\end{equation}
+The second equality is the source's Theorem~5.10; the first is obtained from the structural results of this note. Thus $\ao$ gives a presentation-independent realization of one of the original weakened invariants. The equality beyond elementary orders is proved under an explicit sufficient condition, not universally.
+
+\begin{resultbox}
+\textbf{Main positive statement.} Let $A$ be a well-partial-order. Suppose that every finite $S\subseteq A$ lies in a downset $J\subseteq A$ with $J\cong\Idl(B)$ for some well-partial-order $B$. Then
+\[
+ \hgt(\Pf(A))=\ao(A).
+\]
+This hypothesis holds for the closure of all ordinal chains and all finite posets under finite disjoint unions, Cartesian products, finite words, finite multisets, and finitary powersets. It is also inherited by arbitrary downsets.
+\end{resultbox}
+
+\subsection{What is not established}
+We do not identify intrinsic counterparts of both other weakened invariants from the source. We do not give a recursive ordinal evaluator for every expression in the enlarged class. We do not assert that the locality condition is necessary for $\ao(A)=\hgt(\Pf(A))$ in general. Finally, the finite-cap counterexample does not contradict the original elementary-order theorem: it shows that our own most direct universal extension fails.
+
+The ideal identities and standard ordinal-invariant theorems used in the argument belong to established literature \cite{IdealApproach,DSS,deJonghParikh}. Their use here is not a novelty claim. The local rank theorem, the closure argument in its present form, and the exact boundary analysis are offered as independently developed results whose priority remains to be checked.
+
+\section{Conventions and ordinal invariants}
+\subsection{Orders, quotients, and finite powersets}
+All arguments take place in $\ZFC$. A \emph{well-partial-order}, abbreviated wpo, is a partial order such that every infinite sequence $(x_n)$ has $i<j$ with $x_i\leq x_j$. A well-quasi-order is treated through its quotient by mutual comparability. Nothing below depends on a chosen presentation of that quotient.
+
+For a poset $A$, write $\dn_A S=\{x\in A:(\exists s\in S)\ x\leq s\}$. A downset is a subset closed under passing to smaller elements. Let $\Down(A)$ be all downsets, ordered by inclusion, and let
+\[
+ \Df(A)=\{\dn_A S:S\subseteq A\text{ finite}\}.
+\]
+Both include the empty downset. The finite Hoare relation on finite subsets is
+\[
+ S\preceq_H T\quad\Longleftrightarrow\quad
+ (\forall s\in S)(\exists t\in T)\ s\leq_A t.
+\]
+After quotienting by mutual domination, it is exactly $\Df(A)$. Throughout, $\Pf(A)$ denotes this quotient, and we freely work with its concrete representative $\Df(A)$. Thus duplicate generators and redundant smaller generators are removed automatically. In particular,
+\[
+ \Pf(\varnothing)=\{\varnothing\},\qquad
+ \hgt(\Pf(\varnothing))=1.
+\]
+
+An \emph{ideal} is a \textbf{nonempty}, downward-closed, directed subset. Directed means that every pair has an upper bound \emph{inside the subset}. Let $\Idl(A)$ be the poset of ideals under inclusion. We use $\Idl(\varnothing)=\varnothing$. Including the empty ideal would change several endpoint formulas; it is not our convention.
+
+The notation $B\emb A$ always means an order embedding: the map preserves \emph{and reflects} order. No preservation of directed suprema is required. A downward-closed embedding is stronger than an arbitrary embedding, and that distinction is essential in the main theorem.
+
+\subsection{Height, maximal order type, and width}
+For a well-founded poset $X$, define
+\[
+ r_X(x)=\sup_{y<x}(r_X(y)+1),\qquad
+ \hgt(X)=\sup_{x\in X}(r_X(x)+1).
+\]
+The height of the empty poset is $0$. An order embedding does not decrease ranks or height; passing to a downset preserves the ranks of its points. Both facts follow immediately by well-founded induction.
+
+The maximal order type $\mot(A)$ of a wpo is the rank of the empty root in its tree of finite bad sequences, with ranks computed towards extensions. A sequence $(a_0,\ldots,a_{k-1})$ is bad when there are no indices $i<j$ with $a_i\leq a_j$. Equivalently, it is the maximum order type of a well-ordered linear extension \cite{deJonghParikh,DSS}. The bad-sequence definition gives the residual identity
+\begin{equation}\label{eq:badresidual}
+ \mot(A)=\sup_{x\in A}\bigl(\mot(A\setminus\up_Ax)+1\bigr).
+\end{equation}
+Here $\up_Ax=\{y:x\leq y\}$. In particular $\mot(\varnothing)=0$, $\mot(n)=n$, and $\mot(\alpha)=\alpha$ for an ordinal chain. If $B\emb A$, then $\mot(B)\leq\mot(A)$, as follows by embedding the bad-sequence trees.
+
+The ordinal width $\wid(A)$ is the rank of the tree of finite pairwise incomparable sequences. When antichains have a finite maximum size $k$, this invariant is just $k$. We use width only in the finite-cap discussion.
+
+We distinguish ordinary ordinal addition $+$ from Hessenberg natural addition $\nsum$, and write $\otimes$ for natural multiplication. If ordinals are in Cantor normal form, natural addition adds coefficients of matching powers of $\omega$, while natural multiplication distributes with
+\[
+ \omega^\xi\otimes\omega^\eta=\omega^{\xi\nsum\eta}.
+\]
+The classical product theorem is
+\begin{equation}\label{eq:natural-product}
+ \mot(B\times C)=\mot(B)\otimes\mot(C)
+ \qquad\text{for wpos $B,C$}.
+\end{equation}
+This is the de Jongh--Parikh theorem; see also \cite[Lemma~4.5]{DSS}. We use Cartesian, not lexicographic, products.
+
+\section{The ideal-completion mechanism}
+This section proves the ideal facts needed later, including the endpoint conventions. The general ideal approach is developed in \cite{IdealApproach}; related completion identities are used in \cite[Section~5.2]{AHLLSSV}.
+
+\subsection{Finite covers of directed sets}
+\begin{lemma}[Directed finite-cover lemma]\label{lem:cover}
+Let $I$ be a nonempty directed subset of a poset and let $D_1,\ldots,D_m$ be downsets. If $I\subseteq\bigcup_{j=1}^m D_j$, then $I\subseteq D_j$ for some $j$.
+\end{lemma}
+\begin{proof}
+If no $D_j$ contains $I$, choose $x_j\in I\setminus D_j$. By directedness there is $z\in I$ above all $x_j$. Since the $D_j$ cover $I$, some $D_j$ contains $z$. Downward closure then puts $x_j$ in $D_j$, a contradiction. The case $m=0$ cannot cover a nonempty $I$.
+\end{proof}
+
+\begin{lemma}\label{lem:downwf}
+If $B$ is a wpo, $\Down(B)$ is well-founded under strict inclusion, and each of its elements is a finite union of ideals of $B$.
+\end{lemma}
+\begin{proof}
+Suppose $D_0\supsetneq D_1\supsetneq\cdots$ is an infinite decreasing sequence of downsets. Choose $x_i\in D_i\setminus D_{i+1}$. For $i<j$, the relation $x_i\leq x_j$ would imply $x_i\in D_{i+1}$, since $x_j\in D_j\subseteq D_{i+1}$. Thus $(x_i)$ is bad, contradicting the wpo property.
+
+Now induct over $\Down(B)$ under strict inclusion. The empty set is the empty union. A nonempty directed downset is itself an ideal. Otherwise there are $x,y\in D$ with no common upper bound in $D$, and
+\[
+ D=(D\setminus\up_Bx)\cup(D\setminus\up_By).
+\]
+Both terms are proper downsets. Apply the induction hypothesis to them and combine their finite ideal decompositions.
+\end{proof}
+
+\subsection{Two completion identities}
+\begin{proposition}\label{prop:commute}
+For every wpo $B$ there are natural order isomorphisms
+\begin{equation}\label{eq:ideal-powerset}
+ \Pf(\Idl(B))\cong\Down(B)\cong\Idl(\Pf(B)).
+\end{equation}
+The first isomorphism does not assert that $\Idl(B)$ is a wpo.
+\end{proposition}
+\begin{proof}
+Send a finite family of ideals to its union. By \cref{lem:downwf}, every downset is obtained. For finite families $(I_i)$ and $(J_j)$,
+\[
+ \bigcup_i I_i\subseteq\bigcup_j J_j
+ \quad\Longleftrightarrow\quad
+ (\forall i)(\exists j)\ I_i\subseteq J_j,
+\]
+because each $I_i$ is directed and \cref{lem:cover} applies. This is precisely the Hoare order, so union induces an isomorphism on the quotient. The empty family maps to the empty downset.
+
+For the second isomorphism, send an ideal $\mathcal I$ of $\Df(B)$ to $D=\bigcup\mathcal I$. Conversely, to a downset $D$ assign
+\[
+ \mathcal I_D=\{C\in\Df(B):C\subseteq D\}.
+\]
+It is a nonempty ideal: it contains $\varnothing$, is downward closed, and is closed under finite unions. If $C=\dn\{b_1,\ldots,b_m\}\subseteq\bigcup\mathcal I$, each $b_i$ belongs to some member of $\mathcal I$. Directedness gives a single member containing all those members; downward closure of $\mathcal I$ then gives $C\in\mathcal I$. Therefore $\mathcal I=\mathcal I_D$, proving the inverse identities and preservation of inclusion. In particular $D=\varnothing$ corresponds to the ideal $\{\varnothing\}$, not to an empty ideal.
+\end{proof}
+
+\begin{proposition}[Ranks of all downsets]\label{prop:downrank}
+For a wpo $B$ and every $D\in\Down(B)$,
+\begin{equation}\label{eq:downrank}
+ r_{\Down(B)}(D)=\mot(D).
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:downheight}
+ \hgt(\Down(B))=\mot(B)+1
+ =\hgt(\Pf(\Idl(B))).
+\end{equation}
+\end{proposition}
+\begin{proof}
+For any proper downset $C\subsetneq D$, choose $x\in D\setminus C$. Then $C\subseteq D\setminus\up_Dx$. Conversely, each $D\setminus\up_Dx$ is a proper downset of $D$. Monotonicity of maximal order type and \eqref{eq:badresidual} give
+\[
+ \mot(D)=\sup_{\substack{C\subsetneq D\\C\text{ a downset}}}(\mot(C)+1).
+\]
+This is the rank recursion on the well-founded poset $\Down(B)$. Induction proves \eqref{eq:downrank}. Since $B$ is its greatest element, height is the rank of $B$ plus one. Apply \cref{prop:commute} for the last equality.
+\end{proof}
+
+\subsection{Products, finite sums, and finite orders}
+\begin{lemma}\label{lem:basic-completions}
+For posets $B,C$,
+\[
+ \Idl(B\times C)\cong\Idl(B)\times\Idl(C),\qquad
+ \Idl(B\sqcup C)\cong\Idl(B)\sqcup\Idl(C).
+\]
+For a finite poset $F$, $\Idl(F)\cong F$ by $x\mapsto\dn_Fx$.
+\end{lemma}
+\begin{proof}
+An ideal in a product projects to an ideal in each factor. If $I$ is an ideal of $B\times C$ and $b,c$ occur in its two projections, choose witnesses $(b,c')$ and $(b',c)$ in $I$. A common upper bound in $I$ dominates $(b,c)$, which therefore belongs to $I$. Thus $I$ is exactly the product of its projections. This also identifies inclusion.
+
+A directed subset of a disjoint union cannot meet both components, proving the second assertion. Finally, a nonempty finite directed set has a greatest element: successively take common upper bounds of its finitely many members. A finite ideal is consequently principal, and principal ideals reflect order.
+\end{proof}
+
+\section{An intrinsic approximation invariant and a locality theorem}
+\subsection{The invariant and its universal lower bound}
+\begin{definition}\label{def:ao}
+For wpos $A,B$, write $B\prec_I A$ if $\Idl(B)\emb A$. Define
+\[
+ \ao(A)=\sup\{\mot(B)+1:B\text{ is a wpo and }B\prec_I A\}.
+\]
+The empty wpo is allowed as a witness, so $\ao(A)\geq1$, including when $A=\varnothing$.
+\end{definition}
+
+This is intrinsic: it uses only the underlying order and ordinary order embeddings, with no construction grammar, normal form, or chosen ordinal notation. It is invariant under isomorphism and monotone under order embeddings.
+
+The supremum is a set-sized ordinal. Indeed, $B$ embeds into $\Idl(B)$ by principal ideals, so every witness has cardinality at most $|A|$. Up to isomorphism, its order can be represented on a subset of a fixed set of cardinality $|A|$, and there are only set-many such orders. A witness automatically has wpo ideal completion because that completion embeds into $A$; we never assume this for arbitrary wpos.
+
+\begin{theorem}[Universal inequality]\label{thm:lower}
+For every wpo $A$,
+\[
+ \ao(A)\leq\hgt(\Pf(A)).
+\]
+\end{theorem}
+\begin{proof}
+An embedding $e:\Idl(B)\emb A$ induces an embedding on finite Hoare powersets. Preservation is immediate. For reflection, if the images of finite sets satisfy the Hoare relation, each comparison $e(I)\leq e(J)$ reflects to $I\subseteq J$. Hence
+\[
+ \mot(B)+1=\hgt(\Pf(\Idl(B)))\leq\hgt(\Pf(A))
+\]
+by \cref{prop:downrank}. Take the supremum over witnesses.
+\end{proof}
+
+\subsection{The structural hypothesis}
+\begin{definition}\label{def:LI}
+A wpo $A$ is \emph{locally ideal-representable}, written $A\in\LI$, if for every finite $S\subseteq A$ there is a downset $J\subseteq A$ containing $S$ and a wpo $B$ such that $J\cong\Idl(B)$. We call $J$ a local ideal representation and $B$ its core.
+\end{definition}
+
+The condition is not merely the assertion that many ideal completions embed in $A$: their images must be downward closed and must cover every finite configuration. Neither directedness of $A$ nor global existence of suprema is part of the definition.
+
+\begin{theorem}[Locality theorem]\label{thm:locality}
+If $A\in\LI$, then
+\begin{equation}\label{eq:main}
+ \hgt(\Pf(A))=\ao(A)
+ =\sup\{\mot(B)+1:J\subseteq A\text{ is a downset},\ J\cong\Idl(B)\}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Write $\mathcal J$ for the family of such $J$. If $J$ is downward closed in $A$, then $\Df(J)$ is naturally a downset of $\Df(A)$. Indeed, a finitely generated downset of $A$ contained in a member of $\Df(J)$ has all its generators in $J$, hence is finitely generated there as well. The two rank functions therefore agree on $\Df(J)$.
+
+Every $D=\dn_A S\in\Df(A)$ belongs to $\Df(J)$ for a $J\in\mathcal J$ containing $S$: downward closure ensures $D\subseteq J$. These downsets cover $\Df(A)$. Taking point ranks gives
+\[
+ \hgt(\Df(A))=\sup_{J\in\mathcal J}\hgt(\Df(J))
+ =\sup_{J\cong\Idl(B)}(\mot(B)+1).
+\]
+Every such representation supplies a witness in \cref{def:ao}, while \cref{thm:lower} bounds every witness from above. Both equalities follow. No interchange of arbitrary unions and ordinal ranks is used: the downset property is exactly what makes the ranks agree.
+\end{proof}
+
+\subsection{Canonical cores and pointwise ranks}
+The existential hypothesis can be sharpened to one involving only the finitely generated downsets themselves.
+
+\begin{lemma}\label{lem:fgwindow}
+If $B$ is a wpo and $I_1,\ldots,I_m\in\Idl(B)$, the finitely generated downset
+\[
+ L=\bigcup_{j=1}^m\dn_{\Idl(B)} I_j
+\]
+is isomorphic to $\Idl(C)$, where $C=\bigcup_{j=1}^m I_j\subseteq B$. For $m=0$, both $L$ and $C$ are empty.
+\end{lemma}
+\begin{proof}
+Since $C$ is a downset of $B$, its ideals are exactly the ideals of $B$ contained in $C$. A nonempty directed ideal contained in $\bigcup I_j$ is contained in some $I_j$ by \cref{lem:cover}. Thus its ideals are precisely the members of $L$, with the same inclusion order. Also $C$ is a wpo as a subposet of $B$.
+\end{proof}
+
+\begin{corollary}\label{cor:fg-equivalence}
+For a wpo $A$, the following are equivalent: $A\in\LI$; every finitely generated downset $D\subseteq A$ is isomorphic to the ideal completion of a wpo. Moreover, $\LI$ is inherited by arbitrary downsets.
+\end{corollary}
+\begin{proof}
+For the forward implication, contain the generators of $D$ in a local ideal representation $J$. Transport $D$ to a finitely generated downset of $\Idl(B)$ and apply \cref{lem:fgwindow}. The converse uses $D=\dn_A S$ as the required local representation. If $A'\subseteq A$ is a downset, then $\dn_{A'}S=\dn_A S$ for $S\subseteq A'$, so the same assertion applies to $A'$.
+\end{proof}
+
+For completeness, we make the core intrinsic. A poset is a \emph{dcpo} if each nonempty directed subset has a supremum. An element $c$ is \emph{compact} if whenever $c\leq\sup X$ for a nonempty directed $X$, one has $c\leq x$ for some $x\in X$. Let $\Comp(D)$ be the compact elements of $D$, ordered as in $D$. A dcpo is \emph{algebraic} if, below each point, the compact elements form a nonempty directed set with that point as supremum. We allow the empty dcpo, for which this condition is vacuous.
+
+\begin{lemma}[Recovering the core]\label{lem:compact}
+The compact elements of $\Idl(B)$ are exactly its principal ideals. Thus $\Comp(\Idl(B))\cong B$. Conversely, every algebraic dcpo $D$ is isomorphic to $\Idl(\Comp(D))$.
+\end{lemma}
+\begin{proof}
+Directed suprema in $\Idl(B)$ are unions. A principal ideal $\dn b$ contained in a directed union is contained in one member, since that member contains $b$. It is compact. Every ideal $I$ is the directed union of $\dn b$ for $b\in I$. If $I$ is compact, it must be contained in one such $\dn b$, and hence equals it.
+
+For the converse send $x\in D$ to $\Comp(D)\cap\dn x$. Algebraicity says this is a nonempty ideal and that its supremum is $x$, proving order reflection. For an ideal $I$ of $\Comp(D)$, let $x=\sup_D I$. Any compact $c\leq x$ is below some member of $I$, hence belongs to $I$. Therefore $I=\Comp(D)\cap\dn x$, proving surjectivity.
+\end{proof}
+
+\begin{theorem}[Intrinsic local rank formula]\label{thm:pointwise}
+For a wpo $A$, membership in $\LI$ is equivalent to every finitely generated downset being an algebraic dcpo. If $A\in\LI$ and $D\in\Df(A)$, then
+\begin{equation}\label{eq:pointwise}
+ r_{\Df(A)}(D)=\mot(\Comp(D)),
+ \qquad
+ \hgt(\Pf(A))=\sup_{D\in\Df(A)}\bigl(\mot(\Comp(D))+1\bigr).
+\end{equation}
+In particular a core of $D$ is unique up to order isomorphism.
+\end{theorem}
+\begin{proof}
+Combine \cref{cor:fg-equivalence,lem:compact}; in the converse direction $\Comp(D)$ is a wpo because it is a subposet of $D\subseteq A$. For the rank formula, the lower cone of $D$ in $\Df(A)$ is exactly $\Df(D)$. It has greatest element $D$. If $D\cong\Idl(B)$, \cref{prop:commute,prop:downrank} identify this lower cone with $\Down(B)$ and its top rank with $\mot(B)$. Finally $B\cong\Comp(D)$ by \cref{lem:compact}. The empty case gives rank $0$ on both sides.
+\end{proof}
+
+\section{A large class on which the invariant is exact}
+\subsection{Ordinal chains and finite base posets}
+For any ordinal $a$, put
+\begin{equation}\label{eq:rho}
+ \rho(a)=1+a=
+ \begin{cases}a+1,&a<\omega,\\a,&a\geq\omega.
+ \end{cases}
+\end{equation}
+The addition on the left is \emph{ordinary addition with $1$ on the left}.
+
+\begin{lemma}\label{lem:ordinal-core}
+For every ordinal $a$, $\Idl(\rho(a))\cong a+1$. Consequently every ordinal chain is locally ideal-representable, as is every finite poset.
+\end{lemma}
+\begin{proof}
+The ideals of an ordinal $\beta$ are its nonempty initial segments, indexed by $0<\gamma\leq\beta$. If $\beta$ is finite, their order type is $\beta$. If $\beta$ is infinite, the order type is $\beta+1$: removing the first point from the initial $\omega$-segment does not alter that segment's type. Substituting \eqref{eq:rho} gives the first assertion.
+
+A nonempty finite subset of an ordinal $\alpha$ has a maximum $a$, and $[0,a]$ is a downset represented by $\Idl(\rho(a))$. The empty subset can use the empty downset. For a finite poset use $\Idl(F)\cong F$ from \cref{lem:basic-completions}.
+\end{proof}
+
+\begin{remark}[A small but important endpoint issue]
+Under the nonempty-ideal convention, $\Idl(n)\cong n$ for finite $n$, not $n+1$. Writing $\Idl(\alpha)=\alpha+1$ without a qualification at finite $\alpha$ would make the finite-box and empty-poset formulas incorrect. Equation~\eqref{eq:rho} keeps these cases uniform.
+\end{remark}
+
+\subsection{Finite sums, products, and finitary powersets}
+\begin{proposition}\label{prop:closure-simple}
+If $A,C\in\LI$, then $A\sqcup C$, $A\times C$, and $\Pf(A)$ belong to $\LI$.
+\end{proposition}
+\begin{proof}
+For a finite subset of a disjoint union, choose a local representation in each component. Their disjoint union is downward closed and is an ideal completion by \cref{lem:basic-completions}.
+
+For a finite subset of $A\times C$, choose local representations $J\cong\Idl(B)$ and $K\cong\Idl(D)$ containing the two projections. Then $J\times K$ is a downset containing the chosen subset, and
+\[
+ J\times K\cong\Idl(B\times D).
+\]
+Empty factors cause no difficulty.
+
+Finally take finitely many elements of $\Pf(A)$ and choose finite generator sets for them. Their union is finite, so it lies in some downset $J\cong\Idl(B)$ of $A$. The poset $\Pf(J)$ is a downset of $\Pf(A)$ containing all the chosen elements, and
+\[
+ \Pf(J)\cong\Pf(\Idl(B))\cong\Down(B)\cong\Idl(\Pf(B)).
+\]
+The core $\Pf(B)$ is a wpo: the finitary Hoare powerset of a wpo is a wpo. This follows, for example, by choosing enumerations of finite sets and applying Higman's lemma, since a word embedding implies Hoare domination. This is one of the standard closure properties reviewed in \cite{IdealApproach}.
+\end{proof}
+
+\subsection{Bounded words: the required ideal classification}
+Let $\W(A)=A^{<\omega}$ under Higman's subsequence embedding: a word $a_1\cdots a_k$ embeds into $b_1\cdots b_l$ when there is a strictly increasing injection $\sigma:\{1,\ldots,k\}\to\{1,\ldots,l\}$ with $a_i\leq b_{\sigma(i)}$. Let $\W_{\leq N}(A)$ be the induced subposet of words of length at most $N$, including the empty word. Higman's lemma makes $\W(A)$ a wpo for wpo $A$ \cite{IdealApproach}.
+
+\begin{lemma}[Bounded-word ideals]\label{lem:words}
+For a wpo $B$ and $N\in\N$,
+\begin{equation}\label{eq:word-commute}
+ \Idl(\W_{\leq N}(B))\cong\W_{\leq N}(\Idl(B)).
+\end{equation}
+A word of ideals $(I_1,\ldots,I_k)$ corresponds to the downward closure of $I_1\times\cdots\times I_k$ in $\W_{\leq N}(B)$.
+\end{lemma}
+\begin{proof}
+Let $L$ be an ideal on the left and let $k$ be the largest length occurring in $L$. This exists because $L$ is nonempty and lengths are bounded. The length-$k$ part $L_k$ is a nonempty directed downset of $B^k$: between words of equal length, Higman embedding is coordinatewise comparison. Directedness of $L$ supplies common upper bounds of length $k$ because no larger length occurs. By the product identity, $L_k=I_1\times\cdots\times I_k$ for ideals $I_i$ of $B$.
+
+Every shorter word in $L$ lies below a length-$k$ word in $L$: combine it with any fixed word of length $k$ using directedness. Therefore $L=\dn L_k$. Conversely the downward closure of such a product is an ideal. For $k=0$ it is the one-element ideal consisting of the empty word.
+
+It remains to identify order, not just elements. Suppose the ideal generated by $(I_1,\ldots,I_k)$ is contained in the ideal generated by $(J_1,\ldots,J_l)$. Then $k\leq l$, and the directed product $I_1\times\cdots\times I_k$ is covered by the finitely many downsets
+\[
+ \{(b_1,\ldots,b_k):b_i\in J_{\sigma(i)}\text{ for all }i\},
+\]
+where $\sigma$ ranges over increasing injections. By \cref{lem:cover}, one injection works for the whole product. Since the factors are nonempty, this means $I_i\subseteq J_{\sigma(i)}$ for every $i$. Conversely such an injection plainly implies containment of the generated ideals. This is exactly Higman embedding on ideal words, proving the isomorphism.
+\end{proof}
+
+\begin{corollary}\label{cor:words-closure}
+If $A\in\LI$, then $\W(A)\in\LI$.
+\end{corollary}
+\begin{proof}
+Given finitely many words, let $N$ bound their lengths and choose a local ideal representation $J\cong\Idl(B)$ containing all their letters. Then $\W_{\leq N}(J)$ is a downset of $\W(A)$ containing these words. By \cref{lem:words}, it is isomorphic to $\Idl(\W_{\leq N}(B))$, and its core is a wpo.
+\end{proof}
+
+\subsection{Bounded multisets: avoiding a matching gap}
+Let $\M(A)$ consist of finite multisets over $A$, ordered by injective occurrence-wise embedding. Thus multiplicities matter and an injection need not preserve an ordering of occurrences. This is \emph{not} the multiset termination ordering. Write $\M_{\leq N}(A)$ and $\M_k(A)$ for cardinality at most $N$ and exactly $k$. These are wpos when $A$ is a wpo; enumerating occurrences and using word embeddings proves this directly.
+
+\begin{lemma}[Bounded-multiset ideals]\label{lem:multisets}
+For a wpo $B$ and $N\in\N$,
+\begin{equation}\label{eq:multiset-commute}
+ \Idl(\M_{\leq N}(B))\cong\M_{\leq N}(\Idl(B)).
+\end{equation}
+A multiset $(I_1,\ldots,I_k)$ of ideals represents the downward closure of the multisets obtained by choosing one element from each $I_i$.
+\end{lemma}
+\begin{proof}
+Let $L$ be an ideal and let $k$ be its largest occurring cardinality. As in the word case, its size-$k$ part $L_k$ is a cofinal ideal in $\M_k(B)$. Consider the quotient map
+\[
+ q:B^k\longrightarrow\M_k(B)
+\]
+forgetting the order of the coordinates. The inverse image $q^{-1}(L_k)$ is a downset of the wpo $B^k$. By \cref{lem:downwf}, it is a finite union of ideals $H_1,\ldots,H_r$, each a product of coordinate ideals.
+
+Each $q(H_j)$ is a directed downset in $\M_k(B)$. Directedness follows by choosing coordinatewise common upper bounds inside $H_j$. For downward closure, if $u\leq q(v)$ and both multisets have size $k$, a witnessing bijection orders the occurrences of $u$ into a tuple $u'\leq v$; then $u'\in H_j$. Thus the directed ideal $L_k=\bigcup_j q(H_j)$ is a finite union of downsets. By \cref{lem:cover}, one $q(H_j)$ already equals $L_k$. This proves the asserted representation, and smaller sizes are recovered by downward closure.
+
+For order, containment of two generated ideals says that each tuple from $I_1\times\cdots\times I_k$ can be matched into the other $l$ ideals. Cover this directed product by the finitely many matching-pattern downsets, indexed by injections $\sigma:\{1,\ldots,k\}\to\{1,\ldots,l\}$. The finite-cover lemma supplies one common injection and yields $I_i\subseteq J_{\sigma(i)}$ for all $i$. The converse is immediate. This proves equality of the two orders and also uniqueness up to permutation. The empty multiset handles $k=0$.
+\end{proof}
+
+\begin{corollary}\label{cor:multisets-closure}
+If $A\in\LI$, then $\M(A)\in\LI$.
+\end{corollary}
+\begin{proof}
+Bound the cardinalities of a finite family of multisets by $N$, and contain all occurring elements in $J\cong\Idl(B)$ downward closed in $A$. Then $\M_{\leq N}(J)$ is the required downset, using \cref{lem:multisets} with core $\M_{\leq N}(B)$.
+\end{proof}
+
+\subsection{The resulting closure theorem}
+\begin{theorem}\label{thm:closure}
+Let $\mathcal C$ be the least class containing all ordinal chains and all finite posets, and closed under finite disjoint unions, finite Cartesian products, $\W$, $\M$, and $\Pf$. Every member of $\mathcal C$, and every downset of every member, belongs to $\LI$. Therefore $\hgt(\Pf(A))=\ao(A)$ throughout this class.
+\end{theorem}
+\begin{proof}
+Use \cref{lem:ordinal-core,prop:closure-simple,cor:words-closure,cor:multisets-closure} and structural induction. Downsets are covered by \cref{cor:fg-equivalence}, and exactness is \cref{thm:locality}.
+\end{proof}
+
+The original elementary wpos are included: their ordinal bases are more restricted, but their constructors occur in this closure. Combining \cref{thm:closure} with \cite[Theorem~5.10]{AHLLSSV} proves \eqref{eq:agreement-intro}. The argument establishes an intrinsic \emph{value} for their weakened maximal order type; it does not assert equality between the source's entire syntactic approximation relation and $\prec_I$.
+
+\section{Exact heights for products of arbitrary ordinals}
+\subsection{A formula valid at finite and infinite endpoints}
+\begin{theorem}[Ordinal-product formula]\label{thm:ordinal-products}
+Let $d\geq1$ and let $\alpha_1,\ldots,\alpha_d$ be nonzero ordinals. With the coordinatewise order on $A=\prod_{i=1}^d\alpha_i$,
+\begin{equation}\label{eq:ordinal-products}
+ \boxed{\displaystyle
+ \hgt(\Pf(A))=
+ \sup_{a_i<\alpha_i}\left(\bigotimes_{i=1}^d(1+a_i)+1\right).}
+\end{equation}
+Each $1+a_i$ is ordinary ordinal addition. If any factor is zero, then $A=\varnothing$ and the height is $1$, rather than the empty supremum $0$.
+\end{theorem}
+\begin{proof}
+For $\mathbf a=(a_1,\ldots,a_d)$, its principal downset is the box
+\[
+ D_{\mathbf a}=\prod_{i=1}^d(a_i+1)
+ \cong\Idl\!\left(\prod_{i=1}^d\rho(a_i)\right)
+\]
+by \cref{lem:ordinal-core,lem:basic-completions}. It follows from \cref{thm:pointwise} and the natural-product theorem \eqref{eq:natural-product} that
+\begin{equation}\label{eq:box-rank}
+ r_{\Df(A)}(D_{\mathbf a})
+ =\mot\!\left(\prod_i\rho(a_i)\right)
+ =\bigotimes_i\rho(a_i).
+\end{equation}
+Every nonempty finitely generated downset is contained in such a box: take the coordinatewise maxima of its finite generators. The empty downset is contained in any box because all factors are nonzero. Hence the boxes are cofinal in $\Df(A)$. Taking their ranks plus one gives the full height.
+\end{proof}
+
+\begin{corollary}[All factors have a last point]\label{cor:successors}
+If $\alpha_i=a_i+1$ for every $i$, then
+\[
+ \hgt\!\left(\Pf\!\left(\prod_i\alpha_i\right)\right)
+ =\left(\bigotimes_i(1+a_i)\right)+1.
+\]
+For finite chains of positive lengths $n_1,\ldots,n_d$, the answer is $n_1\cdots n_d+1$.
+\end{corollary}
+\begin{proof}
+The greatest box is the whole product, so the supremum in \eqref{eq:ordinal-products} is attained at its top tuple. For finite $a_i=n_i-1$, one has $1+a_i=n_i$.
+\end{proof}
+
+\subsection{Why endpoint changes matter}
+For $A=\omega\times\omega$, every finite set is bounded in a finite box. Its rank is consequently finite, while arbitrarily large finite ranks occur. Therefore $\hgt(\Pf(A))=\omega$.
+
+For $A=\omega\times(\omega+1)$, boxes of the form $(n+1)\times(\omega+1)$ have cores $(n+1)\times\omega$, so their ranks are $\omega(n+1)$. Their supremum is $\omega^2$. If both factors have endpoints, the single greatest box has core $\omega\times\omega$, whose maximal order type is $\omega^2$. This gives height $\omega^2+1$.
+
+Thus three very similar products have the distinct values
+\[
+ \hgt(\Pf(\omega\times\omega))=\omega,\qquad
+ \hgt(\Pf(\omega\times(\omega+1)))=\omega^2,\qquad
+ \hgt(\Pf((\omega+1)^2))=\omega^2+1.
+\]
+Here the square in the last expression denotes a Cartesian square. Replacing $1+a$ by $a+1$ in the general formula would erase the correct ideal core at infinite endpoints and give erroneous ranks.
+
+\section{Milner--Rado sums and monomial product formulas}
+\subsection{The ordinal operation that evaluates the supremum}
+For positive ordinals $\beta_1,\ldots,\beta_d$, the Milner--Rado sum is characterized by
+\begin{equation}\label{eq:MRsup}
+ \beta_1\MR\cdots\MR\beta_d
+ =\sup_{\eta_i<\beta_i}(\eta_1\nsum\cdots\nsum\eta_d+1).
+\end{equation}
+Equivalently, it is the least ordinal not representable as such a natural sum of strict predecessors. These equivalences and its Cantor-normal-form rule are classical; see \cite[Definition~2.19 and Theorem~2.20]{Hilton}.
+
+Here is that rule in a form convenient for computation. Let $\tau_i$ be the last (smallest) exponent occurring in the Cantor normal form of $\beta_i$, and put
+\[
+ \tau=\max_i\tau_i,\qquad
+ k=|\{i:\tau_i=\tau\}|.
+\]
+Let $c$ be the sum of the coefficients of $\omega^\tau$ in the $\beta_i$, allowing coefficient zero when absent. Let $H$ be the natural sum of all terms with exponent strictly greater than $\tau$. Then
+\begin{equation}\label{eq:MRcnf}
+ \beta_1\MR\cdots\MR\beta_d=H+\omega^\tau(c-k+1).
+\end{equation}
+All smaller terms disappear. For positive finite $n_i$, this becomes
+\[
+ n_1\MR\cdots\MR n_d=\sum_i n_i-d+1.
+\]
+In contrast, $\omega\MR\omega=\omega$, while $(\omega+1)\MR(\omega+1)=\omega\cdot2+1$.
+
+\subsection{All factors are powers of omega}
+\begin{theorem}[Open monomial factors]\label{thm:monomials}
+For any positive ordinals $\beta_1,\ldots,\beta_d$,
+\begin{equation}\label{eq:monomial-height}
+ \boxed{\displaystyle
+ \hgt\!\left(\Pf\!\left(\prod_{i=1}^d\omega^{\beta_i}\right)\right)
+ =\omega^{\beta_1\MR\cdots\MR\beta_d}.}
+\end{equation}
+No countability assumption is needed.
+\end{theorem}
+\begin{proof}
+By \cref{thm:ordinal-products}, consider the natural products of $\rho(a_i)=1+a_i$ for $a_i<\omega^{\beta_i}$. Each $\rho(a_i)$ is positive and less than $\omega^{\beta_i}$, so it has a leading Cantor exponent $\eta_i<\beta_i$. The leading exponent of their natural product is
+\[
+ \delta=\eta_1\nsum\cdots\nsum\eta_d.
+\]
+Thus that product, even after adding $1$, is less than $\omega^{\delta+1}$.
+
+Conversely fix any tuple $\eta_i<\beta_i$. The values of $\rho(a_i)$ can have those leading exponents with arbitrarily large finite coefficients. For $\eta_i>0$, take $a_i=\omega^{\eta_i}n$ with $n\geq1$; for $\eta_i=0$, take $a_i=n-1$, so $\rho(a_i)=n$. These choices remain strictly below the corresponding $\omega^{\beta_i}$. The natural products are $\omega^\delta n^d$, which are cofinal in $\omega^{\delta+1}$. Therefore the required supremum is exactly
+\[
+ \sup_{\eta_i<\beta_i}\omega^{\eta_1\nsum\cdots\nsum\eta_d+1}
+ =\omega^{\sup_{\eta_i<\beta_i}(\eta_1\nsum\cdots\nsum\eta_d+1)}.
+\]
+Continuity of ordinal exponentiation and \eqref{eq:MRsup} prove the result. This cofinality argument ranges over all predecessor tuples; for uncountable exponents it does not replace them by a countable sequence.
+\end{proof}
+
+\begin{corollary}\label{cor:finite-exponents}
+For positive integers $n_1,\ldots,n_d$,
+\[
+ \hgt\!\left(\Pf\!\left(\prod_i\omega^{n_i}\right)\right)
+ =\omega^{n_1+\cdots+n_d-d+1}.
+\]
+For example, $\hgt(\Pf(\omega^2\times\omega^2))=\omega^3$, whereas $\mot(\omega^2\times\omega^2)=\omega^4$.
+\end{corollary}
+
+\subsection{Closed and mixed endpoints}
+Let $L$ and $C$ be disjoint finite index sets. For positive ordinal exponents, consider
+\[
+ A=\prod_{i\in L}\omega^{\beta_i}
+   \times\prod_{j\in C}(\omega^{\gamma_j}+1)
+   \times\prod_{t=1}^r n_t,
+ \qquad 0<n_t<\omega.
+\]
+An index in $L$ denotes a factor without its limiting endpoint; an index in $C$ denotes a factor with that endpoint adjoined.
+
+\begin{theorem}[Mixed monomial products]\label{thm:mixed}
+If $L\ne\varnothing$, let
+\[
+ \Delta=\mathop{\bigodot}_{i\in L}\beta_i
+          \MR\mathop{\bigodot}_{j\in C}(\gamma_j+1),
+\]
+where this means the Milner--Rado sum of the indicated nonempty concatenated list, omitting an empty sublist. Then
+\begin{equation}\label{eq:mixed}
+ \hgt(\Pf(A))=\omega^\Delta.
+\end{equation}
+If $L=\varnothing$, put $R=\prod_t n_t$ and $\Gamma=\mathop{\#}_{j\in C}\gamma_j$, with empty values $R=1$, $\Gamma=0$. Then
+\begin{equation}\label{eq:closed}
+ \hgt(\Pf(A))=\omega^\Gamma R+1.
+\end{equation}
+A zero finite factor instead gives height $1$.
+\end{theorem}
+\begin{proof}
+The closed factors may be maximized at their endpoints in \eqref{eq:ordinal-products}; their cores are $\omega^{\gamma_j}$. Finite factors similarly contribute the fixed coefficient $R$. When all factors are closed or finite, \cref{cor:successors} gives \eqref{eq:closed} directly.
+
+Suppose $L\ne\varnothing$. For fixed leading exponents $\eta_i<\beta_i$ in the open factors, the natural product has leading exponent
+\[
+ \delta=\mathop{\#}_{i\in L}\eta_i\nsum\mathop{\#}_{j\in C}\gamma_j.
+\]
+At least one open factor allows an arbitrarily large finite coefficient, while all closed and finite contributions are fixed. Exactly as in \cref{thm:monomials}, the corresponding supremum is $\omega^{\delta+1}$. Now
+\[
+ \sup_{\eta_i<\beta_i}\left(
+ \mathop{\#}_{i\in L}\eta_i\nsum\mathop{\#}_{j\in C}\gamma_j+1\right)=\Delta:
+\]
+in \eqref{eq:MRsup}, the strict predecessors of $\gamma_j+1$ have a greatest member $\gamma_j$, so taking those greatest members does not change the supremum. This proves \eqref{eq:mixed}. The fixed positive finite coefficient $R$ is absorbed by the unbounded coefficient in the cofinality argument.
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\renewcommand{\arraystretch}{1.22}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Underlying product $A$ & $\hgt(\Pf(A))$\\
+\midrule
+$\omega\times\omega$ & $\omega$\\
+$\omega\times(\omega+1)$ & $\omega^2$\\
+$(\omega+1)\times(\omega+1)$ & $\omega^2+1$\\
+$\omega^2\times\omega^2$ & $\omega^3$\\
+$(\omega^2+1)\times(\omega+1)$ & $\omega^3+1$\\
+$\omega^\omega\times\omega^\omega$ & $\omega^\omega$\\
+$3\times(\omega+1)$ & $\omega\cdot3+1$\\
+$3\times\omega$ & $\omega$\\
+$3\times4$ & $13$\\
+\bottomrule
+\end{tabular}
+\caption{Exact examples obtained from the product theorems. Every multiplication sign in the left column denotes a Cartesian product of ordinal chains.}
+\label{tab:products}
+\end{table}
+
+\subsection{A numerical link with topological pigeonhole numbers}
+For ordinals $\alpha_1,\ldots,\alpha_d$, let $P^{\mathrm{top}}(\alpha_1,\ldots,\alpha_d)$ denote the least ordinal $\theta$ such that every coloring of $\theta$ in $d$ colors has, in some color $i$, a subspace homeomorphic to $\alpha_i$, with the ordinal order topologies. Hilton computes these values for the cases needed here \cite[Theorems~1.1 and~4.7]{Hilton}.
+
+\begin{corollary}\label{cor:pigeonhole}
+Suppose each $\alpha_i$ is either $\omega^{\beta_i}$ or $\omega^{\beta_i}+1$, where $0<\beta_i<\omega_1$. Then
+\[
+ \hgt\!\left(\Pf\!\left(\prod_i\alpha_i\right)\right)
+ =P^{\mathrm{top}}(\alpha_1,\ldots,\alpha_d).
+\]
+\end{corollary}
+\begin{proof}
+If every endpoint is present, both sides equal $\omega^{\beta_1\nsum\cdots\nsum\beta_d}+1$. If at least one endpoint is absent, both sides equal the mixed Milner--Rado expression in \cref{thm:mixed}, by the cited topological theorem.
+\end{proof}
+
+This is a numerical consequence of two formulas, not a new proof of Hilton's partition theorem and not an asserted equivalence of their combinatorial mechanisms. The countability restriction applies to this comparison; it does not apply to the powerset-height theorems. Nor does the comparison automatically extend to arbitrary ordinal factors: for example, the finite powerset height of $2\times2$ is $5$, whereas the ordinary finite topological pigeonhole number $P^{\mathrm{top}}(2,2)$ is $3$.
+
+\section{A sharp obstruction: a limit chain with a finite cap}
+\subsection{The exact two formulas}
+Let $\lambda$ be a nonzero infinite limit ordinal, and let $F$ be a nonempty finite poset. The ordinal sum $A=\lambda+F$ puts every member of the initial chain below every member of $F$, preserving the internal order of $F$. Set
+\[
+ n=|F|,\qquad u(F)=\max_{x\in F}|\up_Fx|.
+\]
+
+\begin{theorem}[Finite-cap classification]\label{thm:caps}
+For $A=\lambda+F$ as above,
+\begin{align}
+ \hgt(\Pf(A))&=\lambda+n,\label{eq:cap-height}\\
+ \ao(A)&=\lambda+u(F).\label{eq:cap-ao}
+\end{align}
+Therefore $\ao(A)=\hgt(\Pf(A))$ if and only if $F$ has a least element. The same condition is equivalent to $A\in\LI$ within this family.
+\end{theorem}
+
+\begin{proof}[Proof of \eqref{eq:cap-height}]
+A finitely generated downset of $A$ has one of two forms. If no generator lies in $F$, it is empty or a principal initial segment of $\lambda$. These form a chain of order type $1+\lambda=\lambda$. If at least one generator lies in $F$, it is
+\[
+ \lambda\cup D,\qquad\varnothing\ne D\in\Down(F).
+\]
+Every first-kind element is strictly below every second-kind element. Hence
+\begin{equation}\label{eq:cap-structure}
+ \Df(A)\cong\lambda+\bigl(\Down(F)\setminus\{\varnothing\}\bigr).
+\end{equation}
+For a finite poset, a downset $D$ has rank $|D|$ in its downset lattice: each strict inclusion reduces cardinality, and a linear extension of $D$ supplies all intermediate sizes. After deleting the empty downset, the rank of a nonempty $D$ is $|D|-1$. Thus its rank in \eqref{eq:cap-structure} is $\lambda+(|D|-1)$, and the greatest element has rank $\lambda+(n-1)$. The height is $\lambda+n$.
+\end{proof}
+
+\begin{proof}[Proof of the lower bound in \eqref{eq:cap-ao}]
+Choose $x\in F$ with $|\up_Fx|=u(F)$, and put $G=\{y\in F:x<y\}$. Set $B=\lambda+G$. Its ideals are the nonempty initial segments of $\lambda$, including all of $\lambda$, followed by the ideals meeting $G$. Such a latter ideal is $\lambda\cup\dn_G g$ for some $g\in G$, since every directed ideal in finite $G$ is principal. Therefore
+\[
+ \Idl(B)\cong(\lambda+1)+G.
+\]
+Embed this in $A$ by mapping its initial chain of type $\lambda$ onto the prefix of $A$, its extra point to $x$, and each member of $G$ to itself. This is an order embedding because $G$ consists of points strictly above $x$.
+
+Every linear extension of $B$ lists the entire prefix $\lambda$ before the $|G|$ remaining elements. Hence $\mot(B)=\lambda+|G|$, and this witness gives
+\[
+ \ao(A)\geq\mot(B)+1=\lambda+u(F).
+\]
+This also covers $G=\varnothing$.
+\end{proof}
+
+\begin{proof}[Proof of the upper bound in \eqref{eq:cap-ao}]
+Let $e:\Idl(B)\emb A$ be any witness. Partition $B$ according to the images of its principal ideals:
+\[
+ C=\{b\in B:e(\dn_Bb)\in\lambda\},\qquad G=B\setminus C.
+\]
+Order reflection implies that $C$ is a well-ordered chain of type $\beta\leq\lambda$. The set $G$ is finite, since its principal ideals inject into $F$. Every member of $C$ is below every member of $G$, again by reflection. Thus $B\cong\beta+G$, and
+\[
+ \mot(B)=\beta+|G|.
+\]
+If $\beta<\lambda$, then $\beta+|G|+1<\lambda$ because $\lambda$ is a limit ordinal and the added tail is finite. Such witnesses cannot exceed the desired bound.
+
+Suppose $\beta=\lambda$. The set $C$ is a nonempty directed downset of $B$, with no greatest element, so $C$ itself is a nonprincipal ideal of $B$. Its image cannot lie in the prefix $\lambda$: that would place the principal images of a chain of order type $\lambda$ below one point of $\lambda$, impossible because every bounded initial segment has type strictly less than $\lambda$. Hence $x=e(C)\in F$.
+
+For every $g\in G$, one has $C\subsetneq\dn_Bg$, so $x<e(\dn_Bg)$. The $|G|$ distinct images thus lie in the strict upper cone of $x$ in $F$. Consequently
+\[
+ |G|+1\leq|\up_Fx|\leq u(F),
+ \qquad \mot(B)+1\leq\lambda+u(F).
+\]
+This bounds every witness and proves \eqref{eq:cap-ao}.
+\end{proof}
+
+\begin{proof}[Proof of the characterizations]
+Since $F$ is finite and nonempty, $u(F)=|F|$ holds exactly when some $x\in F$ lies below every member of $F$, that is, when $F$ has a least element. The two formulas prove the equality characterization.
+
+If $F$ has a least element $x$, the construction above with $G=F\setminus\{x\}$ gives $A\cong\Idl(\lambda+G)$. Taking $J=A$ proves $A\in\LI$. Conversely, $A\in\LI$ would imply equality by \cref{thm:locality}, forcing $F$ to have a least element.
+\end{proof}
+
+\subsection{The smallest transparent failure}
+Let $\mathcal A_k$ be an antichain of $k\geq1$ points. Then $u(\mathcal A_k)=1$, and \cref{thm:caps} gives
+\begin{equation}\label{eq:fork}
+ \ao(\lambda+\mathcal A_k)=\lambda+1,
+ \qquad
+ \hgt(\Pf(\lambda+\mathcal A_k))=\lambda+k.
+\end{equation}
+For $k=2$, an $\omega$-chain capped by two incomparable points already refutes the universal identity $\ao(A)=\hgt(\Pf(A))$. The finite-tail discrepancy $k-1$ can be arbitrarily large.
+
+The mechanism is instructive. An ideal completion supplies a single element representing the whole increasing prefix. In the target, that element must use one cap point. Any additional principal images must then sit above that selected point, so they cannot use incomparable cap points. The finite powerset, however, can combine incomparable cap points one after another. It therefore sees the total number of cap points, not just the size of one upper cone.
+
+This also shows why downward closure matters. The non-$\LI$ poset $\omega+\mathcal A_2$ embeds into the $\LI$ product $(\omega+2)\times(\omega+2)$: map $n$ to $(n,n)$ and the two cap points to $(\omega+1,\omega)$ and $(\omega,\omega+1)$. Its image omits $(\omega,\omega)$ and is not downward closed. Thus $\LI$ is not inherited by arbitrary embedded subposets.
+
+\subsection{A table of finite caps}
+\begin{table}[htbp]
+\centering
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+$F$ & $|F|$ & $u(F)$ & $\ao(\omega+F)$ & $\hgt(\Pf(\omega+F))$\\
+\midrule
+One point & 1 & 1 & $\omega+1$ & $\omega+1$\\
+Two-point antichain & 2 & 1 & $\omega+1$ & $\omega+2$\\
+Three-point antichain & 3 & 1 & $\omega+1$ & $\omega+3$\\
+Three-point chain & 3 & 3 & $\omega+3$ & $\omega+3$\\
+$C_3\sqcup C_1$ & 4 & 3 & $\omega+3$ & $\omega+4$\\
+$C_3\sqcup C_2$ & 5 & 3 & $\omega+3$ & $\omega+5$\\
+One point below two incomparable points & 3 & 3 & $\omega+3$ & $\omega+3$\\
+\bottomrule
+\end{tabular}
+\caption{The cap formulas distinguish total finite size from maximum upper-cone size. Here $C_j$ is a chain of $j$ points. The accompanying CSV records the same calculations.}
+\label{tab:caps}
+\end{table}
+
+\section{Trying the same construction for the other two invariants}
+For comparison, define the following two \emph{new candidate} invariants:
+\[
+ \ah(A)=\sup_{\Idl(B)\emb A}(\hgt(B)+1),\qquad
+ \aw(A)=\sup_{\Idl(B)\emb A}(\wid(B)+1).
+\]
+These definitions are intrinsic, but we have not proved that they agree with the source's weakened height and width on elementary orders. They are introduced only to test whether using all three analogous ideal-embedding quantities repairs the cap obstruction.
+
+\begin{proposition}\label{prop:othercaps}
+For an infinite limit ordinal $\lambda$ and a nonempty finite poset $F$,
+\[
+ \ah(\lambda+F)=\lambda+\hgt(F),\qquad
+ \aw(\lambda+F)=\wid(F)+1.
+\]
+\end{proposition}
+\begin{proof}
+For height, repeat the witness decomposition $B\cong\beta+G$ from the proof of \cref{thm:caps}. When $\beta<\lambda$, $\hgt(B)+1<\lambda$. When $\beta=\lambda$, the image $x$ of the nonprincipal prefix ideal lies strictly below every image of $G$. A chain of maximum length in $G$ can therefore be prefixed by $x$ inside $F$, giving $\hgt(G)+1\leq\hgt(F)$. Hence $\hgt(B)+1\leq\lambda+\hgt(F)$. Equality is witnessed by $B=\lambda+C_{r-1}$, where $r=\hgt(F)$, using a chain of length $r$ in $F$.
+
+For width, the principal-ideal embedding puts $B$ inside $\lambda+F$, so every antichain of $B$ has size at most $\wid(F)$. This gives $\wid(B)+1\leq\wid(F)+1$. Taking $B=F$ supplies equality because $\Idl(F)\cong F\emb\lambda+F$.
+\end{proof}
+
+\begin{corollary}\label{cor:triple-fail}
+The triple $(\ao(A),\ah(A),\aw(A))$ does not determine $\hgt(\Pf(A))$ on all wpos.
+\end{corollary}
+\begin{proof}
+Take $A=\omega+(C_3\sqcup C_1)$ and $A'=\omega+(C_3\sqcup C_2)$. In both finite caps, $u=3$, height is $3$, and width is $2$. Thus both triples equal $(\omega+3,\omega+3,3)$. But their finitary powerset heights are $\omega+4$ and $\omega+5$ by \cref{thm:caps}.
+\end{proof}
+
+This conclusion concerns exactly these three proposed invariants. It does not show that every conceivable intrinsic extension fails, and it does not address a larger tuple also containing the ordinary maximal order type, which already distinguishes these two examples.
+
+\section{Reproducible checks and their limitations}
+\subsection{What the programs actually verify}
+The accompanying programs use Python 3.10 or later and only the standard library. The file \texttt{ordinal\_arithmetic.py} implements recursive Cantor-normal-form ordinals below $\eps_0$, ordinary addition, natural sum and product, the finite Milner--Rado sum, and the mixed monomial-product formula. The mathematical theorems themselves have no $\eps_0$ restriction; that bound is a choice of executable notation.
+
+Run \texttt{python verify.py} to regenerate the JSON report and the finite-cap CSV. Redirect the printed output to \texttt{verification\_output.txt} to retain a text copy. The completed run reported the following.
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Check family & Count\\
+\midrule
+Naturally labelled posets on at most five points & 408\\
+Downsets enumerated in those posets & 5,231\\
+Nonempty directed ideals identified & 1,971\\
+Hoare/union order comparisons & 376,293\\
+Bounded word/multiset test constructions & 10\\
+Exact ordinal and predecessor-sample assertions & 1,947\\
+Finite-prefix cap instances & 28\\
+\bottomrule
+\end{tabular}
+\end{center}
+All reported assertions passed. Naturally labelled means that the ordinary label order is a linear extension. Every finite poset admits such a labeling, so all isomorphism types through five points occur, although isomorphic repetitions remain.
+
+The finite-poset checks independently enumerate all downsets, test directedness, and verify that ideals are principal. They compare every pair of finite families of ideals: Hoare domination must agree with inclusion of their unions. The bounded-construction checks explicitly generate the ideal descriptions for word and multiset lengths at most two over five small base orders, and compare both elements and orders.
+
+The ordinal tests include exact finite Milner--Rado calculations from both its predecessor definition and its closed formula, selected transfinite Cantor-normal-form identities, and the product examples in \cref{tab:products}. The predecessor sampler produces lower approximants only. A finite sequence of those samples does not certify any asserted transfinite supremum.
+
+\subsection{Why finite checks are not a proof of the main theorem}
+Every finite poset is already its own ideal completion. Consequently a finite test cannot detect the nonprincipal ideal of an infinite limit chain that drives \cref{thm:caps}. In fact, replacing $\lambda$ by a finite chain of length $m$ changes the formula:
+\[
+ \ao(m+F)=\hgt(\Pf(m+F))=m+|F|+1.
+\]
+The finite counterexample analogue has no discrepancy at all. The program verifies this finite offset explicitly rather than pretending that a large finite prefix simulates $\omega$.
+
+Similarly, finite tests of the bounded-word and bounded-multiset identities exercise endpoint, matching, and quotient conventions, but do not prove their infinite cases. Those rely on the directed finite-cover lemma and the finite ideal-decomposition theorem, with the mathematical proofs given above. The software is a reproducibility and error-detection aid, not a substitute for proof checking.
+
+\subsection{Using the ordinal evaluator}
+For example, the following calculates two displayed heights exactly.
+\begin{lstlisting}[language=Python]
+from ordinal_arithmetic import (
+    ONE, OMEGA, Ordinal, monomial_product_height
+)
+
+# A = omega^2 x omega^2; output: w^(3)
+h1 = monomial_product_height(
+    open_exponents=[Ordinal.finite(2), Ordinal.finite(2)],
+    closed_exponents=[]
+)
+
+# A = (omega+1) x (omega+1); output: w^(2) + 1
+h2 = monomial_product_height(
+    open_exponents=[], closed_exponents=[ONE, ONE]
+)
+print(h1)
+print(h2)
+\end{lstlisting}
+The variable \texttt{OMEGA} can itself be used as an exponent, so the same representation handles $\omega^\omega$ and recursively more complicated ordinals below $\eps_0$. Invalid Cantor normal forms and inappropriate zero exponents are rejected; zero finite factors are handled separately as products with an empty underlying factor.
+
+\section{Assessment and remaining research directions}
+\subsection{How far the published problem has been answered}
+The positive result is more than a redefinition of $\hgt(\Pf(A))$: $\ao(A)$ is defined using $\mot(B)$ and ideal embeddings into $A$, without mentioning the powerset height. Theorem~\ref{thm:locality} proves that these a priori different quantities agree under a checkable structural condition. Theorem~\ref{thm:closure} then proves that the condition survives the relevant constructors, rather than assuming it separately for every expression.
+
+The canonical formula of \cref{thm:pointwise} goes further: it identifies the ordinal rank of an individual finitely generated downset by the maximal order type of its compact elements. This formulation contains neither a presentation of $A$ nor a noncanonical choice of core.
+
+For ordinal products, \cref{thm:ordinal-products,thm:mixed} remove the original restrictions on the base ordinal factors for this height calculation. They handle small powers, finite coordinates, successors, and mixed limiting endpoints. However, a structural representation theorem is not the same as a uniform recursive evaluator for arbitrary nested words, multisets, and powersets. Such an evaluator remains a separate task.
+
+\subsection{The obstruction indicates what additional information is needed}
+The cap theorem makes the missing information concrete. The ideal-embedding invariant is constrained to the part of the cap lying above one representative of a limit ideal. The powerset height can combine several incomparable cap components. Any universal extension modeled on a single ideal embedding must somehow account for these finite combinations, or it will reproduce the discrepancy.
+
+One possible next object is an approximation by finite diagrams of ideal completions, retaining their intersections and common upper bounds, rather than one core at a time. This is a proposed direction, not a theorem. To be useful, such a definition must not simply restate the rank recursion on $\Df(A)$, and it should have a compositional theory on a class larger than $\LI$.
+
+A second concrete question is to characterize equality $\ao(A)=\hgt(\Pf(A))$ without assuming local ideal representability. We have an exact characterization only for the family $\lambda+F$. Numerical equality can in principle hold for reasons weaker than local representation, so the converse of \cref{thm:locality} should not be silently assumed.
+
+A third question concerns the numerical partition-theoretic correspondence. The coincidence in \cref{cor:pigeonhole} may invite a direct translation between local rank obstructions and topological colorings, but none is established here. The failure on finite factors shows that an unrestricted equality would be wrong.
+
+\subsection{Status of the proposed proofs}
+The decisive arguments are finite-cover uniformization, preservation of ranks on downward-closed subposets, and the placement of the nonprincipal limit ideal in the finite-cap upper bound. Those steps are isolated in full detail. A proof-audit checklist accompanies the source and summarizes dependencies, empty-set conventions, and the boundary cases most likely to cause an error.
+
+The article should be read as a mathematically substantive research attempt with proposed complete proofs of its stated theorems, not as an independently certified solution of the entire published research program. An expert review could still find a gap or identify a result already implicit in prior work. The computational checks passed, but do not remove that uncertainty.
+
+\appendix
+\section{Worked local cores and boundary checks}
+\subsection{A point rank inside a product}
+Let $A=(\omega+2)\times(\omega+1)$ and let $D=\dn_A(\omega+1,\omega)$. Then
+\[
+ D=(\omega+2)\times(\omega+1)
+ \cong\Idl((\omega+1)\times\omega).
+\]
+Its compact core has maximal order type
+\[
+ (\omega+1)\otimes\omega=\omega^2+\omega.
+\]
+Therefore $r_{\Df(A)}(D)=\omega^2+\omega$ and $\hgt(\Pf(A))=\omega^2+\omega+1$. By contrast, for the smaller box $D'=\dn_A(\omega,\omega)$, the core is $\omega\times\omega$, and its rank is $\omega^2$. The two neighboring ordinal endpoints genuinely change the point rank by an infinite amount.
+
+\subsection{A nonprincipal finitely generated downset}
+In $A=(\omega+2)\times(\omega+2)$, take the two generators
+\[
+ s=(\omega+1,\omega),\qquad t=(\omega,\omega+1),
+ \qquad D=\dn\{s,t\}.
+\]
+The whole product is $\Idl(B)$ with $B=(\omega+1)\times(\omega+1)$. Under this representation, $s$ corresponds to the ideal
+\[
+ I_s=(\omega+1)\times\omega,
+\]
+and $t$ corresponds to $I_t=\omega\times(\omega+1)$. Hence the canonical core of $D$ is
+\[
+ C=I_s\cup I_t=B\setminus\{(\omega,\omega)\}.
+\]
+The top point of $B$ is above everything else, so every linear extension of $B$ is a linear extension of $C$ followed by that point. Therefore $\mot(B)=\mot(C)+1$. Since
+\[
+ \mot(B)=(\omega+1)\otimes(\omega+1)=\omega^2+\omega\cdot2+1,
+\]
+we obtain
+\[
+ r_{\Df(A)}(D)=\mot(C)=\omega^2+\omega\cdot2.
+\]
+This example illustrates why the pointwise theorem is not limited to principal boxes: a finite union of boxes has a canonical core given by a union of the corresponding ideals.
+
+\subsection{Algebraicity cannot be replaced by directed completeness alone}
+Consider $Q=(\omega\sqcup\{a\})+\{t\}$, with $t$ above every point and $a$ incomparable with the initial $\omega$-chain. Every directed subset has a supremum: an unbounded subset of the chain has supremum $t$, while a directed subset meeting both $a$ and the chain must contain $t$. Every finitely generated downset is also a dcpo.
+
+Nevertheless $Q$ is not algebraic. The element $a$ is not compact, since $a\leq\sup\omega=t$ but $a\nleq n$ for every $n<\omega$. There is no compact element below $a$, because the only point at or below $a$ is $a$ itself. Thus $Q$, which is the principal downset of $t$, is not an ideal completion, and $Q\notin\LI$. The algebraicity requirement in \cref{thm:pointwise} cannot be weakened to the mere existence of directed suprema.
+
+\section{Dependency map and audit targets}
+The principal proof dependencies are as follows:
+\[
+ \begin{gathered}
+ \text{wpo bad-sequence property}
+ \Longrightarrow\text{well-founded downsets and finite ideal decomposition},\\
+ \text{finite ideal decomposition + directed finite cover}
+ \Longrightarrow\Pf(\Idl B)\cong\Down B,\\
+ \text{bad-sequence residual recursion}
+ \Longrightarrow r_{\Down B}(D)=\mot(D),\\
+ \text{these identities + downward-closed local representations}
+ \Longrightarrow\hgt(\Pf A)=\ao(A).
+ \end{gathered}
+\]
+The word and multiset closure proofs add only bounded-size ideal classifications. The ordinal-product theorem additionally imports the classical natural-product theorem for maximal order types. The monomial formulas additionally use the classical Milner--Rado characterization. The cap classification has a separate direct proof and does not depend on the word or multiset results.
+
+The following checks are especially important during review. Ideals exclude the empty set, while finite powersets include it. Hoare finite sets are quotiented before heights are taken. An embedding of ideal completions must reflect order. Rank equality requires a downward-closed subposet, not merely a cofinal or embedded subposet. A finite cover supplies one matching pattern for a whole directed product, not a different pattern for each tuple. The limit-chain witness in the cap proof is a nonprincipal ideal. Finally, every $+1$ in a height formula is an ordinal successor taken at the indicated stage, not an interchangeable finite correction.
+
+\begin{thebibliography}{9}
+\bibitem{AHLLSSV}
+Sergio Abriola, Simon Halfon, Aliaume Lopez, Sylvain Schmitz, Philippe Schnoebelen, and Isa Vialard.
+\emph{Measuring well-quasi-ordered finitary powersets}.
+arXiv:2312.14587v2, 17 July 2024.
+\url{https://arxiv.org/abs/2312.14587}.
+Relevant locations: Section~5.2, Theorem~5.10, and the intrinsic-invariant question in Section~6.
+
+\bibitem{DSS}
+Mirna D\v zamonja, Sylvain Schmitz, and Philippe Schnoebelen.
+\emph{On ordinal invariants in well quasi orders and finite antichain orders}.
+In \emph{Well-Quasi Orders in Computation, Logic, Language and Reasoning},
+Trends in Logic 53, pp.~29--54, Springer, 2020.
+Preprint: \url{https://arxiv.org/abs/1711.00428}.
+The Cartesian-product maximal-order-type formula is Lemma~4.5 in the inspected preprint.
+
+\bibitem{deJonghParikh}
+D.~H.~J. de Jongh and Rohit Parikh.
+\emph{Well-partial orderings and hierarchies}.
+Indagationes Mathematicae 39(3), 195--207, 1977.
+\url{https://www.sciencedirect.com/science/article/pii/1385725877900671}.
+
+\bibitem{IdealApproach}
+Jean Goubault-Larrecq, Simon Halfon, Prateek Karandikar,
+K.~Narayan Kumar, and Philippe Schnoebelen.
+\emph{The ideal approach to computing closed subsets in well-quasi-orderings}.
+In \emph{Well-Quasi Orders in Computation, Logic, Language and Reasoning},
+Trends in Logic 53, pp.~55--105, Springer, 2020.
+\url{https://arxiv.org/abs/1904.10703}.
+\url{https://doi.org/10.1007/978-3-030-30229-0_3}.
+
+\bibitem{Hilton}
+Jacob Hilton.
+\emph{The topological pigeonhole principle for ordinals}.
+arXiv:1410.2520v4, 12 July 2016.
+\url{https://arxiv.org/abs/1410.2520}.
+Relevant locations: Definition~2.19, Theorem~2.20, and Theorems~1.1 and~4.7.
+
+\bibitem{VialardPage}
+Isa Vialard.
+\emph{Research homepage and publication list}.
+\url{https://isavialard.github.io/home/}.
+Consulted 19 September 2026 for a limited publication-status check, not as a proof source.
+\end{thebibliography}
+\end{document}

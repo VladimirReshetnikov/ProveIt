@@ -1,0 +1,1236 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{newtxtext}
+\usepackage{mathtools,amsthm}
+\usepackage{newtxmath}
+\usepackage{microtype}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{hyperref}
+\definecolor{DeepBlue}{HTML}{17324D}
+\definecolor{Teal}{HTML}{176B70}
+\definecolor{PaleBlue}{HTML}{F0F5F8}
+\definecolor{QuietGray}{HTML}{52606D}
+\hypersetup{colorlinks=true,linkcolor=DeepBlue,citecolor=Teal,urlcolor=Teal,
+ pdftitle={Arithmetic of a Self-Iterating Generating Function},
+ pdfauthor={Research report prepared with ChatGPT},bookmarksnumbered=true}
+\titleformat{\section}{\large\bfseries\color{DeepBlue}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{Teal}}{\thesubsection}{0.7em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{QuietGray}Arithmetic of a self-iterating generating function}
+\fancyhead[R]{\small\color{QuietGray}A396807}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.1em}
+\setlist{nosep,leftmargin=1.5em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\F}{\mathbb F}
+\newcommand{\iter}[2]{#1^{\langle #2\rangle}}
+\newcommand{\coeff}[1]{[x^{#1}]}
+\newcommand{\M}{\mathcal M}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\lcm}{lcm}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,breaklines=true,
+ frame=single,rulecolor=\color{PaleBlue},showstringspaces=false,
+ xleftmargin=0.3em,xrightmargin=0.3em}
+\title{\vspace{-1.0cm}\color{DeepBlue}\bfseries
+ Arithmetic of a Self-Iterating\\[3pt] Generating Function\\[7pt]
+ \large Proofs of the A396807 congruences, rational prime-power lifts,\\
+ and an exact period of 46,860 for the last two digits}
+\author{\normalsize Research report prepared with ChatGPT}
+\date{September 19, 2026}
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+\begin{abstract}
+Let $A=x+O(x^2)$ be the formal power series defined by
+$A=x+\iter{A}{5}\iter{A}{6}$, where angle brackets denote functional
+iteration.  We prove the two congruences recorded as conjectures in OEIS
+A396807: $\coeff{n}A\equiv1\pmod {10}$ and
+$\coeff{n}\iter{A}{k}\equiv k^{n-1}\pmod {10}$ for every integer iterate
+$k$ and every $n\geq1$.  The key is uniqueness over arbitrary coefficient
+rings and the substitution $\M(x)=x/(1-x)$.
+
+The main extension is an arithmetic theory of the entire family
+$F=x+\iter{F}{r}\iter{F}{s}$.  Its largest uniform M\"obius-congruence
+modulus is exactly $\gcd(r+s-1,rs)$.  For each prime dividing this modulus,
+we explicitly invert the linearized functional equation using a cyclic
+trace.  Consequently, every prime-power reduction is rational and its
+coefficient sequence is eventually periodic.  For A396807 we calculate
+the reductions modulo $4$ and $25$ and prove that the last two decimal
+digits have minimal period $46860$, starting at $n=1$.  We also determine
+exact compositional orders, construct $2$-adic and $5$-adic iterates,
+prove zero complex radius of convergence, and settle closely related
+congruences in two neighboring OEIS entries.  All proofs are accompanied
+by exact, reproducible computation; numerical tests are not used as a
+substitute for the all-degree arguments.
+\end{abstract}
+
+\begin{tcolorbox}[colback=PaleBlue,colframe=DeepBlue,boxrule=0.5pt,
+ arc=1pt,left=8pt,right=8pt,top=6pt,bottom=6pt]
+\textbf{Status and scope.}
+The OEIS records retrieved on September 19, 2026 still label the target
+statements as conjectures.  This report supplies self-contained proofs
+and further deductions.  A limited search did not locate a separate
+proof of the target statements; this is not a claim of exhaustive
+literature coverage or priority.  The report has not been externally
+peer reviewed or formalized in a proof assistant.
+\end{tcolorbox}
+
+\clearpage
+\tableofcontents
+\newpage
+
+\section{The problem, the answer, and the notation}\label{sec:problem}
+
+\subsection{A concrete conjecture}
+Paul D. Hanna's OEIS entry A396807, contributed on June 16, 2026,
+defines the sequence $a(n)$ by the ordinary formal generating function
+\begin{equation}\label{eq:target}
+ A(x)=\sum_{n\geq1}a(n)x^n
+      =x+\iter{A}{5}(x)\iter{A}{6}(x).
+\end{equation}
+The entry explicitly uses the exponents for \emph{iteration}, not
+ordinary multiplication, and records the two congruences addressed
+below \cite{oeis807,oeis807internal}.
+
+Throughout the report,
+\[
+ \iter{F}{0}(x)=x,\qquad
+ \iter{F}{j+1}=F\circ\iter{F}{j}.
+\]
+For negative $j$, $\iter{F}{j}$ is an iterate of the compositional
+inverse.  Such an inverse exists over any commutative ring for a series
+$F=x+O(x^2)$.  Ordinary powers, for example $F(x)^2$, retain their usual
+multiplicative meaning.  This distinction is essential: replacing the
+right side of \eqref{eq:target} by $x+A(x)^{11}$ gives an entirely
+different problem.
+
+The first coefficients, also independently reproduced by the supplied
+program, are
+\[
+ 1,\ 1,\ 11,\ 201,\ 4721,\ 129671,\ 3976201,\ 132554541,
+ \ 4724742051,\ 178052854981,\ldots.
+\]
+All congruences between power series in this report are coefficientwise.
+They do not assert convergence at a numerical value of $x$.
+
+\begin{theorem}[The two target congruences]\label{thm:target}
+The unique solution of \eqref{eq:target} in $x+x^2\Z[[x]]$ satisfies
+\begin{equation}\label{eq:maincong}
+ A(x)\equiv\frac{x}{1-x}\pmod {10},\qquad
+ \iter{A}{k}(x)\equiv\frac{x}{1-kx}\pmod {10}
+ \quad(k\in\Z).
+\end{equation}
+In particular, for $n\geq1$,
+\[
+ a(n)\equiv1\pmod {10},\qquad
+ \coeff{n}\iter{A}{k}\equiv k^{n-1}\pmod {10}.
+\]
+At $k=0,n=1$, the last display means that the coefficient is $1$;
+equivalently, use the convention $0^0=1$ in this one coefficient formula.
+The modulus $10$ is the largest positive integer for which all the
+coefficients of $A$ equal $1$ modulo that integer.
+\end{theorem}
+
+The proof occupies Sections \ref{sec:formal}--\ref{sec:modulus} and does
+not require computation.  The stronger results are summarized here to
+make their logical status clear.
+
+\begin{center}
+\begin{tabular}{@{}p{0.25\textwidth}p{0.57\textwidth}p{0.08\textwidth}@{}}
+\toprule
+Result & Conclusion & Section\\
+\midrule
+Exact modulus & A necessary and sufficient condition for the whole
+ two-iterate family, including an integer weight & \ref{sec:modulus}\\[3pt]
+Rational lifting & Rational reduction modulo every $p^e$ at each
+ prime selected by the exact modulus & \ref{sec:lifting}\\[3pt]
+Decimal digits & Explicit formulas modulo $4$, $20$, $25$, and $100$;
+ minimal two-digit period $46860$ & \ref{sec:period}\\[3pt]
+Iteration & Exact order $p^e$ modulo $p^e$ and well-defined
+ $p$-adic-time iterates & \ref{sec:orders}\\[3pt]
+Related entries & Modulo-$6$ results for A396797; all modulo-$8$
+ iterate formulas for A396798, with a corrected starting index
+ & \ref{sec:neighbors}\\[3pt]
+Growth & A factorial lower bound along each parity and zero
+ complex radius of convergence & \ref{sec:growth}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Formal existence, uniqueness, and reduction}\label{sec:formal}
+
+\subsection{A coefficientwise contraction}
+Let $R$ be a commutative ring with identity.  Congruence modulo $x^N$
+means equality of the coefficients in degrees less than $N$.  The
+$x$-adic topology simply packages this coefficientwise stabilization.
+For fixed nonnegative integers $r,s$ and $c\in R$, set
+\begin{equation}\label{eq:T}
+ T_c(F)=x+c\,\iter{F}{r}\iter{F}{s},\qquad F\in x+x^2R[[x]].
+\end{equation}
+
+\begin{lemma}[One extra coefficient]\label{lem:contraction}
+If $F\equiv G\pmod {x^N}$ with $N\geq2$, then
+\[
+ \iter{F}{j}\equiv\iter{G}{j}\pmod {x^N}\quad(j\geq0),
+ \qquad T_c(F)\equiv T_c(G)\pmod {x^{N+1}}.
+\]
+\end{lemma}
+\begin{proof}
+Composition by a series of order one preserves divisibility by $x^N$.
+Also, if $U-V$ is divisible by $x^N$ and $U(0)=V(0)=0$, then
+$H(U)-H(V)$ is divisible by $x^N$: apply the identity that
+$U^m-V^m$ is divisible by $U-V$ to each coefficient of $H$.
+Induction on $j$, using
+\[
+ F\circ\iter{F}{j}-G\circ\iter{G}{j}
+ =(F-G)\circ\iter{F}{j}
+   +G\circ\iter{F}{j}-G\circ\iter{G}{j},
+\]
+proves the assertion about iterates.  The difference of the two products
+in \eqref{eq:T} is
+\[
+ (\iter{F}{r}-\iter{G}{r})\iter{F}{s}
+ +\iter{G}{r}(\iter{F}{s}-\iter{G}{s}).
+\]
+Every iterate on the right has zero constant term, including the
+zeroth iterate $x$.  Each summand is therefore divisible by $x^{N+1}$.
+No division, cancellation of ring elements, or field hypothesis is used.
+\end{proof}
+
+\begin{theorem}[Well-posedness over arbitrary rings]\label{thm:unique}
+There is a unique $F\in x+x^2R[[x]]$ satisfying
+\begin{equation}\label{eq:generalweighted}
+ F=x+c\,\iter{F}{r}\iter{F}{s}.
+\end{equation}
+Its coefficient of $x^2$ is $c$.  The construction commutes with every
+homomorphism of coefficient rings.
+\end{theorem}
+\begin{proof}
+Starting at $F_0=x$, put $F_{j+1}=T_c(F_j)$.  The first difference is
+$c x^2$, and Lemma \ref{lem:contraction} shows inductively that
+$F_{j+1}-F_j$ is divisible by $x^{j+2}$.  Every coefficient stabilizes,
+defining a series $F$.  Each fixed-degree coefficient of a composition
+or product depends on only finitely many coefficients of its inputs.
+Passing to the stabilized coefficients gives $F=T_c(F)$.
+
+Any two solutions agree modulo $x^2$.  Repeated application of the lemma
+makes them agree modulo every power of $x$, hence they are equal.
+The product in \eqref{eq:generalweighted} begins with $x^2$, proving the
+claim about its coefficient.  Ring homomorphisms preserve all the
+finite sums and products used to construct a fixed coefficient, so
+construction and coefficient reduction commute.
+\end{proof}
+
+\subsection{Why negative iterates cause no difficulty}
+If $F=x+\sum_{n\geq2}u_nx^n$, the coefficient of $x^n$ in
+$F(G)$, where $G=x+\sum_{n\geq2}v_nx^n$, is $v_n$ plus a polynomial
+with integer coefficients in previously determined $v_j$ and the
+$u_j$.  Setting $F(G)=x$ therefore determines each $v_n$ uniquely without
+dividing by a nonunit.  The same argument constructs a left inverse;
+associativity of composition makes the left and right inverses equal.
+
+It follows that inversion, positive iteration, and negative iteration
+all commute with reduction modulo an integer.  In particular, the
+uniqueness theorem may be used directly over $\Z/10\Z$, although this
+ring is not a field.  This is the exact logical step that promotes a
+rational substitution from an observation to a proof for every
+coefficient.
+
+\section{The M\"obius substitution and the exact modulus}\label{sec:modulus}
+
+\subsection{A calculation valid in every ring}
+For $c$ in a coefficient ring define
+\[
+ M_c(x)=\frac{x}{1-cx}.
+\]
+The denominator has constant term $1$, so the expression is a formal
+power series over the same ring.  Direct composition gives
+\begin{equation}\label{eq:mobiusgroup}
+ M_u\circ M_v=M_{u+v},\qquad
+ \iter{M_c}{j}(x)=\frac{x}{1-jcx}\quad(j\in\Z).
+\end{equation}
+Write $S=r+s$ and $P=rs$.  Clearing only denominators that are formal
+units gives the identity
+\begin{equation}\label{eq:residual}
+ M_c-T_c(M_c)
+ =\frac{-c^2(S-1)x^3+c^3P x^4}
+ {(1-cx)(1-rcx)(1-scx)}.
+\end{equation}
+Thus the two numbers $c^2(S-1)$ and $c^3P$ govern the entire
+coefficientwise congruence.
+
+\begin{theorem}[Sharp uniform modulus]\label{thm:sharp}
+Let $r,s\geq0$ and $c\in\Z$.  Let
+$F_{r,s,c}=x+\sum_{n\geq2}u_nx^n$ be the unique integral solution of
+\eqref{eq:generalweighted}.  For every positive integer $m$,
+\begin{equation}\label{eq:iff}
+ F_{r,s,c}\equiv M_c\pmod m
+ \quad\Longleftrightarrow\quad
+ m\mid c^2(r+s-1)\ \text{ and }\ m\mid c^3rs.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:gcdideal}
+ \gcd_{n\geq2}\bigl|u_n-c^{n-1}\bigr|
+ =\gcd\bigl(c^2(r+s-1),c^3rs\bigr).
+\end{equation}
+We use $\gcd(0,0)=0$; a zero right side means exact equality, and hence
+congruence for every modulus.  For $c=1$ the sharp modulus is
+\begin{equation}\label{eq:D}
+ D_{r,s}=\gcd(r+s-1,rs).
+\end{equation}
+\end{theorem}
+\begin{proof}
+If the two divisibilities hold, \eqref{eq:residual} shows that $M_c$ is
+a solution of the defining equation over $\Z/m\Z$.  By
+Theorem \ref{thm:unique}, it is the reduction of $F_{r,s,c}$.
+
+For necessity, the first four coefficients suffice.  The elementary
+iteration expansion is
+\[
+ \iter{F}{j}=x+jc x^2+
+   \bigl(j u_3+j(j-1)c^2\bigr)x^3+O(x^4).
+\]
+Substitution in the defining equation gives
+\begin{equation}\label{eq:firstfour}
+ F_{r,s,c}=x+c x^2+c^2Sx^3+
+          c^3(2S^2-S-P)x^4+O(x^5).
+\end{equation}
+Consequently, its discrepancies from $M_c$ in degrees $3$ and $4$ are
+\[
+ c^2(S-1),\qquad
+ c^3\bigl((S-1)(2S+1)-P\bigr).
+\]
+If both vanish modulo $m$, subtracting an integer multiple of the first
+from the second yields $m\mid c^3P$.  These same two discrepancies have
+gcd $\gcd(c^2(S-1),c^3P)$.  Since that gcd divides every discrepancy by
+the sufficient direction, \eqref{eq:gcdideal} follows.
+\end{proof}
+
+\begin{corollary}[All integer iterates]\label{cor:iterates}
+Whenever \eqref{eq:iff} holds,
+\[
+ \iter{F_{r,s,c}}{k}(x)\equiv\frac{x}{1-kcx}\pmod m
+ \qquad(k\in\Z).
+\]
+For $n\geq1$, the corresponding coefficient is $(kc)^{n-1}$, with
+the degree-one convention stated in Theorem \ref{thm:target}.
+\end{corollary}
+\begin{proof}
+Reduction commutes with iteration and inversion, and
+\eqref{eq:mobiusgroup} gives the iterates of the reduced series.
+\end{proof}
+
+\subsection{The target conjecture and a useful subfamily}
+For $(r,s,c)=(5,6,1)$,
+\[
+ D_{5,6}=\gcd(10,30)=10.
+\]
+More concretely,
+\[
+ (1-5x)(1-6x)=1-11x+30x^2\equiv1-x\pmod {10},
+\]
+so that
+\[
+ x+\frac{x}{1-5x}\frac{x}{1-6x}
+ \equiv x+\frac{x^2}{1-x}=\frac{x}{1-x}\pmod {10}.
+\]
+Uniqueness proves the first target congruence, and
+Corollary \ref{cor:iterates} proves the second.  Finally $a(3)-1=10$,
+so a larger common modulus is impossible.  This proves
+Theorem \ref{thm:target}.
+
+For adjacent iterate indices $(r,s)=(q,q+1)$ with $q\geq1$,
+\begin{equation}\label{eq:adjacentD}
+ D_{q,q+1}=\gcd(2q,q(q+1))
+ =\begin{cases}2q,&q\text{ odd},\\q,&q\text{ even}.\end{cases}
+\end{equation}
+The modulus is therefore not uniformly $2q$: the parity of $q$ matters.
+This explains simultaneously the moduli $6$, $4$, and $10$ in the
+three examples studied here.
+
+\begin{remark}[Scaling]
+If $F_{r,s,1}=x+\sum_{n\geq2}a_nx^n$, then
+\[
+ F_{r,s,c}(x)=x+\sum_{n\geq2}c^{n-1}a_nx^n.
+\]
+For nonzero $c$, this is the identity
+$F_{r,s,c}(x)=c^{-1}F_{r,s,1}(cx)$, interpreted coefficientwise;
+it also holds at $c=0$ without any division.  Direct substitution and
+uniqueness prove the assertion.
+\end{remark}
+
+\section{A cyclic-trace inverse for the linearized equation}\label{sec:trace}
+
+The uniform congruence is elementary.  To go beyond it, we must control
+how the self-iteration equation changes under a small perturbation.
+The crucial fact is that the reduced M\"obius map has a finite orbit.
+This section gives an explicit inverse, rather than invoking an
+unspecified lifting theorem.
+
+\subsection{The cyclic substitution and its trace}
+Fix a prime $p\mid D_{r,s}$.  In $\F_p$, the conditions
+$r+s=1$ and $rs=0$ force the residues of $r,s$ to be $0,1$ in some
+order.  Interchanging them does not change the functional equation.
+We may therefore write
+\begin{equation}\label{eq:alphabeta}
+ r=p\alpha,\qquad s=1+p\beta,
+ \qquad \alpha,\beta\in\Z_{\geq0}.
+\end{equation}
+In formulas over $\F_p$, $\alpha$ and $\beta$ mean their residues.
+Put
+\[
+ M_j(x)=\frac{x}{1-jx},\qquad M=M_1,\qquad M_0=x.
+\]
+Equation \eqref{eq:mobiusgroup} implies $M_p=x$ over $\F_p$.
+For a formal series or a rational function regular at zero define
+\begin{equation}\label{eq:trace}
+ \Tr_p f=\sum_{j=0}^{p-1}f(M_j(x)).
+\end{equation}
+The trace is invariant under $x\mapsto M(x)$, by cyclically reindexing
+the sum.  If $B$ is invariant, then
+$\Tr_p(Bf)=B\Tr_p(f)$.
+
+\begin{lemma}[Trace of the coordinate]\label{lem:tracex}
+Over $\F_p(x)$,
+\begin{equation}\label{eq:tracex}
+ \Tr_p x=-\frac{x^p}{1-x^{p-1}}.
+\end{equation}
+Consequently, with
+\begin{equation}\label{eq:C}
+ C(x)=\alpha x+\beta M(x),
+\end{equation}
+we have
+\begin{equation}\label{eq:traceC}
+ \Tr_p C=-\frac{(\alpha+\beta)x^p}{1-x^{p-1}}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+In $\F_p[t]$,
+$\prod_{j\in\F_p}(t-j)=t^p-t$.  Taking its logarithmic derivative gives
+\[
+ \sum_{j\in\F_p}\frac1{t-j}=-\frac1{t^p-t}.
+\]
+Substituting $t=1/x$ proves \eqref{eq:tracex}.  The trace of $M(x)$
+equals that of $x$, again by cyclic reindexing, proving
+\eqref{eq:traceC}.
+\end{proof}
+
+\subsection{First variation of a functional iterate}
+Work temporarily over $\F_p[\varepsilon]/(\varepsilon^2)$.  Write a
+perturbation in the normalized form
+\[
+ F_\varepsilon=M+\varepsilon M^2w.
+\]
+The factor $M^2$ simplifies the chain rule.
+
+\begin{lemma}[Iteration derivative]\label{lem:variation}
+For every $k\geq0$,
+\begin{equation}\label{eq:variation}
+ \iter{F_\varepsilon}{k}
+ =M_k+\varepsilon M_k^2\sum_{j=0}^{k-1}w(M_j(x)).
+\end{equation}
+The sum is empty at $k=0$.
+\end{lemma}
+\begin{proof}
+The formula is immediate at $k=0,1$.  In passing from $k$ to $k+1$, the
+perturbation already present in the inner iterate is multiplied by
+$M'(M_k)$.  Since
+\[
+ M'(M_k)M_k^2=M_{k+1}^2,
+\]
+and the new outer perturbation contributes
+$M_{k+1}^2w(M_k)$, the partial sum acquires exactly one further term.
+\end{proof}
+
+Let $T(F)=x+\iter{F}{r}\iter{F}{s}$ and denote by
+\[
+ Lh=h-(DT)_M h
+\]
+the linearization of $F-T(F)$ at $M$.  In the notation
+\eqref{eq:alphabeta}, the sums in \eqref{eq:variation} are
+\[
+ \sum_{j=0}^{r-1}w(M_j)=\alpha\Tr_p w,
+ \qquad
+ \sum_{j=0}^{s-1}w(M_j)=\beta\Tr_p w+w.
+\]
+Using $M_r=x$ and $M_s=M$ in $\F_p[[x]]$ gives the central identity
+\begin{equation}\label{eq:L}
+ L(M^2w)=M^2(1-x)\bigl(w-C\Tr_p w\bigr).
+\end{equation}
+For clarity, the two product-derivative terms, divided by $M^2$, are
+$x(1-x)\alpha\Tr_p w$ and $x(\beta\Tr_p w+w)$; subtracting them from
+$w$ yields \eqref{eq:L}.
+
+\begin{theorem}[Explicit inverse]\label{thm:inverseL}
+For any $R\in x^3\F_p[[x]]$, set
+\begin{equation}\label{eq:inverseL}
+ d=\frac{R}{M^2(1-x)},\qquad
+ w=d+C\frac{\Tr_p d}{1-\Tr_p C},\qquad h=M^2w.
+\end{equation}
+Then $h\in x^3\F_p[[x]]$ is the unique solution of $Lh=R$.
+If $R$ is rational and regular at zero, then so is $h$.
+\end{theorem}
+\begin{proof}
+The equation $Lh=R$ is equivalent to $w-C\Tr_p w=d$.
+Taking the trace and using the invariance of $\Tr_p w$ gives
+\[
+ (1-\Tr_p C)\Tr_p w=\Tr_p d.
+\]
+The factor $1-\Tr_p C$ has constant term $1$, so it is invertible.
+Substituting the resulting trace into the original equation gives
+\eqref{eq:inverseL}, and proves uniqueness as well.
+
+Since $R$ starts in degree at least $3$, $d$ starts in degree at least
+$1$.  Both $C$ and $\Tr_p d$ have zero constant term.  Thus $w$ starts
+in degree at least $1$ and $M^2w$ in degree at least $3$.
+The operations in \eqref{eq:inverseL} are finite rational operations
+and substitution by the rational functions $M_j$, all regular at zero.
+They preserve rationality and regularity.
+\end{proof}
+
+\section{Rational reduction modulo every selected prime power}\label{sec:lifting}
+
+\subsection{The lifting theorem}
+Here a series over $\Z/p^e\Z$ is called rational when it can be written
+as $P(x)/Q(x)$ with polynomial numerator and denominator and with
+$Q(0)$ a unit.  This definition is meaningful even though the coefficient
+ring is not a field.
+
+\begin{theorem}[Rational prime-power lifts]\label{thm:rationallifts}
+Let $F=F_{r,s,1}$ and let $p$ be a prime dividing $D_{r,s}$.
+For every $e\geq1$, the coefficientwise reduction of $F$ modulo $p^e$
+is rational.  The proof gives a finite recursive construction of a
+rational representative.
+\end{theorem}
+\begin{proof}
+Let $\Z_{(p)}$ denote the rational numbers whose denominators are not
+divisible by $p$.  Work with rational functions having coefficients in
+$\Z_{(p)}$ and a denominator whose constant term is a $p$-adic unit.
+Their expansions at zero lie in $\Z_{(p)}[[x]]$.
+
+The initial representative is $f_1=M$, by Theorem \ref{thm:sharp}.
+Inductively, suppose that the rational function $f_e$ agrees with $F$
+modulo $p^e$ and has its coefficients of $x$ and $x^2$ exactly equal to
+$1$, with zero constant term.  Its residual is rational and satisfies
+\[
+ T(f_e)-f_e\equiv0\pmod {p^e}.
+\]
+The quotient
+\begin{equation}\label{eq:Re}
+ R_e=\frac{T(f_e)-f_e}{p^e}\pmod p
+\end{equation}
+is a rational element of $x^3\F_p[[x]]$.  To justify the division
+algebraically, write the residual over a common denominator with unit
+constant term.  Multiplication by this denominator shows that every
+coefficient of its polynomial numerator is divisible by $p^e$ in
+$\Z_{(p)}$.  Dividing the numerator by $p^e$ preserves the permitted
+class of rational functions.
+
+Solve $Lh_e=R_e$ by Theorem \ref{thm:inverseL}.  Choose a rational lift
+$\widetilde h_e\in x^3\Z_{(p)}[[x]]$ of $h_e$, with denominator still
+having unit constant term, and put
+\begin{equation}\label{eq:liftstep}
+ f_{e+1}=f_e+p^e\widetilde h_e.
+\end{equation}
+Because $2e\geq e+1$, terms involving two perturbations vanish modulo
+$p^{e+1}$.  Also $f_e\equiv M\pmod p$, so its derivative operator reduces
+to $(DT)_M$.  Hence
+\[
+ T(f_{e+1})-f_{e+1}
+ \equiv p^e\bigl(R_e+(DT)_M h_e-h_e\bigr)
+ =0\pmod {p^{e+1}}.
+\]
+Uniqueness over $\Z/p^{e+1}\Z$ identifies $f_{e+1}$ with the reduction
+of $F$.  It is rational and still has exactly the prescribed first two
+coefficients.  This completes the induction.
+\end{proof}
+
+\begin{corollary}[Eventual periodicity]\label{cor:periodic}
+For every such $p$ and every $e\geq1$, the coefficient sequence of $F$
+is eventually periodic modulo $p^e$.  In particular, A396807 is rational
+modulo $10^e$, and its last $e$ decimal digits are eventually periodic,
+for every $e\geq1$.
+\end{corollary}
+\begin{proof}
+Normalize a rational denominator to have constant term $1$.
+Its coefficients impose a fixed finite-order forward linear recurrence
+after the degree of the numerator.  Over a finite ring there are only
+finitely many states consisting of the last fixed number of
+coefficients.  A repeated state gives a repeated future, proving eventual
+periodicity.
+
+For A396807 use $p=2,5$.  Rational representatives modulo $2^e$ and
+$5^e$ can have their denominators lifted with constant term exactly $1$.
+A Chinese-remainder linear combination is then a rational representative
+modulo $10^e$.  The same finite-state argument applies.
+\end{proof}
+
+\begin{remark}[What the theorem does not say]
+The construction proves rationality separately at each finite modulus.
+It does not assert that one rational function over $\Q$ works at every
+modulus, nor that its numerator and denominator degrees stay bounded as
+$e$ increases.  It supplies no small uniform bound on the periods at
+higher powers.  In fact, Section \ref{sec:growth} proves that the
+characteristic-zero generating function is not rational.
+\end{remark}
+
+\subsection{A closed formula for the first new digit}
+The first lifting step is particularly simple because its normalized
+residual is exactly $C$.
+
+\begin{theorem}[Universal first correction]\label{thm:firstcorrection}
+With $r=p\alpha$ and $s=1+p\beta$, define in $\F_p(x)$
+\begin{equation}\label{eq:Hgeneral}
+ H_{p;\alpha,\beta}(x)=
+ \frac{x^3\bigl(\alpha(1-x)+\beta\bigr)(1-x^{p-1})}
+ {(1-x)^3\bigl(1-x^{p-1}+(\alpha+\beta)x^p\bigr)}.
+\end{equation}
+Then
+\begin{equation}\label{eq:firstlift}
+ F_{r,s,1}(x)\equiv M(x)+pH_{p;\alpha,\beta}(x)\pmod {p^2}.
+\end{equation}
+On the right, any integral rational lift of $H$ with unit denominator
+constant may be used.
+\end{theorem}
+\begin{proof}
+Identity \eqref{eq:residual}, with $c=1$ and with its sign reversed,
+gives
+\[
+ \frac{T(M)-M}{p}
+ \equiv\frac{x^3\bigl(\alpha+\beta-\alpha x\bigr)}{(1-x)^2}
+ \pmod p.
+\]
+Indeed, $(r+s-1)/p=\alpha+\beta$ and
+$rs/p=\alpha(1+p\beta)\equiv\alpha\pmod p$.
+After division by $M^2(1-x)$, this residual becomes
+\[
+ d=\alpha x+\beta\frac{x}{1-x}=C.
+\]
+Formula \eqref{eq:inverseL} therefore simplifies to
+$w=C/(1-\Tr_p C)$.  Multiply by $M^2$ and apply
+\eqref{eq:traceC} to obtain \eqref{eq:Hgeneral}.
+The lifting proof then gives \eqref{eq:firstlift}.
+\end{proof}
+
+This formula also explains why Artin--Schreier polynomials appear in a
+question that initially seems to concern only the last decimal digit.
+Writing $\lambda=\alpha+\beta$, the reciprocal of the new denominator
+factor is
+\[
+ t^p-t+\lambda.
+\]
+If $\lambda\ne0$ in $\F_p$, any root $\theta$ satisfies
+$\theta^{p^j}=\theta-j\lambda$.  Its Frobenius orbit therefore has length
+exactly $p$, proving that this polynomial is irreducible of degree $p$.
+This elementary observation will be decisive for the exact period.
+
+\section{Explicit refinements and the two-digit period}\label{sec:period}
+
+\subsection{Reductions modulo 4 and 25}
+For A396807 the applicable orientations in \eqref{eq:alphabeta} are
+\[
+ \begin{array}{c|c|c|c}
+ p&r&s&(\alpha,\beta)\bmod p\\\hline
+ 2&6&5&(1,0)\\
+ 5&5&6&(1,1).
+ \end{array}
+\]
+Substitution into Theorem \ref{thm:firstcorrection} yields the following
+particularly convenient representatives:
+\begin{align}
+ H_2(x)&=\frac{x^3}{1+x^3},\label{eq:H2}\\
+ H_5(x)&=\frac{x^3(2-x)(1-x^4)}
+ {(1-x)^3(1-x^4+2x^5)}\nonumber\\
+ &=\frac{x^3(2-x)(1+x+x^2+x^3)}
+ {(1-x)^2(1-x^4+2x^5)}.\label{eq:H5}
+\end{align}
+The simplification of $H_2$ is performed over $\F_2$; the displayed
+rational function is then an integral lift of that result.
+
+\begin{corollary}[Refinements of the target congruence]\label{cor:refinements}
+Coefficientwise,
+\begin{align}
+ A&\equiv M+2H_2\pmod4,\label{eq:mod4}\\
+ A&\equiv M+5H_5\pmod {25},\label{eq:mod25}\\
+ A&\equiv M+10\frac{x^3}{1-x^3}\pmod {20},\label{eq:mod20}\\
+ A&\equiv M+50H_2+80H_5\pmod {100}.\label{eq:mod100}
+\end{align}
+In particular,
+\begin{equation}\label{eq:mod20coeff}
+ a(n)\equiv
+ \begin{cases}11\pmod {20},&3\mid n,\\1\pmod {20},&3\nmid n,
+ \end{cases}\qquad n\geq1.
+\end{equation}
+\end{corollary}
+\begin{proof}
+The first two statements are the two first-correction formulas.
+Modulo $4$, $2x^3/(1+x^3)=2x^3/(1-x^3)$, while modulo $5$ the correction
+is zero.  The Chinese remainder theorem proves \eqref{eq:mod20}.
+For \eqref{eq:mod100}, note that $50\equiv2\pmod4$, $50\equiv0\pmod {25}$,
+$80\equiv0\pmod4$, and $80\equiv5\pmod {25}$.
+\end{proof}
+
+The first few last-two-digit values are a useful check, but not a proof
+of periodicity:
+\begin{center}
+\begin{tabular}{@{}rrrrrrrrrr@{}}
+\toprule
+$n$&1&2&3&4&5&6&7&8&9\\
+$a(n)\bmod100$&01&01&11&01&21&71&01&41&51\\
+\midrule
+$n$&10&11&12&13&14&15&16&17&18\\
+$a(n)\bmod100$&81&81&31&81&61&71&41&61&11\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{A denominator criterion for a minimal period}
+\begin{lemma}\label{lem:periodcriterion}
+Let $H=N/Q\in\F_p(x)$ be in reduced form, with $Q(0)\ne0$ and
+$\deg N\leq\deg Q$.  The coefficients $h_n=\coeff{n}H$, indexed by
+$n\geq1$, have period $L$ if and only if $Q$ divides $1-x^L$.
+\end{lemma}
+\begin{proof}
+If $h_{n+L}=h_n$ for $n\geq1$, then
+\[
+ H=h_0+\frac{\sum_{j=1}^Lh_jx^j}{1-x^L},
+\]
+so the reduced denominator divides $1-x^L$.
+Conversely, if it divides, $(1-x^L)H$ is a polynomial of degree at most
+$L$.  Comparing coefficients above degree $L$ gives exactly
+$h_{n+L}=h_n$ for $n\geq1$.
+\end{proof}
+
+\begin{theorem}[Exact two-digit period]\label{thm:46860}
+The sequence $(a(n)\bmod100)_{n\geq1}$ is periodic from its first term,
+with minimal period
+\begin{equation}\label{eq:46860}
+ \boxed{46860.}
+\end{equation}
+The minimal periods modulo $4$ and modulo $25$ are $3$ and $15620$,
+respectively.
+\end{theorem}
+\begin{proof}
+Modulo $4$, formula \eqref{eq:mod4} gives the repeating pattern
+$1,1,3$, hence minimal period $3$.
+
+Modulo $25$, the period equals the period of the coefficients of $H_5$
+over $\F_5$, since $a(n)=1+5\coeff{n}H_5$ in $\Z/25\Z$ for $n\geq1$.
+In \eqref{eq:H5} its reduced denominator is
+\begin{equation}\label{eq:Q5}
+ Q(x)=(1-x)^2Q_5(x),\qquad Q_5(x)=1-x^4+2x^5.
+\end{equation}
+To check that it is reduced, first evaluate the numerator at $x=1$:
+it is $4\ne0$ in $\F_5$.  Next, the reciprocal polynomial
+\[
+ q(t)=t^5-t+2
+\]
+is irreducible.  Indeed, if $q(\theta)=0$, then
+$\theta^{5^j}=\theta-2j$, whose first return to $\theta$ occurs at $j=5$.
+Thus the Frobenius orbit, and hence the minimal polynomial, has degree
+$5$.  The numerator of \eqref{eq:H5} is a product of $x^3$, a linear
+factor, and a degree-three factor, none of which is divisible by this
+irreducible reciprocal factor.
+
+Let $\theta$ be the class of $t$ in $\F_5[t]/(q)$.
+The multiplicative order of $\theta$ divides
+$5^5-1=3124=4\cdot11\cdot71$.  Reduction of powers using
+$\theta^5=\theta-2$ gives
+\begin{align}
+ \theta^{1562}&=4,\label{eq:cert1}\\
+ \theta^{284}&=4+\theta+2\theta^2+4\theta^4,\label{eq:cert2}\\
+ \theta^{44}&=2+2\theta+\theta^2+3\theta^3+3\theta^4.\label{eq:cert3}
+\end{align}
+None is $1$, because a nonzero polynomial of degree less than $5$
+cannot vanish at $\theta$.  The three exponents are $3124/2$, $3124/11$,
+and $3124/71$; they exclude every possible proper divisor as the order.
+Hence $\theta$, and also its reciprocal, has order exactly $3124$.
+The displayed residues are small, independently checkable certificates;
+the supplied program obtains them by binary powering and reduction.
+
+It follows that $Q_5$ divides $1-x^L$ precisely when $3124\mid L$.
+The factor $(1-x)^2$ divides $1-x^L$ precisely when $5\mid L$:
+write $L=5^v u$ with $5\nmid u$ and use
+$1-x^L=(1-x^u)^{5^v}$.  By Lemma \ref{lem:periodcriterion}, the minimal
+period of $H_5$ is therefore
+\[
+ \lcm(5,3124)=15620.
+\]
+The degree condition in that lemma is satisfied: both the numerator
+and denominator in the reduced expression for $H_5$ have degree $7$.
+Thus there is no initial transient for the coefficients indexed from
+$n=1$.
+
+A period modulo $100$ must be a period modulo both $4$ and $25$;
+conversely, a common period works by the Chinese remainder theorem.
+The minimal period is consequently
+$\lcm(3,15620)=46860$.
+\end{proof}
+
+\subsection{The general first-lift period mechanism}
+The same proof gives more than this numerical example.
+
+\begin{proposition}\label{prop:generalperiod}
+Assume $\lambda=\alpha+\beta\ne0$ in $\F_p$ and let $\ell$ be the
+multiplicative order of a root of $t^p-t+\lambda$ in $\F_{p^p}$.
+The coefficients of $F_{r,s,1}$ modulo $p^2$, indexed from $n=1$,
+have minimal period
+\[
+ \begin{cases}
+ \ell,&\beta=0\text{ in }\F_p,\\
+ p\ell,&\beta\ne0\text{ in }\F_p.
+ \end{cases}
+\]
+In particular, $\ell$ divides $p^p-1$.  It need not be assumed equal
+to $p^p-1$; that equality in the A396807 case was proved by the
+certificates above.
+\end{proposition}
+\begin{proof}
+The Artin--Schreier factor is irreducible of degree $p$ by the
+Frobenius-orbit calculation following Theorem \ref{thm:firstcorrection}.
+Cancel $1-x$ from $1-x^{p-1}$ in \eqref{eq:Hgeneral}.  The remaining
+numerator factors have degrees less than $p$, so none cancels the
+irreducible factor.  At $x=1$ their value is a nonzero multiple of
+$\beta$.  When $\beta\ne0$, the reduced denominator retains
+$(1-x)^2$.  When $\beta=0$, $\alpha\ne0$ and one further factor $1-x$
+cancels, leaving just a simple factor $1-x$.
+
+The degree of the reduced numerator is at most that of its denominator.
+Lemma \ref{lem:periodcriterion} now requires $\ell\mid L$ and, only in
+the double-factor case, $p\mid L$.  Since $\ell\mid p^p-1$, it is prime
+to $p$.  Formula \eqref{eq:firstlift} transfers exactly these periods
+from $H$ over $\F_p$ to $F$ modulo $p^2$.
+\end{proof}
+
+\section{Exact compositional order and p-adic time}\label{sec:orders}
+
+Periodicity in the coefficient index $n$ must not be confused with
+periodicity in the iteration index $k$.  The latter has a different,
+and particularly simple, exact answer.
+
+\begin{lemma}[Raising a near-identity map]\label{lem:nearid}
+If $G(x)\equiv x\pmod {p^e}$ with $e\geq1$, then
+$\iter{G}{p}(x)\equiv x\pmod {p^{e+1}}$.
+\end{lemma}
+\begin{proof}
+Write $G=x+p^e h$.  For any formal series $h$ with zero constant term,
+$h(x+p^e h(x))-h(x)$ has all coefficients divisible by $p^e$.
+Consequently composition of two near-identity maps adds their
+$p^e$-perturbations modulo $p^{2e}$.  Since $2e\geq e+1$, induction gives
+\[
+ \iter{G}{j}\equiv x+jp^e h\pmod {p^{e+1}}.
+\]
+Taking $j=p$ proves the claim.  The argument includes $p=2$ and $e=1$.
+\end{proof}
+
+\begin{theorem}[Exact order]\label{thm:order}
+For $F=F_{r,s,1}$ and any prime $p\mid D_{r,s}$, the order of the
+reduction of $F$ in the composition group of
+$x+x^2(\Z/p^e\Z)[[x]]$ is exactly $p^e$.  In particular,
+\[
+ \iter{A}{10^e}(x)\equiv x\pmod {10^e},
+\]
+and the compositional order of A396807 modulo $10^e$ is exactly $10^e$.
+\end{theorem}
+\begin{proof}
+Modulo $p$, $F$ is $M$, which has $p$th iterate $x$.
+Lemma \ref{lem:nearid} inductively gives
+$\iter{F}{p^e}\equiv x\pmod {p^e}$.
+The coefficient of $x^2$ in $F$ is $1$, and the coefficient of $x^2$
+in its $k$th iterate is $k$.  Thus an iterate equal to $x$ modulo $p^e$
+must have $p^e\mid k$, proving exactness.
+For A396807 combine the two prime-power orders by the Chinese
+remainder theorem, whose least common multiple is $10^e$.
+\end{proof}
+
+\begin{corollary}[A well-defined p-adic iteration parameter]\label{cor:padictime}
+For each selected prime $p$, there is an injective group homomorphism
+\[
+ (\Z_p,+)\longrightarrow (x+x^2\Z_p[[x]],\circ),
+ \qquad t\longmapsto\iter{F}{t},
+\]
+which extends the usual integer iterates, and
+$\coeff{2}\iter{F}{t}=t$.
+\end{corollary}
+\begin{proof}
+Choose integers $k_e$ representing $t$ modulo $p^e$.
+Theorem \ref{thm:order} makes the reductions of $\iter{F}{k_e}$
+compatible as $e$ increases, independently of the representatives.
+Take the inverse limit coefficient by coefficient.  Every coefficient
+of a composition is a finite polynomial in input coefficients, so the
+integer identity
+$\iter{F}{a}\circ\iter{F}{b}=\iter{F}{a+b}$ passes to the inverse limit.
+The degree-two coefficient is $t$, proving injectivity.
+\end{proof}
+
+These are $p$-adic formal iterates, not real fractional iterates.
+No assertion about a real-time flow follows from the construction.
+
+\section{Two neighboring OEIS entries}\label{sec:neighbors}
+
+\subsection{A396797: the same proof modulo 6}
+The entry A396797 uses the equation
+$B=x+\iter{B}{3}\iter{B}{4}$ and records both the constant coefficient
+congruence and its all-integer-iterate version modulo $6$
+\cite{oeis797}.  Here $D_{3,4}=6$, so Theorem \ref{thm:sharp} and
+Corollary \ref{cor:iterates} immediately prove
+\[
+ B\equiv\frac{x}{1-x}\pmod6,
+ \qquad \iter{B}{k}\equiv\frac{x}{1-kx}\pmod6
+ \quad(k\in\Z).
+\]
+Thus this is not a second unrelated computation: it is another
+specialization of the same exact-modulus theorem.
+
+\subsection{A396798: a corrected start and all its modulo-8 iterates}
+Let $G=F_{4,5,1}$, the generating function in A396798.  The entry lists
+a repeating coefficient word modulo $8$ and several patterns for its
+first eight iterates \cite{oeis798}.  A single formula handles all of
+them, including a small indexing correction.
+
+\begin{theorem}\label{thm:798}
+Set $J(x)=x^4/(1-x)^3$.  For every integer $k$,
+\begin{equation}\label{eq:798all}
+ \iter{G}{k}(x)\equiv\frac{x}{1-kx}
+       +4(k\bmod2)J(x)\pmod8.
+\end{equation}
+In particular,
+\[
+ G\equiv\frac{x}{1-x}+\frac{4x^4}{(1-x)^3}\pmod8.
+\]
+The coefficients of $G$ are $1$ at $n=1$, followed by the repeating
+word $1,1,5,5$ starting at $n=2$.  For odd $k$, the coefficients of
+$\iter{G}{k}$ starting at $n=2$ repeat
+\begin{equation}\label{eq:oddword}
+ k,\ 1,\ k+4,\ 5\pmod8.
+\end{equation}
+For even $k$, they are exactly the coefficients of $x/(1-kx)$ modulo $8$.
+\end{theorem}
+\begin{proof}
+The exact uniform modulus is $D_{4,5}=4$, so $G\equiv M\pmod4$.
+The residual of $M$, divided by $4$ and reduced modulo $2$, is
+\[
+ \frac{T(M)-M}{4}
+ =\frac{2x^3-5x^4}{(1-x)(1-4x)(1-5x)}
+ \equiv\frac{x^4}{(1-x)^2}\pmod2.
+\]
+For $(r,s,p)=(4,5,2)$, both $\alpha=2$ and $\beta=2$ vanish in $\F_2$,
+so $C=0$ and \eqref{eq:L} reduces to $Lh=(1-x)h$.
+The required correction is therefore $J=x^4/(1-x)^3$,
+proving $G\equiv M+4J\pmod8$.
+
+To iterate this identity, only the first variation modulo $2$ matters:
+terms quadratic in $4J$ vanish modulo $8$.
+Normalize $J=M^2w$, where
+\[
+ w=\frac{x^2}{1-x}.
+\]
+A direct substitution in $\F_2(x)$ gives $w(M)=w(x)$.
+The sum in \eqref{eq:variation} is thus $(k\bmod2)w$.
+For odd $k$, $M_k=M$ in $\F_2(x)$; for even $k$, the sum is zero.
+This proves \eqref{eq:798all} for nonnegative $k$.
+Theorem \ref{thm:order} gives $\iter{G}{8}=x$ modulo $8$, and both sides
+of \eqref{eq:798all} depend only on $k$ modulo $8$, extending the formula
+to all integers.
+
+For $n\geq4$,
+\[
+ \coeff{n}J=\binom{n-2}{2};
+\]
+in smaller positive degrees it is zero.  Its parity, starting at
+$n=2$, is the repeating word $0,0,1,1$.
+For odd $k$, $k^{n-1}$ modulo $8$ alternates $k,1$ starting at $n=2$.
+Adding the correction gives \eqref{eq:oddword}.
+\end{proof}
+
+For instance, the even iterates are
+\[
+ \iter{G}{2}\equiv x+2x^2+4x^3,\qquad
+ \iter{G}{4}\equiv x+4x^2,\qquad
+ \iter{G}{6}\equiv x+6x^2+4x^3,\qquad
+ \iter{G}{8}\equiv x\pmod8.
+\]
+The odd words for $k=3,5,7$ are respectively
+$(3,1,7,5)$, $(5,1,1,5)$, and $(7,1,3,5)$.
+
+The literal proposed word for $G$ cannot start at $n=1$:
+its third coefficient is $9\equiv1\pmod8$, not $5$.
+The corrected start $n=2$ gives an exact theorem.  This is an indexing
+correction in the neighboring entry, not a counterexample to either
+of the two main A396807 conjectures.
+
+\section{Large integer coefficients and zero complex radius}\label{sec:growth}
+
+The rational reductions do not reflect convergence of the original
+ordinary generating function.  In fact its coefficients grow too
+quickly for any positive complex radius.
+
+\begin{theorem}[A factorial lower bound]\label{thm:growth}
+Let $F=F_{r,s,1}=\sum_{n\geq1}a_nx^n$ with $\max(r,s)\geq2$.
+Then all coefficients are nonnegative, and
+\begin{equation}\label{eq:2stepbound}
+ a_n\geq(n-2)a_{n-2}\qquad(n\geq3).
+\end{equation}
+In particular, for $m\geq1$,
+\begin{equation}\label{eq:factorialbounds}
+ a_{2m}\geq2^{m-1}(m-1)!,\qquad
+ a_{2m+1}\geq(2m-1)!!.
+\end{equation}
+The complex radius of convergence is zero.
+\end{theorem}
+\begin{proof}
+The construction in Theorem \ref{thm:unique}, starting at $x$, uses only
+products, compositions, and addition with nonnegative coefficients.
+Hence the stabilized coefficients are nonnegative.  Also $F\geq x$
+coefficientwise and $a_1=a_2=1$.  Coefficientwise order is preserved by
+composition of such series, so any iterate of order at least two is
+at least $F\circ F$, and every other iterate is at least $x$.
+The defining equation thus implies
+\[
+ a_n\geq\coeff{n-1}(F\circ F).
+\]
+Within $F(F(x))$, select the outer term $a_{n-2}F(x)^{n-2}$.
+Because $F=x+x^2+O(x^3)$, the coefficient of $x^{n-1}$ in
+$F(x)^{n-2}$ is $n-2$: exactly one of its $n-2$ factors contributes
+$x^2$ and all others contribute $x$.  This proves
+\eqref{eq:2stepbound}.
+
+Iterating it along the two parities gives \eqref{eq:factorialbounds}.
+These lower bounds have $n$th roots tending to infinity.
+For example, at least half the factors in $(m-1)!$ are at least
+$(m-1)/2$, which already makes the $2m$th root unbounded.
+The odd case is similar.  Therefore
+$\limsup_n |a_n|^{1/n}=\infty$, and the radius is zero.
+\end{proof}
+
+This applies in particular to A396807.  A rational function regular at
+zero has positive complex radius of convergence, so $A$ is not rational
+over $\Q$.  There is no contradiction with rationality modulo every
+$10^e$: reduction discards unbounded amounts of integer information,
+and the rational representative is allowed to change with $e$.
+The lower bound is not an asymptotic equivalent.  It also does not,
+by itself, decide whether the series is D-finite.
+
+\section{Algorithms, independent checks, and reproducibility}\label{sec:computation}
+
+\subsection{An exact triangular construction}
+Repeatedly recomputing the whole functional equation is unnecessary.
+The supplied \texttt{series\_tools.py} maintains two tables:
+\[
+ P_{k,n}=\coeff{n}F(x)^k,
+ \qquad B_{j,n}=\coeff{n}\iter{F}{j}(x).
+\]
+Here $P$ uses ordinary powers and $B$ uses functional iterates.
+Initially $P_{0,0}=1$ and $B_{0,n}$ is $1$ at $n=1$ and $0$ otherwise.
+At degree $n$, perform the following operations in order:
+\begin{align}
+ a_n&=\mathbf1_{n=1}
+       +c\sum_{i=1}^{n-1}B_{r,i}B_{s,n-i},\label{eq:alg1}\\
+ P_{1,n}&=a_n,\qquad
+ P_{k,n}=\sum_{i=1}^{n-k+1}a_iP_{k-1,n-i}\quad(2\leq k\leq n),
+                                                        \label{eq:alg2}\\
+ B_{1,n}&=a_n,\qquad
+ B_{j,n}=\sum_{k=1}^{n}B_{j-1,k}P_{k,n}
+                    \quad(2\leq j\leq\max(r,s,1)).       \label{eq:alg3}
+\end{align}
+Equation \eqref{eq:alg1} uses only previously completed degrees because
+both product factors have zero constant term.
+Equation \eqref{eq:alg2} also uses only smaller degrees, and
+\eqref{eq:alg3} is triangular in $j$.
+The last identity represents $\iter{F}{j-1}\circ F$, which equals the
+$j$th iterate.  These observations prove the algorithm directly.
+
+Up to degree $N$, it uses
+$O(N^3+\max(r,s)N^2)$ ring operations and
+$O(N^2+\max(r,s)N)$ ring elements of storage.
+These are arithmetic-operation bounds, not bit-complexity bounds;
+integer sizes grow substantially.  Reducing after each operation gives
+the same algorithm over any desired finite modulus.
+
+For the last two digits alone, \eqref{eq:mod100} is much faster.
+Expanding a fixed rational function gives a fixed-order linear
+recurrence, hence $O(N)$ operations on bounded residues.
+After storing one period, any particular index is answered by reducing
+$n-1$ modulo $46860$ and adding one.  This does not require constructing
+the huge integer $a(n)$.
+
+\subsection{What was actually checked}
+The standard-library verification program was run with Python 3.13.5.
+The symbolic certificates were independently run with SymPy 1.14.0.
+The generated files contain the full machine-readable logs.
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.56\textwidth}>{\raggedright\arraybackslash}p{0.35\textwidth}@{}}
+\toprule
+Check & Executed range / result\\
+\midrule
+Exact A396807 construction & $1\leq n\leq400$; $a(400)$ has 910 digits\\[3pt]
+Published initial values & First 19 values matched\\[3pt]
+Independent Horner-composition residual & Defining equation checked
+ through degree 100\\[3pt]
+Main and refined congruences & 2,000 coefficient checks through degree 400\\[3pt]
+Positive and negative iterate congruences & $-20\leq k\leq20$,
+ $1\leq n\leq48$: 1,968 checks\\[3pt]
+Weighted sharp modulus and scaling & 1,014 parameter triples;
+ 29,406 coefficients\\[3pt]
+Compositional order upper bounds & Moduli $2,4,8,16,5,25,125,625$
+ through degree 40\\[3pt]
+Neighboring entries & 100 A396797 checks; 580 A396798 checks\\[3pt]
+Period data & 93,720 residues from the proved rational formulas;
+ two full matching periods\\[3pt]
+Symbolic identities & Universal residual, both first corrections,
+ direct chain-rule checks, trace checks, and the A396798 correction passed\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The weighted family range was
+$0\leq r,s\leq12$, $c\in\{-3,-1,0,1,2,5\}$, through degree $30$.
+For every triple, the gcd of the computed discrepancies equaled
+\eqref{eq:gcdideal}, and the scaling identity held coefficientwise.
+
+The 400 large integer coefficients were independently generated; only
+the first 19 were compared with the published initial list.
+The 93,720 two-digit residues were obtained from the proved rational
+formulas, \emph{not} by independently generating 93,720 full integer
+coefficients.  This distinction prevents circular evidence: the
+all-degree rational identities and period proof are established
+algebraically above; the long residue file is an efficient consequence
+and an implementation check.
+
+As additional implementation checks, the program rejects every
+maximal proper divisor of the proposed two-digit period.  It finds
+the following discrepancies, all already at $n=1$:
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+Proposed shift $L$ & $a(1)\bmod100$ & $a(1+L)\bmod100$\\
+\midrule
+23430&01&81\\
+15620&01&51\\
+9372&01&21\\
+4260&01&61\\
+660&01&81\\
+\bottomrule
+\end{tabular}
+\end{center}
+These finite discrepancies are consistent with, but are not needed in
+place of, the denominator and finite-field proof of minimality.
+
+\subsection{Files and commands}
+The archive contains the LaTeX source and compiled PDF, plus:
+\begin{center}
+\begin{tabular}{@{}p{0.44\textwidth}p{0.47\textwidth}@{}}
+\toprule
+File & Purpose\\
+\midrule
+\texttt{code/series\_tools.py} & Exact family solver, independent
+ composition and inverse routines, rational recurrence expansion\\[3pt]
+\texttt{code/verify.py} & Standard-library verification and data generation\\[3pt]
+\texttt{code/symbolic\_checks.py} & Optional SymPy rational identities and
+ reusable first-correction/linearized-solver functions\\[3pt]
+\texttt{data/a396807\_exact\_400.txt} & Independently generated exact values\\[3pt]
+\texttt{data/a396807\_mod100\_period.txt} & One complete minimal two-digit
+ period, with indices\\[3pt]
+\texttt{data/verification.json} & Detailed finite-test results\\[3pt]
+\texttt{data/symbolic\_verification.json} & Symbolic certificate results\\[3pt]
+\texttt{source\_notes/status.md} & Source provenance and status distinctions\\
+\bottomrule
+\end{tabular}
+\end{center}
+From the unpacked directory, run
+\begin{lstlisting}
+python code/verify.py
+python code/symbolic_checks.py    # optional; requires SymPy
+latexmk -pdf -interaction=nonstopmode article.tex
+\end{lstlisting}
+The first command requires no third-party Python packages.  The general
+higher-power rational lifting procedure is given explicitly in the
+proof of Theorem \ref{thm:rationallifts}; the code implements its
+linearized inverse and closed first correction, not an optimized
+arbitrary-exponent rational-function engine.
+
+\section{Conclusions and further questions}\label{sec:conclusion}
+
+The selected A396807 conjectures are proved, including negative
+functional iterates and sharpness of the modulus.  The useful broader
+lesson is that reduction to a finite-order rational substitution can
+turn an equation involving unknown functional iterates into an
+explicitly invertible trace equation.
+
+For this family the chain of implications is fully proved:
+\[
+ \begin{aligned}
+ \text{sharp M\"obius congruence}
+ &\ \Longrightarrow\ \text{cyclic-trace inverse}\\
+ &\ \Longrightarrow\ \text{rational prime-power lifts}\\
+ &\ \Longrightarrow\ \text{eventually periodic residues}.
+ \end{aligned}
+\]
+At the first additional digit the denominator is explicit enough to
+prove exact periods.  For A396807 this produces a period of $46860$
+for the last two digits, despite superexponential lower bounds on the
+integer coefficients themselves.
+
+Several questions remain beyond the results proved here.  One is to
+obtain comparably explicit minimal periods modulo $10^e$ for $e\geq3$,
+rather than merely eventual periodicity.  Another is to control the
+growth of numerator and denominator degrees in the rational lifting
+algorithm.  A third is to sharpen \eqref{eq:factorialbounds} to an actual
+asymptotic description of $a(n)$.  Finally, the method as stated selects
+primes dividing $D_{r,s}$; it does not classify reductions at other
+primes.  These are natural continuation questions, not claims here
+about their global status in the literature.
+
+The computational evidence is deliberately separated from the proofs.
+The finite checks test implementations and catch algebraic mistakes;
+existence, congruence, rationality at every selected prime power, and
+minimal period are established by the preceding arguments.
+
+\begin{thebibliography}{9}
+\bibitem{oeis807}
+Paul D. Hanna, \emph{A396807: G.f. satisfies
+$A(x)=x+A^5(x)A^6(x)$}, The On-Line Encyclopedia of Integer Sequences,
+entry contributed June 16, 2026. Retrieved September 19, 2026.
+\url{https://oeis.org/A396807}.
+
+\bibitem{oeis807internal}
+The OEIS Foundation, \emph{A396807, internal-format record},
+record identifier \texttt{\#9 Jun 18 2026 00:43:54} in the retrieved
+version. Retrieved September 19, 2026.
+\url{https://oeis.org/A396807/internal}.
+
+\bibitem{oeis797}
+Paul D. Hanna, \emph{A396797: G.f. satisfies
+$A(x)=x+A^3(x)A^4(x)$}, The On-Line Encyclopedia of Integer Sequences,
+entry contributed June 15, 2026. Retrieved September 19, 2026.
+\url{https://oeis.org/A396797}.
+
+\bibitem{oeis798}
+Paul D. Hanna, \emph{A396798: G.f. satisfies
+$A(x)=x+A^4(x)A^5(x)$}, The On-Line Encyclopedia of Integer Sequences,
+entry contributed June 16, 2026. Retrieved September 19, 2026.
+\url{https://oeis.org/A396798}.
+\end{thebibliography}
+
+\end{document}

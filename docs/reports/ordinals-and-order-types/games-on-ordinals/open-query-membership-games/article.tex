@@ -1,0 +1,1234 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{aliascnt}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{Navy}{HTML}{17344D}
+\definecolor{Teal}{HTML}{157F82}
+\definecolor{Pale}{HTML}{EFF6F7}
+\definecolor{Gray}{HTML}{53606B}
+\hypersetup{colorlinks=true,linkcolor=Navy,citecolor=Teal,urlcolor=Teal,
+ pdftitle={Open-query games on ordinal spaces: a negative solution to the topological-sum problem},
+ pdfauthor={Research report},
+ pdfsubject={Order topology, Cantor--Bendixson rank, finite decision trees}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{Navy} ORDINAL MEMBERSHIP GAMES}
+\fancyhead[R]{\small\sffamily\color{Gray} RESEARCH REPORT}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.2em}
+\setlist{nosep,leftmargin=1.7em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\newcommand{\sm}{\operatorname{sm}}
+\newcommand{\ps}{\operatorname{ps}}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\rk}{\operatorname{rk}}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\bigsqsum}{\bigsqcup}
+\newcommand{\Fin}{\operatorname{Fin}}
+\newcommand{\CB}{\operatorname{CB}}
+\newtcolorbox{resultbox}{colback=Pale,colframe=Teal,boxrule=0.5pt,
+ arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,breakable}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
+ breaklines=true,frame=single,rulecolor=\color{Gray},showstringspaces=false}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.4in}
+{\sffamily\color{Teal}\large ORDER TOPOLOGY \; / \; ORDINAL COMBINATORICS\par}
+\vspace{0.45in}
+{\sffamily\bfseries\color{Navy}\Huge Open-query games\\[0.15em] on ordinal spaces\par}
+\vspace{0.3in}
+{\sffamily\color{Navy}\Large A negative solution to the topological-sum problem,\\
+with an exact Cantor--Bendixson classification\par}
+\vspace{0.5in}
+{\large Research report\par}
+{\color{Gray}19 September 2026\par}
+\vspace{0.45in}
+\begin{resultbox}
+For the convergent ordinal sequence $S=[0,\omega]$,
+\[
+ \sm(S)=1,
+ \qquad
+ \sm(S\sqcup S)=2.
+\]
+More generally, for every integer $k\geq1$, the compact ordinal space
+\[
+ K_k=[0,\omega^{\,2^k-1}]
+\]
+satisfies $\sm(K_k)=k$ and $\sm(K_k\sqcup K_k)=k+1$.
+\end{resultbox}
+\vfill
+{\small\color{Gray}
+Complete ordinary mathematical proofs are included. The archive also contains
+an independent finite-poset verifier, exact data, and a machine-readable strategy
+certificate. The infinite-space results do not depend on numerical experiments.
+No claim of independent peer review or formal proof-assistant verification is made.\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\begin{abstract}
+We answer negatively Problem 1.3 of Chiozini, Csern\'ak, and Soukup's
+\emph{Gamification of the $T_0$-pseudoweight via cut-and-choose games on
+topological spaces}, in the version available as arXiv:2510.05754v3.
+The counterexample consists of two convergent sequences, so it lies entirely
+within compact metrizable ordinal spaces.
+
+The main further result is an exact formula for every nonempty Hausdorff space
+of finite Cantor--Bendixson height. If $X^{(h)}\ne\varnothing$ and
+$X^{(h+1)}=\varnothing$, then
+\[
+ \sm(X)=
+ \begin{cases}
+  \ceil{\log_2(h+1)},& |X^{(h)}|=1,\\
+  \ceil{\log_2(h+2)},& |X^{(h)}|\geq2.
+ \end{cases}
+\]
+The proof identifies finite open-query complexity with the logarithm of the
+minimum length of an alternating closed-layer decomposition. A canonical
+alternating-closure procedure computes that length and retains the orientation
+information lost by the scalar invariant $\sm$.
+
+Consequences include sharp one-move failures of the proposed sum identity at
+every positive finite level, exact finite-product formulae, a classification on
+countable scattered Hausdorff spaces, and a quadratic-time target algorithm for
+finite posets. Independent minimax computations verify the finite normal form
+on all naturally labelled posets through six elements and all their targets:
+320,866 tests in total.
+\end{abstract}
+
+\setcounter{tocdepth}{1}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{The selected problem and the status of the answer}
+
+In the set-membership game, questions are restricted to open subsets of a space,
+and the aim is to decide membership in a fixed target subset. The invariant
+$\sm(X)$ is the worst, over all targets, of the least ordinal number of questions
+needed. Chiozini, Csern\'ak, and Soukup ask whether
+\begin{equation}\label{eq:question}
+ \sm\!\left(\bigsqsum_{i\in I}X_i\right)
+ \stackrel{?}{=}\sup_{i\in I}\sm(X_i).
+\end{equation}
+This is their Problem 1.3; their Theorem 3.4 gives the upper bound consisting of
+the right-hand side followed by one additional move \cite{CCS}.
+
+The answer to \eqref{eq:question} is \emph{no}. The proof in the next section is
+short and does not depend on any later theorem. In particular, the counterexample
+is not an artifact of non-Hausdorff topology, uncountable spaces, or an ambiguity
+about transfinite play. It uses a two-move game on a countable compact metrizable
+space. Repeating the same component countably many times also gives a
+counterexample when the index set is required to be infinite.
+
+The more substantial development is the classification in
+\cref{thm:height}. Its mechanism explains exactly why the counterexample works.
+Different components may require opposite interpretations of the same
+open-set answer. A scalar question count forgets that orientation, while a pair
+of alternating-closure lengths preserves it.
+
+\paragraph{Status and provenance.}
+The arXiv record retrieved for this report lists version 3, dated 29 May 2026;
+the question remains explicitly printed there \cite{CCS}. The report gives a
+negative solution to that stated question, not a solution to every open problem
+in the paper. A targeted literature search found no intervening resolution of
+this question. This is a search statement, not a proof of priority. The
+closed-layer machinery belongs to the classical setting of Hausdorff difference
+hierarchies; we do not claim that framework as new \cite{BGKS}. All lemmas needed
+for the results here are proved below.
+
+\section{A compact ordinal counterexample}\label{sec:small}
+
+Let $S=[0,\omega]$ have its order topology. Thus every natural number is isolated,
+and the neighborhoods of $\omega$ contain a final segment of $\N$.
+We use zero questions for a constant target: a subset equal to the whole space
+or to the empty set.
+
+\begin{lemma}[The one-question criterion]\label{lem:one}
+For a subset $A$ of any topological space $X$, membership in $A$ can be decided
+with at most one open-set question if and only if $A$ is open or closed.
+\end{lemma}
+\begin{proof}
+An open target is itself a legal question. A closed target can be tested by
+asking its open complement. Conversely, suppose the first question is $U$.
+The only two possible final states are $U$ and $X\setminus U$. Both must be
+monochromatic for membership in $A$. If they have the same color, $A$ is
+constant. Otherwise $A=U$ or $A=X\setminus U$.
+\end{proof}
+
+\begin{proposition}\label{prop:small}
+For $S=[0,\omega]$,
+\begin{equation}\label{eq:small}
+ \sm(S)=1,\qquad \sm(S\sqcup S)=2.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Every subset of $S$ missing $\omega$ is open, since it consists entirely of
+isolated points. Every subset containing $\omega$ is closed, since its complement
+consists of isolated points. Hence every target takes at most one question.
+There are nonconstant targets, so $\sm(S)=1$.
+
+Write $S_0,S_1$ for two disjoint copies, with limit points $p_0,p_1$, and put
+\[
+ A=\{p_0\}\ \sqcup\ (S_1\setminus\{p_1\}).
+\]
+This set is not open: it contains $p_0$ but no isolated point of $S_0$.
+It is not closed: it contains all isolated points of $S_1$, but omits their
+limit $p_1$. By \cref{lem:one}, one question cannot suffice.
+
+Two questions suffice for \emph{every} target $B$. First ask the clopen set
+$S_0$, thereby determining which copy contains the remaining candidates.
+Inside that copy, $B$ is open or closed, so one more open question decides
+membership. An open set in a component is open in the disjoint union.
+\end{proof}
+
+The fact that spaces with at most one accumulation point have one-question
+membership complexity is also noted in \cite[Section 7]{CCS}; the failure of
+\eqref{eq:question} comes from putting two such components together.
+
+\begin{corollary}
+The proposed identity fails even when every component and the whole sum are
+compact, countable, metrizable, zero-dimensional, and homeomorphic to ordinal
+spaces. Specifically,
+\[
+ S\sqcup S\cong[0,\omega\cdot2],
+ \qquad \sm([0,\omega\cdot2])=2.
+\]
+\end{corollary}
+\begin{proof}
+The two clopen intervals $[0,\omega]$ and $(\omega,\omega\cdot2]$ partition
+$[0,\omega\cdot2]$. Each has order type $\omega+1$. The stated topological
+properties can also be seen directly from two disjoint convergent sequences.
+\end{proof}
+
+\begin{proposition}[An infinite index set]
+For every cardinal $\kappa\geq2$,
+\[
+ \sm\!\left(\bigsqsum_{i<\kappa}S\right)=2.
+\]
+\end{proposition}
+\begin{proof}
+The lower bound follows by restricting to two components. For the upper bound,
+fix a target $A$, and split the component indices into two classes so that $A_i$
+is open on the first class and closed on the second; when both apply, choose
+either class. One question asks the union of the components in the first class.
+A second question asks the open set whose trace is $A_i$ on the first class and
+$S_i\setminus A_i$ on the second. The two answers determine the color.
+\end{proof}
+
+\section{The game, subspaces, and ordinal conventions}
+
+All ordinal intervals in this report carry their order topology. The notation
+$[0,\gamma]$ denotes a space whose underlying ordered set has order type
+$\gamma+1$. A topological sum $X\sqcup Y$ is not being confused with an ordinal
+sum; when they are homeomorphic, this is stated separately.
+
+\begin{definition}[Open-query membership game]
+Fix $A\subseteq X$ and an ordinal $\beta$. At stage $\xi<\beta$, the Seeker
+chooses an open set $U_\xi$. The Hider answers $e_\xi\in\{0,1\}$. Set
+\[
+ W_\eta=\bigcap_{\xi<\eta}
+ \begin{cases}
+  U_\xi,&e_\xi=1,\\
+  X\setminus U_\xi,&e_\xi=0.
+ \end{cases}
+\]
+The Seeker wins if $W_\beta\subseteq A$ or $W_\beta\cap A=\varnothing$.
+Write $\sm(A,X)$ for the least winning length and
+$\sm(X)=\sup_{A\subseteq X}\sm(A,X)$, as in \cite{CCS}.
+\end{definition}
+
+For ordinal-valued invariants we work with $T_0$ spaces, where a winning
+length exists: asking all open sets separates points. A statement of the form
+$\sm(A,X)\leq d$ can also be read on an arbitrary topological space as the
+existence of a winning depth-$d$ strategy, whether or not a least ordinal
+winning length exists. The finite normal form is valid in this broader sense.
+
+An empty final state is winning. The Hider need not commit to a point in advance.
+For a finite decision tree, however, the game formulation and correctness on
+every fixed point are equivalent: a bad leaf contains two points of different
+colors, while an empty leaf is harmless. This equivalence will be used carefully
+in \cref{sec:normal}.
+
+\begin{lemma}[Restriction to a subspace]\label{lem:subspace}
+If $Z\subseteq X$ and $A\subseteq X$, then
+\[
+ \sm(A\cap Z,Z)\leq\sm(A,X),\qquad \sm(Z)\leq\sm(X).
+\]
+\end{lemma}
+\begin{proof}
+Restrict every open question in a strategy on $X$ to $Z$. It is open in the
+subspace, and every resulting state is the old state intersected with $Z$.
+For the second inequality, extend an arbitrary target of $Z$ to a target of $X$.
+\end{proof}
+
+Finite question counts are ordinary nonnegative integers. We use
+$\ceil{\log_2 L}$ only for positive integers $L$; equivalently, it is the least
+integer $d$ for which $L\leq2^d$. This avoids floating-point or ordinal-logarithm
+conventions. In particular, $\ceil{\log_2 1}=0$.
+
+\section{Finite decision trees and alternating layers}\label{sec:normal}
+
+\begin{definition}[Alternating closed layers]
+For a nonempty space $X$ and $A\subseteq X$, let $C_1=A$ and
+$C_0=X\setminus A$. A closed-layer decomposition of length $L\geq1$ and
+outer color $c\in\{0,1\}$ is a chain
+\begin{equation}\label{eq:layerchain}
+ X=F_0\supseteq F_1\supseteq\cdots\supseteq F_L=\varnothing
+\end{equation}
+of closed sets such that
+\begin{equation}\label{eq:layercolor}
+ F_i\setminus F_{i+1}\subseteq C_{(c+i)\bmod2}
+ \quad(0\leq i<L).
+\end{equation}
+Empty layers are allowed. Let $L(A,X)$ be the least such length, allowing either
+outer color, and put $L(A,X)=\infty$ if no finite chain exists.
+\end{definition}
+
+These are finite alternating differences of closed sets, equivalently finite
+Boolean combinations of open sets. This connects the game to the difference
+hierarchy, but the exact decision-depth statement below is proved directly.
+
+\begin{theorem}[Finite normal form]\label{thm:normal}
+For every nonempty topological space $X$, target $A$, and integer $d\geq0$,
+\begin{equation}\label{eq:normal}
+ \sm(A,X)\leq d
+ \quad\Longleftrightarrow\quad L(A,X)\leq2^d.
+\end{equation}
+Consequently, whenever $L(A,X)<\infty$,
+\begin{equation}\label{eq:logdepth}
+ \sm(A,X)=\ceil{\log_2 L(A,X)}.
+\end{equation}
+\end{theorem}
+
+\subsection{From a query tree to an ordered collection of leaves}
+
+\begin{lemma}\label{lem:leaf}
+Complete a finite open-query tree to depth $d$, padding terminal branches with
+dummy questions. Number its leaves $0,1,\ldots,2^d-1$ in lexicographic order of
+answer strings, with $0<1$. If $\ell(x)$ is the leaf reached by the answers of
+$x$, then every upper level set
+\[
+ \{x:\ell(x)\geq j\}
+\]
+over the leaf order is open.
+\end{lemma}
+\begin{proof}
+Proceed by induction on $d$. The case $d=0$ is immediate. Let the root question
+be $U$, and put $M=2^{d-1}$. Consider the two subtrees as query trees defined on
+all of $X$, regardless of which root answer would actually occur, and write
+$\ell_0,\ell_1$ for their leaf functions. If $j\leq M$, then
+\[
+ \{\ell\geq j\}=U\cup\{\ell_0\geq j\};
+\]
+for $j=M$, the second set is empty. If $j>M$, then
+\[
+ \{\ell\geq j\}=U\cap\{\ell_1\geq j-M\}.
+\]
+The induction hypothesis and closure of the topology under finite unions and
+intersections prove the claim.
+\end{proof}
+
+\begin{proof}[Proof of the forward implication of \cref{thm:normal}]
+A winning depth-$d$ tree has a well-defined output color at each nonempty leaf.
+Assign an arbitrary color to each empty leaf. Read the $2^d$ leaf colors from
+the largest leaf down to the smallest, and group consecutive equal colors into
+runs. There are at most $2^d$ runs, and successive run colors alternate.
+
+After deleting the largest $i$ runs, the set of points still represented is a
+lower level set of $\ell$. It is closed by \cref{lem:leaf}. These lower level
+sets, starting with $X$ and ending with $\varnothing$, form the required chain.
+A run can represent no points, which is why empty layers were allowed.
+\end{proof}
+
+\subsection{Balanced search among closed layers}
+
+\begin{proof}[Proof of the reverse implication of \cref{thm:normal}]
+Suppose \eqref{eq:layerchain}--\eqref{eq:layercolor} hold. Every point lies in a
+unique layer $F_i\setminus F_{i+1}$. The open question $X\setminus F_j$ tests
+whether $i<j$. Thus ordinary binary search can identify the layer index among
+$L$ possibilities. Split the current interval of indices as evenly as possible
+at each question. Its largest remaining size after $d$ questions is at most
+$\ceil{L/2^d}$. When $L\leq2^d$, at most one layer remains, and that layer is
+monochromatic. The same reasoning applies to arbitrary Hider answers: either
+the state is empty or it is contained in a single layer.
+\end{proof}
+
+\begin{remark}[Why the logarithm is genuine]
+Sequentially peeling $L$ layers would spend roughly $L$ questions. Adaptivity
+permits balanced search through nested open thresholds, reducing the count to
+$\ceil{\log_2 L}$. Conversely, a depth-$d$ tree has at most $2^d$ ordered leaf
+runs. Neither direction assumes that the space is ordered or Hausdorff.
+\end{remark}
+
+\section{Canonical alternating closures and orientation}
+
+The least layer length has a concrete canonical description. This is also the
+right quantity for understanding disjoint unions.
+
+\begin{definition}[Oriented closure sequence]\label{def:closure}
+For $c\in\{0,1\}$ define
+\begin{equation}\label{eq:greedy}
+ F^c_0=X,\qquad
+ F^c_{i+1}=\cl_X\bigl(F^c_i\cap C_{(c+i+1)\bmod2}\bigr).
+\end{equation}
+Let $N_c(A,X)$ be the first integer $L$ such that $F^c_L=\varnothing$, or
+$\infty$ when no such integer exists. The pair $(N_0,N_1)$ is the
+\emph{oriented closure profile} of the target.
+\end{definition}
+
+Every $F^c_i$ is closed and the sequence is decreasing. At step $i+1$, one keeps
+the closure of points whose color would be wrong in the next layer. Therefore
+\[
+ F^c_i\setminus F^c_{i+1}\subseteq C_{(c+i)\bmod2}.
+\]
+
+\begin{theorem}[Canonical minimality]\label{thm:greedy}
+For each outer color $c$, $N_c(A,X)$ is the least possible length of a
+closed-layer decomposition with that color. In particular,
+\begin{equation}\label{eq:profileformula}
+ L(A,X)=\min(N_0(A,X),N_1(A,X)).
+\end{equation}
+\end{theorem}
+\begin{proof}
+If the canonical sequence terminates, its layers are a decomposition of the
+required length. Conversely, let $G_0,\ldots,G_L$ be any closed-layer chain
+with outer color $c$. We show $F^c_i\subseteq G_i$ by induction.
+The assertion is true at $i=0$. If it holds at $i$, then every wrong-colored
+point of $F^c_i$ belongs to $G_{i+1}$, because $G_i\setminus G_{i+1}$ has the
+prescribed color. Taking closures preserves containment in the closed set
+$G_{i+1}$. Hence $F^c_{i+1}\subseteq G_{i+1}$. In particular $F^c_L=\varnothing$.
+\end{proof}
+
+\begin{lemma}[Two elementary profile rules]\label{lem:profiles}
+Complementing the target swaps $N_0$ and $N_1$. Also,
+\[
+ N_c\leq N_{1-c}+1
+\]
+whenever the latter is finite.
+\end{lemma}
+\begin{proof}
+The first assertion follows directly from \eqref{eq:greedy}. For the second,
+prepend an empty outer layer of color $c$ to a decomposition whose outer color
+is $1-c$; in the chain this means repeating $X$ once at the beginning.
+Apply \cref{thm:greedy}.
+\end{proof}
+
+Thus finite profile entries differ by at most one, but discarding the distinction
+between them can change a question count at a power-of-two threshold.
+
+\begin{proposition}[Exact finite profile of a sum]\label{prop:profile-sum}
+Let $X=\bigsqsum_{i\in I}X_i$, $A_i=A\cap X_i$, and let $c\in\{0,1\}$.
+For a nonempty family of nonempty components,
+\begin{equation}\label{eq:profile-sum}
+ N_c(A,X)=\sup_{i\in I}N_c(A_i,X_i),
+\end{equation}
+where the supremum is taken in $\N\cup\{\infty\}$: an unbounded set of finite
+lengths has value $\infty$. Hence, whenever the resulting minimum is finite,
+\begin{equation}\label{eq:sumexact}
+ \sm(A,X)=\ceil{\log_2\!\left(
+   \min_{c\in\{0,1\}}\sup_i N_c(A_i,X_i)\right)}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Closure in a disjoint union is computed componentwise. Inductively,
+$F^c_n(A,X)\cap X_i=F^c_n(A_i,X_i)$ for every finite $n$. The global sequence
+is empty exactly when every component sequence is empty. Now use
+\cref{thm:normal,thm:greedy}.
+\end{proof}
+
+The obstruction to \eqref{eq:question} is already visible in the elementary
+inequality
+\[
+ \min_c\sup_i N_{i,c}\ \geq\ \sup_i\min_c N_{i,c}.
+\]
+The two operations need not commute: each component may have its own preferred
+outer color, whereas one global closed-layer chain has only one outer color.
+
+\section{Exact classification at finite Cantor--Bendixson height}
+\label{sec:height}
+
+For a closed subspace $F$ of a Hausdorff space, let $F'$ be its set of
+nonisolated points. Set $X^{(0)}=X$, $X^{(n+1)}=(X^{(n)})'$; at a limit ordinal,
+use the intersection of the previous derivatives. Only finite derivatives are
+needed for the principal formula.
+
+\begin{definition}
+A nonempty Hausdorff space has \emph{last derivative rank $h$} if
+\[
+ X^{(h)}\ne\varnothing,\qquad X^{(h+1)}=\varnothing.
+\]
+Its Cantor--Bendixson height is then $h+1$. The terminal derivative $X^{(h)}$
+is discrete; it need not be finite unless the space is compact.
+\end{definition}
+
+\begin{theorem}[Finite-height classification]\label{thm:height}
+Let $X$ be a nonempty Hausdorff space with last derivative rank $h<\omega$.
+Then
+\begin{equation}\label{eq:height}
+ \boxed{\quad
+ \sm(X)=
+ \begin{cases}
+  \ceil{\log_2(h+1)},& |X^{(h)}|=1,\\[2pt]
+  \ceil{\log_2(h+2)},& |X^{(h)}|\geq2.
+ \end{cases}\quad}
+\end{equation}
+More precisely, the maximum of $L(A,X)$ over all targets is $h+1$ in the first
+case and $h+2$ in the second. The maxima are attained.
+\end{theorem}
+
+\subsection{Why canonical closures lose one derivative at each step}
+
+\begin{lemma}\label{lem:isolation}
+If $F=\cl_X B$ and $x$ is isolated in $F$, then $x\in B$.
+\end{lemma}
+\begin{proof}
+An open neighborhood $U$ with $U\cap F=\{x\}$ must meet $B$, because
+$x\in\cl_X B$. Thus $x\in B$.
+\end{proof}
+
+\begin{lemma}[Derivative descent]\label{lem:descent}
+For every target and outer color, the canonical sequence satisfies
+\begin{equation}\label{eq:descent}
+ F^c_{n+1}\subseteq(F^c_n)'\quad(n\geq1),
+ \qquad F^c_n\subseteq X^{(n-1)}\quad(n\geq1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+By \cref{lem:isolation}, every isolated point of $F^c_n$ has color
+$(c+n)\bmod2$. Therefore the opposite-colored points whose closure defines
+$F^c_{n+1}$ all lie in $(F^c_n)'$. This derivative is closed in $X$, so their
+closure lies there too. Derivation is monotone on closed sets, giving the
+second assertion by induction from $F^c_1\subseteq X$.
+\end{proof}
+
+\begin{proof}[Upper bounds in \cref{thm:height}]
+For every target and orientation, \cref{lem:descent} gives
+$F^c_{h+2}\subseteq X^{(h+1)}=\varnothing$. Hence $L(A,X)\leq h+2$.
+
+Now assume $X^{(h)}=\{p\}$, and write $d$ for the target color of $p$.
+Choose $c$ so that $(c+h)\bmod2=d$. We have $F^c_{h+1}\subseteq\{p\}$.
+If this set were nonempty, $p$ would be isolated in it and, by
+\cref{lem:isolation}, would have color $(c+h+1)\bmod2=1-d$, a contradiction.
+Thus $F^c_{h+1}=\varnothing$ and $L(A,X)\leq h+1$.
+\end{proof}
+
+\subsection{Alternating rank layers give matching lower bounds}
+
+Write
+\[
+ D_j=X^{(j)}\setminus X^{(j+1)}\qquad(0\leq j\leq h).
+\]
+These sets partition $X$. The set $D_j$ is dense in $X^{(j)}$. Here are details
+that do not assume compactness: a finite-height space is scattered, because any
+nonempty subspace contains a point of least ambient rank, and that point is
+isolated in the subspace after restricting an isolating neighborhood at its rank.
+Every nonempty open subset of a scattered space contains a point isolated in
+that space. Apply this to $X^{(j)}$.
+
+\begin{lemma}[Parity target]\label{lem:parity}
+Color every point of $D_j$ by $(b+j)\bmod2$, where $b\in\{0,1\}$, and let
+$A_b$ be the color-$1$ set. Then
+\begin{equation}\label{eq:parityprofiles}
+ N_b(A_b,X)=h+1,\qquad N_{1-b}(A_b,X)=h+2.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $h=0$, the target is constant of color $b$, and the two lengths are
+$1$ and $2$, as asserted. Assume $h\geq1$.
+With outer color $b$, the first closure is $X'$, because the opposite color
+contains $D_1$, which is dense in $X'$, and is contained in $X'$.
+Repeating the argument shows $F^b_n=X^{(n)}$ for $0\leq n\leq h+1$.
+Thus the first empty term has index $h+1$.
+
+With outer color $1-b$, the first closure is $X$, since it includes the dense
+rank-zero layer $D_0$. Subsequent closures give
+$F^{1-b}_n=X^{(n-1)}$ for $1\leq n\leq h+2$. The first empty term now has
+index $h+2$. The same computation covers $h=0$.
+\end{proof}
+
+\begin{lemma}[Restriction of profiles]\label{lem:profile-restrict}
+For any subspace $Z\subseteq X$ and either color $c$,
+\[
+ N_c(A\cap Z,Z)\leq N_c(A,X).
+\]
+\end{lemma}
+\begin{proof}
+The closure identity
+$\cl_Z(B\cap Z)\subseteq Z\cap\cl_X B$ gives, inductively,
+$F^c_n(A\cap Z,Z)\subseteq Z\cap F^c_n(A,X)$.
+\end{proof}
+
+\begin{proof}[Lower bounds in \cref{thm:height}]
+The parity target of \cref{lem:parity} always has $L=h+1$, proving the required
+lower bound when the terminal derivative is a singleton.
+
+Suppose instead that $p\ne q$ lie in $X^{(h)}$. Take disjoint open neighborhoods
+$U,V$ of $p,q$. Derivatives commute with restriction to an open subspace:
+$U^{(j)}=U\cap X^{(j)}$, and similarly for $V$. In particular both $U$ and $V$
+have last derivative rank $h$.
+
+On $U$, choose the parity target with bottom color $0$. On $V$, choose the parity
+target with bottom color $1$. Define the target arbitrarily outside $U\cup V$.
+By \cref{lem:parity}, orientation $0$ requires $h+2$ layers on $V$, while
+orientation $1$ requires $h+2$ layers on $U$. By
+\cref{lem:profile-restrict}, both global orientations require at least $h+2$
+layers. The upper bound already proved gives equality. Applying
+\cref{thm:normal} finishes the proof.
+\end{proof}
+
+\begin{remark}[What information survives]
+At finite height, the invariant sees the last derivative rank and whether the
+terminal derivative has one point or more than one. It sees neither the exact
+larger cardinality of that derivative nor the cardinalities of lower levels.
+Compactness and metrizability are not needed for \cref{thm:height}.
+\end{remark}
+
+\section{Exact values on ordinal intervals}\label{sec:ordinals}
+
+For $h,m\geq1$ finite, put
+\[
+ X_{h,m}=[0,\omega^h\cdot m].
+\]
+These are countable compact ordinal spaces. Standard background on ordinal
+spaces and Cantor--Bendixson characteristics is discussed in \cite{AM}; the
+specific derivative calculation needed here is elementary.
+
+\begin{lemma}\label{lem:ordinal-rank}
+For $1\leq j\leq h$,
+\begin{equation}\label{eq:ordinal-derivative}
+ X_{h,m}^{(j)}=
+ \{\omega^j\eta:0<\eta\leq\omega^{h-j}\cdot m\}.
+\end{equation}
+In particular,
+\[
+ X_{h,m}^{(h)}=\{\omega^h,\omega^h\cdot2,\ldots,\omega^h\cdot m\},
+ \qquad X_{h,m}^{(h+1)}=\varnothing.
+\]
+\end{lemma}
+\begin{proof}
+The nonisolated points of an ordinal interval are exactly its nonzero limit
+ordinals. Below $\omega^h\cdot m$, these are precisely the positive multiples
+of $\omega$. This gives the formula for $j=1$.
+
+Within the ordered set of positive multiples of $\omega^j$, a point with
+successor coefficient is isolated, including the first coefficient. A point
+with limit coefficient is a limit of smaller such multiples. The nonzero limit
+coefficients are the multiples of $\omega$. Therefore the next derivative
+consists exactly of the positive multiples of $\omega^{j+1}$ in the indicated
+range. This proves the induction. At step $h$ the remaining finite set is
+discrete, so the next derivative is empty.
+\end{proof}
+
+\begin{corollary}[Finite-exponent ordinal formula]\label{cor:ordinal}
+For positive finite $h,m$,
+\begin{equation}\label{eq:ordinal-sm}
+ \sm([0,\omega^h\cdot m])=
+ \begin{cases}
+  \ceil{\log_2(h+1)},&m=1,\\
+  \ceil{\log_2(h+2)},&m\geq2.
+ \end{cases}
+\end{equation}
+\end{corollary}
+
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+Last rank $h$ & One terminal point & At least two & Duplication increases $\sm$\\
+\midrule
+0 & 0 & 1 & yes\\
+1 & 1 & 2 & yes\\
+2 & 2 & 2 & no\\
+3 & 2 & 3 & yes\\
+4 & 3 & 3 & no\\
+5 & 3 & 3 & no\\
+6 & 3 & 3 & no\\
+7 & 3 & 4 & yes\\
+8 & 4 & 4 & no\\
+15 & 4 & 5 & yes\\
+31 & 5 & 6 & yes\\
+63 & 6 & 7 & yes\\
+\bottomrule
+\end{tabular}
+\end{center}
+The row $h=0$ refers to arbitrary discrete spaces, not the notation
+$[0,\omega^0\cdot m]$. A singleton has value $0$; any larger discrete space has
+value $1$.
+
+\paragraph{Explicit hard targets.}
+On $X_{h,1}$, color a point according to the parity of its Cantor--Bendixson
+rank. In Cantor normal form, the rank of a nonzero point is its last nonzero
+exponent; the point $0$ has rank $0$. On two copies, reverse all colors in one
+copy. The canonical closure lengths are then $h+2$ in both orientations.
+This is an explicit witness, not merely an existence argument using the
+supremum over targets.
+
+\paragraph{Why two copies form another ordinal space.}
+For $h\geq1$, the intervals
+\[
+ [0,\omega^h],\qquad (\omega^h,\omega^h\cdot2]
+\]
+are clopen in $[0,\omega^h\cdot2]$ and are each homeomorphic to
+$[0,\omega^h]$. The second interval has the same order type because removing
+the first point from an infinite indecomposable ordinal $\omega^h$ does not
+change that order type. Thus
+\[
+ X_{h,1}\sqcup X_{h,1}\cong X_{h,2}.
+\]
+
+\section{Sharp failures at every finite level, and sums more generally}
+
+\begin{theorem}[Sharpness at every positive finite level]\label{thm:sharp}
+For every integer $k\geq1$, let
+\[
+ K_k=[0,\omega^{\,2^k-1}].
+\]
+Then
+\begin{equation}\label{eq:sharp}
+ \sm(K_k)=k,\qquad
+ \sm\!\left(\bigsqsum_{i<\kappa}K_k\right)=k+1
+ \quad\text{for every cardinal }\kappa\geq2.
+\end{equation}
+Thus the one-extra-move upper bound for sums is attained at every positive
+finite level, including by sums of two compact metrizable ordinal spaces.
+\end{theorem}
+\begin{proof}
+Put $h=2^k-1$. Derivatives of a disjoint union are computed componentwise.
+Each component has last rank $h$ and one terminal point; a sum of at least two
+has the same last rank and at least two terminal points. By
+\cref{thm:height}, the respective values are
+\[
+ \ceil{\log_2(2^k)}=k,\qquad
+ \ceil{\log_2(2^k+1)}=k+1.
+\]
+\end{proof}
+
+\begin{corollary}[Exact duplication threshold]\label{cor:threshold}
+If $X$ is Hausdorff of last finite derivative rank $h$ and
+$|X^{(h)}|=1$, then
+\[
+ \sm(X\sqcup X)>
+ \sm(X)
+ \quad\Longleftrightarrow\quad h+1\text{ is a power of }2.
+\]
+In that case the increase is exactly one.
+\end{corollary}
+\begin{proof}
+The comparison is between $\ceil{\log_2(h+1)}$ and
+$\ceil{\log_2(h+2)}$. Consecutive positive integers cross a ceiling-logarithm
+threshold exactly when the smaller is a power of two.
+\end{proof}
+
+\subsection{Bounded finite heights}
+
+Let $\{X_i:i\in I\}$ be any nonempty family of nonempty Hausdorff spaces with
+finite last derivative ranks $h_i$. Suppose $H=\sup_i h_i<\omega$. Then $H$
+is attained and
+\[
+ \left(\bigsqsum_iX_i\right)^{(H)}
+ =\bigsqsum_{h_i=H}X_i^{(H)}.
+\]
+If there is a unique component of height $H+1$ and that component has a
+singleton terminal derivative, the sum has value $\ceil{\log_2(H+1)}$.
+In all other cases its value is $\ceil{\log_2(H+2)}$.
+These two formulae can give the same numerical value.
+
+\subsection{Unbounded finite heights}
+
+The next upper bound is useful because the number of components need not be
+countable.
+
+\begin{proposition}[Parallel play with finite-time certification]\label{prop:omega-sum}
+If every component $X_i$ has finite $\sm(X_i)$, then
+\[
+ \sm\!\left(\bigsqsum_iX_i\right)\leq\omega.
+\]
+If the component values are unbounded among the integers, equality holds.
+\end{proposition}
+\begin{proof}
+Fix a target $A$ in the sum and, for each $i$, a finite winning strategy for
+$A_i=A\cap X_i$. We describe countably many rounds, each using three questions.
+
+In round $n$, first ask the union of the next local questions in every component
+whose local strategy has not finished. Use a dummy open question in components
+that have finished. The single global answer advances all unfinished local
+simulations along the same answer history.
+
+Next ask the union of the whole components whose current local simulation has
+finished with output color $0$. Finally ask the analogous union for color $1$.
+These are open sets because whole components are open. At either of these
+certification questions, a yes answer leaves a monochromatic state, and the
+Seeker has won. Empty local states may be assigned either output color.
+
+Suppose all certification answers are no. Any point surviving the final
+intersection would lie in a particular component $X_i$. Its local strategy
+finishes after finitely many rounds. In that round or an earlier one, a
+certification question includes the whole component $X_i$, and a no answer
+removes the point. This is a contradiction. Thus the final state is empty.
+
+The three questions per round have total order type $3\cdot\omega=\omega$.
+For the lower bound when local values are unbounded, use subspace monotonicity.
+\end{proof}
+
+In particular, for any family of finite-height Hausdorff spaces whose last
+ranks are unbounded in $\omega$, the sum has membership number exactly $\omega$.
+This conclusion is independent of the cardinality of the index set.
+
+\section{Finite products and the information lost by \texorpdfstring{$\sm$}{sm}}
+
+\begin{lemma}[Product derivatives]\label{lem:product}
+Let $X,Y$ be Hausdorff spaces of finite last derivative ranks $h,k$.
+For finite $n$,
+\begin{equation}\label{eq:product-derivative}
+ (X\times Y)^{(n)}=
+ \bigcup_{i+j=n}X^{(i)}\times Y^{(j)}.
+\end{equation}
+Thus the last rank of the product is $h+k$, and its terminal derivative is
+$X^{(h)}\times Y^{(k)}$.
+\end{lemma}
+\begin{proof}
+For closed subspaces $F\subseteq X$, $G\subseteq Y$, a point of $F\times G$
+is isolated precisely when both coordinates are isolated in their respective
+subspaces. Therefore
+\[
+ (F\times G)'=(F'\times G)\cup(F\times G').
+\]
+Derivation distributes over finite unions of closed sets: if a point is
+isolated or absent in every one of finitely many closed sets, intersect finitely
+many suitable neighborhoods to witness that it is not an accumulation point
+of their union. The reverse inclusion is immediate. Induction proves
+\eqref{eq:product-derivative}. At $n=h+k$ only the term with $i=h,j=k$ can be
+nonempty, and all terms vanish at the next stage.
+\end{proof}
+
+\begin{corollary}[Exact product formula]\label{cor:product}
+For nonempty finite-height Hausdorff spaces $X_1,\ldots,X_r$, put
+$H=\sum_j h_j$. Then
+\[
+ \sm\!\left(\prod_{j=1}^rX_j\right)=
+ \begin{cases}
+ \ceil{\log_2(H+1)},&\text{every }X_j^{(h_j)}\text{ is a singleton},\\
+ \ceil{\log_2(H+2)},&\text{otherwise}.
+ \end{cases}
+\]
+In particular, for finite $r\geq1$,
+\begin{equation}\label{eq:power}
+ \sm\bigl([0,\omega]^r\bigr)=\ceil{\log_2(r+1)}.
+\end{equation}
+\end{corollary}
+
+Knowing only the values of $\sm$ is not sufficient to compute product values.
+For example, let
+\[
+ P=[0,\omega^2],\qquad Q=[0,\omega^3],\qquad S=[0,\omega].
+\]
+Then $\sm(P)=\sm(Q)=2$, but
+\[
+ \sm(P\times S)=2,\qquad \sm(Q\times S)=3.
+\]
+The finer data consisting of the last rank and singleton-versus-multiple
+terminal derivative are compositional for finite products and bounded-height
+sums. The logarithmic compression to $\sm$ discards precisely the numerical
+information needed in this example.
+
+\section{Countable spaces and the transfinite-height boundary}
+\label{sec:countable}
+
+The finite formula is not a transfinite ordinal-logarithm formula. On countable
+scattered spaces, all infinite Cantor--Bendixson heights lead to the same game
+value, namely $\omega$.
+
+The point-separating number $\ps(X)$ is defined by the same game, but with
+winning condition $|W_\beta|\leq1$ instead of monochromaticity for a target
+\cite{CCS}.
+
+\begin{lemma}[A countable $T_1$ upper bound]\label{lem:countable}
+If $X$ is countable and $T_1$, then $\sm(X)\leq\omega$. If $X$ is also infinite,
+then $\ps(X)=\omega$.
+\end{lemma}
+\begin{proof}
+Enumerate $X=\{x_0,x_1,\ldots\}$. Ask the open complements
+$X\setminus\{x_n\}$ successively. A no answer leaves at most the singleton
+$\{x_n\}$. If every answer is yes, the final state is empty. This proves both
+upper bounds. A finite binary tree has finitely many leaves and cannot separate
+all points of an infinite space, proving the point-separation lower bound.
+\end{proof}
+
+\begin{theorem}[Countable scattered classification]\label{thm:countable}
+Let $X$ be a nonempty countable scattered Hausdorff space. If its
+Cantor--Bendixson height is finite, \cref{thm:height} applies. Otherwise
+\begin{equation}\label{eq:infiniteheight}
+ \sm(X)=\omega.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Only the lower bound in the infinite-height case remains. For every finite $h$,
+$X^{(h)}$ is nonempty and scattered, hence has an isolated point $p$.
+Choose an open neighborhood $U$ in $X$ with $U\cap X^{(h)}=\{p\}$.
+Derivatives commute with open restriction, so
+\[
+ U^{(h)}=\{p\},\qquad U^{(h+1)}=\varnothing.
+\]
+By \cref{thm:height} and subspace monotonicity,
+$\sm(X)\geq\ceil{\log_2(h+1)}$. These integers are unbounded as $h$ varies.
+Together with \cref{lem:countable}, this yields \eqref{eq:infiniteheight}.
+\end{proof}
+
+\begin{corollary}[All countable exponent intervals]\label{cor:allordinals}
+Let $0<\alpha<\omega_1$ and $1\leq m<\omega$. Then
+\[
+ \sm([0,\omega^\alpha\cdot m])=
+ \begin{cases}
+ \ceil{\log_2(h+1)},&\alpha=h<\omega,\ m=1,\\
+ \ceil{\log_2(h+2)},&\alpha=h<\omega,\ m\geq2,\\
+ \omega,&\alpha\geq\omega.
+ \end{cases}
+\]
+Every one of these spaces has $\ps=\omega$.
+\end{corollary}
+\begin{proof}
+The finite-exponent cases were proved in \cref{cor:ordinal}. When
+$\alpha\geq\omega$, the interval contains $[0,\omega^h]$ as a clopen subspace
+for every positive finite $h$. Their membership numbers are unbounded, while
+the whole space is countable and $T_1$. Use \cref{lem:countable}.
+\end{proof}
+
+For example,
+\[
+ \sm([0,\omega^\omega])
+ =\sm([0,\omega^{\omega^2}])
+ =\sm([0,\omega^{\omega^\omega}])=\omega.
+\]
+Thus extremely different countable order types can have the same membership
+number. This is a mathematical limitation of the invariant, not a limitation
+of the ordinal notation.
+
+The countable scattered classification also covers every countable compact
+Hausdorff space. For completeness, the fact that such a space is scattered is
+proved in \cref{app:compact}, rather than invoked as an unproved classification
+of countable compact spaces by ordinals.
+
+\section{A purely order-theoretic form for finite posets}\label{sec:posets}
+
+Equip a finite poset $P$ with the Alexandrov topology of upper sets. This is
+$T_0$, and it is Hausdorff only when the order is an antichain. It is important
+not to mistake this topology for the order topology on the infinite ordinal
+spaces studied above.
+
+Fix a target $A\subseteq P$ and color points by their membership in $A$.
+A strictly increasing chain is \emph{alternating} if consecutive colors differ.
+Let $a_b$ be the largest number of elements in an alternating chain whose
+greatest element has color $b$, with $a_b=0$ if no point has that color.
+
+\begin{theorem}[Alternating-chain formula]\label{thm:posets}
+For every nonempty finite poset $P$ and target $A$,
+\begin{equation}\label{eq:poset-profile}
+ N_0(A,P)=1+a_1,\qquad N_1(A,P)=1+a_0,
+\end{equation}
+and therefore
+\begin{equation}\label{eq:poset-sm}
+ \boxed{\ \sm(A,P)=\ceil{\log_2(1+\min(a_0,a_1))}.\ }
+\end{equation}
+\end{theorem}
+\begin{proof}
+Closure in the upper-set topology is downward closure. We claim that
+$F^c_n\ne\varnothing$ exactly when there is an alternating chain of length
+$n$ ending in color $1-c$.
+
+More precisely, $F^c_n$ is the downward closure of the least elements of all
+such chains. This is immediate for $n=1$. In the next step, intersect with color
+$(c+n+1)\bmod2$ and take downward closure. A point of that color below the
+least element of an existing length-$n$ alternating chain has the opposite
+color from that least element, so the inequality is strict and it can be
+prepended to the chain. Conversely, the first point of any length-$(n+1)$
+chain is produced this way. The induction follows.
+
+The largest index of a nonempty $F^c_n$ is consequently $a_{1-c}$, giving
+\eqref{eq:poset-profile}. Now apply \cref{thm:normal,thm:greedy}.
+\end{proof}
+
+\begin{corollary}[Quadratic-time computation]
+Given the comparability relation of an $n$-element poset and a target, its
+optimal finite query depth is computable in $O(n^2)$ time after choosing a
+linear extension.
+\end{corollary}
+\begin{proof}
+Process points in a linear extension. Set
+\[
+ a(x)=1+\max\{a(y):y<x,\ y\text{ has the opposite color to }x\},
+\]
+where the maximum of the empty set is $0$. Then
+$a_b=\max\{a(x):x\text{ has color }b\}$. Each comparable pair is inspected at
+most once. Formula \eqref{eq:poset-sm} completes the computation.
+\end{proof}
+
+\begin{example}[A finite orientation conflict]
+An alternating four-element chain has profile $(4,5)$ or $(5,4)$, depending on
+its orientation. Its target takes two questions. Two disjoint chains with
+opposite orientations have profile $(5,5)$, so their combined target takes
+three questions. The archive contains an explicit optimal query tree for this
+eight-point example.
+\end{example}
+
+\begin{remark}
+This order-theoretic formula is not obtained by applying the Hausdorff
+finite-height theorem to a non-Hausdorff space. Both results are separate
+consequences of the general finite normal form, and their hypotheses are kept
+distinct.
+\end{remark}
+
+\section{Algorithms, exact checks, and reproducibility}\label{sec:checks}
+
+The proof of \cref{thm:normal} gives a strategy compiler. First construct the two
+canonical closure sequences; choose the shorter one; then binary-search its
+layer indices. At a node where the possible indices are $a,\ldots,b-1$, choose
+$j=\lfloor(a+b)/2\rfloor$ and ask $X\setminus F_j$. A yes answer selects
+$a,\ldots,j-1$, and a no answer selects $j,\ldots,b-1$.
+
+For a general infinite space, computing a closure is a mathematical operation,
+not necessarily an effective algorithm on a presentation of the space. The
+complexity claim in \cref{sec:posets} is specifically for finite posets whose
+comparability relation is supplied.
+
+\subsection{Independent verification paths}
+
+The program \texttt{code/verify.py} uses only the Python standard library.
+For each finite poset and every target, it compares three independently
+implemented calculations: exhaustive minimax over all upper-set questions,
+canonical downward-closure profiles, and the alternating-chain dynamic program.
+It also constructs a balanced strategy tree from the shorter closure chain and
+checks the color returned on every point.
+
+The exhaustive minimax recurrence is
+\[
+ d_A(S)=
+ \begin{cases}
+ 0,&S\text{ is monochromatic},\\
+ 1+\displaystyle\min_U\max\{d_A(S\cap U),d_A(S\setminus U)\},&\text{otherwise},
+ \end{cases}
+\]
+where $U$ ranges over upper sets splitting $S$ nontrivially. States are encoded
+as bit masks, and the recursion is memoized. This recurrence does not use the
+closure formula being tested.
+
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+Number of points & Naturally labelled posets & Targets checked\\
+\midrule
+1 & 1 & 2\\
+2 & 2 & 8\\
+3 & 7 & 56\\
+4 & 40 & 640\\
+5 & 357 & 11,424\\
+6 & 4,824 & 308,736\\
+\midrule
+Total & 5,231 & 320,866\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All checks passed. ``Naturally labelled'' means that every strict comparison
+$i<_{P}j$ satisfies $i<j$ as an integer. These are not counts of isomorphism
+classes. Every finite poset has at least one such labelling, so the search
+covers every isomorphism type through six points, with repetitions possible.
+
+The included run took approximately 13 seconds in the execution environment
+used for this report. That observation is not a portable performance guarantee.
+The machine-readable result is in \texttt{data/verification.json}; the text log,
+count table, ordinal-value table, sharp-family table, and eight-point strategy
+certificate are provided alongside it.
+
+\subsection{Scope of the computational evidence}
+
+Finite upper-set topologies are not convergent sequences and do not model the
+Hausdorff accumulation behavior of ordinal intervals. Accordingly, the finite
+checks do \emph{not} establish the infinite-space counterexample, the
+Cantor--Bendixson formula, or its transfinite consequences. Those results follow
+from the proofs in \cref{sec:small,sec:height,sec:countable}. The computation
+instead checks the general finite game/closure/alternation mechanism in a
+large family where a direct independent minimax computation is possible.
+
+To reproduce the included exhaustive run, execute
+\begin{lstlisting}
+python3 code/verify.py --max-n 6
+\end{lstlisting}
+To rebuild the PDF, execute \texttt{make pdf}, or run \texttt{pdflatex} three times on
+\texttt{article.tex}. All inputs needed for compilation are local; no network
+access, external bibliography processor, or data regeneration is required.
+
+\section{What is settled and what is not}
+
+The topological-sum identity \eqref{eq:question} is false as stated. The
+counterexample can be expressed using the ordinary ordinal intervals
+$[0,\omega]$ and $[0,\omega\cdot2]$, and the one-move defect is sharp at every
+positive finite level. The proof also yields exact computations for every
+Hausdorff space of finite Cantor--Bendixson height and every countable scattered
+Hausdorff space.
+
+The two central distinctions are structural. First, the number of alternating
+layers is different from the number of adaptive questions: they are related
+by a ceiling logarithm. Second, the minimum over the two orientations is
+different from the pair of oriented lengths. Taking a disjoint union can force
+a common orientation and increase the minimum length by one; when that passes
+a power of two, it costs a full additional query.
+
+No transfinite version of \eqref{eq:logdepth} is asserted. In particular, the
+symbol $\infty$ in the finite profile is not an ordinal rank and cannot simply
+be inserted into an ordinal logarithm. Nothing here determines the games at
+arbitrary uncountable lengths or resolves the other problems posed in
+\cite{CCS}. Those are separate questions.
+
+The research claim should be read at its demonstrated scale: an explicit
+negative solution to an explicitly stated question, together with a complete additional
+classification on a natural order-topological class. The proofs are intended
+to be independently checkable; their priority and presentation can be assessed
+separately from their mathematical content.
+
+\appendix
+\section{Why countable compact Hausdorff spaces are scattered}\label{app:compact}
+
+This appendix supplies the fact used after \cref{cor:allordinals} without
+requiring the full ordinal classification of countable compact spaces.
+
+\begin{lemma}
+A nonempty compact Hausdorff space with no isolated points has at least
+$2^{\aleph_0}$ points.
+\end{lemma}
+\begin{proof}
+Construct nonempty open sets $U_s$ indexed by finite binary strings. Start with
+the whole space. Inside each $U_s$, select two distinct points; this is possible
+because no nonempty open set is a singleton. By regularity, choose nonempty
+open neighborhoods $U_{s0},U_{s1}$ with disjoint closures contained in $U_s$.
+
+For each infinite binary string $z$, the compact sets
+$\overline{U_{z\upharpoonright n}}$ are nonempty and nested, so their intersection
+is nonempty. Choose one point from each intersection. Distinct binary strings
+split at some level and hence give points in disjoint closed sets. This produces
+an injection of $2^\N$ into the space.
+\end{proof}
+
+\begin{proposition}
+Every countable compact Hausdorff space is scattered.
+\end{proposition}
+\begin{proof}
+If a space is not scattered, some nonempty subspace $B$ has no isolated points.
+Its closure $F$ has no isolated points either: an isolated point of $F$ would,
+by density, belong to $B$ and be isolated in $B$. In a compact Hausdorff space,
+$F$ is compact Hausdorff. The preceding lemma would make $F$ uncountable, a
+contradiction.
+\end{proof}
+
+This proof also shows why no additional set-theoretic hypothesis such as the
+continuum hypothesis is needed. Uncountability of $2^\N$ is sufficient.
+
+\section{A proof audit and implementation checklist}
+
+The following points isolate possible sources of off-by-one or topology errors.
+
+\paragraph{Zero questions.}
+A constant target has $L=1$, not $L=0$, on a nonempty space. Thus its depth is
+$\ceil{\log_2 1}=0$. The empty space is assigned $\sm=0$ separately.
+
+\paragraph{Derivative rank.}
+The integer $h$ is the index of the \emph{last nonempty} derivative, not the
+height. The height is $h+1$. A convergent sequence has $h=1$ and height $2$.
+
+\paragraph{First closure.}
+The general estimate is $F_n\subseteq X^{(n-1)}$ for $n\geq1$, not
+$F_n\subseteq X^{(n)}$. The extra first step is exactly what creates the two
+oriented lengths $h+1$ and $h+2$ for a parity target.
+
+\paragraph{Hausdorff separation.}
+The lower bound with two terminal points uses disjoint open neighborhoods.
+The finite-height theorem is therefore stated for Hausdorff spaces. Its proof
+is not silently applied to arbitrary $T_0$ posets.
+
+\paragraph{Arbitrary answers.}
+The binary-search proof wins on every answer sequence, including one whose
+state becomes empty. In the $\omega$-length certification strategy, an
+all-no certification path has empty final intersection. There is no hidden
+assumption that the Hider fixes a point beforehand.
+
+\paragraph{Infinite sums.}
+In the oriented finite-profile formula, an unbounded supremum of integers is
+recorded as $\infty$, meaning ``no finite decomposition''. The separate
+certification argument is needed to obtain the actual ordinal value $\omega$.
+
+\paragraph{Independent checking.}
+The minimax implementation enumerates all open queries. It does not import the
+closed-layer answer as its return value. The mathematical proof and the
+finite computational check are deliberately distinct.
+
+\begin{thebibliography}{9}
+\small
+\setlength{\itemsep}{0.35em}
+\setlength{\parskip}{0pt}
+
+\bibitem{CCS}
+Lucas Chiozini, Tam\'as Csern\'ak, and Lajos Soukup,
+\emph{Gamification of the $T_0$-pseudoweight via cut-and-choose games on
+topological spaces}, arXiv:2510.05754v3, 29 May 2026.
+The arXiv abstract record retains the shorter title
+\emph{Cut-and-choose games in topological spaces}.
+\url{https://arxiv.org/abs/2510.05754v3}.
+Problem 1.3 and Theorem 3.4 are the principal source references.
+Accessed 19 September 2026.
+
+\bibitem{BGKS}
+C\'elia Borlido, Mai Gehrke, Andreas Krebs, and Howard Straubing,
+\emph{Difference hierarchies and duality with an application to formal languages},
+Topology and its Applications \textbf{273} (2020), 106975.
+\url{https://doi.org/10.1016/j.topol.2019.106975}.
+Preprint: \url{https://arxiv.org/abs/1812.01921}.
+Cited for the classical difference-chain framework, not as a source for the
+new game computations in this report.
+
+\bibitem{AM}
+Borys \'Alvarez-Samaniego and Andr\'es Merino,
+\emph{Some properties related to the Cantor--Bendixson derivative on a Polish space},
+New Zealand Journal of Mathematics \textbf{50} (2020), 207--218.
+\url{https://doi.org/10.53733/82}.
+Preprint: \url{https://arxiv.org/abs/2003.01512}.
+The volume PDF is dated 2020; the journal landing page records online
+publication in 2021. Cited for ordinal-space and derivative background.
+
+\end{thebibliography}
+\end{document}

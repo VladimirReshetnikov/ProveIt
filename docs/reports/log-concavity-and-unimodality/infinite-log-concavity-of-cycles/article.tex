@@ -1,0 +1,957 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage{microtype}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{placeins}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\definecolor{ink}{HTML}{19334A}
+\definecolor{accent}{HTML}{006B72}
+\definecolor{soft}{HTML}{F0F6F7}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={Cycles refute infinite log-concavity for chromatic coefficients},
+ pdfauthor={Research report prepared with ChatGPT}}
+\titleformat{\section}{\large\bfseries\color{ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{accent}}{\thesubsection}{0.7em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Chromatic coefficients and iterated log-concavity}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.1em}
+\setcounter{tocdepth}{1}
+\setlength{\cftbeforesecskip}{1pt}
+\renewcommand{\cftsecfont}{\small\bfseries}
+\renewcommand{\cftsecpagefont}{\small\bfseries}
+\renewcommand{\cfttoctitlefont}{\large\bfseries\color{ink}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Lop}{\mathcal L}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\aco}{a^{(n)}}
+\newcommand{\bin}[2]{\binom{#1}{#2}}
+\lstset{language=Python,basicstyle=\ttfamily\footnotesize,
+ keywordstyle=\color{ink}\bfseries,commentstyle=\color{accent},
+ stringstyle=\color{accent},showstringspaces=false,breaklines=true,
+ frame=single,rulecolor=\color{ink!25},columns=fullflexible,
+ keepspaces=true,xleftmargin=0.7em,xrightmargin=0.7em}
+\allowdisplaybreaks[2]
+\emergencystretch=2em
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+
+\title{\vspace{-1.2em}\color{ink}\bfseries Cycles refute infinite log-concavity\\
+for chromatic coefficients\\[0.55em]
+\large Exact thresholds, finite certificates, and an exponential boundary limit}
+\author{Research report prepared for Vladimir Reshetnikov\\
+\small Prepared with ChatGPT; proofs and reproducible exact-arithmetic artifacts}
+\date{September 19, 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+Amdeberhan and Moll's Conjecture~21 asserts that the absolute coefficients of
+ every chromatic polynomial form an infinitely log-concave sequence. We give
+ an elementary disproof using cycle graphs, and classify the entire cycle
+ family. With zero padding and
+ $\Lop(a)_k=a_k^2-a_{k-1}a_{k+1}$, the absolute coefficient sequence of $C_n$
+ is infinitely log-concave exactly when $3\le n\le11$. Its first negative
+ iterate occurs at depth $5$ for $n=12$, depth $4$ for $13\le n\le16$, and
+ depth $3$ for all $n\ge17$. Every cycle sequence is nevertheless
+ $2$-log-concave. The infinite negative family follows from a factored
+ degree-$16$ polynomial; the positive cases are certified by an invariant
+ $3$-factor log-concavity region. A normalized limit with coefficients of
+ $e^x-1$ explains the failure and gives a perturbation-stable obstruction.
+ We also derive generating functions and a constant-coefficient recurrence
+ for the integer witness sequence. All finite checks use exact integers or
+ rational numbers. The report does not claim priority over all existing
+ literature, nor minimality among graphs other than cycles.
+\end{abstract}
+
+\begin{tcolorbox}[colback=soft,colframe=accent,boxrule=0.5pt]
+\textbf{A compact disproof.} For $C_{17}$, the third iterate has
+\[
+  (\Lop^3\aco)_2
+  =22\,491\,136^2-65\,536\cdot8\,150\,077\,440
+  =-28\,272\,276\,537\,344<0.
+\]
+The complete local calculation appears in Section~\ref{sec:witness}; no
+ floating-point calculation or exhaustive graph search is required.
+\end{tcolorbox}
+
+{\setlength{\parskip}{0pt}\small\tableofcontents}
+\clearpage
+
+\section{The problem, conventions, and main result}\label{sec:introduction}
+
+\subsection{A precise published conjecture}
+The target is Conjecture~21 in \emph{Infinite log-convexity} by
+Amdeberhan and Moll~\cite{AM}: the absolute values of the coefficients of
+any chromatic polynomial should be infinitely log-concave. The statement
+appears on printed page~9 of the publisher's PDF; bibliographic and
+manuscript-date details are recorded in the references.
+
+This is a stronger assertion than ordinary log-concavity of chromatic
+coefficients, established by Huh~\cite{Huh}. A different sufficient
+condition comes from Br\"and\'en~\cite{Branden}: a polynomial with
+nonnegative coefficients and only real nonpositive zeros has an infinitely
+log-concave coefficient sequence. Neither theorem implies the proposed
+statement for all chromatic polynomials.
+
+\paragraph{Status and attribution.}
+The primary paper inspected on September~19, 2026 still formulates the
+assertion as a conjecture. A targeted search did not locate a prior cycle
+counterexample, but it was not an exhaustive bibliographic search. Thus
+this report establishes a disproof of the stated formulation, without
+claiming to certify that it remained unresolved everywhere until this
+report. The invariant-cone method used below is established machinery,
+attributed to McNamara and Sagan~\cite{MS}; its proof is included.
+
+\subsection{The nonlinear operator}
+\begin{definition}
+For a finite sequence $a=(a_0,\ldots,a_N)$, set $a_k=0$ when $k<0$ or
+$k>N$, and define
+\begin{equation}\label{eq:L}
+  (\Lop a)_k=a_k^2-a_{k-1}a_{k+1}.
+\end{equation}
+A nonnegative sequence is \emph{$r$-log-concave} when $\Lop^j a$ is
+entrywise nonnegative for every $1\le j\le r$. It is
+\emph{infinitely log-concave} when this holds for every $j\ge1$.
+\end{definition}
+Zero extension is the convention explicitly used in~\cite{MS}. It keeps
+both endpoints: the first and last nonzero entries are squared, rather
+than discarded, at each iteration. In particular, we do not take absolute
+values again after applying $\Lop$.
+
+For a sequence under consideration, define its \emph{first failure depth}
+by
+\begin{equation}\label{eq:depth}
+  h(a)=\min\{j\ge1:\text{$\Lop^j a$ has a negative entry}\},
+\end{equation}
+with $h(a)=\infty$ if this set is empty. Write $h(n)=h(\aco)$ for the
+absolute coefficient sequence of the simple cycle $C_n$, indexed by
+increasing degree.
+
+\begin{theorem}[Complete cycle classification]\label{thm:main}
+For every integer $n\ge3$, the absolute coefficients of the chromatic
+polynomial of $C_n$ form the sequence
+\begin{equation}\label{eq:row}
+  a^{(n)}_0=0,\qquad a^{(n)}_1=n-1,\qquad
+  a^{(n)}_k=\bin nk\quad(2\le k\le n).
+\end{equation}
+Every such sequence is $2$-log-concave, and
+\begin{equation}\label{eq:classification}
+ h(n)=
+ \begin{cases}
+   \infty,&3\le n\le11,\\
+   5,&n=12,\\
+   4,&13\le n\le16,\\
+   3,&n\ge17.
+ \end{cases}
+\end{equation}
+In every finite case, the coefficient of degree $2$ is negative at the
+first failure depth. In particular, $C_{12}$ is the smallest cycle
+counterexample to the infinite-log-concavity conjecture.
+\end{theorem}
+
+The qualification ``cycle'' in the last sentence matters. No exhaustive
+search through all graphs on at most eleven vertices is asserted here.
+The proof combines a symbolic argument valid for every $n\ge17$ with a
+small collection of exact certificates for $3\le n\le16$.
+
+\section{The cycle polynomial and its coefficient triangle}\label{sec:cycle}
+
+\begin{proposition}\label{prop:chromatic}
+For $n\ge3$, the chromatic polynomial and its absolute-coefficient
+polynomial are respectively
+\begin{align}
+ P_{C_n}(q)&=(q-1)^n+(-1)^n(q-1),\label{eq:chromatic}\\
+ A_n(x)&=\sum_{k=0}^n a^{(n)}_kx^k
+       =(1+x)^n-(1+x).\label{eq:An}
+\end{align}
+\end{proposition}
+\begin{proof}
+The triangle has $q(q-1)(q-2)$ proper colorings, which agrees with
+\eqref{eq:chromatic}. For $n\ge4$, delete one edge of $C_n$. The remaining
+path has $q(q-1)^{n-1}$ proper colorings. The colorings in which the two
+endpoints receive the same color are precisely those of the contracted
+cycle $C_{n-1}$. Therefore
+\[
+  P_{C_n}(q)=q(q-1)^{n-1}-P_{C_{n-1}}(q).
+\]
+Substituting the induction hypothesis proves \eqref{eq:chromatic}.
+The constant coefficient cancels, the linear coefficient has magnitude
+$n-1$, and all coefficients of degree at least two are alternating
+binomial coefficients. Equivalently,
+$(-1)^nP_{C_n}(-x)=(1+x)^n-(1+x)$ has nonnegative coefficients, proving
+\eqref{eq:An} and \eqref{eq:row}.
+\end{proof}
+
+Thus the sequences are almost rows of Pascal's triangle: their constant
+coefficient is replaced by zero and their linear coefficient is reduced
+by one. An arbitrarily small relative change in the latter coefficient
+does not make the nonlinear iteration harmless, because the change at
+the constant coefficient is not small.
+
+The row polynomials satisfy two useful recurrences:
+\begin{align}
+ A_{n+1}(x)&=(1+x)A_n(x)+x(1+x),\label{eq:rowrec}\\
+ A_n(x)&=A_{n-1}(x)+x(1+x)^{n-1}\qquad(n\ge4).\label{eq:delconrec}
+\end{align}
+The second is also a convenient independent way to generate the
+coefficient triangle. At the coefficient level, \eqref{eq:rowrec} is
+Pascal's recurrence with a correction of $1$ in degrees $1$ and $2$:
+\[
+ a^{(n+1)}_k=a^{(n)}_k+a^{(n)}_{k-1}
+              +\mathbf 1_{k=1}+\mathbf 1_{k=2}.
+\]
+The bivariate ordinary generating function is rational:
+\begin{equation}\label{eq:bivariate}
+ \sum_{n\ge3} A_n(x)t^n
+ =\frac{(1+x)^3t^3}{1-(1+x)t}
+  -\frac{(1+x)t^3}{1-t}.
+\end{equation}
+These identities also specify the integer triangle in the bundled data
+without relying on an external sequence identifier.
+
+\paragraph{Indexing is not the obstruction.}
+For a shift $T_s$ on zero-extended sequences, $(T_sa)_k=a_{k-s}$,
+we have $\Lop T_s=T_s\Lop$. The operator also commutes with reversal of a
+finite coefficient list. Consequently the counterexample persists when
+coefficients are listed in decreasing degree or when the initial zero
+coefficient is omitted and the remaining entries are reindexed. Deleting
+endpoints at \emph{every} iteration, by contrast, would define a different
+operator.
+
+\section{A short exact counterexample: the seventeen-cycle}\label{sec:witness}
+
+Only six input coefficients are needed to compute $(\Lop^3a)_2$.
+For $C_{17}$ they are
+\[
+ (a_0,a_1,a_2,a_3,a_4,a_5)=(0,16,136,680,2380,6188).
+\]
+Let $b=\Lop a$, $c=\Lop^2a$, and $d=\Lop^3a$. Table~\ref{tab:triangle}
+contains every nontrivial intermediate quantity needed for $d_2$.
+Blank positions are unnecessary, not assumed to be zero.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}crrrrrr@{}}
+\toprule
+Iterate & $k=0$ & $k=1$ & $k=2$ & $k=3$ & $k=4$ & $k=5$\\
+\midrule
+$a$ & 0 & 16 & 136 & 680 & 2380 & 6188\\
+$b$ & 0 & 256 & 7616 & 138720 & 1456560 & \\
+$c$ & 0 & 65536 & 22491136 & 8150077440 & & \\
+\bottomrule
+\end{tabular}
+\caption{An exact dependency triangle for the counterexample $C_{17}$.}
+\label{tab:triangle}
+\end{table}
+
+For example,
+\begin{align*}
+ b_2&=136^2-16\cdot680=7616,\\
+ b_3&=680^2-136\cdot2380=138720,\\
+ b_4&=2380^2-680\cdot6188=1456560,\\
+ c_2&=7616^2-256\cdot138720=22491136,\\
+ c_3&=138720^2-7616\cdot1456560=8150077440.
+\end{align*}
+Since $a_0=b_0=c_0=0$, the first positive entry is repeatedly squared,
+so $c_1=16^4=65536$. Finally,
+\begin{align}
+ d_2
+  &=22491136^2-65536\cdot8150077440\notag\\
+  &=505851198570496-534123475107840\notag\\
+  &=-28272276537344<0.\label{eq:C17}
+\end{align}
+This exact calculation by itself disproves the universal conjecture. The
+remaining sections explain why the example works, prove an infinite
+family, and identify the smaller cycles that fail only at later depths.
+
+\section{Symbolic iterates and the threshold at seventeen}\label{sec:symbolic}
+
+Throughout this section, $a=\aco$, $b=\Lop a$, $c=\Lop^2a$, and
+$d=\Lop^3a$. We compare them with a full Pascal row
+$p_k=\bin nk$ and its successive iterates
+$B=\Lop p$, $C=\Lop^2p$, and $D=\Lop^3p$.
+
+\subsection{The first two Pascal iterates}
+For $0\le k\le n$, direct cancellation of binomial ratios gives
+\begin{align}
+ B_k&=p_k^2\frac{n+1}{(k+1)(n-k+1)},\label{eq:B}\\
+ C_k&=B_k^2\frac{2(n+2)}{(k+2)(n-k+2)}.\label{eq:C}
+\end{align}
+For interior indices, the corresponding neighboring-product ratios are
+\begin{align}
+ \frac{B_{k-1}B_{k+1}}{B_k^2}
+   &=\frac{k(n-k)}{(k+2)(n-k+2)},\label{eq:B-ratio}\\
+ \frac{C_{k-1}C_{k+1}}{C_k^2}
+   &=\frac{k^2(n-k)^2}
+    {(k+1)(k+3)(n-k+1)(n-k+3)}.\label{eq:C-ratio}
+\end{align}
+Both ratios are strictly less than one. At either endpoint the
+neighboring product is zero, and the same positivity conclusion holds.
+In particular $B_k,C_k,D_k>0$ for $0\le k\le n$. These elementary
+identities suffice for the tail comparisons below; no general
+real-rootedness theorem is needed in the proof of the cycle classification.
+
+\subsection{The exceptional coefficients}
+Because $a_0=0$, we have $b_0=c_0=d_0=0$. The first iterate begins with
+\begin{align}
+ b_1&=(n-1)^2,\label{eq:b1}\\
+ b_2&=\frac{n(n-1)^2(n+4)}{12},\label{eq:b2}\\
+ b_k&=B_k\qquad(3\le k\le n).\label{eq:b-tail}
+\end{align}
+For later calculations the two specific tail values are
+\begin{align}
+ b_3&=\frac{n^2(n-1)^2(n-2)(n+1)}{144},\label{eq:b3}\\
+ b_4&=\frac{n^2(n-1)^2(n-2)^2(n-3)(n+1)}{2880}.
+ \label{eq:b4}
+\end{align}
+The formula for $b_4$ is also valid at $n=3$, where it is zero by padding.
+All entries on the positive support of $b$ are positive.
+
+The second iterate has
+\begin{align}
+ c_1&=(n-1)^4,\label{eq:c1}\\
+ c_2&=\frac{n^2(n-1)^4(n+2)}{16},\label{eq:c2}\\
+ c_3&=\frac{n^3(n-2)^2(n-1)^4(n+1)(n^2+n+18)}{51840},
+       \label{eq:c3}\\
+ c_k&=C_k\qquad(4\le k\le n).\label{eq:c-tail}
+\end{align}
+For instance, $c_2=b_2^2-b_1b_3$ reduces to
+\[
+ \frac{n^2(n-1)^4}{144}
+       \bigl((n+4)^2-(n-2)(n+1)\bigr)
+ =\frac{n^2(n-1)^4(n+2)}{16}.
+\]
+Substitution of \eqref{eq:b2}--\eqref{eq:b4} gives \eqref{eq:c3}.
+The exact algebra is also audited by \texttt{derive\_symbolic.py}.
+
+\begin{proposition}\label{prop:2LC}
+For every $n\ge3$, the cycle coefficient sequence is $2$-log-concave.
+In fact, both its first and second iterates are strictly positive on
+indices $1,\ldots,n$.
+\end{proposition}
+\begin{proof}
+Every factor in \eqref{eq:b1}--\eqref{eq:b-tail} and
+\eqref{eq:c1}--\eqref{eq:c-tail} is positive on the indicated support.
+The remaining entries are zero. The positivity of the Pascal terms was
+proved using \eqref{eq:B} and \eqref{eq:C}.
+\end{proof}
+
+\subsection{The decisive quartic}
+Define
+\begin{equation}\label{eq:Q}
+ Q(n)=2n^4-12n^3-327n^2-412n+36.
+\end{equation}
+Using $d_2=c_2^2-c_1c_3$, we obtain
+\begin{equation}\label{eq:d2}
+ \boxed{\displaystyle
+ d_2=-\frac{n^3(n-1)^8(n+4)}{103680}\,Q(n).}
+\end{equation}
+An explicit intermediate form, useful for checking the factorization, is
+\[
+ d_2=\frac{n^3(n-1)^8}{103680}
+ \left(405n(n+2)^2
+  -2(n-2)^2(n+1)(n^2+n+18)\right).
+\]
+The polynomial in parentheses is exactly $-(n+4)Q(n)$.
+
+\begin{lemma}\label{lem:Qsign}
+For integral $n\ge3$, $Q(n)<0$ when $n\le16$, and $Q(n)>0$ when $n\ge17$.
+\end{lemma}
+\begin{proof}
+On $3\le n\le16$, the increasing quadratic
+$2n^2-12n-327$ is at most its value $-7$ at $n=16$. Hence
+\[
+ Q(n)=n^2(2n^2-12n-327)-412n+36<0.
+\]
+For $n=17+m$, $m\ge0$, expansion gives
+\begin{equation}\label{eq:Qshift}
+ Q(17+m)=2m^4+124m^3+2529m^2+17370m+6615>0.
+\end{equation}
+\end{proof}
+
+\begin{corollary}\label{cor:infinitefamily}
+For every $n\ge17$, $\aco$ fails at its third iterate. In particular,
+the conjecture has infinitely many connected, simple counterexamples.
+\end{corollary}
+\begin{proof}
+The prefactor outside $Q(n)$ in \eqref{eq:d2} is negative and nonzero.
+Lemma~\ref{lem:Qsign} therefore gives $d_2<0$. Proposition~\ref{prop:2LC}
+shows that no earlier failure is possible.
+\end{proof}
+
+\subsection{No other third-iterate obstruction for smaller cycles}
+To prove exact failure depths for $12\le n\le16$, it remains to know
+that their \emph{entire} third iterates are nonnegative, not just $d_2$.
+Define
+\[
+ S(n)=4n^5-27n^4+186n^3+145n^2+684n-3564.
+\]
+Direct calculation gives
+\begin{equation}\label{eq:d3}
+ d_3=\frac{n^6(n-2)^3(n-1)^8(n+1)^2}{10749542400}\,S(n).
+\end{equation}
+Every $n\ge3$ has $S(n)>0$, since
+\begin{equation}\label{eq:Sshift}
+ S(3+m)=4m^5+33m^4+222m^3+1441m^2+5280m+3600.
+\end{equation}
+The next coordinate admits a useful comparison rather than a large
+factorization. From the first-iterate formulas,
+\[
+  b_2=B_2+p_3,
+  \qquad c_3=C_3-p_3B_4\le C_3.
+\]
+Since $c_k=C_k$ for $k\ge4$, it follows that
+\begin{equation}\label{eq:d4compare}
+ d_4=C_4^2-c_3C_5\ge C_4^2-C_3C_5=D_4>0
+ \quad(4\le n),
+\end{equation}
+where $C_5=0$ when $n=4$. For $k\ge5$ on the support, $d_k=D_k>0$.
+Finally $d_1=(n-1)^8>0$.
+
+\begin{proposition}\label{prop:3LC}
+The cycle coefficient sequence is $3$-log-concave exactly when
+$3\le n\le16$. In that range its third iterate is strictly positive
+on the nonzero support.
+\end{proposition}
+\begin{proof}
+The formulas above establish positivity at every index other than $2$;
+Lemma~\ref{lem:Qsign} and \eqref{eq:d2} settle index $2$. For $n=3$,
+indices beyond $3$ are simply absent. Proposition~\ref{prop:2LC} supplies
+the earlier two iterates.
+\end{proof}
+
+\section{Infinite positivity for the nine small cycles}\label{sec:cone}
+
+A long list of positive iterates is not a proof of infinite
+log-concavity. Instead we use a region that $\Lop$ maps into itself.
+The following sufficient criterion is the McNamara--Sagan
+invariant-cone argument~\cite[Lemma~2.1]{MS}; using the rational constant
+$3$ makes the certificates especially simple.
+
+\begin{lemma}[Invariant factor-log-concavity region]\label{lem:cone}
+Let $r\ge(3+\sqrt5)/2$ and let $a$ be nonnegative with
+\begin{equation}\label{eq:rcone}
+ a_k^2\ge r\,a_{k-1}a_{k+1}\qquad\text{for all }k.
+\end{equation}
+Then $b=\Lop a$ is nonnegative and satisfies the same inequalities.
+Consequently $a$ is infinitely log-concave. In particular, $r=3$ is
+sufficient.
+\end{lemma}
+\begin{proof}
+The assumption gives, coordinatewise,
+\[
+ (1-1/r)a_k^2\le b_k\le a_k^2,
+ \qquad b_k\ge0.
+\]
+Therefore
+\begin{align*}
+ b_k^2
+ &\ge (1-1/r)^2a_k^4\\
+ &\ge (r-1)^2a_{k-1}^2a_{k+1}^2\\
+ &\ge r\,b_{k-1}b_{k+1}.
+\end{align*}
+The last inequality uses $(r-1)^2\ge r$ and
+$0\le b_{k\pm1}\le a_{k\pm1}^2$. All steps remain valid when a coordinate
+is zero; no division by an entry of $a$ is used. Iteration proves the claim.
+\end{proof}
+
+For a nonnegative vector $u$ with at least one positive neighboring
+product, let
+\[
+ R(u)=\min_{k:\,u_{k-1}u_{k+1}>0}
+        \frac{u_k^2}{u_{k-1}u_{k+1}}.
+\]
+If $R(u)\ge3$, indices with zero neighboring product satisfy the cone
+condition automatically. Table~\ref{tab:cone} gives the exact minimum
+for a suitable iterate of each small cycle.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rrrl@{}}
+\toprule
+$n$ & Iterate $j$ & Minimizing index $k$ & $R(\Lop^j\aco)$\\
+\midrule
+3 & 0 & 2 & $9/2$\\
+4 & 1 & 3 & $25/6$\\
+5 & 2 & 3 & $256/49$\\
+6 & 2 & 3 & $100/27$\\
+7 & 2 & 3 & $6845/2187$\\
+8 & 3 & 3 & $30926/5863$\\
+9 & 3 & 3 & $8736525/1666093$\\
+10 & 3 & 3 & $2991871581875/519958761651$\\
+11 & 3 & 2 & $32433025/8287488$\\
+\bottomrule
+\end{tabular}
+\caption{Finite certificates of infinite log-concavity. Every displayed
+ratio is greater than $3$. All ratios and minima are exact.}
+\label{tab:cone}
+\end{table}
+
+The entries are obtained from \eqref{eq:row} by applying \eqref{eq:L}
+at most three times and comparing fractions by cross multiplication.
+The complete vectors are provided in \texttt{data/certificates.json};
+Appendix~\ref{app:code} gives a short, independent-of-SymPy checker of
+all these minima. Thus each row represents finitely many explicit integer
+inequalities, not an extrapolation from a numerical plot.
+
+\begin{proposition}\label{prop:small}
+The sequences $\aco$ are infinitely log-concave for $3\le n\le11$.
+\end{proposition}
+\begin{proof}
+All iterates preceding those in Table~\ref{tab:cone} are nonnegative by
+Propositions~\ref{prop:2LC} and \ref{prop:3LC}, or by the initial row.
+The tabulated iterate is nonnegative and satisfies the $r=3$ condition.
+Lemma~\ref{lem:cone} certifies every subsequent iterate.
+\end{proof}
+
+It is worth distinguishing a certificate from a necessary condition:
+this proof does not assert that every infinitely log-concave sequence
+eventually enters this cone. Only the nine displayed cases require that
+property here, and for them it is checked exactly.
+
+\section{The delayed failures at twelve through sixteen}\label{sec:late}
+
+For $12\le n\le16$, Proposition~\ref{prop:3LC} shows that depth three is
+still positive. The next calculations determine the exact first
+failure. In Table~\ref{tab:failures}, the middle column is the first
+failure depth, and the final column is the offending entry of that
+iterate.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$n$ & $h(n)$ & $(\Lop^{h(n)}\aco)_2$\\
+\midrule
+12 & 5 & $-249621701601023742801969101519201265582387397744$\\
+13 & 4 & $-3618341131654935620812800$\\
+14 & 4 & $-199158562975246657489530096$\\
+15 & 4 & $-2734560032125157358883149375$\\
+16 & 4 & $-25982668618402950000000000000$\\
+17 & 3 & $-28272276537344$\\
+\bottomrule
+\end{tabular}
+\caption{Exact negative witnesses. The $n=17$ row is repeated for
+comparison with the delayed failures.}
+\label{tab:failures}
+\end{table}
+
+For $n=13,14,15,16$, one can reproduce the values without constructing a
+full fourth-iterate vector: use
+\begin{equation}\label{eq:e2}
+  (\Lop^4a)_2=d_2^2-d_1d_3
+\end{equation}
+with $d_1=(n-1)^8$ and the formulas \eqref{eq:d2}, \eqref{eq:d3}.
+Their earlier iterates are already known to be positive, so these
+negative values settle their exact depths.
+
+For $n=12$, all fourth-iterate entries are nonnegative. The complete
+fourth-iterate vector, with every integer explicitly displayed, appears
+in Appendix~\ref{app:C12}. Its first three positive entries are
+\begin{align*}
+ e_1&=45949729863572161,\\
+ e_2&=1505318939996586804452286,\\
+ e_3&=54746933663864342589859620161140.
+\end{align*}
+Consequently
+\[
+ (\Lop^5a^{(12)})_2=e_2^2-e_1e_3
+  =-249621701601023742801969101519201265582387397744<0.
+\]
+This also explains why checking only three or four iterations would miss
+some counterexamples.
+
+\begin{proof}[Completion of Theorem~\ref{thm:main}]
+Proposition~\ref{prop:chromatic} gives the coefficient row;
+Proposition~\ref{prop:2LC} gives universal $2$-log-concavity;
+Corollary~\ref{cor:infinitefamily} gives $h(n)=3$ for $n\ge17$;
+Proposition~\ref{prop:small} gives the nine infinite cases; and the exact
+calculations in this section give all remaining depths. These cases
+exhaust $n\ge3$.
+\end{proof}
+
+\section{Why the failure is structural: an exponential limit}\label{sec:limit}
+
+\subsection{Locality and geometric normalization}
+For $t>0$, define the geometric rescaling $(G_ta)_k=t^ka_k$. Directly
+from \eqref{eq:L},
+\begin{equation}\label{eq:scaling}
+ \Lop^j(G_ta)_k=t^{2^j k}(\Lop^ja)_k.
+\end{equation}
+This follows by induction, since each iteration squares the scale.
+Moreover, $(\Lop^ja)_k$ is a polynomial in the entries
+$a_{k-j},\ldots,a_{k+j}$, with negative-index entries fixed at zero.
+Each iteration enlarges the dependency interval by one on each side.
+
+Taking $t=1/n$ gives a normalized row $u^{(n)}_k=a^{(n)}_k/n^k$. For
+fixed $k$,
+\[
+ u^{(n)}_0=0,\qquad u^{(n)}_1\longrightarrow1,\qquad
+ u^{(n)}_k\longrightarrow\frac1{k!}\quad(k\ge2).
+\]
+Thus the coefficientwise limit is the sequence $u$ of $e^x-1$:
+\begin{equation}\label{eq:expcoeff}
+ u=(0,1,1/2!,1/3!,1/4!,1/5!,\ldots).
+\end{equation}
+
+The necessary local iterates of this limiting sequence are particularly
+simple:
+\begin{align*}
+ u&=(0,1,1/2,1/6,1/24,1/120,\ldots),\\
+ \Lop u&=(0,1,1/12,1/144,1/2880,\ldots),\\
+ \Lop^2u&=(0,1,0,1/51840,\ldots).
+\end{align*}
+The zero between two positive entries forces
+\begin{equation}\label{eq:limitnegative}
+   (\Lop^3u)_2=-\frac1{51840}.
+\end{equation}
+Only a finite prefix is involved, so passage to the limit follows from
+continuity of a polynomial; there is no interchange of an infinite number
+of nonlinear iterations with a limit.
+
+\begin{theorem}[A local, perturbation-stable obstruction]\label{thm:local}
+Let $v^{(N)}$ be nonnegative sequences indexed by the nonnegative integers,
+zero-extended to negative indices. Suppose $s_N>0$ and
+\[
+ v^{(N)}_0\longrightarrow0,\qquad
+ \frac{v^{(N)}_k}{s_N^k}\longrightarrow\frac1{k!}
+       \quad(1\le k\le5).
+\]
+Then
+\begin{equation}\label{eq:local-limit}
+ s_N^{-16}(\Lop^3v^{(N)})_2\longrightarrow-\frac1{51840}.
+\end{equation}
+In particular, all sufficiently late members of the family fail
+$3$-log-concavity.
+\end{theorem}
+\begin{proof}
+Apply \eqref{eq:scaling} with $t=1/s_N$ and $j=3,k=2$.
+The required entry depends only on indices $-1$ through $5$.
+Those entries converge to the corresponding ones in \eqref{eq:expcoeff},
+with the negative index fixed at zero. Polynomial continuity and
+\eqref{eq:limitnegative} prove the limit. Its strict negativity gives an
+eventually negative entry.
+\end{proof}
+
+For example, for any fixed real $\lambda$, the rows
+\[
+ (0,n-\lambda,\bin n2,\ldots,\bin nn)
+\]
+are nonnegative for all sufficiently large $n$ and fail $3$-log-concavity
+eventually. More generally, the same conclusion survives arbitrary
+perturbations $o(n^k)$ in coordinates $1\le k\le5$, provided the zeroth
+coordinate tends to zero and the resulting rows remain nonnegative.
+This is a statement about local coefficient data, not about whether every
+such perturbation is realized by a chromatic polynomial.
+
+\subsection{A quantitative asymptotic expansion}
+Equation~\eqref{eq:d2} sharpens the limiting argument to an exact
+polynomial. Expanding its highest powers gives
+\begin{equation}\label{eq:asymptotic}
+ (\Lop^3\aco)_2
+ =-\frac{n^{16}}{51840}
+   +\frac{n^{15}}{5184}
+   +\frac{287n^{14}}{103680}
+   +O(n^{13}).
+\end{equation}
+The remainder is simply the lower-degree part of a polynomial, not an
+uncontrolled approximation. The asymptotic limit explains eventual
+failure, whereas the positive-shift quartic \eqref{eq:Qshift} proves the
+exact threshold $17$.
+
+The mechanism is a boundary effect. The full Pascal row, after the same
+normalization, tends to the coefficients of $e^x$, whose constant term
+is $1$. Our rows instead tend to $e^x-1$. The changed boundary produces a
+zero in the second iterate and a strict negative entry in the third.
+It would therefore be unsafe to transfer infinite log-concavity from
+Pascal rows merely because most coefficients are unchanged.
+
+\section{An integer witness sequence, its recurrence and generating function}
+\label{sec:witnesssequence}
+
+The negative obstruction itself defines a natural positive integer
+sequence. Set
+\begin{equation}\label{eq:wm}
+ w_m=-(\Lop^3a^{(17+m)})_2\qquad(m\ge0).
+\end{equation}
+From \eqref{eq:d2} and \eqref{eq:Qshift},
+\begin{equation}\label{eq:wmfactor}
+ \begin{split}
+ w_m={}&\frac{(m+17)^3(m+16)^8(m+21)}{103680}\\
+ &\mathrel{}\times
+ (2m^4+124m^3+2529m^2+17370m+6615).
+ \end{split}
+\end{equation}
+Integrality follows directly from the integer sequence recurrence defining
+$\Lop$; it need not be inferred from the rational prefactor.
+
+The first three values are
+\[
+ 28272276537344,\quad229969795557447,\quad880220808750663.
+\]
+Equation~\eqref{eq:wmfactor} expresses $w_m$ as a degree-$16$ polynomial
+in $m$, with strictly positive coefficients and leading coefficient
+$1/51840$. In particular it is strictly increasing for $m\ge0$.
+
+Let $\Delta f(m)=f(m+1)-f(m)$ and let $\delta_j=\Delta^jw_0$.
+Then Newton's finite expansion gives
+\begin{equation}\label{eq:newton}
+   w_m=\sum_{j=0}^{16}\delta_j\bin mj.
+\end{equation}
+Every $\delta_j$ for $0\le j\le16$ is a positive integer. To see
+positivity, express the polynomial in powers $m^r$: the coefficients
+are positive, and $\Delta^jm^r|_{m=0}=j!\,{r\brace j}\ge0$.
+For $j=0$ the positive constant term suffices; for $j\ge1$ the $m^j$
+coefficient already contributes positively.
+
+Consequently the ordinary generating function is
+\begin{equation}\label{eq:wgf}
+ W(t)=\sum_{m\ge0}w_mt^m
+     =\sum_{j=0}^{16}\frac{\delta_jt^j}{(1-t)^{j+1}}
+     =\frac{P(t)}{(1-t)^{17}},
+\end{equation}
+where an exact specification of the degree-at-most-$16$ numerator is
+\begin{equation}\label{eq:Pnumerator}
+ P(t)=\sum_{j=0}^{16}\delta_jt^j(1-t)^{16-j},\qquad
+ \delta_j=\sum_{i=0}^j(-1)^{j-i}\bin ji w_i.
+\end{equation}
+These are finite closed formulas, rather than auxiliary recurrences
+needed to define the coefficients. The integer lists $\delta_j$ and
+$[t^j]P(t)$ are included in
+\path{data/witness_generating_function.json}.
+
+The denominator has a pole of exact order $17$ at $t=1$, since
+$P(1)=\delta_{16}=16!/51840>0$. Equivalently, the sequence satisfies
+\begin{equation}\label{eq:wrec}
+ \sum_{j=0}^{17}(-1)^{17-j}\bin{17}{j}w_{m+j}=0
+ \qquad(m\ge0).
+\end{equation}
+Thus the original graph-theoretic question yields an explicit integer
+sequence with a rational generating function, a constant-coefficient
+recurrence, and a complete polynomial asymptotic expansion. No OEIS
+accession or novelty claim for this derived sequence is assumed.
+
+\section{Verification, reproducibility, and proof boundaries}\label{sec:verification}
+
+The proof has three logically different components. The explicit
+$C_{17}$ arithmetic already disproves the conjecture. The symbolic
+factorization and its sign proof treat every $n\ge17$. Finally, a finite
+set of rational inequalities and integer identities settles the cases
+$3\le n\le16$. Only the last component needs finite certificate
+checking, and those certificates are fully specified in the report and
+accompanying files.
+
+\subsection{What was executed}
+The standard-library program \texttt{verify.py} was run with full cycle
+rows through $n=200$. It checks the first-failure classification, all nine
+positive cone certificates, the formulas for the third iterate, and an
+independent deletion--contraction generation of the coefficient rows.
+It also computes the necessary six-entry prefix at
+$n=1000,10000,10^6,10^{12}$ and compares the exact third-iterate result
+with \eqref{eq:d2}. These larger checks are corroboration, not the proof
+of the universal assertion.
+
+A separate SymPy program, \texttt{derive\_symbolic.py}, was executed to
+audit all displayed low-index factorizations, both positive-shift
+identities, the Pascal neighbor ratios, the asymptotic coefficients, and
+the rational generating-function data. The recorded environment was
+Python~3.13.5 and SymPy~1.14.0. The principal checker needs only the Python
+standard library; SymPy is optional. No Lean formalization or independent
+human referee verification is claimed.
+
+\subsection{Exact arithmetic and computational cost}
+A whole-row iteration uses $O(n)$ integer operations and $O(n)$ integer
+storage if only the current row is retained. If entries initially have
+at most $B$ bits, the largest bit length after $j$ iterations is
+$O(2^j(B+1))$, because a new value is a difference of products or squares.
+For a fixed depth, full-row tests are consequently practical at modest
+$n$, but integer sizes grow rapidly with depth.
+
+The local witness requires only six initial entries, three shrinking
+prefix updates, and a constant number of integer operations after those
+entries are formed. Their bit lengths are $O(\log n)$, and the witness
+has $O(\log n)$ bits as well, since its degree is fixed. This explains
+why the $n=10^{12}$ prefix test is easy without ever constructing a row
+of length $10^{12}$.
+
+Floating-point ratio iteration is unnecessary and can be misleading
+near cancellation. The programs therefore neither convert large
+coefficients to machine floats nor decide a sign from a decimal
+approximation. They also never apply absolute values to an iterate:
+once a negative entry appears, the infinite-log-concavity property has
+already failed.
+
+\subsection{Rebuilding the package}
+From the archive directory, run
+\begin{lstlisting}[language=bash]
+python verify.py
+python minimal_verifier.py
+python derive_symbolic.py   # optional: needs SymPy
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The \texttt{--write-data} option regenerates the JSON and CSV artifacts.
+Sequence values in the JSON certificate are decimal strings, deliberately
+avoiding precision loss in software that parses JSON numbers as binary
+floating-point values. The CSV data are exact decimal integers.
+
+The archive contains the article source and PDF, the three verification
+programs, execution transcripts, a README, a build script, and the
+coefficient and witness datasets. It contains no third-party font files
+or copied research-paper PDFs.
+
+\section{Consequences and remaining directions}\label{sec:consequences}
+
+The conjecture fails within a particularly restrictive class: simple,
+connected, $2$-regular graphs. The failure is therefore not a consequence
+of loops, multiple edges, dense graphs, or complicated graph
+constructions. On the other hand, it is genuinely a higher-iteration
+phenomenon: every cycle passes the first two iterations.
+
+Adding $s$ isolated vertices to a graph multiplies its chromatic
+polynomial by $q^s$. It only shifts the coefficient sequence, and the
+shift invariance of $\Lop$ preserves all failure depths. This supplies
+further counterexamples, although the cycles already give a connected
+infinite family. No analogous inheritance from an arbitrary subgraph is
+claimed: the presence of a long cycle inside a larger graph does not by
+itself transfer this coefficient calculation.
+
+The positive cases illustrate the limits of the real-rooted sufficient
+criterion. By \eqref{eq:An},
+\[
+ A_n(x)=(1+x)\bigl((1+x)^{n-1}-1\bigr).
+\]
+For $n\ge4$ this has nonreal roots obtained from nonreal $(n-1)$st roots
+of unity by subtracting $1$. Nevertheless $C_4,\ldots,C_{11}$ are
+infinitely log-concave by their cone certificates. Real-rootedness is
+therefore sufficient but not necessary in this family.
+
+Several questions are separate from what has been proved. The smallest
+counterexample among \emph{all} simple graphs could be smaller than
+$C_{12}$. Whether every chromatic coefficient sequence is $2$-log-concave
+is not decided by the cycle calculations. One may also ask for a useful
+structural description of those graphs whose coefficient sequences are
+infinitely log-concave. These are directions for further investigation,
+not claims of newly verified open-problem status.
+
+The central methodological lesson is concrete: normalize a tractable
+family, inspect a few boundary coefficients under the nonlinear
+operator, and use exact arithmetic to expose a sign change. Here that
+approach leads beyond a single counterexample to an exact classification
+and a stable asymptotic obstruction.
+
+\appendix
+\section{The fourth iterate for the twelve-cycle}\label{app:C12}
+
+For $a=a^{(12)}$, the vector $e=\Lop^4a$ has the entries in
+Table~\ref{tab:C12}. All are nonnegative, and every entry of indices
+$1$ through $12$ is positive. Together with
+Proposition~\ref{prop:3LC}, this certifies that the negative fifth-iterate
+entry in Section~\ref{sec:late} really is the first failure.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}rr@{}}
+\toprule
+$k$ & $e_k=(\Lop^4a^{(12)})_k$\\
+\midrule
+0 & 0\\
+1 & 45949729863572161\\
+2 & 1505318939996586804452286\\
+3 & 54746933663864342589859620161140\\
+4 & 15531438327857548927780352470984421505\\
+5 & 11178866851263718584359046258900106285056\\
+6 & 102599969549662636115648080319674359475968\\
+7 & 11246650538385145317068550658400941510656\\
+8 & 13507131422281444862413759705797857505\\
+9 & 131200081206735639046019512080640\\
+10 & 5555828662478863428996336\\
+11 & 299028575209728\\
+12 & 1\\
+\bottomrule
+\end{tabular}
+\caption{A complete exact certificate that the fourth iterate for
+$C_{12}$ has no negative entries.}
+\label{tab:C12}
+\end{table}
+
+\FloatBarrier
+\section{A short checker for the finite certificates}\label{app:code}
+
+The following complete Python program computes the finite cases directly
+from binomial coefficients. It requires only the standard library and
+prints the exact minimizing ratios or negative entries. It uses no
+precomputed iterate vectors. The larger \texttt{verify.py} adds
+explicit expected values, data generation, redundant identity tests,
+and checks that remain enabled under Python's optimized mode.
+
+\lstinputlisting{minimal_verifier.py}
+
+This finite program is not being asked to establish a statement by
+checking infinitely many iterates. Its positive exit condition invokes
+Lemma~\ref{lem:cone}; its negative exit condition provides an explicit
+counterexample. That distinction is the reason the finite certificates
+are logically sufficient.
+
+\begin{thebibliography}{9}
+
+\bibitem{AM}
+T. Amdeberhan and V. H. Moll,
+\emph{Infinite log-convexity},
+Online Journal of Analytic Combinatorics, issue 17 (2022), article 6,
+10 pages. Publisher PDF dated December 30, 2023; Conjecture 21 on p.~9.
+\url{https://combinatorialpress.com/article/ojac/vol17/305.pdf}.
+Accessed September 19, 2026.
+
+\bibitem{MS}
+P. R. W. McNamara and B. E. Sagan,
+\emph{Infinite log-concavity: developments and conjectures},
+arXiv:0808.1065v2 (2009), especially Section~1 and Lemma~2.1.
+\url{https://arxiv.org/abs/0808.1065}.
+
+\bibitem{Branden}
+P. Br\"and\'en,
+\emph{Iterated sequences and the geometry of zeros},
+Journal f\"ur die reine und angewandte Mathematik \textbf{658} (2011),
+115--131; arXiv:0909.1927.
+\url{https://arxiv.org/abs/0909.1927}.
+
+\bibitem{Huh}
+J. Huh,
+\emph{Milnor numbers of projective hypersurfaces and the chromatic
+polynomial of graphs},
+Journal of the American Mathematical Society \textbf{25} (2012),
+907--927; arXiv:1008.4749.
+\url{https://arxiv.org/abs/1008.4749}.
+
+\end{thebibliography}
+\end{document}

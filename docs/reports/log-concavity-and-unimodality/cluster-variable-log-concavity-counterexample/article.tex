@@ -1,0 +1,1021 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{OliveInk}{HTML}{4E5C3D}
+\definecolor{SoftOlive}{HTML}{EFF2E8}
+\definecolor{Muted}{HTML}{60665D}
+\definecolor{Coral}{HTML}{A85E53}
+\hypersetup{colorlinks=true,linkcolor=OliveInk,citecolor=OliveInk,urlcolor=OliveInk,
+ pdftitle={Single curves do not force log-concavity},
+ pdfauthor={Research note prepared with ChatGPT for Vladimir Reshetnikov},
+ pdfsubject={An annular counterexample, positive transfer matrices, and Fibonacci-type recurrences}}
+\titleformat{\section}{\large\bfseries\color{OliveInk}}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{OliveInk}}{\thesubsection}{0.65em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{Muted}Single curves and coefficient sequences}
+\fancyhead[R]{\small\color{Muted}19 September 2026}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.25em}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep,leftmargin=1.5em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Btilde}{\widetilde B}
+\newcommand{\pos}[1]{[#1]_+}
+\newcommand{\coeff}[2]{[q^{#1}]\,#2}
+\newcommand{\Pn}{P_n^{(d)}}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\diag}{\operatorname{diag}}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{OliveInk},
+ backgroundcolor=\color{SoftOlive},commentstyle=\color{Muted},
+ keywordstyle=\bfseries\color{OliveInk},numbers=none,tabsize=4}
+
+\begin{document}
+\begin{center}
+{\small\scshape\color{OliveInk}A constructive attack on a recent combinatorial conjecture}\par
+\vspace{0.7em}
+{\LARGE\bfseries Single curves do not force log-concavity}\par
+\vspace{0.45em}
+{\large An annular counterexample, a positive transfer matrix,\\[0.15em]
+and Fibonacci-type recurrences}\par
+\vspace{0.9em}
+{\normalsize Research note prepared with ChatGPT for Vladimir Reshetnikov}\par
+{\small 19 September 2026}
+\end{center}
+\vspace{0.4em}
+\begin{abstract}
+We construct a counterexample to the single-lamination log-concavity conjecture
+in Section~5 of Kang--Lee--Lim, \emph{Unimodality and Cluster Algebras from
+Surfaces}, arXiv:2508.04396v3. The surface is an unpunctured annulus with one
+marked point on each boundary component, and the lamination consists of one
+unit-weight simple curve. A legal change of triangulation gives the extended
+exchange matrix with rows $(0,-2)$, $(2,0)$, and $(-1,2)$. Three subsequent
+mutations produce the coefficient polynomial
+\[
+1+3q^2+2q^3+4q^4+2q^5+q^6.
+\]
+The positive consecutive coefficients $3,2,4$ violate log-concavity and form a
+strict valley, so deleting internal zeros does not remove the obstruction.
+Indeed, one fixed triangulation and one fixed curve yield infinitely many
+nonunimodal examples. We derive a two-parameter family, prove an equivalent
+linear recurrence, give a nonnegative two-state walk model and a positive
+finite coefficient formula, identify its row sums with OEIS A001519, and
+establish exponential and Gaussian asymptotics. The geometric realization is
+proved from standard surface-cluster results; all finite algebraic certificates
+are also checked with an included dependency-free exact-arithmetic program.
+The disproof targets the stated arXiv version; no claim of a completed priority
+search or independent peer review is made.
+\end{abstract}
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{The problem and the outcome}\label{sec:problem}
+
+For a polynomial $f(q)=\sum_{i=0}^{m}a_iq^i$ with nonnegative coefficients,
+\emph{log-concavity} means
+\begin{equation}\label{eq:lc}
+ a_i^2\geq a_{i-1}a_{i+1}\qquad(1\leq i<m).
+\end{equation}
+A sequence is \emph{unimodal} if it first weakly increases and then weakly
+decreases. A strict local valley $a_{i-1}>a_i<a_{i+1}$ therefore disproves
+unimodality, independently of what happens elsewhere.
+
+The selected problem is Conjecture~1 of Kang--Lee--Lim~\cite{KLL}, in the
+single-lamination setting of their Section~5. Their Definition~20 associates a
+$c$-polynomial to a cluster variable by specializing the initial mutable
+variables to $1$ and the frozen variables to $q$. They conjecture that its
+coefficient sequence satisfies \eqref{eq:lc} when the lamination has one
+component. Their Theorem~14 also asserts unimodality on unpunctured surfaces.
+The construction below contradicts both statements at that level of generality.
+
+\begin{theorem}[Counterexample and persistence]\label{thm:main}
+There are an unpunctured marked annulus $S$, a fixed triangulation $T$, and a
+fixed lamination $L$ consisting of exactly one unit-weight simple curve such
+that the $c$-polynomials of a sequence of simple arcs are $P_n(q)$, where
+\begin{equation}\label{eq:mainlinear}
+ P_0=P_1=1,\qquad
+ P_{n+1}=(1+q+q^2)P_n-qP_{n-1}\quad(n\geq1).
+\end{equation}
+For every $n\geq3$, the positive consecutive coefficients at degrees $2,3,4$
+violate log-concavity. For every $n\geq4$, those coefficients form a strict
+valley. In particular,
+\begin{equation}\label{eq:P4}
+ P_4(q)=1+3q^2+2q^3+4q^4+2q^5+q^6
+\end{equation}
+is neither log-concave nor unimodal, even after all zero coefficients are
+removed.
+\end{theorem}
+
+The proof has two independent parts. The geometric part verifies that the
+coefficient row really comes from \emph{one connected curve}, not an arbitrary
+integral lamination. The algebraic part consists of explicit mutations and
+coefficient calculations. Both are necessary: a random integer row does not
+by itself certify connectedness of the corresponding lamination.
+
+\subsection{Version and scope of the claim}
+
+The source examined is arXiv:2508.04396v3, whose submission history gives
+11 February 2026. The arXiv record lists a related publication in the
+\emph{European Journal of Combinatorics}, volume~136, article~104392~\cite{KLL}.
+The final publisher text was not independently inspected. Accordingly,
+``counterexample to the conjecture'' throughout this note means a counterexample
+to its formulation in that specific arXiv version, with its definitions and
+exchange rules. The result concerns an annulus, not a polygon-only restriction,
+and does not contradict the separate results about ordinary rank polynomials
+of fence or loop-fence posets.
+
+The main mathematical assertion is a proof, rather than an inference from a
+search bound. The computational appendix corroborates its formulas but is not
+used to replace an argument for infinitely many indices. The recurrence and
+transfer-matrix techniques are elementary; we make no separate originality
+claim for those methods or for the Fibonacci sequence obtained by specialization.
+
+\section{The geometric certificate}\label{sec:geometry}
+
+This section supplies all surface-cluster input needed later. Readers primarily
+interested in enumerative combinatorics can then work entirely with the
+recurrences and weighted walks.
+
+\subsection{Mutation with one frozen variable}
+
+A rank-two geometric seed consists of independent mutable variables $x_1,x_2$,
+a frozen variable $q$, and an integer matrix
+\[
+ \Btilde=(b_{ij})_{1\leq i\leq3,\,1\leq j\leq2}
+\]
+whose top $2\times2$ submatrix is skew-symmetric. Mutation at $k\in\{1,2\}$
+replaces $x_k$ by $x_k'$ according to
+\begin{equation}\label{eq:exchange}
+ x_kx_k'
+ =\prod_{i=1}^{3}x_i^{\pos{b_{ik}}}
+  +\prod_{i=1}^{3}x_i^{\pos{-b_{ik}}},
+ \qquad x_3=q,
+\end{equation}
+where $[z]_+=\max(z,0)$. Simultaneously,
+\begin{equation}\label{eq:matrixmutation}
+ b'_{ij}=\begin{cases}
+ -b_{ij},&i=k\text{ or }j=k,\\
+ b_{ij}+[b_{ik}]_+[b_{kj}]_+
+             -[-b_{ik}]_+[-b_{kj}]_+,&\text{otherwise}.
+ \end{cases}
+\end{equation}
+These are the usual exchange and matrix-mutation rules; see
+Fomin--Zelevinsky~\cite{FZ} and Fomin--Thurston~\cite{FT}.
+
+There is just one frozen generator in our construction. Its powers are not
+new variables. In particular, $q^2$ remains $q^2$ after the specialization in
+Definition~20; it is not renamed $q$. This distinction matters when a single
+curve has shear coordinate of absolute value greater than one.
+
+\subsection{Two triangles on an annulus}
+
+Let $S$ be an annulus with a marked point on each boundary circle and no
+punctures. A concrete model is a square with its vertical sides identified.
+The two bottom corners become one marked point and the two top corners become
+the other. The diagonal and the identified vertical side give two bridging
+arcs, denoted $\alpha_1$ and $\alpha_2$. Their interiors are disjoint. They cut
+the annulus into two triangles, neither of which is self-folded.
+
+With a suitable labeling, both triangles contribute the same arrow between
+these two arcs. Equivalently, in the square model their cyclic side orders give
+$\alpha_2$ immediately after $\alpha_1$ in the signed-adjacency convention in
+each triangle. Thus the principal exchange matrix is
+\begin{equation}\label{eq:B0principal}
+ B(T_0)=\begin{pmatrix}0&2\\-2&0\end{pmatrix}.
+\end{equation}
+The entry $2$ is the sum of two contributions from different triangles. It does
+not mean that an arc or a lamination has been given multiplicity two.
+
+This annulus lies within the usual marked-surface setup: each boundary
+component has a marked point, and it has no punctures or self-folded triangles.
+Arcs and flips have the standard interpretation established by
+Fomin--Shapiro--Thurston~\cite{FST} and Fomin--Thurston~\cite{FT}.
+
+\subsection{One curve, not merely one coefficient row}
+
+Take $L=L_{\alpha_1}$, the elementary lamination following $\alpha_1$ once,
+with its endpoints displaced slightly along the boundary in the standard
+prescribed directions. This is a single simple bridging curve of weight one.
+Because its endpoints lie on different boundary components, it is not
+boundary-parallel and does not bound an excluded disk.
+
+The elementary-lamination construction gives the shear row $(1,0)$ relative
+to $T_0$. This is the one-row part of the principal-coefficient realization in
+Fomin--Thurston, Definition~17.2 and Proposition~17.3~\cite{FT}. We use only
+this one curve, not the entire collection of elementary laminations. Hence
+\begin{equation}\label{eq:B0extended}
+ \Btilde_0=\begin{pmatrix}0&2\\-2&0\\1&0\end{pmatrix}.
+\end{equation}
+
+Keep $L$ fixed and flip $\alpha_1$. The shear-coordinate mutation theorem
+(Fomin--Thurston, Theorem~12.6, or its tagged version Theorem~13.5) says that
+changing the triangulation changes the extended matrix by
+\eqref{eq:matrixmutation}~\cite{FT}. Direct calculation gives
+\begin{equation}\label{eq:certificate}
+ \Btilde_1=\mu_1(\Btilde_0)
+ =\begin{pmatrix}0&-2\\2&0\\-1&2\end{pmatrix}.
+\end{equation}
+For clarity, the new bottom-right entry is
+$0+[1]_+[2]_+-[-1]_+[-2]_+=2$, and the first bottom entry is negated.
+
+\begin{lemma}[Connected geometric realization]\label{lem:realization}
+The matrix \eqref{eq:certificate} is the extended exchange matrix of the
+triangulation $T_1=\mu_1(T_0)$ and the same one-component, unit-weight lamination
+$L=L_{\alpha_1}$.
+\end{lemma}
+\begin{proof}
+The initial realization \eqref{eq:B0extended} uses the explicit elementary
+curve just described. The flip changes only the triangulation. The fixed-curve
+shear-coordinate mutation theorem gives \eqref{eq:certificate}. Neither the
+number of connected components of $L$ nor its weight changes under this
+operation.
+\end{proof}
+
+In particular, we have not inferred connectedness from the fact that $-1$ and
+$2$ are relatively prime. Such an inference would not be a valid general
+criterion. The actual curve and its legal flip history are the certificate.
+
+\subsection{Which variables are set to one?}\label{sec:reseed}
+
+We now choose $T_1$ as the \emph{initial triangulation for the $c$-polynomials}.
+Write its independent mutable variables as $a,b$. Every $c$-polynomial below
+means specialization of these variables to $a=b=1$ with $q$ retained.
+
+This is not the same as setting the variables of $T_0$ to one and then
+repeatedly resetting newly created variables. To see the distinction
+explicitly, write the variables of $T_0$ as $u,b$. Its first exchange is
+\[
+ ua=q+b^2.
+\]
+Thus $a=b=1$ corresponds to $u=1+q$, not to $u=1$. The birational change of
+coordinates ensures that $a,b$ remain independent over $\Q(q)$. The general
+statement being tested allows a chosen initial triangulation, so choosing
+$T_1$ is legitimate.
+
+Although $L$ was conveniently described as elementary relative to $T_0$, it
+is not one of the elementary coefficient curves of $T_1$: its row there is
+$(-1,2)$ rather than a standard basis row. In particular this is not a
+principal-coefficient rank-polynomial calculation in disguise.
+
+\section{The counterexample in three exchanges}\label{sec:small}
+
+Start with \eqref{eq:certificate} and the cluster $(a,b)$. Mutate in directions
+$2,1,2$. Denote the successive new cluster variables by $v,w,z$. The matrices
+and equations are completely explicit:
+\begin{align}
+ \Btilde_1&=\begin{pmatrix}0&-2\\2&0\\-1&2\end{pmatrix},
+ & bv&=a^2+q^2,\label{eq:firstexchange}\\
+ \Btilde_2&=\begin{pmatrix}0&2\\-2&0\\3&-2\end{pmatrix},
+ & aw&=v^2+q^3,\label{eq:secondexchange}\\
+ \Btilde_3&=\begin{pmatrix}0&-2\\2&0\\-3&4\end{pmatrix},
+ & vz&=w^2+q^4.\label{eq:thirdexchange}
+\end{align}
+After the last exchange the matrix has bottom row $(5,-4)$ and principal
+part $B(T_0)$. All variables created by these flips correspond to simple arcs
+on the annulus. No generalized self-intersecting arc or essential closed-loop
+variable is needed.
+
+\subsection{A full Laurent certificate}
+
+To avoid relying solely on calculations after specialization, put
+$A=a^2+q^2$. The exchanges give
+\begin{equation}\label{eq:laurentcertificate}
+ v=\frac{A}{b},\qquad
+ w=\frac{A^2+b^2q^3}{ab^2},\qquad
+ z=\frac{A^3+2Ab^2q^3+b^4q^4}{a^2b^3}.
+\end{equation}
+For the last identity, substitute the first two expressions into
+\eqref{eq:thirdexchange}. The numerator before cancellation is
+\[
+ (A^2+b^2q^3)^2+a^2b^4q^4
+ =A\bigl(A^3+2Ab^2q^3+b^4q^4\bigr),
+\]
+because $q^6+a^2q^4=q^4A$. This establishes the Laurent expression directly.
+
+Now set $a=b=1$. The successive polynomials are
+\begin{align}
+ P_2&=1+q^2,\label{eq:P2}\\
+ P_3&=1+2q^2+q^3+q^4,\label{eq:P3}\\
+ P_4&=1+3q^2+2q^3+4q^4+2q^5+q^6.\label{eq:P4again}
+\end{align}
+Already $P_2$ violates \eqref{eq:lc}: its coefficients are $(1,0,1)$ and
+$0^2<1\cdot1$. The stronger example is $P_4$. At index $3$, its coefficients
+satisfy
+\begin{equation}\label{eq:positivefailure}
+ (\coeff{3}{P_4})^2=2^2=4
+ <3\cdot4=(\coeff{2}{P_4})(\coeff{4}{P_4}).
+\end{equation}
+Moreover, $3>2<4$, so the sequence is not unimodal.
+
+\subsection{Why an internal-zero convention cannot rescue the statement}
+
+One can additionally require the absence of internal zeros, or instead adopt
+the more permissive convention of testing only the sequence of nonzero
+coefficients. Neither choice matters for \eqref{eq:positivefailure}. Removing the zero at degree one
+leaves
+\[
+ (1,3,2,4,2,1),
+\]
+which still has the strict valley $3,2,4$ and still violates the corresponding
+log-concavity inequality. Likewise, multiplying by a monomial merely shifts
+degrees and does not remove this triple.
+
+One must not generalize the first binomial example carelessly. When $d>2$,
+the sequence of $1+q^d$ can satisfy every \emph{local} inequality
+\eqref{eq:lc} if internal zeros are allowed, because no zero has two positive
+neighbors. This is why the positive-consecutive-coefficient obstruction is
+preferable to an argument based only on a support gap.
+
+\section{A two-parameter annular family}\label{sec:family}
+
+The three-exchange calculation is not isolated. The same curve yields
+arbitrarily large shear coordinates as the triangulation changes.
+
+\begin{lemma}[Alternating shear-coordinate orbit]\label{lem:orbit}
+Starting from $\Btilde_0$ in \eqref{eq:B0extended}, perform the alternating
+mutations $1,2,1,2,\ldots$. After $r\geq0$ mutations, the principal part is
+$(-1)^rB(T_0)$ and the coefficient row is
+\begin{equation}\label{eq:shearorbit}
+ \ell_r=\begin{cases}
+ (r+1,-r),&r\text{ even},\\
+ (-r,r+1),&r\text{ odd}.
+ \end{cases}
+\end{equation}
+Every matrix in this orbit is realized by the same one-component lamination
+$L$ on the same annulus.
+\end{lemma}
+\begin{proof}
+For $r=0$, the claim is \eqref{eq:B0extended}. Suppose first that $r$ is even.
+The next mutation is at $1$. It negates the first coefficient $r+1$, and
+changes the second from $-r$ to $-r+2(r+1)=r+2$. The top matrix changes sign.
+This gives $(-(r+1),r+2)$, as required at the odd index $r+1$. If $r$ is odd,
+the next mutation is at $2$, and the same calculation with the coordinates
+interchanged gives $(r+2,-(r+1))$. Induction proves the formulas. The geometric
+assertion follows by keeping $L$ fixed throughout and applying the
+shear-coordinate mutation theorem at each flip.
+\end{proof}
+
+Fix an integer $d\geq1$. Choose the triangulation reached after $d-1$ mutations
+as a new initial seed, and specialize its two mutable variables to $1$.
+Continue forward along the alternating orbit, without further resetting any
+variable. Write the successive specialized arc variables as
+$P_2^{(d)},P_3^{(d)},\ldots$, and set $P_0^{(d)}=P_1^{(d)}=1$ for the two
+initial variables in their exchange-chain order.
+
+\begin{proposition}[Nonlinear recurrence]\label{prop:nonlinear}
+The polynomials associated to this construction satisfy
+\begin{equation}\label{eq:nonlinear}
+ P_{n-1}^{(d)}P_{n+1}^{(d)}
+   =(P_n^{(d)})^2+q^{d+n-1}\qquad(n\geq1).
+\end{equation}
+In particular $P_2^{(d)}=1+q^d$. All the terms arise from the same fixed curve
+$L$, although changing $d$ changes the chosen initial triangulation.
+\end{proposition}
+\begin{proof}
+Immediately before the $n$th forward exchange, the orbit index is
+$r=d+n-2$. The column to be mutated has coefficient $r+1=d+n-1$ by
+\eqref{eq:shearorbit}. Its nonzero mutable entry is $-2$: for even $r$ this is
+the first column, and for odd $r$ it is the second. Thus the two exchange
+monomials are $q^{d+n-1}$ and the square of the other mutable variable.
+The exchanged-out variable is $P_{n-1}^{(d)}$ and the retained variable is
+$P_n^{(d)}$. Equation~\eqref{eq:exchange} is exactly \eqref{eq:nonlinear}.
+\end{proof}
+
+The proof of the next section also shows directly that all these rationally
+defined expressions are polynomials with nonnegative integer coefficients.
+Consequently no general positivity theorem is needed for the enumeration
+that follows.
+
+\section{Linearization and positive enumeration}\label{sec:enumeration}
+
+\subsection{An invariant that removes the division}
+
+Set
+\begin{equation}\label{eq:Kd}
+ K_d(q)=1+q+q^d.
+\end{equation}
+Despite the quadratic form of \eqref{eq:nonlinear}, the sequence satisfies a
+second-order linear recurrence with a fixed polynomial coefficient.
+
+\begin{theorem}[Linear recurrence and generating functions]\label{thm:linear}
+For every $d\geq1$,
+\begin{equation}\label{eq:linear}
+ P_0^{(d)}=P_1^{(d)}=1,\qquad
+ P_{n+1}^{(d)}=K_d(q)P_n^{(d)}-qP_{n-1}^{(d)}\quad(n\geq1).
+\end{equation}
+The ordinary generating functions are
+\begin{align}
+ \sum_{n\geq0}P_n^{(d)}(q)t^n
+   &=\frac{1-(q+q^d)t}{1-(1+q+q^d)t+qt^2},\label{eq:G}\\
+ \sum_{N\geq0}P_{N+1}^{(d)}(q)t^N
+   &=\frac{1-qt}{1-(1+q+q^d)t+qt^2}.\label{eq:H}
+\end{align}
+\end{theorem}
+\begin{proof}
+Temporarily work in the rational function field and abbreviate
+$P_n=P_n^{(d)}$. Define
+\[
+ K_n=\frac{P_{n+1}+qP_{n-1}}{P_n}\qquad(n\geq1).
+\]
+For $n\geq2$, multiplication by $P_nP_{n-1}$ gives
+\begin{align*}
+ P_nP_{n-1}(K_n-K_{n-1})
+ &=P_{n+1}P_{n-1}-P_n^2
+    -q\bigl(P_nP_{n-2}-P_{n-1}^2\bigr)\\
+ &=q^{d+n-1}-q\,q^{d+n-2}=0.
+\end{align*}
+Thus $K_n=K_1=P_2+q=1+q+q^d$. The rational functions in question are nonzero:
+for positive $q$ the original exchange recursion gives positive values.
+Rearranging $K_n=K_d$ proves \eqref{eq:linear}.
+
+Conversely, define $P_n$ by \eqref{eq:linear} and put
+$D_n=P_{n-1}P_{n+1}-P_n^2$. Direct substitution yields
+\[
+ D_n=qD_{n-1}\quad(n\geq2),\qquad D_1=P_2-1=q^d.
+\]
+Hence $D_n=q^{d+n-1}$, recovering the nonlinear identity. In particular the
+linear recurrence is not merely a heuristic fit to initial terms.
+
+Finally, multiplying the generating series by $1-K_dt+qt^2$ leaves only its
+constant and linear coefficients. These are $1$ and $1-K_d=-(q+q^d)$,
+respectively, giving \eqref{eq:G}. Subtracting its constant term and dividing
+by $t$ gives \eqref{eq:H}.
+\end{proof}
+
+\subsection{A nonnegative transfer matrix}
+
+The negative term in \eqref{eq:linear} conceals positivity, but a $2\times2$
+transfer matrix makes it transparent. Define
+\begin{equation}\label{eq:transfer}
+ M_d(q)=\begin{pmatrix}1+q^d&q^d\\q&q\end{pmatrix}.
+\end{equation}
+
+\begin{proposition}[Positive walk model]\label{prop:walk}
+For every $n\geq1$,
+\begin{equation}\label{eq:matrixpower}
+ P_n^{(d)}(q)=\bigl(M_d(q)^{n-1}\bigr)_{11}.
+\end{equation}
+Equivalently, $P_n^{(d)}$ counts length-$n-1$ walks that start and end at state
+$A$ in the following weighted directed multigraph:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Transition & Number of edges & Integer edge weights\\
+\midrule
+$A\to A$ & $2$ & $0$ and $d$\\
+$A\to B$ & $1$ & $d$\\
+$B\to A$ & $1$ & $1$\\
+$B\to B$ & $1$ & $1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+A walk of total edge weight $k$ contributes $q^k$. In particular,
+$P_n^{(d)}\in\Z_{\geq0}[q]$.
+\end{proposition}
+\begin{proof}
+The trace of $M_d$ is $K_d$ and its determinant is $q$. Its characteristic
+identity is therefore $M_d^2-K_dM_d+qI=0$. The $(1,1)$ entries of its powers
+satisfy \eqref{eq:linear}, with initial entries $1$ and $1+q^d$. These agree
+with $P_1$ and $P_2$, proving \eqref{eq:matrixpower}. The entries of $M_d$
+are the generating polynomials for the displayed transitions, so ordinary
+matrix multiplication proves the walk interpretation. Each counted walk
+has a nonnegative integer multiplicity.
+\end{proof}
+
+For $d\geq2$ and $n\geq2$, this also gives
+\begin{equation}\label{eq:degree}
+ \deg P_n^{(d)}=d(n-1),\qquad
+ [q^0]P_n^{(d)}=[q^{d(n-1)}]P_n^{(d)}=1.
+\end{equation}
+Indeed, only the all-zero $A$-loop walk has weight zero. A walk of length
+$n-1$ has weight at most $d(n-1)$; attaining this upper bound requires every
+edge to have weight $d$. A walk returning from $B$ would use an edge of
+weight $1<d$, so the only maximizing walk consists of the positive $A$-loop
+at every step. For $d=1$ the upper-degree uniqueness argument does not apply,
+which is why that case is excluded from the monicity assertion.
+
+\subsection{Excursions and a positive finite formula}
+
+A closed walk at $A$ decomposes uniquely into individual $A$-loops and
+excursions from $A$ through $B$ back to $A$. If an excursion has $b\geq0$
+intermediate $B$-loops, its length is $b+2$ and its weight is $d+b+1$.
+Its generating series is thus
+\[
+ \sum_{b\geq0}t^{b+2}q^{d+b+1}
+ =\frac{q^{d+1}t^2}{1-qt}.
+\]
+A closed walk is a sequence of these blocks and the two possible $A$-loops.
+This gives a second derivation of \eqref{eq:H}:
+\begin{equation}\label{eq:excursionGF}
+ \sum_{N\geq0}P_{N+1}^{(d)}t^N
+ =\frac{1}{1-(1+q^d)t-q^{d+1}t^2/(1-qt)}.
+\end{equation}
+
+\begin{theorem}[A subtraction-free finite expansion]\label{thm:finite}
+For $N\geq0$,
+\begin{align}\label{eq:positiveformula}
+ P_{N+1}^{(d)}(q)
+ &=(1+q^d)^N\\[-0.2em]
+ &\quad+\sum_{j=1}^{\lfloor N/2\rfloor}\;
+  \sum_{b=0}^{N-2j}
+  \binom{N-j-b}{j}\binom{b+j-1}{j-1}
+  q^{j(d+1)+b}(1+q^d)^{N-2j-b}.\notag
+\end{align}
+\end{theorem}
+\begin{proof}
+The first term counts walks without excursions. Otherwise let $j$ be the
+number of excursions, let $b$ be the total number of internal $B$-loops,
+and let $a=N-2j-b$ be the number of $A$-loops. There are
+$\binom{a+j}{j}$ ways to position the $j$ ordered excursions among the $a$
+individual $A$-loops. There are $\binom{b+j-1}{j-1}$ ways to distribute $b$
+internal loops among the $j$ excursions. Their combined weight is
+$j(d+1)+b$, and the $A$-loops contribute $(1+q^d)^a$. Summing gives
+\eqref{eq:positiveformula}, since $a+j=N-j-b$.
+\end{proof}
+
+Thus these are ordinary weighted counting polynomials for a fixed finite
+state system, in addition to being specializations of surface cluster
+variables. This makes the recurrence and coefficient triangle accessible
+without any cluster-algebra terminology.
+
+\section{Infinitely many positive-coefficient obstructions}\label{sec:low}
+
+Let $a_{n,k}^{(d)}=[q^k]P_n^{(d)}$. The beginning of each row can be read
+directly from the walk model.
+
+\begin{proposition}[Low-degree coefficients]\label{prop:low}
+For $d\geq2$ and $n\geq1$,
+\begin{align}
+ a_{n,0}^{(d)}&=1,&
+ a_{n,k}^{(d)}&=0\quad(1\leq k<d),\label{eq:low0}\\
+ a_{n,d}^{(d)}&=n-1,\label{eq:lowd}\\
+ a_{n,d+s}^{(d)}&=\max(n-1-s,0)
+                 &&(1\leq s\leq d-1),\label{eq:lows}\\
+ a_{n,2d}^{(d)}&=\binom{n-1}{2}+\max(n-d-1,0).
+ \label{eq:low2d}
+\end{align}
+Here $\binom{0}{2}=\binom{1}{2}=0$.
+\end{proposition}
+\begin{proof}
+Put $N=n-1$. The smallest positive $A$-loop weight is $d$ and the smallest
+excursion weight is $d+1$. This proves \eqref{eq:low0}. A weight-$d$ walk
+must contain one positive $A$-loop and otherwise zero loops, giving $N$
+choices and \eqref{eq:lowd}.
+
+For weight $d+s<2d$, there cannot be two positive $A$-loops, two excursions,
+or one positive $A$-loop together with an excursion. The only possibility
+is one excursion with $s-1$ internal $B$-loops. It occupies $s+1$ steps and
+can be placed in $N-s$ positions if $N\geq s+1$, and in no positions
+otherwise. This gives \eqref{eq:lows}.
+
+At weight $2d$, there are exactly two possibilities. Two positive $A$-loops
+can be chosen in $\binom N2$ ways. Alternatively, a single excursion with
+$d-1$ internal $B$-loops occupies $d+1$ steps and has
+$\max(N-d,0)$ possible positions. Their sum is \eqref{eq:low2d}.
+\end{proof}
+
+\begin{corollary}[Every $d\geq2$ supplies a positive triple]\label{cor:generaltriple}
+At $n=d+1$, the coefficients of $P_n^{(d)}$ at consecutive degrees
+$2d-2,2d-1,2d$ are
+\begin{equation}\label{eq:generaltriple}
+ \left(2,1,\binom d2\right).
+\end{equation}
+They violate log-concavity for every $d\geq2$. For $d\geq3$ they also form
+a strict local valley.
+\end{corollary}
+\begin{proof}
+For $d=2$, the first entry follows from \eqref{eq:lowd}; for $d\geq3$ it
+follows from \eqref{eq:lows} with $s=d-2$. The remaining entries follow
+from \eqref{eq:lows} and \eqref{eq:low2d}. The log-concavity inequality
+would require $1\geq2\binom d2=d(d-1)$, which is false for every $d\geq2$.
+For $d\geq3$, both neighbors of the middle entry exceed one.
+\end{proof}
+
+More is true without varying the initial seed at all.
+
+\begin{proof}[Proof of \cref{thm:main}]
+Use the fixed initial seed $T_1$, so $d=2$. The geometric realization and
+recurrence follow from \cref{lem:realization,prop:nonlinear,thm:linear}.
+For $n\geq3$, \cref{prop:low} gives the positive triple
+\begin{equation}\label{eq:fixedtriple}
+ \left(a_{n,2}^{(2)},a_{n,3}^{(2)},a_{n,4}^{(2)}\right)
+ =\left(n-1,n-2,\binom{n-1}{2}+n-3\right).
+\end{equation}
+Write $m=n-3\geq0$. The neighbor product minus the middle square equals
+\begin{align}\label{eq:defect}
+ &(n-1)\left(\binom{n-1}{2}+n-3\right)-(n-2)^2\\
+ &\hspace{2em}=\frac{m^3+5m^2+8m+2}{2}>0.\notag
+\end{align}
+Therefore log-concavity fails for every $n\geq3$. If $n\geq4$, the first
+entry in \eqref{eq:fixedtriple} exceeds the second by one, while the third
+exceeds the second by $\binom{n-1}{2}-1>0$. Thus the triple is a strict
+valley. The expression for $P_4$ was calculated in \cref{sec:small}.
+The degrees $2(n-1)$ strictly increase with $n$, so these polynomials are
+indeed infinitely many distinct examples.
+\end{proof}
+
+For reference, the first coefficient rows for $d=2$ are shown below. Blank
+entries are outside the degree range, not additional coefficients.
+\begin{center}
+\small
+\setlength{\tabcolsep}{4.7pt}
+\begin{tabular}{r|rrrrrrrrrrr|r}
+\toprule
+$n\backslash k$&0&1&2&3&4&5&6&7&8&9&10&$P_n(1)$\\
+\midrule
+0&1&&&&&&&&&&&1\\
+1&1&&&&&&&&&&&1\\
+2&1&0&1&&&&&&&&&2\\
+3&1&0&2&1&1&&&&&&&5\\
+4&1&0&3&2&4&2&1&&&&&13\\
+5&1&0&4&3&8&7&7&3&1&&&34\\
+6&1&0&5&4&13&14&20&16&11&4&1&89\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Closed forms, Fibonacci numbers, and asymptotics}\label{sec:asymptotics}
+
+\subsection{Exact algebraic form and row sums}
+
+Fix $d\geq1$ and $q>0$, and define
+\begin{equation}\label{eq:roots}
+ \Delta_d(q)=\sqrt{K_d(q)^2-4q},\qquad
+ \lambda_\pm(q)=\frac{K_d(q)\pm\Delta_d(q)}{2}.
+\end{equation}
+Since $K_d>1+q\geq2\sqrt q$, the roots are real, distinct, and positive.
+The characteristic polynomial $x^2-K_dx+q$ is negative at both $x=1$ and
+$x=q$. Therefore
+\begin{equation}\label{eq:rootbounds}
+ 0<\lambda_-<\min(1,q)\leq\max(1,q)<\lambda_+.
+\end{equation}
+
+\begin{proposition}[Closed form]\label{prop:closed}
+For every $n\geq0$ and $q>0$,
+\begin{equation}\label{eq:closed}
+ P_n^{(d)}(q)=
+ \frac{(1-\lambda_-)\lambda_+^n+
+             (\lambda_+-1)\lambda_-^n}{\lambda_+-\lambda_-}.
+\end{equation}
+At $q=1$, independently of $d$,
+\begin{equation}\label{eq:fibonacci}
+ P_0^{(d)}(1)=1,\qquad
+ P_n^{(d)}(1)=F_{2n-1}\quad(n\geq1),
+\end{equation}
+where $F_0=0$, $F_1=1$, and $F_{r+1}=F_r+F_{r-1}$.
+\end{proposition}
+\begin{proof}
+The right side of \eqref{eq:closed} satisfies the linear recurrence, because
+both characteristic roots do. Its values at $n=0$ and $n=1$ are one, so
+uniqueness proves the formula. At $q=1$, the recurrence becomes
+$P_{n+1}=3P_n-P_{n-1}$, with $P_0=P_1=1$. The odd-indexed Fibonacci numbers
+satisfy this recurrence and the required initial values for $n\geq1$.
+Alternatively, substitute $\lambda_+=\varphi^2$ and
+$\lambda_-=\varphi^{-2}$, where $\varphi=(1+\sqrt5)/2$, into
+\eqref{eq:closed} and use Binet's formula.
+\end{proof}
+
+The row sums are exactly OEIS A001519 with its existing indexing:
+\[
+ 1,1,2,5,13,34,89,233,610,1597,\ldots.
+\]
+That entry defines the sequence by the same recurrence and initial values,
+and identifies it as an odd-indexed Fibonacci subsequence~\cite{OEIS}.
+Thus no new OEIS identifier is being claimed for these totals. The family
+provides a weight refinement of that established sequence.
+
+There is a useful interpretation of the independence from $d$. At $q=1$,
+\[
+ M_d(1)=\begin{pmatrix}2&1\\1&1\end{pmatrix}
+\]
+is independent of $d$. The set of walks is the same for every parameter;
+only the statistic assigned to each walk changes. Coefficient-shape phenomena
+therefore change while the row sums do not.
+
+\subsection{Exponential asymptotics at fixed positive \texorpdfstring{$q$}{q}}
+
+Define
+\[
+ A_d(q)=\frac{1-\lambda_-(q)}{\Delta_d(q)},\qquad
+ C_d(q)=\frac{\lambda_+(q)-1}{\Delta_d(q)}.
+\]
+Both are positive by \eqref{eq:rootbounds}. Equation~\eqref{eq:closed} gives
+\begin{equation}\label{eq:asymp}
+ P_n^{(d)}(q)=A_d(q)\lambda_+(q)^n
+ \left(1+\frac{C_d(q)}{A_d(q)}
+              \left(\frac{\lambda_-(q)}{\lambda_+(q)}\right)^n\right).
+\end{equation}
+This is an exact two-term expansion, and hence in particular an exponentially
+accurate leading asymptotic. For fixed $d$, it is uniform when $q$ ranges over
+any compact subset of $(0,\infty)$: the positive continuous quantities stay
+bounded away from their forbidden limits, and the root ratio has a maximum
+strictly less than one on that compact set.
+
+At $q=1$, the exact expression is especially simple:
+\begin{equation}\label{eq:fibasy}
+ P_n^{(d)}(1)=\frac{\varphi^{2n-1}+\varphi^{-(2n-1)}}{\sqrt5}
+ =\frac{\varphi^{2n-1}}{\sqrt5}
+   \left(1+\varphi^{-4n+2}\right)\qquad(n\geq1).
+\end{equation}
+
+\subsection{A Gaussian limit despite persistent non-log-concavity}
+
+Choose uniformly among all length-$n-1$ walks from $A$ to $A$, counting the
+two $A$-loops as distinct edges. Let $W_n^{(d)}$ be the total weight. Its
+probability generating function is
+\begin{equation}\label{eq:pgf}
+ \EE\bigl[q^{W_n^{(d)}}\bigr]
+ =\frac{P_n^{(d)}(q)}{P_n^{(d)}(1)}.
+\end{equation}
+
+\begin{theorem}[Mean, variance, and central limit]\label{thm:clt}
+For each fixed $d\geq1$, as $n\to\infty$,
+\begin{align}
+ \EE W_n^{(d)}&=\mu_dn+O(1),&
+ \mu_d&=\frac12+\frac{2d-1}{2\sqrt5},\label{eq:mean}\\
+ \Var(W_n^{(d)})&=\sigma_d^2n+O(1),&
+ \sigma_d^2&=\frac{\sqrt5(2d^2-2d+3)}{25}.
+ \label{eq:variance}
+\end{align}
+Furthermore,
+\begin{equation}\label{eq:clt}
+ \frac{W_n^{(d)}-\mu_dn}{\sqrt{\sigma_d^2n}}
+ \ \Longrightarrow\ N(0,1).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The discriminant in \eqref{eq:roots} is nonzero at $q=1$. Choose analytic
+branches of the roots in a complex neighborhood of that point. Their moduli
+remain separated in a sufficiently small neighborhood, and $A_d$ is nonzero
+there. If $s$ is sufficiently close to zero, put
+$H(s)=\log\lambda_+(e^s)$, choosing the analytic logarithm through its positive
+real value at zero. From \eqref{eq:asymp}, uniformly in a smaller neighborhood,
+\begin{equation}\label{eq:quasipower}
+ \log\frac{P_n^{(d)}(e^s)}{P_n^{(d)}(1)}
+ =n\bigl(H(s)-H(0)\bigr)
+  +\log\frac{A_d(e^s)}{A_d(1)}+O(\rho^n),
+ \qquad 0<\rho<1.
+\end{equation}
+Analyticity and a smaller disk also permit differentiation of the exponentially
+small remainder. Thus the first two cumulants have leading coefficients
+$H'(0)$ and $H''(0)$.
+
+We compute them explicitly rather than leaving them as derivatives of a root.
+The characteristic equation becomes
+\[
+ e^{H(s)}+e^{s-H(s)}=1+e^s+e^{ds}.
+\]
+Put $L=(3+\sqrt5)/2$, $l=(3-\sqrt5)/2$, $\mu=H'(0)$, and $\nu=H''(0)$.
+The first and second derivatives at zero give
+\begin{align*}
+ L\mu+l(1-\mu)&=1+d,\\
+ L(\mu^2+\nu)+l\bigl((1-\mu)^2-\nu\bigr)&=1+d^2.
+\end{align*}
+Since $L-l=\sqrt5$, the first equation yields \eqref{eq:mean}. Substituting
+that value into the second yields
+\[
+ \nu=\frac{1+d^2-L\mu^2-l(1-\mu)^2}{\sqrt5}
+     =\frac{\sqrt5(2d^2-2d+3)}{25}>0.
+\]
+This proves the mean and variance formulas.
+
+For the limit law, expand
+$H(s)-H(0)=\mu_ds+\tfrac12\sigma_d^2s^2+O(s^3)$ in
+\eqref{eq:quasipower}, set $s=iu/\sqrt{\sigma_d^2n}$ for fixed real $u$,
+and subtract the centering term $iu\mu_dn/\sqrt{\sigma_d^2n}$. The logarithm
+of the resulting characteristic function tends to $-u^2/2$; the analytic
+prefactor contributes $O(n^{-1/2})$ and the cubic remainder does likewise.
+The continuity theorem for characteristic functions proves
+\eqref{eq:clt}.
+\end{proof}
+
+For the fixed-seed counterexample family $d=2$, the constants are
+\[
+ \mu_2=\frac12+\frac{3\sqrt5}{10},\qquad
+ \sigma_2^2=\frac{7\sqrt5}{25}.
+\]
+There is no contradiction between this Gaussian limit and the coefficient
+valleys proved earlier. The central limit theorem describes weight on the
+scale $n$ with fluctuations of order $\sqrt n$. Our persistent obstruction
+occurs at the fixed degrees $2,3,4$, far into the lower tail. Those
+coefficients grow only polynomially in $n$, whereas the row sum grows
+exponentially. A Gaussian weak limit neither asserts local log-concavity nor
+controls every fixed tail coefficient.
+
+\section{Interpretation, verification, and remaining questions}\label{sec:scope}
+
+\subsection{What the counterexample does and does not show}
+
+The decisive distinction is between \emph{one connected curve} and
+\emph{at most one contributing crossing at each mutable arc}. The former does
+not imply the latter on an annulus. The coefficient row $(-1,2)$ is obtained
+from one curve by one flip, and \eqref{eq:shearorbit} exhibits unbounded shear
+coordinates with no change in the number of curve components. The resulting
+exchange relation contains $q^2$, then $q^3$, then $q^4$.
+
+This identifies a concrete obstruction to extending arguments based only on
+unit coefficient shifts to arbitrary unpunctured surfaces. It is unnecessary
+to diagnose every line of an existing proof: the explicit example already
+settles the general formulation. The mechanism, however, explains why tests
+confined to polygons could miss it.
+
+The natural residual question is the polygon-restricted formulation: does
+log-concavity hold for every single lamination in an unpunctured polygon,
+with the same geometric-coefficient specialization? This note does not answer
+that question. Nor does it characterize exactly which triples $(S,T,L)$
+produce log-concave polynomials. A further possible restriction is to bound
+the shear-coordinate multiplicities relevant to an expansion, but the
+sufficiency of such a condition would require a new proof; it is not asserted
+here.
+
+The annular construction is deliberately narrow enough to be audited. It
+uses a rank-two exchange matrix, a single unit-weight bridge, legal flips,
+and ordinary integer arithmetic. It does not rely on a large experimental
+search, a floating-point inequality, or a numerical guess about a lamination's
+connectedness.
+
+\subsection{Exact computational verification}
+
+The supplied \texttt{verify.py} uses the Python standard library and represents
+polynomials as tuples of integers in increasing degree. Polynomial division
+checks both integrality of the quotient and vanishing of the remainder.
+It implements the full extended-matrix mutation rule separately from the
+linear and nonlinear recurrences and separately from the walk update.
+The following checks were actually executed:
+\begin{center}
+\small
+\begin{tabular}{p{0.64\linewidth}r}
+\toprule
+Check & Number of cases\\
+\midrule
+Shear-orbit matrices, with both mutation involutions & 201\\
+Linear/walk agreement, positivity, and Fibonacci row sums & 972\\
+Nonlinear recurrence and actual seed mutations & 396\\
+Positive finite expansion against the recurrence & 156\\
+Fixed-seed log-concavity failures, $3\leq n\leq160$ & 158\\
+Fixed-seed strict valleys, $4\leq n\leq160$ & 157\\
+\bottomrule
+\end{tabular}
+\end{center}
+The 972 cases are $1\leq d\leq12$ and $0\leq n\leq80$. The 396
+nonlinear/mutation cases use the same $d$ range and $0\leq n\leq32$.
+The finite-expansion comparison uses $0\leq n\leq12$. All comparisons are
+exact. The detailed low-degree formulas, degree, monicity, and the general
+triple \eqref{eq:generaltriple} are also checked in their stated ranges.
+
+These computations do not machine-formalize the geometric theorem or certify
+all $n$. The article supplies the geometric reasoning and the induction and
+counting proofs that make the conclusions unconditional for the stated
+infinite families. No Lean formalization or external computer-algebra
+certification is claimed.
+
+\subsection{Reproducibility and research status}
+
+To rerun the checks and regenerate the data, use Python~3.10 or later:
+\begin{lstlisting}
+python verify.py --write-data
+\end{lstlisting}
+The program writes a matrix-and-polynomial certificate, a coefficient table
+for $d=2$ through $n=40$, Fibonacci row sums through $n=100$, and a JSON
+verification report. The archive also includes the LaTeX source, this PDF,
+a source-audit note, and build instructions. The final proof does not depend
+on reproducing a random search.
+
+As of the research date, the arXiv record inspected still presented the target
+as a conjecture. Targeted searches by title and identifier did not locate a
+correction addressing this annular example. That is not an exhaustive
+priority determination. Before preparing a journal submission, the appropriate
+next verification is to compare the final publisher version and seek expert
+review of the interpretation of the geometric coefficients. The counterexample
+and all algebraic claims made here are stated explicitly enough for that
+review to be short and decisive.
+
+\appendix
+\section{A minimal independent check of the fixed-seed family}\label{app:minimal}
+
+The following small program uses only coefficientwise recurrence updates and
+is included as \texttt{minimal\_check.py}. It is not the main verifier, since
+it does not implement the surface matrix. Its purpose is to make the central
+coefficient claim reproducible with very little code.
+\begin{lstlisting}[language=Python]
+def add(a, b):
+    c = [0] * max(len(a), len(b))
+    for i, v in enumerate(a):
+        c[i] += v
+    for i, v in enumerate(b):
+        c[i] += v
+    while len(c) > 1 and c[-1] == 0:
+        c.pop()
+    return c
+
+def shift(a, k):
+    return [0] * k + a
+
+P = [[1], [1]]
+for n in range(1, 160):
+    next_p = add(add(P[n], shift(P[n], 1)), shift(P[n], 2))
+    next_p = add(next_p, [-v for v in shift(P[n-1], 1)])
+    P.append(next_p)
+
+assert P[4] == [1, 0, 3, 2, 4, 2, 1]
+assert all(p[3]**2 < p[2]*p[4] for p in P[3:])
+assert all(p[2] > p[3] < p[4] for p in P[4:])
+print("PASS: exact fixed-seed checks through n=160")
+\end{lstlisting}
+
+\section{Certificate at a glance}\label{app:certificate}
+
+The essential proof data can be summarized without any asymptotic or
+generating-function machinery:
+\begin{center}
+\begin{tabular}{p{0.29\linewidth}p{0.62\linewidth}}
+\toprule
+Surface & Annulus, one marked point per boundary, no punctures.\\
+Reference triangulation & Two bridges forming two triangles; principal
+matrix $\bigl(\begin{smallmatrix}0&2\\-2&0\end{smallmatrix}\bigr)$.\\
+Lamination & One elementary curve along the first bridge, with weight one;
+reference shear row $(1,0)$.\\
+Geometric certification & Flip reference arc $1$, keeping the same curve;
+new coefficient row $(-1,2)$.\\
+Chosen initial variables & The two mutable variables $a,b$ of this new seed;
+set $a=b=1$ only when forming $c$-polynomials.\\
+Subsequent mutations & $2,1,2$.\\
+Exchange equations & $bv=a^2+q^2$, $aw=v^2+q^3$, $vz=w^2+q^4$.\\
+Resulting polynomial & $1+3q^2+2q^3+4q^4+2q^5+q^6$.\\
+Violation & $2^2<3\cdot4$, using positive coefficients at degrees $2,3,4$.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{thebibliography}{9}
+
+\bibitem{KLL}
+W.~Kang, K.~J.~Lee, and E.~Lim,
+\emph{Unimodality and Cluster Algebras from Surfaces},
+arXiv:2508.04396v3, 11 February 2026.
+Target statements: Definition~20, Theorem~14, and Conjecture~1 in Section~5.
+\url{https://arxiv.org/abs/2508.04396v3};
+\url{https://arxiv.org/html/2508.04396v3}.
+The arXiv record lists the related journal publication
+\emph{European Journal of Combinatorics} \textbf{136} (2026), 104392,
+\url{https://doi.org/10.1016/j.ejc.2026.104392}.
+Version-specific text and metadata consulted 19 September 2026.
+
+\bibitem{FT}
+S.~Fomin and D.~Thurston,
+\emph{Cluster algebras and triangulated surfaces. Part II: Lambda lengths},
+\emph{Memoirs of the American Mathematical Society} \textbf{255} (2018),
+no.~1223, v+97 pp.
+\url{https://arxiv.org/abs/1210.5569}.
+Especially Definitions~12.5 and~17.2, Theorems~12.6 and~13.5,
+and Proposition~17.3.
+
+\bibitem{FST}
+S.~Fomin, M.~Shapiro, and D.~Thurston,
+\emph{Cluster algebras and triangulated surfaces. I. Cluster complexes},
+\emph{Acta Mathematica} \textbf{201} (2008), 83--146.
+\url{https://arxiv.org/abs/math/0608367}.
+
+\bibitem{FZ}
+S.~Fomin and A.~Zelevinsky,
+\emph{Cluster algebras. I. Foundations},
+\emph{Journal of the American Mathematical Society} \textbf{15} (2002),
+497--529.
+\url{https://arxiv.org/abs/math/0104151}.
+
+\bibitem{OEIS}
+The OEIS Foundation Inc.,
+\emph{The On-Line Encyclopedia of Integer Sequences}, entry A001519,
+$a(0)=a(1)=1$, $a(n)=3a(n-1)-a(n-2)$.
+\url{https://oeis.org/A001519}.
+Consulted 19 September 2026.
+
+\end{thebibliography}
+\end{document}

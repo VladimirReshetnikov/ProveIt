@@ -1,0 +1,37 @@
+DRAFT ONLY — NOT SUBMITTED
+Targets: A122251 and A122249
+
+Suggested comment (subject to editorial review):
+
+The numerator conjecture holds for every prime p. More generally, if
+m >= 0, d,b >= 1, and gcd(d,b)=1, the reduced numerator of
+D_m(d,b) = det(1/(b+d*(i+j)))_{0<=i,j<m}
+is Product_{ell|d, ell prime} ell^(v_ell(d)*m*(m-1)
++ 2*Sum_{j=0..m-1} v_ell(j!)). Thus it is a square and is independent
+of the coprime shift b. Setting d=p, b=1, and m=n+1 proves the formula
+in A122251 and its specialization in A122249.
+
+Compact proof:
+
+Cauchy's determinant identity gives
+D_m(d,b)=d^(m*(m-1))*Product_{j=0..m-1}(j!)^2 /
+Product_{0<=i,j<m}(b+d*(i+j)).
+Every prime ell dividing d is coprime to the denominator, so its valuation
+is exactly the asserted one. For a prime ell not dividing d, let h=ell^a
+and write m=q*h+r, 0<=r<h. The number of pairs with
+h | b+d*(i+j) equals the number whose sum lies in one specified residue
+class modulo h. This count is h*q^2+2*q*r+E, where E>=0 counts the
+pairs of surplus residues. The contribution of h to the squared
+superfactorial is 2*Sum_{j=0..m-1} floor(j/h)
+=h*q*(q-1)+2*q*r. The denominator contribution exceeds this by
+h*q+E >= 0. Sum over a>=1. Thus no prime not dividing d can survive
+in the reduced numerator.
+
+For d=p prime and m=n+1, the exponent is
+n*(n+1)+2*Sum_{j=1..n} v_p(j!)
+=2*Sum_{j=1..n} Sum_{a>=0} floor(j/p^a), as conjectured.
+
+Before submission, review attribution and check for an existing equivalent
+proof. The accompanying report was developed with AI assistance and does
+not certify historical novelty. A public link to the reviewed report would
+need to be supplied by the person submitting the contribution.

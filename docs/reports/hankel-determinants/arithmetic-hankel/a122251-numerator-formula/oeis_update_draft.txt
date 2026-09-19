@@ -1,0 +1,55 @@
+DRAFT ONLY — NOT SUBMITTED TO OEIS
+Prepared 19 September 2026
+Relevant entries: A122251 (general prime conjecture), A122249 (p=2).
+
+Proposed comment:
+
+The conjectured formula holds for every prime p. More generally, for positive
+integers a,m with gcd(a,m)=1, the reduced numerator of
+H_n(m,a)=det(1/(a+m(i+j)))_{0<=i,j<=n} is
+
+    product_{p|m} p^(n(n+1)*v_p(m)+2*sum_{k=0}^n v_p(k!)),
+
+independent of a. Here n is the Hankel index, so the matrix size is n+1.
+
+Proof of the prime case:
+
+Cauchy's determinant formula gives
+
+    H_n(p,1) = p^(n(n+1))*(product_{k=0}^n k!)^2
+               / product_{i,j=0}^n (1+p(i+j)).
+
+The denominator is coprime to p. For any other prime q and d=q^e, write
+N=n+1=td+b, 0<=b<d. Let r be the residue -p^(-1) modulo d. Each residue occurs
+t times among 0,...,N-1, with one extra occurrence for residues 0,...,b-1.
+Thus the number of denominator factors divisible by d is
+
+    d*t^2 + 2*t*b + #{(u,v):0<=u,v<b, u+v=r mod d}
+    >= d*t*(t-1)+2*t*b
+    = 2*sum_{k=0}^n floor(k/d).
+
+Summing over e shows that every factor q!=p in the factorial numerator
+cancels. The reduced numerator is consequently
+
+    p^(n(n+1)+2*sum_{k=0}^n v_p(k!))
+    = (p^2)^(sum_{k=1}^n sum_{j>=0} floor(k/p^j)),
+
+which is the recorded formula; all terms beyond j=n vanish. The same argument
+with residue -a*m^(-1) applies to any q not dividing m, while primes dividing
+m cannot divide a+ms under the coprimality assumption. This proves the
+stated composite-step and offset extension.
+
+Supporting artifact:
+
+The accompanying report.tex/report.pdf contains the detailed proof, an
+independent inverse-matrix argument, denominator formulas, and exact tests.
+No permanent public URL has been assigned to this generated research article.
+A publication or repository link should be supplied before proposing an
+external OEIS link. Do not present this file as an accepted OEIS edit.
+
+Priority caution:
+
+The entries were still marked conjectural on the consultation date, but an
+older proof or a general classical result may already imply the formula.
+The Cauchy determinant and inverse formulas themselves are classical. Check
+historical attribution before submitting a novelty or first-proof claim.
