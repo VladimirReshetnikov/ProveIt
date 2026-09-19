@@ -40,10 +40,15 @@ open CoarseDegrees
 #print axioms SetCoarseEq.oddHalf
 #print axioms SetCoarseEq.join
 #print axioms blockCode_reducible
+#print axioms Budget.inter
+#print axioms densityBudget
+#print axioms densityBudget_le
 
 -- proved from the admitted published results (`sorryAx` expected)
 #print axioms exists_hyp_minimal_pair
 #print axioms exists_no_least_hyperdegree'
+#print axioms exists_hyp_minimal_pair_close
+#print axioms exists_no_least_hyperdegree_close
 #print axioms no_cone_theorem
 #print axioms leastClass_no_cone
 #print axioms OneGeneric.no_least

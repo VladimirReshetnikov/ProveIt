@@ -152,6 +152,76 @@ def countingBudget (b : ℕ → ℕ) (hmono : Monotone b) (hunb : ∀ c, ∃ n, 
       have h2 : b n ≤ b j := hmono (by omega)
       omega
 
+/-- Budgets are closed under intersection: one may impose two constraints at once. -/
+def Budget.inter (𝔅 𝔏 : Budget) : Budget where
+  mem E := 𝔅.mem E ∧ 𝔏.mem E
+  empty_mem := ⟨𝔅.empty_mem, 𝔏.empty_mem⟩
+  mono h hE := ⟨𝔅.mono h hE.1, 𝔏.mono h hE.2⟩
+  reserve E hE L := by
+    obtain ⟨M₁, h₁, hM₁⟩ := 𝔅.reserve E hE.1 L
+    obtain ⟨M₂, h₂, hM₂⟩ := 𝔏.reserve E hE.2 L
+    exact ⟨max M₁ M₂, le_trans h₁ (le_max_left _ _), fun k hk =>
+      ⟨hM₁ k (le_trans (le_max_left _ _) hk), hM₂ k (le_trans (le_max_right _ _) hk)⟩⟩
+
+theorem Budget.Obeys.left {𝔅 𝔏 : Budget} {V : Set ℕ} (h : (𝔅.inter 𝔏).Obeys V) :
+    𝔅.Obeys V := fun n => (h n).1
+
+theorem Budget.Obeys.right {𝔅 𝔏 : Budget} {V : Set ℕ} (h : (𝔅.inter 𝔏).Obeys V) :
+    𝔏.Obeys V := fun n => (h n).2
+
+/-- The *density budget* `|E ∩ [0,n)| ≤ r·n`.  Obeying it means exactly lying within distance
+`r` of the empty set in the prefix-density metric `d(U,V) = supₙ ρₙ(U △ V)` of the synthesis,
+so a condition of this forcing is a ball of that metric: the forcing of report 10 and the
+Baire-category method of the synthesis act on the same space. -/
+def densityBudget (r : ℚ) (hr : 0 < r) : Budget where
+  mem E := ∀ n : ℕ, ((E.filter (· < n)).card : ℚ) ≤ r * n
+  empty_mem := by
+    intro n
+    simp only [Finset.filter_empty, Finset.card_empty, Nat.cast_zero]
+    positivity
+  mono := by
+    intro E F hFE hE n
+    refine le_trans ?_ (hE n)
+    exact_mod_cast Finset.card_le_card (Finset.filter_subset_filter _ hFE)
+  reserve := by
+    intro E hE L
+    refine ⟨max L ⌈((E.card : ℚ) + 1) / r⌉₊, le_max_left _ _, fun k hk n => ?_⟩
+    by_cases hnk : n ≤ k
+    · have hfil : (insert k E).filter (· < n) = E.filter (· < n) := by
+        ext x
+        simp only [Finset.mem_filter, Finset.mem_insert]
+        constructor
+        · rintro ⟨rfl | hx, hlt⟩
+          · omega
+          · exact ⟨hx, hlt⟩
+        · rintro ⟨hx, hlt⟩
+          exact ⟨Or.inr hx, hlt⟩
+      rw [hfil]
+      exact hE n
+    · have hcard : ((insert k E).filter (· < n)).card ≤ E.card + 1 :=
+        le_trans (Finset.card_le_card (Finset.filter_subset _ _)) (Finset.card_insert_le _ _)
+      have hMn : ⌈((E.card : ℚ) + 1) / r⌉₊ ≤ n := by
+        have : ⌈((E.card : ℚ) + 1) / r⌉₊ ≤ k := le_trans (le_max_right _ _) hk
+        omega
+      have h1 : ((E.card : ℚ) + 1) / r ≤ (n : ℚ) :=
+        le_trans (Nat.le_ceil _) (by exact_mod_cast hMn)
+      have h2 : (E.card : ℚ) + 1 ≤ r * n := by
+        rw [div_le_iff₀ hr] at h1
+        linarith
+      calc (((insert k E).filter (· < n)).card : ℚ) ≤ ((E.card : ℚ) + 1) := by exact_mod_cast hcard
+        _ ≤ r * n := h2
+
+/-- A set obeying the density budget has all prefix ratios at most `r`. -/
+theorem densityBudget_le {r : ℚ} (hr : 0 < r) {V : Set ℕ} (h : (densityBudget r hr).Obeys V)
+    (n : ℕ) : ((count V n : ℚ)) ≤ r * n := by
+  have hn := h n n
+  refine le_trans (le_of_eq ?_) hn
+  unfold count
+  congr 2
+  apply (Finset.filter_true_of_mem _).symm
+  intro x hx
+  exact Finset.mem_range.mp (Finset.mem_filter.mp hx).1
+
 /-- Conditions: pairs of equal-length strings whose disagreement set is affordable. -/
 structure Cond (𝔅 : Budget) where
   fst : List Bool

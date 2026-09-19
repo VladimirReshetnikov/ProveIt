@@ -294,4 +294,51 @@ theorem exists_no_least_hyperdegree' :
     ∃ A : Set ℕ, (¬ ∃ g, IsLeastHypNC (χ A) g) ∧ (¬ ∃ g, IsLeastHypUC (χ A) g) :=
   exists_no_least_hyperdegree sqrtBudget sqrtBudget_densityZero
 
+/-! ## Minimal pairs inside a ball of the prefix-density metric
+
+Budgets are closed under intersection, so the two constraints can be imposed at once: the
+witnesses can be made coarsely equal *and* arbitrarily close in the prefix-density metric
+`d(U,V) = supₙ ρₙ(U △ V)` in which the synthesis runs its Baire-category arguments.  Since
+`d(A,B) ≤ r` says exactly that `A △ B` obeys `densityBudget r`, this places a hyperdegree
+minimal pair inside every ball of that metric, however small the radius. -/
+
+/-- **Hyperdegree minimal pairs inside an arbitrarily small ball.**  For every rational
+`r > 0` there are `A`, `B` whose symmetric difference has density zero *and* satisfies
+`|(A △ B) ∩ [0,n)| ≤ r·n` for every `n` — that is, `d(A,B) ≤ r` — such that every set
+hyperarithmetic in both is hyperarithmetic, and neither has a hyperarithmetic coarse
+description. -/
+theorem exists_hyp_minimal_pair_close (r : ℚ) (hr : 0 < r) :
+    ∃ A B : Set ℕ,
+      DensityZero (symmDiff A B) ∧
+      (∀ n, ((count (symmDiff A B) n : ℚ)) ≤ r * n) ∧
+      (∀ X, HypIn A X → HypIn B X → Hyp X) ∧
+      (∀ C, Hyp C → ¬ SetCoarseEq C A) ∧ (∀ C, Hyp C → ¬ SetCoarseEq C B) := by
+  obtain ⟨A, B, hobey, hmin, hA, hB⟩ :=
+    exists_hyp_minimal_pair (sqrtBudget.inter (densityBudget r hr))
+  exact ⟨A, B, sqrtBudget_densityZero _ hobey.left, densityBudget_le hr hobey.right,
+    hmin, hA, hB⟩
+
+/-- The same, in the form used by Corollary 1.2: the class of `A` has no representative of
+least hyperdegree, and the second witness lies within `r` of the first. -/
+theorem exists_no_least_hyperdegree_close (r : ℚ) (hr : 0 < r) :
+    ∃ A B : Set ℕ,
+      (∀ n, ((count (symmDiff A B) n : ℚ)) ≤ r * n) ∧
+      CoarseEq (χ B) (χ A) ∧
+      (¬ ∃ g, IsLeastHypNC (χ A) g) ∧ (¬ ∃ g, IsLeastHypUC (χ A) g) := by
+  obtain ⟨A, B, hzero, hclose, hmin, hA, -⟩ := exists_hyp_minimal_pair_close r hr
+  have hBA : CoarseEq (χ B) (χ A) := by
+    rw [← setCoarseEq_iff]
+    unfold SetCoarseEq
+    rw [symmDiff_comm B A]
+    exact hzero
+  refine ⟨A, B, hclose, hBA, ?_, ?_⟩
+  · rintro ⟨g, hg, hleast⟩
+    obtain ⟨C, hC, hCA⟩ := hyp_description_of_least hmin hg
+      (hleast _ (CoarseEq.refl _).ncEquiv) (hleast _ hBA.ncEquiv)
+    exact hA C hC hCA
+  · rintro ⟨g, hg, hleast⟩
+    obtain ⟨C, hC, hCA⟩ := hyp_description_of_least hmin hg.ncEquiv
+      (hleast _ (CoarseEq.refl _).ucEquiv) (hleast _ hBA.ucEquiv)
+    exact hA C hC hCA
+
 end CoarseDegrees
