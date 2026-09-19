@@ -32,13 +32,13 @@ ratio stayed within $0.96$ to $1.05$.
 \item a standalone recognizer that chains the three.
 \end{itemize}
 Not ported: diagram simplification, the Jones filter, factorization, and the
-interning of matchings with plan caches. Each layer was compared with its Python
+cache of composition plans. Each layer was compared with its Python
 counterpart before the next was written: 200 Alexander minors, 1920 gluings and
 circle numberings, 2736 compositions and transfers, the Khovanov ranks of 160
 random closures and of the timing inputs (up to rank 5898), and the verdicts of
 the recognizer on 60 diagrams with up to 40 crossings, 40 of them unknots, among
 the knots Conway's and the Kinoshita--Terasaka knot: no mismatch anywhere.
-Sixteen laws about the control logic (for instance: of two scan orders with
+Eighteen laws about the control logic (for instance: of two scan orders with
 equal profile the left one wins, so the work does not depend on scheduling) are
 stated in \texttt{LAWS.bend} and proved in \texttt{PROOF.bend}; they were drafted
 by the AI as proposals, and they do not say that a rank is right, which Bend
@@ -81,6 +81,7 @@ version & 1 thread & 6 threads & 1 thread & 6 threads\\
 first working scan, first-found pivots & 1.04 s & 1.28--1.85 s & 63 s & 58 s\\
 sequential phases as tasks & 1.05 s & 0.89 s & 63 s & 58 s\\
 least-fill pivots in batches, work lists & 0.65 s & 0.50 s & 7.0 s & 4.9 s\\
+one transfer plan per pair of matchings & 0.36 s & 0.39 s & 4.07 s & 3.9 s\\
 Python package, same host & 0.134 s & & 0.542 s & \\
 \bottomrule
 \end{tabular}
@@ -90,26 +91,43 @@ fill-in is within a limit, and raising the limit to the least fill-in that was
 skipped, brought the stress closure from 58 to 5 s. A sampling profile of the
 emitted C then showed 43\% of the time in reference counting: a value used more
 than once is shared and counted, and every step through a shared list bumps and
-drops counts. Matchings are shared by design, and the linear lookups in them are
-most of those steps. Python avoids the work altogether by interning matchings
-as small integers and caching every plan (2817 plans serve 251\,406 transferred
-entries on the stress closure); in Bend a cache is a value every call must
-thread, the only map has string keys, and an array cannot be shared between the
-branches of a fork. That layer was not ported. It would make the port faster
-and, since it removes work from the one part that forks, less parallel.
+drops counts. Matchings are shared by design, and the linear lookups in them
+were most of those steps; a differential profile put the transfers at 48 to
+61\% of the single-thread time.
 
-As a process the native recognizer beats the Python command line where
-Python's 28 ms start-up dominates (2 ms against 28 ms on an 8-crossing unknot)
-and loses from about 25 crossings on (80 against 45 ms at 30 crossings);
-in-process, Python is 2 to 4 times faster on the same steps.
+Python avoids that work by interning matchings and caching every plan (2817
+plans serve 251\,406 transferred entries on the stress closure). In Bend a cache
+is a value every call must thread, the only map has string keys, and an array
+cannot be shared between the branches of a fork. The port therefore splits a
+transfer into its plan, which depends on the two matchings only, and its
+application to a morphism, and before the forked map of a stage a sequential
+pass builds a table with one entry per pair of matchings that occurs: a binary
+trie over 20 bits of a hash of the pair, which is plain data and may be shared,
+read-only, by all branches. A leaf remembers its pair, and a lookup that finds
+another pair or nothing computes the plan on the spot, so a collision costs time
+and never correctness (two of the laws). That halved the single-thread time
+($0.53$ and $0.56$, A/A control within $0.98$ to $1.01$).
+
+It also ended the parallel gain. The table took the work out of the one part
+that forks: the map fell to 22 to 25\% of the time, and with six threads the two
+inputs take 0.39 and 3.9 s against 0.36 and 4.07 s with one. What had been
+running in parallel was the redundant work.
+
+As a process the native recognizer (one thread) beats or ties the Python
+command line up to about 30 crossings, because Python needs 28 ms to start
+(2 ms against 28 ms on an 8-crossing unknot, 50 against 46 ms at 30 crossings);
+in-process, Python is up to 2.4 times faster on the same steps, and 2.7 to 7.5
+times faster on the two large scans of the table.
 
 \subsection{Verdict}
 The promise holds in the narrow sense and not in the useful one. Writing a fork
 is trivial and safe. But the scan alternates a parallel map with a Gaussian
-elimination in which each cancellation changes the rows the next one reads; the
-map is 20 to 45\% of the time, so six threads give 1.2 to 1.4 overall, on top of
-a single-thread speed 4 to 13 times below the tuned Python package. The cost
-model (a fork anywhere taxes all sequential code by 1.8 unless it is wrapped as
-a task) is invisible in the language, and the compiler removes the wrapper
-unless it is written just so. For this algorithm the measured ranking stays:
-Rust, then Python, then Bend.
+elimination in which each cancellation changes the rows the next one reads.
+While the map recomputed every plan for every entry it was 20 to 60\% of the
+time and six threads gave 1.2 to 1.4 overall; once the plans were computed once
+per pair of matchings, which is the first thing a sequential programmer does,
+one thread was as fast as six. The cost model (a fork anywhere taxes all
+sequential code by 1.8 unless it is wrapped as a task) is invisible in the
+language, and the compiler removes the wrapper unless it is written just so.
+For this algorithm the measured ranking stays: Rust, then Python, then Bend,
+the last 2.7 to 7.5 times behind the Python package on large scans.
