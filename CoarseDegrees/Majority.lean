@@ -212,4 +212,97 @@ theorem eventually_two_errCnt_lt {E : Set ℕ} (hE : DensityZero E) (k : ℕ) :
   have : (2 : ℝ) * (errCnt E k s : ℝ) < s := by linarith
   exact_mod_cast this
 
+
+/-! ## Majority decoding -/
+
+/-- The majority set: `⟨k,s⟩` belongs to it when more than half of the first `s` elements of
+column `k` lie in `D`.  This is the `B`-computable approximation extracted from a coarse
+description `D` of the dyadic code. -/
+def majSet (D : Set ℕ) : Set ℕ := {m | m.unpair.2 < 2 * cnt D m.unpair.1 m.unpair.2}
+
+theorem majSet_reducible (D : Set ℕ) : majSet D ≤ᵀₛ D := by
+  have h0 : RecursiveIn {characteristic D} (fun m : ℕ => (Part.some m : Part ℕ)) :=
+    Partrec.recursiveIn (f := fun m : ℕ => (Part.some m : Part ℕ)) Computable.id
+  have h1 := cnt_recursiveIn D
+  have hlt : PrimrecPred (fun q : ℕ => q.unpair.1.unpair.2 < 2 * q.unpair.2) :=
+    Primrec.nat_lt.comp
+      (Primrec.snd.comp (Primrec.unpair.comp (Primrec.fst.comp Primrec.unpair)))
+      (Primrec.nat_mul.comp (Primrec.const 2) (Primrec.snd.comp Primrec.unpair))
+  have hc : Computable (fun q : ℕ => if q.unpair.1.unpair.2 < 2 * q.unpair.2 then 1 else 0) :=
+    (Primrec.ite hlt (Primrec.const 1) (Primrec.const 0)).to_comp
+  have h4 := recursiveIn_map (recursiveIn_pair h0 h1) hc
+  refine h4.of_eq fun m => ?_
+  simp [characteristic, Seq.seq, characteristicValue, majSet]
+
+/-! ## The two counting inequalities -/
+
+/-- If `k ∈ A`, every non-error in column `k` is counted. -/
+theorem le_cnt_add_errCnt {D A : Set ℕ} {k : ℕ} (hk : k ∈ A) (s : ℕ) :
+    s ≤ cnt D k s + errCnt (symmDiff D (Rc A)) k s := by
+  have hsplit := Finset.card_filter_add_card_filter_not
+    (s := Finset.range s) (p := fun t => colElem k t ∈ D)
+  have hsub : ((Finset.range s).filter (fun t => ¬ (colElem k t ∈ D))) ⊆
+      ((Finset.range s).filter (fun t => colElem k t ∈ symmDiff D (Rc A))) := by
+    intro t htm
+    simp only [Finset.mem_filter, Finset.mem_range] at htm ⊢
+    refine ⟨htm.1, ?_⟩
+    have hR : colElem k t ∈ Rc A := by rw [mem_Rc, col_colElem]; exact hk
+    rw [Set.mem_symmDiff]
+    exact Or.inr ⟨hR, htm.2⟩
+  have hcard := Finset.card_le_card hsub
+  simp only [Finset.card_range] at hsplit
+  unfold cnt errCnt
+  omega
+
+/-- If `k ∉ A`, everything counted in column `k` is an error. -/
+theorem cnt_le_errCnt {D A : Set ℕ} {k : ℕ} (hk : k ∉ A) (s : ℕ) :
+    cnt D k s ≤ errCnt (symmDiff D (Rc A)) k s := by
+  apply Finset.card_le_card
+  intro t htm
+  simp only [Finset.mem_filter, Finset.mem_range] at htm ⊢
+  refine ⟨htm.1, ?_⟩
+  have hR : colElem k t ∉ Rc A := by rw [mem_Rc, col_colElem]; exact hk
+  rw [Set.mem_symmDiff]
+  exact Or.inl ⟨htm.2, hR⟩
+
+/-! ## The hard direction of the criterion -/
+
+/-- **From a coarse description to a limit approximation** (report 10, Theorem 1.4).  If `B`
+computes a coarse description `D` of the dyadic code `R(A)`, then `A` is the limit of a
+`B`-computable approximation: take the majority vote over the first `s` elements of column `k`.
+Because a column has positive density, the errors in it are eventually a minority, so the vote
+is eventually correct. -/
+theorem limit_of_description {B D A : Set ℕ} (hD : D ≤ᵀₛ B) (hcoarse : SetCoarseEq D (Rc A)) :
+    LimitComputableIn B A := by
+  refine ⟨majSet D, (majSet_reducible D).trans hD, fun k => ?_⟩
+  obtain ⟨s₀, hs₀⟩ := eventually_two_errCnt_lt hcoarse k
+  refine ⟨s₀, fun t ht => ?_⟩
+  have hmem : Nat.pair k t ∈ majSet D ↔ t < 2 * cnt D k t := by
+    simp [majSet]
+  rw [hmem]
+  have herr := hs₀ t ht
+  constructor
+  · intro hlt
+    by_contra hk
+    have := cnt_le_errCnt (D := D) (A := A) hk t
+    omega
+  · intro hk
+    have := le_cnt_add_errCnt (D := D) (A := A) hk t
+    omega
+
+/-- **The criterion for the dyadic code** (report 10, Theorem 1.4).  `B` computes a coarse
+description of `R(A)` exactly when `A` is the limit of a `B`-computable approximation — which,
+by Shoenfield's limit lemma, is `A ≤ᵀ B′`.  So passing to the dyadic code replaces `A` by a set
+whose coarse descriptions see only `A` relative to a jump. -/
+theorem description_iff_limit {B A : Set ℕ} :
+    (∃ D : Set ℕ, D ≤ᵀₛ B ∧ SetCoarseEq D (Rc A)) ↔ LimitComputableIn B A :=
+  ⟨fun ⟨_, hD, hc⟩ => limit_of_description hD hc, exists_description_of_limit⟩
+
+/-- Everything in the core of a dyadic code is hyperarithmetic in the coded set's parameter:
+if `B` computes a coarse description of `R(A)` then `A` is hyperarithmetic in `B`.  This is the
+half of report 10, Theorem 1.4 that the hyperdegree statements use. -/
+theorem hypIn_of_description {B D A : Set ℕ} (hD : D ≤ᵀₛ B) (hcoarse : SetCoarseEq D (Rc A)) :
+    HypIn B A :=
+  (limit_of_description hD hcoarse).hypIn
+
 end CoarseDegrees
