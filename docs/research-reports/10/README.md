@@ -29,6 +29,36 @@ ordinals, and large cardinals". Main file: `coarse_hyperdegrees.{tex,pdf}` (10 p
    code is a countably complete ultrafilter on the nonuniform coarse degrees properly
    extending the cone filter.
 
+## Added 19 September 2026
+
+**Result 4 (Theorem 1.6).** Budgets are closed under intersection, and a set obeys the
+*density budget* `|E cap [0,n)| <= r*n` exactly when it is within distance `r` of the empty
+set in the prefix-density metric. So a condition of this forcing **is a ball of the metric in
+which the synthesis runs its Baire-category arguments**: the two methods act on the same
+space. Imposing both constraints at once, the witnesses of result 1 can be taken coarsely
+equal *and* within distance `r` for any prescribed `r > 0`, so a hyperdegree minimal pair sits
+inside every ball of that metric. Formalized in Lean with nothing admitted beyond what result
+1 already uses.
+
+**Question (Q1) analysed, not settled.** (Q1) asks whether the cone `{D : A <=_h D}` is meager
+when `A` is outside the hyperarithmetic core. The reduction is sound -- the cone is `Sigma^1_1`,
+so it has the Baire property, and finite modifications preserve hyperdegree -- so everything
+reduces to "comeager in a ball implies all of the ball". Two routes are now ruled out:
+
+- the Turing proof cannot be repaired, since it runs through the local decoder whose
+  conclusion (the robust-radius characterization) is false for `<=_h` by result 2;
+- the obvious *forcing* proof is **circular**: one can build a pair inside the ball dodging the
+  meager complement, so both coordinates land in the cone and the bridge lemma applies, but the
+  ground model must contain the parameters defining the dense sets, and the cone is defined
+  from `A` itself. The bridge lemma then says only that `A` is hyperarithmetic in a ground
+  model containing `A`. This is the same circularity that makes the classical "hyperarithmetic
+  in comeager many implies hyperarithmetic" a theorem about `Sigma^1_1` sets rather than a
+  genericity argument.
+
+A third observation: the classical theorem does not transfer along the obvious Cantor-space
+parametrization, because `D_X` is nowhere locally compact and so any such image is nowhere
+dense. What remains is to run the `Sigma^1_1` category machinery directly in `D_X`.
+
 ## What is classical here, and what is not
 
 Minimal pairs of hyperdegrees are **classical**: Feferman (1965) embedded every countable
