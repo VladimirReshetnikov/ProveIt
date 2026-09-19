@@ -8,3 +8,8 @@ import CoarseDegrees.C1
 import CoarseDegrees.BudgetForcing
 import CoarseDegrees.Hyper
 import CoarseDegrees.Cone
+import CoarseDegrees.Columns
+import CoarseDegrees.Limit
+import CoarseDegrees.Dyadic
+import CoarseDegrees.Majority
+import CoarseDegrees.Compactness

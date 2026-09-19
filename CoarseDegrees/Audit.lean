@@ -44,6 +44,25 @@ open CoarseDegrees
 #print axioms densityBudget
 #print axioms densityBudget_le
 
+-- report 10, Theorem 1.4 (dyadic codes): fully proved
+#print axioms computable_col
+#print axioms card_tail
+#print axioms densityZero_of_bounded_columns
+#print axioms setTuringReducible_of_one_query
+#print axioms LimitComputableIn.hypIn
+#print axioms Rc_equivalent
+#print axioms exists_description_of_limit
+#print axioms recursiveIn_prec_total
+#print axioms cnt_recursiveIn
+#print axioms errCnt_div_tendsto
+#print axioms majSet_reducible
+#print axioms limit_of_description
+#print axioms description_iff_limit
+#print axioms hypIn_of_description
+#print axioms mem_hcore_Rc
+#print axioms computable_listApprox
+#print axioms exists_computable_approx
+
 -- proved from the admitted published results (`sorryAx` expected)
 #print axioms exists_hyp_minimal_pair
 #print axioms exists_no_least_hyperdegree'
@@ -58,3 +77,5 @@ open CoarseDegrees
 #print axioms not_C1Uniform
 #print axioms not_C1Uniform'
 #print axioms exists_binary_counterexample
+#print axioms hcore_Rc
+#print axioms hyperarithmetic_compactness_fails
