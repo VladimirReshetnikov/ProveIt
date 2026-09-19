@@ -1,0 +1,298 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=13pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Forest}{HTML}{30392C}
+\definecolor{Olive}{HTML}{687144}
+\definecolor{Muted}{HTML}{65685F}
+\definecolor{Sage}{HTML}{CBD0BC}
+\definecolor{Pale}{HTML}{F2F4EB}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\PassOptionsToPackage{obeyspaces}{url}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{pdftitle={Exacting embeddings of countable structures},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Deduplicated results of thirty-six research continuations on cover-exacting, exacting and ultraexacting cardinals},pdfkeywords={large cardinals, cover exacting, ultraexacting, HCD, strongly compact, Ground Axiom, I0, I3}}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Forest}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Forest}}{\thesubsection}{.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Forest}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}EXACTING EMBEDDINGS OF COUNTABLE STRUCTURES}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}RESEARCH NOTE\quad 18 SEP 2026}
+\fancyfoot[L]{\small\color{Muted}Virtually exacting cardinals and large countable ordinals}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}Virtually exacting cardinals and large countable ordinals}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\tcbset{colback=Pale,colframe=Sage,colbacktitle=Sage,coltitle=Forest,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{question}[definition]{Question}
+\newtheorem{inputthm}{Input}
+\renewcommand{\theinputthm}{\Alph{inputthm}}
+\numberwithin{equation}{section}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\AC}{\mathsf{AC}}
+\newcommand{\GA}{\mathsf{GA}}
+\newcommand{\HOD}{\mathrm{HOD}}
+\newcommand{\OD}{\mathrm{OD}}
+\newcommand{\CD}{\mathrm{CD}}
+\newcommand{\HCD}{\mathrm{HCD}}
+\newcommand{\UF}{\mathrm{UF}}
+\newcommand{\Ex}{\operatorname{Ex}}
+\newcommand{\UEx}{\operatorname{UEx}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\SC}{\operatorname{SC}}
+\newcommand{\CEx}{\operatorname{CEx}}
+\newcommand{\REx}{\operatorname{REx}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\crit}{\operatorname{crit}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\ot}{\operatorname{ot}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\Izero}{\mathrm{I0}}
+\newcommand{\Itwo}{\mathrm{I2}}
+\newcommand{\Ithree}{\mathrm{I3}}
+\newcommand{\Iwf}{\mathrm{I3}_{\mathrm{wf}}(0)}
+\newcommand{\Sel}{\operatorname{Sel}}
+\newcommand{\FF}{\mathcal F}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\Clam}{\mathcal C_\lambda}
+\newcommand{\Rig}{\operatorname{Rig}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\ch}{\operatorname{ind}}
+\newcommand{\CF}{\mathsf{CF}}
+\newcommand{\src}[1]{\unskip\ {\normalfont\small\sffamily\color{Olive}[#1]}\ }
+\newcommand{\R}[1]{\textsf{R#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}{>{\centering\arraybackslash}p{.034\textwidth}}
+\newcommand{\yes}{$\bullet$}
+\newcommand{\prt}{$\circ$}
+\newcommand{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:\nolinkurl{#1}}}
+
+\begin{document}
+\thispagestyle{empty}
+\begin{center}
+{\sffamily\bfseries\color{Forest}\fontsize{20}{24}\selectfont Exacting embeddings of countable structures\par}
+\vspace{6pt}
+{\fontsize{13}{17}\selectfont Virtually exacting cardinals, large countable ordinals,\\ and the exact role of the Kunen inconsistency\par}
+\vspace{8pt}
+{\small Research note accompanying the synthesis \nolinkurl{docs/research-synthesis}; prepared for Vladimir Reshetnikov, \today}
+\end{center}
+\vspace{4pt}
+
+\begin{assessment}{Summary}
+\textbf{Question.} Is there a connection between large cardinals (LC) and large countable ordinals (LCO) that supports theorems and not only analogies, for the cardinals studied in this repository?
+
+\textbf{Answer proposed here.} Yes, through \emph{virtual} large cardinals in the sense of Gitman and Schindler \cite{gs}: embeddings that exist only in a forcing extension, equivalently embeddings between countable structures. We define \emph{virtually exacting} cardinals and the corresponding \emph{$L$-exacting} countable ordinals and prove:
+\begin{enumerate}[leftmargin=1.6em,itemsep=1pt]
+\item (Theorem~\ref{thm:free}) a Kunen-free core: the critical points $\kappa_n$ of any virtual witness are inaccessible, and $\kappa_0$ is virtually rank-into-rank. The proofs are those already machine-checked in the Lean development, which never use that the embedding belongs to the universe.
+\item (Theorem~\ref{thm:sharp}) If $0^\#$ exists then in $L$ the cardinal $i_\omega$ is virtually exacting with a cofinal critical sequence and is \emph{inaccessible}; every limit Silver indiscernible is virtually exacting. So the three basic facts about exacting cardinals --- cofinality $\omega$, singularity, $V\ne\HOD$ --- all fail virtually, and virtual exactingness is consistent with $V=L$.
+\item (Theorem~\ref{thm:cofinal}) What survives when the critical sequence is cofinal: $\lambda$ is a strong limit, fixed small sets lie below the critical point, and $\lambda$ is regular in $\HOD_{V_\lambda}$. Hence a dichotomy: either $\cf(\lambda)=\omega$ and $V\ne\HOD_{V_\lambda}$ (the situation of a genuine exacting cardinal), or $\lambda$ is a regular limit of inaccessibles (the situation in $L$). The Kunen inconsistency is used for exactly one thing: to put the critical sequence into $V$.
+\item (Theorem~\ref{thm:ordinal}) The least $L$-exacting countable ordinal $\lambda_{\mathrm{ex}}$, if it exists, is a limit of ordinals $\kappa$ with $L_\kappa\models\ZFC$ and lies below the least stable ordinal; it exists if $0^\#$ does. This gives a new family of large countable ordinals, one for each virtual large cardinal notion.
+\item (Proposition~\ref{prop:ultra}) By contrast \emph{ultra}exactingness does not virtualize: a virtual ultraexacting witness yields a genuine rank-into-rank embedding in $V$.
+\end{enumerate}
+\textbf{Status.} Conventional proofs, not refereed. Items 1 and the combinatorial Proposition~\ref{prop:interleave} are formalized in Lean (\nolinkurl{Cardinals/KunenFree.lean}, \nolinkurl{Cardinals/WitnessFacts.lean}); the rest is not. I searched for ``virtually exacting'' and found nothing, but exacting cardinals date from 2024 and I cannot exclude unpublished work. The results are modest: they are what one obtains by running the arguments of the synthesis through the Gitman--Schindler machinery, and their main value is to locate precisely where the Kunen inconsistency enters.
+\end{assessment}
+
+\section{Analogies between large cardinals and large countable ordinals}
+
+The following table collects the connections; the last four rows are the ones this repository contributes to. ``S'' refers to the synthesis.
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{@{}P{.3\textwidth}P{.3\textwidth}Y@{}}
+\toprule
+\textbf{Large cardinals}&\textbf{Large countable ordinals}&\textbf{Nature of the link}\\\midrule
+inaccessible, Mahlo, weakly compact, \dots&$\Omega$, $I$, $M$, $K$ in collapsing functions $\psi$&scaffolding: each cardinal can be replaced by its recursive analogue\\
+regular / Mahlo / $\Pi^1_n$-indescribable&admissible / recursively Mahlo / $\Pi_{n+1}$-reflecting&the same reflection scheme, second order over $V_\kappa$ versus first order over $L_\alpha$\\
+$V_\alpha\prec V_\beta$, $C^{(n)}$ cardinals&$L_\alpha\prec_{\Sigma_1}L_\beta$, stable ordinals&elementary substructures of the hierarchy\\
+consistency strength of $T$&proof-theoretic ordinal $|T|$&calibration of $\Pi^1_1$ consequences; known only far below $\ZFC$\\
+measurable, $0^\dagger$, Woodin&mice, $0^\#$, heights and ranks of countable iterable structures&inner model theory; determinacy\\\midrule
+$\lambda$ regular in $\HOD_{V_\lambda}$, rigidity (S~\S8, \S12)&admissibility, $\Sigma^1_1$-boundedness at $\omega_1^{\mathrm{CK}}$&same theorem shape: a definable family of short cofinal sets is empty or as large as possible (S~Prop.~15.1)\\
+Prikry core at an ultraexacting $\lambda$ (S~Thm.~13.3)&$\langle\kappa_n\rangle$ generic over the $\omega$th iterate (Bukovsk\'y--Dehornoy)&the same theorem with a single embedding in place of an iteration\\
+$Q_\lambda=D_\lambda/{=^*}$ and definable choice (S~\S9, \S12, \S14)&$\Pow(\omega)/\mathrm{fin}$, $E_0$, Baire measurability&different answers: $\CF$ versus a global fixed point (S~Prop.~15.3)\\
+exacting witnesses $j:X\to V_\zeta$&embeddings of countable $L_\zeta$; Silver indiscernibles&\emph{this note}: the virtual version lives in $L$ and on countable ordinals\\
+orbit classes of $j\restr\lambda$ (S~Lemma~12.1)&fundamental sequences from iterating a normal function&Proposition~\ref{prop:interleave}\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Definitions}
+
+Recall (Aguilera--Bagaria--L\"ucke \cite{abl}) that $\lambda$ is \emph{exacting} if for every $\zeta>\lambda$ there are $X\prec V_\zeta$ with $V_\lambda\cup\{\lambda\}\subseteq X$ and an elementary $j:X\to V_\zeta$ with $j(\lambda)=\lambda$ and $j\restr\lambda\ne\mathrm{id}$. Such a $\lambda$ has cofinality $\omega$, is a strong limit, is regular in $\HOD_{V_\lambda}$, and therefore $V\ne\HOD$.
+
+\begin{definition}\label{def:virtual}
+A \emph{virtual exacting witness} at $\lambda$ of height $\zeta>\lambda$ is a pair $(X,j)$ in a set-forcing extension $V[G]$ such that $X\prec V^V_\zeta$, $V^V_\lambda\cup\{\lambda\}\subseteq X$, and $j:X\to V^V_\zeta$ is elementary with $j(\lambda)=\lambda$ and $j\restr\lambda\ne\mathrm{id}$. Put $\kappa=\crit(j)$, $\kappa_0=\kappa$, $\kappa_{n+1}=j(\kappa_n)$ (each $\kappa_n<\lambda$ belongs to $X$) and $\kappa_\omega=\sup_n\kappa_n\le\lambda$. The witness is of \emph{cofinal type} if $\kappa_\omega=\lambda$ and of \emph{bounded type} otherwise. The cardinal $\lambda$ is \emph{virtually exacting} if it has virtual witnesses of every height $\zeta>\lambda$, and \emph{virtually exacting of cofinal type} if it has virtual witnesses of cofinal type of unboundedly many limit heights.
+\end{definition}
+
+A genuine exacting witness is a virtual one with $G$ trivial; and, by the Kunen inconsistency, it is of cofinal type (S~Lemma~3.1). The structures $V^V_\zeta$ and the requirement $V^V_\lambda\subseteq X$ refer to $V$, as in all of \cite{gs}; only $X$ and $j$ are new.
+
+\begin{definition}\label{def:Lex}
+A countable ordinal $\lambda$ is \emph{$L$-exacting} if there are a countable $\zeta>\lambda$ with $L_\zeta\models\ZFC$, a set $X\prec L_\zeta$ with $V^{L_\zeta}_\lambda\cup\{\lambda\}\subseteq X$, and an elementary $j:X\to L_\zeta$ with $j(\lambda)=\lambda$ and $j\restr\lambda\ne\mathrm{id}$. Cofinal and bounded type are defined as before.
+\end{definition}
+
+By condensation $X$ is isomorphic to some $L_{\bar\zeta}$, so an $L$-exacting witness is the same as a pair of elementary embeddings $i,k:L_{\bar\zeta}\to L_\zeta$ with $i\restr V^{L_{\bar\zeta}}_\lambda=\mathrm{id}$, $i(\lambda)=k(\lambda)=\lambda$ and $\crit(k)<\lambda$: one embedding that does not see $V_\lambda$ and one that acts on it.
+
+\begin{lemma}[Gitman--Schindler {\cite[Lemma~3.1]{gs}}]\label{lem:abs}
+Let $W\subseteq V$ be transitive models of $\ZFC$ and $M,N\in W$ first-order structures with $M$ countable in $W$. If $V$ has an elementary embedding $M\to N$, so does $W$, and it can be required to agree with the given one on finitely many points.
+\end{lemma}
+
+The proof (a tree of finite partial elementary maps is ill-founded in $V$, hence in $W$) works for structures in a countable language; we use it with constants for the elements of $V_\lambda$.
+
+\begin{proposition}\label{prop:equiv}
+Let $\lambda<\zeta$ be countable ordinals with $L_\zeta\models\ZFC$ and $V^L_\zeta=L_\zeta$ (for instance $\zeta$ a strong limit cardinal of $L$). Then $\lambda$ is $L$-exacting with a witness of height $\zeta$ if and only if $L\models$ ``$\lambda$ has a virtual exacting witness of height $\zeta$''; and the types agree.
+\end{proposition}
+
+\begin{proof}
+Let $G$ be $\mathrm{Col}(\omega,L_\zeta)$-generic over $V$. If $(i,k)$ is a witness in $V$, apply Lemma~\ref{lem:abs} to $L[G]\subseteq V[G]$ and the structures $(L_{\bar\zeta},\in,x)_{x\in V_\lambda\cup\{\lambda\}}$, $(L_\zeta,\in,x)_{x\in V_\lambda\cup\{\lambda\}}$ for $i$, and $(L_{\bar\zeta},\in,\lambda,\kappa)$, $(L_\zeta,\in,\lambda,k(\kappa))$ for $k$: both embeddings exist in the generic extension $L[G]$ of $L$. Conversely a witness in a generic extension of $L$ is a witness in $V[G]$, and Lemma~\ref{lem:abs} for $V\subseteq V[G]$ returns one in $V$. Cofinality of the critical sequence can be arranged by prescribing $k(\kappa_n)=\kappa_{n+1}$ level by level in the tree.
+\end{proof}
+
+\section{The Kunen-free core}
+
+\begin{theorem}\label{thm:free}
+Let $(X,j)$ be a virtual exacting witness at $\lambda$ of limit height $\zeta$, with critical sequence $\langle\kappa_n\rangle$.
+\begin{enumerate}
+\item $j(n)=n$ for $n<\omega$, $j(\omega)=\omega$, and $\kappa>\omega$.
+\item $j(x)=x$ for every $x\subseteq\mu<\kappa$ in $V$.
+\item For $\mu<\kappa$ there is in $V$ no surjection of $\Pow(\mu)$ onto $\kappa$ and no cofinal map $\mu\to\kappa$. So $\kappa$ is inaccessible in $V$, and so is every $\kappa_n$.
+\item $e=j\restr V_\lambda$ is an elementary embedding $V_\lambda\to V_\lambda$ in $V[G]$; hence $\kappa$ is virtually rank-into-rank \cite[Def.~2.4]{gs}, and therefore an $\omega$-iterable limit of $\omega$-iterable cardinals and a virtually $n$-huge$^*$ limit of such cardinals for every $n$ \cite[Thm.~4.15, 4.20]{gs}.
+\item If $S\in X$, $S\subseteq\lambda$, $j(S)=S$ and $|S|^V<\kappa$, then $j``S=S$ and $S$ consists of fixed points of $j$.
+\end{enumerate}
+The same holds for $L$-exacting witnesses, with $L_\zeta$ in place of $V$.
+\end{theorem}
+
+\begin{proof}
+(1)--(3) and (5) are the statements \nolinkurl{jOrd_nat}, \nolinkurl{jOrd_omega}, \nolinkurl{omega_le_crit}, \nolinkurl{jv_subset_fixed}, \nolinkurl{no_surj_pow_crit}, \nolinkurl{slSem_critSeq}, \nolinkurl{crit_regular} and the first half of \nolinkurl{fixed_small_subset} of the Lean development, whose proofs use the embedding only through the two schemes ``$V_\zeta\models\varphi[\vec x]\iff V_\zeta\models\varphi[j(\vec x)]$ for $\vec x\in X$'' and ``existential statements with parameters in $X$ have witnesses in $X$''; the axiom audit confirms that they do not depend on the (admitted) Kunen inconsistency. For instance, for (3): a surjection $f:\Pow(\mu)\to\kappa$ can be found in $X$; then $j(f)$ maps $\Pow(\mu)$ onto $j(\kappa)\ni\kappa$, while $j(f)(x)=j(f(x))=f(x)<\kappa$ for every $x\subseteq\mu$ by (2) --- a contradiction. For regularity, a cofinal $f:\mu\to\kappa$ in $X$ has $j(f)=f$ pointwise, but $j(f)$ is cofinal in $j(\kappa)>\kappa$. (4): $j(V_\lambda)=V_\lambda$ because $j(\lambda)=\lambda$, and $V_\lambda\models\varphi[x]$ iff $V_\zeta\models$``$V_\lambda\models\varphi[x]$''.
+\end{proof}
+
+\section{What fails: virtually exacting cardinals in $L$}
+
+\begin{theorem}\label{thm:sharp}
+Assume $0^\#$ exists and let $\langle i_\alpha\rangle$ enumerate the Silver indiscernibles.
+\begin{enumerate}
+\item $L\models$ ``$i_\omega$ is virtually exacting of cofinal type''. In $L$, $i_\omega$ is inaccessible (indeed ineffable and more).
+\item $L\models$ ``$i_\gamma$ is virtually exacting'' for every limit ordinal $\gamma$; for $\gamma>\omega$ there are witnesses of bounded type, and witnesses for which $j(\kappa_\omega)\ne\kappa_\omega$.
+\item Consequently $\ZFC+V=L+{}$``there is a virtually exacting cardinal of cofinal type'' is consistent relative to $0^\#$, and none of the statements ``$\cf(\lambda)=\omega$'', ``$\lambda$ is singular'', ``$V\ne\HOD$'' follows from virtual exactingness.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) Let $\lambda=i_\omega$ and let $\zeta>\lambda$ be arbitrary. Write $\zeta=t^L(i_{a_1},\dots,i_{a_p},i_{b_1},\dots,i_{b_q})$ with $a_1<\dots<a_p<\omega\le b_1<\dots$, and let $m>a_p$. Let $H$ be the Skolem hull in $L$ of $\{i_n:n<\omega\}\cup\{i_\omega\}\cup\{i_{b_1},\dots,i_{b_q}\}\cup\{i_\beta:\beta\in B\}$ for a fixed infinite set $B$ of indices above all $b_l$. Every $x\in L_{i_\omega}$ is of the form $t^L(i_{n_1},\dots,i_{n_r},i_{\beta_1},\dots,i_{\beta_s})$ with $\beta$'s in $B$, because the value of such a term, when it lies below $i_\omega$, does not depend on the indiscernibles above $i_\omega$; so $L_\lambda\cup\{\lambda,\zeta\}\subseteq H$, and $V^L_\lambda=L_\lambda$. The map $\sigma$ that sends $i_n\mapsto i_{n+1}$ for $n\ge m$ and fixes the other generators is order preserving, so it induces an elementary $j:H\to H$ with $j(\lambda)=\lambda$, $j(\zeta)=\zeta$, $\crit(j)=i_m$ and critical sequence $i_m,i_{m+1},\dots$, cofinal in $\lambda$. Put $X=H\cap V^L_\zeta$. Since $V^L_\zeta$ is definable in $H\prec L$ from $\zeta$, $X\prec V^L_\zeta$ and $j\restr X:X\to X$ is elementary for $V^L_\zeta$. This is a witness in $V$ for the structure $V^L_\zeta$; by Lemma~\ref{lem:abs}, applied as in the proof of Proposition~\ref{prop:equiv} in $V^{\mathrm{Col}(\omega,V^L_\zeta)}$ and its submodel $L[G]$, there is one in a generic extension of $L$.
+(2) For $\lambda=i_\gamma$ use all $i_\alpha$, $\alpha<\gamma$, as generators, the shift $i_n\mapsto i_{n+1}$ above $m$ on the first $\omega$ of them and the identity elsewhere: then $\kappa_\omega=i_\omega<\lambda$ and $j(\kappa_\omega)=\kappa_\omega$. For $\gamma=\omega\cdot2$ the map $i_\alpha\mapsto i_{\alpha+1}$ ($m\le\alpha<\omega\cdot2$) gives $\kappa_\omega=i_\omega$ and $j(i_\omega)=i_{\omega+1}$.
+(3) follows from (1) and \cite[Thm.~2.10]{abl}, since $L\models V=\HOD$.
+\end{proof}
+
+So for virtual embeddings the supremum of the critical sequence, the fixed cardinal $\lambda$, and its cofinality come apart completely, as Gitman and Schindler observed for rank-into-rank embeddings. What Theorem~\ref{thm:sharp} adds is that \emph{even when the critical sequence is cofinal in $\lambda$} the cardinal can be regular: the sequence $\langle i_n\rangle$ is simply not in $L$.
+
+\section{What survives: cofinal type}
+
+\begin{theorem}\label{thm:cofinal}
+Let $\lambda$ be virtually exacting of cofinal type.
+\begin{enumerate}
+\item $\lambda$ is a strong limit cardinal and a limit of inaccessible virtually rank-into-rank cardinals.
+\item If $(X,j)$ is a witness of cofinal type, $S\in X$, $S\subseteq\lambda$, $j(S)=S$ and $|S|^V<\lambda$, then $S\subseteq\crit(j)$; and there is no nonempty $\mathcal F\in X$ with $j(\mathcal F)=\mathcal F$, $|\mathcal F|^V<\lambda$, consisting of cofinal subsets of $\lambda$ of order type below $\lambda$.
+\item $\lambda$ is regular in $\HOD_{V_\lambda}$; more precisely every nonempty $\mathcal A\in\OD_{V_\lambda}$ of cofinal subsets of $\lambda$ of order type below $\lambda$ has $|\mathcal A|\ge\lambda$.
+\item Hence exactly one of the following holds: $\lambda$ is singular in $V$ and $V\ne\HOD_{V_\lambda}$; or $\lambda$ is inaccessible. If $V=\HOD_{V_\lambda}$, in particular if $V=L$, the second alternative holds.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) By Theorem~\ref{thm:free}(3) each $\kappa_n$ is a strong limit, and $\lambda=\sup_n\kappa_n$ for the witnesses of cofinal type. (2) Every $\alpha\in[\kappa,\lambda)$ is moved by $j$: if $\kappa_n\le\alpha<\kappa_{n+1}$ then $j(\alpha)\ge\kappa_{n+1}$. Now $\mu=|S|^V$ is definable from $S$ in $V_\zeta$ ($\zeta$ is a limit above $\lambda$), so $\mu\in X$ and $j(\mu)=\mu$, whence $\mu<\kappa$; by Theorem~\ref{thm:free}(5) $S$ consists of fixed points, so $S\subseteq\kappa$. For a family $\mathcal F$, let $\tau$ be the least order type of a member and $u$ the union of the members of order type $\tau$: $u\in X$ is fixed, cofinal, and $|u|\le|\mathcal F|\cdot|\tau|<\lambda$, a contradiction. These are the proofs of S~Lemma~8.4; the first is \nolinkurl{fixed_small_subset} in Lean, with the cofinality of the critical sequence now a hypothesis instead of a consequence of Kunen's theorem.
+(3) Call a nonempty $\mathcal A\in\OD_{V_\lambda}$ of short cofinal subsets of $\lambda$ with $|\mathcal A|<\lambda$ a \emph{counterexample}. Every member of $\OD_{V_\lambda}$ is definable over some $V_\theta$ from ordinals below $\theta$ and one parameter in $V_\lambda$. Suppose counterexamples exist and let $\theta_0$ be least such that one of them is so definable over $V_{\theta_0}$. Take a witness $(X,j)$ of cofinal type of limit height $\zeta>\theta_0+\omega$. Satisfaction over set structures is absolute for $V_\zeta$, so $V_\zeta$ defines $\theta_0$ from $\lambda$; thus $\theta_0\in X$ and $j(\theta_0)=\theta_0$. In the same way the following are definable from $\lambda$ in $V_\zeta$, hence fixed: the least cardinality $\nu_0$ of a counterexample definable over $V_{\theta_0}$; the least rank $\rho_0$ of a parameter defining one of cardinality $\nu_0$; and the least pair $(\varphi,\vec\alpha)$, in a canonical well-order of formulas and finite sequences of ordinals, that does so with some parameter of rank $\rho_0$. Being fixed ordinals below $\lambda$, $\nu_0$ and $\rho_0$ are below $\kappa$. Let $\mathcal F$ be the union of all counterexamples of cardinality $\nu_0$ defined over $V_{\theta_0}$ by $(\varphi,\vec\alpha)$ from a parameter of rank $\rho_0$. Then $\mathcal F\in X$ is nonempty and fixed, consists of short cofinal sets, and $|\mathcal F|\le|V_{\rho_0+1}|\cdot\nu_0<\lambda$ by (1). This contradicts (2). (4) If $\lambda$ is singular in $V$, then $V$ has a short cofinal subset of $\lambda$ and $\HOD_{V_\lambda}$ has none by (3), so $V\ne\HOD_{V_\lambda}$; if $\lambda$ is regular it is inaccessible by (1).
+\end{proof}
+
+\begin{corollary}\label{cor:kunen}
+For a cardinal $\lambda$ the following are equivalent: (a) $\lambda$ is exacting; (b) $\lambda$ has, for every $\zeta$, a virtual exacting witness that belongs to $V$. In that case the witnesses are of cofinal type and $\cf(\lambda)=\omega$. In $L$, by contrast, a virtually exacting cardinal of cofinal type is inaccessible and no witness belongs to $L$.
+\end{corollary}
+
+Thus, of the properties of an exacting cardinal, the Kunen inconsistency is responsible for \emph{one}: that the critical sequence is a set of the universe and is cofinal. Everything else in S~\S3--\S8 that is proved from a single witness --- strong limit, the fixed-small-sets lemma, regularity in $\HOD_{V_\lambda}$, the projection-width theorem --- holds for virtual witnesses of cofinal type, in $L$ if one likes.
+
+\begin{proposition}\label{prop:ultra}
+Suppose $(X,j)$ is a virtual exacting witness at $\lambda$ and $j\restr V_\lambda\in X$ (a virtual \emph{ultraexacting} witness). Then $e=j\restr V_\lambda$ belongs to $V$, so $V$ has a nontrivial elementary $e:V_\lambda\to V_\lambda$, the witness is of cofinal type, $\cf(\lambda)=\omega$, and $V\ne L$.
+\end{proposition}
+
+\begin{proof}
+$X\subseteq V_\zeta^V\subseteq V$. Now apply the Kunen inconsistency in $V$ to $e$: if $\kappa_\omega<\lambda$ then $e\restr V_{\kappa_\omega+2}$ is a nontrivial elementary embedding of $V_{\kappa_\omega+2}$ into itself.
+\end{proof}
+
+So exactingness has a virtual form compatible with $L$ and ultraexactingness has none. This matches the consistency-strength picture of \cite{abgl}, where ultraexacting cardinals are tied to $\Izero$ while exacting cardinals are weaker, and it explains why all results of S~\S12--\S13 that use $e\in X$ (orbit classes in $X$, the internal normal measure) have no counterpart in $L$ other than the classical theory of indiscernibles.
+
+\section{Large countable ordinals}
+
+\begin{theorem}\label{thm:ordinal}
+Suppose some countable ordinal is $L$-exacting, and let $\lambda_{\mathrm{ex}}$ be the least one.
+\begin{enumerate}
+\item $\lambda_{\mathrm{ex}}$ is the same whether computed in $V$ or in $L$, and it is countable in $L$.
+\item $\lambda_{\mathrm{ex}}<\sigma$, where $\sigma$ is the least stable ordinal ($L_\sigma\prec_{\Sigma_1}L$); indeed a witness belongs to $L_\sigma$.
+\item $\lambda_{\mathrm{ex}}$ is a limit of ordinals $\kappa$ with $L_\kappa\models\ZFC$; in particular it is far above $\omega_1^{\mathrm{CK}}$, the recursively Mahlo and $\Pi_n$-reflecting ordinals, the nonprojectible ordinals, and the least $\alpha$ with $L_\alpha\models\ZFC$.
+\item If $0^\#$ exists then $L$-exacting ordinals exist, of both types, and $\lambda_{\mathrm{ex}}<\omega_1^L<i_0$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) ``Some countable ordinal is $L$-exacting'' is a $\Sigma^1_2$ sentence (there is a real coding a well-founded model of $V=L$, with the embeddings), so it holds in $L$; let $\lambda_1$ be least in $L$. For $\lambda<\lambda_1$, which is countable in $L$, ``$\lambda$ is $L$-exacting'' is $\Sigma^1_2$ in a real of $L$ coding $\lambda$, hence fails in $V$; and $\lambda_1$ is $L$-exacting in $V$. (2) In $L_{\omega_1^L}$ the existence of a witness is a $\Sigma_1$ statement, so it holds in $L_\sigma$. (3) Let $(X,j)$ be a witness at $\lambda_{\mathrm{ex}}$ of height $\zeta$ and $\kappa=\crit(j)$. If $\beta\in(\kappa,\lambda_{\mathrm{ex}})$ were fixed by $j$, then $(X,j)$ would be a witness at $\beta$, contradicting minimality; so no ordinal in $(\kappa,\lambda_{\mathrm{ex}})$ is fixed. By Theorem~\ref{thm:free}(3) for $L_\zeta$, $\kappa$ is inaccessible in $L_\zeta$, so the supremum $\beta$ of the inaccessibles of $L_\zeta$ below $\lambda_{\mathrm{ex}}$ is at least $j(\kappa)>\kappa$; it is definable in $L_\zeta$ from $\lambda_{\mathrm{ex}}$, hence fixed, hence equal to $\lambda_{\mathrm{ex}}$. And $L_\kappa=V^{L_\zeta}_\kappa\models\ZFC$ for every inaccessible $\kappa$ of $L_\zeta$. (4) Theorem~\ref{thm:sharp} with $\zeta=i_{\omega\cdot2}$, which is countable and satisfies $L_\zeta=V^L_\zeta\prec L$; then (1) and (2).
+\end{proof}
+
+The argument is not specific to exacting cardinals. For every virtual large cardinal notion $A$ of \cite{gs} that is witnessed by embeddings between set-sized structures, ``the least countable $\alpha$ such that some countable $L_\zeta\models\ZFC$ has embeddings witnessing that $\alpha$ is $A$'' is a countable ordinal between the least $\alpha$ with $L_\alpha\models\ZFC$ and the least stable ordinal, it is the same in $V$ and in $L$, and it exists if $0^\#$ does. The order of these ordinals reflects the virtual large cardinal hierarchy. They are large countable ordinals in the sense of the last section of the usual lists, defined by an embedding property rather than by reflection or stability; I have not found them discussed.
+
+\section{Critical sequences and fundamental sequences}
+
+A cofinal $\omega$-sequence in a countable limit ordinal is what proof theory calls a fundamental sequence, and the classes of $Q_\lambda$ are fundamental sequences up to finite change. The orbit structure of S~Lemma~12.1 is ordinal arithmetic and holds for any normal function.
+
+\begin{proposition}\label{prop:interleave}
+Let $e:\lambda\to\lambda$ be strictly increasing with $e(\xi)>\xi$ for $\xi\in[\kappa,\lambda)$ and $\sup_ne^n(\kappa)=\lambda$. Then the forward orbits $a_r=\{e^n(r):n<\omega\}$ of the roots $r\in[\kappa,\lambda)\setminus e``[\kappa,\lambda)$ partition $[\kappa,\lambda)$ into cofinal sets of order type $\omega$; and if $r\le r'<e(r)$ then $e^n(r)\le e^n(r')<e^{n+1}(r)$ for all $n$. So any two orbits are interleaved with bounded index displacement, and they represent pairwise different classes of $Q_\lambda$.
+\end{proposition}
+
+The interleaving is \nolinkurl{interleave} in \nolinkurl{Cardinals/KunenFree.lean}. For $e(\xi)=\omega^\xi$, $\kappa=0$, $\lambda=\varepsilon_0$ the orbit of $0$ is the standard fundamental sequence $0,1,\omega,\omega^\omega,\dots$; for $e(\xi)=\varphi_\xi(0)$ one gets that of $\Gamma_0$; and for $e=j\restr\lambda$ the critical sequence. In each case the least root gives the canonical sequence and the other roots give ``parallel'' ones. In the large-cardinal case S~Theorem~13.3(2) singles out the least root by a property of the class alone (its tail filter is normal, the others are not). Whether there is an analogous intrinsic characterization of the standard fundamental sequences of proof theory among their parallels --- a notoriously informal matter --- is a question this analogy suggests but does not answer.
+
+\section{Questions}
+
+\begin{question}
+(i) What is the consistency strength of a virtually exacting cardinal (of cofinal type)? It is at least that of a virtually rank-into-rank cardinal and at most that of $0^\#$; the argument of \cite[Thm.~4.17]{gs} suggests an upper bound near an $\omega$-Erd\H os cardinal, with the same difficulty they note (the fixed point may be the supremum of the indiscernibles). (ii) Can a virtually exacting cardinal of cofinal type be singular of uncountable cofinality? (iii) Is there a virtual version of cover exactingness for which the barrier S~Theorem~5.1 holds, and is it consistent with a strongly compact cardinal below $\lambda$? (iv) Where exactly does $\lambda_{\mathrm{ex}}$ sit relative to the ordinals attached to the other virtual large cardinals, and relative to the least $\alpha$ such that $L_\alpha$ has a nontrivial elementary self-embedding?
+\end{question}
+
+\begin{thebibliography}{9}
+\bibitem{abl} J.~P.~Aguilera, J.~Bagaria, P.~L\"ucke. \emph{Large cardinals, structural reflection, and the HOD Conjecture}. \arxiv{2411.11568v4}, 2025.
+\bibitem{abgl} J.~P.~Aguilera, J.~Bagaria, G.~Goldberg, P.~L\"ucke. \emph{Large cardinals beyond HOD}. \arxiv{2509.10254v1}, 2025.
+\bibitem{gs} V.~Gitman, R.~Schindler. Virtual large cardinals. \emph{Ann.\ Pure Appl.\ Logic} \textbf{169} (2018), 1317--1334. Definition~2.4, Lemma~3.1, Theorems~4.15, 4.17, 4.20. (Numbering checked against the authors' version.)
+\end{thebibliography}
+\end{document}

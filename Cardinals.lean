@@ -10,6 +10,7 @@ import Cardinals.Foundations.Bridge
 import Cardinals.Foundations.Witness
 import Cardinals.Foundations.SetForms
 import Cardinals.WitnessFacts
+import Cardinals.KunenFree
 import Cardinals.ObservationOne
 import Cardinals.CoverBound
 import Cardinals.Published

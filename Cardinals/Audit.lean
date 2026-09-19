@@ -27,6 +27,13 @@ open Cardinals
 #print axioms Countable.Cantor.global_fixed_point
 #print axioms Countable.Klein.separation
 #print axioms RelWitness.jOrd_nat
+-- Kunen-free facts (no `sorryAx` expected): they hold for virtual witnesses too
+#print axioms RelWitness.jv_subset_fixed
+#print axioms RelWitness.no_surj_pow_crit
+#print axioms RelWitness.slSem_critSeq
+#print axioms RelWitness.crit_regular
+#print axioms RelWitness.jOrd_omega
+#print axioms interleave
 #print axioms RelWitness.trace_fixed_of
 #print axioms FourthRound.finiteChange_realize_insert
 #print axioms FourthRound.shift_ne
