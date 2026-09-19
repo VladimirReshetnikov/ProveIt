@@ -82,6 +82,9 @@ first working scan, first-found pivots & 1.04 s & 1.28--1.85 s & 63 s & 58 s\\
 sequential phases as tasks & 1.05 s & 0.89 s & 63 s & 58 s\\
 least-fill pivots in batches, work lists & 0.65 s & 0.50 s & 7.0 s & 4.9 s\\
 one transfer plan per pair of matchings & 0.36 s & 0.39 s & 4.07 s & 3.9 s\\
+composition plans once per source matching & 0.32 s & & 3.59 s & \\
+one alternative evaluated instead of all & 0.24 s & & 2.65 s & \\
+number of sources kept, not counted & 0.23 s & 0.25 s & 2.20 s & 1.99 s\\
 Python package, same host & 0.134 s & & 0.542 s & \\
 \bottomrule
 \end{tabular}
@@ -108,16 +111,28 @@ another pair or nothing computes the plan on the spot, so a collision costs time
 and never correctness (two of the laws). That halved the single-thread time
 ($0.53$ and $0.56$, A/A control within $0.98$ to $1.01$).
 
+Two further findings were about the language rather than the algorithm. Bend
+is strict and has no \texttt{if}: \texttt{Bool.pick} evaluates both alternatives
+and \texttt{\&\&} both sides. The port had used them as conditionals, and so ran
+twelve rounds of list work per surface component whether needed or not,
+compared matchings for every entry of every visited row, and iterated a
+connectivity closure sixteen times after it had converged; evaluating one
+alternative takes a separate function that matches on a Boolean parameter.
+Five such repairs gave $0.75$ of the time. And a third of all reference-count
+drops then came from counting a list of sources at every pivot candidate; the
+list now carries its length.
+
 It also ended the parallel gain. The table took the work out of the one part
 that forks: the map fell to 22 to 25\% of the time, and with six threads the two
-inputs take 0.39 and 3.9 s against 0.36 and 4.07 s with one. What had been
+inputs took 0.39 and 3.9 s against 0.36 and 4.07 s with one (at the end: 0.25
+and 1.99 s against 0.23 and 2.20 s). What had been
 running in parallel was the redundant work.
 
-As a process the native recognizer (one thread) beats or ties the Python
-command line up to about 30 crossings, because Python needs 28 ms to start
-(2 ms against 28 ms on an 8-crossing unknot, 50 against 46 ms at 30 crossings);
-in-process, Python is up to 2.4 times faster on the same steps, and 2.7 to 7.5
-times faster on the two large scans of the table.
+As a process the native recognizer (one thread) beats the Python command line
+on every input tried up to 30 crossings, because Python needs 28 ms to start
+(2 ms against 27 ms on an 8-crossing unknot, 34 against 44 ms at 30 crossings);
+in-process, Python is on a par up to 25 crossings on the same steps, and 1.7 to
+4.1 times faster on the two large scans of the table.
 
 \subsection{Verdict}
 The promise holds in the narrow sense and not in the useful one. Writing a fork
@@ -130,4 +145,6 @@ one thread was as fast as six. The cost model (a fork anywhere taxes all
 sequential code by 1.8 unless it is wrapped as a task) is invisible in the
 language, and the compiler removes the wrapper unless it is written just so.
 For this algorithm the measured ranking stays: Rust, then Python, then Bend,
-the last 2.7 to 7.5 times behind the Python package on large scans.
+the last 1.7 to 4.1 times behind the Python package on large scans, after
+becoming 4.5 to 29 times faster than its own first version by sequential changes
+alone.
