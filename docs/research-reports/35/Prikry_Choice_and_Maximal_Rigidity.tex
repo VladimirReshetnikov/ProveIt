@@ -1,0 +1,1058 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=13pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Forest}{HTML}{30392C}
+\definecolor{Olive}{HTML}{687144}
+\definecolor{Muted}{HTML}{65685F}
+\definecolor{Sage}{HTML}{CBD0BC}
+\definecolor{Pale}{HTML}{F2F4EB}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\PassOptionsToPackage{obeyspaces}{url}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{pdftitle={Finite choice and maximal rigidity at one measurable cardinal},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={A Prikry-forcing continuation: maximal jointly rigid families, finite-choice transfer, and countable ultrafilter clouds},pdfkeywords={Prikry forcing, measurable cardinal, definable choice, cofinal quotient, rigidity, ultrafilters, HOD}}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Forest}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Forest}}{\thesubsection}{.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Forest}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}FINITE CHOICE AND MAXIMAL RIGIDITY}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}CONTINUATION\quad 18 SEP 2026}
+\fancyfoot[L]{\small\color{Muted}A continuation of Cardinals4}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}A continuation of Cardinals4}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\tcbset{colback=Pale,colframe=Sage,colbacktitle=Sage,coltitle=Forest,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{question}[definition]{Question}
+\newtheorem{inputthm}{Input}
+\renewcommand{\theinputthm}{\Alph{inputthm}}
+\numberwithin{equation}{section}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\AC}{\mathsf{AC}}
+\newcommand{\GA}{\mathsf{GA}}
+\newcommand{\HOD}{\mathrm{HOD}}
+\newcommand{\OD}{\mathrm{OD}}
+\newcommand{\CD}{\mathrm{CD}}
+\newcommand{\HCD}{\mathrm{HCD}}
+\newcommand{\UF}{\mathrm{UF}}
+\newcommand{\Ex}{\operatorname{Ex}}
+\newcommand{\UEx}{\operatorname{UEx}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\SC}{\operatorname{SC}}
+\newcommand{\CEx}{\operatorname{CEx}}
+\newcommand{\REx}{\operatorname{REx}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\crit}{\operatorname{crit}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\ot}{\operatorname{ot}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\Izero}{\mathrm{I0}}
+\newcommand{\Itwo}{\mathrm{I2}}
+\newcommand{\Ithree}{\mathrm{I3}}
+\newcommand{\Iwf}{\mathrm{I3}_{\mathrm{wf}}(0)}
+\newcommand{\Sel}{\operatorname{Sel}}
+\newcommand{\FF}{\mathcal F}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\Clam}{\mathcal C_\lambda}
+\newcommand{\Rig}{\operatorname{Rig}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\ch}{\operatorname{ind}}
+\newcommand{\CF}{\mathsf{CF}}
+\newcommand{\src}[1]{\unskip\ {\normalfont\small\sffamily\color{Olive}[#1]}\ }
+\newcommand{\R}[1]{\textsf{R#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}{>{\centering\arraybackslash}p{.034\textwidth}}
+\newcommand{\yes}{$\bullet$}
+\newcommand{\prt}{$\circ$}
+\newcommand{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:\nolinkurl{#1}}}
+
+
+\newcommand{\PPU}{\mathbb P_U}
+\newcommand{\HD}[1]{\operatorname{HOD}_{\{#1\}}}
+\newcommand{\ODp}[1]{\operatorname{OD}_{\{#1\}}}
+\newcommand{\Tail}{\operatorname{Tail}}
+\newcommand{\UFilt}{\operatorname{Ult}}
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\Fin}{\mathrm{Fin}}
+\newcommand{\lheadtag}[1]{\textsf{\small\color{Olive}#1}}
+\newtheorem{maintheorem}{Main theorem}
+\renewcommand{\themaintheorem}{\Alph{maintheorem}}
+\newtheorem{claim}[definition]{Claim}
+\newcommand{\Cof}{\mathcal C}
+\newcommand{\Vlow}{V_\kappa}
+\newcommand{\checkname}[1]{\check{#1}}
+\begin{document}
+\thispagestyle{empty}
+{\sffamily\bfseries\small\color{Olive}SET THEORY\quad /\quad RESEARCH CONTINUATION}
+
+\vspace{13pt}
+{\fontsize{28}{31}\selectfont\bfseries\color{Forest}Finite choice and maximal rigidity\\ at one measurable cardinal\par}
+\vspace{10pt}
+{\fontsize{14}{18}\selectfont Prikry symmetry, $2^\lambda$ jointly rigid classes,\\ and an exact local threshold for ultrafilter choice\par}
+\vspace{14pt}
+{\color{Muted}Prepared for Vladimir Reshetnikov\hfill 18 September 2026\par}
+\vspace{3pt}
+{\color{Sage}\hrule height .6pt}
+\vspace{12pt}
+
+\textbf{Abstract.}
+The supplied synthesis leaves open whether its finite-label obstruction and its prohibition on finite definable families of selectors already hold in a Prikry extension of one measurable cardinal. We prove that they do. The proof uses deletion of a generic point beyond a deciding stem, not an elementary self-embedding. We also construct the maximum possible number, $2^\lambda$, of rigid classes of cofinal $\omega$-subsets of $\lambda$ modulo finite difference. Their representatives are pairwise almost disjoint, and one joint parameter preserves regularity of $\lambda$ in the corresponding hereditary-definability model. Consequently every low-parameter definable complete section has $2^\lambda$ full fibres in these models, simultaneously.
+
+A further construction assigns, uniformly to every cofinal class, a countably infinite family of nonprincipal ultrafilters. At the Prikry-generic class no nonempty finite such family is definable from the class and ground-model parameters. Thus the local minimum is exactly $\aleph_0$. We combine these conclusions with an internal normal tail measure to obtain a package equiconsistent with one measurable cardinal. The result separates a substantial collection of quotient-choice phenomena from the much stronger ultraexacting hypothesis that originally produced them.
+
+\begin{assessment}{Main advance over the supplied reports}
+\textbf{Finite choice transfers down.} The complete cyclic fixed-point classification, including its necessity direction, and the no-finite-family theorem for selectors hold in an ordinary normal Prikry extension.
+
+\textbf{Rigidity can be maximal.} There are $2^\lambda$ rigid classes, not merely $\lambda$, and they remain jointly harmless to the regularity of $\lambda$ in a hereditary-definability model.
+
+\textbf{Local ultrafilter choice has an exact threshold.} Finite definable families fail at the generic class; countably infinite definable families exist uniformly at every class.
+\end{assessment}
+
+\textbf{Status.} All new assertions below are accompanied by English proofs. The forcing inputs are classical and are reviewed, with proofs, in Appendix~\ref{app:prikry}. These are additions to the supplied synthesis; literature-wide priority is not asserted. No inconsistency of an established large-cardinal axiom is claimed, and no new Lean formalization is claimed.
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The results and their significance}\label{sec:results}
+
+The input archive \nolinkurl{Cardinals4.zip} contains the third edition of \emph{Large Cardinals Synthesis}, the original research assessment, and a Lean development. Its last research round studies the quotient
+\[
+ D_\lambda=\{a\subseteq\lambda:\operatorname{ot}(a)=\omega,\ \sup a=\lambda\},
+ \qquad Q_\lambda=D_\lambda/{=^*},
+\]
+where $a=^*b$ means that $a\triangle b$ is finite. A class is supplied as \emph{one set parameter}; its individual representatives are not supplied as additional parameters. This distinction is indispensable.
+
+The synthesis proves finite-choice obstructions using ultraexacting embeddings, while calibrating several rigidity consequences by ordinary Prikry forcing. Its final questions explicitly ask whether the finite-choice results transfer to the Prikry model. The answer below is affirmative. Its question about more than $\lambda$ rigid classes also has a sharp affirmative answer \emph{in these Prikry models}; the corresponding universal assertion for every ultraexacting cardinal is not proved here. References to the supplied work mean the two source files in the archive, not the twenty-seven individual reports, which are not included there.\cite{synthesis,plan}
+
+\subsection{The forcing setting}
+
+Let $W\models\ZFC$, let $\kappa$ carry a normal measure $U$ in $W$, and let
+\[
+ V=W[G]=W[c]
+\]
+be a normal Prikry extension, where $c=\langle c_n:n<\omega\rangle$ is the increasing generic sequence. We use $\kappa$ for the same ordinal in both models. It is measurable and regular in $W$, but a strong limit cardinal of cofinality $\omega$ in $V$. Throughout the conclusions, cardinalities are computed in $V$ unless another model is indicated.
+
+For a finite permutation group $\Gamma\le S_m$, with $m\ge1$, and a nonempty finite $\Gamma$-set $F$, let $D_m(\kappa)$ consist of the tuples $\vec a=(a_i)_{i<m}$ of elements of $D_\kappa$ whose classes are pairwise distinct. A rule $L:D_m(\kappa)\to F$ is \emph{admissible} when it is unchanged by finite modification of the coordinates and satisfies
+\[
+ L(g\cdot\vec a)=g\cdot L(\vec a),
+ \qquad (g\cdot\vec a)_i=a_{g^{-1}(i)}.
+\]
+Finite sets and actions may be coded by natural numbers. The case $m=0$ is trivial: the group is trivial and a constant rule suffices.
+
+\begin{maintheorem}[Finite-choice transfer]\label{main:choice}
+In $V=W[c]$ an admissible $L\in\OD_{V_\kappa}$ exists if and only if
+\begin{equation}\label{eq:CF}
+ \forall g\in\Gamma\quad \Fix_F(g)\ne\varnothing.
+\end{equation}
+The necessity holds even when $L$ is definable from arbitrary ground-model set parameters and ordinal parameters. Moreover, for $1\le r<n<\omega$, there is no nonempty finite family, definable from such parameters, of functions choosing an $r$-element subset of each $n$-element subset of $Q_\kappa$.
+\end{maintheorem}
+
+The sufficiency in this classification is the finite-word construction already present in the synthesis. The new step is necessity in an ordinary Prikry extension, and the consequent transfer of the \emph{finite-family} theorem, not just the assertion that an individual selector cannot be definable.
+
+\Needspace{16\baselineskip}
+\begin{maintheorem}[Maximal joint rigidity]\label{main:max}
+In $V=W[c]$ there are a parameter $z$ and a sequence
+\[
+ \vec q=\langle q_\xi:\xi<(2^\kappa)^V\rangle
+\]
+of distinct classes in $Q_\kappa$ with pairwise almost disjoint representatives such that:
+\begin{enumerate}
+\item $V_\kappa\subseteq H=\HD{z}\subseteq W$, and $H\models\ZFC+$ ``$\kappa$ is measurable.''
+\item Every $q_\xi$ is definable from $z$ and $\xi$. In particular every $q_\xi$ is rigid in the sense of the synthesis: every nonempty $\OD_{V_\kappa\cup\{q_\xi\}}$ family of short cofinal subsets of $\kappa$ has size at least $\kappa$.
+\item Every complete section $T\subseteq D_\kappa$ in $\OD_{V_\kappa\cup\{z\}}$ satisfies $|T\cap q_\xi|=\kappa$ for all $\xi<(2^\kappa)^V$.
+\end{enumerate}
+Thus the same set of $2^\kappa$ classes works simultaneously for all complete sections in $\OD_{V_\kappa}$.
+\end{maintheorem}
+
+The assertion is \emph{pairwise almost disjoint}, not pairwise disjoint: more than $\kappa$ pairwise disjoint nonempty subsets of $\kappa$ are impossible. Also $z$ is not required to belong to $H$. Indeed it cannot belong to this transitive model, because it encodes cofinal classes with representatives outside $H$.
+
+\begin{maintheorem}[Exact local ultrafilter threshold]\label{main:ultra}
+Let $q=[\operatorname{ran}(c)]$. No nonempty finite family of ultrafilters on the set $q$ is definable in $V$ from $q$, ordinals, and ground-model parameters. However, in every model of $\ZFC$, for every uncountable $\lambda$ of cofinality $\omega$ and every free ultrafilter $D$ on $\omega$, there is a function
+\[
+ q\longmapsto\mathcal K_D(q)\qquad(q\in Q_\lambda)
+\]
+definable from $D$ and the ordinal $\lambda$ which assigns a countably infinite family of nonprincipal ultrafilters on $q$. Consequently the least size of a nonempty $\OD_{V_\kappa\cup\{q\}}$ family of ultrafilters on the generic class is exactly $\aleph_0$.
+\end{maintheorem}
+
+These statements coexist with Choice. There are selectors, transversals, and ultrafilters in $V$; the negative conclusions concern the specified \emph{definability classes}. Section~\ref{sec:consistency} states an exact equiconsistency package. It includes an internal normal tail measure, so its lower bound does not require any appeal to a core-model covering theorem.
+
+\subsection{What the result does not identify}
+
+It is essential not to identify the following questions: whether a theorem holds in the Prikry extension of a measurable; whether it follows from rigidity alone in an arbitrary universe; and whether it follows from ordinary exactingness. The first is settled here for the finite-choice statements. The other two implications are not proved. Similarly, $2^\kappa$ rigid classes in the present construction do not prove that every ultraexacting cardinal has that many. Ultraexacting existence itself remains calibrated by $\mathrm{I0}$ in the cited work; our result concerns consequences which do not characterize ultraexactingness.\cite{abgl}
+
+\section{Definitions and the finite-change mechanism}\label{sec:mechanism}
+
+\subsection{Definability and rigidity}
+
+For a set $p$, $\ODp{p}$ means definability from $p$ as a single parameter and finitely many ordinals. For a parameter collection $A$, $\OD_A$ allows finitely many members of $A$; $\HOD_A$ consists of the sets $x$ for which $\operatorname{tc}(\{x\})\subseteq\OD_A$. In particular, $\OD_{V_\kappa\cup\{q\}}$ allows a low-rank parameter and the class $q$, but not a representative of $q$ merely because it is an element of $q$.
+
+The notation $\OD_W$ below is only shorthand for ``definable from ordinals and finitely many set parameters belonging to $W$.'' It does not mean definability in the language expanded by a predicate for the ground model. No definability of $W$ inside $V$ is assumed.
+
+Put
+\[
+ \Cof_\lambda=\{a\subseteq\lambda:\sup a=\lambda,\ \operatorname{ot}(a)<\lambda\}.
+\]
+For a cardinal $\lambda$, these are exactly its cofinal subsets of cardinality below $\lambda$. We call $q\in Q_\lambda$ \emph{rigid} if
+\begin{equation}\label{eq:rigidity}
+ \varnothing\ne A\subseteq\Cof_\lambda,
+ \quad A\in\OD_{V_\lambda\cup\{q\}}
+ \quad\Longrightarrow\quad |A|\ge\lambda.
+\end{equation}
+This is the definition in the supplied synthesis, not a new use of the word.
+
+Every $q\in Q_\lambda$ has cardinality $\lambda$ for an uncountable $\lambda$ of cofinality $\omega$. Indeed, all finite modifications of one representative remain cofinal of order type $\omega$, and there are exactly $\lambda$ finite subsets of $\lambda$. A complete section is a subset of $D_\lambda$ meeting every class. Its fibres therefore have size at most $\lambda$.
+
+\subsection{Prikry conditions and generic sequences}
+
+Conditions in $\PPU^W$ are pairs $(s,A)$, where $s$ is a finite increasing sequence from $\kappa$, $A\in U$, and every element of $A$ exceeds $\max(s)$. An extension $(t,B)\le(s,A)$ lengthens the stem using points of $A$ and shrinks the upper set. A \emph{direct} extension does not change the stem. The filter determined by a generic sequence is
+\[
+ G_c=\{(s,A):s\text{ is an initial segment of }c,
+                 \ \operatorname{ran}(c)\setminus\operatorname{ran}(s)\subseteq A\}.
+\]
+All stems, being finite sequences of ordinals, belong to $W$.
+
+We use the forcing theorem and the classical Prikry facts: no bounded subsets of $\kappa$ are added, cardinals are preserved, and Mathias' criterion characterizes generic sequences by eventual membership in every measure-one set. Appendix~\ref{app:prikry} supplies the needed proofs. The reference for these facts is Benhamou's account, especially Theorem~3.14, Corollary~3.15, Lemma~3.16, and Theorem~3.17.\cite{benhamou}
+
+\begin{lemma}[Deletion beyond a deciding stem]\label{lem:deletion}
+Suppose $p=(s,A)\in G_c$. Delete one point $c_k$ with $k\ge |s|$ and let $d$ be the increasing enumeration of the remaining set. Then $d$ is Prikry generic over $W$, $p\in G_d$, and
+\[
+ W[d]=W[c].
+\]
+More generally every finite modification which leaves the stem $s$ unchanged and all later points in $A$ has these properties.
+\end{lemma}
+\begin{proof}
+The modified sequence remains increasing and cofinal. For each $B\in U$, the original sequence is eventually in $B$, so the modified sequence is eventually in $B$ as well. Mathias' criterion makes it generic. It still extends $s$, and all its later points lie in $A$, so its filter contains $p$. Finally the two sequences differ by finitely many ordinals, all in $W$. Each is definable from the other and that finite ground-model information, whence the two forcing extensions are equal.
+\end{proof}
+
+The equality here is equality of transitive models, not an asserted nontrivial automorphism of a well-founded universe. Ground parameters and the actual definable function under discussion are literally the same in these two presentations of the extension.
+
+\begin{definition}[An invariant parameter]\label{def:invariant}
+A ground-model construction $c\mapsto z(c)$ is \emph{finite-change invariant} if its interpretations satisfy $z(c)=z(d)$ whenever $c,d$ are Prikry generic sequences with finite symmetric difference. The constructions used below are set-valued and have ground-model names. Examples include $[\operatorname{ran}(c)]$, a fixed ground-model parameter, and a set-indexed tuple of finite-change invariant constructions.
+\end{definition}
+
+\begin{lemma}[Decided data are unchanged]\label{lem:decided}
+Let $z(c)$ be invariant. Suppose $R$ is uniquely definable in $W[c]$ from $z(c)$, ordinals, and ground-model set parameters. Let $E(R,c)$ be a ground-specified construction with values in a finite ground-model set. There is $p\in G_c$ deciding both the relevant definition of $R$ and the value $E(R,c)=v$. For a deletion as in Lemma~\ref{lem:deletion},
+\[
+ R^{W[d]}=R^{W[c]},\qquad E(R,d)=v=E(R,c).
+\]
+\end{lemma}
+\begin{proof}
+Replace the mention of $R$ by its unique defining formula. The truth lemma gives a condition in the generic filter forcing the definition and the actual finite value. For $d$, the same condition belongs to the new generic filter. Thus the forced assertion holds in $W[d]$. These models are equal, all ground parameters agree, and the parameter $z$ agrees by invariance. Therefore the unique object $R$ is unchanged and both evaluations equal the forced value.
+\end{proof}
+
+This small lemma is the entire forcing mechanism behind the new finite-choice theorems. It permits arbitrary ordinal parameters: they do not have to be below a critical point, because there is no critical point in the argument.
+
+\section{The exact finite-label classification}\label{sec:labels}
+
+\subsection{Encoding a permutation into a generic sequence}
+
+Fix $g\in\Gamma\le S_m$. For a generic sequence $c$ define
+\begin{equation}\label{eq:twist}
+ a_i^g(c)=\{\omega\cdot c_n+g^n(i):n<\omega\},\qquad i<m.
+\end{equation}
+Ordinal multiplication is intended. Because $\kappa$ is an uncountable initial ordinal, $\omega\cdot\alpha+i<\kappa$ whenever $\alpha<\kappa$ and $i<\omega$. The successive blocks are disjoint and increasing, so these are pairwise disjoint cofinal sets of order type $\omega$.
+
+\begin{lemma}[One deletion realizes any prescribed permutation]\label{lem:twist}
+If $d$ is obtained by deleting $c_k$ from $c$, then, coordinatewise modulo finite difference,
+\[
+ \vec a^{\,g}(d)=^*g\cdot\vec a^{\,g}(c).
+\]
+\end{lemma}
+\begin{proof}
+For $n\ge k$ one has $d_n=c_{n+1}$. Writing $\ell=n+1$, the corresponding point of $a_i^g(d)$ is
+\[
+ \omega\cdot c_\ell+g^{\ell-1}(i)
+   =\omega\cdot c_\ell+g^\ell(g^{-1}(i)).
+\]
+This is the point with index $\ell$ in $a_{g^{-1}(i)}^g(c)$. Only finitely many initial points are left over. This is exactly the stated coordinate action.
+\end{proof}
+
+\begin{theorem}[Necessity, with invariant parameters]\label{thm:necessity}
+Let $z(c)$ be finite-change invariant. If an admissible $L:D_m(\kappa)\to F$ is definable in $W[c]$ from $z(c)$, ordinals, and ground-model set parameters, then every $g\in\Gamma$ fixes a point of $F$.
+\end{theorem}
+\begin{proof}
+Fix $g\in\Gamma$ and apply Lemma~\ref{lem:decided} to
+\[
+ E(L,c)=L(\vec a^{\,g}(c))\in F.
+\]
+Let $p=(s,A)\in G_c$ decide its value $v$. Delete a point beyond $s$, producing $d$. The decision lemma gives
+\[
+ L(\vec a^{\,g}(d))=v=L(\vec a^{\,g}(c)).
+\]
+Finite-modification invariance, Lemma~\ref{lem:twist}, and equivariance also give
+\[
+ L(\vec a^{\,g}(d))
+ =L(g\cdot\vec a^{\,g}(c))
+ =g\cdot L(\vec a^{\,g}(c))=g\cdot v.
+\]
+Thus $g\cdot v=v$. The point $v$ may depend on $g$; the conclusion is the elementwise fixed-point condition, not the existence of a common fixed point for the entire group.
+\end{proof}
+
+\subsection{Why that condition is sufficient}
+
+For completeness, we reprove the construction from the supplied synthesis. It works at every uncountable $\lambda$ of cofinality $\omega$ and does not use forcing or a large cardinal.
+
+Given $\vec a\in D_m(\lambda)$, enumerate $\bigcup_{i<m}a_i$ increasingly as $\langle\delta_n:n<\omega\rangle$ and form the incidence word
+\[
+ w_{\vec a}(n)=\{i<m:\delta_n\in a_i\}\in\Pow(m)\setminus\{\varnothing\}.
+\]
+Each label occurs infinitely often. For two distinct labels, the corresponding membership bits differ infinitely often; otherwise the two cofinal sets would have the same class. Finite modifications of $\vec a$ alter the word only by a finite prefix and an index shift.
+
+Two words $v,w$ are \emph{shift-tail equivalent} if $v(r+n)=w(s+n)$ for all $n<\omega$ and some $r,s<\omega$. The group acts letterwise on words and hence on these equivalence classes.
+
+\begin{lemma}[The stabilizer is cyclic]\label{lem:cyclicnew}
+The stabilizer in $\Gamma$ of the shift-tail class of such an incidence word is cyclic.
+\end{lemma}
+\begin{proof}
+Consider the subgroup
+\[
+ K_w=\{(d,g)\in\mathbb Z\times\Gamma:
+       w(n+d)=g\cdot w(n)\text{ for all sufficiently large }n\}.
+\]
+It is a subgroup because eventual equalities can be composed and inverted. Its projection to $\mathbb Z$ is injective: if $(0,g)\in K_w$ and $g$ moves a label $i$, then the bits for $i$ and $g^{-1}(i)$ agree eventually, contrary to the separation property of the word. Every subgroup of $\mathbb Z$ is cyclic. Hence $K_w$ is cyclic, and so is its image under the second projection. That image is precisely the stabilizer of the shift-tail class.
+\end{proof}
+
+\begin{theorem}[Sufficiency]\label{thm:sufficiency}
+Assume every element of $\Gamma$ fixes some element of $F$. A well-order of the reals defines an admissible rule $D_m(\lambda)\to F$.
+\end{theorem}
+\begin{proof}
+Code all incidence words as reals and fix a well-order of their codes. In each $\Gamma$-orbit of shift-tail classes, select the class containing the least coded word $v$. Its stabilizer $K$ is cyclic by Lemma~\ref{lem:cyclicnew}. If $K$ is nontrivial, choose a generator $g$; by assumption some label is fixed by $g$, and that label is fixed by all of $K$. If $K$ is trivial, every label is fixed. Using a fixed order of the finite label set, choose the least $K$-fixed label $f$.
+
+On a class $h[v]$, assign the label $h f$. This is well-defined: if $h[v]=h'[v]$, then $h^{-1}h'\in K$ and fixes $f$. It is equivariant by construction and depends only on the shift-tail class. Applying it to the incidence word of a tuple gives the required rule. A well-order of the reals is a set of rank below $\omega+10$, so it is an allowed $V_\lambda$ parameter.
+\end{proof}
+
+In a Prikry extension there are no new reals, and a ground-model well-order of them is still a well-order of all the reals. Theorems~\ref{thm:necessity} and~\ref{thm:sufficiency} prove the classification in Main Theorem~\ref{main:choice}, even relative to any invariant parameter $z$.
+
+\begin{assessment}{A nontrivial positive case}
+For $\Gamma=S_3$, take $F$ to be the disjoint union of its natural three-point action and its two-point sign action. A transposition fixes a natural point; a three-cycle fixes both sign points. Thus every group element has a fixed point, although no point is fixed by all of $S_3$. An admissible ``choose a point or choose an orientation'' rule exists. This example, already in the synthesis, illustrates why the exact classification is stronger than a list of impossibility results.
+\end{assessment}
+
+\section{No finite definable family of selectors}\label{sec:selectors}
+
+A function $f:[Q_\kappa]^n\to[Q_\kappa]^r$ is an $(n,r)$-selector if $f(B)\subseteq B$ for every $B\in[Q_\kappa]^n$. The following proof does not choose a distinguished member of a finite family of selectors. Instead, the entire finite family becomes a finite equivariant label.
+
+\subsection{The finite obstruction}
+
+For $N\ge n$, let $\mathcal T_{N,n,r}$ be the finite set of all tables
+\[
+ t:[N]^n\longrightarrow[N]^r,
+ \qquad t(B)\subseteq B.
+\]
+The symmetric group acts by relabelling:
+\[
+ (\pi t)(B)=\pi\bigl[t(\pi^{-1}[B])\bigr].
+\]
+For $k\ge1$, let $F_{N,n,r,k}$ be the set of nonempty subsets of $\mathcal T_{N,n,r}$ of size at most $k$, with its induced $S_N$-action.
+
+\begin{lemma}[A cycle with no fixed family of tables]\label{lem:tables}
+Assume $1\le r<n$ and $k\ge1$. Put
+\[
+ L=\operatorname{lcm}(1,2,\ldots,k),\qquad N=nL.
+\]
+The cycle $\tau=(0\ 1\ \cdots\ N-1)$ fixes no element of $F_{N,n,r,k}$.
+\end{lemma}
+\begin{proof}
+Suppose $R\in F_{N,n,r,k}$ and $\tau R=R$. The permutation induced by $\tau$ on $R$ has all its cycle lengths at most $|R|\le k$. Therefore its order divides $L$, and $\tau^L$ fixes every table $t\in R$.
+
+Consider the $n$-element set
+\[
+ B_0=\{0,L,2L,\ldots,(n-1)L\}.
+\]
+It is invariant under $\tau^L$, whose restriction to it is a single $n$-cycle. For $t\in R$, invariance gives
+\[
+ t(B_0)=(\tau^L t)(B_0)=\tau^L[t(B_0)].
+\]
+A subset invariant under a transitive cyclic action is either empty or the entire orbit. But $t(B_0)$ has size $r$, strictly between $0$ and $n$. This contradiction proves the lemma.
+\end{proof}
+
+\subsection{Turning a definable family into a finite label}
+
+\Needspace{8\baselineskip}
+\begin{theorem}[The finite-family theorem in the Prikry model]\label{thm:finitefamily}
+Let $z(c)$ be finite-change invariant. For $1\le r<n<\omega$, no nonempty finite family of $(n,r)$-selectors on $Q_\kappa$ is definable from $z(c)$, ordinals, and ground-model set parameters.
+\end{theorem}
+\begin{proof}
+Suppose $\mathcal F$ were such a family, of size $k\ge1$. Choose $L,N$ as in Lemma~\ref{lem:tables}. For $\vec a\in D_N(\kappa)$ put $q_i=[a_i]$. Each $f\in\mathcal F$ determines a table $t_{f,\vec a}\in\mathcal T_{N,n,r}$ by
+\[
+ t_{f,\vec a}(B)=\{i<N:q_i\in f(\{q_j:j\in B\})\}.
+\]
+Since the $q_i$ are distinct, this is an $r$-element subset of $B$. Define
+\[
+ R(\vec a)=\{t_{f,\vec a}:f\in\mathcal F\}\in F_{N,n,r,k}.
+\]
+Different selectors may produce the same table; this is why the label space allows any nonempty size at most $k$.
+
+The rule $R$ is definable from the same parameters as $\mathcal F$. Finite modifications do not change the classes $q_i$, so they do not change $R$. Relabelling the coordinates by $\pi$ replaces each table by $\pi t$, so $R$ is $S_N$-equivariant. Theorem~\ref{thm:necessity} says that every element of $S_N$ must fix some point of the label space. Lemma~\ref{lem:tables} supplies a cycle that fixes none, a contradiction.
+\end{proof}
+
+\begin{corollary}\label{cor:orders}
+There is no nonempty finite family, definable from the same parameters, of linear orders on $Q_\kappa$, of tournament orientations on $Q_\kappa$, or of choice functions on all nonempty finite subsets of $Q_\kappa$.
+\end{corollary}
+\begin{proof}
+A linear order yields the selector choosing the smaller member of each pair. A tournament yields the selector choosing the winner of each pair. A choice function restricts to a selector on pairs. Applying these definable transformations to a nonempty finite family produces a nonempty finite family of $(2,1)$-selectors, contrary to Theorem~\ref{thm:finitefamily}. Repetitions in the image do not matter.
+\end{proof}
+
+All these objects exist in $V$ by Choice. The theorem forbids a finite family with the specified definition; it does not forbid an arbitrary family of the same finite cardinality. Nor does it infer the definability of individual members from the definability of a finite family.
+
+\section{Invariant parameters and maximal joint rigidity}\label{sec:maximal}
+
+The supplied synthesis uses cone homogeneity to show that one class $[c]$ preserves ground-model regularity in its hereditary-definability model. We need two extensions of that observation: preservation for a single parameter encoding a set-indexed family of invariant classes, and a construction producing $2^\kappa$ distinct such classes. The first is a general lemma; the second uses branches through the ground-model binary tree.
+
+\subsection{The cone argument with one large invariant parameter}
+
+\begin{lemma}[Invariant-parameter homogeneity]\label{lem:homogeneity}
+Suppose $z(c)$ is a finite-change invariant construction given by a ground-model name. In $V=W[c]$, every set of ordinals definable from $z(c)$, ordinals, and finitely many ground-model set parameters belongs to $W$. For every ground-model set $p$,
+\[
+ \HOD_{\{p,z(c)\}}^V\subseteq W.
+\]
+The parameter $z(c)$ may code a family of any set size; no bound such as $\kappa$ on its size is needed.
+\end{lemma}
+\begin{proof}
+First consider a formula $\varphi(\dot z,\check p,\check{\boldsymbol\alpha})$ with ground-model and ordinal parameters. We show that two conditions cannot force opposite answers.
+
+Let $(s,A)$ and $(t,B)$ be arbitrary conditions. Choose $C\in U$ contained in $A\cap B$ and above all points of $s$ and $t$. There is an order isomorphism between the cones below $(s,C)$ and $(t,C)$:
+\begin{equation}\label{eq:cone}
+ (s^\frown u,D)\longmapsto(t^\frown u,D).
+\end{equation}
+Here all points of $u$ come from $C$, and $D$ is a measure-one upper set contained in $C$ above the extended stem.
+
+Corresponding generic filters yield sequences $s^\frown e$ and $t^\frown e$ with the same infinite tail. They differ only finitely, generate the same extension, and have the same value of $z$. The isomorphism fixes ground-model parameters, and ordinal parameters have the same values in these presentations. Consequently it preserves the truth value of $\varphi$. Opposite decisions below the two cones are therefore impossible. Equivalently, the top condition decides every such sentence. This argument is an isomorphism argument for forcing names; the generic presentations explain it without positing any nontrivial automorphism of a transitive universe.
+
+Now let $X\subseteq\eta$ be uniquely definable in the actual extension from these parameters, for some ordinal $\eta$. The sentence that the defining formula specifies a unique such set holds in one generic extension, so by the preceding homogeneity it is forced by the top condition. For each $\beta<\eta$, membership in that unique set is likewise decided by the top condition. Hence
+\[
+ X=\{\beta<\eta:\mathbf1\Vdash\text{``$\beta$ belongs to the uniquely defined set''}\}
+\]
+is a set in $W$, by its forcing relation and Separation. Every set of ordinals is bounded in some ordinal, so this proves the first assertion.
+
+For the hereditary assertion, take $x\in\HOD_{\{p,z\}}^V$. The canonical well-order of sets ordinal-definable from the fixed pair $(p,z)$ well-orders $\operatorname{tc}(\{x\})$. It is obtained by taking least definition codes: a rank bound, a formula, and a finite tuple of ordinals. Thus its enumeration, the membership relation on the enumeration, and the index designating $x$ are definable from $p,z$ and ordinals. The relation can be coded as a set of ordinals, which belongs to $W$ by the first part.
+
+This relation is well-founded and extensional in $V$, hence also in $W$. Its Mostowski collapse in $W$ is the same as its collapse in $V$, by uniqueness. The element at the designated index is $x$, so $x\in W$. The proof does not use the cardinality of $z$.
+\end{proof}
+
+For a fixed set parameter, the hereditary-definability class used here is an inner model of $\ZFC$: the least-definition coding gives Choice, and the standard closure argument gives Separation and Replacement. This is not a claim that an arbitrary parameter \emph{collection} gives Choice. We will deliberately code the needed low-rank parameters into one fixed ground-model set.
+
+\subsection{A compression lemma}
+
+\begin{lemma}[Compressing a small cofinal family]\label{lem:compress}
+Suppose $\kappa$ is regular in $W$, remains a cardinal in $V\supseteq W$, and every $\ODp{z}$ set of ordinals belongs to $W$. Then every nonempty $\ODp{z}$ family $\mathcal A\subseteq\Cof_\kappa$ has size at least $\kappa$ in $V$.
+\end{lemma}
+\begin{proof}
+Suppose $0<|\mathcal A|=\mu<\kappa$. Let $\tau<\kappa$ be the least order type of a member of $\mathcal A$, and set
+\[
+ B=\bigcup\{a\in\mathcal A:\operatorname{ot}(a)=\tau\}.
+\]
+The subfamily being unioned is nonempty, so $B$ is cofinal in $\kappa$. By Choice in $V$, each of its members has cardinality $|\tau|$, and
+\[
+ |B|\le\mu\cdot|\tau|<\kappa.
+\]
+The final inequality is valid even when $\kappa$ is singular in $V$: the product of two fixed infinite cardinals below $\kappa$ is their maximum, and finite factors cause no difficulty.
+
+The set $B$ is a set of ordinals definable from $z$ and ordinals, so $B\in W$. Its unboundedness in $\kappa$ is absolute. Since $\kappa$ is regular in $W$, its cardinality there is $\kappa$; a ground-model bijection witnesses that it still has cardinality $\kappa$ in $V$. This contradicts the displayed bound.
+\end{proof}
+
+The least-order-type step is important. The union of a small family of arbitrary short cofinal sets need not have uniformly bounded member sizes without first making this reduction.
+
+\subsection{The size of the power set is preserved}
+
+\begin{lemma}\label{lem:power}
+Normal Prikry forcing preserves the cardinal value of $2^\kappa$:
+\[
+ (2^\kappa)^V=(2^\kappa)^W.
+\]
+\end{lemma}
+\begin{proof}
+Write $\Theta=(2^\kappa)^W$. The forcing has at most $\Theta$ conditions: there are $\kappa$ finite stems and at most $2^\kappa$ upper sets. Conditions with the same stem are compatible, so every antichain has size at most $\kappa$.
+
+A nice name for a subset of $\kappa$ is specified by at most $\kappa$ antichains, each of size at most $\kappa$. The number of such names in $W$ is at most
+\[
+ \bigl(|\mathbb P_U|^\kappa\bigr)^\kappa
+ \le(\Theta^\kappa)^\kappa
+ =\bigl((2^\kappa)^\kappa\bigr)^\kappa
+ =\Theta.
+\]
+Cardinals are preserved. The ground-model list of names therefore gives $(2^\kappa)^V\le\Theta$, whereas all $\Theta$ old subsets remain distinct, giving the reverse inequality. Preservation of cardinals, including $\kappa$ itself, is proved in Appendix~\ref{app:prikry}.
+\end{proof}
+
+This is preservation of the \emph{cardinal value}, not preservation of $\Pow(\kappa)$ as a set: the generic cofinal sequence is a new subset of $\kappa$.
+
+\subsection{Coding all ground-model branches}
+
+\begin{lemma}[Separated coding of tree levels]\label{lem:treecode}
+In $W$ there is an injection
+\[
+ h:{}^{<\kappa}2\longrightarrow\kappa
+\]
+such that $h(t)\ge\operatorname{lh}(t)$, and all codes on a lower level are below every code on a higher level.
+\end{lemma}
+\begin{proof}
+Measurability makes $\kappa$ strongly inaccessible in $W$. Thus each level ${}^\alpha2$ has cardinality less than $\kappa$. Choose, in $W$, ordinals $\eta_\alpha<\kappa$ recursively so that $\eta_\alpha\ge\alpha$, the interval $[\eta_\alpha,\eta_{\alpha+1})$ has room for ${}^\alpha2$, and at limits take the supremum of the previous endpoints. Regularity ensures that each endpoint remains below $\kappa$. Choose an injection of level $\alpha$ into its interval and combine these injections. The intervals are disjoint and ordered, giving all the required properties.
+\end{proof}
+
+For each ground-model branch $x\in({}^\kappa2)^W$, define in $V$
+\begin{equation}\label{eq:branchseq}
+ a_x(c)=\{h(x\restr c_n):n<\omega\},\qquad q_x(c)=[a_x(c)].
+\end{equation}
+
+\begin{lemma}[An invariant, almost disjoint family]\label{lem:branches}
+Every $a_x(c)$ belongs to $D_\kappa$. If $x\ne y$, then $a_x(c)\cap a_y(c)$ is finite. Each $q_x(c)$ is finite-change invariant as a function of $c$.
+\end{lemma}
+\begin{proof}
+The levels $c_n$ increase, so their codes increase. Moreover $h(x\restr c_n)\ge c_n$, so the codes are cofinal in $\kappa$. This proves that $a_x(c)$ has order type $\omega$ and belongs to $D_\kappa$.
+
+Choose $\delta<\kappa$ at which $x$ and $y$ differ. A common code must come from the same tree node, since $h$ is injective; it must in particular come from the same level. If that level is greater than $\delta$, the two initial segments are different. Consequently common codes occur only at levels $c_n\le\delta$, and there are only finitely many of those.
+
+Finally, changing finitely many levels in $\operatorname{ran}(c)$ changes only finitely many codes on a fixed branch. The corresponding equivalence class therefore remains unchanged. Both extensions have the same sets, so the equivalence class is literally the same set of representatives.
+\end{proof}
+
+Fix in $W$ an enumeration
+\[
+ e:\Theta\longrightarrow({}^\kappa2)^W,
+ \qquad \Theta=(2^\kappa)^W,
+\]
+and a bijection $b:\kappa\to V_\kappa^W$. Let
+\begin{equation}\label{eq:jointparameter}
+ \vec q(c)=\langle q_{e(\xi)}(c):\xi<\Theta\rangle,
+ \qquad
+ z(c)=\bigl(b,[\operatorname{ran}(c)],\vec q(c)\bigr).
+\end{equation}
+The enumeration, the code function, and the bijection are ground-model sets. Thus $z$ is given by a ground-model name and is finite-change invariant. A set-indexed tuple remains invariant even when its index set is much larger than $\kappa$.
+
+\begin{theorem}[The maximal joint family]\label{thm:maxfamily}
+The classes $q_\xi=q_{e(\xi)}(c)$ and the parameter $z=z(c)$ satisfy the rigidity and full-fibre conclusions of Main Theorem~\ref{main:max}. In addition,
+\[
+ V_\kappa\subseteq\HD{z}\subseteq W,
+ \qquad \HD{z}\models\text{``$\kappa$ is regular.''}
+\]
+\end{theorem}
+\begin{proof}
+Lemma~\ref{lem:homogeneity} gives $\HD{z}\subseteq W$. There are no new sets of rank below $\kappa$, so $b$ still enumerates all of $V_\kappa$. For every $x\in V_\kappa$ some ordinal $\alpha<\kappa$ satisfies $x=b(\alpha)$; hence $x$ is definable from $z$ and $\alpha$. All members of its transitive closure are likewise low-rank sets and have such definitions. Thus $V_\kappa\subseteq\HD{z}$.
+
+If this inner model contained a cofinal map from an ordinal below $\kappa$ into $\kappa$, that map would be in $W$ and would contradict regularity there. Hence $\kappa$ is regular in $\HD{z}$.
+
+Each $q_\xi$ is definable from $z$ and $\xi$. Every low-rank parameter is definable from $z$ and an ordinal via $b$. Therefore every $\OD_{V_\kappa\cup\{q_\xi\}}$ family is $\ODp{z}$. Apply Lemma~\ref{lem:compress} to obtain rigidity of $q_\xi$.
+
+Now let $T\subseteq D_\kappa$ be a complete section in $\OD_{V_\kappa\cup\{z\}}$. By the same coding observation, $T$ is $\ODp{z}$. For each $\xi$, the family $T\cap q_\xi$ is nonempty, is $\ODp{z}$, and consists of short cofinal sets. Lemma~\ref{lem:compress} gives $|T\cap q_\xi|\ge\kappa$. Since $|q_\xi|=\kappa$, equality follows.
+
+The classes are distinct by Lemma~\ref{lem:branches}, and Lemma~\ref{lem:power} gives $\Theta=(2^\kappa)^V$. There cannot be more than $2^\kappa$ classes because $D_\kappa\subseteq\Pow(\kappa)$. Hence the size of the constructed rigid family is maximal.
+\end{proof}
+
+The result is stronger than producing $2^\kappa$ individually rigid classes: all their class parameters can be made available \emph{simultaneously}, as one indexed tuple, without adding a new ordinal set to the corresponding hereditary-definability model. Its measurability strengthening is proved next.
+
+\section{An internal normal measure in the joint core}\label{sec:measure}
+
+Put $q_0^*=[\operatorname{ran}(c)]$; the star distinguishes this designated class from the class with index $0$ in $\vec q$. Recall
+\[
+ \Tail(q,A)\quad\Longleftrightarrow\quad
+ a\subseteq^* A\text{ for some, equivalently every, }a\in q.
+\]
+This definition uses the class, not a chosen representative.
+
+\begin{theorem}[A normal measure surviving all the joint parameters]\label{thm:normal}
+Let $z$ be the parameter in \eqref{eq:jointparameter} and $H=\HD{z}$. Then
+\begin{equation}\label{eq:internalmeasure}
+ U_H=\{A\in\Pow(\kappa)^H:\Tail(q_0^*,A)\}
+\end{equation}
+is an element of $H$, and $H$ regards $U_H$ as a nonprincipal normal $\kappa$-complete ultrafilter on $\kappa$.
+\end{theorem}
+\begin{proof}
+Because $H\subseteq W$, every $A\in\Pow(\kappa)^H$ is a ground-model set. The generic sequence is eventually in every member of $U$. Since $U$ is an ultrafilter in $W$, it is eventually in exactly one of $A$ and $\kappa\setminus A$. Therefore
+\begin{equation}\label{eq:restriction}
+ A\in U_H\quad\Longleftrightarrow\quad A\in U,
+ \qquad A\in\Pow(\kappa)^H.
+\end{equation}
+Thus $U_H=U\cap\Pow(\kappa)^H$ as sets in $V$.
+
+Formula~\eqref{eq:internalmeasure} defines $U_H$ from $z$: the class $H$ is definable from $z$, and $q_0^*$ is a designated component of $z$. Every member of $U_H$ belongs to $H$, so every set in its transitive closure is ordinal-definable from $z$. It follows that $U_H\in H$.
+
+The ultrafilter and nonprincipality assertions follow immediately from \eqref{eq:restriction} and the corresponding facts for $U$. To check internal completeness, let $\delta<\kappa$ and let $\langle A_i:i<\delta\rangle\in H$ be a sequence of members of $U_H$. The entire sequence lies in $W$. Its intersection belongs to $U$ by $\kappa$-completeness in $W$, and belongs to $H$ by Separation there. By \eqref{eq:restriction}, that intersection is in $U_H$.
+
+For normality, let $S\in U_H$ and let $f:S\to\kappa$ be a regressive function belonging to $H$. Both are in $W$. Normality of $U$ supplies $\alpha<\kappa$ with $f^{-1}\{\alpha\}\in U$. This fibre belongs to $H$, so it belongs to $U_H$. This is precisely the normality assertion evaluated in $H$.
+\end{proof}
+
+\begin{assessment}{Internal versus external completeness}
+The theorem does not make $\kappa$ measurable in $V$, where $\operatorname{cf}(\kappa)=\omega$. For example each final segment $\kappa\setminus(c_n+1)$ belongs to $U_H$, but their external countable intersection is empty. The sequence of those final segments is not a sequence in $H$. Every completeness claim quantifies over sequences belonging to the indicated inner model.
+\end{assessment}
+
+The proof of Main Theorem~\ref{main:max} is now complete. By Mathias' criterion, each representative of $q_0^*$ is Prikry generic over $H$ for $U_H$: it is cofinal and is almost contained in every member of $U_H$. Representatives differ finitely and generate the same extension of $H$. No assertion that this smaller Prikry extension is all of $V$ is needed or made.
+
+\section{The exact local threshold for ultrafilter choice}\label{sec:ultrafilters}
+
+Here an ultrafilter on $q$ means an ultrafilter on the \emph{set of representatives} $q$, that is, a subset of $\Pow(q)$. It is a different object from the tail ultrafilter on $\kappa$ in the preceding section.
+
+\subsection{A phase partition of one equivalence class}
+
+For $a,b\in q$, define the integer
+\[
+ \operatorname{ind}_a(b)=|b\setminus a|-|a\setminus b|.
+\]
+The two differences are finite. For $m\ge2$ and $j\in\mathbb Z/m\mathbb Z$, put
+\begin{equation}\label{eq:phase}
+ P_j(a)=\{b\in q:\operatorname{ind}_a(b)\equiv j\pmod m\}.
+\end{equation}
+These sets partition $q$ into $m$ cells. Each residue occurs, for instance by deleting the appropriate finite number of initial points of $a$. Every ultrafilter on $q$ contains exactly one of the cells.
+
+\begin{lemma}[Deleting a point rotates all phase labels]\label{lem:phase}
+If $d=a\setminus\{\gamma\}$ for $\gamma\in a$, then for every $b\in q$,
+\[
+ \operatorname{ind}_d(b)=\operatorname{ind}_a(b)+1.
+\]
+Consequently $P_j(d)=P_{j-1}(a)$, with residues taken modulo $m$.
+\end{lemma}
+\begin{proof}
+If $\gamma\in b$, deleting it from $a$ adds one element to $b\setminus a$ and does not change $a\setminus b$. If $\gamma\notin b$, the deletion removes one element from $a\setminus b$ and does not change $b\setminus a$. In both cases the displayed difference increases by one. The equality of phase cells follows by reducing modulo $m$.
+\end{proof}
+
+\begin{theorem}[No finite ultrafilter family at the generic class]\label{thm:finiteultra}
+Let $q=q_0^*$. No nonempty finite family of ultrafilters on $q$ is definable from $q$, ordinals, and ground-model set parameters. The same conclusion holds with any additional finite-change invariant parameter $z(c)$.
+\end{theorem}
+\begin{proof}
+Suppose $\mathcal F$ were such a family, of size $k\ge1$, and choose $m=k+1$. For a representative $a$ of $q$, let
+\[
+ R(a)=\{j\in\mathbb Z/m\mathbb Z:
+                 P_j(a)\in\nu\text{ for some }\nu\in\mathcal F\}.
+\]
+Every ultrafilter chooses one phase cell, so $R(a)$ is nonempty and has size at most $k$.
+
+Apply Lemma~\ref{lem:decided} to the finite value $R(\operatorname{ran}(c))$. Choose a deciding condition $p\in G_c$ and delete one generic point beyond its stem, producing $d$. The parameter $q$ is unchanged, as are all other invariant and ground-model parameters. Therefore the family $\mathcal F$ itself is unchanged, and the same condition forces
+\[
+ R(\operatorname{ran}(d))=R(\operatorname{ran}(c)).
+\]
+On the other hand Lemma~\ref{lem:phase} says that the phase selected by each unchanged ultrafilter increases by one. Thus
+\[
+ R(\operatorname{ran}(d))=R(\operatorname{ran}(c))+1.
+\]
+A nonempty subset of the cyclic group invariant under translation by $1$ is the whole group. It follows that $|R(\operatorname{ran}(c))|=m=k+1$, contradicting the bound $k$.
+\end{proof}
+
+This includes principal ultrafilters. No completeness or nonprincipality hypothesis was used in the negative theorem.
+
+\subsection{A uniform countably infinite family in ZFC}
+
+Now work in an arbitrary model of $\ZFC$. Let $\lambda$ be uncountable with cofinality $\omega$, let $q\in Q_\lambda$, and fix a free ultrafilter $D$ on $\omega$. For $a\in q$, write
+\[
+ a=\{a(0)<a(1)<\cdots\},\qquad
+ t_a(n)=\{a(i):n\le i<\omega\}\in q.
+\]
+Push $D$ forward along the tail map $t_a:\omega\to q$:
+\begin{equation}\label{eq:tailpush}
+ \nu_a=(t_a)_*D
+       =\{X\subseteq q:\{n<\omega:t_a(n)\in X\}\in D\}.
+\end{equation}
+Finally set
+\begin{equation}\label{eq:cloud}
+ \mathcal K_D(q)=\{\nu_a:a\in q\}.
+\end{equation}
+
+\begin{theorem}[The countable ultrafilter cloud]\label{thm:cloud}
+The set $\mathcal K_D(q)$ is a countably infinite family of nonprincipal ultrafilters on $q$. It is definable from $D$ and $q$, and the function $q\mapsto\mathcal K_D(q)$ on $Q_\lambda$ is definable from $D$ and the ordinal $\lambda$. Every ultrafilter in this family contains every tail ray
+\[
+ \mathcal R_a=\{t_a(n):n<\omega\},\qquad a\in q.
+\]
+\end{theorem}
+\begin{proof}
+\textbf{Ultrafilters and nonprincipality.}
+Preimages under a function commute with complements and finite intersections. Therefore \eqref{eq:tailpush} defines an ultrafilter on $q$. The map $t_a$ is injective: each successive tail has lost one more point. The preimage of any singleton in $q$ consequently has at most one element, and a free ultrafilter contains no finite set. Thus $\nu_a$ is nonprincipal.
+
+\textbf{At most countably many.}
+Fix temporarily a reference representative $a\in q$. If $b\in q$, the increasing enumerations of $a$ and $b$ agree after discarding finite prefixes. Hence there are $r,s<\omega$ such that
+\[
+ t_a(r+n)=t_b(s+n)\qquad(n<\omega).
+\]
+For all sufficiently large $n$, this can be written
+\[
+ t_b(n)=t_a(n+d),\qquad d=r-s\in\mathbb Z.
+\]
+If two representatives $b,b'$ have the same offset $d$ relative to $a$, their tail maps agree for all sufficiently large $n$. A free ultrafilter ignores a finite change of its argument set, so $\nu_b=\nu_{b'}$. There are only countably many integers $d$, giving $|\mathcal K_D(q)|\le\aleph_0$. The reference $a$ is used only to prove the bound; it is not a parameter in the definition of the family.
+
+\textbf{Infinitely many distinct ultrafilters.}
+For $j<\omega$, put $a^{(j)}=t_a(j)$. Then
+\[
+ t_{a^{(j)}}(n)=t_a(n+j).
+\]
+Take $j\ne\ell$ and choose $M>|j-\ell|$. The ultrafilter $D$ contains a unique residue class $\{n:n\equiv u\pmod M\}$. Define a subset of the tail ray by
+\[
+ X_v=\{t_a(n):n\equiv v\pmod M\}.
+\]
+By the preceding identity,
+\[
+ X_v\in\nu_{a^{(j)}}\quad\Longleftrightarrow\quad v\equiv u+j\pmod M.
+\]
+For $\ell$ in place of $j$, the selected residue is $u+\ell$, which differs modulo $M$. Thus $\nu_{a^{(j)}}\ne\nu_{a^{(\ell)}}$. We have exhibited infinitely many distinct members, so the family has size exactly $\aleph_0$.
+
+\textbf{Support and definability.}
+For any $a,b\in q$, the synchronization identity shows that $t_b(n)\in\mathcal R_a$ for all sufficiently large $n$. Therefore $\mathcal R_a\in\nu_b$. Formulae~\eqref{eq:tailpush} and~\eqref{eq:cloud} quantify over the entire class $q$ and make no selection from it. They define the family uniformly from $D$ and $q$, and Replacement gives the indicated function on the set $Q_\lambda$.
+\end{proof}
+
+A free ultrafilter on $\omega$ has rank below $\omega+4$, so it belongs to $V_\lambda$ for every uncountable $\lambda$. In the Prikry setting such an ultrafilter can be chosen in $W$ and remains an ultrafilter on all subsets of $\omega$, because no new reals are added.
+
+\begin{corollary}[An exact minimum]\label{cor:minultra}
+For $q=q_0^*$ in the Prikry extension, the minimum of the cardinalities of nonempty $\OD_{V_\kappa\cup\{q\}}$ families of ultrafilters on $q$ is $\aleph_0$. This remains true after adjoining the joint invariant parameter $z$ of \eqref{eq:jointparameter} to the allowed parameters.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:finiteultra} excludes every positive finite size, and Theorem~\ref{thm:cloud}, with a free $D\in V_\kappa$, supplies a family of size $\aleph_0$. The former theorem allows $z$, and the latter construction is still definable when more parameters are permitted.
+\end{proof}
+
+\begin{corollary}[Different thresholds at two levels]\label{cor:twolevels}
+At the generic class $q_0^*$, the least size of a nonempty definable family of representatives is $\kappa$, whereas the least size of a nonempty definable family of ultrafilters on that class is $\aleph_0$. Here definitions may use $V_\kappa$, $q_0^*$, and even the joint parameter $z$.
+\end{corollary}
+\begin{proof}
+Since $q_0^*$ is a component of $z$, Lemma~\ref{lem:compress} applies to every allowed family of representatives and bounds its size below by $\kappa$. The entire class $q_0^*$ is an allowed family of size $\kappa$, so the bound is attained. Corollary~\ref{cor:minultra} gives the ultrafilter threshold. The positive witnesses use no additional parameter $z$, so both equalities also hold without it.
+\end{proof}
+
+\subsection{The cloud is a canonical integer torsor}
+
+The preceding construction has more structure than countability. Let $T:q\to q$ remove the least point of a representative, and let $S$ send an ultrafilter on $q$ to its pushforward under $T$.
+
+\begin{proposition}\label{prop:torsor}
+The map $S$ restricts to a bijection of $\mathcal K_D(q)$ with one infinite orbit and no periodic points. Equivalently, $\mathcal K_D(q)$ is a $\mathbb Z$-torsor: it has a canonical successor operation but no designated origin.
+\end{proposition}
+\begin{proof}
+The identity $T(t_a(n))=t_a(n+1)$ gives $S(\nu_a)=\nu_{t_a(1)}$. Fixing a reference $a$ for the proof, every $\nu_b$ is determined by its integer tail offset relative to $a$. Distinct offsets give distinct ultrafilters, by the same residue-class argument as in Theorem~\ref{thm:cloud}, now choosing a modulus larger than the absolute difference of the two offsets.
+
+Every integer offset occurs. Positive offsets result from deleting finitely many points of $a$; negative offsets result from adding finitely many fresh ordinals. There are arbitrarily many fresh ordinals because $a$ is countable and $\lambda$ is uncountable. Adding $r$ points shifts the eventual enumeration index by $-r$. Thus the offsets are exactly $\mathbb Z$, and $S$ adds $1$ to them. It is consequently a bijection with a single free orbit. More precisely, the offset of $b$ relative to $a$ is $-\operatorname{ind}_a(b)$, so $\nu_a=\nu_b$ exactly when $|a\setminus b|=|b\setminus a|$. The cloud therefore also identifies canonically with the balanced-finite-change quotient of $q$. The operation $S$ was defined from $q$ alone, without the temporary reference $a$.
+\end{proof}
+
+At the generic class, an origin definable from the allowed parameters would give a definable singleton family of ultrafilters, which Theorem~\ref{thm:finiteultra} forbids. This explains concretely how a countable definable family can exist without a definable enumeration: the successor relation is available, but a starting point is not.
+
+\subsection{The quantifier distinction that remains open}
+
+An ultrafilter-valued kernel on $Q_\lambda$ is a function $K$ assigning \emph{one} ultrafilter $K(q)$ to every $q$. The construction above is instead one function assigning a \emph{countable set} of ultrafilters to every $q$:
+\[
+ q\longmapsto\mathcal K_D(q).
+\]
+These assertions must not be confused. A countably infinite definable family of kernels would have the form $\mathcal L\subseteq\prod_{q\in Q_\lambda}\UFilt(q)$ and would coordinate the choices across all classes. The cloud construction supplies no definable enumeration of each $\mathcal K_D(q)$, and hence supplies no such family $\mathcal L$.
+
+A nonempty \emph{finite} definable family of kernels is impossible here: evaluating it at $q_0^*$ would contradict Theorem~\ref{thm:finiteultra}. The existence of a \emph{countably infinite} definable family of kernels, the question in the synthesis, remains distinct and is not settled by this report. What is settled sharply is its local, one-class analogue.
+
+\section{The joint package has exactly measurable strength}\label{sec:consistency}
+
+To avoid attaching an unjustified lower bound to the finite-choice theorem in isolation, we state precisely which package is being calibrated.
+
+\begin{definition}[The joint Prikry-choice package]\label{def:package}
+Let $\mathsf{JPC}$ assert the existence of an uncountable strong limit cardinal $\lambda$ of cofinality $\omega$, a set parameter $z$, a class $q_*\in Q_\lambda$ definable from $z$ and ordinals, and an injective sequence $\vec q=\langle q_\xi:\xi<2^\lambda\rangle$ definable from $z$ and ordinals, with these properties:
+\begin{enumerate}
+\item $V_\lambda\subseteq H=\HD{z}$, and the tail filter of $q_*$ on $\Pow(\lambda)^H$ belongs to $H$ and is a normal measure there.
+\item The $q_\xi$ have pairwise almost disjoint representatives and are rigid. Every complete section in $\OD_{V_\lambda\cup\{z\}}$ has fibre size $\lambda$ at every $q_\xi$.
+\item For every finite permutation group and finite label set, an admissible rule in $\OD_{V_\lambda\cup\{z\}}$ exists exactly when every group element fixes a label. There is no nonempty finite $\OD_{V_\lambda\cup\{z\}}$ family of $(n,r)$-selectors for $1\le r<n$.
+\item The least cardinality of a nonempty $\OD_{V_\lambda\cup\{z,q_*\}}$ family of ultrafilters on $q_*$ is $\aleph_0$. The uniform cloud of Theorem~\ref{thm:cloud} supplies the positive witness.
+\end{enumerate}
+\end{definition}
+
+All appearances of $\OD$ and $\HOD$ are the usual definable classes obtained by least definition codes. Thus this is a set-theoretic assertion, or equivalently an explicitly specified theory if one presents the definability clauses schematically. It does not use a predicate for a ground model or an external truth predicate.
+
+\begin{theorem}[Equiconsistency]\label{thm:equiconsistency}
+The theories
+\[
+ \ZFC+\text{``there is a measurable cardinal''}
+ \quad\text{and}\quad
+ \ZFC+\mathsf{JPC}
+\]
+are equiconsistent. In fact every normal Prikry extension of a model with a measurable cardinal satisfies $\mathsf{JPC}$ at that cardinal.
+\end{theorem}
+\begin{proof}
+\textbf{Upper bound.}
+Start with $W\models\ZFC$ and a measurable cardinal $\kappa$. Choose a normal measure $U$ on $\kappa$ and force with $\mathbb P_U$. By the classical facts in Appendix~\ref{app:prikry}, $\kappa$ is a strong limit cardinal of cofinality $\omega$ in the extension. Use $z$ from \eqref{eq:jointparameter} and $q_*=q_0^*$.
+
+Clause (1) follows from Theorems~\ref{thm:maxfamily} and~\ref{thm:normal}. Clause (2) is Theorem~\ref{thm:maxfamily}. Every allowed low-rank parameter lies in $W$, and $z$ is invariant, so Theorems~\ref{thm:necessity}, \ref{thm:sufficiency}, and~\ref{thm:finitefamily} give clause (3). Corollary~\ref{cor:minultra} gives clause (4).
+
+\textbf{Lower bound.}
+Suppose $\mathsf{JPC}$ holds. The class $\HD{z}$ is an inner model of $\ZFC$. By clause (1), it contains a normal nonprincipal measure on $\lambda$ and regards $\lambda$ as measurable. Therefore it is a model of $\ZFC+$ ``there is a measurable cardinal.'' This is an inner-model interpretation of that theory and gives the required relative consistency implication.
+
+Both implications are formalizable by the forcing and inner-model arguments just given. No hypothesis asserting a transitive model is part of the stated equiconsistency result.
+\end{proof}
+
+\Needspace{12\baselineskip}
+\begin{assessment}{What is new in this consistency calibration}
+The synthesis already calibrates its normal-trace principle by one measurable cardinal. The new contribution is that the full finite-choice obstruction and a maximal, jointly rigid family can be adjoined to that principle \emph{without increasing its consistency strength}. The lower bound uses the explicitly included internal measure. We have not proved that the finite-label classification alone, or the local countable-threshold theorem alone, has measurable strength.
+\end{assessment}
+
+One can phrase the conclusion as a conditional consistency result without mentioning the package: assuming the consistency of one measurable cardinal, it is consistent that a singular strong limit $\lambda$ has the maximum number of rigid classes and the exact finite-choice classification, all while one joint hereditary-definability core contains $V_\lambda$ and regards $\lambda$ as measurable.
+
+\section{Comparison, proof audit, and remaining boundaries}\label{sec:audit}
+
+\subsection{Exact comparison with the supplied synthesis}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\textwidth}{@{}P{.25\textwidth}YY@{}}
+\toprule
+\textbf{Topic}&\textbf{Supplied synthesis}&\textbf{This continuation}\\
+\midrule
+Finite-label necessity & Proved using ultraexacting witnesses; Prikry counterpart asked for. & Proved in every normal Prikry extension, allowing ground and invariant parameters.\\
+Finite families of selectors & No finite definable family under ultraexactingness. & The same obstruction follows from one measurable via Prikry forcing.\\
+Number of rigid classes & At least $\lambda$ from the embedding; larger sizes questioned. & $2^\lambda$ in the Prikry model, with one simultaneous invariant parameter.\\
+Full fibres & $\lambda$ full fibres for every allowed complete section. & The same $2^\lambda$ fibres are full for all sections definable using the joint parameter.\\
+Normal tail measure & Already calibrated at one measurable. & Retained after adjoining the whole maximal family of class parameters.\\
+Ultrafilter choice & Finite families excluded in the embedding setting; countable kernel-family problem open. & Local finite families excluded by deletion; a uniform countable local cloud exists, and is an integer torsor.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The words ``in the Prikry model'' cannot be removed from the new cardinality assertion. The comparison is between proved hypotheses and conclusions, not a claim that one proof automatically covers every universe in which the synthesis works. Also, the synthesis groups the question ``in a Prikry extension'' with ``from rigidity alone.'' These are not logically equivalent formulations; this continuation answers the former.
+
+\subsection{The sensitive points in the proofs}
+
+\textbf{Finite change, not a universe automorphism.}
+The two sequences yield two filters and two presentations of exactly the same extension. The function or finite family under consideration is unchanged because its actual defining parameters are unchanged. A condition common to both filters fixes the finite output. This is the step that replaces the elementary embedding.
+
+\textbf{A deciding stem must be protected.}
+Deleting the first generic point without checking the deciding condition is not valid. Every deletion in the negative proofs occurs at an index beyond the stem of a condition which decides the relevant finite output.
+
+\textbf{Class parameters are not representative parameters.}
+A representative would expose a cofinal sequence, destroying the regularity assertion. The invariant parameter contains entire equivalence classes, and the proof never treats a chosen representative as definable from its class.
+
+\textbf{The large parameter is genuinely invariant.}
+Every branch component changes only finitely when the generic set changes finitely. Equality holds coordinate by coordinate, so the entire indexed tuple is invariant. No small-size argument is being extrapolated to a proper class: the index $2^\kappa$ is a set ordinal.
+
+\textbf{The number $2^\kappa$ is the extension's number.}
+The ground-model binary tree supplies $(2^\kappa)^W$ branches. Lemma~\ref{lem:power} explicitly identifies that cardinal with $(2^\kappa)^V$. Without this check, the maximality statement would not follow merely from the existence of many ground-model branches.
+
+\textbf{Completeness is evaluated internally.}
+The normal measure in $H$ only has to close under sequences belonging to $H$. It is not a countably complete ultrafilter on the ambient full power set of $\kappa$.
+
+\textbf{Finite families are treated as families.}
+The table argument and the phase argument record a finite set of outputs, so they do not assume that individual members of a finite definable family are definable.
+
+\textbf{The countable family is local.}
+The positive theorem produces a countable family of ultrafilters on each class, not a countable family of global kernels. Turning one into the other requires a coordinated choice which is absent from the proof.
+
+\subsection{Verification status}
+
+The arguments were checked by re-deriving the deletion identities, the table-cycle obstruction, the cone isomorphism, the branch-code counting, and the ultrafilter phase calculation. The accompanying Python script exhaustively checks small finite instances of the two phase identities and the table obstruction, and checks finite initial segments of the branch coding. Those computations are bookkeeping tests only. They do not verify forcing, hereditary definability, cardinal arithmetic, or the existence of infinite ultrafilters.
+
+The supplied Lean files were used as reference for the separation between finite combinatorics and set-theoretic interfaces. No supplied theorem was treated as a machine-checked proof of a new forcing claim, and no new Lean proof was written or compiled. The mathematical status of this report is a conventional, unrefereed proof manuscript.
+
+The classical forcing statements were checked against the cited Prikry reference. The more recent large-cardinal comparison was checked against the cited paper on cardinals beyond HOD. The new constructions are not attributed to those papers. The literature check was not sufficient to establish that no prior publication contains these consequences of Prikry symmetry; the novelty claim is therefore explicitly relative to the supplied synthesis, not a literature-wide priority claim.
+
+\subsection{What would be a further advance}
+
+The most direct remaining problem is whether a \emph{countably infinite definable family of global ultrafilter-valued kernels} exists in this same Prikry model. The local cloud shows that a pointwise cardinality obstruction cannot settle it; any negative proof must use incompatibility of the choices across classes.
+
+A second problem is whether a bare rigid class, without an ambient Prikry presentation or another source of finite-change symmetry, implies the finite-label classification. The present proof identifies the additional mechanism precisely: arbitrarily late deletions of a generic sequence realizing any prescribed finite permutation.
+
+Finally, maximality for arbitrary ultraexacting cardinals remains open in this report. The tree-coding construction succeeds because an inaccessible ground model supplies a full binary tree and all its ground branches, while cone homogeneity protects all class codes jointly. Transplanting that mechanism into an arbitrary ultraexacting witness would require a substitute for the ground-model invariant-parameter lemma.
+
+\appendix
+\section{Classical Prikry facts used in the proofs}\label{app:prikry}
+
+This appendix gives the normal-measure arguments needed above. The forcing theorem, the basic recursion on names, and the existence of a normal measure on a measurable cardinal are taken as standard foundational facts. None of the rank-into-rank or ultraexacting results from the supplied Lean interfaces is used here. For reference, the Prikry property, the no-bounded-subsets consequence, the strong Prikry property, and Mathias' criterion appear as Theorem~3.14, Corollary~3.15, Lemma~3.16, and Theorem~3.17 in Benhamou's account.\cite{benhamou}
+
+All the constructions in this appendix before passing to a generic extension are performed inside $W$.
+
+\subsection{Normal measures and finite-stem diagonalization}
+
+A normal measure $U$ on $\kappa$ is a nonprincipal $\kappa$-complete ultrafilter such that every regressive function on a member of $U$ is constant on a member of $U$. Nonprincipality and $\kappa$-completeness imply that every set of size less than $\kappa$ is null: intersect the complements of its singletons. In particular every member of $U$ is unbounded.
+
+For completeness, these facts imply strong inaccessibility. A cofinal sequence of length $\mu<\kappa$ would express $\kappa$ as a union of fewer than $\kappa$ bounded, hence null, sets, contradicting completeness. Thus $\kappa$ is regular. If $\mu<\kappa$ and there were an injection $f:\kappa\to\Pow(\mu)$, let $U$ decide the bit ``$\beta\in f(\alpha)$'' for each $\beta<\mu$. Intersecting the $\mu$ selected measure-one sets yields a measure-one set on which all bits are fixed. Injectivity makes this set have at most one element, a contradiction. Therefore $2^\mu<\kappa$ for every $\mu<\kappa$.
+
+\begin{lemma}[Diagonal intersection]\label{lem:diag}
+For $\langle A_\alpha:\alpha<\kappa\rangle$ with each $A_\alpha\in U$, the diagonal intersection
+\[
+ \Delta_{\alpha<\kappa}A_\alpha
+   =\{\beta<\kappa:\forall\alpha<\beta\ (\beta\in A_\alpha)\}
+\]
+belongs to $U$. Consequently, for any family $\langle B_s:s\in[\kappa]^{<\omega}\rangle$ of members of $U$, there is $B\in U$ such that
+\begin{equation}\label{eq:stemdiag}
+ \beta\in B,\quad \max(s)<\beta
+ \quad\Longrightarrow\quad \beta\in B_s.
+\end{equation}
+The empty stem is included in this convention.
+\end{lemma}
+\begin{proof}
+If the complement of the diagonal intersection were measure one, the least witnessing $\alpha<\beta$ would define a regressive function there. Normality would make it constantly some $\alpha_0$ on a measure-one set disjoint from $A_{\alpha_0}$, impossible.
+
+For the second assertion, put
+\[
+ C_\alpha=\bigcap\{B_s:s\in[\alpha+1]^{<\omega}\}.
+\]
+There are fewer than $\kappa$ sets in this intersection, so $C_\alpha\in U$. Take $B$ to be the diagonal intersection of the $C_\alpha$, intersected also with $B_\varnothing$ and with $\kappa\setminus\{0\}$. If $s$ is nonempty and $\max(s)<\beta\in B$, then $\beta\in C_{\max(s)}\subseteq B_s$. The empty-stem case follows from the extra intersection.
+\end{proof}
+
+\begin{lemma}[Homogeneity for finite subsets]\label{lem:ramsey}
+If $f:[\kappa]^{<\omega}\to r$ and $r<\kappa$, there is $A\in U$ such that, for every $n<\omega$, the restriction $f\restr[A]^n$ is constant. Its constant value may depend on $n$.
+\end{lemma}
+\begin{proof}
+Prove the assertion for each fixed $n$ by induction. For $n=1$, a partition into $r<\kappa$ cells has one cell in $U$; otherwise intersecting their complements would put the empty set in $U$.
+
+Suppose the assertion holds for $n$, and let $f:[\kappa]^{n+1}\to r$. For each $s\in[\kappa]^n$, choose $i_s<r$ and $A_s\in U$ so that
+\[
+ f(s^\frown\langle\beta\rangle)=i_s
+ \quad\text{whenever }\beta\in A_s\text{ and }\beta>\max(s).
+\]
+Use Lemma~\ref{lem:diag} to find a diagonal set $B\in U$ for all these $A_s$. By the induction hypothesis, thin to $C\in U$ on which $s\mapsto i_s$ is constant. Every $(n+1)$-tuple from $B\cap C$ consists of an $n$-tuple $s$ followed by a point in $A_s$, so $f$ is constant there.
+
+Finally intersect the homogeneous sets for all finite $n$. This is a countable intersection, and $\omega<\kappa$. The case $n=0$ has only the empty tuple and needs no thinning.
+\end{proof}
+
+\subsection{The Prikry property}
+
+\begin{theorem}[Direct decision]\label{thm:prikry}
+For every forcing sentence $\varphi$ and condition $(s,A)$, there is a direct extension $(s,H)$ which decides $\varphi$.
+\end{theorem}
+\begin{proof}
+For each finite increasing $t$ from $A$, color $t$ with $0$ if some condition with stem $s^\frown t$, below $(s,A)$, forces $\varphi$; color it with $1$ if some such condition forces $\neg\varphi$; and color it with $2$ if neither is possible. The first two alternatives cannot both occur, because conditions with the same stem are compatible by intersecting their upper sets.
+
+Use Lemma~\ref{lem:ramsey} to choose $H\subseteq A$, $H\in U$, on which the color is constant at each finite length. Suppose $(s,H)$ does not decide $\varphi$. Then there are two extensions of it forcing opposite truth values. Extend their stems further, if needed, to make the two added stem lengths equal. All added points can be chosen from the corresponding upper sets, which are subsets of $H$ and are unbounded. The resulting equal-length tuples from $H$ receive colors $0$ and $1$, contrary to homogeneity. Hence $(s,H)$ decides the sentence.
+\end{proof}
+
+\begin{corollary}[No new bounded subsets]\label{cor:nobounded}
+For every $\mu<\kappa$,
+\[
+ \Pow(\mu)^{W[G]}=\Pow(\mu)^W.
+\]
+\end{corollary}
+\begin{proof}
+Given a name $\dot X$ for a subset of $\mu$ and a condition $p=(s,A)$, recursively take direct extensions deciding ``$\alpha\in\dot X$'' for all $\alpha<\mu$. At limit stages intersect the upper sets; fewer than $\kappa$ intersections occur. A final direct extension decides every bit, and so forces $\dot X$ equal to a particular ground-model subset of $\mu$. Such deciding conditions are dense, proving the claim.
+\end{proof}
+
+\subsection{The strong Prikry property and Mathias' criterion}
+
+\begin{lemma}[Uniform finite length into a dense set]\label{lem:strongprikry}
+Let $\mathcal D\subseteq\mathbb P_U$ be dense open, and let $p=(s,A)$. There are $H\subseteq A$ in $U$ and $n<\omega$ such that for every increasing $t\in[H]^n$,
+\[
+ (s^\frown t,H\setminus(\max(t)+1))\in\mathcal D.
+\]
+For $n=0$ the displayed upper set is simply $H$.
+\end{lemma}
+\begin{proof}
+Color a finite tuple $t$ from $A$ by $1$ if there is an upper set $B\in U$ such that $(s^\frown t,B)\le p$ and belongs to $\mathcal D$, and by $0$ otherwise. Thin to $A'\in U$ on which each length has a constant color. For every tuple of color $1$, choose a witnessing upper set $B_t$. For tuples of color $0$, put $B_t=\kappa$.
+
+Apply finite-stem diagonalization to obtain $H\subseteq A'$ in $U$ such that
+\[
+ H\setminus(\max(t)+1)\subseteq B_t
+\]
+for every finite $t$, with the empty-stem convention handled by intersecting with $B_\varnothing$. By density there is an extension of $(s,H)$ in $\mathcal D$, with added stem of some length $n$. That tuple has color $1$, so every $n$-tuple from $H$ has color $1$. For each such tuple, the condition in the statement is stronger than its chosen witness. Openness of $\mathcal D$ puts it in $\mathcal D$.
+\end{proof}
+
+\begin{theorem}[Mathias' criterion]\label{thm:mathias}
+An increasing cofinal $\omega$-sequence $c$ in $\kappa$ is Prikry generic over $W$ exactly when it is eventually in every member of $U$.
+\end{theorem}
+\begin{proof}
+For a generic sequence, eventual membership in $A\in U$ follows from the dense set of conditions whose upper sets are contained in $A$.
+
+Conversely assume the eventual-membership property. The set $G_c$ defined in Section~\ref{sec:mechanism} is a filter. For two conditions in it, their stems are initial segments of the same sequence, so one extends the other; intersect the upper sets and keep the longer stem to get a common extension still in $G_c$.
+
+Fix any dense open $\mathcal D\in W$. For each finite stem $s$, apply Lemma~\ref{lem:strongprikry} below $(s,\kappa\setminus(\max(s)+1))$ to obtain an upper set $A_s\in U$ and a length $n_s$. Diagonalize these sets to $B\in U$ as in Lemma~\ref{lem:diag}. Choose an initial segment $s$ of $c$, long enough that every remaining point of $c$ lies in $B$. Let $t$ be the next $n_s$ points of $c$.
+
+Each point of the tail after $s$ lies in $B$ and exceeds $\max(s)$, so it lies in $A_s$. In particular $t\in[A_s]^{n_s}$, and the condition
+\[
+ (s^\frown t,A_s\setminus(\max(t)+1))
+\]
+belongs to $\mathcal D$ by the choice of $A_s,n_s$. All still later points of $c$ are in its upper set, so this condition also belongs to $G_c$. When $n_s=0$, use $(s,A_s)$ instead. Thus $G_c$ meets every ground-model dense open set and is generic.
+\end{proof}
+
+This proves in particular that finite modifications of a generic set remain generic. The equality of extensions after finite modification follows because each missing or added ordinal is ground-model information. For the decision arguments in the main text, deleting beyond the deciding stem also guarantees that the \emph{same condition} belongs to the two generic filters.
+
+\subsection{Cardinals, the low-rank universe, and cofinality}
+
+\begin{proposition}[Preservation and singularization]\label{prop:preservation}
+Normal Prikry forcing preserves all cardinals, has $V_\kappa^{W[G]}=V_\kappa^W$, and makes $\operatorname{cf}(\kappa)=\omega$. The cardinal $\kappa$ remains a strong limit.
+\end{proposition}
+\begin{proof}
+\textbf{Cardinals below $\kappa$.}
+A collapsing map between two ordinals below $\kappa$ can be coded by a bounded subset of $\kappa$, using a ground-model pairing and a sufficiently large cardinal below $\kappa$. Corollary~\ref{cor:nobounded} excludes a new such map, so all cardinals below $\kappa$ are preserved.
+
+\textbf{The cardinal $\kappa$ itself.}
+It is a limit of ground-model cardinals below it. Since all of those remain cardinals, $\kappa$ cannot have cardinality $\mu<\kappa$: a preserved cardinal strictly between $\mu$ and $\kappa$ would then inject into $\mu$. Thus $\kappa$ remains a cardinal, even though its cofinality will change.
+
+\textbf{Cardinals above $\kappa$.}
+There are only $\kappa$ stems, and conditions with the same stem are compatible. Hence the forcing has the $\kappa^+$-chain condition. Explicitly, for a name for a function from $\alpha$ to a ground-model cardinal $\beta\ge\kappa^+$, each coordinate has at most $\kappa$ possible values, by a maximal deciding antichain. If $\alpha<\beta$, the union of all these possibilities has ground-model size at most $\max(|\alpha|,\kappa)<\beta$. Such a name cannot be a surjection onto $\beta$. This rules out all cardinal collapses above $\kappa$.
+
+\textbf{Agreement below rank $\kappa$.}
+Use induction on $\gamma<\kappa$. At a successor stage, $V_\gamma^W$ has ground-model size less than $\kappa$, by inaccessibility. A ground-model enumeration codes each subset of it by a bounded subset of $\kappa$, so no new subset is added. Limit stages are unions. This proves $V_\kappa^{W[G]}=V_\kappa^W$.
+
+\textbf{Cofinality and the strong limit property.}
+The dense sets requiring a longer stem and a point above any prescribed ordinal ensure that the generic union is an increasing cofinal sequence of length $\omega$. Thus $\operatorname{cf}(\kappa)=\omega$. Finally every power set below $\kappa$ is unchanged and its old cardinal value is preserved. Since $\kappa$ was a strong limit in $W$, it is still a strong limit in the extension.
+\end{proof}
+
+These are exactly the preservation properties used in the main proofs. In particular the deletion arguments do not require iterated ultrapowers, preservation of an elementary self-embedding, or any assumption above measurability.
+
+\section{Finite checks and reproducibility}\label{app:checks}
+
+The archive contains \nolinkurl{finite_checks.py}, a dependency-free Python 3 script. It checks the following finite identities and obstructions. The word ``check'' here means finite exhaustive computation, not formal proof of the set-theoretic assertions.
+
+\begin{enumerate}
+\item For every permutation of at most five labels and every tested deletion index, deleting one level gives the inverse-coordinate shift in Lemma~\ref{lem:twist}, after discarding the finite prefix.
+\item For all subsets of a six-element universe and every possible single deletion, the integer phase increases by one, as in Lemma~\ref{lem:phase}.
+\item For $k=1$ with $2\le n\le5$, and for $(n,r,k)=(2,1,2)$, it enumerates all selector tables and verifies that no orbit under the specified cycle has length at most $k$. It also performs exact input-orbit constraint checks for $2\le n\le4$, $1\le r<n$, $1\le k\le3$, and every cycle power from $1$ through $k$. A short table orbit would be a nonempty invariant family of at most $k$ tables. These are finite instances of Lemma~\ref{lem:tables}.
+\item On a finite binary tree it verifies injectivity and level separation of the code, and verifies that two branches share sampled codes only before their first difference.
+\end{enumerate}
+
+The recorded run passed 47,454 twist identities, 12,288 integer-phase identities, 1,004 residue-set tests, an enumeration of 116 tables in 29 orbits, 36 exact orbit-constraint tests, and 32,640 pairs of binary branches. The proofs cover all finite sizes and the infinite set-theoretic conclusions; the script only tests the indicated finite instances. It performs no simulation of a measurable cardinal or an infinite free ultrafilter.
+
+The manuscript is built with pdfLaTeX, using the same \texttt{newpxtext}/\texttt{newpxmath} typography and Forest--Olive--Sage palette as the supplied source. Run pdfLaTeX twice, or use the accompanying build instructions. Font files are not included in the archive; the standard installed LaTeX packages supply them.
+
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{synthesis}
+\emph{Large cardinals at the inconsistency frontier: a synthesis}.
+Third edition, prepared for Vladimir Reshetnikov, 18 September 2026.
+User-supplied source \nolinkurl{docs/Large_Cardinals_Synthesis.tex} in \nolinkurl{Cardinals4.zip}.
+See the sections ``The exact finite-label classification,'' ``Measures hidden in rigid classes,'' and the final third-round questions. This is the research baseline, not a claim of external publication.
+
+\bibitem{plan}
+\emph{Large Cardinals Unified Report}.
+User-supplied research assessment,
+\nolinkurl{docs/Large_Cardinals_Unified_Report.tex}, in \nolinkurl{Cardinals4.zip}.
+Used for the original research scope and visual style.
+
+\bibitem{benhamou}
+Tom Benhamou.
+\emph{Prikry Forcing and Tree Prikry Forcing of Various Filters}.
+\arxiv{1801.04424v2}, revised 25 September 2018.
+Related publication: \doi{10.1007/s00153-019-00660-3}.
+Theorem 3.14, Corollary 3.15, Lemma 3.16, and Theorem 3.17 provide the classical forcing references used here.
+
+\bibitem{abgl}
+Juan Pablo Aguilera, Joan Bagaria, Gabriel Goldberg, and Philipp L\"ucke.
+\emph{Large cardinals beyond HOD}.
+\arxiv{2509.10254v1}, 12 September 2025.
+Used only for the comparison with exacting and ultraexacting consistency strengths, not as a source for the new constructions in this report.
+
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,857 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=13pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Forest}{HTML}{30392C}
+\definecolor{Olive}{HTML}{687144}
+\definecolor{Muted}{HTML}{65685F}
+\definecolor{Sage}{HTML}{CBD0BC}
+\definecolor{Pale}{HTML}{F2F4EB}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\PassOptionsToPackage{obeyspaces}{url}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{pdftitle={Vopenka reflection in hidden Prikry cores},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Predicate-extendibility, normal measures, and rank-correct inner models at ultraexacting cardinals},pdfkeywords={ultraexacting, Vopenka, predicate extendibility, HOD, normal measure, Prikry forcing}}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Forest}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Forest}}{\thesubsection}{.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Forest}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}LARGE CARDINALS AT THE INCONSISTENCY FRONTIER}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}CONTINUATION\quad 18 SEP 2026}
+\fancyfoot[L]{\small\color{Muted}Vop\v{e}nka reflection in hidden Prikry cores}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}Vop\v{e}nka reflection in hidden Prikry cores}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\tcbset{colback=Pale,colframe=Sage,colbacktitle=Sage,coltitle=Forest,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{question}[definition]{Question}
+\newtheorem{inputthm}{Input}
+\renewcommand{\theinputthm}{\Alph{inputthm}}
+\numberwithin{equation}{section}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\AC}{\mathsf{AC}}
+\newcommand{\GA}{\mathsf{GA}}
+\newcommand{\HOD}{\mathrm{HOD}}
+\newcommand{\OD}{\mathrm{OD}}
+\newcommand{\CD}{\mathrm{CD}}
+\newcommand{\HCD}{\mathrm{HCD}}
+\newcommand{\UF}{\mathrm{UF}}
+\newcommand{\Ex}{\operatorname{Ex}}
+\newcommand{\UEx}{\operatorname{UEx}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\SC}{\operatorname{SC}}
+\newcommand{\CEx}{\operatorname{CEx}}
+\newcommand{\REx}{\operatorname{REx}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\crit}{\operatorname{crit}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\ot}{\operatorname{ot}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\Izero}{\mathrm{I0}}
+\newcommand{\Itwo}{\mathrm{I2}}
+\newcommand{\Ithree}{\mathrm{I3}}
+\newcommand{\Iwf}{\mathrm{I3}_{\mathrm{wf}}(0)}
+\newcommand{\Sel}{\operatorname{Sel}}
+\newcommand{\FF}{\mathcal F}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\Clam}{\mathcal C_\lambda}
+\newcommand{\Rig}{\operatorname{Rig}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\ch}{\operatorname{ind}}
+\newcommand{\CF}{\mathsf{CF}}
+\newcommand{\src}[1]{\unskip\ {\normalfont\small\sffamily\color{Olive}[#1]}\ }
+\newcommand{\R}[1]{\textsf{R#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}{>{\centering\arraybackslash}p{.034\textwidth}}
+\newcommand{\yes}{$\bullet$}
+\newcommand{\prt}{$\circ$}
+\newcommand{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:\nolinkurl{#1}}}
+
+
+\newcommand{\Tail}{\operatorname{Tail}}
+\newcommand{\EA}[2]{E^{#1}_{#2}}
+\newcommand{\VP}{\mathsf{VP}}
+\newcommand{\PRM}{\mathsf{PRM}}
+\newcommand{\PRT}{\mathsf{PRT}}
+\newcommand{\tc}{\operatorname{tc}}
+\newcommand{\Sat}{\operatorname{Sat}}
+\newcommand{\Vop}{Vop\v{e}nka}
+\newcommand{\prelem}{\longrightarrow_{\mathrm{elem}}}
+\newcommand{\pair}[2]{\langle #1,#2\rangle}
+\newcommand{\substar}{\subseteq^{*}}
+\newcommand{\Ncore}{\HOD_{\{b,q\}}}
+\begin{document}
+\thispagestyle{empty}
+{\sffamily\bfseries\small\color{Olive}SET THEORY\quad /\quad RESEARCH CONTINUATION}
+
+\vspace{13pt}
+{\fontsize{28}{31}\selectfont\bfseries\color{Forest}\Vop\ reflection in\\ hidden Prikry cores\par}
+\vspace{10pt}
+{\fontsize{14}{18}\selectfont Predicate-extendibility, normal measures, and rank-correct\\ inner models at ultraexacting cardinals\par}
+\vspace{14pt}
+{\color{Muted}Prepared for Vladimir Reshetnikov\hfill 18 September 2026\par}
+\vspace{3pt}
+{\color{Sage}\hrule height .6pt}
+\vspace{12pt}
+
+\textbf{Abstract.}
+The supplied synthesis constructs, at an ultraexacting cardinal $\lambda$, a rank-correct inner model $N=\HOD_{\{b,q\}}$ in which the tail of a critical sequence induces a normal measure on $\lambda$. We strengthen the conclusion from concentration on measurable cardinals to \emph{predicate-extendibility for every predicate belonging to $N$}. For every $A\in\Pow(V_\lambda)^N$, the same critical sequence is eventually contained in the set of cardinals that are extendible below $\lambda$ for $A$. All bounded-rank embedding witnesses lie in $V_\lambda\subseteq N$. Consequently, $N$ regards $\lambda$ as a measurable \Vop\ cardinal, and its normal tail measure extends its \Vop\ filter.
+
+We also prove a parameter-removal consequence: if an exacting $\lambda$ satisfies $V_\lambda\subseteq\HOD$, then $\HOD$ regards $\lambda$ as a \Vop\ cardinal. Finally, we give an exact relative-consistency calibration for the strengthened trace principle by Prikry forcing, and exhibit a new predicate in the extension for which \emph{no} below-$\lambda$ predicate-extendible cardinal exists. The last observation makes the internal quantifier in the main theorem essential.
+
+\begin{assessment}{The new conclusion}
+There are $b,q,N,U$ such that
+\[
+ V_\lambda^N=V_\lambda,\qquad
+ N\models\text{``$U$ is a normal measure on $\lambda$''},
+\]
+and, simultaneously for every $A\in\Pow(V_\lambda)^N$,
+\[
+ E_A^N=\{\delta<\lambda:\delta\text{ is extendible below $\lambda$ for }A\}
+ \ \in U.
+\]
+Equivalently, for every such $A$, a tail of the critical sequence consists of members of $E_A^N$. The starting index may depend on $A$; the measure, the model, and the sequence do not.
+\end{assessment}
+
+\textbf{Status.} The predicate-reflection theorem and the strengthened trace calibration are the contributions of this continuation relative to the supplied synthesis. The proofs are conventional and have been checked here for parameter, rank, and model-absoluteness issues, but are not independently refereed or Lean-verified. No inconsistency of a standard large-cardinal axiom, no new optimal bound for ultraexactingness, and no worldwide priority claim is made.
+
+\newpage
+\tableofcontents
+
+\section{What is being strengthened}\label{sec:intro}
+
+The working source is the third-edition synthesis in the supplied archive \cite{source}, especially its Theorems~13.2--13.3 and~13.7. Its normal-trace theorem provides a normal measure on $\lambda$ in a parameter-HOD model, proves Prikry genericity of the critical sequence over that model, and obtains concentration on internally measurable cardinals. These conclusions are not themselves claimed as new here.
+
+The extra information available from the embeddings is substantially richer. If an elementary self-embedding of $V_\lambda$ preserves a predicate $A\subseteq V_\lambda$, then restrictions of its ordinary composition powers witness \emph{extendibility below $\lambda$ for $A$}. The difficulty is that an arbitrary $A\in N$ need not be preserved by the original embedding. We overcome that difficulty by applying the least-counterexample argument to the failure of \emph{eventual predicate-extendibility}, not by pretending that every ordinal-definable object is fixed.
+
+Two additional points are indispensable. First, a fixed bijection $b:\lambda\to V_\lambda$ ensures that the inner model contains the full ambient $V_\lambda$. Second, the definition of below-$\lambda$ predicate-extendibility uses only embeddings of bounded rank, so the relevant existence assertions are absolute between that inner model and the ambient universe. Without these points, an external rank embedding would not automatically witness an internal large-cardinal property.
+
+The predicate notion used here is standard: it is ``extendible below $\lambda$ for $A$'' in Brooke-Taylor's Definition~6 and Proposition~7 \cite{bt}. Our new assertion is the \emph{uniform normal-measure concentration} on all these sets in one hidden model. It strengthens, rather than replaces, the previously established normal-trace theorem.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\textwidth}{@{}P{.25\textwidth}YY@{}}
+\toprule
+\textbf{Feature}&\textbf{Supplied synthesis}&\textbf{This continuation}\\\midrule
+Internal measure&Normal tail measure on $\lambda$&Same measure, reconstructed with full parameter bookkeeping\\
+Concentration&Internally measurable cardinals&$E_A^N$ for every internal predicate $A\subseteq V_\lambda$\\
+Reflection at $\lambda$&Measurability in the hidden core&Measurable \Vop\ cardinal; extension of the \Vop\ filter\\
+Removing $q$&Measurability in ordinary HOD left open&\Vop\ conclusion in $\HOD_b$; in HOD under $V_\lambda\subseteq\HOD$\\
+Calibration&Normal traces from normal measures&Predicate-reflecting traces from predicate-reflecting normal measures\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The terminology ``hidden core'' refers to a definable inner model, not to a fine-structural core model. No comparison or iterability theorem for extender models is used.
+
+\section{Definitions and the main theorem}\label{sec:main}
+
+We work in $\ZFC$. Inner models are transitive classes containing all ordinals. All statements about elementary embeddings of \emph{set-sized} structures use the usual first-order satisfaction relation for such structures.
+
+\begin{definition}[Exacting and ultraexacting]\label{def:ex}
+A cardinal $\lambda$ is \emph{exacting} if for every cardinal $\theta>\lambda$ there exist $X\prec V_\theta$ and an elementary map $j:X\to V_\theta$ such that
+\[
+ V_\lambda\cup\{\lambda\}\subseteq X,\qquad j(\lambda)=\lambda,
+ \qquad j\restr\lambda\ne\id.
+\]
+It is \emph{ultraexacting} if the witnesses can additionally satisfy
+$e=j\restr V_\lambda\in X$.
+\end{definition}
+
+This is the formulation in \cite[\S2]{abgl}. We may choose $\theta$ to be a sufficiently correct cardinal. The finite amount of correctness actually needed is explained in Lemma~\ref{lem:least}; no truth predicate for the entire universe is assumed.
+
+\begin{definition}[Parameters and tail classes]\label{def:tail}
+For a fixed finite tuple $p$ of sets, $\OD_p$ permits $p$ and finitely many ordinals as parameters, and
+\[
+ \HOD_p=\{x:\tc(\{x\})\subseteq\OD_p\}.
+\]
+Each component of $p$ is permitted as \emph{one} parameter, not as a collection of separately available parameters.
+
+If $\cf(\lambda)=\omega$, let $D_\lambda$ consist of the cofinal subsets of $\lambda$ of order type $\omega$. Put
+\[
+ a=^*c\ \Longleftrightarrow\ |a\triangle c|<\omega,
+ \qquad q=[a]=\{c\in D_\lambda:c=^*a\}.
+\]
+Write $q\substar B$ if some, equivalently every, $a\in q$ satisfies $a\substar B$.
+A function $f:\lambda\to\lambda$ is \emph{eventually constant on $q$} if it is constant on a tail of any representative. It is \emph{eventually regressive on $q$} if $f(\alpha)<\alpha$ on such a tail.
+\end{definition}
+
+The model $\HOD_p$ satisfies $\ZFC$, including when $p\notin\HOD_p$. For clarity, the usual argument still applies with $p$ fixed: definability from $p$ and ordinals is closed under composition; the canonical definition codes provide a well-order of each set in the hereditary class; and relativizing each formula to that definable class verifies Separation and Replacement. The parameter need not itself be hereditarily definable. We will use this distinction for $q$.
+
+\begin{definition}[Predicate-extendibility below a height]\label{def:extend}
+Let $M$ be an inner model, let $\lambda$ be a limit cardinal of $M$, and let $A\in\Pow(V_\lambda^M)^M$. A cardinal $\delta<\lambda$ belongs to $E_A^M$ if, in $M$, for every $\eta$ with $\delta<\eta<\lambda$ there are $\zeta<\lambda$ and an elementary embedding
+\begin{equation}\label{eq:extend}
+ i:(V_\eta^M,\in,A\cap V_\eta^M)
+       \prelem (V_\zeta^M,\in,A\cap V_\zeta^M)
+\end{equation}
+with $\crit(i)=\delta$ and $i(\delta)>\eta$.
+For the ambient universe we write $E_A^V$.
+\end{definition}
+
+No embedding of all of $M$ is required. Both heights in \eqref{eq:extend} are strictly below $\lambda$. Nor is the assertion that $\delta$ is extendible in the \emph{whole} inner model $M$; the cutoff matters.
+
+\begin{definition}[\Vop\ cardinal]\label{def:vop}
+An inaccessible cardinal $\lambda$ in a model $M$ is a \emph{\Vop\ cardinal in $M$} if every set $\mathcal S\in M$ of cardinality $\lambda$ of structures in $V_\lambda^M$, in a common language belonging to $V_\lambda^M$, contains distinct structures with an elementary embedding from one to the other in $M$.
+\end{definition}
+
+\begin{theorem}[Predicate reflection in a hidden Prikry core]\label{thm:main}
+Let $\lambda$ be ultraexacting. There is a sufficiently correct witness $j:X\to V_\theta$, with
+\[
+ e=j\restr V_\lambda,\qquad \kappa=\crit(j),\qquad
+ \kappa_n=e^n(\kappa),\qquad a=\{\kappa_n:n<\omega\},
+\]
+and there is a bijection $b:\lambda\to V_\lambda$, such that, for $q=[a]$ and $N=\Ncore$:
+\begin{enumerate}
+\item $b,q\in X$, $j(b)=b$, $j(q)=q$, and $V_\lambda^N=V_\lambda$.
+\item The set
+\begin{equation}\label{eq:U}
+ U=\{B\in\Pow(\lambda)^N:q\substar B\}
+\end{equation}
+belongs to $N$, and $N$ regards $U$ as a nonprincipal normal $\lambda$-complete ultrafilter on $\lambda$.
+\item For every $A\in\Pow(V_\lambda)^N$,
+\begin{equation}\label{eq:concentration}
+ E_A^N=E_A^V\in U.
+\end{equation}
+In particular, there is $n_A<\omega$ such that $\kappa_n\in E_A^N$ for every $n\ge n_A$.
+\item $N$ regards $\lambda$ as a measurable \Vop\ cardinal. Its \Vop\ filter is contained in $U$.
+\item Every representative $c\in q$ is Prikry generic over $N$ for $U$. All such representatives generate the same extension $N[c]$, and
+\[
+ V_\lambda^{N[c]}=V_\lambda^N=V_\lambda.
+\]
+\end{enumerate}
+\end{theorem}
+
+Items~(1), (2), and (5) reconstruct the relevant part of the supplied synthesis. Item~(3) is the main strengthening; item~(4) is its structural-reflection consequence. Sections~\ref{sec:bookkeeping}--\ref{sec:filter} prove the theorem, with the standard Prikry inputs stated explicitly.
+
+\section{Fixed parameters and rank correctness}\label{sec:bookkeeping}
+
+\subsection{The critical sequence}
+
+\begin{lemma}[Normalization]\label{lem:normalization}
+For an exacting witness at a sufficiently high cardinal, $e=j\restr V_\lambda$ is elementary, its critical sequence has supremum $\lambda$, and
+\begin{equation}\label{eq:moved}
+ e(\alpha)>\alpha\quad(\kappa\le\alpha<\lambda).
+\end{equation}
+Its critical point and all the $\kappa_n$ are inaccessible. Thus $\lambda$ is a strong limit of cofinality $\omega$.
+\end{lemma}
+
+\begin{proof}
+Relativize formulas to the set $V_\lambda$, which is definable from the fixed ordinal $\lambda$. Because $V_\lambda\subseteq X$, the restriction is elementary; transitivity of $X$ is unnecessary.
+
+Put $\mu=\sup_n\kappa_n$. If $\mu<\lambda$, the critical sequence is a set in $V_\lambda$, and elementarity gives $e(\mu)=\mu$. Since $\lambda$ is an uncountable cardinal, $\mu+2<\lambda$. Restricting $e$ to $V_{\mu+2}$ contradicts the local form of Kunen's inconsistency theorem \cite{kunen,hkp}. Hence $\mu=\lambda$. If $\kappa_n\le\alpha<\kappa_{n+1}$, then
+$e(\alpha)\ge\kappa_{n+1}>\alpha$, proving \eqref{eq:moved}.
+
+The usual derived measure
+\[
+ U_\kappa=\{B\subseteq\kappa:\kappa\in e(B)\}
+\]
+is a normal measure on $\kappa$ in the ambient universe. All subsets of $\kappa$, their short sequences, and the computations used in this argument have rank below $\lambda$. For example, a sequence of fewer than $\kappa$ many members of $U_\kappa$ is sent to a sequence with the same index set, and $\kappa$ belongs to every image member; this proves completeness. For a regressive function, its image value at $\kappa$ is below $\kappa$ and hence fixed, proving normality. Nonprincipality follows because ordinals below $\kappa$ are fixed. It follows that $\kappa$ is inaccessible. This low-rank fact transfers to each $\kappa_n$ by $e$. Their cofinality in $\lambda$ gives the strong-limit assertion.
+\end{proof}
+
+\subsection{A fixed bijection, not an arbitrary enumeration}
+
+\begin{lemma}[Fixed rank coding]\label{lem:b}
+For an ultraexacting witness, there is a bijection $b:\lambda\to V_\lambda$ with $b\in X$ and $j(b)=b$.
+\end{lemma}
+
+\begin{proof}
+Choose a bijection $b_0:\kappa\to V_\kappa$. It exists because $\kappa$ is inaccessible, and $b_0\in V_\lambda\subseteq X$. Define
+\[
+ b_n=e^n(b_0):\kappa_n\longrightarrow V_{\kappa_n}.
+\]
+For $\alpha<\kappa$, both $\alpha$ and $b_0(\alpha)$ are fixed by $e$, so $b_1(\alpha)=b_0(\alpha)$. Thus $b_0\subseteq b_1$. Applying $e$ repeatedly gives $b_n\subseteq b_{n+1}$ for every $n$.
+
+Since $e,b_0\in X$, the uniquely defined $\omega$-iteration sequence $\langle b_n:n<\omega\rangle$ belongs to $X$. Its union
+\[
+ b=\bigcup_{n<\omega}b_n
+\]
+is in $X$, is a function, and is a bijection from $\lambda$ onto $V_\lambda$. Indeed, its domains and ranges exhaust those sets, and its constituent bijections are nested.
+
+For every $n$, the set $b_n$ has rank below $\lambda$, so $j(b_n)=e(b_n)=b_{n+1}$. Since $j$ fixes $\omega$ pointwise and the sequence belongs to $X$,
+\[
+ j(b)=\bigcup_{n<\omega}b_{n+1}=b.
+\]
+The argument uses ordinary composition of $e$, not the application operation in the algebra of rank-into-rank embeddings. It is a bijection version of the fixed-well-order construction in \cite[proof of Proposition~3.9]{abgl}.
+\end{proof}
+
+\begin{lemma}[The fixed tail class and its model]\label{lem:q}
+For $a=\{\kappa_n:n<\omega\}$ and $q=[a]$, one has
+\[
+ a,q\in X,\quad j(a)=a\setminus\{\kappa\},\quad j(q)=q.
+\]
+If $N=\Ncore$, then $V_\lambda^N=V_\lambda$. Moreover, for every $A\subseteq V_\lambda$,
+\begin{equation}\label{eq:ODHOD}
+ A\in N\quad\Longleftrightarrow\quad A\in\OD_{\{b,q\}}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The critical sequence and its range are definable from $e$, so are in $X$. Its image is its shift because $j$ fixes the natural-number indices. The quotient class is definable from $a,\lambda$ and the relation of finite symmetric difference. Elementarity therefore gives $j(q)=[j(a)]=[a]$.
+
+For each $x\in V_\lambda$, some ordinal $\alpha<\lambda$ satisfies $x=b(\alpha)$. Thus every element of $V_\lambda$ is ordinal definable from $b$, and the same holds for every member of its transitive closure. Consequently $V_\lambda\subseteq\HOD_{\{b\}}\subseteq N$. Transitivity of $N$ gives rank agreement. If $A\subseteq V_\lambda$ is ordinal definable from $b,q$, all the other members of $\tc(\{A\})$ already belong to $V_\lambda$ and are hereditarily ordinal definable from $b$. This proves the nontrivial implication in \eqref{eq:ODHOD}.
+\end{proof}
+
+\subsection{Why one sufficiently correct witness suffices}
+
+\begin{lemma}[Uniform least-counterexample bookkeeping]\label{lem:least}
+Fix a finite list of first-order formulas $\Phi(x,\lambda,p)$. A sufficiently correct cardinal $\theta$ can be chosen \emph{before} the ultraexacting witness so that the following holds. If $p\in X$, $j(p)=p$, and there is an $\OD_p$ object satisfying one of the formulas, then its canonical least such object is in $X$ and is fixed by $j$, whenever that object has rank below $\theta$.
+\end{lemma}
+
+\begin{proof}
+The class $\OD_p$ has a uniformly definable, set-like canonical well-order: use the least ordinal code for a rank $V_\xi$, a formula, and an ordinal-parameter tuple that uniquely defines the object over that rank with the additional fixed parameter $p$. Satisfaction for $V_\xi$ is a set satisfaction relation. Ordering codes first by a bound on their ordinals and then by the finite syntactic data gives a set-like well-order. Each ordinal-definable object has a least code.
+
+For each formula in the finite list, ``$x$ is the canonical least $\OD_p$ object satisfying $\Phi(x,\lambda,p)$'' is therefore a single first-order formula. Choose a finite collection of these formulas, their uniqueness assertions, and the subsidiary definitions, and then choose a cardinal $\theta$ reflecting that collection. Equivalently, choose a $\Sigma_m$-correct cardinal for some sufficiently large fixed finite $m$. Such correctness is uniform for \emph{all} parameters in $V_\theta$, not just for parameters chosen before $\theta$.
+
+Let $x$ be a least object in one application. By correctness it is the same unique object defined in $V_\theta$ from $\lambda,p$. Since those parameters are in $X\prec V_\theta$, elementarity puts $x$ in $X$. Applying $j$ to the same definition and using $j(\lambda)=\lambda$, $j(p)=p$, gives $j(x)=x$ by uniqueness.
+
+The applications below use only three bad-object predicates: a splitting subset of $\lambda$; an eventually regressive function that is not eventually constant; and a predicate whose extendibility set does not contain a tail of $q$. Each is first-order expressible, uniformly in the fixed parameters. The last uses uniform satisfaction for set-sized structures, not satisfaction for $V$. All candidate objects have rank below $\lambda+\omega<\theta$. This verifies both the finiteness and the rank hypotheses.
+\end{proof}
+
+\begin{assessment}{What this lemma does not say}
+It does not say that $j$ fixes every object of $\OD_{\{b,q\}}$. Its ordinal parameters may move. Only a canonical least \emph{counterexample to a fixed definable assertion} is guaranteed to be fixed. Also, ``a tail of $q$'' is expressible from $q$ alone; the representative $a$, which $j$ shifts, is not inserted as an extra fixed parameter.
+\end{assessment}
+
+\section{Reconstructing the normal tail measure}\label{sec:measure}
+
+This section supplies the earlier trace argument in the precise model needed for the new theorem. Put $p=\pair bq$ and choose the witness with the correctness specified in Lemma~\ref{lem:least}.
+
+\begin{lemma}[Tail decisions and regressive constancy]\label{lem:decide}
+Every $B\in\OD_p\cap\Pow(\lambda)$ satisfies exactly one of
+\[
+ q\substar B,\qquad q\substar(\lambda\setminus B).
+\]
+Every $f\in\OD_p$ that is a function $\lambda\to\lambda$ and is eventually regressive on $q$ is eventually constant on $q$.
+\end{lemma}
+
+\begin{proof}
+Suppose a splitting set exists and let $B$ be the canonical least one. Lemma~\ref{lem:least} gives $B\in X$ and $j(B)=B$. Hence, for every $n$,
+\[
+ \kappa_n\in B\quad\Longleftrightarrow\quad
+ j(\kappa_n)\in j(B)\quad\Longleftrightarrow\quad\kappa_{n+1}\in B.
+\]
+Membership is constant on the entire critical sequence, contradicting the choice of $B$. The two eventual alternatives cannot both hold because $a$ is infinite.
+
+Now suppose a bad regressive function exists and choose the canonical least $f$. It is in $X$ and fixed. For every $n$,
+\begin{equation}\label{eq:frecur}
+ f(\kappa_{n+1})=j(f(\kappa_n))=e(f(\kappa_n)).
+\end{equation}
+Moreover, $f(\kappa_n)<\kappa_n$ holds if and only if it holds at $n+1$, by elementarity. Since it holds eventually, it holds already at $n=0$. The value $f(\kappa)<\kappa$ is fixed by $e$. Equation~\eqref{eq:frecur} now implies that all values along $a$ equal $f(\kappa)$, a contradiction.
+
+The backward propagation of regressivity is important: eventual regressivity cannot simply be replaced by regressivity at the first critical point without this argument.
+\end{proof}
+
+\begin{proposition}[Internal normality]\label{prop:U}
+The set $U$ in \eqref{eq:U} belongs to $N$ and is, in $N$, a nonprincipal normal $\lambda$-complete ultrafilter on $\lambda$. In particular $N$ regards $\lambda$ as measurable and inaccessible.
+\end{proposition}
+
+\begin{proof}
+The class $N$ is definable from $b,q$. Thus $U$ is ordinal definable from $b,q$ and is a set, being a subcollection of $\Pow(\lambda)$. Every member of $U$ lies in $N$, so every member of its transitive closure is hereditarily ordinal definable from $b,q$. Therefore $U\in N$.
+
+Tail containment is upward closed and closed under finite intersections. Lemma~\ref{lem:decide}, applied using \eqref{eq:ODHOD}, proves that $U$ decides every subset of $\lambda$ belonging to $N$. No bounded subset lies in $U$, and every final segment belongs to $U$, because $a$ is cofinal in $\lambda$. In particular, $U$ is nonprincipal and uniform in $N$.
+
+For completeness, let $\mu<\lambda$ and let $\langle B_\xi:\xi<\mu\rangle\in N$ be a sequence of members of $U$. Define in $N$
+\[
+ f(\alpha)=
+ \begin{cases}
+ \min\{\xi<\mu:\alpha\notin B_\xi\},&\text{if this set is nonempty},\\
+ \mu,&\text{otherwise}.
+ \end{cases}
+\]
+The range is bounded below $\lambda$, so $f$ is eventually regressive on $q$. It is ordinal definable from $p$, since it belongs to $N$. By Lemma~\ref{lem:decide}, it has an eventual value $\xi\le\mu$. If $\xi<\mu$, a tail of $a$ misses $B_\xi$, contradicting $B_\xi\in U$. Hence the eventual value is $\mu$, and
+$q\substar\bigcap_{\xi<\mu}B_\xi$. This is exactly the internal completeness assertion.
+
+For normality, take $B\in U$ and a regressive $f:B\to\lambda$ in $N$, disregarding $0$ if necessary. Extend it by $0$ off $B$. Its extension is eventually regressive on $q$, so is constant with some value $\beta$ on a tail. Intersect that tail with $B$. The fibre $\{\alpha\in B:f(\alpha)=\beta\}$ belongs to $U$, as required.
+
+Finally, $\lambda$ remains a cardinal in $N$, since a bijection in an inner model would also be one in $V$. A nonprincipal $\lambda$-complete ultrafilter on this uncountable cardinal makes it measurable in $N$. Its regularity also follows directly: a short cofinal sequence in $N$ would yield fewer than $\lambda$ final segments in $U$ with empty intersection, contrary to the proved completeness. The strong-limit property follows either from measurability or from rank agreement and Lemma~\ref{lem:normalization}.
+\end{proof}
+
+\begin{remark}[Internal is not external]\label{rem:internal}
+Although every $\lambda\setminus(\kappa_n+1)$ belongs to $U$, their external countable intersection is empty. Thus $U$ is not countably complete with respect to arbitrary sequences in $V$. That particular sequence of sets does not belong to $N$. There is no contradiction between the preceding proposition and $\cf^V(\lambda)=\omega$.
+\end{remark}
+
+\section{The predicate-reflection argument}\label{sec:predicate}
+
+\subsection{Absoluteness of the witnesses}
+
+\begin{lemma}[Bounded-rank absoluteness]\label{lem:absolute}
+Suppose $M\subseteq V$ is an inner model and $V_\lambda^M=V_\lambda$, where $\lambda$ is a limit cardinal in both models. If $A\in\Pow(V_\lambda)^M$, then
+\[
+ E_A^M=E_A^V.
+\]
+The assertion remains true when $\lambda$ is singular in $V$.
+\end{lemma}
+
+\begin{proof}
+For every $\eta<\lambda$ the two models have exactly the same set $V_\eta$ and exactly the same predicate $A\cap V_\eta$. Cardinalhood below $\lambda$ agrees as well: a function witnessing a failure of cardinalhood has bounded rank and belongs to the common $V_\lambda$.
+
+For $\eta,\zeta<\lambda$, every function from $V_\eta$ to $V_\zeta$ has graph of rank at most $\max(\eta,\zeta)+c$ for a fixed finite coding constant $c$. This is below $\lambda$. Consequently every possible embedding witness belongs to $V_\lambda^M$, and conversely no internal witness is missing externally.
+
+Satisfaction for these set structures is absolute. More explicitly, induct on the finite construction of each formula: atomic truth uses the same relations; Boolean operations agree; and an existential quantifier ranges over the same underlying set in both models. Both models have the same finite formulas and tuples. Hence elementarity, critical point, and the inequality $i(\delta)>\eta$ agree for each candidate graph. Quantifying over the same ordinals $\eta,\zeta<\lambda$ proves the equality.
+\end{proof}
+
+\subsection{One preserved predicate gives an entire critical sequence}
+
+\begin{lemma}[Orbit amplification for predicates]\label{lem:orbit}
+If $A\subseteq V_\lambda$, $A\in X$, and $j(A)=A$, then
+\[
+ e:(V_\lambda,\in,A)\prelem(V_\lambda,\in,A)
+ \quad\text{and}\quad \kappa_n\in E_A^V\ \ (n<\omega).
+\]
+\end{lemma}
+
+\begin{proof}
+For any formula in the language with an extra unary predicate, relativize every set quantifier to $V_\lambda$ and interpret that predicate by $A$. These are ordinary set-theoretic formulas with parameters $A,\lambda$. Both parameters are fixed; $V_\lambda\subseteq X$; and the tuple being tested is in $X$. The elementarity of $X\prec V_\theta$ and of $j$ therefore proves elementarity of the displayed expanded-structure map.
+
+Fix $\eta$ with $\kappa<\eta<\lambda$. Choose $m<\omega$ with $\kappa_m>\eta$. The ordinary composition power $e^m$ is elementary for the same predicate, so relativizing once more gives
+\[
+ e^m\restr V_\eta:
+ (V_\eta,\in,A\cap V_\eta)
+ \prelem
+ (V_{e^m(\eta)},\in,A\cap V_{e^m(\eta)}).
+\]
+Its critical point is $\kappa$, its image of $\kappa$ is $\kappa_m>\eta$, and its target height is below $\lambda$. This proves $\kappa\in E_A^V$.
+
+There is a single first-order formula $\operatorname{Ext}(\delta)$ in the expanded structure $(V_\lambda,\in,A)$ expressing this property. It quantifies over ordinal heights and set-coded maps and uses the uniform satisfaction relation for the bounded-rank structures in question. All these codes and their satisfaction relations have rank below $\lambda$. Thus
+\[
+ (V_\lambda,\in,A)\models\operatorname{Ext}(\delta)
+ \quad\Longleftrightarrow\quad\delta\in E_A^V.
+\]
+Elementarity of $e$ transfers $\operatorname{Ext}(\kappa)$ successively to $\operatorname{Ext}(\kappa_n)$. This proves the assertion for every $n$, without falsely claiming that a composition power of $e$ has critical point $\kappa_n$.
+\end{proof}
+
+\begin{theorem}[Every internal predicate is eventually reflected]\label{thm:tailE}
+For the single model $N$, class $q$, and measure $U$ already constructed,
+\[
+ \forall A\in\Pow(V_\lambda)^N\quad E_A^N=E_A^V\in U.
+\]
+\end{theorem}
+
+\begin{proof}
+Call a predicate $A\subseteq V_\lambda$ \emph{bad} if
+\[
+ A\in\OD_{\{b,q\}}\quad\text{and}\quad
+ \neg\bigl(q\substar E_A^V\bigr).
+\]
+This is a first-order property of $A,\lambda,b,q$. It does not refer to the particular representative $a$ or require that $a$ be fixed.
+
+Suppose a bad predicate exists, and take the canonical least one. Lemma~\ref{lem:least} gives $A\in X$ and $j(A)=A$. Lemma~\ref{lem:orbit} then shows that \emph{every} $\kappa_n$ belongs to $E_A^V$. Since $a\in q$, this contradicts badness. Therefore no bad predicate exists.
+
+By \eqref{eq:ODHOD}, every predicate in $\Pow(V_\lambda)^N$ was included in this argument. Lemma~\ref{lem:absolute} identifies its internal extendibility set with $E_A^V$. This set belongs to $N$, by Separation in $N$ applied to Definition~\ref{def:extend}. Tail containment and \eqref{eq:U} now give $E_A^N\in U$.
+\end{proof}
+
+\begin{assessment}{Where the strengthening occurs}
+The earlier normal-trace argument applies the least-counterexample method to subsets of $\lambda$ and regressive functions. The new application is to the \emph{failure of predicate-extendibility on a tail}. The preserved least bad predicate activates rank-into-rank elementarity in its expanded language; bounded-rank absoluteness then puts every resulting witness inside the hidden model.
+\end{assessment}
+
+\section{\Vop\ reflection and the normal measure}\label{sec:filter}
+
+\subsection{A direct proof of the \Vop\ consequence}
+
+\begin{proposition}[The core sees a measurable \Vop\ cardinal]\label{prop:VP}
+$N\models$ ``$\lambda$ is a measurable \Vop\ cardinal.''
+\end{proposition}
+
+\begin{proof}
+Measurability and inaccessibility were proved in Proposition~\ref{prop:U}. Work inside $N$. Let $\mathcal S\subseteq V_\lambda$ be a set of $\lambda$ many structures in a common language $L\in V_\lambda$.
+
+Use a finite-tag coding to put $\mathcal S$ and $L$ into a single predicate $A\subseteq V_\lambda$. For example, use pairs $\pair0M$ for $M\in\mathcal S$ and the marked object $\pair1L$. All these codes have rank below $\lambda$, and $A\in N$. By Theorem~\ref{thm:tailE} and the uniformity of $U$, choose $\delta\in E_A^N$ with $\delta>\rank(L)+\omega$.
+
+The ranks of the structures in $\mathcal S$ are unbounded in $\lambda$: otherwise the whole family would lie in some $V_\rho$ of cardinality less than $\lambda$. Choose $M\in\mathcal S$ with $\rank(M)\ge\delta$, and then choose $\eta<\lambda$ exceeding $\rank(M)+\omega$. Let $i$ witness the $\eta$-extendibility of $\delta$ for $A$.
+
+Predicate preservation gives $i(M)\in\mathcal S$, and $i$ fixes $L$ pointwise because $L\in V_\delta$. The usual relativization of satisfaction to the structure $M$ shows that $i\restr\operatorname{dom}(M)$ is an elementary $L$-embedding from $M$ to $i(M)$. The height margin ensures that all relevant structure and satisfaction codes are available in the source and target ranks. Moreover,
+\[
+ \rank(i(M))=i(\rank(M))\ge i(\delta)>\eta>\rank(M),
+\]
+so the two structures are distinct. The graph of the restricted map has rank below $\lambda$ and belongs to $N$. This proves the required internal instance of \Vop's principle.
+\end{proof}
+
+\subsection{Extension of the standard \Vop\ filter}
+
+We specify the standard natural-sequence description of the filter to avoid an ambiguity about which reflection filter is meant; see \cite[\S5]{perlmutter} and \cite[\S2.2]{poveda}. In an inaccessible $\lambda$, a natural sequence consists of structures
+\[
+ \vec{\mathcal M}=\langle\mathcal M_\alpha:\alpha<\lambda\rangle,
+ \qquad
+ \mathcal M_\alpha=(V_{h(\alpha)},\in,\{\alpha\},R_\alpha),
+\]
+where $h:\lambda\to\lambda$ is nondecreasing, $h(\alpha)>\alpha$, and $R_\alpha\subseteq V_{h(\alpha)}$ is a unary relation in the common finite language. A set $B\subseteq\lambda$ is in the \Vop\ filter $\mathcal F_{\mathrm{VP}}$ if some such sequence witnesses that every elementary embedding between distinct increasing-index members has its critical point in $B$.
+
+\begin{proposition}[The tail measure contains the \Vop\ filter]\label{prop:filter}
+Inside $N$,
+\[
+ \mathcal F_{\mathrm{VP}}\subseteq U.
+\]
+\end{proposition}
+
+\begin{proof}
+Work in $N$, and let $B\in\mathcal F_{\mathrm{VP}}$ be witnessed by $\vec{\mathcal M}$. Encode its graph by the predicate
+\[
+ A=\{\pair\alpha{\mathcal M_\alpha}:\alpha<\lambda\}\subseteq V_\lambda.
+\]
+Take $\delta\in E_A^N$. Choose $\eta<\lambda$ large enough that $\delta$, $\mathcal M_\delta$, and their coding and satisfaction apparatus have rank below $\eta$, and choose a witnessing $i$ with critical point $\delta$ and $i(\delta)>\eta$.
+
+Preservation of the graph predicate gives
+$i(\mathcal M_\delta)=\mathcal M_{i(\delta)}$. Therefore the restriction of $i$ to the underlying universe of $\mathcal M_\delta$ is an elementary embedding
+\[
+ \mathcal M_\delta\prelem\mathcal M_{i(\delta)}.
+\]
+Its critical point is exactly $\delta$, since the universe contains $\delta$ and every smaller ordinal. The indices are increasing and distinct. By the defining property of the witness sequence, $\delta\in B$. Hence $E_A^N\subseteq B$. Theorem~\ref{thm:tailE} gives $E_A^N\in U$, and upward closure proves $B\in U$.
+\end{proof}
+
+The existence of normal measures extending a \Vop\ filter is not a new notion of strength: such extensions are studied, for example, in \cite[Lemma~2.11]{poveda}. What is obtained here is a specific such extension, namely the critical-tail measure in the rank-correct parameter-HOD core. We do not identify the consistency strength of the stronger, explicitly quantified property \eqref{eq:concentration} with any shorter standard name.
+
+\subsection{Simultaneous reflection}
+
+\begin{corollary}[Internal diagonal reflection]\label{cor:diagonal}
+If $\langle A_\xi:\xi<\lambda\rangle\in N$ is a sequence of subsets of $V_\lambda$, then
+\[
+ D=\{\delta<\lambda:\forall\xi<\delta\ (\delta\in E_{A_\xi}^N)\}\in U.
+\]
+Consequently, a tail of $a$ belongs to $D$. For a family in $N$ of length $\mu<\lambda$, the ordinary intersection $\bigcap_{\xi<\mu}E_{A_\xi}^N$ belongs to $U$.
+\end{corollary}
+
+\begin{proof}
+The ordinary-intersection assertion is completeness. For the diagonal assertion, if $\lambda\setminus D\in U$, send each $\delta$ there to the least $\xi<\delta$ with $\delta\notin E_{A_\xi}^N$. This function is regressive in $N$. Normality gives a constant fibre in $U$, contradicting $E_{A_\xi}^N\in U$ for that constant $\xi$. Thus $D\in U$, and its external tail containment follows from the definition of $U$.
+\end{proof}
+
+\begin{proposition}[One embedding can handle all earlier predicates]\label{prop:simultaneous}
+For the sequence in Corollary~\ref{cor:diagonal}, there is $D'\in U$ such that for every $\delta\in D'$, every $\beta$ with $\delta<\beta<\lambda$ admits an elementary rank embedding $i:V_\beta\to V_\gamma$, with $\gamma<\lambda$, $\crit(i)=\delta$, and $i(\delta)>\beta$, which preserves \emph{each} predicate $A_\xi$ for $\xi<\delta$ on the source and target ranks.
+\end{proposition}
+
+\begin{proof}
+Code the whole family by
+$B=\{\pair\xi x:\xi<\lambda,\ x\in A_\xi\}\subseteq V_\lambda$, a predicate in $N$, and take $D'=E_B^N\in U$. For $\delta\in D'$ and $\beta>\delta$, first choose $\eta$ with $\beta+\omega<\eta<\lambda$, and then take an $\eta$-extendibility embedding $k$ for $B$. Restrict $k$ to $V_\beta$ and put $\gamma=k(\beta)$.
+
+For every $\xi<\delta$, $k(\xi)=\xi$. The predicate $A_\xi$ on $V_\beta$ is definable from $B$ and $\xi$ by the membership condition $\pair\xi x\in B$. The extra rank margin places these pair codes in the larger source and target structures. Relativizing formulas with this definition proves elementarity for each $A_\xi$, using the same restricted map. Its graph belongs to $V_\lambda\subseteq N$.
+\end{proof}
+
+\section{What remains when the tail parameter is removed}\label{sec:remove}
+
+\begin{corollary}[Removing $q$, while retaining $b$]\label{cor:HODb}
+For the fixed bijection supplied by Theorem~\ref{thm:main},
+\[
+ \HOD_{\{b\}}\models\text{``$\lambda$ is a \Vop\ cardinal.''}
+\]
+\end{corollary}
+
+\begin{proof}
+Put $H=\HOD_{\{b\}}$. Then $H\subseteq N$ and $V_\lambda^H=V_\lambda$. Since $\lambda$ is regular in $N$, it is regular in $H$; a short cofinal sequence in $H$ would also be in $N$. Strong-limitness transfers by rank agreement. Thus $\lambda$ is inaccessible in $H$.
+
+Let $A\in\Pow(V_\lambda)^H$. It belongs to $N$, and Lemma~\ref{lem:absolute} gives $E_A^H=E_A^N$. This set is unbounded in $\lambda$, since it lies in the uniform measure $U$. The direct proof of Proposition~\ref{prop:VP} therefore works in $H$: all its finite-rank coding and embedding witnesses lie in the common $V_\lambda$. No claim that $U\in H$ is used or needed.
+\end{proof}
+
+\begin{theorem}[Ordinary exactingness under rank correctness of HOD]\label{thm:ordinary}
+If $\lambda$ is exacting and $V_\lambda\subseteq\HOD$, then
+\[
+ \HOD\models\text{``$\lambda$ is a \Vop\ cardinal.''}
+\]
+More precisely, for every $A\in\Pow(V_\lambda)^{\HOD}$, the set $E_A^{\HOD}$ is unbounded in $\lambda$.
+\end{theorem}
+
+\begin{proof}
+Let $H=\HOD$. Rank agreement is the stated hypothesis. We first verify regularity in $H$, using the standard argument underlying \cite[Theorem~2.10]{abl}. If a cofinal map $f:\mu\to\lambda$ with $\mu<\lambda$ belongs to HOD, take the canonical least ordinal-definable pair $(\mu,f)$ with this property. Choose an exacting witness at a height reflecting this least-object definition. Then $\mu,f\in X$ and both are fixed.
+
+By Lemma~\ref{lem:normalization}, the only fixed ordinals below $\lambda$ are below $\kappa$, so $\mu<\kappa$. For every $\xi<\mu$, elementarity gives $j(f(\xi))=f(\xi)$. Hence the entire range of $f$ lies below $\kappa$, contradicting cofinality. This proves regularity. Strong-limitness and rank agreement make $\lambda$ inaccessible in $H$.
+
+Suppose that some $A\in\Pow(V_\lambda)^H$ has $E_A^V$ bounded in $\lambda$. Since $V_\lambda\subseteq H$, membership in $H$ for subsets of $V_\lambda$ is equivalent to ordinal definability. Take the canonical least such bad $A$ and choose an exacting witness at a height reflecting its definition. Then $A\in X$ and $j(A)=A$.
+
+Lemma~\ref{lem:orbit} applies to this witness: its proof used $e=j\restr V_\lambda$, but did not require $e\in X$. Thus every member of its critical sequence belongs to $E_A^V$, contradicting boundedness. By Lemma~\ref{lem:absolute}, $E_A^H=E_A^V$. Finally the direct argument of Proposition~\ref{prop:VP}, now choosing a member of an unbounded extendibility set above the language rank, proves the \Vop\ assertion in $H$.
+\end{proof}
+
+The theorem does \emph{not} remove the hypothesis $V_\lambda\subseteq\HOD$, and it does \emph{not} produce a measure on $\lambda$ in HOD. The parameter-removal question concerning measurability in the supplied synthesis therefore remains open. The rank-correctness hypothesis is compatible with ultraexactingness by the coding preservation theorem of \cite[Proposition~3.9]{abgl}; that compatibility is an imported result, not an extra forcing construction proved here.
+
+\section{Prikry cores and an exact trace calibration}\label{sec:consistency}
+
+\subsection{The Prikry input and completion of the main theorem}
+
+We use the following standard facts about Prikry forcing, with the normal-measure convention. A condition in $\PP_U$ is $(s,B)$, where $s$ is a finite increasing sequence from $\lambda$, $B\in U$, and every member of $B$ is above the stem. An extension lengthens the stem with points of $B$ and shrinks the remaining measure-one set; a direct extension leaves the stem unchanged.
+
+\begin{inputthm}[Prikry and Mathias]\label{in:prikry}
+In a model $W\models\ZFC$ with a normal measure $U$ on $\lambda$, Prikry forcing preserves cardinals, changes $\cf(\lambda)$ to $\omega$, and adds no bounded subsets of $\lambda$. An increasing cofinal $\omega$-sequence $c$ in an outer model is Prikry generic over $W$ for $U$ exactly when $c\substar B$ for every $B\in U$.
+\end{inputthm}
+
+The genericity criterion is Mathias' theorem \cite{mathias}; the preservation facts are the standard Prikry theorem \cite{prikry,benhamou}. These are the only forcing inputs. In particular, we do not assume homogeneity of the \emph{generic sequence}; the relative homogeneity needed below is proved separately for its finite-change class.
+
+\begin{proof}[Completion of Theorem~\ref{thm:main}]
+The fixed-parameter, measure, and predicate assertions are Lemmas~\ref{lem:b}--\ref{lem:q}, Proposition~\ref{prop:U}, Theorem~\ref{thm:tailE}, and Propositions~\ref{prop:VP}--\ref{prop:filter}.
+
+For $c\in q$, every $B\in U$ contains a tail of $c$ by definition. Apply Input~\ref{in:prikry} in $N$. This makes $c$ Prikry generic over $N$. Finite modifications of a set of ordinals are interdefinable using the finite symmetric difference, which belongs to $N$. Hence $N[c]=N[a]$ for every $c\in q$.
+
+The Prikry theorem adds no bounded subsets of $\lambda$. In a model where $\lambda$ is inaccessible, this implies that $V_\lambda$ is unchanged: at each $\rho<\lambda$ the ground-model $V_\rho$ has size less than $\lambda$, so a new subset of it would code a new bounded subset of $\lambda$ using a ground-model enumeration. An induction on $\rho$ gives rank agreement. Thus $V_\lambda^{N[c]}=V_\lambda^N=V_\lambda$.
+\end{proof}
+
+\subsection{Two explicit principles}
+
+The following notation is local to this article. It avoids silently equating the main theorem with the weaker assertion that a cardinal is both measurable and \Vop.
+
+\begin{definition}[Predicate-reflecting measure and trace]\label{def:principles}
+The principle $\PRM$ asserts that there are an inaccessible $\kappa$ and a nonprincipal normal measure $U$ on $\kappa$ such that
+\[
+ \forall A\subseteq V_\kappa\quad E_A^V\in U.
+\]
+The principle $\PRT$ asserts that there are a strong limit cardinal $\lambda$ of cofinality $\omega$, a bijection $b:\lambda\to V_\lambda$, and $q\in D_\lambda/{=^*}$ such that, with $N=\Ncore$, the tail set $U$ from \eqref{eq:U} belongs to $N$, is a normal measure on $\lambda$ there, and satisfies
+\[
+ \forall A\in\Pow(V_\lambda)^N\quad E_A^N\in U.
+\]
+\end{definition}
+
+Both are first-order assertions of set theory using definable class relativization for $N$. The bijection in $\PRT$ automatically implies $V_\lambda^N=V_\lambda$, as in Lemma~\ref{lem:q}; no hidden extra rank-correctness axiom is being suppressed.
+
+\begin{theorem}[Exact calibration of the strengthened trace]\label{thm:calibration}
+Over $\ZFC$, $\PRM$ and $\PRT$ are equiconsistent. More precisely:
+\begin{enumerate}
+\item A model of $\ZFC+\PRT$ has the definable inner model $N\models\ZFC+\PRM$.
+\item If $W\models\ZFC+\PRM$ and $c$ is Prikry generic for a witnessing normal measure, then $W[c]\models\PRT$.
+\end{enumerate}
+Consequently,
+\[
+ \Con(\ZFC+\PRT)\ \Longleftrightarrow\ \Con(\ZFC+\PRM),
+\]
+and Theorem~\ref{thm:main} gives
+\[
+ \Con(\ZFC+\exists\lambda\,\UEx(\lambda))
+ \ \Longrightarrow\ \Con(\ZFC+\PRM).
+\]
+\end{theorem}
+
+\subsection{The relative homogeneity lemma}
+
+\begin{lemma}[Finite-stem changes preserve the class parameter]\label{lem:cones}
+Let $W$ carry a normal measure $U$ on $\kappa$, let $c$ be Prikry generic, and let $q=[c]$ in $W[c]$. Every set of ordinals ordinal definable in $W[c]$ from $q$ and finitely many ground-model parameters belongs to $W$. In particular, for every $b\in W$,
+\[
+ \HOD^{W[c]}_{\{b,q\}}\subseteq W.
+\]
+\end{lemma}
+
+\begin{proof}
+Given two conditions $(s,B)$ and $(t,C)$, choose
+$D\in U$ contained in $B\cap C$ and lying above both stems. The cones below $(s,D)$ and $(t,D)$ are isomorphic by
+\[
+ (s^\frown u,E)\longmapsto(t^\frown u,E).
+\]
+The finite additional stem $u$ and the remaining measure-one set $E$ are unchanged. A generic branch on either side has the same infinite tail as its transported branch on the other side, so their finite-change classes are identical. Ground-model parameters and ordinals are also preserved.
+
+It follows that no two conditions can force opposite answers to a sentence whose only non-ground parameter is the canonical name for $q$. For if they did, direct extensions with the displayed isomorphism would preserve both the sentence and the forcing relation, a contradiction. The set of conditions deciding any sentence is dense, so each such sentence is decided by the top condition.
+
+Let $z\subseteq\gamma$ be defined from $q$, ground-model parameters, and ordinals. For every $\alpha<\gamma$, apply the preceding argument to the formula defining $\alpha\in z$. The forcing theorem then gives in $W$ the set
+\[
+ \{\alpha<\gamma:1_{\PP_U}\Vdash\text{the defining membership formula at }\alpha\},
+\]
+which is exactly $z$. When the original definition uses a unique set, the assertion of that uniqueness is also invariant under these cone isomorphisms, so is forced by the top condition as soon as it holds in the given generic extension.
+
+To pass from ordinal sets to arbitrary $x\in\HOD^{W[c]}_{\{b,q\}}$, take the canonical $\OD_{\{b,q\}}$ well-order of $\tc(\{x\})$. Both this well-order and its order-isomorphism with some ordinal $\tau$ are ordinal definable from $b,q$, since $x$ is. Code the transported membership relation on $\tau$ and the index of $x$ as a set of ordinals, for example using ordinal multiplication to code pairs from $\tau^2$. The first part puts the code in $W$. It is well-founded and extensional in $W$, since it is so in the outer model. Its Mostowski collapse in $W$ agrees with the outer collapse by uniqueness. The element at the distinguished index is $x$, so $x\in W$.
+\end{proof}
+
+\subsection{Proof of the calibration}
+
+\begin{proof}[Proof of Theorem~\ref{thm:calibration}]
+For the lower implication, let $\lambda,b,q$ witness $\PRT$. The model $N=\Ncore$ satisfies $\ZFC$, has a normal measure $U$ on $\lambda$, and satisfies the universally quantified predicate-reflection property by the very statement of $\PRT$. Thus $N\models\PRM$. This is a definable-inner-model interpretation, not an assertion that the ambient singular $\lambda$ is measurable.
+
+For the upper implication, work first in $W\models\PRM$, with witnesses $\kappa,U_0$. Choose in $W$ a bijection $b:\kappa\to V_\kappa^W$, and force with $\PP_{U_0}$. Put
+\[
+ V=W[c],\qquad q=[c],\qquad N=\HOD^V_{\{b,q\}}.
+\]
+By the Prikry theorem, $\kappa$ remains a cardinal and strong limit, its cofinality becomes $\omega$, and $V_\kappa^V=V_\kappa^W$. Hence $b$ is still the required bijection in $V$. It puts the common $V_\kappa$ inside $N$. Lemma~\ref{lem:cones} gives $N\subseteq W$.
+
+For every $B\in\Pow(\kappa)^N$, the ground-model ultrafilter decides $B$. If $B\in U_0$, genericity gives $c\substar B$; if $B\notin U_0$, genericity gives $c\substar(\kappa\setminus B)$. Therefore the tail filter of $q$ in $N$ is exactly
+\begin{equation}\label{eq:restriction}
+ U_N=U_0\cap N,
+\end{equation}
+where the right side means restriction to the subsets of $\kappa$ belonging to $N$. As before, the left side is definable from $b,q$ and consists of members of $N$, so $U_N\in N$. No assumption that $U_0\in N$ is needed.
+
+Completeness and normality descend to $U_N$: each relevant sequence or regressive function in $N$ is also in $W$, where $U_0$ has the required property, and its intersection or constant fibre belongs to $N$ by Separation and Replacement there. Thus $N$ regards $U_N$ as a normal measure on $\kappa$.
+
+Finally let $A\in\Pow(V_\kappa)^N$. Since $N\subseteq W$ and the two models have identical $V_\kappa$, Lemma~\ref{lem:absolute} gives
+\[
+ E_A^N=E_A^W.
+\]
+The right side belongs to $U_0$ by $\PRM$ in $W$, and the left side is a set in $N$. Equation~\eqref{eq:restriction} implies $E_A^N\in U_N$. This proves $\PRT$ in $V$.
+
+These constructions establish the displayed consistency equivalence by the usual forcing and inner-model formalizations. One may first read the argument for transitive models; the forcing proof and the definable relativization also yield the ordinary syntactic relative-consistency implications. No assertion that consistency alone produces a transitive model is used.
+\end{proof}
+
+\begin{remark}[The calibration is exact, but its hypothesis is explicit]
+The upper construction starts with $\PRM$, not with a bare measurable cardinal and not merely with a measurable \Vop\ cardinal. We have not proved that either of those weaker descriptions implies $\PRM$. Likewise, the theorem calibrates the strengthened trace principle; it does not identify its strength with ultraexactingness. The latter is already equiconsistent with $\mathrm{I0}$ by \cite[Theorem~4.5]{abgl}, and no improvement of that published bound is claimed.
+\end{remark}
+
+\section{Sharp boundaries and proof audit}\label{sec:boundaries}
+
+\subsection{A new predicate with an empty extendibility set}
+
+\begin{proposition}[Why the predicate quantifier cannot be external]\label{prop:empty}
+Suppose $\lambda$ is a limit cardinal of cofinality $\omega$ and $c\in D_\lambda$. Regard $c$ as a unary predicate on $V_\lambda$. Then
+\[
+ E_c^V=\varnothing.
+\]
+In particular, this holds for a representative of $q$ in the ambient universe of Theorem~\ref{thm:main}, and in the Prikry extension of Theorem~\ref{thm:calibration}.
+\end{proposition}
+
+\begin{proof}
+Let $\delta<\lambda$ be a cardinal. Choose $\alpha\in c$ with $\alpha\ge\delta$, and choose $\eta$ with $\alpha+\omega<\eta<\lambda$. Since $c$ has order type $\omega$ and is cofinal in $\lambda$, $c\cap\eta$ is finite. The chosen $\alpha$ is its $n$th member for some natural number $n$.
+
+Suppose $i$ witnessed $\eta$-extendibility of $\delta$ for $c$. The $n$th member of the predicate, in ordinal order, is parameter-free definable using that finite natural number. In the target structure this member is still $\alpha$: the predicate is again the same set $c$ restricted to a larger rank, and $i(\delta)>\eta$ ensures that the target height is above $\eta$. Elementarity therefore gives $i(\alpha)=\alpha$.
+
+But $\alpha\ge\delta$ and $\alpha<\eta$, so monotonicity on ordinals gives
+\[
+ i(\alpha)\ge i(\delta)>\eta>\alpha,
+\]
+a contradiction. Thus no $\delta<\lambda$ belongs to $E_c^V$.
+\end{proof}
+
+The proposition proves more than the failure of regularity at $\lambda$ in the extension. Even though the ranks below $\lambda$ and \emph{all their embedding graphs} remain unchanged, the new predicate $c$ destroys the corresponding predicate-extendibility property everywhere. For old predicates the equality $E_A^{N[c]}=E_A^N$ still holds by Lemma~\ref{lem:absolute}; what changes is the collection of predicates being quantified over.
+
+\subsection{Dependency and scope ledger}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{@{}P{.29\textwidth}Y@{}}
+\toprule
+\textbf{Potential gap}&\textbf{How the proof addresses it}\\\midrule
+An OD definition may use moved ordinals&Only canonical least counterexamples are fixed; Lemma~\ref{lem:least}.\\
+The parameters are chosen after the height&Finite formula correctness is uniform for all parameters in the chosen rank.\\
+The critical sequence is not fixed&Its finite-change class is fixed; all bad-object assertions use the class.\\
+An arbitrary bijection need not be fixed&The nested union $\bigcup_n e^n(b_0)$ is constructed explicitly; Lemma~\ref{lem:b}.\\
+External embeddings may be absent internally&Every required graph has rank below $\lambda$; Lemma~\ref{lem:absolute}.\\
+Composition powers have the wrong critical point&They first witness the property at $\kappa$; expanded-structure elementarity transfers the property to $\kappa_n$.\\
+Normality could be only external&Completeness and normality are proved for sequences and functions belonging to $N$; Proposition~\ref{prop:U}.\\
+The Prikry sequence itself is not homogeneous&Cone isomorphisms preserve its \emph{class}, not the sequence; Lemma~\ref{lem:cones}.\\
+A consistency argument might assume transitive models&The constructions are stated also as forcing and definable-inner-model interpretations.\\
+An internal theorem might be overstated in $V$&Proposition~\ref{prop:empty} gives an explicit external counterpredicate.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\textbf{Imported mathematics.} The genuine external inputs are the local Kunen theorem; the standard definition and basic properties of parameter HOD and finite reflection; and the Prikry preservation theorem and Mathias criterion. The fixed-bijection and normal-trace arguments are reconstructed here from the earlier research. The definition of predicate-extendibility and its relationship with \Vop\ cardinals are established literature; the implication needed here is proved directly rather than used as a black box. No stationary ideal on $(\lambda^+)^V$ from the synthesis is used.
+
+\textbf{Formalization status.} The supplied Lean project was used as a reference for the existing combinatorial orbit and tail-measure arguments. Its own README distinguishes those cores from the unformalized parameter-HOD models and forcing arguments. This continuation adds no Lean files and makes no claim that the new theorems have been checked by Lean.
+
+\textbf{Novelty status.} The supplied synthesis does not state the all-predicate concentration theorem, the \Vop\-filter inclusion for its tail measure, or the $\PRM$--$\PRT$ calibration. The primary papers checked for this continuation supply the standard notions and ingredients cited above. That comparison supports novelty relative to the supplied project, not an exhaustive claim about unpublished or independently known consequences in the literature.
+
+\section{Further questions and conclusion}\label{sec:questions}
+
+The main theorem provides a definite advance without deciding the frontier consistency questions. It says that the hidden normal measure is not merely a device for explaining an external cofinal $\omega$-sequence. Internally it supports a broad structural-reflection principle, uniformly for every predicate that the hidden model possesses.
+
+Three focused questions remain. First, can the normal measure, rather than just the \Vop\ conclusion, be recovered in $\HOD_{\{b\}}$ or in ordinary HOD under rank correctness? Corollary~\ref{cor:HODb} deliberately does not assert this. Second, what is the precise relation between $\PRM$ and familiar hypotheses ensuring normal extensions of the \Vop\ filter? The inclusion in Proposition~\ref{prop:filter} proves one direction of a comparison, not an equivalence. Third, can the predicate-reflecting traces arising from different ultraexacting witnesses be compared to obtain different normal measures or stronger coherent systems in a common inner model?
+
+The explicit counterpredicate in Proposition~\ref{prop:empty} also indicates the central obstruction to an indiscriminate strengthening: preserving all bounded sets does not preserve the higher-rank family of predicates. Any attempt to turn the present internal reflection theorem into an ambient one must confront that obstruction rather than ignore it.
+
+\begin{assessment}{Conclusion}
+At an ultraexacting $\lambda$, a single critical-sequence tail canonically supports a rank-correct inner model with a normal measure concentrating on below-$\lambda$ $A$-extendibility for \emph{every internal $A$}. Thus the hidden core sees a measurable \Vop\ cardinal, and its tail measure contains its \Vop\ filter. The mechanism is explicit: fixed rank coding, a least bad predicate, finite composition powers, and bounded-rank absoluteness. Prikry forcing gives an exact trace calibration and simultaneously demonstrates why the internal/external distinction cannot be dropped.
+\end{assessment}
+
+\begin{thebibliography}{99}
+\footnotesize
+\setlength{\itemsep}{2pt}
+\setlength{\parskip}{0pt}
+\bibitem{source}
+\emph{Large cardinals at the inconsistency frontier: a synthesis}.
+Third-edition manuscript supplied in \nolinkurl{Cardinals4.zip},
+\nolinkurl{docs/Large_Cardinals_Synthesis.tex}, 18 September 2026.
+Especially \S\S3, 12, 13, and the accompanying \nolinkurl{Cardinals/README.md}.
+The underlying twenty-seven individual reports are described there; they are not separately present in this archive and are not treated as independently inspected sources.
+
+\bibitem{abgl}
+J.~P.~Aguilera, J.~Bagaria, G.~Goldberg, and P.~L\"ucke.
+\emph{Large cardinals beyond HOD}.
+\arxiv{2509.10254v1}.
+PDF dated 15 September 2025; consulted online on 18 September 2026.
+Definitions~2.1--2.3, Theorem~3.1, Proposition~3.9, and Theorem~4.5.
+
+\bibitem{abl}
+J.~P.~Aguilera, J.~Bagaria, and P.~L\"ucke.
+\emph{Large cardinals, structural reflection, and the HOD Conjecture}.
+\arxiv{2411.11568v4}, 2025.
+Especially Theorem~2.10.
+
+\bibitem{bt}
+A.~D.~Brooke-Taylor.
+\emph{Indestructibility of \Vop's Principle}.
+Archive for Mathematical Logic \textbf{50} (2011), 515--529.
+\arxiv{1003.4707}.
+Especially Definition~6 and Proposition~7.
+
+\bibitem{perlmutter}
+N.~L.~Perlmutter.
+\emph{The large cardinals between supercompact and almost-huge}.
+\arxiv{1307.7387}, 2013.
+The natural-sequence presentation of the \Vop\ filter is used in \S\ref{sec:filter}.
+
+\bibitem{poveda}
+A.~Poveda.
+\emph{Axiom $\mathcal A$ and supercompactness}.
+\arxiv{2406.12776}.
+Author's version, \S2.2 and Lemma~2.11, consulted 18 September 2026.
+\url{https://apoveda.scholars.harvard.edu/sites/g/files/omnuum10651/files/c_n_supercompactspdf.pdf}.
+
+\bibitem{kunen}
+K.~Kunen.
+\emph{Elementary embeddings and infinitary combinatorics}.
+Journal of Symbolic Logic \textbf{36} (1971), 407--413.
+\doi{10.2307/2269948}.
+
+\bibitem{hkp}
+J.~D.~Hamkins, G.~Kirmayer, and N.~L.~Perlmutter.
+\emph{Generalizations of the Kunen inconsistency}.
+Annals of Pure and Applied Logic \textbf{163} (2012), 1872--1890.
+\arxiv{1106.1951}.
+
+\bibitem{mathias}
+A.~R.~D.~Mathias.
+\emph{On sequences generic in the sense of Prikry}.
+Journal of the Australian Mathematical Society \textbf{15} (1973), 409--414.
+\doi{10.1017/S1446788700028755}.
+
+\bibitem{prikry}
+K.~Prikry.
+\emph{Changing measurable into accessible cardinals}.
+Dissertationes Mathematicae \textbf{68} (1970), 5--52.
+
+\bibitem{benhamou}
+T.~Benhamou.
+\emph{Prikry forcing and tree Prikry forcing of various filters}.
+Archive for Mathematical Logic \textbf{58} (2019), 787--817.
+\doi{10.1007/s00153-019-00660-3}.
+\end{thebibliography}
+\end{document}

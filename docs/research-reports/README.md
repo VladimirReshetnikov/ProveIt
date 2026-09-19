@@ -2,7 +2,7 @@
 
 Eighteen independent continuations, numbered by file modification time. `01`-`09` continue
 `../research-plan/Large_Cardinals_Unified_Report.tex`; `10`-`18` (delivered as zip archives,
-which are git-ignored) continue the first edition of the synthesis, and `19`-`27` (also zip archives) continue the second edition. Each directory holds the report source, its PDF, and
+which are git-ignored) continue the first edition of the synthesis, `19`-`27` (also zip archives) continue the second edition, and `28`-`36` the third. Each directory holds the report source, its PDF, and
 whatever ancillary files shipped with it. The deduplicated synthesis is in
 `../research-synthesis/Large_Cardinals_Synthesis.{tex,pdf}`.
 
@@ -35,3 +35,12 @@ whatever ancillary files shipped with it. The deduplicated synthesis is in
 | `25` | `Cofinal_Orbit_Consistency` | Rigidity ⇔ regularity in N_q; equiconsistency of rigid classes with one measurable; Vopěnka algebra of a class | `Cardinals4_Research_Continuation.zip` : `Cardinals4_Rigid_Classes` |
 | `26` | `Ultraexacting_Prikry_Cores` | Canonical Prikry cores with and without the fixed bijection; ZF core; refutation of definable splitting | `Ultraexacting_Prikry_Cores.zip` : `Ultraexacting_Prikry_Cores` |
 | `27` | `Normal_Traces_and_Prikry_Factorization` | Tail measure concentrates on measurables; trace principles NT (a measurable) and NT⁺ (o(κ) ≥ 2) | `Cardinals4_Normal_Traces.zip` : `Cardinals4_Normal_Traces` |
+| `28` | `Finite_Symmetry_at_Measurable_Strength` | Prikry model: no finite definable selector family, exact finite-label classification (generic-point deletion); countable ultrafilter orbit in ZFC; finite checks (Python) | `Cardinals5_Finite_Symmetry.zip` : `Cardinals5_Finite_Symmetry` |
+| `29` | `Vopenka_Reflection` | Ultraexacting: the tail measure of HOD_{b,q} contains every internal predicate-extendibility set; the core sees a measurable Vopěnka cardinal | `Cardinals5_Vopenka_Reflection.zip` : `Cardinals5_Vopenka_Reflection` |
+| `30` | `Prikry_Symmetry` | Decide-then-insert lemma; block coding; separation from rank-into-rank at the least measurable; ultrafilter threshold ℵ₀ | `Cardinals5_Prikry_Symmetry(1).zip` : `Cardinals5_Prikry_Symmetry` |
+| `31` | `Prikry_Symmetry_and_Maximal_Rigidity` | 2^κ rigid classes q_A with measurable cores; joint parameters; finite symmetry in the Prikry model | `Cardinals5_Prikry_Symmetry.zip` : `Cardinals5_Prikry_Symmetry` |
+| `32` | `Maximal_Rigidity_and_Finite_Symmetry` | Tail-invariant parameters; rank capture (κ⁺ correct, V_{κ+1} in the Prikry layer); no exacting cardinal ≤ κ at the least measurable | `Cardinals5_Prikry_Separation.zip` : `Cardinals5_Prikry_Separation` |
+| `33` | `Prikry_Finite_Symmetry` | Finite families of label rules; local constancy; phase and coordinate saturation with ground parameters | `Prikry_Finite_Symmetry.zip` : `Prikry_Finite_Symmetry` |
+| `34` | `Prikry_Choice_Gap` | Countably infinite definable families of total selectors and kernels from a ground name presentation; OD version by coding | `Prikry_Choice_Gap.zip` : `Prikry_Choice_Gap` |
+| `35` | `Prikry_Choice_and_Maximal_Rigidity` | Invariant parameters z(c); 2^κ classes in one parameter with a normal measure in the joint core; ultrafilter cloud as a ℤ-torsor | `Cardinals5_Prikry_Choice.zip` : `Cardinals5_Prikry_Choice` |
+| `36` | `Cardinals5_Prikry_Finite_Choice` | Profinite density of phases; compact families of size 2^(2^ℵ₀); residue laws for finite families of charges | `Cardinals5_Prikry_Finite_Choice.zip` : `Cardinals5_Prikry_Finite_Choice` |
