@@ -34,6 +34,8 @@ source in the docstring.  There are 18 of them; nothing else uses `sorry`.
 | | `HCD_isInnerModelZF`, `HCD_isInnerModelZFC`, `HCD_cover`, `HCD_stabilizes` | Goldberg, arXiv:2103.13961v2, Prop. 4.2, Thm 4.3, Thm 4.13, Thm 4.14 |
 | `Above.lean` | `HCD_isGround` | Goldberg, arXiv:2103.13961v2, Thm 4.9 |
 | | `cc_preserves_regular` | Kunen 1980, Ch. VII Lemma 6.9; Jech Ch. 15 |
+| `Sandwich.lean` | `amenable_dichotomy` | Goldberg, *Strongly compact cardinals and ordinal definability*, JML 24(1) 2024, arXiv:2107.00513v1, Lemma 2.7 (with §2.2) |
+| | `ground_not_eventually_measurable` | Jech, Thm 15.3 (chain condition preserves cardinals) with Lemma 10.4 (measurables are inaccessible), applied in the ground |
 | `Width.lean` | `no_short_cofinal_OD` | ABL, arXiv:2411.11568v4, Thm 2.10 |
 | `HODBoundary.lean` | `HOD_isInnerModelZF` | Jech, Thm 13.26 |
 
@@ -42,7 +44,7 @@ beyond the Kunen inconsistency*, lecture notes, 1 July 2026,
 <https://math.berkeley.edu/~goldberg/Slides/CoverExact.pdf>.  Goldberg = *The uniqueness of
 elementary embeddings*, JSL 89 (2024); the numbers are those of arXiv v2 (the journal
 version is reported to be shifted by one in §4).  Full bibliographic data is in the header
-of `Published.lean` and in each doc comment.  The numbers for ABL, BG and Goldberg were
+of `Published.lean` and in each doc comment.  The numbers for ABL, BG and Goldberg (both papers) were
 checked against the PDFs on 18 September 2026; textbook citations are at chapter/section
 level where the exact number was not checked.
 
@@ -80,11 +82,23 @@ Theorem 3.6 is *not* admitted: it is re-derived as `no_CEx_above_extendible`.
 | Lemma 12.11 cyclic stabilizers | `SecondRound.isCyclic_map_snd` | **proved** |
 | Theorem 12.7 full phase; two-sided orbits | `SecondRound.eq_univ_of_image_succ_eq`, `two_sided_orbit_lt_crit`, `two_sided_orbit_const` | **proved** |
 
-The numbering refers to the second edition of the synthesis, in which all first-edition
-numbers are unchanged; the new Section 12 and the appended parts of Sections 7 and 8 are
-otherwise not yet formalized.
+| Theorem 7.11 (amenable grounds cover), 7.12 (no sandwich), Cor. 7.13(a) | `amenable_ground_cover`, `countableCover_contra`, `amenable_ground_cof`, `no_sandwich`, `no_SC_above`; `ThirdRound.card_le_of_disjoint_meeting` | proved from Goldberg's Lemma 2.7 (admitted) with the amenability of `HCD(η)` (Lemma 7.10) as a **hypothesis**; shows that the hypotheses of `two_strongly_compacts` are inconsistent |
+| Theorem 13.2, 13.3 (tail decisions, normality; cores) | `ThirdRound.orbit_mem_iff`, `orbit_decided`, `orbit_value_const`, `small_range_const`, `regressive_const_on_critical_sequence`, `tail_ultra` | **proved** (combinatorial core) |
+| Theorem 13.9 (charges; cores) | `ThirdRound.phase_balance`, `no_two_valued_phase`, `mean_shift`, `tail_mean_indep` | **proved** |
+
+The numbering refers to the third edition of the synthesis, in which all earlier numbers
+are unchanged; Sections 12 and 13 and the appended parts of Sections 7 and 8 are otherwise
+not formalized.
 
 ### Not formalized
+
+* Lemma 7.10 (amenability of `HCD(η)`): it needs the first-order definability of the class
+  `HCD(η)` via reflection.  It enters `no_sandwich` as the hypothesis
+  `OmegaClubAmenable (HCD η)`.  Goldberg's Lemma 2.7 is admitted rather than re-proved by
+  the stationary-seed argument of Theorem 7.11.
+* Section 13 beyond its combinatorial cores: the models `HOD_{d,q}`, Prikry genericity
+  (Mathias' criterion), Theorem 13.6, the Vopěnka algebra, and the consistency-strength
+  calibration of Theorem 13.7 (metamathematical, from Prikry forcing and Dodd–Jensen).
 
 * Lemmas 3.3–3.5, 4.1–4.2 (Route H: persistent covers and exact hulls).  The barrier is
   obtained through Route S instead; these statements are covered by the admitted
