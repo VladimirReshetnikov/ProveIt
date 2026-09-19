@@ -1,4 +1,4 @@
-import CoarseDegrees.Hyper
+import CoarseDegrees.Block
 
 /-!
 # No cone theorem for the coarse degrees
@@ -16,7 +16,6 @@ function is `I(Z) ⊕ X` with `X` 1-generic relative to `Z = graph h`, and the r
 the relativizations of the two published theorems used for C1 (Route G of
 `CoarseDegrees.Published`).  Admitted, with references:
 
-* `blockCode_decode` — every coarse description of the block code `I(A)` computes `A`;
 * `OneGenericRel.core_le` — Hirschfeldt--Jockusch--Kuyper--Schupp, Theorem 4.2, relativized;
 * `OneGenericRel.not_coarselyComputableIn` — Jockusch--Schupp, remark after Proposition 2.15,
   relativized.
@@ -163,52 +162,7 @@ theorem SetCoarseEq.join {D X : Set ℕ} (P : Set ℕ) (h : SetCoarseEq D X) :
   refine squeeze_zero (fun n => by positivity) (fun n => ?_) h
   exact div_le_div_of_nonneg_right (by exact_mod_cast hcount n) (Nat.cast_nonneg n)
 
-/-! ## The block code -/
-
-/-- The block code `I(A) = {k : 2ⁿ ≤ k < 2ⁿ⁺¹ for some n ∈ A}`
-(Hirschfeldt--Jockusch--Kuyper--Schupp 2016, Definition 2.1). -/
-def blockCode (A : Set ℕ) : Set ℕ := {k | 0 < k ∧ Nat.log 2 k ∈ A}
-
-theorem computable_log2 : Computable (fun k : ℕ => Nat.log 2 k) := by
-  have hpow : Primrec₂ ((· ^ ·) : ℕ → ℕ → ℕ) := Primrec₂.unpaired'.1 Nat.Primrec.pow
-  have hP : ComputablePred (fun p : ℕ × ℕ => p.1 < 2 ^ (p.2 + 1)) :=
-    PrimrecPred.computablePred
-      (Primrec.nat_lt.comp Primrec.fst
-        (hpow.comp (Primrec.const 2) (Primrec.succ.comp Primrec.snd)))
-  have hex : ∀ k : ℕ, ∃ n, k < 2 ^ (n + 1) := fun k => ⟨Nat.log 2 k, Nat.lt_pow_succ_log_self one_lt_two k⟩
-  refine (Computable.find (P := fun k n => k < 2 ^ (n + 1)) hP hex).of_eq fun k => ?_
-  rw [Nat.find_eq_iff]
-  refine ⟨Nat.lt_pow_succ_log_self one_lt_two k, fun n hn hlt => ?_⟩
-  have hk : k ≠ 0 := by
-    rintro rfl
-    simp at hn
-  have h1 : 2 ^ (n + 1) ≤ 2 ^ Nat.log 2 k := Nat.pow_le_pow_right (by norm_num) (by omega)
-  have h2 : 2 ^ Nat.log 2 k ≤ k := Nat.pow_log_le_self 2 hk
-  omega
-
-/-- The block code of `A` is computable from `A`. -/
-theorem blockCode_reducible (A : Set ℕ) : blockCode A ≤ᵀₛ A := by
-  have h1 : RecursiveIn {characteristic A} (fun k : ℕ => characteristic A (Nat.log 2 k)) :=
-    recursiveIn_precomp (RecursiveIn.oracle _ (Set.mem_singleton _)) computable_log2
-  have h0 : RecursiveIn {characteristic A} (fun k : ℕ => (Part.some k : Part ℕ)) :=
-    Partrec.recursiveIn (f := fun k : ℕ => (Part.some k : Part ℕ)) Computable.id
-  have hc : Computable (fun p : ℕ => if 0 < p.unpair.1 then p.unpair.2 else 0) :=
-    (Primrec.ite (Primrec.nat_lt.comp (Primrec.const 0) (Primrec.fst.comp Primrec.unpair))
-      (Primrec.snd.comp Primrec.unpair) (Primrec.const 0)).to_comp
-  have h4 := recursiveIn_map (recursiveIn_pair h0 h1) hc
-  refine h4.of_eq fun k => ?_
-  by_cases hk : 0 < k <;> by_cases hA : Nat.log 2 k ∈ A <;>
-    simp [characteristic, blockCode, Seq.seq, hk, hA]
-
 /-! ## Admitted published facts -/
-
-/-- Every coarse description of the block code `I(A)` computes `A`.
-D. R. Hirschfeldt, C. G. Jockusch, Jr., R. Kuyper, P. E. Schupp, *Coarse reducibility and
-algorithmic randomness*, J. Symb. Log. 81 (2016), Section 2 (the map `𝓘` and the nonuniform
-embedding of the Turing degrees); the argument is block-majority decoding with a finite
-correction, as in the synthesis, Lemma 3.4. -/
-theorem blockCode_decode {A D : Set ℕ} (hD : SetCoarseEq D (blockCode A)) : A ≤ᵀₛ D := by
-  admit
 
 /-- `W` is a set of strings that is computably enumerable relative to `Z`. -/
 def REIn (Z : Set ℕ) (W : List Bool → Prop) : Prop :=

@@ -40,6 +40,10 @@ open CoarseDegrees
 #print axioms SetCoarseEq.oddHalf
 #print axioms SetCoarseEq.join
 #print axioms blockCode_reducible
+#print axioms bcnt_recursiveIn
+#print axioms bcnt_div_tendsto
+#print axioms bmaj_reducible
+#print axioms blockCode_decode
 #print axioms Budget.inter
 #print axioms densityBudget
 #print axioms densityBudget_le

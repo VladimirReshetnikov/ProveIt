@@ -84,28 +84,41 @@ theorem hcore_Rc (A : Set ℕ) : hcore (Rc A) = {X | HypIn A X} := by
 
 /-! ## Computable approximations to a dyadic code -/
 
-/-- The set of numbers whose column index is marked in the finite list `l`.  Taking `l` to be
-the first `K` bits of `A` gives a computable set agreeing with `R(A)` on every column below
-`K`: only finitely much information about `A` is used. -/
-def listApprox (l : List Bool) : Set ℕ := {n | (l[col n]?).getD false = true}
+/-- The set marked by a finite list of bits: `n` belongs when entry `n` of `l` is `true`.
+Only finitely much information is involved, so the set is computable. -/
+def finSet (l : List Bool) : Set ℕ := {n | (l[n]?).getD false = true}
 
-instance decidableListApprox (l : List Bool) : DecidablePred (fun n => n ∈ listApprox l) :=
+instance decidableFinSet (l : List Bool) : DecidablePred (fun n => n ∈ finSet l) :=
   fun _ => instDecidableEqBool _ _
 
-theorem computable_listApprox (l : List Bool) : ComputablePred (fun n => n ∈ listApprox l) := by
-  refine ⟨decidableListApprox l, ?_⟩
-  have hm : Computable (fun m : ℕ => (l[m]?).getD false) :=
-    (Primrec.option_getD.comp (Primrec.list_getElem?.comp (Primrec.const l) Primrec.id)
-      (Primrec.const false)).to_comp
-  exact (hm.comp computable_col).of_eq fun n => by simp [listApprox]
+theorem computable_finSet (l : List Bool) : ComputablePred (fun n => n ∈ finSet l) := by
+  refine ⟨decidableFinSet l, ?_⟩
+  exact ((Primrec.option_getD.comp (Primrec.list_getElem?.comp (Primrec.const l) Primrec.id)
+    (Primrec.const false)).to_comp).of_eq fun n => by simp [finSet]
 
 /-- The first `K` bits of `A`. -/
 def bitsOf (A : Set ℕ) (K : ℕ) : List Bool := (List.range K).map (fun k => decide (k ∈ A))
 
+theorem mem_finSet_bitsOf {A : Set ℕ} {K n : ℕ} (h : n < K) :
+    n ∈ finSet (bitsOf A K) ↔ n ∈ A := by
+  simp only [finSet, bitsOf, Set.mem_setOf_eq, List.getElem?_map,
+    List.getElem?_range h, Option.map_some, Option.getD_some, decide_eq_true_eq]
+
+/-- The set of numbers whose column index is marked in `l`.  Taking `l` to be the first `K` bits
+of `A` gives a computable set agreeing with `R(A)` on every column below `K`. -/
+def listApprox (l : List Bool) : Set ℕ := {n | col n ∈ finSet l}
+
+instance decidableListApprox (l : List Bool) : DecidablePred (fun n => n ∈ listApprox l) :=
+  fun n => decidableFinSet l (col n)
+
+theorem computable_listApprox (l : List Bool) : ComputablePred (fun n => n ∈ listApprox l) := by
+  obtain ⟨_, hf⟩ := computable_finSet l
+  exact ⟨decidableListApprox l, (hf.comp computable_col).of_eq fun n => by simp [listApprox]⟩
+
 theorem mem_listApprox_bitsOf {A : Set ℕ} {K n : ℕ} (h : col n < K) :
     n ∈ listApprox (bitsOf A K) ↔ n ∈ Rc A := by
-  simp only [listApprox, bitsOf, Set.mem_setOf_eq, mem_Rc, List.getElem?_map,
-    List.getElem?_range h, Option.map_some, Option.getD_some, decide_eq_true_eq]
+  rw [mem_Rc]
+  exact mem_finSet_bitsOf h
 
 /-- **Computable approximations at every radius** (report 10, Theorem 1.4(b)).  For every `K`
 there is a computable `Y` disagreeing with `R(A)` only on the columns from `K` on, so its

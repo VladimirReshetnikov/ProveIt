@@ -114,7 +114,8 @@ theorem CoarseDegrees.hyperarithmetic_compactness_fails  -- Theorem 1.4(b)
 | `Dyadic.lean` | the dyadic code `Rc A = {n : col n ∈ A}`; `Rc A ≡ᵀₛ A`; `exists_description_of_limit` — the easy direction of Theorem 1.4 | proved |
 | `Majority.lean` | `recursiveIn_prec_total` (primitive recursion relative to an oracle, for total base and step); the column counting function `cnt` and its `D`-computability; `errCnt_div_tendsto` — the errors have relative density zero in each column; majority decoding and `limit_of_description`; `description_iff_limit` | proved |
 | `Compactness.lean` | `HypIn.mono`; the hyper-core `hcore`; `hcore_Rc`; computable approximations `listApprox` at every radius; `hyperarithmetic_compactness_fails` | proved (`hcore_Rc` uses `HypIn.trans`) |
-| `Cone.lean` | `LeastClass` and its invariance; density estimates for joins and halves of descriptions; the block code and its computability (`computable_log2`); relatively 1-generic sets exist (`exists_oneGenericRel`); `exists_least_above`, `exists_nonleast_above`, `no_cone_theorem` | proved from **3 admitted** facts |
+| `Block.lean` | the block code `𝓘(A)` and its computability (`computable_log2`); block counting `bcnt` and its `D`-computability; `bcnt_div_tendsto`; `blockCode_decode` — every coarse description of `𝓘(A)` computes `A`, by block majority above a threshold and a finite table below it | proved |
+| `Cone.lean` | `LeastClass` and its invariance; density estimates for joins and halves of descriptions; relatively 1-generic sets exist (`exists_oneGenericRel`); `exists_least_above`, `exists_nonleast_above`, `no_cone_theorem` | proved from **2 admitted** facts |
 
 The new mathematics of report 10 is in `BudgetForcing.lean` and is proved with nothing
 admitted: the bridge lemma is stated for an abstract decision relation `dec σ ψ n b` on strings
@@ -130,16 +131,21 @@ Admitted for report 10 (each closed by `admit`, with the reference in its docstr
 |---|---|
 | `HypIn.trans` | transitivity of hyperarithmetic reducibility: Rogers 1967, §16.8; Sacks, *Higher Recursion Theory*, Ch. II |
 | `cohen_forcing_package` | Cohen forcing over `L_{ω₁^CK}`, facts (H2)–(H5) of report 10: Feferman, Fund. Math. 56 (1965); Sacks, *Higher Recursion Theory*, Ch. IV §3.  A single existential statement: a countable set of names with a decision relation satisfying the `DecSys` axioms, countably many dense sets of strings, hyperarithmetic definability of `{n : ∃ α ⊇ σ, α ⊩ ψ(n̄)}`, and, for every set meeting the dense sets, naming of the sets hyperarithmetic in it together with forcing = truth, and the instance of "hyperarithmetic dense sets are met" that is needed |
-| `blockCode_decode` | every coarse description of `𝓘(A)` computes `A`: HJKS, Section 2 |
 | `OneGenericRel.core_le` | HJKS, Theorem 4.2, relativized to an oracle |
 | `OneGenericRel.not_coarselyComputableIn` | JS, remark after Proposition 2.15, relativized to an oracle (the unrelativized statement is proved in `GenericDensity.lean`) |
+
+`blockCode_decode` was admitted until 19 September 2026 and is now proved, by the same
+majority argument as the dyadic criterion: a block `[2ⁿ, 2ⁿ⁺¹)` is half of the initial segment
+ending at its right endpoint, so the errors in it are eventually a minority.  The reduction is
+*nonuniform*, and the formalization shows where: the finitely many blocks on which the vote may
+fail are corrected from a finite table, spliced in along a computable set, and neither the
+threshold nor the table is computed from the description.
 
 Caveats.  `cohen_forcing_package` is a repackaging, made for this library, of theorems that
 the sources state separately and in their own language (ramified formulas, the structures
 `𝓜(ω₁^CK, G)`); its docstring says how each clause arises, but the packaging itself has not
-been checked against the sources, and the report quotes those facts from memory.  The last two
-statements are relativizations of published theorems rather than the published statements
-themselves.  Theorem 1.5 is formalized for the nonuniform coarse degrees and with the witness
+been checked against the sources, and the report quotes those facts from memory.  The two remaining `Cone.lean` statements are
+relativizations of published theorems rather than the published statements themselves.  Theorem 1.5 is formalized for the nonuniform coarse degrees and with the witness
 `𝓘(Z) ⊕ X`, `X` 1-generic relative to `Z`, instead of the report's `J(h) ⊕ A`; the report's
 witness needs the relativized minimal-pair theorem of the synthesis, which is not formalized.
 
