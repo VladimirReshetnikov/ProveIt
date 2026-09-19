@@ -62,6 +62,10 @@ open CoarseDegrees
 #print axioms mem_hcore_Rc
 #print axioms computable_listApprox
 #print axioms exists_computable_approx
+#print axioms setTuringReducible_splice
+#print axioms densityZero_sparse
+#print axioms implant_equivalent
+#print axioms spectrum_Rc
 
 -- proved from the admitted published results (`sorryAx` expected)
 #print axioms exists_hyp_minimal_pair
