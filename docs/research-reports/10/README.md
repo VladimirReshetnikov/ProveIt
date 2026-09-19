@@ -29,13 +29,40 @@ ordinals, and large cardinals". Main file: `coarse_hyperdegrees.{tex,pdf}` (10 p
    code is a countably complete ultrafilter on the nonuniform coarse degrees properly
    extending the cone filter.
 
+## What is classical here, and what is not
+
+Minimal pairs of hyperdegrees are **classical**: Feferman (1965) embedded every countable
+partial order into the hyperdegrees below `deg_h(O)` by Cohen forcing, Gandy-Sacks (1967)
+constructed a minimal hyperdegree (and two distinct minimal hyperdegrees form a minimal
+pair), and Thomason (1967) extended the forcing side. For the *unrestricted* product forcing
+the minimal-pair property of a mutually generic pair has a one-line proof, and the bridge
+lemma of this report degenerates to it.
+
+The whole content of result 1 is therefore the **budget**. Under a budget `(alpha, beta)`
+need not be a condition, since the two strings may by then disagree too often, and the
+one-bit reserve plus the hybrid path is what restores the comparison. This matters because a
+Cohen generic set is at upper density 1 from every hyperarithmetic set: no classical
+construction puts a hyperdegree minimal pair inside a *single coarse class*. That combination
+is the only thing claimed as possibly new, and it has not been established. Added after a
+literature check on 19 September 2026.
+
 ## Status
 
-Conventional proofs; not refereed; partly formalized (see "Lean" below); novelty not established. The proof of
-result 1 quotes five standard facts (H1)-(H5) about hyperarithmetic sets and Cohen forcing
-over `L_{omega_1^CK}` (Feferman 1965; Sacks, *Higher Recursion Theory*, Ch. IV) **from
-memory**; they are isolated in Section 2.2 so that they can be checked, and Section 7 says
-exactly what is needed from them. Results 2 and 3 depend only on the synthesis
+Conventional proofs; not refereed; partly formalized (see "Lean" below). The proof of
+result 1 uses five standard facts (H1)-(H5) about hyperarithmetic sets and Cohen forcing
+over `L_{omega_1^CK}`, written from memory and isolated in Section 2.2. Verification status
+as of 19 September 2026:
+
+- **(H4) confirmed** against Shore, *Lattice initial segments of the hyperdegrees*
+  (arXiv:1408.3147), which states for the same Feferman forcing that Cohen genericity
+  preserves `omega_1^CK` and that the sets of `M(omega_1^CK, G)` are exactly those
+  hyperarithmetic in `G`. (H2) is the standard forcing apparatus of the same source.
+- **(H3) not confirmed**, and it must be read carefully: the neighbouring *uniform*
+  statement is false, since forcing of `Sigma^1_1` sentences (and of ranked sentences for
+  perfect-tree conditions) is `Pi^1_1`, not `Delta^1_1`. What is used, and all that is used,
+  is that for one *fixed* ranked formula the forcing relation is `Delta^1_1`. Sacks,
+  *Higher Recursion Theory*, III.4 would settle this and should be read before the result is
+  relied on. Results 2 and 3 depend only on the synthesis
 (`../../research-synthesis`) and on Spector's criterion and Sacks's realization theorem.
 Remark 4.3 and question (Q1) contain unproved claims and are marked as such.
 
