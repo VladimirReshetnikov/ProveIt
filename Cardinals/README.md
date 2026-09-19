@@ -1,7 +1,7 @@
 # Lean formalization of the synthesis
 
 Lean 4 (v4.32.0) + Mathlib (v4.32.0) formalization of
-`docs/research-synthesis/Large_Cardinals_Synthesis.tex`.  Set theory is done inside
+`docs/cardinals/research-synthesis/Large_Cardinals_Synthesis.tex`.  Set theory is done inside
 Mathlib's model `ZFSet` of ZFC; first-order syntax, the ZF axioms and the Choice formula
 come from the sibling repository `C:\ProveIt` (libraries `FirstOrder`, `ZF`,
 `BoundedZFCConsistency`), which is required by path in `lakefile.toml`.
