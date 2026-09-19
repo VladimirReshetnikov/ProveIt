@@ -11,6 +11,9 @@ import Cardinals.Foundations.Witness
 import Cardinals.Foundations.SetForms
 import Cardinals.WitnessFacts
 import Cardinals.KunenFree
+import Cardinals.Virtual.TWitness
+import Cardinals.Virtual.Core
+import Cardinals.Virtual.Extras
 import Cardinals.ObservationOne
 import Cardinals.CoverBound
 import Cardinals.Published

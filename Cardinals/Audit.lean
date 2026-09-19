@@ -34,6 +34,20 @@ open Cardinals
 #print axioms RelWitness.crit_regular
 #print axioms RelWitness.jOrd_omega
 #print axioms interleave
+-- witnesses over a transitive model (virtual / countable): the whole Kunen-free core
+#print axioms TWitness.jOrd_omega
+#print axioms TWitness.omega_le_crit
+#print axioms TWitness.jv_subset_fixed
+#print axioms TWitness.no_surj_pow_crit
+#print axioms TWitness.slSem_critSeq
+#print axioms TWitness.crit_regular
+#print axioms TWitness.fixed_small_subset
+#print axioms TWitness.no_small_fixed_family
+#print axioms TWitness.no_small_definable_family
+#print axioms elementary_iff_assignment
+#print axioms assignment_iff_branch
+#print axioms TWitness.restrictTo
+#print axioms exists_root
 #print axioms RelWitness.trace_fixed_of
 #print axioms FourthRound.finiteChange_realize_insert
 #print axioms FourthRound.shift_ne
@@ -56,6 +70,7 @@ open Cardinals
 #print axioms not_REx_shortCofinal
 #print axioms le_of_CEx
 #print axioms no_SC_above
+#print axioms TWitness.cofinalType_of_ultra
 #print axioms RelWitness.fixed_small_subset
 #print axioms RelWitness.no_small_fixed_family
 #print axioms RelWitness.orb_mem_X

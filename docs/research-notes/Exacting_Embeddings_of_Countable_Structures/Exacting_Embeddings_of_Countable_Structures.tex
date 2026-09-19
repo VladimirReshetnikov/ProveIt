@@ -41,7 +41,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}EXACTING EMBEDDINGS OF COUNTABLE STRUCTURES}
-\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}RESEARCH NOTE\quad 18 SEP 2026}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}RESEARCH NOTE\quad 19 SEP 2026}
 \fancyfoot[L]{\small\color{Muted}Virtually exacting cardinals and large countable ordinals}
 \fancyfoot[R]{\small\color{Muted}\thepage}
 \renewcommand{\headrulewidth}{.35pt}
@@ -130,7 +130,7 @@
 \item (Theorem~\ref{thm:ordinal}) The least $L$-exacting countable ordinal $\lambda_{\mathrm{ex}}$, if it exists, is a limit of ordinals $\kappa$ with $L_\kappa\models\ZFC$ and lies below the least stable ordinal; it exists if $0^\#$ does. This gives a new family of large countable ordinals, one for each virtual large cardinal notion.
 \item (Proposition~\ref{prop:ultra}) By contrast \emph{ultra}exactingness does not virtualize: a virtual ultraexacting witness yields a genuine rank-into-rank embedding in $V$.
 \end{enumerate}
-\textbf{Status.} Conventional proofs, not refereed. Items 1 and the combinatorial Proposition~\ref{prop:interleave} are formalized in Lean (\nolinkurl{Cardinals/KunenFree.lean}, \nolinkurl{Cardinals/WitnessFacts.lean}); the rest is not. I searched for ``virtually exacting'' and found nothing, but exacting cardinals date from 2024 and I cannot exclude unpublished work. The results are modest: they are what one obtains by running the arguments of the synthesis through the Gitman--Schindler machinery, and their main value is to locate precisely where the Kunen inconsistency enters.
+\textbf{Status.} Conventional proofs, not refereed. Items 1, 3 and 5, and Propositions~\ref{prop:interleave} and~\ref{prop:root}, are formalized in Lean over an arbitrary transitive set model (Section~\ref{sec:lean}); items 2 and 4 are not, because they quantify over $L$. I searched for ``virtually exacting'' and found nothing, but exacting cardinals date from 2024 and I cannot exclude unpublished work. The results are modest: they are what one obtains by running the arguments of the synthesis through the Gitman--Schindler machinery, and their main value is to locate precisely where the Kunen inconsistency enters.
 \end{assessment}
 
 \section{Analogies between large cardinals and large countable ordinals}
@@ -186,7 +186,7 @@ Let $\lambda<\zeta$ be countable ordinals with $L_\zeta\models\ZFC$ and $V^L_\ze
 Let $G$ be $\mathrm{Col}(\omega,L_\zeta)$-generic over $V$. If $(i,k)$ is a witness in $V$, apply Lemma~\ref{lem:abs} to $L[G]\subseteq V[G]$ and the structures $(L_{\bar\zeta},\in,x)_{x\in V_\lambda\cup\{\lambda\}}$, $(L_\zeta,\in,x)_{x\in V_\lambda\cup\{\lambda\}}$ for $i$, and $(L_{\bar\zeta},\in,\lambda,\kappa)$, $(L_\zeta,\in,\lambda,k(\kappa))$ for $k$: both embeddings exist in the generic extension $L[G]$ of $L$. Conversely a witness in a generic extension of $L$ is a witness in $V[G]$, and Lemma~\ref{lem:abs} for $V\subseteq V[G]$ returns one in $V$. Cofinality of the critical sequence can be arranged by prescribing $k(\kappa_n)=\kappa_{n+1}$ level by level in the tree.
 \end{proof}
 
-\section{The Kunen-free core}
+\section{The Kunen-free core}\label{sec:free}
 
 \begin{theorem}\label{thm:free}
 Let $(X,j)$ be a virtual exacting witness at $\lambda$ of limit height $\zeta$, with critical sequence $\langle\kappa_n\rangle$.
@@ -223,7 +223,7 @@ Assume $0^\#$ exists and let $\langle i_\alpha\rangle$ enumerate the Silver indi
 
 So for virtual embeddings the supremum of the critical sequence, the fixed cardinal $\lambda$, and its cofinality come apart completely, as Gitman and Schindler observed for rank-into-rank embeddings. What Theorem~\ref{thm:sharp} adds is that \emph{even when the critical sequence is cofinal in $\lambda$} the cardinal can be regular: the sequence $\langle i_n\rangle$ is simply not in $L$.
 
-\section{What survives: cofinal type}
+\section{What survives: cofinal type}\label{sec:cofinal}
 
 \begin{theorem}\label{thm:cofinal}
 Let $\lambda$ be virtually exacting of cofinal type.
@@ -278,11 +278,46 @@ The argument is not specific to exacting cardinals. For every virtual large card
 
 A cofinal $\omega$-sequence in a countable limit ordinal is what proof theory calls a fundamental sequence, and the classes of $Q_\lambda$ are fundamental sequences up to finite change. The orbit structure of S~Lemma~12.1 is ordinal arithmetic and holds for any normal function.
 
+\begin{proposition}\label{prop:root}
+Let $e$ map $[\kappa,\lambda)$ into itself with $e(\xi)>\xi$. Then every $\xi\in[\kappa,\lambda)$ is $e^n(r)$ for some $n<\omega$ and some root $r$.
+\end{proposition}
+
 \begin{proposition}\label{prop:interleave}
 Let $e:\lambda\to\lambda$ be strictly increasing with $e(\xi)>\xi$ for $\xi\in[\kappa,\lambda)$ and $\sup_ne^n(\kappa)=\lambda$. Then the forward orbits $a_r=\{e^n(r):n<\omega\}$ of the roots $r\in[\kappa,\lambda)\setminus e``[\kappa,\lambda)$ partition $[\kappa,\lambda)$ into cofinal sets of order type $\omega$; and if $r\le r'<e(r)$ then $e^n(r)\le e^n(r')<e^{n+1}(r)$ for all $n$. So any two orbits are interleaved with bounded index displacement, and they represent pairwise different classes of $Q_\lambda$.
 \end{proposition}
 
 The interleaving is \nolinkurl{interleave} in \nolinkurl{Cardinals/KunenFree.lean}. For $e(\xi)=\omega^\xi$, $\kappa=0$, $\lambda=\varepsilon_0$ the orbit of $0$ is the standard fundamental sequence $0,1,\omega,\omega^\omega,\dots$; for $e(\xi)=\varphi_\xi(0)$ one gets that of $\Gamma_0$; and for $e=j\restr\lambda$ the critical sequence. In each case the least root gives the canonical sequence and the other roots give ``parallel'' ones. In the large-cardinal case S~Theorem~13.3(2) singles out the least root by a property of the class alone (its tail filter is normal, the others are not). Whether there is an analogous intrinsic characterization of the standard fundamental sequences of proof theory among their parallels --- a notoriously informal matter --- is a question this analogy suggests but does not answer.
+
+\section{What is formalized}\label{sec:lean}
+
+The Lean development in \nolinkurl{Cardinals/Virtual/} verifies the parts of this note that are theorems of $\ZFC$ about a single witness. In Lean's \nolinkurl{ZFSet} every function on a set is itself a set, so a virtual embedding cannot be modelled by an embedding into a rank of the ambient universe --- there the Kunen inconsistency applies. Instead the ambient universe plays the role of $V[G]$ and an arbitrary \emph{transitive set} $A$ plays the role of the ground structure ($V^V_\zeta$, or a countable $L_\zeta$):
+\[
+  \mathtt{TWitness}\ A\ \lambda\ Y\ :\quad X\prec A,\quad (A\cap V_\lambda)\cup\{\lambda\}\subseteq X,\quad j:X\to A\ \text{elementary},\ j(\lambda)=\lambda,\ j\restr\lambda\ne\mathrm{id},
+\]
+with \emph{no} requirement that $j\in A$. A genuine witness is the special case $A=V_\alpha$ (\nolinkurl{RelWitness.toTWitness}), with the same critical point and critical sequence. Since $A$ may be countable, all notions of size are taken internal to $A$: ``small'' means ``the image of an ordinal below $\lambda$ under a function belonging to $A$'', and the power set is $\Pow^A(y)=\Pow(y)\cap A$.
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{@{}P{.26\textwidth}P{.36\textwidth}Y@{}}
+\toprule
+\textbf{Statement}&\textbf{Lean}&\textbf{Status}\\\midrule
+Definitions~\ref{def:virtual}, \ref{def:Lex}&\nolinkurl{TWitness}, \nolinkurl{CofinalType}, \nolinkurl{toTWitness}&definitions; genuine witnesses are the case $A=V_\alpha$\\
+Theorem~\ref{thm:free}(1)&\nolinkurl{jOrd_nat}, \nolinkurl{jOrd_omega}, \nolinkurl{omega_le_crit}&proved\\
+Theorem~\ref{thm:free}(2)&\nolinkurl{jv_subset_fixed}&proved\\
+Theorem~\ref{thm:free}(3)&\nolinkurl{no_surj_pow_crit}, \nolinkurl{slSem_critSeq}, \nolinkurl{crit_regular}&proved (inaccessibility of every $\kappa_n$ \emph{in the sense of $A$})\\
+Theorem~\ref{thm:free}(4)&---&the rank-into-rank restriction and the Gitman--Schindler hierarchy are not formalized\\
+Theorem~\ref{thm:free}(5), \ref{thm:cofinal}(2)&\nolinkurl{least_surj_fixed}, \nolinkurl{fixed_small_subset}, \nolinkurl{no_small_fixed_family}&proved from \nolinkurl{CofinalType} as a \emph{hypothesis}\\
+Theorem~\ref{thm:cofinal}(3)&\nolinkurl{no_small_definable_family}&proved for families definable from parameters fixed by $j$; the reduction of $\OD_{V_\lambda}$ to that case needs a satisfaction predicate inside $A$ and is not formalized\\
+Lemma~\ref{lem:abs}&\nolinkurl{elementary_iff_assignment}, \nolinkurl{exists_free_bound}, \nolinkurl{assignment_iff_branch}&the combinatorial core: an embedding of a countable structure is a branch of a tree of finite approximations. The absoluteness step itself is a metatheorem about two models and is not expressible in one Lean universe\\
+Proposition~\ref{prop:ultra}&\nolinkurl{IsUltra}, \nolinkurl{cofinalType_of_ultra}&proved from an admitted in-model Kunen inconsistency (\nolinkurl{Published.kunen_in_model}, referenced to Kunen 1971 and Kanamori Cor.~23.14)\\
+Theorem~\ref{thm:ordinal}(3)&\nolinkurl{restrictTo}, \nolinkurl{no_fixed_point_of_minimal}&proved: a fixed point of $j$ above $\crit(j)$ carries a witness, so at a least witnessed ordinal nothing above the critical point is fixed\\
+Propositions~\ref{prop:interleave}, \ref{prop:root}&\nolinkurl{interleave}, \nolinkurl{exists_root}&proved\\
+Theorems~\ref{thm:sharp}, \ref{thm:ordinal}(1),(2),(4)&---&not formalized: they quantify over $L$, $0^\#$, Silver indiscernibles and stable ordinals, and neither Mathlib nor ProveIt has the constructible hierarchy\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The axiom audit (\nolinkurl{Cardinals/Audit.lean}) confirms that every entry marked ``proved'' above depends only on \nolinkurl{propext}, \nolinkurl{Classical.choice} and \nolinkurl{Quot.sound} --- in particular on no admitted statement, and so on no form of the Kunen inconsistency. That is the precise content of the claim that the core of Sections~\ref{sec:free} and~\ref{sec:cofinal} is Kunen-free: it is not an inspection of the paper proofs but a property of the machine-checked ones.
 
 \section{Questions}
 

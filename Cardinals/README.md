@@ -35,6 +35,7 @@ Observation 1(2)) and `le_of_CEx`.  Their only admitted ingredient is `critSeq_c
 | | `HCD_isInnerModelZF`, `HCD_isInnerModelZFC`, `HCD_cover`, `HCD_stabilizes` | Goldberg, arXiv:2103.13961v2, Prop. 4.2, Thm 4.3, Thm 4.13, Thm 4.14 |
 | `Above.lean` | `HCD_isGround` | Goldberg, arXiv:2103.13961v2, Thm 4.9 |
 | | `cc_preserves_regular` | Kunen 1980, Ch. VII Lemma 6.9; Jech Ch. 15 |
+| `Virtual/Extras.lean` | `kunen_in_model` | Kunen 1971; Kanamori Cor. 23.14, applied inside a transitive model of ZFC |
 | `Sandwich.lean` | `amenable_dichotomy` | Goldberg, *Strongly compact cardinals and ordinal definability*, JML 24(1) 2024, arXiv:2107.00513v1, Lemma 2.7 (with §2.2) |
 | | `ground_not_eventually_measurable` | Jech, Thm 15.3 (chain condition preserves cardinals) with Lemma 10.4 (measurables are inaccessible), applied in the ground |
 | `Foundations/Witness.lean` | `critSeq_cofinal` | ABL §2 (restriction of an exact embedding is an I3 embedding); Kunen 1971; Kanamori Cor. 23.14 |
@@ -88,6 +89,12 @@ Theorem 3.6 is *not* admitted: it is re-derived as `no_CEx_above_extendible`.
 | Theorem 13.2, 13.3 (tail decisions, normality; cores) | `ThirdRound.orbit_mem_iff`, `orbit_decided`, `orbit_value_const`, `small_range_const`, `regressive_const_on_critical_sequence`, `tail_ultra` | **proved** (combinatorial core) |
 | Theorem 13.9 (charges; cores) | `ThirdRound.phase_balance`, `no_two_valued_phase`, `mean_shift`, `tail_mean_indep` | **proved** |
 | Section 14 (Prikry model; cores) | `FourthRound.fixed_of_insertion`, `finiteChange_realize_insert` (insertion rotates block-coded tuples), `shift_ne`, `no_finite_invariant`, `residue_law`; the finite algebra of Theorem 14.5 is `FiniteCycles.no_equivariant_selectors` | **proved** (combinatorial cores; no forcing is formalized) |
+| Research note, Def. 2.1-2.2 (virtual / L-exacting witnesses) | `TWitness` over a transitive set `A` with the embedding **not** required to be in `A`; `RelWitness.toTWitness`, `toT_crit`, `toT_critSeq`, `cofinalType_toTWitness` (`Virtual/TWitness.lean`) | **proved**: the genuine notion is the special case `A = V_ α` |
+| Research note, Theorem 3.1 (Kunen-free core) over a transitive model | `TWitness.jOrd_nat`, `jOrd_omega`, `omega_le_crit`, `jv_subset_fixed`, `no_surj_pow_crit`, `slSem_critSeq`, `crit_regular` (`Virtual/Core.lean`) | **proved** with all sizes internal to `A` (`powA`, `SurjSem`), so it applies to countable `A`; audit shows no `sorryAx` |
+| Research note, Theorem 5.1(2),(3) (cofinal type) | `TWitness.fixed_small_subset`, `no_small_fixed_family`, `no_small_definable_family`, `least_surj_fixed` (`Virtual/Core.lean`) | **proved** from `CofinalType` as a hypothesis in place of the Kunen inconsistency |
+| Research note, Lemma 2.3 (absoluteness), combinatorial core | `elementary_iff_assignment`, `exists_free_bound`, `assignment_iff_branch` (`Virtual/Extras.lean`) | **proved**: an embedding of a countable structure is a branch of a tree of finite approximations. The two-model absoluteness step is a metatheorem, not formalizable in one universe |
+| Research note, Theorem 6.1(3) and Prop. 7.1 (cores) | `TWitness.restrictTo`, `no_fixed_point_of_minimal`, `exists_root` (`Virtual/Extras.lean`) | **proved** |
+| Research note, Prop. 5.3 | `TWitness.IsUltra`, `cofinalType_of_ultra` (`Virtual/Extras.lean`) | proved from the admitted in-model Kunen inconsistency |
 | Section 15, Proposition 15.3 (Baire-measurable classification at λ = ω) | `Countable.zero_one` (topological zero-one law), `generic_const`, `fixed_label`, `Cantor.transitive`, `Cantor.global_fixed_point`, `Klein.separation` (`Countable/GenericErgodicity.lean`) | **proved**, nothing admitted; uses Mathlib's Baire category library |
 | Research note *Exacting embeddings of countable structures*, Theorem 3.1 (Kunen-free core) and Prop. 7.1 | `RelWitness.crit_regular`, `cof_iff`, `interleave` (`KunenFree.lean`); with `jOrd_nat`, `jOrd_omega`, `jv_subset_fixed`, `no_surj_pow_crit`, `slSem_critSeq` | **proved**, and the audit shows no dependence on `critSeq_cofinal`: the critical points of a witness are inaccessible without the Kunen inconsistency, so the proofs apply to virtual witnesses |
 | Lemma 3.1 (λ uncountable, cofinality ω, strong limit), for every exacting witness | `RelWitness.jOrd_nat`, `omega_le_crit`, `aleph0_lt`, `jv_subset_fixed`, `no_surj_pow_crit`, `slSem_critSeq`, `strongLimit` (`WitnessFacts.lean`) | **proved** from the Kunen inconsistency; formerly admitted |
@@ -105,6 +112,13 @@ are unchanged; Sections 12-14 and the appended parts of Sections 7 and 8 are oth
 not formalized.
 
 ### Not formalized
+
+* Theorems 4.1 and 6.1 of the research note (virtually exacting cardinals in `L` from
+  `0^#`; the least `L`-exacting ordinal below the least stable ordinal).  They quantify
+  over the constructible hierarchy, Silver indiscernibles and stable ordinals; neither
+  Mathlib nor ProveIt has `L`, so the statements cannot be written down here.
+* The absoluteness step of Lemma 2.3 of the note (a branch of a tree exists in the
+  smaller model): a metatheorem about two models of ZFC, not expressible inside one.
 
 * Section 14 beyond its combinatorial cores: Prikry forcing, the cone isomorphisms and
   the insertion lemma, ground capture, the `2^κ` rigid classes, the countable families of
