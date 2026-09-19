@@ -1,6 +1,6 @@
 # Research reports
 
-Nine independent continuations of `../research-plan/turing_degrees_unified.tex`, all attacking
+Reports `01`-`09` are nine independent continuations of `../research-plan/turing_degrees_unified.tex`, all attacking
 its target **C1** (must every nonuniform coarse-equivalence class contain a representative of
 least Turing degree? — the coarse instance of Gerdes's Question 7). They were delivered as zip
 archives and are numbered by archive modification time. Each directory holds the report source,
@@ -8,7 +8,7 @@ its PDF, and whatever ancillary files shipped with it (finite checks, proof and 
 build scripts). The deduplicated synthesis is in
 `../research-synthesis/Turing_Degrees_Synthesis.{tex,pdf}`.
 
-All nine reports answer C1 negatively, and all nine record that the bare negative answer already
+Report `10` is a later follow-up on a different topic (see its row). All nine reports `01`-`09` answer C1 negatively, and all nine record that the bare negative answer already
 follows from Hirschfeldt–Jockusch–Kuyper–Schupp (2016), Theorems 4.2/4.3. They differ in the
 witnesses they construct and in the method:
 
@@ -23,6 +23,7 @@ witnesses they construct and in the method:
 | `07` | `sparse_error_minimal_pairs` | Finite extension, one-bit bridge, weighted budget | `A,B ≤ 0''` 1-generic minimal pair with `Σ_{n∈A△B} 1/h(n) ≤ b`, hence `o(h(N))` errors; `A△B` bi-immune; relative version; every degree an unattained infimum | `Sparse_Error_Minimal_Pairs_Research.zip` : `Sparse_Error_Minimal_Pairs` |
 | `08` | `coarse_degree_attack` | Baire category; Kuratowski–Ulam + Mycielski | Cone dichotomy and exact partners; cone-avoiding compactness recovered; explicit jump-complete c.e. set with trivial core; Cantor family of pairwise exact partners; principal-core classes `I(A) ⊕ X_A` with no least representative | `coarse_degree_attack.zip` : `coarse_degree_attack` |
 | `09` | `coarse_degree_attack` | Baire category; direct ball fusion | Perfect exact-pair family with exact intersections against any countable family of oracles; approximability bounds the core (external-centre proof); many-one complete c.e. example; no countable coinitial family of representative degrees; arbitrary principal cores | `coarse_degree_attack (1).zip` : `coarse_degree_attack` |
+| `10` | `coarse_hyperdegrees` | Forcing over L_{ω₁^CK} with budget conditions; elementary | Follow-up to plan Section 12, written in this repository: coarse classes with no least *hyperdegree* (hyperdegree minimal pairs `A ≈ B`, both Cohen generic, `ω₁ = ω₁^CK`); dyadic codes do have least hyperdegrees, so cone-avoiding compactness fails for `≤_h`; Martin's cone theorem fails for the coarse degrees (a `Π¹₁` invariant set splitting every cone) | — (not an archive) |
 
 Housekeeping applied on extraction: the single top-level folder of each archive was flattened
 into its numbered directory; five byte-identical copies of the research plan
