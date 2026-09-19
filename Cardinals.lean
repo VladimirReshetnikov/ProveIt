@@ -6,6 +6,8 @@ import Cardinals.Combinatorics.ThirdRound
 import Cardinals.Foundations.Basic
 import Cardinals.Foundations.Exacting
 import Cardinals.Foundations.PairForm
+import Cardinals.Foundations.Bridge
+import Cardinals.Foundations.Witness
 import Cardinals.Published
 import Cardinals.Barrier
 import Cardinals.Below
