@@ -3,9 +3,12 @@ import CoarseDegrees.Sets
 /-!
 # Published results admitted without proof
 
-Each statement below is a theorem from the literature, closed by the tactic `admit`; nothing
-else in the library uses `sorry`.  Two independent routes to the negative answer to C1 are
-supported, and they share no admitted statement.
+Each statement below is a theorem from the literature, closed by the tactic `admit`.  Two
+independent routes to the negative answer to C1 are supported here, and they share no admitted
+statement.  A third route, through the dyadic codes, is in `CoarseDegrees.DyadicRoute` and
+admits one consequence of Cooper (1973) there; the admitted classical inputs for research
+report 10 are likewise stated where they are used, in `CoarseDegrees.Hyper` and
+`CoarseDegrees.Cone`.  Nothing outside those four files uses `sorry`.
 
 **Route G (1-generic sets).**
 * `OneGeneric.core_trivial` — [HJKS], Theorem 4.2.

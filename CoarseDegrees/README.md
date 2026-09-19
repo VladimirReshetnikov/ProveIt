@@ -7,8 +7,9 @@ Gerdes, arXiv:2508.06925v1 — and proves that it is false, together with its an
 coarse equivalence:
 
 ```lean
-theorem CoarseDegrees.not_C1        : ¬ C1
-theorem CoarseDegrees.not_C1Uniform : ¬ C1Uniform
+theorem CoarseDegrees.not_C1         : ¬ C1
+theorem CoarseDegrees.not_C1Uniform  : ¬ C1Uniform
+theorem CoarseDegrees.not_C1_dyadic  : ¬ C1   -- a third route, independent of HJKS
 ```
 
 Turing reducibility is Mathlib's oracle semantics (`Mathlib.Computability.TuringDegree`,
@@ -57,6 +58,7 @@ and both are proved:
 | `Generic.lean` | 1-generic sets exist (finite-extension construction over all codes) | proved |
 | `GenericDensity.lean` | a 1-generic set is not coarsely computable (Jockusch–Schupp 2012, remark after Prop. 2.15; synthesis Lemma 5.1), including the computability of the extension map and the c.e.-ness of its range | proved |
 | `Published.lean` | three published theorems | **admitted** |
+| `DyadicRoute.lean` | `not_setCoarselyComputable_Rc`, `no_least_of_dyadic`, `exists_not_limitComputable`, `not_C1_dyadic`, `not_C1Uniform_dyadic` | proved from **1 admitted** consequence of Cooper 1973 |
 | `C1.lean` | `no_least_of_core_trivial`, `OneGeneric.no_least`, `exists_re_no_least`, `not_C1`, `not_C1'`, `not_C1Uniform`, `not_C1Uniform'`, `exists_binary_counterexample` | proved from the above |
 | `Audit.lean` | axiom audit | — |
 
@@ -78,8 +80,14 @@ Jockusch Jr., P. E. Schupp, *Generic computability, Turing degrees, and asymptot
 J. London Math. Soc. 85 (2012), 472–490, arXiv:1010.5212.  Theorem numbers were checked against
 the arXiv texts on 18 September 2026.  Neither paper is formalized in `C:\ProveIt`.
 
-The two routes share no admitted statement, so `¬ C1` is obtained twice, once from a single
-admitted theorem (HJKS 4.2) and once from two others.  `Audit.lean` confirms that everything
+A third route, in `DyadicRoute.lean`, uses neither paper; see "The dyadic route" below.
+
+| Admitted statement | Reference | Used by |
+|---|---|---|
+| `exists_minimal_pair_limit` | consequence of Cooper, *Minimal degrees and the jump operator*, JSL 38 (1973), 249–271 (every degree above `0′` is the jump of a minimal degree); the derivation is in the docstring | Route D: `not_C1_dyadic`, `not_C1Uniform_dyadic` |
+
+The three routes share no admitted statement, so `¬ C1` is obtained three times, once from a
+single admitted theorem (HJKS 4.2), once from two others, and once from Cooper 1973.  `Audit.lean` confirms that everything
 outside `Published.lean` and `C1.lean` depends only on `propext`, `Classical.choice` and
 `Quot.sound`, and that the theorems of `C1.lean` add only `sorryAx`.
 
@@ -135,6 +143,27 @@ themselves.  Theorem 1.5 is formalized for the nonuniform coarse degrees and wit
 `𝓘(Z) ⊕ X`, `X` 1-generic relative to `Z`, instead of the report's `J(h) ⊕ A`; the report's
 witness needs the relativized minimal-pair theorem of the synthesis, which is not formalized.
 
+### The dyadic route to `¬ C1`
+
+With the criterion in hand, the route of research reports 03 and 04 and of Section 6 of the
+synthesis can be run, and it uses neither HJKS nor JS:
+
+* `not_setCoarselyComputable_Rc`: if `A` is not the limit of a computable approximation, that is
+  if `A ≰ᵀ ∅′`, then `R(A)` is not coarsely computable — a computable coarse description *is* a
+  computable approximation.
+* `exists_not_limitComputable`: such an `A` exists.  The sets reducible to `∅` form a countable
+  lower cone (`lowerConeSets_countable`, from `C:\ProveIt`), each determines the limit of the
+  approximation it codes, and Cantor's theorem finishes it.
+* `no_least_of_dyadic`: if `A` is limit-computable in each half of a minimal pair, the two
+  descriptions the criterion supplies are the two witnesses of `no_least_of_two_witnesses`, so
+  neither coarse class of `R(A)` has a representative of least Turing degree.
+
+The one admitted ingredient is the minimal pair, `exists_minimal_pair_limit`.  It is a
+consequence of Cooper's theorem that every degree above `0′` is the jump of a minimal degree,
+not one of its verbatim statements: apply Cooper to `deg(A ⊕ ∅′)` and to its jump, note that
+distinct minimal degrees form a minimal pair, and read `A ≤ᵀ Mᵢ′` in limit form.  The docstring
+spells this out.
+
 ### Theorem 1.4: the dyadic codes
 
 Theorem 1.4 is formalized, and the way around the missing jump operator is to state the
@@ -173,11 +202,13 @@ Corollary 1.3 (every hyperdegree is an unattained infimum); the spectrum clause 
 
 ## What is not formalized
 
-The stronger witness theorems of the synthesis are not formalized: the prefix-density metric and
-the exact-pair theorems (Section 4), the jump-cone spectrum of the dyadic codes (Section 6), and
-the reservoir and one-bit-reserve constructions (Sections 7–8), which would make `not_C1`
-independent of HJKS.  The dyadic-code construction is now available in limit form
-(`Dyadic.lean`, `Majority.lean`), so what is still missing for that route is only the
-relativized Jockusch–Schupp criterion.  The spectrum identity (synthesis, Theorem 3.1) and the block-code
+The remaining witness theorems of the synthesis are not formalized: the prefix-density metric and
+the exact-pair theorems (Section 4), and the reservoir and one-bit-reserve constructions
+(Sections 7–8).  The jump-cone spectrum of the dyadic codes (Section 6) *is* formalized, in
+`Spectrum.lean`, and `DyadicRoute.lean` makes `¬ C1` independent of HJKS at the cost of one
+admitted consequence of Cooper 1973; building the minimal pair in Lean instead would need a
+use-bounded model of Turing functionals, which neither Mathlib nor the Lean side of
+`C:\ProveIt` provides (`RecursiveIn` takes the oracle as a total function, with no use).
+The spectrum identity (synthesis, Theorem 3.1) and the block-code
 characterization (Theorem 3.6) are also left for later.  `no_least_of_two_witnesses` (Lemma 2.4)
 is proved and is the entry point for any such witness construction.

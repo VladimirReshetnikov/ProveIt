@@ -66,6 +66,9 @@ open CoarseDegrees
 #print axioms densityZero_sparse
 #print axioms implant_equivalent
 #print axioms spectrum_Rc
+#print axioms not_setCoarselyComputable_Rc
+#print axioms no_least_of_dyadic
+#print axioms exists_not_limitComputable
 
 -- proved from the admitted published results (`sorryAx` expected)
 #print axioms exists_hyp_minimal_pair
@@ -83,3 +86,5 @@ open CoarseDegrees
 #print axioms exists_binary_counterexample
 #print axioms hcore_Rc
 #print axioms hyperarithmetic_compactness_fails
+#print axioms not_C1_dyadic
+#print axioms not_C1Uniform_dyadic
