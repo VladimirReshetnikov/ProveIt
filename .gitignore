@@ -1,0 +1,65 @@
+# SPDX-License-Identifier: MIT-0
+
+# --- LaTeX build products ---------------------------------------------------
+# Rebuilt PDFs (synthesis/report.pdf, the archives' reports, the preprint) are
+# tracked on purpose; only auxiliary files are ignored.  LaTeX build logs are
+# ignored only in the directories where documents are compiled; the recorded
+# evidence logs (reports/*/results, reports/*/validation, fast/results) stay
+# tracked.
+*.aux
+*.bbl
+!docs/arXiv-2607.23350v1/*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex
+*.synctex.gz
+*.synctex(busy)
+*.toc
+*.vrb
+*.xdv
+*-blx.bib
+*.dvi
+synthesis/*.log
+docs/arXiv-2607.23350v1/*.log
+reports/*/docs/*.log
+
+# --- Python -----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- Archives supplied as inputs (their extracted contents are tracked) ------
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+
+# --- Editors and operating systems ------------------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.claude/settings.local.json
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Lean / Lake ---------------------------------------------------------------
+.lake/

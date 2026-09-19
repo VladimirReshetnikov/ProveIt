@@ -1,0 +1,702 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25.5mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,microtype,enumitem,xcolor}
+\usepackage{fancyhdr,listings,xurl,titlesec}
+\definecolor{navy}{RGB}{30,57,82}
+\definecolor{ink}{RGB}{32,38,44}
+\definecolor{pale}{RGB}{239,243,247}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=navy,bookmarksnumbered=true]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Sparse-error minimal pairs and coarse representative spectra},pdfauthor={Research report prepared with ChatGPT for Vladimir Reshetnikov},pdfsubject={An attack on C1: a status correction and a quantitative counterexample construction}}
+\urlstyle{same}
+\titleformat{\section}{\large\bfseries\color{navy}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{navy}}{\thesubsection}{0.65em}{}
+\setlength{\parskip}{3.5pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{3em}
+\setlist{nosep,leftmargin=*}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{navy}Sparse-error minimal pairs}
+\fancyhead[R]{\small Research report \;|\; September 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Cantor}{2^{\N}}
+\newcommand{\Baire}{\N^{\N}}
+\newcommand{\leT}{\leq_{\mathrm T}}
+\newcommand{\eqT}{\equiv_{\mathrm T}}
+\newcommand{\degT}{\operatorname{deg}_{\mathrm T}}
+\newcommand{\CD}{\operatorname{CD}}
+\newcommand{\Spec}{\operatorname{Spec}_{\mathrm T}}
+\newcommand{\Up}{\operatorname{Up}}
+\newcommand{\nc}{\mathrm{nc}}
+\newcommand{\uc}{\mathrm{uc}}
+\newcommand{\cost}{\operatorname{cost}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\pref}{\preccurlyeq}
+\newcommand{\concat}{\mathbin{{}^{\frown}}}
+\newcommand{\stem}[1]{\lvert #1\rvert}
+\newcommand{\Icode}{\mathcal I}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,breaklines=true,frame=single,showstringspaces=false,backgroundcolor=\color{pale}}
+\pdfstringdefDisableCommands{\def\leT{<=T}\def\eqT{=T}\def\N{N}\def\CD{CD}\def\Spec{Spec}}
+\begin{document}
+\begin{titlepage}
+\vspace*{12mm}
+{\small\sffamily\bfseries\color{navy}COMPUTABILITY THEORY \quad / \quad COUNTEREXAMPLE CONSTRUCTION\par}
+\vspace{14mm}
+{\Huge\bfseries\color{navy}Sparse-error\par minimal pairs\par}
+\vspace{7mm}
+{\LARGE Coarse representative spectra\par without a least Turing degree\par}
+\vspace{10mm}
+{\large An attack on Problem C1, a literature-status correction,\par and a quantitative finite-extension construction\par}
+\vspace{12mm}
+\noindent\rule{\textwidth}{0.5pt}
+\vspace{5mm}
+\noindent Prepared for Vladimir Reshetnikov\\[3pt]
+18 September 2026
+\vspace{9mm}
+\begin{abstract}
+We select the least-representative question C1 from the supplied survey. The initial source audit changes its status: the coarse negative answer is already implicit in an earlier theorem, so it should not be advertised as a newly settled open problem. We then give an independent, self-contained construction with stronger control. For every computable nondecreasing unbounded order $h(n)\leq n+1$ and every positive rational $b$, there are individually $1$-generic sets $A,B\leT\emptyset''$ whose degrees form a minimal pair and for which
+\[
+\sum_{n\in A\triangle B}\frac1{h(n)}\leq b.
+\]
+In particular, their disagreement count is $o(h(N))$, yet their common coarse class is nonzero and has no least Turing-degree representative. The central lemma synchronizes finitely many dense convergence domains along a one-bit path. We also identify the representative spectrum with the upward spectrum of coarse descriptions and construct, above every Turing degree, a coarse class with that degree as an unattained infimum. Detailed English proofs, exact finite checks, and an explicit verification boundary are included.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Status.} The proofs below are research claims presented for checking, not an independently refereed or Lean-verified development. Novelty of the quantitative construction and its corollaries has not been established. Finite experiments test only their stated finite consequences.
+\end{titlepage}
+{\small\tableofcontents}
+\newpage
+
+\section{The selected problem and the status correction}\label{sec:status}
+The supplied \emph{Turing Degrees: A Unified Research Report} identifies C1 as a bounded counterexample target and proposes a minimal pair of Turing degrees inside one nonzero coarse class as a sufficient certificate \cite{Survey}. Its formulation, drawn from Gerdes's Question~7, is
+\begin{equation}\label{eq:question}
+\forall f\in\Baire\ \exists g\equiv_{\nc}f\
+\forall q\equiv_{\nc}f\quad g\leT q.
+\end{equation}
+Here the desired representative is \emph{least}, not merely minimal. Gerdes's displayed question occurs in the version submitted on 9 August 2025; it also asks more generally about representative spectra \cite[Question~7]{Gerdes}.
+
+\subsection{A negative answer was already implicit}
+Hirschfeldt, Jockusch, Kuyper, and Schupp prove that, for a $1$-generic $X$, any set computable from every coarse description of $X$ is computable \cite[Theorem~4.2]{HJKS}. Their preprint dates from 2015. This already refutes \eqref{eq:question}: every coarse description of $X$ is coarse equivalent to $X$, so a least representative would be computable; but $X$ has no computable coarse description. The latter fact is proved directly in Lemma~\ref{lem:generic-not-coarse}. This is a consequence of the cited theorem, not a claim that its authors used the exact wording of C1.
+
+Accordingly, the present report does \emph{not} claim priority for the negative coarse answer. The useful response to the audit is to sharpen the construction rather than simply relabel an old consequence as new. We ask for two actual binary representatives that are arbitrarily close in a strong weighted sense, individually generic, and a Turing minimal pair. Sections~\ref{sec:forcing}--\ref{sec:construction} supply a proof without invoking the preceding external theorem or an external minimal-pair theorem.
+
+\subsection{What is established here}
+The principal assertion is Theorem~\ref{thm:main}. Its proof separates three tasks that are easy to conflate: maintaining a quantitative error bound, meeting ordinary one-coordinate genericity requirements, and destroying noncomputable information common to the two coordinates. The last task needs more than the absence of a splitting witness. The density hypothesis in Lemma~\ref{lem:bridge} is indispensable.
+
+Two further conclusions answer parts of the broader spectrum question. Proposition~\ref{prop:spectrum} identifies exactly which Turing degrees occur among representatives. Theorem~\ref{thm:infimum} realizes every Turing degree as the infimum of such a spectrum while omitting that degree from the spectrum itself. These are proved assertions in this report; their historical novelty is not certified.
+
+No conclusion is asserted about effective-dense equivalence, the survey's C2. A density-zero modification preserves coarse descriptions because errors are allowed. It need not preserve descriptions that are forbidden to give any wrong answer. Nor do our results say that a spectrum without a least element has no minimal elements.
+
+\section{Definitions and representation conventions}\label{sec:definitions}
+We identify a set with its total binary characteristic function. A total numerical function is used as a value oracle, equivalently as an oracle for its graph. All references to Turing degree use total objects, not arbitrary partial-function degrees.
+
+For $S\subseteq\N$ and $N\geq1$, let
+\[
+\rho_N(S)=\frac{|S\cap[0,N)|}{N}.
+\]
+The assertion that $S$ has density zero means $\rho_N(S)\to0$. For a total function $f$, put
+\[
+\CD(f)=\{d\in\Baire:\rho_N(\{n:d(n)\ne f(n)\})\longrightarrow0\}.
+\]
+A member of $\CD(f)$ is a \emph{coarse description} of $f$. We say that $f$ is coarsely computable if it has a computable coarse description.
+
+For total functions $f,g$, define
+\[
+f\leq_{\nc}g
+\quad\Longleftrightarrow\quad
+\forall d\in\CD(g)\ \exists c\in\CD(f)\quad c\leT d.
+\]
+Uniform coarse reducibility $f\leq_{\uc}g$ requires one Turing functional that, on every $d\in\CD(g)$, returns a total member of $\CD(f)$. Thus uniform reducibility implies nonuniform reducibility. The direction of a reduction matters: the function on the right supplies descriptions to the reduction. These are the coarse conventions used in the source question \cite{Gerdes}.
+
+For binary targets, restricting descriptions to binary values does not change any argument below. Apply the computable projection $v\mapsto 1$ if $v=1$, and $v\mapsto0$ otherwise. It never turns a correct answer to a binary target into an incorrect answer. We retain numerical descriptions to cover the question on all of $\Baire$.
+
+Write $[f]_r=\{g:g\equiv_r f\}$, where $r$ is $\nc$ or $\uc$. For a nonempty class $\mathcal P$ of total objects, define
+\[
+\Spec(\mathcal P)=\{\degT(p):p\in\mathcal P\},\qquad
+\Up(\mathcal P)=\{\mathbf d:\exists p\in\mathcal P\ (\degT(p)\leq\mathbf d)\}.
+\]
+A degree belongs to the first set only when it occurs exactly; the second set asks only for the ability to compute a member.
+
+\begin{lemma}[Density-zero changes]\label{lem:change}
+If $f$ and $g$ disagree on a density-zero set, then $\CD(f)=\CD(g)$ and $f\equiv_{\uc}g$.
+\end{lemma}
+\begin{proof}
+For every total $d$,
+\[
+\{n:d(n)\ne g(n)\}\subseteq
+\{n:d(n)\ne f(n)\}\cup\{n:f(n)\ne g(n)\}.
+\]
+The density below $N$ of a union is at most the sum of the two densities. This proves one inclusion of description classes, and symmetry gives the other. The identity functional is the required uniform reduction in both directions.
+\end{proof}
+
+\begin{definition}[Minimal pair]
+Two nonzero Turing degrees form a minimal pair if their only common lower degree is $\mathbf0$. For sets $A,B$, it suffices to prove
+\begin{equation}\label{eq:minimal-pair}
+F\leT A\ \&\ F\leT B\ \&\ F\text{ total}
+\quad\Longrightarrow\quad F\text{ computable}
+\end{equation}
+for all numerical functions $F$, together with noncomputability of $A$ and $B$.
+\end{definition}
+
+A finite binary string $\sigma$ is a function on $[0,|\sigma|)$. The notation $\sigma\pref X$ denotes extension, and $[\sigma]$ denotes the set of infinite extensions of $\sigma$. We write concatenation as $\sigma\concat\eta$. A computation $\Phi^\sigma(x)\downarrow=v$ means a terminating oracle computation that asks only positions below $|\sigma|$. Every extension then preserves its value.
+
+\begin{definition}[$1$-genericity]
+A set $A$ is $1$-generic if for every computably enumerable set $W$ of finite binary strings, either some prefix of $A$ belongs to $W$, or some prefix of $A$ has no extension in $W$. Relative $1$-genericity replaces computable enumerability by enumerability relative to the stated oracle.
+\end{definition}
+
+\section{Representative spectra: two preliminary exact results}\label{sec:spectra}
+These elementary facts clarify what a counterexample must accomplish. Their proofs do not require the main construction.
+
+\begin{proposition}[The spectrum identity]\label{prop:spectrum}
+For every total numerical function $f$,
+\begin{equation}\label{eq:spectrum}
+\Spec([f]_{\uc})
+=\Spec([f]_{\nc})
+=\Spec(\CD(f))
+=\Up(\CD(f)).
+\end{equation}
+The equivalence classes themselves need not be equal; the assertion is about their Turing-degree spectra.
+\end{proposition}
+\begin{proof}
+A coarse description of $f$ differs from $f$ on a density-zero set, so Lemma~\ref{lem:change} gives
+\[
+\Spec(\CD(f))\subseteq\Spec([f]_{\uc})\subseteq\Spec([f]_{\nc}).
+\]
+If $q\equiv_{\nc}f$, apply $f\leq_{\nc}q$ to the description $q$ itself. There is a $d\in\CD(f)$ with $d\leT q$. Hence
+\[
+\Spec([f]_{\nc})\subseteq\Up(\CD(f)).
+\]
+It remains to realize exactly any degree in the last set. Choose a binary oracle $B$ of that degree and $d\in\CD(f)$ with $d\leT B$. Define a total numerical function $y$ by
+\[
+y(2^n)=B(n),\qquad y(k)=d(k)\quad(k\notin\{2^n:n\in\N\}).
+\]
+The powers of two have density zero: there are at most $1+\log_2N$ of them below $N$. Thus $y\in\CD(f)$. Also $y\leT B$, while $B\leT y$ by reading the powers of two. Therefore $\degT(y)=\degT(B)$, proving the missing inclusion.
+\end{proof}
+
+This identity explains why adding sparse high-degree information cannot by itself refute the least-representative claim. Every such spectrum is already upward closed. In the computable coarse class it is the entire set of Turing degrees, with least element $\mathbf0$.
+
+\subsection{An explicit robust block code}
+For a set $Z$, define
+\begin{equation}\label{eq:block-code}
+\Icode(Z)(0)=0,\qquad
+\Icode(Z)(k)=Z(n)\quad\text{if }2^n\leq k<2^{n+1}.
+\end{equation}
+Clearly $\Icode(Z)\eqT Z$: one direction forms the blocks and the other reads the first position of each block.
+
+\begin{lemma}[Nonuniform recovery from the block code]\label{lem:block}
+Every coarse description of $\Icode(Z)$ computes $Z$.
+\end{lemma}
+\begin{proof}
+Let $d\in\CD(\Icode(Z))$. On the block $[2^n,2^{n+1})$, let $a(n)=1$ if strictly more than half the entries of $d$ equal $1$, and let $a(n)=0$ otherwise. This gives a total $d$-computable binary sequence. If $a(n)\ne Z(n)$, at least half of that block is erroneous. Consequently, at the endpoint $2^{n+1}$, the error density is at least
+\[
+\frac{2^{n-1}}{2^{n+1}}=\frac14
+\]
+(with the same lower bound valid for $n=0$ by the direct integer count). Since the error density tends to zero, only finitely many blocks are decoded incorrectly. Thus $a=^*Z$. A program with the finitely many corrections hardcoded computes $Z$ from $d$.
+
+The finite corrections depend on the particular description. This proves a nonuniform Turing reduction; it does not provide one exact decoder valid for all descriptions.
+\end{proof}
+
+\begin{proposition}[Characterization of a least nonuniform representative]\label{prop:least-code}
+The class $[f]_{\nc}$ has a least Turing-degree representative if and only if
+\[
+f\equiv_{\nc}\Icode(Z)
+\]
+for some set $Z$. In that case its spectrum is exactly the upper cone above $\degT(Z)$.
+\end{proposition}
+\begin{proof}
+Suppose $\ell\in[f]_{\nc}$ has least degree, and choose a set $Z\eqT\ell$. Every $d\in\CD(f)$ is a representative of the same class, so $Z\leT\ell\leT d$. Such a $d$ computes $\Icode(Z)$ itself; therefore $\Icode(Z)\leq_{\nc}f$.
+
+Conversely, every description of $\Icode(Z)$ computes $Z$, hence $\ell$. The reduction $f\leq_{\nc}\ell$, applied to $\ell$ itself, supplies a description of $f$ computable from $\ell$. Thus every description of $\Icode(Z)$ computes a description of $f$, proving $f\leq_{\nc}\Icode(Z)$.
+
+For the reverse implication, suppose $f\equiv_{\nc}\Icode(Z)$. If $q\in[f]_{\nc}$, then $\Icode(Z)\leq_{\nc}q$, so $q$ computes some description of $\Icode(Z)$ and therefore computes $Z$. Meanwhile $\Icode(Z)$ is itself a representative of degree $\degT(Z)$. It is least. Upward closure from Proposition~\ref{prop:spectrum} gives the final assertion.
+\end{proof}
+
+\section{The quantitative counterexample theorem}\label{sec:main}
+\begin{definition}[Admissible order]
+An admissible order is a computable, nondecreasing, unbounded function $h:\N\to\N_{\geq1}$ such that $h(n)\leq n+1$ for all $n$.
+\end{definition}
+
+\begin{theorem}[Sparse-error minimal pairs]\label{thm:main}
+Let $h$ be an admissible order and let $b>0$ be rational. There are sets $A,B\leT\emptyset''$ with all the following properties:
+\begin{enumerate}[label=(\roman*)]
+\item $A$ and $B$ are each $1$-generic.
+\item Their Turing degrees form a minimal pair, in the sense of \eqref{eq:minimal-pair}.
+\item Their error set $E=A\triangle B$ satisfies
+\begin{equation}\label{eq:weighted-bound}
+\sum_{n\in E}\frac1{h(n)}\leq b.
+\end{equation}
+\item Its counting function satisfies
+\begin{equation}\label{eq:little-o}
+|E\cap[0,N)|=o(h(N)).
+\end{equation}
+\item $A\equiv_{\uc}B$, their coarse class is nonzero, and neither $[A]_{\uc}$ nor $[A]_{\nc}$ has a representative of least Turing degree.
+\end{enumerate}
+The construction can extend any prescribed equal finite prefix of $A$ and $B$.
+\end{theorem}
+
+The order is prescribed \emph{before} constructing the pair. For example,
+\[
+h(n)=\lfloor\log_2(n+1)\rfloor+1
+\]
+is admissible and gives $o(\log N)$ disagreements. Iterating this integer logarithm gives still slower examples. An arbitrary computable nondecreasing unbounded rate can first be capped by $n+1$, so the theorem covers rates without the displayed cap as well. This is not a claim that one fixed pair meets all such rates simultaneously.
+
+The theorem asserts individual genericity, not that $A$ and $B$ are mutually generic. Its upper bound $\emptyset''$ is an oracle-computability bound, not an implementable finite-time procedure without that oracle.
+
+\section{Finite conditions and the available error budget}\label{sec:forcing}
+Fix $h$ and $b$ as in Theorem~\ref{thm:main}, and put $w_n=1/h(n)$. Thus the weights are positive rational numbers, computable, nonincreasing, and tend to zero.
+
+A condition is a pair $p=(\sigma,\tau)$ of equal-length binary strings with
+\begin{equation}\label{eq:condition}
+\cost(p):=\sum_{\substack{n<|\sigma|\\\sigma(n)\ne\tau(n)}}w_n<b.
+\end{equation}
+An extension $q\geq p$ extends both strings. It must still satisfy the strict inequality. The empty pair is a condition; so is $(\nu,\nu)$ for any finite string $\nu$.
+
+The difference between $<$ at finite stages and $\leq$ in the limit is deliberate. Every condition has positive unused budget. We never assume that the eventual infinite pair has unused budget.
+
+\begin{lemma}[Copy extensions]\label{lem:copy}
+Every finite extension of either coordinate of a condition can be lifted to a condition by putting exactly the same new suffix on the other coordinate. Its cost is unchanged.
+\end{lemma}
+\begin{proof}
+If $\rho=\sigma\concat\eta$, replace $(\sigma,\tau)$ by $(\sigma\concat\eta,\tau\concat\eta)$. All newly defined coordinates agree; all old mismatch contributions remain unchanged. The argument is symmetric for the second coordinate.
+\end{proof}
+
+This is the reason ordinary genericity requirements remain available. Even if a dense set demands a long, complicated extension of $A$, copying that suffix to $B$ costs nothing.
+
+\begin{lemma}[Padding for a one-bit bridge]\label{lem:padding}
+Given a condition $p=(\sigma,\tau)$, there is an effectively findable length $L\geq|\sigma|$ such that
+\begin{equation}\label{eq:slack}
+\cost(p)+\frac1{h(L)}<b.
+\end{equation}
+Let $\sigma_*,\tau_*$ be obtained by appending zeros to length $L$. Equal additional suffixes form legal extensions. Additional suffixes of equal length differing in exactly one position also form legal extensions, provided all positions of those suffixes are at least $L$.
+\end{lemma}
+\begin{proof}
+Search successive $L$ until \eqref{eq:slack} holds. The search terminates because $h$ is unbounded and $b-\cost(p)>0$. The padding adds no mismatches. If two suffixes differ in one position $k\geq L$, their pair has cost
+\[
+\cost(p)+w_k\leq\cost(p)+w_L<b.
+\]
+If they are equal, the added cost is zero.
+\end{proof}
+
+The bridge lemma below uses many such legal pairs. They are alternative extensions of one padded condition, not stages successively placed on one construction path. Therefore their one-bit costs are \emph{not added together}. Confusing these two uses of extension would invalidate the argument.
+
+\section{The key lemma: dense convergence forces a computable value}\label{sec:bridge}
+Fix oracle functionals $\Phi,\Psi$ and a condition $p=(\sigma,\tau)$.
+
+Say that a \emph{splitting extension} exists if there are a legal $q=(\alpha,\beta)\geq p$ and an input $x$ such that
+\begin{equation}\label{eq:split}
+\Phi^\alpha(x)\downarrow\ne\Psi^\beta(x)\downarrow.
+\end{equation}
+A convergence domain is \emph{dense above $\sigma$} if
+\begin{equation}\label{eq:dense}
+\forall\rho\succeq\sigma\ \exists\alpha\succeq\rho\quad
+\Phi^\alpha(x)\downarrow.
+\end{equation}
+This definition is used separately for each input $x$.
+
+\begin{lemma}[One-bit bridge lemma]\label{lem:bridge}
+Assume that no splitting extension of $p$ exists. Also assume that, for every $x$, the convergence domain of $\Phi(x)$ is dense above $\sigma$ and the convergence domain of $\Psi(x)$ is dense above $\tau$.
+
+Choose the padded stems $\sigma_*,\tau_*$ from Lemma~\ref{lem:padding}. There is one total computable function $g$ such that every defined value of $\Phi^X(x)$ for $X\succeq\sigma_*$, and every defined value of $\Psi^Y(x)$ for $Y\succeq\tau_*$, equals $g(x)$.
+\end{lemma}
+\begin{proof}
+Fix an input $x$. First consider any two finite convergence witnesses $\alpha,\alpha'\succeq\sigma_*$ for $\Phi(x)$, with respective values $v,v'$. Extend the shorter witness with zeros so they have the same length $M$. Convergence is preserved. Write
+\[
+\alpha=\sigma_*\concat\theta,\qquad
+\alpha'=\sigma_*\concat\theta',
+\]
+where both tails have length $M-L$.
+
+\textit{A path of one-bit changes.}
+List the positions at which $\theta$ and $\theta'$ differ, and flip them one at a time. This gives finite strings
+\[
+\theta=\theta_0,\theta_1,\ldots,\theta_r=\theta'
+\]
+of the same length with consecutive strings differing in one bit. Here $r$ is the number of differing positions; a length-zero path is allowed when the endpoints agree.
+
+\textit{One suffix works for the whole path.}
+We claim that there is a single finite suffix $\eta$ such that, for every $j\leq r$, both computations
+\begin{equation}\label{eq:synchronized}
+\Phi^{\sigma_*\concat\theta_j\concat\eta}(x),
+\qquad
+\Psi^{\tau_*\concat\theta_j\concat\eta}(x)
+\end{equation}
+converge. To obtain it, start with the empty suffix and treat the finitely many computations in any order. For a computation currently using the prefix $\sigma_*\concat\theta_j\concat\eta$, density above $\sigma$ supplies a finite extension on which it converges. Append the new part of that extension to the common suffix $\eta$. For a $\Psi$ computation, use density above $\tau$ instead. Every previously arranged convergence persists when the common suffix is extended. After finitely many steps, all the computations converge.
+
+Let their values be $a_j$ and $b_j$, respectively. Equal-tail pairs
+\[
+(\sigma_*\concat\theta_j\concat\eta,
+ \tau_*\concat\theta_j\concat\eta)
+\]
+have cost $\cost(p)$ and are legal. Since there is no splitting extension, $a_j=b_j$. Adjacent-tail pairs
+\[
+(\sigma_*\concat\theta_j\concat\eta,
+ \tau_*\concat\theta_{j+1}\concat\eta)
+\]
+have just one new mismatch beyond the padded stems. Lemma~\ref{lem:padding} makes them legal, so $a_j=b_{j+1}$ for $j<r$. Together with $a_{j+1}=b_{j+1}$, this yields $a_j=a_{j+1}$ at every edge and therefore $a_0=a_r$. The original endpoint computations persist under extension, giving $v=v'$. Thus all defined $\Phi$ values on this input above $\sigma_*$ are the same.
+
+\textit{The other coordinate has that same value.}
+Take any $\Psi$ witness $\beta=\tau_*\concat\theta$ on input $x$. Density for $\Phi$ gives an extension $\sigma_*\concat\theta\concat\eta$ where $\Phi(x)$ converges. Extend $\beta$ by the same $\eta$. The resulting pair is legal and the $\Psi$ value is unchanged. The absence of splitting shows it equals the unique $\Phi$ value just established.
+
+\textit{Uniformity in the input.}
+Given $x$, dovetail all finite oracle simulations of $\Phi(x)$ over strings extending the fixed finite string $\sigma_*$. Return the first convergent value. Density ensures that the search terminates. The preceding argument ensures that the returned value is the only possible defined value on either coordinate above the padded stems. The index of $\Phi$ and the single finite string $\sigma_*$ can be hardcoded in one ordinary program. They do not vary with $x$. This program computes the required total function $g$.
+\end{proof}
+
+\subsection{Why the density assumption cannot be dropped}
+A small finite model isolates the danger. Suppose that the only tails where either computation is defined are $000$, with output $0$, and $111$, with output $1$. Suppose that legal comparisons may change at most one tail bit. The only legal comparisons between defined tails compare a tail with itself. Thus there is no legal pair of unequal defined outputs, but the partial functions are not constant.
+
+In the actual proof, dense convergence permits a common further suffix for \emph{every hybrid tail}. Without that step, the one-bit path may go through undefined computations, so equality cannot propagate. The program in the archive explicitly checks this failure model as well as the positive finite bridge graph.
+
+\section{Meeting the minimal-pair requirements}\label{sec:requirements}
+Fix an effective enumeration $(\Phi_e)_{e\in\N}$ of oracle programs with numerical output. For every pair of indices $(e,i)$, we impose
+\[
+R_{e,i}:\quad
+\text{if }\Phi_e^A=\Phi_i^B\text{ is total, then it is computable}.
+\]
+
+\begin{lemma}[A decisive extension for each requirement]\label{lem:decide}
+Given any condition $p$ and any $(e,i)$, there is a finite extension after which $R_{e,i}$ is satisfied for every infinite continuation. Such an extension can be selected using $\emptyset''$.
+\end{lemma}
+\begin{proof}
+Write $p=(\sigma,\tau)$ and $\Phi=\Phi_e$, $\Psi=\Phi_i$. There are four exhaustive cases.
+
+\textbf{Case 1: a splitting extension exists.}
+Choose a legal extension $q=(\alpha,\beta)$ and an input witnessing \eqref{eq:split}. The two values persist on every continuation. The two total functions therefore cannot be equal, so $R_{e,i}$ is permanently satisfied.
+
+From now on assume no splitting extension exists.
+
+\textbf{Case 2: some first-coordinate convergence domain is not dense.}
+There are an input $x$ and a string $\rho\succeq\sigma$ such that no finite extension $\alpha\succeq\rho$ has $\Phi^\alpha(x)\downarrow$. Lift $\rho$ to a legal pair using Lemma~\ref{lem:copy}. For every infinite continuation $X\succeq\rho$, the computation $\Phi^X(x)$ diverges: if it converged, a finite prefix would witness convergence. Thus $\Phi^A$ is not total on any continuation.
+
+\textbf{Case 3: the analogous second-coordinate failure occurs.}
+Use a string $\rho\succeq\tau$ with no convergence extension for some input of $\Psi$, and apply the symmetric copy extension. Again totality is permanently destroyed.
+
+\textbf{Case 4: neither failure of density occurs.}
+For every input, the two convergence domains are dense on their respective cylinders. Pad to $\sigma_*,\tau_*$ as in Lemma~\ref{lem:padding}. Lemma~\ref{lem:bridge} supplies a total computable function $g$ such that every defined value on either coordinate above those stems equals $g$ on that input. Hence any common total result is $g$. This also permanently satisfies the requirement.
+
+\textit{Oracle complexity of the choice.}
+Case~1 asks whether a finite splitting witness exists. Such witnesses are computably enumerable: finite strings, time bounds, and inputs can be enumerated, and the rational cost inequality is decidable. The existence question is $\Sigma^0_1$ and can be decided by $\emptyset'$.
+
+For Case~2 the question is
+\begin{equation}\label{eq:sigma-two}
+\exists x\ \exists\rho\succeq\sigma\ \forall\alpha\succeq\rho\ \forall s\quad
+\neg[\Phi_{e,s}^{\alpha}(x)\downarrow].
+\end{equation}
+The bracketed bounded simulation is decidable. Thus \eqref{eq:sigma-two} is $\Sigma^0_2$ and is decidable by $\emptyset''$. When it is true, search for $x,\rho$, using $\emptyset'$ to check each $\Pi^0_1$ nonconvergence property. Case~3 has the same complexity. If all three existence tests are negative, Case~4 applies and its padding search is computable. These procedures give a $\emptyset''$-effective choice of a decisive extension.
+\end{proof}
+
+\begin{remark}[Finite parameters are not hidden oracle advice]
+In Case~4, the construction may need $\emptyset''$ to discover that it is in this case and to choose the earlier condition. The function $g$ is nevertheless computable without that oracle. A fixed finite stem is an ordinary finite program parameter; computing its bits uniformly from all possible constructions is not required for the assertion that this particular $g$ is computable. Crucially, the same stem works for every input.
+\end{remark}
+
+\section{The full construction and its verification}\label{sec:construction}
+For an effective enumeration $(W_e)$ of the computably enumerable sets of finite strings, impose the requirements
+\[
+G_e^A:\ A\text{ meets or avoids }W_e,\qquad
+G_e^B:\ B\text{ meets or avoids }W_e.
+\]
+Use a computable schedule that lists every $G_e^A$, every $G_e^B$, and every $R_{e,i}$. For example, at round $s$ process $G_s^A,G_s^B$ and all $R_{e,i}$ with $e+i=s$, in a fixed order. Each requirement need be processed only once.
+
+Start with $(\nu,\nu)$ for the desired common finite prefix $\nu$, or with the empty pair. Inductively extend the current condition as follows.
+
+For $G_e^A$, use $\emptyset'$ to decide whether the current first stem $\sigma$ has an extension in $W_e$. If it does, find such an extension and lift it by copying its new suffix. The limit first coordinate then meets $W_e$. If no such extension exists, leave the condition unchanged: $\sigma$ already witnesses avoidance. Treat $G_e^B$ symmetrically.
+
+For $R_{e,i}$, choose the decisive extension from Lemma~\ref{lem:decide}. After each processed requirement append at least one common zero to both strings. This last action has zero cost and ensures that the lengths tend to infinity.
+
+Let $p_s=(\sigma_s,\tau_s)$ be the successive conditions, and define
+\[
+A=\bigcup_s\sigma_s,\qquad B=\bigcup_s\tau_s.
+\]
+They are total binary sets because the strings increase and their lengths are unbounded.
+
+\subsection{Genericity and degree properties}
+Each $G$ requirement is satisfied permanently at its assigned stage. Meeting a c.e. string set is preserved because a witnessing prefix remains a prefix. Avoidance is preserved because no extension of the avoiding stem can enter that set. Therefore $A$ and $B$ are each $1$-generic.
+
+Each $R_{e,i}$ is also permanent by Lemma~\ref{lem:decide}. If a total numerical function $F$ is computable from both $A$ and $B$, choose indices $e,i$ for these computations. Requirement $R_{e,i}$ says that $F$ is computable. Lemma~\ref{lem:generic-not-coarse} below gives noncomputability of $A$ and $B$, completing the minimal-pair assertion.
+
+All finite-stage decisions are computable in $\emptyset''$. To compute $A(n)$ or $B(n)$ with that oracle, perform stages until the current stems have length greater than $n$, then read the corresponding bit. The explicit length growth guarantees termination. Hence $A,B\leT\emptyset''$.
+
+\subsection{The weighted bound and the counting estimate}
+For every $N$ choose a stage whose stems have length at least $N$. Then
+\[
+\sum_{\substack{n<N\\A(n)\ne B(n)}}\frac1{h(n)}
+\leq\cost(p_s)<b.
+\]
+The finite partial sums are nondecreasing. Their supremum, which is the infinite nonnegative sum, is at most $b$. This proves \eqref{eq:weighted-bound}.
+
+\begin{lemma}[Summable errors have a smaller counting order]\label{lem:count}
+If $h$ is nondecreasing and unbounded, and
+$\sum_{n\in E}1/h(n)<\infty$, then
+$|E\cap[0,N)|/h(N)\to0$.
+\end{lemma}
+\begin{proof}
+Fix $M$ and let $N\geq M$. Monotonicity gives $1/h(N)\leq1/h(n)$ for every $n<N$. Therefore
+\begin{align*}
+\frac{|E\cap[0,N)|}{h(N)}
+&\leq\frac{M}{h(N)}+
+\sum_{\substack{n\in E\\M\leq n<N}}\frac1{h(n)}\\
+&\leq\frac{M}{h(N)}+
+\sum_{\substack{n\in E\\n\geq M}}\frac1{h(n)}.
+\end{align*}
+First take the upper limit as $N\to\infty$. The first term tends to zero because $h$ is unbounded and nondecreasing. Then let $M\to\infty$; the tail of a convergent nonnegative series tends to zero. The ratio is nonnegative, so its limit is zero.
+\end{proof}
+
+With $h(N)\leq N+1$, this implies
+\[
+\rho_N(E)=\frac{|E\cap[0,N)|}{h(N)}\frac{h(N)}{N}\longrightarrow0.
+\]
+The proof supplies no computable modulus for the convergence of the infinite tail. None is needed. A computable budget on the sum is not an algorithm for locating the errors.
+
+\subsection{Genericity excludes the zero coarse class}
+\begin{lemma}\label{lem:generic-not-coarse}
+If $A$ is $1$-generic, then for every total computable numerical function $f$,
+\[
+\limsup_{N\to\infty}\rho_N(\{n:A(n)\ne f(n)\})=1.
+\]
+In particular, $A$ is not coarsely computable. Relative to an oracle $Z$, the same assertion holds for a $1$-generic relative to $Z$ and every total $Z$-computable $f$.
+\end{lemma}
+\begin{proof}
+Fix $k\geq2$ and $m\geq1$. Let $W_{f,k,m}$ consist of binary strings $\eta$ of length $N\geq m$ such that their fraction of disagreements with $f$ is greater than $1-1/k$. This set of strings is computably enumerable (indeed decidable among finite strings) because $f$ is total and computable.
+
+It is dense. Given any string $\sigma$ of length $\ell$, extend it far enough, and on every new coordinate choose a binary value different from $f$ there. Such a binary value always exists. If the new total length is $N>k\ell$ and $N\geq m$, the new disagreement fraction is at least $(N-\ell)/N>1-1/k$.
+
+A $1$-generic set cannot avoid a dense c.e. set, since every stem has an extension in that set. Hence some prefix of $A$ belongs to $W_{f,k,m}$. As $m$ is arbitrary, arbitrarily long prefixes have disagreement fraction greater than $1-1/k$. As $k$ is arbitrary, the upper density is $1$. The entire argument relativizes by enumerating these string sets with oracle $Z$.
+\end{proof}
+
+\subsection{No least representative}
+By the weighted bound, $E=A\triangle B$ has density zero. Lemma~\ref{lem:change} gives $A\equiv_{\uc}B$, hence also $A\equiv_{\nc}B$. Lemma~\ref{lem:generic-not-coarse} says that their class is not the computable coarse class.
+
+Suppose that $q\in[A]_{\nc}$ has least Turing degree. Since $A$ and $B$ both belong to that class, $q\leT A,B$. The minimal-pair property makes $q$ computable. Now apply $A\leq_{\nc}q$ to the computable description $q$ itself. It yields a computable description of $A$, contradicting Lemma~\ref{lem:generic-not-coarse}.
+
+The same argument works in the uniform class: $A$ and $B$ still belong to it, and a uniform reduction in particular provides a description computable from $q$. Alternatively, use the spectrum identity. This completes the proof of Theorem~\ref{thm:main}.
+
+\section{How sparse errors can still destroy every common noncomputable set}\label{sec:support}
+The result might seem to conflict with the elementary observation that two sets agreeing on a computable density-one domain have common information. The resolution is that a very small \emph{number} of errors need not have a computably recognizable location.
+
+\begin{lemma}[Computable subsequences of a generic]\label{lem:subsequence}
+Let $R$ be an infinite computable subset of $\N$, with increasing enumeration $r_0<r_1<\cdots$. If $A$ is $1$-generic, the sequence $A_R(n)=A(r_n)$ is $1$-generic and hence noncomputable.
+\end{lemma}
+\begin{proof}
+For a c.e. string set $W$, enumerate into $V$ every binary string $\sigma$ whose restriction to positions in $R$ has a prefix in $W$. Here the restriction is the finite sequence of values at the positions of $R$ below $|\sigma|$. The computability of $R$ makes $V$ c.e.
+
+If $A$ meets $V$, then $A_R$ meets $W$. Otherwise choose $\sigma\pref A$ with no extension in $V$. Let $\eta$ be its restriction to $R$. If an extension $\theta\succeq\eta$ belonged to $W$, one could extend $\sigma$ by assigning the finitely many new $R$ positions according to $\theta$, filling other positions arbitrarily. The resulting extension would belong to $V$, a contradiction. Thus $\eta$ witnesses avoidance of $W$ by $A_R$.
+\end{proof}
+
+\begin{proposition}[The errors cannot have a computable sparse cover]\label{prop:immune}
+For the sets in Theorem~\ref{thm:main}, both $E=A\triangle B$ and its complement meet every infinite computable set infinitely often. In particular, $E$ is not contained, even modulo a finite set, in a computable density-zero set.
+\end{proposition}
+\begin{proof}
+Suppose $E\cap R$ were finite for an infinite computable $R$. Then $A_R$ and $B_R$ would differ only finitely. Consequently $A_R\leT A$ and $A_R\leT B$: to compute from $B$, read its $R$ subsequence and make finitely many hardcoded corrections. By Lemma~\ref{lem:subsequence}, $A_R$ is noncomputable. This contradicts the minimal-pair property. If instead $R\setminus E$ were finite, $A_R$ would differ only finitely from the bitwise complement of $B_R$. It would again be a noncomputable function computable from both $A$ and $B$, giving the same contradiction.
+
+If $E$ were contained modulo finite in a computable density-zero set $S$, take $R=\N\setminus S$. It is infinite and computable, but $E\cap R$ would be finite, giving the same contradiction.
+\end{proof}
+
+In fact $E$ is \emph{bi-immune}: neither $E$ nor $\N\setminus E$ has an infinite c.e. subset. Any infinite c.e. set contains an infinite computable subset: choose an increasing sequence of elements by waiting in its enumeration for the next larger element; its range is decidable by searching until the increasing sequence reaches or exceeds the proposed input. An infinite c.e. subset on either side would therefore contradict Proposition~\ref{prop:immune}. In particular, the error set is neither c.e. nor co-c.e.; an enumeration of a sparse error support cannot replace the present construction.
+
+This also proves that $E$ is infinite. Finite changes preserve Turing degree, so finite disagreement would be impossible for a nonzero minimal pair even without the stronger subsequence argument. Thus the theorem's $o(h(N))$ bound is not achieved by the degenerate choice of a finite error set.
+
+\section{Relativization and prescribed unattained infima}\label{sec:relative}
+The construction admits an explicit relative version. This leads to a spectrum theorem that is stronger than simply exhibiting a failure of leastness at the computable degree.
+
+\begin{theorem}[Relative sparse minimal pairs]\label{thm:relative}
+For every set $Z$, admissible order $h$, and rational $b>0$, there are $A,B\leT Z''$ such that:
+\begin{enumerate}[label=(\roman*)]
+\item $A$ and $B$ are each $1$-generic relative to $Z$;
+\item every total $F\leT Z\oplus A,Z\oplus B$ satisfies $F\leT Z$;
+\item $\sum_{n\in A\triangle B}1/h(n)\leq b$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Use exactly the same rational-cost conditions. Enumerate the $Z$-c.e. string sets for the two genericity coordinates, and use functionals of the form $\Phi_e^{Z\oplus X}$ in the pair requirements.
+
+Finite oracle convergence is now enumerable relative to $Z$. Splitting existence is $\Sigma^0_1(Z)$; the existence of a nonconvergence cylinder is $\Sigma^0_2(Z)$. Thus the decisive extensions and genericity choices can be made using $Z''$.
+
+The topological part of Lemma~\ref{lem:bridge} is unchanged. Under its hypotheses, one finite suffix still synchronizes the finitely many computations along a one-bit path. The final search for a convergence witness uses $Z$, so the unique common total function is $Z$-computable. This is precisely the implication in (ii). The genericity verification uses the relative version of the definition; the cost and counting arguments do not use an oracle at all. Finally, simulating the stage construction with $Z''$ computes the two limit sets.
+\end{proof}
+
+For clarity, a lower bound of a set of degrees means a degree below every member. An infimum is a greatest such lower bound; it need not belong to the set.
+
+\begin{theorem}[Every degree occurs as an unattained infimum]\label{thm:infimum}
+For every Turing degree $\mathbf z$, there is a binary set $F$ such that the spectra of $[F]_{\nc}$ and $[F]_{\uc}$ have infimum $\mathbf z$ but do not contain $\mathbf z$. In particular, they have no least element.
+
+Moreover, choosing a representative $Z$ of $\mathbf z$, there are representatives $F,G\leT Z''$ in that same uniform coarse class such that their degree-theoretic meet exists and equals $\mathbf z$.
+\end{theorem}
+\begin{proof}
+Choose $Z$ of degree $\mathbf z$ and apply Theorem~\ref{thm:relative} to obtain $A,B$. Define the binary joins
+\[
+F=A\oplus\Icode(Z),\qquad G=B\oplus\Icode(Z),
+\]
+where the first component occupies the even positions and the second the odd positions. Thus
+\[
+\degT(F)=\degT(Z\oplus A),\qquad
+\degT(G)=\degT(Z\oplus B).
+\]
+Their only disagreements occur at the even positions $2n$ with $n\in A\triangle B$. This set has density zero, so $F\equiv_{\uc}G$.
+
+\textit{Every representative computes $Z$.}
+Let $q\equiv_{\nc}F$. Applying $F\leq_{\nc}q$ to $q$ itself gives a coarse description $d$ of $F$ with $d\leT q$. Its odd subsequence $d_o(n)=d(2n+1)$ is a coarse description of $\Icode(Z)$. Indeed, if the full error count below $2N$ is $e(2N)=o(N)$, the odd error count below $N$ is at most $e(2N)$, and its fraction is at most $e(2N)/N\to0$.
+
+Lemma~\ref{lem:block} gives $Z\leT d_o\leT d\leT q$. Therefore $\mathbf z$ is a lower bound for the whole nonuniform spectrum, and hence also for the uniform spectrum.
+
+\textit{No larger lower bound is possible.}
+Both $F$ and $G$ belong to either spectrum. If a degree $\mathbf c$ is a lower bound for one of the spectra, take a set $C$ of degree $\mathbf c$. Then
+\[
+C\leT F\eqT Z\oplus A,\qquad C\leT G\eqT Z\oplus B.
+\]
+Theorem~\ref{thm:relative}(ii) implies $C\leT Z$. Thus every lower bound is below $\mathbf z$, proving that $\mathbf z$ is the infimum. This reasoning also proves that $\degT(F)\wedge\degT(G)=\mathbf z$.
+
+\textit{The infimum is not attained.}
+If some $q\equiv_{\nc}F$ had degree $\mathbf z$, the same reduction would supply a coarse description $d$ of $F$ with $d\leT q\leT Z$. Its even subsequence would then be a $Z$-computable coarse description of $A$. The relative version of Lemma~\ref{lem:generic-not-coarse} rules this out. Hence $\mathbf z$ is absent. A least member would have to equal the infimum, so no least member exists.
+
+Finally, $A,B\leT Z''$ and $\Icode(Z)\leT Z\leT Z''$, so $F,G\leT Z''$.
+\end{proof}
+
+\begin{remark}[Why raw joining with $Z$ is not enough]
+The robust block code in this proof cannot simply be replaced by $Z$. From a coarse description of $A\oplus Z$, the odd subsequence is only a coarse description of $Z$, which need not compute $Z$. Coding $Z$ by \eqref{eq:block-code} is what makes $\mathbf z$ a lower bound of \emph{every} representative, rather than merely a common lower bound of the two displayed representatives.
+\end{remark}
+
+\section{Proof audit and finite evidence}\label{sec:audit}
+\subsection{The logical dependencies}
+The main construction uses only finite strings, oracle machines, elementary facts about c.e. sets, the definition of the first two jumps, finite extension, and a nonnegative-series estimate. Its dependency chain is
+\[
+\begin{aligned}
+\text{copying and padding}&\Longrightarrow\text{one-bit bridge}\\
+&\Longrightarrow\text{decisive extensions}\\
+&\Longrightarrow\text{minimal-pair construction}.
+\end{aligned}
+\]
+Genericity supplies non-coarse-computability; the weighted estimate supplies coarse equivalence. The relative infimum result additionally uses the independently proved block-code lemma.
+
+The following are the principal failure points checked in writing the proof.
+\begin{description}[style=nextline]
+\item[Projection versus independent extension.] Arbitrarily extending both coordinates can exceed the budget. A one-coordinate requirement is lifted only by copying its new suffix.
+\item[Density versus no splitting.] No splitting does not guarantee constancy by itself. Cases~2 and~3 remove the possible nondense convergence domains before the bridge lemma is invoked.
+\item[One common suffix.] Pairwise convergence on unrelated extensions would not permit equality to propagate along the path. The proof constructs one suffix simultaneously valid for every hybrid computation.
+\item[Alternative pairs versus accumulated errors.] The bridge comparisons are alternative legal conditions. Their costs are checked separately; only the cost on the actual increasing construction is accumulated.
+\item[Computability versus uniform recovery.] A finite stem may be hardcoded for the bridge's one total function. The block decoder similarly permits finitely many hardcoded corrections, but these do not form one uniform exact decoder for all descriptions.
+\item[Least versus minimal.] Only leastness is refuted. The existence or nonexistence of minimal degrees inside the displayed spectra is not inferred.
+\end{description}
+
+\subsection{Executed finite checks}
+The file \texttt{finite\_checks.py} uses Python's exact rational arithmetic and only the standard library. Its recorded output is in \texttt{finite\_checks\_results.json}. The tests were executed successfully for this report.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}Xr@{}}
+\toprule
+Finite diagnostic & Cases or size \\
+\midrule
+Legal bridge graphs checked for connectivity & 6 graphs \\
+Largest bridge graph & 128 vertices, 448 edges \\
+Boolean labelings exhaustively checked on the 16-vertex graph & 65,536 \\
+Labelings constant across all legal comparisons & 2 \\
+Copy extensions with exact unchanged cost & 2,728 \\
+Padded one-bit legal extensions & 2,100 \\
+Finite instances of the weighted counting inequality & 900 \\
+Dyadic-block majority cases & 556 \\
+Dense-open toy domains met by a common suffix & 14 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+For the exhaustive graph, the fixed stems have length six and mismatch cost $1/3$, the budget is $1/2$, and the new weights are $1/(n+1)$ for $n\geq6$. Each one-bit comparison is affordable because $1/3+1/7<1/2$. On three new tail bits the legal bipartite graph has sixteen vertices and thirty-two edges. All $2^{16}$ binary labelings were tested; exactly the two constant labelings avoid an unequal-output legal edge.
+
+The negative test uses the two-point domain $\{000,111\}$ with distinct outputs and Hamming-distance-at-most-one legal comparisons. It verifies that no-splitting alone can hold while constancy fails. The positive suffix toy test uses finitely many dense open pattern-occurrence domains; it illustrates preservation of earlier convergence but does not enumerate arbitrary c.e. convergence domains.
+
+\subsection{What the experiments do not establish}
+None of the finite tests computes $\emptyset''$, constructs the infinite sets, decides whether an arbitrary oracle functional is total, or proves a Turing nonreducibility. They are deliberately restricted diagnostics for the combinatorial and arithmetic components. There is no claim of a compiled Lean proof or any other machine-checked verification of the infinite theorem.
+
+The construction is specified as a $\emptyset''$-oracle algorithm, with its noncomputable decisions exposed in Appendix~\ref{app:pseudocode}. Substituting finite timeouts for its negative existence tests would not produce the asserted sets. We do not provide such a substitution disguised as an implementation.
+
+\section{Conclusions and the remaining research boundary}\label{sec:conclusion}
+The counterexample route proposed for C1 works, and it works with stringent quantitative control on the disagreement set. The direct proof builds two individually generic, arithmetically bounded representatives with no common noncomputable information, even though they agree at all but $o(\log N)$ positions below $N$ in a concrete instance. Their shared coarse description class is therefore a genuine nonzero class without a least Turing degree.
+
+The literature audit is part of the result: C1's negative coarse answer should not continue to be presented as unestablished merely because a newer source lists the question. What this report adds as a research argument is the self-contained weighted construction, its detailed bridge mechanism, and explicit spectrum consequences. Whether these formulations or proofs have appeared elsewhere remains a separate novelty question.
+
+Several precise limits remain. We have not optimized the $\emptyset''$ upper bound, classified all possible representative spectra, characterized their minimal elements, or transferred the construction to effective-dense reducibility. These are not being certified here as new literature-open problems; they are the limits of what the present proofs establish. The most useful next mathematical audit is a line-by-line check of Lemma~\ref{lem:bridge} and its four-case use, because that is the step on which the quantitative construction depends.
+
+\appendix
+\section{An explicit oracle construction schedule}\label{app:pseudocode}
+The following pseudocode is a specification with a second-jump oracle, not executable ordinary Python. Finite searches in positive cases are ordinary dovetailing searches. Negative answers come only from the stated decision oracle.
+\begin{lstlisting}
+Input: an admissible computable order h, rational b > 0,
+       and a common finite prefix nu.
+Oracle: the second Turing jump 0''.
+p := (nu, nu)
+
+For round s = 0, 1, 2, ...:
+    For coordinate C in {A, B}:
+        Decide whether W_s contains an extension of stem_C(p).
+        If yes, find one and copy its new suffix to the other stem.
+        If no, retain the current avoiding stem.
+        Append one common zero.
+
+    For all pairs (e, i) with e + i = s:
+        Decide whether a legal finite extension witnesses
+            Phi_e(left)(x) != Phi_i(right)(x)
+        for some x, with both computations convergent.
+        If yes:
+            choose such a finite extension.
+        Else:
+            Decide whether the first coordinate has an input
+            and a finite extension with no convergence extension.
+            If yes:
+                choose it and lift by copying its suffix.
+            Else:
+                Decide the analogous second-coordinate question.
+                If yes:
+                    choose it and lift by copying its suffix.
+                Else:
+                    Pad by common zeros to length L satisfying
+                        cost(p) + 1/h(L) < b.
+                    // The bridge lemma now settles this pair.
+        Append one common zero.
+
+Output: unions of the first and second stems.
+\end{lstlisting}
+The schedule handles each pair exactly once. Permanent satisfaction, rather than injury recovery, is the reason no priority tree is needed. Replacing $0''$ by $Z''$ and allowing $Z$ as a fixed oracle inside the computations gives the relative construction.
+
+\section{A compact statement for independent checking}\label{app:certificate}
+Here is the central assertion stripped of its application-specific language.
+
+\begin{quote}
+Let $w_n$ be a computable nonincreasing sequence of positive rational numbers tending to zero, and let $b>0$ be rational. Consider pairs of equal-length binary strings with weighted mismatch cost less than $b$. For any two oracle functionals and any such condition, a finite extension either witnesses unequal convergent outputs, forces one functional to be partial, or restricts both functionals so that every defined value equals the corresponding value of one total computable function.
+\end{quote}
+
+The proof is exactly Lemmas~\ref{lem:padding}, \ref{lem:bridge}, and~\ref{lem:decide}; monotonicity ensures that a sufficiently late single-bit change fits the unused budget. Taking $w_n=1/h(n)$ supplies the quantitative density conclusion. This abstraction also makes clear that the summability control belongs to the finite conditions, whereas the computability conclusion comes from connected one-bit comparisons and dense convergence.
+
+For an independent review, the important quantifiers are: one padded pair of stems for \emph{all} inputs; a possibly different finite synchronized suffix for each input and each finite path; and one ordinary program that searches for a first convergence using the fixed first stem. No uniform bound on the lengths of the synchronized suffixes is assumed.
+
+{\raggedright
+\begin{thebibliography}{9}
+\bibitem{Survey}
+\emph{Turing Degrees: A Unified Research Report}.
+User-supplied LaTeX source, \texttt{turing\_degrees\_unified.tex}, unified edition 18 September 2026. Especially C1 and the diagnostic lemmas on coarse representative spectra.
+
+\bibitem{Gerdes}
+Peter M. Gerdes.
+\emph{Comparing Notions of Dense Computability on $\omega^\omega$ and $2^\omega$}.
+Preprint, arXiv:2508.06925v1, submitted 9 August 2025. Question~7.
+\url{https://arxiv.org/abs/2508.06925}.
+
+\bibitem{HJKS}
+Denis R. Hirschfeldt, Carl G. Jockusch, Jr., Rutger Kuyper, and Paul E. Schupp.
+\emph{Coarse Reducibility and Algorithmic Randomness}.
+Journal of Symbolic Logic \textbf{81} (2016), 1028--1046.
+Preprint arXiv:1505.01707v1, submitted 7 May 2015; Theorem~4.2.
+\url{https://arxiv.org/abs/1505.01707}.
+\end{thebibliography}
+}
+\end{document}

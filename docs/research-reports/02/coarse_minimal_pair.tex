@@ -1,0 +1,693 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25.5mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,microtype,enumitem,xcolor}
+\usepackage{fancyhdr,listings,xurl,titlesec,needspace}
+\definecolor{navy}{RGB}{30,57,82}
+\definecolor{ink}{RGB}{32,38,44}
+\definecolor{pale}{RGB}{239,243,247}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=navy,bookmarksnumbered=true]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Sparse Disagreement and Turing Minimal Pairs},pdfauthor={Research manuscript prepared for Vladimir Reshetnikov},pdfsubject={Quantitative counterexamples to least Turing representatives in coarse classes}}
+\urlstyle{same}
+\titleformat{\section}{\large\bfseries\color{navy}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{navy}}{\thesubsection}{0.65em}{}
+\setlength{\parskip}{3.5pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{3em}
+\setlist{nosep,leftmargin=*}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{navy}Sparse disagreement and Turing minimal pairs}
+\fancyhead[R]{\small September 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Cantor}{2^{\N}}
+\newcommand{\Baire}{\N^{\N}}
+\newcommand{\strings}{2^{<\N}}
+\newcommand{\leT}{\leq_{\mathrm T}}
+\newcommand{\eqT}{\equiv_{\mathrm T}}
+\newcommand{\degT}{\operatorname{deg}_{\mathrm T}}
+\newcommand{\CD}{\operatorname{CD}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\Up}{\operatorname{Up}}
+\newcommand{\nc}{\mathrm{nc}}
+\newcommand{\uc}{\mathrm{uc}}
+\newcommand{\zero}{\mathbf 0}
+\newcommand{\dd}{\mathbf d}
+\newcommand{\zz}{\mathbf z}
+\newcommand{\bits}{\{0,1\}}
+\newcommand{\cat}{\mathbin{{}^{\frown}}}
+\newcommand{\pref}{\mathbin{\upharpoonright}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\hd}{\operatorname{Ham}}
+\newcommand{\J}{\mathsf J}
+\newcommand{\phiZ}[2]{\Phi_{#1}^{Z}[#2]}
+\newcommand{\bblog}{b_{\log}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,breaklines=true,frame=single,showstringspaces=false}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{10mm}
+{\small\sffamily\bfseries\color{navy}COMPUTABILITY THEORY \quad / \quad RESEARCH MANUSCRIPT\par}
+\vspace{14mm}
+{\Huge\bfseries\color{navy}Sparse Disagreement\par}
+\vspace{5mm}
+{\LARGE Turing minimal pairs and coarse classes\par without least representatives\par}
+\vspace{12mm}
+\noindent\rule{\textwidth}{0.5pt}
+\vspace{4mm}
+\noindent A quantitative attack on problem C1 of the supplied unified report\\[4pt]
+Prepared for Vladimir Reshetnikov\\
+18 September 2026
+\vspace{9mm}
+\begin{abstract}
+We give a finite-extension construction of two binary sets $A,B\leT Z''$ that are individually $1$-generic relative to an arbitrary oracle $Z$, form a Turing minimal pair over $Z$, and disagree below $n$ at most $b(n)$ times, for any prescribed computable nondecreasing unbounded integer function $b$. In particular, $b(n)=\lfloor\log_2(n+1)\rfloor$ makes $A$ and $B$ coarsely equal. For $Z=\emptyset$, their common uniform and nonuniform coarse classes have no least Turing degree. The essential lemma uses a one-disagreement reserve and connectivity of finite Boolean cubes: absent a finite disagreement between two oracle computations, dense convergence forces their common total output to be computable in $Z$.
+
+We also identify the Turing spectrum of a coarse class with the spectrum of its actual coarse descriptions, and realize every Turing degree as an \emph{unattained infimum} of such a spectrum. An independent literature check is important: the negative answer to the literal least-degree question already follows from Hirschfeldt--Jockusch--Kuyper--Schupp (2016). Accordingly, no priority claim is made for that answer. The quantitative minimal-pair construction and its consequences are presented with full conventional proofs; their novelty is not established by the search conducted here.
+\end{abstract}
+\vfill
+\noindent\small\color{ink}Verification boundary: the document is compiled and its finite combinatorial checks are executable. The infinite oracle construction is not formalized in Lean, and the manuscript has not received independent specialist review.
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+{\small\tableofcontents}
+\clearpage
+\pagenumbering{arabic}
+
+\section{Target, outcome, and source status}
+\label{sec:outcome}
+
+The supplied report identifies C1 as the question whether every nonuniform coarse-equivalence class contains a representative of least Turing degree. It proposes a particularly concrete negative certificate: a nonzero coarse class containing a Turing minimal pair. We take that certificate as our construction target. This is C1, not the analogous effective-dense question C2.\cite[entry C1 and the minimal-pair criterion]{Unified}
+
+Gerdes's Question~7 explicitly asks for a \emph{least} degree, rather than just a minimal degree, and also asks more broadly about representative spectra.\cite[Question 7]{Gerdes} We use that literal formulation throughout.
+
+\begin{theorem}[Quantitative relative minimal-pair construction]
+\label{thm:main}
+Let $Z\subseteq\N$, and let $b:\N\to\N$ be computable, nondecreasing, and unbounded. There are $A,B\in\Cantor$, both computable from $Z''$, such that:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $A$ and $B$ are individually $1$-generic relative to $Z$;
+\item for every $n\in\N$,
+\begin{equation}\label{eq:budget-main}
+       |(A\mathbin\triangle B)\cap[0,n)|\le b(n);
+\end{equation}
+\item for every total function $h:\N\to\N$,
+\begin{equation}\label{eq:minpair-main}
+ h\leT Z\oplus A\ \land\ h\leT Z\oplus B
+       \quad\Longrightarrow\quad h\leT Z.
+\end{equation}
+\end{enumerate}
+Consequently $\degT(Z\oplus A)$ and $\degT(Z\oplus B)$ are incomparable, strictly above $\degT(Z)$, and have greatest lower bound $\degT(Z)$.
+\end{theorem}
+
+The proof occupies Sections~\ref{sec:conditions}--\ref{sec:construction}; it does not assume a pre-existing minimal-pair existence theorem. The computability bound is $Z''$, not $Z'$.
+
+\begin{corollary}[A logarithmically close counterexample]
+\label{cor:headline}
+There are $1$-generic sets $A,B\leT\emptyset''$ satisfying
+\[
+ |(A\triangle B)\cap[0,n)|\le\lfloor\log_2(n+1)\rfloor
+ \quad(n\in\N),\qquad
+ \degT(A)\wedge\degT(B)=\zero.
+\]
+They are uniformly coarsely equivalent, are not coarsely computable, and their common coarse class has no least Turing degree, for either uniform or nonuniform coarse equivalence. These statements allow arbitrary total natural-valued representatives, not only sets.
+\end{corollary}
+
+A further consequence, proved in Section~\ref{sec:infimum}, is that every degree $\zz$ is the greatest lower bound of some coarse representative spectrum without itself belonging to that spectrum. Thus failure of a least representative need not arise from failure of the infimum to exist.
+
+\subsection{The negative answer itself is not a new priority claim}
+Hirschfeldt--Jockusch--Kuyper--Schupp prove that if $X$ is $1$-generic, the only sets computed by \emph{every} coarse description of $X$ are computable.\cite[Theorem 4.2]{HJKS} Since coarse descriptions of $X$ belong to its uniform coarse class, a least representative would be computable. A $1$-generic set is not coarsely computable; we prove the needed fact directly below. Hence their theorem already implies a negative answer to the literal coarse instance of Gerdes's later question. This is a deduction from the older theorem, not a claim that the older paper uses the later question's wording.
+
+The work here therefore goes beyond that short deduction by constructing \emph{two} witnesses with a prescribed disagreement budget and by deriving relative and spectral consequences. The searches conducted for this manuscript did not locate this precise quantitative statement. That is not evidence sufficient to establish novelty. The original uploaded report is preserved unchanged in the archive; the status correction is explicit here rather than silently changing that source.
+
+\section{Definitions and the exact counterexample obligation}
+\label{sec:definitions}
+
+For total functions $f,g:\N\to\N$, put
+\[
+ d_n(f,g)=|\{k<n:f(k)\ne g(k)\}|,
+ \qquad
+ \delta(f,g)=\limsup_{n\to\infty}\frac{d_n(f,g)}{n},
+\]
+where ratios are taken only for $n>0$. The finite-prefix count $d_n$ is also used for strings whenever the relevant first $n$ values are defined. A coarse description of $f$ is a total function $D$ with $\delta(D,f)=0$. Write $\CD(f)$ for the class of all such descriptions. For sets, we identify a set with its binary characteristic function.
+
+The two reducibilities used here are
+\begin{align*}
+ f\le_\nc g
+ &\iff (\forall D\in\CD(g))(\exists E\in\CD(f))\ E\leT D,\\
+ f\le_\uc g
+ &\iff (\exists\Phi)(\forall D\in\CD(g))\ \Phi^D\in\CD(f).
+\end{align*}
+In the second line the functional must produce a total description on every valid input. No behavior is required on invalid inputs. Equivalence is mutual reducibility. These are the definitions of the cited question.\cite[Definitions 2.3--2.4]{Gerdes}
+
+A function is coarsely computable when it has a computable coarse description. This is equivalent to belonging to the zero coarse degree, for either reducibility: the computable description can be produced while ignoring the input oracle, and a reduction from a computable representative can be applied to that representative itself.
+
+\begin{lemma}[Density-zero changes preserve the entire description class]
+\label{lem:equal-CD}
+If $\delta(f,g)=0$, then $\CD(f)=\CD(g)$, and $f\equiv_\uc g$.
+\end{lemma}
+\begin{proof}
+For every total $D$,
+\[
+ \{k:D(k)\ne g(k)\}
+ \subseteq \{k:D(k)\ne f(k)\}\cup\{k:f(k)\ne g(k)\}.
+\]
+The sum of the densities of two density-zero sets tends to zero. This proves one inclusion of description classes, and symmetry gives the other. The identity functional is a uniform reduction in both directions.
+\end{proof}
+
+\begin{lemma}[Two-witness obstruction to a least representative]
+\label{lem:no-least}
+Suppose $A,B$ are coarsely equal, $A$ is not coarsely computable, and every total function computable from both $A$ and $B$ is computable. Then neither the uniform nor the nonuniform coarse class of $A$ has a least Turing degree.
+\end{lemma}
+\begin{proof}
+Fix $r\in\{\uc,\nc\}$. Both $A$ and $B$ belong to $[A]_r$. If a representative $g$ had least Turing degree in this class, then $g\leT A,B$, so $g$ would be computable. From $A\le_r g$, applied to the computable coarse description $g$ of itself, we obtain a computable coarse description of $A$, a contradiction.
+\end{proof}
+
+The proof excludes a \emph{least} degree. It does not assert that the spectrum has no minimal elements. Nor does a Turing minimal pair here mean a minimal pair in the coarse degrees: our two sets have the \emph{same} coarse degree.
+
+\subsection{Finite oracle computations}
+Fix a standard effective enumeration $\Phi_e$ of oracle programs. Write $\phiZ{e}{X}$ for computation with two oracles, a fixed $Z$ and a variable binary oracle $X$. This enumerates the functions computable from $Z\oplus X$.
+
+For a finite binary string $\sigma$, the assertion
+\[
+                 \phiZ{e}{\sigma}(n)\downarrow=v
+\]
+means that the computation halts with output $v$ without querying a variable-oracle position at or above $|\sigma|$. Queries to $Z$ are allowed. Such convergence has a finite witness, is computably enumerable in $Z$, and persists under extension of $\sigma$. These elementary properties of oracle computation are the only computational machinery used in the central lemma.
+
+A set $X$ is $1$-generic relative to $Z$ if, for every $Z$-c.e. set $W\subseteq\strings$, either an initial segment of $X$ belongs to $W$, or some initial segment of $X$ has no extension in $W$. The genericity is \emph{individual} for $A$ and $B$; we do not claim that they are mutually generic.
+
+\section{An exact identity for representative spectra}
+\label{sec:spectrum}
+
+For $r\in\{\uc,\nc\}$ define
+\[
+ \Spec_r(f)=\{\degT(g):g\equiv_r f\},\qquad
+ \Spec(\CD(f))=\{\degT(D):D\in\CD(f)\}.
+\]
+For a collection $S$ of degrees, $\Up(S)$ denotes its upward closure.
+
+\begin{proposition}[The spectrum is already realized by actual descriptions]
+\label{prop:spectrum}
+For every total $f:\N\to\N$,
+\begin{equation}\label{eq:spectrum}
+ \Spec_\uc(f)=\Spec_\nc(f)
+ =\Spec(\CD(f))=\Up(\Spec(\CD(f))).
+\end{equation}
+When $f$ is binary, each degree in these sets has a binary representative which is a coarse description of $f$.
+\end{proposition}
+\begin{proof}
+Every $D\in\CD(f)$ is uniformly coarsely equivalent to $f$ by Lemma~\ref{lem:equal-CD}. Conversely, if $g\equiv_\nc f$, applying $f\le_\nc g$ to $g\in\CD(g)$ gives some $D\in\CD(f)$ with $D\leT g$. Thus
+\[
+ \Spec(\CD(f))\subseteq\Spec_\uc(f)
+ \subseteq\Spec_\nc(f)\subseteq\Up(\Spec(\CD(f))).
+\]
+It remains to show that $\Spec(\CD(f))$ is upward closed.
+
+Suppose $D\in\CD(f)$ and a binary oracle $C$ computes $D$. Define
+\[
+ Y(k)=
+ \begin{cases}
+ C(i),&k=2^i,\\
+ D(k),&k\notin\{2^i:i\in\N\}.
+ \end{cases}
+\]
+The powers of two have density zero: there are at most $1+\log_2 n$ of them below $n$ for $n\ge1$. Hence $Y\in\CD(f)$. Reading the positions $2^i$ computes $C$ from $Y$, while the displayed definition computes $Y$ from $C$. Therefore $Y\equiv_T C$, proving upward closure and~\eqref{eq:spectrum}.
+
+For binary $f$, replace any natural-valued description $D$ by $\widehat D(k)=1$ if $D(k)=1$ and $\widehat D(k)=0$ otherwise. Whenever $D(k)=f(k)$, also $\widehat D(k)=f(k)$, so $\widehat D\in\CD(f)$ and $\widehat D\leT D$. Apply the same sparse coding with $\widehat D$ to obtain a binary representative of any prescribed degree above it.
+\end{proof}
+
+Uniform and nonuniform coarse equivalence can distinguish classes, but not their Turing representative spectra at a fixed $f$. In particular, a least-degree existence claim cannot be rescued merely by restricting C1 to uniform coarse equivalence.
+
+\section{Finite conditions with a computable disagreement budget}
+\label{sec:conditions}
+
+Fix $Z$ and $b$ as in Theorem~\ref{thm:main}. A \emph{condition} is a pair $p=(\sigma,\tau)$ of binary strings of the same length $L$ such that
+\begin{equation}\label{eq:admissible}
+       d_k(\sigma,\tau)\le b(k)\qquad(0\le k\le L).
+\end{equation}
+An extension $(\alpha,\beta)$ of $p$ extends both coordinates, has equal coordinate lengths, and satisfies~\eqref{eq:admissible} at every prefix. All conditions are finite, and admissibility is decidable. An infinite pair is \emph{admitted by} $p$ if it extends $p$ and satisfies the budget at every finite prefix.
+
+Requiring every prefix matters. For $b(n)=\lfloor\log_2(n+1)\rfloor$, strings $000$ and $110$ have two disagreements at length three, within $b(3)=2$, but violate the bound $b(2)=1$ at length two.
+
+\begin{lemma}[Unrestricted coordinate projections]
+\label{lem:projection}
+Let $(\sigma,\tau)$ be a condition of length $L$. Every finite extension $\alpha=\sigma\cat u$ of $\sigma$ can occur as the first coordinate of a condition extending $p$: use $(\sigma\cat u,\tau\cat u)$. The analogous assertion holds for the second coordinate. In particular, appending an identical suffix to both coordinates preserves admissibility.
+\end{lemma}
+\begin{proof}
+Up to $L$ the old bounds hold. Beyond $L$ the number of disagreements is the fixed integer $d_L(\sigma,\tau)$, which is at most $b(L)$ and hence at most $b(k)$ at every later prefix $k$.
+\end{proof}
+
+This is the reason individual genericity can be imposed without sacrificing closeness. The second coordinate is allowed to copy the newly chosen suffix of the first; no previously fixed bit changes.
+
+\begin{lemma}[A one-disagreement reserve]
+\label{lem:cushion}
+Let $p=(\sigma,\tau)$ have length $L$ and $d=d_L(\sigma,\tau)$. Choose $M\ge L$ such that $b(M)\ge d+1$, and append zeros to both coordinates to obtain $p^*=(\sigma^*,\tau^*)$ of length $M$. If $u,v$ have equal length and $\hd(u,v)\le1$, then
+\begin{equation}\label{eq:onebit}
+                  (\sigma^*\cat u,\tau^*\cat v)
+\end{equation}
+is a condition extending $p$. The same holds after appending any common finite suffix to $u$ and $v$.
+\end{lemma}
+\begin{proof}
+Unboundedness gives $M$, found by ordinary search. Padding adds no disagreements. After $M$ there are at most $d+1$ disagreements at any prefix, while $b(k)\ge b(M)\ge d+1$. Appending a common suffix creates no further disagreement.
+\end{proof}
+
+For the logarithmic budget, $M=\max\{L,2^{d+1}-1\}$ is an explicit valid choice. The reserve is used for \emph{comparison extensions} in a proof. It is not a claim that the final infinite pair will acquire only one more disagreement.
+
+\begin{lemma}[Connectivity test for two output labelings]
+\label{lem:cube}
+Let $F,G:\bits^r\to V$ be maps into any set $V$. If
+\[
+       F(u)=G(v)\qquad\text{whenever }\hd(u,v)\le1,
+\]
+then $F$ and $G$ have the same constant value.
+\end{lemma}
+\begin{proof}
+Taking $u=v$ gives $F(u)=G(u)$. If $u$ and $v$ differ in one bit, then $F(u)=G(v)=F(v)$. Any two binary words of length $r$ are connected by successively flipping their differing bits. Values therefore propagate along a finite path. This also covers $r=0$, when there is one word.
+\end{proof}
+
+\section{The central finite-extension lemma}
+\label{sec:dichotomy}
+
+For program indices $e,j$, let the requirement $R_{e,j}$ be
+\begin{equation}\label{eq:requirement}
+ \phiZ{e}{A}=\phiZ{j}{B}=h\text{ total}
+                \quad\Longrightarrow\quad h\leT Z.
+\end{equation}
+We will settle each requirement by one finite extension. No injury to a previously settled requirement is necessary.
+
+\begin{lemma}[Dense convergence synchronizes finitely many prefixes]
+\label{lem:synchronization}
+Suppose that for every $\alpha\succeq\sigma$ and every input $n$, some $\alpha'\succeq\alpha$ makes $\phiZ{e}{\alpha'}(n)$ converge. Suppose the analogous property holds for $j$ above $\tau$. Fix $n$ and finite lists of strings extending $\sigma$ and $\tau$. There is a single finite suffix $\rho$ such that all the listed computations on input $n$ converge after $\rho$ is appended to their respective strings.
+\end{lemma}
+\begin{proof}
+Start with the empty suffix. Process the finite list of computational demands one at a time. If the current common suffix is $\rho_0$ and the next prefix is $\eta$, dense convergence above $\eta\cat\rho_0$ supplies a further suffix $\nu$ making that computation halt. Replace the common suffix by $\rho_0\cat\nu$. Previously obtained convergence is preserved under this extension. After finitely many steps all demands are met.
+\end{proof}
+
+This is a finite synchronization argument. It does not assume that the programs are total on all oracles, or that one suffix handles infinitely many inputs.
+
+\begin{proposition}[One requirement can always be settled]
+\label{prop:extension}
+For every condition $p$ and every pair $e,j$, there is an extension $q$ such that every infinite pair admitted by $q$ satisfies $R_{e,j}$. An appropriate $q$ can be chosen using $Z''$.
+\end{proposition}
+\begin{proof}
+Write $p=(\sigma,\tau)$, with both strings of length $L$. We separate four exhaustive cases.
+
+\paragraph{Case 1: a first-coordinate divergence cylinder exists.}
+There are $\alpha\succeq\sigma$ and $n$ such that
+\begin{equation}\label{eq:blocker}
+    (\forall\alpha'\succeq\alpha)\quad
+                  \phiZ{e}{\alpha'}(n)\uparrow.
+\end{equation}
+Use Lemma~\ref{lem:projection} to extend $p$ with first coordinate $\alpha$, copying its new suffix into the second coordinate. On every infinite first coordinate extending $\alpha$, the computation at $n$ diverges: any convergence would have a finite witnessing prefix contradicting~\eqref{eq:blocker}. Thus the antecedent of~\eqref{eq:requirement} cannot hold.
+
+\paragraph{Case 2: a second-coordinate divergence cylinder exists.}
+If there are $\beta\succeq\tau$ and $n$ with no further extension on which $\phiZ{j}{\beta'}(n)$ converges, argue symmetrically. We henceforth assume that neither Case 1 nor Case 2 applies. Therefore for \emph{each input} both sets of halting prefixes are dense in their respective full binary subtrees.
+
+\paragraph{Case 3: a finite cross-disagreement exists.}
+Suppose there are an admissible extension $(\alpha,\beta)$ of $p$ and an input $n$ such that
+\begin{equation}\label{eq:crosssplit}
+  \phiZ{e}{\alpha}(n)\downarrow\ \ne\
+                            \phiZ{j}{\beta}(n)\downarrow.
+\end{equation}
+Choose this condition as $q$. The two witnessed computations keep their distinct values under every subsequent extension, so they cannot become equal total functions.
+
+\paragraph{Case 4: dense convergence, but no cross-disagreement.}
+Pad $p$ to $p^*=(\sigma^*,\tau^*)$ using Lemma~\ref{lem:cushion}. No admissible extension of $p^*$ has a cross-disagreement, since it would also extend $p$. Dense convergence remains true above both padded coordinates.
+
+We first prove that for a fixed input $n$, all convergent computations $\phiZ{e}{\alpha}(n)$ with $\alpha\succeq\sigma^*$ have the same value. Take any two such prefixes $\alpha_0,\alpha_1$. Extend them, if necessary, to the same length without changing their convergence, and write
+\[
+       \alpha_0=\sigma^*\cat u_0,
+       \qquad \alpha_1=\sigma^*\cat u_1,
+       \qquad |u_0|=|u_1|=r.
+\]
+Connect $u_0$ to $u_1$ by a finite path
+\[
+        u_0=v_0,v_1,\ldots,v_t=u_1,
+        \qquad \hd(v_\ell,v_{\ell+1})=1.
+\]
+Apply Lemma~\ref{lem:synchronization} to the finitely many prefixes $\sigma^*\cat v_\ell$ for program $e$, and $\tau^*\cat v_\ell$ for program $j$. Obtain a common suffix $\rho$ on which all these computations at input $n$ converge. Write their values as $E_\ell$ and $J_\ell$.
+
+The pairs
+\[
+ (\sigma^*\cat v_\ell\cat\rho,
+        \tau^*\cat v_\ell\cat\rho)
+\]
+are admissible, so absence of a cross-disagreement gives $E_\ell=J_\ell$. The pairs
+\[
+ (\sigma^*\cat v_\ell\cat\rho,
+        \tau^*\cat v_{\ell+1}\cat\rho)
+\]
+are also admissible by the one-disagreement reserve. Hence
+\[
+               E_\ell=J_{\ell+1}=E_{\ell+1}.
+\]
+Following the path shows $E_0=E_t$. The two original convergent computations are preserved in these endpoints, proving uniqueness of their values.
+
+Now define $h(n)$ by a search using only $Z$: dovetail all computations $\phiZ{e}{\alpha}(n)$ over finite $\alpha\succeq\sigma^*$, and return the first value found. Dense convergence guarantees termination, and the uniqueness just proved makes the choice harmless. Thus $h$ is total and $Z$-computable.
+
+For any infinite $X\succeq\sigma^*$, every convergent value of $\phiZ{e}{X}$ is witnessed by such a finite $\alpha$, and therefore equals the corresponding value of $h$. In particular, if an infinite pair admitted by $p^*$ produces equal total outputs under $e,j$, that output is $h$. Choose $q=p^*$.
+
+\paragraph{Complexity of choosing the case and its witness.}
+For fixed $\alpha,n$, the existence of a further convergent prefix in~\eqref{eq:blocker} is a $Z$-c.e. question, so $Z'$ decides it. Existence of some pair $(\alpha,n)$ with no convergent extension is consequently c.e. in $Z'$; $Z''$ decides whether Case 1 holds, and similarly Case 2. If such a case holds, a witness is found by searching with $Z'$.
+
+Existence of a witness to~\eqref{eq:crosssplit} is c.e. in $Z$, because admissibility is decidable and both convergence claims have finite witnesses. Thus $Z'$ decides Case 3 and finds its witness when it exists. If none of the first three cases holds, padding for Case 4 is computable. All case choices and extensions are therefore computable from $Z''$.
+\end{proof}
+
+\begin{remark}[The finite prefix is not an extra infinite oracle]
+The $Z$-program computing $h$ in Case 4 may hardcode $e$ and the finite string $\sigma^*$. The construction may have used $Z''$ to choose that string, but once fixed it is finite program data. The conclusion is the existence of a $Z$-computation of $h$, not merely a $Z''$-computation. No uniform extraction of an index for $h$ from the final pair is asserted.
+\end{remark}
+
+\begin{remark}[Why this is stronger than diagonal copying alone]
+If we only compared equal tails, we would know $E_\ell=J_\ell$ but could not compare different vertices. A shared noncomputable tail could then survive. The ability to spend one additional disagreement supplies the cross comparisons. This is exactly the finite connectivity used in Lemma~\ref{lem:cube}.
+\end{remark}
+
+\section{The infinite construction and its verification}
+\label{sec:construction}
+
+Fix a computable enumeration of all pairs $(e,j)$, and a uniform enumeration $(W_s^Z)$ of the $Z$-c.e. sets of binary strings. Start with the empty condition. At stage $s$, perform the following operations on the current condition.
+
+\paragraph{The common-output requirement.}
+Apply Proposition~\ref{prop:extension} to the $s$th pair $(e,j)$ and replace the current condition by the extension provided there.
+
+\paragraph{First-coordinate genericity.}
+If the first coordinate is currently $\sigma$, ask whether some $\alpha\succeq\sigma$ belongs to $W_s^Z$. This is a $Z$-c.e. existence question, decidable by $Z'$. If the answer is yes, find such an $\alpha$, extend the first coordinate to it, and copy its new suffix into the second coordinate as in Lemma~\ref{lem:projection}. If the answer is no, keep the condition: $\sigma$ already has no extension in $W_s^Z$.
+
+\paragraph{Second-coordinate genericity.}
+Apply the same procedure to the current second coordinate and $W_s^Z$, copying a newly chosen suffix into the first coordinate.
+
+\paragraph{Progress.}
+Append common zeros, when necessary, until both coordinates have length at least $s+1$. Call the resulting condition $p_{s+1}$. This completes the stage.
+
+The sequence is computable in $Z''$. Let $A$ and $B$ be the unions of its respective coordinates.
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+All operations extend the old strings; hence the unions are well defined. The progress clause makes their lengths tend to infinity. To compute $A(n)$ or $B(n)$ from $Z''$, simulate the construction through any stage with length greater than $n$. Thus $A,B\leT Z''$.
+
+Every $p_s$ satisfies the bound at all of its prefixes. For any fixed $n$, a sufficiently long $p_s$ already determines the first $n$ bits of $A$ and $B$, proving~\eqref{eq:budget-main}.
+
+At the first-coordinate genericity step for $W_s^Z$, either an initial segment is placed in $W_s^Z$, or a prefix with no extension there is fixed. Both properties persist under later extension. Thus $A$ is $1$-generic relative to $Z$; the same reasoning applies to $B$.
+
+Now suppose $h\leT Z\oplus A$ and $h\leT Z\oplus B$ is total. Choose indices $e,j$ for these computations. At the stage for $(e,j)$, a condition settling $R_{e,j}$ was fixed. The final pair is admitted by that condition: it extends it and obeys the budget at all prefixes. Proposition~\ref{prop:extension} therefore gives $h\leT Z$.
+
+Finally, a $1$-generic set relative to $Z$ cannot be $Z$-computable. Indeed, if $X\leT Z$, the $Z$-decidable set of strings incompatible with $X$ is dense, but $X$ has no initial segment in it and no prefix avoiding all its extensions. This contradicts genericity. Hence $Z\oplus A$ and $Z\oplus B$ are strictly above $Z$. If their degrees were comparable, the lesser would be a non-$Z$-computable common lower bound, contradicting~\eqref{eq:minpair-main}. The same equation shows their meet is exactly $\degT(Z)$.
+\end{proof}
+
+\subsection{Why genericity rules out a computable coarse description}
+\begin{lemma}[Relative genericity is far from every relative computable set]
+\label{lem:generic-density}
+If $X$ is $1$-generic relative to $Z$ and $C\leT Z$ is binary, then
+\[
+                 \limsup_{n\to\infty}\frac{d_n(X,C)}n=1.
+\]
+In particular $X$ has no $Z$-computable coarse description, including a natural-valued one.
+\end{lemma}
+\begin{proof}
+Fix a rational $q<1$ with $q\ge0$ and an integer $m$. Let
+\[
+ W_{C,q,m}=\{\sigma:|\sigma|\ge\max\{m,1\},\
+                  d_{|\sigma|}(\sigma,C)/|\sigma|>q\}.
+\]
+This is a $Z$-decidable set of strings. It is dense: from any prefix of length $L$, append the complement of $C$ to a length $N$ so large that $(N-L)/N>q$ and $N\ge m$. The extension has the required disagreement proportion. Genericity therefore forces $X$ to have a prefix in $W_{C,q,m}$, since a dense set cannot be avoided by a finite prefix.
+
+Varying $m$ gives arbitrarily large witnessing lengths, and varying $q$ towards one gives the asserted limsup. A natural-valued $Z$-computable coarse description could be clamped to a binary one as in Proposition~\ref{prop:spectrum}, so none exists either.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:headline}]
+Use Theorem~\ref{thm:main} with $Z=\emptyset$ and
+\[
+                       \bblog(n)=\lfloor\log_2(n+1)\rfloor.
+\]
+This is a computable nondecreasing unbounded function. Moreover $\bblog(n)/n\to0$: when $2^m\le n+1<2^{m+1}$, the ratio is at most $m/(2^m-1)$, which tends to zero. Thus $A$ and $B$ are coarsely equal. Lemma~\ref{lem:generic-density} says that $A$ is not coarsely computable. The common-output assertion of the construction and Lemma~\ref{lem:no-least} finish the proof.
+\end{proof}
+
+\section{Sharp boundaries and a failed sparse-support strategy}
+\label{sec:boundaries}
+
+\begin{corollary}[Any computable sublinear unbounded budget works]
+\label{cor:any-budget}
+In Corollary~\ref{cor:headline}, the logarithmic budget may be replaced by any computable nondecreasing unbounded $b$ satisfying $b(n)/n\to0$. One may therefore prescribe an arbitrarily slowly increasing computable bound, provided it remains unbounded.
+\end{corollary}
+\begin{proof}
+The finite-extension proof uses only monotonicity and unboundedness. The additional sublinearity makes the disagreement density zero.
+\end{proof}
+
+The quantifier is $\forall b\,\exists A,B$. It is not a single pair promised to obey all computable unbounded budgets simultaneously.
+
+\begin{proposition}[Bounded budgets cannot give the claimed minimal pair]
+\label{prop:bounded}
+If $d_n(A,B)$ is bounded independently of $n$, then $A\triangle B$ is finite and $A\equiv_T B$. Consequently such a pair cannot satisfy Theorem~\ref{thm:main} with both relative degrees strictly above $\degT(Z)$.
+\end{proposition}
+\begin{proof}
+The counts $d_n(A,B)$ increase with $n$. If the disagreement set were infinite, these counts would be unbounded. Finite changes preserve Turing degree, because the finitely many changed bits can be hardcoded. Thus $Z\oplus A\equiv_T Z\oplus B$, contradicting the nontrivial relative minimal-pair conclusion.
+\end{proof}
+
+There is another tempting but invalid approach: fix a computable sparse set in advance and permit disagreements only there. The following explains why our construction controls the \emph{number} of disagreements without specifying such a support.
+
+\begin{proposition}[No relative computable sparse cover]
+\label{prop:no-cover}
+Let $A,B$ be obtained from Theorem~\ref{thm:main}. There is no density-zero set $S\leT Z$ with $A\triangle B\subseteq^* S$. In particular, the logarithmically bounded disagreement set has no $Z$-computable density-zero cover, even modulo finitely many points.
+\end{proposition}
+\begin{proof}
+If such $S$ existed, add the finitely many exceptional disagreements to it, preserving its degree bound and zero density. We may therefore assume $A\triangle B\subseteq S$. Define $R(k)=A(k)$ for $k\notin S$ and $R(k)=0$ for $k\in S$.
+
+Then $R\leT Z\oplus A$. Because $A$ and $B$ agree outside $S$, the same definition with $B$ shows $R\leT Z\oplus B$. The relative minimal-pair property gives $R\leT Z$. Yet $R$ is a coarse description of $A$, contradicting Lemma~\ref{lem:generic-density}.
+\end{proof}
+
+An explicit computable bound on disagreement counts, even one yielding an explicit density convergence rate, is therefore substantially weaker than a computable density-zero set containing the disagreements. Confusing these two kinds of control would make the proposed counterexample fail.
+
+\section{Robust block coding and the least-degree criterion}
+\label{sec:coarsening}
+
+A simple block code makes the obstruction to least representatives transparent. For total $g:\N\to\N$, define
+\begin{equation}\label{eq:blockcode}
+ \J(g)(0)=0,\qquad
+ \J(g)(k)=g(n)\quad\text{when }2^n\le k<2^{n+1}.
+\end{equation}
+It is immediate that $\J(g)\equiv_T g$, using the positions $2^n$ for the reverse reduction.
+
+\begin{lemma}[Every coarse description of the block code computes its message]
+\label{lem:robust}
+If $D\in\CD(\J(g))$, then $g\leT D$.
+\end{lemma}
+\begin{proof}
+On the block $I_n=[2^n,2^{n+1})$, compute from $D$ its strict-majority value if one exists, and output zero otherwise. This gives a total $D$-computable sequence $y(n)$. Let $E=\{k:D(k)\ne\J(g)(k)\}$. The fraction of errors in the block satisfies
+\[
+ \frac{|E\cap I_n|}{2^n}
+ \le 2\frac{|E\cap[0,2^{n+1})|}{2^{n+1}}
+       \longrightarrow0.
+\]
+Eventually fewer than half of the entries are wrong, so $y(n)=g(n)$ for all sufficiently large $n$. The finitely many exceptional values of $g$ can be hardcoded into a program, proving $g\leT D$.
+\end{proof}
+
+The lemma is deliberately nonuniform in $D$: no effective bound on the exceptional blocks is asserted. Eventual correctness gives Turing reducibility by a finite correction, not a uniform procedure for identifying that correction.
+
+\begin{proposition}[An elementary nonuniform coarse embedding]
+\label{prop:embedding}
+For total $g,h$,
+\[
+             g\leT h\quad\Longleftrightarrow\quad
+                         \J(g)\le_\nc\J(h).
+\]
+\end{proposition}
+\begin{proof}
+If $g\leT h$, any description of $\J(h)$ computes $h$, hence $g$ and the exact function $\J(g)$, which is a description of itself. Conversely, apply $\J(g)\le_\nc\J(h)$ to the particular description $\J(h)$ of itself. It computes a description of $\J(g)$, which computes $g$ by Lemma~\ref{lem:robust}. Since $\J(h)\leT h$, this gives $g\leT h$.
+\end{proof}
+
+\Needspace{12\baselineskip}
+\begin{theorem}[Least representatives are precisely the block-code image]
+\label{thm:least-characterization}
+For any total $f$, the following conditions are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\Spec_\nc(f)$ has a least element;
+\item $\Spec_\nc(f)$ is a principal upper cone;
+\item $f\equiv_\nc\J(g)$ for some total $g$.
+\end{enumerate}
+The least degree, when these hold, is $\degT(g)$ for any witness to \textup{(iii)}. By Proposition~\ref{prop:spectrum}, existence of a least degree in $\Spec_\uc(f)$ is equivalent to the same conditions.
+\end{theorem}
+\begin{proof}
+The equivalence of (i) and (ii) follows from upward closure. Suppose (i) holds and choose a representative $g\equiv_\nc f$ of its least degree. For every $D\in\CD(g)$, Lemma~\ref{lem:equal-CD} gives $D\equiv_\nc g$, so leastness implies $g\leT D$. Thus every such $D$ computes $\J(g)$, proving $\J(g)\le_\nc g$. In the other direction, every description of $\J(g)$ computes $g$ by Lemma~\ref{lem:robust}; hence $g\le_\nc\J(g)$. This proves (iii).
+
+Suppose (iii) holds. The representative $\J(g)$ has degree $\degT(g)$. If $H\equiv_\nc f$, then $\J(g)\le_\nc H$. Apply this reduction to $H$ itself: it computes some $D\in\CD(\J(g))$, which in turn computes $g$. Therefore every representative degree is at least $\degT(g)$, proving (i) and the value of the least degree.
+\end{proof}
+
+This characterization is proved here as a structural deduction, without a novelty claim. It also explains why a nonsurjective coarse embedding is relevant to the least-representative question; no identification of different uniform coding conventions is needed.
+
+\section{Every degree occurs as an unattained spectral infimum}
+\label{sec:infimum}
+
+\begin{theorem}[Prescribed infimum, no least representative]
+\label{thm:infimum}
+For every Turing degree $\zz$, there is a binary function $F$ such that, for either $r\in\{\uc,\nc\}$,
+\begin{equation}\label{eq:infimum}
+              \inf\Spec_r(F)=\zz,
+                  \qquad \zz\notin\Spec_r(F).
+\end{equation}
+Moreover, for any chosen $Z\in\zz$, the spectrum contains degrees of two binary representatives $F,G\leT Z''$ with meet $\zz$ and
+\[
+ d_n(F,G)\le\Big\lfloor\log_2\bigl(\lfloor n/2\rfloor+1\bigr)\Big\rfloor.
+\]
+The assertion is about the ordinary, unrelativized coarse equivalence relations.
+\end{theorem}
+\begin{proof}
+Apply Theorem~\ref{thm:main} relative to $Z$, using $\bblog$, obtaining $A,B$. Let $R=\J(Z)$, with $Z$ regarded as binary, and define
+\[
+   F(2k)=R(k),\quad F(2k+1)=A(k),\qquad
+   G(2k)=R(k),\quad G(2k+1)=B(k).
+\]
+Then
+\[
+ F\equiv_T Z\oplus A,\qquad G\equiv_T Z\oplus B,
+\]
+because the even projection is $R\equiv_T Z$ and the odd projection is $A$ or $B$. Both functions are binary and computable from $Z''$. Also
+\[
+               d_n(F,G)=d_{\lfloor n/2\rfloor}(A,B),
+\]
+which proves the quantitative bound and density-zero closeness. Consequently $F\equiv_\uc G$.
+
+\paragraph{Every representative computes $Z$.}
+Let $D\in\CD(F)$. Its even projection $D_0(k)=D(2k)$ is a coarse description of $R$, since
+\[
+ \frac{|\{k<m:D_0(k)\ne R(k)\}|}{m}
+            \le 2\frac{d_{2m}(D,F)}{2m}\longrightarrow0.
+\]
+Lemma~\ref{lem:robust} gives $Z\leT D_0\leT D$. Now take any representative $H\equiv_\nc F$. Applying $F\le_\nc H$ to $H$ itself supplies a description $D$ of $F$ computed by $H$. Thus $Z\leT H$. The same conclusion applies to uniform representatives.
+
+\paragraph{The degree of $Z$ is not represented.}
+Suppose a representative $H\equiv_\nc F$ satisfied $H\leT Z$. As above it computes a coarse description $D$ of $F$. The odd projection $D_1(k)=D(2k+1)$ is a coarse description of $A$, by the same density estimate. It is $Z$-computable, contradicting Lemma~\ref{lem:generic-density}. Thus no representative has degree $\zz$.
+
+\paragraph{No larger lower bound exists.}
+If a degree $\dd$ is below every representative degree in the spectrum, then it is below both $\degT(F)$ and $\degT(G)$. These have meet $\zz$ by Theorem~\ref{thm:main}. Hence $\dd\le\zz$. Together with the first paragraph, this proves~\eqref{eq:infimum} for both spectra. The infimum is missing, so neither spectrum has a least element.
+\end{proof}
+
+This theorem realizes a specific feature of representative spectra; it does not classify all upward-closed sets of degrees which can occur. No arbitrary prescribed spectrum is claimed.
+
+\section{Proof audit, computation, and limits}
+\label{sec:audit}
+
+\subsection{Dependencies that carry the infinite argument}
+The construction rests on four explicit facts: copying a common suffix preserves the budget; unboundedness buys a one-disagreement reserve; finitely many dense convergence demands admit a common suffix; and the finite Boolean cube is connected by one-bit changes. The case analysis turns these facts into a permanent requirement. Genericity supplies the obstruction to a relative computable coarse description, and the remaining arguments are degree-theoretic deductions.
+
+The selection of a divergence cylinder uses $Z''$. The program computing the common output in the no-disagreement case uses only $Z$ and fixed finite constants. Conflating these two uses of an oracle would invalidate the minimal-pair conclusion. Similarly, absence of a divergence cylinder means \emph{dense possible convergence}, not totality on every infinite branch. Lemma~\ref{lem:synchronization} is the bridge that makes the weaker property sufficient.
+
+We never use an implication $f\leT g\Rightarrow f\le_\nc g$ for arbitrary representatives. Coarse reducibility is derived either by explicitly handling all descriptions, by equality of description classes, or by the robust block-code lemma.
+
+\subsection{Executed finite checks}
+The archive contains \path{checks/check_finite_lemmas.py}, requiring only Python's standard library, and its actual output \path{checks/results.json}. All assertions passed. The following are counts of finite instances, not counts of infinite constructions or verified degree statements.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}Xr@{}}
+\toprule
+Check & Executed scope or count\\\midrule
+Base pairs examined, each of two budgets & 5,461\\
+Admissible logarithmic-budget base pairs & 2,049\\
+Logarithmic-budget copy-extension checks & 30,735\\
+Logarithmic-budget one-bit reserve checks & 264,321\\
+Square-root-budget one-bit reserve checks & 233,361\\
+Two-layer cube connectivity & Dimensions 0--10\\
+Binary output assignments on the dimension-three cube & 65,536\\
+Assignments satisfying all cross equalities in that cube & 2\\
+Three-symbol block-majority test cases & 29,520\\
+Finite sparse-code examples & 2,046\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The two surviving cube assignments are exactly the two constant binary labelings. The script also checks explicit failures of endpoint-only budgets and of adding a mismatch without sufficient reserve. These tests support the finite lemmas but do not replace their proofs for arbitrary lengths.
+
+\subsection{What is and is not supplied}
+This manuscript supplies complete conventional proofs of the construction and the stated consequences, together with a precise oracle procedure and executable finite tests. It does not supply a computable generator for the actual infinite pair: the procedure requires jump-oracle decisions, as stated. The displayed $Z''$ upper bound is an existence-and-oracle-computation theorem, not an ordinary finite runtime guarantee.
+
+No Lean proof has been compiled, no external verifier has checked the infinite construction, and no independent specialist review is represented as having occurred. The negative answer to C1 is also a consequence of the older theorem cited in Section~\ref{sec:outcome}; the quantitative construction is not advertised as a first published result. C2, C3, and the metric questions in the supplied report are not answered here. In particular, density-zero modification does not automatically preserve effective-dense descriptions, which are forbidden to make even one incorrect asserted answer.
+
+\subsection{Precisely delimited next mathematical questions}
+The proof leaves open whether the same quantitative witness can always be obtained with the bound $A,B\leT Z'$ instead of $Z''$; no claim about the literature status of that sharpening is made here. Another distinct question is to characterize exactly which upward-closed degree sets occur as coarse representative spectra. Our results establish the spectrum identity and all prescribed unattained infima, not that full characterization.
+
+\clearpage
+\appendix
+\section{Oracle-level pseudocode and invariants}
+\label{app:algorithm}
+
+The following is mathematical pseudocode. An instruction beginning with \texttt{Decide} uses the indicated jump oracle; it is not an executable substitute for that oracle. Finite strings are ordered by a fixed effective length-lexicographic enumeration so that witness selection can be made definite.
+
+\begin{lstlisting}
+Settle(p = (sigma,tau), e, j; fixed oracle Z, budget b):
+    Decide with Z'' whether a first-coordinate blocker exists.
+    If yes:
+        Find (alpha,n) using Z' with alpha extending sigma
+        and no further prefix on which program e halts at n.
+        Extend tau by copying alpha's new suffix; return.
+
+    Decide with Z'' whether a second-coordinate blocker exists.
+    If yes:
+        Perform the symmetric extension; return.
+
+    Decide with Z' whether an admissible finite extension
+    witnesses distinct convergent outputs of e and j.
+    If yes:
+        Find that extension by a Z-oracle search; return.
+
+    Let d be the current disagreement count.
+    Find M >= current length with b(M) >= d+1.
+    Pad both coordinates by zeros to length M; return.
+
+MeetOrAvoid(p, coordinate i, c.e.-in-Z set W):
+    Decide with Z' whether W has an extension of coordinate i.
+    If yes, find one and copy its new suffix to the other side.
+    Otherwise leave p unchanged.
+
+Construct(Z,b):
+    p := (empty string, empty string)
+    For s = 0,1,2,...:
+        p := Settle(p, pair_number_s; Z,b)
+        p := MeetOrAvoid(p, first coordinate, W_s^Z)
+        p := MeetOrAvoid(p, second coordinate, W_s^Z)
+        Pad identically until length >= s+1.
+    Output the two coordinate unions A,B.
+\end{lstlisting}
+
+Every step preserves three invariants: already fixed bits never change; every prefix obeys the budget; and every previously settled common-output or genericity requirement remains settled. The first two follow from admissible extension, and the third follows from the extension-closed conclusions of the individual steps. Increasing lengths then transfers the finite constraints to the two total limit sets.
+
+\clearpage
+\section{Artifact map and reproducibility}
+The root source \path{coarse_minimal_pair.tex} is self-contained apart from standard TeX packages. Its layout follows the Latin Modern font and navy/ink palette of the supplied report. Run \path{build.sh} from any working directory to rerun the finite checks and compile the PDF. LaTeX intermediates are placed in a separate build directory. The archive also contains \path{proof_audit.md}, \path{source_ledger.md}, and the unchanged input source under \path{source_material/}.
+
+The delivered PDF was compiled with \texttt{pdflatex}/\texttt{latexmk}, checked for unresolved references and layout warnings, and rendered for visual inspection. These are document checks, not mathematical certification. No font binaries or uncompiled placeholder Lean files are distributed.
+
+\begin{thebibliography}{9}
+\raggedright
+\addcontentsline{toc}{section}{References}
+\bibitem{Unified}
+\emph{Turing Degrees: A Unified Research Report}.
+Supplied manuscript prepared for Vladimir Reshetnikov, 18 September 2026.
+File \path{turing_degrees_unified.tex}; especially entry C1, the coarse-description definitions, and the minimal-pair certificate. The supplied report describes C1 as an unresolved target; Section~\ref{sec:outcome} makes the literature-based correction explicit.
+
+\bibitem{Gerdes}
+Peter M. Gerdes.
+\emph{Comparing Notions of Dense Computability on $\omega^\omega$ and $2^\omega$}.
+arXiv:2508.06925v1, 9 August 2025.
+Definitions 2.3--2.4 and Question 7.
+\url{https://arxiv.org/abs/2508.06925}.
+HTML text inspected 18 September 2026.
+
+\bibitem{HJKS}
+Denis R. Hirschfeldt, Carl G. Jockusch, Jr., Rutger Kuyper, and Paul E. Schupp.
+Coarse reducibility and algorithmic randomness.
+\emph{Journal of Symbolic Logic} \textbf{81}(3) (2016), 1028--1046.
+\href{https://doi.org/10.1017/jsl.2015.70}{doi:10.1017/jsl.2015.70}.
+Preprint arXiv:1505.01707, first posted 7 May 2015;
+\url{https://arxiv.org/abs/1505.01707}.
+Theorem 4.2 supplies the independent older consequence discussed in Section~\ref{sec:outcome}. The main construction in this manuscript does not depend on that theorem.
+\end{thebibliography}
+\end{document}
