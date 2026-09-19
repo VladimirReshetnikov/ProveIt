@@ -1,4 +1,5 @@
 import CoarseDegrees.Dyadic
+import Mathlib.Analysis.SpecificLimits.Basic
 
 /-!
 # Majority decoding
@@ -18,6 +19,7 @@ oracle computation, and the counting function.  Everything here is proved.
 
 noncomputable section
 
+open Filter Topology
 open scoped Classical Computability
 open TuringDegrees
 open scoped SetTuring
@@ -143,5 +145,71 @@ theorem cnt_recursiveIn (D : Set ℕ) :
     have h4 := recursiveIn_map (recursiveIn_pair h0 h1) hc
     refine h4.of_eq fun p => ?_
     simp [characteristic, Seq.seq, characteristicValue]
+
+
+/-! ## Errors have relative density zero in each column -/
+
+/-- The number of the first `s` elements of the `k`-th column that lie in `E`. -/
+def errCnt (E : Set ℕ) (k s : ℕ) : ℕ :=
+  ((Finset.range s).filter (fun t => colElem k t ∈ E)).card
+
+theorem errCnt_le_count (E : Set ℕ) (k s : ℕ) :
+    errCnt E k s ≤ count E (2 ^ k * (2 * s - 1)) := by
+  apply Finset.card_le_card_of_injOn (colElem k)
+  · intro t ht
+    simp only [Finset.coe_filter, Finset.mem_range, Set.mem_setOf_eq] at ht ⊢
+    exact ⟨colElem_lt ht.1, ht.2⟩
+  · exact (colElem_injective k).injOn
+
+/-- **The relative density of the errors in a column tends to zero.**  This is what makes the
+majority eventually correct, and it is where the positive density of a column is used. -/
+theorem errCnt_div_tendsto {E : Set ℕ} (hE : DensityZero E) (k : ℕ) :
+    Tendsto (fun s => (errCnt E k s : ℝ) / s) atTop (𝓝 0) := by
+  have hN : Tendsto (fun s : ℕ => 2 ^ k * (2 * s - 1)) atTop atTop := by
+    refine tendsto_atTop_mono' _ ?_ tendsto_id
+    filter_upwards [eventually_ge_atTop 1] with s hs
+    calc s ≤ 2 * s - 1 := by omega
+      _ ≤ 2 ^ k * (2 * s - 1) := Nat.le_mul_of_pos_left _ (Nat.two_pow_pos k)
+  have hcomp : Tendsto (fun s : ℕ => (count E (2 ^ k * (2 * s - 1)) : ℝ) /
+      ((2 ^ k * (2 * s - 1) : ℕ) : ℝ)) atTop (𝓝 0) := hE.comp hN
+  have hlim : Tendsto (fun s : ℕ => (2 : ℝ) ^ (k + 1) *
+      ((count E (2 ^ k * (2 * s - 1)) : ℝ) / ((2 ^ k * (2 * s - 1) : ℕ) : ℝ))) atTop (𝓝 0) := by
+    simpa using hcomp.const_mul ((2 : ℝ) ^ (k + 1))
+  refine squeeze_zero' ?_ ?_ hlim
+  · filter_upwards [eventually_ge_atTop 1] with s _
+    positivity
+  · filter_upwards [eventually_ge_atTop 1] with s hs
+    have hsp : (0 : ℝ) < s := by exact_mod_cast hs
+    have hNnat : 0 < 2 ^ k * (2 * s - 1) := by
+      have h1 : 0 < 2 * s - 1 := by omega
+      exact Nat.mul_pos (Nat.two_pow_pos k) h1
+    have hNp : (0 : ℝ) < ((2 ^ k * (2 * s - 1) : ℕ) : ℝ) := by exact_mod_cast hNnat
+    have h1 : (errCnt E k s : ℝ) ≤ (count E (2 ^ k * (2 * s - 1)) : ℝ) := by
+      exact_mod_cast errCnt_le_count E k s
+    have h2 : ((2 ^ k * (2 * s - 1) : ℕ) : ℝ) ≤ (2 : ℝ) ^ (k + 1) * s := by
+      have hnat : 2 ^ k * (2 * s - 1) ≤ 2 ^ (k + 1) * s := by
+        calc 2 ^ k * (2 * s - 1) ≤ 2 ^ k * (2 * s) :=
+              Nat.mul_le_mul_left _ (by omega)
+          _ = 2 ^ (k + 1) * s := by ring
+      exact_mod_cast hnat
+    have hc0 : (0 : ℝ) ≤ (count E (2 ^ k * (2 * s - 1)) : ℝ) := by positivity
+    rw [← mul_div_assoc, div_le_div_iff₀ hsp hNp]
+    nlinarith [h1, h2, hc0]
+
+/-- Eventually, fewer than half of the first `s` elements of a column are errors. -/
+theorem eventually_two_errCnt_lt {E : Set ℕ} (hE : DensityZero E) (k : ℕ) :
+    ∃ s₀, ∀ s, s₀ ≤ s → 2 * errCnt E k s < s := by
+  have h := errCnt_div_tendsto hE k
+  rw [Metric.tendsto_atTop] at h
+  obtain ⟨s₁, hs₁⟩ := h (1 / 2) (by norm_num)
+  refine ⟨max s₁ 1, fun s hs => ?_⟩
+  have hs1 : s₁ ≤ s := le_trans (le_max_left _ _) hs
+  have hspos : 1 ≤ s := le_trans (le_max_right _ _) hs
+  have hsp : (0 : ℝ) < s := by exact_mod_cast hspos
+  have hlt := hs₁ s hs1
+  rw [Real.dist_eq, sub_zero, abs_of_nonneg (by positivity)] at hlt
+  rw [div_lt_iff₀ hsp] at hlt
+  have : (2 : ℝ) * (errCnt E k s : ℝ) < s := by linarith
+  exact_mod_cast this
 
 end CoarseDegrees
