@@ -16,3 +16,4 @@ import CoarseDegrees.Compactness
 import CoarseDegrees.Spectrum
 import CoarseDegrees.DyadicRoute
 import CoarseDegrees.Block
+import CoarseDegrees.BlockChar

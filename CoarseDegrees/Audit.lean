@@ -44,6 +44,8 @@ open CoarseDegrees
 #print axioms bcnt_div_tendsto
 #print axioms bmaj_reducible
 #print axioms blockCode_decode
+#print axioms exists_description_of_degree
+#print axioms isLeastNC_blockCode
 #print axioms Budget.inter
 #print axioms densityBudget
 #print axioms densityBudget_le
@@ -92,3 +94,5 @@ open CoarseDegrees
 #print axioms hyperarithmetic_compactness_fails
 #print axioms not_C1_dyadic
 #print axioms not_C1Uniform_dyadic
+#print axioms isLeastNC_iff_blockCode
+#print axioms exists_not_ncEquiv_blockCode

@@ -115,6 +115,7 @@ theorem CoarseDegrees.hyperarithmetic_compactness_fails  -- Theorem 1.4(b)
 | `Majority.lean` | `recursiveIn_prec_total` (primitive recursion relative to an oracle, for total base and step); the column counting function `cnt` and its `D`-computability; `errCnt_div_tendsto` — the errors have relative density zero in each column; majority decoding and `limit_of_description`; `description_iff_limit` | proved |
 | `Compactness.lean` | `HypIn.mono`; the hyper-core `hcore`; `hcore_Rc`; computable approximations `listApprox` at every radius; `hyperarithmetic_compactness_fails` | proved (`hcore_Rc` uses `HypIn.trans`) |
 | `Block.lean` | the block code `𝓘(A)` and its computability (`computable_log2`); block counting `bcnt` and its `D`-computability; `bcnt_div_tendsto`; `blockCode_decode` — every coarse description of `𝓘(A)` computes `A`, by block majority above a threshold and a finite table below it | proved |
+| `BlockChar.lean` | `exists_description_of_degree` (the sparse-coding step of the spectrum identity); `isLeastNC_blockCode`; `isLeastNC_iff_blockCode` — a coarse class has a representative of least Turing degree exactly when it is the class of a block code | proved |
 | `Cone.lean` | `LeastClass` and its invariance; density estimates for joins and halves of descriptions; relatively 1-generic sets exist (`exists_oneGenericRel`); `exists_least_above`, `exists_nonleast_above`, `no_cone_theorem` | proved from **2 admitted** facts |
 
 The new mathematics of report 10 is in `BudgetForcing.lean` and is proved with nothing
@@ -170,6 +171,27 @@ not one of its verbatim statements: apply Cooper to `deg(A ⊕ ∅′)` and to i
 distinct minimal degrees form a minimal pair, and read `A ≤ᵀ Mᵢ′` in limit form.  The docstring
 spells this out.
 
+### Which classes do have a least degree
+
+With `blockCode_decode` proved, the synthesis's structural theorems follow.  `BlockChar.lean`
+has the characterization (synthesis, Theorem 3.6, clauses (i) ⇔ (v)):
+
+```lean
+theorem isLeastNC_iff_blockCode {X : Set ℕ} :
+    (∃ g, IsLeastNC (χ X) g) ↔ ∃ B : Set ℕ, χ X ≡ₙ χ (blockCode B)
+```
+
+so `C1` asserts exactly that every function is coarsely equivalent to a block code, and each of
+the three counterexamples is a set coarsely equivalent to none.  The forward direction takes
+`B` to be the graph of the least representative; the converse is `blockCode_decode` applied to a
+normalized description.  Nothing is admitted.
+
+The attainment half of the spectrum identity (synthesis, Theorem 3.1) is
+`exists_description_of_degree`: if `B` merely *computes* a coarse description of `X`, then `B`
+is the exact degree of one, by implanting a copy of `B` on the markers `{2^k - 1}`.  This is
+what turns "some representative is complicated" into a statement about the spectrum; without it
+no leastness question could be refuted.
+
 ### Theorem 1.4: the dyadic codes
 
 Theorem 1.4 is formalized, and the way around the missing jump operator is to state the
@@ -210,7 +232,8 @@ Corollary 1.3 (every hyperdegree is an unattained infimum); the spectrum clause 
 
 The remaining witness theorems of the synthesis are not formalized: the prefix-density metric and
 the exact-pair theorems (Section 4), and the reservoir and one-bit-reserve constructions
-(Sections 7–8).  The jump-cone spectrum of the dyadic codes (Section 6) *is* formalized, in
+(Sections 7–8).  Section 3 (the spectrum identity, block recovery, and the characterization of
+the classes with a least degree) *is* formalized, in `Block.lean` and `BlockChar.lean`.  The jump-cone spectrum of the dyadic codes (Section 6) *is* formalized, in
 `Spectrum.lean`, and `DyadicRoute.lean` makes `¬ C1` independent of HJKS at the cost of one
 admitted consequence of Cooper 1973; building the minimal pair in Lean instead would need a
 use-bounded model of Turing functionals, which neither Mathlib nor the Lean side of
