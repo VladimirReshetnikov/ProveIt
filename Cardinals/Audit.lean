@@ -50,6 +50,8 @@ open Cardinals
 #print axioms exists_root
 -- Theorem 3.1(4): relativization and the fixed points below the critical point
 #print axioms relTo_spec
+#print axioms zfAxioms_zfset
+#print axioms mem_relImage
 #print axioms leastF_spec
 -- Theorem 5.1(3): the minimal-rank-parameter and least-counterexample devices
 #print axioms no_short_cofinal_low_rank

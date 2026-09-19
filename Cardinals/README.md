@@ -118,6 +118,20 @@ The numbering refers to the fourth edition of the synthesis, in which all earlie
 are unchanged; Sections 12-14 and the appended parts of Sections 7 and 8 are otherwise
 not formalized.
 
+### The bridge to ProveIt's internal satisfaction
+
+`Internal/Bridge.lean` proves `zfAxioms_zfset`: Lean's `ZFSet` universe is a model of
+ProveIt's `SetTheory.ZFAxioms` (extensionality, separation, pairing, union, infinity,
+replacement -- the last along an arbitrary functional relation, via `relImage`, since
+Mathlib's `ZFSet.image` wants a `Definable` function).  This unlocks, for the concrete
+structures of this development, `BoundedZFCConsistency`'s Gödel coding
+`formCode : Form → V`, its internal satisfaction relation `SatIn` for set-sized
+structures (all Tarski clauses and totality proved there), and above all the *formula*
+`fSatInF` with `fSatInF_spec`, which makes internal satisfaction definable inside the
+model.  That is the ingredient the two remaining gaps need: the definability of the
+cumulative hierarchy (`exists_vonNeumann_formula`, currently admitted) and the full
+`OD` version of Theorem 5.1(3).
+
 ### Not formalized
 
 * The constructible hierarchy itself.  Neither Mathlib nor ProveIt has `L`, so

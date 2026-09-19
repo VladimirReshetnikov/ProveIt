@@ -4,6 +4,7 @@ import Cardinals.Combinatorics.Completeness
 import Cardinals.Combinatorics.SecondRound
 import Cardinals.Combinatorics.ThirdRound
 import Cardinals.Foundations.Basic
+import Cardinals.Internal.Bridge
 import Cardinals.Foundations.Exacting
 import Cardinals.Foundations.PairForm
 import Cardinals.Foundations.Bridge
