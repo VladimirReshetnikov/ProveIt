@@ -142,7 +142,7 @@
 \textbf{H. Fourth round: the Prikry model} (\R{28}--\R{36}). In the extension $W[c]$ of a model $W$ with a normal measure on $\kappa$ by Prikry forcing, with $q=[c]$ and definitions allowed to use $q$, ordinals and arbitrary ground-model sets: the exact finite-label classification of group~F holds, and there is no nonempty finite definable family of $r$-of-$n$ selectors on $Q_\kappa$ (eight reports; the device is to insert one point into the generic sequence, which changes neither the extension nor $q$ but rotates coded tuples of classes). So the last conclusions of groups C and F that were tied to an embedding already hold at the strength of one measurable cardinal. The least size of a nonempty definable family of ultrafilters on $q$ is exactly $\aleph_0$, and with a ground-model parameter there are countably infinite definable families of total selectors and of total ultrafilter-valued kernels (\R{34}). There are $2^\kappa$ jointly rigid classes (\R{31}, \R{32}, \R{35}). Separately, at an ultraexacting $\lambda$ the core $\HOD_{\{b,q\}}$ regards $\lambda$ as a measurable Vop\v enka cardinal (\R{29}).
 \end{assessment}
 
-\textbf{Status.} Nothing here refutes a standard large-cardinal hypothesis; all thirty-six reports agree on that. The strongest negative result is Theorem~\ref{thm:sandwich}, a $\ZFC$ theorem that answers the Blue--Goldberg Problem~5.2 negatively \emph{when there is a further strongly compact cardinal above the cover bound}; without one the problem remains open. The proofs are conventional, unrefereed, and not machine-checked. The synthesis re-derived the arguments while merging them, but did not re-verify the external sources; theorem numbers for imported results are those quoted by the reports (those used in the Lean formalization were later checked against the sources; see \nolinkurl{Cardinals/README.md}). Priority is not claimed for any statement. \emph{Second edition:} Sections~\ref{sec:above}, \ref{sec:width}, \ref{sec:cons}, \ref{sec:compare} and \ref{sec:open} were amended and Section~\ref{sec:quot} was added. \emph{Third edition:} Section~\ref{sec:above} was amended again and Section~\ref{sec:measures} was added. \emph{Fourth edition:} Section~\ref{sec:measures} gained Subsection~\ref{sec:vopenka} and Section~\ref{sec:prikry} is new. The numbering of all earlier statements is unchanged.
+\textbf{Status.} Nothing here refutes a standard large-cardinal hypothesis; all thirty-six reports agree on that. The strongest negative result is Theorem~\ref{thm:sandwich}, a $\ZFC$ theorem that answers the Blue--Goldberg Problem~5.2 negatively \emph{when there is a further strongly compact cardinal above the cover bound}; without one the problem remains open. The proofs are conventional, unrefereed, and not machine-checked. The synthesis re-derived the arguments while merging them, but did not re-verify the external sources; theorem numbers for imported results are those quoted by the reports (those used in the Lean formalization were later checked against the sources; see \nolinkurl{Cardinals/README.md}). Priority is not claimed for any statement. \emph{Second edition:} Sections~\ref{sec:above}, \ref{sec:width}, \ref{sec:cons}, \ref{sec:compare} and \ref{sec:open} were amended and Section~\ref{sec:quot} was added. \emph{Third edition:} Section~\ref{sec:above} was amended again and Section~\ref{sec:measures} was added. \emph{Fourth edition:} Section~\ref{sec:measures} gained Subsection~\ref{sec:vopenka} and Section~\ref{sec:prikry} was added; Section~\ref{sec:countable}, on countable analogues, is an addition by the synthesis and does not come from any report. The numbering of all earlier statements is unchanged.
 
 \newpage
 \tableofcontents
@@ -1239,6 +1239,52 @@ If $\kappa$ is the least measurable cardinal of $W$, then in $W[c]$ all of this 
 After this round, no conclusion of Sections~\ref{sec:uex}, \ref{sec:quot} and~\ref{sec:measures} about definable choice on the quotient $Q_\lambda$ is known to need more than one measurable cardinal, except those that mention the embedding or $\lambda^+$ explicitly (Theorem~\ref{thm:succmeas}, Theorem~\ref{thm:vopenka}, the $\Izero$ package). Conversely the Prikry model has more: $2^\kappa$ rigid classes instead of $\lambda$, and ground parameters of arbitrary rank. The results of groups C and F are therefore best described as theorems about Prikry-type singularization, of which an ultraexacting embedding provides an instance inside $V$ without forcing (Theorem~\ref{thm:core}(3)). Whether they follow from rigidity alone remains open.
 \end{assessment}
 
+\section{Countable analogues}\label{sec:countable}
+
+This section is not drawn from the reports. It records what the results of Sections~\ref{sec:width}--\ref{sec:prikry} become when $\lambda$ is replaced by a countable ordinal of cofinality $\omega$ and ``ordinal definable'' by a notion from descriptive set theory or higher recursion theory. The barrier, the ground theorems and everything about $\HCD(\eta)$ have no such analogue: they are statements about covering in $V$. Nor has the threshold $\aleph_0$ of Theorem~\ref{thm:ufthreshold}, which needs an ultrafilter on $\omega$ as a parameter. Proof-theoretic ordinals are not touched by anything here.
+
+\subsection{Admissibility as rigidity}
+
+Code a cofinal $\omega$-sequence in $\omega_1^{\mathrm{CK}}$ by a real $x=\langle e_n:n<\omega\rangle$ with $e_n\in\mathcal O$ and $\sup_n|e_n|=\omega_1^{\mathrm{CK}}$; let $C$ be the set of such codes.
+
+\begin{proposition}\label{prop:ck}
+Every $\Sigma^1_1$ subset of $C$ is empty or contains a perfect set. The same holds for $\Sigma^1_1(z)$ sets whenever $\omega_1^z=\omega_1^{\mathrm{CK}}$.
+\end{proposition}
+
+\begin{proof}
+A $\Sigma^1_1$ set without a perfect subset is countable and all its members are hyperarithmetic \cite[Ch.~III]{sacks}. If $x=\langle e_n\rangle\in C$ were hyperarithmetic, $\{e_n:n<\omega\}$ would be a $\Delta^1_1$ subset of $\mathcal O$, hence bounded below $\omega_1^{\mathrm{CK}}$ by Spector's $\Sigma^1_1$-boundedness theorem.
+\end{proof}
+
+This has exactly the shape of Theorem~\ref{thm:smallC} and Definition~\ref{def:rigid}: a definable family of short cofinal sets is empty or as large as possible, with ``countable'' in place of ``of size below $\lambda$'', lightface $\Sigma^1_1$ in place of $\OD_{V_\lambda}$, and admissibility of $\omega_1^{\mathrm{CK}}$ --- the absence of a cofinal $\omega$-sequence that is $\Sigma_1$ over $L_{\omega_1^{\mathrm{CK}}}$ --- in place of the regularity of $\lambda$ in $\HOD_{V_\lambda}$ (Theorem~\ref{thm:rigreg}). It is a routine consequence of classical theorems and presumably folklore; its interest is that it identifies the rigidity phenomenon of Section~\ref{sec:quot} with $\Sigma^1_1$-boundedness one universe up. The class-by-class statement of Corollary~\ref{cor:rigid}(1) degenerates, because a class modulo finite difference is now countable; a nonempty $\Sigma^1_1$ subset of $C$ instead meets uncountably many classes.
+
+\subsection{The classical counterpart of the Prikry core}
+
+Theorem~\ref{thm:core} should be compared with the theorem of Bukovsk\'y and Dehornoy \cite{bukovsky,dehornoy}: if $M_n$ is the $n$th iterate of $M_0$ by a normal measure $U$ with critical points $\kappa_n$, then $\langle\kappa_n:n<\omega\rangle$ is Prikry generic over the direct limit $M_\omega$ for the image of $U$, and $M_\omega[\langle\kappa_n\rangle]=\bigcap_nM_n$. Theorem~\ref{thm:core} is the form this takes when the iteration is replaced by the single embedding of an ultraexacting witness and $M_\omega$ by $\HOD_{\{d,q\}}$; the synthesis should have cited it in the third edition. When $M_0$ is a countable iterable structure (for instance the mouse $0^\dagger$), all ordinals involved are countable, and this is where the countable counterpart of Section~\ref{sec:measures} lives. One level lower, the tail filter of the Silver indiscernibles below $i_\omega$ is a normal $L$-ultrafilter on $i_\omega$ that does not belong to $L$; there is a measure but no genericity.
+
+\begin{question}
+In the situation of Theorem~\ref{thm:core}, is the Prikry core $K(d,q)=N(d,q)[a]$ an intersection of models, as in the Bukovsk\'y--Dehornoy theorem --- for instance of the models $\HOD_{\{d,\,e^n``a\}}$, or of the images under the iterates of $e$ of a suitable model?
+\end{question}
+
+\subsection{$\lambda=\omega$: the Baire-measurable classification}
+
+For $\lambda=\omega$ the quotient $Q_\lambda$ is the set of infinite subsets of $\omega$ modulo finite difference, a form of $E_0$. Give $X_m=\Pow(\omega)^m$ the product topology and let $D_m\subseteq X_m$ be the set of $m$-tuples of infinite sets that are pairwise different modulo finite sets; $D_m$ is comeagre and invariant under finite changes and under permutations of the coordinates. For $\Gamma\le S_m$ and a finite $\Gamma$-set $F$, call $L:D_m\to F$ \emph{admissible} if it is invariant under finite changes and $L(\pi\cdot\vec x)=\pi\cdot L(\vec x)$ for $\pi\in\Gamma$, as before.
+
+\begin{proposition}\label{prop:baire}
+A Baire-measurable admissible $L:D_m\to F$ exists if and only if some label in $F$ is fixed by every element of $\Gamma$. Consequently, in $\ZF+\mathsf{DC}+{}$``every set of reals has the Baire property'' this is the criterion for the existence of any admissible rule.
+\end{proposition}
+
+\begin{proof}
+A constant map to a globally fixed label is admissible. Conversely, finite changes act on $X_m$ by homeomorphisms and topologically transitively, so by the topological zero-one law \cite[Section~8]{kechris} each fibre of $L$ is meagre or comeagre; as $F$ is finite, $L$ has a constant value $\ell_0$ on a comeagre set. A permutation of coordinates is a homeomorphism, so for comeagre many $\vec x$ both $L(\vec x)=\ell_0$ and $L(\pi\cdot\vec x)=\ell_0$, whence $\pi\cdot\ell_0=\ell_0$.
+\end{proof}
+
+Compare Theorems~\ref{thm:classification} and~\ref{thm:prikryclass}, where the criterion is the strictly weaker $\CF(\Gamma,F)$: every single $\pi\in\Gamma$ fixes a label. The two differ already for the Klein four-group acting on three blocks of two labels, each non-identity element fixing one block pointwise. The difference is located in the sufficiency half of Theorem~\ref{thm:classification}: it chooses, for each $\Gamma$-orbit of tail-classes of incidence words, one class on which to start, and does so from a well-order of $\Pow(\omega)$ --- a parameter in $V_\lambda$. That is a selection from a quotient of $E_0$ type and cannot be Baire measurable. The necessity halves of Sections~\ref{sec:uex}, \ref{sec:quot} and~\ref{sec:prikry} only ever test one $\pi$ at a time (Lemma~\ref{lem:insertion}(c)), which is why they yield $\CF$ and no more. So the classification measures how much choice the definability class contains, and the two known answers are the extremes.
+
+\begin{question}
+(i) Let $\lambda$ be ultraexacting, or let $V=W[c]$ be a Prikry extension, and allow as parameters only ordinals, reals and the class $q$, in a universe where no well-order of the reals is ordinal definable from a real (for instance after adding $\omega_1$ Cohen reals; large cardinals alone do not ensure this). Is the criterion for a definable admissible rule $\CF(\Gamma,F)$, a global fixed point, or something in between? (ii) What is the criterion in a Prikry extension of a model of $\mathsf{AD}+\mathsf{DC}$?
+\end{question}
+
+Proposition~\ref{prop:baire} is formalized in Lean, in the generality of a finite-change-invariant labelling of $\{0,1\}^\iota$ that is generically equivariant for a group acting on the index set and on the labels, together with the zero-one law it rests on and the Klein four-group example (\nolinkurl{Cardinals/Countable/GenericErgodicity.lean}; nothing is admitted there).
+
 \section{Comparison of the reports}\label{sec:compare}
 
 \subsection{Agreement}
@@ -1619,6 +1665,18 @@ K.~Prikry. Changing measurable into accessible cardinals. \emph{Dissertationes M
 
 \bibitem{mathias}
 A.~R.~D.~Mathias. On sequences generic in the sense of Prikry. \emph{J.\ Austral.\ Math.\ Soc.} \textbf{15} (1973), 409--414.
+
+\bibitem{bukovsky}
+L.~Bukovsk\'y. Iterated ultrapower and Prikry's forcing. \emph{Comment.\ Math.\ Univ.\ Carolinae} \textbf{18} (1977), 77--85.
+
+\bibitem{dehornoy}
+P.~Dehornoy. Iterated ultrapowers and Prikry forcing. \emph{Ann.\ Math.\ Logic} \textbf{15} (1978), 109--160.
+
+\bibitem{sacks}
+G.~E.~Sacks. \emph{Higher Recursion Theory}. Springer, 1990. Chapters~I and~III ($\Sigma^1_1$-boundedness; the effective perfect set theorem).
+
+\bibitem{kechris}
+A.~S.~Kechris. \emph{Classical Descriptive Set Theory}. Springer, 1995. Section~8 (the topological zero--one law).
 
 \bibitem{reitz}
 J.~Reitz. The Ground Axiom. \emph{J.\ Symbolic Logic} \textbf{72}(4) (2007), 1299--1317. \doi{10.2178/jsl/1203350787}.

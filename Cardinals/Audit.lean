@@ -23,6 +23,9 @@ open Cardinals
 #print axioms ThirdRound.phase_balance
 #print axioms ThirdRound.tail_mean_indep
 #print axioms countableCover_contra
+#print axioms Countable.zero_one
+#print axioms Countable.Cantor.global_fixed_point
+#print axioms Countable.Klein.separation
 #print axioms RelWitness.jOrd_nat
 #print axioms RelWitness.trace_fixed_of
 #print axioms FourthRound.finiteChange_realize_insert
