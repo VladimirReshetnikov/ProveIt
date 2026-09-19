@@ -86,17 +86,25 @@ Theorem 3.6 is *not* admitted: it is re-derived as `no_CEx_above_extendible`.
 | Theorem 7.11 (amenable grounds cover), 7.12 (no sandwich), Cor. 7.13(a) | `amenable_ground_cover`, `countableCover_contra`, `amenable_ground_cof`, `no_sandwich`, `no_SC_above`; `ThirdRound.card_le_of_disjoint_meeting` | proved from Goldberg's Lemma 2.7 (admitted) with the amenability of `HCD(η)` (Lemma 7.10) as a **hypothesis**; shows that the hypotheses of `two_strongly_compacts` are inconsistent |
 | Theorem 13.2, 13.3 (tail decisions, normality; cores) | `ThirdRound.orbit_mem_iff`, `orbit_decided`, `orbit_value_const`, `small_range_const`, `regressive_const_on_critical_sequence`, `tail_ultra` | **proved** (combinatorial core) |
 | Theorem 13.9 (charges; cores) | `ThirdRound.phase_balance`, `no_two_valued_phase`, `mean_shift`, `tail_mean_indep` | **proved** |
+| Section 14 (Prikry model; cores) | `FourthRound.fixed_of_insertion`, `finiteChange_realize_insert` (insertion rotates block-coded tuples), `shift_ne`, `no_finite_invariant`, `residue_law`; the finite algebra of Theorem 14.5 is `FiniteCycles.no_equivariant_selectors` | **proved** (combinatorial cores; no forcing is formalized) |
 | **Actual embedding:** elementarity for `Form`; Lemma 3.1 | `Bridge.realize_toLex`, `RelWitness.sat_j`, `elem`, `tarski_vaught`, `definable`, `definable_fixed`; `jOrd`, `crit`, `critSeq`, `le_jOrd`, `moved`, `fixed_iff_lt_crit` | **proved** from the definition of a witness (cofinality of the critical sequence admitted) |
 | Lemma 8.4(a),(b) for the actual embedding | `RelWitness.fixed_small_subset`, `no_small_fixed_family` (with `exists_surj`, `least_surj_fixed`, `surj_iff`, `card_sUnion_le`) | **proved**; (b) for families with a common size bound `ν < λ`, which covers subfamilies of `D_λ` |
 | Lemma 12.1(2) orbits | `RelWitness.IsUltra`, `orb`, `orb_mem_X`, `jv_eq_image`, `jv_orb`, `cofinalIn_orb`, `orb_locally_finite` | **proved** from `j ↾ V_λ ∈ X` |
 | Theorem 12.3 / Cor. 12.4(1) zero-or-full traces, for sets fixed by `j` | `RelWitness.zero_or_full` (with `agree_iff`, `agree_in_X`, `evAgree_orb_shift`) | **proved**; the class is represented by eventual agreement with the orbit, which coincides with `=*` on `D_λ` |
 | Theorem 13.2 for the actual embedding | `RelWitness.tail_decision`, `regressive_const` | **proved** |
 
-The numbering refers to the third edition of the synthesis, in which all earlier numbers
-are unchanged; Sections 12 and 13 and the appended parts of Sections 7 and 8 are otherwise
+The numbering refers to the fourth edition of the synthesis, in which all earlier numbers
+are unchanged; Sections 12-14 and the appended parts of Sections 7 and 8 are otherwise
 not formalized.
 
 ### Not formalized
+
+* Section 14 beyond its combinatorial cores: Prikry forcing, the cone isomorphisms and
+  the insertion lemma, ground capture, the `2^κ` rigid classes, the countable families of
+  Theorem 14.7, and all equiconsistency statements.  Neither Mathlib nor ProveIt has a
+  forcing library.
+* The phase theorem 12.7 for the actual embedding (the index `ind_a(b)` is not defined
+  in `Orbits.lean`); its combinatorial core is `SecondRound.eq_univ_of_image_succ_eq`.
 
 * The passage from *ordinal definable from `V_λ ∪ {q}`* to *fixed by `j`* (height
   correctness, the minimal-rank-parameter device, the canonical least counterexample).

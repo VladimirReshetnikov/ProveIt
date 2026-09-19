@@ -23,6 +23,10 @@ open Cardinals
 #print axioms ThirdRound.phase_balance
 #print axioms ThirdRound.tail_mean_indep
 #print axioms countableCover_contra
+#print axioms FourthRound.finiteChange_realize_insert
+#print axioms FourthRound.shift_ne
+#print axioms FourthRound.no_finite_invariant
+#print axioms FourthRound.residue_law
 #print axioms Bridge.realize_toLex
 #print axioms RelWitness.definable_fixed
 #print axioms RelWitness.le_jOrd

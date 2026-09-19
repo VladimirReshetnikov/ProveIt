@@ -20,5 +20,6 @@ import Cardinals.HODBoundary
 import Cardinals.Ultraexacting
 import Cardinals.Range
 import Cardinals.FiniteLabel
+import Cardinals.Combinatorics.FourthRound
 import Cardinals.FixedSets
 import Cardinals.Orbits
