@@ -76,6 +76,14 @@ Theorem 3.6 is *not* admitted: it is re-derived as `no_CEx_above_extendible`.
 | Lemma 10.3 (invariance) | `Ultraexacting.cloud_index_eq` | proved |
 | Theorem 11.2, Cor. 11.3 | `Range.no_internal_unbounded_range`, `final_segment_not_in_range` | **proved** from the published HKP lemma (hypothesis) |
 
+| Lemma 8.4(a) (second edition) | `SecondRound.fixed_small_set_below_crit` | **proved** (combinatorial core) |
+| Lemma 12.11 cyclic stabilizers | `SecondRound.isCyclic_map_snd` | **proved** |
+| Theorem 12.7 full phase; two-sided orbits | `SecondRound.eq_univ_of_image_succ_eq`, `two_sided_orbit_lt_crit`, `two_sided_orbit_const` | **proved** |
+
+The numbering refers to the second edition of the synthesis, in which all first-edition
+numbers are unchanged; the new Section 12 and the appended parts of Sections 7 and 8 are
+otherwise not yet formalized.
+
 ### Not formalized
 
 * Lemmas 3.3–3.5, 4.1–4.2 (Route H: persistent covers and exact hulls).  The barrier is
