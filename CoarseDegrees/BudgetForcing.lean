@@ -4,7 +4,7 @@ import CoarseDegrees.Generic
 # Budget forcing and the bridge lemma in forcing form
 
 This file contains the combinatorial core of research report 10
-(`docs/research-reports/10/coarse_hyperdegrees.tex`, Section 4), with nothing admitted.
+(`docs/coarse-degrees/research-reports/10/coarse_hyperdegrees.tex`, Section 4), with nothing admitted.
 
 * A `Budget` is a family of finite sets of positions, closed under subsets, with a *one-bit
   reserve*: every member can absorb any one sufficiently large new position.

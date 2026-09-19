@@ -9,7 +9,7 @@ Mathlib's `TuringReducible` (`≤ᵀ`) on partial functions.  Uniform reductions
 oracle-program syntax `TuringDegrees.OracleProgram` of the sibling repository
 `C:\ProveIt` (`Computability/TuringDegrees/Lean/TuringDegrees/Cardinality.lean`).
 
-The definitions follow Section 2 of `docs/research-synthesis/Turing_Degrees_Synthesis.tex`
+The definitions follow Section 2 of `docs/coarse-degrees/research-synthesis/Turing_Degrees_Synthesis.tex`
 (which follows Gerdes, arXiv:2508.06925v1, Definitions 2.3--2.4, and
 Hirschfeldt--Jockusch--Kuyper--Schupp, *Coarse reducibility and algorithmic randomness*,
 J. Symb. Log. 81 (2016), Definitions 1.2--1.3).  Everything in this file is proved.

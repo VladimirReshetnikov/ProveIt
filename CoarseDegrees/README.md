@@ -1,7 +1,7 @@
 # Lean formalization: C1, and report 10
 
 Lean 4 (v4.32.0) + Mathlib (v4.32.0).  The library `CoarseDegrees` formalizes the statement
-**C1** of the research plan (`docs/research-plan`) — *every nonuniform coarse-equivalence class
+**C1** of the research plan (`docs/coarse-degrees/research-plan`) — *every nonuniform coarse-equivalence class
 contains a representative of least Turing degree*, the coarse instance of Question 7 of
 Gerdes, arXiv:2508.06925v1 — and proves that it is false, together with its analogue for uniform
 coarse equivalence:
@@ -18,7 +18,7 @@ oracle-program syntax used for *uniform* coarse reductions come from the sibling
 `C:\ProveIt` (library `TuringDegrees`, in `Computability/TuringDegrees/Lean`), which is required
 by path in `lakefile.toml`.
 
-The library also formalizes research report 10 (`docs/research-reports/10`): coarse classes
+The library also formalizes research report 10 (`docs/coarse-degrees/research-reports/10`): coarse classes
 with no representative of least *hyperdegree*, and the failure of Martin's cone theorem for the
 coarse degrees.  See "Report 10" below.
 

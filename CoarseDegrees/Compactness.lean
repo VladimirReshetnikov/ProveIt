@@ -3,7 +3,7 @@ import CoarseDegrees.Majority
 /-!
 # The hyper-core of a dyadic code, and the failure of hyperarithmetic compactness
 
-Theorem 1.4(a),(b) of research report 10 (`docs/research-reports/10/coarse_hyperdegrees.tex`).
+Theorem 1.4(a),(b) of research report 10 (`docs/coarse-degrees/research-reports/10/coarse_hyperdegrees.tex`).
 
 The cone-avoiding compactness theorem of Hirschfeldt--Jockusch--Kuyper--Schupp (2016,
 Theorem 3.7), equivalently the robust-radius characterization of the core (synthesis,

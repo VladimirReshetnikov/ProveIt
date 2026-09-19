@@ -5,7 +5,7 @@ import Mathlib.Analysis.SpecificLimits.Basic
 
 `count S n` is the number of elements of `S` below `n`, and `S` has *density zero* when
 `count S n / n → 0`.  This is the quantity `ρ_n(S)` of Section 2 of the synthesis
-(`docs/research-synthesis/Turing_Degrees_Synthesis.tex`).  Everything in this file is proved.
+(`docs/coarse-degrees/research-synthesis/Turing_Degrees_Synthesis.tex`).  Everything in this file is proved.
 -/
 
 noncomputable section

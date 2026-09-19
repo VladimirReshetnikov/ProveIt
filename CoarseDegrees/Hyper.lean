@@ -6,7 +6,7 @@ import Mathlib.Analysis.Real.Sqrt
 # Coarse classes without least hyperdegree
 
 Formalization of Theorem 1.1 and Corollary 1.2 of research report 10
-(`docs/research-reports/10/coarse_hyperdegrees.tex`), for the oracle `Z = ∅`.
+(`docs/coarse-degrees/research-reports/10/coarse_hyperdegrees.tex`), for the oracle `Z = ∅`.
 
 * `Sigma11In Y X`, `HypIn Y X`: `X` is `Σ¹₁`, respectively `Δ¹₁`, in `Y`, by the Kleene normal
   form `n ∈ X ↔ ∃ f, ∀ k, T n (f ↾ k)` with `T` decidable in `Y`.
