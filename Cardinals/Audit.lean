@@ -48,6 +48,13 @@ open Cardinals
 #print axioms assignment_iff_branch
 #print axioms TWitness.restrictTo
 #print axioms exists_root
+-- Theorem 3.1(4): relativization and the fixed points below the critical point
+#print axioms relTo_spec
+#print axioms leastF_spec
+-- Theorem 5.1(3): the minimal-rank-parameter and least-counterexample devices
+#print axioms no_short_cofinal_low_rank
+#print axioms no_small_family_low_rank
+#print axioms TWitness.least_ordinal_fixed
 #print axioms RelWitness.trace_fixed_of
 #print axioms FourthRound.finiteChange_realize_insert
 #print axioms FourthRound.shift_ne
@@ -71,6 +78,9 @@ open Cardinals
 #print axioms le_of_CEx
 #print axioms no_SC_above
 #print axioms TWitness.cofinalType_of_ultra
+#print axioms TWitness.vA_fixed
+#print axioms TWitness.fixed_below_crit
+#print axioms TWitness.restriction_elementary
 #print axioms RelWitness.fixed_small_subset
 #print axioms RelWitness.no_small_fixed_family
 #print axioms RelWitness.orb_mem_X

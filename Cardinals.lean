@@ -14,6 +14,8 @@ import Cardinals.KunenFree
 import Cardinals.Virtual.TWitness
 import Cardinals.Virtual.Core
 import Cardinals.Virtual.Extras
+import Cardinals.Virtual.Restriction
+import Cardinals.Virtual.Regularity
 import Cardinals.ObservationOne
 import Cardinals.CoverBound
 import Cardinals.Published
