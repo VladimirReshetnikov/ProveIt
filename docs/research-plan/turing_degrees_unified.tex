@@ -51,6 +51,7 @@
 \newcommand{\Spec}{\operatorname{Spec}_{\mathrm T}}\newcommand{\Up}{\operatorname{Up}}
 \newcommand{\Min}{\operatorname{Min}}\newcommand{\Computable}{\operatorname{Comp}}
 \newcommand{\EDesc}{\operatorname{ED}}\newcommand{\CDesc}{\operatorname{CD}}
+\newcommand{\Core}{\operatorname{Core}}\newcommand{\Low}{\mathcal L}
 \newcommand{\pair}[2]{\langle#1,#2\rangle}
 \newcommand{\code}[1]{\texttt{#1}}
 \newcommand{\Wmark}{\textbf{B}}\newcommand{\Pmark}{\textbf{R}}\newcommand{\Lmark}{\textbf{H}}
@@ -82,14 +83,14 @@ and the cost of paper-and-Lean verification\par}
 \noindent\rule{\textwidth}{0.5pt}
 \vspace{5mm}
 \noindent Prepared for Vladimir Reshetnikov\\[3pt]
-Unified edition: 18 September 2026\\
+Second edition: 18 September 2026 (revised after research round~1)\\
 Underlying report audits: 17 September 2026
 \vspace{12mm}
 \begin{abstract}
-Three research reports are integrated into one catalogue of thirty-nine topics and three separately identified bounded research programmes. Shared definitions, feasibility assessments, source records, and formalization requirements are consolidated; distinct variants are retained rather than silently identified. The most consequential difference between the inputs concerns towers: one report proposes elementary strong reductions under explicit computable-column conventions, while another treats the same comparisons as transformation-search targets. We preserve the complete proposed proofs and their diagnostic lemmas, but separate mathematical claims under those conventions from external acceptance, novelty, and the interpretation of the published questions. The report also combines metric geometry, coarse and effective-dense representatives, local oracle classes, lattice spectra, categoricity, randomness, dimension, and global structure. A unified Lean audit distinguishes inherited source inspection from successful compilation, and a crosswalk accounts for every original numbered entry.
+Three research reports are integrated into one catalogue of open topics and three separately identified bounded research programmes. This second edition follows a first round of nine research reports, all of which attacked the coarse least-representative question C1. That question is settled negatively---the answer already followed from published work---and it has been removed from the list of targets; its results are recorded in the separate synthesis \cite{Synthesis}. Five follow-on topics C4--C8 arising from that round have been added, the effective-dense question C2 has been re-triaged, and the catalogue now has forty-three topics. A new context section relates the degrees to large countable ordinals and to large cardinals. Shared definitions, feasibility assessments, source records, and formalization requirements are consolidated; distinct variants are retained rather than silently identified. The most consequential difference between the inputs concerns towers: one report proposes elementary strong reductions under explicit computable-column conventions, while another treats the same comparisons as transformation-search targets. We preserve the complete proposed proofs and their diagnostic lemmas, but separate mathematical claims under those conventions from external acceptance, novelty, and the interpretation of the published questions. The report also combines metric geometry, coarse and effective-dense representatives, local oracle classes, lattice spectra, categoricity, randomness, dimension, and global structure. A unified Lean audit distinguishes inherited source inspection from successful compilation, and a crosswalk accounts for every original numbered entry.
 \end{abstract}
 \vfill
-\noindent\small This is a synthesis of the supplied reports, not a claim of thirty-nine independent open conjectures or a new, exhaustive literature review. No Lean development is claimed to have been compiled. The included finite checks do not certify the infinite mathematical assertions.
+\noindent\small This is a synthesis of the supplied reports, not a claim of forty-three independent open conjectures or a new, exhaustive literature review. No Lean development is claimed to have been compiled. The included finite checks do not certify the infinite mathematical assertions.
 \end{titlepage}
 {\small\tableofcontents}
 \newpage
@@ -100,7 +101,7 @@ Three research reports are integrated into one catalogue of thirty-nine topics a
 \subsection{The three inputs and the integrated result}
 The supplied archive contains three reports, each dated 17 September 2026. We call them \textbf{Report A}, the research map and feasibility audit; \textbf{Report B}, the research portfolio with proposed tower constructions; and \textbf{Report C}, the broader research agenda with diagnostic lemmas. Their full titles and original paths are recorded in the bibliography and the crosswalk in Appendix~\ref{app:crosswalk}.\cite{ReportA,ReportB,ReportC}
 
-Each input has twenty numbered research entries, but the lists overlap substantially. The unified catalogue has \textbf{39 topics}; it splits the distinct classical and relative dimension questions that one original entry grouped together. It also preserves three bounded programmes from Report A without counting them as established literature-open problems. Some topics contain refinements, restricted versions, or linked conjectures. Thus neither the original sixty entries nor the unified thirty-nine topics are counts of logically independent conjectures.
+Each input has twenty numbered research entries, but the lists overlap substantially. The unified catalogue has \textbf{39 topics}; it splits the distinct classical and relative dimension questions that one original entry grouped together. It also preserves three bounded programmes from Report A without counting them as established literature-open problems. Some topics contain refinements, restricted versions, or linked conjectures. Thus neither the original sixty entries nor the unified thirty-nine topics are counts of logically independent conjectures. The second edition retires one of the thirty-nine (C1) and adds five (C4--C8), for forty-three; the added topics come from the round-1 synthesis, not from the three input reports.
 
 The organizing principle is the intended mathematical statement, not the original section order. Common foundations and software cautions appear once. Detailed constructions and proofs are retained. Where assessments differed, the distinction is explained instead of averaging incompatible labels. All original entries remain traceable through the crosswalk and the accompanying CSV.
 
@@ -111,10 +112,37 @@ The organizing principle is the intended mathematical statement, not the origina
 \]
 Report C identifies defects in two simpler approaches, but those defects are addressed by the finite-fiber and moving-cutoff features of the padding constructions. The appropriate next step is therefore to audit the proposed proofs, their exact input conventions, their relationship to the source questions, and their novelty---not to ignore them and restart an unconstrained separation search. The proofs are retained in Section~\ref{sec:padding}. They have not been independently reviewed, accepted by the source author, or checked in Lean.
 
-\textbf{Unresolved-target track: M1, M3, and C1.} For a genuinely unresolved bounded attempt, the combined reports favor the five-cycle metric realization, the diameter-three-versus-four question, and a counterexample to least Turing degrees in nonuniform coarse classes. These are speculative choices, not forecasts. A short conventional argument might exist; a complete formal proof could still require a substantial foundation. The local questions Q1--Q3, the effective-dense questions C2--C3, and a sharply defined categoricity subcase are exploratory alternatives. Programmes R1--R3 are more controllable only after fixing a genuinely new, finite or restricted target.
+\textbf{Unresolved-target track: M1, M3, and the coarse follow-ups.} For a genuinely unresolved bounded attempt, the combined reports favor the five-cycle metric realization and the diameter-three-versus-four question. The third first-edition choice, a counterexample to least Turing degrees in nonuniform coarse classes (C1), has been carried out and is retired; see Section~\ref{sec:changes}. Its place is taken by the effective-dense least-representative question C2, for which round~1 produced both an obstruction and a concrete line of attack, and by the short follow-ups C4 and C6, for which proof sketches are already in hand. These are speculative choices, not forecasts. A short conventional argument might exist; a complete formal proof could still require a substantial foundation. The local questions Q1--Q3, the remaining coarse questions C3, C5, C7 and C8, and a sharply defined categoricity subcase are exploratory alternatives. Programmes R1--R3 are more controllable only after fixing a genuinely new, finite or restricted target.
+
+\subsection{What changed in the second edition}
+\label{sec:changes}
+Round~1 consisted of nine independent research reports, all of which chose C1. They are archived in \path{docs/research-reports/01}--\path{09}, and their deduplicated content is the synthesis \cite{Synthesis}. The outcome has three parts.
+
+\emph{C1 is settled, and was not open.} Every nonuniform (and uniform) coarse class of a $1$-generic set, of the dyadic code $n\mapsto\emptyset''(\nu_2(n+1))$, and of an explicit many-one complete c.e. set lacks a least Turing degree. All nine reports found independently that this bare answer already follows from Hirschfeldt--Jockusch--Kuyper--Schupp \cite[Theorems 4.2 and 4.3]{HJKS}, with \cite[Theorem 2.19]{JS} for the dyadic code. The first edition's rating of C1 as ``B, O25'' was therefore wrong as a \emph{status}: the question was listed in a 2025 source, but it was not unresolved. Section~\ref{sec:stale} records the correction and Section~\ref{sec:plan} adds a protocol step designed to catch this failure mode earlier.
+
+\emph{What round~1 established beyond the bare answer.} With complete conventional proofs, none refereed or formalized: the density-zero class, the uniform class and the nonuniform class of any $f$ have the same upward-closed Turing spectrum; a nonuniform class has a least degree exactly when it is the class of a robust block code; for every $X$ there are perfect families of density-zero modifications of $X$ whose pairwise common lower cone is exactly the ideal $\Core(X)$ of sets computable from every coarse description of $X$, and a spectrum either has a least element or has no countable coinitial subset; the dyadic code $\R(A)$ has coarse spectrum $\{\bdeg:\degT(A)\le\bdeg'\}$ and effective-dense spectrum $\{\bdeg:\degT(A)\le\bdeg\}$; there are $\zero''$-computable perfect trees of individually $1$-generic sets, pairwise forming minimal pairs, whose disagreements obey any prescribed unbounded computable budget; and every degree is the unattained infimum of some coarse spectrum. These are now \emph{tools}, not targets, and are used as such in Section~\ref{sec:coarse}.
+
+\emph{Re-triage.} The changes to the catalogue are as follows.
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Entry & First edition & Second edition\\\midrule
+C1 & B, O25 & retired: settled negatively; known since 2016\\
+C2 & E, O25 & B: obstruction identified, attack route with one explicit gap\\
+C3 & E, O25 / Ref & E, unchanged\\
+C4 & --- & V: every countable Turing ideal is a core (proof sketch supplied)\\
+C5 & --- & E: minimal elements and the shape of coarse spectra\\
+C6 & --- & V/E: arithmetical bounds for exact partners of a prescribed set\\
+C7 & --- & E: sparse-disagreement minimal pairs below $\zero'$\\
+C8 & --- & E: least degrees of uniform coarse classes\\
+M1, M3 & B, O21 & B, O21, but conditional on the status audit of Section~\ref{sec:plan}\\
+\bottomrule
+\end{tabular}
+\end{center}
+A context section on the connections of the Turing degrees with large countable ordinals and with large cardinals has also been added (Section~\ref{sec:ordinals}); it contains no catalogue entries, but it lists directions and observations (O1)--(O5) that bear on the coarse track and on G3--G5; (O1), (O2) and (O4) have since been settled in report~10 \cite{ReportTen}. No other tier is changed: round~1 produced no new information about the tower, metric, local, lattice, categoricity, randomness, dimension or global entries. The M1 and M3 ratings now carry an explicit condition because they rest on the same kind of evidence (a dated question listing, here from 2021) that failed for C1. A targeted search on 18 September 2026 found no resolution of \cite[Questions 9.3 and 9.7]{HJS}; that search is a spot check, not a status certificate.
 
 \subsection{Status evidence and feasibility are different axes}
-The catalogue separates the following evidence descriptions. \textbf{O26}, \textbf{O25}, \textbf{O24}, and \textbf{O21} mean an explicit open-question statement or listing of that date inherited from the reports. \textbf{S07}, \textbf{S12}, and \textbf{S17} flag older primary-source leads for which current specialist reconfirmation is particularly important. \textbf{Ref} identifies a refinement or a precise component of a broader source question. \textbf{V} flags a supplied proof proposal rather than externally established closure of an open problem. A recent preprint is not silently treated as a peer-reviewed publication.
+The catalogue separates the following evidence descriptions. \textbf{O26}, \textbf{O25}, \textbf{O24}, and \textbf{O21} mean an explicit open-question statement or listing of that date inherited from the reports. \textbf{S07}, \textbf{S12}, and \textbf{S17} flag older primary-source leads for which current specialist reconfirmation is particularly important. \textbf{Ref} identifies a refinement or a precise component of a broader source question. \textbf{V} flags a supplied proof proposal rather than externally established closure of an open problem. A recent preprint is not silently treated as a peer-reviewed publication. \textbf{S26} marks a topic that arose from the round-1 synthesis of 18 September 2026 \cite{Synthesis}; it is a question posed by this project, not an open problem listed in the literature, and its novelty is unverified.
 
 The unified feasibility tiers are:
 \begin{description}[style=nextline]
@@ -130,6 +158,8 @@ The original four-to-eight-week horizons are planning assumptions for a speciali
 The complete LaTeX sources of all three reports were used. This edition normalizes notation and identifiers, deduplicates the bibliography, and resolves internal discrepancies without asserting that all inherited literature and software audits have been repeated. Targeted source checks on 18 September 2026 confirmed the displayed tower questions and the weak-tower wording in McDonald's July preprint, Gerdes's least-representative and set-representative questions, Zhao's 16 September dispersive/AEWG status discussion, and the publication details of Marks--Slaman--Steel.\cite{McDonald,Gerdes,Zhao,MSS}
 
 In particular, McDonald's weak-tower definition does not repeat the infinitude and computability requirements in its wording; this report makes those requirements explicit rather than pretending that the interpretive issue is settled. Zhao's account reports a recent attractive-degree characterization, whereas the dispersive-to-AEWG implication remains a question. The bibliography corrects the Marks--Slaman--Steel page range to 200--219. The original software evidence remains a \emph{dated source audit}, not a current clean-build certificate.\cite{McDonald,Zhao,MSS,ReportA,ReportB,ReportC}
+
+For the second edition, the complete LaTeX sources of the nine round-1 reports were read and merged into \cite{Synthesis}; no mathematical disagreement between them was found, but the merged proofs have not been independently checked. The open-question section and the statements of Theorems 3.7, 4.2 and 4.3 of \cite{HJKS} were checked through a machine summary of the arXiv text, not read in full. The proposals under C2, C4 and C6 were written for this edition and are unreviewed. Entries other than C1--C8 were not re-audited, apart from the spot check on M1 and M3 recorded in Section~\ref{sec:changes}.
 
 
 \section{Common mathematical language and representation boundaries}
@@ -188,9 +218,13 @@ The identifiers below are stable throughout the report and the CSV crosswalk. Ev
 \hyperref[entry:T3]{T3} & Weak set tower to function tower & V & O26 / V \\
 \hyperref[entry:T4]{T4} & Function tower to weak set tower & V & O26 / V \\
 \multicolumn{4}{@{}l}{\rule{0pt}{3.6ex}\textbf{Coarse and effective-dense classes}}\\[2pt]
-\hyperref[entry:C1]{C1} & Least Turing degree in each nonuniform coarse class & B & O25 \\
-\hyperref[entry:C2]{C2} & Least Turing degree in each nonuniform effective-dense class & E & O25 \\
+\hyperref[entry:C2]{C2} & Least Turing degree in each nonuniform effective-dense class & B & O25 \\
 \hyperref[entry:C3]{C3} & Binary effective-dense representative below the jump & E & O25 / Ref \\
+\hyperref[entry:C4]{C4} & Every countable Turing ideal as a core; exact pairs in one coarse class & V & S26 / V \\
+\hyperref[entry:C5]{C5} & Minimal elements and the shape of coarse spectra & E & S26 \\
+\hyperref[entry:C6]{C6} & Arithmetical bounds for exact partners of a prescribed set & V/E & S26 / V \\
+\hyperref[entry:C7]{C7} & Sparse-disagreement minimal pairs below the halting degree & E & S26 \\
+\hyperref[entry:C8]{C8} & Least Turing degrees of uniform coarse classes & E & S26 \\
 \multicolumn{4}{@{}l}{\rule{0pt}{3.6ex}\textbf{Metric geometry}}\\[2pt]
 \hyperref[entry:M1]{M1} & Five-cycle realization in the degree metric & B & O21 \\
 \hyperref[entry:M2]{M2} & Finite and countable graph-metric universality & H & O21 \\
@@ -232,7 +266,7 @@ The identifiers below are stable throughout the report and the CSV crosswalk. Ev
 \hyperref[entry:G7]{G7} & Sacks's order-embedding conjecture & H & O26 \\
 \end{longtable}
 \normalsize
-\noindent R1--R3, discussed in Section~\ref{sec:projects}, are separately proposed programmes: bounded lattice-obstruction classification, a new restricted meet-removal theorem, and finite bookkeeping for measure constructions. Their specification and novelty remain part of the research task.
+\noindent The identifier C1 is retired and is not reused: the first edition's C1 (least Turing degree in each nonuniform coarse class) is settled negatively; see Sections~\ref{sec:changes} and~\ref{entry:C1}. R1--R3, discussed in Section~\ref{sec:projects}, are separately proposed programmes: bounded lattice-obstruction classification, a new restricted meet-removal theorem, and finite bookkeeping for measure constructions. Their specification and novelty remain part of the research task.
 
 
 \section{Tower comparisons: proposed proofs and their exact scope}
@@ -506,20 +540,36 @@ An effective-dense description of $f$ is a \emph{total} function $h:\N\to\N\cup\
 \]
 These are nonuniform coarse and nonuniform effective-dense reducibility. Equivalence means reducibility in both directions \cite{Gerdes}.
 
-\problemheading{C1}{Must every nonuniform coarse class have a least Turing degree?}{\W{}, counterexample route}
-The coarse instance of Gerdes's Question~7 asks whether
+\subsection{Established background: the former entry C1}\label{entry:C1}
+The first edition's C1 was the coarse instance of Gerdes's Question~7,
 \[
  \forall f\in\Baire\ \exists g\equiv_{\mathrm{nc}}f\
  \forall h\equiv_{\mathrm{nc}}f\ (g\leT h).
 \]
-A small negative example would settle this instance completely. The distinction between a \emph{minimal} element and a \emph{least} element must be preserved: a least representative is below every representative.
+It is false, it is no longer a target, and nothing in this subsection is an open problem. The statements below are proved in the round-1 synthesis \cite{Synthesis}, to which the theorem numbers refer; they are listed because the remaining entries of this section use them. None has been refereed or formalized, and the bare negative answer is a consequence of \cite[Theorems 4.2 and 4.3]{HJKS}.
 
-A concrete sufficient target is a nonzero coarse class with two representatives whose Turing degrees form a minimal pair. Proposition~\ref{prop:minpair} proves why this suffices. The research difficulty is arranging those properties together. Ordinary Turing noncomputability is far too weak: Proposition~\ref{prop:sparse} gives every Turing degree a representative in the computable coarse class. The \W{} rating is conditional on obtaining a short finite-extension argument, not on importing a large minimal-pair theorem as an unproved Lean axiom. Unlike the tower validation track, this remains a construction-search target; its formal cost depends strongly on the availability of an oracle-construction library.
+Write $\Core(f)$ for the class of sets computable from every coarse description of $f$ (the class $X^{\mathfrak c}$ of \cite{HJKS}), $\Low(Y)$ for the lower Turing cone of $Y$, $J(g)$ for the block code with $J(g)(k)=g(n)$ for $2^n\le k<2^{n+1}$, and $\R(A)(n)=A(\nu_2(n+1))$ for the dyadic column code.
+\begin{enumerate}[label=\textup{(K\arabic*)},leftmargin=3em]
+\item \emph{Spectrum identity} (Theorem~3.1). The density-zero class of $f$, its uniform coarse class and its nonuniform coarse class have the same Turing spectrum, namely the upward closure of the degrees of coarse descriptions of $f$.
+\item \emph{Least representatives} (Theorem~3.6). The spectrum has a least element iff $f\equiv_{\mathrm{nc}}J(B)$ for some $B$, iff some member of $\Core(f)$ computes a coarse description of $f$. The characterization is of nonuniform classes only.
+\item \emph{Category method} (Theorems~4.4--4.14). For binary $X$ the binary descriptions of $X$ form a perfect Polish space under $d(U,V)=\sup_n\rho_n(U\mathbin\triangle V)$; the cone above any set outside $\Core(X)$ is meager there; $A\in\Core(X)$ iff some $\eta>0$ has $A\leT Y$ whenever $Y$ is within upper density $\eta$ of $X$ (this is \cite[Theorem 3.7]{HJKS}); there is a perfect family of descriptions with pairwise common lower cone exactly $\Core(X)$, exact also against any prescribed countable family of oracles; and the spectrum either has a least element or has no countable coinitial subset.
+\item \emph{Dyadic codes} (Theorems~6.3--6.8, 7.3, 7.4). $B$ computes a coarse description of $\R(A)$ iff $A\leT B'$; the coarse spectrum of $\R(A)$ is $\{\bdeg:\degT(A)\le\bdeg'\}$, with a least element iff $A\leT\emptyset'$; $\R(A)\le_{\mathrm{uc}}\R(B)\iff\R(A)\le_{\mathrm{nc}}\R(B)\iff A\leT B\oplus\emptyset'$; there are minimal-pair witnesses below $A\oplus\emptyset'$ with jump $A\oplus\emptyset'$. In contrast the effective-dense spectrum of $\R(A)$ is $\{\bdeg:\degT(A)\le\bdeg\}$, which has a least element.
+\item \emph{An explicit c.e. example} (Theorem~6.10, Corollaries~6.11 and~7.6). A guarded diagonal c.e. set $X$ is many-one complete, has $\Core(X)$ equal to the computable sets, and is not coarsely computable. It has a partner $D\approx X$ with $\Low(X)\cap\Low(D)$ computable, necessarily $D\nleq_{\mathrm T}\emptyset'$; and its class contains a perfect family of pairwise minimal pairs, two of them below $\emptyset''$.
+\item \emph{Quantitative minimal pairs} (Theorem~8.7). For every oracle $Z$ and every unbounded computable disagreement budget there is a $Z''$-computable perfect tree of sets, individually $1$-generic over $Z$, pairwise forming minimal pairs over $Z$, all agreeing off one set obeying the budget. Bounded budgets are impossible, and the disagreement sets are bi-immune.
+\item \emph{Unattained infima} (Theorem~9.2). For every $Z$ there is $F$ with $\Core(F)=\Low(Z)$ and $\inf\Spec=\degT(Z)\notin\Spec$; thus a principal core does not give a least representative.
+\end{enumerate}
+The distinction between a \emph{minimal} and a \emph{least} element remains essential: none of these results says that a spectrum lacks minimal elements (see C5).
 
-\problemheading{C2}{Least Turing degrees in effective-dense classes}{\E{}}
+\problemheading{C2}{Least Turing degrees in effective-dense classes}{\W{}, re-triaged from \E{}}
 Take the preceding least-representative statement with $\equiv_{\mathrm{ned}}$ in place of $\equiv_{\mathrm{nc}}$; this is another instance of \cite[Question~7]{Gerdes}. Uniform variants are distinct questions and are not implicitly settled by either nonuniform instance.
 
-The minimal-pair criterion still applies because it is an abstract fact about equivalence classes. What does not transfer automatically is the density-zero modification argument: an effective-dense description cannot output a wrong value at \emph{any} location. A description accurate for one function may therefore fail to describe a density-zero modification. An AI proof that treats wrong answers and explicit omissions interchangeably has changed the problem. This makes a shared formal development useful, but makes C2 a less immediate short target than C1.
+The minimal-pair criterion still applies because it is an abstract fact about equivalence classes. What does not transfer automatically is the density-zero modification argument: an effective-dense description cannot output a wrong value at \emph{any} location. A description accurate for one function may therefore fail to describe a density-zero modification. An AI proof that treats wrong answers and explicit omissions interchangeably has changed the problem. This makes a shared formal development useful.
+
+\paragraph{What round~1 adds.} Two facts sharpen the target. First, the dyadic codes do \emph{not} give counterexamples: every effective-dense description of $\R(A)$ computes $A$ outright, so those classes have least degree $\degT(A)$ (K4). Second, the coarse witnesses cannot be transferred: for a minimal pair $A,B$ of $1$-generics the disagreement set meets every infinite computable set, so it has no computable density-zero cover, and the common error support of the reservoir witnesses for $\R(A)$ has no computable null envelope \cite[Propositions 5.8 and 7.5]{Synthesis}. A counterexample must therefore come from a class whose members cannot decode anything robustly, and the natural candidate is the class of a $1$-generic $G$.
+
+\paragraph{A line of attack, with its gap.} Let $G$ be $1$-generic. (i) For a computable density-zero set $T$ let $G_T(n)=2$ for $n\in T$ and $G_T(n)=G(n)$ otherwise. Then $G_T\equiv_{\mathrm{ued}}G$: from a description of $G$ output $2$ on $T$ and copy elsewhere; from a description of $G_T$ copy the answers $0,1$ and turn every other answer into $\bot$. Also $G_T\eqT G\upharpoonright(\N\setminus T)$. (ii) Suppose $g\equiv_{\mathrm{ned}}G$ had least degree. Applying $G\le_{\mathrm{ned}}g$ to $g$ itself, $g$ computes an effective-dense description $E$ of $G$; let $S=E^{-1}(\bot)$, a density-zero set with $S\leT g$. Leastness gives $g\leT G\upharpoonright(\N\setminus T)$ for every computable density-zero $T$. For infinite such $T$, $G\upharpoonright T$ is $1$-generic relative to $G\upharpoonright(\N\setminus T)$, so the latter cannot compute the values of $G$ on an infinite subset of $T$; hence $T\subseteq^*S$. (iii) So a least representative yields a density-zero set $S$ that almost contains \emph{every} computable density-zero set and is computable from $G\upharpoonright(\N\setminus T)$ for all of them. No computable $S$ can do this, since one may adjoin a sparse infinite computable subset of its complement; but density-zero sets form a P-ideal, so noncomputable such $S$ exist abstractly, and the contradiction has to come from genericity. \emph{This step is the gap.} The natural attempt is to take $S=\Gamma^G$, fix a condition forcing the density bound, and build a computable sparse $T$ inside the c.e. set of positions that some extension declares to be outside $S$; the obstacle is that $T$ must be decidable while the witnessing extensions are found with unbounded delay.
+
+\paragraph{Order of work.} First audit the literature, in particular the minimal-pair and upper-cone results of Astor--Hirschfeldt--Jockusch for dense and effective-dense reducibility \cite{AHJ} and the remainder of \cite{Gerdes}: C1 shows that a recently listed question may already be answered by a theorem about a neighbouring invariant. Then attack step (iii); a weaker, still informative result would be that the class of $G$ has no least representative among functions computable from $G$. The positive direction should be tested in parallel on the guarded c.e. set of (K5), whose columns are individually computable. The rating \W{} is conditional on step (iii) having a short forcing proof.
 
 \problemheading{C3}{How low can a set representative be?}{\E{}}
 A precise component of Gerdes's Question~5 is
@@ -532,6 +582,33 @@ The source also asks for arithmetical or hyperarithmetical bounds \cite{Gerdes}.
 
 A disproof of this bound would answer that component, not the weaker hyperarithmetical question. A proof with $f''$ in place of $f'$ would be an explicitly weaker result. For a short project, the appealing branch is a bounded, finite-search selection argument. The main risk is that selecting among set representatives involves a much stronger basis theorem than the displayed formula suggests. Hyperarithmetical versions additionally require ordinal and effective descriptive-set-theoretic infrastructure. Keep those costs separate from the $f'$ target.
 
+\problemheading{C4}{Is every countable Turing ideal a core?}{V: proof sketch supplied; novelty unchecked}
+By (K3) the core of $X$ is a countable Turing ideal contained in $\Low(X)$, and by (K2) and (K7) every principal ideal $\Low(Z)$ occurs, both with and without a least representative. The following statement would complete the picture. It was formulated while preparing this edition; it has not been reviewed, and \cite{HJKS} was checked only to the extent of confirming that its open questions do not include it.
+
+\begin{proposition}[proposed]\label{prop:idealcore}
+Let $(A_k)_{k\in\N}$ be any sequence of sets. Define $X$ on the dyadic column $\{2^k(2t+1)-1:t\in\N\}$ by $X(2^k(2t+1)-1)=J(A_k)(t)$. Then
+\[
+ \Core(X)=\{A:\ A\leT A_0\oplus\cdots\oplus A_{k-1}\text{ for some }k\}.
+\]
+Hence every countable Turing ideal is the core of a binary sequence.
+\end{proposition}
+\begin{proof}[Proof sketch]
+Let $D$ be a binary coarse description of $X$ with error set $E$, and let $D_k(t)=D(2^k(2t+1)-1)$. The first $m$ points of column $k$ lie below $2^{k+1}m$, so the error fraction of $D_k$ against $J(A_k)$ at $m$ is at most $2^{k+1}\rho_{2^{k+1}m}(E)\to0$. Thus $D_k$ is a coarse description of $J(A_k)$ and computes $A_k$ by block majority, with a finite correction (K2). This gives $\supseteq$. Conversely let $A\in\Core(X)$ and take $\eta$ from the robust-radius characterization in (K3). Choose $k$ with $2^{-k}<\eta$ and let $Y_k$ agree with $X$ on the columns below $k$ and be $0$ elsewhere. The remaining columns have density $2^{-k}$, so $Y_k$ is within $\eta$ of $X$ and $A\leT Y_k\leT A_0\oplus\cdots\oplus A_{k-1}$. A countable ideal is generated by a sequence.
+\end{proof}
+Combined with the perfect exact-pair theorem of (K3) this would give, for every countable Turing ideal $I$, a perfect family of pairwise density-zero-close sets any two of which form an exact pair for $I$: a quantitative form of Spector's exact-pair theorem inside a single coarse class. The tasks are: check the sketch; search the literature on robust information coding for the statement; determine for which sequences $(A_k)$ the class of $X$ has a least degree, which by (K2) asks when a member of the ideal computes a description of $X$ and should be governed by a limit-lemma condition as in (K4); and decide whether the uniform core, defined with a single functional, behaves differently.
+
+\problemheading{C5}{Minimal elements and the shape of coarse spectra}{\E{}}
+Round~1 excludes least elements and countable coinitial families, not minimal elements. For the dyadic codes the question is already answered by classical work: if $A\nleq_{\mathrm T}\emptyset'$, Cooper's jump inversion for minimal degrees \cite{CooperMinimal} gives a minimal degree $\mathbf m$ with $\mathbf m'=\degT(A\oplus\emptyset')$, so $\mathbf m$ lies in the spectrum $\{\bdeg:\degT(A)\le\bdeg'\}$ of (K4), and it is a minimal element of it because $\zero$ does not. So absence of a least element coexists with minimal elements, and the following are the real questions. (a) Is there a coarse class whose spectrum has no minimal element? The candidates are the class of a $1$-generic and the classes of (K7), where a minimal element would be a degree minimal among those above $\degT(Z)$ that compute a description. (b) Which upward-closed classes of degrees are coarse spectra? Principal cones, jump-cones $\{\bdeg:\adeg\le\bdeg'\}$ and the spectra of (K7) occur; is the strict cone $\{\bdeg:\bdeg>\adeg\}$ one? (c) Is the coinitiality of a spectrum without least element always $2^{\aleph_0}$? The citation of Cooper's theorem is from memory and must be verified before use.
+
+\problemheading{C6}{How low can an exact partner of a prescribed set be?}{V/\E{}}
+For the many-one complete c.e. set $X$ of (K5), a partner $D\approx X$ with $\Low(X)\cap\Low(D)$ computable cannot be $\Delta^0_2$, and the category method bounds it by nothing; the reservoir method bounds two witnesses by $\emptyset''$ but neither of them is $X$. \emph{Proposed:} there is such a $D\leT\emptyset''$. \emph{Sketch:} use the computable reservoirs of $X$ on one side only. Given a reservoir condition $\sigma$ at level $k$ and indices $e,j$, ask whether some admissible $\alpha\succeq\sigma$ and some $n$ satisfy $\Phi_e^\alpha(n)\downarrow\ne\Phi_j^X(n)\downarrow$. This is $\Sigma^0_1(X)$, so $X'\eqT\emptyset''$ decides it. If so, extend to $\alpha$. If not, any total $h=\Phi_e^D=\Phi_j^X$ with $D$ in the reservoir is computable, by searching admissible extensions for a convergent value; a wrong value would be a witness. Raising the protection level as in \cite[Theorem 7.2]{Synthesis} gives $D\approx X$, and $\emptyset''$ also supplies the reservoir indices. If this is correct the bound $\emptyset''$ is sharp up to the jump, and the residual questions are whether $D$ can have $D'\leT\emptyset''$ and what replaces $\emptyset''$ for a general approximable $X$. The exploratory half is the question raised in report~1: for a prescribed $\Delta^0_2$ $1$-generic $G$, which has no reservoir structure, is there an arithmetical exact partner inside its description class? Neither finite-extension method of round~1 applies when one side is fixed, because both vary the two sides independently.
+
+\problemheading{C7}{Sparse-disagreement minimal pairs below the halting degree}{\E{}}
+(K6) gives $1$-generic $A,B\leT\emptyset''$ forming a minimal pair with $|(A\mathbin\triangle B)\cap[0,n)|\le h(n)$ for any prescribed unbounded computable $h$. Report~6 asks whether $A,B\leT\emptyset'$ is possible. The second jump enters only through the $\Sigma^0_2$ question whether a partiality cylinder exists; the combinatorial core, that one affordable disagreement forces a computable common value by hypercube connectivity, is finite. The task is to replace the oracle decision by a full-approximation or priority argument that preserves the global variation budget. A negative answer, showing that sparseness forces complexity, would be more surprising and would need a new idea.
+
+\problemheading{C8}{Least Turing degrees of uniform coarse classes}{\E{}}
+(K1) shows that the uniform and nonuniform classes of $f$ have the same spectrum, so the \emph{existence} of a least degree does not depend on the choice. The \emph{characterization} (K2) does: block decoding hard-codes a finite correction, and no report obtains $f\equiv_{\mathrm{uc}}J(B)$ from a least degree. Is there $f$ whose spectrum has a least element but which is not uniformly coarsely equivalent to any block code, or to any function computable from every one of its descriptions by a single functional? This is a question about uniformity of majority decoding and is close to the known separations between uniform and nonuniform coarse reducibility \cite{HJKS}.
+
 \subsection{Diagnostic lemmas: what a counterexample must establish}
 \begin{proposition}[Sparse coding and coarse Turing spectra]\label{prop:sparse}
 For binary sequences, the Turing-degree spectrum of a nonuniform coarse-equivalence class is upward closed. The spectrum of the computable coarse class is all of $\D$.
@@ -539,7 +616,7 @@ For binary sequences, the Turing-degree spectrum of a nonuniform coarse-equivale
 \begin{proof}
 Let $X$ represent a given coarse class and let $B$ have degree at least $\degT(X)$. Define $Y$ by $Y(2^n)=B(n)$ and $Y(k)=X(k)$ elsewhere. The powers of two have density zero, so $X$ and $Y$ have exactly the same coarse descriptions: a union of two density-zero error sets still has density zero. Hence they are uniformly, and therefore nonuniformly, coarse equivalent. Also $B\leT Y$ by reading powers of two, while $Y\leT B$ because $X\leT B$. Thus $\degT(Y)=\degT(B)$, proving upward closure. Take $X$ to be constantly zero to obtain every degree in the computable coarse class. That class also contains a computable representative, so its least Turing degree is $\mathbf0$.
 \end{proof}
-This is a useful warning for C1: even the presence of arbitrarily complicated representatives says nothing against the existence of a least one. The same proof of upward closure works for natural-number-valued representatives, with a fixed encoding of the higher oracle.
+This was the warning that shaped the attack on C1, and it applies equally to C2: even the presence of arbitrarily complicated representatives says nothing against the existence of a least one. The full statement for coarse classes is the spectrum identity (K1). The same proof of upward closure works for natural-number-valued representatives, with a fixed encoding of the higher oracle.
 
 \begin{proposition}[A sufficient certificate for no least degree]\label{prop:minpair}
 Let $E$ be an equivalence relation on total functions. Suppose an $E$-class $C$ contains no computable member and has $f,g\in C$ such that
@@ -552,7 +629,7 @@ for every total function $h$. Then $\Spec(C)$ has no least element.
 \begin{proof}
 A representative $h\in C$ of a least degree would satisfy $h\leT f$ and $h\leT g$. It would be computable by the assumption, contradicting the first property of $C$.
 \end{proof}
-This gives a sufficient route for C1 or C2, not a necessary characterization. In particular, a proof that no such minimal pair exists would not prove that every class has a least degree.
+This is the certificate that round~1 produced for the coarse case in several ways. It remains a sufficient route for C2, not a necessary characterization. In particular, a proof that no such minimal pair exists would not prove that every class has a least degree; and the argument sketched under C2 does not use it.
 
 
 
@@ -1120,7 +1197,7 @@ A statement holds \emph{on a cone} if it holds for every $x\geT z$ for some $z$.
  f\leq_M g\ \Longleftrightarrow\
    (\exists z)(\forall x\geT z)\ f(x)\leT g(x).
 \]
-Martin's full conjecture is normally formulated in a determinacy setting, such as $\mathsf{ZF}+\mathsf{AD}+\mathsf{DC}$. Borel restrictions provide targets in ordinary classical mathematics. These are not interchangeable foundational formulations.\cite{MSS}
+Martin's full conjecture is normally formulated in a determinacy setting, such as $\mathsf{ZF}+\mathsf{AD}+\mathsf{DC}$. Borel restrictions provide targets in ordinary classical mathematics. These are not interchangeable foundational formulations.\cite{MSS} Section~\ref{sec:ordinals} places these entries in context: the cone theorem, the large-cardinal strength of the determinacy hypotheses, and the ladder of natural jump operators that the conjecture asserts to be exhaustive.
 
 \subsection{G3. Martin's conjecture, Part I \Lmark}
 \label{entry:G3}
@@ -1177,6 +1254,97 @@ The embedding theorem for partial orders of size at most $\aleph_1$ yields the p
 \assessment{Height three is a meaningful restriction but still carries uncountable global coherence requirements. A finite-poset embedding is not evidence of progress on that obstacle. A formal resolution may require both degree coding and a substantial cardinal/set-theoretic argument; it is not a recommended weeks-scale joint target.}
 
 
+
+\section{Turing degrees, large countable ordinals, and large cardinals}
+\label{sec:ordinals}
+This section is context rather than catalogue. It records where the Turing degrees meet the two hierarchies that lie on either side of them: the large countable ordinals, which measure how far the jump can be iterated and how much induction a degree-theoretic argument consumes, and the large cardinals, which enter through determinacy and govern the behaviour of definable sets and functions on the degrees. The connection with countable ordinals is direct and classical. The connection with large cardinals is indirect, and passes almost entirely through Martin's cone theorem. Entries G3--G5 sit exactly at the junction, and Section~\ref{sec:ordinals-targets} lists what the junction suggests for this programme. Nothing here is a new catalogue entry.
+
+\noindent\colorbox{pale}{\parbox{\dimexpr\textwidth-2\fboxsep\relax}{\small
+\textbf{Verification status.} The statements in this section are standard and are given with their usual attributions, but they were written from memory and only partly checked. Checked against sources on 18 September 2026: the Marcone--Montalb\'an equivalences of Section~\ref{sec:ordinals-wop}; the attribution of the superjump results to Aczel--Hinman and Harrington; Woodin's equivalence of Turing determinacy with $\mathsf{AD}$ in $L(\mathbb R)$; and Harrington's derivation of $0^\#$ from $\Sigma^1_1$ Turing determinacy. Everything else should be confirmed in the cited textbooks \cite{SacksHRT,Simpson,Kanamori} before it is relied on.}}
+
+\subsection{Iterating the jump along computable ordinals}
+\label{sec:ordinals-hyp}
+The finite jumps $\zero^{(n)}$ are continued into the transfinite by iterating along ordinal notations. Kleene's $\mathcal O$ is a $\Pi^1_1$-complete set of natural numbers, each $a\in\mathcal O$ denoting a computable ordinal $|a|_{\mathcal O}$; the supremum of these ordinals is the Church--Kleene ordinal $\omega_1^{\mathrm{CK}}$, the least ordinal with no computable copy. One defines sets $H_a$ for $a\in\mathcal O$ by
+\[
+ H_1=\emptyset,\qquad H_{2^a}=(H_a)',\qquad
+ H_{3\cdot5^e}=\{\pair{n}{m}:n\in H_{\varphi_e(m)}\}.
+\]
+The definition depends on the notation, but its degree does not.
+\begin{itemize}
+\item \emph{Spector's uniqueness theorem} \cite{Spector}: if $|a|_{\mathcal O}=|b|_{\mathcal O}$ then $H_a\eqT H_b$. Hence $\zero^{(\alpha)}$ is a well-defined degree for every $\alpha<\omega_1^{\mathrm{CK}}$, and the map $\alpha\mapsto\zero^{(\alpha)}$ is a strictly increasing embedding of $\omega_1^{\mathrm{CK}}$ into $\D$.
+\item \emph{Kleene's theorem} \cite{Kleene}: a set is $\Delta^1_1$ if and only if it is computable from some $\zero^{(\alpha)}$ with $\alpha<\omega_1^{\mathrm{CK}}$. These are the \emph{hyperarithmetic} sets, and $\omega_1^{\mathrm{CK}}$ is exactly the height of the natural jump hierarchy.
+\item Everything relativizes. $X\le_h Y$ means that $X$ is hyperarithmetic in $Y$; the equivalence classes are the \emph{hyperdegrees}, a coarsening of $\D$. The \emph{hyperjump} $X\mapsto\mathcal O^X$ is to $\le_h$ what the jump is to $\leT$, and $\mathcal O\eqT$ every $\Pi^1_1$-complete set.
+\end{itemize}
+The degree $\zero^{(\omega)}$, of the theory of true arithmetic, is the first point at which the hierarchy is no longer controlled by quantifier counting; the arithmetic degrees are those below some $\zero^{(n)}$.
+
+\subsection{The ordinal \texorpdfstring{$\omega_1^X$}{omega-1-X} as a degree invariant}
+\label{sec:ordinals-omega1}
+For a real $X$ let $\omega_1^X$ be the least ordinal with no $X$-computable copy. It depends only on the hyperdegree of $X$, and a fortiori only on its Turing degree, so $\adeg\mapsto\omega_1^{\adeg}$ is an ordinal-valued invariant on $\D$ \cite{SacksHRT}.
+\begin{itemize}
+\item \emph{Spector's criterion.} $\omega_1^X>\omega_1^{\mathrm{CK}}$ if and only if $\mathcal O\le_h X$. Thus the invariant jumps exactly when the hyperjump is reached.
+\item \emph{Gandy's basis theorem.} Every nonempty $\Sigma^1_1$ class of reals has a member $X$ with $\omega_1^X=\omega_1^{\mathrm{CK}}$ and $X<_h\mathcal O$. This is the higher analogue of the low basis theorem and is the standard tool for keeping constructions ``low'' in the hyperarithmetic sense.
+\item \emph{Sacks's measure theorem.} $\omega_1^X=\omega_1^{\mathrm{CK}}$ for almost every $X$; the same holds for comeager many $X$.
+\item \emph{Sacks's realization theorem.} Every countable admissible ordinal greater than $\omega$ is $\omega_1^X$ for some real $X$. The countable admissible ordinals are therefore exactly the values of this invariant, and the recursively inaccessible, recursively Mahlo and nonprojectible ordinals are particular values of it.
+\item \emph{Harrison's ordering.} There is a computable linear order of type $\omega_1^{\mathrm{CK}}(1+\eta)$ with no hyperarithmetic descending sequence. Computable pseudo-well-orders of this kind are why ``iterate the jump along a computable well-order'' cannot be replaced by ``along a computable linear order that looks well-founded''.
+\end{itemize}
+
+\subsection{Beyond \texorpdfstring{$\omega_1^{\mathrm{CK}}$}{the Church--Kleene ordinal}}
+\label{sec:ordinals-beyond}
+\emph{Higher-type functionals.} Kleene's recursion in the type-2 functional ${}^2E$ (existential quantification over $\N$) computes exactly the hyperarithmetic sets, and its closure ordinal is $\omega_1^{\mathrm{CK}}$. Stronger functionals have larger closure ordinals, and these are the ``recursively large'' ordinals: recursion in the hyperjump functional $E_1$ reaches the first recursively inaccessible ordinal, and recursion in the \emph{superjump} reaches the first recursively Mahlo ordinal \cite{AczelHinman,HarringtonMahlo,Hinman}. In this sense the recursive analogues of large cardinals measure the strength of jump-like operators on reals.
+
+\emph{Master codes.} In G\"odel's $L$, whenever a new real appears at a level $L_{\alpha+1}\setminus L_\alpha$ there is a canonical real coding $L_\alpha$, a \emph{master code}, and the master codes form a hierarchy of Turing degrees, well-ordered by $\leT$ and indexed by ordinals, that extends $\alpha\mapsto\zero^{(\alpha)}$ far past $\omega_1^{\mathrm{CK}}$ \cite{BoolosPutnam,Hodes}. The successor step is the Turing jump. The hierarchy is interrupted at the \emph{gap ordinals}, the $\alpha$ for which no new real is constructed at level $\alpha+1$. The ordinal $\beta_0$ of ramified analysis, the least $\beta$ such that $L_\beta$ is a model of full second-order comprehension, is where the first gap begins. These are the sharpest known ``natural'' degrees, and they are one reason to expect that natural degree-invariant operators are well-ordered (Section~\ref{sec:ordinals-martin}).
+
+\emph{Ordinals as structures.} Computable structure theory asks how hard it is to present an ordinal. For computable $\alpha$ the jump hierarchy controls this: Ash's theorem, as we recall it, says that any two computable copies of $\omega^\alpha$ are isomorphic by a $\Delta^0_{2\alpha+1}$ map and that this bound is optimal, so that the ordinal $\omega^\alpha$ ``knows'' the degree $\zero^{(2\alpha)}$; and ordinals are among the structures with $\alpha$-th jump degrees in the sense of Ash, Jockusch and Knight \cite{AshKnight}. The precise statements should be taken from that book.
+
+\subsection{Proof-theoretic ordinals and well-ordering principles}
+\label{sec:ordinals-wop}
+The ordinals $\varepsilon_0$, $\Gamma_0$ and the Bachmann--Howard ordinal all lie far below $\omega_1^{\mathrm{CK}}$, and nothing happens in $\D$ at $\zero^{(\Gamma_0)}$ that does not happen at neighbouring iterates. The connection with degrees is through reverse mathematics, where the set-existence axioms are closure conditions on Turing ideals and the proof-theoretic ordinal measures the induction needed \cite{Simpson}.
+\begin{center}\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+System & $\omega$-models are the Turing ideals closed under & Well-ordering principle & Ordinal\\\midrule
+$\mathsf{ACA}_0$ & the jump & $X\mapsto\omega^X$ & $\varepsilon_0$\\
+$\mathsf{ACA}_0^+$ & the $\omega$-jump $X\mapsto X^{(\omega)}$ & $X\mapsto\varepsilon_X$ & $\varphi_2(0)$\\
+$\Pi^0_{\omega^\alpha}\text{-}\mathsf{CA}_0$ & $\omega^\alpha$ iterations of the jump & $X\mapsto\varphi(\alpha,X)$ & \\
+$\mathsf{ATR}_0$ & jump iteration along any well-order in the ideal & $X\mapsto\varphi(X,0)$ & $\Gamma_0$\\
+$\Pi^1_1\text{-}\mathsf{CA}_0$ & the hyperjump & a Bachmann--Howard principle & $\psi_0(\Omega_\omega)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+A \emph{well-ordering principle} is the statement that an ordinal-theoretic operation preserves well-orderedness. The equivalences in the third column are over $\mathsf{RCA}_0$. The first is due to Girard and Hirst. The second and third are due to Marcone and Montalb\'an, whose proofs are purely computability-theoretic: they show that $\omega$ iterations of the Turing jump are \emph{necessary} to prove that $\varepsilon_X$ is well-ordered when $X$ is, and $\omega^\alpha$ iterations for $\varphi(\alpha,X)$ \cite{MarconeMontalban}. The fourth is Friedman's. The last is Freund's characterization of $\Pi^1_1$-comprehension \cite{Freund}. For the $\omega$-model column, closure under the jump alone characterizes the $\omega$-models of $\mathsf{ACA}_0$; for $\mathsf{ATR}_0$ and $\Pi^1_1\text{-}\mathsf{CA}_0$ the stated closure is necessary, and the exact class of $\omega$-models is subtler (every $\omega$-model of $\mathsf{ATR}_0$ contains all hyperarithmetic sets, but the hyperarithmetic sets do not form one).
+
+So the Veblen hierarchy of the Wikipedia page on large countable ordinals is, read computability-theoretically, a scale for counting jump iterations: each step up the Veblen functions costs an $\omega$-power more iterations of the Turing jump.
+
+\subsection{Determinacy, the cone measure, and large cardinals}
+\label{sec:ordinals-ad}
+A \emph{cone} is a set $\{\bdeg:\bdeg\ge\adeg\}$. A set $A$ of reals is \emph{degree invariant} if it is closed under $\eqT$.
+\begin{itemize}
+\item \emph{Martin's cone theorem} \cite{MartinCone}. If the game with payoff set $A$ is determined and $A$ is degree invariant, then $A$ contains a cone or is disjoint from one. The proof is three lines: if $\sigma$ is a winning strategy for the player trying to get into $A$, then for any $x\geT\sigma$ the opponent can play $x$, the result $\sigma*x$ is Turing equivalent to $x$ and lies in $A$, so $A$ contains the cone above $\deg(\sigma)$. \emph{Turing determinacy} is the statement that every degree-invariant set is determined.
+\item \emph{The Martin measure.} Under $\mathsf{AD}$ the sets of degrees containing a cone form a countably complete ultrafilter on $\D$. Pushing it forward along the ordinal invariant of Section~\ref{sec:ordinals-omega1}, $\adeg\mapsto\omega_1^{\adeg}$, gives a countably complete nonprincipal ultrafilter on $\omega_1$: this is the standard proof that $\omega_1$ is measurable under $\mathsf{AD}$, and it is the point where the two themes of this section meet.
+\item \emph{Determinacy from large cardinals} \cite{Kanamori,KoellnerWoodin}. Borel determinacy is a theorem of $\mathsf{ZFC}$ (Martin), but it needs $\omega_1$ iterations of the power set; Friedman proved this necessity, and as we recall it his argument already applies to degree-invariant Borel games, so that even Borel \emph{Turing} determinacy is unprovable in Zermelo set theory \cite{FriedmanHigher}. Analytic determinacy is equivalent to the existence of $x^\#$ for every real $x$ (Martin; Harrington \cite{HarringtonSharp}), and already $\Sigma^1_1$ \emph{Turing} determinacy yields $0^\#$. Projective determinacy follows from infinitely many Woodin cardinals (Martin--Steel), and $\mathsf{AD}$ holds in $L(\mathbb R)$ if there are $\omega$ Woodin cardinals with a measurable above (Woodin). In the other direction Woodin showed that, in $L(\mathbb R)$, Turing determinacy is equivalent to $\mathsf{AD}$.
+\item \emph{What this gives in $\mathsf{ZFC}$.} Granting the large cardinals, every projective, indeed every $L(\mathbb R)$-definable, degree-invariant property of reals holds on a cone or fails on a cone. This is a genuine structural theorem about $\D$ for definable sets, and its consistency strength is exactly that of the large cardinals involved. For Borel sets it is a theorem of $\mathsf{ZFC}$ outright, which is why the Borel restrictions of G3--G5 are the versions that can be stated in ordinary mathematics (Section~\ref{sec:foundations}).
+\end{itemize}
+
+\subsection{Martin's conjecture as the junction}
+\label{sec:ordinals-martin}
+Martin's conjecture (G3, G4) says that under $\mathsf{AD}$ the degree-invariant functions that are not constant on a cone are prewellordered by $\leq_M$, with the jump as successor. The known natural examples form a single ladder,
+\[
+ x\ \mapsto\ x',\ x'',\ \ldots,\ x^{(\alpha)},\ \ldots,\ \mathcal O^x,\ \ldots,\ x^\#,\ \ldots,\ M_n^\#(x),\ \ldots
+\]
+whose lower rungs are the ordinal iterations of Sections~\ref{sec:ordinals-hyp}--\ref{sec:ordinals-beyond} and whose upper rungs are the sharp and mouse operators of inner model theory, one for each level of the large-cardinal hierarchy. The conjecture asserts that there is nothing else: the hierarchy of countable ordinals and the hierarchy of large cardinals are, seen from $\D$, one well-ordered scale of jump operators. Steel's classification of jump operators and the Slaman--Steel theorems establish this for uniformly invariant functions \cite{SteelJump,MSS}; the uniformity conjecture G5 would transfer it to all invariant functions.
+
+\paragraph{Set-theoretic sensitivity without large cardinals.} Several global questions about $\D$ depend on the set-theoretic universe for reasons unrelated to determinacy. Sacks's embedding conjecture (G7) holds under $\mathsf{CH}$ and is open in $\mathsf{ZFC}$; Groszek and Slaman showed that statements about maximal chains and independent sets of degrees are independent of $\mathsf{ZFC}$ \cite{GroszekSlaman}; and the Slaman--Woodin analysis of automorphisms (G1, G2) uses forcing and absoluteness, collapsing the continuum so that countable-ideal arguments apply, but no large cardinals. No connection is known to us between the degrees and large cardinals beyond the determinacy-level ones above; in particular none with the cardinals at the Kunen inconsistency studied in the sibling repository \path{C:\Cardinals}.
+
+\subsection{What this suggests for the programme}
+\label{sec:ordinals-targets}
+These are directions, not catalogue entries; none has been checked against the literature, and the status audit of Section~\ref{sec:plan} applies to each before any work. \emph{Update.} Report~10 \cite{ReportTen} settles (O1) and (O4), both negatively, and proves the observation (O2); the items are kept below as written, each followed by what was shown. Its proofs are conventional, unrefereed and not formalized, and the proof for (O1) quotes standard facts about Cohen forcing over $L_{\omega_1^{\mathrm{CK}}}$ from memory.
+\begin{enumerate}[label=\textup{(O\arabic*)},leftmargin=3em]
+\item \emph{Hyperarithmetic analogues of the coarse track.} Replace $\leT$ by $\le_h$ in Section~\ref{sec:coarse}: does every coarse class have a representative of least \emph{hyperdegree}? The round-1 counterexamples evaporate at this level, which is what makes the question interesting. For the dyadic code, every description $B$ of $\R(A)$ satisfies $A\leT B'$ by (K4), hence $A\le_h B$, while $\R(A)\eqT A$ is itself a representative; so the class of $\R(A)$ has least hyperdegree $\deg_h(A)$, although it has no least Turing degree when $A\nleq_{\mathrm T}\emptyset'$. The $\emptyset'$-computable $1$-generic set and the guarded c.e. set of (K5) are hyperarithmetic, so their classes trivially have least hyperdegree $\zero_h$. A counterexample must therefore be a non-hyperarithmetic $X$ with no hyperarithmetic coarse description whose hyperarithmetic core $\{A:A\le_h D\text{ for every coarse description }D\text{ of }X\}$ is just the hyperarithmetic sets; the candidates are $\Sigma^1_1$-generic and $\Pi^1_1$-random reals. The category method of round~1 rests on the local decoder of \cite[Lemma 4.3]{Synthesis}, which uses the finite-use property of Turing functionals; $\le_h$ has no such property, so this is a real test of the method and not a relabelling. Gandy's basis theorem and Sacks's measure theorem are the natural replacements for the genericity and approximation arguments, and the proposal C4 has an obvious analogue for countable ideals of hyperdegrees. \emph{Settled negatively} \cite[Theorem 1.1]{ReportTen}: for every $Z$ and every disagreement budget there are $A\approx B$, each Cohen generic over $L_{\omega_1^Z}[Z]$, with $\Delta^1_1(Z\oplus A)\cap\Delta^1_1(Z\oplus B)=\Delta^1_1(Z)$; so there are coarse classes with no least hyperdegree, and every hyperdegree is an unattained infimum of a hyperdegree spectrum. The category method was not needed: the one-bit bridge lemma survives with ``the condition decides the sentence'' in place of ``the computation converges''. Whether the category method itself extends to $\le_h$ is question (Q1) of that report.
+\item \emph{Coarse information can force the hyperjump.} This is an observation rather than a question, recorded because it calibrates (O1). Since $\omega_1^X$ depends only on the degree, each coarse class has a least value $\min\{\omega_1^g:g\equiv_{\mathrm{nc}}f\}$. For $\R(\mathcal O)$ every representative computes a description $B$ with $\mathcal O\leT B'$ by (K4), so $\mathcal O\le_h g$ and $\omega_1^g>\omega_1^{\mathrm{CK}}$ by Spector's criterion: no representative is ``hyperarithmetically low'', although by (K4) a representative need not compute $\mathcal O$: it is enough that its jump does. Conversely the block code $J(X)$ of a real with $\omega_1^X=\alpha$ shows, with Sacks's realization theorem, that every countable admissible $\alpha>\omega$ is the least value of $\omega_1^g$ on some coarse class. So the ordinal invariant is nontrivial on coarse classes but is always attained; what it does not decide is whether a class can lack a least \emph{hyperdegree}, which is (O1). \emph{Proved} in \cite[Theorem 1.4]{ReportTen}, together with its consequence that cone-avoiding compactness and the $\gamma(X)=1$ theorem of \cite{HJKS} fail for $\le_h$.
+\item \emph{Reverse-mathematical calibration of round~1.} The cone-avoiding compactness theorem, the exact-pair theorems and the perfect-family theorem of \cite{Synthesis} use Baire category in a non-compact Polish space together with arithmetical decisions. Locating them among $\mathsf{RCA}_0$, $\mathsf{WKL}_0$, $\mathsf{ACA}_0$ and $\mathsf{ATR}_0$ would measure, in the sense of Section~\ref{sec:ordinals-wop}, how many jumps the constructions really use; the finite-extension constructions suggest $\mathsf{ACA}_0$ with $\Sigma^0_2$ induction as a first guess. The source paper \cite{HJS} already contains reverse mathematics of the density metric and should be read first.
+\item \emph{A cone theorem for coarse degrees.} Under $\mathsf{AD}$, is there an analogue of the Martin measure on the uniform or nonuniform coarse degrees, and do Borel sets of reals that are invariant under coarse equivalence contain or avoid a ``coarse cone''? The block-code embedding of $\D$ (K2) transfers cones one way; the question is whether the absence of least representatives obstructs the usual strategy-stealing argument, in which the opponent must be able to play a representative of the \emph{same} class. This is speculative and is recorded only because round~1 makes the obstruction precise. \emph{Settled negatively} \cite[Theorem 1.5]{ReportTen}, in $\mathsf{ZF}$: the $\Pi^1_1$ set of functions whose coarse class has a least Turing degree is invariant under both coarse equivalences, and it and its complement meet every coarse cone. No determinacy hypothesis can restore a cone theorem; under $\mathsf{AD}$ the push-forward of the Martin measure along the block code is a countably complete ultrafilter on the nonuniform coarse degrees that properly extends the cone filter.
+\item \emph{Formalization.} None of this is available in Lean: neither Mathlib nor the Lean side of \path{C:\ProveIt} has the general jump, ordinal notations, the hyperarithmetic hierarchy or $\omega_1^X$. A relativized jump with the limit lemma is the common prerequisite of this section, of the dyadic-code slice of the coarse track (Section~\ref{sec:lean}) and of most local entries, and it is the single most reusable piece of infrastructure the programme could build. Determinacy-based statements remain subject to the foundational caution of Section~\ref{sec:foundations}.
+\end{enumerate}
 
 \section{Three narrower programmes with better-controlled scope}
 \label{sec:projects}
@@ -1237,7 +1405,7 @@ A promising implementation discipline is to make the transition system executabl
 
 \subsection{Known mathematics that would still be valuable to formalize}
 
-A relative oracle-machine enumeration, the general jump, a limit-lemma development, and a carefully engineered finite-injury theorem would improve the prospects of many entries. The Friedberg--Muchnik construction is another substantial infrastructure milestone. None is an open mathematical problem in the sense requested here.
+A relative oracle-machine enumeration, the general jump, a limit-lemma development, and a carefully engineered finite-injury theorem would improve the prospects of many entries. The Friedberg--Muchnik construction is another substantial infrastructure milestone. None is an open mathematical problem in the sense requested here. After round~1 the same holds for the negative answer to the former C1: the dyadic-code counterexample and the block-code characterization of least representatives \cite{Synthesis} are known-status mathematics with complete conventional proofs and a small dependency path, and they are a realistic first Lean pilot for the density interface of Section~\ref{sec:lean}. A first step exists: the Lean library \path{CoarseDegrees} at the repository root formalizes the statement of the former C1 and refutes it, with Theorem~4.2 of \cite{HJKS} as its only admitted input on one route; the density layer, the coarse reducibilities, the two-witness obstruction, the existence of $1$-generic sets and their failure to be coarsely computable are proved there. The witness constructions of \cite{Synthesis} are not yet formalized.
 
 This distinction allows a productive fallback without misreporting success. A project may end with a reusable Lean library and a formalization paper rather than a solution of a new mathematical conjecture. That is a different deliverable, and its value should be stated on its own terms.
 
@@ -1418,17 +1586,20 @@ External computation can suggest constructions, enumerate counterexamples to ten
 
 An abstract theorem with a typeclass field asserting, for example, that the necessary random degree exists is only conditional until the concrete instance is proved. Similarly, formalizing the implication ``HJS theorem plus new lemma implies M1'' is useful intermediate work but does not satisfy the full requested deliverable by itself.
 
-\subsection{A shared density interface for C1--C3}
+\subsection{A shared density interface for the coarse track}
 A useful arithmetic formulation of density zero is
 \[
  \forall k\geq1\ \exists N\ \forall n\geq N\quad
               k\,|S\cap[0,n)|<n.
 \]
-One may choose $N\geq1$ to avoid the zero denominator. Prove finite-union closure and the powers-of-two sparsity estimate at this layer, then connect it to the analytic definition. Effective-dense descriptions need a separate total output type with an explicit omission symbol; nontermination must not be substituted for omission. This interface supports the diagnostic lemmas without pretending that their target constructions have already been formalized.\cite{ReportC}
+One may choose $N\geq1$ to avoid the zero denominator. Prove finite-union closure and the powers-of-two sparsity estimate at this layer, then connect it to the analytic definition. Effective-dense descriptions need a separate total output type with an explicit omission symbol; nontermination must not be substituted for omission. This interface supports the diagnostic lemmas without pretending that their target constructions have already been formalized.\cite{ReportC} Since round~1 the coarse track also has a complete conventional development to formalize against: the lemma list of \cite{Synthesis} serves as the theorem-obligation ledger. Its cheapest end-to-end slice is the dyadic-code counterexample (K4), which needs finite-use oracle computations, the relativized limit lemma, the column counts and one finite-extension construction with $\emptyset'$-decided searches, and no randomness, genericity or category.
 
 
 \section{Recent status corrections and tempting nonproblems}
 \label{sec:stale}
+
+\paragraph{Least Turing degrees of coarse classes (the former C1).}
+The first edition listed this as a bounded unresolved target on the strength of its explicit appearance as Question~7 of \cite{Gerdes} in 2025. All nine round-1 reports found that the coarse instance had been answered, negatively, by results published in 2016: every coarse description of $X$ lies in the coarse class of $X$, so a least representative would be computable from all of them, hence computable whenever $\Core(X)$ is trivial, which \cite[Theorems 4.2 and 4.3]{HJKS} prove for $1$-generic $X$ and for $X$ with coarse computability bound $1$; and such $X$ need not be coarsely computable. The deduction takes three lines, but it connects a 2025 question about \emph{representatives} to a 2016 theorem about \emph{common information}, and neither a keyword search nor the source's own open-question list reveals it. The stronger round-1 statements are recorded in \cite{Synthesis}; their novelty is unverified. The effective-dense instance C2 is not affected by this correction.
 
 \paragraph{Attractive c.e. degrees.}
 Zhao's preprint of 16 September 2026 reports a theorem of Hirschfeldt--Royer resolving the c.e. attractive-versus-almost-everywhere-dominating characterization positively. The original Hirschfeldt--Royer manuscript was not independently inspected in Report A's audit; its result is recorded as \emph{reported settled} by that primary source. The residual dispersive-versus-AEWG question is explicitly still open there.\cite{Zhao} Thus the attractive c.e. characterization from HJS Question 9.2 is \emph{not} offered as a fresh short-project target.
@@ -1454,9 +1625,11 @@ The recurring distinctions are: weak versus strong reducibility; literal versus 
 The following sequence integrates the stop/go criteria of all three reports. It is an experimental protocol, not a schedule or a promise that a novel result will appear within a fixed period.
 
 \subsection{Fix the statement before building infrastructure}
-For the tower track, first agree on the exact definitions, array representation, optional $G_0=\N$ convention, and reduction direction. Ask whether the proposed arguments address the intended source questions and whether equivalent constructions already occur in the literature. For an unresolved target, choose \emph{one} of M1, M3, C1, or a precisely stated restriction, and write its complete quantifiers before selecting a proof assistant interface. The first formal pilot should test the semantic bottleneck, not merely establish notation.
+For the tower track, first agree on the exact definitions, array representation, optional $G_0=\N$ convention, and reduction direction. Ask whether the proposed arguments address the intended source questions and whether equivalent constructions already occur in the literature. For an unresolved target, choose \emph{one} of M1, M3, C2, or a precisely stated restriction, and write its complete quantifiers before selecting a proof assistant interface.
 
-For example, the tower pilot is bounded projection and maximum computability with the right uniformity; M1's pilot is a genuinely usable distance estimate; C1's pilot separates coarse descriptions from Turing noncomputability. An early failure to prove these interfaces is evidence to revise the project, not permission to turn the missing result into an axiom.
+\emph{Status audit by derived consequence.} Before any construction work, spend a fixed, short effort trying to \emph{derive} the answer from theorems about neighbouring invariants, not merely searching for the question's wording. For a question of the form ``does every class have a least, greatest or canonical member'', list the known results on what \emph{all} members have in common and on what \emph{some} member can avoid, and test them against the question. This is the step that would have retired C1 before round~1: nine independent attempts each rediscovered the same three-line deduction only after choosing the target. The audit applies with particular force to entries whose evidence is a question listing several years old (M1, M3, L2--L4), and to C2, whose neighbouring results are in \cite{AHJ}. The first formal pilot should test the semantic bottleneck, not merely establish notation.
+
+For example, the tower pilot is bounded projection and maximum computability with the right uniformity; M1's pilot is a genuinely usable distance estimate; C2's pilot is an exact treatment of omissions as outputs, including the equivalence $G_T\equiv_{\mathrm{ued}}G$ of Section~\ref{sec:coarse} and the failure of the density-zero modification lemma. An early failure to prove these interfaces is evidence to revise the project, not permission to turn the missing result into an axiom.
 
 \subsection{Interleave proof search, counterexample search, and formalization}
 A proposed lemma should be attacked independently before it becomes a large dependency. Finite examples can falsify combinatorial claims, and model-assisted searches can suggest maps or coding invariants. They do not prove stabilization, maximality, randomness, or the absence of an oracle computation. For a tower separation one would need a single source object computing no target object; showing that one natural map fails is much weaker. For a coarse-class counterexample, a noncomputable representative alone says almost nothing, as Proposition~\ref{prop:sparse} shows.
@@ -1469,7 +1642,7 @@ There are three legitimate but different outcomes: a new mathematical result wit
 For a genuine paper-and-Lean solution, require a clean pinned build, the same semantic statement in paper and code, all substantive dependencies discharged, and a documented axiom audit. A known theorem used without its formal proof is a clear boundary on the formal result, not a hidden convenience. For a bounded classification, a list of verified cases also needs a completeness argument showing that every eligible finite object was considered.
 
 \subsection{Combined recommendation}
-The first choice for an immediate verification project is the tower-padding package, because it has explicit maps, bounded computations, and short maximality arguments already available. The first choices for fresh unresolved work are M1, M3, and C1, conditional on a small dependency path. The best scope-controlled alternatives are R1--R3 after a novelty check. Global structural conjectures remain mathematically valuable targets, but the report identifies no comparably short complete formal route for them. These priorities concern present proof shapes and infrastructure, not limits on possible discovery.
+The first choice for an immediate verification project is the tower-padding package, because it has explicit maps, bounded computations, and short maximality arguments already available. The first choices for fresh unresolved work are M1 and M3, conditional on the status audit and on a small dependency path, and C2 along the line of attack in Section~\ref{sec:coarse}. The quickest available gains are the two validation candidates from round~1, C4 and the $\emptyset''$ bound in C6: each has a sketch of under a page built from proved tools, and each needs a careful write-up and a novelty check rather than a new idea. Round~1 also showed that independent parallel attempts on one target converge on a small number of methods; for the next round it is more informative to spread attempts over C2, C4--C7, M1 and M3 than to repeat that experiment on a single entry. The best scope-controlled alternatives are R1--R3 after a novelty check. Global structural conjectures remain mathematically valuable targets, but the report identifies no comparably short complete formal route for them. These priorities concern present proof shapes and infrastructure, not limits on possible discovery.
 
 
 \appendix
@@ -1530,7 +1703,7 @@ Report C & P01 & T1 \\
 Report C & P02 & T2 \\
 Report C & P03 & T3 \\
 Report C & P04 & T4 \\
-Report C & P05 & C1 \\
+Report C & P05 & C1 (retired in the second edition: settled negatively) \\
 Report C & P06 & C2 \\
 Report C & P07 & C3 \\
 Report C & P08 & Q3 \\
@@ -1546,6 +1719,7 @@ Report C & P17 & G4 \\
 Report C & P18 & G5 \\
 Report C & P19 & G6 \\
 Report C & P20 & G7 \\
+Round-1 synthesis & open items, Section 10.4 & C4, C5, C6, C7, C8 \\
 \end{longtable}
 \normalsize
 \section{Evidence and software ledger}
@@ -1592,6 +1766,138 @@ Neither script checks infinite pseudointersections, actual oracle reducibility, 
 
 \bibitem{ReportC}
 \emph{Open Problems About Turing Degrees: Research Opportunities, Short-Project Candidates, and the Cost of Formalization in Lean}. Source-based research survey, 17 September 2026. Supplied report C, \path{turing_degree_research_agenda/turing_degree_research_agenda.tex}, in \texttt{Turing.zip}.
+
+\bibitem{Synthesis}
+\emph{Coarse Classes Without Least Turing Degrees: Deduplicated results of the nine research reports on target C1}. Round-1 synthesis prepared for Vladimir Reshetnikov, 18 September 2026. \path{docs/research-synthesis/Turing_Degrees_Synthesis.tex}; the nine reports are in \path{docs/research-reports/01}--\path{09}. Conventional proofs; not refereed, not formalized, novelty unverified.
+
+\bibitem{ReportTen}
+\emph{Coarse Classes, Hyperdegrees, and the Cone Filter}. Research report 10, 18 September 2026. \path{docs/research-reports/10/coarse_hyperdegrees.tex}. Conventional proofs; not refereed, not formalized.
+
+\bibitem{HJKS}
+D.~R. Hirschfeldt, C.~G. Jockusch, Jr., R.~Kuyper, and P.~E. Schupp.
+\emph{Coarse reducibility and algorithmic randomness}.
+Journal of Symbolic Logic \textbf{81} (2016), 1028--1046; arXiv:1505.01707.
+Theorem 3.7 (cone-avoiding compactness), Theorems 4.2 and 4.3.
+\url{https://arxiv.org/abs/1505.01707}.
+
+\bibitem{JS}
+C.~G. Jockusch, Jr., and P.~E. Schupp.
+\emph{Generic computability, Turing degrees, and asymptotic density}.
+Journal of the London Mathematical Society \textbf{85}(2) (2012), 472--490; arXiv:1010.5212. Theorem 2.19.
+
+\bibitem{AHJ}
+E.~P. Astor, D.~R. Hirschfeldt, and C.~G. Jockusch, Jr.
+\emph{Dense computability, upper cones, and minimal pairs}.
+Computability \textbf{8}(2) (2019), 155--177; arXiv:1811.07172.
+Not inspected for this edition; named as the first source for the C2 status audit.
+
+\bibitem{CooperMinimal}
+S.~B. Cooper.
+\emph{Minimal degrees and the jump operator}.
+Journal of Symbolic Logic \textbf{38} (1973), 249--271.
+Cited from memory for jump inversion by minimal degrees; to be verified before use in C5.
+
+\bibitem{Spector}
+C.~Spector.
+\emph{Recursive well-orderings}.
+Journal of Symbolic Logic \textbf{20} (1955), 151--163.
+Uniqueness of the degrees $H_a$; the criterion for $\omega_1^X>\omega_1^{\mathrm{CK}}$. Cited from memory.
+
+\bibitem{Kleene}
+S.~C. Kleene.
+\emph{Hierarchies of number-theoretic predicates}.
+Bulletin of the American Mathematical Society \textbf{61} (1955), 193--213.
+Hyperarithmetic equals $\Delta^1_1$. Cited from memory.
+
+\bibitem{SacksHRT}
+G.~E. Sacks.
+\emph{Higher Recursion Theory}.
+Perspectives in Mathematical Logic, Springer, 1990.
+Standard source for Sections~\ref{sec:ordinals-hyp}--\ref{sec:ordinals-beyond}: hyperdegrees, Gandy's basis theorem, the measure theorem, realization of countable admissible ordinals, Harrison's ordering.
+
+\bibitem{AczelHinman}
+P.~Aczel and P.~G. Hinman.
+\emph{Recursion in the superjump}.
+In: Generalized Recursion Theory (J.~E. Fenstad and P.~G. Hinman, eds.), North-Holland, 1974, 3--41.
+
+\bibitem{HarringtonMahlo}
+L.~Harrington.
+\emph{The superjump and the first recursively Mahlo ordinal}.
+In: Generalized Recursion Theory (J.~E. Fenstad and P.~G. Hinman, eds.), North-Holland, 1974, 43--52.
+
+\bibitem{Hinman}
+P.~G. Hinman.
+\emph{Recursion-Theoretic Hierarchies}.
+Perspectives in Mathematical Logic, Springer, 1978.
+
+\bibitem{BoolosPutnam}
+G.~Boolos and H.~Putnam.
+\emph{Degrees of unsolvability of constructible sets of integers}.
+Journal of Symbolic Logic \textbf{33} (1968), 497--513.
+
+\bibitem{Hodes}
+H.~T. Hodes.
+\emph{Jumping through the transfinite: the master code hierarchy of Turing degrees}.
+Journal of Symbolic Logic \textbf{45} (1980), 204--220.
+
+\bibitem{AshKnight}
+C.~J. Ash and J.~F. Knight.
+\emph{Computable Structures and the Hyperarithmetical Hierarchy}.
+Studies in Logic and the Foundations of Mathematics 144, Elsevier, 2000.
+
+\bibitem{Simpson}
+S.~G. Simpson.
+\emph{Subsystems of Second Order Arithmetic}, second edition.
+Perspectives in Logic, Cambridge University Press, 2009.
+
+\bibitem{MarconeMontalban}
+A.~Marcone and A.~Montalb\'an.
+\emph{The Veblen functions for computability theorists}.
+Journal of Symbolic Logic \textbf{76} (2011), 575--602; arXiv:0910.5442.
+Abstract checked 18 September 2026.
+\url{https://arxiv.org/abs/0910.5442}.
+
+\bibitem{Freund}
+A.~Freund.
+\emph{$\Pi^1_1$-comprehension as a well-ordering principle}.
+Advances in Mathematics \textbf{355} (2019), 106767.
+
+\bibitem{MartinCone}
+D.~A. Martin.
+\emph{The axiom of determinateness and reduction principles in the analytical hierarchy}.
+Bulletin of the American Mathematical Society \textbf{74} (1968), 687--689.
+
+\bibitem{HarringtonSharp}
+L.~Harrington.
+\emph{Analytic determinacy and $0^\#$}.
+Journal of Symbolic Logic \textbf{43} (1978), 685--693.
+
+\bibitem{FriedmanHigher}
+H.~M. Friedman.
+\emph{Higher set theory and mathematical practice}.
+Annals of Mathematical Logic \textbf{2} (1971), 325--357.
+
+\bibitem{Kanamori}
+A.~Kanamori.
+\emph{The Higher Infinite}, second edition.
+Springer Monographs in Mathematics, 2003.
+Chapter 6 for determinacy, the Martin measure, and the results of Martin, Harrington, Martin--Steel and Woodin.
+
+\bibitem{KoellnerWoodin}
+P.~Koellner and W.~H. Woodin.
+\emph{Large cardinals from determinacy}.
+In: Handbook of Set Theory (M.~Foreman and A.~Kanamori, eds.), Springer, 2010, 1951--2119.
+Includes Woodin's equivalence of Turing determinacy and $\mathsf{AD}$ in $L(\mathbb R)$.
+
+\bibitem{SteelJump}
+J.~R. Steel.
+\emph{A classification of jump operators}.
+Journal of Symbolic Logic \textbf{47} (1982), 347--358.
+
+\bibitem{GroszekSlaman}
+M.~Groszek and T.~A. Slaman.
+\emph{Independence results on the global structure of the Turing degrees}.
+Transactions of the American Mathematical Society \textbf{277} (1983), 579--588.
 
 \bibitem{McDonald}
 L. McDonald. \emph{Maximal Eventually Different Families of Computable
