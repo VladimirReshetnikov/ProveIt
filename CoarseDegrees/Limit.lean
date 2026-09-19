@@ -169,4 +169,96 @@ theorem sigma11_of_limit {B A L : Set ℕ} (hL : L ≤ᵀₛ B)
     · rw [nth_ofFn (by omega : (0:ℕ) < t + 1)] at h
       omega
 
+
+/-! ## The complement is `Σ¹₁` in the approximation -/
+
+/-- The matrix for the complement: `f` is a Skolem function picking, for each `s`, some
+`t ≥ s` at which the approximation says `k ∉ A`. -/
+def limT' (L : Set ℕ) (k : ℕ) (σ : List ℕ) : Prop :=
+  σ.length = 0 ∨
+    (σ.length - 1 ≤ nth σ (σ.length - 1) ∧ Nat.pair k (nth σ (σ.length - 1)) ∉ L)
+
+theorem codeSet_limT'_red {L : Set ℕ} : codeSet (limT' L) ≤ᵀₛ L := by
+  classical
+  refine setTuringReducible_of_one_query
+    (fun m => Nat.pair m.unpair.1 (nth (seqOf m) ((seqOf m).length - 1)))
+    ((Primrec₂.natPair.comp (Primrec.fst.comp Primrec.unpair)
+      (primrec_nth.comp primrec_seqOf
+        (Primrec.nat_sub.comp (Primrec.list_length.comp primrec_seqOf)
+          (Primrec.const 1)))).to_comp)
+    (fun m v => if (seqOf m).length = 0 then 1
+      else if (seqOf m).length - 1 ≤ nth (seqOf m) ((seqOf m).length - 1) then
+        (if v = 1 then 0 else 1)
+      else 0)
+    (by
+      have hlen : Primrec (fun p : ℕ × ℕ => (seqOf p.1).length) :=
+        Primrec.list_length.comp (primrec_seqOf.comp Primrec.fst)
+      have hsub : Primrec (fun p : ℕ × ℕ => (seqOf p.1).length - 1) :=
+        Primrec.nat_sub.comp hlen (Primrec.const 1)
+      have hnth : Primrec (fun p : ℕ × ℕ => nth (seqOf p.1) ((seqOf p.1).length - 1)) :=
+        primrec_nth.comp (primrec_seqOf.comp Primrec.fst) hsub
+      exact (Primrec.ite (Primrec.eq.comp hlen (Primrec.const 0)) (Primrec.const 1)
+        (Primrec.ite (Primrec.nat_le.comp hsub hnth)
+          (Primrec.ite (Primrec.eq.comp Primrec.snd (Primrec.const 1)) (Primrec.const 0)
+            (Primrec.const 1))
+          (Primrec.const 0))).to_comp)
+    ?_
+  intro m
+  have hmem : m ∈ codeSet (limT' L) ↔ limT' L m.unpair.1 (seqOf m) := by
+    constructor
+    · rintro ⟨n, σ, rfl, hT⟩
+      rwa [seqOf_pair, Nat.unpair_pair]
+    · intro hT
+      exact ⟨m.unpair.1, seqOf m, by simp [seqOf, Denumerable.encode_ofNat, Nat.pair_unpair], hT⟩
+  by_cases h0 : (seqOf m).length = 0
+  · have hin : m ∈ codeSet (limT' L) := hmem.mpr (Or.inl h0)
+    simp [characteristicValue, hin, h0]
+  · by_cases hle : (seqOf m).length - 1 ≤ nth (seqOf m) ((seqOf m).length - 1)
+    · by_cases hL : Nat.pair m.unpair.1 (nth (seqOf m) ((seqOf m).length - 1)) ∈ L
+      · have hout : m ∉ codeSet (limT' L) := by
+          rw [hmem]
+          unfold limT'
+          tauto
+        simp [characteristicValue, hout, h0, hle, hL]
+      · have hin : m ∈ codeSet (limT' L) := hmem.mpr (Or.inr ⟨hle, hL⟩)
+        simp [characteristicValue, hin, h0, hle, hL]
+    · have hout : m ∉ codeSet (limT' L) := by
+        rw [hmem]
+        unfold limT'
+        tauto
+      simp [characteristicValue, hout, h0, hle]
+
+theorem sigma11_compl_of_limit {B A L : Set ℕ} (hL : L ≤ᵀₛ B)
+    (hlim : ∀ k, ∃ s, ∀ t, s ≤ t → (Nat.pair k t ∈ L ↔ k ∈ A)) : Sigma11In B Aᶜ := by
+  refine ⟨limT' L, codeSet_limT'_red.trans hL, fun k => ?_⟩
+  constructor
+  · intro hk
+    obtain ⟨s₀, hs₀⟩ := hlim k
+    refine ⟨fun s => max s s₀, fun m => ?_⟩
+    rcases Nat.eq_zero_or_pos m with rfl | hm
+    · exact Or.inl (by simp)
+    · refine Or.inr ?_
+      have hnth : nth (List.ofFn fun i : Fin m => max (i : ℕ) s₀) (m - 1) = max (m - 1) s₀ := by
+        unfold nth
+        rw [List.getElem?_eq_getElem (by simp; omega)]
+        simp
+      simp only [List.length_ofFn]
+      rw [hnth]
+      refine ⟨le_max_left _ _, fun hmem => ?_⟩
+      exact hk ((hs₀ _ (le_max_right _ _)).mp hmem)
+  · rintro ⟨f, hf⟩ hk
+    obtain ⟨s, hs⟩ := hlim k
+    have h1 := hf (s + 1)
+    unfold limT' at h1
+    simp only [List.length_ofFn, Nat.add_sub_cancel] at h1
+    rcases h1 with h | ⟨hle, hnot⟩
+    · omega
+    · rw [nth_ofFn (by omega : s < s + 1)] at hle hnot
+      exact hnot ((hs (f s) hle).mpr hk)
+
+/-- **A limit of a `B`-computable approximation is hyperarithmetic in `B`.** -/
+theorem LimitComputableIn.hypIn {B A : Set ℕ} (h : LimitComputableIn B A) : HypIn B A := by
+  obtain ⟨L, hL, hlim⟩ := h
+  exact ⟨sigma11_of_limit hL hlim, sigma11_compl_of_limit hL hlim⟩
+
 end CoarseDegrees
