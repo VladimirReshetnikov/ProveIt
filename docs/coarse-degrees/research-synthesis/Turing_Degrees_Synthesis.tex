@@ -1,0 +1,995 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=13pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Navy}{RGB}{30,57,82}
+\definecolor{Ink}{RGB}{32,38,44}
+\definecolor{Steel}{RGB}{62,96,130}
+\definecolor{Muted}{RGB}{96,104,112}
+\definecolor{Rule}{RGB}{190,202,214}
+\definecolor{Pale}{RGB}{239,243,247}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\PassOptionsToPackage{obeyspaces}{url}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Steel,citecolor=Steel,urlcolor=Steel,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{pdftitle={Coarse classes without least Turing degrees: synthesis of the research reports},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Deduplicated results of nine research reports on target C1 (least Turing degrees of coarse equivalence classes)},pdfkeywords={Turing degrees, coarse reducibility, asymptotic density, minimal pairs, 1-generic sets, representative spectra}}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Navy}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Navy}}{\thesubsection}{.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Navy}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.9em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}COARSE CLASSES WITHOUT LEAST TURING DEGREES}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}SYNTHESIS\quad 18 SEP 2026}
+\fancyfoot[L]{\small\color{Muted}Synthesis of the research reports 01--09}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}Synthesis of the research reports 01--09}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\tcbset{colback=Pale,colframe=Rule,colbacktitle=Rule,coltitle=Navy,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{example}[definition]{Example}
+\newtheorem{question}[definition]{Question}
+\numberwithin{equation}{section}
+% ---- notation -------------------------------------------------------------
+\newcommand{\N}{\mathbb N}
+\newcommand{\Cantor}{2^{\N}}
+\newcommand{\Baire}{\N^{\N}}
+\newcommand{\strings}{2^{<\N}}
+\newcommand{\leT}{\le_{\mathrm T}}
+\newcommand{\geT}{\ge_{\mathrm T}}
+\newcommand{\eqT}{\equiv_{\mathrm T}}
+\newcommand{\nleT}{\nleq_{\mathrm T}}
+\newcommand{\ltT}{<_{\mathrm T}}
+\newcommand{\lenc}{\le_{\mathrm{nc}}}
+\newcommand{\leuc}{\le_{\mathrm{uc}}}
+\newcommand{\eqnc}{\equiv_{\mathrm{nc}}}
+\newcommand{\equc}{\equiv_{\mathrm{uc}}}
+\newcommand{\nc}{\mathrm{nc}}
+\newcommand{\uc}{\mathrm{uc}}
+\newcommand{\ned}{\mathrm{ned}}
+\newcommand{\ued}{\mathrm{ued}}
+\newcommand{\CD}{\operatorname{CD}}
+\newcommand{\ED}{\operatorname{ED}}
+\newcommand{\DX}[1]{\mathcal D_{#1}}
+\newcommand{\Low}{\mathcal L}
+\newcommand{\Core}{\operatorname{Core}}
+\newcommand{\Comp}{\mathrm{Comp}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\Up}{\operatorname{Up}}
+\newcommand{\degT}{\deg_{\mathrm T}}
+\newcommand{\J}{J}
+\newcommand{\Rc}{\mathcal R}
+\newcommand{\sd}{\mathbin{\triangle}}
+\newcommand{\rest}{\mathbin{\upharpoonright}}
+\newcommand{\cat}{\mathbin{{}^\frown}}
+\newcommand{\patch}{\mathbin{\triangleright}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Ham}{\operatorname{Ham}}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\zero}{\mathbf 0}
+\newcommand{\bud}{\mathfrak B}
+\newcommand{\dn}{{\downarrow}}
+\newcommand{\up}{{\uparrow}}
+\newcommand{\src}[1]{\leavevmode{\sffamily\footnotesize\color{Steel}[#1]}}
+\newcommand{\rep}[1]{\leavevmode{\sffamily\small\color{Steel}R#1}}
+\newenvironment{proofA}[1]{\begin{proof}[#1]}{\end{proof}}
+\begin{document}
+\thispagestyle{plain}
+\begin{center}
+{\sffamily\small\bfseries\color{Steel}COMPUTABILITY THEORY\quad/\quad RESEARCH SYNTHESIS}\\[10pt]
+{\fontsize{22}{27}\selectfont\bfseries\color{Navy}Coarse Classes Without Least Turing Degrees}\\[7pt]
+{\large\color{Ink}Deduplicated results of the nine research reports on target C1}\\[9pt]
+{\color{Muted}Prepared for Vladimir Reshetnikov\quad$\cdot$\quad 18 September 2026}
+\end{center}
+\vspace{2pt}
+\begin{assessment}{Summary}
+The nine reports in \path{docs/research-reports/01}--\path{09} all attack target C1 of the research plan: \emph{must every nonuniform coarse-equivalence class contain a representative of least Turing degree?} All nine answer \textbf{no}, all nine record that this bare answer already follows from published work of Hirschfeldt--Jockusch--Kuyper--Schupp, and all nine then prove stronger witness statements. The reports overlap heavily: the same spectrum identity, block-code characterization and obstruction lemma appear up to seven times, and the main constructions fall into three methods, each found independently by three reports. This synthesis states every reported result once, in its strongest reported form, with one proof per genuinely distinct argument. Where a theorem was proved in genuinely different ways (the perfect exact-pair theorem; the prescribed unattained infimum; the absence of a computable null cover) the different proofs are all kept. Provenance tags such as \src{R1, R8} name the reports in which a statement occurs. Section~\ref{sec:comparison} compares the reports and records what none of them settles.
+\end{assessment}
+{\small\tableofcontents}
+
+\section{The question, its status, and the shape of the answer}\label{sec:overview}
+\subsection{Target C1}
+A \emph{coarse description} of a total function $f:\N\to\N$ is a total function which agrees with $f$ off a set of asymptotic density zero. Write $f\lenc g$ when every coarse description of $g$ computes some coarse description of $f$, and $f\leuc g$ when a single Turing functional does this for all descriptions of $g$. Target C1 of the plan \cite{Plan}, which is the coarse instance of Question~7 of Gerdes \cite{Gerdes}, is the statement
+\begin{equation}\tag{C1}\label{eq:C1}
+ \forall f\in\Baire\ \ \exists g\eqnc f\ \ \forall h\eqnc f\quad g\leT h .
+\end{equation}
+Here \emph{least} means below every representative; it must not be confused with \emph{minimal}. The plan proposed a sufficient certificate for the failure of \eqref{eq:C1}: a nonzero coarse class containing two representatives whose Turing degrees form a minimal pair.
+
+\begin{assessment}{Status of the bare answer (unanimous across the nine reports)}
+\eqref{eq:C1} is false, and this is a consequence of the published literature; it is not a new discovery. Hirschfeldt, Jockusch, Kuyper and Schupp \cite{HJKS} write $X^{\mathfrak c}$ for the sets computable from every coarse description of $X$ and prove $X^{\mathfrak c}=\Comp$ when $X$ is $1$-generic (their Theorem~4.2) and when the coarse computability bound $\gamma(X)$ equals $1$ (their Theorem~4.3, credited to Igusa). Every coarse description of $X$ lies in the coarse class of $X$, so a least representative would be computed by all of them, would therefore be computable, and would make $X$ coarsely computable; but $1$-generic sets are not coarsely computable, and neither is the dyadic code $\Rc(\emptyset'')$, which has $\gamma=1$ by the classical criterion of Jockusch and Schupp \cite[Theorem~2.19]{JS}. \rep1, \rep2, \rep5, \rep6 give this deduction from Theorem~4.2; \rep3, \rep4, \rep9 give it from Theorem~4.3; \rep7, \rep8 refer to it. No report claims priority for the stronger statements below, and none of the proofs has been refereed or formalized. The finite Python checks shipped with the reports test finite combinatorial identities only.
+\end{assessment}
+
+\subsection{Three methods}
+Every report constructs explicit witnesses rather than quoting the literature, and every construction keeps the witnesses inside a \emph{single density-zero equality class}, which is contained in both the uniform and the nonuniform coarse class. The methods are:
+
+\begin{description}[leftmargin=1.4em,itemsep=3pt,topsep=3pt]
+\item[Category in the prefix-density metric] \src{R1, R8, R9}. The binary descriptions of a fixed $X$ form a perfect Polish space under $d(U,V)=\sup_n\rho_n(U\sd V)$. A local decoding lemma shows that the cone above any set outside the common-information ideal $\Core(X)$ is meager. This yields exact partners, perfect families of pairwise exact partners, and the absence of countable coinitial families, for \emph{arbitrary} $X$; it gives no arithmetical bound on the witnesses (Section~\ref{sec:category}).
+\item[Finite extension with computable reservoirs] \src{R3, R4, R5}. When the target is exactly computable on nested regions whose complements have densities tending to zero, a product no-cross-splitting dichotomy makes every common total function computable. This yields pairs and perfect families below $A\oplus\zero'$ for the dyadic code $\Rc(A)$, with jump control, and below $\zero''$ for an explicit c.e.\ set (Section~\ref{sec:reservoir}).
+\item[Finite extension with a one-bit reserve] \src{R2, R6, R7}. If one further disagreement is always affordable, hypercube connectivity forces a no-split, no-partiality configuration to have a computable output. This yields individually $1$-generic minimal pairs, and perfect families, below $\zero''$, whose disagreements obey an arbitrarily slowly growing prescribed budget (Section~\ref{sec:budget}).
+\end{description}
+
+\subsection{Principal results}
+\begin{enumerate}[label=\textbf{\Alph*.}]
+\item \textbf{Spectra and least representatives} (Section~\ref{sec:spectra}). For every $f$ the density-zero class, the uniform coarse class and the nonuniform coarse class of $f$ have the same Turing spectrum, which is upward closed (Theorem~\ref{thm:spectrum}). A nonuniform coarse class has a least Turing degree exactly when it is the class of a robust block code $\J(B)$ (Theorem~\ref{thm:least}).
+\item \textbf{Exact pairs for arbitrary $X$} (Section~\ref{sec:category}). For every binary $X$ and every countable family of oracles $B_j$ there is a perfect set of descriptions of $X$ whose distinct members have common lower cone exactly $\Core(X)$ and which meet each $\Low(B_j)$ exactly in $\Core(X)\cap\Low(B_j)$ (Theorems~\ref{thm:partners} and~\ref{thm:perfect}). A representative spectrum either has a least element or has no countable coinitial subset (Theorem~\ref{thm:coinitial}).
+\item \textbf{Trivial cores} (Sections~\ref{sec:category}--\ref{sec:columns}). $A\in\Core(X)$ iff every set within some positive upper density of $X$ computes $A$ (Theorem~\ref{thm:radius}); approximability by $Z$-computable sets gives $\Core(X)\subseteq\Low(Z)$ (Corollary~\ref{cor:approx}); the core of a $1$-generic is $\Comp$ (Theorem~\ref{thm:genericcore}).
+\item \textbf{Explicit counterexamples} (Sections~\ref{sec:columns}--\ref{sec:reservoir}). The dyadic code $\Rc(A)(n)=A(\nu_2(n+1))$ has coarse spectrum $\{\mathbf b:\degT(A)\le\mathbf b'\}$ and effective-dense spectrum $\{\mathbf b:\degT(A)\le\mathbf b\}$; its coarse classes have a least degree iff $A\leT\emptyset'$; $\Rc(A)\leuc\Rc(B)\iff\Rc(A)\lenc\Rc(B)\iff A\leT B\oplus\emptyset'$. A guarded diagonal c.e.\ set is many-one complete, has trivial core and is not coarsely computable.
+\item \textbf{Quantitative minimal pairs} (Section~\ref{sec:budget}). For every oracle $Z$ and every budget (for instance $|E\cap[0,n)|\le\lfloor\log_2(n+1)\rfloor$, or $\sum_{n\in E}1/h(n)\le b$) there is a $Z''$-computable perfect tree of sets, individually $1$-generic over $Z$, pairwise forming minimal pairs over $Z$, all agreeing off one set $V$ obeying the budget. The budget must be unbounded, the family has Hausdorff dimension zero, and $A\sd B$ is bi-immune.
+\item \textbf{Unattained infima} (Section~\ref{sec:infimum}). Every Turing degree is the greatest lower bound of a coarse representative spectrum to which it does not belong; a principal core therefore does not guarantee a least representative. Three different constructions are given.
+\end{enumerate}
+
+\subsection{The reports}
+\begin{center}\small
+\begin{longtable}{@{}l>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+ & Title (main file) & Distinctive content\\
+\midrule
+\endhead
+\rep1 & Coarse Classes Without a Least Turing Degree (\path{01/paper}) & Category method; robust-radius theorem; self-contained proof that $1$-generics have trivial core; countable pairwise family\\
+\rep2 & Sparse Disagreement and Turing Minimal Pairs (\path{02/coarse_minimal_pair}) & One-bit reserve with counting budget, relative to $Z$; no $Z$-computable null cover; unattained infimum\\
+\rep3 & Coarse Classes Without Least Turing Degrees (\path{03/coarse_counterexample}) & Dyadic code: jump-cone spectrum, pair with $D'\eqT E'\eqT A\oplus\emptyset'$, order classification, effective-dense spectrum\\
+\rep4 & Coarse Classes Without Least Turing Representatives (\path{04/coarse_jump_spectra}) & Dyadic code: perfect family below $A\oplus\emptyset'$, null envelope, explicit degree-$\zero'$ representative, effective-dense contrast\\
+\rep5 & Coarse Degrees with Unattained Turing Infima (\path{05/coarse_degrees}) & General reservoir-fusion theorem; c.e.\ diagonal set; witnesses below $\zero''$; unattained infimum\\
+\rep6 & Sparse Perfect Families in a Single Coarse Class (\path{06/coarse_minimal_pair_attack}) & One-bit trilemma with a global variation budget; perfect family; budget dichotomy; dimension zero; mask obstruction\\
+\rep7 & Sparse-error minimal pairs and coarse representative spectra (\path{07/sparse_error_minimal_pairs}) & One-bit bridge with a weighted budget; $o(h)$ errors; bi-immunity; unattained infimum\\
+\rep8 & Coarse Classes Without Least Turing Representatives (\path{08/coarse_degree_attack}) & Category method; compactness recovered; Kuratowski--Ulam/Mycielski perfect family; jump-complete c.e.\ example; principal cores\\
+\rep9 & Perfect Exact Pairs in Coarse-Description Classes (\path{09/coarse_degree_attack}) & Category method; direct ball fusion with prescribed oracles; external-centre approximability proof; no countable coinitial family\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\section{Conventions and the basic obstruction}\label{sec:prelim}
+Sets are identified with their characteristic functions. Oracles are total; a total function $g:\N\to\N$ is used through its value oracle, which is Turing equivalent to the set coding its graph, so $g\leT Y$ iff the graph code of $g$ belongs to $\Low(Y)=\{A\subseteq\N:A\leT Y\}$. Fix an enumeration $(\Phi_e)$ of oracle functionals with numerical output. For a finite string $\sigma$, $\Phi_e^\sigma(n)\dn=v$ means that the computation halts with output $v$ having queried only positions below $|\sigma|$; such convergence is a c.e.\ event and persists under extension of $\sigma$. With a fixed oracle $Z$ we write $\Phi_e^{Z\oplus\sigma}$, and convergence is then c.e.\ in $Z$. The jump is $Y'=\{e:\Phi_e^Y(e)\dn\}$. $\Comp$ is the class of computable sets.
+
+For $S\subseteq\N$ and $n\ge1$ let $\rho_n(S)=|S\cap[0,n)|/n$; $S$ has \emph{density zero} if $\rho_n(S)\to0$. For total $f,g$ put
+\[
+ \delta(f,g)=\limsup_{n\to\infty}\rho_n(\{k:f(k)\ne g(k)\}),\qquad f\approx g\iff\delta(f,g)=0 .
+\]
+A finite union of density-zero sets has density zero, so $\approx$ is an equivalence relation and $\delta$ satisfies the triangle inequality. The coarse descriptions of $f$ are $\CD(f)=\{D\in\Baire:D\approx f\}$; for binary $X$ we write $\DX X=\CD(X)\cap\Cantor$. The reducibilities are
+\begin{align*}
+ f\lenc g&\iff(\forall D\in\CD(g))(\exists E\in\CD(f))\ E\leT D,\\
+ f\leuc g&\iff(\exists\Phi)(\forall D\in\CD(g))\ \Phi^D\in\CD(f),
+\end{align*}
+where $\Phi^D$ must be total on every valid input and may behave arbitrarily elsewhere. For $r\in\{\uc,\nc\}$, $[f]_r$ is the class of all total $g\equiv_rf$ and $\Spec_r(f)=\{\degT(g):g\equiv_rf\}$. A function is \emph{coarsely computable} if it has a computable coarse description.
+
+\begin{lemma}[Density-zero changes]\label{lem:change}\src{all reports}
+If $f\approx g$ then $\CD(f)=\CD(g)$ and $f\equc g$; hence also $f\eqnc g$.
+\end{lemma}
+\begin{proof}
+For total $D$, $\{D\ne g\}\subseteq\{D\ne f\}\cup\{f\ne g\}$, and symmetrically. The identity functional is a uniform reduction in both directions.
+\end{proof}
+
+\begin{lemma}[Binary normalization]\label{lem:binary}\src{all reports}
+Let $X$ be binary and $D\in\CD(X)$. Put $D^{\mathrm{bin}}(n)=1$ if $D(n)=1$ and $D^{\mathrm{bin}}(n)=0$ otherwise. Then $D^{\mathrm{bin}}\in\DX X$ and $D^{\mathrm{bin}}\leT D$ uniformly. The same holds relative to any oracle.
+\end{lemma}
+\begin{proof}
+Wherever $D(n)=X(n)$ the normalized value is still $X(n)$, so no new errors arise.
+\end{proof}
+
+\begin{lemma}[Self-application]\label{lem:self}\src{all reports}
+If $g\eqnc f$, in particular if $g\equc f$, then $g$ computes a member of $\CD(f)$. Consequently, for $r\in\{\uc,\nc\}$, the class $[f]_r$ contains a computable function if and only if $f$ is coarsely computable.
+\end{lemma}
+\begin{proof}
+$g\in\CD(g)$, so $f\lenc g$ applied to the description $g$ of itself yields $E\in\CD(f)$ with $E\leT g$. If $g$ is computable so is $E$. Conversely a computable $E\in\CD(f)$ satisfies $E\equc f$ by Lemma~\ref{lem:change}.
+\end{proof}
+
+\begin{lemma}[Two-witness obstruction]\label{lem:certificate}\src{R2, R3, R5, R6; implicit in all}
+Suppose $f$ is not coarsely computable and $D,E\in\CD(f)$ are such that every total function computable from both $D$ and $E$ is computable. Then neither $\Spec_{\uc}(f)$ nor $\Spec_{\nc}(f)$ has a least element, even though representatives range over all of $\Baire$.
+\end{lemma}
+\begin{proof}
+By Lemma~\ref{lem:change}, $D,E\in[f]_r$. A representative of least degree would be computable from both, hence computable, contradicting Lemma~\ref{lem:self}.
+\end{proof}
+
+\begin{remark}\label{rem:leastminimal}
+Two distinctions recur in every report. First, the lemma excludes a \emph{least} degree; no report proves or claims that any of the spectra below lacks \emph{minimal} elements. Second, the witnesses $D,E$ have the \emph{same} coarse degree; it is their ordinary Turing degrees that form a minimal pair. Nothing here concerns minimal pairs in the coarse degrees.
+\end{remark}
+
+\section{Representative spectra and the classes that do have a least degree}\label{sec:spectra}
+For a class $\mathcal C$ of total functions let $\Spec(\mathcal C)=\{\degT(g):g\in\mathcal C\}$ and $\Up(\mathcal C)=\{\mathbf b:(\exists g\in\mathcal C)\ \degT(g)\le\mathbf b\}$.
+
+\begin{theorem}[Spectrum identity]\label{thm:spectrum}\src{R1, R2, R4, R6, R7; upward closure also R5, R9}
+For every total $f$,
+\begin{equation}\label{eq:spectrum}
+ \Spec(\CD(f))=\Spec_{\uc}(f)=\Spec_{\nc}(f)=\Up(\CD(f)).
+\end{equation}
+In particular all three spectra are upward closed, and least-degree existence is the same question for the density-zero class, the uniform class and the nonuniform class of $f$. If $f$ is binary, every degree in \eqref{eq:spectrum} is the degree of a member of $\DX f$.
+\end{theorem}
+\begin{proof}
+Lemma~\ref{lem:change} gives $\Spec(\CD(f))\subseteq\Spec_{\uc}(f)\subseteq\Spec_{\nc}(f)$, and Lemma~\ref{lem:self} gives $\Spec_{\nc}(f)\subseteq\Up(\CD(f))$. For the remaining inclusion let $B$ be a set whose degree computes some $D\in\CD(f)$; if $f$ is binary, first replace $D$ by $D^{\mathrm{bin}}$. Define $Y(2^n)=B(n)$ and $Y(k)=D(k)$ when $k$ is not a power of two. There are at most $1+\log_2N$ powers of two below $N$, so $Y\approx D\approx f$. Clearly $Y\leT B$, and $B\leT Y$ by reading the positions $2^n$. Thus $\degT(Y)=\degT(B)$ and $Y\in\CD(f)$.
+\end{proof}
+
+The sparse-coding step is what turns ``$\mathbf b$ computes a representative'' into ``$\mathbf b$ is the degree of a representative''; merely exhibiting complicated representatives can never refute leastness. Equality of spectra at a fixed $f$ does not assert that the uniform and nonuniform classes of $f$ coincide.
+
+\begin{definition}[Core]\label{def:core}
+$\Core(f)=\{A\subseteq\N:(\forall D\in\CD(f))\ A\leT D\}$. For binary $X$, Lemma~\ref{lem:binary} gives $\Core(X)=\bigcap_{D\in\DX X}\Low(D)$. This is the object $X^{\mathfrak c}$ of \cite{HJKS}; the reports denote it $\mathrm{Core}_X$ (\rep1), $\mathcal I(X)$ (\rep4), $\mathcal K_X$ (\rep8), $I_X$ or $\mathrm{core}_X$ (\rep9).
+\end{definition}
+
+\begin{proposition}[Properties of the core]\label{prop:core}\src{R1, R5, R8, R9}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $\Core(f)$ is a countable Turing ideal containing $\Comp$ and contained in $\Low(f)$.
+\item If $f\lenc g$ then $\Core(f)\subseteq\Core(g)$; so the core is invariant under $\eqnc$ and $\equc$.
+\item For $r\in\{\uc,\nc\}$, $\Core(f)=\bigcap_{g\equiv_rf}\Low(g)$: the core is exactly the information common to all representatives.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Downward closure and closure under joins hold in every lower cone, hence in an intersection of lower cones; $f\in\CD(f)$ gives $\Core(f)\subseteq\Low(f)$, which is countable. (b) Given $A\in\Core(f)$ and $D\in\CD(g)$, choose $E\in\CD(f)$ with $E\leT D$; then $A\leT E\leT D$. (c) Every description is a representative, which gives $\supseteq$. Conversely, if $A\in\Core(f)$ and $g\equiv_rf$, Lemma~\ref{lem:self} gives $E\in\CD(f)$ with $A\leT E\leT g$.
+\end{proof}
+
+\subsection{Robust block coding}
+For total $g$ define the block code
+\begin{equation}\label{eq:J}
+ \J(g)(0)=0,\qquad \J(g)(k)=g(n)\quad\text{for }2^n\le k<2^{n+1}.
+\end{equation}
+
+\begin{lemma}[Block recovery]\label{lem:block}\src{R1, R2, R5, R6, R7, R8, R9}
+$\J(g)\eqT g$, and every $D\in\CD(\J(g))$ computes $g$. Consequently $\Core(\J(A))=\Low(A)$ for every set $A$. The reduction $g\leT D$ is not uniform in $D$.
+\end{lemma}
+\begin{proof}
+$g(n)=\J(g)(2^n)$. Given $D$, let $y(n)$ be the value taken by $D$ on strictly more than half of the block $I_n=[2^n,2^{n+1})$ if there is one, and $0$ otherwise; $y\leT D$. With $E=\{D\ne\J(g)\}$,
+\[
+ \frac{|E\cap I_n|}{2^n}\le2\,\rho_{2^{n+1}}(E)\longrightarrow0,
+\]
+so eventually fewer than half the entries of $I_n$ are wrong and $y(n)=g(n)$. The finitely many exceptions are hard-coded; neither their number nor their positions are obtained from $D$. For the core, $\Low(A)\subseteq\Core(\J(A))$ has just been shown, and $\J(A)\in\CD(\J(A))$ with $\J(A)\eqT A$ gives the converse.
+\end{proof}
+
+\begin{proposition}[Embedding]\label{prop:embedding}\src{R2, R5, R8, R9}
+For total $g,h$: $g\leT h\iff\J(g)\lenc\J(h)$.
+\end{proposition}
+\begin{proof}
+If $g\leT h$, every description of $\J(h)$ computes $h$, hence $g$, hence $\J(g)$ itself. Conversely apply the reduction to the description $\J(h)$ of itself; it computes a description of $\J(g)$, hence $g$, and $\J(h)\leT h$.
+\end{proof}
+
+\begin{theorem}[Least representatives are exactly the block-code classes]\label{thm:least}\src{R1, R2, R5, R6, R7, R8, R9; condition (iv) R1, R4}
+For every total $f$ the following are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\Spec_{\nc}(f)$ has a least element (equivalently, by Theorem~\ref{thm:spectrum}, $\Spec_{\uc}(f)$ or $\Spec(\CD(f))$ has one).
+\item $\Spec_{\nc}(f)$ is a principal upper cone.
+\item Some $g\eqnc f$ satisfies $g\leT D$ for every $D\in\CD(g)$.
+\item Some set $A$ computes a member of $\CD(f)$ and is computed by every member of $\CD(f)$; that is, some member of $\Core(f)$ computes a coarse description of $f$.
+\item $f\eqnc\J(B)$ for some set $B$.
+\end{enumerate}
+When these hold, the least degree is $\degT(B)=\degT(A)$ and $\Core(f)=\Low(B)$.
+\end{theorem}
+\begin{proof}
+(i)$\Leftrightarrow$(ii) by upward closure. (i)$\Rightarrow$(iii): let $g$ be a representative of least degree; each $D\in\CD(g)$ satisfies $D\equc g\eqnc f$, so $g\leT D$. (iii)$\Rightarrow$(iv): let $A$ code the graph of $g$. By Lemma~\ref{lem:self}, $g$ computes a member of $\CD(f)$; and each $D\in\CD(f)$ satisfies $D\eqnc g$, so it computes some $D'\in\CD(g)$, whence $A\eqT g\leT D'\leT D$. (iv)$\Rightarrow$(v) with $B=A$: every description of $f$ computes $A$ and hence $\J(A)$ itself, so $\J(A)\lenc f$; every description of $\J(A)$ computes $A$ by Lemma~\ref{lem:block}, hence a description of $f$, so $f\lenc\J(A)$. (v)$\Rightarrow$(i): $\J(B)$ is a representative of degree $\degT(B)$, and any representative $h$ computes a description of $\J(B)$ by Lemma~\ref{lem:self}, hence computes $B$. The core is given by Proposition~\ref{prop:core}(b) and Lemma~\ref{lem:block}.
+\end{proof}
+
+\begin{remark}[Uniformity boundary]\label{rem:uniformboundary}
+The characterization is of \emph{nonuniform} classes: block decoding hard-codes a finite correction depending on the description, so neither (v) with $\equc$ nor a uniform image characterization is asserted by any report. The \emph{negative} results below do hold for uniform classes, because density-zero modifications are uniformly equivalent. \rep1 and \rep5 use blocks $[2^{2^n},2^{2^{n+1}})$ instead of $[2^n,2^{n+1})$; the block choice is immaterial. Condition (iv) separates the two requirements that a least degree must meet: common information, and the ability to rebuild a description from it. Theorem~\ref{thm:infimum} shows that the first alone does not suffice, even when the core is principal.
+\end{remark}
+
+\section{The category method: exact pairs inside an arbitrary description class}\label{sec:category}
+Throughout this section $X\in\Cantor$ is arbitrary. The pseudometric $\delta$ vanishes identically on $\DX X$ and cannot support a category argument. \rep1, \rep8 and \rep9 independently replace it by the \emph{prefix-density metric}
+\begin{equation}\label{eq:metric}
+ d(U,V)=\sup_{n\ge1}\rho_n(U\sd V)\qquad(U,V\in\Cantor),
+\end{equation}
+which controls every initial segment, including short ones. Balls $B(Z,r)=\{D\in\DX X:d(D,Z)<r\}$ and closures are taken inside $\DX X$. For a string $\sigma$ and a set $Z$, $\sigma\patch Z$ denotes $Z$ with its first $|\sigma|$ bits replaced by $\sigma$.
+
+\begin{lemma}[Metric facts]\label{lem:metric}\src{R1, R8, R9}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $d$ is a metric on $\Cantor$, invariant under symmetric difference with a fixed set, and $\delta\le d$.
+\item If $U(k)\ne V(k)$ then $d(U,V)\ge1/(k+1)$. Hence every cylinder $[\tau]$ is $d$-open, halting oracle computations are $d$-continuous, and the identity map from $(\Cantor,d)$ to $\Cantor$ with the product topology is continuous.
+\item $d(\sigma\patch Z,Z)=\max_{1\le n\le|\sigma|}|\{j<n:\sigma(j)\ne Z(j)\}|/n$, and this is $0$ for the empty string. If $Q$ agrees with $P$ below $m$ and with $Z$ from $m$ on, then $d(Q,Z)\le d(P,Z)$.
+\item \textup{(Finite patch.)} If $\delta(Y,Z)<\eta$ then some finite modification $\widetilde Y$ of $Y$ satisfies $d(\widetilde Y,Z)<\eta$; of course $\widetilde Y\eqT Y$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) follows from $U\sd W\subseteq(U\sd V)\cup(V\sd W)$ at every prefix, from (b) for separation, and from $(U\sd H)\sd(V\sd H)=U\sd V$. (b) A disagreement at $k$ contributes an error to the prefix of length $k+1$; a ball of radius below $1/m$ therefore fixes the first $m$ bits. (c) Beyond $|\sigma|$ the number of disagreements is constant while the denominator grows; for the second assertion the error set of $Q$ is a subset of that of $P$. (d) Choose $\eta'$ with $\delta(Y,Z)<\eta'<\eta$ and $N$ with $\rho_n(Y\sd Z)<\eta'$ for $n\ge N$, and let $\widetilde Y=(Z\rest N)\patch Y$. Its discrepancy from $Z$ is $0$ at prefixes up to $N$ and at most that of $Y$ afterwards, so $d(\widetilde Y,Z)\le\eta'$.
+\end{proof}
+Nothing in (d) is uniform in $Y$; the patch is used only to prove the existence of individual Turing reductions, in which finitely many constants may be hard-wired.
+
+\begin{proposition}[A perfect Polish space]\label{prop:polish}\src{R1, R8, R9}
+$(\DX X,d)$ is nonempty, complete, separable and has no isolated points. For each $P\in\DX X$ the finite modifications of $P$ are dense.
+\end{proposition}
+\begin{proof}
+Let $(D_i)$ be $d$-Cauchy. By Lemma~\ref{lem:metric}(b) each coordinate is eventually constant; let $D$ be the coordinatewise limit. Given $\varepsilon$, choose $i_0$ with $d(D_i,D_j)<\varepsilon$ for $i,j\ge i_0$. For fixed $i\ge i_0$ and $n$, take $j$ so large that $D_j\rest n=D\rest n$; then $\rho_n(D_i\sd D)=\rho_n(D_i\sd D_j)<\varepsilon$. Hence $d(D_i,D)\le\varepsilon$, and $\delta(D,X)\le d(D,D_i)+\delta(D_i,X)=d(D,D_i)\to0$, so $D\in\DX X$. For density, let $P,Z\in\DX X$ and $Z_N=(Z\rest N)\patch P$; then $d(Z_N,Z)\le\sup_{n>N}\rho_n(P\sd Z)\to0$ because $\delta(P,Z)=0$. There are countably many finite modifications. Finally, flipping bit $k$ of $D$ gives another member at distance exactly $1/(k+1)$.
+\end{proof}
+
+We use the Baire category theorem in the form: in a nonempty complete metric space a countable intersection of dense open sets is dense, so a nonempty open set is not meager. (\rep1 and \rep8 include the nested-ball proof.) For $e\in\N$ and $A\subseteq\N$ let
+\[
+ S_{e,A}=\{D\in\DX X:\Phi_e^D\text{ is total and equals }A\}.
+\]
+Convergence at one input is an open condition, but $S_{e,A}$ is not assumed closed.
+
+\begin{lemma}[Local decoder]\label{lem:decoder}\src{R1, R8, R9}
+Let $Z\in\DX X$, let $r>0$ be rational, and suppose $S_{e,A}$ is dense in $B(Z,r)$. Then every $Y\in\Cantor$ with $d(Y,Z)<r/4$ computes $A$, by one program depending only on $e$ and $r$. The oracle $Y$ need not belong to $\DX X$.
+\end{lemma}
+\begin{proof}
+On input $n$, using $Y$, search for a string $\tau$ and a halting computation with
+\begin{equation}\label{eq:decodersearch}
+ \max_{1\le m\le|\tau|}\frac{|\{j<m:\tau(j)\ne Y(j)\}|}{m}<\frac r2,\qquad\Phi_e^\tau(n)\dn ,
+\end{equation}
+and output the first value found. The test is a finite rational computation from $Y$.
+
+\emph{Termination.} Density gives $D^*\in S_{e,A}\cap B(Z,r/4)$, so $d(D^*,Y)<r/2$, and a sufficiently long prefix of $D^*$ satisfies \eqref{eq:decodersearch}.
+
+\emph{Soundness.} Let $\tau$ be any witness and $H=\tau\patch Z$, a finite modification of $Z$, so $H\in\DX X$. By Lemma~\ref{lem:metric}(c) and the triangle inequality at each prefix $m\le|\tau|$, $d(H,Z)<r/2+r/4<r$. Thus $[\tau]\cap B(Z,r)$ is a nonempty open subset of $\DX X$ and contains some $D\in S_{e,A}$. The witnessed computation is also a computation of $\Phi_e^D$, so its value is $A(n)$.
+\end{proof}
+The centre $Z$ is used only in the correctness proof; the program never queries it. \rep8 phrases the search over finite sets $F$ with $d(\emptyset,F)<r/2$, running $\Phi_e^{Y\sd F}$, where $d(\emptyset,F)=\max_j j/(f_j+1)$ for $F=\{f_1<\dots<f_t\}$; \rep9 takes $Y$ to be a finite modification of a member of $\DX X$. These are the same argument.
+
+\begin{theorem}[All-or-meager cone dichotomy]\label{thm:dichotomy}\src{R1, R8, R9}
+For every set $A$, the cone $\{D\in\DX X:A\leT D\}$ is either all of $\DX X$ or meager in $(\DX X,d)$. More precisely, if $A\notin\Core(X)$ then every $S_{e,A}$ is nowhere dense.
+\end{theorem}
+\begin{proof}
+Suppose the closure of $S_{e,A}$ contains a ball $B(Z,r)$ with $r$ rational; then $S_{e,A}$ is dense in it. Let $D\in\DX X$ be arbitrary. Since $\delta(D,Z)=0$, Lemma~\ref{lem:metric}(d) gives a finite modification $\widetilde D\eqT D$ with $d(\widetilde D,Z)<r/4$, and Lemma~\ref{lem:decoder} gives $A\leT\widetilde D$. Hence $A\in\Core(X)$.
+\end{proof}
+
+\begin{corollary}[Simultaneous countable avoidance]\label{cor:avoid}\src{R1, R8, R9}
+If $(A_i)_{i\in I}$ is a countable family of sets outside $\Core(X)$, the set of $D\in\DX X$ with $A_i\nleT D$ for all $i$ contains a dense $G_\delta$. No effective indexing of the family is needed.
+\end{corollary}
+\begin{proof}
+Remove the countably many closed nowhere dense sets $\cl(S_{e,A_i})$ and apply the Baire theorem.
+\end{proof}
+Individual cone avoidance does not by itself give simultaneous avoidance; the nowhere-density statement is the additional ingredient.
+
+\begin{theorem}[Exact partners]\label{thm:partners}\src{R1, R8 for one oracle; R9 for countably many}
+Let $(B_j)_{j\in\N}$ be any countable family of oracles. Comeager many $D\in\DX X$ satisfy
+\begin{equation}\label{eq:exact}
+ \Low(D)\cap\Low(B_j)=\Core(X)\cap\Low(B_j)\qquad\text{for every }j .
+\end{equation}
+If $B_j$ computes a member of $\DX X$, the right-hand side is $\Core(X)$. In particular, for every prescribed $P\in\DX X$, every $N$ and every $\varepsilon>0$ there is $D\in\DX X$ with
+\[
+ \Low(P)\cap\Low(D)=\Core(X),\qquad D\rest N=P\rest N,\qquad d(D,P)<\varepsilon .
+\]
+\end{theorem}
+\begin{proof}
+$\mathcal A=\bigcup_j(\Low(B_j)\setminus\Core(X))$ is countable; avoid all its members by Corollary~\ref{cor:avoid}. If $A\leT D,B_j$ then $A\notin\mathcal A$, so $A\in\Core(X)$; conversely every member of $\Core(X)$ is computable from $D\in\DX X$. If $B_j$ computes $E\in\DX X$ then $\Core(X)\subseteq\Low(E)\subseteq\Low(B_j)$. For the last statement, $[P\rest N]\cap B(P,\varepsilon)$ is a nonempty open set and a comeager set meets it.
+\end{proof}
+
+\begin{corollary}[Countably many pairwise exact partners]\label{cor:many}\src{R1}
+For every $D_0\in\DX X$ there is a sequence $(D_i)_{i\in\N}$ in $\DX X$ with $\Low(D_i)\cap\Low(D_j)=\Core(X)$ for $i\ne j$. If $\Core(X)=\Comp$ and $X$ is not coarsely computable, the $D_i$ have pairwise distinct nonzero degrees, any two forming a minimal pair.
+\end{corollary}
+\begin{proof}
+Choose $D_{i+1}$ by Theorem~\ref{thm:partners} with the oracles $D_0,\dots,D_i$. In the last case no description is computable, and equal or comparable degrees would put a noncomputable description into the common lower cone. Without those two hypotheses the degrees of the $D_i$ are not asserted to be distinct.
+\end{proof}
+
+\subsection{Robust radius and approximability}
+\begin{theorem}[Robust-radius characterization of the core]\label{thm:radius}\src{R1, R8}
+For all $A,X\subseteq\N$,
+\begin{equation}\label{eq:radius}
+ A\in\Core(X)\iff(\exists\eta>0)(\forall Y\in\Cantor)\ \bigl[\delta(X,Y)<\eta\Rightarrow A\leT Y\bigr].
+\end{equation}
+In contrapositive form this is the cone-avoiding compactness theorem \cite[Theorem~3.7]{HJKS}; the proof below is a direct topological one.
+\end{theorem}
+\begin{proof}
+($\Leftarrow$) Every $D\in\DX X$ has $\delta(X,D)=0$. ($\Rightarrow$) $\DX X=\bigcup_eS_{e,A}$, so by the Baire theorem some $S_{e,A}$ is dense in a ball $B(Z,r)$ with $r$ rational. Put $\eta=r/4$. If $\delta(X,Y)<\eta$ then $\delta(Y,Z)<\eta$ because $\delta(X,Z)=0$; Lemma~\ref{lem:metric}(d) gives $\widetilde Y\eqT Y$ with $d(\widetilde Y,Z)<r/4$, and Lemma~\ref{lem:decoder} gives $A\leT\widetilde Y$.
+\end{proof}
+
+\begin{corollary}[Countable compactness]\label{cor:countablecompact}\src{R1}
+Suppose that for every $i\in\N$ and every $\varepsilon>0$ there is $Y\in\Cantor$ with $\delta(X,Y)<\varepsilon$ and $A_i\nleT Y$. Then a single $D\in\DX X$ satisfies $A_i\nleT D$ for every $i$, and such $D$ are comeager in $(\DX X,d)$.
+\end{corollary}
+\begin{proof}
+By Theorem~\ref{thm:radius} no $A_i$ lies in $\Core(X)$; apply Corollary~\ref{cor:avoid}.
+\end{proof}
+
+\begin{corollary}[Approximability bounds the core]\label{cor:approx}\src{R8, R9}
+Let $Z$ be an oracle and suppose that for every $\varepsilon>0$ some $C\leT Z$ has $\delta(C,X)<\varepsilon$; no uniformity in $\varepsilon$ is assumed. Then $\Core(X)\subseteq\Low(Z)$. In particular, if $X$ is approximable to every positive tolerance by computable sets, that is $\gamma(X)=1$, then $\Core(X)=\Comp$; this is \cite[Theorem~4.3]{HJKS}, credited there to Igusa.\end{corollary}
+\begin{proof}
+Given $A\in\Core(X)$ take $\eta$ from \eqref{eq:radius} and $C\leT Z$ with $\delta(C,X)<\eta$; then $A\leT C\leT Z$.
+\end{proof}
+
+\begin{remark}[The external-centre proof]\label{rem:external}
+\rep9 proves Corollary~\ref{cor:approx} without first isolating Theorem~\ref{thm:radius}: choose $C\leT Z$ with $\delta(C,X)<r/16$, patch it to $C_0$ with $d(C_0,Y)<r/8$ for a centre $Y\in\DX X$ of a ball in which $S_{e,A}$ is dense, run the search \eqref{eq:decodersearch} from $C_0$, and prove correctness by patching accepted strings onto the genuine description $Y$ rather than onto $C_0$. This is the proof of Theorem~\ref{thm:radius} specialized to one $C$, with Lemma~\ref{lem:decoder} inlined; the point it isolates --- the approximating set is queried but is \emph{not} a member of $\DX X$, so the topological correctness argument must use a different centre --- is already built into the statement of Lemma~\ref{lem:decoder}.
+\end{remark}
+
+\subsection{Perfect families of pairwise exact partners}
+\begin{theorem}[Perfect exact-pair theorem]\label{thm:perfect}\src{R8; R9 with prescribed oracles}
+For every $X$ and every countable family of oracles $(B_j)$ there is a continuous injection $F:\Cantor\to(\DX X,d)$ whose image $P$ satisfies:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $\Low(D)\cap\Low(E)=\Core(X)$ for all distinct $D,E\in P$;
+\item $\Low(D)\cap\Low(B_j)=\Core(X)\cap\Low(B_j)$ for all $D\in P$ and all $j$;
+\item $P\cap\Core(X)=\emptyset$, and the members of $P$ are pairwise Turing incomparable;
+\item $P$ is a Cantor set both in the metric $d$ and in the product topology.
+\end{enumerate}
+\end{theorem}
+
+The common lower bound of a pair may depend on both coordinates, so this does not follow from Theorem~\ref{thm:partners} by iteration. The two reports that prove it handle the pair relation differently.
+
+\begin{lemma}[Bad-pair relations are nowhere dense]\label{lem:badpairs}\src{R9}
+For $e,f\in\N$ let $R_{e,f}=\{(D,E)\in\DX X^2:\Phi_e^D=\Phi_f^E=A\text{ for some set }A\notin\Core(X)\}$. Then $R_{e,f}$ is nowhere dense in $\DX X^2$.
+\end{lemma}
+\begin{proof}
+Otherwise $R_{e,f}$ is dense in a nonempty open rectangle $U\times V$. Fix $(D_0,E_0)\in R_{e,f}\cap(U\times V)$ with common output $A\notin\Core(X)$. \emph{Claim: every convergent $\Phi_e^D(n)$ with $D\in U$ has value $A(n)$.} If some $D\in U$ gave a value $v\ne A(n)$, intersect $U\times V$ with the cylinders of finite prefixes of $D$ and of $E_0$ witnessing $\Phi_e^D(n)=v$ and $\Phi_f^{E_0}(n)=A(n)$. This is a nonempty open rectangle on which the two outputs at $n$ differ, so it misses $R_{e,f}$, contradicting density. Now the projection of $R_{e,f}\cap(U\times V)$ to $U$ is dense in $U$, each of its members makes $\Phi_e$ total, and by the claim the output is $A$. So $S_{e,A}$ is dense in $U$, and Theorem~\ref{thm:dichotomy} gives $A\in\Core(X)$, a contradiction.
+\end{proof}
+
+\begin{proofA}{Proof A of Theorem~\ref{thm:perfect}: direct ball fusion \src{R9}}
+Let $O_{e,f}=\DX X^2\setminus\cl(R_{e,f})$, open dense by Lemma~\ref{lem:badpairs}; the pairs $(e,f)$ are ordered and no symmetry is assumed. Let $(V_i)_{i\in\N}$ enumerate the following countably many open dense subsets of $\DX X$: the sets $\DX X\setminus\cl(S_{e,A})$ for $e\in\N$ and $A\in\bigcup_j\Low(B_j)\setminus\Core(X)$ (Theorem~\ref{thm:dichotomy}), and the sets $\DX X\setminus\{A\}$ for $A\in\Core(X)\cap\DX X$ (singletons are closed, and no point is isolated). The enumeration is set-theoretic, not effective.
+
+Build nonempty open balls $U_s$ ($s\in\strings$) with closures $K_s$ such that: $K_{s0}\cup K_{s1}\subseteq U_s$ and $K_{s0}\cap K_{s1}=\emptyset$; $\diam K_s\le2^{-|s|}$ for $|s|>0$; $K_s\subseteq V_i$ for $i\le|s|$, $|s|\ge1$; and $K_s\times K_t\subseteq O_{e,f}$ whenever $s\ne t$, $|s|=|t|=m\ge1$ and $e,f\le m$. At each step choose two distinct points in every parent ball (possible since no point is isolated) and small balls around them with disjoint closures inside the parent. Then treat the finitely many unary requirements by shrinking each child into the relevant open dense set, and the finitely many pair requirements one at a time: the product of the two current balls is a nonempty open rectangle, so it meets the open set $O_{e,f}$, and one shrinks just those two balls so that the product of their closures lies in $O_{e,f}$. Shrinking preserves every requirement already met.
+
+For $p\in\Cantor$ the sets $K_{p\rest m}$ are nested, closed, nonempty, with diameters tending to $0$; by completeness they have exactly one common point $F(p)$. Shared prefixes give closeness, so $F$ is continuous; disjoint sibling closures give injectivity. If $p\ne q$ and $A\leT F(p),F(q)$ via $\Phi_e,\Phi_f$, then at a level $m\ge e,f$ beyond the splitting of $p,q$ we have $(F(p),F(q))\in O_{e,f}$, so $(F(p),F(q))\notin R_{e,f}$ and therefore $A\in\Core(X)$; the reverse inclusion in (a) holds in all of $\DX X$. The unary requirements give (b) exactly as in Theorem~\ref{thm:partners}, and give $P\cap\Core(X)=\emptyset$. If $D\leT E$ for distinct $D,E\in P$ then $D\in\Low(D)\cap\Low(E)=\Core(X)$, contradicting this; so (c) holds. Finally, by Lemma~\ref{lem:metric}(b) $F$ is also a continuous injection of the compact space $\Cantor$ into the Hausdorff space $\Cantor$ with the product topology, hence a homeomorphism onto a closed set without isolated points. This is (d).
+\end{proofA}
+
+\begin{proofA}{Proof B of Theorem~\ref{thm:perfect}: Kuratowski--Ulam and Mycielski \src{R8}}
+Write $M=(\DX X,d)$ and let $R=\{(U,V)\in M^2:(\exists A\notin\Core(X))\ A\leT U\wedge A\leT V\}=\bigcup_{e,f}R_{e,f}$. This proof establishes that $R$ is meager without Lemma~\ref{lem:badpairs}.
+
+\emph{$R$ is Borel.} Enumerate the countable core as $(K_j)$, non-effectively. For fixed $e,f$, the condition ``$\Phi_e^U$ and $\Phi_f^V$ are total, binary and equal'' is $\forall n\,\exists b\in\{0,1\}\,[\Phi_e^U(n)\dn=b\wedge\Phi_f^V(n)\dn=b]$, a countable intersection of open sets by finite use; under it, ``different from every $K_j$'' is $\forall j\,\exists n\,[\Phi_e^U(n)\dn\ne K_j(n)]$, again $G_\delta$. Taking the union over $e,f$ shows that $R$ is Borel.
+
+\emph{Sections are meager.} For fixed $U$, $R_U=\bigcup\{\{V:A\leT V\}:A\in\Low(U)\setminus\Core(X)\}$ is a countable union of cones which are meager by Theorem~\ref{thm:dichotomy}.
+
+\emph{Kuratowski--Ulam, in the direction needed.} If $B\subseteq M\times N$ is Borel, $M,N$ are separable complete metric spaces, and every vertical section $B_x$ is meager, then $B$ is meager. Indeed $B$ has the Baire property, $B\sd O\subseteq H$ with $O$ open and $H$ meager. If $B$ were nonmeager, $O$ would contain a nonempty open rectangle $U_0\times V_0$. For a meager $H$, comeager many $x$ have $H_x$ meager: for a closed nowhere dense $F\supseteq$ a piece of $H$ and a countable base $(V_j)$ of $N$, each $E_j=\{x:\{x\}\times V_j\subseteq F\}$ is closed with empty interior, and off $\bigcup_jE_j$ the closed section $F_x$ has empty interior. Pick such an $x\in U_0$. On $V_0$ the complement of $B_x$ lies in $H_x$ and $B_x$ is meager, so $V_0$ would be meager in $N$, contradicting the Baire theorem.
+
+Hence $R$ is meager in $M^2$. Let $Q=\Low(X)\cap M$, which is countable and hence meager because $M$ has no isolated points, and let $N_0$ be the meager union of the cones above the sets in $\bigcup_j\Low(B_j)\setminus\Core(X)$. Then $S=R\cup((Q\cup N_0)\times M)\cup(M\times(Q\cup N_0))$ is meager, since $N\times M$ is nowhere dense when $N$ is.
+
+\emph{Mycielski's theorem \cite{Mycielski}, binary case.} If $M$ is a nonempty complete metric space without isolated points and $S\subseteq M^2$ is meager, there is a continuous injection $p:\Cantor\to M$ with $(p(\alpha),p(\beta))\notin S$ for $\alpha\ne\beta$. Its proof is the fusion of Proof~A: cover $S$ by closed nowhere dense symmetric sets $F_i$ and require $K_s\times K_t\subseteq\bigcap_{i<m}(M^2\setminus F_i)$ for distinct $s,t$ of length $m$. The only new point is that, for finitely many children, the conditions ``this ordered pair of coordinates lies in $M^2\setminus F_i$'' and ``these two coordinates differ'' are open dense in the finite product of the parent balls.
+
+Apply this to $S$. Distinct members of $P=p[\Cantor]$ are not $R$-related, which is (a). Each member has a distinct companion in $P$, so no member lies in $Q\cup N_0$; this gives (b) and $P\cap\Core(X)=\emptyset$, and (c), (d) follow as in Proof~A.
+\end{proofA}
+
+\begin{theorem}[Least element or no countable coinitial family]\label{thm:coinitial}\src{R9 for the explicit examples; general form from the same proof}
+Let $r\in\{\uc,\nc\}$ and let $(g_j)_{j\in\N}$ be representatives of $[X]_r$. There is a perfect set of $D\in\DX X$, pairwise as in Theorem~\ref{thm:perfect}\textup{(a)}, such that $\Low(D)\cap\Low(g_j)=\Core(X)$ for every $j$. Consequently, if $\Spec_r(X)$ has no least element, then $g_j\nleT D$ for every $j$, and $\Spec_r(X)$ has no countable coinitial subset. If moreover $\Core(X)=\Comp$, each such $D$ forms a Turing minimal pair with every $g_j$.
+\end{theorem}
+\begin{proof}
+Let $B_j$ code the graph of $g_j$ and apply Theorem~\ref{thm:perfect}; by Proposition~\ref{prop:core}(c), $\Core(X)\subseteq\Low(g_j)$, so the right-hand side of (b) is $\Core(X)$. If $g_j\leT D$ then $B_j\in\Core(X)$: every description of $X$ computes $g_j$, while $g_j$ computes a description of $X$ by Lemma~\ref{lem:self}. This is condition (iv) of Theorem~\ref{thm:least}, so the spectrum has a least element. Since $D\in[X]_r$, a countable set $\{\degT(g_j)\}$ none of whose members is below $\degT(D)$ is not coinitial. If $\Core(X)=\Comp$ and there is no least element, then $X$ is not coarsely computable, so $D$ and all $g_j$ are noncomputable by Lemma~\ref{lem:self}.
+\end{proof}
+A least degree is a one-element coinitial family, so this is a strong form of the failure of \eqref{eq:C1}; it does not exclude an uncountable antichain of minimal degrees, and no value for the coinitiality beyond uncountability is asserted.
+
+\section{Generic sets}\label{sec:generic}
+A set $G$ is \emph{$1$-generic relative to $Z$} if for every $Z$-c.e.\ set $W\subseteq\strings$ some initial segment of $G$ lies in $W$ or has no extension in $W$. In particular $G$ meets every dense $Z$-c.e.\ set of strings. The $1$-generics are comeager in the ordinary Cantor topology, and a $1$-generic $G\leT\emptyset'$ is obtained by the usual recursion: at stage $e$, ask $\emptyset'$ whether the current string has an extension in $W_e$ and take the first one found if so \src{R1}.
+
+\begin{lemma}[Generics are far from every computable function]\label{lem:genericfar}\src{R2, R6, R7; with bound $1/2$ R1}
+If $G$ is $1$-generic relative to $Z$ and $f$ is total and $Z$-computable, then $\limsup_n\rho_n(\{k:G(k)\ne f(k)\})=1$. Hence $G$ has no $Z$-computable coarse description, numerical or binary, and $G\nleT Z$.
+\end{lemma}
+\begin{proof}
+For rational $q<1$ and $m\in\N$ the $Z$-decidable set of strings $\sigma$ with $|\sigma|\ge\max(m,1)$ and disagreement fraction with $f$ greater than $q$ is dense: extend any string by a long block of bits different from $f$. So arbitrarily long prefixes of $G$ have disagreement fraction above $q$.
+\end{proof}
+
+The next three lemmas give a self-contained proof of the $1$-generic case of \cite[Theorem~4.2]{HJKS}. Finite tuples of strings are used as conditions for finite tuples of reals; this is equivalent to the interleaved formulation.
+
+\begin{lemma}[Projections and sections]\label{lem:sections}\src{R1}
+A subtuple of a $1$-generic tuple is $1$-generic. If $(C,R)$ is $1$-generic then $R$ is $1$-generic relative to $C$; either component may be a tuple.
+\end{lemma}
+\begin{proof}
+Pull a c.e.\ set of conditions on the selected coordinates back to all coordinates; meeting or avoiding the pullback projects to meeting or avoiding the original. For sections, given a $C$-c.e.\ set $W^C$ let $V$ be the c.e.\ set of pairs $(\sigma,\tau)$ such that the finite oracle $\sigma$ enumerates into $W$ a string extended by $\tau$. If $(C,R)$ meets $V$ then $R$ meets $W^C$. If $(\sigma_0,\tau_0)\prec(C,R)$ has no extension in $V$ and some $\tau\supseteq\tau_0$ lay in $W^C$, a long enough $\sigma$ with $\sigma_0\subseteq\sigma\prec C$ would give $(\sigma,\tau)\in V$.
+\end{proof}
+
+\begin{lemma}[Relative meet]\label{lem:relmeet}\src{R1}
+If $Y\oplus Z$ is $1$-generic relative to $C$ and $A\leT C\oplus Y$, $A\leT C\oplus Z$, then $A\leT C$.
+\end{lemma}
+\begin{proof}
+Let $\Phi,\Psi$ witness the reductions. The $C$-c.e.\ set of pairs $(\sigma,\tau)$ with $\Phi^{C\oplus\sigma}(n)\dn\ne\Psi^{C\oplus\tau}(n)\dn$ for some $n$ is not met by $(Y,Z)$, so some $(\sigma_0,\tau_0)\prec(Y,Z)$ has no extension in it. To compute $A(n)$ from $C$, search for any $\sigma\supseteq\sigma_0$ with $\Phi^{C\oplus\sigma}(n)\dn$. A prefix of $Y$ is a witness, and a prefix of $Z$ extending $\tau_0$ gives $\Psi^{C\oplus\tau}(n)=A(n)$, so the value found is $A(n)$.
+\end{proof}
+
+\begin{lemma}[Intersection of coordinate information]\label{lem:intersect}\src{R1}
+If $(G_0,\dots,G_{k-1})$ is $1$-generic and $A\leT G_S,G_T$, where $G_S$ is the join of the coordinates in $S$, then $A\leT G_{S\cap T}$. In particular, if $A\leT G_{k\setminus\{i\}}$ for every $i<k$ then $A$ is computable.
+\end{lemma}
+\begin{proof}
+Group the coordinates as $C=G_{S\cap T}$, $Y=G_{S\setminus T}$, $Z=G_{T\setminus S}$; Lemma~\ref{lem:sections} makes $Y\oplus Z$ generic relative to $C$, and Lemma~\ref{lem:relmeet} applies. Iterate over the complements of singletons.
+\end{proof}
+
+\begin{theorem}[The core of a $1$-generic]\label{thm:genericcore}\src{R1; = \cite[Theorem~4.2]{HJKS}}
+If $G$ is $1$-generic then $\Core(G)=\Comp$.
+\end{theorem}
+\begin{proof}
+Let $A\in\Core(G)$ and take $\eta$ from Theorem~\ref{thm:radius}. Choose $k\ge2$ with $1/k<\eta$ and split $G$ into residue columns $G_i(n)=G(kn+i)$; the tuple is $1$-generic. Let $Y_i$ be $G$ with the bits at positions $\equiv i\pmod k$ set to $0$. Then $\delta(G,Y_i)\le1/k<\eta$ and $Y_i\eqT G_{k\setminus\{i\}}$, so $A$ is below every complementary subjoin and is computable by Lemma~\ref{lem:intersect}.
+\end{proof}
+
+\begin{corollary}[The $1$-generic counterexample family]\label{cor:generic}\src{R1}
+Let $G$ be $1$-generic, for instance the $\emptyset'$-computable one above. There is $D\approx G$, agreeing with $G$ on any prescribed initial segment and arbitrarily $d$-close to $G$, with $\Low(G)\cap\Low(D)=\Comp$ and $G,D$ noncomputable; there is a perfect family of such sets, pairwise forming minimal pairs; and the coarse classes of $G$ have neither a least degree nor a countable coinitial family of degrees. No arithmetical bound on $D$ is obtained.
+\end{corollary}
+\begin{proof}
+Theorems~\ref{thm:genericcore}, \ref{thm:partners}, \ref{thm:perfect}, \ref{thm:coinitial}, with Lemmas~\ref{lem:genericfar} and~\ref{lem:certificate}.
+\end{proof}
+Two different Baire spaces occur here and must be kept apart: ordinary Cantor category for the choice of $G$, and the metric $d$ for the choice of partners inside the fixed class $\DX G$.
+
+\begin{lemma}[Computable subsequences]\label{lem:subsequence}\src{R7}
+Let $R=\{r_0<r_1<\cdots\}$ be infinite and $Z$-computable. If $A$ is $1$-generic relative to $Z$, so is $A_R(n)=A(r_n)$.
+\end{lemma}
+\begin{proof}
+For a $Z$-c.e.\ $W$ let $V$ be the $Z$-c.e.\ set of strings whose restriction to $R$ has a prefix in $W$. If $A$ meets $V$ then $A_R$ meets $W$. If $\sigma\prec A$ has no extension in $V$, its restriction $\eta$ to $R$ has no extension in $W$, since such an extension could be copied onto the $R$-positions of an extension of $\sigma$.
+\end{proof}
+
+\begin{proposition}[No computable mask, cover or enumeration of the disagreements]\label{prop:mask}\src{R2, R6, R7}
+Let $A$ be $1$-generic relative to $Z$, let $B$ be such that every set computable from both $Z\oplus A$ and $Z\oplus B$ is $Z$-computable, and let $E=A\sd B$. Then for every infinite $Z$-computable $R$ both $R\cap E$ and $R\setminus E$ are infinite. Consequently:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $E$ is infinite and bi-immune relative to $Z$: neither $E$ nor $\N\setminus E$ has an infinite $Z$-c.e.\ subset; in particular $E$ is neither c.e.\ nor co-c.e.\ in $Z$;
+\item there is no $Z$-computable density-zero $S$ with $E\subseteq^*S$, even if $E$ satisfies an explicit computable counting bound;
+\item if $Y$ agrees with a $1$-generic $X$ on an infinite computable set, then $X,Y$ do not form a minimal pair.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+If $R\cap E$ is finite then $A_R=^*B_R$, so $A_R\leT Z\oplus A,Z\oplus B$, while $A_R\nleT Z$ by Lemmas~\ref{lem:subsequence} and~\ref{lem:genericfar}. If $R\setminus E$ is finite, the same holds with the complement of $B_R$. (a) An infinite $Z$-c.e.\ set has an infinite $Z$-computable subset. (b) Take $R=\N\setminus S$. (c) is the argument of the first case with $Z=\emptyset$, which used only the genericity of $A$.
+\end{proof}
+\begin{proofA}{Second proof of \textup{(b)} \src{R2}}
+Adjoin the finitely many exceptions to $S$ and let $Q(k)=A(k)$ for $k\notin S$ and $Q(k)=0$ for $k\in S$. Since $A,B$ agree off $S$, $Q\leT Z\oplus A$ and $Q\leT Z\oplus B$, so $Q\leT Z$. But $Q\approx A$, contradicting Lemma~\ref{lem:genericfar}.
+\end{proofA}
+This is the obstruction to the naive construction ``alter one generic on a predetermined computable sparse set'': a computable \emph{counting bound} on the disagreements is much weaker than a computable \emph{location} for them. Proposition~\ref{prop:envelope} is the analogous statement for the reservoir method.
+
+\section{Dyadic columns: two explicit families of examples}\label{sec:columns}
+Let $\nu_2(m)$ be the exponent of $2$ in $m\ge1$ and put
+\[
+ c(n)=\nu_2(n+1),\qquad C_k=\{n:c(n)=k\}=\{2^k(2t+1)-1:t\in\N\},\qquad T_K=\bigcup_{k\ge K}C_k=\{n:2^K\mid n+1\}.
+\]
+The shift by one only avoids a special case at $0$. The $C_k$ form a computable partition of $\N$ into infinitely many columns of positive density with uniformly small tails. This device is used by \rep3, \rep4, \rep5, \rep8 and \rep9; it is the dyadic replication of \cite[Definition~2.7]{JS}.
+
+\begin{lemma}[Counts]\label{lem:counts}\src{R3, R4, R5, R8, R9}
+$|C_k\cap[0,N)|=\lfloor N/2^k\rfloor-\lfloor N/2^{k+1}\rfloor$ and $|T_K\cap[0,N)|=\lfloor N/2^K\rfloor$. Thus $\rho(C_k)=2^{-k-1}$ and $\rho_N(T_K)\le2^{-K}$ for every $N$. If $E\cap[M,\infty)\subseteq T_K$ then $\rho_N(E)\le M/N+2^{-K}$ for all $N$; hence a set with finite intersection with every column has density zero.
+\end{lemma}
+\begin{proof}
+$n\mapsto n+1$ maps $[0,N)$ onto $\{1,\dots,N\}$; count multiples of $2^k$ and of $2^{k+1}$. For the last statement, given $\varepsilon$ choose $K$ with $2^{-K}<\varepsilon/2$, then $M$ above the finitely many errors in the columns below $K$, then $N>2M/\varepsilon$.
+\end{proof}
+The tail bound is essential: every subset of $\N$ is a countable union of finite sets, and it is the summable column densities that make ``finitely many errors per column'' a density-zero condition. The order of the two limits ($N\to\infty$ first, then $K\to\infty$) matters in every application.
+
+\subsection{The dyadic code \texorpdfstring{$\Rc(A)$}{R(A)}}
+For $A\subseteq\N$ let $\Rc(A)(n)=A(c(n))$, that is $\Rc(A)=\bigcup_{k\in A}C_k$. Then $\Rc(A)\eqT A$ because $A(k)=\Rc(A)(2^k-1)$.
+
+\begin{lemma}[Relativized limit lemma, with uniformity]\label{lem:limit}\src{R3, R4}
+$A\leT B'$ if and only if there is a total $B$-computable binary $a(k,s)$ with $\lim_sa(k,s)=A(k)$ for all $k$. Both translations are uniform in indices, and the approximation obtained from an index is total for every oracle.
+\end{lemma}
+\begin{proof}
+Given $A=\Psi^{B'}$, let $a(k,s)$ be the output of $\Psi^{B'_s}(k)$ run for $s$ steps if it halts with a binary value, and $0$ otherwise, where $B'_s$ is the standard $B$-computable approximation to $B'$; the true computation has finite use, so eventually the simulation follows it. Conversely $B'$ computes $B$ and decides the $B$-c.e.\ question $\exists t\ge s\,[a(k,t)\ne a(k,s)]$; search for an $s$ with a negative answer. Convergence is used for termination only; no modulus is assumed.
+\end{proof}
+
+\begin{theorem}[Description criterion]\label{thm:criterion}\src{R3, R4; unrelativized: \cite[Theorem~2.19]{JS}}
+For all sets $A,B$: $B$ computes a coarse description of $\Rc(A)$ if and only if $A\leT B'$. Moreover one fixed functional computes $A$ from $D'$ for every $D\in\DX{\Rc(A)}$, uniformly in $A$ and $D$. In particular $\Rc(A)$ is coarsely computable iff $A\leT\emptyset'$.
+\end{theorem}
+\begin{proof}
+Let $D\leT B$ be a description, binary by Lemma~\ref{lem:binary}, with error set $E$. Let $a(k,s)$ be the majority of $D$ on the first $s$ elements of $C_k$ (ties to $0$). These lie below $N_{k,s}=2^k(2s-1)$, so the fraction of wrong answers among them is at most $\rho_{N_{k,s}}(E)\,N_{k,s}/s\le2^{k+1}\rho_{N_{k,s}}(E)\to0$. Hence $a(k,s)\to A(k)$ and $A\leT D'\leT B'$ by Lemma~\ref{lem:limit}; the majority and limit algorithms do not depend on $A$ or $D$. Conversely, given a $B$-computable $a(k,s)\to A(k)$, put $D(n)=a(c(n),n)$. On each column all errors occur below the stabilization point, so $D\approx\Rc(A)$ by Lemma~\ref{lem:counts}.
+\end{proof}
+Majority decoding yields $A\leT D'$ and in general not $A\leT D$: there need be no $D$-computable bound on when a column majority becomes final.
+
+\begin{theorem}[Jump-cone spectrum]\label{thm:jumpcone}\src{R3, R4}
+For every set $A$,
+\[
+ \Spec(\DX{\Rc(A)})=\Spec_{\uc}(\Rc(A))=\Spec_{\nc}(\Rc(A))=\{\mathbf b:\degT(A)\le\mathbf b'\},
+\]
+with numerical representatives allowed. For $A=\emptyset''$ this is the class $\{\mathbf b:\zero''\le\mathbf b'\}$ of high degrees in the unrestricted sense (no assumption $\mathbf b\le\zero'$).
+\end{theorem}
+\begin{proof}
+Theorems~\ref{thm:spectrum} and~\ref{thm:criterion}.
+\end{proof}
+
+\begin{proposition}[Computable approximations and the core]\label{prop:gamma}\src{R3, R4}
+For every $A$ and $K$ the computable set $Q_K$ which equals $A(k)$ on $C_k$ for $k<K$ and $0$ on $T_K$ satisfies $d(Q_K,\Rc(A))\le2^{-K}$; the sequence $(Q_K)$ is in general not uniformly computable. Hence $\gamma(\Rc(A))=1$ and, by Corollary~\ref{cor:approx}, $\Core(\Rc(A))=\Comp$ for \emph{every} $A$. If $A\nleT\emptyset'$, Theorems~\ref{thm:perfect} and~\ref{thm:coinitial} therefore give perfect families of pairwise minimal-pair descriptions of $\Rc(A)$, exact against any countable family of oracles, and the spectrum $\{\mathbf b:\degT(A)\le\mathbf b'\}$ has no countable coinitial subset.
+\end{proposition}
+\begin{proof}
+$Q_K$ hard-codes the finite word $A\rest K$, and its errors lie in $T_K$. A uniformly computable sequence would compute $A$.
+\end{proof}
+This is the literature route of \rep3 and \rep4 (there via the quoted \cite[Theorem~4.3]{HJKS}, here via Corollary~\ref{cor:approx}); it gives no bound on the witnesses. The reservoir method of Section~\ref{sec:reservoir} produces witnesses below $A\oplus\emptyset'$.
+
+\begin{proposition}[An explicit representative of degree $\zero'$]\label{prop:G}\src{R4}
+Let $K=\emptyset'$, let $D_K(n)=1$ iff $\Phi^K_{c(n)}(c(n))$ halts within $n$ steps, and let $G(2^j)=K(j)$, $G(n)=D_K(n)$ for $n$ not a power of two. Then $G\eqT\emptyset'$, $G\equc\Rc(\emptyset'')$, and $\Spec_{\uc}(G)=\Spec_{\nc}(G)=\{\mathbf b:\zero''\le\mathbf b'\}$, which has no least element.
+\end{proposition}
+\begin{proof}
+$D_K\leT K$ by bounded simulation. On $C_k$, if $\Phi_k^K(k)$ never halts all values are correctly $0$; if it halts after $t$ steps, all values at positions $n\ge t$ are $1$. So $D_K\approx\Rc(K')$ by Lemma~\ref{lem:counts}, $G\approx D_K$, and $G\eqT K$ by reading the powers of two. The spectrum is Theorem~\ref{thm:jumpcone}; the absence of a least element is Theorem~\ref{thm:columnsC1} or Proposition~\ref{prop:gamma}, using $\emptyset''\nleT\emptyset'$.
+\end{proof}
+So a readily described representative of fairly low degree need not be a minimum: two minimal-pair witnesses cannot both compute $K$.
+
+\begin{theorem}[Order classification of the dyadic codes]\label{thm:order}\src{R3}
+For all sets $A,B$,
+\[
+ \Rc(A)\leuc\Rc(B)\iff\Rc(A)\lenc\Rc(B)\iff A\leT B\oplus\emptyset' .
+\]
+Hence $\Rc(A)\equc\Rc(B)\iff\Rc(A)\eqnc\Rc(B)\iff A\oplus\emptyset'\eqT B\oplus\emptyset'$, and $\degT(A)\mapsto[\Rc(A)]_r$ embeds the cone above $\zero'$ into the uniform and the nonuniform coarse degrees, sending $\zero'$ to the zero coarse degree.
+\end{theorem}
+\begin{proof}
+Assume $\Rc(A)\lenc\Rc(B)$. Corollary~\ref{cor:columnfusion} provides $P\in\DX{\Rc(B)}$ with $P'\eqT B\oplus\emptyset'$. $P$ computes a description of $\Rc(A)$, so $A\leT P'$ by Theorem~\ref{thm:criterion}. Conversely fix a reduction of $A$ to $B\oplus\emptyset'$. For any description $P$ of $\Rc(B)$, normalized to binary, the uniform clause of Theorem~\ref{thm:criterion} computes $B$ from $P'$, and $\emptyset'\leT P'$ uniformly; so one index computes $A$ from $P'$ for every valid $P$. Lemma~\ref{lem:limit} turns this index into a $P$-computable array $a_P(k,s)\to A(k)$, total for every oracle, and $Q_P(n)=a_P(c(n),n)$ is a coarse description of $\Rc(A)$ as in Theorem~\ref{thm:criterion}. The functional $P\mapsto Q_P$ never queries $P'$: the jump computation is compiled into a pointwise limit. So the reduction is uniform.
+\end{proof}
+
+\subsubsection{Contrast: effective-dense reducibility}
+An \emph{effective-dense description} of $f$ is a total $D:\N\to\N\cup\{\bot\}$ which never gives a wrong numerical answer and whose omission set $D^{-1}(\bot)$ has density zero; $\bot$ is an explicit value, not divergence. Replacing $\CD$ by $\ED$ in the definitions gives $\le_{\ned}$ and $\le_{\ued}$ \cite{Gerdes,AHJ}.
+
+\begin{theorem}[Effective-dense spectrum of $\Rc(A)$]\label{thm:ed}\src{R3, R4}
+Every effective-dense description of $\Rc(A)$ computes $A$, by one functional independent of $A$. For $r\in\{\ned,\ued\}$, $\Spec([\Rc(A)]_r)=\{\mathbf b:\degT(A)\le\mathbf b\}$, with least degree $\degT(A)$ realized by $\Rc(A)$ itself, and $\Rc(A)\le_{\ued}\Rc(B)\iff\Rc(A)\le_{\ned}\Rc(B)\iff A\leT B$.
+\end{theorem}
+\begin{proof}
+To compute $A(k)$ query successive elements of $C_k$ until an answer other than $\bot$ appears; the omission set has density zero and $C_k$ has positive density, so this halts, and every numerical answer on $C_k$ is $A(k)$. If $Y\equiv_r\Rc(A)$, applying $\Rc(A)\le_rY$ to the exact description $Y$ gives $A\leT Y$. For realization let $B\geT A$ and overwrite $\Rc(A)$ at the positions $2^j$ with $B(j)$ to get $Y\eqT B$. Replacing all answers on the computable density-zero set $\{2^j\}$ by $\bot$ is a single procedure turning a description of either of $Y,\Rc(A)$ into a description of the other, so $Y\equiv_{\ued}\Rc(A)$. The order statement follows by decoding $B$, computing $A$, and outputting $\Rc(A)$ exactly; conversely apply the reduction to the exact description $\Rc(B)$.
+\end{proof}
+For the single binary target $\Rc(\emptyset'')$ the contrast is exact: coarse representatives $\{\mathbf b:\zero''\le\mathbf b'\}$ with no least degree, effective-dense representatives $\{\mathbf b:\zero''\le\mathbf b\}$ with least degree $\zero''$. This does \emph{not} answer the general effective-dense question C2: density-zero equality does not imply effective-dense equivalence, because a wrong answer cannot be passed off as an omission. The realization step works only because its modification support is computable, and Proposition~\ref{prop:envelope} shows that this is unavailable for the error supports of the coarse witnesses.
+
+\subsection{The guarded diagonal c.e.\ set}
+Fix an acceptable enumeration $(\varphi_e)$ of the partial computable functions.
+
+\begin{definition}[Guarded diagonal set]\label{def:guarded}\src{R8, R9; variant R5}
+For $n\in C_e$ put
+\begin{equation}\label{eq:guarded}
+ n\in X\iff\bigl[(\forall m\le n)\ \varphi_e(m)\dn\in\{0,1\}\bigr]\ \wedge\ \varphi_e(n)=0 .
+\end{equation}
+\rep5 guards only along the column: for $n=2^e(2j+1)-1$ it requires $\varphi_e(2^e(2i+1)-1)\dn\in\{0,1\}$ for $i\le j$. Every statement below except many-one completeness (which \rep5 does not claim) is proved for both variants by the same arguments. Relative to an oracle $Z$, $X_Z$ is defined by \eqref{eq:guarded} with $(\varphi_e^Z)$.
+\end{definition}
+The guard is the point of the construction: without it a partial program could leave a noncomputable pattern inside one positive-density column; with it every program that is not total and binary-valued contributes only finitely many points.
+
+\begin{theorem}[Properties of the guarded diagonal set]\label{thm:guarded}\src{R5, R8, R9}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $X$ is c.e., and many-one complete; so $X\eqT\emptyset'$.
+\item Each $X\cap C_e$ is computable, hence so is each $X_{<k}=X\cap\bigcup_{e<k}C_e$; no uniformly computable sequence of indices exists.
+\item $d(X,X_{<k})\le2^{-k}$; hence $\gamma(X)=1$ and $\Core(X)=\Comp$.
+\item $X$ has no computable coarse description: $\liminf_n\rho_n(X\sd C)\ge2^{-e-1}$ whenever $\varphi_e$ is the characteristic function of $C$.
+\item Indices for the sets $X_{<k}$ can be computed uniformly in $k$ from $\emptyset''$.
+\end{enumerate}
+All of this relativizes: $X_Z$ is c.e.\ in $Z$, $X_Z\eqT Z'$, each $X_Z\cap C_e$ is $Z$-computable with indices uniformly computable from $Z''$, $X_Z$ is approximable within $2^{-k}$ by $Z$-computable sets, so $\Core(X_Z)\subseteq\Low(Z)$, and $X_Z$ has no $Z$-computable coarse description.
+\end{theorem}
+\begin{proof}
+(a) Membership has a finite positive witness, so dovetailing enumerates $X$ without deciding totality. By the parameter theorem obtain from $p$ an index $h(p)$ of the program which on every input waits for $\varphi_p(p)$ to halt and then outputs $0$. It is total and constantly $0$ if $p\in\emptyset'$ and nowhere defined otherwise, so $p\in\emptyset'\iff2^{h(p)}-1\in X$, as $2^{h(p)}-1\in C_{h(p)}$. (b) If $\varphi_e$ is total and binary then $X=1-\varphi_e$ on $C_e$; otherwise let $m$ be least with $\varphi_e(m)$ undefined or nonbinary, and then $X\cap C_e\subseteq[0,m)$ is finite. This is a case split, not a decision procedure; a uniform sequence would compute $X(n)=X_{<c(n)+1}(n)$. (c) The errors lie in $T_k$; apply Lemma~\ref{lem:counts} and Corollary~\ref{cor:approx}. (d) On $C_e$, $X=1-C$; numerical descriptions are excluded by Lemma~\ref{lem:binary}. (e) ``$\varphi_e$ is total and binary-valued'' is $\Pi^0_2$, so $\emptyset''$ decides it; in the positive case output the program that tests membership in $C_e$ and complements $\varphi_e$; in the negative case use $\emptyset'$ to find the least bad input $m$, run the finitely many computations below it, and output an index for the resulting finite set. The indices obtained are indices of ordinary computable sets; the oracle is used only to choose them.
+\end{proof}
+There is no tension between (c) and (d): each approximant has a positive error tolerance, and only finitely many columns are handled by any one of them.
+
+\begin{corollary}[Category consequences for the c.e.\ example]\label{cor:guardedcategory}\src{R8, R9}
+There is $D\approx X$ with $\Low(X)\cap\Low(D)=\Comp$; thus $\degT(D)$ and $\zero'$ form a minimal pair inside one uniform coarse class, and necessarily $D\nleT\emptyset'$, so $D$ is not $\Delta^0_2$. There is a perfect set of descriptions of $X$ forming minimal pairs with each other and, individually, with $\emptyset'$. Neither coarse class of $X$ has a least degree or a countable coinitial family of degrees.
+\end{corollary}
+\begin{proof}
+Theorems~\ref{thm:partners}, \ref{thm:perfect} (with $B_0=X$) and~\ref{thm:coinitial}, using Theorem~\ref{thm:guarded}(c),(d). If $D\leT\emptyset'\eqT X$ then $D\in\Low(X)\cap\Low(D)=\Comp$, contradicting (d).
+\end{proof}
+
+\section{Finite extension I: computable reservoirs}\label{sec:reservoir}
+\rep3 and \rep4 (for $\Rc(A)$) and \rep5 (in general, and for the guarded diagonal set) use the same forcing. \rep5's formulation covers all three, so the theorem is stated in that generality; the jump-control clause is from \rep3.
+
+\textbf{Setting.} Fix an oracle $Z$, a target set $A$, and an increasing sequence of $Z$-computable sets $P_0\subseteq P_1\subseteq\cdots$ such that each $A\cap P_k$ is $Z$-computable (no uniformity in $k$ is assumed), each $Q_k=\N\setminus P_k$ is infinite, and the upper densities of the $Q_k$ tend to $0$. For a string $\sigma$ the level-$k$ \emph{reservoir} is
+\[
+ \Res(\sigma,k)=\{X\in\Cantor:X\succeq\sigma\ \wedge\ (\forall n\ge|\sigma|)\,[n\in P_k\Rightarrow X(n)=A(n)]\},
+\]
+and $\alpha\succeq\sigma$ is \emph{admissible at level $k$} if it agrees with $A$ on $P_k\cap[|\sigma|,|\alpha|)$. Given indices for $P_k$ and $A\cap P_k$, admissibility is $Z$-decidable; the full set $A$ is never queried. Bits already in $\sigma$ are never changed, even if they disagree with $A$. If $\alpha$ is admissible then
+\begin{equation}\label{eq:shrink}
+ \Res(\alpha,k)\subseteq\Res(\sigma,k),\qquad\Res(\alpha,k+1)\subseteq\Res(\sigma,k).
+\end{equation}
+In \rep3 and \rep4 a condition is a stem together with a finite ``frozen word'' (or ``lock vector'') $A\rest k$ prescribing the future values on the columns below $k$; this is the case $P_k=\N\setminus T_k$ with target $\Rc(A)$.
+
+\begin{lemma}[Cross-disagreement or computable common output]\label{lem:product}\src{R3, R4, R5}
+Fix $k$, strings $\sigma,\tau$ and indices $e,j$. Exactly one of the following holds.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item There are admissible $\alpha\succeq\sigma$, $\beta\succeq\tau$ and $n$ with $\Phi_e^{Z\oplus\alpha}(n)\dn\ne\Phi_j^{Z\oplus\beta}(n)\dn$. This disagreement persists on $\Res(\alpha,k)\times\Res(\beta,k)$.
+\item There are none; and whenever $X\in\Res(\sigma,k)$ and $Y\in\Res(\tau,k)$ satisfy $\Phi_e^{Z\oplus X}=\Phi_j^{Z\oplus Y}=F$ total, then $F\leT Z$.
+\end{enumerate}
+Whether \textup{(1)} holds is a $\Sigma^0_1(Z)$ question about the finite parameters, decidable by $Z'$.
+\end{lemma}
+\begin{proof}
+Assume (1) fails and $X,Y,F$ are as in (2). To compute $F(n)$ from $Z$, enumerate admissible $\alpha\succeq\sigma$, dovetail the computations $\Phi_e^{Z\oplus\alpha}(n)$, and output the first value. The search halts because a long prefix of $X$ is admissible and witnesses convergence. A long prefix $\beta$ of $Y$ is admissible with $\Phi_j^{Z\oplus\beta}(n)=F(n)$, so any other output would be a cross-disagreement. The program uses only $Z$ and finitely many hard-coded integers.
+\end{proof}
+The lemma does not decide which alternative holds, does not claim that a common total output exists, and does not produce an index for $F$ uniformly. The independence of the two sides matters: any admissible witness on one side may be paired with any on the other; the two oracles agree in density because of their progressively protected regions, not because of a joint consistency condition on free positions.
+
+\begin{theorem}[Reservoir fusion with jump control]\label{thm:fusion}\src{R5; jump clause R3; special cases R3, R4}
+In the setting above there are lengths $L_0<L_1<\cdots$ and a perfect set $\mathcal P=\{X_U:U\in\Cantor\}\subseteq\DX A$ such that:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item if $U\ne V$ and $F$ is total with $F\leT Z\oplus X_U$ and $F\leT Z\oplus X_V$, then $F\leT Z$;
+\item $X_U\sd A\subseteq[0,L_k)\cup Q_k$ for all $U$ and all $k$, so $\rho_N(X_U\sd A)\le L_k/N+\rho_N(Q_k)$ uniformly in $U$;
+\item if an oracle $W\geT Z'$ computes indices for $P_k$ and $A\cap P_k$ uniformly in $k$, then the tree is $W$-computable, $U\mapsto X_U$ is a continuous injection computable from $W$, and
+\[
+ X_U\leT W\oplus U,\qquad(Z\oplus X_U)'\leT W\oplus U .
+\]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+At level $s$ we have pairwise incompatible strings $\sigma_\eta$ ($\eta\in2^s$) of common length $L_s$, starting from the empty string. All extensions made while passing from level $s$ to level $s+1$ are admissible at level $s$.
+
+\emph{Split.} For each $\eta$ choose a fresh $q\in Q_s$ beyond the current length, extend admissibly up to $q$ (prescribed values on $P_s$, zeros elsewhere), and give $q$ the values $0$ and $1$ to obtain children $\eta0$, $\eta1$. Both are admissible because $q$ is unprotected.
+
+\emph{Pair tasks.} For every ordered pair of distinct $\xi,\zeta\in2^{s+1}$ and all $e,j\le s$, in a fixed order, apply Lemma~\ref{lem:product} at level $s$ to the current strings at $\xi,\zeta$. In case (1) extend those two strings to the witnesses; in case (2) do nothing.
+
+\emph{Jump tasks.} For every $\xi\in2^{s+1}$ and $e\le s$ ask whether the current string at $\xi$ has an admissible extension $\alpha$ with $\Phi_e^{Z\oplus\alpha}(e)\dn$. If so extend to the first such $\alpha$ and record $1$; otherwise record $0$.
+
+\emph{Raise protection.} Pad all strings admissibly to a common length $L_{s+1}>L_s$, $L_{s+1}\ge s+1$, and pass to level $s+1$.
+
+Each level consists of finitely many finite extensions. By \eqref{eq:shrink} every later reservoir of a branch is contained in every earlier one, and extending one leaf leaves the others unchanged and incompatible with it. A witnessed disagreement is permanent, and a no-disagreement conclusion remains valid on smaller reservoirs; so there is no injury.
+
+Put $X_U=\bigcup_s\sigma_{U\rest s}$. Then $\mathcal P=\bigcap_s\bigcup_{\eta\in2^s}[\sigma_\eta]$ is closed; the splitting makes $U\mapsto X_U$ injective, and changing a late bit of $U$ shows that no point is isolated. For (b): beyond $L_k$ every bit of $X_U$ is placed by an extension admissible at some level $\ge k$, hence agrees with $A$ on $P_k$. Letting first $N\to\infty$ and then $k\to\infty$ gives $X_U\approx A$. For (a): choose $s\ge e,j$ with $U\rest(s+1)\ne V\rest(s+1)$. Outcome (1) of the corresponding task would contradict $\Phi_e^{Z\oplus X_U}=\Phi_j^{Z\oplus X_V}$, so outcome (2) occurred, the final sets lie in the two reservoirs, and $F\leT Z$. For (c): $W$ performs the admissibility tests, the searches for fresh positions, and, via $Z'$, the $\Sigma^0_1(Z)$ decisions; positive searches are run only after a positive oracle answer. To compute $X_U(n)$ build levels until $L_s>n$. Finally $e\in(Z\oplus X_U)'$ iff the bit recorded for $(U\rest(e+1),e)$ at level $e$ is $1$: if it is $1$, a prefix of $X_U$ forces convergence; if it is $0$, no admissible extension of the then-current string $\sigma$ converges, while every longer prefix of $X_U\in\Res(\sigma,e)$ is such an extension.
+\end{proof}
+Unrestricted Cohen forcing can diagonalize but may introduce errors of positive density, while fixing $A$ off a single computable density-zero set leaves too much noncomputable information in each condition. Here the protected part is computable at each stage and the unprotected density tends to $0$ only across stages; that is what lets the two requirements coexist \src{R5}.
+
+\begin{corollary}[Dyadic codes: witnesses below $A\oplus\emptyset'$ with prescribed jump]\label{cor:columnfusion}\src{R3, R4}
+For every set $A$ there is a continuous injection $F_A:\Cantor\to\DX{\Rc(A)}$ with perfect range, computable from $A\oplus\emptyset'$ together with the input branch, such that for distinct $X,Y$ in the range every total function computable from both is computable, and
+\[
+ F_A(U)\leT A\oplus\emptyset'\oplus U,\qquad A\oplus\emptyset'\leT F_A(U)'\leT A\oplus\emptyset'\oplus U .
+\]
+In particular there are $D,E\approx\Rc(A)$ with $D,E\leT A\oplus\emptyset'$, $D'\eqT E'\eqT A\oplus\emptyset'$, and only computable common total lower bounds; and a sequence $(D_i)_{i\in\N}$ with the same pairwise property and jumps, uniformly computable from $A\oplus\emptyset'$. If $A\nleT\emptyset'$ all members of the range are noncomputable, and any two form a Turing minimal pair.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:fusion} with $Z=\emptyset$, target $\Rc(A)$, $P_k=\N\setminus T_k$ and $W=A\oplus\emptyset'$: an index for $\Rc(A)\cap P_k$ is computable from $A\rest k$, and $Q_k=T_k$ is infinite of density $2^{-k}$. The lower bound on the jump is Theorem~\ref{thm:criterion}, together with $\emptyset'\leT Y'$ for every $Y$. Take computable branches, for instance $0^\N,10^\N$, and $U_i=0^i10^\N$ for the sequence. Noncomputability is Theorem~\ref{thm:criterion}.
+\end{proof}
+The oracle cost is $A\oplus\emptyset'$ and not one jump higher because every search ranges over strings compatible with a condition whose protected word is a \emph{finite} parameter; $A$ is consulted only to supply the next bit when a column is frozen. For $A\geT\emptyset'$ the witnesses are below $A\eqT\Rc(A)$, so $\Rc(A)$ itself is not one half of a minimal pair with them \src{R4}.
+
+\begin{theorem}[Failure of C1 for the dyadic codes; least-degree dichotomy]\label{thm:columnsC1}\src{R3, R4}
+The three spectra of $\Rc(A)$ have a least degree if and only if $A\leT\emptyset'$, in which case $\Rc(A)$ is in the zero coarse class, the least degree is $\zero$, and the spectrum is all degrees. In particular
+\[
+ X(n)=\chi_{\emptyset''}(\nu_2(n+1))
+\]
+is a counterexample to \eqref{eq:C1} and to its uniform analogue, with numerical representatives allowed. Its class contains $D,E\leT\emptyset''$ with $D'\eqT E'\eqT\emptyset''$ and $\degT(D)\wedge\degT(E)=\zero$, and continuum many pairwise minimal-pair degrees.
+\end{theorem}
+\begin{proof}
+If $A\leT\emptyset'$ then $A\leT B'$ for every $B$ and Theorem~\ref{thm:jumpcone} applies. Otherwise combine Corollary~\ref{cor:columnfusion}, Theorem~\ref{thm:criterion} and Lemma~\ref{lem:certificate}.
+\end{proof}
+
+\begin{proposition}[No computable null envelope]\label{prop:envelope}\src{R4}
+In Corollary~\ref{cor:columnfusion} every member of the range agrees with $\Rc(A)$ off the density-zero set $S_A=\{n:n<L_{c(n)+1}\}$. If $A$ is noncomputable, no computable density-zero set contains $S_A$.
+\end{proposition}
+\begin{proof}
+Column $C_k$ is protected from level $k+1$ on, which gives the first statement by Theorem~\ref{thm:fusion}(b); $S_A$ has density zero by Lemma~\ref{lem:counts}. If $S_A\subseteq C$ with $C$ computable of density zero, then on input $k$ one can search for $n\in C_k\setminus C$, which exists since $C_k$ has positive density; every member $X$ of the range has $X(n)=A(k)$. So two distinct members both compute the noncomputable $A$, contradicting the pairwise property.
+\end{proof}
+This is the precise obstruction to turning the coarse witnesses into effective-dense ones: the small set of possible mistakes cannot be replaced by a computable density-zero erasure mask (compare Theorem~\ref{thm:ed} and Proposition~\ref{prop:mask}).
+
+\begin{corollary}[The c.e.\ example: witnesses below $\zero''$]\label{cor:cefusion}\src{R5}
+For the guarded diagonal set $X$ there is a perfect set $\mathcal P\subseteq\DX X$ of noncomputable sets, any two forming a Turing minimal pair, with $X_U\sd X\subseteq[0,L_k)\cup T_k$ for all $k$, and with distinct members $X_0,X_1\leT\emptyset''$. Hence neither coarse class of $X$ has a least degree, and the same is true of the part of the spectrum below $\zero''$. An arbitrary member of $\mathcal P$ need not be below $\emptyset''$.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:fusion} with $Z=\emptyset$, $P_k=\N\setminus T_k$ and $W=\emptyset''$, using Theorem~\ref{thm:guarded}(b),(d),(e), two computable branches, and Lemma~\ref{lem:certificate}.
+\end{proof}
+Compare Corollary~\ref{cor:guardedcategory}: the category method makes $X$ itself one half of a minimal pair, at the price of a partner that cannot be $\Delta^0_2$ and carries no bound; the reservoir method bounds both witnesses by $\emptyset''$ but neither of them is $X$.
+
+\section{Finite extension II: the one-bit reserve under a disagreement budget}\label{sec:budget}
+\rep2, \rep6 and \rep7 construct individually $1$-generic minimal pairs whose disagreements are quantitatively sparse. Their central lemma is the same (``connectivity test'' and Case~4 in \rep2, ``one-bit connectivity trilemma'' in \rep6, ``one-bit bridge lemma'' in \rep7). They differ in how sparseness is measured: \rep2 and \rep6 bound the counting function of the disagreement set, \rep7 bounds a weighted sum; \rep2 and \rep7 build two sets, relative to an oracle, and \rep6 builds a perfect family. The proofs use only two properties of the measure of sparseness, so they are presented once, for an abstract budget.
+
+\begin{definition}[Budget]\label{def:budget}
+A \emph{budget} is a decidable family $\bud$ of finite subsets of $\N$ such that
+\begin{enumerate}[label=\textup{(B\arabic*)},leftmargin=2.6em]
+\item $\emptyset\in\bud$, and $\bud$ is closed under subsets;
+\item \textup{(one-bit reserve)} there is a computable function $m$ such that for all $E\in\bud$ and $L\in\N$: $m(E,L)\ge L$, $m(E,L)>\max E$, and $E\cup\{k\}\in\bud$ for every $k\ge m(E,L)$.
+\end{enumerate}
+A set $V\subseteq\N$ \emph{obeys} $\bud$ if $V\cap[0,n)\in\bud$ for every $n$.
+\end{definition}
+
+\begin{example}[The budgets of the reports]\label{ex:budgets}
+Both kinds of budget used in the reports satisfy (B1) and (B2).
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item \emph{Counting budget} \src{R2, R6}. For $b:\N\to\N$ computable, nondecreasing and unbounded, $\bud_b=\{E:|E\cap[0,k)|\le b(k)\text{ for all }k\}$, with $m(E,L)$ the least $M\ge L$, $M>\max E$, such that $b(M)\ge|E|+1$. $V$ obeys $\bud_b$ iff $|V\cap[0,n)|\le b(n)$ for all $n$. Every prefix must be tested: with $b(n)=\lfloor\log_2(n+1)\rfloor$ the strings $000$ and $110$ are within budget at length $3$ but not at length $2$.
+\item \emph{Weighted budget} \src{R7}. For $h:\N\to\N_{\ge1}$ computable, nondecreasing and unbounded and a rational $b>0$, $\bud_{h,b}=\{E:\sum_{n\in E}1/h(n)<b\}$, with $m(E,L)$ the least $M\ge L$, $M>\max E$, such that $\sum_{n\in E}1/h(n)+1/h(M)<b$. If $V$ obeys $\bud_{h,b}$ then $\sum_{n\in V}1/h(n)\le b$. The strict inequality at finite stages is deliberate: every condition has unused budget, the limit need not.
+\end{enumerate}
+\end{example}
+
+A \emph{frontier} is a finite indexed family $F=(\sigma_i)_{i<k}$, $k\ge2$, of binary strings of one length $L$ (repetitions allowed); its \emph{variation set} is $\Var(F)=\{n<L:(\exists i,j)\ \sigma_i(n)\ne\sigma_j(n)\}$, and $F$ is \emph{legal} if $\Var(F)\in\bud$. For $k=2$ these are the pair conditions $(\sigma,\tau)$ of \rep2 and \rep7, and $\Var$ is the disagreement set. Appending one word to all members of a frontier (a \emph{copy extension}) leaves $\Var$ unchanged; this is why ordinary genericity requirements remain available at no cost.
+
+\begin{lemma}[One-bit trilemma]\label{lem:trilemma}\src{R2, R6, R7}
+Fix an oracle $Z$, strings $\sigma,\tau$, functionals $\Phi,\Psi$, and a set $\mathcal A$ of pairs $(u,v)$ of equal-length strings containing every pair with Hamming distance $\Ham(u,v)\le1$. At least one of the following holds.
+\begin{description}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item[\textup{D (admissible disagreement)}] There are $n$ and $(u,v)\in\mathcal A$ with $\Phi^{Z\oplus\sigma u}(n)\dn\ne\Psi^{Z\oplus\tau v}(n)\dn$.
+\item[\textup{P (partiality cylinder)}] There are $n$ and $u$ with $\Phi^{Z\oplus\sigma uw}(n)\up$ for all $w$, or with $\Psi^{Z\oplus\tau uw}(n)\up$ for all $w$.
+\item[\textup{C (computable common output)}] There is a total $Z$-computable $g$ such that for all $n,u$: if $\Phi^{Z\oplus\sigma u}(n)\dn$ or $\Psi^{Z\oplus\tau u}(n)\dn$, the value is $g(n)$.
+\end{description}
+In case \textup{C} the conclusion holds for \emph{all} suffixes, not only admissibly paired ones, so it survives arbitrary later extensions on either side.
+\end{lemma}
+\begin{proof}
+Assume D and P fail and fix $n$. Failure of P says that above every suffix, on either side, some further suffix makes the computation at $n$ converge. Take any two finite convergence witnesses, on either side, with suffixes $u,v$; pad the shorter so that both have length $r$ (convergence persists). Join $u$ to $v$ in the $r$-cube by a path $u=u_0,u_1,\dots,u_t=v$ flipping one coordinate at a time.
+
+\emph{One suffix serves the whole path.} Process the $2(t+1)$ computations $\Phi^{Z\oplus\sigma u_iw}(n)$, $\Psi^{Z\oplus\tau u_iw}(n)$ one at a time: if the current common suffix is $w_0$, density of convergence above the relevant string gives a further suffix making the next computation halt; append it to $w_0$ everywhere. Earlier convergences persist. After finitely many steps we have a single $w$ with values $a_i$ and $b_i$ for all $i\le t$.
+
+The pairs $(u_iw,u_iw)$ and $(u_iw,u_{i+1}w)$ have Hamming distance $0$ and $1$, so they are in $\mathcal A$, and failure of D gives $a_i=b_i$ and $a_i=b_{i+1}$. Hence $a_i=a_{i+1}$ along the path, and the two original witnesses, whose computations are preserved at the endpoints, have the same value. So all convergent computations at $n$, on both sides, share one value $g(n)$. To compute $g(n)$ from $Z$, dovetail $\Phi^{Z\oplus\sigma u}(n)$ over all $u$ and output the first value; this halts because P fails at the empty suffix. The string $\sigma$ and the index of $\Phi$ are finite constants of this program, however they were chosen.
+\end{proof}
+
+\begin{remark}[Both hypotheses are needed]\label{rem:trilemmasharp}
+\emph{Without the one-bit pairs:} if only diagonal pairs $(u,u)$ were admissible, two identity functionals above identical strings would never disagree admissibly, yet they compute a possibly noncomputable common tail; comparing equal tails gives $a_i=b_i$ but cannot compare different vertices \src{R2, R6}. \emph{Without density of convergence:} if the only tails on which the computations are defined are $000$, with output $0$, and $111$, with output $1$, and comparisons may change one bit, there is no admissible pair of unequal defined outputs although the output is not constant; the one-bit path passes through undefined computations \src{R7}. A failed disagreement search is therefore not enough to invoke C, and a bounded simulation cannot certify the absence of a partiality cylinder. The many one-bit pairs used in the proof are \emph{alternative} extensions of one condition, not successive stages, so their costs are not added.
+\end{remark}
+
+\begin{lemma}[Buffering and global lifting]\label{lem:lift}\src{R2, R6, R7}
+Let $F$ be a legal frontier of length $L$. Appending zeros to all members up to a length $L^*\ge m(\Var(F),L)$ gives a legal frontier $F^*$ with the same variation set. For leaves $i\ne j$ of $F^*$ call a pair $(u,v)$ of equal-length strings \emph{admissible} if
+\[
+ \Var(F)\cup\{L^*+t:u(t)\ne v(t)\}\in\bud .
+\]
+This is decidable, and every pair with $\Ham(u,v)\le1$ is admissible. If $(u,v)$ is admissible, extending leaf $j$ by $v$ and \emph{every other leaf} by $u$ gives a legal frontier whose variation set is exactly the displayed set.
+\end{lemma}
+\begin{proof}
+The first two statements are (B2). At a new coordinate leaf $j$ has the $v$-value and every other leaf the $u$-value, and there is at least one other leaf; so the coordinate varies iff $u$ and $v$ differ there.
+\end{proof}
+A pairwise task may extend many leaves, but it costs only the coordinates where the two suffixes differ, not the number of leaves. Conversely the cost must be charged against the \emph{global} variation set: \rep6's regression check exhibits a four-leaf frontier on which charging a selected pair's own disagreement count would wrongly admit an extension.
+
+\begin{proposition}[One permanent pair requirement]\label{prop:onereq}\src{R2, R6, R7}
+Given a legal frontier, distinct leaves $i,j$ and indices $e,f$, there is a legal extension of the whole frontier such that for all $X,Y$ extending the new leaves $i,j$ respectively,
+\[
+ \Phi_e^{Z\oplus X}=\Phi_f^{Z\oplus Y}\text{ total}\ \Longrightarrow\ \Phi_e^{Z\oplus X}\leT Z .
+\]
+The extension can be chosen computably in $Z''$.
+\end{proposition}
+\begin{proof}
+Buffer, and apply Lemma~\ref{lem:trilemma} to the two leaves and the admissible pairs of Lemma~\ref{lem:lift}. In case D lift the disagreeing pair; the two values persist, so the outputs are never equal. In case P append the witness $u$ to every leaf; this costs nothing and makes one of the outputs partial on every extension. In case C any common total output is the $Z$-computable $g$; no extension is needed. Each outcome is preserved by arbitrary further extension of all leaves. \emph{Complexity:} D has finite witnesses and decidable budget checks, so it is $\Sigma^0_1(Z)$ and $Z'$ decides it and finds a witness. If D fails, P is the $\Sigma^0_2(Z)$ statement $\exists n,u\ \forall w,t\ \neg[\Phi^{Z\oplus\sigma_iuw}_{e,t}(n)\dn]$ or its analogue for $f$; $Z''$ decides it, and a witness is found using $Z'$ for the inner $\Pi^0_1(Z)$ property. If both fail, C holds with no further oracle decision.
+\end{proof}
+
+\begin{theorem}[Budgeted perfect trees of pairwise minimal pairs]\label{thm:budget}\src{two sets, relative to $Z$: R2, R7; perfect family, $Z=\emptyset$: R6}
+Let $Z$ be an oracle, $\bud$ a budget and $\nu$ a finite string. There are a $Z''$-computable map $T:\strings\to\strings$ with $T(\emptyset)\succeq\nu$, $T(\alpha)\prec T(\alpha i)$, $T(\alpha0)$ and $T(\alpha1)$ incompatible, and $|T(\alpha)|=L_{|\alpha|}$, and a set $V\leT Z''$, such that the set $P=\{X_U:U\in\Cantor\}$ of paths $X_U=\bigcup_sT(U\rest s)$ is perfect and:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item every $X\in P$ is $1$-generic relative to $Z$;
+\item if $X,Y\in P$ are distinct and $F$ is total with $F\leT Z\oplus X$ and $F\leT Z\oplus Y$, then $F\leT Z$;
+\item all members of $P$ agree off $V$, and $V$ obeys $\bud$; in particular $X\sd Y$ obeys $\bud$ for all $X,Y\in P$;
+\item $X_U\leT Z''\oplus U$; in particular $P$ has distinct members $A,B\leT Z''$.
+\end{enumerate}
+Consequently, for distinct $X,Y\in P$ the degrees of $Z\oplus X$ and $Z\oplus Y$ are incomparable, strictly above $\degT(Z)$, and have greatest lower bound $\degT(Z)$. The members of $P$ are individually generic; no mutual genericity is claimed.
+\end{theorem}
+\begin{proof}
+Keep at level $s$ a legal frontier $F_s=(T(\alpha))_{\alpha\in2^s}$ of pairwise incompatible strings of length $L_s$, starting from $T(\emptyset)=\nu$ (for $s=0$ treat the single string as a frontier with empty variation). Let $(W^Z_e)$ enumerate the $Z$-c.e.\ sets of strings.
+
+\emph{Split.} Buffer, then replace every leaf $\widehat T(\alpha)$ by $\widehat T(\alpha)0$ and $\widehat T(\alpha)1$. All splits occur at one coordinate, which lies beyond $m(\Var,L)$; so exactly one variation coordinate is added, whatever the number of leaves, and the frontier stays legal by (B2).
+
+\emph{Genericity.} For each leaf $\beta\in2^{s+1}$ and each $e\le s$ ask $Z'$ whether the current string at $\beta$ has an extension in $W^Z_e$. If so append a witness suffix to \emph{all} leaves; if not, the string already avoids $W^Z_e$.
+
+\emph{Pairs.} For each ordered pair of distinct leaves and all $e,f\le s$ apply Proposition~\ref{prop:onereq}, buffering again before each application since earlier tasks may have used the reserve.
+
+\emph{Freeze.} Append a common $0$ and let the resulting strings be $T(\beta)$, of common length $L_{s+1}>L_s$.
+
+All certificates (meeting or avoiding $W^Z_e$, outcomes D, P, C) persist under arbitrary extensions, so nothing is injured. The map $U\mapsto X_U$ is continuous and injective, so $P$ is closed without isolated points. (i) The leaf on $U$ is treated for $W^Z_e$ at every level $s\ge e$. (ii) Take a level after $U,U'$ have separated and with $e,f\le s$: outcome D contradicts equality of the outputs and outcome P contradicts totality, so outcome C makes the common output $Z$-computable. (iii) Let $V=\bigcup_s\Var(F_s)$. Every leaf has descendants forever, so a variation coordinate remains one, and no coordinate begins to vary after it is frozen; hence $V\cap[0,n)=\Var(F_s)\cap[0,n)$ whenever $L_s\ge n$, and this is in $\bud$ by (B1). Off $V$ all sufficiently long labels carry the same bit. (iv) The levels are uniformly $Z''$-computable: splitting and budgeting are computable, genericity uses $Z'$, pair tasks use $Z''$. To compute $X_U(n)$ build levels until $L_s>n$; $V$ is computed in the same way. Two computable addresses, for example $0^\N$ and $10^\N$, give $A,B$. Finally $X\nleT Z$ by Lemma~\ref{lem:genericfar}, which with (ii) gives the statement about degrees.
+\end{proof}
+The two-set constructions of \rep2, \rep6 (its Theorem ``sparse $\zero''$-computable minimal pair'') and \rep7 are this construction restricted to two leaves, without the splitting step; there the two strings need not even be incompatible at finite stages, since only two distinct indices are needed for lifting.
+
+\begin{corollary}[Negative answer to \eqref{eq:C1} with prescribed sparseness]\label{cor:budgetC1}\src{R2, R6, R7}
+Let $\bud$ be a counting budget with $b(n)/n\to0$, or a weighted budget with $h(n)\le n+1$. Then all members of the family $P$ of Theorem~\ref{thm:budget} (with $Z=\emptyset$) are pairwise $\approx$, none is coarsely computable, any two form a Turing minimal pair, and their common uniform and nonuniform coarse classes have no least Turing degree, with numerical representatives allowed and with the counterexample binary and below $\zero''$. For $b(n)=\lfloor\log_2(n+1)\rfloor$, all variation across the entire continuum-sized family within the first million bits is confined to at most $19$ coordinates. For a weighted budget the disagreement sets satisfy $\sum_{n\in X\sd Y}1/h(n)\le b$ and $|(X\sd Y)\cap[0,N)|=o(h(N))$; with $h(n)=\lfloor\log_2(n+1)\rfloor+1$ this is $o(\log N)$ errors.
+\end{corollary}
+\begin{proof}
+Density zero is immediate for counting budgets and follows from Lemma~\ref{lem:count} and $h(N)\le N+1$ for weighted ones. Apply Lemmas~\ref{lem:genericfar} and~\ref{lem:certificate}.
+\end{proof}
+The quantifier order is $\forall\bud\ \exists P$: no single pair is claimed to obey all budgets. The budget is prescribed \emph{before} the construction, and may grow as slowly as any computable unbounded function, for instance an iterated logarithm.
+
+\begin{lemma}[Summable errors have smaller counting order]\label{lem:count}\src{R7}
+If $h$ is nondecreasing and unbounded and $\sum_{n\in E}1/h(n)<\infty$, then $|E\cap[0,N)|/h(N)\to0$.
+\end{lemma}
+\begin{proof}
+For $N\ge M$, $|E\cap[0,N)|/h(N)\le M/h(N)+\sum_{n\in E,\,n\ge M}1/h(n)$, since $1/h(N)\le1/h(n)$ for $n<N$. Let $N\to\infty$ and then $M\to\infty$. No computable modulus for the tail is obtained, and none is needed.
+\end{proof}
+
+\begin{corollary}[Budget dichotomy]\label{cor:dichotomy}\src{R2, R6}
+Let $h:\N\to\N$ be computable and nondecreasing. There are noncomputable $A,B$ forming a Turing minimal pair with $|(A\sd B)\cap[0,n)|\le h(n)$ for all $n$ if and only if $h$ is unbounded. In the unbounded case one can in addition require $A\approx B$, both sets $1$-generic and below $\zero''$, and the perfect-family conclusion.
+\end{corollary}
+\begin{proof}
+If $h\le M$ then $A\sd B$ is finite and $A\eqT B$. If $h$ is unbounded, $g(n)=\min\{h(n),\lfloor\sqrt n\rfloor\}$ is computable, nondecreasing, unbounded and sublinear; apply Theorem~\ref{thm:budget} to $\bud_g$.
+\end{proof}
+
+\begin{corollary}[Hausdorff dimension zero]\label{cor:dimension}\src{R6}
+For a counting budget with $b(n)/n\to0$ the perfect set $P$ has classical Hausdorff dimension $0$.
+\end{corollary}
+\begin{proof}
+Length-$n$ prefixes of members of $P$ agree off $V\cap[0,n)$, so at most $2^{b(n)}$ cylinders of length $n$ meet $P$, and their $t$-cost $2^{b(n)-tn}$ tends to $0$ for every $t>0$. This concerns the family, not the effective dimension of individual members.
+\end{proof}
+
+\begin{remark}[Location versus number of disagreements]\label{rem:location}
+Proposition~\ref{prop:mask} applies to every pair produced by Theorem~\ref{thm:budget}: $X\sd Y$ is infinite and bi-immune relative to $Z$, and has no $Z$-computable density-zero cover, although it obeys an explicit computable budget; and the complement of $V$ contains no infinite computable set. The sparse positions are chosen by the noncomputable stage decisions and cannot be fixed in advance. \rep6 asks whether the same budget theorem admits two witnesses below $\zero'$; the present proof does not give this, because the existence of a partiality cylinder is a $\Sigma^0_2$ question.
+\end{remark}
+
+\section{Every degree is an unattained spectral infimum}\label{sec:infimum}
+Failure of a least representative need not come from failure of the infimum to exist, and a principal core does not guarantee a least representative. \rep2, \rep5, \rep7, \rep8 and \rep9 all prove this, by three genuinely different constructions with different additional information. They share one coding device.
+
+\begin{lemma}[Anchoring by a block code]\label{lem:anchor}\src{R2, R5, R7, R8, R9}
+For sets $Z,W$ let $F=\J(Z)\oplus W$, with $F(2n)=\J(Z)(n)$ and $F(2n+1)=W(n)$. If $D\in\CD(F)$, its even half is a coarse description of $\J(Z)$ and its odd half is one of $W$. Hence every $D\in\CD(F)$, and therefore every $g\equiv_rF$ for $r\in\{\uc,\nc\}$, computes $Z$. If $W$ has no $Z$-computable coarse description then no $g\equiv_rF$ is computable from $Z$; thus every representative is strictly above $Z$, $\J(Z)\leuc F$, and $F\not\lenc\J(Z)$.
+\end{lemma}
+\begin{proof}
+The errors of either half below $m$ number at most the errors of $D$ below $2m$, so the error fraction at most doubles. Lemma~\ref{lem:block} gives $Z\leT D$, and Lemma~\ref{lem:self} passes this to representatives. If $g\equiv_rF$ and $g\leT Z$, the description of $F$ computed by $g$ has a $Z$-computable odd half describing $W$. The even-half map is a uniform reduction of $\J(Z)$ to $F$; and $F\lenc\J(Z)$ applied to $\J(Z)\eqT Z$ itself would give a $Z$-computable description of $F$.
+\end{proof}
+The block code cannot be replaced by $Z$ itself: from a coarse description of $Z\oplus W$ one obtains only a coarse description of $Z$, which need not compute $Z$. Coding by $\J$ is what makes $\degT(Z)$ a lower bound of \emph{every} representative rather than of two displayed ones \src{R7}.
+
+\begin{theorem}[Prescribed unattained infimum]\label{thm:infimum}\src{R2, R5, R7, R8, R9}
+For every set $Z$ there is a binary $F$ such that for $r\in\{\uc,\nc\}$
+\[
+ \inf\Spec_r(F)=\degT(Z)\notin\Spec_r(F),\qquad\Core(F)=\Low(Z),
+\]
+the infimum being taken in the full partial order of the Turing degrees. In particular $\Spec_r(F)$ has no least element, and by Theorem~\ref{thm:coinitial} no countable coinitial subset. The statement concerns the ordinary, unrelativized coarse reducibilities. Moreover $F$ can be chosen with each of the following sets of additional properties.
+\begin{enumerate}[label=\textup{(\Roman*)},leftmargin=2.4em]
+\item \src{R2, R7} $F=\J(Z)\oplus A$ and $G=\J(Z)\oplus B$ with $A,B\leT Z''$ individually $1$-generic relative to $Z$; $F,G\leT Z''$ are in one uniform coarse class, $\degT(F)\wedge\degT(G)=\degT(Z)$, and $F\sd G$ obeys a prescribed budget after halving, for instance $|(F\sd G)\cap[0,n)|\le\lfloor\log_2(\lfloor n/2\rfloor+1)\rfloor$. There is a $Z''$-computable perfect tree of such representatives with pairwise meet $\degT(Z)$.
+\item \src{R5} $F=\J(Z)\oplus X_Z$, where $X_Z$ is the guarded diagonal set relative to $Z$; $F$ is c.e.\ in $Z$, and $\DX F$ contains a perfect family with pairwise meet $\degT(Z)$, two of whose members are below $Z''$.
+\item \src{R8, R9} For the same $F=\J(Z)\oplus X_Z$: $Z\ltT F\eqT Z'$; $\J(Z)<_{\uc}F$ and $\J(Z)<_{\nc}F$; and for every countable family of oracles, in particular for every countable family of representatives, $\DX F$ contains a perfect family of pairwise incomparable sets, each strictly above $Z$, with pairwise meet $\degT(Z)$ and exact intersections as in Theorem~\ref{thm:perfect}\textup{(b)}. No arithmetical bound on these members is obtained.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\emph{Common part.} Let $F=\J(Z)\oplus W$ where $W$ has no $Z$-computable coarse description, and suppose $D,E\in\CD(F)$ satisfy $\Low(D)\cap\Low(E)\subseteq\Low(Z)$. By Lemma~\ref{lem:anchor}, $\degT(Z)$ is a lower bound of $\Spec_r(F)$ that does not belong to it. Any lower bound of the spectrum is below $\degT(D)$ and $\degT(E)$, hence below $\degT(Z)$; so $\degT(Z)$ is the infimum, and a least element would have to equal it. Also $\Low(Z)\subseteq\Core(F)\subseteq\Low(D)\cap\Low(E)\subseteq\Low(Z)$.
+
+\emph{Construction I: budgeted generics.} Apply Theorem~\ref{thm:budget} relative to $Z$, say with $b(n)=\lfloor\log_2(n+1)\rfloor$, and put $F_U=\J(Z)\oplus X_U$. Then $F_U\eqT Z\oplus X_U$, the $F_U$ are binary, pairwise $\approx$ (their disagreements are at the positions $2n+1$ with $n\in X_U\sd X_{U'}$, so the counting function is that of $X_U\sd X_{U'}$ at $\lfloor n/2\rfloor$), and any set below two of them is below $Z$ by Theorem~\ref{thm:budget}(ii). $W=X_U$ has no $Z$-computable coarse description by Lemma~\ref{lem:genericfar}. Take $F=F_{0^\N}$, $G=F_{10^\N}$.
+
+\emph{Construction II: reservoir fusion.} Take $X_Z$ as the odd half and use Theorem~\ref{thm:fusion} relative to $Z$ with target $F$ and
+\[
+ \widetilde P_k=\{2n:n\in\N\}\cup\{2n+1:n\notin T_k\},\qquad\widetilde Q_k=\{2n+1:n\in T_k\}.
+\]
+The whole even half is protected; on the odd half finitely many columns are. $\widetilde Q_k$ is infinite of density $2^{-(k+1)}$, $F\cap\widetilde P_k$ is $Z$-computable (the block code together with finitely many $Z$-computable columns), and the oracle $Z''$, in the role of the oracle $W$ of Theorem~\ref{thm:fusion}(c), computes the indices by Theorem~\ref{thm:guarded}(e). For distinct members $X,Y$ of the resulting perfect family, a set below both is below $Z\oplus X$ and $Z\oplus Y$, hence below $Z$; and $Z\leT X,Y$ by Lemma~\ref{lem:anchor}. Two computable branches give members below $Z''$. $F$ is c.e.\ in $Z$ since its even half is $Z$-computable and its odd half c.e.\ in $Z$.
+
+\emph{Construction III: category.} Again the odd half is $X_Z$. The sets $\J(Z)\oplus(X_Z\cap\bigcup_{e<k}C_e)$ are $Z$-computable, and their errors against $F$ lie in the odd positions over $T_k$; since $d(\emptyset,2S+1)=\tfrac12d(\emptyset,S)$, they are within $2^{-k-1}$ of $F$. Corollary~\ref{cor:approx} gives $\Core(F)\subseteq\Low(Z)$, and Lemma~\ref{lem:anchor} the reverse inclusion. Theorem~\ref{thm:perfect} now gives the perfect families, whose pairwise common lower cone is $\Core(F)=\Low(Z)$; this supplies $D,E$ for the common part. Each member computes $Z$ and none is computable from $Z$. $F\eqT Z'$ because its odd half is $X_Z\eqT Z'$ and both halves are computable from $Z'$; the strict coarse inequalities are Lemma~\ref{lem:anchor}.
+\end{proof}
+
+\begin{remark}[The core does not decide least-representative existence]\label{rem:principalcore}\src{R8}
+$\J(Z)$ and $\J(Z)\oplus X_Z$ have the same core $\Low(Z)$, which is principal; the first class has least degree $\degT(Z)$ and the second has none. So the natural repair of \eqref{eq:C1} --- ``every class with principal core has a least representative'' --- fails at every degree, and the core, although exactly recoverable as the common information of suitable pairs (Theorem~\ref{thm:perfect}), does not classify coarse classes. A greatest lower bound of all representatives and a least representative are different things. For $Z=\emptyset$, Constructions II and III concern the same c.e.\ set $X$ (up to the trivial even half) and are compared after Corollary~\ref{cor:cefusion}.
+\end{remark}
+
+\section{Comparison of the reports}\label{sec:comparison}
+\subsection{What each method delivers}
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.13\textwidth}>{\raggedright\arraybackslash}p{0.20\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.13\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Method & Base set & Witnesses & Bound & By-products\\
+\midrule
+Category \rep1, \rep8, \rep9 & \emph{arbitrary} $X$; the core may be any ideal that occurs & exact partner of a \emph{prescribed} description; perfect family; exactness against countably many prescribed oracles & none; a partner of the c.e.\ example is not $\Delta^0_2$ & cone dichotomy, compactness theorem, Igusa's theorem, coinitiality dichotomy\\
+Reservoirs \rep3, \rep4, \rep5 & a target exactly computable on nested regions: $\Rc(A)$, the guarded c.e.\ set, $\J(Z)\oplus X_Z$ & pair, uniformly computable sequence, perfect family; neither witness is the base set & $A\oplus\emptyset'$ with jump exactly $A\oplus\emptyset'$; $\emptyset''$; $Z''$ & jump-cone spectra, order classification, effective-dense contrast, null envelope\\
+One-bit reserve \rep2, \rep6, \rep7 & none prescribed: the class is built with the witnesses & pair or perfect family of individually $1$-generic sets, relative to any $Z$ & $Z''$ & arbitrary budget, budget dichotomy, dimension $0$, bi-immunity\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The methods are complementary rather than redundant. Only the category method handles a prescribed $X$ and a prescribed partner, and only it yields the coinitiality statement; only the finite-extension methods give arithmetical bounds; only the one-bit reserve controls the \emph{number} of disagreements, and only the reservoir method controls the jump. The $1$-generic case of \cite[Theorem~4.2]{HJKS} is reproved in \rep1 (Theorem~\ref{thm:genericcore}); the $\gamma=1$ case \cite[Theorem~4.3]{HJKS} is reproved in \rep8 and \rep9 (Corollary~\ref{cor:approx}); the classical criterion \cite[Theorem~2.19]{JS} is reproved, relativized and with its uniformity made explicit, in \rep3 and \rep4 (Theorem~\ref{thm:criterion}).
+
+\subsection{Concordance}
+\begin{center}\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.62\textwidth}@{}}
+\toprule
+Synthesis statement & Occurrences in the reports\\
+\midrule
+\endhead
+Lemmas~\ref{lem:change}--\ref{lem:certificate} (basics, obstruction) & all nine, under various names (``two-witness obstruction'' \rep2, ``least-representative obstruction'' \rep3, ``minimal-pair certificate'' \rep5, \rep6)\\
+Theorem~\ref{thm:spectrum} (spectrum identity) & \rep1 ``spectrum collapse''; \rep2, \rep7 ``spectrum identity''; \rep4 ``representative-spectrum identity''; \rep6 ``equality of representative spectra''; upward closure only in \rep5, \rep9\\
+Proposition~\ref{prop:core} (core) & \rep1 Lemma ``three elementary facts''; \rep5 ``core equals the common lower bounds''; \rep8 Propositions on the core and on representatives; \rep9 Lemma ``ideal''\\
+Lemma~\ref{lem:block}, Theorem~\ref{thm:least} & \rep1 (blocks $2^{2^n}$, conditions (i)--(iv)), \rep2, \rep5 (blocks $2^{2^n}$, condition (iii)), \rep6, \rep7, \rep8, \rep9; \rep4 gives criterion (iv) only\\
+Lemma~\ref{lem:metric}--Theorem~\ref{thm:partners} (metric, decoder, dichotomy, partners) & \rep1, \rep8, \rep9; countably many oracles only \rep9; local control and Corollary~\ref{cor:many} only \rep1\\
+Theorem~\ref{thm:radius}, Corollary~\ref{cor:countablecompact} & \rep1 ``robust-radius characterization'' and ``countable compactness consequence'', \rep8 ``cone-avoiding compactness, equivalent form''\\
+Corollary~\ref{cor:approx} & \rep8 (from Theorem~\ref{thm:radius}), \rep9 (external-centre proof, Remark~\ref{rem:external})\\
+Theorem~\ref{thm:perfect} & \rep9 (Proof~A, with prescribed oracles), \rep8 (Proof~B)\\
+Theorem~\ref{thm:coinitial} & \rep9, for the c.e.\ example and its relativizations\\
+Lemma~\ref{lem:genericfar} & \rep1 (disagreement $>1/2$ infinitely often), \rep2, \rep6, \rep7 (upper density $1$; relativized in \rep2, \rep7)\\
+Lemmas~\ref{lem:sections}--\ref{lem:intersect}, Theorem~\ref{thm:genericcore}, Corollary~\ref{cor:generic} & \rep1\\
+Lemma~\ref{lem:subsequence}, Proposition~\ref{prop:mask} & \rep7 (subsequences, bi-immunity), \rep6 (computable mask), \rep2 (no $Z$-computable cover; second proof)\\
+Lemma~\ref{lem:counts}--Theorem~\ref{thm:jumpcone}, Theorem~\ref{thm:ed} & \rep3 and \rep4, with essentially identical proofs\\
+Proposition~\ref{prop:gamma} & \rep3 Proposition on close approximations, \rep4 Lemma $\gamma(R_A)=1$, both followed by the deduction from \cite[Theorem~4.3]{HJKS}\\
+Proposition~\ref{prop:G}, Proposition~\ref{prop:envelope} & \rep4\\
+Theorem~\ref{thm:order} & \rep3\\
+Definition~\ref{def:guarded}, Theorem~\ref{thm:guarded} & \rep5 (column guard; index selector below $\emptyset''$), \rep8 (Turing completeness), \rep9 (many-one completeness)\\
+Corollary~\ref{cor:guardedcategory} & \rep8, \rep9\\
+Lemma~\ref{lem:product} & \rep3 ``product dichotomy'', \rep4 ``cross-splitting dichotomy'', \rep5 ``cross-disagreement or computable common output''\\
+Theorem~\ref{thm:fusion} & \rep5 ``computable-reservoir fusion''; two-path and countable versions with jump control \rep3; two-path and perfect versions \rep4\\
+Corollary~\ref{cor:columnfusion}, Theorem~\ref{thm:columnsC1} & \rep3, \rep4\\
+Corollary~\ref{cor:cefusion} & \rep5 (main theorem)\\
+Lemma~\ref{lem:trilemma}--Proposition~\ref{prop:onereq} & \rep2 (connectivity test, synchronization lemma, four cases), \rep6 (trilemma, buffering, global lifting), \rep7 (copy, padding, bridge, decisive extension)\\
+Theorem~\ref{thm:budget} & \rep2 (pair, counting budget, relative), \rep7 (pair, weighted budget, relative, prescribed prefix), \rep6 (pair and perfect family, counting budget, $Z=\emptyset$)\\
+Corollaries~\ref{cor:dichotomy}, \ref{cor:dimension} & \rep6; boundedness half also \rep2\\
+Lemma~\ref{lem:count} & \rep7\\
+Theorem~\ref{thm:infimum} & (I) \rep2, \rep7; (II) \rep5; (III) \rep8, \rep9; Remark~\ref{rem:principalcore} \rep8\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\subsection{Differences in strength, and editorial notes}
+No mathematical disagreement between the reports was found, and no error was found in any of the proofs while merging them. The differences are of strength and presentation.
+\begin{itemize}
+\item \emph{Budgets.} A weighted budget with $b\le1$ implies the counting bound $|E\cap[0,N)|\le h(N)$, since $|E\cap[0,N)|/h(N)\le\sum_{n\in E,\,n<N}1/h(n)$, and even gives $o(h(N))$; a counting bound does not imply summability. So \rep7's pair theorem is the strongest of the three pair theorems, \rep6's perfect-family theorem is the strongest family statement, and \rep2 and \rep7 are the ones that relativize. Definition~\ref{def:budget} is an editorial abstraction covering both kinds of budget; Theorem~\ref{thm:budget} is accordingly stated relative to $Z$ and for an arbitrary budget, which no single report does, but its proof is \rep6's with \rep2's and \rep7's relativization, verbatim.
+\item \emph{Reservoirs.} \rep3 and \rep4 work with the dyadic code only; \rep5's fusion theorem is more general and its proof is the same. The jump-control clause of Theorem~\ref{thm:fusion}(c) is \rep3's jump step inserted into \rep5's level construction; this merge is editorial. \rep3's pair and countable-family theorems and \rep4's pair and perfect-family theorems then become Corollary~\ref{cor:columnfusion}.
+\item \emph{Category.} \rep1 and \rep8 state exact partners for one oracle, \rep9 for countably many. Theorem~\ref{thm:coinitial} is stated here for an arbitrary $X$ as a dichotomy; \rep9 states it for its explicit examples, and the general form needs only Theorem~\ref{thm:least}(iv) in addition to \rep9's proof. Proposition~\ref{prop:gamma} obtains $\Core(\Rc(A))=\Comp$ from Corollary~\ref{cor:approx}, where \rep3 and \rep4 quote \cite{HJKS}.
+\item \emph{Constants and codes.} The decoder radii ($r/4$, $r/2$ in \rep1 and \rep8; $q$, $r/16$, $r/8$ in \rep9), the two block codes, the two guards in Definition~\ref{def:guarded}, the placement of $\J(Z)$ on even or odd positions, and the indexing of the lengths $L_k$ differ between reports and are immaterial.
+\item \emph{Status statements.} All reports agree on the literature status. \rep5 additionally cites Gerdes's July 2026 slides \cite{GerdesSlides} as displaying the question; \rep1, \rep2, \rep3, \rep6 and \rep8 explicitly describe their finding as a correction to the plan's classification of C1 as an unresolved target.
+\end{itemize}
+
+\subsection{What is not settled}
+\begin{itemize}
+\item \textbf{C2.} None of the reports bears on the effective-dense question in general. Lemma~\ref{lem:change}, on which every construction rests, fails for effective-dense descriptions, which may omit but never err. The dyadic examples have \emph{least} effective-dense degrees (Theorem~\ref{thm:ed}), and Propositions~\ref{prop:mask} and~\ref{prop:envelope} show that the error supports of the coarse witnesses cannot be covered by computable null masks.
+\item \textbf{Minimal elements.} No report shows that any spectrum considered here lacks minimal elements; Theorem~\ref{thm:coinitial} excludes countable coinitial families only.
+\item \textbf{Uniform classes.} Theorem~\ref{thm:least} characterizes nonuniform classes; no uniform analogue is asserted (Remark~\ref{rem:uniformboundary}).
+\item \textbf{Effectivity.} The complexity of exact partners of a given $\Delta^0_2$ generic (\rep1), arithmetical bounds for the perfect families of Theorem~\ref{thm:perfect} (\rep9), and witnesses below $\zero'$ for the budget theorem (\rep6) are open; the c.e.\ example shows that a partner of a prescribed set of degree $\zero'$ cannot be $\Delta^0_2$.
+\item \textbf{Classification.} Which countable ideals occur as cores, and which upward-closed sets of degrees occur as spectra, is not determined (\rep2, \rep9). Theorem~\ref{thm:infimum} realizes every principal ideal as a core without a least representative, and Theorem~\ref{thm:jumpcone} realizes every jump-cone $\{\mathbf b:\mathbf a\le\mathbf b'\}$.
+\item \textbf{Assurance.} None of the results has been refereed. The only part that is formalized is the literature route to the bare negative answer: the Lean library \path{CoarseDegrees} at the repository root proves $\neg\mathrm{C1}$ and its uniform analogue from \cite[Theorem~4.2]{HJKS} as its single admitted input (and, independently, from \cite[Theorem~4.3]{HJKS} with \cite[Theorem~2.26]{JS}); it proves Lemmas~\ref{lem:change}--\ref{lem:certificate} and~\ref{lem:genericfar}, the existence of $1$-generic sets, and the passage from functions to sets by graph coding. Since 19 September 2026 the dyadic-code material of Section~\ref{sec:columns} is formalized there as well: the criterion ``$B$ computes a coarse description of $\Rc(A)$ iff $A\leT B'$'' in limit form (no jump operator exists in Mathlib or in \path{C:\ProveIt}), with the majority decoding and the density estimate proved from scratch and nothing admitted, together with the jump-cone spectrum $\Spec(\Rc(A))=\{\mathbf b:A\leT\mathbf b'\}$. This yields a third derivation of $\neg\mathrm{C1}$ that uses neither \cite{HJKS} nor \cite{JS}, admitting instead one consequence of Cooper's theorem that every degree above $\zero'$ is the jump of a minimal degree; the three derivations share no admitted statement. Section~\ref{sec:spectra} is formalized too: Lemma~\ref{lem:block} (block recovery) is proved by the same majority argument, so the library no longer admits it; the sparse-coding step of Theorem~\ref{thm:spectrum} is proved; and Theorem~\ref{thm:least} is proved in the form ``the coarse class of $X$ has a representative of least Turing degree if and only if $X\eqnc\J(B)$ for some $B$'', with nothing admitted. None of the witness constructions of Sections~\ref{sec:category}--\ref{sec:infimum} is formalized, and the minimal pair the dyadic route needs is admitted rather than built, because a Lean construction would require a use-bounded model of Turing functionals that neither Mathlib nor \path{C:\ProveIt} provides. The reports' Python programs check finite identities (prefix-metric inequalities, dyadic counts, majority bounds, cube connectivity, budget bookkeeping, finite models of the dichotomies) and nothing infinitary. Novelty of the stronger statements is unverified in every report. The proofs in this synthesis are the reports' proofs, merged and shortened; the merging itself has not been independently checked.
+\end{itemize}
+
+\begingroup\raggedright\small
+\begin{thebibliography}{9}
+\bibitem{Plan}
+\emph{Turing Degrees: A Unified Research Report}. Research synthesis prepared for Vladimir Reshetnikov, 18 September 2026. \path{docs/research-plan/turing_degrees_unified.tex}; entry C1 and the minimal-pair diagnostic of Section~5.
+\bibitem{Gerdes}
+Peter M. Gerdes. \emph{Comparing Notions of Dense Computability on $\omega^\omega$ and $2^\omega$}. arXiv:2508.06925v1, 9 August 2025. Question~7. \url{https://arxiv.org/abs/2508.06925v1}.
+\bibitem{GerdesSlides}
+Peter M. Gerdes. \emph{Comparing Notions of Robust Computability on $\omega^\omega$ and $2^\omega$}. Slides, ASL North American Meeting, July 2026. \url{https://invariant.org/coarse.pdf}. (Cited by \rep5.)
+\bibitem{HJKS}
+Denis R. Hirschfeldt, Carl G. Jockusch, Jr., Rutger Kuyper, and Paul E. Schupp. Coarse reducibility and algorithmic randomness. \emph{Journal of Symbolic Logic} \textbf{81} (2016), 1028--1046. Preprint arXiv:1505.01707. Definition~2.1, Theorem~3.7, Theorems~4.2 and~4.3.
+\bibitem{JS}
+Carl G. Jockusch, Jr., and Paul E. Schupp. Generic computability, Turing degrees, and asymptotic density. \emph{Journal of the London Mathematical Society} \textbf{85}(2) (2012), 472--490. Preprint arXiv:1010.5212. Theorem~2.19.
+\bibitem{AHJ}
+Eric P. Astor, Denis R. Hirschfeldt, and Carl G. Jockusch, Jr. Dense computability, upper cones, and minimal pairs. \emph{Computability} \textbf{8}(2) (2019), 155--177. Preprint arXiv:1811.07172.
+\bibitem{Mycielski}
+Jan Mycielski. Independent sets in topological algebras. \emph{Fundamenta Mathematicae} \textbf{55}(2) (1964), 139--147.
+\end{thebibliography}
+\endgroup
+\end{document}

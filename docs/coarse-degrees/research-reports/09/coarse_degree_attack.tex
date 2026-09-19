@@ -1,0 +1,1189 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25.5mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,microtype,enumitem,xcolor}
+\usepackage{fancyhdr,listings,xurl,titlesec}
+\definecolor{navy}{RGB}{30,57,82}
+\definecolor{ink}{RGB}{32,38,44}
+\definecolor{pale}{RGB}{239,243,247}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=navy,
+  bookmarksnumbered=true]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Perfect Exact Pairs in Coarse-Description Classes},
+  pdfauthor={Research note prepared for Vladimir Reshetnikov},
+  pdfsubject={Coarse reducibility, least Turing representatives, cone avoidance and exact pairs}}
+\urlstyle{same}
+\titleformat{\section}{\large\bfseries\color{navy}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{navy}}{\thesubsection}{0.65em}{}
+\setlength{\parskip}{3.5pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{3em}
+\setlist{nosep,leftmargin=*}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{navy}Exact pairs and coarse descriptions}
+\fancyhead[R]{\small September 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Cantor}{2^{\N}}
+\newcommand{\Baire}{\N^{\N}}
+\newcommand{\leT}{\leq_{\mathrm T}}
+\newcommand{\nleT}{\nleq_{\mathrm T}}
+\newcommand{\eqT}{\equiv_{\mathrm T}}
+\newcommand{\degT}{\operatorname{deg}_{\mathrm T}}
+\newcommand{\nc}{\mathrm{nc}}
+\newcommand{\uc}{\mathrm{uc}}
+\newcommand{\CD}{\mathcal C}
+\newcommand{\core}{\mathcal I}
+\newcommand{\Comp}{\mathsf{Comp}}
+\newcommand{\low}[1]{\mathord\downarrow_{\!\mathrm T}#1}
+\newcommand{\AP}{\mathsf{AP}}
+\newcommand{\patch}{\mathbin\star}
+\newcommand{\cl}[1]{\overline{#1}}
+\newcommand{\Spec}{\operatorname{Spec}_{\mathrm T}}
+\newcommand{\restr}{\mathbin\upharpoonright}
+\newcommand{\pair}[2]{\langle #1,#2\rangle}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\diam}{diam}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,breaklines=true,
+  frame=single,showstringspaces=false}
+\begin{document}
+\thispagestyle{empty}
+\noindent{\small\sffamily\bfseries\color{navy}COMPUTABILITY THEORY / RESEARCH NOTE}\par
+\vspace{7mm}
+{\setlength{\parindent}{0pt}\fontsize{25}{29}\selectfont\bfseries\color{navy}Perfect Exact Pairs in\par Coarse-Description Classes\par}
+\vspace{4mm}
+\noindent{\large An attack on the least-Turing-representative question}\par
+\vspace{5mm}
+\noindent Prepared for Vladimir Reshetnikov\\[2pt]
+18 September 2026\par
+\vspace{5mm}
+\begin{abstract}
+We investigate the least-representative question selected as C1 in the supplied
+Turing-degree survey. For a set $X$, let $\CD_X$ be the sets differing from $X$
+on a density-zero set, and let $\core_X$ be the sets computable from every
+member of $\CD_X$. We give a conventional proof that $\CD_X$ contains a perfect
+family of pairwise Turing-incomparable members such that the common lower cone
+of any two is exactly $\core_X$. The construction can simultaneously control
+intersections with the lower cones of any prescribed countable family of
+oracles. Its main ingredient is a local recovery lemma in a complete metric
+on $\CD_X$: information computed on a dense open-region subset is already
+computable from every coarse description.
+
+An explicit computably enumerable, many-one complete set $X$ has
+$\core_X=\Comp$ but no computable coarse description. Consequently its uniform
+and nonuniform coarse-equivalence classes contain Turing minimal pairs, have
+no least Turing degree, and have no countable coinitial family of Turing
+degrees. Relativized examples have any prescribed principal core. All infinite
+arguments are written out; the accompanying program checks only finite
+arithmetic lemmas.
+\end{abstract}
+\vspace{3mm}
+\noindent\colorbox{pale}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\small
+\textbf{Status and attribution.} The negative answer to the literal C1 question
+already follows from results published in 2016; it is not claimed here as a
+new resolution of an open problem. The perfect-family and simultaneous
+exact-pair development is the stronger result pursued in this note. Its proof
+is supplied in full, but its novelty has not been established, and it has not
+been independently refereed or checked by a proof-assistant kernel.}}
+\vfill
+{\noindent\small Conventional proofs, an explicit c.e. witness, and reproducible finite checks.\par}
+\normalsize
+\newpage
+{\small\tableofcontents}
+\newpage
+
+\section{Target, result, and correction of the research map}
+\label{sec:target}
+The uploaded report~\cite{Survey}, entry C1, asks whether every nonuniform
+coarse-equivalence class contains a representative of least Turing degree.
+For total functions, its statement is
+\begin{equation}\label{eq:question}
+ \forall f\in\Baire\ \exists g\equiv_{\nc}f\
+ \forall h\equiv_{\nc}f\quad g\leT h.
+\end{equation}
+The report proposes a concrete negative route: find a nonzero coarse class
+containing two representatives that form a Turing minimal pair. This is the
+route taken here, with an additional perfect-set strengthening.
+
+\subsection{What the source check changes}
+Gerdes's 2025 preprint explicitly asks the least-degree question in
+Question~7~\cite{Gerdes}. However, the invariant used below is already
+Definition~3.1 of Hirschfeldt--Jockusch--Kuyper--Schupp~\cite{HJKS}, where it is
+written $X^{\mathrm c}$. Their Theorem~4.3, attributed to Igusa, gives a trivial
+invariant when the coarse computability bound is $1$, including examples that
+are not coarsely computable. Those two properties alone negate
+\eqref{eq:question}, as the next paragraph proves. The journal publication is
+from 2016. Thus the literal C1 entry is not a defensible novelty target,
+despite its appearance in the later question list.
+
+Suppose every coarse description of $X$ has only computable information in
+common, while $X$ has no computable coarse description. Any least
+representative $g$ of the coarse class would be computable from every coarse
+description of $X$, since each such description itself belongs to the class.
+The graph of $g$ would therefore be computable. But a computable member of the
+class would provide a computable coarse description of $X$, a contradiction.
+This argument works for both uniform and nonuniform coarse equivalence.
+
+The status correction does not end the investigation. The older invariant
+statement does not itself present the minimal-pair certificate requested by
+the survey, nor the exact-pair and perfect-family results proved here. The
+remainder develops those stronger statements without relying on randomness,
+a priority minimal-pair theorem, or an imported cone-avoidance theorem.
+
+\subsection{The principal structural theorem}
+Write $\low B=\{A\subseteq\N:A\leT B\}$. The word \emph{exact} refers to equality
+of common lower cones with an entire ideal, not merely to the exclusion of
+one selected noncomputable set.
+
+\begin{theorem}[Perfect exact pairs; proved in Section~\ref{sec:perfect}]
+\label{thm:mainpreview}
+For every $X\subseteq\N$, put
+\[
+ \CD_X=\{D\subseteq\N:\rho_n(D\triangle X)\longrightarrow0\},
+ \qquad \core_X=\bigcap_{D\in\CD_X}\low D.
+\]
+There is a perfect set $P\subseteq\CD_X$ of pairwise Turing-incomparable
+members such that
+\begin{equation}\label{eq:perfect-main}
+ D,E\in P,\ D\ne E
+ \quad\Longrightarrow\quad
+ (\low D)\cap(\low E)=\core_X.
+\end{equation}
+Moreover, given any countable family of oracles $(B_j)_{j\in\N}$, $P$ may be
+chosen so that, for every $D\in P$ and every $j$,
+\begin{equation}\label{eq:prescribed-main}
+ (\low D)\cap(\low {B_j})=\core_X\cap(\low {B_j}).
+\end{equation}
+No effective presentation of $(B_j)$ is assumed or needed.
+\end{theorem}
+
+Taking $B_0=X$ gives an exact partner for the original, prescribed $X$, not
+merely two newly chosen descriptions. For the explicit $X$ constructed in
+Section~\ref{sec:diagonal}, $X\eqT\emptyset'$ and $\core_X=\Comp$. Thus every
+member of the selected perfect family forms a Turing minimal pair with
+$\emptyset'$, as well as with every other member of that family.
+
+\subsection{What is and is not being claimed}
+The negative answer to C1 is a consequence of established work, not a new
+breakthrough. The mathematical contribution attempted here is the fully
+proved perfect exact-pair formulation and its applications. A targeted
+literature search did not establish whether these stronger formulations have
+already appeared, perhaps as consequences of generic-description arguments.
+Their novelty therefore remains unverified.
+
+The effective-dense problem C2 is not answered. Nor do the results prove that
+the exhibited coarse classes contain no \emph{minimal} Turing degrees. A least
+degree is below every representative; a minimal degree need only have no
+strictly smaller representative. These are different assertions.
+
+\section{Descriptions, reducibility, and the common-information ideal}
+\label{sec:definitions}
+Identify a set with its characteristic function. For $n\ge1$, define
+\[
+ \rho_n(S)=\frac{|S\cap[0,n)|}{n},\qquad
+ \delta(Y,Z)=\limsup_{n\to\infty}\rho_n(Y\triangle Z).
+\]
+Thus $D\in\CD_X$ exactly when $\delta(D,X)=0$. Because prefix discrepancies
+are nonnegative, a zero limsup is equivalent to convergence to zero.
+
+For total functions $f,g$, define $f\le_{\nc}g$ to mean that every coarse
+description of $g$ computes some coarse description of $f$. In the uniform
+version $f\le_{\uc}g$, one Turing functional must work for every source
+description. These are the conventions of the supplied report and
+Gerdes~\cite{Gerdes}. We write $[X]_r$ for the equivalence class under $r$, with
+$r\in\{\nc,\uc\}$.
+
+Binary source sets cause no ambiguity between binary and natural-number-valued
+descriptions. Replace every nonbinary answer in a description of $X$ by zero.
+This transformation is computable and does not create a disagreement at any
+previously correct position. Consequently the binary descriptions suffice for
+the common-information questions below. Total functions are treated as oracles
+by coding their graphs as sets; this coding preserves Turing degree.
+
+\begin{lemma}[Equality of description classes]\label{lem:sameclass}
+If $D\in\CD_X$, then $\CD_D=\CD_X$. In particular
+$D\equiv_{\uc}X$, and hence $D\equiv_{\nc}X$.
+\end{lemma}
+\begin{proof}
+For each prefix, disagreement with $X$ is contained in the union of
+disagreement with $D$ and $D\triangle X$. Taking upper densities gives
+\[
+ \delta(E,X)\le\delta(E,D)+\delta(D,X).
+\]
+The same inequality with $X,D$ exchanged proves the equivalence of the two
+zero-discrepancy conditions. The identity functional is a coarse reduction
+in both directions. The argument also applies to natural-number-valued
+coarse descriptions.
+\end{proof}
+
+\begin{definition}[Common-information ideal]
+For $X\subseteq\N$, define
+\[
+ \core_X=\{A\subseteq\N:(\forall D\in\CD_X)\ A\leT D\}.
+\]
+We call this the \emph{core} only as an abbreviation for the displayed
+invariant; the invariant itself is established terminology and notation
+$X^{\mathrm c}$ in~\cite[Definition~3.1]{HJKS}.
+\end{definition}
+
+\begin{lemma}\label{lem:ideal}
+The family $\core_X$ is a countable Turing ideal: it contains every computable
+set, is downward closed under $\leT$, and is closed under finite Turing joins.
+It is contained in $\low X$. If $X\le_{\nc}Y$, then
+$\core_X\subseteq\core_Y$. In particular the core is invariant under both
+coarse equivalences.
+\end{lemma}
+\begin{proof}
+Every oracle computes every computable set. If $A\leT B$ and every description
+computes $B$, every description computes $A$. If every description computes
+both $A$ and $B$, it computes their join. Since $X$ itself is a description of
+$X$, each member of the core is computable from $X$. There are only countably
+many oracle programs, so $\low X$ and hence $\core_X$ are countable.
+
+For monotonicity, fix $A\in\core_X$ and $D\in\CD_Y$. The assumed reduction
+provides an $E\in\CD_X$ with $E\leT D$. Then $A\leT E\leT D$. Since this holds
+for every $D$, $A\in\core_Y$. Applying this in both directions proves
+invariance. Uniform reducibility implies nonuniform reducibility.
+\end{proof}
+
+\begin{remark}[Two different equivalence classes]
+The space $\CD_X$ is the equivalence class of $X$ modulo density-zero
+symmetric difference. It is a subset, generally a proper subset, of the
+coarse-reducibility class $[X]_r$. We construct witnesses in the smaller
+space. Confusing these two classes would invalidate the least-representative
+argument.
+\end{remark}
+
+\section{A complete metric on one coarse-description class}
+\label{sec:metric}
+The asymptotic discrepancy $\delta$ is identically zero on $\CD_X\times\CD_X$,
+so it cannot provide a useful topology there. Instead use every prefix:
+\begin{equation}\label{eq:dmetric}
+ d(Y,Z)=\sup_{n\ge1}\rho_n(Y\triangle Z).
+\end{equation}
+This is a metric on all of $\Cantor$. We use its restriction to $\CD_X$;
+this restriction is not the topology inherited from ordinary Cantor space.
+
+For a finite binary string $\sigma$ and a set $Z$, write $\sigma\patch Z$ for
+$Z$ with its first $|\sigma|$ bits replaced by $\sigma$.
+
+\begin{lemma}[Finite-prefix facts]\label{lem:prefix}
+The following statements hold.
+\begin{enumerate}[label=(\roman*)]
+\item If $Y(j)\ne Z(j)$, then $d(Y,Z)\ge1/(j+1)$. Hence each ordinary finite
+cylinder is open in the $d$ topology.
+\item If $L=|\sigma|>0$, then
+\begin{equation}\label{eq:patchidentity}
+ d(\sigma\patch Z,Z)
+ =\max_{1\le n\le L}\frac{|\{j<n:\sigma(j)\ne Z(j)\}|}{n}.
+\end{equation}
+For the empty string this distance is zero.
+\item The triangle inequality holds for $d$ and for $\delta$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+A disagreement at $j$ contributes at least one error to the prefix of length
+$j+1$. In particular a $d$-ball of radius less than $1/L$ fixes the first $L$
+bits. For (ii), after position $L$ the number of disagreements is constant,
+so its proportion cannot exceed the proportion at $L$. For (iii), use the
+inclusion
+$Y\triangle W\subseteq(Y\triangle Z)\cup(Z\triangle W)$ at each prefix,
+and take a supremum or a limsup. Symmetry is immediate, and (i) supplies
+separation, completing the metric verification.
+\end{proof}
+
+\begin{proposition}[Polish description space]\label{prop:polish}
+The metric space $(\CD_X,d)$ is nonempty, complete, separable, and has no
+isolated points. For every $Z\in\CD_X$, the finite modifications of $Z$ are
+dense in $(\CD_X,d)$.
+\end{proposition}
+\begin{proof}
+Nonemptiness follows from $X\in\CD_X$. Let $(D_k)$ be $d$-Cauchy. For each
+coordinate $j$, the first part of Lemma~\ref{lem:prefix} shows that $D_k(j)$
+is eventually constant. Let $D(j)$ be this eventual value.
+
+Given $\varepsilon>0$, choose $K$ so that $d(D_k,D_l)<\varepsilon/2$ whenever
+$k,l\ge K$. Fix $k\ge K$ and a prefix length $n$. For sufficiently large $l$,
+$D_l\restr n=D\restr n$, whence
+$\rho_n(D_k\triangle D)\le\varepsilon/2$. This holds for every $n$, so
+$d(D_k,D)\le\varepsilon/2<\varepsilon$. Thus $D_k\to D$ in $d$. Also
+\[
+ \delta(D,X)\le d(D,D_k)+\delta(D_k,X)=d(D,D_k),
+\]
+which tends to zero. Therefore $D\in\CD_X$, proving completeness.
+
+Fix $Y,Z\in\CD_X$. Put $Z_N=(Y\restr N)\patch Z$, a finite modification of
+$Z$. The first $N$ bits of $Z_N$ and $Y$ agree, and for $n>N$ their errors are
+a subset of $Y\triangle Z$ below $n$. Therefore
+\begin{equation}\label{eq:finite-dense}
+ d(Z_N,Y)\le\sup_{n>N}\rho_n(Y\triangle Z)\longrightarrow0.
+\end{equation}
+The convergence holds because $\delta(Y,Z)=0$. Thus the countable set of
+finite modifications of $Z$ is dense, proving separability as well.
+
+Finally, flip just bit $j$ of an arbitrary $Y\in\CD_X$. The result remains
+in $\CD_X$ and has distance exactly $1/(j+1)$ from $Y$. Taking $j$ arbitrarily
+large proves that no point is isolated.
+\end{proof}
+
+A set is \emph{nowhere dense} if its closure has empty interior, and
+\emph{meager} if it is a countable union of nowhere dense sets. We use the
+Baire category theorem in the form: a nonempty complete metric space cannot
+be covered by countably many nowhere dense sets. Its usual nested-ball proof
+also shows that the complement of such a union is dense. These topological
+statements are used with $d$, not with $\delta$.
+
+\section{Local recovery and simultaneous cone avoidance}
+\label{sec:recovery}
+Fix an enumeration $(\Phi_e)$ of oracle Turing functionals. For a set $A$,
+write
+\[
+ S_{e,A}=\{D\in\CD_X:\Phi_e^D=A\}.
+\]
+Equality here includes totality on every input and binary output. A
+computation $\Phi_e^\sigma(n)\downarrow=v$ uses only oracle bits within the
+finite string $\sigma$.
+
+\begin{lemma}[Local recovery]\label{lem:recovery}
+If $S_{e,A}$ is dense in a nonempty $d$-open set $U\subseteq\CD_X$, then
+$A\in\core_X$.
+\end{lemma}
+\begin{proof}
+Fix any $Z\in\CD_X$. Finite modifications of $Z$ are dense, so choose a finite
+modification $Z^*$ in $U$. Choose a positive rational $q$ with
+$B_d(Z^*,q)\subseteq U$, where the ball is taken within $\CD_X$. The finite
+modification and $q$ may depend on $Z$; they will be constants in the
+reduction below.
+
+To compute $A(n)$ using $Z^*$, dovetail over finite strings $\sigma$ and
+finite simulations of $\Phi_e^\sigma(n)$. Accept a convergent simulation
+with value $v$ only if
+\begin{equation}\label{eq:searchcondition}
+ \frac{|\{j<k:\sigma(j)\ne Z^*(j)\}|}{k}<q
+ \qquad(1\le k\le|\sigma|).
+\end{equation}
+Each test is a finite, $Z^*$-decidable calculation. No test of membership in
+$\CD_X$, totality, or asymptotic density is performed.
+
+\emph{Termination.} Density gives a $D\in S_{e,A}\cap B_d(Z^*,q)$. A finite
+initial segment $\sigma\prec D$ witnesses convergence on input $n$. Every
+prefix discrepancy of $D$ from $Z^*$ is at most $d(D,Z^*)<q$, so this $\sigma$
+passes \eqref{eq:searchcondition}. The dovetailing eventually finds an
+accepted computation.
+
+\emph{Correctness.} For any accepted $\sigma$, the set
+$W=\sigma\patch Z^*$ belongs to $\CD_X$, because it is a finite modification
+of $Z^*$. By \eqref{eq:patchidentity} and the finitely many strict inequalities
+in \eqref{eq:searchcondition}, $d(W,Z^*)<q$. Thus $W\in U\cap[\sigma]$.
+The intersection is a nonempty $d$-open set. Density of $S_{e,A}$ in $U$
+provides $D'\in S_{e,A}\cap U\cap[\sigma]$. The same finite computation runs
+with oracle $D'$, so the accepted value is $v=A(n)$.
+
+The search computes $A$ from $Z^*$. Since $Z^*$ is a fixed finite modification
+of $Z$, $Z^*\eqT Z$, and therefore $A\leT Z$. The choice of $Z$ was arbitrary,
+which proves $A\in\core_X$.
+\end{proof}
+
+\begin{remark}[The nonuniformity is essential]
+The proof asserts $\forall Z\in\CD_X\ \exists i\ (\Phi_i^Z=A)$. It does not
+supply one index working for every $Z$, an effective choice of the finite
+patch, or an effective choice of the rational radius. Hard-coding finitely
+many constants proves an ordinary Turing reduction; finding those constants
+uniformly would be a stronger assertion.
+\end{remark}
+
+\begin{theorem}[All-or-meager cone dichotomy]\label{thm:dichotomy}
+For any $A\subseteq\N$, the cone
+$\{D\in\CD_X:A\leT D\}$ is either all of $\CD_X$ or a meager subset of it.
+More precisely, if $A\notin\core_X$, each $S_{e,A}$ is nowhere dense.
+\end{theorem}
+\begin{proof}
+When $A\in\core_X$, the cone is all of the space by definition. Otherwise,
+if $\cl{S_{e,A}}$ had nonempty interior $U$, $S_{e,A}$ would be dense in $U$.
+Lemma~\ref{lem:recovery} would imply $A\in\core_X$, a contradiction. Thus
+each $S_{e,A}$ is nowhere dense. The cone is their countable union.
+\end{proof}
+
+\begin{corollary}[Countable avoidance]\label{cor:countavoid}
+Given a countable family $(A_j)$ with every $A_j\notin\core_X$, the set
+\[
+ \{D\in\CD_X:(\forall j)\ A_j\nleT D\}
+\]
+is comeager, and in particular is nonempty and dense. No effective enumeration
+of the family is required.
+\end{corollary}
+\begin{proof}
+Remove all sets $S_{e,A_j}$. This removes a countable union of nowhere dense
+sets. Proposition~\ref{prop:polish} and the Baire category theorem apply.
+\end{proof}
+
+\begin{theorem}[Exact partners for prescribed oracles]\label{thm:partners}
+For every countable family $(B_j)$ there is $D\in\CD_X$ such that
+\[
+ (\low D)\cap(\low {B_j})=\core_X\cap(\low {B_j})
+ \qquad\text{for all }j.
+\]
+The set of suitable $D$ is comeager. In particular, some $D\in\CD_X$ satisfies
+\begin{equation}\label{eq:fixedexact}
+ (\low D)\cap(\low X)=\core_X.
+\end{equation}
+\end{theorem}
+\begin{proof}
+There are countably many sets computable from any one oracle $B_j$, and hence
+countably many in
+\[
+ \mathcal A=\bigcup_j\bigl((\low {B_j})\setminus\core_X\bigr).
+\]
+Avoid all members of $\mathcal A$ by Corollary~\ref{cor:countavoid}. If $A$ is
+computable from both the resulting $D$ and $B_j$, it cannot belong to
+$(\low {B_j})\setminus\core_X$, and thus belongs to the right-hand side.
+Conversely every member of $\core_X$ is computable from $D$, which proves the
+reverse inclusion. Take $B_0=X$ and use $\core_X\subseteq\low X$ for
+\eqref{eq:fixedexact}.
+\end{proof}
+
+This avoids an important logical shortcut. The assertion that each individual
+non-core set can be avoided does not, by itself, give one oracle avoiding all
+of them simultaneously. The nowhere-density proof and Baire category are the
+additional ingredients that make simultaneous avoidance valid.
+
+\section{A perfect family of exact pairs}
+\label{sec:perfect}
+We now prove Theorem~\ref{thm:mainpreview}, including the word \emph{perfect}.
+We give the finite-level fusion directly, rather than invoking a perfect-set
+selection theorem as an unexplained black box.
+
+\begin{lemma}[Bad pair relations are nowhere dense]\label{lem:badpairs}
+For $e,f\in\N$, put
+\[
+ R_{e,f}=\{(D,E)\in\CD_X^2:
+   \Phi_e^D=\Phi_f^E=A\in\Cantor\text{ for some }A\notin\core_X\}.
+\]
+Then $R_{e,f}$ is nowhere dense in the product of the $d$ topologies.
+\end{lemma}
+\begin{proof}
+Suppose to the contrary that $R_{e,f}$ is dense in a nonempty open rectangle
+$U\times V$. Such a rectangle would exist if its closure had interior.
+Choose $(D_0,E_0)\in R_{e,f}\cap(U\times V)$, and let
+$A=\Phi_e^{D_0}=\Phi_f^{E_0}\notin\core_X$.
+
+Fix $n$. We claim that every convergent computation $\Phi_e^D(n)$ with $D\in U$
+has value $A(n)$. Otherwise there would be a $D\in U$ whose computation
+converges to a different value $v$. Choose finite initial segments witnessing
+this computation and $\Phi_f^{E_0}(n)=A(n)$. Intersect their cylinders with
+$U$ and $V$. The resulting nonempty open rectangle consists of pairs with
+unequal outputs on input $n$, and is therefore disjoint from $R_{e,f}$. This
+contradicts the assumed density. The claim holds for every $n$.
+
+The projection of $R_{e,f}\cap(U\times V)$ onto $U$ is dense in $U$: every
+nonempty open subset of $U$, multiplied by $V$, meets $R_{e,f}$. Every oracle
+in this projection makes $\Phi_e$ total. By the preceding claim its output is
+exactly $A$. Therefore $S_{e,A}$ is dense in $U$.
+Lemma~\ref{lem:recovery} gives $A\in\core_X$, contradicting its choice.
+\end{proof}
+
+\begin{theorem}[Perfect exact-pair theorem]\label{thm:perfect}
+There exists a continuous injection
+$F:2^{\N}\longrightarrow(\CD_X,d)$ whose image $P$ satisfies
+\eqref{eq:perfect-main}. It can be chosen to satisfy
+\eqref{eq:prescribed-main} for any prescribed countable family $(B_j)$, and
+so that $P\cap\core_X=\varnothing$. Its image is perfect in the ordinary
+Cantor topology, and its members are pairwise Turing incomparable.
+\end{theorem}
+\begin{proof}
+For each $(e,f)$ let
+\[
+ O_{e,f}=\CD_X^2\setminus\cl{R_{e,f}}.
+\]
+By Lemma~\ref{lem:badpairs}, these are open dense sets. They are indexed by
+\emph{ordered} pairs of functionals; there is no symmetry assumption.
+
+We also need countably many unary open dense requirements. For each set
+$A$ computable from some $B_j$ but not in $\core_X$, and each $e$, include
+$\CD_X\setminus\cl{S_{e,A}}$. Include as well
+$\CD_X\setminus\{A\}$ for every $A\in\core_X\cap\CD_X$. These last sets are
+open dense because singletons are closed and no point is isolated. There
+are only countably many requirements, by Lemma~\ref{lem:ideal}. Enumerate
+them as $(V_i)$, repeating the whole space if necessary. This enumeration is
+an ordinary set-theoretic enumeration, not a computable one.
+
+Construct, for each finite binary string $s$, a nonempty open metric ball
+$U_s\subseteq\CD_X$. Write $K_s=\cl{U_s}$, with closure within $\CD_X$.
+Require
+\begin{align}
+ &K_{s0}\cup K_{s1}\subseteq U_s,
+       \qquad K_{s0}\cap K_{s1}=\varnothing,\label{eq:fusion1}\\
+ &\diam(K_s)\le2^{-|s|}\quad\text{if }|s|>0,\label{eq:fusion2}\\
+ &K_s\subseteq V_i\quad\text{if }i\le m=|s|,\ m\ge1,\label{eq:fusion3}\\
+ &K_s\times K_t\subseteq O_{e,f}\quad
+   \text{if }s\ne t,\ |s|=|t|=m\ge1,\ e,f\le m.\label{eq:fusion4}
+\end{align}
+Start with any nonempty open ball for the root; impose no diameter condition
+at level zero.
+
+Here is the complete extension step. In each current parent ball choose two
+distinct points. Small enough balls around them have disjoint closures
+contained in the parent and meet the next diameter bound. Such points exist
+because the space has no isolated points. This gives preliminary child balls
+at the next level.
+
+There are finitely many children and finitely many unary requirements with
+$i\le m$ at level $m$. Intersect each child successively with those open dense
+sets, choosing a smaller nonempty ball whose closure lies in the intersection.
+Then list all finitely many ordered distinct child pairs $(s,t)$ and all
+$e,f\le m$. For the next pair requirement, the product of the current two
+balls is a nonempty open rectangle, so it meets $O_{e,f}$. Because $O_{e,f}$
+is open, choose smaller balls in the two coordinates whose product of
+closures is contained in $O_{e,f}$. Shrink just those two child balls. Every
+previously established requirement persists under shrinking. After finitely
+many steps all requirements at that level hold. This completes the recursive
+construction of the balls.
+
+For $p\in2^{\N}$, the sets $(K_{p\restr m})_{m\ge1}$ are nonempty closed,
+nested, and have diameters tending to zero. To see that they have a unique
+common point without any compactness assumption, select one point from each.
+The nesting and diameter bounds make this sequence Cauchy. Completeness puts
+its limit in every closed set, and the vanishing diameters give uniqueness.
+Define $F(p)$ to be that point. Shared long prefixes make the images close,
+so $F$ is continuous. Disjoint sibling closures make it injective.
+
+Let $p\ne q$, and fix $(e,f)$. At a sufficiently large level $m$, the two
+prefixes are distinct and $m\ge e,f$. Requirement~\eqref{eq:fusion4} gives
+$(F(p),F(q))\in O_{e,f}$, and thus this pair is not in $R_{e,f}$. If a set $A$
+is computable from both images, some such pair of functionals computes it.
+The excluded relation therefore implies $A\in\core_X$. The reverse inclusion
+holds because every image is in $\CD_X$. This proves
+\eqref{eq:perfect-main}.
+
+The unary requirements exclude every $S_{e,A}$ for $A\leT B_j$ outside the
+core. The argument of Theorem~\ref{thm:partners} then proves
+\eqref{eq:prescribed-main}. The singleton requirements ensure
+$P\cap\core_X=\varnothing$. If distinct $D,E\in P$ satisfied $D\leT E$, the
+set $D$ itself would lie in their common lower cone, hence in $\core_X$,
+contradicting this exclusion. This proves pairwise incomparability.
+
+Finally, the identity map from $(\CD_X,d)$ into ordinary Cantor space is
+continuous by Lemma~\ref{lem:prefix}. Composing it with $F$ yields a continuous
+injection from compact Cantor space into a Hausdorff space. It is therefore a
+homeomorphism onto its image. The image is compact, hence closed, and has no
+isolated points. Thus $P$ is perfect in the usual sense as well.
+\end{proof}
+
+\begin{remark}[A useful safeguard]
+A perfect family of Turing minimal pairs does not alone disprove a least-degree
+claim about its surrounding coarse class. The computable coarse class also
+contains many noncomputable representatives. The later application separately
+proves that its coarse class contains no computable representative.
+\end{remark}
+
+\section{Computable approximability forces a small core}
+\label{sec:approximability}
+We next produce a core to which the exact-pair theorem can be applied. The
+following proof is independent of the older cone-avoiding compactness proof.
+Its unrelativized conclusion is the result attributed to Igusa in
+\cite[Theorem~4.3]{HJKS}; no novelty is claimed for that conclusion.
+
+\begin{definition}
+For an oracle $Z$, let $\AP_Z(X)$ denote the property
+\begin{equation}\label{eq:AP}
+ \forall\varepsilon>0\ \exists C\leT Z\quad \delta(C,X)<\varepsilon.
+\end{equation}
+The sequence of approximating sets need not be uniformly computable in $Z$.
+For the computable oracle, this is the usual assertion that the coarse
+computability bound is $1$.
+\end{definition}
+
+\begin{lemma}[Patching an approximate center]\label{lem:approxpatch}
+If $\delta(C,Y)<\eta$, there is a finite modification $C_0$ of $C$ such that
+$d(C_0,Y)<\eta$.
+\end{lemma}
+\begin{proof}
+Choose $\eta'$ strictly between $\delta(C,Y)$ and $\eta$. For some $N$, all
+prefixes of length $n>N$ have discrepancy less than $\eta'$. Put
+$C_0=(Y\restr N)\patch C$. Prefixes of length at most $N$ have no errors,
+and longer prefixes have no more errors than $C\triangle Y$. Consequently
+$d(C_0,Y)\le\eta'<\eta$. The finite patch does not change the Turing degree.
+\end{proof}
+
+\begin{theorem}[Relative approximability bound]\label{thm:APcore}
+If $\AP_Z(X)$, then $\core_X\subseteq\low Z$. In particular,
+$\AP_{\emptyset}(X)$ implies $\core_X=\Comp$.
+\end{theorem}
+\begin{proof}
+Fix $A\in\core_X$. Every member of $\CD_X$ computes $A$, so
+$\CD_X=\bigcup_e S_{e,A}$. By the Baire category theorem, at least one $S_{e,A}$
+is not nowhere dense. Hence it is dense in some nonempty open set $U$.
+Choose $Y\in U$ and a positive rational $r$ with $B_d(Y,r)\subseteq U$.
+
+By \eqref{eq:AP}, choose $C\leT Z$ with $\delta(C,X)<r/16$. Since
+$\delta(X,Y)=0$, also $\delta(C,Y)<r/16$. Lemma~\ref{lem:approxpatch} gives
+a finite modification $C_0\leT Z$ such that
+\begin{equation}\label{eq:external-center}
+ d(C_0,Y)<r/8.
+\end{equation}
+Crucially, $C_0$ is \emph{not} asserted to belong to $\CD_X$.
+
+To compute $A(n)$ from $C_0$, search finite strings $\sigma$ and convergent
+simulations $\Phi_e^\sigma(n)\downarrow=v$ subject to
+\begin{equation}\label{eq:APsearch}
+ \frac{|\{j<k:\sigma(j)\ne C_0(j)\}|}{k}<r/4
+ \qquad(1\le k\le|\sigma|).
+\end{equation}
+This is an ordinary $C_0$-computable search.
+
+For termination, the dense set $S_{e,A}$ meets $B_d(Y,r/8)\subseteq U$.
+Choose $D$ in that intersection. Then
+$d(D,C_0)\le d(D,Y)+d(Y,C_0)<r/4$, so a finite prefix of $D$ witnessing
+convergence on input $n$ satisfies \eqref{eq:APsearch}.
+
+For correctness, take any accepted $\sigma$ of length $L$ and form
+$W=\sigma\patch Y$, patching onto the genuine description $Y$, not onto
+$C_0$. Then $W\in\CD_X$. For $1\le k\le L$, the prefix triangle inequality,
+\eqref{eq:external-center}, and \eqref{eq:APsearch} give
+\[
+ \rho_k(W\triangle Y)
+ \le \frac{|\{j<k:\sigma(j)\ne C_0(j)\}|}{k}
+       +\rho_k(C_0\triangle Y)
+ <r/4+r/8=3r/8.
+\]
+After $L$ there are no additional errors, so
+$d(W,Y)<3r/8<r$, by the finite-prefix identity. Thus
+$W\in U\cap[\sigma]$. This nonempty open set meets $S_{e,A}$, forcing the
+accepted value $v$ to be $A(n)$.
+
+We have computed $A$ from $C_0\leT Z$. Since $A$ was any member of the core,
+$\core_X\subseteq\low Z$. For computable $Z$, the opposite inclusion of all
+computable sets follows from Lemma~\ref{lem:ideal}.
+\end{proof}
+
+\begin{remark}[Why the external-center argument matters]
+A computable set can approximate $X$ to every fixed positive error tolerance
+without any computable set being a coarse description of $X$. It would be
+incorrect to insert such an approximate set directly into a proof that assumes
+membership in $\CD_X$. The two different patches in the proof above separate
+what the oracle computation can use from what the topological correctness
+argument can use.
+\end{remark}
+
+\section{An explicit complete c.e. counterexample}
+\label{sec:diagonal}
+We now construct $X$ rather than simply citing the existence of a random or
+generic example. Fix an acceptable enumeration $(\varphi_e)$ of partial
+computable functions $\N\to\N$. It contains all total binary-valued computable
+functions. Let
+\begin{equation}\label{eq:columns}
+ R_e=\{n:\nu_2(n+1)=e\}
+     =\{2^e(2k+1)-1:k\in\N\},
+\end{equation}
+where $\nu_2$ is the exponent of $2$ dividing a positive integer. These sets
+partition $\N$. Their densities and exact tail counts are
+\begin{equation}\label{eq:column-densities}
+ \rho(R_e)=2^{-e-1},\qquad
+ \bigcup_{e\ge k}R_e=\{n:2^k\mid n+1\},\qquad
+ \left|\Bigl(\bigcup_{e\ge k}R_e\Bigr)\cap[0,n)\right|
+     =\left\lfloor\frac n{2^k}\right\rfloor.
+\end{equation}
+
+\begin{definition}[Guarded diagonal set]\label{def:X}
+For $n\in R_e$, put
+\begin{equation}\label{eq:explicit-X}
+ n\in X\quad\Longleftrightarrow\quad
+ \left[\forall m\le n\ \varphi_e(m)\downarrow\in\{0,1\}\right]
+ \ \land\ \varphi_e(n)=0.
+\end{equation}
+\end{definition}
+
+The finite-prefix convergence guard is the point of the construction. Without
+it, a partial program might leave a noncomputable pattern inside one
+positive-density column. With the guard, every non-total or nonbinary program
+contributes only finitely many points to its column.
+
+\begin{theorem}[Properties of the guarded diagonal set]\label{thm:X}
+The set $X$ is computably enumerable and many-one complete. It has
+$\AP_{\emptyset}(X)$, but it has no computable coarse description. Hence
+\[
+ X\eqT\emptyset',\qquad \core_X=\Comp,
+ \qquad X\text{ is not coarsely computable}.
+\]
+\end{theorem}
+\begin{proof}
+\emph{Computable enumerability.} At stage $s$, examine each $n\le s$, compute
+its unique column index $e$, and simulate the finitely many computations
+$\varphi_e(0),\ldots,\varphi_e(n)$ for $s$ steps. Enumerate $n$ if all have
+halted with binary values and the last has value zero. An enumerated witness
+remains valid forever. Conversely, every witness to \eqref{eq:explicit-X}
+is discovered at a finite stage. This is a c.e. enumeration of $X$.
+
+\emph{Individual columns are computable.} Fix $e$. If $\varphi_e$ is total
+and binary-valued, then on $R_e$,
+\[
+ X(n)=1-\varphi_e(n).
+\]
+In this case $X\cap R_e$ is computable. Otherwise let $m_e$ be the least input
+on which $\varphi_e$ is undefined or has a nonbinary value. For every
+$n\ge m_e$, the guard in \eqref{eq:explicit-X} fails, so
+$X\cap R_e\subseteq[0,m_e)$. This column is finite and hence computable.
+These alternatives prove computability for each fixed column, without an
+effective procedure deciding which alternative holds.
+
+\emph{Arbitrarily accurate computable approximations.} For fixed $k$, let
+\[
+ C_k=X\cap\bigcup_{e<k}R_e.
+\]
+It is a finite union of computable sets, so it is computable. All errors of
+$C_k$ lie in the tail union $\bigcup_{e\ge k}R_e$. Thus
+\begin{equation}\label{eq:approx-rate}
+ \delta(C_k,X)\le2^{-k}.
+\end{equation}
+For any positive $\varepsilon$, choose $k$ with $2^{-k}<\varepsilon$.
+This proves $\AP_{\emptyset}(X)$. It does not assert that indices for the
+$C_k$ can be obtained effectively from $k$.
+
+\emph{No computable coarse description.} If $C$ is a computable set, its
+characteristic function is $\varphi_e$ for some total binary index $e$.
+Then $X(n)\ne C(n)$ for every $n\in R_e$. Therefore
+\[
+ \liminf_{n\to\infty}\rho_n(X\triangle C)
+ \ge \rho(R_e)=2^{-e-1}>0.
+\]
+So $C$ is not a coarse description. A natural-number-valued computable coarse
+description would yield a binary one by the normalization in
+Section~\ref{sec:definitions}, and is excluded as well.
+
+\emph{Many-one completeness.} Let
+$K=\{p:\varphi_p(p)\downarrow\}$ be the usual halting set. By the parameter
+ theorem, obtain computably from $p$ an index $e(p)$ of the following program:
+on any input, first wait for $\varphi_p(p)$ to halt, and then return zero.
+If $p\in K$, this program is total and constantly zero. If $p\notin K$, it is
+nowhere defined. Put $n(p)=2^{e(p)}-1$, which belongs to $R_{e(p)}$. Then
+\[
+ p\in K\quad\Longleftrightarrow\quad n(p)\in X.
+\]
+The map $p\mapsto n(p)$ is total computable, giving $K\le_m X$. As $X$ is
+c.e., $X\leT K$, so $X\eqT\emptyset'$.
+
+Finally, Theorem~\ref{thm:APcore} applied to the proved approximability gives
+$\core_X=\Comp$.
+\end{proof}
+
+\begin{remark}[An index-level subtlety]
+The displayed formula for $C_k$ does not give a uniform algorithm for its
+characteristic function from $k$. The proof of each column's computability
+uses either a genuinely total program or the existence of a fixed finite set.
+Recognizing the appropriate case uniformly would decide information about
+program totality. No such recognition is used in this construction or in
+Theorem~\ref{thm:APcore}.
+\end{remark}
+
+\section{Minimal pairs, no least degree, and uncountable coinitiality}
+\label{sec:consequences}
+From now on $X$ denotes the explicit set of Definition~\ref{def:X}.
+
+\begin{lemma}[The coarse classes are nonzero]\label{lem:nonzero}
+Neither $[X]_{\nc}$ nor $[X]_{\uc}$ contains a computable representative,
+including a computable natural-number-valued function.
+\end{lemma}
+\begin{proof}
+If a computable $g$ belonged to either class, then $X\le_{\nc}g$. Since $g$
+is its own computable coarse description, the reduction would give a
+computable coarse description of $X$, contrary to Theorem~\ref{thm:X}.
+\end{proof}
+
+\begin{theorem}[The requested minimal-pair certificate]\label{thm:minpair}
+There is $D\equiv_{\uc}X$ such that $\degT D$ and $\mathbf0'$ form a Turing
+minimal pair. In particular both $[X]_{\nc}$ and $[X]_{\uc}$ have no least
+Turing degree.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:partners} gives $D\in\CD_X$ with
+\[
+ (\low D)\cap(\low X)=\core_X=\Comp.
+\]
+Lemma~\ref{lem:sameclass} gives $D\equiv_{\uc}X$, and
+Lemma~\ref{lem:nonzero} makes $D$ noncomputable. The degree of $X$ is
+$\mathbf0'$. Thus the two degrees are nonzero and their only common lower
+degree is $\mathbf0$, exactly the minimal-pair condition.
+
+If $g$ were a least representative of either coarse class, it would be
+computable from both $X$ and $D$. Apply the common-lower-cone equality to the
+graph of $g$ when $g$ is a function. Then $g$ would be computable, contradicting
+Lemma~\ref{lem:nonzero}.
+\end{proof}
+
+\begin{corollary}[Perfect strengthening]\label{cor:perfectminimal}
+There is a perfect set $P\subseteq\CD_X$ whose members form Turing minimal
+pairs with each other and, individually, with $\emptyset'$. Every member is
+uniformly coarsely equivalent to $X$. In particular, every member is Turing
+incomparable with $\emptyset'$ and is not $\Delta^0_2$.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:perfect} with prescribed oracle $B_0=X$. The core is
+$\Comp$, and no member of $\CD_X$ is computable. The exact-pair equalities
+therefore become minimal-pair equalities. A nonzero degree forming a minimal
+pair with $\mathbf0'$ can neither be below nor above $\mathbf0'$; in
+particular no representative is computable from $\emptyset'$.
+\end{proof}
+
+\begin{definition}
+For $r\in\{\nc,\uc\}$, write
+\[
+ \Spec([X]_r)=\{\degT g:g\equiv_r X\}.
+\]
+A subset $Q$ of this spectrum is \emph{coinitial} if every degree in the
+spectrum bounds some degree in $Q$. This is the order-theoretic notion of
+coinitiality, not a claim about a computable listing.
+\end{definition}
+
+\begin{theorem}[No countable coinitial family]\label{thm:coinitial}
+For either $r\in\{\nc,\uc\}$ and every countable sequence
+$g_j\equiv_r X$, there is $D\in\CD_X$ forming a Turing minimal pair with
+every $g_j$. Consequently $\Spec([X]_r)$ has no countable coinitial subset.
+Indeed one may choose a perfect family of such $D$, pairwise forming minimal
+pairs with each other.
+\end{theorem}
+\begin{proof}
+Let $B_j$ be a set coding the graph of $g_j$, so that $B_j\eqT g_j$.
+Theorem~\ref{thm:partners}, or its perfect strengthening, gives $D\in\CD_X$
+with
+\[
+ (\low D)\cap(\low {B_j})
+   =\core_X\cap(\low {B_j})=\Comp
+ \quad\text{for every }j.
+\]
+All $g_j$ and $D$ are noncomputable by Lemma~\ref{lem:nonzero}. Therefore the
+equalities are minimal-pair equalities. In particular $g_j\nleT D$ for every
+$j$. Since $D\equiv_r X$, no degree in the proposed countable family lies
+below this member of the spectrum. The family is not coinitial.
+\end{proof}
+
+\begin{remark}[Why this is stronger than the original target]
+A least degree would give a one-element coinitial family. The theorem rules
+out even a countably infinite one, and does so with an oracle Turing
+incomparable with each proposed member. It does not exclude an uncountable
+set of minimal degrees. No exact cardinal value for the coinitiality beyond
+uncountability is asserted here.
+\end{remark}
+
+\subsection{The representative spectrum is upward closed}
+For completeness, the familiar sparse-coding observation in the source
+report can be checked directly. Suppose $Y\equiv_r X$ is binary and
+$Y\leT B$. Define $W$ by putting $W(2^n)=B(n)$ and keeping $W(k)=Y(k)$ at
+all other positions. The powers of two have density zero, so
+$W\equiv_{\uc}Y$. Also $B\leT W$ by reading those positions, while
+$W\leT B$ because $Y\leT B$. Thus $\degT W=\degT B$.
+
+The same argument works for function representatives by first choosing a
+set $B$ of the desired higher degree and storing its bits on the powers of
+two. This shows that both full representative spectra are upward closed.
+There is no conflict with the preceding theorems: an upward-closed family of
+Turing degrees need not have a least member or a countable coinitial basis.
+
+\section{Which nonuniform coarse classes have least representatives?}
+\label{sec:classification}
+The least-degree property has a short structural characterization. We give
+it to clarify exactly why the earlier nonsurjectivity results already bear
+on C1. The proof uses a simple robust coding, with no uniform decoder claimed.
+
+For $A\subseteq\N$, let $J(A)(0)=0$ and define
+\begin{equation}\label{eq:J}
+ J(A)(k)=A(n)\qquad\text{when }2^n\le k<2^{n+1}.
+\end{equation}
+Thus bit $A(n)$ is repeated on a block of length $2^n$.
+
+\begin{lemma}[Nonuniform robust recovery]\label{lem:J}
+$J(A)\eqT A$, and every coarse description of $J(A)$ computes $A$.
+Consequently
+\[
+ \core_{J(A)}=\low A.
+\]
+\end{lemma}
+\begin{proof}
+Computing $J(A)$ from $A$ uses the block index. Conversely
+$A(n)=J(A)(2^n)$, proving Turing equivalence.
+
+Let $D$ be a binary coarse description of $J(A)$. Compute $b(n)$ as the
+majority value of $D$ on $[2^n,2^{n+1})$, resolving ties by zero. For all large
+$n$,
+\[
+ |(D\triangle J(A))\cap[0,2^{n+1})|
+       <\tfrac14\,2^{n+1}=2^{n-1}.
+\]
+This is fewer than half the positions in the $n$th block, so $b(n)=A(n)$ for
+all sufficiently large $n$. Thus $A$ is a finite modification of the
+$D$-computable set $b$, and $A\leT D$. The finite correction depends on $D$;
+there is no asserted uniform recovery of its cutoff or values.
+
+All sets below $A$ are therefore in the core. The reverse inclusion follows
+from $J(A)\in\CD_{J(A)}$ and $J(A)\eqT A$.
+\end{proof}
+
+\begin{theorem}[Least-representative characterization]\label{thm:leastclass}
+A nonuniform coarse-equivalence class of total functions has a least Turing
+degree if and only if it is $[J(A)]_{\nc}$ for some set $A$. In that case its
+least degree is $\degT A$.
+\end{theorem}
+\begin{proof}
+First suppose $g\equiv_{\nc}J(A)$. Since $J(A)\le_{\nc}g$, the oracle $g$
+computes a coarse description $D$ of $J(A)$. Lemma~\ref{lem:J} yields
+$A\leT D\leT g$. The representative $J(A)$ itself has degree $\degT A$, so
+that degree is least in the class.
+
+Conversely suppose the class has a least representative $g$, and choose a
+set $A\eqT g$ by graph coding. Every coarse description $h$ of $g$ is itself
+uniformly coarsely equivalent to $g$, by the disagreement triangle inequality.
+Leastness therefore gives $g\leT h$, and hence $A\leT h$. Thus every coarse
+description of $g$ computes $J(A)$ itself, proving $J(A)\le_{\nc}g$.
+
+In the other direction every coarse description of $J(A)$ computes $A$ by
+Lemma~\ref{lem:J}, and hence computes $g$ itself. Therefore
+$g\le_{\nc}J(A)$. This proves equality of the classes and identifies the least
+degree.
+\end{proof}
+
+The map $\degT A\mapsto[J(A)]_{\nc}$ is an order embedding: if $A\leT B$,
+every description of $J(B)$ computes $B$ and then $J(A)$; if
+$J(A)\le_{\nc}J(B)$, apply the reduction to $J(B)$ itself to get
+$A\leT J(B)\eqT B$. Thus the characterization identifies exactly its image.
+
+\begin{remark}[Uniformity boundary]
+The theorem characterizes \emph{nonuniform} coarse classes. The eventual
+majority decoding above does not provide one exact decoder for $A$ that works
+on every description, and the converse proof does not establish a uniform
+coarse equivalence. No corresponding image characterization for uniform
+coarse classes is asserted. The negative uniform-class results in
+Section~\ref{sec:consequences} do not depend on such a characterization.
+\end{remark}
+
+\section{Relativized examples with any principal core}
+\label{sec:relative}
+The construction is not restricted to common information of computable
+degree. Fix any set $Z$. Using an acceptable enumeration of partial
+$Z$-computable functions, define $X_Z$ by the guarded formula
+\eqref{eq:explicit-X}, with $\varphi_e^Z$ in place of $\varphi_e$. The proof of
+Theorem~\ref{thm:X} relativizes line by line:
+\begin{equation}\label{eq:relativeX}
+ X_Z\text{ is c.e. in }Z,\qquad X_Z\eqT Z',\qquad
+ \AP_Z(X_Z),
+\end{equation}
+and $X_Z$ has no $Z$-computable coarse description. The reductions proving
+$X_Z\eqT Z'$ have the same form: $Z'$ enumerates membership in any $Z$-c.e.
+set, and the parameterized all-or-nothing programs reduce $Z'$ to $X_Z$.
+
+Let
+\begin{equation}\label{eq:Y}
+ Y_Z=J(Z)\oplus X_Z,
+ \quad Y_Z(2n)=J(Z)(n),\quad Y_Z(2n+1)=X_Z(n).
+\end{equation}
+
+\begin{theorem}[Arbitrary principal cores]\label{thm:relative}
+For every $Z$ the set $Y_Z$ has
+\[
+ Y_Z\eqT Z',\qquad \core_{Y_Z}=\low Z,
+ \qquad Y_Z\text{ has no }Z\text{-computable coarse description}.
+\]
+Every representative of $[Y_Z]_{\nc}$ or $[Y_Z]_{\uc}$ has Turing degree
+strictly above $\degT Z$. Both spectra have no countable coinitial family.
+There is a perfect family of representatives whose distinct pairs have
+greatest common lower degree exactly $\degT Z$.
+\end{theorem}
+\begin{proof}
+Taking the odd half of $Y_Z$ computes $X_Z$, and both halves are computable
+from $Z'$, proving $Y_Z\eqT Z'$. If $D$ is a coarse description of $Y_Z$,
+its even half is a coarse description of $J(Z)$: up to $n$ positions, its
+errors are bounded by the total errors of $D$ up to $2n$, so their proportion
+is at most twice that total proportion. Lemma~\ref{lem:J} gives $Z\leT D$.
+Thus $\low Z\subseteq\core_{Y_Z}$.
+
+Given $\varepsilon>0$, choose a $Z$-computable $C$ with
+$\delta(C,X_Z)<\varepsilon$. The join $J(Z)\oplus C$ is $Z$-computable, and
+only its odd half can disagree with $Y_Z$. Its upper discrepancy is
+$\tfrac12\delta(C,X_Z)<\varepsilon/2$. Therefore $\AP_Z(Y_Z)$ holds.
+Theorem~\ref{thm:APcore} gives the opposite inclusion of cores, proving
+$\core_{Y_Z}=\low Z$.
+
+A $Z$-computable coarse description of $Y_Z$ would have a $Z$-computable odd
+half describing $X_Z$, which is impossible. If $g$ belongs to either coarse
+class, $Y_Z\le_{\nc}g$, so $g$ computes a coarse description of $Y_Z$, and
+hence computes $Z$. If also $g\leT Z$, that same description would be
+$Z$-computable, a contradiction. Thus every such $g$ is strictly above $Z$.
+
+For any countable family of representatives $g_j$, code them by oracles
+$B_j$. Theorem~\ref{thm:partners} gives a description $D$ whose common lower
+cone with each $B_j$ is $\low Z$, since every $B_j$ computes $Z$. Therefore
+$g_j\nleT D$: otherwise $g_j$ would be computable from $Z$, contrary to what
+was just proved. This excludes countable coinitiality. Theorem~\ref{thm:perfect}
+gives the perfect strengthening, with common lower cones exactly $\low Z$.
+\end{proof}
+
+This result concerns ordinary Turing degrees above $\degT Z$; it does not
+change the underlying definition of coarse reducibility. The parameter $Z$
+is used to construct an example whose common information is exactly that
+oracle's lower cone.
+
+\section{Proof audit, limitations, and continuation targets}
+\label{sec:audit}
+\subsection{Dependency ledger}
+The logical dependencies are short enough to expose explicitly:
+\[
+\begin{gathered}
+ \text{prefix-density inequalities}
+ \Longrightarrow \text{complete description space}
+ \Longrightarrow \text{local recovery},\\
+ \text{local recovery}+\text{Baire category}
+ \Longrightarrow \text{simultaneous exact partners},\\
+ \text{local recovery}+\text{finite-level fusion}
+ \Longrightarrow \text{perfect exact pairs},\\
+ \text{approximability}+\text{Baire category}+\text{prefix search}
+ \Longrightarrow \text{small core},\\
+ \text{guarded c.e. diagonalization}+\text{small core}
+ \Longrightarrow \text{the explicit negative examples}.
+\end{gathered}
+\]
+The many-one completeness statement additionally uses the standard parameter
+ theorem for an acceptable enumeration. No randomness basis theorem, jump
+inversion theorem, classical priority minimal-pair construction, or
+uncountable effective listing is assumed.
+
+\subsection{Where incorrect shortcuts were excluded}
+The density metric $\delta$ cannot support the category proof: it vanishes
+throughout one description class. The supremum-prefix metric $d$ is used
+instead, and its completeness and separability are proved.
+
+Individual cone avoidance is not silently upgraded to simultaneous avoidance.
+The nowhere-density calculation precedes the countable Baire argument. The
+perfect construction explicitly handles all ordered pairs of distinct nodes
+at each level; separate pairwise existence assertions would not produce a
+single compatible perfect family.
+
+The set used as a computable approximate center in
+Theorem~\ref{thm:APcore} need not be a description. The algorithm queries that
+center, but the correctness proof patches onto a genuine description. This
+separation is indispensable.
+
+The individual column programs in the c.e. construction are not presented as
+a uniformly computable sequence. The finite-correction argument in robust
+block decoding is also explicitly nonuniform. Neither step recovers unknown
+indices or stabilization stages effectively.
+
+Finally, membership in the same coarse class is proved before applying the
+minimal-pair criterion, and nonzero coarse degree is proved independently.
+Ordinary noncomputability of the chosen binary set would not suffice.
+
+\subsection{Effectivity and formal verification}
+The set $X$ is given by an explicit c.e. enumeration, with a proof that it is
+many-one complete. The additional descriptions and the perfect set are
+obtained by classical countable choices and Baire/fusion arguments. We do not
+provide a computable procedure for the perfect-set code, an oracle bound on
+that code, or a low arithmetical bound on its paths. In fact the selected paths
+forming minimal pairs with $\emptyset'$ cannot be $\Delta^0_2$.
+
+No Lean executable was available in the working environment, and no Lean
+proof is supplied or claimed to compile. The source report is not treated as
+an axiom library. The mathematical proofs in this note are conventional
+proofs; the program in the archive checks only explicitly stated finite
+lemmas. Those checks are not evidence that the infinite theorems have been
+kernel verified.
+
+\subsection{The next mathematical questions}
+A meaningful continuation would determine how effectively the perfect family
+can be selected from a presentation of $X$ and its core. The proof exposes
+the relevant obstacles: deciding that information lies outside the core,
+locating open rectangles outside closures of bad computation relations, and
+making compatible shrinkings. None of these choices has been assigned an
+arithmetical bound here. This is a newly proposed refinement, not a claim that
+it is a verified literature-open problem.
+
+The nonprincipal-core case also deserves investigation. The perfect theorem
+already realizes any core arising from a coarse-description class as a
+common lower-cone ideal of pairs inside that same class. What additional
+restrictions characterize the ideals that arise this way is not determined
+here.
+
+The effective-dense analogue cannot be inferred. An effective-dense
+description must either answer correctly or explicitly omit an answer; it
+cannot silently make wrong assertions. Density-zero modifications preserve
+coarse descriptions but do not in general preserve effective-dense
+descriptions. Thus the argument leaves C2 unchanged.
+
+\appendix
+\section{Finite checks and reproduction}
+\label{app:checks}
+The archive contains one standard-library Python program,
+\path{checks/check_finite_lemmas.py}. It uses exact integers and rational
+fractions, with no floating-point density comparisons. The run packaged with
+this note completed \textbf{302,579 finite checks}, all passing.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Finite statement or model & Cases\\
+\midrule
+Metric axioms on binary strings of length at most five & 37,449\\
+Exact finite-prefix patch identity & 43,435\\
+External-center patch inequality & 9,021\\
+Positive-density column counts & 53,261\\
+Tail-column counts & 53,261\\
+Column truncation error bounds & 12,282\\
+Guarded diagonalization on finite partial tables & 13,120\\
+Monotonicity of finite delayed enumerations & 27,884\\
+Strict-majority block recovery & 52,866\\
+\midrule
+Total & 302,579\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The finite partial tables use a distinguished value to mean \emph{permanently
+undefined within the model}, not a claim that a real program has failed to
+halt. The tests therefore do not decide totality. Similarly, finite column
+counts support the displayed arithmetic identities, not the Turing
+computability of individual infinite columns.
+
+To rerun the checks and compile the article from the archive root:
+\begin{lstlisting}
+python checks/check_finite_lemmas.py --output checks/results.json
+pdflatex -interaction=nonstopmode -halt-on-error coarse_degree_attack.tex
+pdflatex -interaction=nonstopmode -halt-on-error coarse_degree_attack.tex
+\end{lstlisting}
+Python 3.9 or later and a standard TeX Live installation suffice. The provided
+\path{build.sh} also performs these steps in an isolated build directory.
+The shipped PDF was compiled locally and rendered for visual inspection.
+The source report is included unchanged under \path{source/} for provenance;
+it is not needed to compile this article.
+
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+\bibitem{Survey}
+\emph{Turing Degrees: A Unified Research Report}.
+Supplied file \path{turing_degrees_unified.tex}, unified edition
+18 September 2026. In particular entry C1 and its minimal-pair diagnostic.
+An unchanged copy is included in this archive under \path{source/}.
+
+\bibitem{Gerdes}
+Peter M. Gerdes.
+\emph{Comparing Notions of Dense Computability on $\omega^\omega$ and
+$2^\omega$}.
+arXiv:2508.06925v1, 9 August 2025. Definitions 2.3--2.4 and Question 7.
+\url{https://arxiv.org/abs/2508.06925v1}.
+
+\bibitem{HJKS}
+Denis R. Hirschfeldt, Carl G. Jockusch, Jr., Rutger Kuyper, and Paul E. Schupp.
+\emph{Coarse Reducibility and Algorithmic Randomness}.
+Journal of Symbolic Logic \textbf{81}(3) (2016), 1028--1046.
+Preprint arXiv:1505.01707. In particular Definition 3.1 and Theorem 4.3.
+\url{https://arxiv.org/abs/1505.01707}.
+Author's publication record:
+\url{https://www.math.uchicago.edu/~drh/Papers/coarsereducibility.html}.
+\end{thebibliography}
+\end{document}
