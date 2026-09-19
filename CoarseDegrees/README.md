@@ -92,12 +92,20 @@ theorem CoarseDegrees.exists_hyp_minimal_pair      -- Theorem 1.1 (Z = ∅)
 theorem CoarseDegrees.exists_no_least_hyperdegree' -- Corollary 1.2
 theorem CoarseDegrees.no_cone_theorem              -- Theorem 1.5(b), nonuniform coarse degrees
 theorem CoarseDegrees.leastClass_invariant         -- invariance of the set 𝒜 of Theorem 1.5
+theorem CoarseDegrees.description_iff_limit        -- Theorem 1.4, the criterion for R(A)
+theorem CoarseDegrees.hcore_Rc                     -- Theorem 1.4(a), Core_h(R(A)) = Δ¹₁(A)
+theorem CoarseDegrees.hyperarithmetic_compactness_fails  -- Theorem 1.4(b)
 ```
 
 | File | Content | Status |
 |---|---|---|
 | `BudgetForcing.lean` | disagreement sets of strings, hybrids; `Budget`, `countingBudget`; the forcing `Cond 𝔅` (copy extensions, padding, one-bit reserve); abstract decision systems `DecSys`; `bridge_step`, `bridge`; Rasiowa–Sikorski chains; `exists_generic_pair` | proved |
 | `Hyper.lean` | `Sigma11In`, `HypIn`, `Hyp`, `HRed` (Kleene normal form); `HypIn.of_setTuringReducible` (proved); `not_setCoarseEq_of_ext`; `exists_hyp_minimal_pair`; `tRed_graph`; `exists_no_least_hyperdegree`; the square-root budget forces density zero | proved from **2 admitted** classical facts |
+| `Columns.lean` | the dyadic columns `col n` (the exponent of 2 in `n+1`) and their computability; the exact tail count `\|{n < N : 2^K ∣ n+1}\| = ⌊N/2^K⌋`; a set meeting every column in a bounded set has density zero | proved |
+| `Limit.lean` | reductions making a single oracle query; `LimitComputableIn`; `LimitComputableIn.hypIn` — a limit of a `B`-computable approximation is `Δ¹₁(B)`, by writing both the set and its complement in Kleene normal form | proved |
+| `Dyadic.lean` | the dyadic code `Rc A = {n : col n ∈ A}`; `Rc A ≡ᵀₛ A`; `exists_description_of_limit` — the easy direction of Theorem 1.4 | proved |
+| `Majority.lean` | `recursiveIn_prec_total` (primitive recursion relative to an oracle, for total base and step); the column counting function `cnt` and its `D`-computability; `errCnt_div_tendsto` — the errors have relative density zero in each column; majority decoding and `limit_of_description`; `description_iff_limit` | proved |
+| `Compactness.lean` | `HypIn.mono`; the hyper-core `hcore`; `hcore_Rc`; computable approximations `listApprox` at every radius; `hyperarithmetic_compactness_fails` | proved (`hcore_Rc` uses `HypIn.trans`) |
 | `Cone.lean` | `LeastClass` and its invariance; density estimates for joins and halves of descriptions; the block code and its computability (`computable_log2`); relatively 1-generic sets exist (`exists_oneGenericRel`); `exists_least_above`, `exists_nonleast_above`, `no_cone_theorem` | proved from **3 admitted** facts |
 
 The new mathematics of report 10 is in `BudgetForcing.lean` and is proved with nothing
@@ -127,19 +135,49 @@ themselves.  Theorem 1.5 is formalized for the nonuniform coarse degrees and wit
 `𝓘(Z) ⊕ X`, `X` 1-generic relative to `Z`, instead of the report's `J(h) ⊕ A`; the report's
 witness needs the relativized minimal-pair theorem of the synthesis, which is not formalized.
 
+### Theorem 1.4: the dyadic codes
+
+Theorem 1.4 is formalized, and the way around the missing jump operator is to state the
+criterion in **limit form**.  `R(A)` is `Rc A = {n : col n ∈ A}`, where `col n` is the exponent
+of 2 in `n + 1`, so that the bits of `A` are replicated along the dyadic columns.  The criterion
+proved is
+
+```lean
+theorem description_iff_limit {B A : Set ℕ} :
+    (∃ D : Set ℕ, D ≤ᵀₛ B ∧ SetCoarseEq D (Rc A)) ↔ LimitComputableIn B A
+```
+
+— by Shoenfield's limit lemma the right-hand side is `A ≤ᵀ B′`, but no jump operator is needed
+to state or to prove it.  The easy direction reads the approximation at stage `n` on the column
+of `n`, so each column carries only finitely many errors.  The hard direction is majority
+decoding: vote over the first `s` elements of column `k`.  Because column `k` has density
+`2^{-k-1} > 0` while the errors have density zero, the errors in it are eventually a minority
+(`errCnt_div_tendsto`), so the vote converges to `A(k)`.  Its `B`-computability needs primitive
+recursion relative to an oracle for a total base and step, which Mathlib's `RecursiveIn` API
+does not expose; `recursiveIn_prec_total` supplies it.
+
+Theorem 1.4(a) is `hcore_Rc : hcore (Rc A) = {X | HypIn A X}`.  The inclusion of the hyper-core
+in `Δ¹₁(A)` is proved outright by testing the core against `R(A)` itself; only the reverse
+inclusion uses the admitted `HypIn.trans`.  Theorem 1.4(b) is
+`hyperarithmetic_compactness_fails`, and the audit confirms it depends on **no** admitted
+statement: for non-hyperarithmetic `A` the set `A` lies in the hyper-core of `R(A)`, yet for
+every `K` there is a *computable* `Y` — the first `K` bits of `A` replicated along the columns
+below `K` — with `|(R(A) △ Y) ∩ [0,N)| ≤ N/2^K` for every `N`.  So the cone-avoiding compactness
+theorem (HJKS 2016, Theorem 3.7), equivalently the robust-radius characterization of the core
+(synthesis, Theorem 4.8), has no analogue for `≤_h`.
+
 Not formalized from report 10: the relativization of Theorem 1.1 to an oracle `Z` and
-Corollary 1.3 (every hyperdegree is an unattained infimum); Theorem 1.4 (dyadic codes, failure
-of hyperarithmetic compactness, the ordinal invariant), which needs a jump operator and the
-relativized Jockusch–Schupp criterion; Theorem 1.5(a) (`𝒜` is `Π¹₁`), the uniform cones, and
-the statement about the Martin measure.
+Corollary 1.3 (every hyperdegree is an unattained infimum); the spectrum clause of Theorem
+1.4(a) and the ordinal invariant of Theorem 1.4(c), which does need `ω₁^A`; Theorem 1.5(a)
+(`𝒜` is `Π¹₁`), the uniform cones, and the statement about the Martin measure.
 
 ## What is not formalized
 
 The stronger witness theorems of the synthesis are not formalized: the prefix-density metric and
 the exact-pair theorems (Section 4), the jump-cone spectrum of the dyadic codes (Section 6), and
 the reservoir and one-bit-reserve constructions (Sections 7–8), which would make `not_C1`
-independent of HJKS.  The cheapest of these is the dyadic-code construction; it needs the
-relativized limit lemma and a jump operator, neither of which is available in Mathlib or in the
-Lean side of `C:\ProveIt`.  The spectrum identity (synthesis, Theorem 3.1) and the block-code
+independent of HJKS.  The dyadic-code construction is now available in limit form
+(`Dyadic.lean`, `Majority.lean`), so what is still missing for that route is only the
+relativized Jockusch–Schupp criterion.  The spectrum identity (synthesis, Theorem 3.1) and the block-code
 characterization (Theorem 3.6) are also left for later.  `no_least_of_two_witnesses` (Lemma 2.4)
 is proved and is the entry point for any such witness construction.
