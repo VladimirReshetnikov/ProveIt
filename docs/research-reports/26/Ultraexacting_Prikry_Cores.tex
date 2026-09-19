@@ -1,0 +1,1048 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=13pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Forest}{HTML}{30392C}
+\definecolor{Olive}{HTML}{687144}
+\definecolor{Muted}{HTML}{65685F}
+\definecolor{Sage}{HTML}{CBD0BC}
+\definecolor{Pale}{HTML}{F2F4EB}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\PassOptionsToPackage{obeyspaces}{url}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\urlstyle{same}
+\hypersetup{pdftitle={Canonical Prikry Cores at Ultraexacting Cardinals},pdfauthor={Research continuation prepared for Vladimir Reshetnikov},pdfsubject={Internal normal measures, definable splitting, and an I0-equiconsistent strengthening}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Forest}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Forest}}{\thesubsection}{.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Forest}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}LARGE CARDINALS AT THE INCONSISTENCY FRONTIER}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}PRIKRY CORES\quad 18 SEP 2026}
+\fancyfoot[L]{\small\color{Muted}Continuation of the Cardinals3 research archive}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\tcbset{colback=Pale,colframe=Sage,colbacktitle=Sage,coltitle=Forest,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{question}[definition]{Question}
+\newtheorem{inputthm}[definition]{Imported theorem}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\OD}{\mathrm{OD}}
+\newcommand{\HOD}{\mathrm{HOD}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\UEx}{\mathrm{UEx}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\crit}{\operatorname{crit}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\otp}{\operatorname{otp}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\tc}{\operatorname{tc}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\Izero}{\mathrm I0}
+\newcommand{\tail}{\operatorname{Tail}}
+\newcommand{\Split}{\operatorname{Split}}
+\newcommand{\Npar}[2]{\HOD_{\langle #1,#2\rangle}}
+\newcommand{\ODpar}[2]{\OD_{\langle #1,#2\rangle}}
+\newcommand{\seq}[1]{\langle #1\rangle}
+\newcommand{\smallnote}[1]{{\small\color{Muted}#1}}
+
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{.2in}
+{\sffamily\bfseries\color{Olive}\fontsize{11}{14}\selectfont RESEARCH CONTINUATION\quad /\quad CARDINALS3\par}
+\vspace{.22in}
+{\color{Forest}\bfseries\fontsize{28}{31}\selectfont Canonical Prikry cores\\at ultraexacting cardinals\par}
+\vspace{.20in}
+{\color{Forest}\fontsize{14}{18}\selectfont Internal normal measures, a definable-splitting obstruction,\\and an $\Izero$-equiconsistent strengthening\par}
+\vspace{.22in}
+{\color{Muted}Prepared for Vladimir Reshetnikov\par}
+{\color{Muted}18 September 2026\par}
+\vspace{.18in}
+{\color{Sage}\hrule height .8pt}
+\vspace{.18in}
+\textbf{Abstract.}
+The supplied synthesis obtains regularity, and in a coded setting inaccessibility, of an ultraexacting cardinal $\lambda$ inside inner models defined from a cofinal-sequence class modulo finite difference. We strengthen this for suitably chosen \emph{single-orbit classes}. If $c$ is the critical sequence of a sufficiently correct ultraexacting witness and $q=[\ran(c)]_{=^*}$, then
+\[
+ U_q=\{A\in\Pow(\lambda)\cap\HOD_{\{q\}}^V:
+             \ran(c)\subseteq^* A\}
+\]
+is an element of $\HOD_{\{q\}}^V$ and is a normal measure there. Moreover, $c$ is Prikry-generic over that inner model for $U_q$. A fixed bijection $b:\lambda\to V_\lambda$ gives a larger core $\HOD_{\langle b,q\rangle}^V$ with the same conclusions and with exactly the ambient sets of rank below $\lambda$. Every representative of $q$ produces the same Prikry extension of either core.
+
+The proof uses canonical counterexamples, not an assumption that arbitrary ordinal parameters are fixed. It gives an explicit incompatibility with a definable splitting principle. Together with the published comparison between ultraexactingness and $\Izero$, it also gives an $\Izero$-equiconsistent theory in which $V_\lambda\subseteq\HOD$ and the canonical $q$-core regards $\lambda$ as measurable while $V$ regards it as countably cofinal. A successor-shift example shows that the normality conclusion is sharp for the particular tail measure.
+
+\begin{assessment}{Scope and status}
+This is a research draft with detailed English proofs. The new claims are the canonical-measure and Prikry-core conclusions relative to the supplied synthesis, not a refutation of ultraexacting cardinals or a new proof of their published $\Izero$ calibration. The arguments have not been independently refereed or formalized in Lean, and no claim of literature-wide priority is made.
+\end{assessment}
+\vfill
+\smallnote{Main results: Theorem~\ref{thm:main} (canonical cores), Theorem~\ref{thm:tailmeasure} (internal measures), and Theorems~\ref{thm:splitting} and~\ref{thm:equicons} (consistency consequences).}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Results and their relation to the archive}\label{sec:results}
+
+The starting point is the distinction between an actual cofinal sequence and its equivalence class modulo finite changes. An ultraexacting witness moves its critical sequence to a proper tail, but fixes the equivalence class of that sequence. The supplied synthesis exploits this to exclude small definable sets of representatives \cite{archive}. Here we ask a different question: can this fixed class define a \emph{measure} on the subsets of $\lambda$ belonging to an appropriate inner model?
+
+The answer obtained below is affirmative. The important extra observation is that a subset of $\lambda$ fixed by the witness is constant along each forward orbit. Canonical counterexamples turn this local observation into an ultrafilter theorem for an entire definable inner model. At the critical orbit, a fixed regressive function is likewise constant, giving normality.
+
+Throughout, $\HOD_{\{q\}}$ permits the \emph{single set} $q$ as a parameter. It does not permit arbitrary members of $q$ as parameters. We define this convention precisely in Section~\ref{sec:definability}. The notation $a\subseteq^* A$ means that $a\setminus A$ is finite, and
+\[
+ D_\lambda=\{a\subseteq\lambda:\otp(a)=\omega,\ \sup a=\lambda\},
+ \qquad Q_\lambda=D_\lambda/=^*.
+\]
+A sequence $c:\omega\to\lambda$ and its range are distinguished when necessary; $[c]$ abbreviates $[\ran(c)]_{=^*}$.
+
+\begin{theorem}[Canonical Prikry cores]\label{thm:main}
+Assume $\ZFC$ and let $\lambda$ be ultraexacting. There are an increasing cofinal sequence $c:\omega\to\lambda$ and a bijection $b:\lambda\to V_\lambda$ such that, writing $q=[c]$,
+\[
+ N_0=\HOD_{\{q\}}^V,\qquad N_1=\Npar bq^V,
+ \qquad
+ U_i=\{A\in\Pow(\lambda)\cap N_i:\ran(c)\subseteq^* A\},
+\]
+the following statements hold.
+\begin{enumerate}
+\item $N_0\subseteq N_1\subseteq V$ are inner models of $\ZFC$. Each $U_i$ belongs to $N_i$, and $N_i$ regards $U_i$ as a nonprincipal, $\lambda$-complete normal ultrafilter on $\lambda$.
+\item $V_\lambda^{N_1}=V_\lambda^V$. If in addition $V_\lambda\subseteq\HOD^V$, then $V_\lambda^{N_0}=V_\lambda^V$ as well.
+\item $c$ is Prikry-generic over each $N_i$ for its measure $U_i$. Every increasing enumeration $d$ of a member of $q$ is generic for the same forcing, and
+\[
+                    N_i[d]=N_i[c]\subseteq V.
+\]
+\item $q\in N_i[c]\setminus N_i$ and $q\cap N_i=\varnothing$. The measures are coherent:
+\[
+                       U_0=U_1\cap N_0.
+\]
+\end{enumerate}
+The sequence $c$ can be chosen as the critical sequence of a sufficiently correct ultraexacting witness. The bijection $b$ can be chosen in that witness's domain and fixed by the witness.
+\end{theorem}
+
+The use of ``normal measure'' in this theorem is \emph{internal}: it concerns all subsets and all short sequences belonging to $N_i$. In $V$, the ordinal $\lambda$ has cofinality $\omega$. This is exactly the familiar configuration in which a measurable cardinal of an inner model has been singularized by Prikry forcing. The theorem identifies such an inner model and such a generic sequence canonically from the orbit class; it does \emph{not} assert that all of $V$ is that Prikry extension.
+
+\begin{assessment}{What is added to the supplied synthesis}
+The synthesis's quotient results give suitable classes $q$ for which a parameter-HOD model regards $\lambda$ as regular, and in the coded case inaccessible. The new step is to put a \emph{specific normal measure inside a suitable core} and identify the representatives of $q$ as genuine Prikry generics over it. The existing orbit, fixed-bijection, and canonical-counterexample ideas are retained and proved in the form needed here. Mere rigidity of an arbitrary class is not asserted to suffice.
+\end{assessment}
+
+Two further conclusions make the consistency content explicit. First, ultraexactingness contradicts the assertion that every countable cofinal set is split by some subset of $\lambda$ ordinal definable from parameters in $V_\lambda$ (Theorem~\ref{thm:splitting}). Second, the theory asserting the coded configuration in Theorem~\ref{thm:main}, together with $V_\lambda\subseteq\HOD$, is equiconsistent with $\ZFC+\Izero$ (Theorem~\ref{thm:equicons}). The latter is a structural enrichment of the published calibration, not a different consistency-strength calculation.
+
+\section{Definability and uniformly correct witnesses}\label{sec:definability}
+
+\subsection{Individual parameters and their hereditary closure}
+
+\begin{definition}[Parameter convention]\label{def:hod}
+For fixed sets $d,q$, let $\ODpar dq$ consist of the sets definable in $V$ from $d,q$ and finitely many ordinal parameters. Set
+\[
+ N(d,q)=\Npar dq
+       =\{x:\tc(\{x\})\subseteq\ODpar dq\}.
+\]
+When $d=\varnothing$ we also write $N_q=\HOD_{\{q\}}$. Separately, $\OD_{V_\lambda\cup\{q\}}$ allows finitely many \emph{elements} of $V_\lambda$, together with $q$, as parameters. These are different conventions.
+\end{definition}
+
+In particular, $q\in\OD_{\{q\}}$ is automatic, but $q\in\HOD_{\{q\}}$ need not hold. The latter would require every member of $q$ to be ordinal definable from $q$. This distinction is essential, not notational decoration.
+
+\begin{lemma}[Definability and Choice]\label{lem:hod}
+For any fixed finite tuple of set parameters, ordinal definability from that tuple is first-order definable, admits a definable set-like well-order, and its hereditary closure is a transitive inner model of $\ZFC$ containing all ordinals.
+\end{lemma}
+
+\begin{proof}
+We give the argument for the tuple $(d,q)$. A definition can be coded by an ordinal $\theta$, a formula number, and a finite tuple of ordinals below $\theta$, with $d,q\in V_\theta$. The code defines $x$ when $x$ is the unique element satisfying that formula in the set structure $V_\theta$ with the indicated parameters. Satisfaction for set structures is first-order definable. Thus the existence of such a code is a first-order condition on $x,d,q$.
+
+This condition is equivalent to ordinal definability in $V$. A code in a rank gives a definition in $V$ using the ordinal $\theta$ and the definable satisfaction relation for $V_\theta$. Conversely, reflect an actual definition and its uniqueness statement to a sufficiently large rank containing its parameters and its unique value. This produces a rank code for that value.
+
+Order the codes by a fixed set-like well-order of finite ordinal data, first bounding all ordinal entries and then ordering the remaining finite data. Every code has only set-many predecessors. Assign each definable object its least code, and compare objects by their least codes. This gives a definable set-like well-order $<_{d,q}$ of $\ODpar dq$. In particular, every nonempty definable collection of its elements has a least element. The construction does not require $d$ or $q$ to belong to their hereditary closure.
+
+Let $N=N(d,q)$. It is transitive by definition and contains all ordinals. Definability from $d,q$ is closed under substitution of finitely many definitions. Consequently a set definable from $d,q$ and finitely many members of $N$ is ordinal definable from $d,q$. If all its members belong to $N$, it belongs to $N$ itself.
+
+Pairing, Union, Infinity, Extensionality and Foundation now follow directly. For Separation, relativize the chosen formula to the definable class $N$; the resulting subset of a set in $N$ is definable from $d,q$ and parameters in $N$, and all its members are in $N$. For Power Set, the set $\Pow(x)\cap N$ has the same properties when $x\in N$. For Replacement, relativize a functional formula to $N$ and apply Replacement in $V$ to its values on the given domain. The range is definable from $d,q$ and the parameters and consists of members of $N$, so it too belongs to $N$. This argument applies separately to every formula of the axiom schemes.
+
+Finally, if $x\in N$, the restriction of $<_{d,q}$ to $x$ is a well-order of $x$. This restriction is definable from $d,q,x$, and its ordered pairs are hereditarily ordinal definable from $d,q$. Hence the restriction belongs to $N$. Every set of $N$ is therefore well-orderable in $N$, proving Choice.
+\end{proof}
+
+\subsection{The local embedding convention}
+
+\begin{definition}[Ultraexactingness]\label{def:uex}
+An uncountable cardinal $\lambda$ is \emph{ultraexacting} if, for every cardinal $\zeta>\lambda$, there are
+\[
+ V_\lambda\cup\{\lambda\}\subseteq X\prec V_\zeta,
+ \qquad j:X\longrightarrow V_\zeta
+\]
+such that $j$ is elementary, $j(\lambda)=\lambda$, $j\restr\lambda\ne\id$, and $e=j\restr V_\lambda\in X$. We call $(X,j,\zeta)$ a witness. The domain $X$ need not be transitive.
+\end{definition}
+
+This is the convention in the supplied synthesis and in the primary papers \cite{abl,abgl}. All embeddings used in the new argument are sets. No elementary embedding of the universe, and no satisfaction predicate for the universe, is assumed.
+
+We will use the classical local form of Kunen's inconsistency theorem as a background theorem:
+\begin{inputthm}[Local Kunen]\label{input:kunen}
+In $\ZFC$ there is no nontrivial elementary self-embedding of $V_{\delta+2}$.
+\end{inputthm}
+The use of this result is the same as in the supplied synthesis's critical-sequence normalization; see \cite{kunen,hkp}. All subsequent local deductions are proved below.
+
+\subsection{Why a single height works for parameters chosen later}
+
+The measure will be defined from a class $q$ extracted \emph{after} a witness is chosen. It would therefore be circular to choose the witness height by reflecting a definition that depends on that particular, not-yet-chosen class. Uniform reflection avoids this problem.
+
+\begin{lemma}[Canonical-counterexample transfer]\label{lem:canonical}
+Fix a finite list of first-order properties $\Psi_i(x;\lambda,d,q)$ whose possible witnesses $x$ have rank below $\lambda+\omega$ and belong to $\ODpar dq$. There are arbitrarily large cardinal heights $\zeta$ with the following property.
+
+Suppose $(X,j,\zeta)$ is an ultraexacting witness, $d,q\in X\cap V_{\lambda+\omega}$, and $j(d)=d$, $j(q)=q$. If some $\Psi_i$ has a witness in $V$, then its $<_{d,q}$-least witness belongs to $X$ and is fixed by $j$.
+\end{lemma}
+
+\begin{proof}
+For each $i$, form the first-order formula
+\[
+ \theta_i(x;\lambda,d,q):\quad
+ \Psi_i(x;\lambda,d,q)\ \wedge\
+ \neg\exists y\bigl(y<_{d,q}x\ \wedge\ \Psi_i(y;\lambda,d,q)\bigr).
+\]
+All notation in this formula is expanded using fixed first-order definitions. Apply the Reflection Theorem to the finite list of these formulas and the auxiliary formulas needed for their definitions. We may choose $\zeta>\lambda+\omega$ to be a cardinal and to be correct for this list for \emph{all} parameters in $V_\zeta$. Equivalently, choose a sufficiently large finite $m$ and a cardinal $\zeta$ in the class $C^{(m)}$ of $\Sigma_m$-correct ranks. Such cardinal heights are unbounded. The list, and hence $m$, is chosen before $d,q$ and the witness.
+
+If a counterexample exists, its least witness $x$ exists by Lemma~\ref{lem:hod} and has rank below $\lambda+\omega$. Correctness gives
+\[
+                        V_\zeta\models\theta_i(x;\lambda,d,q).
+\]
+Because the displayed parameters are in $X\prec V_\zeta$, elementarity supplies the unique such witness inside $X$. Correctness and uniqueness identify it with the actual $x$. Applying $j$ to its defining statement in $X$, and using the fixedness of $\lambda,d,q$, yields
+\[
+                        V_\zeta\models\theta_i(j(x);\lambda,d,q).
+\]
+Correctness again identifies $j(x)$ with the same unique actual witness. Thus $j(x)=x$.
+\end{proof}
+
+\begin{remark}[What is not being assumed]\label{rem:ordinals}
+The ordinal parameters in an arbitrary definition of a set may be moved by $j$. We never assume otherwise. Canonical minimization makes the \emph{counterexample itself} uniquely definable from the fixed tuple $(\lambda,d,q)$, without retaining those arbitrary ordinal parameters. Nor do we ask one rank to reflect every formula: the three failure properties in Appendix~\ref{app:formulas} form a fixed finite list.
+\end{remark}
+
+\section{Critical orbits and a fixed coding parameter}\label{sec:orbits}
+
+\subsection{Critical-sequence normalization}
+
+\begin{lemma}[Dynamics below the fixed height]\label{lem:dynamics}
+Let $(X,j,\zeta)$ be a witness and $e=j\restr V_\lambda$. Then $e:V_\lambda\to V_\lambda$ is elementary. If
+\[
+ \kappa=\crit(e),\qquad \kappa_n=e^n(\kappa),
+\]
+then
+\[
+ \sup_{n<\omega}\kappa_n=\lambda,
+ \qquad e(\alpha)>\alpha\quad(\kappa\le\alpha<\lambda).
+\]
+In particular, every ordinal $\mu<\lambda$ fixed by $j$ is below $\kappa$.
+\end{lemma}
+
+\begin{proof}
+The set $V_\lambda$ is definable from $\lambda$, so it belongs to $X$ and is fixed by $j$. Moreover every element of $V_\lambda$ belongs to $X$. Relativizing formulas to this set shows that the restriction $e$ is elementary on the full structure $V_\lambda$. This uses no transitivity of $X$.
+
+Let $\delta=\sup_n\kappa_n$. If $\delta<\lambda$, the critical sequence is an element of $V_\lambda$, its image under $e$ is its tail, and therefore $e(\delta)=\delta$. Since $\lambda$ is an uncountable cardinal, $\delta+2<\lambda$. Restricting $e$ to $V_{\delta+2}$ contradicts Imported Theorem~\ref{input:kunen}. Thus $\delta=\lambda$.
+
+If $\kappa_n\le\alpha<\kappa_{n+1}$, then
+\[
+                  e(\alpha)\ge e(\kappa_n)=\kappa_{n+1}>\alpha.
+\]
+These intervals cover $[\kappa,\lambda)$, proving the remaining claims.
+\end{proof}
+
+\begin{lemma}[A measure implies inaccessibility]\label{lem:inaccessible}
+If an uncountable cardinal $\rho$ carries a nonprincipal $\rho$-complete ultrafilter on its full power set, then $\rho$ is regular and strong limit.
+\end{lemma}
+
+\begin{proof}
+Every set of cardinality less than $\rho$ is null: intersect the complements of its singletons. If $\rho$ had a cofinal sequence of length $\mu<\rho$, the final segments determined by that sequence would be $\mu$ many measure-one sets with empty intersection. Thus $\rho$ is regular.
+
+Suppose $\theta<\rho$ and $2^\theta\ge\rho$. Choose distinct subsets $x_\alpha\subseteq\theta$ for $\alpha<\rho$. For each $\xi<\theta$, the ultrafilter decides the set $\{\alpha:\xi\in x_\alpha\}$. Intersect the $\theta$ chosen measure-one sides. The intersection is measure one, but any two indices in it give exactly the same subset of $\theta$. Since the $x_\alpha$ are distinct, the intersection has at most one element, a contradiction. Hence $2^\theta<\rho$ for every $\theta<\rho$.
+\end{proof}
+
+\begin{lemma}[The critical point is inaccessible]\label{lem:criticalmeasure}
+In Lemma~\ref{lem:dynamics}, $\kappa$ and all $\kappa_n$ are inaccessible cardinals in $V$. In fact $\kappa$ carries the usual normal measure derived from $e$.
+\end{lemma}
+
+\begin{proof}
+First $\kappa$ is a cardinal. Otherwise let $h:\alpha\to\kappa$ be a bijection with $\alpha<\kappa$. It belongs to $V_\lambda$. The map $e(h)$ has domain $\alpha$ and range $e(\kappa)$, but for every $\xi<\alpha$,
+\[
+ e(h)(\xi)=e(h(\xi))=h(\xi),
+\]
+since $h(\xi)<\kappa$. Its range is therefore also $\kappa$, a contradiction. As elementary embeddings fix all finite ordinals and $\omega$, $\kappa$ is uncountable.
+
+Define
+\[
+                     W=\{A\subseteq\kappa:\kappa\in e(A)\}.
+\]
+All subsets, functions and short sequences used in verifying this definition have rank below $\lambda$. Elementarity therefore gives a nonprincipal ultrafilter on the full ambient power set of $\kappa$. If $\mu<\kappa$ and $\seq{A_i:i<\mu}$ is a sequence of members of $W$, $e$ fixes the indexing ordinal and
+\[
+ e\Bigl(\bigcap_{i<\mu}A_i\Bigr)=\bigcap_{i<\mu}e(A_i).
+\]
+The right side contains $\kappa$, proving $\kappa$-completeness.
+
+For normality, let $f:A\to\kappa$ be regressive with $A\in W$. Then $e(f)(\kappa)=\beta<\kappa$, so $e(\beta)=\beta$ and
+\[
+       \kappa\in e\bigl(\{\xi\in A:f(\xi)=\beta\}\bigr).
+\]
+That fibre belongs to $W$. Lemma~\ref{lem:inaccessible} gives inaccessibility. The assertion that a particular ordinal below $\lambda$ is inaccessible is absolute between $V_\lambda$ and $V$: every counterexample would have rank below $\lambda$. Applying $e$ repeatedly therefore gives inaccessibility of each $\kappa_n$.
+
+We also record that $e$ fixes $V_\kappa$ pointwise. Induct on rank below $\kappa$. Any set $x$ at that rank has an enumeration of length $\mu<\kappa$, by inaccessibility. Its members are fixed by the induction hypothesis and its indexing ordinal is fixed, so applying $e$ to the enumeration gives $e(x)=x$.
+\end{proof}
+
+\subsection{Single-orbit classes}
+
+\begin{lemma}[Orbit classes are fixed]\label{lem:orbitclass}
+For any $r\in[\kappa,\lambda)$ set
+\[
+ c_r(n)=e^n(r),\qquad a_r=\ran(c_r),\qquad q_r=[a_r]_{=^*}.
+\]
+Then $c_r,a_r,q_r\in X$, $a_r\in D_\lambda$, and
+\[
+                  j(a_r)=a_r\setminus\{r\},\qquad j(q_r)=q_r.
+\]
+\end{lemma}
+
+\begin{proof}
+The parameter $r$ belongs to $V_\lambda\subseteq X$, and $e\in X$. Recursion on $\omega$ with these parameters gives the actual function $c_r$ in $X$. Its existence and uniqueness are correctly computed at the chosen height; its rank is below $\lambda+\omega$. Lemma~\ref{lem:dynamics} makes it strictly increasing, and $e^n(r)\ge\kappa_n$ makes it cofinal in $\lambda$. Its range and its equivalence class are obtained by definable set operations, so they also belong to $X$.
+
+Since $j(\omega)=\omega$, for each $n<\omega$ we have
+\[
+                       j(c_r)(n)=j(c_r(n))=e^{n+1}(r).
+\]
+Thus $j(a_r)$ is the indicated tail. The relation of finite symmetric difference on $D_\lambda$ is absolute at our height and is preserved by $j$. The image of the equivalence class of $a_r$ is consequently the equivalence class of its tail, which is $q_r$ itself.
+\end{proof}
+
+\begin{lemma}[There are $\lambda$ disjoint forward orbits]\label{lem:manyorbits}
+Let $R=[\kappa,\lambda)\setminus e``[\kappa,\lambda)$. The orbits $a_r$, for $r\in R$, partition $[\kappa,\lambda)$. They are pairwise disjoint and $|R|=\lambda$, so their classes $q_r$ are distinct.
+\end{lemma}
+
+\begin{proof}
+The map $e$ is injective and strictly raises every ordinal in the interval. Each ordinal has at most one immediate predecessor under $e$. Repeatedly taking such predecessors must terminate: otherwise there would be an infinite strictly descending sequence of ordinals. The final predecessor is a root in $R$. Uniqueness of predecessors proves disjointness of the resulting forward orbits. Each orbit is countably infinite. Choice and $|[\kappa,\lambda)|=\lambda>\omega$ now give
+\[
+                            \lambda=|R|\cdot\aleph_0=|R|.
+\]
+Disjoint infinite sets cannot have finite symmetric difference.
+\end{proof}
+
+Here $e^n$ always means ordinary finite composition of the set map $e$. No iterability or well-founded direct-limit hypothesis is used.
+
+\subsection{A fixed enumeration of the entire lower rank}
+
+\begin{lemma}[Fixed-bijection lemma]\label{lem:bijection}
+There is a bijection $b:\lambda\to V_\lambda$ such that $b\in X$ and $j(b)=b$.
+\end{lemma}
+
+\begin{proof}
+Choose a well-order $w_0$ of $V_\kappa$ of order type $\kappa$ that respects rank: sets of lower rank precede sets of higher rank. Such an order exists because $\kappa$ is inaccessible. Explicitly, well-order each rank layer with order type below $\kappa$ and concatenate the layers. Every proper initial block of layers has size and order type below $\kappa$, while the union has order type $\kappa$. The relation $w_0$ has rank below $\lambda$, hence belongs to $X$.
+
+For $n<\omega$ let $w_n=e^n(w_0)$. It is a rank-respecting well-order of $V_{\kappa_n}$ of order type $\kappa_n$. The relation $w_1$ agrees with $w_0$ on $V_\kappa$, because $e$ fixes every element of $V_\kappa$. Moreover $V_\kappa$ is an initial segment in $w_1$, by rank-respect. Applying $e$ repeatedly shows that $w_{n+1}$ end-extends $w_n$.
+
+The sequence $\seq{w_n:n<\omega}$ is definable by recursion from $e,w_0$ and belongs to $X$. Its union
+\[
+                               w=\bigcup_{n<\omega}w_n
+\]
+is a well-order of $V_\lambda$. To check well-foundedness directly, a nonempty subset meeting $V_{\kappa_n}$ has a least member in that initial segment, and that member precedes everything outside it. The order type is $\sup_n\kappa_n=\lambda$.
+
+The pointwise image of the sequence under $j$ is its tail, since $j(w_n)=e(w_n)=w_{n+1}$. Thus
+\[
+                       j(w)=\bigcup_{n<\omega}w_{n+1}=w.
+\]
+The unique order-isomorphism from $\lambda$ onto $(V_\lambda,w)$ belongs to $X$ and is fixed by $j$. It is the desired $b$.
+\end{proof}
+
+This is the fixed-coding device already present in the supplied synthesis's discussion of report~R17 and in the proof of \cite[Proposition~3.9]{abgl}. The rank-respecting choice above makes the end-extension step explicit.
+
+\begin{corollary}[Absorbing lower-rank parameters]\label{cor:absorb}
+For the bijection $b$ of Lemma~\ref{lem:bijection} and every set $q$,
+\[
+ \OD_{V_\lambda\cup\{q\}}\subseteq\ODpar bq,
+ \qquad V_\lambda\subseteq\Npar bq.
+\]
+In particular $V_\lambda^{\Npar bq}=V_\lambda^V$.
+\end{corollary}
+
+\begin{proof}
+Every $x\in V_\lambda$ is $b(\alpha)$ for some ordinal $\alpha<\lambda$, so it is ordinal definable from $b$. Substitute these definitions for any finitely many lower-rank parameters. Every member of the transitive closure of $x\in V_\lambda$ again lies in $V_\lambda$, so $x$ is hereditarily ordinal definable from $b$. Transitivity and absoluteness of rank give the final equality.
+\end{proof}
+
+\section{The canonical tail filter is an internal measure}\label{sec:measure}
+
+\subsection{A definition that does not choose a representative}
+
+\begin{definition}[Tail predicate and filter]\label{def:filter}
+For $q\in Q_\lambda$ and $A\subseteq\lambda$, put
+\[
+ \tail(q,A)\quad\Longleftrightarrow\quad
+       (\exists a\in q)\ |a\setminus A|<\omega.
+\]
+For individual parameters $d,q$ define
+\[
+ \begin{split}
+ B(d,q)&=\Pow(\lambda)\cap N(d,q),\\
+ U(d,q)&=\{A\in B(d,q):\tail(q,A)\}.
+ \end{split}
+\]
+The ordinal $\lambda$ is understood in this notation and can always be included as an ordinal parameter.
+\end{definition}
+
+If $a,a'\in q$, their symmetric difference is finite. Hence $a\setminus A$ is finite exactly when $a'\setminus A$ is finite. The existential quantifier in the definition can therefore be replaced by a universal quantifier over $q$.
+
+\begin{remark}[No common cutoff]\label{rem:cutoff}
+This equivalence does \emph{not} assert that one cutoff works simultaneously for all representatives. Members of $q$ can have arbitrary additional finite points. The argument below never selects a ``least tail bound from $q$''; that would confuse a quotient-invariant eventual property with a non-invariant choice of representative.
+\end{remark}
+
+\begin{lemma}[The filter belongs to the core]\label{lem:ownership}
+For any $q\in Q_\lambda$ and fixed $d$, both $B(d,q)$ and $U(d,q)$ belong to $N(d,q)$. The latter is a proper filter on $B(d,q)$, contains every final segment of $\lambda$, and contains no bounded subset of $\lambda$.
+\end{lemma}
+
+\begin{proof}
+The two collections are sets, obtained by Separation from the ambient $\Pow(\lambda)$, and are ordinal definable from $d,q$. Each of their elements belongs to $N(d,q)$; therefore all elements of their transitive closures are ordinal definable from $d,q$. Lemma~\ref{lem:hod} gives membership in the core.
+
+A representative $a\in q$ is infinite, so $\tail(q,\varnothing)$ fails, while $\tail(q,\lambda)$ holds. Upward closure is immediate. If $A,A'$ each contain all but finitely many points of $a$, then so does $A\cap A'$. The required finite set operations remain in the core.
+
+Finally, an increasing cofinal $\omega$-set has only finitely many elements below each $\beta<\lambda$. Thus every final segment contains a tail of $a$, and no bounded subset contains a tail. This proves all claims.
+\end{proof}
+
+\subsection{What a fixed subset does along an orbit}
+
+\begin{lemma}[Orbit dichotomy]\label{lem:fixedsubset}
+Let $a_r$ be as in Lemma~\ref{lem:orbitclass}. If $A\in X$, $A\subseteq\lambda$ and $j(A)=A$, then either $a_r\subseteq A$ or $a_r\cap A=\varnothing$. In particular,
+\[
+                  \tail(q_r,A)\quad\Longleftrightarrow\quad a_r\subseteq A.
+\]
+\end{lemma}
+
+\begin{proof}
+For each $n$, both $e^n(r)$ and $A$ belong to $X$. The inclusion $X\prec V_\zeta$ and the elementarity of $j$ give
+\[
+ e^n(r)\in A
+   \quad\Longleftrightarrow\quad
+ j(e^n(r))\in j(A)
+   \quad\Longleftrightarrow\quad e^{n+1}(r)\in A.
+\]
+Membership is constant along the whole orbit. Since the orbit is infinite, eventual membership is equivalent to membership everywhere on it.
+\end{proof}
+
+\begin{theorem}[Tail-measure theorem]\label{thm:tailmeasure}
+Choose the height of an ultraexacting witness uniformly correct for the three canonical failure properties specified in Appendix~\ref{app:formulas}. Let $d\in X\cap V_{\lambda+\omega}$ be fixed by $j$.
+\begin{enumerate}
+\item For every $r\in[\kappa,\lambda)$, $U(d,q_r)$ is, in $N(d,q_r)$, a nonprincipal $\lambda$-complete ultrafilter on $\lambda$. Consequently
+\[
+                   N(d,q_r)\models\text{``$\lambda$ is measurable.''}
+\]
+\item For the critical orbit $r=\kappa$, the particular ultrafilter $U(d,q_\kappa)$ is normal in $N(d,q_\kappa)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Write $q=q_r$, $N=N(d,q)$ and $U=U(d,q)$. By Lemma~\ref{lem:orbitclass}, $q\in X$ and $j(q)=q$. The tuple $(\lambda,d,q)$ is fixed. Lemma~\ref{lem:ownership} already gives an internal proper filter containing the co-bounded sets and no singletons.
+
+\textbf{Ultrafilter property.}
+Suppose it fails. There is $A\in N\cap\Pow(\lambda)$ such that neither $A$ nor $\lambda\setminus A$ satisfies $\tail(q,\cdot)$. Choose the least such $A$ in $<_{d,q}$. This is a bounded-rank canonical counterexample, so Lemma~\ref{lem:canonical} gives $A\in X$ and $j(A)=A$. By Lemma~\ref{lem:fixedsubset}, the orbit $a_r$ is either entirely in $A$ or entirely in its complement. One of the two sets therefore belongs to $U$, a contradiction. Thus every subset of $\lambda$ in $N$ is decided by $U$.
+
+\textbf{Internal $\lambda$-completeness.}
+Suppose there is a failure inside $N$. It is witnessed by a sequence
+\[
+                  F=\seq{A_i:i<\mu}\in N,\qquad \mu<\lambda,
+\]
+all of whose terms belong to $U$, while $\bigcap_{i<\mu}A_i\notin U$. Among such sequences choose the $<_{d,q}$-least one. Its rank is below $\lambda+\omega$. Canonical transfer gives $F\in X$ and $j(F)=F$. The ordinal $\mu=\dom(F)$ is uniquely definable from $F$, hence is fixed by $j$. Lemma~\ref{lem:dynamics} implies $\mu<\kappa$.
+
+For each $i<\mu$ we have $i\in X$, $j(i)=i$, and therefore
+\[
+                     j(A_i)=j(F(i))=j(F)(j(i))=F(i)=A_i.
+\]
+Since $A_i\in U$, Lemma~\ref{lem:fixedsubset} gives $a_r\subseteq A_i$ for every $i<\mu$. Consequently
+\[
+                              a_r\subseteq\bigcap_{i<\mu}A_i.
+\]
+The intersection belongs to $N$, by its axioms, and satisfies the tail predicate. It belongs to $U$, contrary to the choice of $F$. This proves closure under all sequences of length below $\lambda$ that belong to $N$. Choice in $N$ makes this equivalent to its usual $\lambda$-completeness condition for internally small families.
+
+The ambient cardinal $\lambda$ remains a cardinal in the inner model $N$: a smaller bijection in $N$ would also be such a bijection in $V$. It is uncountable in $N$. We have therefore proved the claimed internal measurability.
+
+\textbf{Normality at the critical orbit.}
+Now take $r=\kappa$ and suppose normality fails in $N$. Choose the $<_{d,q}$-least pair $(A,f)$ witnessing this: $A\in U$, $f:A\to\lambda$ is regressive on its domain, and no fibre $f^{-1}\{\beta\}$ belongs to $U$. We can discard $0$ from the domain without changing its measure. The pair belongs to $N$ and has bounded rank. Canonical transfer fixes the pair and hence fixes both $A$ and $f$.
+
+By Lemma~\ref{lem:fixedsubset}, $A$ contains the whole critical orbit. In particular $\kappa\in A$. Set $\beta=f(\kappa)$. Regressiveness gives $\beta<\kappa$, so $e(\beta)=\beta$. For every $n<\omega$, elementarity and fixedness of $f$ yield
+\[
+        f(\kappa_{n+1})=f(e(\kappa_n))=e(f(\kappa_n)).
+\]
+Induction starting at $f(\kappa)=\beta$ gives $f(\kappa_n)=\beta$ for every $n$. Thus the fibre $f^{-1}\{\beta\}$ contains the entire orbit. The fibre belongs to $N$ and hence to $U$, contradicting the supposed failure of normality.
+\end{proof}
+
+\begin{remark}[The nontrivial quantifier in completeness]
+The proof does not make an arbitrary sequence of members of $U$ fixed. It assumes that some \emph{internal counterexample sequence} exists, chooses a canonical one, and fixes that one. Its length is then forced below the critical point. This is what permits the simultaneous orbit-containment argument. Intersecting an arbitrary ambient countable family would be invalid.
+\end{remark}
+
+\begin{corollary}[Many measurable cores]\label{cor:manymeasurable}
+At an ultraexacting $\lambda$, one can find $\lambda$ distinct classes $q_r$ with pairwise disjoint representatives such that both $N(\varnothing,q_r)$ and $N(b,q_r)$ regard $\lambda$ as measurable. The latter models agree with $V$ below $\lambda$.
+\end{corollary}
+
+\begin{proof}
+Use one uniformly correct witness, the fixed bijection $b$, Lemma~\ref{lem:manyorbits}, Theorem~\ref{thm:tailmeasure}, and Corollary~\ref{cor:absorb}. Uniform reflection allows the same witness to serve all these root parameters.
+\end{proof}
+
+This counts classes, not necessarily different inner models. Nor does it say that all their particular tail measures are normal. Section~\ref{sec:shift} gives an explicit distinction.
+
+\section{From the normal measure to Prikry genericity}\label{sec:prikry}
+
+We provide the forcing argument in detail, including the form of the classical Mathias criterion that is needed. The criterion itself is not a new result \cite{mathias}. What is new relative to the supplied synthesis is the preceding construction of the normal measure in a parameter-HOD core directly from ultraexactingness.
+
+\subsection{Internal normal-measure combinatorics}
+
+For this subsection work entirely inside a model of $\ZFC$ with a normal, nonprincipal, $\rho$-complete ultrafilter $U$ on an uncountable cardinal $\rho$. By Lemma~\ref{lem:inaccessible}, $\rho$ is inaccessible. In particular all $U$-large sets are unbounded. Write
+\[
+ \ell(s)=\begin{cases}0,&s=\varnothing,\\ \max(s)+1,&s\ne\varnothing,
+ \end{cases}
+\]
+for a finite increasing stem, identified with its range when convenient.
+
+\begin{lemma}[Diagonal intersections]\label{lem:diagonal}
+If $\seq{A_\alpha:\alpha<\rho}$ is a sequence of members of $U$, then
+\[
+ \triangle_{\alpha<\rho}A_\alpha
+       =\{\beta<\rho:(\forall\alpha<\beta)\ \beta\in A_\alpha\}
+\]
+belongs to $U$.
+\end{lemma}
+
+\begin{proof}
+Otherwise its complement, after removing $0$, is $U$-large. Assign to each point of that complement the least $\alpha<\beta$ witnessing failure of membership in $A_\alpha$. This is regressive. Normality gives a $U$-large set on which the assigned value is one fixed $\alpha$. That set is disjoint from $A_\alpha\in U$, contradicting propriety of the filter.
+\end{proof}
+
+\begin{lemma}[Finite-stem diagonalization]\label{lem:stemdiag}
+Suppose $A_s\in U$ for every finite increasing stem $s$ in $\rho$. There is $H\in U$ such that
+\[
+                         H\setminus\ell(s)\subseteq A_s
+                    \quad\hbox{for every }s.
+\]
+\end{lemma}
+
+\begin{proof}
+For $\alpha<\rho$ set
+\[
+ C_\alpha=\bigcap\{A_s:s\subseteq\alpha+1\text{ is finite}\}.
+\]
+There are fewer than $\rho$ finite subsets of $\alpha+1$, so $C_\alpha\in U$. Let
+\[
+ H=A_\varnothing\cap(\rho\setminus\{0\})
+        \cap\triangle_{\alpha<\rho}C_\alpha.
+\]
+For nonempty $s$ and $\beta\in H\setminus\ell(s)$, take $\alpha=\max(s)<\beta$. Then $\beta\in C_\alpha\subseteq A_s$. The empty case follows from $H\subseteq A_\varnothing$.
+\end{proof}
+
+\begin{lemma}[Finite-arity homogeneity]\label{lem:rowbottom}
+Let $\mu<\rho$. If $f:[\rho]^{<\omega}\to\mu$, there is $H\in U$ such that, for every $n<\omega$, $f$ is constant on $[H]^n$. Different arities may have different constant values.
+\end{lemma}
+
+\begin{proof}
+First prove the assertion for one arity by induction. For arity one, the $\mu$ fibres form a partition. If no fibre belonged to $U$, intersecting their $\mu<\rho$ complements would put the empty set in $U$. Thus one fibre belongs to $U$.
+
+Suppose the result holds for arity $n$ and consider $f:[\rho]^{n+1}\to\mu$. For every $s\in[\rho]^n$, the function
+\[
+             \beta\longmapsto f(s\cup\{\beta\}),\qquad \beta\ge\ell(s),
+\]
+has a $U$-large constant fibre $A_s$, with value $\gamma_s<\mu$. Choose these fibres and values for all $s$. Apply Lemma~\ref{lem:stemdiag}, filling in irrelevant arities with $\rho$, to obtain $H_0\in U$ with $H_0\setminus\ell(s)\subseteq A_s$. By induction, some $H_1\in U$ makes $s\mapsto\gamma_s$ constant on $[H_1]^n$. If $s\cup\{\beta\}\in[H_0\cap H_1]^{n+1}$ with $\beta>\max(s)$, then $\beta\in A_s$, so its $f$-value is the fixed value of $\gamma_s$. This proves the induction step. Arity zero is automatic.
+
+Apply the fixed-arity result separately for each natural number and intersect the resulting countably many sets. This intersection is in $U$ by $\rho$-completeness. All choices and the countable sequence just used are taken \emph{in the model in which $U$ is a normal measure}.
+\end{proof}
+
+\subsection{Prikry forcing and a strong density lemma}
+
+\begin{definition}[Prikry forcing]\label{def:prikry}
+A condition of $\PP_U$ is a pair $(s,A)$, where $s$ is a finite strictly increasing sequence in $\rho$, $A\in U$, and every member of $A$ is at least $\ell(s)$. A stronger condition $(t,B)\le(s,A)$ extends $s$ by finitely many points from $A$ and has $B\subseteq A$. A \emph{direct extension} leaves the stem unchanged. A set of conditions is open if it is closed under stronger conditions.
+\end{definition}
+
+\begin{lemma}[Strong density lemma]\label{lem:strongprikry}
+For every open dense $D\subseteq\PP_U$, stem $s$, and $A\in U$ above $s$, there are $H\in U$, $H\subseteq A$, and $n\ge1$ such that
+\[
+                  (s\mathbin{^\frown}t,H\setminus\ell(t))\in D
+                    \quad\text{for every }t\in[H]^n.
+\]
+Here finite sets in $[H]^n$ are enumerated increasingly when concatenated.
+\end{lemma}
+
+\begin{proof}
+Color each finite $t\subseteq A$ by $1$ if there is $B\in U$ with $(s\mathbin{^\frown}t,B)\in D$, and by $0$ otherwise. Extend the coloring arbitrarily off $A$ and apply Lemma~\ref{lem:rowbottom}, then intersect with $A$. We obtain $H_0\in U$, $H_0\subseteq A$, on which the color is constant at each arity.
+
+By density there is an extension $(s\mathbin{^\frown}t,B)\le(s,H_0)$ belonging to $D$. For $n=|t|$, the constant color at arity $n$ is therefore $1$. If $n=0$, shrink $H_0$ to its intersection with $B$; the condition with stem $s$ and this smaller measure component already lies in $D$, and all its one-point extensions do too. This gives the conclusion with $n=1$.
+
+Otherwise $n\ge1$. For each $t\in[H_0]^n$ choose $B_t\in U$ with $(s\mathbin{^\frown}t,B_t)\in D$. Apply Lemma~\ref{lem:stemdiag} to these sets, using $\rho$ for other stems, and intersect the result with $H_0$. Obtain $H\in U$ such that
+\[
+                             H\setminus\ell(t)\subseteq B_t
+                      \quad(t\in[H]^n).
+\]
+The condition in the statement is a direct extension of $(s\mathbin{^\frown}t,B_t)$, so it lies in $D$ by openness.
+\end{proof}
+
+\subsection{The geometric criterion, with all model quantifiers visible}
+
+\begin{theorem}[Mathias criterion]\label{thm:mathias}
+Let $N\subseteq V$ be a transitive inner model of $\ZFC$, let $U\in N$ be a normal measure on $\rho$ as computed in $N$, and let $c:\omega\to\rho$ be increasing and cofinal in $V$. Then $c$ determines a $\PP_U^N$-generic filter over $N$ if and only if
+\[
+                 \text{for every }A\in U,
+                 \quad c(n)\in A\text{ for all sufficiently large }n.
+                 \tag{MC}\label{eq:MC}
+\]
+\end{theorem}
+
+\begin{proof}
+Given $c$, its candidate filter is
+\[
+ G_c=\{(s,A)\in\PP_U^N:s\text{ is an initial segment of }c
+                  \text{ and }c(n)\in A\text{ for }n\ge |s|\}.
+\]
+It is upward closed towards weaker conditions and directed towards stronger ones: compare the two finite stems, take the longer one, and intersect the two measure components above it. The defining tail condition for each condition ensures compatibility with any new stem points. Thus it is a filter whenever considered on the indicated poset.
+
+Suppose first that $G_c$ is generic. For $A\in U$, conditions whose measure component is contained in $A$ are dense, by intersection with $A$. Meeting this dense set says exactly that a tail of $c$ lies in $A$, proving necessity.
+
+Now assume \eqref{eq:MC} and let $D\in N$ be an open dense subset of $\PP_U^N$. Work \emph{inside $N$} to apply Lemma~\ref{lem:strongprikry} for each finite stem $s$, with initial measure component $\rho\setminus\ell(s)$. By Choice in $N$, choose the resulting $H_s\in U$ and $n_s\ge1$ simultaneously. Apply Lemma~\ref{lem:stemdiag}, still in $N$, to obtain $H\in U$ with
+\[
+                              H\setminus\ell(s)\subseteq H_s
+                                  \quad\text{for every }s.
+\]
+Whenever $t\in[H\setminus\ell(s)]^{n_s}$, it follows that
+\[
+                     (s\mathbin{^\frown}t,H\setminus\ell(t))\in D.
+                     \tag{*}\label{eq:uniformD}
+\]
+Indeed the strong density lemma first puts $(s\mathbin{^\frown}t,H_s\setminus\ell(t))$ in $D$, and the displayed condition is stronger.
+
+Return to $V$. By \eqref{eq:MC}, choose $k<\omega$ such that the tail of $c$ starting at $k$ lies in $H$. Put $s=c\restr k$ and let $t$ be the next $n_s$ points of $c$. Finite sequences of ordinals belong to $N$, even when $c$ does not. Thus these are legitimate stems of the forcing in $N$. Formula~\eqref{eq:uniformD} produces a condition in $D$ whose stem is an initial segment of $c$ and whose measure component contains the rest of $c$. It belongs to $G_c$.
+
+For an arbitrary dense set, its downward closure is open dense. Meeting that closure puts a weaker member of the original dense set in the filter. Hence $G_c$ meets every dense subset belonging to $N$, proving genericity.
+\end{proof}
+
+\begin{remark}[No outer completeness was used]
+All diagonal intersections, homogeneous-set constructions, and simultaneous choices in the proof occur in $N$. Only the last selection of a finite prefix of $c$ occurs in $V$. The theorem therefore applies even when $\cf^V(\rho)=\omega$ and the internal measure fails external countable completeness.
+\end{remark}
+
+\begin{corollary}[The critical sequence is generic]\label{cor:generic}
+Under the normality case of Theorem~\ref{thm:tailmeasure}, $c_\kappa$ is Prikry-generic over $N(d,q_\kappa)$ for $U(d,q_\kappa)$.
+\end{corollary}
+
+\begin{proof}
+For each member $A$ of that measure, the tail condition in \eqref{eq:MC} is exactly the definition of $A\in U(d,q_\kappa)$.
+\end{proof}
+
+\begin{proposition}[Finite modifications and uniqueness]\label{prop:finitegeneric}
+In Corollary~\ref{cor:generic}, write $N=N(d,q)$ and $c=c_\kappa$.
+Every increasing enumeration $c'$ of a member of $q$ is generic for the same forcing and $N[c']=N[c]$. Moreover $U(d,q)$ is the unique normal measure in $N$ on $\lambda$ for which $c$ is Prikry-generic over $N$.
+\end{proposition}
+
+\begin{proof}
+Finite changes preserve eventual membership in every $A\in U$, so Theorem~\ref{thm:mathias} proves genericity of $c'$. The finite symmetric difference of their ranges is a finite set of ordinals, hence belongs to $N$. Each range is definable from the other and finite ordinal data in $N$; increasing enumeration is unique. Thus each sequence belongs to the extension by the other, and their extensions of $N$ coincide. The standard notation $N[c]$ equals $N[G_c]$, since the filter is definable from $c,U$ and the union of its stems is $c$.
+
+If $W\in N$ is another normal measure making $c$ generic, necessity in the Mathias criterion gives $W\subseteq U(d,q)$. Both are ultrafilters on the same internal power set, so they are equal: otherwise a set in the difference has its complement in $W$, contradicting propriety of $U(d,q)$.
+\end{proof}
+
+\section{Assembling the cores and the rank agreement}\label{sec:assembly}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Choose one witness at a height uniformly correct for the finite list used in Theorem~\ref{thm:tailmeasure}. Construct its critical sequence $c=c_\kappa$, its class $q=q_\kappa$, and the fixed bijection $b$ of Lemma~\ref{lem:bijection}. Apply Theorem~\ref{thm:tailmeasure} first with $d=\varnothing$ and then with $d=b$. This gives the claimed internal normal measures $U_0\in N_0$ and $U_1\in N_1$. Lemma~\ref{lem:hod} gives $\ZFC$ in both cores. Adding $b$ as an allowed parameter enlarges ordinal definability, so $N_0\subseteq N_1$.
+
+Corollary~\ref{cor:absorb} gives $V_\lambda^{N_1}=V_\lambda^V$. Under the additional hypothesis $V_\lambda\subseteq\HOD^V$, all these lower-rank sets already belong to $\HOD^V\subseteq N_0$, giving the same equality for $N_0$.
+
+Corollary~\ref{cor:generic} and Proposition~\ref{prop:finitegeneric} give all the genericity and finite-modification claims. Evaluating $N_i$-names using the actual set filter $G_c\in V$ is a recursion carried out in $V$. Thus every element of $N_i[c]$ is in $V$; no outside generic has been postulated.
+
+Each $N_i$ regards $\lambda$ as measurable and hence, by Lemma~\ref{lem:inaccessible} inside $N_i$, as regular. If $a\in q\cap N_i$, then $N_i$ contains its increasing enumeration, an $\omega$-sequence cofinal in $\lambda$. Transitivity makes cofinality of this particular set absolute, contradicting internal regularity. Hence $q\cap N_i=\varnothing$, and consequently $q\notin N_i$ by transitivity and nonemptiness of $q$.
+
+On the other hand, $N_i[c]$ contains every finite subset of $\lambda$ and contains $\ran(c)$. Inside that extension one can form
+\[
+ \{(\ran(c)\setminus F)\cup E:
+          F\in[\ran(c)]^{<\omega},\ E\in[\lambda]^{<\omega}\}.
+\]
+This is exactly the ambient class $q$ viewed as a set. There are no new or missing finite ordinal subsets between these transitive models, and finite modifications preserve order type $\omega$ and cofinality here. Therefore $q\in N_i[c]$.
+
+Finally, both measures use the same eventual-membership predicate and $N_0\subseteq N_1$. Restricting $U_1$ to the subsets of $\lambda$ in $N_0$ therefore gives precisely $U_0$.
+\end{proof}
+
+\begin{corollary}[The original parameter-HOD core]\label{cor:originalcore}
+For the same critical-orbit class $q$, let
+\[
+ M_q=\HOD_{V_\lambda\cup\{q\}}^V,\qquad
+ U_q^*=\{A\in\Pow(\lambda)\cap M_q:\tail(q,A)\}.
+\]
+Then $M_q\models\ZF$, $V_\lambda\subseteq M_q\subseteq N_1$, and $U_q^*\in M_q$ is an internally nonprincipal normal ultrafilter, closed under intersections of every $M_q$-sequence of length less than $\lambda$. Thus the original parameter-HOD model used in the synthesis also has an internal normal-measure conclusion for this particular $q$. Choice in $M_q$ is not asserted. Under $V_\lambda\subseteq\HOD^V$, $M_q=N_0$.
+\end{corollary}
+
+\begin{proof}
+Membership in $M_q$ is first-order definable from $\lambda,q$: permit finite tuples of parameters from $V_\lambda$ in the rank-definition codes. The hereditary-closure argument in Lemma~\ref{lem:hod} proves $\ZF$ in this class. In the Separation, Power Set and Replacement steps, the defining parameter $V_\lambda$ is itself definable from the allowed ordinal $\lambda$, and finitely many definitions use only finitely many additional parameters from $V_\lambda$. The Choice step is not used; there need not be a canonical well-order of all the allowed lower-rank parameter tuples in $M_q$.
+
+Every set of rank below $\lambda$ is hereditarily definable using allowed lower-rank parameters. Corollary~\ref{cor:absorb} gives $M_q\subseteq N_1$. The set $U_q^*$ is ordinal definable from $q,\lambda$, and all its members belong to $M_q$, so hereditary closure gives $U_q^*\in M_q$. Its definition shows
+\[
+                             U_q^*=U_1\cap M_q.
+\]
+Therefore $U_q^*$ decides each subset of $\lambda$ in $M_q$. Any $M_q$-sequence of length below $\lambda$ consisting of members of $U_q^*$ is also such a sequence in $N_1$; its intersection lies in $U_1$, and belongs to $M_q$ by its axioms, so lies in $U_q^*$. For a regressive function in $M_q$, normality of $U_1$ gives a measure-one fibre with value $\beta<\lambda$. This ordinal belongs to $M_q$, and Separation there gives the same fibre; hence it belongs to $U_q^*$. This proves normality without invoking Choice in $M_q$.
+
+Finally, if every element of $V_\lambda$ is already ordinal definable in $V$, allowing these elements as additional parameters does not enlarge $\OD_{\{q\}}$. Taking hereditary closures yields $M_q=N_0$.
+\end{proof}
+
+\begin{corollary}[A stronger local non-splitting statement]\label{cor:nonsplitq}
+For the $b,c,q$ of Theorem~\ref{thm:main}, every
+\[
+                  A\in\OD_{V_\lambda\cup\{q\}}\cap\Pow(\lambda)
+\]
+contains all but finitely many points of $c$, or contains only finitely many points of $c$. The same is true after replacing $c$ by any representative of $q$.
+\end{corollary}
+
+\begin{proof}
+Corollary~\ref{cor:absorb} puts $A$ in $\ODpar bq$. A set of ordinals that is ordinal definable from the fixed parameters is automatically hereditarily so; hence $A\in N_1$. The ultrafilter $U_1$ decides $A$, giving exactly one of the two alternatives. Finite modification does not affect either alternative.
+\end{proof}
+
+This is more than an obstruction to selecting representatives. The entire definable collection of subsets of $\lambda$, with the indicated parameters allowed, behaves as a two-valued algebra along a single cofinal sequence.
+
+\subsection{One core can carry different canonical tail measures}\label{sec:shift}
+
+\begin{proposition}[Successor shift: same core, non-normal tail measure]\label{prop:shift}
+Let $c(n)=\kappa_n$ and $q=[c]$ be as above. Put
+\[
+               c^+(n)=\kappa_n+1,\qquad q^+=[c^+].
+\]
+Then $q$ and $q^+$ are mutually ordinal definable from one another. Consequently, for any fixed additional parameter $d$,
+\[
+                         N(d,q)=N(d,q^+).
+\]
+For $d=\varnothing$ or $d=b$, the canonical tail measure $U(d,q^+)$ is $\lambda$-complete in this common core but is \emph{not normal}. It is distinct from $U(d,q)$.
+\end{proposition}
+
+\begin{proof}
+Applying the ordinal successor function pointwise respects finite symmetric difference. Thus $q^+$ is definable from $q$ as the class modulo finite difference of the successor image of any member of $q$; equivalently take all sets finitely different from such an image. This definition uses no choice of representative. Conversely, take the predecessor image of the successor-ordinal members of a representative of $q^+$ and close under finite changes. Only finitely many extraneous points can occur, so this recovers $q$. Substituting the two definitions into one another gives equality of the corresponding OD classes and hence of their hereditary closures.
+
+Since $e(\alpha+1)=e(\alpha)+1$, the sequence $c^+$ is the orbit of $\kappa+1$. Moreover $\kappa+1<e(\kappa)$, so this starting point is in the interval allowed by Theorem~\ref{thm:tailmeasure}. That theorem gives $\lambda$-completeness of $U(d,q^+)$ for either fixed parameter under consideration.
+
+Let $S$ be the set of nonzero successor ordinals below $\lambda$. It is ordinal definable, belongs to the common core, and lies in $U(d,q^+)$. The ordinal-definable predecessor function
+\[
+                            f:S\to\lambda,\qquad f(\alpha+1)=\alpha
+\]
+is regressive. Each of its fibres has one point, so no fibre belongs to the nonprincipal tail measure. Thus that measure is not normal. On the other hand, every $\kappa_n$ is an inaccessible cardinal and therefore a limit ordinal. Hence $S\notin U(d,q)$, showing that the two measures are different.
+
+More explicitly, if $h(\alpha)=\alpha+1$, then in the common core
+\[
+                   A\in U(d,q^+)\quad\Longleftrightarrow\quad
+                        h^{-1}[A]\in U(d,q).
+\]
+The shifted measure is the successor pushforward of the normal one. This also explains directly why completeness is preserved while normality is lost.
+\end{proof}
+
+The proposition prevents two unjustified extrapolations: the existence of many orbit classes need not give many inner models, and $\lambda$-complete tail measures obtained from arbitrary orbits need not be normal. The critical seed in the normality proof cannot simply be replaced by an arbitrary root.
+
+\section{Conditional inconsistency and equiconsistency}\label{sec:consistency}
+
+\subsection{A definable splitting principle incompatible with ultraexactingness}
+
+\begin{definition}[Definable cofinal splitting]\label{def:splitting}
+Let $\lambda$ be an uncountable cardinal of cofinality $\omega$. A subset $A\subseteq\lambda$ \emph{splits} $a\in D_\lambda$ if both $a\cap A$ and $a\setminus A$ are infinite. Let $\mathsf{DS}(\lambda)$ be the assertion
+\[
+ \forall a\in D_\lambda\ \exists A\subseteq\lambda\
+ \bigl(A\in\OD_{V_\lambda}\ \wedge\ A\text{ splits }a\bigr).
+\]
+The collection $\OD_{V_\lambda}\cap\Pow(\lambda)$ is a set defined by a first-order property; the displayed assertion is an ordinary first-order statement of set theory.
+\end{definition}
+
+Choice in $V$ implies that each individual $a\in D_\lambda$ has a splitting subset: use its even-indexed points. The extra demand in $\mathsf{DS}(\lambda)$ is that a splitter can always be found in the indicated definability class, \emph{without using $a$ itself as an additional parameter}.
+
+\begin{theorem}[Definable-splitting obstruction]\label{thm:splitting}
+\[
+          \ZFC\vdash\forall\lambda\,
+                    \bigl(\UEx(\lambda)\longrightarrow\neg\mathsf{DS}(\lambda)\bigr).
+\]
+In particular the theory
+\[
+        \ZFC+\exists\lambda\,
+             \bigl(\UEx(\lambda)\wedge\mathsf{DS}(\lambda)\bigr)
+\]
+is inconsistent. More strongly, the critical-orbit class $q$ in Theorem~\ref{thm:main} has no splitter for any of its representatives even among sets ordinal definable from $V_\lambda$-parameters \emph{and $q$}.
+\end{theorem}
+
+\begin{proof}
+Take $c,q,b$ from Theorem~\ref{thm:main}. Corollary~\ref{cor:nonsplitq} says that every allowed $A$ either contains almost all of $\ran(c)$ or misses almost all of it. In neither case does it split $\ran(c)$. The stronger assertion follows from the same corollary and invariance under finite changes.
+\end{proof}
+
+\begin{remark}[What the inconsistency asserts]
+This is a conditional incompatibility with an explicitly stated definability principle. It does not prove that $\ZFC$ or ultraexactingness alone is inconsistent. Nor is $\mathsf{DS}(\lambda)$ being presented as a theorem of $\ZFC$. The point is to identify exactly the additional uniform definability property that the new core construction rules out.
+\end{remark}
+
+\subsection{An enriched theory with the same strength as I0}
+
+We use two published metamathematical inputs, separate from the new argument:
+\begin{inputthm}[Aguilera--Bagaria--Goldberg--L\"ucke]\label{input:abgl}
+The theories $\ZFC+\exists\lambda\,\UEx(\lambda)$ and $\ZFC+\Izero$ are equiconsistent \cite[Theorem~A/4.5]{abgl}. Moreover, an ultraexacting $\lambda$ can be preserved by sufficiently closed set forcing that makes $V_\lambda\subseteq\HOD$ \cite[Proposition~3.9]{abgl}.
+\end{inputthm}
+
+Here $\Izero$ uses the standard first-order presentation of the rank-into-rank assertion that there is a nontrivial elementary self-embedding of $L(V_{\eta+1})$ with critical point below $\eta$, as in the cited paper. We use its published consistency comparison, not a new class-embedding formalization.
+
+\begin{definition}[The coded canonical-core theory]\label{def:Tcore}
+Let $T_{\mathrm{core}}$ be $\ZFC$ together with the existence of $\lambda,c,q,U$ satisfying the following conditions:
+\begin{enumerate}
+\item $\lambda$ is ultraexacting, $V_\lambda\subseteq\HOD^V$, $c:\omega\to\lambda$ is increasing and cofinal, and $q=[c]$.
+\item For $N=\HOD_{\{q\}}^V$,
+\[
+ U=\{A\in\Pow(\lambda)\cap N:\ran(c)\subseteq^* A\}\in N,
+\]
+and $N$ regards $U$ as a normal measure on $\lambda$.
+\item $V_\lambda^N=V_\lambda^V$, $c$ is $\PP_U^N$-generic over $N$, and
+\[
+        q\in N[c]\setminus N,\qquad q\cap N=\varnothing,
+        \qquad N[c]\subseteq V.
+\]
+Every increasing enumeration $c'$ of a member of $q$ is generic for the same forcing and satisfies $N[c']=N[c]$.
+\end{enumerate}
+Assertions about the definable class $N$ are read by relativizing their formulas. Genericity quantifies over sets $D\in N$ that are dense in the set poset $\PP_U^N$. Thus the clauses have ordinary first-order formulations; they do not require quantifying over an undefinable proper-class truth predicate.
+\end{definition}
+
+\begin{theorem}[Prikry-core equiconsistency]\label{thm:equicons}
+\[
+                         \boxed{\quad
+       \Con(T_{\mathrm{core}})\quad\Longleftrightarrow\quad
+                          \Con(\ZFC+\Izero).
+                         \quad}
+\]
+In fact, over $\ZFC$, the new core clauses in Definition~\ref{def:Tcore} follow from the existence of an ultraexacting $\lambda$ with $V_\lambda\subseteq\HOD$.
+\end{theorem}
+
+\begin{proof}
+Suppose first that $\ZFC+\Izero$ is consistent. By the first part of Imported Theorem~\ref{input:abgl}, so is $\ZFC$ with an ultraexacting cardinal. Its second part gives a consistency-preserving forcing construction in which that cardinal remains ultraexacting and $V_\lambda\subseteq\HOD$. Apply Theorem~\ref{thm:main} in the resulting universe. Its $N_0$ core and $U_0$ measure satisfy all the new clauses, including rank agreement because the coding hypothesis is now present. Hence $T_{\mathrm{core}}$ is consistent.
+
+This reasoning uses ordinary relative-consistency implications from the cited theorems. It does not strengthen the initial consistency assumption to the existence of a transitive model. Equivalently, the published forcing arguments and the first-order proofs above can be composed at the syntactic consistency level.
+
+Conversely, a model of $T_{\mathrm{core}}$ in particular satisfies $\ZFC$ and has an ultraexacting cardinal. Forget the additional objects and apply the reverse published consistency implication in Imported Theorem~\ref{input:abgl}. This gives consistency of $\ZFC+\Izero$.
+
+The final assertion is just the direct implication of Theorem~\ref{thm:main}, with no extra forcing needed once the coding hypothesis holds.
+\end{proof}
+
+\begin{corollary}[A conditional positive configuration]\label{cor:positive}
+Relative to $\Con(\ZFC+\Izero)$, it is consistent that some ultraexacting $\lambda$ satisfies
+\[
+ \begin{gathered}
+ V_\lambda\subseteq\HOD^V,\qquad
+ N=\HOD_{\{q\}}^V,\qquad V_\lambda^N=V_\lambda^V,\\
+ N\models\text{``$\lambda$ is measurable''},\qquad
+ \cf^V(\lambda)=\omega,\qquad N[c]\subseteq V,
+ \end{gathered}
+\]
+where $c$ is Prikry-generic over $N$ for the canonical measure defined from $q=[c]$. In the same configuration $\mathsf{DS}(\lambda)$ fails.
+\end{corollary}
+
+\begin{proof}
+Combine Theorems~\ref{thm:equicons} and~\ref{thm:splitting}.
+\end{proof}
+
+\begin{assessment}{Interpretation of the consistency result}
+The improvement is structural: the parameter-HOD core is not merely a model where $\lambda$ becomes inaccessible. It contains a canonical normal measure and an identifiable Prikry forcing whose generic sequence already lives in $V$. The equality of consistency strengths itself still rests on the published ABGL comparison and coding theorem. Nothing here asserts $\Izero$ at the same ordinal $\lambda$ or inside the same ambient universe.
+\end{assessment}
+
+\section{Boundary checks and research status}\label{sec:audit}
+
+\subsection{The apparent completeness contradiction, resolved}
+
+\begin{proposition}[Internal completeness is the exact limit]\label{prop:external}
+For either normal core $(N_i,U_i)$ of Theorem~\ref{thm:main}, $U_i$ is not countably complete with respect to arbitrary countable families in $V$, even though $N_i$ regards it as $\lambda$-complete.
+\end{proposition}
+
+\begin{proof}
+For each $n<\omega$, the final segment
+\[
+                            A_n=\lambda\setminus\kappa_n
+\]
+belongs to $N_i$ and to $U_i$: every ordinal parameter is allowed and the set is co-bounded. But
+\[
+                              \bigcap_{n<\omega}A_n=\varnothing
+\]
+because the critical sequence is cofinal in $\lambda$. Thus this ambient countable family witnesses failure of external countable completeness.
+
+The sequence $\seq{A_n:n<\omega}$ does not belong to $N_i$. If it did, $N_i$ could recover $\kappa_n$ as the least member of $A_n$, and would contain a countable cofinal sequence in $\lambda$. That contradicts its internal regularity. Accordingly this family is not among the sequences quantified over in its completeness assertion.
+\end{proof}
+
+The proposition blocks a tempting but invalid use of the synthesis's completeness barriers. Those barriers involve ultrafilters complete in the ambient universe on the relevant full power set. The present $U_i$ is an ultrafilter on $\Pow(\lambda)\cap N_i$, not on the full ambient $\Pow(\lambda)$, and the required ambient completeness fails explicitly.
+
+External countable incompleteness alone also does not justify declaring the \emph{internal} ultrapower ill-founded in $V$. One would have to produce an external descending sequence of equivalence classes of functions actually belonging to $N_i$. We make no such claim.
+
+\subsection{Which parameters may not be smuggled into the core}
+
+If an actual representative $a\in q$ is added as an individual parameter, then $\HOD_{\langle b,q,a\rangle}$ contains $a$, its increasing enumeration, and the even-indexed part of that enumeration. The last set splits $a$. The tail rule on the enlarged internal power set therefore ceases to be an ultrafilter. This demonstrates concretely why the parameter $q$ cannot be treated as permission to use its members.
+
+Likewise, the canonical normality proof uses the \emph{critical} orbit, not just the fact that the class is fixed or rigid. The predecessor example in Proposition~\ref{prop:shift} disproves normality for a nearby orbit class with exactly the same core. The results do not show that every rigid class has a normal canonical tail measure, or that every cofinal sequence is generic over its class-parameter HOD.
+
+\subsection{What remains unproved here}
+
+No claim is made that $V=N_i[c]$, that $N_i$ is a ground of $V$, that $\lambda$ is measurable in ordinary $\HOD^V$, or that ordinary exactingness suffices for Theorem~\ref{thm:main}. The use of $e\in X$ is essential to putting the orbit sequence and its class into the witness domain. The strong-compactness and cover-exacting questions identified in the supplied synthesis are not resolved by these arguments.
+
+A natural next question is whether the core can be identified more intrinsically, without reference to the chosen sufficiently correct witness, or whether its normal measure carries additional canonical iteration information. The successor-shift example shows that the inner model alone cannot recover which tail class supplied the normal rather than a non-normal measure.
+
+\subsection{Proof and source audit}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\textwidth}{@{}p{.28\textwidth}X@{}}
+\toprule
+\textbf{Component}&\textbf{Status in this report}\\
+\midrule
+Local Kunen theorem&Imported classical theorem. Used only to make the critical sequence cofinal in the stated height.\\
+Critical orbits; fixed coding&Background devices from the supplied synthesis, reproved with the nontransitive-domain and end-extension details visible.\\
+Parameterized HOD; reflection&First-order definability and finite-list reflection are proved and specified; no global truth predicate or fixed arbitrary ordinal parameters are assumed.\\
+Canonical tail measures&New relative to the supplied synthesis: ownership, ultrafilterhood, internal completeness, and critical-orbit normality proved in Section~\ref{sec:measure}.\\
+Prikry criterion&Classical Mathias criterion, with a full proof of the needed combinatorial and forcing lemmas in Section~\ref{sec:prikry}.\\
+Canonical Prikry cores&New application of that criterion to the measures constructed here; includes rank agreement, finite modifications, and coherence.\\
+Equiconsistency&Uses the published ABGL $\Izero$ comparison and coding preservation as explicit inputs; the additional core properties are proved here.\\
+Lean reference&Inspected as reference only. No Lean compilation or formal verification of the new proofs is claimed.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The literature check consulted the primary exacting-cardinal papers, the author-hosted ABGL version, and the original Mathias paper, as well as the supplied two reports and Lean reference. The ABGL Prikry construction already uses critical-sequence tail measures in an \emph{iteration model} \cite[Section~5.2]{abgl}; that general mechanism is not new. The contribution developed here is a direct \emph{parameter-HOD} measure theorem from a sufficiently correct ultraexacting witness, without an added iteration hypothesis. A search of these sources is not a proof of literature-wide novelty. Independent specialist review would be particularly valuable for the definability/reflection interface and the claimed canonical-core theorem.
+
+\appendix
+\section{The finite list of counterexample formulas}\label{app:formulas}
+
+This appendix makes the phrase ``sufficiently correct'' in the main proof precise enough to determine a finite reflection requirement. It is not an assertion of full elementarity $V_\zeta\prec V$.
+
+Use the fixed first-order definitions from Lemma~\ref{lem:hod} for
+\[
+ \mathsf N(x;d,q)\quad\text{and}\quad x<_{d,q}y,
+\]
+and use $\mathsf T(q,A)$ for $\exists a\in q\ (a\setminus A\text{ is finite})$. For parameters $(\lambda,d,q)$ put
+\[
+ \mathsf U(A;\lambda,d,q)\ \Longleftrightarrow\
+       A\subseteq\lambda\ \wedge\ \mathsf N(A;d,q)\ \wedge\ \mathsf T(q,A).
+\]
+All set operations displayed below have their ordinary first-order definitions.
+
+The three failure predicates are the following.
+
+\textbf{Undecided subset.}
+\[
+ \begin{split}
+ \Psi_{\mathrm{ult}}(A;\lambda,d,q)\ \Longleftrightarrow\;&
+ A\subseteq\lambda\ \wedge\ \mathsf N(A;d,q)\\
+ &{}\wedge\neg\mathsf T(q,A)
+       \wedge\neg\mathsf T(q,\lambda\setminus A).
+ \end{split}
+\]
+
+\textbf{Failure of internal completeness.}
+\[
+ \begin{split}
+ \Psi_{\mathrm{comp}}(F;\lambda,d,q)\ \Longleftrightarrow\;&
+ \mathsf N(F;d,q)\ \wedge\
+ \exists\mu<\lambda\ \bigl[\mu\text{ is an ordinal}\\
+ &{}\wedge\ F\text{ is a function with domain }\mu\\
+ &{}\wedge\ (\forall i<\mu)\ \mathsf U(F(i);\lambda,d,q)\\
+ &{}\wedge\neg\mathsf T\bigl(q,\bigcap\ran(F)\bigr)\bigr].
+ \end{split}
+\]
+For an empty index set, the intersection is by convention $\lambda$, so the empty sequence is never a failure.
+
+\textbf{Failure of normality.}
+For an ordered pair $x=(A,f)$ let $\Psi_{\mathrm{norm}}(x;\lambda,d,q)$ assert
+\[
+ \begin{gathered}
+ \mathsf N(x;d,q),\quad \mathsf U(A;\lambda,d,q),\quad 0\notin A,\\
+ f:A\to\lambda,\quad(\forall\alpha\in A)\ f(\alpha)<\alpha,\\
+ (\forall\beta<\lambda)\
+      \neg\mathsf T\bigl(q,\{\alpha\in A:f(\alpha)=\beta\}\bigr).
+ \end{gathered}
+\]
+The relevant fibres are automatically in $N(d,q)$ because that class satisfies Separation and contains $f,A,\beta$.
+
+Every witness to one of these predicates has rank below $\lambda+\omega$. The sets $q_r$, the extra parameter $b$, and the required sequences of elementary set operations also have rank below that bound. Form the three least-witness predicates $\theta_i$ as in Lemma~\ref{lem:canonical}, add the fixed formulas defining the constructions of Sections~\ref{sec:definability} and~\ref{sec:orbits}, and close this finite list under the subformulas needed by reflection. Choose a natural number $m$ bounding their logical complexities and choose a cardinal
+\[
+                              \zeta>\lambda+\omega,\qquad
+                              \zeta\in C^{(m)}.
+\]
+Ultraexactingness supplies a witness at this height. Correctness is uniform for every tuple of parameters in $V_\zeta$, so the same choice handles $d=\varnothing$, the subsequently constructed $d=b$, and every subsequently constructed orbit class $q_r$. No separate reflection choice depending on any of them is needed.
+
+Only the elementary embedding of the set structures $X$ and $V_\zeta$ is applied. For example, once the least failure sequence $F$ is fixed, its domain $\mu$ is fixed by uniqueness of the domain operation; the deduction $\mu<\kappa$ comes from the previously proved dynamics lemma, not from any assertion about the definition's original ordinal code.
+
+\section{Concordance with the supplied files}\label{app:concordance}
+
+The archive supplied for this continuation contains the following principal sources. Their contents, not a presumed proof status for their Lean statements, were used as the starting point.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{}p{.34\textwidth}X@{}}
+\toprule
+\textbf{Supplied source}&\textbf{Relevant interface}\\
+\midrule
+\nolinkurl{docs/Large_Cardinals_Synthesis.tex}&Critical-sequence normalization (Section~3); the $\Izero$-equiconsistent HOD-boundary package (Section~10); fixed orbit classes, rigidity, and parameter-HOD regularity (Section~12). The discussion of R17 contains the fixed-bijection device.\\
+\nolinkurl{docs/Large_Cardinals_Unified_Report.tex}&Original inconsistency-frontier context and the distinction between ambient consistency questions and conditional definability obstructions.\\
+\nolinkurl{Cardinals/README.md}&Reference map of formalized combinatorial cores and imported theorems. The README records literature admissions and explicitly identifies portions of the synthesis not formalized.\\
+\nolinkurl{Cardinals/Combinatorics/} and related Lean files&Reference for the elementary orbit and fixed-point bookkeeping. The present measure and forcing proofs are supplied in English, independently of those files' compilation environment.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The numbering above is that in the supplied synthesis's source and its own concordance. The present report has independent numbering. No original report, external article PDF, or font file is redistributed in the output archive.
+
+\begin{thebibliography}{9}
+
+\bibitem{archive}
+\emph{Large Cardinals Synthesis} and \emph{Large Cardinals Unified Report}.
+User-supplied research reports in \nolinkurl{Cardinals3.zip}, with accompanying Lean reference files, 18 September 2026.
+
+\bibitem{abl}
+Juan P. Aguilera, Joan Bagaria, and Philipp L\"ucke.
+\emph{Large cardinals, structural reflection, and the HOD Conjecture}.
+arXiv:2411.11568, version 4.
+\url{https://arxiv.org/abs/2411.11568}.
+Primary text consulted 18 September 2026.
+
+\bibitem{abgl}
+Juan P. Aguilera, Joan Bagaria, Gabriel Goldberg, and Philipp L\"ucke.
+\emph{Large cardinals beyond HOD}.
+arXiv:2509.10254, 2025.
+\url{https://arxiv.org/abs/2509.10254}.
+Author-hosted PDF: \url{https://www.math.uni-hamburg.de/home/luecke/publications/beyond_hod.pdf}.
+Theorem~A/4.5, Proposition~3.9, and Section~5.2 were checked in the primary text on 18 September 2026. The author-hosted PDF and the arXiv HTML display different document dates; the cited statements and numbering agree in the versions checked.
+
+\bibitem{kunen}
+Kenneth Kunen.
+Elementary embeddings and infinitary combinatorics.
+\emph{Journal of Symbolic Logic} \textbf{36}(3) (1971), 407--413.
+\url{https://doi.org/10.2307/2269948}.
+
+\bibitem{hkp}
+Joel David Hamkins, Greg Kirmayer, and Norman Lewis Perlmutter.
+Generalizations of the Kunen inconsistency.
+\emph{Annals of Pure and Applied Logic} \textbf{163}(12) (2012), 1872--1890.
+arXiv:1106.1951.
+\url{https://arxiv.org/abs/1106.1951}.
+
+\bibitem{mathias}
+A. R. D. Mathias.
+On sequences generic in the sense of Prikry.
+\emph{Journal of the Australian Mathematical Society} \textbf{15}(4) (1973), 409--414.
+\url{https://doi.org/10.1017/S1446788700028755}.
+The original article, including its geometric genericity criterion and normal-measure lemmas, was consulted 18 September 2026.
+
+\end{thebibliography}
+\end{document}

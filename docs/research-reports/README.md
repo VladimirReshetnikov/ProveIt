@@ -2,7 +2,7 @@
 
 Eighteen independent continuations, numbered by file modification time. `01`-`09` continue
 `../research-plan/Large_Cardinals_Unified_Report.tex`; `10`-`18` (delivered as zip archives,
-which are git-ignored) continue the first edition of the synthesis. Each directory holds the report source, its PDF, and
+which are git-ignored) continue the first edition of the synthesis, and `19`-`27` (also zip archives) continue the second edition. Each directory holds the report source, its PDF, and
 whatever ancillary files shipped with it. The deduplicated synthesis is in
 `../research-synthesis/Large_Cardinals_Synthesis.{tex,pdf}`.
 
@@ -26,3 +26,12 @@ whatever ancillary files shipped with it. The deduplicated synthesis is in
 | `16` | `Small_Fibres_Ultraexacting` | Sharp multisection theorem; ordinal colourings; coarser relations; predicate-expanded I1 embeddings | `Cardinals_Continuation_Small_Fibres.zip` : `Cardinals_Continuation_Small_Fibres` |
 | `17` | `Thin_Sections_and_Saturation` | λ classes saturated for all OD_{V_λ} sets at once; fixed bijection λ → V_λ; sharp parameter-rank cutoff | `Large_Cardinals_Thin_Sections.zip` : `Large_Cardinals_Thin_Sections` |
 | `18` | `Cofinal_Orbit_Rigidity` | Rigidity relative to the class q as a parameter; minimal-rank-parameter device; homomorphisms into relations with small classes | `Cardinals3_Cofinal_Orbit_Rigidity.zip` : `Cardinals3_Continuation` |
+| `19` | `Fixed_Tail_Parameters` | (λ⁺)^V measurable in HOD_{b,q_F} for finite sets of orbit classes; one club of simultaneous inaccessibles; no λ⁺-cc reconstruction | `Cardinals_Continuation_Fixed_Tails.zip` : `Fixed_Tail_Parameters` |
+| `20` | `Cofinality_Cascades` | General forcing theorem: singularizing λ above a strongly compact δ forces a cascade of δ cofinality changes; antichains of size (λ^{+δ})^W | `Cardinals4_Cofinality_Cascades.zip` : `Cardinals4_Cofinality_Cascades` |
+| `21` | `Finitely_Additive_Kernels` | Definable tail-mean kernel; common null partitions; phase balance of definable charges; no definable ultrafilter-valued kernel | `Cardinals4_Finitely_Additive_Kernels.zip` : `Cardinals4_Continuation` |
+| `22` | `Canonical_Tail_Measures` | Normal tail measure in HOD_{q} and HOD_{V_λ∪{q}}; Prikry core; intrinsic criterion; normal / non-normal / non-ultra examples | `Cardinals4_Tail_Measures.zip` : `Cardinals4_Tail_Measures` |
+| `23` | `Normal_Measures_and_Prikry_Layers` | One class q serving all parameters p ∈ V_λ; coherence of the measures U_{q,p}; collapse-or-destroy for the Prikry layer | `Cardinals4_Normal_Measures.zip` : `Cardinals4_Normal_Measures` |
+| `24` | `Cover_Exacting_Stationary_Seeds` | ZFC theorem: no cover-exacting cardinal between two strongly compact cardinals (ω-club amenability of HCD, stationary seeds) | `Cardinals4_Stationary_Seeds.zip` : `Cardinals4_Stationary_Seeds` |
+| `25` | `Cofinal_Orbit_Consistency` | Rigidity ⇔ regularity in N_q; equiconsistency of rigid classes with one measurable; Vopěnka algebra of a class | `Cardinals4_Research_Continuation.zip` : `Cardinals4_Rigid_Classes` |
+| `26` | `Ultraexacting_Prikry_Cores` | Canonical Prikry cores with and without the fixed bijection; ZF core; refutation of definable splitting | `Ultraexacting_Prikry_Cores.zip` : `Ultraexacting_Prikry_Cores` |
+| `27` | `Normal_Traces_and_Prikry_Factorization` | Tail measure concentrates on measurables; trace principles NT (a measurable) and NT⁺ (o(κ) ≥ 2) | `Cardinals4_Normal_Traces.zip` : `Cardinals4_Normal_Traces` |

@@ -1,0 +1,894 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=13pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Forest}{HTML}{30392C}
+\definecolor{Olive}{HTML}{687144}
+\definecolor{Muted}{HTML}{65685F}
+\definecolor{Sage}{HTML}{CBD0BC}
+\definecolor{Pale}{HTML}{F2F4EB}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\PassOptionsToPackage{obeyspaces}{url}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\urlstyle{same}
+\hypersetup{pdftitle={Finitely Additive Kernels at Ultraexacting Cardinals},pdfauthor={Research continuation prepared with ChatGPT},pdfsubject={Common null covers, phase balance, and a definable extreme-point obstruction}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Forest}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Forest}}{\thesubsection}{.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Forest}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}LARGE CARDINALS AT THE INCONSISTENCY FRONTIER}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}ADDITIVITY BOUNDARY}
+\fancyfoot[L]{\small\color{Muted}Research continuation \textbullet\ 18 September 2026}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\tcbset{colback=Pale,colframe=Sage,colbacktitle=Sage,coltitle=Forest,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{question}[definition]{Question}
+\newtheorem{inputtheorem}[definition]{Imported theorem}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\OD}{\mathrm{OD}}
+\newcommand{\HOD}{\mathrm{HOD}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\FA}{\mathsf{FA}}
+\newcommand{\UF}{\mathsf{UF}}
+\newcommand{\Ex}{\mathsf{Ex}}
+\newcommand{\UEx}{\mathsf{UEx}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\crit}{\operatorname{crit}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\ot}{\operatorname{ot}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\Izero}{\mathsf I_0}
+\newcommand{\Blam}[1]{\mathsf B_\lambda(#1)}
+\newcommand{\ODlam}{\OD_{V_\lambda}}
+\newcommand{\ODq}{\OD_{V_\lambda\cup\{q\}}}
+\newcommand{\ODz}{\OD_{V_\lambda\cup\{z\}}}
+\newcommand{\Dlam}{D_\lambda}
+\newcommand{\Qlam}{Q_\lambda}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\tail}{\mathsf t}
+\newcommand{\ext}{\operatorname{ext}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\begin{document}
+\thispagestyle{empty}
+{\sffamily\small\bfseries\color{Olive}RESEARCH CONTINUATION \quad / \quad CARDINALS3 ARCHIVE\par}
+\vspace{15pt}
+{\fontsize{28}{31}\selectfont\bfseries\color{Forest}Finitely Additive Kernels\\at Ultraexacting Cardinals\par}
+\vspace{10pt}
+{\fontsize{14}{18}\selectfont\color{Forest}A common null-cover theorem, phase balance,\\and an extreme-point obstruction\par}
+\vspace{12pt}
+{\color{Muted}Prepared for Vladimir Reshetnikov\hfill 18 September 2026\par}
+\vspace{5pt}{\color{Sage}\hrule height .6pt}\vspace{12pt}
+
+\textbf{Abstract.}
+The supplied synthesis excludes definable countably additive probability kernels on the quotient of cofinal $\omega$-subsets of an ultraexacting cardinal by finite difference. We investigate what remains when countable additivity is removed. Three refinements emerge. First, a regularity-in-relative-HOD hypothesis forces every small definable family of finitely additive laws to admit a \emph{common countable partition into null sets}. In particular, every law in the family is purely finitely additive, even against nondefinable countably additive minorants. Second, a low-rank invariant mean produces a representative-independent finitely additive kernel on every quotient class. Third, at an ultraexacting cardinal there are $\lambda$ classes on which every low-parameter-definable charge has a translation-invariant integer-phase distribution. Consequently there is no definable ultrafilter-valued kernel, nor even a nonempty finite definable family of such kernels. Equivalently, a concrete definable family of nonempty compact convex sets admits a low-parameter-definable point selection but no such extreme-point selection. We give complete proofs of these refinements, sharp examples for the coordinate-continuity obstruction, and an $\Izero$-equiconsistent simultaneous realization using the existing ultraexacting calibration.
+
+\begin{assessment}{What is, and is not, established}
+\textbf{A conditional inconsistency:} $\ZFC$ plus an ultraexacting $\lambda$ plus a low-parameter-definable ultrafilter assignment to every cofinal-mod-finite class is inconsistent. Finite unordered families of candidate assignments are excluded as well.
+
+\textbf{A positive boundary result:} the corresponding finitely additive probability assignment exists in $\ZFC$, with a parameter of rank below every uncountable cardinal. Countable additivity and extreme-point selection fail for different, explicitly proved reasons.
+
+\textbf{Scope:} these are new refinements relative to the two reports actually supplied in \nolinkurl{Cardinals3.zip}. They do not refute ultraexactingness, $\Izero$, or the Axiom of Choice. The proofs are an unrefereed research contribution; no claim of literature priority or Lean verification is made.
+\end{assessment}
+
+\newpage
+\tableofcontents
+\vspace{10pt}
+\begin{assessment}{Reading guide}
+The elementary core is the common-null-cover argument in Section~\ref{sec:null}. Sections~\ref{sec:means}--\ref{sec:prefix} construct the positive examples without large cardinals. Sections~\ref{sec:embed}--\ref{sec:extreme} prove the new ultraexacting obstruction. Section~\ref{sec:consistency} separates the new structural conclusions from the published consistency-strength input. The final audit records the exact uses of definability, Choice, and ultraexactingness.
+\end{assessment}
+
+\section{The question left by the supplied reports}\label{sec:intro}
+
+Let $\lambda$ be an uncountable cardinal of cofinality $\omega$. Put
+\[
+ \Dlam=\{a\subseteq\lambda:\ot(a)=\omega\text{ and }\sup a=\lambda\},
+ \qquad \Qlam=\Dlam/{=^*},
+\]
+where $a=^*b$ means that $a\triangle b$ is finite. For $a\in\Dlam$, write $a(n)$ for its $n$th element in increasing order, starting at $n=0$. A point of $\Qlam$ is an actual set $q=[a]$ of representatives, not a formal equivalence-class symbol.
+
+The supplied second-edition synthesis~\cite{archive} establishes two inputs to the present investigation: an exacting $\lambda$ has no low-parameter-definable small family of short cofinal information, and ultraexactingness supplies many classes $q$ that remain resistant to such information even when $q$ is allowed as a parameter. Its theorem on probability laws obtains a cofinal sequence of medians from a countably additive law. Its final kernel corollary applies this argument to the quotient. The synthesis also observes that a finitely additive law supported on the tails of one chosen sequence need not have those medians.
+
+That observation leaves two substantive questions. Can the choice of the sequence be removed, yielding an actual definable kernel on \emph{all} classes? And, if such a kernel exists, exactly how much regularity must it lose? Merely producing another version of the median argument would not answer either question.
+
+\begin{assessment}{The resulting boundary}
+On $\Qlam$, representative-independent \emph{finitely additive} probability is possible. Under ultraexactingness, representative-independent \emph{ultrafilter} choice is not low-parameter definable, even with finitely many candidates. Moreover, every definable charge on many individual classes has zero countably additive part and exact uniform weights on every finite phase quotient.
+\end{assessment}
+
+The null-cover theorem below is not restricted to the particular kernel we construct. It applies simultaneously to every member of a small definable family; those members need not themselves be definable. The phase theorem is a different assertion: it concerns every individually definable charge on the same $\lambda$ test classes, and its finite-family consequence follows by averaging rather than by choosing a member.
+
+\section{Conventions and the precise imported input}\label{sec:setup}
+
+We work in $\ZFC$. Cardinalities without superscripts are computed in the ambient universe $V$. All probability laws in this article are defined on the \emph{full power set} of their underlying set. The null-cover argument also works on the coordinate-generated $\sigma$-algebra; we indicate the relevant events explicitly. A countably additive minorant always means a nonnegative measure dominated on every measurable set.
+
+\begin{definition}[Charges and kernels]
+For a nonempty set $S$, let $\FA(S)$ be the set of functions $\mu:\Pow(S)\to[0,1]$ such that $\mu(S)=1$, $\mu(\varnothing)=0$, and
+\[
+ A\cap B=\varnothing\quad\Longrightarrow\quad
+ \mu(A\cup B)=\mu(A)+\mu(B).
+\]
+We call these functions \emph{charges}, or finitely additive probability laws. A \emph{kernel} on $\Qlam$ is a function $K$ with domain $\Qlam$ and $K(q)\in\FA(q)$ for every $q$. No measurable structure on the index set $\Qlam$ is imposed. An ultrafilter-valued kernel assigns a proper ultrafilter on $q$ to each $q$.
+\end{definition}
+
+For a set or class $A$, $\OD_A$ allows finitely many parameters from $A$ and finitely many ordinals. Thus $\ODq$ allows $q$ as \emph{one} parameter, not arbitrary members of $q$. Finitely many parameters in $V_\lambda$ can be coded by one parameter in $V_\lambda$. A kernel in $\ODlam$ is a definable \emph{set function}; its values belong to $\ODq$ by evaluation. The ordinal parameters in these definitions can lie far above $\lambda$.
+
+\begin{definition}[The boundedness property]\label{def:bounded}
+For a parameter $z$, write $\Blam z$ for the statement
+\[
+ B\subseteq\lambda,
+ \quad B\in\ODz,
+ \quad |B|<\lambda
+ \quad\Longrightarrow\quad \sup B<\lambda.
+\]
+Write $\Blam\varnothing$ when no additional parameter is used. Equivalently, there is no cofinal map $f:\tau\to\lambda$ in $\ODz$ with $\tau<\lambda$.
+\end{definition}
+
+To verify the equivalence, the range of such a map is a forbidden small cofinal set. Conversely, the increasing enumeration of a small cofinal $B$ is definable from $B$. Its domain is $\ot(B)<\lambda$: an ordinal of cardinality less than the ambient cardinal $\lambda$ cannot be at least $\lambda$. For sets of ordinals, being in $\ODz$ is equivalent to being in $\HOD_{V_\lambda\cup\{z\}}$. This explains the familiar formulation as regularity of $\lambda$ in relative HOD. We use Definition~\ref{def:bounded} directly and do not assume that $q$ itself belongs to this relative HOD.
+
+\begin{definition}[Exacting and ultraexacting]
+A cardinal $\lambda$ is \emph{exacting} if at every sufficiently large cardinal height $\zeta$ there are
+\[
+ X\prec V_\zeta,\qquad V_\lambda\cup\{\lambda\}\subseteq X,
+ \qquad j:X\longrightarrow V_\zeta
+\]
+with $j$ elementary, $j(\lambda)=\lambda$, and $j\restr\lambda\ne\id$. It is \emph{ultraexacting} if one can also require $e=j\restr V_\lambda\in X$. These are the equivalent witness formulations of~\cite[Definitions 2.1--2.3 and Proposition 2.4]{abgl}. The set $X$ need not be transitive.
+\end{definition}
+
+\begin{inputtheorem}[Published large-cardinal facts]\label{in:published}
+We use the following results.
+\begin{enumerate}
+\item Local Kunen inconsistency: no nontrivial elementary embedding $V_{\delta+2}\to V_{\delta+2}$ exists in $\ZFC$~\cite{kunen,hkp}.
+\item An exacting $\lambda$ satisfies $\Blam\varnothing$~\cite[Theorem 2.10]{abl}.
+\item Existence of an ultraexacting cardinal is equiconsistent over $\ZFC$ with $\Izero$. An ultraexacting $\lambda$ can be preserved while forcing $V_\lambda\subseteq\HOD$ and making $\lambda$ the least exacting cardinal~\cite[Theorem 4.5, Proposition 3.9, Corollary 3.10]{abgl}.
+\end{enumerate}
+\end{inputtheorem}
+
+Here $\Izero$ has its usual meaning: an elementary self-embedding of $L(V_{\delta+1})$ with critical point below $\delta$, in the standard formulation used by~\cite{abgl}. We do not reprove the inner-model and forcing arguments behind item~(3). Our new obstruction uses only item~(1), the witness definition, and elementary definability bookkeeping. We rederive the orbit and fixed-parameter machinery from the supplied synthesis before applying it to charges.
+
+\section{Common coordinate plateaus and null partitions}\label{sec:null}
+
+This section requires no embedding. Fix an uncountable cardinal $\lambda$ of cofinality $\omega$, a parameter $z$ satisfying $\Blam z$, and a nonempty $S\subseteq\Dlam$ with $S\in\ODz$. For $n<\omega$ and $\alpha<\lambda$, set
+\[
+ C_{n,\alpha}=\{a\in S:a(n)<\alpha\}.
+\]
+For a charge $\mu$, write
+\[
+ F_n^\mu(\alpha)=\mu(C_{n,\alpha}),
+ \qquad t_n^\mu=\sup_{\alpha<\lambda}F_n^\mu(\alpha).
+\]
+The functions $F_n^\mu$ are nondecreasing in $\alpha$ and nonincreasing in $n$.
+
+\begin{theorem}[A simultaneous coordinate plateau]\label{thm:plateau}
+Suppose $\mathcal F\in\ODz$ is a nonempty subset of $\FA(S)$ with $|\mathcal F|<\lambda$. Then there is $\beta<\lambda$ such that, simultaneously for every $\mu\in\mathcal F$ and $n<\omega$,
+\begin{equation}\label{eq:plateau}
+ F_n^\mu(\alpha)=t_n^\mu\qquad(\beta\le\alpha<\lambda).
+\end{equation}
+No member of $\mathcal F$ is required to be individually definable.
+\end{theorem}
+
+\begin{proof}
+For each $\mu\in\mathcal F$, $n<\omega$, and rational $r\in[0,1)$ with $r<t_n^\mu$, let
+\[
+ b(\mu,n,r)=\min\{\alpha<\lambda:F_n^\mu(\alpha)>r\}.
+\]
+The minimum exists by the definition of the supremum and the well-ordering of $\lambda$. Form the set $B$ of all these ordinals. It is definable from $\mathcal F,S,\lambda$, and therefore lies in $\ODz$. Also
+\[
+ |B|\le |\mathcal F|\cdot\aleph_0<\lambda.
+\]
+This inequality is valid even though $\lambda$ is singular: it is the product of one fixed cardinal below $\lambda$ with $\aleph_0$, not a union of sets of unbounded sizes below $\lambda$.
+
+By $\Blam z$, the set $B$ is bounded. Choose $\beta<\lambda$ strictly above every member of $B$; when $B$ is empty any suitable $\beta$ will do. For every rational $r<t_n^\mu$ in $[0,1)$, monotonicity gives
+\[
+ F_n^\mu(\beta)\ge F_n^\mu(b(\mu,n,r))>r.
+\]
+Density of the rationals implies $F_n^\mu(\beta)\ge t_n^\mu$. The reverse inequality follows from the definition of $t_n^\mu$. If $t_n^\mu=0$, it follows immediately from nonnegativity instead. Finally, for $\alpha\ge\beta$, monotonicity traps $F_n^\mu(\alpha)$ between $t_n^\mu$ and itself. This proves~\eqref{eq:plateau}.
+\end{proof}
+
+\begin{theorem}[A common countable null partition]\label{thm:null}
+Under the hypotheses of Theorem~\ref{thm:plateau}, there is a sequence $(E_j)_{j<\omega}$ of pairwise disjoint subsets of $S$ such that
+\begin{equation}\label{eq:nullcover}
+ S=\bigcup_{j<\omega}E_j,
+ \qquad \mu(E_j)=0
+ \quad(\mu\in\mathcal F,\ j<\omega).
+\end{equation}
+Each $E_j$ belongs to the $\sigma$-algebra generated by the coordinate events $C_{n,\alpha}$. The sequence itself is not asserted to be in $\ODz$.
+\end{theorem}
+
+\begin{proof}
+Let $\beta$ be given by Theorem~\ref{thm:plateau}. In the ambient universe choose a strictly increasing cofinal sequence $(\alpha_k)_{k<\omega}$ in $\lambda$, with every $\alpha_k>\beta$. Define
+\[
+ Z_{n,k}=\{a\in S:\beta\le a(n)<\alpha_k\}
+       =C_{n,\alpha_k}\setminus C_{n,\beta}.
+\]
+Finite additivity and~\eqref{eq:plateau} imply
+\[
+ \mu(Z_{n,k})=F_n^\mu(\alpha_k)-F_n^\mu(\beta)=0
+\]
+for every $\mu\in\mathcal F$. The sets $Z_{n,k}$ cover $S$: for a cofinal $a$, first choose $n$ with $a(n)\ge\beta$, and then $k$ with $a(n)<\alpha_k$.
+
+Fix a bijective enumeration $(Z_j)_{j<\omega}$ of this indexed collection, allowing repetitions of the sets. Put
+\[
+ E_j=Z_j\setminus\bigcup_{i<j}Z_i.
+\]
+These sets are pairwise disjoint and cover $S$. Since $E_j\subseteq Z_j$, monotonicity gives $\mu(E_j)=0$ for every member of the family. Only finite Boolean operations on coordinate events occur in each $E_j$. Empty pieces may be retained or removed.
+\end{proof}
+
+\begin{corollary}[No nonzero countably additive minorant]\label{cor:pure}
+Every $\mu\in\mathcal F$ is purely finitely additive in the following precise sense: if $\nu$ is a nonnegative countably additive measure on $\Pow(S)$ and $\nu(A)\le\mu(A)$ for every $A\subseteq S$, then $\nu=0$. The same conclusion holds for a countably additive minorant on the coordinate-generated $\sigma$-algebra. The minorant need not be definable.
+\end{corollary}
+
+\begin{proof}
+For the partition from Theorem~\ref{thm:null}, domination gives $\nu(E_j)=0$ for every $j$. Countable additivity gives $\nu(S)=\sum_j\nu(E_j)=0$. Nonnegativity then gives $\nu(A)=0$ on its entire domain.
+\end{proof}
+
+\begin{corollary}[The exacting specialization]\label{cor:exactingnull}
+At an exacting $\lambda$, every nonempty $\ODlam$ family of fewer than $\lambda$ charges on $\Dlam$ has a common countable null partition. In particular, none of its members has a nonzero countably additive minorant.
+\end{corollary}
+
+\begin{proof}
+Use Imported Theorem~\ref{in:published}(2), with $S=\Dlam$ and no extra parameter. The fact that $\cf(\lambda)=\omega$ also follows from the critical-sequence calculation in Lemma~\ref{lem:normalization} below.
+\end{proof}
+
+\subsection{A sharper continuity obstruction}
+
+\begin{definition}
+A charge $\mu$ on $S$ is \emph{coordinate-tight} if $t_n^\mu=1$ for every $n$. It has \emph{coordinate escape} if
+\[
+ \inf_{n<\omega}F_n^\mu(\alpha)=0
+ \quad\text{for every }\alpha<\lambda.
+\]
+These are two separate continuity requirements, not alternative names for finite or countable additivity.
+\end{definition}
+
+\begin{corollary}[Attained minimax identity]\label{cor:minimax}
+For every $\mu\in\mathcal F$,
+\begin{equation}\label{eq:minimax}
+ \inf_{n<\omega}\sup_{\alpha<\lambda}F_n^\mu(\alpha)
+ =\sup_{\alpha<\lambda}\inf_{n<\omega}F_n^\mu(\alpha)
+ =\inf_{n<\omega}F_n^\mu(\beta),
+\end{equation}
+where the same $\beta$ works for the entire family. In particular, no member can be both coordinate-tight and have coordinate escape.
+\end{corollary}
+
+\begin{proof}
+At $\alpha=\beta$, all coordinate suprema are attained simultaneously. Thus the last expression equals $\inf_n t_n^\mu$, which is the first expression. For any $\alpha$, the inequalities $F_n^\mu(\alpha)\le t_n^\mu$ show that the middle expression is at most this number; evaluating it at $\beta$ gives the opposite inequality. Coordinate tightness makes the first expression $1$, whereas coordinate escape makes the second $0$.
+\end{proof}
+
+A countably additive probability law satisfies \emph{both} continuity requirements. For tightness, fix $n$ and use an ambient cofinal $\omega$-sequence of ordinals to write $S$ as an increasing countable union of $C_{n,\alpha}$. For escape, fix $\alpha$ and note that $C_{n,\alpha}$ decreases to the empty set, since every $a\in S$ is cofinal. Continuity from below and above give the respective conclusions. Corollary~\ref{cor:minimax} therefore isolates a forbidden conjunction strictly weaker than full countable additivity. Section~\ref{sec:prefix} will show that each requirement separately is compatible with a definable finitely additive kernel.
+
+\begin{remark}[Where the cofinal sequence is allowed]
+The proof does not construct a forbidden definable cofinal sequence. Its cutpoint set $B$ is definable and \emph{bounded}; the cofinal sequence $(\alpha_k)$ used afterwards is chosen externally in $V$. Confusing these two roles would invalidate the argument. Likewise, a common null partition is a statement about ambient countable additivity, not about whatever countable sequences a relative inner model happens to contain.
+\end{remark}
+
+\section{A finitely additive kernel without representative choice}\label{sec:means}
+
+This section works for every uncountable cardinal $\lambda$ of cofinality $\omega$. There is no exactingness assumption. The important step is not existence of a charge on one class, which follows immediately from Choice, but independence of the chosen representative in a \emph{single definition valid for all classes}.
+
+\subsection{A low-rank shift-invariant mean}
+
+Let $\ell^\infty(\omega)$ be the vector space of bounded real sequences. A \emph{shift-invariant mean} is a positive linear functional $M:\ell^\infty(\omega)\to\mathbb R$ satisfying $M(\ind)=1$ and
+\[
+ M((x_{n+1})_{n<\omega})=M((x_n)_{n<\omega}).
+\]
+Positivity implies $|M(x)|\le\|x\|_\infty$. It also implies that the value of $M$ on a convergent sequence is its usual limit: shift invariance makes every finite-support sequence have mean zero, and a convergent sequence differs from its limit by a sequence uniformly small outside a finite set.
+
+\begin{lemma}[An explicit invariant mean]\label{lem:mean}
+In $\ZFC$ a shift-invariant mean exists. It can be represented by a set in $V_{\omega+20}$, and hence by a parameter in $V_\lambda$ for every uncountable $\lambda$.
+\end{lemma}
+
+\begin{proof}
+By Choice, extend the cofinite filter on the positive integers to an ultrafilter $U$. For a bounded real sequence $x$, define
+\begin{equation}\label{eq:cesaro}
+ M(x)=\lim_{N\to U}\frac1N\sum_{n<N}x_n.
+\end{equation}
+For completeness, every bounded sequence of reals has a unique $U$-limit in a compact interval containing its range. Existence follows by intersecting the closed sets obtained as closures of the ranges over members of $U$: they have the finite-intersection property. Uniqueness follows because disjoint neighborhoods of two different proposed limits cannot both have inverse images in $U$.
+
+Ultrafilter limits preserve sums and scalar multiples. Indeed, intersect the inverse images of sufficiently small neighborhoods of the proposed limits and use the usual estimates for addition and scalar multiplication. They also preserve inequalities. Consequently~\eqref{eq:cesaro} is positive, linear, and normalized. If $Tx=(x_{n+1})_n$, then
+\[
+ \left|\frac1N\sum_{n<N}(Tx)_n-\frac1N\sum_{n<N}x_n\right|
+ =\frac{|x_N-x_0|}{N}\le\frac{2\|x\|_\infty}{N}.
+\]
+The right side tends to zero, proving shift invariance.
+
+With reals coded by subsets of $\omega$, bounded sequences, their power sets, ordered pairs, and the graph of $M$ require only finitely many power-set and pairing operations above rank $\omega$. The generous fixed bound $\omega+20$ suffices for the usual set encodings. This is a rank estimate, not a cardinality estimate; no smallness assumption on the continuum is used.
+\end{proof}
+
+One can equivalently work with a shift-invariant finitely additive probability on $\Pow(\omega)$. A mean gives it by $B\mapsto M(\ind_B)$. Conversely, integrate finite-valued simple functions by finite additivity and pass to uniform limits of simple functions. The estimate $|M(x)|\le\|x\|_\infty$ makes this extension well-defined and unique. This elementary equivalence will be used in the classification below.
+
+\subsection{Tail rays and the kernel formula}
+
+Define $\tail(a)=a\setminus\{\min a\}$. For $a\in\Dlam$, put
+\[
+ R_a=\{\tail^n(a):n<\omega\}\subseteq[a].
+\]
+Distinct iterates are distinct sets, since each step removes one more element. Thus $R_a$ is countably infinite.
+
+\begin{lemma}[Tail synchronization]\label{lem:sync}
+If $a=^*b$, there are $r,s<\omega$ such that
+\begin{equation}\label{eq:sync}
+ \tail^{r+n}(a)=\tail^{s+n}(b)\qquad(n<\omega).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Choose a cutoff ordinal above every element of $a\triangle b$. Above that cutoff, $a$ and $b$ have the same infinite tail. Each has only finitely many elements below the cutoff, because it has order type $\omega$ and is cofinal in $\lambda$. Remove those finite initial segments, of lengths $r$ and $s$. Further deletions agree term by term.
+\end{proof}
+
+\begin{theorem}[The tail-mean kernel]\label{thm:tailkernel}
+Fix a shift-invariant mean $M$. For $q\in\Qlam$ and $A\subseteq q$, define
+\begin{equation}\label{eq:kernel}
+ K_M(q)(A)=M\bigl((\ind_A(\tail^n(a)))_{n<\omega}\bigr),
+ \qquad a\in q.
+\end{equation}
+The right side is independent of $a$. It defines a kernel $K_M\in\OD_{\{M\}}\subseteq\ODlam$. For every $q$ and every $a\in q$,
+\begin{align}
+ K_M(q)(R_a)&=1,\label{eq:raymass}\\
+ K_M(q)(\{b\})&=0\qquad(b\in q),\label{eq:atomzero}\\
+ K_M(q)(\tail^{-1}[A])&=K_M(q)(A)\qquad(A\subseteq q),\label{eq:deleteinv}\\
+ K_M(q)(\{b:b(i)<\alpha\})&=0\qquad(i<\omega,\ \alpha<\lambda).
+ \label{eq:tailcdf}
+\end{align}
+Here $\tail^{-1}$ means inverse image under the map $\tail:q\to q$.
+\end{theorem}
+
+\begin{proof}
+For $a,b\in q$, the sequences sampled in~\eqref{eq:kernel} have equal shifts by Lemma~\ref{lem:sync}. Repeated shift invariance of $M$ therefore gives equal means. This proves representative independence.
+
+Normalization and nonnegativity follow from those of $M$. If $A,B$ are disjoint, their indicator functions add pointwise, so linearity of $M$ gives finite additivity. The formula defines a unique law for each $q$, without selecting any $a$. Replacement collects these unique laws into a set function on the set $\Qlam$. Its graph is definable from $M$ and the ordinal $\lambda$, giving the asserted definability.
+
+Sampling with reference $a$ makes every term of $\ind_{R_a}(\tail^n a)$ equal to $1$, proving~\eqref{eq:raymass}. For a singleton $\{b\}$, at most one iterate equals $b$, so the sequence has finite support and mean zero. This proves~\eqref{eq:atomzero}. For~\eqref{eq:deleteinv}, observe that
+\[
+ \ind_{\tail^{-1}[A]}(\tail^n a)=\ind_A(\tail^{n+1}a)
+\]
+and apply shift invariance. Finally, $(\tail^n a)(i)=a(n+i)$ eventually lies above any fixed $\alpha<\lambda$. The indicator of the coordinate event is eventually zero, proving~\eqref{eq:tailcdf}.
+\end{proof}
+
+The formula gives mass one to \emph{every} tail ray in the class, although different rays need not be equal: by synchronization they differ by finite initial pieces, all of which have mass zero. The law is not countably additive, because $R_a$ is a countable union of null singletons but has mass one. More strongly, $R_a$ together with its null complement gives a countable null partition after splitting the ray into singletons. This direct argument for the constructed law does not require large cardinals. Theorem~\ref{thm:null} is stronger in scope because it applies to arbitrary small definable families, without assuming ray support.
+
+\begin{proposition}[Naturality under increasing cofinal maps]\label{prop:natural}
+Let $h:\lambda\to\eta$ be strictly increasing and cofinal, where $\lambda$ and $\eta$ are uncountable cardinals of cofinality $\omega$. For $q=[a]$, put $q'=[h``a]$ and $h_*(b)=h``b$. Using the same mean $M$ at both cardinals, one has
+\[
+ K_M(q')(B)=K_M(q)(h_*^{-1}[B])\qquad(B\subseteq q').
+\]
+\end{proposition}
+
+\begin{proof}
+The map $h$ preserves increasing order and commutes with deleting the least element. Thus $h``\tail^n a=\tail^n(h``a)$ for every $n$. The two sides are means of identical indicator sequences. Surjectivity of $h_*:q\to q'$ is not needed.
+\end{proof}
+
+\subsection{An affine description of all tail means}
+
+\begin{definition}
+A \emph{tail mean} on $q$ is a charge $\mu\in\FA(q)$ with $\mu(R_a)=1$ for every $a\in q$ and $\mu(\tail^{-1}[A])=\mu(A)$ for every $A\subseteq q$.
+\end{definition}
+
+\begin{proposition}[Canonical affine classification]\label{prop:classify}
+For each $q$, formula~\eqref{eq:kernel} gives an affine bijection between shift-invariant means on $\omega$ and tail means on $q$. The inverse does not depend on a representative of $q$.
+\end{proposition}
+
+\begin{proof}
+Theorem~\ref{thm:tailkernel} gives the forward map and its affine character. For a tail mean $\mu$, choose $a\in q$ temporarily and set
+\[
+ m_a(B)=\mu(\{\tail^n a:n\in B\}),\qquad B\subseteq\omega.
+\]
+This is a normalized finitely additive probability because $n\mapsto\tail^n a$ is a bijection from $\omega$ onto a set of mass one. If $B^- =\{n:n+1\in B\}$ and $E_B=\{\tail^n a:n\in B\}$, then
+\[
+ \tail^{-1}[E_B]\cap R_a=E_{B^-}.
+\]
+Sets outside $R_a$ have mass zero. Deletion invariance therefore gives $m_a(B)=m_a(B^-)$, the shift-invariance condition. In particular $m_a(\{0\})=0$ and then every finite subset of $\omega$ has mass zero. It follows that each singleton in $R_a$ is $\mu$-null.
+
+For another $b\in q$, synchronization gives equal tails of the two enumerations after deleting $r$ and $s$ terms. For any $B\subseteq\omega$, deleting these finitely many terms changes no measure; shifting the remaining index set changes no $m_a$-value. More explicitly, $\tail^{s+n}b=\tail^{r+n}a$ identifies the part of $\{\tail^n b:n\in B\}$ after its first $s$ terms with the $a$-ray indices $\{r+n:s+n\in B\}$. Shift invariance assigns that index set the same mass as $B$. Thus $m_b(B)=m_a(B)$.
+
+Extend this set mean to its unique mean $M$ on bounded sequences. For every $A\subseteq q$, the complement of $R_a$ is null, so
+\[
+ \mu(A)=\mu(A\cap R_a)
+       =m_a(\{n:\tail^n a\in A\})=K_M(q)(A).
+\]
+This proves surjectivity. Applying the inverse to $K_M(q)$ recovers $M$ first on indicators and then on all bounded sequences, proving injectivity. Both constructions preserve convex combinations.
+\end{proof}
+
+\section{Sharp examples for the two continuity defects}\label{sec:prefix}
+
+The tail-mean kernel has coordinate escape but fails coordinate tightness as badly as possible: all its coordinate suprema are zero. There is a complementary construction that is coordinate-tight while failing escape as badly as possible. It is useful because it prevents misidentifying the obstruction with either continuity condition separately.
+
+Fix a strictly increasing sequence $c:\omega\to\lambda$ with bounded range, for example $c(i)=i$. Let $s_k=\{c(0),\ldots,c(k-1)\}$. The sequence $c$ is a parameter in $V_\lambda$ because its range is bounded below the uncountable limit cardinal $\lambda$.
+
+\begin{theorem}[The prefix--tail kernel]\label{thm:prefix}
+With $M$ as above, define, for $A\subseteq q$,
+\begin{equation}\label{eq:prefix}
+ J_{M,c}(q)(A)
+ =M_k\left(M_n\bigl(\ind_A(s_k\cup\tail^n a)\bigr)\right),
+ \qquad a\in q.
+\end{equation}
+Subscripts indicate which sequence variable the mean acts on. This is a representative-independent kernel in $\OD_{\{M,c\}}\subseteq\ODlam$. Its coordinate laws are
+\begin{equation}\label{eq:prefixcdf}
+ J_{M,c}(q)(\{b:b(i)<\alpha\})=\ind_{\{c(i)<\alpha\}}.
+\end{equation}
+Consequently it is coordinate-tight, but for any $\beta>\sup_i c(i)$ all the events $\{b:b(i)<\beta\}$ have mass one even though their intersection is empty.
+\end{theorem}
+
+\begin{proof}
+Every set $s_k\cup\tail^n a$ differs from $a$ by a finite set, and remains cofinal of order type $\omega$, so the arguments of the indicators belong to $q$. For fixed $k$, changing $a$ to another representative merely shifts the inner sequence after finitely many terms, by Lemma~\ref{lem:sync}. The inner mean is unchanged. Hence so is the outer mean.
+
+Each inner value belongs to $[0,1]$, so the outer mean is defined. Positivity, normalization, and finite additivity pass through the two positive linear functionals. As before, a unique output for each $q$ yields a set function by Replacement; its definition uses only $M,c$, and ordinals.
+
+Fix $i$ and $\alpha$. If $k>i$, then for all sufficiently large $n$ the tail $\tail^n a$ begins above every element of $s_k$. Therefore the first $k$ elements of $s_k\cup\tail^n a$ are exactly $c(0),\ldots,c(k-1)$, in that order. Its $i$th element is $c(i)$, so the inner mean of the coordinate indicator equals $\ind_{\{c(i)<\alpha\}}$. This holds for all $k>i$; the finitely many remaining $k$ do not affect the outer mean. Equation~\eqref{eq:prefixcdf} follows.
+
+For each $i$ some $\alpha<\lambda$ exceeds $c(i)$, proving tightness. If $\beta$ exceeds the range of $c$, each indicated coordinate event has mass one. A member of their intersection would be a cofinal subset of $\lambda$ bounded by $\beta$, which is impossible.
+\end{proof}
+
+\begin{corollary}[Every intermediate plateau value occurs]\label{cor:sharp}
+For $0\le\theta\le1$, the kernel
+\[
+ L_\theta(q)=\theta J_{M,c}(q)+(1-\theta)K_M(q)
+\]
+is in $\OD_{\{M,c,\theta\}}\subseteq\ODlam$ and satisfies
+\[
+ F_i^{L_\theta(q)}(\alpha)=\theta\ind_{\{c(i)<\alpha\}},
+ \qquad t_i^{L_\theta(q)}=\theta.
+\]
+Both sides of the minimax identity~\eqref{eq:minimax} equal $\theta$. In particular, the full interval $[0,1]$ occurs, and neither of the two separate continuity conditions is prohibited by ultraexactingness.
+\end{corollary}
+
+\begin{proof}
+Use linearity, equations~\eqref{eq:tailcdf} and~\eqref{eq:prefixcdf}, and the fact that every real is a permissible low-rank parameter. The endpoint $\theta=0$ has coordinate escape, and the endpoint $\theta=1$ is coordinate-tight.
+\end{proof}
+
+These examples can even keep the \emph{same phase distribution}. With the phase notation of Section~\ref{sec:phase}, every $K_M(q)$, $J_{M,c}(q)$, and $L_\theta(q)$ has
+\[
+ \nu_a(A)=M_n\bigl(\ind_A(-n)\bigr),\qquad A\subseteq\mathbb Z.
+\]
+For $K_M$, this follows from $\chi_a(\tail^n a)=-n$. For the prefix construction, at fixed $k$ and all sufficiently large $n$, all points of $s_k$ lie below the beginning of $\tail^n a$. The phase is then
+\[
+ |s_k\setminus a|-\bigl(n-|s_k\cap a|\bigr)=k-n.
+\]
+The inner mean of $\ind_A(k-n)$ equals that of $\ind_A(-n)$ by shifting $k$ times, so the outer mean changes nothing. Convex mixtures have the same phase law. Thus exact phase balance is compatible with every plateau value in $[0,1]$.
+
+There is no probability law on actual cofinal sequences whose coordinates are all deterministically the bounded sequence $c$ \emph{and} which is countably additive. The prefix construction realizes these coordinate marginals only by abandoning countable continuity. This is a concrete example of the distinction between consistent finite-dimensional behavior and a countably additive law supported on the required sample space.
+
+\section{Embedding bookkeeping and simultaneous test classes}\label{sec:embed}
+
+We now assume that $\lambda$ is ultraexacting. The orbit construction and minimal-parameter argument in this section continue the machinery of the supplied synthesis~\cite[Sections 8 and 12]{archive}. We include the details because the uniform quantifier in the new phase theorem depends on choosing a correct height \emph{before} its test classes are constructed.
+
+\subsection{The critical sequence and its orbits}
+
+\begin{lemma}[Critical-sequence normalization]\label{lem:normalization}
+Let $j:X\to V_\zeta$ be an exacting witness, where $\zeta>\lambda+\omega$ is sufficiently correct for the elementary set constructions below. Put $\kappa=\crit(j)$ and $e=j\restr V_\lambda$. Then
+\[
+ \kappa_0=\kappa,\qquad \kappa_{n+1}=e(\kappa_n),
+ \qquad \sup_{n<\omega}\kappa_n=\lambda.
+\]
+In particular $\cf(\lambda)=\omega$, and
+\begin{equation}\label{eq:moved}
+ \kappa\le\xi<\lambda\quad\Longrightarrow\quad j(\xi)>\xi.
+\end{equation}
+The critical point is an uncountable cardinal, $j$ fixes $V_\kappa$ pointwise, and each $\kappa_n$ is a cardinal.
+\end{lemma}
+
+\begin{proof}
+The restriction $e$ is elementary from $V_\lambda$ to itself: relativize a formula to the set $V_\lambda$, which is definable from $\lambda$ and fixed by $j$. All parameters from $V_\lambda$ lie in $X$. The usual least-moved-ordinal argument shows that $\kappa$ is a cardinal. If there were a bijection from an ordinal below $\kappa$ onto $\kappa$, its image under $j$ would have the same pointwise range, contradicting movement of $\kappa$. Countable ordinals are fixed, by applying the same argument to maps from $\omega$, so $\kappa$ is uncountable. Induction on rank below $\kappa$ gives $j\restr V_\kappa=\id$. Cardinal correctness for ordinals below $\lambda$, and elementarity, show that all $\kappa_n$ are cardinals. They form a strictly increasing sequence.
+
+Let $\delta=\sup_n\kappa_n\le\lambda$. If $\delta<\lambda$, its critical sequence is a set of rank below $\lambda$ and therefore belongs to $X$. Its domain is $\omega$, so $j$ maps it pointwise to its one-step shift. Hence $j(\delta)=\delta$. Restricting $e$ to $V_{\delta+2}$ would now give a nontrivial elementary self-embedding of $V_{\delta+2}$, contrary to local Kunen inconsistency. The inclusion $V_{\delta+2}\subseteq V_\lambda$ holds because $\delta<\lambda$ and $\lambda$ is a cardinal greater than the limit cardinal $\delta$. Thus $\delta=\lambda$.
+
+Finally, if $\kappa_n\le\xi<\kappa_{n+1}$, order preservation gives $j(\xi)\ge\kappa_{n+1}>\xi$. These intervals cover $[\kappa,\lambda)$, proving~\eqref{eq:moved}.
+\end{proof}
+
+\begin{lemma}[Many internal tail-shifted representatives]\label{lem:orbits}
+For an ultraexacting witness as above, so that $e\in X$, there are $\lambda$ pairwise disjoint sets $a_r\in\Dlam\cap X$ satisfying
+\begin{equation}\label{eq:shifteda}
+ j(a_r)=\tail(a_r),\qquad
+ q_r=[a_r]\in X,\qquad j(q_r)=q_r.
+\end{equation}
+The classes $q_r$ are pairwise distinct.
+\end{lemma}
+
+\begin{proof}
+Consider the roots
+\[
+ R_e=[\kappa,\lambda)\setminus e``[\kappa,\lambda).
+\]
+For $n\ge1$, the only possible preimages under $e$ of elements of $[\kappa_n,\kappa_{n+1})$ lie in $[\kappa_{n-1},\kappa_n)$. There are at most $\kappa_n$ such images, whereas $[\kappa_n,\kappa_{n+1})$ has size $\kappa_{n+1}$. The interval $[\kappa,\kappa_1)$ has no images from $[\kappa,\lambda)$ at all. Thus $|R_e|=\lambda$.
+
+For $r\in R_e$, let $a_r=\{e^n(r):n<\omega\}$. If $r\in[\kappa_m,\kappa_{m+1})$, then $e^n(r)\in[\kappa_{m+n},\kappa_{m+n+1})$. Its orbit is strictly increasing and cofinal in $\lambda$, so $a_r\in\Dlam$. If two root orbits meet, injectivity cancels the common number of iterates. Either the roots agree, or one root is a positive iterate of the other, contradicting the definition of a root. Hence distinct root orbits are disjoint.
+
+Because $e\in X$ and $r\in V_\lambda\subseteq X$, the recursion $n\mapsto e^n(r)$ and its range belong to $X$ by definability and elementarity. Applying $j$ to this enumeration acts pointwise on its domain $\omega$, and sends $e^n(r)$ to $e^{n+1}(r)$. It follows that $j(a_r)=\tail(a_r)$. The class $q_r$ is definable from $a_r,\lambda$, so belongs to $X$ and satisfies $j(q_r)=[\tail(a_r)]=q_r$. Disjoint infinite representatives cannot differ by a finite set, proving distinctness of the classes.
+\end{proof}
+
+The proof never iterates $j$ on a class outside its domain. It uses finite iterates of the \emph{set function} $e:V_\lambda\to V_\lambda$, and applies $j$ once to an enumeration in $X$. No iterability hypothesis is being inserted.
+
+\subsection{Eliminating ordinal parameters uniformly}
+
+For fixed set parameters $p,q$, the class $\OD_{\{p,q\}}$ has a canonical definable well-order. One way to obtain it is to use codes consisting of a rank height, a formula, and a finite tuple of ordinal parameters witnessing unique definability over that rank segment, with $p,q$ as additional parameters. Order the codes by height and then by a fixed well-order of their remaining data, and assign each object its least code. Each code has only set-many predecessors. Thus every nonempty definable subclass of $\OD_{\{p,q\}}$ has a canonical least member. The construction concerns ordinal-definable \emph{objects}, not a definable well-order of the whole universe.
+
+\begin{lemma}[Uniform fixed-counterexample lemma]\label{lem:canonical}
+Fix finitely many first-order predicates $P_i(\lambda,q,x)$ whose possible witnesses $x$ have rank below $\lambda+\omega$. There is a sufficiently correct cardinal height $\zeta>\lambda+\omega$ with the following property. For any exacting witness $j:X\to V_\zeta$ and any $q\in X$ with $j(q)=q$, if
+\[
+ \exists x\in\ODq\ P_i(\lambda,q,x),
+\]
+then there is such a witness $x_*\in X$ with $j(x_*)=x_*$. The height can be chosen before $j$ and $q$.
+\end{lemma}
+
+\begin{proof}
+The relation $x\in\OD_{\{p,q\}}$ and the canonical ordering just described are first-order definable, using satisfaction for \emph{set} rank segments. For each $i$, consider the formulas expressing existence of a witness, the least rank of a low parameter permitting a witness, and the canonical least witness for fixed parameters. These are a finite collection of first-order formulas, including their needed subformulas. By reflection, choose a cardinal $\zeta>\lambda+\omega$ for which these formulas are correct between $V_\zeta$ and $V$ for all parameters in $V_\zeta$. Equivalently, a sufficiently high finite degree of $\Sigma_n$-correctness suffices. Such heights can be chosen to be cardinals. No truth predicate for $V$, and no full elementarity $V_\zeta\prec V$, is required.
+
+Suppose a witness exists for $P_i$ and a fixed $q$. Let $\rho<\lambda$ be the least rank of a parameter $p\in V_\lambda$ such that some $x\in\OD_{\{p,q\}}$ satisfies $P_i(\lambda,q,x)$. Finitely many original low parameters have already been coded into one. By correctness, $\rho$ is the same ordinal in $V_\zeta$ as in $V$. It is uniquely definable there from $\lambda,q$, so $\rho\in X$ and $j(\rho)=\rho$. Lemma~\ref{lem:normalization} gives $\rho<\kappa$.
+
+Choose any eligible $p$ of rank $\rho$. It lies in $V_\kappa\subseteq X$, so $j(p)=p$. Let $x_*$ be the canonical least $P_i$-witness in $\OD_{\{p,q\}}$. Correctness makes this the same witness in $V_\zeta$ and in $V$. Its uniqueness from $p,q,\lambda$ puts it in $X$, and elementarity, with these three parameters fixed, gives $j(x_*)=x_*$.
+
+The initial reflection was uniform in all its parameters, including $q$. Consequently it applies to every fixed $q\in X$ that appears after the embedding has been chosen. In particular it applies to all the classes constructed in Lemma~\ref{lem:orbits}.
+\end{proof}
+
+\begin{remark}[Why least ordinal parameters cannot simply be fixed]
+The original definition of an object may use ordinal parameters above $\lambda$, and an arbitrary low parameter may have rank above $\kappa$. Neither is assumed fixed. The argument first minimizes the \emph{rank of an eligible low parameter}, then uses the canonical least definable witness to eliminate all further ordinal parameters. Omitting either step would not prove a uniform assertion about all $\ODq$ objects.
+\end{remark}
+
+\begin{proposition}[Boundedness on the orbit classes]\label{prop:localbounded}
+Choose the reflecting height in Lemma~\ref{lem:canonical} to include the predicate saying that $x$ is a cofinal map from an ordinal below $\lambda$ into $\lambda$. Then every fixed $q\in X$ satisfies $\Blam q$. In particular all the $\lambda$ classes of Lemma~\ref{lem:orbits} do so.
+\end{proposition}
+
+\begin{proof}
+Otherwise Lemma~\ref{lem:canonical} produces a fixed cofinal map $f:\tau\to\lambda$ in $X$, with $\tau<\lambda$. Its domain is definable from it, so $j(\tau)=\tau$ and hence $\tau<\kappa$. For every $\xi<\tau$, evaluation and elementarity give
+\[
+ j(f(\xi))=j(f)(j(\xi))=f(\xi).
+\]
+All these values lie below $\kappa$, by Lemma~\ref{lem:normalization}. Their range cannot be cofinal in $\lambda$, a contradiction. Now use the equivalence in Definition~\ref{def:bounded}.
+\end{proof}
+
+\section{Phase balance for every definable charge}\label{sec:phase}
+
+For $a,b\in q$, define the integer-valued phase
+\[
+ \chi_a(b)=|b\setminus a|-|a\setminus b|\in\mathbb Z.
+\]
+Both differences are finite. Counting membership on the finite symmetric differences gives the cocycle identities
+\begin{equation}\label{eq:cocycle}
+ \chi_a(b)=\chi_a(c)+\chi_c(b),
+ \qquad \chi_{\tail(a)}(b)=\chi_a(b)+1.
+\end{equation}
+The first identity can also be checked by summing $\ind_b-\ind_a=(\ind_c-\ind_a)+(\ind_b-\ind_c)$ on the finite set where one of these differences is nonzero.
+
+For a charge $\mu$ on $q$, its phase distribution relative to $a$ is the charge on $\mathbb Z$ given by
+\[
+ \nu_a^\mu(A)=\mu(H_a(A)),\qquad
+ H_a(A)=\{b\in q:\chi_a(b)\in A\},\quad A\subseteq\mathbb Z.
+\]
+Changing the reference $a$ translates the phase by a fixed integer, by~\eqref{eq:cocycle}. Therefore the condition that $\nu_a^\mu$ is translation invariant is independent of the choice of reference.
+
+\begin{definition}[Phase balance]
+A charge $\mu$ on $q$ is \emph{phase-balanced} if $\nu_a^\mu(A)=\nu_a^\mu(A+1)$ for all $A\subseteq\mathbb Z$, for one, equivalently every, $a\in q$.
+\end{definition}
+
+\begin{lemma}[The fixed-charge calculation]\label{lem:fixedcharge}
+Let $j:X\to V_\zeta$ be an ultraexacting witness, and suppose $a,q,\mu\in X$ satisfy
+\[
+ a\in q,\quad j(a)=\tail(a),\quad j(q)=q,
+ \quad \mu\in\FA(q),\quad j(\mu)=\mu.
+\]
+Then $\mu$ is phase-balanced.
+\end{lemma}
+
+\begin{proof}
+Every subset $A$ of $\mathbb Z$ has low enough rank to lie in $V_\kappa$ and is fixed by $j$. The set $H_a(A)$ belongs to $X$ by its definition. Elementarity gives
+\[
+ j(H_a(A))=H_{\tail(a)}(A)=H_a(A-1),
+\]
+where $A-1=\{z\in\mathbb Z:z+1\in A\}$. The last equality is the second identity in~\eqref{eq:cocycle}. Since $\mu(H_a(A))$ is a real, it too is fixed by $j$. Applying $j$ to the evaluation of $\mu$ yields
+\[
+ \mu(H_a(A))
+ =j\bigl(\mu(H_a(A))\bigr)
+ =j(\mu)(j(H_a(A)))
+ =\mu(H_a(A-1)).
+\]
+This is invariance under translation by $1$, hence under all integer translations. Notice that the argument uses the elementary image $j(H_a(A))$, not the generally smaller pointwise image $j``H_a(A)$.
+\end{proof}
+
+\begin{theorem}[A simultaneous phase-balance theorem]\label{thm:balance}
+If $\lambda$ is ultraexacting, there is a set $\mathcal G\subseteq\Qlam$ of cardinality $\lambda$, with pairwise disjoint representatives, such that for every $q\in\mathcal G$:
+\begin{enumerate}
+\item $\Blam q$ holds;
+\item every charge $\mu\in\FA(q)\cap\ODq$ is phase-balanced.
+\end{enumerate}
+The same set $\mathcal G$ works for \emph{all} low parameters and all ordinal parameters in these assertions. No definability of $\mathcal G$ is asserted.
+\end{theorem}
+
+\begin{proof}
+Apply Lemma~\ref{lem:canonical} to two predicates. The first says that $x$ is a cofinal map from some $\tau<\lambda$ into $\lambda$. The second says that $x$ is a charge on $q$ which is not phase-balanced. Both are first-order predicates; phase balance quantifies over the sets $a\in q$ and $A\subseteq\mathbb Z$. Their possible witnesses have rank below $\lambda+\omega$. Choose the reflecting height for both predicates before taking an ultraexacting witness.
+
+Let $\mathcal G=\{q_r:r\in R_e\}$ be the classes of Lemma~\ref{lem:orbits}. Proposition~\ref{prop:localbounded} gives item~(1). If item~(2) failed for some $q_r$, Lemma~\ref{lem:canonical} would produce a charge $\mu_*\in X$ on $q_r$, fixed by $j$, which is not phase-balanced. But $a_r\in X$ and $j(a_r)=\tail(a_r)$, so Lemma~\ref{lem:fixedcharge} makes $\mu_*$ phase-balanced. This contradiction proves item~(2). The cardinality and disjoint-representative assertion were proved in Lemma~\ref{lem:orbits}.
+\end{proof}
+
+\begin{corollary}[Exact weights on all finite phase quotients]\label{cor:residues}
+For $q\in\mathcal G$, $\mu\in\FA(q)\cap\ODq$, $a\in q$, and $m\ge1$,
+\begin{equation}\label{eq:residues}
+ \mu(\{b\in q:\chi_a(b)\equiv r\pmod m\})=\frac1m
+ \qquad(r\in\mathbb Z/m\mathbb Z).
+\end{equation}
+Every singleton phase has mass zero. The range of $\mu$ contains every rational in $[0,1]$, and in particular is infinite.
+\end{corollary}
+
+\begin{proof}
+Translation invariance makes the $m$ residue classes have equal phase mass. They partition $\mathbb Z$, so finite additivity makes each mass $1/m$. All singleton phases also have equal mass, say $u\ge0$. The union of any $N$ of them has mass $Nu\le1$, for every positive integer $N$, so $u=0$. Finally, a union of $k$ residue classes has mass $k/m$.
+\end{proof}
+
+\begin{remark}[What phase balance does not say]
+The theorem does not say that every definable charge is invariant under \emph{all} finite modifications, or even under the deletion map on arbitrary subsets of $q$. It states translation invariance of the particular integer-phase pushforward. This is exactly enough for the ultrafilter obstruction. The prefix--tail kernels need not share the stronger deletion invariance of $K_M$.
+\end{remark}
+
+\begin{corollary}[Null partitions for arbitrary small families on the same classes]\label{cor:localnull}
+For every $q\in\mathcal G$, every nonempty $\mathcal F\in\ODq$ with $\mathcal F\subseteq\FA(q)$ and $|\mathcal F|<\lambda$ has a common countable null partition. Every member is purely finitely additive. Consequently, for any nonempty family $\mathscr K\in\ODlam$ of kernels with $|\mathscr K|<\lambda$, each $q\in\mathcal G$ has a countable partition null for every law $K(q)$ with $K\in\mathscr K$.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:null} and Corollary~\ref{cor:pure} with $S=q$, $z=q$, and Theorem~\ref{thm:balance}(1). For the kernel statement, the image family $\{K(q):K\in\mathscr K\}$ is nonempty, belongs to $\ODq$, and has size at most $|\mathscr K|$.
+\end{proof}
+
+This proves a strictly more informative statement than merely ruling out countably additive kernels: any admissible definable finite-additive substitute has a common null-cover obstruction on every one of the same $\lambda$ test classes, even when it occurs only as a nondefinable member of a small definable family.
+
+\section{Ultrafilters, finite candidate families, and extreme points}\label{sec:extreme}
+
+The following is the principal new conditional inconsistency. It imposes no completeness or normality on the ultrafilters.
+
+\begin{theorem}[No finite definable family of finite-range charges]\label{thm:finitefamily}
+For every $q\in\mathcal G$, there is no nonempty finite family $\mathcal F\in\ODq$ of charges on $q$ each having finite range. In particular there is no nonempty finite $\ODq$ family of proper ultrafilters on $q$, and there is no proper ultrafilter on $q$ belonging to $\ODq$.
+\end{theorem}
+
+\begin{proof}
+Suppose $\mathcal F$ is such a family, with $m=|\mathcal F|\ge1$. Form its unordered barycenter
+\[
+ \overline\mu(A)=\frac1m\sum_{\mu\in\mathcal F}\mu(A),\qquad A\subseteq q.
+\]
+A finite sum over a set is independent of its enumeration, so $\overline\mu$ is definable from $\mathcal F$ and hence lies in $\ODq$. It is a charge. Its range is contained in the finite set
+\[
+ \left\{\frac1m\sum_{\mu\in\mathcal F}r_\mu:
+             r_\mu\in\ran(\mu)\text{ for every }\mu\in\mathcal F\right\}.
+\]
+This contradicts Corollary~\ref{cor:residues}, which says that its range contains every rational in $[0,1]$.
+
+For a proper ultrafilter $U$ on $q$, the function $\mu_U(A)=1$ when $A\in U$ and $0$ otherwise is a charge. To check finite additivity, if two sets are disjoint they cannot both belong to $U$, and their union belongs to $U$ exactly when one of them does. Thus $\mu_U$ has range $\{0,1\}$. Turning a finite family of ultrafilters into its family of incidence charges is definable and preserves nonemptiness and finiteness, so the first assertion applies. In this special case the barycenter has range contained in $\{0,1/m,\ldots,1\}$, whereas phase balance modulo $m+1$ demands the impossible value $1/(m+1)$.
+\end{proof}
+
+\begin{theorem}[The ultrafilter-kernel inconsistency]\label{thm:ufkernel}
+Over $\ZFC$, ultraexactingness of $\lambda$ is incompatible with the existence of a nonempty finite $\ODlam$ family of ultrafilter-valued kernels on $\Qlam$. In particular,
+\begin{equation}\label{eq:inconsistent}
+ \ZFC+\UEx(\lambda)
+ +\text{``there is an ultrafilter-valued kernel on $\Qlam$ in $\ODlam$''}
+\end{equation}
+is inconsistent. The same exclusion holds for finite families of kernels whose laws have finite range at every class, with no uniform bound on those finite ranges.
+\end{theorem}
+
+\begin{proof}
+Given a nonempty finite definable family of kernels, evaluate its members at any $q\in\mathcal G$. The resulting set of values is a nonempty finite family in $\ODq$; repeated values may simply be removed. For ultrafilter-valued kernels it is excluded by Theorem~\ref{thm:finitefamily}. For finite-range charge kernels the same theorem applies directly. No member of the original finite family has been selected in the definition of the image family or in the averaging argument.
+\end{proof}
+
+\subsection{An explicit compact-convex selection failure}
+
+Identify $\FA(q)$ with a subset of the product space $[0,1]^{\Pow(q)}$ carrying the product topology. In the ambient $\ZFC$ universe the product is compact, and the normalization and finite-additivity equations define a closed subset. Thus $\FA(q)$ is compact. It is convex, and nonempty because any $a\in q$ gives a Dirac charge. These are ordinary product-topology facts; the following characterization gives the needed extreme points directly, with no use of an extreme-point existence theorem.
+
+\begin{lemma}[Extreme charges are exactly ultrafilters]\label{lem:extreme}
+For every nonempty set $S$, the extreme points of $\FA(S)$ are exactly the $\{0,1\}$-valued charges, equivalently the incidence charges of proper ultrafilters on $S$.
+\end{lemma}
+
+\begin{proof}
+Suppose $0<\mu(A)<1$ for some $A\subseteq S$. Define
+\[
+ \mu_1(B)=\frac{\mu(B\cap A)}{\mu(A)},
+ \qquad
+ \mu_0(B)=\frac{\mu(B\setminus A)}{1-\mu(A)}.
+\]
+Both are charges, with $\mu_1(A)=1$ and $\mu_0(A)=0$. Finite additivity gives
+\[
+ \mu=\mu(A)\mu_1+(1-\mu(A))\mu_0,
+\]
+a nontrivial convex decomposition. Therefore a charge which is not two-valued is not extreme.
+
+Conversely, suppose $\mu$ is two-valued and $\mu=t\nu+(1-t)\xi$ for $0<t<1$ and charges $\nu,\xi$. If $\mu(B)=0$, nonnegativity forces $\nu(B)=\xi(B)=0$. If $\mu(B)=1$, the bounds $\nu(B),\xi(B)\le1$ force both values to be $1$. Hence $\nu=\xi=\mu$, proving extremality.
+
+For a two-valued charge, let $U=\{A\subseteq S:\mu(A)=1\}$. Monotonicity makes $U$ upward closed. If $A,B\in U$, finite subadditivity gives $\mu(S\setminus(A\cap B))\le\mu(S\setminus A)+\mu(S\setminus B)=0$, so $A\cap B\in U$. Exactly one of $A$ and its complement belongs to $U$, and $\varnothing\notin U$. Thus $U$ is a proper ultrafilter. The reverse construction was checked in Theorem~\ref{thm:finitefamily}.
+\end{proof}
+
+\begin{corollary}[Point selection without extreme-point selection]\label{cor:convex}
+If $\lambda$ is ultraexacting, the ordinal-definable indexed family
+\[
+ q\longmapsto\FA(q),\qquad q\in\Qlam,
+\]
+of nonempty compact convex sets has a point-selection function in $\ODlam$, namely $K_M$, but no extreme-point-selection function in $\ODlam$. It has no nonempty finite $\ODlam$ family of extreme-point-selection functions either.
+\end{corollary}
+
+\begin{proof}
+Use Theorem~\ref{thm:tailkernel} for the positive assertion. By Lemma~\ref{lem:extreme}, an extreme-point selector is exactly a two-valued charge kernel, or equivalently an ultrafilter-valued kernel. Theorem~\ref{thm:ufkernel} excludes it and finite families of it.
+\end{proof}
+
+This does not contradict compactness or the usual existence of extreme points. Each individual convex set has many extreme points, and Choice provides an unrestricted selector on the whole indexed family: choose a representative in each class and take its Dirac charge. What fails is the additional demand of definability from parameters below $\lambda$. The positive construction shows that this failure is not just absence of a definable point selector.
+
+\subsection{The location of a countable support is itself nonuniform}
+
+\begin{proposition}[Support-location width for the positive kernel]\label{prop:support}
+Let $q\in\mathcal G$. Although $K_M(q)$ is carried by every countable tail ray $R_a$, there is no nonempty $\ODq$ family of fewer than $\lambda$ countable sets of $K_M(q)$-mass one. The family
+\[
+ \mathcal R_q=\{R_a:a\in q\}
+\]
+is in $\ODq$, has cardinality exactly $\lambda$, and consists of countable mass-one sets.
+\end{proposition}
+
+\begin{proof}
+Suppose $\mathcal A$ were a forbidden family. Its union $U=\bigcup\mathcal A$ is a nonempty subset of $q$, is definable from $\mathcal A$, and has size at most $|\mathcal A|\cdot\aleph_0<\lambda$. The union $B=\bigcup U\subseteq\lambda$ is again definable, has size at most $|U|\cdot\aleph_0<\lambda$, and is cofinal because $U$ contains a member of $q$. This contradicts $\Blam q$.
+
+For the displayed positive family, definability is immediate from $q$. Each member has mass one by~\eqref{eq:raymass}. Each class $q$ has size $\lambda$: for a fixed $a\in q$, finite symmetric difference gives a bijection $d\mapsto a\triangle d$ from $[\lambda]^{<\omega}$ onto $q$. The map $a\mapsto R_a$ is injective, because $a$ is the unique largest element of $R_a$ under inclusion. Therefore $|\mathcal R_q|=\lambda$.
+\end{proof}
+
+This is an application of the supplied reports' small-family barrier, not a new general width principle. Its role here is explanatory: a definable finitely additive law can have an ambient countable carrier without making the \emph{location} of any such carrier definably selectable from a small family.
+
+\section{An \texorpdfstring{$\Izero$}{I0}-calibrated simultaneous consistency result}\label{sec:consistency}
+
+We now give the requested consistency calibration, keeping its provenance explicit. Let $\mathsf T_{\mathrm{prob}}$ be $\ZFC$ together with existence of a cardinal $\lambda$ satisfying the following assertions:
+\begin{enumerate}
+\item $\lambda$ is ultraexacting, $V_\lambda\subseteq\HOD$, and $\lambda$ is the least exacting cardinal.
+\item There is an \emph{ordinal-definable} tail-mean kernel on $\Qlam$; the prefix--tail kernel and every mixture in Corollary~\ref{cor:sharp} can also be chosen ordinal definable.
+\item There is no nonempty finite ordinal-definable family of ultrafilter-valued kernels on $\Qlam$. The compact-convex point/extreme-point separation of Corollary~\ref{cor:convex} holds with $\OD$ in place of $\ODlam$.
+\item There are $\lambda$ classes $q$, with pairwise disjoint representatives, on which all $\OD_{\{q\}}$ charges are phase-balanced and every nonempty $\OD_{\{q\}}$ family of fewer than $\lambda$ charges has a common countable null partition. The global exacting null-partition assertion also holds.
+\end{enumerate}
+In item~(2), each real mixture parameter is allowed its own ordinal definition; the assertion is not that a single parameter-free formula gives all reals different values without an index. All these are set-theoretic assertions using the definable class $\OD$.
+
+\begin{theorem}[Calibrated boundary theory]\label{thm:consistency}
+With the standard consistency formulations used in Imported Theorem~\ref{in:published},
+\begin{equation}\label{eq:equicons}
+ \Con(\ZFC+\Izero)\quad\Longleftrightarrow\quad
+ \Con(\mathsf T_{\mathrm{prob}}).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For the forward implication, apply the published ultraexacting calibration and coding result in Imported Theorem~\ref{in:published}(3) to obtain, relative to the stated consistency assumption, a model with an ultraexacting $\lambda$ and $V_\lambda\subseteq\HOD$. There can be no exacting $\mu<\lambda$: such a $\mu$ would have an ambient cofinal $\omega$-sequence, whose rank is below $\lambda$ and which would therefore belong to $\HOD$. This contradicts the relative-HOD boundedness assertion for $\mu$ from item~(2) of that imported theorem.
+
+In this model, every permitted low parameter is ordinal definable. Substituting its ordinal definition into any formula shows
+\begin{equation}\label{eq:collapseOD}
+ \ODlam=\OD,
+ \qquad \ODq=\OD_{\{q\}}.
+\end{equation}
+Choose an invariant mean $M$ as in Lemma~\ref{lem:mean}; since $M\in V_\lambda$, it is ordinal definable. The same applies to $c$ and to each real $\theta$. Theorems~\ref{thm:tailkernel} and~\ref{thm:prefix}, and Corollary~\ref{cor:sharp}, give item~(2) of $\mathsf T_{\mathrm{prob}}$. Theorem~\ref{thm:ufkernel} and Corollary~\ref{cor:convex}, together with~\eqref{eq:collapseOD}, give item~(3). Theorem~\ref{thm:balance}, Corollaries~\ref{cor:localnull} and~\ref{cor:exactingnull}, give item~(4). Thus all the additional structural assertions hold in the same model; no additional forcing is needed for them.
+
+For the reverse implication, forget all clauses except existence of an ultraexacting cardinal, and apply the reverse direction of the published calibration in Imported Theorem~\ref{in:published}(3).
+\end{proof}
+
+\begin{assessment}{The strength of the consistency conclusion}
+The new content is the simultaneous probability and extreme-point boundary in $\mathsf T_{\mathrm{prob}}$. Its $\Izero$ calibration uses the existing ultraexacting equiconsistency and coding theorem. It is \emph{not} a new lower or upper bound for the consistency strength of ultraexactingness, and it is not a new forcing construction. The new inconsistency is the concrete strengthening~\eqref{eq:inconsistent}, not ultraexactingness by itself.
+\end{assessment}
+
+\section{Proof audit, comparison, and unresolved extensions}\label{sec:audit}
+
+\subsection{What has been added to the archive}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.16}
+\begin{tabularx}{\textwidth}{@{}p{.24\textwidth}YY@{}}
+\toprule
+\textbf{Topic}&\textbf{Supplied synthesis}&\textbf{This continuation}\\
+\midrule
+Countably additive laws&Median sequences rule out small definable families.&One bounded collection of all rational cutpoints gives a \emph{common null partition} and rules out every nonzero countably additive minorant.\\
+Finitely additive laws&A remark uses tails of one selected cofinal sequence.&A shift-invariant mean removes representative choice and gives a kernel on every class; an affine classification describes all ray-supported deletion-invariant laws.\\
+Coordinate continuity&The two continuity arguments occur inside the median proof.&An attained minimax identity isolates the forbidden conjunction; prefix--tail kernels realize every intermediate plateau value.\\
+Integer phase&Full-fibre phase spectra and finite symmetry are studied.&Every definable charge on $\lambda$ simultaneous test classes has translation-invariant phase distribution, hence exact weights $1/m$.\\
+Finite choice&Finite families of selectors and thin-section families are excluded.&Finite families of ultrafilter-valued kernels are excluded by an unordered barycenter; this yields a compact-convex extreme-point-selection failure.\\
+Consistency strength&An $\Izero$-equiconsistent boundary package is assembled.&The new probability package is realized at the same strength; the calibration itself is explicitly imported.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The invariant-mean construction, finite-additive integration, and the characterization of extreme charges are elementary classical mechanisms, not claimed as new in isolation. The research contribution is their representative-independent deployment on this quotient, and the new conclusions forced by exacting and ultraexacting definability barriers. The comparisons concern the two actual report files supplied in the archive. The eighteen historical source reports mentioned by the synthesis were not separately present, and no independent examination of all eighteen is claimed.
+
+\subsection{Dependency and quantifier checks}
+
+\textbf{Common null covers.} The only set-theoretic input is $\Blam z$. Smallness means ambient $|\mathcal F|<\lambda$, not smallness in an inner model. The family may be definable without its members being definable. Its one cutpoint set has size at most $|\mathcal F|\cdot\aleph_0$; no singular-cardinal union estimate with unbounded summand sizes is used. The countable null partition need not be definable.
+
+\textbf{Phase balance.} Ultraexactingness is used to put the orbit enumeration into $X$, via $e\in X$. Fixedness of a charge then yields a phase identity by one application of $j$. The passage from fixed charges to \emph{all} definable charges uses a finite, uniformly reflected collection of formulas. The selected height is not chosen after seeing $q$. Arbitrary ordinal parameters are eliminated rather than silently declared fixed.
+
+\textbf{Finite families.} The barycenter of a finite \emph{unordered} family is canonical. An argument assigning weights $2^{-n}$ to a merely countable definable family would require a definable enumeration that is not supplied by ambient countability. No countable-family ultrafilter obstruction is claimed here.
+
+\textbf{Domains.} A charge is defined on all subsets of its sample space. This is essential to the phase argument, which tests arbitrary subsets of $\mathbb Z$ through inverse images. The null-cover theorem needs far less: its partition uses finite Boolean combinations of coordinate events, so it already applies to their generated $\sigma$-algebra. There is no unmentioned measurability requirement on the index space of a kernel.
+
+\textbf{Choice and consistency.} Choice is used for invariant means, cardinal arithmetic, and ambient cofinal sequences. The negative result is compatible with unrestricted choice of representatives and principal ultrafilters. Relative consistency uses precisely the published input recorded in Section~\ref{sec:setup}; it does not infer $\Izero$ outright from ultraexactingness in the same universe.
+
+\textbf{Verification status.} All new proofs are given in ordinary English and formulas. No Lean formalization was attempted or claimed. The provided Lean files were reference material, not a machine verification of the results here. The decisive arguments should be checked particularly at Lemma~\ref{lem:canonical} and the simultaneous use of its two predicates in Theorem~\ref{thm:balance}. The elementary charge calculations and the consistency reduction have been written so they can be checked independently of that bookkeeping.
+
+\subsection{Precisely delimited next questions}
+
+\begin{question}[Countable unordered ultrafilter families]
+Can an ultraexacting $\lambda$ admit a nonempty \emph{countably infinite} $\ODlam$ family of ultrafilter-valued kernels on $\Qlam$? Likewise, can $q\in\mathcal G$ admit a countably infinite family of ultrafilters in $\ODq$?
+\end{question}
+
+The finite barycenter argument does not decide this. A countable family equipped with a definable enumeration is already excluded, since its first member would be definable. The unresolved issue is precisely the absence of such an enumeration. Phase pushforwards can have infinite translation orbits, so finite-cycle arithmetic alone is not enough.
+
+\begin{question}[Ordinary exactingness]
+Does an exacting cardinal suffice to rule out a low-parameter-definable ultrafilter-valued kernel on $\Qlam$?
+\end{question}
+
+The common-null-cover theorem is already available globally at an exacting cardinal. The phase proof is not: an ordinary exacting witness need not contain a cofinal representative whose elementary image is its tail. An alternative source of a fixed quotient parameter would be needed.
+
+\begin{question}[Intrinsic test classes]
+Can the phase-balanced test classes be characterized without reference to an embedding, more sharply than by the conjunction of $\Blam q$ and universal definable phase balance? Does $\Blam q$ alone force universal phase balance?
+\end{question}
+
+The present proof separates the two properties. Boundedness controls coordinate cutpoints, whereas phase balance uses a tail-shifted representative and elementarity. We have not derived the latter from the former. The family $\mathcal G$ is an ambient set of test classes, not a definable enumeration of them.
+
+\Needspace{14\baselineskip}
+\begin{assessment}{Conclusion}
+The probability boundary is not simply ``definable randomization fails.'' A representative-independent finitely additive kernel exists and has a low-rank construction. What fails at ultraexacting cardinals is a much more specific strengthening: definable selection of two-valued laws, even from finitely many unordered candidates. On $\lambda$ simultaneous test classes, every definable law must distribute phase uniformly modulo every integer and must have no nonzero countably additive minorant. This gives a concrete conditional inconsistency, a positive counterpart, and an explicit $\Izero$-calibrated simultaneous model.
+\end{assessment}
+
+\begin{thebibliography}{9}
+\bibitem{archive}
+\emph{Large cardinals at the inconsistency frontier: a synthesis}.
+Second edition, 18 September 2026. User-supplied research report,
+\nolinkurl{docs/Large_Cardinals_Synthesis.tex} in \nolinkurl{Cardinals3.zip}.
+Read together with \nolinkurl{docs/Large_Cardinals_Unified_Report.tex}.
+The synthesis's Sections 8, 9, and 12 contain the small-family, fixed-parameter, orbit, phase, and kernel results continued here.
+
+\bibitem{abl}
+J.~P.~Aguilera, J.~Bagaria, and P.~L\"ucke.
+\emph{Large cardinals, structural reflection, and the HOD Conjecture}.
+Preprint, arXiv:2411.11568v4, 2025.
+\url{https://arxiv.org/abs/2411.11568v4}.
+Theorem 2.10 is the relative-HOD regularity input.
+
+\bibitem{abgl}
+J.~P.~Aguilera, J.~Bagaria, G.~Goldberg, and P.~L\"ucke.
+\emph{Large cardinals beyond HOD}.
+Preprint, arXiv:2509.10254v1, 2025.
+\url{https://arxiv.org/abs/2509.10254}.
+Definitions 2.1--2.3 and Proposition 2.4 give the witness formulations;
+Proposition 3.9 and Corollary 3.10 give the coding refinement;
+Theorem 4.5 gives the $\Izero$ equiconsistency.
+
+\bibitem{kunen}
+K.~Kunen.
+Elementary embeddings and infinitary combinatorics.
+\emph{Journal of Symbolic Logic} \textbf{36}(3) (1971), 407--413.
+\url{https://doi.org/10.2307/2269948}.
+
+\bibitem{hkp}
+J.~D.~Hamkins, G.~Kirmayer, and N.~L.~Perlmutter.
+Generalizations of the Kunen inconsistency.
+\emph{Annals of Pure and Applied Logic} \textbf{163}(12) (2012), 1872--1890.
+Preprint: \url{https://arxiv.org/abs/1106.1951}.
+
+\end{thebibliography}
+\end{document}

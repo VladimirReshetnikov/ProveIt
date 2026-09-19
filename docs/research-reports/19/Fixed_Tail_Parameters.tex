@@ -1,0 +1,878 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.88in,top=0.84in,bottom=0.83in,headheight=14pt,headsep=20pt,footskip=28pt]{geometry}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxmath}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{Forest}{HTML}{30392C}
+\definecolor{Olive}{HTML}{687144}
+\definecolor{Muted}{HTML}{65685F}
+\definecolor{Sage}{HTML}{CBD0BC}
+\definecolor{Pale}{HTML}{F2F4EB}
+\usepackage{mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\PassOptionsToPackage{obeyspaces}{url}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{pdftitle={Fixed tail parameters and stationary collapse},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Normal measures in finite-parameter HOD models and a successor chain-condition obstruction},pdfkeywords={ultraexacting, HOD, tail equivalence, normal measures, stationary ideals, forcing grounds, I0}}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.1pt plus 1pt minus .4pt}
+\linespread{1.035}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\Large\bfseries\color{Forest}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{Forest}}{\thesubsection}{.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{Forest}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 2pt minus 1pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{9pt}{3pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=3pt,topsep=4pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}LARGE CARDINALS AT THE INCONSISTENCY FRONTIER}
+\fancyhead[R]{\sffamily\fontsize{9}{11}\selectfont\color{Muted}FIXED TAIL PARAMETERS}
+\fancyfoot[L]{\small\color{Muted}Fixed tail parameters and stationary collapse}
+\fancyfoot[R]{\small\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\small\color{Muted}Fixed tail parameters and stationary collapse}\fancyfoot[R]{\small\color{Muted}\thepage}\renewcommand{\headrulewidth}{0pt}}
+\tcbset{colback=Pale,colframe=Sage,colbacktitle=Sage,coltitle=Forest,fonttitle=\bfseries,boxrule=.5pt,arc=3pt,left=9pt,right=9pt,top=6pt,bottom=6pt,toptitle=3pt,bottomtitle=3pt,before skip=8pt,after skip=8pt,breakable}
+\newtcolorbox{assessment}[1]{title={#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{question}[definition]{Question}
+\newtheorem{inputthm}{Input}
+\renewcommand{\theinputthm}{\Alph{inputthm}}
+\numberwithin{equation}{section}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\AC}{\mathsf{AC}}
+\newcommand{\GA}{\mathsf{GA}}
+\newcommand{\HOD}{\mathrm{HOD}}
+\newcommand{\OD}{\mathrm{OD}}
+\newcommand{\CD}{\mathrm{CD}}
+\newcommand{\HCD}{\mathrm{HCD}}
+\newcommand{\UF}{\mathrm{UF}}
+\newcommand{\Ex}{\operatorname{Ex}}
+\newcommand{\UEx}{\operatorname{UEx}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\SC}{\operatorname{SC}}
+\newcommand{\CEx}{\operatorname{CEx}}
+\newcommand{\REx}{\operatorname{REx}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\crit}{\operatorname{crit}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\ot}{\operatorname{ot}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\Ord}{\mathrm{Ord}}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\Izero}{\mathrm{I0}}
+\newcommand{\Itwo}{\mathrm{I2}}
+\newcommand{\Ithree}{\mathrm{I3}}
+\newcommand{\Iwf}{\mathrm{I3}_{\mathrm{wf}}(0)}
+\newcommand{\Sel}{\operatorname{Sel}}
+\newcommand{\FF}{\mathcal F}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\Clam}{\mathcal C_\lambda}
+\newcommand{\Rig}{\operatorname{Rig}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\ch}{\operatorname{ind}}
+\newcommand{\CF}{\mathsf{CF}}
+\newcommand{\src}[1]{\unskip\ {\normalfont\small\sffamily\color{Olive}[#1]}\ }
+\newcommand{\R}[1]{\textsf{R#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}{>{\centering\arraybackslash}p{.034\textwidth}}
+\newcommand{\yes}{$\bullet$}
+\newcommand{\prt}{$\circ$}
+\newcommand{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:\nolinkurl{#1}}}
+
+
+\newcommand{\NS}{\mathrm{NS}}
+\newcommand{\Inacc}{\operatorname{Inacc}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\tc}{\operatorname{tc}}
+\newcommand{\cfam}{[\lambda]^{<\omega}}
+\newcommand{\Nf}{N_F}
+\newcommand{\quot}{\mathbb B}
+\newcommand{\st}{\,\mid\,}
+\newcommand{\Tail}{\mathsf{Tail}}
+\newcommand{\Pkg}{\mathsf{SP}}
+\begin{document}
+\thispagestyle{empty}
+{\sffamily\bfseries\small\color{Olive}SET THEORY\quad /\quad RESEARCH CONTINUATION}
+
+\vspace{13pt}
+{\fontsize{28}{31}\selectfont\bfseries\color{Forest}Fixed tail parameters\par and stationary collapse\par}
+\vspace{10pt}
+{\fontsize{14}{18}\selectfont Normal measures, simultaneous inner models,\par and a successor chain-condition obstruction\par}
+\vspace{14pt}
+{\color{Muted}Prepared for Vladimir Reshetnikov\hfill 18 September 2026\par}
+\vspace{3pt}
+{\color{Sage}\hrule height .6pt}
+\vspace{12pt}
+
+\textbf{Abstract.}
+We continue the cofinal-orbit analysis in the supplied \emph{Large Cardinals Synthesis}. Let $\lambda$ be ultraexacting and let $\theta=(\lambda^+)^V$. We construct a fixed bijection $b:\lambda\to V_\lambda$ and $\lambda$ pairwise distinct tail-equivalence classes $q_i$ with disjoint cofinal representatives. For every finite set $F$ of indices, the inner model
+\[
+N_F=\HOD_{b,\langle q_i:i\in F\rangle}
+\]
+makes $\lambda$ inaccessible and $\theta$ measurable. More precisely, the ambient nonstationary ideal restricted to its subsets of $S_\omega^{\theta,V}$ belongs to $N_F$ and has an atomic quotient with fewer than one fixed critical point many atoms. A single ambient club works for all finite $F$: its points of ambient cofinality $\omega$ are inaccessible in every $N_F$. Consequently every $N_F$ computes the successor of $\lambda$ strictly below $\theta$, and its old countable-cofinality stationary set at $\theta$ is destroyed in $V$. If $N_F$ is a set-forcing ground, no witnessing forcing is $\theta$-cc in $N_F$.
+
+\begin{assessment}{The consistency and inconsistency conclusions}
+\textbf{Conditional inconsistency.} Ultraexactingness is incompatible with successor correctness, or with a $\theta$-cc reconstruction of $V$, for any of the inner models selected by the theorem. No strongly compact cardinal is assumed.
+
+\textbf{Equiconsistent enrichment.} Using the published $\Izero$/ultraexacting equiconsistency and the published coding theorem, the entire simultaneous configuration is equiconsistent with $\ZFC+\Izero$, even with $V_\lambda\subseteq\HOD$, no exacting cardinal below $\lambda$, and no extra parameter $b$ in the definition of the models.
+\end{assessment}
+
+\textbf{Scope and status.} The unparameterized strong-measurability theorem and the $\Izero$ calibration are established results, not discoveries of this report. The continuation is their finite-tail-parameter strengthening and the resulting simultaneous collapse and forcing obstruction. The English proofs below have been checked by direct mathematical derivation, not by Lean or independent peer review. No priority claim and no unconditional inconsistency of ultraexacting cardinals or $\Izero$ is made.
+
+\newpage
+\tableofcontents
+
+\newpage
+\section{The result and its relation to the supplied research}\label{sec:main}
+
+All universes in this paper satisfy $\ZFC$. Unless a superscript indicates otherwise, cardinality, stationarity, and cofinality are computed in the ambient universe $V$. For an inner model $N$ with all ordinals, the expression ``$\theta$ is measurable in $N$'' means that $N$ contains a measure on \emph{its own} power set of $\theta$. It does not mean that the ambient successor cardinal $\theta$ is measurable in $V$.
+
+The supplied synthesis establishes that an ultraexacting cardinal has at least $\lambda$ rigid classes of cofinal $\omega$-sets modulo finite difference. Its quotient-parameter arguments prevent small definable families of short cofinal sets and show regularity of $\lambda$ in associated inner models. The present paper moves to the \emph{next ambient cardinal} and studies its stationary ideal. The relevant literature already proves $\omega$-strong measurability of that successor in ordinary $\HOD$; see Aguilera--Bagaria--L\"ucke \cite[Theorem~3.14 and Corollary~3.15]{abl}. We retain several fixed tail classes at once, retain all of $V_\lambda$, and extract explicit consequences for the corresponding inner models.
+
+\begin{definition}[Tail classes and literal parameters]\label{def:tails}
+For a cardinal $\lambda$ of cofinality $\omega$, put
+\[
+D_\lambda=\{a\subseteq\lambda:\ot(a)=\omega,\ \sup a=\lambda\},
+\qquad
+Q_\lambda=D_\lambda/{=^*},
+\]
+where $a=^*a'$ means that $a\mathbin\triangle a'$ is finite. Write $[a]$ for the equivalence class of $a$.
+
+For a finite tuple $p$ of sets, $\OD_p$ permits the entries of $p$ as \emph{whole set parameters}, together with arbitrary ordinal parameters. Define
+\[
+\HOD_p=\{x:\tc(\{x\})\subseteq\OD_p\}.
+\]
+Allowing a class $q\in Q_\lambda$ as one parameter does not allow an arbitrarily chosen member of $q$ as a parameter. The distinction is essential.
+\end{definition}
+
+\begin{theorem}[Simultaneous stationary-collapse theorem]\label{thm:main}
+Suppose $\lambda$ is ultraexacting, and set $\theta=(\lambda^+)^V$ and $S=S_\omega^{\theta,V}$. There are an inaccessible cardinal $\kappa<\lambda$, a bijection $b:\lambda\to V_\lambda$, and a sequence $\langle q_i:i<\lambda\rangle$ of distinct members of $Q_\lambda$, with pairwise disjoint representatives, with the following properties.
+
+For every finite $F\subseteq\lambda$, let $\vec q_F$ list the $q_i$ for $i\in F$ in increasing index order, and let $N_F=\HOD_{b,\vec q_F}$.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item $N_F$ is an inner model of $\ZFC$, $V_\lambda^{N_F}=V_\lambda$, and $\lambda$ is strongly inaccessible in $N_F$.
+\item The set
+\[
+I_F=\{A\in\Pow(S)^{N_F}:A\text{ is nonstationary in }V\}
+\]
+belongs to $N_F$. There, $I_F$ is $\theta$-complete and
+\[
+\Pow(S)^{N_F}/I_F\ \cong\ \Pow(\tau_F)^{N_F}
+\quad\text{for an ordinal }0<\tau_F<\kappa.
+\]
+Each atom produces a nonprincipal normal measure on $\theta$ in $N_F$.
+\item There is one club $C\subseteq(\lambda,\theta)$ in $V$ such that, simultaneously for all finite $F$,
+\begin{equation}\label{eq:commonclub}
+C\cap S_\omega^{\theta,V}\subseteq\Inacc^{N_F}.
+\end{equation}
+In particular, the points on the left are inaccessible in every $N_F$, have cardinality $\lambda$ in $V$, and have cofinality $\omega$ in $V$.
+\item Every $N_F$ satisfies
+\begin{equation}\label{eq:successorgap}
+(\lambda^+)^{N_F}<\theta,
+\qquad
+\bigl|(\lambda^+)^{N_F}\bigr|^V=\lambda.
+\end{equation}
+The set $S_\omega^{\theta,N_F}$ is stationary in $N_F$ but is disjoint from $C$, hence is nonstationary in $V$.
+\item If $V=N_F[G]$ for a forcing $\PP\in N_F$, then $N_F$ contains an antichain in $\PP$ of cardinality $\theta$. In particular $\PP$ is not $\theta$-cc in $N_F$ and $|\PP|^V\geq\theta$.
+\end{enumerate}
+\end{theorem}
+
+The same $\kappa$, the same tail classes, and the same club work for all finite $F$. The theorem does \emph{not} assert that the models $N_F$ are pairwise distinct, that any $N_F$ is a ground, or that the entire sequence of parameters belongs to one of them. It also does not assert that a quotient which is $\kappa$-cc \emph{inside} $N_F$ has no new external antichains in $V$.
+
+\begin{corollary}[Explicit incompatible enrichments]\label{cor:incompatible}
+In the configuration of Theorem~\ref{thm:main}, for every finite $F$, each of the following extra assertions is false:
+\[
+(\lambda^+)^{N_F}=(\lambda^+)^V;
+\qquad
+S_\omega^{\theta,N_F}\text{ is stationary in }V;
+\]
+\[
+V=N_F[G]\text{ by a forcing which }N_F\text{ regards as }\theta\text{-cc}.
+\]
+In particular, no reconstruction by a forcing having a dense subset of $N_F$-cardinality less than $\theta$ is possible.
+\end{corollary}
+
+These are conditional inconsistency statements about fully specified additional assumptions. The quantifier is important: they concern the inner models supplied by the construction, not every possible parameter extension of $\HOD$.
+
+\subsection{What is added, and what is imported}
+
+The orbit construction and the regularity obstruction below reproduce and extend the mechanism in the supplied synthesis \cite[Sections~8 and~12]{synthesis}. The ordinal-map construction and the stationary-partition contradiction follow the method of \cite[Lemmas~3.7--3.9 and Theorem~3.14]{abl}; their proofs are given with the literal parameter retained. The stationary-ideal argument is a standard type of argument in the theory of $\omega$-strong measurability, for which \cite{benhayut} provides background. We include the algebraic and measure-theoretic proofs rather than treating the extraction of a measure as an unexplained black box.
+
+The extension proved here is the simultaneous finite-parameter conclusion, its common-club formulation, and its successor-correctness and ground consequences. Its strength is \emph{not} a new level above $\Izero$. Section~\ref{sec:consistency} gives an enriched theory at the already established $\Izero$ consistency level, explicitly using \cite[Proposition~3.9, Corollary~3.10, and Theorem~4.5]{abgl}.
+
+\section{Parameters, correctness, and the witness}\label{sec:setup}
+
+\begin{definition}[Ultraexacting witness]\label{def:witness}
+A cardinal $\lambda$ is ultraexacting if for every cardinal $\zeta>\lambda$ there are $X\prec V_\zeta$ and an elementary map $j:X\to V_\zeta$ such that
+\[
+V_\lambda\cup\{\lambda\}\subseteq X,
+\qquad j(\lambda)=\lambda,
+\qquad\crit(j)<\lambda,
+\qquad e:=j\restr V_\lambda\in X.
+\]
+The domain $X$ is not assumed transitive. The map $j$ is a set, and elementarity refers to the satisfaction relations of the indicated set structures.
+\end{definition}
+
+We use the definition and normalization in the supplied reports. The distinction between $V_\lambda\subseteq X$ and $V_{\lambda+1}\subseteq X$ must not be suppressed: the second inclusion is unavailable. Most of the stationary-partition proof is devoted to working around precisely this absence.
+
+\begin{lemma}[Relative hereditary definability]\label{lem:hod}
+For every finite tuple of set parameters $p$, $\HOD_p$ is a transitive inner model of $\ZFC$. The classes $\OD_p$ and $\HOD_p$ and a canonical set-like wellordering of $\OD_p$ are uniformly first-order definable from $p$.
+\end{lemma}
+
+\begin{proof}
+One can code a definition by a rank $\eta$, a formula, and a finite tuple of ordinals: the definition says that the designated object is the unique object satisfying the formula in $V_\eta$, with $p$ and the ordinal tuple supplied as parameters. Satisfaction for the set $V_\eta$ is definable. Ordering such codes first by a bound on all the ordinals appearing in them and then by a fixed finite-code ordering gives a definable set-like wellordering; assign each object its least code. Reflection identifies this rank-based presentation with ordinal definability in $V$ using $p$.
+
+Hereditary closure makes $\HOD_p$ transitive and places all ordinals in it. Pairing, Union, and Infinity are inherited because their definitions preserve hereditary definability. For Power Set, the set $\Pow(x)\cap\HOD_p$ is definable from $p$ and a definition of $x$, and all its elements are hereditary $\OD_p$. Separation and Replacement follow by relativizing the relevant formulas to the uniformly definable class $\HOD_p$; Replacement in $V$ first collects the image, and its defining formula then shows hereditary definability. Foundation and Extensionality are inherited from $V$. Finally, the canonical ordering restricts to a wellordering of each set in $\HOD_p$, and that restriction is itself hereditary $\OD_p$. This proves Choice.
+
+Notice what this argument does not say: an entry of $p$ need not itself be in $\HOD_p$. The parameter is definable from itself, but its arbitrary elements need not be.
+\end{proof}
+
+\subsection{How the height is chosen}\label{subsec:height}
+
+Fix once and for all the first-order definitions of $\OD_p$, its canonical order, the least short-cofinal-map counterexample, the least small-family counterexample, and the least stationary partition. There are only finitely many defining formulas and their required existential closures. Choose a finite $m$ large enough to cover their logical complexity. Choose a cardinal $\zeta>\theta+\omega$ with $V_\zeta\prec_{\Sigma_m}V$, and then choose an ultraexacting witness at $\zeta$.
+
+Such cardinal heights are available by the usual finite-complexity reflection theorem. Correctness is uniform in all parameters lying in $V_\zeta$; it is not a separate choice of height for each parameter. This order of choices is what permits us to construct $b$ and the $q_i$ from the witness \emph{after} $\zeta$ has been selected. Their ranks will be less than $\lambda+\omega$.
+
+Here is the exact use of reflection. If there is an $\OD_p$ object having a specified property, take the least such object in the canonical order. Its definition has only $p$ and the explicitly specified ordinal parameters free. Correctness ensures that this object exists already in $V_\zeta$ and that its definition there agrees with its definition in $V$. If those free parameters belong to $X$, elementary substructure closure puts the object in $X$. If they are all fixed by $j$, the object is fixed. If an ordinal parameter $\kappa$ moves to $j(\kappa)$, the image is instead the least object for the \emph{moved} parameter. Both versions are computed correctly.
+
+We never assume that all ordinal parameters used in a previously chosen definition are fixed. Taking a \emph{canonical least counterexample} removes those extraneous ordinal parameters from the free-parameter list. Nor do we assume full elementarity $V_\zeta\prec V$, or a truth predicate for the universe.
+
+\begin{lemma}[Critical-sequence normalization]\label{lem:critical}
+For the witness chosen above, put $\kappa=\crit(j)$ and $\kappa_n=e^n(\kappa)$. Then
+\[
+\lambda=\sup_{n<\omega}\kappa_n,
+\qquad
+\cf^V(\lambda)=\omega,
+\qquad
+|V_\lambda|=\lambda.
+\]
+The $\kappa_n$ are inaccessible, $\lambda$ is a strong limit, $e$ fixes $V_\kappa$ pointwise, and
+\begin{equation}\label{eq:motion}
+\kappa\leq\alpha<\lambda\quad\Longrightarrow\quad e(\alpha)>\alpha.
+\end{equation}
+Consequently the fixed ordinals below $\lambda$ are exactly the ordinals below $\kappa$.
+\end{lemma}
+
+\begin{proof}
+The restriction $e:V_\lambda\to V_\lambda$ is elementary. The standard critical-point argument gives that $\kappa$ is inaccessible and $e$ fixes $V_\kappa$ pointwise: a least failure of cardinality, regularity, or strong-limitness would be witnessed by a function or a power-set enumeration below the critical point and would be preserved by $e$, contradicting that $\kappa$ is moved. Equivalently one can derive the normal measure on $\kappa$ from $e\restr V_{\kappa+1}$ and use the elementary measurable-cardinal argument. All the relevant objects have rank below $\lambda$. Elementarity then gives inaccessibility of every $\kappa_n$.
+
+Let $\mu=\sup_n\kappa_n$. If $\mu<\lambda$, its critical sequence belongs to $V_\lambda$, and $e(\mu)=\mu$. Since $\lambda$ is a cardinal above the infinite cardinal $\mu$, we have $\mu+2<\lambda$. Restricting $e$ would give a nontrivial elementary self-map of $V_{\mu+2}$, contrary to the local Kunen theorem \cite{kunen}. Hence $\mu=\lambda$.
+
+For $\kappa_n\leq\alpha<\kappa_{n+1}$, monotonicity gives $e(\alpha)\geq\kappa_{n+1}>\alpha$, proving \eqref{eq:motion}. The cofinal sequence of inaccessible cardinals makes $\lambda$ a strong limit of cofinality $\omega$. Moreover $|V_{\kappa_n}|=\kappa_n$, so the countable union of these rank segments has cardinality $\lambda$. That union is $V_\lambda$.
+\end{proof}
+
+This is the standard local-Kunen normalization used in the supplied report; no new inconsistency argument is hidden in this lemma. The new work begins by preserving more parameters while passing to stationarity at $\theta$.
+
+\section{A fixed coding bijection and many fixed tail classes}\label{sec:fixed}
+
+\begin{lemma}[An invariant bijection]\label{lem:b}
+There is $b\in X$ such that $b:\lambda\to V_\lambda$ is a bijection and $j(b)=b$. In particular $V_\lambda\subseteq\HOD_b$.
+\end{lemma}
+
+\begin{proof}
+Choose any bijection $h_0:\kappa\to V_\kappa$. Its graph has rank below $\lambda$, so $h_0\in X$. Define $h_n=e^n(h_0)$. Elementarity makes $h_n$ a bijection from $\kappa_n$ onto $V_{\kappa_n}$. For $\alpha<\kappa$, both $\alpha$ and $h_0(\alpha)$ are fixed by $e$, and hence
+\[
+h_1(\alpha)=e(h_0)(\alpha)=e(h_0(\alpha))=h_0(\alpha).
+\]
+Thus $h_0\subseteq h_1$. Applying $e$ repeatedly gives $h_n\subseteq h_{n+1}$ for every $n$. The union
+\[
+b=\bigcup_{n<\omega}h_n
+\]
+is a bijection from $\lambda$ onto $V_\lambda$ by Lemma~\ref{lem:critical}.
+
+The recursion is definable from $e$ and $h_0$. Since both are in $X$, its entire $\omega$-sequence, and its union $b$, belong to $X$. Each $h_n$ lies in $V_\lambda$, so $j(h_n)=e(h_n)=h_{n+1}$. Applying $j$ to the sequence and its union gives
+\[
+j(b)=\bigcup_{n<\omega}h_{n+1}=b.
+\]
+Finally every $x\in V_\lambda$ is $b(\alpha)$ for an ordinal $\alpha<\lambda$, so it is $\OD_b$. Every member of its transitive closure is again in $V_\lambda$ and is likewise $\OD_b$. Hence $x\in\HOD_b$.
+\end{proof}
+
+The invariant-wellordering idea also appears in the coding argument of \cite[Proposition~3.9]{abgl}. The explicit bijection is useful here because it ensures that the inner models agree with the ambient universe on every bounded rank below $\lambda$.
+
+\begin{lemma}[Roots, disjoint orbits, and tail parameters]\label{lem:roots}
+Let
+\[
+R_e=[\kappa,\lambda)\setminus e``[\kappa,\lambda).
+\]
+Then $|R_e|=\lambda$. For $r\in R_e$, the sets
+\[
+a_r=\{e^n(r):n<\omega\},\qquad q_r=[a_r]
+\]
+belong to $X$, the $a_r$ are pairwise disjoint members of $D_\lambda$, and
+\[
+j(a_r)=a_r\setminus\{r\},\qquad j(q_r)=q_r.
+\]
+Every finite tuple of the $q_r$ belongs to $X$ and is fixed by $j$.
+\end{lemma}
+
+\begin{proof}
+If $e(\alpha)<\kappa_{n+1}=e(\kappa_n)$, strict monotonicity gives $\alpha<\kappa_n$. Thus the range of $e$ contains at most $\kappa_n$ elements in $[\kappa_n,\kappa_{n+1})$. That interval has cardinality $\kappa_{n+1}$, so it contains $\kappa_{n+1}$ roots. Taking all $n$ proves $|R_e|=\lambda$.
+
+For any $r\geq\kappa$, the orbit is strictly increasing and $e^n(r)\geq\kappa_n$. It therefore has order type $\omega$ and is cofinal in $\lambda$. If $e^n(r)=e^m(s)$ for roots $r,s$ and $n\leq m$, injectivity gives $r=e^{m-n}(s)$. If $m>n$, this contradicts that $r$ is a root; if $m=n$, it gives $r=s$. The different root orbits are disjoint.
+
+The orbit recursion is definable from $e$ and $r$, which are in $X$; hence the orbit sequence and its range $a_r$ are in $X$. Applying $j$ to an $\omega$-sequence applies it pointwise, since every natural number is fixed. Its terms are ordinals below $\lambda$, so
+\[
+j(a_r)=\{e^{n+1}(r):n<\omega\}=a_r\setminus\{r\}.
+\]
+The class $q_r$ is uniquely definable from $a_r$ and $\lambda$ by finite symmetric difference inside $D_\lambda$. This is a bounded-rank construction in $V_\zeta$, so $q_r\in X$. Its image is $[j(a_r)]=[a_r]=q_r$. Closure under finite tuple formation finishes the proof.
+\end{proof}
+
+Use Choice in $V$ to enumerate $R_e$ by $\lambda$, and hence enumerate the $q_r$ as $\langle q_i:i<\lambda\rangle$. No definability or invariance is asserted for this enumeration. If $F$ is finite, each entry of $\vec q_F$ is individually in $X$ and fixed, which suffices for the tuple to be in $X$ and fixed. Set
+\begin{equation}\label{eq:pF}
+p_F=(b,\vec q_F),\qquad N_F=\HOD_{p_F}.
+\end{equation}
+All these literal tuple parameters have rank less than $\lambda+\omega$. They therefore lie in the uniform correctness range fixed in Section~\ref{subsec:height}.
+
+\section{The fixed-parameter cofinality barrier}\label{sec:regular}
+
+The next two lemmas make explicit a useful finite-parameter strengthening of the quotient rigidity in the supplied research.
+
+\begin{lemma}[No fixed short cofinal set]\label{lem:nofixed}
+There is no $u\in X$ such that $u\subseteq\lambda$ is cofinal, $|u|<\lambda$, and $j(u)=u$.
+\end{lemma}
+
+\begin{proof}
+Let $\tau=\ot(u)$. Since $|u|<\lambda$ and $\lambda$ is an initial ordinal, $\tau<\lambda$. The ordinal $\tau$ and the increasing enumeration $d:\tau\to u$ are uniquely definable from $u$, so they belong to $X$ and are fixed by $j$. Lemma~\ref{lem:critical} gives $\tau<\kappa$.
+
+For $\xi<\tau$, the value $d(\xi)$ is in $X$ and
+\[
+j(d(\xi))=j(d)(j(\xi))=d(\xi).
+\]
+Every value is therefore below $\kappa$, again by Lemma~\ref{lem:critical}. This contradicts cofinality of $u$ in $\lambda$.
+\end{proof}
+
+\begin{lemma}[Joint rigidity and regularity]\label{lem:regular}
+Let $p\in X$ be one of the fixed parameters in the correctness range, and suppose $j(p)=p$. There is no nonempty $\OD_p$ family of cardinality less than $\lambda$ consisting of cofinal subsets of $\lambda$ of cardinality less than $\lambda$. Also, $\lambda$ is regular in $\HOD_p$. If $V_\lambda\subseteq\HOD_p$, then $\lambda$ is strongly inaccessible there.
+\end{lemma}
+
+\begin{proof}
+First consider an invariant family $\mathcal A\in X$ of the stated kind, with $j(\mathcal A)=\mathcal A$. Let $\tau$ be the least order type of any member, let $\mathcal A_0$ be the subfamily of members of order type $\tau$, and put $u=\bigcup\mathcal A_0$. These objects are definable from $\mathcal A$ and are in $X$ and fixed. The set $u$ is cofinal and
+\[
+|u|\leq|\mathcal A_0|\cdot|\tau|<\lambda.
+\]
+The last inequality is valid even though $\lambda$ is singular: it involves the product of two fixed cardinals below the infinite cardinal $\lambda$, not a union with unboundedly varying sizes. This contradicts Lemma~\ref{lem:nofixed}.
+
+If any $\OD_p$ counterexample family exists, select the canonical least one using $p$ and $\lambda$. Section~\ref{subsec:height} puts it in $X$ and makes it fixed, reducing to the previous paragraph. This proves the family assertion.
+
+If $\HOD_p$ contained a cofinal map $c:\mu\to\lambda$ with $\mu<\lambda$, its range would be an $\OD_p$ cofinal set of size less than $\lambda$. Its singleton family is a forbidden $\OD_p$ family. Thus $\lambda$ is regular in $\HOD_p$. It is a cardinal there because it is a cardinal in $V$.
+
+Suppose now that $V_\lambda\subseteq\HOD_p$. For each ordinal $\alpha<\lambda$, the ambient power set of $\alpha$ belongs to $V_\lambda$, as do bijections witnessing its cardinality below $\lambda$. Therefore the strong-limit property of $\lambda$ holds in $\HOD_p$. It is uncountable there and is regular by what we have just proved, hence is strongly inaccessible.
+\end{proof}
+
+Applied to $p_F$, these lemmas prove Theorem~\ref{thm:main}(1), as well as joint rigidity for every finite tuple of the selected classes. They do not apply to a parameter that includes a chosen cofinal representative $a_i$: that parameter is not fixed by $j$.
+
+\section{Recovering an ordinal map inside the domain}\label{sec:ordinalmap}
+
+Put $\theta=(\lambda^+)^V$. This ordinal is uniquely defined from $\lambda$, belongs to $X$, and is fixed by $j$. The choice of $\zeta$ ensures that cardinal-successor computations here are correct. We now reproduce the internalization mechanism behind \cite[Lemmas~3.7--3.9]{abl}, in the special case of $\theta$ needed for our argument.
+
+\begin{lemma}[Canonical surjection]\label{lem:surj}
+There is a surjection $s:V_{\lambda+1}\to\theta$ definable from $\lambda$ and $\theta$, with $s\in X$ and $j(s)=s$.
+\end{lemma}
+
+\begin{proof}
+For every $\alpha,\beta<\lambda$, their ordered pair belongs to $V_\lambda$. Thus a binary relation on a subset of $\lambda$ is an element of $\Pow(V_\lambda)=V_{\lambda+1}$. Use reflexive wellorders as codes, so the domain is exactly the set of ordinals whose diagonal pair appears in the relation. Send such a code to its order type, and send every non-code to $0$. The empty relation codes $0$, and a singleton diagonal relation codes $1$. This is a uniform set-theoretic definition.
+
+Every $\beta<\theta$ has cardinality at most $\lambda$, so it is isomorphic to a wellorder on some subset of $\lambda$ and has such a code. Conversely every such wellorder has order type below $\theta$. Hence the resulting map is onto $\theta$. It is defined from fixed parameters by a correct bounded-rank construction; therefore it belongs to $X$ and is fixed by $j$.
+\end{proof}
+
+\begin{lemma}[Extension on subsets of the rank]\label{lem:eplus}
+The map $e^+:V_{\lambda+1}\to V_{\lambda+1}$ defined by
+\begin{equation}\label{eq:eplus}
+e^+(x)=\bigcup_{\alpha<\lambda}e(x\cap V_\alpha)
+\end{equation}
+belongs to $X$ and satisfies $e^+(x)=j(x)$ whenever $x\in X\cap V_{\lambda+1}$.
+\end{lemma}
+
+\begin{proof}
+For $\alpha<\lambda$, the bounded slice $x\cap V_\alpha$ belongs to $V_\lambda$, so the expression in \eqref{eq:eplus} is defined. Each image is a subset of $V_{e(\alpha)}$, so their union is a subset of $V_\lambda$. The entire function is uniquely definable from $e$ and $\lambda$, has rank below $\zeta$, and is therefore in $X$.
+
+For $x\in X\cap V_{\lambda+1}$ and $\alpha<\lambda$, elementarity gives
+\[
+j(x)\cap V_{e(\alpha)}
+=j(x\cap V_\alpha)
+=e(x\cap V_\alpha).
+\]
+The first equality uses that $x,\alpha,V_\alpha$ are all in $X$; the second uses that the slice has rank below $\lambda$. Since $e``\lambda$ is cofinal in $\lambda$, taking unions proves the assertion.
+\end{proof}
+
+\begin{lemma}[An internal ordinal map]\label{lem:t}
+There is $t\in X$ with $t:\theta\to\theta$ such that
+\begin{equation}\label{eq:t}
+t(s(x))=s(e^+(x))\quad(x\in V_{\lambda+1}),
+\qquad
+t(\beta)=j(\beta)\quad(\beta\in X\cap\theta).
+\end{equation}
+The map $t$ is strictly increasing and preserves suprema of increasing $\omega$-sequences below $\theta$.
+\end{lemma}
+
+\begin{proof}
+For $x,y\in X\cap V_{\lambda+1}$ with $s(x)=s(y)$, apply $j$ and use $j(s)=s$ and Lemma~\ref{lem:eplus} to obtain
+\[
+s(e^+(x))=s(j(x))=j(s(x))=j(s(y))=s(j(y))=s(e^+(y)).
+\]
+Consequently $X$ satisfies the assertion that $x\mapsto s(e^+(x))$ is constant on the fibers of $s$. All the functions and their domains are parameters in $X$. Elementarity $X\prec V_\zeta$ therefore transfers this universally quantified assertion to \emph{all} $x,y\in V_{\lambda+1}$. Surjectivity of $s$ gives a unique quotient map $t$, and uniqueness puts $t$ in $X$.
+
+If $\beta\in X\cap\theta$, elementarity of the substructure supplies $x\in X\cap V_{\lambda+1}$ with $s(x)=\beta$. The same calculation gives $t(\beta)=j(\beta)$. Strict increase follows first for $\beta,\gamma\in X\cap\theta$ from strict increase of $j$ on ordinals, and then follows for all $\beta<\gamma<\theta$ by elementarity with the parameter $t$.
+
+Let $a=\langle\alpha_n:n<\omega\rangle\in X$ be an increasing sequence below $\theta$, with supremum $\alpha$. Each term and $\alpha$ belong to $X$. Since $j$ fixes $\omega$ and maps its sequences pointwise,
+\[
+t(\alpha)=j(\alpha)=\sup_{n<\omega}j(\alpha_n)
+=\sup_{n<\omega}t(\alpha_n).
+\]
+Thus $X$ satisfies the relevant continuity assertion about $t$. It transfers to $V_\zeta$, hence to all increasing $\omega$-sequences below $\theta$ in $V$, since those sequences and their suprema have rank below $\zeta$.
+\end{proof}
+
+\begin{lemma}[A fixed-point set meeting the relevant stationary sets]\label{lem:fixset}
+The set $E_t=\{\beta<\theta:t(\beta)=\beta\}$ belongs to $X$, is unbounded and $\omega$-closed in $\theta$, and meets every stationary subset of $S_\omega^{\theta,V}$.
+\end{lemma}
+
+\begin{proof}
+Membership in $X$ follows from definability from $t$ and $\theta$. Every increasing self-map of an ordinal satisfies $t(\alpha)\geq\alpha$. Given $\beta<\theta$, choose $\alpha_0>\beta$ and recursively choose $\alpha_{n+1}>t(\alpha_n)$. The supremum $\alpha$ is below $\theta$, since $\theta$ is regular and uncountable. Continuity and the two bounds
+\[
+\alpha_n\leq t(\alpha_n)<\alpha_{n+1}
+\]
+give $t(\alpha)=\alpha$. This proves unboundedness. Continuity also shows closure under increasing $\omega$-suprema below $\theta$.
+
+The set of limit points of $E_t$ is a club. If such a limit point $\delta$ has cofinality $\omega$, an increasing $\omega$-sequence from $E_t\cap\delta$ cofinal in $\delta$ shows $\delta\in E_t$. Hence any stationary subset of $S_\omega^{\theta,V}$ meets $E_t$.
+\end{proof}
+
+We deliberately call $E_t$ an unbounded $\omega$-closed set, not a club: closure at uncountable cofinalities has not been proved or used. We also do not write $j\restr\theta\in X$; the total map is $t$, and its agreement with $j$ is only on $X\cap\theta$.
+
+\section{No fixed-parameter stationary partition}\label{sec:partition}
+
+\begin{theorem}[Parameterized stationary-partition barrier]\label{thm:partition}
+Let $p\in X$ be a fixed parameter in the correctness range, with $j(p)=p$. There is no $\OD_p$ sequence
+\[
+\vec A=\langle A_\xi:\xi<\kappa\rangle
+\]
+partitioning $S_\omega^{\theta,V}$ into $\kappa$ sets which are stationary in $V$.
+\end{theorem}
+
+\begin{proof}
+Suppose such a sequence exists. Let $\vec A$ be the canonical least one among the $\OD_p$ sequences satisfying this property. It is uniquely defined from $p,\theta,\kappa$. By the correctness arrangement, it belongs to $X$ and is the same least partition in $X$, $V_\zeta$, and $V$.
+
+Apply $j$. Because $p$ and $\theta$ are fixed, $j(\vec A)$ is the canonical least $\OD_p$ partition of $S_\omega^{\theta,V}$ into $j(\kappa)$ stationary sets. Write it as
+\[
+\vec B=\langle B_\xi:\xi<j(\kappa)\rangle.
+\]
+The stationarity here is actual stationarity in $V$, not merely an internal assertion of $X$. This follows from the selected correctness formulas; alternatively, stationarity at $\theta$ itself is absolute to the sufficiently high rank once the relevant subset is fixed.
+
+An important extra point is that $\vec B\in X$. Its defining parameters are $p,\theta,j(\kappa)$, all in $X$: in particular $j(\kappa)<\lambda$ and $V_\lambda\subseteq X$. The least-object definition, together with correctness, therefore puts $\vec B$ in $X$. We do not use the generally false assertion that $j``X\subseteq X$.
+
+Since $\kappa<j(\kappa)$ and $\kappa\in X$, we obtain $B_\kappa\in X$. Lemma~\ref{lem:fixset} shows $E_t\cap B_\kappa\neq\varnothing$. Let
+\[
+\beta=\min(E_t\cap B_\kappa).
+\]
+This minimum belongs to $X$, and $t(\beta)=j(\beta)=\beta$.
+
+There is a unique $\xi<\kappa$ with $\beta\in A_\xi$. It lies in $X$ and is fixed by $j$, since it is below the critical point. Applying $j$ to the membership gives
+\[
+\beta=j(\beta)\in j(A_\xi)=B_\xi.
+\]
+But $\beta\in B_\kappa$ as well. The sets in $\vec B$ are pairwise disjoint, and $\xi<\kappa$, a contradiction.
+\end{proof}
+
+The proof does \emph{not} assert $j(\vec A)=\vec A$: the length $\kappa$ moves. Retaining the parameter $p$ is harmless precisely because $p$ is fixed and the \emph{image} least partition can be recovered inside $X$. This is the point at which the fixed tail classes can be added jointly without losing the stationary obstruction.
+
+\section{From a stationary ideal to normal measures}\label{sec:ideal}
+
+Fix such a parameter $p$, assume $V_\lambda\subseteq N:=\HOD_p$, and retain $S=S_\omega^{\theta,V}$. Define
+\begin{equation}\label{eq:ideal}
+I=\{A\in\Pow(S)^N:A\text{ is nonstationary in }V\}.
+\end{equation}
+All references to positivity in this section mean positivity for this \emph{ambient stationarity trace}, not for $N$'s own nonstationary ideal.
+
+\begin{lemma}[The trace is internal and saturated]\label{lem:trace}
+The sets $S$ and $I$ belong to $N$. In $N$, the ideal $I$ is proper and $\theta$-complete, $\theta$ is regular, $(2^\kappa)^N<\theta$, and the quotient algebra $\Pow(S)^N/I$ is $\kappa$-cc.
+\end{lemma}
+
+\begin{proof}
+The set $S$ is definable in $V$ from the ordinal $\theta$. As a set of ordinals it is hereditary ordinal definable, so $S\in N$. Formula \eqref{eq:ideal} defines a set from $p$ and $\theta$. Thus $I$ is $\OD_p$, and each of its elements belongs to $N$, so its entire transitive closure is $\OD_p$. Therefore $I\in N$. This is not a claim that $N$ can independently reconstruct external stationarity without the particular set $I$; it is a hereditary-definability argument showing that this trace set is an element of $N$.
+
+Properness follows because $S$ is stationary in $V$. If an $N$-sequence of fewer than $\theta$ members of $I$ is given, it is also such a sequence in $V$. Choose in $V$ clubs disjoint from its members and intersect them. Regularity of $\theta$ in $V$ makes this intersection club, so the union of the sequence is again in $I$. Hence $N$ sees $\theta$-completeness. A cofinal map in $N$ would be a cofinal map in $V$, so $\theta$ remains a regular cardinal in $N$.
+
+All subsets of $\kappa$ and cardinality witnesses for their power set have rank below $\lambda$ and belong to $N$. In particular $N$ regards $\kappa$ as a cardinal and $(2^\kappa)^N<\lambda<\theta$.
+
+Suppose $N$ had a $\kappa$-antichain in the quotient. Using Choice in $N$, choose representatives $\langle A_\xi:\xi<\kappa\rangle\in N$ of positive classes whose pairwise intersections lie in $I$. Define
+\[
+B_\xi=A_\xi\setminus\bigcup_{\eta<\xi}A_\eta.
+\]
+For each $\xi$, the part removed from $A_\xi$ is a union of fewer than $\theta$ sets in $I$ and is therefore in $I$. Thus the $B_\xi$ are positive and pairwise disjoint. Add $S\setminus\bigcup_{\xi<\kappa}B_\xi$ to $B_0$. The resulting sequence is a partition of $S$ into $\kappa$ sets stationary in $V$. It belongs to $N$, hence is $\OD_p$, contradicting Theorem~\ref{thm:partition}.
+\end{proof}
+
+\subsection{The atomicity argument in full}
+
+\begin{lemma}[Complete ideal with a small chain condition]\label{lem:atomic}
+Work in any model $W\models\ZFC$. Let $\theta$ be regular, let $\kappa<\theta$ be infinite, and assume $2^\kappa<\theta$. If $I$ is a proper $\theta$-complete ideal on a set $S$ and $\Pow(S)/I$ is $\kappa$-cc, then the quotient is atomic and has a nonempty set of fewer than $\kappa$ atoms. It is isomorphic to $\Pow(\tau)$ for some ordinal $0<\tau<\kappa$.
+\end{lemma}
+
+\begin{proof}
+All constructions in this proof take place in $W$. Suppose some positive set $B$ has no atom below its class. Construct a binary tree $\langle B_s:s\in{}^{\leq\kappa}2\rangle$ as follows. Begin with $B_\varnothing=B$. Whenever $B_s$ is positive, split it into two disjoint positive subsets $B_{s^\frown0}$ and $B_{s^\frown1}$. This is possible because its class is not an atom, and no positive subset below $B$ can be an atom. For a null node, use the harmless split into itself and the empty set. At a limit length $\delta\leq\kappa$, set
+\[
+B_s=\bigcap_{\alpha<\delta}B_{s\restr\alpha}.
+\]
+Choice and transfinite recursion on a set carry out the construction.
+
+Every $x\in B$ follows a unique branch through the tree: at each splitting step it belongs to exactly one child. Recursion with the tree and $x$ produces this branch in $W$. Hence
+\[
+B=\bigcup_{s\in{}^\kappa2}B_s.
+\]
+There are $2^\kappa<\theta$ terms. If all terminal sets belonged to $I$, $\theta$-completeness would put $B$ in $I$, a contradiction. Therefore some branch $s$ has $B_s$ positive.
+
+Every predecessor on this branch is positive. For each $\alpha<\kappa$, take its sibling at the next split,
+\[
+D_\alpha=B_{(s\restr\alpha)^\frown(1-s(\alpha))}.
+\]
+These $\kappa$ sets are positive and pairwise disjoint. Indeed a later sibling is contained in the branch-child at every earlier split, while the earlier sibling is disjoint from that child. Their classes form a $\kappa$-antichain, a contradiction. Thus every positive class has an atom below it.
+
+The set of all atoms is an antichain, so its cardinality is some $0<\tau<\kappa$. Choose representatives $A_\xi$, $\xi<\tau$, and disjointify them by subtracting earlier representatives. This changes them only by elements of $I$, using $\theta$-completeness. Their union covers $S$ modulo $I$: a positive remainder would contain a further atom. Map the class of $B$ to
+\[
+\{\xi<\tau:A_\xi\setminus B\in I\}.
+\]
+Atomicity makes this a Boolean homomorphism. It is injective because a positive symmetric difference contains an atom, and it is onto because the union of the representatives indexed by any subset of $\tau$ realizes that subset. Thus it is the required isomorphism.
+\end{proof}
+
+The proof is internal to $W$. When $W=N$, the branches used above are $N$-branches, and their number is $(2^\kappa)^N$. Nothing in this argument purports to count branches added by the ambient universe.
+
+\begin{theorem}[Stationary atoms yield normal measures]\label{thm:measure}
+In the situation of Lemma~\ref{lem:trace}, $N$ contains a nonempty family of fewer than $\kappa$ stationary-ideal atoms covering $S$ modulo $I$. For each representative atom $A$, the set
+\begin{equation}\label{eq:measure}
+U_A=\{B\in\Pow(\theta)^N:A\setminus B\in I\}
+\end{equation}
+belongs to $N$ and is a nonprincipal normal $\theta$-complete ultrafilter on $\theta$ in $N$.
+
+In addition, if $\mathcal B\subseteq U_A$ belongs to $V$ and $|\mathcal B|^V<\theta$, then $\bigcap\mathcal B$ contains a stationary subset of $\theta$ in $V$.
+\end{theorem}
+
+\begin{proof}
+Apply Lemma~\ref{lem:atomic} inside $N$ using Lemma~\ref{lem:trace}. The definition \eqref{eq:measure} uses the sets $A,I,\Pow(\theta)^N$ in $N$, so Separation in $N$ gives $U_A\in N$. Since $A$ is an atom, for every $B\in\Pow(\theta)^N$ exactly one of $A\cap B$ and $A\setminus B$ is null. Hence $U_A$ is an ultrafilter. No singleton, or bounded subset of $\theta$, belongs to it because $A$ is stationary in $V$. Completeness follows from completeness of $I$ by taking unions of complements relative to $A$.
+
+To prove normality in $N$, let $B\in U_A$ and let $f\in N$ be a regressive function on $B\setminus\{0\}$. The set $A\cap B$ is stationary in $V$. By the pressing-down lemma in $V$, some fiber
+\[
+H=\{\alpha\in A\cap B:f(\alpha)=\xi\}
+\]
+is stationary in $V$, for an ordinal $\xi<\theta$. Because $A,B,f,\xi$ are all in $N$, the fiber $H$ belongs to $N$. Atomicity of $A$ then gives $A\setminus H\in I$. In particular the whole fiber of $f$ with value $\xi$ belongs to $U_A$. This is precisely the regressive-function formulation of normality in $N$.
+
+Finally let $\mathcal B$ be as in the last assertion. For every $B\in\mathcal B$, choose in $V$ a club $C_B$ avoiding $A\setminus B$. The intersection of fewer than $\theta$ such clubs is club, so
+\[
+A\cap\bigcap_{B\in\mathcal B}C_B\subseteq\bigcap\mathcal B
+\]
+is stationary in $V$. This argument concerns an external intersection; the intersection itself need not be a member of $N$ or of the domain of its ultrafilter.
+\end{proof}
+
+\begin{assessment}{Internal measure versus ambient measure}
+The measure $U_A$ decides every subset of $\theta$ belonging to $N$, not every subset belonging to $V$. Its external intersection property is stronger than mere internal completeness but still does not turn it into a $V$-measure on $\Pow(\theta)^V$. Thus there is no conflict with $\theta$ being a successor cardinal in $V$.
+\end{assessment}
+
+\section{A stationary set of simultaneous inaccessible ordinals}\label{sec:club}
+
+For completeness we give the measure-theoretic facts needed to turn the atomic quotient into an ambient club. These facts are applied \emph{inside} each $N_F$.
+
+\begin{lemma}[What a normal measure sees]\label{lem:inaccmeasure}
+In $\ZFC$, if a regular uncountable cardinal $\theta$ carries a nonprincipal $\theta$-complete normal ultrafilter $U$, then $\theta$ is strongly inaccessible, every club subset of $\theta$ belongs to $U$, and
+\[
+\{\alpha<\theta:\alpha\text{ is strongly inaccessible}\}\in U.
+\]
+\end{lemma}
+
+\begin{proof}
+First, every set of cardinality less than $\theta$ is null, since it is a union of fewer than $\theta$ singletons. Suppose $\mu<\theta$ and $2^\mu\geq\theta$. Choose an injection $g:\theta\to\Pow(\mu)$. For each $\xi<\mu$, the ultrafilter chooses either the set of $\alpha$ with $\xi\in g(\alpha)$ or its complement. Intersect the fewer than $\theta$ chosen sets. The intersection belongs to $U$, but all its members have exactly the same image under $g$, so it has at most one member. This contradiction proves $2^\mu<\theta$. Regularity was assumed, so $\theta$ is inaccessible.
+
+Let $D\subseteq\theta$ be club. If its complement belonged to $U$, discard a bounded initial segment and define $f(\alpha)=\sup(D\cap\alpha)$ on the remaining complement. Closedness of $D$ gives $f(\alpha)<\alpha$. Normality makes $f$ constant, say equal to $\gamma$, on a set in $U$. That set is bounded by the next member of $D$ above $\gamma$, contrary to uniformity. Thus $D\in U$.
+
+The infinite cardinals below the inaccessible $\theta$ form a club, so $U$ concentrates on cardinals. Suppose the singular cardinals formed a set in $U$. The regressive function $\alpha\mapsto\cf(\alpha)$ would be constant, with value some $\mu<\theta$, on a set in $U$. Choose a cofinal sequence $c_\alpha:\mu\to\alpha$ for each such $\alpha$. For every $\xi<\mu$, normality makes $\alpha\mapsto c_\alpha(\xi)$ constant on a set in $U$. Intersect these $\mu$ sets. On the intersection all the $c_\alpha$ are the same sequence, so all their suprema $\alpha$ are the same ordinal. This contradicts uniformity. Thus $U$ concentrates on regular cardinals.
+
+If non-strong-limit cardinals formed a set in $U$, assign to each the least $\beta<\alpha$ with $2^{|\beta|}\geq\alpha$. Normality makes $\beta$ constant on a set in $U$. That set is bounded by $2^{|\beta|}+1<\theta$, again impossible. Removing the bounded set of countable and finite exceptions leaves precisely uncountable regular strong-limit cardinals, as required.
+\end{proof}
+
+\begin{theorem}[A club for one parameter model]\label{thm:oneclub}
+Let $N=\HOD_p$ be as in Section~\ref{sec:ideal}. Then there is a club $C_N\subseteq\theta$ in $V$ such that
+\[
+C_N\cap S_\omega^{\theta,V}\subseteq\Inacc^N.
+\]
+Moreover $\theta$ is measurable in $N$, $(\lambda^+)^N<\theta$, and the set $S_\omega^{\theta,N}$ is stationary in $N$ and nonstationary in $V$.
+\end{theorem}
+
+\begin{proof}
+Let $\langle A_\xi:\xi<\tau\rangle\in N$ be disjoint representatives of the atoms given by Theorem~\ref{thm:measure}, with $0<\tau<\kappa$. Let
+\[
+D=\{\beta<\theta:N\models\text{``$\beta$ is strongly inaccessible''}\}.
+\]
+This is a set in $N$ by Separation there. Apply Lemma~\ref{lem:inaccmeasure} inside $N$ to each $U_{A_\xi}$. It gives $D\in U_{A_\xi}$, hence $A_\xi\setminus D\in I$. The atoms cover $S$ modulo $I$, and there are fewer than $\theta$ of them, so
+\[
+S\setminus D\in I.
+\]
+By the definition of the trace ideal, some club $C_N$ in $V$ avoids $S\setminus D$. This proves the displayed inclusion.
+
+The existence of any atom gives a normal measure on $\theta$ in $N$. Lemma~\ref{lem:inaccmeasure} makes $\theta$ inaccessible there, so it cannot be the $N$-successor of $\lambda$. Since $\lambda$ is a cardinal in $N$ and $\theta$ is a larger cardinal there, $(\lambda^+)^N<\theta$.
+
+The ordinal $\theta$ is regular and uncountable in $N$, so $S_\omega^{\theta,N}$ is stationary in $N$. One direct proof is to start inside $N$ with an arbitrary club in $\theta$, take a strictly increasing $\omega$-sequence in that club, and take its supremum, which is still below $\theta$ and lies in the club.
+
+If $\beta\in S_\omega^{\theta,N}$, its $N$-cofinal $\omega$-sequence remains cofinal in $V$, so $\beta\in S_\omega^{\theta,V}$. But $\beta$ is not inaccessible in $N$. Therefore
+\[
+S_\omega^{\theta,N}\subseteq S\setminus D,
+\]
+and $C_N$ avoids this old stationary set. It is nonstationary in $V$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}, except the forcing clause]
+Use the witness of Section~\ref{sec:setup}, the bijection of Lemma~\ref{lem:b}, and the enumeration from Lemma~\ref{lem:roots}. Every $p_F$ is in $X$ and fixed. Lemmas~\ref{lem:hod} and~\ref{lem:regular} give (1). Theorem~\ref{thm:partition}, Lemmas~\ref{lem:trace} and~\ref{lem:atomic}, and Theorem~\ref{thm:measure} give (2), all with the \emph{same} $\kappa$.
+
+For each finite $F$, choose the club $C_{N_F}$ from Theorem~\ref{thm:oneclub}. There are $|[\lambda]^{<\omega}|=\lambda<\theta$ finite index sets. Choice in $V$ and regularity of $\theta$ show that
+\begin{equation}\label{eq:clubintersect}
+C=(\lambda,\theta)\cap\bigcap_{F\in[\lambda]^{<\omega}}C_{N_F}
+\end{equation}
+is club in $\theta$. This proves (3) and the common-club part of (4). The set $C\cap S_\omega^{\theta,V}$ is stationary. Each of its members lies strictly between $\lambda$ and its ambient successor, so its ambient cardinality is exactly $\lambda$.
+
+Finally $(\lambda^+)^{N_F}$ lies strictly between $\lambda$ and $\theta$, so it too has ambient cardinality $\lambda$. This proves \eqref{eq:successorgap}. The old stationary-set assertion follows from Theorem~\ref{thm:oneclub}. The forcing clause is proved next.
+\end{proof}
+
+\begin{remark}[The club is genuinely external]\label{rem:externalclub}
+The common club $C$ cannot belong to any $N_F$. Otherwise its closedness and unboundedness in the common ordinal $\theta$ would hold in $N_F$ as well, and it would contradict stationarity of $S_\omega^{\theta,N_F}$ there. Thus the conclusion identifies not just different cofinalities, but an ambient club which is absent from every selected inner model.
+\end{remark}
+
+\section{The successor chain-condition obstruction}\label{sec:forcing}
+
+The result about grounds is a consequence of stationary preservation. It does not rely on a theorem identifying any particular $N_F$ as a ground.
+
+\begin{lemma}[Chain condition preserves old stationary sets]\label{lem:cc}
+Let $W\models\ZFC$, let $\theta$ be regular and uncountable in $W$, and let $\PP\in W$ be $\theta$-cc in $W$. If $G$ is $W$-generic, every stationary $T\subseteq\theta$ belonging to $W$ remains stationary in $W[G]$.
+\end{lemma}
+
+\begin{proof}
+Work in $W$. Let $p\in\PP$ and suppose $p$ forces that $\dot D$ is a club subset of $\theta$. For each $\alpha<\theta$, choose a maximal antichain below $p$ whose conditions decide a particular ordinal $\beta>\alpha$ belonging to $\dot D$. Conditions making such a decision are dense below $p$ by forced unboundedness. The antichain has size less than $\theta$, so the supremum of all the decided values plus one is some $f(\alpha)<\theta$.
+
+Let $E$ be the club of nonzero limit ordinals $\delta<\theta$ closed under this bound function, meaning that $f(\alpha)<\delta$ for every $\alpha<\delta$. We claim $p\Vdash E\subseteq\dot D$. Indeed, in a generic extension containing $p$, and for every $\alpha<\delta\in E$, genericity meets the associated maximal antichain and produces a point of $\dot D$ strictly between $\alpha$ and $\delta$. Hence $\dot D\cap\delta$ is unbounded in $\delta$, and forced closedness gives $\delta\in\dot D$.
+
+Since $T$ is stationary in $W$, choose $\delta\in T\cap E$. Then $p$ forces $\delta\in T\cap\dot D$. No condition can force a club disjoint from $T$, which proves stationary preservation.
+\end{proof}
+
+\begin{theorem}[No successor-cc reconstruction]\label{thm:ground}
+For the parameters of Theorem~\ref{thm:main}, fix finite $F$. There is no representation $V=N_F[G]$ by a forcing that is $\theta$-cc in $N_F$. If $N_F$ is a set-forcing ground, every forcing witnessing this contains, in $N_F$, an antichain of $N_F$-cardinality $\theta$. Its ambient cardinality and its density as computed in $N_F$ are both at least $\theta$.
+\end{theorem}
+
+\begin{proof}
+The set $T=S_\omega^{\theta,N_F}$ is stationary in $N_F$, and $\theta$ is regular there. Theorem~\ref{thm:main}(4), already proved, says that $T$ is nonstationary in $V$. A $\theta$-cc forcing extension of $N_F$ would preserve its stationarity by Lemma~\ref{lem:cc}, a contradiction.
+
+If a witnessing forcing is not $\theta$-cc in $N_F$, Choice in $N_F$ supplies an antichain and an injection of $\theta$ into it in that model. The injection remains an injection in $V$, where $\theta=(\lambda^+)^V$ is still a cardinal. Hence the antichain and the forcing both have ambient cardinality at least $\theta$.
+
+A dense subset of a forcing must contain distinct refinements of the distinct members of an antichain. Consequently no dense subset of this forcing can have $N_F$-cardinality below $\theta$. The same obstruction applies to any forcing-equivalent presentation yielding this extension, because the stationary preservation argument applies to that presentation directly.
+\end{proof}
+
+This finishes Theorem~\ref{thm:main}. Corollary~\ref{cor:incompatible} follows immediately.
+
+\subsection{Comparison with the previous successor alternative}
+
+The supplied synthesis obtains, under additional hypotheses involving strong compactness below an exacting cardinal, a successor alternative: either an inner model computes the successor too low or an associated stationary set is destroyed \cite[Section~7, second-round refinements]{synthesis}. Our result assumes ultraexactingness rather than ordinary exactingness and selects particular fixed-parameter inner models. For those models it proves \emph{both} a strict successor gap and stationary destruction, without any strongly compact cardinal. It therefore does not subsume every case of the earlier theorem; it strengthens the conclusion in a different, explicitly identified regime.
+
+There is also a useful distinction between cofinality preservation at $\lambda$ and the present argument at $\theta$. Since $\lambda$ is regular in $N_F$ and has cofinality $\omega$ in $V$, ordinary $\lambda$-cc preservation already obstructs certain forcing reconstructions. The theorem above reaches the larger bound $\theta=(\lambda^+)^V$ by exhibiting an old stationary subset of $\theta$ which fails to remain stationary. The larger chain-condition obstruction is not obtained merely by restating the cofinality gap at $\lambda$.
+
+\section{An equiconsistent coded configuration}\label{sec:consistency}
+
+We now formulate a consistency result which removes the artificial coding bijection from the parameters of the inner models. Its consistency strength is exactly the published ultraexacting/$\Izero$ strength, not a stronger new benchmark.
+
+\begin{inputthm}[Published calibration and coding]\label{input:consistency}
+The following are imported results of Aguilera--Bagaria--Goldberg--L\"ucke \cite{abgl}.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\ZFC+\exists\lambda\,\UEx(\lambda)$ and $\ZFC+\Izero$ are equiconsistent \cite[Theorem~4.5]{abgl}.
+\item From an ultraexacting $\lambda$, forcing can preserve its ultraexactingness and arrange $V_\lambda\subseteq\HOD$ \cite[Proposition~3.9]{abgl}.
+\item In the resulting extension there is no exacting cardinal below $\lambda$ \cite[Corollary~3.10]{abgl}.
+\end{enumerate}
+\end{inputthm}
+
+Here $\Izero$ has its usual meaning: there is a nontrivial elementary self-embedding of $L(V_{\delta+1})$ with critical point below $\delta$, in the standard formulation of that large-cardinal assertion. We use its established metamathematical calibration; we do not attempt to reprove the deep inner-model arguments behind Input~\ref{input:consistency}(i).
+
+\begin{definition}[The coded simultaneous package]\label{def:package}
+Let $\mathsf T_{\mathrm{tail}}$ be $\ZFC$ together with the assertion that there exist an ultraexacting $\lambda$, an inaccessible $\kappa<\lambda$, $\lambda$ distinct classes $\langle q_i:i<\lambda\rangle\subseteq Q_\lambda$ with disjoint cofinal representatives, and a club $C\subseteq(\lambda,(\lambda^+)^V)$ such that:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $V_\lambda\subseteq\HOD$ and there is no exacting cardinal below $\lambda$;
+\item for every finite $F\subseteq\lambda$, with $M_F=\HOD_{\vec q_F}$, all conclusions (1)--(5) of Theorem~\ref{thm:main} hold with $M_F$ in place of $N_F$, the same $\kappa$, and this common $C$.
+\end{enumerate}
+In particular $M_\varnothing=\HOD$. There is no additional $b$ parameter in these models.
+\end{definition}
+
+\begin{theorem}[Equiconsistency of the coded package]\label{thm:equiconsistency}
+The theories $\mathsf T_{\mathrm{tail}}$ and $\ZFC+\Izero$ are equiconsistent.
+\end{theorem}
+
+\begin{proof}
+For the forward relative-consistency construction, assume $\Con(\ZFC+\Izero)$. By Input~\ref{input:consistency}(i), the theory with an ultraexacting cardinal is consistent. Apply the forcing construction in Input~\ref{input:consistency}(ii)--(iii). It yields the consistency of a universe $W$ with an ultraexacting $\lambda$, $V_\lambda^W\subseteq\HOD^W$, and no exacting cardinal below $\lambda$.
+
+Now work entirely in $W$. Choose a new sufficiently correct ultraexacting witness and construct its root orbits and tail classes as in Lemma~\ref{lem:roots}. For finite $F$, the parameter $p=\vec q_F$ is in the domain and fixed. Since
+\[
+V_\lambda^W\subseteq\HOD^W\subseteq\HOD_{\vec q_F}^W,
+\]
+no bijection parameter is needed to guarantee the low-rank inclusion. All arguments from Lemma~\ref{lem:regular} onward therefore apply with this $p$. The same intersection of the $\lambda$ many clubs gives the common $C$, and all clauses of $\mathsf T_{\mathrm{tail}}$ hold in $W$. This proves
+\[
+\Con(\ZFC+\Izero)\ \Longrightarrow\ \Con(\mathsf T_{\mathrm{tail}}).
+\]
+
+Conversely, $\mathsf T_{\mathrm{tail}}$ explicitly includes an ultraexacting cardinal. Thus its consistency implies the consistency of $\ZFC+\exists\lambda\,\UEx(\lambda)$. Input~\ref{input:consistency}(i) supplies the reverse calibration to $\ZFC+\Izero$.
+
+These implications use the standard syntactic relative-consistency reading of the published forcing and inner-model constructions. They do not assume the existence of transitive models merely from consistency. Also, no old tail class is claimed to survive the coding forcing with the desired properties: the witness and all the classes are constructed \emph{after} that forcing, in its extension.
+\end{proof}
+
+\begin{corollary}[A compatible collapse profile]\label{cor:profile}
+Relative to $\ZFC+\Izero$, it is consistent that $\lambda$ is the least exacting cardinal and is ultraexacting, that $V_\lambda\subseteq\HOD$, and that the same ambient stationary set $C\cap S_\omega^{(\lambda^+)^V,V}$ consists of ordinals inaccessible in every $\HOD_{\vec q_F}$ for finite $F$. At the same time, every one of those models loses its own countable-cofinality stationary set at $(\lambda^+)^V$ on passing to $V$.
+\end{corollary}
+
+\begin{proof}
+The package gives no exacting cardinal below $\lambda$ and gives that $\lambda$ itself is ultraexacting, hence exacting. All remaining assertions are clauses of the package and Theorem~\ref{thm:main}.
+\end{proof}
+
+The enrichment is informative about the simultaneous behavior of these inner models, but it does not improve the known consistency lower or upper bound for ultraexactingness. In particular, measurability of the ambient successor \emph{inside} these models is not an extra ambient measurable cardinal and does not invoke the substantially stronger interaction of an ultraexacting cardinal with an ambient measurable above it.
+
+\section{Proof audit and limitations}\label{sec:audit}
+
+\subsection{The checks that carry mathematical weight}
+
+\textbf{The parameters really are fixed.}
+The only freely chosen low-rank object in the construction is $h_0$. Its iterated union is fixed even though $h_0$ itself need not be. Each orbit loses its first term under $j$, but its finite-difference class is fixed. Every finite tuple of such classes is fixed. The global enumeration of roots is never fed into $j$.
+
+\textbf{The inner models really contain the required rank.}
+The first version uses $b$ so that every element of $V_\lambda$ is definable from an ordinal and $b$. The coded version uses the published forcing to place all those elements in ordinary $\HOD$. Naming a quotient class alone, in an arbitrary universe, would not justify the needed inclusion. This is why $b$ is not silently omitted from Theorem~\ref{thm:main}.
+
+\textbf{Correctness is uniform.}
+The height is chosen for a fixed finite list of formulas before the witness-dependent parameters are constructed. The canonical least-counterexample definition eliminates arbitrary ordinal parameters. In the partition argument the length is allowed to move; the image partition is recovered from the moved length inside $X$.
+
+\textbf{Nontransitivity of the domain is respected.}
+A function belonging to $X$ can have values outside $X$ at arguments outside $X$. The proof does not infer $V_{\lambda+1}\subseteq X$. It constructs a total $t\in X$, proves its agreement with $j$ on $X\cap\theta$, and uses elementary substructure correctness to transfer its first-order properties.
+
+\textbf{The ideal is not the inner model's own nonstationary ideal.}
+It is a set recording ambient nonstationarity only for subsets in the inner model. Its membership in the inner model is proved by hereditary definability. The distinction is indispensable: the conclusion is exactly that some sets which are internally stationary become externally nonstationary.
+
+\textbf{The chain condition is internal.}
+The saturation lemma uses only antichain sequences in $N_F$. In the ground theorem the hypothetical forcing is likewise assumed $\theta$-cc in $N_F$. No transfer of an arbitrary chain condition from one universe to another is used.
+
+\textbf{The common club is obtained by a small intersection.}
+There are only $\lambda$ finite subsets of $\lambda$, and $\lambda<\theta$. Thus an ordinary intersection of clubs suffices. There is no appeal to intersection closure for $2^\lambda$ many clubs, or to a definable enumeration of all the inner models inside one of them.
+
+\subsection{Relationship to the supplied Lean reference}
+
+The supplied \nolinkurl{Cardinals/README.md} distinguishes proved combinatorial cores from imported set-theoretic statements and lists portions of the second-round synthesis not formalized. The fixed-small-set and orbit arguments correspond in spirit to \nolinkurl{Combinatorics/SecondRound.lean}, while the earlier finite-selector work is represented in \nolinkurl{Ultraexacting.lean}. Those files served as a reference for the earlier proof architecture.
+
+No Lean theorem in the attachment is claimed to verify Theorem~\ref{thm:main}. In particular, the parameterized stationary-partition theorem, the internal stationary-ideal trace, the atomicity construction, the simultaneous club, and the new package have not been formalized here. No new Lean code is supplied and no compilation of the supplied Lean project was performed. The present deliverable is the English mathematical argument, as requested.
+
+\subsection{What remains outside the conclusion}
+
+There is no proof here that a standard large-cardinal hypothesis is inconsistent. The result also does not settle the consistency of a cover-exacting cardinal above a strongly compact cardinal, the ordinary-exacting analogue of the thin-section problem, or the existence of more than $\lambda$ rigid quotient classes from the same hypothesis.
+
+The finite qualifier is structural, not cosmetic. An arbitrary infinite list of individually fixed classes need not belong to the domain $X$. Even when a tuple does belong to $X$, its index ordinal can move. We therefore make no blanket claim for countably or $<\lambda$ many quotient parameters. Likewise a single tail representative usually reveals ambient cofinality and invalidates the invariant-parameter argument.
+
+Finally, the obstruction concerns $\theta$-cc forcing. It does not rule out a forcing representation of size at least $\theta$ with large antichains. The theorem is also compatible with different finite tuples producing the same $\HOD$ model. Neither distinctness of those models nor their groundhood is needed for the common-club conclusion.
+
+\begin{assessment}{Conclusion}
+The fixed tail classes do more than hide cofinal sequences at $\lambda$. In the associated finite-parameter inner models, ambient stationarity at $\lambda^+$ decomposes into fewer than $\kappa$ normal-measure pieces. This yields one common ambient club, a strict successor gap for every selected inner model, and a successor chain-condition obstruction to forcing reconstruction. The entire configuration fits at the established $\Izero$ consistency level.
+\end{assessment}
+
+\appendix
+\section{Dependency map and conventions for checking the proof}\label{app:dependencies}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{@{}P{.27\textwidth}YP{.23\textwidth}@{}}
+\toprule
+\textbf{Step}&\textbf{Mathematical input}&\textbf{Where established}\\
+\midrule
+Critical normalization&Local Kunen and elementary critical-point facts&Lemma~\ref{lem:critical}\\
+Fixed parameter family&Internal restriction $e$, low-rank bijection, root orbits&Lemmas~\ref{lem:b}--\ref{lem:roots}\\
+Regularity at $\lambda$&Canonical least counterexample; no fixed short cofinal set&Lemmas~\ref{lem:nofixed}--\ref{lem:regular}\\
+Partition obstruction&Canonical surjection, internal ordinal map, fixed parameters&Theorem~\ref{thm:partition}\\
+Atomic quotient&Internal $\theta$-completeness, $\kappa$-cc, $(2^\kappa)^N<\theta$&Lemmas~\ref{lem:trace}--\ref{lem:atomic}\\
+Normal measures&Ambient pressing down on a stationary atom&Theorem~\ref{thm:measure}\\
+Common club&Measure concentration and $\lambda<\theta$&Theorem~\ref{thm:oneclub}, \eqref{eq:clubintersect}\\
+Ground obstruction&Preservation of old stationary sets by $\theta$-cc forcing&Theorem~\ref{thm:ground}\\
+Equiconsistency&Published calibration and coding; new theorem in the extension&Theorem~\ref{thm:equiconsistency}\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The theorem uses a single sufficiently correct witness, not a system of coherent witnesses. The inaccessible $\kappa$ is the critical point of that witness. The ambient successor is always the ordinal $\theta=(\lambda^+)^V$; an inner model's successor is written with its superscript. ``Fewer than $\kappa$ atoms'' refers to the quotient inside the relevant $\HOD$ model. The representatives of these atoms, and a short internal indexing sequence for them, are nevertheless actual sets in $V$, which is enough for the external club arguments.
+
+It is possible to state the central local theorem without mentioning all tail classes: any fixed literal parameter $p$ in the chosen correctness range with $V_\lambda\subseteq\HOD_p$ satisfies the stationary-ideal, measurable-successor, and forcing-obstruction conclusions. The tail construction supplies $\lambda$ many usable parameters and makes their finite combinations usable by the same witness. This separates the reusable local mechanism from its application to the research archive's quotient.
+
+
+\section{Why naming a tail class does not put it in the inner model}\label{app:membership}
+
+The use of literal parameters can initially look paradoxical: $q_i$ is allowed in definitions, yet the model thereby defined need not contain $q_i$. The next consequence makes the distinction explicit in the present construction.
+
+\begin{proposition}[The named classes and their representatives stay outside]\label{prop:outside}
+For every finite $F\subseteq\lambda$ and every $i<\lambda$, no member of $q_i$ belongs to $N_F$, and $q_i\notin N_F$. This holds even when $i\in F$, so that $q_i$ is one of the literal parameters defining $N_F$. On the other hand $b\in N_F$.
+\end{proposition}
+
+\begin{proof}
+Suppose $a\in q_i\cap N_F$. In $V$, the set $a$ is a subset of $\lambda$, is cofinal, and has order type $\omega$. For a set of ordinals in a transitive model of $\ZFC$, the order type and increasing enumeration are absolute: the model constructs the unique order isomorphism from an ordinal onto that set, and this remains the unique such isomorphism in $V$. Thus the increasing enumeration of $a$ in $N_F$ has domain $\omega$. Cofinality of a set of ordinals in a common ordinal is absolute as well, since it asserts $\forall\beta<\lambda\,\exists\alpha\in a\,(\beta<\alpha)$. Consequently $N_F$ contains a cofinal $\omega$-sequence in $\lambda$, contradicting its regularity there.
+
+If $q_i\in N_F$, transitivity of $N_F$ would put every member of the nonempty set $q_i$ in $N_F$, contradicting the first assertion. No choice of a representative inside $N_F$ is needed for this deduction.
+
+Finally, $b$ is definable from the parameter $p_F$ by projection. Each element of its graph, together with all its hereditary members, has rank below $\lambda$. Those sets are in $N_F$ and are $\OD_{p_F}$. Hence $b$ itself is hereditary $\OD_{p_F}$, so $b\in N_F$.
+\end{proof}
+
+In particular $\OD_{p_F}$ and $\HOD_{p_F}$ cannot be substituted for one another in these arguments: the first class contains the named $q_i$ when $i\in F$, while the second does not. Likewise, $N_F$ is not an inner model constructed by adjoining $q_i$ as an element and then closing transitively. Any transitive inner model containing even one such class would contain a cofinal $\omega$-sequence and would fail the regularity conclusion at $\lambda$.
+
+This observation also explains the role of the external common club. Each $N_F$ contains the stationary trace ideal and its normal measures, but neither the original tail representatives nor the club destroying $S_\omega^{\theta,N_F}$. The main theorem specifies exactly which definability information is retained and which cofinality witnesses remain outside.
+
+\begin{thebibliography}{9}
+\small
+\bibitem{abl}
+Juan P. Aguilera, Joan Bagaria, and Philipp L\"ucke.
+\emph{Large cardinals, structural reflection, and the HOD Conjecture}.
+\arxiv{2411.11568}, version~4. In particular Definition~2.4, Theorem~2.10, Lemmas~3.7--3.9, Theorem~3.14, and Corollary~3.15. Versioned text consulted 18 September 2026.
+
+\bibitem{abgl}
+Juan P. Aguilera, Joan Bagaria, Gabriel Goldberg, and Philipp L\"ucke.
+\emph{Large cardinals beyond HOD}.
+\arxiv{2509.10254}, version~1 (2025). In particular Proposition~3.9, Corollary~3.10, and Theorem~4.5. Versioned text consulted 18 September 2026.
+
+\bibitem{benhayut}
+Omer Ben-Neria and Yair Hayut.
+\emph{On $\omega$-strongly measurable cardinals}.
+\arxiv{1911.04568}, version~5 (2023).
+Background on the stationary-filter formulation of strong measurability in $\HOD$.
+
+\bibitem{kunen}
+Kenneth Kunen.
+Elementary embeddings and infinitary combinatorics.
+\emph{Journal of Symbolic Logic} \textbf{36}(3) (1971), 407--413.
+\doi{10.2307/2269948}.
+
+\bibitem{synthesis}
+\emph{Large cardinals at the inconsistency frontier: a synthesis}.
+Second edition, prepared for Vladimir Reshetnikov, 18 September 2026.
+User-supplied research document, \nolinkurl{docs/Large_Cardinals_Synthesis.tex} in \nolinkurl{Cardinals3.zip}. Especially the second-round successor refinements and the section on cofinal quotient classes. This is a research input, not a refereed publication.
+
+\bibitem{unified}
+\emph{Large Cardinals Unified Report}.
+User-supplied research document, \nolinkurl{docs/Large_Cardinals_Unified_Report.tex} in \nolinkurl{Cardinals3.zip}. Background survey and initial research program.
+\end{thebibliography}
+\end{document}
