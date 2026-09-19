@@ -2,12 +2,13 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
-* `report.tex`, `acceleration.tex`, `round3.tex`, `report.pdf`: the report (22
+* `report.tex`, `acceleration.tex`, `round3.tex`, `bend.tex`, `report.pdf`: the report (27
   pages). Sections: sources and outcome; the six archives; code review;
   cross-validation; what is missing for `n^O(log n)`; the `fastunknot`
   recognizer; assessment; the nine acceleration proposals, 0.2 and the Rust
   port (`acceleration.tex`); the later constant-factor work on the Python
-  package, its negative results, and how it was measured (`round3.tex`).
+  package, its negative results, and how it was measured (`round3.tex`); the port to
+  Bend 2 and what its parallelism delivered (`bend.tex`).
 * `build.sh`: regenerates the tables and runs `pdflatex` twice.
 * `make_tables.py`: writes `tables/*.tex` from the JSON files in `data/` and
   from `../fast/results/benchmark.json`.

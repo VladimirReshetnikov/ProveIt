@@ -1,0 +1,115 @@
+% Fourth round: the port to Bend 2 and what its parallelism delivered.
+\section{A port to Bend 2, and what its parallelism delivered}
+\label{sec:bend}
+
+Bend 2 (version 2.0.10) is a pure, total, affine functional language that compiles
+through C to native code and promises parallelism for free: a parallel let
+\texttt{a b = f(x) g(y)} forks, the type checker guarantees that the two calls
+share nothing, and the result cannot depend on the number of threads. The
+algorithm of \texttt{fastunknot} was ported to it (directory \texttt{bend/}) to
+find out what that promise is worth for this problem. Nothing in this section
+changes the complexity discussion: the scan is exponential in the boundary
+width, in every language.
+
+\subsection{Setting}
+Bend runs on Linux, macOS and WSL only, so all Bend work ran over SSH on an
+Ubuntu virtual machine with 6 virtual CPUs of an i7-3770. That CPU has no AVX2
+and the distributed binary died with an illegal instruction; Bend was run from
+source under the baseline build of its JavaScript runtime instead. All times
+below are from that host, and the Python package was copied there for every
+comparison, so the two sides of a ratio always share the hardware. Timings are
+interleaved with an A/A control as in Section~\ref{sec:round3}; the control's
+ratio stayed within $0.96$ to $1.05$.
+
+\subsection{What was ported, and how it was checked}
+\begin{itemize}
+\item the modular Alexander filter (Wirtinger matrix, determinant modulo 65521,
+  because \texttt{U32} is the only machine integer);
+\item the planar geometry, the dotted cobordism algebra over $\mathbb{F}_2$ and
+  Bar-Natan's scan with delooping and Gaussian elimination, that is
+  \texttt{scan\_fast.py} without its caches;
+\item a greedy scan order from eight starting crossings;
+\item a standalone recognizer that chains the three.
+\end{itemize}
+Not ported: diagram simplification, the Jones filter, factorization, and the
+interning of matchings with plan caches. Each layer was compared with its Python
+counterpart before the next was written: 200 Alexander minors, 1920 gluings and
+circle numberings, 2736 compositions and transfers, the Khovanov ranks of 160
+random closures and of the timing inputs (up to rank 5898), and the verdicts of
+the recognizer on 60 diagrams with up to 40 crossings, 40 of them unknots, among
+the knots Conway's and the Kinoshita--Terasaka knot: no mismatch anywhere.
+Sixteen laws about the control logic (for instance: of two scan orders with
+equal profile the left one wins, so the work does not depend on scheduling) are
+stated in \texttt{LAWS.bend} and proved in \texttt{PROOF.bend}; they were drafted
+by the AI as proposals, and they do not say that a rank is right, which Bend
+cannot express about \texttt{U32} arithmetic.
+
+\subsection{What the fork delivers}
+Measured on kernels first: a deep, balanced, uniform recursion reaches 5.0 on 6
+threads; 32 coarse leaves reach 2.1; every switch from sequential to parallel
+execution costs about 80 microseconds; forks inside the sparse elimination of
+the Alexander determinant made it 8 to 15 times \emph{slower}; one fork over
+four independent determinants gained nothing. Tasks are dealt once and never
+moved, and there is no cancellation, so the race of scan orders, the best
+parallel gain of the Rust port ($0.65$ of the time in total), cannot be written.
+
+In the scan, the transfer of all objects of a stage through a crossing is a
+map that shares nothing, and it was written as a fork over the tree of the
+array. Its first effect was negative: with six threads the scan took 1.28 to
+1.85 s instead of 1.04 s. The cause was found in the runtime source and the
+emitted C, and then confirmed by measurement: generated code makes a non-tail
+call either by pushing a stack frame or, in ``parallel mode'', by allocating
+the continuation as a task on the heap; a program runs in parallel mode
+wherever a fork is reachable, which for a program with one fork is
+everywhere. With the forking transfer \emph{switched off} and six threads the
+scan took 1.85 s: a factor 1.8 for the mere presence of a fork. The remedy is
+to make every long sequential phase a task of its own, a fork next to a
+trivial second child, since a task whose function reaches no fork runs in the
+fast mode. Three natural ways of writing that child were silently compiled
+away (inlined, constant-folded, dropped as unused), leaving no fork; it has to
+be recursive, depend on run-time data, and its result has to be used. After
+that: 1.02 s on one thread, 0.81 s on six; the transfer alone became 2.7 times
+faster.
+
+\subsection{Where the time goes}
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+ & \multicolumn{2}{c}{braid closure, rank 218} & \multicolumn{2}{c}{stress closure, rank 5898}\\
+version & 1 thread & 6 threads & 1 thread & 6 threads\\
+\midrule
+first working scan, first-found pivots & 1.04 s & 1.28--1.85 s & 63 s & 58 s\\
+sequential phases as tasks & 1.05 s & 0.89 s & 63 s & 58 s\\
+least-fill pivots in batches, work lists & 0.65 s & 0.50 s & 7.0 s & 4.9 s\\
+Python package, same host & 0.134 s & & 0.542 s & \\
+\bottomrule
+\end{tabular}
+\end{center}
+The largest gain was algorithmic and sequential: cancelling only pivots whose
+fill-in is within a limit, and raising the limit to the least fill-in that was
+skipped, brought the stress closure from 58 to 5 s. A sampling profile of the
+emitted C then showed 43\% of the time in reference counting: a value used more
+than once is shared and counted, and every step through a shared list bumps and
+drops counts. Matchings are shared by design, and the linear lookups in them are
+most of those steps. Python avoids the work altogether by interning matchings
+as small integers and caching every plan (2817 plans serve 251\,406 transferred
+entries on the stress closure); in Bend a cache is a value every call must
+thread, the only map has string keys, and an array cannot be shared between the
+branches of a fork. That layer was not ported. It would make the port faster
+and, since it removes work from the one part that forks, less parallel.
+
+As a process the native recognizer beats the Python command line where
+Python's 28 ms start-up dominates (2 ms against 28 ms on an 8-crossing unknot)
+and loses from about 25 crossings on (80 against 45 ms at 30 crossings);
+in-process, Python is 2 to 4 times faster on the same steps.
+
+\subsection{Verdict}
+The promise holds in the narrow sense and not in the useful one. Writing a fork
+is trivial and safe. But the scan alternates a parallel map with a Gaussian
+elimination in which each cancellation changes the rows the next one reads; the
+map is 20 to 45\% of the time, so six threads give 1.2 to 1.4 overall, on top of
+a single-thread speed 4 to 13 times below the tuned Python package. The cost
+model (a fork anywhere taxes all sequential code by 1.8 unless it is wrapped as
+a task) is invisible in the language, and the compiler removes the wrapper
+unless it is written just so. For this algorithm the measured ranking stays:
+Rust, then Python, then Bend.
