@@ -19,30 +19,6 @@ namespace Cardinals
 
 open ZFSet Ordinal Cardinal
 
-/-- The range of an `ω`-sequence of ordinals, as a set. -/
-noncomputable def seqSet (s : ℕ → Ordinal.{u}) : ZFSet.{u} :=
-  ZFSet.range (fun n : ULift.{u} ℕ => ordZ (s n.down))
-
-theorem mem_seqSet {s : ℕ → Ordinal.{u}} {x : ZFSet.{u}} :
-    x ∈ seqSet s ↔ ∃ n, ordZ (s n) = x := by
-  unfold seqSet
-  rw [ZFSet.mem_range]
-  exact ⟨fun ⟨n, hn⟩ => ⟨n.down, hn⟩, fun ⟨n, hn⟩ => ⟨⟨n⟩, hn⟩⟩
-
-theorem card_seqSet_le (s : ℕ → Ordinal.{u}) : ZFSet.card (seqSet s) ≤ ℵ₀ := by
-  have h := ZFSet.lift_card_range_le (f := fun n : ULift.{u} ℕ => ordZ (s n.down))
-  simpa [seqSet] using h
-
-theorem cofinalIn_seqSet {s : ℕ → Ordinal.{u}} {lam : Ordinal.{u}}
-    (hlt : ∀ n, s n < lam) (hcof : ∀ ξ < lam, ∃ n, ξ ≤ s n) : CofinalIn (seqSet s) lam := by
-  refine ⟨?_, ?_⟩
-  · intro x hx
-    obtain ⟨n, rfl⟩ := mem_seqSet.mp hx
-    exact ⟨s n, hlt n, rfl⟩
-  · intro ξ hξ
-    obtain ⟨n, hn⟩ := hcof ξ hξ
-    exact ⟨s n, hn, hlt n, mem_seqSet.mpr ⟨n, rfl⟩⟩
-
 /-- Under cover exactingness there is a countable cofinal subset of `lam` in `V`. -/
 theorem exists_countable_cofinal (c γ : Cardinal.{u}) (hc : ℵ₀ ≤ c) (h : CEx γ c.ord) :
     ∃ a : ZFSet.{u}, CofinalIn a c.ord ∧ ZFSet.card a ≤ ℵ₀ := by

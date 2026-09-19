@@ -23,6 +23,8 @@ open Cardinals
 #print axioms ThirdRound.phase_balance
 #print axioms ThirdRound.tail_mean_indep
 #print axioms countableCover_contra
+#print axioms RelWitness.jOrd_nat
+#print axioms RelWitness.trace_fixed_of
 #print axioms FourthRound.finiteChange_realize_insert
 #print axioms FourthRound.shift_ne
 #print axioms FourthRound.no_finite_invariant
@@ -40,6 +42,9 @@ open Cardinals
 #print axioms groundAxiom_obstruction
 #print axioms general_ground_obstruction
 #print axioms no_sandwich
+#print axioms RelWitness.strongLimit
+#print axioms not_REx_shortCofinal
+#print axioms le_of_CEx
 #print axioms no_SC_above
 #print axioms RelWitness.fixed_small_subset
 #print axioms RelWitness.no_small_fixed_family

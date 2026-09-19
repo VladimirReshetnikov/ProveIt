@@ -317,4 +317,150 @@ theorem agreeF_spec (hA : IsTransitive A) (env : ℕ → Carrier A) (i T a lam :
       have h' : d.1 ∈ (env i).1 := h ▸ this
       exact h'
 
+/-! ### Subsets, power sets, and "no element of `v_k` has its power set mapped onto `v_k`" -/
+
+/-- `v_a ⊆ v_b`. -/
+def subsetF (a b : ℕ) : Form := fAll (fImp (fMem 0 (a + 1)) (fMem 0 (b + 1)))
+
+theorem subsetF_spec (hA : IsTransitive A) (e : ℕ → Carrier A) (a b : ℕ) :
+    Sat (memOn A) e (subsetF a b) ↔ (e a).1 ⊆ (e b).1 := by
+  unfold subsetF
+  simp only [Sat]
+  constructor
+  · intro h t ht
+    exact h ⟨t, hA.subset_of_mem (e a).2 ht⟩ ht
+  · intro h d hd
+    exact h hd
+
+/-- `v_i = 𝒫(v_j)`. -/
+def powF (i j : ℕ) : Form := fAll (SetTheory.fIff (fMem 0 (i + 1)) (subsetF 0 (j + 1)))
+
+theorem powF_spec (hA : IsTransitive A) (hsub : ∀ y ∈ A, ∀ t, t ⊆ y → t ∈ A)
+    (e : ℕ → Carrier A) (i j : ℕ) :
+    Sat (memOn A) e (powF i j) ↔ (e i).1 = powerset (e j).1 := by
+  unfold powF
+  simp only [Sat, SetTheory.Sat_fIff]
+  constructor
+  · intro h
+    ext t
+    rw [mem_powerset]
+    constructor
+    · intro ht
+      have := (h ⟨t, hA.subset_of_mem (e i).2 ht⟩).mp ht
+      exact (subsetF_spec hA _ 0 (j + 1)).mp this
+    · intro ht
+      exact (h ⟨t, hsub _ (e j).2 t ht⟩).mpr ((subsetF_spec hA _ 0 (j + 1)).mpr ht)
+  · intro h d
+    rw [subsetF_spec hA]
+    show d.1 ∈ (e i).1 ↔ d.1 ⊆ (e j).1
+    rw [h, mem_powerset]
+
+/-- The meaning of `slF`: no element of `k` has its power set mapped onto `k` by a
+function in `A`. -/
+def SLSem (A k : ZFSet.{u}) : Prop := ∀ μ ∈ k, ¬ ∃ f ∈ A, SurjSem A f (powerset μ) k
+
+/-- `∀ μ ∈ v_k ∀ p (p = 𝒫(μ) → ¬ ∃ f, f : p ↠ v_k)`. -/
+def slF (k : ℕ) : Form :=
+  fAll (fImp (fMem 0 (k + 1)) (fAll (fImp (powF 0 1) (fImp (fEx (surjF 0 1 (k + 3))) fBot))))
+
+theorem slF_spec (hA : IsTransitive A) (hP : PairClosed A)
+    (hsub : ∀ y ∈ A, ∀ t, t ⊆ y → t ∈ A) (hpow : ∀ y ∈ A, powerset y ∈ A)
+    (e : ℕ → Carrier A) (k : ℕ) :
+    Sat (memOn A) e (slF k) ↔ SLSem A (e k).1 := by
+  unfold slF SLSem
+  simp only [Sat]
+  constructor
+  · rintro h μ hμ ⟨f, hf, hs⟩
+    have hμA : μ ∈ A := hA.subset_of_mem (e k).2 hμ
+    exact h ⟨μ, hμA⟩ hμ ⟨powerset μ, hpow μ hμA⟩ ((powF_spec hA hsub _ 0 1).mpr rfl)
+      ⟨⟨f, hf⟩, (surjF_spec hA hP _ 0 1 (k + 3)).mpr hs⟩
+  · rintro h d hd p hp ⟨f, hf⟩
+    have hp' : p.1 = powerset d.1 := (powF_spec hA hsub _ 0 1).mp hp
+    have hf' : SurjSem A f.1 p.1 (e k).1 := (surjF_spec hA hP _ 0 1 (k + 3)).mp hf
+    rw [hp'] at hf'
+    exact h d.1 hd ⟨f.1, f.2, hf'⟩
+
+/-! ### Sets without limit elements, and unions of countable members -/
+
+/-- `v_i = ∅`. -/
+def emptyF (i : ℕ) : Form := fAll (fImp (fMem 0 (i + 1)) fBot)
+
+theorem emptyF_spec (hA : IsTransitive A) (e : ℕ → Carrier A) (i : ℕ) :
+    Sat (memOn A) e (emptyF i) ↔ (e i).1 = ∅ := by
+  unfold emptyF
+  simp only [Sat]
+  constructor
+  · intro h
+    rw [ZFSet.eq_empty]
+    intro t ht
+    exact h ⟨t, hA.subset_of_mem (e i).2 ht⟩ ht
+  · intro h d hd
+    have hd0 : d.1 ∈ (e i).1 := hd
+    rw [h] at hd0
+    exact ZFSet.notMem_empty _ hd0
+
+/-- The meaning of `noLimitF`: every element is empty or the successor of an element. -/
+def NoLimitSem (x : ZFSet.{u}) : Prop := ∀ y ∈ x, y = ∅ ∨ ∃ z ∈ x, y = insert z z
+
+/-- `∀ y ∈ v_x (y = ∅ ∨ ∃ z ∈ v_x, y = z ∪ {z})`. -/
+def noLimitF (x : ℕ) : Form :=
+  fAll (fImp (fMem 0 (x + 1)) (fOr (emptyF 0) (fEx (fAnd (fMem 0 (x + 2)) (insertF 1 0 0)))))
+
+theorem noLimitF_spec (hA : IsTransitive A) (e : ℕ → Carrier A) (x : ℕ) :
+    Sat (memOn A) e (noLimitF x) ↔ NoLimitSem (e x).1 := by
+  unfold noLimitF NoLimitSem
+  simp only [Sat]
+  constructor
+  · intro h y hy
+    rcases h ⟨y, hA.subset_of_mem (e x).2 hy⟩ hy with h0 | ⟨z, hz, hins⟩
+    · exact Or.inl ((emptyF_spec hA _ 0).mp h0)
+    · exact Or.inr ⟨z.1, hz, (insertF_spec hA _ 1 0 0).mp hins⟩
+  · intro h d hd
+    rcases h d.1 hd with h0 | ⟨z, hz, hins⟩
+    · exact Or.inl ((emptyF_spec hA _ 0).mpr h0)
+    · exact Or.inr ⟨⟨z, hA.subset_of_mem (e x).2 hz⟩, hz, (insertF_spec hA _ 1 0 0).mpr hins⟩
+
+/-- The members of `D` onto which some function in `A` maps `om`. -/
+noncomputable def CntPart (A D om : ZFSet.{u}) : ZFSet.{u} :=
+  ZFSet.sep (fun t => ∃ f ∈ A, SurjSem A f om t) D
+
+/-- `v_T = ⋃ {t ∈ v_D : ∃ f, f : v_om ↠ t}`. -/
+def cntUnionF (T D om : ℕ) : Form :=
+  fAll (SetTheory.fIff (fMem 0 (T + 1))
+    (fEx (fAnd (fMem 0 (D + 2)) (fAnd (fEx (surjF 0 (om + 3) 1)) (fMem 1 0)))))
+
+theorem cntUnionF_spec (hA : IsTransitive A) (hP : PairClosed A) (e : ℕ → Carrier A)
+    (T D om : ℕ) :
+    Sat (memOn A) e (cntUnionF T D om) ↔ (e T).1 = ⋃₀ (CntPart A (e D).1 (e om).1) := by
+  unfold cntUnionF
+  simp only [Sat, SetTheory.Sat_fIff]
+  constructor
+  · intro h
+    ext z
+    rw [mem_sUnion]
+    constructor
+    · intro hz
+      obtain ⟨t, htD, ⟨f, hf⟩, hzt⟩ := (h ⟨z, hA.subset_of_mem (e T).2 hz⟩).mp hz
+      exact ⟨t.1, mem_sep.mpr ⟨htD, f.1, f.2, (surjF_spec hA hP _ 0 (om + 3) 1).mp hf⟩, hzt⟩
+    · rintro ⟨t, ht, hzt⟩
+      obtain ⟨htD, f, hfA, hf⟩ := mem_sep.mp ht
+      have htA : t ∈ A := hA.subset_of_mem (e D).2 htD
+      exact (h ⟨z, hA.subset_of_mem htA hzt⟩).mpr
+        ⟨⟨t, htA⟩, htD, ⟨⟨f, hfA⟩, (surjF_spec hA hP _ 0 (om + 3) 1).mpr hf⟩, hzt⟩
+  · intro h d
+    constructor
+    · intro hd
+      have hd0 : d.1 ∈ (e T).1 := hd
+      rw [h, mem_sUnion] at hd0
+      obtain ⟨t, ht, hdt⟩ := hd0
+      obtain ⟨htD, f, hfA, hf⟩ := mem_sep.mp ht
+      exact ⟨⟨t, hA.subset_of_mem (e D).2 htD⟩, htD,
+        ⟨⟨f, hfA⟩, (surjF_spec hA hP _ 0 (om + 3) 1).mpr hf⟩, hdt⟩
+    · rintro ⟨t, htD, ⟨f, hf⟩, hdt⟩
+      have : d.1 ∈ ⋃₀ (CntPart A (e D).1 (e om).1) :=
+        mem_sUnion.mpr ⟨t.1, mem_sep.mpr ⟨htD, f.1, f.2,
+          (surjF_spec hA hP _ 0 (om + 3) 1).mp hf⟩, hdt⟩
+      have h' : d.1 ∈ (e T).1 := h ▸ this
+      exact h'
+
 end Cardinals

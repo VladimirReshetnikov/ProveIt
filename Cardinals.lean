@@ -9,6 +9,9 @@ import Cardinals.Foundations.PairForm
 import Cardinals.Foundations.Bridge
 import Cardinals.Foundations.Witness
 import Cardinals.Foundations.SetForms
+import Cardinals.WitnessFacts
+import Cardinals.ObservationOne
+import Cardinals.CoverBound
 import Cardinals.Published
 import Cardinals.Barrier
 import Cardinals.Below
@@ -23,3 +26,4 @@ import Cardinals.FiniteLabel
 import Cardinals.Combinatorics.FourthRound
 import Cardinals.FixedSets
 import Cardinals.Orbits
+import Cardinals.Transversals

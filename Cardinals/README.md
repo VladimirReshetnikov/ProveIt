@@ -18,15 +18,16 @@ lake env lean Cardinals/Audit.lean     # prints the axioms behind each main theo
 ## Policy on admitted statements
 
 Only results from the literature are admitted, each closed by the tactic `admit` with its
-source in the docstring.  There are 18 of them; nothing else uses `sorry`.
+source in the docstring; nothing else uses `sorry`.  Five statements that were admitted in
+earlier versions are now **proved** from the definition of a witness (they keep their names
+in `Published.lean` so that nothing downstream changed): `cof_omega_of_witness`,
+`aleph0_lt_of_witness`, `strongLimit_of_witness`, `not_REx_shortCofinal` (Blue–Goldberg
+Observation 1(2)) and `le_of_CEx`.  Their only admitted ingredient is `critSeq_cofinal`
+(the Kunen inconsistency).  16 admitted statements remain:
 
 | File | Admitted statement | Reference |
 |---|---|---|
-| `Published.lean` | `cof_omega_of_witness`, `strongLimit_of_witness` | ABL, remark after Def. 2.4; Kunen 1971; Kanamori Cor. 23.14 |
-| | `aleph0_lt_of_witness` | ABL §2 (restriction is an I3 embedding); Kanamori §5, §24 |
-| | `not_REx_shortCofinal` | BG, Observation 1(2) |
-| | `REx_transfer` | BG, Lemma 3.3 |
-| | `le_of_CEx` | BG, remark after Def. 3.1 |
+| `Published.lean` | `REx_transfer` | BG, Lemma 3.3 |
 | | `stationary_of_CEx` | BG, Proposition 3.4 (1)⇒(3) |
 | | `isClub_elemSub` | Jech Ch. 8 (clubs in P_κ(A)) and Ch. 12; Kanamori §25 |
 | | `ODfrom_trans` | Jech Ch. 13 (ordinal-definable sets), Thm 12.14 (reflection) |
@@ -87,10 +88,14 @@ Theorem 3.6 is *not* admitted: it is re-derived as `no_CEx_above_extendible`.
 | Theorem 13.2, 13.3 (tail decisions, normality; cores) | `ThirdRound.orbit_mem_iff`, `orbit_decided`, `orbit_value_const`, `small_range_const`, `regressive_const_on_critical_sequence`, `tail_ultra` | **proved** (combinatorial core) |
 | Theorem 13.9 (charges; cores) | `ThirdRound.phase_balance`, `no_two_valued_phase`, `mean_shift`, `tail_mean_indep` | **proved** |
 | Section 14 (Prikry model; cores) | `FourthRound.fixed_of_insertion`, `finiteChange_realize_insert` (insertion rotates block-coded tuples), `shift_ne`, `no_finite_invariant`, `residue_law`; the finite algebra of Theorem 14.5 is `FiniteCycles.no_equivariant_selectors` | **proved** (combinatorial cores; no forcing is formalized) |
+| Lemma 3.1 (λ uncountable, cofinality ω, strong limit), for every exacting witness | `RelWitness.jOrd_nat`, `omega_le_crit`, `aleph0_lt`, `jv_subset_fixed`, `no_surj_pow_crit`, `slSem_critSeq`, `strongLimit` (`WitnessFacts.lean`) | **proved** from the Kunen inconsistency; formerly admitted |
+| Lemma 3.2 = Blue–Goldberg Observation 1(2) | `RelWitness.trace_fixed`, `not_REx_shortCofinal` (`ObservationOne.lean`) | **proved**; formerly admitted.  Uses a formula of the language with the predicate, written directly in Mathlib's syntax |
+| Lemma 3.5 (`γ ≥ λ`) | `RelWitness.jOrd_omega`, `trace_fixed_of`, `pow_lam_fixed`, `cntUnion_iff`, `le_of_CEx` (`CoverBound.lean`) | **proved**; formerly admitted |
 | **Actual embedding:** elementarity for `Form`; Lemma 3.1 | `Bridge.realize_toLex`, `RelWitness.sat_j`, `elem`, `tarski_vaught`, `definable`, `definable_fixed`; `jOrd`, `crit`, `critSeq`, `le_jOrd`, `moved`, `fixed_iff_lt_crit` | **proved** from the definition of a witness (cofinality of the critical sequence admitted) |
 | Lemma 8.4(a),(b) for the actual embedding | `RelWitness.fixed_small_subset`, `no_small_fixed_family` (with `exists_surj`, `least_surj_fixed`, `surj_iff`, `card_sUnion_le`) | **proved**; (b) for families with a common size bound `ν < λ`, which covers subfamilies of `D_λ` |
 | Lemma 12.1(2) orbits | `RelWitness.IsUltra`, `orb`, `orb_mem_X`, `jv_eq_image`, `jv_orb`, `cofinalIn_orb`, `orb_locally_finite` | **proved** from `j ↾ V_λ ∈ X` |
 | Theorem 12.3 / Cor. 12.4(1) zero-or-full traces, for sets fixed by `j` | `RelWitness.zero_or_full` (with `agree_iff`, `agree_in_X`, `evAgree_orb_shift`) | **proved**; the class is represented by eventual agreement with the orbit, which coincides with `=*` on `D_λ` |
+| Theorem 9.10 / Cor. 12.5 for the actual embedding | `RelWitness.trace_eq_empty_of_card_lt`, `no_fixed_transversal` (`Transversals.lean`) | **proved** (for sets fixed by `j`) |
 | Theorem 13.2 for the actual embedding | `RelWitness.tail_decision`, `regressive_const` | **proved** |
 
 The numbering refers to the fourth edition of the synthesis, in which all earlier numbers

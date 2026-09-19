@@ -1,9 +1,15 @@
 /-
-  PUBLISHED RESULTS, ADMITTED WITHOUT PROOF.
+  PUBLISHED RESULTS: ADMITTED WITHOUT PROOF, OR -- SINCE THE WITNESS LAYER -- PROVED.
 
-  Every statement in this file is a result from the literature (or a textbook
-  fact), stated in the framework of `Cardinals.Foundations` and closed by `admit`.
-  Nothing else in the development is admitted.  Each entry records its source.
+  Every statement in this file is a result from the literature (or a textbook fact),
+  stated in the framework of `Cardinals.Foundations`.  Each entry records its source.
+
+  Five of them are no longer admitted but proved from the definition of a witness, with
+  the Kunen inconsistency (`critSeq_cofinal`, admitted in `Foundations/Witness.lean`) as
+  the only input: `cof_omega_of_witness`, `aleph0_lt_of_witness`,
+  `strongLimit_of_witness` (see `WitnessFacts.lean`), `not_REx_shortCofinal`
+  (`ObservationOne.lean`) and `le_of_CEx` (`CoverBound.lean`).  The remaining statements
+  are closed by `admit`.
 
   References (every admitted statement cites one of these in its doc comment)
   * [ABL]  J. P. Aguilera, J. Bagaria, P. Lücke, "Large cardinals, structural reflection,
@@ -26,7 +32,7 @@
   18 September 2026.  Textbook citations are given at the level of chapters or sections
   where the exact theorem number was not checked.
 -/
-import Cardinals.Foundations.Exacting
+import Cardinals.CoverBound
 
 universe u
 
@@ -47,7 +53,9 @@ predicate.  See also [BG, proof of Observation 1].  (Synthesis Lemma 3.1.) -/
 theorem cof_omega_of_witness (c : Cardinal.{u}) (hc : ℵ₀ ≤ c)
     (h : ∀ α > c.ord, ∃ Y : ZFSet.{u}, Y ⊆ V_ α ∧ Nonempty (RelWitness c.ord α Y)) :
     ∃ s : ℕ → Ordinal.{u}, StrictMono s ∧ (∀ n, s n < c.ord) ∧ ∀ ξ < c.ord, ∃ n, ξ ≤ s n := by
-  admit
+  obtain ⟨Y, -, ⟨w⟩⟩ := h (c.ord + 1) (Order.lt_add_one_iff.mpr le_rfl)
+  exact ⟨w.critSeq, w.critSeq_strictMono, w.critSeq_lt, fun ξ hξ =>
+    (critSeq_cofinal c hc w ξ hξ).imp fun _ hn => hn.le⟩
 
 /-- An exacting cardinal is uncountable: the restriction of a witness to `V_lam` is an
 `I3` embedding, whose critical point is a measurable cardinal below `lam`.
@@ -58,7 +66,8 @@ embedding to `V_lam` is an `I3`-embedding and `lam` is a limit of `n`-huge cardi
 theorem aleph0_lt_of_witness (c : Cardinal.{u}) (hc : ℵ₀ ≤ c)
     (h : ∀ α > c.ord, ∃ Y : ZFSet.{u}, Y ⊆ V_ α ∧ Nonempty (RelWitness c.ord α Y)) :
     ℵ₀ < c := by
-  admit
+  obtain ⟨Y, -, ⟨w⟩⟩ := h (c.ord + 1) (Order.lt_add_one_iff.mpr le_rfl)
+  exact w.aleph0_lt hc
 
 /-- An exacting cardinal is a strong limit.
 
@@ -68,7 +77,12 @@ Reference: [ABL, remark following Definition 2.4]: exacting cardinals are elemen
 theorem strongLimit_of_witness (c : Cardinal.{u}) (hc : ℵ₀ ≤ c)
     (h : ∀ α > c.ord, ∃ Y : ZFSet.{u}, Y ⊆ V_ α ∧ Nonempty (RelWitness c.ord α Y)) :
     ∀ μ < c, (2 : Cardinal.{u}) ^ μ < c := by
-  admit
+  -- a limit height above `c.ord`
+  have hlim : Order.IsSuccLimit (c.ord + ω) := Ordinal.isSuccLimit_add _ Ordinal.isSuccLimit_omega0
+  have hα : ∀ b < c.ord + ω, b + 1 < c.ord + ω := fun b hb => by simpa using hlim.succ_lt hb
+  have hlt : c.ord < c.ord + ω := (lt_add_iff_pos_right _).mpr Ordinal.omega0_pos
+  obtain ⟨Y, -, ⟨w⟩⟩ := h (c.ord + ω) hlt
+  exact w.strongLimit hc hα
 
 /-- No cardinal is exacting relative to a short cofinal subset of itself.
 
@@ -77,7 +91,7 @@ Reference: [BG, Observation 1(2)]: "If `Y ⊆ λ` is cofinal with `ot(Y) < λ`, 
 The same mechanism proves [ABL, Theorem 2.10].  (Synthesis Lemma 3.2.) -/
 theorem not_REx_shortCofinal (c : Cardinal.{u}) (hc : ℵ₀ ≤ c) (a : ZFSet.{u})
     (ha : ShortCofinal a c.ord) : ¬ REx c.ord a := by
-  admit
+  exact Cardinals.not_REx_shortCofinal c hc a ha
 
 /-- Definability transfer: relative exactingness passes from `Y` to every set
 ordinal definable from `Y`.
@@ -94,7 +108,7 @@ Reference: [BG, remark following Definition 3.1]: "If `γ < λ`, then `λ` is no
 exacting by the argument that refutes relativized exacting cardinals."
 (Synthesis Lemma 3.5.) -/
 theorem le_of_CEx (c γ : Cardinal.{u}) (hc : ℵ₀ ≤ c) (h : CEx γ c.ord) : c ≤ γ := by
-  admit
+  exact Cardinals.le_of_CEx c γ hc h
 
 /-- Stationary characterization of cover exactingness, forward direction:
 the relatively exacting predicates of size at most `γ` are stationary in

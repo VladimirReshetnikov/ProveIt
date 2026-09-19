@@ -205,26 +205,6 @@ theorem orb_mem_X (hU : w.IsUltra) (hα : ∀ a < α, a + 1 < α) {r : Ordinal.{
 
 /-! ### `j(a) = j '' a` for locally finite `a ⊆ λ` -/
 
-theorem nonempty_iff (b : Str w.X Y) : (∃ t, t ∈ b.1) ↔ ∃ t, t ∈ w.jv b := by
-  have hA := isTransitive_vonNeumann α
-  have h := w.elem (nonemptyF 0) (fun _ => b)
-  rw [nonemptyF_spec hA, nonemptyF_spec hA] at h
-  exact h
-
-theorem insert_iff (b x b' : Str w.X Y) :
-    b.1 = insert x.1 b'.1 ↔ w.jv b = insert (w.jv x) (w.jv b') := by
-  have hA := isTransitive_vonNeumann α
-  have h := w.elem (insertF 0 1 2) (scons b (scons x (fun _ => b')))
-  rw [insertF_spec hA, insertF_spec hA] at h
-  exact h
-
-theorem inter_iff (b x y : Str w.X Y) :
-    b.1 = x.1 ∩ y.1 ↔ w.jv b = w.jv x ∩ w.jv y := by
-  have hA := isTransitive_vonNeumann α
-  have h := w.elem (interF 0 1 2) (scons b (scons x (fun _ => y)))
-  rw [interF_spec hA, interF_spec hA] at h
-  exact h
-
 /-- `j` of a finite set of ordinals below `λ` is its pointwise image. -/
 theorem jv_finite (s : Finset Ordinal.{u}) :
     ∀ (η : Ordinal.{u}), η < c.ord → ∀ b : Str w.X Y,
