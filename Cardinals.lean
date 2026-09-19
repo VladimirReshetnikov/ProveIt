@@ -8,6 +8,7 @@ import Cardinals.Foundations.Exacting
 import Cardinals.Foundations.PairForm
 import Cardinals.Foundations.Bridge
 import Cardinals.Foundations.Witness
+import Cardinals.Foundations.SetForms
 import Cardinals.Published
 import Cardinals.Barrier
 import Cardinals.Below
@@ -19,3 +20,4 @@ import Cardinals.HODBoundary
 import Cardinals.Ultraexacting
 import Cardinals.Range
 import Cardinals.FiniteLabel
+import Cardinals.FixedSets
