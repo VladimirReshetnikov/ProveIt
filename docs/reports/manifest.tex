@@ -458,115 +458,6 @@ target is an informal suggestion in the source, not a numbered conjecture.}
 translation-invariant ideal that is not Baire and carries a perfect
 translation-almost-disjoint family.}
 
-\section{OEIS sequence asymptotics and formulas}
-
-Nine reports on the growth or the closed form of a single OEIS sequence.  Three
-of them count the terms in the derivatives of a power tower --- of $x^{x^x}$,
-$x^{x^2}$ and $x^x$ --- and reach three different answers by three different
-recurrences; two more share a Bell-scale saddle-point method on unrelated
-sequences.  Shared technique is not shared theorem, and none of these nine
-duplicates another.
-
-\entry{Bell-scale growth of OEIS A088714}
-{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a088714-bell-scale-growth}
-{article.pdf}{A088714\_asymptotic\_growth.zip}
-{For the unique formal series with $A(x)=1+xA(x)^2A(xA(x))$, proves
-$\log a_n=n\log n-n\log\log n-n+O(n\log\log n/\log n)$, so
-$(e\log n/n)\,a_n^{1/n}\to1$ and the ordinary generating function has radius of
-convergence zero while the exponential one is entire.  The lower bound comes
-from a single explicit path through an exact triangular recurrence, the upper
-from a Stirling-positivity comparison with derivatives of Touchard
-polynomials.  The multiplicative equivalent is \emph{not} claimed, and the
-finer Bell-number form is labelled a conjecture with a sufficient ratio
-condition isolated.}
-
-\entry{The exponential growth constant of OEIS A158415}
-{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a158415-growth-constant}
-{article.pdf}{A158415\_asymptotic\_growth.zip}
-{For the number of distinct values expressible with $n$ symbols from
-$E::=1\mid\sqrt E\mid(E+E)$, proves a computable $\gamma>1$ exists with
-$a(n)^{1/n}\to\gamma$ and $1.86204<\gamma<1.9208$, gives an effective
-characterisation as a supremum of algebraic finite-data bounds, and proves the
-boundary identity $\sum a(n)\gamma^{-n}=\gamma^2$, which rules out a pure
-$C\gamma^n$ prefactor.  The rigorous lower bounds rest on a uniform injectivity
-theorem: any finite alphabet of representable values can serve as nested-radical
-digits, via an odd valuation at a prime above~2.  No closed form for $\gamma$ is
-claimed, and terms 22--28 get certified intervals rather than exact values.}
-
-\entry{An exact coefficient formula for Ramanujan's theta function}
-{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a260306-formula-proof}
-{a260306\_proof.pdf}{A260306\_formula\_proof.zip}
-{Proves both finite formulas recorded in OEIS A260306, for every coefficient
-index, for the expansion $\theta(N)\sim\sum c_nN^{-n}$ defined by
-$\sum_{k<N}N^k/k!+\theta(N)N^N/N!=e^N/2$.  The route is an exact Laplace-integral
-difference, an analytic change of variable with $F(\psi(w))=w^2/2$, and Lagrange
-inversion reducing each $c_n$ to one coefficient extraction, then a finite
-change of basis into the entry's double and triple sums.  Includes the analytic
-error estimate the identification needs, rather than only checking the two sums
-agree, and identifies A065973 as the reduced denominators.}
-
-\entry{The maximal positive coefficient of a Hermite polynomial}
-{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a277280-hermite-maximum}
-{article.pdf}{A277280\_asymptotics.zip}
-{An exact closed form for OEIS A277280, the largest coefficient of the
-physicists' Hermite polynomial $H_n$ with signs retained: with
-$k_n=\lfloor(2n+6-\lfloor\sqrt{8n+21}\rfloor)/8\rfloor$ and $d_n=n-4k_n$, the
-exponent $d_n$ is the unique maximizer and $a(n)=n!\,2^{d_n}/((2k_n)!\,d_n!)$.
-The distinction from the largest coefficient in absolute value is kept explicit
-throughout.}
-
-\entry{Asymptotics of OEIS A277364}
-{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a277364-bell-asymptotics}
-{A277364\_asymptotics.pdf}{A277364\_asymptotics.zip}
-{For $a(n)=\sum_{k\le n/2}S(n,k)$, partitions of an $n$-set into at most
-$\lfloor n/2\rfloor$ blocks, proves $a(n)\sim B_n$ with an explicit first
-correction: writing $r=W_0(n)$,
-$a(n)=\exp\{n(r-1+1/r)-1\}(1+r)^{-1/2}\,(1-P(r)/n+O(r^2/n^2))$ for an explicit
-rational $P$.  Also gives a parity-split equivalent for the omitted tail
-$B_n-a(n)$.}
-
-\entry{Cubic-order growth of the derivatives of $x^{x^x}$}
-{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a281434-cubic-growth}
-{article.pdf}{A281434\_exact\_algorithm\_and\_cubic\_growth.zip}
-{For OEIS A281434, the number of nonzero monomials in the fully collected $n$th
-derivative of $x^{x^x}$, gives a canonical three-variable differential-polynomial
-representation with a seven-transition integer recurrence, two deterministic
-exact algorithms, and the two-sided bound placing $a(n)$ at order $n^3$, between
-$(7n^3+39n^2+26n+3\varepsilon)/24$ and $(2n^3+3n^2+4n)/3$.  The OEIS constant is
-not pinned down.  One of three entries counting derivative terms of a
-power-tower function; the functions, recurrences and answers all differ.}
-
-\entry{The derivative-term conjecture for $x^{x^2}$}
-{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a290268-derivative-terms}
-{A290268\_partial\_results.pdf}{A290268\_partial\_results.zip}
-{\textbf{The OEIS A290268 conjecture is not proved here, and the report says so
-first.}  What is proved unconditionally: the conjectured
-$U(n)=n^2/2+n+1-\ldots$ is an upper bound for the number of collected terms in
-the $n$th derivative of $x^{x^2}$; every predicted cancellation is explained;
-positivity holds on a large coefficient region; and there are no further zeros
-on the first two logarithmic-deficit diagonals.  The precise remaining
-nonvanishing statement is isolated.}
-
-\entry{Counting terms in the derivatives of $x^x$}
-{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a293239-derivative-terms}
-{article.pdf}{A293239\_research\_report.zip}
-{\textbf{The principal all-order closed formula for OEIS A293239 is not proved
-here}; its missing nonvanishing statement is isolated.  What the report does
-settle: the term count reduces exactly to zeros of the first-kind
-Lehmer--Comtet triangle A008296, giving $a(n)=1+n(n+1)/2-Z(n)$; and the
-recurrence printed in the entry with range $n>6$ is \emph{disproved} at $n=8$,
-its correct eventual range for the proposed sequence being $n\ge14$ ---
-conditional, for the actual derivative count, on the principal conjecture.}
-
-\entry{Iterated sums and products from one}
-{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a352969-correctness-and-growth}
-{article.pdf}{A352969\_correctness\_and\_growth.zip}
-{For $S_0=\{1\}$, $S_{n+1}=(S_n+S_n)\cup(S_n\cdot S_n)$ and $a_n=|S_n|$ (OEIS
-A352969), proves correctness of the listed terms and the doubly exponential law
-$2^{2^{\,n-r_n-4}}\le a_n\le 2^{2^{\,n-1}}$, hence
-$\log\log a_n=n+O(\sqrt{\log n})$.  The step is simultaneous, not repeated
-closure --- a distinction the report is careful about.}
-
 \section{Automata and formal languages}
 
 Five reports on state complexity, synchronization and language hierarchies.
@@ -1460,6 +1351,115 @@ periodic signs of block length $k+1$ and block product $-1$ and shows every
 signed finite product is flat.  \emph{Merged; the Conjecture 6.3 halves proved
 the same statement on the same domain, and the surviving report adds
 Conjecture~6.2 and the asymptotic analysis.}}
+
+\subsection{Single-sequence OEIS studies}
+
+Nine reports on the growth or the closed form of a single OEIS sequence.  Three
+of them count the terms in the derivatives of a power tower --- of $x^{x^x}$,
+$x^{x^2}$ and $x^x$ --- and reach three different answers by three different
+recurrences; two more share a Bell-scale saddle-point method on unrelated
+sequences.  Shared technique is not shared theorem, and none of these nine
+duplicates another.
+
+\entry{Bell-scale growth of OEIS A088714}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a088714-bell-scale-growth}
+{article.pdf}{A088714\_asymptotic\_growth.zip}
+{For the unique formal series with $A(x)=1+xA(x)^2A(xA(x))$, proves
+$\log a_n=n\log n-n\log\log n-n+O(n\log\log n/\log n)$, so
+$(e\log n/n)\,a_n^{1/n}\to1$ and the ordinary generating function has radius of
+convergence zero while the exponential one is entire.  The lower bound comes
+from a single explicit path through an exact triangular recurrence, the upper
+from a Stirling-positivity comparison with derivatives of Touchard
+polynomials.  The multiplicative equivalent is \emph{not} claimed, and the
+finer Bell-number form is labelled a conjecture with a sufficient ratio
+condition isolated.}
+
+\entry{The exponential growth constant of OEIS A158415}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a158415-growth-constant}
+{article.pdf}{A158415\_asymptotic\_growth.zip}
+{For the number of distinct values expressible with $n$ symbols from
+$E::=1\mid\sqrt E\mid(E+E)$, proves a computable $\gamma>1$ exists with
+$a(n)^{1/n}\to\gamma$ and $1.86204<\gamma<1.9208$, gives an effective
+characterisation as a supremum of algebraic finite-data bounds, and proves the
+boundary identity $\sum a(n)\gamma^{-n}=\gamma^2$, which rules out a pure
+$C\gamma^n$ prefactor.  The rigorous lower bounds rest on a uniform injectivity
+theorem: any finite alphabet of representable values can serve as nested-radical
+digits, via an odd valuation at a prime above~2.  No closed form for $\gamma$ is
+claimed, and terms 22--28 get certified intervals rather than exact values.}
+
+\entry{An exact coefficient formula for Ramanujan's theta function}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a260306-formula-proof}
+{a260306\_proof.pdf}{A260306\_formula\_proof.zip}
+{Proves both finite formulas recorded in OEIS A260306, for every coefficient
+index, for the expansion $\theta(N)\sim\sum c_nN^{-n}$ defined by
+$\sum_{k<N}N^k/k!+\theta(N)N^N/N!=e^N/2$.  The route is an exact Laplace-integral
+difference, an analytic change of variable with $F(\psi(w))=w^2/2$, and Lagrange
+inversion reducing each $c_n$ to one coefficient extraction, then a finite
+change of basis into the entry's double and triple sums.  Includes the analytic
+error estimate the identification needs, rather than only checking the two sums
+agree, and identifies A065973 as the reduced denominators.}
+
+\entry{The maximal positive coefficient of a Hermite polynomial}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a277280-hermite-maximum}
+{article.pdf}{A277280\_asymptotics.zip}
+{An exact closed form for OEIS A277280, the largest coefficient of the
+physicists' Hermite polynomial $H_n$ with signs retained: with
+$k_n=\lfloor(2n+6-\lfloor\sqrt{8n+21}\rfloor)/8\rfloor$ and $d_n=n-4k_n$, the
+exponent $d_n$ is the unique maximizer and $a(n)=n!\,2^{d_n}/((2k_n)!\,d_n!)$.
+The distinction from the largest coefficient in absolute value is kept explicit
+throughout.}
+
+\entry{Asymptotics of OEIS A277364}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a277364-bell-asymptotics}
+{A277364\_asymptotics.pdf}{A277364\_asymptotics.zip}
+{For $a(n)=\sum_{k\le n/2}S(n,k)$, partitions of an $n$-set into at most
+$\lfloor n/2\rfloor$ blocks, proves $a(n)\sim B_n$ with an explicit first
+correction: writing $r=W_0(n)$,
+$a(n)=\exp\{n(r-1+1/r)-1\}(1+r)^{-1/2}\,(1-P(r)/n+O(r^2/n^2))$ for an explicit
+rational $P$.  Also gives a parity-split equivalent for the omitted tail
+$B_n-a(n)$.}
+
+\entry{Cubic-order growth of the derivatives of $x^{x^x}$}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a281434-cubic-growth}
+{article.pdf}{A281434\_exact\_algorithm\_and\_cubic\_growth.zip}
+{For OEIS A281434, the number of nonzero monomials in the fully collected $n$th
+derivative of $x^{x^x}$, gives a canonical three-variable differential-polynomial
+representation with a seven-transition integer recurrence, two deterministic
+exact algorithms, and the two-sided bound placing $a(n)$ at order $n^3$, between
+$(7n^3+39n^2+26n+3\varepsilon)/24$ and $(2n^3+3n^2+4n)/3$.  The OEIS constant is
+not pinned down.  One of three entries counting derivative terms of a
+power-tower function; the functions, recurrences and answers all differ.}
+
+\entry{The derivative-term conjecture for $x^{x^2}$}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a290268-derivative-terms}
+{A290268\_partial\_results.pdf}{A290268\_partial\_results.zip}
+{\textbf{The OEIS A290268 conjecture is not proved here, and the report says so
+first.}  What is proved unconditionally: the conjectured
+$U(n)=n^2/2+n+1-\ldots$ is an upper bound for the number of collected terms in
+the $n$th derivative of $x^{x^2}$; every predicted cancellation is explained;
+positivity holds on a large coefficient region; and there are no further zeros
+on the first two logarithmic-deficit diagonals.  The precise remaining
+nonvanishing statement is isolated.}
+
+\entry{Counting terms in the derivatives of $x^x$}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a293239-derivative-terms}
+{article.pdf}{A293239\_research\_report.zip}
+{\textbf{The principal all-order closed formula for OEIS A293239 is not proved
+here}; its missing nonvanishing statement is isolated.  What the report does
+settle: the term count reduces exactly to zeros of the first-kind
+Lehmer--Comtet triangle A008296, giving $a(n)=1+n(n+1)/2-Z(n)$; and the
+recurrence printed in the entry with range $n>6$ is \emph{disproved} at $n=8$,
+its correct eventual range for the proposed sequence being $n\ge14$ ---
+conditional, for the actual derivative count, on the principal conjecture.}
+
+\entry{Iterated sums and products from one}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a352969-correctness-and-growth}
+{article.pdf}{A352969\_correctness\_and\_growth.zip}
+{For $S_0=\{1\}$, $S_{n+1}=(S_n+S_n)\cup(S_n\cdot S_n)$ and $a_n=|S_n|$ (OEIS
+A352969), proves correctness of the listed terms and the doubly exponential law
+$2^{2^{\,n-r_n-4}}\le a_n\le 2^{2^{\,n-1}}$, hence
+$\log\log a_n=n+O(\sqrt{\log n})$.  The step is simultaneous, not repeated
+closure --- a distinction the report is careful about.}
 
 \subsection{Asymptotics, records and discrepancy}
 
