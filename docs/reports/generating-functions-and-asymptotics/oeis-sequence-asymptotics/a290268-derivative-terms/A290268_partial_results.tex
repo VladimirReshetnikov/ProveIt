@@ -1,0 +1,999 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage[hidelinks]{hyperref}
+\usepackage{bookmark}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\atanh}{atanh}
+\newcommand{\fall}[2]{(#1)_{\underline{#2}}}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\U}{U}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small A290268: cancellations and nonvanishing}
+\fancyhead[R]{\small Partial results}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,
+  frame=single,keepspaces=true,showstringspaces=false}
+\hypersetup{pdftitle={A290268: forced cancellations, nonvanishing regions, and certified computations},
+  pdfauthor={Research note prepared for Vladimir Reshetnikov},
+  pdfsubject={Rigorous partial results; the full conjecture is not proved}}
+
+\title{The derivative-term conjecture for \texorpdfstring{$x^{x^2}$}{x raised to x squared}\\[4pt]
+\large Forced cancellations, nonvanishing regions,\\and certified computations for OEIS A290268}
+\author{Research note prepared for Vladimir Reshetnikov}
+\date{September 20, 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $a(n)$ be the number of nonzero monomials in the fully collected $n$th
+ derivative of $x^{x^2}$. The conjecture in OEIS A290268 predicts
+\[
+ a(n)=\U(n):=\frac{n^2}{2}+n+1
+ -(n\bmod2)\left(\frac12+\left\lfloor\frac{n+1}{8}\right\rfloor\right).
+\]
+This article does \emph{not} establish the equality for all $n$. It proves the
+unconditional bound $a(n)\le\U(n)$ by identifying every cancellation needed to
+explain the proposed formula. It also proves positivity throughout the upper
+half of the coefficient triangle, classifies all zeros on the first two
+logarithmic-deficit diagonals, and gives explicit quadratic lower bounds.
+An exact generating-function identity and a finite-difference formula reduce
+the full conjecture to a precise nonvanishing assertion. Integer arithmetic
+verifies the support through $n=200$; two complete modular computations,
+combined with the proved zero identities, certify $a(n)=\U(n)$ for every
+$0\le n\le3000$. All source code, finite certificates, and reproduction
+instructions accompany the article. The remaining nonvanishing step is
+stated explicitly rather than assumed.
+\end{abstract}
+
+\section{The problem and the status of the result}\label{sec:introduction}
+Put
+\[
+ f(x)=x^{x^2}=\exp(x^2\log x),\qquad x>0.
+\]
+The sequence A290268 counts the terms in the fully expanded derivative
+$f^{(n)}(x)$, after identical monomials have been collected. The OEIS entry
+was contributed by Vladimir Reshetnikov in October 2017; its formula section
+labels both the generating function and the explicit expression as
+conjectural. Peter Luschny's equivalent floor-function form is explicitly
+conditional on that conjecture~\cite{oeis}.
+
+For clarity, throughout this article the letter $\U$ denotes the
+\emph{proposed} answer, not an already proved formula for $a$:
+\begin{equation}\label{eq:U}
+ \U(n)=\frac{n^2}{2}+n+1
+ -(n\bmod2)\left(\frac12+\left\lfloor\frac{n+1}{8}\right\rfloor\right).
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:U-parity}
+ \U(2r)=2r^2+2r+1,\qquad
+ \U(2r+1)=2(r+1)^2-\left\lfloor\frac{r+1}{4}\right\rfloor.
+\end{equation}
+The two central issues are different. One must explain why certain
+coefficients vanish, and one must also exclude every other cancellation.
+The first task is completed here. The second is completed in substantial
+regions and in a large finite range, but not in full generality.
+
+\begin{theorem}[Unconditional bounds]\label{thm:main-bounds}
+For every integer $n\ge0$,
+\begin{equation}\label{eq:bounds}
+ \Lambda(n)\le a(n)\le\U(n),
+ \qquad
+ \Lambda(n)=
+ \begin{cases}
+ (3n^2+10n+8)/8,&n\text{ even},\\[2pt]
+ (3n^2+12n+1)/8,&n\text{ odd}.
+ \end{cases}
+\end{equation}
+In particular, $a(n)=\Theta(n^2)$. The proposed leading constant $1/2$ is
+not established by these bounds.
+\end{theorem}
+
+The upper bound is proved in Section~\ref{sec:counting}; the lower bound is
+proved in Section~\ref{sec:positivity}. Section~\ref{sec:computation} gives a
+reproducible finite certification of the stronger equality through $3000$.
+The exact outstanding assertion appears in Section~\ref{sec:remaining}.
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{A canonical polynomial expansion}\label{sec:canonical}
+Set $z=x^2$ and $L=\log x$. Define polynomials $P_n\in\Z[z,L]$ by
+\begin{equation}\label{eq:canonical}
+ f^{(n)}(x)=f(x)x^{-n}P_n(x^2,\log x),\qquad P_0=1.
+\end{equation}
+Write
+\begin{equation}\label{eq:c-def}
+ P_n(z,L)=\sum_{k,j}c_{n,k,j}z^kL^j.
+\end{equation}
+Thus $c_{n,k,j}$ is the coefficient of
+$x^{x^2+2k-n}(\log x)^j$ in the derivative. Counting terms means counting
+nonzero $c_{n,k,j}$, rather than counting the summands generated by a
+particular symbolic differentiation algorithm.
+
+\begin{lemma}[Uniqueness of the collected expansion]\label{lem:unique}
+A finite identity $\sum_{k,j}b_{k,j}x^{2k}(\log x)^j=0$ for all $x>0$
+forces every $b_{k,j}$ to vanish. Consequently, the expansion
+\eqref{eq:canonical}--\eqref{eq:c-def} is canonical.
+\end{lemma}
+\begin{proof}
+Substitute $x=e^L$ and group the identity as
+$\sum_k e^{2kL}B_k(L)=0$, with polynomial $B_k$. If $K$ is the largest
+index with $B_K\ne0$, division by $e^{2KL}$ shows that $B_K(L)$ tends to
+zero as $L\to+\infty$: all remaining terms are polynomials multiplied by
+decaying exponentials. A nonzero polynomial cannot tend to zero at
+$+\infty$. This contradiction eliminates $K$, and then all indices.
+\end{proof}
+
+The normalized derivative obeys a particularly small recurrence.
+\begin{proposition}[Polynomial and coefficient recurrences]\label{prop:recurrence}
+For every $n\ge0$,
+\begin{equation}\label{eq:P-recurrence}
+ P_{n+1}=\bigl(z(2L+1)-n\bigr)P_n
+          +2z\frac{\partial P_n}{\partial z}
+          +\frac{\partial P_n}{\partial L}.
+\end{equation}
+With nonexistent coefficients interpreted as zero,
+\begin{equation}\label{eq:c-recurrence}
+ \boxed{\;
+ c_{n+1,k,j}=(2k-n)c_{n,k,j}+(j+1)c_{n,k,j+1}
+             +c_{n,k-1,j}+2c_{n,k-1,j-1}.
+ \;}
+\end{equation}
+For $n\ge1$, the only possible nonzero indices satisfy
+\begin{equation}\label{eq:triangle}
+ 1\le k\le n,\qquad 0\le j\le k.
+\end{equation}
+\end{proposition}
+\begin{proof}
+We have $f'/f=x(2L+1)$, $dz/dx=2z/x$, and $dL/dx=1/x$.
+Differentiate \eqref{eq:canonical} and factor out $f(x)x^{-n-1}$ to obtain
+\eqref{eq:P-recurrence}. Taking the coefficient of $z^kL^j$ gives
+\eqref{eq:c-recurrence}. Starting from $P_0=1$, the first derivative is
+$P_1=z(2L+1)$. The four operations in \eqref{eq:P-recurrence} preserve
+$k\ge1$ and $j\le k$, and increase $k$ by at most one. Induction proves
+\eqref{eq:triangle} and integrality.
+\end{proof}
+
+For example,
+\begin{align*}
+ P_1&=z(2L+1),\\
+ P_2&=z(2L+3)+z^2(2L+1)^2,\\
+ P_3&=2z+z^2(12L^2+24L+9)+z^3(2L+1)^3.
+\end{align*}
+These have respectively $2$, $5$, and $8$ nonzero coefficients, in
+agreement with the definition. Already $P_3$ illustrates a degree loss:
+its $z$-coefficient has no $L$-term. Later cancellations are less obvious.
+For instance,
+\begin{equation}\label{eq:examples-cancel}
+ [z^2]P_7(z,L)=28,\qquad [z^2]P_9(z,L)=-864L.
+\end{equation}
+The missing $L$-term in the first polynomial and the missing constant in
+the second will follow from the same reflection principle.
+
+\section{Exact formulas for individual coefficients}\label{sec:formulas}
+\subsection{An exponential generating function}
+Define two formal power series
+\begin{equation}\label{eq:AB}
+ A(t)=t(2+t)=(1+t)^2-1,\qquad
+ B(t)=(1+t)^2\log(1+t).
+\end{equation}
+Formal coefficient extraction is denoted by $[t^n]$. All logarithms in
+formal series are expanded at the origin.
+
+\begin{proposition}[Generating function]\label{prop:egf}
+The complete coefficient array is described by
+\begin{equation}\label{eq:egf}
+ \sum_{n\ge0}P_n(z,L)\frac{t^n}{n!}
+   =\exp\bigl(z(A(t)L+B(t))\bigr).
+\end{equation}
+In particular, if $m=k-j\ge0$, then
+\begin{equation}\label{eq:coefficient-AB}
+ \boxed{\quad
+ c_{n,k,j}=\frac{n!}{j!m!}[t^n]A(t)^j B(t)^m.
+ \quad}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Taylor expansion at the point $x$ gives
+\[
+ \frac{f(x(1+t))}{f(x)}
+ =\sum_{n\ge0}\frac{x^nf^{(n)}(x)}{f(x)}\frac{t^n}{n!}.
+\]
+The logarithm of the ratio on the left is
+\[
+ x^2\bigl(((1+t)^2-1)\log x+(1+t)^2\log(1+t)\bigr).
+\]
+This proves \eqref{eq:egf} after substitution of $z,L$. Alternatively,
+its coefficients satisfy \eqref{eq:P-recurrence}, so the identity also
+holds with $z,L$ algebraically independent. Expanding separately the two
+exponentials $\exp(zA(t)L)$ and $\exp(zB(t))$ gives
+\eqref{eq:coefficient-AB}.
+\end{proof}
+
+Because both $A$ and $B$ start with a nonzero term of degree one, their
+product in \eqref{eq:coefficient-AB} starts at degree $k$. This independently
+explains $k\le n$. The difficulty is that $B$ does not have only positive
+coefficients:
+\[
+ B(t)=t+\frac32t^2+\frac13t^3-\frac1{12}t^4+\frac1{30}t^5-\cdots.
+\]
+Consequently, the coefficient formula is not itself a proof of
+nonvanishing.
+
+\subsection{Falling factorials and finite differences}
+Let
+\[
+ F_n(u)=\fall{u}{n}=u(u-1)\cdots(u-n+1),\qquad F_0(u)=1,
+\]
+and let $\Delta_2G(u)=G(u+2)-G(u)$. Set
+$Q_{n,j}(u)=\Delta_2^jF_n(u)$.
+
+\begin{proposition}[Finite-difference formula]\label{prop:difference}
+For $m=k-j\ge0$,
+\begin{align}
+ c_{n,k,j}
+ &=\frac{1}{j!m!}
+       \left.\frac{d^m}{du^m}Q_{n,j}(u)\right|_{u=2m}
+       \label{eq:difference}\\
+ &=\frac1{j!}[v^m]\sum_{h=0}^j(-1)^{j-h}\binom jh
+       F_n(2m+2h+v).\label{eq:difference-coeff}
+\end{align}
+\end{proposition}
+\begin{proof}
+The generalized binomial theorem gives
+$n![t^n](1+t)^u=F_n(u)$. Differentiating $m$ times in $u$ introduces
+$\log^m(1+t)$. Taking $j$ forward differences of step two introduces
+$((1+t)^2-1)^j=A(t)^j$. Evaluation at $u=2m$ introduces
+$(1+t)^{2m}$, which combines with the logarithm to give $B(t)^m$.
+Equation~\eqref{eq:coefficient-AB} now proves \eqref{eq:difference};
+Taylor's formula proves \eqref{eq:difference-coeff}.
+\end{proof}
+
+Derivatives of falling factorials also occur in the theory of shifted
+Stirling numbers and elementary symmetric harmonic sums; Poon gives a
+broader account of these connections~\cite{poon}. No general nonvanishing
+theorem from that literature is being assumed here. Formula
+\eqref{eq:difference-coeff} is also an independent way to compute a
+coefficient using integer polynomial products.
+
+\section{A transformation proving positivity}\label{sec:positivity}
+A fractional-linear change of variable turns a large region of the
+coefficient array into a manifestly positive expression. Define
+\begin{equation}\label{eq:H}
+ H(u)=\frac{\atanh u}{u}=\sum_{r\ge0}\frac{u^{2r}}{2r+1},
+ \qquad H(0)=1.
+\end{equation}
+The value at zero is understood by its formal power series.
+
+\begin{proposition}[Transformed coefficient formula]\label{prop:mobius}
+For $m=k-j\ge0$ and $n\ge k$,
+\begin{equation}\label{eq:mobius}
+ c_{n,k,j}=\frac{n!}{j!m!}\,2^{\,2j+m-n}
+ [u^{n-k}](1-u)^{n-2k-1}(1+u)^{2m}H(u)^m.
+\end{equation}
+Negative integer powers of $1-u$ have their usual formal expansions.
+\end{proposition}
+\begin{proof}
+In the residue expression for $[t^n]A(t)^jB(t)^m$, substitute
+$t=2u/(1-u)$. Then
+\[
+ 1+t=\frac{1+u}{1-u},\quad
+ A(t)=\frac{4u}{(1-u)^2},\quad
+ B(t)=\frac{2(1+u)^2}{(1-u)^2}\atanh u,
+ \quad dt=\frac{2\,du}{(1-u)^2}.
+\]
+Using $[t^n]G(t)=\Res_{t=0}G(t)t^{-n-1}\,dt$, the constant factor becomes
+$2^{2j+m-n}$. The remaining power of $1-u$ is $n-2k-1$.
+The factors $u^j(\atanh u)^m$ contribute $u^kH(u)^m$, so the resulting
+residue extracts the coefficient of $u^{n-k}$. Multiplying by
+$n!/(j!m!)$ proves the formula. The formal change-of-variable rule applies
+because $2u/(1-u)$ has zero constant term and nonzero linear coefficient.
+\end{proof}
+
+\begin{theorem}[A nonvanishing region]\label{thm:positive}
+For $1\le k\le n$ and $0\le j\le k$,
+\begin{equation}\label{eq:positive}
+ \begin{split}
+ n\le2k&\quad\Longrightarrow\quad c_{n,k,j}>0,\\
+ n=2k+1,\ j<k&\quad\Longrightarrow\quad c_{n,k,j}>0.
+ \end{split}
+\end{equation}
+\end{theorem}
+\begin{proof}
+If $n\le2k$, the factor $(1-u)^{n-2k-1}$ is $(1-u)^{-q}$ with $q\ge1$.
+Every coefficient of this factor is strictly positive. The other two
+factors in \eqref{eq:mobius} have nonnegative coefficients and constant
+term one. Their product therefore has a strictly positive coefficient in
+every nonnegative degree.
+
+If $n=2k+1$, that factor disappears. The condition $j<k$ means $m\ge1$.
+The series $H(u)^m$ has a strictly positive coefficient in every even
+degree. The polynomial $(1+u)^{2m}$ has positive constant and linear
+coefficients. An even target degree can be supplied entirely by $H(u)^m$;
+an odd target degree can use the linear term of $(1+u)^{2m}$ and an even
+degree from $H(u)^m$. Thus the target coefficient of degree $n-k$ is
+strictly positive in both cases. The prefactor in \eqref{eq:mobius} is
+positive.
+\end{proof}
+
+\begin{corollary}[Quadratic lower bounds]\label{cor:lower}
+The lower bound in Theorem~\ref{thm:main-bounds} holds.
+\end{corollary}
+\begin{proof}
+For $n=2r\ge2$, Theorem~\ref{thm:positive} supplies all coefficients with
+$r\le k\le2r$, giving
+\[
+ a(2r)\ge\sum_{k=r}^{2r}(k+1)=\frac{(r+1)(3r+2)}2.
+\]
+For $n=2r+1$ with $r\ge1$, it supplies all coefficients with
+$r+1\le k\le2r+1$ and the $r$ coefficients $0\le j<r$ at $k=r$.
+Hence
+\[
+ a(2r+1)\ge r+\sum_{k=r+1}^{2r+1}(k+1)
+ =\frac{3(r+1)(r+2)}2-1.
+\]
+These are precisely \eqref{eq:bounds}. The cases $n=0,1$ follow directly
+from $P_0=1$ and $P_1=z(2L+1)$.
+\end{proof}
+
+\section{The two forced families of zeros}\label{sec:zeros}
+\subsection{Degree-forced zeros on the top diagonal}
+Setting $j=k$, and therefore $m=0$, in \eqref{eq:coefficient-AB} yields
+an explicit coefficient.
+\begin{proposition}[Top logarithmic degree]\label{prop:top}
+For $k\ge1$ and $k\le n\le2k$,
+\begin{equation}\label{eq:top}
+ c_{n,k,k}=\frac{n!}{k!}\binom{k}{n-k}2^{2k-n}>0.
+\end{equation}
+For $n>2k$, one has $c_{n,k,k}=0$.
+\end{proposition}
+\begin{proof}
+The relevant series is the polynomial
+$A(t)^k=t^k(2+t)^k$, of degree $2k$. Its coefficient of $t^n$ is
+$\binom{k}{n-k}2^{2k-n}$ in the indicated range and zero above it.
+\end{proof}
+For a fixed $n\ge1$, this removes exactly
+$\lfloor(n-1)/2\rfloor$ cells from the possible triangle.
+
+\subsection{Reflection-forced cancellations}
+The less obvious zeros follow from symmetry about the midpoint of the
+roots of a falling factorial.
+\begin{lemma}[Reflection of a finite difference]\label{lem:reflection}
+For all $n,j\ge0$,
+\begin{equation}\label{eq:reflection}
+ Q_{n,j}(n-2j-1-u)=(-1)^{n-j}Q_{n,j}(u).
+\end{equation}
+\end{lemma}
+\begin{proof}
+First,
+$F_n(n-1-u)=(-1)^nF_n(u)$, by reversing the order of the factors.
+Expand the left side of \eqref{eq:reflection}:
+\[
+ \sum_{h=0}^j(-1)^{j-h}\binom jh
+ F_n(n-2j-1-u+2h).
+\]
+Reflection turns its last factor into
+$(-1)^nF_n(u+2(j-h))$. Reindexing by $\ell=j-h$ leaves the factor
+$(-1)^{n-j}$ times the usual expansion of $\Delta_2^jF_n(u)$.
+\end{proof}
+
+\begin{theorem}[Reflection zeros]\label{thm:reflection-zeros}
+Suppose $1\le k\le n$ and $0\le j<k$. Then
+\begin{equation}\label{eq:reflection-zeros}
+ k\text{ even},\qquad n=4k-2j+1
+ \quad\Longrightarrow\quad c_{n,k,j}=0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Put $m=k-j$. The reflection center in Lemma~\ref{lem:reflection} is
+$(n-2j-1)/2$. Under the displayed condition this equals $2m$, precisely
+the evaluation point in \eqref{eq:difference}. The parity of
+$Q_{n,j}(2m+v)$ as a polynomial in $v$ is $n-j$. Its coefficient of $v^m$
+therefore vanishes whenever $n-j-m=n-k$ is odd. The relation
+$n=4k-2j+1$ makes $n$ odd, so $n-k$ is odd when $k$ is even.
+Equation~\eqref{eq:difference-coeff} completes the proof.
+\end{proof}
+
+There is also a direct proof using \eqref{eq:mobius}. The relation in
+\eqref{eq:reflection-zeros} gives $n-2k-1=2m$, so the series whose
+coefficient is extracted becomes
+\begin{equation}\label{eq:even-kernel}
+ (1-u^2)^{2m}H(u)^m.
+\end{equation}
+This series is even. When $k$ is even, $n-k$ is odd, and its coefficient
+of that degree is zero. This second proof makes the cancellation visible
+without evaluating any large integer coefficient.
+
+\begin{remark}[What symmetry does not say]\label{rem:symmetry-gap}
+The theorem is an implication, not an equivalence. An even power series
+has zero odd coefficients, but it can also have zero even coefficients.
+Similarly, away from the reflection center, a derivative of a polynomial
+can vanish for reasons unrelated to symmetry. Excluding such additional
+zeros is a separate requirement of the full conjecture.
+\end{remark}
+
+\section{Counting the forced zeros}\label{sec:counting}
+For $n\ge1$, the triangle \eqref{eq:triangle} has
+\begin{equation}\label{eq:triangle-size}
+ T(n)=\sum_{k=1}^n(k+1)=\frac{n(n+3)}2
+\end{equation}
+cells. Let $Z_n^{\mathrm{top}}$ be the top-diagonal cells removed by
+Proposition~\ref{prop:top}, and let $Z_n^{\mathrm{ref}}$ be the cells in
+Theorem~\ref{thm:reflection-zeros}. These sets are disjoint, since the
+second requires $j<k$.
+
+\begin{lemma}[Number of reflection zeros]\label{lem:reflection-count}
+For even $n$, $Z_n^{\mathrm{ref}}$ is empty. For odd $n$,
+\begin{equation}\label{eq:reflection-count}
+ |Z_n^{\mathrm{ref}}|=\left\lfloor\frac{n+1}{8}\right\rfloor.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Reflection zeros have odd $n$. Write $n=2r+1$ and $k=2\ell$.
+The reflection relation determines
+$j=2k-r=4\ell-r$. The inequalities $0\le j<k$ become
+\[
+ \frac r4\le\ell<\frac r2.
+\]
+For $r\ge1$, these automatically give $\ell\ge1$ whenever the interval
+contains an integer. Its number of integers is
+\[
+ \left\lceil\frac r2\right\rceil-
+ \left\lceil\frac r4\right\rceil
+ =\left\lfloor\frac{r+1}{4}\right\rfloor,
+\]
+as is checked in the four residue classes of $r$ modulo four. For $r=0$
+both sides are zero. Since $(r+1)/4=(n+1)/8$, the result follows.
+\end{proof}
+
+\begin{theorem}[The conjectured expression is an upper bound]\label{thm:upper}
+For every $n\ge0$,
+\begin{equation}\label{eq:upper}
+ a(n)\le\U(n).
+\end{equation}
+Equality holds for a given $n$ if and only if the coefficient triangle has
+no zeros other than $Z_n^{\mathrm{top}}\cup Z_n^{\mathrm{ref}}$.
+\end{theorem}
+\begin{proof}
+For even $n=2r\ge2$, subtraction of the top-diagonal zeros from
+\eqref{eq:triangle-size} gives
+\[
+ 2r^2+3r-(r-1)=2r^2+2r+1.
+\]
+For odd $n=2r+1$, subtraction of both disjoint families gives
+\[
+ 2r^2+5r+2-r-\left\lfloor\frac{r+1}{4}\right\rfloor
+ =2(r+1)^2-\left\lfloor\frac{r+1}{4}\right\rfloor.
+\]
+These are \eqref{eq:U-parity}. Additional zeros could only decrease the
+number of nonzero coefficients, proving the inequality and the stated
+equivalence. Finally $a(0)=\U(0)=1$.
+\end{proof}
+
+For example, at $n=7$ there are $35$ potential cells, three top-diagonal
+zeros, and the reflection zero $(k,j)=(2,1)$, leaving $31$. At $n=9$,
+there are $54$ potential cells, four top-diagonal zeros, and the reflection
+zero $(2,0)$, leaving $49$. The exact expansions in
+\eqref{eq:examples-cancel} display those two different cancellations.
+The floor term in the proposed formula is thus explained by a proved
+symmetry, not merely by fitting initial values.
+
+\section{Nonvanishing on the first two deficit diagonals}\label{sec:small-m}
+Call $m=k-j$ the \emph{logarithmic deficit}. This section gives a complete
+zero classification for $m=1$ and $m=2$. Together with
+Theorem~\ref{thm:positive}, it narrows the unproved portion of the problem.
+
+\subsection{A beta-integral representation}
+Suppose $n>2k$, $m=k-j\ge1$, and put
+\begin{equation}\label{eq:d}
+ d=n-2k-1\ge0.
+\end{equation}
+For sufficiently small complex $\varepsilon$, define
+\begin{equation}\label{eq:I}
+ I_{m,j,d}(\varepsilon)=
+ \int_0^1 t^{2m+\varepsilon}(1-t)^{d-\varepsilon}(2t-1)^j\,dt.
+\end{equation}
+The integral and all derivatives required below converge uniformly on
+compact subsets of $|\varepsilon|<1/2$.
+
+\begin{lemma}[Integral formula]\label{lem:beta}
+Under these assumptions,
+\begin{equation}\label{eq:beta-Q}
+ Q_{n,j}(2m+\varepsilon)
+ =(-1)^{n-1}n!\frac{\sin(\pi\varepsilon)}{\pi}
+    I_{m,j,d}(\varepsilon),
+\end{equation}
+and consequently
+\begin{equation}\label{eq:beta-c}
+ c_{n,k,j}=\frac{(-1)^{n-1}n!}{j!}
+ [\varepsilon^m]\left(
+ \frac{\sin(\pi\varepsilon)}{\pi}I_{m,j,d}(\varepsilon)\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Euler's reflection formula and beta integral~\cite{dlmf-reflection,dlmf-beta}
+give, initially away from integer $\alpha$,
+\begin{align*}
+ F_n(\alpha)
+ &=(-1)^{n-1}\frac{\sin(\pi\alpha)}{\pi}
+      \Gamma(\alpha+1)\Gamma(n-\alpha)\\
+ &=(-1)^{n-1}n!\frac{\sin(\pi\alpha)}{\pi}
+      \int_0^1t^\alpha(1-t)^{n-\alpha-1}\,dt.
+\end{align*}
+In the $j$th difference put $\alpha=2m+2h+\varepsilon$. The sine factor
+is independent of the integer $h$. The finite sum inside the integral is
+\[
+ \sum_{h=0}^j(-1)^{j-h}\binom jh
+     \left(\frac{t}{1-t}\right)^{2h}
+ =\frac{(2t-1)^j}{(1-t)^{2j}}.
+\]
+The remaining exponent of $1-t$ is $d-\varepsilon$, proving
+\eqref{eq:beta-Q}. All terms are analytic near $\varepsilon=0$, so the
+identity extends to zero as well. Taking the coefficient of
+$\varepsilon^m$ and using \eqref{eq:difference-coeff} gives
+\eqref{eq:beta-c}.
+\end{proof}
+
+\subsection{Deficit one}
+\begin{theorem}[Complete signs for $m=1$]\label{thm:m1}
+Suppose $m=k-j=1$ and $n>2k$, and define $d$ by \eqref{eq:d}. Then
+\begin{equation}\label{eq:m1-sign}
+ \sgn c_{n,k,j}=(-1)^{n-1}
+ \begin{cases}
+ 1,&j\text{ even},\\
+ \sgn(2-d),&j\text{ odd}.
+ \end{cases}
+\end{equation}
+In particular the only zeros in this range have $j$ odd and $d=2$.
+\end{theorem}
+\begin{proof}
+The coefficient of $\varepsilon$ in \eqref{eq:beta-c} is
+\begin{equation}\label{eq:m1-integral}
+ c_{n,k,j}=\frac{(-1)^{n-1}n!}{j!}
+ \int_0^1t^2(1-t)^d(2t-1)^j\,dt.
+\end{equation}
+For even $j$, the integrand is nonnegative and positive except at finitely
+many points, so the integral is strictly positive. For odd $j$, pair $t$
+with $1-t$ and integrate over $1/2<t<1$. The paired integrand is
+\[
+ (2t-1)^j\bigl(t^2(1-t)^d-t^d(1-t)^2\bigr).
+\]
+The ratio of the two positive terms in parentheses is
+$(t/(1-t))^{2-d}$. Since $t/(1-t)>1$, their difference is identically
+zero when $d=2$ and otherwise has the strict sign of $2-d$ throughout
+the open interval. This proves the sign formula.
+\end{proof}
+These zeros are exactly the previously identified reflection zeros:
+$j$ odd means $k=j+1$ is even, and $d=2$ means
+$n=2k+3=4k-2j+1$.
+
+\subsection{Deficit two}
+\begin{theorem}[Complete signs for $m=2$]\label{thm:m2}
+Suppose $m=k-j=2$ and $n>2k$. Then
+\begin{equation}\label{eq:m2-sign}
+ \sgn c_{n,k,j}=(-1)^{n-1}
+ \begin{cases}
+ 1,&j\text{ odd},\\
+ \sgn(4-d),&j\text{ even}.
+ \end{cases}
+\end{equation}
+The only zeros in this range have $j$ even and $d=4$.
+\end{theorem}
+\begin{proof}
+The coefficient of $\varepsilon^2$ in \eqref{eq:beta-c} is
+\begin{equation}\label{eq:m2-integral}
+ c_{n,k,j}=\frac{(-1)^{n-1}n!}{j!}
+ \int_0^1t^4(1-t)^d(2t-1)^j
+       \log\frac{t}{1-t}\,dt.
+\end{equation}
+For odd $j$, the factors $(2t-1)^j$ and $\log(t/(1-t))$ have the same
+sign, so the integral is strictly positive. For even $j$, their product
+is antisymmetric under $t\mapsto1-t$. Pairing the integral as before
+leaves, on $1/2<t<1$,
+\[
+ (2t-1)^j\log\frac{t}{1-t}
+ \bigl(t^4(1-t)^d-t^d(1-t)^4\bigr).
+\]
+The first two factors are positive there. The bracket has the strict
+sign of $4-d$, or is identically zero when $d=4$. This proves the claim.
+\end{proof}
+Again the zero condition is exactly reflection: $k=j+2$ is even and
+$n=2k+5=4k-2j+1$.
+
+For $n\le2k$, positivity has already been proved, and the borderline
+$n=2k+1$ is included in both sign arguments. Thus these two theorems,
+together with Proposition~\ref{prop:top}, classify all zeros for
+$k-j\le2$ throughout the possible triangle.
+
+\subsection{Why the same sign proof does not settle higher deficits}
+At $m=3$, formula \eqref{eq:beta-c} gives the integral of
+\begin{equation}\label{eq:m3-kernel}
+ t^6(1-t)^d(2t-1)^j
+ \left(\frac12\log^2\frac{t}{1-t}-\frac{\pi^2}{6}\right)
+\end{equation}
+multiplied by $(-1)^{n-1}n!/j!$. The last factor changes sign inside
+$(0,1)$. Thus positivity of the weight, or pairing $t$ with $1-t$, no
+longer excludes cancellation. This is a concrete obstruction to simply
+extending the proofs above. It is not a counterexample to the conjecture.
+
+\section{Generating functions and equivalent formulas for the upper bound}
+\label{sec:gf}
+All identities in this section are proved identities for $\U(n)$.
+They become identities for $a(n)$ only after the remaining nonvanishing
+assertion is supplied, or when restricted to a certified finite range.
+
+\subsection{Derivation of the rational generating function}
+By \eqref{eq:U-parity}, the even and odd subsequences have generating
+functions
+\begin{align}
+ E(y)&=\sum_{r\ge0}\U(2r)y^r
+       =\frac{(1+y)^2}{(1-y)^3},\label{eq:E}\\
+ O(y)&=\sum_{r\ge0}\U(2r+1)y^r
+       =\frac{2(1+y)}{(1-y)^3}
+          -\frac{y^3}{(1-y)(1-y^4)}.\label{eq:O}
+\end{align}
+For the last term, write
+$\lfloor(r+1)/4\rfloor=\sum_{h\ge1}\mathbf1_{r\ge4h-1}$ and sum each
+geometric tail. Therefore
+\begin{align}
+ G(t):=\sum_{n\ge0}\U(n)t^n
+ &=E(t^2)+tO(t^2)\notag\\
+ &=\frac{1+t^2}{(1-t)^3(1+t)}
+       -\frac{t^7}{(1-t^2)(1-t^8)}\notag\\
+ &=\frac{N(t)}{(1-t)(1-t^2)(1-t^8)},\label{eq:GF}
+\end{align}
+where
+\begin{equation}\label{eq:N}
+ N(t)=1+t+2t^2+2t^3+2t^4+2t^5+2t^6+t^7+2t^8+t^9.
+\end{equation}
+Indeed,
+$N(t)=(1+t^2)(1+t+\cdots+t^7)-t^7(1-t)$.
+This is exactly the rational function proposed in the OEIS entry~\cite{oeis}.
+The derivation shows why period eight appears: it counts the even values
+of $k$ on the reflection line, in addition to the parity split of the
+ordinary triangle.
+
+\subsection{The eight constituent polynomials}
+Writing $n=8q+s$ with $0\le s\le7$, \eqref{eq:U} becomes the following
+degree-two quasipolynomial.
+\begin{center}
+\begin{tabular}{cl}
+\toprule
+$s$ & $\U(8q+s)$\\
+\midrule
+0 & $32q^2+8q+1$\\
+1 & $32q^2+15q+2$\\
+2 & $32q^2+24q+5$\\
+3 & $32q^2+31q+8$\\
+4 & $32q^2+40q+13$\\
+5 & $32q^2+47q+18$\\
+6 & $32q^2+56q+25$\\
+7 & $32q^2+63q+31$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The trigonometric expression from the OEIS entry is another way to write
+the same eight polynomials:
+\begin{equation}\label{eq:trig}
+ \U(n)=\frac{8n^2+15n+14+(n+2)(-1)^n
+ +(2-4\sqrt2\sin(\pi n/4))\sin(\pi n/2)}{16}.
+\end{equation}
+To verify the equivalence without an approximation, substitute $n=8q+s$.
+The sine factors take their exact values at multiples of $\pi/4$ and
+$\pi/2$. Substitution in each of the eight residue classes yields the
+polynomials in the table. In particular, no irrational value remains.
+
+\subsection{Linear recurrences}
+Multiplication of \eqref{eq:GF} by its denominator yields
+\begin{equation}\label{eq:rec11}
+ \begin{split}
+ \U(n)={}&\U(n-1)+\U(n-2)-\U(n-3)+\U(n-8)\\
+         &-\U(n-9)-\U(n-10)+\U(n-11),\qquad n\ge11.
+ \end{split}
+\end{equation}
+Multiplying the denominator by $1+t$ gives the convenient order-twelve
+form recorded in the OEIS entry:
+\begin{equation}\label{eq:rec12}
+ \U(n)=2\U(n-2)-\U(n-4)+\U(n-8)-2\U(n-10)+\U(n-12),
+ \qquad n\ge12.
+\end{equation}
+The twelve initial values are
+\[
+ 1,2,5,8,13,18,25,31,41,49,61,71.
+\]
+Using these recurrences to \emph{generate} the claimed values of $a(n)$
+would be circular in a proof of the conjecture. The computations in the
+next section instead use the independently derived coefficient recurrence
+\eqref{eq:c-recurrence}.
+
+\section{Exact finite verification and certificates}\label{sec:computation}
+\subsection{Integer arithmetic and independent formula checks}
+The accompanying Python program applies \eqref{eq:c-recurrence} with
+arbitrary-precision integers. Through $n=200$, it checks not only the
+term count but the entire zero pattern: a coefficient is zero if and only
+if it belongs to one of the two proved zero families. This examines
+$1{,}373{,}500$ cells with $1\le k\le n\le200$, $0\le j\le k$.
+
+For $0\le n\le16$, the program independently recomputes $969$ triples
+$(n,k,j)$, including the $k=0$ boundary, using each of
+\eqref{eq:coefficient-AB}, \eqref{eq:difference-coeff}, and
+\eqref{eq:mobius}. Fractions are exact rational numbers. All three formulas
+agree with the integer recurrence. The positivity and deficit-one and
+-deficit-two sign theorems are also checked throughout the integer range.
+These checks test the derivations and their implementation; the proofs in
+the preceding sections do not depend on them.
+
+\subsection{Why modular arithmetic gives a rigorous finite certificate}
+A nonzero residue modulo any integer $M\ge2$ proves that the original
+integer is nonzero. A zero residue, in contrast, might mean only that
+$M$ divides a nonzero integer. We use two moduli,
+\begin{equation}\label{eq:moduli}
+ M_1=1{,}000{,}000{,}007,\qquad M_2=1{,}000{,}000{,}009.
+\end{equation}
+Their primality is not needed for this argument: only exact reduction of
+an integer recurrence is used, with no modular division.
+
+For each modulus, a C++ program computes every row through $n=3000$ and
+records every zero residue outside the two mathematically proved zero
+families. There are three such residues modulo $M_1$ and four modulo
+$M_2$. The two lists are disjoint. Their union and the corresponding
+residues are as follows.
+\begin{center}
+\small
+\begin{tabular}{rrr|rr}
+\toprule
+$n$ & $k$ & $j$ & $c_{n,k,j}\bmod M_1$ & $c_{n,k,j}\bmod M_2$\\
+\midrule
+1471&1046&521&847578491&0\\
+1701&610&505&0&439228697\\
+1854&1713&549&0&366891231\\
+2336&1689&145&0&782191592\\
+2543&1785&663&405694396&0\\
+2807&2566&502&607368440&0\\
+2842&2673&2118&474540977&0\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every entry in this table is therefore a nonzero integer coefficient.
+All other cells outside the proved zero families have a nonzero residue
+in both runs. Each modulus run checks $4{,}509{,}002{,}501$ potential
+cells, including the single cell at $n=0$.
+
+\begin{proposition}[Finite computational certification]\label{prop:finite}
+The accompanying exact computations, together with
+Proposition~\ref{prop:top} and Theorem~\ref{thm:reflection-zeros}, certify
+\begin{equation}\label{eq:finite}
+ a(n)=\U(n)\qquad\text{for every integer }0\le n\le3000.
+\end{equation}
+\end{proposition}
+\begin{proof}[Certificate argument]
+The two analytic results prove that every predicted zero is an actual
+integer zero. For any other coefficient in the finite range, membership
+in neither, one, or both modular zero lists exhausts the possibilities.
+The intersection of the lists is empty. Thus at least one of its two
+residues is nonzero, proving that the integer coefficient is nonzero.
+Theorem~\ref{thm:upper} now gives the equality for every row in the range.
+\end{proof}
+This is a deterministic finite verification, not a probabilistic claim
+based on the size of the moduli. It is also not a formal proof-assistant
+certificate: it relies on the supplied ordinary programs and their
+execution, which can be independently reproduced.
+
+\subsection{Implementation details and limitations}
+The C++ program stores two coefficient rows in arrays of unsigned
+32-bit integers. An update is evaluated in signed 64-bit arithmetic
+before reduction. Its explicit input bounds guarantee that these
+intermediates cannot overflow. It never approximates logarithms or
+transcendental values. The arrays have $O(N^2)$ entries and the computation
+uses $O(N^3)$ fixed-modulus arithmetic operations through order $N$.
+
+The Python implementation uses a different update organization: it
+scatters each existing coefficient into its four successors, whereas
+the C++ implementation gathers four contributions into each destination.
+The small-range generating-function and finite-difference calculations
+provide further independent comparisons. The archive retains both raw
+modular zero lists, row-by-row support statistics, explicit nonzero
+witnesses, the combined certificate, and the exact small-range counts.
+
+No finite range, regardless of its size, proves the nonvanishing assertion
+for all $n$. In particular, the certificate supplies neither an induction
+step beyond $3000$ nor a theorem bounding where a first additional zero
+could occur.
+
+\section{The precise missing step}\label{sec:remaining}
+The coefficient problem can now be stated independently of the original
+transcendental function.
+\begin{conjecture}[Complete support classification]\label{conj:support}
+Let $n\ge1$, $1\le k\le n$, $0\le j\le k$, and $m=k-j$. Then
+\begin{equation}\label{eq:classification}
+ \frac{1}{j!m!}
+ \left.\frac{d^m}{du^m}\Delta_2^j\fall{u}{n}\right|_{u=2m}=0
+\end{equation}
+if and only if at least one of the following holds:
+\begin{equation}\label{eq:only-zeros}
+ \bigl(j=k\text{ and }n>2k\bigr),
+ \qquad
+ \bigl(k\text{ even and }n=4k-2j+1\bigr).
+\end{equation}
+\end{conjecture}
+The implication from \eqref{eq:only-zeros} to \eqref{eq:classification}
+is proved above. The converse remains unproved in the following precise
+region:
+\begin{equation}\label{eq:gap-region}
+ m=k-j\ge3,\qquad n\ge2k+2,
+\end{equation}
+away from the reflection zeros. All other regions have been handled by
+the preceding analytic theorems.
+
+\begin{theorem}[Exact reduction of the OEIS conjecture]\label{thm:equivalence}
+The equality $a(n)=\U(n)$ for every $n\ge0$ is equivalent to
+Conjecture~\ref{conj:support}. It is also equivalent to proving the
+nonvanishing assertion only in the remaining region
+\eqref{eq:gap-region}, excluding the reflection-zero family.
+\end{theorem}
+\begin{proof}
+Formula~\eqref{eq:difference} identifies the expression in
+\eqref{eq:classification} with the actual derivative coefficient.
+Theorem~\ref{thm:upper} counts exactly the cells left after removal of the
+two proved, disjoint zero families. Hence any additional zero makes the
+corresponding inequality strict, and no additional zeros makes it an
+equality. Theorem~\ref{thm:positive}, Proposition~\ref{prop:top}, and
+Theorems~\ref{thm:m1}--\ref{thm:m2} eliminate the complementary regions.
+\end{proof}
+
+A tempting shortcut would assert that a derivative of a falling factorial
+cannot vanish at an integer other than its reflection center. That
+assertion is false. Direct differentiation gives
+\begin{equation}\label{eq:false-shortcut}
+ \frac{d^5}{du^5}\fall{u}{8}
+ =3360(u-5)(u-2)(2u-7).
+\end{equation}
+It vanishes at $u=2$ and $u=5$, as well as at the reflection center
+$u=7/2$. This is \emph{not} a counterexample to
+Conjecture~\ref{conj:support}, because the derivative order, evaluation
+point, and finite-difference order in that conjecture are linked in a
+special way. It does show why those constraints must be used in a genuine
+proof of the missing implication.
+
+The transformed formula provides an alternative target. With
+$d=n-2k-1\ge1$, the outstanding task is to prove that
+\begin{equation}\label{eq:gap-transform}
+ [u^{k+d+1}](1-u)^d(1+u)^{2m}
+       \left(\frac{\atanh u}{u}\right)^m
+\end{equation}
+is nonzero for $m\ge3$, except when $d=2m$ and $k$ is even. The
+reflection case is transparent because the series then becomes even;
+the remaining finite-difference cancellations are the essential issue.
+Equation~\eqref{eq:gap-transform} is an equivalent residual lemma, not an
+additional theorem claimed by this article.
+
+\section{Conclusion}
+The proposed formula has a rigorous structural explanation. The obvious
+degree loss removes the top logarithmic coefficients with $n>2k$.
+A separate reflection symmetry removes exactly
+$\lfloor(n+1)/8\rfloor$ further coefficients for odd $n$. Their total
+produces the OEIS floor expression and its rational generating function
+as an unconditional upper bound.
+
+A fractional-linear transformation proves that a large region of the
+coefficient triangle is strictly positive, and beta-integral arguments
+exclude additional zeros on the first two deficit diagonals. These
+results prove quadratic growth and reduce the full formula to the
+explicit residual nonvanishing problem \eqref{eq:gap-transform}.
+Exact finite computations settle every derivative order through $3000$.
+The global equality is not proved here: its remaining obligation is the
+nonvanishing statement in \eqref{eq:gap-region}, not any of the counting
+or generating-function manipulations.
+
+\appendix
+\section{Reproducing the computations}\label{app:reproduce}
+The archive needs Python 3.10 or later and a C++17 compiler for the
+computations. Python uses only its standard library. The PDF can be
+rebuilt with a conventional LaTeX installation containing the packages
+listed in the source preamble.
+
+Run the following commands from the archive directory. The Makefile
+wraps the same operations.
+\begin{lstlisting}
+python3 code/verify_exact.py --max-n 200 --formula-n 16
+mkdir -p build
+g++ -O3 -std=c++17 -Wall -Wextra \
+    code/verify_modular.cpp -o build/verify_modular
+build/verify_modular 3000 1000000007 data/p1000000007 \
+    data/watch_coordinates.csv
+build/verify_modular 3000 1000000009 data/p1000000009 \
+    data/watch_coordinates.csv
+python3 code/combine_certificates.py
+pdflatex -interaction=nonstopmode -halt-on-error \
+    A290268_partial_results.tex
+pdflatex -interaction=nonstopmode -halt-on-error \
+    A290268_partial_results.tex
+\end{lstlisting}
+The watch file requests explicit residues at the seven exceptional
+coordinates found in the modular runs. It does not restrict the search:
+the C++ program checks every coefficient in every row regardless of the
+watch file. The combiner checks that the complete exceptional zero lists
+are disjoint and that all listed witnesses are consistent with them.
+
+For a smaller test, the optional watch file can be omitted. For example,
+\texttt{build/verify\_modular 100 1000000007 data/test} performs the full
+modular recurrence through $100$. A watch file containing indices beyond
+the chosen bound is rejected, rather than silently ignored.
+
+\section{Files included in the archive}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.43\textwidth}>{\raggedright\arraybackslash}p{0.53\textwidth}@{}}
+\toprule
+File or directory & Purpose\\
+\midrule
+\endhead
+\texttt{A290268\_partial\_results.tex} & Complete article source.\\
+\texttt{A290268\_partial\_results.pdf} & Compiled article.\\
+\texttt{README.md}, \texttt{Makefile} & Status, dependency notes, and reproduction commands.\\
+\texttt{code/verify\_exact.py} & Arbitrary-precision recurrence and three independent coefficient-formula checks.\\
+\texttt{code/verify\_modular.cpp} & Complete modular coefficient search with explicit overflow bounds.\\
+\texttt{code/combine\_certificates.py} & Verification and combination of the two finite modular certificates.\\
+\texttt{data/exact\_counts.csv} & Exact term counts through $200$.\\
+\texttt{data/certified\_counts.csv} & Certified term counts through $3000$.\\
+\texttt{data/p1000000007\_*} and \texttt{data/p1000000009\_*} & Complete exceptional zero lists, row statistics, witness residues, run logs, and summaries.\\
+\texttt{data/modular\_witnesses.csv} & The seven coordinates at which one residue vanishes, with the nonzero residue in the other modulus.\\
+\texttt{data/*summary.json} & Machine-readable verification scope and results.\\
+\texttt{data/sample\_coefficients.json} & Fully collected low-order coefficient arrays and cancellation examples.\\
+\texttt{SHA256SUMS.txt} & Integrity checks for the distributed files; these are not mathematical proof certificates.\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{9}
+\bibitem{oeis}
+The OEIS Foundation Inc.,
+\emph{A290268: Number of terms in the fully expanded $n$-th derivative of
+$x^{x^2}$}, contributed by Vladimir Reshetnikov, with formula comments by
+Peter Luschny, October 2017. Accessed September 20, 2026.
+\url{https://oeis.org/A290268}.
+
+\bibitem{poon}
+Steven S. Poon,
+\emph{Higher Derivatives of the Falling Factorial and Related
+Generalizations of the Stirling and Harmonic Numbers},
+arXiv:1401.2737, 2014.
+\url{https://arxiv.org/abs/1401.2737}.
+
+\bibitem{dlmf-reflection}
+NIST Digital Library of Mathematical Functions,
+\S5.5(ii), especially Eq.~5.5.3, Euler's reflection formula.
+Accessed September 20, 2026.
+\url{https://dlmf.nist.gov/5.5.E3}.
+
+\bibitem{dlmf-beta}
+NIST Digital Library of Mathematical Functions,
+\S5.12, especially Eq.~5.12.1, Euler's beta integral.
+Accessed September 20, 2026.
+\url{https://dlmf.nist.gov/5.12.E1}.
+\end{thebibliography}
+\end{document}

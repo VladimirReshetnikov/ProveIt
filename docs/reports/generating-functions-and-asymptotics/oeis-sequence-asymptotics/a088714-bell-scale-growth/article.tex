@@ -1,0 +1,948 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{hidelinks,pdftitle={Bell-Scale Growth of OEIS A088714},pdfauthor={OpenAI ChatGPT},pdfsubject={Rigorous coefficient growth, formal iteration, and Poisson-moment comparison}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Bell-scale growth of A088714}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\ST}[2]{\left\{\begin{matrix}#1\\#2\end{matrix}\right\}}
+\newcommand{\eps}{\varepsilon}
+\DeclareMathOperator{\rad}{rad}
+\allowdisplaybreaks
+\title{\textbf{Bell-Scale Growth of OEIS A088714}\\[5pt]
+\large A rigorous $n$th-root asymptotic, quantitative bounds,\\
+and a separately identified finer conjecture}
+\author{OpenAI ChatGPT}
+\date{September 20, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $A(x)=\sum_{n\ge0}a_nx^n$ be the unique formal power series satisfying
+$A(x)=1+xA(x)^2A(xA(x))$. Its coefficients form OEIS A088714.
+We prove
+\[
+ \log a_n=n\log n-n\log\log n-n
+       +O\!\left(\frac{n\log\log n}{\log n}\right),
+ \qquad
+ a_n^{1/n}\sim\frac{n}{e\log n}.
+\]
+The proof is based on an exact triangular recurrence obtained from
+composition iterates. A simple path through that recurrence supplies the
+lower bound. The upper bound comes from a coefficientwise inequality for
+shifted Poisson moments, proved here by a positivity argument involving
+Stirling numbers. More explicitly, for every $n\ge1$,
+\[
+ \max_{1\le h\le n+1}h^{\,n+1-h}
+ \ \le\ a_n\ \le\
+ \inf_{\lambda>0}\left(1+\frac2\lambda\right)^n T_n'(\lambda),
+\]
+where $T_n$ is the $n$th Touchard polynomial.
+Consequently the ordinary generating function has radius zero, whereas
+the exponential generating function is entire. Exact coefficient
+computations accompany the proof. They suggest a considerably sharper
+Bell-number comparison, but that comparison and its multiplicative
+constant are not claimed as established results.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{The problem and the precise result}
+
+The OEIS entry A088714 defines the sequence through the formal functional
+equation \cite{oeis-a088714}
+\begin{equation}\label{eq:def}
+ A(x)=1+xA(x)^2A(xA(x)),\qquad A(0)=1.
+\end{equation}
+Its beginning is
+\[
+1,\ 1,\ 3,\ 13,\ 69,\ 419,\ 2809,\ 20353,\ 157199,\ 1281993,\ 10963825,\ldots.
+\]
+The index convention throughout is $a_0=1$, $a_1=1$, $a_2=3$.
+All logarithms are natural. Formal composition is legitimate because the
+series substituted into $A$ has zero constant term.
+
+The composition in \eqref{eq:def} makes this a different problem from
+ordinary algebraic generating-function asymptotics. In fact, the answer
+rules out a positive radius of convergence. One must not assume that the
+formal identity initially defines a holomorphic function near the origin.
+
+\begin{theorem}[Main asymptotic]\label{thm:main}
+For the coefficients of \eqref{eq:def},
+\begin{equation}\label{eq:mainlog}
+ \log a_n=n\log n-n\log\log n-n
+       +O\!\left(\frac{n\log\log n}{\log n}\right).
+\end{equation}
+Equivalently, at the level of $n$th-root asymptotics,
+\begin{equation}\label{eq:root}
+ \boxed{\displaystyle
+ a_n^{1/n}=\frac{n}{e\log n}
+       \left(1+O\!\left(\frac{\log\log n}{\log n}\right)\right),
+ \qquad
+ \lim_{n\to\infty}\frac{e\log n}{n}\,a_n^{1/n}=1.}
+\end{equation}
+In particular,
+\begin{equation}\label{eq:expform}
+ a_n=\left(\frac{n}{e\log n}\right)^n
+        \exp\!\left(O\!\left(\frac{n\log\log n}{\log n}\right)\right).
+\end{equation}
+\end{theorem}
+
+The $-n$ in \eqref{eq:mainlog} is important: it identifies the constant
+$1/e$ in \eqref{eq:root}. The weaker assertion $\log a_n\sim n\log n$
+would miss both the logarithmic denominator and this constant.
+
+\paragraph{What the theorem does not say.}
+Equation \eqref{eq:expform} is not the multiplicative equivalent
+$a_n\sim(n/(e\log n))^n$. The error in its logarithm is $o(n)$, but it
+need not tend to zero. Likewise, an $n$th-root equivalent does not by
+itself imply an equivalent for $a_n/a_{n-1}$. Section~\ref{sec:finer}
+discusses a finer numerical pattern without confusing it with the theorem.
+
+A useful feature of the argument is that it gives bounds for every index,
+not merely an eventual limiting statement.
+
+\begin{theorem}[Finite-index comparison]\label{thm:finite}
+Define the Touchard polynomials by
+\begin{equation}\label{eq:touchard}
+ T_n(\lambda)=\sum_{j=0}^n\ST{n}{j}\lambda^j,
+\end{equation}
+where $\ST{n}{j}$ denotes a Stirling number of the second kind, and let
+$T_n'(\lambda)$ mean differentiation with respect to $\lambda$.
+For every integer $n\ge1$,
+\begin{equation}\label{eq:finite}
+ \boxed{\displaystyle
+ \max_{h\in\{1,\ldots,n+1\}}h^{\,n+1-h}
+ \ \le\ a_n\ \le\
+ \inf_{\lambda>0}\left(1+\frac2\lambda\right)^nT_n'(\lambda).}
+\end{equation}
+For every $r>0$ and $\lambda>0$ this implies the entirely explicit bound
+\begin{equation}\label{eq:cauchyupper}
+ a_n\le
+ \left(1+\frac2\lambda\right)^n
+ \frac{n!}{r^n}(e^r-1)\exp\!\bigl(\lambda(e^r-1)\bigr).
+\end{equation}
+\end{theorem}
+
+The remainder of the proof is self-contained. The OEIS supplies the
+sequence identification and related formal identities. Standard Bell
+number and Lambert $W$ information is used for interpretation and
+numerical comparison, not to assume the answer for A088714.
+
+\section{Formal identities and the exact coefficient recurrence}
+
+\subsection{Existence, uniqueness, and direct extraction}
+
+In \eqref{eq:def}, the coefficient of $x^n$ on the right depends only on
+$a_0,\ldots,a_{n-1}$. Starting with $a_0=1$ therefore determines the
+coefficients successively and proves existence and uniqueness in
+$\mathbb Z[[x]]$. The same observation proves their nonnegativity.
+Expanding the outer occurrence of $A$ gives the exact identity
+\begin{equation}\label{eq:directrec}
+ a_n=\sum_{k=0}^{n-1}a_k\,[x^{n-1-k}]A(x)^{k+2},\qquad n\ge1.
+\end{equation}
+This recurrence is useful for independently checking computed
+coefficients. It also explains the finer heuristic in
+Section~\ref{sec:finer}, but it is not the most convenient recurrence for
+our rigorous upper bound.
+
+\subsection{Passage to composition iterates}
+
+Put $B(x)=xA(x)$. Equation \eqref{eq:def} becomes
+\begin{equation}\label{eq:B}
+ B(x)=x+B(x)B(B(x)).
+\end{equation}
+Since $B(x)=x+O(x^2)$, it has a formal compositional inverse. Substitution
+of that inverse into \eqref{eq:B} yields
+\begin{equation}\label{eq:inverse}
+ B^{\langle-1\rangle}(x)=x-xB(x)=x-x^2A(x).
+\end{equation}
+This is the reversion identity also recorded in the OEIS entry
+\cite{oeis-a088714}.
+
+For each integer $k\ge0$, define
+\begin{equation}\label{eq:Fk}
+ F_k(x)=\frac{B^{\circ k}(x)}x,
+ \qquad F_0(x)=1,
+ \qquad F_1(x)=A(x).
+\end{equation}
+Here $B^{\circ0}(x)=x$ and $B^{\circ k}$ denotes $k$-fold composition,
+not an ordinary power. Composing \eqref{eq:B} with $B^{\circ(k-1)}$ and
+dividing by $x$ gives
+\begin{equation}\label{eq:hierarchy}
+ F_k(x)=F_{k-1}(x)+xF_k(x)F_{k+1}(x),\qquad k\ge1.
+\end{equation}
+The first few equations are the infinite system displayed in the OEIS
+entry; the derivation here fixes the indexing and proves the general
+identity \cite{oeis-a088714}.
+
+Write
+\[
+ F_k(x)=\sum_{n\ge0}c_{n,k}x^n.
+\]
+Then
+\begin{equation}\label{eq:boundary}
+ c_{0,k}=1\quad(k\ge0),\qquad c_{n,0}=0\quad(n\ge1),
+ \qquad a_n=c_{n,1}.
+\end{equation}
+Coefficient extraction in \eqref{eq:hierarchy} gives
+\begin{equation}\label{eq:triangular}
+ c_{n,k}-c_{n,k-1}
+ =\sum_{i=0}^{n-1}c_{i,k}c_{n-1-i,k+1}.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:triangularsum}
+ c_{n,k}=\sum_{j=1}^k\sum_{i=0}^{n-1}
+                  c_{i,j}c_{n-1-i,j+1}.
+\end{equation}
+Every term on the right has first index less than $n$. Consequently this
+is a genuine triangular recurrence despite the occurrence of $k+1$.
+It proves positivity and monotonicity in $k$, and is the main structural
+tool of the article.
+
+For illustration, the first three coefficient polynomials are
+\begin{align*}
+ c_{1,k}&=k,\\
+ c_{2,k}&=k^2+2k,\\
+ c_{3,k}&=k^3+5k^2+7k.
+\end{align*}
+Evaluating at $k=1$ gives $1,3,13$ as required. These are not ordinary
+Touchard polynomials; the Poisson polynomials introduced later are
+comparison objects, not an exact formula for the sequence.
+
+\subsection{Relation to the signed reversion sequence}
+
+For completeness, set
+\[
+ g(x)=-B^{\langle-1\rangle}(-x)=x+x^2A(-x).
+\]
+The inverse identity implies
+\[
+ g(g(x))=(1+x)g(x).
+\]
+For $n\ge2$ its coefficient of $x^n$ is $(-1)^{n-2}a_{n-2}$.
+Thus the signed series in A067145 has the same coefficient magnitudes,
+with this explicit index shift \cite{oeis-a067145}. This identity is an
+additional verification route, not an analytic-convergence argument.
+
+\section{A lower bound from an increasing-index path}
+
+\begin{lemma}\label{lem:powerlower}
+For every $n\ge0$ and every integer $k\ge1$,
+\begin{equation}\label{eq:powerlower}
+ c_{n,k}\ge k^n.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The case $n=0$ is immediate. Suppose the statement holds for smaller
+first indices. By \eqref{eq:triangularsum},
+\begin{align*}
+ c_{n,k}
+ &\ge\sum_{j=1}^k\sum_{i=0}^{n-1}j^i(j+1)^{n-1-i}\\
+ &=\sum_{j=1}^k\bigl((j+1)^n-j^n\bigr)
+  =(k+1)^n-1\ge k^n.
+\end{align*}
+The inner sum is a difference of two $n$th powers, and the outer sum
+then telescopes. This completes the induction.
+\end{proof}
+
+The $i=0$ summand of \eqref{eq:triangular} and positivity imply
+\[
+ c_{n,k}\ge c_{n-1,k+1}\qquad(n\ge1).
+\]
+Iterating this inequality $h-1$ times, for $1\le h\le n+1$, gives
+\begin{equation}\label{eq:pathlower}
+ a_n=c_{n,1}\ge c_{n-h+1,h}\ge h^{n-h+1}.
+\end{equation}
+This proves the lower half of Theorem~\ref{thm:finite}.
+
+\subsection{Optimizing the lower bound}
+
+Let $N=n+1$ and temporarily allow $h$ to be real. The function
+\[
+ \phi_N(h)=(N-h)\log h
+\]
+has derivatives
+\[
+ \phi_N'(h)=\frac Nh-1-\log h,
+ \qquad
+ \phi_N''(h)=-\frac N{h^2}-\frac1h<0.
+\]
+Its unique maximum is attained at
+\begin{equation}\label{eq:lowerW}
+ h_*\bigl(1+\log h_*\bigr)=N,
+ \qquad
+ h_* =\frac{N}{W(eN)}.
+\end{equation}
+The positive real branch of Lambert $W$, characterized by
+$W(z)e^{W(z)}=z$, is intended \cite{dlmf-w}. The exact maximizing integer
+is among $\lfloor h_*\rfloor$ and $\lceil h_*\rceil$.
+If $w_*=W(eN)$, the continuous maximum is
+\begin{equation}\label{eq:lowerWvalue}
+ \phi_N(h_*)=N\left(w_*-2+\frac1{w_*}\right).
+\end{equation}
+Rounding to a nearest integer changes this value by
+$O((\log N)^2/N)$: on an interval of fixed length around $h_*$,
+$|\phi_N''(h)|=O((\log N)^2/N)$, and $\phi_N'(h_*)=0$.
+This provides an accurate, explicit lower bound even when the leading
+logarithmic expression is numerically crude.
+
+For the main theorem, a simpler choice suffices. Put
+\[
+ L=\log n,\qquad \ell=\log\log n,
+ \qquad h=\left\lfloor\frac nL\right\rfloor.
+\]
+As $n\to\infty$,
+\[
+ \log h=L-\ell+O(L/n),\qquad h=n/L+O(1).
+\]
+Hence \eqref{eq:pathlower} yields
+\begin{equation}\label{eq:lowerexpanded}
+ \log a_n\ge n(L-\ell-1)+\frac{n\ell}{L}-O(L).
+\end{equation}
+In particular the lower bound has the same $n\log n$, $-n\log\log n$,
+and $-n$ terms as the claimed answer.
+
+\section{The Poisson-moment comparison inequality}\label{sec:poisson}
+
+The upper bound requires a comparison family that respects the increase
+from $k$ to $k+1$ in \eqref{eq:triangular}. Ordinary exponential bounds
+are too small, while a rough factorial bound loses the logarithmic
+factor. Shifted Poisson moments provide the needed intermediate scale.
+
+Let $X$ have the Poisson distribution with mean $\lambda>0$, and define
+\begin{equation}\label{eq:M}
+ M_n(k)=\E(k+X)^n,\qquad T_n(\lambda)=M_n(0).
+\end{equation}
+Their exponential generating functions are
+\begin{equation}\label{eq:mgf}
+ \sum_{n\ge0}M_n(k)\frac{z^n}{n!}
+ =\exp\!\bigl(kz+\lambda(e^z-1)\bigr),
+ \qquad
+ \sum_{n\ge0}T_n(\lambda)\frac{z^n}{n!}
+ =\exp\!\bigl(\lambda(e^z-1)\bigr).
+\end{equation}
+Expanding the last exponential proves \eqref{eq:touchard}; at
+$\lambda=1$ these polynomials give the Bell numbers. Standard Bell
+identities are recorded in \cite{dlmf-bell}; the identities needed below
+also follow directly from \eqref{eq:mgf}.
+
+For $n\ge1$ set
+\begin{equation}\label{eq:DS}
+ D_n(k)=M_n(k)-M_n(k-1),\qquad
+ S_n(k)=\sum_{i=0}^{n-1}M_i(k)M_{n-1-i}(k+1).
+\end{equation}
+The central estimate is the following.
+
+\begin{lemma}[Shifted Poisson convolution inequality]\label{lem:poisson}
+For every $n\ge1$, $k\ge1$, and $\lambda>0$,
+\begin{equation}\label{eq:poissonineq}
+ S_n(k)\le\left(1+\frac2\lambda\right)D_n(k).
+\end{equation}
+In fact, after multiplication by $\lambda$, the difference between the
+right and left sides is a polynomial with nonnegative coefficients in
+$\lambda$ and $k-1$.
+\end{lemma}
+
+\subsection{Reduction to the shift \texorpdfstring{$k=1$}{k=1}}
+
+Write $u=k-1$. The binomial theorem gives
+\begin{equation}\label{eq:Dtranslate}
+ D_n(k)=\sum_{r=1}^n\binom nr u^{n-r}D_r(1).
+\end{equation}
+There is a matching identity for the ordinary convolution:
+\begin{equation}\label{eq:Stranslate}
+ S_n(k)=\sum_{r=1}^n\binom nr u^{n-r}S_r(1).
+\end{equation}
+To verify it, expand both shifted moments in the definition of $S_n(k)$.
+For fixed nonnegative integers $p,q$ with $p+q=r-1$, the coefficient
+sum over the convolution index is
+\[
+ \sum_i\binom ip\binom{n-1-i}q=\binom n{p+q+1}=\binom nr.
+\]
+This identity counts a subset of $r$ elements of an $n$-element ordered
+set by the location of its $(p+1)$st element. Thus it holds including
+all boundary cases. Equations \eqref{eq:Dtranslate} and
+\eqref{eq:Stranslate} reduce the lemma to $k=1$.
+
+Differentiating \eqref{eq:mgf} with respect to $\lambda$ shows
+\begin{equation}\label{eq:Dderivative}
+ D_n(1)=T_n'(\lambda).
+\end{equation}
+Suppress the argument $\lambda$ temporarily, write $S_n=S_n(1)$, and set
+\begin{equation}\label{eq:H}
+ H_n=(\lambda+2)T_n'-\lambda S_n.
+\end{equation}
+We shall prove that $H_n$ has nonnegative coefficients for every $n\ge1$.
+
+\subsection{A recurrence for the difference polynomial}
+
+The moment identities imply
+\begin{align}
+ T_{n+1}&=\lambda(T_n+T_n'),\label{eq:Trec}\\
+ M_{n+1}(k)&=(k+\lambda)M_n(k)+\lambda M_n'(k).\label{eq:Mrec}
+\end{align}
+Here and below a prime means differentiation in $\lambda$, not in $k$.
+Applying \eqref{eq:Mrec} to both factors in $S_n$ gives
+\begin{equation}\label{eq:Srec}
+ S_{n+1}=\frac\lambda2 S_n'
+          +\left(\lambda+\frac32\right)S_n
+          +\frac12\bigl(M_n(1)+M_n(2)\bigr).
+\end{equation}
+Indeed, the two shifted convolution sums add up to
+$2S_{n+1}-M_n(1)-M_n(2)$. Furthermore,
+\[
+ M_n(1)=T_n+T_n',\qquad
+ M_n(2)=T_n+2T_n'+T_n''.
+\]
+Substitute these formulas and \eqref{eq:Trec} into \eqref{eq:H}. A direct
+simplification gives the exact recurrence
+\begin{equation}\label{eq:Hrec}
+ H_{n+1}=\frac\lambda2 H_n'+(\lambda+1)H_n+K_n,
+\end{equation}
+where
+\begin{equation}\label{eq:K}
+ K_n=\frac{\lambda(\lambda+1)}2T_n''-2\lambda T_n'+2T_n.
+\end{equation}
+The initial difference polynomials are
+\begin{align*}
+ H_1&=2,\\
+ H_2&=2+2\lambda,\\
+ H_3&=2+6\lambda+\lambda^2,\\
+ H_4&=2+14\lambda+8\lambda^2.
+\end{align*}
+They all have nonnegative coefficients.
+
+\subsection{Why the forcing polynomial is nonnegative}
+
+From \eqref{eq:touchard}, the coefficient of $\lambda^j$ in $K_n$ is
+\begin{equation}\label{eq:Kcoeff}
+ [\lambda^j]K_n
+ =\frac{(j-1)(j-4)}2\ST nj
+   +\frac{j(j+1)}2\ST n{j+1}.
+\end{equation}
+For $n\ge4$, this is visibly nonnegative except possibly when $j=2$ or
+$j=3$. Those cases require only
+\begin{equation}\label{eq:stirlingineq}
+ \ST n2\le3\ST n3\quad(n\ge3),\qquad
+ \ST n3\le6\ST n4\quad(n\ge4).
+\end{equation}
+Here is a common elementary proof. If a partition of $n$ elements into
+$r$ blocks has $n>r$, it has a nonsingleton block. Choose such a block by
+any fixed deterministic rule and split off a specified element of it.
+Remember the unordered pair of blocks created. Merging that pair
+recovers the original partition. This is an injection into partitions
+with $r+1$ blocks together with a choice of two of those blocks. Therefore
+\begin{equation}\label{eq:mergeineq}
+ \ST nr\le\binom{r+1}{2}\ST n{r+1}\qquad(n>r).
+\end{equation}
+Taking $r=2,3$ proves \eqref{eq:stirlingineq}.
+Thus $K_n$ has nonnegative coefficients for all $n\ge4$.
+
+Starting from $H_4$, recurrence \eqref{eq:Hrec} preserves coefficientwise
+nonnegativity: differentiation, multiplication by $\lambda/2$ or by
+$\lambda+1$, and addition of $K_n$ all preserve it. Together with the
+three earlier base cases, this proves $H_n\ge0$ coefficientwise for all
+$n\ge1$. By \eqref{eq:H} and \eqref{eq:Dderivative},
+\[
+ \lambda S_n(1)\le(\lambda+2)D_n(1).
+\]
+Finally, \eqref{eq:Dtranslate}--\eqref{eq:Stranslate} extend the result to
+all $k\ge1$, proving Lemma~\ref{lem:poisson}.
+
+\section{The global upper bound and completion of the proof}
+
+\subsection{Comparison with the triangular recurrence}
+
+Fix any $\lambda>0$ and write
+\[
+ \gamma=1+\frac2\lambda.
+\]
+We claim that, simultaneously for all $n\ge0$ and $k\ge0$,
+\begin{equation}\label{eq:majorant}
+ c_{n,k}\le\gamma^n M_n(k).
+\end{equation}
+For $n=0$, both sides equal $1$. Assume the bound for smaller first
+indices. Equations \eqref{eq:triangularsum} and \eqref{eq:poissonineq}
+imply, for $n\ge1$,
+\begin{align}
+ c_{n,k}
+ &\le\gamma^{n-1}\sum_{j=1}^k S_n(j)\notag\\
+ &\le\gamma^n\sum_{j=1}^k\bigl(M_n(j)-M_n(j-1)\bigr)\notag\\
+ &=\gamma^n\bigl(M_n(k)-M_n(0)\bigr)
+ \le\gamma^n M_n(k).\label{eq:compareproof}
+\end{align}
+The boundary $k=0$ is immediate. This proves the induction.
+
+Importantly, the penultimate expression is sharper than the induction
+claim. At $k=1$, \eqref{eq:Dderivative} yields
+\begin{equation}\label{eq:touchardupper}
+ a_n\le\left(1+\frac2\lambda\right)^nT_n'(\lambda).
+\end{equation}
+Because $\lambda$ was arbitrary, this proves the upper half of
+Theorem~\ref{thm:finite}.
+
+Differentiation of \eqref{eq:mgf} gives
+\[
+ \sum_{n\ge0}T_n'(\lambda)\frac{r^n}{n!}
+ =(e^r-1)\exp\!\bigl(\lambda(e^r-1)\bigr).
+\]
+All coefficients are nonnegative. Any one term is bounded by the whole
+sum when $r>0$, and \eqref{eq:cauchyupper} follows. This argument is just
+a positive-coefficient bound; it does not require any analyticity of
+$A(x)$.
+
+\subsection{An explicit parameter choice}
+
+Let $L=\log n$ and $\ell=\log L$ as before. For all sufficiently large
+$n$, take
+\begin{equation}\label{eq:parameters}
+ \lambda=L,\qquad r=L-2\ell>0.
+\end{equation}
+Then $e^r=n/L^2$. Taking logarithms in \eqref{eq:cauchyupper}, and using
+$\log(e^r-1)\le r$, gives
+\begin{align}
+ \log a_n
+ &\le \log n!-n\log r
+       +n\log(1+2/L)
+       +L(e^r-1)+r\notag\\
+ &=\log n!-n\log(L-2\ell)
+       +n\log(1+2/L)+\frac nL-2\ell.\label{eq:explicitupperlog}
+\end{align}
+The elementary estimates
+\begin{align*}
+ \log n!&=nL-n+O(L),\\
+ \log(L-2\ell)&=\ell-\frac{2\ell}{L}
+                         +O\!\left(\frac{\ell^2}{L^2}\right),\\
+ \log(1+2/L)&=\frac2L+O(L^{-2})
+\end{align*}
+now show
+\begin{equation}\label{eq:upperexpanded}
+ \log a_n\le n(L-\ell-1)
+     +\frac{2n\ell+3n}{L}
+     +O\!\left(\frac{n\ell^2}{L^2}+L\right).
+\end{equation}
+For the first estimate, even Stirling's full formula is unnecessary:
+bounding the sum $\sum_{j=1}^n\log j$ between its neighboring integrals
+already gives $\log n!=n\log n-n+O(\log n)$.
+
+The lower estimate \eqref{eq:lowerexpanded} and upper estimate
+\eqref{eq:upperexpanded} together give \eqref{eq:mainlog}. Dividing by
+$n$ and exponentiating proves \eqref{eq:root} and \eqref{eq:expform}.
+This completes the proof of Theorem~\ref{thm:main}.
+
+\begin{remark}[Why a tunable comparison is necessary]
+A bound of the form $a_n\le C^n n!$ cannot identify the factor
+$(\log n)^{-n}$. Even a comparison with $C^n$ times a fixed Bell-type
+sequence leaves an unwanted constant $C$ in the $n$th root. Here the
+factor $1+2/\lambda$ can approach $1$, and the valid choice
+$\lambda=\log n$ makes its total logarithmic cost only $O(n/\log n)$.
+The dependence of the Poisson mean on $n$ is fully allowed because
+\eqref{eq:touchardupper} holds for every positive $\lambda$ at every
+index.
+\end{remark}
+
+\section{Consequences and comparison with Bell numbers}
+
+\subsection{Superexponential but subfactorial growth}
+
+The main theorem immediately implies
+\begin{equation}\label{eq:superexp}
+ \frac{a_n}{C^n}\longrightarrow\infty
+ \quad\text{for every fixed }C>0.
+\end{equation}
+On the other hand,
+\begin{equation}\label{eq:subfact}
+ \left(\frac{a_n}{n!}\right)^{1/n}
+ =\frac1{\log n}\left(1+O\!\left(\frac{\log\log n}{\log n}\right)\right)
+ \longrightarrow0.
+\end{equation}
+Thus $a_n/(C^n n!)\to0$ for every fixed $C>0$.
+These two assertions locate the growth more precisely than the phrase
+``almost factorial'': there is a factor of approximately
+$(\log n)^n$ between $n!$ and $a_n$ on the logarithmic scale.
+
+For every fixed $s<1$ and $C>0$,
+\[
+ \frac{a_n}{C^n(n!)^s}\longrightarrow\infty,
+\]
+because the logarithm of this quotient has dominant term
+$(1-s)n\log n$. In the convention that Gevrey order $s$ means a bound
+by $CK^n(n!)^s$, the series has exact Gevrey order $1$, with zero
+factorial exponential type. This statement specifies the convention,
+as Gevrey indexing is not uniform across the literature.
+
+\subsection{The two generating functions behave differently}
+
+By the Cauchy--Hadamard formula,
+\[
+ \rad A=\frac1{\limsup a_n^{1/n}}=0.
+\]
+In particular, there is no holomorphic germ at zero whose Taylor series
+has these coefficients and satisfies \eqref{eq:def}. The formal series
+itself remains perfectly well-defined and unique.
+
+In contrast, the exponential generating function
+\begin{equation}\label{eq:EGF}
+ \mathcal A(t)=\sum_{n\ge0}a_n\frac{t^n}{n!}
+\end{equation}
+is entire by \eqref{eq:subfact}. Summing the finite-index upper bound
+also gives, for every $t\ge0$ and $\lambda>0$,
+\begin{equation}\label{eq:EGFupper}
+ \mathcal A(t)\le
+ 1+(e^{\gamma t}-1)
+       \exp\!\bigl(\lambda(e^{\gamma t}-1)\bigr),
+ \qquad\gamma=1+2/\lambda.
+\end{equation}
+
+\begin{corollary}[Double-exponential scale]\label{cor:EGF}
+Along the positive real axis,
+\begin{equation}\label{eq:doubleexp}
+ \lim_{t\to\infty}\frac{\log\log\mathcal A(t)}t=1.
+\end{equation}
+\end{corollary}
+\begin{proof}
+For a fixed $\lambda$, \eqref{eq:EGFupper} bounds the limit superior by
+$1+2/\lambda$. Letting $\lambda\to\infty$ gives the upper bound $1$.
+For the lower bound fix $0<\eps<1$ and take
+$n=\lfloor e^{(1-\eps)t}\rfloor$. The single term $a_nt^n/n!$ and
+Theorem~\ref{thm:main} give
+\[
+ \log\left(\frac{a_nt^n}{n!}\right)
+ =n\bigl(\log t-\log\log n+o(1)\bigr)
+ =n\bigl(-\log(1-\eps)+o(1)\bigr).
+\]
+The constant inside the last parentheses is positive. Taking a further
+logarithm shows that the limit inferior in \eqref{eq:doubleexp} is at
+least $1-\eps$. Let $\eps\downarrow0$.
+\end{proof}
+Since the coefficients of $\mathcal A$ are nonnegative, its maximum
+modulus on $|z|=t$ equals $\mathcal A(t)$. Consequently its usual entire
+function order is infinite. Equation \eqref{eq:doubleexp}, rather than
+just ``infinite order,'' states the useful growth scale.
+
+\subsection{Bell-number scale is not Bell-number equivalence}
+
+Let $\mathsf B_n=T_n(1)$ denote the Bell numbers. A standard asymptotic,
+with $w=W(n)$, is \cite{dlmf-bell}
+\begin{equation}\label{eq:bellsaddle}
+ \mathsf B_n\sim
+ \frac{\exp\!\bigl(n(w-1+1/w)-1\bigr)}{\sqrt{1+w}}.
+\end{equation}
+In particular $\mathsf B_n^{1/n}\sim n/(e\log n)$. Therefore our theorem
+implies
+\begin{equation}\label{eq:bellroot}
+ \left(\frac{a_n}{\mathsf B_n}\right)^{1/n}\longrightarrow1,
+ \qquad
+ a_n=\mathsf B_n\exp(o(n)).
+\end{equation}
+These are the senses in which the sequence has Bell-number-scale growth.
+They do not assert that $a_n/\mathsf B_n$ is bounded or converges. Indeed,
+the finite computations in the next section show a substantial and
+growing discrepancy. The formula \eqref{eq:bellsaddle} is a comparison
+formula for Bell numbers, not a formula silently transferred to A088714.
+
+\section{Exact computation and numerical diagnostics}\label{sec:numerics}
+
+\subsection{A triangular dynamic program}
+
+To obtain $a_0,\ldots,a_N$, store $c_{0,k}=1$ for $0\le k\le N+1$.
+For each $n=1,\ldots,N$, compute
+\[
+ c_{n,0}=0,\qquad
+ c_{n,k}=c_{n,k-1}+\sum_{i=0}^{n-1}c_{i,k}c_{n-1-i,k+1}
+ \quad(1\le k\le N-n+1).
+\]
+Then output $a_n=c_{n,1}$. The triangular cutoff is sufficient: every
+requested entry on the right was computed at an earlier first index.
+The number of products is exactly
+\[
+ \sum_{n=1}^N n(N-n+1)=\frac{N(N+1)(N+2)}6.
+\]
+Thus the algorithm uses $O(N^3)$ arbitrary-precision arithmetic
+operations and $O(N^2)$ integer cells. These are arithmetic counts, not
+unit-cost bit-complexity claims; the integers grow with $N$.
+
+The archive contains both a dependency-free Python implementation and
+a faster C++ implementation using GMP. The supplied data were computed
+with exact integer arithmetic through $n=1200$. The Python and C++
+outputs agree through $n=400$. Independent truncated-polynomial checks
+verify \eqref{eq:def} and \eqref{eq:inverse}; the supplied verification
+script also checks the auxiliary polynomial recurrences and finite
+bounds on explicitly reported finite ranges.
+
+\subsection{What the diagnostics measure}
+
+Define
+\begin{align}
+ Q_n&=\frac{e\log n}{n}\,a_n^{1/n},\label{eq:Q}\\
+ R_n&=\frac{a_n}{a_{n-1}},\label{eq:R}\\
+ D_n^{\mathrm{num}}
+ &=\log\left(\frac{a_n}{\mathsf B_n}\right)-W(n)^2-3W(n).
+ \label{eq:Dnum}
+\end{align}
+The notation $D_n^{\mathrm{num}}$ is distinct from the Poisson moment
+difference $D_n(k)$ in Section~\ref{sec:poisson}. The main theorem proves
+$Q_n\to1$. The quantities $R_n$ and $D_n^{\mathrm{num}}$ examine finer
+behavior not established by that theorem.
+
+\input{data/diagnostics_table.tex}
+
+The relatively slow approach of $Q_n$ to $1$ is not surprising:
+$\log\log n/\log n$ is still appreciable at these indices. Substituting
+only the first term $(n/(e\log n))^n$ is therefore not a numerically
+accurate approximation to $a_n$, despite its correct $n$th-root scale.
+The optimized finite lower and upper bounds offer certified alternatives
+when actual error control is required.
+
+The normalization in \eqref{eq:Dnum} is motivated next. Its numerical
+behavior is evidence for a conjecture, not evidence that upgrades
+Theorem~\ref{thm:main} to a multiplicative equivalent. In particular no
+rigorous enclosure for a limiting constant is extracted from the table.
+
+\section{A finer asymptotic: formal motivation and its missing step}\label{sec:finer}
+
+\subsection{The leading endpoint balance}
+
+Write $R_n=a_n/a_{n-1}$ and consider \eqref{eq:directrec}. Near its outer
+endpoint put $k=n-1-m$. Then the corresponding summand is
+\[
+ a_{n-1-m}[x^m]A(x)^{n+1-m}.
+\]
+Since $a_1=1$, the first approximation to the coefficient is $n^m/m!$.
+If neighboring ratios can be treated as locally constant, the endpoint
+sum divided by $a_n$ is approximately
+\[
+ \frac1{R_n}\sum_{m\ge0}\frac{(n/R_n)^m}{m!}
+ =\frac{e^{n/R_n}}{R_n}.
+\]
+Setting this expression equal to $1$ leads to
+\[
+ R_n\log R_n\approx n,
+ \qquad R_n\approx\frac n{W(n)}.
+\]
+This explains the natural Lambert $W$ scale of the ratios. It is not a
+proof: local ratio regularity and uniform control of the other summands
+have been assumed in deriving the approximation.
+
+\subsection{The first correction and a candidate normalization}
+
+There is more information in the same calculation. From the first few
+coefficients,
+\[
+ \log A(x)=x+\frac52x^2+O(x^3).
+\]
+Expanding the near-endpoint coefficient for $m$ of logarithmic size gives
+the formal local approximation
+\begin{equation}\label{eq:localcoeff}
+ [x^m]A(x)^{n+1-m}
+ =\frac{n^m}{m!}
+  \left(1+\frac{3m(m-1)}{2n}+\cdots\right).
+\end{equation}
+The factor $3/2$ combines the quadratic term of $\log A$ with the
+replacement of $n+1-m$ by $n$.
+
+Suppose, for this calculation, that the ratio has a smooth expansion
+near $R_n=n/w$, where $w=W(n)$. Put
+\[
+ t=n/R_n,\qquad d=\frac{w}{1+w}.
+\]
+The local variation of the ratios contributes
+$m(m+1)d/(2n)$ to the bracket multiplying the Poisson kernel. Averaging
+$m(m-1)$ and $m(m+1)$ against that kernel replaces them by $t^2$ and
+$t^2+2t$, respectively. The opposite endpoint, where one inner factor
+has almost all the degree, begins with $2a_{n-1}$ from $A(x)^2$.
+At this formal order the equation becomes
+\begin{equation}\label{eq:formalbalance}
+ 1\approx\frac{e^t}{R_n}
+  \left(1+\frac{(3+d)t^2+2dt}{2n}\right)+\frac2{R_n}.
+\end{equation}
+Writing $R_n=n/w+\delta$ and expanding gives
+\[
+ \delta(1+w)\approx2+\frac{(3+d)w+2d}{2},
+\]
+and hence the candidate ratio approximation
+\begin{equation}\label{eq:ratiocandidate}
+ R_n\approx\frac n{W(n)}+2+
+                \frac{W(n)}{2(1+W(n))^2}.
+\end{equation}
+This is consistent with the exact data, but the approximation signs in
+this subsection are intentional.
+
+A normalization whose successive quotient has these same first terms
+is
+\begin{equation}\label{eq:normalizer}
+ \mathcal N_n=
+ \frac{\exp\!\bigl(n(w-1+1/w)-1+w^2+3w\bigr)}{\sqrt{1+w}},
+ \qquad w=W(n).
+\end{equation}
+Indeed, using $w'=w/(n(1+w))$ and Taylor expansion in the real variable
+$n$ shows
+\begin{equation}\label{eq:normratio}
+ \frac{\mathcal N_n}{\mathcal N_{n-1}}
+ =\frac n{W(n)}+2+
+     \frac{W(n)}{2(1+W(n))^2}
+      +O\!\left(\frac{W(n)^3}{n}\right).
+\end{equation}
+One way to check the differentiation is to note that
+\[
+ \frac d{dn}\bigl[n(w-1+1/w)\bigr]=w.
+\]
+The additional derivative from $w^2+3w-\tfrac12\log(1+w)$ supplies the
+constant and rational correction in \eqref{eq:normratio}.
+
+\begin{conjecture}[Finer Bell comparison]\label{conj:finer}
+There exists a constant $C>0$ such that, with $w=W(n)$,
+\begin{equation}\label{eq:conjecture}
+ a_n\sim C\,\mathsf B_n\exp(w^2+3w)
+       \sim C\,\mathcal N_n.
+\end{equation}
+\end{conjecture}
+The existence or numerical value of $C$ is not established in this
+article. The data and the endpoint calculation motivate the displayed
+form, rather than merely an arbitrary fit to an exponential correction.
+
+\subsection{A precise sufficient condition for the conjecture}
+
+The unresolved analytic step can be stated cleanly.
+\begin{proposition}[Conditional implication]\label{prop:conditional}
+Suppose that for some fixed $p\ge0$ the actual ratios satisfy
+\begin{equation}\label{eq:neededratio}
+ \frac{a_n}{a_{n-1}}
+ =\frac n{W(n)}+2+
+     \frac{W(n)}{2(1+W(n))^2}
+       +O\!\left(\frac{W(n)^p}{n}\right).
+\end{equation}
+Then Conjecture~\ref{conj:finer} follows with some finite, strictly
+positive constant $C$.
+\end{proposition}
+\begin{proof}
+Compare \eqref{eq:neededratio} with \eqref{eq:normratio}. Since both
+ratios are asymptotic to $n/W(n)$, their quotient is
+\[
+ 1+O\!\left(\frac{W(n)^{\max(p,3)+1}}{n^2}\right).
+\]
+The error is summable because $W(n)=O(\log n)$. Therefore the successive
+differences of $\log(a_n/\mathcal N_n)$ are absolutely summable. This
+logarithm converges to a finite real number, so $a_n/\mathcal N_n$ tends
+to a finite positive constant. Formula \eqref{eq:bellsaddle} then gives
+the Bell-number version.
+\end{proof}
+
+The main theorem does not supply \eqref{eq:neededratio}. In particular,
+it does not justify replacing all nearby coefficient ratios by a smooth
+function, nor does it control every non-endpoint contribution at a
+summable error level. A proof of such uniform endpoint estimates would
+be a genuine strengthening of the present result. This identifies the
+remaining task without presenting a formal asymptotic calculation as a
+completed proof.
+
+\section{Reproducibility and verification scope}
+
+The archive is organized so that the mathematical theorem does not
+depend on a numerical black box. The principal files are
+\texttt{article.tex}, \texttt{article.pdf}, the exact data file
+\texttt{data/coefficients.txt}, and the scripts under \texttt{code/}.
+
+The dependency-free command
+\begin{quote}\ttfamily
+ python3 code/verify.py
+\end{quote}
+checks the initial OEIS terms; verifies the defining composition and
+inverse identities by independent truncated-polynomial arithmetic;
+checks the Poisson difference-polynomial identity and coefficient signs
+on a finite range; and tests both sides of the finite-index bound using
+exact integer arithmetic. Its actual output is supplied in
+\texttt{data/verification.txt}. These are useful implementation audits;
+the all-index positivity proof is the argument in
+Section~\ref{sec:poisson}, not an extrapolation from those finite checks.
+
+The command
+\begin{quote}\ttfamily
+ python3 code/coefficients.py --n 400 --output coefficients.txt
+\end{quote}
+recomputes the first $401$ terms without third-party Python packages.
+For a larger table, \texttt{code/compute\_gmp.cpp} provides the same
+recurrence in C++ with GMP. Instructions in \texttt{README.md} describe
+compilation and analysis. The diagnostic calculations use exact
+integers as input and arbitrary-precision floating-point logarithms only
+at the presentation stage; no computed coefficient is rounded.
+
+No computer-assisted proof of the finer conjecture is claimed. The
+article's rigorous conclusion is Theorem~\ref{thm:main}, supported by
+the explicit all-index inequalities of Theorem~\ref{thm:finite}.
+
+\section{Conclusion}
+
+OEIS A088714 has the precise $n$th-root growth
+\[
+ \boxed{a_n^{1/n}\sim\frac{n}{e\log n}.}
+\]
+The accompanying logarithmic error estimate is
+\[
+ \log a_n=n\log n-n\log\log n-n
+       +O\!\left(\frac{n\log\log n}{\log n}\right).
+\]
+The mechanism is visible in the proof. Composition iterates turn the
+functional equation into a positive triangular recurrence. Moving along
+its increasing-index direction gives roughly $h^{n-h}$, whose optimum
+occurs at $h$ of order $n/\log n$. Shifted Poisson moments furnish a
+compatible upper comparison and recover the same leading scale,
+including the factor $1/e$.
+
+The result determines the growth at logarithmic precision $o(n)$ and
+settles the convergence classification of both generating functions.
+The finer proposed factor $\exp(W(n)^2+3W(n))$ remains explicitly
+separate from the proved theorem.
+
+\begin{thebibliography}{9}
+\bibitem{oeis-a088714}
+The OEIS Foundation Inc., \emph{A088714: G.f. satisfies
+$A(x)=1+xA(x)^2A(xA(x))$}, entry attributed to Paul D. Hanna,
+with subsequent contributions.
+\url{https://oeis.org/A088714}.
+Text form consulted: \url{https://oeis.org/search?q=id:A088714&fmt=text}.
+Accessed September 20, 2026.
+
+\bibitem{oeis-a067145}
+The OEIS Foundation Inc., \emph{A067145: Shifts left under reversion},
+entry attributed to Christian G. Bower, with subsequent contributions.
+\url{https://oeis.org/A067145}.
+Accessed September 20, 2026.
+
+\bibitem{dlmf-bell}
+NIST Digital Library of Mathematical Functions,
+\emph{Section 26.7: Set Partitions: Bell Numbers}, especially
+Equations 26.7.4--26.7.8.
+\url{https://dlmf.nist.gov/26.7}.
+Accessed September 20, 2026.
+
+\bibitem{dlmf-w}
+NIST Digital Library of Mathematical Functions,
+\emph{Section 4.13: Lambert $W$-Function}.
+\url{https://dlmf.nist.gov/4.13}.
+Accessed September 20, 2026.
+\end{thebibliography}
+\end{document}

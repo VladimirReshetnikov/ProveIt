@@ -1,0 +1,1277 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=2.45cm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usepackage{xcolor}
+\usepackage{fancyhdr,placeins}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Nonintegral Tropical Degree from Two Horizontal Segments},pdfauthor={AI-assisted research draft},pdfsubject={An exact tropical Hilbert function and proposed counterexamples to two questions of Grigoriev}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Nonintegral tropical degree}
+\fancyhead[R]{\small Research draft, 20 September 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.28em}
+\setlength{\parindent}{1.25em}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=0.25em,topsep=0.35em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb Z_{\geq0}}
+\newcommand{\tHilb}{\operatorname{TH}}
+\newcommand{\degT}{\operatorname{deg}_{T}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\newcommand{\VD}{V_d}
+\newcommand{\HD}{H_d}
+\newcommand{\BoxH}{\tHilb^{\Box}}
+
+\title{\textbf{Nonintegral Tropical Degree\\from Two Horizontal Segments}\\[0.45em]
+\large An exact Hilbert function, explicit rational certificates,\\and counterexamples to eventual polynomiality}
+\author{AI-assisted research draft}
+\date{20 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+For Grigoriev's strict-witness tropical Hilbert function, with monomials of
+\emph{total degree at most} $k$, we compute the entire function of a compact
+one-dimensional min-plus prevariety consisting of two horizontal segments.
+For every positive rational $d$, let
+\[
+V_d=([0,1]\times\{0\})\ \cup\ ([d+1,d+2]\times\{1\}).
+\]
+We prove, for every integer $k\geq0$,
+\[
+\tHilb_{V_d}(k)=k+\min\{k,\lceil k/d\rceil\}+1.
+\]
+In particular, $V_3$ has tropical degree $4/3$, and its Hilbert function is a
+quasipolynomial of least period three, not an eventual polynomial. These give
+negative answers, under the definitions in arXiv:2404.06440v2, to the
+integrality question and the eventual-polynomiality conjecture stated in that
+paper's introduction. Every rational number strictly between one and two is
+realized as a tropical degree by the same family. For $d\geq1$, the formula
+also holds with a box degree cutoff. The proof uses only ordered slopes,
+a strict inequality between facing endpoints, and an explicit family of
+quadratic coefficient profiles. All lower bounds have rational strict
+witnesses. An accompanying standard-library Python verifier checks 823,974
+witness inequalities in exact arithmetic, in addition to endpoint bounds and
+recurrence identities.
+\end{abstract}
+
+\medskip
+\noindent\textbf{Status.} The mathematical claims below have complete proofs in
+this draft. The proposed resolution has not been independently refereed or
+checked in a proof assistant. The source and novelty audit records what was
+actually retrieved on 20 September 2026; it is not an exhaustive priority
+certification.
+
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{The problem and the result}
+\label{sec:problem}
+
+\subsection{The precise published target}
+
+The target is the tropical Hilbert function in Definitions 1.1 and 1.2 of
+Dima Grigoriev's \emph{Degree of 1-dimensional tropical prevariety},
+arXiv:2404.06440v2, revised 11 August 2025 \cite{Grigoriev2025}.
+This function counts how many bounded-degree monomials can each be the unique
+minimum somewhere on a fixed set, using \emph{one common assignment of
+coefficients}. Its definition is reproduced carefully in
+Section~\ref{sec:definitions}.
+
+In the introduction of that version, the author conjectures eventual
+polynomiality of this function and asks, as Question 2, whether the tropical
+degree is always an integer. The paper distinguishes total-degree and
+box-degree cutoffs. Our main result concerns total degree; we separately
+establish the relevant box-degree result in Section~\ref{sec:box}.
+The version matters: the original 2024 submission had the different title
+\emph{A tropical version of Hilbert function} \cite{Grigoriev2024}.
+
+\subsection{An all-degree formula}
+
+For $d\in\Q_{>0}$ put
+\begin{equation}
+\label{eq:V}
+I_0=[0,1]\times\{0\},\qquad
+I_1=[d+1,d+2]\times\{1\},\qquad
+V_d=I_0\cup I_1.
+\end{equation}
+Both components have length one. Their heights differ by one, and the
+horizontal displacement from the right endpoint of $I_0$ to the left
+endpoint of $I_1$ is $d$.
+
+\begin{theorem}[Exact Hilbert function]
+\label{thm:main}
+For every $d\in\Q_{>0}$ and every $k\in\N$,
+\begin{equation}
+\label{eq:main}
+H_d(k):=\tHilb_{V_d}(k)
+=k+\min\left\{k,\ceil{\frac{k}{d}}\right\}+1.
+\end{equation}
+In particular,
+\begin{equation}
+\label{eq:piecewise}
+H_d(k)=
+\begin{cases}
+2k+1,&0<d\leq1,\\[2pt]
+k+\lceil k/d\rceil+1,&d\geq1.
+\end{cases}
+\end{equation}
+The two expressions agree when $d=1$.
+\end{theorem}
+
+\begin{corollary}[A counterexample with tropical degree $4/3$]
+\label{cor:main}
+For
+\[
+V_3=([0,1]\times\{0\})\cup([4,5]\times\{1\}),
+\]
+one has
+\begin{equation}
+\label{eq:d3}
+\tHilb_{V_3}(k)=k+\ceil{k/3}+1,
+\qquad
+\degT(V_3)=\lim_{k\to\infty}\frac{\tHilb_{V_3}(k)}{k}=\frac43.
+\end{equation}
+The Hilbert function is not eventually a polynomial.
+\end{corollary}
+
+The full proof of Theorem~\ref{thm:main} is given in
+Sections~\ref{sec:upper} and~\ref{sec:lower}. No asymptotic existence theorem,
+tropical rank theorem, or general classification of prevarieties is required
+for that proof. We give min-plus equations for the set itself, so membership
+in the source's category is explicit rather than assumed.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[x=1.7cm,y=1.45cm,>=Stealth]
+\draw[->,thin] (-.25,-.35)--(5.45,-.35) node[right] {$x$};
+\draw[->,thin] (-.25,-.35)--(-.25,1.4) node[above] {$y$};
+\draw[line width=1.6pt] (0,0)--(1,0);
+\draw[line width=1.6pt] (4,1)--(5,1);
+\foreach \x/\y in {0/0,1/0,4/1,5/1}{\fill (\x,\y) circle(1.5pt);}
+\node[above] at (.5,0) {$I_0$};
+\node[above] at (4.5,1) {$I_1$};
+\node[below] at (0,0) {$0$};\node[below] at (1,0) {$1$};
+\node[below] at (4,1) {$(4,1)$};\node[below] at (5,1) {$(5,1)$};
+\draw[dashed,thin,->] (1,.07)--(3.94,.98);
+\node[above left] at (2.55,.55) {$(d,1)=(3,1)$};
+\end{tikzpicture}
+\caption{The counterexample $V_3$. The dashed arrow is an endpoint displacement,
+not an additional component of the prevariety.}
+\label{fig:geometry}
+\end{figure}
+
+\FloatBarrier
+\section{Definitions and conventions}
+\label{sec:definitions}
+
+\subsection{Monomials, coefficients, and the total-degree cutoff}
+
+In min-plus notation, an ordinary affine function
+\[
+c+ix+jy,\qquad i,j\in\N,\quad c\in\R,
+\]
+is a tropical monomial with coefficient $c$ and total degree $i+j$.
+A tropical polynomial is the minimum of finitely many such affine functions.
+We use the finite exponent set
+\begin{equation}
+\label{eq:Delta}
+\Delta_k=\{(i,j)\in\N^2:i+j\leq k\}.
+\end{equation}
+The coefficient-free monomial corresponding to $u=(i,j)$ is the function
+$x,y\mapsto ix+jy$. Additive constants are chosen when constructing a
+certificate; they do not create new exponent vectors.
+
+\begin{definition}[Strict-witness independence]
+\label{def:independent}
+A finite set $S\subseteq\Delta_k$ is independent on $V\subseteq\R^2$ if there
+exist coefficients $(c_u)_{u\in S}\in\R^S$ and points $(z_u)_{u\in S}\in V^S$
+such that
+\begin{equation}
+\label{eq:witness}
+c_u+\ip{u}{z_u}<c_v+\ip{v}{z_u}
+\quad\text{for every }u\in S\text{ and }v\in S\setminus\{u\}.
+\end{equation}
+The tropical Hilbert function is
+\begin{equation}
+\label{eq:THdefinition}
+\tHilb_V(k)=\max\{|S|:S\subseteq\Delta_k\text{ is independent on }V\}.
+\end{equation}
+\end{definition}
+
+This is exactly the strict-inequality notion in the cited Definitions 1.1
+and 1.2 \cite{Grigoriev2025}. We do not replace it by another notion of tropical
+linear independence. In particular, the coefficient vector in
+\eqref{eq:witness} is fixed while the witness point varies. Choosing a separate
+coefficient vector at each point would define a different and much weaker
+condition.
+
+The maximum in \eqref{eq:THdefinition} is over subsets of a finite set, so it
+is a genuine maximum. On any nonempty $V$, one has $\tHilb_V(0)=1$: the sole
+exponent vector is $(0,0)$, whose singleton support is independent.
+
+For a one-dimensional set for which the limit exists, the degree considered
+here is
+\begin{equation}
+\label{eq:degree}
+\degT(V)=\lim_{k\to\infty}\frac{\tHilb_V(k)}{k}.
+\end{equation}
+Our exact formula will establish this limit directly for every $V_d$.
+
+\subsection{What the result does not identify}
+
+An ideal in the sense of Maclagan--Rinc\'on has additional tropical linear-space
+structure \cite{MaclaganRincon}. Its ideal-theoretic Hilbert function is not
+being substituted for Definition~\ref{def:independent}. Likewise, a compact
+union of two isolated segments is not asserted to be a balanced tropical
+curve. The balancedness theorem for varieties of tropical ideals belongs to
+a different, more restrictive setting \cite{Balanced}.
+
+The counterexample addresses the class actually specified in
+\cite{Grigoriev2025}: min-plus prevarieties, including finite unions of rational
+polyhedra. It makes no claim against an integrality theorem whose hypotheses
+include balancing, an ideal structure, or a different normalization.
+
+\section{Explicit equations for the prevariety}
+\label{sec:equations}
+
+\begin{proposition}[A three-equation presentation]
+\label{prop:equations}
+Write $d=p/q$ with positive integers $p,q$. The set $V_d$ is precisely the
+solution set in $\R^2$ of
+\begin{align}
+\min\{2y,1\}&=y,\label{eq:eq1}\\
+\min\{qx,(p+q)y\}&=(p+q)y,\label{eq:eq2}\\
+\min\{qx,(p+q)y+q\}&=qx.\label{eq:eq3}
+\end{align}
+Every expression on either side is a tropical polynomial with nonnegative
+integer exponent vectors.
+\end{proposition}
+
+\begin{proof}
+If $2y\leq1$, equation~\eqref{eq:eq1} forces $2y=y$, and hence $y=0$.
+If $2y\geq1$, it forces $1=y$, and hence $y=1$. Conversely, both $y=0$ and
+$y=1$ satisfy it. Equations~\eqref{eq:eq2} and~\eqref{eq:eq3} are respectively
+equivalent to
+\[
+qx\geq(p+q)y,\qquad qx\leq(p+q)y+q.
+\]
+Thus $y=0$ gives $0\leq x\leq1$, whereas $y=1$ gives
+$d+1\leq x\leq d+2$. These are exactly the two components in \eqref{eq:V}.
+All coefficients multiplying $x$ and $y$ in the displayed tropical monomials
+are nonnegative integers; their additive constants are rational.
+\end{proof}
+
+For the main counterexample $p=3,q=1$, the presentation is especially small:
+\begin{equation}
+\label{eq:eqd3}
+\min\{2y,1\}=y,\qquad
+\min\{x,4y\}=4y,\qquad
+\min\{x,4y+1\}=x.
+\end{equation}
+The set is nonempty, compact, one-dimensional, and has two connected
+components. These are direct properties of the displayed segments.
+
+\subsection{Why a union creates a new obstruction}
+
+On a single horizontal interval, the restriction of an exponent $(i,j)$ has
+slope $i$. Two distinct monomials with the same slope cannot both be unique
+minima on that interval. There are only $k+1$ possible slopes, and it is easy
+to realize all of them.
+
+Two intervals give two opportunities to use the same slope with different
+vertical exponents. Those opportunities are not independent: the same
+coefficient vector must work on both components. Moving between the facing
+endpoints imposes a strict comparison between two monomials. The horizontal
+gap $d$ then converts the finite vertical-exponent budget into a bound on the
+number of additional slopes that can occur. This bound contains a ceiling,
+and the ceiling persists at all degrees.
+
+\section{The upper bound}
+\label{sec:upper}
+
+We first isolate the elementary facts that make the proof insensitive to
+degeneracies and ties.
+
+\subsection{Perturbing coefficients without losing witnesses}
+
+\begin{lemma}[Generic endpoint winners]
+\label{lem:perturb}
+Suppose $S$ is independent on $V_d$. Its coefficients can be chosen so that
+all members of $S$ still have strict witnesses and the minimum is attained by
+a unique member of $S$ at each of the four endpoints of the two segments.
+\end{lemma}
+
+\begin{proof}
+For a fixed certificate, every difference in \eqref{eq:witness} is positive.
+When $|S|\geq2$, let $\gamma$ be the minimum of these finitely many positive
+differences. A perturbation of every coefficient by less than $\gamma/4$
+changes any difference by less than $\gamma/2$, so it preserves every witness.
+
+At a fixed endpoint $z$, a tie between distinct $u,v\in S$ is the proper affine
+hyperplane
+\[
+c_u-c_v=\ip{v-u}{z}
+\]
+in coefficient space. The four endpoints give finitely many such hyperplanes.
+Their union contains no nonempty open ball. We can therefore perturb within
+the permitted ball while avoiding all endpoint ties. A singleton support
+requires no perturbation.
+\end{proof}
+
+A monomial with a strict witness at an endpoint is also uniquely minimal on
+a sufficiently short one-sided interval, by continuity. Thus endpoint
+witnesses do not introduce exceptional zero-length pieces into the slope
+count below.
+
+\subsection{Counting strictly active slopes}
+
+Call a monomial \emph{active on a segment} if it is uniquely minimal at some
+point of that segment. Under the generic endpoint convention, the set of
+active monomials includes the endpoint winners.
+
+\begin{lemma}[Slope order on a horizontal segment]
+\label{lem:slopes}
+Along a horizontal segment traversed from left to right, the $x$-slopes of
+successive distinct active monomials strictly decrease. In particular, if the
+left and right endpoint slopes are $u$ and $v$, the number of active monomials
+is at most $u-v+1$.
+\end{lemma}
+
+\begin{proof}
+Let two distinct monomials restrict to $\alpha+it$ and $\beta+jt$.
+Suppose the first wins strictly at $t_1$ and the second at $t_2>t_1$. Then
+\[
+\alpha+it_1<\beta+jt_1,
+\qquad
+\beta+jt_2<\alpha+it_2.
+\]
+Adding gives $(i-j)(t_2-t_1)>0$, so $i>j$. Distinct monomials of the same
+slope cannot both be strictly active: their restricted difference is
+constant. Every active integer slope lies between the endpoint slopes, and
+there are $u-v+1$ integers in that interval.
+\end{proof}
+
+Now fix an independent support $S\subseteq\Delta_k$ and coefficients supplied
+by Lemma~\ref{lem:perturb}. Let $S_0,S_1$ be the sets active on $I_0,I_1$,
+respectively. Because every element of $S$ has a witness,
+\begin{equation}
+\label{eq:cover}
+S=S_0\cup S_1.
+\end{equation}
+Write the four endpoint slopes in order as
+\[
+\begin{array}{c|cc}
+&\text{left endpoint}&\text{right endpoint}\\ \hline
+I_0&u&r\\
+I_1&P&v.
+\end{array}
+\]
+Lemma~\ref{lem:slopes} gives
+\begin{equation}
+\label{eq:counts}
+|S_0|\leq u-r+1,\qquad |S_1|\leq P-v+1,
+\qquad 0\leq v,r,P,u\leq k.
+\end{equation}
+
+\begin{lemma}[The universal two-segment bound]
+\label{lem:2k}
+For total degree at most $k$,
+\[
+|S|\leq2k+1.
+\]
+\end{lemma}
+
+\begin{proof}
+Each active set has size at most $k+1$. If either has size at most $k$, the
+claim follows immediately from \eqref{eq:cover}. Otherwise both have size
+$k+1$, so each contains a monomial of $x$-slope $k$. The only exponent in
+$\Delta_k$ with that slope is $(k,0)$. Consequently the two sets have a common
+element, and their union has size at most $2(k+1)-1$.
+\end{proof}
+
+This is the one place in the upper-bound proof where the triangular degree
+cutoff does more than bound each exponent separately. With a box cutoff,
+slope $k$ no longer identifies a unique exponent vector.
+
+\subsection{Comparing the facing endpoints}
+
+Let $a=(r,s)$ be the exponent winning at $z=(1,0)$, and let $b=(P,Q)$ be the
+exponent winning at $w=(d+1,1)$. If $a=b$, then $P=r$ and $S_0\cap S_1$ is
+nonempty. From \eqref{eq:counts},
+\begin{equation}
+\label{eq:shared}
+|S|\leq(u-r+1)+(r-v+1)-1=u-v+1\leq k+1.
+\end{equation}
+This covers the shared-winner case completely.
+
+Suppose next that $a\ne b$. Strictness at the two endpoints gives
+\[
+c_a+\ip{a}{z}<c_b+\ip{b}{z},
+\qquad
+c_b+\ip{b}{w}<c_a+\ip{a}{w}.
+\]
+Adding cancels the coefficients and yields
+\begin{equation}
+\label{eq:facing}
+0<\ip{a-b}{w-z}=d(r-P)+s-Q.
+\end{equation}
+Since $s\leq k-r$ and $Q\geq0$,
+\begin{equation}
+\label{eq:budget}
+d(P-r)<s-Q\leq k-r\leq k.
+\end{equation}
+The integer $P-r$ is therefore strictly less than $k/d$, so
+\begin{equation}
+\label{eq:ceiling}
+P-r\leq\ceil{k/d}-1.
+\end{equation}
+This statement is valid even if $P-r$ is negative. Using
+\eqref{eq:counts} and $u\leq k$, $v\geq0$, we obtain
+\begin{align}
+|S|&\leq |S_0|+|S_1|\nonumber\\
+&\leq u-r+1+P-v+1\nonumber\\
+&\leq k+(P-r)+2\nonumber\\
+&\leq k+\ceil{k/d}+1.\label{eq:gapupper}
+\end{align}
+
+\begin{proposition}[Upper half of the main theorem]
+\label{prop:upper}
+For all $k\geq0$,
+\[
+\tHilb_{V_d}(k)\leq k+\min\{k,\lceil k/d\rceil\}+1.
+\]
+\end{proposition}
+
+\begin{proof}
+For $k=0$ the assertion was already noted. For $k\geq1$, the shared-winner
+bound \eqref{eq:shared} is no larger than the claimed upper bound. In the
+other case combine \eqref{eq:gapupper} with Lemma~\ref{lem:2k}.
+\end{proof}
+
+\begin{remark}[Why the strict ceiling is essential]
+The implication $n<t\Rightarrow n\leq\lceil t\rceil-1$ is the source of the
+periodic term. Replacing \eqref{eq:facing} by a non-strict inequality would lose
+one unit whenever $k/d$ is an integer. The generic perturbation does not create
+this strictness artificially: it preserves an already strict certificate
+while ensuring that the selected endpoints also have unique winners.
+\end{remark}
+
+\section{An explicit lower-bound certificate}
+\label{sec:lower}
+
+We now construct a support of exactly the size in Proposition~\ref{prop:upper}.
+The construction gives every coefficient and every witness as a rational
+number. It is therefore stronger than an existence argument based on a
+linear-programming feasibility test.
+
+\subsection{The parameters}
+
+Fix $k\geq1$ and $d\in\Q_{>0}$. Define
+\begin{equation}
+\label{eq:mwsigma}
+m=\min\{k,\lceil k/d\rceil\}-1,\qquad
+\omega=\min\{1,d\},\qquad
+\sigma=\omega k-dm.
+\end{equation}
+Then $0\leq m<k$ and $\sigma>0$. To check the last assertion, if $d\geq1$,
+then $m=\lceil k/d\rceil-1<k/d$, and hence $\sigma=k-dm>0$. If $d\leq1$,
+then $m=k-1$, so $\sigma=dk-d(k-1)=d>0$.
+
+Choose the small positive rational numbers
+\begin{equation}
+\label{eq:small}
+\delta=\min\left\{\frac18,\frac{\sigma}{8(m+1)}\right\},\qquad
+\varepsilon=\frac{\delta}{4k},\qquad
+\eta=\frac{\delta}{4(m+1)},
+\end{equation}
+and set
+\begin{equation}
+\label{eq:abh}
+a=1-\delta,\qquad b=d+1+\delta,\qquad h=\omega k-\delta.
+\end{equation}
+The letters $a,b$ in this section are scalar parameters, not the endpoint
+exponent vectors used in the upper bound.
+
+\subsection{Two groups of monomials}
+
+Take the following coefficient-bearing monomials:
+\begin{align}
+A_i(x,y)&=\varepsilon i^2-ai+ix+(k-i)y,
+&&0\leq i\leq k,\label{eq:Ai}\\
+B_j(x,y)&=h-bj+\eta j^2+jx,
+&&0\leq j\leq m.\label{eq:Bj}
+\end{align}
+Thus the exponent sets are the diagonal row
+\[
+\{(i,k-i):0\leq i\leq k\}
+\]
+and a short initial part of the bottom row
+\[
+\{(j,0):0\leq j\leq m\}.
+\]
+They are disjoint because $m<k$: the sole diagonal exponent with second
+coordinate zero is $(k,0)$, which is not in the bottom-row group.
+Every exponent lies in $\Delta_k$.
+
+The total support size is
+\begin{equation}
+\label{eq:size}
+(k+1)+(m+1)=k+\min\{k,\lceil k/d\rceil\}+1.
+\end{equation}
+We must show that the minimum of all the functions in
+\eqref{eq:Ai}--\eqref{eq:Bj} is a certificate of independence.
+
+\subsection{Witnesses for the diagonal row}
+
+For $0\leq i\leq k$, use
+\begin{equation}
+\label{eq:Awit}
+z_i=(a-2\varepsilon i,0).
+\end{equation}
+Its horizontal coordinate satisfies
+\[
+1-\frac32\delta\leq a-2\varepsilon i\leq1-\delta.
+\]
+Because $0<\delta\leq1/8$, each $z_i$ is strictly inside $I_0$.
+For another diagonal-row index $\ell$,
+\begin{align}
+A_\ell(z_i)
+&=\varepsilon\ell^2-a\ell+\ell(a-2\varepsilon i)\nonumber\\
+&=\varepsilon(\ell-i)^2-\varepsilon i^2.\label{eq:Asquare}
+\end{align}
+Consequently $A_i(z_i)=-\varepsilon i^2\leq0$, and $A_i$ is the unique
+minimum within the $A$ group.
+
+It remains to keep all $B$ terms above it. Put
+$x_{\min}=1-3\delta/2$. For $0\leq j\leq m$, using the nonnegativity of
+$\eta j^2$ gives
+\begin{align}
+B_j(z_i)
+&=h-(b-z_{i,x})j+\eta j^2\nonumber\\
+&\geq h-(b-x_{\min})m\nonumber\\
+&=\omega k-\delta-(d+5\delta/2)m\nonumber\\
+&=\sigma-\delta(1+5m/2).\label{eq:Bpositive}
+\end{align}
+Here $b-z_{i,x}>0$, so replacing $j$ by $m$ in the negative term is legitimate.
+The choice of $\delta$ implies
+\[
+\delta(1+5m/2)
+\leq \sigma\frac{1+5m/2}{8(m+1)}
+\leq\frac{5\sigma}{16}.
+\]
+Therefore
+\begin{equation}
+\label{eq:Bmargin}
+B_j(z_i)\geq\frac{11\sigma}{16}>0\geq A_i(z_i).
+\end{equation}
+Every $A_i$ has a strict witness against \emph{all} other monomials.
+
+\subsection{Witnesses for the bottom row}
+
+For $0\leq j\leq m$, use
+\begin{equation}
+\label{eq:Bwit}
+w_j=(b-2\eta j,1).
+\end{equation}
+Their horizontal coordinates satisfy
+\[
+d+1+\frac\delta2<b-2\eta j\leq d+1+\delta<d+2.
+\]
+(The weaker left inequality with $\leq$ would also suffice.) Thus the witnesses
+are strictly inside $I_1$.
+For another bottom-row index $\ell$,
+\begin{equation}
+\label{eq:Bsquare}
+B_\ell(w_j)=h+\eta(\ell-j)^2-\eta j^2.
+\end{equation}
+It follows that $B_j$ is the unique minimum within its own group, and
+$B_j(w_j)=h-\eta j^2\leq h$.
+
+For any $0\leq i\leq k$,
+\begin{equation}
+\label{eq:Alower}
+A_i(w_j)=k+i(w_{j,x}-1-a)+\varepsilon i^2.
+\end{equation}
+Since $w_{j,x}-1-a\geq d-1+3\delta/2$, if $d\geq1$ then
+$A_i(w_j)\geq k=\omega k$. If $0<d\leq1$, then
+\[
+A_i(w_j)\geq k+i(d-1)\geq k+k(d-1)=dk=\omega k,
+\]
+where the second inequality uses $i\leq k$ and $d-1\leq0$.
+In both cases,
+\begin{equation}
+\label{eq:Amargin}
+A_i(w_j)\geq\omega k=h+\delta>B_j(w_j).
+\end{equation}
+Thus every $B_j$ also has a strict witness against every competitor.
+
+\begin{proposition}[Lower half of the main theorem]
+\label{prop:lower}
+The tropical polynomial
+\[
+F_{k,d}(x,y)=\min\{A_0(x,y),\ldots,A_k(x,y),B_0(x,y),\ldots,B_m(x,y)\}
+\]
+is a certificate of independence for its full support. Hence
+\[
+\tHilb_{V_d}(k)\geq k+\min\{k,\lceil k/d\rceil\}+1.
+\]
+\end{proposition}
+
+\begin{proof}
+Equations~\eqref{eq:Asquare}, \eqref{eq:Bmargin}, \eqref{eq:Bsquare}, and
+\eqref{eq:Amargin} verify all the strict inequalities in
+Definition~\ref{def:independent}. The support count is \eqref{eq:size}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+For $k\geq1$, combine Propositions~\ref{prop:upper} and~\ref{prop:lower}.
+For $k=0$, the unique coefficient-free monomial has a singleton certificate,
+so the formula also holds.
+\end{proof}
+
+\subsection{Quantitative strictness and certificate size}
+
+The construction supplies useful positive margins. Within the $A$ group,
+the gap at a witness is at least $\varepsilon$; within the $B$ group, when it
+has more than one member, the gap is at least $\eta$. Across the groups,
+\eqref{eq:Bmargin} gives at least $11\sigma/16$ for an $A$ witness, and
+\eqref{eq:Amargin} gives at least $\delta$ for a $B$ witness. Thus, for $k\geq1$,
+a valid uniform lower bound for all competitor gaps is
+\begin{equation}
+\label{eq:margin}
+\min\{\varepsilon,\eta,\delta,11\sigma/16\}>0.
+\end{equation}
+Including $\eta$ in this minimum is harmless when the $B$ group is a singleton.
+
+There are at most $2k+1$ monomials, so direct certificate verification needs
+at most $(2k+1)(2k)$ ordered strict comparisons. The generator uses $O(k)$
+rational arithmetic operations. For $d=p/q$ in lowest terms, the displayed
+formulas give rational numbers with bit lengths bounded by
+$O(\log(k+1)+\log(p+1)+\log(q+1))$ per coefficient or coordinate. Indeed,
+$m\leq k$, and the denominators are products of $q$ and a bounded number of
+factors among $8$, $4k$, and $m+1$; the numerators grow at most polynomially
+in $p,q,k$. This is an explicit, polynomial-size certificate, not a limiting
+or numerical construction.
+
+\section{Degree, quasipolynomiality, and generating functions}
+\label{sec:consequences}
+
+\subsection{Varying the gap and the degree}
+
+\begin{corollary}[Degree formula]
+\label{cor:degree}
+For every positive rational $d$,
+\begin{equation}
+\label{eq:degreeformula}
+\degT(V_d)=1+\min\{1,1/d\}.
+\end{equation}
+Every rational $\rho$ with $1<\rho\leq2$ is realized by a member of this
+family. The denominators of these degrees are unbounded, even though the
+number, lengths, and directions of the components are fixed.
+\end{corollary}
+
+\begin{proof}
+Divide \eqref{eq:piecewise} by $k$ and use
+$0\leq\lceil k/d\rceil-k/d<1$. For $1<\rho<2$, take
+$d=1/(\rho-1)>1$. For $\rho=2$, take $d=1$.
+For example, $d=N$ gives degree $(N+1)/N$ for every integer $N\geq2$, and
+these fractions are in lowest terms.
+\end{proof}
+
+The value $1$ is approached as $d\to\infty$, but is not attained for finite
+$d$ in this two-segment family. A single nondegenerate horizontal segment
+has Hilbert function $k+1$, and hence degree one: the upper slope count is
+sharp by the same quadratic-profile construction used above. Thus the
+endpoint value itself is not problematic; it simply has a different witness.
+
+\subsection{Exact quasipolynomial periods}
+
+\begin{definition}
+A function $f:\N\to\R$ is an eventual quasipolynomial of period $t\geq1$ if,
+for each residue class modulo $t$, it agrees with a polynomial in $k$ for all
+sufficiently large $k$ in that class. An eventual polynomial is the special
+case $t=1$.
+\end{definition}
+
+\begin{corollary}[Least period]
+\label{cor:period}
+Let $d=p/q>1$ in lowest terms, so $p>q\geq1$. Then
+\begin{equation}
+\label{eq:rationalH}
+H_d(k)=k+\ceil{\frac{qk}{p}}+1,
+\qquad
+H_d(k+p)=H_d(k)+p+q.
+\end{equation}
+It is a quasipolynomial of least eventual period $p$. In particular,
+it is not an eventual polynomial. Within the rational family $V_d$, eventual
+polynomiality holds exactly when $0<d\leq1$.
+\end{corollary}
+
+\begin{proof}
+Write $k=pn+r$, $0\leq r<p$. Formula~\eqref{eq:rationalH} becomes
+\begin{equation}
+\label{eq:residuegeneral}
+H_d(pn+r)=(p+q)n+r+\ceil{\frac{qr}{p}}+1.
+\end{equation}
+This proves quasipolynomiality with period $p$ and the shift identity.
+
+To prove minimality, set
+\[
+E(k)=H_d(k)-\left(1+\frac qp\right)k-1
+=\ceil{\frac{qk}{p}}-\frac{qk}{p}.
+\]
+This bounded function is nonnegative and vanishes exactly when $p$ divides
+$k$. Suppose $H_d$ has an eventual quasipolynomial period $t$. On each residue
+class modulo $t$, its polynomial must be linear with slope $1+q/p$:
+boundedness of $E(k)$ excludes both a higher degree and any different slope.
+Therefore $E(k)$ is eventually periodic with period $t$. Choose a sufficiently
+large multiple $k$ of $p$. Since $E(k)=0$, eventual periodicity gives
+$E(k+t)=0$, which implies $p\mid t$. Thus the least eventual period is $p$.
+The assertion for $d\leq1$ follows from $H_d(k)=2k+1$.
+\end{proof}
+
+A shorter argument suffices merely to disprove eventual polynomiality.
+An eventual polynomial with linear growth must be affine. If it has integer
+values at all sufficiently large integers, its slope, being a difference
+of consecutive integer values, is an integer. Here the slope $1+q/p$ lies
+strictly between one and two, so that is impossible.
+
+\subsection{The complete sequence for \texorpdfstring{$d=3$}{d = 3}}
+
+\begin{corollary}
+\label{cor:d3sequence}
+Writing $k=3n+r$, the main example has
+\begin{align*}
+H_3(3n)&=4n+1,\\
+H_3(3n+1)&=4n+3,\\
+H_3(3n+2)&=4n+4.
+\end{align*}
+Its first values are
+\[
+1,3,4,5,7,8,9,11,12,13,15,16,17,19,20,21,\ldots.
+\]
+The first differences repeat $2,1,1$ from the start.
+\end{corollary}
+
+\begin{proof}
+Substitute the three residue classes into \eqref{eq:d3}.
+\end{proof}
+
+The ordinary generating function has a short reduced rational form:
+\begin{equation}
+\label{eq:GF}
+G_3(z)=\sum_{k\geq0}H_3(k)z^k
+=\frac{(1+z)^2}{(1-z)(1-z^3)}.
+\end{equation}
+For completeness, put $C(k)=\lceil k/3\rceil$. Then $C(0)=0$ and
+$C(k)-C(k-1)$ equals one precisely when $k\equiv1\pmod3$. Consequently
+\[
+(1-z)\sum_{k\geq0}C(k)z^k=\frac{z}{1-z^3},
+\]
+and hence
+\[
+G_3(z)=\frac{1}{(1-z)^2}+\frac{z}{(1-z)(1-z^3)}
+=\frac{1+2z+z^2}{(1-z)(1-z^3)}.
+\]
+The numerator is nonzero at every cube root of unity, including one, so the
+displayed fraction is reduced. Multiplying by the denominator gives the
+constant-coefficient recurrence
+\begin{equation}
+\label{eq:recurrence}
+H_3(k)=H_3(k-1)+H_3(k-3)-H_3(k-4),\qquad k\geq4,
+\end{equation}
+with initial values $1,3,4,5$. Rationality of a generating function is thus
+fully compatible with failure of eventual polynomiality of its coefficients.
+
+\subsection{A rational generating function for every rational gap}
+
+For $d=p/q>1$ in lowest terms, define the integers
+\[
+e_r=\ceil{\frac{qr}{p}}-\ceil{\frac{q(r-1)}{p}},\qquad 1\leq r\leq p.
+\]
+They belong to $\{0,1\}$ and sum to $q$. The increments of $\lceil qk/p\rceil$
+repeat this block. Applying the same first-difference argument gives
+\begin{equation}
+\label{eq:GFgeneral}
+\sum_{k\geq0}H_d(k)z^k=
+\frac{1+z+\cdots+z^{p-1}+\sum_{r=1}^{p}e_rz^r}
+{(1-z)(1-z^p)}.
+\end{equation}
+This formula is not asserted to be reduced for every $p,q$. Its role is to
+give a direct rational representation and another way to generate the
+sequence exactly. When $0<d\leq1$, the generating function is simply
+$(1+z)/(1-z)^2$.
+
+\section{The separate box-degree convention}
+\label{sec:box}
+
+The source also considers
+\[
+\Box_k=\{(i,j)\in\N^2:0\leq i\leq k,\ 0\leq j\leq k\}
+\]
+in place of $\Delta_k$ \cite{Grigoriev2025}. Let $\BoxH_V(k)$ denote the resulting
+maximum number of independently witnessed monomials. It is important to
+check this modification rather than silently identifying it with total degree.
+
+\begin{proposition}[The same counterexample for a box cutoff]
+\label{prop:box}
+For every rational $d\geq1$ and $k\geq0$,
+\begin{equation}
+\label{eq:box}
+\BoxH_{V_d}(k)=\tHilb_{V_d}(k)=k+\lceil k/d\rceil+1.
+\end{equation}
+Thus the box-normalized degree of $V_3$ is also $4/3$, and its box Hilbert
+function is not eventually polynomial.
+\end{proposition}
+
+\begin{proof}
+The inclusion $\Delta_k\subseteq\Box_k$ and the existing certificate give the
+lower bound. For the upper bound, apply the perturbation and slope lemmas to
+an independent subset of $\Box_k$. The shared-winner case still gives
+$|S|\leq k+1$.
+
+For distinct facing winners, \eqref{eq:facing} still holds. Although we no
+longer have $s\leq k-r$, we still have $s\leq k$ and $Q\geq0$. Therefore
+$d(P-r)<k$, which is all that is needed for \eqref{eq:ceiling} and
+\eqref{eq:gapupper}. It follows that $|S|\leq k+\lceil k/d\rceil+1$.
+For $d\geq1$, this agrees with the total-degree lower bound. The case $k=0$
+again consists of the unique constant monomial.
+\end{proof}
+
+No box formula for $d<1$ is needed for either counterexample, and none is
+being inferred from the total-degree formula in that range. In particular,
+Lemma~\ref{lem:2k} itself is not a valid box-degree argument.
+
+\section{A seven-monomial certificate that can be checked by hand}
+\label{sec:example}
+
+The first few values already expose the nonconstant increments, but a small
+explicit certificate makes the lower-bound mechanism tangible. Take $d=3$
+and $k=4$. The theorem predicts $H_3(4)=7$.
+
+Use five diagonal-row monomials
+\[
+A_i(x,y)=\frac{i^2}{100}-\frac{9i}{10}+ix+(4-i)y,
+\qquad 0\leq i\leq4,
+\]
+together with
+\[
+B_0(x,y)=\frac{39}{10},\qquad B_1(x,y)=-\frac{19}{100}+x.
+\]
+These parameters are chosen for a compact table; they are not the particular
+small-parameter choice in \eqref{eq:small}. Their strict witnesses are listed
+below.
+
+\begin{table}[ht]
+\centering
+\renewcommand{\arraystretch}{1.22}
+\begin{tabular}{@{}c c r c r@{}}
+\toprule
+Term & Exponent & Coefficient & Witness & Own value\\
+\midrule
+$A_0$ & $(0,4)$ & $0$ & $(9/10,0)$ & $0$\\
+$A_1$ & $(1,3)$ & $-89/100$ & $(22/25,0)$ & $-1/100$\\
+$A_2$ & $(2,2)$ & $-44/25$ & $(43/50,0)$ & $-4/100$\\
+$A_3$ & $(3,1)$ & $-261/100$ & $(21/25,0)$ & $-9/100$\\
+$A_4$ & $(4,0)$ & $-86/25$ & $(41/50,0)$ & $-16/100$\\
+$B_0$ & $(0,0)$ & $39/10$ & $(41/10,1)$ & $390/100$\\
+$B_1$ & $(1,0)$ & $-19/100$ & $(102/25,1)$ & $389/100$\\
+\bottomrule
+\end{tabular}
+\caption{An exact seven-term certificate at $k=4$. Every witness belongs to
+$V_3$, and every exponent has total degree at most four.}
+\label{tab:certificate}
+\end{table}
+
+Let $T_u$ denote a row's selected term and $z_u$ its witness. To avoid relying
+on a plotted lower envelope or rounded values, Table~\ref{tab:gaps} prints
+\emph{all} competitor gaps, multiplied by $100$:
+\[
+G_{u,v}=100\bigl(T_v(z_u)-T_u(z_u)\bigr).
+\]
+The diagonal is zero and every off-diagonal entry is a positive integer.
+This proves all 42 strict comparisons directly, with least gap $1/100$.
+
+\begin{table}[ht]
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}c rrrrrrr@{}}
+\toprule
+Witness for & $A_0$ & $A_1$ & $A_2$ & $A_3$ & $A_4$ & $B_0$ & $B_1$\\
+\midrule
+$A_0$ &0&1&4&9&16&390&71\\
+$A_1$ &1&0&1&4&9&391&70\\
+$A_2$ &4&1&0&1&4&394&71\\
+$A_3$ &9&4&1&0&1&399&74\\
+$A_4$ &16&9&4&1&0&406&79\\
+$B_0$ &10&231&454&679&906&0&1\\
+$B_1$ &11&230&451&674&899&1&0\\
+\bottomrule
+\end{tabular}
+\caption{The complete scaled gap matrix for Table~\ref{tab:certificate}.
+Columns identify competitors, not alternative witnesses.}
+\label{tab:gaps}
+\end{table}
+
+The endpoint upper bound gives $H_3(4)\leq4+\lceil4/3\rceil+1=7$.
+The small example is therefore optimal, not merely a nonmaximal independent
+set. Its JSON representation is included in the accompanying data.
+
+\section{Exact computation and reproducibility}
+\label{sec:computation}
+
+\subsection{What was actually checked}
+
+The Python program \texttt{code/verify.py} uses only the standard library,
+and all numerical values relevant to certification are instances of
+\texttt{fractions.Fraction}. No floating-point tolerances, numerical linear
+programming, or external computer algebra system enter the verifier.
+
+The recorded run used every integer $0\leq k\leq40$ and the fourteen values
+\[
+\frac14,\ \frac12,\ \frac23,\ 1,\ \frac54,\ \frac32,\ \frac53,\ 2,\
+\frac73,\ 3,\ 4,\ 5,\ 10,\ \frac{101}{7}.
+\]
+For each case it constructed the exact certificate and checked that all
+exponents were distinct, their degrees satisfied the cutoff, all witnesses
+lay in the correct segments, and every selected term was strictly smaller
+than every other selected term at its witness.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}lr@{}}
+\toprule
+Recorded check & Count or result\\
+\midrule
+Rational gap parameters & 14\\
+Parameter--degree cases & 574\\
+Strict witness inequalities, including the hand example & 823,974\\
+Total-degree endpoint-relaxation checks & 574\\
+Box endpoint-relaxation checks for $d\geq1$ & 451\\
+Generating-function coefficients checked for $d=3$ & 121\\
+Least competitor gap in the hand example & $1/100$\\
+Overall result & PASS\\
+\bottomrule
+\end{tabular}
+\caption{Recorded results. The finite checks supplement the all-degree proof;
+they do not prove it by extrapolation.}
+\label{tab:checks}
+\end{table}
+
+\subsection{The independent endpoint-state calculation}
+
+The verifier also computes an upper-bound relaxation by enumerating integer
+pairs $(r,P)$ with $0\leq r,P\leq k$. In the total-degree calculation, it
+retains the necessary condition
+\[
+d(P-r)<k-r,
+\]
+maximizes the relaxed count $k+P-r+2$ over these states, includes $k+1$ for a
+shared endpoint winner, and caps the result by $2k+1$.
+For the box calculation, it uses $d(P-r)<k$ and the elementary cap $2k+2$.
+In the tested parameter range these independently computed upper bounds
+match the certificate cardinalities exactly.
+
+This is \emph{not} an exhaustive search over all coefficient vectors, all
+supports, or all tropical polynomials. Some enumerated endpoint states need
+not be realizable. Because they are only used to relax necessary conditions,
+that does not invalidate the upper bound. Its all-degree validity is supplied
+by Section~\ref{sec:upper}, not by the enumeration.
+
+\subsection{Commands and files}
+
+From the unpacked package directory, run
+\begin{verbatim}
+python3 code/verify.py --max-k 40
+python3 code/select_area.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The second command audits the saved random-selection record without drawing
+again. A deliberately requested new draw writes a separate output file.
+The verifier should not be run with Python's \texttt{-O} flag, which disables
+assertions; the entry point explicitly rejects that mode.
+
+\texttt{data/verification.csv} contains one row per parameter--degree case,
+including the least exact gap. The JSON summary records aggregate counts.
+Separate JSON files contain the hand certificate and a degree-12 certificate
+for $d=3$. The first 121 values of $H_3$ appear in
+\texttt{data/hilbert\_d3.csv}. The source and proof audits are plain-text files
+under \texttt{notes/}.
+
+\section{Interpretation and limits}
+\label{sec:limits}
+
+\subsection{What has been established}
+
+The counterexample is not based on an irrational slope, irrational exponent,
+nonclosed set, limiting support, or ambiguous degree convention. It uses two
+closed rational horizontal segments, nonnegative integer exponents, ordinary
+total degree, and a finite family of rational coefficients at every $k$.
+The coefficients are allowed to depend on $k$, as they must be when evaluating
+a Hilbert function degree by degree. Within each fixed $k$, however, the same
+coefficients serve every witness.
+
+The exact formula supplies both a lower and an upper bound for every degree.
+It therefore proves the degree limit as well as its nonintegrality. A single
+finite certificate would not suffice to establish either asymptotic claim;
+that is why the universal upper bound and uniform construction are both
+included.
+
+The geometric effect is visible even though the component directions never
+change. Increasing the horizontal gap restricts how much the active
+$x$-slope can reset between the components. The available reset is asymptotic
+to $k/d$, and its integer rounding yields a genuine quasipolynomial.
+Consequently, for this invariant, the relative placement of components
+contains information not captured by their separate directions and lengths.
+
+\subsection{What is left outside the claim}
+
+The proof does not determine the Hilbert function of every rational
+polyhedral set. It does not establish a general eventual-quasipolynomiality
+theorem, a general rationality theorem for tropical degrees, or the existence
+of higher-dimensional normalized limits. Nor does it settle the same
+questions under a connectedness or balancing hypothesis.
+
+The algebraic inequalities in the construction remain meaningful for a real
+parameter $d>0$. We have deliberately stated the main geometric claim for
+rational $d$, so it lies within the source's rational-polyhedral setting
+without requiring a convention about irrational defining data. No assertion
+about irrational tropical degree in that rational category is being made.
+
+\subsection{A focused next mathematical question}
+
+A natural continuation is whether every finite union of rational segments
+has an eventually quasipolynomial strict-witness Hilbert function. The example
+shows that polynomiality is too strong, but does not decide this replacement.
+The endpoint argument suggests finite systems of integer inequalities whose
+right-hand sides grow with $k$; proving that such endpoint data completely
+characterize realizable supports would be the missing step, not a consequence
+of the computations reported here.
+
+\appendix
+\section{Problem selection, exclusions, and source audit}
+\label{app:audit}
+
+\subsection{The random draw}
+
+Before selecting a tropical problem, a fixed list of 96 mathematical areas
+was constructed, and one call to Python's \texttt{secrets.randbelow(96)} was
+made. The result was index 49 in zero-based indexing, or \textbf{50 in
+one-based indexing: tropical geometry}. No redraw was made. The list and
+the result are preserved in \texttt{data/area\_selection.json}; the full list
+is printed in Appendix~\ref{app:areas}.
+
+An operating-system random draw is not a deterministic sequence that another
+reader should expect to reproduce. What is reproducible is the audit of the
+saved draw, its selected list entry, and the subsequent calculations. The
+packaged selection script defaults to this nonrandom audit; a new random draw
+requires an explicit command and does not overwrite the retained record.
+
+\subsection{The manifest exclusion check}
+
+The supplied \texttt{manifest(1).tex} was read in full. It catalogues 71
+research packages, and none of its listed problems concerns strict-witness
+tropical Hilbert functions, tropical-degree integrality, or the two-segment
+family studied here. Its own description distinguishes the claims in its
+reports from independently checked proofs; for this task all listed problems
+were excluded regardless of that distinction.
+
+The SHA-256 digest of the supplied manifest is
+\begin{center}
+\small\ttfamily
+729fb6e3aef3f30c7c5284c4296681fba72\\
+b6d6af68211f178ad0bc3c5d15b41
+\end{center}
+The line break is typographical only: the digest has 64 hexadecimal digits.
+The saved JSON record contains the uninterrupted digest.
+
+\subsection{Version and priority qualification}
+
+The arXiv abstract page retrieved on 20 September 2026 listed v2, dated
+11 August 2025, as the latest version of 2404.06440. The v2 HTML and parsed
+PDF text were consulted for the definitions and questions. PDF screenshot
+requests failed with a fetch/cache error, so no claim is made that the
+source's rendered PDF pages were visually inspected. The present article's
+own compiled PDF was rendered and inspected separately.
+
+Targeted searches for the paper title and for combinations of tropical
+Hilbert function, counterexample, noninteger degree, and segments did not
+locate a later resolution. Some searches were noisy or uninformative.
+This supports the limited statement that the latest primary version retrieved
+still poses the questions, not a guarantee that no unindexed preprint,
+private proof, or independent concurrent work exists.
+
+\subsection{Dependency audit}
+
+The definitions and problem statements are the only mathematical inputs
+needed from \cite{Grigoriev2025}. The degree computation does not invoke that
+paper's general existence proof or its formulas for stars or individual
+polyhedra. References~\cite{MaclaganRincon,Balanced} serve only to distinguish
+the ideal-theoretic setting from the question answered here. Every bound and
+certificate used in the result is proved within this article.
+
+\section{Checklist for auditing the proof}
+\label{app:proofaudit}
+
+The following are the points at which an off-by-one error or a change of
+convention would affect the conclusion.
+
+\begin{enumerate}[leftmargin=1.6em]
+\item The exponent region is $i+j\leq k$, not $i+j<k$ and not a square.
+The separate box result has its own proof.
+\item The support is one finite set with one common coefficient vector.
+Every chosen monomial has a strict witness against every other chosen
+monomial, not merely against monomials on its own segment.
+\item The perturbation is inside an open set preserving all original strict
+witnesses. Endpoint uniqueness is then obtained by avoiding finitely many
+proper hyperplanes.
+\item The count on a horizontal segment uses distinct integer slopes. Terms
+that tie at an isolated point but never win strictly do not contribute an
+additional active slope.
+\item The two active sets may overlap. Their union is counted, and the
+shared facing-winner case is separated before applying the strict comparison.
+\item At distinct facing winners, adding the two strict inequalities gives
+$d(P-r)<s-Q$, with this sign. The strict inequality implies
+$P-r\leq\lceil k/d\rceil-1$ even when $k/d$ is integral.
+\item The universal bound $2k+1$ uses the unique total-degree exponent
+$(k,0)$ of $x$-slope $k$. It must not be copied to a box cutoff.
+\item In the lower bound, $m<k$ makes the two rows of exponent vectors
+disjoint. The slack $\sigma$ is positive for both $d\leq1$ and $d\geq1$.
+\item The witnesses lie in the interiors of the required segments. The
+cross-group gaps are explicitly positive, including at the transition $d=1$
+and when $k/d$ is an integer.
+\item The case $k=0$ is handled separately before dividing by $k$ in the
+certificate parameters. Limits and nonpolynomiality are then deduced from
+the all-degree formula, not from the finite verification range.
+\end{enumerate}
+
+\section{The complete random-selection list}
+\label{app:areas}
+
+The ordering below is the ordering supplied to the random draw. Both columns
+use the original one-based indices; they do not define separate draws.
+
+\small
+\begin{longtable}{@{}r p{6.55cm} r p{6.55cm}@{}}
+\toprule
+No.&Area&No.&Area\\
+\midrule
+\endfirsthead
+\toprule
+No.&Area&No.&Area\\
+\midrule
+\endhead
+1 & Additive combinatorics & 49 & Transcendental number theory \\
+2 & Algebraic combinatorics & 50 & \textbf{Tropical geometry} \\
+3 & Analytic number theory & 51 & Word combinatorics \\
+4 & Arithmetic geometry & 52 & Zero-sum theory \\
+5 & Automata and formal languages & 53 & Association schemes \\
+6 & Banach space geometry & 54 & Coding theory \\
+7 & Combinatorial commutative algebra & 55 & Discrete optimization \\
+8 & Combinatorial design theory & 56 & Extremal set theory \\
+9 & Combinatorial game theory & 57 & Frame theory \\
+10 & Computable analysis & 58 & Graph colorings \\
+11 & Computational geometry & 59 & Incidence geometry \\
+12 & Convex geometry & 60 & Infinite-dimensional holomorphy \\
+13 & Discrete geometry & 61 & Matrix inequalities \\
+14 & Dynamical systems & 62 & Moment problems \\
+15 & Enumerative geometry & 63 & Orthogonal polynomials \\
+16 & Ergodic theory & 64 & Positive definite functions \\
+17 & Extremal graph theory & 65 & Rational approximation \\
+18 & Finite fields & 66 & Riemannian geometry \\
+19 & Finite group theory & 67 & Simplicial complexes \\
+20 & Functional equations & 68 & Tensor rank \\
+21 & General topology & 69 & Topological dynamics \\
+22 & Geometric group theory & 70 & Universal algebra \\
+23 & Graph polynomials & 71 & Ultrametric analysis \\
+24 & Hypergraph theory & 72 & Valuation theory \\
+25 & Integer partitions & 73 & Boolean function theory \\
+26 & Integral inequalities & 74 & Chip-firing and sandpiles \\
+27 & Knot invariants & 75 & Discrete probability \\
+28 & Lattice theory & 76 & Fractional calculus \\
+29 & Linear preserver problems & 77 & Group actions on trees \\
+30 & Matroid theory & 78 & Hyperplane arrangements \\
+31 & Metric geometry & 79 & Information inequalities \\
+32 & Noncommutative algebra & 80 & Modular forms \\
+33 & Numerical semigroups & 81 & Monomial ideals \\
+34 & Operator inequalities & 82 & Optimal transport \\
+35 & Ordered algebraic structures & 83 & Partial orders \\
+36 & Permutation patterns & 84 & Real-rooted polynomials \\
+37 & Polynomial dynamics & 85 & Rewriting systems \\
+38 & Probabilistic combinatorics & 86 & Schubert calculus \\
+39 & Quasigroups and loops & 87 & Set-theoretic topology \\
+40 & Ramsey theory & 88 & Special functions \\
+41 & Real algebraic geometry & 89 & String-rewriting and monoids \\
+42 & Recurrence sequences & 90 & Sum-product phenomena \\
+43 & Riordan arrays & 91 & Topological semigroups \\
+44 & Semigroup theory & 92 & Visibility in graphs \\
+45 & Spectral graph theory & 93 & Weighted lattice paths \\
+46 & Symbolic dynamics & 94 & Well-quasi-orders \\
+47 & Tiling theory & 95 & Zeta functions of graphs \\
+48 & Topological graph theory & 96 & Numerical linear algebra \\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\begin{thebibliography}{9}
+\bibitem{Grigoriev2025}
+D. Grigoriev,
+\emph{Degree of 1-dimensional tropical prevariety},
+arXiv:2404.06440v2, 11 August 2025.
+Definitions 1.1--1.2; introduction, eventual-polynomiality conjecture and
+Question 2.
+\url{https://arxiv.org/abs/2404.06440v2}.
+Versioned full text:
+\url{https://arxiv.org/html/2404.06440v2}.
+
+\bibitem{Grigoriev2024}
+D. Grigoriev,
+\emph{A tropical version of Hilbert function},
+arXiv:2404.06440v1, 9 April 2024.
+Cited only to identify the earlier title and version.
+\url{https://arxiv.org/abs/2404.06440v1}.
+
+\bibitem{MaclaganRincon}
+D. Maclagan and F. Rinc\'on,
+\emph{Tropical ideals},
+Compositio Mathematica \textbf{154} (2018), 640--670.
+\href{https://doi.org/10.1112/S0010437X17008004}{doi:10.1112/S0010437X17008004}.
+\url{https://arxiv.org/abs/1609.03838}.
+
+\bibitem{Balanced}
+D. Maclagan and F. Rinc\'on,
+\emph{Varieties of Tropical Ideals are Balanced},
+arXiv:2009.14557, 30 September 2020.
+\url{https://arxiv.org/abs/2009.14557}.
+\end{thebibliography}
+
+\end{document}

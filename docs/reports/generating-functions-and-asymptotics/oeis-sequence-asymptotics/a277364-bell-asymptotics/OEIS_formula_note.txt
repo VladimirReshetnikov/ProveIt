@@ -1,0 +1,34 @@
+A277364: proposed formula extract (not submitted to OEIS)
+
+Let r = W_0(n), the positive solution of r*exp(r)=n.
+
+%F A277364 a(n) ~ A000110(n) ~ exp(n*(r-1+1/r)-1)/sqrt(1+r), where r = LambertW(n).
+
+%F A277364 log(a(n)) = n*log(n)-n*log(log(n))-n+o(n); hence a(n)^(1/n) ~ n/(e*log(n)).
+
+First relative correction:
+
+  a(n) = exp(n*(r-1+1/r)-1)/sqrt(1+r)
+       * [1-r^2*(2*r^2+7*r+10)/(24*n*(1+r)^3)+O(r^2/n^2)].
+
+Quantifying the difference from the Bell numbers:
+
+  D(n) = A000110(n)-a(n), K=floor(n/2)+1,
+  tau = 2+W_0(-2*exp(-2)) = 1.593624260040040092323041875875...,
+  g = exp(tau)-1,
+  rho = 2*g = 7.843107269135010184913524623509...,
+  C = sqrt(2*g/e)/tau = 1.065886358412959264624311175907...,
+  delta = K-n/2 (1 for even n and 1/2 for odd n).
+
+  D(n) = Stirling2(n,K)*[1+rho/n+O(1/n^2)].
+
+  D(n) ~ rho^delta/sqrt(Pi*(tau-1))
+          * n^(-delta-1/2)*(C*sqrt(n))^n.
+
+  log(D(n)/A000110(n)) = -(n/2)*log(n)+n*log(log(n))+O(n).
+
+The article gives full proofs, an explicit first correction for D(n),
+and the corresponding fixed-fraction generalization.
+The simplified expression (n/(e*log(n)))^n is NOT a relative asymptotic
+equivalent for a(n); only its n-th-root or logarithmic interpretation
+is valid. Retain Lambert W for the relative equivalent.

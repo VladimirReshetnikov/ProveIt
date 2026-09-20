@@ -1,0 +1,939 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=0.92in,headheight=14pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\definecolor{linkblue}{RGB}{28,65,104}
+\hypersetup{colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,
+  pdftitle={A proof of the formulas in OEIS A260306},
+  pdfauthor={Research note prepared with ChatGPT},
+  pdfsubject={Ramanujan theta function, series inversion, Stirling numbers}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Ramanujan's theta function}
+\fancyhead[R]{\small A proof of OEIS A260306}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.15em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\Sthree}[2]{\left\{\!\begin{matrix}#1\\#2\end{matrix}\!\right\}_{\geq 3}}
+\lstset{language=Python,basicstyle=\ttfamily\small,columns=fullflexible,
+  keepspaces=true,showstringspaces=false,breaklines=true,
+  frame=single,framerule=0.3pt,rulecolor=\color{black!30},
+  xleftmargin=0.3em,xrightmargin=0.3em,aboveskip=10pt,belowskip=8pt}
+\title{An exact coefficient formula for\\[2pt]Ramanujan's theta function\\[6pt]
+  \large A self-contained proof of both formulas in OEIS A260306}
+\author{Research note}
+\date{September 20, 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+For positive integers $N$, define $\theta(N)$ by
+$\sum_{k=0}^{N-1}N^k/k!+\theta(N)N^N/N!=e^N/2$.
+The numerators of the coefficients in its asymptotic expansion form OEIS
+A260306. We prove both explicit formulas recorded in that entry: a double
+sum involving Stirling numbers of the second kind and an equivalent triple
+sum involving only binomial coefficients, factorials, and integer powers.
+The proof first converts the defining expression into the difference of
+two Laplace integrals. An analytic change of variable and a direct remainder
+estimate establish the expansion to every order. Lagrange inversion then
+reduces each coefficient to a single coefficient extraction. A finite
+change-of-basis identity turns that extraction into the exact OEIS sums,
+including all their signs and factorial factors. We also derive the
+recurrence used in the entry, a one-sum formula using associated Stirling
+numbers, and reproducible exact-arithmetic checks. The argument is a proof
+for every nonnegative coefficient index, not an extrapolation from computed
+initial values.
+\end{abstract}
+
+\section{The statement and its normalization}
+\label{sec:statement}
+
+For a positive integer $N$, let
+\begin{equation}
+ \sum_{k=0}^{N-1}\frac{N^k}{k!}
+ +\theta(N)\frac{N^N}{N!}=\frac{e^N}{2}.
+ \label{eq:def}
+\end{equation}
+We use $N$ for the large argument and $n$ for a coefficient index. Thus the
+expansion under discussion is
+\begin{equation}
+ \theta(N)\sim\sum_{n\geq 0}\frac{c_n}{N^n}.
+ \label{eq:asymp}
+\end{equation}
+In this article, \eqref{eq:asymp} means that, for each fixed integer $R\geq1$,
+\begin{equation}
+ \theta(N)=\sum_{n=0}^{R-1}\frac{c_n}{N^n}+O_R(N^{-R})
+ \qquad(N\longrightarrow+\infty).
+ \label{eq:poincare}
+\end{equation}
+It is not being used as an assertion that the infinite series converges.
+
+Write $c_n=a(n)/b(n)$ in lowest terms, with $b(n)>0$. The OEIS entries
+A260306 and A065973 specify $a(n)$ and $b(n)$, respectively
+\cite{oeis260306,oeis065973}. Their initial coefficients are
+\begin{equation}
+ c_0=\frac13,\qquad c_1=\frac4{135},\qquad
+ c_2=-\frac8{2835},\qquad c_3=-\frac{16}{8505},\qquad
+ c_4=\frac{8992}{12629925}.
+ \label{eq:initial}
+\end{equation}
+The formulas in the entry are formulas for the \emph{rational coefficients}
+$c_n$, not for the integer numerators before reduction.
+
+Let $S(L,j)$ denote a Stirling number of the second kind: the number of
+partitions of an $L$-element set into $j$ nonempty blocks. In particular,
+$S(0,0)=1$ and $S(L,0)=0$ for $L>0$.
+
+\begin{theorem}[The two OEIS formulas]
+\label{thm:main}
+The expansion \eqref{eq:poincare} exists to every order. For every integer
+$n\geq0$, its coefficient $c_n$ satisfies
+\begin{equation}
+\begin{split}
+ c_n={}&2^n(3n+2)!
+ \sum_{i=1}^{2n+1}\sum_{j=1}^{i}\\[-2pt]
+ &\quad\times
+ \frac{(-1)^{j+1}2^i S(2n+i+j+1,j)}
+ {(2n+i+j+1)!\,(2n-i+1)!\,(i-j)!\,(n+i+1)}.
+\end{split}
+\label{eq:double}
+\end{equation}
+Equivalently,
+\begin{equation}
+\begin{split}
+ c_n={}&\frac{2^n(3n+2)!}{(2n+1)!}
+ \sum_{i=1}^{2n+1}\sum_{j=1}^{i}\sum_{k=1}^{j}\\[-2pt]
+ &\quad\times
+ \frac{(-1)^{k+1}2^i k^{2n+i+j+1}
+       \binom{2n+1}{i}\binom{i}{j}\binom{j}{k}}
+ {(2n+i+j+1)!\,(n+i+1)}.
+\end{split}
+\label{eq:triple}
+\end{equation}
+Consequently, the reduced numerators of either right-hand side are
+A260306, and the reduced positive denominators are A065973.
+\end{theorem}
+
+The finite sums \eqref{eq:double}--\eqref{eq:triple} are the formulas displayed
+in A260306 \cite{oeis260306}. O'Sullivan gives a broader study of Ramanujan's
+approximation using saddle-point methods, including other closed forms
+for its coefficients \cite{osullivan}. Our purpose here is to give a direct,
+self-contained derivation of these \emph{particular} OEIS expressions.
+No claim of novelty for Ramanujan's expansion or its general coefficient
+theory is needed.
+
+The decisive intermediate identity will be
+\begin{equation}
+ \boxed{\displaystyle
+ c_n=-2^n n!\,[z^{2n+1}]
+ \left(\frac{z^2}{2(e^z-1-z)}\right)^{n+1}.}
+ \label{eq:key}
+\end{equation}
+The quotient in parentheses has a removable singularity at zero and
+constant term $1$. Sections~\ref{sec:integral}--\ref{sec:lagrange} establish
+\eqref{eq:key} analytically; Sections~\ref{sec:finite}--\ref{sec:triple}
+convert it into the advertised sums by finite algebra.
+
+\section{An exact integral representation}
+\label{sec:integral}
+
+For $x>0$ and $u>0$, define
+\[
+ \Gamma(x)=\int_0^\infty t^{x-1}e^{-t}\dd t,
+ \qquad
+ \Gamma(x,u)=\int_u^\infty t^{x-1}e^{-t}\dd t.
+\]
+Integration by parts, starting with $\Gamma(1,u)=e^{-u}$, gives
+\[
+ \Gamma(N,u)=(N-1)!e^{-u}\sum_{k=0}^{N-1}\frac{u^k}{k!}
+ \qquad(N\in\mathbb Z_{\geq1}).
+\]
+Setting $u=N$ in this identity and rearranging \eqref{eq:def} yields
+\begin{equation}
+ \theta(N)=\frac{Ne^N}{N^N}
+ \left(\frac12\Gamma(N)-\Gamma(N,N)\right).
+ \label{eq:gamma}
+\end{equation}
+The right-hand side also defines a natural extension to every real $N>0$.
+We use that extension in the analysis below; its restriction to positive
+integers is exactly the original function.
+
+In both gamma integrals substitute $t=Ne^x$. Since
+\[
+ t^{N-1}e^{-t}\dd t
+ =N^Ne^{-N}\exp\{-N(e^x-1-x)\}\dd x,
+\]
+formula \eqref{eq:gamma} becomes
+\begin{equation}
+ \theta(N)=\frac N2\left(
+   \int_{-\infty}^{0}e^{-NF(x)}\dd x
+   -\int_0^\infty e^{-NF(x)}\dd x\right),
+ \qquad F(x)=e^x-1-x.
+ \label{eq:laplace}
+\end{equation}
+This equality is exact. The common exponential scale and all gamma factors
+have disappeared. In particular, no separate use of Stirling's expansion
+for $N!$ is required.
+
+The function $F$ is positive away from zero, with
+\[
+ F(0)=F'(0)=0,\qquad F''(0)=1,\qquad F'(x)=e^x-1.
+\]
+Thus each integral is concentrated near the same nondegenerate minimum.
+Their difference will cancel the terms that would otherwise produce
+half-integer powers of $N^{-1}$.
+
+\section{The inverse change of variable and the remainder}
+\label{sec:analytic}
+
+Define the entire function with a removable value at zero
+\begin{equation}
+ A(z)=\frac{2(e^z-1-z)}{z^2}
+ =\sum_{r=0}^\infty\frac{2z^r}{(r+2)!}
+ =1+\frac z3+\frac{z^2}{12}+\frac{z^3}{60}+\cdots.
+ \label{eq:A}
+\end{equation}
+Near $z=0$, choose the analytic square root of $A(z)$ with value $1$.
+The function $w=z\sqrt{A(z)}$ then has derivative $1$ at zero, so it has a
+unique local analytic inverse
+\begin{equation}
+ z=\psi(w)=\sum_{m=1}^\infty b_mw^m,
+ \qquad b_1=1,
+ \qquad F(\psi(w))=\frac{w^2}{2}.
+ \label{eq:inverse}
+\end{equation}
+
+On the real line the same change of variable can be written globally as
+\[
+ w=\operatorname{sgn}(x)\sqrt{2F(x)}.
+\]
+It is strictly increasing: away from zero its derivative is $F'(x)/w>0$,
+and at zero its derivative is $1$. Its limits at the two ends of the real
+line are $-\infty$ and $+\infty$, respectively. It therefore has a global
+real inverse, agreeing with the analytic inverse $\psi$ near zero.
+Differentiating \eqref{eq:inverse} gives
+\begin{equation}
+ \psi'(w)=\frac{w}{e^{\psi(w)}-1}\qquad(w\ne0).
+ \label{eq:derivative}
+\end{equation}
+
+Substitution into \eqref{eq:laplace}, followed by reflection of the negative
+half-axis, gives the exact identity
+\begin{equation}
+ \theta(N)=\frac N2\int_0^\infty e^{-Nw^2/2}
+              \bigl(\psi'(-w)-\psi'(w)\bigr)\dd w.
+ \label{eq:gaussian}
+\end{equation}
+
+\begin{proposition}[All-orders expansion]
+\label{prop:asymp}
+For every fixed integer $R\geq1$, \eqref{eq:poincare} holds with
+\begin{equation}
+ c_n=-2^{n+1}(n+1)!\,b_{2n+2},\qquad n\geq0.
+ \label{eq:bcoeff}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Choose $\delta>0$ small enough that the power series for $\psi$ is analytic
+on a neighborhood of $[-\delta,\delta]$. Its derivative difference has the
+odd Taylor expansion
+\begin{equation}
+ \psi'(-w)-\psi'(w)
+ =-2\sum_{n=0}^{R-1}(2n+2)b_{2n+2}w^{2n+1}
+   +O_R(w^{2R+1})
+ \quad(0\leq w\leq\delta).
+ \label{eq:oddpart}
+\end{equation}
+The required Gaussian moments are elementary:
+\begin{equation}
+ \int_0^\infty e^{-Nw^2/2}w^{2n+1}\dd w
+ =\frac{2^n n!}{N^{n+1}}.
+ \label{eq:moments}
+\end{equation}
+Indeed, substitute $v=Nw^2/2$.
+
+We now justify replacing the local expansion by these moments. For
+$w\geq\delta$, the negative inverse branch satisfies
+\[
+ 0<\psi'(-w)
+ =\frac{w}{1-e^{\psi(-w)}}
+ \leq\frac{w}{1-e^{\psi(-\delta)}}.
+\]
+For the positive branch, $e^{\psi(w)}-1=\psi(w)+w^2/2\geq w^2/2$, so
+\[
+ 0<\psi'(w)\leq\frac2w\leq\frac{2w}{\delta^2}.
+\]
+Consequently,
+\[
+ \frac N2\int_\delta^\infty e^{-Nw^2/2}
+       |\psi'(-w)-\psi'(w)|\dd w
+ \leq C_\delta N\int_\delta^\infty we^{-Nw^2/2}\dd w
+ =C_\delta e^{-N\delta^2/2}.
+\]
+Thus the nonlocal part is exponentially small.
+
+On $[0,\delta]$, the remainder in \eqref{eq:oddpart} contributes at most
+\[
+ C_R N\int_0^\delta e^{-Nw^2/2}w^{2R+1}\dd w
+ \leq C_R\,2^R R!\,N^{-R}.
+\]
+For each of the finitely many polynomial terms, extending its integral
+from $\delta$ to infinity changes the answer by an exponentially small
+quantity. One can see this directly by substituting $v=w^2/2$ and
+integrating $e^{-Nv}v^n$ by parts a finite number of times.
+
+Finally, inserting \eqref{eq:oddpart} and \eqref{eq:moments} into
+\eqref{eq:gaussian} gives
+\[
+ \frac N2\cdot(-2)(2n+2)b_{2n+2}
+        \frac{2^n n!}{N^{n+1}}
+ =\frac{-2^{n+1}(n+1)!b_{2n+2}}{N^n}.
+\]
+The stated coefficients and remainder follow.
+\end{proof}
+
+The parity cancellation in \eqref{eq:oddpart} explains why only integer
+powers $N^{-n}$ occur. The argument proves the expansion for real
+$N\to+\infty$, hence in particular along the positive integers.
+Its coefficients are unique: if two expansions first differ at index
+$n$, subtracting them and multiplying by $N^n$ gives a nonzero constant
+that would have to tend to zero.
+
+\section{Lagrange inversion and the coefficient identity}
+\label{sec:lagrange}
+
+We include the particular form of Lagrange inversion that is needed, so
+that no coefficient-extraction step is left implicit.
+
+\begin{lemma}[Inverse-series coefficient formula]
+\label{lem:lagrange}
+Suppose $w=z\phi(z)$, where $\phi$ is analytic near zero and $\phi(0)=1$.
+Let $z=g(w)$ be its local inverse. For every $m\geq1$,
+\begin{equation}
+ [w^m]g(w)=\frac1m[z^{m-1}]\phi(z)^{-m}.
+ \label{eq:lagrange}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Differentiation and a change of variable in the residue give
+\begin{align*}
+ m[w^m]g(w)
+ &=\Res_{w=0}\frac{g'(w)}{w^m}\dd w\\
+ &=\Res_{z=0}\frac{1}{(z\phi(z))^m}\dd z
+ =[z^{m-1}]\phi(z)^{-m}.
+\end{align*}
+All residues can be taken on sufficiently small contours on which the
+analytic change of variable is invertible.
+\end{proof}
+
+Apply the lemma with $\phi(z)=\sqrt{A(z)}$ and $m=2n+2$. Then
+\[
+ b_{2n+2}
+ =\frac1{2n+2}[z^{2n+1}]A(z)^{-n-1}.
+\]
+Together with \eqref{eq:bcoeff}, this proves the key identity
+\eqref{eq:key}. In particular, every $c_n$ is rational, since the
+power series of $A$ has rational coefficients.
+
+\begin{corollary}[Residue form]
+\label{cor:residue}
+For every $n\geq0$,
+\begin{equation}
+ c_n=-\frac{n!}{2}\Res_{z=0}
+             \frac{\dd z}{(e^z-1-z)^{n+1}}.
+ \label{eq:residue}
+\end{equation}
+\end{corollary}
+\begin{proof}
+In \eqref{eq:key}, replace $A(z)^{-n-1}$ by
+$z^{2n+2}/\bigl(2^{n+1}F(z)^{n+1}\bigr)$. The coefficient of $z^{2n+1}$
+is $2^{-n-1}$ times the coefficient of $z^{-1}$ in $F(z)^{-n-1}$.
+\end{proof}
+
+Formula \eqref{eq:key} is already a compact exact answer. The remaining
+work is to show why its finite expansion has precisely the less obvious
+shape recorded in OEIS.
+
+\section{A finite change of basis for negative powers}
+\label{sec:finite}
+
+The factorial $(3n+2)!$ and the factor $n+i+1$ in the OEIS formulas come
+from a general finite algebraic identity.
+
+\begin{lemma}[Finite negative-power identity]
+\label{lem:finite}
+Let $p\geq1$ and $M\geq1$ be integers, and let $B(z)$ be a formal power
+series over $\mathbb Q$ or $\mathbb C$ with $B(0)=1$. Then
+\begin{equation}
+ [z^M]B(z)^{-p}
+ =\frac{(p+M)!}{(p-1)!}
+   \sum_{i=1}^{M}
+   \frac{(-1)^i[z^M]B(z)^i}{i!\,(M-i)!\,(p+i)}.
+ \label{eq:finite}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Since $B(z)-1$ has zero constant term, only powers at most $M$ can affect
+a coefficient of degree $M$. Therefore
+\begin{equation}
+ B(z)^{-p}\equiv
+ \sum_{r=0}^{M}(-1)^r\binom{p+r-1}{r}(B(z)-1)^r
+ \pmod{z^{M+1}}.
+ \label{eq:truncated}
+\end{equation}
+Expand $(B-1)^r$ in powers of $B$ and interchange the two finite sums.
+The coefficient multiplying $B^i$ is
+\begin{align*}
+ \sum_{r=i}^{M}(-1)^r\binom{p+r-1}{r}
+                     \binom ri(-1)^{r-i}
+ &=(-1)^i\sum_{r=i}^{M}\binom{p+r-1}{r}\binom ri\\
+ &=(-1)^i\binom{p+i-1}{i}
+                \sum_{r=i}^{M}\binom{p+r-1}{r-i}\\
+ &=(-1)^i\binom{p+i-1}{i}\binom{p+M}{M-i}\\
+ &=\frac{(-1)^i(p+M)!}
+        {(p-1)!\,i!\,(M-i)!\,(p+i)}.
+\end{align*}
+The penultimate equality is the hockey-stick identity, obtained by repeated
+application of Pascal's identity. The term $i=0$ multiplies $B^0=1$ and has
+zero coefficient of $z^M$, because $M\geq1$. Taking $[z^M]$ proves the lemma.
+\end{proof}
+
+\begin{remark}[An integral interpretation of the denominator]
+The polynomial in $X$ produced by the proof can also be written as
+\begin{equation}
+ T_{p,M}(X)=\frac{(p+M)!}{(p-1)!M!}
+        \int_0^1 t^{p-1}(1-Xt)^M\dd t.
+ \label{eq:beta}
+\end{equation}
+Expanding $(1-Xt)^M$ shows that the coefficient of $X^i$ includes
+$\int_0^1t^{p+i-1}\dd t=1/(p+i)$. Thus the denominator in
+\eqref{eq:finite} has a simple finite-polynomial origin.
+\end{remark}
+
+Now put
+\begin{equation}
+ M=2n+1,\qquad p=n+1,\qquad B(z)=A(z).
+ \label{eq:specialization}
+\end{equation}
+Multiplying \eqref{eq:finite} by $-2^n n!$, as prescribed by
+\eqref{eq:key}, gives
+\begin{equation}
+ c_n=2^n(3n+2)!
+ \sum_{i=1}^{M}
+ \frac{(-1)^{i+1}[z^M]A(z)^i}
+      {i!\,(M-i)!\,(n+i+1)}.
+ \label{eq:intermediate}
+\end{equation}
+Here $(p+M)!=(3n+2)!$ and $(p-1)!=n!$, which cancels the $n!$
+from \eqref{eq:key}. These are exactly the factorials needed in the target.
+
+\section{Extraction with Stirling numbers: the double sum}
+\label{sec:double}
+
+The exponential generating function for Stirling numbers is
+\begin{equation}
+ (e^z-1)^j=j!\sum_{L\geq0}S(L,j)\frac{z^L}{L!}.
+ \label{eq:stirling-egf}
+\end{equation}
+For completeness, expanding $(e^z-1)^j$ gives, for $L,j\geq1$,
+\begin{equation}
+ j!S(L,j)=\sum_{k=0}^{j}(-1)^{j-k}\binom jk k^L.
+ \label{eq:finite-difference}
+\end{equation}
+The right-hand side counts surjections from an $L$-element set to a
+$j$-element set by inclusion--exclusion; dividing by $j!$ forgets the
+labels of the nonempty fibers. This proves \eqref{eq:stirling-egf} and
+\eqref{eq:finite-difference} directly.
+
+From \eqref{eq:A}, for $i\geq1$,
+\begin{align}
+ [z^M]A(z)^i
+ &=2^i[z^{M+2i}](e^z-1-z)^i \notag\\
+ &=2^i\sum_{j=0}^{i}(-1)^{i-j}\binom ij
+          [z^{M+i+j}](e^z-1)^j \notag\\
+ &=2^i\sum_{j=1}^{i}(-1)^{i-j}\binom ij
+          \frac{j!S(M+i+j,j)}{(M+i+j)!}.
+ \label{eq:Apositive}
+\end{align}
+The second line follows by writing $e^z-1-z=(e^z-1)-z$.
+In the third line, the $j=0$ term vanishes because it asks for a positive
+coefficient of the constant series $1$.
+
+Insert \eqref{eq:Apositive} into \eqref{eq:intermediate}. Two elementary
+simplifications are responsible for the final form:
+\[
+ (-1)^{i+1}(-1)^{i-j}=(-1)^{j+1},
+ \qquad
+ \frac1{i!}\binom ij j!=\frac1{(i-j)!}.
+\]
+It follows that
+\begin{equation}
+ c_n=2^n(3n+2)!
+ \sum_{i=1}^{M}\sum_{j=1}^{i}
+ \frac{(-1)^{j+1}2^i S(M+i+j,j)}
+      {(M+i+j)!\,(M-i)!\,(i-j)!\,(n+i+1)}.
+ \label{eq:double-M}
+\end{equation}
+Substituting $M=2n+1$ is exactly \eqref{eq:double}. This proves the
+Stirling-number formula for every $n\geq0$.
+
+All bounds and factorials are valid at the endpoints: $M\geq1$,
+$1\leq j\leq i\leq M$, and therefore $M-i$ and $i-j$ are nonnegative.
+No zero factorial is omitted, and $n+i+1$ is strictly positive.
+
+\section{From the double sum to the triple sum}
+\label{sec:triple}
+
+Let $L=M+i+j$. This exponent is positive, so the $k=0$ term in
+\eqref{eq:finite-difference} is zero. Multiplying that identity by
+$(-1)^{j+1}$ gives
+\begin{equation}
+ (-1)^{j+1}j!S(L,j)
+ =\sum_{k=1}^{j}(-1)^{k+1}\binom jk k^L.
+ \label{eq:signidentity}
+\end{equation}
+Indeed, $(-1)^{j+1}(-1)^{j-k}=(-1)^{k+1}$.
+
+Also,
+\begin{equation}
+ \frac{S(L,j)}{(M-i)!\,(i-j)!}
+ =\frac1{M!}\binom Mi\binom ij\,j!S(L,j).
+ \label{eq:binomials}
+\end{equation}
+Substituting \eqref{eq:binomials} and \eqref{eq:signidentity} into
+\eqref{eq:double-M} yields
+\begin{equation}
+\begin{split}
+ c_n={}&\frac{2^n(3n+2)!}{M!}
+ \sum_{i=1}^{M}\sum_{j=1}^{i}\sum_{k=1}^{j}\\[-2pt]
+ &\qquad\times
+ \frac{(-1)^{k+1}2^i k^{M+i+j}
+       \binom Mi\binom ij\binom jk}
+      {(M+i+j)!\,(n+i+1)}.
+\end{split}
+\label{eq:triple-M}
+\end{equation}
+Replacing $M$ by $2n+1$ proves \eqref{eq:triple} and completes the proof of
+Theorem~\ref{thm:main}. Since every exponent $L$ here is positive, no
+convention concerning $0^0$ is involved.
+
+The roles of the three summation indices are now explicit. The index $i$
+arises from replacing a negative power of $A$ by a finite combination of
+positive powers. The index $j$ comes from expanding
+$((e^z-1)-z)^i$. The index $k$ is the inclusion--exclusion index that
+eliminates the Stirling number. In particular, equivalence of the double
+and triple sums alone would not identify them with Ramanujan's
+coefficients; the integral and inversion arguments supply that essential
+identification.
+
+\section{The recurrence in the OEIS entry}
+\label{sec:recurrence}
+
+A recurrence provides a compact way to compute a long initial segment.
+It is also useful to explain the separate treatment of the constant term
+in the OEIS program \cite{oeis260306}.
+
+Define
+\begin{equation}
+ u(w)=e^{\psi(w)}-1.
+ \label{eq:u}
+\end{equation}
+The inverse equation $e^{\psi(w)}-1-\psi(w)=w^2/2$ implies the especially
+simple relation
+\begin{equation}
+ u(w)=\psi(w)+\frac{w^2}{2}.
+ \label{eq:upsi}
+\end{equation}
+Equivalently, $u-\log(1+u)=w^2/2$ near zero. Let
+\begin{equation}
+ H(w)=u'(w)=\sum_{m\geq0}h_mw^m,\qquad h_0=1.
+ \label{eq:H}
+\end{equation}
+Differentiating the latter inverse equation gives
+\begin{equation}
+ u(w)H(w)=w(1+u(w)).
+ \label{eq:quadratic}
+\end{equation}
+Since $u(w)=\sum_{j\geq0}h_jw^{j+1}/(j+1)$, comparison of coefficients of
+$w^{m+1}$ gives, for $m\geq1$,
+\[
+ \sum_{j=0}^{m}\frac{h_jh_{m-j}}{j+1}=\frac{h_{m-1}}m.
+\]
+Separating the terms $j=0$ and $j=m$ yields
+\begin{equation}
+ \boxed{\displaystyle
+ h_m=\frac{\displaystyle\frac{h_{m-1}}m
+          -\sum_{j=1}^{m-1}\frac{h_{m-j}h_j}{j+1}}
+         {\displaystyle1+\frac1{m+1}},\qquad h_0=1.}
+ \label{eq:hrec}
+\end{equation}
+Its beginning is
+\[
+ H(w)=1+\frac23w+\frac1{12}w^2-\frac2{135}w^3
+          +\frac1{864}w^4+\frac1{2835}w^5+\cdots.
+\]
+
+By \eqref{eq:upsi}, $H(w)=\psi'(w)+w$, hence
+\[
+ h_{2n+1}=(2n+2)b_{2n+2}+\delta_{n,0}.
+\]
+Formula \eqref{eq:bcoeff} is therefore equivalent to
+\begin{equation}
+ \boxed{\displaystyle
+ c_n=\delta_{n,0}-2^n n!\,h_{2n+1}.}
+ \label{eq:ch}
+\end{equation}
+For $n=0$, this says $c_0=1-h_1=1/3$. For $n\geq1$, it says
+$c_n=-(2n)!!\,h_{2n+1}$, since $(2n)!!=2^nn!$.
+These are precisely the recurrence and the constant-term exception
+underlying the Maple code in A260306. Forgetting the Kronecker delta in
+\eqref{eq:ch} would give $-2/3$ instead of $1/3$ at index zero.
+
+\subsection{A second coefficient algorithm}
+
+There is a separate exact computation directly from \eqref{eq:key}.
+For fixed $p\geq1$, write
+\[
+ A(z)^{-p}=\sum_{m\geq0}f_mz^m,\qquad f_0=1,
+ \qquad a_k=[z^k]A(z)=\frac2{(k+2)!}.
+\]
+The differential identity $A(A^{-p})'=-pA'A^{-p}$ gives
+\begin{equation}
+ f_m=-\frac1m\sum_{k=1}^{m}
+              \bigl(m+(p-1)k\bigr)a_kf_{m-k}
+ \qquad(m\geq1).
+ \label{eq:powerrec}
+\end{equation}
+Use $p=n+1$ and $m=2n+1$, then multiply by $-2^nn!$.
+This algorithm is independently implemented in the verification code,
+alongside \eqref{eq:hrec}, both OEIS sums, and the next corollary.
+
+To obtain all coefficients through $c_K$, recurrence \eqref{eq:hrec}
+uses $O(K^2)$ rational arithmetic operations. A single double-sum
+coefficient has $O(n^2)$ summands after its Stirling table is available;
+the literal triple sum has $O(n^3)$ summands. These are arithmetic-operation
+counts, not bit-complexity bounds. Numerators and denominators grow, and
+alternating sums can involve severe cancellation, so the exact algorithms
+use integers and rational numbers rather than floating-point arithmetic.
+
+\section{A one-sum corollary with associated Stirling numbers}
+\label{sec:associated}
+
+Let $\Sthree{L}{k}$ count partitions of an $L$-element set into $k$ blocks,
+each of size at least three. The associated exponential generating
+function is
+\begin{equation}
+ \frac{(e^z-1-z-z^2/2)^k}{k!}
+ =\sum_{L\geq0}\Sthree{L}{k}\frac{z^L}{L!}.
+ \label{eq:associated-egf}
+\end{equation}
+This follows by forming $k$ labeled blocks of sizes at least three and
+then dividing by $k!$ to remove their order. O'Sullivan's treatment also
+relates the asymptotic coefficients to associated Stirling numbers
+\cite{osullivan}; here the needed identity follows immediately from
+\eqref{eq:key}.
+
+\begin{corollary}
+\label{cor:associated}
+For every $n\geq0$,
+\begin{equation}
+ c_n=\sum_{k=1}^{2n+1}
+       \frac{(-1)^{k+1}2^{n+k}(n+k)!}
+            {(2n+2k+1)!}
+       \Sthree{2n+2k+1}{k}.
+ \label{eq:associated}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Put $M=2n+1$. Instead of changing basis as in Lemma~\ref{lem:finite}, expand
+$A^{-n-1}$ directly in powers of $A-1$:
+\[
+ [z^M]A(z)^{-n-1}
+ =\sum_{k=1}^{M}(-1)^k\binom{n+k}{k}[z^M](A(z)-1)^k.
+\]
+Since $A(z)-1=2(e^z-1-z-z^2/2)/z^2$, \eqref{eq:associated-egf} gives
+\[
+ [z^M](A(z)-1)^k
+ =\frac{2^k k!}{(M+2k)!}\Sthree{M+2k}{k}.
+\]
+Multiplication by $-2^nn!$ proves the result. The upper bound $k\leq M$
+also follows combinatorially: $M+2k$ elements cannot form $k$ blocks of
+size at least three unless $M+2k\geq3k$.
+\end{proof}
+
+For exact computation, these associated numbers satisfy, for $L,k\geq1$,
+\begin{equation}
+ \Sthree{L}{k}
+ =k\Sthree{L-1}{k}
+   +\binom{L-1}{2}\Sthree{L-3}{k-1}.
+ \label{eq:associated-rec}
+\end{equation}
+Use the usual zero conventions outside the allowed range and
+$\Sthree{0}{0}=1$. To prove the recurrence, distinguish one element. Either
+its block has at least four elements, in which case removing it leaves
+one of $k$ eligible blocks, or its block has exactly three elements, in
+which case choose its two companions and partition the remaining $L-3$
+elements. This supplies another integer-based check of \eqref{eq:associated}.
+
+\section{Initial coefficients and worked cases}
+\label{sec:examples}
+
+The first case is visible without any summation. From \eqref{eq:A},
+\[
+ [z]A(z)^{-1}=-\frac13,
+ \qquad
+ c_0=-[z]A(z)^{-1}=\frac13.
+\]
+The double sum also has only one term when $n=0$: $i=j=1$, giving
+\[
+ 2!\,\frac{2S(3,1)}{3!\,0!\,0!\,2}=\frac13.
+\]
+Thus the displayed OEIS sum itself needs no exceptional rule at $n=0$.
+
+For $n=1$, put $a_1=1/3$, $a_2=1/12$, and $a_3=1/60$. The binomial
+expansion of $A^{-2}$ yields
+\begin{align*}
+ [z^3]A(z)^{-2}
+ &=-2a_3+6a_1a_2-4a_1^3\\
+ &=-\frac1{30}+\frac16-\frac4{27}
+ =-\frac2{135}.
+\end{align*}
+Therefore $c_1=-2[z^3]A(z)^{-2}=4/135$, confirming both the factor and the
+sign in the general formula.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{r r r}
+\toprule
+$n$ & Reduced numerator $a(n)$ & Positive denominator $b(n)$\\
+\midrule
+0 & 1 & 3\\
+1 & 4 & 135\\
+2 & $-8$ & 2835\\
+3 & $-16$ & 8505\\
+4 & 8992 & 12629925\\
+5 & 334144 & 492567075\\
+6 & $-698752$ & 1477701225\\
+7 & $-23349012224$ & 39565450299375\\
+8 & 1357305243136 & 2255230667064375\\
+9 & 6319924923392 & 6765692001193125\\
+10 & $-8773495082018816$ & 7002491221234884375\\
+\bottomrule
+\end{tabular}
+\caption{Coefficients generated by exact arithmetic from the proved
+recurrence. The displayed values agree with the corresponding prefixes
+of A260306 and A065973 \cite{oeis260306,oeis065973}.}
+\label{tab:coefficients}
+\end{table}
+
+The table illustrates why it is important to reduce each rational
+coefficient before extracting its numerator or denominator. Neither the
+individual summands nor the unreduced factorial prefactor alone determines
+the two OEIS sequences.
+
+\section{Reproducible computation and a numerical illustration}
+\label{sec:verification}
+
+The accompanying Python code uses the standard-library
+\texttt{fractions.Fraction} class for every exact coefficient computation.
+The executed checks are recorded in \texttt{artifacts/checks.json}.
+Specifically, the inverse-function recurrence generated $c_0$ through
+$c_{117}$. For $0\leq n\leq20$, these coefficients were compared exactly
+with the inverse-power algorithm, the double sum, and the associated
+Stirling-number sum. For $0\leq n\leq10$, they were also compared with the
+literal triple sum. Every comparison passed.
+
+An external-data check compared the first 17 computed numerators and the
+first 14 computed denominators with prefixes transcribed from the
+consulted OEIS entries. The precise prefixes, source addresses, and access
+date are in \texttt{artifacts/reference\_prefix.json}. All of those
+comparisons passed as well. The 118 generated coefficients should not be
+confused with 118 independently checked OEIS values: the external
+comparison in this run covers only the stated prefixes. The optional
+live b-file comparison is available in the script but was not completed
+in the restricted execution environment.
+
+To rerun the exact checks from the archive's root directory, use
+\begin{lstlisting}[language=bash]
+python3 code/verify.py
+\end{lstlisting}
+No third-party package and no network access is needed for that command.
+The output includes \texttt{coefficients.csv}, containing separately the
+index, reduced numerator, and reduced positive denominator. These checks
+are finite consistency tests; the all-index assertion is established by
+Theorem~\ref{thm:main}.
+
+\subsection{Checking the asymptotic scale}
+
+A separate script evaluates $\theta(N)$ in two ways: from the scaled
+finite-sum definition and from the incomplete-gamma expression
+\eqref{eq:gamma}. In the executed run, \texttt{mpmath} version 1.3.0 was used
+at 100 decimal digits of working precision. The two evaluations differed
+by less than $7.18\times10^{-99}$ for all tested
+$N\in\{5,10,20,50,100,200,500,1000\}$.
+
+Let
+\[
+ P_4(N)=\frac13+\frac4{135N}-\frac8{2835N^2}
+                    -\frac{16}{8505N^3}.
+\]
+Applying \eqref{eq:poincare} with $R=6$ gives
+\begin{equation}
+ N^4\bigl(\theta(N)-P_4(N)\bigr)
+ =c_4+\frac{c_5}{N}+O(N^{-2}),
+ \label{eq:scalederror}
+\end{equation}
+where
+\[
+ c_4=\frac{8992}{12629925}\approx0.000711959888914621.
+\]
+Table~\ref{tab:numerical} illustrates the limit in
+\eqref{eq:scalederror}. The numbers are high-precision computations rounded
+for display, not interval-certified error bounds; the analytic proof
+above supplies the rigorous asymptotic assertion.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{r r r}
+\toprule
+$N$ & $N^4(\theta(N)-P_4(N))$ & Ratio to $c_4$\\
+\midrule
+10   & 0.000774546454009 & 1.087907431400\\
+20   & 0.000744626622858 & 1.045882829148\\
+50   & 0.000725333573049 & 1.018784322464\\
+100  & 0.000718695744320 & 1.009461004069\\
+200  & 0.000715339856847 & 1.004747413422\\
+500  & 0.000713314737917 & 1.001902985018\\
+1000 & 0.000712637788046 & 1.000952159162\\
+\bottomrule
+\end{tabular}
+\caption{A numerical illustration of the first omitted coefficient after
+four terms. Full working-precision output for five truncation orders is
+included in \texttt{artifacts/numerical\_checks.csv}.}
+\label{tab:numerical}
+\end{table}
+
+The optional numerical run is reproduced with
+\begin{lstlisting}[language=bash]
+python3 -m pip install -r requirements-optional.txt
+python3 code/numerical_check.py
+\end{lstlisting}
+The README describes the remaining files and the PDF build command.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+Both formulas in A260306 are proved for every $n\geq0$. The analytic part
+identifies the asymptotic coefficients uniquely and proves an
+$O_R(N^{-R})$ remainder after any fixed number of terms. The algebraic
+part is finite: a negative-power identity produces the factorial
+$(3n+2)!$ and the denominator $n+i+1$; the exponential generating function
+of Stirling numbers gives the double sum; and inclusion--exclusion gives
+the triple sum.
+
+The main structural answer is the extraction \eqref{eq:key}, or
+equivalently the residue \eqref{eq:residue}. The more elaborate OEIS
+expressions are exact finite expansions of that simpler object. The
+recurrence, the associated Stirling-number formula, and the computational
+checks are consequences and useful cross-checks, not additional
+assumptions in the proof.
+
+\clearpage
+\appendix
+\section{Minimal exact coefficient generator}
+\label{app:code}
+
+The following standalone routine computes all coefficients from $c_0$
+through $c_K$ using \eqref{eq:hrec} and \eqref{eq:ch}. It uses no symbolic
+algebra package and performs no floating-point operations.
+
+\begin{lstlisting}
+from fractions import Fraction
+from math import factorial
+
+
+def ramanujan_coefficients(K: int) -> list[Fraction]:
+    if not isinstance(K, int) or isinstance(K, bool) or K < 0:
+        raise ValueError("K must be a nonnegative integer")
+    h = [Fraction(1)]
+    for m in range(1, 2 * K + 2):
+        convolution = sum(
+            (h[m-j] * h[j] / (j+1) for j in range(1, m)),
+            Fraction(0),
+        )
+        h.append(
+            (h[m-1] / m - convolution) * Fraction(m+1, m+2)
+        )
+    return [
+        Fraction(int(n == 0)) - 2**n * factorial(n) * h[2*n+1]
+        for n in range(K + 1)
+    ]
+
+
+for n, coefficient in enumerate(ramanujan_coefficients(10)):
+    print(n, coefficient.numerator, coefficient.denominator)
+\end{lstlisting}
+
+The fuller \texttt{code/verify.py} in the archive includes the independent
+algorithms and validation checks discussed in
+Section~\ref{sec:verification}. The exact checks were executed with
+Python 3.13.5; the supplied scripts use syntax supported by Python 3.10
+and later.
+
+\begin{thebibliography}{9}
+
+\bibitem{oeis260306}
+The OEIS Foundation Inc.,
+\emph{A260306: Numerators in Ramanujan's asymptotic expansion of theta(n)},
+entry authored by Vladimir Reshetnikov, November 10, 2015, with subsequent
+contributions.
+\url{https://oeis.org/A260306}.
+Text record consulted September 20, 2026:
+\url{https://oeis.org/search?q=id:A260306&fmt=text}.
+
+\bibitem{oeis065973}
+The OEIS Foundation Inc.,
+\emph{A065973: Denominators in an asymptotic expansion of Ramanujan}.
+\url{https://oeis.org/A065973}.
+Consulted September 20, 2026.
+
+\bibitem{osullivan}
+Cormac O'Sullivan,
+\emph{Ramanujan's approximation to the exponential function and
+generalizations}, arXiv:2205.08504 [math.NT], 2022.
+See the introduction and the discussion of associated Stirling numbers
+in Section 7.
+\url{https://arxiv.org/abs/2205.08504}.
+
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,1070 @@
+% SPDX-License-Identifier: MIT-0
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,multicol}
+\usepackage{microtype,enumitem,fancyhdr}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\definecolor{Ink}{HTML}{203545}
+\definecolor{Accent}{HTML}{536348}
+\hypersetup{colorlinks=true,linkcolor=Ink,citecolor=Accent,urlcolor=Ink,
+ pdftitle={Coefficientwise magic positivity through dimension ten},
+ pdfauthor={Research draft prepared with ChatGPT for Vladimir Reshetnikov},
+ pdfsubject={A computer-assisted partial solution of a generalized parking-function polytope conjecture}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\bb}{\mathbf b}
+\newcommand{\xx}{\mathbf x}
+\newcommand{\qq}{\mathbf q}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\zero}{\mathbf 0}
+\newcommand{\X}{\mathfrak X}
+\newcommand{\M}{\mathcal M}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\degree}{\operatorname{deg}}
+\DeclareMathOperator{\proj}{proj}
+\numberwithin{equation}{section}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{Ink}Magic positivity through dimension ten}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{0.35em}
+\emergencystretch=2em
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{black!20},showstringspaces=false,
+ xleftmargin=0.5em,xrightmargin=0.5em}
+\title{\LARGE\bfseries\color{Ink}Coefficientwise magic positivity\\through dimension ten\\[0.45em]
+\large An exact-arithmetic partial solution for\\generalized parking-function polytopes}
+\author{Research draft prepared for Vladimir Reshetnikov}
+\date{20 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Hill, Luo, Trinh, and Vindas-Mel\'endez conjecture that every generalized
+parking-function polytope $\X_n(\bb)$ with $n\ge3$ is magic positive: its Ehrhart
+polynomial has nonnegative coefficients in the basis
+$t^j(t+1)^{n-j}$. We obtain an exact-arithmetic, computer-assisted proof for
+\emph{all positive integer parameter vectors} in every dimension $3\le n\le10$.
+The certified statement is stronger: after $b_i=1+x_i$, every coefficient of
+every polynomial $n!\mu_{n,j}(\one+\xx)$ is nonnegative. For $4\le n\le10$,
+all monomials of total degree at most $j$ occur with strictly positive
+coefficients. Dimension three has a short explicit proof printed in full.
+Independently of the dimension bound, we derive a harmonic-number formula for
+$\mu_{n,1}$ and prove its sharp minimum $n(3n-7)/4$. We also identify the zero
+cases of the final magic coefficient and give a cube-addition identity reducing
+the general problem to $b_1=1$. The accompanying package contains exact
+polynomial certificates, a standard-library Python generator and verifier,
+and independent lattice-point checks. The unrestricted conjecture is not
+settled here; the distinction between the finite-dimensional theorem and the
+remaining all-dimensional problem is maintained throughout.
+\end{abstract}
+
+\noindent\textbf{Keywords.} Ehrhart polynomial; magic positivity; generalized
+parking function; polymatroid; exact polynomial certificate.
+
+\setcounter{tocdepth}{1}
+\begingroup
+\setlength{\parskip}{0pt}
+\small
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{The selected problem and the result obtained}
+\label{sec:problem}
+
+\subsection{Selection, exclusion, and current source status}
+The subject was selected before choosing the problem. A catalogue of 120
+mathematical areas was fixed, and a pseudorandom draw seeded by 128 bits from the
+operating system selected entry 33, \emph{discrete geometry}. There was no
+redraw. The seed, ordered catalogue, and replay command are recorded in
+Appendix~\ref{app:selection} and in \texttt{data/selection.json}.
+
+The supplied \texttt{manifest(1).tex} was read in full and used as an exclusion
+list. Its 71 entries do not contain the problem considered here. In particular,
+its lucky-parking-spots problem concerns a statistic on parking functions;
+its preorder-polytope and order/chain-polytope problems concern different
+polytopes and different invariants. The present question concerns the
+Ehrhart polynomial of the convex hull of generalized parking functions.
+The input-file hash and the exclusion comparison are recorded in
+\texttt{notes/exclusion\_audit.md}.
+
+The precise target is Conjecture~8.1 of Hill, Luo, Trinh, and
+Vindas-Mel\'endez \cite{HLTV}. Their preprint, arXiv:2607.15503v1, was
+submitted on 16 July 2026. That version explicitly leaves arbitrary parameter vectors open,
+while proving the two-parameter family $(a,b,\ldots,b)$. The version history
+and targeted literature searches were checked on 20 September 2026; no later
+resolution of the arbitrary-vector conjecture was located. The investigation below uses that published formulation.
+
+\subsection{Definitions and the conjecture}
+For $\bb=(b_1,\ldots,b_n)\in\Z_{>0}^n$, put
+\[
+ S_i=b_1+\cdots+b_i,\qquad S_0=0.
+\]
+A \emph{$\bb$-parking function} is a positive integer vector whose increasing
+rearrangement $\beta'_1\le\cdots\le\beta'_n$ satisfies $\beta'_i\le S_i$.
+Let $\X_n(\bb)$ be the convex hull of these vectors, and define
+\[
+ E_{n,\bb}(t)=\#\bigl(t\X_n(\bb)\cap\Z^n\bigr)
+ \qquad(t\in\Z_{\ge0}).
+\]
+The vertices are integral, and this counting function is a polynomial. We
+will also obtain its polynomiality directly from an exact recursion.
+
+For $n\ge2$, these polytopes have dimension $n$. Expand uniquely as
+\begin{equation}
+ E_{n,\bb}(t)=\sum_{j=0}^n\mu_{n,j}(\bb)t^j(t+1)^{n-j}.
+ \label{eq:magic-basis}
+\end{equation}
+The word \emph{magic} names the basis, not an additional geometric operation.
+The polytope is \emph{magic positive} when all $\mu_{n,j}(\bb)$ are
+nonnegative. Equivalently, the polynomial
+\begin{equation}
+ M_{n,\bb}(y)=(1-y)^n E_{n,\bb}\!\left(\frac{y}{1-y}\right)
+       =\sum_{j=0}^n\mu_{n,j}(\bb)y^j
+ \label{eq:transform}
+\end{equation}
+has nonnegative ordinary coefficients.
+
+\begin{conjecture}[Hill--Luo--Trinh--Vindas-Mel\'endez]
+\label{conj:target}
+For every $n\ge3$ and every $\bb\in\Z_{>0}^n$, the polytope $\X_n(\bb)$ is
+magic positive.
+\end{conjecture}
+
+Magic positivity is stronger than ordinary Ehrhart positivity. It also
+implies real-rootedness of the $h^*$-polynomial through Br\"and\'en's
+transformation theorem \cite[Theorem~4.2]{Branden}. This explains why changing
+the basis is useful rather than merely cosmetic. Section~\ref{sec:consequences}
+makes the implication precise.
+
+\subsection{Main results and their proof status}
+\begin{theorem}[Coefficientwise positivity through dimension ten]
+\label{thm:main}
+For $3\le n\le10$ and $0\le j\le n$,
+\begin{equation}
+ n!\mu_{n,j}(1+x_1,\ldots,1+x_n)\in
+       \Z_{\ge0}[x_1,\ldots,x_n].
+ \label{eq:strong}
+\end{equation}
+For $4\le n\le10$, every monomial of total degree at most $j$ has a
+strictly positive coefficient. For $n=3$, the same assertion holds except
+that the constant coefficient of $6\mu_{3,3}(\one+\xx)$ is zero.
+Consequently Conjecture~\ref{conj:target} holds for all positive integer
+parameter vectors in these eight dimensions.
+\end{theorem}
+
+The dimension-three proof is entirely explicit in
+Section~\ref{sec:cubic}. The proof for dimensions four through ten is
+computer-assisted: exact polynomial identities obtained from a proved
+recursion are checked, and their complete coefficient lists are supplied.
+It is not a numerical test over a finite box of parameter values.
+
+\begin{theorem}[The first magic coefficient in every dimension]
+\label{thm:first-intro}
+Let $H_m=\sum_{k=1}^m1/k$. For $n\ge3$ and $x_i=b_i-1\ge0$,
+\begin{equation}
+ \mu_{n,1}(\one+\xx)
+ =\frac{n(3n-7)}4+n x_1+
+  \sum_{r=1}^{n-1}r(1+H_n-H_r)x_{n-r+1}.
+ \label{eq:first-intro}
+\end{equation}
+In particular,
+\[
+ \mu_{n,1}(\bb)\ge \frac{n(3n-7)}4>0,
+\]
+with equality precisely at $\bb=\one$.
+\end{theorem}
+
+The second theorem has a proof in arbitrary dimension and does not rely on
+the certificates. The identities $\mu_{n,0}=1$ and
+$\mu_{n,n}=\#(\interior\X_n(\bb)\cap\Z^n)$ further control the endpoints.
+Therefore any counterexample not ruled out by this work must have
+$n\ge11$ and a negative coefficient at an index $2\le j\le n-1$.
+This does \emph{not} assert that such a counterexample exists.
+
+The conjecture in all dimensions, and the coefficientwise strengthening of
+it, remain unproved in this draft.
+
+\section{Geometry and an exact counting recursion}
+\label{sec:geometry}
+
+The inequality description used here is due to Bayer and collaborators
+\cite[Theorem~2.3]{Bayer}. The lattice-layer recursion, polynomiality, and
+dilation identity are established in \cite[Theorem~3.5, Theorem~4.1,
+Proposition~5.4, and Section~5]{HLTV}. They are inputs rather than novelty
+claims. We provide direct derivations because the correctness of the
+certificates depends on their boundary conventions.
+
+\subsection{A symmetric rank description}
+Translate by the integer vector $\one$, and write
+\[
+ P_n(\bb)=\X_n(\bb)-\one,\qquad u_i=S_i-1,
+ \qquad f(k)=\sum_{i=n-k+1}^n u_i,\quad f(0)=0.
+\]
+Then
+\begin{equation}
+ P_n(\bb)=\left\{z\in\R_{\ge0}^n:
+       \sum_{i\in I}z_i\le f(|I|)\text{ for every }I\subseteq[n]\right\}.
+ \label{eq:rank-polytope}
+\end{equation}
+The sequence $u_1\le\cdots\le u_n$ is nonnegative. The same definition makes
+sense for the auxiliary weak parameter range
+\begin{equation}
+ b_1\ge1,\qquad b_2,\ldots,b_n\ge0.
+ \label{eq:weak}
+\end{equation}
+We will need this range to evaluate the counting polynomial on coordinate
+axes. It is a genuine geometric extension, not an assumption that arbitrary
+polynomial specializations still count lattice points.
+
+\begin{lemma}[Greedy description]
+\label{lem:greedy}
+The right side of \eqref{eq:rank-polytope} is the convex hull of all coordinate
+permutations of
+\[
+ (u_n,u_{n-1},\ldots,u_{n-m+1},0,\ldots,0),\qquad 0\le m\le n.
+\]
+This holds throughout \eqref{eq:weak}. In particular the polytope is integral
+when the parameters are integers.
+\end{lemma}
+\begin{proof}
+Each displayed vector satisfies all subset inequalities, since the sum of
+any $k$ coordinates is at most the sum of the $k$ largest $u_i$.
+For the reverse inclusion, maximize a linear functional. By symmetry, its
+positive coefficients may be ordered $c_1\ge\cdots\ge c_m>0$; coordinates
+with nonpositive coefficients can be set to zero, since the feasible set is
+downward closed. With $c_{m+1}=0$, every feasible $z$ satisfies
+\[
+ \sum_{i=1}^m c_i z_i
+ =\sum_{k=1}^m(c_k-c_{k+1})\sum_{i=1}^kz_i
+ \le\sum_{k=1}^m(c_k-c_{k+1})f(k).
+\]
+Equality is attained by $z_i=u_{n-i+1}$ for $i\le m$ and zero otherwise.
+Thus the proposed convex hull has the same support function. After adding
+$\one$, the displayed vectors are parking functions, so this also identifies
+the original convex hull when the parameters are positive.
+\end{proof}
+
+\begin{remark}
+Counting lattice points of the convex hull is not the same as counting
+parking functions. For example, $(2,2,2)\in\X_3(1,1,1)$, since its largest
+one-, two-, and three-coordinate sums are $2,4,6$, bounded by $3,5,6$.
+It is not a parking function: its smallest coordinate exceeds $S_1=1$.
+The algorithms below count points of the polytope, not just its defining
+integer set.
+\end{remark}
+
+\subsection{Derivation of the layers}
+In the unshifted coordinates put
+\[
+ \Sigma_k=\sum_{i=n-k+1}^n S_i.
+\]
+Fix the last coordinate at an integer height $h$, where $1\le h\le S_n$.
+For a $k$-element subset $I$ of the other coordinates, the two relevant
+bounds are
+\[
+ \sum_{i\in I}x_i\le\Sigma_k,
+ \qquad \sum_{i\in I}x_i\le\Sigma_{k+1}-h.
+\]
+Their minimum is the exact residual bound. Indeed all inequalities either
+contain the fixed coordinate or do not. The switch between the two bounds
+is controlled by
+\[
+ \Sigma_{k+1}-\Sigma_k=S_{n-k}.
+\]
+
+Write $h=S_{\ell-1}+r$ with $1\le r\le b_\ell$. The resulting layer is
+$\X_{n-1}(\bb^{(\ell,r)})$, where
+\begin{align}
+ \bb^{(1,r)}&=(b_1+b_2,b_3,\ldots,b_n),\label{eq:first-layer}\\
+ \bb^{(\ell,r)}&=(b_1,\ldots,b_{\ell-2},
+ b_{\ell-1}+b_\ell-r,b_{\ell+1}+r,b_{\ell+2},\ldots,b_n),
+ &&2\le\ell\le n-1,\label{eq:middle-layer}\\
+ \bb^{(n,r)}&=(b_1,\ldots,b_{n-2},b_{n-1}+b_n-r).
+ \label{eq:last-layer}
+\end{align}
+To check the indexing, the new partial sums for $\ell>1$ are
+$S_i$ for $i\le\ell-2$, then $S_\ell-r$, and then $S_{i+1}$ for
+$i\ge\ell$; for $\ell=1$ they are simply $S_{i+1}$.
+Their largest-coordinate sums give precisely
+$\min(\Sigma_k,\Sigma_{k+1}-h)$.
+
+This derivation also covers zero values among $b_2,\ldots,b_n$: a block
+of length zero contributes no layers. Every parameter vector that does
+occur still satisfies \eqref{eq:weak}.
+
+\begin{proposition}[Exact lattice-count recurrence]
+\label{prop:recurrence}
+Let $L_n(\bb)=\#(\X_n(\bb)\cap\Z^n)$ in the weak integer parameter range.
+Then $L_1(b_1)=b_1$, and for $n\ge2$,
+\begin{align}
+ L_n(\bb)={}&b_1L_{n-1}(b_1+b_2,b_3,\ldots,b_n)\notag\\
+ &+\sum_{\ell=2}^{n-1}\sum_{r=1}^{b_\ell}
+       L_{n-1}(\bb^{(\ell,r)})
+   +\sum_{r=1}^{b_n}L_{n-1}(\bb^{(n,r)}).
+ \label{eq:recurrence}
+\end{align}
+The middle sum is empty for $n=2$.
+\end{proposition}
+\begin{proof}
+The layers partition the lattice points. In the first block all $b_1$ layers
+have the same parameter vector \eqref{eq:first-layer}; the other blocks use
+\eqref{eq:middle-layer} and \eqref{eq:last-layer} individually.
+\end{proof}
+
+\subsection{Polynomiality, degree, and denominators}
+\begin{proposition}
+\label{prop:polynomial}
+There is a unique polynomial $L_n\in\Q[b_1,\ldots,b_n]$ of total degree at most
+$n$ that gives these counts. Moreover,
+\begin{equation}
+ n!L_n\in\Z[b_1,\ldots,b_n].
+ \label{eq:integral-scale}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Induct on $n$. Affine substitution preserves the degree bound $n-1$.
+Expanding a summand in powers of $r$ and summing $r^k$ from $1$ to $b_\ell$
+replaces it by a polynomial of degree $k+1$; hence the total degree rises by
+at most one. The first block also raises degree by at most one. This
+constructs $L_n$. Uniqueness follows because a polynomial vanishing on all
+positive integer vectors vanishes identically, by induction on the number
+of variables.
+
+For the denominator statement, let $R(\xx)=L_n(\one+\xx)$. Its values on
+$\Z_{\ge0}^n$ are integers. The multivariate Newton expansion is
+\[
+ R(\xx)=\sum_{|\alpha|\le n}
+ (\Delta_1^{\alpha_1}\cdots\Delta_n^{\alpha_n}R)(\zero)
+ \prod_{i=1}^n\binom{x_i}{\alpha_i}.
+\]
+All finite differences are integers. Each denominator
+$\prod_i\alpha_i!$ divides $n!$, because $|\alpha|\le n$.
+Multiplication by $n!$ therefore gives integral ordinary coefficients;
+translation back to the $b_i$ preserves integrality.
+\end{proof}
+
+The recurrence and the polynomial agree on the weak parameter domain,
+not merely on its strictly positive part. This follows from the layer proof,
+where zero-length blocks are omitted. This point is useful in the next section
+and in the all-dimensional coefficient calculation.
+
+\section{The magic transform and finite symbolic certificates}
+\label{sec:certificates}
+
+\subsection{Dilation and homogeneous components}
+By the rank description, multiplication of $P_n(\bb)$ by a nonnegative
+integer $t$ replaces $u_i$ by $t u_i$. Consequently,
+\begin{equation}
+ E_{n,\bb}(t)=L_n(1+t(b_1-1),t b_2,\ldots,t b_n).
+ \label{eq:dilation}
+\end{equation}
+The translation between $t\X_n(\bb)$ and $tP_n(\bb)$ is integral.
+At $t=0$, the right side is $L_n(1,0,\ldots,0)=1$, as required.
+Thus \eqref{eq:dilation} supplies an Ehrhart polynomial without an
+interpolation step.
+
+Define
+\[
+ F_n(\qq)=L_n(1+q_1,q_2,\ldots,q_n)
+     =\sum_{d=0}^n F_{n,d}(\qq),
+\]
+where $F_{n,d}$ is homogeneous of degree $d$. If
+$E_{n,\bb}(t)=\sum_{d=0}^n e_{n,d}(\bb)t^d$, then
+\begin{equation}
+ e_{n,d}(\bb)=F_{n,d}(b_1-1,b_2,\ldots,b_n),\qquad
+ \mu_{n,j}=\sum_{d=0}^j(-1)^{j-d}\binom{n-d}{j-d}e_{n,d}.
+ \label{eq:triangular-transform}
+\end{equation}
+In particular $\mu_{n,j}(\one+\xx)$ has degree at most $j$.
+The integer scaling in \eqref{eq:integral-scale} survives all translations
+and the integral triangular transform.
+
+There are two different translations here. The homogeneous grading uses
+$(q_1,q_2,\ldots)=(b_1-1,b_2,\ldots)$, whereas the positivity certificate
+uses $x_i=b_i-1$ for \emph{every} coordinate. Confusing these shifts would
+produce an incorrect certificate; the implementation performs them in
+separate stages.
+
+\subsection{A small exact summation kernel}
+For nonnegative integers $a,b$, introduce
+\begin{equation}
+ K_{a,b}(X,Y,Z)=\sum_{r=1}^{Y}(X+Y-r)^a(Z+r)^b,
+ \label{eq:kernel}
+\end{equation}
+where the sum is interpreted as its unique polynomial continuation in $Y$.
+This kernel carries every middle block of the recursion. The final block
+uses $K_{a,0}(X,Y,0)$.
+
+For a complete construction, let $A_k(Y)=\sum_{r=1}^Yr^k$. Telescoping
+$(r+1)^{k+1}-r^{k+1}$ gives
+\begin{equation}
+ A_k(Y)=\frac{(Y+1)^{k+1}-1-
+               \sum_{h=0}^{k-1}\binom{k+1}{h}A_h(Y)}{k+1}.
+ \label{eq:power-sum}
+\end{equation}
+After binomial expansion,
+\begin{equation}
+ K_{a,b}(X,Y,Z)=
+ \sum_{i+j+h=a}\binom{a}{i,j,h}X^iY^j(-1)^h
+ \sum_{z=0}^{b}\binom bz Z^z A_{h+b-z}(Y).
+ \label{eq:kernel-expansion}
+\end{equation}
+All arithmetic is rational, and $n!K_{a,b}$ has integral coefficients when
+$a+b+1\le n$. This also follows from the integer-valued-polynomial argument
+of Proposition~\ref{prop:polynomial}.
+
+An independent identity is especially useful for auditing the kernel:
+\begin{align}
+ K_{a,b}(X,0,Z)&=0,\label{eq:kernel-boundary}\\
+ K_{a,b}(X,Y,Z)-K_{a,b}(X+1,Y-1,Z)
+     &=X^a(Z+Y)^b.\label{eq:kernel-difference}
+\end{align}
+The second term has exactly the first $Y-1$ summands of the first; the
+remaining summand is the displayed right side. Conversely these identities
+uniquely determine the kernel on nonnegative integer $Y$, and therefore
+as a polynomial. The verifier checks them by independent polynomial
+translation, not by reapplying the power-sum recurrence.
+
+\subsection{What the certificate proves}
+A sparse polynomial is represented by a map
+\[
+ (\alpha_1,\ldots,\alpha_n)\longmapsto c_\alpha\in\Z.
+\]
+The lattice files store $n!L_n(\bb)$, and the magic files store
+$n!\mu_{n,j}(\one+\xx)$. Missing monomials have coefficient zero.
+The three invariants of the generator are:
+\begin{enumerate}[label=(\roman*),itemsep=0.15em]
+\item the current lattice map is exactly $n!L_n$, by the layer recursion;
+\item homogeneous extraction and \eqref{eq:triangular-transform} produce
+exactly the scaled magic maps;
+\item a nonnegative map evaluates nonnegatively whenever $x_i\ge0$.
+\end{enumerate}
+No root approximation, positivity tolerance, guessed recurrence, or
+parameter-bound assumption enters any invariant.
+
+\begin{proof}[Computer-assisted proof of Theorem~\ref{thm:main}]
+Start from $L_1(b_1)=b_1$. Equations \eqref{eq:recurrence},
+\eqref{eq:power-sum}, and \eqref{eq:kernel-expansion} construct $L_n$
+inductively. Equations \eqref{eq:dilation} and
+\eqref{eq:triangular-transform} construct the magic maps. The supplied
+verifier regenerates and compares every stored coefficient for $1\le n\le10$.
+For $3\le n\le10$, every retained coefficient is a positive integer.
+The number of retained monomials in the $j$th map is
+\begin{equation}
+ \binom{n+j}{j}-\begin{cases}1,&(n,j)=(3,3),\\0,&\text{otherwise}.
+ \end{cases}
+ \label{eq:support-size}
+\end{equation}
+The degree bound is $j$, so for $n\ge4$ this is the entire possible support.
+For $n=3,j=3$, the single missing monomial is the constant, as the explicit
+formula below confirms. Evaluating at $x_i=b_i-1\ge0$ proves the stated
+infinite-parameter assertions. The exact output is summarized in
+Table~\ref{tab:certificate-counts}; the full coefficient lists, rather than
+only their counts, are included in the archive.
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$n$ & Terms in $n!L_n$ & Terms in all magic maps & $\mu_{n,n}(\one)$\\
+\midrule
+3 & 16 & 34 & 0 \\
+4 & 60 & 126 & 5 \\
+5 & 227 & 462 & 96 \\
+6 & 851 & 1,716 & 1,758 \\
+7 & 3,223 & 6,435 & 34,820 \\
+8 & 12,200 & 24,310 & 762,675 \\
+9 & 46,456 & 92,378 & 18,489,870 \\
+10 & 177,525 & 352,716 & 493,794,476 \\
+\bottomrule
+\end{tabular}
+\caption{Exact certificate sizes and the final magic coefficient at the
+classical parameter vector. All 478,177 retained coefficients in the magic
+maps for $3\le n\le10$ are positive. The last column is also an interior
+lattice-point count.}
+\label{tab:certificate-counts}
+\end{table}
+
+The number of possible monomials in a polynomial of degree at most $j$ in
+$n$ variables is $\binom{n+j}{j}$. Summing over $j$ gives
+$\binom{2n+1}{n}$, which explains the total support size for $n\ge4$.
+These support counts are observations proved for the listed dimensions,
+not an all-dimensional extrapolation.
+
+\section{A complete explicit proof in dimension three}
+\label{sec:cubic}
+
+The first two recursion steps give
+\begin{align*}
+ L_2(b_1,b_2)&=b_1^2+2b_1b_2+\tfrac12b_2^2-\tfrac12b_2,\\
+ L_3(b_1,b_2,b_3)&=b_1^3+3b_1^2b_2+3b_1^2b_3
+ +3b_1b_2^2+6b_1b_2b_3+\tfrac32b_1b_3^2-\tfrac32b_1b_3\\
+ &\quad+\tfrac56b_2^3+2b_2^2b_3-\tfrac12b_2^2
+ +b_2b_3^2-2b_2b_3-\tfrac13b_2
+ +\tfrac16b_3^3-\tfrac12b_3^2+\tfrac13b_3.
+\end{align*}
+The $L_2$ formula follows by summing the last block of
+\eqref{eq:recurrence}; substitution of it into the same recurrence gives
+$L_3$ using sums of first and second powers. Thus the following identities
+can be checked using only elementary polynomial arithmetic.
+
+Put $x=b_1-1$, $y=b_2-1$, and $z=b_3-1$. Applying
+\eqref{eq:triangular-transform} gives
+\begin{align}
+ 6\mu_{3,0}&=6,\notag\\
+ 6\mu_{3,1}&=18x+16y+11z+9,\label{eq:cubic-mu1}\\
+ 6\mu_{3,2}&=18x^2+x(36y+27z+27)
+       +15y^2+24yz+22y+6z^2+14z+9,\label{eq:cubic-mu2}\\
+ 6\mu_{3,3}&=6x^3+18x^2(y+z+1)\notag\\
+ &\quad+x(18y^2+36yz+36y+9z^2+27z+18)\notag\\
+ &\quad+5y^3+12y^2z+12y^2+6yz^2+12yz+7y
+       +z^3+3z^2+2z.\label{eq:cubic-mu3}
+\end{align}
+All coefficients are nonnegative, and $x,y,z\ge0$ for the desired
+parameter range. This proves Conjecture~\ref{conj:target} in dimension
+three without any unprinted computation. Moreover, $\mu_{3,1}$ and
+$\mu_{3,2}$ are always positive, while $\mu_{3,3}=0$ holds exactly when
+$x=y=z=0$.
+
+\begin{example}[An asymmetric parameter vector]
+For $\bb=(2,3,1)$, the formulas give
+\begin{align*}
+ M_{3,\bb}(y)&=1+\frac{59}{6}y+\frac{115}{3}y^2+54y^3,\\
+ E_{3,\bb}(t)&=1+\frac{77}{6}t+61t^2+\frac{619}{6}t^3,\\
+ h^*_{3,\bb}(z)&=1+174z+390z^2+54z^3.
+\end{align*}
+In particular there are 178 lattice points at dilation one. The first line
+agrees with the independently printed example in \cite[Section~8]{HLTV};
+that example was used as a check, not to fit the polynomial.
+\end{example}
+
+\subsection{Why the lower-dimensional exception is genuine}
+For $u=b_1-1$ and $v=b_2-1$, the degree-two magic coefficients are
+\[
+ 2\mu_{2,0}=2,\qquad 2\mu_{2,1}=4u+3v-1,\qquad
+ 2\mu_{2,2}=2u^2+4uv+v(v-1).
+\]
+For nonnegative integers $u,v$, the final expression is nonnegative; the
+middle one is negative precisely when $u=v=0$. This rederives the known
+exception $\X_2(1,1)$ and shows why a proof that assumes coefficientwise
+positivity beginning in dimension two would fail. The nonnegative-value
+statement and the nonnegative-ordinary-coefficient statement are distinct:
+$v(v-1)$ has a negative linear coefficient but is nonnegative at every
+nonnegative integer.
+
+In dimension one, $\X_1(b_1)=[1,b_1]$ has Ehrhart polynomial
+$1+(b_1-1)t$. For $b_1\ge2$ its degree-one magic transform is
+$1+(b_1-2)y$. The case $b_1=1$ is a point of intrinsic dimension zero;
+its intrinsic magic polynomial is $1$. The auxiliary certificate files
+use ambient degree one in that case, yielding $1-y$; this is not a
+counterexample to the intrinsic-dimensional definition.
+
+\section{A sharp all-dimensional formula for the first coefficient}
+\label{sec:first}
+
+\subsection{Linearity from the multivariate counting polynomial}
+Equation~\eqref{eq:dilation} shows that $e_{n,1}(\bb)$ is the homogeneous
+linear part of $F_n(\qq)$ evaluated at
+$\qq=(b_1-1,b_2,\ldots,b_n)$. Hence it is enough to evaluate that linear
+form on the $n$ coordinate axes. This observation avoids invoking a general
+mixed-Ehrhart theorem or assuming a positivity property of mixed volumes.
+
+For $1\le r\le n$, define the uniform-rank polytope
+\begin{equation}
+ Q_{r,n}=\{z\in[0,1]^n:z_1+\cdots+z_n\le r\}.
+ \label{eq:uniform}
+\end{equation}
+On the $q_1$ axis, the rank polytope is a cube $q_1Q_{n,n}$. On the
+$q_j$ axis for $j\ge2$, its $u$-sequence has $j-1$ zeros followed by
+$n-j+1$ copies of $q_j$, so it is $q_jQ_{n-j+1,n}$.
+These statements follow directly from the subset inequalities, including
+their weak-parameter interpretation.
+
+\subsection{The linear Ehrhart coefficient of a uniform-rank polytope}
+\begin{lemma}
+\label{lem:uniform-linear}
+For $1\le r\le n$,
+\begin{equation}
+ [t]E_{Q_{r,n}}(t)=r(1+H_n-H_r).
+ \label{eq:uniform-linear}
+\end{equation}
+\end{lemma}
+\begin{proof}
+At dilation $t$, count integer vectors $0\le z_i\le t$ with
+$\sum_i z_i\le rt$. Inclusion--exclusion for the upper coordinate bounds
+and the stars-and-bars formula give the polynomial identity
+\begin{equation}
+ E_{Q_{r,n}}(t)=\sum_{j=0}^{r-1}(-1)^j\binom nj
+                     \binom{(r-j)t+n-j}{n}.
+ \label{eq:uniform-ehrhart}
+\end{equation}
+For positive integer $t$, intersections of $j\ge r$ forbidden events
+are empty, so they are not included. The terms shown with an insufficient
+nonnegative upper binomial argument vanish in the usual combinatorial way.
+Consequently \eqref{eq:uniform-ehrhart} is valid for every positive integer
+$t$ and is a polynomial identity.
+
+The derivative of the $j=0$ term at zero is $rH_n$, since
+\[
+ \binom{rt+n}{n}=\prod_{k=1}^n\left(1+\frac{rt}{k}\right).
+\]
+For $1\le j\le r-1$, the binomial polynomial has one zero factor at
+$t=0$. Differentiating that factor gives
+\[
+ \left.\frac{d}{dt}\binom{(r-j)t+n-j}{n}\right|_{t=0}
+ =\frac{(r-j)(n-j)!(-1)^{j-1}(j-1)!}{n!}.
+\]
+After multiplication by $(-1)^j\binom nj$, its contribution is
+$-(r-j)/j$. Therefore
+\[
+ [t]E_{Q_{r,n}}=rH_n-\sum_{j=1}^{r-1}\frac{r-j}{j}
+             =r(1+H_n-H_r).
+\]
+The formula includes $r=n$, where $Q_{n,n}$ is the unit cube and the
+answer is $n$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:first-intro}]
+Coordinate-axis evaluation of the linear form gives
+\begin{equation}
+ e_{n,1}(\bb)=n(b_1-1)+
+   \sum_{r=1}^{n-1}r(1+H_n-H_r)b_{n-r+1}.
+ \label{eq:linear-ehrhart}
+\end{equation}
+Since $e_{n,0}=1$, the triangular transform gives
+$\mu_{n,1}=e_{n,1}-n$. Substitute $b_i=1+x_i$ and evaluate the constant:
+\begin{align*}
+ \sum_{r=1}^{n-1}r(1+H_n-H_r)
+ &=\frac{n(n-1)}2+
+   \sum_{k=2}^n\frac1k\sum_{r=1}^{k-1}r\\
+ &=\frac{n(n-1)}2+\frac{n(n-1)}4
+ =\frac{3n(n-1)}4.
+\end{align*}
+This proves \eqref{eq:first-intro}. Every coefficient of an $x_i$ is
+strictly positive. Thus the minimum on $x_i\ge0$ is attained uniquely at
+$\xx=\zero$, where it equals $n(3n-7)/4$.
+\end{proof}
+
+\begin{remark}
+At the extremes, the coefficients of $b_2$ and $b_n$ in
+\eqref{eq:linear-ehrhart} are $(n^2-1)/n$ and $H_n$, respectively.
+For $n=3$, these are $8/3$ and $11/6$, reproducing the asymmetric weights
+in \eqref{eq:cubic-mu1}. At $n=2$, the constant minimum becomes $-1/2$,
+exactly the exceptional magic coefficient above.
+\end{remark}
+
+\section{Endpoints, consequences, and parameter monotonicity}
+\label{sec:consequences}
+
+\subsection{The first and last entries of the magic vector}
+\begin{proposition}
+\label{prop:endpoints}
+For all positive parameters and $n\ge3$,
+\[
+ \mu_{n,0}(\bb)=1,\qquad
+ \mu_{n,n}(\bb)=\#\bigl(\interior\X_n(\bb)\cap\Z^n\bigr).
+\]
+Moreover $\mu_{n,n}(\bb)=0$ if and only if
+$n=3$ and $\bb=(1,1,1)$.
+\end{proposition}
+\begin{proof}
+The constant coefficient follows from $E(0)=1$. At $t=-1$, every term in
+\eqref{eq:magic-basis} vanishes except the last, so
+$\mu_{n,n}=(-1)^nE(-1)$. Ehrhart--Macdonald reciprocity identifies this with
+the interior lattice count; this standard theorem is an external input
+\cite{Macdonald,BeckDevelin}.
+
+At $\bb=\one$, the original-coordinate upper bound for a subset of size
+$k$ is
+\[
+ \Sigma_k=\frac{k(2n-k+1)}2.
+\]
+For $n\ge4$ this is strictly greater than $2k$ for every $1\le k\le n$.
+Thus $(2,\ldots,2)$ strictly satisfies every lower and upper inequality
+and is an interior lattice point. Increasing any parameter preserves
+these strict inequalities.
+
+For $n=3$ at $\bb=\one$, every interior lattice point would have all
+coordinates at least two and total sum strictly less than six, which is
+impossible. If any parameter is increased, the total-sum upper bound
+becomes greater than six, while the bounds on one- and two-coordinate
+sums were already strictly greater than two and four. Hence $(2,2,2)$
+becomes interior. This proves the exact zero classification.
+\end{proof}
+
+\subsection{Consequences of the finite-dimensional theorem}
+For $3\le n\le10$, the coefficientwise assertion has implications stronger
+than nonnegativity at integer parameters. The polynomial continuations
+$\mu_{n,j}(\one+\xx)$ are coordinatewise nondecreasing for real $x_i\ge0$,
+and for $j\ge1$ they are strictly increasing in each coordinate. Their
+minimum is therefore attained at the classical vector $\bb=\one$.
+For $4\le n\le10$, every mixed partial derivative of total order at most $j$
+is strictly positive on this orthant; the full-support statement proves
+this by differentiating its matching monomial. These are statements about
+the polynomial continuations, not an assertion that an irrational polytope
+has an Ehrhart polynomial.
+
+Since $\mu_{n,0}=1$, expanding the nonnegative magic basis gives
+\begin{equation}
+ [t^k]E_{n,\bb}(t)\ge\binom nk>0
+ \qquad(0\le k\le n,\;3\le n\le10).
+ \label{eq:ordinary-lower}
+\end{equation}
+The comparison is with $(1+t)^n$ coefficient by coefficient.
+
+Define the $h^*$-polynomial by
+\[
+ \sum_{t\ge0}E_{n,\bb}(t)z^t=\frac{h^*_{n,\bb}(z)}{(1-z)^{n+1}}.
+\]
+Let $\mathcal E$ be the linear map sending $\binom tk$ to $w^k$.
+The identity $\sum_{t\ge0}\binom tkz^t=z^k/(1-z)^{k+1}$ gives
+\[
+ h^*_{n,\bb}(z)=(1-z)^n
+       \mathcal E(E_{n,\bb})\!\left(\frac{z}{1-z}\right).
+\]
+Br\"and\'en's theorem says that nonnegative magic coefficients force
+$\mathcal E(E)$ to have all its zeros in $[-1,0]$
+\cite[Theorem~4.2 and equation~(6.4)]{Branden}. The fractional-linear
+substitution takes these zeros to nonpositive real zeros; a zero at $-1$
+accounts for a possible degree drop. Thus the finite-dimensional theorem
+also gives real-rooted $h^*$-polynomials for every positive parameter vector
+with $3\le n\le10$. Their coefficient sequences are consequently
+log-concave and unimodal. The real-rootedness implication is classical;
+only its application to the newly certified parameter range is part of
+the present result.
+
+\section{Cube addition and a reduction to the boundary parameter}
+\label{sec:cube}
+
+The following identity clarifies which parameter is easiest to remove from
+a possible all-dimensional proof. It is an exact identity, not a positivity
+assumption about general Minkowski sums.
+
+\begin{lemma}[Adding coordinate segments]
+\label{lem:segments}
+Let $P\subset\R_{\ge0}^n$ be a compact downward-closed convex set. For an
+integer $m\ge0$ and a coordinate vector $e_i$,
+\[
+ \#((P+[0,m]e_i)\cap\Z^n)
+ =\#(P\cap\Z^n)+m\#(\proj_{[n]\setminus\{i\}}P\cap\Z^{n-1}).
+\]
+\end{lemma}
+\begin{proof}
+Over an integer point of the projection, the original fiber is a nonempty
+interval $[0,u]$. It contains $\lfloor u\rfloor+1$ integers. After adding
+the segment it is $[0,u+m]$, containing exactly $m$ more. No other fibers
+appear. Downward closure is what guarantees that a nonempty projected
+fiber contains the integer height zero.
+\end{proof}
+
+By the greedy support description,
+\begin{equation}
+ P_n(b_1+a,b_2,\ldots,b_n)=P_n(\bb)+a[0,1]^n
+ \qquad(a\ge0).
+ \label{eq:cube-sum}
+\end{equation}
+For $1\le k\le n$, a projection onto any $k$ coordinates has the same
+rank bounds through size $k$. Its parameter vector is
+\[
+ \pi_k\bb=(S_{n-k+1},b_{n-k+2},\ldots,b_n).
+\]
+Put $E_{0,\pi_0\bb}=M_{0,\pi_0\bb}=1$ as an empty-dimensional convention.
+
+\begin{proposition}[Cube-addition formula]
+\label{prop:cube}
+For nonnegative integer $a$ and positive $\bb$,
+\begin{align}
+ E_{n,(b_1+a,b_2,\ldots,b_n)}(t)
+ &=\sum_{k=0}^n\binom nk (at)^{n-k}E_{k,\pi_k\bb}(t),
+ \label{eq:cube-ehrhart}\\
+ M_{n,(b_1+a,b_2,\ldots,b_n)}(y)
+ &=\sum_{k=0}^n\binom nk (ay)^{n-k}M_{k,\pi_k\bb}(y).
+ \label{eq:cube-magic}
+\end{align}
+The degree-$k$ ambient transform is used on the right; the projected
+one-dimensional parameters occurring for $k<n$ are at least two.
+\end{proposition}
+\begin{proof}
+At an integer dilation $t$, apply Lemma~\ref{lem:segments} successively
+in all coordinates, with segment length $at$. Choosing the coordinates
+in which the projection term is taken produces the sum over all subsets.
+Symmetry identifies all terms with the same remaining dimension $k$,
+giving \eqref{eq:cube-ehrhart}. Projection commutes with addition of the
+other coordinate segments, so no mixed term is omitted.
+
+Both sides are polynomials in $t$. Substituting $t=y/(1-y)$ and multiplying
+by $(1-y)^n$ turns each term into
+$\binom nk(ay)^{n-k}M_{k,\pi_k\bb}(y)$, which proves
+\eqref{eq:cube-magic}.
+\end{proof}
+
+\begin{corollary}[Boundary reduction]
+\label{cor:boundary}
+To prove Conjecture~\ref{conj:target} in every dimension, it is sufficient
+to prove it for the parameter vectors $(1,b_2,\ldots,b_n)$ in every
+dimension $n\ge3$.
+\end{corollary}
+\begin{proof}
+Use induction on $n$, starting with the elementary classifications in
+dimensions one and two. For a desired vector, apply
+\eqref{eq:cube-magic} with base vector $(1,b_2,\ldots,b_n)$ and
+$a=b_1-1$. The term $k=n$ is nonnegative by the boundary hypothesis.
+Terms $3\le k<n$ are nonnegative by induction. For $k=2<n$, the first
+projected parameter is at least $n-1\ge2$, excluding the only
+non-magic-positive two-dimensional vector $(1,1)$. For $k=1<n$, it is
+at least $n\ge3$, so its magic transform is nonnegative. The term $k=0$
+is nonnegative as well.
+\end{proof}
+
+This is a reduction of the difficulty, not its disappearance: the boundary
+family still has $n-1$ independent positive parameters. Nor does the formula
+say that arbitrary Minkowski addition preserves magic positivity. Its
+special form depends on coordinate segments and downward-closed fibers.
+
+\section{Verification, reproducibility, and the limits of the attempt}
+\label{sec:verification}
+
+\subsection{Independent checks performed}
+The recorded run of \texttt{code/verify\_certificates.py} completed with
+status \texttt{PASS}. It performs full coefficient-by-coefficient
+regeneration of all lattice and magic certificates through dimension ten,
+checks the degree and support claims, and compares every first-coefficient
+map with the independent harmonic-number formula. It also verifies all 55
+kernel difference identities with $a+b\le9$ by direct polynomial
+translation.
+
+The independent geometric enumerator uses only
+\eqref{eq:rank-polytope}. It lists decreasing nonnegative integer tuples
+$z_1\ge\cdots\ge z_n$ and tests
+\[
+ z_1+\cdots+z_k\le t f(k)\qquad(1\le k\le n).
+\]
+These are equivalent to every subset inequality, since the largest sum
+of $k$ coordinates is the prefix sum. A tuple with multiplicities
+$m_1,m_2,\ldots$ represents exactly $n!/\prod_i m_i!$ coordinate
+permutations. Summing these orbit sizes gives the full lattice count.
+This procedure uses neither the slice recurrence nor power sums nor
+Ehrhart interpolation.
+
+\begin{center}
+\begin{tabular}{@{}llllr@{}}
+\toprule
+$n$ & Parameter vectors & Dilations & & Counts\\
+\midrule
+3 & $\{1,2,3,4\}^3$ & $0,1,2,3$ &&256\\
+4 & $\{1,2,3\}^4$ & $0,1,2$ &&243\\
+5 & $\{1,2\}^5$ & $0,1,2$ &&96\\
+6 & $\{1,2\}^6$ & $0,1$ &&128\\
+7--10 & $\bb=\one$ & $0,1$ &&8\\
+\midrule
+\multicolumn{4}{l}{Total} &731\\
+\bottomrule
+\end{tabular}
+\end{center}
+There are 486 positive-dilation checks and 245 zero-dilation checks. Each
+agrees both with the lattice polynomial under \eqref{eq:dilation} and
+with the magic-basis expansion. All inputs and resulting integer counts
+are recorded in \texttt{data/verification.json}. These finite geometric
+checks are error-detection tests; the all-parameter conclusion comes
+from the symbolic identities and nonnegative coefficients, not from
+extrapolating the tests.
+
+\subsection{Reproducing and using the package}
+The core programs use only the Python 3.9+ standard library. From the
+unpacked package directory:
+\begin{lstlisting}
+python code/verify_certificates.py
+python code/evaluate_polytope.py 2 3 1
+python code/sparse_magic.py --max-dimension 10 --output data/rebuilt
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The first command regenerates the full certificates before checking them.
+The evaluator returns exact rational Ehrhart and magic coefficients,
+integer $h^*$-coefficients, and a requested lattice count. It reads the
+provided certificates and accepts dimensions two through ten. Higher
+symbolic dimensions can be attempted with the generator, but are not
+part of the theorem certified by this archive.
+
+The supplied run took approximately 33 seconds for full verification in
+the execution environment used here; this is a recorded observation,
+not a hardware-independent performance promise. The uncompressed
+certificate directory is about 25 MB. Its largest files are sparse
+coefficient lists, not opaque binary proof objects. SHA-256 hashes in
+\texttt{SHA256SUMS} identify the delivered artifacts.
+
+\subsection{Why the natural induction has not yet closed}
+The data suggest a stronger all-dimensional assertion:
+\begin{conjecture}[Coefficientwise strengthening]
+\label{conj:strong}
+For every $n\ge3$ and $0\le j\le n$,
+$\mu_{n,j}(\one+\xx)$ has nonnegative ordinary coefficients.
+For $n\ge4$ its support is the entire set of monomials of degree at most $j$.
+\end{conjecture}
+The numerical dimension bound has not been removed. In particular, the
+positive coefficients seen through dimension ten do not justify an
+induction unless the recursion is shown to preserve the relevant cone
+of polynomials.
+
+A specific obstacle is that the power-sum operation does not preserve
+ordinary coefficientwise nonnegativity. Already
+\[
+ \sum_{r=1}^Y r^4
+ =\frac{Y^5}{5}+\frac{Y^4}{2}+\frac{Y^3}{3}-\frac{Y}{30}
+\]
+has a negative coefficient. The magic transform also contains alternating
+binomial signs. The actual lattice polynomials exhibit cancellations
+that make the final shifted magic coefficients positive in the certified
+range, but an arbitrary nonnegative input polynomial need not do so.
+A proof that merely calls each summation step ``positive'' would be invalid.
+
+The attempts here isolate three concrete routes for further work.
+First, it would suffice to build a positivity-preserving recurrence on the
+boundary family $b_1=1$, using Corollary~\ref{cor:boundary} to restore the
+first parameter. Second, a combinatorial interpretation for the integers
+$[\xx^\alpha]n!\mu_{n,j}(\one+\xx)$ would explain the full support and
+remove the dimension cutoff simultaneously. Third, one can seek an
+invariant stronger than ordinary coefficientwise positivity that is
+preserved by the finite-sum kernels together with the triangular transform.
+The published two-parameter theorem remains a useful exact specialization
+against which any candidate recurrence must be checked.
+
+\subsection{Status of the mathematical claims}
+The theorem in dimensions three through ten is presented as a
+computer-assisted mathematical result with explicit proof dependencies and
+reproducible exact data. The cubic formulas, the all-dimensional first
+coefficient, the endpoint classification, and the cube identity have
+ordinary proofs printed above. The inequality description and slice
+machinery are credited to their sources; reciprocity and Br\"and\'en's
+theorem are stated external inputs. Neither global magic positivity nor
+global coefficientwise positivity is claimed. The draft has not been
+independently refereed or checked in a proof assistant, and priority for
+the consequences derived here has not been established independently.
+
+\appendix
+\section{Random selection and the full area catalogue}
+\label{app:selection}
+The generator \texttt{code/select\_area.py} first fixes the ordered list
+below, obtains a seed using \texttt{secrets.randbits(128)}, and calls
+\texttt{random.Random(seed).randrange(120)}. The recorded seed is
+\[
+ \texttt{89054884759964478034823739394527898187}.
+\]
+It returns zero-based index 32, or one-based entry 33. To replay the same
+draw without obtaining new entropy:
+\begin{lstlisting}
+python code/select_area.py --seed 89054884759964478034823739394527898187
+\end{lstlisting}
+The selection is reproducible, but its purpose is diversification rather
+than a mathematical claim about a canonical probability distribution on
+research areas. In particular, the list itself is an editorial choice.
+
+\begin{multicols}{2}
+\small
+\input{tables/area_catalogue.tex}
+\end{multicols}
+
+\section{Certificate format and audit}
+\label{app:format}
+A lattice certificate named \texttt{lattice\_nn.json} stores
+\texttt{dimension}, \texttt{scale}, and a lexicographically sorted
+\texttt{terms} list. Each term is \texttt{[[a1,...,an],c]} and denotes
+$c\prod_i b_i^{a_i}$ in the scaled polynomial $n!L_n$.
+A file \texttt{magic\_nn\_jj.json} uses exactly the same representation
+but denotes $n!\mu_{n,j}(\one+\xx)$ in the $x_i$ variables.
+The distinction between the two variable conventions is essential.
+
+For example, the dimension-three first magic certificate is the list of
+terms
+\[
+ ((0,0,0),9),\quad ((0,0,1),11),\quad
+ ((0,1,0),16),\quad ((1,0,0),18),
+\]
+with scale $6$. Dividing by six reproduces
+\eqref{eq:cubic-mu1}. In the dimension-three final certificate, the
+constant term is absent; its value is exactly zero, not a discarded small
+floating-point value.
+
+A minimal coefficient audit, independent of any symbolic package, is:
+\begin{lstlisting}[language=Python]
+import json
+from math import comb, factorial
+from pathlib import Path
+
+root = Path("data/certificates")
+for n in range(3, 11):
+    for j in range(n + 1):
+        d = json.loads((root / f"magic_{n:02d}_{j:02d}.json").read_text())
+        assert d["dimension"] == n and d["scale"] == factorial(n)
+        terms = d["terms"]
+        exponents = [tuple(a) for a, c in terms]
+        assert len(set(exponents)) == len(exponents)
+        assert all(len(a) == n and min(a) >= 0 for a in exponents)
+        assert all(sum(a) <= j for a in exponents)
+        assert all(isinstance(c, int) and c > 0 for a, c in terms)
+        assert len(terms) == comb(n + j, j) - ((n, j) == (3, 3))
+\end{lstlisting}
+This small audit establishes positivity of the supplied polynomial lists,
+but by itself does not establish that they are the right polynomials.
+For that, use the full verifier, which checks their exact construction
+from the geometric recurrence. Keeping these two obligations separate
+is part of the proof, not merely a software convention.
+
+\begin{thebibliography}{9}
+\bibitem{HLTV}
+C.~Hill, A.~Luo, V.~Trinh, and A.~R.~Vindas-Mel\'endez,
+\emph{Lattice slices, Ehrhart polynomials, and magic positivity of generalized
+parking-function polytopes}, preprint, 2026, arXiv:2607.15503v1.
+\url{https://arxiv.org/abs/2607.15503v1}.
+
+\bibitem{Bayer}
+M.~M.~Bayer, S.~Borgwardt, T.~Chambers, S.~Daugherty, A.~Dawkins,
+D.~Deligeorgaki, H.-C.~Liao, T.~McAllister, A.~Morrison, G.~Nelson,
+and A.~R.~Vindas-Mel\'endez,
+\emph{Combinatorics of generalized parking-function polytopes},
+Discrete Comput. Geom. \textbf{76} (2026), 339--377.
+\url{https://doi.org/10.1007/s00454-025-00770-1}.
+Preprint: \url{https://arxiv.org/abs/2403.07387}.
+
+\bibitem{Branden}
+P.~Br\"and\'en, \emph{On linear transformations preserving the P\'olya
+frequency property}, Trans. Amer. Math. Soc. \textbf{358} (2006),
+3697--3716. Preprint: \url{https://arxiv.org/abs/math/0403364}.
+
+\bibitem{Macdonald}
+I.~G.~Macdonald, \emph{Polynomials associated with finite cell-complexes},
+J. London Math. Soc. (2) \textbf{4} (1971), 181--192.
+\url{https://doi.org/10.1112/jlms/s2-4.1.181}.
+
+\bibitem{BeckDevelin}
+M.~Beck and M.~Develin, \emph{On Stanley's reciprocity theorem for rational
+cones}, preprint, 2004, arXiv:math/0409562.
+\url{https://arxiv.org/abs/math/0409562}.
+This supplies an accessible proof of a reciprocity theorem implying the
+Ehrhart--Macdonald identity used here.
+\end{thebibliography}
+\end{document}

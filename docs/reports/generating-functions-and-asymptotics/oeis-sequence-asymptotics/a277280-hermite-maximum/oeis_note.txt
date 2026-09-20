@@ -1,0 +1,22 @@
+A277280 — compact formula/comment summary (not submitted)
+
+Exact formula:
+Let k = floor((2*n + 6 - floor(sqrt(8*n + 21)))/8) and d = n - 4*k.
+Then a(n) = n!*2^d/((2*k)!*d!). The uniquely maximal positive coefficient
+occurs at degree d. All floors can be evaluated using integer square root.
+
+Asymptotic equivalent:
+a(n) ~ exp(sqrt(2*n) - 1/2)*(2*n/e)^(n/2)/(sqrt(Pi)*(2*n)^(1/4)).
+
+First correction:
+Put s = sqrt(2*n) and delta = d - s + 3/2. Then
+ a(n)/L(n) = 1 + (41/24 - delta^2/2)/s + O(1/n),
+where L(n) denotes the displayed asymptotic equivalent.
+
+Consecutive ratios:
+a(n+1)/(a(n)*sqrt(n)) -> sqrt(2).
+The scaled deviations sqrt(n)*(a(n+1)/(a(n)*sqrt(n)) - sqrt(2))
+have liminf -1/2, limsup 5/2, and limiting uniform distribution
+on [-1/2,5/2].
+
+See article.pdf for complete proofs, further corrections, and source context.

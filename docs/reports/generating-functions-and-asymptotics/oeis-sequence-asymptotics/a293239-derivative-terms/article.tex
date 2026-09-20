@@ -1,0 +1,985 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+ urlcolor=blue!45!black,pdftitle={Counting terms in derivatives of x to the x: OEIS A293239},
+ pdfauthor={OpenAI ChatGPT},pdfsubject={Exact reduction, partial proofs, and computational certificates}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Counting terms in derivatives of $x^x$}
+\fancyhead[R]{\small OEIS A293239}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\ind}[1]{\mathbf{1}_{\{#1\}}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ZZ}{\mathcal Z}
+\newcommand{\EE}{\mathcal E}
+\DeclareMathOperator{\supp}{supp}
+\title{\textbf{Counting terms in derivatives of $x^x$}\\[5pt]
+\large An exact reduction of OEIS A293239, nonvanishing theorems,\\
+computational certificates, and a corrected recurrence}
+\author{Research report prepared with ChatGPT}
+\date{20 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The sequence A293239 counts the nonzero terms in the fully expanded $n$th
+ derivative of $x^x$. Its proposed generating function is rational, and its
+ proposed eventual formula is a quadratic quasipolynomial of period four.
+ We reduce the counting problem exactly to the zero set of the first-kind
+ Lehmer--Comtet numbers. All cancellations predicted by the conjecture are
+ proved: a symmetry family and one additional zero. The converse assertion,
+ excluding every further zero, is not established here; consequently this
+ report does \emph{not} claim a complete proof of the principal closed formula.
+ The unconditional results include an exact defect formula, upper and lower
+ bounds proving quadratic-order growth, nonvanishing on every prime-offset
+ diagonal with an exact prime-adic valuation, and complete zero classifications
+ for the first three columns and offsets one through sixteen. Independently
+ implemented exact computations confirm the formula through $n=3000$.
+ A separate conjectured recurrence in the OEIS entry is false with its printed
+ range: it already fails at $n=8$. For the proposed sequence its correct
+ eventual starting point is $n=14$. The accompanying code and certificates
+ distinguish finite verification from statements proved for infinitely many
+ indices.
+\end{abstract}
+\clearpage
+\tableofcontents
+\newpage
+
+\section{The question and the status of the answer}
+
+For $x>0$, put $f(x)=x^x=\exp(x\log x)$. Let $a(n)$ be the number of nonzero
+summands after $f^{(n)}(x)$ is expanded into the monomials
+\begin{equation}\label{eq:monomials}
+ x^{x-k}(\log x)^j,\qquad k,j\in\Z_{\ge0},
+\end{equation}
+and coefficients of identical monomials are collected. In particular, an
+unexpanded expression such as $x^x(1+\log x)^n$ is not one term for this
+purpose. This is the convention in OEIS A293239, introduced by Vladimir
+Reshetnikov in 2017 \cite{oeis293239}.
+
+The entry attributes the rational generating function and closed formula to
+Colin Barker and the proposed asymptotic equivalent to V\'aclav
+Kote\v{s}ovec. To separate a proved object from the proposed answer, define
+\begin{equation}\label{eq:q}
+ q(0)=1,\qquad
+ q(n)=1+\frac{n(n+1)}2-\left\lfloor\frac{n-1}{4}\right\rfloor
+             -\ind{n\ge8}\quad(n\ge1).
+\end{equation}
+The principal conjecture is $a(n)=q(n)$. For $n\ge8$, this says simply
+\begin{equation}\label{eq:eventual}
+ a(n)\stackrel{?}{=}\frac{n(n+1)}2-\left\lfloor\frac{n-1}{4}\right\rfloor.
+\end{equation}
+The proposed generating function is
+\begin{equation}\label{eq:targetgf}
+ Q(z):=\sum_{n\ge0}q(n)z^n
+ =\frac{1+z^2+z^3+z^6-z^8+z^9+z^{12}-z^{13}}
+ {(1-z)^2(1-z^4)}.
+\end{equation}
+The rational function in \eqref{eq:targetgf} is indeed the generating function
+of the explicitly defined sequence $q$. What remains to be proved is its
+identification with the derivative count $a$.
+
+\subsection{What is proved}
+The central unconditional identity will be
+\begin{equation}\label{eq:introdefect}
+ a(n)=q(n)-E(n),
+\end{equation}
+where $E(n)$ counts a precisely defined set of additional zero coefficients.
+In particular, $E(n)$ is a nonnegative, nondecreasing integer. Thus the
+proposed answer is an upper bound, not a formula that can be exceeded by a
+previously overlooked cancellation.
+
+We prove, for all $n\ge0$,
+\begin{equation}\label{eq:introbounds}
+ n+1+\left\lfloor\frac{n^2}{4}\right\rfloor\le a(n)\le q(n).
+\end{equation}
+Consequently $a(n)=\Theta(n^2)$. This does not establish the sharper claim
+$a(n)\sim n^2/2$; that claim is equivalent to $E(n)=o(n^2)$.
+We also prove infinite nonvanishing results that substantially restrict where
+additional zeros could lie. The remaining gap is stated explicitly in
+Conjecture~\ref{conj:zeros}.
+
+\subsection{A correction that is unconditional}
+The OEIS entry also proposes
+\begin{equation}\label{eq:recprinted}
+ a(n)=2a(n-1)-a(n-2)+a(n-4)-2a(n-5)+a(n-6)\qquad(n>6).
+\end{equation}
+This range is incorrect. Exact low-order differentiation gives
+\[
+ a(2)=4,\quad a(3)=7,\quad a(4)=11,\quad a(6)=21,\quad
+ a(7)=28,\quad a(8)=35,
+\]
+whereas the right side of \eqref{eq:recprinted} at $n=8$ is
+\[
+ 2\cdot28-21+11-2\cdot7+4=36\ne35.
+\]
+For $q$, the recurrence holds for every $n\ge14$, and it fails at $n=13$.
+This correction does not disprove the proposed generating function or
+closed formula. Section~\ref{sec:gf} explains the distinction.
+
+\section{A canonical polynomial for each derivative}
+
+Set $t=x^{-1}$ and $L=\log x$. There is a polynomial $P_n\in\Z[t,L]$ such that
+\begin{equation}\label{eq:Pdefinition}
+ f^{(n)}(x)=x^x P_n(x^{-1},\log x).
+\end{equation}
+Differentiating this expression and using $t'=-t^2$, $L'=t$, and
+$(x^x)'=x^x(1+L)$ gives the following exact recurrence.
+
+\begin{proposition}\label{prop:Prec}
+The derivative polynomials satisfy
+\begin{equation}\label{eq:Prec}
+ P_0=1,\qquad P_{n+1}=(1+L)P_n+t\frac{\partial P_n}{\partial L}
+                         -t^2\frac{\partial P_n}{\partial t}.
+\end{equation}
+In particular, they have integer coefficients and can be computed using
+integer arithmetic only.
+\end{proposition}
+
+For example,
+\begin{align*}
+ P_1&=1+L,\\
+ P_2&=1+2L+L^2+t,\\
+ P_3&=1+3L+3L^2+L^3+3t+3tL-t^2.
+\end{align*}
+Thus $a(3)=7$, consistently with the example in the entry.
+
+\begin{lemma}\label{lem:independence}
+The monomials in \eqref{eq:monomials} are linearly independent over $\R$
+when only finitely many are used. Consequently the collected expansion is
+unique, and $a(n)=|\supp P_n|$.
+\end{lemma}
+\begin{proof}
+Divide a putative relation by the positive function $x^x$ and set $x=e^s$.
+The result is $\sum_{k=0}^K e^{-ks}p_k(s)=0$, with polynomial $p_k$.
+If some $p_k$ is nonzero, let $k_0$ be the smallest such index. Multiplication
+by $e^{k_0s}$ shows that $p_{k_0}(s)$ tends to zero as $s\to+\infty$, because
+all remaining summands decay exponentially times a polynomial. No nonzero
+polynomial has that property. This is a contradiction.
+\end{proof}
+
+The independence statement matters: the variables $t$ and $L$ are related
+by $t=e^{-L}$ after substitution, but this relation causes no additional
+finite polynomial identities.
+
+\section{The Lehmer--Comtet coefficient triangle}
+
+\subsection{Definition and generating function}
+Put
+\begin{equation}\label{eq:phi}
+ \Phi(z)=(1+z)\log(1+z)
+ =z+\sum_{d\ge1}\frac{(-1)^{d-1}}{d(d+1)}z^{d+1}.
+\end{equation}
+Define
+\begin{equation}\label{eq:bdef}
+ b(m,r)=\frac{m!}{r!}\coef{z}{m}\Phi(z)^r
+ \quad(m,r\ge0).
+\end{equation}
+Here $b(0,0)=1$, $b(m,0)=0$ for $m>0$, and $b(m,r)=0$ when $r>m$.
+These are the first-kind Lehmer--Comtet numbers, tabulated in OEIS A008296
+\cite{oeis8296}. The general derivative problem and these numbers belong to
+the classical literature of Comtet, Lehmer, and Gould
+\cite{comtet,lehmer,gould}. A recent treatment of their identities is
+Jeong's preprint \cite{jeong}. We derive the identities needed here rather
+than assuming a nonvanishing conclusion from those formulas.
+
+\begin{theorem}[Exact coefficient formula]\label{thm:expansion}
+For every $n\ge0$,
+\begin{equation}\label{eq:expansion}
+ \boxed{\displaystyle
+ f^{(n)}(x)=x^x\sum_{m=0}^n\binom nm (\log x)^{n-m}
+                         \sum_{r=0}^m b(m,r)x^{r-m}.}
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:cformula}
+ \coef{t}{k}\coef{L}{j}P_n(t,L)
+ =\binom nj\,b(n-j,n-j-k),
+\end{equation}
+with out-of-range entries interpreted as zero.
+\end{theorem}
+\begin{proof}
+Taylor expansion at a fixed $x>0$ gives
+\[
+ \sum_{n\ge0}\frac{f^{(n)}(x)}{x^x}\frac{u^n}{n!}
+ =\frac{(x+u)^{x+u}}{x^x}
+ =\exp(u\log x)\exp\bigl(x\Phi(u/x)\bigr).
+\]
+Using \eqref{eq:bdef}, expand the second exponential:
+\begin{align*}
+ \exp\bigl(x\Phi(u/x)\bigr)
+ &=\sum_{r\ge0}\frac{x^r}{r!}\Phi(u/x)^r\\
+ &=\sum_{m\ge0}\frac{u^m}{m!}\sum_{r=0}^m b(m,r)x^{r-m}.
+\end{align*}
+Multiplication by $\exp(u\log x)$ and extraction of the coefficient of
+$u^n$ proves \eqref{eq:expansion}. All manipulations can also be performed
+formally, since only finitely many terms affect any prescribed coefficient.
+\end{proof}
+
+\subsection{A shifted falling-factorial formula}
+Let
+\[
+ F_m(y)=\fall{y}{m}=\prod_{h=0}^{m-1}(y-h),\qquad F_0(y)=1.
+\]
+
+\begin{proposition}\label{prop:falling}
+For $0\le r\le m$,
+\begin{equation}\label{eq:falling}
+ b(m,r)=\frac{F_m^{(r)}(r)}{r!}
+       =\coef{u}{r}\prod_{h=0}^{m-1}(u+r-h).
+\end{equation}
+In particular, all $b(m,r)$ are integers.
+\end{proposition}
+\begin{proof}
+The binomial-series identity is
+$(1+z)^y=\sum_{m\ge0}F_m(y)z^m/m!$.
+Differentiate $r$ times in $y$ and set $y=r$. The left side becomes
+$(1+z)^r\log(1+z)^r=\Phi(z)^r$. Comparing coefficients gives the first
+formula. The second is the polynomial Taylor formula at $y=r$.
+\end{proof}
+
+Writing $F_m(y)=\sum_{\ell=0}^m s(m,\ell)y^\ell$ in terms of the signed
+Stirling numbers of the first kind also gives
+\begin{equation}\label{eq:stirling}
+ b(m,r)=\sum_{\ell=r}^m\binom\ell r r^{\ell-r}s(m,\ell).
+\end{equation}
+This is another exact formula, but its alternating summands do not by
+themselves resolve whether the result can vanish.
+
+\subsection{An integer recurrence}
+\begin{proposition}\label{prop:brec}
+For $m\ge2$ and $1\le r\le m$,
+\begin{equation}\label{eq:brec}
+ b(m,r)=(r-m+1)b(m-1,r)+b(m-1,r-1)+(m-1)b(m-2,r-1).
+\end{equation}
+Together with rows $b(0,0)=1$ and $(b(1,0),b(1,1))=(0,1)$, this determines
+the entire triangle.
+\end{proposition}
+\begin{proof}
+Let $B_r(z)=\Phi(z)^r/r!$. Since
+$(1+z)\Phi'(z)=1+z+\Phi(z)$, we have
+\[
+ (1+z)B_r'(z)=(1+z)B_{r-1}(z)+rB_r(z).
+\]
+Compare coefficients of $z^{m-1}/(m-1)!$. The result is
+\[
+ b(m,r)+(m-1)b(m-1,r)
+ =b(m-1,r-1)+(m-1)b(m-2,r-1)+r b(m-1,r),
+\]
+which rearranges to \eqref{eq:brec}.
+\end{proof}
+
+For reference, the first rows, omitting column zero, are
+\begin{center}
+\setlength{\tabcolsep}{4pt}
+\small
+\begin{tabular}{r|rrrrrrrrr}
+$m\backslash r$&1&2&3&4&5&6&7&8&9\\\hline
+1&1\\
+2&1&1\\
+3&$-1$&3&1\\
+4&2&$-1$&6&1\\
+5&$-6$&0&5&10&1\\
+6&24&4&$-15$&25&15&1\\
+7&$-120$&$-28$&49&$-35$&70&21&1\\
+8&720&188&$-196$&49&0&154&28&1\\
+9&$-5040$&$-1368$&944&0&$-231$&252&294&36&1
+\end{tabular}
+\end{center}
+
+\section{The exact zero-count reduction}
+
+\begin{definition}
+For $n\ge0$, let
+\[
+ Z(n)=\#\{(m,r):1\le r\le m\le n,\ b(m,r)=0\}.
+\]
+Column zero is not included: its zeros for $m>0$ are forced by the definition
+and never represent potential nonzero derivative terms.
+\end{definition}
+
+\begin{theorem}\label{thm:count}
+For every $n\ge0$,
+\begin{equation}\label{eq:count}
+ \boxed{\displaystyle a(n)=1+\frac{n(n+1)}2-Z(n).}
+\end{equation}
+\end{theorem}
+\begin{proof}
+In \eqref{eq:expansion}, the pair $(m,r)$ gives the monomial
+\[
+ x^{x-(m-r)}(\log x)^{n-m}
+\]
+with coefficient $\binom nm b(m,r)$. The map
+$(m,r)\mapsto(m-r,n-m)$ is injective for fixed $n$: the second coordinate
+recovers $m$, and the first then recovers $r$. Thus different pairs do not
+cancel each other. The factor $\binom nm$ is positive. There is one nonzero
+entry at $(0,0)$, and $m$ potentially nonzero entries $1\le r\le m$ in every
+row $m\ge1$. Removing exactly the zero entries proves the formula.
+\end{proof}
+
+This argument isolates the main difficulty. Once the triangle is known,
+term counting is easy; proving that its list of zeros is complete is not
+a consequence of merely writing down the triangle's recurrence.
+
+\subsection{Cancellations that are proved}
+\begin{proposition}[Symmetry zeros]\label{prop:symmetry}
+For every integer $h\ge1$,
+\begin{equation}\label{eq:symmetry}
+ b(4h+1,2h)=0.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Center the product in \eqref{eq:falling} at $r=2h$:
+\[
+ F_{4h+1}(2h+u)=u\prod_{s=1}^{2h}(u^2-s^2).
+\]
+This polynomial is odd. Its coefficient of the even power $u^{2h}$ is zero.
+\end{proof}
+
+This family is not claimed as new: it appears as Proposition 3.10(iii) in
+Jeong \cite{jeong}, with attribution there to Theorem 7 of Lehmer
+\cite{lehmer}. Its elementary proof is included to make the reduction
+self-contained.
+
+There is one further zero required by the proposed formula:
+\begin{equation}\label{eq:exception}
+ b(8,5)=0.
+\end{equation}
+It follows immediately from the factorization proved in
+Section~\ref{sec:diagonals}:
+\[
+ b(m,m-3)=\frac{m(m-1)(m-2)(m-3)(m-5)(m-8)}{48}.
+\]
+The root $m=5$ is the first symmetry zero; $m=8$ is genuinely additional.
+
+\subsection{The precise missing assertion}
+\begin{conjecture}[Complete zero classification]\label{conj:zeros}
+For integers $1\le r\le m$,
+\begin{equation}\label{eq:zeroconj}
+ b(m,r)=0\quad\Longleftrightarrow\quad
+ (m,r)=(8,5)\ \text{or}\ (m,r)=(4h+1,2h)\text{ for some }h\ge1.
+\end{equation}
+\end{conjecture}
+
+The right-to-left implication is proved above. The left-to-right implication
+is the unproved step in this report.
+
+Let
+\[
+ \ZZ_0=\{(8,5)\}\cup\{(4h+1,2h):h\ge1\}
+\]
+be the proved set of zeros, and define
+\begin{align*}
+ e_m&=\#\{r:1\le r\le m,\ b(m,r)=0,\ (m,r)\notin\ZZ_0\},\\
+ E(n)&=\sum_{m=1}^n e_m.
+\end{align*}
+Thus $E$ counts only zeros not in the proved list.
+
+\begin{theorem}[Exact defect formula]\label{thm:defect}
+For every $n\ge0$,
+\[
+ a(n)=q(n)-E(n).
+\]
+The following are equivalent: Conjecture~\ref{conj:zeros}; $E(n)=0$ for all
+$n$; $a(n)=q(n)$ for all $n$; and the proposed eventual formula
+\eqref{eq:eventual} for every $n\ge8$.
+\end{theorem}
+\begin{proof}
+For $n\ge1$, the number of symmetry zeros with first coordinate at most $n$
+is $\lfloor(n-1)/4\rfloor$. The zero $(8,5)$ contributes
+$\ind{n\ge8}$. Substituting
+\[
+ Z(n)=\left\lfloor\frac{n-1}{4}\right\rfloor+\ind{n\ge8}+E(n)
+\]
+into \eqref{eq:count} proves the identity for $n\ge1$; $n=0$ is immediate.
+The first three equivalences follow from the definitions. The eventual
+formula also forces $E(n)=0$ for every $n\ge8$, and nonnegativity and
+monotonicity then force $E(n)=0$ for smaller $n$ as well.
+\end{proof}
+
+A hypothetical new zero at row $M$ would decrease every count $a(n)$ for
+$n\ge M$ relative to $q(n)$. It would not merely alter a single isolated
+term of the sequence. This persistent-deficit property is a useful safeguard
+when testing proposed proofs or numerical data.
+
+\section{Diagonal polynomials and exact nonvanishing}\label{sec:diagonals}
+
+\subsection{A polynomial for each fixed offset}
+Define
+\begin{equation}\label{eq:H}
+ H(z)=\frac{\Phi(z)}z
+ =1+\frac z2-\frac{z^2}{6}+\frac{z^3}{12}-\frac{z^4}{20}+\cdots,
+ \qquad T_d(Y)=\coef{z}{d}H(z)^Y.
+\end{equation}
+For a fixed integer $d\ge0$, $T_d$ is a polynomial over $\Q$ in $Y$.
+
+\begin{lemma}\label{lem:diagdegree}
+For $m\ge d$,
+\begin{equation}\label{eq:diag}
+ b(m,m-d)=\fall m d\,T_d(m-d).
+\end{equation}
+For $d\ge1$, $T_d(Y)$ has degree $d$, leading coefficient $1/(2^d d!)$,
+and a factor $Y$. Consequently $T_d(Y)/Y$ is a nonzero polynomial of
+degree $d-1$.
+\end{lemma}
+\begin{proof}
+Since $\Phi(z)^{m-d}=z^{m-d}H(z)^{m-d}$, definition \eqref{eq:bdef} gives
+\eqref{eq:diag}. Now assume $d\ge1$ and write $h(z)=H(z)-1$. Then
+\begin{equation}\label{eq:Tbinomial}
+ T_d(Y)=\sum_{\ell=1}^d\binom Y\ell\coef{z}{d}h(z)^\ell.
+\end{equation}
+Every summand is divisible by $Y$. The only term of degree $d$ in $Y$
+comes from $\ell=d$, and $\coef{z}{d}h(z)^d=2^{-d}$. This proves the
+remaining assertions.
+\end{proof}
+
+The first three cases are
+\begin{align}
+ b(m,m-1)&=\frac{m(m-1)}2,\label{eq:d1}\\
+ b(m,m-2)&=\frac{m(m-1)(m-2)(3m-13)}{24},\label{eq:d2}\\
+ b(m,m-3)&=\frac{m(m-1)(m-2)(m-3)(m-5)(m-8)}{48}.
+ \label{eq:d3}
+\end{align}
+For instance,
+\[
+ T_3(Y)=\frac{Y}{12}-\frac{Y(Y-1)}{12}
+                  +\frac{Y(Y-1)(Y-2)}{48}
+        =\frac{Y(Y-2)(Y-5)}{48}.
+\]
+This proves both zeros on the third offset and excludes all others on that
+entire diagonal, not just up to a numerical cutoff.
+
+\subsection{Prime offsets: an infinite family of nonvanishing results}
+For a nonzero rational number $v$, write $v_p(v)$ for its exponent of the
+prime $p$ in its prime factorization. A rational number is called
+$p$-integral when its denominator in lowest terms is not divisible by $p$.
+
+\begin{theorem}[Prime-offset nonvanishing]\label{thm:prime}
+Let $p$ be any prime and let $m\ge p$. Then
+\begin{equation}\label{eq:primevaluation}
+ b(m,m-p+1)\ne0,\qquad
+ v_p\bigl(b(m,m-p+1)\bigr)=v_p\left(\left\lfloor\frac mp\right\rfloor\right).
+\end{equation}
+In particular, an additional zero cannot occur on any offset $d=m-r$
+for which $d+1$ is prime.
+\end{theorem}
+\begin{proof}
+Put $d=p-1$ and $h_j=\coef{z}{j}(H(z)-1)$.
+For $1\le j\le p-2$, the number
+$h_j=(-1)^{j-1}/(j(j+1))$ is $p$-integral. Moreover,
+\[
+ p h_{p-1}\equiv1\pmod p.
+\]
+For odd $p$, this follows from $p h_{p-1}=-1/(p-1)$; for $p=2$, it is
+$2h_1=1$.
+
+Divide \eqref{eq:Tbinomial} by $Y$. Its $\ell=1$ summand is $h_{p-1}$.
+For every $2\le\ell\le p-1$, a composition of $p-1$ into $\ell$ positive
+parts has all parts at most $p-2$. Therefore every coefficient contributing
+to $\coef{z}{p-1}h(z)^\ell$ is $p$-integral. Also,
+\[
+ \frac1Y\binom Y\ell
+ =\frac{(Y-1)\cdots(Y-\ell+1)}{\ell!}
+\]
+has $p$-integral coefficients, because $\ell!$ is not divisible by $p$.
+It follows, as a polynomial congruence over the $p$-integral rationals, that
+\begin{equation}\label{eq:punit}
+ p\,\frac{T_{p-1}(Y)}Y\equiv1\pmod p.
+\end{equation}
+For every positive integer $Y$, the left side is therefore nonzero and has
+$p$-adic valuation zero. Hence
+$v_p(T_{p-1}(Y))=v_p(Y)-1$.
+
+Set $Y=m-p+1>0$ and use \eqref{eq:diag}. This yields
+\[
+ v_p\bigl(b(m,m-p+1)\bigr)=v_p(\fall m p)-1.
+\]
+Among the $p$ consecutive positive integers $m-p+1,\ldots,m$, exactly one
+is divisible by $p$: it is $p\lfloor m/p\rfloor$. Its valuation is
+$1+v_p(\lfloor m/p\rfloor)$, proving \eqref{eq:primevaluation}.
+\end{proof}
+
+This proof explains, for example, why the residual polynomial $3m-13$ in
+\eqref{eq:d2} is a nonzero constant modulo $3$, and why analogous residual
+polynomials for offsets $4,6,10,12,16$ are nonzero constants modulo
+$5,7,11,13,17$, respectively.
+
+\subsection{Finite certificates that cover infinitely many row indices}
+For a fixed $d\ge1$, put
+\[
+ S_d(X)=T_d(X-d).
+\]
+The factor $X-d$ is forced by Lemma~\ref{lem:diagdegree}. When $d\ge3$ is
+odd, the symmetry zero also forces $X-(2d-1)$; for $d=3$ there is in
+addition the factor $X-8$.
+Remove these factors from $S_d$, clear rational denominators, divide out
+the greatest common divisor of the integer coefficients, and normalize the
+leading coefficient to be positive. Call the resulting polynomial $R_d(X)$.
+Thus, with a positive rational constant $c_d$,
+\begin{equation}\label{eq:Rd}
+ S_d(X)=c_d(X-d)
+ \begin{cases}
+ (X-5)(X-8)R_d(X),&d=3,\\
+ (X-(2d-1))R_d(X),&d\ge5\text{ odd},\\
+ R_d(X),&\text{otherwise}.
+ \end{cases}
+\end{equation}
+
+\begin{lemma}[Modular certificate]\label{lem:modcert}
+If $R\in\Z[X]$ satisfies $R(t)\not\equiv0\pmod p$ for every
+$t\in\{0,1,\ldots,p-1\}$, then $R$ has no integer root.
+\end{lemma}
+\begin{proof}
+An integer root, reduced modulo $p$, would be one of those residues and
+would give a zero value modulo $p$.
+\end{proof}
+
+\begin{theorem}[Computer-assisted diagonal classification]\label{thm:16}
+Conjecture~\ref{conj:zeros} holds for every pair $1\le r\le m$ with
+$m-r\le16$.
+\end{theorem}
+\begin{proof}
+For offset zero, $b(m,m)=1$. For $1\le d\le16$, compute $S_d$ exactly from
+\eqref{eq:Tbinomial} and factor it as in \eqref{eq:Rd}. The supplied
+\texttt{data/diagonal\_certificates.json} records the full rational
+coefficients of $S_d$, the scalar $c_d$, all removed linear factors, the
+full integer coefficients of $R_d$, and every value of $R_d(t)$ modulo
+the certifying prime. All of those values are nonzero. The following
+summary identifies the certificates:
+\begin{center}
+\begin{tabular}{rrrr@{\qquad}rrrr}
+\toprule
+$d$&$\deg R_d$&$p$&roots mod $p$&$d$&$\deg R_d$&$p$&roots mod $p$\\
+\midrule
+1&0&2&0&9&7&7&0\\
+2&1&3&0&10&9&11&0\\
+3&0&2&0&11&9&13&0\\
+4&3&5&0&12&11&13&0\\
+5&3&3&0&13&11&11&0\\
+6&5&7&0&14&13&23&0\\
+7&5&5&0&15&13&19&0\\
+8&7&11&0&16&15&17&0\\
+\bottomrule
+\end{tabular}
+\end{center}
+The standard-library program \texttt{verify\_diagonals.py} reconstructs
+every polynomial using rational arithmetic and checks the factorization
+and each residue. The modular lemma excludes every integer root of every
+$R_d$. For $m>d$, the removed factor $m-d$ cannot vanish; the remaining
+removed factors give exactly the stated symmetry and exceptional zeros.
+\end{proof}
+
+These certificates are not extrapolations from finitely many values of
+$m$: each modular argument excludes integer roots for \emph{all} $m$ on
+its fixed diagonal. What is finite is the set of offsets treated.
+
+For a small example not requiring the machine-readable file,
+\begin{align*}
+ R_4(X)&=15X^3-390X^2+3245X-8638\equiv2\pmod5,\\
+ R_5(X)&=3X^3-103X^2+1118X-3776
+                  \equiv2X^2+2X+1\pmod3.
+\end{align*}
+The second reduced polynomial takes the values $1,2,1$ at the three
+residues modulo $3$. Hence there are no additional zeros on offset $4$,
+and the only zero on offset $5$ is the symmetry zero $m=9$.
+
+\section{The first three columns for all row indices}\label{sec:columns}
+
+The diagonal results keep $m-r$ fixed. A complementary calculation keeps
+$r$ fixed and proves nonvanishing in a different infinite region.
+
+\begin{proposition}\label{prop:firstcolumns}
+Column $r=1$ has no zero. Column $r=2$ has exactly the zero $m=5$.
+Column $r=3$ has no zero.
+\end{proposition}
+\begin{proof}
+For $r=1$, \eqref{eq:falling} gives
+\[
+ b(1,1)=1,\qquad b(m,1)=(-1)^m(m-2)!\quad(m\ge2).
+\]
+For $r=2$, put $t=m-3\ge0$. The shifted product is
+\[
+ F_m(2+u)=u(u+1)(u+2)\prod_{j=1}^{t}(u-j).
+\]
+The coefficient of $u^2$ is
+\begin{equation}\label{eq:col2}
+ b(m,2)=(-1)^m(m-3)!\,(2H_{m-3}-3),\qquad m\ge3,
+\end{equation}
+where $H_t=\sum_{j=1}^t1/j$ and $H_0=0$. The harmonic numbers strictly
+increase, and $H_2=3/2$, so the only zero is $m-3=2$. The remaining
+boundary entry is $b(2,2)=1$.
+
+For $r=3$, the boundary entry is $b(3,3)=1$. Put $t=m-4\ge0$ and define
+\[
+ H_t^{(2)}=\sum_{j=1}^t\frac1{j^2},\qquad
+ g(t)=6-11H_t+3\bigl(H_t^2-H_t^{(2)}\bigr).
+\]
+Extracting the coefficient of $u^3$ from
+$u(u+1)(u+2)(u+3)\prod_{j=1}^t(u-j)$ gives
+\begin{equation}\label{eq:col3}
+ b(m,3)=(-1)^t t!\,g(t).
+\end{equation}
+The elementary identity
+\begin{equation}\label{eq:gdiff}
+ g(t+1)-g(t)=\frac{6H_t-11}{t+1}
+\end{equation}
+controls its entire sign pattern. We have $g(0)=6$, $g(1)=-5$, and
+$H_3=11/6$. Thus $g$ decreases through $t=3$, has
+$g(3)=g(4)=-49/6$, and is strictly increasing thereafter.
+Finally, exact rational evaluation gives
+\[
+ g(19)=-\frac{4571462267}{97772875200}<0,\qquad
+ g(20)=\frac{537826687}{1150269120}>0.
+\]
+It follows that $g(t)<0$ for $1\le t\le19$, whereas $g(t)>0$ for
+$t\ge20$. There is no integer zero.
+\end{proof}
+
+The last argument illustrates a distinction from a numerical search: exact
+values at two adjacent integers, together with a proved monotonicity
+statement outside a finite initial segment, settle the entire column.
+
+\section{Unconditional quadratic growth}\label{sec:bounds}
+
+\begin{theorem}\label{thm:bounds}
+For every integer $n\ge0$,
+\begin{equation}\label{eq:bounds}
+ n+1+\left\lfloor\frac{n^2}{4}\right\rfloor\le a(n)\le q(n).
+\end{equation}
+In particular,
+\[
+ \frac14\le\liminf_{n\to\infty}\frac{a(n)}{n^2}
+ \le\limsup_{n\to\infty}\frac{a(n)}{n^2}\le\frac12,
+ \qquad a(n)=\Theta(n^2).
+\]
+\end{theorem}
+\begin{proof}
+The upper bound is Theorem~\ref{thm:defect}. For the lower bound, count
+nonzero entries along diagonals of the triangle in
+Theorem~\ref{thm:count}. The main diagonal, including $(0,0)$, contributes
+$n+1$ entries.
+
+Fix $1\le d\le n-1$. The diagonal $m-r=d$ has $n-d$ relevant positions,
+$m=d+1,\ldots,n$. By Lemma~\ref{lem:diagdegree}, its zero positions are
+roots of the nonzero polynomial $T_d(m-d)/(m-d)$ of degree $d-1$.
+There are therefore at most $d-1$ such positions, and at least
+\[
+ \max(0,n-d-(d-1))=\max(0,n-2d+1)
+\]
+nonzero entries on the diagonal. Summing over all $d\ge1$ gives
+\[
+ a(n)\ge n+1+\sum_{d\ge1}\max(0,n-2d+1)
+       =n+1+\left\lfloor\frac{n^2}{4}\right\rfloor.
+\]
+The last equality follows by summing the odd numbers $1,3,\ldots,2s-1$
+when $n=2s$, and the even numbers $2,4,\ldots,2s$ when $n=2s+1$.
+The asymptotic bounds follow immediately.
+\end{proof}
+
+\begin{corollary}[A stronger explicit lower bound]\label{cor:primebound}
+For every $n\ge0$,
+\begin{equation}\label{eq:primebound}
+ a(n)\ge n+1+\left\lfloor\frac{n^2}{4}\right\rfloor
+       +\sum_{\substack{p\le n\\p\text{ prime}}}\min(p-2,n-p+1).
+\end{equation}
+\end{corollary}
+\begin{proof}
+On offset $d=p-1$, Theorem~\ref{thm:prime} guarantees all $n-d=n-p+1$
+entries, rather than just $\max(0,n-2p+3)$. The improvement is
+$\min(p-2,n-p+1)$. These diagonals are disjoint, so their improvements add.
+\end{proof}
+
+The prime-enhanced bound is useful without invoking any theorem about the
+density of primes. It still does not close the factor-of-two gap in the
+leading quadratic coefficient. In terms of the exact defect,
+\begin{equation}\label{eq:asympeq}
+ a(n)\sim\frac{n^2}{2}\quad\Longleftrightarrow\quad E(n)=o(n^2).
+\end{equation}
+Thus the proposed asymptotic equivalent is potentially a weaker target than
+the complete zero classification: it would allow a sufficiently sparse set
+of additional zeros.
+
+\section{The rational function, quasipolynomial, and recurrence}\label{sec:gf}
+
+\subsection{Deriving the proposed generating function}
+There is one potential term at $(0,0)$ and $m$ potential terms in row $m$.
+The cumulative potential count therefore has generating function
+\[
+ \sum_{n\ge0}\left(1+\frac{n(n+1)}2\right)z^n
+ =\frac1{1-z}+\frac{z}{(1-z)^3}.
+\]
+The symmetry zeros are born at rows $5,9,13,\ldots$, and each remains
+absent from every later derivative. Their cumulative generating function is
+$z^5/((1-z)(1-z^4))$. The exceptional zero is born at row $8$ and
+contributes $z^8/(1-z)$. Subtracting these two \emph{proved} families gives
+\begin{align}
+ Q(z)
+ &=\frac1{1-z}+\frac{z}{(1-z)^3}
+       -\frac{z^5}{(1-z)(1-z^4)}-\frac{z^8}{1-z}\notag\\
+ &=\frac{1+z^2+z^3+z^6-z^8+z^9+z^{12}-z^{13}}
+        {(1-z)^2(1-z^4)}.\label{eq:gfderive}
+\end{align}
+This explains every correction term in the proposed rational function.
+
+\begin{theorem}[Exact generating-function correction]\label{thm:gfdefect}
+With $A(z)=\sum_{n\ge0}a(n)z^n$ and
+$\mathcal E(z)=\sum_{m\ge1}e_m z^m$,
+\begin{equation}\label{eq:gfdefect}
+ A(z)=Q(z)-\frac{\mathcal E(z)}{1-z}.
+\end{equation}
+Consequently the proposed rational function equals $A(z)$ if and only if
+Conjecture~\ref{conj:zeros} is true.
+\end{theorem}
+\begin{proof}
+Sum $a(n)=q(n)-\sum_{m\le n}e_m$ as a formal power series. Each $e_m$
+contributes $e_mz^m/(1-z)$ to the cumulative sum.
+\end{proof}
+
+\subsection{The real form of the complex expression}
+For $n\ge8$, division into the four residue classes gives
+\begin{equation}\label{eq:residueq}
+ q(n)=\frac{n^2}{2}+\frac n4+
+ \begin{cases}
+ 1,&n\equiv0\pmod4,\\
+ \tfrac14,&n\equiv1\pmod4,\\
+ \tfrac12,&n\equiv2\pmod4,\\
+ \tfrac34,&n\equiv3\pmod4.
+ \end{cases}
+\end{equation}
+The same periodic correction is
+\[
+ \frac{5+(-1)^n+(1-i)(-i)^n+(1+i)i^n}{8},\qquad i^2=-1.
+\]
+Substitution yields exactly the complex-valued-looking expression printed
+in OEIS, whose total value is real and integral. This is an algebraic
+identity for $q$, independent of the unresolved equality $a=q$.
+
+For all $n\ge0$, another convenient form is
+\[
+ q(n)=\frac{n(n+1)}2-\left\lfloor\frac{n-1}{4}\right\rfloor
+                         +\ind{1\le n\le7}.
+\]
+Here $\lfloor-1/4\rfloor=-1$ correctly gives $q(0)=1$.
+The first terms are
+\[
+ 1,2,4,7,11,15,21,28,35,43,53,64,76,88,102,117,133,\ldots.
+\]
+
+\subsection{Why the recurrence starts at fourteen}
+Set
+\begin{align*}
+ D(z)&=(1-z)^2(1-z^4)=1-2z+z^2-z^4+2z^5-z^6,\\
+ N(z)&=1+z^2+z^3+z^6-z^8+z^9+z^{12}-z^{13}.
+\end{align*}
+The identity $D(z)Q(z)=N(z)$ implies, for $n\ge6$,
+\begin{equation}\label{eq:inhomogeneous}
+ q(n)-2q(n-1)+q(n-2)-q(n-4)+2q(n-5)-q(n-6)
+ =\coef{z}{n}N(z).
+\end{equation}
+The right side vanishes for every $n\ge14$, but at $n=13$ it equals $-1$.
+Thus the least starting index from which the homogeneous recurrence holds
+for \emph{every} subsequent index of $q$ is $14$.
+For $7\le n\le13$, its only nonzero residuals are
+\begin{center}
+\begin{tabular}{c|rrrr}
+$n$&8&9&12&13\\\hline
+residual&$-1$&1&1&$-1$
+\end{tabular}
+\end{center}
+This proves the range correction asserted in Section 1.
+If the original derivative sequence satisfies the corrected recurrence
+for all $n\ge14$, its directly verified initial values $a(0),\ldots,a(13)$
+force $a=q$ by induction. Consequently the corrected recurrence for $a$
+is itself equivalent to the main conjecture, once those initial values
+are supplied; it is not an independent proved consequence for arbitrary
+orders.
+
+The second forward differences $q(n+2)-2q(n+1)+q(n)$ begin
+\[
+ 1,1,1,0,2,1,0,1,\underbrace{2,1,1,0,2,1,1,0,\ldots}_{n\ge8}.
+\]
+Again, this is proved for $q$; transferring the entire pattern to $a$
+requires the missing nonvanishing statement.
+
+\section{Reproducible verification}\label{sec:computation}
+
+\subsection{What was actually checked}
+All reported checks use exact arithmetic. No floating-point threshold was
+used to decide that a coefficient was zero.
+
+The C++ implementation with GMP computes the recurrence \eqref{eq:brec}
+through row $3000$. It tests all $4{,}501{,}500$ entries with
+$1\le r\le m\le3000$. Exactly $750$ are zero: $749$ symmetry zeros and
+$(8,5)$. There are no other zeros in that range, and therefore
+\begin{equation}\label{eq:3000}
+ a(n)=q(n)\quad(0\le n\le3000),\qquad
+ a(3000)=4{,}500{,}751.
+\end{equation}
+These are finite computational results, not an induction proving all $n$.
+
+A separate Python standard-library implementation computes the triangle
+through row $1500$ and agrees with the C++ term counts at all $1501$
+indices $0,\ldots,1500$. Further independent checks include the complete
+polynomials from the differential recurrence \eqref{eq:Prec} through order
+$60$, all $496$ shifted-product coefficients \eqref{eq:falling} with
+$0\le r\le m\le30$, and $11{,}865$ instances of the prime-adic valuation
+formula. All $54$ values displayed directly in the OEIS entry agree with
+the exact computation. The separately linked OEIS table through $500$ was
+not used as an independent data source for this report.
+
+The sixteen diagonal certificates were reconstructed and checked with a
+third, rational-polynomial computation. In addition to showing no unexpected
+zeros in a finite triangular region, these certificates prove there are no
+unexpected zeros on those fixed diagonals for any row index.
+
+\subsection{Algorithm and complexity}
+Only two preceding rows are required for \eqref{eq:brec}. A schematic
+implementation is
+\begin{quote}\ttfamily\small
+previousprevious = [1]\\
+previous = [0, 1]\\
+count = 2\\
+for m = 2, ..., N:\\
+\hspace*{1em}current[0] = 0\\
+\hspace*{1em}for r = 1, ..., m:\\
+\hspace*{2em}current[r] = (r-m+1)*previous[r]\\
+\hspace*{3em}+ previous[r-1] + (m-1)*previousprevious[r-1]\\
+\hspace*{1em}count += number of nonzero current[r] for 1 <= r <= m\\
+\hspace*{1em}rotate the three rows
+\end{quote}
+Indices beyond the end of a row mean zero. The supplied implementations
+handle these boundaries explicitly.
+
+The computation uses $O(N^2)$ arithmetic operations and stores $O(N)$
+integers. These are not bit-complexity claims: the integers grow with $N$.
+From the product formula,
+\[
+ |b(m,r)|\le\prod_{h=0}^{m-1}(1+|r-h|)\le(m+1)^m,
+\]
+so a coefficient has $O(m\log m)$ bits. The rolling-row implementation thus
+has an $O(N^2\log N)$-bit storage bound. A crude schoolbook arithmetic bound
+for the running time is $O(N^3\log^2 N)$ bit operations.
+
+\subsection{Files and commands}
+The archive contains \texttt{article.tex}, the compiled \texttt{article.pdf},
+a build script, both triangle verifiers, the rational certificate verifier,
+the complete count and zero-position tables through $3000$, and the exact
+verification reports. From the extracted directory, run
+\begin{quote}\ttfamily\small
+python3 verify.py --max-n 1500 --data-dir data\\
+python3 verify\_diagonals.py --output-dir data --check-only
+\end{quote}
+The C++ implementation requires a C++17 compiler and GMP development files:
+\begin{quote}\ttfamily\small
+c++ -O3 -std=c++17 verify\_gmp.cpp -lgmpxx -lgmp -o verify\_gmp\\
+./verify\_gmp 3000 data
+\end{quote}
+The Python programs use only the standard library. The diagonal checker
+constructs the coefficients afresh rather than trusting the saved residue
+tables. Its proof obligations are elementary rational polynomial identities
+and finite modular evaluations; it does not require a general-purpose
+computer algebra system.
+
+\section{What remains to finish the requested proof}
+
+The derivation of the candidate rational function is complete, but the
+identification of that function with the derivative count is conditional.
+The exact outstanding statement is
+\[
+ \coef{u}{r}\prod_{h=0}^{m-1}(u+r-h)\ne0
+\]
+for all $1\le r\le m$ outside the explicitly proved zero set $\ZZ_0$.
+The preceding results settle this for $r\le3$, for $m-r\le16$, and whenever
+$m-r+1$ is prime, in addition to all rows through $3000$ by exact computation.
+They do not cover every remaining pair.
+
+The diagonal-polynomial formulation gives a particularly precise route to
+a complete proof. For every offset $d$, it would suffice to show that the
+residual polynomial $R_d$ in \eqref{eq:Rd} has no integer root $m>d$.
+Irreducibility would be stronger than necessary. A uniform family of
+modular nonvanishing certificates would also suffice, but the fact that
+such certificates work for $d\le16$ does not establish that they work for
+all $d$.
+
+For the asymptotic conjecture alone, an exclusion of every additional zero
+is unnecessary: by \eqref{eq:asympeq}, it suffices to bound their cumulative
+number by $o(n^2)$. The present root-counting argument proves quadratic
+order but not this sharper estimate.
+
+\medskip
+\noindent\textbf{Conclusion.}
+The printed recurrence with range $n>6$ is disproved, and its correct
+range for the proposed sequence is identified. The principal closed formula
+is supported by an exact structural reduction, several infinite
+nonvanishing theorems, and extensive reproducible verification. A complete
+all-order proof of that formula is \emph{not} supplied: the missing converse
+in Conjecture~\ref{conj:zeros} is left explicit rather than being replaced
+by an inference from numerical agreement.
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{oeis293239}
+V. Reshetnikov and contributors,
+\emph{A293239: Number of terms in the fully expanded $n$th derivative of $x^x$},
+The On-Line Encyclopedia of Integer Sequences, 2017.
+Conjectured formulas attributed in the entry to C. Barker and V. Kote\v{s}ovec.
+Consulted 20 September 2026.
+\url{https://oeis.org/A293239}.
+
+\bibitem{oeis8296}
+N. J. A. Sloane and contributors,
+\emph{A008296: Triangle of Lehmer--Comtet numbers of the first kind},
+The On-Line Encyclopedia of Integer Sequences.
+Consulted 20 September 2026.
+\url{https://oeis.org/A008296}.
+
+\bibitem{comtet}
+L. Comtet,
+\emph{Advanced Combinatorics: The Art of Finite and Infinite Expansions},
+D. Reidel, Dordrecht, 1974, p. 139.
+
+\bibitem{lehmer}
+D. H. Lehmer,
+\emph{Numbers associated with Stirling numbers and $x^x$},
+Rocky Mountain Journal of Mathematics \textbf{15}(2) (1985), 461--479.
+\url{https://projecteuclid.org/euclid.rmjm/1250127221}.
+
+\bibitem{gould}
+H. W. Gould,
+\emph{A set of polynomials associated with the higher derivatives of $y=x^x$},
+Rocky Mountain Journal of Mathematics \textbf{26}(2) (1996), 615--625.
+\url{https://doi.org/10.1216/rmjm/1181072076}.
+
+\bibitem{jeong}
+S. Jeong,
+\emph{On a question of Lehmer concerning the Comtet numbers},
+arXiv:2607.26613v1, 2026.
+In particular, Proposition 3.10(iii) records the symmetry zero family.
+The recurrence question answered there concerns the numbers of the
+\emph{second} kind, not the complete first-kind zero classification used here.
+\url{https://arxiv.org/abs/2607.26613}.
+\end{thebibliography}
+\end{document}
