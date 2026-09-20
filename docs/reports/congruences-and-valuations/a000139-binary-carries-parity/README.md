@@ -36,7 +36,8 @@ All histogram bounds are exclusive. Least indices are **positive** indices.
 - `data/verification.json` — the recorded full execution report.
 - `data/symbolic_verification.json` — the symbolic execution report.
 - `data/initial_terms.csv` — indices 0 through 200, including exact a(n).
-- `data/dyadic_histograms.csv` — complete distributions for lengths 0 through 256.
+- `data/dyadic_histograms.csv` — **not distributed** (1.8 MB). Complete
+  distributions for lengths 0 through 256; `python code/verify.py` rebuilds it.
 - `data/least_indices.csv` — least positive indices for valuations 0 through 64.
 - `data/histogram_below_10_pow_100.json` — the complete distribution for
   0 <= n < 10^100, computed without enumerating that interval.

@@ -29,7 +29,9 @@ or proof-assistant-certified publication.
 ## Main files
 
 - `apery_hankel_growth.pdf` and `apery_hankel_growth.tex`: 12-page report.
-- `data/determinants_0_200.txt`: exact D_0 through D_200. D_200 has 37,308 digits.
+- `data/determinants_0_200.txt`: **not distributed** (2.4 MB). Exact D_0
+  through D_200, D_200 having 37,308 digits; rebuild with
+  `build/apery_gmp 200 > data/determinants_0_200.txt`.
 - `code/apery_exact.py` and `code/apery_gmp.cpp`: two exact implementations.
 - `code/verify.py` and `data/verification.json`: independent exact checks.
 - `data/shift_experiments.json`: exact samples of the shifted/dilated families.

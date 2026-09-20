@@ -4,6 +4,14 @@
 constructive reachability**
 Research manuscript prepared for Vladimir Reshetnikov — 20 September 2026.
 
+
+> **The certificate databases are not distributed.** `data/certificates.jsonl`,
+> `data/certificates_masks.jsonl`, `data/certificates.txt` and
+> `certificates/cores.cert` together came to about 6 MB and are regenerated
+> deterministically by the routes below; database C's 453 records
+> (`residual/`) and every worked example cited in the article are still
+> shipped, so the article's displayed cases remain checkable as they stand.
+
 ## Result and scope
 
 The manuscript gives a reproducible computer-assisted proof of the conjectured
@@ -66,8 +74,8 @@ the same conjecture. Each proved the shared theorem; they differ in *how*.
 
 |  | Classified objects | Records | Widths | Discovery | File |
 |---|---|---:|---:|---|---|
-| **A** | hard matrices, orbit-closure coverage | 10,642 | ≤ 20 | SMT (Z3) | `data/certificates.jsonl` (+ two other encodings) |
-| **B** | hard matrices, degree-sorted canonical | 10,619 | ≤ 20 | SMT (Z3) | `certificates/cores.cert` |
+| **A** | hard matrices, orbit-closure coverage | 10,642 | ≤ 20 | SMT (Z3) | `data/certificates.jsonl` (+ two other encodings) — *regenerate, see below* |
+| **B** | hard matrices, degree-sorted canonical | 10,619 | ≤ 20 | SMT (Z3) | `certificates/cores.cert` — *regenerate, see below* |
 | **C** | residual cores (no balanced triple) | 453 | ≤ 11 | solver-free enumeration | `residual/certificates.tsv` |
 
 Verified during the merge, directly from the shipped files:
@@ -378,7 +386,7 @@ A search failure or timeout is not a counterexample to the original conjecture.
 |---|---|
 | `shuffle_six_state.tex`, `.pdf` | the merged manuscript and its source |
 | `data/certificates.jsonl` | database A, coordinate-pair encoding |
-| `data/certificates_masks.jsonl` | database A, column-mask encoding |
+| `data/certificates_masks.jsonl` | database A, column-mask encoding — *regenerate* |
 | `data/certificates.txt` | database A, plain-integer encoding |
 | `certificates/cores.cert` | database B, 10,619 records |
 | `residual/certificates.tsv` | database C, 453 records |

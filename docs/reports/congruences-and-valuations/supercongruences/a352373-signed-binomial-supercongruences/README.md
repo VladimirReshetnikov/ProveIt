@@ -30,7 +30,8 @@ paper. All weighted-cancellation and valuation deductions are included.
 - `signed_binomial_supercongruence.tex`: standalone LaTeX source, including references.
 - `code/verify.py`: standard-library-only exact verification and coefficient evaluators.
 - `results/verification.json`: test counts, parameters, examples, and results.
-- `results/family_cases.csv`: every family congruence tested, with its valuation.
+- `results/family_cases.csv`: **not distributed** (0.6 MB); `python code/verify.py`
+  rebuilds it. Every family congruence tested, with its valuation.
 - `PROOF_AUDIT.md`: explicit review checklist for the proof.
 - `SOURCES.md`: sources checked and limitations of the priority/status check.
 - `OEIS_note.txt`: a proposed explanatory note; NOT submitted to OEIS.

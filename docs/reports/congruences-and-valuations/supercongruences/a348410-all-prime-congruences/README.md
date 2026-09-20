@@ -218,7 +218,8 @@ and `make symbolic` runs the optional symbolic checks.
 - `data/terms.csv`: a(n) through n=1000.
 - `data/supercongruence_checks.csv`: odd-prime valuation checks, strong form.
 - `data/binary_defect_checks.csv`: the full exact binary parameter grid.
-- `data/denominator12.csv`: primitive orbits, B(n), 12B(n), and the proved
+- `data/denominator12.csv`: **not distributed** (1.0 MB); `python binary_checks.py`
+  rebuilds it. Primitive orbits, B(n), 12B(n), and the proved
   orbit divisibility factor through n=1000.
 - `data/mobius_invariants.csv`: earlier odd-prime-only orbit checks;
   the stronger completed bound is in `denominator12.csv`.

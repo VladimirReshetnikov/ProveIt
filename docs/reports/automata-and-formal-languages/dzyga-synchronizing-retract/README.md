@@ -36,7 +36,11 @@ human review and an exhaustive priority assessment have not been performed.
 - `code/generate_certificates.py`: reverse-BFS pair-distance generator.
 - `code/verify_certificates.py`: independent local-identity certificate checker.
 - `code/test_structure.py`: algebraic identity, model, word and negative checks.
-- `certificates/k_0001.json.gz` through `k_0200.json.gz`: all exact distances.
+- `certificates/`: **not distributed.** The 200 exact pair-distance files
+  (26 MB) are reproduced byte for byte by
+  `python code/generate_certificates.py --max-k 200`, and the article's
+  proof does not depend on them. `results/summary.csv` keeps the
+  parameter-by-parameter results.
 - `results/summary.csv`: full parameter-by-parameter numerical results.
 - `results/generation.txt`, `verification.txt`, `structure_tests.txt`: run logs.
 - `PROOF_AUDIT.md`: precise claim/proof/status map and limitations.

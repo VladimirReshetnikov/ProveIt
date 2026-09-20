@@ -64,6 +64,17 @@ theorem but not a proof and were left as they are: the two remaining
 friendly-order-type reports, the two Lipparini Problem 6.2 solutions, and
 `finite-alphabet-transfinite-words`.
 
+## Large regenerable artifacts
+
+Ten bulk artifacts, about 38 MB in total, are deliberately not distributed:
+the 200 pair-distance certificates of `dzyga-synchronizing-retract`, the four
+certificate databases of `shuffle-six-state-bound`, and six large CSV or text
+tables elsewhere.  Every one is rebuilt byte for byte by its own package's
+generator, each package README gives the command, and `.gitignore` keeps a
+local rebuild from returning them to the history.  Nothing an article displays
+depends on them: worked examples, small certificate sets and the recorded run
+summaries are all still shipped.
+
 ## Notes on names and packaging
 
 Several reports attack the same published problem, so each directory is named

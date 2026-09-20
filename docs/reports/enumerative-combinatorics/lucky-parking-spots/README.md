@@ -28,7 +28,8 @@ verified by a proof assistant.
 - `article.pdf`, `article.tex`: full article and editable source.
 - `code/verify.py`: exact verifier/data generator, Python standard library only.
 - `code/make_figures.py`: optional matplotlib figure generator.
-- `data/triangle.csv`: all 5,050 entries with 1 <= j <= n <= 100, and P_n.
+- `data/triangle.csv`: **not distributed** (1.3 MB). All 5,050 entries with
+  1 <= j <= n <= 100, and P_n; `python code/verify.py` rebuilds it byte for byte.
 - `data/f_polynomials.json`: ascending rational coefficients of f_j, 2 <= j <= 30.
 - `data/boundary_limits.csv`: exact rational factors and 50-decimal-place limits.
 - `data/a374533_extension.txt`: local next-to-last-column extension to n=100.
