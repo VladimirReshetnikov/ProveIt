@@ -1,0 +1,1098 @@
+% SPDX-License-Identifier: MIT-0
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\hypersetup{pdftitle={A parity factorization and sharp stabilization for Cigler's Hankel polynomials},pdfauthor={AI-assisted research draft prepared for Vladimir Reshetnikov}}
+\definecolor{Ink}{HTML}{16324F}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\CT}{\operatorname{CT}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\U}{\mathcal U}
+\newcommand{\V}{\mathcal V}
+\newcommand{\Ht}{\mathcal H}
+\newcommand{\F}{\mathcal F}
+\newcommand{\B}{\mathcal B}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\coeffge}{\succeq}
+\newcommand{\Dlt}{\Delta}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\bracket}[1]{\left[#1\right]}
+\DeclareMathOperator{\sgn}{sgn}
+\numberwithin{equation}{section}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{Ink}Cigler's Hankel polynomials}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{14pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\setlist{nosep}
+
+\title{\color{Ink}\LARGE A parity factorization and sharp stabilization\\[0.25em]
+for Cigler's Hankel polynomials\\[0.5em]
+\large A proposed proof of Conjecture 16 in arXiv:2111.14492v3}
+\author{Research draft prepared for Vladimir Reshetnikov}
+\date{20 September 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We study the shifted Hankel determinants of Cigler's polynomial extension
+$c_n(t)$ of the middle binomial coefficients. An even--odd decomposition
+factors every normalized determinant into two principal minors of powers of
+simple tridiagonal matrices. This gives a proof of polynomiality, strict
+coefficient positivity, reciprocity, and the exact degree. An elementary
+alternant evaluation of the two factors proves the stable-coefficient
+assertions of Conjecture 16. More precisely, if
+$a=\lfloor k/2\rfloor$, $b=\lfloor(k-1)/2\rfloor$, and
+$\Ht_k(n;t)=(-1)^{k\binom n2}t^{-\binom n2}
+\det(c_{k+i+j}(t))_{0\le i,j<n}$, then for $k\ge2$,
+\[
+\Ht_k(n;t)=\frac{1}{(1-t)^a(1-t^2)^{ab}}
+-\binom{n+a}{a-1}t^{n+1}+O(t^{n+2}).
+\]
+Thus the conjectured stable range is optimal, and its first defect has a
+closed formula. We also obtain fixed-size determinant evaluations, an
+explicit nonminimal recurrence, and convergence on compact subsets of the
+open unit disk. Exact integer and polynomial verification programs accompany
+the article. A stronger rectangular-Schur identity suggested by computation
+is separated from the proved results and is not used in any proof.
+\end{abstract}
+
+\medskip
+\noindent\fcolorbox{Ink}{blue!3}{\parbox{0.94\linewidth}{\small
+\textbf{Status and scope.} This is an AI-assisted research draft with a full
+mathematical argument, not an independently refereed or proof-assistant-checked
+result. The target is Conjecture 16 in Section 6 of Cigler's paper, not
+Conjectures 13--15 in Section 5, which are already represented in the supplied
+manifest. A targeted literature search did not locate a later solution of
+this specific conjecture; that is not a guarantee of priority.}}
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The problem and the main result}
+\label{sec:main}
+
+\subsection{Why this problem is not a duplicate}
+The supplied manifest \cite{manifest} catalogues a report entitled
+\emph{Product formulas for ballot-polynomial Hankel determinants}, concerning
+Conjectures 13--15 in Section 5 of Cigler's paper \cite{Cigler}.
+Those conjectures concern the moment family denoted there by $a_n(t)$.
+Here the family is $c_n(t)$ from equation (6), and the target is
+\emph{Conjecture 16 in Section 6}, on pages 21--22 of version 3.
+The relationship is methodological---polynomial moment sequences and their
+Hankel determinants---but the input moments and the numbered problem differ.
+We do not assume that any proof catalogued in the manifest is correct.
+
+The source continues to present this statement as a conjecture in the
+version located during the search. The arXiv record identifies version 3
+as dated 30 December 2021 \cite{Cigler}. The bounded status audit in
+Section~\ref{sec:audit} explains what was and was not established about
+subsequent literature.
+
+\subsection{Definitions and conventions}
+A binomial coefficient $\binom rj$ is zero unless $0\le j\le r$.
+Set $c_0(t)=1$, and for $r\ge1$ define
+\begin{equation}
+ c_r(t)=\sum_{j=1}^{r}
+ \binom{\lfloor(r-1)/2\rfloor}{\lfloor(j-1)/2\rfloor}
+ \binom{\lfloor r/2\rfloor}{\lfloor j/2\rfloor}t^{j-1}.
+ \label{eq:source-moments}
+\end{equation}
+This is Cigler's equation (6), with its zero $j=0$ term omitted so that no
+negative power of $t$ is displayed. For example,
+\begin{align*}
+ c_0&=1,&c_1&=1,&c_2&=1+t,\\
+ c_3&=1+t+t^2,&
+ c_4&=1+2t+2t^2+t^3,&
+ c_5&=1+2t+4t^2+2t^3+t^4.
+\end{align*}
+For $k,n\ge0$, write
+\begin{equation}
+ D_k(n;t)=\det(c_{k+i+j}(t))_{0\le i,j<n},\qquad D_k(0;t)=1.
+ \label{eq:D}
+\end{equation}
+For $k\ge1$ initially define, in $\Q(t)$,
+\begin{equation}
+ \Ht_k(n;t)=(-1)^{k\binom n2}\frac{D_k(n;t)}{t^{\binom n2}}.
+ \label{eq:normalization}
+\end{equation}
+Polynomiality, including a well-defined value at $t=0$, will be proved.
+It is important not to substitute $t=0$ into the quotient before this step.
+
+Let
+\begin{equation}
+ a=\left\lfloor\frac k2\right\rfloor,\qquad
+ b=\left\lfloor\frac{k-1}{2}\right\rfloor,\qquad
+ \F_k(t)=\frac{1}{(1-t)^a(1-t^2)^{ab}}.
+ \label{eq:F}
+\end{equation}
+An expression $O(t^r)$ in a formal-series identity means an element of
+$t^r\Q[[t]]$; it has no analytic meaning unless one is explicitly stated.
+
+\begin{theorem}[Conjecture 16, with a sharp first defect]
+\label{thm:main}
+For every $k\ge1$ and $n\ge0$, $\Ht_k(n;t)$ is a polynomial in $\Z[t]$ of
+exact degree $(k-1)n$. Its constant and leading coefficients are both $1$,
+every coefficient between them is strictly positive, and
+\begin{equation}
+ \Ht_k(n;t)=t^{(k-1)n}\Ht_k(n;t^{-1}).
+ \label{eq:pal}
+\end{equation}
+For $k=1$, $\Ht_1(n;t)=1$. For $k\ge2$,
+\begin{equation}
+ \Ht_k(n;t)=\F_k(t)
+ -\binom{n+a}{a-1}t^{n+1}+O(t^{n+2}).
+ \label{eq:sharp}
+\end{equation}
+Consequently,
+\begin{equation}
+ [t^j]\Ht_k(n;t)=[t^j]\F_k(t)\quad(0\le j\le n),
+ \label{eq:stable}
+\end{equation}
+and $n+1$ is the first degree of disagreement for every $k\ge2$.
+\end{theorem}
+
+For $k=2a$, equation~\eqref{eq:stable} has denominator
+$(1-t)^a(1-t^2)^{a^2-a}$; for $k=2a+1$ it has denominator
+$(1-t)^a(1-t^2)^{a^2}$. These are precisely the two stable-coefficient
+assertions in the source. The first-defect formula \eqref{eq:sharp} is a
+refinement, not part of the original statement.
+
+\subsection{Proof architecture}
+The proof has three independent ingredients. First, the relation
+$c_{2r+2}=(1+t)c_{2r+1}$ turns a Hankel matrix into a two-by-two block matrix
+whose determinant factors by row operations. Second, the resulting factors
+are principal minors of powers of coefficientwise totally nonnegative
+tridiagonal matrices. This establishes positivity and degree without any
+alternant or Schur identity. Finally, small alternant determinants give the
+first omitted terms of the two factors and hence the exact stable range.
+All determinant identities needed below are proved in the article.
+
+\section{Two auxiliary moment sequences}
+\label{sec:moments}
+
+Put $B=1+t^2$ and $s=1+t$, so that $s^2=B+2t$.
+For a Laurent polynomial in $z$, $\CT_z$ denotes its constant coefficient.
+Define
+\begin{equation}
+ Q(z)=B+t(z+z^{-1})=(1+tz)(1+t/z),
+ \quad
+ u_r=\CT_z(1+z)Q(z)^r,
+ \quad
+ v_r=\CT_z(1-z^2)Q(z)^r.
+ \label{eq:uv-ct}
+\end{equation}
+Both $u_r$ and $v_r$ belong to $\Z[t]$.
+
+\begin{lemma}[The pairing relation]
+\label{lem:pair}
+For every $r\ge0$,
+\begin{equation}
+ c_{2r+1}=u_r,\qquad c_{2r+2}=s u_r,\qquad
+ s^2u_r-u_{r+1}=t v_r.
+ \label{eq:pair}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Expanding $Q(z)^r=(1+tz)^r(1+t/z)^r$ gives
+\begin{equation}
+ u_r=\sum_{j=0}^r\binom rj^2t^{2j}
+ +\sum_{j=0}^{r-1}\binom rj\binom r{j+1}t^{2j+1}.
+ \label{eq:u-binomial}
+\end{equation}
+Separating the even and odd indices of
+\eqref{eq:source-moments} gives $c_{2r+1}=u_r$.
+The coefficients of $t^{2j}$ and $t^{2j+1}$ in $(1+t)u_r$ are respectively
+\[
+ \binom rj\biggl(\binom rj+\binom r{j-1}\biggr),\qquad
+ \binom rj\biggl(\binom rj+\binom r{j+1}\biggr).
+\]
+Pascal's identity identifies these with the coefficients of $c_{2r+2}$.
+For the last assertion, observe that
+\[
+ (s^2-Q(z))(1+z)=t(1+z-z^2-z^{-1}).
+\]
+Since $Q(z)=Q(z^{-1})$, the constant terms of $zQ(z)^r$ and
+$z^{-1}Q(z)^r$ agree. The unwanted two terms cancel, leaving $t v_r$.
+\end{proof}
+
+\subsection{Tridiagonal realizations}
+Let $e_0,e_1,\ldots$ be the standard basis, let $S e_j=e_{j+1}$ be the
+unilateral shift, and let $E_{00}=e_0e_0^{\mathsf T}$. For $\eps=0,1$ put
+\begin{equation}
+ M_\eps=B I+t(S+S^{\mathsf T})+\eps t E_{00}.
+ \label{eq:M}
+\end{equation}
+Thus every off-diagonal entry adjacent to the diagonal is $t$, every
+diagonal entry is $1+t^2$, and for $M_1$ the first diagonal entry has the
+additional summand $t$. These are infinite banded matrices: every entry
+of a fixed power and every minor used below is a finite calculation.
+
+\begin{lemma}[Moment realization]
+\label{lem:realization}
+For $r\ge0$,
+\begin{equation}
+ u_r=(M_1^r)_{00},\qquad v_r=(M_0^r)_{00}.
+ \label{eq:moment-M}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For the first identity use Laurent polynomials
+$f_h=z^h+z^{-h-1}$, $h\ge0$. Multiplication by $z+z^{-1}$ sends
+$f_0$ to $f_0+f_1$ and sends $f_h$, $h>0$, to $f_{h-1}+f_{h+1}$.
+Also $\CT f_h$ is $1$ for $h=0$ and $0$ otherwise. Multiplication by
+$Q(z)$ in this basis therefore has matrix $M_1$, and
+$\CT Q(z)^r f_0=(M_1^r)_{00}$. Replacing $z$ by $z^{-1}$ gives the
+constant term defining $u_r$.
+
+For the second identity use $g_h=z^h-z^{-h-2}$. Multiplication by
+$z+z^{-1}$ sends $g_0$ to $g_1$ and, for $h>0$, sends $g_h$ to
+$g_{h-1}+g_{h+1}$. Again $\CT g_h=\delta_{h0}$. This gives $M_0$ and
+$\CT Q(z)^r(1-z^{-2})=v_r$.
+\end{proof}
+
+\section{Hankel determinants as principal minors}
+\label{sec:gram}
+
+For a matrix $A$, $A[m]$ means its principal submatrix on indices
+$0,\ldots,m-1$, and $\det A[0]=1$. Define
+\begin{equation}
+ \U_a(m;t)=\det(M_1^a[m]),\qquad
+ \V_a(m;t)=\det(M_0^a[m])\qquad(a,m\ge0).
+ \label{eq:UV}
+\end{equation}
+Here $M_\eps^a[m]$ means $(M_\eps^a)[m]$, \emph{not}
+$(M_\eps[m])^a$. Paths may leave the first $m$ indices and return before
+the $a$ multiplications are complete.
+
+\begin{lemma}[The auxiliary Gram identity]
+\label{lem:gram}
+For $a,m\ge0$,
+\begin{align}
+ \det(u_{a+i+j})_{0\le i,j<m}&=t^{m(m-1)}\U_a(m;t),\label{eq:gram-u}\\
+ \det(v_{a+i+j})_{0\le i,j<m}&=t^{m(m-1)}\V_a(m;t).\label{eq:gram-v}
+\end{align}
+\end{lemma}
+\begin{proof}
+We prove both statements together. Write $M=M_\eps$ and define a moment
+functional $L(X^r)=e_0^{\mathsf T}M^re_0$. Let
+\[
+ p_0=1,\quad p_1=X-B-\eps t,\quad
+ p_{j+1}=(X-B)p_j-t^2p_{j-1}\quad(j\ge1).
+\]
+Induction gives $p_j(M)e_0=t^j e_j$. Consequently,
+\begin{equation}
+ L(p_i p_j)=t^{i+j}\delta_{ij},\qquad
+ L(X^a p_i p_j)=t^{i+j}(M^a)_{ij}.
+ \label{eq:orthogonality}
+\end{equation}
+The change from $1,X,\ldots,X^{m-1}$ to the monic polynomials
+$p_0,\ldots,p_{m-1}$ is unit triangular. Changing both bases in the Hankel
+Gram matrix therefore preserves its determinant. Taking the factors $t^i$
+and $t^j$ out of its rows and columns gives
+$t^{2\sum_{i=0}^{m-1}i}=t^{m(m-1)}$, as required.
+This argument is an identity over $\Z[t]$ and does not require $t\ne0$.
+\end{proof}
+
+The normalized auxiliary quantities are thus polynomials before we use any
+rational evaluation of them. In particular $\U_0(m)=\V_0(m)=1$ and
+$\U_a(0)=\V_a(0)=1$.
+
+\section{The parity factorization}
+\label{sec:factor}
+
+\begin{theorem}[Four parity cases]
+\label{thm:factor}
+For $a,m\ge0$,
+\begin{align}
+ \Ht_{2a+1}(2m;t)&=\U_a(m;t)\V_a(m;t),\label{eq:factor-oo}\\
+ \Ht_{2a+1}(2m+1;t)&=\U_a(m+1;t)\V_a(m;t).\label{eq:factor-oe}
+\end{align}
+For $a\ge1$ and $m\ge0$,
+\begin{align}
+ \Ht_{2a}(2m;t)&=\U_a(m;t)\V_{a-1}(m;t),\label{eq:factor-eo}\\
+ \Ht_{2a}(2m+1;t)&=(1+t)\U_{a-1}(m+1;t)\V_a(m;t).\label{eq:factor-ee}
+\end{align}
+In particular the normalization in \eqref{eq:normalization} is polynomial.
+\end{theorem}
+\begin{proof}
+Reorder both rows and columns of the Hankel matrix by putting the even
+indices first. Applying the same permutation on both sides contributes no
+sign. Write $U_a(r)$ for the unnormalized matrix
+$(u_{a+i+j})_{0\le i,j<r}$ and $V_a(r)$ for the analogous matrix of $v$'s.
+
+For an odd shift $2a+1$, the four blocks, with the appropriate rectangular
+sizes, are
+\[
+ \begin{pmatrix}
+ (u_{a+i+j})& (s u_{a+i+j})\\
+ (s u_{a+i+j})& (u_{a+i+j+1})
+ \end{pmatrix}.
+\]
+Subtract $s$ times the corresponding even row from each odd row. The lower
+left block becomes zero and the lower right block becomes
+$(-t v_{a+i+j})$, by Lemma~\ref{lem:pair}. The upper left block has size
+$m$ when $n=2m$ and size $m+1$ when $n=2m+1$. Therefore
+\begin{align*}
+ D_{2a+1}(2m)&=(-t)^m\det U_a(m)\det V_a(m),\\
+ D_{2a+1}(2m+1)&=(-t)^m\det U_a(m+1)\det V_a(m).
+\end{align*}
+Using Lemma~\ref{lem:gram}, the total powers of $t$ are respectively
+$2m^2-m=\binom{2m}{2}$ and $2m^2+m=\binom{2m+1}{2}$.
+Also $(-1)^m=(-1)^{\binom n2}$ for both $n=2m$ and $n=2m+1$.
+This proves the two odd-shift formulas.
+
+For shift $2a$ and size $2m$, the reordered matrix is
+\[
+ \begin{pmatrix}sU_{a-1}(m)&U_a(m)\\ U_a(m)&sU_a(m)\end{pmatrix}.
+\]
+Work temporarily in $\Q(t)$ and subtract $s^{-1}$ times each bottom row
+from the matching top row. The upper right block becomes zero, and the
+upper left block is $(t/s)V_{a-1}(m)$. Hence
+\[
+ D_{2a}(2m)=t^m\det V_{a-1}(m)\det U_a(m).
+\]
+For size $2m+1$, the even block has $m+1$ rows. Subtract $s^{-1}$ times
+even row $i+1$ from odd row $i$, for $0\le i<m$. The lower left block
+vanishes; the lower right block becomes $(t/s)V_a(m)$, while the upper
+left block is $sU_{a-1}(m+1)$. Thus
+\[
+ D_{2a}(2m+1)=s t^m\det U_{a-1}(m+1)\det V_a(m).
+\]
+The Gram identities give exactly the same two normalization exponents as
+before. These are polynomial identities after denominators are cleared,
+so the temporary use of $1/s$ causes no exception at $t=-1$.
+\end{proof}
+
+\section{Strict positivity, degree, and reciprocity}
+\label{sec:positive}
+
+For polynomials $P,Q$, write $P\coeffge Q$ if $P-Q$ has nonnegative
+integer coefficients. A matrix is \emph{coefficientwise totally nonnegative}
+if every finite minor, with row and column indices in increasing order,
+is a polynomial with nonnegative coefficients.
+
+\begin{lemma}[Total nonnegativity of the auxiliary matrices]
+\label{lem:TP}
+Both $M_0$ and $M_1$, and all of their nonnegative integer powers, are
+coefficientwise totally nonnegative.
+\end{lemma}
+\begin{proof}
+Since $S^{\mathsf T}S=I$ for the unilateral shift,
+\begin{equation}
+ M_0=(I+tS^{\mathsf T})(I+tS).
+ \label{eq:bidiagonal}
+\end{equation}
+The two bidiagonal factors are totally nonnegative: a nonzero minor has
+an order-preserving matching of its selected rows and columns and has a
+nonnegative monomial weight. This can also be checked by expanding at the
+first selected row; the bidiagonal zero pattern prevents a negatively
+signed nonzero matching.
+
+The Cauchy--Binet formula proves total nonnegativity of their product.
+Although the matrices are infinite, each of these sums is finite because
+the factors are banded. Next $M_1=M_0+tE_{00}$. A minor not selecting both
+row $0$ and column $0$ is unchanged. A minor selecting both acquires
+$t$ times the minor obtained by deleting its first row and first column.
+The cofactor sign is positive because the selected indices are increasing.
+Thus adding this corner entry preserves coefficientwise total
+nonnegativity. Repeated Cauchy--Binet proves the assertion for powers.
+\end{proof}
+
+\begin{proposition}[Support and reciprocity of the factors]
+\label{prop:factor-positive}
+For $a,m\ge0$, $\U_a(m)$ and $\V_a(m)$ are reciprocal polynomials of
+exact degree $2am$, with constant and leading coefficients $1$.
+For $a,m\ge1$, every coefficient of $\U_a(m)$ is positive, whereas
+$\V_a(m)$ has a positive coefficient at every even degree between $0$ and
+$2am$ and no odd-degree terms. More quantitatively,
+\begin{align}
+ \U_a(m;t)&\coeffge(1+t+\cdots+t^{2m})^a,\label{eq:U-lower}\\
+ \V_a(m;t)&\coeffge(1+t^2+\cdots+t^{2m})^a.\label{eq:V-lower}
+\end{align}
+\end{proposition}
+\begin{proof}
+The matrices satisfy $M_\eps(t^{-1})=t^{-2}M_\eps(t)$.
+Taking the $a$th power and an $m$-row principal minor gives
+\[
+ \U_a(m;t)=t^{2am}\U_a(m;t^{-1}),\qquad
+ \V_a(m;t)=t^{2am}\V_a(m;t^{-1}).
+\]
+At $t=0$, the matrices are $I$, so both determinants have constant term
+$1$. Their exact degrees and leading coefficients follow.
+
+The tridiagonal determinant recurrence, with $B=1+t^2$, gives
+\[
+ \det M_1[m]=1+t+\cdots+t^{2m},\qquad
+ \det M_0[m]=1+t^2+\cdots+t^{2m}.
+\]
+For example the second sequence has initial values $1,B$ and recurrence
+$P_m=BP_{m-1}-t^2P_{m-2}$; the first has initial values $1,B+t$
+and the same recurrence. The displayed finite sums satisfy these recurrences.
+
+Expand the principal minor of $M_\eps^a$ by repeated Cauchy--Binet. All
+terms are coefficientwise nonnegative. Selecting the same index set
+$\{0,\ldots,m-1\}$ at every intermediate stage supplies the term
+$(\det M_\eps[m])^a$, proving the two lower bounds.
+Finally $M_0(-t)=J M_0(t)J$, where $J=\diag(1,-1,1,-1,\ldots)$.
+Its principal minors of powers are unchanged, so $\V_a(m)$ is even.
+\end{proof}
+
+\begin{proof}[Proof of the positivity and reciprocity part of Theorem~\ref{thm:main}]
+Apply Theorem~\ref{thm:factor}. The degrees in its four lines are
+\[
+ 4am,\quad 2a(2m+1),\quad 2m(2a-1),\quad (2a-1)(2m+1),
+\]
+which equal $(k-1)n$ in each case. All factors are reciprocal, including
+$1+t$, and their constant terms are $1$.
+
+For strict positivity, the full consecutive support of a nonconstant
+$\U$ factor overlaps the translates arising from the even support of a
+$\V$ factor. More explicitly, an interval $\{0,\ldots,L\}$ with $L\ge1$,
+added to $\{0,2,\ldots,2R\}$, covers every integer from $0$ to $L+2R$.
+The only exceptional-looking even-shift case is $a=1$, $n$ odd: there the
+factor $1+t$ supplies precisely the needed interval of length one.
+The cases $n=0$ and $k=1$ give the constant polynomial $1$ directly.
+\end{proof}
+
+\section{A small alternant evaluation}
+\label{sec:alternants}
+
+Positivity did not require symmetric-function identities. The stabilization
+proof will also be elementary: the relevant formulas are quotients of
+explicit alternating determinants. This section supplies their derivation,
+including the classical moment determinant identity that is often used for
+this purpose; compare the general framework in \cite{CK}.
+
+\subsection{The Christoffel determinant identity}
+\begin{lemma}[Moment modification]
+\label{lem:christoffel}
+Let $L$ be a moment functional over a characteristic-zero field, with monic
+orthogonal polynomials $p_j$ of nonzero norms $h_j=L(p_j^2)$.
+Put $H_m=\det(L(X^{i+j}))_{0\le i,j<m}$.
+For independent parameters $\eta_1,\ldots,\eta_a$,
+\begin{equation}
+ \frac{\det\left(L\left(X^{i+j}\prod_{r=1}^a(X-\eta_r)\right)\right)_{0\le i,j<m}}{H_m}
+ =(-1)^{am}
+ \frac{\det(p_{m+j-1}(\eta_i))_{1\le i,j\le a}}
+ {\Dlt(\eta)},
+ \label{eq:christoffel}
+\end{equation}
+where $\Dlt(\eta)=\prod_{i<j}(\eta_j-\eta_i)$.
+\end{lemma}
+\begin{proof}
+Form an $(m+a)$-square matrix whose first $m$ rows, indexed by $r$, are
+$L(X^r X^j)$ for $0\le j<m+a$, and whose last $a$ rows are
+$\eta_i^j$. Change the column polynomials from the monomials to
+$p_0,\ldots,p_{m+a-1}$. The change is unit triangular. Orthogonality makes
+the upper right block zero, and the determinant of the upper left block is
+$\prod_{r=0}^{m-1}h_r=H_m$. Thus this determinant is
+$H_m\det(p_{m+j-1}(\eta_i))$.
+
+Alternatively change the column polynomials to
+$1,X,\ldots,X^{a-1},P,XP,\ldots,X^{m-1}P$, where
+$P=\prod_r(X-\eta_r)$. This is again a monic unit-triangular change.
+Move the last $a$ rows to the top, contributing $(-1)^{am}$.
+The top left block is a Vandermonde matrix and the top right block is zero.
+The bottom right block is the modified moment matrix on the left of
+\eqref{eq:christoffel}. Equating the two evaluations proves the identity.
+\end{proof}
+
+\subsection{The two explicit numerators}
+For $a,m\ge0$ and $\delta\in\{0,1\}$, define
+\begin{equation}
+ N^{\delta}_{a,m}(t)=
+ \det\left(
+ \binom{j-1}{i-1}t^{j-i}
+ -\binom{2m+2a-j+\delta}{i-1}
+ t^{2m+2a-j+\delta-i+1}
+ \right)_{1\le i,j\le a}.
+ \label{eq:N}
+\end{equation}
+The first summand is interpreted as zero when $j<i$, without evaluating
+its negative power. An empty determinant is $1$.
+
+\begin{theorem}[Fixed-size evaluations]
+\label{thm:alternant}
+For all $a,m\ge0$,
+\begin{align}
+ \U_a(m;t)&=
+ \frac{N^0_{a,m}(t)}{(1-t)^a(1-t^2)^{\binom a2}},\label{eq:Uclosed}\\
+ \V_a(m;t)&=
+ \frac{N^1_{a,m}(t)}{(1-t^2)^{\binom{a+1}{2}}}.
+ \label{eq:Vclosed}
+\end{align}
+These identities hold in $\Q(t)$ and determine the polynomials already
+constructed in \eqref{eq:UV}; apparent singularities at $t=1$ or $t=-1$
+are removable. The determinant orders are $a$, independently of $m$.
+\end{theorem}
+\begin{proof}
+Work first over $\Q(t)$. Let $C_0(y)=1$, $C_1(y)=y$, and
+$C_{j+1}(y)=yC_j(y)-C_{j-1}(y)$; also put $C_{-1}=0$.
+The orthogonal polynomials in Lemma~\ref{lem:gram} are
+\[
+ p_j^\eps(X)=t^j\left[C_j\left(\frac{X-B}{t}\right)
+ -\eps C_{j-1}\left(\frac{X-B}{t}\right)\right].
+\]
+Define monic polynomials $A_j^\eps(y)=C_j(y)+\eps C_{j-1}(y)$ and put
+\[
+ \eta_i=B-t(x_i+x_i^{-1}).
+\]
+Then $p_j^\eps(\eta_i)=(-t)^jA_j^\eps(x_i+x_i^{-1})$.
+The elementary recurrence gives
+\begin{align}
+ A_j^0(x+x^{-1})&=\frac{x^{j+1}-x^{-j-1}}{x-x^{-1}},\label{eq:A0}\\
+ A_j^1(x+x^{-1})&=\frac{x^{j+1/2}-x^{-j-1/2}}
+ {x^{1/2}-x^{-1/2}}=\sum_{r=-j}^{j}x^r.\label{eq:A1}
+\end{align}
+The half powers in the middle expression cancel; the expression on the
+right is a Laurent polynomial.
+
+Since the $A_j^\eps$ are monic in $y$, their first $a$ evaluation columns
+have determinant $\Dlt(y)$, where $y_i=x_i+x_i^{-1}$.
+Apply Lemma~\ref{lem:christoffel}, cancel the column powers of $-t$ and
+the Vandermonde scale, and then specialize every $\eta_i$ to zero.
+Choosing every $x_i=t$ gives
+\begin{equation}
+ \det(M_\eps^a[m])=
+ t^{am}\left.
+ \frac{\det(A_{m+j-1}^\eps(x_i+x_i^{-1}))}
+ {\det(A_{j-1}^\eps(x_i+x_i^{-1}))}
+ \right|_{x_1=\cdots=x_a=t}.
+ \label{eq:character-step}
+\end{equation}
+The equal-parameter value is the limit of an alternating quotient, not a
+quotient of two separately substituted zero determinants.
+
+Reverse all columns in the numerator and denominator of this quotient and
+use \eqref{eq:A0}--\eqref{eq:A1}. For $\delta=1-\eps$, multiplication
+of row $i$ by the appropriate power of $x_i$ gives
+\begin{equation}
+ \left(\prod_{i=1}^a x_i\right)^m
+ \frac{\det(A_{m+j-1}^\eps(x_i+x_i^{-1}))}
+ {\det(A_{j-1}^\eps(x_i+x_i^{-1}))}
+ =
+ \frac{\det(x_i^{j-1}-x_i^{2m+2a-j+\delta})}
+ {\det(x_i^{j-1}-x_i^{2a-j+\delta})}.
+ \label{eq:alternant-ratio}
+\end{equation}
+At $x_i=t$, the prefactor on the left is exactly $t^{am}$.
+
+The denominator on the right has the factorization
+\begin{equation}
+ \det(x_i^{j-1}-x_i^{2a-j+\delta})
+ =\Dlt(x)\prod_{i=1}^a(1-x_i^{1+\delta})
+ \prod_{i<j}(1-x_ix_j).
+ \label{eq:den-factor}
+\end{equation}
+Here is a direct verification. Alternation supplies $\Dlt(x)$.
+At $x_i=1$ a row vanishes, and for $\delta=1$ it also vanishes at $x_i=-1$.
+At $x_j=x_i^{-1}$ the two rows are proportional, with proportionality
+factor $-x_i^{-(2a-1+\delta)}$, so every $1-x_ix_j$ divides the determinant.
+These factors have exactly its total degree. Its lowest homogeneous term
+is $\Dlt(x)$, which fixes the multiplicative constant as $1$.
+
+Finally, for polynomials $f_j$, Taylor expansion gives the confluent identity
+\begin{equation}
+ \left.\frac{\det(f_j(x_i))}{\Dlt(x)}\right|_{x_1=\cdots=x_a=t}
+ =\det\left(\frac{f_j^{(i-1)}(t)}{(i-1)!}\right)_{1\le i,j\le a}.
+ \label{eq:confluent}
+\end{equation}
+Indeed the lowest alternating term in the Taylor expansion around $t$ uses
+the distinct exponents $0,1,\ldots,a-1$.
+Apply \eqref{eq:confluent} to the numerator in
+\eqref{eq:alternant-ratio}. It gives exactly \eqref{eq:N}.
+The remaining factors in \eqref{eq:den-factor}, after equal specialization,
+give the denominators in \eqref{eq:Uclosed} and \eqref{eq:Vclosed}.
+\end{proof}
+
+\begin{remark}
+The quotients before equal specialization are familiar rectangular
+orthogonal and symplectic character alternants. No character theory,
+branching formula, or bounded Schur-sum identity is being imported: the
+moment identity, the recurrence, the denominator factorization, and the
+confluent limit above give a complete determinant proof.
+\end{remark}
+
+\section{Sharp stable coefficients}
+\label{sec:stable}
+
+\begin{lemma}[First nonconstant numerator term]
+\label{lem:first-term}
+For $a\ge1$, $m\ge0$, and $\delta\in\{0,1\}$, put
+$r=2m+1+\delta$. Then
+\begin{equation}
+ N^\delta_{a,m}(t)=1-\binom{a+r-1}{a-1}t^r+O(t^{r+1}).
+ \label{eq:N-first}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Before equal specialization, expand
+$\det(x_i^{j-1}-x_i^{2m+2a-j+\delta})$ by choosing either the low or the
+high monomial in each column. If the high monomial is selected in column
+$j$, the total degree increases, relative to $\Dlt(x)$, by
+\[
+ 2m+2a-2j+1+\delta=r+2(a-j).
+\]
+The all-low choice is $\Dlt(x)$. The unique choice of smallest positive
+additional degree is to select only the high monomial in column $a$;
+its sign is negative and its additional degree is $r$.
+Every other choice has strictly larger additional degree.
+
+After division by $\Dlt(x)$ and equal specialization, the coefficient of
+this first correction can be computed directly from
+\eqref{eq:confluent}. The column exponents are
+$0,1,\ldots,a-2,a-1+r$. The first $a-1$ columns are triangular with
+unit diagonal, so the remaining determinant is
+$\binom{a-1+r}{a-1}t^r$. This proves the assertion, including $a=1$.
+\end{proof}
+
+Define the formal series
+\begin{equation}
+ U_a^\infty(t)=\frac{1}{(1-t)^a(1-t^2)^{\binom a2}},\qquad
+ V_a^\infty(t)=\frac{1}{(1-t^2)^{\binom{a+1}{2}}}.
+ \label{eq:limits}
+\end{equation}
+Their constant terms are $1$. For $a=0$ both are exactly $1$.
+Theorem~\ref{thm:alternant} and Lemma~\ref{lem:first-term} imply, for
+$a\ge1$,
+\begin{align}
+ \U_a(m;t)&=U_a^\infty(t)
+ -\binom{2m+a}{a-1}t^{2m+1}+O(t^{2m+2}),\label{eq:Udefect}\\
+ \V_a(m;t)&=V_a^\infty(t)
+ -\binom{2m+a+1}{a-1}t^{2m+2}+O(t^{2m+3}).\label{eq:Vdefect}
+\end{align}
+Multiplying by a series with constant term $1$ does not change the first
+nonzero correction, which is why the same binomial coefficient appears in
+these formulas.
+
+\begin{proof}[Completion of Theorem~\ref{thm:main}]
+For $n=2m$ the earliest correction in both
+\eqref{eq:factor-oo} and \eqref{eq:factor-eo} comes from $\U_a(m)$,
+at degree $2m+1=n+1$. Its magnitude is
+$\binom{2m+a}{a-1}=\binom{n+a}{a-1}$.
+The products of the corresponding limiting series are respectively
+\[
+ U_a^\infty V_a^\infty
+ =\frac1{(1-t)^a(1-t^2)^{a^2}},\qquad
+ U_a^\infty V_{a-1}^\infty
+ =\frac1{(1-t)^a(1-t^2)^{a(a-1)}}.
+\]
+For $n=2m+1$ the earliest correction in both
+\eqref{eq:factor-oe} and \eqref{eq:factor-ee} comes from $\V_a(m)$,
+at degree $2m+2=n+1$, with magnitude
+$\binom{2m+a+1}{a-1}=\binom{n+a}{a-1}$.
+For the last parity case the limiting product simplifies as
+\[
+ (1+t)U_{a-1}^\infty V_a^\infty
+ =\frac{1+t}{(1-t)^{a-1}(1-t^2)^{a^2-a+1}}
+ =\frac1{(1-t)^a(1-t^2)^{a(a-1)}}.
+\]
+All multiplying factors have constant term $1$, so they do not alter the
+first correction coefficient. When $a=1$, any factor with index $a-1=0$
+is identically $1$, and the same argument applies. The positive binomial
+coefficient proves optimality of the range. The case $k=1$ was already
+obtained directly from the factorization.
+\end{proof}
+
+\begin{corollary}[Coefficient extraction without a Hankel determinant]
+For $k\ge2$, $0\le j\le n$, and $a,b$ as in \eqref{eq:F},
+\begin{equation}
+ [t^j]\Ht_k(n;t)
+ =\sum_{\ell=0}^{\lfloor j/2\rfloor}
+ W(ab,\ell)W(a,j-2\ell),
+ \label{eq:stable-sum}
+\end{equation}
+where $W(q,r)=\binom{q+r-1}{r}$ for $q\ge1$, and
+$W(0,r)=1$ for $r=0$ and $0$ otherwise.
+\end{corollary}
+\begin{proof}
+Expand $(1-t)^{-a}$ and $(1-t^2)^{-ab}$ and use
+\eqref{eq:stable}. The convention for $W(0,r)$ handles $k=2$ without
+an artificial negative upper binomial index.
+\end{proof}
+
+\section{Examples and checks on the statement}
+\label{sec:examples}
+
+\subsection{The first three shifts}
+The factorization immediately gives
+\begin{equation}
+ \Ht_1(n;t)=1,\qquad
+ \Ht_2(n;t)=1+t+\cdots+t^n.
+ \label{eq:k12}
+\end{equation}
+For $k=3$, insert
+$\U_1(m)=1+t+\cdots+t^{2m}$ and
+$\V_1(m)=1+t^2+\cdots+t^{2m}$ in the two parity cases. Both simplify to
+\begin{equation}
+ \Ht_3(n;t)=\frac{(1-t^{n+1})(1-t^{n+2})}{(1-t)(1-t^2)}.
+ \label{eq:k3}
+\end{equation}
+These small-shift formulas are already printed in Cigler's paper; they
+serve as indexing and sign checks, not as new results.
+
+\subsection{A first-defect example}
+For $k=4$, the limiting series is
+\[
+ \F_4(t)=\frac1{(1-t)^2(1-t^2)^2}
+ =1+2t+5t^2+8t^3+14t^4+\cdots.
+\]
+At $n=2$ the determinant gives
+\[
+ \Ht_4(2;t)=1+2t+5t^2+4t^3+5t^4+2t^5+t^6.
+\]
+The first three coefficients agree. At degree $3=n+1$ the deficit is
+$8-4=4=\binom{2+2}{2-1}$, exactly as predicted.
+At $n=3$,
+\[
+ \Ht_4(3;t)=1+2t+5t^2+8t^3+9t^4+9t^5+8t^6+5t^7+2t^8+t^9,
+\]
+and the first deficit is $14-9=5=\binom{3+2}{2-1}$.
+
+These examples also delimit the result. The coefficients $5,4,5$ in
+$\Ht_4(2;t)$ have a strict valley. Thus positivity and reciprocity do
+\emph{not} imply unimodality here. No unimodality or log-concavity assertion
+is included in Theorem~\ref{thm:main}.
+
+\subsection{Signs and exceptional parameters}
+For real $t>0$, strict coefficient positivity gives the exact sign
+\begin{equation}
+ \sgn D_k(n;t)=(-1)^{k\binom n2}.
+ \label{eq:sign}
+\end{equation}
+At $t=0$ the normalized polynomial has value $1$, although the original
+Hankel determinant vanishes when $n\ge2$. At $t=1$ the source moments
+are the middle binomial coefficients. At $t=-1$ the factor $1+t$ in
+\eqref{eq:factor-ee} shows that every positive even-shift, odd-size determinant
+vanishes. These statements follow from polynomial identities; no argument
+uses an undefined specialization of a rational formula.
+
+\section{Algorithms and further consequences}
+\label{sec:consequences}
+
+\subsection{Exact computation at fixed shift}
+Theorem~\ref{thm:alternant} evaluates the factors through determinants of
+order at most $\lfloor k/2\rfloor$, even when $n$ is very large.
+A practical algorithm is to determine the parity of $k,n$, compute the
+one or two numerators in \eqref{eq:N}, divide by their proved exact
+denominators, and multiply according to Theorem~\ref{thm:factor}.
+For $t=\pm1$, use the principal-minor definition or take the polynomial
+limit instead of evaluating a zero denominator.
+
+The reduction is in determinant \emph{order}, not in bit complexity.
+The entries contain powers whose exponents grow with $n$, and an expanded
+answer has degree $(k-1)n$. Once entries are constructed, ordinary dense
+elimination uses a cubic number of field operations in the small determinant
+order; large integers and polynomial output still carry their usual costs.
+For only the first $j\le n$ coefficients, \eqref{eq:stable-sum} avoids
+both determinant constructions.
+
+\subsection{A concrete, nonminimal recurrence}
+\begin{proposition}[Rationality at each fixed shift]
+\label{prop:recurrence}
+For $k\ge2$, set
+\[
+ d_k=\begin{cases}(a-1)^2,&k=2a,\\ a(a-1),&k=2a+1.\end{cases}
+\]
+The series $\sum_{n\ge0}\Ht_k(n;t)x^n$ is rational over $\Q(t)$,
+with a denominator dividing
+\begin{equation}
+ \prod_{q=0}^{k-1}(1-t^{2q}x^2)^{d_k+1}.
+ \label{eq:coarse-den}
+\end{equation}
+Equivalently, with $E$ denoting forward shift in $n$,
+\begin{equation}
+ \prod_{q=0}^{k-1}(E^2-t^{2q})^{d_k+1}\Ht_k(n;t)=0.
+ \label{eq:coarse-rec}
+\end{equation}
+The bound is not asserted to be minimal and is not a resolution of all the
+more precise denominator and numerator assertions in Conjecture 18.
+\end{proposition}
+\begin{proof}
+Expand \eqref{eq:N} column by column. A term selecting $q$ high columns
+has the form $P(m;t)t^{2qm}$, where $P$ is a polynomial in $m$ with
+coefficients in $\Q(t)$. Its degree in $m$ is at most
+$\sum_{i=1}^a(i-1)=\binom a2$, because the binomial in row $i$ has degree
+at most $i-1$. The denominators in Theorem~\ref{thm:alternant} do not
+depend on $m$. Thus each auxiliary factor is a finite sum of
+$m^j(t^{2q})^m$, with $0\le q\le a$ and $j\le\binom a2$.
+
+The products in the two parity subsequences have $0\le q\le k-1$.
+Their degree bounds are $2\binom a2=a(a-1)$ in the odd-shift case and
+$\binom a2+\binom{a-1}{2}=(a-1)^2$ in the even-shift case.
+Replacing $m$ by $m+1$ changes neither bound. A polynomial of degree at
+most $d$ times $\lambda^m$ is annihilated by $(E_m-\lambda)^{d+1}$,
+as follows by taking successive finite differences. Interleaving the
+even and odd subsequences replaces $E_m$ by $E^2$, proving the claim.
+\end{proof}
+
+For the unadjusted normalized determinant
+$d_k(n;t)=t^{-\binom n2}D_k(n;t)$, the even-$k$ recurrence is unchanged.
+For odd $k$, the period-four sign replaces $1-t^{2q}x^2$ in the displayed
+coarse denominator by $1+t^{2q}x^2$.
+
+\subsection{Actual convergence, not just formal stabilization}
+\begin{proposition}[Uniform convergence inside the unit disk]
+\label{prop:analytic}
+Fix $k\ge2$ and $0<r<1$. There is a constant $C_{k,r}$ such that, for all
+$n\ge0$,
+\begin{equation}
+ \sup_{|t|\le r}|\Ht_k(n;t)-\F_k(t)|
+ \le C_{k,r}(n+1)^{\binom a2}r^{n+1}.
+ \label{eq:analytic}
+\end{equation}
+In particular the polynomials converge to $\F_k$ locally uniformly on
+$|t|<1$.
+\end{proposition}
+\begin{proof}
+In the expansion of $N^\delta_{a,m}-1$, every nonzero term has degree at
+least $2m+1+\delta$ in $t$. There are finitely many determinant terms for
+fixed $a$, and each coefficient is bounded by a constant times
+$(m+1)^{\binom a2}$, by the row-degree estimate just used.
+It follows, uniformly on $|t|\le r$, that
+\[
+ N^\delta_{a,m}(t)-1
+ =O_{a,r}\bigl((m+1)^{\binom a2}r^{2m+1+\delta}\bigr).
+\]
+The two fixed denominators in Theorem~\ref{thm:alternant} are bounded
+away from zero on this disk. Hence the factors converge uniformly to
+\eqref{eq:limits}, with these bounds, and in particular remain uniformly
+bounded as $m$ varies. Subtract the limiting products in the four parity
+formulas. The earliest error has exponent $n+1$, exactly as in
+Section~\ref{sec:stable}; the largest polynomial exponent is $\binom a2$.
+The finitely many small cases can be absorbed in $C_{k,r}$.
+\end{proof}
+
+\section{A stronger identity suggested by the computations}
+\label{sec:schur}
+
+The discovery phase suggested a compact formula not needed for any theorem
+above. We record it as a separate conjecture so that a promising observation
+is not silently promoted to a proof.
+
+For an alphabet $X=(x_1,\ldots,x_k)$, define $h_j(X)$ by
+$\sum_{j\ge0}h_j(X)z^j=\prod_{i=1}^k(1-x_i z)^{-1}$, with $h_j=0$ for
+$j<0$. The rectangular Schur polynomial is
+\[
+ s_{(n^a)}(X)=\det(h_{n-i+j}(X))_{1\le i,j\le a}.
+\]
+
+\begin{conjecture}[Experimental rectangular-Schur formula]
+\label{conj:schur}
+With $a=\lfloor k/2\rfloor$ and $b=\lfloor(k-1)/2\rfloor$,
+\begin{equation}
+ \Ht_k(n;t)=s_{(n^a)}
+ (\underbrace{1,\ldots,1}_{a},\ t,\
+ \underbrace{t^2,\ldots,t^2}_{b}).
+ \label{eq:schur-candidate}
+\end{equation}
+\end{conjecture}
+
+The conjecture agrees with all 1,248 exact evaluations in the range recorded
+in Section~\ref{sec:verify}. For instance, at $k=4,n=2$, its right-hand
+side is $h_2^2-h_1h_3$ in the alphabet $(1,1,t,t^2)$, giving the
+polynomial displayed in Section~\ref{sec:examples}.
+
+A proof of \eqref{eq:schur-candidate} would give an attractive unified
+symmetric-function interpretation. It may be approachable through
+factorizations of rectangular Schur polynomials into classical-character
+alternants. This article does not assert such a factorization without
+proof. The proof of Conjecture 16 instead uses the parity factors,
+coefficientwise total nonnegativity, and the fully derived alternant
+formulas. The larger conjecture can be deleted from this article without
+changing any proved statement.
+
+\section{Reproducibility and proof audit}
+\label{sec:audit}
+
+\subsection{What was checked computationally}
+\label{sec:verify}
+The accompanying program \texttt{code/verify.py} uses exact integers and
+exact polynomials in $\Z[t]$. It does not infer symbolic identities from
+floating-point samples or from interpolation. The direct moment routine
+implements the source definition \eqref{eq:source-moments}; the principal
+minor routine independently multiplies the banded matrices; and the small
+determinant routine implements \eqref{eq:N}.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.35\linewidth}p{0.48\linewidth}r@{}}
+\toprule
+Check & Range & Cases\\
+\midrule
+Original Hankel versus parity formula &
+$1\le k\le12$, $0\le n\le12$, eight integer parameters & 1,248\\[3pt]
+Auxiliary corner versus alternant &
+$0\le a\le7$, $0\le m\le8$, both factors, six parameters & 864\\[3pt]
+Three-way polynomial equality; degree, positivity, reciprocity,
+stability, first defect & $1\le k\le10$, $0\le n\le8$, in $\Z[t]$ & 90\\[3pt]
+Auxiliary first numerator term &
+$1\le a\le6$, $0\le m\le6$, both numerators, in $\Z[t]$ & 84\\[3pt]
+Experimental Schur formula only &
+$1\le k\le12$, $0\le n\le12$, eight integer parameters & 1,248\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The eight parameters are $-3,-2,-1,0,1,2,3,5$. The six-parameter
+alternant test omits $\pm1$, where its displayed denominator vanishes;
+these parameters are nevertheless covered by the original-versus-corner
+checks. All checks passed with Python 3.13.5 and SymPy 1.14.0.
+The execution record is in \texttt{data/verification.json}, with the
+console transcript in \texttt{data/verification.log} and coefficient
+arrays in \texttt{data/sample\_polynomials.json}. A supplementary script
+checks the specialization products in Appendix~\ref{app:one} in 234 cases
+and the recurrence in Proposition~\ref{prop:recurrence} in 126 cases; its
+exact ranges and results are recorded in
+\texttt{data/additional\_verification.json}.
+These finite checks supplement the all-index proofs; they are not a
+substitute for them.
+
+\subsection{Logical dependencies and possible failure points}
+The main theorem depends only on the binomial definition, the Laurent
+basis calculation, elementary block row operations, Cauchy--Binet,
+monic orthogonal-polynomial recurrences, and alternating determinants.
+The proof of the moment-modification identity is included rather than
+used as an unexplained import. The exact role of each delicate point is
+as follows.
+
+The odd/even row reorder is applied to both rows and columns, so there is
+no permutation sign. The only sign remaining is $(-1)^{\lfloor n/2\rfloor}$
+for odd shifts, which equals the prescribed $(-1)^{\binom n2}$.
+The temporary division by $1+t$ in the even-shift factorization is removed
+before specialization. The auxiliary normalization is justified by an
+identity in $\Z[t]$, not by dividing a determinant whose vanishing has
+not been established. Equal-variable alternants are evaluated after
+cancelling the Vandermonde, not by a $0/0$ substitution. Finally,
+strict positivity is obtained from explicit Cauchy--Binet summands;
+nonnegativity alone would not have been sufficient.
+
+\subsection{Literature status and exclusions}
+The source pages and their mathematical notation were inspected directly.
+Searches by the paper identifier, its title, and the exact numbered
+conjecture did not locate a later proof of this specific statement.
+A search hit for Manuel Kauers's \emph{A Proof of Conjecture 16} \cite{KauersIndex} was
+investigated separately: indexed material identifies its target as the
+sequence A339987, not Cigler's $c_n(t)$ conjecture. It was therefore not
+counted as a solution of the present problem. The full talk PDF was not
+successfully fetched, so this disambiguation rests on the indexed author
+material rather than a complete reading of the talk.
+
+The article makes no absolute priority claim. It also does not claim to
+settle all parts of Cigler's Conjectures 17 and 18, or the separate Schur
+formula \eqref{eq:schur-candidate}. What is claimed mathematically is the
+full argument for Conjecture 16 and the additional results explicitly
+proved here. Independent expert checking remains appropriate before
+publication or addition to a collection of established theorems.
+
+\appendix
+\section{The removable specialization at \texorpdfstring{$t=1$}{t=1}}
+\label{app:one}
+
+The factors have convenient product evaluations at $1$:
+\begin{align}
+ \U_a(m;1)&=
+ \prod_{r=1}^a\frac{2m+2r-1}{2r-1}
+ \prod_{1\le r<s\le a}\frac{2m+r+s-1}{r+s-1},\label{eq:Uone}\\
+ \V_a(m;1)&=
+ \prod_{r=1}^a\frac{m+r}{r}
+ \prod_{1\le r<s\le a}\frac{2m+r+s}{r+s}.
+ \label{eq:Vone}
+\end{align}
+Empty products have value $1$.
+To see these formulas directly from the proved alternants, set
+$x_i=e^{z_i}$ before taking the equal-parameter limit in
+\eqref{eq:character-step}. For $\V$, the numerator contains
+$\sinh((m+r)z_i)$ and the denominator $\sinh(rz_i)$, with $1\le r\le a$.
+For $\U$, replace $r$ by $r-\tfrac12$.
+The lowest nonzero alternating term of
+$\det(\sinh(\rho_j z_i))$ is a common nonzero constant times
+\[
+ \left(\prod_i z_i\right)\Dlt(z_1^2,\ldots,z_a^2)
+ \left(\prod_j\rho_j\right)\Dlt(\rho_1^2,\ldots,\rho_a^2).
+\]
+This follows by selecting the powers $1,3,\ldots,2a-1$ in the Taylor
+series. In the ratio, the differences between the $\rho_j$ cancel,
+whereas the sums give the second products in
+\eqref{eq:Uone}--\eqref{eq:Vone}. These specialize the new parity formula
+to the classical middle-binomial Hankel setting already treated in the
+source; the unweighted setting itself is not claimed as new.
+
+\clearpage
+\section{How to run the package}
+
+The archive contains the article source and PDF, three Python files, exact
+verification output, example coefficient arrays, and a status/source audit.
+The commands, from the archive's root directory, are
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/verify.py
+python code/verify_additional.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The \texttt{Makefile} provides \texttt{make verify} and \texttt{make pdf}.
+The verification program stops at the first failed assertion or inexact
+division. It records the mathematical test ranges and software versions,
+not just a generic success message. Its stronger Schur checks are labelled
+\texttt{EXPERIMENTAL} in both the code and the output.
+
+\begin{thebibliography}{9}
+\bibitem{Cigler}
+Johann Cigler,
+\emph{Hankel determinants of middle binomial coefficients and conjectures
+for some polynomial extensions and modifications},
+arXiv:2111.14492v3, 30 December 2021.
+The present target is Conjecture 16, pp.~21--22; the input moments are
+equation (6), p.~3.
+\url{https://arxiv.org/abs/2111.14492v3}.
+
+\bibitem{CK}
+Johann Cigler and Christian Krattenthaler,
+\emph{Hankel determinants of linear combinations of moments of orthogonal
+polynomials}, arXiv:2003.01676, 2020.
+\url{https://arxiv.org/abs/2003.01676}.
+
+\bibitem{manifest}
+Vladimir Reshetnikov,
+\emph{A manifest of docs/reports: Seventy-one independent mathematical
+research packages, classified by subject}, supplied file
+\texttt{manifest.tex}, dated 20 September 2026.
+See the entry \emph{Product formulas for ballot-polynomial Hankel
+determinants} under \emph{Catalan and ballot moments}.
+The manifest records report claims, not independent proof verification.
+\bibitem{KauersIndex}
+Manuel Kauers,
+\emph{A Proof of Conjecture 16}, author-hosted lecture material,
+\url{https://www.algebra.uni-linz.ac.at/people/mkauers/publications/kauers26a.pdf}.
+Search-index excerpts consulted 20 September 2026 identify the target as
+A339987. The complete PDF was not successfully retrieved; this reference
+is used only to disambiguate the numbered problem, not as a mathematical
+proof source.
+\end{thebibliography}
+\end{document}

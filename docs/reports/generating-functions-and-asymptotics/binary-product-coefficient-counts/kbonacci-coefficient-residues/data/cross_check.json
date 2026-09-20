@@ -1,0 +1,62 @@
+{
+  "python": "3.14.4",
+  "checks": {
+    "X1_structural_witnesses": {
+      "k_min": 2,
+      "k_max": 6,
+      "n_max": 12,
+      "positions_compared": 53876,
+      "represented_exponents_compared": 27747,
+      "identity": "abs(signed coefficient) == exact coefficient mod 2",
+      "passed": true
+    },
+    "X2_two_proofs_agree": {
+      "k_min": 2,
+      "k_max": 8,
+      "n_max": 100,
+      "comparisons": 707,
+      "note": "count_fast descends from the signed proof's recurrence; dfa_sequence descends from the parity automaton. Unlike count_prefix vs count_fast, this compares two proofs.",
+      "passed": true
+    },
+    "X3_count_tables_agree": {
+      "overlap_entries": 707,
+      "k_range": [
+        2,
+        8
+      ],
+      "n_range": [
+        0,
+        100
+      ],
+      "files": [
+        "data/counts.csv",
+        "data/odd_counts.csv"
+      ],
+      "passed": true
+    },
+    "X4_growth_tables_agree": {
+      "values_compared": 21,
+      "worst_relative_difference": 3.013471740712969e-16,
+      "tolerance": 1e-09,
+      "note": "C_k from the analytic formula equals gamma_k from the V_k formula; see the article's corollary.",
+      "files": [
+        "data/growth.csv",
+        "data/growth_constants.csv"
+      ],
+      "passed": true
+    },
+    "X5_weight_conventions_agree": {
+      "k_min": 2,
+      "k_max": 12,
+      "n": 40,
+      "note": "kbonacci_parity stores weights one-based internally; the public sequences are identical.",
+      "passed": true
+    },
+    "X6_documented_invariants": {
+      "invariants_checked": 7,
+      "passed": true
+    }
+  },
+  "all_passed": true,
+  "elapsed_seconds": 0.517
+}

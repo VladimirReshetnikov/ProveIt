@@ -1,0 +1,1156 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black,
+ pdfauthor={Research note prepared with ChatGPT},
+ pdftitle={Leaves of Large Type in the Numerical-Semigroup Tree},
+ pdfsubject={A counterexample to Conjecture 4.4 of Chappelon, Ramirez Alfonsin, and Stamate}]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\scshape Leaves of large type}
+\fancyhead[R]{\small Research note \textnormal{\textbullet} September 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.25em}
+\linespread{1.025}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\ints}[2]{[#1,#2]_{\Z}}
+\newcommand{\tail}[1]{[#1,\infty)_{\Z}}
+\DeclareMathOperator{\PF}{PF}
+\DeclareMathOperator{\Ap}{Ap}
+\DeclareMathOperator{\Max}{Max}
+\newcommand{\conjb}{\beta}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{black!25},
+ xleftmargin=0.5em,xrightmargin=0.5em,aboveskip=10pt,belowskip=10pt}
+\title{\vspace{-0.7cm}{\LARGE\bfseries Leaves of Large Type in the\\[4pt]
+ Numerical-Semigroup Tree}\\[9pt]
+ {\large A genus-34 counterexample and a sharp asymptotic order}}
+\author{A research investigation prepared for Vladimir Reshetnikov}
+\date{20 September 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We give an explicit counterexample to Conjecture 4.4 of Chappelon, Ram\'irez
+Alfons\'in, and Stamate on the type of leaves of the numerical-semigroup tree.
+The numerical semigroup
+\[
+ S=\{0,26,27,29,31,32\}\cup\ints{39}{50}\cup\tail{52}
+\]
+has genus $34$, type $17$, and no minimal generator above its Frobenius number
+$51$; the conjectured bound is $16$. Its validity is proved directly, without
+relying on a search program. We then turn restricted additive bases into
+infinite families of leaves with explicitly determined pseudo-Frobenius sets.
+One elementary family has genus $11q+1$ and type $6q-1$ and contradicts the
+conjecture for every $q\ge3$.
+
+More generally, let $L(g)$ be the maximum type of a leaf of genus $g$. A sparse
+basis construction, a genus-padding operation, and a counting argument in
+Ap\'ery sets prove
+\[
+ L(g)=\frac23g-\Theta(\sqrt g).
+\]
+In particular, the extremal type-to-genus ratio tends to $2/3$, not $1/2$.
+Explicit two-sided bounds hold at every genus $g\ge7$. The archive includes
+an exact-arithmetic verifier, independently reconstructed Ap\'ery certificates,
+finite enumeration data, the random area-selection record, and optional search
+code. The mathematical arguments are self-contained; the computational tests
+are additional checks, not substitutes for the infinite proofs.
+\end{abstract}
+
+\vspace{6pt}
+\noindent\textbf{Status.} This note disproves the stated conjecture and proves
+the displayed asymptotic order. It does not determine the exact function
+$L(g)$ or its sharp square-root coefficient. The retrieved version of the
+source paper still states the conjecture; a targeted search did not locate a
+later resolution. Priority and the proofs have not been independently refereed.
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{The problem and the outcome}\label{sec:problem}
+
+The area was selected before choosing the problem, using a pseudorandom
+generator seeded from operating-system randomness. A uniform draw from 24
+areas selected \emph{semigroup theory}. The seed and the full sampling frame
+are recorded in \cref{sec:reproduce} and in the accompanying JSON file.
+
+The target is Conjecture 4.4 of Chappelon, Ram\'irez Alfons\'in, and
+Stamate~\cite{CRS}. For $g=4q+r\ge2$, with $0\le r<4$, put
+\begin{equation}\label{eq:oldbound}
+ \conjb(g)=
+ \begin{cases}
+  2q-1,&r=0,1,\\
+  2q,&r=2,\\
+  2q+1,&r=3.
+ \end{cases}
+\end{equation}
+The conjecture asserts that every leaf $S$ of genus $g$ satisfies
+$t(S)\le\conjb(g)$. Notice the strict inequality
+\begin{equation}\label{eq:beta-half}
+ \conjb(g)<\frac g2.
+\end{equation}
+Thus a leaf with $2t(S)\ge g(S)$ necessarily contradicts the conjecture.
+
+The counterexample proved in \cref{sec:small} has $(g,t)=(34,17)$.
+The source paper tabulates leaf counts through genus $33$~\cite[Table 5]{CRS},
+so the example occurs immediately beyond that reported range. Our own
+exhaustive enumeration stops at genus $20$; we do not claim an independent
+exhaustive proof that genus $34$ is globally minimal.
+
+The counterexample suggests an extremal problem that admits a substantially
+stronger answer. In this note, define
+\begin{equation}\label{eq:Ldef}
+ L(g)=\max\{t(S):S\text{ is a leaf and }g(S)=g\}.
+\end{equation}
+The symbol denotes a \emph{maximum type}, not a number of leaves. The sets in
+\eqref{eq:Ldef} are nonempty for every $g\ge7$, as our constructions show, and
+they are finite. Our main quantitative result is
+\begin{equation}\label{eq:summarybounds}
+ \frac{2g}{3}-\sqrt{24g-87}-2
+ \ \le\ L(g)\ \le\
+ \left\lfloor\frac{6g+2-\sqrt{24g-23}}{9}\right\rfloor,
+ \qquad g\ge7.
+\end{equation}
+Both errors from $2g/3$ have square-root order. The proof has two independent
+parts: a construction for the lower bound and an Ap\'ery-set counting argument
+for the upper bound. Neither uses an unproved classification of numerical
+semigroups or an assumed optimality result for additive bases.
+
+\section{Definitions and finite certificates}\label{sec:definitions}
+
+We use $\N=\{0,1,2,\ldots\}$ and
+$\ints{a}{b}=\{n\in\Z:a\le n\le b\}$. The notation
+$A+B$ means $\{a+b:a\in A,b\in B\}$.
+
+\begin{definition}
+A \emph{numerical semigroup} is an additive submonoid $S\subseteq\N$ with
+finite complement. Except when describing the root of the semigroup tree,
+we assume $S\ne\N$. Its gap set, genus, Frobenius number, conductor, and
+multiplicity are, respectively,
+\[
+ G(S)=\N\setminus S,\qquad g(S)=|G(S)|,\qquad F(S)=\max G(S),
+\]
+\[
+ c(S)=F(S)+1,\qquad m(S)=\min(S\setminus\{0\}).
+\]
+A positive element is \emph{primitive} if it is not a sum of two positive
+elements of $S$. The primitive elements form the minimal generating set;
+its cardinality $e(S)$ is the embedding dimension.
+\end{definition}
+
+To see why the primitive elements generate, repeatedly split a nonprimitive
+positive element into two smaller positive elements. This process terminates
+because positive integers decrease. Conversely, a primitive element must
+belong to every generating set. A primitive element cannot exceed $F+m$:
+if $n\ge F+m+1$, then $n=m+(n-m)$ and $n-m\ge F+1$ belongs to $S$.
+
+\begin{definition}
+The \emph{numerical-semigroup tree} has root $\N$. The parent of a nonroot
+semigroup $S$ is $S\cup\{F(S)\}$. Equivalently, its children are obtained by
+deleting one primitive element larger than $F(S)$. A semigroup is a
+\emph{leaf} when it has no children, or, equivalently, when every primitive
+element is at most its Frobenius number.
+\end{definition}
+
+For completeness, adjoining $F$ preserves closure: every sum involving $F$
+and a positive semigroup element is larger than $F$. Deleting a primitive
+$x>F$ also preserves closure, since a sum of two remaining positive elements
+cannot be $x$. The new largest gap is $x$, so these operations give exactly
+the stated parent-child relation.
+
+\begin{definition}
+A \emph{pseudo-Frobenius number} is a gap $p\in G(S)$ such that
+\[
+ p+s\in S\qquad\text{for every }s\in S\setminus\{0\}.
+\]
+Write $\PF(S)$ for this set and $t(S)=|\PF(S)|$ for the \emph{type}.
+\end{definition}
+
+The largest gap $F$ always belongs to $\PF(S)$, so $t\ge1$. To verify that a
+gap is pseudo-Frobenius, it suffices to test addition by minimal generators.
+Indeed, after the first generator is added the sum belongs to $S$, and
+further additions preserve membership. Alternatively, testing all positive
+elements at most $F$ is finite and sufficient, because larger additions
+already exceed the Frobenius number.
+
+These observations give small certificates for statements that initially
+quantify over an infinite semigroup. Closure only needs to be checked below
+the conductor. The leaf condition only needs decompositions of the interval
+$\ints{F+1}{F+m}$. A non-pseudo-Frobenius gap needs just one positive element
+whose addition leaves another gap.
+
+\section{A counterexample of genus 34}\label{sec:small}
+
+\begin{theorem}\label{thm:small}
+Let
+\begin{equation}\label{eq:smallS}
+ A=\{26,27,29,31,32\}\cup\ints{39}{50},\qquad
+ S=\{0\}\cup A\cup\tail{52}.
+\end{equation}
+Then $S$ is a leaf with
+\[
+ (m,F,c,e,g,t)=(26,51,52,17,34,17).
+\]
+Its minimal generators are exactly $A$, and
+\begin{align}\label{eq:smallPF}
+ \PF(S)={}&\{13,14,15,16,17,18,21,23\}\nonumber\\
+ &{}\cup\{28,30,33,34,35,36,37,38,51\}.
+\end{align}
+Consequently, $t(S)=17>\conjb(34)=16$.
+\end{theorem}
+
+\begin{proof}
+Every positive element of $S$ is at least $26$. The sum of two positive
+elements is therefore at least $52$ and belongs to $S$. This proves closure;
+the full tail proves cofiniteness. The multiplicity is $26$, and the largest
+gap is $51$.
+
+There are five elements in $\{26,27,29,31,32\}$ and twelve in
+$\ints{39}{50}$. Hence $A$ has $17$ elements and
+\[
+ g=51-|A|=34.
+\]
+Every element of $A$ is primitive, because it is smaller than $2m=52$.
+We show that there are no others.
+
+Put $D=\{0,1,3,5,6\}$. Direct addition gives
+$D+D=\ints{0}{12}$. Therefore
+\[
+ (26+D)+(26+D)=\ints{52}{64}.
+\]
+Also $26+\ints{39}{50}=\ints{65}{76}$ and $77=27+50$.
+Thus every element of $\ints{52}{77}$ is decomposable. For $n\ge78$,
+\[
+ n=26+(n-26),\qquad n-26\ge52,
+\]
+so every remaining tail element is decomposable too. The minimal generating
+set is exactly $A$, all of whose elements are below $F=51$. Thus $S$ is a leaf.
+
+The gap set is
+\begin{equation}\label{eq:smallgaps}
+ G(S)=\ints{1}{25}\cup\{28,30,33,34,35,36,37,38,51\}.
+\end{equation}
+Every gap in the second set is pseudo-Frobenius, since adding a positive
+element gives at least $28+26>51$. For $13\le p\le18$, adding one of
+$26,27,29,31,32$ gives an element of $\ints{39}{50}$, and adding an element
+of $\ints{39}{50}$ gives at least $52$. For $p=21$, the five smaller-generator
+sums are $47,48,50,52,53$; for $p=23$ they are $49,50,52,54,55$.
+Thus these eight low gaps are pseudo-Frobenius as well.
+
+The remaining seventeen gaps each fail the defining condition, as the
+witnesses in \cref{tab:witness} show. This proves \eqref{eq:smallPF} and gives
+$t=8+9=17$. Finally, $34=4\cdot8+2$ gives $\conjb(34)=16$.
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rrr@{\qquad}rrr}
+\toprule
+Gap $p$ & Element $a$ & Gap $p+a$ & Gap $p$ & Element $a$ & Gap $p+a$\\
+\midrule
+1&27&28 &10&26&36\\
+2&26&28 &11&26&37\\
+3&27&30 &12&26&38\\
+4&26&30 &19&32&51\\
+5&29&34 &20&31&51\\
+6&27&33 &22&29&51\\
+7&26&33 &24&27&51\\
+8&26&34 &25&26&51\\
+9&26&35 & & & \\
+\bottomrule
+\end{tabular}
+\caption{Certificates that the gaps not listed in \eqref{eq:smallPF} are not
+pseudo-Frobenius. Every witness $a$ is a minimal generator.}\label{tab:witness}
+\end{table}
+
+This is a complete finite disproof of the conjecture. In particular, neither
+the families below nor any asymptotic reasoning is required to establish the
+contradiction. The purpose of the remaining sections is to explain its
+structure and identify the correct scale of the extremal problem.
+
+\section{Reducing depth-two leaves to finite sets}\label{sec:binary}
+
+The counterexample has conductor exactly twice its multiplicity. At this
+depth, additive closure is automatic, and the nontrivial conditions become
+finite sumset and translation conditions.
+
+\begin{proposition}\label{prop:binary}
+Let $M\ge1$, let $m=M+1$, and let $B\subseteq\ints{0}{M}$ satisfy
+$0\in B$ and $M\notin B$. Define
+\begin{equation}\label{eq:SB}
+ S_B=\{0\}\cup(m+B)\cup\tail{2m}.
+\end{equation}
+Then $S_B$ is a numerical semigroup with multiplicity $m$, conductor $2m$,
+and Frobenius number $2M+1$. It is a leaf if and only if
+\begin{equation}\label{eq:sumcondition}
+ \ints{0}{M}\subseteq B+B.
+\end{equation}
+For
+\begin{equation}\label{eq:Tdef}
+ T(B)=\{p\in B\setminus\{0\}:(p+B)\cap\ints{0}{M}\subseteq B\},
+\end{equation}
+its invariants and pseudo-Frobenius set satisfy
+\begin{align}
+ g(S_B)&=2M+1-|B|,\label{eq:binaryg}\\
+ \PF(S_B)&=T(B)\mathbin{\dot\cup}
+    \bigl(m+(\ints{0}{M}\setminus B)\bigr),\label{eq:binaryPF}\\
+ t(S_B)&=M+1-|B|+|T(B)|.\label{eq:binaryt}
+\end{align}
+When \eqref{eq:sumcondition} holds, the minimal generating set is exactly
+$m+B$.
+\end{proposition}
+
+\begin{proof}
+Every positive element is at least $m$, and every integer at least $2m$
+belongs to $S_B$. Since $m+M=2m-1$ is absent, the asserted conductor and
+Frobenius number are exact. All elements of $m+B$ are less than $2m$, hence
+primitive.
+
+It remains to examine possible primitive elements in
+$\ints{2m}{3m-1}$. A decomposition there cannot use a summand at least $2m$,
+because the other positive summand would bring the total to at least $3m$.
+Consequently, $2m+j$ is decomposable exactly when
+$j=b+b'$ for some $b,b'\in B$. This proves the leaf criterion. Above this
+interval, $n=m+(n-m)$ is always a decomposition inside the tail.
+
+The positive elements below the conductor are exactly the $|B|$ elements
+of $m+B$, proving \eqref{eq:binaryg}. Every high gap
+$m+j$, where $j\in\ints{0}{M}\setminus B$, is pseudo-Frobenius: adding
+$m$ already reaches the tail. A low gap $p\in\ints{1}{M}$ can be
+pseudo-Frobenius only if $p+m\in S_B$, that is, only if $p\in B$.
+The remaining conditions are
+\[
+ p+(m+b)\in S_B\quad(b\in B).
+\]
+For $p+b>M$ they hold automatically, and for $p+b\le M$ they say exactly
+$p+b\in B$. This is \eqref{eq:Tdef}. Low and high gaps are disjoint,
+so taking cardinalities proves the type formula.
+\end{proof}
+
+The sumset condition explains the design problem. One wants a relatively
+small set that covers an initial interval by two-term sums, together with a
+long interval near the top that is stable under many small positive
+translations. The former prevents tail generators; the latter creates many
+low pseudo-Frobenius numbers. The two demands can be separated cleanly.
+
+\section{Restricted additive bases produce leaves}\label{sec:basis}
+
+\begin{definition}
+A \emph{restricted additive basis of order two and maximum $d$} is a set
+$D\subseteq\ints{0}{d}$ such that
+\begin{equation}\label{eq:restricted}
+ D+D=\ints{0}{2d}.
+\end{equation}
+We assume $d\ge1$ and write $k=|D|$.
+\end{definition}
+
+This is the restricted two-summand basis condition studied in the restricted
+postage-stamp problem; see Kohonen~\cite{Kohonen} for that terminology and
+computational setting. We need no extremal theorem from that literature.
+Equation \eqref{eq:restricted} forces $0,1,d\in D$: representing $0$ and
+$2d$ forces the endpoints, and representing $1$ forces $1$.
+
+\begin{theorem}[Basis-to-leaf construction]\label{thm:basis}
+Let $D$ satisfy \eqref{eq:restricted}, and let $\delta\ge0$ be an integer. Put
+\begin{equation}\label{eq:construction}
+ \begin{gathered}
+ M=4d+1+\delta,\qquad m=M+1,\\
+ H=\ints{2d+1}{M-1},\qquad B=D\cup H,\\
+ S(D,\delta)=\{0\}\cup(m+B)\cup\tail{2m}.
+ \end{gathered}
+\end{equation}
+Then $S(D,\delta)$ is a leaf, its minimal generators are precisely $m+B$, and
+\begin{align}
+ m&=4d+2+\delta,&F&=8d+3+2\delta,&c&=8d+4+2\delta,
+ \label{eq:familymF}\\
+ e&=k+2d+\delta,&g&=6d+3-k+\delta,&t&=4d+3-2k.
+ \label{eq:familygt}
+\end{align}
+Its pseudo-Frobenius numbers are given explicitly by
+\begin{align}\label{eq:familyPF}
+ \PF(S(D,\delta))={}&
+ \left(\ints{M-2d}{M-1}\setminus
+       \{M-a:a\in D\setminus\{0\}\}\right)\nonumber\\
+ &{}\mathbin{\dot\cup}\left(m+(\ints{0}{2d}\setminus D)\right)
+   \mathbin{\dot\cup}\{2M+1\}.
+\end{align}
+In particular, increasing $\delta$ increases the genus by the same amount
+and leaves the type unchanged.
+\end{theorem}
+
+\begin{proof}
+The sets $D$ and $H$ are disjoint, $0\in B$, and $M\notin B$.
+For the leaf condition, $D+D$ covers $\ints{0}{2d}$,
+$0+H$ covers $\ints{2d+1}{M-1}$, and
+\[
+ M=1+(M-1)\in D+H.
+\]
+Thus $B+B$ covers $\ints{0}{M}$, so \cref{prop:binary} proves the leaf
+property and identifies the generators.
+
+The interval $H$ has $2d+\delta$ elements, whence
+$|B|=k+2d+\delta$. This gives the formulas for $e$ and $g$ as well as
+\eqref{eq:familymF}. For the type it remains to determine $T(B)$.
+
+First, if $p\in D\setminus\{0\}$, then
+\[
+ d+1\le p+d\le2d.
+\]
+This interval is disjoint from $B$, so such $p$ cannot belong to $T(B)$.
+Second, if $p\in H$ and $p\le M-2d-1$, then $M-p\in H$. The sum
+$p+(M-p)=M$ is outside $B$, so this $p$ also fails the condition.
+
+It remains to consider $p\in\ints{M-2d}{M-1}$. This entire interval lies
+in $H$ because $M\ge4d+1$. For $h\in H$ we have $p+h>M$.
+For $a\in D$, a sum $p+a\le M$ is already above $2d$, and hence it
+belongs to $B$ unless it equals the single missing value $M$. Therefore
+\begin{equation}\label{eq:Tfamily}
+ T(B)=\ints{M-2d}{M-1}\setminus
+       \{M-a:a\in D\setminus\{0\}\}.
+\end{equation}
+The interval has $2d$ elements, and the excluded $k-1$ values are distinct
+and lie in it. Thus
+\[
+ |T(B)|=2d-k+1.
+\]
+The high missing indices are exactly $(\ints{0}{2d}\setminus D)\cup\{M\}$,
+so there are $2d+2-k$ high pseudo-Frobenius numbers. Their sum with
+$|T(B)|$ is $4d+3-2k$, and \eqref{eq:familyPF} follows from
+\eqref{eq:binaryPF}.
+\end{proof}
+
+\begin{corollary}\label{cor:familydefect}
+Every semigroup from \cref{thm:basis} satisfies
+\begin{equation}\label{eq:defectfamily}
+ F+t=2g,\qquad
+ \frac{2g}{3}-t=\frac{4k-3+2\delta}{3}.
+\end{equation}
+At $\delta=0$ one also has $2t-g=2d+3-3k$.
+\end{corollary}
+
+\begin{proof}
+Substitute \eqref{eq:familymF} and \eqref{eq:familygt}.
+\end{proof}
+
+The first identity says that these examples attain the general inequality
+$F+t\le2g$, proved below. The second says that the departure from $2g/3$
+is controlled by the basis size, not directly by its maximum. Sparse bases
+are therefore the natural way to approach the limiting ratio.
+
+\section{Two explicit infinite families}\label{sec:families}
+
+\subsection{An odd-progression family containing the counterexample}
+
+For an integer $q\ge1$, let
+\begin{equation}\label{eq:oddD}
+ d=2q,\qquad D_q=\{0,2q\}\cup\{1,3,5,\ldots,2q-1\}.
+\end{equation}
+Then $|D_q|=q+2$ and $D_q+D_q=\ints{0}{4q}$. Indeed, sums of two odd
+members give all even integers from $2$ through $4q-2$. The even endpoints
+come from $0+0$ and $2q+2q$. Adding $0$ or $2q$ to the odd members gives
+all odd integers in the required range.
+
+\begin{corollary}\label{cor:odd}
+The semigroup $S_q=S(D_q,0)$ is a leaf with
+\begin{equation}\label{eq:oddparams}
+ m=8q+2,\qquad F=16q+3,\qquad e=5q+2,\qquad
+ g=11q+1,\qquad t=6q-1.
+\end{equation}
+For every $q\ge3$ it contradicts \eqref{eq:oldbound}.
+\end{corollary}
+
+\begin{proof}
+Apply \cref{thm:basis}. The excess over half the genus is
+\[
+ 2t-g=2(6q-1)-(11q+1)=q-3.
+\]
+For $q\ge3$, this is nonnegative; now use \eqref{eq:beta-half}.
+\end{proof}
+
+At $q=3$, $D_q=\{0,1,3,5,6\}$, $M=25$, and
+$H=\ints{13}{24}$, recovering \eqref{eq:smallS}. Thus the genus-34 example
+is not isolated. Its successors increase the discrepancy without bound,
+and $t/g$ tends to $6/11>1/2$.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rrrrrr}
+\toprule
+$q$ & $g$ & $t$ & $\conjb(g)$ & $t-\conjb(g)$ & $2t-g$\\
+\midrule
+1&12&5&5&0&$-2$\\
+2&23&11&11&0&$-1$\\
+3&34&17&16&1&0\\
+4&45&23&21&2&1\\
+5&56&29&27&2&2\\
+6&67&35&33&2&3\\
+7&78&41&38&3&4\\
+8&89&47&43&4&5\\
+\bottomrule
+\end{tabular}
+\caption{The first odd-progression examples. The entries are direct evaluations
+of proved formulas, also checked by the supplied program.}\label{tab:odd}
+\end{table}
+
+\subsection{A sparse square-grid family}
+
+A different elementary basis improves the limiting ratio to $2/3$. For
+$r\ge1$, put $d=r^2$ and define
+\begin{equation}\label{eq:gridD}
+ D_r=\ints{0}{r-1}\cup\{0,r,2r,\ldots,r^2\}
+       \cup\ints{r^2-r+1}{r^2}.
+\end{equation}
+The set contains $3r-1$ elements. It is symmetric under $a\mapsto r^2-a$.
+For $0\le n\le r^2$, Euclidean division gives
+\[
+ n=qr+s,\qquad 0\le s<r,
+\]
+with both $qr$ and $s$ in $D_r$. Reflecting this representation about $r^2$
+represents every $n\in\ints{r^2}{2r^2}$ as well. Consequently,
+$D_r+D_r=\ints{0}{2r^2}$.
+
+\begin{corollary}\label{cor:grid}
+For $S_r=S(D_r,0)$, write $g_r=g(S_r)$ and $t_r=t(S_r)$. Then
+\begin{equation}\label{eq:gridgt}
+ g_r=6r^2-3r+4,\qquad t_r=4r^2-6r+5.
+\end{equation}
+These are leaves, and
+\begin{equation}\label{eq:gridratio}
+ t_r=\frac23g_r-4r+\frac73,\qquad
+ \lim_{r\to\infty}\frac{t_r}{g_r}=\frac23.
+\end{equation}
+They contradict the original conjecture for every $r\ge4$.
+\end{corollary}
+
+\begin{proof}
+The formulas follow by substituting $d=r^2$ and $k=3r-1$ into
+\cref{thm:basis}. Moreover,
+\[
+ 2t_r-g_r=2r^2-9r+6,
+\]
+which is positive at $r=4$ and strictly increasing for integer $r\ge4$.
+The contradiction again follows from \eqref{eq:beta-half}.
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rrrrrr}
+\toprule
+$r$ & $|D_r|$ & $g_r$ & $t_r$ & $\conjb(g_r)$ & $t_r-\conjb(g_r)$\\
+\midrule
+1&2&7&3&3&0\\
+2&5&22&9&10&$-1$\\
+3&8&49&23&23&0\\
+4&11&88&45&43&2\\
+5&14&139&75&69&6\\
+6&17&202&113&100&13\\
+8&23&364&213&181&32\\
+10&29&574&345&286&59\\
+20&59&2344&1485&1171&314\\
+30&89&5314&3425&2656&769\\
+\bottomrule
+\end{tabular}
+\caption{Sparse-grid leaves. The quadratic growth of genus and type, versus the
+linear size of the additive basis, yields the limiting ratio $2/3$.}
+\label{tab:grid}
+\end{table}
+
+\subsection{Why square-root defects arise in this construction}
+
+There are at most $k(k+1)/2$ distinct unordered two-term sums from a set of
+size $k$, allowing equal summands. A restricted basis therefore satisfies
+\[
+ \frac{k(k+1)}2\ge2d+1,
+ \qquad
+ k\ge\frac{\sqrt{16d+9}-1}{2}.
+\]
+Thus its size is necessarily at least of square-root order in $d$.
+The bases \eqref{eq:gridD} have size $3\sqrt d-1$, which is sufficient for
+our asymptotic purpose even without any claim of optimality. By
+\eqref{eq:defectfamily}, these bounds translate directly into square-root
+defects from $2g/3$ along the unpadded family.
+
+This counting observation applies only to this construction. The next
+section gives a separate argument showing that a square-root defect is
+unavoidable for \emph{every} leaf, whether or not it has conductor $2m$ or
+comes from a restricted basis.
+
+\section{Universal upper bounds for the type of a leaf}\label{sec:upper}
+
+\subsection{The reflection inequality}
+
+The inequality in the following lemma is standard; it also appears as
+Proposition 3.1 of the target paper~\cite{CRS}. We include a direct proof so
+that all later bounds can be checked from the definitions.
+
+\begin{lemma}\label{lem:reflection}
+Every nontrivial numerical semigroup satisfies
+\begin{equation}\label{eq:reflection}
+ F+t\le2g.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let $N=S\cap\ints{1}{F}$. Its cardinality is $F-g$. The sets $N$ and
+$\PF(S)\setminus\{F\}$ are disjoint. Reflection $x\mapsto F-x$ sends
+their union injectively into $G(S)\setminus\{F\}$.
+
+For $x\in N$, membership $F-x\in S$ would imply $F\in S$ by closure.
+For $x\in\PF(S)\setminus\{F\}$, membership of the positive number
+$F-x$ in $S$ would contradict the pseudo-Frobenius condition. All reflected
+values are positive and smaller than $F$. Comparing cardinalities gives
+\[
+ (F-g)+(t-1)\le g-1,
+\]
+which is equivalent to \eqref{eq:reflection}.
+\end{proof}
+
+Since $t\ge1$, this also gives $F\le2g-1$. Thus there are only finitely many
+numerical semigroups of any fixed positive genus: their gap sets are subsets
+of the finite interval $\ints{1}{2g-1}$. This justifies the finiteness asserted
+in the definition of $L(g)$.
+
+\subsection{Ap\'ery sets and nonmaximal elements}
+
+\begin{definition}
+For the multiplicity $m$, the \emph{Ap\'ery set} is
+\[
+ W=\Ap(S;m)=\{s\in S:s-m\notin S\}.
+\]
+It contains the least element of $S$ in each residue class modulo $m$, hence
+has $m$ elements and contains $0$. On $W$ use the partial order
+\[
+ u\preceq_S v\quad\Longleftrightarrow\quad v-u\in S.
+\]
+\end{definition}
+
+The numerically largest Ap\'ery element is $F+m$. Indeed, it belongs to $S$
+while subtracting $m$ gives the gap $F$; conversely, $w-m\notin S$ prevents
+an Ap\'ery element $w$ from exceeding $F+m$.
+
+\begin{lemma}\label{lem:aperyPF}
+The map $p\mapsto p+m$ is a bijection from $\PF(S)$ to the maximal elements
+of $(W,\preceq_S)$. In particular, precisely $t$ elements of $W$ are maximal,
+and none of them is $0$.
+\end{lemma}
+
+\begin{proof}
+For $p\in\PF(S)$, $p+m\in S$ and $p\notin S$, so $p+m\in W$.
+If $w\in W$ strictly dominates $p+m$, write $w=p+m+s$ with positive
+$s\in S$. Then $w-m=p+s\in S$, a contradiction.
+
+Conversely, let $w$ be maximal in $W$. It is nonzero because $0$ is below
+every element of $W$ and $m\ge2$. Every nonzero Ap\'ery element exceeds
+$m$, so $p=w-m$ is a positive gap. If $p+s\notin S$ for some positive
+$s\in S$, then $w+s\in W$, contradicting maximality. Thus $p\in\PF(S)$.
+\end{proof}
+
+Write
+\begin{equation}\label{eq:a}
+ a=m-1-t
+\end{equation}
+for the number of nonzero, nonmaximal Ap\'ery elements.
+
+\begin{lemma}\label{lem:leafbasic}
+For every leaf, $a\ge1$ and $F\ge2m-1$. Consequently, with
+$h=2g-3t$, one has
+\begin{equation}\label{eq:hlinear}
+ h\ge2a+1\ge3,
+ \qquad
+ t\le\left\lfloor\frac{2g-3}{3}\right\rfloor.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The Ap\'ery element $F+m$ lies above $F$ and therefore is not primitive in
+a leaf. Write $F+m=u+v$ with $u,v\in S\setminus\{0\}$.
+Both $u$ and $v$ belong to $W$: if $u-m\in S$, for example, then
+$F=(u-m)+v\in S$, a contradiction. Both are nonmaximal since
+$u\prec_S F+m$ and $v\prec_S F+m$. They may coincide, but at least one
+nonzero nonmaximal element exists. Hence $a\ge1$.
+
+If $F<2m-1$, the number $2m-1$ belongs to $S$ and is smaller than the sum of
+any two positive elements. It is therefore a primitive element above $F$,
+contrary to the leaf condition. Thus $F\ge2m-1$.
+
+Combining this with \cref{lem:reflection} and $m=t+a+1$ gives
+\[
+ 2g-3t\ge F-2t\ge2m-1-2t=2a+1.
+\]
+The final bound follows from $a\ge1$.
+\end{proof}
+
+\subsection{Counting decompositions above the Frobenius number}
+
+The preceding linear bound identifies the candidate leading constant $2/3$,
+but it does not yet rule out a bounded defect from that line. A second count
+forces many nonmaximal Ap\'ery elements, which creates the missing
+square-root term.
+
+\begin{lemma}\label{lem:paircount}
+For any leaf, with $a$ as in \eqref{eq:a},
+\begin{equation}\label{eq:paircount}
+ \frac{a(a+1)}2\ge2t+a-g.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Consider $w\in W$ with $w>F$. Since $S$ is a leaf, $w=u+v$ for positive
+$u,v\in S$. The argument used in \cref{lem:leafbasic} works for this $w$
+as well: if $u-m\in S$, then $w-m=(u-m)+v\in S$, contradicting $w\in W$.
+Thus both summands are in $W$, and both are nonmaximal because each is
+strictly below $w$ in the semigroup order.
+
+There are only $a(a+1)/2$ unordered pairs, with repetition, of nonzero
+nonmaximal Ap\'ery elements. Their sums can therefore cover at most that
+many distinct values of $w$. Hence
+\[
+ |\{w\in W:w>F\}|\le\frac{a(a+1)}2.
+\]
+On the other hand, the number of nonzero Ap\'ery elements at most $F$
+is at most the number $n=F-g$ of positive semigroup elements at most $F$.
+Consequently,
+\[
+ |\{w\in W:w>F\}|\ge m-1-n.
+\]
+By $F+t\le2g$ we have $n=F-g\le g-t$, so
+\[
+ m-1-n\ge t+a-(g-t)=2t+a-g.
+\]
+Combining these estimates proves \eqref{eq:paircount}.
+\end{proof}
+
+\begin{theorem}[Square-root upper bound]\label{thm:upper}
+Every leaf of genus $g$ and type $t$ satisfies
+\begin{equation}\label{eq:quadratic}
+ (2g-3t)^2\ge4t-3,
+\end{equation}
+and, more explicitly,
+\begin{equation}\label{eq:upperexplicit}
+ t\le\left\lfloor\frac{6g+2-\sqrt{24g-23}}9\right\rfloor.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Set $h=2g-3t$. Rearranging \eqref{eq:paircount} gives
+\[
+ a^2-a\ge4t-2g=t-h,
+ \qquad\text{or}\qquad t\le a^2-a+h.
+\]
+From \cref{lem:leafbasic}, $1\le a\le(h-1)/2$. The function $x^2-x$ is
+increasing on $[1,\infty)$, so
+\[
+ t\le\left(\frac{h-1}{2}\right)^2-\frac{h-1}{2}+h
+   =\frac{h^2+3}{4}.
+\]
+This proves \eqref{eq:quadratic}.
+
+To obtain the displayed bound on $t$, substitute $t=(2g-h)/3$ to get
+\[
+ 3h^2+4h+9-8g\ge0.
+\]
+Since $h\ge3$, this implies
+\[
+ h\ge\frac{\sqrt{24g-23}-2}{3}.
+\]
+Now use $t=(2g-h)/3$ and the integrality of $t$.
+\end{proof}
+
+The decisive count is of \emph{nonmaximal} Ap\'ery elements, not of all
+minimal generators. Every high Ap\'ery element needs a decomposition, and
+its summands must be nonmaximal Ap\'ery elements. A small supply of such
+elements generates only quadratically many sums. Near the extremal line,
+there are linearly many high elements to cover, so the supply must grow at
+least like a square root. The inequalities above make that observation
+quantitative without imposing a special form on $S$.
+
+\section{The maximum type at every large genus}\label{sec:asymptotic}
+
+The unpadded grid family proves a lower bound only at the genera
+$g_r=6r^2-3r+4$. To determine an ordinary limit rather than just a limit
+superior, one must fill the gaps between these genera. The parameter
+$\delta$ in \cref{thm:basis} does exactly that.
+
+\begin{theorem}\label{thm:allg}
+For every integer $g\ge7$, there is a leaf of genus $g$. Moreover,
+\begin{equation}\label{eq:lowerexplicit}
+ L(g)\ge\frac{2g}{3}-\sqrt{24g-87}-2.
+\end{equation}
+Together with \cref{thm:upper}, this yields
+\begin{equation}\label{eq:theta}
+ L(g)=\frac23g-\Theta(\sqrt g),\qquad
+ \lim_{g\to\infty}\frac{L(g)}g=\frac23.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The grid basis with $r=1$ has genus $g_1=7$ and type $3$; arbitrary
+$\delta\ge0$ already proves existence at every genus at least $7$.
+For the stronger lower bound, choose the largest $r\ge1$ such that
+$g_r\le g$, equivalently
+\begin{equation}\label{eq:rchoice}
+ r=\left\lfloor\frac{3+\sqrt{24g-87}}{12}\right\rfloor.
+\end{equation}
+Set $\delta=g-g_r$. Since
+\[
+ g_{r+1}-g_r=12r+3,
+\]
+we have $0\le\delta\le12r+2$. By \cref{thm:basis}, $S(D_r,\delta)$ has
+exactly genus $g$ and still has type $t_r$. Using \eqref{eq:gridratio},
+\begin{align*}
+ L(g)\ge t_r
+ &=\frac23(g-\delta)-4r+\frac73\\
+ &\ge\frac23g-12r+1.
+\end{align*}
+Equation \eqref{eq:rchoice} implies
+$12r\le3+\sqrt{24g-87}$, proving \eqref{eq:lowerexplicit}.
+
+Let $E(g)=2g/3-L(g)$. The lower and upper bounds together imply
+\begin{equation}\label{eq:errorbounds}
+ \frac{\sqrt{24g-23}-2}{9}
+ \le E(g)\le\sqrt{24g-87}+2,\qquad g\ge7.
+\end{equation}
+Both outer expressions have positive square-root leading terms. Hence
+$E(g)=\Theta(\sqrt g)$, and division by $g$ proves the asserted limit.
+\end{proof}
+
+Here $\Theta(\sqrt g)$ has its usual two-sided meaning: there exist positive
+constants $c,C$ and a threshold $g_0$ such that
+$c\sqrt g\le2g/3-L(g)\le C\sqrt g$ for every integer $g\ge g_0$.
+It does not assert the existence of a limiting square-root coefficient.
+
+There is also an explicit, though not optimized, point beyond which a
+counterexample exists at \emph{every} genus.
+
+\begin{corollary}\label{cor:everygenus}
+For every integer $g\ge697$, the construction above gives a leaf with
+$t>\conjb(g)$.
+\end{corollary}
+
+\begin{proof}
+Since $g_{11}=697$, the choice in \eqref{eq:rchoice} gives $r\ge11$.
+For $0\le\delta\le12r+2$,
+\begin{align*}
+ 2t_r-(g_r+\delta)
+ &\ge (2r^2-9r+6)-(12r+2)\\
+ &=2r^2-21r+4>0.
+\end{align*}
+The final polynomial is positive at $r=11$ and increasing thereafter.
+Thus $t_r\ge g/2$, and \eqref{eq:beta-half} gives the contradiction.
+\end{proof}
+
+The correction to the original picture is therefore not a sporadic
+exception or a change of a rounding term. The proposed bound has leading
+coefficient $1/2$, whereas the actual extremal function has leading
+coefficient $2/3$, with a negative correction of square-root order.
+
+\section{Search, exact verification, and reproducibility}\label{sec:computation}
+
+\subsection{Discovery was optimization; validation is exact}
+
+The initial search used fixed multiplicity $m$ and Frobenius number $F$.
+For $1\le i\le F$, binary variables $s_i$ indicated semigroup membership
+and binary variables $p_i$ marked proposed pseudo-Frobenius numbers.
+Membership was fixed by
+\[
+ s_1=\cdots=s_{m-1}=0,\qquad s_m=1,\qquad s_F=0.
+\]
+For indices within $\ints{1}{F}$, closure and the pseudo-Frobenius
+implications were encoded by
+\begin{align*}
+ s_i+s_j-s_{i+j}&\le1&& (i+j\le F),\\
+ p_i+s_i&\le1,\\
+ p_i+s_j-s_{i+j}&\le1&& (i+j\le F).
+\end{align*}
+Only $j\ge m$ is needed in the last constraint, and only $i,j\ge m$ in
+the closure constraint. Repeated summands have coefficient $2$ where
+appropriate.
+
+To ensure the leaf condition, for each $n\in\ints{F+1}{F+m}$ we introduced
+binary witnesses $z_{ij}$ for $i+j=n$ with $m\le i\le j\le F$, imposed
+$z_{ij}\le s_i,s_j$, and required at least one witness. Such decompositions
+cannot use a summand greater than $F$, because then their total with a
+positive summand would exceed $F+m$.
+
+The maximized expression was
+\[
+ 2\sum_{i=1}^F p_i+\sum_{i=1}^F s_i-F.
+\]
+For any fixed membership vector, maximizing the $p_i$ marks every valid
+pseudo-Frobenius gap, so this expression becomes $2t-g$. Positive or zero
+values are a convenient sufficient test for violating \eqref{eq:oldbound}.
+This objective need not find every possible parity-dependent violation.
+
+The optional implementation uses SciPy's mixed-integer linear programming
+interface~\cite{SciPy}. An initial run at $(m,F)=(36,71)$ returned a leaf
+with $(g,t)=(48,24)$, exceeding the bound $23$. Examining its low elements
+led to the restricted-basis construction, and then to the smaller
+$(34,17)$ example. The historical candidates are saved in
+\texttt{data/discovery\_search.jsonl}.
+
+No floating-point optimality claim is used in the proofs. Search results
+are merely proposals: every candidate used in the article is reconstructed
+and checked with integer arithmetic. A time-limited optimizer may return a
+different candidate, or no candidate, on another machine without affecting
+any theorem in this note.
+
+\subsection{Two independent descriptions of the main example}
+
+The principal verifier first starts with the finite-tail description
+$S=\{0\}\cup A\cup\tail c$. It checks closure below $c$, finds the exact
+gap set, tests the pseudo-Frobenius condition against all positive elements
+below $c$, and searches for primitive elements through $F+m$.
+Integer bitsets make these tests fast while preserving exactness.
+
+A second method starts only from the listed generators. Form a directed
+graph on residues modulo $m$; a generator $a$ gives an edge of weight $a$
+from residue $r$ to residue $r+a$. Shortest-path distances from $0$ are
+exactly the least representable nonnegative integers in each residue,
+namely the Ap\'ery set. The supplied Dijkstra implementation uses integer
+weights. Unreachable residues would reveal that the generators do not
+have greatest common divisor $1$.
+
+For \eqref{eq:smallS}, the Ap\'ery vector, in residue order modulo $26$, is
+\begin{equation}\label{eq:smallapery}
+\begin{split}
+ (w_0,\ldots,w_{25})={}&(0,27,54,29,56,31,32,59,60,61,62,63,64,\\
+ &39,40,41,42,43,44,45,46,47,48,49,50,77).
+\end{split}
+\end{equation}
+Membership is then characterized by
+\[
+ n\in S\quad\Longleftrightarrow\quad n\ge w_{n\bmod m}
+ \qquad(n\ge0).
+\]
+The maximum entry gives $F=77-26=51$. Counting missing elements residue
+by residue gives the independent genus formula
+\[
+ g=\sum_{i=0}^{m-1}\frac{w_i-i}{m}=34.
+\]
+Maximal Ap\'ery elements recover the same pseudo-Frobenius set by
+\cref{lem:aperyPF}. The code also independently recomputes all primitive
+elements from this membership test. Thus the tail description and the
+generator description are checked against one another, rather than merely
+re-evaluating the same closed formulas twice.
+
+\subsection{Scope of the finite checks}
+
+The default run completed the checks in \cref{tab:checks}; its results are saved
+in \path{data/verification_report.json}.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{p{0.68\linewidth}r}
+\toprule
+Check & Count or range\\
+\midrule
+Odd-progression and padded square-grid instances & 220\\
+Restricted bases with maximum $1\le d\le12$ & 384\\
+Those bases checked at $\delta=0,1,7$ & 1,152\\
+Distinct examples reconstructed independently by Dijkstra & 26\\
+Exhaustive tree levels checked & genus $1$--$20$\\
+Semigroups in those levels & 93,141\\
+Leaves in those levels & 34,001\\
+\bottomrule
+\end{tabular}
+\caption{Exact finite verification completed for this archive. The infinite
+claims are established by the written proofs, not inferred from these counts.}
+\label{tab:checks}
+\end{table}
+
+For each constructed example, the program checks closure, the leaf condition,
+the precise generator set, the genus, the entire pseudo-Frobenius set, the
+type formula, and the universal linear and quadratic inequalities.
+The exhaustive tree traversal generates children by deleting every primitive
+above the Frobenius number. Each child has a unique parent, so starting at
+genus one and traversing every child covers every semigroup at the next
+genus without duplicates. The original bound holds on all leaves through
+genus $20$ in this run.
+
+For orientation, the independently computed small-genus maxima are
+\[
+\begin{array}{c|rrrrrrrrrrrrrr}
+ g&7&8&9&10&11&12&13&14&15&16&17&18&19&20\\\hline
+ L(g)&3&3&3&4&5&5&5&6&7&7&7&8&9&9.
+\end{array}
+\]
+These small values explain why limited enumeration does not distinguish the
+proposed half-genus scale from a larger eventual scale.
+
+The checks are ordinary executable integer computations, not proofs checked
+in a foundational proof assistant. Their purpose is to catch arithmetic,
+implementation, and transcription errors, especially in the finite
+certificates. They do not certify priority, global minimality of the
+counterexample, or optimality of a basis or semigroup beyond the explicitly
+enumerated ranges.
+
+\section{What is settled and what remains}\label{sec:remaining}
+
+The original conjecture is settled negatively by \cref{thm:small}. The
+same construction supplies infinitely many counterexamples by
+\cref{cor:odd}, and counterexamples at every genus at least $697$ by
+\cref{cor:everygenus}. The maximum leaf type has the exact leading
+coefficient $2/3$, and the magnitude of its deficit from that line is
+exactly square-root order by \cref{thm:allg}.
+
+Several more precise questions remain outside those conclusions. First,
+the exact values of $L(g)$ beyond the small enumerated range are not
+determined here. A constructed type gives a lower bound, not necessarily
+the maximum. Second, the ratio
+\[
+ \frac{2g/3-L(g)}{\sqrt g}
+\]
+is bounded above and away from zero for large $g$, but the present argument
+does not show that it converges. Along the unpadded square-grid sequence,
+our examples have deficit $4r-7/3$, whereas padding gives a larger uniform
+constant. Better restricted bases, denser choices of their maxima, or
+constructions of a different shape could improve the lower-bound constant.
+
+Third, the universal upper bound deliberately forgets information about
+which pairs of nonmaximal Ap\'ery elements may have equal sums and which
+sums can occur in the relevant residue classes. Retaining that structure
+could strengthen the square-root coefficient. The elementary estimate
+$a(a+1)/2$ is enough for the order of growth but is not asserted to be
+sharp for this problem.
+
+Finally, a genus-minimal counterexample would require either a complete
+independent search below genus $34$ or a structural exclusion theorem. The
+example here is at the first genus after the source paper's reported range,
+but our independent search stops at $20$. No stronger minimality statement
+is needed for the disproof or the asymptotic theorem.
+
+The reusable mathematical mechanism is the combination of two finite
+objects: a restricted additive basis that guarantees enough decompositions,
+and an Ap\'ery poset whose nonmaximal elements account for the cost of those
+decompositions. The construction and the upper bound meet at the same
+square-root scale, even though they arise from different counts.
+
+\appendix
+\section{Additional certificate for the conductor interval}\label{sec:certificate}
+
+To make the generator claim independently inspectable, here are explicit
+decompositions of the entire possible-tail-generator interval
+$\ints{52}{77}$. The compact proof in \cref{sec:small} groups these into
+three blocks; the table lists the individual witnesses.
+
+\begin{center}
+\begin{tabular}{r@{\;=\;}l@{\qquad}r@{\;=\;}l}
+\toprule
+\multicolumn{2}{c}{Lower half} & \multicolumn{2}{c}{Upper half}\\
+\midrule
+52&$26+26$ &65&$26+39$\\
+53&$26+27$ &66&$26+40$\\
+54&$27+27$ &67&$26+41$\\
+55&$26+29$ &68&$26+42$\\
+56&$27+29$ &69&$26+43$\\
+57&$26+31$ &70&$26+44$\\
+58&$26+32$ &71&$26+45$\\
+59&$27+32$ &72&$26+46$\\
+60&$29+31$ &73&$26+47$\\
+61&$29+32$ &74&$26+48$\\
+62&$31+31$ &75&$26+49$\\
+63&$31+32$ &76&$26+50$\\
+64&$32+32$ &77&$27+50$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All summands occur in the proposed generating set. Above $77$, subtracting
+$26$ stays in the full tail, completing the argument for every larger
+integer. The machine-readable certificate in \path{data/counterexample.json} contains
+these decompositions, the witnesses in \cref{tab:witness}, the complete gap
+set, the pseudo-Frobenius set, and the residue-ordered Ap\'ery vector.
+
+\section{Reproducing the random draw and the computations}\label{sec:reproduce}
+
+The area-selection method was
+\texttt{random.Random(secrets.randbits(128)).randrange(24)}. The sampled seed
+was
+\[
+ \texttt{84421886621299946913970799425001841153}.
+\]
+The returned zero-based index was $9$, selecting semigroup theory. The
+complete ordered list of areas is in \texttt{data/random\_selection.json}.
+Replaying the seed verifies the recorded index; it does not require fresh
+randomness.
+
+From the extracted archive directory, run
+\begin{lstlisting}
+python code/verify.py --out data
+\end{lstlisting}
+The verifier requires only the Python standard library and uses integer
+arithmetic. Python 3.10 or later supports its syntax; the saved run used
+Python 3.13.5. Verification failures raise exceptions through explicit
+checks, so running Python with optimization does not disable them.
+The optional argument \texttt{--tree-genus 24} extends the exhaustive
+traversal but is not necessary for the default report.
+
+The optional numerical discovery program is separate:
+\begin{lstlisting}
+python -m pip install -r requirements-search.txt
+python code/search.py --multiplicity 36 --frobenius 71 --seconds 15
+\end{lstlisting}
+The original environment used NumPy 2.3.5 and SciPy 1.17.0. Candidate validity
+is checked exactly by the verifier even when a solver stops at its time
+limit. Solver optimality is not part of the certificate.
+
+To compile the article, run
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+Alternatively, run \texttt{pdflatex article.tex} twice. All references are
+included directly in the source, so no bibliography database or external
+image is required. The archive includes both the editable source and the
+compiled PDF, together with a README, verification data, optional search
+requirements, and SHA-256 checksums.
+
+\begin{thebibliography}{9}
+\bibitem{CRS}
+Jonathan Chappelon, Jorge L. Ram\'irez Alfons\'in, and Dumitru I. Stamate,
+\emph{Numerical semigroup tree: type-representation},
+arXiv:2507.15006v2, revised 22 November 2025.
+\url{https://arxiv.org/abs/2507.15006v2}.
+Conjecture 4.4 is the target of this note.
+
+\bibitem{Kohonen}
+Jukka Kohonen,
+\emph{Early Pruning in the Restricted Postage Stamp Problem},
+arXiv:1503.03416, 2015.
+\url{https://arxiv.org/abs/1503.03416}.
+
+\bibitem{SciPy}
+SciPy developers,
+\emph{scipy.optimize.milp --- Mixed-integer linear programming},
+SciPy reference documentation, accessed 20 September 2026.
+\url{https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.milp.html}.
+\end{thebibliography}
+
+\end{document}

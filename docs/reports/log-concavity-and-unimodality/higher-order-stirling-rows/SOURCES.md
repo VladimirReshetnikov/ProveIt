@@ -1,6 +1,8 @@
 # Sources and status check
 
-Access date: 19 September 2026.
+Access dates: 19 September 2026 (first source draft) and 20 September 2026
+(second source draft). Both drafts performed the check independently and
+reached the same conclusion; the merged report records both.
 
 ## Originating statement
 
@@ -54,7 +56,14 @@ Umesh Shankar, *Log-concavity of rows of triangular arrays satisfying a
 certain super-recurrence*, arXiv:2508.12467v1, 2025. The introduction and
 Theorems 1.2–1.4 were inspected to distinguish its results and parameter
 families from this article. The present proof is self-contained and does
-not invoke those theorems.
+not invoke those theorems. Theorem 1.2 there records the same
+coefficient-sign criterion (P, Q, M >= 0 in its letters; A, B, H >= 0 in
+ours) that Sagan's Theorem 1 gives; the merged article cites both, since
+they are independent sources for the condition that the present criterion
+relaxes. Section 1 of that paper also defines a *different* family of
+generalized Stirling numbers, the r-Stirling numbers, which require certain
+distinguished elements to lie in distinct blocks. They must not be
+conflated with the shifted associated subset triangle treated here.
 
 ```text
 https://arxiv.org/abs/2508.12467
@@ -72,6 +81,17 @@ https://oeis.org/A134991
 
 No claim is made that the higher-order row-sum sequences in the data
 are absent from OEIS or are newly discovered sequences.
+
+## Attribution and scope
+
+The underlying combinatorial objects, their recurrences, and the target
+conjecture are from the cited literature. What this report offers as its own
+contribution is the fifth-order certificate in its several forms, the
+induction, the quantitative bound, the sharpness argument, the cycle
+extensions and the cycle obstruction, the interpolating family, the
+asymptotic explanation of the cutoff, and the accompanying checks. No
+exhaustive novelty claim is made for the general two-variable preservation
+lemma, for the elementary identities, or for the small counterexamples.
 
 ## Search and priority limitation
 

@@ -1,0 +1,878 @@
+% SPDX-License-Identifier: MIT-0
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{microtype}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{titlesec}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+            urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\definecolor{Ink}{HTML}{20354C}
+\definecolor{Accent}{HTML}{536147}
+\titleformat{\section}{\large\bfseries\color{Ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{Accent}}{\thesubsection}{0.7em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Stirling subset polynomials and Hankel obstructions}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.25pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\St}[2]{S^{(r)}_{#1,#2}}
+\newcommand{\sr}[1]{s_{r,#1}(x)}
+\newcommand{\HT}{H_{r,a}(x)}
+\newcommand{\dd}{\mathop{}\!\mathrm{d}}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\sgn}{sgn}
+\emergencystretch=2em
+\setlength{\parskip}{0.25em}
+\setlist{nosep}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+        frame=single,rulecolor=\color{black!20},xleftmargin=0.3em,xrightmargin=0.3em}
+\hypersetup{pdftitle={A uniform Hankel obstruction for higher-order Stirling subset polynomials},
+ pdfauthor={AI-assisted research draft prepared for Vladimir Reshetnikov},
+ pdfsubject={A proof of the higher-order negative assertion in Deb--Sokal Conjecture 1.4(d)}}
+
+\begin{document}
+\begin{center}
+{\LARGE\bfseries\color{Ink} A uniform Hankel obstruction for\\[0.18em]
+higher-order Stirling subset polynomials\par}
+\vspace{0.8em}
+{\large A proof of the higher-order assertion in Deb--Sokal Conjecture 1.4(d)}\\[0.9em]
+{Prepared for Vladimir Reshetnikov}\\[0.3em]
+{20 September 2026}
+\end{center}
+
+\begin{abstract}
+Let $S^{(r)}_{n,k}$ count partitions of $n+(r-1)k$ labels into $k$ blocks,
+each of size at least $r$, and put $s_{r,n}(x)=\sum_k S^{(r)}_{n,k}x^k$.
+For every integer $r\ge3$ we prove that this polynomial sequence is not
+coefficientwise Hankel-totally positive. More strongly, every adjacent
+$3\times3$ Hankel determinant with positive shift has a negative coefficient
+of $x^5$, and all its lower coefficients vanish. For shift one, the coefficient is
+\[
+-\binom{2r-1}{r-1}^{\!2}
+ \frac{(r-2)(r-1)(r^2+11r+6)}{(r+1)(r+2)^2(r+3)}.
+\]
+The proof reduces a rank-one perturbation determinant to the second
+differences of the two-block counting sequence. Those differences are a
+geometric sequence minus a partial binomial sum; an elementary ratio
+argument determines the sign uniformly. This proves the previously
+conjectured negative range of Deb--Sokal Conjecture~1.4(d), using the
+shift-one witness already suggested by its authors. We also obtain exact
+formulas for arbitrary shifts, quantitative negative bounds, small-parameter
+obstructions to both Stieltjes and Hamburger moment representations, and
+asymptotic formulas. The accompanying code supplies independent
+exact-arithmetic checks, not a replacement for the proofs.
+\end{abstract}
+
+\medskip
+\noindent\textbf{Status.}
+This is an AI-assisted research draft. The negative-range proofs are
+self-contained; the known positive cases $r=1,2$ are imported when stating
+the complete dichotomy. No independent referee or proof-assistant check is
+claimed. The source audit did not locate an intervening proof, but it does
+not establish priority.
+
+\setcounter{tocdepth}{1}
+\makeatletter
+\renewcommand*\l@section{\@dottedtocline{1}{0em}{1.5em}}
+\makeatother
+\tableofcontents
+\clearpage
+
+\section{The problem and its relation to the supplied manifest}
+
+Deb and Sokal's Conjecture~1.4(d) asks for a sharp cutoff in coefficientwise
+Hankel positivity of higher-order Stirling subset polynomials: positivity
+at orders one and two, and failure at every higher order
+\cite[Conjecture~1.4(d), p.~10]{DebSokal}. Their Appendix~C suggests the
+shift-one $3\times3$ determinant as a witness, without an all-order sign
+formula \cite[p.~50]{DebSokal}. The present argument proves that prediction
+and extends it to every positive shift.
+
+The supplied manifest contains an entry entitled \emph{A sharp order-five
+threshold for higher-order Stirling subset log-concavity}
+\cite{Manifest}. That entry concerns part~(c) of the same conjecture:
+log-concavity \emph{along individual rows} of the counting triangle. Here
+we study part~(d): determinants built \emph{across different row-generating
+polynomials}. The underlying numbers are the same, but the assertions are
+not duplicates. No theorem claimed by that manifest entry is used below.
+The manifest is treated as a catalogue of reported results, not as an
+independent verification of their proofs.
+
+The useful feature of the selected problem is that a uniform negative
+answer can be certified by one coefficient of one fixed-size minor.
+There is no need to search larger and larger matrices or to control every
+coefficient of the row polynomials. In fact, the coefficient of $x^2$ in
+each row already contains all the information needed to obtain the
+obstruction.
+
+\section{Definitions and principal results}
+\label{sec:definitions}
+
+\subsection{The counting triangle}
+
+For integers $r\ge1$ and $0\le k\le n$, let $S^{(r)}_{n,k}$ be the number
+of set partitions of an $(n+(r-1)k)$-element labelled set into exactly $k$
+nonempty blocks, with every block having size at least $r$. The empty
+partition gives $S^{(r)}_{0,0}=1$. Entries outside the triangle are zero.
+Define
+\begin{equation}
+ s_{r,n}(x)=\sum_{k=0}^{n}S^{(r)}_{n,k}x^k.
+ \label{eq:rows}
+\end{equation}
+In particular, $s_{r,0}(x)=1$, while for every $n\ge1$,
+\begin{equation}
+ s_{r,n}(x)=x+b_nx^2+O(x^3),\qquad b_n=S^{(r)}_{n,2}.
+ \label{eq:smallx}
+\end{equation}
+Here and throughout, $O(x^j)$ can be read formally as divisibility by
+$x^j$ in a power-series ring. No analytic convergence is involved in
+coefficient extraction. The coefficient of $x$ is one because there is
+exactly one partition into a single block of the required size.
+
+For completeness, the triangular recurrence is
+\begin{equation}
+ S^{(r)}_{n,k}=
+ \binom{n+(r-1)k-1}{r-1}S^{(r)}_{n-1,k-1}
+       +kS^{(r)}_{n-1,k}.
+ \label{eq:triangle-recurrence}
+\end{equation}
+To see this, distinguish the largest label. If its block has size exactly
+$r$, choose the other $r-1$ labels and remove that block. If its block has
+size greater than $r$, remove only the distinguished label, then record
+which of the $k$ blocks receives it on reinsertion. Both cases leave
+precisely the label counts encoded on the right-hand side.
+
+\subsection{Hankel positivity and the witness}
+
+\begin{definition}
+A polynomial sequence $(p_n(x))_{n\ge0}$ is \emph{coefficientwise
+Hankel-totally positive} when every finite minor of
+$(p_{i+j}(x))_{i,j\ge0}$ has only nonnegative coefficients.
+\end{definition}
+
+We follow the source's convention that ``totally positive'' allows zero
+minors; this is also called total nonnegativity. In particular, finding
+one strictly negative coefficient disproves the property.
+
+For a positive integer $a$, put
+\begin{equation}
+ H_{r,a}(x)=\det\bigl(s_{r,a+i+j}(x)\bigr)_{0\le i,j\le2}.
+ \label{eq:H-def}
+\end{equation}
+This is a minor of the full Hankel matrix: take row indices $a,a+1,a+2$
+and column indices $0,1,2$. Let
+\begin{equation}
+ K_{r,a}=[x^5]H_{r,a}(x),\qquad
+ F_m(N)=\sum_{j=0}^{m}\binom Nj,
+ \label{eq:K-F}
+\end{equation}
+with $F_{-1}(N)=F_{-2}(N)=0$ and $\binom N{-1}=0$.
+
+\begin{theorem}[Uniform shifted obstruction]
+\label{thm:shifted}
+Let $r\ge3$ and $a\ge1$ be integers. Set $N=a+2r-2$ and $m=r-3$. Then
+\begin{align}
+ H_{r,a}(x)&=K_{r,a}x^5+O(x^6),\label{eq:leading}\\
+ K_{r,a}&=-2^{N-1}\left(\binom Nm-\binom N{m-1}\right)
+        +F_m(N)F_m(N+2)-F_m(N+1)^2.\label{eq:general-K}
+\end{align}
+Moreover,
+\begin{equation}
+ K_{r,a}\le
+ -2^{N-1}\left(\binom Nm-\binom N{m-1}\right)<0.
+ \label{eq:negative-bound}
+\end{equation}
+Consequently every determinant in \eqref{eq:H-def} has order of vanishing
+exactly five at the origin and a negative leading coefficient.
+\end{theorem}
+
+\begin{theorem}[Factored first-shift certificate]
+\label{thm:factored}
+For every integer $r\ge1$,
+\begin{equation}
+ \boxed{\displaystyle
+ K_{r,1}=-\binom{2r-1}{r-1}^{\!2}
+ \frac{(r-2)(r-1)(r^2+11r+6)}{(r+1)(r+2)^2(r+3)}.}
+ \label{eq:factored}
+\end{equation}
+Thus $K_{r,1}=0$ for $r=1,2$ and $K_{r,1}<0$ for every $r\ge3$.
+\end{theorem}
+
+Theorem~\ref{thm:factored} alone proves the new negative-range assertion.
+Theorem~\ref{thm:shifted} explains its mechanism and gives additional
+consequences. These are two compatible routes to the same sign, not
+independent evidence from a finite list of examples.
+
+\begin{corollary}[The cutoff]
+\label{cor:cutoff}
+For positive integer $r$, the sequence $(s_{r,n}(x))_{n\ge0}$ is
+coefficientwise Hankel-totally positive if and only if $r\in\{1,2\}$.
+\end{corollary}
+\begin{proof}
+The negative range follows from either theorem. The positive cases are
+known results: the ordinary Stirling case and the Ward-polynomial case,
+respectively. The latter is supported by the continued-fraction result of
+Elvey Price and Sokal \cite{ElveyPriceSokal}; the deduction of the required
+positivity, and the status of both positive cases, are recorded explicitly
+in \cite[p.~10]{DebSokal}. We do not count these positive cases as new
+results of this article.
+\end{proof}
+
+\section{A rank-one reduction for the leading coefficient}
+\label{sec:rankone}
+
+The determinant is initially degenerate to unusually high order: after
+factoring one $x$ from each row, its constant matrix is the all-ones
+matrix, which has rank one. Adjacent differences isolate the first
+nontrivial part.
+
+\begin{lemma}[Low-degree Hankel reduction]
+\label{lem:rankone}
+Suppose $p_j(x)=x+b_jx^2+O(x^3)$ for the five indices
+$j=a,\ldots,a+4$. With $\Delta b_j=b_{j+1}-b_j$,
+\begin{equation}
+ \det(p_{a+i+j}(x))_{0\le i,j\le2}
+ =x^5\left((\Delta^2b_a)(\Delta^2b_{a+2})
+                -(\Delta^2b_{a+1})^2\right)+O(x^6).
+ \label{eq:rankone-identity}
+\end{equation}
+In particular all coefficients below degree five vanish, and coefficients
+of $p_j$ of degree at least three cannot affect the displayed term.
+\end{lemma}
+\begin{proof}
+Factor $x$ from each row. The remaining matrix is
+$J+xB+O(x^2)$, where $J$ is the all-ones matrix and
+$B_{ij}=b_{a+i+j}$. The matrix
+\[
+ L=\begin{pmatrix}1&0&0\\-1&1&0\\0&-1&1\end{pmatrix}
+\]
+has determinant one. Multiplication on the left by $L$ and on the right
+by $L^{\mathsf T}$ preserves the determinant. Since
+$LJL^{\mathsf T}=\operatorname{diag}(1,0,0)$, the resulting matrix has the
+block form
+\begin{equation}
+ \begin{pmatrix}
+  1+O(x)&O(x)&O(x)\\
+  O(x)&x\Delta^2b_a+O(x^2)&x\Delta^2b_{a+1}+O(x^2)\\
+  O(x)&x\Delta^2b_{a+1}+O(x^2)&x\Delta^2b_{a+2}+O(x^2)
+ \end{pmatrix}.
+ \label{eq:transformed}
+\end{equation}
+The terms of degree two in its determinant are exactly the determinant
+of the displayed lower-right block of linear terms. All permutations
+using an off-diagonal entry in the first row also use an off-diagonal
+entry in the first column, and hence have degree at least three. Restoring
+the factor $x^3$ proves \eqref{eq:rankone-identity}.
+\end{proof}
+
+The sign question is therefore equivalent to a strict log-concavity
+inequality for the sequence $d_n=\Delta^2b_n$. This is log-concavity in the
+\emph{row index after taking two differences}, not the log-concavity of
+$k\mapsto S^{(r)}_{n,k}$ considered in the manifest.
+
+\section{Two-block partitions and the all-shifts proof}
+\label{sec:allshifts}
+
+\subsection{The two-block column}
+
+\begin{lemma}
+\label{lem:two-blocks}
+For $n\ge1$ and $N=n+2r-2$,
+\begin{equation}
+ b_n=S^{(r)}_{n,2}
+ =\frac12\sum_{j=r}^{N-r}\binom Nj
+ =2^{N-1}-\sum_{j=0}^{r-1}\binom Nj.
+ \label{eq:b-formula}
+\end{equation}
+The first sum is empty when $n=1$, giving $b_1=0$.
+For $r\ge3$,
+\begin{equation}
+ d_n:=\Delta^2b_n=2^{N-1}-F_{r-3}(N).
+ \label{eq:d-formula}
+\end{equation}
+For $r=1,2$, instead $d_n=2^{N-1}$.
+\end{lemma}
+\begin{proof}
+An unordered partition into two admissible blocks is specified twice by
+choosing one block, whose size must lie between $r$ and $N-r$.
+The omitted lower and upper binomial tails are equal by symmetry. Since
+$N\ge2r-1$, the tails are disjoint, including at the boundary $n=1$.
+Subtracting them from $2^N$ gives \eqref{eq:b-formula}.
+
+When $n$ increases by one, so does $N$. Pascal's identity gives
+\[
+ \Delta\binom Nj=\binom N{j-1},\qquad
+ \Delta^2\binom Nj=\binom N{j-2},
+\]
+where terms with negative lower index are zero. Also
+$\Delta^2 2^{N-1}=2^{N-1}$. Applying these identities term by term gives
+\eqref{eq:d-formula}; the finite polynomial correction disappears
+entirely when $r=1,2$.
+\end{proof}
+
+For $r\ge3$, the relevant $N$ satisfies $N\ge2(r-3)+5$.
+Binomial symmetry then gives $F_{r-3}(N)<2^{N-1}$, since its final
+index lies strictly below the midpoint and omits central terms. Thus
+$d_n>0$; the sequence whose strict log-concavity we use is positive.
+
+\subsection{A partial-binomial log-concavity lemma}
+
+\begin{lemma}
+\label{lem:F-logconcave}
+For fixed integer $m\ge0$, the positive sequence $F_m(N)$, $N\ge m$,
+is log-concave:
+\begin{equation}
+ F_m(N)F_m(N+2)-F_m(N+1)^2\le0.
+ \label{eq:F-logconcave}
+\end{equation}
+Equality holds for $m=0$, and the inequality is strict for $m\ge1$.
+\end{lemma}
+\begin{proof}
+The case $m=0$ is $F_0(N)=1$. Suppose $m\ge1$. Pascal's identity gives
+\begin{equation}
+ \frac{F_m(N+1)}{F_m(N)}
+ =1+\frac{F_{m-1}(N)}{F_m(N)}.
+ \label{eq:F-ratio}
+\end{equation}
+For each $0\le j<m$,
+\begin{equation}
+ \frac{\binom Nj}{\binom Nm}
+ =\frac{m!}{j!}\,
+   \frac{1}{\prod_{h=j}^{m-1}(N-h)}
+ \label{eq:binom-ratio}
+\end{equation}
+is strictly decreasing with integer $N\ge m$. Hence so is the positive
+sum
+\[
+ R_m(N)=\frac{F_{m-1}(N)}{\binom Nm}.
+\]
+The ratio appearing in \eqref{eq:F-ratio} is
+$F_{m-1}(N)/F_m(N)=R_m(N)/(1+R_m(N))$, a strictly increasing function of
+$R_m(N)$. It therefore decreases with $N$. Successive ratios of $F_m$
+strictly decrease, which is exactly \eqref{eq:F-logconcave} after
+multiplication by the positive denominators.
+\end{proof}
+
+This proof deliberately uses only finite sums and positive ratios. It
+requires no general preservation theorem for log-concavity.
+
+\subsection{Proof of Theorem \ref{thm:shifted}}
+
+Set $B=2^{N-1}$ and abbreviate $F_j=F_m(N+j)$ for $j=0,1,2$ in this
+subsection only. By Lemmas~\ref{lem:rankone} and~\ref{lem:two-blocks},
+\begin{align}
+ K_{r,a}
+   &=(B-F_0)(4B-F_2)-(2B-F_1)^2\notag\\
+   &=-B(F_2-4F_1+4F_0)+F_0F_2-F_1^2.
+ \label{eq:K-expand}
+\end{align}
+The $B^2$ terms cancel. Applying Pascal twice yields
+\begin{align*}
+ F_m(N+1)&=F_m(N)+F_{m-1}(N),\\
+ F_m(N+2)&=F_m(N)+2F_{m-1}(N)+F_{m-2}(N).
+\end{align*}
+Consequently
+\begin{align}
+ F_m(N+2)-4F_m(N+1)+4F_m(N)
+  &=F_m(N)-2F_{m-1}(N)+F_{m-2}(N)\notag\\
+  &=\binom Nm-\binom N{m-1}.
+ \label{eq:tail-cancellation}
+\end{align}
+This proves \eqref{eq:general-K}.
+
+Here $N=a+2r-2\ge2r-1=2m+5$. If $m=0$, the binomial difference in
+\eqref{eq:tail-cancellation} is one. If $m\ge1$, it is positive because
+\[
+ \frac{\binom Nm}{\binom N{m-1}}=\frac{N-m+1}{m}>1.
+\]
+Lemma~\ref{lem:F-logconcave} makes the remaining term of
+\eqref{eq:K-expand} nonpositive. This proves the strict negativity and
+the quantitative bound. The rank-one lemma proves the vanishing of the
+lower coefficients, so the order of vanishing is exactly five.
+\hfill$\square$
+
+\begin{remark}[The two lowest orders]
+For $r=1,2$, Lemma~\ref{lem:two-blocks} makes $d_n$ geometric. Its adjacent
+$2\times2$ determinants vanish, and hence $K_{r,a}=0$ for every $a\ge1$.
+This explains why the degree-five obstruction starts at $r=3$.
+Vanishing at one degree is not itself a proof of total positivity at
+$r=1,2$; those cases remain the imported positive results of
+Corollary~\ref{cor:cutoff}.
+\end{remark}
+
+\section{A short factored certificate at shift one}
+\label{sec:factor}
+
+We now give a separate, very small algebraic proof of
+Theorem~\ref{thm:factored}. It uses only the first five entries of the
+two-block column and is useful as a standalone certificate.
+
+Let
+\[
+ A=\binom{2r-1}{r-1},\qquad
+ u=\frac{2r}{r+1},\qquad
+ v=\frac{2r(2r+1)}{(r+1)(r+2)},\qquad
+ w=\frac{2r(2r+1)(2r+2)}{(r+1)(r+2)(r+3)}.
+\]
+The recurrence \eqref{eq:triangle-recurrence} at $k=2$ is
+\begin{equation}
+ b_n=2b_{n-1}+\binom{n+2r-3}{r-1}\qquad(n\ge2).
+ \label{eq:b-recur}
+\end{equation}
+The successive binomial terms at $n=2,3,4,5$ are $A,Au,Av,Aw$.
+Starting from $b_1=0$ gives
+\begin{equation}
+ (b_1,b_2,b_3,b_4,b_5)
+ =A\bigl(0,1,2+u,4+2u+v,8+4u+2v+w\bigr).
+ \label{eq:first-b}
+\end{equation}
+Thus
+\begin{equation}
+ (d_1,d_2,d_3)=A\bigl(u,1+v,2+u+w\bigr).
+ \label{eq:first-d}
+\end{equation}
+The rank-one identity immediately gives
+\begin{equation}
+ \frac{K_{r,1}}{A^2}=u(2+u+w)-(1+v)^2.
+ \label{eq:short-certificate}
+\end{equation}
+For a completely explicit factorization, observe that
+\[
+ 1+v=\frac{5r^2+5r+2}{(r+1)(r+2)},\qquad
+ 2+u+w=\frac{2(2r+1)(3r^2+7r+6)}{(r+1)(r+2)(r+3)}.
+\]
+On the common denominator $(r+1)^2(r+2)^2(r+3)$, the numerator in
+\eqref{eq:short-certificate} becomes
+\begin{align*}
+ &4r(2r+1)(3r^2+7r+6)(r+2)-(5r^2+5r+2)^2(r+3)\\
+ &\hspace{2em}=-(r-2)(r-1)(r+1)(r^2+11r+6).
+\end{align*}
+Canceling the factor $r+1$ proves \eqref{eq:factored}. All denominators
+are positive for $r\ge1$, and every factor in the numerator after the
+minus sign is positive for $r\ge3$. No interpolation in $r$ is being
+used: this is an identity of rational functions.
+
+\begin{table}[ht]
+\centering
+\caption{The first-shift degree-five coefficient. Every entry is an exact integer.}
+\label{tab:K}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$r$ & $\binom{2r-1}{r-1}$ & $K_{r,1}$\\
+\midrule
+1&1&0\\
+2&3&0\\
+3&10&$-16$\\
+4&35&$-385$\\
+5&126&$-6\,966$\\
+6&462&$-114\,345$\\
+7&1\,716&$-1\,799\,512$\\
+8&6\,435&$-27\,756\,729$\\
+9&24\,310&$-423\,939\,880$\\
+10&92\,378&$-6\,445\,028\,304$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Worked examples and moment obstructions}
+\label{sec:examples}
+
+\subsection{The smallest higher order}
+
+For $r=3$, recurrence \eqref{eq:triangle-recurrence} gives
+\begin{align*}
+ s_{3,1}(x)&=x,\\
+ s_{3,2}(x)&=x+10x^2,\\
+ s_{3,3}(x)&=x+35x^2+280x^3,\\
+ s_{3,4}(x)&=x+91x^2+2100x^3+15400x^4,\\
+ s_{3,5}(x)&=x+210x^2+10395x^3+200200x^4+1401400x^5.
+\end{align*}
+Their determinant is
+\begin{equation}
+ \begin{split}
+ H_{3,1}(x)=x^5\bigl(&-16+19110x+938700x^2\\
+                    &+15309000x^3+79380000x^4\bigr).
+ \end{split}
+ \label{eq:H31}
+\end{equation}
+The entire negative coefficient can also be checked without expanding
+these polynomials: $(b_1,\ldots,b_5)=(0,10,35,91,210)$ has second
+differences $(15,31,63)$, and $15\cdot63-31^2=-16$.
+
+For comparison, the two lower-order determinants are
+\begin{align}
+ H_{1,1}(x)&=2x^6,\notag\\
+ H_{2,1}(x)&=x^6(216+960x+1440x^2+720x^3).
+ \label{eq:low-order-H}
+\end{align}
+These examples illustrate the threshold but are not used to extrapolate
+it to other orders.
+
+In \eqref{eq:H31}, the quartic after $x^5$ is strictly increasing for
+$x>0$, starts negative, and tends to positive infinity. It has exactly
+one positive root $\xi$, and exact rational evaluations give
+\begin{equation}
+ 0.000805006270<\xi<0.000805006271.
+ \label{eq:root-bracket}
+\end{equation}
+In particular,
+\begin{equation}
+ H_{3,1}(1/2000)=
+ -\frac{4966725131}{25600000000000000000000000}<0.
+ \label{eq:scalar-example}
+\end{equation}
+The bracket is only an illustration. The proof for all $r$ and all shifts
+requires no numerical root finding.
+
+\subsection{Failure of scalar moment representations}
+
+A negative polynomial coefficient does not, by itself, force the
+polynomial to be negative at a positive argument. Here it does force
+negativity \emph{near zero}, because the negative coefficient is the
+first nonzero one. This distinction is essential.
+
+\begin{proposition}[An effective negative interval]
+\label{prop:epsilon}
+For $r\ge3$ and $a\ge1$, define $L_j=s_{r,j}(1)$ and
+\begin{equation}
+ \begin{split}
+ M_{r,a}={}&L_aL_{a+2}L_{a+4}+L_aL_{a+3}^{\,2}
+            +L_{a+1}^{\,2}L_{a+4}\\
+           &+2L_{a+1}L_{a+2}L_{a+3}+L_{a+2}^{\,3},\\
+ \varepsilon_{r,a}={}&\min\left(1,\frac{-K_{r,a}}{2M_{r,a}}\right).
+ \end{split}
+ \label{eq:epsilon}
+\end{equation}
+Then $\varepsilon_{r,a}$ is a positive rational number and
+\begin{equation}
+ H_{r,a}(x)\le \tfrac12K_{r,a}x^5<0
+ \qquad(0<x\le\varepsilon_{r,a}).
+ \label{eq:epsilon-result}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The five products defining $M_{r,a}$ are the unsigned terms in the
+symmetric $3\times3$ determinant expansion, with the paired terms counted
+twice. Since each row polynomial has nonnegative coefficients, the sum
+of the absolute values of all coefficients of $H_{r,a}$ is at most
+$M_{r,a}$. For $0<x\le1$ the terms of degree at least six consequently
+have absolute sum at most $M_{r,a}x^6$. Use
+$K_{r,a}<0$ and the definition of $\varepsilon_{r,a}$.
+\end{proof}
+
+\begin{corollary}[Stieltjes and Hamburger exclusions]
+\label{cor:moments}
+For every $r\ge3$, the following assertions hold.
+For $0<x\le\varepsilon_{r,1}$, the numerical sequence
+$(s_{r,n}(x))_{n\ge0}$ is not a Stieltjes moment sequence. For
+$0<x\le\varepsilon_{r,2}$, it is not even a Hamburger moment sequence.
+\end{corollary}
+\begin{proof}
+A Stieltjes representation would give a positive measure $\mu$ supported
+on $[0,\infty)$ with
+$s_{r,n}(x)=\int t^n\dd\mu(t)$. For every real vector
+$v=(v_0,v_1,v_2)$,
+\[
+ \sum_{i,j=0}^2v_iv_j s_{r,a+i+j}(x)
+  =\int t^a(v_0+v_1t+v_2t^2)^2\dd\mu(t)\ge0.
+\]
+Thus the matrix defining $H_{r,a}$ would be positive semidefinite and its
+determinant nonnegative. Shift $a=1$ contradicts
+Proposition~\ref{prop:epsilon}.
+
+For a Hamburger representation the positive measure may be supported
+anywhere on $\R$. Use $a=2$, for which the integrand is again
+nonnegative. Equivalently, the matrix defining $H_{r,2}$ is the Gram
+matrix of $t,t^2,t^3$ and a principal submatrix of the unshifted Hankel
+matrix. Its negative determinant is again impossible.
+\end{proof}
+
+This argument uses only the necessary Gram-matrix condition for a
+moment representation; no converse characterization theorem is needed.
+The exclusions concern sufficiently small positive $x$. They do not
+classify the numerical sequence at every positive specialization.
+
+For a concrete Hamburger exclusion at $r=3$, the next shifted
+determinant is
+\begin{equation}
+ \begin{split}
+ H_{3,2}(x)=x^5\bigl(&-32+124614x+12875310x^2+556088400x^3\\
+ &+12832394400x^4+165904200000x^5\\
+ &+1136880360000x^6+3202824240000x^7\bigr).
+ \end{split}
+ \label{eq:H32}
+\end{equation}
+The parenthesized polynomial has positive nonconstant coefficients, and
+its value at $x=10^{-4}$ is less than $-19$, as can be checked by rational
+arithmetic. It is therefore negative throughout $0<x\le10^{-4}$.
+Hence the third-order sequence has no Hamburger moment representation
+throughout that explicit interval.
+
+\section{Size, asymptotics, and useful specializations}
+\label{sec:asymptotics}
+
+\subsection{Low-order formulas at every shift}
+
+The general formula becomes particularly simple for the first two
+higher orders. When $r=3$, $m=0$ and the partial-binomial determinant
+vanishes. When $r=4$, $m=1$ and $F_1(N)=N+1$, whose adjacent determinant
+is $-1$. Therefore
+\begin{align}
+ K_{3,a}&=-2^{a+3},\label{eq:r3-all}\\
+ K_{4,a}&=-2^{a+5}(a+5)-1.\label{eq:r4-all}
+\end{align}
+These show that the obstruction is not confined to an initial corner of
+the Hankel matrix. Moving the test arbitrarily far down the sequence
+preserves the sign.
+
+\subsection{Large shift at fixed order}
+
+\begin{proposition}
+\label{prop:shift-asymptotic}
+For each fixed $r\ge3$, as $a\to\infty$,
+\begin{equation}
+ K_{r,a}\sim
+ -\frac{2^{a+2r-3}}{(r-3)!}\,a^{r-3}.
+ \label{eq:shift-asymptotic}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Set $m=r-3$ and $N=a+2r-2$. For fixed $m\ge1$,
+\[
+ \binom Nm-\binom N{m-1}
+   =\frac{N^m}{m!}+O(N^{m-1}).
+\]
+Each $F_m(N+j)$ is a polynomial in $N$ of degree $m$, so its determinant
+in \eqref{eq:general-K} is at most polynomial in $N$. It is negligible
+compared with the exponential term $2^{N-1}N^m/m!$. Since $N/a\to1$,
+\eqref{eq:shift-asymptotic} follows. For $m=0$, use the exact formula
+\eqref{eq:r3-all}.
+\end{proof}
+
+\subsection{Large order at shift one}
+
+The rational factor in \eqref{eq:factored} satisfies the useful identity
+\begin{equation}
+ \begin{split}
+ Q(r)&:=\frac{(r-2)(r-1)(r^2+11r+6)}{(r+1)(r+2)^2(r+3)}\\
+     &=1-\frac{24r(2r+1)}{(r+1)(r+2)^2(r+3)}
+       =1+O(r^{-2}).
+ \end{split}
+ \label{eq:Qasym}
+\end{equation}
+In particular $0<-K_{r,1}<\binom{2r-1}{r-1}^2$ for every $r\ge3$.
+Since $\binom{2r-1}{r-1}=\tfrac12\binom{2r}{r}$, the elementary
+central-binomial asymptotic, obtained from Stirling's formula, yields
+\begin{equation}
+ K_{r,1}\sim-\frac{16^r}{4\pi r}\qquad(r\to\infty).
+ \label{eq:order-asymptotic}
+\end{equation}
+Thus the coefficient is not merely negative by a vanishingly small
+margin: its absolute size grows exponentially in the order. This does
+not imply a uniform interval of negative \emph{specialized}
+determinants, because the higher coefficients also grow.
+
+\section{Exact verification and reproducibility}
+\label{sec:computation}
+
+The article's proofs establish the results for all parameter values.
+The supplied programs audit indexing, cancellation, integrality,
+factorization, and examples. They use no fitted recurrence and no
+floating-point sign tests.
+
+\subsection{Independent counting and determinant calculations}
+
+The standard-library program \texttt{code/verify.py} constructs the
+triangle using \eqref{eq:triangle-recurrence}. An independent routine
+counts partitions by the block containing label one. Writing $T_r(M,k)$
+for the number of admissible partitions of $M$ labels into $k$ blocks,
+that routine uses
+\begin{equation}
+ T_r(M,k)=\sum_{j=r}^{M-r(k-1)}
+       \binom{M-1}{j-1}T_r(M-j,k-1),
+ \label{eq:independent-count}
+\end{equation}
+with $T_r(0,0)=1$ and impossible cases zero. This conditions on the
+\emph{entire distinguished block}, rather than deleting one label as in
+\eqref{eq:triangle-recurrence}, and checks the label shift
+$M=n+(r-1)k$ directly.
+
+The determinant routine expands all six signed permutation products
+with exact integer polynomial arithmetic. A degree-five truncation is
+also used, but it still retains enough coefficients to detect the
+cancellation of all terms below $x^5$ and to compare the full six-term
+expansion with the two-block formula. It is not a computation of the
+same closed formula under a different name.
+
+\begin{table}[ht]
+\centering
+\caption{Executed verification coverage. Counts are finite audit cases.}
+\label{tab:checks}
+\small
+\begin{tabular}{@{}p{5.1cm}p{6.7cm}r@{}}
+\toprule
+Check & Range & Cases\\
+\midrule
+Independent partition counts & $1\le r\le6$, $0\le n\le8$, $0\le k\le n$ &270\\
+Full polynomial determinants & $1\le r\le12$, $1\le a\le8$ &96\\
+Degree-five determinant expansions & $3\le r\le30$, $1\le a\le40$ &1120\\
+First-shift factorization & $1\le r\le100$ &100\\
+Partial-binomial log-concavity & $0\le m\le30$, $\max(1,m)\le N\le100$ &2665\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+All checks in Table~\ref{tab:checks} passed. The output records every full
+determinant, a grid of shifted coefficients, the first one hundred
+first-shift coefficients, the exact scalar examples, and a rational
+bracket for the root in \eqref{eq:root-bracket}. The optional script
+\texttt{code/symbolic\_identity.py} independently verifies the rational
+factorization \eqref{eq:short-certificate} using SymPy~1.14.0. That is a
+symbolic algebra check, not a proof-assistant certification.
+
+\subsection{Commands and file layout}
+
+The core verifier requires Python~3.9 or later and no third-party
+packages. From the extracted directory, run
+\begin{lstlisting}
+python code/verify.py
+\end{lstlisting}
+The optional symbolic check additionally requires SymPy:
+\begin{lstlisting}
+python code/symbolic_identity.py
+\end{lstlisting}
+The document uses ordinary pdfLaTeX packages and an embedded bibliography:
+\begin{lstlisting}
+pdflatex -halt-on-error article.tex
+pdflatex -halt-on-error article.tex
+\end{lstlisting}
+The archive also contains a \texttt{Makefile}, \texttt{README.md},
+\texttt{STATUS.md}, a source audit, and a proof-audit note. The data files
+are written deterministically; numerical timings and machine-dependent
+paths are deliberately excluded from the mathematical certificates.
+
+\section{Scope and remaining questions}
+\label{sec:scope}
+
+The established result is the all-$r\ge3$ failure claimed in
+Conjecture~1.4(d), strengthened to a leading negative coefficient in
+\emph{every} positive-shift adjacent $3\times3$ minor. Together with the
+previously known positive cases this gives the full dichotomy in that
+part of the conjecture.
+
+Several nearby questions are not settled here. We do not prove total
+positivity of the numerical triangle $S^{(r)}$ itself, total positivity
+of any row reversal, row log-concavity, or Hankel positivity of the
+higher-order \emph{cycle} polynomials. We also do not claim that all
+$2\times2$ polynomial Hankel minors are nonnegative; hence the present
+$3\times3$ witness is not asserted to have minimum possible size.
+
+For scalar specializations, an especially concrete continuation is to
+classify the set of $x>0$ for which $(s_{r,n}(x))_{n\ge0}$ is a
+Stieltjes or Hamburger moment sequence. The small-$x$ interval is now
+excluded, but positivity of a single determinant past its first root
+would not establish the required positivity of all other minors.
+Another question is whether an analogue of the rank-one reduction
+organizes leading coefficients of larger shifted minors into tractable
+finite-difference determinants. These are directions beyond, not
+conditions on, the proof above.
+
+\appendix
+\section{Indexing and boundary audit}
+
+The most error-prone feature of this problem is that changing the number
+of blocks changes the number of labels in the definition of a row.
+For example, $S^{(r)}_{n,1}$ counts partitions of $n+r-1$ labels, whereas
+$S^{(r)}_{n,2}$ counts partitions of $n+2r-2$ labels. Treating both as
+partitions of the same set would give the wrong two-block column.
+
+The shift $a$ in \eqref{eq:H-def} is the index of the top-left entry,
+not the size of the determinant. The first witness uses polynomials
+$s_{r,1}$ through $s_{r,5}$. The positive-shift hypothesis is substantive:
+$s_{r,0}=1$ is not divisible by $x$, so the rank-one argument in the form
+used here does not apply to shift zero.
+
+For the all-shifts sign formula, the auxiliary parameters satisfy
+$m=r-3\ge0$ and $N=a+2r-2\ge2m+5$. Thus every binomial coefficient in a
+denominator ratio is positive when it is used. The conventions
+$F_{-1}=F_{-2}=0$ and $\binom N{-1}=0$ handle $r=3,4$ without silently
+invoking undefined lower indices. The cases $r=1,2$ are treated directly
+by the finite-difference identity, not by extending $m$ to negative
+values in an unproved formula.
+
+Finally, \eqref{eq:factored} has rational-looking factors but its value
+is an integer: it equals a coefficient of an integer polynomial by the
+proof. No denominator cancellation hypothesis or generic-parameter
+specialization is needed. In particular, zeros at $r=1,2$ are harmless,
+and there is no division by a Hankel determinant anywhere in the
+argument.
+
+\section{Proof dependency map}
+
+The negative-range proof has a short dependency chain. The counting
+definition gives \eqref{eq:smallx} and the two-block sum
+\eqref{eq:b-formula}. The rank-one lemma converts the desired coefficient
+into $d_ad_{a+2}-d_{a+1}^2$. Pascal's identity computes $d_a$ and the
+geometric-term cancellation. A ratio comparison of finite binomial
+sums proves the sign. Every step is an explicit algebraic or counting
+identity.
+
+The first-shift route replaces the binomial-sum sign lemma with a
+rational factorization of three second differences. The moment
+corollaries add only the elementary positivity of an integral of a
+square and an explicit coefficient-norm estimate. The asymptotic
+statements add standard estimates for fixed-degree polynomials and the
+central binomial coefficient. Only the positive half of the final
+cutoff imports a nontrivial published positivity theorem.
+
+\begin{thebibliography}{9}
+
+\bibitem{DebSokal}
+Bishal Deb and Alan D. Sokal,
+\emph{Higher-order Stirling cycle and subset triangles: Total positivity,
+continued fractions and real-rootedness},
+arXiv:2507.18959v1, 2025.
+Conjecture~1.4(d) and discussion: p.~10;
+proposed $3\times3$ witness: Appendix~C, p.~50.
+\url{https://arxiv.org/abs/2507.18959v1}.
+
+\bibitem{ElveyPriceSokal}
+Andrew Elvey Price and Alan D. Sokal,
+\emph{Phylogenetic trees, augmented perfect matchings, and a Thron-type
+continued fraction (T-fraction) for the Ward polynomials},
+Electronic Journal of Combinatorics \textbf{27}(4) (2020), P4.6.
+\url{https://doi.org/10.37236/9571};
+\url{https://arxiv.org/abs/2001.01468}.
+
+\bibitem{Manifest}
+Vladimir Reshetnikov,
+\emph{A manifest of docs/reports}, supplied file \texttt{manifest.tex},
+20 September 2026.
+Entry \emph{A sharp order-five threshold for higher-order Stirling subset
+log-concavity}, in the section on log-concavity, unimodality and
+positivity. Used to identify a related, nonduplicate problem; not used
+as proof evidence.
+
+\end{thebibliography}
+\end{document}

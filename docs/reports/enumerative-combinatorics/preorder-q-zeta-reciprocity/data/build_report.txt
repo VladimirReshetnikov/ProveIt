@@ -1,0 +1,27 @@
+PDF build report
+================
+Article: article.pdf (merged draft)
+Pages: 45
+Build: latexmk -pdf -interaction=nonstopmode article.tex, from a clean tree
+       (latexmk -c beforehand), three pdflatex passes driven by latexmk.
+Raw transcript: data/latex_build.log, covering all three passes. Its first
+       pass reports undefined references and citations, as any first pass on a
+       cleaned tree does; the third and final pass reports none.
+Final LaTeX log (article.log, third pass): no overfull boxes, no underfull
+       boxes, no unresolved references or citations, no LaTeX warnings, and
+       no pdfTeX warnings.
+Engine: pdfTeX via MiKTeX; Latin Modern fonts; no external figures, no
+       bibliography processor, no network downloads.
+Post-build: latexmk -c, so only article.pdf and the sources remain.
+
+This is a document-quality check, not a mathematical proof certificate.
+
+Earlier record retained from the merged supportwise draft
+--------------------------------------------------------
+That draft's own 17-page article.pdf was built with the same latexmk
+invocation and additionally rasterized in full: all 17 pages rendered at
+140 dpi, contact sheets and detailed pages inspected, PDF text layer checked
+for Unicode replacement characters and for lines outside the page bounds, with
+no defects found. That rasterization check applied to the 17-page document and
+has not been repeated for the 45-page merged article; only the log-level
+checks listed above have been performed here.

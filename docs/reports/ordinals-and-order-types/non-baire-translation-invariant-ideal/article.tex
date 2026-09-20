@@ -1,0 +1,1311 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\hypersetup{hidelinks,pdftitle={A non-Baire translation-invariant ideal with a perfect translation-almost-disjoint family},pdfauthor={ChatGPT},pdfsubject={A proposed affirmative solution to Question 1 of Filipow and Tryba}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Non-Baire ideals and translated almost disjointness}
+\fancyhead[R]{\small Research note}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{problem}[theorem]{Problem}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\omega}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\I}{\mathcal I}
+\newcommand{\J}{\mathcal J}
+\newcommand{\U}{\mathcal U}
+\newcommand{\M}{\mathcal M}
+\newcommand{\A}{\mathcal A}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\Fin}{\mathrm{Fin}}
+\newcommand{\cfr}{\mathfrak c}
+\newcommand{\supp}{\sigma}
+\newcommand{\sh}[2]{\tau_{#1}(#2)}
+\newcommand{\eqfin}{=^{*}}
+\newcommand{\subfin}{\subseteq^{*}}
+\newcommand{\bp}{\mathrm{BP}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\DeclareMathOperator{\val}{val}
+\title{\vspace{-1.5em}\textbf{A non-Baire translation-invariant ideal\protect\\
+with a perfect translation-almost-disjoint family}\protect\\[0.65em]
+\large An affirmative construction for a question of Filip\'ow and Tryba}
+\author{ChatGPT\thanks{Prepared in response to a request for a randomly selected open-problem investigation. This is an unrefereed research note, not an independently certified or formally verified result.}}
+\date{September 20, 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a ZFC construction intended to answer Question~1 of Filip\'ow and
+Tryba, \emph{Densities for sets of natural numbers vanishing on a given
+family}, affirmatively. For every free ultrafilter $\U$ on $\omega$, an
+explicit partition into finite intervals defines a proper
+translation-invariant ideal $\I_\U$ without the Baire property. There is a
+continuous injection $x\mapsto A_x$ from $2^\omega$ into $\I_\U^+$ such
+that $A_x\cap(A_y+k)$ is finite whenever $x\ne y$ and $k\in\mathbb Z$.
+Thus the positive family can be perfect, and its translated intersections
+can be genuinely finite rather than merely ideal-small. The construction
+combines ultrafilter block supports with widely separated labels on a
+binary tree. A direct fusion argument proves the category assertion
+without relying on a preservation claim about arbitrary continuous
+preimages. We also establish quantitative intersection bounds, maximal
+ultrafilter traces, a rich maxitive abstract upper density with this exact
+null ideal, and an extension to countable permutation actions. Exact
+finite tests accompany the proof; they check its explicit arithmetic and
+fusion invariants, not the infinitary assertions. The literature search
+found the question explicitly posed in the original source, but does not
+constitute a definitive priority determination.
+\end{abstract}
+
+\vspace{0.3em}
+\noindent\textbf{Keywords.} Ideals on the integers; Baire property; free
+ultrafilters; translation almost disjointness; abstract upper densities.
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{The problem, the result, and its status}
+\label{sec:intro}
+
+\subsection{Random selection and problem selection}
+The mathematical area was chosen before the problem. A single call to a
+pseudorandom generator, seeded with 128 bits from the operating system,
+selected index~22 from a fixed, zero-indexed list of 24 mathematical
+areas. The result was \emph{set theory}. The seed, the complete list, and
+reproduction instructions appear in Appendix~\ref{app:random} and in
+\texttt{random\_selection.json}. There was no reroll of the area.
+
+Within set theory, ideals on a countable set offered a useful balance:
+the motivating question is genuinely infinitary, but potential witnesses
+can be built from finite blocks, binary trees, and ultrafilters. The
+selected problem is Question~1 of Filip\'ow and Tryba~\cite{FT}. In the
+notation developed below, its content is the following.
+
+\begin{problem}[Filip\'ow--Tryba, Question 1]
+\label{prob:FT}
+Find a translation-invariant proper ideal $\I$ on $\omega$ for which
+$\I$ lacks the Baire property and $\I^+$ contains a
+translation-almost-disjoint family of size $\cfr=2^{\aleph_0}$.
+\end{problem}
+
+The original uses the positive integers. Passing between $\omega$ and
+the positive integers by $n\mapsto n+1$ does not change this question.
+The translation conventions and the harmless finite boundary effects
+are made explicit in Section~\ref{sec:prelim}.
+
+\subsection{Main statement}
+\begin{theorem}[Main construction]
+\label{thm:main}
+In ZFC, for every free ultrafilter $\U$ on $\omega$ there exist a proper
+ideal $\I_\U\subseteq\Pow(\omega)$ and a continuous injection
+\[
+             \Phi:2^\omega\longrightarrow 2^\omega,
+             \qquad \Phi(x)=A_x,
+\]
+with the following properties:
+\begin{enumerate}[label=\textup{(\roman*)},itemsep=2pt]
+\item $\I_\U$ contains $\Fin$, is translation invariant, and does not
+have the Baire property.
+\item Every $A_x$ is $\I_\U$-positive.
+\item If $x\ne y$ and $k\in\mathbb Z$, then
+$A_x\cap(A_y+k)$ is finite. If $k\ne0$, this conclusion also holds for
+$x=y$.
+\item $\I_\U$ is tall. More strongly, its restriction to any positive
+set does not have the Baire property in the corresponding Cantor space.
+\end{enumerate}
+The image of $\Phi$ is a compact perfect family of cardinality $\cfr$.
+Both the block partition and the map $\Phi$ are independent of $\U$.
+\end{theorem}
+
+The proof is given in Sections~\ref{sec:category}--\ref{sec:tree}.
+No additional hypothesis such as the continuum hypothesis is used. The
+construction is explicit \emph{relative to a free ultrafilter}; this is
+not a claim that membership in the ideal is algorithmically decidable.
+
+The theorem answers the existential question by strengthening its
+witness. An ideal-small intersection is allowed in the problem, whereas
+our intersections are finite. A family of continuum cardinality is
+requested, whereas our family is the continuous image of Cantor space.
+These stronger properties will also make it possible to prescribe
+positive values of an associated abstract density.
+
+\subsection{What is, and is not, being claimed}
+The original article was published in 2020; its arXiv version was posted
+in 2023. Question~1 is visible on page~7 of the ten-page preprint~\cite{FT}.
+A targeted search on September~20, 2026 checked this source, the author's
+publication and citation lists, and related accessible later papers,
+including~\cite{KL,Path}. No resolution of this particular question was
+located. These checks do not exclude an unindexed paper, an unpublished
+argument, or another treatment under different terminology. A search
+record is included in the archive.
+
+The mathematical contribution claimed here is the complete written
+construction and proof, not a verified assertion of priority. The note
+has not been refereed or checked in a proof assistant. The explicit
+formulas and several finite versions of the combinatorial invariants
+were checked by an executable program. This provides protection against
+indexing errors but is not a substitute for the proofs.
+
+The category criterion used below is classical, and the maximal-family
+method for constructing abstract densities is established in the
+literature~\cite{Talagrand,DNJ,FT}. These ingredients are not presented as
+new. The later questions in~\cite{FT} about all invariant ideals or
+translation-maximal ideals are not answered by this construction.
+
+\section{Preliminaries and translation conventions}
+\label{sec:prelim}
+
+Write $\omega=\{0,1,2,\ldots\}$ and identify a subset of a countable set
+$X$ with its characteristic function in $2^X$. This endows $\Pow(X)$ with
+the product topology. After any enumeration of $X$, this is Cantor space.
+A subset of this space has the \emph{Baire property} if its symmetric
+difference with an open set is meager. A meager set is a countable union
+of nowhere dense sets.
+
+\begin{definition}
+An \emph{ideal} on $X$ is a family $\I\subseteq\Pow(X)$ that contains all
+finite subsets of $X$, is hereditary, is closed under finite unions, and
+does not contain $X$. Its positive sets are
+$\I^+=\Pow(X)\setminus\I$. It is \emph{tall} if every infinite
+$D\subseteq X$ has an infinite subset belonging to $\I$.
+\end{definition}
+
+Every ideal is invariant under finite symmetric differences. Indeed,
+if $A\in\I$ and $F$ is finite, then $A\mathbin\triangle F\subseteq
+A\cup F\in\I$; the converse follows by applying the same observation
+again. We write $A\eqfin B$ when $A\mathbin\triangle B$ is finite and
+$A\subfin B$ when $A\setminus B$ is finite.
+
+For $k\in\mathbb Z$ define the truncated shift
+\begin{equation}
+\label{eq:shift}
+                 \sh{k}{A}=(A+k)\cap\omega.
+\end{equation}
+It preserves unions and inclusions. For all integers $h,k$,
+\begin{equation}
+\label{eq:composition}
+           \sh{k}{\sh{h}{A}}\eqfin\sh{k+h}{A}.
+\end{equation}
+To check this, the only possible loss is caused by an element shifted
+below zero at the intermediate step and shifted back into $\omega$ at
+the next step. Such original elements lie in a fixed finite initial
+segment, depending on $h$ and $k$. An ideal is \emph{translation
+invariant} if $A\in\I$ is equivalent to $\sh{k}{A}\in\I$ for every $k$.
+
+\begin{definition}
+A family $\A\subseteq\I^+$ is \emph{$\I$-translation-almost-disjoint},
+or \emph{$\I$-TAD}, if
+\[
+             A\cap\sh{k}{B}\in\I
+     \quad(A,B\in\A,\ A\ne B,\ k\in\mathbb Z).
+\]
+We call the stronger property that all these intersections are finite
+\emph{finite translation almost disjointness}.
+\end{definition}
+
+A free ultrafilter $\U$ on $\omega$ is a maximal proper filter containing
+all cofinite sets and no finite sets. In particular, for every
+$S\subseteq\omega$ exactly one of $S$ and $\omega\setminus S$ belongs to
+$\U$. Its dual ideal is
+\[
+           \U^{\mathrm d}=\{S\subseteq\omega:S\notin\U\}.
+\]
+For example, if $S,T\notin\U$, their complements belong to $\U$, so
+$\omega\setminus(S\cup T)\in\U$ and $S\cup T\notin\U$.
+Membership in $\U$ is unaffected by finite changes.
+
+Free ultrafilters exist in ZFC by extending the cofinite filter to an
+ultrafilter. No special ultrafilter, such as a selective ultrafilter or a
+$P$-point, will be needed. In all that follows, $\U$ is an arbitrary
+fixed free ultrafilter.
+
+\section{An elementary category criterion for ideals}
+\label{sec:category}
+
+The next criterion is the form of the classical category
+characterization of ideals needed here; compare
+Talagrand~\cite{Talagrand} and its formulation in~\cite[Theorem~1.7]{FT}.
+We include the proof to make the category step inspectable.
+
+\begin{lemma}
+\label{lem:zeroone}
+If a proper ideal on a countably infinite set has the Baire property,
+then it is meager.
+\end{lemma}
+\begin{proof}
+Enumerate the ground set as $\omega$. Suppose that $\I$ has the Baire
+property and is not meager. There is a nonempty basic cylinder $[s]$ in
+which $\I$ is comeager. For every binary word $t$ of length $|s|$, flipping
+a suitable subset of the first $|s|$ coordinates gives a homeomorphism
+from $[s]$ onto $[t]$. It preserves $\I$ because $\I$ is invariant under
+finite changes. Thus $\I$ is comeager in every such cylinder, and hence
+in all of $2^\omega$.
+
+The complementation map $A\mapsto\omega\setminus A$ is a
+homeomorphism. Its image of $\I$ is therefore also comeager. This image
+is disjoint from $\I$: otherwise an ideal would contain both a set and
+its complement, and so would contain $\omega$. Two comeager subsets of
+Cantor space cannot be disjoint, by the Baire category theorem. This is
+a contradiction.
+\end{proof}
+
+\begin{lemma}[Finite-block category criterion]
+\label{lem:criterion}
+A proper ideal $\I$ on $\omega$ has the Baire property if and only if
+there are integers
+\[
+               0=t_0<t_1<t_2<\cdots
+\]
+such that no member of $\I$ contains infinitely many whole intervals
+$[t_n,t_{n+1})$.
+\end{lemma}
+\begin{proof}
+Suppose first that $\I$ has the Baire property. By
+Lemma~\ref{lem:zeroone}, it is contained in $\bigcup_j K_j$, where each
+$K_j\subseteq2^\omega$ is closed and nowhere dense.
+
+We recursively choose $t_{n+1}>t_n$ and a binary word $u_n$ on the
+coordinates $[t_n,t_{n+1})$ so that
+\begin{equation}
+\label{eq:pattern}
+ [v\,u_n]\cap(K_0\cup\cdots\cup K_n)=\varnothing
+             \qquad\text{for every }v\in2^{t_n}.
+\end{equation}
+Here $v\,u_n$ denotes concatenation. There are only finitely many such
+prefixes $v$. Start with an empty proposed common suffix. For the first
+prefix, extend the suffix until the resulting cylinder avoids the
+finite union of the $K_j$'s. For the next prefix, extend the same suffix
+further to obtain avoidance for that prefix as well. Previously obtained
+avoidance persists under extension. After processing every prefix, add
+a coordinate if necessary to make the suffix nonempty. Now set
+$t_{n+1}$ equal to the resulting total length. Nowhere density justifies
+every extension.
+
+If a point $z\in2^\omega$ agrees with $u_n$ on infinitely many of these
+intervals, it belongs to none of the $K_j$. For any fixed $j$, choose a
+matching $n\ge j$ and apply~\eqref{eq:pattern} to the actual prefix of
+$z$.
+
+Suppose, toward a contradiction, that some $A\in\I$ contains infinitely
+many full intervals $[t_n,t_{n+1})$. On those intervals choose a subset
+$D\subseteq A$ whose characteristic function is $u_n$, and put no
+points into $D$ elsewhere. Then $D$ avoids every $K_j$, so $D\notin\I$.
+This contradicts heredity.
+
+Conversely, suppose the stated partition exists. For each $m$, the set
+\[
+ E_m=\{A\subseteq\omega:
+           [t_n,t_{n+1})\nsubseteq A\text{ for every }n\ge m\}
+\]
+is closed and nowhere dense. It is closed because each single-block
+condition is clopen. It has empty interior because any basic cylinder
+can be extended by putting an entire sufficiently late block into the
+set. The hypothesis gives $\I\subseteq\bigcup_m E_m$. Thus $\I$ is
+meager, and in particular has the Baire property.
+\end{proof}
+
+The same statement holds on any countably infinite set after choosing an
+enumeration. To refute the Baire property, it therefore suffices to show
+that every finite-block partition has an infinite union of blocks
+belonging to the ideal. Our next lemma proves a somewhat stronger
+assertion.
+
+\section{Block-support ideals and the fusion argument}
+\label{sec:fusion}
+
+\subsection{Block support and countably many transformations}
+Let $X$ be a countably infinite set and let $(B_n)_{n\in\omega}$ be a
+partition of $X$ into nonempty finite blocks. Define
+\begin{equation}
+\label{eq:support}
+              \supp(A)=\{n:A\cap B_n\ne\varnothing\}.
+\end{equation}
+The simple block-support ideal is
+\[
+              \J_\U=\{A\subseteq X:\supp(A)\notin\U\}.
+\]
+Because $\supp(A\cup D)=\supp(A)\cup\supp(D)$, this is an ideal.
+Notice that being small here does not mean having few points in each
+block. It means avoiding all points of a $\U$-large collection of
+blocks.
+
+For a slightly more general construction, let
+$f_i:D_i\to X$, $i\in\omega$, be partial maps with finite fibers, and
+assume the identity map on $X$ occurs in the list. Set
+\[
+              T_i(A)=f_i[A\cap D_i]
+\]
+and define
+\begin{equation}
+\label{eq:generalideal}
+ \I=\{A\subseteq X:\supp(T_i(A))\notin\U
+                               \text{ for every }i\in\omega\}.
+\end{equation}
+This is again an ideal: each $T_i$ preserves inclusions and finite
+unions, sends finite sets to finite sets, and the identity term ensures
+$X\notin\I$. The finite-fiber assumption will be needed in the fusion
+argument, not in this elementary ideal verification.
+
+\begin{lemma}[Separated-block fusion]
+\label{lem:fusion}
+For the ideal~\eqref{eq:generalideal}, let $(Q_j)_{j\in\omega}$ be any
+sequence of pairwise disjoint, nonempty finite subsets of $X$. There
+exists an infinite $H\subseteq\omega$ for which
+\[
+                        \bigcup_{j\in H} Q_j\in\I.
+\]
+The $Q_j$ need not cover $X$.
+\end{lemma}
+\begin{proof}
+We first choose increasing indices $j_0<j_1<\cdots$ with the following
+finite-stage invariant:
+\begin{equation}
+\label{eq:fusioninvariant}
+ \supp(T_i(Q_{j_n}))\cap\supp(T_\ell(Q_{j_r}))=\varnothing
+ \quad\text{if }r<n\text{ and }i,\ell\le n.
+\end{equation}
+Suppose $j_0,\ldots,j_{n-1}$ have been selected. The set of previously
+used block indices, with transformations through stage $n$, is
+\[
+ H_n=\bigcup_{r<n}\ \bigcup_{\ell\le n}
+                         \supp(T_\ell(Q_{j_r})).
+\]
+It is finite. Consequently $C_n=\bigcup_{b\in H_n}B_b$ is finite, and so
+is
+\[
+                  F_n=\bigcup_{i\le n} f_i^{-1}(C_n).
+\]
+Preimages here are taken in the domains $D_i$. Finiteness follows from
+the finite-fiber hypothesis. Only finitely many of the disjoint sets
+$Q_j$ meet $F_n$. Choose $j_n>j_{n-1}$ outside those exceptions. Then
+$T_i(Q_{j_n})\cap C_n=\varnothing$ for every $i\le n$, which is exactly
+what is needed for~\eqref{eq:fusioninvariant}.
+
+Separate the selected sets into two unions:
+\[
+ C_0=\bigcup_{n\text{ even}}Q_{j_n},
+ \qquad
+ C_1=\bigcup_{n\text{ odd}}Q_{j_n}.
+\]
+For fixed $i,\ell$, the intersection
+\begin{equation}
+\label{eq:crossfinite}
+                  \supp(T_i(C_0))\cap\supp(T_\ell(C_1))
+\end{equation}
+is finite. Indeed, if a block index lies in this intersection, it is
+witnessed by an even selected stage $n$ and an odd selected stage $r$.
+These stages are distinct. If $\max(n,r)\ge\max(i,\ell)$,
+condition~\eqref{eq:fusioninvariant}, with the larger stage taken last,
+forbids the intersection. All remaining witnesses come from finitely
+many early selected sets, and their transformed block supports are
+finite.
+
+If neither $C_0$ nor $C_1$ belonged to $\I$, there would exist indices
+$i$ and $\ell$ with
+\[
+                 \supp(T_i(C_0))\in\U,
+       \qquad    \supp(T_\ell(C_1))\in\U.
+\]
+Their intersection would belong to $\U$, contradicting its finiteness
+in~\eqref{eq:crossfinite} and the freeness of $\U$. Hence at least one
+of $C_0,C_1$ belongs to $\I$. Its defining parity supplies the required
+infinite index set $H$.
+\end{proof}
+
+\begin{corollary}
+\label{cor:nonbp}
+The ideal~\eqref{eq:generalideal} does not have the Baire property and
+is tall. For every $D\in\I^+$, its restriction
+\[
+                 \I\restr D=\{A\subseteq D:A\in\I\}
+\]
+does not have the Baire property as a subset of $2^D$.
+\end{corollary}
+\begin{proof}
+Apply Lemma~\ref{lem:fusion} to each finite-block partition supplied by
+a putative application of Lemma~\ref{lem:criterion}. The resulting
+infinite union contradicts that criterion, so $\I$ cannot have the
+Baire property.
+
+For tallness, enumerate an arbitrary infinite $D$ by distinct points
+$d_j$ and apply the fusion lemma to $Q_j=\{d_j\}$. It produces an
+infinite subset of $D$ belonging to $\I$.
+
+Finally, if $D$ is positive, $\I\restr D$ is a proper ideal on $D$.
+Any finite-block partition of $D$ is an eligible sequence $(Q_j)$ in the
+fusion lemma, even though it does not cover $X$. The same contradiction
+to the category criterion in $2^D$ proves the last assertion.
+\end{proof}
+
+\subsection{Taking the translation core}
+Return to $X=\omega$. Use the partial maps $f_k(n)=n+k$ on the domains
+where $n+k\ge0$, enumerated over $k\in\mathbb Z$. They are injective,
+and their induced transformations are the truncated shifts.
+Define
+\begin{equation}
+\label{eq:core}
+ \boxed{\displaystyle
+ \I_\U=\{A\subseteq\omega:
+          \supp(\sh{k}{A})\notin\U\text{ for every }k\in\mathbb Z\}.}
+\end{equation}
+This is the translation core of $\J_\U$.
+
+\begin{proposition}
+\label{prop:core}
+For every partition of $\omega$ into nonempty finite blocks,
+$\I_\U$ is a proper, tall, translation-invariant ideal without the
+Baire property. Its restriction to each positive set also lacks the
+Baire property.
+\end{proposition}
+\begin{proof}
+All assertions except translation invariance follow from
+Corollary~\ref{cor:nonbp}. For invariance, suppose $A\in\I_\U$ and fix
+$h\in\mathbb Z$. For each $k$,
+\[
+       \supp(\sh{k}{\sh{h}{A}})
+                   \eqfin\supp(\sh{k+h}{A}).
+\]
+The right side does not belong to $\U$, by~\eqref{eq:core}, and finite
+changes do not affect ultrafilter membership. Thus
+$\sh{h}{A}\in\I_\U$. Conversely, if $\sh{h}{A}\in\I_\U$, apply the
+already established closure to $-h$. Equation~\eqref{eq:composition}
+and invariance of ideals under finite changes recover $A\in\I_\U$.
+\end{proof}
+
+\begin{remark}[Why the category proof needs care]
+An embedding of a free ultrafilter into a trace of an ideal does not, by
+itself, prove that the whole ideal lacks the Baire property. The Baire
+property is not preserved by preimages under arbitrary continuous maps.
+For instance, every subset of a closed nowhere dense copy of Cantor
+space is meager in the ambient Cantor space, even when its pullback
+under the embedding has no Baire property. The fusion argument avoids
+this pitfall. It also uses a single parity choice for \emph{all}
+transformations, not a potentially different parity for each shift.
+\end{remark}
+
+The preservation of non-Baire behavior under translation cores is
+already part of the surrounding theory: see~\cite[Proposition~3.8]{FT}
+and the countable-intersection theorem attributed there to
+Plewik~\cite{Plewik}. The point of the direct argument is to verify the
+specific ideal used here without leaving the preservation step implicit.
+
+\section{An explicit separated binary tree}
+\label{sec:tree}
+
+\subsection{Blocks and labels}
+We now choose the block partition that supplies continuum many positive
+sets. For $n\ge0$ put
+\begin{equation}
+\label{eq:blocks}
+\begin{aligned}
+ d_n&=2^n,\qquad L_n=4^n+2^{n+1},\\
+ b_n&=\sum_{j<n}L_j=\frac{4^n-1}{3}+2(2^n-1),\\
+ B_n&=[b_n,b_{n+1})\cap\omega.
+\end{aligned}
+\end{equation}
+Thus $b_0=0$, the intervals partition $\omega$, and each has length
+$L_n$. Let $2^{<\omega}$ denote the finite binary words. If $s$ has
+length $n$, let $\val(s)$ be its usual binary value between $0$ and
+$2^n-1$, with $\val(\varnothing)=0$. Assign the integer label
+\begin{equation}
+\label{eq:label}
+                  p_s=b_n+2^n\bigl(1+\val(s)\bigr).
+\end{equation}
+The labels at level $n$ form the finite set
+\[
+                   T_n=\{p_s:|s|=n\}.
+\]
+They lie inside $B_n$, and
+\begin{equation}
+\label{eq:margins}
+ \min T_n=b_n+2^n,\qquad
+ \max T_n=b_n+4^n,\qquad
+ b_{n+1}-\max T_n=2^{n+1}.
+\end{equation}
+Consecutive labels at level $n$ are $2^n$ apart. The gap between the last
+label of level $n$ and the first label of level $n+1$ is
+\begin{equation}
+\label{eq:levelgap}
+                     \min T_{n+1}-\max T_n=2^{n+2}.
+\end{equation}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}rrrrl@{}}
+\toprule
+$n$ & $b_n$ & $b_{n+1}$ & $|T_n|$ & Labels in $T_n$\\
+\midrule
+0 & 0 & 3 & 1 & $1$\\
+1 & 3 & 11 & 2 & $5,7$\\
+2 & 11 & 35 & 4 & $15,19,23,27$\\
+3 & 35 & 115 & 8 & $43,51,59,67,75,83,91,99$\\
+4 & 115 & 403 & 16 & $131,147,\ldots,371$\\
+\bottomrule
+\end{tabular}
+\caption{The first levels. Block endpoints are half-open; the labels
+stay away from both endpoints by margins tending to infinity.}
+\label{tab:levels}
+\end{table}
+
+\begin{lemma}[Global separation]
+\label{lem:separation}
+If $s\ne t$ are finite binary words and $m=\max(|s|,|t|)$, then
+\begin{equation}
+\label{eq:separation}
+                            |p_s-p_t|\ge2^m.
+\end{equation}
+\end{lemma}
+\begin{proof}
+If both words have length $m$, their distinct binary values and
+formula~\eqref{eq:label} give the bound. If the levels differ, the label
+at the higher level is to the right of every label at a lower level.
+For $m\ge1$, even its distance from the last label of the immediately
+preceding level is
+\[
+                         \min T_m-\max T_{m-1}=2^{m+1}.
+\]
+All earlier labels are still farther away. This is stronger than the
+claimed bound.
+\end{proof}
+
+\subsection{Branches, positivity, and translated intersections}
+For $x\in2^\omega$, write $x\restr n$ for its prefix of length $n$ and
+set
+\begin{equation}
+\label{eq:branch}
+                       A_x=\{p_{x\restr n}:n\ge0\}.
+\end{equation}
+Every branch has exactly one point in every $B_n$. Therefore
+\begin{equation}
+\label{eq:positive}
+                         \supp(A_x)=\omega\in\U,
+                 \qquad A_x\notin\I_\U.
+\end{equation}
+The identity shift alone witnesses positivity.
+
+\begin{proposition}[Quantitative translated intersections]
+\label{prop:quantitative}
+Let $x,y\in2^\omega$.
+If $k\ne0$, define
+\[
+                   N(k)=\lfloor\log_2|k|\rfloor+1.
+\]
+Then, without any requirement that $x\ne y$,
+\begin{equation}
+\label{eq:cutoff}
+ A_x\cap\sh{k}{A_y}\subseteq[0,b_{N(k)}),
+ \qquad
+ \bigl|A_x\cap\sh{k}{A_y}\bigr|\le N(k).
+\end{equation}
+If $x\ne y$ and $d=\min\{j:x(j)\ne y(j)\}$, then
+\begin{equation}
+\label{eq:commonprefix}
+                  |A_x\cap A_y|=d+1.
+\end{equation}
+\end{proposition}
+\begin{proof}
+For $k\ne0$, an intersection point gives
+$p_{x\restr n}=p_{y\restr r}+k$. The two node labels are distinct.
+By Lemma~\ref{lem:separation},
+\[
+                           |k|\ge2^{\max(n,r)}.
+\]
+Since $2^{N(k)}>|k|$, both $n$ and $r$ are smaller than $N(k)$. Thus the
+intersection is contained in the first $N(k)$ levels, all of which lie
+below $b_{N(k)}$. There is at most one point of $A_x$ in each such level,
+proving~\eqref{eq:cutoff}.
+
+For $k=0$, equality of node labels forces equality of the words, since
+distinct levels are in disjoint blocks and labels within a level are
+distinct. Two different infinite branches have the same prefixes
+exactly at lengths $0,1,\ldots,d$. This includes the empty prefix and
+explains the $+1$ in~\eqref{eq:commonprefix}.
+\end{proof}
+
+The cutoff is a uniform bound for each fixed nonzero shift, independent
+of both branches. It is not asserted to be optimal. The dependence on
+$k$ is essential, and the zero shift is treated separately because two
+branches can share an arbitrarily long finite prefix.
+
+\begin{proposition}[The perfect family]
+\label{prop:perfect}
+The map $\Phi(x)=A_x$ is a continuous injection from $2^\omega$ into
+$2^\omega$. Its image is compact and perfect and has cardinality
+$\cfr$.
+\end{proposition}
+\begin{proof}
+For a coordinate $q$ that is not a node label, membership
+$q\in A_x$ is constantly false. If $q=p_s$, it is equivalent to $s$
+being a prefix of $x$, a clopen condition on $x$. Hence every coordinate
+map is continuous, so $\Phi$ is continuous in the product topology.
+Distinct branches differ at some prefix, and their sets consequently
+differ at the corresponding label; thus $\Phi$ is injective.
+
+A continuous injection from the compact space $2^\omega$ into the
+Hausdorff space $2^\omega$ is a homeomorphism onto its image. The image
+is therefore compact, has no isolated points, and has the cardinality
+of Cantor space.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Use the partition~\eqref{eq:blocks} in~\eqref{eq:core}.
+Proposition~\ref{prop:core} establishes all assertions about the ideal,
+including tallness and the category of its positive restrictions.
+Equation~\eqref{eq:positive} establishes positivity of every branch.
+Proposition~\ref{prop:quantitative} gives the finite-intersection
+properties, and Proposition~\ref{prop:perfect} gives the required
+perfect parametrization. Since $\Fin\subseteq\I_\U$, the family is
+in particular $\I_\U$-TAD. This proves the stated affirmative answer to
+Problem~\ref{prob:FT}.
+\end{proof}
+
+\section{The ultrafilter trace and the quotient Boolean algebra}
+\label{sec:trace}
+
+The increasing margins in~\eqref{eq:margins} have another purpose:
+a fixed translation eventually keeps every selected point in its own
+block. This identifies the ideal on every branch exactly.
+
+For $S\subseteq\omega$, define
+\[
+                   A_x[S]=\{p_{x\restr n}:n\in S\}.
+\]
+\begin{proposition}[Exact trace formula]
+\label{prop:trace}
+For every $x\in2^\omega$, $S\subseteq\omega$, and $k\in\mathbb Z$,
+\begin{equation}
+\label{eq:tracesupport}
+                         \supp(\sh{k}{A_x[S]})\eqfin S.
+\end{equation}
+Consequently,
+\begin{equation}
+\label{eq:trace}
+                         A_x[S]\in\I_\U
+                              \quad\Longleftrightarrow\quad S\notin\U.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Whenever $2^n>|k|$, the margin estimates show that
+$p_{x\restr n}+k$ is still in $B_n$. Thus all sufficiently late selected
+points retain their block index. The finitely many early selected
+points contribute only finitely many block indices before and after
+translation, proving~\eqref{eq:tracesupport}.
+
+If $S\notin\U$, every support in~\eqref{eq:tracesupport} is outside
+$\U$, so $A_x[S]\in\I_\U$. If $S\in\U$, the identity shift has support
+exactly $S$, and hence $A_x[S]\notin\I_\U$.
+\end{proof}
+
+Thus $n\mapsto p_{x\restr n}$ transports the dual ideal of $\U$ to
+$\I_\U\restr A_x$. In particular, this trace is a maximal ideal on
+$A_x$. Notice that this does not make the whole ideal maximal: there
+are many different positive branches.
+
+Recall that $\Pow(\omega)/\I_\U$ identifies $A$ and $D$ when
+$A\mathbin\triangle D\in\I_\U$. An \emph{atom} in a Boolean algebra is
+a nonzero element with no strictly intermediate element between it and
+zero.
+
+\begin{corollary}
+\label{cor:atoms}
+Each $[A_x]$ is an atom in $\Pow(\omega)/\I_\U$. The elements $[A_x]$
+are distinct and pairwise disjoint, so the quotient has at least
+$\cfr$ atoms. Distinct free ultrafilters give distinct ideals in the
+construction.
+\end{corollary}
+\begin{proof}
+Every subset of $A_x$ has the form $A_x[S]$. Exactly one of $S$ and its
+complement belongs to $\U$. By~\eqref{eq:trace}, either $A_x[S]$ is zero
+in the quotient, or its complement relative to $A_x$ is zero there.
+This proves atomicity. More generally, an element below $[A_x]$ can be
+represented by a subset of $A_x$, by intersecting a representative with
+$A_x$.
+
+For $x\ne y$, the intersection $A_x\cap A_y$ is finite, so the two
+nonzero atoms are disjoint and distinct. Finally, if $\U\ne\mathcal V$,
+choose $S$ belonging to one ultrafilter and not the other. Formula
+\eqref{eq:trace}, using any one fixed branch, distinguishes
+$\I_\U$ from $\I_{\mathcal V}$.
+\end{proof}
+
+The occurrence of continuum many atoms is compatible with the
+countability of the ground set. These atoms live in a quotient by an
+ideal; the representing sets are not literally disjoint, only disjoint
+modulo the ideal. No claim is made that these are all the atoms.
+
+\section{Abstract densities with this exact null ideal}
+\label{sec:density}
+
+\subsection{The meaning of abstract upper density}
+An \emph{abstract upper density} is a map
+$\delta:\Pow(\omega)\to[0,1]$ such that $\delta(\omega)=1$, finite sets
+have value zero, $\delta$ is monotone, and
+\[
+                       \delta(A\cup D)\le\delta(A)+\delta(D).
+\]
+It is \emph{rich} when its range is the whole interval $[0,1]$, and
+translation invariant when $\delta(\sh{k}{A})=\delta(A)$ for every $k$.
+This is the framework of~\cite{DNJ,FT}. It does not require agreement
+with ordinary asymptotic density, finite additivity, or a dilation
+identity. The distinction matters for our example.
+
+\subsection{A maxitive realization and prescribed branch values}
+The next argument is an application of the established maximal-TAD
+construction~\cite[Theorem~3.1]{FT}, related to the maximal-family method
+of~\cite{DNJ}. We give the formula and verify it, rather than claiming
+the general mechanism as a new theorem.
+
+\begin{theorem}
+\label{thm:density}
+Let $w:2^\omega\to(0,1]$ be any surjection. There is a translation-invariant
+rich abstract upper density $\delta$ with
+\begin{equation}
+\label{eq:exactnull}
+          \{A:\delta(A)=0\}=\I_\U,
+        \qquad \delta(A_x)=w(x)\quad(x\in2^\omega).
+\end{equation}
+It can be chosen \emph{maxitive}:
+\begin{equation}
+\label{eq:maxitive}
+                    \delta(A\cup D)=\max\{\delta(A),\delta(D)\}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Extend $\{A_x:x\in2^\omega\}$ to a maximal $\I_\U$-TAD family
+$\M\subseteq\I_\U^+$. Zorn's lemma applies because the union of a chain
+of extending TAD families is again such a family: any two of its
+members already lie together in one element of the chain.
+
+Define a weight $a:\M\to(0,1]$ by $a(A_x)=w(x)$ and $a(C)=1$ on any
+remaining members. All weights are strictly positive. For
+$A\subseteq\omega$, let
+\[
+ W(A)=\{C\in\M:\text{there is }k\in\mathbb Z
+                         \text{ with }C\cap\sh{k}{A}\notin\I_\U\},
+\]
+and set
+\begin{equation}
+\label{eq:densityformula}
+                    \delta(A)=\sup\{a(C):C\in W(A)\},
+                        \qquad\sup\varnothing=0.
+\end{equation}
+We verify each required property.
+
+If $A\subseteq D$, then $W(A)\subseteq W(D)$, so $\delta$ is monotone.
+A finite $A$ has no witnesses, so its value is zero. Every member of
+$\M$ witnesses $\omega$, and $w$ takes the value~1; hence
+$\delta(\omega)=1$.
+
+For any fixed $C$ and $k$, the intersection with a shifted union is
+\[
+ C\cap\sh{k}{A\cup D}
+       =\bigl(C\cap\sh{k}{A}\bigr)
+                         \cup\bigl(C\cap\sh{k}{D}\bigr).
+\]
+A union belongs to an ideal exactly when both constituent sets do.
+It follows that $W(A\cup D)=W(A)\cup W(D)$.
+Taking suprema proves~\eqref{eq:maxitive}, which implies subadditivity.
+
+For translation invariance, $\sh{k}{\sh{h}{A}}$ differs finitely from
+$\sh{k+h}{A}$, and adding or removing finitely many points does not
+change whether an intersection is positive. As $k$ ranges over
+$\mathbb Z$, so does $k+h$. Thus $W(\sh{h}{A})=W(A)$.
+
+If $A\in\I_\U$, every shift and every intersection of a shift with a
+member of $\M$ belongs to $\I_\U$, so $W(A)=\varnothing$. Conversely,
+suppose $A\notin\I_\U$ and $W(A)=\varnothing$. Then $A$ is translated
+almost disjoint from every member of $\M$. The condition is symmetric:
+shifting $C\cap\sh{k}{A}$ back by $-k$ gives
+$A\cap\sh{-k}{C}$ modulo a finite set. Also $A\notin\M$, since otherwise
+it witnesses itself with $k=0$. Therefore adjoining $A$ would strictly
+enlarge $\M$, a contradiction. Hence every positive $A$ has a witness,
+and its density is strictly positive. This proves the exact-null-ideal
+assertion.
+
+Finally, $W(A_x)=\{A_x\}$. The inclusion of $A_x$ follows from
+positivity; no other member of the TAD family can witness it. Therefore
+$\delta(A_x)=a(A_x)=w(x)$. Surjectivity of $w$ supplies every value in
+$(0,1]$, and the empty set supplies zero.
+\end{proof}
+
+A surjection $w$ can be chosen very concretely: take
+$r(x)=\sum_{j\ge0}x(j)2^{-j-1}$, and replace its value~0 by~1. This has
+range $(0,1]$. Neither continuity nor measurability of the weights is
+required.
+
+\subsection{Why finite additivity is impossible}
+\begin{proposition}
+\label{prop:noadditive}
+There is no finitely additive probability measure on all subsets of
+$\omega$ whose null ideal is exactly $\I_\U$.
+\end{proposition}
+\begin{proof}
+Suppose $\mu$ were such a measure. Every $A_x$ would have positive
+measure, and all intersections $A_x\cap A_y$ with $x\ne y$ would have
+measure zero. For any finite list of distinct branches, successively
+remove the intersections with earlier branches. This makes the list
+literally disjoint without changing any of its measures. Therefore
+\[
+                       \sum_{j=1}^r\mu(A_{x_j})\le1.
+\]
+For each positive integer $m$, at most $m$ branches can have measure
+at least $1/m$. But every positive real number is at least $1/m$ for
+some $m$. Thus only countably many branches could have positive
+measure, contradicting their continuum cardinality.
+\end{proof}
+
+This is the usual countable-chain-condition obstruction for a measure
+algebra, applied directly. In particular, the nonadditivity of the
+maxitive density is not an accidental weakness of the formula.
+Moreover, any function with exact zero set $\I_\U$ cannot be Baire
+measurable: a Baire-measurable real-valued function has a zero set with
+the Baire property, since that zero set is a countable intersection of
+preimages of open intervals.
+
+\section{Comparison with ordinary density}
+\label{sec:banach}
+
+For clarity, define upper Banach density here by
+\[
+ d^*(E)=\limsup_{L\to\infty}\ \sup_{a\in\omega}
+                   \frac{|E\cap[a,a+L)|}{L},
+              \qquad L\in\mathbb N_{>0}.
+\]
+We need only its defining estimates, not any structural theorem about
+this density. Let $\mathcal Z_B=\{E:d^*(E)=0\}$.
+
+\begin{proposition}
+\label{prop:incomparable}
+The ideals $\I_\U$ and $\mathcal Z_B$ are incomparable under inclusion.
+Every branch $A_x$ has upper Banach density zero but is
+$\I_\U$-positive. Conversely, $\I_\U$ contains a set of upper Banach
+density one.
+\end{proposition}
+\begin{proof}
+Let $T=\bigcup_n T_n$ be the set of all tree labels. Its successive gaps
+tend to infinity by~\eqref{eq:margins} and~\eqref{eq:levelgap}. Given a
+positive integer $M$, remove a finite initial set $F\subseteq T$ so
+that consecutive points of $T\setminus F$ are at least $M$ apart.
+Any interval of length $L$ contains at most $L/M+1$ such points, so
+\[
+       \sup_a\frac{|T\cap[a,a+L)|}{L}
+                       \le\frac1M+\frac{|F|+1}{L}.
+\]
+First let $L\to\infty$, then $M\to\infty$. This gives $d^*(T)=0$ and
+hence $d^*(A_x)=0$. Positivity was proved in~\eqref{eq:positive}.
+
+For the other direction, the four residue classes modulo~4 partition
+$\omega$, so exactly one of them, say $R_r$, belongs to $\U$. Let
+$S=R_{r+2\bmod4}$ and put
+\[
+                         E=\bigcup_{n\in S}B_n.
+\]
+Fix $k\in\mathbb Z$. Since $L_n\to\infty$, all sufficiently late
+blocks and their neighbors have length larger than $|k|$.
+Translating a late block by $k$ can therefore meet only itself and its
+immediate neighbors. Up to finitely many block indices,
+\[
+                 \supp(\sh{k}{E})\subseteq S+\{-1,0,1\}.
+\]
+The set on the right misses $R_r$. Consequently the support has finite
+intersection with the member $R_r$ of $\U$ and cannot belong to $\U$.
+This is true for every $k$, so $E\in\I_\U$.
+
+On the other hand, $E$ contains the full intervals $B_n$ for infinitely
+many $n$, with lengths tending to infinity. For each fixed $L$, some
+such interval has length at least $L$; it contains an interval of length
+$L$ entirely inside $E$. Thus the supremum in the definition of $d^*$ is
+1 for every $L$, and $d^*(E)=1$.
+\end{proof}
+
+It follows in particular that the density in
+Theorem~\ref{thm:density} does not extend ordinary asymptotic density:
+it assigns a positive value to sets $A_x$ whose asymptotic density is
+zero. Nor can it dominate upper Banach density, because it vanishes on
+the set $E$ just constructed. These observations locate the result
+inside the \emph{abstract} density framework and prevent an unintended
+stronger interpretation.
+
+\section{Extension to countable permutation actions}
+\label{sec:group}
+
+The mechanism is not specific to integer addition. Countability of the
+transformations and finiteness of their preimages of finite sets are
+the ingredients used in the category proof. The tree can also be built
+by finite avoidance rather than by the explicit numerical formula.
+
+\begin{theorem}
+\label{thm:group}
+Let a countable group $G$ act by permutations on a countably infinite
+set $X$. In ZFC there is a proper, tall, $G$-invariant ideal $\I$ on $X$
+without the Baire property and a perfect family
+$\{A_x:x\in2^\omega\}\subseteq\I^+$ such that
+\[
+                         A_x\cap gA_y\text{ is finite}
+               \quad(x\ne y,\ g\in G).
+\]
+The restriction of $\I$ to each positive set also lacks the Baire
+property. If the action is free, $A_x\cap gA_x$ is finite for every
+$g\ne e$ as well.
+\end{theorem}
+\begin{proof}
+Choose an enumeration of $X$ and increasing finite symmetric sets
+$G_n\subseteq G$ with $e\in G_n$ and $\bigcup_nG_n=G$.
+We recursively build finite blocks $B_n$ and distinct labels $p_s$ for
+all binary words $s$, putting the labels of words of length $n$ into
+$B_n$.
+
+At stage $n$, the previously constructed blocks form a finite set.
+Let $e_n$ be the first point of the enumeration not yet used in a block.
+Reserve it as a filler. Choose the $2^n$ labels of the new level one at
+a time. A new label must avoid all previous blocks, the filler $e_n$,
+the already chosen labels at this level, and
+\[
+              \{g p_t:g\in G_n,\ t\text{ labels a previously
+                                      chosen tree node}\}.
+\]
+Only finitely many points are forbidden at each choice, so the infinite
+set $X$ always supplies another point. Symmetry of $G_n$ ensures that
+avoiding $p_s=g p_t$ also avoids $p_t=g p_s$. When the level has been
+chosen, let $B_n$ be its labels together with $e_n$.
+
+The blocks are pairwise disjoint and finite. They cover $X$: at every
+stage the first unused point is placed in a block, so every fixed point
+of the enumeration is eventually used. For distinct tree nodes $s,t$,
+the construction guarantees
+\begin{equation}
+\label{eq:groupseparation}
+ p_s\ne g p_t
+ \quad\text{whenever }g\in G_N
+                    \text{ and }\max(|s|,|t|)\ge N.
+\end{equation}
+Indeed, at the later of the two selection times the element $g$ and its
+inverse belong to the current finite symmetric set, and the relevant
+point is forbidden. This also covers two distinct nodes chosen at the
+same level.
+
+Fix a free ultrafilter $\U$ on $\omega$, use block support for this
+partition, and put
+\[
+            \I=\{A\subseteq X:\supp(gA)\notin\U
+                                           \text{ for every }g\in G\}.
+\]
+It is proper because the identity transformation sends $X$ to $X$.
+The fusion lemma and Corollary~\ref{cor:nonbp} apply to the permutation
+maps, giving the category and tallness assertions. For $h\in G$,
+reindexing $g$ by $gh$ proves $hA\in\I$ if and only if $A\in\I$.
+
+Define $A_x=\{p_{x\restr n}:n\ge0\}$. It has exactly one point in each
+block and is positive. For $g\in G_N$, an equality between a point of
+$A_x$ and a point of $gA_y$ either involves the same tree node or,
+by~\eqref{eq:groupseparation}, involves two nodes at levels below $N$.
+Distinct branches have only finitely many common nodes, and there are
+only finitely many nodes at levels below $N$. This proves the required
+finite intersection. In a free action a nonidentity $g$ fixes no point,
+so the same-node possibility disappears even for $x=y$.
+
+Finally, membership of a label $p_s$ in $A_x$ is exactly the clopen
+prefix condition, while a filler point belongs to no branch. The same
+compactness argument as in Proposition~\ref{prop:perfect} gives a
+perfect family.
+\end{proof}
+
+For a nonfree action the final self-intersection assertion need not
+hold: the identity action fixes every branch. This is why the theorem
+separates distinct-branch intersections from self-intersections. The
+main result on $\omega$ used explicit truncated shifts; the theorem
+above concerns genuine permutation actions and does not silently
+identify the two settings.
+
+\section{Verification, reproducibility, and proof audit}
+\label{sec:verification}
+
+\subsection{What the program checks}
+The accompanying \texttt{verify.py} uses only the Python standard
+library and exact integer arithmetic. It contains explicit checks that
+remain active even under Python's optimization flag. A failed check
+raises an error and terminates with a nonzero exit status.
+
+The recorded run completed \textbf{13,012,145 successful checks} with
+Python~3.13.5. These include the replay of the random draw, the block
+boundary formula, uniqueness and placement of all 8,191 tree labels
+through level~12, their endpoint margins, and adjacent-label separation.
+For every nonzero integer shift from $-512$ to $512$, the program scans
+all those labels for collisions and checks the theoretical cutoff.
+
+All 256 binary branch prefixes of length~8 are also tested. Their
+zero-shift intersections are checked against the exact common-prefix
+formula. Every ordered pair, including identical prefixes, is checked
+for every nonzero shift from $-31$ to $31$. Both the cardinality bound
+and the location bound are verified. A further set of tests checks
+same-block transport under shifts from $-256$ to $256$ whenever the
+margin hypothesis applies.
+
+Finally, eight finite fusion constructions are run through 24 stages
+each, using separate reproducible seeds and auxiliary blocks of lengths
+$3,4,5,\ldots$. The program checks every finite-stage separation
+condition, then independently verifies that each even--odd transformed
+support overlap is confined to the predicted early stages. The
+auxiliary blocks keep the test inexpensive; the written fusion lemma
+applies to \emph{every} finite-block partition, including the main
+exponentially growing one.
+
+\subsection{Files and reproducibility}
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.39\textwidth}p{0.55\textwidth}@{}}
+\toprule
+File & Purpose\\
+\midrule
+\texttt{article.tex}, \texttt{article.pdf} & Source and compiled article.\\
+\texttt{verify.py} & Exact finite verification program.\\
+\texttt{random\_selection.json} & Original area pool, seed, and selected index.\\
+\texttt{verification\_results.json} & Parameters, check counts, and limitations.\\
+\texttt{verification\_report.txt} & Readable summary of the recorded run.\\
+\texttt{tree\_levels.csv} & Exact block and label data through level~12.\\
+\texttt{shift\_collisions.csv} & Collision counts for the finite tree and tested shifts.\\
+\texttt{fusion\_certificates.json} & Selected finite-block subsequences in the fusion tests.\\
+\texttt{literature\_search.md} & Sources consulted and search limitations.\\
+\texttt{README.md}, \texttt{Makefile} & Build and execution instructions.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+To rerun the checks, execute \texttt{python3 verify.py}. To rebuild the
+PDF, execute \texttt{latexmk -pdf article.tex}, or run
+\texttt{pdflatex article.tex} twice. No network access is needed for
+these steps once the archive has been obtained. The compiled article
+uses ordinary LaTeX packages; its bibliography is embedded in the
+source.
+
+\subsection{The infinitary checks are mathematical, not computational}
+No finite object is substituted for a free ultrafilter. On a finite
+set every ultrafilter is principal, which would invalidate the
+finite-intersection contradiction in the fusion lemma. Accordingly,
+the program does not claim to query $\U$, test ideal membership, or
+verify failure of the Baire property.
+
+The main logical dependencies can be audited as follows. First, the
+category criterion produces a finite-block obstruction from the
+assumption of the Baire property. Second, the fusion lemma defeats
+every such obstruction using finite fibers and one fixed free
+ultrafilter. Third, the orbit-core definition enforces invariance;
+truncated-shift compositions are used only modulo finite sets. Fourth,
+the branch sets are positive because they hit every block, not because
+of an assumption about their density. Fifth, global separation treats
+collisions between different levels as well as within a level. Finally,
+continuity and injectivity, rather than a bare cardinality assertion,
+produce the perfect family.
+
+The proof of the density corollary has two further important points:
+all weights are strictly positive, so a nonempty witness set cannot
+have supremum zero; and maximality is invoked for exactness of the
+null ideal, not merely for the availability of many prescribed values.
+The group extension uses symmetric finite sets of group elements so
+that avoidance works in both directions.
+
+\section{Conclusion and remaining scope}
+\label{sec:conclusion}
+
+The construction separates two tasks that initially look in tension.
+Ultrafilter block supports make every full block selector positive,
+while a translation core makes the ideal invariant. Neither operation
+requires selectors to be close together. By leaving enough room inside
+each block for widely separated binary-tree labels, one obtains
+continuum many positive selectors with only finite translated
+intersections. The fusion lemma then supplies the missing category
+argument for the core.
+
+Thus the mathematical argument presented here gives an affirmative
+construction for the stated Question~1, and in fact a perfect-family
+version with explicit bounds. The further consequences show that the
+example is tall, has maximal ultrafilter traces on its branches, admits
+a rich maxitive abstract density with its exact null ideal, and has an
+analogue for countable permutation actions.
+
+There are definite limits. The construction does not settle whether
+every translation-invariant ideal is the null ideal of a rich invariant
+abstract density. It does not construct such a density for a
+translation-maximal ideal. In fact $\I_\U$ is not translation maximal:
+fix distinct branches $A_x,A_y$ and form the invariant ideal generated
+by $\I_\U$ together with all shifts of $A_x$. If that ideal contained
+$\omega$, then $A_y$ would be covered by an ideal-small set and finitely
+many shifts of $A_x$. Its intersections with those shifts are finite,
+forcing $A_y\in\I_\U$, a contradiction. The generated ideal is
+therefore proper and strictly larger.
+
+Nor is a definable or computable replacement for the free ultrafilter
+provided. A proof-assistant formalization and an independent
+mathematical review remain distinct verification tasks, and the
+literature-priority question remains separate from the correctness of
+the explicit argument.
+
+\clearpage
+\appendix
+\section{Random-area selection record}
+\label{app:random}
+
+The original decimal seed was
+\begin{center}
+\texttt{209442498745758881649029240816391254350}.
+\end{center}
+It was generated using \texttt{secrets.randbits(128)}. A local instance
+of \texttt{random.Random(seed)} then selected
+\texttt{randrange(24)}, obtaining \textbf{22}. The recorded UTC time was
+September 20, 2026, at 21:02:49.492499 UTC. The complete pool, in its
+original order, was:
+
+\begin{center}
+\small
+\begin{longtable}{@{}rl@{}}
+\toprule
+Index & Area\\
+\midrule
+\endhead
+0 & Analytic number theory\\
+1 & Algebraic number theory\\
+2 & Finite group theory\\
+3 & Commutative algebra\\
+4 & Discrete geometry\\
+5 & Extremal graph theory\\
+6 & Probability and random processes\\
+7 & Dynamical systems\\
+8 & Approximation theory and special functions\\
+9 & Matrix analysis and inequalities\\
+10 & Topology and knot theory\\
+11 & Formal languages and automata\\
+12 & Order theory and lattice theory\\
+13 & Enumerative combinatorics\\
+14 & Additive combinatorics\\
+15 & Optimization and convex analysis\\
+16 & Coding theory\\
+17 & Algebraic geometry\\
+18 & Functional equations\\
+19 & Combinatorial game theory\\
+20 & Spectral graph theory\\
+21 & Numerical analysis\\
+22 & \textbf{Set theory}\\
+23 & Mathematical logic and computability\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+The selected mathematical area was random; the subsequent choice of
+Problem~\ref{prob:FT} within that area was based on its precise published
+formulation and the availability of a plausible constructive approach.
+Random selection does not guarantee that another researcher has not
+chosen the same problem.
+
+\section{A compact proof map}
+\label{app:proofmap}
+For a reader checking the central claim independently, the whole
+argument can be reduced to the following sequence of assertions.
+
+Start with any free $\U$ and the blocks
+\[
+ B_n=\left[\frac{4^n-1}{3}+2(2^n-1),\,
+              \frac{4^{n+1}-1}{3}+2(2^{n+1}-1)\right)\cap\omega.
+\]
+Let $\supp(A)=\{n:A\cap B_n\ne\varnothing\}$ and impose
+$\supp(\sh{k}{A})\notin\U$ simultaneously for every integer $k$.
+The resulting family is an ideal, is proper at the identity shift,
+and is invariant by composition modulo finite sets.
+
+To test the category assertion, begin with an arbitrary finite-block
+partition $(Q_j)$. Select a subsequence so that the first $n$ translated
+supports of the new block avoid the first $n$ translated supports of
+all preceding selected blocks. This is possible because a finite union
+of the $B_n$ is finite and each translation has finite preimages. The
+even and odd selected unions have finite cross-intersection of their
+block supports under every pair of fixed shifts. They cannot both
+have a shifted support in a free ultrafilter. One therefore belongs to
+the ideal and contains infinitely many $Q_j$, contradicting the
+category criterion under a Baire-property assumption.
+
+Finally, put
+\[
+ A_x=\left\{
+      \frac{4^n-1}{3}+2(2^n-1)+2^n(1+\val(x\restr n)):n\ge0
+                         \right\}.
+\]
+These sets are positive full selectors. Distinct node labels with
+maximum level $m$ differ by at least $2^m$. A fixed nonzero difference
+can therefore occur at only finitely many levels; difference zero
+between distinct branches is confined to their common prefixes.
+Coordinate membership is a clopen prefix condition, so the family is
+perfect. These statements are sufficient for the main theorem without
+using any of the density or group-action extensions.
+
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{FT}
+Rafa\l{} Filip\'ow and Jacek Tryba,
+\emph{Densities for sets of natural numbers vanishing on a given family},
+Journal of Number Theory \textbf{211} (2020), 371--382.
+\href{https://doi.org/10.1016/j.jnt.2019.10.015}{doi:10.1016/j.jnt.2019.10.015}.
+Preprint: \href{https://arxiv.org/abs/2309.00982}{arXiv:2309.00982v1},
+posted September 2, 2023. Question~1 is on preprint page~7.
+
+\bibitem{DNJ}
+Mauro Di Nasso and Renling Jin,
+\emph{Abstract densities and ideals of sets},
+Acta Arithmetica \textbf{185} (2018), no.~4, 301--313.
+Preprint: \href{https://arxiv.org/abs/1709.03097}{arXiv:1709.03097}.
+
+\bibitem{Talagrand}
+Michel Talagrand,
+\emph{Compacts de fonctions mesurables et filtres non mesurables},
+Studia Mathematica \textbf{67} (1980), no.~1, 13--43.
+Theorem~21; the ideal formulation used here is also stated in
+\cite[Theorem~1.7]{FT}.
+\href{https://eudml.org/doc/218303}{EuDML record 218303}.
+
+\bibitem{Plewik}
+Szymon Plewik,
+\emph{Ideals of the second category},
+Fundamenta Mathematicae \textbf{138} (1991), no.~1, 23--26.
+\href{https://doi.org/10.4064/fm-138-1-23-26}{doi:10.4064/fm-138-1-23-26}.
+The countable-intersection result is quoted in
+\cite[Theorem~1.9]{FT}; our argument does not depend on invoking it.
+
+\bibitem{KL}
+Jonathan M. Keith and Paolo Leonetti,
+\emph{Completeness and additive property for submeasures},
+\href{https://arxiv.org/abs/2501.13615}{arXiv:2501.13615v2},
+March 23, 2026. Consulted for surrounding literature, not used in the
+proof.
+
+\bibitem{Path}
+Rafa\l{} Filip\'ow and Jacek Tryba,
+\emph{Path of pathology},
+\href{https://arxiv.org/abs/2501.00503}{arXiv:2501.00503v1},
+submitted December 31, 2024. Consulted for surrounding literature, not
+used in the proof.
+
+\end{thebibliography}
+\end{document}

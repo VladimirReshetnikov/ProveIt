@@ -1,0 +1,1917 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{enumitem,fancyhdr,xcolor}
+\usepackage{listings}
+\makeatletter
+\let\tableinput\@@input
+\makeatother
+\usepackage[hidelinks,pdfusetitle]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdfauthor={Research manuscript prepared with ChatGPT},
+  pdftitle={Canonical Binomial Decomposition Does Not Preserve Real Roots},
+  pdfsubject={Counterexamples to Mu--Welker Question 3.10; exact and asymptotic proofs},
+  pdfkeywords={real-rooted polynomials, binomial expansion, recursive decomposition, Newton inequality}}
+\setlength{\parskip}{0.3em}
+\setlength{\parindent}{1.4em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\crefname{theorem}{Theorem}{Theorems}
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{proposition}{Proposition}{Propositions}
+\crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{Definition}{Definitions}
+\crefname{remark}{Remark}{Remarks}
+\crefname{section}{Section}{Sections}
+\crefname{table}{Table}{Tables}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\kap}{\kappa}
+\newcommand{\Disc}{\operatorname{Disc}}
+\DeclareMathOperator{\lk}{lk}
+\DeclareMathOperator{\del}{del}
+\newcommand{\coeff}[2]{[t^{#1}]#2}
+\newcommand{\F}{F}
+\newcommand{\G}{G}
+\newcommand{\HH}{H}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Canonical binomial decomposition and real roots}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,keepspaces=true,
+  breaklines=true,frame=single,framerule=0.3pt,showstringspaces=false,
+  aboveskip=0.8em,belowskip=0.8em,language=Python}
+\title{\LARGE\bfseries Canonical Binomial Decomposition\\
+Does Not Preserve Real Roots\\[0.5em]
+\large Two minimal counterexamples, exact cubic classifications,\\
+and explicit failures in every degree}
+\author{Research manuscript prepared with ChatGPT}
+\date{20 September 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We give a negative answer to Question~3.10 of Mu and Welker as stated in
+arXiv:2503.24076v1. Their canonical recursive decomposition splits a polynomial
+with constant coefficient one as $F(t)=G(t)+tH(t)$ using the integer binomial
+expansion of each coefficient. Two cubic inputs are exhibited, and each is
+minimal in its own sense. The real-rooted polynomial
+$F(t)=(1+2t)(1+3t)^2$ has canonical outputs
+$G(t)=1+7t+15t^2+8t^3$ and $H(t)=1+6t+10t^2$, with discriminants $-59$
+and $-4$; the simple-root polynomial $F(t)=(1+2t)(1+3t)(1+4t)$ has outputs
+$G(t)=1+8t+19t^2+11t^3$ and $H(t)=1+7t+13t^2$, with discriminants $-31$ and
+$-3$. In both cases \emph{both} outputs have nonreal zeros, and the second
+example removes repeated input roots as a possible explanation.
+
+We prove that degree three is minimal. Exhaustive exact finite certificates
+show that $8$ is the least linear coefficient among cubic counterexamples and
+$9$ the least among cubic counterexamples with distinct input roots. For
+$F_m(t)=(1+mt)^3$ we determine all positive integers $m$ for which either
+output is real-rooted: $G_m$ precisely for $m\in\{1,2,6\}$, and $H_m$
+precisely for $m\in\{1,2,4,6\}$. A separate family gives a complete
+classification for the second output when the input has three distinct roots.
+
+The phenomenon is not confined to cubics, and two explicit thresholds are
+proved, neither implying the other. For every $d\ge3$ and every integer
+$m\ge20(d-1)$, the second output for the repeated-slope input $(1+mt)^d$
+violates the first Newton inequality; for every $d\ge3$ and every integer
+$n\ge10d^3$, the same happens for the distinct-root consecutive-slope input
+$\prod_{j=0}^{d-1}(1+(n+j)t)$. We also derive a two-sided coefficientwise
+scaling limit, a general open-region dilation criterion, and the asymmetry
+that the first output eventually regains distinct real roots under dilation of
+a fixed simple-root input while the second never does. A compressed simplicial
+complex realizes the smaller example's full decomposition as a deletion and a
+link, while the same input also has a multipartite realization all of whose
+links are real-rooted: the failure is local, not a property of the $f$-vector.
+Full proofs, integer certificates, and two independent executable
+verification stacks are supplied. The Bell--Skandera simplicial-complex
+realization question and Mu--Welker Conjecture~3.8 are not resolved by these
+counterexamples.
+\end{abstract}
+\vfill
+\noindent\textbf{Status and scope.}
+This is an unrefereed research manuscript, not a proof-assistant
+formalization. The question and definitions were checked in the
+31 March 2025 arXiv version, in the rendered PDF pages rather than only in
+search snippets or an experimental HTML conversion. A literature search on
+20 September 2026 did not locate an earlier answer, but priority is not
+certified and the publisher's final full text was not inspected. The
+mathematical claims below refer to the explicitly defined decomposition,
+independently of that bibliographic limitation.
+\newpage
+\tableofcontents
+\newpage
+
+\section{The question and the outcome}\label{sec:question}
+
+Let
+\begin{equation}\label{eq:F}
+ F(t)=1+c_1t+\cdots+c_dt^d,\qquad c_k\in\ZZ_{>0}.
+\end{equation}
+We call a nonzero real polynomial \emph{real-rooted} if all its complex zeros
+are real, allowing repeated zeros. Constant nonzero polynomials are
+real-rooted by this convention. A polynomial of the form \eqref{eq:F} cannot
+vanish at a nonnegative real number. Thus, if it is real-rooted, it factors
+as
+\begin{equation}\label{eq:positivefactor}
+ F(t)=\prod_{i=1}^d(1+\lambda_i t),\qquad \lambda_i>0.
+\end{equation}
+The numbers $\lambda_i$ need not be integers. Such a factorization certifies
+real-rootedness without any numerical root calculation.
+
+Mu and Welker define a canonical coefficientwise splitting
+$F=G+tH$ in \cite[Section~3.2]{MW}. Their Question~3.10 asks whether
+real-rootedness of $F$ forces both outputs to be real-rooted. We answer this
+question negatively for that precise splitting. The word \emph{recursive},
+used for this decomposition in \cite{MW} and in part of the supplementary
+material, names this particular arithmetic rule; it does not mean an
+arbitrary choice of $G$ and $H$ with $F=G+tH$.
+
+\subsection{Two headline witnesses}
+
+Two cubic inputs carry the negative answer, and both are kept throughout
+because they are minimal in two different senses.
+The first has the smallest possible linear coefficient:
+\begin{equation}\label{eq:maintriple}
+\begin{aligned}
+ F(t)&=(1+2t)(1+3t)^2=1+8t+21t^2+18t^3,\\
+ G(t)&=1+7t+15t^2+8t^3,\qquad \Disc(G)=-59,\\
+ H(t)&=1+6t+10t^2,\qquad\quad\ \ \Disc(H)=-4.
+\end{aligned}
+\end{equation}
+The second is the smallest with three \emph{distinct} input roots, and so
+removes ``repeated roots caused it'' as an explanation:
+\begin{equation}\label{eq:simpletriple}
+\begin{aligned}
+ F(t)&=(1+2t)(1+3t)(1+4t)=1+9t+26t^2+24t^3,\\
+ G(t)&=1+8t+19t^2+11t^3,\qquad \Disc(G)=-31,\\
+ H(t)&=1+7t+13t^2,\qquad\quad\ \ \Disc(H)=-3.
+\end{aligned}
+\end{equation}
+Each proof requires only three integer binomial expansions and two negative
+discriminants; neither depends on an extensive computation. They are proved
+in \cref{thm:main,thm:simple}.
+
+The extensions are substantial. We prove degree-minimality, certify both
+minimality statements \emph{within cubics}, classify two infinite cubic
+families completely, and give two uniform constructions,
+\begin{equation}\label{eq:uniformpreview}
+ F(t)=(1+mt)^d\quad(d\ge3,\ m\ge20(d-1)),
+ \qquad
+ F_{d,n}(t)=\prod_{j=0}^{d-1}\bigl(1+(n+j)t\bigr)\quad(d\ge3,\ n\ge10d^3),
+\end{equation}
+for both of which $H$ is not real-rooted. We then explain the
+large-coefficient mechanism by a limiting transform. In particular, multiple
+input roots are not essential, and neither threshold in
+\eqref{eq:uniformpreview} implies the other.
+
+\subsection{Results kept in pairs, and what each pair buys}
+\label{subsec:pairs}
+
+This manuscript merges two independently written treatments of the same
+question (see \cref{subsec:provenance}). Several results come in pairs whose
+members look redundant but are not. Each pair is marked at its place in the
+text. We list them here with one sentence on what keeping both buys.
+
+\begin{enumerate}[label=P\arabic*.,leftmargin=3.2em]
+\item\label{pair:witness}
+ \emph{Both cubic witnesses}, \eqref{eq:maintriple} and
+ \eqref{eq:simpletriple}, each with its own digit table and discriminant pair
+ (\cref{thm:main,thm:simple}): the first is the smallest counterexample,
+ and the second shows that a repeated input root is not what causes failure.
+\item\label{pair:minimal}
+ \emph{Both minimality statements}
+ (\cref{prop:minimalcubic,prop:simpleminimal}): $8$ is least among cubic
+ counterexamples while $9$ is least among cubic counterexamples with distinct
+ roots, so the two numbers answer two different questions and neither
+ subsumes the other.
+\item\label{pair:threshold}
+ \emph{Both all-degree families with their explicit thresholds}
+ (\cref{thm:uniform,thm:explicitsimple}): the repeated-slope family has the
+ far smaller threshold $20(d-1)$, and the consecutive-slope family is the only
+ one for which an explicit threshold is proved with \emph{distinct} roots.
+\item\label{pair:limit}
+ \emph{Both scaling limits} in \cref{thm:scaling}, on the $H$ side and on the
+ $G$ side: only having both exhibits the asymmetry of
+ \cref{prop:Grecovery}, which is the sharpest qualitative statement about the
+ first output.
+\item\label{pair:transfer}
+ \emph{Both directions of the relation between the two failures}
+ (\cref{lem:transfer} and the counterexample to its converse in
+ \eqref{eq:converse}): the lemma alone would misstate the scope, since $G$ can
+ be real-rooted while $H$ is not.
+\item\label{pair:complex}
+ \emph{Both simplicial realizations of the same input} $1+8t+21t^2+18t^3$
+ (\cref{subsec:complexes,sec:complex}): the multipartite join has only
+ real-rooted links, the compressed complex has a non-real-rooted link, and
+ together they prove that the $f$-vector does not determine the
+ real-rootedness of every local link.
+\item\label{pair:split}
+ \emph{Both decompositions of the repeated input}, the canonical one and the
+ noncanonical one in \eqref{eq:noncanonical}: the second shows the negative
+ answer is about the specified rule and not about the existence of some
+ real-rooted splitting.
+\item\label{pair:verify}
+ \emph{Both verification stacks} (\cref{sec:verification}): one is independent
+ inside Python, the other is independent of Python, and two different computer
+ algebra systems confirming the same integers is worth more than either alone.
+\item\label{pair:cert}
+ \emph{Both standalone certificates} (\cref{app:code,app:certificate}): each is
+ a hand-checkable disproof on its own, one driven from the search bounds and
+ one from the literal digit table.
+\item\label{pair:scan}
+ \emph{Both cubic enumerations} (\cref{tab:minimal,tab:cubiccounts}): the wider
+ scan is the stronger certificate, the narrower one is hand-auditable, and
+ their agreement across two different search rectangles is itself a check.
+\item\label{pair:tables}
+ \emph{Both all-degree witness tables} (\cref{tab:higher} and
+ \texttt{results/all\_degree\_certificates.csv}): the dyadic table shows the
+ proved thresholds are far from sharp, the certificate file audits a proved
+ threshold exactly at and just above its stated value.
+\item\label{pair:prov}
+ \emph{Both provenance documents} (\texttt{REFERENCES.md} and
+ \texttt{STATUS.md}): neither contains all of the page-level source audit, the
+ search enumeration, the journal-metadata caveat and the indexing
+ correspondence.
+\item\label{pair:degtwo}
+ \emph{Both rearrangements in the degree-two proof} (\cref{thm:degree} and
+ \cref{rem:degtwoalt}): the second exhibits three separately nonnegative
+ contributions, which the first hides.
+\item\label{pair:k2}
+ \emph{Both forms of the $k=2$ estimate} (\cref{lem:k2}): the exact
+ triangular-number form drives the transfer lemma, and the two-sided
+ inequalities drive every asymptotic estimate; neither substitutes for the
+ other.
+\item\label{pair:open}
+ \emph{Both statements of what is not resolved}
+ (\cref{subsec:notresolved}): Bell--Skandera Question~1.1 and Mu--Welker
+ Conjecture~3.8 are logically separate, and Proposition~3.9 of \cite{MW} is
+ the bridge between them.
+\end{enumerate}
+
+\subsection{Provenance}\label{subsec:provenance}
+
+This article is the merger of two research packages prepared on the same day
+for the same question, \texttt{mu-welker-binomial-decomposition} and
+\texttt{recursive-binomial-real-rootedness}. They proved the shared core
+theorem by the same route and differed only in which witness they headlined.
+The first package headlined the repeated-root input \eqref{eq:maintriple} and
+carried \eqref{eq:simpletriple} as a proposition; the second headlined
+\eqref{eq:simpletriple} and carried \eqref{eq:maintriple} in a subsection on
+smaller linear coefficients. Both computed the same three integer binomial
+expansions, the same two discriminant pairs, the same hockey-stick uniqueness
+argument, the same $k=2$ and $k=3$ estimates, the same first Newton
+inequality with the same Cauchy--Schwarz proof, the same leading-digit
+asymptotic, the same search rectangle for cubics, and the same conclusion that
+the Bell--Skandera question and Conjecture~3.8 are untouched. The present text
+proves that shared core once. Where the two genuinely diverged --- the
+explicit all-degree thresholds --- both results survive in full, in
+\cref{thm:uniform,thm:explicitsimple}. The structure, notation
+($\kap_k$, $R_k$, $F$, $G$, $H$) and macros of the first package are used
+throughout; the second package's $\mathcal S_k$, $\mathcal G_k$, $f$, $g$, $h$
+have been rewritten into them. The supplementary files of both packages are
+retained side by side, with the second package's verifier renamed to
+\texttt{code/verify\_wide.py}.
+
+\subsection{What is not resolved}\label{subsec:notresolved}
+
+The broader problem discussed in \cite[Question~1.1]{MW} asks whether every
+real-rooted polynomial \eqref{eq:F} is the face-counting polynomial of a
+simplicial complex. That problem, attributed there to Bell and Skandera, is
+logically different from Question~3.10, and we do not resolve it: our input
+examples already have explicit simplicial-complex realizations, so they cannot
+be obstructions to it. Nor do we disprove the coefficientwise inequality
+conjectured in \cite[Conjecture~3.8]{MW}; it holds in every example exhibited
+below, as recorded explicitly in \cref{subsec:complexes,sec:complex}.
+Proposition~3.9 of \cite{MW} is the bridge between those two statements,
+relating the coefficientwise conjecture to the realization question; nothing
+here bears on that bridge either. These are two independent non-results and
+both are stated deliberately.
+
+\section{The canonical binomial splitting}\label{sec:definition}
+
+\subsection{Integer binomial expansions}
+
+For integers $a\ge0$ and $k\ge0$, we use
+$\binom ak=0$ when $a<k$, and $\binom00=1$. Negative upper indices are never
+needed. For each positive integer $q$ and each positive
+integer $k$, there is a unique representation
+\begin{equation}\label{eq:binexp}
+ q=\binom{a_k}{k}+\binom{a_{k-1}}{k-1}+\cdots+\binom{a_j}{j},
+ \qquad a_k>a_{k-1}>\cdots>a_j\ge j\ge1.
+\end{equation}
+The lower indices are consecutive; the expansion stops when the remainder
+becomes zero. We assign zero the empty expansion. Each polynomial coefficient
+receives its own expansion: the upper indices in the expansion of $c_k$ are
+not shared with those in the expansion of $c_{k+1}$.
+
+For completeness, the greedy construction is elementary. Choose the largest
+$a_k$ such that $\binom{a_k}{k}\le q$. If $r$ is the remainder, then
+\[
+ 0\le r<\binom{a_k+1}{k}-\binom{a_k}{k}
+       =\binom{a_k}{k-1}.
+\]
+If $r>0$, the next upper index is therefore less than $a_k$. Continue with
+lower index $k-1$. At lower index one, any positive remainder is represented
+by one binomial coefficient, so the procedure terminates.
+
+To see uniqueness, fix the first upper index $a$. Every permissible sum of
+lower terms is at most
+\[
+ \sum_{\ell=1}^{k-1}\binom{a-k+\ell}{\ell}
+ =\binom{a}{k-1}-1,
+\]
+by the elementary hockey-stick identity.
+Consequently any representation with first term $\binom ak$ lies in
+$[\binom ak,\binom{a+1}{k})$. The first term is forced by $q$, and induction
+forces every remaining term. This also proves that the integer algorithm
+used in the supplementary code implements the specified expansion, and it is
+why an exact binary search for the leading index is sufficient.
+
+\subsection{Conventions}\label{subsec:conventions}
+
+All polynomial coefficient lists in the supplementary JSON and CSV files are
+in \emph{ascending} power order. A decomposition list may retain zero trailing
+coefficients; those are removed before classifying a polynomial's degree, so a
+trailing zero is never mistaken for an extra zero of the polynomial. The
+source \cite{MW} writes $f_{i-1}$ for the coefficient of $t^i$; we write
+$c_i$ for that coefficient and keep the corresponding indexing in both
+outputs.
+
+\subsection{The splitting operator}
+
+\begin{definition}\label[definition]{def:split}
+For the expansion \eqref{eq:binexp}, define
+\begin{equation}\label{eq:KR}
+ \kap_k(q)=\sum_{\ell=j}^k\binom{a_\ell-1}{\ell-1},\qquad
+ R_k(q)=\sum_{\ell=j}^k\binom{a_\ell-1}{\ell}.
+\end{equation}
+Set $\kap_k(0)=R_k(0)=0$. For \eqref{eq:F}, set
+\begin{equation}\label{eq:GH}
+ G_F(t)=1+\sum_{k=1}^dR_k(c_k)t^k,\qquad
+ H_F(t)=\sum_{k=1}^d\kap_k(c_k)t^{k-1}.
+\end{equation}
+\end{definition}
+
+Pascal's identity gives
+\begin{equation}\label{eq:pascal}
+ R_k(q)+\kap_k(q)=q,\qquad F(t)=G_F(t)+tH_F(t).
+\end{equation}
+For $q>0$, $\kap_1(q)=1$. Hence both output polynomials have constant
+coefficient one. All their coefficients are nonnegative, and $H_F$ has
+positive coefficients and degree exactly $d-1$. The polynomial $G_F$ may have
+degree smaller than $d$.
+
+These are the outputs denoted $g$ and $h$ in \cite[Section~3.2]{MW}. In
+particular, $H_F$ is \emph{not} the usual $h$-polynomial of a simplicial
+complex.
+
+\begin{remark}[A warning about other binomial operators]\label[remark]{rem:operator}
+The upper index in both sums in \eqref{eq:KR} is lowered by one. Replacing
+$\binom{a_\ell-1}{\ell-1}$ by $\binom{a_\ell}{\ell-1}$ would give a different
+operator and would not be the question under consideration. The operation is
+also not the one that decrements only the \emph{lower} indices, and it is not
+obtained by differentiating the polynomial. Concretely, for the simple-root
+example \eqref{eq:simpletriple},
+\[
+ \kap_3(24)=13,\qquad\text{whereas}\qquad
+ \tfrac13\coeff{2}{F'(t)}=24 .
+\]
+Confusing these constructions changes the question. The digit tables in
+\cref{sec:counterexample} make the choice of operation explicit, summand by
+summand.
+\end{remark}
+
+\subsection{Two elementary estimates}
+
+We isolate bounds that will be used repeatedly. \Cref{lem:k2} is kept in both
+of its forms; this is pair~\ref{pair:k2}. The exact form drives the
+root-location argument of \cref{lem:transfer}, where an inequality would not
+suffice; the two-sided inequalities drive every asymptotic estimate in
+\cref{sec:everydegree,sec:scaling}, where the exact form is unusable.
+
+\begin{lemma}\label[lemma]{lem:k2}
+For every integer $q\ge1$,
+\begin{equation}\label{eq:k2exact}
+ \kap_2(q)=\left\lceil\frac{\sqrt{8q+1}-1}{2}\right\rceil.
+\end{equation}
+Equivalently, $\kap_2(q)$ is the smallest positive integer $u$ such that
+$q\le u(u+1)/2$; writing $q=\binom n2+r$ with $0\le r<n$, it equals
+$n-1+\mathbf 1_{r>0}$. In particular,
+\begin{equation}\label{eq:k2bounds}
+ \sqrt q\le\kap_2(q)<\sqrt{2q}+1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $q=\binom n2+r$, where $0\le r<n$. If $r=0$, then
+$\kap_2(q)=n-1$. If $r>0$, the remaining term is $\binom r1$, and
+$\kap_2(q)=(n-1)+1=n$. These are exactly the successive triangular-number
+intervals described in the statement.
+
+If $u=\kap_2(q)$, then $q\le u(u+1)/2\le u^2$, which proves the lower
+bound. For the upper bound, put
+$x=(\sqrt{8q+1}-1)/2$. Since $x<\sqrt{2q}$ and
+$\lceil x\rceil<x+1$, formula \eqref{eq:k2exact} gives the result.
+\end{proof}
+
+\begin{lemma}\label[lemma]{lem:k3}
+For every integer $q\ge1$, with $x=(6q)^{1/3}$,
+\begin{equation}\label{eq:k3bound}
+ \kap_3(q)>\frac{(x-1)(x-2)}2
+           =\frac{x^2}{2}-\frac{3x}{2}+1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $n$ be maximal with $\binom n3\le q$. Then
+\[
+ q<\binom{n+1}{3}=\frac{n^3-n}{6}<\frac{n^3}{6},
+\]
+so $n>x$. The first term in the expansion contributes
+$\binom{n-1}{2}$ to $\kap_3(q)$; all other terms contribute nonnegative
+integers. The function $(y-1)(y-2)/2$ is strictly increasing for $y>3/2$,
+and $x\ge6^{1/3}>3/2$. Hence
+\[
+ \kap_3(q)\ge\binom{n-1}{2}>\frac{(x-1)(x-2)}2.
+ \qedhere
+\]
+\end{proof}
+
+\section{An exact negative answer}\label{sec:counterexample}
+
+The two theorems of this section are pair~\ref{pair:witness}: the first gives
+the smallest counterexample there is, and the second removes the possibility
+that a repeated input root is what causes the failure. Neither is a corollary
+of the other, and neither is demoted to a remark.
+
+\subsection{The minimal witness}
+
+\begin{theorem}\label{thm:main}
+The polynomial $F(t)=(1+2t)(1+3t)^2$ satisfies every input hypothesis of
+Mu--Welker Question~3.10 as stated in arXiv:2503.24076v1, but neither output
+in its canonical decomposition is real-rooted.
+\end{theorem}
+\begin{proof}
+The input has positive integer coefficients, constant coefficient one, and
+zeros $-1/2$ and $-1/3$, the latter of multiplicity two. Its relevant
+canonical expansions are
+\begin{equation}\label{eq:mainexp}
+ 8=\binom81,\qquad
+ 21=\binom72,\qquad
+ 18=\binom53+\binom42+\binom21.
+\end{equation}
+The upper indices $5>4>2$ in the last expansion satisfy the strict ordering
+requirement. Applying \eqref{eq:KR} gives the following exact table.
+\begin{center}
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$k$ & $c_k$ & $R_k(c_k)$ & $\kap_k(c_k)$\\
+\midrule
+1 & 8 & $7$ & $1$\\
+2 & 21 & $\binom62=15$ & $\binom61=6$\\
+3 & 18 & $\binom43+\binom32+\binom11=8$
+       & $\binom42+\binom31+\binom10=10$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Thus the outputs are precisely those in \eqref{eq:maintriple}. The quadratic
+$H$ has discriminant $6^2-4\cdot10=-4$, and its zeros are
+\begin{equation}\label{eq:Hexactroots}
+ \frac{-3+i}{10},\qquad\frac{-3-i}{10}.
+\end{equation}
+For a cubic $1+at+bt^2+ct^3$, write
+\begin{equation}\label{eq:cubicdisc}
+ D(a,b,c)=a^2b^2-4b^3-4a^3c-27c^2+18abc.
+\end{equation}
+This is its discriminant. Direct substitution gives
+\[
+ D(7,15,8)=11025-13500-10976-1728+15120=-59.
+\]
+A real cubic with negative discriminant has one real zero and one nonreal
+conjugate pair. Hence $G$ also fails to be real-rooted.
+\end{proof}
+
+\begin{remark}[Why the discriminant test is exact]\label[remark]{rem:disc}
+For a real cubic with leading coefficient $c\ne0$ and roots $r_1,r_2,r_3$,
+its discriminant is $c^4\prod_{i<j}(r_i-r_j)^2$. Three distinct real roots
+give positive discriminant. A real root together with $u\pm iv$, $v\ne0$,
+gives a negative factor $(2iv)^2$ times a positive real factor. A zero
+discriminant means repeated roots; a repeated nonreal root and its conjugate
+would require degree at least four. Thus a real cubic is real-rooted exactly
+when its discriminant is nonnegative. No floating-point approximation is
+involved.
+\end{remark}
+
+\subsection{The minimal witness with distinct input roots}\label{subsec:simple}
+
+\begin{theorem}\label{thm:simple}
+The simple-root polynomial
+\[
+ F(t)=(1+2t)(1+3t)(1+4t)=1+9t+26t^2+24t^3
+\]
+has three distinct negative zeros, and neither canonical output is
+real-rooted.
+\end{theorem}
+\begin{proof}
+The input zeros are $-1/2$, $-1/3$, $-1/4$, which are distinct. The complete
+digit table is \cref{tab:digits}: it displays the two contributions summand by
+summand, so the action of \cref{def:split} can be followed term by term. The
+coefficient identity is immediate,
+\[
+ (1+8t+19t^2+11t^3)+t(1+7t+13t^2)=1+9t+26t^2+24t^3 .
+\]
+The quadratic output has discriminant $7^2-4\cdot13=-3$ and zeros
+\begin{equation}\label{eq:simplezeros}
+ \frac{-7+i\sqrt3}{26},\qquad\frac{-7-i\sqrt3}{26},
+\end{equation}
+which alone disproves the assertion that both outputs must be real-rooted.
+For the cubic output, \eqref{eq:cubicdisc} gives
+\[
+ D(8,19,11)=19^2\cdot8^2-4\cdot11\cdot8^3-4\cdot19^3-27\cdot11^2
+  +18\cdot11\cdot19\cdot8=-31 .
+\]
+By \cref{rem:disc} it has one real zero and a nonreal conjugate pair.
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}clrr@{}}
+\toprule
+$k$ & Canonical expansion of $c_k$ & $R_k(c_k)$ & $\kap_k(c_k)$\\
+\midrule
+1 & $9=\binom91$ & $8$ & $1$\\
+2 & $26=\binom72+\binom51$ & $15+4=19$ & $6+1=7$\\
+3 & $24=\binom63+\binom32+\binom11$ & $10+1+0=11$ & $10+2+1=13$\\
+\bottomrule
+\end{tabular}
+\caption{The complete arithmetic certificate for the simple-root witness
+\eqref{eq:simpletriple}. Every entry is small enough to check by hand.}
+\label{tab:digits}
+\end{table}
+
+\subsection{What the examples do not contradict}\label{subsec:complexes}
+
+A simplicial complex on a finite vertex set is a family of subsets closed
+under taking subsets; its face polynomial is
+$\sum_{\sigma}t^{|\sigma|}$, including the empty face. Partition a vertex
+set into blocks of sizes $a_1,\ldots,a_d$, and allow faces to contain at most
+one vertex from each block. Independent choices in the blocks give the
+face polynomial
+\begin{equation}\label{eq:join}
+ \prod_{i=1}^d(1+a_it).
+\end{equation}
+Thus the main example, with block sizes $2,3,3$, already has a realization,
+as does \eqref{eq:simpletriple} with block sizes $2,3,4$. This construction
+also applies to all integer-slope products used below, so every input in this
+manuscript is an $f$-polynomial and none of them can obstruct
+\cite[Question~1.1]{MW}. This realization is one half of
+pair~\ref{pair:complex}; the other half, a differently shaped complex with the
+same face counts, is constructed in \cref{sec:complex}.
+
+Even the two outputs in \eqref{eq:maintriple} are face polynomials. For $H$,
+take the complete graph on five vertices together with a sixth isolated
+vertex, without two-dimensional faces. For $G$, take all fifteen edges on
+six vertices, add a seventh isolated vertex, and select any eight of the
+ten triangular faces on the first five vertices. These are valid complexes
+with the prescribed face counts. The first complex is a subcomplex of the
+second. These two realizations serve a different purpose from those of
+\cref{sec:complex}: they show that the \emph{outputs} are themselves
+$f$-polynomials, so no realizability obstruction is being exhibited on either
+side of the splitting.
+
+Their coefficient sequences also satisfy
+\[
+ (1,6,10,0)\le(1,7,15,8),\qquad
+ (1,7,13,0)\le(1,8,19,11)
+\]
+coordinatewise, after padding the shorter vector with a trailing zero. So
+neither example violates the separate inequality in Mu--Welker
+Conjecture~3.8. Failure of real-rootedness of $G$ or $H$ is logically
+different from failure of these inequalities.
+
+There is also a different, noncanonical split with real-rooted outputs:
+\begin{equation}\label{eq:noncanonical}
+ (1+2t)(1+3t)^2
+ =\underbrace{(1+t)(1+3t)^2}_{1+7t+15t^2+9t^3}
+ +t\underbrace{(1+3t)^2}_{1+6t+9t^2}.
+\end{equation}
+Comparing this with \eqref{eq:maintriple}, the canonical rule transfers just
+one unit from the cubic coefficient of the first output to the quadratic
+coefficient of the second. Real-rootedness is lost in both. This is
+pair~\ref{pair:split}: without \eqref{eq:noncanonical} a reader could not see
+that the negative answer concerns the specified canonical rule and not the
+existence of some real-rooted decomposition.
+
+\section{Minimality}\label{sec:minimality}
+
+\subsection{No counterexample in degree at most two}
+
+\begin{theorem}\label{thm:degree}
+For every real-rooted polynomial of the form \eqref{eq:F} of degree one or
+two, both canonical outputs are real-rooted. Therefore three is the minimum
+possible degree of a counterexample.
+\end{theorem}
+\begin{proof}
+For $F=1+at$, the outputs are $G=1+(a-1)t$ and $H=1$.
+
+Now let $F=1+at+bt^2$, with $a,b$ positive integers. Real-rootedness means
+$a^2\ge4b$, hence $a\ge2\sqrt b$. Put $u=\kap_2(b)$. The outputs are
+\[
+ G=1+(a-1)t+(b-u)t^2,\qquad H=1+ut.
+\]
+The second is linear. The first has nonnegative leading coefficient
+$b-u=R_2(b)$. If this coefficient is zero, $G$ has degree at most one.
+Otherwise, because $2\sqrt b-1\ge1$, its discriminant satisfies
+\begin{align*}
+ (a-1)^2-4(b-u)
+ &\ge(2\sqrt b-1)^2-4b+4u\\
+ &=1+4(u-\sqrt b)\ge1,
+\end{align*}
+where the last inequality uses \cref{lem:k2}. Thus $G$ is real-rooted.
+The example in \cref{thm:main} completes the degree-minimality claim.
+\end{proof}
+
+\begin{remark}[The same estimate, factored]\label[remark]{rem:degtwoalt}
+This is pair~\ref{pair:degtwo}. The same discriminant can be organized as
+\begin{equation}\label{eq:degtwoalt}
+ (a-1)^2-4(b-u)
+ =(a-2\sqrt b)(a+2\sqrt b-2)+4(u-\sqrt b)+1\ \ge\ 1,
+\end{equation}
+which exhibits three separately nonnegative contributions: the first factor
+pair is nonnegative because $a\ge2\sqrt b$ and $b\ge1$, the middle term is
+nonnegative by \cref{lem:k2}, and the last is the constant~$1$. The
+rearrangement in the proof above hides this decomposition, so both are
+recorded.
+\end{remark}
+
+\subsection{The smallest linear coefficients among cubics}
+\label{subsec:cubicscan}
+
+The following two statements are finite, exact computer-assisted refinements.
+Their search bounds are proved here, and the entire enumeration is supplied as
+CSV and JSON certificates and as executable code. They are
+pair~\ref{pair:minimal}: the first answers ``how small can a cubic
+counterexample be?'', the second answers ``how small can one with distinct
+input roots be?'', and the two answers are different integers with different
+witnesses.
+
+\begin{proposition}\label[proposition]{prop:minimalcubic}
+Among real-rooted cubics $1+at+bt^2+ct^3$ with positive integer coefficients,
+there is no counterexample with $a\le7$. With $a=8$, the unique
+counterexample is $(a,b,c)=(8,21,18)$, the input of \eqref{eq:maintriple}.
+\end{proposition}
+\begin{proof}
+Write the input as $\prod_{i=1}^3(1+\lambda_it)$ with $\lambda_i>0$.
+Then
+\[
+ a=\lambda_1+\lambda_2+\lambda_3,\quad
+ b=\lambda_1\lambda_2+\lambda_1\lambda_3+\lambda_2\lambda_3,\quad
+ c=\lambda_1\lambda_2\lambda_3.
+\]
+Since $c\ge1$, arithmetic--geometric mean gives $a\ge3$ and
+$b\ge3c^{2/3}\ge3$. Also $b\le a^2/3$ and $c\le a^3/27$.
+Thus the complete finite region for $a\le8$ is
+\begin{equation}\label{eq:searchbounds}
+ 3\le a\le8,\qquad
+ 3\le b\le\lfloor a^2/3\rfloor,\qquad
+ 1\le c\le\lfloor a^3/27\rfloor.
+\end{equation}
+For each triple, compute $D(a,b,c)$ from \eqref{eq:cubicdisc}. By
+\cref{rem:disc}, retaining exactly those with $D\ge0$ selects exactly the
+real-rooted inputs in this region. Compute their canonical outputs by the
+greedy rule and test each output by its actual degree and discriminant.
+This gives \cref{tab:minimal}. The sole failed output pair is
+\eqref{eq:maintriple}. The complete retained list has 124 rows in
+\texttt{data/cubics\_a\_le8.csv}; \texttt{verify.py} regenerates it directly.
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$a$ & Candidate triples & Real-rooted inputs & Counterexamples\\
+\midrule
+3 & 1 & 1 & 0\\
+4 & 6 & 2 & 0\\
+5 & 24 & 6 & 0\\
+6 & 80 & 16 & 0\\
+7 & 168 & 33 & 0\\
+8 & 342 & 66 & 1\\
+\midrule
+Total & 621 & 124 & 1\\
+\bottomrule
+\end{tabular}
+\caption{Complete exact search in \eqref{eq:searchbounds}, using the
+arithmetic--geometric lower bound $b\ge3$. A counterexample
+means that at least one canonical output is not real-rooted. This is the
+hand-auditable half of pair~\ref{pair:scan}.}
+\label{tab:minimal}
+\end{table}
+
+\begin{proposition}\label[proposition]{prop:simpleminimal}
+Among real-rooted cubics $1+at+bt^2+ct^3$ with positive integer coefficients
+and \emph{distinct} zeros, there is no counterexample with $a\le8$, and with
+$a=9$ the input of \eqref{eq:simpletriple}, namely $(a,b,c)=(9,26,24)$, is a
+counterexample. Hence $9$ is the least linear coefficient among cubic
+counterexamples with distinct input roots, while $8$ is the least without that
+restriction.
+\end{proposition}
+\begin{proof}
+Relax the lower bound on $b$ to $b\ge1$ and extend the scan to $a\le14$, which
+is legitimate because \eqref{eq:searchbounds} bounds $b$ and $c$ from above
+for every $a$ and the additional triples with $b<3$ are merely never
+real-rooted. \Cref{tab:cubiccounts} records the resulting exhaustive
+enumeration. By \cref{prop:minimalcubic} there is no counterexample at all for
+$a\le7$; the unique one at $a=8$ has $D(8,21,18)=0$, hence a repeated zero by
+\cref{rem:disc}. At $a=9$ the triple $(9,26,24)$ has $D=4>0$, so its zeros are
+distinct, and \cref{thm:simple} shows both outputs fail.
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$a$ & Candidate $(b,c)$ pairs & Real-rooted inputs & Failures\\
+\midrule
+1--2 & 0 & 0 & 0\\
+3 & 3 & 1 & 0\\
+4 & 10 & 2 & 0\\
+5 & 32 & 6 & 0\\
+6 & 96 & 16 & 0\\
+7 & 192 & 33 & 0\\
+8 & 378 & 66 & 1\\
+9 & 729 & 120 & 2\\
+10 & 1221 & 203 & 1\\
+11 & 1960 & 329 & 0\\
+12 & 3072 & 512 & 6\\
+13 & 4536 & 762 & 8\\
+14 & 6565 & 1109 & 7\\
+\midrule
+Total & 18794 & 3159 & 25\\
+\bottomrule
+\end{tabular}
+\caption{The wider exact scan, using the weaker lower bound $b\ge1$. A
+``failure'' means that at least one output is not real-rooted; the two outputs
+need not both fail. These are not counts over all degrees. This is the
+stronger half of pair~\ref{pair:scan}; the complete failure list is in
+\texttt{results/cubic\_failures.json}.}
+\label{tab:cubiccounts}
+\end{table}
+
+\begin{remark}[Why both scans are kept]\label[remark]{rem:twoscans}
+This is pair~\ref{pair:scan}. \Cref{tab:minimal} uses the rectangle
+$3\le b\le\lfloor a^2/3\rfloor$, \cref{tab:cubiccounts} the rectangle
+$1\le b\le\lfloor a^2/3\rfloor$; the candidate counts therefore differ
+($342$ versus $378$ at $a=8$, for instance) while the real-rooted counts
+agree exactly, row by row, everywhere the two overlap. That agreement across
+two differently specified search regions, produced by two programs that share
+no code, is itself a check. \Cref{tab:minimal} is small enough to audit by
+hand against the $124$-row CSV; \cref{tab:cubiccounts} is the stronger
+certificate and is the only place where the vanishing of the failure count at
+$a=11$, between two nonzero rows, is visible.
+\end{remark}
+
+The restriction to cubics is essential to the wording of both
+\cref{prop:minimalcubic,prop:simpleminimal}. We have not proved that eight is
+the smallest linear coefficient among counterexamples of \emph{all} degrees,
+nor that nine is smallest among simple-root counterexamples of all degrees.
+The unconditional degree-minimality result is \cref{thm:degree}.
+
+\section{A complete classification for repeated-root cubics}\label{sec:repeated}
+
+For a positive integer $m$, write
+\begin{equation}\label{eq:repeated}
+\begin{aligned}
+ F_m(t)&=(1+mt)^3=1+3mt+3m^2t^2+m^3t^3,\\
+ u_m&=\kap_2(3m^2),\qquad v_m=\kap_3(m^3),\\
+ H_m(t)&=1+u_mt+v_mt^2,\\
+ G_m(t)&=1+(3m-1)t+(3m^2-u_m)t^2+(m^3-v_m)t^3.
+\end{aligned}
+\end{equation}
+
+\begin{theorem}\label{thm:repeated}
+For positive integers $m$,
+\begin{align}
+ H_m\text{ is real-rooted}&\iff m\in\{1,2,4,6\},\label{eq:Hclass}\\
+ G_m\text{ is real-rooted}&\iff m\in\{1,2,6\}.\label{eq:Gclass}
+\end{align}
+In particular, both outputs have a nonreal conjugate pair for every
+$m\ge7$.
+\end{theorem}
+
+\subsection{An analytic tail for the quadratic output}
+
+Put $\rho=6^{1/3}$. From \cref{lem:k2,lem:k3},
+\[
+ u_m<\sqrt6\,m+1,\qquad
+ v_m>\frac{\rho^2m^2}{2}-\frac{3\rho m}{2}+1.
+\]
+It follows that the discriminant $\delta_m=u_m^2-4v_m$ satisfies
+\begin{equation}\label{eq:repeatedtail1}
+ \delta_m<(6-2\rho^2)m^2+(6\rho+2\sqrt6)m-3.
+\end{equation}
+The inequalities
+\[
+ \rho^2>\frac{33}{10},\qquad \rho<\frac{11}{6},\qquad
+ \sqrt6<\frac52
+\]
+are certified by cubing or squaring positive quantities:
+$(33/10)^3<36$, $(11/6)^3>6$, and $(5/2)^2>6$.
+Therefore
+\begin{equation}\label{eq:repeatedtail2}
+ \delta_m<-\frac35m^2+16m-3<0\qquad(m\ge27).
+\end{equation}
+The final quadratic is negative at $m=27$ and strictly decreasing from that
+point on. This is a proof for the entire infinite tail, not an extrapolation
+from a table.
+
+For $1\le m\le26$, direct integer binomial expansions give
+\cref{tab:repeated}. The entries with nonnegative $\delta_m$ occur exactly
+at $m=1,2,4,6$. Together with \eqref{eq:repeatedtail2}, this proves
+\eqref{eq:Hclass}.
+
+\begin{table}[p]
+\centering
+\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$m$ & $u_m$ & $v_m$ & $\Disc(H_m)$ & $D(3m-1,3m^2-u_m,m^3-v_m)$\\
+\midrule
+\tableinput data/repeated_table.tex
+\bottomrule
+\end{tabular}
+\caption{Exact finite part of the repeated-cubic classification.
+At $m=1$, $G_m=(1+t)^2$ has degree two; the last column is the cubic
+\emph{formula} with a zero cubic coefficient, not a claim of degree three.
+All other $G_m$ in the table have degree three.}
+\label{tab:repeated}
+\end{table}
+
+\subsection{Why failure transfers to the cubic output}
+
+A root-location argument is more informative than estimating a second
+large discriminant.
+
+\begin{lemma}\label[lemma]{lem:transfer}
+For $m\ge2$, if $H_m$ is not real-rooted, then $G_m$ is not real-rooted.
+\end{lemma}
+\begin{proof}
+The leading coefficient $v_m$ of $H_m$ is positive. Thus a negative
+quadratic discriminant gives $H_m(t)>0$ for every real $t$. For
+$-1/m\le t<0$, the identity
+\[
+ G_m(t)=(1+mt)^3-tH_m(t)
+\]
+then implies $G_m(t)>0$. For $t\ge0$, nonnegative coefficients and constant
+coefficient one also imply $G_m(t)>0$.
+
+For $m\ge2$, $G_m$ genuinely has degree three. Indeed, $m^3\ge8$ makes the
+first upper index $n$ in the third binomial expansion at least four, so
+$R_3(m^3)\ge\binom{n-1}{3}>0$.
+
+Suppose, for contradiction, that all three roots of $G_m$ are real. They
+must all lie strictly to the left of $-1/m$, so
+\[
+ G_m(t)=\prod_{i=1}^3(1+\lambda_it),\qquad 0<\lambda_i<m.
+\]
+Let $\varepsilon_i=m-\lambda_i>0$. Comparing linear coefficients gives
+$\sum_i\varepsilon_i=1$. Comparing quadratic coefficients now gives
+\[
+ 3m^2-u_m=3m^2-2m+
+     \sum_{i<j}\varepsilon_i\varepsilon_j,
+\]
+so $u_m=2m-\sum_{i<j}\varepsilon_i\varepsilon_j<2m$.
+But
+\[
+ 3m^2>\frac{(2m)(2m+1)}2\qquad(m>1),
+\]
+and the triangular-number characterization in \cref{lem:k2} implies
+$u_m>2m$. This contradiction proves the lemma.
+\end{proof}
+
+\begin{proof}[Completion of \cref{thm:repeated}]
+The classification of $H_m$ and \cref{lem:transfer} exclude every $m$ except
+$1,2,4,6$ for $G_m$. At $m=4$, its discriminant is $-31$, so it also fails:
+here $H_4$ succeeds while $G_4$ fails. The other three cases can be verified
+without a cubic root formula:
+\begin{align*}
+ G_1(t)&=(1+t)^2,\\
+ G_2(t)&=(1+2t)(1+3t+t^2),\\
+ G_6(t)&=(1+7t)(1+10t+23t^2).
+\end{align*}
+The two quadratic factors have positive discriminants $5$ and $8$.
+This proves \eqref{eq:Gclass} and the assertion about $m\ge7$.
+\end{proof}
+
+The isolated successful values $m=4$ for $H_m$ and $m=6$ for both outputs
+show that the small-parameter behavior is not monotone. An infinite-tail
+proof is therefore important even when many finite values have been tested.
+
+\section{A complete quadratic-output classification with simple input roots}
+\label{sec:simplefamily}
+
+Consider
+\begin{equation}\label{eq:simplefamily}
+ \widetilde F_m(t)=(1+2mt)(1+3mt)(1+4mt)
+                  =1+9mt+26m^2t^2+24m^3t^3.
+\end{equation}
+All three input roots are distinct for every positive integer $m$. Put
+\[
+ \widetilde u_m=\kap_2(26m^2),\qquad
+ \widetilde v_m=\kap_3(24m^3).
+\]
+Its quadratic output is
+$\widetilde H_m=1+\widetilde u_mt+\widetilde v_mt^2$.
+
+\begin{theorem}\label{thm:simplefamily}
+The polynomial $\widetilde H_m$ is real-rooted exactly when $m=3$ or $m=4$.
+Thus it has a nonreal conjugate pair for $m=1,2$ and for every $m\ge5$.
+\end{theorem}
+\begin{proof}
+Let $\rho=144^{1/3}$. By \cref{lem:k2,lem:k3},
+\[
+ \widetilde u_m<\sqrt{52}\,m+1,\qquad
+ \widetilde v_m>\frac{\rho^2m^2}{2}-\frac{3\rho m}{2}+1.
+\]
+Hence
+\[
+ \Disc(\widetilde H_m)
+ <(52-2\rho^2)m^2+(6\rho+2\sqrt{52})m-3.
+\]
+The rational bounds
+\[
+ \rho^2>\frac{137}{5},\qquad
+ \rho<\frac{21}{4},\qquad
+ \sqrt{52}<\frac{29}{4}
+\]
+follow from $(137/5)^3<144^2$, $(21/4)^3>144$, and $(29/4)^2>52$.
+Thus
+\begin{equation}\label{eq:simpletail}
+ \Disc(\widetilde H_m)<-\frac{14}{5}m^2+46m-3<0
+ \qquad(m\ge17).
+\end{equation}
+Again the last quadratic is negative at the stated endpoint and decreases
+thereafter. The finite computations in \cref{tab:simple} cover all
+remaining values. Only $m=3,4$ give nonnegative discriminants.
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$m$ & $\widetilde u_m$ & $\widetilde v_m$ & $\Disc(\widetilde H_m)$\\
+\midrule
+\tableinput data/simple_table.tex
+\bottomrule
+\end{tabular}
+\caption{The finite part of \cref{thm:simplefamily}. The inequality
+\eqref{eq:simpletail} covers every $m\ge17$.}
+\label{tab:simple}
+\end{table}
+
+\subsection{No converse to the transfer lemma}\label{subsec:converse}
+
+There is no general converse to \cref{lem:transfer} outside its particular
+repeated-root family. Already at $m=2$ in \eqref{eq:simplefamily},
+\begin{equation}\label{eq:converse}
+\begin{aligned}
+ \widetilde G_2&=1+17t+90t^2+140t^3, &\quad \Disc(\widetilde G_2)&=20>0,\\
+ \widetilde H_2&=1+14t+52t^2, &\quad \Disc(\widetilde H_2)&=-12<0.
+\end{aligned}
+\end{equation}
+So the first output can be real-rooted while the second is not. Together with
+\cref{lem:transfer} this is pair~\ref{pair:transfer}: keeping only the lemma
+would misstate the scope of the relation between the two failures, since it
+holds in exactly one direction and only for the repeated-slope cubics. In
+\cref{sec:scaling} we prove that $\widetilde G_m$ is real-rooted for all
+sufficiently large $m$, even though $\widetilde H_m$ is not. No exact
+classification of $\widetilde G_m$ for all $m$ is asserted here.
+
+\subsection{An open region of dilation failures}\label{subsec:region}
+
+\Cref{thm:simplefamily} is one instance of a general criterion, which
+identifies an open region of factor data for which the quadratic output must
+eventually fail. Its proof uses two tools stated later, the first Newton
+inequality \eqref{eq:newton} of \cref{lem:newton} and the asymptotic
+\cref{lem:asymptotic}; neither of those depends on anything in this section,
+so there is no circularity.
+
+\begin{proposition}\label[proposition]{prop:region}
+Let $\lambda_1,\ldots,\lambda_d$ be positive integers with $d\ge3$, and let
+$e_2,e_3$ be their second and third elementary symmetric functions. For the
+canonical decomposition of
+\[
+ F_n(t)=\prod_{i=1}^d(1+n\lambda_it),
+\]
+the output $H_{F_n}$ is not real-rooted for all sufficiently large integers
+$n$, provided
+\begin{equation}\label{eq:region}
+ 9(d-1)^3e_3^2>2(d-2)^3e_2^3 .
+\end{equation}
+\end{proposition}
+\begin{proof}
+The input coefficients are $e_2n^2$ and $e_3n^3$, so by \cref{lem:asymptotic}
+the first two nonconstant coefficients of $H_{F_n}$ satisfy
+\[
+ b_1=\sqrt{2e_2}\,n+O(1),\qquad
+ b_2=\frac{(6e_3)^{2/3}}2n^2+O(n).
+\]
+Since $H_{F_n}$ has degree $d-1$, its first Newton difference
+(\cref{lem:newton} with $n$ there equal to $d-1$) is
+\[
+ 2(d-1)b_2-(d-2)b_1^2
+ =\bigl((d-1)(6e_3)^{2/3}-2(d-2)e_2\bigr)n^2+O(n).
+\]
+The coefficient of $n^2$ is positive exactly when \eqref{eq:region} holds, as
+is seen by cubing the two positive quantities $(d-1)(6e_3)^{2/3}$ and
+$2(d-2)e_2$. For sufficiently large $n$ the difference is then positive,
+contradicting \eqref{eq:newton}.
+\end{proof}
+
+For a cubic $1+At+Bt^2+Ct^3$ with $d=3$, so $e_2=B$ and $e_3=C$, criterion
+\eqref{eq:region} reduces to
+\begin{equation}\label{eq:cubicregion}
+ B^3<36C^2 .
+\end{equation}
+For the simple-root witness \eqref{eq:simpletriple},
+$B^3=26^3=17576$ while $36C^2=36\cdot24^2=20736$, so every integer dilation of
+that single input eventually yields a counterexample for the second output;
+\cref{thm:simplefamily} makes the exceptional set exact in that case.
+The criterion is strict, hence stable under sufficiently small perturbations
+of the positive factor parameters. Equality in \eqref{eq:region} is not
+decided by this leading-order argument.
+
+\section{Uniform constructions in every degree}\label{sec:everydegree}
+
+We now give explicit infinite families in every possible degree. Only the
+first three coefficients of the second output are needed.
+
+\subsection{The first Newton inequality}
+
+\begin{lemma}[First Newton inequality]\label[lemma]{lem:newton}
+If
+\[
+ P(t)=1+b_1t+b_2t^2+\cdots+b_nt^n
+\]
+has positive coefficients, degree $n\ge2$, and only real zeros, then
+\begin{equation}\label{eq:newton}
+ (n-1)b_1^2\ge2n b_2.
+\end{equation}
+\end{lemma}
+\begin{proof}
+All roots are negative, so $P=\prod_{i=1}^n(1+\lambda_i t)$ with
+$\lambda_i>0$. By Cauchy--Schwarz,
+\[
+ \sum_i\lambda_i^2\ge\frac1n\Bigl(\sum_i\lambda_i\Bigr)^2.
+\]
+Since $b_1=\sum_i\lambda_i$ and
+$2b_2=b_1^2-\sum_i\lambda_i^2$, inequality \eqref{eq:newton} follows.
+\end{proof}
+
+This is the first of the usual normalized Newton inequalities; the complete
+classical sequence is discussed, for example, in \cite{Vondrak}. The
+self-contained proof above is all that is needed here.
+
+\begin{remark}[The implication runs one way]\label[remark]{rem:direction}
+Failure of \eqref{eq:newton} is sufficient to prove that a polynomial is not
+real-rooted; satisfaction of \eqref{eq:newton} is \emph{not} sufficient to
+prove that it is. Every use below is in the first direction. This also limits
+how the finite Newton certificates of \cref{subsec:margin} may be read: a
+positive margin is a complete proof of failure, whereas a nonpositive margin
+proves nothing at all.
+\end{remark}
+
+\subsection{The repeated-slope family}\label{subsec:repeatedslope}
+
+\begin{theorem}\label{thm:uniform}
+For every integer $d\ge3$ and every integer $m\ge20(d-1)$, the canonical
+second output $H$ for
+\[
+ F(t)=(1+mt)^d
+\]
+is not real-rooted. In particular, the explicit polynomial
+\[
+ \bigl(1+20(d-1)t\bigr)^d
+\]
+is a counterexample in every degree $d\ge3$.
+\end{theorem}
+\begin{proof}
+Let
+\[
+ u=\kap_2\!\left(\binom d2m^2\right),\qquad
+ v=\kap_3\!\left(\binom d3m^3\right).
+\]
+The polynomial $H$ has degree $d-1$, positive coefficients, and initial
+terms $1+ut+vt^2$. Its necessary Newton inequality is
+\[
+ N:=(d-2)u^2-2(d-1)v\ge0.
+\]
+We will prove the strict reverse inequality. Write
+\[
+ s=d-1\ge2,\qquad a=\sqrt{d(d-1)},\qquad
+ \rho=\bigl(d(d-1)(d-2)\bigr)^{1/3}=(s^3-s)^{1/3}.
+\]
+The two elementary bounds give
+\[
+ u<am+1,\qquad
+ v>\frac{\rho^2m^2}{2}-\frac{3\rho m}{2}+1.
+\]
+Therefore
+\begin{equation}\label{eq:Nd}
+ N<-A m^2+B m-d,
+\end{equation}
+where
+\[
+ A=s\bigl(\rho^2-d(d-2)\bigr),\qquad
+ B=2(d-2)a+3s\rho.
+\]
+
+We establish the elementary estimates $A>s/4$ and $B<5s^2$.
+For the first, compare positive cubes:
+\begin{align*}
+ (s^3-s)^2-\left(s^2-\frac34\right)^3
+ &=\frac{16s^4-44s^2+27}{64}\\
+ &=\frac{16(s^2-4)^2+84(s^2-4)+107}{64}>0.
+\end{align*}
+Thus $\rho^2>s^2-3/4$. Since $d(d-2)=s^2-1$, this gives
+$\rho^2-d(d-2)>1/4$, as required. For the second estimate, use $a<d$ and
+$\rho<s$ to obtain
+\[
+ B<2d(d-2)+3s^2=5s^2-2<5s^2.
+\]
+Substituting in \eqref{eq:Nd} yields
+\begin{equation}\label{eq:uniformbound}
+ N<-\frac{s}{4}m^2+5s^2m-d
+   =sm\left(5s-\frac m4\right)-d.
+\end{equation}
+For $m\ge20s$, the right-hand side is at most $-d<0$. This contradicts
+\cref{lem:newton}, completing the proof.
+\end{proof}
+
+The constant $20$ is not optimized. It is useful because it gives a short
+uniform certificate, without numerical evaluation of radicals or a
+parameter-dependent unproved threshold. The exact cubic result of
+\cref{thm:repeated} is much stronger in degree three.
+
+\subsection{The consecutive-slope family with distinct roots}
+\label{subsec:consecutive}
+
+The inputs of \cref{thm:uniform} have a single repeated root. The next
+theorem supplies an explicit threshold for a family with $d$ \emph{distinct}
+roots. Neither theorem implies the other: \cref{thm:uniform} has the far
+smaller threshold, and \cref{thm:explicitsimple} is the only explicit
+threshold proved here for simple-root inputs. This is
+pair~\ref{pair:threshold}, and both proofs are given in full.
+
+\begin{theorem}\label{thm:explicitsimple}
+For integers $d\ge3$ and $n\ge10d^3$, set
+\[
+ F_{d,n}(t)=\prod_{j=0}^{d-1}\bigl(1+(n+j)t\bigr).
+\]
+Then $F_{d,n}$ has positive integer coefficients and $d$ distinct negative
+zeros, but its canonical second output $H_{d,n}$ is not real-rooted.
+\end{theorem}
+\begin{proof}
+The input assertions follow from the displayed factorization: each factor
+parameter $n+j$ is a positive integer, and the $d$ zeros $-1/(n+j)$ are
+distinct. Put
+\[
+ Q=\sqrt{d(d-1)},\qquad
+ R=\bigl(d(d-1)(d-2)\bigr)^{1/3},\qquad
+ K=\frac{d-1}{d-2},
+\]
+and write $H_{d,n}(t)=1+b_1t+b_2t^2+\cdots+b_{d-1}t^{d-1}$, a polynomial of
+degree exactly $d-1$ with positive coefficients.
+
+Every product of two factor parameters is at most $(n+d-1)^2$, and every
+product of three is at least $n^3$, so the input coefficients $c_2,c_3$ satisfy
+\[
+ c_2\le\binom d2(n+d-1)^2,\qquad
+ c_3\ge\binom d3n^3 .
+\]
+By \cref{lem:k2}, $b_1=\kap_2(c_2)<\sqrt{2c_2}+1\le Q(n+d-1)+1$. By
+\cref{lem:k3} with $x=(6c_3)^{1/3}\ge Rn$, and by monotonicity of
+$(y-1)(y-2)$ for $y>3/2$,
+\begin{equation}\label{eq:bbounds}
+ b_1<Q(n+d-1)+1,\qquad 2b_2>(Rn-1)(Rn-2).
+\end{equation}
+It therefore suffices to prove
+\begin{equation}\label{eq:suffdifference}
+ K(Rn-1)(Rn-2)-\bigl(Q(n+d-1)+1\bigr)^2>0,
+\end{equation}
+since that implies $2Kb_2>b_1^2$, which is the strict reverse of
+\eqref{eq:newton} for a polynomial of degree $d-1$.
+
+Expanding the left-hand side of \eqref{eq:suffdifference} gives
+\begin{equation}\label{eq:quadraticbound}
+ \Delta n^2-B_dn+C_d,\qquad
+\begin{aligned}
+ \Delta&=KR^2-Q^2,\\
+ B_d&=3KR+2Q^2(d-1)+2Q,\\
+ C_d&=2K-\bigl(Q(d-1)+1\bigr)^2 .
+\end{aligned}
+\end{equation}
+We use the three uniform bounds
+\begin{equation}\label{eq:threebounds}
+ \Delta>\frac13,\qquad B_d<3d^3,\qquad C_d>-d^4 .
+\end{equation}
+
+For the first, write $u=Q^2=d(d-1)$ and $v=KR^2$. Direct calculation gives
+\[
+ v^3=\frac{d^2(d-1)^5}{d-2},\qquad u^3=d^3(d-1)^3,\qquad
+ v^3-u^3=\frac{d^2(d-1)^3}{d-2}=Ku^2 .
+\]
+Hence
+\[
+ v^3-\Bigl(u+\frac13\Bigr)^3
+ =Ku^2-u^2-\frac u3-\frac1{27}
+ =\frac{u^2}{d-2}-\frac u3-\frac1{27}.
+\]
+Since $u/(d-2)=d(d-1)/(d-2)>1$, the right-hand side exceeds
+$u-u/3-1/27=2u/3-1/27$, and $u\ge6$ makes this positive. Both $v$ and
+$u+1/3$ are positive, so taking cube roots gives $v>u+1/3$, which is
+$\Delta>1/3$.
+
+For the second bound, $Q<d$, $R<d$ and $K\le2$ give
+\[
+ B_d<6d+2d(d-1)^2+2d<2d^3+8d\le3d^3\qquad(d\ge3).
+\]
+For the third, $Q(d-1)+1<d(d-1)+1\le d^2$ and $K>0$ give $C_d>-d^4$.
+Thus \eqref{eq:quadraticbound} exceeds
+\[
+ \frac{n^2}{3}-3d^3n-d^4
+ =n\left(\frac n3-3d^3\right)-d^4 .
+\]
+At $n\ge10d^3$ this is at least $\tfrac{10}3d^6-d^4>0$, and the expression is
+increasing in $n$ beyond that point. This proves
+\eqref{eq:suffdifference}, so \cref{lem:newton} excludes real-rootedness of
+$H_{d,n}$.
+\end{proof}
+
+The number $10d^3$ is an explicit sufficient threshold, not an optimized one,
+and it is not a claim that $n=10d^3$ is the first failure. The limiting ratio
+computed in \cref{subsec:everydegreelimit} approaches one as $d$ increases,
+while the finite binomial digits introduce rounding effects; a simple bound
+dominating all of those effects is useful even when far from sharp.
+
+\subsection{A compact finite certificate, and how far the bounds are from
+sharp}\label{subsec:margin}
+
+For specified $d$ and $n$, the finite certificate is just the integer
+\begin{equation}\label{eq:margin}
+ M_{d,n}=2(d-1)\kap_3(c_3)-(d-2)\kap_2(c_2)^2 ,
+\end{equation}
+where $c_2,c_3$ are the quadratic and cubic input coefficients. A positive
+value proves failure, by \cref{lem:newton} and \cref{rem:direction}. Neither
+the expanded input polynomial nor any zero of any output is needed. For
+example, $d=3$ and $n=270$ give
+\[
+ c_2=220322,\quad c_3=19902240,\quad
+ b_1=664,\quad b_2=121112,\quad M_{3,270}=43552 .
+\]
+The archive records $294$ such checks, at $n\in\{10d^3,\,10d^3+1,\,20d^3\}$
+for every $3\le d\le100$, in
+\texttt{results/all\_degree\_certificates.csv}. That file audits the proved
+threshold of \cref{thm:explicitsimple} exactly at and just above its stated
+value.
+
+\Cref{tab:higher} measures something different, and both are kept; this is
+pair~\ref{pair:tables}. It records the first successful \emph{dyadic test
+values} $m=1,2,4,8,\ldots$ for the repeated-slope inputs $(1+mt)^d$, with last
+column the integer $N$ of \cref{thm:uniform}. Each negative entry alone is a
+complete certificate of failure for the stated pair $(d,m)$. Already $d=3$
+fails at $m=8$, far below the proved threshold $20\cdot2=40$, so the table
+shows how far from sharp the proved bound is. The certificate file, by
+contrast, says nothing about sharpness and everything about the correctness of
+the stated threshold.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$d$ & $m$ & $u$ & $v$ & $(d-2)u^2-2(d-1)v$\\
+\midrule
+\tableinput data/higher_degree_table.tex
+\bottomrule
+\end{tabular}
+\caption{Exact Newton-inequality certificates in degrees $3$ through $20$.
+The input is $(1+mt)^d$, and $m$ is the first dyadic test value that works,
+not necessarily the smallest possible one.}
+\label{tab:higher}
+\end{table}
+
+\section{Scaling limits and the mechanism of failure}\label{sec:scaling}
+
+The preceding proofs give explicit counterexamples. A limiting description
+explains why failure persists and why the two outputs can behave
+asymmetrically.
+
+\subsection{Asymptotics of the integer splitting operator}
+
+\begin{lemma}\label[lemma]{lem:asymptotic}
+Fix an integer $k\ge2$ and a real number $c>0$. Suppose $q_m$ are positive
+integers with
+\[
+ q_m=cm^k+O(m^{k-1})\qquad(m\longrightarrow\infty).
+\]
+Then
+\begin{equation}\label{eq:kappaasymptotic}
+ \kap_k(q_m)=
+ \frac{(k!c)^{(k-1)/k}}{(k-1)!}\,m^{k-1}+O(m^{k-2}).
+\end{equation}
+The implicit constant may depend on $k$, $c$, and the constant in the
+hypothesis, but not on $m$.
+\end{lemma}
+\begin{proof}
+Let $a=a(m)$ be the largest upper index in the $k$th binomial expansion of
+$q_m$. Then
+\[
+ \binom ak\le q_m<\binom{a+1}{k}.
+\]
+For fixed $k$, both bounding binomial coefficients equal
+$a^k/k!+O(a^{k-1})$ as $a\to\infty$. First this shows $a=\Theta(m)$, and
+then it shows
+\[
+ a^k=k!c\,m^k+O(m^{k-1}).
+\]
+Writing $\alpha=(k!c)^{1/k}$ and factoring
+$a^k-(\alpha m)^k$ gives $a=\alpha m+O(1)$.
+
+The largest term of $\kap_k(q_m)$ is
+\[
+ \binom{a-1}{k-1}
+ =\frac{\alpha^{k-1}}{(k-1)!}m^{k-1}+O(m^{k-2}).
+\]
+Every other term has the form $\binom{a_\ell-1}{\ell-1}$ with
+$\ell\le k-1$ and $a_\ell<a=O(m)$. There are at most $k-1$ such terms,
+and each is $O(m^{k-2})$. Their sum can therefore change only the error
+term, proving \eqref{eq:kappaasymptotic}.
+\end{proof}
+
+The main term depends only on the leading growth of the input coefficient.
+The smaller binomial summands, including the jumps at binomial thresholds,
+are one order lower after rescaling. Equivalently, in terms of the argument
+itself,
+\[
+ \kap_k(N)=\frac{(k!N)^{(k-1)/k}}{(k-1)!}+O_k\bigl(N^{(k-2)/k}\bigr)
+ \qquad(N\to\infty),
+\]
+which for $k=2$ is consistent with the exact formula \eqref{eq:k2exact}.
+
+\begin{theorem}\label{thm:scaling}
+Fix a polynomial $F(t)=1+\sum_{k=1}^dc_kt^k$ with positive integer
+coefficients, and let $F_m(t)=F(mt)$. Define
+\begin{equation}\label{eq:QF}
+ Q_F(z)=\sum_{k=1}^d
+ \frac{(k!c_k)^{(k-1)/k}}{(k-1)!}\,z^{k-1}.
+\end{equation}
+Then, coefficientwise and uniformly on every compact subset of $\mathbb C$,
+\begin{align}
+ H_{F_m}(z/m)&=Q_F(z)+O(m^{-1}),\label{eq:Hlimit}\\
+ G_{F_m}(z/m)&=F(z)-\frac{z}{m}Q_F(z)+O(m^{-2}).\label{eq:Glimit}
+\end{align}
+\end{theorem}
+\begin{proof}
+For $k\ge2$, apply \cref{lem:asymptotic} with $q_m=c_km^k$, and divide by
+$m^{k-1}$ to obtain the coefficient of $z^{k-1}$ in
+$H_{F_m}(z/m)$. The constant coefficient, coming from $k=1$, is exactly
+one, also agreeing with \eqref{eq:QF}. There are finitely many
+coefficients, so the coefficientwise errors are uniform on any prescribed
+compact set. The identity
+\[
+ G_{F_m}(z/m)=F(z)-\frac zmH_{F_m}(z/m)
+\]
+then gives \eqref{eq:Glimit}.
+\end{proof}
+
+Both halves of \cref{thm:scaling} are used, and this is pair~\ref{pair:limit}:
+\eqref{eq:Hlimit} produces the failures, \eqref{eq:Glimit} produces the
+recovery in \cref{prop:Grecovery}, and only the two together exhibit the
+asymmetry between the outputs.
+
+\begin{remark}[The limit is not a linear operator]\label[remark]{rem:notlinear}
+The map $F\mapsto Q_F$ is not a linear transformation of coefficient vectors:
+different coefficients are raised to different fractional powers with
+different normalizing constants. Hence the preservation properties of
+differentiation, or of other linear root-preserving operators, cannot simply
+be transferred to it.
+\end{remark}
+
+For the repeated cubic, the limiting quadratic is
+\begin{equation}\label{eq:Q3}
+ Q_{(1+t)^3}(z)=1+\sqrt6\,z+\frac{6^{2/3}}2z^2.
+\end{equation}
+Its discriminant is $6-2\cdot6^{2/3}<0$. This predicts eventual failure of
+$H_m$; \cref{thm:repeated} supplies the exact exceptional set.
+
+\subsection{The first output recovers simple real roots under dilation}
+
+\begin{proposition}\label[proposition]{prop:Grecovery}
+Suppose the fixed polynomial $F$ in \cref{thm:scaling} has $d$ distinct
+negative real roots. Then $G_{F_m}$ has $d$ distinct negative real roots for
+all sufficiently large integers $m$.
+\end{proposition}
+\begin{proof}
+Choose $d$ disjoint closed intervals on the negative real axis, each
+containing one root of $F$ in its interior. Since the roots are simple,
+choose the endpoints so that $F$ is nonzero and has opposite signs at the
+two endpoints of each interval. Uniform convergence
+$G_{F_m}(z/m)\to F(z)$ preserves those endpoint signs for all sufficiently
+large $m$. The intermediate value theorem then gives one root of the
+rescaled polynomial in each interval.
+
+Also its leading coefficient is $c_d+O(m^{-1})>0$ for sufficiently large
+$m$, so its degree is $d$. The $d$ disjoint intervals exhaust its roots,
+which are therefore all distinct, negative, and real. Rescaling back does
+not change their reality or multiplicities.
+\end{proof}
+
+Applied to $F(t)=(1+2t)(1+3t)(1+4t)$, this proves the eventual
+real-rootedness of $\widetilde G_m$ asserted in \cref{subsec:converse}.
+Meanwhile $\widetilde H_m$ is nonreal for every $m\ge5$. Thus small
+perturbation of the input polynomial itself is a good model for $G$, but not
+for $H$: the latter converges to the different transform $Q_F$. This
+asymmetry --- under dilation the first output eventually becomes real-rooted
+while the second never does --- is the most interesting qualitative statement
+here about the $G$ side, and it is available only because both limits in
+\cref{thm:scaling} were proved.
+
+\subsection{Simple-root failures in every degree}
+\label{subsec:everydegreelimit}
+
+For $F(t)=(1+t)^d$, write $Q_d=Q_F$. Its first three coefficients are
+\begin{equation}\label{eq:Qdcoeff}
+ Q_d(z)=1+A_1z+A_2z^2+\cdots,
+ \qquad
+ A_1=\sqrt{d(d-1)},\quad
+ A_2=\frac{[d(d-1)(d-2)]^{2/3}}2.
+\end{equation}
+Its degree is $d-1$. The first Newton inequality would require
+\begin{equation}\label{eq:Qnewton}
+ d(d-1)\ge
+ \frac{d-1}{d-2}[d(d-1)(d-2)]^{2/3}.
+\end{equation}
+Both sides are positive, but the ratio of their cubes is
+\begin{equation}\label{eq:ratiolimit}
+ \frac{d(d-2)}{(d-1)^2}=1-\frac1{(d-1)^2}<1.
+\end{equation}
+Therefore \eqref{eq:Qnewton} fails strictly for every $d\ge3$: the limit
+object $Q_d$ itself violates the first Newton inequality. This gives a
+qualitative limiting explanation of \cref{thm:uniform}, separate from its
+explicit bound.
+
+The same limit yields inputs without repeated roots, for which
+\cref{thm:explicitsimple} has already supplied an explicit threshold. We
+record the limiting statement because it is the conceptual reason, and because
+it applies to consecutive slopes shifted by any fixed amount.
+
+\begin{corollary}\label[corollary]{cor:simpleall}
+Fix any integer $d\ge3$. For all sufficiently large positive integers $m$,
+the polynomial
+\begin{equation}\label{eq:consecutiveslopes}
+ P_{d,m}(t)=\prod_{j=1}^d\bigl(1+(m+j)t\bigr)
+\end{equation}
+has positive integer coefficients and distinct negative roots, while its
+canonical second output is not real-rooted.
+\end{corollary}
+\begin{proof}
+The input properties are immediate from the distinct positive integer
+slopes $m+1,\ldots,m+d$. For fixed $d$, its coefficient of $t^k$ is
+$\binom dk m^k+O(m^{k-1})$, because it is the sum of $\binom dk$ products,
+each with leading term $m^k$. By \cref{lem:asymptotic}, the coefficient of
+$z^{k-1}$ in $H_{P_{d,m}}(z/m)$ tends to the corresponding coefficient of
+$Q_d$. The strict reverse of \eqref{eq:Qnewton} is an open inequality in the
+first two nonconstant coefficients, so it also holds for $H_{P_{d,m}}(z/m)$
+once $m$ is sufficiently large. This polynomial has positive coefficients and
+degree $d-1$, so \cref{lem:newton} rules out real-rootedness. Positive
+rescaling of the variable preserves whether roots are real.
+\end{proof}
+
+The phrase ``sufficiently large'' in \cref{cor:simpleall} is established by a
+proved coefficient limit and a strict inequality, and no threshold comes out
+of that argument. The explicit threshold for this family is
+\cref{thm:explicitsimple}, whose proof is by finite estimates rather than by a
+limit. \Cref{thm:uniform} has the different explicit threshold $20(d-1)$ for
+the repeated-slope family, which \cref{thm:explicitsimple} does not cover.
+
+\section{Deletion, link, and a compressed realization}\label{sec:complex}
+
+This section reads the identity $F=G+tH$ combinatorially. It explains where a
+splitting of this shape comes from, and it shows that the failure exhibited in
+\cref{sec:counterexample} is a \emph{local} phenomenon which the $f$-vector
+cannot see.
+
+\subsection{The deletion--link identity}
+
+For a vertex $v$ of a simplicial complex $\mathcal C$, the deletion
+$\del_v\mathcal C$ comprises the faces not containing $v$, and the link
+$\lk_v\mathcal C$ comprises the sets $\tau$ disjoint from $v$ for which
+$\tau\cup\{v\}$ is a face. Separating the faces according to whether they
+contain $v$ proves
+\begin{equation}\label{eq:deletelink}
+ f_{\mathcal C}(t)=f_{\del_v\mathcal C}(t)+t\,f_{\lk_v\mathcal C}(t).
+\end{equation}
+This is the structural shape of $F=G+tH$. The canonical rule of
+\cref{def:split} is one arithmetic choice of such a shape, and the next
+construction realizes that particular choice geometrically for the witness
+\eqref{eq:maintriple}.
+
+\subsection{A compressed complex realizing the full decomposition}
+
+Use vertices $1,\ldots,8$. Include the empty face, all eight singletons, every
+pair from $\{1,\ldots,7\}$ as an edge, and the triangles
+\begin{equation}\label{eq:trianglefamily}
+ \binom{[5]}{3}
+ \ \cup\ \bigl\{\{6\}\cup A:A\in\tbinom{[4]}2\bigr\}
+ \ \cup\ \bigl\{\{1,5,6\},\{2,5,6\}\bigr\},
+\end{equation}
+and no faces of size four or more. All subsets of each displayed triangle are
+present, so this is a simplicial complex. It has $8$ vertices, $21$ edges and
+$10+6+2=18$ triangles, so its face polynomial is exactly the input
+$1+8t+21t^2+18t^3$ of \eqref{eq:maintriple}.
+
+The link of vertex $1$ has vertices $2,\ldots,7$; its edges are every pair from
+$\{2,3,4,5,6\}$, with vertex $7$ isolated. It has no triangular faces, since
+the complex has no four-vertex faces. Its face polynomial is therefore exactly
+\[
+ 1+6t+\binom52t^2=1+6t+10t^2=H(t).
+\]
+The deletion of vertex $1$ has $7$ vertices, $15$ edges and $8$ triangles, so
+its face polynomial is exactly $1+7t+15t^2+8t^3=G(t)$. Direct face counting
+thus recovers the complete canonical decomposition \eqref{eq:maintriple}, with
+no arithmetic beyond counting.
+
+The triangles in \eqref{eq:trianglefamily} are the first $18$ triples in
+\emph{colexicographic} order, where two distinct sets of the same size are
+compared by the largest element of their symmetric difference; the edges are
+the first $21$ pairs and the singletons the first $8$ elements in the same
+order. This finite observation explains why a binomially compressed
+realization appears here. No general compression theorem is invoked for this
+example.
+
+\subsection{The failure is local, not a property of the \texorpdfstring{$f$}{f}-vector}
+
+The same input $1+8t+21t^2+18t^3$ also has the multipartite realization
+\eqref{eq:join} with part sizes $2,3,3$. Every vertex link in that complex is
+again a join of discrete sets, so every such link has a real-rooted face
+polynomial. The compressed complex above has the \emph{same} face-counting
+polynomial, but its link at vertex $1$ is $1+6t+10t^2$, which is not
+real-rooted. This is the payoff of pair~\ref{pair:complex}: face counts and
+their zeros do not determine the real-rootedness of every local link, so the
+failure discovered in \cref{thm:main} is local and cannot be read off the
+$f$-vector.
+
+These two realizations are also different in purpose from the ones in
+\cref{subsec:complexes}: there the point was that the two \emph{outputs} are
+themselves $f$-polynomials, so no realizability obstruction is exhibited on
+either side. Here the point is that one $f$-vector supports both a complex all
+of whose links are real-rooted and a complex with a link that is not. Neither
+fact follows from the other.
+
+Finally, the coefficientwise conjecture is untouched by either realization: as
+recorded in \cref{subsec:complexes}, both examples satisfy the coordinatewise
+inequalities, so Mu--Welker Conjecture~3.8 is not falsified here.
+
+\section{Reproducibility and the role of computation}\label{sec:verification}
+
+The accompanying files distinguish arithmetic checking from the proofs of
+infinite statements. Two verification stacks are supplied, and both are kept;
+this is pair~\ref{pair:verify}. They are independent in different senses and
+were run on different software.
+
+The core program \texttt{verify.py} requires Python
+3.10 or later and only its standard library. It uses arbitrary-precision
+integers and exact rational arithmetic. There is no numerical root finder,
+floating-point discriminant, or probabilistic test. The second program,
+\texttt{code/verify\_wide.py}, shares no code with it: the canonical
+expansion, the splitting operator, the discriminants and the search loops are
+independently reimplemented, and it carries the wider cubic scan, the
+colex-prefix recomputation and the all-degree certificates.
+
+The counterexamples are hand-checkable proofs. Computation is used to
+check their arithmetic redundantly, to certify the finite cubic searches in
+\cref{prop:minimalcubic,prop:simpleminimal}, and to generate the finite parts
+of the exact family classifications. Infinite tails and all-degree conclusions
+are proved analytically in the text.
+
+\subsection{Stack one: the core verifier}
+
+\begin{center}
+\begin{tabular}{@{}p{0.64\textwidth}r@{}}
+\toprule
+Exact check & Scope or count\\
+\midrule
+Two independent greedy implementations compared & 21,105 cases\\
+All cubic candidates in \eqref{eq:searchbounds} & 621 triples\\
+Retained real-rooted cubic inputs & 124 triples\\
+Each of the two cubic families & $1\le m\le1000$\\
+Printed higher-degree Newton witnesses & $3\le d\le20$\\
+Additional checks at $m=20(d-1)$ & $3\le d\le200$\\
+Independent exact Sturm checks (SymPy 1.14.0) & 869 polynomials\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The two independent greedy implementations use binary search and linear
+search, respectively; boundary cases immediately below, at, and above binomial
+coefficients are included. All checks remain enabled even when Python is
+run with its optimization flag. Invalid negative, nonintegral, or
+zero-order inputs are rejected. Output real-rootedness tests remove
+trailing zero coefficients before deciding the degree. The extended family
+data in \texttt{data/repeated\_cubic\_family.csv} and
+\texttt{data/simple\_cubic\_family.csv} cover both cubic families through
+$m=1000$ and can be extended with \texttt{--family-limit}.
+
+The supplementary \texttt{minimal\_certificate.py} checks both main
+examples independently in a short standard-library script, and
+\texttt{independent\_sympy\_check.py} cross-checks the cubic certificate using
+exact square-free parts and Sturm root counts on all $621$ input polynomials
+and the $248$ outputs of the $124$ admissible inputs, recomputing the
+canonical expansions by a separate linear-search routine. That script does not
+import \texttt{verify.py} and is not a prerequisite for the proofs.
+
+\subsection{Stack two: the wide-scan verifier}
+
+\begin{center}
+\begin{tabular}{@{}p{0.64\textwidth}r@{}}
+\toprule
+Exact check & Scope or count\\
+\midrule
+Canonical expansion and Pascal identity, $0\le N\le5000$, $1\le k\le8$
+ & 40,008 checks\\
+Independent colex-prefix counts & 2,509 checks\\
+Real-rooted quadratic inputs, $2\le a\le100$ & 84,575 inputs\\
+Candidate cubic triples, $1\le a\le14$ & 18,794 triples\\
+All-degree Newton certificates, $3\le d\le100$ & 294 certificates\\
+Discriminants recomputed by Sylvester determinant & 6 checks\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The colex-prefix check is a genuinely different implementation route to the
+splitting operator: initial colexicographic segments of the $k$-subsets of
+$[12]$ are constructed as explicit lists of subsets, and the number of them
+containing vertex $1$ is compared with $\kap_k(N)$, for each $1\le k\le6$ and
+every initial segment. The discriminant check recomputes the same six numbers
+from the Sylvester determinant of a polynomial and its derivative by exact
+rational Gaussian elimination, rather than from the closed formula. The
+explicit complex of \cref{sec:complex} is machine-enumerated as a face set,
+checked for closure under subsets and under deletion of a vertex, and checked
+against the claimed $f$-, deletion- and link-vectors; the result is recorded
+in \texttt{results/compressed\_complex.json} with $f$-vector $(1,8,21,18)$,
+deletion vector $(1,7,15,8)$ and link vector $(1,6,10)$. The quadratic scan
+confirms \cref{thm:degree} computationally over its stated range, which the
+proof of course does not require.
+
+The recorded run used Python 3.13.5 and took about $1.28$ seconds; that is an
+observation about that run, not a portable performance claim. Both an ordinary
+run and a \texttt{python -O} run were executed, and the checks raise rather
+than assert so that optimization does not disable them.
+
+\subsection{Two computer algebra systems}
+
+The two optional external checks use different systems, and both are
+recorded. The script
+\texttt{independent\_sympy\_check.py} uses SymPy~1.14.0, as described above.
+Separately, \texttt{code/verify.wl} was evaluated in a connected Wolfram
+Language kernel reporting version \texttt{15.0.1 for Linux x86 (64-bit)}; it
+returned the coefficient lists of all six polynomials of
+\eqref{eq:maintriple} and \eqref{eq:simpletriple}, both decomposition
+identities as the zero polynomial, the six discriminants $(4,-31,-3,0,-59,-4)$
+for $(F,G,H)$ of the simple-root example followed by the repeated-root one,
+real-root counts $(3,1,0)$ for the simple-root triple, the symbolic
+cube difference
+\[
+ \frac{(-2+3d)\,(-1+8d-15d^2+9d^3)}{27\,(-2+d)},
+\]
+and the answer \texttt{False} to the question whether any real $d\ge3$ makes
+that difference nonpositive --- which is the rational positivity step
+underlying $\Delta>1/3$ in \cref{thm:explicitsimple}. The exact returned text
+is in \texttt{results/wolfram\_output.txt}. Two different systems confirming
+the same integers is worth more than either alone, and neither is needed to
+run the standard-library verification or to follow the proofs.
+
+These are independent computational implementations, not independent human
+refereeing and not a proof-assistant formalization. In particular, the
+unbounded theorems are not inferred from finite tests.
+
+\subsection{Running everything}
+
+To regenerate the core certificates and report, run
+\begin{lstlisting}[language={}]
+python verify.py
+\end{lstlisting}
+from the archive directory; to extend the finite family checks, run
+\begin{lstlisting}[language={}]
+python verify.py --family-limit 10000
+\end{lstlisting}
+The larger range is optional and does not strengthen an already proved
+infinite tail. For the second stack,
+\begin{lstlisting}[language={}]
+python code/verify_wide.py --out reproduced_results
+python code/certificate.py
+python minimal_certificate.py
+\end{lstlisting}
+Omitting \texttt{--out} writes to \texttt{results/} and replaces the recorded
+data there. The files in \texttt{data/} contain the complete narrow cubic
+certificate, extended family data, the higher-degree integer witnesses, and
+the small generated tables used by this article; the files in
+\texttt{results/} contain the wide cubic scan, the all-degree certificates,
+the complex certificate and the recorded external output.
+
+To build the PDF after regenerating the tables, run
+\begin{lstlisting}[language={}]
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+Two or more ordinary \texttt{pdflatex} runs can be used instead. The archive
+contains the already compiled PDF as well as its source. The bibliography is
+inline; \texttt{references.bib} is supplied only for reference-manager import.
+
+\section{Conclusions and precise limits}\label{sec:conclusion}
+
+The proposed preservation principle has a negative answer for the
+canonical rule in \cref{def:split}. The smallest-degree obstruction is
+already visible in a cubic with eight as its linear coefficient, the smallest
+with distinct input roots has nine, and in both cases both outputs fail
+simultaneously. The obstruction persists in infinite
+families, in every degree at least three, and for inputs with distinct
+negative roots, with two explicit thresholds proved by different arguments.
+In high degree, the first Newton inequality alone detects
+failure; locating nonreal roots numerically is unnecessary.
+
+Several distinctions matter. Both minimal linear coefficients are certified
+only among cubics. The complete all-$m$ classifications concern $G_m,H_m$
+for $(1+mt)^3$ and the quadratic output for
+$(1+2mt)(1+3mt)(1+4mt)$, not every possible cubic family. The threshold
+$20(d-1)$ applies to the repeated-slope family $(1+mt)^d$ and the threshold
+$10d^3$ to the distinct-root consecutive-slope family; neither covers the
+other, and neither is claimed to be sharp. The all-degree theorems prove
+failure of $H$, not simultaneous failure of both outputs in every degree; only
+the explicit cubic examples prove simultaneous failure. Criterion
+\eqref{eq:region} is sufficient, not a classification of every input whose
+$H$ fails. None of these claims resolves Bell--Skandera's realization question
+or the different coefficientwise conjecture of Mu and Welker, and nothing here
+bears on Proposition~3.9 of \cite{MW}, which is the bridge between them.
+
+The limiting transform $F\mapsto Q_F$ suggests further concrete problems:
+determine when this transform is real-rooted, sharpen the uniform thresholds
+in \cref{thm:uniform,thm:explicitsimple}, determine the exact last exceptional
+value of $m$ in each fixed degree, and decide the equality case of
+\eqref{eq:region}. These are directions suggested by the present
+results, not assertions that an exhaustive literature review has verified
+their novelty or open status.
+
+Finally, mathematical validity and priority are separate issues. The
+finite counterexamples and the stated proofs can be checked from this
+manuscript alone. The literature search did not identify a prior answer,
+but this draft makes no unconditional claim of first discovery. Its
+bibliographic target is explicitly the versioned question in \cite{MW}.
+
+\appendix
+\section{A compact exact search certificate}\label{app:code}
+
+The following pseudocode in executable Python syntax shows the essential
+finite enumeration behind \cref{prop:minimalcubic}. Here \texttt{decompose}
+implements \cref{def:split}, and \texttt{all\_real\_small} uses the actual
+polynomial degree and the exact discriminant. Their complete implementations,
+validation, and tests are supplied in \texttt{verify.py}.
+\begin{lstlisting}
+def D(a, b, c):
+    return (a*a*b*b - 4*b*b*b - 4*a*a*a*c
+            - 27*c*c + 18*a*b*c)
+
+failures = []
+for a in range(3, 9):
+    for b in range(3, a*a // 3 + 1):
+        for c in range(1, a*a*a // 27 + 1):
+            if D(a, b, c) < 0:
+                continue
+            g, h = decompose([1, a, b, c])
+            if not (all_real_small(g) and all_real_small(h)):
+                failures.append((a, b, c))
+
+assert failures == [(8, 21, 18)]
+\end{lstlisting}
+The mathematical bounds \eqref{eq:searchbounds} are what make this a
+complete certificate rather than a search for suggestive examples.
+Repeated roots are retained by the non-strict input condition $D\ge0$.
+Lower-degree outputs are tested separately. Widening the loop to
+\texttt{range(1, 15)} with \texttt{b} from~$1$ gives the scan of
+\cref{tab:cubiccounts}; that variant is implemented in
+\texttt{code/verify\_wide.py}.
+
+\section{A standalone minimal certificate}\label{app:certificate}
+
+This is the other half of pair~\ref{pair:cert}. The program below contains an
+entire finite disproof by itself, driven from the literal digit table of
+\cref{tab:digits}. It uses only small binomial identities, explicit
+coefficient vectors, and the two discriminant formulas, and it depends on no
+search program and no third-party package. It raises rather than asserts, so
+it survives \texttt{python -O}.
+\begin{lstlisting}
+from math import comb
+
+def check(condition):
+    if not condition:
+        raise RuntimeError("Certificate check failed")
+
+digits = [[(9, 1)], [(7, 2), (5, 1)],
+          [(6, 3), (3, 2), (1, 1)]]
+f, g, h = [1], [1], []
+for expansion in digits:
+    f.append(sum(comb(a, k) for a, k in expansion))
+    g.append(sum(comb(a-1, k) if a-1 >= k else 0
+                 for a, k in expansion))
+    h.append(sum(comb(a-1, k-1) for a, k in expansion))
+check(f == [1, 9, 26, 24])
+check(g == [1, 8, 19, 11] and h == [1, 7, 13])
+check(all(f[k] == g[k] + h[k-1] for k in range(1, 4)))
+check(7**2 - 4*13 == -3)
+check(19**2*8**2 - 4*11*8**3 - 4*19**3
+      - 27*11**2 + 18*11*19*8 == -31)
+print("Exact counterexample verified")
+\end{lstlisting}
+The factorization $(1+2t)(1+3t)(1+4t)$ certifies the real zeros of the input;
+the source definition and the digit table certify that these are the required
+outputs, rather than merely some decomposition. The file is
+\texttt{code/certificate.py}; the companion
+\texttt{minimal\_certificate.py} does the same for \emph{both} witnesses
+starting from their factorizations instead of their digit tables.
+
+\section{Source and version audit}\label{app:sources}
+
+The primary source used for the question is the PDF of
+arXiv:2503.24076v1, dated 31 March 2025. The splitting is on printed page~5,
+Section~3.2; the target question is on printed page~6 and is numbered 3.10.
+The PDF page image was checked because the available HTML rendering did not
+preserve all displayed theorem numbers correctly. The separate
+coefficientwise conjecture is numbered 3.8 and is also on page~6; the
+realization question attributed to Bell and Skandera is numbered 1.1;
+Proposition~3.9 relates 3.8 to 1.1. The source writes $f_{i-1}$ for the
+coefficient of $t^i$; this manuscript writes $c_i$ and keeps the corresponding
+output indexing, as stated in \cref{subsec:conventions}.
+
+A publisher listing was found for the same work in \emph{Advances in
+Applied Mathematics}, volume~175 (2026), article~103041, 16 pages, with DOI
+\texttt{10.1016/j.aam.2026.103041}. The final publisher full text was not
+available for inspection during this work; the DOI open attempt returned an
+access error. It is therefore not assumed
+that the final article retains the same numbering or that it contains no
+change to the question. Searches using the title, arXiv identifier, the arXiv
+DOI \texttt{10.48550/arXiv.2503.24076}, author names, ``Question 3.10'', and
+``recursive decomposition'' with ``real rooted'' and ``counterexample'' did
+not locate an earlier resolution; an author's publication list at the
+University of Marburg was also consulted. These searches are evidence of a
+reasonable check, not proof of worldwide absence of prior work. In particular,
+inaccessible journal content, unpublished communications, differently worded
+results, or unindexed corrections could contain an earlier answer.
+
+The full source URLs, search scope, and access limitations are recorded in
+\texttt{REFERENCES.md} and \texttt{STATUS.md}; both are retained because
+neither contains all of the above. No third-party article PDF is redistributed
+in the archive. This manuscript restates the necessary definitions and
+presents its counterexamples and proofs directly. No checksum manifest is
+distributed with this package.
+
+\begin{thebibliography}{9}
+
+\bibitem{MW}
+Lili Mu and Volkmar Welker,
+\emph{On a question about real rooted polynomials and $f$-polynomials of
+simplicial complexes}, arXiv:2503.24076v1, 31 March 2025.
+\href{https://arxiv.org/abs/2503.24076v1}{\texttt{arXiv:2503.24076v1}}.
+Question~3.10 and Section~3.2, on pp.~5--6, are the version-specific target of
+this manuscript. A publisher listing identifies the journal version as
+\emph{Advances in Applied Mathematics} \textbf{175} (2026), 103041,
+\href{https://doi.org/10.1016/j.aam.2026.103041}{doi:10.1016/j.aam.2026.103041}.
+
+\bibitem{Vondrak}
+Jan Vondr\'ak (instructor), Scott Mutchnik (original scribe),
+\emph{Lecture~11: Real-rooted Polynomials},
+Math~233: Non-constructive methods in combinatorics,
+Stanford University, 2018.
+\href{https://theory.stanford.edu/~jvondrak/MATH233A-2018/Math233-lec11.pdf}
+{Lecture notes on real-rooted polynomials and Newton inequalities}.
+Theorem~11.2 there states Newton's inequalities; the specific inequality used
+in this article is proved from scratch in \cref{lem:newton}, so nothing is
+used as a black box.
+
+\end{thebibliography}
+\end{document}

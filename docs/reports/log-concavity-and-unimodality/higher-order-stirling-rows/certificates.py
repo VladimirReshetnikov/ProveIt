@@ -159,13 +159,37 @@ def verify_all() -> Dict[str, Any]:
             positive(f"centered second difference P_{d} is positive", -C1, 2*(d+1))
         As[d], Ls[d], Ms[d] = A, L, M
 
+    P4 = falling_poly(t, 4)
+    minus4, plus4 = P4.at(t-4), P4.at(t+4)
+
+    # The three fifth-order auxiliaries of the article: alpha, beta, gamma.
+    alpha = 2*t**3 + 9*t**2 - 161*t + 255
+    beta = 2*t**2 - 6*t + 9
+    gamma = 7*t**3 - 31*t**2 - 126*t + 1080
+
     E4 = 4*As[4] - Ls[4]**2
-    E4_factored = Fraction(384, 25)*(t-5)*(2*t**2-6*t+9)*(7*t**3-31*t**2-126*t+1080)
+    E4_factored = Fraction(384, 25)*(t-5)*beta*gamma
     equal("subset order five discriminant factorization", E4, E4_factored)
+    equal("L_4 = -(16/5) alpha", Ls[4], -16*alpha/5)
+    equal("beta as a shifted square", beta, 2*(t-Fraction(3, 2))**2 + Fraction(9, 2))
+
+    # The bivariate certificate 25(A_4 u^2 + H_4 uv + v^2)
+    #   = (5v - 8 alpha u)^2 + 96 (t-5) beta gamma u^2 + 480 beta (t - 5k) uv
+    # is equivalent to these three coefficientwise identities in t alone,
+    # because H_4 = C0_4 + k*C1_4 is affine in k and the v^2 coefficient is 25
+    # on both sides. Verifying them here certifies the certificate without a CAS.
+    equal("order five SOS: coefficient of u^2", 25*As[4],
+          64*alpha**2 + 96*(t-5)*beta*gamma)
+    equal("order five SOS: coefficient of uv, constant in k",
+          25*(plus4 - minus4), -80*alpha + 480*beta*t)
+    equal("order five SOS: coefficient of uv, linear in k",
+          25*(2*P4 - minus4 - plus4), -2400*beta)
+    equal("order five mixed-term remainder slope: Delta_4 = 96 beta",
+          minus4 + plus4 - 2*P4, 96*beta)
     equal("expanded main discriminant, multiplied by 25", 25*E4,
           5376*t**6-66816*t**5+198528*t**4+1018368*t**3
           -7986816*t**2+18351360*t-18662400)
-    equal("cubic at t=10+s", (7*t**3-31*t**2-126*t+1080).at(t+10),
+    equal("cubic at t=10+s", gamma.at(t+10),
           7*t**3+179*t**2+1354*t+3720)
     positive("subset order five discriminant positive", E4, 10)
     equal("cycle order four discriminant factorization", 36*As[3]-Ms[3]**2,

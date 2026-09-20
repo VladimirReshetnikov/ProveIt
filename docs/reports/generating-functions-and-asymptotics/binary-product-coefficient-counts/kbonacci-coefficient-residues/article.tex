@@ -1,0 +1,2561 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.93in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor,microtype}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+ urlcolor=blue!45!black,pdftitle={Coefficient residues in generalized Fibonacci products},
+ pdfauthor={Research manuscript prepared with ChatGPT}]{hyperref}
+\definecolor{ink}{HTML}{233D54}
+\definecolor{pale}{HTML}{EDF2F6}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Coefficient residues in Fibonacci products}}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\renewcommand{\headrulewidth}{0.3pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\F}{\mathbb F}
+\newcommand{\val}{\operatorname{val}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\bits}[1]{\mathtt{#1}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\coef}[2]{[x^{#1}]#2}
+\newcommand{\normsq}[1]{\lVert #1\rVert_2^2}
+
+\title{\vspace{-1.2em}\color{ink}\bfseries Coefficient residues in\protect\\ generalized Fibonacci products\protect\\[0.5em]
+\large Finite-state and signed-cancellation proofs of two conjectures of Stanley}
+\author{\normalsize Research manuscript prepared with ChatGPT}
+\date{September 20, 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+For the $k$-bonacci numbers initialized by $k$ ones, consider the product
+$P_n(x)=\prod_{i=0}^{n-1}(1+x^{F_{i+k}^{(k)}})$, with $k\ge2$.
+We give a self-contained finite-state argument that, for every modulus $m$
+and residue $a$, the number of coefficients of $P_n$ congruent to $a$
+has a rational ordinary generating function in $n$. The construction also
+proves rationality for the number of coefficients equal to any prescribed
+positive integer. Its key ingredients are a unique binary normal form
+avoiding $1^k0$, a factorization of each representation fiber into disjoint
+carry blocks, and an exact counter with only $k+1$ coordinates. Modulo two,
+a uniform automaton with $4k+2$ states gives
+\[
+ \sum_{n\ge0}\#\{j:[x^j]P_n(x)\text{ is odd}\}\,z^n
+ =\frac{1+2z^k}{1-2z+2z^k-2z^{k+1}}.
+\]
+We then prove that same odd-coefficient identity a \emph{second} time, by a
+completely disjoint elementary route: replacing selected plus signs by minus
+signs according to a periodic coherent signing makes every coefficient of the
+signed product lie in $\{-1,0,1\}$, parity becomes a squared norm, and an exact
+overlap identity closes the recurrence. The second proof shares no lemma with
+the first, and it holds for every quasifibonacci weight sequence with
+superincreasing seeds, not only for Stanley's initialization.
+These arguments provide proposed proofs of Conjectures 6.2 and 6.3 in
+Stanley's arXiv version 3. We explicitly handle internal zero coefficients,
+prove two \emph{different} exponential sparsity statements with different
+denominators, derive exponential asymptotics twice (analytically and by
+Perron--Frobenius), and include two independent exact computational suites
+and finite certificates for two modulo-three identities.
+None of the general theorems depends on a finite numerical fit.
+\end{abstract}
+
+\medskip
+\noindent\colorbox{pale}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{
+\textbf{Status and scope.} This is an unrefereed research manuscript containing
+complete proposed proofs, not a claim of independently certified discovery.
+The identified source explicitly states the target conjectures. A targeted
+literature search did not identify a later resolution, but does not establish
+priority. All claims below are restricted to $k\ge2$ and to the stated
+initial conditions, except where a statement is explicitly extended to
+arbitrary superincreasing seeds.}}
+
+\vfill
+\noindent\small
+\textbf{Companion artifacts.} Editable \LaTeX\ source; two independent
+standard-library Python implementations; two exact verification suites and a
+cross-verification script that relates them; CSV tables; JSON automata and
+Cayley--Hamilton certificates. The symbolic cross-check additionally uses
+SymPy.\par
+\textbf{Keywords.} Generalized Fibonacci numbers; quasifibonacci partitions;
+coefficient congruences; flat signed products; weighted automata; rational
+generating functions; binary normalization.
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{The problem and the main results}
+\label{sec:intro}
+
+An exponentially large polynomial can contain substantial finite-state
+structure. The issue is to expose that structure without confusing
+representations of an exponent with distinct exponents, or confusing the
+number of representations modulo $m$ with the number of exponents having
+that residue. Both distinctions matter in the problem considered here.
+
+A second, quite different mechanism is also available for the modulus two:
+a suitable periodic signing of the factors makes the product \emph{flat},
+and parity then becomes a squared norm. This manuscript carries both
+mechanisms, because they prove the same identity from disjoint hypotheses
+and each reaches conclusions the other cannot.
+
+\subsection{The documented target}
+
+Stanley's paper \emph{Theorems and Conjectures on Some Rational Generating
+Functions} asks whether coefficient-residue counts for generalized Fibonacci
+products always have rational generating functions. It also proposes a
+particularly small formula for the odd-coefficient count
+\cite[Conjectures 6.2 and 6.3, pp.~23--24]{Stanley}. Our numbering of those
+conjectures refers specifically to arXiv:2101.02131v3. The article subsequently
+appeared in the \emph{European Journal of Combinatorics} in 2024
+\cite{StanleyJournal}.
+
+The relevant background includes Stanley's factorization of equal-weight
+pairs \cite[Lemma 5.2]{Stanley} and the symbolic dynamic programming methods
+of Ekhad and Zeilberger \cite{EZ}. The finite-state argument below instead
+organizes one canonical representative per exponent and counts its fiber.
+We prove the required canonical-pair factorization directly, so that central
+argument has no dependence on an omitted proof from the literature.
+
+For the second proof there is also important prior work to acknowledge.
+Zhao proved flatness of finite signed Fibonacci products when $k=2$
+\cite{Zhao}. Diao introduced the quasifibonacci seed conditions used in
+Section~\ref{sec:signed} and proved flatness of the infinite all-minus
+product for even recurrence order \cite[Definition~1.1 and
+Theorem~1.1]{Diao}. The argument here uses a varying, periodic signing, works
+for both even and odd orders, concerns every finite product, and gives its
+exact support count. These distinctions matter: simply replacing every plus
+sign by a minus sign does \emph{not} work for odd $k$
+(Section~\ref{sec:allminus}).
+
+\subsection{Provenance of this manuscript}
+\label{sec:provenance}
+
+This article is the merger of two previously separate research packages that
+independently attacked the same conjecture page.
+
+\begin{itemize}[leftmargin=1.6em]
+\item \code{stanley-kbonacci-residues} (September 20, 2026) proved
+Conjecture~6.2 for every modulus and residue, and proved Conjecture~6.3 by
+constructing a unique regular cross-section of the representation map, a
+proved factorization of each canonical fiber into carry blocks, an exact
+$(k+1)$-coordinate counter, a uniform $4k+2$-state parity automaton, and a
+symbolic elimination valid for arbitrary $k$. It is the structural spine of
+the present article: Sections~\ref{sec:normal}--\ref{sec:eliminate}, the
+combinatorial half of Section~\ref{sec:asymptotic}, and
+Sections~\ref{sec:verification}--\ref{sec:scope} come from it.
+\item \code{quasifibonacci-odd-coefficient-counts} (September 19, 2026)
+proved Conjecture~6.3 by a signed-cancellation argument: a coherent periodic
+signing, separation inequalities for the weights, a signed reflection
+identity, a pointwise two-tail cancellation identity, flatness, and an exact
+overlap inner product. It proved the statement for \emph{every} superincreasing
+seed list, and it explicitly recorded that its parity lift cannot reach moduli
+greater than two. Sections~\ref{sec:signed}--\ref{sec:positive}, the analytic
+half of Section~\ref{sec:asymptotic}, Section~\ref{sec:algorithms}, and
+Appendix~\ref{app:dependency} come from it.
+\end{itemize}
+
+\noindent\textbf{[Kept twice: literature audits.]}
+Each package carried its own literature and status audit, and neither list
+contains the other. Both are retained: \code{LITERATURE.md} records which
+printed pages of the source were inspected as rendered images, Stanley's
+Lemma~5.2 background, and the Ekhad--Zeilberger version dating;
+\code{RESEARCH_STATUS.md} records Zhao, Diao, OEIS A104767 with the exact
+relation $a_2(n)=2\,\mathrm{A}104767(n)$ for $n\ge1$, and Tang--Xin
+\cite{TangXin}. The bibliography below is their union.
+
+The two packages shared no lemma. Their agreement on the numbers was checked
+before the merge (for instance $a_3(4)=14$ in both, and the growth constant
+$\rho_2=1.5436890126920763615\ldots$ from the $80$-digit bisection against
+$1.5436890126920766$ from the independent floating-point bisection), and it
+is now checked automatically by \code{code/cross_check.py}
+(Section~\ref{sec:crosscheck}).
+
+\subsection{Definitions and conventions}
+
+Fix an integer $k\ge2$. Define
+\begin{equation}
+ F_1^{(k)}=\cdots=F_k^{(k)}=1,
+ \qquad F_{i+1}^{(k)}=\sum_{j=0}^{k-1}F_{i-j}^{(k)}\quad(i\ge k).
+ \label{eq:F}
+\end{equation}
+Set $w_i=F_{i+k}^{(k)}$ for $i\ge0$. Thus the first weights are
+\[
+\begin{array}{c|rrrrrrrr}
+k=2&1&2&3&5&8&13&21&34\\
+k=3&1&3&5&9&17&31&57&105\\
+k=4&1&4&7&13&25&49&94&181.
+\end{array}
+\]
+In particular, the $k=3$ initialization is \emph{not} the alternative
+$1,2,4,7,\ldots$ sometimes used for tribonacci numeration.
+
+Write
+\begin{equation}
+ P_n(x)=\prod_{i=0}^{n-1}(1+x^{w_i})
+       =\sum_{j=0}^{D_n}c_n(j)x^j,
+ \qquad D_n=\sum_{i=0}^{n-1}w_i,
+ \label{eq:product}
+\end{equation}
+with $P_0=1$ and $D_0=0$. All the $c_n(j)$ are nonnegative integers.
+For $m\ge2$ and $0\le a<m$, distinguish
+\begin{align}
+ h_{m,a}^{(k)}(n)
+   &=\#\{j:0\le j\le D_n,\ c_n(j)>0,\ c_n(j)\equiv a\pmod m\},
+   \label{eq:hpositive}\\
+ \mathfrak h_{m,a}^{(k)}(n)
+   &=\#\{j:0\le j\le D_n,\ c_n(j)\equiv a\pmod m\}.
+   \label{eq:hall}
+\end{align}
+Their ordinary generating functions are denoted $H_{m,a}^{(k)}(z)$ and
+$\cH_{m,a}^{(k)}(z)$, respectively. The first convention counts nonzero
+terms; the second counts every coefficient position through the degree.
+They differ only at residue zero. Proving both avoids any dependence on
+how the word ``coefficients'' is interpreted. Coefficients at exponents
+beyond the degree are never counted. This is a finite-product problem:
+$n$ is the number of factors, not an upper bound on the exponent being
+counted.
+
+We abbreviate the odd count by
+\begin{equation}
+ a_k(n)=h_{2,1}^{(k)}(n)=\mathfrak h_{2,1}^{(k)}(n),
+ \qquad a_k(0)=1,
+ \label{eq:ak}
+\end{equation}
+the two conventions agreeing at residue one because a missing position has
+coefficient zero, which is even.
+
+For a word $u=u_0\cdots u_{n-1}\in\{0,1\}^n$, define
+\begin{equation}
+ \val(u)=\sum_{i=0}^{n-1}u_iw_i.
+ \label{eq:value}
+\end{equation}
+Throughout the article, words are written and read in \emph{increasing
+weight order}: the leftmost digit has weight $w_0$. Expansion of
+\eqref{eq:product} shows that $c_n(j)$ is exactly the number of length-$n$
+words with value $j$.
+
+\subsection{The main results}
+
+\begin{theorem}[Residue rationality; Conjecture 6.2]
+\label{thm:mainrat}
+For all $k\ge2$, $m\ge2$, and $0\le a<m$, both
+$H_{m,a}^{(k)}(z)$ and $\cH_{m,a}^{(k)}(z)$ belong to $\Q(z)$.
+The nonzero-term function has an explicitly constructible integer
+linear representation with at most $(k+1)m^{k+1}$ states.
+\end{theorem}
+
+\begin{theorem}[The odd-coefficient formula; Conjecture 6.3]
+\label{thm:mainodd}
+For every $k\ge2$,
+\begin{equation}
+ \boxed{\displaystyle
+ H_{2,1}^{(k)}(z)=\cH_{2,1}^{(k)}(z)=\sum_{n\ge0}a_k(n)z^n
+ =\frac{1+2z^k}{1-2z+2z^k-2z^{k+1}}.}
+ \label{eq:mainodd}
+\end{equation}
+\end{theorem}
+
+\begin{theorem}[Prescribed exact multiplicity]
+\label{thm:mainexact}
+Fix $k\ge2$ and $q\ge1$. Then
+\[
+ \sum_{n\ge0}\#\{j:c_n(j)=q\}\,z^n
+\]
+is rational. A finite-state construction uses at most
+$(k+1)(q+2)^{k+1}$ states.
+\end{theorem}
+
+\begin{theorem}[Seed independence and signed flatness]
+\label{thm:seedmain}
+Let $w_0,w_1,\ldots$ be any \emph{quasifibonacci sequence of order $k$}
+in the sense of Definition~\ref{def:weights}: positive integers with
+superincreasing seeds $w_i>\sum_{j<i}w_j$ for $0\le i\le k-1$, continued by
+the $k$-term recurrence. Let $\eps_0,\eps_1,\ldots$ be any coherent signing
+(Definition~\ref{def:sign}). Then every coefficient of the signed product
+$\prod_{i<n}(1+\eps_ix^{w_i})$ lies in $\{-1,0,1\}$; the parity of
+$\coef{m}{\prod_{i<n}(1+x^{w_i})}$ is the square of the corresponding signed
+coefficient; and the number of odd coefficients is independent of the seeds
+and of the signing and again equals $a_k(n)$ in \eqref{eq:mainodd}.
+\end{theorem}
+
+Theorems~\ref{thm:mainrat}--\ref{thm:mainexact} are proved by the
+finite-state route of Sections~\ref{sec:normal}--\ref{sec:eliminate}.
+Theorem~\ref{thm:seedmain} is proved by the signed route of
+Section~\ref{sec:signed}, which \emph{re-proves} Theorem~\ref{thm:mainodd}
+as the special case of Stanley's seeds (Lemma~\ref{lem:originalseeds}).
+The two proofs of \eqref{eq:mainodd} are logically independent; see
+Section~\ref{sec:twice}.
+
+\subsection{What this article deliberately keeps twice}
+\label{sec:twice}
+
+Merging two disjoint solutions of one problem is only worthwhile if the
+duplication is preserved where it carries information. The following
+thirteen items are kept in duplicate on purpose. Each is flagged in the
+text with the marker \textbf{[Kept twice: $\langle$item$\rangle$]}.
+
+\begin{enumerate}[leftmargin=1.9em,label=\textbf{D\arabic*.}]
+\item \textbf{Conjecture 6.3 itself}, proved once in
+Sections~\ref{sec:normal}--\ref{sec:eliminate} (canonical words, fiber
+factorization, counter, $4k+2$-state automaton, symbolic elimination) and
+once in Section~\ref{sec:signed} (coherent signing, separation, reflection,
+two-tail identity, parity lift, norm recurrence). \emph{What it buys:} two
+arguments with no lemma in common confirm each other, so an error in either
+route cannot silently survive.
+\item \textbf{Two structural witnesses for the same coefficients}:
+flatness gives the parity as $\varphi_n(m)^2$ with $\varphi_n(m)\in\{-1,0,1\}$
+(Theorem~\ref{thm:flat}), while the counter gives the exact integer
+$c_n(j)$ (Proposition~\ref{prop:counter}). \emph{What it buys:} neither
+implies the other, and their agreement --- $c_n(j)$ odd exactly when
+$|\varphi_n(j)|=1$ --- is a genuine cross-check
+(Section~\ref{sec:crosscheck}).
+\item \textbf{The dominant-root asymptotic} $a_k(n)=\gamma_k\rho_k^n
++O(\theta_k^n)$, proved analytically in Section~\ref{sec:analyticroot} and
+combinatorially by Perron--Frobenius in Section~\ref{sec:pfroot}.
+\emph{What it buys:} the analytic proof needs no automaton and the
+combinatorial proof needs no complex analysis, so the asymptotic survives
+if either technique is questioned. The two explicit leading constants
+$C_k$ and $\gamma_k$ are both kept, with their equality proved in
+Corollary~\ref{cor:constants}.
+\item \textbf{The inequality} $\rho_k<\beta_k$ (odd growth below $k$-bonacci
+growth), proved once from $s^k<1/2$ and $L_k(s)<1$
+(Section~\ref{sec:densityall}) and once from
+$V_k(t_k)=t_k^k(2-3t_k)>0$ (Theorem~\ref{thm:growth}).
+\emph{What it buys:} the strict separation that makes both sparsity
+statements meaningful is independent of which growth polynomial one prefers.
+\item \textbf{Two different sparsity statements}, not one repeated:
+density among \emph{all} positions $0\le j\le D_n$ including zeros
+(Theorem~\ref{thm:densityall}) and density among \emph{nonzero}
+coefficients only (Theorem~\ref{thm:growth}). \emph{What it buys:} the
+first was explicitly disclaimed by the signed route and the second is
+inaccessible to it, so stating only one would lose a theorem.
+\item \textbf{Two numerical growth-constant computations}: an $80$-digit
+\code{Decimal} bisection (\code{data/growth.csv}, Table~\ref{tab:growth80})
+and an independent floating-point bisection
+(\code{data/growth_constants.csv}, Table~\ref{tab:growth}).
+\emph{What it buys:} agreement to floating-point precision between two
+independently coded root finders, with the $80$-digit values as the primary
+record.
+\item \textbf{Two count tables of the same sequence}:
+\code{data/counts.csv} ($2\le k\le20$, $n\le200$) and
+\code{data/odd_counts.csv} ($2\le k\le8$, $n\le100$), produced by different
+algorithms. \emph{What it buys:} equality on the overlap is an independent
+check of both proofs at once, not of one implementation against itself.
+\item \textbf{Two algorithm families for the odd count}: the order-$(k+1)$
+recurrence and $X^N\bmod\chi_k$ polynomial powering on one side; direct
+expansion, the generic mod-$2$ machine, and the uniform $4k+2$-state table
+on the other (Section~\ref{sec:algorithms}). \emph{What it buys:} an
+independent check, because the two families descend from different proofs
+--- whereas two recurrence-based routines agreeing would check only
+implementation.
+\item \textbf{Two coefficient oracles with different outputs}:
+\code{CoefficientOracle.signed} returns the signed value in $\{-1,0,1\}$ for
+arbitrary superincreasing seeds and arbitrary initial sign blocks, and
+\code{coefficient_for_canonical} returns the exact nonnegative integer
+coefficient for Stanley's seeds. \emph{What it buys:} neither subsumes the
+other, and the assertion $|\text{signed}|\equiv\text{coefficient}\pmod2$
+links them.
+\item \textbf{Two exhaustive verification suites and their two coverage
+tables} (Tables~\ref{tab:coverage-fs} and \ref{tab:coverage-signed}), testing
+disjoint objects. \emph{What it buys:} the record of what was actually
+checked; collapsing them into one summary would destroy it.
+\item \textbf{Two proof-hygiene mechanisms}: the dependency map of
+Appendix~\ref{app:dependency}, which records that no rational-generating-function
+ansatz and no unproved word-rewriting monoid is assumed; and the
+Cayley--Hamilton certificate Lemma~\ref{lem:certificate}, which records
+that a proved state dimension, not an arbitrary cutoff, makes finite checks
+sufficient. \emph{What it buys:} the two articles' respective answers to
+``why is this not curve fitting.''
+\item \textbf{Two initialization discussions}: Remark~\ref{rem:seedhyp}
+(why the superincreasing hypothesis cannot be dropped) and
+Section~\ref{sec:notclaimed} (why $k=1$ is excluded). \emph{What it buys:}
+they rule out different degenerations, one in the seeds and one in the order.
+\item \textbf{Two literature audits}: \code{RESEARCH_STATUS.md} (Zhao, Diao,
+OEIS A104767 with $a_2(n)=2\,\mathrm{A}104767(n)$ for $n\ge1$, Tang--Xin) and
+\code{LITERATURE.md} (Stanley's Lemma 5.2 background, the page-image
+inspection record, the Ekhad--Zeilberger dating). \emph{What it buys:}
+neither list contains the other, and the merged bibliography is their union.
+\end{enumerate}
+
+\subsection{Notation reconciled between the two routes}
+\label{sec:notation}
+
+The two source packages used incompatible symbols. This article uses one
+convention throughout; the table records the translation, so that readers of
+either original can navigate.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{lll}
+\toprule
+This article & Finite-state package & Signed package\\
+\midrule
+$w_0,\ldots,w_{n-1}$, $w_i=F^{(k)}_{i+k}$ & same & $w_1,\ldots,w_n$, $w_i=F^{(k)}_{i+k-1}$\\
+$D_n=\sum_{i<n}w_i$ (degree) & $D_n$ & $S_n$\\
+$P_n(x)$, $c_n(j)$ & same & $I_n(x)$\\
+$a_k(n)$ (odd count) & $a_k(n)=H^{(k)}_{2,1}$ & $h_k(n)$\\
+$\Phi_n(x)$, $\varphi_n(m)$ (signed product) & --- & $A_n(x)$, $a_n(m)$\\
+$\Pi_n=\prod_{i<n}\eps_i$ & --- & $E_n$\\
+$G_n$ (overlap inner product) & --- & $B_n$\\
+$V_k(z)=1-2z+2z^k-2z^{k+1}$ & $V_k(z)$ & $D_k(z)$\\
+$R_k(z)=1+z+\cdots+z^{k-1}$ & $R$ & $B_k(z)$\\
+$B_k(z)=\sum_{j=2}^{k-1}(k-j)z^j$ (holes) & $B_k(z)$ & ---\\
+$L_k(z)=z+\cdots+z^{k-1}+2z^{2k}$ & --- & $L_k(z)$\\
+$r_k$ (root in $(0,1)$) & $r_k$ & $r_k$ (same number)\\
+$\rho_k=1/r_k$ (odd growth) & $\rho_k$ & $\lambda_k$\\
+$\beta_k$ ($k$-bonacci growth) & $\beta_k$ & $\rho_k$\\
+$\theta_k$ (subdominant bound) & $\theta_k$ & $\mu_k$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Three symbols are reused with different meanings in disjoint scopes, and we
+flag them once here rather than inventing new letters.
+\begin{itemize}[leftmargin=1.6em]
+\item In Sections~\ref{sec:parity}--\ref{sec:eliminate} only, the letters
+$A_j,B_j,C_j,D,E_j,F,X$ denote automaton states and, in
+Section~\ref{sec:eliminate}, the generating series of accepted continuations
+from those states. Elsewhere $B_k(z)$ is the hole numerator, $D_n$ is the
+degree, and $C_k$ is the leading asymptotic constant of
+Theorem~\ref{thm:asymptotic}. No formula mixes the two readings.
+\item $R_k(z)$ is the polynomial $1+z+\cdots+z^{k-1}$ throughout. It is what
+the signed package called $B_k(z)$; the symbol $B_k(z)$ in this article always
+means the hole numerator $\sum_{j=2}^{k-1}(k-j)z^j$ of \eqref{eq:QB}.
+\item The supplied Python module \code{kbonacci_parity.py} stores weights and
+signs in one-based internal arrays, matching the signed package's original
+indexing. Its public functions take and return the same weight \emph{sets} as
+\code{kbonacci_residues.py}; only the internal offset differs, and
+\code{code/cross_check.py} asserts the agreement.
+\end{itemize}
+
+\section{Unique normal forms for represented exponents}
+\label{sec:normal}
+
+The weight sequence satisfies
+\begin{equation}
+ w_0=1,\qquad
+ w_i=(k-1)2^{i-1}+1\ (1\le i<k),\qquad
+ w_i=\sum_{j=1}^k w_{i-j}\ (i\ge k).
+ \label{eq:weights}
+\end{equation}
+The middle identity follows by induction from \eqref{eq:F}; it records the
+exceptional initial segment that must not be replaced by a generic
+$k$-bonacci initialization. Section~\ref{sec:signed} works with a much larger
+class of initial segments, but the normal form of the present section is
+tied to \eqref{eq:weights}.
+
+\begin{definition}
+A binary word is \emph{canonical} if it avoids the consecutive substring
+$1^k0$. Let $\cL_k$ be the language of canonical words, including the empty
+word. A normalization step is the replacement
+\begin{equation}
+ 1^k0\longrightarrow 0^k1
+ \label{eq:rewrite}
+\end{equation}
+inside a fixed-length word.
+\end{definition}
+
+Every normalization step preserves value, by the recurrence for $w_i$.
+It strictly increases the ordinary binary integer $\sum_i u_i2^i$:
+a step starting at position $r$ increases that integer by $2^r$.
+There are only finitely many words of a fixed length. Therefore every
+sequence of normalization steps terminates, and its terminal word is
+canonical. Uniqueness requires a separate argument.
+
+\begin{lemma}[A lower-weight bound]
+\label{lem:lower}
+If a word $u$ of length $i$ has no $k$ consecutive ones, then
+$\val(u)<w_i$.
+\end{lemma}
+\begin{proof}
+For $i=0$ the assertion is $0<1$. For $1\le i<k$, the sum of all the lower
+weights is less than $w_i$; indeed \eqref{eq:weights} gives
+\begin{equation}
+ w_i-\sum_{j=0}^{i-1}w_j=k-i>0.
+ \label{eq:superincreasing}
+\end{equation}
+Proceed by induction for $i\ge k$. Let $r$ be the run of ones at the
+high-weight end of $u$. Then $0\le r\le k-1$. The next digit is zero,
+and the remaining word has length $i-r-1$. The induction hypothesis gives
+\[
+ \val(u)<w_{i-1}+\cdots+w_{i-r}+w_{i-r-1}\le w_i.
+\]
+Here the first sum is empty if $r=0$; the final inequality holds because
+these are at most the $k$ most recent positive weights in the recurrence.
+\end{proof}
+
+Equation~\eqref{eq:superincreasing} is exactly the statement that Stanley's
+own seeds are superincreasing; it is reused in
+Lemma~\ref{lem:originalseeds} to make Theorem~\ref{thm:seedmain} imply
+Theorem~\ref{thm:mainodd}.
+
+\begin{lemma}[Canonical injectivity]
+\label{lem:injective}
+Two distinct canonical words of the same length have distinct values.
+\end{lemma}
+\begin{proof}
+First observe that every portion of a canonical word strictly below a
+zero digit contains no $k$ consecutive ones. Otherwise a run of at least
+$k$ ones would eventually meet a zero, producing the forbidden pattern.
+
+Now take two distinct canonical words and let $i$ be their highest
+position of disagreement. Suppose the first has a one there and the
+second a zero. Their higher contributions agree. By the observation and
+Lemma~\ref{lem:lower}, the entire lower contribution of the second word is
+less than $w_i$. The first word contributes $w_i$ at position $i$ and a
+nonnegative amount below it. Its value is therefore strictly larger.
+\end{proof}
+
+\begin{proposition}[A regular cross-section]
+\label{prop:normal}
+Every fiber of $\val:\{0,1\}^n\to\N$ contains exactly one canonical word.
+Thus normalization terminates at the same word regardless of the order
+of the steps. Moreover,
+\begin{equation}
+ \cL_k=(0\mid10\mid\cdots\mid1^{k-1}0)^*1^*.
+ \label{eq:language}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Termination supplies a canonical word in every fiber, and
+Lemma~\ref{lem:injective} gives uniqueness. In a canonical word, the run
+of ones before each zero has length less than $k$; the final run of ones
+is unrestricted. Cutting immediately after each zero gives exactly
+\eqref{eq:language}, with unique cuts.
+\end{proof}
+
+This avoids a potentially invalid shortcut: termination by itself does
+not establish uniqueness of a rewriting system. Here uniqueness is a
+consequence of an explicit numerical separation argument.
+
+\begin{corollary}[Support size]
+\label{cor:support}
+Let $s_k(n)=\#\{j:c_n(j)>0\}$. Then
+\begin{equation}
+ S_k(z):=\sum_{n\ge0}s_k(n)z^n
+ =\frac{1}{(1-z)(1-z-z^2-\cdots-z^k)}
+ =\frac1{1-2z+z^{k+1}}.
+ \label{eq:support}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Canonical words are in bijection with represented exponents. In
+\eqref{eq:language}, a block ending in zero has generating function
+$z+\cdots+z^k$, and the final run of ones has generating function
+$1/(1-z)$. Unique decomposition gives the first fraction; multiplication
+of its denominator gives the second.
+\end{proof}
+
+The support generating function \eqref{eq:support} is available only on this
+route; the signed argument of Section~\ref{sec:signed} has no access to it.
+That is precisely why the two sparsity statements of
+Section~\ref{sec:asymptotic} are different theorems.
+
+\section{The structure of a canonical representation fiber}
+\label{sec:fibers}
+
+Counting canonical words counts exponents, but does not yet reveal their
+coefficients. We need to count \emph{all} words with the value of a given
+canonical word. The next factorization turns that task into a small
+weighted automaton.
+
+For $j\ge0$ and $c_1,\ldots,c_j\in\{0,1\}$, call
+\begin{equation}
+ \begin{pmatrix}
+ 0^k(c_1 0^{k-1})\cdots(c_j0^{k-1})1\\
+ 1^k(c_1 1^{k-1})\cdots(c_j1^{k-1})0
+ \end{pmatrix}
+ \label{eq:block}
+\end{equation}
+a \emph{carry block}. Parentheses indicate concatenation blocks, not
+multiplication. When $j=0$, this is simply the pair $(0^k1,1^k0)$.
+
+\begin{theorem}[Canonical-fiber factorization]
+\label{thm:factor}
+Let $a$ be canonical and let $b$ be any binary word of the same length.
+Then $\val(a)=\val(b)$ if and only if the two-row word $(a,b)$ is a
+concatenation of diagonal columns $(0,0)$ and $(1,1)$ and carry blocks
+\eqref{eq:block}. Such a factorization, when it exists, is unique.
+\end{theorem}
+
+\begin{proof}
+\emph{Necessity.} Normalize $b$ to $a$, using
+Proposition~\ref{prop:normal}. For each integer $i$, let $t_i$ be the
+number of normalization steps that start at position $i$. Set $t_i=0$
+outside $0\le i\le n-k-1$. Summing the changes at each coordinate gives
+\begin{equation}
+ a_i=b_i-\sum_{h=0}^{k-1}t_{i-h}+t_{i-k}
+ \qquad(0\le i<n).
+ \label{eq:rewritecounts}
+\end{equation}
+All $t_i$ are nonnegative integers. We use only this equation and the
+binary bounds on $a_i,b_i$.
+
+If every $t_i$ is zero, the rows agree. Otherwise let $r$ be the least
+index with $t_r>0$. At position $r$, equation~\eqref{eq:rewritecounts}
+reduces to $a_r=b_r-t_r$. Hence
+\[
+ t_r=1,\qquad (a_r,b_r)=(0,1).
+\]
+At each of the next $k-1$ positions, the negative sum already contains
+$t_r=1$, while the positive term is zero. Inductively the binary bounds
+force
+\begin{equation}
+ t_{r+1}=\cdots=t_{r+k-1}=0,
+ \qquad
+ (a_i,b_i)=(0,1)\quad(r<i<r+k).
+ \label{eq:forcedrun}
+\end{equation}
+
+At the separator $s=r+k$, the equation becomes
+\begin{equation}
+ a_s=b_s+1-t_s.
+ \label{eq:separator}
+\end{equation}
+We claim $t_s\le1$. If $s$ cannot be the start of a valid step, then
+$t_s=0$ by definition. Otherwise position $s+1$ exists, and
+$t_{s+1-k}=t_{r+1}=0$ because $k\ge2$. The equation at $s+1$ has a
+negative sum containing $t_s$ and no positive contribution. Binary bounds
+therefore imply $t_s\le1$.
+
+If $t_s=0$, equation~\eqref{eq:separator} forces
+$(a_s,b_s)=(1,0)$, closing a carry block. If $t_s=1$, it forces
+$a_s=b_s=c_1$, and the next $k-1$ positions satisfy the same forced pattern
+as \eqref{eq:forcedrun}. Repeating the argument at the next separator
+produces a chain of starts
+\[
+ r,\ r+k,\ r+2k,\ \ldots,\ r+jk
+\]
+with count one at each start and zero at the intervening positions.
+It must eventually close, because only finitely many starts are possible.
+The resulting two-row segment is exactly \eqref{eq:block}.
+
+After its closing position, this chain makes no further contribution to
+\eqref{eq:rewritecounts}: its final start is $k$ positions before the
+closure. We can therefore take the next nonzero $t_i$, if any, and repeat
+the same argument. Positions between these disjoint blocks are diagonal.
+This proves necessity without counting normalization histories.
+
+\emph{Sufficiency.} A diagonal column changes no value. For a carry block
+starting at $r$, place $t_i=1$ at $r,r+k,\ldots,r+jk$ and zero elsewhere.
+The coordinate differences of the two rows are exactly the changes in
+\eqref{eq:rewritecounts}. Each such formal change has weighted sum
+\[
+ w_{i+k}-(w_i+\cdots+w_{i+k-1})=0.
+\]
+Thus every carry block preserves value at its actual position, and so
+does a concatenation of blocks and diagonal columns.
+
+\emph{Uniqueness.} Parse from the low-weight end. If the current column is
+diagonal, it cannot start a carry block, so it is forced to be a diagonal
+factor. Otherwise a block starts with $k$ columns $(0,1)$. At each ensuing
+separator, $(1,0)$ must close the block, while an equal pair $(c,c)$ must
+continue it and is followed by $k-1$ columns $(0,1)$. Every choice is
+therefore determined by the two-row word itself.
+\end{proof}
+
+\begin{remark}
+The block shapes agree with the appropriate orientation of Stanley's
+pair generators \cite[Lemma 5.2]{Stanley}. The proof above is specialized
+to a canonical upper row and establishes exactly the version needed here.
+In particular, it does not assume that a numerical equality of weighted
+sums automatically has a unique local carry history.
+\end{remark}
+
+\section{An exact counter with only \texorpdfstring{$k+1$}{k+1} coordinates}
+\label{sec:counter}
+
+For a fixed canonical upper word, read its digits one at a time. There is
+a balanced state, where a completed factorization can end, and excursion
+states $1,\ldots,k$. In an excursion, states $1,\ldots,k-1$ record progress
+through a required run of $(0,1)$ columns, and state $k$ waits at a
+separator. A transition selects the bottom digit as well as the next
+state.
+
+Let $p$ count paths in the balanced state, and let $b_i$ count paths in
+excursion state $i$. The initial counter is
+\begin{equation}
+ v_\eps=(p,b_1,\ldots,b_k)=(1,0,\ldots,0).
+ \label{eq:initial}
+\end{equation}
+Reading an upper zero or one acts by the following nonnegative integer
+linear maps:
+\begin{align}
+ Z(p,b_1,\ldots,b_k)&=(p,\ p+b_k,\ b_1,\ldots,b_{k-1}),\label{eq:Z}\\
+ O(p,b_1,\ldots,b_k)&=(p+b_k,\ b_k,\ 0,\ldots,0).\label{eq:O}
+\end{align}
+
+To verify the first equation, an upper zero permits either a diagonal
+$(0,0)$ in the balanced state or a new excursion beginning with $(0,1)$.
+An existing state $i<k$ advances to $i+1$ on $(0,1)$. At state $k$, an
+upper zero can only be an equal separator $(0,0)$, returning to state 1.
+For an upper one, the balanced state permits the diagonal $(1,1)$.
+State $k$ either closes the excursion on $(1,0)$ or continues it on
+$(1,1)$; no other excursion state permits that upper digit. These are
+precisely \eqref{eq:Z}--\eqref{eq:O}.
+
+\begin{proposition}[The output is the coefficient]
+\label{prop:counter}
+For every canonical word $a\in\{0,1\}^n$, the final first coordinate $p$
+obtained from \eqref{eq:initial}--\eqref{eq:O} is $c_n(\val(a))$.
+\end{proposition}
+\begin{proof}
+A path that ends balanced specifies a complete factorization of a pair
+$(a,b)$ of the form in Theorem~\ref{thm:factor}. That theorem identifies
+such pairs with all words $b$ of the same value. Different paths cannot
+count the same bottom word twice, because the pair factorization is
+unique. Conversely every such bottom word has its factorization and
+therefore its path. The first coordinate counts exactly these paths.
+\end{proof}
+
+\noindent\textbf{[Kept twice: structural witness.]}
+Proposition~\ref{prop:counter} produces the \emph{exact nonnegative integer}
+$c_n(j)$. Theorem~\ref{thm:flat} below produces instead a \emph{signed}
+value in $\{-1,0,1\}$ whose square is the parity of $c_n(j)$. Neither
+statement implies the other: the counter says nothing about signs, and
+flatness says nothing about the size of $c_n(j)$. Their consistency is
+asserted and checked in Section~\ref{sec:crosscheck}.
+
+\begin{example}
+For $k=2$ and $n=5$, the weights are $1,2,3,5,8$. The canonical word
+$\bits{00001}$ represents 8. The counters are
+\[
+ (1,0,0)\xrightarrow{0}(1,1,0)\xrightarrow{0}(1,1,1)
+ \xrightarrow{0}(1,2,1)\xrightarrow{0}(1,2,2)
+ \xrightarrow{1}(3,2,0).
+\]
+Thus $[x^8]P_5(x)=3$. The three representations, in the same low-to-high
+convention, are $\bits{00001}$, $\bits{00110}$, and $\bits{11010}$.
+\end{example}
+
+The coefficient itself can be large; nevertheless its residue is computed
+by the same $k+1$ coordinates reduced modulo $m$. No division by a residue,
+field structure, or primality assumption is needed.
+
+\section{Rationality for every residue, including the zero correction}
+\label{sec:rational}
+
+\subsection{The finite machine}
+
+Fix $m\ge2$. Keep the counter $v$ in $(\Z/m\Z)^{k+1}$ and augment it by a
+run state $r\in\{0,1,\ldots,k\}$. The latter is the current trailing run
+of upper ones, capped at $k$. The initial state is $(v_\eps,0)$.
+On an upper digit, use
+\begin{equation}
+\begin{array}{c|c|c}
+\text{input}&\text{counter update}&\text{run update}\\ \hline
+0&Z(v)\pmod m&r\mapsto0\quad\text{provided }r<k,\\
+1&O(v)\pmod m&r\mapsto\min(k,r+1).
+\end{array}
+\label{eq:modmachine}
+\end{equation}
+The zero transition from $r=k$ is rejected. Thus legal paths read exactly
+the canonical words. There are at most $(k+1)m^{k+1}$ nonrejecting states;
+only states reachable from the initial state need be retained.
+
+Let $A$ be the integer adjacency matrix of this finite labeled graph:
+$A_{uv}$ is the number of input labels taking state $u$ to state $v$.
+Even though the counters live modulo $m$, the entries and matrix arithmetic
+of $A$ live in $\Z$. Let $\lambda$ select the initial state, and let $f_a$
+be the column vector that is one exactly when the first counter is $a$.
+Proposition~\ref{prop:counter} gives
+\begin{equation}
+ h_{m,a}^{(k)}(n)=\lambda A^nf_a,
+ \qquad
+ H_{m,a}^{(k)}(z)=\lambda(I-zA)^{-1}f_a.
+ \label{eq:resolvent}
+\end{equation}
+Since $\det(I-zA)$ has constant term one, the inverse exists formally and
+has rational entries. This proves residue rationality for nonzero terms.
+In particular, this construction counts each exponent once, not once for
+each of its representations.
+
+\subsection{Internal zero coefficients}
+
+For $k\ge3$, some exponents between zero and the degree are not represented.
+For instance, at $k=3,n=2$ the polynomial is
+$1+x+x^3+x^4$ and has a zero coefficient at exponent 2. These missing
+positions belong to residue zero under the full-position convention.
+
+Put
+\begin{equation}
+ Q_k(z)=1-z-z^2-\cdots-z^k,
+ \qquad B_k(z)=\sum_{j=2}^{k-1}(k-j)z^j,
+ \label{eq:QB}
+\end{equation}
+where $B_2=0$.
+
+\begin{proposition}[An explicit hole generating function]
+\label{prop:holes}
+The number of zero positions in $0\le j\le D_n$ has generating function
+\begin{equation}
+ J_k(z):=\sum_{n\ge0}\bigl(D_n+1-s_k(n)\bigr)z^n
+ =B_k(z)S_k(z).
+ \label{eq:holes}
+\end{equation}
+Consequently
+\begin{equation}
+ \cH_{m,a}^{(k)}(z)=H_{m,a}^{(k)}(z)
+       +\one_{a=0}\frac{B_k(z)}{1-2z+z^{k+1}}.
+ \label{eq:zerocorrection}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The initial values and recurrence in \eqref{eq:weights} give
+\[
+ W_k(z):=\sum_{i\ge0}w_i z^i
+ =\frac{1+\sum_{j=1}^{k-1}(k-j)z^j}{Q_k(z)}.
+\]
+Since $D_n$ is the sum of the first $n$ weights,
+\begin{equation}
+ \sum_{n\ge0}(D_n+1)z^n
+ =\frac{1+zW_k(z)}{1-z}
+ =\frac{1+B_k(z)}{(1-z)Q_k(z)}
+ =(1+B_k(z))S_k(z).
+ \label{eq:degreegf}
+\end{equation}
+Subtract \eqref{eq:support}. A missing position contributes only to
+residue zero, which gives \eqref{eq:zerocorrection}.
+\end{proof}
+
+This finishes the proof of Theorem~\ref{thm:mainrat}. The case $m=1$, if
+included, is immediate from $S_k$ for nonzero terms and $(1+B_k)S_k$ for
+all positions. For $k=2$ there are no holes, and the two conventions agree
+for every residue. At $k=3$ the hole function is $z^2S_3(z)$; at $k=4$ it
+is $(2z^2+z^3)S_4(z)$.
+
+\section{Exact multiplicities and a general finite-state principle}
+\label{sec:exact}
+
+To test a coefficient against a fixed positive integer $q$, it is enough
+to distinguish $0,1,\ldots,q$ and ``at least $q+1$.'' This works because
+all additions in the counter are nonnegative.
+
+Set $M=q+1$ and define $\sigma_M(t)=\min(M,t)$. For nonnegative integers,
+\begin{equation}
+ \sigma_M(u+v)=\sigma_M(\sigma_M(u)+\sigma_M(v)).
+ \label{eq:saturate}
+\end{equation}
+Apply $\sigma_M$ coordinatewise after every counter update. Induction using
+\eqref{eq:saturate} shows that the resulting counter is the coordinatewise
+saturation of the exact counter, not an approximation to it. Thus its
+first coordinate equals $q$ exactly when the true coefficient equals $q$.
+
+There are $q+2$ possible values per coordinate, so adjoining the canonical
+run state gives at most $(k+1)(q+2)^{k+1}$ states. Mark first coordinate
+$q$ as accepting and apply the resolvent construction
+\eqref{eq:resolvent}. This proves Theorem~\ref{thm:mainexact}. Fixed finite
+sets of positive multiplicities, and fixed positive thresholds, can be
+handled by changing the final-state indicator.
+
+\begin{proposition}[Finite-output principle]
+\label{prop:principle}
+Suppose a regular language contains exactly one representative of each
+object being counted. Suppose further that a nonnegative integer weight
+of a representative is read from a fixed coordinate of a finite-dimensional
+counter updated by fixed nonnegative integer linear maps on each input letter. Then the
+length generating function for objects whose weight has a fixed residue
+modulo $m$ is rational. The same is true for objects with any fixed exact
+weight, or with weight in any fixed finite set.
+\end{proposition}
+\begin{proof}
+Take the product of an automaton for the regular language with the finite
+set of counter values modulo $m$. For exact weights, saturate above the
+largest requested weight. Saturation commutes with addition and with
+multiplication by a nonnegative integer, so it commutes with all the
+counter updates. In both cases the desired set is recognized by a finite
+machine and its length counts have an integer adjacency representation.
+\end{proof}
+
+The nonnegativity hypothesis is important for saturation. If a computation
+can later subtract large quantities, identifying all large values would
+lose information. Modulo-$m$ reduction has no analogous problem for
+integer linear maps, but the present exact-multiplicity conclusion does.
+
+The significant problem-specific work is therefore not the final
+finite-state rationality argument. It is the construction of a regular
+cross-section and a correct finite-dimensional counter for the fibers.
+For the present weights these are supplied by
+Proposition~\ref{prop:normal} and Theorem~\ref{thm:factor}.
+
+\section{A uniform parity automaton}
+\label{sec:parity}
+
+The general residue construction is enough to prove rationality. To obtain
+a simple formula for every $k$, we now exploit the special structure
+modulo two. Let $e_j$ be the $j$th unit vector in $(\Z/2\Z)^k$.
+We describe states by $(p;b;r)$, with $b=(b_1,\ldots,b_k)$ and $r$ the
+canonical run state.
+
+\emph{Scope warning.} From here through Section~\ref{sec:eliminate}, the
+letters $A_j,B_j,C_j,D,E_j,F,X$ denote automaton states and their
+generating series, not the polynomials $B_k(z)$ and $V_k(z)$, the degree
+$D_n$, or the constant $C_k$.
+
+The following state families suffice:
+\begin{align*}
+ A_j&=(1;e_1+\cdots+e_j;0) &&(0\le j\le k),\\
+ B_j&=(1;e_j+\cdots+e_k;0) &&(2\le j\le k),\\
+ C_j&=(1;0;j) &&(1\le j\le k),\\
+ D&=(0;e_1;1),\\
+ E_j&=(0;e_j;0) &&(2\le j\le k),\\
+ F&=(1;e_1;1).
+\end{align*}
+For $A_0$ the excursion vector is zero. We merge $(0;e_1;0)$ with $D$:
+these two states have first coordinate zero and identical relevant
+successors, namely $E_2$ on zero and the zero counter on one. This uses
+$k\ge2$. Any zero counter, and any already forbidden input, is merged
+into a dead state $X$.
+
+The initial state is $A_0$. Every $A_j,B_j,C_j$, and $F$ is accepting;
+$D,E_j$, and $X$ are not. All transitions are specified in
+Table~\ref{tab:parity}. There are
+\[
+ (k+1)+(k-1)+k+1+(k-1)+1+1=4k+2
+\]
+states, including $X$. No minimality claim is needed.
+
+\begin{table}[htbp]
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lll}
+\toprule
+State or range & Input 0 & Input 1\\
+\midrule
+$A_j$, $0\le j<k$ & $A_{j+1}$ & $C_1$\\
+$A_k$ & $B_2$ & $D$\\
+$B_j$, $2\le j<k$ & $B_{j+1}$ & $D$\\
+$B_k$ & $A_0$ & $D$\\
+$C_j$, $1\le j<k$ & $A_1$ & $C_{j+1}$\\
+$C_k$ & $X$ & $C_k$\\
+$D$ & $E_2$ & $X$\\
+$E_j$, $2\le j<k$ & $E_{j+1}$ & $X$\\
+$E_k$ & $D$ & $F$\\
+$F$ & $A_2$ & $C_2$\\
+$X$ & $X$ & $X$\\
+\bottomrule
+\end{tabular}
+\caption{The parity automaton, valid uniformly for $k\ge2$. Empty index
+ranges at $k=2$ are simply omitted; $A_2,C_2,E_2,B_2$ still exist.}
+\label{tab:parity}
+\end{table}
+
+\begin{proposition}[Correctness of the uniform automaton]
+\label{prop:parity}
+The accepted length-$n$ words of Table~\ref{tab:parity} are precisely the
+canonical words whose represented exponent has an odd coefficient in
+$P_n(x)$.
+\end{proposition}
+\begin{proof}
+The stated tuples include the initial counter and are closed under the
+updates \eqref{eq:Z}--\eqref{eq:O} modulo two, with the canonical run rule.
+For example, if $j<k$, a zero shifts the prefix $e_1+\cdots+e_j$ right and
+introduces $e_1$, giving $A_{j+1}$. From $A_k$, the new first excursion
+coordinate is $1+1=0$ modulo two, giving $B_2$. Suffixes in the $B$ family
+then shift until they disappear and return to $A_0$.
+
+On a one, every $A_j$ with $j<k$ loses its excursion coordinates and goes
+to $C_1$. From $A_k$ or a $B_j$, the last excursion coordinate is one, so
+$p$ changes from one to zero and the new excursion vector is $e_1$, giving
+$D$. From $E_k$, a one changes $p$ from zero to one and gives $F$.
+The remaining transitions follow by shifting a single $e_j$, or by
+updating the run length of a zero excursion vector. The only forbidden
+zero in these nondead families is the transition from $C_k$.
+
+The two tuples merged into $D$ have the same acceptance and the same
+successor classes, as noted above. A zero vector stays zero under both
+linear maps, so no continuation of it can be accepted. Hence merging it
+with $X$ is legitimate even when its original run state differs.
+Induction on the input length proves that the table computes the same
+first-coordinate parity and canonicality as the general machine.
+Proposition~\ref{prop:counter} identifies that parity with the coefficient.
+\end{proof}
+
+\section{Symbolic elimination and the first proof of the odd formula}
+\label{sec:eliminate}
+
+For each state in Table~\ref{tab:parity}, use the same letter to denote the
+generating function of accepted continuations from that state. In this
+section, therefore, $A_j$ denotes a series rather than a tuple. An accepting
+state has a constant contribution one for the empty continuation; a
+nonaccepting state has constant contribution zero. The dead state has
+series $X=0$. Write
+\[
+ H=A_0,\qquad u=z^k,\qquad R_k(z)=1+z+\cdots+z^{k-1}=\frac{1-u}{1-z}.
+\]
+All equations below are identities of formal power series.
+
+\subsection{The run states and the single-excursion states}
+
+The $C$ chain satisfies $C_k=1+zC_k$ and
+$C_i=1+zA_1+zC_{i+1}$ for $i<k$. Back-substitution gives
+\begin{equation}
+ C_i=\frac1{1-z}
+       +\frac{z(1-z^{k-i})}{1-z}A_1
+ \qquad(1\le i\le k).
+ \label{eq:Cseries}
+\end{equation}
+In particular,
+\begin{equation}
+ C_2-C_1=-z^{k-1}A_1.
+ \label{eq:Cdiff}
+\end{equation}
+The transitions from $A_1$ and $F$ give
+\[
+ A_1=1+zA_2+zC_1,\qquad F=1+zA_2+zC_2.
+\]
+Subtracting and applying \eqref{eq:Cdiff},
+\begin{equation}
+ F=(1-u)A_1.
+ \label{eq:Fseries}
+\end{equation}
+The $D,E$ states give $D=zE_2$, $E_i=zE_{i+1}$ for $2\le i<k$, and
+$E_k=zD+zF$. Consequently
+\[
+ D=u(D+F).
+\]
+Since $1-u$ is invertible as a formal power series,
+\begin{equation}
+ D=uA_1.
+ \label{eq:Dseries}
+\end{equation}
+
+\subsection{Closing the two long chains}
+
+The chain beginning with $A_k$ and continuing through
+$B_2,\ldots,B_k$ has $k$ accepting states, each with a one-transition to
+$D$, and then returns to $H$ on zeros. Thus
+\begin{equation}
+ A_k=R_k(1+zD)+uH.
+ \label{eq:Akseries}
+\end{equation}
+Similarly the $k$ states $A_0,\ldots,A_{k-1}$ give
+\begin{equation}
+ H=R_k(1+zC_1)+uA_k.
+ \label{eq:Hchain}
+\end{equation}
+Combining \eqref{eq:Akseries} and \eqref{eq:Hchain}, then canceling
+$1-u$, gives
+\begin{equation}
+ (1+u)(1-z)H=1+u+zC_1+zuD.
+ \label{eq:combined}
+\end{equation}
+
+The first transition equation is $H=1+zA_1+zC_1$.
+The formula for $C_1$ in \eqref{eq:Cseries} then gives a second convenient
+identity:
+\begin{equation}
+ (1-z)H=1+z(1-u)A_1.
+ \label{eq:second}
+\end{equation}
+Substitute $D=uA_1$ and $zC_1=H-1-zA_1$ into
+\eqref{eq:combined}. Its right-hand side becomes
+\[
+ u+H-z(1-u^2)A_1.
+\]
+Now use \eqref{eq:second}, multiplied by $1+u$, to eliminate $A_1$.
+The result is
+\[
+ \bigl(2(1+u)(1-z)-1\bigr)H=1+2u.
+\]
+Replacing $u$ by $z^k$ proves
+\[
+ H=\frac{1+2z^k}{1-2z+2z^k-2z^{k+1}}.
+\]
+Proposition~\ref{prop:parity} identifies $H$ with $H_{2,1}^{(k)}$ and
+completes the \emph{first} proof of Theorem~\ref{thm:mainodd}.
+
+Only factors with constant term one were canceled or inverted in this
+argument. In particular, the proof does not require dividing by $z$, and
+is valid at the formal-series level including the constant coefficient.
+The number of states is linear in $k$, but elimination reduces the final
+denominator degree to $k+1$.
+
+\subsection{A recurrence and initial values}
+\label{sec:recurrence}
+
+The rational formula yields
+\begin{equation}
+ a_k(n)=2^n\quad(0\le n\le k),
+ \qquad
+ a_k(n)=2a_k(n-1)-2a_k(n-k)+2a_k(n-k-1)
+ \quad(n\ge k+1).
+ \label{eq:oddrec}
+\end{equation}
+The range $n\ge k+1$ matters: the numerator contains the additional term
+$2z^k$. The first nontrivial collision occurs at length $k+1$ and gives
+$a_k(k+1)=2^{k+1}-2$.
+
+\begin{table}[htbp]
+\centering
+\small
+\input{data/initial_table.tex}
+\caption{Initial odd-coefficient counts. These values are produced by the
+recurrence \eqref{eq:oddrec}, and independently by exact polynomial
+expansion, by the uniform $4k+2$-state automaton of
+Table~\ref{tab:parity}, and by the signed sparse products of
+Section~\ref{sec:signed}.}
+\label{tab:odd}
+\end{table}
+
+\section{A second, independent proof: signed cancellation}
+\label{sec:signed}
+
+\noindent\textbf{[Kept twice: Conjecture 6.3.]}
+This section proves Theorem~\ref{thm:mainodd} again, and proves it in the
+greater generality of Theorem~\ref{thm:seedmain}. It uses none of
+Sections~\ref{sec:normal}--\ref{sec:eliminate}: no canonical word, no
+carry block, no counter, no automaton, and no rational-function ansatz.
+What it buys is stated in item D1 of Section~\ref{sec:twice}.
+
+\subsection{Quasifibonacci weights and coherent signings}
+
+\begin{definition}
+\label{def:weights}
+A \emph{quasifibonacci sequence of order $k$} is a sequence of positive
+integers $w_0,w_1,\ldots$ satisfying
+\begin{align}
+ w_i&>D_i:=\sum_{r=0}^{i-1}w_r &&(0\le i\le k-1),\label{eq:seed}\\
+ w_i&=\sum_{r=i-k}^{i-1}w_r &&(i\ge k).\label{eq:recw}
+\end{align}
+We put $D_0=0$ and $D_n=\sum_{r=0}^{n-1}w_r$.
+The term agrees with Diao's definition \cite[Definition~1.1]{Diao}, with
+``level'' replaced by ``order.''
+\end{definition}
+
+The seed condition is often called \emph{superincreasing}: each seed is
+larger than all earlier seeds combined. For instance $(1,3,5)$ and
+$(2,7,15)$ are valid order-three seed lists; $(1,2,3)$ is not.
+
+\begin{definition}
+\label{def:sign}
+A sign sequence $\eps_0,\eps_1,\ldots\in\{-1,1\}$ is \emph{coherent} if
+\begin{equation}
+ \eps_i=-\prod_{r=i-k}^{i-1}\eps_r\qquad(i\ge k).
+ \label{eq:signrec}
+\end{equation}
+Its first $k$ signs can be chosen arbitrarily. A convenient canonical choice
+is
+\begin{equation}
+ \eps_i=\begin{cases}-1,&i\equiv k\ \ (\mathrm{mod}\ k+1),\\
+ 1,&\text{otherwise.}\end{cases}
+ \label{eq:canonical}
+\end{equation}
+Define the signed product by
+\[
+ \Phi_n(x)=\prod_{i=0}^{n-1}(1+\eps_i x^{w_i})=\sum_{m\in\Z}\varphi_n(m)x^m .
+\]
+The coefficient function $\varphi_n(m)$ vanishes outside $0\le m\le D_n$.
+When every $\eps_i=1$ this is the ordinary product $P_n$ of
+\eqref{eq:product}.
+\end{definition}
+
+\begin{theorem}[Uniform parity and signed flatness]
+\label{thm:flat}
+For every sequence in Definition~\ref{def:weights}, every coherent signing,
+and every $n\ge0$:
+\begin{enumerate}[label=(\roman*)]
+\item every coefficient of $\Phi_n$ is $-1$, $0$, or $1$;
+\item for each $m\in\Z$, the residue modulo two of $\coef{m}{P_n}$ is
+$\varphi_n(m)^2$;
+\item the number of odd coefficients is independent of the seeds and of the
+initial signs, and satisfies
+\begin{align}
+ a_k(n)&=2^n &&(0\le n\le k),\label{eq:hinit}\\
+ a_k(n)&=2a_k(n-1)-2a_k(n-k)+2a_k(n-k-1) &&(n\ge k+1),\label{eq:hrec}
+\end{align}
+so that $\sum_{n\ge0}a_k(n)z^n=(1+2z^k)/(1-2z+2z^k-2z^{k+1})$.
+\end{enumerate}
+\end{theorem}
+
+The proof occupies Sections~\ref{sec:sep}--\ref{sec:norm}. It has two
+distinct parts: first flatness, then an exact norm recurrence. The latter
+alone would not justify counting odd coefficients without the former.
+
+\subsection{Arithmetic of the exponent sequence}
+\label{sec:sep}
+
+\begin{lemma}[Separation]
+\label{lem:sep}
+The weights are strictly increasing. For every $j\ge0$,
+\begin{equation}
+ w_{j+1}>D_j,\qquad 2w_j>D_j.
+ \label{eq:sep}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The seeds are strictly increasing by \eqref{eq:seed}. At the first
+recurrence step, $w_k=D_k>w_{k-1}$. Each subsequent weight is a sum of
+$k\ge2$ positive weights including its immediate predecessor, so strict
+increase persists.
+
+For $0\le j\le k-2$, the first inequality in \eqref{eq:sep} is the seed
+condition at index $j+1$. For $j=k-1$, we have $w_k=D_k>D_{k-1}$. If
+$j\ge k$, the recurrence for $w_{j+1}$ includes the two preceding weights,
+so induction gives
+\[
+ w_{j+1}\ge w_j+w_{j-1}>D_{j-1}+w_{j-1}=D_j ,
+\]
+where $w_j>D_{j-1}$ is the first inequality one index lower. This proves the
+first inequality at all indices. For $j=0$ the second inequality is
+immediate. For $j\ge1$, combine the first inequality one index lower with
+strict increase:
+\[
+ D_j=D_{j-1}+w_{j-1}<w_j+w_j=2w_j .
+\]
+\end{proof}
+
+\begin{lemma}[Exact overlap length]
+\label{lem:overlap-length}
+For $n\ge k+1$, put $j=n-k-1$. Then
+\begin{equation}
+ D_{n-1}=w_{n-1}+D_j.
+ \label{eq:overlaplength}
+\end{equation}
+Thus the coefficient ranges of $\Phi_{n-1}(x)$ and
+$x^{w_{n-1}}\Phi_{n-1}(x)$ overlap exactly in the interval
+$[w_{n-1},w_{n-1}+D_j]$.
+\end{lemma}
+\begin{proof}
+Split $D_{n-1}=w_0+\cdots+w_{n-2}$ after its first $j$ summands. The
+remaining $k$ summands are $w_{n-k-1},\ldots,w_{n-2}$, whose sum is
+$w_{n-1}$ by \eqref{eq:recw}. The interval assertion follows because
+$\deg\Phi_{n-1}=D_{n-1}$ and both endpoint coefficients are nonzero.
+Here ``coefficient range'' means the containing interval, not necessarily a
+support without internal gaps.
+\end{proof}
+
+\begin{lemma}[Stanley's seeds are admissible]
+\label{lem:originalseeds}
+The weights $w_i=F^{(k)}_{i+k}$ of \eqref{eq:weights} form a
+quasifibonacci sequence of order $k$: $w_0=1$,
+$w_i=(k-1)2^{i-1}+1$ for $1\le i\le k-1$, and
+$w_i-D_i=k-i>0$ for $0\le i\le k-1$.
+\end{lemma}
+\begin{proof}
+This is \eqref{eq:weights} together with \eqref{eq:superincreasing}.
+Directly: the first new term after the $k$ initial ones is $k$, and each
+subsequent initial step replaces one of those ones by the newest term, so
+the new value is twice its predecessor minus one. Summing
+$w_i=(k-1)2^{i-1}+1$ over $1\le r<i$ and adding $w_0=1$ gives
+$D_i=(k-1)(2^{i-1}-1)+i$, whence $w_i-D_i=k-i$. The later weights satisfy
+\eqref{eq:recw} by definition.
+\end{proof}
+
+Consequently Theorem~\ref{thm:flat} applied to these weights re-proves
+Theorem~\ref{thm:mainodd}.
+
+\subsection{Coherent signs and reflection}
+
+\begin{lemma}[Periodic description of all coherent signings]
+\label{lem:period}
+A signing is coherent if and only if it is periodic with period dividing
+$k+1$ and every consecutive block of length $k+1$ has product $-1$.
+There are exactly $2^k$ such signings.
+\end{lemma}
+\begin{proof}
+Equation \eqref{eq:signrec} says that each length-$(k+1)$ window has product
+$-1$. Dividing the products for two consecutive windows cancels the $k$
+common signs and gives $\eps_{r+k+1}=\eps_r$. Conversely, a periodic sign
+block with product $-1$ has that product in every window, hence satisfies
+\eqref{eq:signrec}. Its first $k$ signs are free and its final sign is their
+negative product. The canonical choice \eqref{eq:canonical} is the block of
+$k$ plus signs followed by one minus sign.
+\end{proof}
+
+Put $\Pi_n=\prod_{i=0}^{n-1}\eps_i$, including $\Pi_0=1$.
+
+\begin{lemma}[Reflection]
+\label{lem:reflection}
+For every integer $m$,
+\begin{equation}
+ \varphi_n(D_n-m)=\Pi_n\,\varphi_n(m).
+ \label{eq:reflection}
+\end{equation}
+If $n\ge k+1$ and $j=n-k-1$, then
+\begin{equation}
+ \Pi_{n-1}\Pi_j=-\eps_{n-1}.
+ \label{eq:Esign}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For an individual factor,
+$x^{w_i}(1+\eps_i x^{-w_i})=\eps_i(1+\eps_i x^{w_i})$.
+Multiplication gives $x^{D_n}\Phi_n(x^{-1})=\Pi_n\Phi_n(x)$ and proves
+\eqref{eq:reflection}, including the zero coefficients outside the range.
+Since $\Pi_j^2=1$, the product $\Pi_{n-1}\Pi_j$ consists precisely of the
+$k$ signs of indices $j=n-k-1$ through $n-2$. By \eqref{eq:signrec} its
+value is $-\eps_{n-1}$.
+\end{proof}
+
+\subsection{The pointwise cancellation identity}
+\label{sec:pointwise}
+
+This subsection contains the decisive calculation. It is an identity over
+the integers, before reducing anything modulo two.
+
+\begin{proposition}[Two disjoint tails]
+\label{prop:pointwise}
+Let $n\ge k+1$, $j=n-k-1$, and $v=w_j$. For $0\le u\le D_j$,
+\begin{equation}
+\boxed{\displaystyle
+ \varphi_n(w_{n-1}+u)=\eps_{n-1}\eps_j
+       \bigl(\varphi_j(u-v)-\varphi_j(u+v)\bigr).}
+ \label{eq:pointwise}
+\end{equation}
+The two terms on the right cannot both be nonzero.
+\end{proposition}
+\begin{proof}
+By Lemma~\ref{lem:sep}, $w_{j+1}>D_j$, so the factors of index $j+1$ or
+higher have all their nonconstant terms in degrees larger than $D_j$.
+Therefore, on the interval $0\le u\le D_j$,
+\begin{equation}
+ \varphi_{n-1}(u)=\varphi_j(u)+\eps_j\varphi_j(u-v).
+ \label{eq:low}
+\end{equation}
+There is no convergence or truncation approximation in this equation:
+later factors simply cannot contribute to such a low exponent.
+
+Reflect the high end of $\Phi_{n-1}$ using
+$D_{n-1}=w_{n-1}+D_j$ from Lemma~\ref{lem:overlap-length} and
+\eqref{eq:low}. We obtain
+\begin{align}
+ \varphi_{n-1}(w_{n-1}+u)
+ &=\Pi_{n-1}\varphi_{n-1}(D_{n-1}-w_{n-1}-u)\notag\\
+ &=\Pi_{n-1}\varphi_{n-1}(D_j-u)\notag\\
+ &=\Pi_{n-1}\bigl(\varphi_j(D_j-u)+\eps_j\varphi_j(D_j-u-v)\bigr)\notag\\
+ &=\Pi_{n-1}\Pi_j\bigl(\varphi_j(u)+\eps_j\varphi_j(u+v)\bigr)\notag\\
+ &=-\eps_{n-1}\bigl(\varphi_j(u)+\eps_j\varphi_j(u+v)\bigr).
+ \label{eq:high}
+\end{align}
+Now use $\Phi_n=\Phi_{n-1}+\eps_{n-1}x^{w_{n-1}}\Phi_{n-1}$ and add
+\eqref{eq:high} to $\eps_{n-1}$ times \eqref{eq:low}. The two copies of
+$\varphi_j(u)$ cancel exactly, leaving \eqref{eq:pointwise}.
+
+For the first tail to be nonzero, $u\ge v$ is necessary. For the second,
+$u\le D_j-v$ is necessary. These conditions cannot hold simultaneously,
+because $2v=2w_j>D_j$ by Lemma~\ref{lem:sep}. More explicitly, the possible
+tail intervals are
+\[
+ [0,D_j-v]\qquad\hbox{and}\qquad[v,D_j],
+\]
+with an interval understood to be empty if its endpoints are reversed.
+They are disjoint.
+\end{proof}
+
+\begin{remark}
+At the very first overlap, $n=k+1$ and $j=0$. Both tails are empty:
+$\varphi_0(-w_0)=\varphi_0(w_0)=0$. Thus the only overlapping coefficient,
+at exponent $w_k=D_k$, cancels. This is an important endpoint check on the
+indexing.
+\end{remark}
+
+\subsection{Flatness and the parity lift}
+
+\begin{proof}[Proof of Theorem~\ref{thm:flat}(i)--(ii)]
+For $0\le n\le k$, the seed condition ensures that two distinct subsets of
+$\{w_0,\ldots,w_{n-1}\}$ cannot have the same sum. Indeed, at their largest
+index of disagreement, the larger seed exceeds the sum of all earlier
+seeds. Every nonzero coefficient of $\Phi_n$ is therefore a single product
+of signs and is $1$ or $-1$.
+
+Proceed by strong induction on $n$. For $n\ge k+1$, outside
+$[w_{n-1},D_{n-1}]$ at most one of the two terms $\Phi_{n-1}$ and
+$\eps_{n-1}x^{w_{n-1}}\Phi_{n-1}$ contributes. The coefficient there is zero
+or, up to sign, an earlier coefficient. Inside the overlap,
+Proposition~\ref{prop:pointwise} expresses it as the signed difference of
+two coefficients of $\Phi_j$, where $j<n$, with at most one nonzero term.
+The induction hypothesis consequently proves flatness everywhere.
+
+Modulo two, $\eps_i\equiv1$, so $P_n\equiv\Phi_n$ in $\F_2[x]$. A flat
+integer coefficient is odd exactly when its square is one. Therefore
+\begin{equation}
+ (\coef{m}{P_n}\bmod2)=\varphi_n(m)^2\in\{0,1\}.
+ \label{eq:paritylift}
+\end{equation}
+This proves both assertions.
+\end{proof}
+
+The result can also be read as a signed enumeration statement. Among all
+subsets having a specified weight, split them according to the product of
+their assigned signs. The sizes of the two classes differ by at most one.
+This signing is not necessarily the parity of the subset's cardinality. For
+odd $k$, that distinction is exactly what makes the theorem possible.
+
+\begin{corollary}[An infinite-product extension]
+\label{cor:infinite}
+For any admissible seeds and coherent signing, the formal infinite product
+$\prod_{i\ge0}(1+\eps_i x^{w_i})$ has all coefficients in $\{-1,0,1\}$.
+\end{corollary}
+\begin{proof}
+The weights tend to infinity. For each fixed exponent, all sufficiently
+late factors contribute only their constant term, so the coefficient
+stabilizes to one of the finite-product coefficients already proved flat.
+\end{proof}
+
+For even $k$, choosing all initial signs negative makes every sign negative;
+this recovers the setting of Diao's infinite-product theorem \cite{Diao}.
+For odd $k$, a periodic coherent signing replaces that all-minus choice.
+
+\subsection{The exact norm recurrence}
+\label{sec:norm}
+
+Define
+\[
+ q_n=\normsq{\Phi_n}:=\sum_{m\in\Z}\varphi_n(m)^2,
+ \qquad
+ G_n=\sum_{m\in\Z}\varphi_{n-1}(w_{n-1}+m)\,\varphi_{n-1}(m).
+\]
+All sums here and below are finite. Expanding the square in
+$\Phi_n=\Phi_{n-1}+\eps_{n-1}x^{w_{n-1}}\Phi_{n-1}$ gives
+\begin{equation}
+ q_n=2q_{n-1}+2\eps_{n-1}G_n.
+ \label{eq:normrec}
+\end{equation}
+Flatness and \eqref{eq:paritylift} imply $q_n=a_k(n)$, but we first derive
+the norm recurrence directly.
+
+\begin{lemma}[The overlap inner product]
+\label{lem:inner}
+For $n\ge k+1$ and $j=n-k-1$,
+\begin{equation}
+ \eps_{n-1}G_n=q_j-q_{j+1}.
+ \label{eq:inner}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Only $0\le u\le D_j$ can contribute to $G_n$. Substitute \eqref{eq:low} and
+\eqref{eq:high}, abbreviating $v=w_j$ and $e=\eps_j$:
+\[
+ \eps_{n-1}G_n=-\sum_{u=0}^{D_j}
+ \bigl(\varphi_j(u)+e\,\varphi_j(u+v)\bigr)
+ \bigl(\varphi_j(u)+e\,\varphi_j(u-v)\bigr).
+\]
+The product $\varphi_j(u+v)\varphi_j(u-v)$ vanishes for every $u$, by the
+same separation $2v>D_j$ used in Proposition~\ref{prop:pointwise}. The two
+mixed sums are equal after a change of index. If
+\[
+ T=\sum_{u\in\Z}\varphi_j(u)\varphi_j(u-v),
+\]
+then the preceding display becomes $\eps_{n-1}G_n=-q_j-2eT$.
+On the other hand, multiplication of $\Phi_j$ by $1+ex^v$ yields
+$q_{j+1}=2q_j+2eT$. Eliminating $T$ proves $\eps_{n-1}G_n=q_j-q_{j+1}$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:flat}(iii)]
+The superincreasing seed block gives $q_n=2^n$ for $0\le n\le k$.
+Substituting \eqref{eq:inner} into \eqref{eq:normrec} gives
+\[
+ q_n=2q_{n-1}-2q_{n-k}+2q_{n-k-1}\qquad(n\ge k+1).
+\]
+Since $q_n=a_k(n)$, this proves \eqref{eq:hinit}--\eqref{eq:hrec}.
+Neither the coefficients of this recurrence nor its initial values depend
+on the seeds or on the first $k$ signs.
+
+Finally multiply $\sum_n a_k(n)z^n$ by $V_k(z)=1-2z+2z^k-2z^{k+1}$. Its
+constant coefficient becomes one, its coefficients of degrees
+$1,\ldots,k-1$ vanish, its coefficient of degree $k$ is two, and all later
+coefficients vanish by the recurrence. Thus the product is $1+2z^k$.
+\end{proof}
+
+By Lemma~\ref{lem:originalseeds}, this is a second and independent proof of
+Theorem~\ref{thm:mainodd}, and it also proves the seed-independent
+Theorem~\ref{thm:seedmain}. The two proofs share no lemma: the finite-state
+route never forms a signed product, and the signed route never forms a
+canonical word.
+
+\subsection{Examples, and the role of the signs}
+\label{sec:allminus}
+
+\paragraph{The first genuinely overlapping order-three example.}
+The standard order-three weights are $1,3,5,9,17,31,57,105,193,\ldots$.
+The canonical coherent signs repeat $+,+,+,-$. For the first four factors,
+\begin{align*}
+ \Phi_4(x)&=(1+x)(1+x^3)(1+x^5)(1-x^9)\\
+ &=1+x+x^3+x^4+x^5+x^6+x^8\\
+ &\quad-x^{10}-x^{12}-x^{13}-x^{14}-x^{15}-x^{17}-x^{18}.
+\end{align*}
+There are fourteen nonzero coefficients. The ordinary all-plus product has
+a coefficient two at $x^9$ and fourteen odd coefficients elsewhere.
+The recurrence agrees: $a_3(4)=2\cdot8-2\cdot2+2\cdot1=14$, matching row
+$n=4$, column $k=3$ of Table~\ref{tab:odd}.
+
+A later example displays the disjoint-tail mechanism rather than just a
+single cancellation. At $n=8$ we have $j=4$, $v=w_4=17$ and $D_4=18$.
+The overlap is $105\le m\le123$. Formula \eqref{eq:pointwise} allows
+nonzero coefficients there only at $m=105,106,122,123$; each is $-1$.
+The fifteen intermediate positions cancel.
+
+\paragraph{Why the naive all-minus choice fails.}
+For the same weights,
+\[
+ [x^9](1-x)(1-x^3)(1-x^5)(1-x^9)=-2 .
+\]
+The contributions come from the singleton $\{9\}$ and the triple
+$\{1,3,5\}$; both have negative cardinality sign. An odd-order recurrence
+replaces $k$ selected parts by one part without changing cardinality
+parity. The coherent signing instead forces those two contributions to have
+opposite signs. This explains why the proof must change the signing, not
+merely reuse the all-minus Fibonacci product.
+
+\paragraph{An OEIS connection.}
+For $k=2$ the sequence satisfies $a_2(n)=2\,\mathrm{A}104767(n)$ for
+$n\ge1$, with the separate value $a_2(0)=1$. The cited OEIS entry records
+the corresponding Fibonacci signed-product interpretation \cite{OEIS}.
+No new OEIS identifier is assigned or implied for the tables accompanying
+this manuscript.
+
+\begin{remark}[The seed hypothesis cannot simply be omitted]
+\label{rem:seedhyp}
+\textbf{[Kept twice: initialization boundaries.]}
+For $k=3$ and seeds $(1,2,3)$, the first three all-plus factors already
+have an even coefficient at exponent three and only six odd coefficients,
+not $2^3$. Likewise, duplicate order-two seeds $(1,1)$ give $(1+x)^2$, with
+two odd coefficients instead of four. Theorem~\ref{thm:seedmain} is not
+asserting the same initial values for arbitrary positive seed lists.
+This is a different degeneration from the $k=1$ failure discussed in
+Section~\ref{sec:notclaimed}, which concerns the order rather than the
+seeds.
+\end{remark}
+
+\section{A positive recurrence and a finite counting formula}
+\label{sec:positive}
+
+The minimal recurrence \eqref{eq:oddrec} has a negative coefficient. A
+slightly longer one has only nonnegative coefficients and makes both
+positivity and the analytic asymptotics of Section~\ref{sec:analyticroot}
+more transparent. Put
+\[
+ R_k(z)=1+z+\cdots+z^{k-1},\qquad
+ L_k(z)=z+z^2+\cdots+z^{k-1}+2z^{2k},\qquad
+ N_k(z)=1+2z^k .
+\]
+Direct multiplication gives
+\begin{equation}
+ R_k(z)V_k(z)=1-L_k(z).
+ \label{eq:factor}
+\end{equation}
+Indeed $(1-z)R_k=1-z^k$ and $V_k=(1-2z)+2z^k(1-z)$, so
+$R_kV_k=R_k-2zR_k+2z^k(1-z^k)=1-z-\cdots-z^{k-1}-2z^{2k}$.
+
+\begin{corollary}[Positive recurrence]
+\label{cor:positive}
+For every $n\ge2k$,
+\begin{equation}
+ a_k(n)=\sum_{r=1}^{k-1}a_k(n-r)+2a_k(n-2k).
+ \label{eq:positive}
+\end{equation}
+Equivalently,
+\begin{equation}
+ \sum_{n\ge0}a_k(n)z^n=\frac{N_k(z)R_k(z)}{1-L_k(z)} .
+ \label{eq:positiveGF}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Multiply numerator and denominator of \eqref{eq:mainodd} by $R_k$ and use
+\eqref{eq:factor}. The numerator has degree $2k-1$, so extracting
+coefficients in degrees at least $2k$ proves \eqref{eq:positive}.
+\end{proof}
+
+Formula \eqref{eq:positiveGF} is the generating function of the following
+simple objects. Choose a prefix of size $d+ek$, where $0\le d<k$ and
+$e\in\{0,1\}$; the prefix has one color if $e=0$ and two colors if $e=1$.
+Follow it by an ordered sequence of parts of sizes $1,2,\ldots,k-1,2k$,
+where the part $2k$ has two colors and the other parts each have one color.
+Total size is counted by $z$.
+
+This is an exact equinumerosity obtained from the generating function. It
+is \emph{not} claimed to be an explicit bijection with the odd-coefficient
+positions of the original product.
+
+In particular, an entirely finite, nonrecursive expression is
+\begin{equation}
+ a_k(n)=\sum_{e=0}^1\sum_{d=0}^{k-1}
+ \ \sum_{\substack{m_1,\ldots,m_{k-1},b\ge0\\
+ \sum_{r=1}^{k-1}r m_r+2kb=n-d-ek}}
+ 2^{e+b}\frac{(m_1+\cdots+m_{k-1}+b)!}{m_1!\cdots m_{k-1}!\,b!} .
+ \label{eq:multinomial}
+\end{equation}
+An impossible constraint contributes zero. The multinomial coefficient
+orders the chosen parts; the power of two supplies their colors and, when
+applicable, the prefix color. This proves \eqref{eq:multinomial} directly
+from the description above.
+
+\begin{proposition}[Minimal recurrence order]
+\label{prop:minimal}
+Over $\Q$, the smallest order of an eventual homogeneous
+constant-coefficient recurrence for $a_k(n)$ is $k+1$.
+\end{proposition}
+\begin{proof}
+The denominator $V_k$ has degree $k+1$. It is relatively prime to
+$N_k(z)=1+2z^k$, because
+\[
+ V_k(z)=(1-2z)N_k(z)+2z^{k+1}.
+\]
+A common root would have to be zero, but $N_k(0)=1$. Thus the fraction in
+\eqref{eq:mainodd} is reduced. If a recurrence with denominator polynomial
+$Q(z)$ holds eventually, then $Q(z)\sum a_k(n)z^n$ is a polynomial, so the
+reduced denominator $V_k$ divides $Q$. Its degree is therefore a lower
+bound for the recurrence order, and the recurrence \eqref{eq:oddrec}
+attains it.
+\end{proof}
+
+\section{Asymptotics: growth twice, and two sparsity statements}
+\label{sec:asymptotic}
+
+Let $\beta_k$ be the positive root greater than one of
+\begin{equation}
+ \beta_k^k=\beta_k^{k-1}+\cdots+\beta_k+1,
+ \label{eq:beta}
+\end{equation}
+equivalently $t_k=1/\beta_k$ is the root in $(0,1)$ of
+$Q_k(z)=1-z-\cdots-z^k$; and let $r_k$ be the root in $(0,1)$ of
+$V_k(z)=1-2z+2z^k-2z^{k+1}$, with $\rho_k=1/r_k$. By \eqref{eq:factor} and
+$R_k>0$ on $(0,1)$, the number $r_k$ is simultaneously the unique positive
+solution of $L_k(r)=1$; the two routes below therefore concern the same
+constant.
+
+\subsection{The analytic route to the dominant root}
+\label{sec:analyticroot}
+
+\noindent\textbf{[Kept twice: dominant-root asymptotic, proof 1 of 2.]}
+
+\begin{theorem}[Asymptotic count, analytic proof]
+\label{thm:asymptotic}
+For every fixed $k\ge2$ there is $0<\theta_k<\rho_k$ with
+\begin{equation}
+ a_k(n)=C_k\rho_k^n+O(\theta_k^n),
+ \qquad
+ C_k=\frac{N_k(r_k)R_k(r_k)}{r_kL_k'(r_k)}>0 .
+ \label{eq:asymptotic}
+\end{equation}
+Moreover $1<\rho_k<2$, and $\rho_k$ is the unique real root in $(1,2)$ of
+\begin{equation}
+ \rho^{k+1}-2\rho^k+2\rho-2=0 .
+ \label{eq:characteristic}
+\end{equation}
+\end{theorem}
+\begin{proof}
+$L_k$ is strictly increasing on the positive real axis, with $L_k(0)=0$ and
+$L_k(1)=k+1>1$. Thus $r_k\in(0,1)$ exists uniquely and $L_k'(r_k)>0$. Also
+\[
+ L_k(1/2)=1-2^{1-k}+2^{1-2k}<1,
+\]
+so $r_k>1/2$ and $\rho_k<2$.
+
+For complex $z$ with $|z|<r_k$ the triangle inequality gives
+$|L_k(z)|\le L_k(|z|)<1$. If $|z|=r_k$ and $L_k(z)=1$, equality in the
+triangle inequality forces all summands to have the same argument, and
+their sum is positive real. The term $z$ occurs with positive coefficient,
+so $z$ itself is positive real, whence $z=r_k$. Therefore $r_k$ is the only
+zero of $1-L_k$ on its smallest root circle, and it is simple.
+
+By \eqref{eq:positiveGF} the singular part of the generating function at
+$r_k$ is $C_k/(1-z/r_k)$ with $C_k$ as displayed. Subtracting it leaves a
+rational function analytic in a disk of radius strictly larger than $r_k$;
+Cauchy's coefficient bound on a circle inside that disk gives the
+exponentially smaller error term. Finally, \eqref{eq:factor} and
+$R_k(r_k)>0$ give $V_k(r_k)=0$; substituting $r_k=1/\rho_k$ yields
+\eqref{eq:characteristic}, and uniqueness follows from the uniqueness of
+the positive root of $1-L_k$ together with positivity of $R_k$ on the
+positive axis.
+\end{proof}
+
+\subsection{The combinatorial route to the dominant root, and strict sparsity
+among nonzero coefficients}
+\label{sec:pfroot}
+
+\noindent\textbf{[Kept twice: dominant-root asymptotic, proof 2 of 2; and
+sparsity statement 1 of 2.]}
+
+\begin{theorem}[Growth and strict sparsity among nonzero coefficients]
+\label{thm:growth}
+For fixed $k\ge2$,
+\begin{equation}
+ 1<\rho_k<\beta_k<2,
+ \qquad
+ a_k(n)=\gamma_k\rho_k^n+O(\theta_k^n)
+ \label{eq:growth}
+\end{equation}
+for some $0<\theta_k<\rho_k$, where
+\begin{equation}
+ \gamma_k=-\frac{1+2r_k^k}{r_kV_k'(r_k)}>0 .
+ \label{eq:gamma}
+\end{equation}
+In particular $a_k(n)/s_k(n)$ tends to zero exponentially, where $s_k(n)$
+is the number of \emph{nonzero} coefficients of $P_n$.
+\end{theorem}
+\begin{proof}
+First, $V_k(0)=1$ and $V_k(1)=-1$. On $[0,1]$,
+\[
+ V_k'(z)=-2+2z^{k-1}\bigl(k-(k+1)z\bigr)<0,
+\]
+because the maximum of $z^{k-1}(k-(k+1)z)$ is $((k-1)/(k+1))^{k-1}<1$.
+Thus $r_k$ exists uniquely and is simple.
+
+To exclude other poles of the same modulus, use the automaton of
+Table~\ref{tab:parity} rather than complex analysis. Remove $X$ and $C_k$
+from its graph. The remaining states form one strongly connected component:
+every state is reachable from $A_0$, and the transition table supplies a
+return path to $A_0$. There is an all-zero cycle of length $2k$ through the
+$A$ and $B$ families. Replacing its first edge $A_0\to A_1$ with
+$A_0\to C_1\to A_1$ gives a cycle of length $2k+1$. The component is
+therefore aperiodic. Its spectral radius is strictly greater than one: at a
+common multiple of those two lengths there are two different closed walks,
+whose arbitrary concatenations already give exponential growth.
+
+The Perron--Frobenius theorem for a finite irreducible aperiodic
+nonnegative matrix now gives a simple strictly dominant positive
+eigenvalue. The other productive component, the loop at $C_k$, has spectral
+radius one. Both the initial state and accepting states meet the main
+component, so its leading contribution is nonzero. Hence the rational
+series has one simple dominant pole, necessarily $r_k$, and coefficient
+extraction gives \eqref{eq:growth}--\eqref{eq:gamma}. Subdominant
+polynomial factors are absorbed by choosing $\theta_k$ strictly above the
+moduli of all other contributing eigenvalues.
+
+Let $t_k=1/\beta_k$, the unique root in $(0,1)$ of $Q_k$. Its simplicity
+and the triangle inequality show that no other root of $Q_k$ has modulus
+$t_k$: equality would force the terms $z$ and $z^2$ to have the same
+positive argument, hence $z=t_k$. Equation~\eqref{eq:support} therefore
+gives $s_k(n)\sim\delta_k\beta_k^n$ with $\delta_k>0$. Also
+$1/2<t_k\le1/\beta_2<2/3$ and $1-2t_k+t_k^{k+1}=0$, so
+\[
+ V_k(t_k)=t_k^k(2-3t_k)>0 .
+\]
+Since $V_k$ is strictly decreasing, $r_k>t_k$, that is $\rho_k<\beta_k$.
+The remaining inequalities are immediate from the locations of $r_k,t_k$.
+Taking the ratio of the two asymptotic formulas proves exponential
+sparsity among nonzero coefficients.
+\end{proof}
+
+\begin{corollary}[The two leading constants agree]
+\label{cor:constants}
+$C_k=\gamma_k$.
+\end{corollary}
+\begin{proof}
+Differentiate \eqref{eq:factor}: $R_k'V_k+R_kV_k'=-L_k'$. At $z=r_k$ we
+have $V_k(r_k)=0$, so $R_k(r_k)V_k'(r_k)=-L_k'(r_k)$. Substituting into
+\eqref{eq:asymptotic} gives
+\[
+ C_k=\frac{N_k(r_k)R_k(r_k)}{r_kL_k'(r_k)}
+   =\frac{N_k(r_k)R_k(r_k)}{-r_kR_k(r_k)V_k'(r_k)}
+   =-\frac{N_k(r_k)}{r_kV_k'(r_k)}=\gamma_k .\qedhere
+\]
+\end{proof}
+
+Both expressions are retained in Tables~\ref{tab:growth80} and
+\ref{tab:growth}, each computed from its own defining formula. Agreement of
+the two columns is a further arithmetic check on the merged data.
+
+\noindent\textbf{[Kept twice: the inequality $\rho_k<\beta_k$.]}
+Theorem~\ref{thm:growth} obtained it from $V_k(t_k)=t_k^k(2-3t_k)>0$;
+Section~\ref{sec:densityall} obtains it again from $L_k(1/\beta_k)<1$,
+without reference to $V_k$.
+
+\subsection{Zero density in the full coefficient range}
+\label{sec:densityall}
+
+\noindent\textbf{[Kept twice: sparsity statement 2 of 2.]}
+The following theorem is \emph{not} Theorem~\ref{thm:growth} restated. Its
+denominator counts every position from exponent zero to the degree,
+including positions whose coefficient is zero. The signed route has no
+access to the support generating function \eqref{eq:support} and therefore
+cannot prove Theorem~\ref{thm:growth}; conversely the statement below holds
+for arbitrary superincreasing seeds, where $s_k(n)$ is not given by
+\eqref{eq:support} at all.
+
+\begin{theorem}[Density among all positions]
+\label{thm:densityall}
+Let $w_0,w_1,\ldots$ be any quasifibonacci sequence of order $k$. Then
+$D_n=\Theta(\beta_k^n)$, $\rho_k<\beta_k$, and
+\begin{equation}
+ \frac{a_k(n)}{D_n+1}=O\!\left((\rho_k/\beta_k)^n\right)\longrightarrow0 .
+ \label{eq:density}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The number $\beta_k\in(1,2)$ satisfies $\sum_{i=1}^k\beta_k^{-i}=1$, the
+growth equation of the exponent sequence. For every admissible seed list,
+$D_n=\Theta(\beta_k^n)$. One sees this without a spectral theorem: choose
+positive constants bounding $w_i/\beta_k^i$ above and below for the first
+$k$ indices, and propagate the bounds through \eqref{eq:recw}. Summing
+preserves the same exponential order.
+
+Put $s=\beta_k^{-1}=t_k$. Since the $k$ terms $s,\ldots,s^k$ sum to one, we
+have $s^k<1/2$. Consequently
+\[
+ L_k(s)=\bigl(s+\cdots+s^{k-1}\bigr)+2s^{2k}=1-s^k+2s^{2k}<1,
+\]
+so $s<r_k$ and $\rho_k<\beta_k$. Combining with
+Theorem~\ref{thm:asymptotic} gives \eqref{eq:density}.
+\end{proof}
+
+The denominator of \eqref{eq:density} counts every coefficient position
+from zero to the degree, including positions with coefficient zero.
+\emph{No assertion about density among nonzero coefficients only is implicit
+in \eqref{eq:density}}; that separate statement is
+Theorem~\ref{thm:growth}, and it is proved only for Stanley's
+initialization, where the support count \eqref{eq:support} is available.
+
+\subsection{Large-order expansion}
+\label{sec:largek}
+
+There is also a useful asymptotic as $k\to\infty$, with no counterpart on
+the finite-state route:
+\begin{equation}
+ \rho_k=2-2^{1-k}-(2k-4)\,4^{-k}+O(k^2 8^{-k}).
+ \label{eq:largek}
+\end{equation}
+Here is a justification that keeps the varying parameter under control.
+Write $t=2^{-k}$ and $\delta=2-\rho_k$. Equation \eqref{eq:characteristic}
+becomes
+\begin{equation}
+ \delta=2t(1-\delta)(1-\delta/2)^{-k}.
+ \label{eq:delta}
+\end{equation}
+For all sufficiently large $k$, the equivalent function
+$f(\delta)=\delta(2-\delta)^k-2+2\delta$ is negative at zero and positive
+at $4t$, since $f(4t)=4(1-2t)^k-2+8t\to2$. The uniqueness already proved
+places the relevant root in $(0,4t)$. Thus $k\delta\to0$, and Taylor
+expansion, uniformly on that interval, gives
+\[
+ (1-\delta)(1-\delta/2)^{-k}=1+\frac{k-2}{2}\delta+O(k^2\delta^2).
+\]
+First \eqref{eq:delta} yields $\delta=2t+O(kt^2)$; substituting back gives
+$\delta=2t+2(k-2)t^2+O(k^2t^3)$, proving \eqref{eq:largek}. This expansion
+is separate from the fixed-$k$, large-$n$ asymptotic of
+Theorem~\ref{thm:asymptotic}.
+
+\subsection{Two numerical tables}
+\label{sec:growthtables}
+
+\noindent\textbf{[Kept twice: numerical growth constants.]}
+Table~\ref{tab:growth80} is the primary record, computed by bisection at
+$80$-digit working precision with Python's \code{Decimal} arithmetic, using
+the formulas of Theorem~\ref{thm:asymptotic}. Table~\ref{tab:growth} is an
+independent recomputation in double-precision floating point, using instead
+the formulas of Theorem~\ref{thm:growth}. The two agree to floating-point
+precision; for instance $\rho_2=1.54368901269207636157\ldots$ against
+$1.5436890126920766$.
+
+\begin{table}[htbp]
+\centering
+\input{data/growth_table.tex}
+\caption{Primary numerical record: $80$-digit \code{Decimal} bisection,
+truncated for display. Here $\rho_k$ is the odd-coefficient growth
+constant, $C_k$ the leading constant of \eqref{eq:asymptotic}, and
+$\beta_k$ the $k$-bonacci growth constant.}
+\label{tab:growth80}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rrrr}
+\toprule
+$k$ & Support growth $\beta_k$ & Odd growth $\rho_k$ & $\gamma_k$\\
+\midrule
+2&1.618033989&1.543689013&1.473679689\\
+3&1.839286755&1.716672749&1.550023534\\
+4&1.927561975&1.855679028&1.362757097\\
+5&1.965948237&1.930604989&1.200842855\\
+6&1.983582843&1.966580689&1.109329020\\
+8&1.996031180&1.991997414&1.032931668\\
+10&1.999018633&1.998031429&1.009930808\\
+\bottomrule
+\end{tabular}
+\caption{Independent recomputation by floating-point bisection from
+\eqref{eq:gamma}. Compare $\gamma_k$ here with $C_k$ in
+Table~\ref{tab:growth80}; Corollary~\ref{cor:constants} proves they are
+equal.}
+\label{tab:growth}
+\end{table}
+
+Both tables are illustrative numerical approximations, \emph{not} certified
+interval enclosures. All the strict inequalities and asymptotic statements
+above are proved without numerical root finding.
+
+\section{Exact algorithms}
+\label{sec:algorithms}
+
+\noindent\textbf{[Kept twice: odd-count algorithm families, and coefficient
+oracles.]}
+Two families of algorithms are supplied, descending from the two proofs.
+Section~\ref{sec:crosscheck} explains why their agreement is informative
+while the agreement of two members of the same family is not.
+
+\subsection{Counting without expanding a polynomial}
+
+The recurrence \eqref{eq:oddrec} computes $a_k(0),\ldots,a_k(N)$ in $O(N)$
+integer arithmetic operations. A streaming implementation needs only $k+1$
+past values; the supplied \code{count_prefix} returns the whole list and so
+intentionally uses $O(N)$ integer storage.
+
+For an isolated very large index, let
+\[
+ \chi_k(X)=X^{k+1}-2X^k+2X-2 .
+\]
+Compute $X^N\bmod\chi_k(X)$ by binary powering. If the remainder is
+$\sum_{i=0}^k b_iX^i$, then
+\begin{equation}
+ a_k(N)=\sum_{i=0}^k b_i2^i .
+ \label{eq:fast}
+\end{equation}
+To justify this, let $E$ be the shift operator on the sequence. The proved
+recurrence says $\chi_k(E)a=0$ beginning at index zero in shift-operator
+form, so polynomial division applied to $E^N$ gives \eqref{eq:fast}.
+Naive polynomial multiplication and reduction use $O(k^2\log(N+1))$ ring
+operations. The same code works modulo any positive integer; it does not
+assume the modulus is prime.
+
+These are arithmetic-operation bounds, not bit-complexity bounds. In exact
+arithmetic $a_k(N)$ has $\Theta(N)$ bits for fixed $k$, by
+Theorem~\ref{thm:asymptotic}; writing it already takes linear time in its
+bit length.
+
+\subsection{A single coefficient's parity in linearly many steps}
+\label{sec:oracle}
+
+Proposition~\ref{prop:pointwise} gives an efficient coefficient oracle.
+Precompute the weights, partial sums, and signs through index $n-1$.
+To evaluate $\varphi_n(m)$, first return zero if $m\notin[0,D_n]$. For
+$n>k$:
+\begin{enumerate}[label=(\arabic*)]
+\item if $m<w_{n-1}$, replace $(n,m)$ by $(n-1,m)$;
+\item if $m>D_{n-1}$, replace $(n,m)$ by $(n-1,m-w_{n-1})$ and multiply the
+accumulated sign by $\eps_{n-1}$;
+\item otherwise set $j=n-k-1$, $u=m-w_{n-1}$, $v=w_j$. Formula
+\eqref{eq:pointwise} gives at most one continuing branch: use
+$\varphi_j(u-v)$ if $u\ge v$; use $-\varphi_j(u+v)$ if $u+v\le D_j$;
+otherwise return zero. In either continuing case multiply also by
+$\eps_{n-1}\eps_j$.
+\end{enumerate}
+When the index is at most $k$, a greedy subset-sum test on the
+superincreasing seeds finishes the computation. At every step the index
+strictly decreases; there is no branching tree. Hence the query uses $O(n)$
+arithmetic comparisons, additions, and sign changes after $O(n+k)$-entry
+preprocessing, including validation of the seed block. The absolute value of
+the resulting signed coefficient is the requested parity of the all-plus
+coefficient.
+
+For fixed $k$ and seed bit length $b$, the stored exponents have $O(n+b)$
+bits. The arithmetic-step description therefore does not assert
+constant-time operations on arbitrarily large exponents. Its principal
+advantage is avoiding storage proportional to the exponentially large
+degree.
+
+\subsection{The exact integer coefficient from the counter}
+
+The counter of Section~\ref{sec:counter} gives a different oracle with a
+different output: for Stanley's seeds it returns the exact nonnegative
+integer $c_n(j)$, not a sign. Given any binary word, normalize it and run
+\eqref{eq:initial}--\eqref{eq:O}. The supplied function is
+\code{coefficient_for_canonical}; for example
+\code{coefficient_for_canonical((0,0,0,0,1), k=2)} returns $3$, in agreement
+with the worked example of Section~\ref{sec:counter}.
+Neither oracle subsumes the other: the signed oracle accepts arbitrary
+superincreasing seeds and arbitrary initial sign blocks but returns only a
+value in $\{-1,0,1\}$; the counter oracle returns the exact multiplicity but
+is tied to \eqref{eq:weights}.
+
+\subsection{Direct multiplication as an independent check}
+
+An integer bitset represents a polynomial over $\F_2$ by storing the
+coefficient of $x^m$ in bit $m$. Multiplication by $1+x^w$ is exactly
+\begin{verbatim}
+bits ^= bits << w
+\end{verbatim}
+and the final odd-coefficient count is \code{bits.bit_count()}. This is an
+excellent small-instance oracle, but its memory requirement is proportional
+to the polynomial degree; the supplied implementation has an explicit
+degree cap to prevent accidental enormous allocations.
+
+The signed sparse and dense checks perform integer polynomial
+multiplication, not just multiplication modulo two. They therefore test the
+stronger flatness claim and the sign-sensitive overlap identity as well.
+The reference expansion \code{expand} of the finite-state package is a third
+and separate implementation: it begins with the coefficient vector $[1]$ and
+multiplies by each factor $1+x^{w_i}$ using integer additions at offsets
+zero and $w_i$, using neither normalization, nor the counter, nor a guessed
+recurrence.
+
+\subsection{Complexity of the finite-state machines}
+
+Once a machine with $N$ states has been constructed, advancing its count
+vector by one length uses at most $2N$ integer additions, because every
+state has at most two labeled successors. Thus the first $L$ coefficient
+histograms can be generated in $O(LN)$ integer-arithmetic operations after
+graph construction. This is again an arithmetic-operation bound, not a
+bit-complexity bound: the counts themselves grow with $L$. Constructing each
+successor updates $k+1$ counter coordinates, so a straightforward
+breadth-first construction uses $O(kN)$ such coordinate operations plus
+dictionary overhead. Very large parameters can still produce a large
+machine; the supplied code raises an error when its explicit state limit is
+exceeded rather than returning a truncated graph.
+
+\section{Exact computation, cross-verification, and finite certificates}
+\label{sec:verification}
+
+The general proofs above do not require a computer. Computation serves
+three different purposes here: detecting implementation or indexing errors;
+making the constructions reusable; and certifying a specified rational
+expression once a finite linear representation is known. The third purpose
+is stronger than checking a long list of initial terms.
+
+\subsection{Two verification suites}
+\label{sec:suites}
+
+\noindent\textbf{[Kept twice: verification suites and their coverage
+tables.]}
+The two suites test disjoint objects and are reported separately, because a
+single merged summary would destroy the record of what was actually
+checked.
+
+\begin{table}[htbp]
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.29\linewidth}p{0.39\linewidth}r}
+\toprule
+Check & Parameter range & Comparisons\\
+\midrule
+Residue histograms & $2\le k\le8$, $0\le n\le16$, $m=2,3,4,5$ & 476\\
+Individual residue entries & All residues in those histograms & 1,666\\
+Binary normalizations and pair factorizations & $2\le k\le8$,
+all words of lengths $0$ through $11$ & 28,665\\
+Complete representation fibers & Same exhaustive word ranges & 22,582\\
+Exact multiplicities & $2\le k\le5$, $1\le q\le4$, $0\le n\le12$ & 208\\
+Parity sequence entries & $2\le k\le25$, $0\le n\le250$ & 6,024\\
+Parity quotient transitions & All reachable generic modulo-two states,
+$2\le k\le25$ & 3,384\\
+\bottomrule
+\end{tabular}
+\caption{Coverage of \code{code/verify.py}, the suite attached to the
+finite-state proof. Recorded in \code{data/verification_summary.json}.}
+\label{tab:coverage-fs}
+\end{table}
+
+The largest directly expanded polynomial had degree $227{,}138$. Every
+residue comparison includes the zero-position correction
+\eqref{eq:zerocorrection}. The exhaustive pair test parses each carry block
+independently and checks that it preserves value at its actual weight
+positions. The parity test compares the uniform table both with the generic
+modulo-two machine and with recurrence \eqref{eq:oddrec}.
+
+\begin{table}[htbp]
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.40\linewidth}p{0.52\linewidth}}
+\toprule
+Check & Recorded coverage\\
+\midrule
+Direct bitset products & 519 prefix comparisons for $2\le k\le25$, with an
+8,000,000-degree cap; the maximum $n$ depends on $k$.\\
+Signed dense products & 144 products: $2\le k\le10$, $1\le n\le16$;
+19,338 coefficient-oracle comparisons.\\
+Every initial signing & All $2^k$ choices for $2\le k\le6$, two seed
+families, $n=12$: 248 cases.\\
+Random seed/sign cases & 96 superincreasing seed lists and initial
+signings, each at $n=12$, with a fixed random seed.\\
+Pointwise overlap formula & 5,821 exact coefficient identities for
+$2\le k\le6$, through $n=14$.\\
+Positive recurrence & 28,101 comparisons for $2\le k\le30$, through
+$n=1000$.\\
+Fast versus linear counts & Eight indices per $k$ for $2\le k\le30$, in
+exact arithmetic and modulo $1{,}000{,}000{,}007$.\\
+\bottomrule
+\end{tabular}
+\caption{Coverage of \code{code/verify_signed.py}, the suite attached to the
+signed-cancellation proof. Recorded in
+\code{data/verification_signed.json}.}
+\label{tab:coverage-signed}
+\end{table}
+
+Coverage is intentionally reported with its limitations. The degree cap
+means that the largest tested orders in the bitset sweep reach only the
+nonoverlapping initial block; they are \emph{not} evidence of long-run
+behavior at those orders. Nontrivial overlap checks occur at the smaller
+orders, and the proofs, not the sweep, establish all orders and all indices.
+Equally, agreement between the two recurrence-based counting routines
+(\code{count_prefix} and \code{count_fast}) checks their implementation, not
+the combinatorial theorem: both descend from \eqref{eq:oddrec}.
+
+The generated data include odd counts through $n=200$ for $2\le k\le20$,
+$80$-digit working-precision growth constants, complete decimal values of
+$a_k(10000)$ at six orders, and large-index modular values. Some compact
+checkpoints are shown below.
+\begin{table}[htbp]
+\centering
+\input{data/large_table.tex}
+\caption{Large-index checkpoints. Each value was obtained both by the linear
+recurrence \eqref{eq:oddrec} and by the polynomial powering \eqref{eq:fast}.
+The complete integers are in \code{data/large_values.json}. Because both
+algorithms descend from \eqref{eq:oddrec}, their agreement checks
+implementation, not the combinatorial theorem.}
+\label{tab:large}
+\end{table}
+
+The two original packages recorded their runs under Python 3.13.5; the
+merged archive's regenerated JSON records were produced under Python 3.14.4,
+and, for four optional symbolic elimination identities, SymPy 1.14.0.
+Python 3.10 or newer suffices. The main tests and certificates need
+only the Python standard library. The finite-state suite uses explicit error
+checks rather than removable Python assertions, so running Python with
+optimization enabled does not disable validation; the signed suite still
+uses \code{assert} and refuses to run under \code{python -O}.
+
+\subsection{The merged cross-verification}
+\label{sec:crosscheck}
+
+\noindent\textbf{[Kept twice: count tables, and the two coefficient
+oracles.]}
+The script \code{code/cross_check.py} exists only in the merged archive:
+neither original package could run these comparisons, because each held
+only one of the two implementations. It records the following.
+
+\begin{enumerate}[leftmargin=1.9em,label=(X\arabic*)]
+\item \emph{Structural witnesses agree.} For $2\le k\le6$ and $0\le n\le12$,
+for every exponent $0\le j\le D_n$,
+\[
+ \bigl|\varphi_n(j)\bigr|=c_n(j)\bmod 2,
+\]
+with $\varphi_n(j)$ from \code{CoefficientOracle.signed} and $c_n(j)$ from
+the exact dense expansion; and for every represented $j$,
+\code{coefficient_for_canonical} applied to the normalized word reproduces
+$c_n(j)$. This links item D2 of Section~\ref{sec:twice}: flatness and the
+fiber counter are different facts about the same coefficient.
+\item \emph{The two proofs agree numerically.} For $2\le k\le8$ and
+$0\le n\le100$, the polynomial-powering value \eqref{eq:fast} equals the
+value produced by running the uniform $4k+2$-state automaton of
+Table~\ref{tab:parity}. These two routines descend from different proofs,
+so this is an independent check, unlike \code{count_prefix} versus
+\code{count_fast}.
+\item \emph{The two count tables agree.} \code{data/counts.csv} and
+\code{data/odd_counts.csv} were generated by the two packages
+independently; every one of their $707$ common $(k,n)$ entries is compared.
+\item \emph{The two growth tables agree.} The $80$-digit \code{Decimal}
+values in \code{data/growth.csv} and the floating-point values in
+\code{data/growth_constants.csv} agree to floating-point precision, and
+$C_k$ matches $\gamma_k$ as Corollary~\ref{cor:constants} requires.
+\item \emph{The weight conventions agree.} The two modules' weight functions
+produce the same sets for $2\le k\le12$, confirming the index-shift
+reconciliation of Section~\ref{sec:notation}.
+\end{enumerate}
+
+The outcome is stored in \code{data/cross_check.json} with a console
+transcript in \code{data/cross_check.txt}.
+
+\subsection{Actual reachable-state counts}
+
+The bound $(k+1)m^{k+1}$ proves finiteness but is not generally tight.
+The straightforward construction, before language minimization and with
+no explicit rejecting sink, gives the following exact counts.
+\begin{table}[htbp]
+\centering
+\begin{tabular}{r|rrrr}
+\toprule
+$k$ & $m=2$ & $m=3$ & $m=4$ & $m=5$\\
+\midrule
+2&13&35&71&139\\
+3&18&58&124&288\\
+4&23&75&161&377\\
+5&28&92&198&466\\
+6&33&109&235&555\\
+7&38&126&272&644\\
+8&43&143&309&733\\
+\bottomrule
+\end{tabular}
+\caption{Reachable states in the generic residue construction. These
+numbers are not the state counts of the separately derived parity
+quotient, and no formula for general $m$ is inferred from the table.}
+\label{tab:states}
+\end{table}
+
+\subsection{Why a finite recurrence certificate proves an identity}
+
+\begin{lemma}[Cayley--Hamilton certificate]
+\label{lem:certificate}
+Suppose $u_n=\lambda A^nf$ for an $N\times N$ matrix $A$ over $\Q$.
+Let $Q(z)=1+q_1z+\cdots+q_dz^d$ and let $P(z)$ have degree less than $d$.
+To prove $\sum_{n\ge0}u_nz^n=P(z)/Q(z)$, it suffices to check that
+$Q(z)\sum u_nz^n$ agrees with $P(z)$ through degree $d-1$, and that its
+next $N$ coefficients, in degrees $d,\ldots,d+N-1$, are zero.
+\end{lemma}
+\begin{proof}
+For $n\ge0$, define
+\[
+ r_n=u_{n+d}+q_1u_{n+d-1}+\cdots+q_du_n
+ =\lambda A^n\bigl(A^d+q_1A^{d-1}+\cdots+q_dI\bigr)f.
+\]
+By Cayley--Hamilton, $r_n$ obeys the order-$N$ recurrence supplied by the
+characteristic polynomial of $A$. Its first $N$ values being zero forces
+all its values to be zero. The initial coefficient check then proves the
+formal identity $Q\sum u_nz^n=P$.
+\end{proof}
+
+\noindent\textbf{[Kept twice: proof-hygiene mechanisms.]}
+Thus the state-space dimension, not an arbitrary choice of a large
+experimental cutoff, determines how many checks certify a candidate. The
+argument does not require the candidate denominator to be the full
+characteristic polynomial, and it permits substantial cancellation.
+The complementary hygiene statement for the signed route --- that no
+rational generating function is assumed and no unproved word-rewriting
+monoid is used --- is Appendix~\ref{app:dependency}.
+
+\subsection{Two explicit modulo-three identities}
+
+For the following formulas the residue is one, so internal zeros are
+irrelevant. Define
+\begin{align*}
+ P_2(z)&=1-2z+4z^2-6z^3+8z^4-10z^5+8z^6-6z^7,\\
+ Q_2(z)&=1-4z+8z^2-12z^3+16z^4-20z^5+19z^6-12z^7+4z^8,
+\end{align*}
+and
+\begin{align*}
+ P_3(z)&=1-2z+4z^3-6z^4+8z^6-10z^7+8z^9-6z^{10},\\
+ Q_3(z)&=1-4z+4z^2+4z^3-12z^4+8z^5+8z^6-20z^7\\
+       &\hspace{1.5em}+11z^8+8z^9-12z^{10}+4z^{11}.
+\end{align*}
+Then the finite certificates establish
+\begin{equation}
+ H_{3,1}^{(2)}(z)=\frac{P_2(z)}{Q_2(z)},
+ \qquad
+ H_{3,1}^{(3)}(z)=\frac{P_3(z)}{Q_3(z)}.
+ \label{eq:mod3}
+\end{equation}
+These expressions appear in Stanley's discussion
+\cite[p.~24]{Stanley}; their forms are not claimed as discoveries here.
+The $k=2$ congruence case is already covered by his earlier theorem.
+
+For $k=2$, the constructed matrix has dimension 35 and $\deg Q_2=8$.
+The certificate checks the eight initial numerator coefficients and 35
+consecutive zero residuals. For $k=3$, the corresponding numbers are 58,
+11, and 58. The JSON files contain every reachable counter state, every
+labeled transition, the numerator and denominator arrays in ascending
+coefficient order, the exact sequence prefix, and all residuals. Rebuilding
+the graph and checking these integers reproduces the all-$n$ proof via
+Lemma~\ref{lem:certificate}. This part is a finite computational certificate;
+the symbolic proof for arbitrary $k$ and modulus remains separate.
+
+\section{Scope, limitations, and the next mathematical questions}
+\label{sec:scope}
+
+\subsection{What the argument establishes}
+
+The finite-state construction addresses the coefficient-residue conjecture
+for the entire family of products \eqref{eq:product}, not just several
+numerical values of $k$ or prime moduli. It provides a proof mechanism, an
+explicit algorithm for the rational function, a closed parity formula, and a
+rationality result for fixed exact multiplicities. The normal-form,
+fiber-factorization, and counter arguments are all given in full.
+
+The signed construction addresses the parity statement alone, but does so
+for every quasifibonacci weight sequence with superincreasing seeds and for
+all $2^k$ coherent signings, and yields in addition signed flatness, the
+infinite-product corollary, the positive recurrence, the finite multinomial
+formula, minimality of the recurrence order, and the large-order expansion
+\eqref{eq:largek}.
+
+The distinction between established background and the proposed
+contribution is important. General finite-state rationality is a standard
+linear-algebra fact. Carry-block shapes have a precedent in Stanley's work.
+Flatness of truncated all-minus Fibonacci products at $k=2$ is Zhao's
+\cite{Zhao}, and the quasifibonacci seed conditions together with the
+even-order infinite all-minus theorem are Diao's \cite{Diao}. The present
+routes combine a unique canonical cross-section with an exact fiber counter,
+and a periodic coherent signing with a pointwise two-tail cancellation.
+The supplied evidence supports those routes; it does not, by itself, certify
+that no equivalent proof exists elsewhere.
+
+\subsection{What is not being claimed}
+\label{sec:notclaimed}
+
+The argument is not a proof of every conjecture in Stanley's paper.
+In particular, it does not automatically cover arbitrary initial
+polynomials, arbitrary lists of factor coefficients, products with several
+nonconstant monomials per factor, or arbitrary sequences satisfying a
+constant-coefficient recurrence. Such changes may destroy either the
+regular cross-section or the finite counter used here. No claim is made
+that the generic residue state counts in Table~\ref{tab:states} are
+minimal, or that every denominator has an unexplained universal form.
+No higher-moment conjecture from the same paper is claimed solved.
+Coherent signing is proved sufficient for flatness; \emph{all} flat signings
+are not classified. No explicit bijection between the colored compositions
+of Section~\ref{sec:positive} and odd-coefficient positions is supplied;
+their equinumerosity is proved by generating functions only.
+
+\noindent\textbf{[Kept twice: initialization boundaries.]}
+The restriction $k\ge2$ is genuine. At $k=1$, all weights equal one and
+$P_n(x)=(1+x)^n$; the canonical-injectivity argument no longer applies.
+Even the displayed parity formula is already wrong at $n=4$: it would
+predict four odd coefficients, whereas $(1+x)^4$ has two. This boundary case
+is excluded throughout, as in the nontrivial $k\ge2$ framework of the
+source's pair construction. It is a different degeneration from the failure
+of non-superincreasing seeds recorded in Remark~\ref{rem:seedhyp}.
+
+For moduli greater than two, changing a factor's sign no longer leaves its
+residue unchanged, so the parity lift \eqref{eq:paritylift} is unavailable
+in that form. The signed route therefore does \emph{not} prove
+Theorem~\ref{thm:mainrat}; that theorem rests entirely on the finite-state
+route. Conversely, the finite-state route is nailed to the initialization
+\eqref{eq:weights}: its canonical normal form and carry blocks are derived
+from exactly that initial segment, and it does not prove
+Theorem~\ref{thm:seedmain}.
+
+The manuscript has not been independently refereed or formalized in a
+proof assistant. The computational checks are exact but finite; their
+role is not to substitute for the general proofs. The special
+Cayley--Hamilton certificates are distinguished because a proved finite
+dimension bound makes those finite checks logically sufficient.
+The numerical constants are high-precision approximations, not certified
+interval enclosures.
+
+\subsection{Concrete continuations}
+
+One natural next problem is to classify the reachable modulo-$m$ counter
+vectors uniformly in $k$, as was done here for $m=2$. A sufficiently
+explicit classification for $m=3$ might explain the relation between the
+two displayed fractions in \eqref{eq:mod3} and give a general symbolic
+formula. The state-count table suggests structure, but is not offered
+as a theorem outside its checked range.
+
+A second question is whether a finite collection of root-of-unity-weighted
+products can replace the parity lift at moduli greater than two. Flatness
+over $\{-1,0,1\}$ by itself supplies no such result.
+
+A third question is how much of the fiber-counting method survives for
+other numeration systems. Proposition~\ref{prop:principle} isolates the
+necessary ingredients: a regular set of unique representatives and a
+finite-dimensional nonnegative counter. Establishing either ingredient
+for a new recurrence is a substantive mathematical problem, rather than
+an automatic consequence of the recurrence being linear.
+
+A fourth is which weaker seed conditions preserve the same count. The
+signed proof uses the seed condition twice --- to obtain the initial values
+$2^n$, and to establish the separation inequalities of Lemma~\ref{lem:sep}
+that make the tails disjoint. Changing only the initial values without
+checking that separation would not justify reusing the argument.
+
+Finally, a formal proof could focus on the short dependency chain of the
+finite-state route: termination and canonical injectivity; the rewrite-count
+identity and its block decomposition; the two counter maps; and the
+finite-state resolvent. The uniform parity table and its elimination would
+then form a separate, comparatively small algebraic verification. The signed
+route's chain, displayed in Appendix~\ref{app:dependency}, is shorter still
+and uses only elementary arithmetic.
+
+\appendix
+\section{A compact proof dependency map for the signed route}
+\label{app:dependency}
+
+The logical order is
+\[
+\begin{gathered}
+\text{seed separation and recurrence}\quad+\quad\text{coherent signs}\\
+\Downarrow\\
+\text{low-degree truncation and signed reflection}\\
+\Downarrow\\
+\text{pointwise two-tail identity}\\
+\Downarrow\\
+\text{flatness}\quad+\quad\text{overlap inner-product identity}\\
+\Downarrow\\
+\text{parity count recurrence and rational generating function}.
+\end{gathered}
+\]
+Concretely: Lemma~\ref{lem:sep} and Lemma~\ref{lem:period} feed
+\eqref{eq:low} and Lemma~\ref{lem:reflection}; these give
+Proposition~\ref{prop:pointwise}; that gives Theorem~\ref{thm:flat}(i)--(ii)
+and Lemma~\ref{lem:inner}; and those give Theorem~\ref{thm:flat}(iii).
+Five lemmas and one proposition, all elementary arithmetic.
+
+In particular, neither an assumed rational generating function nor any
+unproved description of a word-rewriting monoid is used in this argument.
+All boundary cases are covered by the convention that coefficient functions
+vanish outside their finite ranges. This is the signed route's counterpart
+to Lemma~\ref{lem:certificate}: together they are the two answers this
+manuscript gives to the question of whether anything here is numerical
+curve fitting.
+
+\section{Reproduction guide and artifact map}
+\label{app:reproduce}
+
+The archive is self-contained except for a Python interpreter, a \TeX\
+distribution for rebuilding the PDF, and the optional symbolic-check
+package. Python 3.10 or newer is required; no third-party package is needed
+except for \code{--symbolic}. From the archive root, run
+\begin{verbatim}
+python code/verify.py
+python code/verify.py --symbolic
+python code/check_certificates.py
+python code/verify_signed.py
+python code/test_api.py
+python code/cross_check.py
+python code/growth_constants.py
+python code/make_tex_tables.py
+python code/kbonacci_residues.py 3 5 20
+python code/kbonacci_parity.py 3 8 --coefficient 105
+\end{verbatim}
+The ninth command prints, for each $n=0,\ldots,20$, the five residue counts
+for $k=3,m=5$, including internal zero positions; add \code{--exclude-holes}
+to count nonzero terms only. The tenth returns the JSON object with
+\code{parity} equal to $1$ and \code{signed_coefficient} equal to $-1$.
+Do not run
+\code{verify_signed.py} under \code{python -O}: it refuses to start when
+assertions are disabled. \code{test_api.py} is unaffected, because
+\code{unittest} assertions are method calls that \code{-O} does not remove;
+\code{verify.py},
+\code{check_certificates.py} and \code{cross_check.py} use explicit error
+checks and are safe under \code{-O}.
+
+The independent script \code{check_certificates.py} validates the two
+modulo-three certificate files without importing the main implementation.
+
+Reusable functions of \code{kbonacci_residues.py} include \code{weights},
+\code{expand}, \code{normalize}, \code{build_machine},
+\code{residue_counts}, \code{parity_machine}, \code{dfa_sequence} and
+\code{odd_counts}; \code{coefficient_for_canonical} implements the exact
+counter. For exact multiplicity $q$, call \code{build_machine(k, cap=q+1)}
+and take column $q$ of its distributions. Words are always passed in
+low-to-high weight order.
+
+The signed route's module is \code{kbonacci_parity.py}. It supplies
+\code{standard_seeds}, \code{check_seeds}, \code{weights} and
+\code{coherent_signs} for setting up a weight and sign sequence;
+\code{count_prefix} and \code{count_fast} for counting;
+\code{parity_bitset} and \code{signed_sparse} for direct expansion; and the
+class \code{CoefficientOracle}, whose \code{signed} and \code{parity}
+methods are described in Section~\ref{sec:oracle}.
+Documented invariants used as
+regression tests include
+\begin{verbatim}
+count_fast(3, 20) == 76576
+count_fast(3, 10**12, modulus=1000000007) == 699562826
+coefficient_for_canonical((0,0,0,0,1), k=2) == 3
+normalize((1,1,0), k=2) == (0,0,1)
+\end{verbatim}
+all of which \code{code/cross_check.py} asserts.
+
+\begin{center}
+\begin{tabular}{p{0.42\linewidth}p{0.5\linewidth}}
+\toprule
+Artifact & Purpose\\
+\midrule
+\code{article.tex}, \code{article.pdf} & Editable manuscript and compiled article.\\
+\code{code/kbonacci_residues.py} & Finite-state constructions and a command-line interface.\\
+\code{code/kbonacci_parity.py} & Signed-cancellation algorithms and a command-line interface.\\
+\code{code/verify.py} & Finite-state tests and the finite certificates.\\
+\code{code/verify_signed.py} & Signed-route tests and numerical data generation.\\
+\code{code/cross_check.py} & Comparisons between the two implementations.\\
+\code{code/test_api.py} & Boundary cases and input validation.\\
+\code{code/check_certificates.py} & Independent certificate validator.\\
+\code{code/make_tex_tables.py} & Regenerates the three \code{data/*_table.tex} fragments.\\
+\code{code/growth_constants.py} & Floating-point growth table of Table~\ref{tab:growth}.\\
+\code{data/coefficient_counts.csv} & All 1,666 directly checked residue counts.\\
+\code{data/odd_counts.csv} & Odd counts through length 100 for $2\le k\le8$.\\
+\code{data/counts.csv} & Odd counts through length 200 for $2\le k\le20$.\\
+\code{data/state_counts.csv} & Reachable-state counts in Table~\ref{tab:states}.\\
+\code{data/growth.csv} & $80$-digit growth constants, Table~\ref{tab:growth80}.\\
+\code{data/growth_constants.csv} & Floating-point growth constants, Table~\ref{tab:growth}.\\
+\code{data/large_values.json} & Complete $a_k(10000)$ and large-index modular values.\\
+\code{data/b_k*.txt} & Two-column index/value files; not assigned OEIS b-files.\\
+\code{data/verification_summary.json} & Finite-state verification ranges and results.\\
+\code{data/verification_signed.json} & Signed-route verification ranges and results.\\
+\code{data/cross_check.json} & Outcome of the merged cross-verification.\\
+\code{data/initial_table.tex}\newline\code{data/growth_table.tex}\newline\code{data/large_table.tex} & Generated fragments required to compile the PDF.\\
+\code{certificates/mod3_k2.json}\newline\code{certificates/mod3_k3.json}
+& Complete finite certificates for \eqref{eq:mod3}.\\
+\code{certificates/parity_k*.json} & Uniform parity automata for $2\le k\le8$.\\
+\code{README.md} & Usage instructions for the merged archive.\\
+\code{LITERATURE.md}, \code{RESEARCH_STATUS.md} & The two literature and status audits.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Compile the article with \code{latexmk -pdf article.tex}, or with
+\code{pdflatex article.tex} twice, or use the provided Makefile. The three
+generated fragments in \code{data/} must exist; the eighth command above
+regenerates them. Numerical growth approximations are regenerated by the
+seventh. Those floating-point values are illustrative and do not enter any
+exact verification certificate.
+The archive contains no third-party research PDFs, font files, compiled
+Python caches, or \LaTeX\ build intermediates.
+
+\begin{thebibliography}{9}
+\bibitem{Stanley}
+Richard P. Stanley,
+\emph{Theorems and Conjectures on Some Rational Generating Functions},
+arXiv:2101.02131v3, September 30, 2021, 25 pp.
+\url{https://arxiv.org/abs/2101.02131v3}.
+Conjecture numbers and page numbers in this manuscript refer to this
+version; Conjectures 6.2 and 6.3 are on pp.~23--24.
+
+\bibitem{StanleyJournal}
+Richard P. Stanley,
+\emph{Theorems and conjectures on some rational generating functions},
+European Journal of Combinatorics \textbf{119} (2024), article 103814.
+\url{https://doi.org/10.1016/j.ejc.2023.103814}.
+
+\bibitem{Diao}
+Hansheng Diao,
+\emph{A poset structure on quasifibonacci partitions},
+arXiv:0802.1293v1, February 10, 2008.
+\url{https://arxiv.org/abs/0802.1293}.
+Definition~1.1 and Theorem~1.1.
+
+\bibitem{Zhao}
+Yufei Zhao,
+\emph{The coefficients of a truncated Fibonacci power series},
+Fibonacci Quarterly \textbf{46/47} (2008/2009), 53--55.
+\url{https://doi.org/10.1080/00150517.2008.12428188}.
+Author's PDF: \url{https://yufeizhao.com/research/fibprod.pdf}.
+
+\bibitem{OEIS}
+OEIS Foundation Inc.,
+\emph{The On-Line Encyclopedia of Integer Sequences}, entry A104767.
+\url{https://oeis.org/A104767}. Consulted September 19, 2026.
+
+\bibitem{EZ}
+Shalosh B. Ekhad and Doron Zeilberger,
+\emph{Automated Generation of Generating Functions Related to Generalized
+Stern's Diatomic Arrays in the footsteps of Richard Stanley},
+arXiv:2103.12855v2, October 20, 2024.
+\url{https://arxiv.org/abs/2103.12855v2}.
+Companion page, updated June 17, 2025:
+\url{https://sites.math.rutgers.edu/~zeilberg/mamarim/mamarimhtml/stern.html}.
+
+\bibitem{TangXin}
+Jinlong Tang and Guoce Xin,
+\emph{Meeting a challenge raised by Ekhad and Zeilberger related to Stern's
+triangle}, arXiv:2506.13375, 2025.
+\url{https://arxiv.org/abs/2506.13375}.
+The present manuscript does not resolve that separate challenge.
+\end{thebibliography}
+
+\end{document}

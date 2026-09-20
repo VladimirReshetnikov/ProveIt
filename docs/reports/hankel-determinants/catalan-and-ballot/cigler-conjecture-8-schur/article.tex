@@ -1,0 +1,1199 @@
+% Research draft produced for the accompanying request, 20 September 2026.
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=2.45cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr,needspace}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+  urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Rectangular Schur Polynomials and Cigler's Conjecture 8},
+ pdfauthor={AI-assisted research draft},
+ pdfsubject={An even-shift Hankel determinant identity and its consequences}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\CT}{\operatorname{CT}_z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\SL}{\operatorname{SL}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\len}{\ell}
+\newcommand{\Rkn}{R_{k,n}}
+\newcommand{\Xk}{X_k}
+\DeclareMathOperator{\sgn}{sgn}
+\numberwithin{equation}{section}
+\setlist{nosep}
+\emergencystretch=2em
+\allowdisplaybreaks[2]
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Rectangular Schur polynomials and Hankel determinants}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\title{\textbf{Rectangular Schur Polynomials\protect\\
+and Cigler's Conjecture 8}\\[0.4em]
+\large A Laurent--Gram proof of the even-shift Hankel identity}
+\author{AI-assisted research draft}
+\date{20 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Let
+\(b_m(t)=\sum_{r\ge0}\binom{\lfloor m/2\rfloor}{r}
+\binom{\lceil m/2\rceil}{r}t^r\).
+We prove, for all integers \(k,n\ge0\), the polynomial identity
+\[
+ \det\bigl(b_{2k+i+j}(t)\bigr)_{0\le i,j<n}
+ =t^{\lfloor n^2/4\rfloor}
+ s_{(n^k)}(\underbrace{1,\ldots,1}_{k},
+                \underbrace{t,\ldots,t}_{k}).
+\]
+The proof realizes the Hankel matrix as a Laurent-polynomial Gram matrix,
+changes to a consecutive monomial basis, and identifies the resulting
+Toeplitz determinant by dual Jacobi--Trudi. A positive sum over partitions
+inside a rectangle proves full coefficient support and palindromicity;
+restriction of a Schur module to \(\SL_2\) proves unimodality. A confluent
+alternant supplies explicit numerator polynomials of exactly the degrees and
+with exactly the reciprocity required in Cigler's Conjecture~8
+(arXiv:2111.14492v3). Thus every assertion of that conjecture is obtained,
+not only its positivity assertion. Further consequences include stable edge
+coefficients, a dimension product, an exact generic recurrence, and
+fixed-parameter asymptotics. All identities and boundary cases are proved
+symbolically; a standard-library Python verifier supplies additional exact
+finite checks.
+\end{abstract}
+
+\medskip
+\noindent\textbf{Status.}
+This is a complete mathematical proof draft relative to the classical Schur
+identities and Schur-module character theorem stated below. It has not been
+independently refereed or checked in a proof assistant. A targeted public
+literature search did not locate an earlier resolution of the selected
+conjecture; this is not an exhaustive priority certificate.
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The selected problem and its provenance}
+\label{sec:problem}
+
+\subsection{Why this is related to, but not a duplicate of, the manifest}
+The supplied manifest \cite{manifest} contains an entry entitled
+\emph{Product formulas for ballot-polynomial Hankel determinants}. Its stated
+scope is Conjectures~13--15 in Section~5 of Cigler's paper \cite{cigler}.
+The present article instead treats \emph{Conjecture~8 in Section~4}, concerning
+the polynomial extension \(b_m(t)\) of the middle binomial coefficients.
+The determinant family, normalization, and numbered conjecture are all
+specified below. None of the manifest's reports is used as a theorem in the
+proof. In particular, the manifest's descriptions of claimed results are not
+silently treated as independently verified mathematics.
+
+The original source is the third version of arXiv:2111.14492, dated
+30 December 2021. The arXiv record consulted on 20 September 2026 still
+identified that version as current. Conjecture~8 appears on printed
+pages~16--17, with its numerator formula and reciprocity numbered (56)
+and (57). A targeted search for the paper title and for combinations of
+``Cigler'', ``Conjecture 8'', ``Schur'', and ``proof'' found no prior
+resolution. An absence of search results cannot establish novelty.
+The package's \texttt{sources.md} records the search and its limits.
+
+\subsection{Notation and the precise target}
+For integers \(m\ge0\), define
+\begin{equation}
+ b_m(t)=\sum_{r=0}^{\lfloor m/2\rfloor}
+ \binom{\lfloor m/2\rfloor}{r}
+ \binom{\lceil m/2\rceil}{r}t^r.
+ \label{eq:moment}
+\end{equation}
+Thus
+\[
+ b_0=b_1=1,\qquad b_2=1+t,\qquad b_3=1+2t,\qquad
+ b_4=1+4t+t^2.
+\]
+At \(t=1\), Vandermonde's convolution gives
+\(b_m(1)=\binom{m}{\lfloor m/2\rfloor}\), explaining the name.
+For a shift \(s\ge0\) and an order \(n\ge0\), put
+\begin{equation}
+ D_s(n,t)=\det\bigl(b_{s+i+j}(t)\bigr)_{0\le i,j<n},
+ \qquad D_s(0,t)=1.
+ \label{eq:hankel}
+\end{equation}
+The empty determinant convention is important throughout. We will prove
+\begin{equation}
+ D_0(n,t)=t^{\lfloor n^2/4\rfloor}.
+ \label{eq:unshifted}
+\end{equation}
+For even shifts we write
+\begin{equation}
+ R_{k,n}(t)=\frac{D_{2k}(n,t)}{D_0(n,t)}
+ =\frac{D_{2k}(n,t)}{t^{\lfloor n^2/4\rfloor}}.
+ \label{eq:normalization}
+\end{equation}
+At this point the quotient is interpreted in \(\Q(t)\); its polynomiality
+is a conclusion, not an assumption. In Cigler's notation,
+\(R_{k,n}(t)=d_{2k}(n,t)=r_{2k}(n,t)\).
+
+For \(k\ge1\), Conjecture~8 asks that \(R_{k,n}\) have positive coefficients
+at every degree from \(0\) through \(kn\), be palindromic and unimodal, and
+admit the expression
+\begin{equation}
+ R_{k,n}(t)=
+ \frac{\displaystyle\sum_{j=0}^{k}(-1)^j
+ c_{2k,j}(n,t)t^{j(n+j)}}{(1-t)^{k^2}},
+ \label{eq:target-numerator}
+\end{equation}
+where
+\begin{align}
+ \deg_t c_{2k,j}(n,t)&=2j(k-j),\label{eq:target-degree}\\
+ c_{2k,k-j}(n,t)&=t^{2j(k-j)}c_{2k,j}(n,t^{-1}).
+ \label{eq:target-reciprocity}
+\end{align}
+Here \emph{unimodal} means weakly increasing up to the center and weakly
+decreasing afterwards; strict unimodality is neither required nor true in
+general. We prove all of these assertions, including the stated degrees.
+
+\section{Schur notation and the classical ingredients}
+\label{sec:schur}
+A partition is a weakly decreasing finite list of nonnegative integers,
+with trailing zeros ignored. Its size is \(|\lambda|=\sum_i\lambda_i\),
+and its conjugate is denoted \(\lambda'\). The notation \((n^k)\) means the
+rectangle with \(k\) rows, each of length \(n\). If \(k=0\) or \(n=0\),
+this is the empty partition.
+
+For a list \(X=(x_1,\ldots,x_m)\), let \(e_r(X)\) and \(h_r(X)\) be the
+elementary and complete homogeneous symmetric polynomials:
+\begin{equation}
+ \sum_{r\ge0}e_r(X)u^r=\prod_{a=1}^m(1+x_au),\qquad
+ \sum_{r\ge0}h_r(X)u^r=\prod_{a=1}^m(1-x_au)^{-1}.
+ \label{eq:eh}
+\end{equation}
+Both are zero for negative subscripts and equal one at subscript zero;
+\(e_r(X)=0\) also when \(r>m\).
+
+A semistandard Young tableau has weakly increasing rows and strictly
+increasing columns. The Schur polynomial \(s_\lambda(X)\) is the sum of the
+weight monomials of all such tableaux of shape \(\lambda\), with entries
+from \(\{1,\ldots,m\}\). The following classical descriptions of the same
+polynomial will be used \cite{fulton,macdonald}:
+\begin{align}
+ s_\lambda(X)
+ &=\det\bigl(h_{\lambda_i-i+j}(X)\bigr)_{1\le i,j\le \len(\lambda)},
+ \label{eq:jt}\\
+ s_\lambda(X)
+ &=\det\bigl(e_{\lambda'_i-i+j}(X)\bigr)_{1\le i,j\le\lambda_1},
+ \label{eq:dual-jt}\\
+ s_\lambda(X)
+ &=\frac{\det(x_i^{\lambda_{m+1-a}+a-1})_{1\le i,a\le m}}
+         {\det(x_i^{a-1})_{1\le i,a\le m}}.
+ \label{eq:alternant}
+\end{align}
+The last formula is first read for distinct variables and then extended as
+a polynomial identity. The increasing order of the exponents in
+\eqref{eq:alternant} fixes the signs used later.
+
+We also use one standard representation-theoretic fact. If \(V\) is a
+complex vector space of dimension \(m\), the Schur module
+\(S_\lambda(V)\) is a homogeneous polynomial representation of
+\(\GL(V)\) of degree \(|\lambda|\), and the trace of
+\(\diag(x_1,\ldots,x_m)\) on it is \(s_\lambda(X)\).
+The tableau basis has exactly the corresponding weight monomials. This
+character theorem is explicitly stated in Fulton's treatment
+\cite{fulton}. It is an imported classical result; it is not claimed as a
+new construction here. The needed elementary \(\SL_2\) argument is proved
+in Section~\ref{sec:unimodal}.
+
+For our repeated-variable specialization, write
+\begin{equation}
+ X_k=(\underbrace{1,\ldots,1}_{k},
+        \underbrace{t,\ldots,t}_{k}).
+ \label{eq:alphabet}
+\end{equation}
+For example,
+\begin{align}
+ e_r(X_k)&=\sum_a\binom{k}{a}\binom{k}{r-a}t^a,\label{eq:e-explicit}\\
+ h_r(X_k)&=\sum_{a=0}^{r}\binom{k+a-1}{a}
+                   \binom{k+r-a-1}{r-a}t^a \quad(k\ge1,\ r\ge0).
+ \label{eq:h-explicit}
+\end{align}
+We use the usual convention that a binomial coefficient with an invalid
+lower index is zero.
+
+\section{The central determinant identity}
+\label{sec:main}
+\begin{theorem}[Even-shift Hankel--Schur identity]
+\label{thm:main}
+For all integers \(k,n\ge0\),
+\begin{equation}
+ \boxed{\displaystyle
+ D_{2k}(n,t)=t^{\lfloor n^2/4\rfloor}s_{(n^k)}(X_k).}
+ \label{eq:main}
+\end{equation}
+The identity holds in \(\Z[t]\). In particular,
+\(D_0(n,t)=t^{\lfloor n^2/4\rfloor}\) and
+\(R_{k,n}(t)=s_{(n^k)}(X_k)\).
+\end{theorem}
+
+The determinant on the left has entries depending on \(i+j\). The proof
+turns it into a determinant depending on \(i-j\). The entire normalizing
+power of \(t\) comes from the change of basis, which is why both parities
+of the matrix order must be tracked explicitly.
+
+\subsection{A constant-term model for the moments}
+Work temporarily over \(K=\Q(t)\) and in the Laurent-polynomial ring
+\(K[z,z^{-1}]\). Define
+\begin{equation}
+ A(z)=(1+z)(1+t/z)=1+t+z+t/z.
+ \label{eq:A}
+\end{equation}
+Let \(\CT\) extract the coefficient of \(z^0\). Substitution
+\(z\mapsto t/z\) defines a \(K\)-linear ring involution \(f\mapsto f^*\).
+It fixes \(A\), and
+\begin{equation}
+ \CT f^*=\CT f.
+ \label{eq:ct-star}
+\end{equation}
+Indeed, the coefficient of \(z^0\) is unchanged when each monomial
+\(z^r\) is replaced by \(t^rz^{-r}\).
+
+\begin{lemma}
+\label{lem:moments}
+For \(a\ge0\),
+\begin{equation}
+ b_{2a}(t)=\CT A^a,\qquad
+ b_{2a+1}(t)=\CT(1+z)A^a
+            =\CT(1+t/z)A^a.
+ \label{eq:ct-moments}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Expand \(A^a=(1+z)^a(1+t/z)^a\). Its constant term is
+\(\sum_r\binom ar^2t^r\). Similarly, the constant term of
+\((1+z)^{a+1}(1+t/z)^a\) is
+\(\sum_r\binom{a+1}{r}\binom ar t^r\). These are the even and odd cases
+of \eqref{eq:moment}. The last equality follows from
+\eqref{eq:ct-star}.
+\end{proof}
+
+\subsection{The Hankel matrix as a Gram matrix}
+Define a \emph{linear} map \(\Phi:K[x]\to K[z,z^{-1}]\) on monomials by
+\begin{equation}
+ \Phi(x^{2a})=A^a,\qquad
+ \Phi(x^{2a+1})=(1+z)A^a.
+ \label{eq:Phi}
+\end{equation}
+This map is not an algebra homomorphism; no multiplicativity of \(\Phi\)
+is used. For fixed \(k\ge0\), define the bilinear form
+\begin{equation}
+ B_k(f,g)=\CT A^k f(z)g(t/z)
+ \quad\text{on }K[z,z^{-1}].
+ \label{eq:form}
+\end{equation}
+It is symmetric because applying the involution inside the constant term
+interchanges \(f\) and \(g\).
+
+Put \(v_i=\Phi(x^i)\). Then
+\begin{equation}
+ B_k(v_i,v_j)=b_{2k+i+j}(t).
+ \label{eq:gram}
+\end{equation}
+For completeness, if \(i=2a,j=2b\), the product inside the constant term
+is \(A^{k+a+b}\). If \(i=2a+1,j=2b+1\), it is
+\((1+z)(1+t/z)A^{k+a+b}=A^{k+a+b+1}\). The two mixed-parity cases give
+\((1+z)A^{k+a+b}\) and \((1+t/z)A^{k+a+b}\), respectively. Lemma~\ref{lem:moments}
+proves \eqref{eq:gram} in all four cases.
+
+Consequently, \(D_{2k}(n,t)\) is the Gram determinant of
+\(v_0,\ldots,v_{n-1}\) for the form \(B_k\).
+
+\subsection{A triangular Laurent basis change}
+Consider the ordered monomials
+\begin{equation}
+ w_0=1,\ w_1=z,\ w_2=z^{-1},\ w_3=z^2,\ w_4=z^{-2},\ldots;
+ \qquad w_{2a}=z^{-a},\quad w_{2a+1}=z^{a+1}.
+ \label{eq:laurent-basis}
+\end{equation}
+Each \(v_i\) belongs to the span of \(w_0,\ldots,w_i\). The coefficient
+of the newly appearing monomial is
+\begin{equation}
+ [w_{2a}]v_{2a}=t^a,\qquad [w_{2a+1}]v_{2a+1}=1.
+ \label{eq:diagonal}
+\end{equation}
+For the even case, \(A^a\) has lowest power \(z^{-a}\), with coefficient
+\(t^a\), and highest power \(z^a\). For the odd case,
+\((1+z)A^a\) has highest power \(z^{a+1}\), with coefficient one, and
+lowest power \(z^{-a}\). This proves both triangularity and
+\eqref{eq:diagonal}.
+
+Assume \(n\ge1\), and set \(q=\lfloor(n-1)/2\rfloor\). The determinant
+of the transition matrix from the first \(n\) monomials \(w_i\) to the
+first \(n\) vectors \(v_i\) is therefore
+\[
+ \prod_{a=0}^{q}t^a=t^{q(q+1)/2}.
+\]
+A bilinear Gram determinant changes by the square of this determinant:
+\begin{equation}
+ D_{2k}(n,t)=t^{q(q+1)}
+ \det\bigl(B_k(w_i,w_j)\bigr)_{0\le i,j<n}.
+ \label{eq:gram-change}
+\end{equation}
+
+Reorder the monomials increasingly by exponent in both rows and columns.
+The two permutation signs multiply to one. The resulting exponent set is
+\begin{equation}
+ \begin{cases}
+ \{-m,-m+1,\ldots,m\},&n=2m+1,\\
+ \{-(m-1),-(m-2),\ldots,m\},&n=2m.
+ \end{cases}
+ \label{eq:exponents}
+\end{equation}
+For any two such exponents \(a,b\),
+\begin{equation}
+ B_k(z^a,z^b)=t^b\CT A^kz^{a-b}.
+ \label{eq:monomial-gram}
+\end{equation}
+Factor \(t^b\) from the column indexed by \(b\). The sum of the exponents
+in \eqref{eq:exponents} is zero for \(n=2m+1\) and \(m\) for \(n=2m\).
+Combining with \eqref{eq:gram-change}, the total power extracted is
+\begin{equation}
+ \begin{cases}
+ m(m+1),&n=2m+1,\\
+ (m-1)m+m=m^2,&n=2m,
+ \end{cases}
+ =\lfloor n^2/4\rfloor.
+ \label{eq:power-audit}
+\end{equation}
+Since the exponent set is consecutive, the remaining determinant is
+\begin{equation}
+ D_{2k}(n,t)=t^{\lfloor n^2/4\rfloor}
+ \det\bigl(\CT A^kz^{i-j}\bigr)_{0\le i,j<n}.
+ \label{eq:toeplitz}
+\end{equation}
+This identity has been obtained in \(\Q(t)\), where all column factors are
+legitimate, including those with negative exponent.
+
+\subsection{Identification of the Toeplitz determinant}
+We have
+\begin{equation}
+ z^kA(z)^k=(1+z)^k(z+t)^k
+          =\prod_{x\in X_k}(z+x).
+ \label{eq:elementary-symbol}
+\end{equation}
+The coefficient of \(z^{2k-r}\) in this product is \(e_r(X_k)\). Hence
+\begin{equation}
+ \CT A^kz^{i-j}=e_{k+i-j}(X_k).
+ \label{eq:entry-e}
+\end{equation}
+The conjugate of the rectangle \((n^k)\) is \((k^n)\). After transposing
+the determinant, dual Jacobi--Trudi \eqref{eq:dual-jt} gives
+\begin{equation}
+ \det\bigl(e_{k+i-j}(X_k)\bigr)_{0\le i,j<n}=s_{(n^k)}(X_k).
+ \label{eq:toeplitz-schur}
+\end{equation}
+Equations~\eqref{eq:toeplitz} and \eqref{eq:toeplitz-schur} prove
+Theorem~\ref{thm:main} for \(n\ge1\). For \(n=0\), both determinants and
+the empty Schur polynomial are one. For \(k=0\), the matrix in
+\eqref{eq:toeplitz-schur} is the identity matrix, so
+\eqref{eq:unshifted} follows as well. Both sides of \eqref{eq:main} belong
+to \(\Z[t]\); equality in \(\Q(t)\) is therefore the claimed polynomial
+identity. In particular it remains valid at \(t=0\), without dividing a
+specialized zero by zero. This completes the proof.
+
+\section{An explicit positive partition formula}
+\label{sec:positive}
+For a partition \(\lambda\) with at most \(k\) parts, pad it with zeros
+and define
+\begin{equation}
+ d_k(\lambda)=\prod_{1\le a<b\le k}
+ \frac{\lambda_a-\lambda_b+b-a}{b-a}.
+ \label{eq:weyl-dimension}
+\end{equation}
+This is \(s_\lambda(1^k)\), the number of semistandard tableaux of shape
+\(\lambda\) on \(k\) letters, and is a positive integer. The product
+formula also follows directly from the alternant by letting all variables
+tend to one: normalized derivatives give a Vandermonde in the exponents
+\(\lambda_{k+1-a}+a-1\), divided by the Vandermonde in \(a-1\).
+
+\begin{theorem}[Positive sum of squared tableau counts]
+\label{thm:positive}
+For \(k,n\ge0\),
+\begin{equation}
+ \boxed{\displaystyle
+ R_{k,n}(t)=\sum_{\lambda\subseteq(n^k)}d_k(\lambda)^2t^{|\lambda|}.}
+ \label{eq:positive}
+\end{equation}
+For \(k=0\), the only summand is the empty partition, of dimension one.
+\end{theorem}
+\begin{proof}
+Take a tableau of the rectangle \((n^k)\) on the alphabet
+\(\{1,\ldots,2k\}\). The boxes whose entries are at most \(k\) form a
+Young diagram \(\lambda\subseteq(n^k)\). The entries in those boxes have
+\(d_k(\lambda)\) possibilities. The other boxes form the skew shape
+\((n^k)/\lambda\), and each contributes a factor \(t\).
+
+Define the rectangular complement
+\begin{equation}
+ \lambda^c=(n-\lambda_k,n-\lambda_{k-1},\ldots,n-\lambda_1).
+ \label{eq:complement}
+\end{equation}
+Rotate the skew tableau through \(180\) degrees, first subtract \(k\)
+from its entries, and replace each resulting letter \(a\) by \(k+1-a\).
+Rotation reverses both row and column directions; reversal of the alphabet
+restores weak increase along rows and strict increase down columns. This is
+a bijection with tableaux of the ordinary shape \(\lambda^c\) on \(k\)
+letters. Therefore splitting the alphabet gives
+\[
+ s_{(n^k)}(1^k,t^k)
+ =\sum_{\lambda\subseteq(n^k)}
+ d_k(\lambda)d_k(\lambda^c)t^{kn-|\lambda|}.
+\]
+The product \eqref{eq:weyl-dimension}, with pairs of indices reversed,
+shows \(d_k(\lambda^c)=d_k(\lambda)\). Replacing \(\lambda\) by
+\(\lambda^c\) in the sum and using Theorem~\ref{thm:main} proves
+\eqref{eq:positive}.
+\end{proof}
+
+\begin{corollary}[Polynomiality, full support, and symmetry]
+\label{cor:support}
+For \(k\ge1,n\ge0\), every coefficient of \(R_{k,n}\) from degree zero
+through degree \(kn\) is a positive integer. Its degree is \(kn\), its
+constant and leading coefficients are one, and
+\begin{equation}
+ R_{k,n}(t)=t^{kn}R_{k,n}(t^{-1}).
+ \label{eq:palindrome}
+\end{equation}
+\end{corollary}
+\begin{proof}
+For every \(0\le r\le kn\), there exists a partition of size \(r\) inside
+the rectangle: fill as many whole rows of length \(n\) as possible and
+then at most one partial row. The case \(n=0\) is immediate. Each
+corresponding dimension in \eqref{eq:positive} is positive. Only the empty
+partition contributes at degree zero, and only the full rectangle
+contributes at degree \(kn\); both have dimension one on \(k\) letters.
+Finally \(\lambda\mapsto\lambda^c\) preserves the squared dimension and
+changes the size from \(r\) to \(kn-r\).
+\end{proof}
+
+This argument explains the nonnegativity without extracting coefficients
+from an alternating determinant. It does \emph{not} by itself prove
+unimodality: a positive, symmetric sum of monomials need not be unimodal.
+The next section supplies the missing mechanism.
+
+\section{Unimodality by a balanced \texorpdfstring{$\SL_2$}{SL2} restriction}
+\label{sec:unimodal}
+\begin{lemma}[Weight strings]
+\label{lem:sl2}
+Suppose a finite-dimensional complex algebraic representation of
+\(\SL_2\) has torus character
+\[
+ u^{-N}P(u^2),\qquad P(t)=\sum_{r=0}^{N}a_rt^r.
+\]
+Then there exist nonnegative integers \(\mu_0,\ldots,
+\mu_{\lfloor N/2\rfloor}\) such that
+\begin{equation}
+ P(t)=\sum_{a=0}^{\lfloor N/2\rfloor}
+ \mu_a t^a(1+t+\cdots+t^{N-2a}).
+ \label{eq:strings}
+\end{equation}
+In particular the coefficient sequence, including any zero end coefficients,
+is symmetric and unimodal.
+\end{lemma}
+\begin{proof}
+For clarity, recall why finite-dimensional \(\SL_2\) modules have the
+required strings. Restriction to the compact group \(\mathrm{SU}_2\)
+admits an invariant positive-definite Hermitian form, obtained by averaging
+any such form. Orthogonal complements of invariant subspaces are invariant;
+complexifying the Lie algebra gives the same complete reducibility for
+\(\mathfrak{sl}_2\), and hence for the connected group \(\SL_2\).
+
+With generators \(E,F,H\) satisfying
+\([H,E]=2E\), \([H,F]=-2F\), and \([E,F]=H\), choose a highest-weight
+vector \(v\) in an irreducible summand, so that \(Ev=0\) and \(Hv=mv\).
+The commutator relations imply, by induction,
+\[
+ EF^rv=r(m-r+1)F^{r-1}v.
+\]
+If \(F^qv\ne0\) and \(F^{q+1}v=0\), this formula gives \(m=q\).
+The span of \(v,Fv,\ldots,F^mv\) is invariant, so irreducibility makes
+it the whole summand. Its weights are \(m,m-2,\ldots,-m\), each once.
+Thus the summand has character
+\(u^{-m}+u^{-m+2}+\cdots+u^m\), as does \(\Sym^m\C^2\).
+
+In the character assumed in the lemma, all weights lie between \(-N\)
+and \(N\), and all have parity \(N\). Since a direct sum has nonnegative
+weight multiplicities, every occurring \(m\) has the form \(N-2a\), with
+\(0\le a\le\lfloor N/2\rfloor\). Multiplying the corresponding character
+by \(u^N\) and substituting \(t=u^2\) gives the summand in
+\eqref{eq:strings}. All strings have the same center, \(N/2\). Their sum
+is consequently symmetric and weakly increases towards that center.
+\end{proof}
+
+\begin{theorem}[Unimodality]
+\label{thm:unimodal}
+For all \(k\ge1,n\ge0\), the polynomial \(R_{k,n}(t)\) is unimodal.
+More precisely, with \(N=kn\), it admits \eqref{eq:strings} with
+\(P=R_{k,n}\), and
+\begin{equation}
+ \mu_a=[t^a]R_{k,n}(t)-[t^{a-1}]R_{k,n}(t)\ge0
+ \quad(0\le a\le\lfloor N/2\rfloor),
+ \label{eq:multiplicities}
+\end{equation}
+where the coefficient of \(t^{-1}\) is zero.
+\end{theorem}
+\begin{proof}
+Identify \(\C^{2k}\) with \(\C^2\otimes\C^k\). Let \(\SL_2\) act on
+the first factor and trivially on the second, then restrict the Schur module
+\(S_{(n^k)}(\C^{2k})\) to this subgroup. The torus element
+\(\diag(u^{-1},u)\) has \(k\) eigenvalues \(u^{-1}\) and \(k\)
+eigenvalues \(u\) on the underlying vector space. Homogeneity of the Schur
+polynomial and Theorem~\ref{thm:main} give the restricted character
+\[
+ s_{(n^k)}((u^{-1})^k,u^k)=u^{-kn}s_{(n^k)}(1^k,(u^2)^k)
+                       =u^{-kn}R_{k,n}(u^2).
+\]
+Apply Lemma~\ref{lem:sl2}. Up to the center, the coefficient of \(t^a\)
+in \eqref{eq:strings} is \(\mu_0+\cdots+\mu_a\), proving
+\eqref{eq:multiplicities}.
+\end{proof}
+
+\begin{remark}
+The restriction argument applies to \(s_\lambda(1^k,t^k)\) for any
+partition \(\lambda\) with at most \(2k\) parts, if the coefficient list
+is extended through degree \(|\lambda|\) by zeros where necessary.
+The rectangle is needed for the particular Hankel identity and for the
+nonzero endpoints, not for the general weight-string mechanism.
+We do not claim this classical representation-theoretic mechanism as new.
+\end{remark}
+
+\section{Explicit numerator polynomials and reciprocity}
+\label{sec:numerator}
+This section proves the remaining assertions
+\eqref{eq:target-numerator}--\eqref{eq:target-reciprocity}. All signs and
+normalizing factorials are included, because the repeated-variable limit is
+otherwise an easy source of indexing errors.
+
+Fix \(k\ge1\) and \(n\ge0\). Index positions by
+\(I=\{0,1,\ldots,2k-1\}\), and put
+\begin{equation}
+ \epsilon_a=\begin{cases}a,&0\le a<k,\\ n+a,&k\le a<2k,\end{cases}
+ \qquad F_k=\prod_{r=0}^{k-1}r!.
+ \label{eq:epsilon}
+\end{equation}
+These \(2k\) exponents are strictly increasing, including when \(n=0\).
+For a subset \(S\subseteq I\), let \(\epsilon_S\) denote the list in
+increasing index order, and write
+\[
+ \Delta(\epsilon_S)=\prod_{\substack{a,b\in S\\a<b}}
+ (\epsilon_b-\epsilon_a).
+\]
+For a \(k\)-element subset \(S\), set
+\begin{align}
+ j(S)&=|S\cap\{k,k+1,\ldots,2k-1\}|,\label{eq:jS}\\
+ \delta(S)&=\sum_{a\in S}a-\binom{k}{2}-j(S)^2,\label{eq:delta}\\
+ W_S(n)&=\frac{\Delta(\epsilon_S)\Delta(\epsilon_{S^c})}{F_k^2}.
+ \label{eq:weight}
+\end{align}
+Finally define
+\begin{equation}
+ C_{k,j}(n,t)=
+ \sum_{\substack{S\subseteq I,\ |S|=k\\j(S)=j}}
+ (-1)^{\delta(S)}W_S(n)t^{\delta(S)}
+ \qquad(0\le j\le k).
+ \label{eq:blocks}
+\end{equation}
+This is an explicit finite sum with \(\binom{2k}{k}\) terms in total.
+
+\begin{lemma}[Bounds and integrality]
+\label{lem:blocks}
+If \(j(S)=j\), then
+\begin{equation}
+ 0\le\delta(S)\le 2j(k-j).
+ \label{eq:delta-bounds}
+\end{equation}
+Each endpoint is achieved by a unique such \(S\). Moreover, \(W_S(n)\)
+is a positive integer for every integer \(n\ge0\). As a polynomial in
+\(n\), it belongs to \(\Q[n]\) and has exact degree \(2j(k-j)\).
+\end{lemma}
+\begin{proof}
+The smallest sum of indices is obtained by taking the smallest \(k-j\)
+indices from the lower half of \(I\) and the smallest \(j\) from the upper
+half. Their sum is \(\binom{k}{2}+j^2\). The largest sum, obtained by
+taking the largest indices in the same two halves, is larger by
+\(2j(k-j)\). These extremizers are unique, proving the bounds.
+
+For increasing nonnegative integers \(q_1<\cdots<q_k\),
+\begin{equation}
+ \det\left(\binom{q_b}{r}\right)_{
+      \substack{0\le r<k\\1\le b\le k}}
+ =\frac{\prod_{a<b}(q_b-q_a)}{F_k}.
+ \label{eq:binomial-vandermonde}
+\end{equation}
+Indeed, the polynomial \(\binom{x}{r}\) has degree \(r\) and leading
+coefficient \(1/r!\). Changing from these polynomials to powers of \(x\)
+in the determinant proves \eqref{eq:binomial-vandermonde}. Its left side
+is an integer, and its right side is strictly positive. Applying it to
+\(\epsilon_S\) and \(\epsilon_{S^c}\) proves the integrality and
+positivity of \(W_S(n)\).
+
+Only differences between one lower-half exponent and one upper-half
+exponent depend on \(n\). There are \(j(k-j)\) such differences in each
+of the two Vandermonde products. Each has the form \(n+c\), with \(c>0\).
+The claimed degree is therefore exact and its leading coefficient is positive.
+\end{proof}
+
+\begin{theorem}[The conjectured numerator, explicitly]
+\label{thm:numerator}
+For all \(k\ge1,n\ge0\),
+\begin{equation}
+ \boxed{\displaystyle
+ (1-t)^{k^2}R_{k,n}(t)
+ =\sum_{j=0}^{k}(-1)^j t^{j(n+j)}C_{k,j}(n,t).}
+ \label{eq:numerator}
+\end{equation}
+For each such \(n\), the polynomials \(C_{k,j}(n,t)\) have integer
+coefficients and exact degree \(2j(k-j)\) in \(t\). They satisfy
+\begin{equation}
+ C_{k,k-j}(n,t)=t^{2j(k-j)}C_{k,j}(n,t^{-1}),
+ \qquad C_{k,0}=C_{k,k}=1.
+ \label{eq:C-reciprocity}
+\end{equation}
+As a bivariate expression \(C_{k,j}\in\Q[n,t]\), its degree in \(n\) is
+also exactly \(2j(k-j)\). Thus the requested numerator polynomials are
+\(c_{2k,j}=C_{k,j}\).
+\end{theorem}
+
+\subsection{Confluence of the alternant}
+Use the alternant \eqref{eq:alternant} for the partition \((n^k)\) padded
+to length \(2k\). Its increasing exponents are precisely
+\(\epsilon_0,\ldots,\epsilon_{2k-1}\).
+Let the first \(k\) variables tend to one and the last \(k\) tend to \(t\).
+Divide numerator and denominator by the within-group Vandermonde products
+before taking the limit. The normalized derivative of order \(r\) of
+\(x^{\epsilon_a}\) at \(x=y\) is
+\(\binom{\epsilon_a}{r}y^{\epsilon_a-r}\).
+The remaining denominator is the product of the \(k^2\) cross-group
+differences, namely \((t-1)^{k^2}\). Therefore
+\begin{equation}
+ R_{k,n}(t)=\frac{\det M}{(t-1)^{k^2}},
+ \label{eq:confluent}
+\end{equation}
+where \(M\) is the \(2k\)-by-\(2k\) matrix with columns indexed by \(a\in I\):
+\begin{align}
+ M_{r,a}&=\binom{\epsilon_a}{r},&&0\le r<k,\label{eq:M-top}\\
+ M_{k+r,a}&=\binom{\epsilon_a}{r}t^{\epsilon_a-r},&&0\le r<k.
+ \label{eq:M-bottom}
+\end{align}
+An entry with \(r>\epsilon_a\) is zero. This computation is performed in
+\(\Q(t)\), so there is no need to assign a meaning to an intermediate
+negative power at \(t=0\).
+
+The normalized-derivative rule used here follows by Taylor expansion:
+when \(k\) row variables coalesce at \(y\), the lowest alternating term
+in their differences is the Vandermonde times the determinant of derivative
+rows of orders \(0,\ldots,k-1\), each divided by its factorial. Thus the
+calculation does not assume any analytic convergence of infinite series.
+
+\subsection{Laplace expansion and its sign}
+Expand \(\det M\) along the bottom \(k\) rows, selecting columns \(S\).
+The top minor is \(\Delta(\epsilon_{S^c})/F_k\). Factoring powers of
+\(t\) from the columns and rows of the bottom minor gives
+\begin{equation}
+ \det M_{\text{bottom},S}
+ =t^{\sum_{a\in S}\epsilon_a-\binom{k}{2}}
+   \frac{\Delta(\epsilon_S)}{F_k}.
+ \label{eq:bottom-minor}
+\end{equation}
+By the definitions of \(j\) and \(\delta\), the exponent is
+\begin{equation}
+ \sum_{a\in S}\epsilon_a-\binom{k}{2}
+ =jn+j^2+\delta(S).
+ \label{eq:exponent-split}
+\end{equation}
+Using zero-based row and column indices, the Laplace sign is
+\((-1)^{k(3k-1)/2+\sum_{a\in S}a}\). Changing the denominator in
+\eqref{eq:confluent} from \((t-1)^{k^2}\) to \((1-t)^{k^2}\) adds the
+factor \((-1)^{k^2}\). The resulting sign simplifies as follows:
+\begin{align}
+ (-1)^{k^2+k(3k-1)/2+\sum_{a\in S}a}
+ &=(-1)^{\binom{k}{2}+\sum_{a\in S}a}\notag\\
+ &=(-1)^{j^2+\delta(S)}=(-1)^{j+\delta(S)}.
+ \label{eq:sign}
+\end{align}
+Grouping subsets according to \(j(S)\) proves \eqref{eq:numerator}.
+
+\subsection{Exact degrees and complementary subsets}
+Lemma~\ref{lem:blocks} shows that \(C_{k,j}\) is an integer polynomial
+in \(t\), with degree at most \(d=2j(k-j)\). The unique subset at
+\(\delta=d\) contributes the nonzero coefficient
+\((-1)^dW_S(n)=W_S(n)>0\). Hence the degree is exactly \(d\), for every
+nonnegative integer \(n\). The unique subset at \(\delta=0\) likewise
+shows that the coefficient of \(n^d\) in \(C_{k,j}\), as a polynomial
+in \(t\), has nonzero constant term. This proves the exact degree in \(n\).
+
+Complementing the selected subset gives
+\begin{equation}
+ j(S^c)=k-j(S),\qquad
+ \delta(S^c)=2j(k-j)-\delta(S),\qquad W_{S^c}(n)=W_S(n).
+ \label{eq:complement-subset}
+\end{equation}
+Since \(2j(k-j)\) is even, the signs of complementary terms agree.
+Equation~\eqref{eq:C-reciprocity} follows immediately. If \(j=0\) or
+\(j=k\), there is only one subset, both Vandermonde products are those
+of consecutive integers, and their quotient by \(F_k^2\) is one.
+This completes the proof of Theorem~\ref{thm:numerator}.
+
+\begin{remark}[Integer-valued is not the same as integral coefficients in \(n\)]
+The formula gives \(C_{k,j}(n,t)\in\Z[t]\) at every integer \(n\ge0\),
+but we only assert \(C_{k,j}\in\Q[n,t]\) before specializing \(n\).
+The Vandermonde quotients are integer-valued polynomials. No claim that
+their ordinary monomial coefficients in \(n\) are all integers is needed.
+Also, the \(C_{k,j}\) generally have alternating signs in \(t\); positivity
+in the conjecture concerns \(R_{k,n}\), not these numerator blocks.
+\end{remark}
+
+\begin{corollary}[Resolution of the selected conjecture]
+Conjecture~8 of Cigler's paper \cite{cigler} holds for every
+\(k\ge1,n\ge0\). Its polynomiality, positive full support, exact degree,
+palindromicity, unimodality, numerator representation, numerator degrees,
+and numerator reciprocity are established respectively by
+Theorem~\ref{thm:main}, Corollary~\ref{cor:support},
+Theorem~\ref{thm:unimodal}, and Theorem~\ref{thm:numerator}.
+\end{corollary}
+
+\section{Coefficient edges and special values}
+\label{sec:consequences}
+
+\begin{proposition}[Stable initial coefficients]
+\label{prop:edge}
+For \(k\ge1\) and \(0\le r\le n\),
+\begin{equation}
+ [t^r]R_{k,n}(t)=\binom{k^2+r-1}{r}.
+ \label{eq:edge}
+\end{equation}
+The next coefficient, with coefficients outside the degree interpreted as
+zero, is
+\begin{equation}
+ [t^{n+1}]R_{k,n}(t)
+ =\binom{k^2+n}{n+1}-\binom{n+k}{k-1}^{\!2}.
+ \label{eq:edge-next}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The \(j=0\) term in \eqref{eq:numerator} is one; every other term starts
+at degree at least \(n+1\). Thus
+\[
+ R_{k,n}(t)\equiv(1-t)^{-k^2}\pmod{t^{n+1}},
+\]
+which proves \eqref{eq:edge} by the binomial series.
+At degree \(n+1\), only the constant coefficient of \(C_{k,1}\) supplies
+a correction. Its unique subset has lower indices \(0,\ldots,k-2\) and
+upper index \(k\). Evaluation of \eqref{eq:weight} gives
+\[
+ C_{k,1}(n,0)
+ =\left(\frac{(n+2)(n+3)\cdots(n+k)}{(k-1)!}\right)^2
+ =\binom{n+k}{k-1}^{\!2}.
+\]
+Empty products cover \(k=1\). Substitution in \eqref{eq:numerator} proves
+\eqref{eq:edge-next}.
+\end{proof}
+
+\begin{proposition}[Dimension product and monotonicity in the order]
+\label{prop:dimension}
+For \(k,n\ge0\),
+\begin{equation}
+ R_{k,n}(1)=\prod_{i=1}^{k}\prod_{j=1}^{k}
+ \frac{n+i+j-1}{i+j-1}.
+ \label{eq:dimension}
+\end{equation}
+Also, \(R_{k,n+1}(t)-R_{k,n}(t)\) has nonnegative coefficients, and
+\(R_{k,n}(0)=1\).
+\end{proposition}
+\begin{proof}
+At \(t=1\), Theorem~\ref{thm:main} gives
+\(s_{(n^k)}(1^{2k})\). In the dimension formula
+\eqref{eq:weyl-dimension}, now with \(2k\) letters, factors from pairs
+within the same half cancel. The remaining factors are
+\[
+ \prod_{a=1}^{k}\prod_{b=k+1}^{2k}\frac{n+b-a}{b-a}.
+\]
+Set \(i=k+1-a\) and \(j=b-k\) to obtain \eqref{eq:dimension}.
+The rectangles \((n^k)\) form an increasing family, and the summand
+\(d_k(\lambda)^2t^{|\lambda|}\) in \eqref{eq:positive} is independent
+of \(n\). This proves coefficientwise monotonicity. The last assertion
+was already proved in Corollary~\ref{cor:support}.
+\end{proof}
+
+The apparent poles at \(t=1\) in \eqref{eq:numerator} are therefore
+removable. For the original determinant,
+\(D_{2k}(n,1)=R_{k,n}(1)\). At \(t=0\), the original determinant is zero
+for \(n\ge2\), while its normalized polynomial has value one. These are
+different statements and should not be conflated.
+
+The parameter \(t\) records how many tableau entries are in the upper
+half of the alphabet. This is a repeated-variable specialization, not the
+principal specialization \(1,t,t^2,\ldots\); standard volume-generating
+formulas for plane partitions cannot simply be substituted for it.
+
+\section{A generic recurrence and three asymptotic regimes}
+\label{sec:recurrence}
+The explicit numerator has information beyond coefficient shape. The
+following results concern fixed \(k\) and varying matrix order \(n\).
+
+\begin{theorem}[Exact generic recurrence]
+\label{thm:recurrence}
+Fix \(k\ge1\), and regard \(t\) as an indeterminate. Let \(E\) be the
+forward shift in \(n\). Over \(\Q(t)\), the minimal monic
+constant-coefficient recurrence operator for \(R_{k,n}(t)\) is
+\begin{equation}
+ \prod_{j=0}^{k}(E-t^j)^{2j(k-j)+1}.
+ \label{eq:recurrence}
+\end{equation}
+Equivalently, the generating function in the order \(n\) has reduced
+denominator
+\begin{equation}
+ \prod_{j=0}^{k}(1-t^jz)^{2j(k-j)+1}.
+ \label{eq:gf-denominator}
+\end{equation}
+Its degree in \(z\), and the recurrence order, is
+\begin{equation}
+ L_k=\sum_{j=0}^{k}\bigl(2j(k-j)+1\bigr)
+     =\frac{(k+1)(k^2-k+3)}{3}.
+ \label{eq:recurrence-order}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Rewrite \eqref{eq:numerator} in the form
+\[
+ R_{k,n}(t)=\sum_{j=0}^{k}t^{jn}Q_j(n,t),\qquad
+ Q_j(n,t)=\frac{(-1)^jt^{j^2}C_{k,j}(n,t)}{(1-t)^{k^2}}.
+\]
+By Theorem~\ref{thm:numerator}, \(Q_j\) has exact degree
+\(d_j=2j(k-j)\) in \(n\). Finite differences give
+\((E-t^j)^{d_j+1}(t^{jn}Q_j(n,t))=0\); multiplying all these commuting
+operators proves the recurrence.
+
+For minimality, recall that the generating function of a polynomial in
+\(n\) of exact degree \(d\) has a pole of exact order \(d+1\) at one.
+This follows by applying \((w\,d/dw)^d\) to \((1-w)^{-1}\): the
+coefficient of its highest-order pole is \(d!\), times the leading
+coefficient of the polynomial. The \(j\)-th summand above consequently
+has a pole of exact order \(d_j+1\) at \(z=t^{-j}\). Over \(\Q(t)\)
+these locations are distinct, so no other summand cancels that pole.
+This proves the exact denominator and hence minimality. Summing the
+exponents gives \eqref{eq:recurrence-order}.
+\end{proof}
+
+The denominator is the one appearing in the nearby Conjecture~10 of
+\cite{cigler}. That conjecture also specifies a numerator degree and a
+separate reciprocity identity, which are not asserted here. The present
+article's complete-resolution claim concerns Conjecture~8 only.
+For specialized values of \(t\), poles can coincide or disappear, so
+Theorem~\ref{thm:recurrence} must not be read as an unchanged minimal-order
+claim after every specialization. At \(t=0\), the sequence is constant;
+at \(t=1\), it is a polynomial in \(n\) of degree \(k^2\).
+
+\Needspace{17\baselineskip}
+\begin{theorem}[Fixed-parameter asymptotics]
+\label{thm:asymptotics}
+Fix \(k\ge1\). For every fixed real \(t\) with \(0<t<1\),
+\begin{equation}
+ R_{k,n}(t)\longrightarrow(1-t)^{-k^2}
+ \quad(n\to\infty),
+ \label{eq:limit}
+\end{equation}
+and the deficit has the sharp leading term
+\begin{equation}
+ (1-t)^{-k^2}-R_{k,n}(t)
+ \sim\frac{n^{2k-2}t^{n+1}}
+ {((k-1)!)^2(1-t)^{k^2-2k+2}}.
+ \label{eq:deficit}
+\end{equation}
+At \(t=1\),
+\begin{equation}
+ R_{k,n}(1)\sim
+ \frac{n^{k^2}}{\displaystyle\prod_{i=1}^{k}\prod_{j=1}^{k}(i+j-1)}.
+ \label{eq:asymp-one}
+\end{equation}
+For fixed \(t>1\),
+\begin{equation}
+ R_{k,n}(t)\sim t^{kn}(1-t^{-1})^{-k^2}.
+ \label{eq:asymp-large}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For \(0<t<1\), every term with \(j\ge1\) in the numerator formula
+vanishes as \(n\to\infty\), because it is a fixed-degree polynomial in
+\(n\) times \(t^{jn}\). This proves \eqref{eq:limit}.
+
+To identify the first error term, compute the leading coefficient in
+\(n\) of \(C_{k,1}\). Put \(m=k-1\). A selected subset with one
+upper-half index consists of all lower-half indices except some \(a\),
+and the single upper index \(k+b\), where \(0\le a,b\le m\). Its
+\(\delta\) is \(m-a+b\). Deleting one element from a consecutive
+Vandermonde gives
+\[
+ [n^{2m}]W_S(n)=\frac{\binom ma\binom mb}{(m!)^2}.
+\]
+Consequently,
+\begin{align*}
+ [n^{2k-2}]C_{k,1}(n,t)
+ &=\frac{1}{(m!)^2}
+   \sum_{a,b=0}^{m}\binom ma\binom mb(-t)^{m-a+b}\\
+ &=\frac{(1-t)^{2m}}{(m!)^2}.
+\end{align*}
+The \(j=1\) term in \eqref{eq:numerator} is
+\(-t^{n+1}C_{k,1}\). All terms with \(j\ge2\) are exponentially
+smaller than this term for fixed \(t\in(0,1)\). Division by
+\((1-t)^{k^2}\) proves \eqref{eq:deficit}. For \(k=1\), the error
+formula is exact: it is \(t^{n+1}/(1-t)\).
+
+Equation~\eqref{eq:asymp-one} follows from the product in
+\eqref{eq:dimension}. Finally, palindromicity reduces the case \(t>1\)
+to \eqref{eq:limit} with parameter \(t^{-1}\).
+\end{proof}
+These are fixed-\(t\) assertions, not estimates uniform as \(t\to1\).
+A transition regime with \(t\) depending on \(n\) would require a
+separate analysis.
+
+\section{Worked examples and explicit checks on conventions}
+\label{sec:examples}
+For \(k=1\), the rectangle has one row. Either the positive formula or
+Jacobi--Trudi gives
+\begin{equation}
+ R_{1,n}(t)=1+t+\cdots+t^n=\frac{1-t^{n+1}}{1-t}.
+ \label{eq:k1}
+\end{equation}
+Here \(C_{1,0}=C_{1,1}=1\), and the numerator formula is immediate.
+This family also shows why ``unimodal'' cannot be strengthened to
+``strictly unimodal'' without exceptions. For \(n=2\), the roots of
+\(1+t+t^2\) are nonreal; real-rootedness is not a premise of our proof.
+
+For \(k=2\), evaluation of \eqref{eq:blocks} gives
+\begin{align}
+ C_{2,0}=C_{2,2}&=1,\notag\\
+ C_{2,1}(n,t)&=(n+2)^2-2(n^2+4n+3)t+(n+2)^2t^2.
+ \label{eq:k2C}
+\end{align}
+Thus
+\begin{equation}
+ R_{2,n}(t)=
+ \frac{1-t^{n+1}\bigl((n+2)^2-2(n^2+4n+3)t+(n+2)^2t^2\bigr)
+       +t^{2n+4}}{(1-t)^4}.
+ \label{eq:k2}
+\end{equation}
+Cigler had already obtained this small-shift formula in his equation (53);
+it is included as a normalization check, not claimed as a new special case.
+The contribution here is the all-\(k\) mechanism and its consequences.
+
+Some small normalized polynomials are:
+\begin{center}
+\small
+\begin{tabular}{@{}ccl@{}}
+\toprule
+\(k\)&\(n\)&\(R_{k,n}(t)\)\\
+\midrule
+1&2&\(1+t+t^2\)\\
+2&1&\(1+4t+t^2\)\\
+2&2&\(1+4t+10t^2+4t^3+t^4\)\\
+2&3&\(1+4t+10t^2+20t^3+10t^4+4t^5+t^6\)\\
+3&1&\(1+9t+9t^2+t^3\)\\
+3&2&\(1+9t+45t^2+65t^3+45t^4+9t^5+t^6\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+For \(k=3,n=3\), the coefficient list is
+\[
+ (1,9,45,165,270,270,165,45,9,1).
+\]
+Its weight-string multiplicities up to the center are
+\((1,8,36,120,105)\), the consecutive differences prescribed by
+\eqref{eq:multiplicities}.
+
+As a direct two-by-two check on the Hankel normalization,
+\begin{align*}
+ D_2(2,t)&=(1+t)(1+4t+t^2)-(1+2t)^2\\
+        &=t+t^2+t^3=t^{\lfloor 2^2/4\rfloor}R_{1,2}(t).
+\end{align*}
+The factor \(t\) is essential; omitting it would make both the Schur
+identity and the stated coefficient degree wrong.
+
+\section{Verification, dependencies, and limits of the claim}
+\label{sec:verification}
+
+\subsection{What the executable verifier does}
+The accompanying file \texttt{code/verify.py} uses only Python's standard
+library and arbitrary-precision integers. Polynomials are stored as
+coefficient tuples in ascending degree. It implements addition,
+multiplication, and exact polynomial division, with explicit checks for
+zero remainders and integral quotients. The determinant engine is the
+fraction-free Bareiss algorithm with row pivoting; every intermediate
+exact division is checked.
+
+For all \(0\le k\le6\) and \(0\le n\le10\), it compares the following
+formulas:
+\begin{enumerate}[label=(\arabic*)]
+\item the original shifted Hankel determinant divided exactly by
+      \(t^{\lfloor n^2/4\rfloor}\);
+\item the elementary-symmetric Toeplitz determinant
+      \(\det(e_{k+i-j}(X_k))\);
+\item the complete-symmetric Jacobi--Trudi determinant
+      \(\det(h_{n-i+j}(X_k))_{0\le i,j<k}\);
+\item the positive rectangular partition sum \eqref{eq:positive};
+\item for \(k\ge1\), the subset numerator \eqref{eq:blocks} reconstructed
+      through exact division by \((1-t)^{k^2}\).
+\end{enumerate}
+The three determinant formulations share the Bareiss implementation;
+they are independent formulas, not three independent software systems.
+As a separate audit, every original Hankel determinant of order at most
+four in the tested grid is also calculated by the signed-permutation
+Leibniz formula, which does not use Bareiss elimination.
+
+The verifier also checks degree, positivity of every coefficient,
+palindromicity, weak unimodality, the dimension product at \(t=1\), the
+stable leading coefficients, coefficientwise monotonicity in \(n\), and
+the exact degrees and reciprocity of the numerator blocks. The saved run
+reported:
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Check category & Count\\
+\midrule
+Parameter pairs \((k,n)\) &77\\
+Determinant-to-partition comparisons &231\\
+Numerator reconstructions &66\\
+Independent signed-permutation audits &35\\
+Disagreements &0\\
+\bottomrule
+\end{tabular}
+\end{center}
+The run used Python~3.13.5. Exact outputs are saved in
+\texttt{results/verification.json}, \texttt{results/polynomials.json}, and
+\texttt{results/numerator\_blocks.json}. To reproduce the default grid,
+run from the package directory:
+\begin{verbatim}
+python3 code/verify.py
+\end{verbatim}
+Larger bounds can be selected with \texttt{--max-k} and
+\texttt{--max-n}. Enumeration of partitions is finite but grows with the
+rectangle; the default run is deliberately a check rather than a large-scale
+search. No floating-point computation, numerical root test, or guessed
+recurrence is used to establish an identity.
+
+The supplementary script \texttt{code/verify\_consequences.py} adds
+66 exact checks of \eqref{eq:edge-next}, six symbolic checks of the
+leading coefficient controlling \eqref{eq:deficit}, and nine recurrence
+windows for \(k=1,2,3\), computed from original Hankel determinants up
+to order 14. All passed. The leading coefficients are checked by exact
+finite differences in \(n\), not by numerical fitting. The output is
+\texttt{results/consequences.json}; reproduce it with
+\begin{verbatim}
+python3 code/verify_consequences.py
+\end{verbatim}
+
+\subsection{Proof audit}
+The roles of the main ingredients are distinct. The moment identity and
+basis change prove the full Hankel-to-Toeplitz reduction, including the
+normalization. Dual Jacobi--Trudi identifies the resulting determinant.
+The tableau decomposition proves full support and palindromicity without
+representation theory. The Schur-module character theorem and the proved
+weight-string lemma give unimodality. The confluent alternant and its
+Laplace expansion prove the numerator assertions, including their signs
+and exact degrees. The generic recurrence and asymptotics are consequences
+of those explicit formulas.
+
+In particular, no induction step divides by a shifted Hankel determinant
+that might vanish at a special parameter value. Intermediate calculations
+in \(\Q(t)\) are converted to polynomial identities before specialization.
+The proof treats both parities of \(n\), the empty determinant, \(k=0\),
+\(n=0\), and the apparent singularities at \(t=0\) and \(t=1\).
+
+The imported mathematical facts are the tableau/Schur identities
+\eqref{eq:jt}--\eqref{eq:alternant} and the classical Schur-module
+character theorem. These are standard theorems with references, not
+unproved conjectures or results borrowed from the supplied manifest.
+The finite checks are supplemental and cannot replace the all-parameter
+proof.
+
+\subsection{What is not asserted}
+This article does not settle the odd-shift Conjecture~9, the remaining
+numerator assertions of Conjecture~10, or Conjectures~13--15 concerning
+the separate family catalogued in the manifest. It makes no general
+real-rootedness or strict-unimodality assertion. It does not claim that the
+small examples already printed by Cigler are new.
+
+The proof has been derived and checked within this research session, but
+there has been no external referee report and no proof-assistant
+formalization. The source version explicitly formulates the selected
+problem as a conjecture, and the search did not locate a prior resolution;
+neither fact rules out an unpublished proof, a differently indexed result,
+or a resolution outside the sources searched. The mathematical statement
+and its argument should be assessed independently of any priority claim.
+
+\section{Conclusion}
+The even-shift middle-binomial Hankel determinant conceals a particularly
+simple Toeplitz determinant. The parity-sensitive map
+\(x^{2a}\mapsto A^a\), \(x^{2a+1}\mapsto(1+z)A^a\), together with the
+involution \(z\mapsto t/z\), exposes it. Once the precise power
+\(t^{\lfloor n^2/4\rfloor}\) is accounted for, the normalized answer is a
+rectangular Schur polynomial at two equally repeated values.
+
+That one identification separates the conjecture into three transparent
+mechanisms: tableaux for positive symmetric coefficients, \(\SL_2\)
+strings for unimodality, and complementary minors of a confluent alternant
+for the rational numerator and its reciprocity. Each part works for all
+\(k\) and \(n\); none is an extrapolation from the finite test grid.
+This supplies a complete proof draft of the selected, nonduplicate
+Conjecture~8, together with explicit formulas and reproducible checks.
+
+\begin{thebibliography}{9}
+\bibitem{cigler}
+Johann Cigler,
+\emph{Hankel determinants of middle binomial coefficients and conjectures for
+some polynomial extensions and modifications},
+arXiv:2111.14492v3, 30 December 2021.
+Section~4, Conjecture~8, printed pp.~16--17; equations (55)--(57).
+\url{https://arxiv.org/abs/2111.14492v3}.
+Accessed 20 September 2026.
+
+\bibitem{fulton}
+William Fulton,
+\emph{Young Tableaux: With Applications to Representation Theory and Geometry},
+London Mathematical Society Student Texts~35, Cambridge University Press.
+Parts I--II; in particular the Schur-module character statement in the
+introduction to Part~II, pp.~79--82.
+Online chapter DOI:
+\url{https://doi.org/10.1017/CBO9780511626241.010}.
+Publisher's character-theorem summary accessed 20 September 2026.
+
+\bibitem{macdonald}
+I.~G. Macdonald,
+\emph{Symmetric Functions and Hall Polynomials}, second edition,
+Oxford University Press, 1995.
+Chapter~I, especially the Schur-function identities and specializations.
+
+\bibitem{manifest}
+Vladimir Reshetnikov,
+\emph{A manifest of \texttt{docs/reports}}, 20 September 2026.
+User-supplied \LaTeX{} file \texttt{manifest.tex}, catalogue of 71 research
+packages. The related entry is
+``Product formulas for ballot-polynomial Hankel determinants'', concerning
+Cigler's Conjectures~13--15. Used for topic selection and duplicate avoidance,
+not as a proof source.
+\end{thebibliography}
+\end{document}

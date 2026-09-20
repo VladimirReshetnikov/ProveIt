@@ -1,0 +1,2021 @@
+% SPDX-License-Identifier: MIT-0
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=26mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+  urlcolor=MidnightBlue]{hyperref}
+\usepackage{bookmark}
+\usepackage{listings}
+\hypersetup{pdftitle={Multiple-chain preorder polytopes: two proofs of the exponential formula},
+ pdfauthor={Research draft prepared for Vladimir Reshetnikov},
+ pdfsubject={Athanasiadis--Chapoton Section 9.5; lattice-point enumeration, excursions and slack meanders}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Multiple-chain preorder polytopes}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.25em}
+\emergencystretch=2em
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\CT}{\operatorname{CT}_u}
+\newcommand{\CTv}{\operatorname{CT}_v}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\A}{A_{n;d,c}}
+\newcommand{\Adc}[1]{A_{#1;d,c}}
+\newcommand{\B}{\mathcal B}
+\newcommand{\F}{\mathcal F}
+\newcommand{\pt}{\operatorname{pt}}
+\newcommand{\pos}[1]{\left[#1\right]_{\geq0}}
+\newcommand{\negp}[1]{\left[#1\right]_{<0}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\Cat}{\operatorname{Cat}}
+\DeclareMathOperator{\Ehr}{Ehr}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,breaklines=true,
+ frame=single,rulecolor=\color{gray!45},xleftmargin=0.4em,xrightmargin=0.4em}
+\title{\textbf{Multiple-chain preorder polytopes:\\
+two proofs of the exponential formula}\\[0.6em]
+\large A rectangular extension, unequal block sizes, algebraic generating
+functions, fixed-support polynomiality, and support asymptotics}
+\author{Research draft prepared for Vladimir Reshetnikov}
+\date{20 September 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+Let $H_{n,d}(t)$ enumerate the nonnegative integer points satisfying
+$\sum_{i\leq r}\sum_{j\leq d}a_{ij}\leq dr$ for $1\leq r\leq n$, with
+$t$ marking nonzero coordinates. We give two complete and structurally
+different formal-power-series proofs of
+\[
+ \sum_{n\geq0}H_{n,d}(t)z^n
+ =\exp\left(\sum_{m\geq1}\frac{z^m}{m}
+       \sum_{j=0}^{dm}\binom{dm}{j}^{\!2}t^j\right).
+\]
+This is the conjectural multiple-chain identity of Athanasiadis and Chapoton,
+Section~9.5 of arXiv:2605.26916v1, with its normalization removed. The first
+proof encodes lattice points by two subsets and applies a constant-term
+excursion factorization with a bounded Laurent-polynomial symbol; the second
+runs the original coordinate slack process, whose symbol is an unbounded
+Laurent series, and evaluates the positive part by stars and bars. Replacing
+the budget $dr$ by $cr$ gives the stronger bridge polynomial
+$\sum_j\binom{dm}{j}\binom{cm}{j}t^j$; allowing unequal block sizes gives a
+commutative formula summed over orders, which is sharp because the support
+polynomial is not a function of the multiset of block sizes. We derive a
+support-preserving rectangular duality, recurrences, Ehrhart evaluations, a
+root-of-unity product with two degree bounds, an explicit quartic for double
+chains, and a gamma-coefficient identity with both a block-boundary path
+model and an algebraic constant-term derivation. For each fixed support size
+$j$ the coefficient is a polynomial in $n$ of exact degree $2j$ with leading
+coefficient $d^{2j}/(j!(j+1)!)$. We obtain a Stieltjes moment representation
+in the chain-length variable, explicit $n^{-3/2}$ asymptotics with two
+expressions for the boundary constant, and a central limit theorem for
+support size including an exact variance formula and its constant-order
+correction. Two independent exact verifier suites, over disjoint parameter
+ranges, accompany the article.
+\end{abstract}
+
+\medskip
+\noindent\textbf{Status and scope.}
+The main identity is proved for every integer $d\geq1$, not just a finite
+range. This is an AI-assisted research draft, not an independently refereed or
+proof-assistant-verified paper; neither its correctness nor its priority has
+been certified. The selected identity is stated as experimental in the
+retrieved source; a targeted literature search found no subsequent proof, but
+this is a bounded check and not a certification of publication priority. The
+walk factorization is classical Spitzer/Wiener--Hopf background and the
+earlier gamma-positivity theorem for composition polytopes is explicitly
+credited; neither is claimed as new here.
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The selected problem and its precise meaning}
+\label{sec:problem}
+
+\subsection{Relation to the supplied manifest}
+The supplied manifest~\cite{manifest} records seventy-one packages and
+describes two of them on preorder polytopes: \emph{Reciprocity and Matrix
+Duality for Preorder Polytopes} and \emph{A Reflexive Root-Polytope Model for
+Preorder $h$-Polynomials}. Their catalogued targets concern reciprocity,
+transpose duality, and polytopal realization. The present target is instead
+the multiple-chain generating function in Section~9.5 of
+Athanasiadis--Chapoton~\cite{AC}. This identity is not among the results
+described in the manifest. No theorem claimed in those two packages is used
+below; both proofs start from the defining inequalities. The manifest is a
+selection and duplicate-avoidance aid, not independent evidence that its other
+proofs are correct; it expressly warns that its statements describe unrefereed
+claims.
+
+\subsection{Provenance of this article}
+\label{sec:provenance}
+This article is the merger of two independently prepared research packages,
+both dated 20~September 2026 and both targeting the same unnumbered identity.
+
+\begin{itemize}[leftmargin=1.4em,itemsep=0.25em]
+\item \texttt{enumerative-combinatorics/multiple-chain-exponential-formula}
+ (the base of this merge) proved the identity by encoding each lattice point
+ as a pair of subsets with a prefix-domination condition, so that the
+ admissible arrays become nonnegative \emph{excursions} whose one-block symbol
+ is the bounded Laurent polynomial $(1+u)^c(1+t/u)^d$; the logarithm of the
+ excursion series is then the constant term $\CT P^m$, evaluated by the
+ binomial theorem. It proved the statement in the rectangular generality
+ $(d,c)$ recorded as Theorem~\ref{thm:main} below, and it carried the
+ rectangular duality, the Ehrhart evaluation, the Stieltjes moment section,
+ and the exact variance with its constant-order correction. It also contained,
+ as an appendix, a rectangular form of the second proof.
+\item \texttt{enumerative-combinatorics/multiple-chains-exponential-identity}
+ proved the identity by running the original coordinate slack process: the
+ block slack walk has step series $S_k(u)=u^k(1+q/(u-1))^k$ expanded at
+ $u=\infty$, the admissible arrays are \emph{meanders} of that walk, the
+ positive-part factorization is carried out in $\Q[q]((u^{-1}))[[z]]$, and
+ $u=1$ is substituted only after the projection, where stars and bars
+ produces the type-B Narayana polynomial. It proved the diagonal case $c=d$
+ only, but it carried the fixed-support polynomiality theorem, the
+ mixed-block-size theorem with its order-dependence counterexample, the
+ Lagrange-inversion Narayana row, the gamma integrality and strict-positivity
+ arguments, and a verifier suite over a deeper range of parameters.
+\end{itemize}
+
+\noindent
+In the merged notation below, the second package's $k$ is this article's $d$
+and its $q$ is this article's $t$; its $A_k(q)$ is renamed $K_d(t)$ to avoid a
+collision with the array-counting symbol $\Adc n(t)$, its $\mathcal N(q,z)$ is
+this article's $g(w,t)$, and its $\mathsf P_{\geq0}$ and $\mathsf P_{<0}$ are
+written $[\,\cdot\,]_{\geq0}$ and $[\,\cdot\,]_{<0}$. Both packages removed
+the source's Laurent normalization in the same way, and their shared numerical
+data agree exactly. The second proof of Section~\ref{sec:slack} is not a
+paraphrase of the first: it is a different walk, with a different symbol, in a
+different ring, under a different boundary condition.
+
+\subsection{Chain preorders, not layers of incomparable elements}
+For $d\geq1$ and $n\geq0$, partition a ground set of size $dn$ into ordered
+blocks $B_1,\ldots,B_n$, each of size $d$. Within a block all elements are
+equivalent under the preorder, and its quotient order is
+$B_1<\cdots<B_n$. The nonempty order ideals are therefore exactly the complete
+prefixes $B_1\cup\cdots\cup B_r$. In particular, these are \emph{not} ordinal
+sums of $d$-element antichains, whose ideals would allow partial blocks.
+A vertex of the quotient poset represents an entire equivalence class, so the
+preorder $\tau_{n,d}$ has $n$ quotient vertices but $dn$ underlying elements,
+and its polytope has dimension $dn$, not $n$.
+
+The associated polytope and its support enumerator are
+\begin{align}
+ Q_{n,d}&=\left\{a\in\R_{\geq0}^{dn}:
+       \sum_{i=1}^{r}\sum_{j=1}^{d}a_{ij}\leq dr\quad(1\leq r\leq n)\right\},
+       \label{eq:Q}\\
+ H_{n,d}(t)&=\sum_{a\in Q_{n,d}\cap\Z^{dn}}t^{\#\{(i,j):a_{ij}>0\}},
+       \qquad H_{0,d}(t)=1.\label{eq:H}
+\end{align}
+We use $\N=\{0,1,2,\ldots\}$. These are the source's polynomials
+$h(\tau_{n,d},t)$~\cite[Sections~1, 5, and 9.5]{AC}, and~\eqref{eq:Q} is the
+composition-polytope model of~\cite[Equation~(1)]{A} for the composition
+$(d,d,\ldots,d)$. The support polynomial $H_{n,d}$ must not be confused with
+the Ehrhart $h^*$-polynomial of $Q_{n,d}$ or with its ordinary
+face-enumeration $h$-polynomial. The last inequality makes the sum finite;
+the constant coefficient is $1$, and the degree is $dn$ with leading
+coefficient $1$.
+
+Put
+\begin{equation}
+ B_N(t)=\sum_{j=0}^N\binom Nj^2t^j,
+ \qquad F_d(z,t)=\sum_{n\geq0}H_{n,d}(t)z^n.
+ \label{eq:BFdefs}
+\end{equation}
+Specifying $B_N$ by this formula removes any ambiguity in the indexing of
+Narayana polynomials: $B_N$ is the type-$\mathbb B$ Narayana polynomial in the
+normalization used by the source. In a variable $q$, the source's displayed
+identity reads
+\begin{equation}
+ 1+\sum_{n\geq1}H_{n,d}(q^2)q^{-dn}x^n
+ =\exp\left(\sum_{m\geq1}B_{dm}(q^2)q^{-dm}\frac{x^m}{m}\right).
+ \label{eq:sourceform}
+\end{equation}
+The substitution $x=zq^d$ removes all negative powers. Since $t\mapsto q^2$
+is injective on polynomial coefficients, the target is equivalently
+\begin{equation}
+ \boxed{F_d(z,t)=\exp\left(\sum_{m\geq1}B_{dm}(t)\frac{z^m}{m}\right).}
+ \label{eq:target}
+\end{equation}
+Removing the normalization is not cosmetic: it makes the specialization $t=0$
+legitimate and exposes an ordinary generating function in the number of
+equivalence classes. No parity restriction on $d$ is needed.
+
+\subsection{What is proved, and what is not claimed}
+Section~\ref{sec:proof} proves~\eqref{eq:target} as a specialization of a
+rectangular theorem, and Section~\ref{sec:slack} proves the same rectangular
+theorem a second time by a different route.
+Sections~\ref{sec:enumeration}--\ref{sec:statistics} develop its consequences.
+Gamma positivity for \emph{all} composition polytopes was already proved by
+Athanasiadis~\cite[Theorem~1.2]{A}; recovering it for constant block sizes is
+not a new resolution of that question, and the two-subset encoding below is
+closely related to that paper's encoding. The formal factorization belongs to
+the classical Spitzer/Wiener--Hopf framework~\cite{Spitzer,BF}; it is not
+presented as a new general lemma, and the elementary form needed here is
+proved in full so that no inaccessible theorem is a hidden prerequisite. The
+contribution of the proofs is to identify the exact walks to which that
+factorization applies and thereby establish the selected identity.
+
+We do not prove real-rootedness of $H_{n,d}$, gamma positivity for arbitrary
+preorders, flag realizability, or the weighted $q$-reciprocity conjecture in
+the same source. We do not claim that the algebraic degree bound $2^d$ is
+sharp, that $H_{n,d}$ is an Ehrhart $h^*$-polynomial, that the support
+polynomial of an unequal-size block sequence depends only on the multiset of
+sizes (an explicit counterexample is given in
+Section~\ref{sec:mixed}), or that the asymptotics of
+Section~\ref{sec:asymptotics} are uniform as $d$ grows with $n$ or as
+$t\to0$. Those are different assertions. In particular, a generating-function
+identity with positive coefficients is not by itself a real-rootedness
+argument.
+
+\subsection{Deliberate redundancies}
+\label{sec:redundancies}
+Because this article merges two independent treatments, several results are
+deliberately given twice. Each duplication is kept because the two versions
+are not substitutes; the list below states what each one buys.
+
+\begin{enumerate}[leftmargin=1.5em,itemsep=0.25em]
+\item \textbf{Two proofs of the headline identity}
+ (Sections~\ref{sec:proof} and~\ref{sec:slack}). The excursion proof gives a
+ two-sided bounded symbol and a constant term evaluated by the binomial
+ theorem; the slack-meander proof stays in the original coordinates, needs no
+ encoding, and is the one that extends to unequal block sizes.
+\item \textbf{Two forms of the factorization lemma}
+ (Lemma~\ref{lem:factor} and Corollary~\ref{cor:excursion}). The Laurent-series
+ form over $R((u^{-1}))$ is what the slack walk and the mixed-size theorem
+ need; the constant-term excursion form is what the subset walk needs, and
+ neither statement is a formal consequence of the other as stated.
+\item \textbf{Two generalization directions} (Theorem~\ref{thm:main} and
+ Theorem~\ref{thm:mixed}). The rectangular budget $cr$ is what powers the
+ duality of Corollary~\ref{cor:duality} and the Ehrhart evaluation
+ of~\eqref{eq:ehrhart}; the commutative mixed-size formula is what covers
+ unequal blocks, and neither implies the other.
+\item \textbf{Two derivations of the one-block Narayana series}
+ (Section~\ref{sec:oneblock}). The first-step Motzkin decomposition is
+ combinatorial and self-contained; the analytic route through
+ $\sum_mB_m(t)w^m=\Delta^{-1/2}$ is what unlocks the Lagrange-inversion row
+ \eqref{eq:d1row}.
+\item \textbf{Two expressions for the asymptotic boundary constant}
+ (\eqref{eq:critical} and~\eqref{eq:Kexp}). The finite radical product is the
+ fast evaluation; the convergent exponential sum is what identifies the
+ constant as the boundary value $F_d(\rho_d(t),t)$.
+\item \textbf{Two treatments of the gamma coefficients}
+ (Sections~\ref{sec:gammapath} and~\ref{sec:gammaalg}). The block-boundary
+ path model supplies a combinatorial meaning, a table, and the dictionary to
+ the encoding of~\cite{A}; the algebraic constant-term derivation supplies
+ integrality and strict positivity, which the path model does not give.
+\item \textbf{Two degree-bound arguments for $2^d$}
+ (Theorem~\ref{thm:rootproduct} and Proposition~\ref{prop:degree}). The
+ conjugate count is short; the explicit monic polynomial is constructive, and
+ the two guard each other.
+\item \textbf{Two elimination certificates for the double-chain quartic}
+ (Corollary~\ref{cor:quartic} and the second pair displayed after it). They
+ eliminate different auxiliary quantities and are checked by two different
+ scripts.
+\item \textbf{Two independent verifier suites}
+ (Section~\ref{sec:checks}), over disjoint parameter ranges and with
+ non-overlapping methods: only the first witnesses the subset encoding and the
+ rectangular cases $c\neq d$, and only the second witnesses the endpoint
+ factorization, the mixed-size recursion, and the range $d\leq8$, $n\leq12$.
+\item \textbf{Two data corpora} (Appendix~\ref{app:data}). Neither is a subset
+ of the other: one holds all $315$ rectangular polynomials and the only
+ $\kappa_d$ table, the other reaches $d=8$ and $n=12$ and holds the only
+ exact-versus-asymptotic ratio table.
+\item \textbf{Two provenance records} (\texttt{sources.md}). One carries the
+ hash and version reasoning for the pinned source, the other carries two
+ adjacent 2026 papers and the Section~9.4 cross-check.
+\end{enumerate}
+
+One duplication has deliberately \emph{not} been kept: the weaker statement
+$\Var=dn/8+O(1)$ is strictly subsumed by the exact variance of
+Proposition~\ref{prop:variance} together with Theorem~\ref{thm:CLT}, so only
+the sharper form is stated. Both justifications of the quasi-power step are
+retained, however, in the proof of Theorem~\ref{thm:CLT}.
+
+\section{A rectangular lattice-point theorem, proved by excursions}
+\label{sec:proof}
+
+\subsection{Statement}
+For integers $d\geq1$, $c\geq0$, and $n\geq0$, let
+\begin{equation}
+ \mathcal A_{n;d,c}=\left\{a\in\N^{dn}:
+  \sum_{i=1}^{r}\sum_{j=1}^{d}a_{ij}\leq cr\quad(1\leq r\leq n)\right\},
+ \qquad
+ \Adc n(t)=\sum_{a\in\mathcal A_{n;d,c}}t^{\#\supp(a)}.
+ \label{eq:rectdef}
+\end{equation}
+The notation $\Adc0=1$ includes the empty array.
+
+\begin{theorem}[Rectangular exponential formula]
+\label{thm:main}
+For every $d\geq1$ and $c\geq0$, the following identity holds in
+$\Q[t][[z]]$:
+\begin{equation}
+ \boxed{\sum_{n\geq0}\Adc n(t)z^n
+ =\exp\left(\sum_{m\geq1}\frac{z^m}{m}
+       \sum_{j=0}^{\min(dm,cm)}\binom{dm}{j}\binom{cm}{j}t^j\right).}
+ \label{eq:rectangular}
+\end{equation}
+Consequently~\eqref{eq:target} holds for every $d\geq1$. Both sides in fact
+have coefficients in $\Z[t]$.
+\end{theorem}
+
+The binomial product counts a single unrestricted bridge of $m$ blocks.
+The exponential is not an approximation and is not inferred from matching
+initial coefficients. The next two lemmas explain exactly why it is the
+series for all excursions. Section~\ref{sec:slack} proves the same theorem
+again by a different walk.
+
+\subsection{From an array to two subsets}
+Flatten an array into $a_1,\ldots,a_{dn}$. Suppose its positive coordinates
+occur at
+\[
+ S=\{s_1<\cdots<s_j\}\subseteq[dn].
+\]
+Their successive positive partial sums are strictly increasing:
+\begin{equation}
+ b_\ell=a_{s_1}+\cdots+a_{s_\ell},\qquad
+ T=\{b_1<\cdots<b_j\}\subseteq[cn].
+ \label{eq:ST}
+\end{equation}
+Here $[0]$ is the empty set. The case $j=0$ gives $S=T=\varnothing$.
+
+\begin{lemma}[Subset encoding]
+\label{lem:subsets}
+The map~\eqref{eq:ST} is a support-preserving bijection between
+$\mathcal A_{n;d,c}$ and pairs
+\begin{equation}
+ S\subseteq[dn],\quad T\subseteq[cn],\quad |S|=|T|,
+ \qquad |S\cap[dr]|\leq |T\cap[cr]|\quad(1\leq r\leq n).
+ \label{eq:subsetconstraint}
+\end{equation}
+The support size is $|S|=|T|$.
+\end{lemma}
+\begin{proof}
+For the inverse, order $S$ and $T$ as above, put $b_0=0$, set
+$a_{s_\ell}=b_\ell-b_{\ell-1}$, and put all other coordinates equal to zero.
+This gives a unique nonnegative array with the specified support and partial
+sums. If $k=|S\cap[dr]|$, its sum over the first $dr$ coordinates is $b_k$
+when $k>0$, and zero when $k=0$. The condition $b_k\leq cr$ is equivalent to
+having at least $k$ elements of $T$ in $[cr]$. This is precisely the last
+inequality in~\eqref{eq:subsetconstraint}. The two constructions are inverse.
+\end{proof}
+
+Divide the positions of $S$ into $n$ blocks of length $d$, and the positions
+of $T$ into $n$ blocks of length $c$. Write $p_r$ and $q_r$ for the numbers
+selected in their respective $r$th blocks. The successive walk heights are
+\begin{equation}
+ h_r=\sum_{i=1}^r(q_i-p_i),\qquad h_0=h_n=0,\qquad h_r\geq0.
+ \label{eq:heights}
+\end{equation}
+A block with $(p_r,q_r)=(p,q)$ has
+$\binom dp\binom cq$ possible decorations, contributes weight $t^p$, and
+changes the height by $q-p$. Its Laurent-polynomial symbol is therefore
+\begin{equation}
+ P_{d,c}(u,t)=\sum_{p=0}^d\sum_{q=0}^c
+  \binom dp\binom cq t^p u^{q-p}
+  =(1+u)^c(1+t/u)^d.
+ \label{eq:symbol}
+\end{equation}
+Thus $\Adc n(t)$ is the weight of all length-$n$ nonnegative excursions
+with step symbol $P_{d,c}$. Positivity is checked after a whole block;
+no extra restriction is imposed on an ordering of choices inside it.
+
+\begin{example}
+Take $d=c=2$, $n=2$, and the array $(0,2\mid1,0)$. Then
+$S=\{2,3\}$ and $T=\{2,3\}$. Both block heights are zero and the weight is
+$t^2$. For $(0,0\mid0,4)$, the sets are $S=\{4\}$ and $T=\{4\}$; the
+weight is $t$. The original coordinate partial sums and the subset-walk
+heights are different statistics. Only the specified equivalence of their
+prefix constraints is used.
+\end{example}
+
+\subsection{The formal factorization, in two forms}
+\label{sec:factorization}
+Let $R$ be any commutative algebra over $\Q$. We work with
+$R((u^{-1}))$, the ring of formal Laurent series in $u$ whose exponents are
+bounded above; its products are well defined, since for any fixed exponent
+only finitely many pairs of exponents below the respective upper bounds
+contribute. For such a series, $[\,\cdot\,]_{\geq0}$ retains its nonnegative
+powers of $u$ and $[\,\cdot\,]_{<0}$ retains the strictly negative powers.
+Apply these operators coefficientwise to series in $z$. At a fixed $z$-degree
+only finitely many factors contribute to a product, logarithm, or exponential
+with positive $z$-valuation, so all formal logarithms, exponentials,
+products, and projections used below are legitimate.
+
+The first form is stated in this full generality, with infinitely many
+possible negative jumps and no positivity assumption on their weights. It is
+what Section~\ref{sec:slack} and Theorem~\ref{thm:mixed} need.
+
+\begin{lemma}[Nonnegative-walk factorization]
+\label{lem:factor}
+Let $S(u)\in R((u^{-1}))$. There is a unique $M(z,u)\in R[u][[z]]$ with
+\begin{equation}
+ M=1+z\pos{SM},\label{eq:walkrec}
+\end{equation}
+namely
+\begin{equation}
+ M(z,u)=\exp\left(\sum_{m\geq1}\frac{z^m}{m}
+                                  \pos{S(u)^m}\right).
+ \label{eq:meanderfactor}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Set
+\[
+ L=-\log(1-zS)=\sum_{m\geq1}\frac{z^mS^m}{m},\qquad
+ L_+=\pos L,\qquad L_-=\negp L,
+\]
+the projections acting coefficientwise in $z$. Each coefficient of $L_+$ is a
+polynomial in $u$, so $M_*:=\exp(L_+)$ lies in $R[u][[z]]$. Since the
+coefficient algebra is commutative,
+\begin{equation}
+ (1-zS)M_*=\exp(-L)\exp(L_+)=\exp(-L_-).\label{eq:factorization}
+\end{equation}
+Every monomial of $L_-$ has strictly negative $u$-exponent, hence so does
+every nonconstant term of $\exp(-L_-)$; therefore
+$\pos{\exp(-L_-)}=1$. Applying $\pos{\cdot}$ to~\eqref{eq:factorization},
+and using that $M_*$ has only nonnegative powers of $u$, gives
+$M_*-z\pos{SM_*}=1$, so $M_*$ solves~\eqref{eq:walkrec}.
+
+Finally, writing $M=\sum_{n\geq0}M_n(u)z^n$, equation~\eqref{eq:walkrec}
+determines $M_0=1$ and $M_n=\pos{SM_{n-1}}$ for $n\geq1$. This proves
+existence and uniqueness, and hence~\eqref{eq:meanderfactor}.
+\end{proof}
+
+\begin{corollary}[Excursions are the exponential of bridges]
+\label{cor:excursion}
+Let $P(u)\in R[u,u^{-1}]$ be a Laurent \emph{polynomial} and let $E_P(z)$ be
+the generating series of walks with step symbol $P$ which start and end at
+height zero and remain at nonnegative heights. Then
+\begin{equation}
+ E_P(z)=\exp\left(\sum_{m\geq1}\frac{z^m}{m}\CT P(u)^m\right).
+ \label{eq:excursionlemma}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Because $P$ has a finite exponent range, each coefficient of the meander
+series $M_P$ of Lemma~\ref{lem:factor} is a Laurent polynomial, and
+$E_P=\CT M_P$. Now $L_+$ has only nonnegative $u$-degrees, so a product of its
+monomials can have degree zero only when every chosen monomial has degree
+zero; hence
+\[
+ \CT\exp(L_+)=\exp(\CT L_+)=\exp(\CT L),
+\]
+which is~\eqref{eq:excursionlemma}.
+\end{proof}
+
+\begin{remark}
+\label{rem:twoforms}
+Neither statement contains the other as written. Lemma~\ref{lem:factor} is
+needed in $R((u^{-1}))$, where the slack symbol~\eqref{eq:slacksymbol} lives
+and where the mixed-size step series of Section~\ref{sec:mixed} lives;
+Corollary~\ref{cor:excursion} needs a two-sided bounded symbol for $E_P$ to be
+the excursion enumerator with finitely many decorated steps per block. The
+constant-term algebra in the proof of the corollary does extend verbatim to
+$R((u^{-1}))$; what does not extend is the reading of $\CT P^m$ as a finite
+bridge count over a bounded step set, which is exactly what the binomial
+theorem evaluates in Section~\ref{sec:firstproof}.
+\end{remark}
+
+The separation of degree zero into the \emph{nonnegative} factor is essential:
+the walks may touch zero at intermediate block boundaries. Replacing this by
+a strictly positive convention would count a different class. One must
+likewise not replace the proof by the assertion that every cyclic orbit has
+exactly one nonnegative rotation: zero sums, periodic words, and unequal
+positive jumps make that assertion false in this form. The factorization
+handles these degeneracies without any orbit-counting assumption.
+
+\subsection{First proof of the theorem}
+\label{sec:firstproof}
+\begin{proof}[First proof of Theorem~\ref{thm:main}]
+Lemma~\ref{lem:subsets} and~\eqref{eq:symbol} identify the left side of
+\eqref{eq:rectangular} with $E_{P_{d,c}}(z)$. The binomial theorem gives
+\begin{align*}
+ \CT P_{d,c}(u,t)^m
+ &=\CT(1+u)^{cm}(1+t/u)^{dm}\\
+ &=\sum_{j=0}^{\min(dm,cm)}\binom{cm}{j}\binom{dm}{j}t^j.
+\end{align*}
+Substitution in Corollary~\ref{cor:excursion}
+proves~\eqref{eq:rectangular}.
+For $c=d$, the defining arrays are exactly the lattice points
+of~\eqref{eq:Q}, so $\Adc n=H_{n,d}$ and the selected conjecture follows.
+If $c=0$, only the zero array is possible for each $n$; both sides reduce to
+$(1-z)^{-1}$, consistently with the same proof. The lattice-point
+interpretation places all coefficients in $\Z[t]$.
+\end{proof}
+
+\section{A second proof by the original slack process}
+\label{sec:slack}
+
+This section proves Theorem~\ref{thm:main} a second time, without the subset
+encoding, by running the process on the original coordinates. The walk, the
+symbol, the ring and the boundary condition are all different from those of
+Section~\ref{sec:proof}: the admissible arrays are meanders with a free
+terminal slack rather than excursions, the symbol is a Laurent series with an
+infinite negative tail rather than a Laurent polynomial, and the logarithm is
+extracted by the nonnegative projection followed by $u=1$ rather than by a
+constant term. The argument also produces an endpoint refinement that the
+first proof does not see.
+
+\subsection{Slack walks and the block weight}
+For an array in~\eqref{eq:rectdef}, let $Y_r=\sum_{j=1}^d a_{rj}$ and set
+\[
+ k_r=cr-\sum_{i=1}^rY_i,\qquad k_0=0.
+\]
+The inequalities say exactly that $k_r\geq0$ for every $r$; the final slack
+$k_n$ may be arbitrary. The jump in slack is $c-Y_r$, bounded above by $c$,
+but unbounded below before nonnegativity is imposed. Thus the arrays are
+\emph{meanders}, not excursions, of this walk.
+
+Retaining the whole contents of a block as its decoration, a block of $d$
+coordinates with prescribed coordinate sum $s$ has support polynomial
+\begin{equation}
+ W_{d,s}(t)=
+ \begin{cases}
+  1,&s=0,\\
+  \displaystyle\sum_{r=1}^{\min(d,s)}
+       \binom{d}{r}\binom{s-1}{r-1}t^r,&s\geq1,
+ \end{cases}
+ \label{eq:blockweight}
+\end{equation}
+because the second binomial coefficient counts positive compositions of $s$
+into $r$ specified coordinates. Formula~\eqref{eq:blockweight} yields a
+finite-state dynamic program on the slack, using only the defining
+inequalities and no conjectured identity; this is what one of the two
+verifier suites of Section~\ref{sec:checks} actually runs.
+
+\subsection{The step symbol and its ring}
+The weight generating series of one coordinate is
+\[
+ \omega(v,t)=1+\frac{tv}{1-v}=\sum_{s\geq0}W_{1,s}(t)v^s .
+\]
+The slack-step symbol, expanded at $u=\infty$, is
+\begin{equation}
+ S_{d,c}(u,t)=u^c\,\omega(u^{-1},t)^d
+             =u^c\left(\frac{u+t-1}{u-1}\right)^d
+             =\sum_{s\geq0}W_{d,s}(t)\,u^{c-s}.
+ \label{eq:slacksymbol}
+\end{equation}
+Here and below $1/(u-1)=u^{-1}+u^{-2}+u^{-3}+\cdots$ is expanded at infinity;
+expansion at $u=0$ would encode a different walk and invalidate the argument.
+The symbol has largest $u$-degree $c$ and an infinite negative tail, so it
+lies in $\Q[t]((u^{-1}))$ and not in $\Q[t][u,u^{-1}]$. Lemma~\ref{lem:factor}
+applies verbatim with $R=\Q[t]$: each $z^m$ coefficient is bounded above in
+$u$-degree, and its nonnegative projection is a finite polynomial.
+
+\subsection{The endpoint refinement}
+Let
+\[
+ M_{d,c}(z,u,t)=\sum_{n\geq0}z^n\sum_{a\in\mathcal A_{n;d,c}}
+     t^{\#\supp(a)}u^{cn-\sum_{i,j}a_{ij}}
+\]
+record the terminal slack as well as the support. Appending one block and
+discarding negative new slack is exactly~\eqref{eq:walkrec} for
+$S=S_{d,c}$, so Lemma~\ref{lem:factor} gives
+\begin{equation}
+ M_{d,c}(z,u,t)
+ =\exp\left(\sum_{m\geq1}\frac{z^m}{m}\pos{S_{d,c}(u,t)^m}\right).
+ \label{eq:slackgf}
+\end{equation}
+
+\begin{corollary}[Endpoint-refined factorization]
+\label{cor:endpoint}
+Since $S_{d,c}(u,t)^m=S_{dm,cm}(u,t)$, one has for $cm>0$
+\begin{equation}
+ \pos{S_{d,c}(u,t)^m}
+ =\sum_{s=0}^{cm}W_{dm,s}(t)\,u^{cm-s}
+ =u^{cm}+\sum_{j=1}^{\min(dm,cm)}\binom{dm}{j}t^j
+       \sum_{\ell=j}^{cm}\binom{\ell-1}{j-1}u^{cm-\ell},
+ \label{eq:slackprojection}
+\end{equation}
+and therefore
+\begin{equation}
+ M_{d,c}(z,u,t)=\exp\left(\sum_{m\geq1}\frac{z^m}{m}
+       \sum_{s=0}^{cm}W_{dm,s}(t)u^{cm-s}\right).
+ \label{eq:endpointfactor}
+\end{equation}
+When $c=0$ the projection is simply $1$.
+\end{corollary}
+\begin{proof}
+Both displays in~\eqref{eq:slackprojection} are the truncation
+of~\eqref{eq:slacksymbol} with $(d,c)$ replaced by $(dm,cm)$ to the range
+$s\leq cm$; expanding $W_{dm,s}$ by~\eqref{eq:blockweight} and exchanging the
+two summations gives the second form with $\ell=s$.
+\end{proof}
+
+This refinement computes the joint distribution of support and unused budget.
+Its diagonal case $c=d$ is verified directly at integer $t$ by one of the
+verifier suites of Section~\ref{sec:checks}.
+
+\subsection{Evaluating the positive part}
+\begin{lemma}[Unrestricted endpoint count; stars and bars]
+\label{lem:starsbars}
+For all integers $D\geq0$ and $C\geq0$,
+\begin{equation}
+ \sum_{\substack{a_1,\ldots,a_D\geq0\\ a_1+\cdots+a_D\leq C}}
+   t^{\#\{i:a_i>0\}}
+ =\sum_{r\geq0}\binom{D}{r}\binom{C}{r}t^r .
+ \label{eq:unrestricted}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Choose the $r$ positive coordinates in $\binom Dr$ ways. Subtract one from
+each of them; introducing a nonnegative slack variable converts their
+sum-at-most-$C$ condition into an equation with $r+1$ nonnegative unknowns and
+total $C-r$, which stars and bars counts in $\binom{C}{r}$ ways. The same
+formula at $r=0$ counts the zero vector. Multiplying the two choices and
+summing proves the identity.
+\end{proof}
+
+\begin{proof}[Second proof of Theorem~\ref{thm:main}]
+Equation~\eqref{eq:slackgf} holds by Lemma~\ref{lem:factor}. Each coefficient
+of that series is a polynomial in $u$, so the substitution $u=1$ is a
+well-defined ring homomorphism applied coefficientwise in $z$. The projected
+polynomial at index $m$, evaluated at $u=1$, enumerates all $dm$ coordinates
+with total at most $cm$; Lemma~\ref{lem:starsbars} with $D=dm$ and $C=cm$
+turns this into $\sum_j\binom{dm}{j}\binom{cm}{j}t^j$. Since
+$F_{d,c}(z,t)=M_{d,c}(z,1,t)$, this is~\eqref{eq:rectangular} again.
+\end{proof}
+
+Substituting $u=1$ directly into the rational
+expression~\eqref{eq:slacksymbol} would be invalid, because it has a pole
+there. Projecting first is what makes the proof correct. Both proofs are
+independent of the manifest's reciprocity, root-polytope, and triangulation
+claims: each uses only the defining prefix inequalities, a formal
+factorization, and an elementary count.
+
+\subsection{Why the type-\texorpdfstring{$\mathbb B$}{B} polynomial appears}
+The coefficient in the logarithm does \emph{not} impose the intermediate
+constraints at block boundaries. It imposes only nonnegative \emph{final}
+slack after $m$ blocks. Those $dm$ coordinates then satisfy a single simplex
+constraint, and the two binomial choices in Lemma~\ref{lem:starsbars} --
+positions and values -- explain the product $\binom{dm}{j}\binom{cm}{j}$, and
+hence the square when $c=d$. The exponential restores all intermediate
+nonnegativity conditions through the factorization. This separation is the
+structural content of the identity.
+
+\section{Duality, recurrences, and exact enumeration}
+\label{sec:enumeration}
+
+\subsection{A support-preserving rectangular duality}
+\begin{corollary}
+\label{cor:duality}
+For $c,d\geq1$ and all $n$, one has
+\begin{equation}
+ A_{n;d,c}(t)=A_{n;c,d}(t).\label{eq:duality}
+\end{equation}
+There is an explicit support-preserving bijection realizing this equality.
+\end{corollary}
+\begin{proof}
+The generating-function proof follows from the symmetry of the binomial
+product. For a bijection, encode an array by $(S,T)$ and put
+\[
+ S'=\{cn+1-b:b\in T\},\qquad
+ T'=\{dn+1-s:s\in S\}.
+\]
+If $h_r$ is the original block height, the new height at block $r$ is
+$h_{n-r}$: swap the two subset types and reverse the block sequence.
+It is nonnegative, and the new path also ends at zero. Decode $(S',T')$
+using Lemma~\ref{lem:subsets} with the dimensions interchanged. Applying this
+map twice restores the original pair, and its common cardinality is unchanged.
+\end{proof}
+
+For example, $A_{1;2,3}(t)=1+6t+3t^2=A_{1;3,2}(t)$. The arrays live in
+different ambient dimensions, so this equality is not coordinate reversal of
+the original array. The subset description is what makes the bijection simple;
+this corollary has no counterpart in the diagonal case alone.
+
+\subsection{Convolution and partition formulas}
+Define the bridge polynomial
+\begin{equation}
+ C_m^{d,c}(t)=\sum_j\binom{dm}{j}\binom{cm}{j}t^j.
+ \label{eq:C}
+\end{equation}
+Logarithmic differentiation of~\eqref{eq:rectangular} immediately gives
+\begin{equation}
+ \boxed{n\Adc n(t)=\sum_{m=1}^n C_m^{d,c}(t)\Adc{n-m}(t),
+        \qquad \Adc0(t)=1.}\label{eq:recurrence}
+\end{equation}
+Although this recursion divides by $n$, Theorem~\ref{thm:main} proves that
+the division is exact coefficientwise over $\Z[t]$. The accompanying
+implementations check this divisibility rather than rounding numerical values.
+
+For a partition $\lambda\vdash n$, let $m_r(\lambda)$ be its number of parts
+of size $r$ and put $z_\lambda=\prod_{r\geq1}r^{m_r}m_r!$. Expanding the
+exponential also gives the finite formula
+\begin{equation}
+ \Adc n(t)=\sum_{\lambda\vdash n}\frac{1}{z_\lambda}
+                  \prod_{r\geq1}C_r^{d,c}(t)^{m_r(\lambda)}.
+ \label{eq:partition}
+\end{equation}
+Equivalently, because the number of permutations of cycle type $\lambda$ is
+$n!/z_\lambda$,
+\begin{equation}
+ \Adc n(t)=\frac1{n!}\sum_{\pi\in\mathfrak S_n}
+   \prod_{\gamma\text{ a cycle of }\pi}C_{|\gamma|}^{d,c}(t).
+ \label{eq:permutation}
+\end{equation}
+This is a cycle-index identity, or weighted permutation average; it is not,
+without further work, a bijection between lattice points and unlabelled
+collections of decorated cycles.
+
+In the diagonal case the first rows can be recorded symbolically in $d$:
+\begin{align}
+ H_{2,d}&=\frac{B_d^2+B_{2d}}{2},\qquad
+ H_{3,d}=\frac{B_d^3+3B_dB_{2d}+2B_{3d}}{6},\notag\\
+ H_{4,d}&=\frac{B_d^4+6B_d^2B_{2d}+3B_{2d}^2+8B_dB_{3d}+6B_{4d}}{24}.
+ \label{eq:symbolicrows}
+\end{align}
+
+At $t=1$, Vandermonde's identity yields
+\begin{equation}
+ C_m^{d,c}(1)=\binom{(c+d)m}{dm},\qquad B_m(1)=\binom{2m}{m}.
+ \label{eq:unweightedbridge}
+\end{equation}
+Thus the totals can be evaluated through index $N$ using $O(N^2)$ integer
+arithmetic operations after precomputing the binomial coefficients. With
+naive coefficient convolution, computing all support polynomials through
+index $N$ takes $O(b^2N^4)$ arithmetic operations and $O(bN^2)$ stored
+coefficients, where $b=\min(c,d)$ is fixed and positive. These are arithmetic
+operation counts, not bit-complexity bounds.
+
+\subsection{Examples and boundary cases}
+For one block the prefix condition is just a total-sum bound, so
+$H_{1,d}=B_d$. The first double-chain polynomials are
+\begin{align*}
+ H_{1,2}(t)&=1+4t+t^2,\\
+ H_{2,2}(t)&=1+12t+27t^2+12t^3+t^4,\\
+ H_{3,2}(t)&=1+24t+134t^2+236t^3+134t^4+24t^5+t^6.
+\end{align*}
+For instance, $2H_{2,2}=B_2^2+B_4$ follows directly from the recurrence, and
+$H_{2,2}(1)=53$. These values agree with the small double-chain table
+in~\cite[Section~9.4]{AC}.
+Table~\ref{tab:counts} gives further totals computed independently from
+coordinate dynamic programming and from~\eqref{eq:recurrence}.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{r r r r r}
+\toprule
+$n$ & $H_{n,1}(1)$ & $H_{n,2}(1)$ & $H_{n,3}(1)$ & $H_{n,4}(1)$\\
+\midrule
+0&1&1&1&1\\
+1&2&6&20&70\\
+2&5&53&662&8885\\
+3&14&554&26780&1409002\\
+4&42&6362&1205961&250837850\\
+5&132&77580&58050204&47928217484\\
+6&429&986253&2924165436&9605146588557\\
+7&1430&12927170&152231599628&1992173405162370\\
+\bottomrule
+\end{tabular}
+\caption{Exact lattice-point counts. The $d=1$ column is the Catalan sequence
+shifted by one index.}\label{tab:counts}
+\end{table}
+
+The specialization $t=0$ gives $H_{n,d}(0)=1$ and $F_d(z,0)=(1-z)^{-1}$,
+as it must, since only the zero lattice point remains.
+The leading coefficient of $H_{n,d}$ is also $1$: if all $dn$ coordinates are
+positive, the total bound $dn$ forces every coordinate to be $1$.
+These are useful normalization checks; changing the source's support
+statistic or number of blocks would usually violate one of them.
+
+\subsection{Uniform dilations and Ehrhart evaluation}
+For a nonnegative integer $\ell$, the lattice points of $\ell Q_{n,d}$ are
+precisely $\mathcal A_{n;d,\ell d}$. Therefore Theorem~\ref{thm:main} gives
+\begin{equation}
+ \sum_{n\geq0}\Ehr(Q_{n,d},\ell)z^n
+ =\exp\left(\sum_{m\geq1}\binom{(\ell+1)dm}{dm}\frac{z^m}{m}\right).
+ \label{eq:ehrhart}
+\end{equation}
+The corresponding finite partition formula is
+\begin{equation}
+ \Ehr(Q_{n,d},\ell)
+ =\sum_{\lambda\vdash n}\frac1{z_\lambda}
+       \prod_{r\geq1}\binom{(\ell+1)dr}{dr}^{m_r(\lambda)}.
+ \label{eq:ehrhartpoly}
+\end{equation}
+For fixed $n,d$, its right side is a polynomial in $\ell$ of degree at most
+$dn$. Thus this is also an identity of Ehrhart polynomials, since it holds
+at every nonnegative integer $\ell$. It provides an evaluation formula in the
+number of blocks; it is not a proof of real-rootedness of those polynomials,
+and it does not identify the support polynomial $H_{n,d}$ with an Ehrhart
+$h^*$-polynomial. This evaluation is available only because
+Theorem~\ref{thm:main} is rectangular.
+
+\section{Algebraic generating functions}
+\label{sec:algebraic}
+
+\subsection{The one-block-size series, two ways}
+\label{sec:oneblock}
+For $d=c=1$, the subset-walk symbol is
+\begin{equation}
+ P_{1,1}(u,t)=1+t+u+t/u.
+ \label{eq:motzkinsymbol}
+\end{equation}
+These are Motzkin excursions with horizontal weight $1+t$, up weight $1$,
+and down weight $t$. A nonempty excursion begins either with a horizontal
+step followed by an excursion, or with an up step, an excursion translated
+up one unit, a down step, and another excursion. Hence, writing
+$g(w,t)=F_1(w,t)$,
+\begin{equation}
+ g=1+(1+t)wg+tw^2g^2.\label{eq:quadratic}
+\end{equation}
+The unique formal solution with constant term $1$ is
+\begin{equation}
+ \boxed{g(w,t)=\frac{2}{1-(1+t)w+\sqrt{\Delta(w,t)}},}
+ \qquad \Delta(w,t)=1-2(1+t)w+(1-t)^2w^2.
+ \label{eq:g}
+\end{equation}
+The square root has constant term $1$. This rationalized expression remains
+valid at $t=0$, unlike a formula which divides by $t$.
+At $t=1$ it becomes $g(w,1)=\Cat(w)^2$, where
+$\Cat(w)=2/(1+\sqrt{1-4w})$ is the Catalan generating function, so
+$H_{n,1}(1)$ is the Catalan number $\Cat_{n+1}$.
+
+A second, independent derivation runs through the ordinary generating function
+of the Narayana polynomials themselves. Summing the constant-term
+expression~\eqref{eq:Bgamma} below gives
+\begin{equation}
+ \sum_{m\geq0}B_m(t)w^m=\frac1{\sqrt{\Delta(w,t)}},
+ \label{eq:Bordinary}
+\end{equation}
+the square root again having constant coefficient $1$. Indeed, expand
+$\bigl(1-(1+t)w-\sqrt t\,w(v+v^{-1})\bigr)^{-1}$ in powers of $v+v^{-1}$ and
+take its constant term in $v$: only even powers survive, with constant term
+$\binom{2r}{r}$, and summing them gives~\eqref{eq:Bordinary}. Now
+Theorem~\ref{thm:main} at $d=1$ says $\log g=\sum_{m\geq1}B_m(t)w^m/m$, so
+\[
+ w\frac{\partial}{\partial w}\log g=\frac1{\sqrt{\Delta(w,t)}}-1,
+\]
+whose unique solution with constant coefficient $1$ is again~\eqref{eq:g}.
+
+The second route is what yields a closed form for the $d=1$ row. Put
+$Y=wg$; then~\eqref{eq:quadratic} becomes $Y=w(1+Y)(1+tY)$, and Lagrange
+inversion gives the Narayana row
+\begin{equation}
+ \boxed{H_{n,1}(t)=\frac1{n+1}\sum_{j=0}^{n}
+              \binom{n+1}{j}\binom{n+1}{j+1}t^j.}
+ \label{eq:d1row}
+\end{equation}
+
+\subsection{A root-of-unity product for every block size}
+\begin{theorem}
+\label{thm:rootproduct}
+Let $d\geq1$, let $\xi=e^{2\pi i/d}$, and introduce a formal variable $s$ with
+$s^d=z$. Then
+\begin{equation}
+ \boxed{F_d(z,t)=\prod_{r=0}^{d-1}g(\xi^r s,t).}\label{eq:rootproduct}
+\end{equation}
+The product contains only powers of $s^d$, has rational polynomial
+coefficients in $t$, and is algebraic over $\Q(z,t)$ of degree at most $2^d$.
+No assertion that this upper bound is always minimal is made.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:main} with $d=1$ gives
+$\log g(w,t)=\sum_{m\geq1}B_m(t)w^m/m$. Therefore
+\begin{align*}
+ \log\prod_{r=0}^{d-1}g(\xi^rs,t)
+ &=\sum_{m\geq1}\frac{B_m(t)s^m}{m}
+                          \sum_{r=0}^{d-1}\xi^{rm}\\
+ &=\sum_{k\geq1}\frac{B_{dk}(t)s^{dk}}{k}
+ =\log F_d(s^d,t).
+\end{align*}
+Both series have constant coefficient $1$, so the formal exponential proves
+the identity and the cancellation of fractional powers. Algebraicity follows
+already from~\eqref{eq:g}, since each factor is quadratic over
+$\Q(t,s)$ and algebraicity is transitive.
+
+For the degree bound, work over the rational-function field $\Q(z,t)$ and
+adjoin $s$, all $d$th roots of unity, and the $d$ square roots occurring in
+the factors of~\eqref{eq:rootproduct}. This is contained in a finite normal
+extension. An automorphism over $\Q(z,t)$ permutes the arguments $\xi^rs$,
+and can change the signs of their square roots. As the product is insensitive
+to the permutation, every conjugate is one of at most $2^d$ sign-choice
+products. In characteristic zero the algebraic degree is the number of
+distinct conjugates, proving the bound.
+\end{proof}
+
+\begin{proposition}[A constructive form of the same bound]
+\label{prop:degree}
+Let $g_r^+$ and $g_r^-$ be the two roots of the quadratic~\eqref{eq:quadratic}
+at $w=\xi^rs$, in a splitting field over $\Q(z,t)$ containing all $d$ roots
+$\xi^rs$ of $s^d-z$. Then
+\begin{equation}
+ \prod_{\varepsilon\in\{+,-\}^d}
+   \left(T-\prod_{r=0}^{d-1}g_r^{\varepsilon_r}\right)
+ \label{eq:monic}
+\end{equation}
+is a monic polynomial of degree $2^d$ with coefficients in $\Q(z,t)$, and
+$F_d(z,t)$ is one of its roots.
+\end{proposition}
+\begin{proof}
+Every automorphism of the splitting field over $\Q(z,t)$ permutes the $\xi^rs$
+and, over each of them, either exchanges or preserves the two quadratic roots.
+It therefore permutes the $2^d$ displayed factors, so the coefficients
+of~\eqref{eq:monic} are fixed and lie in $\Q(z,t)$. The branch
+in~\eqref{eq:rootproduct} is the factor with all $\varepsilon_r=+$.
+\end{proof}
+
+The conjugate count of Theorem~\ref{thm:rootproduct} is shorter; the explicit
+polynomial~\eqref{eq:monic} is constructive and exhibits the annihilating
+equation. Keeping both is cheap and they guard each other.
+
+This product is a multiplicative root-of-unity filter. An \emph{average} of
+the $g(\xi^rs,t)$ would instead extract the coefficients $H_{dn,1}$; those
+count paths constrained after every microstep and generally give the wrong
+answer. For example, $H_{1,2}(1)=6$ whereas $H_{2,1}(1)=5$.
+
+Algebraicity also implies that $F_d$ satisfies a linear differential equation
+over $\Q(z,t)$, and its coefficients in $z$ satisfy a polynomial-coefficient
+recurrence in $n$. Indeed, derivatives of an algebraic function lie in the
+same finite extension of $\Q(z,t)$, so sufficiently many are linearly
+dependent over that field. This observation does not turn
+\eqref{eq:recurrence} itself into a fixed-order, constant-coefficient recurrence.
+
+\subsection{An explicit quartic for double chains}
+\begin{corollary}
+\label{cor:quartic}
+The double-chain series $Y=F_2(z,t)$ is the unique solution in $\Q[t][[z]]$
+with constant term $1$ of
+\begin{align}
+0={}&t^4z^4Y^4+t^2z^2\bigl((1+t)^2z-1\bigr)Y^3\notag\\
+ &+2tz\bigl(1+(t^2+t+1)z\bigr)Y^2
+    +\bigl((1+t)^2z-1\bigr)Y+1.
+ \label{eq:quartic}
+\end{align}
+\end{corollary}
+\begin{proof}
+Write $z=s^2$, $a=g(s,t)$, $b=g(-s,t)$, and $Y=ab$. The two quadratic
+relations~\eqref{eq:quadratic} give
+\begin{align*}
+ ts^2a^2+((1+t)s-1)a+1&=0,\\
+ ts^2Y^2+(-(1+t)s-1)Ya+a^2&=0.
+\end{align*}
+Their resultant with respect to $a$, followed by $s^2=z$, is exactly the
+right side of~\eqref{eq:quartic}. This polynomial identity is reproduced by
+\texttt{code/derive\_quartic.py}. The defining polynomial has value $1-Y$
+at $z=0$ and derivative $-1$ with respect to $Y$ there. Coefficientwise
+induction, or the formal implicit-function theorem, proves uniqueness of the
+branch with constant term $1$.
+\end{proof}
+
+A second elimination certificate, computed by a different script from a
+different pair, reaches the same quartic. With $a=g(w,t)$ and $F=a\,g(-w,t)$,
+the pair is
+\begin{align}
+ t w^2a^2+((1+t)w-1)a+1&=0,\notag\\
+ a^2-((1+t)w+1)Fa+t w^2F^2&=0,
+ \label{eq:quarticpair2}
+\end{align}
+whose resultant in $a$, after $w^2=z$, is again the right side
+of~\eqref{eq:quartic}. The script
+\texttt{code/sym\-bolic\_cer\-tif\-i\-cate.py} verifies
+that this difference is the zero polynomial, rather than a series vanishing to
+finite order.
+
+At $t=1$, the equation is
+\[
+ z^4Y^4+(4z^3-z^2)Y^3+(6z^2+2z)Y^2+(4z-1)Y+1=0.
+\]
+The independent standard-library verifier also substitutes the exact support
+polynomials into~\eqref{eq:quartic} through $z^{16}$, retaining every power of
+$t$; this is a check of the printed certificate, not a substitute for the
+resultant proof.
+
+\section{Gamma coefficients: a path model and an algebraic derivation}
+\label{sec:gamma}
+
+The gamma expansion itself is a single identity, stated once
+in~\eqref{eq:gamma} and~\eqref{eq:gammagf}. The two derivations below have
+different corollaries and are both retained.
+
+\subsection{The block-boundary path model}
+\label{sec:gammapath}
+For $c=d$, one has
+\begin{equation}
+ P_{d,d}(u,t)=(1+t+u+t/u)^d.\label{eq:groupedmotzkin}
+\end{equation}
+Thus an excursion with $n$ macrosteps is a word of $dn$ microsteps, grouped
+into blocks of $d$. Up and down steps have increments $+1,-1$, and a
+horizontal step has increment zero and two colors of weights $1,t$.
+The walk must have nonnegative height only after the $d$th, $2d$th,
+$\ldots$, $nd$th microsteps and must finish at zero.
+
+\begin{proposition}
+\label{prop:gamma}
+Let $\gamma_{n,d,j}$ be the number of uncolored words of length $dn$ in
+$\{U,D,H\}$ having $j$ up steps and $j$ down steps, total height zero,
+and nonnegative heights at multiples of $d$. Then
+\begin{equation}
+ H_{n,d}(t)=\sum_{j=0}^{\lfloor dn/2\rfloor}
+                    \gamma_{n,d,j}t^j(1+t)^{dn-2j}.
+ \label{eq:gamma}
+\end{equation}
+In particular, $H_{n,d}$ is palindromic and unimodal.
+\end{proposition}
+\begin{proof}
+Expand each factor of~\eqref{eq:groupedmotzkin} into its four choices.
+An excursion has equally many up and down steps. If that number is $j$, the
+vertical steps together contribute $t^j$, while the $dn-2j$ horizontal
+positions contribute $(1+t)^{dn-2j}$. Summing over uncolored words proves
+the expansion. Each displayed summand has a symmetric unimodal coefficient
+sequence with center $dn/2$; their nonnegative sum has the same properties.
+\end{proof}
+
+For $d=2$, the first gamma vectors are
+\begin{center}
+\begin{tabular}{r l}
+\toprule
+$n$ & $(\gamma_{n,2,0},\gamma_{n,2,1},\ldots)$\\
+\midrule
+0 & $(1)$\\
+1 & $(1,2)$\\
+2 & $(1,8,5)$\\
+3 & $(1,18,47,14)$\\
+4 & $(1,32,190,244,42)$\\
+5 & $(1,50,530,1560,1186,132)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $n=1,d=2$, both $UD$ and $DU$ are allowed, explaining the gamma
+coefficient $2$. The word $DU$ would be forbidden for ordinary Motzkin paths,
+which require nonnegativity after every microstep.
+
+This is a constant-block-size reformulation of the earlier composition
+polytope gamma phenomenon~\cite[Theorem~1.2 and Proposition~2.2]{A}.
+In the two-subset encoding, the common elements of $S$ and $T$ give the
+horizontal color of weight $t$, the elements in neither give the other color,
+and $T\setminus S$ and $S\setminus T$ give up and down steps. Requiring
+$S\cap T=\varnothing$ leaves exactly the uncolored paths counted by
+$\gamma_{n,d,j}$. This makes the connection to the prior interpretation
+explicit rather than treating positivity as an uncredited new theorem.
+
+If $\Gamma_{n,d}(y)=\sum_j\gamma_{n,d,j}y^j$, so that
+\begin{equation}
+ H_{n,d}(t)=(1+t)^{dn}\,\Gamma_{n,d}\!\left(\frac{t}{(1+t)^2}\right),
+ \label{eq:Hgamma}
+\end{equation}
+the same factorization gives
+\begin{equation}
+ \sum_{n\geq0}\Gamma_{n,d}(y)z^n
+ =\exp\left(\sum_{m\geq1}\frac{z^m}{m}G_{dm}(y)\right),
+ \qquad
+ G_N(y)=\sum_{r=0}^{\lfloor N/2\rfloor}\binom{N}{2r}\binom{2r}{r}y^r .
+ \label{eq:gammagf}
+\end{equation}
+Indeed, use the uncolored symbol $(1+u+y/u)^d$; a bridge of $dm$
+microsteps chooses its $2r$ vertical positions and then its $r$ up positions.
+
+\subsection{The algebraic derivation, integrality and strict positivity}
+\label{sec:gammaalg}
+The same $G_N$ arises from a constant-term computation, which yields
+properties the path model does not. Note first that
+\begin{equation}
+ \binom{N}{2r}\binom{2r}{r}=\frac{N!}{r!^2\,(N-2r)!},
+\end{equation}
+so that, with $v$ an auxiliary variable and $\sqrt t$ a formal symbol,
+\begin{align}
+ B_N(t)
+ &=\CTv\bigl(1+\sqrt t\,v\bigr)^N\bigl(1+\sqrt t\,v^{-1}\bigr)^N \notag\\
+ &=\sum_{r=0}^{\lfloor N/2\rfloor}\frac{N!}{r!^2(N-2r)!}\,
+    t^r(1+t)^{N-2r}
+ =(1+t)^NG_N\!\left(\frac{t}{(1+t)^2}\right).
+ \label{eq:Bgamma}
+\end{align}
+The displayed constant term is a polynomial in $t$; the square root is only
+an auxiliary symbol. Applying~\eqref{eq:Bgamma} factorwise
+to~\eqref{eq:partition} in the diagonal case gives~\eqref{eq:Hgamma}
+and~\eqref{eq:gammagf} directly, with the total factor of $1+t$ equal to
+$(1+t)^{dn}$ because the parts of $\lambda$ sum to $n$.
+
+\begin{proposition}[Integrality and strict positivity]
+\label{prop:gammapos}
+Every $\gamma_{n,d,j}$ is a nonnegative integer, $\gamma_{n,d,0}=1$, and for
+$n\geq1$ every $\gamma_{n,d,j}$ with $0\leq j\leq\lfloor dn/2\rfloor$ is
+strictly positive. Consequently the coefficients of $H_{n,d}$ increase
+strictly up to the centre, except for the equal middle pair forced by odd
+degree.
+\end{proposition}
+\begin{proof}
+The exponential~\eqref{eq:gammagf} produces a priori only nonnegative rational
+gamma coefficients. For integrality, observe that the coefficients of any
+symmetric integer polynomial of degree $N$ in the basis $t^r(1+t)^{N-2r}$ are
+integers: determine the coefficient at $r=0$, subtract that multiple, and
+continue successively with the coefficient of $t^r$. Each step subtracts an
+integer polynomial and requires no division. Applying this to $H_{n,d}$, whose
+coefficients are integers by Theorem~\ref{thm:main}, gives integrality.
+
+For strict positivity, expand the exponential over partitions as
+in~\eqref{eq:partition}. All contributions are nonnegative, and the single-part
+partition $(n)$ alone contributes $G_{dn}(y)/n$, whose coefficient of $y^j$ is
+positive for every $0\leq j\leq\lfloor dn/2\rfloor$. At $y=0$ the exponential
+in~\eqref{eq:gammagf} is $(1-z)^{-1}$, so $\gamma_{n,d,0}=1$; the case $n=0$ is
+immediate. The final statement follows because the $r=0$ term
+of~\eqref{eq:Hgamma} is $(1+t)^{dn}$, whose binomial coefficients increase
+strictly to the centre, and all other terms are nonnegative and symmetric
+about the same centre.
+\end{proof}
+
+Writing out the coefficient of $y$ gives the closed form
+\begin{equation}
+ \gamma_{n,d,1}=\frac{d^2n(n+1)}2-nd,
+ \label{eq:gamma1}
+\end{equation}
+which also follows from the first support coefficient~\eqref{eq:h1} below by
+subtracting $nd$, the coefficient of $t$ in the gamma-basis term $(1+t)^{dn}$.
+As recorded in Section~\ref{sec:problem}, qualitative gamma positivity was
+already proved in greater generality in~\cite{A}; what
+\eqref{eq:gammagf} adds here is an explicit exponential organization in the
+equal-block case, and what Proposition~\ref{prop:gammapos} adds is
+integrality together with strictness.
+
+\section{Fixed support size: polynomiality in the number of blocks}
+\label{sec:fixed}
+
+Write $h_{n,d,j}=[t^j]H_{n,d}(t)$, with $h_{n,d,j}=0$ if $j>dn$. The following
+result concerns a fixed $j$, not the whole row, whose degree grows with $n$.
+It has no counterpart in the rectangular development above.
+
+\begin{theorem}[Polynomiality and leading coefficient]
+\label{thm:fixed}
+Fix integers $d\geq1$ and $j\geq1$. As a function of $n\in\N$, $h_{n,d,j}$ is
+the restriction of a rational-coefficient polynomial of exact degree $2j$,
+with leading coefficient
+\begin{equation}
+ \boxed{\displaystyle\frac{d^{2j}}{j!\,(j+1)!}.}
+ \label{eq:leadingfixed}
+\end{equation}
+Equivalently, its ordinary generating function has the form
+\begin{equation}
+ \sum_{n\geq0}h_{n,d,j}z^n=\frac{\Pi_{d,j}(z)}{(1-z)^{2j+1}},
+ \qquad\deg\Pi_{d,j}\leq2j-1,
+ \label{eq:fixedrational}
+\end{equation}
+with
+\begin{equation}
+ \Pi_{d,j}(1)=\Cat_j\,d^{2j},\qquad
+ \Cat_j=\frac1{j+1}\binom{2j}{j}.
+ \label{eq:Pboundary}
+\end{equation}
+In particular the pole order $2j+1$ is exact.
+\end{theorem}
+\begin{proof}
+Separate the constant-in-$t$ part of the logarithm in~\eqref{eq:target}:
+\begin{equation}
+ F_d(z,t)=\frac1{1-z}
+   \exp\left(\sum_{r\geq1}t^r\Lambda_{d,r}(z)\right),
+ \qquad
+ \Lambda_{d,r}(z)=\sum_{m\geq1}\binom{dm}{r}^{\!2}\frac{z^m}{m}.
+ \label{eq:fixedstart}
+\end{equation}
+For $r\geq1$, the expression $\binom{dm}{r}^2/m$ is a polynomial in $m$ of
+degree $2r-1$: indeed $\binom{dm}{r}$ has a factor $m$, so the quotient is
+polynomial and has zero constant term. The elementary identity
+\[
+ \sum_{m\geq1}m^az^m=\left(z\frac{\mathrm d}{\mathrm dz}\right)^a\frac{z}{1-z}
+\]
+shows that $\Lambda_{d,r}$ has denominator dividing $(1-z)^{2r}$ and a
+numerator of degree at most $2r-1$.
+
+In the coefficient of $t^j$ in the exponential, a product
+$\prod_r\Lambda_{d,r}^{e_r}$ satisfies $\sum_r re_r=j$; its denominator
+divides $(1-z)^{2j}$ and its numerator has degree at most
+$2j-\sum_re_r\leq2j-1$. The extra factor $(1-z)^{-1}$
+in~\eqref{eq:fixedstart} proves~\eqref{eq:fixedrational}.
+
+For the highest pole, the leading term of $\binom{dm}{r}^2/m$ is
+$d^{2r}m^{2r-1}/(r!)^2$, so
+\begin{equation}
+ \Lambda_{d,r}(z)=\frac{d^{2r}(2r-1)!}{(r!)^2}(1-z)^{-2r}
+   +O\bigl((1-z)^{-2r+1}\bigr).
+ \label{eq:Aleading}
+\end{equation}
+The coefficient of the highest pole in~\eqref{eq:fixedrational} is therefore
+$[\sigma^j]$ of
+\[
+ \exp\left(\sum_{r\geq1}\frac1{2r}\binom{2r}{r}(d^2\sigma)^r\right)
+ =\Cat(d^2\sigma),
+\]
+the last identity following, for instance, by differentiating $\log\Cat(v)$
+and using $\Cat(v)=2/(1+\sqrt{1-4v})$. This proves~\eqref{eq:Pboundary}.
+
+Finally, each monomial $z^a$ in $\Pi_{d,j}$ contributes
+$\binom{n+2j-a}{2j}$ to the coefficient of $z^n$. Since $a\leq2j-1$, this
+binomial expression is a polynomial in $n$ agreeing with the coefficient for
+every $n\geq0$, including the initial zero values, and its leading
+coefficient is $1/(2j)!$. Hence the leading coefficient of $h_{n,d,j}$ is
+$\Pi_{d,j}(1)/(2j)!=d^{2j}/(j!(j+1)!)$.
+\end{proof}
+
+\subsection{The first two coefficients}
+At support size one, either~\eqref{eq:fixedstart} or a direct coordinate count
+gives
+\begin{equation}
+ h_{n,d,1}=d^2\binom{n+1}{2}.
+ \label{eq:h1}
+\end{equation}
+For the direct argument, a coordinate in block $b$ may contain any positive
+integer at most $bd$ if all other coordinates vanish; there are $d$ positions
+in that block, and $\sum_{b=1}^nd(bd)=d^2\binom{n+1}{2}$.
+
+At support size two,
+\begin{align}
+ h_{n,d,2}
+ &=\frac{d^2(d-1)^2}{4}\binom{n+3}{4}
+   +\frac{3d^4-d^2}{2}\binom{n+2}{4}\notag\\
+ &\hspace{3em}+\frac{d^2(d+1)^2}{4}\binom{n+1}{4}.
+ \label{eq:h2}
+\end{align}
+To check this directly, use
+$[t^2]F_d=(1-z)^{-1}\bigl(\Lambda_{d,2}+\tfrac12\Lambda_{d,1}^2\bigr)$; put it
+over $(1-z)^5$, whose numerator is
+\[
+ \tfrac14\bigl(d^4(z+6z^2+z^3)-2d^3(z-z^3)+d^2(z-2z^2+z^3)\bigr),
+\]
+and extract coefficients. The leading coefficients of~\eqref{eq:h1}
+and~\eqref{eq:h2} are $d^2/2$ and $d^4/12$, in agreement with
+Theorem~\ref{thm:fixed}.
+
+\section{A Stieltjes moment representation in the number of blocks}
+\label{sec:moments}
+
+Fix a real number $t>0$. The variable in this section is the number of
+blocks $n$, not the support degree. Let $U$ be the bilateral shift on
+$\ell^2(\Z)$ and define
+\begin{equation}
+ J=(1+t)I+\sqrt t\,(U+U^*)
+    =(I+\sqrt t\,U)(I+\sqrt t\,U^*).
+ \label{eq:J}
+\end{equation}
+This is a bounded positive self-adjoint operator. If $P$ is the orthogonal
+projection onto $\ell^2(\N)$, let
+\begin{equation}
+ T_d=PJ^dP\big|_{\ell^2(\N)}.\label{eq:compression}
+\end{equation}
+The compression is applied \emph{after} the $d$th power. In general,
+$PJ^dP$ and $(PJP)^d$ are different: the latter would disallow negative
+intermediate microstep heights.
+
+\begin{theorem}
+\label{thm:moment}
+For every $d\geq1$ and $t>0$,
+\begin{equation}
+ H_{n,d}(t)=\langle e_0,T_d^n e_0\rangle\qquad(n\geq0).
+ \label{eq:moment}
+\end{equation}
+Consequently there is a probability measure $\mu_{d,t}$ supported on
+$[0,(1+\sqrt t)^{2d}]$ such that
+\begin{equation}
+ H_{n,d}(t)=\int x^n\,d\mu_{d,t}(x).
+ \label{eq:measure}
+\end{equation}
+Every leading Hankel determinant
+$\det(H_{i+j,d}(t))_{0\leq i,j\leq r}$ is strictly positive. In particular,
+$H_{n,d}(t)^2<H_{n-1,d}(t)H_{n+1,d}(t)$ for all $n\geq1$.
+\end{theorem}
+\begin{proof}
+Matrix multiplication expands~\eqref{eq:moment} as a sum over the
+block-boundary paths of Section~\ref{sec:gammapath}, with each vertical
+microstep of weight $\sqrt t$ and each horizontal one of weight $1+t$.
+For a returning path with $j$ up and $j$ down steps, the vertical weight is
+$t^j$, the same as before. This proves~\eqref{eq:moment}.
+
+The Fourier multiplier of $J$ is
+$1+t+2\sqrt t\cos\theta$, which lies between $0$ and $(1+\sqrt t)^2$.
+Thus $0\leq T_d\leq(1+\sqrt t)^{2d}I$. The spectral theorem applied to
+$T_d$ and the unit vector $e_0$ gives~\eqref{eq:measure} with the stated
+support and total mass.
+
+The Hankel matrix is the Gram matrix of
+$e_0,T_de_0,\ldots,T_d^re_0$. The vector $T_d^i e_0$ is supported on
+$\{0,\ldots,di\}$ and has coefficient $t^{di/2}>0$ at $di$.
+These vectors are therefore linearly independent by comparing their last
+nonzero coordinates. Their Gram determinant is strictly positive.
+In particular, the representing measure has infinite support. Applying strict
+Cauchy--Schwarz to $x^{(n-1)/2}$ and $x^{(n+1)/2}$ in this measure proves
+the strict log-convexity statement.
+\end{proof}
+
+The shifted Hankel matrices are strictly positive definite as well.
+For a nonzero finitely supported $v$, Fourier transformation shows
+\[
+ \langle v,T_dv\rangle
+ =\frac1{2\pi}\int_0^{2\pi}
+ (1+t+2\sqrt t\cos\theta)^d|\widehat v(\theta)|^2\,d\theta>0.
+\]
+The multiplier is positive except possibly at a single point when $t=1$.
+Applying this to linear combinations of $T_d^ie_0$ proves the assertion.
+At $t=0$, by contrast, $H_{n,d}(0)=1$ and the Hankel matrices have rank one.
+No coefficientwise Hankel-positivity assertion in the indeterminate $t$ is
+needed or claimed here.
+
+\section{Unequal block sizes}
+\label{sec:mixed}
+
+The factorization of Lemma~\ref{lem:factor} does not require every step to
+have the same block size. There is, however, an essential distinction between
+a \emph{fixed order} of unequal sizes and a \emph{sum over all orders}. This
+section states the positive result and the counterexample which shows that its
+qualification cannot be dropped. Throughout it, the budget equals the block
+size, so this generalizes the diagonal case $c=d$ only; the rectangular
+direction of Theorem~\ref{thm:main} and the mixed-size direction here are
+orthogonal, and neither implies the other.
+
+Let $\mathcal D$ be a finite set of positive integers. For a word
+$\kappa=(d_1,\ldots,d_r)$ over $\mathcal D$, define $H_\kappa(t)$ by the
+prefix constraints at the partial sums $d_1+\cdots+d_i$, exactly as
+in~\eqref{eq:Q}; the empty word has polynomial $1$. Introduce commuting
+variables $x_d$ for $d\in\mathcal D$ and set
+\[
+ \mathcal F_{\mathcal D}(t;\boldsymbol x)
+ =\sum_{\kappa\text{ a word over }\mathcal D}
+    H_\kappa(t)\prod_{i=1}^{|\kappa|}x_{d_i}.
+\]
+For a nonnegative multiplicity vector $\boldsymbol m=(m_d)_{d\in\mathcal D}$,
+put $|\boldsymbol m|=\sum_dm_d$ and $\|\boldsymbol m\|=\sum_ddm_d$.
+
+\begin{theorem}[Commutative mixed-size formula]
+\label{thm:mixed}
+One has
+\begin{equation}
+ \boxed{\mathcal F_{\mathcal D}(t;\boldsymbol x)
+ =\exp\left(\sum_{\boldsymbol m\neq0}
+   \frac{(|\boldsymbol m|-1)!}{\prod_{d\in\mathcal D}m_d!}
+   B_{\|\boldsymbol m\|}(t)\prod_{d\in\mathcal D}x_d^{m_d}\right).}
+ \label{eq:mixed}
+\end{equation}
+For fixed multiplicities, the left side sums the polynomials of all
+\emph{distinct ordered words} with those multiplicities.
+\end{theorem}
+\begin{proof}
+Replace $zS_d$ in Lemma~\ref{lem:factor} by
+$\mathcal S(u)=\sum_{d\in\mathcal D}x_dS_{d,d}(u,t)$; all formal operations
+are justified by positive total degree in the $x_d$. The same argument gives
+the exponential of $\pos{\sum_{r\geq1}\mathcal S^r/r}$. In a monomial with
+multiplicities $\boldsymbol m$, the multinomial coefficient is
+$|\boldsymbol m|!/\prod_dm_d!$, and by~\eqref{eq:slacksymbol}
+\[
+ \prod_{d\in\mathcal D}S_{d,d}(u,t)^{m_d}
+ =S_{\|\boldsymbol m\|,\|\boldsymbol m\|}(u,t).
+\]
+Project to nonnegative powers, set $u=1$, and apply
+Lemma~\ref{lem:starsbars} with $D=C=\|\boldsymbol m\|$. Dividing the
+multinomial coefficient by $|\boldsymbol m|$ gives~\eqref{eq:mixed}.
+\end{proof}
+
+It would be incorrect to infer that $H_\kappa$ depends only on the multiset of
+its parts. Direct enumeration gives
+\begin{align}
+ H_{(1,1,2)}(t)&=1+11t+23t^2+11t^3+t^4,\notag\\
+ H_{(1,2,1)}(t)&=1+11t+22t^2+11t^3+t^4,\label{eq:ordercounterexample}\\
+ H_{(2,1,1)}(t)&=1+11t+23t^2+11t^3+t^4.\notag
+\end{align}
+The mixed formula gives their sum as the coefficient of $x_1^2x_2$. This
+example also explains why the constant-block problem is special: a multiset of
+identical parts admits only one order. It is what makes the phrase ``summed
+over orders'' in Theorem~\ref{thm:mixed} a genuine restriction rather than a
+formality.
+
+\begin{remark}[The reach of the scalar method]
+\label{rem:reach}
+A fixed periodic pattern of unequal sizes may be grouped into a macrostep only
+if its internal block-boundary restrictions are retained; simply replacing the
+period by its total size erases inequalities and is generally invalid, as
+\eqref{eq:ordercounterexample} shows. It does \emph{not} follow that the
+method stops at constant block sizes. Theorem~\ref{thm:mixed} shows that the
+same scalar factorization covers every finite set of block sizes, with the
+one qualification that its exponential computes the sum over all distinct
+orders with given multiplicities rather than any individual $H_\kappa$. What
+remains genuinely out of reach of the present argument is a closed formula for
+a single prescribed order of unequal sizes.
+\end{remark}
+
+\section{Singularity analysis and explicit leading asymptotics}
+\label{sec:asymptotics}
+
+Fix $d\geq1$ and $t>0$. Define
+\begin{equation}
+ R(t)=(1+\sqrt t)^2,\qquad \rho_d(t)=R(t)^{-d},\qquad
+ K_d(t)=\prod_{r=0}^{d-1}g\!\left(\frac{\xi^r}{R(t)},t\right).
+ \label{eq:critical}
+\end{equation}
+The factors are obtained by continuation from their series at zero. In the
+factor with $r=0$, the square root in~\eqref{eq:g} vanishes and the value is
+$R(t)/\sqrt t$. Conjugate factors pair, and $K_d(t)$ is a positive real
+number. It is also the finite boundary value $F_d(\rho_d(t),t)$, and admits a
+second, convergent expression
+\begin{equation}
+ K_d(t)=\exp\left(\sum_{m\geq1}\frac{B_{dm}(t)}{m\,R(t)^{dm}}\right).
+ \label{eq:Kexp}
+\end{equation}
+Both are used below: the finite radical product of~\eqref{eq:critical} is the
+fast evaluation, while the exponential sum~\eqref{eq:Kexp} is what identifies
+the constant as the boundary value of $F_d$. Convergence of~\eqref{eq:Kexp}
+follows from the coefficient asymptotics of the Narayana polynomial itself,
+\begin{equation}
+ B_N(t)=\frac{1+\sqrt t}{2\sqrt\pi\,t^{1/4}}\,R(t)^NN^{-1/2}
+        \bigl(1+O(N^{-1})\bigr),
+ \label{eq:Basymp}
+\end{equation}
+which is the square-root transfer applied to~\eqref{eq:Bordinary} and makes
+the summands of~\eqref{eq:Kexp} of order $m^{-3/2}$.
+
+\begin{theorem}[Uniform-chain asymptotics]
+\label{thm:asymptotics}
+For fixed $d\geq1$ and $t>0$,
+\begin{equation}
+ \boxed{H_{n,d}(t)=
+ \frac{K_d(t)(1+\sqrt t)}{2\sqrt{\pi d}\,t^{1/4}}
+ (1+\sqrt t)^{2dn}n^{-3/2}\left(1+O(n^{-1})\right).}
+ \label{eq:asymptotic}
+\end{equation}
+The radius of convergence of $F_d(\cdot,t)$ is $\rho_d(t)$, and
+$K_d(t)=F_d(\rho_d(t),t)$. In particular,
+\begin{equation}
+ H_{n,d}(1)=\frac{K_d(1)}{\sqrt{\pi d}}\,
+                4^{dn}n^{-3/2}\left(1+O(n^{-1})\right),
+ \qquad
+ K_d(1)=\prod_{r=0}^{d-1}
+                 \left(\frac{2}{1+\sqrt{1-\xi^r}}\right)^2.
+ \label{eq:totalasymptotic}
+\end{equation}
+The square roots in the last formula are principal, with the $r=0$ value
+zero. The error in~\eqref{eq:asymptotic} is locally uniform in a complex
+neighborhood of any fixed positive $t$, using the corresponding analytic
+branches; in particular it is locally uniform near $t=1$.
+\end{theorem}
+\begin{proof}
+The discriminant factors as
+\begin{equation}
+ \Delta(w,t)=(1-R(t)w)\bigl(1-(1-\sqrt t)^2w\bigr).
+ \label{eq:deltafact}
+\end{equation}
+Its first positive root is $w_0=1/R(t)$; the other root is strictly farther
+from zero, or is absent when $t=1$. There are no additional nonzero poles
+of~\eqref{eq:g}: if its denominator vanished, multiplying it by the
+conjugate expression would give $4tw^2=0$, while at $w=0$ the denominator
+is $2$.
+
+Write $w=w_0(1-\varepsilon)$. Since
+\[
+ 1-\frac{(1-\sqrt t)^2}{(1+\sqrt t)^2}
+ =\frac{4\sqrt t}{(1+\sqrt t)^2},
+\]
+expanding the square root and denominator in~\eqref{eq:g} gives
+\begin{equation}
+ g(w,t)=g(w_0,t)
+ \left(1-\frac{1+\sqrt t}{t^{1/4}}\sqrt{\varepsilon}
+       +O(\varepsilon)\right),
+ \qquad g(w_0,t)=\frac{R(t)}{\sqrt t}.
+ \label{eq:baseexpansion}
+\end{equation}
+Choose the local branch $s=z^{1/d}$ with $s=w_0$ at $z=\rho_d(t)$.
+Only the factor $g(s,t)$ in~\eqref{eq:rootproduct} is singular there;
+all $g(\xi^rs,t)$ with $r\ne0$ are analytic and nonzero. Moreover,
+\[
+ 1-s/w_0=\frac1d(1-z/\rho_d(t))+O((1-z/\rho_d(t))^2).
+\]
+It follows that
+\begin{equation}
+ F_d(z,t)=K_d(t)
+ \left(1-\frac{1+\sqrt t}{t^{1/4}\sqrt d}
+               \sqrt{1-z/\rho_d(t)}+O(1-z/\rho_d(t))\right).
+ \label{eq:localF}
+\end{equation}
+In fact the algebraic expression has a full convergent local Puiseux
+expansion, not just the displayed two terms. Its leading value is
+$K_d(t)>0$, so the square-root term does not cancel, and it agrees
+with~\eqref{eq:Kexp} by the convergent exponential formula.
+
+To check dominance, a singularity of a factor at
+$\xi^rs=w_0$ always projects to the same point $z=w_0^d$.
+The second discriminant root projects outside this circle. Rotation
+invariance removes the apparent branching at $z=0$.
+Thus there is a unique singularity on $|z|=\rho_d(t)$, with analytic
+continuation to a dented neighborhood beyond that circle. The same separation
+persists under sufficiently small complex perturbations of $t$.
+
+Finally,
+\[
+ [z^n](1-z/\rho)^{1/2}
+ =-\frac{\rho^{-n}}{2\sqrt\pi\,n^{3/2}}
+                         \left(1+O(n^{-1})\right).
+\]
+The next nonanalytic Puiseux term has exponent $3/2$ and contributes
+$O(\rho^{-n}n^{-5/2})$; the locally analytic terms are handled by the
+continuation just established. This is the usual algebraic singularity
+transfer underlying directed-path asymptotics~\cite{BF,FO}.
+Applying it to~\eqref{eq:localF} proves~\eqref{eq:asymptotic}, including the
+uniform form. Specialization $t=1$ gives~\eqref{eq:totalasymptotic}.
+\end{proof}
+
+At $d=1$, $K_1(1)=4$, recovering the asymptotics of the shifted Catalan
+numbers. At $d=2$,
+\begin{equation}
+ K_2(1)=\frac{16}{(1+\sqrt2)^2}=16(3-2\sqrt2)=48-32\sqrt2,
+ \quad
+ H_{n,2}(1)\sim\frac{16(3-2\sqrt2)}{\sqrt{2\pi}}\,
+                    16^n n^{-3/2}.
+ \label{eq:doubleconstant}
+\end{equation}
+The two displayed closed forms are the radical product and the value obtained
+from~\eqref{eq:Kexp}; they are the same number.
+The exponent $-3/2$ is characteristic of excursions; despite its exponential
+presentation, the generating function is algebraic rather than entire.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{r r r r}
+\toprule
+$d$ & $K_d(1)$ & $K_d(1)/\sqrt{\pi d}$ & growth factor $4^d$\\
+\midrule
+1&4.0000000000&2.2567583342&4\\
+2&2.7451660041&1.0951627857&16\\
+3&2.3004650571&0.7493420036&64\\
+4&2.0653267193&0.5826179108&256\\
+5&1.9170238358&0.4836905186&1024\\
+\bottomrule
+\end{tabular}
+\caption{Decimal approximations to explicit algebraic boundary values and
+leading asymptotic constants. Numerical values are not interval-certified.}
+\label{tab:constants}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{r r r r}
+\toprule
+$d$ & $K_d(1)$ & ratio at $n=100$ & ratio at $n=400$\\
+\midrule
+1 & 4.0000000000 & 0.9743200738 & 0.9934736873\\
+2 & 2.7451660041 & 0.9848655014 & 0.9961813732\\
+3 & 2.3004650571 & 0.9886892314 & 0.9971536342\\
+4 & 2.0653267193 & 0.9907300253 & 0.9976704816\\
+8 & 1.6768915769 & 0.9941248072 & 0.9985270518\\
+\bottomrule
+\end{tabular}
+\caption{Boundary constants and ratios of exact totals to the leading term
+in~\eqref{eq:totalasymptotic}. Ratios approaching $1$ illustrate, but do not
+prove, the asymptotic theorem.}
+\label{tab:ratios}
+\end{table}
+
+The asymptotic statement does not include $t=0$. At that boundary
+$H_{n,d}(0)=1$ and the square-root regime degenerates to a simple pole. Nor is
+any uniformity claimed when $d$ grows with $n$, or when $t$ tends to zero with
+$n$.
+
+\section{Support size: exact variance and a central limit theorem}
+\label{sec:statistics}
+
+Choose a lattice point uniformly from $Q_{n,d}\cap\Z^{dn}$ and let $X_{n,d}$
+be its number of nonzero coordinates. Its probability generating function is
+$H_{n,d}(t)/H_{n,d}(1)$. Write $a_{n,d}=H_{n,d}(1)$.
+
+\begin{proposition}[Exact mean and variance]
+\label{prop:variance}
+For every $d\geq1$ and $n\geq0$,
+\begin{equation}
+ \E X_{n,d}=\frac{dn}{2},\qquad
+ \boxed{\Var X_{n,d}=\frac{d}{2a_{n,d}}
+       \sum_{m=1}^n\binom{2dm-2}{dm-1}a_{n-m,d}.}
+ \label{eq:exactvariance}
+\end{equation}
+The empty sum gives variance zero when $n=0$.
+\end{proposition}
+\begin{proof}
+Palindromicity, that is $H_{n,d}(t)=t^{dn}H_{n,d}(t^{-1})$, makes the
+distribution symmetric about $dn/2$ and gives the exact mean. For the
+variance, introduce the centered series
+\[
+ G(z,s)=\sum_{n\geq0}e^{-dns/2}H_{n,d}(e^s)z^n
+       =F_d(ze^{-ds/2},e^s).
+\]
+By~\eqref{eq:target},
+\[
+ \log G(z,s)=\sum_{m\geq1}\frac{z^m}{m}
+                 e^{-dms/2}B_{dm}(e^s).
+\]
+Every centered polynomial on the right has first derivative zero at $s=0$.
+For $N\geq1$, Vandermonde's identity and its first two marked versions give
+\begin{equation}
+ \sum_{j=0}^N\binom Nj^2(j-N/2)^2
+ =\binom{2N}{N}\frac{N^2}{4(2N-1)}.
+ \label{eq:bridgevariance}
+\end{equation}
+For completeness, $B_N'(1)=N\binom{2N-1}{N-1}$ and
+$B_N''(1)=N(N-1)\binom{2N-2}{N-2}$; substituting these into
+$\sum j^2\binom Nj^2-N\sum j\binom Nj^2+(N^2/4)B_N(1)$ proves
+\eqref{eq:bridgevariance}, with $N=1$ also immediate.
+
+Since $\partial_s\log G(z,0)=0$, one has
+$\partial_s^2G(z,0)=G(z,0)\partial_s^2\log G(z,0)$.
+When $N=dm$, the factor in~\eqref{eq:bridgevariance} divided by $m$ simplifies
+to
+\[
+ \frac1m\binom{2dm}{dm}\frac{(dm)^2}{4(2dm-1)}
+       =\frac d2\binom{2dm-2}{dm-1}.
+\]
+Taking the coefficient of $z^n$ gives~\eqref{eq:exactvariance}.
+\end{proof}
+
+\begin{theorem}[Gaussian support fluctuations]
+\label{thm:CLT}
+For fixed $d\geq1$, as $n\to\infty$,
+\begin{equation}
+ \frac{X_{n,d}-dn/2}{\sqrt{dn/8}}\ \Longrightarrow\ \mathcal N(0,1),
+ \qquad
+ \Var X_{n,d}=\frac{dn}{8}+\kappa_d+O(n^{-1}),
+ \label{eq:CLT}
+\end{equation}
+where
+\begin{equation}
+ \boxed{\kappa_d=\frac1{16}+\frac d8
+                -\frac18\sum_{r=0}^{d-1}\sqrt{1-\xi^r}.}
+ \label{eq:kappa}
+\end{equation}
+The root sum is real; conjugate terms pair and the $r=0$ term is zero.
+For example, $\kappa_1=3/16$ and
+$\kappa_2=5/16-\sqrt2/8$.
+\end{theorem}
+\begin{proof}
+Let $C_d(t)$ denote the leading prefactor in~\eqref{eq:asymptotic}.
+Its locally uniform analytic form implies, for complex $s$ near zero,
+\begin{equation}
+ \log\E e^{sX_{n,d}}
+ =n\lambda_d(s)+\log\frac{C_d(e^s)}{C_d(1)}+O(n^{-1}),
+ \qquad
+ \lambda_d(s)=2d\log\frac{1+e^{s/2}}2.
+ \label{eq:quasipower}
+\end{equation}
+Two independent justifications of this quasi-power step are available, and
+each suffices. The first is the locally uniform complex-$t$ error statement of
+Theorem~\ref{thm:asymptotics}. The second tracks the distinguished branch
+point explicitly: choosing $\sqrt t$ analytic near $t=1$, the branch point
+$1/R(t)$ varies analytically while the second root of~\eqref{eq:deltafact}
+stays outside a larger disk, and the $d-1$ nondistinguished factors
+of~\eqref{eq:rootproduct} remain analytic and nonzero on a common
+neighborhood of their evaluation points; hence the local Puiseux coefficients
+and the transfer estimates vary analytically and uniformly, and
+$C_d(t)=K_d(t)(1+\sqrt t)/(2\sqrt{\pi d}\,t^{1/4})$ is analytic and nonzero
+there. Either way the error and its derivatives are controlled on a smaller
+neighborhood by Cauchy's formula.
+
+The derivatives of the rate at zero are $\lambda_d'(0)=d/2$ and
+$\lambda_d''(0)=d/8$. Substitution $s=iv/\sqrt{dn/8}$, followed by subtraction
+of the exact mean, makes~\eqref{eq:quasipower} converge to $-v^2/2$;
+convergence of characteristic functions proves the central limit theorem.
+Twice differentiating gives the variance expansion, with
+$\kappa_d=(\log C_d(e^s))''|_{s=0}$.
+
+It remains to evaluate this derivative. The non-$K_d$ part of the prefactor is
+\[
+ \frac{1+e^{s/2}}{2e^{s/4}\sqrt{\pi d}}
+ =\frac{\cosh(s/4)}{\sqrt{\pi d}},
+\]
+which contributes $1/16$. Put $v=\tanh(s/4)$ and $q=\xi^r$. At the critical
+argument $w=q/R(e^s)$, formula~\eqref{eq:g} becomes
+\begin{equation}
+ g(w,e^s)=
+ \frac{2}{1-\tfrac12(1+v^2)q+\sqrt{1-q}\sqrt{1-v^2q}}.
+ \label{eq:criticalfactor}
+\end{equation}
+At $v=0$ the denominator is
+$(1+\sqrt{1-q})^2/2$. Its expansion in $v^2$ shows that the coefficient
+of $v^2$ in $\log g(w,e^s)$ is
+\[
+ \frac{q}{1+\sqrt{1-q}}=1-\sqrt{1-q}.
+\]
+Since $v^2=s^2/16+O(s^4)$, the second derivative is
+$(1-\sqrt{1-q})/8$. Summing over $r$ and adding $1/16$ proves
+\eqref{eq:kappa}.
+\end{proof}
+
+An equivalent positive, convergent series is
+\begin{equation}
+ \kappa_d=\frac1{16}+\frac d8
+       \sum_{m\geq1}\frac{\binom{2dm}{dm}}{4^{dm}(2dm-1)}.
+ \label{eq:kappaseries}
+\end{equation}
+To see this, expand
+$\sqrt{1-z}=1-\sum_{k\geq1}\binom{2k}{k}z^k/(4^k(2k-1))$
+and sum at the $d$th roots of unity. The series is absolutely convergent even
+at $z=1$, so the filtering is justified. In particular, $\kappa_d>1/16$.
+
+For the double chain, the exact centered variance at $n=400$ is
+approximately $0.13552348$ after subtracting $dn/8=100$; the limiting
+correction is $0.13572330$. The error is consistent with the proved
+$O(n^{-1})$ expansion. This numerical comparison is illustrative, whereas
+the constant is determined by the finite radical expression above.
+
+This argument concerns the uniform distribution on \emph{lattice points}, not
+uniform sampling of faces, of equivalence classes, or of support sets. Those
+would be different probability models.
+
+\section{Reproducibility, proof audit, and remaining questions}
+\label{sec:verification}
+
+\subsection{Independent checks actually performed}
+\label{sec:checks}
+The package contains a single standard-library Python verifier which runs
+\emph{two separate suites}, inherited from the two merged packages. They use
+different methods over disjoint parameter ranges, and neither range has been
+narrowed. All checks use arbitrary-precision integers or exact rational
+numbers, and the verifier raises explicit exceptions rather than relying on
+\texttt{assert}, so its checks remain active under \texttt{python -O}.
+
+\medskip
+\noindent\textbf{Suite~1 (rectangular).}
+Three structurally different methods compute the same polynomials. The first
+performs dynamic programming on the original coordinates, merging states with
+equal current total and support size; it never uses the bridge formula. The
+second uses the decorated subset-walk macrosteps of~\eqref{eq:symbol}, and is
+the only computational witness of the encoding of Lemma~\ref{lem:subsets}. The
+third uses the exponential-formula recurrence~\eqref{eq:recurrence} with
+exact divisibility checks. All three agree for the $315$ parameter triples
+\[
+ 1\leq d\leq5,\qquad0\leq c\leq6,\qquad0\leq n\leq8.
+\]
+The same run visits $34\,689$ feasible arrays individually in $48$ smaller
+cases, without merged states, and matches their support distributions.
+It verifies $225$ instances of rectangular duality, $54$ independent gamma
+path expansions, and $54$ exact variance identities against
+\eqref{eq:exactvariance}. It also checks the quartic through $z^{16}$ and
+matches the first four double-chain polynomials printed in the source.
+
+\medskip
+\noindent\textbf{Suite~2 (diagonal, deeper).}
+The second suite computes $H_{n,d}$ from the block-weight slack dynamic
+program of~\eqref{eq:blockweight}, which uses the defining inequalities
+directly, and compares it with the recurrence over
+$1\leq d\leq8$, $0\leq n\leq12$: $104$ complete polynomials, well beyond the
+range of Suite~1. It re-enumerates every individual coordinate vector in the
+$28$ cases with $dn\leq8$; verifies the endpoint-refined
+factorization~\eqref{eq:endpointfactor} in $112$ cases with
+$1\leq d\leq4$, $0\leq n\leq6$ and $t\in\{0,1,2,7\}$ -- the only computational
+witness of Corollary~\ref{cor:endpoint}; reconstructs the gamma basis on all
+$104$ rows and checks strict positivity; confirms
+Theorem~\ref{thm:fixed} by finite differences in $40$ cases
+($1\leq d\leq8$, $1\leq j\leq5$), checking both the exact degree $2j$ and the
+leading coefficient~\eqref{eq:leadingfixed}; checks~\eqref{eq:h1}
+and~\eqref{eq:h2} on all $104$ rows; re-checks the quartic through $z^{16}$
+coefficientwise in $t$; and verifies the mixed-size
+identity~\eqref{eq:mixed} over all $121$ ordered compositions with parts in
+$\{1,2,3\}$ and at most four blocks, against $35$ multiplicity vectors,
+recording the counterexample~\eqref{eq:ordercounterexample}.
+
+\medskip
+The optional SymPy scripts derive the quartic by two different resultants,
+independently of the recurrence; the second reports that its difference from
+the printed quartic is the zero polynomial rather than a truncated series.
+The optional mpmath script computes exact integer totals, and exact rational
+means and variances, before any decimal conversion, then compares them with
+the asymptotic formulas at $80$-digit working precision. It records
+observations up to $n=400$ for $d\in\{1,2,3,4,5,8\}$, the exact-to-asymptotic
+ratios of Table~\ref{tab:ratios}, the $\kappa_d$ comparisons, and samples at
+the positive support weight $t=4$. Those decimal calculations are not
+certified interval computations.
+
+Finite checks corroborate the proofs; they do not certify untested parameters.
+
+\subsection{A short audit of the mathematical dependencies}
+Both proofs of the selected identity use only formal commutative series
+algebra together with an elementary count: the first uses the subset bijection
+and the binomial theorem, the second uses the slack process and stars and
+bars. Their only infinite objects are formal power series and Laurent series
+with exponents bounded above, handled coefficientwise. No appeal is made to
+convergence or numerical extrapolation. The source's normalization is removed
+explicitly in~\eqref{eq:sourceform}. The main formal results are independent
+of both the analytic consequences and the computer calculations.
+
+The algebraic formulas follow from a quadratic equation and a finite
+root-of-unity filter. The degree bound is an upper bound, proved twice, and
+the quartic has its formal branch specified by a nonzero derivative. The
+moment representation uses the spectral theorem for a bounded positive
+operator. The asymptotic and limit-law sections additionally use analytic
+continuation, square-root singularity transfer~\cite{FO}, and the continuity
+theorem for characteristic functions; their hypotheses are checked in place.
+These analytic conclusions are separate from, and are not needed to prove, the
+original conjectural identity.
+
+Particular pitfalls which are avoided are: imposing bounds inside a block;
+identifying a preorder-equivalence block with an antichain; confusing support
+$h$ with Ehrhart $h^*$; counting strict rather than weak excursions; using an
+additive instead of multiplicative root-of-unity filter; replacing the
+compressed power $PJ^dP$ by the power of a compression; substituting $u=1$
+into the slack symbol before projecting; and assuming that a cyclic orbit has
+exactly one nonnegative rotation.
+
+\subsection{Reproduction commands}
+From the package directory, the complete exact check is
+\begin{lstlisting}
+python code/verify.py
+\end{lstlisting}
+It needs only Python 3.10 or later and no third-party package. By default it
+writes to \texttt{results/}; \texttt{--output DIRECTORY} redirects it. All
+generated coefficient arrays use increasing powers. The optional symbolic and
+numerical checks are
+\begin{lstlisting}
+python code/derive_quartic.py
+python code/symbolic_certificate.py
+python code/asymptotics.py
+\end{lstlisting}
+The first two require SymPy and the third mpmath; \texttt{asymptotics.py}
+additionally accepts \texttt{--maximum N} (default $400$). Versions used in
+this run are recorded in \texttt{results/environment.json}. The article can be
+rebuilt with
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode article.tex
+\end{lstlisting}
+or with the two \texttt{pdflatex} passes performed by \texttt{build.sh} and by
+the optional \texttt{Makefile}.
+The original supplied manifest is preserved in \texttt{context/manifest.tex};
+the two merged packages shipped byte-identical copies of it, and only one is
+kept. The proposed additional entry in \texttt{manifest-entry.tex} describes
+this package without modifying that source file.
+
+\subsection{What would be a genuinely different next problem?}
+The all-block-size identity selected here no longer has an unresolved case
+within either proof, and Theorem~\ref{thm:mixed} extends the method to
+arbitrary finite sets of block sizes once one sums over orders. What remains
+open is of a different kind. A closed formula for a single prescribed order of
+unequal sizes is not delivered by the present scalar factorization, and
+\eqref{eq:ordercounterexample} shows that no formula depending only on the
+multiset can exist. Real-rootedness of the support polynomials, the minimal
+algebraic degree for a given $d$ (only the upper bound $2^d$ is proved here),
+gamma positivity for arbitrary preorders, and the weighted $q$-reciprocity
+conjecture of the same source all require additional arguments. Finally, a
+direct bijection explaining the permutation average~\eqref{eq:permutation},
+with all periodicity factors treated explicitly, would be a useful complement
+to the formal proofs.
+
+\appendix
+\section{A compact proof certificate}
+\label{app:certificate}
+
+The logical core of the second proof can be recorded in six equations, so that
+the main result can be audited without reading any consequence section. All
+projections act in $\Q[t]((u^{-1}))[[z]]$:
+\begin{align*}
+ S_{d,c}(u,t)&=u^c\left(\frac{u+t-1}{u-1}\right)^d,
+       & M&=1+z\pos{S_{d,c}M},\\
+ L&=-\log(1-zS_{d,c})=L_++L_-,
+       & M_*&=\exp(L_+),\\
+ (1-zS_{d,c})M_*&=\exp(-L_-),
+       &\pos{\exp(-L_-)}&=1.
+\end{align*}
+The recurrence uniquely gives $M=M_*$. Since
+\[
+ \left.\pos{S_{d,c}^m}\right|_{u=1}
+ =\sum_{a_1+\cdots+a_{dm}\leq cm}t^{\#\{i:a_i>0\}}
+ =\sum_{r\geq0}\binom{dm}{r}\binom{cm}{r}t^r,
+\]
+specializing $u=1$ proves~\eqref{eq:rectangular}, and $c=d$ gives the
+conjectured formula. The only infinite series in $u$ have exponents bounded
+above, and the specialization is made only after projection, coefficient by
+coefficient in $z$.
+
+\section{Exact data and source provenance}
+\label{app:data}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.44\textwidth}
+                    >{\raggedright\arraybackslash}p{0.52\textwidth}@{}}
+\toprule
+File & Contents\\
+\midrule
+\endhead
+\texttt{results/verification.json} & Exact test ranges, counts of cases, and
+pass status for both verifier suites.\\
+\texttt{results/exact\_polynomials.json} & All $315$ rectangular support
+polynomials in increasing coefficient order; the only data with $c\neq d$.\\
+\texttt{results/coefficients.json} & Every diagonal polynomial for
+$1\leq d\leq8$, $0\leq n\leq12$, with its gamma coefficients; the only data
+reaching $d=8$ and $n=12$.\\
+\texttt{results/gamma\_polynomials.json} & Gamma coefficients obtained by
+independent uncolored microstep dynamic programming.\\
+\texttt{results/small\_values.csv} & Uniform-chain totals, support
+coefficients, and exact rational variances.\\
+\texttt{results/lattice\_point\_totals.csv} & Totals at $t=1$ over the deeper
+diagonal range.\\
+\texttt{results/quartic\_certificate.txt} & The first symbolic resultant, the
+printed quartic, and the branch check.\\
+\texttt{results/symbolic\_certificate.json} & The second elimination
+certificate, with a zero-polynomial residual.\\
+\texttt{results/asymptotics.csv} & Exact-count versus asymptotic ratios and
+variance-correction comparisons.\\
+\texttt{results/asymptotic\_constants.csv},
+\texttt{results/asymptotic\_checks.csv} & Boundary constants and
+exact-to-leading-term ratios at $n=100$ and $n=400$, including $d=8$.\\
+\texttt{results/constants.json} & Decimal values of $K_d(1)$, leading
+constants, and $\kappa_d$ for $1\leq d\leq5$; the $\kappa_d$ column occurs
+nowhere else.\\
+\texttt{results/pdf\_validation.json} & Machine-readable render audit of the
+compiled article.\\
+\texttt{results/environment.json} & Exact Python, SymPy, mpmath, and pdfTeX
+versions.\\
+\texttt{sources.md}, \texttt{STATUS.md} & Source/version audit and explicit
+claim boundaries.\\
+\bottomrule
+\end{longtable}
+
+The target was checked against the text of Section~9.5, printed page~24 of
+the arXiv v1 PDF, and the corresponding HTML formula. The mathematical formula
+was read in structured HTML and parsed PDF text; repeated attempts to obtain a
+screenshot of that page failed with retrieval and cache errors, and no
+unavailable screenshot is treated as evidence.
+The source paper is not included in this archive; retrieval details are
+recorded in \texttt{sources.md}. The supplied manifest is included unaltered,
+with its hash recorded in \texttt{sources.md}.
+
+\begin{thebibliography}{9}
+\raggedright
+
+\bibitem{AC}
+C.~A. Athanasiadis and F. Chapoton,
+\emph{Polytopes and posets associated to preorders},
+arXiv:2605.26916v1 (2026), especially Section~9.5, p.~24.
+\href{https://arxiv.org/abs/2605.26916v1}{arXiv record};
+\href{https://arxiv.org/html/2605.26916v1}{HTML text}.
+Accessed 20 September 2026.
+
+\bibitem{A}
+C.~A. Athanasiadis,
+\emph{Lattice point enumeration of polytopes associated to integer compositions},
+arXiv:2510.23903v1 (2025), Equation~(1), Theorem~1.2 and Section~2.
+\href{https://arxiv.org/abs/2510.23903v1}{arXiv record}.
+Accessed 20 September 2026.
+
+\bibitem{Spitzer}
+F. Spitzer,
+A combinatorial lemma and its application to probability theory,
+\emph{Transactions of the American Mathematical Society}
+\textbf{82} (1956), 323--339.
+\href{https://doi.org/10.1090/S0002-9947-1956-0079851-X}
+{doi:10.1090/S0002-9947-1956-0079851-X}.
+
+\bibitem{BF}
+C. Banderier and P. Flajolet,
+Basic analytic combinatorics of directed lattice paths,
+\emph{Theoretical Computer Science} \textbf{281} (2002), 37--80.
+\href{https://doi.org/10.1016/S0304-3975(02)00007-5}
+{doi:10.1016/S0304-3975(02)00007-5}.
+
+\bibitem{FO}
+P. Flajolet and A. Odlyzko,
+Singularity analysis of generating functions,
+\emph{SIAM Journal on Discrete Mathematics} \textbf{3} (1990), no.~2,
+216--240.
+\href{https://doi.org/10.1137/0403019}{doi:10.1137/0403019}.
+
+\bibitem{DHLTW}
+Z. Dai, Q. Hou, Z. Liu, W. Thawinrak, and H. Wang,
+\emph{Counting Lattice Points in Minkowski Sums of Cross Polytopes},
+arXiv:2608.16037v2 (2026).
+\href{https://arxiv.org/html/2608.16037v2}{HTML text}.
+Consulted as adjacent preorder-support and duality literature; its
+introduction connects support duality to Conjecture~5.4 of~\cite{AC}.
+
+\bibitem{Yan}
+X. Yan,
+\emph{Variations of colored multiset Eulerian polynomials and applications},
+arXiv:2608.15682v2 (2026).
+\href{https://arxiv.org/html/2608.15682v2}{HTML text}.
+Consulted as adjacent composition-polytope literature.
+
+\bibitem{manifest}
+V. Reshetnikov,
+\emph{manifest.tex}, user-supplied \LaTeX{} research catalogue of
+seventy-one packages, received 20 September 2026. The catalogue records
+claimed results, not independent proof verification. A copy of the exact
+supplied file is included in \texttt{context/manifest.tex}.
+
+\end{thebibliography}
+\end{document}

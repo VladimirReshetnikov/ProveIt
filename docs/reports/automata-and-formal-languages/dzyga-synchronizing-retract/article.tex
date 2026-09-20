@@ -1,0 +1,1172 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsthm}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype,mathtools,booktabs,array,longtable}
+\usepackage{enumitem,fancyhdr,titlesec,tcolorbox,listings}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{172F48}
+\definecolor{accent}{HTML}{176B78}
+\definecolor{pale}{HTML}{F0F5F7}
+\titleformat{\section}{\large\bfseries\color{ink}}{\thesection}{0.8em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{ink}}{\thesubsection}{0.8em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\scshape A cyclic retract for D\.{z}yga's automata}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{14pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Ak}{\mathcal A_k}
+\newcommand{\Bk}{\mathcal B_k}
+\newcommand{\Zr}{\mathbb Z/r\mathbb Z}
+\newcommand{\rt}{\operatorname{rt}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\ResetLang}{\operatorname{Reset}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\N}{\mathbb N}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{black!15},backgroundcolor=\color{pale},
+ keepspaces=true,showstringspaces=false}
+\hypersetup{pdftitle={Synchronizing Dzyga's Automata by a Cyclic Retract},
+ pdfauthor={Research draft prepared for Vladimir Reshetnikov},
+ pdfsubject={An explicit universal reset construction and certified finite pair distances}}
+
+\title{\vspace{-12mm}\color{ink}\textbf{Synchronizing D\.{z}yga's Automata\\by a Cyclic Retract}\\[5pt]
+\large An explicit all-parameter reset construction,\\a nearby obstruction, and certified pair distances}
+\author{Research draft prepared for Vladimir Reshetnikov}
+\date{20 September 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+We study the binary automata $\Ak$ on $n=3k+6$ states that occur in
+Conjecture~8 of Szyku\l a's 2026 survey of synchronizing automata. We give
+a uniform proof that every $\Ak$, $k\geq1$, is synchronizing. The construction
+uses the word $ab$: its unique recurrent component is a cycle of length
+$r=k+4$, and $p=(ab)^r$ is an idempotent retraction onto this cycle.
+Two projected letter actions become a reflection and a reflection with one
+defect. Their composition produces an elementary merger, from which we
+construct a reset word of length
+\[
+8k^2+54k+92=\frac89 n^2+\frac{22}{3}n+16.
+\]
+This resolves the synchronization clause for the figure-defined family,
+not the conjectured exact compress-with-another threshold. We also prove
+that shortening the tail by one state produces a nonsynchronizing family
+with a dihedral permutation quotient. The known upper bound $4k+8$ for
+compressing $q_0$ is reproved and attributed to prior work. Independent
+integer certificates establish the exact threshold and all pair distances
+for $1\leq k\leq200$. The universal matching lower bound remains unproved
+here. Complete proofs, source-model conventions, executable checks, and
+verification limitations are included.
+\end{abstract}
+
+\begin{tcolorbox}[colback=pale,colframe=accent,boxrule=0.6pt,arc=1mm,
+ title={\textbf{Scope of the result}},fonttitle=\normalsize]
+\textbf{Proved for every parameter:} a reset word for $\Ak$; a quadratic
+reset-length upper bound; a permutation-quotient obstruction for the
+one-state-shorter comparison family.\\[3pt]
+\textbf{Not proved for every parameter:} that $4k+8$ is the \emph{minimum}
+length merging $q_0$ with another state, or the proposed exact formula for
+the pairwise merging diameter. The supplied finite certificates do not
+replace these missing uniform lower-bound proofs.
+\end{tcolorbox}
+
+\vfill
+\noindent\small\textbf{Research status.} This is a new research draft with an
+explicit, independently checkable argument, not a peer-reviewed publication
+or a proof-assistant formalization. Novelty is assessed against the sources
+identified below, not asserted against all possible prior literature.
+\normalsize
+\newpage
+\tableofcontents
+\newpage
+
+\section{The problem selected and the result obtained}
+\label{sec:intro}
+
+\subsection{A concrete open question in automata theory}
+
+A deterministic finite automaton transforms its state each time it reads a
+letter. A \emph{reset word} sends every possible initial state to the same
+final state. The problem of finding such a word is therefore a question about
+a language of words, not about choosing an initial or an accepting state.
+Our automata are more precisely complete deterministic \emph{semiautomata};
+the shorter conventional name will be used throughout.
+
+Szyku\l a's survey \cite[Section~2.3, Figure~3 and Conjecture~8]{Szykula2026}
+records a family $\Ak$ on $3k+6$ states, credited there to D\.{z}yga's 2018
+master's thesis. Its conjecture combines universal synchronizability with an
+exact shortest-word assertion for one distinguished state. We select the
+first clause as the main research problem:
+\begin{quote}
+For the family $\Ak$ defined in \cref{sec:model}, does a reset word exist for
+every integer $k\geq1$?
+\end{quote}
+
+The advantage of this target is that a positive answer can be made entirely
+explicit. It is not necessary to characterize every shortest word, and it is
+not necessary to infer a universal pattern from a finite search. One can
+instead identify transformations induced by a few parameterized words and
+then compose them to obtain a constant transformation.
+
+An intervening online research manuscript \cite{MM2026} already proves the
+all-parameter upper bound $4k+8$ for merging the distinguished state and
+corrects the displayed witness word. It reports exact finite checks through
+$k=60$, but explicitly leaves universal synchronizability open. Those upper
+bounds and the correction are \emph{prior results}, not contributions claimed
+by the present draft. We prove synchronization by a different structural
+argument and extend the independently reproduced finite checks to $k=200$.
+
+The original thesis has not been examined for this article. Thus historical
+attribution to it is through the survey, and no assertion is made about the
+precise wording or contents of that thesis. The available source record
+supports treating the selected clause as open, but it cannot guarantee
+absolute priority for the argument given here.
+
+\subsection{Main theorem}
+
+Words act on the right and are read from left to right: $q(uv)=(qu)v$.
+A product of words below is a literal concatenation, even when we use the
+same notation for the state transformations that the words induce.
+
+\begin{theorem}[Explicit synchronization]\label{thm:main}
+Let $k\geq1$ and let $\Ak$ be the complete binary automaton of
+\cref{def:family}. Put
+\begin{equation}\label{eq:mainwords}
+ r=k+4,\qquad c=ab,\qquad p=c^r,\qquad
+ e=a p b p c^{r-1}.
+\end{equation}
+Then the word
+\begin{equation}\label{eq:resetword}
+ R_k=p\bigl(e c^{r-1}\bigr)^{r-2}e
+\end{equation}
+sends every state to $q_2$. In particular, $\Ak$ is synchronizing and
+\begin{equation}\label{eq:lengthmain}
+ \rt(\Ak)\leq |R_k|=8r^2-10r+4
+ =8k^2+54k+92
+ =\frac89n^2+\frac{22}{3}n+16,
+ \qquad n=3k+6.
+\end{equation}
+\end{theorem}
+
+The notation $\rt(\Ak)$ denotes the length of a \emph{shortest} reset word.
+The theorem supplies an upper bound, not a formula for that minimum. Its
+purpose is an explicit synchronization proof. There is substantial room to
+shorten the construction.
+
+The proof has three exact steps. First, $p$ maps the whole state set onto a
+cycle and fixes that cycle pointwise. Second, the words $ap$ and $bp$ act on
+cycle indices as two almost matching reflections. Their discrepancy yields
+an elementary merger $e$. Third, a rotation followed by this merger repeatedly
+reduces the image until only one state remains. All three assertions are
+proved below for an arbitrary parameter.
+
+\section{Words, pair merging, and regular languages}
+\label{sec:basics}
+
+\subsection{Three different length parameters}
+
+Let $\mathcal A=(Q,\Sigma,\delta)$ be finite and complete, with $|Q|\geq2$. For a nonempty
+subset $S\subseteq Q$ and a word $w$, write
+\[
+ Sw=\{qw:q\in S\},\qquad \rank(w)=|Qw|.
+\]
+The empty word $\eps$ acts as the identity. For $x,y\in Q$ define
+\begin{equation}\label{eq:distance}
+ \dist(x,y)=\min\{\,|w|:xw=yw\,\},
+\end{equation}
+with value $\infty$ when the set is empty. The diagonal has distance zero.
+For a distinguished state $q$, the compress-with-another threshold is
+\begin{equation}\label{eq:tau}
+ \tau(q)=\min_{x\in Q\setminus\{q\}}\dist(q,x).
+\end{equation}
+The reset threshold is instead
+\[
+ \rt(\mathcal A)=\min\{\,|w|:|Qw|=1\,\}.
+\]
+Finally, the pairwise merging diameter is
+$D(\mathcal A)=\max_{x,y\in Q}\dist(x,y)$.
+
+These parameters quantify different tasks. A word witnessing $\tau(q)$ may
+merge just one pair and leave almost every other state distinct. A reset
+word witnesses every pair's mergeability simultaneously. Whenever the
+reset threshold is finite,
+\begin{equation}\label{eq:thresholdorder}
+ \tau(q)\leq D(\mathcal A)\leq\rt(\mathcal A).
+\end{equation}
+The first inequality follows from a minimum being at most a maximum over a
+larger collection. The second follows because a reset word merges any chosen
+pair. Neither inequality usually identifies the other quantities exactly.
+
+\begin{lemma}[Pair criterion]\label[lemma]{lem:paircriterion}
+A finite complete automaton is synchronizing if and only if every pair of
+states can be merged by a word.
+\end{lemma}
+\begin{proof}
+A reset word merges every pair. Conversely, begin with the image set $S=Q$.
+If $S$ has more than one element, choose distinct $x,y\in S$ and a word $u$
+with $xu=yu$. Applying $u$ to every member of $S$ cannot increase the image
+size and identifies at least two members, so $|Su|<|S|$. Repeat on the new
+image. Its positive integer size strictly decreases at each repetition,
+so after at most $|Q|-1$ repetitions the concatenation of the chosen words
+has singleton image.
+\end{proof}
+
+Our universal proof will not use finite pair enumeration. The lemma explains
+why the independently supplied pair certificates also verify synchronization
+on their finite parameter range.
+
+\subsection{The reset language and a right-linear grammar}
+
+The set
+\[
+ \ResetLang(\mathcal A)=\{w\in\Sigma^*:|Qw|=1\}
+\]
+is regular. Indeed, consider a deterministic automaton whose states are the
+nonempty subsets of $Q$, whose initial state is $Q$, whose letter action is
+$S\mapsto Sx$, and whose accepting states are the singleton subsets.
+Induction on word length shows that its state after reading $w$ is exactly
+$Qw$. This proves the claim without any minimization assumption.
+
+It is also a two-sided ideal of the free monoid: if $w$ is a reset word and
+$u,v$ are arbitrary words, then
+\[
+ Q(uwv)=((Qu)w)v\subseteq(Qw)v,
+\]
+and the right-hand side is a singleton. Completeness ensures the left-hand
+side is nonempty, hence a singleton too.
+
+For an explicitly grammatical description, introduce a nonterminal $X_S$
+for each nonempty reachable subset, with start symbol $X_Q$. For each letter
+$x$ include the production $X_S\to xX_{Sx}$, and include $X_S\to\eps$ exactly
+when $S$ is a singleton. A derivation tracking its successive subscripts
+shows that this right-linear grammar generates precisely
+$\ResetLang(\mathcal A)$. Thus \cref{thm:main} gives a parameterized word in a
+well-defined regular language. The grammar observation is elementary
+background, not a new grammar-size theorem.
+
+\section{The exact automaton model}
+\label{sec:model}
+
+\subsection{A total transition specification}
+
+Fix $k\geq1$ and put
+\begin{equation}\label{eq:parameters}
+ n=3k+6,\quad M=2k+4,\quad N=3k+5,
+ \qquad Q=\{q_0,q_1,\ldots,q_N\}.
+\end{equation}
+It is useful to call $q_0,\ldots,q_M$ the core, $q_M$ the junction, and
+$q_{M+1},\ldots,q_N$ the tail. The tail has $k+1$ states.
+
+\begin{definition}[The figure-complete family]\label[definition]{def:family}
+The automaton $\Ak$ has alphabet $\{a,b\}$ and the following actions:
+\begin{equation}\label{eq:a}
+ q_i a=\begin{cases}
+ q_0,&i=0,\\
+ q_{i+1},&1\leq i<M,\ i\text{ odd},\\
+ q_{i-1},&1\leq i<M,\ i\text{ even},\\
+ q_{M+1},&i=M,\\
+ q_3,&i=M+1,\\
+ q_{\min(i+1,N)},&M+2\leq i\leq N,\ i\text{ even},\\
+ q_{i-1},&M+2\leq i\leq N,\ i\text{ odd},
+ \end{cases}
+\end{equation}
+\begin{equation}\label{eq:b}
+ q_i b=\begin{cases}
+ q_{i+1},&0\leq i<M,\ i\text{ even},\\
+ q_{i-1},&0\leq i<M,\ i\text{ odd},\\
+ q_2,&i=M,\\
+ q_{\min(i+1,N)},&M+1\leq i\leq N,\ i\text{ odd},\\
+ q_{i-1},&M+1\leq i\leq N,\ i\text{ even}.
+ \end{cases}
+\end{equation}
+\end{definition}
+
+Every pair $(q_i,x)$ is covered by exactly one clause of the appropriate
+formula. The minimum in each outward tail rule is simply a compact way of
+writing the endpoint self-loop. In particular,
+\begin{equation}\label{eq:endpoint}
+\begin{array}{c|cc}
+ &q_Na&q_Nb\\\hline
+ N\text{ even}&q_N&q_{N-1}\\
+ N\text{ odd}&q_{N-1}&q_N
+\end{array}
+\qquad\text{and}\qquad q_0b=q_1.
+\end{equation}
+
+The survey's printed cases omit $q_0b$ and one endpoint transition; its
+Figure~3 supplies them. Equations \eqref{eq:a}--\eqref{eq:endpoint} use that
+figure-complete interpretation, also used in \cite{MM2026}. This convention
+is essential: the theorem is not about an arbitrary completion of an
+incomplete transition table. For example, changing $q_0b$ to $q_0$ would
+make the single letter $b$ merge $q_0$ with $q_1$.
+
+\subsection{Two immediate structural checks}
+
+\begin{proposition}\label[proposition]{prop:basicmodel}
+The automaton $\Ak$ is strongly connected. Both letter transformations have
+rank $n-1$. The only distinct-state collisions of one letter are
+\[
+ \{q_4,q_{M+1}\}a=\{q_3\},\qquad
+ \{q_3,q_M\}b=\{q_2\}.
+\]
+\end{proposition}
+\begin{proof}
+On $q_0,\ldots,q_{M-1}$, consecutive states are joined in both directions:
+$b$ exchanges the pairs with even left endpoint, and $a$ exchanges the pairs
+with odd left endpoint. Thus that segment is mutually reachable. From
+$q_{M-1}$ an $a$ reaches $q_M$, and from $q_M$ a $b$ returns to $q_2$.
+The transition $q_Ma=q_{M+1}$ reaches the tail; consecutive tail states
+are again joined in both directions. Finally $q_{M+1}a=q_3$ returns to the
+core. These routes prove strong connectivity.
+
+The $b$-action consists of disjoint transpositions on the core segment,
+disjoint tail transpositions and one possible endpoint fixed point, together
+with $q_Mb=q_2$. The latter duplicates the image of $q_3$; every other image
+has just one preimage, except the missing image $q_M$. Hence $b$ has rank
+$n-1$ with the stated collision. For $a$, the exceptional chain is
+\[
+ q_{M-1}\longmapsto q_M\longmapsto q_{M+1}\longmapsto q_3.
+\]
+All remaining arrows are disjoint transpositions or fixed points. Its final
+image $q_3$ is also the image of $q_4$, while $q_{M-1}$ is absent from the
+image. This gives the other assertion.
+\end{proof}
+
+Strong connectivity does not itself prove synchronizability. Nor does the
+fact that both letters have rank $n-1$. The comparison family in
+\cref{sec:obstruction} will show how a nontrivial permutation quotient can
+survive a very similar collection of arrows.
+
+\section{The cyclic retract}
+\label{sec:retract}
+
+The main simplification appears after grouping letters into blocks $ab$.
+Use the reparameterization
+\begin{equation}\label{eq:rparameters}
+ r=k+4\geq5,\qquad M=2r-4,\qquad N=3r-7,\qquad n=3r-6.
+\end{equation}
+Define $r$ distinct states
+\begin{equation}\label{eq:cycle}
+ s_0=q_0,\qquad s_j=q_{2j-1}\ (1\leq j\leq r-2),\qquad
+ s_{r-1}=q_2,
+ \qquad C=\{s_0,\ldots,s_{r-1}\}.
+\end{equation}
+Whenever a subscript on $s$ is interpreted modulo $r$, we say so or use an
+expression already in $\Zr$.
+
+\begin{lemma}[One recurrent cycle]\label[lemma]{lem:cycle}
+For $c=ab$, the action on $C$ is
+\begin{equation}\label{eq:rotation}
+ s_jc=s_{j+1\bmod r}.
+\end{equation}
+Every state of $Q$ enters $C$ after at most $r-2$ applications of $c$.
+The junction $q_M$ enters $C$ for the first time at $q_2$ after exactly
+$r-2$ applications.
+\end{lemma}
+\begin{proof}
+The beginning and end of the proposed cycle follow directly from the
+transition rules:
+\[
+ q_0ab=q_1,\quad q_2ab=q_0,\quad q_{M-1}ab=q_2.
+\]
+For odd $i$ with $1\leq i\leq M-3$, the two letters send $q_i$ first to
+$q_{i+1}$ and then to $q_{i+2}$. This proves the complete cycle
+\[
+ q_0\longmapsto q_1\longmapsto q_3\longmapsto\cdots
+ \longmapsto q_{M-1}\longmapsto q_2\longmapsto q_0.
+\]
+The remaining even core states obey
+\begin{equation}\label{eq:evencore}
+ q_{2j}c=q_{2j-2}\qquad(2\leq j\leq r-3).
+\end{equation}
+Thus $q_{2j}$ reaches $q_2$ in $j-1\leq r-4$ blocks.
+
+It remains to analyze the junction and tail. Let $E$ be the largest even
+integer at most $N$, and $O$ the largest odd integer at most $N$. The
+$c$-trajectory from the junction is
+\begin{equation}\label{eq:tailwalk}
+ \begin{split}
+ q_M&\longmapsto q_{M+2}\longmapsto\cdots
+       \longmapsto q_E\\
+    &\longmapsto q_O\longmapsto\cdots
+       \longmapsto q_{M+1}\longmapsto q_2.
+ \end{split}
+\end{equation}
+The even portion lists the even tail states in increasing order, and the
+odd portion lists the odd tail states in decreasing order; an endpoint is
+listed only once when its portion has one state. Away from the endpoint,
+the even tail indices increase by two under $c$
+and the odd tail indices decrease by two. At the endpoint there are two
+cases. If $N$ is even, $q_Na=q_N$ and $q_Nb=q_{N-1}$, so $q_Ec=q_O$.
+If $N$ is odd, $E=N-1$ and $q_Ea=q_N$, $q_Nb=q_N$, again giving
+$q_Ec=q_O$. At the exit, $q_{M+1}a=q_3$ and $q_3b=q_2$.
+This proves every arrow in \eqref{eq:tailwalk}.
+
+The displayed trajectory visits every one of the $N-M=r-3$ tail states
+exactly once: first its even indices, then its odd indices. None belongs to
+$C$. It therefore has $r-2$ edges from $q_M$ to its first point in $C$.
+Every tail state is already on this trajectory and needs fewer edges.
+Together with \eqref{eq:evencore}, this accounts for all of $Q$.
+\end{proof}
+
+The recurrent behavior has become completely regular despite the
+parity-dependent endpoint. The parity changes only which of the last two
+states is visited first in the folded tail trajectory.
+
+\begin{lemma}[Idempotent retraction]\label[lemma]{lem:projection}
+The word $p=c^r$ satisfies
+\begin{equation}\label{eq:projection}
+ Qp=C,\qquad s_jp=s_j\quad(0\leq j<r),\qquad p^2=p
+ \quad\text{as transformations on }Q.
+\end{equation}
+Moreover,
+\begin{align}
+ q_{2j}p&=s_{r-j}&& (1\leq j\leq r-3),\label{eq:projecteven}\\
+ q_Mp&=s_1,\label{eq:projectjunction}\\
+ q_{M+1}p&=s_{r-2}.\label{eq:projectexit}
+\end{align}
+\end{lemma}
+\begin{proof}
+Every state enters $C$ by time $r-2$, hence certainly by time $r$.
+On $C$, the word $c^r$ is one complete turn around a cycle of length $r$,
+so it is the identity. These facts give both $Qp=C$ and $p^2=p$.
+
+For \eqref{eq:projecteven}, $q_{2j}$ reaches $q_2=s_{r-1}$ after $j-1$
+blocks, including the case $j=1$ in which it is there initially. The
+remaining $r-j+1$ blocks put it at index
+\[
+ (r-1)+(r-j+1)\equiv r-j\pmod r.
+\]
+For the junction, \cref{lem:cycle} gives $q_Mc^{r-2}=q_2$. The two
+remaining blocks send $q_2$ to $q_0$ and then $q_1=s_1$.
+Finally $q_{M+1}c=q_2$; applying the remaining $r-1$ blocks gives index
+$(r-1)+(r-1)\equiv r-2\pmod r$.
+\end{proof}
+
+It is important that $p$ fixes $C$ \emph{pointwise}; a word merely mapping
+$Q$ into $C$ would not justify the same subsequent formulas. It is equally
+important that $c^{r-1}$ is an inverse of $c$ only on $C$. The transformation
+$c$ is not a permutation of the entire state set. No global inverse is used
+anywhere in the construction.
+
+\section{Two projected reflections and one elementary merger}
+\label{sec:reflections}
+
+A word $v$ mapping $C$ into itself induces a map on indices,
+\[
+ \overline v:\Zr\longrightarrow\Zr,
+ \qquad s_jv=s_{\overline v(j)}.
+\]
+By \cref{lem:projection}, both $F=ap$ and $H=bp$ have this property, even
+though $a$ and $b$ individually can leave $C$.
+
+\begin{lemma}[Projected letters]\label[lemma]{lem:reflections}
+The induced maps of $F=ap$ and $H=bp$ are
+\begin{equation}\label{eq:FH}
+ \overline F(j)=
+ \begin{cases}
+ 1,&j=r-2,\\
+ -j\pmod r,&j\neq r-2,
+ \end{cases}
+ \qquad
+ \overline H(j)=1-j\pmod r.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $F$, $s_0a=q_0$ and $q_0p=s_0$, giving $\overline F(0)=0$.
+For $1\leq j\leq r-3$, we have $s_j=q_{2j-1}$ and $s_ja=q_{2j}$;
+\eqref{eq:projecteven} then gives $s_jap=s_{r-j}$.
+At $j=r-2$, $s_j=q_{M-1}$, so $s_ja=q_M$ and
+\eqref{eq:projectjunction} gives $s_jap=s_1$. This is the single exceptional
+value. At $j=r-1$, $s_j=q_2$, $q_2a=q_1=s_1$, and $p$ fixes $s_1$.
+Thus the formula for $F$ covers every index.
+
+For $H$, the first two cases are $s_0b=q_1=s_1$ and $s_1b=q_0=s_0$.
+For $2\leq j\leq r-2$,
+\[
+ s_jb=q_{2j-2}=q_{2(j-1)},\qquad
+ q_{2(j-1)}p=s_{r-j+1},
+\]
+by \eqref{eq:projecteven}. Finally $s_{r-1}=q_2$ and $q_2b=q_3=s_2$.
+These cases give $\overline H(j)=1-j$ modulo $r$ throughout.
+\end{proof}
+
+The map $\overline H$ is a genuine reflection of the cyclic indices.
+The map $\overline F$ would be the reflection $j\mapsto-j$ but for one
+value: index $r-2$ is sent to $1$ instead of $2$. This one-unit defect is
+precisely what permits a reduction in rank.
+
+\begin{lemma}[An elementary merger]\label[lemma]{lem:merger}
+The word
+\[
+ e=F H c^{r-1}=a p b p c^{r-1}
+\]
+fixes every state of $C$ except $s_{r-2}$, and sends
+$s_{r-2}$ to $s_{r-1}$. Equivalently,
+\begin{equation}\label{eq:elementary}
+ \overline e(j)=
+ \begin{cases}
+ r-1,&j=r-2,\\
+ j,&j\neq r-2.
+ \end{cases}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For a nonexceptional index $j$, applying $\overline F$ and then
+$\overline H$ gives $j\mapsto-j\mapsto1+j$. The final $c^{r-1}$ subtracts
+one on $C$, so the result is $j$.
+For $j=r-2$, the successive indices are
+\[
+ r-2\xmapsto{F}1\xmapsto{H}0\xmapsto{c^{r-1}}r-1.
+\]
+This is exactly \eqref{eq:elementary}.
+\end{proof}
+
+Although $F$ and $H$ are long words in the original alphabet, their
+restrictions are very small algebraic objects. The use of a retraction
+makes their compositions legitimate: after each projected action the
+current state is back in $C$. There is no assumption that the same formulas
+hold outside $C$.
+
+\section{From a single merger to a reset word}
+\label{sec:reset}
+
+\subsection{A general cycle-sweeping lemma}
+
+The final step is useful independently of the particular automaton.
+
+\begin{lemma}[Cycle and adjacent merger]\label[lemma]{lem:sweep}
+Let $C=\{s_0,\ldots,s_{r-1}\}$ with $r\geq3$. Suppose words $c,e$ map
+$C$ into itself, $c$ advances indices by one modulo $r$, and $e$ fixes
+all indices except an index $t$, which it sends to $t+1$ modulo $r$.
+Put $h=e c^{r-1}$. Then
+\begin{equation}\label{eq:sweep}
+ \overline h(j)=
+ \begin{cases}
+ t,&j=t,\\
+ j-1\pmod r,&j\neq t,
+ \end{cases}
+\end{equation}
+and
+\begin{equation}\label{eq:rankprofile}
+ |Ch^m|=\max(1,r-m)\quad(m\geq0),\qquad
+ Ch^{r-2}=\{s_t,s_{t+1}\},\qquad
+ Ch^{r-2}e=\{s_{t+1}\}.
+\end{equation}
+If a word $p$ maps an entire state set $Q$ onto $C$, then
+$p h^{r-2}e$ resets $Q$.
+\end{lemma}
+\begin{proof}
+At index $t$, $e$ first advances to $t+1$, and $c^{r-1}$ returns to $t$.
+Every other index is fixed by $e$ and then decremented by one. This proves
+\eqref{eq:sweep}.
+
+List the cyclic indices in the order
+\[
+ t-1,\ t-2,\ \ldots,\ t-(r-1)=t+1,\ t
+ \qquad\text{in }\Zr.
+\]
+There are $r$ distinct entries. The transformation $h$ sends each entry to
+the next and fixes the final entry. After $m$ iterations its image consists
+of the final $r-m$ entries when $m<r$, and just the last entry when
+$m\geq r-1$. This proves the rank formula and the description of
+$Ch^{r-2}$. The map $e$ sends both of its remaining indices to $t+1$.
+Prepending $p$ replaces the initial image $Q$ by $C$, proving the last
+assertion.
+\end{proof}
+
+\subsection{Proof and length of the explicit construction}
+
+\begin{proof}[Proof of \cref{thm:main}]
+By \cref{lem:projection}, the first factor $p$ maps $Q$ onto $C$.
+By \cref{lem:merger}, $e$ is the adjacent merger with exceptional index
+$t=r-2$. Apply \cref{lem:sweep}: the suffix
+$(e c^{r-1})^{r-2}e$ maps $C$ to $s_{r-1}=q_2$. Consequently
+$QR_k=\{q_2\}$.
+
+For the length calculation, all exponents in the word expression are
+nonnegative integers and all products are literal concatenations. We have
+\[
+ |c|=2,\qquad |p|=2r,
+\]
+\[
+ |e|=1+2r+1+2r+2(r-1)=6r,
+ \qquad |e c^{r-1}|=8r-2.
+\]
+Hence
+\begin{align*}
+ |R_k|
+ &=2r+(r-2)(8r-2)+6r\\
+ &=8r^2-10r+4.
+\end{align*}
+Substituting $r=k+4$ gives $8k^2+54k+92$. Substituting
+$r=n/3+2$ gives $8n^2/9+22n/3+16$. This proves every assertion of the
+theorem.
+\end{proof}
+
+The state-set reduction is especially transparent:
+\[
+ Q\xmapsto{p}C
+ \xmapsto{h^{r-2}}\{s_{r-2},s_{r-1}\}
+ \xmapsto{e}\{s_{r-1}\}.
+\]
+The word has a short description even when its expanded length is large.
+The implementation evaluates its transformations by repeated squaring,
+using $O(n\log r)$ elementary state-array operations and $O(n)$ working
+memory for the fixed number of arrays. Writing the expanded word instead
+requires $\Theta(r^2)$ output symbols. These are different computational
+tasks; the large-parameter checks use the compressed description.
+
+\subsection{The smallest case worked out completely}
+
+For $k=1$, the state set is $\{q_0,\ldots,q_8\}$ and $r=5$. The two
+transition arrays, written as target indices, are
+\begin{equation}\label{eq:k1arrays}
+\begin{array}{c|rrrrrrrrr}
+ i&0&1&2&3&4&5&6&7&8\\\hline
+ a(i)&0&2&1&4&3&6&7&3&8\\
+ b(i)&1&0&3&2&5&4&2&8&7
+\end{array}
+\end{equation}
+The $c=ab$ cycle and its longest incoming trajectory are
+\[
+ 0\to1\to3\to5\to2\to0,
+ \qquad 6\to8\to7\to2.
+\]
+Thus the original state indices in the cycle order of $C$ are
+$(0,1,3,5,2)$. On these five cycle positions,
+not on the original state numbering, the relevant transformations are
+\[
+\begin{array}{c|rrrrr}
+ j&0&1&2&3&4\\\hline
+ \overline F(j)&0&4&3&1&1\\
+ \overline H(j)&1&0&4&3&2\\
+ \overline e(j)&0&1&2&4&4\\
+ \overline h(j)&4&0&1&3&3
+\end{array}
+\]
+The chain under $h$ is $2\to1\to0\to4\to3\to3$. Therefore
+$Ch^3=\{s_4,s_3\}$ and $Ch^3e=\{s_4\}=\{q_2\}$. The word
+$p h^3e$ has length $10+3\cdot38+30=154$. This example also illustrates why
+mixing state labels with cycle indices would lead to incorrect formulas.
+
+\section{Why one fewer tail state changes the answer}
+\label{sec:obstruction}
+
+A nearby nonsynchronizing example helps identify what the reset proof
+actually exploits. It also gives a negative test for both the mathematics
+and the implementation.
+
+\begin{definition}[The shortened-tail family]
+Keep $k\geq1$, $r=k+4$, and $M=2r-4$, but use the state set
+\[
+ Q'=\{q_0,\ldots,q_{N'}\},\qquad N'=3r-8=3k+4.
+\]
+Define $\Bk$ by the same formulas as \eqref{eq:a} and \eqref{eq:b}, with
+$N'$ in place of $N$. In particular the new endpoint has the same
+parity-based reflecting self-loop convention. The tail now has $k=r-4$
+states, and $|Q'|=3k+5$.
+\end{definition}
+
+This operation is not simply restricting both old transformations to a
+subset: the new endpoint's outward arrow is replaced by a self-loop.
+For $k=1$ the tail consists of the single state $q_{M+1}$; its $a$-image
+is still the exceptional exit $q_3$, and its $b$-image is itself.
+
+\begin{theorem}[A dihedral permutation quotient]\label{thm:obstruction}
+Every $\Bk$ is strongly connected but not synchronizing. More precisely,
+there is a surjection $\pi:Q'\to\Zr$ such that
+\begin{equation}\label{eq:quotient}
+ \pi(q a)=-\pi(q),\qquad \pi(q b)=1-\pi(q)
+ \qquad(q\in Q').
+\end{equation}
+\end{theorem}
+\begin{proof}
+Strong connectivity follows by the same core and tail routes as in
+\cref{prop:basicmodel}; the one-state tail causes no exception to those
+routes. Define the colors modulo $r$ by
+\begin{equation}\label{eq:colours}
+\begin{aligned}
+ \pi(q_0)&=0,\\
+ \pi(q_{2j-1})&=j &&(1\leq j\leq r-2),\\
+ \pi(q_{2j})&=r-j &&(1\leq j\leq r-2),\\
+ \pi(q_{M+2s+1})&=r-2-s &&(s\geq0,\ M+2s+1\leq N'),\\
+ \pi(q_{M+2s})&=2+s &&(s\geq1,\ M+2s\leq N').
+\end{aligned}
+\end{equation}
+These cases partition $Q'$. The states of $C$, which are all still present,
+have colors $0,1,\ldots,r-1$, so $\pi$ is surjective.
+
+On the ordinary core transpositions of $a$, the paired colors are $j$ and
+$r-j$, which are negatives. The fixed state $q_0$ has color zero. On the
+exceptional $a$-chain the colors are
+\[
+ r-2\longmapsto2\longmapsto r-2\longmapsto2,
+\]
+again changing sign at each step. A core $b$-pair with left endpoint
+$q_{2j}$, $j\geq1$, has colors $r-j$ and $j+1$; these sum to $1$ modulo
+$r$. The pair $q_0,q_1$ has colors $0,1$, and the junction transition
+$q_Mb=q_2$ has colors $2,r-1$, again summing to $1$.
+
+In the tail, an ordinary $a$-pair $q_{M+2s},q_{M+2s+1}$ has colors
+$2+s,r-2-s$, which are negatives. An ordinary $b$-pair
+$q_{M+2s+1},q_{M+2s+2}$ has colors $r-2-s,3+s$, which sum to $1$ modulo
+$r$. The first tail state's exceptional $a$-exit has colors $r-2,2$,
+as required. Thus only the endpoint self-loop remains to check.
+
+If $r$ is even, $N'$ is even and $N'-M=r-4$ is even. The endpoint color
+is $r/2$, fixed by $x\mapsto-x$, which is the letter $a$ that self-loops.
+If $r$ is odd, $N'$ is odd and its color is $(r+1)/2$, fixed by
+$x\mapsto1-x$, which is the self-looping letter $b$. The endpoint's other
+letter is already covered by a tail pair, or by the exceptional exit when
+$k=1$. This completes the verification of \eqref{eq:quotient}.
+
+Both maps $x\mapsto-x$ and $x\mapsto1-x$ are permutations of $\Zr$.
+By induction on word length, every word $w$ induces a permutation $g_w$
+with $\pi(qw)=g_w(\pi(q))$. Consequently
+\[
+ \pi(Q'w)=g_w(\pi(Q'))=g_w(\Zr)=\Zr.
+\]
+In particular $|Q'w|\geq r>1$ for every word. No reset word exists.
+\end{proof}
+
+\begin{corollary}[A single endpoint defect]\label[corollary]{cor:defect}
+Extend the same color formulas \eqref{eq:colours} to $\Ak$ by allowing its
+one additional endpoint. The two relations \eqref{eq:quotient} hold at every
+state-letter pair except the self-loop at $q_N$.
+\end{corollary}
+\begin{proof}
+All non-self-loop verifications in the preceding proof remain valid.
+If $r$ is even, then $N$ is odd, its color is $r/2$, and its $b$-loop would
+need to send that color to $r/2+1$ instead of fixing it. If $r$ is odd,
+then $N$ is even, its color is $(r+1)/2$, and its $a$-loop would need to send
+that color to $(r-1)/2$. These colors differ modulo $r$ since $r\geq5$.
+\end{proof}
+
+This explains the usefulness of the projected reflections. In the shorter
+family, a perfect reflection action survives as a quotient and forbids
+synchronization. In the actual family, precisely one local arrow violates
+that obstruction. The cyclic retraction turns the violation into an
+explicit adjacent merger. A vague assertion that ``the letters almost act
+as permutations'' would miss the decisive feature in either direction.
+
+\section{The short merging word: a known result, reproved}
+\label{sec:upper}
+
+Let $\tau_k=\tau_{\Ak}(q_0)$. The word in the numerical part of the
+original conjecture has one letter more than its stated length. The
+corrected all-parameter upper bound is established in \cite{MM2026}; we
+include a short proof using the trajectory already proved above.
+
+\begin{proposition}[Known upper bound]\label[proposition]{prop:knownupper}
+For every $k\geq1$, the word
+\begin{equation}\label{eq:shortword}
+ w_k=(ba)^{k+2}(ab)^{k+2}
+\end{equation}
+sends $q_0$ and $q_2$ to $q_2$. Thus
+\begin{equation}\label{eq:tauupper}
+ \tau_k\leq4k+8=\frac43n.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Set $u=ba$, $c=ab$ and retain $r=k+4$. On the even core states,
+\[
+ q_{2j}u=q_{2j+2}\quad(0\leq j\leq r-3),\qquad q_Mu=q_1.
+\]
+Hence $q_0u^{r-2}=q_M$ and $q_2u^{r-2}=q_1$.
+By \cref{lem:cycle}, $q_Mc^{r-2}=q_2$. The point $q_1=s_1$ is on the
+$c$-cycle, so $q_1c^{r-2}=s_{r-1}=q_2$. Concatenating the blocks proves
+both merging identities. Their combined length is $4(r-2)=4k+8$.
+\end{proof}
+
+The elementary free-monoid identity $(ab)^m a=a(ba)^m$ gives
+\begin{equation}\label{eq:slip}
+ (ab)^{k+2}a(ab)^{k+2}=a w_k,
+ \qquad |a w_k|=4k+9.
+\end{equation}
+Since $q_0a=q_0$ and $q_1a=q_2$, this longer word merges $q_0$ with
+$q_1$. The length discrepancy is not a counterexample to the numerical
+bound $4k+8$; it is a distinction between a displayed witness, its partner,
+and the minimum over all possible partners.
+
+\begin{conjecture}[Remaining numerical clause]\label[conjecture]{conj:remaining}
+For every $k\geq1$, $\tau_k=4k+8$.
+\end{conjecture}
+
+Only the lower inequality is missing after \cref{prop:knownupper}.
+The universal reset word in \cref{thm:main} does not establish it: a word
+that eventually merges \emph{all} states supplies no reason why a
+\emph{particular pair} could not merge earlier than the proposed minimum.
+The two questions must remain separate even though they originated in one
+conjecture.
+
+\section{Exact computations with independently checkable certificates}
+\label{sec:certificates}
+
+\subsection{A finite graph of unordered pairs}
+
+For an $n$-state automaton, take all unordered pairs with repetition,
+\[
+ \mathcal P=\{\{q_i,q_j\}:0\leq i\leq j<n\}.
+\]
+There are $n(n+1)/2$ such vertices, including $n$ diagonal pairs. Each letter
+induces one outgoing edge from each vertex. The merging distance of a pair
+is exactly its directed distance to the diagonal set. This follows because
+a path labeled by $w$ ends at $\{q_iw,q_jw\}$.
+
+Reverse breadth-first search from all diagonal vertices computes these
+distances in $O(n^2)$ time and space for a fixed two-letter alphabet: the
+graph has $n(n+1)/2$ vertices and twice as many directed edges. The supplied
+generator stores the reverse adjacency lists in integer arrays. It writes
+one nonnegative integer for each pair. An unreachable pair would have value
+$-1$ in the generator, but the verifier would reject such a certificate as
+a certificate of complete mergeability.
+
+\subsection{Why the certificate proves an exact distance}
+
+\begin{lemma}[Bellman certificate]\label[lemma]{lem:certificate}
+Let $\N$ include zero. Suppose a function $d:\mathcal P\to\N$ has value zero exactly on the
+diagonal and satisfies, for every nondiagonal pair $P$,
+\begin{equation}\label{eq:bellman}
+ d(P)=1+\min\{d(Pa),d(Pb)\}.
+\end{equation}
+Then $d(P)$ equals the shortest merging length of $P$ for every $P$.
+\end{lemma}
+\begin{proof}
+For either letter $x$, \eqref{eq:bellman} implies
+$d(P)\leq1+d(Px)$. The same inequality holds on a diagonal because its
+value and the values of both successors are zero. Along any word of length
+$\ell$ that merges $P$, telescoping gives $d(P)\leq\ell+0$. Thus $d(P)$ is
+a lower bound for every merging length.
+
+If $P$ is nondiagonal, one of the two successor values is exactly $d(P)-1$.
+Choose such a letter and repeat while the value is positive. A nonnegative
+integer decreases by one at each step, so after exactly $d(P)$ steps it
+reaches zero. Zero occurs only on the diagonal. The resulting word merges
+$P$ and has length $d(P)$, proving the matching upper bound.
+\end{proof}
+
+This proof does not depend on how the values were discovered. In
+particular the verifier need not rerun breadth-first search or trust the
+generator's queue discipline. It checks only the finite table, the explicit
+transition model, and the displayed local identity.
+
+\subsection{Results actually verified}
+
+For every integer $1\leq k\leq200$, the supplied certificates verify
+\begin{equation}\label{eq:finitechecks}
+ \tau_k=4k+8,\qquad \dist(q_0,q_1)=4k+9,
+\end{equation}
+and identify the complete set of optimal partners of $q_0$ as
+$\{q_2,q_{2k+5}\}$. They also verify, on the same finite range,
+\begin{equation}\label{eq:diameter}
+ D(\Ak)=
+ \begin{cases}
+ (5k^2+32k+47)/4,&k\text{ odd},\\
+ (5k^2+34k+44)/4,&k\text{ even}.
+ \end{cases}
+\end{equation}
+The prior note \cite{MM2026} reports the threshold checks through $k=60$
+and the diameter formula through $k=16$. Here all values are independently
+recomputed and checked, not copied from that source.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{rrrrrr}
+\toprule
+$k$&$n$&$\tau_k$&$\dist(q_0,q_1)$&$D(\Ak)$&$|R_k|$\\
+\midrule
+1&9&12&13&21&154\\
+2&12&16&17&33&232\\
+3&15&20&21&47&326\\
+4&18&24&25&65&436\\
+5&21&28&29&83&562\\
+10&36&48&49&221&1432\\
+20&66&88&89&681&4372\\
+40&126&168&169&2351&15052\\
+60&186&248&249&5021&32132\\
+100&306&408&409&13361&85492\\
+150&456&608&609&29411&188192\\
+200&606&808&809&51711&330892\\
+\bottomrule
+\end{tabular}
+\caption{Selected certified pair-distance results. The last column is the
+length of the universal construction, not a computed shortest reset length.
+The archive contains every intervening parameter, not only these rows.}
+\label{tab:results}
+\end{table}
+
+The largest automaton in the exhaustive pair calculation has $606$ states
+and $183{,}921$ pair vertices. Across the $200$ certificates there are
+$12{,}486{,}300$ pair entries, each checked against either the diagonal
+condition or the Bellman identity. All entries are finite and all the stated
+identities passed.
+
+Separately, every structural identity in the universal construction was
+checked for $k=1,\ldots,300$ and at $k=500,1000,10000$. Those tests include
+the retraction image, the two projected maps, the elementary merger, selected
+ranks of powers of the sweeping map, and the final singleton image. They
+also check the shortened-family quotient and the unique endpoint defect.
+For $k=1,\ldots,10$, the reset words were expanded and evaluated both as
+compositions of state arrays and by direct state-by-state simulation.
+
+These computations support implementation fidelity and help catch indexing
+errors. The proofs in \cref{sec:retract,sec:reflections,sec:reset,sec:obstruction}
+are the justification for universal statements. Testing the word at
+$k=10000$ is not being presented as a substitute for induction or a symbolic
+argument.
+
+\subsection{Implementation independence and negative controls}
+
+The generator and verifier build the transition functions differently.
+The generator uses the piecewise rules. The verifier initializes identity
+maps, inserts disjoint transpositions, and then inserts the exceptional
+junction arrows. It does not import the generator or its constructor.
+The structural test program compares the two constructions directly.
+
+The verifier checks every entry using ordinary Python integers and explicit
+exceptions. Its safety conditions are not written as \texttt{assert}
+statements that disappear under \texttt{python -O}. It also rejects three
+deliberately corrupted versions of the smallest certificate: a nonzero
+diagonal, an incremented nondiagonal distance, and a nondiagonal distance
+replaced by zero. Random-word tests with a fixed seed check the
+left-to-right composition convention against a second evaluator.
+
+This is an independent executable checker in the algorithmic sense, not a
+separately developed or proof-assistant-verified implementation. A shared
+misreading of the source figure would still be a possible error unless the
+source-model correspondence were checked; this is why the complete
+transition specification and endpoint discussion are included in the
+article itself.
+
+\section{What the argument does not yet prove}
+\label{sec:remaining}
+
+\subsection{The universal lower bound}
+
+To finish \cref{conj:remaining}, it would suffice to produce, for arbitrary
+$k$, a nonnegative potential $L_k$ on unordered pairs such that it vanishes
+on the diagonal and satisfies
+\begin{equation}\label{eq:potential}
+ L_k(P)\leq1+L_k(Pa),\qquad
+ L_k(P)\leq1+L_k(Pb),
+\end{equation}
+together with
+\begin{equation}\label{eq:potentialstart}
+ L_k(\{q_0,q_j\})\geq4k+8\qquad(1\leq j\leq N).
+\end{equation}
+The telescoping half of \cref{lem:certificate} would then imply the missing
+lower bound. Equality in a Bellman equation would not be necessary for
+this purpose. A piecewise formula proving only the lower bound might be
+simpler than a formula for all exact distances.
+
+The finite distance tables provide examples of such potentials for the
+checked parameters, but this article does not extract a universally valid
+formula from them. Nor does it give a finite parameter-independent partition
+of all pair configurations with verified affine transition inequalities.
+Those are precise missing steps, not consequences of the reset construction.
+
+\subsection{Why the synchronization proof cannot be reversed}
+
+The retraction $p$ deliberately forgets transient position. Many states
+outside $C$ acquire the same projected state, and that is useful for
+constructing a reset word. For a shortest-word lower bound, however,
+forgetting transient position can erase the very time cost one needs to
+measure. Showing that a particular long word collapses a projected cycle
+does not imply that every shorter word fails to merge the distinguished
+state with some partner.
+
+Likewise, the dihedral coloring in \cref{sec:obstruction} is an exact
+obstruction only for the shortened family. In $\Ak$ its one defective
+self-loop changes the color relation. A lower-bound argument based on that
+coloring would have to track both when a trajectory reaches the defect and
+what transient information remains after leaving it. Treating all letters
+as reflections throughout a proposed short word would be false precisely
+at that critical transition.
+
+A further source of misleading lower bounds is symmetrizing the pair graph.
+Allowing a transition to be traversed backward can only shorten distances,
+so undirected distance is a legitimate relaxation but need not be sharp.
+One must not replace a directed shortest-path problem by a symmetric
+geometric picture and then silently retain the claimed exact length.
+
+\subsection{Other conjectural patterns and distinct neighboring questions}
+
+The formula \eqref{eq:diameter} is certified here only through $k=200$.
+Its algebraic leading term would be $(5/36)n^2$ after substituting
+$n=3k+6$, but finite agreement does not establish an asymptotic theorem for
+$D(\Ak)$. The same limitation applies to the observed optimal-partner
+classification outside the certified range.
+
+Triple rendezvous time asks for a shortest word merging \emph{some three}
+initial states. A recent preprint by Zhang \cite{Zhang2026} gives exact
+$\lfloor4n/3\rfloor$ values for a different family. This is a neighboring
+invariant, not the distinguished-state threshold of $\Ak$, and not the
+universal reset problem solved by our construction. Coinciding numerical
+expressions do not identify the automata or the quantified tasks.
+
+Finally, the quadratic bound \eqref{eq:lengthmain} is not presented as
+optimal. The construction spends many letters restoring states to the
+cyclic retract after each projected action. Shorter projected words or
+more economical sweeps could lower it. The exact reset threshold itself
+has not been computed by the pair-distance procedure: it would require
+an appropriate subset calculation or another proof.
+
+\section{Conclusion}
+
+The selected open synchronization question has an explicit answer for the
+figure-complete family: every $\Ak$ resets under
+\[
+ \boxed{\;R_k=p(e c^{r-1})^{r-2}e,\quad
+ c=ab,\quad p=c^r,\quad e=a p b p c^{r-1},\quad r=k+4.\;}
+\]
+The mechanism is a cyclic retraction, two projected reflections differing
+at one index, and an elementary adjacent merger. It is uniform in the
+parameter and includes both endpoint parities without an appeal to
+experimental extrapolation.
+
+The shortened-tail family supplies a matching structural warning: restoring
+a perfect dihedral quotient prevents synchronization altogether. This
+comparison identifies the endpoint defect rather than strong connectivity
+or near-involutivity as the feature used by the proof.
+
+The larger numerical conjecture remains a separate problem. Its upper
+bound is prior work and is reproved here; its lower bound is independently
+certified through $606$ states, but not proved for arbitrary $k$. The
+archive is intended to make both the affirmative theorem and that boundary
+of knowledge easy to inspect and reproduce.
+
+\appendix
+\section{Reproducing the artifacts}
+\label{app:reproduce}
+
+All Python programs use only the standard library and require Python~3.10
+or newer. From the archive's top directory, run
+\begin{lstlisting}
+python code/test_structure.py
+python code/verify_certificates.py --max-k 200
+\end{lstlisting}
+The second command checks the existing certificates without regenerating
+them. To reproduce the data and CSV summary, run
+\begin{lstlisting}
+python code/generate_certificates.py --max-k 200
+python code/verify_certificates.py --max-k 200
+\end{lstlisting}
+On a constrained execution service the generator may instead be split into
+two runs:
+\begin{lstlisting}
+python code/generate_certificates.py --max-k 150
+python code/generate_certificates.py --min-k 151 --max-k 200
+\end{lstlisting}
+The first run replaces the summary and the second appends to it. Do not
+append the same range twice without regenerating the summary from $k=1$.
+
+The certificate for parameter $k$ is
+\texttt{certificates/k\_XXXX.json.gz}, where \texttt{XXXX} is $k$ padded to
+four decimal digits. Its distance array uses index
+\[
+ I(i,j)=\frac{\max(i,j)(\max(i,j)+1)}2+\min(i,j).
+\]
+Thus pairs are listed by increasing larger endpoint and then by increasing
+smaller endpoint. The verifier derives transitions independently from $k$;
+transition arrays supplied by the generator are not trusted or needed.
+
+The file \texttt{results/summary.csv} contains one row for each parameter.
+The three text logs record data generation, certificate checking, and
+structural testing. These logs report completed runs, not predicted results.
+The directory \texttt{code/} includes a guarded expansion routine for small
+reset words and a transformation-based evaluation routine for large ones.
+The file \texttt{PROOF\_AUDIT.md} maps every main claim to its proof,
+computational status, and relevant limitation.
+
+To rebuild the document with a standard TeX Live installation:
+\begin{lstlisting}
+pdflatex -halt-on-error article.tex
+pdflatex -halt-on-error article.tex
+pdflatex -halt-on-error article.tex
+\end{lstlisting}
+The bibliography is embedded below, so no bibliography database or network
+access is needed to compile. A separate \texttt{references.bib} is supplied
+for reuse, not required by this build.
+
+\clearpage
+\section{A compact algebraic audit}
+
+For checking the proof without following the discussion in its original
+order, the exact dependencies are as follows. The transition formulas imply
+the cycle and tail trajectory in \cref{lem:cycle}. Their lengths imply
+$p=c^r$ is an idempotent retraction, together with the three projection
+identities of \cref{lem:projection}. Those identities alone determine the
+actions of $ap$ and $bp$ in \cref{lem:reflections}. Composing those two
+maps and the inverse cycle rotation on $C$ yields the one-point merger of
+\cref{lem:merger}. The path argument in \cref{lem:sweep} then proves the
+reset identity. No computational assertion is an input to this chain.
+
+There are three conventions on which the argument is especially sensitive.
+First, the letter $a$ is applied \emph{before} $b$ in $c=ab$. Second,
+$q_0b=q_1$ and the nonloop endpoint arrow returns to the previous state.
+Third, indices modulo $r$ label the ordered states $s_j$ of the retract;
+they are not the original labels on $q_i$. Each convention is exposed in
+both the formulas and the executable examples.
+
+\begin{thebibliography}{9}
+
+\bibitem{Szykula2026}
+Marek Szyku\l a.
+\newblock Synchronizing Automata: Open Problems.
+\newblock \emph{Electronic Proceedings in Theoretical Computer Science},
+451:33--47, 2026.
+\newblock DOI: \href{https://doi.org/10.4204/EPTCS.451.3}{10.4204/EPTCS.451.3}.
+\newblock \url{https://arxiv.org/abs/2608.24245}.
+\newblock Version~1, 25 August 2026; in particular Section~2.3,
+Figure~3 and Conjecture~8. Consulted 20 September 2026.
+
+\bibitem{MM2026}
+Korea Superintelligence Labs; generated by Machina Mathematica.
+\newblock The compress-with-another threshold of the series $A_k$: an upper
+bound $4n/3$ for every $k$, exact values to $n=186$, and a one-letter correction.
+\newblock \emph{Ideosphere}, version~1, source snapshot 7 September 2026.
+\newblock \url{https://ideosphere.ai/papers/cwa-series}.
+\newblock Archived manuscript:
+\url{https://ideosphere.ai/papers/cwa-series-v1.pdf}.
+\newblock AI-generated research manuscript; independent human review listed
+as open. Consulted 20 September 2026. Its reported Lean build was not rerun
+for the present article.
+
+\bibitem{Zhang2026}
+Enkai Zhang.
+\newblock The triple rendezvous time of a synchronizing automaton can be
+$\lfloor4n/3\rfloor$.
+\newblock Preprint, arXiv:2609.19173v1, 14 September 2026.
+\newblock \url{https://arxiv.org/abs/2609.19173}.
+\newblock Consulted 20 September 2026. This paper concerns a different
+family and is cited only to distinguish the neighboring invariant.
+
+\end{thebibliography}
+\end{document}

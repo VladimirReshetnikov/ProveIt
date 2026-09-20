@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={A manifest of the research reports in docs/reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of 71 independent mathematical research packages}}
+  pdfsubject={Catalogue of 87 independent mathematical research packages}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -53,7 +53,7 @@
 
 \begin{center}
   {\LARGE\bfseries\color{Ink} A manifest of \texttt{docs/reports}}\\[0.6em]
-  {\large Seventy-one independent mathematical research packages,\\
+  {\large Eighty-seven independent mathematical research packages,\\
    classified by subject}\\[1.0em]
   {\normalsize Vladimir Reshetnikov}\\[0.3em]
   {\normalsize 20 September 2026}
@@ -63,19 +63,21 @@
 
 \section{Scope and conventions}
 
-This document catalogues the seventy-one research packages stored under
-\dir{docs/reports}.  They arrived as eighty ZIP archives, in three deliveries,
-which have been unpacked and grouped into the subject hierarchy described in
-Section~\ref{sec:tree}.  The archives themselves are no longer kept in the
-repository.
+This document catalogues the eighty-seven research packages stored under
+\dir{docs/reports}.  They arrived as one hundred and seven ZIP archives, in six
+deliveries, which have been unpacked and grouped into the subject hierarchy
+described in Section~\ref{sec:tree}.  The archives themselves are no longer
+kept in the repository.
 
-Eighty archives yield seventy-one reports because nine pairs turned out to prove
-the same theorem.  Each pair has been merged into one report that proves the
+One hundred and seven archives yield eighty-seven reports because twenty of
+them duplicated another: sixteen pairs, three three-way clusters and one
+four-way cluster.  Each pair has been merged into one report that proves the
 shared theorem once and keeps everything both originals built on top of it.
 Where the two reached a result by genuinely different routes, both proofs are
 kept and marked as alternatives, with a sentence on what each one buys; the
 merged report on surreal option graphs keeps two different five-vertex
-counterexamples for the same reason.  A merged entry below names both of its
+counterexamples for the same reason, and the merged shuffle report keeps three
+independent finite certifications of one theorem.  A merged entry below names both of its
 source archives and says what was doubled.
 
 Not every pair aimed at one problem is a duplicate.  The two Gonshor
@@ -118,17 +120,19 @@ original archive names are recorded with every entry.
 \toprule
 \textbf{Category} & \textbf{Subcategory} & \textbf{Reports}\\
 \midrule
+\dir{automata-and-formal-languages} & ---                               & 5\\
+\midrule
 \dir{ordinals-and-order-types}    & \dir{friendly-order-types}          & 3\\
                                   & \dir{wqo-powersets-and-statures}    & 4\\
                                   & \dir{transfinite-words}             & 2\\
                                   & \dir{ordinal-arithmetic}            & 4\\
                                   & \dir{games-on-ordinals}             & 3\\
-                                  & (top level)                         & 2\\
+                                  & (top level)                         & 3\\
 \midrule
 \dir{surreal-numbers}             & ---                                 & 6\\
 \midrule
 \dir{hankel-determinants}         & \dir{somos-and-elliptic}            & 3\\
-                                  & \dir{catalan-and-ballot}            & 2\\
+                                  & \dir{catalan-and-ballot}            & 4\\
                                   & \dir{growth-and-runs}               & 2\\
                                   & (top level)                         & 1\\
 \midrule
@@ -138,17 +142,17 @@ original archive names are recorded with every entry.
 \midrule
 \dir{tetration-and-digit-stabilization} & ---                           & 6\\
 \midrule
-\dir{log-concavity-and-unimodality}     & ---                           & 7\\
+\dir{log-concavity-and-unimodality}     & ---                           & 10\\
 \midrule
 \dir{graph-theory}                      & ---                           & 3\\
 \midrule
-\dir{enumerative-combinatorics}         & ---                           & 10\\
+\dir{enumerative-combinatorics}         & ---                           & 15\\
 \midrule
 \dir{generating-functions-and-asymptotics}
                                   & \dir{binary-product-coefficient-counts} & 3\\
                                   & (top level)                         & 3\\
 \midrule
-\multicolumn{2}{l}{\textbf{Total}} & \textbf{71}\\
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{87}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -429,6 +433,92 @@ essential to it.  The question is Massas, \emph{A Semi-Constructive Approach to
 the Hyperreal Line} (2023), p.~517 after Fact~5.10, repeated in the 2024
 dissertation \emph{Duality and Infinity}, p.~249.}
 
+\entry{A non-Baire translation-invariant ideal}
+{ordinals-and-order-types/non-baire-translation-invariant-ideal}
+{article.pdf}{non\_baire\_ideal\_research.zip}
+{An affirmative construction for Question~1 of Filipów and Tryba,
+\emph{Densities for sets of natural numbers vanishing on a given family}
+(J.\ Number Theory 211 (2020) 371--382; arXiv:2309.00982, p.~7): a
+translation-invariant ideal that is not Baire and carries a perfect
+translation-almost-disjoint family.}
+
+\section{Automata and formal languages}
+
+Five reports on state complexity, synchronization and language hierarchies.
+The first two are each a merge: the shuffle bound arrived four times and the
+DFAO reversal bound twice.
+
+\entry{The six-state shuffle bound}
+{automata-and-formal-languages/shuffle-six-state-bound}
+{shuffle\_six\_state.pdf}{shuffle\_six\_state\_research (1).zip + shuffle\_six\_state\_research.zip + Shuffle\_Six\_State\_Theorem.zip + six\_state\_shuffle\_research.zip}
+{For complete DFAs with $m,n\ge2$ and $\min(m,n)\le6$, the worst-case
+deterministic state complexity of the shuffle is
+$F(m,n)=2^{mn-1}+2^{(m-1)(n-1)}(2^{m-1}-1)(2^{n-1}-1)$, over a finite alphabet
+allowed to depend on $m$ and $n$; the unrestricted conjecture stays open.  The
+route is a reachability theorem in the universal shuffle automaton --- a subset
+is reachable exactly when it meets the initial row and the initial column ---
+proved by induction on $(m+n,|S|)$ down to a finite certificate obligation.
+\emph{Merged from four reports.  Two shipped the same 10{,}642 witnesses; a
+third supplies an independent database of 10{,}619 witnesses sharing no witness
+with them, so the finite step is certified twice over; a fourth adds a fifth
+analytic reduction that cuts the obligation to 453 certificates and replaces
+the solver search with a deterministic enumeration.  All three routes are
+kept.}}
+
+\entry{A coloring obstruction to maximal binary DFAO reversal}
+{automata-and-formal-languages/dfao-reversal-coloring-obstruction}
+{article.pdf}{dfao\_reversal\_research.zip + binary\_dfao\_reversal\_research.zip}
+{For transformations $a,b$ on an $n$-element set and an output map to $k$
+labels, proves $|\tau\langle a,b\rangle|\le k^n-k!+g(k)<k^n$ for $3\le k\le n$,
+with $g(k)$ the largest order of a permutation of $k$ symbols --- the
+binary-alphabet nonattainment question of Davies, arXiv:1705.07150v2,
+Section~5.  The mechanism is a collision-orbit graph, a rightmost singular
+factorization, and a cyclic relabeling bound.  Adds an abelian-permutation
+extension, a structural universal bound matching the published lower
+construction on all 372 pairs with $7\le n\le30$, and polynomial-time
+missing-coloring certificates.  \emph{Merged; the two originals ran the same
+three-case argument, and both a qualitative short proof and the counting proof
+are kept.}}
+
+\entry{Synchronizing D\.zyga's automata by a cyclic retract}
+{automata-and-formal-languages/dzyga-synchronizing-retract}
+{article.pdf}{Dzyga\_Automata\_Cyclic\_Retract\_Research.zip}
+{For the Figure-3-complete automaton $A_k$ of Conjecture~8 in Szyku\l{}a's 2026
+survey, exhibits an explicit word $R_k=p(ec^{r-1})^{r-2}e$ with $r=k+4$ that
+sends every state to $q_2$ for every $k\ge1$, of expanded length
+$8k^2+54k+92=\tfrac89n^2+\tfrac{22}3n+16$ for $n=3k+6$.  The proof is a cyclic
+retraction with two projected reflections whose discrepancy supplies one
+adjacent merger, and does not depend on the finite computations; shortening the
+reflected tail by one state gives a nonsynchronizing automaton with a dihedral
+permutation quotient.  This settles the synchronization clause of the stated
+model, not the numerical threshold conjecture, and the universal lower bound
+$\tau(q_0)\ge4k+8$ is not proved.}
+
+\entry{Gaps in bounded-shuffle hierarchies}
+{automata-and-formal-languages/insertion-degree-spectra}
+{article.pdf}{shuffle\_spectra\_research.zip}
+{A counterexample to the insertion-degree No-Gap Conjecture of Hughes,
+arXiv:2608.27755v1, Section~11, followed by positive results: every finite set
+of positive integers containing~1 is the insertion-degree spectrum of two
+nonempty finite languages over a suitable alphabet, and any prescribed finite
+list of degrees above~1 is realizable with every other output of degree~1.  A
+ternary pair has spectrum $\{1,3\}$ with sole difficult output \texttt{abcba},
+whose length~5 is the minimum possible for a gap witness; a binary pair has
+spectrum $\{1,2,4\}$ while all 18 singleton source-pair spectra are initial
+intervals, so source-pair ambiguity can erase a degree.  The separate
+iteration-depth no-gap conjecture is proved for arbitrary languages.}
+
+\entry{A cut-sensitive attack on the first open MIX grammar case}
+{automata-and-formal-languages/mix-grammar-cut-sensitive}
+{mix\_grammar\_report.pdf}{mix\_grammar\_research.zip}
+{The selected question --- whether $L_3=\mathrm{MIX}$ for the canonical tuple
+grammars of Yuyama, \emph{On the Kanazawa--Salvati Conjecture}
+(arXiv:2609.13871v1) --- is \emph{not} settled here, and the report says so at
+the front.  What it does contain, with complete written proofs, is a
+cut-sensitive membership recurrence, a broad three-component positive family,
+an infinite family in $L_3\setminus L_2$, and an exhaustive computation through
+length~21.}
+
 \section{Surreal numbers}
 
 Six reports on the surreal field itself: birthdays and their behaviour under
@@ -584,6 +674,25 @@ every residual coefficient for $n\ge1$; the same products give the conjectured
 generating-function denominators, exact numerator degrees and reciprocal
 numerator identities.  Adds strict log-concavity of the residual coefficients
 and their limiting binomial profile.}
+
+\entry{Rectangular Schur polynomials and Cigler's Conjecture 8}
+{hankel-determinants/catalan-and-ballot/cigler-conjecture-8-schur}
+{article.pdf}{cigler\_conjecture8\_research.zip}
+{A complete proof of Conjecture~8 in Cigler, arXiv:2111.14492v3, Section~4
+(printed pp.~16--17), for the Hankel determinants of
+$b_m(t)=\sum_r\binom{\lfloor m/2\rfloor}{r}\binom{\lceil m/2\rceil}{r}t^r$,
+including the numerator-polynomial degree and reciprocity assertions.  A
+different conjecture of that paper from the ballot-polynomial entry
+(Conjectures 13--15) and from the parity entry (Conjecture~16).}
+
+\entry{A parity factorization for Cigler's Conjecture 16}
+{hankel-determinants/catalan-and-ballot/cigler-conjecture-16-parity}
+{article.pdf}{cigler\_conjecture16\_research.zip}
+{A complete proof of Conjecture~16 in Cigler, arXiv:2111.14492v3, Section~6
+(pp.~21--22), on the Hankel polynomials, together with a sharp stabilization
+statement: the report also determines the first coefficient at which the
+conjectured stabilization fails.  Its own README explains why this is a
+different problem from the other Cigler entries in this collection.}
 
 \subsection{Arithmetic Hankel determinants}
 
@@ -863,6 +972,37 @@ $W_n(t)=(A_{n+1}(t)-tA_n(t)/2)^2+3t^2A_n(t)^2/4>0$.  The adjacent-polynomial
 quadratic identity behind it was already in Ulas's paper and is re-derived, not
 claimed as new.}
 
+\entry{Canonical binomial decomposition does not preserve real roots}
+{log-concavity-and-unimodality/binomial-decomposition-real-roots}
+{article.pdf}{mu\_welker\_recursive\_decomposition.zip + recursive\_binomial\_counterexample.zip}
+{A negative answer to Question~3.10 of Mu and Welker (arXiv:2503.24076v1) for
+their canonical decomposition $F(t)=G(t)+tH(t)$ built from the integer binomial
+expansion of every coefficient: real-rootedness of $F$ does not pass to the
+parts.  Two cubic witnesses are carried, one with a repeated root and one with
+simple roots, each with its own digit table, discriminant pair and exact
+nonreal zeros; the report also gives the minimal witness within cubics, two
+all-degree thresholds neither of which implies the other, and a two-sided
+limit.  \emph{Merged; the two originals were two write-ups of one proof
+program, each already containing both witnesses with the headline and the
+co-star swapped.}}
+
+\entry{A first-triple criterion for log-concavity of MDS weight distributions}
+{log-concavity-and-unimodality/mds-weight-log-concavity}
+{article.pdf}{mds\_log\_concavity\_research.zip}
+{For $d=n-k+1\ge2$, $k\ge3$ and $q>d$, the compressed formal MDS weight
+distribution $(1,A_d,\ldots,A_n)$ is log-concave if and only if the single
+inequality $A_{d+1}^2\ge A_dA_{d+2}$ holds --- the whole sequence is controlled
+by its first triple.}
+
+\entry{A uniform Hankel obstruction for higher-order Stirling subset polynomials}
+{log-concavity-and-unimodality/stirling-hankel-obstruction}
+{article.pdf}{stirling\_hankel\_obstruction.zip}
+{Proves the higher-order negative assertion of Deb--Sokal Conjecture~1.4(d),
+with a stronger statement at every positive shift: for $r\ge3$ and $a\ge1$ the
+$3\times3$ Hankel determinant $\det(s_{r,a+i+j}(x))$ of the row-generating
+polynomials fails the required positivity.  Clause~(d) of that conjecture;
+clause~(c) is the subject of the higher-order Stirling rows entry.}
+
 \section{Graph theory}
 
 \entry{Mutual-visibility sets in Andr\'asfai graphs}
@@ -936,6 +1076,24 @@ functions in which \emph{spot} $j$ is lucky.  Adds an exact reflection law, all
 fixed right-edge columns, a closed form for OEIS A374533, Poisson edge limits,
 uniform bulk convergence, polynomial reciprocity and asymptotic expansions.}
 
+\entry{A hexagonal-lattice proof of the A195806 conjecture}
+{enumerative-combinatorics/a195806-hexagonal-lattice}
+{article.pdf}{A195806\_hexagonal\_proof.zip}
+{An elementary derivation of the six residue-class formulas and the
+constant-coefficient recurrence recorded as conjectural in OEIS A195806,
+starting from the original triangular-array constraints rather than from
+interpolation.  The steps are an integral six-parameter bijection, four
+independent translation intervals, a dihedral chamber reduction, and an exact
+lattice count.}
+
+\entry{Leaves of large type in the numerical-semigroup tree}
+{enumerative-combinatorics/numerical-semigroup-leaf-types}
+{article.pdf}{leaf\_type\_counterexample.zip}
+{Disproves Conjecture~4.4 of Chappelon, Ram\'irez Alfons\'in and Stamate,
+\emph{Numerical semigroup tree: type-representation} (arXiv:2507.15006v2), with
+an explicit genus-34 counterexample, and establishes a sharp asymptotic order
+for the type of leaves in that tree.}
+
 \entry{Strict growth and the Catalan limit for adjacency-bounded 132-avoiding permutations}
 {enumerative-combinatorics/adjacency-bounded-132-avoiders}
 {article.pdf}{strict\_growth\_132.zip}
@@ -967,6 +1125,46 @@ Two mechanisms: Ehrhart--Macdonald reciprocity after subtracting the all-ones
 vector, extending the double identity to independently weighted capacities; and
 duplication of both colour classes of the bipartite graph followed by
 Postnikov's lattice-point formula, giving the conjectured matrix transpose.}
+
+\entry{Support reciprocity and the $q$-zeta polynomial of preorder lattice-point posets}
+{enumerative-combinatorics/preorder-q-zeta-reciprocity}
+{article.pdf}{preorder\_qzeta\_reciprocity.zip + preorder\_q\_zeta\_reciprocity.zip + preorder\_q\_reciprocity\_research.zip}
+{Proves the full $q$-refinement of Athanasiadis--Chapoton Conjecture~4.9,
+equation~(21): for a preorder $\tau$ on $[n]$, with $P_\tau$ the nonnegative
+integer vectors satisfying $a(I)\le|I|$ on every order ideal and $B_\tau$ its
+maximal elements, $Z_q(P_\tau,[-1]_q)=(-1)^n\sum_{b\in B_\tau}q^{-|\mathrm{supp}(b)|}$,
+together with the stronger identity at each exact support.  The $q=1$ case was
+already covered by the preorder-polytope reciprocity report and is cited, not
+reclaimed.  \emph{Merged from three reports that reached the same two theorems
+by three architecturally independent routes --- an incidence inversion with
+Boolean localization, the same with a Hall-based privatization and a
+self-contained Euler identity, and a capacity-enumerator reciprocity with a
+transfer involution --- and all three survive.}}
+
+\entry{An explicit shelling for preorder lattice-point posets}
+{enumerative-combinatorics/preorder-shellability}
+{article.pdf}{preorder\_shellability\_research.zip}
+{An affirmative solution to Question~4.6 of Athanasiadis and Chapoton
+(arXiv:2605.26916v1, p.~13): an explicit pure shelling of the order complex of
+$P_\tau$ with its minimum removed, and a coning that shells the order complex
+of $P_\tau$ itself.  Both complexes are therefore Cohen--Macaulay over the
+integers and over every field.  A different question of that paper from the
+three other preorder entries.}
+
+\entry{Multiple-chain preorder polytopes}
+{enumerative-combinatorics/multiple-chain-exponential-formula}
+{article.pdf}{multiple\_chain\_exponential\_formula\_research.zip + multiple\_chains\_research.zip}
+{Proves the exponential generating-function identity proposed in Section~9.5 of
+Athanasiadis and Chapoton (arXiv:2605.26916v1) for lattice points of
+multiple-chain preorder polytopes counted by number of nonzero coordinates, in
+a rectangular generalization with independent block width and height.  Adds a
+duality corollary, an Ehrhart evaluation, a degree-$2^d$ root theorem with a
+quartic elimination certificate, two treatments of the $\gamma$-vector, a
+Stieltjes moment representation, the boundary constant in two forms, and a
+central limit theorem with exact variance.  \emph{Merged; the identity is
+proved twice, once through a subset encoding with a bounded symbol and once
+through slack meanders in a Laurent ring, and the eleven deliberate
+redundancies are listed in the text.}}
 
 \entry{Rationality and growth of stabilized permutation-weight series}
 {enumerative-combinatorics/stabilized-permutation-weights}
@@ -1044,16 +1242,18 @@ $a_n=a_{n-1}-2a_{n-2}$, with $b_n=T_{n-1}+2^n-1+a_n$, $T_n=T_{n-1}+b_n$,
 $G_{2n-1}=2^{n-1}$ and $G_{2n}=b_n$: the counting series has a natural boundary
 on the unit circle, hence is neither rational, algebraic nor D-finite.}
 
-\entry{Odd coefficients in quasifibonacci products}
-{generating-functions-and-asymptotics/binary-product-coefficient-counts/quasifibonacci-odd-coefficient-counts}
-{article.pdf}{quasifibonacci\_parity\_research.zip}
-{Stanley's Conjecture~6.3, with a seed-independent extension.  For $k\ge2$ and
-seeds each exceeding the sum of their predecessors, continued by the $k$-term
-recurrence, the number $h_k(n)$ of odd coefficients of
-$\prod_{i\le n}(1+x^{w_i})$ has generating function
-$(1+2z^k)/(1-2z+2z^k-2z^{k+1})$, independently of the seeds.  The proof builds
+\entry{Coefficient residues in generalized Fibonacci products}
+{generating-functions-and-asymptotics/binary-product-coefficient-counts/kbonacci-coefficient-residues}
+{article.pdf}{stanley\_kbonacci\_research.zip + quasifibonacci\_parity\_research.zip}
+{Settles Conjectures 6.2 and 6.3 of Stanley, \emph{Theorems and Conjectures on
+Some Rational Generating Functions} (arXiv:2101.02131v3, pp.~23--24).  For
+$k$-bonacci seeds each exceeding the sum of their predecessors, the number of
+odd coefficients of $\prod_{i\le n}(1+x^{w_i})$ has generating function
+$(1+2z^k)/(1-2z+2z^k-2z^{k+1})$, independently of the seeds; the proof builds
 periodic signs of block length $k+1$ and block product $-1$ and shows every
-signed finite product is flat.}
+signed finite product is flat.  \emph{Merged; the Conjecture 6.3 halves proved
+the same statement on the same domain, and the surviving report adds
+Conjecture~6.2 and the asymptotic analysis.}}
 
 \subsection{Asymptotics, records and discrepancy}
 

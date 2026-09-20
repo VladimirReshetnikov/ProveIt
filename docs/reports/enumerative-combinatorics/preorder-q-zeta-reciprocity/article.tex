@@ -1,0 +1,3283 @@
+% SPDX-License-Identifier: MIT-0
+% Merged research draft. Incorporates material originally written as three
+% separate packages; see Section 1.5 (Provenance) and Appendix E.
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,bookmarksnumbered=true]{hyperref}
+\usepackage{listings}
+\definecolor{Ink}{HTML}{19384B}
+\definecolor{CodeBackground}{HTML}{F4F5EF}
+\lstset{basicstyle=\small\ttfamily,backgroundcolor=\color{CodeBackground},
+ breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,
+ frame=single,rulecolor=\color{black!15},xleftmargin=4pt,xrightmargin=4pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Support reciprocity for preorder posets}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.3em}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=0.2em,topsep=0.4em}
+\emergencystretch=2em
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{imported}[theorem]{Imported theorem}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\zero}{\mathbf 0}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Max}{\operatorname{Max}}
+\newcommand{\Int}{\operatorname{int}}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\cov}{\operatorname{cov}}
+\newcommand{\Deg}{\operatorname{Deg}}
+\newcommand{\Dr}{\mathcal D}
+\newcommand{\Ical}{\mathcal I}
+\newcommand{\Ecal}{\mathcal E}
+\newcommand{\Tr}{\mathcal T}
+\newcommand{\Dz}[1]{\Delta^{0}_{#1}}
+\newcommand{\qint}[1]{[#1]_q}
+\newcommand{\Zeta}{\mathcal Z}
+\newcommand{\zt}[1]{\mathbf z^{#1}}
+\newcommand{\omitprod}[1]{\prod_{i\notin #1}(1-z_i)}
+\newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
+\newcommand{\gausstbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{t}}
+\hypersetup{pdftitle={Support reciprocity and the q-zeta polynomial of preorder lattice-point posets},
+ pdfauthor={Merged AI-assisted research draft prepared for Vladimir Reshetnikov},
+ pdfsubject={A proposed proof of Athanasiadis--Chapoton Conjecture 4.9, with two independent proofs and evaluations at every negative q-integer}}
+
+\title{\color{Ink}\bfseries Support reciprocity and the \texorpdfstring{$q$}{q}-zeta polynomial\protect\\
+of preorder lattice-point posets\\[0.45em]
+\large Two independent proofs, every negative \texorpdfstring{$q$}{q}-integer,
+and arbitrary height functions}
+\author{Merged research draft prepared for Vladimir Reshetnikov\\
+\small Mathematical investigation and exposition with AI assistance}
+\date{20 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Athanasiadis and Chapoton conjecture a negative-evaluation formula for the
+$q$-zeta polynomial of the coordinatewise poset of lattice points in a
+preorder polytope. This draft gives a proposed proof of the full
+$q$-identity, not only its unweighted specialization, and strengthens it to a
+separate identity for every support of a maximal lattice point. The
+strengthened statement is proved \emph{twice}, by two arguments that share
+nothing beyond two classical imports and the elementary structure of the
+poset. The first proof runs through weighted incidence inversion, a
+support-restricted bipartite graph, and Ehrhart--Macdonald reciprocity at the
+capacities $\one+\one_T$; inside it, the geometric step is available in two
+interchangeable forms, one importing Postnikov's bipartite duality and one
+deriving the duality it needs from a single application-free Euler identity
+for arbitrary bipartite graphs. The second proof uses no incidence matrix, no
+matching theorem and no second polytope: it keeps an auxiliary capacity alive
+through multivariate Ehrhart reciprocity, kills every non-maximal layer by a
+single specialization, and converts the result into a coefficient-transfer
+theorem for the involution $\Tr f(z)=(1-z)f(-z/(1-z))$. Only the second proof
+reaches every negative $q$-integer $\qint{-r}$, where it produces manifestly
+nonnegative integer coefficients with a colored-composition meaning; only the
+first reaches arbitrary normalized height functions. We also obtain
+multivariate, transversal-matroid and Tutte interpretations, a
+characterization of the supports that occur, sharp extreme degrees, explicit
+coefficient formulas, worked examples, and three obstructions that bound the
+theorem in three different directions. Three independent exact verifiers are
+included. The proofs are mathematical, with the classical inputs stated
+explicitly; the computations are corroboration rather than a proof
+substitute.
+\end{abstract}
+
+\noindent\textbf{Status.} This is an AI-assisted research draft containing
+complete proposed arguments. It has not been independently refereed or
+verified in a proof assistant. The source checked still labels the target as
+Conjecture~4.9; focused literature searches found no separate resolution.
+This is not a certification of priority. Where the three source drafts merged
+here recorded a caveat differently, the most cautious wording has been kept.
+
+\tableofcontents
+\clearpage
+
+\section{The problem, the results, and the nonduplication boundary}
+\label{sec:problem}
+
+Let $E$ be a finite set of cardinality $n$, and let $\tau$ be a preorder on
+$E$: a reflexive, transitive relation, with antisymmetry \emph{not} required.
+An \emph{ideal} is a set $I\subseteq E$ such that $j\in I$ and $i\le_\tau j$
+imply $i\in I$; a \emph{filter} is the complement of an ideal, equivalently an
+upward closed set. For a vector $x$, write $x(I)=\sum_{i\in I}x_i$ and
+$|x|=x(E)$. Define
+\begin{equation}
+ Q_\tau=\{x\in\R_{\ge0}^E:x(I)\le |I|\text{ for every ideal }I\},
+ \qquad P_\tau=Q_\tau\cap\Z^E.
+ \label{eq:preorder-polytope}
+\end{equation}
+The order on $P_\tau$ is coordinatewise. Its rank is $|a|$, and all maximal
+points have rank $n$; proofs of these basic facts are included below.
+
+Put $\qint m=(q^m-1)/(q-1)$. The $q$-zeta polynomial is characterized by
+\begin{equation}
+ \Zeta_q(P,\qint m)
+ =\sum_{a_1\le\cdots\le a_{m-1}}q^{|a_1|+\cdots+|a_{m-1}|}
+ \qquad(m\ge2).
+ \label{eq:qzeta-def}
+\end{equation}
+Here the chains are weak chains, repetitions are allowed, and there are
+\emph{$m-1$} entries. The second argument of $\Zeta_q$ is an ordinary
+polynomial variable over $\Q(q)$, not a count of chain entries. In particular,
+$\qint{-1}=-q^{-1}$. These conventions are those in
+Athanasiadis--Chapoton~\cite[Section~4.4]{AC}, following
+Chapoton~\cite{Chapoton}.
+
+The target is Conjecture~4.9, equation~(21), in~\cite{AC}:
+\begin{equation}
+ \boxed{\displaystyle
+ \Zeta_q(P_\tau,-q^{-1})
+ =(-1)^n\sum_{a\in\Max(P_\tau)}q^{-\cov(a)}.}
+ \label{eq:target}
+\end{equation}
+The statistic $\cov(a)$ counts the elements covered by $a$, not those covering
+$a$. For our coordinate downset,
+\begin{equation}
+ \cov(a)=|\supp(a)|,\qquad \supp(a)=\{i:a_i>0\}.
+ \label{eq:covers-support}
+\end{equation}
+It is this identity \eqref{eq:covers-support}, proved in
+Section~\ref{sec:transport}, that makes \eqref{eq:target} literally the source
+conjecture rather than a renormalized variant of it.
+
+\subsection{What is proved}
+\label{sec:whatisproved}
+
+For independent indeterminates $(z_i)_{i\in E}$, set
+\begin{equation}
+ H_\tau(\mathbf z)
+ =\sum_{a\in\Max(P_\tau)}\prod_{i\in\supp(a)}z_i,
+ \qquad \zt B=\prod_{i\in B}z_i,
+ \label{eq:support-poly}
+\end{equation}
+and write $H_\tau(u)=H_\tau(u,\ldots,u)$ for its diagonal. The polynomial
+$H_\tau$ is multiaffine: each variable has degree at most one. Different
+maximal points may contribute the same monomial. For $B\subseteq E$ put
+\begin{align}
+ N_\tau(B)&=\#\{a\in\Max(P_\tau):\supp(a)=B\},
+ \label{eq:N-def}\\
+ \eta_\tau(B)&=\sum_{\substack{S\subseteq E\\\one_B+\one_S\in P_\tau}}
+                 (-1)^{|S|}.
+ \label{eq:eta-def}
+\end{align}
+
+\begin{theorem}[Support-refined reciprocity]
+\label{thm:main}
+For every finite preorder $\tau$ on $E$,
+\begin{equation}
+ H_\tau(\mathbf z)
+ =(-1)^n
+ \sum_{\substack{B,S\subseteq E\\ \one_B+\one_S\in P_\tau}}
+ (-1)^{|B|+|S|}\zt B.
+ \label{eq:main}
+\end{equation}
+Equivalently, for every $B\subseteq E$,
+\begin{equation}
+ N_\tau(B)=(-1)^{n-|B|}\eta_\tau(B)
+ =(-1)^{n-|B|}
+ \sum_{\substack{S\subseteq E\\\one_B+\one_S\in P_\tau}}(-1)^{|S|}.
+ \label{eq:exact-support}
+\end{equation}
+Conjecture~\eqref{eq:target} follows by setting every $z_i=q^{-1}$ and using
+weighted incidence inversion.
+\end{theorem}
+
+The second headline statement goes past $\qint{-1}$. For integers $r\ge1$ and
+$a\ge0$, define
+\begin{equation}
+ C_{r,0}(t)=1,\qquad
+ C_{r,a}(t)=\sum_{s=1}^{\min(r,a)}
+ \binom{a-1}{s-1}e_s(t,t^2,\ldots,t^r)\quad(a\ge1),
+ \label{eq:Cdefinition}
+\end{equation}
+where $e_s$ is the elementary symmetric polynomial of degree $s$. Every
+coefficient of $C_{r,a}$ is a nonnegative integer.
+
+\begin{theorem}[All negative $q$-integers]
+\label{thm:allnegative}
+For every finite preorder $\tau$ and every integer $r\ge1$,
+\begin{equation}
+ (-1)^n \Zeta_q(P_\tau,\qint{-r})
+ =\sum_{b\in \Max(P_\tau)}\prod_{i\in E}C_{r,b_i}(q^{-1})
+ \ \in\ \Z_{\ge0}[q^{-1}].
+ \label{eq:allnegative}
+\end{equation}
+For $n>0$, the polynomial on the right, in the variable $t=q^{-1}$, is monic
+of degree $rn$; its smallest exponent is the number $c_\tau$ of maximal
+equivalence classes of $\tau$, and the coefficient there is the number of
+maximal points of that support size.
+\end{theorem}
+
+Here an equivalence class is a class of the relation $i\sim j$ if $i\le_\tau
+j\le_\tau i$; the quotient is a finite poset. Equivalence classes retain their
+original cardinalities throughout: replacing a class by a single element and
+forgetting that cardinality would change the problem. At $r=1$ we have
+$C_{1,a}(t)=t$ for $a\ge1$, so Theorem~\ref{thm:allnegative} contains
+\eqref{eq:target}.
+
+The third headline statement goes sideways instead, replacing the rank by an
+arbitrary height statistic. Let $h:P_\tau\to\N$ be strictly increasing on
+comparable distinct elements with $h(\zero)=0$, and let $\Zeta_{q,h}$ be the
+height-weighted $q$-zeta polynomial of~\cite{Chapoton}, defined by
+\eqref{eq:qzeta-def} with $|a_j|$ replaced by $h(a_j)$.
+
+\begin{theorem}[Arbitrary normalized heights]
+\label{thm:height-intro}
+For every such $h$,
+\begin{equation}
+ \Zeta_{q,h}(P_\tau,\qint{-1})
+ =(-1)^n\sum_{b\in\Max(P_\tau)}q^{-h(\one_{\supp(b)})}.
+ \label{eq:height-intro}
+\end{equation}
+The exponent uses the \emph{Boolean support vector} $\one_{\supp(b)}$, not
+$h(b)$.
+\end{theorem}
+
+\subsection{Two proofs, and two engines inside the first}
+\label{sec:roadmap}
+
+Theorem~\ref{thm:main} is proved twice. The two proofs are recorded in full,
+and deliberately so: the result is unrefereed, the arguments are independent,
+and each reaches a generalization the other does not.
+
+\medskip\noindent\textbf{Proof A (incidence inversion plus geometry),
+Sections~\ref{sec:incidence}--\ref{sec:private}.} Weighted incidence-matrix
+inversion over $\Q(q)$ reduces the negative evaluation to points with
+coordinates in $\{0,1,2\}$ and produces the signed Boolean sums
+$\eta_\tau(B)$; this step works for an arbitrary finite coordinate downset and
+for an arbitrary normalized height, which is where
+Theorem~\ref{thm:height-intro} comes from. A geometric argument then evaluates
+those signed sums. Two interchangeable engines are available for it:
+\begin{itemize}
+\item \textbf{Engine~1 (Section~\ref{sec:interior}), cumulative supports.}
+ A support-restricted bipartite graph $G_T$ and Postnikov's bipartite
+ draconian duality identify maximal points supported inside $T$ with the
+ interior lattice points of $Q_{\tau^*}(\one+\one_T)$; Ehrhart--Macdonald
+ reciprocity and a coordinatewise two-value interpolation finish. Shortest
+ route, largest imported surface.
+\item \textbf{Engine~2 (Section~\ref{sec:private}), exact supports.}
+ Two Hall lemmas reduce $\eta_\tau(B)$ at the \emph{exact} support $B$ to an
+ alternating count over the independent sets of a private-element bipartite
+ graph, and a standalone Euler identity, proved for \emph{every} bipartite
+ graph from two applications of Postnikov's lattice-count theorem plus
+ Ehrhart, evaluates that count. Longest route, smallest imported surface: it
+ re-derives, in the case it needs, the duality Engine~1 imports.
+\end{itemize}
+
+\medskip\noindent\textbf{Proof B (the transfer involution),
+Section~\ref{sec:transfer}.} No incidence matrix, no Hall theorem, no
+bipartite graph, no second polytope, no interior-point count. Instead: build
+the independent-capacity enumerator $\Ecal_\sigma(u,v)$ and prove
+$\Ecal_\sigma(-u,-v)=(-1)^n\Ecal_\sigma(u-\one,v-1)$ by interior translation
+and Ehrhart; then set $v=0$, so that the auxiliary capacity slides from $0$ to
+$-1$ and the binomial factor $\binom{n-|a|-1}{n-|a|}$ annihilates every
+non-maximal layer; then convert the resulting binomial identity into a
+transfer theorem for arbitrary local weights, through the involution
+$\Tr f(z)=(1-z)f(-z/(1-z))$ on the basis $(1-z)^m$; finally evaluate
+$\Zeta_q$ by an explicit Gaussian endpoint formula valid at \emph{every}
+integer $m$ and feed $f(z)=(1-z)(1-q^{-1}z)$ through $\Tr$. This is the only
+route that reaches $\qint{-r}$ for every $r$, so it is where
+Theorem~\ref{thm:allnegative} comes from.
+
+\medskip
+The two proofs share the two classical imports (Postnikov's lattice-count
+theorem and Ehrhart--Macdonald reciprocity), the elementary structure of
+$P_\tau$ in Section~\ref{sec:transport}, and nothing else. They also touch at
+two seams, which Sections~\ref{sec:transfer} and~\ref{sec:consequences} point
+out explicitly: the two-capacity collapse of Proof~B is the two-value
+interpolation table of Proof~A in binomial rather than polynomial language,
+and the independent-set family of Engine~2 is the family
+$\{S:\one_B+\one_S\in P_\tau\}$ of Engine~1, which is a transversal matroid.
+
+\subsection{What is deliberately kept more than once}
+\label{sec:kept}
+
+Several things below exist in two or three versions. None of the duplications
+is an accident of merging: each buys something the others do not, and the
+place where each lives is listed here once and for all.
+
+\begin{enumerate}[label=(\arabic*),leftmargin=2.2em]
+\item \textbf{Two proofs of Theorem~\ref{thm:main}}
+ (Sections~\ref{sec:incidence}--\ref{sec:private} and
+ Section~\ref{sec:transfer}): they cross-validate an unrefereed result, and
+ only one of them generalizes to $\qint{-r}$ while only the other reaches
+ arbitrary height functions.
+\item \textbf{Two geometric engines inside Proof~A}
+ (Sections~\ref{sec:interior} and~\ref{sec:private}): Engine~1 is much
+ shorter, Engine~2 imports strictly less, so a reader who declines
+ Imported theorem~\ref{imp:duality} still has a complete route.
+\item \textbf{Three derivations of the exact-support identity}
+ \eqref{eq:exact-support} (Sections~\ref{sec:completion}, \ref{sec:private}
+ and~\ref{sec:proofB-support}): this is the statement the whole document is
+ built on, so every independent route to it is worth having.
+\item \textbf{Two constructions of the $q$-zeta polynomial at negative
+ arguments} (Lemma~\ref{lem:continuation} and
+ Proposition~\ref{prop:endpoint}): the matrix continuation is what makes
+ arbitrary heights reachable, the endpoint formula is what makes every
+ $\qint{-r}$ reachable, and neither implies the other
+ (Remark~\ref{rem:two-constructions}).
+\item \textbf{Three obstructions carrying four failure statements}
+ (Section~\ref{sec:limits}): they bound purity, transitivity and unit
+ capacities separately, and collapsing any of them would lose a boundary.
+\item \textbf{Two matroid invariants for the same coefficient}
+ (Proposition~\ref{prop:matroid} and \eqref{eq:h-polynomial}): the Tutte
+ evaluation places it inside a standard formalism, the independence-complex
+ $h$-polynomial needs no matroid theorem at all.
+\item \textbf{Three verifiers} (Section~\ref{sec:computation}): they test
+ three different theorems, at two different seeds and two different sampling
+ depths, so the sampled populations are genuinely independent.
+\item \textbf{Two statements about which supports occur}
+ (Proposition~\ref{prop:support-feasible} and
+ Lemma~\ref{lem:minsupp} with Proposition~\ref{prop:degrees}): the
+ qualitative cofinality criterion settles positivity, the quantitative
+ extremal statement is what the degree claim of
+ Theorem~\ref{thm:allnegative} depends on.
+\item \textbf{Two sets of coefficient formulas}
+ (Proposition~\ref{prop:top} and Section~\ref{sec:consequences}): the
+ third-from-the-top coefficient \eqref{eq:next-coefficient} and the product
+ rule over disjoint unions came from different arguments and neither follows
+ from the other.
+\item \textbf{Two accounts of the $q\to1$ specialization}
+ (Section~\ref{sec:shadow}): the nilpotent argument is the cleaner
+ justification, the interpolation is what the verifier implements, and both
+ are needed to explain why the case already covered by
+ \cite{PriorReciprocity} falls out safely rather than being reproved.
+\item \textbf{Three reciprocity references}
+ (Section~\ref{sec:imports-ehrhart}): historical, textbook and
+ cone-reciprocity, for readers arriving from three different literatures.
+\item \textbf{Two seams between the two proofs}
+ (Remarks~\ref{rem:seam-table} and~\ref{rem:seam-matroid}): the two-capacity
+ collapse against the two-value table, and Engine~2's independent sets
+ against Engine~1's transversal matroid; recording them is what keeps the
+ coincidences from looking like repetitions.
+\end{enumerate}
+
+\subsection{Provenance}
+\label{sec:provenance}
+
+This document is a merge of three separate research drafts prepared on
+20~September 2026, each of which independently proposed a proof of
+\eqref{eq:target} \emph{and}, letter for letter, of the exact-support
+strengthening \eqref{eq:exact-support}. All three are directories of the same
+collection:
+\begin{description}[style=nextline,leftmargin=1.2em,labelwidth=0pt,labelindent=0pt,font=\normalfont\bfseries]
+\item[\nolinkurl{enumerative-combinatorics/preorder-q-zeta-support-reciprocity}]
+ The spine of the present document. Proved \eqref{eq:main} in its multivariate
+ form by weighted incidence inversion, the support--interior identity at
+ capacities $\one+\one_T$ through Postnikov's bipartite duality, univariate
+ Ehrhart reciprocity along each capacity ray, a two-value interpolation table
+ and a Bernstein-type collapse. Contributed Engine~1, the Tutte evaluation,
+ the product rule, the nontransitive and capacity-two obstructions, and most
+ of the package infrastructure.
+\item[\nolinkurl{enumerative-combinatorics/preorder-q-zeta-supportwise}]
+ Proved \eqref{eq:exact-support} at the exact support by residual and
+ privatization Hall lemmas, followed by a self-contained Euler identity for
+ arbitrary bipartite graphs obtained from two applications of Postnikov's
+ Theorem~11.3. Contributed Engine~2, the arbitrary-height theorem, the
+ $[t^{n-2}]$ coefficient formula, the finite Hall proof, the standalone
+ bipartite test suite, and the pure-downset obstruction in its supportwise
+ form.
+\item[\nolinkurl{enumerative-combinatorics/preorder-q-reciprocity-weighted}]
+ Proved \eqref{eq:target} and \eqref{eq:exact-support} by independent-capacity
+ reciprocity, the $v=0$ pivot, and the coefficient-transfer involution, with
+ no geometric duality and no matching theorem at all. Contributed Proof~B,
+ Theorem~\ref{thm:allnegative} and the whole $\qint{-r}$ apparatus, the
+ Gaussian endpoint formula, the colored-composition model, the sharp extreme
+ degrees, and the pure-downset obstruction in its transfer form.
+\end{description}
+The merge states the shared theorem once, keeps both proofs, keeps both
+engines inside Proof~A, and keeps every statement that exists in only one of
+the three. Section~\ref{sec:audit} records which caveat came from where, and
+Appendix~\ref{app:ledger} merges the three source ledgers.
+
+\subsection{Relation to the other packages in this collection}
+\label{sec:nonduplication}
+
+The supplied manifest~\cite{Manifest} includes a package entitled
+\emph{Reciprocity and Matrix Duality for Preorder Polytopes}, in the directory
+\nolinkurl{enumerative-combinatorics/preorder-polytope-reciprocity}; we cite
+it as~\cite{PriorReciprocity}. Its description explicitly claims the ordinary
+$q=1$ case of Conjecture~4.9 and explicitly excludes the full
+$q$-refinement. The present target is exactly that excluded refinement. The
+manifest also contains results about other conjectures of the same source, and
+a separate entry, \emph{A Reflexive Root-Polytope Model for Preorder
+$h$-Polynomials}, which concerns a different conjecture and is not repeated
+here.
+
+The difference is substantive. At $q=1$, the right side of \eqref{eq:target}
+retains only the total number of maximal points. At general $q$, it records
+the entire distribution of their support sizes. Theorem~\ref{thm:main} retains
+the actual support set, which is finer still, and
+Theorem~\ref{thm:allnegative} leaves the point $\qint{-1}$ altogether.
+
+Three specific overlaps with \cite{PriorReciprocity} are acknowledged rather
+than concealed, and are flagged again at the places where they occur.
+\begin{enumerate}[label=(\roman*)]
+\item The independent-capacity reciprocity of
+ Proposition~\ref{prop:reciprocity} is the identity already recorded in the
+ manifest entry for~\cite{PriorReciprocity}, whose Theorem on multivariate
+ reciprocity states it. We reprove it here in order to make Proof~B
+ independent of an unrefereed draft, not because it is claimed as new.
+\item The enumerator formula \eqref{eq:L-formula} for $L_{\tau^*}$ is the
+ specialization at $s=0$ of the rising-factorial enumerator of
+ \cite{PriorReciprocity}, derived there the same way from Postnikov's theorem
+ and the filter identification of draconian vectors, with both drafts
+ crediting \cite[Lemma~4.1]{AC} for that identification. It is re-derived here
+ and is not claimed as a new theorem.
+\item The ordinary case $\Zeta(P_\tau,-1)=(-1)^n\#\Max(P_\tau)$, recovered in
+ Section~\ref{sec:shadow}, is the corollary already proved in
+ \cite{PriorReciprocity}. We continue to present it as covered there and not
+ as a fresh result; what is new here is the $q$-refinement above it and the
+ support refinement beyond that.
+\end{enumerate}
+No proof in \cite{PriorReciprocity} is imported as a lemma, and no uninspected
+proof in that package is assumed correct. Conversely, nothing here supersedes
+it. Only the manifest, and not the full text of the earlier packages, was
+available to the three drafts when they assessed nonduplication; that
+limitation is retained as stated.
+
+Finally, a nonduplication boundary inside the source paper itself:
+$H_\tau$ counts \emph{maximal} points by support, whereas the preorder
+$h$-polynomial of \cite[Section~5]{AC} counts support sizes over \emph{all}
+lattice points. These are different polynomials, and no claim is made about
+the latter.
+
+There are three explicitly identified classical ingredients: the integral
+bipartite matching criterion (Hall's theorem, proved in
+Appendix~\ref{app:hall}), Ehrhart--Macdonald reciprocity, and Postnikov's
+lattice-count and bipartite-duality theorems. The steps relating these
+ingredients to support sets, and their combination with the negative
+$q$-evaluation, are proved in full. No conjecture about real-rootedness,
+unimodality, or the $h$-polynomials of preorder polytopes is used.
+
+\section{Preorder polytopes as transport polytopes}
+\label{sec:transport}
+
+For $J\subseteq E$, let
+\[
+ D_\tau(J)=\{i:i\le_\tau j\text{ for some }j\in J\},\qquad
+ U_\tau(J)=\{i:j\le_\tau i\text{ for some }j\in J\}.
+\]
+Transitivity makes these an ideal and a filter, respectively. Reflexivity
+gives $J\subseteq D_\tau(J)$ and $J\subseteq U_\tau(J)$. We abbreviate the
+closure of a singleton in the usual way. The dual preorder $\tau^*$ reverses
+all comparisons, so that the ideals of $\tau^*$ are the filters of $\tau$.
+
+For a nonnegative capacity vector $\mathbf t=(t_i)$ and a nonnegative scalar
+$v$, define
+\begin{equation}
+\begin{aligned}
+ Q_\tau(\mathbf t)&=
+ \{x\ge0:x(I)\le t(I)\ \text{ for every ideal }I\},\\
+ K_\tau(\mathbf t,v)&=
+ \{x\ge0:x(I)\le t(I)+v\ \text{ for every nonempty ideal }I\}.
+\end{aligned}
+ \label{eq:weighted-Q}
+\end{equation}
+Thus $Q_\tau=Q_\tau(\one)$ and $Q_\tau(\mathbf t)=K_\tau(\mathbf t,0)$. The
+auxiliary capacity $v$ plays no role in Proof~A; it is the whole mechanism of
+Proof~B, and it is introduced here once so that both proofs can use the same
+Minkowski realization.
+
+\begin{lemma}[Minkowski realization and transport description]
+\label{lem:transport}
+Write $\Dz A=\conv(\{\zero\}\cup\{e_j:j\in A\})$, so that
+$\Dz\emptyset=\{\zero\}$. For all nonnegative real capacities,
+\begin{equation}
+ K_\tau(\mathbf t,v)
+ =\sum_{i\in E} t_i\,\Dz{U_\tau(i)}\ +\ v\,\Dz E .
+ \label{eq:minkowski}
+\end{equation}
+For integral $\mathbf t$ and $v$, this is a lattice polytope. If $\mathbf t>0$
+coordinatewise, then $Q_\tau(\mathbf t)=K_\tau(\mathbf t,0)$ has dimension
+$n$; so does $K_\tau(\mathbf t,v)$ whenever $v>0$.
+
+Moreover $Q_\tau(\mathbf t)$ is the transport polytope in which each $i\in E$
+is a source supplying at most $t_i$ units, each $j\in E$ is a destination
+requiring $x_j$ units, transport from $i$ to $j$ is allowed exactly when
+$i\le_\tau j$, and unused supply is permitted; equivalently,
+\begin{equation}
+ x\in Q_\tau(\mathbf t)
+ \iff
+ x\ge0\ \text{and}\
+ x(J)\le t(D_\tau(J))\ \ \text{for every }J\subseteq E.
+ \label{eq:hall-demand}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Denote the Minkowski sum in \eqref{eq:minkowski} by $M$. A summand
+$t_i\Dz{U_\tau(i)}$ contributes at most $t_i$ to an ideal $I$, and contributes
+zero if $i\notin I$, since an element of $U_\tau(i)\cap I$ would force
+$i\in I$. The last summand contributes at most $v$. Hence
+$M\subseteq K_\tau(\mathbf t,v)$.
+
+For the reverse inclusion, fix $x\in K_\tau(\mathbf t,v)$ and a linear
+functional $w\in\R^E$. Put $w^+_j=\max(w_j,0)$ and $J_s=\{j:w_j\ge s\}$ for
+$s>0$. When $J_s$ is nonempty, its downward closure $D_\tau(J_s)$ is a
+nonempty ideal, so $x(J_s)\le x(D_\tau(J_s))\le t(D_\tau(J_s))+v$.
+Integrating this step-function inequality,
+\begin{align*}
+ w\cdot x\le w^+\cdot x=\int_0^\infty x(J_s)\,ds
+ \le\sum_{i\in E}t_i\max\bigl(0,\max_{j\in U_\tau(i)}w_j\bigr)
+       +v\max\bigl(0,\max_{j\in E}w_j\bigr),
+\end{align*}
+and the right-hand side is exactly the support function of $M$ at $w$. Both
+sets are compact, because nonnegativity and the constraint for $I=E$ bound
+all coordinates; the separation theorem gives $x\in M$. A finite Minkowski
+sum of integer multiples of lattice simplices is a lattice polytope.
+Reflexivity puts the box $\prod_i[0,t_i]$ inside $Q_\tau(\mathbf t)$, which
+has nonempty interior when every $t_i>0$; and $v\Dz E$ is full-dimensional
+for $v>0$.
+
+For the transport description, any transport satisfies the ideal
+inequalities, because a unit received by a destination in an ideal $I$ must
+have originated in $I$. Conversely, the capacitated bipartite matching
+criterion says that the demands can be met if and only if
+\eqref{eq:hall-demand} holds: these are the source-capacity bounds for the
+neighbours of each set of destinations, that is, the cut conditions of the
+corresponding flow network. The ideal inequalities imply them, since
+$x(J)\le x(D_\tau(J))\le t(D_\tau(J))$, and conversely every ideal $I$
+satisfies $D_\tau(I)=I$. The matching criterion itself is Hall's theorem,
+proved in Appendix~\ref{app:hall}; the passage from vector inequalities to an
+ordinary finite matching replaces a demand of multiplicity $x_j$ by $x_j$
+distinct copies, as explained there.
+\end{proof}
+
+We restate the unit-capacity case in the language of allocations, because
+Proof~A's Engine~2 uses it constantly.
+
+\begin{lemma}[Allocation criterion]
+\label{lem:allocation}
+Think of each $r\in E$ as one available resource and of $a_i$ as a number of
+demands of type $i$, a resource $r$ being able to serve a demand of type $i$
+exactly when $r\le_\tau i$. For $a\in\N^E$ the following are equivalent:
+\emph{(i)} $a\in P_\tau$; \emph{(ii)} the $|a|$ demands can be assigned
+injectively to resources along allowed edges; \emph{(iii)}
+$a(A)\le|D_\tau(A)|$ for every $A\subseteq E$.
+\end{lemma}
+
+\begin{proof}
+This is \eqref{eq:hall-demand} at $\mathbf t=\one$, together with the
+integrality of the matching: (i)~$\Rightarrow$~(iii) since
+$a(A)\le a(D_\tau(A))\le|D_\tau(A)|$; (iii)~$\Rightarrow$~(ii) by Hall's
+theorem applied to $a_i$ distinct copies of each demand $i$, whose possible
+resources form $D_\tau(A)$ where $A$ is the set of their types; and
+(ii)~$\Rightarrow$~(i) because every demand whose type lies in an ideal $I$
+must use a resource in $I$.
+\end{proof}
+
+\begin{lemma}[Maximal points and intervals]
+\label{lem:max}
+The set $P_\tau$ is a finite coordinate downset containing $\zero$ and
+$\one$, indeed containing every $\one_S$. Its maximal elements are exactly its
+points of total coordinate sum $n$. Every interval $[a,b]$ is the coordinate
+box $\prod_i[a_i,b_i]\cap\Z^E$. In particular $P_\tau$ is graded with rank
+$|a|$, is pure of rank $n$, and \eqref{eq:covers-support} holds.
+\end{lemma}
+
+\begin{proof}
+Downward closure and the inclusion of the Boolean cube follow directly from
+the inequalities, since $|S\cap I|\le|I|$. The inequality for $I=E$ gives
+$|a|\le n$, proving finiteness. If $a$ is integral with $|a|<n$, choose an
+integral allocation as in Lemma~\ref{lem:allocation}; at least one resource
+$r$ is unused, and adding one demand of type $r$ served by $r$ itself, which
+reflexivity permits, gives $a+e_r\in P_\tau$. Thus $a$ is not maximal, while a
+point of total $n$ cannot be increased in any coordinate.
+
+If $a\le c\le b$ and $b\in P_\tau$, downward closure gives $c\in P_\tau$,
+which proves the interval assertion. Hence the elements covered by $a$ are
+exactly the $a-e_i$ with $a_i>0$, which is \eqref{eq:covers-support}, and
+decrementing to $\zero$ proves the rank formula.
+\end{proof}
+
+\begin{remark}[An alternative proof of the maximal layer]
+\label{rem:tight}
+The maximal-layer statement can also be proved without any matching theorem,
+which matters for Proof~B: if $a\in P_\tau$ has $|a|<n$ and $a+e_i\notin
+P_\tau$ for every $i$, then for each $i$ some ideal $I_i\ni i$ is
+\emph{tight}, that is $a(I_i)=|I_i|$. Modularity of $x\mapsto x(I)$ and of
+cardinality gives
+$a(I\cup J)+a(I\cap J)=|I\cup J|+|I\cap J|$ for tight $I,J$, and since each
+term on the left is at most the corresponding cardinality, both $I\cup J$ and
+$I\cap J$ are tight. The union of the $I_i$ is $E$, so $E$ is tight,
+contradicting $|a|<n$.
+\end{remark}
+
+\begin{remark}[Preorders are genuinely allowed]
+An equivalence class of $\tau$ is not contracted to a single coordinate. Its
+individual elements remain distinct unit-capacity sources and distinct
+destinations. Ideals contain a whole equivalence class or none of it, but
+support sets need not. This distinction is important both in the proofs and
+in the exhaustive tests. For the empty ground set,
+$P_\tau=\Max(P_\tau)=\{()\}$ and all the polynomials below equal $1$; the
+geometric statements are proved for $n\ge1$ and this convention is used at
+$n=0$.
+\end{remark}
+
+\section{Negative evaluation by weighted incidence inversion}
+\label{sec:incidence}
+
+This section is the first half of Proof~A. Everything in it is valid for an
+arbitrary finite poset with least element and an arbitrary normalized height,
+hence in particular for any finite coordinate downset $P\subseteq\N^E$, not
+just a preorder polytope. It is a specialization of the $q$-incidence
+viewpoint of Chapoton~\cite[Appendix~C]{Chapoton}, with the matrix conventions
+and the negative exponent verified explicitly.
+
+\subsection{An algebraic continuation, not an analytic one}
+
+Let $P$ be a finite poset with least element $\zero$, and let $h:P\to\N$ be
+\emph{normalized}: strictly increasing on comparable distinct elements, with
+$h(\zero)=0$. Order the elements by nondecreasing $h$. Let $Z$ be the
+incidence zeta matrix, let $D$ be the weight matrix, and put
+\begin{equation}
+ Z_{a,b}=\begin{cases}1&a\le b,\\0&\text{otherwise},\end{cases}
+ \qquad D_{a,a}=q^{h(a)},\qquad A=ZD.
+ \label{eq:matrices}
+\end{equation}
+Use row vectors on the left: write $e_0^{\mathsf T}$ for the row supported at
+$\zero$ and $\mathbf j$ for the column vector of ones; $\mathbf j$ is not an
+element of $P$. For every integer $\ell\ge0$,
+\begin{equation}
+ e_0^{\mathsf T}A^{\ell}\mathbf j
+ =\sum_{a_1\le\cdots\le a_{\ell}}
+   q^{h(a_1)+\cdots+h(a_{\ell})},
+ \label{eq:positive-matrix}
+\end{equation}
+the empty-chain sum at $\ell=0$ being $1$. Comparing with
+\eqref{eq:qzeta-def} at $\ell=m-1$ identifies \eqref{eq:positive-matrix} with
+$\Zeta_{q,h}(P,\qint m)$ for $m\ge2$.
+
+\begin{lemma}[Polynomial continuation to negative integers]
+\label{lem:continuation}
+Let $g_0<\cdots<g_d$ be the distinct values of $h$. The expression
+$e_0^{\mathsf T}A^{m-1}\mathbf j$, for all integers $m$, is a polynomial of
+degree at most $g_d$ in $\qint m$, with coefficients in $\Q(q)$. Consequently
+\begin{equation}
+ \Zeta_{q,h}(P,-q^{-1})=e_0^{\mathsf T}A^{-2}\mathbf j
+ =e_0^{\mathsf T}\mu D^{-1}\mu\,\mathbf j,
+ \qquad \mu=Z^{-1}.
+ \label{eq:negative-matrix}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let $V_j$ be the space of row vectors supported on elements of height at least
+$g_j$. Right multiplication by $A$ preserves $V_j$, and on $V_j/V_{j+1}$ it
+acts as the scalar $q^{g_j}$, because two comparable elements of the same
+height are equal. Therefore $A-q^{g_j}I$ maps $V_j$ into $V_{j+1}$, and
+applying the factors in increasing order gives
+\[
+ \prod_{j=0}^{d}(A-q^{g_j}I)=0 .
+\]
+Over $\Q(q)$ the factors are distinct, so $A$ is diagonalizable with nonzero
+eigenvalues among $q^{g_0},\ldots,q^{g_d}$. Hence there are $c_j\in\Q(q)$
+with
+\[
+ e_0^{\mathsf T}A^{\ell}\mathbf j=\sum_{j=0}^{d}c_jq^{g_j\ell}
+ \qquad\text{for \emph{every} integer }\ell .
+\]
+Put $H(X)=\sum_jc_jq^{-g_j}X^{g_j}$. For $m\ge2$ and $\ell=m-1$ this equals
+$H(q^m)=H(1+(q-1)\qint m)$, and such a polynomial is unique because the
+$\qint m$, $m\ge2$, are infinitely many distinct elements of $\Q(q)$. So
+$\Zeta_{q,h}(P,t)=H(1+(q-1)t)$, and at $t=\qint{-1}=-q^{-1}$ the argument of
+$H$ is $q^{-1}$, that is $\ell=-2$: at $m=-1$ the matrix exponent is $-2$,
+not $-1$, precisely because the multichains in \eqref{eq:qzeta-def} have
+$m-1$ entries. Finally $A^{-1}=D^{-1}\mu$ and $e_0^{\mathsf T}D^{-1}=e_0^{\mathsf T}$
+because $h(\zero)=0$. No limiting or analytic-continuation assertion is
+involved anywhere in this argument; every step is an identity of polynomials
+over $\Q(q)$.
+\end{proof}
+
+\begin{remark}
+The argument just given also supplies, in this least-element setting, the
+polynomial existence that Chapoton's construction \cite{Chapoton} requires;
+we do not assume it.
+\end{remark}
+
+\subsection{Boolean localization}
+
+From now on $P\subseteq\N^E$ is a finite coordinate downset and $h$ is
+arbitrary normalized as above. Its intervals are products of integer chains by
+Lemma~\ref{lem:max}. A chain interval of positive length has M\"obius number
+$-1$ at length one and $0$ at greater length, directly from the defining
+recurrence $\sum_{a\le c\le b}\mu(a,c)=\delta_{a,b}$. Multiplying over
+coordinates,
+\begin{equation}
+ \mu(a,b)=
+ \begin{cases}
+ (-1)^{|T|},&b-a=\one_T\text{ for some }T\subseteq E,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+ \label{eq:mobius}
+\end{equation}
+In particular $\mu(\zero,a)$ vanishes unless $a$ is Boolean. This
+localization is why a statistic of full maximal vectors can be recovered from
+vectors with coordinates only $0,1,2$.
+
+\begin{proposition}[The Boolean localization formula]
+\label{prop:local}
+For every nonempty finite coordinate downset $P\subseteq\N^E$ and every
+normalized height $h$,
+\begin{equation}
+ \Zeta_{q,h}(P,-q^{-1})
+ =\sum_{B\subseteq E}(-1)^{|B|}q^{-h(\one_B)}\eta_P(B),
+ \qquad
+ \eta_P(B)=\sum_{\substack{S\subseteq E\\\one_B+\one_S\in P}}(-1)^{|S|}.
+ \label{eq:reduction}
+\end{equation}
+For the ordinary rank $h=|\cdot|$ this reads
+\begin{equation}
+ \Zeta_q(P,-q^{-1})
+ =\sum_{\substack{B,S\subseteq E\\\one_B+\one_S\in P}}
+   (-1)^{|B|+|S|}q^{-|B|},
+ \label{eq:local}
+\end{equation}
+and, with $u=q^{-1}$, equivalently
+\begin{equation}
+ \Zeta_q(P,-q^{-1})
+ =\sum_{c\in P\cap\{0,1,2\}^E}
+   (-1)^{s(c)}(1+u)^{s(c)}u^{d(c)},
+ \label{eq:ternary}
+\end{equation}
+where $s(c)=\#\{i:c_i=1\}$ and $d(c)=\#\{i:c_i=2\}$.
+\end{proposition}
+
+\begin{proof}
+Expand \eqref{eq:negative-matrix}:
+\[
+ e_0^{\mathsf T}\mu D^{-1}\mu\,\mathbf j
+ =\sum_{b\le c}\mu(\zero,b)q^{-h(b)}\mu(b,c)
+ =\sum_{a\in P}\mu(\zero,a)q^{-h(a)}\sum_{c\ge a}\mu(a,c).
+\]
+By \eqref{eq:mobius} a surviving $b$ is $\one_B$ and a surviving $c-b$ is
+$\one_S$; conversely, if $\one_B+\one_S\in P$ then downward closure puts both
+points in the sum. This is \eqref{eq:reduction}, and \eqref{eq:local} is its
+specialization. For \eqref{eq:ternary}, group the pairs $(B,S)$ by the vector
+$c=\one_B+\one_S$: a coordinate of $c$ equal to zero contributes $1$; a
+coordinate equal to one arises in two ways and contributes $-1-u$; a
+coordinate equal to two contributes $u$. Multiply over coordinates.
+\end{proof}
+
+Thus \eqref{eq:main} implies \eqref{eq:target}, since the two signs multiply
+to $(-1)^n$ and \eqref{eq:covers-support} identifies support size with the
+number of lower covers; and \eqref{eq:main} together with \eqref{eq:reduction}
+implies Theorem~\ref{thm:height-intro}. What remains for Proof~A is the
+evaluation of the signed Boolean sums $\eta_\tau(B)=\eta_{P_\tau}(B)$. Neither
+the matrix calculation nor the Boolean M\"obius formula alone proves the
+desired sign or positivity; that is the work of
+Sections~\ref{sec:imports}--\ref{sec:private}.
+
+The rational function in \eqref{eq:local} is a Laurent polynomial. Although
+the full poset may contain large coordinate values, this particular evaluation
+sees only its ternary-coordinate portion. This fact alone does \emph{not}
+identify the answer with maximal points: Section~\ref{sec:limits} exhibits
+downsets where it is false. The special preorder geometry is still needed.
+
+\section{The classical polyhedral inputs, with conventions fixed}
+\label{sec:imports}
+
+We state the precise versions used, so that no normalization of a trimmed
+polytope or of a draconian sequence remains implicit. These results are
+classical inputs, not contributions of this draft. Both proofs use
+Section~\ref{sec:imports-lattice} and Section~\ref{sec:imports-ehrhart};
+only Engine~1 of Proof~A uses Section~\ref{sec:imports-duality}.
+
+Throughout, for an indeterminate $X$ and an integer $a\ge0$,
+\begin{equation}
+ \binom Xa=\frac{X(X-1)\cdots(X-a+1)}{a!},\qquad\binom X0=1,
+\end{equation}
+\begin{equation}
+ f_a(X)=\binom{X+a-1}{a}=\frac{X(X+1)\cdots(X+a-1)}{a!},
+ \qquad f_a(X+1)=\binom{X+a}{a}.
+ \label{eq:binomial-polynomial}
+\end{equation}
+Every later evaluation with a negative upper argument means a polynomial
+evaluation, not the cardinality of a negatively sized set.
+
+\subsection{Hall's theorem}
+The finite marriage theorem \cite{Hall} is used in
+Lemmas~\ref{lem:transport}, \ref{lem:allocation}, \ref{lem:euler},
+\ref{lem:residual}, \ref{lem:private} and Proposition~\ref{prop:matroid}. It
+is stated and proved, with the exact matching convention and the multiplicity
+reduction fixed, in Appendix~\ref{app:hall}. It is entirely absent from
+Proof~B.
+
+\subsection{The lattice-count formula}
+\label{sec:imports-lattice}
+
+\begin{imported}[Postnikov's untrimmed lattice-count formula]
+\label{imp:lattice}
+Let $F$ be a finite set with $|F|=d+1$, let $I_0=F$, and let
+$I_1,\ldots,I_m$ be nonempty subsets of $F$. Write
+$\Delta_I=\conv\{e_j:j\in I\}$. For nonnegative integers $y_0,\ldots,y_m$,
+\begin{equation}
+ \#\left(\left(\sum_{j=0}^{m}y_j\Delta_{I_j}\right)\cap\Z^{F}\right)
+ =\sum_{a}\ f_{a_0}(y_0+1)\prod_{j=1}^{m}f_{a_j}(y_j),
+ \label{eq:postnikov}
+\end{equation}
+where $a\in\N^{m+1}$ ranges over the vectors with
+\begin{equation}
+ \sum_{j=0}^{m}a_j=d,\qquad
+ \sum_{j\in J}a_j\le\Bigl|\bigcup_{j\in J}I_j\Bigr|-1
+ \quad(\emptyset\ne J\subseteq\{0,\ldots,m\}).
+ \label{eq:draconian-conditions}
+\end{equation}
+\end{imported}
+
+This is \cite[Theorem~11.3]{Postnikov} in its stated untrimmed form; compare
+\cite[Theorem~2.1]{AC}. In Postnikov's trimmed formulation, passing to the
+untrimmed polytope replaces the coefficient of the full simplex by one more
+than that coefficient, which is why the distinguished factor is
+$f_{a_0}(y_0+1)=\binom{y_0+a_0}{a_0}$ and not $f_{a_0}(y_0)$. The theorem is
+used at zero weights as well, as its nonnegative-integer statement permits:
+an auxiliary full simplex may be introduced with $y_0=0$, and its factor is
+then $f_{a_0}(1)=1$ for every $a_0\ge0$, \emph{not} $\binom{a_0-1}{a_0}$.
+Forgetting this one-unit shift would invalidate every application below.
+The imported statement is Postnikov's Theorem~11.3 together with its main
+proof; the passage of \cite{Postnikov} explicitly called an ``alternative
+semiproof'' is not what is imported here.
+
+\subsection{Bipartite draconian sequences and their duality}
+\label{sec:imports-duality}
+
+Let $G=(L,R;\mathcal E)$ be a connected bipartite graph with both parts
+nonempty. For $J\subseteq L$ write $N_G(J)\subseteq R$ for its neighbours, and
+define
+\begin{equation}
+ \Dr_L(G)=\left\{a\in\N^L:
+ \sum_{i\in L}a_i=|R|-1,\quad
+ \sum_{i\in J}a_i\le |N_G(J)|-1\ (\emptyset\ne J\subseteq L)\right\}.
+ \label{eq:draconian}
+\end{equation}
+The set $\Dr_R(G)$ is defined by exchanging the parts.
+
+\begin{imported}[Postnikov's bipartite duality]
+\label{imp:duality}
+For such a graph, $|\Dr_L(G)|=|\Dr_R(G)|$.
+\end{imported}
+
+This is the draconian-sequence form of \cite[Lemma~11.7 and
+Corollary~11.8]{Postnikov}. One may view both sets as the lattice points of
+two dual trimmed generalized permutohedra; the triangulation interpretation
+explains why their cardinalities agree even when their ambient dimensions
+differ. Our application in Section~\ref{sec:interior} checks connectedness; it
+does not silently assume the theorem for a graph with isolated vertices.
+
+\begin{remark}[The import surface is a real trade]
+\label{rem:import-trade}
+Imported theorem~\ref{imp:duality} is used only by Engine~1. Engine~2, in
+Section~\ref{sec:private}, proves the instance of this duality that it needs
+from Imported theorem~\ref{imp:lattice} alone, applied twice to two polytopes
+in different ambient dimensions. Engine~1 is much shorter; Engine~2 rests on a
+strictly smaller imported surface. A reader who is unwilling to assume
+Lemma~11.7 of \cite{Postnikov} still has a complete route to
+Theorem~\ref{thm:main}, and this is why both engines are written out.
+\end{remark}
+
+\subsection{Ehrhart--Macdonald reciprocity}
+\label{sec:imports-ehrhart}
+
+For a full-dimensional lattice polytope $K\subseteq\R^d$, let
+$L_K(s)=\#(sK\cap\Z^d)$ for nonnegative integers $s$. Its polynomial
+continuation satisfies
+\begin{equation}
+ L_K(-1)=(-1)^{d}\#(\Int(K)\cap\Z^{d}).
+ \label{eq:ehrhart-reciprocity}
+\end{equation}
+We use this standard reciprocity theorem in precisely this univariate form.
+The historical reference is Macdonald~\cite{Macdonald}; a textbook treatment
+is \cite[Chapter~4]{BeckRobins}; and a primary-source proof of the more
+general rational-cone statement, from which the polytope case follows, is in
+Beck--Develin~\cite{BeckDevelin}. All three are retained because they are the
+historical, textbook and cone-reciprocity citations respectively; the three
+drafts merged here each used a different one. No assertion about a general
+multivariate reciprocity law, about changing normal fans, or about a weighted
+$q$-Ehrhart theorem is required anywhere below.
+
+\section{Independent capacities and their reciprocity}
+\label{sec:weighted}
+
+This section is shared by both proofs, and it is the only place where they
+share more than the two imports. Proof~A needs it only at $v=0$; Proof~B needs
+the auxiliary capacity $v$ to stay alive until after reciprocity has been
+applied, and then kills the non-maximal layers by setting it to zero. Setting
+$v=0$ too early would hide exactly that operation.
+
+\begin{proposition}[The independent-capacity polynomial]
+\label{prop:count}
+Let $\sigma$ be a preorder on $E$. For all nonnegative integers $u_i$ and $v$,
+the number of lattice points of $K_\sigma(\mathbf u,v)$ equals the evaluation
+at $(\mathbf u,v)$ of the polynomial
+\begin{equation}
+ \Ecal_\sigma(\mathbf u,v)=
+ \sum_{a\in P_{\sigma^*}}
+ \binom{v+n-|a|}{n-|a|}
+ \prod_{i\in E}f_{a_i}(u_i),
+ \label{eq:E}
+\end{equation}
+whose total degree is at most $n$.
+\end{proposition}
+
+\begin{proof}
+Adjoin a new coordinate $0$ and put $I_0=E\cup\{0\}$ and
+$I_i=U_\sigma(i)\cup\{0\}$ for $i\in E$. Lift the right-hand side of
+\eqref{eq:minkowski} to
+\[
+ \widehat K=v\,\Delta_{I_0}+\sum_{i\in E}u_i\Delta_{I_i}
+ \subseteq\R^{\{0\}\sqcup E}.
+\]
+It lies in the affine hyperplane $x_0+\sum_{i\in E}x_i=v+\sum_iu_i$, so
+projection forgetting $x_0$ is an affine lattice isomorphism from that
+hyperplane onto $\R^E$ and carries $\widehat K$ onto $K_\sigma(\mathbf u,v)$.
+
+Apply Imported theorem~\ref{imp:lattice} with $F=\{0\}\sqcup E$, so $d=n$. Any
+condition in \eqref{eq:draconian-conditions} involving the index $0$ is
+automatic, because $I_0$ is the full ground set. For nonempty $A\subseteq E$
+the remaining condition is
+\begin{equation}
+ a(A)\le|U_\sigma(A)|,\qquad U_\sigma(A)=\bigcup_{i\in A}U_\sigma(i).
+ \label{eq:draconian-filter}
+\end{equation}
+If $A$ is a filter this says $a(A)\le|A|$; conversely those inequalities for
+all filters imply \eqref{eq:draconian-filter}, since
+$a(A)\le a(U_\sigma(A))\le|U_\sigma(A)|$. Filters of $\sigma$ are ideals of
+$\sigma^*$, so the allowed $a$ are exactly the points of $P_{\sigma^*}$, and
+the remaining coordinate $a_0=n-|a|$ is determined. Substituting into
+\eqref{eq:postnikov} gives \eqref{eq:E}, the distinguished factor being
+$f_{a_0}(v+1)=\binom{v+a_0}{a_0}$. The degrees of the factors in each summand
+sum to $n$.
+
+This filter identification of draconian vectors is the same one as
+\cite[Lemma~4.1]{AC}; it is reproduced here to fix the dual orientation.
+\end{proof}
+
+\begin{proposition}[A weighted dual lattice-count polynomial]
+\label{prop:weighted}
+Put $L_{\tau^*}(\mathbf t)=\Ecal_{\tau^*}(\mathbf t,0)$. Then
+\begin{equation}
+ \boxed{\displaystyle
+ L_{\tau^*}(\mathbf t)=\sum_{a\in P_\tau}\prod_{i\in E} f_{a_i}(t_i)}
+ \qquad\text{and}\qquad
+ L_{\tau^*}(\mathbf t)=\#\bigl(Q_{\tau^*}(\mathbf t)\cap\Z^E\bigr)
+ \ \ (\mathbf t\in\N^E).
+ \label{eq:L-formula}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Take $\sigma=\tau^*$ in Proposition~\ref{prop:count}, so $\sigma^*=\tau$ and
+$K_{\tau^*}(\mathbf t,0)=Q_{\tau^*}(\mathbf t)$. The distinguished factor is
+$f_{a_0}(0+1)=1$ for every $a_0\ge0$, including zero weights; the remaining
+factors are $f_{a_i}(t_i)$. The displayed formula also establishes
+polynomiality directly.
+\end{proof}
+
+\begin{remark}[Overlap with the earlier package, and why the dual appears]
+\label{rem:prior-enumerator}
+Formula \eqref{eq:L-formula} is the $s=0$ specialization, with independent
+capacities, of the rising-factorial enumerator of \cite{PriorReciprocity},
+derived there in the same way from Postnikov's theorem and the same filter
+identification of draconian vectors, both drafts crediting
+\cite[Lemma~4.1]{AC}. It is re-derived here so that this document is
+self-contained; it is not claimed as new. As for the orientation: in
+$Q_{\tau^*}(\mathbf t)$ a source $i$ may send to precisely the $\tau$-lower
+elements $D_\tau(i)$, and these are the neighbourhoods that turn the
+draconian inequalities into the ideal inequalities defining $P_\tau$. Using
+$U_\tau(i)$ at this point would interchange the preorder and its dual. This
+orientation is checked once more in Section~\ref{sec:interior}.
+\end{remark}
+
+\begin{proposition}[Independent-capacity reciprocity]
+\label{prop:reciprocity}
+The polynomials of \eqref{eq:E} satisfy
+\begin{equation}
+ \Ecal_\sigma(-\mathbf u,-v)=(-1)^n\,\Ecal_\sigma(\mathbf u-\one,v-1)
+ \label{eq:reciprocity}
+\end{equation}
+as an identity in all $n+1$ independent variables.
+\end{proposition}
+
+\begin{proof}
+First take all $u_i$ and $v$ to be positive integers. Then
+$K_\sigma(\mathbf u,v)$ is full-dimensional by Lemma~\ref{lem:transport}, and
+$sK_\sigma(\mathbf u,v)=K_\sigma(s\mathbf u,sv)$ for $s\ge0$ by homogeneity of
+the inequalities, so $L_K(s)=\Ecal_\sigma(s\mathbf u,sv)$ as polynomials in
+$s$.
+
+A lattice point $x$ is interior precisely when
+\[
+ x_i\ge1\ (i\in E),\qquad x(I)\le u(I)+v-1\quad(\emptyset\ne I\text{ an ideal}).
+\]
+Indeed, all the defining inequalities must be strict at an interior point,
+since equality in a valid inequality with nonzero normal prevents a full ball
+around it; and conversely simultaneous strictness of these finitely many
+inequalities gives an open neighbourhood inside the polytope, redundant
+inequalities causing no difficulty. The translation $x=z+\one$ is a bijection
+onto the integer points with
+\[
+ z\ge0,\qquad z(I)\le(\mathbf u-\one)(I)+(v-1),
+\]
+whose capacities are nonnegative. Now \eqref{eq:ehrhart-reciprocity} and
+Proposition~\ref{prop:count} give \eqref{eq:reciprocity} for every positive
+integer capacity vector. Both sides are multivariate polynomials, and equality
+on a Cartesian product of infinite sets forces polynomial equality: fix all
+but one variable, use the univariate root bound, and repeat.
+\end{proof}
+
+\begin{remark}[Overlap with the earlier package]
+\label{rem:prior-reciprocity}
+Independently weighted capacity reciprocity is exactly what the manifest
+entry for \cite{PriorReciprocity} already records, and its multivariate
+reciprocity theorem is \eqref{eq:reciprocity}. The proof is supplied here so
+that Proof~B is independent of that unrefereed draft; the mechanism is
+credited to it as prior work within this collection and is not claimed as a
+contribution. What goes beyond it is the conversion of \eqref{eq:reciprocity}
+into arbitrary local coefficient weights in Section~\ref{sec:transfer}, and
+the full $q$-evaluation.
+\end{remark}
+
+\begin{corollary}[Negative capacities as interior counts]
+\label{cor:L-reciprocity}
+For every positive integral vector $\mathbf c$,
+\begin{equation}
+ L_{\tau^*}(-\mathbf c)
+ =(-1)^n\#\bigl(\Int Q_{\tau^*}(\mathbf c)\cap\Z^E\bigr).
+ \label{eq:L-reciprocity}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Fix $\mathbf c>0$ integral. By homogeneity $Q_{\tau^*}(s\mathbf c)
+=sQ_{\tau^*}(\mathbf c)$ for $s\ge0$, and $Q_{\tau^*}(\mathbf c)$ is a
+full-dimensional lattice polytope by Lemma~\ref{lem:transport}. Hence
+$s\mapsto L_{\tau^*}(s\mathbf c)$ is its Ehrhart polynomial. Evaluate this
+univariate polynomial at $s=-1$ and apply
+\eqref{eq:ehrhart-reciprocity}.
+\end{proof}
+
+\section{Proof A, Engine 1: the support--interior identity}
+\label{sec:interior}
+
+This is the central combinatorial step of the first geometric engine. It works
+with \emph{cumulative} supports. For $T\subseteq E$, put
+\begin{align}
+ B_\tau(T)&=\#\{a\in\Max(P_\tau):\supp(a)\subseteq T\},
+ \label{eq:contained-B}\\
+ \Lambda_\tau(T)&=\#\bigl(\Int Q_{\tau^*}(\one+\one_T)\cap\Z^E\bigr).
+ \label{eq:interior-N}
+\end{align}
+The capacity vector $\one+\one_T$ is the distinctive idea of this route: a
+capacity of $1$ everywhere, raised to $2$ exactly on $T$.
+
+\begin{theorem}[Restricted supports as interior lattice points]
+\label{thm:interior}
+For every $T\subseteq E$,
+\begin{equation}
+ \boxed{B_\tau(T)=\Lambda_\tau(T).}
+ \label{eq:interior-identity}
+\end{equation}
+In particular,
+\begin{equation}
+ B_\tau(T)=(-1)^nL_{\tau^*}(-\one-\one_T).
+ \label{eq:restricted-negative}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Assume first $n>0$. If $T=\emptyset$, then $B_\tau(T)=0$, since a maximal
+point has total $n$; and an interior integral point of $Q_{\tau^*}(\one)$
+would have all coordinates at least one and total strictly less than $n$,
+which is impossible, so $\Lambda_\tau(T)=0$ as well.
+
+Let $T\ne\emptyset$. Form a bipartite graph $G_T$ with left part $T$ and right
+part $E\sqcup\{0\}$. Put an edge from $t$ to $0$ for every $t\in T$, and an
+edge from $t$ to $i\in E$ exactly when
+\begin{equation}
+ i\le_\tau t.
+ \label{eq:GT-edge}
+\end{equation}
+For nonempty $J\subseteq T$ we then have $N_{G_T}(J)=\{0\}\cup D_\tau(J)$.
+
+\smallskip\noindent\emph{Left-hand draconian sequences.}
+A vector $a\in\Dr_T(G_T)$ has total $n$ and satisfies
+\begin{equation}
+ a(J)\le |D_\tau(J)|\qquad(\emptyset\ne J\subseteq T).
+ \label{eq:left-drac}
+\end{equation}
+Extend it by zero outside $T$. If $a\in P_\tau$, then \eqref{eq:left-drac}
+follows from the ideal inequalities. Conversely, for any ideal $I$ let
+$J=T\cap I$. If $J=\emptyset$ then $a(I)=0$; otherwise $D_\tau(J)\subseteq I$
+and $a(I)=a(J)\le|D_\tau(J)|\le|I|$. Thus \eqref{eq:left-drac} is equivalent
+to membership in $P_\tau$ for vectors of total $n$ supported in $T$, and
+Lemma~\ref{lem:max} gives
+\begin{equation}
+ |\Dr_T(G_T)|=B_\tau(T).
+ \label{eq:left-identification}
+\end{equation}
+
+\smallskip\noindent\emph{Right-hand draconian sequences.}
+Write such a sequence as $(d_0,y)$ with $y\in\N^E$; its total is $|T|-1$. For
+nonempty $S\subseteq E$ its condition is
+\begin{equation}
+ y(S)\le |T\cap U_\tau(S)|-1.
+ \label{eq:right-subsets}
+\end{equation}
+Every subset containing the right vertex $0$ has all of $T$ as its neighbour
+set, so those inequalities are automatic from the total and nonnegativity.
+Conditions \eqref{eq:right-subsets} are equivalent to
+\begin{equation}
+ y(I)\le |T\cap I|-1
+ \qquad\text{for every nonempty $\tau$-filter }I:
+ \label{eq:right-filters}
+\end{equation}
+for one direction take $S=I$, noting $U_\tau(I)=I$; for the other apply
+\eqref{eq:right-filters} to $U_\tau(S)$ and use $y(S)\le y(U_\tau(S))$. Taking
+$I=E$ gives $|y|\le|T|-1$, so $d_0=|T|-1-|y|$ is determined and nonnegative.
+
+Since the ideals of $\tau^*$ are the filters of $\tau$, the integral interior
+points of $Q_{\tau^*}(\one+\one_T)$ are exactly the integer vectors $x$ with
+\[
+ x_i>0\ (i\in E),\qquad
+ x(I)<|I|+|T\cap I|\quad(\emptyset\ne I\text{ a $\tau$-filter}).
+\]
+Full dimensionality was proved in Lemma~\ref{lem:transport}; consequently
+strictness of these finitely many defining inequalities describes the ordinary
+interior, even when some of them are redundant. Substituting $x=y+\one$ turns
+these integral strict inequalities precisely into \eqref{eq:right-filters}. We
+have therefore obtained a bijection $(d_0,y)\leftrightarrow y+\one$ between
+right-hand draconian sequences and interior points, giving
+\begin{equation}
+ |\Dr_{E\sqcup\{0\}}(G_T)|=\Lambda_\tau(T).
+ \label{eq:right-identification}
+\end{equation}
+
+\smallskip\noindent\emph{Isolated vertices and the duality step.}
+If $D_\tau(T)\ne E$, there is an isolated right vertex. In that case the left
+condition with $J=T$ would force $n\le|D_\tau(T)|<n$, and the right condition
+for the singleton isolated vertex would force a nonnegative entry to be at
+most $-1$; both draconian sets are empty. If $D_\tau(T)=E$, every right vertex
+is adjacent to some left vertex, and the common neighbour $0$ connects all
+left vertices, so $G_T$ is connected and Imported theorem~\ref{imp:duality}
+applies. In both cases \eqref{eq:left-identification} and
+\eqref{eq:right-identification} yield \eqref{eq:interior-identity}.
+
+For $n=0$ use the usual zero-dimensional conventions: the only lattice point
+is $\zero$, it is maximal and interior in $\R^0$, and both counts are one.
+Finally, \eqref{eq:restricted-negative} follows from
+Corollary~\ref{cor:L-reciprocity} with $\mathbf c=\one+\one_T$.
+\end{proof}
+
+The added vertex $0$ serves two distinct and indispensable purposes. On the
+left it raises the total to $n$ and cancels the ``minus one'' in the
+neighbourhood inequalities. On the right its entry stores the slack
+$|T|-1-|y|$, and the ordinary interior then produces exactly the strictness
+left over in the right neighbourhood inequalities.
+
+\section{Proof A, completion: from negative capacities to exact supports}
+\label{sec:completion}
+
+For a finite coordinate downset $P\subseteq\N^E$, define the multiaffine
+polynomial
+\begin{equation}
+ R_P(\mathbf z)=
+ \sum_{\substack{B,S\subseteq E\\\one_B+\one_S\in P}}
+ (-1)^{|B|+|S|}\zt B
+ =\sum_{B\subseteq E}(-1)^{|B|}\eta_P(B)\,\zt B .
+ \label{eq:R}
+\end{equation}
+The task is to prove $R_{P_\tau}=(-1)^nH_\tau$; by
+Proposition~\ref{prop:local} this is Theorem~\ref{thm:main}.
+
+\begin{lemma}[Two-value interpolation]
+\label{lem:interpolation}
+For the weighted polynomial of \eqref{eq:L-formula},
+\begin{equation}
+ R_{P_\tau}(\mathbf z)
+ =\sum_{T\subseteq E}\zt T\omitprod T\,
+       L_{\tau^*}(-\one-\one_T).
+ \label{eq:two-value}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Insert \eqref{eq:L-formula} into the right-hand side and interchange the
+finite sums. The contribution of a fixed $a\in P_\tau$ factorizes as
+\begin{equation}
+ \prod_{i\in E}\bigl((1-z_i)f_{a_i}(-1)+z_i f_{a_i}(-2)\bigr).
+ \label{eq:local-interpolation}
+\end{equation}
+Directly from the polynomial definition \eqref{eq:binomial-polynomial} of
+$f_k$:
+\begin{center}
+\begin{tabular}{@{}c c c c@{}}
+\toprule
+$k$ & $f_k(-1)$ & $f_k(-2)$ & $(1-z)f_k(-1)+zf_k(-2)$\\
+\midrule
+$0$ & $1$ & $1$ & $1$\\
+$1$ & $-1$ & $-2$ & $-(1+z)$\\
+$2$ & $0$ & $1$ & $z$\\
+$k\ge3$ & $0$ & $0$ & $0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Thus only $a\in\{0,1,2\}^E$ survive. The three nonzero local factors are
+exactly the factors obtained by summing over all decompositions
+$a=\one_B+\one_S$ with sign $(-1)^{|B|+|S|}$ and weight $\zt B$. This proves
+\eqref{eq:two-value}.
+\end{proof}
+
+\begin{remark}[Seam: the same table in binomial language]
+\label{rem:seam-table}
+The four-row table above is the same content as the two-capacity collapse of
+Section~\ref{sec:two-capacity}, which arises inside Proof~B by combining the
+binomial identity \eqref{eq:binomial} multilinearly over $u_i\in\{1,2\}$: the
+local maximal-layer factor there becomes $1$ at $b=0$ and $t$ at $b>0$,
+exactly as the fourth column here becomes $1,-(1+z),z,0$ before the geometric
+step. The two derivations were found independently and in different
+languages, and the coincidence is one of the two seams where the two proofs
+touch. Neither is used in the other's proof.
+\end{remark}
+
+\begin{proof}[Proof A of Theorem~\ref{thm:main}]
+By Lemma~\ref{lem:interpolation} and Theorem~\ref{thm:interior},
+\begin{align*}
+ R_{P_\tau}(\mathbf z)
+ &=(-1)^n\sum_{T\subseteq E}\zt T\omitprod T\,B_\tau(T)\\
+ &=(-1)^n\sum_{a\in\Max(P_\tau)}
+   \sum_{T\supseteq\supp(a)}\zt T\omitprod T.
+\end{align*}
+For any fixed $B\subseteq E$,
+\begin{equation}
+ \sum_{T\supseteq B}\zt T\omitprod T
+ =\zt B\prod_{i\notin B}\bigl(z_i+(1-z_i)\bigr)=\zt B.
+ \label{eq:bernstein-collapse}
+\end{equation}
+Consequently $R_{P_\tau}=(-1)^nH_\tau$, which is \eqref{eq:main}. Taking the
+coefficient of $\zt B$ proves \eqref{eq:exact-support}; the exponents $n+|B|$
+and $n-|B|$ have the same parity.
+
+Finally, Proposition~\ref{prop:local} identifies $\Zeta_q(P_\tau,-q^{-1})$
+with $R_{P_\tau}(q^{-1},\ldots,q^{-1})$, and Lemma~\ref{lem:max} identifies
+the number of lower covers with support size. This proves the full formula
+\eqref{eq:target} as an identity in $\Q(q)$. Substituting
+\eqref{eq:exact-support} into \eqref{eq:reduction} for a general normalized
+height proves Theorem~\ref{thm:height-intro}.
+\end{proof}
+
+\subsection{The proof compressed into a chain of equalities}
+
+Writing $w_T(\mathbf z)=\zt T\prod_{i\notin T}(1-z_i)$, Proof~A is
+\begin{align*}
+ R_{P_\tau}(\mathbf z)
+ &=\sum_T w_T(\mathbf z)L_{\tau^*}(-\one-\one_T)
+ &&\text{by the local binomial table},\\
+ &=(-1)^n\sum_Tw_T(\mathbf z)\Lambda_\tau(T)
+ &&\text{by Ehrhart reciprocity},\\
+ &=(-1)^n\sum_Tw_T(\mathbf z)B_\tau(T)
+ &&\text{by bipartite duality},\\
+ &=(-1)^nH_\tau(\mathbf z)
+ &&\text{by \eqref{eq:bernstein-collapse}}.
+\end{align*}
+The $q$-zeta statement is the diagonal specialization, after the independent
+incidence calculation of Section~\ref{sec:incidence}. The argument is finite
+throughout: no convergence, no analytic continuation in a numerical parameter,
+and no exchange of infinite sums is involved.
+
+\subsection{Ordinary reciprocity is only the total-count shadow}
+\label{sec:shadow}
+
+At $q=1$, positive evaluations specialize to ordinary multichain counts.
+Polynomial interpolation at the distinct nodes $m=2,\ldots,n+2$ shows that
+this specialization of the $q$-zeta polynomial is the ordinary zeta
+polynomial; this is the route the shipped verifier implements. A cleaner
+justification avoids any specialization of a rational function in $q$
+altogether: the ordinary zeta polynomial is represented by
+$e_0^{\mathsf T}Z^{m-1}\mathbf j$, and since $Z=I+N$ with $N$ nilpotent,
+$Z^{m-1}=\sum_j\binom{m-1}{j}N^j$ is polynomial in $m$ and evaluates to
+$Z^{-2}$ at $m=-1$. Either way,
+\[
+ \Zeta(P_\tau,-1)=(-1)^n\#\Max(P_\tau).
+\]
+Both accounts are recorded because the merge must not appear to prove this
+case again, but must explain why it falls out safely: this is the case already
+claimed in the manifest and proved in \cite{PriorReciprocity}, and it is not
+presented here as a new result.
+
+Conversely, knowledge of this single total count cannot recover
+\eqref{eq:exact-support}. The additional information is retained by the $2^n$
+choices of the capacities $\one+\one_T$, and the two-value interpolation
+converts it into support coefficients.
+
+\section{Proof A, Engine 2: a private-element Euler identity}
+\label{sec:private}
+
+Engine~1 evaluated the cumulative counts $B_\tau(T)$ and recovered exact
+supports afterwards, at the cost of importing Postnikov's bipartite duality.
+Engine~2 attacks the exact support $B$ directly. It costs two Hall lemmas --
+the point at which transitivity is spent -- and a longer geometric argument,
+and it buys back the import: it uses Imported theorem~\ref{imp:lattice} alone,
+applied twice, and thereby \emph{proves}, in the case it needs, the duality
+that Engine~1 imports. Either engine completes Proof~A on its own. Both are
+recorded, as announced in Remark~\ref{rem:import-trade}.
+
+\subsection{An inequality description for sums of truncated simplices}
+
+\begin{lemma}
+\label{lem:inequalities}
+Let $A_u\subseteq R$ for $u$ in a finite index set $U$, where $R$ is a finite
+coordinate set. Then
+\begin{equation}
+ \sum_{u\in U}\Dz{A_u}
+ =\left\{z\in\R_{\ge0}^{R}:
+ z(J)\le\#\{u:A_u\cap J\ne\emptyset\}\ \text{ for all }J\subseteq R
+ \right\}.
+ \label{eq:rank-polytope}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The inclusion from left to right holds separately for each summand. For the
+reverse inclusion let $z$ satisfy the inequalities and let $w\in\R^R$.
+Replacing the negative entries of $w$ by zero can only increase $w\cdot z$.
+Let the distinct positive entries be $0<c_1<\cdots<c_k$, put $c_0=0$ and
+$J_j=\{i:w_i\ge c_j\}$. Then
+\[
+ w\cdot z\le\sum_{j=1}^{k}(c_j-c_{j-1})z(J_j)
+ \le\sum_{u\in U}\max\bigl(0,\max_{i\in A_u}w_i\bigr),
+\]
+and the last expression is the support function of the Minkowski sum. It
+bounds $w\cdot z$ for every $w$, which places $z$ in that compact convex set
+by the separating-hyperplane characterization. Empty $A_u$ contribute zero to
+the support function. This is the general truncated-simplex-sum statement, for
+an arbitrary indexed family; Lemma~\ref{lem:transport} is the instance in
+which the family comes from a preorder.
+\end{proof}
+
+\subsection{Private elements and their alternating count}
+
+Let $H$ be \emph{any} bipartite graph with disjoint vertex classes $R$ and
+$C$. Write $r=|R|$, $c=|C|$, and $N(i)\subseteq C$ for the neighbours of
+$i\in R$. Give each resource $i\in R$ an additional \emph{private} ground
+element $p_i$, adjacent to resource $i$ alone; the augmented ground set is
+\[
+ U=\{p_i:i\in R\}\sqcup C .
+\]
+Let $\Ical_H$ consist of the subsets of $U$ that can be matched injectively
+into $R$. Let $\Deg(H)$ be the set of distinct vectors
+\begin{equation}
+ d=(d_j)_{j\in C},\qquad
+ d_j=\#\{i\in R:f(i)=j\},\qquad f(i)\in N(i),
+ \label{eq:degree-vectors}
+\end{equation}
+that is, the set of degree vectors of full allocations -- not the set of
+allocations themselves.
+
+\begin{lemma}[Private-element Euler identity]
+\label{lem:euler}
+For every bipartite graph $H$ as above,
+\begin{equation}
+ (-1)^r\sum_{T\in\Ical_H}(-1)^{|T|}=|\Deg(H)|.
+ \label{eq:euler}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+If $R=\emptyset$, the only independent subset is empty and the unique full
+allocation has zero degree vector, so both sides are $1$. If some $i\in R$ has
+$N(i)=\emptyset$, resource $i$ can serve only $p_i$; toggling $p_i$ preserves
+membership in $\Ical_H$ and reverses the sign, so the left side is zero, while
+the right side is zero because a full allocation into $C$ is impossible. We
+may therefore assume $r\ge1$ and all $N(i)$ nonempty; in particular $c\ge1$.
+
+\smallskip\noindent\emph{Step 1: turn the alternating sum into an Ehrhart
+value.} For a ground element $u\in U$ let $A_u\subseteq R$ be its allowed
+resources, so $A_{p_i}=\{i\}$ and $A_j=\{i:j\in N(i)\}$ for $j\in C$. Set
+\begin{equation}
+ K=\sum_{u\in U}\Dz{A_u}=[0,1]^R+\sum_{j\in C}\Dz{A_j}.
+ \label{eq:K}
+\end{equation}
+Introduce a coordinate $0$ and homogenize each $\Dz{A_u}$ to
+$\Delta_{\{0\}\cup A_u}$ on $F=\{0\}\sqcup R$. For a fixed nonnegative integer
+$s$, dropping the zeroth coordinate is an affine lattice bijection from the
+corresponding sum of simplices onto $sK$, since the sum of all coordinates is
+fixed at $s|U|$. Introduce one further, full, simplex on $F$ with weight zero.
+
+In \eqref{eq:draconian-conditions} a nonempty $V\subseteq U$ now imposes
+$a(V)\le|\bigcup_{u\in V}A_u|$; subsets containing the full-simplex index give
+no additional condition, and its exponent is $a_0=r-\sum_{u\in U}a_u$.
+Consequently Imported theorem~\ref{imp:lattice} gives the polynomial identity
+\begin{equation}
+ \begin{gathered}
+ L_K(s)=\sum_{a\in\mathcal A}\prod_{u\in U}f_{a_u}(s),\\
+ \mathcal A=\Bigl\{a\in\N^U:a(V)\le\bigl|\textstyle\bigcup_{u\in V}A_u\bigr|
+                           \text{ for all }V\subseteq U\Bigr\},
+ \end{gathered}
+ \label{eq:K-ehrhart}
+\end{equation}
+the sum being finite because $\sum_ua_u\le r$. The equality holds for all
+nonnegative integers $s$ and is therefore an equality of polynomials. At
+$s=-1$ a factor $f_{a_u}(-1)$ is $1$ for $a_u=0$, $-1$ for $a_u=1$, and $0$
+for $a_u\ge2$; Hall's theorem identifies the surviving Boolean vectors with
+$\Ical_H$. Thus
+\begin{equation}
+ L_K(-1)=\sum_{T\in\Ical_H}(-1)^{|T|}.
+ \label{eq:alt-ehrhart}
+\end{equation}
+
+\smallskip\noindent\emph{Step 2: describe the interior lattice points.}
+The cube in \eqref{eq:K} makes $K$ full-dimensional in $\R^R$. For
+$J\subseteq R$ write $N(J)=\bigcup_{i\in J}N(i)$. Lemma~\ref{lem:inequalities}
+gives
+\[
+ K=\{z\ge0:z(J)\le |J|+|N(J)|\ \text{ for all }J\subseteq R\}.
+\]
+Its interior is obtained by making the coordinate inequalities and all
+nonempty-subset inequalities strict: an interior point cannot lie on a proper
+supporting hyperplane, and conversely strict satisfaction of this finite
+system gives a neighbourhood inside $K$. For an integer point $z$ put
+$y=z-\one_R$. Then
+\begin{equation}
+ z\in\Int K\cap\Z^R
+ \iff
+ y\in\N^R\ \text{ and }\ y(J)\le|N(J)|-1
+                   \quad(\emptyset\ne J\subseteq R).
+ \label{eq:interior-y}
+\end{equation}
+The condition $J=R$ in particular bounds $\sum_iy_i$ by $c-1$. Note that the
+shift removes the private cube and leaves \emph{strict} neighbourhood bounds,
+that is $y(J)\le|N(J)|-1$ and not $y(J)\le|N(J)|$.
+
+\smallskip\noindent\emph{Step 3: count the same vectors on the other side of
+the graph.} Consider
+\[
+ P_H=\sum_{i\in R}\Delta_{N(i)}\subseteq\R^{C}.
+\]
+Apply Imported theorem~\ref{imp:lattice} once more, with a full simplex
+$\Delta_C$ of weight zero and each displayed summand of weight one. Every
+binomial factor then equals $1$. The resulting exponent vectors are precisely
+the $y$ of \eqref{eq:interior-y}, completed by $a_0=c-1-\sum_iy_i$; subsets
+containing the full-simplex index impose only the automatic bound
+$a(J)\le c-1$. Hence
+\begin{equation}
+ \#(\Int K\cap\Z^R)=\#(P_H\cap\Z^{C}).
+ \label{eq:interior-dual}
+\end{equation}
+
+Every degree vector in \eqref{eq:degree-vectors} is a lattice point of $P_H$.
+Conversely, for $d\in P_H\cap\Z^{C}$ one has $\sum_jd_j=r$ and
+$d(A)\le\#\{i:N(i)\cap A\ne\emptyset\}$ for all $A\subseteq C$; Hall's
+theorem, applied to $d_j$ copies of each target $j$, provides an injective
+assignment of these $r$ demands to the $r$ resources. All resources are used,
+so this is a full allocation with degree vector $d$. Hence
+$P_H\cap\Z^{C}=\Deg(H)$. Combining \eqref{eq:alt-ehrhart}, Ehrhart
+reciprocity \eqref{eq:ehrhart-reciprocity} and \eqref{eq:interior-dual} proves
+\eqref{eq:euler}.
+\end{proof}
+
+\begin{remark}[What the geometric argument does and does not assert]
+The two sets in \eqref{eq:interior-dual} generally lie in different ambient
+dimensions. The proof is an equality of their cardinalities obtained from
+Imported theorem~\ref{imp:lattice}; it does not claim an affine bijection
+between them, and it does not count matchings with multiplicity. Both
+distinctions matter when the lemma is applied. Lemma~\ref{lem:euler} is
+stated and proved for \emph{every} bipartite graph, not merely those arising
+from preorders, so it is a reusable graph-theoretic statement in its own
+right; the standalone test suite of Section~\ref{sec:computation} exercises it
+in that generality.
+\end{remark}
+
+\subsection{Residual matchings and privatization}
+
+Fix $B\subseteq E$ and put $R=E\setminus B$.
+
+\begin{lemma}[Subtracting a Boolean vector]
+\label{lem:residual}
+For $y\in\N^E$, the vector $\one_B+y$ lies in $P_\tau$ exactly when the
+demands specified by $y$ can be assigned injectively to resources in $R$,
+using the relation $r\le_\tau i$.
+\end{lemma}
+
+\begin{proof}
+The feasibility inequalities after subtraction are
+\begin{equation}
+ y(I)\le |I|-|I\cap B|=|I\cap R|\qquad\text{for every ideal }I.
+ \label{eq:residual-ideal}
+\end{equation}
+For any set $A$ of demand types these imply
+$y(A)\le y(D_\tau(A))\le|R\cap D_\tau(A)|$, and Hall's theorem gives the
+matching. Conversely such a matching uses only resources in $R$, while the
+base demands $\one_B$ can use their own resources in $B$; the combined
+matching is feasible by Lemma~\ref{lem:allocation}.
+\end{proof}
+
+The residual graph still has targets in $R$ as well as targets in $B$: a
+resource $r$ can serve a different target $u\in R$ when $r\le_\tau u$. The
+next lemma removes those extra edges without changing any Boolean feasibility
+test. It is the point at which transitivity does its work in this engine, and
+it has no counterpart in Engine~1 or in Proof~B.
+
+\begin{lemma}[Privatizing the residual targets]
+\label{lem:private}
+For $U\subseteq R$ and $V\subseteq B$, the set of demands $U\sqcup V$ can be
+matched to $R$ under $\le_\tau$ if and only if $V$ can be matched to
+$R\setminus U$ under $\le_\tau$.
+\end{lemma}
+
+\begin{proof}
+The reverse implication follows by assigning each $u\in U$ to its own
+resource. For the forward implication let $A\subseteq V$ and set
+$I=D_\tau(A)$, an ideal by transitivity. Every matched demand in
+$(U\cup V)\cap I$ must use a resource in $R\cap I$, so
+\[
+ |A|+|U\cap I|\le|(U\cup V)\cap I|\le|R\cap I|,
+ \qquad\text{whence}\qquad
+ |A|\le|(R\setminus U)\cap D_\tau(A)| .
+\]
+This is Hall's condition for matching $V$ to $R\setminus U$. No antisymmetry
+was used.
+\end{proof}
+
+Now form the bipartite graph $H_B$ with resource set $R=E\setminus B$, target
+set $B$, and edges
+\begin{equation}
+ r\mathrel{H_B}s\quad\Longleftrightarrow\quad r\le_\tau s,
+ \label{eq:H-S}
+\end{equation}
+and adjoin to it a private ground element for each resource, identified with
+the corresponding element of $R$. Lemmas~\ref{lem:residual}
+and~\ref{lem:private} show that
+\begin{equation}
+ \eta_\tau(B)=\sum_{T\in\Ical_{H_B}}(-1)^{|T|}.
+ \label{eq:eta-independent}
+\end{equation}
+
+\begin{lemma}[Maxima with prescribed support]
+\label{lem:max-degrees}
+The map $b\mapsto(b-\one_B)|_B$ is a bijection from the maximal elements of
+$P_\tau$ with support $B$ onto $\Deg(H_B)$.
+\end{lemma}
+
+\begin{proof}
+For such a $b$, Lemma~\ref{lem:max} gives $|b|=n$. The nonnegative vector
+$y=b-\one_B$ is supported in $B$ and has sum $n-|B|=|R|$; by
+Lemma~\ref{lem:residual} its demands can be assigned to $R$, and equality of
+the totals forces every resource to be used. Thus $y|_B$ is a full-allocation
+degree vector for $H_B$. Conversely a degree vector in $\Deg(H_B)$, extended
+by zero outside $B$ and added to $\one_B$, is feasible, has sum $n$ and has
+support exactly $B$, hence is maximal. The two constructions are inverse on
+vectors; different allocations realizing the same degree vector produce the
+same $b$, which is exactly what is required, since the final objects are
+distinct degree vectors and not matchings counted with multiplicity.
+\end{proof}
+
+\begin{proof}[Proof A of Theorem~\ref{thm:main}, via Engine~2]
+By \eqref{eq:eta-independent} and Lemma~\ref{lem:euler},
+\[
+ (-1)^{n-|B|}\eta_\tau(B)=|\Deg(H_B)|=N_\tau(B),
+\]
+the last equality being Lemma~\ref{lem:max-degrees}. This is
+\eqref{eq:exact-support}, and it includes $B=\emptyset$, $B=E$ and
+$E=\emptyset$ through the boundary cases of Lemma~\ref{lem:euler}. Summing
+$(-1)^{|B|}\eta_\tau(B)\zt B$ over $B$ gives \eqref{eq:main}, and substitution
+into \eqref{eq:reduction} proves \eqref{eq:target} and
+Theorem~\ref{thm:height-intro} as before.
+\end{proof}
+
+\begin{remark}[Seam: one family, two descriptions]
+\label{rem:seam-matroid}
+The family $\Ical_{H_B}$ just used is precisely the family
+$\{S\subseteq E:\one_B+\one_S\in P_\tau\}$ that Engine~1 meets in
+\eqref{eq:exact-support}, and Proposition~\ref{prop:matroid} identifies it as
+the independent-set family of a transversal matroid. In Engine~2 that
+identification is load-bearing and is proved by Hall's theorem before
+anything geometric happens; in Engine~1 it appears afterwards, as an
+interpretation. This is the second of the two seams announced in
+Section~\ref{sec:roadmap}.
+\end{remark}
+
+\section{Proof B: an involution transferring local weights}
+\label{sec:transfer}
+
+Proof~B is architecturally independent of Proof~A end to end. It uses no
+incidence matrix, no M\"obius function, no Hall theorem, no bipartite graph,
+no second polytope and no interior-point count. Its only inputs are
+Section~\ref{sec:weighted} -- itself resting on the same two classical
+theorems -- and the elementary structure of $P_\tau$. Keeping it is not
+redundancy: it cross-validates an unrefereed result, and it is the only route
+that reaches $\qint{-r}$ for every $r$.
+
+\subsection{The \texorpdfstring{$v=0$}{v=0} pivot}
+
+\begin{proposition}[Maximal-layer binomial identity]
+\label{prop:binomial}
+For independent indeterminates $u_i$,
+\begin{equation}
+ \sum_{a\in P_\tau}\prod_{i\in E}\binom{a_i-u_i-1}{a_i}
+ =(-1)^n\sum_{b\in \Max(P_\tau)}\prod_{i\in E}\binom{b_i+u_i-2}{b_i}.
+ \label{eq:binomial}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Apply Proposition~\ref{prop:reciprocity} with $\sigma=\tau^*$, so that the
+index set of \eqref{eq:E} is $P_{\sigma^*}=P_\tau$, and then set $v=0$. On the
+left of \eqref{eq:reciprocity} the first factor of \eqref{eq:E} is
+$\binom{n-|a|}{n-|a|}=1$. On the right it becomes
+\[
+ \binom{n-|a|-1}{n-|a|}=
+ \begin{cases}1,&|a|=n,\\0,&|a|<n,\end{cases}
+\]
+which annihilates every layer below the top. This is a polynomial
+specialization, legitimate because reciprocity was first established in all
+$n+1$ variables. Lemma~\ref{lem:max} identifies the surviving layer with
+$\Max(P_\tau)$. The remaining factors are exactly those of
+\eqref{eq:binomial}, since $f_a(-u)=\binom{a-u-1}{a}$ and
+$f_b(u-1)=\binom{b+u-2}{b}$ directly from \eqref{eq:binomial-polynomial}.
+\end{proof}
+
+The source of the top-layer restriction is now transparent, and it is worth
+stating what it is not. The auxiliary capacity changes from $0$ to $-1$,
+annihilating every positive slack $n-|a|$. There is \emph{no} geometric object
+``of capacity $-1$'' anywhere in this argument, and no duality is invoked: the
+selection of the maximal layer is a pure algebraic specialization. This is the
+sharpest contrast with Proof~A, where the same selection is performed by a
+bijection with interior lattice points (Engine~1) or with full allocations in
+a residual graph (Engine~2).
+
+\subsection{The involution and the transfer theorem}
+
+For a formal power series over a commutative $\Q$-algebra, define
+\begin{equation}
+ (\Tr f)(z)=(1-z)f\left(\frac{-z}{1-z}\right).
+ \label{eq:T}
+\end{equation}
+The substituted series has zero constant term, so the composition is
+well-defined. The substitution $h(z)=-z/(1-z)$ satisfies $h(h(z))=z$ and
+$1-h(z)=1/(1-z)$; hence $\Tr^2f=f$.
+
+\begin{theorem}[Coefficient transfer]
+\label{thm:transfer}
+For any family $(f_i)_{i\in E}$ of formal power series over a commutative
+$\Q$-algebra,
+\begin{equation}
+ \boxed{\displaystyle
+ \sum_{a\in P_\tau}\prod_{i\in E}[z^{a_i}]f_i(z)
+ =(-1)^n\sum_{b\in \Max(P_\tau)}\prod_{i\in E}[z^{b_i}](\Tr f_i)(z).}
+ \label{eq:transfer}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+All indices on either side are at most $n$, and the first $n+1$ coefficients
+of $\Tr f$ depend only on the first $n+1$ coefficients of $f$, so every $f_i$
+may be truncated after degree $n$. The polynomials $(1-z)^m$, $0\le m\le n$,
+form a basis of that polynomial space, and the identity is multilinear in the
+$f_i$, so it suffices to take $f_i=(1-z)^{m_i}$ with $0\le m_i\le n$. For this
+basis,
+\[
+ [z^a](1-z)^m=(-1)^a\binom ma=\binom{a-m-1}{a},
+ \qquad \Tr\bigl((1-z)^m\bigr)=(1-z)^{1-m},
+\]
+\[
+ [z^b](1-z)^{1-m}=\binom{b+m-2}{b},
+\]
+so that \eqref{eq:transfer} is \eqref{eq:binomial} with $u_i=m_i$.
+Multilinearity and truncation finish the proof.
+\end{proof}
+
+Theorem~\ref{thm:transfer} is stated for arbitrary families of formal power
+series over any commutative $\Q$-algebra, which is far more general than the
+conjecture requires; that generality is what makes both
+Theorem~\ref{thm:main} and Theorem~\ref{thm:allnegative} instances of one
+statement.
+
+\begin{remark}[A concrete coefficient rule]
+\label{rem:Tcoeff}
+If $f(z)=\sum_{k\ge0}f_kz^k$ and $\Tr f=\sum_{a\ge0}g_az^a$, then
+\begin{equation}
+ g_0=f_0,\qquad g_1=-f_0-f_1,\qquad
+ g_a=\sum_{k=2}^a(-1)^k\binom{a-2}{k-2}f_k\quad(a\ge2),
+ \label{eq:Tcoeff}
+\end{equation}
+by expanding $\Tr(z^k)=(-1)^kz^k(1-z)^{1-k}$. The transfer therefore uses a
+triangular integral matrix, and is particularly simple to test without a
+symbolic algebra system.
+\end{remark}
+
+\subsection{Proof B of the support identity}
+\label{sec:proofB-support}
+
+\begin{proof}[Proof B of Theorem~\ref{thm:main}]
+Take $f_i(z)=(1-z)(1-z_iz)$, whose coefficient sequence is
+$1,-(1+z_i),z_i,0,0,\ldots$, whereas
+\[
+ \Tr f_i(z)=1+\frac{z_iz}{1-z}
+\]
+has coefficient $1$ in degree zero and $z_i$ in every positive degree. The
+left side of \eqref{eq:transfer} is then
+\[
+ \sum_{a\in P_\tau\cap\{0,1,2\}^E}
+ \prod_{i:a_i=1}\bigl[-(1+z_i)\bigr]\prod_{i:a_i=2}z_i
+ =R_{P_\tau}(\mathbf z),
+\]
+by grouping the pairs $(B,S)$ of \eqref{eq:R} according to
+$a=\one_B+\one_S$, and the right side is
+$(-1)^n\sum_{b}\prod_{i\in\supp(b)}z_i=(-1)^nH_\tau(\mathbf z)$. Hence
+$R_{P_\tau}=(-1)^nH_\tau$, which is \eqref{eq:main}, and taking the
+coefficient of $\zt B$ gives \eqref{eq:exact-support} in the form
+\begin{equation}
+ N_\tau(B)
+ =(-1)^{n+|B|}\sum_{S\subseteq E}(-1)^{|S|}
+       \mathbf 1_{\one_B+\one_S\in P_\tau}.
+ \label{eq:fixedsupport}
+\end{equation}
+\end{proof}
+
+This is a third, independent derivation of the exact-support identity: via
+the transfer theorem, rather than via incidence inversion plus residual
+matchings (Engine~2) or via cumulative counts plus two-value interpolation
+(Engine~1). Since \eqref{eq:exact-support} is the strengthened statement on
+which this whole document is built, all three routes to it are worth
+recording.
+
+Formula~\eqref{eq:fixedsupport} counts maximal elements with specified support
+without enumerating their possibly large coordinate entries, and it displays a
+nontrivial positivity statement for an alternating sum of feasibility
+indicators. For $B=E$ the only feasible $S$ is the empty set, so the
+coefficient of $\prod_iz_i$ is one, as expected from the unique all-positive
+vector of sum $n$.
+
+\subsection{The \texorpdfstring{$q$}{q}-zeta polynomial at every integer}
+\label{sec:endpoint}
+
+To complete Proof~B we must connect \eqref{eq:main} to $\Zeta_q$ without using
+the incidence calculation of Section~\ref{sec:incidence}. This is done by
+constructing the $q$-zeta polynomial outright. For $a\ge0$ and an integer $m$
+use the rational-function convention
+\begin{equation}
+ \qbinom{m+a-2}{a}=\prod_{j=1}^a\frac{1-q^{m+j-2}}{1-q^j},
+ \label{eq:gaussian}
+\end{equation}
+with empty product one; it extends the usual Gaussian binomial to the negative
+upper arguments occurring below. The variable $q$ is indeterminate throughout.
+
+\begin{proposition}[Gaussian endpoint formula]
+\label{prop:endpoint}
+For every integer $m$,
+\begin{equation}
+ \Zeta_q(P_\tau,\qint m)=\sum_{a\in P_\tau}q^{|a|}
+                     \prod_{i\in E}\qbinom{m+a_i-2}{a_i}.
+ \label{eq:endpoint}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+First let $m\ge2$ and condition a multichain on its final element $a$. Every
+earlier point is coordinatewise at most $a$, hence lies in $P_\tau$ by the
+downset property, and the choices in the separate coordinates are independent.
+In a coordinate with endpoint $a_i$, the preceding $m-2$ entries form a weakly
+increasing sequence in $\{0,\ldots,a_i\}$, whose weight enumerator is
+$\qbinom{m+a_i-2}{a_i}$; the endpoint contributes $q^{a_i}$. For an elementary
+verification of the local enumerator, let $R_{k,a}$ count weakly increasing
+$k$-tuples with entries between zero and $a$ by the sum of their entries;
+separating according to whether an entry $a$ occurs gives
+$R_{k,a}=R_{k,a-1}+q^aR_{k-1,a}$ with $R_{0,a}=R_{k,0}=1$, and the Gaussian
+polynomial $\qbinom{k+a}{a}$ satisfies the same recurrence and boundary
+values.
+
+To justify the remaining integers, regard $Q=q^m$ as a new variable. Each
+local product in \eqref{eq:gaussian} is a polynomial in $Q$ of degree at most
+$a_i$ over $\Q(q)$, so the right side of \eqref{eq:endpoint} is a polynomial
+in $Q$ of degree at most $n$. Replacing $Q$ by $1+(q-1)X$ yields a polynomial
+in $X$ whose values at $X=\qint m$, $m\ge2$, agree with \eqref{eq:qzeta-def}.
+Such a polynomial is unique, because these arguments are infinitely many
+distinct elements of $\Q(q)$. It is therefore the $q$-zeta polynomial, and the
+same formula is valid at every integer $m$, including the negative ones.
+\end{proof}
+
+\begin{remark}[Two constructions at negative arguments]
+\label{rem:two-constructions}
+Proposition~\ref{prop:endpoint} and Lemma~\ref{lem:continuation} are two
+different constructions of the $q$-zeta polynomial at negative arguments, and
+neither implies the other. The endpoint formula is uniform in $m$ and is what
+makes every $\qint{-r}$ reachable, through Lemma~\ref{lem:kernel} below; it is
+special to coordinate downsets. The matrix continuation
+$e_0^{\mathsf T}A^{m-1}\mathbf j$, with its rank-filtration diagonalization,
+applies to an arbitrary finite poset with least element and an arbitrary
+normalized height, and is what makes Theorem~\ref{thm:height-intro}
+reachable. Both are kept.
+\end{remark}
+
+\begin{lemma}[The local negative kernel]
+\label{lem:kernel}
+For every $r\ge1$ and $a\ge0$,
+\begin{equation}
+ q^a\qbinom{a-r-2}{a}=[z^a]\prod_{j=0}^r(1-q^{-j}z).
+ \label{eq:negativekernel}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+When $a\ge r+2$, the product \eqref{eq:gaussian} with $m=-r$ contains a factor
+$1-q^0$, so both sides vanish. If $0\le a\le r+1$, rewrite the negative powers
+by $1-q^{-k}=-q^{-k}(1-q^k)$ to get
+\[
+ q^a\qbinom{a-r-2}{a}=(-1)^aq^{-ra+\binom a2}\qbinom{r+1}{a},
+\]
+and expanding $\prod_{j=0}^r(1-q^{-j}z)$ by elementary symmetric functions
+gives the same expression. This finite $q$-binomial identity also follows by
+induction on $r$, multiplying by $1-q^{-r}z$.
+\end{proof}
+
+\begin{proof}[Proof B of \eqref{eq:target}]
+By Proposition~\ref{prop:endpoint} and Lemma~\ref{lem:kernel} with $r=1$, the
+left side of \eqref{eq:target} is the left side of \eqref{eq:transfer} with
+every $f_i(z)=f(z)=(1-z)(1-q^{-1}z)$. Its transfer is
+$\Tr f(z)=1+q^{-1}z/(1-z)$, whose coefficient is one in degree zero and
+$q^{-1}$ in every positive degree. Hence Theorem~\ref{thm:transfer} gives
+\[
+ \Zeta_q(P_\tau,\qint{-1})
+ =(-1)^n\sum_{b\in \Max(P_\tau)}\prod_{i:b_i>0}q^{-1}
+ =(-1)^n\sum_{b\in\Max(P_\tau)}q^{-|\supp(b)|},
+\]
+and Lemma~\ref{lem:max} identifies that statistic with the $\cov$ of the
+conjecture. No step of Section~\ref{sec:incidence} was used.
+\end{proof}
+
+\subsection{A shorter derivation once capacity reciprocity is known}
+\label{sec:two-capacity}
+
+The decisive interpolation can alternatively be compressed to the two capacity
+values $u_i\in\{1,2\}$. Put $t=q^{-1}$. For every $a\ge0$,
+\[
+ [z^a](1-z)(1-tz)=(1-t)\binom{a-2}{a}+t\binom{a-3}{a},
+\]
+so multilinearity lets one combine \eqref{eq:binomial} over all choices
+$u_i\in\{1,2\}$. On the maximal-layer side the corresponding local factor at
+$b$ becomes
+\[
+ (1-t)\binom{b-1}{b}+t\binom bb
+ =\begin{cases}1,&b=0,\\t,&b>0,\end{cases}
+\]
+which proves the conjecture directly. As Remark~\ref{rem:seam-table} records,
+this two-capacity collapse is the same content as the two-value interpolation
+table of Lemma~\ref{lem:interpolation}, in binomial rather than
+$z$-polynomial language; the two were reached independently, from opposite
+ends of the cluster of arguments merged here. The general transfer theorem is
+kept nevertheless, because it is what exposes why the same method works at
+every negative $q$-integer and not only at $\qint{-1}$.
+
+\section{All negative evaluations: positivity and combinatorics}
+\label{sec:negative}
+
+Set $t=q^{-1}$ and $F_r(z)=\prod_{j=0}^r(1-t^jz)$. A direct substitution into
+\eqref{eq:T} gives
+\begin{equation}
+ \Tr F_r(z)
+ =\frac{\prod_{j=1}^r\bigl(1-(1-t^j)z\bigr)}{(1-z)^r}
+ =\prod_{j=1}^r\left(1+\frac{t^jz}{1-z}\right).
+ \label{eq:TF}
+\end{equation}
+To select a coefficient of $z^a$, choose the $s$ factors in which the
+nonconstant summand is used; their contribution is
+$e_s(t,t^2,\ldots,t^r)z^s(1-z)^{-s}$. For $a\ge1$ this gives
+\[
+ [z^a]\Tr F_r(z)=\sum_{s=1}^{\min(r,a)}\binom{a-1}{s-1}e_s(t,t^2,\ldots,t^r)
+ =C_{r,a}(t),
+\]
+the degree-zero coefficient being one, in agreement with
+\eqref{eq:Cdefinition}. One may also use the compact Gaussian form
+\begin{equation}
+ C_{r,a}(t)=\sum_{s=1}^{\min(r,a)}
+ \binom{a-1}{s-1}t^{s(s+1)/2}\gausstbinom rs\qquad(a\ge1).
+ \label{eq:Cgaussian}
+\end{equation}
+
+\begin{proof}[Proof of the identity and positivity in Theorem~\ref{thm:allnegative}]
+Proposition~\ref{prop:endpoint} and Lemma~\ref{lem:kernel} express
+$\Zeta_q(P_\tau,\qint{-r})$ as the left side of \eqref{eq:transfer} with every
+$f_i=F_r$. Equation~\eqref{eq:TF} identifies the transferred coefficients as
+$C_{r,a}(t)$, which proves \eqref{eq:allnegative}. Positivity and integrality
+are immediate from \eqref{eq:Cdefinition}. The extreme-degree statements are
+proved in Proposition~\ref{prop:degrees} below.
+\end{proof}
+
+Nothing in Proof~A goes past $\qint{-1}$; Theorem~\ref{thm:allnegative} is the
+single largest piece of mathematics in this document that has only one proof.
+
+\subsection{A colored-composition interpretation}
+
+For $a>0$, an object counted by $C_{r,a}(t)$ consists of a nonempty set of
+colors $1\le j_1<\cdots<j_s\le r$ together with a composition
+$a=a_1+\cdots+a_s$ into $s$ positive parts; its weight is
+$t^{j_1+\cdots+j_s}$. The colors are written in increasing order, so no factor
+$s!$ occurs, and there are $\binom{a-1}{s-1}$ choices of composition. For
+$a=0$ there is one empty object of weight one.
+
+Consequently the signed negative evaluation counts pairs consisting of a
+maximal lattice point $b$ and, independently at each coordinate, one such
+colored composition of $b_i$. This explains the nonnegative coefficients
+without any appeal to cancellation in the original expression for the $q$-zeta
+polynomial. For instance,
+\begin{align*}
+ C_{1,a}(t)&=t &&(a\ge1),\\
+ C_{2,a}(t)&=t+t^2+(a-1)t^3 &&(a\ge1),\\
+ C_{3,a}(t)&=(t+t^2+t^3)+(a-1)(t^3+t^4+t^5)+\binom{a-1}{2}t^6 &&(a\ge1),
+\end{align*}
+the usual convention making the last binomial zero when $a=1,2$.
+
+\subsection{The ordinary specialization at every \texorpdfstring{$r$}{r}}
+
+Substituting $t=1$ in \eqref{eq:TF} gives $(1-z)^{-r}$, so
+\begin{equation}
+ C_{r,a}(1)=\binom{r+a-1}{a}.
+ \label{eq:Cordinary}
+\end{equation}
+After the substitution $q^m=1+(q-1)X$, the $j$th local quotient in
+\eqref{eq:gaussian} tends coefficientwise to $(X+j-2)/j$ as $q\to1$, so the
+coefficientwise limit in the endpoint formula identifies the ordinary zeta
+polynomial and yields
+\begin{equation}
+ (-1)^n \Zeta(P_\tau,-r)=
+ \sum_{b\in \Max(P_\tau)}\prod_{i\in E}\binom{r+b_i-1}{b_i}.
+ \label{eq:ordinary-r}
+\end{equation}
+At $r=1$ this is the unweighted identity already covered by
+\cite{PriorReciprocity} and discussed in Section~\ref{sec:shadow}; it is not
+claimed as new. At general $r$ it also follows directly by specializing all
+$u_i=r+1$ in \eqref{eq:binomial}. The negative ordinary zeta values at $r>1$
+appear nowhere else in this document.
+
+\subsection{Sharp extreme degrees}
+\label{sec:degrees}
+
+\begin{lemma}[Minimum support size]
+\label{lem:minsupp}
+The smallest support size of an element of $\Max(P_\tau)$ is the number
+$c_\tau$ of maximal equivalence classes of $\tau$.
+\end{lemma}
+
+\begin{proof}
+A maximal equivalence class $F$ is a filter, so its complement is an ideal and
+every $b\in\Max(P_\tau)$ satisfies $b(F)=n-b(E\setminus F)\ge|F|>0$. The
+distinct maximal classes are disjoint, forcing at least one support coordinate
+in each.
+
+For the converse, choose a representative in each maximal class. For every
+$i\in E$ choose a maximal class above the class of $i$ and send one unit from
+$i$ to the chosen representative there; let $b_j$ count the units received by
+$j$. Every unit assigned to a member of an ideal $I$ originates in $I$, since
+its source lies below its destination, so $b(I)\le|I|$, and $|b|=n$; thus
+$b\in\Max(P_\tau)$. Its support is exactly the set of chosen representatives,
+because every maximal class receives at least the units from its own members.
+\end{proof}
+
+\begin{proposition}[Sharp extreme degrees]
+\label{prop:degrees}
+For $n,r\ge1$ let $H_{\tau,r}(t)=\sum_{b\in \Max(P_\tau)}\prod_iC_{r,b_i}(t)$.
+Then $H_{\tau,r}$ has degree exactly $rn$ and leading coefficient one, its
+smallest exponent is $c_\tau$, and the coefficient of $t^{c_\tau}$ is the
+number of maximal points of support size $c_\tau$.
+\end{proposition}
+
+\begin{proof}
+For every $a>0$ the smallest exponent in $C_{r,a}$ is one with coefficient
+one, from the single color $1$, and positivity prevents cancellation; so the
+smallest exponent in the summand indexed by $b$ is $|\supp(b)|$, and
+Lemma~\ref{lem:minsupp} proves the assertion at the lower end.
+
+A choice of $s\le a$ distinct colors has weight exponent at most $rs$, hence
+at most $ra$. Equality with $ra$ is possible only when $a=1$: if $s<a$ the
+first bound is strictly smaller than $ra$, and if $s=a\ge2$ then distinctness
+of the colors makes their sum strictly smaller than $ra$. Thus
+$\deg C_{r,a}\le ra$, with strict inequality for $a\ge2$, while
+$C_{r,1}=t+\cdots+t^r$ is monic of degree $r$. Every maximal point has total
+$n$, and the only one all of whose coordinates are at most one is $\one$; its
+summand $(t+\cdots+t^r)^n$ is monic of degree $rn$, and every other summand
+has smaller degree.
+\end{proof}
+
+This completes the proof of Theorem~\ref{thm:allnegative}.
+
+\section{Consequences: matroids, feasible supports, and coefficients}
+\label{sec:consequences}
+
+\subsection{Two matroid invariants for the same coefficient}
+
+Fix $B\subseteq E$. Make a bipartite graph whose sources are $E\setminus B$
+and whose destinations are $E$, with an edge $i\to j$ whenever $i\le_\tau j$.
+Let $M_B$ be the transversal matroid on the destination set $E$: a set $S$ is
+independent when its elements can be matched to distinct sources. The matching
+exchange property follows by taking alternating paths in the union of two
+matchings, so these sets do form a matroid.
+
+\begin{proposition}[Tutte evaluation]
+\label{prop:matroid}
+The independent sets of $M_B$ are exactly
+\begin{equation}
+ \Ical_B=\{S\subseteq E:\one_B+\one_S\in P_\tau\},
+ \label{eq:matroid-independent}
+\end{equation}
+and $\rank M_B=n-|B|$. If $T_M(x,y)$ denotes the Tutte polynomial, then
+\begin{equation}
+ [\zt B]H_\tau(\mathbf z)=T_{M_B}(0,1).
+ \label{eq:tutte}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Membership in \eqref{eq:matroid-independent} is the family of inequalities
+$|S\cap I|\le|I\setminus B|$ over ideals $I$. A matching implies them, because
+every destination in $I$ must be matched from $I\setminus B$. Conversely, for
+$A\subseteq S$ apply the inequality to $D_\tau(A)$:
+\[
+ |A|\le|S\cap D_\tau(A)|\le|D_\tau(A)\setminus B| ,
+\]
+which are Hall's conditions for matching $S$ into the available sources. There
+are $n-|B|$ sources, and the destination set $E\setminus B$ can be matched
+identically to them, which gives the rank.
+
+By the subset expansion
+$T_M(x,y)=\sum_{A\subseteq E}(x-1)^{\rank M-\rank(A)}(y-1)^{|A|-\rank(A)}$, at
+$(x,y)=(0,1)$ only independent sets survive, giving
+$T_M(0,1)=(-1)^{\rank M}\sum_{A\text{ independent}}(-1)^{|A|}$. Substitute
+$\rank M_B=n-|B|$ and use \eqref{eq:exact-support}.
+\end{proof}
+
+The same coefficient carries a second, different standard invariant. By
+Remark~\ref{rem:seam-matroid} the family $\Ical_B$ is the independent-set
+family $\Ical_{H_B}$ of Engine~2, a transversal matroid of rank $n-|B|$ whose
+private elements form a basis. Define the $h$-polynomial of its independence
+complex directly by
+\begin{equation}
+ h_B(t)=\sum_{T\in\Ical_B}t^{|T|}(1-t)^{\,n-|B|-|T|} .
+ \label{eq:h-polynomial}
+\end{equation}
+Its top coefficient is $(-1)^{n-|B|}\sum_T(-1)^{|T|}=N_\tau(B)$. So
+\eqref{eq:tutte} and \eqref{eq:h-polynomial} are two standard matroid
+invariants for one and the same number, reached from two different
+literatures; \eqref{eq:h-polynomial} needs no matroid theorem at all, while
+\eqref{eq:tutte} places the coefficient inside the Tutte formalism. Both are
+recorded for that reason.
+
+In either reading, the signs in the Boolean sum encode a familiar matroid
+evaluation, but the equality with a count of maximal preorder points still
+rests on Section~\ref{sec:interior} or Section~\ref{sec:private}.
+Nonnegativity alone would not determine that count.
+
+\subsection{Exactly which supports occur}
+\label{sec:feasible}
+
+Call $B\subseteq E$ \emph{cofinal} if every $r\in E$ satisfies $r\le_\tau s$
+for some $s\in B$; equivalently, $B$ meets every maximal equivalence class of
+$\tau$, that is, every maximal element of the quotient partial order. Two
+statements are recorded, a qualitative one and a quantitative one; neither
+follows from the other.
+
+\begin{proposition}[Support feasibility, qualitative form]
+\label{prop:support-feasible}
+For every $B\subseteq E$, $N_\tau(B)>0$ if and only if $B$ is cofinal.
+Consequently $\eta_\tau(B)=0$ on noncofinal supports, and on cofinal supports
+its sign is exactly $(-1)^{n-|B|}$.
+\end{proposition}
+
+\begin{proof}
+Let $C$ be a maximal class; its complement is an ideal, and a maximal point
+has total $n$, so $a(E\setminus C)\le n-|C|$ forces $a(C)\ge|C|>0$, and the
+support of $a$ meets $C$.
+
+Conversely suppose $B$ meets every maximal class. Retain the unit of each
+source $b\in B$ at its own destination; for each source $i\notin B$ choose a
+maximal class above the class of $i$ and some $b\in B$ in that class, and send
+the source's unit to $b$. This is allowed transport and uses every source, so
+its destination vector has total $n$ and exact support $B$, hence is maximal.
+The same conclusion follows from Lemma~\ref{lem:max-degrees}: positivity means
+that every resource in $E\setminus B$ can choose some neighbour in $B$, the
+choices not needing to be distinct because the degree vector records
+multiplicities. The assertion about signs is Theorem~\ref{thm:main}.
+\end{proof}
+
+The quantitative counterpart is Lemma~\ref{lem:minsupp} together with
+Proposition~\ref{prop:degrees}: the \emph{minimum} support size is the number
+$c_\tau$ of maximal equivalence classes, and the coefficient at that exponent
+counts the maximal points of that support size. Its constructive unit-routing
+proof is kept because Proposition~\ref{prop:degrees}, and hence the degree
+statement of Theorem~\ref{thm:allnegative}, depends on it.
+
+It follows that the coefficient of $u^k$ in $H_\tau(u)$ is positive exactly
+for $c_\tau\le k\le n$, with no internal zero coefficients. This does
+\emph{not} assert log-concavity, real-rootedness, or any stronger coefficient
+property.
+
+\subsection{Coefficients of the support polynomial}
+
+\begin{proposition}[Extreme and near-extreme coefficients]
+\label{prop:top}
+For $n\ge1$,
+\begin{equation}
+ [u^n]H_\tau(u)=1,\qquad
+ [u^{n-1}]H_\tau(u)=\#\{(i,j)\in E^2:i\ne j,\ i\le_\tau j\}
+ =\sum_{i\in E}\bigl(|U_\tau(i)|-1\bigr).
+ \label{eq:top-coefficients}
+\end{equation}
+If the quotient preorder has exactly one maximal class $C$, then
+$[u]H_\tau(u)=|C|$; if it has more than one maximal class, this coefficient is
+zero. Equivalently, $[u]H_\tau(u)=\#\{s\in E:r\le_\tau s\text{ for all }r\in
+E\}$. For $n\ge2$, writing $S_{ru}=E\setminus\{r,u\}$,
+\begin{equation}
+ [u^{n-2}]H_\tau(u)=
+ \sum_{\{r,u\}\subseteq E}
+ \left(
+ |U_\tau(r)\cap S_{ru}|\,|U_\tau(u)\cap S_{ru}|
+ -\binom{|U_\tau(r)\cap U_\tau(u)\cap S_{ru}|}{2}
+ \right).
+ \label{eq:next-coefficient}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The only positive-coordinate integer vector of total $n$ is $\one$. A vector
+of total $n$ with support of size $n-1$ is uniquely $\one-e_i+e_j$ with $i\ne
+j$, and it satisfies the ideal inequalities exactly when every ideal
+containing $j$ also contains $i$, which is equivalent to $i\le_\tau j$; for
+necessity take the ideal $D_\tau(j)$. For singleton support the vector must be
+$ne_j$, and the transport criterion says that every source lies below $j$,
+which in a finite preorder happens exactly when there is a unique maximal
+class and $j$ lies in it.
+
+For \eqref{eq:next-coefficient}, use Lemma~\ref{lem:max-degrees}: fix the two
+residual resources $r,u$, and let their target sets inside $S_{ru}$ have sizes
+$a,b$ with intersection of size $d$. There are $ab$ ordered choices. Two
+distinct choices produce the same degree vector exactly when two distinct
+common targets are exchanged between $r$ and $u$, so each of the $\binom d2$
+unordered pairs of common targets creates exactly one excess count, and no
+degree vector has any other multiplicity. The number of distinct vectors is
+therefore $ab-\binom d2$. Summing over residual pairs proves the formula.
+\end{proof}
+
+Formula \eqref{eq:next-coefficient} is the only third-from-the-top
+coefficient formula available here, and the product rule below is the only
+statement about disjoint unions; they came from different drafts and neither
+subsumes the other. In particular, the negative $q$-evaluation has pole order
+exactly $n$ at $q=0$:
+\[
+ (-1)^n\Zeta_q(P_\tau,-q^{-1})
+ =q^{-n}+c'_\tau q^{-(n-1)}+\text{higher powers of }q,
+\]
+where $c'_\tau$ counts the ordered nonreflexive comparisons in
+\eqref{eq:top-coefficients}. Equivalent but distinct elements contribute in
+both directions.
+
+\subsection{Products and an inclusion--exclusion algorithm}
+
+If $\tau=\tau_1\sqcup\tau_2$ is a disjoint union on disjoint ground sets, then
+$P_\tau=P_{\tau_1}\times P_{\tau_2}$, its maximal points are products of
+maximal points, and therefore
+\[
+ H_\tau(\mathbf z)=H_{\tau_1}(\mathbf z_{E_1})H_{\tau_2}(\mathbf z_{E_2}),
+\]
+with no additional interaction between components.
+
+The cumulative counts can be inverted on the Boolean lattice:
+\begin{equation}
+ [\zt B]H_\tau(\mathbf z)
+ =\sum_{T\subseteq B}(-1)^{|B|-|T|}B_\tau(T)
+ =(-1)^n\sum_{T\subseteq B}(-1)^{|B|-|T|}L_{\tau^*}(-\one-\one_T).
+ \label{eq:support-inversion}
+\end{equation}
+Once the $2^n$ cumulative values are known, all exact-support counts follow in
+$O(n2^n)$ additions by the Boolean M\"obius transform. This is an exact finite
+procedure, not a claim that obtaining the cumulative counts is
+polynomial-time.
+
+\subsection{Arbitrary heights and a multivariate matrix identity}
+\label{sec:heights}
+
+Theorem~\ref{thm:height-intro} was proved in Section~\ref{sec:completion}. Two
+consequences deserve separate statements.
+
+\begin{corollary}[Linear weights]
+\label{cor:height}
+For positive integers $w_i$ and $h(a)=\sum_iw_ia_i$,
+\begin{equation}
+ \Zeta_{q,h}(P_\tau,\qint{-1})
+   =(-1)^n\sum_{b\in\Max(P_\tau)}q^{-\sum_{i\in\supp(b)}w_i}.
+ \label{eq:linear-height}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Substitute $h(\one_{\supp(b)})=\sum_{i\in\supp(b)}w_i$ in
+\eqref{eq:height-intro}. The exponent involves the Boolean support vector and
+not $h(b)$; the M\"obius function in \eqref{eq:reduction} is exactly what
+enforces that distinction.
+\end{proof}
+
+\begin{corollary}[Multivariate matrix identity]
+\label{cor:multi}
+Let $z_i$ be commuting indeterminates, put $\mathbf z^a=\prod_iz_i^{a_i}$ and
+$D(\mathbf z)=\operatorname{diag}(\mathbf z^a)_{a\in P_\tau}$. Then, over
+$\Q(z_i:i\in E)$,
+\begin{equation}
+ e_0^{\mathsf T}\bigl(ZD(\mathbf z)\bigr)^{-2}\mathbf j
+    =(-1)^n\sum_{b\in\Max(P_\tau)}\prod_{i\in\supp(b)}z_i^{-1}.
+ \label{eq:multi}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The purely algebraic equality
+$e_0^{\mathsf T}(ZD)^{-2}\mathbf j=e_0^{\mathsf T}\mu D^{-1}\mu\mathbf j$
+still holds, and \eqref{eq:mobius} reduces it to
+$\sum_B(-1)^{|B|}\eta_\tau(B)\prod_{i\in B}z_i^{-1}$. Apply
+Theorem~\ref{thm:main}.
+\end{proof}
+
+Equation \eqref{eq:multi} is a multivariate \emph{matrix} identity; it is not
+a claim that some multivariate interpolation polynomial has been constructed,
+and no such object is needed. Setting all $z_i=1$ is legitimate because $Z$ is
+invertible, and returns $\Zeta(P_\tau,-1)=(-1)^n\#\Max(P_\tau)$ as in
+Section~\ref{sec:shadow}.
+
+\section{Explicit examples}
+\label{sec:examples}
+
+\subsection{Antichains, discrete preorders, and a single equivalence class}
+
+For an $n$-element antichain the defining inequalities reduce to $0\le x_i\le
+1$, so $P_\tau=\{0,1\}^E$ and the only maximal point is $\one$:
+\[
+ H_\tau(\mathbf z)=\prod_iz_i,\qquad
+ \Zeta_q(P_\tau,-q^{-1})=(-1)^nq^{-n},\qquad
+ \Zeta_q(P_\tau,X)=X^n,
+\]
+the last because a multichain is determined coordinatewise by its number of
+ones, which may be $0,\ldots,m-1$. At the other negative arguments,
+$(-1)^n\Zeta_q(P_\tau,\qint{-r})=(t+t^2+\cdots+t^r)^n$. This example checks
+both the sign and the shift in the length of the multichains.
+
+At the opposite extreme let all $n$ elements be equivalent. The only nonempty
+ideal is $E$, so $P_\tau=\{a\ge0:|a|\le n\}$ and the maximal points are the
+weak compositions of $n$ into $n$ parts. For a prescribed support $B$ of size
+$b\ge1$ the positive coordinates form a composition of $n$ into $b$ positive
+parts, so, by placing $b-1$ separators in the $n-1$ internal gaps,
+\begin{equation}
+ [\zt B]H_\tau(\mathbf z)=\binom{n-1}{b-1},\qquad
+ H_\tau(u)=\sum_{b=1}^n\binom nb\binom{n-1}{b-1}u^b.
+ \label{eq:one-class}
+\end{equation}
+For $n=3$ this is $3u+6u^2+u^3$ with $10$ maximal points, and for $n=5$ it is
+$5u+40u^2+60u^3+20u^4+u^5$ with $126$. The example also shows that an
+equivalence class must not be collapsed to one coordinate: its cardinality
+affects both the polytope and the support statistic.
+
+\subsection{Chains}
+
+For the partial order $1<2<\cdots<n$ the maximal vectors are described by
+$a_1+\cdots+a_i\le i$ for $1\le i<n$ together with $|a|=n$. For $n=3$ they are
+\[
+ (0,0,3),\quad(0,1,2),\quad(0,2,1),\quad(1,0,2),\quad(1,1,1),
+\]
+so $H_\tau(u)=u+3u^2+u^3$, with full multivariate form
+$z_3+2z_2z_3+z_1z_3+z_1z_2z_3$. The nonzero supportwise counts and their
+signed Boolean sums are
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+$B$ & $N_\tau(B)$ & $\eta_\tau(B)$\\
+\midrule
+$\{3\}$ & 1 & 1\\
+$\{1,3\}$ & 1 & $-1$\\
+$\{2,3\}$ & 2 & $-2$\\
+$\{1,2,3\}$ & 1 & 1\\
+\bottomrule
+\end{tabular}
+\end{center}
+All other supports have both counts zero, because they are not cofinal. For
+$B=\{2,3\}$ the feasible $S$ are $\emptyset,\{1\},\{2\},\{3\}$, with
+alternating sum $-2$; for $B=\{3\}$ the independent-subset counts by size in
+the private residual graph are $1,3,3$, with alternating sum $1$. Hence
+$\Zeta_q(P_\tau,-q^{-1})=-q^{-1}-3q^{-2}-q^{-3}$, and at the next negative
+argument
+\[
+ (-1)^3\Zeta_q(P_\tau,\qint{-2})=t+4t^2+9t^3+9t^4+6t^5+t^6 .
+\]
+For the nonlinear height $h(a)=|a|^2$, Theorem~\ref{thm:height-intro} instead
+gives
+\[
+ \Zeta_{q,h}(P_\tau,\qint{-1})=-q^{-1}-3q^{-4}-q^{-9},
+\]
+which is $-353/512$ at $q=2$, against $-11/8$ in the linear case. The verifier
+obtains both by interpolation from positive multichain values, with a degree
+bound of $9$ in the nonlinear case, without ever using a negative-evaluation
+formula.
+
+For $n=5$ direct enumeration gives $132$ lattice points, $42$ maximal vectors,
+\[
+ H_\tau(u)=u+10u^2+20u^3+10u^4+u^5,
+ \qquad \Zeta_2(P_\tau,-1/2)=-\tfrac{197}{32}.
+\]
+This example has a unique maximum, so its least support size is one, and its
+coefficient at $u^4$ is the ten ordered comparisons $i<j$.
+
+\subsection{A fork, and why the direction of the preorder matters}
+
+For $V$: $1<2$ and $1<3$, the three maximal points are $(0,1,2)$, $(0,2,1)$
+and $(1,1,1)$, so
+\[
+ H_V(\mathbf z)=2z_2z_3+z_1z_2z_3,\qquad
+ \Zeta_q(P_V,-q^{-1})=-2q^{-2}-q^{-3},\qquad H_V(t)=2t^2+t^3 .
+\]
+There are two maximal classes, which explains the absence of a $t$ term before
+any computation. This small example already distinguishes maximal-point
+support from rank: all three points have rank three, but their support sizes
+are two, two and three, so replacing the cover statistic by the rank would
+give an incorrect formula.
+
+For the dual preorder $V^*$, relabelled so that $3$ lies above the
+incomparable $1,2$, one gets instead $H_{V^*}(t)=t+2t^2+t^3$. Both
+lattice-point posets have $12$ elements, but their numbers of maxima are $3$
+and $4$. Neither the maximal-support polynomial nor its $q$-zeta
+specialization should therefore be confused with the different
+support-enumerator duality studied in~\cite{DaiEtAl}.
+
+\subsection{A diamond}
+
+For the partial order $1<2$, $1<3$, $2<4$, $3<4$ one finds $|P_\tau|=38$,
+$|\Max(P_\tau)|=12$ and
+\[
+ H_\tau(t)=t+5t^2+5t^3+t^4 .
+\]
+This is the only four-element example worked out here.
+
+\subsection{The five-element example in the source}
+
+Take $E=\{a,b,c,d,e\}$ with $a\sim c$, with $a,c<e$, with $b<d$ and $b<e$, and
+with no other comparisons except those forced by reflexivity and transitivity.
+This is the running example of~\cite[Sections~3.1 and~4.4]{AC}. Besides
+nonnegativity, its polytope is described by
+\begin{align*}
+ x_a+x_c&\le2,& x_b&\le1,\\
+ x_a+x_b+x_c+x_e&\le4,& x_b+x_d&\le2,\\
+ x_a+x_b+x_c+x_d+x_e&\le5.
+\end{align*}
+There are $92$ lattice points and $18$ maximal ones. The maximal classes are
+$\{d\}$ and $\{e\}$, so every support contains both $d$ and $e$. The complete
+exact-support distribution is
+\begin{center}
+\begin{tabular}{@{}l r@{\qquad}l r@{}}
+\toprule
+Support & Count & Support & Count\\
+\midrule
+$\{d,e\}$ & 2 & $\{a,b,d,e\}$ & 2\\
+$\{a,d,e\}$ & 4 & $\{a,c,d,e\}$ & 2\\
+$\{b,d,e\}$ & 1 & $\{b,c,d,e\}$ & 2\\
+$\{c,d,e\}$ & 4 & $\{a,b,c,d,e\}$ & 1\\
+\bottomrule
+\end{tabular}
+\end{center}
+Thus
+\begin{align}
+ H_\tau(\mathbf z)
+ &=z_dz_e\bigl(2+4z_a+z_b+4z_c
+       +2z_az_b+2z_az_c+2z_bz_c+z_az_bz_c\bigr),
+ \label{eq:source-multivariate}\\
+ H_\tau(u)&=2u^2+9u^3+6u^4+u^5,
+ \label{eq:source-diagonal}
+\end{align}
+and Theorem~\ref{thm:main} gives
+\[
+ \Zeta_q(P_\tau,-q^{-1})
+ =-\frac{2q^3+9q^2+6q+1}{q^5}
+ =-\frac{(2q+1)(q^2+4q+1)}{q^5},
+\]
+which agrees with the expression printed on page~15 of~\cite{AC}. The support
+table is a refinement of that expression, not merely its total value $-18$ at
+$q=1$; \eqref{eq:source-multivariate} is finer still, and is the multivariate
+refinement of the source's own example. At the next negative argument,
+Theorem~\ref{thm:allnegative} gives
+\begin{align*}
+ (-1)^5\Zeta_q(P_\tau,\qint{-2})
+ ={}&2t^2+13t^3+41t^4+76t^5+94t^6\\
+    &+76t^7+40t^8+11t^9+t^{10},
+\end{align*}
+whose lowest exponent $2$ agrees with the two maximal equivalence classes, as
+Proposition~\ref{prop:degrees} requires.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}lrrlr@{}}
+\toprule
+Preorder & $|P_\tau|$ & $|\Max(P_\tau)|$ & $H_\tau(t)$
+ & $\Zeta_q(P_\tau,-q^{-1})|_{q=2}$\\
+\midrule
+Antichain, $n=3$ & 8 & 1 & $t^3$ & $-1/8$\\
+Chain, $n=3$ & 14 & 5 & $t+3t^2+t^3$ & $-11/8$\\
+$V$ (fork), $n=3$ & 12 & 3 & $2t^2+t^3$ & $-5/8$\\
+$V^*$, $n=3$ & 12 & 4 & $t+2t^2+t^3$ & $-9/8$\\
+One equivalence class, $n=3$ & 20 & 10 & $3t+6t^2+t^3$ & $-25/8$\\
+Diamond, $n=4$ & 38 & 12 & $t+5t^2+5t^3+t^4$ & ---\\
+Chain, $n=5$ & 132 & 42 & $t+10t^2+20t^3+10t^4+t^5$ & $-197/32$\\
+One equivalence class, $n=5$ & 252 & 126 & $5t+40t^2+60t^3+20t^4+t^5$
+ & $-681/32$\\
+Source example, $n=5$ & 92 & 18 & $2t^2+9t^3+6t^4+t^5$ & $-65/32$\\
+\bottomrule
+\end{tabular}
+\caption{Exact examples, all computed independently by the included
+verifiers. The diamond has relations $1<2$, $1<3$, $2<4$, $3<4$. The last
+column is the negative $q$-evaluation at $q=2$; the seven rows for which it is
+given are also recorded in \texttt{data/examples.csv}.}
+\label{tab:examples}
+\end{table}
+
+\section{Why the hypotheses cannot simply be discarded}
+\label{sec:limits}
+
+Three examples are recorded, carrying four distinct failure statements
+between them. Each bounds a different hypothesis, and none of them can be
+deduced from the others: the first shows that purity of the downset is not
+enough, the second that transitivity is not implied by the rest of the
+transport picture, and the third that unit capacities are essential.
+
+\subsection{Purity alone is insufficient: a pure downset, two failures}
+\label{sec:pure-downset}
+
+It is natural to ask whether \eqref{eq:target}, or the transfer identity
+\eqref{eq:transfer} behind Proof~B, holds for every finite pure coordinate
+downset in $\N^E$ containing the Boolean cube. Neither does. Let
+\begin{equation}
+ P=[\zero,(1,1,1)]\cup[\zero,(3,0,0)]\subseteq\N^3,
+ \label{eq:counterexample}
+\end{equation}
+a finite graded coordinate downset containing every Boolean vector, whose two
+maximal elements $(1,1,1)$ and $(3,0,0)$ both have rank three.
+
+\smallskip\noindent\emph{Failure of the supportwise identity and of the
+$q$-zeta value.} For $B=\{1\}$ the terms with $S\subseteq\{2,3\}$ cancel,
+while $S=\{1\}$ contributes $-1$; so $\eta_P(\{1\})=-1$, whereas
+$(-1)^{3-|B|}N_P(\{1\})=+1$. The only other nonvanishing $\eta_P$ is at
+$B=\{1,2,3\}$, where it is $1$, so \eqref{eq:reduction} gives
+\[
+ \Zeta_q(P,-q^{-1})=q^{-1}-q^{-3},
+\]
+whereas the proposed extension would give $-q^{-1}-q^{-3}$. At $q=2$ the
+discrepancy is $3/8$ against $-5/8$.
+
+\smallskip\noindent\emph{Failure of the transfer identity.} With
+$f_1(z)=z^2$ and $f_2=f_3=1$, the two sides of \eqref{eq:transfer} are $1$ and
+$-1$. This is immediate from $\Tr(z^2)=z^2/(1-z)$ and $\Tr(1)=1-z$: the left
+side counts the single point $(2,0,0)\in P$, while on the right only
+$b=(3,0,0)$ contributes, with weight $1$ and sign $(-1)^3$.
+
+Both statements are kept. They are genuinely different: the first says the
+conclusion of Theorem~\ref{thm:main} fails for $P$, the second says the
+much more general machine of Theorem~\ref{thm:transfer} fails for $P$, so
+capacity reciprocity is a real restriction inside Proof~B and not an artifact
+of its presentation. This counterexample locates a genuine restriction of the
+theorem: its proofs use the preorder allocation structure, not merely purity
+and product-of-chains intervals.
+
+\subsection{A reflexive, nontransitive incidence system}
+\label{sec:nontransitive}
+
+One could instead try to prove the theorem for any downset generated by
+assigning unit sources to allowed destinations, with each source allowed to
+stay in place. The following example rules that out, and it is not covered by
+Section~\ref{sec:pure-downset}, because here the transport representation is
+present and only transitivity is missing.
+
+On three coordinates give the sources the neighbourhoods
+\[
+ A_1=\{1,2\},\qquad A_2=\{2,3\},\qquad A_3=\{1,3\}.
+\]
+The relation is reflexive but not transitive. Its distinct full-assignment
+vectors are the six permutations of $(2,1,0)$ together with $(1,1,1)$. Let $P$
+be their coordinate downset. All seven generators are maximal, and
+\begin{equation}
+ H_P(\mathbf z)=2(z_1z_2+z_1z_3+z_2z_3)+z_1z_2z_3.
+ \label{eq:counter-support}
+\end{equation}
+The downset contains every vector of total at most two, and among total-three
+vectors exactly the seven just listed. The general Boolean localization
+formula \eqref{eq:local} gives
+\begin{equation}
+ -R_P(\mathbf z)
+ =z_1+z_2+z_3+2(z_1z_2+z_1z_3+z_2z_3)+z_1z_2z_3 .
+ \label{eq:counter-boolean}
+\end{equation}
+For instance, at the coefficient of $z_1$ the feasible $S$ are all the proper
+subsets of $\{1,2,3\}$, whose alternating sum is $1-3+3=1$; yet there is no
+maximal point supported only at coordinate one. In diagonal form the true
+maximal-support polynomial is $6u^2+u^3$, whereas the signed negative
+$q$-zeta value is $3u+6u^2+u^3$.
+
+Reflexivity, purity, unit supplies, coordinate-box intervals and a transport
+representation are therefore jointly insufficient. Transitivity enters
+decisively when arbitrary neighbourhood constraints are replaced by ideal or
+filter inequalities, which is exactly what Lemma~\ref{lem:private} and the
+filter identification inside Proposition~\ref{prop:count} exploit.
+
+\subsection{Arbitrary positive capacities do not satisfy the same formula}
+
+The auxiliary polynomial $L_{\tau^*}(\mathbf t)$ has independent capacity
+variables, but this does not extend the main $q$-formula unchanged to
+$Q_\tau(\mathbf c)$ with arbitrary capacities. Take one coordinate of capacity
+two: the lattice-point poset is the chain $0<1<2$, and \eqref{eq:ternary}
+gives
+\[
+ \Zeta_q(P,-q^{-1})=1-(1+q^{-1})+q^{-1}=0 .
+\]
+Its sole maximal point has support size one, so neither a sign based on
+ambient dimension nor one based on maximal rank can produce the asserted
+support formula. The unit-capacity model in the main theorem is essential.
+
+\subsection{What the result does not settle}
+\label{sec:notsettled}
+
+This document does not establish the other real-rootedness,
+magic-positivity or $\gamma$-positivity conjectures for preorder polytopes,
+and nonnegativity of the coefficients in \eqref{eq:allnegative} does not imply
+real-rootedness or log-concavity; no such inference is made. As recorded in
+Section~\ref{sec:nonduplication}, $H_\tau$ counts only maximal points, whereas
+the preorder $h$-polynomial of \cite[Section~5]{AC} counts support sizes over
+all lattice points; these are different polynomials.
+
+We also do not provide a canonical pointwise bijection between $B_\tau(T)$ and
+$\Lambda_\tau(T)$: in Engine~1 that equality uses the imported bipartite
+duality, and a triangulation-dependent bijection could be sought through that
+theorem but is not needed. Similarly, no direct sign-reversing involution
+realizing \eqref{eq:exact-support} is constructed. In Proof~B the operator
+$\Tr$ is an algebraic involution on local series, not a combinatorial matching
+of individual global summands; the colored-composition model of
+Section~\ref{sec:negative} gives a positive interpretation of the final answer
+without pretending to supply such a matching.
+
+Two open problems are recorded rather than solved. First, characterize the
+finite coordinate downsets for which the transfer identity
+\eqref{eq:transfer} holds for every family of local series; the example of
+Section~\ref{sec:pure-downset} shows the class is strictly smaller than the
+pure downsets containing the Boolean cube. Second, characterize the finite
+downsets satisfying the supportwise identity \eqref{eq:exact-support}. Neither
+is claimed as an additional solved problem here.
+
+\section{Exact computation and reproducibility}
+\label{sec:computation}
+
+Three independent verifiers are shipped, one from each of the merged
+packages. They test three different theorems and none subsumes the others, so
+all three are retained rather than unified:
+\begin{itemize}
+\item \texttt{code/verify.py} --- the support/interior/transport suite, with
+ four random-construction modes and the weighted lattice polynomial at both
+ nonnegative and negative capacities;
+\item \texttt{code/verify\_transfer.py} --- the $\qint{-r}$ polynomial
+ identities at $r=1,\ldots,4$, arbitrary signed local-kernel transfer tests,
+ direct capacity and reciprocity counts, and multichain dynamic-programming
+ interpolation;
+\item \texttt{code/verify\_supportwise.py} --- the inverse-matrix evaluations,
+ the nonlinear-height interpolation, and the standalone bipartite-lemma suite;
+\item \texttt{code/test\_unit.py} --- ten fast normalization and boundary
+ tests.
+\end{itemize}
+All of them use only the Python standard library, all counts use integers, and
+all interpolations and polynomial evaluations use
+\texttt{fractions.Fraction}. There is no floating-point tolerance, computer
+algebra service or hidden dataset; the only floating-point quantity recorded
+anywhere is elapsed wall-clock time. A failed equality raises an exception
+instead of silently recording approximate agreement.
+
+Note that the runs used \emph{different seeds} and \emph{different sampling
+depths}, and this has been preserved deliberately: \texttt{verify.py} and
+\texttt{verify\_transfer.py} use seed \texttt{20260920}, while
+\texttt{verify\_supportwise.py} uses seed \texttt{26092049}; and at sizes
+$6,7,8$ the first samples $16$ relations per size while the third samples
+$64$. The sampled populations are therefore genuinely different, and that
+independence is part of the evidentiary value.
+
+\subsection{Exhaustive enumeration}
+
+For $n$ labelled elements each program considers every reflexive relation by
+choosing, independently, the $n-1$ possible off-diagonal entries of each row,
+and then accepts exactly the transitive ones: whenever row $i$ contains $j$,
+row $j$ must be a subset of row $i$. There are $2^{n(n-1)}$ candidates and
+each labelled preorder is visited exactly once. No antisymmetry condition is
+imposed, so preorders with genuine equivalence classes are included, and
+isomorphism classes are not collapsed.
+
+For every accepted relation \texttt{verify.py} independently computes the
+maximal candidates from the ideal inequalities at total $n$, their exact
+support counts by enumeration, and the alternating Boolean formula. It also
+counts every interior-capacity case $\one+\one_T$ directly from the strict
+filter inequalities, and compares the maximal candidates with all distinct
+full-assignment vectors in the transport model.
+
+\begin{center}
+\begin{tabular}{@{}r r r r@{}}
+\toprule
+$n$ & Labelled preorders & Support identities & Interior counts\\
+\midrule
+0 & 1 & 1 & 1\\
+1 & 1 & 2 & 2\\
+2 & 4 & 16 & 16\\
+3 & 29 & 232 & 232\\
+4 & 355 & 5,680 & 5,680\\
+5 & 6,942 & 222,144 & 222,144\\
+\midrule
+Total & 7,332 & 228,075 & 228,075\\
+\bottomrule
+\end{tabular}
+\end{center}
+All comparisons passed. The counts in the two right columns include zero
+coefficients and empty support sets, not only successful nonempty supports,
+and the interior column is checked at full exhaustive depth. The
+assignment-model comparison was performed for each of the 7,332 preorders.
+
+The supportwise verifier covers the same exhaustive range independently:
+7,332 labelled preorders and 228,075 support identities, plus $64$ distinct
+seeded preorders at each of sizes $6,7,8$, contributing another 28,672
+identities for a total of 256,747. Its sampled relations are saved as row
+bitmasks, so they can be recovered independently of the pseudorandom
+generator. The transfer verifier's default exhaustive range is sizes
+$0,\ldots,4$, that is $1+1+4+29+355=390$ relations; it accepts
+\texttt{--max-n 5}.
+
+\subsection{Additional cases and independent routes}
+
+Using seed \texttt{20260920}, \texttt{verify.py} generates sixteen cases at
+each of sizes six, seven and eight, alternating four construction modes:
+sparse acyclic relations, dense acyclic relations, closures of arbitrary
+directed relations, and partial orders on randomly chosen equivalence blocks.
+In the recorded run all sixteen relations at each size were distinct. This
+checks another 7,168 exact-support coefficients. The interior and assignment
+checks were also run on the size-six and size-seven cases; they were omitted
+at size eight in this test profile, which is stated openly rather than
+implied.
+
+For each of the five named examples a separate routine counts \emph{positive}
+weighted multichains at $m=2,\ldots,n+2$, interpolates in the actual nodes
+$\qint m$, evaluates at $-1/q$ and compares with the maximal-support
+polynomial, without invoking the Boolean negative-evaluation formula. At
+$q=1,2,3,5$ all twenty comparisons passed; for the source example the values
+were
+\[
+ -18,\qquad -\frac{65}{32},\qquad-\frac{154}{243},\qquad-\frac{506}{3125}.
+\]
+This independent route is particularly useful for checking the $m-1$ chain
+length and the $-2$ matrix exponent. The weighted lattice polynomial was also
+checked in 156 evaluations on the five examples: twenty nonnegative capacity
+vectors against direct lattice counts, zero capacities included, and 136
+vectors in $\{-1,-2\}^E$ against the support--interior identity. Finally, the
+nontransitive example of Section~\ref{sec:nontransitive} is explicitly
+computed and checked to \emph{fail} the extension it is meant to refute.
+
+The transfer verifier checks, over its exhaustive range: every coefficient of
+the multivariate identity of Section~\ref{sec:proofB-support}; the full
+transfer \eqref{eq:transfer} on deterministically generated signed integer
+local polynomials, which is a sample of weights and not an exhaustive check
+over all weights; and the negative evaluations as exact polynomials in $t$ for
+$r=1,2,3,4$, the left side built from the finite product of
+Lemma~\ref{lem:kernel} and the right side built independently from subsets of
+colors and compositions, with the leading and smallest-degree claims of
+Proposition~\ref{prop:degrees} checked at the same time. To avoid merely
+comparing two rewritings of the same Gaussian expression, a further test
+computes positive-length multichain weights by the direct dynamic program
+\[
+ V_1(a)=q^{|a|},\qquad V_{\ell+1}(a)=q^{|a|}\sum_{b\le a}V_\ell(b),
+\]
+and reconstructs the polynomial by exact Lagrange interpolation at $q=2,3$,
+one further positive argument checking the interpolation before all four
+negative arguments are compared against \eqref{eq:allnegative}.
+Independent-capacity counts were checked by direct lattice enumeration for all
+nonempty preorders of size at most three, all $u_i\in\{1,2\}$ and
+$v\in\{0,1,2\}$, with reciprocity also checked at $v=1,2$.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}lr@{}}
+\toprule
+Check family & Number passed\\
+\midrule
+Exhaustively enumerated labelled preorders, transfer verifier & 390\\
+Full multivariate support identities in that range & 390\\
+Signed local-polynomial transfer tests in that range & 390\\
+Negative-evaluation polynomial identities, $r=1,\ldots,4$ & 1,560\\
+Direct capacity counts and reciprocity evaluations & 1,250\\
+Positive and negative interpolation comparisons & 410\\
+Additional deterministic random preorders, sizes $5$--$8$ & 24\\
+\bottomrule
+\end{tabular}
+\caption{Recorded output of \texttt{code/verify\_transfer.py} at its default
+settings \texttt{--max-n 4}, \texttt{--max-r 4}, seed \texttt{20260920}. The
+six worked examples also receive all structural and polynomial checks.}
+\label{tab:checks}
+\end{table}
+
+The supportwise verifier adds checks that exist nowhere else. For every
+preorder of size at most four, two triangular linear solves compute
+$e_0^{\mathsf T}(ZD)^{-2}\mathbf j$ directly, at $q=2$, $q=3/2$ and with
+independent coordinate weights $z_i=2,3,5,7$, for 1,170 matrix evaluations in
+total; seven named examples are checked by interpolating the $q$-zeta
+polynomial from positive multichain values at $q=2$, and the three-element
+chain receives an eighth interpolation using the nonlinear height $h=|\cdot|^2$
+with a degree bound of $9$. Above all, Lemma~\ref{lem:euler} is tested
+\emph{standalone}, in isolation from the preorder application, on all 5,058
+labelled bipartite graphs with $0\le|R|\le3$ and $0\le|C|\le4$ and on 300
+further seeded graphs of sizes $(4,4)$, $(5,4)$, $(4,5)$, comparing three
+independently computed counts: independent subsets of the private-element
+graph, full-allocation degree vectors, and the integer vectors satisfying
+\eqref{eq:interior-y}. All tests passed.
+
+\subsection{Two finite algorithms, and what they cost}
+
+Equation \eqref{eq:exact-support} gives a direct exact procedure for the whole
+maximal-support polynomial: enumerate $B,S\subseteq E$, test
+$\one_B+\one_S\in P_\tau$, and accumulate the signed sums. There are $4^n$
+membership tests; using the allocation interpretation, each is a
+bipartite-matching test on at most $2n$ demand copies and $n$ resources, and
+sums exceeding $n$ can be rejected immediately. A basic augmenting-path
+implementation gives an $O(4^nn^3)$ arithmetic-operation upper bound,
+including all support counts. This is an exponential algorithm, not a claim of
+polynomial-time enumeration in $n$.
+
+Alternatively, for a fixed support $B$, enumerate the distinct degree vectors
+of full allocations in $H_B$ by dynamic programming: begin with the zero
+vector on $B$, and for each resource $r\in E\setminus B$ replace the current
+set $D$ by
+\[
+ \bigcup_{s\in B:\,r\le_\tau s}\{d+e_s:d\in D\} .
+\]
+The cardinality of the final set is $N_\tau(B)$. The union is a \emph{set}
+union: failing to deduplicate would count allocations rather than maximal
+vectors. The shipped verifiers use a third engineering choice suited to small
+exhaustive cases, encoding all ideals as a bitset and precomputing which
+subset inequalities each candidate vector violates; this changes neither the
+statement being checked nor its exact integer arithmetic.
+
+If only the diagonal polynomial $H_\tau(u)$ is required, \eqref{eq:ternary}
+uses $3^n$ vectors, each contributing $(-1)^{n+s}(1+u)^su^d$, and a direct
+implementation takes $O(nj(\tau)3^n)$ elementary arithmetic operations, where
+$j(\tau)$ is the number of ideals, with no construction of a large incidence
+matrix. This bound ignores integer bit costs and is a transparent upper bound,
+not a sharp complexity result. Against it, enumeration of all rank-$n$
+candidate vectors requires at most $\binom{2n-1}{n-1}$ candidates when $n>0$,
+which is often competitive. The value of the Boolean formula is therefore not
+a universal speed claim; it is structural locality, the matroid
+interpretation, and the ability to check two genuinely different computations
+against one another.
+
+\subsection{Running and reusing the programs}
+
+From the extracted archive directory, the recorded profiles are
+\begin{lstlisting}
+python code/verify.py --exhaustive 5 --random-per-size 16 \
+    --seed 20260920 --output data/verification.json
+python code/verify_transfer.py --output data/verification_transfer.json
+python code/verify_supportwise.py --output data/verification_supportwise.json
+python -m unittest discover -s code -v
+\end{lstlisting}
+On PowerShell, put each command on one line, or replace the shell
+continuation with PowerShell's continuation character. A smaller smoke test is
+\begin{lstlisting}
+python code/verify.py --exhaustive 3 --random-per-size 4 \
+    --output data/smoke.json
+\end{lstlisting}
+Do not run Python with \texttt{-O}, since some test assertions use
+\texttt{assert}.
+
+The row-mask representation is explicit and shared by all three programs: bit
+$j$ in \texttt{rows[i]} means $i\le_\tau j$, with zero-based labels. For
+example, \texttt{(21, 26, 21, 8, 16)} encodes the five-element source example
+in the order $a,b,c,d,e$; then
+\texttt{boolean\_coefficients(rows)[24]} is $2$, the exact-support count for
+$\{d,e\}$, and \texttt{direct\_qzeta\_negative(rows, 2)} is $-65/32$. Library
+functions expose ideal generation, lattice points, maximal points, exact
+support coefficients, cumulative support counts, direct interior counts, and
+positive-chain interpolation. Invalid relations should be checked with
+\texttt{is\_preorder}; transitive closure is available as a separate, explicit
+operation, and a nontransitive relation must not be confused with its
+transitive closure, which is never a silently applied repair.
+
+The JSON records the actual relations used in the additional tests and a
+SHA-256 digest of the deterministic exhaustive witness stream. That digest
+helps detect accidental changes to the run; it is not a mathematical
+certificate in the proof-assistant sense, and no checksum manifest of the
+archive is shipped or intended.
+
+The source paper already reports verification of its original, univariate
+conjecture through size six~\cite[p.~15]{AC}. The role of these computations
+is independent reproducibility and testing of the stronger support-by-support
+identity, its two geometric engines, and the negative evaluations; it is not a
+claim to exceed that original size bound. Neither the original checks nor
+these establish an all-size theorem. That role belongs to the arguments in
+Sections~\ref{sec:incidence}--\ref{sec:negative}.
+
+\section{Proof audit and research status}
+\label{sec:audit}
+
+\subsection{Dependencies}
+
+Two substantial results are imported: Postnikov's lattice-count formula
+(Imported theorem~\ref{imp:lattice}) and Ehrhart--Macdonald reciprocity
+\eqref{eq:ehrhart-reciprocity}. Engine~1 of Proof~A imports one more,
+Postnikov's bipartite duality (Imported theorem~\ref{imp:duality}); Engine~2
+and Proof~B do not. Hall's theorem is used by Proof~A and is proved in
+Appendix~\ref{app:hall}; it is entirely absent from Proof~B. Everything else
+is proved here: the Minkowski realization with independent capacities, the
+filter identification of draconian vectors, the polynomial extension of
+reciprocity, the incidence-matrix continuation and Boolean localization, the
+support--interior identity, the private-element Euler identity, the residual
+and privatization lemmas, the coefficient involution, the Gaussian endpoint
+formula, and the positive local factors. The filter identification is included
+with explicit credit to its appearance in \cite[Lemma~4.1]{AC}, and the
+overlaps with \cite{PriorReciprocity} are listed in
+Section~\ref{sec:nonduplication} and flagged again at
+Remarks~\ref{rem:prior-enumerator} and~\ref{rem:prior-reciprocity}. No theorem
+asserted by another report in the supplied manifest is used as a proof source.
+
+\subsection{Normalization errors the proofs are sensitive to}
+
+The following points make the delicate conventions explicit. They merge the
+audits of the three source drafts; where two drafts recorded the same point
+differently, both formulations are kept.
+
+\begin{enumerate}[label=\arabic*.]
+\item \textbf{Lower covers and rank are different.} Covers are $a-e_i$ for
+positive coordinates; the exponent in the conjecture is the support size, not
+the common maximal rank $n$.
+\item \textbf{The matrix is $ZD$, and the exponent is $-2$.} Its column
+weighting gives the sum of the heights of the chain entries. There are $m-1$
+entries, so the negative evaluation uses $A^{-2}$, not $A^{-1}$. The
+independent multichain-interpolation tests were designed specifically to
+detect an error here.
+\item \textbf{Repeated height eigenvalues cause no Jordan blocks.} The rank
+(or height) filtration proves annihilation by the \emph{squarefree}
+polynomial $\prod_j(X-q^{g_j})$ over $\Q(q)$. The argument does not rely on
+upper triangularity alone.
+\item \textbf{Boolean localization localizes only the middle vector.} The
+M\"obius factor $\mu(\zero,a)$ forces $a$ to be Boolean, but $a+\one_S$ may
+have entries equal to $2$ and must not be treated as Boolean; the signed count
+does not discard those terms.
+\item \textbf{The height statistic is $h(\one_{\supp(b)})$, not $h(b)$.} The
+nonlinear-height example on the three-element chain distinguishes the two.
+\item \textbf{The weighted count uses the dual preorder.} Its source
+neighbourhoods are $D_\tau(i)$, not $U_\tau(i)$. This orientation is checked
+twice, in Proposition~\ref{prop:count} and again in the support-restricted
+graph of Section~\ref{sec:interior}.
+\item \textbf{The zero-weight universal vertex remains present.} In the
+untrimmed Postnikov formula its factor is $f_{a_0}(0+1)=1$, not
+$\binom{a_0-1}{a_0}$; the new $0$-coordinate is included when applying the
+theorem, so the draconian total is $n$ and not $n-1$. Deleting that vertex
+would change both the total and the formula.
+\item \textbf{Interior strictness is integral strictness.} After subtracting
+$\one$, the capacity $\one+\one_T$ produces $y(I)\le|I\cap T|-1$, not
+$y(I)\le|I\cap T|$; likewise in Engine~2 the shift by $\one_R$ removes the
+private cube and leaves $y(J)\le|N(J)|-1$.
+\item \textbf{The support-restricted graph need not be connected initially.}
+The isolated-vertex case has both counts zero; in the remaining case the
+universal right neighbour makes the graph connected, meeting the hypothesis of
+the imported duality. Correspondingly, in Engine~2 no empty simplex is ever
+passed to the nonempty-simplex formula: a resource with no nonprivate
+neighbour is handled before any polytope is formed.
+\item \textbf{Degree vectors, not allocations.} The objects in bijection with
+maximal points are distinct full-allocation degree vectors. Counting maps or
+matchings with multiplicity would give the wrong theorem, which is also why
+the dynamic program of Section~\ref{sec:computation} must deduplicate.
+\item \textbf{The multivariate step is not a weighted $q$-Ehrhart
+assertion.} It is the explicit two-value identity of
+Lemma~\ref{lem:interpolation}, followed by ordinary univariate Ehrhart
+reciprocity along each fixed capacity ray.
+\item \textbf{Capacities are independent variables before any negative
+specialization.} In Proof~B reciprocity is established in all $n+1$ variables
+first, and only then is $v$ set to $0$; there is no polytope of capacity $-1$.
+\item \textbf{Preorders, not just partial orders.} Privatization uses
+reflexivity and transitivity and never antisymmetry; genuine equivalence
+classes are allowed and retain their individual coordinates. Boundary cases
+with empty $E$, empty residual resource set and empty target sets are treated
+explicitly. The exhaustive verifiers include relations with genuine cycles.
+\end{enumerate}
+
+\subsection{What is established, and what is not}
+
+The arguments supplied here prove Theorems~\ref{thm:main},
+\ref{thm:allnegative} and~\ref{thm:height-intro} from the stated classical
+results, with no unproved additional combinatorial assertion and no hidden
+lemma. In that mathematical sense this is a complete proposed solution of the
+chosen conjecture, and its validity is not inferred from the finite
+computations.
+
+The following separate questions are \emph{not} answered by the computations
+or by this presentation: independent expert verification of every step;
+priority relative to unpublished or newly posted work; and a formal proof
+checked by a small trusted kernel. No such verification or priority
+certificate is claimed. This is an AI-assisted research draft, not
+independently refereed, not formalized in a proof assistant, and not
+represented as accepted or published mathematics. The literature checks were
+performed on 20 September 2026 and are documented in
+Appendix~\ref{app:ledger} and \texttt{notes/source\_audit.md}. The target is
+identified by both conjecture number and displayed formula, so a future change
+of source numbering need not make the statement ambiguous. It should be added
+that three separate drafts reaching the same two statements by three different
+routes is evidence of internal consistency, not of correctness; a shared
+misreading of the source's conventions would not have been detected by that
+agreement alone, which is why those conventions are restated explicitly in
+Section~\ref{sec:problem} and audited above.
+
+\subsection{Provenance of the source discrepancy}
+\label{sec:discrepancy}
+
+All three merged drafts recorded the same anomaly about the target's version
+metadata, each slightly differently, and the union is retained. The arXiv
+submission record displayed only v1, submitted 26 May 2026; the PDF's author
+date is 27 May 2026; and the retrieved HTML bears an internal date in
+August 2026 --- one draft recording it as 24 August 2026. The three drafts
+therefore pin the target by arXiv identifier, section, equation number and
+displayed formula rather than by any of those dates, and the PDF's conjecture
+page was inspected visually as well as through parsed text. The relevant
+$q$-zeta statement agrees between all representations consulted.
+
+Two further provenance points are kept verbatim from their original drafts.
+First, only the manifest, and not the full text of the earlier packages, was
+available when nonduplication was assessed. Second, the manifest's relevant
+entry is preserved word for word, with its SHA-256 digest and its source line
+numbers 960--969, in \texttt{notes/manifest\_provenance.txt}; that file is the
+precise record of the nonduplication boundary, and it is the only place where
+the earlier entry is reproduced exactly.
+
+\section{Conclusion}
+
+The negative $q$-zeta evaluation is controlled by a small-coordinate part of
+the lattice-point poset, but its positive interpretation is global: maximal
+points of total $n$ with a specified support. Proof~A links the two views
+geometrically. In Engine~1 the support-restricted graph $G_T$ does the work:
+its left draconian sequences encode maximal points allowed to use $T$, its
+right sequences encode interior points at capacities $\one+\one_T$, classical
+reciprocity converts the latter to negative polynomial values, and a two-entry
+interpolation table produces the same local weights as incidence inversion. In
+Engine~2 the work is done instead by privatizing the residual targets and by
+an Euler identity valid for every bipartite graph, which trades length for a
+smaller imported surface. Proof~B links the two views algebraically, with no
+geometry beyond the one reciprocity statement: an auxiliary capacity is kept
+alive, then set to zero, and an involution on local power series moves the
+whole computation onto the maximal layer --- which is also why it, and it
+alone, reaches every $\qint{-r}$.
+
+Together these yield the full Athanasiadis--Chapoton $q$-reciprocity formula,
+the stronger exact-support identity \eqref{eq:exact-support}, its
+arbitrary-height version, and positive integral formulas at every negative
+$q$-integer. The three obstructions of Section~\ref{sec:limits} show that the
+cancellation is not an automatic property of pure coordinate downsets, of
+arbitrary assignment models, or of arbitrary capacities. It is the transitive
+ideal--filter structure of a preorder, with unit capacities, that makes the
+different descriptions agree.
+
+\appendix
+
+\section{The finite Hall theorem used in Proof A}
+\label{app:hall}
+
+We recall the standard finite theorem~\cite{Hall}, with its short inductive
+proof, in order to fix the exact matching convention. Let $L,R$ be finite
+disjoint sets and let $N(A)\subseteq R$ be the neighbours of $A\subseteq L$.
+There is an injective assignment $f:L\to R$ with $f(i)\in N(\{i\})$ if and
+only if
+\[
+ |A|\le|N(A)|\qquad(A\subseteq L).
+\]
+Necessity is immediate. For sufficiency, induct on $|L|$; the empty case is
+trivial. If some nonempty proper $A\subset L$ has $|N(A)|=|A|$, match $A$ into
+$N(A)$ by induction; for $B\subseteq L\setminus A$,
+\[
+ |N(B)\setminus N(A)|=|N(A\cup B)|-|N(A)|\ge|B| ,
+\]
+so induction matches $L\setminus A$ into $R\setminus N(A)$ and the two
+matchings combine. If no such nonempty proper $A$ exists, choose $i\in L$ and
+a neighbour $r\in N(\{i\})$; after deleting $i$ and $r$, every nonempty
+$B\subseteq L\setminus\{i\}$ still has at least $|B|$ neighbours, since
+originally it had at least $|B|+1$. Apply induction and add the pair $(i,r)$.
+The singleton case is included directly by the existence of a neighbour.
+
+Every use with integer multiplicities replaces a demand $i$ of multiplicity
+$a_i$ by $a_i$ distinct copies. For any subset of copies, its cardinality is
+at most the total multiplicity of its set of types, while its neighbourhood is
+the neighbourhood of that set of types. This licenses every passage from
+vector inequalities to an ordinary finite matching in this document.
+
+\section{A compact verification specification}
+\label{app:spec}
+
+A reimplementation need not reproduce the Python organization. The essential
+checks are the following, all over the integers except the last.
+
+\subsection{Support, Boolean sums, and interior counts}
+
+For each enumerated preorder let $\mathcal J$ be its ideals and $\mathcal F$
+its filters. For every $B,T\subseteq E$ compare
+\begin{align*}
+ h(B)&=\#\{a\in\N^E:|a|=n,\ \supp(a)=B,
+                         \ a(I)\le|I|\ (I\in\mathcal J)\},\\
+ h(B)&\stackrel{?}{=}(-1)^{n-|B|}
+      \sum_{S\subseteq E}(-1)^{|S|}
+      \one\bigl[|B\cap I|+|S\cap I|\le|I|\ (I\in\mathcal J)\bigr],\\
+ \sum_{B\subseteq T}h(B)&\stackrel{?}{=}
+      \#\{y\in\N^E:y(I)\le|I\cap T|-1\ (\emptyset\ne I\in\mathcal F)\}.
+\end{align*}
+The full-set bound makes the last enumeration finite, with $|y|\le|T|-1$; when
+$T=\emptyset$ and $n>0$ its count is zero. The additional transport check
+compares the set of rank-$n$ points above with
+\[
+ \left\{\sum_{i\in E}e_{f(i)}:f:E\to E,\ i\le_\tau f(i)\text{ for every }i
+ \right\},
+\]
+different assignments giving the same vector being counted only once.
+
+\subsection{The independent \texorpdfstring{$q$}{q}-check}
+
+Enumerate all points $a$ of total at most $n$ satisfying the ideal bounds. At
+a fixed positive integer $q$, initialize $v_1(a)=q^{|a|}$ and iterate
+$v_{\ell+1}(b)=q^{|b|}\sum_{a\le b}v_\ell(a)$; then $\sum_av_{m-1}(a)$ is the
+positive value at $\qint m$. Interpolate a polynomial of degree at most $n$
+through the $n+1$ nodes $m=2,\ldots,n+2$ using rational arithmetic and compare
+its value at $-1/q$ with $(-1)^n\sum_Bh(B)q^{-|B|}$. At $q=1$ use
+$\qint m=m$. The interpolation must use exact rational arithmetic even at
+negative $q$-integers such as $\qint{-2}=-3/4$ at $q=2$.
+
+\subsection{Capacities, transfer, and negative evaluations}
+
+A relation is stored as $n$ integer bit masks, bit $j$ of row $i$ being one
+exactly when $i\le_\tau j$; transitivity is verified by requiring every bit of
+row $j$ to be present in row $i$ whenever bit $j$ is present in row $i$.
+Ideals are generated by testing downward closure of every subset. This
+representation retains labels and does not collapse equivalence classes.
+
+The capacity test implements \eqref{eq:E} with the falling-factorial
+definition of the binomial coefficient, including negative upper arguments.
+The transfer test applies the triangular integral rule \eqref{eq:Tcoeff} to
+signed integer local polynomials. For a univariate polynomial the JSON
+coefficient array is in ascending powers, so $[0,2,9,6,1]$ means
+$2t+9t^2+6t^3+t^4$. Each example records the relation rows, the total
+lattice-point count, the number and full list of maximal points, the support
+polynomial and all four signed negative evaluations.
+
+\section{Compact proof outlines for independent checking}
+\label{app:outline}
+
+Proof~A compresses to the four-line chain displayed in
+Section~\ref{sec:completion}, each line labelled with the ingredient it uses.
+Proof~B compresses to the following five identities, starting from the count
+polynomial \eqref{eq:E}:
+\begin{align*}
+ \Ecal_\sigma(-u,-v)
+  &=(-1)^n\Ecal_\sigma(u-\one,v-1),\\
+ \sum_{a\in P_\tau}\prod_i\binom{a_i-u_i-1}{a_i}
+  &=(-1)^n\sum_{b\in \Max(P_\tau)}\prod_i\binom{b_i+u_i-2}{b_i},\\
+ \sum_{a\in P_\tau}\prod_i[z^{a_i}]f_i(z)
+  &=(-1)^n\sum_{b\in \Max(P_\tau)}\prod_i[z^{b_i}](\Tr f_i)(z),\\
+ q^a\qbinom{a-r-2}{a}
+  &=[z^a]\prod_{j=0}^r(1-q^{-j}z),\\
+ \Tr\!\left(\prod_{j=0}^r(1-t^jz)\right)
+  &=\prod_{j=1}^r\left(1+\frac{t^jz}{1-z}\right).
+\end{align*}
+The first line is interior-point translation plus classical reciprocity; the
+second is $v=0$ with the dual preorder; the third is basis interpolation; the
+fourth is a finite Gaussian identity; the fifth is one rational substitution.
+For $r=1$ the last expression has coefficient $t$ in every positive degree,
+which is exactly the support statistic in the conjecture.
+
+Engine~2 of Proof~A compresses to: $\eta_\tau(B)$ is an alternating sum over
+the independent sets of a private-element bipartite graph
+(Lemmas~\ref{lem:residual} and~\ref{lem:private}); that alternating sum is
+$L_K(-1)$ for the polytope $K=[0,1]^R+\sum_j\Dz{A_j}$; Ehrhart reciprocity
+turns it into an interior count; a second application of Postnikov's theorem
+turns that into $\#(\sum_i\Delta_{N(i)}\cap\Z^{C})$; and Hall's theorem
+identifies those lattice points with full-allocation degree vectors, which are
+in bijection with the maximal points of support $B$.
+
+\section{Source and version ledger}
+\label{app:ledger}
+
+The mathematical sources and the claimed additions are separated as follows.
+This ledger merges the three ledgers of the drafts named in
+Section~\ref{sec:provenance}; where they disagreed, the more cautious
+statement is kept.
+
+\begin{description}[style=nextline,leftmargin=1.2em,labelwidth=0pt,labelindent=0pt,font=\normalfont\bfseries]
+\item[Athanasiadis--Chapoton, arXiv:2605.26916v1.]
+Section~4.4, Conjecture~4.9 and equation~(21), on printed page~14 of the
+retrieved PDF, supply the target; Section~3.1 supplies the five-element
+example and its defining inequalities; Theorem~2.1 and Lemma~4.1 are the
+source's own statement of Postnikov's formula and of the draconian/filter
+identification. The source's printed page~15 reports computational
+verification through size six and the value $-(2q+1)(q^2+4q+1)/q^5$. The
+version-date anomaly is recorded in Section~\ref{sec:discrepancy}. The PDF's
+conjecture page was inspected visually as well as through parsed text.
+\item[Chapoton, arXiv:2402.11979v2, revised 29 January 2025.]
+Supplies the $q$-zeta concept, its conventions, and the general
+height-weighted definition; Appendix~C develops the $q$-incidence algebra of
+which Section~\ref{sec:incidence} is a written-out specialization. It is not
+claimed that interpreting $q$-zeta values through incidence powers is new. No
+general weighted reciprocity theorem is assumed from this paper: the negative
+specializations used here are derived independently, twice
+(Remark~\ref{rem:two-constructions}).
+\item[Postnikov, arXiv:math/0507163v1; IMRN 2009(6), 1026--1106.]
+Theorem~11.3, printed page~28 of the arXiv version, supplies the lattice-point
+formula, with its untrimmed full-simplex shift retained exactly;
+Definition~9.2, Lemma~11.7 and Corollary~11.8 supply the bipartite duality
+used only by Engine~1. The pages containing both were checked in the PDF page
+images. The passage of that paper explicitly called an ``alternative
+semiproof'' is not what is imported; the stated theorem and its main proof
+are the dependency. These are explicit imports, not part of any novelty claim.
+\item[Ehrhart--Macdonald reciprocity.]
+Used only for full-dimensional integral polytopes with all capacities positive
+integers, univariately along $s\mapsto s\mathbf c$. Three references are
+retained: Macdonald~\cite{Macdonald} as the historical source,
+Beck--Robins~\cite[Chapter~4]{BeckRobins} as the textbook statement, and
+Beck--Develin~\cite{BeckDevelin} as a primary-source proof of the rational
+cone reciprocity from which the polytope case follows. The Macdonald publisher
+page was not accessible through the browsing tool used, and that bibliographic
+entry was cross-checked indirectly in research-paper references; no claim is
+made that the original Macdonald paper was read in full.
+\item[Hall, JLMS 10 (1935), 26--30.]
+The finite marriage theorem, also proved in Appendix~\ref{app:hall}.
+\item[Dai--Hou--Liu--Thawinrak--Wang, arXiv:2608.16037v2, 27 August 2026.]
+Checked as related recent work. Its preorder application concerns duality for
+the support enumerator of \emph{all} lattice points, which is a different
+enumerator from the maximal-support polynomial here; see the $V$ versus $V^*$
+example of Section~\ref{sec:examples}. It is not a proof dependency. A text
+search for ``zeta'' in the retrieved HTML returned no matches; that is a
+search observation, not a certificate of absence of related mathematics.
+\item[\nolinkurl{enumerative-combinatorics/preorder-polytope-reciprocity}.]
+The earlier package \cite{PriorReciprocity} in this collection, cited in the
+three places listed in Section~\ref{sec:nonduplication}. It is credited as
+prior work, not imported as a lemma, and not audited here.
+\item[User-supplied \texttt{manifest.tex}, 20 September 2026.]
+Used only to delimit the target and to assess nonduplication, never as a proof
+source. Only the manifest, and not the full text of the earlier packages, was
+available for that comparison. The relevant entry is preserved verbatim with
+its digest and line numbers in \texttt{notes/manifest\_provenance.txt}.
+\item[Status searches, 20 September 2026.]
+Targeted searches combined the source title or arXiv identifier with
+``Conjecture 4.9'', ``$q$-zeta'', ``reciprocity'' and ``proof''; the source
+manuscript, Chapoton's paper and the cross-polytope paper were inspected. The
+checked source still states the target as a conjecture, and no separate
+resolution was located. Some results were irrelevant or aggregated. This is
+evidence about the sources checked, not a universal priority claim: an
+unpublished proof, an unindexed announcement, or the same result in other
+terminology could have been missed.
+\end{description}
+
+\section{Suggested manifest entry}
+\label{app:manifest}
+
+The included file \texttt{manifest\_entry.tex} contains a ready-to-adapt
+entry. Its scope is deliberately limited to the full $q$-refinement of
+Conjecture~4.9, the stronger support identity, the evaluations at every
+negative $q$-integer and the arbitrary-height variant. It does not repeat the
+earlier packages' other claimed conjecture resolutions, and its wording
+retains the research-draft status instead of representing this investigation
+as independently refereed. The three drafts merged here proposed three
+different directory paths, none of which matched the actual location of any of
+them; the entry now names one correct path.
+
+\begin{thebibliography}{9}
+\bibitem{AC}
+C.~A. Athanasiadis and F. Chapoton,
+\emph{Polytopes and posets associated to preorders},
+arXiv:2605.26916v1, 2026.
+\url{https://arxiv.org/abs/2605.26916v1}.
+Target: Section~4.4, Conjecture~4.9, equation~(21), printed page~14;
+also Theorem~2.1, Lemma~4.1 and Section~3.1.
+
+\bibitem{Chapoton}
+F. Chapoton,
+\emph{On a $q$-analogue of the Zeta polynomial of posets},
+arXiv:2402.11979v2, revised 29 January 2025.
+\url{https://arxiv.org/abs/2402.11979v2}.
+The $q$-incidence algebra is developed in Appendix~C.
+
+\bibitem{Postnikov}
+A. Postnikov,
+\emph{Permutohedra, associahedra, and beyond},
+International Mathematics Research Notices \textbf{2009}, no.~6,
+1026--1106. DOI:~10.1093/imrn/rnn153.
+\url{https://arxiv.org/abs/math/0507163}.
+Theorem and lemma numbering in this draft follows the arXiv version:
+Definition~9.2, Theorem~11.3, Lemma~11.7 and Corollary~11.8.
+
+\bibitem{Macdonald}
+I.~G. Macdonald,
+\emph{Polynomials associated with finite cell-complexes},
+Journal of the London Mathematical Society (2) \textbf{4} (1971), 181--192.
+
+\bibitem{BeckRobins}
+M. Beck and S. Robins,
+\emph{Computing the Continuous Discretely: Integer-Point Enumeration in
+Polyhedra}, second edition, Springer, 2015, Chapter~4.
+DOI:~10.1007/978-1-4939-2969-6.
+
+\bibitem{BeckDevelin}
+M. Beck and M. Develin,
+\emph{On Stanley's reciprocity theorem for rational cones},
+arXiv:\allowbreak math/\allowbreak 0409562v3, revised 4 August 2005,
+available at \url{https://arxiv.org/abs/math/0409562v3}. Only the
+lattice-polytope consequence is used here, with full dimensionality checked
+explicitly at each application.
+
+\bibitem{Hall}
+P. Hall,
+\emph{On representatives of subsets},
+Journal of the London Mathematical Society \textbf{10} (1935), 26--30.
+DOI:~10.1112/jlms/s1-10.37.26.
+
+\bibitem{DaiEtAl}
+Z. Dai, Q. Hou, Z. Liu, W. Thawinrak and H. Wang,
+\emph{Counting Lattice Points in Minkowski Sums of Cross Polytopes},
+arXiv:2608.16037v2, 27 August 2026.
+\url{https://arxiv.org/abs/2608.16037v2}.
+
+\bibitem{PriorReciprocity}
+\emph{Reciprocity and Matrix Duality for Preorder Polytopes},
+research manuscript, 19 September 2026, in this collection under
+\nolinkurl{docs/reports/enumerative-combinatorics/} in the directory
+\nolinkurl{preorder-polytope-reciprocity}. It proves Conjectures~7.2, 4.2
+and 4.4 of \cite{AC} and the ordinary $q=1$ case of Conjecture~4.9, together
+with multivariate reciprocity for independently weighted capacities. Cited as
+prior work in this collection; not imported as a lemma and not audited here.
+
+\bibitem{Manifest}
+\emph{Manifest of mathematical research packages},
+user-supplied \texttt{manifest.tex}, received 20 September 2026.
+Relevant entry: ``Reciprocity and Matrix Duality for Preorder Polytopes,''
+source lines 960--969. The manifest is used only to delimit the present task,
+not as a proof source. A verbatim entry with its digest accompanies this
+archive in \texttt{notes/manifest\_provenance.txt}.
+\end{thebibliography}
+
+\end{document}

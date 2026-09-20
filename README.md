@@ -17,7 +17,7 @@ The two are mathematically independent.  They do share a technical layer: both u
 `ProveIt`'s first-order syntax (`SetTheory.Form`, `Sat`) and, on the set-theoretic
 side, its internal-satisfaction machinery.
 
-Alongside them, `docs/reports/` collects seventy-one further research reports on
+Alongside them, `docs/reports/` collects eighty-seven further research reports on
 unrelated topics, with no Lean counterpart; see [Other research
 reports](#other-research-reports).
 
@@ -46,16 +46,17 @@ Martin's cone theorem for the coarse degrees.  See `CoarseDegrees/README.md`.
 
 ## Other research reports
 
-`docs/reports/` holds seventy-one independent reports that belong to neither project
+`docs/reports/` holds eighty-seven independent reports that belong to neither project
 and are not formalized here: ordinals and well-quasi-orders, surreal numbers, Hankel
 determinants, supercongruences, tetration and digit stabilization, log-concavity,
-graphs, enumerative combinatorics, and generating-function asymptotics.  Most attack a
+graphs, automata and formal languages, enumerative combinatorics, and
+generating-function asymptotics.  Most attack a
 specific conjecture from the literature or from an OEIS entry; about a quarter are
-counterexamples rather than proofs.  They arrived as eighty archives in three
-deliveries; nine pairs turned out to prove the same theorem and were merged, each
-merged report keeping both originals' extra material and, where the proofs
-genuinely differed, both proofs.  `docs/reports/manifest.pdf` catalogues all
-seventy-one, and `docs/reports/README.md` is the index.
+counterexamples rather than proofs.  They arrived as one hundred and seven archives in
+six deliveries; twenty of them duplicated another and were merged away, each
+merged report keeping every original's extra material and, where the proofs
+genuinely differed, every proof.  `docs/reports/manifest.pdf` catalogues all
+eighty-seven, and `docs/reports/README.md` is the index.
 
 ## Building
 

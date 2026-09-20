@@ -1,0 +1,973 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage[unicode,colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue!45!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{
+ pdftitle={A First-Triple Criterion for Log-Concavity of MDS Weight Distributions},
+ pdfauthor={Research note prepared for Vladimir Reshetnikov},
+ pdfsubject={Dimension-free criterion, boundary cases, and exact verification},
+ pdfkeywords={MDS codes, log-concavity, alternating sums, weight distribution}
+}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small MDS weight distributions}
+\fancyhead[R]{\small A first-triple criterion}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlist{nosep}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\N}{\mathbb N}
+\newcommand{\LC}{\operatorname{LC}}
+\newcommand{\wt}{\operatorname{wt}}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,breaklines=true,
+  frame=single,rulecolor=\color{black!20},showstringspaces=false,
+  xleftmargin=0.5em,xrightmargin=0.5em}
+\title{\textbf{A First-Triple Criterion for Log-Concavity\ of MDS Weight Distributions}\\[0.5em]
+\large Removing the dimension restriction by alternating-sum contraction}
+\author{Research note prepared for Vladimir Reshetnikov}
+\date{20 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $C$ be a linear $[n,k,d]_q$ maximum-distance-separable code, with
+$d=n-k+1$, and let $A_w$ count its words of Hamming weight $w$.
+Log-concavity is understood after zero coefficients have been deleted,
+with $A_0=1$ retained. We prove that, whenever $d\ge2$, $k\ge3$, and
+$q>d$, this entire distribution is log-concave if and only if
+$A_{d+1}^{\,2}\ge A_dA_{d+2}$. There is no restriction on $k/n$ or on
+$n$ relative to $q$. The criterion is the single quadratic inequality
+\[
+ (n+1)q^2-Bq+\frac{dB}{2}\ge0,
+ \qquad B=k(d^2+2d-1)+2.
+\]
+This removes the dimension restriction in the MDS result of Shi, Wang,
+An, and Kim and answers the high-dimension extension discussed in
+Remark~2 of their 2024 preprint. The proof normalizes the MDS weight
+formula into alternating negative-binomial partial sums. Their
+log-convexity defect contracts geometrically, fast enough to be
+absorbed by the binomial coefficient's log-concavity at every later
+weight. We also classify the boundary $q=d$, obtain an exact
+classification of single-parity-check codes, and derive sharp
+fixed-distance and fixed-rate thresholds. The accompanying standard-library
+Python programs reproduce exact checks on 154,888 main-case parameter
+triples, additional boundary cases, and 64 explicitly enumerated small
+codes. The results are proved for formal weight arrays as well as for
+existing codes; none is an assertion that arbitrary MDS parameters are
+realizable.
+\end{abstract}
+
+\clearpage
+\begingroup
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Problem selection and the precise research target}
+
+\subsection{The random draw}
+The area was selected before choosing a problem. A single call to
+Python's \texttt{secrets.randbelow(24)} returned the zero-based index
+$16$, selecting \emph{coding theory}. The ordered list of candidate
+areas, the method, and the result are preserved in
+\texttt{data/random\_selection.json}. No area was redrawn.
+This records the actual outcome, not a pseudorandom seed reconstructed
+after the choice.
+
+\subsection{The question from the literature}
+Shi, Wang, An, and Kim establish an MDS log-concavity criterion under
+$3\le k\le n/2+3$; their Remark~2 discusses extending it to larger
+$k$ \cite[Theorem~9 and Remark~2]{SWAK}. The question addressed here is:
+\begin{quote}
+Does the same first-triple quadratic criterion suffice without the
+restriction $k\le n/2+3$?
+\end{quote}
+The answer proved below is affirmative for every integer $q>d$.
+The boundary $q=d$, where a weight coefficient vanishes, is treated
+separately rather than silently divided out.
+
+The published version's indexed abstract retains the stated dimension
+restriction \cite{SWAKjournal}. Literature searches on 20 September 2026
+found no subsequent removal of it. This is a bounded literature check,
+not a guarantee of priority. The full preprint was examined; the
+publisher's full-text PDF could not be retrieved. Consequently the
+precise target and numbering above are anchored to the accessible
+preprint, not to an assumed identical journal layout.
+
+\subsection{What is, and is not, being solved}
+The main theorem supplies a full proof of this extension. It does not
+solve the MDS \emph{existence} conjecture. Indeed, it does not use any
+conjectural upper bound on the length of an MDS code. The proof is an
+inequality argument for the universal MDS weight formula and is valid
+even for formal parameters for which no code exists.
+
+Three distinctions matter throughout. First, we delete zero
+\emph{coefficients}, not the weight-zero codeword. Second, a formal
+weight array is not a construction of a code. Third, an exact finite
+check corroborates the proof but cannot replace its universal argument.
+The discussion of missing weights by Ezerman, Grassl, and Sol\'e
+provides useful background for these distinctions \cite{EGS}.
+
+\section{Definitions and the MDS weight formula}
+
+\begin{definition}
+A linear $[n,k,d]_q$ code is a $k$-dimensional subspace of $\F_q^n$
+whose smallest nonzero Hamming weight is $d$. It is
+\emph{maximum-distance-separable}, or MDS, when $d=n-k+1$.
+Write
+\[
+ A_w=\#\{c\in C:\wt(c)=w\},\qquad
+ W_C(z)=\sum_{w=0}^n A_wz^w.
+\]
+The \emph{compressed weight distribution} is the sequence of positive
+$A_w$, in increasing order of $w$, including $A_0=1$.
+\end{definition}
+
+A positive sequence $(a_0,\ldots,a_m)$ is log-concave if
+$a_i^2\ge a_{i-1}a_{i+1}$ for every internal index. Equivalently, its
+successive quotients $a_i/a_{i-1}$ are nonincreasing. The definition
+used here agrees with the coding-theoretic convention in
+\cite{SWAK}; it is not a statement about a sequence in which the
+missing weights remain as zeros.
+
+For example, the binary even-weight code of length four has full
+array $(1,0,6,0,1)$ and compressed array $(1,6,1)$. These are different
+sequences for purposes of testing adjacent inequalities.
+
+\subsection{Derivation by shortening and inclusion--exclusion}
+An MDS generator matrix has every set of $k$ columns independent.
+To see this, a dependency causing a rank drop in $k$ selected columns
+would produce a nonzero codeword zero in those $k$ positions, of
+weight at most $n-k=d-1$, a contradiction. Every smaller set of
+columns is therefore independent as well.
+
+Consequently, prescribing zeros in a set $T$ of coordinates leaves
+$q^{k-|T|}$ words when $|T|\le k$, and only the zero word when
+$|T|\ge k$. Fix a set $S$ of $w\ge d$ positions. Inclusion--exclusion
+within $S$, after requiring zeros outside $S$, gives the number of
+words with support exactly $S$ as
+\begin{equation}\label{eq:ie}
+ \sum_{j=0}^{w-d}(-1)^j\binom{w}{j}
+       \bigl(q^{w-d+1-j}-1\bigr).
+\end{equation}
+The subtracted constants are legitimate because the complete
+alternating sum of the constant $1$ vanishes when $w>0$.
+Using Pascal's identity to telescope \eqref{eq:ie} gives
+\begin{equation}\label{eq:mds}
+ A_0=1,\qquad A_w=0\ (0<w<d),\qquad
+ A_w=(q-1)\binom nw
+       \sum_{j=0}^{w-d}(-1)^j\binom{w-1}{j}q^{w-d-j}
+       \quad(w\ge d).
+\end{equation}
+This is the usual MDS weight formula, also the starting point of
+\cite[Section~5]{SWAK}. Its derivation shows that all linear MDS codes
+with the same parameters have the same weight distribution.
+
+\subsection{Formal arrays and a basic feasibility constraint}
+Formula \eqref{eq:mds} defines an array for any integers
+$1\le k\le n$ and $q\ge2$, whether or not a code exists. We call this
+the \emph{formal MDS array}. All statements about it below concern
+its numerical coefficients only.
+
+The first three potentially nonzero weights are
+\begin{align}
+ A_d&=(q-1)\binom nd,\label{eq:first0}\\
+ A_{d+1}&=(q-1)\binom n{d+1}(q-d),\label{eq:first1}\\
+ A_{d+2}&=(q-1)\binom n{d+2}
+     \left(q^2-(d+1)q+\frac{d(d+1)}2\right).
+     \label{eq:first2}
+\end{align}
+If $k\ge2$, \eqref{eq:first1} exists in the array and implies the
+necessary feasibility condition $q\ge d$. If $q=d$, that coefficient
+is zero. If $q>d$, the proof below shows that \emph{all} coefficients
+from $A_d$ through $A_n$ are positive.
+
+\section{Main theorem: one inequality decides everything}
+
+\begin{theorem}[First-triple criterion]\label{thm:main}
+Let $n,k,q$ be integers, let $d=n-k+1$, and suppose
+\[
+ d\ge2,\qquad k\ge3,\qquad q\ge d+1.
+\]
+For the formal MDS array, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item The compressed distribution $(1,A_d,A_{d+1},\ldots,A_n)$ is
+log-concave.
+\item $A_{d+1}^{\,2}\ge A_dA_{d+2}$.
+\item With $B=k(d^2+2d-1)+2$,
+\begin{equation}\label{eq:P}
+ P_{n,k}(q):=(n+1)q^2-Bq+\frac{dB}{2}\ge0.
+\end{equation}
+\item $q\ge q_0(n,k)$, where
+\begin{equation}\label{eq:root}
+ q_0(n,k)=
+ \frac{B+\sqrt{B(k-2)(d^2-1)}}{2(n+1)}.
+\end{equation}
+\end{enumerate}
+When these conditions hold, every internal log-concavity inequality
+other than the one centered at $A_{d+1}$ is strict.
+In particular, the theorem applies to every existing linear MDS code
+with these parameters, without a length or dimension restriction.
+\end{theorem}
+
+The proof occupies the next two sections. Its only analytical input
+is a simple bound on the ratios of successive terms in an alternating
+sum. No coding-theoretic classification theorem is used.
+
+\section{Alternating sums and normalized defects}
+
+\subsection{A normalization that fixes the truncation parameter}
+Set $s=w-d$ and define
+\begin{equation}\label{eq:Bs}
+ B_s=\sum_{j=0}^s(-1)^j\binom{d+s-1}{j}q^{s-j}.
+\end{equation}
+Thus $A_{d+s}=(q-1)\binom n{d+s}B_s$. The symbol $B_s$ denotes a
+sequence and is distinct from the coefficient $B$ in \eqref{eq:P}.
+Pascal's identity gives
+\begin{equation}\label{eq:recurrence}
+ B_0=1,\qquad
+ B_s=(q-1)B_{s-1}+(-1)^s\binom{d+s-2}{s}.
+\end{equation}
+For completeness, in \eqref{eq:Bs} expand
+$\binom{d+s-1}{j}=\binom{d+s-2}{j}+\binom{d+s-2}{j-1}$.
+The first sum is $qB_{s-1}$ plus its last term, and the second is
+$-B_{s-1}$.
+
+Divide \eqref{eq:recurrence} by $(q-1)^s$. Define
+\begin{equation}\label{eq:terms}
+ t_j=\frac{\binom{d+j-2}{j}}{(q-1)^j},\qquad
+ T_s=\sum_{j=0}^s(-1)^jt_j.
+\end{equation}
+Here $t_0=1$, and we obtain the exact identities
+\begin{equation}\label{eq:normalized}
+ B_s=(q-1)^sT_s,\qquad
+ A_{d+s}=(q-1)^{s+1}\binom n{d+s}T_s.
+\end{equation}
+The crucial feature is that $t_j$ no longer depends on the final
+truncation index $s$. It is a single negative-binomial sequence.
+The infinite alternating series sums to
+$((q-1)/q)^{d-1}$, but its value is not needed for the proof.
+
+\begin{lemma}[Term contraction and positivity]\label{lem:terms}
+Under the hypotheses of \cref{thm:main},
+\begin{equation}\label{eq:half}
+ 0<t_1<1,\qquad
+ \frac{t_j}{t_{j-1}}=
+ \frac{d+j-2}{j(q-1)}\le\frac12\quad(j\ge2).
+\end{equation}
+All $T_s$ are positive. The odd partial sums are nondecreasing and
+satisfy $T_s\ge T_1$ for odd $s\ge1$.
+\end{lemma}
+\begin{proof}
+We have $t_1=(d-1)/(q-1)<1$. Since $q-1\ge d$, the ratio in
+\eqref{eq:half} is at most $(d+j-2)/(jd)$. The latter is at most
+$1/2$ because $(d-2)(j-2)\ge0$.
+Successive pairs satisfy $t_{2r}-t_{2r+1}\ge0$, so
+\[
+ T_{2r+1}=T_1+\sum_{i=1}^r(t_{2i}-t_{2i+1})\ge T_1>0.
+\]
+Every even partial sum exceeds the next odd partial sum. This proves
+all the assertions and, by \eqref{eq:normalized}, the promised
+positivity of all $A_w$ for $w\ge d$.
+\end{proof}
+
+\subsection{The competing effects}
+For an internal index $1\le s\le k-2$, write $w=d+s$. The binomial
+coefficient contributes the factor
+\begin{equation}\label{eq:E}
+ \frac{\binom nw^2}{\binom n{w-1}\binom n{w+1}}
+ =\frac{(w+1)(n-w+1)}{w(n-w)}
+ =1+E_s,\qquad
+ E_s:=\frac{n+1}{(d+s)(n-d-s)}.
+\end{equation}
+The powers of $q-1$ in \eqref{eq:normalized} cancel in an adjacent
+ratio. Thus
+\begin{equation}\label{eq:ratio}
+ \frac{A_{d+s}^2}{A_{d+s-1}A_{d+s+1}}
+ =(1+E_s)\frac{T_s^2}{T_{s-1}T_{s+1}}.
+\end{equation}
+
+For even $s$, $T_s>T_{s-1}$ and $T_s>T_{s+1}$, so the second factor
+is greater than one. Every even-offset inequality is automatically
+strict.
+
+For odd $s$, instead,
+\[
+ T_{s-1}=T_s+t_s,\qquad T_{s+1}=T_s+t_{s+1}.
+\]
+The alternating sum contributes a log-convexity defect
+\begin{equation}\label{eq:D}
+ D_s:=\frac{T_{s-1}T_{s+1}}{T_s^2}-1
+ =\frac{t_s+t_{s+1}}{T_s}
+  +\frac{t_st_{s+1}}{T_s^2}>0.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:ratio-odd}
+ \frac{A_{d+s}^2}{A_{d+s-1}A_{d+s+1}}
+ =\frac{1+E_s}{1+D_s},
+ \qquad
+ A_{d+s}^2\ge A_{d+s-1}A_{d+s+1}
+ \Longleftrightarrow D_s\le E_s.
+\end{equation}
+It is this comparison of \emph{defect to curvature}, not monotonicity
+of the raw adjacent ratios, that works in every dimension.
+
+\begin{lemma}[Uniform defect comparison]\label{lem:defect}
+For every odd internal $s\ge1$,
+\begin{equation}\label{eq:contraction}
+ \frac{D_s}{E_s}\le
+ \frac{s}{2^{s-1}}\frac{D_1}{E_1}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $c=2^{1-s}$. By \cref{lem:terms},
+\[
+ t_s\le ct_1,\qquad t_{s+1}\le ct_2,\qquad T_s\ge T_1.
+\]
+Substituting into \eqref{eq:D} gives
+\[
+ D_s\le c\frac{t_1+t_2}{T_1}
+       +c^2\frac{t_1t_2}{T_1^2}
+ \le cD_1.
+\]
+On the other hand, $d+s\le s(d+1)$ and
+$n-d-s\le n-d-1$, with all relevant factors positive. Hence
+\[
+ \frac{E_s}{E_1}
+ =\frac{(d+1)(n-d-1)}{(d+s)(n-d-s)}\ge\frac1s.
+\]
+Combining these two bounds proves \eqref{eq:contraction}.
+\end{proof}
+
+For $s=1$, the multiplier in \eqref{eq:contraction} is one; for every
+odd $s\ge3$ it is strictly smaller than one. In particular, the
+first odd defect is the only possible obstruction to \emph{all}
+log-concavity inequalities holding simultaneously. Later inequalities
+can certainly fail when the first fails; the theorem does not say
+that a non-log-concave array has only one failure.
+
+\section{Proof of the criterion and the sharp threshold}
+
+\subsection{The boundary involving the zero word}
+There is one internal compressed inequality not covered by
+\eqref{eq:ratio}: the one centered at $A_d$, whose left neighbor is
+$A_0=1$. By \eqref{eq:first0}--\eqref{eq:first1},
+\begin{equation}\label{eq:zero-boundary}
+ \frac{A_d^2}{A_{d+1}}
+ =\frac{q-1}{q-d}\binom nd\frac{d+1}{n-d}>1.
+\end{equation}
+For example, $\binom nd\ge n$ for $1\le d\le n-1$, and
+$(q-1)/(q-d)\ge1$, so the strict inequality is immediate.
+
+\subsection{From the first triple to every triple}
+Condition (i) in \cref{thm:main} plainly implies (ii). Conversely,
+(ii) is $D_1\le E_1$ by \eqref{eq:ratio-odd}.
+For every later odd internal $s$, \cref{lem:defect} gives
+\[
+ \frac{D_s}{E_s}\le\frac{s}{2^{s-1}}<1.
+\]
+All even-offset inequalities are strict by the discussion following
+\eqref{eq:ratio}, and the zero-word boundary is strict by
+\eqref{eq:zero-boundary}. This proves (ii)$\Rightarrow$(i), together
+with the theorem's assertion about equality.
+
+\subsection{Reduction to one quadratic}
+Substitute \eqref{eq:first0}--\eqref{eq:first2} into (ii) and cancel
+positive factors. Since $n-d=k-1$, the result is
+\begin{align}
+ &(d+2)(k-1)(q-d)^2\notag\\
+ &\hspace{2em}-(d+1)(k-2)
+       \left(q^2-(d+1)q+\frac{d(d+1)}2\right)\ge0.
+       \label{eq:expandedfirst}
+\end{align}
+The coefficient of $q^2$ is $d+k=n+1$; the coefficient of $q$ is
+$-B$; and the constant is $dB/2$. Thus (ii) and (iii) are equivalent.
+Notice that $dB$ is even: if $d$ is odd, then $d^2+2d-1$ is even.
+The exact test may nevertheless use $2P$ to avoid any division.
+
+A convenient simplification is
+\begin{equation}\label{eq:disc}
+ B-2d(n+1)=(k-2)(d^2-1).
+\end{equation}
+The discriminant is therefore $B(k-2)(d^2-1)>0$, and
+\begin{equation}\label{eq:atd}
+ P_{n,k}(d)=-\frac d2(k-2)(d^2-1)<0.
+\end{equation}
+The smaller root lies below $d$ and the larger root above it. Since
+$q>d$, (iii) is equivalent to being at or above the larger root,
+which is exactly \eqref{eq:root}. This proves (iii)$\Leftrightarrow$(iv)
+and completes the proof of \cref{thm:main}.
+
+\subsection{Why the dimension restriction disappears}
+The earlier argument compares adjacent log-concavity ratios along
+odd offsets \cite[proof of Theorem~9]{SWAK}. Their binomial contribution need not increase before
+the middle of the weight range. In fact, when $q$ tends to infinity
+with $n,d$ fixed, those ratios approach the binomial ratios in
+\eqref{eq:E}, which decrease on part of the range. Thus a proof based
+on their universal monotonicity would be inappropriate.
+
+The normalized quantity $D_s/E_s$ asks a different question: how
+large is the harmful defect relative to the available positive
+curvature? The defect loses a factor at least $2^{s-1}$, whereas the
+curvature can lose at most a factor $s$ relative to the first
+position. The comparison $s\le2^{s-1}$ is independent of $k/n$.
+That is the entire mechanism behind the extension.
+
+\section{The boundary and a complete conditional classification}
+
+It is useful to remove the hypothesis $q>d$ carefully. The resulting
+classification is conditional on code existence, but the proof again
+works for formal arrays. In particular, statements about parameters
+with $q=d$ and large $k$ below do not assert that such MDS codes exist.
+
+\begin{theorem}[Boundary cases]\label{thm:boundary}
+Let $1\le k\le n$, $d=n-k+1$, and let $q\ge2$ be an integer.
+\begin{enumerate}[label=(\roman*)]
+\item If $k=1$ or $d=1$, the compressed formal MDS array is
+log-concave.
+\item For $k\ge2$, $q<d$ is impossible for an MDS code because the
+formal coefficient $A_{d+1}$ is negative.
+\item If $k=2$ and $q\ge d$, the compressed array is log-concave.
+\item If $q=d=2$, the compressed array is log-concave for every $n$.
+\item If $q=d\ge3$ and $k\ge3$, the compressed array is log-concave
+exactly when
+\[
+ k\le4,\qquad\text{or}\qquad k=5\ \text{and}\ d\ge9.
+\]
+\end{enumerate}
+Together with \cref{thm:main}, this decides compressed log-concavity
+for every existing nonzero linear MDS code.
+\end{theorem}
+
+\begin{proof}
+If $k=1$, the compressed array is $(1,q-1)$. If $d=1$, the code is
+the full space and $A_w=\binom nw(q-1)^w$, a log-concave sequence.
+Part (ii) follows from \eqref{eq:first1}. If $k=2$, there are at most
+two nonzero positive-weight coefficients. When $q>d$, their only
+internal inequality is \eqref{eq:zero-boundary}; when $q=d$, only
+$A_d$ remains.
+
+For $d=q=2$, \eqref{eq:recurrence} yields $B_s=1$ for even $s$ and
+$B_s=0$ for odd $s$. Thus $A_w=\binom nw$ for even $w$ and $A_w=0$
+for odd $w$. The compressed subsequence is log-concave: the quotient
+\[
+ \frac{\binom n{2r+2}}{\binom n{2r}}
+ =\frac{(n-2r)(n-2r-1)}{(2r+2)(2r+1)}
+\]
+is decreasing in $r$.
+
+Now let $q=d\ge3$. The normalized terms satisfy $T_1=0$, but
+$t_j/t_{j-1}<1$ for $j\ge2$. Hence $T_s>0$ for all $s\ge2$:
+$T_2=t_2>0$, $T_3=t_2-t_3>0$, and the later alternating pairs
+preserve positivity. Therefore the only missing positive weight is
+$d+1$. The first support-count factors are
+\begin{align}
+ B_0&=1,&B_1&=0,&B_2&=\frac{d(d-1)}2,\notag\\
+ B_3&=\frac{d(d-1)(d-2)}3,&
+ B_4&=\frac{d(d-1)(3d^2-7d+6)}8.
+ \label{eq:boundary-B}
+\end{align}
+
+We first check the two compressed inequalities affected by deleting
+$A_{d+1}$. When $k\ge3$,
+\[
+ \frac{A_d^2}{A_{d+2}}
+ =\frac{2\binom nd^2}{d\binom n{d+2}}>1.
+\]
+Indeed, $2\le d\le n-2$ gives $\binom nd\ge\binom n2$, and therefore
+$\binom nd^2/\binom n{d+2}\ge(d+1)(d+2)/2$.
+When $k\ge4$,
+\begin{align*}
+ \frac{A_{d+2}^2}{A_dA_{d+3}}
+ &=\frac{(k-1)(k-2)(d+3)}{(d+1)(d+2)(k-3)}
+     \frac{3d(d-1)}{4(d-2)}\\
+ &\ge\frac92\frac{d(d-1)(d+3)}{(d-2)(d+1)(d+2)}>1.
+\end{align*}
+Here $(k-1)(k-2)/(k-3)\ge6$, and the difference between the numerator
+and denominator in the last fraction is $d^2+d+4>0$.
+Thus $k=3,4$ are settled.
+
+For $k\ge5$, the next internal inequality is centered at $A_{d+3}$.
+Using \eqref{eq:boundary-B}, it becomes
+\begin{equation}\label{eq:boundaryineq}
+ U_d(k-3)-V_d(k-4)\ge0,
+\end{equation}
+where
+\[
+ U_d=16(d-2)^2(d+4),\qquad
+ V_d=9(3d^2-7d+6)(d+3).
+\]
+We have
+\[
+ V_d-U_d=11d^3+18d^2+57d-94>0
+\]
+for $d\ge3$. The left side of \eqref{eq:boundaryineq} decreases
+with $k$. At $k=6$ it equals
+\[
+ 3U_d-2V_d=-6d^3-36d^2-306d+444<0.
+\]
+Every $k\ge6$ therefore fails this one inequality.
+
+For $k=5$, \eqref{eq:boundaryineq} is the last remaining internal
+inequality, and it is
+\[
+ f(d):=5d^3-18d^2-249d+350\ge0.
+\]
+The values at $d=3,4,5$ are negative, while
+$f(d+1)-f(d)=15d^2-21d-262>0$ for $d\ge5$.
+Finally $f(8)=-234$ and $f(9)=296$. Hence, for integer $d\ge3$,
+this condition is exactly $d\ge9$. The proof is complete.
+\end{proof}
+
+\begin{remark}
+The quadratic criterion is intentionally not applied at $q=d$.
+For example, the $[6,3,4]_4$ array is
+$A_0=1,A_4=45,A_6=18$, which is compressed-log-concave although
+$A_5^2<A_4A_6$. Testing the zero coefficient as though it had not
+been deleted would answer a different question.
+\end{remark}
+
+\section{Exact classification of single-parity-check codes}
+
+For $n\ge2$, let
+\[
+ C_{n,q}=\{(x_1,\ldots,x_n)\in\F_q^n:x_1+\cdots+x_n=0\}.
+\]
+This is an $[n,n-1,2]_q$ MDS code for every $n$: its dimension is
+$n-1$, it has no word of weight one, and it contains a word of weight
+two. Thus there is no length-existence issue in this family.
+
+A direct count gives
+\begin{equation}\label{eq:parity}
+ A_w=\binom nw\frac{(q-1)^w+(q-1)(-1)^w}{q}.
+\end{equation}
+For a short derivation, let $N_w$ count $w$-tuples of nonzero elements
+summing to zero. A tuple of length $w-1$ with nonzero sum has exactly
+one nonzero last coordinate that makes its total zero. Hence
+$N_w=(q-1)^{w-1}-N_{w-1}$ with $N_1=0$, which solves to the factor
+in \eqref{eq:parity}.
+
+\begin{corollary}\label{cor:parity}
+The compressed weight distribution of $C_{n,q}$ is log-concave
+exactly in the following cases, where $q$ is a prime power:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Alphabet size & Permitted lengths $n\ge2$\\
+\midrule
+$q=2$ & Every length\\
+$q=3$ & $n\le3$\\
+$q=4$ & $n\le6$\\
+$q=5$ & $n\le15$\\
+$q\ge7$ & Every length\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{corollary}
+\begin{proof}
+The binary case is \cref{thm:boundary}. For $q\ge3$ and $n\ge4$,
+substitute $d=2$, $k=n-1$, and $B=7n-5$ into \eqref{eq:P}:
+\begin{equation}\label{eq:parityP}
+ P_{n,n-1}(q)=n(q^2-7q+7)+(q^2+5q-5).
+\end{equation}
+At $q=3,4,5$, this is respectively $19-5n$, $31-5n$, and
+$45-3n$. For $q\ge7$, both coefficients in \eqref{eq:parityP}
+are positive. The omitted lengths $n=2,3$ have dimension at most
+two and are covered by \cref{thm:boundary}.
+\end{proof}
+
+The threshold at $q=5$ exhibits genuine equality. At length $15$,
+\[
+ A_2=420,\qquad A_3=5460,\qquad A_4=70980,
+ \qquad A_3^2=A_2A_4.
+\]
+Every other internal inequality is strict. At length $16$,
+\[
+ A_2=480,\qquad A_3=6720,\qquad A_4=94640,
+\]
+and $A_3^2-A_2A_4=-268800$. The failure occurs near the beginning
+of the nonzero weight range, not near the peak of the distribution.
+
+\section{Further consequences and asymptotic regimes}
+
+\subsection{An exact dimension cutoff at fixed distance}
+Fix $d\ge2$ and an integer $q>d$, and put
+\begin{equation}\label{eq:RS}
+ h=d^2+2d-1,\qquad
+ R_d(q)=q^2-hq+\frac{dh}{2},\qquad
+ S_d(q)=dq^2-2q+d.
+\end{equation}
+Since $n+1=k+d$, the quadratic in \eqref{eq:P} separates as
+\begin{equation}\label{eq:separate}
+ P_{n,k}(q)=kR_d(q)+S_d(q).
+\end{equation}
+Also $S_d(q)>0$ for the stated range.
+
+\begin{corollary}\label{cor:cutoff}
+For fixed $d\ge2$ and $q>d$, the formal MDS arrays are log-concave
+for every dimension if $R_d(q)\ge0$. If $R_d(q)<0$, the exact
+criterion for dimensions $k\ge3$ is
+\[
+ k\le \left\lfloor\frac{S_d(q)}{-R_d(q)}\right\rfloor.
+\]
+In particular, at fixed $d,q$, log-concavity cannot fail at one
+dimension and then return at a larger dimension.
+\end{corollary}
+\begin{proof}
+Apply \cref{thm:main} to \eqref{eq:separate}. The small dimensions
+are already log-concave. In fact $P$ at $k=2$ is
+$(d+2)(q-d)^2>0$, so the cutoff is never below two.
+\end{proof}
+
+\subsection{A sharp uniform alphabet threshold}
+The larger root of $R_d$ is
+\begin{equation}\label{eq:qinf}
+ Q_\infty(d)=\frac{h+\sqrt{h(d^2-1)}}2.
+\end{equation}
+As $R_d(d)=-d(d^2-1)/2<0$, the condition $R_d(q)\ge0$ in our
+range is exactly $q\ge Q_\infty(d)$.
+This is a sharp uniform threshold for the \emph{formal} arrays:
+below it, increasing $k$ eventually causes failure; at or above it,
+every dimension passes. Existence restrictions may of course prevent
+particular failing formal arrays from being realized as codes.
+
+For fixed $d$, the root $q_0(n,k)$ strictly increases with $k$ and
+converges to $Q_\infty(d)$. To see strict increase, at the root for
+$k$ we have $kR_d+S_d=0$, so $R_d<0$; increasing $k$ makes the
+polynomial negative at that old root. The positive root must move
+right. Dividing \eqref{eq:separate} by $k$ gives the limit.
+
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$d$ & $Q_\infty(d)$, approximately & Smallest prime power at or above it\\
+\midrule
+% BEGIN GENERATED THRESHOLD ROWS
+2 & 5.7913 & 7 \\
+3 & 12.2915 & 13 \\
+4 & 20.7871 & 23 \\
+5 & 31.2829 & 32 \\
+6 & 43.7793 & 47 \\
+7 & 58.2764 & 59 \\
+8 & 74.7739 & 79 \\
+9 & 93.2719 & 97 \\
+10 & 113.7702 & 121 \\
+% END GENERATED THRESHOLD ROWS
+\bottomrule
+\end{tabular}
+\end{center}
+
+Expansion of \eqref{eq:qinf} gives
+\begin{equation}\label{eq:qinf-asymp}
+ Q_\infty(d)=d^2+\frac32d-\frac54+\frac{1}{4d}
+              -\frac{9}{16d^2}+O(d^{-3}).
+\end{equation}
+This follows by applying the Taylor expansion of $\sqrt{1-x}$ to
+$\sqrt{h(h-2d)}$; it is not used to decide any finite case.
+
+\subsection{Fixed positive rate: the threshold is quadratic in length}
+\begin{corollary}\label{cor:rate}
+Suppose $n\to\infty$ and $k/n\to\rho\in(0,1)$. Then
+\begin{equation}\label{eq:rate}
+ \frac{q_0(n,k)}{n^2}\longrightarrow\rho(1-\rho)^2.
+\end{equation}
+In particular, a sequence of such MDS codes over alphabets of size
+$q=O(n)$ with $q>d$ eventually fails compressed log-concavity.
+\end{corollary}
+\begin{proof}
+We have $d/n\to1-\rho$ and
+$B/n^3\to\rho(1-\rho)^2$. Rewrite \eqref{eq:root}, using
+\eqref{eq:disc}, as
+\[
+ q_0(n,k)=\frac{B}{2(n+1)}
+       \left(1+\sqrt{1-\frac{2d(n+1)}B}\right).
+\]
+The fraction inside the square root tends to zero. Dividing by
+$n^2$ proves \eqref{eq:rate}. A linear alphabet size is eventually
+smaller than this positive quadratic threshold.
+\end{proof}
+
+This is an actual infinite-family consequence, not just a formal
+one. Take prime powers $q\to\infty$, set $n=q$, and evaluate all
+polynomials of degree less than $k=\lfloor\rho q\rfloor$ at every
+element of $\F_q$. A nonzero polynomial has at most $k-1$ roots,
+and a product of $k-1$ distinct linear factors attains that number.
+The resulting Reed--Solomon code has parameters $[q,k,q-k+1]_q$.
+For large $q$, $q>d$, and \cref{cor:rate} proves its failure of
+compressed log-concavity.
+
+\subsection{Why a stronger normalized property does not follow}
+Normalize the positive-weight coefficients by their binomial factors:
+$a_s=A_{d+s}/\binom n{d+s}$. For $d\ge2$, $k\ge3$, $q>d$,
+\eqref{eq:normalized} and \eqref{eq:D} give
+\[
+ \frac{a_1^2}{a_0a_2}=\frac{1}{1+D_1}<1.
+\]
+Thus the binomial-normalized positive-weight sequence is \emph{never}
+log-concave in this range, even when the ordinary weight counts are.
+The binomial factor is doing essential work.
+
+Nor does ordinary log-concavity imply real-rootedness of the
+compressed generating polynomial. For the $[5,3,3]_7$ parameters,
+that polynomial is
+\[
+ 1+60z+120z^2+162z^3.
+\]
+Its coefficients are log-concave, but its cubic discriminant is
+$-74753388$, so it has a nonreal conjugate pair of roots.
+
+\section{Examples, computation, and reproducibility}
+
+\subsection{Selected exact examples}
+The following table records values of the integer polynomial $2P$.
+For every row, $q>d$ and $k\ge3$, so its sign is the full criterion.
+\begin{center}
+\begin{tabular}{@{}rrrrrl@{}}
+\toprule
+$n$ & $k$ & $d$ & $q$ & $2P_{n,k}(q)$ & Compressed log-concavity\\
+\midrule
+5 & 3 & 3 & 5 & $-8$ & No\\
+5 & 3 & 3 & 7 & $104$ & Yes\\
+11 & 9 & 3 & 11 & $472$ & Yes\\
+4 & 3 & 2 & 3 & $-2$ & No\\
+7 & 6 & 2 & 4 & $-8$ & No\\
+15 & 14 & 2 & 5 & $0$ & Yes; first-triple equality\\
+16 & 15 & 2 & 5 & $-6$ & No\\
+\bottomrule
+\end{tabular}
+\end{center}
+The $[11,9,3]_{11}$ example has $9>11/2+3$ and is directly
+constructed by polynomial evaluation over $\F_{11}$. Its first
+three positive-weight coefficients are
+\[
+ A_3=1650,\qquad A_4=26400,\qquad A_5=383460,
+\]
+with $A_4^2-A_3A_5=64251000>0$.
+
+For the boundary example $[6,3,4]_4$, the archive explicitly
+enumerates the code generated over $\F_4=\F_2[\omega]$,
+$\omega^2=\omega+1$, by
+\[
+ \begin{pmatrix}
+ 1&0&0&1&1&1\\
+ 0&1&0&1&\omega&\omega^2\\
+ 0&0&1&1&\omega^2&\omega
+ \end{pmatrix}.
+\]
+Its systematic form gives $64$ distinct words. Their exact
+weight array is $(1,0,0,0,45,0,18)$.
+
+\subsection{An exact and inexpensive decision procedure}
+For the main range, no codeword enumeration and no floating-point
+root computation are necessary. Calculate
+\[
+ d=n-k+1,\qquad B=k(d^2+2d-1)+2,
+\]
+then test the sign of
+\begin{equation}\label{eq:integer-test}
+ 2(n+1)q^2-2Bq+dB.
+\end{equation}
+This uses a constant number of arbitrary-precision integer
+operations. Its bit cost depends polynomially on the bit lengths of
+$n,k,q$; the statement is not that multiplication of unbounded
+integers has constant cost. Generating the full array instead takes
+$k$ recurrence steps in \eqref{eq:recurrence}, besides computing the
+binomial coefficients.
+
+\begin{lstlisting}[language=Python]
+def twice_quadratic(n: int, k: int, q: int) -> int:
+    d = n - k + 1
+    b = k * (d*d + 2*d - 1) + 2
+    return 2*(n + 1)*q*q - 2*b*q + d*b
+\end{lstlisting}
+The complete implementation in \texttt{code/mds.py} validates inputs,
+handles all boundary cases, computes the full array, and reports
+any directly detected compressed log-concavity failures.
+
+\subsection{Executed verification, with scopes separated}
+All reported checks were executed using Python 3.13.5 and exact
+integers or \texttt{fractions.Fraction}. No numerical tolerance
+was used in a pass/fail decision.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Check & Number\\
+\midrule
+Main-case formal parameter triples, $q>d$ & 154,888\\
+Formal boundary triples, $q=d\ge3$ & 15,642\\
+Binary boundary lengths & 499\\
+Degenerate-case parameter checks & 1,633\\
+Independent inclusion--exclusion comparisons & 1,815\\
+Exact rational checks of \eqref{eq:contraction} & 45,066\\
+Explicitly enumerated small codes & 64\\
+Codewords enumerated across those codes & 20,798\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The main sweep uses every $4\le n\le200$ and $2\le d\le n-2$,
+with $k=n-d+1$. For each pair it tests the distinct values in
+\[
+ \{d+1,d+2,2d,3d,n-1,n,n^2,d^2+2d-1\}
+\]
+that exceed $d$. For every triple it compares the full compressed
+array against the theorem, checks positivity on the entire claimed
+support, checks that the total is $q^k$, and verifies that any failure
+includes the first triple. These triples include non-prime-power
+$q$ and unrealizable code parameters deliberately: the theorem is
+stronger than a statement restricted to known constructions.
+
+The $q=d\ge3$ sweep uses $3\le d\le200$ and $2\le k\le80$.
+The binary checks cover lengths $2$ through $500$.
+The rational checks test the central bound directly with exact
+fractions for $n\le60$.
+
+The 64 construction checks are separate. They enumerate small
+prime-field Reed--Solomon codes, single-parity-check codes over
+$\F_2,\F_3,\F_4,\F_5,\F_7$, and the displayed $\F_4$ code.
+Their word counts are compared with the universal formula. The
+\texttt{verification.json} file records every constructed code's
+parameters and the full selected-example arrays.
+
+\subsection{Reproducing the archive}
+The source requires an ordinary \LaTeX{} installation with the
+standard packages listed in the preamble. From the archive root:
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+python code/verify.py --max-n 200 --output data/verification.json
+python code/mds.py 11 9 11
+\end{lstlisting}
+Alternatively run \texttt{pdflatex} repeatedly until references stabilize.
+The Python programs require version 3.9 or later and only the standard
+library. The verification runtime was approximately 21 seconds in
+the authoring environment; it naturally varies between machines.
+The deterministic digest of the main sweep is included in the JSON
+output, so the substantive record can be compared independently of
+runtime or Python-version metadata.
+
+\section{Conclusion and status}
+The selected extension has an affirmative answer: the first-triple
+quadratic criterion does not require a dimension restriction. The
+key step is \eqref{eq:contraction}, which compares a geometric
+alternating-sum defect with a binomial curvature that can deteriorate
+only linearly relative to the first position.
+
+The treatment also closes the zero-coefficient boundary algebraically,
+yields an exact classification for every existing linear MDS code,
+and gives explicit length thresholds for single-parity-check codes.
+At fixed distance there is a finite uniform alphabet threshold; at
+fixed positive rate the necessary alphabet threshold grows
+quadratically with length. These different regimes explain why
+apparently similar families can have very different log-concavity
+behavior.
+
+The article supplies a conventional proof and executed exact-arithmetic
+checks. It has not been proof-assistant formalized or independently
+peer reviewed. No gap is known in the argument presented here, but
+novelty and correctness remain subject to independent scrutiny.
+The priority claim is limited to the literature check described in
+Section~1; the explicit theorem and proof do not depend on that
+claim.
+
+\appendix
+\section{A compact proof for independent checking}
+For a reader auditing the central result without the surrounding
+applications, the proof can be compressed to the following chain.
+Let $d\ge2$, $k\ge3$, $q\ge d+1$ and $n=d+k-1$. Define
+\[
+ t_j=\frac{\binom{d+j-2}{j}}{(q-1)^j},\qquad
+ T_s=\sum_{j=0}^s(-1)^jt_j.
+\]
+The MDS recurrence proves
+$A_{d+s}=\binom n{d+s}(q-1)^{s+1}T_s$.
+Because $t_1<1$ and $t_j/t_{j-1}\le1/2$ for $j\ge2$, all $T_s$
+are positive and all odd $T_s\ge T_1$.
+
+Even offsets give strict log-concavity immediately. For odd $s$,
+set
+\[
+ D_s=\frac{t_s+t_{s+1}}{T_s}+\frac{t_st_{s+1}}{T_s^2},\qquad
+ E_s=\frac{n+1}{(d+s)(n-d-s)}.
+\]
+The adjacent inequality is exactly $D_s\le E_s$.
+Term contraction gives $D_s\le2^{1-s}D_1$; elementary denominator
+comparison gives $E_s\ge E_1/s$. Therefore
+\[
+ D_1\le E_1\ \Longrightarrow\
+ \frac{D_s}{E_s}\le \frac{s}{2^{s-1}}\le1.
+\]
+The zero-word boundary is strict because
+$A_d^2/A_{d+1}>1$. Finally, substituting the first three weights
+reduces $D_1\le E_1$ to \eqref{eq:P}; \eqref{eq:atd} identifies the
+relevant root without any MDS existence bound.
+
+\section{Artifact inventory and provenance}
+\begin{center}
+\begin{tabular}{@{}p{0.38\textwidth}p{0.56\textwidth}@{}}
+\toprule
+File & Purpose\\
+\midrule
+\texttt{article.tex}, \texttt{article.pdf} & This article and its editable source.\\
+\texttt{code/mds.py} & Exact enumerator, full criterion, command-line examples.\\
+\texttt{code/verify.py} & Reproducible formal and actual-code checks.\\
+\texttt{code/make\_tables.py} & Exact threshold selection and table regeneration.\\
+\texttt{data/verification.json} & Executed results, scope, examples, deterministic digest.\\
+\texttt{data/random\_selection.json} & The area-selection list, method, and draw.\\
+\texttt{data/thresholds.csv} & Numerical values of the exact uniform threshold.\\
+\texttt{data/threshold\_rows.tex} & Generated rows mirrored in the article source.\\
+\texttt{data/literature\_audit.json} & Sources, exact target, search date, access limitations.\\
+\texttt{README.md} & Build and verification instructions.\\
+
+\bottomrule
+\end{tabular}
+\end{center}
+The external source articles are not bundled. Their references are
+listed below, and the numerical and mathematical work in this archive
+can be inspected without downloading them.
+
+\begin{thebibliography}{9}
+\bibitem{SWAK}
+Minjia Shi, Xuan Wang, Junmin An, and Jon-Lark Kim.
+\emph{Log-Concave Sequences in Coding Theory}.
+arXiv:2410.04412v1, 6 October 2024, 31 pages.
+Especially Section~5, Theorem~9, and Remark~2 on pages 27--29.
+\url{https://arxiv.org/abs/2410.04412}.
+
+\bibitem{SWAKjournal}
+Minjia Shi, Xuan Wang, Junmin An, and Jon-Lark Kim.
+\emph{Log-Concave Sequences in Coding Theory}.
+IEEE Transactions on Information Theory, 71(12):9516--9533, 2025.
+Publisher record 11176928. Bibliographic record and indexed abstract
+consulted; full journal PDF not retrieved.
+\url{https://ieeexplore.ieee.org/document/11176928/}.
+
+\bibitem{EGS}
+Martianus Frederic Ezerman, Markus Grassl, and Patrick Sol\'e.
+\emph{The Weights in MDS Codes}.
+IEEE Transactions on Information Theory, 57(1):392--396, 2011.
+Preprint arXiv:0908.1669.
+\url{https://arxiv.org/abs/0908.1669}.
+\end{thebibliography}
+\end{document}

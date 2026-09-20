@@ -1,0 +1,164 @@
+mkdir -p build
+g++ -O3 -std=c++17 -Wall -Wextra src/exhaust.cpp -o build/mix_exhaust
+python3 tests/forward_oracle.py
+{
+  "all_checks_passed": true,
+  "results": [
+    {
+      "arity": 1,
+      "rows": [
+        {
+          "length": 0,
+          "tested_exact_tuples": 1,
+          "forward_accepted_exact_tuples": 1
+        },
+        {
+          "length": 3,
+          "tested_exact_tuples": 6,
+          "forward_accepted_exact_tuples": 0
+        },
+        {
+          "length": 6,
+          "tested_exact_tuples": 90,
+          "forward_accepted_exact_tuples": 0
+        }
+      ],
+      "seconds": 0.0006707740001274942
+    },
+    {
+      "arity": 2,
+      "rows": [
+        {
+          "length": 0,
+          "tested_exact_tuples": 1,
+          "forward_accepted_exact_tuples": 1
+        },
+        {
+          "length": 3,
+          "tested_exact_tuples": 24,
+          "forward_accepted_exact_tuples": 24
+        },
+        {
+          "length": 6,
+          "tested_exact_tuples": 630,
+          "forward_accepted_exact_tuples": 594
+        }
+      ],
+      "seconds": 0.010757091999948898
+    },
+    {
+      "arity": 3,
+      "rows": [
+        {
+          "length": 0,
+          "tested_exact_tuples": 1,
+          "forward_accepted_exact_tuples": 1
+        },
+        {
+          "length": 3,
+          "tested_exact_tuples": 60,
+          "forward_accepted_exact_tuples": 60
+        },
+        {
+          "length": 6,
+          "tested_exact_tuples": 2520,
+          "forward_accepted_exact_tuples": 2502
+        }
+      ],
+      "seconds": 0.32693519399981597
+    }
+  ]
+}
+python3 tests/test_results.py
+{
+  "all_checks_passed": true,
+  "binary_family_certificates_checked": 1965,
+  "binary_family_max_N": 5,
+  "cone_checks": [
+    {
+      "N": 2,
+      "checked_cone_words": 0
+    },
+    {
+      "N": 3,
+      "checked_cone_words": 0
+    },
+    {
+      "N": 4,
+      "checked_cone_words": 0
+    },
+    {
+      "N": 5,
+      "checked_cone_words": 2
+    },
+    {
+      "N": 6,
+      "checked_cone_words": 6
+    },
+    {
+      "N": 7,
+      "checked_cone_words": 14
+    },
+    {
+      "N": 8,
+      "checked_cone_words": 26
+    },
+    {
+      "N": 9,
+      "checked_cone_words": 44
+    },
+    {
+      "N": 10,
+      "checked_cone_words": 68
+    },
+    {
+      "N": 11,
+      "checked_cone_words": 100
+    },
+    {
+      "N": 12,
+      "checked_cone_words": 140
+    }
+  ],
+  "seconds": 0.3753960920000736
+}
+python3 tests/check_recorded_results.py
+{
+  "all_checks_passed": true,
+  "balanced_words_accounted_for": 417019279,
+  "max_length": 21,
+  "python_cpp_agreement_through_length": 18
+}
+python3 src/check_certificate.py certificates/separation_m1.json
+{
+  "valid": true,
+  "arity": 3,
+  "nodes": 8,
+  "root_tuple": [
+    "aaa",
+    "bbbcbbcccc",
+    "aa"
+  ]
+}
+python3 src/check_certificate.py certificates/separation_m2.json
+{
+  "valid": true,
+  "arity": 3,
+  "nodes": 13,
+  "root_tuple": [
+    "aaaaaa",
+    "bbbbbbccbbbbcccccccc",
+    "aaaa"
+  ]
+}
+python3 src/check_certificate.py certificates/separation_m5.json
+{
+  "valid": true,
+  "arity": 3,
+  "nodes": 28,
+  "root_tuple": [
+    "aaaaaaaaaaaaaaa",
+    "bbbbbbbbbbbbbbbcccccbbbbbbbbbbcccccccccccccccccccc",
+    "aaaaaaaaaa"
+  ]
+}
