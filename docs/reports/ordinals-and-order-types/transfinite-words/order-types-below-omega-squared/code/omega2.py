@@ -59,6 +59,29 @@ class FinitePoset:
                              if self.is_downset(m)),
                             key=lambda m: (m.bit_count(), m)))
 
+    def maximal_elements(self, downset: int) -> tuple[int, ...]:
+        """The maximal elements of a nonempty downset.
+
+        Repeating only these gives an omega-word equivalent to the block that
+        repeats all of the downset: B_{Max D} ~ B_D. See Remark 3.2 of
+        article.tex. The all-elements block B_D is the official definition
+        used by omega() and by embeds(); this method exists so that the
+        equivalence can be exercised by the tests.
+        """
+        if downset == 0 or not self.is_downset(downset):
+            raise ValueError('Expected a nonempty downset.')
+        return tuple(x for x in range(self.n)
+                     if (downset & (1 << x)) and
+                     not any(y != x and (downset & (1 << y)) and
+                             (self.pred[y] & (1 << x))
+                             for y in range(self.n)))
+
+    def upper_mask(self, x: int) -> int:
+        """The bitmask {y : x <= y}, the transpose of pred."""
+        if not 0 <= x < self.n:
+            raise ValueError('Label outside the alphabet.')
+        return sum(1 << y for y in range(self.n) if self.pred[y] & (1 << x))
+
     def validate_word(self, word: Word) -> None:
         for tag, value in word:
             if tag == 'f':
@@ -225,6 +248,62 @@ def full_marker_map(p: FinitePoset, proper_e: int, components: Sequence[Word]) -
     for component in components[:-1]:
         out += pad_to_limit(p, component, proper_e) + (omega(p.full),)
     return out + components[-1]
+
+
+def normalize(word: Word) -> Word:
+    """Canonical representative of the mutual-embeddability class.
+
+    Stack-based: on arrival of an omega token, pop the immediately preceding
+    finite letters while they belong to its downset. The final finite tail is
+    never touched. Two normalized token expressions are mutually embeddable if
+    and only if they are identical (Proposition 11.2 of article.tex).
+    """
+    out: list[Token] = []
+    for token in word:
+        tag, value = token
+        if tag == 'w':
+            while out and out[-1][0] == 'f' and (value & (1 << out[-1][1])):
+                out.pop()
+        out.append(token)
+    return tuple(out)
+
+
+def guard(p: FinitePoset, family: Sequence[int], new: int, word: Word) -> Word:
+    """The unified guard map g_D of Theorem 6.5, both cases in one entry point.
+
+    A proper new downset is guarded by a single letter outside it. The full
+    downset is guarded by pad_to_limit against an earlier proper member of the
+    family. The family-level precondition D not contained in E is checked here.
+    """
+    if new == 0 or not p.is_downset(new) or new in tuple(family):
+        raise ValueError('The new marker must be a new nonempty downset.')
+    if any(not (new & ~old) for old in family):
+        raise ValueError('An old downset contains the new downset.')
+    if new != p.full:
+        c = next(x for x in range(p.n) if not (new & (1 << x)))
+        return word + (letter(c),)
+    proper = next((e for e in family if e != p.full), None)
+    if proper is None:
+        raise ValueError('The universal marker requires an earlier proper downset.')
+    return pad_to_limit(p, word, proper)
+
+
+def encode_product(p: FinitePoset, family: Sequence[int], new: int,
+                   components: Sequence[Word]) -> Word:
+    """The unified Phi_m of Theorem 6.5: guard every component, including the last.
+
+    This is the all-guarded variant of Remark 6.6. proper_marker_map and
+    full_marker_map implement the unguarded-final-component variant used in
+    Sections 5 and 6; both are order embeddings of the same Cartesian power.
+    """
+    if not components:
+        raise ValueError('At least one component is required.')
+    out: Word = ()
+    for i, component in enumerate(components):
+        if i:
+            out += (omega(new),)
+        out += guard(p, family, new, component)
+    return out
 
 
 def theorem_value(p: FinitePoset, family: Sequence[int] | None = None) -> str:

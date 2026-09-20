@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={A manifest of the research reports in docs/reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of 64 independent mathematical research packages}}
+  pdfsubject={Catalogue of 58 independent mathematical research packages}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -50,7 +50,7 @@
 
 \begin{center}
   {\LARGE\bfseries\color{Ink} A manifest of \texttt{docs/reports}}\\[0.6em]
-  {\large Sixty-four independent mathematical research packages,\\
+  {\large Fifty-eight independent mathematical research packages,\\
    classified by subject}\\[1.0em]
   {\normalsize Vladimir Reshetnikov}\\[0.3em]
   {\normalsize 19 September 2026}
@@ -60,11 +60,20 @@
 
 \section{Scope and conventions}
 
-This document catalogues the sixty-four research packages stored under
-\dir{docs/reports}.  Each package was delivered as a single ZIP archive; the
-archives have been unpacked, one directory per package, and grouped into the
-subject hierarchy described in Section~\ref{sec:tree}.  The archives themselves
-are no longer kept in the repository.
+This document catalogues the fifty-eight research packages stored under
+\dir{docs/reports}.  They arrived as sixty-four ZIP archives, which have been
+unpacked and grouped into the subject hierarchy described in
+Section~\ref{sec:tree}.  The archives themselves are no longer kept in the
+repository.
+
+Sixty-four archives yield fifty-eight reports because six pairs turned out to
+prove the same theorem --- in five of the six, by the same argument, down to
+shared lemmas and in one case shared worked counterexamples.  Each pair has been
+merged into one report that proves the shared theorem once and keeps everything
+both originals built on top of it.  Where the two reached a result by genuinely
+different routes, both proofs are kept and marked as alternatives, with a
+sentence on what each one buys.  A merged entry below names both of its source
+archives and says what was doubled.
 
 Every package is self-contained and follows the same shape: a typeset article
 (\texttt{*.pdf}) with its complete \LaTeX{} source, a \texttt{README.md}
@@ -86,8 +95,10 @@ because it changes what the report is.
 
 The naming of the directories is editorial.  Several distinct reports attack the
 same published problem, and some arrived under colliding archive names, so each
-directory has been given a name describing its own angle on the problem.  The
-original archive name is recorded with every entry.
+directory has been given a name describing its own angle on the problem; the
+merged directories are named for their combined scope, which is why none of them
+still carries the name that once distinguished it from its partner.  The
+original archive names are recorded with every entry.
 
 \clearpage
 \section{The directory tree}
@@ -98,22 +109,22 @@ original archive name is recorded with every entry.
 \toprule
 \textbf{Category} & \textbf{Subcategory} & \textbf{Reports}\\
 \midrule
-\dir{ordinals-and-order-types}    & \dir{friendly-order-types}          & 4\\
+\dir{ordinals-and-order-types}    & \dir{friendly-order-types}          & 3\\
                                   & \dir{wqo-powersets-and-statures}    & 4\\
-                                  & \dir{transfinite-words}             & 3\\
+                                  & \dir{transfinite-words}             & 2\\
                                   & \dir{ordinal-arithmetic}            & 2\\
                                   & \dir{games-on-ordinals}             & 2\\
 \midrule
 \dir{hankel-determinants}         & \dir{somos-and-elliptic}            & 3\\
                                   & \dir{catalan-and-ballot}            & 2\\
-                                  & \dir{arithmetic-hankel}             & 2\\
                                   & \dir{growth-and-runs}               & 2\\
+                                  & (top level)                         & 1\\
 \midrule
-\dir{congruences-and-valuations}  & \dir{supercongruences}              & 3\\
+\dir{congruences-and-valuations}  & \dir{supercongruences}              & 2\\
                                   & \dir{iterated-series}               & 2\\
                                   & (top level)                         & 3\\
 \midrule
-\dir{tetration-and-digit-stabilization} & ---                           & 7\\
+\dir{tetration-and-digit-stabilization} & ---                           & 6\\
 \midrule
 \dir{log-concavity-and-unimodality}     & ---                           & 7\\
 \midrule
@@ -122,10 +133,10 @@ original archive name is recorded with every entry.
 \dir{enumerative-combinatorics}         & ---                           & 8\\
 \midrule
 \dir{generating-functions-and-asymptotics}
-                                  & \dir{binary-product-coefficient-counts} & 4\\
+                                  & \dir{binary-product-coefficient-counts} & 3\\
                                   & (top level)                         & 3\\
 \midrule
-\multicolumn{2}{l}{\textbf{Total}} & \textbf{64}\\
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{58}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -133,34 +144,31 @@ original archive name is recorded with every entry.
 \medskip
 \noindent
 More than a quarter of the collection consists of counterexamples and
-corrections rather than proofs.  Entries 14, 15, 29, 32, 33, 38, 39, 40, 41, 43,
-48, 52, 58, 59, 60, 62 and 64 refute, or replace with a proved statement, an
-assertion published or catalogued elsewhere; entry 34 disproves one of the three
-conjectures it treats while proving the other two.  Several reports whose main
-outcome is a proof still correct the statement they prove: entries 17, 19 and 24
-record a sign error, a missing one-unit shift and a numbering ambiguity in their
-sources, and entry 44 refines its target after finding that the original
-conjecture had already been disproved by someone else.
+corrections rather than proofs.  Ordinal Chomp, open-query games, compositional
+tree series, the secant numbers, the decimal-length bound for tetration
+stabilization, power-tower stabilization, iterated-power digit stabilization,
+cluster variables, chromatic coefficients of cycles, products of $q$-integers,
+domination roots, Hardinian array constants, the mixed-base counterexample,
+recursive exponents, Gregory sign thresholds and binary substitution discrepancy
+all refute, or replace with a proved statement, an assertion published or
+catalogued elsewhere.  Several reports whose main outcome is a proof still
+correct the statement they prove: the Somos-8 certificates, the shifted Catalan
+Hankel polynomials and the Rueppel determinants record a sign error, a missing
+one-unit shift and a numbering ambiguity in their sources, and the
+independence-system thresholds report refines its target after finding that the
+original conjecture had already been disproved by someone else.
 
 \section{Ordinals and order types}
 
 \subsection{Friendly order types}
 
-Four independent reports on Isa Vialard's \emph{friendly order type} $f(P)$, the
-rank of the tree of open-ended bad sequences in which every chosen point has an
-incomparable partner in the current residual.  All four prove the same finite
-formula; they differ in what they build on top of it.
-
-\entry{Friendly Order Type and Incomparability Components}
-{ordinals-and-order-types/friendly-order-types/incomparability-components-and-forests}
-{article.pdf}{friendly\_order\_type\_research.zip}
-{Proves $f(P)=|P|-c(\mathrm{Inc}(P))$ for a finite poset $P$, where $c$ counts
-connected components of the incomparability graph (isolated vertices included).
-With Vialard's width-transfer theorem this gives ordinal width
-$\omega^{f(P)}$ for the Dershowitz--Manna multiset ordering.  Also classifies
-all maximum friendly subsets, builds spanning-forest certificates, and gives
-Cartesian-product, lexicographic-substitution and well-ordered-sum formulas
-with an enumerative generating function.}
+Three reports on Isa Vialard's \emph{friendly order type} $f(P)$, the rank of
+the tree of open-ended bad sequences in which every chosen point has an
+incomparable partner in the current residual.  All three prove the same finite
+formula; they differ in what they build on top of it, and in how they prove it
+--- one by a forest-rank monovariant that survives moves deleting a whole upset,
+one through a lemma bounding the cut maxima.  A fourth report proved the formula
+by the first report's argument almost verbatim and has been merged into it.
 
 \entry{Friendly Order Types Through Incomparability Components}
 {ordinals-and-order-types/friendly-order-types/incomparability-components-and-infinite-tails}
@@ -181,15 +189,22 @@ finite, and gives countable counterexamples delimiting stronger infinite
 extrapolations.}
 
 \entry{Friendly Order Types of Finite Posets and Ordinal Products}
-{ordinals-and-order-types/friendly-order-types/cartesian-products-of-ordinals}
-{friendly\_order\_types.pdf}{friendly\_order\_types\_research.zip}
-{Beyond the component formula: a Cartesian product with at least two
-non-singleton factors has exactly one non-endpoint incomparability component;
-the tuple $(o,h,w,f)$ of the factors does \emph{not} determine $f(A\times B)$
-(explicit four-point $D,E$ with equal tuples and $f(D\times 2)=5$,
-$f(E\times 2)=6$); and a complete classification of
-$f(\alpha_1\times\cdots\times\alpha_r\times B)$ as a natural product, with an
-exception when every $\alpha_i$ is a successor and $B$ has a greatest element.}
+{ordinals-and-order-types/friendly-order-types/components-forests-and-ordinal-products}
+{friendly\_order\_types.pdf}{friendly\_order\_types\_research.zip + friendly\_order\_type\_research.zip}
+{Proves $f(P)=|P|-c(\mathrm{Inc}(P))$ for a finite poset $P$, where $c$ counts
+connected components of the incomparability graph (isolated vertices included),
+and classifies the witnesses: every maximum friendly subset is $P$ minus one
+minimal root per component, counted by $\prod|\mathrm{Min}(C_i)|$.  With
+Vialard's width-transfer theorem this gives ordinal width $\omega^{f(P)}$ for
+the Dershowitz--Manna multiset ordering.  On the transfinite side it proves
+$f(\alpha_1\times\cdots\times\alpha_r\times B)=\Theta$, the natural product,
+except that it is the predecessor of $\Theta$ when every $\alpha_i$ is a
+successor and $B$ has a greatest element, and classifies arbitrary finite
+ordinal boxes.  Also: spanning-forest certificates, exact monotonicity under
+added comparisons, a bivariate generating function, and explicit four-point
+factors with equal $(o,h,w,f)$ whose products differ.  \emph{Merged; the
+Cartesian-product formula is proved twice, once by corner deletion and once by
+a chain-grid spanning-subgraph argument.}}
 
 \subsection{Well-quasi-ordered powersets and statures}
 
@@ -238,10 +253,11 @@ Abriola et al.\ to arbitrary Noetherian spaces.}
 
 \subsection{Transfinite words}
 
-Three reports on Harry Altman, \emph{Bounding finite-image sequences of length
+Two reports on Harry Altman, \emph{Bounding finite-image sequences of length
 $\omega^k$} (arXiv:2409.03199v2), Example~3.15: is the bound
 $\omega^{\omega^4}$ sharp for words of length ${<}\,\omega^2$ over the
-two-element antichain?
+two-element antichain?  A third report matched the first lemma for lemma and has
+been merged into it.
 
 \entry{Exact maximal order types of finite-alphabet transfinite words}
 {ordinals-and-order-types/transfinite-words/finite-alphabet-transfinite-words}
@@ -253,22 +269,21 @@ $I_k(P)$, with $N_1(P)=|P|$ and $N_{k+1}(P)=|P|+J(I_k(P))-1$.  For $k=2$ the
 binary antichain gives $\omega^{\omega^4}$ --- the tightness Altman leaves
 open --- and the binary chain gives $\omega^{\omega^3}$.}
 
-\entry{Exact maximal order types below omega squared}
+\entry{Guarded periodic blocks and exact maximal order types below omega squared}
 {ordinals-and-order-types/transfinite-words/order-types-below-omega-squared}
-{article.pdf}{omega2\_order\_types\_proposed\_solution.zip}
-{The $k=2$ case in its own right:
-$o(s^F_{\omega^2}(P))=\omega^{\omega^{n+j(P)-2}}$ for $n=|P|\ge 2$, with $j(P)$
-the number of downsets including the empty one.  Handles the empty and
-singleton alphabets as genuine exceptions and classifies arbitrary selected
-families of periodic tail types.}
-
-\entry{Guarded periodic blocks and maximal order types below omega squared}
-{ordinals-and-order-types/transfinite-words/guarded-periodic-blocks}
-{article.pdf}{ordinal\_words\_research.zip}
-{The same formula $o(s_{\omega^2}(X))=\omega^{\omega^{n+|J(X)|-2}}$, obtained by
-a guarded-periodic-block construction, with symbolic algorithms and executed
-tests; the one-letter alphabet (type $\omega^2$) is flagged as outside the
-formula's range.}
+{article.pdf}{omega2\_order\_types\_proposed\_solution.zip + ordinal\_words\_research.zip}
+{Proves $o(s_{\omega^2}(P))=\omega^{\omega^{n+j(P)-2}}$ for $n=|P|\ge2$, with
+$j(P)$ the number of downsets including the empty one; the empty and singleton
+alphabets are genuine exceptions.  The binary antichain gives $\omega^{\omega^4}$
+--- the tightness Altman leaves open --- and the binary chain $\omega^{\omega^3}$.
+Adds an extremality corollary with both equality characterisations (among
+$n$-element posets only the chain minimises and only the antichain maximises),
+the $j(P)$ toolkit, the arbitrary-support-family classification, and an
+exact-length stratum calculus showing the supremum over lengths is only
+$\omega^{\omega^n}$, strictly below the answer --- so the theorem cannot be
+obtained stratum by stratum.  \emph{Merged; the product amplification is done
+twice, once via de Jongh--Parikh and once by an elementary hand proof that
+removes the import.}}
 
 \subsection{Ordinal arithmetic}
 
@@ -379,27 +394,25 @@ and their limiting binomial profile.}
 
 \subsection{Arithmetic Hankel determinants}
 
-Two independent reports on the numerator formula recorded as a conjecture in
-OEIS A122251, with A122249 as its binary special case.
+The numerator formula recorded as a conjecture in OEIS A122251, with A122249 as
+its binary special case.  Two reports attacked it and proved it the same way,
+sharing even their worked counterexamples; they are merged here into one.  The
+merged report sits at the category's top level.
 
 \entry{A Proof of an OEIS Hankel-Numerator Conjecture}
-{hankel-determinants/arithmetic-hankel/a122251-numerator-formula}
-{report.pdf}{hankel\_numerator\_research.zip}
+{hankel-determinants/a122251-numerators-and-denominators}
+{report.pdf}{hankel\_numerator\_research.zip + hankel\_oeis\_conjecture\_proof.zip}
 {For $H_n(m,a)=\det(1/(a+m(i+j)))_{0\le i,j\le n}$, the reduced numerator is
 $\prod_{p\mid m}p^{\,n(n+1)v_p(m)+2\sum_{k\le n}v_p(k!)}$: independent of the
 coprime offset $a$, a perfect square, and supported on the primes dividing $m$.
-Also gives exact denominator valuations, the gcd of denominators over all
-coprime $a$, a constructive congruence witness, the noncoprime-parameter
-formula, recurrences and a natural-boundary proof.}
-
-\entry{Prime-supported numerators of arithmetic Hankel determinants}
-{hankel-determinants/arithmetic-hankel/a122251-prime-exclusion-proof}
-{report.pdf}{hankel\_oeis\_conjecture\_proof.zip}
-{The same formula in the size-$m$ indexing,
-$\prod_{\ell\mid d}\ell^{\,v_\ell(d)m(m-1)+2\sum_{j<m}v_\ell(j!)}$, with the
-exclusion of every prime not dividing $d$ carried out as a separate step ---
-the point being that determining the $p$-adic valuation alone would not
-suffice.  Every reduced denominator valuation is determined as well.}
+Taking $m=p$ and $a=1$ settles the OEIS A122251 conjecture, with A122249 as the
+binary case.  Also gives a closed form for the reduced denominator and all its
+local valuations, a sharp gcd theorem over the allowed offsets realised at just
+two explicitly constructed shifts, the extension to unequal row and column steps
+$\det(1/(a+m_1i+m_2j))$, recurrences, digit-sum asymptotics, and a Lambert-series
+generating function with a natural boundary.  \emph{Merged; the determinant is
+evaluated three independent ways, and a second proof of the numerator formula
+runs through an explicit inverse matrix and MacMahon's boxed plane partitions.}}
 
 \subsection{Growth laws and run statistics}
 
@@ -426,25 +439,20 @@ the Gray code $n\oplus\lfloor n/2\rfloor$.  Settles statements 8, 10, 13 and 23 
 
 \subsection{Supercongruences}
 
-\entry{A cubic supercongruence for OEIS A348410}
-{congruences-and-valuations/supercongruences/a348410-cubic-supercongruence}
-{article.pdf}{A348410\_Supercongruence\_Research.zip}
-{For $A_{u,v}(n)=[x^n](1-x)^{-un}(1+x)^{-vn}$ proves
-$v_p(A_{u,v}(N)-A_{u,v}(N/p))\ge 3v_p(N)-\varepsilon_p$ with
-$\varepsilon_3=1$ and $\varepsilon_p=0$ for $p\ge5$, for every odd prime $p$ and
-every $N$ divisible by $p$ --- no coprimality condition on the remaining
-multiplier.  Taking $(u,v)=(2,1)$ gives Peter Bala's A348410 supercongruence.
-Appendix~A audits arXiv:2104.10754v1, whose prime-by-prime framing conclusion
-and weighted harmonic assertion fail on its own displayed examples.}
-
-\entry{Small-prime congruences for A348410}
-{congruences-and-valuations/supercongruences/a348410-small-prime-congruences}
-{article.pdf}{a348410\_supercongruence.zip}
-{For $a(n)=[x^n]((1-x)(1-x^2))^{-n}$ proves
-$v_p(a(mp^r)-a(mp^{r-1}))\ge 3r-v_p(12)$ for every prime and all $m,r\ge1$,
-hence $(12/n^3)\sum_{d\mid n}\mu(d)a(n/d)\in\mathbb{Z}_{\ge0}$ with $12$
-optimal.  The principal extension is an exact binary leading-defect formula
-for the family $A_{\alpha,\beta}$, valid modulo $2^{3r-2}$.}
+\entry{Congruences for OEIS A348410 at every prime}
+{congruences-and-valuations/supercongruences/a348410-all-prime-congruences}
+{article.pdf}{a348410\_supercongruence.zip + A348410\_Supercongruence\_Research.zip}
+{For $A_{\alpha,\beta}(n)=[x^n](1-x)^{-\alpha n}(1+x)^{-\beta n}$ proves the
+odd-prime cubic supercongruence $v_p(A(Np)-A(N))\ge 3v_p(N)-\varepsilon_p$ with
+$\varepsilon_3=1$, $\varepsilon_p=0$ for $p\ge5$, and no coprimality condition;
+$(\alpha,\beta)=(2,1)$ is Bala's A348410 conjecture.  Separately proves an exact
+binary leading-defect formula, $A(m2^r)-A(m2^{r-1})\equiv
+2^{3r-3}\alpha\beta\binom{(\alpha+\beta+1)m-1}{m-1}$ mod $2^{3r-2}$, hence the
+all-prime bound $3r-v_p(12)$ and sharp denominators $12$ and $24$.  An appendix
+audits arXiv:2104.10754v1, whose framing conclusion and weighted harmonic
+assertion fail on its own displayed examples.  \emph{Merged; the odd-prime and
+binary halves run on different mechanisms --- a doubling automorphism, and
+reflection with formal integration by parts --- and both are kept.}}
 
 \entry{Signed binomial supercongruences and OEIS A352373}
 {congruences-and-valuations/supercongruences/a352373-signed-binomial-supercongruences}
@@ -522,18 +530,6 @@ Marco Rip\`a, \emph{The congruence speed formula} (NNTDM 27(4), 2021).  The
 report audits the later Rip\`a--Onnis confirmation: their weaker valuation
 bound is compatible with the counterexample, the decimal-length bound is not.}
 
-\entry{Exactly One Digit per Height}
-{tetration-and-digit-stabilization/one-stable-digit-per-height}
-{article.pdf}{tetration\_exact\_digits.zip}
-{The three conjectural comments in OEIS A324017: the first two are proved and
-the third is disproved for every nontrivial base in its stated domain.  For
-even $q\ge4$ and $a=q-1$, the central theorem is
-$T_{h+r}-T_h\equiv-2q^h\pmod{q^{h+1}}$, so each added height contributes
-exactly one new stable radix-$q$ digit.  Smallest counterexample to the third:
-$3\uparrow\uparrow2\equiv27$ and $3\uparrow\uparrow3\equiv59 \pmod{64}$.
-Adds exact prime-adic distances, a factorization-free digit-lifting algorithm
-and higher Knuth arrow ranks.}
-
 \entry{Tetration, perfect powers, and frozen decimal digits}
 {tetration-and-digit-stabilization/perfect-power-minima-for-frozen-digits}
 {article.pdf}{tetration\_perfect\_power\_minima.zip}
@@ -566,16 +562,22 @@ at $z=-2+2\pi ik/(-\log q)$, and diverges for $\mathrm{Re}\,z<-2$.  Adds strict
 complete monotonicity and uniqueness under an eventual log-convexity
 condition.}
 
-\entry{Delayed stabilization of power towers}
-{tetration-and-digit-stabilization/delayed-stabilization-of-towers}
-{article.pdf}{tetration\_stabilization\_research.zip}
+\entry{Stabilization of integer power towers}
+{tetration-and-digit-stabilization/power-tower-stabilization}
+{article.pdf}{tetration\_stabilization\_research.zip + tetration\_exact\_digits.zip}
 {Refutes the claim that every prime base ending in 9 reaches its permanent
-decimal congruence speed by height~2 (Rip\`a, Conjecture~2, journal p.~57;
-arXiv:2208.02622v1, Conjecture~4.1): $2749$ is the smallest prime
-counterexample, with first permanent-speed height $H(2749)=3$.  Proves exact
-formulas for $C_a(h)$, $V(a)$ and $H(a)$ in terms of
-$s=v_2(a-1)$, $t=v_2(a+1)$, $u=s+t-1$, $e=v_5(a+1)$, and shows there are
-infinitely many primes with each prescribed onset $H\ge3$.}
+decimal congruence speed by height~2 (Rip\`a, Conjecture~2; arXiv:2208.02622v1,
+Conjecture~4.1): $2749$ is the smallest prime counterexample, with
+$H(2749)=3$.  Proves exact formulas for $C_a(h)$, $V(a)$ and $H(a)$, an exact
+natural density for onsets, and infinitely many primes at each prescribed onset
+via CRT and Dirichlet.  Also resolves the three conjectural comments in OEIS
+A324017 --- two proved, the third disproved, with
+$3\uparrow\uparrow2\equiv27$ and $3\uparrow\uparrow3\equiv59\pmod{64}$ --- via
+$T_{h+r}-T_h\equiv-2q^h\pmod{q^{h+1}}$ for even $q\ge4$, so exactly one radix-$q$
+digit freezes per height.  Adds a factorization-free digit-lifting algorithm,
+modular saturation across Knuth arrow ranks, and a sign-sensitive local $p$-adic
+Lambert $W$ formula.  \emph{Merged; the shared one-digit-per-height theorem was
+proved identically in both originals and is proved once here.}}
 
 \entry{Delayed digit stabilization: a counterexample and sharp bounds}
 {tetration-and-digit-stabilization/iterated-power-digit-stabilization}
@@ -787,32 +789,31 @@ and Fibonacci numbers.}
 
 \subsection{Coefficient counts of binary products}
 
-Four reports on counting coefficients of $\prod_i(1+x^{G_i})$.  The first three
+Three reports on counting coefficients of $\prod_i(1+x^{G_i})$.  The first two
 answer, independently, the universal-rationality part of Richard Stanley's
 MathOverflow question 431075 (``A conjectured rational generating function'',
-2022), which had no posted answer when checked on 19 September 2026.
-
-\entry{When Rational Exponents Produce Non-D-Finite Coefficient Counts}
-{generating-functions-and-asymptotics/binary-product-coefficient-counts/mixed-base-natural-boundary}
-{article.pdf}{Stanley\_Rationality\_Counterexample.zip}
-{With $G(2j+1)=2^j$ and $G(2j+2)=3^j$, the exponent generating function is
-rational but the generating function of $\nu(N)$ --- the number of coefficients
-equal to one in $P_N(x)=\prod_{i\le N}(1+x^{G(i)})$ --- is not D-finite and has
-a natural boundary; explicitly,
-$a(n)=\nu(2n)=2^{\lfloor(n+1)(1-\log2/\log3)\rfloor}$ for $n\ge2$.  The proof
-assumes nothing about the algebraicity of the growth constant.  In the family
-$G_b$ the count series is rational exactly when $b$ is a power of two.}
+2022), which had no posted answer when checked on 19 September 2026.  A third
+answer used the same mixed-base construction and the same enumerative argument
+as the first, and has been merged into it.
 
 \entry{A Mixed-Base Counterexample to Stanley's Rationality Question}
-{generating-functions-and-asymptotics/binary-product-coefficient-counts/mixed-base-rationality-classification}
-{article.pdf}{stanley\_mixed\_base\_counterexample.zip}
-{The same mixed-base construction, with
-$\nu(2n)=2^{\,n-\lfloor(n+1)\alpha\rfloor}$ for $\alpha=\log2/\log3$ proved by
-interval coverage and a carry-gap count.  Nonrationality is obtained by a
-finite-field argument, then strengthened to a natural boundary,
-non-D-finiteness and non-P-recursiveness.  Classifies rationality in the family
-interleaving $a^j$ and $q^j$ with digit polynomial $1+y+\cdots+y^{a-1}$: it
-holds exactly when $q^u=a^v$.}
+{generating-functions-and-asymptotics/binary-product-coefficient-counts/mixed-base-counterexample}
+{article.pdf}{stanley\_mixed\_base\_counterexample.zip + Stanley\_Rationality\_Counterexample.zip}
+{With $G_{2j+1}=2^j$ and $G_{2j+2}=3^j$ the exponent generating function is
+rational, while $\nu(2n)=2^{\,n-\lfloor(n+1)\alpha\rfloor}$ for
+$\alpha=\log_3 2$ counts the coefficients equal to one in
+$\prod_{i\le N}(1+x^{G_i})$ and its generating function is not rational, not
+D-finite, not P-recursive, and has a natural boundary.  Classifies rationality
+in the family interleaving $a^j$ and $q^j$ with digit polynomial
+$1+y+\cdots+y^{a-1}$ for all $2\le a<q$ --- Stanley's general $r=a-1$ --- as
+holding exactly when $q^u=a^v$.  Adds a finite-quotient rigidity theorem, an
+abstract natural-boundary theorem for $\sum q^{\lfloor n\theta\rfloor}t^n$ at
+every irrational $\theta$, the exact limit set of $a_n/\lambda^n$, and a
+streaming recurrence making the point that non-P-recursive does not mean hard to
+compute.  \emph{Merged; the enumerative half was the same argument in both
+originals, but the two routes to non-rationality differ and both are kept ---
+an elementary finite-state reduction mod $p$, and the rigidity route that
+reaches the stronger transcendence conclusions.}}
 
 \entry{Rational exponents, nonrational coefficient counts}
 {generating-functions-and-asymptotics/binary-product-coefficient-counts/recursive-exponent-construction}

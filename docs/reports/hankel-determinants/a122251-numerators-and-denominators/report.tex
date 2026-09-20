@@ -1,0 +1,1176 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype}
+\usepackage{xcolor,booktabs,array,longtable}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=navy,citecolor=teal,urlcolor=teal,pdftitle={A Proof of an OEIS Hankel-Numerator Conjecture},pdfauthor={GPT-6 Astra Pro}]{hyperref}
+\definecolor{navy}{HTML}{18364A}
+\definecolor{teal}{HTML}{216A73}
+\definecolor{pale}{HTML}{F0F5F7}
+\definecolor{ink}{HTML}{172128}
+\color{ink}
+\setlength{\parskip}{0.4em}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\linespread{1.035}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\scshape Hankel numerators and denominator divisibility}
+\fancyhead[R]{\small Research article}
+\fancyfoot[L]{\footnotesize 19 September 2026}
+\fancyfoot[R]{\footnotesize\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\vp}{v_p}
+\newcommand{\vq}{v_q}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\num}{\operatorname{num}}
+\newcommand{\den}{\operatorname{den}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\PP}{\Pi}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\OEIS}[1]{\href{https://oeis.org/#1}{\texttt{#1}}}
+\newtcolorbox{resultbox}[1][]{colback=pale,colframe=teal,boxrule=.5pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,#1}
+\lstset{language=Python,basicstyle=\ttfamily\small,keywordstyle=\color{navy}\bfseries,commentstyle=\color{teal},breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{teal},xleftmargin=1mm,xrightmargin=1mm}
+\setcounter{tocdepth}{1}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\setlength{\parindent}{0pt}
+\thispagestyle{empty}
+\vspace*{10mm}
+{\color{teal}\sffamily\bfseries RESEARCH IN INTEGER SEQUENCES\par}
+\vspace{7mm}
+{\color{navy}\LARGE\bfseries A Proof of an OEIS\\[2mm] Hankel-Numerator Conjecture\par}
+\vspace{5mm}
+{\large Prime-power cancellation, unequal arithmetic steps,\\sharp denominator divisibility, and boxed plane partitions\par}
+\vspace{8mm}
+{\large GPT-6 Astra Pro\par}
+{19 September 2026\par}
+\vspace{9mm}
+\begin{abstract}
+The OEIS entry A122251 records a conjecture of Paul Barry about the reduced numerators of the Hankel determinants of the sequence $1/(pk+1)$, for prime $p$. We prove that formula, and extend it to every positive progression step and every coprime positive offset. For
+\[
+ H_n(m,a)=\det_{0\leq i,j\leq n}\frac1{a+m(i+j)},\qquad \gcd(a,m)=1,
+\]
+the reduced numerator is independent of $a$ and equals
+\[
+ \prod_{p\mid m}p^{\,n(n+1)v_p(m)+2\sum_{k=0}^n v_p(k!)}.
+\]
+The decisive step is an exact count of residue classes in a square: it proves that every prime not dividing $m$ cancels from the Cauchy determinant numerator. The same count gives a closed form for the reduced denominator, all of its local valuations, and a sharp greatest-common-divisor theorem over the allowed offsets; the gcd is realized by the denominators at only two explicitly constructed offsets. A second proof uses an explicit inverse matrix, itself derived in two independent ways. The residue count further extends to matrices with unequal row and column steps, $\det(1/(a+m_1i+m_2j))$, where it bounds the numerator support by the primes of $m_1m_2$. Further consequences include multiplicative recurrences, digit-sum asymptotics, a Lambert-series generating function with a natural boundary, and a connection with MacMahon's boxed plane partitions. The accompanying standard-library Python implementation passes 159,555 exact checks, including 4,505 independently eliminated matrices.
+\end{abstract}
+\vspace{4mm}
+\begin{resultbox}
+\small\textbf{Scope of the claim.} This article supplies proofs of the displayed conjecture and its stated extensions. The OEIS entries consulted on 19 September 2026 still label the relevant assertions as conjectural; their retrieved internal revision tags are recorded in Section~\ref{sec:problem}. That is evidence for selecting the problem, not a guarantee of historical priority: an earlier proof or a general result implying it may exist. The classical determinant and inverse-matrix identities are explicitly attributed. No peer review or proof-assistant verification is claimed.
+\end{resultbox}
+\vfill
+{\small\color{teal}Self-contained main proofs \;\textbullet\; Exact arithmetic \;\textbullet\; Reproducible research archive\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+
+\tableofcontents
+\vspace{5mm}
+\begin{resultbox}
+\textbf{Reading guide.} Sections~\ref{sec:problem}--\ref{sec:main} contain a complete elementary proof of the selected conjecture. Section~\ref{sec:denominators} proves the stronger denominator theorem. Section~\ref{sec:twosteps} extends the exclusion half to unequal row and column steps. The remaining sections give independent explanations, sequence-theoretic consequences, examples, and a precise account of the computational checks.
+\end{resultbox}
+\begin{resultbox}
+\textbf{Provenance.} This article is a merge of two independently produced research reports on the same OEIS conjecture: \texttt{a122251-numerator-formula} (the base document, whose structure, notation and macros are retained here) and \texttt{a122251-prime-exclusion-proof}. The two reports proved the shared core theorem --- the reduced-numerator formula --- by the same argument: Cauchy's double alternant, an exact residue-square count, Legendre's factorial valuation, and the same Chinese-remainder sharpness construction. That shared argument is therefore given exactly once, in the base document's words and indexing. Where the two reports genuinely differ, both are kept: the explicit inverse matrix is derived twice, by rational interpolation in Section~\ref{sec:inverse} and by a cofactor computation from Cauchy's identity in Section~\ref{sec:cofactor}, and the Lambert-series generating function is derived twice, from second differences and from first differences in Section~\ref{sec:lambert}. Material contributed by the second report is integrated into the sections where it belongs rather than appended; the most substantial such contribution is the unequal-step theorem of Section~\ref{sec:twosteps}. The second report indexed its statements by matrix size $m=n+1$; every ported statement, example, table entry and test range has been reindexed to the OEIS index $n$ used throughout this article.
+\end{resultbox}
+\newpage
+\pagenumbering{arabic}
+
+\section{The selected problem and what is proved}\label{sec:problem}
+
+\subsection{A concrete conjecture still marked as such}
+For a sequence $(c_k)_{k\geq0}$, its Hankel transform, with the indexing used here, is
+\[
+ h_n=\det(c_{i+j})_{0\leq i,j\leq n}.
+\]
+Thus index $n$ means a matrix of size $n+1$. For $c_k=1/(3k+1)$, OEIS entry \OEIS{A122251} describes the resulting numerator sequence as conjectural. Its comments state the more general prime-parameter formula
+\begin{equation}\label{eq:original}
+ \num\left(\det_{0\leq i,j\leq n}\frac1{1+p(i+j)}\right)
+ =(p^2)^{\displaystyle\sum_{k=1}^n\sum_{j=0}^n\floor{k/p^j}}
+ \qquad(p\text{ prime}).
+\end{equation}
+The entry is attributed to Paul Barry, 27 August 2006~\cite{oeis251}. The corresponding $p=2$ entry, \OEIS{A122249}, explicitly requests a proof~\cite{oeis249}. These statements were checked on 19 September 2026, which is 18 September 2026 in the America/Los\_Angeles zone in which one of the two retrievals was made; the encyclopedia's page footers use Eastern time, and those footer timestamps are the site-wide update stamp rather than the revision date of an individual entry. The retrieved internal records carried the revision tags \texttt{\#2 Mar 30 2012 18:59:15} for A122251 and \texttt{\#6 Oct 27 2024 12:12:17} for A122249, and both retained their conjectural wording; the internal records are at \url{https://oeis.org/A122251/internal} and \url{https://oeis.org/A122249/internal}. Those tags, not the footer dates, are the evidence for the phrase ``still recorded as conjectural'' used throughout this article. Adding computed terms, as the 2024 extension of A122249 does, is not itself a proof of the infinite statement.
+
+A targeted search for the sequence identifiers, their formulas, and related generalized Hilbert-matrix arithmetic did not locate a direct prior proof of this exact OEIS assertion. This is not an exhaustive literature survey. In particular, generalized Hilbert and Cauchy matrices have a long literature, and the formulas below are close enough to classical identities that a priority claim would require additional checking.
+
+The reason this is a promising problem is that the determinant itself is readily evaluable. The real issue is \emph{reduction to lowest terms}. A product formula may display many primes in a numerator that disappear completely after cancellation. Our proof isolates and settles precisely that issue.
+
+\subsection{The stronger statement}
+Write $v_p(u)$ for the exponent of a prime $p$ in a nonzero integer $u$, extended to nonzero rationals by subtraction. Set
+\begin{equation}\label{eq:defH}
+ C_n(m,a)=\left(\frac1{a+m(i+j)}\right)_{0\leq i,j\leq n},
+ \qquad H_n(m,a)=\det C_n(m,a),
+\end{equation}
+where $a,m$ are positive integers. Let $A_n(m,a)$ and $B_n(m,a)$ be its positive relatively prime numerator and denominator.
+
+\begin{theorem}[Reduced numerator]\label{thm:numerator}
+For $n\geq0$, $a,m\geq1$, and $\gcd(a,m)=1$,
+\begin{equation}\label{eq:main}
+ \boxed{\displaystyle
+ A_n(m,a)=A_n(m)=
+ \prod_{p\mid m}p^{\,n(n+1)v_p(m)+2V_p(n)},
+ \qquad V_p(n)=\sum_{k=0}^n v_p(k!).}
+\end{equation}
+The product ranges over the prime divisors of $m$. For $m=1$ it is empty and equals $1$.
+\end{theorem}
+
+This theorem proves \eqref{eq:original}, permits composite $m$, and shows that changing the coprime offset does not change the numerator at all. It also shows that the numerator is a square. For $n\geq1$, its prime divisors are exactly those of $m$.
+
+There is a companion statement about denominators. Define
+\begin{equation}\label{eq:Ldef}
+ L_n=\prod_{k=0}^n(2k+1)\binom{2k}{k}^{\!2}.
+\end{equation}
+For a positive integer $u$ and a positive integer $m$, split $u$ into the part supported on the primes of $m$ and the part coprime to them:
+\begin{equation}\label{eq:parts}
+ [u]_m=\prod_{p\mid m}p^{v_p(u)},\qquad
+ u_{\perp m}=\frac u{[u]_m}.
+\end{equation}
+Thus $u_{\perp m}$ is the largest divisor of $u$ coprime to $m$, and $u=[u]_m\cdot u_{\perp m}$. For $m=1$ the two parts are $1$ and $u$. Both halves are used below: the numerator of $H_n(m,a)$ is supported on the primes of $m$, its denominator is coprime to them.
+
+\begin{theorem}[Sharp common denominator divisor]\label{thm:gcd}
+For each $n\geq0$ and $m\geq1$,
+\begin{equation}\label{eq:gcd}
+ \boxed{\displaystyle
+ \gcd_{\substack{a\geq1\\\gcd(a,m)=1}} B_n(m,a)=(L_n)_{\perp m}.}
+\end{equation}
+Moreover, for each prime $q\nmid m$, an explicit offset attains the minimum possible $q$-adic denominator valuation.
+\end{theorem}
+
+The infinite gcd means the largest positive integer dividing every denominator in the family. It does \emph{not} assert that a single offset has denominator exactly $(L_n)_{\perp m}$. The primewise minimum is the right notion, and the proof keeps that distinction explicit. Corollary~\ref{cor:twoshifts} sharpens the statement in the other direction: the infinite gcd is already the gcd of the two denominators at $a=1$ and at one explicitly constructed offset.
+
+\section{The determinant before cancellation}\label{sec:cauchy}
+
+\subsection{Notation and positivity}
+Throughout the proof put
+\[
+ N=n+1,\qquad P_n=\prod_{k=0}^n k!,\qquad
+ Q_n(m,a)=\prod_{i,j=0}^n(a+m(i+j)).
+\]
+There are only $2n+1$ different factors in $Q_n$, with multiplicities
+\begin{equation}\label{eq:Qcompressed}
+ Q_n(m,a)=\prod_{s=0}^{2n}(a+ms)^{w_n(s)},
+ \qquad w_n(s)=\min(s+1,2n+1-s).
+\end{equation}
+The determinant is positive. One direct explanation is the Gram representation
+\[
+ \frac1{a+m(i+j)}=\int_0^1 t^{a-1}t^{mi}t^{mj}\,dt.
+\]
+For a nonzero real vector $(u_0,\ldots,u_n)$, its quadratic form is the integral of
+$t^{a-1}(\sum_i u_it^{mi})^2$. The polynomial is not identically zero, so the integral is positive. Thus the matrix is positive definite and its determinant is positive. Positivity also follows immediately from the product formula below.
+
+The same integral places the problem inside the theory of moment sequences rather than matrix arithmetic alone. The underlying sequence $c_k=1/(a+mk)$ has the ordinary generating function
+\begin{equation}\label{eq:momentgf}
+ \mathcal G_{m,a}(z)=\sum_{k\geq0}\frac{z^k}{a+mk}
+ =\int_0^1\frac{t^{a-1}}{1-zt^m}\,dt
+ =\frac1a\,{}_2F_1\!\left(1,\frac am;1+\frac am;z\right),
+ \qquad|z|<1.
+\end{equation}
+The integral follows by expanding the geometric series under the integral sign, and the hypergeometric form follows from the Pochhammer quotient
+$(a/m)_k/(1+a/m)_k=a/(a+mk)$. Since $c_{i+j}=\int_0^1t^{a-1}t^{mi}t^{mj}\,dt$, the matrix $C_n(m,a)$ is the Gram matrix of the linearly independent monomials $1,t^m,\ldots,t^{mn}$ for the positive weight $t^{a-1}$ on $[0,1]$, and $H_n(m,a)$ is the Hankel transform of that moment sequence. The arithmetic results below are therefore statements about a classical moment problem, not only about a particular matrix pattern; the hypergeometric identification is recorded for context and is not used in any proof.
+
+\subsection{Cauchy's identity, including a proof}
+The classical Cauchy double-alternant identity is a standard determinant evaluation; see Krattenthaler~\cite[Eq.~(2.7)]{krattenthaler}. We give the short algebraic proof to fix signs and indexing.
+
+\begin{lemma}[Cauchy's double alternant]\label{lem:cauchy}
+For pairwise distinct $x_i$, pairwise distinct $y_j$, and nonzero $x_i+y_j$,
+\begin{equation}\label{eq:cauchy}
+ \det_{0\leq i,j<N}\frac1{x_i+y_j}
+ =\frac{\displaystyle\prod_{0\leq i<j<N}(x_j-x_i)(y_j-y_i)}
+ {\displaystyle\prod_{0\leq i,j<N}(x_i+y_j)}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Multiply the determinant by its displayed common denominator. The result is a polynomial alternating separately in the $x$ variables and in the $y$ variables. It is therefore divisible by both Vandermonde products. Its total degree is $N^2-N$, exactly the sum of their degrees, so it is a constant multiple of their product.
+
+To find the constant, take the residue of the rational identity at $x_{N-1}=-y_{N-1}$. On the determinant side, only the last diagonal entry has this pole; its cofactor is the determinant of size $N-1$. On the product side, the cross factors cancel and leave the same product expression of size $N-1$. Thus the constants for sizes $N$ and $N-1$ agree. At size $1$ the constant is $1$. The identity follows by induction, first for generic variables and then wherever the displayed denominators are nonzero.
+\end{proof}
+
+\begin{proposition}[Product evaluation]\label{prop:product}
+For all positive $a,m$,
+\begin{equation}\label{eq:product}
+ H_n(m,a)=\frac{m^{n(n+1)}P_n^2}{Q_n(m,a)}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Take $x_i=mi$ and $y_j=a+mj$ in \eqref{eq:cauchy}. Each Vandermonde is
+\[
+ \prod_{0\leq i<j\leq n}m(j-i)
+ =m^{n(n+1)/2}\prod_{j=0}^n j!.
+\]
+Multiplying the two Vandermondes gives the numerator in \eqref{eq:product}.
+\end{proof}
+
+For later use, the quotient of two consecutive determinants is
+\begin{equation}\label{eq:Hratio}
+ \frac{H_n(m,a)}{H_{n-1}(m,a)}
+ =\frac{m^{2n}(n!)^2}
+ {(a+2mn)\displaystyle\prod_{j=0}^{n-1}(a+m(n+j))^2},
+\end{equation}
+where $H_{-1}=1$ and an empty product is $1$. This follows by separating the last row and column of the denominator product; their common corner is counted only once.
+
+\subsection{Where the difficulty lies}
+When $p\mid m$ and $\gcd(a,m)=1$, no factor of $Q_n(m,a)$ is divisible by $p$. All powers of such a prime in the displayed numerator survive. In contrast, if $q\nmid m$, the factor $P_n^2$ can contain a large power of $q$. It is not enough to say that the progression contains multiples of $q$: their \emph{weighted number at every prime-power level} must cover that factorial contribution. The next section supplies an exact count rather than an approximation.
+
+\section{The residue count and the numerator proof}\label{sec:main}
+
+\subsection{A square made of full residue blocks and one corner}
+For integers $d\geq1$, $0\leq b<d$, and $0\leq r<d$, define
+\begin{equation}\label{eq:Tdef}
+ T_{d,b}(r)=\#\{(u,v):0\leq u,v<b,\ u+v\equiv r\pmod d\}.
+\end{equation}
+Also let
+\[
+ C_d(N,r)=\#\{(i,j):0\leq i,j<N,\ i+j\equiv r\pmod d\}.
+\]
+
+\begin{lemma}[Exact residue-square count]\label{lem:residue}
+Write $N=td+b$ with $0\leq b<d$. Then
+\begin{align}
+ C_d(N,r)&=dt^2+2tb+T_{d,b}(r),\label{eq:rescount}\\
+ 2\sum_{k=0}^{N-1}\floor{k/d}&=dt(t-1)+2tb,\label{eq:floorsum}\\
+ C_d(N,r)-2\sum_{k=0}^{N-1}\floor{k/d}&=dt+T_{d,b}(r)\geq0.\label{eq:surplus}
+\end{align}
+\end{lemma}
+\begin{proof}
+Among $0,\ldots,N-1$, each residue modulo $d$ occurs $t$ times, with one extra occurrence for residues $0,\ldots,b-1$. For each residue $u$, the residue paired with it is uniquely $r-u$. The products of the baseline counts contribute $dt^2$. The extra occurrences in the first coordinate contribute $tb$, and those in the second contribute another $tb$. Pairs in which both occurrences are extra contribute $T_{d,b}(r)$. This proves \eqref{eq:rescount}.
+
+For the floor sum, the first $td$ indices split into $t$ blocks of length $d$, on which the floor values are $0,1,\ldots,t-1$. The remaining $b$ indices have floor value $t$. Thus the sum is $dt(t-1)/2+tb$. Subtracting twice this value from \eqref{eq:rescount} gives \eqref{eq:surplus}.
+\end{proof}
+
+This identity is the entire cancellation mechanism. The progression offset changes the residue $r$, but the error term is a count and hence cannot become negative.
+
+\subsection{Passing from residue classes to valuations}
+We use the elementary factorial valuation identity
+\begin{equation}\label{eq:legendre}
+ v_q(k!)=\sum_{e\geq1}\floor{k/q^e}.
+\end{equation}
+Indeed, every multiple of $q$ contributes once, every multiple of $q^2$ contributes one additional time, and so on. Both sides count the powers of $q$ in the factors $1,\ldots,k$.
+
+Fix a prime $q\nmid m$. For each $e\geq1$, let $d=q^e$ and choose
+\begin{equation}\label{eq:residueoffset}
+ r_e\equiv-a\,m^{-1}\pmod{q^e},\qquad 0\leq r_e<q^e.
+\end{equation}
+The inverse exists because $q\nmid m$. Exactly $C_{q^e}(N,r_e)$ factors of $Q_n(m,a)$, counted with their original matrix multiplicities, are divisible by $q^e$. Hence
+\begin{align}
+ v_q(Q_n(m,a))
+ &=\sum_{e\geq1}C_{q^e}(N,r_e)\notag\\
+ &\geq 2\sum_{e\geq1}\sum_{k=0}^n\floor{k/q^e}
+ =2\sum_{k=0}^n v_q(k!)=2V_q(n).\label{eq:cancellation}
+\end{align}
+All sums are finite: a factor of $Q_n$ is at most $a+2mn$.
+
+\begin{proof}[Proof of Theorem~\ref{thm:numerator}]
+If $p\mid m$, coprimality gives $p\nmid a+m(i+j)$ for every pair $(i,j)$. Equation~\eqref{eq:product} therefore yields
+\[
+ v_p(H_n(m,a))=n(n+1)v_p(m)+2V_p(n).
+\]
+If $q\nmid m$, equations~\eqref{eq:product} and \eqref{eq:cancellation} give
+\[
+ v_q(H_n(m,a))=2V_q(n)-v_q(Q_n(m,a))\leq0.
+\]
+A reduced numerator contains exactly the positive prime valuations of the rational number. The two cases prove \eqref{eq:main}.
+\end{proof}
+
+\begin{corollary}[The OEIS conjecture]\label{cor:oeis}
+For every prime $p$ and every $n\geq0$, equation~\eqref{eq:original} holds.
+\end{corollary}
+\begin{proof}
+At $m=p$ and $a=1$, Theorem~\ref{thm:numerator} gives exponent
+\[
+ n(n+1)+2\sum_{k=0}^n\sum_{j\geq1}\floor{k/p^j}
+ =2\sum_{k=1}^n\sum_{j\geq0}\floor{k/p^j}.
+\]
+The $j=0$ terms sum to $n(n+1)/2$. For $n\geq1$ and $j>n$, $p^j>n$, so all further terms vanish. At $n=0$ both sides equal $1$. This is exactly the finite-sum convention in \eqref{eq:original}.
+\end{proof}
+
+\subsection{Offsets with a common factor}
+The coprimality assumption is transparent rather than restrictive: a common factor can be scaled out.
+
+\begin{corollary}[Arbitrary positive offset and step]\label{cor:noncoprime}
+Let $g=\gcd(a,m)$, $a_0=a/g$, and $m_0=m/g$. Then
+\begin{equation}\label{eq:noncoprime}
+ A_n(m,a)=\prod_{p\mid m_0}
+ p^{\max\{0,\ n(n+1)v_p(m_0)+2V_p(n)-(n+1)v_p(g)\}}.
+\end{equation}
+Equivalently, writing $A_0=A_n(m_0)$ and $B_0=B_n(m_0,a_0)$ for the reduced numerator and denominator of the primitive pair,
+\begin{equation}\label{eq:noncoprimepair}
+ A_n(m,a)=\frac{A_0}{\gcd(A_0,g^{n+1})},
+ \qquad
+ B_n(m,a)=\frac{g^{n+1}B_0}{\gcd(A_0,g^{n+1})}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Every entry of the matrix is $g^{-1}$ times the corresponding entry of $C_n(m_0,a_0)$. Thus
+$H_n(m,a)=g^{-(n+1)}H_n(m_0,a_0)$. Apply Theorem~\ref{thm:numerator} to the coprime pair and subtract $(n+1)v_p(g)$ from its rational valuations. A nonpositive valuation cannot become positive under this scaling. This proves \eqref{eq:noncoprime}.
+
+For \eqref{eq:noncoprimepair}, write $H_n(m,a)=A_0/(g^{n+1}B_0)$ and cancel. Since $\gcd(A_0,B_0)=1$, the only possible common factor of $A_0$ and $g^{n+1}B_0$ is $\gcd(A_0,g^{n+1})$, and after removing it the two displayed integers are coprime. The pair \eqref{eq:noncoprimepair} is therefore a complete formula for the reduced fraction at \emph{all} positive steps and offsets, not only at primitive ones.
+\end{proof}
+
+\section{Exact denominator valuations and a sharp gcd}\label{sec:denominators}
+
+\subsection{A closed form for the whole reduced fraction}
+Before localizing at a single prime it is worth recording what Theorem~\ref{thm:numerator} says about the fraction as a whole. With the splitting \eqref{eq:parts} the numerator formula \eqref{eq:main} becomes a product of two visible pieces, and the denominator is then forced.
+
+\begin{theorem}[Global closed form]\label{thm:globalden}
+Let $\gcd(a,m)=1$ and $n\geq0$. Then
+\begin{equation}\label{eq:globalden}
+ A_n(m,a)=m^{n(n+1)}\,[P_n]_m^{\,2},
+ \qquad
+ B_n(m,a)=\frac{Q_n(m,a)}{\bigl((P_n)_{\perp m}\bigr)^2}\ \in\Z_{>0},
+\end{equation}
+and $B_n(m,a)$ is coprime to $m$.
+\end{theorem}
+\begin{proof}
+For $p\mid m$ we have $v_p(P_n)=\sum_{k=0}^n v_p(k!)=V_p(n)$, so the product over $p\mid m$ in \eqref{eq:main} is exactly $m^{n(n+1)}[P_n]_m^2$. Dividing the unreduced evaluation \eqref{eq:product} by this numerator, and using $P_n=[P_n]_m\cdot(P_n)_{\perp m}$, leaves
+\[
+ B_n(m,a)=\frac{A_n(m,a)}{H_n(m,a)}
+ =\frac{m^{n(n+1)}[P_n]_m^2\,Q_n(m,a)}{m^{n(n+1)}P_n^2}
+ =\frac{Q_n(m,a)}{\bigl((P_n)_{\perp m}\bigr)^2}.
+\]
+Coprimality of $A_n$ and $B_n$ is part of the definition of the reduced fraction, so the right-hand side is a positive integer. Its integrality is thus a \emph{consequence} of the cancellation theorem, not an assumption made when writing the quotient: the content of the assertion is that the squared factorial product, after its $m$-supported part is removed, divides the entry-denominator product exactly. Finally, if $p\mid m$ then $p\nmid Q_n(m,a)$ by coprimality, so $v_p(B_n(m,a))=0$.
+\end{proof}
+
+Once the integrality in \eqref{eq:globalden} is known, coprimality of the two sides needs no separate verification: the numerator is supported on the primes of $m$ and the denominator is coprime to them. The rest of this section refines \eqref{eq:globalden} prime by prime.
+
+\subsection{No hidden cancellation remains}
+Retaining the exact surplus in Lemma~\ref{lem:residue} gives more information than just the numerator.
+
+\begin{theorem}[Denominator valuation formula]\label{thm:denval}
+Assume $\gcd(a,m)=1$ and put $N=n+1$. For a prime $q\mid m$, $v_q(B_n(m,a))=0$. For $q\nmid m$,
+\begin{equation}\label{eq:denval}
+ v_q(B_n(m,a))=
+ \sum_{e\geq1}\left(
+ q^e\floor{N/q^e}
+ +T_{q^e,N\bmod q^e}(r_e)\right),
+\end{equation}
+with $r_e$ defined by \eqref{eq:residueoffset}.
+\end{theorem}
+\begin{proof}
+For $q\nmid m$, the proof of Theorem~\ref{thm:numerator} already shows that the rational valuation is nonpositive. The denominator valuation is therefore
+$v_q(Q_n)-2V_q(n)$. Apply \eqref{eq:surplus} separately at every $q^e$ and sum. For $q\mid m$ the valuation of the rational determinant is nonnegative, so the reduced denominator has no such prime factor.
+\end{proof}
+
+The residual count can be evaluated in constant many arithmetic operations. Set
+\[
+ h_b(s)=
+ \begin{cases}
+ s+1,&0\leq s<b,\\
+ 2b-1-s,&b\leq s\leq2b-2,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+For $b=0$ it is identically zero. The three cases collapse into the single expression
+\begin{equation}\label{eq:htriangleclosed}
+ h_b(s)=\max\bigl\{0,\ b-\abs{s-(b-1)}\bigr\},
+\end{equation}
+which is the form used in the implementation: it needs no case analysis and handles $b=0$ automatically. Since $0\leq u+v\leq2b-2<2d$,
+\begin{equation}\label{eq:Ttriangle}
+ T_{d,b}(r)=h_b(r)+h_b(r+d).
+\end{equation}
+The sum in \eqref{eq:denval} may stop when $q^e>a+2mn$. Thus it is both a structural result and an effective algorithm.
+
+\subsection{The least possible residual count}
+\begin{lemma}[Sharp residual lower bound]\label{lem:Tmin}
+For $0\leq b<d$ and every residue $r$,
+\begin{equation}\label{eq:Tmin}
+ T_{d,b}(r)\geq\max(0,2b-d),\qquad
+ T_{d,b}(d-1)=\max(0,2b-d).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $I=\{0,\ldots,b-1\}\subseteq\Z/d\Z$. The count is $|I\cap(r-I)|$. Both sets have size $b$, so their intersection has size at least $2b-d$, as well as at least zero.
+
+For $r=d-1$, no sum $u+v$ can equal $2d-1$. Thus only the ordinary equality $u+v=d-1$ is possible. The allowed first coordinates form the interval $d-b\leq u\leq b-1$, whose length is $\max(0,2b-d)$. This attains the bound.
+\end{proof}
+
+\subsection{The ordinary Hilbert denominator}
+At $m=a=1$, Theorem~\ref{thm:numerator} says the numerator is $1$. Equation~\eqref{eq:Hratio} becomes
+\[
+ \frac{H_n(1,1)}{H_{n-1}(1,1)}
+ =\frac1{(2n+1)\binom{2n}{n}^2}.
+\]
+Consequently $H_n(1,1)=1/L_n$, with $L_n$ given by \eqref{eq:Ldef}. The first values are
+\[
+ 1,\quad12,\quad2160,\quad6048000,\quad266716800000.
+\]
+Since $C_n(1,1)$ is the ordinary $(n+1)\times(n+1)$ Hilbert matrix, $L_n$ is exactly the determinant of the \emph{inverse} Hilbert matrix, recorded as \OEIS{A005249}~\cite{oeis5249}. The consecutive-ratio computation just performed is the standard derivation of the product form $\prod_{k\leq n}(2k+1)\binom{2k}{k}^2$ listed in that entry; it is repeated here only because the same ratio \eqref{eq:Hratio} is needed for general steps. The classical identification is not claimed as new.
+Here the residue $r_e$ equals $q^e-1$ at every level. Theorem~\ref{thm:denval} and Lemma~\ref{lem:Tmin} therefore give
+\begin{equation}\label{eq:Lval}
+ v_q(L_n)=\sum_{e\geq1}\left[
+ q^e\floor{N/q^e}+\max\bigl(0,2(N\bmod q^e)-q^e\bigr)
+ \right].
+\end{equation}
+It follows immediately that $v_q(B_n(m,a))\geq v_q(L_n)$ whenever $q\nmid m$ and $\gcd(a,m)=1$. This proves the divisibility direction of \eqref{eq:gcd}.
+
+\subsection{Constructive sharpness by congruences}
+We now show that the lower bound cannot be increased, prime by prime. This is the part needed to obtain an exact gcd rather than just a common divisor.
+
+\begin{proof}[Proof of Theorem~\ref{thm:gcd}]
+The preceding subsection proves that $(L_n)_{\perp m}$ divides every allowed denominator. Conversely, fix $q\nmid m$ and choose $K\geq1$ such that
+\[
+ q^K>2n+1.
+\]
+The Chinese remainder theorem gives a positive integer $a$ satisfying
+\begin{equation}\label{eq:crt}
+ a\equiv m\pmod{q^K},\qquad a\equiv1\pmod m.
+\end{equation}
+In particular $\gcd(a,m)=1$. For $0\leq s\leq2n$,
+\[
+ a+ms\equiv m(s+1)\pmod{q^K}.
+\]
+Since $q\nmid m$ and $1\leq s+1<q^K$, the right side has valuation $v_q(s+1)<K$. Congruence modulo $q^K$ then implies
+\[
+ v_q(a+ms)=v_q(s+1).
+\]
+The denominator product has exactly the ordinary Hilbert $q$-valuation. Subtracting the same $2V_q(n)$ shows
+$v_q(B_n(m,a))=v_q(L_n)$. Thus the minimum over offsets equals $v_q(L_n)$ for every $q\nmid m$. For primes dividing $m$, all denominator valuations are zero. This proves the gcd identity.
+\end{proof}
+
+An explicit choice is useful for certificates. Let $M=q^K$ be any prime power exceeding $2n+1$ and choose the least residue
+\[
+ t\equiv (1-m)M^{-1}\pmod m,\qquad 0\leq t<m.
+\]
+Then $a=m+Mt$ works. When $m=1$, take $t=0$ and $a=1$. To certify a finite instance of the gcd theorem computationally, start with $B_n(m,1)$ and include one such witness offset for each of its prime divisors. The gcd of these finitely many denominators equals the infinite gcd.
+
+\subsection{Two offsets already realize the gcd}\label{sec:twoshifts}
+One witness per prime is more than is needed. A single congruence class, obtained by using one prime power for each prime at once, works simultaneously for all of them, so the infinite gcd is already the gcd of exactly two denominators.
+
+\begin{corollary}[Two offsets suffice, constructively]\label{cor:twoshifts}
+For all $n\geq0$ and $m\geq1$ there is an explicitly constructible positive offset $a_*$ with $\gcd(a_*,m)=1$ and
+\begin{equation}\label{eq:twoshifts}
+ \gcd\bigl(B_n(m,1),\,B_n(m,a_*)\bigr)=(L_n)_{\perp m}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Let $\mathcal P$ be the finite set of primes dividing $B_n(m,1)$; by Theorem~\ref{thm:globalden} every $q\in\mathcal P$ is coprime to $m$. For each $q\in\mathcal P$ choose $K_q$ with $q^{K_q}>2n+1$ and put $M=\prod_{q\in\mathcal P}q^{K_q}$, which is coprime to $m$. The Chinese remainder theorem supplies a positive $a_*$ with
+\[
+ a_*\equiv m\pmod M,\qquad a_*\equiv1\pmod m,
+\]
+so $\gcd(a_*,m)=1$. For each $q\in\mathcal P$ the congruence $a_*\equiv m\pmod{q^{K_q}}$ is exactly the hypothesis \eqref{eq:crt} used in the proof of Theorem~\ref{thm:gcd}, whence $v_q(B_n(m,a_*))=v_q(L_n)$. The same proof gives $v_q(B_n(m,1))\geq v_q(L_n)$, so the two-integer gcd has $q$-valuation $v_q(L_n)$ for every $q\in\mathcal P$. A prime outside $\mathcal P$ does not divide $B_n(m,1)$ and so contributes nothing; and since $(L_n)_{\perp m}$ divides $B_n(m,1)$, every prime of $(L_n)_{\perp m}$ lies in $\mathcal P$. Multiplying the local contributions gives \eqref{eq:twoshifts}.
+\end{proof}
+
+As with Theorem~\ref{thm:gcd}, this is a divisibility and gcd statement. It does not claim that $B_n(m,a_*)$, or any single denominator, equals $(L_n)_{\perp m}$, nor that $a_*$ minimizes the denominator. The smallest instance is already instructive: at $n=1$, $m=2$,
+\[
+ B_1(2,1)=45,\qquad B_1(2,47)=5755197,\qquad
+ \gcd(45,5755197)=3=(L_1)_{\perp2},
+\]
+where $a_*=47$ is the output of the construction above ($\mathcal P=\{3,5\}$, $M=9\cdot5=45$, $a_*=2+45$). The much smaller offset $a=17$ also happens to attain both minima,
+\[
+ B_1(2,17)=128877,\qquad\gcd(45,128877)=3,
+\]
+although $17\not\equiv2\pmod 9$ and so is not produced by the construction; the corollary asserts the existence of a constructible $a_*$, not the failure of other offsets. The numerator is $4$ at every offset coprime to $2$, as Theorem~\ref{thm:numerator} requires.
+
+\begin{remark}[Certificates never factor a large integer]\label{rem:primediscovery}
+The construction needs the prime set $\mathcal P$ of $B_n(m,1)$, which can be an enormous integer. It is never factored. By Theorem~\ref{thm:globalden}, $B_n(m,1)$ divides $Q_n(m,1)$, so each of its primes divides one of the $2n+1$ small integers $1+ms$, $0\leq s\leq2n$. Trial division of those entry denominators, followed by a divisibility test against $B_n(m,1)$, therefore produces $\mathcal P$ exactly. This is what the shipped certificate routine does; see Section~\ref{sec:computation}.
+\end{remark}
+
+\section{An independent proof from the inverse matrix}\label{sec:inverse}
+
+The residue proof gives the strongest local information, but an inverse-matrix argument explains why the prime support is so restricted. Explicit Cauchy inverses obtained from interpolation are classical; Schechter gives a general treatment~\cite{schechter}. The specialization and its arithmetic application are derived here.
+
+\subsection{A rational binomial integrality lemma}
+For rational $x$ and integer $k\geq0$, use the polynomial definition
+\[
+ \binom{x}{k}=\frac{x(x-1)\cdots(x-k+1)}{k!},\qquad \binom{x}{0}=1.
+\]
+Say that a rational number is \emph{$q$-integral} if its reduced denominator is not divisible by $q$.
+
+\begin{lemma}\label{lem:qbinomial}
+If $q$ is prime and $x=b/c$ with integers $b,c$, $c\neq0$, and $q\nmid c$, then $\binom{x}{k}$ is $q$-integral for every $k\geq0$.
+\end{lemma}
+\begin{proof}
+The assertion is immediate if a numerator factor vanishes. Otherwise,
+\[
+ \binom{b/c}{k}=\frac{\prod_{j=0}^{k-1}(b-cj)}{c^k k!}.
+\]
+For each $q^e$, the congruence $b-cj\equiv0\pmod{q^e}$ describes exactly one residue class of $j$. Among $k$ consecutive integers, it occurs at least $\lfloor k/q^e\rfloor$ times. Summing over $e$ proves that the numerator has at least $v_q(k!)$ powers of $q$. The factor $c^k$ is a $q$-unit, so no $q$ remains in the reduced denominator.
+\end{proof}
+
+\subsection{The four-binomial inverse}
+\begin{proposition}\label{prop:inverse}
+Put $\alpha=a/m$. For $0\leq i,j\leq n$,
+\begin{align}
+ (C_n(m,a)^{-1})_{ij}
+ ={}&(-1)^{i+j}m(\alpha+i+j)
+ \binom{\alpha+n+i}{n-j}\binom{\alpha+n+j}{n-i}\notag\\[-1mm]
+ &\hspace{13mm}\cdot
+ \binom{\alpha+i+j-1}{i}\binom{\alpha+i+j-1}{j}.
+ \label{eq:inverse}
+\end{align}
+\end{proposition}
+\begin{proof}
+First let $G=(1/(\alpha+i+j))_{0\leq i,j\leq n}$, so $C_n=m^{-1}G$. For a fixed column $j$, form the rational interpolation function
+\begin{equation}\label{eq:Rj}
+ R_j(z)=
+ \frac{\prod_{k=0}^n(j+\alpha+k)}{\prod_{\substack{0\leq h\leq n\\h\neq j}}(j-h)}
+ \frac{\prod_{\substack{0\leq h\leq n\\h\neq j}}(z-h)}
+ {\prod_{k=0}^n(z+\alpha+k)}.
+\end{equation}
+It satisfies $R_j(h)=\delta_{hj}$ for $h=0,\ldots,n$ and tends to zero at infinity. Its poles are the distinct points $-\alpha-i$. Thus its partial fractions are
+\[
+ R_j(z)=\sum_{i=0}^n\frac{b_{ij}}{z+\alpha+i}.
+\]
+Evaluating at each $h=0,\ldots,n$ shows that $Gb_{\bullet j}$ is the $j$th coordinate vector. Hence $b_{ij}=(G^{-1})_{ij}$.
+
+Computing the residue at $z=-\alpha-i$, and using
+$\prod_{h\ne j}(j-h)=(-1)^{n-j}j!(n-j)!$, gives
+\begin{equation}\label{eq:inverseproduct}
+ (G^{-1})_{ij}
+ =(-1)^{i+j}
+ \frac{\prod_{k=0}^n(\alpha+i+k)\prod_{k=0}^n(\alpha+j+k)}
+ {(\alpha+i+j)i!(n-i)!j!(n-j)!}.
+\end{equation}
+Split each product at its common factor $\alpha+i+j$. For example,
+\[
+ \binom{\alpha+n+i}{n-j}\binom{\alpha+i+j-1}{j}
+ =\frac{\prod_{\substack{0\leq k\leq n\\k\neq j}}(\alpha+i+k)}{(n-j)!j!}.
+\]
+The analogous identity with $i$ and $j$ interchanged converts \eqref{eq:inverseproduct} into the four-binomial expression. Finally $C_n^{-1}=mG^{-1}$ supplies the factor $m$.
+\end{proof}
+
+\subsection{A second derivation of the same inverse}\label{sec:cofactor}
+The interpolation argument above imports rational interpolation and a partial-fraction decomposition, and it is the route for which a classical reference is cited. The following second derivation is kept because it buys independence from that import: it uses nothing beyond Cauchy's identity, Lemma~\ref{lem:cauchy}, which has already been proved in this article, so the inverse formula --- and with it the second proof of Theorem~\ref{thm:numerator} --- rests on no external result at all. Both routes reach the same display \eqref{eq:inverseproduct}; neither is a specialization of the other.
+
+\begin{proof}[Second proof of Proposition~\ref{prop:inverse}, by cofactors]
+Keep $G=(1/(\alpha+i+j))_{0\leq i,j\leq n}$ and apply Lemma~\ref{lem:cauchy} with
+$x_k=k$ and $y_k=\alpha+k$, so that
+\[
+ \det G=\frac{P_n^2}{\displaystyle\prod_{r,s=0}^n(\alpha+r+s)},
+ \qquad P_n=\prod_{k=0}^nk!,
+\]
+because both Vandermonde products equal $\prod_{r<s}(s-r)=P_n$.
+
+Fix $i,j$ and let $M_{ji}$ be the minor obtained by deleting row $j$ and column $i$. Its row and column index sets are again of Cauchy type, so Lemma~\ref{lem:cauchy} applies to it as well. Deleting the index $j$ from the rows removes exactly the differences $x_j-x_k$ for $k<j$ and $x_k-x_j$ for $k>j$, whose product is $j!\,(n-j)!$; deleting $i$ from the columns removes $i!\,(n-i)!$ in the same way. In the denominator, deleting row $j$ and column $i$ removes the two strings
+\[
+ \prod_{s\neq i}(\alpha+j+s)=\frac{\prod_{k=0}^n(\alpha+j+k)}{\alpha+i+j},
+ \qquad
+ \prod_{r\neq j}(\alpha+r+i)=\frac{\prod_{k=0}^n(\alpha+i+k)}{\alpha+i+j},
+\]
+together with their common entry $\alpha+i+j$, which is therefore restored once. Dividing,
+\[
+ \frac{M_{ji}}{\det G}
+ =\frac{\prod_{k=0}^n(\alpha+i+k)\prod_{k=0}^n(\alpha+j+k)}
+ {(\alpha+i+j)\,i!\,(n-i)!\,j!\,(n-j)!}.
+\]
+All the removed factors are positive, so no sign arises from them, and
+$(G^{-1})_{ij}=(-1)^{i+j}M_{ji}/\det G$ is exactly \eqref{eq:inverseproduct}. The rearrangement into four binomial coefficients, and the factor $m$ from $C_n^{-1}=mG^{-1}$, are as in the first proof.
+\end{proof}
+
+\subsection{Prime support of the inverse}
+\begin{corollary}\label{cor:localizedinverse}
+Every entry of $C_n(m,a)^{-1}$ lies in $\Z[1/m]$, the rationals whose denominator prime factors all divide $m$. This holds even without $\gcd(a,m)=1$.
+\end{corollary}
+\begin{proof}
+For any prime $q\nmid m$, all upper arguments in \eqref{eq:inverse} are $q$-integral. Lemma~\ref{lem:qbinomial} applies to each binomial. The remaining factor $m(\alpha+i+j)=a+m(i+j)$ is an integer. Hence every entry is $q$-integral for every $q\nmid m$.
+\end{proof}
+
+The determinant of this inverse also belongs to $\Z[1/m]$. Therefore
+$v_q(H_n(m,a))\leq0$ for all $q\nmid m$. Combined with the exact valuations for $p\mid m$ from Cauchy's product and coprimality, this proves Theorem~\ref{thm:numerator} again. The inverse proof and the residue-square proof share the classical product evaluation for the surviving exponents, but their exclusion of unwanted numerator primes is independent.
+
+\section{Unequal row and column steps}\label{sec:twosteps}
+
+The cancellation mechanism does not depend on the matrix being a Hankel matrix. It only needs the row index and the column index to enter through progressions whose steps are units at the prime under consideration. To state that, let $m_1,m_2,a$ be positive integers and put
+\begin{equation}\label{eq:twostepdef}
+ \widetilde H_n(m_1,m_2;a)
+ =\det_{0\leq i,j\leq n}\frac1{a+m_1i+m_2j},
+\end{equation}
+so that $\widetilde H_n(m,m;a)=H_n(m,a)$. Here $a$ is again the shift; $m_1$ is the row step and $m_2$ the column step. No coprimality is assumed.
+
+\begin{theorem}[Two-step prime support and denominator divisibility]\label{thm:twosteps}
+For all positive integers $m_1,m_2,a$ and all $n\geq0$, the reduced numerator of $\widetilde H_n(m_1,m_2;a)$ has no prime divisor outside those of $m_1m_2$, and its reduced denominator is divisible by $(L_n)_{\perp m_1m_2}$.
+\end{theorem}
+\begin{proof}
+Lemma~\ref{lem:cauchy} with $x_i=m_1i$ and $y_j=a+m_2j$ gives
+\begin{equation}\label{eq:twostepproduct}
+ \widetilde H_n(m_1,m_2;a)
+ =\frac{(m_1m_2)^{\binom{n+1}{2}}P_n^2}
+ {\displaystyle\prod_{i,j=0}^n(a+m_1i+m_2j)},
+\end{equation}
+since the two Vandermonde products are $m_1^{n(n+1)/2}P_n$ and $m_2^{n(n+1)/2}P_n$.
+
+Fix a prime $q\nmid m_1m_2$, let $d=q^e$ with $e\geq1$, and write $N=n+1=td+b$ with $0\leq b<d$. Among $i=0,\ldots,n$ each residue class modulo $d$ occurs $t$ times, with one extra occurrence for the classes of $0,\ldots,b-1$. Multiplication by the unit $m_1$ permutes $\Z/d\Z$, so the residues of $m_1i$ likewise occur $t$ times each, with one extra occurrence on the set $U=m_1\{0,\ldots,b-1\}$ of size $b$. Similarly the residues of $m_2j$ have their extra occurrences on a set $V$ of size $b$. Counting the pairs class by class,
+\[
+ \#\{(i,j):d\mid a+m_1i+m_2j\}
+ =\sum_{c\in\Z/d\Z}\bigl(t+\mathbf 1_{c\in U}\bigr)
+ \bigl(t+\mathbf 1_{-a-c\in V}\bigr)
+ =dt^2+2tb+\abs{U\cap(-a-V)},
+\]
+where $-a-V=\{-a-v:v\in V\}$ also has size $b$. Two subsets of $\Z/d\Z$ of size $b$ meet in at least $2b-d$ elements, and of course in at least none, so
+\[
+ \abs{U\cap(-a-V)}\geq\max(0,2b-d),
+\]
+exactly as in Lemma~\ref{lem:Tmin}. Subtracting the contribution \eqref{eq:floorsum} of the squared factorial product at the same level leaves the surplus
+\[
+ dt+\abs{U\cap(-a-V)}\ \geq\ dt+\max(0,2b-d)
+ =q^e\floor{N/q^e}+\max\bigl(0,2(N\bmod q^e)-q^e\bigr).
+\]
+Summing over $e\geq1$ and comparing with \eqref{eq:Lval} gives
+\[
+ v_q\bigl(\widetilde H_n(m_1,m_2;a)\bigr)\leq-v_q(L_n)\leq0 .
+\]
+All sums are finite, since a factor of the denominator product in \eqref{eq:twostepproduct} is at most $a+(m_1+m_2)n$. A nonpositive valuation contributes nothing to the reduced numerator, which proves the support claim, and the displayed inequality is the asserted divisibility of the reduced denominator at every prime outside $m_1m_2$.
+\end{proof}
+
+\begin{remark}[What this theorem deliberately does not say]\label{rem:twostepscope}
+Theorem~\ref{thm:twosteps} asserts no shift-independent formula for the numerator, and no exact exponent, at primes dividing only one of $m_1$ and $m_2$. The uniform residue count above applies precisely where \emph{both} steps are units modulo the prime power; when $q$ divides exactly one step, the residues of $m_1i$ and of $m_2j$ no longer both equidistribute, and the surviving exponent can depend on $a$. The equal-step case of the earlier sections is special for the complementary reason: there the remaining primes are those dividing $m$, and coprimality of $a$ and $m$ makes them divide no entry denominator at all, so their exponents are read off from \eqref{eq:product} without any counting. Theorem~\ref{thm:twosteps} is therefore the exclusion half of Theorem~\ref{thm:numerator} in its natural generality, not a generalization of the exact formula \eqref{eq:main}.
+\end{remark}
+
+An exact instance is worked out in Section~\ref{sec:examples}, where it also explains a sparse minor that at first sight looks like a counterexample to the main theorem.
+
+\section{A boxed-plane-partition interpretation}\label{sec:partitions}
+
+\subsection{A polynomial in the height}
+Define the rational polynomial
+\begin{equation}\label{eq:PP}
+ \PP_N(t)=\prod_{i=1}^N\prod_{j=1}^N\frac{t+i+j-1}{i+j-1}.
+\end{equation}
+For a nonnegative integer $t$, MacMahon's boxed-plane-partition formula identifies this product with the number of arrays of size $N\times N$, with entries in $\{0,\ldots,t\}$, weakly decreasing in each row and column. This is the $N\times N\times t$ box specialization of the classical product formula; see the boxed-plane-partition discussion in~\cite{krattenthaler}. We use the known enumeration only in this section, not in the elementary proofs of the main theorems.
+
+\begin{proposition}[Determinant--box identity]\label{prop:box}
+For positive $a,m$ and $N=n+1$,
+\begin{equation}\label{eq:boxidentity}
+ H_n(m,a)^{-1}=m^N L_n\PP_N(a/m-1).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Divide the reciprocal of \eqref{eq:product} by its value at $m=a=1$. Since $N^2-n(n+1)=N$, the powers of $m$ leave $m^N$. The remaining product is
+\[
+ \prod_{i,j=0}^n\frac{a/m+i+j}{1+i+j}
+ =\PP_N(a/m-1).
+\]
+\end{proof}
+
+At $m=1$ and positive integer $a$, Theorem~\ref{thm:numerator} makes the reciprocal determinant equal to the denominator. Hence
+\begin{equation}\label{eq:integeroffsetbox}
+ B_n(1,a)=L_n\PP_{n+1}(a-1).
+\end{equation}
+So the denominator divided by the ordinary Hilbert denominator counts boxed plane partitions. At $a=1$ the box height is zero and the quotient is $1$. This gives a combinatorial interpretation of the sharp denominator divisibility in the unscaled case.
+
+\subsection{Why the box polynomial also controls rational offsets}
+An integer-valued polynomial need not have integer monomial coefficients. The appropriate basis is the binomial basis.
+
+\begin{lemma}\label{lem:intpoly}
+If $P\in\Q[t]$ has degree $D$ and $P(s)\in\Z$ for every nonnegative integer $s$, then
+\begin{equation}\label{eq:newton}
+ P(t)=\sum_{k=0}^D\Delta^kP(0)\binom{t}{k},
+ \qquad \Delta P(t)=P(t+1)-P(t),
+\end{equation}
+and every coefficient $\Delta^kP(0)$ is an integer. Consequently $P(x)$ is $q$-integral whenever the rational number $x$ is $q$-integral.
+\end{lemma}
+\begin{proof}
+The identity $\Delta\binom{t}{k}=\binom{t}{k-1}$ shows successively that the right side has the same forward differences at zero as $P$, through order $D$. Equivalently, Newton interpolation at $0,\ldots,D$ gives \eqref{eq:newton}; a polynomial of degree at most $D$ vanishing at those $D+1$ points is zero. Each forward difference is an integer linear combination of $P(0),\ldots,P(k)$, so it is integral. Apply Lemma~\ref{lem:qbinomial} term by term for the last assertion.
+\end{proof}
+
+The enumerative interpretation makes $\PP_N$ integer-valued on nonnegative integers. If $q\nmid m$, Lemma~\ref{lem:intpoly} therefore gives
+$v_q(\PP_N(a/m-1))\geq0$. Equation~\eqref{eq:boxidentity} implies
+\[
+ v_q(H_n(m,a)^{-1})\geq v_q(L_n).
+\]
+For coprime $a,m$ this is precisely the universal denominator lower bound already proved by residue counting. Thus an elementary local count, an inverse matrix, and a box-enumeration polynomial illuminate different aspects of the same arithmetic structure.
+
+\section{Recurrences and generating functions}\label{sec:sequences}
+
+\subsection{The prime exponent sequence}
+For a prime $p$, define
+\begin{equation}\label{eq:Ep}
+ E_p(n)=\frac{n(n+1)}2+V_p(n).
+\end{equation}
+Then $A_n(p)=p^{2E_p(n)}$. The $p=3$ sequence is \OEIS{A122250}; its entry already records the generating function obtained below~\cite{oeis250}. The $p=2$ sequence is \OEIS{A122247}, the partial sums of A005187~\cite{oeis247}: by \eqref{eq:Epfirst} its first difference is $n+v_2(n!)=2n-s_2(n)$, which is the general term of A005187. Both generating functions are background, not novelty claims; what is used below is only the general-prime derivation.
+
+Set $E_p(-1)=E_p(0)=0$. From the definition,
+\begin{align}
+ E_p(n)-E_p(n-1)&=n+v_p(n!),\label{eq:Epfirst}\\
+ E_p(n)-2E_p(n-1)+E_p(n-2)&=1+v_p(n)\qquad(n\geq1).\label{eq:Epsecond}
+\end{align}
+The $n=1$ case follows with the stated initial convention. Thus the second differences have the particularly simple pattern $1+v_p(n)$.
+
+\begin{center}
+\begin{tabular}{r r r r r}
+\toprule
+$n$ & $E_2(n)$ & $E_3(n)$ & $E_5(n)$ & $E_7(n)$\\
+\midrule
+0&0&0&0&0\\
+1&1&1&1&1\\
+2&4&3&3&3\\
+3&8&7&6&6\\
+4&15&12&10&10\\
+5&23&18&16&15\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{A multiplicative recurrence for every step}
+Recall from \eqref{eq:parts} that $[r]_m=\prod_{p\mid m}p^{v_p(r)}$ is the part of $r$ supported on the primes of $m$. Set $A_{-1}(m)=A_0(m)=1$.
+
+\begin{proposition}\label{prop:multrec}
+For every $m\geq1$ and $n\geq1$,
+\begin{align}
+ \frac{A_n(m)}{A_{n-1}(m)}
+ &=m^{2n}\prod_{p\mid m}p^{2v_p(n!)},\label{eq:Aratio}\\
+ A_n(m)A_{n-2}(m)
+ &=m^2[n]_m^2\,A_{n-1}(m)^2.\label{eq:multrec}
+\end{align}
+\end{proposition}
+\begin{proof}
+Subtract the exponents in \eqref{eq:main} at consecutive indices. The difference of $n(n+1)$ is $2n$, and the difference of $V_p(n)$ is $v_p(n!)$. This proves \eqref{eq:Aratio}. Dividing that identity by its preceding instance leaves $m^2\prod_{p\mid m}p^{2v_p(n)}$, which proves \eqref{eq:multrec}. The initial case $n=1$ is direct.
+\end{proof}
+
+In particular $A_{n-1}(m)$ divides $A_n(m)$. For $m>1$, the sequence is strictly log-convex in the multiplicative sense in \eqref{eq:multrec}. At $m=6$, its first factorizations are
+\[
+ 1,\quad 2^2 3^2,\quad 2^8 3^6,\quad 2^{16}3^{14},\quad 2^{30}3^{24}.
+\]
+The behavior is governed separately by the prime divisors of the step, not by a composite-base floor sum.
+
+\subsection{The Lambert-series and Mahler equations}\label{sec:lambert}
+Let
+\[
+ F_p(z)=\sum_{n\geq0}E_p(n)z^n,\qquad
+ \mathcal L_p(z)=\sum_{j\geq0}\frac{z^{p^j}}{1-z^{p^j}}.
+\]
+As formal series, every coefficient of $\mathcal L_p$ is a finite sum. The coefficient of $z^r$, for $r\geq1$, counts the powers $p^j$ dividing $r$, and equals $1+v_p(r)$.
+
+\begin{proposition}\label{prop:gf}
+As formal power series, and analytically for $|z|<1$,
+\begin{align}
+ F_p(z)&=\frac1{(1-z)^2}\sum_{j\geq0}\frac{z^{p^j}}{1-z^{p^j}},\label{eq:gf}\\
+ (1-z)^2F_p(z)&=\frac{z}{1-z}+(1-z^p)^2F_p(z^p).\label{eq:mahler}
+\end{align}
+\end{proposition}
+\begin{proof}
+Multiply $F_p$ by $(1-z)^2$ and use \eqref{eq:Epsecond}, including the initial coefficients. The result has coefficient $1+v_p(r)$ for $r\geq1$ and zero constant coefficient, hence equals $\mathcal L_p$. Splitting off its $j=0$ term leaves $\mathcal L_p(z^p)$ and gives \eqref{eq:mahler}.
+
+For $|z|\leq\rho<1$, the absolute values of the summands are bounded by $\rho^{p^j}/(1-\rho)$. Their sum converges, giving locally uniform convergence in the open unit disk and justifying the analytic identity there.
+\end{proof}
+
+A second derivation of \eqref{eq:gf} is recorded because it reaches the Lambert series from the \emph{first} difference \eqref{eq:Epfirst} instead of the second, and so never needs the initial-coefficient bookkeeping that \eqref{eq:Epsecond} requires. What it buys is an explicit intermediate identity, \eqref{eq:floorgf} below, which is elementary, reusable for any counting sequence built from floor functions, and exhibits the Lambert series as a sum of one and the same building block over the prime powers.
+
+\begin{lemma}[Generating function of a floor function]\label{lem:floorgf}
+For every integer $c\geq1$, as formal power series and for $|z|<1$,
+\begin{equation}\label{eq:floorgf}
+ \sum_{n\geq0}\floor{n/c}z^n=\frac{z^c}{(1-z)(1-z^c)}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $\floor{n/c}$ as the number of positive multiples of $c$ not exceeding $n$, that is, $\floor{n/c}=\#\{k\geq1:kc\leq n\}$. Interchanging the two summations,
+\[
+ \sum_{n\geq0}\floor{n/c}z^n
+ =\sum_{k\geq1}\ \sum_{n\geq kc}z^n
+ =\sum_{k\geq1}\frac{z^{kc}}{1-z}
+ =\frac{z^c}{(1-z)(1-z^c)} .
+\]
+Each coefficient on the left is finite, so the interchange is legitimate formally; for $|z|<1$ the double series converges absolutely.
+\end{proof}
+
+\begin{proof}[Second proof of \eqref{eq:gf}, from first differences]
+By \eqref{eq:legendre}, the first difference \eqref{eq:Epfirst} is
+\[
+ E_p(n)-E_p(n-1)=n+v_p(n!)=\sum_{j\geq0}\floor{n/p^j},
+\]
+the term $j=0$ being $n$ itself. With $E_p(-1)=0$, multiplying $F_p$ by $1-z$ turns its coefficients into exactly these first differences, so Lemma~\ref{lem:floorgf} applied at $c=p^j$ gives
+\[
+ (1-z)F_p(z)=\sum_{j\geq0}\frac{z^{p^j}}{(1-z)(1-z^{p^j})} .
+\]
+Dividing by $1-z$ is \eqref{eq:gf}. Splitting off $j=0$ again yields the Mahler equation \eqref{eq:mahler}.
+\end{proof}
+
+\subsection{A natural boundary and non-holonomy}
+\begin{theorem}\label{thm:naturalboundary}
+The unit circle is a natural boundary of $F_p$: it has no analytic continuation across any point of that circle. In particular $F_p$ is neither rational nor algebraic, and it satisfies no nontrivial linear differential equation with polynomial coefficients.
+\end{theorem}
+\begin{proof}
+Let $\zeta$ have order $p^K$, with $K\geq1$. Along $z=r\zeta$, $0<r<1$, the terms in $\mathcal L_p$ with $j<K$ have finite limits as $r$ tends to $1$, since $\zeta^{p^j}\neq1$. All terms with $j\geq K$ are positive real numbers,
+\[
+ \frac{r^{p^j}}{1-r^{p^j}},
+\]
+and the $j=K$ term alone tends to $+\infty$. Thus the bounded finite head cannot cancel the divergent tail. Since $(1-r\zeta)^2$ tends to a nonzero number, $F_p(r\zeta)$ is unbounded. At $\zeta=1$, positivity gives divergence directly.
+
+Roots of unity whose order is a power of $p$ are dense in the unit circle: the mesh of the $p^K$th roots tends to zero. Every arc therefore contains a point through which $F_p$ cannot be holomorphically continued. An analytic continuation across any point would give a neighborhood, and hence a small arc, on which the continuation is holomorphic, a contradiction.
+
+A rational function has only finitely many finite singularities. An algebraic function has only finitely many possible finite branch points or poles, as follows from the leading coefficient and discriminant of a square-free defining polynomial. Finally, a solution of a linear differential equation with polynomial coefficients can be continued along paths avoiding the finitely many zeros of its leading coefficient. Each possibility is incompatible with the dense set of boundary singularities just exhibited.
+\end{proof}
+
+A sequence is \emph{P-recursive} if, from some index onward, it satisfies a nonzero linear recurrence with polynomial coefficients. Coefficient extraction translates such a recurrence into a linear differential equation with polynomial coefficients for its ordinary generating function (an initial polynomial can be removed by differentiating). Thus Theorem~\ref{thm:naturalboundary} shows that $E_p(n)$ is not P-recursive.
+
+The numerator sequence is also not P-recursive for $m>1$, but for a different and simpler reason. Its ordinary generating series has radius zero, so it should not be confused with $F_p$.
+
+\begin{proposition}\label{prop:Anonrec}
+For fixed $m>1$, the sequence $A_n(m)$ is not P-recursive, and $\sum_{n\geq0}A_n(m)z^n$ has radius of convergence zero.
+\end{proposition}
+\begin{proof}
+Equation~\eqref{eq:Aratio} gives $A_n/A_{n-1}\geq m^{2n}$, so $A_n\geq m^{n(n+1)}$. The root test gives radius zero.
+
+Suppose $\sum_{j=0}^dP_j(n)A_{n+j}=0$ eventually, where $P_d$ is a nonzero polynomial and $d$ is the largest index with nonzero coefficient. If $d=0$, positivity is already a contradiction. Otherwise divide by $P_d(n)A_{n+d}$ at sufficiently large integers. For $j<d$,
+\[
+ \frac{A_{n+j}}{A_{n+d}}
+ \leq m^{-2\sum_{r=n+j+1}^{n+d}r}
+ \leq m^{-2n}.
+\]
+Each ratio $P_j(n)/P_d(n)$ grows at most polynomially, so every earlier term tends to zero. The last term is $1$, giving the contradiction $1=0$ in the limit.
+\end{proof}
+
+\subsection{Fast exact evaluation of the exponents}\label{sec:fasteval}
+The exponents in \eqref{eq:main} can be evaluated at a single large index without expanding any series, constructing any factorial, or forming any determinant.
+
+\begin{proposition}[Block evaluation of the factorial sum]\label{prop:fasteval}
+Let $p$ be prime and $n\geq0$, and write $N=n+1=t_ep^e+b_e$ with $0\leq b_e<p^e$. Then
+\begin{equation}\label{eq:fasteval}
+ V_p(n)=\sum_{k=0}^n v_p(k!)
+ =\sum_{e\geq1}\left[\frac{p^e\,t_e(t_e-1)}2+t_eb_e\right],
+\end{equation}
+and only the levels with $p^e\leq n$ contribute.
+\end{proposition}
+\begin{proof}
+Insert \eqref{eq:legendre} and exchange the two sums, so that level $e$ contributes $\sum_{k=0}^n\floor{k/p^e}$. Equation~\eqref{eq:floorsum} evaluates twice that inner sum, at $d=p^e$, as $p^et_e(t_e-1)+2t_eb_e$; halving it gives the bracket. If $p^e>n$, every term $\floor{k/p^e}$ with $0\leq k\leq n$ vanishes.
+\end{proof}
+
+The number of levels is $\floor{\log_pn}$, so \eqref{eq:fasteval} uses $O(\log_pn)$ arithmetic operations once $p$ is known; for composite $m$, factor $m$ and apply \eqref{eq:fasteval} once per prime divisor. The implementation never factors a large determinant numerator or denominator: the only integers it factors are the step $m$ and, for the certificates of Section~\ref{sec:twoshifts}, the $2n+1$ small entry denominators.
+
+This is a count of arithmetic operations on integers, not a bit-complexity claim, and in particular it is not a claim that the numerator can be \emph{printed} that quickly. For fixed $m>1$ the numerator contains the factor $m^{n(n+1)}$ and therefore has quadratically many bits in $n$; constructing and writing out that integer must pay at least its own output size. Factoring a varying step $m$ is likewise a separate cost, and no efficient general factoring is claimed.
+
+\section{Digit sums and asymptotic size}\label{sec:asymptotics}
+
+\subsection{An exact digit formula}
+Let $s_p(k)$ be the sum of the base-$p$ digits of $k$, and put
+$S_p(n)=\sum_{k=1}^n s_p(k)$. Expanding $k=\sum_{j\geq0}d_jp^j$ in \eqref{eq:legendre} gives
+\[
+ v_p(k!)=\sum_jd_j(1+p+\cdots+p^{j-1})
+ =\frac{k-s_p(k)}{p-1}.
+\]
+Therefore
+\begin{equation}\label{eq:digitE}
+ E_p(n)=\frac{p}{2(p-1)}n(n+1)-\frac{S_p(n)}{p-1}.
+\end{equation}
+This formula separates quadratic growth from digit-dependent fluctuations without any cancellation of large rational determinants.
+
+At a complete digit block, $n=p^\ell-1$, each of the $\ell$ digit positions takes every value $0,\ldots,p-1$ equally often among $0,\ldots,p^\ell-1$. Hence
+\[
+ S_p(p^\ell-1)=\frac{\ell(p-1)p^\ell}{2},
+\]
+and
+\begin{equation}\label{eq:completeblock}
+ E_p(p^\ell-1)=
+ \frac{p(p^\ell-1)p^\ell}{2(p-1)}-\frac{\ell p^\ell}{2}.
+\end{equation}
+The digit formula and complete-block formula are useful independent checks on the floor-sum implementation.
+
+\subsection{An elementary error bound of order $n$}
+\begin{lemma}\label{lem:digitsasymp}
+For fixed prime $p$ and $n\geq2$,
+\begin{equation}\label{eq:digitsasymp}
+ S_p(n)=\frac{p-1}{2}\,n\log_p n+O_p(n).
+\end{equation}
+\end{lemma}
+\begin{proof}
+At digit position $j$, the digits repeat with period $p^{j+1}$, and over a complete period their mean is $(p-1)/2$. The incomplete terminal period causes an error bounded by a constant depending on $p$ times $p^{j+1}$. Sum over $0\leq j\leq\lfloor\log_p n\rfloor$. The errors form a geometric sum of order $n$. The number of positions is $\log_p n+O(1)$, so their main contribution is $(p-1)(n+1)\log_p n/2+O_p(n)$; replacing $n+1$ by $n$ only adds $O_p(\log n)$.
+\end{proof}
+
+Combining \eqref{eq:digitE} and \eqref{eq:digitsasymp} yields
+\begin{equation}\label{eq:Easymp}
+ E_p(n)=\frac{p}{2(p-1)}n(n+1)-\frac12 n\log_p n+O_p(n).
+\end{equation}
+For the numerator itself we obtain a uniform-in-offset conclusion.
+
+\begin{corollary}\label{cor:Aasymp}
+Fix $m>1$. Let $\omega(m)$ be the number of distinct prime divisors of $m$, and let logarithms without a subscript be natural logarithms. Then, for every positive offset coprime to $m$,
+\begin{align}
+ \log A_n(m,a)
+ ={}&\left(\log m+\sum_{p\mid m}\frac{\log p}{p-1}\right)n(n+1)\notag\\
+ &\quad-\omega(m)n\log n+O_m(n).
+ \label{eq:Aasymp}
+\end{align}
+\end{corollary}
+\begin{proof}
+Take logarithms of \eqref{eq:main} and insert
+$V_p(n)=n(n+1)/(2(p-1))-S_p(n)/(p-1)$. Each prime divisor contributes a term $-n\log n$ by \eqref{eq:digitsasymp}. There are finitely many such primes, depending only on $m$, and the numerator is exactly independent of the coprime offset.
+\end{proof}
+
+The $O(n)$ remainder can contain digital fluctuations. No smoother expansion or claimed cancellation of those fluctuations is needed for any theorem here.
+
+\section{Examples, tempting false extensions, and limitations}\label{sec:examples}
+
+\subsection{Recovering the conjectured values}
+For $p=3$, the exponents begin
+\[
+ E_3(n)=0,1,3,7,12,18,26,35,45,\ldots.
+\]
+Thus the numerator sequence begins
+\[
+ 1,\quad9,\quad729,\quad4782969,\quad282429536481,\quad
+ 150094635296999121,\ldots,
+\]
+as in \OEIS{A122251}. One exact determinant is
+\[
+ H_3(3,1)=\frac{4782969}{36653693440000}.
+\]
+
+It is worth watching one cancellation happen in full. At $n=2$, $m=3$, $a=1$ the compressed product \eqref{eq:Qcompressed} carries the multiplicities $w_2(s)=1,2,3,2,1$ on the factors $1,4,7,10,13$, so the unreduced evaluation \eqref{eq:product} reads
+\[
+ H_2(3,1)=\frac{3^6\,(0!\,1!\,2!)^2}{1\cdot4^2\cdot7^3\cdot10^2\cdot13}
+ =\frac{729}{1783600}.
+\]
+The squared superfactorial contributes exactly the factor $4$, and that $4$ cancels completely against the $4^2$ standing in the denominator, while $3^6$ does not cancel at all, because coprimality keeps every denominator factor prime to $3$. Changing only the step to $m=6$ at the same size reverses the fate of the same $4$: now the only prime of $2!$ divides the step, so it cannot be cancelled by any entry denominator, and
+\[
+ H_2(6,1)=\frac{6^6\cdot4}{1\cdot7^2\cdot13^3\cdot19^2\cdot25}
+ =\frac{186624}{971568325},
+\]
+whose numerator $6^6\cdot4=186624$ is not a power of the step. The two examples together are the reason Theorem~\ref{thm:numerator} is stated with prime valuations rather than with powers of a composite base.
+
+Changing the offset illustrates the stronger theorem:
+\begin{center}
+\begin{tabular}{r r r}
+\toprule
+$a$ & $A_3(3,a)$ & $B_3(3,a)$\\
+\midrule
+1 & 4782969 & 36653693440000\\
+2 & 4782969 & 371537512192000\\
+4 & 4782969 & 11381495437312000\\
+5 & 4782969 & 46222644130432000\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are exact rational computations, not decimal approximations.
+
+At $n=3$, $L_3=6048000=2^8 3^3 5^3 7$. The sharp gcds from Theorem~\ref{thm:gcd} are therefore
+\begin{center}
+\begin{tabular}{r r l}
+\toprule
+$m$ & $\gcd_a B_3(m,a)$ & Explanation\\
+\midrule
+1 & 6048000 & No primes are removed.\\
+2 & 23625 & Remove the factor $2^8$.\\
+3 & 224000 & Remove the factor $3^3$.\\
+6 & 875 & Remove both $2^8$ and $3^3$.\\
+10 & 189 & Remove both $2^8$ and $5^3$.\\
+\bottomrule
+\end{tabular}
+\end{center}
+In every row the gcd ranges only over positive offsets coprime to that row's $m$.
+
+A wider sample, varying the index, the step and the offset at once, is convenient for immediate inspection. Each entry is an exact reduced fraction, obtained by rational Gaussian elimination and confirmed against \eqref{eq:product}.
+\begin{center}
+\begin{tabular}{r r r l l}
+\toprule
+$n$ & $m$ & $a$ & $H_n(m,a)$ & Feature\\
+\midrule
+1 & 2 & 1 & $4/45$ & Numerator $2^2$; $(L_1)_{\perp2}=3$ divides $45$.\\
+2 & 2 & 1 & $256/496125$ & Numerator $2^8$.\\
+1 & 3 & 1 & $9/112$ & Numerator $3^2$.\\
+2 & 3 & 1 & $729/1783600$ & Worked out above.\\
+2 & 4 & 1 & $16384/52360425$ & Composite step; naive formula fails below.\\
+2 & 6 & 1 & $186624/971568325$ & Two primes in the step.\\
+1 & 2 & 2 & $1/48$ & $\gcd(a,m)=2$: numerator collapses.\\
+2 & 4 & 2 & $32/496125$ & $\gcd(a,m)=2$: numerator not a square.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last two rows are outside the hypothesis $\gcd(a,m)=1$; they are governed by Corollary~\ref{cor:noncoprime} and are discussed in the next subsection.
+
+\subsection{Composite substitution is not the right generalization}
+Replacing the prime $p$ by an arbitrary composite $m$ in the OEIS floor sum is false. At $m=4$ and $n=2$,
+\[
+ H_2(4,1)=\frac{16384}{52360425},\qquad A_2(4)=2^{14}.
+\]
+The naive composite-base formula instead gives
+\[
+ (4^2)^{\sum_{k=1}^2\sum_{j\geq0}\lfloor k/4^j\rfloor}
+ =16^3=4096.
+\]
+The theorem correctly keeps the prime valuation $v_2(4)=2$ separate from the factorial valuation: the exponent is $2\cdot3\cdot2+2v_2(0!1!2!)=14$. The discrepancy is easy to name: the naive expression misses exactly the factor $2^{14}/4096=4$, which is $(2!)^2$ from the squared superfactorial. Its prime is still $2$, but no positive $k\leq2$ reaches the first composite modulus $4$, so a floor sum in base $4$ cannot see it. Counting with the prime $2$ and its powers, as \eqref{eq:main} does, sees it immediately.
+
+Coprimality also matters, and it fails in two different ways. For the square conclusion, take $n=2,m=4,a=2$; scaling out $g=2$ gives
+\[
+ H_2(4,2)=\frac{32}{496125},
+\]
+whose reduced numerator is not a square, exactly as predicted by Corollary~\ref{cor:noncoprime}. Shift independence fails separately, and already at $n=1$: with $m=2$ and $a=2$,
+\[
+ H_1(2,2)=\det\begin{pmatrix}1/2&1/4\\1/4&1/6\end{pmatrix}=\frac1{48},
+\]
+whose numerator is $1$ and not the value $A_1(2)=4$ predicted for the primitive step. Here $g=2$, $m_0=1$, and \eqref{eq:noncoprimepair} gives numerator $A_0/\gcd(A_0,g^{n+1})=1$ and denominator $g^{n+1}B_0=4\cdot12=48$. The two examples refute two different unqualified hypotheses: $32/496125$ shows that the numerator need not remain a square, and $1/48$ shows that it need not remain independent of the offset.
+
+\subsection{Consecutive indices and reciprocal first powers matter}
+Arbitrary minors need not share the numerator support of the consecutive Hankel determinants. Selecting indices $\{0,2\}$ from the ordinary Hilbert moment matrix gives
+\[
+ \det\begin{pmatrix}1&1/3\\1/3&1/5\end{pmatrix}=\frac4{45}.
+\]
+The underlying moment progression has step $1$, but this sparse selection has introduced an effective spacing of $2$. It is not a counterexample to the theorem; it shows why one cannot omit the consecutive-index condition while leaving $m$ unchanged.
+
+Theorem~\ref{thm:twosteps} turns that warning into a positive statement. The displayed minor has row step $2$ and column step $2$, so it is precisely $\widetilde H_1(2,2;1)=H_1(2,1)$, and the surviving numerator prime $2$ divides $m_1m_2=4$, exactly as the theorem permits. The theorem also predicts that the reduced denominator is divisible by $(L_1)_{\perp4}=3$, and indeed $45=3^2\cdot5$. The same applies to genuinely unequal selections: taking rows $\{0,2\}$ and columns $\{0,3\}$ of the same Hilbert matrix gives $\widetilde H_1(2,3;1)$, whose numerator can only involve the primes $2$ and $3$. What fails for sparse index sets is not the cancellation mechanism but the identification of the step: the relevant steps are those of the selected index sets, not of the ambient progression.
+
+Likewise, squaring each reciprocal moment destroys the Cauchy structure:
+\[
+ \det\begin{pmatrix}1&1/4\\1/4&1/9\end{pmatrix}=\frac7{144}.
+\]
+An unexpected numerator prime already appears in size $2$. No theorem about higher reciprocal powers is being claimed.
+
+\subsection{Directions not settled by this article}
+For index sets that are themselves arithmetic progressions, Theorem~\ref{thm:twosteps} settles the exclusion half, with the steps of those progressions in place of $m$; Remark~\ref{rem:twostepscope} delimits what it does not give. For genuinely irregular index sets the Cauchy product contains the corresponding difference products rather than consecutive factorial products, and the uniform square-block argument no longer applies; an exact residue criterion for cancellation in that generality is open here. For moments $(a+mk)^{-r}$ with $r\geq2$, one needs a different determinant evaluation or a different arithmetic invariant. These are possible follow-up questions, not claims that the entire surrounding literature leaves them open.
+
+The present paper settles the precise numerator formula \eqref{eq:original}. It does not identify the minimum numerical denominator among offsets, and it does not prove that the gcd is itself attained as a single denominator: Corollary~\ref{cor:twoshifts} shows that two explicitly constructed denominators already have that gcd, which is a strictly weaker statement than attainment by one of them. It does not classify all related Cauchy minors, and for unequal steps it gives no exact numerator formula. It also does not establish priority for any extension merely by failing to find it in a targeted search.
+
+\section{Exact computation and reproducibility}\label{sec:computation}
+
+\subsection{Two independent routes to a rational determinant}
+The archive contains \texttt{code/hankel\_arithmetic.py} and \texttt{code/verify.py}. Both use only the Python standard library. Every determinant comparison uses integers and \texttt{fractions.Fraction}; no floating-point tolerance or rounding rule enters the verification.
+
+The direct determinant routine performs Gaussian elimination with row pivoting and rational arithmetic. It does not call the Cauchy product. The product routine evaluates \eqref{eq:product}, using the $2n+1$ different factors in \eqref{eq:Qcompressed}. The theorem routine computes the numerator's prime factorization without constructing the matrix. These three implementations have different failure modes and are compared explicitly. The unequal-step determinant of Section~\ref{sec:twosteps} has its own pair of routines, an entrywise matrix builder and the Cauchy evaluation \eqref{eq:twostepproduct}, which are compared with each other in the same way.
+
+The exponent sums are evaluated by Proposition~\ref{prop:fasteval} rather than by looping over $k$, so $V_p(n)$ costs $O(\log_pn)$ prime-power iterations and the factored numerator costs $O(\sum_{p\mid m}(1+\log_pn))$ arithmetic operations. The qualifications recorded with that proposition apply here verbatim: these are counts of integer operations, not of bit operations; trial division is used only for the modest step $m$ and, in the certificates, for the $2n+1$ entry denominators, as explained in Remark~\ref{rem:primediscovery}; no determinant numerator or denominator is ever factored, however large. Expanding a numerator into decimal form necessarily costs at least its output size, which grows quadratically in $n$ for fixed $m>1$.
+
+Two kinds of gcd certificate are shipped, and they are different objects. The witness routine produces one offset per prime, as in the proof of Theorem~\ref{thm:gcd}, and takes the gcd over that finite list. The two-offset routine implements Corollary~\ref{cor:twoshifts}: it builds the single modulus $M$, solves the pair of congruences, and returns the two denominators together with their gcd and the predicted value. Neither routine searches a convenient prefix of offsets.
+
+\subsection{What was actually run}
+The supplied verification run on Python 3.14.4 passed \textbf{159,555 exact checks}. Its logged elapsed time was 4.529 seconds in the execution environment used for this article; this is a run observation, not a performance guarantee. The counts below come from one single run of the merged suite. They are deliberately \emph{not} the sum of the counts advertised by the two reports that were merged: those suites used different indexings and overlapping parameter ranges, so adding their totals would double-count and would mix the two conventions. The important test ranges are as follows.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{.31\textwidth}p{.47\textwidth}r@{}}
+\toprule
+Check family & Parameter range or interpretation & Checks\\
+\midrule
+Direct matrix vs. product & $0\leq n\leq8$; $1\leq m,a\leq16$ & 2,304\\
+Direct matrix vs. theorem & The same independently eliminated matrices & 2,304\\
+Extended product vs. theorem & $0\leq n\leq32$; $1\leq m,a\leq24$ & 19,008\\
+Universal divisibility & Coprime pairs in the preceding range & 11,847\\
+Residue-square formula & $1\leq N\leq30$, $1\leq d\leq40$, every residue & 24,600\\
+Residual lower bound & The same range & 24,600\\
+Minimum residual at $-1$ & Every $(N,d)$ in that range & 1,200\\
+Denominator valuations & $0\leq n\leq10$, $1\leq m,a\leq12$, coprime; primes $\leq47$ & 15,015\\
+Inverse identity & Entrywise products for $0\leq n\leq5$, $1\leq m,a\leq8$ & 5,824\\
+Inverse denominator support & Every inverse entry in the same range & 5,824\\
+Sharpness witnesses & Explicit offsets in finite gcd certificates & 457\\
+Finite gcd certificates & $0\leq n\leq6$, $1\leq m\leq12$ & 84\\
+Global closed form & Coprime pairs, $0\leq n\leq7$, $1\leq m,a\leq12$ & 728\\
+Noncoprime reduced pair & The noncoprime pairs in that range & 424\\
+Two-offset gcd certificates & $1\leq m\leq20$, $0\leq n\leq7$, built by \eqref{eq:twoshifts} & 160\\
+Two-step numerator support & $1\leq m_1,m_2,a\leq9$, $0\leq n\leq4$ & 3,645\\
+Two-step universal divisor & The same range & 3,645\\
+Direct two-step matrices & The same range restricted to $n\leq2$ & 2,187\\
+Ratio recursion vs. product & Coprime pairs, $0\leq n\leq12$, $1\leq m,a\leq40$, via \eqref{eq:Hratio} & 12,727\\
+Ratio recursion vs. theorem & The same size-ratio ladder & 12,727\\
+Published OEIS terms & Seven terms each for $p=2,3$, eliminated directly & 14\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Additional checks cover the box-polynomial identity (448), its integer-height integrality (168), the digit formula (3,078), factorial valuation sums (3,078), second differences (3,072), complete digit blocks (30), the multiplicative recurrence (348), and the three boundary counterexamples. For each of the six primes $2,3,5,7,11,13$, a separate Lambert-series coefficient construction is compared with all values through $n=512$; the log counts this as six whole-list checks, not as 3,078 additional checks. All categories and their exact totals are retained in \texttt{data/verification.json}.
+
+Three of these families deserve a word. The two-offset certificates are \emph{constructed} by the congruences of Corollary~\ref{cor:twoshifts} and then tested against $(L_n)_{\perp m}$; they are not gcds taken over a convenient list of offsets, and they are a different object from the 457 per-prime witnesses, which are also retained. The two-step families are the only tests of Theorem~\ref{thm:twosteps}; the support test uses the predicted bound, while the 2,187 direct matrices are eliminated rationally and compared with \eqref{eq:twostepproduct}. The published-terms family compares the seven terms printed in each of \OEIS{A122249} and \OEIS{A122251} with independently eliminated determinants rather than with this article's own formula, so it ties the implementation to the entries whose conjecture is being proved. Counting distinct rational Gaussian eliminations, the run eliminates $2{,}304+2{,}187+14=4{,}505$ matrices, plus a further 168 while writing the sample determinant table.
+
+These tests establish that the shipped implementation agrees with the formulas over the stated finite ranges. They do not prove an infinite theorem, replace the written proofs, demonstrate independent peer review, or certify historical novelty.
+
+\subsection{Reproduction commands and archive contents}
+From the extracted archive directory, run
+\begin{lstlisting}[language=bash]
+python code/verify.py
+python code/hankel_arithmetic.py 3 3 1 --matrix-check
+latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+The second command prints
+\begin{lstlisting}[language={}]
+H_3(3,1) = 4782969/36653693440000
+numerator factorization: {3: 14}
+denominator: 36653693440000
+Independent exact matrix check: PASS
+\end{lstlisting}
+The validation script regenerates the CSV data and logs. An alternate output directory can be chosen with \texttt{--output PATH}. The full source is provided rather than pseudocode alone. A two-pass \texttt{pdflatex} script, \texttt{build.sh}, is included for installations without \texttt{latexmk}; it isolates intermediates in \texttt{.build/} and copies the result to \texttt{report.pdf}.
+
+Besides this \LaTeX{} source and compiled PDF, the archive includes numerator and exponent tables, a deeper formula-generated numerator table for $n\leq35$, a table of directly eliminated sample determinants including noncoprime parameters, explicit denominator-gcd witnesses, the constructed two-offset certificates, independently computed terms for the two OEIS numerator sequences, a source-status note, and a proposed OEIS comment. None of these files has been submitted to OEIS or any external repository as part of this task.
+
+\section{Conclusion}\label{sec:conclusion}
+The conjecture selected from \OEIS{A122251} has a complete elementary proof: Cauchy's product reduces it to a prime-power divisibility question, and a square residue count proves the needed cancellation. The resulting theorem is stronger than the prime-parameter assertion. It covers all progression steps, all coprime offsets, and the noncoprime case after scaling.
+
+The same local count yields a closed form for the reduced denominator, all of its exact valuations, and the sharp gcd over offsets; that gcd is already realized by two explicitly constructed offsets. An explicit Cauchy inverse, derived here in two independent ways, gives another explanation of the numerator's restricted prime support. Dropping the Hankel symmetry, the residue count still excludes every prime outside the two steps of $\det(1/(a+m_1i+m_2j))$, which is the exclusion half in its natural generality. The plane-partition polynomial explains the universal Hilbert denominator factor, while digit sums and Lambert series --- derived twice, from first and from second differences --- describe the prime exponents.
+
+The mathematical conclusion is definite within the proofs presented here. The historical conclusion is deliberately narrower: these formulas were still labeled as conjectural in the consulted OEIS entries, and this article supplies a proof, but it does not certify that the proof or the generalizations are the first in the literature. That distinction is especially important when an apparently open database assertion is resolved by combining classical identities with an elementary counting lemma.
+
+\appendix
+\section{A compact proof suitable for an OEIS comment}\label{app:comment}
+The following is a proposed mathematical comment, not an accepted edit.
+
+Let $H_n=\det_{0\leq i,j\leq n}(1/(1+p(i+j)))$ and $P_n=\prod_{k=0}^n k!$. Cauchy's determinant formula gives
+\[
+ H_n=\frac{p^{n(n+1)}P_n^2}{\prod_{i,j=0}^n(1+p(i+j))}.
+\]
+The denominator has no factor $p$, so the surviving $p$-exponent is
+$n(n+1)+2\sum_{k=0}^n v_p(k!)$.
+For a prime $q\neq p$ and $d=q^e$, set $N=n+1=td+b$ and let $r\equiv-p^{-1}\pmod d$. The number of denominator factors divisible by $d$ is
+\[
+ dt^2+2tb+\#\{0\leq u,v<b:u+v\equiv r\pmod d\}
+ \ \geq\ dt(t-1)+2tb
+ =2\sum_{k=0}^n\floor{k/d}.
+\]
+Sum over $e$ to see that the denominator cancels every $q$-factor of $P_n^2$. The reduced numerator is therefore
+\[
+ p^{n(n+1)+2\sum_{k=0}^n v_p(k!)}
+ =(p^2)^{\sum_{k=1}^n\sum_{j\geq0}\lfloor k/p^j\rfloor},
+\]
+proving the conjecture for every prime $p$.
+
+\section{A minimal numerator algorithm}\label{app:algorithm}
+The implementation in the archive includes input checking, factorization, noncoprime offsets, independent determinants, inverse matrices, and denominator certificates. The core coprime formula can nevertheless be expressed in a few lines once the prime factorization of $m$ is given:
+\begin{lstlisting}
+def numerator_from_factors(n, factors):
+    """factors maps each prime divisor p of m to v_p(m)."""
+    answer = 1
+    N = n + 1
+    for p, power in factors.items():
+        V, d = 0, p
+        while d <= n:
+            t, b = divmod(N, d)
+            V += d * t * (t - 1) // 2 + t * b
+            d *= p
+        answer *= p ** (n * (n + 1) * power + 2 * V)
+    return answer
+\end{lstlisting}
+Here the offset need not appear because Theorem~\ref{thm:numerator} has already proved its irrelevance under coprimality. This algorithm does not estimate or reconstruct a numerator from numerical determinants; it evaluates the proved integer expression directly.
+
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+\bibitem{oeis251}
+P. Barry, \emph{A122251: Numerators of Hankel transform of $1/(3n+1)$ (conjecture)}, The On-Line Encyclopedia of Integer Sequences, entry dated 27 August 2006; retrieved internal revision tag \texttt{\#2 Mar 30 2012 18:59:15}. Consulted 19 September 2026. \url{https://oeis.org/A122251}, internal record \url{https://oeis.org/A122251/internal}.
+
+\bibitem{oeis249}
+P. Barry, \emph{A122249: Numerators of Hankel transform of $1/(2n+1)$}, The On-Line Encyclopedia of Integer Sequences, entry dated 27 August 2006, with a 2024 extension; retrieved internal revision tag \texttt{\#6 Oct 27 2024 12:12:17}. Consulted 19 September 2026. \url{https://oeis.org/A122249}, internal record \url{https://oeis.org/A122249/internal}.
+
+\bibitem{oeis250}
+P. Barry, \emph{A122250: Partial sums of A004128}, The On-Line Encyclopedia of Integer Sequences, entry dated 27 August 2006. Consulted 19 September 2026. \url{https://oeis.org/A122250}.
+
+\bibitem{oeis247}
+P. Barry, \emph{A122247: Partial sums of A005187}, The On-Line Encyclopedia of Integer Sequences, entry dated 27 August 2006. Consulted 19 September 2026. \url{https://oeis.org/A122247}.
+
+\bibitem{oeis5249}
+The OEIS Foundation Inc., \emph{A005249: Determinant of the inverse of the Hilbert matrix}, The On-Line Encyclopedia of Integer Sequences. Consulted 19 September 2026. \url{https://oeis.org/A005249}.
+
+\bibitem{krattenthaler}
+C. Krattenthaler, \emph{Advanced Determinant Calculus}, S\'eminaire Lotharingien de Combinatoire \textbf{42} (1999), Article B42q, 67 pp. In particular Eq.~(2.7), the Cauchy double alternant, and the discussion of MacMahon's boxed-plane-partition product. \url{https://arxiv.org/abs/math/9902004}; full text also at \url{https://arxiv.org/html/math/9902004v3}.
+
+\bibitem{schechter}
+S. Schechter, \emph{On the Inversion of Certain Matrices}, Mathematical Tables and Other Aids to Computation \textbf{13}, no.~66 (1959), 73--77. \url{https://doi.org/10.2307/2001955}.
+\end{thebibliography}
+\end{document}
