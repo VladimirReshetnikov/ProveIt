@@ -35,7 +35,6 @@ explains that distinction and separately derives formulas for actual towers.
 - `source_audit.md`: source provenance and distinction between prior work and deductions.
 - `short_solution.md`: standalone mathematical answer to the selected question.
 - `build.ps1`, `build.sh`: reproduction scripts for Windows and POSIX systems.
-- `SHA256SUMS.txt`: file integrity hashes for the distributed package.
 
 ## Reproduce the calculations
 

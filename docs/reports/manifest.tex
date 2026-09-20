@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={A manifest of the research reports in docs/reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of 58 independent mathematical research packages}}
+  pdfsubject={Catalogue of 71 independent mathematical research packages}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -45,35 +45,44 @@
   \smallskip\noindent #5\par}
 
 \newcommand{\dir}[1]{\texttt{#1}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
 
 \begin{document}
 
 \begin{center}
   {\LARGE\bfseries\color{Ink} A manifest of \texttt{docs/reports}}\\[0.6em]
-  {\large Fifty-eight independent mathematical research packages,\\
+  {\large Seventy-one independent mathematical research packages,\\
    classified by subject}\\[1.0em]
   {\normalsize Vladimir Reshetnikov}\\[0.3em]
-  {\normalsize 19 September 2026}
+  {\normalsize 20 September 2026}
 \end{center}
 
 \vspace{0.8em}
 
 \section{Scope and conventions}
 
-This document catalogues the fifty-eight research packages stored under
-\dir{docs/reports}.  They arrived as sixty-four ZIP archives, which have been
-unpacked and grouped into the subject hierarchy described in
+This document catalogues the seventy-one research packages stored under
+\dir{docs/reports}.  They arrived as eighty ZIP archives, in three deliveries,
+which have been unpacked and grouped into the subject hierarchy described in
 Section~\ref{sec:tree}.  The archives themselves are no longer kept in the
 repository.
 
-Sixty-four archives yield fifty-eight reports because six pairs turned out to
-prove the same theorem --- in five of the six, by the same argument, down to
-shared lemmas and in one case shared worked counterexamples.  Each pair has been
-merged into one report that proves the shared theorem once and keeps everything
-both originals built on top of it.  Where the two reached a result by genuinely
-different routes, both proofs are kept and marked as alternatives, with a
-sentence on what each one buys.  A merged entry below names both of its source
-archives and says what was doubled.
+Eighty archives yield seventy-one reports because nine pairs turned out to prove
+the same theorem.  Each pair has been merged into one report that proves the
+shared theorem once and keeps everything both originals built on top of it.
+Where the two reached a result by genuinely different routes, both proofs are
+kept and marked as alternatives, with a sentence on what each one buys; the
+merged report on surreal option graphs keeps two different five-vertex
+counterexamples for the same reason.  A merged entry below names both of its
+source archives and says what was doubled.
+
+Not every pair aimed at one problem is a duplicate.  The two Gonshor
+reports both prove his product-birthday bound, but on domains that are
+incomparable in both directions, so neither theorem contains the other and they
+are catalogued separately; the same holds for reports answering different numbered problems of
+one paper, noted where it occurs.
 
 Every package is self-contained and follows the same shape: a typeset article
 (\texttt{*.pdf}) with its complete \LaTeX{} source, a \texttt{README.md}
@@ -112,8 +121,11 @@ original archive names are recorded with every entry.
 \dir{ordinals-and-order-types}    & \dir{friendly-order-types}          & 3\\
                                   & \dir{wqo-powersets-and-statures}    & 4\\
                                   & \dir{transfinite-words}             & 2\\
-                                  & \dir{ordinal-arithmetic}            & 2\\
-                                  & \dir{games-on-ordinals}             & 2\\
+                                  & \dir{ordinal-arithmetic}            & 4\\
+                                  & \dir{games-on-ordinals}             & 3\\
+                                  & (top level)                         & 2\\
+\midrule
+\dir{surreal-numbers}             & ---                                 & 6\\
 \midrule
 \dir{hankel-determinants}         & \dir{somos-and-elliptic}            & 3\\
                                   & \dir{catalan-and-ballot}            & 2\\
@@ -130,13 +142,13 @@ original archive names are recorded with every entry.
 \midrule
 \dir{graph-theory}                      & ---                           & 3\\
 \midrule
-\dir{enumerative-combinatorics}         & ---                           & 8\\
+\dir{enumerative-combinatorics}         & ---                           & 10\\
 \midrule
 \dir{generating-functions-and-asymptotics}
                                   & \dir{binary-product-coefficient-counts} & 3\\
                                   & (top level)                         & 3\\
 \midrule
-\multicolumn{2}{l}{\textbf{Total}} & \textbf{58}\\
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{71}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -287,7 +299,8 @@ removes the import.}}
 
 \subsection{Ordinal arithmetic}
 
-Two independent proposed solutions to Problem~6.2 of Paolo Lipparini,
+Four reports on ordinal and infinitary arithmetic, two of them independent
+proposed solutions to Problem~6.2 of Paolo Lipparini,
 \emph{Monotone infinitary operations on ordinals} (arXiv:2505.00424v2): define
 and study the least weakly monotone, $e$-special strictly increasing operation
 on countable sequences of ordinals.
@@ -309,18 +322,69 @@ pointwise minimality.  Relative to Lipparini's already evaluated $S$, the
 correction is zero, a finite increment, or one \emph{natural} summand $\omega$
 --- ordinary addition of $\omega$ is not a substitute.}
 
+\entry{Jacobsthal Products All at Once}
+{ordinals-and-order-types/ordinal-arithmetic/jacobsthal-products-all-at-once}
+{article.pdf}{Jacobsthal\_Products\_All\_at\_Once.zip}
+{Question~2.16 of Altman, \emph{Intermediate arithmetic operations on ordinal
+numbers} (MLQ 63 (2017) 228--242), asks for an all-at-once order-theoretic model
+of finite and infinitary Jacobsthal products, rather than one built from
+parenthesized binary multiplication or a limit.  Gives a constructive
+affirmative answer: a Cantor-normal-form comparison rule on actual tuples or
+finite-support functions, invariant under order isomorphisms and extending the
+componentwise order, whose definition never evaluates a Jacobsthal product.
+Adds a restricted maximality characterisation and a finite-tail reduction.
+The associativity identity and the binary normal-form formula are classical and
+are not claimed here; the construction is not claimed to be preserved by
+arbitrary order embeddings.}
+
+\entry{Pairwise Coherence Does Not Guarantee Completion}
+{ordinals-and-order-types/ordinal-arithmetic/pairwise-coherence-of-infinitary-products}
+{ordinal\_product\_coherence.pdf}{ordinal\_product\_coherence.zip}
+{Answers the pairwise-coherence sufficiency question of Lipparini,
+\emph{Noncommutative infinitary semigroups} (arXiv:2605.28413v1, Remark~7.1(b)),
+negatively.  On the two-element group $C_2$, retaining every finite product and
+declaring every infinite all-$e$ product to be $e$ gives a partial system
+satisfying full pairwise regrouping, even for arbitrary partitions, yet with no
+injective extension defining all finite and $\omega$-indexed products; two
+elements is minimal.  Adds: for any monoid $M$ the canonical partial domain
+$P(M)$ is coherent, and for directly finite $M$ it completes exactly when the
+unit group is trivial; and for every $r$ a system on $3r+4$ elements coherent
+through nesting depth $r$ but conflicting at depth $r+1$, so no fixed finite
+depth of the coherence test characterises completability.}
+
 \subsection{Games on ordinals}
 
-\entry{A counterexample to winner stability in ordinal Chomp}
-{ordinals-and-order-types/games-on-ordinals/ordinal-chomp-winner-stability}
-{ordinal\_chomp\_counterexample.pdf}{ordinal\_chomp\_counterexample.zip}
-{For the numerical semigroup $S=\langle 4,6,9\rangle$, Chomp on $S$ is a
-second-player win while Chomp on the ordinal square
-$S^2=\{\omega a+b: a,b\in S\}$ is a first-player win --- the opening
-$\omega\cdot 4+4$ leaves Grundy value zero, and the same move wins at every
-exponent ${\ge}\,2$, so $\mathrm{ch}(4,6,9)=2$.  This refutes Conjecture~4.1 of
-arXiv:2504.07317v1 and answers Question~4.6 of v3 negatively, already for
-natural-number generators.}
+\entry{An ordinal Chomp transition at 2}
+{ordinals-and-order-types/games-on-ordinals/ordinal-chomp-transition-at-two}
+{ordinal\_chomp\_counterexample.pdf}{ordinal\_chomp\_transition\_counterexample.zip + ordinal\_chomp\_counterexample.zip}
+{For a numerical semigroup $S$ ordered by $x\le_S y$ iff $y-x\in S$, and the
+ordinal extension ordered by ordinary ordinal subtraction (so $S^2$ is the
+\emph{lexicographic}, not coordinatewise, square), Chomp on $S$ is a
+second-player win while Chomp on $S^\sigma$ is a first-player win for every
+$\sigma\ge2$, and $\omega\cdot4+4$ is the \emph{least} winning opening.  Hence
+$\mathrm{ch}(\langle4,5,6\rangle)=\mathrm{ch}(\langle4,6,9\rangle)=2$, a negative
+answer to Question~4.6 of Rivero Herrera (arXiv:2504.07317v3) and a refutation of
+Conjecture~4.1 of v1, already for three small natural-number generators.  The
+proof reduces the infinite game to a finite spectral statement via a
+finite-window recurrence and an exact finite-state certificate, then transfers
+it by an explicit response procedure.  \emph{Merged; the shared
+$\langle4,6,9\rangle$ certificates were verified to hold the same 253 rows
+entry for entry, and the two reports' poisoned and unpoisoned conventions are
+reconciled by an explicit dictionary.}}
+
+\entry{Every ordinal as a point-separating game value}
+{ordinals-and-order-types/games-on-ordinals/point-separating-game-values}
+{ordinal\_separation.pdf}{ordinal\_separation\_research.zip}
+{For every ordinal $\lambda$, orders $\{0,1\}^\lambda$ lexicographically and
+gives it the topology of all downward-closed sets, and the refinement generated
+by downward-closed sets minus finite sets.  The point-separating game value is
+exactly $\lambda$ for both: the first space is compact $T_0$, the second compact
+$T_1$, and for infinite $\lambda$ neither is Hausdorff.  Taking
+$\lambda=\omega^2+1$ supplies a compact $T_1$ witness of cardinality continuum
+for Problem~1.2 of Chiozini, Csern\'ak and Soukup (arXiv:2510.05754v3), with no
+CH, forcing or large-cardinal hypothesis.  Hausdorff witnesses are not claimed.
+This is a different problem of that paper from the one the open-query games
+report answers.}
 
 \entry{Open-query games on ordinal spaces}
 {ordinals-and-order-types/games-on-ordinals/open-query-membership-games}
@@ -331,6 +395,135 @@ number~1, but their topological sum has value~2.  The general theorem computes
 the invariant for every nonempty Hausdorff space of finite Cantor--Bendixson
 height~$h$ as $\lceil\log_2(h+1)\rceil$ when the last nonempty derivative is a
 singleton and $\lceil\log_2(h+2)\rceil$ otherwise.}
+
+\subsection{Order-theoretic invariants without a subcategory}
+
+Two reports whose objects sit outside every subcategory above: the minor order
+on finite graphs, and a site of filters on $\omega$.
+
+\entry{Ordinal complexity of graph minors}
+{ordinals-and-order-types/graph-minor-ordinals}
+{graph\_minor\_ordinals.pdf}{graph\_minor\_ordinals.zip}
+{For finite simple graphs of maximum degree at most two under minor
+containment, computes maximal order type, ordinal antichain-tree width and
+descending-tree height: $o(D)=w(D)=\omega^{\omega\cdot2}$ and $h(D)=\omega$,
+with exact values $\omega^{b+k}$ and $\omega^{b+k-1}$ for the subfamilies
+bounded by path size $b$ and cyclic-component count $k$.  The general theorem is
+that a wqo $C$ of connected graphs with $o(C)=\alpha<\varepsilon_0$ has finite
+disjoint-union closure of type $\omega^\alpha$, proved by a component-splitting
+argument, since minor containment is not multiset embedding.  A corollary is
+that continuity fails for increasing unions of minor-closed classes.  The
+report is explicit that it does not compute the maximal order type of the minor
+order on all finite graphs and settles no named conjecture.}
+
+\entry{A two-valued obstruction to gluing Fr\'echet powers}
+{ordinals-and-order-types/frechet-two-valued-obstruction}
+{article.pdf}{frechet\_two\_valued\_obstruction.zip}
+{For the presheaf $F\mapsto A^\omega/{\sim_F}$ on proper filters on $\omega$
+containing the cofinite filter, with the dense Grothendieck topology, proves in
+ZF that it is a sheaf if and only if $|A|\le1$.  The counterexample is an
+explicit matching family of constant sections using two values, on a covering
+sieve with countably many generators each of countable base; the distinction
+between the number of sieve generators and the size of the full sieve is
+essential to it.  The question is Massas, \emph{A Semi-Constructive Approach to
+the Hyperreal Line} (2023), p.~517 after Fact~5.10, repeated in the 2024
+dissertation \emph{Duality and Infinity}, p.~249.}
+
+\section{Surreal numbers}
+
+Six reports on the surreal field itself: birthdays and their behaviour under
+multiplication, the option graphs of surreal forms, genetic functions and gaps,
+and two questions of Lipparini about evaluating formal sums in the surreals.
+The first four arrived as two pairs; each pair was merged.
+
+\entry{A square-root obstruction to evaluating increasing Hahn series at $\omega$}
+{surreal-numbers/hahn-evaluation-at-omega}
+{article.pdf}{hahn\_evaluation\_research.zip + reversed\_hahn\_series.zip}
+{Answers Problem~7.7 (p.~38) of Lipparini (arXiv:2505.00424v2) negatively: there
+is no ring homomorphism from the field of set-supported real-coefficient Hahn
+series with strictly increasing surreal exponents into the surreals sending
+$x^a$ to $\omega^a$.  The certificate is $B\in\Q[[x]]$ with $B^2=1-x$, built by
+the recursion $b_n=-\tfrac12\sum_{k=1}^{n-1}b_kb_{n-k}$: any such map would force
+a square to equal $1-\omega<0$.  The homomorphism is applied only to the finite
+identity, so no continuity, valuation, order preservation or preservation of
+infinite sums is assumed.  Adds the exact classification of admissible images of
+the variable as the infinitesimals, the monomial classification over an
+arbitrary ordered abelian group, and order-uniqueness on the source field.
+\emph{Merged; the core certificate was identical in both originals and is proved
+once, but the two toolkits are kept --- in particular a nonnegative-coefficient
+semiring obstruction with strictly weaker hypotheses that the square-root
+certificate cannot reach.}}
+
+\entry{Gonshor's Product-Birthday Conjecture for ordinal-support series}
+{surreal-numbers/gonshor-product-birthdays}
+{surreal\_product\_birthdays.pdf}{gonshor\_product\_birthdays\_research.zip}
+{Proves Gonshor's bound $b(xy)\le b(x)\otimes b(y)$ on the ring of Conway normal
+forms $\sum_{\alpha\in S}c_\alpha\omega^{-\alpha}$ with $S$ an arbitrary set of
+ordinals, so transfinite and uncountable supports are allowed.  Supplies an
+exact birthday formula by transfinite induction over the support with maintained
+prefix bounds and an explicit limit stage, and a complete classification of the
+equality cases.  The route is a leading-Cantor-degree gap, which also gives that
+the degree of the birthday never rises under multiplication.  The conjecture for
+arbitrary surreal numbers is not solved.  The domain is incomparable with that of the
+Laurent-series report that follows: it excludes $\omega$ and every positive
+power.}
+
+\entry{A Laurent-series case of Gonshor's birthday conjecture}
+{surreal-numbers/gonshor-laurent-birthdays}
+{article.pdf}{Gonshor\_Laurent\_Birthday\_Research.zip}
+{Proves the same bound $b(xy)\le b(x)\otimes b(y)$ on the canonically embedded
+field $\R((\omega^{-1}))$, which unlike the ring of the preceding entry
+contains $\omega$
+and its positive powers but restricts supports to order type at most $\omega$ on
+the integer lattice.  The route is a bilinear budget: an exact splitting
+$b(x)=b(P)\oplus b(u)$ into polynomial and infinitesimal parts, three separate
+product estimates for the resulting cross terms, and a finite-jet stabilisation
+carrying the finite bound to infinite series without any continuity claim.  Also
+treats finite normal forms with arbitrary ordinal exponents, derives exact
+birthdays for finite and infinite Laurent series, and proves a reciprocal
+corollary.  Neither this theorem nor the preceding one contains the other; on
+their common corner $\R[[\omega^{-1}]]$ the two agree and are proved twice.}
+
+\entry{Canonical forms need not be subgraphs}
+{surreal-numbers/canonical-forms-need-not-be-subgraphs}
+{surreal\_graphs.pdf}{surreal\_graphs\_research.zip + surreal\_sparse\_graphs.zip}
+{Answers negatively the question in the Figure~3 caption of Roughan,
+\emph{Surreal Birthdays and Their Arithmetic} (arXiv:1810.10373v2, p.~7):
+the canonical form of a surreal value need not be a subgraph of every other form
+of that value.  Five vertices and rank three are both least possible, and there
+are exactly sixteen five-vertex counterexamples, eight triangle-free, four of
+value $1/2$.  Adds cycle representations of $1/2$ at every admissible length,
+the exact extremal function, a planar construction of maximum degree three and
+arbitrarily large girth, classifications of which canonical graphs are
+unavoidable, and transfinite witnesses.  \emph{Merged; the two originals
+exhibited genuinely different five-vertex witnesses --- one passing through a
+vertex of value $-1$, one with no negative value at all --- and both are printed
+in full, as are two odd-cycle families, two high-girth constructions and two
+proofs of the Fibonacci bound.}}
+
+\entry{A countable genetic cut across the finite--infinite gap}
+{surreal-numbers/genetic-gaps-and-primitives}
+{article.pdf}{genetic\_gap\_counterexamples.zip}
+{With $q(t)=t/(1+t^2)$ and $B(x)=1-\{q(n-x):n\in\N\mid\;\}$ as a Conway cut,
+proves that $B$ is the indicator of the positive infinite surreals, is genetic
+under the set-sized option constructors of the cited sources, and has pointwise
+derivative zero everywhere.  Consequently $x$ and $x-B(x)$ are genetic
+primitives of $1$ agreeing at every real input that do not differ by a constant,
+the latter also an increasing bijection.  The sublevel class
+$\{x:0<x<\omega,\;B(x)\le\tfrac12\}$ is nonempty and bounded yet has no surreal
+supremum, so neither end gap supplies one.}
+
+\entry{A Number-Valued Broadcast Sum of Surreal Sequences}
+{surreal-numbers/broadcast-sum-of-surreal-sequences}
+{article.pdf}{surreal\_broadcast\_sum.zip}
+{Analyses the sign-truncation game of Lipparini (arXiv:2505.00424v2,
+Remark~7.6(3), in connection with Problem~7.5).  Proves the game always has a
+surreal-number value, that it agrees with finite surreal sums and with
+Lipparini's ordinal operation on their respective domains, and that it fails
+weak coordinatewise monotonicity, with an explicit family
+$s[n]=3\cdot2^{-n-d-1}$ on a subset $E$ and $2^{-n-d}$ off it realising the
+failure.  The underlying rule is Lipparini's; the name and the notation are
+local to the report.}
 
 \section{Hankel determinants and continued fractions}
 
@@ -784,6 +977,34 @@ an all-$d$ finite-spectrum theorem, rationality, a universal integer
 denominator, the exact radius of convergence and residue-class asymptotics.
 The two-descent sequence gets an explicit formula in powers of 3, powers of 2
 and Fibonacci numbers.}
+
+\entry{A Reflexive Root-Polytope Model for Preorder $h$-Polynomials}
+{enumerative-combinatorics/preorder-root-polytopes}
+{article.pdf}{preorder\_root\_polytopes.zip}
+{Proves Conjecture~5.1(c) of Athanasiadis and Chapoton (arXiv:2605.26916v1): for
+a preorder $\tau$ on $[n]$ the directed root polytope
+$C_\tau=\mathrm{conv}(\{\pm e_i\}\cup\{e_i-e_j: j\le_\tau i\})$ is reflexive with
+$h^*(C_\tau,t)=h_\tau(t)$, and any pulling triangulation of its boundary is
+combinatorially the boundary of a simplicial polytope with that $h$-polynomial.
+Palindromicity and unimodality, Conjecture~5.1(a,b), follow, as do the full
+$g$-theorem conditions.  The higher-dimensional augmented bipartite identity and
+preorder duality are credited to Dai, Hou, Liu, Thawinrak and Wang
+(arXiv:2608.16037v2); flag realizability, $\gamma$-positivity and real-rootedness
+are not proved.  A different conjecture of the same paper from the preorder-polytope
+reciprocity report.}
+
+\entry{Largest Simplex Faces under Ordinal Sums}
+{enumerative-combinatorics/simplex-faces-of-order-and-chain-polytopes}
+{Largest\_Simplex\_Faces.pdf}{Series\_Parallel\_Simplex\_Faces\_Research.zip}
+{Answers the concluding open question of Freij-Hollanti and Lundstr\"om,
+\emph{Simplex inequalities of order and chain polytopes of recursively defined
+posets} (Order 43 (2026), article~31).  For $s_O(P)$ and $s_C(P)$, the largest
+dimensions of simplex \emph{faces} of the order and chain polytopes: both are
+computable in $O(n)$ on any series-parallel decomposition, the order case
+carrying eight normalized endpoint states.  For an ordinal sum of antichains,
+$s_O=r+\nu$ with $\nu$ a maximum $b$-matching of the layer path under capacities
+$\min(a_i-1,2)$, and $s_C=r+\max(0,k-1)$.  The extremal gap is sharp:
+$0\le s_C-s_O\le\lfloor(n-2)/3\rfloor$, attained for every $n\ge2$.}
 
 \section{Generating functions and asymptotics}
 

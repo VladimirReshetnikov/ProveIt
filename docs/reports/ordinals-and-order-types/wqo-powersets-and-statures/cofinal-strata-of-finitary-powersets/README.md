@@ -50,7 +50,6 @@ have a published 2025 treatment; that solved problem is not presented as open.
 | `PROOF_AUDIT.md` | Assumptions, dependencies, and boundaries of the proofs |
 | `SOURCES.md` | Literature and status-check record |
 | `build.py` | Optional cross-platform build helper |
-| `MANIFEST.sha256` | SHA-256 checksums of the distributed files |
 
 No Python packages need to be installed. The reference implementation requires
 Python 3.10 or later and was tested with Python 3.13.5. The mathematics allows

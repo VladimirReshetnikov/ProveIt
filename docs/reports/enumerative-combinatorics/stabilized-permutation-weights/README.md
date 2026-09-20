@@ -39,7 +39,6 @@ Novelty has not been exhaustively or independently certified.
   `data/rederivation_check.log`:
   actual results of the included programs.
 - `requirements.txt`, `Makefile`: reproduction helpers.
-- `SHA256SUMS.txt`: SHA-256 checksums for every other packaged file.
 
 ## Run the independent check without installing anything
 

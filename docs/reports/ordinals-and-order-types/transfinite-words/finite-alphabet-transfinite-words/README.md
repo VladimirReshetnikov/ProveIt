@@ -39,7 +39,6 @@ correspondence is credited, not claimed as a new discovery.
 - `proof_audit.md`: dependency map and fragile steps reviewed.
 - `source_status.md`: source versions, specific open question, and novelty limitations.
 - `build.py`: cross-platform test-and-build driver.
-- `MANIFEST.sha256`: checksums for all packaged files except the manifest itself.
 
 No third-party paper PDFs or font files are bundled.
 

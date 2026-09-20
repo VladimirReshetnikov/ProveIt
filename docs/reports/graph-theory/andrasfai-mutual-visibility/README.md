@@ -55,7 +55,7 @@ not certify exclusive priority for the proof or all its corollaries.
 - `data/environment.json`: the local verification environment, for provenance.
 - `figures/cardinality_distribution.pdf`: vector figure needed to rebuild the PDF.
 - `source_notes.md`: exact source provenance and the scope of the priority search.
-- `Makefile`, `requirements.txt`, `SHA256SUMS.txt`: build/reproduction support.
+- `Makefile`, `requirements.txt`: build/reproduction support.
 
 ## Run the core code
 
@@ -137,8 +137,7 @@ unresolved-reference warnings.
 
 ## Integrity
 
-`SHA256SUMS.txt` records the hashes of all other deliverable files. From this
-directory, `sha256sum -c SHA256SUMS.txt` verifies the extracted files. Re-running
-tests or rebuilding the PDF can change hashes, especially timing and metadata.
-No generated executable, TeX auxiliary file, Python cache, or downloaded
-third-party paper is included.
+No checksum manifest is distributed: re-running the tests or rebuilding the PDF
+changes file hashes, especially timing and metadata fields, so a stored manifest
+would go stale on the first rebuild. No generated executable, TeX auxiliary
+file, Python cache, or downloaded third-party paper is included.

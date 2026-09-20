@@ -38,7 +38,6 @@ beyond `omega+n` are not classified. See the article and audit notes.
 | `proof_audit.md` | Proof dependencies and delicate points |
 | `literature_notes.md` | Exact source locations and novelty-search limits |
 | `Makefile` | Optional build and verification commands |
-| `SHA256SUMS.txt` | Hashes of the distributed files, excluding the manifest itself |
 
 ## Reproduce the computations
 

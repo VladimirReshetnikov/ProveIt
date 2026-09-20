@@ -36,7 +36,6 @@ verified by a proof assistant.
 - `figures/`: vector PDF and PNG versions of both figures.
 - `source_audit.md`: provenance, consulted versions, and indexing cautions.
 - `Build.ps1`, `Makefile`: optional build helpers.
-- `SHA256SUMS.txt`: integrity hashes, excluding this hash file itself.
 
 ## Reproduce the exact checks
 

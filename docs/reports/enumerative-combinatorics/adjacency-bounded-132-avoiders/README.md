@@ -128,7 +128,6 @@ not needed to rebuild the article. No font files are included.
   using d=1,2,4,8 for the lower construction.
 - `computation_log.txt`, `verification_log.txt`: actual successful run logs.
 - `environment.json`: the numerical/symbolic environment used for this run.
-- `SHA256SUMS`: integrity hashes for the distributed files except itself.
 
 ## Sources and attribution
 

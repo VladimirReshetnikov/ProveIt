@@ -46,7 +46,6 @@ See `SOURCES.md` and the article's introduction.
 - `data/rho_coefficients.csv`: residual coefficients for `1 <= k <= 12`, `1 <= n <= 20`.
 - `build.sh`, `build.ps1`: PDF build conveniences.
 - `requirements.txt`: pinned optional symbolic-test dependency.
-- `SHA256SUMS.txt`: checksums of the packaged files other than the checksum file itself.
 
 ## Run the tests
 

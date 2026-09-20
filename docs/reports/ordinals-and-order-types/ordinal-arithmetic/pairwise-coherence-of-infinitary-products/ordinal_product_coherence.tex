@@ -1,0 +1,751 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{Ink}{HTML}{202722}
+\definecolor{Olive}{HTML}{526344}
+\definecolor{Pale}{HTML}{F2F4EC}
+\definecolor{SoftGray}{HTML}{60665E}
+\hypersetup{colorlinks=true,linkcolor=Olive,citecolor=Olive,urlcolor=Olive,
+  pdftitle={Pairwise Coherence Does Not Guarantee Completion of Ordinal Products},
+  pdfauthor={Research report prepared with ChatGPT},
+  pdfsubject={A two-element counterexample and a hierarchy of nesting obstructions}}
+\color{Ink}
+\titleformat{\section}{\large\bfseries\color{Olive}}{\thesection}{.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{.7em}{}
+\titlespacing*{\section}{0pt}{2.2ex plus 1ex minus .2ex}{1.1ex}
+\titlespacing*{\subsection}{0pt}{1.8ex plus .8ex minus .2ex}{.8ex}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{SoftGray}Coherence of ordinal-indexed products}
+\fancyhead[R]{\small\color{SoftGray}Research note}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\setlength{\parskip}{.35em}
+\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\val}{\operatorname{val}}
+\newcommand{\htree}{\operatorname{ht}}
+\newcommand{\flatten}{\operatorname{flat}}
+\newcommand{\content}{\operatorname{ct}}
+\newcommand{\units}{\operatorname{U}}
+\newcommand{\Eq}{\mathrm{Eq}}
+\newcommand{\undefinedprod}{\text{undefined}}
+\newcommand{\Coh}[1]{\mathsf C_{#1}}
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\NN}{\mathbb N}
+\newtcolorbox{resultbox}{colback=Pale,colframe=Olive,boxrule=.5pt,
+  arc=1pt,left=10pt,right=10pt,top=8pt,bottom=8pt,breakable}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
+  frame=single,rulecolor=\color{SoftGray},breaklines=true,showstringspaces=false}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\setlength{\parindent}{0pt}
+\vspace*{.45in}
+{\small\sffamily\color{Olive}ORDINAL COMBINATORICS\enspace /\enspace INFINITARY ALGEBRA\par}
+\vspace{.35in}
+{\Huge\bfseries\raggedright Pairwise Coherence\\
+Does Not Guarantee Completion\\
+of Ordinal Products\par}
+\vspace{.25in}
+{\Large\raggedright A two-element counterexample and an\\
+unbounded hierarchy of nesting obstructions\par}
+\vspace{.35in}
+{\large Research report prepared for Vladimir Reshetnikov\par}
+{\normalsize September 20, 2026\par}
+\vspace{.35in}
+\begin{abstract}
+Can a partially defined associative product of ordinal-indexed words be completed once every pair of defined two-stage regroupings agrees? We give a negative answer to the sufficiency question raised in Remark~7.1(b) of Lipparini's \emph{Noncommutative infinitary semigroups}. The counterexample has only two elements: retain all finite products in the cyclic group of order two, and prescribe every infinite constant product of its identity to be that identity. We prove the full pairwise coherence condition, for arbitrary index sets and even arbitrary partitions. Nevertheless, adjacent-pair and shifted-pair evaluations of an $\omega$-word prohibit any injective extension defining all finite and $\omega$-products.
+
+The underlying inverse obstruction is already in Lipparini's Proposition~5.1; the point here is the coherent partial domain and its use to answer the stated sufficiency question. We also prove a completion criterion for the corresponding construction over every directly finite monoid, including all finite and all commutative monoids. Finally, for each finite depth $r\geq1$, a partial system on $3r+4$ elements has coherent evaluations through depth $r$ but conflicting evaluations at depth $r+1$. Every nonempty constant product in this second family is defined. Detailed proofs and exact computational certificates accompany the report.
+\end{abstract}
+\vfill
+\begin{resultbox}
+\small\textbf{Status and scope.} This is an unrefereed research note with self-contained proofs and reproducible checks, not a claim of independently verified publication priority. The precise pairwise-coherence sufficiency question is answered below. A general characterization of all completable partial infinitary semigroups is not claimed. The two-element example has a total finite product; the arbitrary-depth family deliberately has only a partial finite product.
+\end{resultbox}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+\section{The question and the answer}
+\label{sec:question}
+Ordinary associativity concerns different bracketings of a finite ordered list. For an infinite word one must also decide which products exist, which infinite blocks may be collapsed, and whether the resulting outer product is defined. These domain questions are substantial: agreement among the evaluations already available need not persist when a completion supplies further evaluations.
+
+The concrete target is the sufficiency issue in \cite[Remark~7.1(b)]{LippariniNIS}. In the version dated May~27, 2026, Lipparini asks about complete extensions and expects that a stated pairwise condition, denoted $(\Eq)$, is insufficient. We address that specific expectation, rather than the larger classification problem. All three sources in the bibliography were checked in their first arXiv versions; no later resolution was established by the searches used for this report.
+
+Here is the result in its smallest form. Let
+\[
+G=\set{e,a},\qquad e^2=e,\quad ea=ae=a,\quad a^2=e.
+\]
+For a word $w=(w_i)_{i\in I}$ with a linearly ordered index set, prescribe its product precisely when $I$ is finite or every letter is $e$. Use the ordinary group product in the first case and the value $e$ in the second. These instructions agree on their overlap, including the empty word.
+
+\begin{theorem}[Two-element obstruction]\label{thm:main}
+This partial product satisfies the singleton and regrouping axioms of a partial infinitary semigroup. Any two defined two-stage evaluations of the same word agree. Nevertheless, it has no injective extension in which all finite products and all $\omega$-indexed products are defined and satisfy those axioms. Two elements is the smallest possible size of such a counterexample.
+\end{theorem}
+
+The nonextension argument is very short. A hypothetical value of $a^\omega$ would satisfy
+\[
+\Pi(a^\omega)=\Pi\bigl((aa)_{n<\omega}\bigr)
+             =\Pi(e^\omega)=e.
+\]
+The tail after its first letter is another copy of $a^\omega$, so it would also satisfy
+\[
+\Pi(a^\omega)=a\,\Pi(a^\omega)=ae=a.
+\]
+The real verification is not this contradiction, which is an instance of the inverse obstruction in \cite[Proposition~5.1]{LippariniNIS}. It is that the prescribed partial product really passes \emph{every} instance of the pairwise test. That proof is given in \cref{sec:minimal}, without replacing arbitrary infinite partitions by finite experiments.
+
+Two further results put the counterexample in context. The same partial-domain construction works over every monoid and always satisfies ordered pairwise coherence. For directly finite monoids it has a complete extension exactly when the identity has no nontrivial invertible elements. A separate family shows that raising the allowed nesting depth to any fixed finite number still cannot characterize completion in the unrestricted class of partial products.
+
+\section{Ordered products, regrouping, and extension}
+\label{sec:definitions}
+\subsection{Words and convex partitions}
+A \emph{word over $S$} is a function $w:I\to S$, where $I$ is a set with a linear order. Its letters are denoted by $w_i$. A partial product $\Pi$ assigns an element of $S$ to some of these words. Index orders differing only by an order isomorphism are identified for notational convenience.
+
+An order-preserving surjection $\pi:I\twoheadrightarrow J$ divides $I$ into nonempty convex blocks
+\[
+I_j=\pi^{-1}(j),\qquad j\in J.
+\]
+Conversely, every partition into nonempty convex subsets has a quotient order of this kind. Convexity is essential when multiplication is not commutative: regrouping may change parentheses, but not the order of letters.
+
+The axioms used here are the following, in the notation of \cite[Definition~3.1]{LippariniNIS}:
+\begin{align}
+&\Pi((s))=s \quad(s\in S), \tag{U}\label{eq:U}\\
+&\Pi(w)\text{ defined}\ \Longrightarrow\
+  \Pi(w|_{I_j})\text{ defined for every }j,
+  \quad
+  \Pi(w)=\Pi\bigl((\Pi(w|_{I_j}))_{j\in J}\bigr).
+  \tag{N}\label{eq:N}
+\end{align}
+In \eqref{eq:N}, the outer product on the right must also be defined. This is a \emph{one-way} requirement. Defined block products and a defined outer product do not by themselves force the flat product to belong to the original domain.
+
+The axioms also imply invariance under order isomorphism: apply \eqref{eq:N} to an order isomorphism, whose fibers are singletons, and use \eqref{eq:U}; then do the same with the inverse isomorphism. Our examples have this invariance directly by construction.
+
+We allow the empty word in the domain when explicitly specified. All regrouping maps are surjective, so no empty blocks are introduced. The only surjection out of an empty index set has empty codomain. The counterexample includes the empty product $e$; the later nesting-depth family does not need an empty product.
+
+\subsection{The precise coherence test}
+For a fixed word $w:I\to S$, a \emph{defined two-stage evaluation} consists of a convex partition such that every block product exists and the product of all block values exists. Its value is
+\begin{equation}\label{eq:two-stage}
+E_\pi(w)=\Pi\bigl((\Pi(w|_{I_j}))_{j\in J}\bigr).
+\end{equation}
+The pairwise condition is
+\begin{equation}\label{eq:Eq}
+E_\pi(w)=E_\rho(w)
+\quad\text{whenever both sides are defined}. \tag{Eq}
+\end{equation}
+There is no hypothesis that $\Pi(w)$ itself is defined. Otherwise \eqref{eq:Eq} would follow immediately from \eqref{eq:N} and would not test anything new.
+
+The displayed statement of $(\Eq)$ in \cite[Remark~7.1(b)]{LippariniNIS} calls the maps surjective without repeating the order-preserving qualification. We use the ordered version throughout. The two-element construction in \cref{thm:main} satisfies even the stronger version with arbitrary surjections, so its negative answer is unaffected by this textual distinction. General monoid statements below use convex partitions unless commutativity is explicitly assumed.
+
+\subsection{What counts as a completion}
+An \emph{extension} of $(S,\Pi)$ is a partial system $(T,\widehat\Pi)$ with an injective map $\iota:S\to T$ preserving every prescribed product:
+\[
+\widehat\Pi\bigl((\iota(w_i))_{i\in I}\bigr)=\iota(\Pi(w))
+\quad\text{whenever }\Pi(w)\text{ exists}.
+\]
+After replacing $S$ by its image, we may take $S\subseteq T$ and $\iota$ to be inclusion. Undefined products may acquire values; the extension may introduce new elements. It may not identify two old elements or change an old value. This agrees with \cite[Definition~3.8]{LippariniNIS}.
+
+A \emph{complete extension} defines every nonempty linearly indexed product. An \emph{ordinal-complete extension} defines every nonempty well-ordered product. For the obstruction we require much less: a \emph{$\leq\omega$-extension} defines all nonempty finite products and all products of order type $\omega$. Nonexistence at this level implies nonexistence at both larger levels.
+
+All orders in this report are set-sized. Statements quantifying over all such orders can be read as class-indexed schemes. Alternatively, restrict everything to countable index orders. The two-element obstruction already occurs at $\omega$, and the arbitrary-depth obstructions occur on finite words; no inaccessible cardinal or extra set-theoretic hypothesis is involved.
+
+\section{The minimal counterexample, verified completely}
+\label{sec:minimal}
+\subsection{The product domain}
+Let $G=C_2=\set{e,a}$. Define
+\begin{equation}\label{eq:C2-domain}
+\Pi(w)=
+\begin{cases}
+ a^{\,|\{i:w_i=a\}|\bmod 2}, & I\text{ finite},\\
+ e, & I\text{ infinite and }w_i=e\text{ for all }i,\\
+ \undefinedprod, & \text{otherwise},
+\end{cases}
+\end{equation}
+where $a^0=e$ and $a^1=a$. Thus every finite product is available; there is no missing binary associativity assumption. Infinite products are sparse but not absent: $\Pi(e^I)=e$ for every infinite linear order $I$.
+
+\begin{lemma}\label[lemma]{lem:axioms-C2}
+The operation \eqref{eq:C2-domain} satisfies \eqref{eq:U} and \eqref{eq:N}.
+\end{lemma}
+\begin{proof}
+Singletons are evaluated by the group law. If $I$ is finite, every convex block and its quotient order are finite. The parity of all occurrences of $a$ equals the parity of the sum of the parities in the blocks. Thus all required products exist and regrouping preserves the value.
+
+If $I$ is infinite and $\Pi(w)$ is defined, all letters are $e$. Every block is therefore an all-$e$ word, finite or infinite, with product $e$. The outer word is also all $e$, so it is defined with value $e$, regardless of the size or order type of the quotient. The empty word gives only the empty quotient and causes no additional case.
+\end{proof}
+
+\subsection{Why every pair of two-stage evaluations agrees}
+The following proof is stronger than required: the blocks need not be convex and may be ordered arbitrarily.
+
+\begin{lemma}[Parity invariant for two-stage evaluations]\label[lemma]{lem:parity}
+Fix any word $w:I\to\set{e,a}$ and put $A=\set{i\in I:w_i=a}$. Every defined two-stage evaluation has the value
+\begin{equation}\label{eq:parity-invariant}
+\begin{cases}
+ a^{|A|\bmod2}, & A\text{ finite},\\
+ e, & A\text{ infinite}.
+\end{cases}
+\end{equation}
+The assertion concerns evaluations that exist; it does not claim that every word has such an evaluation.
+\end{lemma}
+\begin{proof}
+Let $J$ be the outer index set of a defined two-stage evaluation.
+
+Suppose first that $J$ is finite. Every block containing an $a$ must be finite, since the only defined infinite block products consist entirely of $e$'s. Consequently $A$ is contained in finitely many finite blocks and is finite. The outer value is the product of their parity values, hence the parity of $|A|$.
+
+Suppose instead that $J$ is infinite. The outer product is defined only if every block value is $e$, and its value is then $e$. If $A$ is finite, only finitely many blocks contain an $a$. Each such block is finite and has an even number of $a$'s because its value is $e$. Therefore $|A|$ is even, and the displayed formula again gives $e$. If $A$ is infinite, the second line of the formula applies directly.
+
+These cases exhaust all defined two-stage evaluations. The description depends only on $w$, not on its partition.
+\end{proof}
+
+\begin{corollary}\label[corollary]{cor:C2-Eq}
+The partial product \eqref{eq:C2-domain} satisfies $(\Eq)$, including its arbitrary-partition version.
+\end{corollary}
+
+It is important that the final paragraph of the proof is not an infinite parity calculation. The parity of an infinite set is never defined or used. An infinite outer product, when available, is forced to be an all-$e$ product. This is the reason its value is determined.
+
+\subsection{The $\omega$ obstruction}
+\begin{proposition}\label[proposition]{prop:C2-noextension}
+The operation \eqref{eq:C2-domain} has no $\leq\omega$-extension.
+\end{proposition}
+\begin{proof}
+Suppose there were such an extension and write
+\[
+q=\widehat\Pi\bigl((a)_{n<\omega}\bigr).
+\]
+Partition $\omega$ into adjacent pairs $\set{2n,2n+1}$. The preserved binary product of each block is $aa=e$. By regrouping in the extension,
+\begin{equation}\label{eq:q-e}
+q=\widehat\Pi\bigl((e)_{n<\omega}\bigr)=e,
+\end{equation}
+since that infinite product was prescribed in the original system.
+
+Next partition the same word into its first singleton and its entire remaining tail. The tail has order type $\omega$ and all its letters are $a$, so order-isomorphism invariance gives its value as $q$. Regrouping yields
+\begin{equation}\label{eq:q-aq}
+q=\widehat\Pi((a,q)).
+\end{equation}
+Substitute \eqref{eq:q-e} into \eqref{eq:q-aq}. The binary product on the right is now the preserved old product $ae=a$. Thus $q=a$, contradicting $q=e$ and injectivity of the inclusion of $\set{e,a}$.
+\end{proof}
+
+Only two elementary identities of order types enter:
+\begin{equation}\label{eq:ordinal-identities}
+\sum_{n<\omega}2=2\cdot\omega=\omega,
+\qquad 1+\omega=\omega.
+\end{equation}
+The first allows pairing; the second identifies the remaining tail with the original word. No cancellation law is imposed on new elements. Nor do we assume that $e$ remains a global identity in the extension. After $q=e$ is forced, the only identity law needed is the already prescribed $ae=a$.
+
+\subsection{Minimality}
+\begin{proposition}\label[proposition]{prop:minimality}
+Every partial infinitary semigroup on a one-element set has a complete extension on that same set. Hence the cardinality two in \cref{thm:main} is optimal.
+\end{proposition}
+\begin{proof}
+Write the underlying set as $\set{s}$. Assign the value $s$ to every nonempty linearly indexed word. All previously prescribed products already had value $s$, and both axioms hold because every block and outer product has that value. If the empty word was originally defined, retain its value $s$ as well.
+\end{proof}
+
+\section{Where the hidden third level enters}
+\label{sec:third}
+\subsection{Two valid computations in the original partial system}
+The nonextension proof can be exhibited entirely using nested operations that are already defined, without introducing a hypothetical new value. For the same flat word $a^\omega$, form
+\begin{align}
+T_{\mathrm{even}}&=\Pi\bigl((\Pi(a,a))_{n<\omega}\bigr)=e,\label{eq:even-tree}\\
+T_{\mathrm{shift}}&=\Pi\left(a,\,
+                  \Pi\bigl((\Pi(a,a))_{n<\omega}\bigr)\right)=a.
+                  \label{eq:shift-tree}
+\end{align}
+Every node evaluates an allowed product: $aa$, an all-$e$ $\omega$-word, or the finite product $ae$. The flat order type of the first tree is $2\cdot\omega=\omega$; that of the second is $1+2\cdot\omega=\omega$. All leaves are $a$, so they are the same indexed word up to order isomorphism.
+
+Counting a leaf as depth zero, \eqref{eq:even-tree} has depth two and \eqref{eq:shift-tree} has depth three. The pairwise condition compares depth-two trees, not arbitrary nested trees. In particular, the shifted partition into a singleton followed by pairs would have outer values
+\[
+a,e,e,e,\ldots.
+\]
+Its outer product is \emph{not} defined in \eqref{eq:C2-domain}. Therefore it is not a second two-stage evaluation with which $(\Eq)$ can compare the even-pair evaluation. The extra grouping of the $e$ tail is exactly what produces the third level.
+
+\subsection{Products forced by any complete extension}
+Let $M$ be any monoid with identity $e$, and retain all its finite products together with all constant-$e$ products. For a word $w$, its \emph{nonidentity support} is
+\[
+\supp_e(w)=\set{i\in I:w_i\ne e}.
+\]
+When this support is finite, define $p(w)$ as the ordinary product of the supported letters in their induced order; the empty product is $e$.
+
+\begin{lemma}[Finite-support values are forced]\label[lemma]{lem:forced-support}
+Any complete extension of this partial system evaluates every finite-support word $w$ to $p(w)$. The same assertion holds in an ordinal-complete extension for well-ordered $w$.
+\end{lemma}
+\begin{proof}
+Let the nonidentity positions be $i_1<\cdots<i_m$. Partition the index order into these singletons and the intervening all-$e$ gaps, including a possible initial and final gap. Omit empty gaps. There are at most $2m+1$ nonempty convex blocks. Every gap product is the prescribed value $e$, and the singleton products are the corresponding supported letters. The flat product exists in the extension, so regrouping identifies it with a finite old product equal to $p(w)$. For $m=0$, the value was prescribed from the outset.
+\end{proof}
+
+In the two-element example, any complete extension must therefore give $a,e,e,\ldots$ the value $a$. Merely enlarging the original domain by all these forced finite-support values already makes $(\Eq)$ fail: the even-pair partition of $a^\omega$ has value $e$, whereas the singleton-then-pairs partition has outer word $a,e,e,\ldots$ and value $a$.
+
+Thus passing the pairwise test is not stable under a necessary domain enlargement. This is a more precise diagnosis than saying that infinity makes associativity fail: the original product is associative in the stated partial sense, but the next forced domain stage exposes an incompatibility.
+
+\subsection{Deletion of identities is not arbitrary insertion}
+Under the one-way identity axiom in \cite[Definition~6.2]{LippariniNIS}, an identity may be deleted from a word \emph{whose product is already defined}, without changing that value. The element $e$ in \eqref{eq:C2-domain} satisfies this condition. From a finite word, deletion leaves a finite word; from an infinite all-$e$ word, deletion leaves the empty word. In both cases the value is preserved.
+
+That axiom does not say that inserting arbitrarily many copies of $e$ into an already evaluable word preserves definedness. In particular, it does not turn the undefined word $a,e,e,\ldots$ into a defined product. An insertion-stable identity requirement would exclude this particular partial domain. Keeping these two statements distinct is necessary for a correct reading of the example.
+
+\section{A canonical partial system over an arbitrary monoid}
+\label{sec:monoids}
+\subsection{Coherence is automatic for this domain}
+\begin{definition}\label[definition]{def:PM}
+For a monoid $M$ with identity $e$, let $\PP(M)$ be the partial product system with underlying set $M$ and rule
+\begin{equation}\label{eq:PM}
+\Pi_M(w)=
+\begin{cases}
+\text{the ordinary ordered monoid product}, & I\text{ finite},\\
+e, & I\text{ infinite and }w_i=e\text{ for every }i,\\
+\undefinedprod, & \text{otherwise}.
+\end{cases}
+\end{equation}
+The empty product is $e$.
+\end{definition}
+
+The verification of \eqref{eq:U} and \eqref{eq:N} is the same as in \cref{lem:axioms-C2}, replacing parity by finite associativity. No cancellation or commutativity assumption is required.
+
+\begin{theorem}[General coherence lemma]\label{thm:monoid-Eq}
+For every monoid $M$, the partial system $\PP(M)$ satisfies ordered $(\Eq)$. For a fixed word $w$, every defined two-stage evaluation equals $p(w)$ if $\supp_e(w)$ is finite, and equals $e$ if $\supp_e(w)$ is infinite.
+\end{theorem}
+\begin{proof}
+Consider a defined two-stage evaluation with outer index set $J$.
+
+If $J$ is finite, every block meeting the nonidentity support is finite. There are only finitely many such blocks, so the support is finite. The supported letters occur in the same order as in $w$, because the blocks are convex. Inserting or deleting finitely many identity factors and using ordinary associativity shows that the outer value is $p(w)$.
+
+If $J$ is infinite, the outer product exists only when every block value is $e$. Its value is therefore $e$. If the support is infinite, this gives the asserted value. If the support is finite, only finitely many blocks meet it. Each such block is finite and its supported letters multiply to $e$. The complete list of supported letters is the ordered concatenation of these finitely many supported block lists. Hence finite associativity gives $p(w)=e$, which is again the outer value.
+\end{proof}
+
+For a commutative $M$, the argument applies to arbitrary partitions, since the finite supported factors can be reordered. This includes the two-element counterexample. For a noncommutative $M$, arbitrary reorderings are not asserted to preserve the finite product.
+
+\subsection{Nontrivial units prohibit completion}
+Recall that $u\in M$ is a unit if it has a two-sided inverse. The set of units is denoted by $\units(M)$.
+
+\begin{proposition}[Unit obstruction]\label[proposition]{prop:unit-obstruction}
+If $\units(M)\ne\set{e}$, then $\PP(M)$ has no $\leq\omega$-extension.
+\end{proposition}
+\begin{proof}
+Choose $u\ne e$ and $v$ with $uv=vu=e$. In a proposed extension, let $q$ be the value of the alternating word
+\[
+u,v,u,v,u,v,\ldots.
+\]
+Grouping it into $uv$ pairs gives $q=e$, because $\Pi_M(e^\omega)=e$ was prescribed. The tail after its first letter is the word $v,u,v,u,\ldots$; grouping this tail into $vu$ pairs also gives $e$. Grouping the whole word into its first singleton and that tail then gives $q=ue=u$, a contradiction.
+\end{proof}
+
+This is the mechanism of \cite[Proposition~5.1]{LippariniNIS}, restated with the partial domain made explicit. The obstruction itself is not presented here as a new theorem of infinitary semigroups. Its combination with \cref{thm:monoid-Eq} supplies the answer to the pairwise-coherence question.
+
+\subsection{A positive construction for conical monoids}
+\begin{definition}
+A monoid $M$ with identity $e$ will be called \emph{conical} if
+\begin{equation}\label{eq:conical}
+xy=e\quad\Longrightarrow\quad x=y=e.
+\end{equation}
+This definition, rather than any alternative use of the word, is what is needed below.
+\end{definition}
+
+\begin{lemma}\label[lemma]{lem:no-erasure}
+In a conical monoid, a finite product is $e$ if and only if every factor is $e$.
+\end{lemma}
+\begin{proof}
+The reverse implication is the identity law. For the forward implication, use induction on the number of factors. If a product of at least two factors is $e$, apply \eqref{eq:conical} to the product of all but the last factor and the last factor. Both are $e$, and induction applies to the shorter product. The cases of zero or one factor are immediate.
+\end{proof}
+
+\begin{theorem}[One-new-element completion]\label{thm:completion}
+If $M$ is conical, then $\PP(M)$ embeds into a complete infinitary semigroup on $M\cup\set{\Omega}$, where $\Omega\notin M$. The new element is absorbing, and $e$ remains an identity even under arbitrary insertion or deletion of copies of $e$.
+\end{theorem}
+\begin{proof}
+For every linearly indexed word $w$ over $M\cup\set{\Omega}$, define
+\begin{equation}\label{eq:Omega-completion}
+\widehat\Pi(w)=
+\begin{cases}
+\Omega, & \Omega\text{ occurs among the letters},\\
+\Omega, & \Omega\text{ does not occur and }\supp_e(w)\text{ is infinite},\\
+p(w), & \Omega\text{ does not occur and }\supp_e(w)\text{ is finite}.
+\end{cases}
+\end{equation}
+Here $p(w)$ is the finite ordered product of nonidentity letters in $M$. In particular, the empty product is $e$. This formula defines every product and preserves \eqref{eq:PM}. It also evaluates every singleton correctly.
+
+To prove regrouping, fix a partition into nonempty convex blocks. If a letter is $\Omega$, the block containing it has value $\Omega$, and the outer product is $\Omega$. Both sides of \eqref{eq:N} therefore agree.
+
+Assume now that no letter is $\Omega$ and the support is finite. Each block has finite support, only finitely many blocks have nonempty support, and all other block values are $e$. By finite associativity, their ordered product is $p(w)$. Thus the outer product equals the flat product.
+
+Finally, suppose there is no $\Omega$ letter but the support is infinite. If a block has infinite support, its value is $\Omega$, and the outer value is $\Omega$. Otherwise every block has finite support. Infinitely many blocks must meet the support, since a finite union of finite sets is finite. By \cref{lem:no-erasure}, each support-meeting block has value different from $e$. The outer word therefore has infinite nonidentity support, so its value is again $\Omega$, as required.
+
+The formula depends on the identity letters only through their absence from the support. Inserting or deleting copies of $e$ preserves the induced order of the remaining letters and hence the value. Occurrence of $\Omega$ forces the first case, proving absorption.
+\end{proof}
+
+The essential issue in this construction is \emph{support erasure}: can a nonempty finite block of nonidentity letters multiply to the identity? Conicality prevents it. In $C_2$, a pair $aa$ does erase its support; infinitely many such erasures are exactly what defeats the completion formula and produces the obstruction.
+
+\subsection{An exact criterion for directly finite monoids}
+\begin{definition}
+A monoid is \emph{directly finite} if $xy=e$ implies $yx=e$.
+\end{definition}
+
+\begin{lemma}\label[lemma]{lem:direct}
+Every finite monoid is directly finite. Every commutative monoid is directly finite. In a directly finite monoid, conicality is equivalent to $\units(M)=\set{e}$.
+\end{lemma}
+\begin{proof}
+For a finite monoid, let $L_x:M\to M$ be left multiplication by $x$. If $xy=e$, then $L_x\circ L_y=\mathrm{id}_M$ in the usual right-to-left convention for function composition. On a finite set, a map with a one-sided inverse is bijective, so also $L_y\circ L_x=\mathrm{id}_M$. Evaluating at $e$ yields $yx=e$. The commutative case follows immediately from commutativity.
+
+Conicality rules out a nonidentity unit. Conversely, if the monoid is directly finite and $xy=e$, then also $yx=e$. Hence $x$ and $y$ are units; when the unit group is trivial, both equal $e$.
+\end{proof}
+
+\begin{theorem}[Classification of the canonical family]\label{thm:classification}
+For a directly finite monoid $M$, the following are equivalent:
+\begin{enumerate}[label=(\roman*),itemsep=1pt,topsep=3pt]
+\item $\PP(M)$ has a complete infinitary extension;
+\item $\PP(M)$ has an ordinal-complete extension;
+\item $\PP(M)$ has a $\leq\omega$-extension;
+\item $\units(M)=\set{e}$;
+\item $M$ is conical.
+\end{enumerate}
+When these conditions hold, one additional element suffices. In particular, the equivalence applies to every finite monoid and every commutative monoid.
+\end{theorem}
+\begin{proof}
+The first implication to the second and the second to the third are restrictions of completeness. The third implies the fourth by \cref{prop:unit-obstruction}. The fourth and fifth are equivalent by \cref{lem:direct}. The fifth implies the first by \cref{thm:completion}.
+\end{proof}
+
+\subsection{Examples and the boundary of the classification}
+\begin{example}[The two monoids on two labeled elements]
+With elements $e,z$ and identity $e$, there are two choices for $z^2$. If $z^2=e$, one obtains $C_2$ and the obstruction. If $z^2=z$, the monoid is conical. In this latter case no extra element is even necessary: assign value $z$ to every word containing a $z$, and value $e$ to every all-$e$ word. A block contains a $z$ exactly when its value is $z$, which proves regrouping directly.
+\end{example}
+
+\begin{example}[Local subgroups need not obstruct]
+Start with any group $H$ with identity $p$, and adjoin a \emph{new} external identity $e$. Keep the multiplication of $H$ and set $eh=he=h$ for $h\in H$. No product involving an element of $H$ can equal the new element $e$, so the resulting monoid is conical. Thus its canonical partial system has a complete extension, even if $H$ is a nontrivial subgroup with local identity $p\ne e$. The obstruction concerns units at the prescribed global identity, not the mere presence of a subgroup somewhere in the multiplication table.
+\end{example}
+
+\begin{example}[An infinite positive example]
+Use the additive monoid $\NN$ with identity $0$. Define all finite sums and prescribe arbitrary all-zero sums to be zero. It is conical because $x+y=0$ forces $x=y=0$. Adjoining $\infty$ and assigning value $\infty$ whenever infinitely many positive terms occur gives the construction of \cref{thm:completion} in additive notation.
+\end{example}
+
+For arbitrary infinite noncommutative monoids, triviality of the unit group alone does not imply conicality: a one-sided inverse need not be two-sided. Theorem~\ref{thm:classification} therefore does not assert that equivalence without direct finiteness. This is not merely a cosmetic distinction in the surrounding theory. Lipparini constructs complete noncommutative infinitary semigroups with nontrivial one-sided inverses and a complete identity \cite{LippariniInv}. We do not classify the canonical partial systems of all nondirectly-finite monoids here.
+
+\section{Evaluation trees and bounded-depth coherence}
+\label{sec:trees}
+\subsection{Trees of already-defined products}
+An evaluation tree is a rooted tree of finite height. A leaf is labeled by an element of $S$. The children of an internal node form a nonempty linearly ordered set. After their values have been obtained, that ordered word must be in the domain of the \emph{original} partial product; its product is the value of the node. A tree is \emph{valid} when this holds at every internal node.
+
+Infinite branching is allowed. Tree height is the largest number of internal nodes on a root-to-leaf path. Leaves have height zero. The flattened leaf word is obtained recursively by taking the ordered sum of the flattened child words. Since height is finite and branching is set-sized, its index order is a set-sized linear order. In an ordinal-only setting, require the children at every node to be well-ordered; the flattened word is then well-ordered as well.
+
+\begin{definition}\label[definition]{def:Cr}
+For $r\geq1$, a partial system satisfies \emph{depth-$r$ coherence}, written $\Coh r$, when any two valid evaluation trees of height at most $r$ with the same flattened labeled word have the same root value.
+\end{definition}
+
+Singleton products allow a tree to be padded by unary nodes without changing its value or flat word. Consequently $\Coh2$ is equivalent to ordered $(\Eq)$: a height-two tree is a two-stage convex regrouping, and shorter trees can be padded to height two. The condition $\Coh1$ is automatic because a partial product is single-valued and the singleton axiom agrees with leaf evaluation.
+
+\begin{lemma}[Completion implies every finite-depth coherence]\label[lemma]{lem:completion-trees}
+If a partial system has a complete extension, it satisfies $\Coh r$ for every finite $r$. For an ordinal-complete extension the same assertion holds for ordinal-indexed evaluation trees.
+\end{lemma}
+\begin{proof}
+Fix a valid tree and work in the extension. We show by induction on its height that the product of its flat leaf word equals its root value. This is the singleton assertion at height zero. At an internal node, the flat leaf word is partitioned into the convex flattened words of the children. The extension's product of each child word is its child value by induction. Apply regrouping to the flat word and use preservation of the originally defined product at the root. Its flat product therefore equals its root value.
+
+Two trees with the same flattened word must consequently have equal values in the extension. Injectivity makes their values equal in the original system.
+\end{proof}
+
+The two-element example satisfies $\Coh2$ but fails $\Coh3$. It is natural to ask whether choosing some larger, fixed depth could repair the test. The next construction answers negatively in the general class of partial infinitary products.
+
+\section{No fixed finite depth can be sufficient}
+\label{sec:hierarchy}
+\subsection{The fork construction}
+Fix $k\geq3$. Begin with distinct atomic letters
+\[
+a_1,a_2,\ldots,a_k.
+\]
+Adjoin distinct prefix symbols $L_2,\ldots,L_k$ and distinct suffix symbols $R_1,\ldots,R_{k-1}$, all disjoint from the atoms and from one another. For notation only, put
+\[
+L_1=a_1,\qquad R_k=a_k,\qquad x=L_k,\qquad y=R_1.
+\]
+The resulting set $F_k$ has
+\[
+|F_k|=k+(k-1)+(k-1)=3k-2
+\]
+elements. Prescribe the following products and no others:
+\begin{align}
+\Pi((s)_{i\in I})&=s
+   &&\text{for every }s\in F_k\text{ and every nonempty linear order }I,
+   \label{eq:constant-fork}\\
+\Pi(L_{i-1},a_i)&=L_i
+   &&(2\leq i\leq k),\label{eq:left-fork}\\
+\Pi(a_i,R_{i+1})&=R_i
+   &&(1\leq i\leq k-1).\label{eq:right-fork}
+\end{align}
+The nonconstant binary inputs in these rules are pairwise distinct when $k\geq3$. They also do not overlap the constant-word rule. Thus the prescription is single-valued.
+
+\begin{lemma}\label[lemma]{lem:fork-axioms}
+The partial product on $F_k$ satisfies \eqref{eq:U} and \eqref{eq:N}. Every element has every nonempty constant power defined, with value equal to itself.
+\end{lemma}
+\begin{proof}
+The assertion about constant powers is the defining rule and includes singletons. A convex partition of a constant word has constant blocks of the same symbol; all their values are that symbol, so the outer constant product has the original value.
+
+The only other defined flat words have two letters. A convex partition of a two-element order has either one block or two singleton blocks. In the first case the outer singleton returns the given binary value. In the second case the inner singletons return the original inputs and the outer product is the same prescribed binary product. These are all possibilities.
+\end{proof}
+
+\subsection{An interval invariant}
+Assign each symbol a nonempty interval of $\set{1,\ldots,k}$:
+\begin{align*}
+J(a_i)&=\set{i},\\
+J(L_i)&=\set{1,\ldots,i} &&(2\leq i\leq k),\\
+J(R_i)&=\set{i,\ldots,k} &&(1\leq i\leq k-1).
+\end{align*}
+Exactly one pair of distinct symbols has the same assigned interval:
+\begin{equation}\label{eq:xy-interval}
+J(x)=J(y)=\set{1,\ldots,k}.
+\end{equation}
+All other assigned intervals are distinct. This follows by distinguishing singletons, proper initial intervals containing $1$ but not $k$, and proper final intervals containing $k$ but not $1$.
+
+\begin{lemma}[Leaf-union invariant]\label[lemma]{lem:interval-invariant}
+If $T$ is a valid evaluation tree over $F_k$, then
+\begin{equation}\label{eq:interval-tree}
+J(\val(T))=\bigcup_{\ell\text{ a leaf of }T} J(\text{label}(\ell)).
+\end{equation}
+Hence two trees with the same flat leaf word can disagree only by having respective values $x$ and $y$.
+\end{lemma}
+\begin{proof}
+Every defined product has output interval equal to the union of its input intervals. This is immediate for a nonempty constant word. For the prefix rule, $\set{1,\ldots,i-1}\cup\set{i}=\set{1,\ldots,i}$; the suffix rule is analogous. Induct on the finite height of the tree and take unions over its children. The final assertion follows from \eqref{eq:xy-interval} and uniqueness of all the other intervals.
+\end{proof}
+
+Note that the proof uses no finiteness of the leaf set and no well-ordering of the branching orders. An infinite constant node contributes the same union as a single copy of its child interval.
+
+\subsection{Why the conflict cannot occur early}
+\begin{lemma}[Common leaf alphabet]\label[lemma]{lem:leaf-alphabet}
+If two valid trees have the same flat leaf word and have respective values $x$ and $y$, then every leaf of that word is an atom $a_i$.
+\end{lemma}
+\begin{proof}
+Inspect the possible rules producing a prefix symbol. A tree with root value $L_i$ can contain only atoms $a_1,\ldots,a_i$ and prefix symbols $L_2,\ldots,L_i$ at its leaves: a constant root reduces this assertion to its smaller-height children, while a nonconstant root must use the rule $(L_{i-1},a_i)\mapsto L_i$. Induction on height proves the assertion, including the case of a leaf root.
+
+Symmetrically, a tree with root value $R_j$ can contain only atoms $a_j,\ldots,a_k$ and suffix symbols $R_j,\ldots,R_{k-1}$. Thus a word that is the leaf word of both an $x$-tree and a $y$-tree can contain neither a prefix symbol nor a suffix symbol. Their permitted alphabets intersect exactly in the atoms.
+\end{proof}
+
+\begin{lemma}[Minimum construction depth]\label[lemma]{lem:minimum-depth}
+An atom-only tree with value $L_i$ has height at least $i-1$. An atom-only tree with value $R_j$ has height at least $k-j$. In particular, an atom-only tree with value $x$ or $y$ has height at least $k-1$.
+\end{lemma}
+\begin{proof}
+For the prefix assertion, induct on tree height, treating all $i$ together. If $i=1$, the lower bound is zero. If $i\geq2$, an atom-only tree cannot be a leaf labeled $L_i$.
+
+If its root is a constant product of copies of $L_i$, take any child. That child is again atom-only, has value $L_i$, and has strictly smaller height. The induction hypothesis already gives height at least $i-1$ for the child, hence an even larger height for the whole tree.
+
+If its root is nonconstant, it must be $(L_{i-1},a_i)\mapsto L_i$. The left child has height at least $i-2$ by induction. The root contributes one more level, giving height at least $i-1$. These cases cover every rule producing $L_i$.
+
+The suffix assertion is proved identically with the right child in $(a_j,R_{j+1})\mapsto R_j$. Its required number of suffix-building steps is $k-j$.
+\end{proof}
+
+\begin{theorem}[Exact first conflicting depth]\label{thm:fork-depth}
+For each $k\geq3$, the partial system $F_k$ satisfies $\Coh{k-2}$ but fails $\Coh{k-1}$. It has no injective extension even to a total associative finite product.
+\end{theorem}
+\begin{proof}
+Suppose two trees of height at most $k-2$ had the same flattened word and different values. By \cref{lem:interval-invariant} their values would be $x$ and $y$. By \cref{lem:leaf-alphabet} all their leaves would be atoms. Then \cref{lem:minimum-depth} would force each height to be at least $k-1$, a contradiction. This proves $\Coh{k-2}$.
+
+For failure at the next depth, use the two combs on the same finite word $a_1\cdots a_k$:
+\begin{align}
+\Pi\bigl(\cdots\Pi(\Pi(a_1,a_2),a_3)\cdots,a_k\bigr)&=L_k=x,
+\label{eq:left-comb}\\
+\Pi\bigl(a_1,\Pi(a_2,\ldots,\Pi(a_{k-1},a_k)\ldots)\bigr)&=R_1=y.
+\label{eq:right-comb}
+\end{align}
+All internal products are prescribed. Each comb has height $k-1$. Its leaf word is exactly $a_1,\ldots,a_k$, but $x\ne y$ by construction. This proves failure of $\Coh{k-1}$.
+
+In a total associative finite extension, the product of $a_1\cdots a_k$ would equal both comb values. Preservation and injectivity would then force $x=y$, which is impossible.
+\end{proof}
+
+\begin{corollary}[No universal finite-depth test]\label[corollary]{cor:no-bound}
+For every integer $r\geq1$, there is a partial infinitary semigroup on $3r+4$ elements that satisfies $\Coh r$ but has no complete extension. Every nonempty constant product of every element is defined. The first conflicting depth in the exhibited system is $r+1$.
+\end{corollary}
+\begin{proof}
+Take $k=r+2$ in \cref{thm:fork-depth} and use $|F_k|=3k-2$.
+\end{proof}
+
+This corollary applies to the full class defined only by \eqref{eq:U} and \eqref{eq:N}. The $F_k$ do not have all finite products defined. Therefore it does \emph{not} prove the same no-bound assertion under an additional total-finite-product hypothesis. By contrast, the two-element example does have every finite product and proves that depth two fails even in that narrower class.
+
+\section{A finite certificate for the ten-element example}
+\label{sec:certificate}
+The case $k=4$ illustrates the hierarchy with a certificate independent of the interval proof. Rename its symbols as
+\[
+a,b,c,d,u,v,w,t,x,y
+\]
+and prescribe, besides all nonempty constant powers,
+\begin{equation}\label{eq:F4-products}
+ab=u,\qquad uc=v,\qquad vd=x,
+\qquad cd=w,\qquad bw=t,\qquad at=y.
+\end{equation}
+The two incompatible depth-three evaluations are
+\[
+((ab)c)d=x,\qquad a(b(cd))=y.
+\]
+
+For a word, let its \emph{content} be the set of distinct symbols occurring in it. The following table lists exactly the possible contents of a flat leaf word evaluated to each output by a valid tree of depth at most two.
+
+\begin{table}[htbp]
+\centering
+\renewcommand{\arraystretch}{1.18}
+\begin{tabular}{@{}cl@{}}
+\toprule
+Output & Possible contents at depth at most two\\
+\midrule
+$a$ & $\set{a}$\\
+$b$ & $\set{b}$\\
+$c$ & $\set{c}$\\
+$d$ & $\set{d}$\\
+$u$ & $\set{u},\ \set{a,b},\ \set{a,b,u}$\\
+$v$ & $\set{v},\ \set{u,c},\ \set{a,b,c},\ \set{u,c,v}$\\
+$w$ & $\set{w},\ \set{c,d},\ \set{c,d,w}$\\
+$t$ & $\set{t},\ \set{b,w},\ \set{b,c,d},\ \set{b,t,w}$\\
+$x$ & $\set{x},\ \set{v,d},\ \set{u,c,d},\ \set{x,v,d}$\\
+$y$ & $\set{y},\ \set{a,t},\ \set{a,b,w},\ \set{y,a,t}$\\
+\bottomrule
+\end{tabular}
+\caption{A 26-content certificate of full depth-two coherence for $F_4$. Contents in different rows are disjoint as families of sets.}
+\label{tab:contents}
+\end{table}
+
+Here is why the table covers infinite branching, rather than merely a finite sample of words. For an output $s$, let $B_s$ be the family of contents possible at depth at most one. It always contains $\set{s}$. If a nonconstant rule $pq=s$ exists, it also contains $\set{p,q}$; these are the only possibilities.
+
+At depth two, the outer node is either constant or one of the binary rules. A constant outer $s$-product has children of value $s$, and its leaf content is a nonempty union of members of $B_s$. Even with infinitely many children there are only the finitely many different content types in $B_s$. Thus all possibilities are obtained by the finitely many nonempty subfamilies of $B_s$. For a binary root $pq=s$, the content is $A\cup B$ for some $A\in B_p$ and $B\in B_q$. These two instructions generate exactly \cref{tab:contents}; shorter trees are covered by singleton padding.
+
+No content occurs in two different output rows. Identical flat words have identical content, so they cannot have different outputs at depth two. This proves the full condition, not just its restriction to finite words. The machine-readable version of the table is included in \texttt{verification\_results.json}, and its generator is in \texttt{verify.py}.
+
+\section{Reproducible checks and their logical scope}
+\label{sec:checks}
+The accompanying verification program uses only the Python standard library and integer arithmetic. It was run successfully for this report. Its output is a deterministic JSON file, not a transcript of guessed or expected results.
+
+\subsection{Finite regrouping checks}
+All words over $C_2$ of lengths zero through ten were enumerated. For each nonempty word, every convex partition was checked against the flat finite product. There were $2{,}047$ words including the empty word, and $699{,}051$ regrouping checks including its trivial check. These counts are
+\[
+\sum_{n=0}^{10}2^n=2047,
+\qquad
+1+\sum_{n=1}^{10}2^n2^{n-1}=699051.
+\]
+This is a regression check for the finite part of the construction, not a proof of coherence for infinite words. That proof is \cref{lem:parity}.
+
+\subsection{A symbolic $\omega$-word certificate}
+The program represents finite product nodes and $\omega$-repetitions of a finite pattern. It checks that all nodes of \eqref{eq:even-tree} and \eqref{eq:shift-tree} are products in the original domain, computes their depths as two and three, and obtains their distinct values $e$ and $a$.
+
+The flattened words are stored as a finite prefix and a nonempty repeating period. In the alphabet $e=0$, $a=1$, their representations are
+\[
+(\text{prefix }(),\ \text{period }(1,1)),
+\qquad
+(\text{prefix }(1),\ \text{period }(1,1)).
+\]
+To compare two such $\omega$-words exactly, it suffices to compare up to the longer prefix and then for one least-common-multiple of the two period lengths. Beyond that point the ordered pair of letters repeats. Thus this computation certifies equality of entire infinite words, not equality of a large finite truncation. For these two representations the comparison bound is three positions.
+
+\subsection{All labeled monoids through four elements}
+The program fixes identity label zero and enumerates all multiplication tables with that identity, retaining precisely the associative ones. It checks direct finiteness, equivalence of conicality and a trivial unit group, and the finite multiplication table of the one-new-element construction in every positive case.
+
+\begin{table}[htbp]
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+Size & Candidate tables & Monoids & Trivial units & Nontrivial units\\
+\midrule
+1 & 1 & 1 & 1 & 0\\
+2 & 2 & 2 & 1 & 1\\
+3 & 81 & 11 & 8 & 3\\
+4 & 262144 & 156 & 113 & 43\\
+\bottomrule
+\end{tabular}
+\caption{Exact enumeration with fixed identity label zero. Counts are of labeled tables, not isomorphism classes.}
+\label{tab:monoids}
+\end{table}
+
+A table on $n$ labels with identity zero has $(n-1)^2$ undetermined entries, explaining the candidate count $n^{(n-1)^2}$. The enumeration does not substitute for the general proof of \cref{thm:classification}. Nor does checking the extended binary table alone prove infinitary regrouping: the latter is established by the support argument in \cref{thm:completion}.
+
+\subsection{Fork invariants and content certificates}
+For each $k=3,\ldots,16$, the program constructs the fork, checks its cardinality and every interval-union identity, verifies that only $x$ and $y$ have the same interval, and computes the possible descendant alphabets. It confirms that their common leaf alphabet consists exactly of the atoms. A finite dynamic program computes the minimum height for constructing each symbol from atoms and finds height $k-1$ for both $x$ and $y$. It also evaluates the explicit two combs.
+
+Separately, the program generates all 26 contents in \cref{tab:contents} and checks pairwise disjointness of the output families. The proof that this finite certificate covers arbitrary linear-order branching is given in \cref{sec:certificate}. The claim for every integer $k$, rather than just $k\leq16$, rests on \cref{thm:fork-depth}.
+
+\subsection{How to reproduce the archive}
+From the extracted directory, run
+\begin{lstlisting}
+python3 verify.py --output verification_results.json
+pdflatex -interaction=nonstopmode -halt-on-error ordinal_product_coherence.tex
+pdflatex -interaction=nonstopmode -halt-on-error ordinal_product_coherence.tex
+\end{lstlisting}
+The verification program supports Python~3.9 or later without external packages. The document uses standard LaTeX packages and an embedded bibliography; BibTeX is not required. A \texttt{Makefile} supplies equivalent targets. On systems where Python is invoked as \texttt{python}, use that executable instead.
+
+The archive does not contain a proof-assistant formalization. Its proofs are conventional mathematical arguments, supplemented by small exact certificates that make several implementation and indexing errors detectable.
+
+\section{What is settled, and what is not}
+\label{sec:scope}
+\subsection{The specific negative answer}
+Theorem~\ref{thm:main} supplies an explicit negative answer to the pairwise-coherence sufficiency issue in \cite[Remark~7.1(b)]{LippariniNIS}. It is stronger than a finite search result: it checks all partitions and excludes even a $\leq\omega$-extension allowing arbitrarily many new elements. Its two-element size is optimal. It also retains a total ordinary monoid structure, so the failure is genuinely infinitary rather than an unfilled finite associativity constraint.
+
+The known inverse obstruction is central and has been explicitly credited. The mathematical contribution of the present attempt is to isolate a partial domain on which the obstruction coexists with the full pairwise condition, to prove that coexistence, and to derive the accompanying classification and depth hierarchy. Whether these exact formulations have appeared elsewhere is not established by the limited literature verification behind this report.
+
+\subsection{Compatibility with existing extension results}
+Lipparini's \emph{Ordinal semigroups} proves an extension result starting with products of all words of order type at most an infinite ordinal $\gamma$, and extending to all well-ordered words of cardinality at most $|\gamma|$ \cite{LippariniOrd}. For $\gamma=\omega$, the premise already includes \emph{every} $\omega$-product. Our two-element example lacks $\Pi(a^\omega)$ and proves that it cannot be added consistently. It therefore does not contradict that extension theorem.
+
+Similarly, adding a fresh absorbing value for all infinite products is not an extension of our prescribed domain: it would change $\Pi(e^\omega)=e$ to the new absorbing element. The successful construction in \cref{thm:completion} instead uses finite \emph{nonidentity support}, not finite word length, and relies on conicality to make that distinction compatible with regrouping.
+
+\subsection{Remaining directions, stated without overclaiming}
+A general necessary-and-sufficient criterion for completion is not proved here. Every finite-depth tree equality is necessary by \cref{lem:completion-trees}, but we have not shown that all such equalities together suffice. Completing a partial operation may create new intermediate values and new equations whose effects are not described merely by two original-domain trees. A general construction would have to control those identifications and prove injectivity of the original set.
+
+The unbounded-depth family leaves a sharper restricted question untouched: what coherence conditions suffice when \emph{all finite products are already defined}? In that setting every finite flat word already evaluates, and repeated application of \eqref{eq:N} makes all finite-leaf evaluations agree. Consequently a remaining obstruction must genuinely involve an infinite flat word, as in the two-element example. The finite forks cannot establish an unbounded hierarchy within that narrower class.
+
+For canonical systems $\PP(M)$, the directly finite case is fully classified by \cref{thm:classification}. The nondirectly-finite case invites a more refined analysis of one-sided inverses and prescribed infinite identity powers. The results about noncommutative one-sided inverses in \cite{LippariniInv} show why it would be unsafe to replace that analysis by a blanket claim that every nontrivial identity factorization is forbidden.
+
+\subsection{Conclusion}
+The essential distinction is between \emph{pairwise agreement within a partial domain} and \emph{agreement after the domain is completed}. For the smallest counterexample, a missing finite-support word conceals a third level of nesting; once that level is exposed, the order-type identities $2\cdot\omega=\omega$ and $1+\omega=\omega$ force a contradiction. For the fork family, analogous incompatibilities can be postponed to any prescribed finite depth, even while all constant transfinite products are available.
+
+These constructions provide a concrete answer to the selected question and a precise warning about its possible repairs: finite coherence tests can be sound necessary conditions without being stable or sufficient completion criteria.
+
+\appendix
+\section{A compact logical audit}
+\label{app:audit}
+For convenience, the core counterexample can be checked through the following implications, each proved above.
+\begin{enumerate}[label=\arabic*.,leftmargin=*,itemsep=4pt]
+\item The domain consists of all finite words and all constant-$e$ words. These rules are compatible and define a genuine partial function.
+\item A defined finite flat word has only finite blocks and finite quotient; a defined infinite flat word has only $e$ letters. Therefore all required regroupings exist and agree.
+\item A two-stage evaluation with finitely many outer factors implies finite nonidentity support and returns its finite product. An infinite outer evaluation has only identity-valued blocks and returns $e$; if its support is finite, that finite product is also $e$. Thus no two defined two-stage evaluations conflict.
+\item A hypothetical complete value of $a^\omega$ is $e$ by pairing adjacent letters. The tail after the first letter is another copy of the same word, so first-letter/tail regrouping gives the value $ae=a$.
+\item Adding new elements cannot repair the contradiction because both forced values are distinct original elements. The argument does not assume cancellation or a global identity law for new elements.
+\item A one-element system always completes. Thus the counterexample is cardinality-minimal.
+\end{enumerate}
+
+The code separately checks finite regroupings and the two nested witness trees. The universal infinite-partition argument is the proof of \cref{lem:parity}, not an inference from the finite checks.
+
+\begin{thebibliography}{9}
+\bibitem{LippariniNIS}
+Paolo Lipparini.
+\emph{Noncommutative infinitary semigroups}.
+arXiv:2605.28413v1 [math.GR], May 27, 2026.
+\url{https://arxiv.org/abs/2605.28413v1}.
+In particular, Definitions 3.1, 3.8, and 6.2; Proposition 5.1; Remark 7.1(b).
+
+\bibitem{LippariniInv}
+Paolo Lipparini.
+\emph{One-sided inverses in noncommutative infinitary semigroups}.
+arXiv:2605.28416v1 [math.GR], May 27, 2026.
+\url{https://arxiv.org/abs/2605.28416v1}.
+
+\bibitem{LippariniOrd}
+Paolo Lipparini.
+\emph{Ordinal semigroups}.
+arXiv:2605.28419v1 [math.LO], May 27, 2026.
+\url{https://arxiv.org/abs/2605.28419v1}.
+\end{thebibliography}
+
+\end{document}

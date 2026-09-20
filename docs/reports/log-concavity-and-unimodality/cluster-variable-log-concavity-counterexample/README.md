@@ -46,7 +46,6 @@ A polygon-only restriction is not settled here.
 - `source_audit.md`: exact source versions, relevant definitions, and limits
   of the literature/status check.
 - `Makefile` and `build.ps1`: optional build helpers.
-- `SHA256SUMS.txt`: hashes of the distributed files other than itself.
 
 ## Run the checks
 

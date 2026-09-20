@@ -209,7 +209,7 @@ proof checks. No font files or copies of third-party papers are distributed.
 and the scope of the status check. The bibliography in `article.tex` is
 self-contained; no bibliography-processing step is needed.
 
-`SHA256SUMS` identifies the files in the delivered package, excluding itself.
-Rebuilding the PDF or rerunning checks can change file hashes, especially
-metadata and elapsed-time fields. The archive was checked for CRC errors
-and the PDF was rendered and visually inspected after its final build.
+Rebuilding the PDF or rerunning the checks changes file hashes, especially
+metadata and elapsed-time fields, so no checksum manifest is distributed. The
+archive was checked for CRC errors and the PDF was rendered and visually
+inspected after its final build.

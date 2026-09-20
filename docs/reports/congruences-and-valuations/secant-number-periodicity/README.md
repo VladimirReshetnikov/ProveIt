@@ -53,7 +53,6 @@ the article, not merely guessed from the included data.
 - `oeis_correction.txt`: proposed correction wording, not submitted anywhere.
 - `SOURCES.md`: source provenance and distinctions between sequences.
 - `Makefile`, `build.ps1`: optional build helpers.
-- `SHA256SUMS.txt`: checksums of the final package files other than itself.
 
 ## Reproduce the computations
 

@@ -34,7 +34,6 @@ selected assertion; this is not a guarantee of novelty or priority.
 - `SOURCES.md`: source locations, statement mapping, and literature-check limitations.
 - `PROOF_CHECKLIST.md`: concise checklist for independently auditing the proof.
 - `build.py`: optional portable verification-and-PDF build command.
-- `SHA256SUMS.txt`: checksums of the distributed files other than this checksum list.
 
 ## Run the verification
 

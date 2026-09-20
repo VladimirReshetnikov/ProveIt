@@ -46,7 +46,6 @@ central limit theorem for size.
 - `oeis_update.txt`: a suggested formula and compact proof note, not submitted.
 - `requirements-optional.txt`: dependencies only for the optional audit.
 - `Makefile`: convenience targets on systems with make, g++, Python, and TeX.
-- `MANIFEST.sha256`: file-integrity checksums.
 
 All generated counts are computed from the proof, not downloaded from an OEIS
 b-file. The 40 published initial values are separately embedded as comparison

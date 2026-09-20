@@ -1,0 +1,1189 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{accent}{HTML}{246B79}
+\definecolor{pale}{HTML}{EEF4F6}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={A Number-Valued Broadcast Sum of Surreal Sequences},
+ pdfauthor={Research manuscript prepared with ChatGPT}}
+\titleformat{\section}{\large\bfseries\color{ink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{ink}}{\thesubsection}{0.65em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\scshape A broadcast sum of surreal sequences}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.2em}
+\setlist{nosep,leftmargin=1.8em}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\BB}{\mathsf B}
+\newcommand{\bs}{\boldsymbol{s}}
+\newcommand{\bt}{\boldsymbol{t}}
+\newcommand{\bu}{\boldsymbol{u}}
+\newcommand{\bv}{\boldsymbol{v}}
+\newcommand{\ns}{\mathbin{\#}}
+\newcommand{\natsum}{\mathop{\#}}
+\newcommand{\len}{\ell}
+\newcommand{\cut}[2]{\left\{\,#1\;\middle|\;#2\,\right\}}
+\newcommand{\pref}[2]{#1\mathbin{\restriction}#2}
+\newcommand{\Rk}{\mathcal R}
+\newcommand{\epset}{\mathcal E}
+\newcommand{\signplus}{\mathtt{+}}
+\newcommand{\signminus}{\mathtt{-}}
+\newcommand{\finite}{\mathrm{fin}}
+\newcommand{\Ord}{\mathrm{Ord}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{0.5in}
+{\small\scshape\color{accent} Ordinal arithmetic \; / \; Surreal numbers \; / \; Infinite games\par}
+\vspace{0.45in}
+{\LARGE\bfseries\color{ink} A Number-Valued Broadcast Sum\\[0.18em]
+of Surreal Sequences\par}
+\vspace{0.25in}
+{\large Commuting truncations and an exact failure of monotonicity\par}
+\vspace{0.3in}
+{\normalsize A partial attack on Lipparini's Problem 7.5\par}
+\vspace{0.35in}
+{\normalsize Research manuscript prepared with ChatGPT\par}
+{\normalsize September 20, 2026\par}
+\vspace{0.45in}
+\begin{minipage}{0.91\textwidth}
+\small
+\textbf{Abstract.}
+We analyze the sign-truncation rule proposed by Lipparini for extending an
+infinitary ordinal operation to surreal sequences. A player chooses a sign
+position and applies the associated truncation to all but finitely many
+coordinates. We supply an explicit descending ordinal rank and prove that every
+resulting game is a number: opposite truncations commute, and the earlier
+selected sign survives the other move. The operation agrees with ordinary
+surreal addition on finite-support families and with Lipparini's operation on
+ordinal sequences. A finite-birthday perturbation bound permits exact
+calculations for cofinite dyadic families. The main example is a positive,
+classically convergent series with terms either $2^{-(n+d)}$ or
+$3\cdot2^{-(n+d+1)}$. Its broadcast value is $k+1$ if exactly $k$ terms take the
+second value, and $\sqrt{\omega}$ if infinitely many do. A strictly larger
+geometric sequence has broadcast value $1$. Thus the proposed rule is
+number-valued but fails even weak coordinatewise monotonicity, including on
+absolutely convergent positive dyadic sequences. Full proofs and an exact finite
+verification program are provided.
+\end{minipage}
+\vfill
+\begin{minipage}{0.91\textwidth}
+\colorbox{pale}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\small
+\textbf{Status and scope.} The underlying rule is Lipparini's, not a new
+definition claimed here. The proofs below are research claims developed in this
+manuscript; they have not been independently refereed or formally verified.
+The result analyzes a published candidate for an open-ended extension problem.
+It does \emph{not} construct a weakly monotone surreal summation theory or prove
+that no such alternative is possible. A limited literature check does not
+establish priority.}}
+\end{minipage}
+\vspace*{0.3in}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\vspace{1.3em}
+\noindent\textbf{Reading guide.} Sections~1--3 state the target and the rule.
+Sections~4--7 establish the structural theorems. Sections~8--10 contain the
+exact dyadic calculation and counterexamples. Sections~11--13 and the appendices
+document verification, limitations, and reproducibility.
+\newpage
+\pagenumbering{arabic}
+
+\section{The target and the outcome}\label{sec:target}
+
+Lipparini's extended paper \cite{lipparini2026} asks in Problem~7.5 for a suitable
+surreal or game-theoretic extension of the ordinal game in Definition~7.1.
+Remark~7.6(3) proposes the sign-truncation rule studied here and already observes
+that its runs terminate. The version checked is arXiv:2505.00424v2, dated
+April~30, 2026; the relevant discussion is on printed pages~36--37.
+We use the local name \emph{broadcast sum} and the notation $\BB$ for this rule.
+
+There are two distinct questions. Does the rule yield a surreal number rather
+than an arbitrary game? And does it retain useful order or summation properties?
+Our answer is positive to the first question and sharply negative to the second.
+
+\subsection{Main results in a compact form}
+
+For every set-indexed family $\bs=(s_i)_{i\in I}$ of canonical surreal sign
+expansions, the rule defines a well-founded game $G(\bs)$. We prove
+\begin{equation}\label{eq:main-number}
+                     G(\bs)\text{ is a number},\qquad \BB(\bs)\in\No.
+\end{equation}
+The passage from countable to set-indexed families uses the same finite-exemption
+rule; no cardinal-dependent normalization is introduced.
+
+For a concrete exact calculation, let $d\geq2$ be an integer and $E\subseteq\NN$,
+where $\NN=\{0,1,2,\ldots\}$. Put
+\begin{equation}\label{eq:main-family}
+ s_n^{E,d}=\begin{cases}
+ 3\cdot2^{-(n+d+1)},&n\in E,\\
+ 2^{-(n+d)},&n\notin E.
+ \end{cases}
+\end{equation}
+Then
+\begin{equation}\label{eq:main-formula}
+ \boxed{\quad
+ \BB\bigl((s_n^{E,d})_{n<\omega}\bigr)=
+ \begin{cases}
+ |E|+1,&E\text{ finite},\\[2pt]
+ \sqrt{\omega},&E\text{ infinite}.
+ \end{cases}\quad}
+\end{equation}
+Here $\sqrt{\omega}$ is the positive square root in the surreal field. It is not
+ordinal exponentiation by a fractional exponent. In Conway monomial notation
+it is $\omega^{1/2}$.
+
+Every series in \eqref{eq:main-family} is an ordinary positive real series, and
+\begin{equation}\label{eq:classical-bound}
+ 0<\sum_{n=0}^{\infty}s_n^{E,d}\leq3\cdot2^{-d}<1.
+\end{equation}
+Nevertheless, the broadcast output can exceed every real number. More strongly,
+$s_n^{E,d}<2^{-(n+d-1)}$ for every $n$, whereas
+\begin{equation}\label{eq:larger-sequence}
+ \BB\bigl((2^{-(n+d-1)})_{n<\omega}\bigr)=1.
+\end{equation}
+Thus \eqref{eq:main-formula} is an explicit counterexample to weak monotonicity
+whenever $E\neq\varnothing$.
+
+\subsection{What is and is not resolved}
+
+The manuscript supplies a numerical extension of the ordinal rule and a
+substantial analysis of that extension. It also rules out an attractive property
+of this particular candidate. This is a partial resolution of the stated
+research direction, not a claim that the word ``suitable'' has acquired a unique
+mathematical meaning.
+
+The strongest new claims proposed here are the general number-valuedness theorem,
+the finite-short-perturbation estimate, and the exact classification
+\eqref{eq:main-formula}. The explicit rank is a quantitative proof of termination,
+not a claim to originate the termination observation. Standard background on
+numbers, cuts, and game comparison is used throughout
+\cite{conway,gonshor,schleicherstoll}. Other infinitary game constructions, such
+as \cite{lipparini2024,lipparini2025}, should not be identified with the rule
+analyzed here.
+
+\section{Conventions and elementary surreal background}\label{sec:background}
+
+\subsection{Signs, prefixes, and options}
+
+We work in ZFC. Index families are set-sized; $\No$ is the proper class of
+surreal numbers, used through set-sized sign expansions and cuts.
+
+A surreal number has a unique canonical sign expansion
+$s:\len(s)\longrightarrow\{\signplus,\signminus\}$, with ordinal length
+$\len(s)$. Its canonical left options are prefixes immediately preceding a plus
+sign; its canonical right options are prefixes immediately preceding a minus
+sign:
+\begin{equation}\label{eq:signcut}
+ s=\cut{\pref{s}{\gamma}:s(\gamma)=\signplus}
+        {\pref{s}{\gamma}:s(\gamma)=\signminus}.
+\end{equation}
+Only positions $\gamma<\len(s)$ occur here. A prefix preceding a plus is strictly
+smaller than $s$, and a prefix preceding a minus is strictly larger. The empty
+string is $0$. The all-plus string of length $\alpha$ represents the ordinal
+$\alpha$.
+
+A \emph{short} number in this paper means a number of finite birthday, or
+equivalently a dyadic rational represented by a finite sign string. In
+particular, ``short'' does not mean every real number. A \emph{finite} surreal
+means one whose absolute value is bounded by some natural number; such a number
+need not be real or dyadic.
+
+We use game forms when discussing options and their numerical equivalence
+classes when calculating values. A game is recursively a \emph{number} when its
+options are numbers and every left option is strictly smaller than every right
+option. This recursive requirement matters: separation of options without their
+number-valuedness is not enough.
+
+\subsection{Comparison and cofinal replacement of cuts}
+
+For numerical game forms $x$ and $y$, the usual comparison test is
+\begin{equation}\label{eq:comparison}
+ x\leq y
+ \quad\Longleftrightarrow\quad
+ (\forall x^L\;x^L<y)\ \text{and}\ (\forall y^R\;x<y^R).
+\end{equation}
+A separated cut denotes the simplest surreal strictly between its two sides.
+Replacing a left side by a mutually cofinal set, or a right side by a mutually
+coinitial set, leaves the value unchanged. For example, any unbounded set of
+nonnegative real numbers is mutually cofinal with $\NN$.
+
+When $L$ and $R$ are sets of numbers, ``mutually coinitial'' means that each
+member of either set lies above or equals a member of the other. This is an
+order statement, not the assertion that either set has an infimum in $\No$.
+These basic tools follow from the ordinary theory of numbers and the simplicity
+theorem; see, for instance, \cite[Sections~3--5]{schleicherstoll}.
+
+\subsection{Arithmetic conventions}
+
+We write $\alpha\ns\beta$ for the finite Hessenberg natural sum of ordinals.
+In common Cantor normal form it adds the corresponding finite coefficients;
+it is strictly increasing in either argument. The natural sum of a finite
+family includes every indexed occurrence, with multiplicity.
+
+In Section~\ref{sec:rank}, addition, multiplication, and powers of ordinals
+without $\ns$ mean \emph{ordinary ordinal} operations. In the remaining sections, products such as $\omega 2^{-m}$ and
+expressions such as $\omega-k$ mean \emph{surreal field} arithmetic.
+This distinction is essential: $\omega/2$ and $\omega-1$ are surreals, not
+ordinals.
+
+For later use, the standard Conway omega-map satisfies
+\begin{equation}\label{eq:omega-map}
+ \omega^x=
+ \cut{0,\ n\omega^{x^L}:n\in\NN_{>0}}
+      {2^{-n}\omega^{x^R}:n\in\NN},
+ \qquad \omega^{x+y}=\omega^x\omega^y.
+\end{equation}
+Using $1/2=\cut{0}{1}$ gives the particular standard identity
+\begin{equation}\label{eq:sqrt-cut}
+ \cut{\NN}{\omega/2^m:m\in\NN}=\omega^{1/2}=\sqrt{\omega}.
+\end{equation}
+Formula \eqref{eq:omega-map} is a background construction, not an infinite
+summation convention introduced here \cite{conway,gonshor}.
+
+\section{The broadcast rule}\label{sec:rule}
+
+\begin{definition}[Truncation maps]\label{def:truncation}
+For a sign $\sigma\in\{\signplus,\signminus\}$ and an ordinal $\gamma$, set
+\begin{equation}\label{eq:single-truncate}
+ T^\sigma_\gamma(s)=
+ \begin{cases}
+ \pref{s}{\delta},&
+ \delta=\min\{\eta:\gamma\leq\eta<\len(s),\ s(\eta)=\sigma\}
+ \text{ exists},\\
+ s,&\text{otherwise}.
+ \end{cases}
+\end{equation}
+For a finite set $F\subseteq I$, define
+\begin{equation}\label{eq:family-truncate}
+ (T^\sigma_{\gamma,F}\bs)_i=
+ \begin{cases}s_i,&i\in F,\\T^\sigma_\gamma(s_i),&i\notin F.\end{cases}
+\end{equation}
+The action is \emph{legal} at $\bs$ when some $j\notin F$ has
+$\gamma<\len(s_j)$ and $s_j(\gamma)=\sigma$.
+\end{definition}
+
+A legal plus action is a Left move and a legal minus action is a Right move.
+The associated recursive game is
+\begin{equation}\label{eq:game-definition}
+ G(\bs)=\cut{G(T^+_{\gamma,F}\bs):\text{legal}}
+                  {G(T^-_{\eta,H}\bs):\text{legal}}.
+\end{equation}
+This reformulation of Lipparini's rule \cite[Remark~7.6(3)]{lipparini2026}
+separates the globally defined truncation map from the requirement that a move
+have a witness at its exact threshold. That distinction will prevent a subtle
+mistake in the proof of number-valuedness.
+
+For a fixed input, all reachable coordinates are prefixes of its original
+coordinates. The set of reachable states is consequently contained in a
+set-sized product of prefix sets, and the options at every state form sets.
+Section~\ref{sec:rank} establishes the well-foundedness needed to justify
+\eqref{eq:game-definition}; no proper-class cut is used.
+
+\section{A descending ordinal rank}\label{sec:rank}
+
+Fix an initial family and put
+\begin{equation}\label{eq:rank-bound-parameters}
+ \Lambda=\sup_{i\in I}\len(s_i),\qquad \Omega=\omega^{\Lambda+1}.
+\end{equation}
+These parameters remain fixed while considering followers of the initial
+family. For any current coordinate $t_i$, define its plus and minus heights by
+\begin{equation}\label{eq:polarity-heights}
+ p_i=\sup\{\eta+1:t_i(\eta)=\signplus\},\qquad
+ m_i=\sup\{\eta+1:t_i(\eta)=\signminus\},
+\end{equation}
+with empty supremum $0$. Both heights are at most $\Lambda$.
+
+For any ordinal family $\bu=(u_i)_{i\in I}$ bounded by $\Lambda$, set
+\begin{align}
+ \zeta(\bu)&=\min\{\xi:\{i:u_i>\xi\}\text{ is finite}\},\label{eq:zeta}\\
+ h(\bu)&=\natsum_{i:u_i>\zeta(\bu)}u_i,\label{eq:exception-height}\\
+ R(\bu)&=\Omega\cdot\zeta(\bu)+h(\bu).\label{eq:one-rank}
+\end{align}
+The minimum exists since $\xi=\Lambda$ qualifies. The sum in
+\eqref{eq:exception-height} is finite. Moreover $h(\bu)<\Omega$, since its
+summands are below the pure power $\Omega$ and finite natural sums preserve that
+bound. The form of $\zeta$ is inspired by the ordinal threshold invariant used
+in \cite{lipparini2026}; our rank tracks both polarities.
+
+\begin{lemma}[Monotonicity of the auxiliary rank]\label{lem:rank-monotone}
+If $v_i\leq u_i$ for all $i$, then $R(\bv)\leq R(\bu)$.
+If additionally $\zeta(\bv)=\zeta(\bu)$ and at least one coordinate above this
+common threshold strictly decreases, then $R(\bv)<R(\bu)$.
+\end{lemma}
+\begin{proof}
+Coordinatewise decrease implies $\zeta(\bv)\leq\zeta(\bu)$. If the inequality is
+strict, then
+\[
+ R(\bv)<\Omega\bigl(\zeta(\bv)+1\bigr)
+ \leq\Omega\zeta(\bu)\leq R(\bu).
+\]
+If the thresholds agree, every new exceptional coordinate was already
+exceptional. Write both finite natural sums over the old exceptional index set,
+using zero for a coordinate that is no longer exceptional. The assertion follows
+from monotonicity, or strict monotonicity, of finite natural sum.
+\end{proof}
+
+\begin{theorem}[Well-foundedness and a birthday bound]\label{thm:rank}
+For the current family $\bt$, let $\boldsymbol p,\boldsymbol m$ be as in
+\eqref{eq:polarity-heights}, and define
+\begin{equation}\label{eq:total-rank}
+ \Rk(\bt)=R(\boldsymbol p)\ns R(\boldsymbol m).
+\end{equation}
+Every legal broadcast move strictly decreases $\Rk$. Consequently
+$G(\bs)$ is well-defined, no run is infinite, and its game-form birthday is at
+most $\Rk(\bs)<\Omega^2$.
+\end{theorem}
+\begin{proof}
+Every truncation replaces strings by prefixes, so both polarity-height families
+decrease coordinatewise. Both auxiliary ranks therefore weakly decrease by
+Lemma~\ref{lem:rank-monotone}.
+
+Consider a legal Left move at threshold $\gamma$, with witness $j\notin F$.
+After the move, every unprotected coordinate has plus height at most $\gamma$:
+there are no plus signs between $\gamma$ and its cutting position, and all later
+signs are deleted. Thus $\zeta(\boldsymbol p')\leq\gamma$. The witness satisfies
+$p_j>\gamma$ and $p'_j\leq\gamma<p_j$.
+
+If the plus threshold $\zeta$ decreases, its rank strictly decreases. Otherwise
+both thresholds agree and are at most $\gamma$. The witness was an exceptional
+coordinate and strictly decreased, so the second assertion of
+Lemma~\ref{lem:rank-monotone} again gives $R(\boldsymbol p')<R(\boldsymbol p)$.
+The minus rank does not increase. Strict monotonicity of natural sum gives a
+strict decrease of \eqref{eq:total-rank}. The Right case exchanges the two signs.
+
+All reachable states form a set, and their ranks are ordinals. Transfinite
+recursion on this rank therefore defines the game. Induction also gives
+$b(G(\bt))\leq\Rk(\bt)$: each follower has rank strictly smaller than the current
+rank, so its birthday plus one is at most the current rank.
+
+Finally, $\Lambda+1<\Omega$ and
+$R(\bu)<\Omega(\Lambda+1)<\Omega^2$. The ordinal $\Omega^2$ is again a pure power
+of $\omega$, hence closed under finite natural sums of smaller ordinals. Thus
+$\Rk(\bt)<\Omega^2$.
+\end{proof}
+
+\begin{remark}
+There need not be a uniform finite bound on the length of runs. Termination
+means that each individual run is finite, not that the game tree has finite
+height. The rank bound is deliberately generous and is not asserted to be
+optimal.
+\end{remark}
+
+\section{Commuting truncations force number-valuedness}\label{sec:number}
+
+\begin{lemma}[Commutation]\label{lem:commute}
+For fixed signs, thresholds, and finite exemption sets, the truncation maps
+commute:
+\begin{equation}\label{eq:commutation}
+ T^\sigma_{\gamma,F}T^\tau_{\eta,H}\bs
+   =T^\tau_{\eta,H}T^\sigma_{\gamma,F}\bs.
+\end{equation}
+The maps need not both be legal at the states where they are applied.
+\end{lemma}
+\begin{proof}
+Work in one coordinate. If either action exempts that coordinate, the claim is
+immediate. Otherwise let $a$ and $b$ be its two cutting positions computed in
+the original string, treating an absent cutting position as the full string
+length. Applying the two prefix operations in either order gives the prefix of
+length $\min(a,b)$. If the first cut erases the sign targeted by the second,
+the second operation becomes the identity; this still gives the same minimum.
+\end{proof}
+
+\begin{lemma}[A nonidentity action can be legalized]\label{lem:legalize}
+If $T^\sigma_{\gamma,F}\bs\neq\bs$, its outcome is a legal move by the
+$\sigma$-player, possibly at a threshold larger than $\gamma$.
+\end{lemma}
+\begin{proof}
+Choose
+\[
+ \delta=\min\{\eta\geq\gamma:\exists i\notin F\;
+                [\eta<\len(s_i)\text{ and }s_i(\eta)=\sigma]\}.
+\]
+This set is nonempty because the action is not the identity. There is a witness
+at $\delta$, and no relevant unprotected sign occurs in $[\gamma,\delta)$.
+It follows coordinatewise that
+$T^\sigma_{\gamma,F}\bs=T^\sigma_{\delta,F}\bs$.
+\end{proof}
+
+\begin{lemma}[The earlier witness survives]\label{lem:survive}
+Suppose a Left action at $\gamma$ and a Right action at $\eta$ are both legal
+at $\bs$. If $\gamma\leq\eta$, the original Left action is still legal after
+the Right action. If $\eta\leq\gamma$, the original Right action is still legal
+after the Left action.
+\end{lemma}
+\begin{proof}
+In the first case, take the chosen plus witness at position $\gamma$. A Right
+cut, unless the coordinate is protected, occurs at a minus position at least
+$\eta$. This position is strictly larger than $\gamma$: equality would require
+a sign to be both plus and minus. Thus the witness survives. The other case is
+symmetric.
+\end{proof}
+
+\begin{theorem}[Every broadcast game is a number]\label{thm:number}
+For every set-indexed family of surreal numbers in their canonical sign
+expansions, $G(\bs)$ is a numerical game. Its surreal value $\BB(\bs)$ is
+therefore defined.
+\end{theorem}
+\begin{proof}
+Induct on the rank of Theorem~\ref{thm:rank}. All options are numbers by
+induction. It remains to compare an arbitrary Left option and an arbitrary
+Right option. Write their states as
+\[
+ \bs_L=T^+_{\gamma,F}\bs,\qquad
+ \bs_R=T^-_{\eta,H}\bs,
+\]
+and use Lemma~\ref{lem:commute} to define the common state
+\[
+ \bs_* = T^-_{\eta,H}\bs_L=T^+_{\gamma,F}\bs_R.
+\]
+If $\gamma\leq\eta$, Lemma~\ref{lem:survive} makes $G(\bs_*)$ a genuine Left
+option of $G(\bs_R)$, so
+$\BB(\bs_*)<\BB(\bs_R)$. Starting instead from $\bs_L$, the action leading to
+$\bs_*$ is either the identity or, by Lemma~\ref{lem:legalize}, a genuine Right
+move at an appropriate threshold. Hence
+\[
+                   \BB(\bs_L)\leq\BB(\bs_*)<\BB(\bs_R).
+\]
+If $\eta\leq\gamma$, the symmetric argument gives
+\[
+                   \BB(\bs_L)<\BB(\bs_*)\leq\BB(\bs_R).
+\]
+Thus every left option is smaller than every right option. Since all options
+are numbers, the recursive criterion makes $G(\bs)$ a number.
+\end{proof}
+
+\begin{remark}[Why a tempting shortcut would be invalid]
+One cannot assume that both original thresholds remain legal after the other
+move. A sign may be erased. The proof needs the stronger distinction between a
+truncation \emph{map} and a legal \emph{move}: at least one witness survives,
+and the other action can be legalized or is the identity. Nor does the proof
+assume that $\BB$ is coordinatewise monotone; that property will be disproved.
+\end{remark}
+
+The canonical birthday of $\BB(\bs)$ is no greater than the birthday of the
+numerical game form $G(\bs)$, so Theorem~\ref{thm:rank} also bounds the birthday
+of the resulting surreal number.
+
+\section{Basic identities and the ordinal restriction}\label{sec:basic}
+
+\begin{proposition}[Relabelling, zeros, and negation]\label{prop:basic}
+The operation $\BB$ is invariant under bijections of the index set and under
+inserting or removing zero coordinates. Also
+\begin{equation}\label{eq:oddness}
+                         \BB((-s_i)_{i\in I})=-\BB((s_i)_{i\in I}).
+\end{equation}
+\end{proposition}
+\begin{proof}
+A bijection carries finite exemption sets and legal witnesses to the
+corresponding ones, yielding the same recursive game. Empty strings supply no
+witness and are unchanged by every truncation, so zero coordinates can be
+ignored, including any of them lying in an exemption set. Negation reverses
+every sign, interchanges Left and Right actions, and commutes with prefix
+truncation. Induction on rank gives the usual game negation and hence
+\eqref{eq:oddness}.
+\end{proof}
+
+\begin{theorem}[Finite-support agreement]\label{thm:finite-support}
+If $s_i=0$ outside a finite subset $J\subseteq I$, then
+\begin{equation}\label{eq:finite-support}
+                            \BB(\bs)=\sum_{i\in J}s_i,
+\end{equation}
+where the right side is ordinary finite surreal addition.
+\end{theorem}
+\begin{proof}
+Induct on the rank of the family. Every follower still has finite support, so
+its value is the finite sum of its coordinates by induction.
+
+Every ordinary single-coordinate move in the disjunctive sum is available as a
+broadcast move: exempt all the other nonzero coordinates. Conversely, a Left
+broadcast move replaces every changed coordinate by one of its left prefixes.
+Select its witnessing coordinate $j$. The ordinary move changing only $j$ to
+the same prefix is a Left option of the ordinary sum and has value at least as
+large as the broadcast follower, because all other coordinate changes weakly
+lower the finite sum. The analogous Right comparison reverses the inequality.
+Thus the Left option sets are mutually cofinal and the Right option sets
+mutually coinitial. Their numerical cuts have the same value.
+\end{proof}
+
+\begin{corollary}[Ordinal extension]\label{cor:ordinal}
+On countable families of ordinals, $\BB$ equals the infinitary ordinal operation
+$\#^S$ characterized by Lipparini's Definition~7.1 and Theorem~7.3.
+\end{corollary}
+\begin{proof}
+For the all-plus sign string of length $\alpha_i$, a legal plus action at
+$\gamma$ replaces an unprotected coordinate by $\min(\alpha_i,\gamma)$.
+There are no Right moves. This is exactly the ordinal game, whose value is
+$\#^S$ by \cite[Theorem~7.3]{lipparini2026}.
+\end{proof}
+
+\begin{remark}[Dependence on the index set]
+For any infinite set $I$, $\BB((1)_{i\in I})=\omega$: a Left move retains an
+arbitrary finite number of ones, and there are no Right moves. Thus the
+set-indexed version is not a cardinal-valued counting operation. Its extension
+beyond sequences is a consequence of the same rules, not a proposed solution
+to every uncountable summation problem.
+\end{remark}
+
+\section{A finite-short-perturbation estimate}\label{sec:perturbation}
+
+A useful comparison principle survives despite the later failure of
+coordinatewise monotonicity. It controls changes in a finite number of
+finite-birthday coordinates.
+
+\begin{theorem}[Finite-short-perturbation bound]\label{thm:perturbation}
+Suppose $\bs$ and $\bt$ have the same index set and coincide outside a finite
+set $E$. Suppose that $s_i$ and $t_i$ are short for $i\in E$. Define
+\begin{equation}\label{eq:perturbation-budget}
+                    N=\sum_{i\in E}\bigl(\len(s_i)+\len(t_i)\bigr)\in\NN.
+\end{equation}
+Then
+\begin{equation}\label{eq:perturbation-bound}
+                       |\BB(\bs)-\BB(\bt)|\leq N.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Use a common ordinal bound $\Lambda$ for both families and the same rank
+parameters as in Section~\ref{sec:rank}. Prove
+$\BB(\bs)\leq\BB(\bt)+N$ by induction on
+$\Rk(\bs)\ns\Rk(\bt)$, keeping the finite set $E$ fixed.
+
+Apply a truncation map, with the same sign, threshold, and exemption set, to
+both families, giving $\bs'$ and $\bt'$. These still agree outside $E$, and the
+new budget $N'$ is at most $N$. By Lemma~\ref{lem:legalize}, each action is either
+a legal move or the identity. If one side changes and the other does not, some
+coordinate in $E$ must have lost at least one sign: outside $E$ the inputs and
+actions agree. Since all lengths in $E$ are finite,
+\begin{equation}\label{eq:budget-drop}
+       \text{one action proper and the other idle}\quad\Longrightarrow\quad
+                            N'\leq N-1.
+\end{equation}
+Whenever at least one side changes, the rank of the pair strictly decreases,
+so the induction hypothesis applies to the resulting pair.
+
+For a Left move $\bs\to\bs'$, match the action on $\bt$. If the matched action
+is a proper Left move, then
+\[
+ \BB(\bs')\leq\BB(\bt')+N'
+           \leq\BB(\bt')+N<\BB(\bt)+N.
+\]
+If it is idle, \eqref{eq:budget-drop} instead gives
+\[
+ \BB(\bs')\leq\BB(\bt)+N'\leq\BB(\bt)+N-1<\BB(\bt)+N.
+\]
+Thus every Left option of $G(\bs)$ lies below $\BB(\bt)+N$.
+
+For a Right move $\bt\to\bt'$, match it on $\bs$. If the matched action is a
+proper Right move, then
+\[
+ \BB(\bs)<\BB(\bs')\leq\BB(\bt')+N'\leq\BB(\bt')+N.
+\]
+If it is idle, induction and \eqref{eq:budget-drop} give
+\[
+ \BB(\bs)\leq\BB(\bt')+N'\leq\BB(\bt')+N-1<\BB(\bt')+N.
+\]
+Use the game form $G(\bt)+N$, with $N$ its nonnegative integer form. Its Right
+options are exactly $G(\bt)^R+N$, since $N$ has no Right options. The two groups
+of inequalities just proved are precisely the comparison test
+\eqref{eq:comparison} for $\BB(\bs)\leq\BB(\bt)+N$. Interchanging the two
+families proves the reverse bound.
+\end{proof}
+
+\begin{corollary}\label{cor:cofinite}
+If a family of short numbers agrees outside a finite set with a constant short
+number $r$, then its broadcast value differs from $\BB(r,r,\ldots)$ by a finite
+surreal number.
+\end{corollary}
+
+The corollary is not an infinitesimal estimate, an integer-error formula, or an
+$\ell^1$-continuity theorem. It only says that the error is bounded in absolute
+value by a finite integer. The distinction will be enough to identify the
+leading scale of all Right options in the main example.
+
+\section{Constant dyadic sequences and finite defects}\label{sec:constants}
+
+For $m\in\NN$, write
+\begin{equation}\label{eq:r-X}
+                         r_m=2^{-m},\qquad X_m=\omega r_m.
+\end{equation}
+All products and differences in this section are in the surreal field.
+
+\subsection{Two standard cut identities}
+
+\begin{lemma}\label{lem:X-cuts}
+The following cuts hold:
+\begin{align}
+ X_0&=\cut{\NN}{},\label{eq:X0}\\
+ X_m&=\cut{\NN}{X_{m-1}-n:n\in\NN}\qquad(m\geq1),\label{eq:Xm}\\
+ X_h-k&=\cut{\NN}{X_h-(k-1)}\qquad(h\geq0,\ k\geq1).
+ \label{eq:X-minus-k}
+\end{align}
+\end{lemma}
+\begin{proof}
+The first identity is the definition of $\omega$. Since
+$r_m=\cut{0}{r_{m-1}}$ for $m\geq1$, the Conway product with
+$\omega=\cut{\NN}{}$ gives
+\[
+ X_m=\cut{nr_m:n\in\NN}{X_{m-1}-nr_m:n\in\NN}.
+\]
+The left side is mutually cofinal with $\NN$; replacing $nr_m$ by $n$ on the
+right is also a mutually coinitial replacement. This gives \eqref{eq:Xm}.
+
+For \eqref{eq:X-minus-k}, use the finite-sum form of $X_h+(-k)$, where
+$-k=\cut{} {-(k-1)}$. Its left options are real numbers cofinal with $\NN$.
+One right option is $X_h-(k-1)$. If $h\geq1$, the other right options have the
+form $X_{h-1}-n-k=2X_h-n-k$, all strictly above $X_h-(k-1)$, since $X_h$
+exceeds every real number. They can be discarded. For $h=0$ there are no such
+additional right options.
+\end{proof}
+
+\begin{theorem}[Constant dyadic values and finite defects]\label{thm:constants}
+For every $m\in\NN$,
+\begin{equation}\label{eq:constant-value}
+                              \BB(r_m,r_m,\ldots)=X_m.
+\end{equation}
+For $m\geq1$, the family with infinitely many $r_{m-1}$ and exactly $k$ entries
+equal to $r_m$ has value
+\begin{equation}\label{eq:defect-value}
+                              H_{m,k}=X_{m-1}-k.
+\end{equation}
+The positions of the finitely many exceptional entries do not matter.
+\end{theorem}
+\begin{proof}
+We use induction on $m$. The constant sequence of ones has only Left moves,
+which give arbitrary finite collections of ones. Its cut is
+$\cut{\NN}{}=\omega$, proving \eqref{eq:constant-value} for $m=0$.
+
+Assume the constant formula for all smaller indices. For this fixed $m\geq1$,
+first prove \eqref{eq:defect-value} by induction on $k$. Its base case is the
+already established constant value $X_{m-1}$.
+
+The sign expansion of $r_j$ is a plus followed by $j$ minuses. Hence the only
+Left threshold of the family defining $H_{m,k}$ is $0$. Such a move leaves
+finitely many positive dyadic entries and has their ordinary finite sum as its
+value, by Theorem~\ref{thm:finite-support}. Since infinitely many $r_{m-1}$ are
+available, these left values are unbounded finite reals and are mutually
+cofinal with $\NN$.
+
+A Right move at threshold $m$ can act only on the $k$ exceptional entries.
+It changes each unprotected $r_m$ into $r_{m-1}$, producing precisely values
+$H_{m,j}$ with $0\leq j<k$. Every such $j$ can be obtained by protecting the
+appropriate exceptional entries. By the induction on $k$, the smallest such
+Right value is $X_{m-1}-(k-1)$.
+
+A Right move at a threshold $q<m$, necessarily $q\geq1$, produces a family
+that is constantly $r_{q-1}$ outside finitely many short exceptions. The
+perturbation bound and the outer induction show that its value is
+$X_{q-1}+\varepsilon$ for a finite surreal $\varepsilon$. Here
+$q-1\leq m-2$, so $X_{q-1}\geq2X_{m-1}$. Such a value is strictly greater than
+$X_{m-1}$ plus any prescribed finite integer, and is therefore greater than
+$X_{m-1}-(k-1)$. These other Right options impose no stronger constraint.
+The cut for $H_{m,k}$ is consequently
+\[
+                     \cut{\NN}{X_{m-1}-(k-1)}=X_{m-1}-k
+\]
+by Lemma~\ref{lem:X-cuts}. This finishes the induction on $k$.
+
+Now consider the constant $r_m$ family. Its Left values are again finite reals
+cofinal with $\NN$. A Right move at threshold $m$, with exactly $k$ entries
+protected, gives $H_{m,k}=X_{m-1}-k$, for every $k\in\NN$. Right moves at
+$q<m$ are larger by the same finite-perturbation argument. Hence its cut is
+\[
+                      \cut{\NN}{X_{m-1}-k:k\in\NN}=X_m.
+\]
+This completes the outer induction.
+\end{proof}
+
+\begin{corollary}[Cofinite dyadic leading scale]\label{cor:dyadic-tail}
+If $\bt$ is constantly $r_m$ outside finitely many short exceptions, then there
+is an $N\in\NN$ such that
+\begin{equation}\label{eq:tail-bound}
+                              X_m-N\leq\BB(\bt)\leq X_m+N.
+\end{equation}
+In particular $\BB(\bt)$ exceeds every real number.
+\end{corollary}
+\begin{proof}
+Combine Theorems~\ref{thm:perturbation} and \ref{thm:constants}. A positive real
+multiple of $\omega$, minus a finite number, is still larger than every real.
+\end{proof}
+
+\section{An exact classification of convergent dyadic series}\label{sec:classification}
+
+Fix $d\geq2$ and abbreviate $\bs^{E,d}$ from \eqref{eq:main-family} to $\bs^E$
+when the shift is understood. Let
+\[
+                        a_n=2^{-(n+d)},\qquad b_n=\tfrac32a_n.
+\]
+Their sign expansions are
+\begin{equation}\label{eq:ab-signs}
+ a_n=\signplus\,\signminus^{\,n+d},\qquad
+ b_n=\signplus\,\signminus^{\,n+d}\,\signplus.
+\end{equation}
+The second plus in $b_n$ is at position $n+d+1$, with positions counted from
+zero. Its deletion changes $b_n$ exactly to $a_n$.
+
+\subsection{A complete description of the relevant options}
+
+\begin{lemma}[Left options]\label{lem:left-family}
+For any $E\subseteq\NN$, the Left moves from $\bs^E$ have the following form.
+A threshold-zero move has finite support and value strictly less than $1$.
+A positive-threshold move produces $\bs^{E'}$ for a finite subset $E'\subseteq E$.
+If $E$ is finite and nonempty, $|E'|<|E|$, and a move with
+$|E'|=|E|-1$ is available. If $E$ is infinite, every finite value of $|E'|$ is
+attainable.
+\end{lemma}
+\begin{proof}
+At threshold zero every unprotected positive string is replaced by the empty
+string. Only finitely many entries remain, and their sum is less than the total
+real sum, which is at most $3\cdot2^{-d}<1$.
+
+A positive Left threshold must be $\gamma=n+d+1$ for a second plus at some
+$n\in E$. Coordinates of the base type $a_j$ have no plus sign at or beyond
+$\gamma$ and are unchanged. In an upgraded coordinate $b_j$, the extra plus is
+removed exactly when it occurs at or after $\gamma$ and the coordinate is
+unprotected. Only finitely many second pluses occur before $\gamma$, and only
+finitely many indices are protected. Thus finitely many upgrades survive.
+The witnessing upgrade is removed, so for finite $E$ the number strictly
+falls. Exempting all other upgrades permits exactly one removal.
+
+If $E$ is infinite, choose the threshold of its earliest upgrade. Exempt any
+$k$ other upgraded indices. All unprotected upgrades are removed, and precisely
+$k$ remain. This realizes every $k\in\NN$.
+\end{proof}
+
+\begin{lemma}[Right options]\label{lem:right-family}
+Every Right option from $\bs^E$ is constantly $r_{\gamma-1}$ outside finitely
+many short exceptions, where $\gamma\geq1$ is its threshold. Consequently its
+value is $X_{\gamma-1}+\varepsilon$, with $\varepsilon$ finite, and is larger
+than every real number. Every integer threshold $\gamma\geq1$ is legal.
+\end{lemma}
+\begin{proof}
+All minus signs occur at positive finite positions. For a fixed $\gamma\geq1$,
+all sufficiently large indices satisfy $n+d\geq\gamma$. Both $a_n$ and $b_n$
+have a minus at position $\gamma$, and truncation immediately before that
+position gives
+\[
+                         \signplus\,\signminus^{\,\gamma-1}=r_{\gamma-1}.
+\]
+Only finitely many earlier coordinates and the finite exemption set can differ
+from this tail. All exceptional strings are short. Apply
+Corollary~\ref{cor:dyadic-tail}. Since arbitrarily long initial minus blocks are
+present, a witness exists at every positive finite threshold.
+\end{proof}
+
+\subsection{The finite-upgrade case}
+
+\begin{theorem}\label{thm:finite-E}
+If $E$ is finite, then $\BB(\bs^E)=|E|+1$.
+\end{theorem}
+\begin{proof}
+Induct on $k=|E|$. For $k=0$, all Left options are finite-support values less
+than $1$, including $0$, and all Right options exceed every real number.
+The simplest number between the two sides is $1$: it fits the cut, whereas its
+only canonical predecessor $0$ does not. Thus the value is $1$.
+
+For $k>0$, Lemma~\ref{lem:left-family} and induction show that a positive
+Left threshold gives a value $j+1$ with $j<k$. Such values are at most $k$, and
+$k$ itself is attained. Threshold-zero values remain below $1$. Every Right
+option is infinite by Lemma~\ref{lem:right-family}. The simplest number larger
+than these Left values and smaller than these Right values is $k+1$: it fits,
+and every canonical predecessor of the integer $k+1$ is at most $k$ and fails.
+\end{proof}
+
+\subsection{The infinitely-many-upgrades case}
+
+\begin{theorem}\label{thm:infinite-E}
+If $E$ is infinite, then $\BB(\bs^E)=\sqrt{\omega}$.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:left-family} and Theorem~\ref{thm:finite-E}, all Left options
+are finite numbers and include every positive integer. Thus the Left option set
+is mutually cofinal with $\NN$.
+
+Let $\mathcal Q$ be the set of Right option values. We show that it is mutually
+coinitial with $\{X_m:m\in\NN\}$.
+
+First take $q\in\mathcal Q$. By Lemma~\ref{lem:right-family}, for some
+$\gamma\geq1$ and some finite integer $N$,
+\[
+                             q\geq X_{\gamma-1}-N>X_\gamma.
+\]
+The last inequality holds because $X_{\gamma-1}-X_\gamma=X_\gamma$ is infinite.
+So some $X_m$ lies below every given Right value.
+
+Conversely, fix $m\in\NN$. Choose a Right move at threshold $\gamma=m+2$ with
+empty exemption set; it is legal by Lemma~\ref{lem:right-family}. Its value
+$q_m$ satisfies $q_m\leq X_{m+1}+N_m$ for some finite $N_m$, and therefore
+\[
+                             q_m<X_m,
+\]
+since $X_m-X_{m+1}=X_{m+1}$ exceeds every finite integer. Thus some Right value
+lies below each prescribed $X_m$.
+
+Replacing both option sets by these mutually cofinal and coinitial sets gives
+\[
+                 \BB(\bs^E)=\cut{\NN}{X_m:m\in\NN}.
+\]
+By the standard omega-map cut \eqref{eq:sqrt-cut}, this is
+$\omega^{1/2}=\sqrt{\omega}$.
+\end{proof}
+
+\begin{remark}[Sparsity does not affect the result]
+The proof uses only that $E$ is infinite, not any positive density or bounded-gap
+assumption. For example, the squares, powers of two, or any arbitrarily sparse
+infinite set give the same output. For finite $E$, the output depends only on
+its cardinality, not on the locations or total real mass of the upgrades.
+\end{remark}
+
+\section{Consequences: monotonicity, scaling, and limits}\label{sec:consequences}
+
+\begin{lemma}[Pure geometric tails]\label{lem:pure-power}
+For every integer $e\geq1$,
+\begin{equation}\label{eq:pure-power}
+                 \BB\bigl((2^{-(n+e)})_{n<\omega}\bigr)=1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The only Left threshold is zero. Its finite-support values are strictly below
+the total real sum $2^{1-e}\leq1$, and include $0$. A Right move at any positive
+threshold produces a constant positive dyadic tail with finitely many short
+exceptions, hence has infinite value by Corollary~\ref{cor:dyadic-tail}.
+The simplest number fitting this cut is $1$.
+\end{proof}
+
+\begin{corollary}[Failure of weak monotonicity]\label{cor:nonmonotone}
+There are strictly positive absolutely convergent dyadic sequences $\bs$ and
+$\bt$ such that $s_n<t_n$ for every $n$ but $\BB(\bs)>\BB(\bt)$.
+The reversal can be an arbitrarily large integer or an infinite surreal.
+\end{corollary}
+\begin{proof}
+Set $\bs=\bs^{E,d}$ and $t_n=2^{-(n+d-1)}$. Then
+$s_n\leq\tfrac32\,2^{-(n+d)}<2\,2^{-(n+d)}=t_n$. By
+Lemma~\ref{lem:pure-power}, $\BB(\bt)=1$. For nonempty finite $E$, the other value
+is $|E|+1$; for infinite $E$, it is $\sqrt{\omega}$.
+\end{proof}
+
+In the particularly simple all-upgraded case with $d=2$, the reversal reads
+\begin{align}
+ \BB(3/8,3/16,3/32,\ldots)&=\sqrt{\omega},\label{eq:concrete-smaller}\\
+ \BB(1/2,1/4,1/8,\ldots)&=1.\label{eq:concrete-larger}
+\end{align}
+Every term on the first line is strictly smaller than the corresponding term on
+the second. Their classical sums are $3/4$ and $1$ respectively.
+
+\begin{corollary}[Failure of finite-scaling compatibility]\label{cor:scaling}
+The operation is not homogeneous under multiplication by $3/2$, even on
+positive convergent dyadic sequences. It also need not satisfy
+$\BB(\bs+\bs)=2\BB(\bs)$.
+\end{corollary}
+\begin{proof}
+For $a_n=2^{-(n+2)}$, the classification gives $\BB(\boldsymbol a)=1$, while
+$\BB((3/2)\boldsymbol a)=\sqrt{\omega}\neq3/2$. Also
+$\BB(2\boldsymbol a)=1$ by \eqref{eq:pure-power}, not $2$.
+\end{proof}
+
+\subsection{A numerical table with exact surreal outputs}
+
+For $d=2$, write $E_k=\{0,1,\ldots,k-1\}$, including $E_0=\varnothing$.
+The ordinary sum is
+\begin{equation}\label{eq:finite-E-real-sum}
+ \sum_{n=0}^{\infty}s_n^{E,2}
+       =\frac12+\sum_{n\in E}2^{-(n+3)},\qquad
+ \sum_{n=0}^{\infty}s_n^{E_k,2}=\frac34-2^{-(k+2)}.
+\end{equation}
+The following values are therefore exact, but the two columns describe
+different operations.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.16}
+\begin{tabular}{lll}
+\toprule
+Upgrade set or sequence & Classical real sum & Broadcast value\\
+\midrule
+$E=\varnothing$ & $1/2$ & $1$\\
+$E=\{0\}$ & $5/8$ & $2$\\
+$E=\{0,1\}$ & $11/16$ & $3$\\
+$E=\{0,1,2\}$ & $23/32$ & $4$\\
+$E=\NN$ & $3/4$ & $\sqrt{\omega}$\\
+$(1/2,1/4,1/8,\ldots)$ & $1$ & $1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Why finite truncations cannot establish the infinite answer}
+
+Let $\bs^{[N]}$ denote the family retaining only its first $N$ coordinates and
+replacing the rest by zero. The finite-support theorem gives
+\[
+                      \BB(\bs^{[N]})=\sum_{n=0}^{N-1}s_n.
+\]
+For the all-upgraded sequence with $d=2$, this is
+\begin{equation}\label{eq:partial-sum}
+                   \BB(\bs^{[N]})=\frac34(1-2^{-N})<\frac34,
+\end{equation}
+whereas $\BB(\bs)=\sqrt{\omega}$. Finite game evaluation and subsequent real
+limiting would therefore compute the wrong operation.
+
+There is no contradiction. An infinite broadcast move truncates infinitely many
+coordinates at once while allowing only finitely many exemptions. Its game tree
+is not a numerical limit of the values of finite-support truncations. The
+proof of the infinite value relies on its full option sets, especially their
+cofinal and coinitial structure.
+
+\subsection{Small real mass does not imply a small output}
+
+For every real $\varepsilon>0$, choose $d$ so large that $3\cdot2^{-d}<\varepsilon$.
+The all-upgraded family then has $\ell^1$ norm below $\varepsilon$, but its
+broadcast value remains $\sqrt{\omega}$. Thus no bound by a real-valued function
+of the ordinary $\ell^1$ norm can hold uniformly for these inputs.
+
+Even a perturbation at a single sufficiently late index has arbitrarily small
+real mass but changes the value of the base family from $1$ to $2$.
+The finite-short-perturbation theorem is consistent with this behavior: it uses
+sign lengths, not numerical size, as its budget.
+
+\section{Computational checks and reproducibility}\label{sec:verification}
+
+The archive includes a standard-library Python implementation using exact
+rational arithmetic. It recursively constructs the \emph{actual finite game}
+for finite families of finite canonical sign strings, checks separation of
+Left and Right option values, and chooses the simplest dyadic in the resulting
+cut. It does not insert the finite-support theorem as the evaluation rule.
+
+Running \texttt{python code/verify.py} produced the following test counts:
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.75\textwidth}r}
+\toprule
+Check & Count\\
+\midrule
+Single-string commutation, sign length at most $8$ & $135{,}156$\\
+Finite two-coordinate game values, lengths at most $4$ & $961$\\
+Finite three-coordinate game values, lengths at most $3$ & $3{,}375$\\
+Legal Left--Right diamonds, including exemption sets & $3{,}378$\\
+Input pairs checked for negation, reversal, and zero insertion & $225$\\
+Dyadic sign formulas and positive-constant-tail truncations & $14{,}560$\\
+\bottomrule
+\end{tabular}
+\end{center}
+All checks passed. The recursive evaluator memoized $4{,}336$ finite states.
+The exact report, including the scope limitation, is saved as
+\texttt{verification/test\_report.json}. Runtime depends on the environment.
+
+The diamond tests explicitly check both details used in the proof: the earlier
+witness survives, and the other action is either idle or a legal move after a
+possible threshold adjustment. Merely testing commutation would miss the
+second issue.
+
+The file \texttt{verification/partial\_sums.csv} contains exact finite partial
+sums for the base and all-upgraded $d=2$ families. Its columns naming the infinite
+values are labeled as values \emph{from the theorem}; they are not numerical
+outputs of an infinite-surreal evaluator.
+
+\paragraph{What the checks establish.}
+They test the implementation and provide finite consistency checks for the local
+lemmas and finite-support theorem. They do not prove well-foundedness for
+arbitrary ordinal-length strings, the universal number theorem, the
+finite-perturbation estimate for long tails, or the value $\sqrt{\omega}$.
+Those statements are supported by the written proofs, not by extrapolation from
+finite experiments. No proof-assistant formalization is included.
+
+\section{Research assessment and remaining questions}\label{sec:assessment}
+
+\subsection{Why this attack was tractable}
+
+The rule is governed by canonical sign positions rather than arbitrary
+comparisons of surreal magnitudes. Prefix truncations have a rigid algebra:
+they commute, and an earlier opposite-sign witness survives. That gives a local
+mechanism forcing the global game to be a number.
+
+The same sign-based mechanism creates the counterexample. A tiny dyadic
+increase from $a_n$ to $b_n$ appends one plus sign at a late position. A single
+broadcast move can remove all but finitely many such signs. Thus the
+\emph{finite versus infinite} combinatorics of the appended signs matter far
+more than the real sizes of the perturbations. The surviving finite cases
+supply all positive integers as Left options; constant dyadic tails control the
+Right options. The final answer is forced by the cut between these two scales.
+
+This explains why the operation can be a valid numerical extension of an
+ordinal game while being unsuitable as an order-preserving completion of
+ordinary real summation. Number-valuedness is a game-theoretic property;
+coordinatewise monotonicity is an additional assertion about its dependence on
+input values. One does not imply the other.
+
+\subsection{Precisely what remains open in this manuscript}
+
+An alternative rule might preserve weak coordinatewise monotonicity while
+extending the ordinal operation. Nothing proved here excludes that possibility.
+One would have to state the desired compatibility axioms explicitly; the
+particular broadcast rule already fails both classical convergence agreement
+and even elementary finite-scaling identities.
+
+Several narrower directions also remain untreated. The exact value of
+$\BB(r,r,\ldots)$ for a general positive surreal $r$ is not established here;
+Theorem~\ref{thm:constants} covers the dyadics $2^{-m}$, not all numbers.
+Our finite-short-perturbation estimate does not cover arbitrary finite changes
+in long surreal coordinates. The ordinal birthday bound is not sharp. And the
+classification of positive dyadic sequences with more than one extra sign per
+coordinate may exhibit additional scales, but no formula for them is claimed.
+
+A useful continuation would be to characterize a substantial class of inputs
+on which the broadcast operation is monotone, or to determine how a controlled
+hierarchy of late sign patterns changes its output cut. These are concrete
+questions suggested by the proofs rather than claims that the broad extension
+problem has been settled.
+
+\subsection{Provenance and priority limits}
+
+The original problem and the exact proposed rule were checked directly against
+the extended source, including the rendered page containing the sign rule.
+The arXiv record identifies v2 as an extended version of the published article.
+Related game-series papers were also identified, but this was not an exhaustive
+bibliographic review. In particular, the present document does not assert that
+no independent proof or overlapping result exists elsewhere.
+
+The construction belongs to Lipparini. The standard facts about surreal cuts,
+comparison, finite arithmetic, and the omega-map belong to the established
+literature. The explicit arguments and classification in this manuscript are
+submitted as mathematical research claims to be checked, not presented as
+results already certified by those sources.
+
+\section{Conclusion}
+
+The proposed sign-truncation rule is more structured than a general infinite
+game: it always produces a surreal number. A well-founded ordinal rank makes
+the recursion precise, and a commuting-move argument separates every pair of
+opposite options. Finite-support agreement and an explicit perturbation bound
+then permit exact transfinite calculations.
+
+The decisive calculation is
+\[
+ \BB\left(\left(2^{-(n+d)}
+       \left(1+\tfrac12\mathbf 1_E(n)\right)\right)_{n<\omega}\right)
+  =\begin{cases}|E|+1,&E\text{ finite},\\\sqrt{\omega},&E\text{ infinite}.
+    \end{cases}
+\]
+All these inputs have small convergent positive real sums. A strictly larger
+geometric input can have broadcast value $1$. This is both positive progress
+on the number-valued extension question and an exact obstruction to using this
+particular candidate as a weakly monotone summation theory.
+
+\appendix
+\section{Proof dependency audit}\label{app:dependencies}
+
+The main arguments have the following noncircular dependency structure.
+\begin{center}
+\renewcommand{\arraystretch}{1.14}
+\begin{tabular}{p{0.36\textwidth}p{0.54\textwidth}}
+\toprule
+Result & Inputs actually used\\
+\midrule
+Descending rank & Prefix lengths; ordinal well-ordering; finite natural sum\\
+Number-valuedness & Rank induction; commutation; legalizing nonidle maps;
+ surviving earlier witnesses; numerical option comparison\\
+Finite-support agreement & Number-valuedness; rank induction; monotonicity of
+ \emph{finite ordinary} surreal sums\\
+Finite-short perturbation & Number-valuedness; pair-rank induction; finite
+ birthday budget; game comparison\\
+Constant dyadic values & Finite-support agreement; perturbation; ordinary
+ product cuts; nested finite induction\\
+Finite-upgrade classification & Option descriptions; constant-tail estimates;
+ simplicity of natural numbers\\
+Infinite-upgrade classification & Finite-upgrade values; constant-tail estimates;
+ mutual coinitiality; the standard omega-map cut\\
+Failure of monotonicity & Exact classification; separate pure-power calculation\\
+\bottomrule
+\end{tabular}
+\end{center}
+In particular, no step uses coordinatewise monotonicity of $\BB$. The only
+monotonicity of numerical addition used in the finite-support proof is the
+standard monotonicity of an already defined \emph{finite} sum.
+
+\section{A small worked sign example}
+
+For $d=2$, the first few base and upgraded strings are
+\[
+\begin{array}{c|c|c|c|c}
+ n&a_n&\text{signs of }a_n&b_n&\text{signs of }b_n\\\hline
+ 0&1/4&\mathtt{+--}&3/8&\mathtt{+--+}\\
+ 1&1/8&\mathtt{+---}&3/16&\mathtt{+---+}\\
+ 2&1/16&\mathtt{+----}&3/32&\mathtt{+----+}
+\end{array}
+\]
+Consider the infinite all-upgraded family. A Left move at position $3$ with no
+exemptions deletes every extra plus: all their positions are at least $3$.
+The result is the base family, whose value is $1$. Protecting any $k$ upgraded
+coordinates other than the selected witness leaves exactly $k$ upgrades and
+produces value $k+1$.
+
+A Right move at position $2$ with no exemptions changes every entry to the
+prefix $\mathtt{+-}=1/2$, giving the constant family of value $\omega/2$.
+A Right move at a much later position leaves finitely many early exceptions and
+produces a much smaller positive dyadic constant tail. Its value is a smaller
+positive dyadic multiple of $\omega$, up to a finite error. These observations
+are the concrete form of the two option-set arguments in
+Theorem~\ref{thm:infinite-E}.
+
+\section{Archive contents and build instructions}
+
+The archive is self-contained apart from standard Python and a LaTeX
+installation. It includes the source \texttt{article.tex}, compiled
+\texttt{article.pdf}, bibliography \texttt{references.bib}, a \texttt{build.sh}
+script, a \texttt{README.md}, two Python modules under \texttt{code/}, and exact
+verification artifacts under \texttt{verification/}. No third-party paper or
+font file is redistributed.
+
+Run the finite checks with
+\begin{verbatim}
+python code/verify.py
+\end{verbatim}
+Build the paper with
+\begin{verbatim}
+sh build.sh
+\end{verbatim}
+The latter runs \texttt{pdflatex}, \texttt{bibtex} (or \texttt{bibtex8}), and two
+further \texttt{pdflatex} passes. The bibliography records source identifiers and links;
+links were checked during preparation on September~20, 2026. A rebuild of the
+PDF is not a verification of the mathematical proofs.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begingroup
+\raggedright
+\bibliographystyle{plain}
+\bibliography{references}
+\endgroup
+\end{document}

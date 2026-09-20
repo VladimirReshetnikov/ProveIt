@@ -35,7 +35,6 @@ irrational-angle proof, and an elementary four-point circle argument.
   optional approximate root/amplitude constants.
 - `build.sh`, `build.ps1`: rebuild the verification data and the PDF.
 - `STATUS.md`: source/version audit and the boundaries of the novelty claim.
-- `MANIFEST.sha256`: checksums for the delivered files other than this manifest.
 
 ## Run
 
