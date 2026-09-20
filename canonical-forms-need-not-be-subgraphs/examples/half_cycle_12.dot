@@ -1,0 +1,28 @@
+digraph form {
+  rankdir=TB;
+  node [shape=box];
+  n0 [label="0: 0 (h=0)"];
+  n1 [label="1: 1 (h=1)"];
+  n1 -> n0 [label="L"];
+  n2 [label="2: -1 (h=1)"];
+  n2 -> n0 [label="R", style=dashed];
+  n3 [label="3: -2 (h=2)"];
+  n3 -> n2 [label="R", style=dashed];
+  n4 [label="4: 0 (h=3)"];
+  n4 -> n3 [label="L"];
+  n5 [label="5: 1 (h=4)"];
+  n5 -> n4 [label="L"];
+  n6 [label="6: 0 (h=5)"];
+  n6 -> n5 [label="R", style=dashed];
+  n7 [label="7: 1 (h=6)"];
+  n7 -> n6 [label="L"];
+  n8 [label="8: 0 (h=7)"];
+  n8 -> n7 [label="R", style=dashed];
+  n9 [label="9: 1 (h=8)"];
+  n9 -> n8 [label="L"];
+  n10 [label="10: 0 (h=9)"];
+  n10 -> n9 [label="R", style=dashed];
+  n11 [label="11: 1/2 (h=10)"];
+  n11 -> n10 [label="L"];
+  n11 -> n1 [label="R", style=dashed];
+}
