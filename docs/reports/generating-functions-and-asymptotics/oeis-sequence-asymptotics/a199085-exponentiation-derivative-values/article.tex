@@ -1,0 +1,927 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{Ink}{HTML}{20374B}
+\definecolor{Link}{HTML}{235D77}
+\definecolor{Soft}{HTML}{F3F5F7}
+\hypersetup{colorlinks=true,linkcolor=Link,urlcolor=Link,citecolor=Link,
+ pdftitle={A proof of the generating function for OEIS A199085},
+ pdfauthor={OpenAI},pdfsubject={Third derivatives of parenthesized self-exponentials}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Parenthesized self-exponentials}}
+\fancyhead[R]{\small\textsc{OEIS A199085}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.38em}
+\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[1]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathcal E}
+\newcommand{\Sset}{\mathcal S}
+\newcommand{\Dset}{\mathcal D}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\pos}[1]{\left(#1\right)_{+}}
+\newcommand{\GF}{A(z)}
+\DeclareMathOperator{\depth}{depth}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ keepspaces=true,frame=single,rulecolor=\color{black!20},backgroundcolor=\color{Soft},
+ showstringspaces=false,tabsize=4,aboveskip=0.8em,belowskip=0.8em}
+
+\title{\color{Ink}\LARGE\bfseries A proof of the generating function\\[0.2em]
+for OEIS A199085\\[0.55em]
+\large\normalfont Third derivatives of parenthesized self-exponentials}
+\author{A self-contained mathematical article and computational companion}
+\date{September 20, 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $a(n)$ count the distinct third derivatives at $x=1$ of fully
+parenthesized exponentiation expressions containing $n$ copies of $x$.
+We prove
+\[
+ a(1)=a(2)=1,\qquad
+ a(n)=\left\lfloor\frac{n^2-2}{3}\right\rfloor\quad(n\ge3),
+\]
+and hence the rational generating function conjectured in OEIS A199085.
+The proof does not extrapolate a recurrence from computed terms.
+Instead, it classifies all possible pairs of second and third derivatives.
+At fixed leftmost nesting depth $k$, the normalized third derivatives
+form the arithmetic progression
+$k^2+2,\,k^2+4,\ldots,k^2+2(n-k-1)$, apart from one extremal singleton.
+Only progressions of the same parity can overlap, and their ordered
+endpoints permit exact counting without an inclusion--exclusion
+expansion. A constructive realization proves that no values in these
+progressions are missing. We also give recurrences, extremal values,
+worked examples, and independently implemented exact-arithmetic checks.
+\end{abstract}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\setcounter{tocdepth}{1}
+\makeatletter
+\renewcommand{\l@section}{\@dottedtocline{1}{0em}{2.4em}}
+\makeatother
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{The problem and the result}
+\label{sec:intro}
+A fully parenthesized exponentiation expression is defined recursively:
+$x$ is an expression, and if $G$ and $H$ are expressions, then $G^H$
+is an expression. Its size is the number of occurrences of $x$.
+Let $\E_n$ denote the expressions of size $n$. They are interpreted as
+positive real-analytic functions on $(0,\infty)$, with
+\[
+ (G^H)(x)=\exp\bigl(H(x)\log G(x)\bigr).
+\]
+Thus the derivative at $1$ has no branch ambiguity. We count values,
+not expressions: two different parenthesizations that give the same
+third derivative contribute only one value.
+
+Define
+\begin{equation}\label{eq:defa}
+ \Dset_n=\{F'''(1):F\in\E_n\},\qquad a(n)=|\Dset_n|,
+ \qquad \GF=\sum_{n\ge1}a(n)z^n.
+\end{equation}
+The generating-function variable is $z$, to distinguish it from the
+variable $x$ in the functions being differentiated.
+
+The OEIS entry attributes the sequence to Vladimir Reshetnikov and the
+conjectured generating function to Alois P. Heinz, dated November 2,
+2011. A program credited to Vladimir Joseph Stephan Orlovsky, dated
+February 1, 2012, evaluates the quadratic formula proved below
+\cite{OEIS199085}. The entry was consulted on September 20, 2026;
+its generating function was still labeled conjectural there.
+This article supplies a proof from the defining expressions, without
+making a separate claim of bibliographic priority.
+
+\begin{theorem}[The generating function]\label{thm:main}
+For the sequence in \eqref{eq:defa},
+\begin{equation}\label{eq:closed}
+ a(n)=
+ \begin{cases}
+  1,&n=1,2,\\[2pt]
+  \displaystyle\left\lfloor\frac{n^2-2}{3}\right\rfloor,&n\ge3.
+ \end{cases}
+\end{equation}
+Its ordinary generating function is
+\begin{align}
+ \GF
+ &=\frac{z}{1-z}+\frac{z^3}{(1-z)^3}
+       -\frac{z^7}{(1-z)^2(1-z^3)}\label{eq:gfdecomp}\\[2pt]
+ &=\frac{z(1-z+z^2+2z^4-z^6)}{(1-z)^2(1-z^3)}\label{eq:gfpositive}\\[2pt]
+ &=\frac{z(z^6-2z^4-z^2+z-1)}
+ {z^5-2z^4+z^3-z^2+2z-1}.\label{eq:gfoeis}
+\end{align}
+The last expression is exactly the proposed OEIS generating function,
+with its variable renamed to $z$.
+\end{theorem}
+
+The substantive step is not the rational-function simplification.
+It is determining the complete set of derivative values and then
+counting its overlaps. We prove a stronger classification in
+\cref{thm:states}; \cref{sec:gf,sec:closed} then prove
+\cref{thm:main}.
+
+\section{The analytic reduction to two integer statistics}
+\label{sec:jets}
+Every expression $F$ satisfies
+\begin{equation}\label{eq:firstjets}
+ F(1)=1,\qquad F'(1)=1.
+\end{equation}
+Indeed these identities hold for $x$. If they hold for $G$ and $H$,
+then $G^H(1)=1$ and
+\[
+ (G^H)'=G^H\left(H'\log G+H\frac{G'}G\right),
+\]
+which gives $(G^H)'(1)=1$. Structural induction proves
+\eqref{eq:firstjets}.
+
+\begin{lemma}[Derivative composition law]\label[lemma]{lem:composition}
+Write
+\[
+ p(F)=F''(1),\qquad q(F)=F'''(1).
+\]
+For $F=G^H$,
+\begin{align}
+ p(F)&=p(G)+2,\label{eq:p}\\
+ q(F)&=q(G)+3p(G)+3p(H)+3.\label{eq:q}
+\end{align}
+\end{lemma}
+\begin{proof}
+Set $L=\log G$ and $V=HL$, so that $F=e^V$.
+Using \eqref{eq:firstjets}, at $x=1$ we obtain
+\[
+ L=0,\quad L'=1,\quad L''=p(G)-1,\quad
+ L'''=q(G)-3p(G)+2.
+\]
+Consequently,
+\begin{align*}
+ V(1)&=0,\qquad V'(1)=1,\\
+ V''(1)&=2H'(1)L'(1)+H(1)L''(1)=p(G)+1,\\
+ V'''(1)&=3p(H)+3\bigl(p(G)-1\bigr)
+              +q(G)-3p(G)+2\\
+         &=q(G)+3p(H)-1.
+\end{align*}
+Finally,
+\[
+ (e^V)''=e^V\bigl(V''+(V')^2\bigr),\qquad
+ (e^V)'''=e^V\bigl(V'''+3V'V''+(V')^3\bigr),
+\]
+which yield \eqref{eq:p} and \eqref{eq:q}.
+\end{proof}
+
+Introduce the normalized statistics
+\begin{equation}\label{eq:normalized}
+ k(F)=\frac{F''(1)}2,\qquad b(F)=\frac{F'''(1)}3.
+\end{equation}
+Since $k(x)=b(x)=0$, the composition law becomes
+\begin{equation}\label{eq:state-law}
+ \boxed{\quad k(G^H)=k(G)+1,\qquad
+ b(G^H)=b(G)+2k(G)+2k(H)+1.\quad}
+\end{equation}
+It follows by induction that $k(F)$ and $b(F)$ are nonnegative integers.
+In particular, every third derivative in question is divisible by $3$.
+Multiplication by $3$ is injective, so counting the normalized values
+$b(F)$ is equivalent to counting the actual derivatives.
+
+A useful asymmetry is already visible: $b(H)$ does not occur in
+\eqref{eq:state-law}. The exponent contributes its second derivative,
+but not its third derivative. This is the analytic reason why two
+statistics suffice.
+
+\section{The left spine and its leaf budget}
+\label{sec:spine}
+View an expression as a rooted ordered binary tree: an internal node
+represents exponentiation, its left subtree is the base, and its right
+subtree is the exponent. The \emph{left spine} is the path obtained by
+repeatedly following the left child from the root to a leaf.
+Its length is the number of internal nodes on that path.
+
+The first identity in \eqref{eq:state-law} says precisely that $k(F)$
+is the length of the left spine. Equivalently, every non-leaf expression
+has a unique decomposition
+\begin{equation}\label{eq:spine}
+ F=\bigl(\cdots((x^{H_1})^{H_2})\cdots\bigr)^{H_k},
+ \qquad k=k(F),
+\end{equation}
+where $H_1$ is the exponent nearest the bottom of the spine.
+If $m_i$ is the size of $H_i$, then
+\begin{equation}\label{eq:leafbudget}
+ n=1+\sum_{i=1}^k m_i,\qquad m_i\ge1.
+\end{equation}
+The single extra leaf is the bottom leftmost $x$.
+
+\begin{lemma}[Spine formula]\label[lemma]{lem:spine}
+For \eqref{eq:spine}, let
+$s=\sum_{i=1}^k k(H_i)$. Then
+\begin{equation}\label{eq:spineformula}
+ F''(1)=2k,\qquad F'''(1)=3k^2+6s.
+\end{equation}
+\end{lemma}
+\begin{proof}
+After $i$ nodes of the spine have been assembled, the left-depth
+statistic is $i$. The $i$th use of \eqref{eq:state-law} therefore adds
+$2(i-1)+2k(H_i)+1$ to $b$. Starting from $b(x)=0$ gives
+\[
+ b(F)=\sum_{i=1}^k(2i-1)+2\sum_{i=1}^k k(H_i)
+     =k^2+2s.
+\]
+The definition of $k(F)$ gives the second derivative as well.
+\end{proof}
+
+Each $H_i$ of size $m_i$ has at most $m_i-1$ internal nodes, and hence
+$0\le k(H_i)\le m_i-1$. Moreover, $k(H_i)=0$ holds exactly when
+$H_i$ is a single leaf. Thus
+\begin{equation}\label{eq:sbound}
+ 0\le s\le \sum_{i=1}^k(m_i-1)=n-1-k.
+\end{equation}
+There is an important boundary distinction. If $k=n-1$, every $m_i=1$
+and $s=0$. If $k\le n-2$, at least one $H_i$ is not a leaf, so $s\ge1$.
+This explains both the missing value $k^2$ in a non-extremal slice and
+the exceptional singleton at maximal depth.
+
+\section{Every admissible pair is realized}
+\label{sec:realization}
+The bounds just obtained do not alone count the values: one must prove
+that all intermediate $s$ occur. The following simple construction
+makes that step explicit.
+
+Let $R_r$ be the right-associated comb on $r$ leaves, defined by
+$R_1=x$ and $R_{r+1}=x^{R_r}$. Let $C_r$ be the left-associated comb,
+defined by $C_1=x$ and $C_{r+1}=(C_r)^x$.
+
+\begin{lemma}[Prescribed left depth]\label[lemma]{lem:depth}
+For every $m\ge2$ and $1\le h\le m-1$, an expression of size $m$
+with left depth $h$ exists.
+\end{lemma}
+\begin{proof}
+Start from $x^{R_{m-h}}$, and apply $h-1$ additional operations
+$Y\mapsto Y^x$. The resulting expression has
+\[
+ 1+(m-h)+(h-1)=m
+\]
+leaves and left depth $1+(h-1)=h$. All indicated indices are valid
+because $m-h\ge1$.
+\end{proof}
+
+\begin{theorem}[Complete derivative-state classification]\label{thm:states}
+Let
+\[
+ \Sset_n=\{(k(F),b(F)):F\in\E_n\}.
+\]
+Then $\Sset_1=\{(0,0)\}$, and for every $n\ge2$,
+\begin{equation}\label{eq:states}
+ \boxed{\quad
+ \Sset_n=\{(n-1,(n-1)^2)\}
+ \;\cup\!
+ \bigcup_{k=1}^{n-2}
+ \{(k,k^2+2s):1\le s\le n-k-1\}.
+ \quad}
+\end{equation}
+In particular,
+\begin{equation}\label{eq:actualset}
+ \Dset_n=\{3(n-1)^2\}\cup
+ \bigcup_{k=1}^{n-2}\{3k^2+6s:1\le s\le n-k-1\}
+ \qquad(n\ge2).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Necessity follows from \cref{lem:spine} and \eqref{eq:sbound}, together
+with the distinction between $k=n-1$ and $k\le n-2$.
+
+For sufficiency, the extremal pair is realized by $C_n$. Now fix
+$1\le k\le n-2$ and $1\le s\le n-k-1$.
+Choose $H_1$ of size $n-k$ and left depth $s$, using
+\cref{lem:depth}, and put $H_2=\cdots=H_k=x$.
+The expression in \eqref{eq:spine} then has
+\[
+ 1+(n-k)+(k-1)=n
+\]
+leaves, left depth $k$, and
+$\sum_i k(H_i)=s$. Its normalized third derivative is $k^2+2s$.
+This realizes every pair on the right-hand side of \eqref{eq:states}.
+\end{proof}
+
+\begin{corollary}[Number of joint states]\label[corollary]{cor:joint}
+For every $n\ge1$,
+\begin{equation}\label{eq:jointcount}
+ |\Sset_n|=1+\binom{n-1}{2}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+For $n\ge2$, the different $k$-slices in \eqref{eq:states} have distinct
+first coordinates, so their sizes add:
+\[
+ |\Sset_n|=1+\sum_{k=1}^{n-2}(n-k-1)
+ =1+\frac{(n-1)(n-2)}2.
+\]
+For $n=1$ the same formula is $1$.
+\end{proof}
+
+\begin{remark}
+Equation \eqref{eq:jointcount} does \emph{not} yet give $a(n)$.
+Different second derivatives can accompany the same third derivative.
+The first such collision occurs at $n=7$. The next section counts
+these collisions exactly.
+\end{remark}
+
+\section{Counting the overlapping progressions}
+\label{sec:overlaps}
+For fixed $n$ and $1\le k\le n-2$, define
+\begin{equation}\label{eq:Pk}
+ P_k=\{k^2+2s:1\le s\le n-k-1\}.
+\end{equation}
+This is a step-$2$ integer interval with lower and upper endpoints
+\begin{equation}\label{eq:endpoints}
+ L_k=k^2+2,\qquad
+ U_k=k^2+2n-2k-2=(k-1)^2+2n-3,
+\end{equation}
+and cardinality $|P_k|=n-k-1$.
+The possible normalized third derivatives are their union together
+with $\{(n-1)^2\}$.
+
+The singleton is disjoint from all the progressions. For $n\ge3$,
+$U_k$ is increasing in $k$, and
+\[
+ (n-1)^2-U_{n-2}=(n-1)^2-\bigl((n-2)^2+2\bigr)=2n-5>0.
+\]
+For $n=2$ there are no progressions.
+
+Next, $P_k$ consists of integers congruent to $k$ modulo $2$.
+Thus even-indexed and odd-indexed progressions are disjoint.
+Within either parity, both endpoints strictly increase with $k$.
+
+\begin{lemma}[Only the preceding same-parity interval matters]
+\label[lemma]{lem:previous}
+For $3\le k\le n-2$,
+\begin{equation}\label{eq:intersection}
+ \left|P_k\cap\bigcup_{j<k}P_j\right|
+   =|P_k\cap P_{k-2}|=(n-3k+3)_+,
+\end{equation}
+where $(u)_+=\max(u,0)$.
+\end{lemma}
+\begin{proof}
+Different parities cannot intersect. Among earlier progressions of the
+same parity, $P_{k-2}$ has the largest upper endpoint.
+If a value $v\in P_k$ lies in any earlier $P_j$ of the same parity,
+then
+\[
+ L_{k-2}<L_k\le v\le U_j\le U_{k-2}.
+\]
+Its parity is that of $P_{k-2}$, so $v\in P_{k-2}$.
+This proves the equality of the two intersections.
+
+Since $U_{k-2}<U_k$ and $L_{k-2}<L_k$, a nonempty intersection runs
+from $L_k$ to $U_{k-2}$ in steps of $2$. Its cardinality is
+\begin{align*}
+ \frac{U_{k-2}-L_k}{2}+1
+ &=\frac{(k-2)^2+2n-2(k-2)-2-(k^2+2)}2+1\\
+ &=n-3k+3.
+\end{align*}
+Taking the positive part also covers the empty case.
+\end{proof}
+
+This lemma is what makes triple and higher intersections harmless.
+We add the progressions one at a time and subtract only those values
+already present. A value occurring in several earlier progressions is
+still subtracted just once when the next progression is inserted.
+There is no assumption that pairwise overlaps are mutually disjoint.
+
+\begin{proposition}[Exact overlap formula]\label[proposition]{prop:count}
+For every $n\ge1$,
+\begin{equation}\label{eq:overlapcount}
+ \boxed{\qquad
+ a(n)=1+\binom{n-1}{2}-\sum_{j\ge2}(n-3j)_+.
+ \qquad}
+\end{equation}
+The sum is finite: only $j\le\lfloor(n-1)/3\rfloor$ contribute.
+\end{proposition}
+\begin{proof}
+For $n\ge3$, sum the sizes of the progressions, subtract the previous
+union intersection from \cref{lem:previous} each time, and then add
+the disjoint singleton:
+\[
+ a(n)=1+\sum_{k=1}^{n-2}(n-k-1)
+       -\sum_{k=3}^{n-2}(n-3k+3)_+.
+\]
+In the last sum put $j=k-1$. All subsequent terms are zero, so the
+upper limit can be replaced by infinity. The first sum is
+$\binom{n-1}{2}$. For $n=1,2$, the right-hand side of
+\eqref{eq:overlapcount} is $1$, agreeing with the direct calculation.
+\end{proof}
+
+The factor $3$ in the overlap cutoff is structural. For consecutive
+same-parity slices, the endpoint separation contains $3k-n$.
+This, rather than any empirical fit, is the origin of the eventual
+period $3$.
+
+\section{Deriving the conjectured generating function}
+\label{sec:gf}
+We now sum \eqref{eq:overlapcount}. All calculations can be interpreted
+in the ring of formal power series. In particular, exchanging the two
+sums below is justified coefficient by coefficient: at a fixed degree,
+only finitely many terms are nonzero.
+
+The first two contributions are
+\begin{equation}\label{eq:jointgf}
+ \sum_{n\ge1}\left(1+\binom{n-1}{2}\right)z^n
+ =\frac{z}{1-z}+\frac{z^3}{(1-z)^3}.
+\end{equation}
+For the correction, fix $j\ge2$. Substituting $n=3j+r$ gives
+\[
+ \sum_{n\ge1}(n-3j)_+z^n
+   =z^{3j}\sum_{r\ge1}rz^r
+   =\frac{z^{3j+1}}{(1-z)^2}.
+\]
+Therefore
+\begin{equation}\label{eq:collisiongf}
+ \sum_{n\ge1}\sum_{j\ge2}(n-3j)_+z^n
+ =\frac{1}{(1-z)^2}\sum_{j\ge2}z^{3j+1}
+ =\frac{z^7}{(1-z)^2(1-z^3)}.
+\end{equation}
+Subtracting \eqref{eq:collisiongf} from \eqref{eq:jointgf} proves
+\eqref{eq:gfdecomp}. Notice that the correction begins at $z^7$,
+exactly where collisions between different depths first appear.
+
+For completeness, the algebraic conversion to the OEIS form is
+\begin{align*}
+ \GF
+ &=\frac{(z-2z^2+2z^3)(1+z+z^2)-z^7}
+ {(1-z)^3(1+z+z^2)}\\
+ &=\frac{z-z^2+z^3+2z^5-z^7}
+ {1-2z+z^2-z^3+2z^4-z^5}\\
+ &=\frac{z(z^6-2z^4-z^2+z-1)}
+ {z^5-2z^4+z^3-z^2+2z-1}.
+\end{align*}
+The final line multiplies numerator and denominator by $-1$.
+Thus the stated rational generating function follows directly from
+an exact count of all defining derivative values.
+
+\section{The closed formula and its three residue classes}
+\label{sec:closed}
+We also evaluate \eqref{eq:overlapcount} explicitly. For $n\ge4$, put
+\[
+ q=\left\lfloor\frac{n-1}{3}\right\rfloor\ge1.
+\]
+Then
+\[
+ \sum_{j\ge2}(n-3j)_+
+ =\sum_{j=2}^{q}(n-3j)
+ =(q-1)n-3\left(\frac{q(q+1)}2-1\right).
+\]
+This identity includes the empty sum at $q=1$.
+Substitution gives
+\begin{equation}\label{eq:qformula}
+ a(n)=\frac{n^2-n-2qn+3q^2+3q-2}{2}.
+\end{equation}
+Writing $n$ by its residue modulo $3$ yields
+\begin{equation}\label{eq:residues}
+ \begin{aligned}
+ a(3m)&=3m^2-1, &&m\ge1,\\
+ a(3m+1)&=3m^2+2m-1, &&m\ge1,\\
+ a(3m+2)&=3m^2+4m, &&m\ge1.
+ \end{aligned}
+\end{equation}
+For the first line at $m=1$, $a(3)=2$ is checked directly;
+all other cases follow from \eqref{eq:qformula}.
+Because the only square residues modulo $3$ are $0$ and $1$,
+\eqref{eq:residues} is precisely
+\[
+ a(n)=\left\lfloor\frac{n^2-2}{3}\right\rfloor\qquad(n\ge3).
+\]
+Together with $a(1)=a(2)=1$, this finishes the proof of
+\cref{thm:main}.
+
+\subsection{Why the first two terms must be separated}
+Substituting $n=1$ into the floor expression gives $-1$, and
+substituting $n=2$ gives $0$. Neither is the desired value $1$.
+A uniform version valid for every positive $n$ is
+\begin{equation}\label{eq:delta}
+ a(n)=\left\lfloor\frac{n^2-2}{3}\right\rfloor
+       +2\,\mathbf1_{\{n=1\}}+\mathbf1_{\{n=2\}}.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:periodic}
+ a(n)=\frac{n^2}{3}-\frac43+\frac13\mathbf1_{\{3\mid n\}}
+       +2\,\mathbf1_{\{n=1\}}+\mathbf1_{\{n=2\}}.
+\end{equation}
+Thus a second, coefficient-based derivation of the generating function is
+\begin{equation}\label{eq:gfindicator}
+ \GF=2z+z^2+\frac{z(1+z)}{3(1-z)^3}
+       -\frac{4z}{3(1-z)}+\frac{z^3}{3(1-z^3)}.
+\end{equation}
+Here the finite correction $2z+z^2$ accounts exactly for the two
+exceptional initial terms. Simplifying \eqref{eq:gfindicator} gives
+the same rational function as \eqref{eq:gfoeis}.
+
+\section{Worked examples and the first cross-depth collision}
+\label{sec:examples}
+\subsection{Five copies of \texorpdfstring{$x$}{x}}
+For $n=5$, the classification is small enough to display completely.
+\begin{center}
+\begin{tabular}{@{}cccc@{}}
+\toprule
+Left depth $k$ & Allowed $s$ & $b=F'''(1)/3$ & $F'''(1)$\\
+\midrule
+$1$ & $1,2,3$ & $3,5,7$ & $9,15,21$\\
+$2$ & $1,2$ & $6,8$ & $18,24$\\
+$3$ & $1$ & $11$ & $33$\\
+$4$ & $0$ & $16$ & $48$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The resulting set is
+\[
+ \Dset_5=\{9,15,18,21,24,33,48\},
+\]
+so $a(5)=7$. Within each row the second derivative is $2k$.
+The accompanying file \texttt{witnesses\_n5\_n7.json} gives an explicit
+fully parenthesized expression for every displayed joint state.
+
+\subsection{Seven copies of \texorpdfstring{$x$}{x}}
+At $n=7$, the normalized progressions and singleton are
+\begin{center}
+\begin{tabular}{@{}cl@{}}
+\toprule
+$k$ & Normalized third derivatives\\
+\midrule
+$1$ & $3,5,7,9,11$\\
+$2$ & $6,8,10,12$\\
+$3$ & $11,13,15$\\
+$4$ & $18,20$\\
+$5$ & $27$\\
+$6$ & $36$\\
+\bottomrule
+\end{tabular}
+\end{center}
+There are $16$ joint states, but the value $b=11$ appears at both
+$k=1$ and $k=3$. Hence there are only $15$ distinct third derivatives.
+The two expressions
+\[
+ F_1=x^{C_6},\qquad F_2=\bigl((x^{R_4})^x\bigr)^x
+\]
+make the collision explicit. For $F_1$, $(k,s)=(1,5)$, while for
+$F_2$, $(k,s)=(3,1)$. Both have $b=k^2+2s=11$, so
+\[
+ F_1'''(1)=F_2'''(1)=33,
+ \qquad F_1''(1)=2,\quad F_2''(1)=6.
+\]
+They are therefore not the same analytic function, despite having the
+same third derivative at $1$.
+
+For $n\le6$, every term in the overlap correction is zero. Thus $n=7$
+is the first collision \emph{between distinct joint derivative states}.
+Different parenthesizations can already have identical joint states
+at smaller sizes; these are a different kind of duplication.
+
+\subsection{Initial values and a counting audit}
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$n$ & Joint states $1+\binom{n-1}{2}$ & Overlap correction & $a(n)$\\
+\midrule
+1&1&0&1\\
+2&1&0&1\\
+3&2&0&2\\
+4&4&0&4\\
+5&7&0&7\\
+6&11&0&11\\
+7&16&1&15\\
+8&22&2&20\\
+9&29&3&26\\
+10&37&5&32\\
+11&46&7&39\\
+12&56&9&47\\
+13&67&12&55\\
+14&79&15&64\\
+15&92&18&74\\
+\bottomrule
+\end{tabular}
+\end{center}
+The archive includes this audit through $n=60$ and the sequence
+coefficients through $n=1000$.
+
+\section{Consequences of the classification}
+\label{sec:consequences}
+\subsection{Extremal derivatives}
+\begin{corollary}\label[corollary]{cor:extrema}
+For $n\ge3$,
+\[
+ \min\Dset_n=9,\qquad \max\Dset_n=3(n-1)^2.
+\]
+The maximum is attained only by the fully left-associated expression
+$C_n$. For $n=1,2$, the derivative sets are $\{0\}$ and $\{3\}$,
+respectively.
+\end{corollary}
+\begin{proof}
+In a non-extremal slice, $k\ge1$ and $s\ge1$, so
+$k^2+2s\ge3$, with equality attained at $k=s=1$.
+The exceptional singleton is larger than every other normalized
+value, as shown in \cref{sec:overlaps}. Attaining it forces
+$k=n-1$, so every right subtree along the spine is a leaf.
+That is exactly $C_n$.
+\end{proof}
+
+For $n\ge3$, the minimum can be described just as explicitly:
+it is attained exactly by expressions $x^{(x^H)}$ with
+$H\in\E_{n-2}$. Indeed, $k=1$ means $F=x^G$, and $s=1$ means that
+$G$ has left depth $1$, hence $G=x^H$.
+
+\subsection{Simple recurrences}
+From the closed formula, for $n\ge3$,
+\begin{equation}\label{eq:step3}
+ a(n+3)=a(n)+2n+3.
+\end{equation}
+This follows because adding $3$ to $n$ adds the integer $2n+3$
+to $(n^2-2)/3$, so it adds the same integer to its floor.
+The forward differences are
+\begin{equation}\label{eq:step1}
+ a(n+1)-a(n)=\left\lceil\frac{2n}{3}\right\rceil
+ \qquad(n\ge3),
+\end{equation}
+as is checked directly in the three residue classes in
+\eqref{eq:residues}.
+The stated starting indices matter: these recurrences do not extend
+unchanged across both exceptional initial terms.
+
+Expanding the denominator in \eqref{eq:gfpositive} also gives the
+homogeneous recurrence
+\begin{equation}\label{eq:order5}
+ \begin{split}
+ a(n)={}&2a(n-1)-a(n-2)+a(n-3)\\
+        &-2a(n-4)+a(n-5),\qquad n\ge8.
+ \end{split}
+\end{equation}
+The initial data are
+$a(1),\ldots,a(7)=1,1,2,4,7,11,15$.
+The numerator has degree $7$, which explains the onset $n=8$.
+
+\subsection{Quadratic growth and exact periodic correction}
+For $n\ge3$, \eqref{eq:periodic} gives the exact identity
+\begin{equation}\label{eq:asymptotic}
+ a(n)=\frac{n^2}{3}-\frac43+\frac13\mathbf1_{\{3\mid n\}}.
+\end{equation}
+In particular,
+\[
+ a(n)=\frac{n^2}{3}+O(1),\qquad a(n)\sim\frac{n^2}{3}.
+\]
+The constant correction is $-1$ on multiples of $3$ and $-4/3$
+on the other two residue classes. Thus the sequence is eventually
+a quadratic quasipolynomial of period $3$; it is not eventually a
+single polynomial.
+
+\subsection{Why the denominator has degree five}
+The denominator factors as
+\[
+ (1-z)^2(1-z^3)=(1-z)^3(1+z+z^2).
+\]
+The cubic factor at $z=1$ corresponds to quadratic growth. The two
+primitive cube roots of unity encode the periodic correction.
+These factors do not cancel. For
+\[
+ N(z)=z(1-z+z^2+2z^4-z^6),
+\]
+we have $N(1)=2$. If $\omega^3=1$ and $\omega\ne1$, then
+$N(\omega)=-\omega\ne0$.
+
+Consequently, \eqref{eq:order5} has the smallest possible order among
+eventual homogeneous recurrences with constant coefficients.
+Indeed, any such recurrence would give a polynomial $Q(z)$ of the
+same order for which $Q(z)\GF$ is a polynomial. The reduced
+denominator of $\GF$ must divide $Q(z)$, so $\deg Q\ge5$.
+The shorter relation \eqref{eq:step3} is inhomogeneous and therefore
+does not contradict this statement.
+
+\section{Exact computation and reproducibility}
+\label{sec:verification}
+The proof above is valid for every $n$ and does not rely on finite
+verification. The archive nevertheless supplies independent exact
+checks, both to make the result reproducible and to catch implementation
+or indexing errors.
+
+\subsection{Three independent routes to the data}
+The companion \texttt{verify.py} uses only Python's standard library.
+It implements the following mathematically distinct computations.
+
+\paragraph{Recursive derivative-state enumeration.}
+Starting from $\{(0,0)\}$ at size $1$, it combines all splits
+$n=j+(n-j)$ using \eqref{eq:state-law}. This computation does not use
+the claimed explicit state set or count. Because the right child's
+$b$-coordinate is irrelevant, its actually computed depth projection
+is used to avoid redundant work.
+
+\paragraph{Exhaustive expression enumeration with Taylor arithmetic.}
+All ordered binary parenthesizations are enumerated up to a selected
+small size. Each is evaluated in $\mathbb Q[t]/(t^4)$ after replacing
+$x$ by $1+t$, using
+\[
+ G^H=\exp(H\log G),\qquad
+ \log(1+w)=w-\frac{w^2}{2}+\frac{w^3}{3},\qquad
+ e^w=1+w+\frac{w^2}{2}+\frac{w^3}{6}
+ \pmod{t^4}.
+\]
+This evaluator does not use the derivative-state recurrence.
+If the resulting jet is
+$1+t+c_2t^2+c_3t^3$, then $(k,b)=(c_2,2c_3)$.
+The coefficients are exact rational numbers, not finite-difference
+approximations.
+
+\paragraph{Expansion of the proposed rational function.}
+The script separately expands the original OEIS numerator and
+denominator by coefficient division. Its coefficients are checked
+against both the floor formula and the overlap formula. This route
+is also used to check \eqref{eq:step3} and \eqref{eq:order5}.
+
+The script additionally constructs a witness for every admissible
+joint state up to a selected size, counts its leaves, and checks its
+Taylor jet with the independent evaluator.
+
+\subsection{Executed checks}
+The supplied \texttt{verification\_report.json} records a successful run
+with the following bounds:
+\begin{center}
+\begin{tabular}{@{}p{0.63\linewidth}r@{}}
+\toprule
+Check & Executed bound\\
+\midrule
+Recursive states versus the complete classification & $1\le n\le60$\\
+All parenthesizations, evaluated by exact Taylor jets & $1\le n\le10$\\
+Constructive witnesses, each checked by Taylor jets & $1\le n\le20$\\
+Rational g.f. coefficients versus both count formulas & $1\le n\le1000$\\
+\bottomrule
+\end{tabular}
+\end{center}
+There were $4{,}862$ parenthesizations at $n=10$ and $6{,}918$
+in total through $n=10$. All $1{,}160$ constructed witnesses through
+$n=20$ passed their leaf-count and derivative checks.
+No floating-point differentiation or numerical tolerance was used.
+
+For context, if $c_n=|\E_n|$, the recursive syntax gives
+$c_1=1$ and $c_n=\sum_{j=1}^{n-1}c_jc_{n-j}$.
+Hence $C(z)=\sum_{n\ge1}c_nz^n$ satisfies $C=z+C^2$, and so
+$c_n=\binom{2n-2}{n-1}/n$.
+The exponential number of expressions explains why direct symbolic
+enumeration is useful for small independent checks but not needed
+for the proof or for large $n$.
+
+\subsection{How to reproduce the files}
+From the archive directory, run
+\begin{lstlisting}[language=bash]
+python3 verify.py --out-dir artifacts
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The Python command has no third-party dependencies. Use Python 3.10 or
+later, without the \texttt{-O} option, since verification uses assertions.
+The PDF is built with a standard TeX Live or MiKTeX installation that
+includes the packages declared at the top of \texttt{article.tex}.
+A \texttt{Makefile} and detailed \texttt{README.md} are also supplied.
+
+For a single $n$, the full state set is available by the short formula
+\begin{lstlisting}[language=Python]
+states = {(n - 1, (n - 1)**2)} | {
+    (k, k*k + 2*s)
+    for k in range(1, n - 1)
+    for s in range(1, n - k)
+}
+third_derivatives = sorted({3*b for k, b in states})
+\end{lstlisting}
+This formula also handles $n=1$ and $n=2$ correctly. It uses
+$O(n^2)$ state insertions for one size. By contrast, evaluating the
+count itself needs only a constant number of integer arithmetic
+operations via \eqref{eq:closed}; this is not a claim of constant
+bit complexity for unbounded integers.
+
+\section{Scope of the result}
+The original task is resolved completely: \eqref{eq:gfoeis} is proved
+for the sequence as defined, including its offset and initial terms.
+The stronger classification \eqref{eq:states} supplies explicit
+witnesses and rules out missing derivative values. The argument counts
+distinct values, not their frequencies among parenthesizations.
+
+Higher derivative counts form the broader table recorded as OEIS
+A216368 \cite{OEIS216368}. The present proof makes no assertion that
+the fourth- or higher-derivative sequences have analogous rational
+generating functions. The fact that only two integer statistics are
+needed here is a special feature of the third-order calculation.
+
+\appendix
+\section{A second derivation of the spine formula}
+\label{app:alternate}
+There is a useful analytic check on \cref{lem:spine} that bypasses
+successive use of the derivative recurrence. On $(0,\infty)$, the
+ordinary identity $(u^v)^w=u^{vw}$ allows \eqref{eq:spine} to be written
+\[
+ F(x)=x^{P(x)},\qquad P(x)=\prod_{i=1}^kH_i(x).
+\]
+At $x=1$, each $H_i$ and $H_i'$ equals $1$. With
+$s=\sum_i k(H_i)$, the product rule gives
+\[
+ P(1)=1,\qquad P'(1)=k,\qquad
+ P''(1)=\sum_iH_i''(1)+\sum_{i\ne j}H_i'(1)H_j'(1)
+       =2s+k(k-1).
+\]
+Set $V=P\log x$. Then
+\begin{align*}
+ V'(1)&=1,\\
+ V''(1)&=2k-1,\\
+ V'''(1)&=3P''(1)-3P'(1)+2
+          =6s+3k^2-6k+2.
+\end{align*}
+Since $F=e^V$, we obtain
+\[
+ F''(1)=V''(1)+(V'(1))^2=2k
+\]
+and
+\[
+ F'''(1)=V'''(1)+3V'(1)V''(1)+(V'(1))^3=3k^2+6s.
+\]
+The cancellation of the linear and constant terms makes the square
+$k^2$ especially transparent in this form.
+
+\clearpage
+\section{A compact proof suitable for a sequence note}
+\label{app:compact}
+For each parenthesized expression $F$, define
+$k(F)=F''(1)/2$ and $b(F)=F'''(1)/3$.
+Direct differentiation gives
+\[
+ k(G^H)=k(G)+1,\qquad
+ b(G^H)=b(G)+2k(G)+2k(H)+1,
+\]
+with $k(x)=b(x)=0$.
+Along a left spine of length $k$ with right subexpressions $H_i$,
+this gives $b=k^2+2\sum_i k(H_i)$.
+For size $n$, the resulting joint states are exactly
+\[
+ (n-1,(n-1)^2),\qquad
+ (k,k^2+2s)\quad(1\le k\le n-2,\ 1\le s\le n-k-1).
+\]
+For realizability, put all $n-k$ nontrivial right-subtree leaves into
+one subtree of depth $s$ and make the remaining right subtrees leaves;
+a size-$m$ tree of any left depth $1,\ldots,m-1$ is obtained by
+successively adding left-spine nodes to a right comb.
+
+At fixed $k$, the possible $b$ form a step-$2$ interval with endpoints
+$k^2+2$ and $(k-1)^2+2n-3$. Only equal parities overlap. On inserting
+the $k$th interval, its intersection with the preceding union is
+exactly its intersection with the $(k-2)$nd interval, of size
+$(n-3k+3)_+$. The extremal singleton is disjoint. Therefore
+\[
+ a(n)=1+\binom{n-1}{2}-\sum_{j\ge2}(n-3j)_+.
+\]
+Summing over $n\ge1$ gives
+\[
+ \sum_{n\ge1}a(n)z^n
+ =\frac{z}{1-z}+\frac{z^3}{(1-z)^3}
+  -\frac{z^7}{(1-z)^2(1-z^3)},
+\]
+which simplifies to the conjectured rational function.
+Evaluating the finite sum gives
+$a(n)=\lfloor(n^2-2)/3\rfloor$ for $n\ge3$, with $a(1)=a(2)=1$.
+
+\begin{thebibliography}{9}
+\bibitem{OEIS199085}
+The OEIS Foundation Inc.,
+\emph{A199085: Number of distinct values taken by the third derivative
+of parenthesized self-exponentials at $x=1$},
+\url{https://oeis.org/A199085}.
+Text endpoint supplied with the problem:
+\url{https://oeis.org/search?q=id:A199085&fmt=text}.
+Accessed September 20, 2026.
+
+\bibitem{OEIS216368}
+The OEIS Foundation Inc.,
+\emph{A216368: Counts of distinct derivative values of parenthesized
+self-exponentials},
+\url{https://oeis.org/A216368}.
+Accessed September 20, 2026.
+\end{thebibliography}
+\end{document}

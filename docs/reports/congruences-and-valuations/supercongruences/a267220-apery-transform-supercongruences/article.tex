@@ -1,0 +1,1159 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.93in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hidelinks,bookmarksnumbered]{hyperref}
+\usepackage{listings}
+\hypersetup{pdftitle={Two Apery-transform supercongruences in OEIS A267220},
+ pdfauthor={ChatGPT},pdfsubject={Proofs, parameter refinement, and the dyadic correction}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Ap\'ery-transform supercongruences}
+\fancyhead[R]{\small OEIS A267220}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.25em}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=0.2em,topsep=0.4em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Zp}{\Z_{(p)}}
+\newcommand{\Ztwo}{\Z_{(2)}}
+\newcommand{\dd}{\delta}
+\newcommand{\CT}{\operatorname{CT}}
+\newcommand{\Rev}{\operatorname{Rev}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\vm}{\nu_p(m)}
+\newcommand{\Bn}{\mathcal B}
+\newcommand{\Wm}{\mathcal W}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
+ breaklines=true,frame=single,framerule=0.3pt,xleftmargin=0.4em,xrightmargin=0.4em}
+
+\title{\textbf{Two Ap\'ery-transform supercongruences\\in OEIS A267220}\\[0.45em]
+\large A coefficient proof, a parameter refinement,\\and the dyadic correction}
+\author{Research note prepared for Vladimir Reshetnikov}
+\date{September 20, 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+Two formulas contributed by Peter Bala to OEIS A267220 on October 17,
+2024 assert second-order supercongruences for diagonal powers of the
+exponential transform of the classical Ap\'ery numbers and of
+its associated reversion transform. Both formulas are true for every
+integer value of the parameter. We prove them by establishing the
+second-order Gauss congruences for the Ap\'ery numbers directly from their
+binomial sum, then giving a coefficient-level proof of preservation under
+normalized framing. For odd primes the result gains an additional factor
+of the prime dividing the parameter, and the restriction to primes at
+least five can be removed. The second family satisfies the original
+unsigned congruence also at the prime two; the first family requires an
+explicit sign correction at the first dyadic descent. We prove the full
+signed statement, treat zero and negative parameters, and give exact
+counterexamples to two tempting stronger assertions. The general
+framing-integrality mechanism is established prior work of Schwarz,
+Vologodsky, and Walcher, not a novelty claim of this note. The purpose here
+is to resolve the specific OEIS assertions with a complete, directly
+checkable argument. A standard-library Python program and its exact
+verification records accompany the article.
+\end{abstract}
+
+\section{The two conjectures and the result}\label{sec:target}
+
+Let
+\begin{equation}\label{eq:apery}
+a_n=\sum_{k=0}^{n}\binom nk^2\binom{n+k}{k}^2\qquad(n\geq0)
+\end{equation}
+be the classical Ap\'ery numbers, OEIS A005259 \cite{oeis-apery}.
+Their initial values are
+\[
+1,\ 5,\ 73,\ 1445,\ 33001,\ 819005,\ 21460825,\ldots.
+\]
+The two series relevant to the problem are
+\begin{equation}\label{eq:A-F}
+A(x)=\exp\!\left(\sum_{n\geq1}\frac{a_n}{n}x^n\right),
+\qquad
+F(x)=\frac{x}{\Rev(xA(x))}.
+\end{equation}
+Here $\Rev$ denotes compositional inversion at zero. Since
+$xA(x)=x+O(x^2)$, this inverse exists uniquely over $\Q[[x]]$.
+The quotient defining $F$ is a well-defined formal power series with
+constant coefficient one. Integrality of both series will be proved
+below; it is not assumed in the argument.
+
+The coefficients of $A$ form OEIS A267220. The entry includes two
+conjectures, both explicitly attributed to Peter Bala and dated
+October 17, 2024 \cite{oeis-target}. In our notation they concern
+\begin{equation}\label{eq:u-v}
+u_m(n)=[x^n]A(x)^{mn},\qquad
+v_m(n)=[x^n]F(x)^{mn}\qquad(m\in\Z,\ n\geq0),
+\end{equation}
+and assert
+\begin{equation}\label{eq:oeis-conjectures}
+\begin{split}
+u_m(np^r)&\equiv u_m(np^{r-1})\pmod{p^{2r}},\\
+v_m(np^r)&\equiv v_m(np^{r-1})\pmod{p^{2r}}
+\end{split}
+\end{equation}
+for every prime $p\geq5$ and all positive integers $n,r$.
+These assertions were still labeled conjectural when the entry was
+checked on September 20, 2026.
+
+The notation $a_n$ in this article always denotes the Ap\'ery numbers,
+\emph{not} the coefficients of A267220. In particular, these are two
+related but different sequences. Also,
+\[
+u_m(0)=v_m(0)=1
+\]
+for every $m$, whereas $u_0(n)=v_0(n)=0$ for $n\geq1$.
+This distinction matters when normalizing by the parameter.
+
+\begin{theorem}[Resolution and refinements]\label{thm:main}
+Both congruences \eqref{eq:oeis-conjectures} hold for every integer $m$.
+More precisely, let $N\geq1$, let $p\mid N$ be prime, and put
+$R=\nu_p(N)\geq1$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item If $p$ is odd and $m\neq0$, then
+\begin{equation}\label{eq:main-odd}
+\begin{split}
+\nu_p\bigl(u_m(N)-u_m(N/p)\bigr)&\geq2R+\nu_p(m),\\
+\nu_p\bigl(v_m(N)-v_m(N/p)\bigr)&\geq2R+\nu_p(m).
+\end{split}
+\end{equation}
+\item The unsigned congruence for the second family holds at every prime,
+including $2$:
+\begin{equation}\label{eq:main-v-all}
+v_m(N)\equiv v_m(N/p)\pmod{p^{2R}}.
+\end{equation}
+\item For every prime $p$ and $m\neq0$, the signed refinements are
+\begin{equation}\label{eq:main-signed}
+\begin{aligned}
+(-1)^{mN}u_m(N)
+&\equiv(-1)^{mN/p}u_m(N/p)
+&&\pmod{p^{2R+\nu_p(m)}},\\
+(-1)^{(m-1)N}v_m(N)
+&\equiv(-1)^{(m-1)N/p}v_m(N/p)
+&&\pmod{p^{2R+\nu_p(m)}}.
+\end{aligned}
+\end{equation}
+\end{enumerate}
+For $m=0$, all the positive-index terms in these statements vanish.
+\end{theorem}
+
+We use $\nu_p(0)=+\infty$, and $\nu_p(m)=\nu_p(|m|)$ for nonzero
+negative integers. Substituting $N=np^r$ gives
+$R=r+\nu_p(n)$, so part (a) proves a modulus at least as strong as the
+one in OEIS even when $p$ divides $n$. The theorem does not tacitly
+assume $p\nmid n$ or $p\nmid m$.
+
+\subsection*{What is established here, and what is prior work?}
+The nonlinear preservation principle behind the proof is the
+\emph{integrality of framing} for $2$-functions. It is proved in general
+by Schwarz, Vologodsky, and Walcher \cite{svw2013,svw2017}; their 2017
+paper includes a local coefficient proof. Our proof uses that known
+mechanism in an explicit normalization adapted to the two OEIS families.
+No claim is made that the general preservation theorem, or its connection
+to dilogarithms, is new. Nor does a conjectural label in OEIS establish
+that no earlier specialist has deduced this particular application.
+
+The contribution of this note is a self-contained resolution of the
+stated formulas, with all parameter values and the prime two handled
+explicitly, together with reproducible computations. The proof does not
+appeal to a computer search as a substitute for an all-index argument.
+Its dependency chain is
+\[
+\begin{gathered}
+\text{Ap\'ery binomial sum}\ \Longrightarrow\
+\text{second-order Gauss congruences}\ \Longrightarrow\
+\text{integral }A,\\
+\text{normalized coefficient transform}\ \Longrightarrow\
+\text{framing congruences}\ \Longrightarrow\
+\text{both OEIS assertions}.
+\end{gathered}
+\]
+
+\section{Formal arithmetic and the dilogarithm criterion}\label{sec:arithmetic}
+
+Everything below takes place in formal power series rings. No analytic
+convergence or choice of a complex logarithm is involved. Set
+\[
+\dd=x\frac{d}{dx},\qquad
+\CT\!\left(\sum_{j\geq j_0}q_jx^j\right)=q_0.
+\]
+The constant-term functional is applied only to Laurent series bounded
+below. It satisfies
+\begin{equation}\label{eq:ct-parts}
+\CT(\dd G)=0,\qquad
+\CT(G\dd J)=-\CT(J\dd G).
+\end{equation}
+Each relevant constant term depends on only finitely many coefficients.
+
+For a prime $p$, write
+\[
+\Zp=\{a/b\in\Q:p\nmid b\}.
+\]
+A congruence between elements of $\Zp$ has its usual valuation meaning;
+a congruence between series means the congruence of every coefficient.
+Working in this localization is sufficient: completeness is unnecessary.
+
+\begin{definition}\label{def:gauss}
+An integer sequence $(\alpha_n)_{n\geq1}$ satisfies the
+\emph{second-order Gauss congruences} if
+\begin{equation}\label{eq:gauss-general}
+\alpha_N\equiv\alpha_{N/p}\pmod{p^{2\nu_p(N)}}
+\end{equation}
+for every prime $p$ and every positive $N$ divisible by $p$.
+\end{definition}
+
+\begin{lemma}[M\"obius and dilogarithm criterion]\label{lem:mobius}
+For an integer sequence $(\alpha_n)_{n\geq1}$, the following are
+equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The sequence satisfies \eqref{eq:gauss-general}.
+\item The numbers
+\begin{equation}\label{eq:c-mobius}
+c_n=\frac1{n^2}\sum_{d\mid n}\mu(n/d)\alpha_d
+\end{equation}
+are integers for every $n\geq1$.
+\item There is an expansion with integer coefficients
+\begin{equation}\label{eq:dilog-expansion}
+\sum_{n\geq1}\frac{\alpha_n}{n^2}x^n
+=\sum_{d\geq1}c_d\Li_2(x^d),
+\qquad \Li_2(z)=\sum_{j\geq1}\frac{z^j}{j^2}.
+\end{equation}
+\end{enumerate}
+The $c_d$ in \textup{(iii)} are uniquely given by \eqref{eq:c-mobius}.
+\end{lemma}
+
+\begin{proof}
+Fix $n=p^rh$ with $p\nmid h$. In the numerator of
+\eqref{eq:c-mobius}, the only nonzero terms have divisor $p$-adic
+exponent $r$ or $r-1$. Pairing them gives
+\[
+\sum_{d\mid n}\mu(n/d)\alpha_d
+=\sum_{e\mid h}\mu(h/e)
+ \bigl(\alpha_{p^re}-\alpha_{p^{r-1}e}\bigr).
+\]
+Under (i), this numerator is divisible by $p^{2r}$. Doing this for every
+prime divisor of $n$ proves divisibility by $n^2$, hence (ii).
+
+M\"obius inversion gives
+\begin{equation}\label{eq:divisor-recovery}
+\alpha_n=\sum_{d\mid n}d^2c_d.
+\end{equation}
+If every $c_d$ is an integer, subtracting the formula for
+$\alpha_{N/p}$ from that for $\alpha_N$ leaves only divisors $d$ with
+$\nu_p(d)=\nu_p(N)$. Every surviving term contains
+$p^{2\nu_p(N)}$, proving (i). Finally, coefficient extraction from the
+right side of \eqref{eq:dilog-expansion} gives
+$n^{-2}\sum_{d\mid n}d^2c_d$, proving the equivalence with (iii).
+\end{proof}
+
+One immediate benefit of this stronger integrality criterion is an Euler
+product. Define
+\[
+W(x)=\sum_{n\geq1}\frac{\alpha_n}{n^2}x^n,
+\qquad H(x)=\dd W(x)=\sum_{n\geq1}\frac{\alpha_n}{n}x^n.
+\]
+Taking $\dd$ of \eqref{eq:dilog-expansion} and then exponentiating gives
+\begin{equation}\label{eq:euler}
+\exp H(x)=\prod_{d\geq1}(1-x^d)^{-d c_d}
+\in1+x\Z[[x]].
+\end{equation}
+This identity is formal: to compute the coefficient of $x^n$, only
+factors with $d\leq n$ are needed. The exponents may be negative or
+positive; any integer power of a unit in $1+x\Z[[x]]$ is integral.
+
+A second formulation will be central to the coefficient proof.
+
+\begin{lemma}[Integral Frobenius defect]\label{lem:defect}
+If $(\alpha_n)$ satisfies the second-order Gauss congruences, then for
+every prime $p$ the series
+\begin{equation}\label{eq:defect}
+E_p(x)=W(x)-\frac1{p^2}W(x^p)
+\end{equation}
+belongs to $x\Zp[[x]]$.
+\end{lemma}
+
+\begin{proof}
+If $p\nmid n$, the coefficient is $\alpha_n/n^2\in\Zp$. If $p\mid n$,
+it is $(\alpha_n-\alpha_{n/p})/n^2$, again in $\Zp$ by the hypothesis.
+\end{proof}
+
+\section{The required Ap\'ery congruence from the binomial sum}\label{sec:apery}
+
+We now return to the sequence $a_n$ in \eqref{eq:apery}. Only a
+second-order congruence is needed. It admits a short proof that works
+uniformly at all primes, including $2$ and $3$.
+
+\begin{proposition}\label{prop:apery-gauss}
+For every prime $p$ and positive integer $N$ divisible by $p$,
+\begin{equation}\label{eq:apery-gauss}
+a_N\equiv a_{N/p}\pmod{p^{2\nu_p(N)}}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Put $R=\nu_p(N)$ and
+\[
+P(N,k)=\binom Nk\binom{N+k}{k}.
+\]
+When $p\nmid k$, the identity
+\[
+\binom Nk=\frac Nk\binom{N-1}{k-1}
+\]
+shows that $\nu_p(P(N,k))\geq R$. Such a summand $P(N,k)^2$ therefore
+vanishes modulo $p^{2R}$.
+
+It remains to compare the summands with $k=p\ell$. For $k\geq1$, an
+exact product identity is
+\begin{equation}\label{eq:P-product}
+P(N,k)=(-1)^{k-1}\frac Nk\left(1+\frac Nk\right)
+  \prod_{j=1}^{k-1}\left(1-\frac{N^2}{j^2}\right).
+\end{equation}
+To see this, write the binomial product as
+\[
+\frac{N(N+k)}{k^2}
+\prod_{j=1}^{k-1}\frac{(N-j)(N+j)}{j^2}
+\]
+and extract the signs. Separating the factors with $p\mid j$ in
+\eqref{eq:P-product} yields
+\begin{equation}\label{eq:P-split}
+P(N,p\ell)=(-1)^{(p-1)\ell}P(N/p,\ell)
+ \prod_{\substack{1\leq j<p\ell\\p\nmid j}}
+ \left(1-\frac{N^2}{j^2}\right).
+\end{equation}
+Each factor in the remaining product belongs to
+$1+p^{2R}\Zp$. Squaring removes the sign even when $p=2$, so
+\[
+P(N,p\ell)^2\equiv P(N/p,\ell)^2\pmod{p^{2R}}.
+\]
+The $k=0$ summand is one on both sides. Summing over $0\leq k\leq N$
+now gives exactly \eqref{eq:apery-gauss}.
+\end{proof}
+
+Consequently, Lemma~\ref{lem:mobius} applies to $a_n$, and the series
+$A$ in \eqref{eq:A-F} is integral by \eqref{eq:euler}. Its primitive
+dilogarithm coefficients begin
+\begin{equation}\label{eq:initial-c}
+c_1=5,\qquad c_2=17,\qquad c_3=160,\qquad
+c_4=2058,\qquad c_5=32760.
+\end{equation}
+For example, $c_4=(a_4-a_2)/16=2058$. Thus
+\[
+A(x)=(1-x)^{-5}(1-x^2)^{-34}(1-x^3)^{-480}
+       (1-x^4)^{-8232}\cdots.
+\]
+The arithmetic input to the rest of the proof is now complete. We have
+not used a stronger Ap\'ery supercongruence as a black box.
+
+\section{An integral normalization of the two transforms}\label{sec:normalization}
+
+From now on set
+\begin{equation}\label{eq:WHD}
+W=\sum_{n\geq1}\frac{a_n}{n^2}x^n,\qquad
+H=\dd W=\log A,\qquad
+D=\dd H=\sum_{n\geq1}a_nx^n.
+\end{equation}
+The series $D$ has constant coefficient zero; in particular, it is the
+Ap\'ery generating series with its initial term $a_0=1$ removed.
+
+For every $m\in\Z$, define $X_m(y)$ by
+\begin{equation}\label{eq:X}
+X_m(y)=yA(X_m(y))^m,
+\qquad\text{equivalently}\qquad y=xA(x)^{-m}.
+\end{equation}
+The inverse exists uniquely in $y+y^2\Z[[y]]$: a series
+$x+O(x^2)$ with integer coefficients has an integer compositional inverse,
+as is seen by solving successively for its coefficients. This includes
+negative $m$, since $A$ and every integer power of $A$ are integral units.
+
+Define the normalized transform by
+\begin{equation}\label{eq:B-definition}
+\Bn_m(y)=\frac{D(X_m(y))}{1-mD(X_m(y))}
+        =\sum_{n\geq1}b_m(n)y^n.
+\end{equation}
+The denominator is a unit of constant coefficient one. Therefore
+\begin{equation}\label{eq:B-integer}
+b_m(n)\in\Z\quad(m\in\Z,\ n\geq1),
+\qquad b_0(n)=a_n.
+\end{equation}
+This integral definition is preferable to starting with a quotient by
+$m$. In particular, it remains valid when a prime under consideration
+divides $m$.
+
+\begin{proposition}[Coefficient normalization]\label{prop:B-coefficient}
+For $m\neq0$ and $n\geq1$,
+\begin{equation}\label{eq:B-coefficient}
+b_m(n)=\frac1m[x^n]A(x)^{mn}.
+\end{equation}
+Consequently, $u_m(n)=m b_m(n)$ for every integer $m$ and every $n\geq1$.
+\end{proposition}
+
+\begin{proof}
+Logarithmic differentiation of $y=xA(x)^{-m}$ gives
+\[
+\frac{d\log y}{d\log x}=1-mD(x),
+\]
+so the chain rule implies
+\begin{equation}\label{eq:chain}
+\dd_yH(X_m(y))=\Bn_m(y).
+\end{equation}
+The formal Lagrange inversion formula (proved in
+Appendix~\ref{app:lagrange}) gives
+\[
+[y^n]H(X_m(y))
+=\frac1n[x^{n-1}]H'(x)A(x)^{mn}.
+\]
+For $m\neq0$, use $(A^{mn})'=mn H'A^{mn}$. The last display becomes
+\[
+[y^n]H(X_m(y))=\frac1{mn}[x^n]A(x)^{mn}.
+\]
+Multiplication by $n$, as in \eqref{eq:chain}, proves the assertion.
+At $m=0$, the identity $u_0(n)=0=m b_0(n)$ holds separately.
+\end{proof}
+
+The relation between the two conjectures is particularly simple after
+this normalization.
+
+\begin{proposition}[The reversion family is a shifted transform]\label{prop:V}
+The series $F$ is integral and satisfies
+\begin{equation}\label{eq:F-X}
+F(y)=A(X_{-1}(y)).
+\end{equation}
+For every integer $m$ and every $n\geq1$,
+\begin{equation}\label{eq:V-B}
+v_m(n)=m b_{m-1}(n).
+\end{equation}
+In particular, $v_1(n)=a_n$.
+\end{proposition}
+
+\begin{proof}
+Equation \eqref{eq:X} with $m=-1$ says
+$X_{-1}(y)A(X_{-1}(y))=y$, hence
+$X_{-1}=\Rev(xA(x))$. Dividing by $X_{-1}$ proves
+\eqref{eq:F-X}, including its integrality.
+
+Apply Lagrange inversion to $A(X_{-1}(y))^{mn}$. For $n\geq1$ it gives
+\begin{equation}\label{eq:v-lagrange}
+[y^n]A(X_{-1}(y))^{mn}
+=m[x^{n-1}]A'(x)A(x)^{(m-1)n-1}.
+\end{equation}
+If $m\neq1$, differentiating $A^{(m-1)n}$ turns this into
+\[
+\frac{m}{m-1}[x^n]A(x)^{(m-1)n}=m b_{m-1}(n).
+\]
+For $m=1$, the right side of \eqref{eq:v-lagrange} is
+$[x^{n-1}]A'/A=[x^{n-1}]H'=a_n=b_0(n)$. Thus the apparent singularity
+at $m=1$ is removable, and the asserted formula holds for all $m$.
+\end{proof}
+
+\begin{remark}[Why division modulo a prime is not enough]
+The formula $v_m(n)=\frac{m}{m-1}u_{m-1}(n)$ for $m\neq1$ is an
+identity over $\Q$, but it cannot safely be used to transfer a congruence
+by dividing by $m-1$ when $p\mid m-1$. Similarly, dividing a congruence
+for $u_m$ by $m$ may lose powers of $p$. The proof below establishes the
+congruence for the integer $b_m$ itself. This is why no exceptional
+parameter classes need to be excluded.
+\end{remark}
+
+\section{The normalized framing congruence at odd primes}\label{sec:odd}
+
+The next theorem is the coefficient form of the established
+framing-integrality principle. Its proof is included rather than invoked
+from the general theory \cite{svw2013,svw2017}.
+
+\begin{theorem}[Normalized framing congruences]\label{thm:normalized}
+Let $b_m$ be as in \eqref{eq:B-definition}. For every integer $m$, define
+\begin{equation}\label{eq:beta}
+\beta_m(n)=(-1)^{mn}b_m(n)\qquad(n\geq1).
+\end{equation}
+Then $\beta_m$ satisfies the second-order Gauss congruences at every
+prime. Equivalently, for $p\mid N$ and $R=\nu_p(N)$,
+\begin{equation}\label{eq:beta-gauss}
+(-1)^{mN}b_m(N)\equiv(-1)^{mN/p}b_m(N/p)\pmod{p^{2R}}.
+\end{equation}
+For odd $p$ this is the ordinary unsigned congruence for $b_m$.
+At $p=2$ the unsigned congruence also holds whenever $m$ is even or
+$R\geq2$.
+\end{theorem}
+
+We prove the odd-prime assertion in this section and the remaining cases
+in Section~\ref{sec:two}. These arguments use only the integer
+coefficients $a_n$ and their second-order Gauss congruences. Thus the same
+proof establishes the theorem for any input sequence satisfying
+Definition~\ref{def:gauss}.
+
+\subsection{An exact constant-term expression}
+
+Fix $p\mid N$, put $R=\nu_p(N)$, and first take $m\neq0$. For brevity
+write $E=E_p$. Lemma~\ref{lem:defect} gives
+\[
+E=W(x)-p^{-2}W(x^p)\in x\Zp[[x]].
+\]
+Differentiating and using $H=\dd W$ yields
+\begin{equation}\label{eq:frob-A}
+\dd E=H(x)-p^{-1}H(x^p),\qquad
+A(x^p)=A(x)^p\exp(-p\dd E).
+\end{equation}
+Introduce the integral Laurent series
+\begin{equation}\label{eq:K}
+K(x)=x^{-N}A(x)^{mN}\in x^{-N}\Z[[x]].
+\end{equation}
+Since substitution $x\mapsto x^p$ turns the coefficient of $x^{N/p}$
+into the coefficient of $x^N$, Proposition~\ref{prop:B-coefficient}
+and \eqref{eq:frob-A} give the exact identity
+\begin{equation}\label{eq:master}
+b_m(N)-b_m(N/p)
+=\frac1m\CT\!\left(K\left(1-\exp(-mN\dd E)\right)\right).
+\end{equation}
+Expanding the exponential gives
+\begin{equation}\label{eq:master-expanded}
+b_m(N)-b_m(N/p)
+=\sum_{k\geq1}\frac{(-1)^{k+1}m^{k-1}N^k}{k!}
+       \CT\bigl(K(\dd E)^k\bigr).
+\end{equation}
+Only $k\leq N$ can contribute, because $\dd E$ has no constant term.
+Thus no question about convergence of the infinite displayed sum arises.
+The factor $m$ has disappeared from the denominator of each summand:
+this is the crucial normalization when $p\mid m$.
+
+\subsection{The linear term gains a second power of the index}
+
+The $k=1$ term seems initially to contain only $N$, not $N^2$.
+Constant-term integration by parts supplies the missing factor. Namely,
+\begin{equation}\label{eq:delta-K}
+\dd K=N(mD-1)K,
+\end{equation}
+and therefore
+\begin{equation}\label{eq:linear}
+\begin{aligned}
+N\CT(K\dd E)
+&=-N\CT(E\dd K)\\
+&=N^2\CT\bigl(K(1-mD)E\bigr)
+\in p^{2R}\Zp.
+\end{aligned}
+\end{equation}
+All coefficients inside the final constant term are $p$-integral.
+This identity, rather than a coarse exponential estimate alone, is what
+produces a second-order congruence.
+
+\subsection{The nonlinear terms at odd primes}
+
+For an odd prime and $k\geq2$,
+\begin{equation}\label{eq:factorial-odd}
+\nu_p(k!)\leq k-2.
+\end{equation}
+For $k=2$ this is immediate. For $k\geq3$, Legendre's formula gives
+$\nu_p(k!)\leq(k-1)/(p-1)\leq k-2$.
+Since $\nu_p(m)\geq0$ and $R\geq1$,
+\[
+\begin{aligned}
+\nu_p\left(\frac{m^{k-1}N^k}{k!}\right)
+&\geq kR-(k-2)\\
+&=2R+(k-2)(R-1)\geq2R.
+\end{aligned}
+\]
+Also $\CT(K(\dd E)^k)\in\Zp$. Every nonlinear term in
+\eqref{eq:master-expanded} is therefore divisible by $p^{2R}$.
+Together with \eqref{eq:linear}, this proves
+\begin{equation}\label{eq:b-odd}
+b_m(N)\equiv b_m(N/p)\pmod{p^{2R}}
+\qquad(p\text{ odd},\ m\neq0).
+\end{equation}
+For $m=0$, this is precisely Proposition~\ref{prop:apery-gauss}.
+Finally, $N$ and $N/p$ have the same parity when $p$ is odd, so the two
+signs in \eqref{eq:beta-gauss} agree. This proves the odd-prime part of
+Theorem~\ref{thm:normalized}.
+
+\section{The prime two and the exact sign correction}\label{sec:two}
+
+The odd-prime factorial bound fails at $p=2$. Replacing it indiscriminately
+by the dyadic bound would lose information and would not prove the
+asserted modulus. There are three distinct cases. Throughout this section
+$E=E_2$, $K=x^{-N}A^{mN}$, and $R=\nu_2(N)\geq1$.
+The case $m=0$ is already covered by the input Ap\'ery congruence.
+
+\subsection{Even parameters}
+
+Suppose $m\neq0$ is even. For $k\geq2$, the bound
+$\nu_2(k!)\leq k-1$ gives
+\[
+\nu_2\left(\frac{m^{k-1}N^k}{k!}\right)
+\geq(k-1)+kR-(k-1)=kR\geq2R.
+\]
+The linear term is handled by \eqref{eq:linear}. Hence
+\begin{equation}\label{eq:two-even}
+b_m(N)\equiv b_m(N/2)\pmod{2^{2R}}
+\qquad(m\text{ even}).
+\end{equation}
+The signs in \eqref{eq:beta-gauss} are both positive in this case.
+
+\subsection{Odd parameters beyond the first dyadic descent}
+
+Suppose $m$ is odd and $R\geq2$. For $k\geq3$,
+\[
+\nu_2\left(\frac{m^{k-1}N^k}{k!}\right)
+\geq kR-(k-1)\geq2R.
+\]
+The last inequality follows from
+$(k-2)R\geq k-1$, valid for $R\geq2$ and $k\geq3$.
+The only problematic nonlinear term is $k=2$, whose scalar coefficient
+$mN^2/2$ has valuation $2R-1$.
+
+Write $E=\sum_{j\geq1}e_jx^j$, with $e_j\in\Ztwo$.
+Reduction modulo two gives
+\begin{equation}\label{eq:delta-E-square}
+(\dd E)^2\equiv\sum_{\substack{j\geq1\\j\text{ odd}}}
+ e_j^2x^{2j}\pmod2.
+\end{equation}
+For odd $j$, applying $\CT\dd$ to $Kx^{2j}$ and using
+\eqref{eq:delta-K} yields
+\begin{equation}\label{eq:ct-even}
+2j\,\CT(Kx^{2j})
+=N\CT\bigl(K(1-mD)x^{2j}\bigr).
+\end{equation}
+Since $j$ is odd, the right side shows
+$\CT(Kx^{2j})\in2^{R-1}\Ztwo\subseteq2\Ztwo$.
+Equation \eqref{eq:delta-E-square} consequently implies
+\[
+\CT\bigl(K(\dd E)^2\bigr)\in2\Ztwo.
+\]
+This supplies the missing factor two in the quadratic term. The linear
+term again follows from \eqref{eq:linear}, proving
+\begin{equation}\label{eq:two-higher}
+b_m(N)\equiv b_m(N/2)\pmod{2^{2R}}
+\qquad(m\text{ odd},\ R\geq2).
+\end{equation}
+Here $N$ and $N/2$ are both even, so this is also the signed congruence.
+
+\subsection{Odd parameters at the first dyadic descent}
+
+It remains to take $m$ odd and $N=2h$ with $h$ odd. The correct relation
+is now a \emph{sum}:
+\begin{equation}\label{eq:two-plus-goal}
+b_m(2h)+b_m(h)\equiv0\pmod4.
+\end{equation}
+Using the same derivation as in \eqref{eq:master}, but adding instead of
+subtracting, we obtain
+\begin{equation}\label{eq:plus-master}
+b_m(N)+b_m(h)
+=\frac1m\CT\!\left(K\left(1+\exp(-mN\dd E)\right)\right).
+\end{equation}
+Let $s_2(k)$ denote the number of ones in the binary expansion of $k$.
+Legendre's formula at two is
+\[
+\nu_2(k!)=k-s_2(k).
+\]
+As $mN$ has valuation one, the coefficient $( -mN)^k/k!$ has valuation
+$s_2(k)$. Modulo four, only positive exponents $k$ that are powers of two
+survive. Each surviving scalar is congruent to two modulo four, since it
+has valuation exactly one. Thus, coefficientwise in $\Ztwo[[x]]$,
+\begin{equation}\label{eq:binary-exponential}
+1+\exp(-mN\dd E)
+\equiv2\left(1+\sum_{s\geq0}(\dd E)^{2^s}\right)\pmod4.
+\end{equation}
+The sum on the right is locally finite in degree.
+
+We next identify its reduction modulo two. In $\dd E$, terms of even
+degree vanish modulo two. For odd $j$, $e_j=a_j/j^2$, and hence
+\[
+\dd E\equiv\sum_{j\text{ odd}}a_jx^j\pmod2.
+\]
+Frobenius in characteristic two gives
+\[
+\sum_{s\geq0}(\dd E)^{2^s}
+\equiv\sum_{s\geq0}\sum_{j\text{ odd}}a_jx^{j2^s}\pmod2.
+\]
+The input congruences imply $a_{j2^s}\equiv a_j\pmod2$.
+Every positive integer is uniquely $j2^s$ with $j$ odd. Therefore
+\begin{equation}\label{eq:binary-D}
+\sum_{s\geq0}(\dd E)^{2^s}\equiv D(x)\pmod2.
+\end{equation}
+Combining \eqref{eq:plus-master}--\eqref{eq:binary-D} gives
+\[
+b_m(N)+b_m(h)\equiv\frac2m\CT\bigl(K(1+D)\bigr)\pmod4.
+\]
+Because $m$ is odd,
+$1+D\equiv1-mD\pmod2$. But \eqref{eq:delta-K} and $\CT\dd K=0$
+give the exact identity
+\begin{equation}\label{eq:ct-zero}
+\CT\bigl(K(1-mD)\bigr)=0.
+\end{equation}
+It follows that $\CT(K(1+D))$ is even, proving
+\eqref{eq:two-plus-goal}. Since $(-1)^{mN}=1$ and
+$(-1)^{mh}=-1$, this is exactly the missing case of
+\eqref{eq:beta-gauss}. Theorem~\ref{thm:normalized} is proved.
+
+\section{Deduction of both OEIS conjectures}\label{sec:deduction}
+
+We now prove Theorem~\ref{thm:main} and make clear where the two families
+behave differently at two.
+
+\subsection{Odd primes and the parameter factor}
+
+For $p$ odd, Theorem~\ref{thm:normalized} and the identities
+\[
+u_m(n)=m b_m(n),\qquad v_m(n)=m b_{m-1}(n)
+\]
+immediately imply
+\[
+\begin{split}
+u_m(N)-u_m(N/p)&\in m p^{2R}\Zp,\\
+v_m(N)-v_m(N/p)&\in m p^{2R}\Zp.
+\end{split}
+\]
+This is \eqref{eq:main-odd}. In particular, the originally stated range
+$p\geq5$ may be replaced by all odd primes.
+
+Multiplying the all-prime signed congruence for $b_m$ by $m$ proves the
+first part of \eqref{eq:main-signed}. Applying the same congruence to
+$b_{m-1}$ and multiplying by $m$ proves its second part. Notice that the
+sign parameter for $v_m$ is $m-1$, but the extra valuation comes from
+$m$, not from $m-1$.
+
+\subsection{Why the second family works unsigned at two}
+
+When $m$ is odd, the normalized parameter $m-1$ is even. Thus
+\eqref{eq:two-even} immediately proves
+$v_m(N)\equiv v_m(N/2)\pmod{2^{2R}}$.
+
+When $m$ is even and $R\geq2$, \eqref{eq:two-higher} gives the same
+result, in fact with the extra factor $2^{\nu_2(m)}$.
+It remains to consider a nonzero even $m$ and $N=2h$ with $h$ odd.
+Now $m-1$ is odd, so the signed theorem says
+\[
+b_{m-1}(2h)+b_{m-1}(h)\in4\Z.
+\]
+Consequently,
+\begin{equation}\label{eq:V2-boundary}
+\begin{aligned}
+v_m(2h)-v_m(h)
+&=m\bigl(b_{m-1}(2h)+b_{m-1}(h)\bigr)
+  -2m b_{m-1}(h)\\
+&\in2^{\nu_2(m)+1}\Z\subseteq4\Z.
+\end{aligned}
+\end{equation}
+This proves \eqref{eq:main-v-all} in the last case. The zero parameter
+has already been separated, so Theorem~\ref{thm:main} is complete.
+
+\subsection{A precise dyadic summary}
+
+For the first family, the unsigned parameter-refined bound
+\[
+\nu_2\bigl(u_m(N)-u_m(N/2)\bigr)\geq2R+\nu_2(m)
+\]
+holds for nonzero even $m$, and also for odd $m$ when $R\geq2$.
+When $m$ is odd and $R=1$, replace the difference by a sum.
+
+For the second family, the same parameter-refined bound holds whenever
+$m$ is odd or $R\geq2$. At the remaining first-descent case with $m$
+even, \eqref{eq:V2-boundary} gives the always-valid unsigned exponent
+$\nu_2(m)+1$, while the signed statement retains exponent
+$2+\nu_2(m)$. The ordinary exponent two holds without exception.
+The examples in Section~\ref{sec:examples} show why this distinction
+cannot simply be suppressed.
+
+\section{Framing as a change of coordinate}\label{sec:framing}
+
+The preceding proof can be understood without geometric background.
+Nevertheless, its structure becomes more transparent when the normalized
+transforms are organized as a family of coordinate changes.
+
+\subsection{The additive law for the transformations}
+
+For an integral unit $A$, set
+\[
+\mathfrak T_m(A)(y)=A(X_m(y))=:A_m(y),
+\qquad y=xA(x)^{-m}.
+\]
+If a second transformation has parameter $\ell$, its coordinate is
+\[
+z=yA_m(y)^{-\ell}=xA(x)^{-(m+\ell)}.
+\]
+Uniqueness of formal inversion therefore proves
+\begin{equation}\label{eq:group}
+\mathfrak T_\ell\bigl(\mathfrak T_m(A)\bigr)
+=\mathfrak T_{m+\ell}(A),\qquad
+\mathfrak T_0(A)=A.
+\end{equation}
+Thus $F=\mathfrak T_{-1}(A)$ is not an unrelated construction. It is
+one step in the same integer-parameter family. The shift from $b_m$ to
+$b_{m-1}$ in \eqref{eq:V-B} reflects precisely this additive law.
+
+\subsection{The transformed potential}
+
+Define
+\begin{equation}\label{eq:framed-potential}
+\Wm_m(y)=W(X_m(y))-\frac m2 H(X_m(y))^2.
+\end{equation}
+Using $d\log y=(1-mD(x))d\log x$, differentiation of the right side
+gives
+\[
+\dd_y\Wm_m(y)=H(X_m(y)),\qquad
+\dd_y^2\Wm_m(y)=\Bn_m(y).
+\]
+All three series have zero constant term where appropriate, so
+\begin{equation}\label{eq:potential-coeff}
+\Wm_m(y)=\sum_{n\geq1}\frac{b_m(n)}{n^2}y^n.
+\end{equation}
+The signed congruence theorem and Lemma~\ref{lem:mobius} now imply an
+integral dilogarithm expansion
+\begin{equation}\label{eq:framed-dilog}
+\Wm_m((-1)^m y)=\sum_{d\geq1}c_{m,d}\Li_2(y^d),
+\end{equation}
+where
+\begin{equation}\label{eq:framed-c}
+c_{m,d}=\frac1{d^2}\sum_{e\mid d}\mu(d/e)(-1)^{me}b_m(e)\in\Z.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:framed-Euler}
+A_m((-1)^m y)=\prod_{d\geq1}(1-y^d)^{-d c_{m,d}}.
+\end{equation}
+The sign in this coordinate is invisible to odd-prime descent, but it
+is essential for the all-prime dilogarithm expansion.
+
+This is the framing-integrality interpretation of the coefficient
+proof. Its general mathematical theory and geometric setting are the
+subject of \cite{svw2013,svw2017}. Higher-order congruences under more
+special framing hypotheses are studied in \cite{mueller}; no such
+additional hypothesis is invoked here. In particular, the arithmetic of
+the input must not be assumed to transfer at every stronger order merely
+because second order transfers.
+
+\section{Examples and limits of stronger assertions}\label{sec:examples}
+
+\subsection{Low-degree values and exceptional parameters}
+
+Direct expansion gives
+\begin{align*}
+A(x)&=1+5x+49x^2+685x^3+11807x^4+232771x^5+O(x^6),\\
+F(x)&=1+5x+24x^2+200x^3+2430x^4+36096x^5+O(x^6).
+\end{align*}
+These values agree with the target entry \cite{oeis-target}.
+The normalized coefficients are already nontrivial polynomials in the
+parameter:
+\begin{equation}\label{eq:small-polynomials}
+\begin{split}
+b_m(1)&=5,\\
+b_m(2)&=73+50m,\\
+b_m(3)&=\frac{2890+3285m+1125m^2}{2}.
+\end{split}
+\end{equation}
+The third expression has rational polynomial coefficients but takes
+integer values at every integer $m$, as guaranteed structurally by
+\eqref{eq:B-definition}. One should not confuse an integer-valued
+polynomial with a polynomial all of whose coefficients are integers.
+
+\begin{center}
+\small
+\begin{tabular}{r r r r r r}
+\toprule
+$m$ & $b_m(1)$ & $b_m(2)$ & $b_m(3)$ & $b_m(4)$ & $b_m(5)$\\
+\midrule
+$-2$ & 5 & $-27$ & 410 & $-1915$ & 53130\\
+$-1$ & 5 & 23 & 365 & 6343 & 123255\\
+0 & 5 & 73 & 1445 & 33001 & 819005\\
+1 & 5 & 123 & 3650 & 118059 & 4015380\\
+2 & 5 & 173 & 6980 & 301517 & 13540505\\
+3 & 5 & 223 & 11435 & 623375 & 35175630\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The cases $m=0$ and $m=1$ now have concrete interpretations.
+The normalized family at $m=0$ is the Ap\'ery sequence, but the original
+$u_0$ and $v_0$ vanish at positive indices. The reversion identity
+$v_1(n)=a_n$ is an exact coefficient identity, not just a congruence.
+Furthermore, $v_2(n)=2u_1(n)$ for every positive $n$.
+
+For comparison, some primitive coefficients from
+\eqref{eq:framed-c} are
+\begin{center}
+\small
+\begin{tabular}{r r r r r}
+\toprule
+$m$ & $c_{m,1}$ & $c_{m,2}$ & $c_{m,3}$ & $c_{m,4}$\\
+\midrule
+$-1$ & $-5$ & 7 & $-40$ & 395\\
+0 & 5 & 17 & 160 & 2058\\
+1 & $-5$ & 32 & $-405$ & 7371\\
+2 & 5 & 42 & 775 & 18834\\
+\bottomrule
+\end{tabular}
+\end{center}
+Negative coefficients present no difficulty: integrality, rather than
+positivity, is the property under consideration.
+
+\subsection{The first unsigned family cannot include two unconditionally}
+
+At $m=1$, $N=2$,
+\[
+u_1(2)-u_1(1)=123-5=118\not\equiv0\pmod4.
+\]
+Thus a blanket unsigned extension of the first OEIS assertion to $p=2$
+is false. The signed statement instead gives
+\[
+u_1(2)+u_1(1)=128\equiv0\pmod4,
+\]
+exactly as predicted by the first-descent proof.
+
+The stronger parameter factor at two also has a genuine boundary for
+the second family:
+\[
+v_2(2)-v_2(1)=246-10=236\equiv0\pmod4,
+\qquad236\not\equiv0\pmod8.
+\]
+Since $2R+\nu_2(m)=3$ in this example, the unsigned parameter-refined
+bound cannot hold uniformly at two. The original second-order
+congruence still holds, and the signed sum is $256$, divisible by $8$.
+
+\subsection{Second order cannot uniformly be replaced by third order}
+
+A small odd-prime example also limits the possible strengthening:
+\begin{equation}\label{eq:sharpness}
+\begin{aligned}
+u_1(7)-u_1(1)
+&=5082313271\\
+&=7^2\cdot103720679,
+\qquad103720679\equiv6\pmod7.
+\end{aligned}
+\end{equation}
+The valuation is exactly two, not three. Therefore a universal
+replacement of $p^{2r}$ by $p^{3r}$ in the first conjecture is false.
+Because $v_2(n)=2u_1(n)$ and $7\nmid2$, the same example rules out that
+replacement for the second family as well. This is a counterexample to
+a uniform higher-order assertion, not a claim that no individual
+parameters or primes can exhibit stronger divisibility.
+
+\section{Exact computation and reproducibility}\label{sec:computation}
+
+The companion file \texttt{verify.py} uses only the Python standard
+library and arbitrary-precision integers. Every division that is
+mathematically supposed to be exact is checked with a remainder test.
+The general proof above is independent of the computations; the program
+checks identities, edge cases, and representative congruences by routes
+that expose indexing or normalization mistakes.
+
+\subsection{Coefficient algorithms}
+
+For a fixed integer $q$, write $A(x)^q=\sum_{j\geq0}h_jx^j$.
+Logarithmic differentiation gives
+\begin{equation}\label{eq:coefficient-recurrence}
+h_0=1,\qquad
+h_j=\frac qj\sum_{k=1}^j a_k h_{j-k}\quad(j\geq1).
+\end{equation}
+The quotient is an integer because $A^q$ is an integral unit. This
+recurrence is valid for positive, zero, and negative $q$.
+To obtain $u_m(N)$, use the \emph{fixed} exponent $q=mN$ throughout the
+computation through degree $N$. The exponent must not be changed to
+$mj$ as the internal coefficient index $j$ varies.
+
+For $m\neq0$, compute $b_m(N)$ by exact division of $h_N$ by $m$;
+for $m=0$, use $a_N$. Then compute $v_m(N)=m b_{m-1}(N)$.
+This requires $O(N^2)$ integer arithmetic operations and $O(N)$ stored
+integers for one coefficient at a fixed parameter and target index.
+These are arithmetic-operation bounds, not unit-cost bit-complexity
+claims for the large integers involved.
+
+The input numbers are generated directly from the binomial definition
+using
+\[
+P(n,0)=1,\qquad
+P(n,k)=P(n,k-1)\frac{(n-k+1)(n+k)}{k^2},
+\qquad a_n=\sum_{k=0}^nP(n,k)^2.
+\]
+They are independently compared against the recurrence recorded in
+A005259 \cite{oeis-apery}:
+\begin{equation}\label{eq:apery-recurrence}
+(n+1)^3a_{n+1}
+=(34n^3+51n^2+27n+5)a_n-n^3a_{n-1},
+\qquad a_0=1,\ a_1=5.
+\end{equation}
+This familiar recurrence is used only as a cross-check; neither its
+validity nor a proof of it is needed for the congruence argument.
+
+For independent low-degree reversion checks, Lagrange inversion gives
+\[
+[y^n]F(y)=
+\begin{cases}
+5,&n=1,\\[2pt]
+\dfrac1{1-n}[x^n]A(x)^{1-n},&n\geq2.
+\end{cases}
+\]
+The program verifies $F(y)=A(y/F(y))$, both directions of compositional
+inversion, and direct polynomial powers of $A$ and $F$ through degree
+12. These direct power checks do not assume the formulas $u_m=m b_m$
+and $v_m=m b_{m-1}$ as their coefficient-computation method.
+
+\subsection{The included run}
+
+The archived run used maximum index $250$, original parameters
+$-6\leq m\leq6$, and normalized parameters $-7\leq m\leq6$.
+For the transformed congruences it used primes
+$2,3,5,7,11,13$ and indices $N=hp^r\leq250$ with
+$1\leq h\leq6$ and $r\geq1$. Duplicate prime--index pairs were removed,
+leaving 71 pairs. This is a specified finite sample, not every possible
+transformed parameter and index up to 250.
+
+The input Ap\'ery congruences were checked more exhaustively: every prime
+divisor of every positive $N\leq250$ was used. The completed run reported
+\textbf{8,142 successful checks}. The grouped counts are:
+\begin{center}
+\small
+\begin{tabular}{p{0.78\linewidth}r}
+\toprule
+Check category & Count\\
+\midrule
+Ap\'ery definition versus three-term recurrence & 251\\
+Input Ap\'ery second-order congruences & 473\\
+Input primitive dilogarithm coefficients & 250\\
+Functional equation, two inverse identities, Euler product & 4\\
+Direct coefficient identities for $u_m$ and $v_m$ & 312\\
+Signed normalized congruences at all selected primes & 994\\
+Unsigned normalized congruences in the applicable cases & 973\\
+Unsigned $v_m$ congruences, including the prime two & 923\\
+Unsigned $u_m$ congruences for odd primes or even $m$ & 815\\
+Signed parameter-refined congruences for both families & 1704\\
+Odd-prime parameter-refined congruences for both families & 1272\\
+Signed transformed primitive dilogarithm coefficients & 168\\
+Boundary and higher-order counterexamples & 3\\
+\midrule
+Total & 8142\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The JSON report gives all 71 prime--index pairs, the ungrouped category
+counts, the exact counterexample values, and the arithmetic environment.
+The CSV file records sample values of the sequences. No floating-point
+approximation or probabilistic primality test is used.
+
+\subsection{Reproduction commands}
+
+From the archive directory, with Python 3.9 or later, run
+\begin{lstlisting}
+python verify.py --max-index 250 --output-dir verification
+\end{lstlisting}
+A larger finite test can be requested, for example, with
+\begin{lstlisting}
+python verify.py --max-index 500 --parameter-radius 8 \
+    --multipliers 8 --primes 2 3 5 7 11 13 17 \
+    --output-dir verification-500
+\end{lstlisting}
+Only the default run described above is represented by the archived
+verification results. To rebuild the article, use
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The source is also compatible with two ordinary \texttt{pdflatex} runs.
+The computational artifact is not a proof-assistant formalization; the
+proof is the mathematical argument in this article.
+
+\section{Conclusion}
+
+The two parameterized assertions in A267220 follow from the same
+normalized transform, with a shift of one in the framing parameter.
+The central arithmetic fact is preservation of second-order Gauss
+congruences after this normalization. Its coefficient proof isolates
+the only linear term that appears to lose one power of the index and
+recovers that power by formal integration by parts.
+
+For the stated OEIS conjectures the conclusion is unconditional: every
+integer parameter, every allowed prime, and every positive pair of
+indices is covered. In fact, all odd primes work with an additional
+parameter valuation, and the second family works unsigned at two.
+The dyadic sign correction is exact, not an artifact of an insufficient
+estimate, as the smallest counterexample demonstrates. Finally,
+second order is genuinely the strongest order that can be asserted
+uniformly for these families without additional restrictions.
+
+\appendix
+\section{A formal Lagrange inversion proof}\label{app:lagrange}
+
+For completeness, the coefficient formula used above is established
+here in the precise formal setting required.
+
+\begin{lemma}\label{lem:lagrange}
+Let $\phi(x)\in1+x\Q[[x]]$ and let $X(y)$ be the unique series satisfying
+$X=y\phi(X)$. For any $G(x)\in\Q[[x]]$ and $n\geq1$,
+\begin{equation}\label{eq:lagrange}
+[y^n]G(X(y))=\frac1n[x^{n-1}]G'(x)\phi(x)^n.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let $\operatorname{Res}_x$ select the coefficient of $x^{-1}$ from a
+formal differential. Residues are unchanged by a substitution
+$y=x+O(x^2)$. This can be checked on monomials: derivatives have zero
+residue, and $y'/y=x^{-1}$ plus a power series.
+
+Substitute $y=x/\phi(x)$ in the coefficient residue. Then
+\[
+\begin{aligned}
+[y^n]G(X(y))
+&=\operatorname{Res}_y G(X(y))y^{-n-1}\,dy\\
+&=\operatorname{Res}_x
+G(x)x^{-n-1}\phi(x)^n
+\left(1-\frac{x\phi'(x)}{\phi(x)}\right)\,dx.
+\end{aligned}
+\]
+The residue of $d(G(x)x^{-n}\phi(x)^n)$ is zero. Expanding that
+derivative and rearranging shows that the last display equals
+\[
+\frac1n\operatorname{Res}_x G'(x)x^{-n}\phi(x)^n\,dx
+=\frac1n[x^{n-1}]G'(x)\phi(x)^n,
+\]
+as required.
+\end{proof}
+
+\begin{thebibliography}{9}
+\bibitem{oeis-target}
+OEIS Foundation Inc., \emph{A267220: Expansion of
+$\exp(\sum_{n\geq1}\mathrm{A005259}(n)x^n/n)$}.
+The two supercongruence conjectures are attributed to Peter Bala,
+October 17, 2024. Entry checked September 20, 2026.
+\url{https://oeis.org/A267220}.
+
+\bibitem{oeis-apery}
+OEIS Foundation Inc., \emph{A005259: Ap\'ery numbers}.
+Entry checked September 20, 2026.
+\url{https://oeis.org/A005259}.
+
+\bibitem{svw2013}
+A.~Schwarz, V.~Vologodsky, and J.~Walcher,
+\emph{Framing the Di-Logarithm (over $\Z$)},
+arXiv:1306.4298 (2013).
+\url{https://arxiv.org/abs/1306.4298}.
+
+\bibitem{svw2017}
+A.~Schwarz, V.~Vologodsky, and J.~Walcher,
+\emph{Integrality of Framing and Geometric Origin of 2-functions
+(with algebraic coefficients)},
+arXiv:1702.07135, version 2 (2017), especially Section 3.
+\url{https://arxiv.org/abs/1702.07135}.
+
+\bibitem{mueller}
+L.~Felipe M\"uller,
+\emph{Wolstenholme Type Congruences and Framing of Rational 2-Functions},
+arXiv:2104.10754 (2021).
+\url{https://arxiv.org/abs/2104.10754}.
+\end{thebibliography}
+
+\end{document}

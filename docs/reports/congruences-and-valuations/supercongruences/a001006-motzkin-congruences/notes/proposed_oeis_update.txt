@@ -1,0 +1,40 @@
+DRAFT ONLY — NOT SUBMITTED
+Target entry: A001006
+Target comment: Peter Bala, 10 February 2022, conjectures (1)–(4).
+
+The four assertions hold. Let T_n=A002426(n),
+U_n=A005717(n) for n>=1 with U_0=0, and
+D_n=A005773(n)=T_(n-1)+U_(n-1) for n>=1.
+
+For every odd prime p, integers m>=0, and 1<=s<=k, put
+q=p^(k-s+1) and h=m*p^(s-1). Then modulo p^s,
+
+  M_(m*p^k+d) = T_h*M_d                   (0<=d<=q-3),
+  M_(m*p^k+q-2) = T_h*M_(q-2)-U_h,
+  M_(m*p^k+q-1) = T_h*M_(q-1)-(q-1)*U_h.
+
+A coefficientwise Frobenius lift and the representation
+M_n=CT[(1-x^2)(x^(-1)+1+x)^n] prove these formulas.
+
+For p>=5, T_(mp)=T_m (mod p^2). A squared-binomial representation
+over sixth roots of unity and Babbage's congruence prove this directly.
+Consequently the fourth conjecture extends to
+M_(m*p^k+n)=T_m*M_n (mod p^2) for 0<=n<=p^(k-1)-3.
+
+The ranges in assertions (3) and (4) are optimal as initial intervals:
+
+  M_(2*p^k-2)-M_(p^k-2) = -1 (mod p),
+
+  M_(p^k+p^(k-1)-2)-M_(p^(k-1)-2)
+    = -2p (mod p^2) if p=1 (mod 6),
+    = p   (mod p^2) if p=5 (mod 6).
+
+The second conjecture has the following all-power extension for
+p=5 (mod 6): M_(n*p^r-2)=-D_n for odd r, and -U_(n-1) for even r,
+modulo p.
+
+Attribution should preserve Bala's original conjecture credit and
+acknowledge the relevant earlier results of Burns, Kohen, and Pan–Sun.
+The accompanying article supplies a unified self-contained derivation;
+no claim that all these results are new is intended. A public stable
+reference should be supplied before any actual OEIS submission.

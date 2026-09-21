@@ -1,0 +1,59 @@
+A381190 — DRAFT ONLY; NOT SUBMITTED
+Date: September 20, 2026
+
+The generating function attributed to Joerg Arndt (Jan 07 2026) follows
+from the classification below. This draft does not claim global priority.
+
+Model the graph with poles u,v and a rim a1,b1,...,an,bn. Edges are
+u-ai, v-bi, ai-bi, bi-a(i+1), cyclically. Minimality means inclusion-
+minimal among ALL dominating sets, with induced connectedness imposed
+separately; subsets are not counted up to symmetry.
+
+Every counted set contains exactly one pole. Both poles make every
+selected rim vertex lack a private neighbor; neither pole forces a
+consecutive rim path, which is too short to dominate or too long to
+be minimal. Fix u in D and v outside D. Every selected b-vertex must
+use v as its private neighbor, so there is exactly one, say bj.
+
+The selected a-positions form a cyclic 0-1 word without 00 or 111,
+hence a cycle of blocks 01 and 011. Mark the edge at bj. A mark is
+legal exactly between the ones of an 011 block, or on either side
+of the singleton one in an 01 block. Every such marked word for
+n>=3 gives a connected minimal dominating set. Private neighbors:
+v for bj; unmarked neighboring b-vertices across 1-0 edges for the
+selected a-vertices; a zero not incident with the mark for u.
+
+The marked block has weight 2*x^2+x^3, followed by a sequence of
+unmarked blocks of weights x^2,x^3. Its initial zero has n possible
+labeled positions. The two pole choices give
+
+    a(n) = 2*n*[x^n] (2*x^2+x^3)/(1-x^2-x^3), n>=3.
+
+Thus the generating function is 2*x*D_x of the displayed rational
+function, minus the spurious degree-two term 8*x^2. Simplification
+is exactly the conjectured generating function.
+
+Additional formulas:
+
+Let p(m)=[x^m]1/(1-x^2-x^3), with p(m)=0 for m<0. Then
+    a(n)=2*n*(2*p(n-2)+p(n-3)), n>=3.
+
+A finite sum is
+    a(n)=2*n*sum_{r,s>=0,2*r+3*s=n}
+      (2*binomial(r+s-1,s)+binomial(r+s-1,s-1)).
+Binomials with out-of-range lower indices are zero.
+
+A recurrence with a(3)=6, a(4)=16, a(5)=30 is
+    (n-2)*(n-3)*a(n)
+      = n*(n-3)*a(n-2)+n*(n-2)*a(n-3), n>=6.
+
+Let lambda be the real root of lambda^3-lambda-1=0 and
+C=2*(2*lambda+1)/(2*lambda+3). Then
+    a(n)=C*n*lambda^n+O(n*lambda^(-n/2)),
+and for every n>=45,
+    a(n)=floor(C*n*lambda^n+1/2).
+
+See article.pdf for the full proof, the cardinality refinement,
+the exact three-root expression, and the uniform rounding bound.
+Exhaustive checks through n=10 compare actual subset families,
+not only counts. All 40 source terms n=3..42 match.

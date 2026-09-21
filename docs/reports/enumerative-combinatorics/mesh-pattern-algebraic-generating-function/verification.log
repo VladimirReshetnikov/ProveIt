@@ -1,0 +1,41 @@
+Exact algorithms agree at indices 0..1000.
+Generator matches all n! permutations through n=8.
+{'n': 0, 'catalan': 1, 'avoid174': 1, 'avoid234': 1, 'indecomposable': 0, 'reduced_core': 0}
+{'n': 1, 'catalan': 1, 'avoid174': 1, 'avoid234': 1, 'indecomposable': 0, 'reduced_core': 0}
+{'n': 2, 'catalan': 2, 'avoid174': 1, 'avoid234': 1, 'indecomposable': 1, 'reduced_core': 1}
+{'n': 3, 'catalan': 5, 'avoid174': 3, 'avoid234': 3, 'indecomposable': 2, 'reduced_core': 1}
+{'n': 4, 'catalan': 14, 'avoid174': 6, 'avoid234': 6, 'indecomposable': 5, 'reduced_core': 3}
+{'n': 5, 'catalan': 42, 'avoid174': 18, 'avoid234': 18, 'indecomposable': 14, 'reduced_core': 7}
+{'n': 6, 'catalan': 132, 'avoid174': 47, 'avoid234': 47, 'indecomposable': 42, 'reduced_core': 19}
+{'n': 7, 'catalan': 429, 'avoid174': 139, 'avoid234': 139, 'indecomposable': 132, 'reduced_core': 53}
+{'n': 8, 'catalan': 1430, 'avoid174': 405, 'avoid234': 405, 'indecomposable': 429, 'reduced_core': 153}
+{'n': 9, 'catalan': 4862, 'avoid174': 1225, 'avoid234': 1225, 'indecomposable': 1430, 'reduced_core': 453}
+{'n': 10, 'catalan': 16796, 'avoid174': 3740, 'avoid234': 3740, 'indecomposable': 4862, 'reduced_core': 1367}
+{'n': 11, 'catalan': 58786, 'avoid174': 11602, 'avoid234': 11602, 'indecomposable': 16796, 'reduced_core': 4191}
+{
+  "status": "PASS",
+  "python": "3.13.5",
+  "exact_last_index": 1000,
+  "exact_terms_compared": 1001,
+  "exhaustive_last_length": 11,
+  "exhaustive_permutations": 82500,
+  "raw_factorial_last_length": 8,
+  "pointwise_inverse_last_length": 8,
+  "indecomposable_contraction_round_trips": 23713,
+  "independent_inflation_tests": 102,
+  "checks": [
+    "two exact coefficient recurrences",
+    "published OEIS terms",
+    "independent n! generator cross-check",
+    "geometric mesh predicates",
+    "pointwise inverse-pattern equivalence",
+    "structural mesh lemma",
+    "Narayana record distribution",
+    "Dyck bijection round trips",
+    "contraction/inflation round trips",
+    "refined core formula",
+    "four-variable class generating function"
+  ],
+  "elapsed_seconds": 9.655,
+  "note": "Finite checks support but do not replace the mathematical proof."
+}

@@ -1,0 +1,1030 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,aliascnt}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Apery Numbers under Exponentiation and Series Reversion},pdfauthor={ChatGPT},pdfsubject={Proofs of two OEIS A267220 supercongruence conjectures}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Ap\'ery numbers and two OEIS conjectures}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\crefname{proposition}{proposition}{propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\crefname{lemma}{lemma}{lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\crefname{corollary}{corollary}{corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\crefname{definition}{definition}{definitions}
+\Crefname{definition}{Definition}{Definitions}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\crefname{example}{example}{examples}
+\Crefname{example}{Example}{Examples}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{remark}{remark}{remarks}
+\Crefname{remark}{Remark}{Remarks}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Zp}{\mathbb Z_p}
+\newcommand{\Qp}{\mathbb Q_p}
+\newcommand{\vp}{\operatorname{ord}_p}
+\newcommand{\vtwo}{\operatorname{ord}_2}
+\newcommand{\Rev}{\operatorname{Rev}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\dd}{\mathop{}\!d}
+\title{\textbf{Ap\'ery Numbers under Exponentiation\texorpdfstring{\\}{ }and Series Reversion}\\[8pt]
+\large Proofs of two OEIS supercongruence conjectures\\
+\normalsize A self-contained framing argument for A267220}
+\author{ChatGPT}
+\date{20 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $a_n=\sum_{k=0}^n\binom nk^2\binom{n+k}k^2$ be the classical Ap\'ery numbers,
+let $G(z)=\exp(\sum_{n\ge1}a_nz^n/n)$, and put
+$F(w)=w/\Rev(zG(z))(w)$. We prove both conjectures recorded by Peter Bala
+in OEIS A267220 on 17 October 2024: for every integer $m$, the sequences
+$u_m(n)=[z^n]G(z)^{mn}$ and $v_m(n)=[w^n]F(w)^{mn}$ satisfy
+order-two prime-power supercongruences. The proof extends both conjectures
+to $p=3$, and extends the second to $p=2$ as well. It also gives
+parameter-dependent divisibility and proves integrality of the normalized
+family $B_t(n)=t^{-1}[z^n]G(z)^{tn}$, with $B_0(n)=a_n$.
+An elementary binomial-product argument supplies the initial congruences.
+An explicit Frobenius-defect identity then establishes the required
+change-of-variable theorem, a rational-coefficient instance of the known
+framing principle for $2$-functions. The special behavior at $2$ is
+tracked without suppressing a denominator. Small exact examples show
+that a uniform cubic modulus is false, and that the first family cannot
+be extended unchanged to $2$. A standard-library Python program provides
+independent finite checks using integer and rational arithmetic.
+\end{abstract}
+\vspace{4pt}
+\noindent\textbf{Scope and status.} This article supplies mathematical proofs,
+not an inference from numerical experiments. The general framing principle
+is prior work, not a novelty claim. The specific OEIS applications and
+refinements are proved explicitly here. This is an unrefereed research
+exposition; no proof-assistant verification or OEIS submission is claimed.
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The problem and its mathematical setting}\label{sec:problem}
+The Ap\'ery numbers associated with $\zeta(3)$ are
+\begin{equation}\label{eq:apery}
+ a_n=\sum_{k=0}^n\binom nk^2\binom{n+k}k^2
+ \qquad(n\ge0).
+\end{equation}
+They begin $1,5,73,1445,33001,819005,21460825,\ldots$ and form
+OEIS A005259 \cite{oeis-apery}. Their role in Ap\'ery's irrationality proof
+and their classical supercongruences make them a natural, substantial
+example rather than an artificially chosen sequence; see \cite{liu}
+for the arithmetic background.
+
+Define the formal power series
+\begin{equation}\label{eq:basic-series}
+ L(z)=\sum_{n\ge1}\frac{a_n}{n}z^n,
+ \qquad G(z)=\exp L(z),
+ \qquad W(z)=\sum_{n\ge1}\frac{a_n}{n^2}z^n.
+\end{equation}
+We use $G$ for the generating function called $A$ in OEIS A267220, to
+avoid confusing it with the Ap\'ery numbers themselves. If $h(w)$ is the
+unique compositional inverse of $zG(z)$, set
+\begin{equation}\label{eq:F}
+ h(w)=\Rev(zG(z))(w),\qquad F(w)=\frac{w}{h(w)}.
+\end{equation}
+Here reversion means composition, not the multiplicative reciprocal.
+The first coefficients are
+\begin{align*}
+ G(z)&=1+5z+49z^2+685z^3+11807z^4+232771z^5+\cdots,\\
+ F(w)&=1+5w+24w^2+200w^3+2430w^4+36096w^5+\cdots.
+\end{align*}
+In the entry's formula section, Peter Bala's contribution dated
+17 October 2024 states the following two conjectures \cite{oeis-target}.
+For each integer $m$, let
+\begin{equation}\label{eq:uv}
+ u_m(n)=[z^n]G(z)^{mn},\qquad
+ v_m(n)=[w^n]F(w)^{mn}.
+\end{equation}
+For every prime $p\ge5$ and positive integers $n,r$, the proposed formulas are
+\begin{align}
+ u_m(np^r)&\equiv u_m(np^{r-1})\pmod{p^{2r}},\label{eq:conj-u}\\
+ v_m(np^r)&\equiv v_m(np^{r-1})\pmod{p^{2r}}.\label{eq:conj-v}
+\end{align}
+Both remain labeled conjectures in the entry accessed on
+20 September 2026. These are the targets of the present article. An older,
+different integrality comment in that entry already cites a proof; it is
+not being presented here as an open problem.
+
+The exponent in \eqref{eq:uv} grows with the index, so these are not merely
+fixed powers of one integral series. Reversion adds a nonlinear operation.
+Furthermore, the original parameter range includes negative integers,
+$m=0$, and parameters divisible by the modulus prime. A proof by division
+by $m$ or $m-1$ in a finite field would miss some of those cases.
+
+The appropriate organizing object is a \emph{$2$-function}, a formal
+series whose coefficients obey a prime-by-prime divisibility condition.
+Schwarz, Vologodsky, and Walcher established preservation of this
+structure under framing, a change of variable involving compositional
+inversion \cite{svw2013,svw2017}. Our proof develops exactly the local
+rational-coefficient calculation needed here. In particular, it keeps the
+unsigned convention dictated by \eqref{eq:uv} and treats its behavior at
+$2$ directly.
+
+\section{Main results and conventions}\label{sec:main}
+All series manipulations take place formally, initially over $\Q$.
+No analytic convergence is assumed. We write $\vp(q)$ for the exponent
+of a prime $p$ in a nonzero rational number $q$ and use
+$\vp(0)=+\infty$. Thus $q\in\Zp$ means $\vp(q)\ge0$; this is simply a
+convenient way of saying that the reduced denominator of $q$ is not
+multiple of $p$. A congruence between integers has its usual meaning.
+For a variable $z$ put $\delta_z=z\dd/\dd z$.
+
+For an integer $t$ and $n\ge1$, define
+\begin{equation}\label{eq:Bt}
+ B_t(n)=
+ \begin{cases}
+ \displaystyle\frac1t[z^n]G(z)^{tn},&t\ne0,\\[5pt]
+ a_n,&t=0.
+ \end{cases}
+\end{equation}
+The value at zero is the removable value: the coefficient of $t$ in
+$[z^n]\exp(tnL(z))$ is $a_n$. More generally $B_t(n)$ is a rational
+polynomial in $t$ of degree at most $n-1$.
+
+\begin{theorem}[Normalized supercongruences]\label{thm:normalized}
+For every integer $t$ and every $n\ge1$, $B_t(n)$ is an integer.
+For an odd prime $p$ and an integer $N\ge1$ divisible by $p$,
+\begin{equation}\label{eq:B-odd}
+ B_t(N)\equiv B_t(N/p)\pmod{p^{2\vp(N)}}.
+\end{equation}
+If $N$ is even, then
+\begin{equation}\label{eq:B-two}
+ \vtwo\bigl(B_t(N)-B_t(N/2)\bigr)\ge
+ \begin{cases}
+ 2\vtwo(N),&t\text{ even},\\
+ 2\vtwo(N)-1,&t\text{ odd}.
+ \end{cases}
+\end{equation}
+\end{theorem}
+
+\begin{theorem}[Both OEIS conjectures, with refinements]\label{thm:OEIS}
+For all integers $m$ and positive integers $n$,
+\begin{equation}\label{eq:identity-uv}
+ u_m(n)=mB_m(n),\qquad v_m(n)=mB_{m-1}(n).
+\end{equation}
+Consequently, \eqref{eq:conj-u} and \eqref{eq:conj-v} hold for every odd
+prime, including $3$. In fact, if $m\ne0$, $p$ is odd, and $p\mid N$, then
+\begin{align}
+ \vp\bigl(u_m(N)-u_m(N/p)\bigr)&\ge2\vp(N)+\vp(m),\label{eq:strong-u}\\
+ \vp\bigl(v_m(N)-v_m(N/p)\bigr)&\ge2\vp(N)+\vp(m).\label{eq:strong-v}
+\end{align}
+The second OEIS congruence also holds for $p=2$, for every integer $m$.
+More precisely, for nonzero $m$ and even $N$,
+\begin{align}
+ \vtwo\bigl(u_m(N)-u_m(N/2)\bigr)&\ge
+ \begin{cases}
+ 2\vtwo(N)+\vtwo(m),&m\text{ even},\\
+ 2\vtwo(N)-1,&m\text{ odd},
+ \end{cases}\label{eq:u-two}\\
+ \vtwo\bigl(v_m(N)-v_m(N/2)\bigr)&\ge
+ \begin{cases}
+ 2\vtwo(N)+\vtwo(m)-1,&m\text{ even},\\
+ 2\vtwo(N),&m\text{ odd}.
+ \end{cases}\label{eq:v-two}
+\end{align}
+For $m=0$, both sequences are zero at positive indices, so all these
+congruences are automatic.
+\end{theorem}
+
+Taking $N=np^r$ gives $\vp(N)=r+\vp(n)\ge r$, explaining why the stated
+results imply precisely the moduli requested in the OEIS entry, even
+when $p\mid n$. The two identities in \eqref{eq:identity-uv} also show
+that the apparently different conjectures belong to one normalized
+family, with parameters differing by one.
+
+The proof has three ingredients. First, a binomial-product identity
+establishes order-two congruences for the seed $a_n$ at every prime.
+Second, these congruences make $W$ a $2$-function and force an integral
+Euler product for $G$. Finally, a change of variable preserves the relevant
+Frobenius divisibility. Lagrange inversion identifies its coefficients
+with $B_t(n)$.
+
+\section{An elementary congruence for the Ap\'ery seed}\label{sec:seed}
+It is known that Ap\'ery numbers satisfy the stronger order-three
+congruences at primes at least $5$; the historical results of Gessel and
+Coster are reviewed in \cite{liu}. We do not need that stronger theorem.
+The following direct argument proves all the input used below, including
+at $2$ and $3$.
+
+\begin{lemma}[Binomial product]\label{lem:product}
+For integers $1\le k\le N$, put
+$C(N,k)=\binom Nk\binom{N+k}k$. Then
+\begin{equation}\label{eq:product}
+ C(N,k)=(-1)^{k-1}\frac{N(N+k)}{k^2}
+       \prod_{j=1}^{k-1}\left(1-\frac{N^2}{j^2}\right).
+\end{equation}
+If $p\mid N$ and $1\le\ell\le N/p$, then
+\begin{equation}\label{eq:split-product}
+ C(N,p\ell)=(-1)^{(p-1)\ell}C(N/p,\ell)
+ \prod_{\substack{1\le j<p\ell\\p\nmid j}}
+       \left(1-\frac{N^2}{j^2}\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Extract $N/k$ from $\binom Nk$ and $(N+k)/k$ from $\binom{N+k}k$.
+Pairing the remaining factors gives
+$(N-j)(N+j)/j^2=-(1-N^2/j^2)$ and proves \eqref{eq:product}.
+When $k=p\ell$, the factors with $p\mid j$ form exactly the product in
+\eqref{eq:product} for $(N/p,\ell)$. The prefactors coincide. The ratio
+of signs is $(-1)^{p\ell-1-(\ell-1)}=(-1)^{(p-1)\ell}$, proving
+\eqref{eq:split-product}.
+\end{proof}
+
+\begin{proposition}[Order two at every prime]\label{prop:seed}
+For every prime $p$ and every positive $N$ divisible by $p$,
+\begin{equation}\label{eq:seed}
+ a_N\equiv a_{N/p}\pmod{p^{2\vp(N)}}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Write $r=\vp(N)$. If $p\nmid k$, the identity
+$\binom Nk=(N/k)\binom{N-1}{k-1}$ gives
+$\vp(\binom Nk)\ge r$. Hence $C(N,k)^2$ is divisible by $p^{2r}$.
+
+If $k=p\ell$, each denominator $j$ in the remaining product of
+\eqref{eq:split-product} is a $p$-adic unit. Thus each factor is
+$1$ modulo $p^{2r}$. On squaring, the sign disappears, and we obtain
+\[
+ C(N,p\ell)^2\equiv C(N/p,\ell)^2\pmod{p^{2r}}.
+\]
+This holds also for $p=2$: no assertion that the unsquared sign is
+positive has been made. The term $k=0$ is $1$ on both sides. Summing over
+all $k$ proves \eqref{eq:seed}.
+\end{proof}
+
+\begin{remark}
+One must split the product before reducing it modulo a prime power.
+Factors with $p\mid j$ need not be congruent to $1$ and cannot be discarded.
+Their exact contribution is the lower-index binomial product.
+\end{remark}
+
+\section{Dilogarithms, Euler products, and local defects}\label{sec:twofunctions}
+We now isolate the general arithmetic structure. The subsequent argument
+works for any integer sequence satisfying \eqref{eq:seed}, not just the
+Ap\'ery numbers.
+
+\begin{definition}
+An integer sequence $(a_n)_{n\ge1}$ will be called \emph{order-two
+admissible} if \eqref{eq:seed} holds for every prime and every positive
+multiple $N$ of that prime. Its associated series $W$ in
+\eqref{eq:basic-series} is then a rational $2$-function.
+\end{definition}
+
+\begin{proposition}[Three equivalent descriptions]\label{prop:equivalence}
+For an integer sequence $(a_n)_{n\ge1}$, the following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)},nosep]
+\item The sequence is order-two admissible.
+\item For every $d\ge1$,
+\begin{equation}\label{eq:cd}
+ c_d=\frac1{d^2}\sum_{e\mid d}\mu(e)a_{d/e}\in\Z.
+\end{equation}
+\item For every prime $p$,
+\begin{equation}\label{eq:R}
+ R_p(z):=\frac1{p^2}W(z^p)-W(z)\in z\Zp[[z]].
+\end{equation}
+\end{enumerate}
+When these conditions hold,
+\begin{align}
+ W(z)&=\sum_{d\ge1}c_d\Li_2(z^d),\label{eq:dilog}\\
+ G(z)&=\prod_{d\ge1}(1-z^d)^{-dc_d}\in1+z\Z[[z]].\label{eq:euler}
+\end{align}
+\end{proposition}
+\begin{proof}
+Suppose (i), fix $d=p^rh$ with $p\nmid h$, and group terms in the
+numerator of \eqref{eq:cd} according to whether the squarefree divisor
+$e$ contains $p$. The numerator becomes
+\[
+ \sum_{e\mid h}\mu(e)
+       \bigl(a_{p^rh/e}-a_{p^{r-1}h/e}\bigr).
+\]
+Every summand is divisible by $p^{2r}$. Doing this for every prime dividing
+$d$ proves divisibility by $d^2$, hence (ii).
+
+M\"obius inversion gives
+\begin{equation}\label{eq:divisor-sum}
+ a_n=\sum_{d\mid n}d^2c_d.
+\end{equation}
+Conversely, if (ii) holds and $N=p^rh$ with $p\nmid h$, subtracting the
+expressions \eqref{eq:divisor-sum} for $N$ and $N/p$ leaves only divisors
+$d$ with $\vp(d)=r$. Their squares are multiples of $p^{2r}$, proving (i).
+
+For (iii), the coefficient of $z^N$ in $R_p$ is
+\begin{equation}\label{eq:defect-coeff}
+ [z^N]R_p(z)=
+ \begin{cases}
+ -a_N/N^2,&p\nmid N,\\
+ (a_{N/p}-a_N)/N^2,&p\mid N.
+ \end{cases}
+\end{equation}
+Since the $a_N$ are integers, the equivalence of (i) and (iii) follows.
+Finally, expand $\Li_2(z)=\sum_{j\ge1}z^j/j^2$ and apply
+\eqref{eq:divisor-sum} to obtain \eqref{eq:dilog}. Because
+$\delta_z\Li_2(z^d)=-d\log(1-z^d)$, exponentiation gives
+\eqref{eq:euler}. All products and sums are locally finite as formal
+series. Integer, including negative, powers of an integral unit have
+integer coefficients, which proves the last assertion.
+\end{proof}
+
+For the Ap\'ery seed, $c_1,\ldots,c_6$ are
+$5,17,160,2058,32760,596092$. For example, the first factors of $G$ are
+\[
+ (1-z)^{-5}(1-z^2)^{-34}(1-z^3)^{-480}(1-z^4)^{-8232}\cdots.
+\]
+Their integrality is a consequence of the congruences, not an assumption
+based on the initial coefficient list.
+
+The logarithmic derivative of \eqref{eq:R} is also integral:
+\begin{equation}\label{eq:D}
+ D_p(z):=\delta_zR_p(z)
+ =\frac1pL(z^p)-L(z)\in z\Zp[[z]].
+\end{equation}
+Although $W$ and $L$ can have denominators, all higher derivatives needed
+below are integral:
+\begin{equation}\label{eq:derivatives}
+ \delta_z^kW(z)=\sum_{n\ge1}n^{k-2}a_nz^n
+ \in z\Z[[z]]\qquad(k\ge2).
+\end{equation}
+This distinction between the first derivative and the higher derivatives
+is important in the cancellation argument.
+
+\section{The normalized family as a change of variable}\label{sec:lagrange}
+For an integer $t$, introduce
+\begin{equation}\label{eq:coordinate}
+ f_t(z)=zG(z)^{-t},\qquad
+ \psi_t(w)=\Rev(f_t)(w).
+\end{equation}
+Since $G$ is an integral unit, $f_t(z)=z+O(z^2)$ has integer coefficients.
+Its inverse $\psi_t(w)=w+O(w^2)$ has integer coefficients as well: the
+coefficient of degree $n$ in the equation $f_t(\psi_t(w))=w$ determines
+the new inverse coefficient with coefficient $1$, using only integer
+polynomials in earlier coefficients.
+
+Set
+\begin{equation}\label{eq:framed-potential}
+ W_t(w)=W(\psi_t(w))-\frac t2L(\psi_t(w))^2.
+\end{equation}
+The quadratic correction is essential. Merely composing $W$ with
+$\psi_t$ does not yield the cancellation used later.
+
+\begin{lemma}[Differential and coefficient identities]\label{lem:lagrange}
+For every integer $t$,
+\begin{align}
+ \delta_wW_t(w)&=L(\psi_t(w)),\label{eq:framed-derivative}\\
+ W_t(w)&=\sum_{n\ge1}\frac{B_t(n)}{n^2}w^n.\label{eq:framed-coefficients}
+\end{align}
+\end{lemma}
+\begin{proof}
+In the coordinate $w=zG(z)^{-t}$,
+\[
+ \frac{\dd w}{w}=(1-t\delta_zL(z))\frac{\dd z}{z},
+ \qquad
+ \dd\left(W(z)-\frac t2L(z)^2\right)
+ =L(z)(1-t\delta_zL(z))\frac{\dd z}{z}.
+\]
+The factor $1-t\delta_zL(z)$ has constant term $1$, so is a formal unit.
+Division gives \eqref{eq:framed-derivative}.
+
+The Lagrange coefficient formula, proved in \cref{app:lagrange}, says that
+if $\psi(w)=w\Phi(\psi(w))$, then for $n\ge1$,
+\begin{equation}\label{eq:lagrange}
+ [w^n]H(\psi(w))=\frac1n[z^{n-1}]H'(z)\Phi(z)^n.
+\end{equation}
+Here $\Phi=G^t$ and $H=L$. When $t\ne0$,
+\begin{align*}
+ [w^n]L(\psi_t(w))
+ &=\frac1n[z^{n-1}]L'(z)G(z)^{tn}\\
+ &=\frac1{tn^2}[z^{n-1}]\bigl(G(z)^{tn}\bigr)'\\
+ &=\frac1{tn}[z^n]G(z)^{tn}=\frac{B_t(n)}n.
+\end{align*}
+For $t=0$, $\psi_0(w)=w$ and the same identity follows from
+$B_0(n)=a_n$. Both sides of \eqref{eq:framed-coefficients} have zero
+constant coefficient, so logarithmic integration proves it.
+\end{proof}
+
+At this point $B_t(n)$ is only known to be rational when $t\ne0$.
+The next section proves the needed local integrality before using it to
+assert divisibility. This avoids treating division by $t$ as though it
+were harmless at a prime dividing $t$.
+
+\section{The Frobenius-defect calculation}\label{sec:framing}
+This section gives the central proof. It uses only the conclusions of
+\cref{prop:equivalence}, the integral coordinate inverse, and elementary
+bounds on factorial denominators.
+
+\subsection{An integral logarithmic error}
+Fix a prime $p$ and an integer $t$. Write
+\begin{equation}\label{eq:x-and-J}
+ x=\psi_t(w),\qquad x_p=\psi_t(w^p),\qquad
+ J(w)=G(\psi_t(w))\in1+w\Z[[w]].
+\end{equation}
+Define
+\begin{equation}\label{eq:S}
+ S(w)=\frac1p\log J(w^p)-\log J(w)
+     =\frac1pL(x_p)-L(x).
+\end{equation}
+
+\begin{lemma}\label{lem:S}
+For every prime $p$, including $2$,
+$S(w)\in w\Zp[[w]]$. Moreover,
+\begin{equation}\label{eq:xp}
+ x_p=x^p\exp\bigl(ptS(w)\bigr).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Reduction modulo $p$ gives $J(w^p)\equiv J(w)^p$ because the coefficients
+are integers. Thus
+\[
+ \frac{J(w^p)}{J(w)^p}=1+pH(w),\qquad H(w)\in w\Zp[[w]].
+\]
+The formal logarithm yields
+\[
+ S(w)=\frac1p\log(1+pH(w))
+     =\sum_{j\ge1}\frac{(-1)^{j+1}p^{j-1}}jH(w)^j.
+\]
+The scalar coefficients are $p$-integral, since
+$j-1-\vp(j)\ge0$ for every $j\ge1$. This includes $p=2$.
+For example, if $e=\vp(j)$ then $j\ge2^e\ge e+1$.
+The sum is well defined coefficientwise because $H$ has zero constant term.
+
+The inverse-coordinate equation says $x=wJ(w)^t$. Applying it at $w^p$
+and dividing by $x^p=w^pJ(w)^{pt}$ gives
+\[
+ \frac{x_p}{x^p}
+ =\left(\frac{J(w^p)}{J(w)^p}\right)^t
+ =\exp(ptS(w)),
+\]
+which is \eqref{eq:xp}. All quotients here are quotients of formal units
+after the common leading monomial has been canceled.
+\end{proof}
+
+\subsection{The exact cancellation identity}
+The framed Frobenius defect is
+\begin{equation}\label{eq:Rtilde}
+ \widetilde R_{p,t}(w)=\frac1{p^2}W_t(w^p)-W_t(w).
+\end{equation}
+The goal is to prove its coefficients integral, allowing at most one
+factor of $2$ in their denominators when both $p=2$ and $t$ is odd.
+
+\begin{proposition}[Explicit defect formula]\label{prop:defect-identity}
+With the notation above,
+\begin{equation}\label{eq:key}
+\boxed{\begin{aligned}
+ \widetilde R_{p,t}(w)
+ &=R_p(x)+tS(w)D_p(x)-\frac t2S(w)^2\\
+ &\quad+\sum_{k\ge2}\frac{p^{k-2}t^k}{k!}S(w)^k
+                  (\delta_z^kW)(x^p).
+\end{aligned}}
+\end{equation}
+This is an equality of formal series over $\Qp$.
+\end{proposition}
+\begin{proof}
+For a series $V$ with zero constant coefficient, the logarithmic Taylor
+identity is
+\begin{equation}\label{eq:logtaylor}
+ V(ye^q)=\sum_{k\ge0}\frac{q^k}{k!}(\delta_y^kV)(y).
+\end{equation}
+It follows by checking the monomials $y^n$: both sides are $y^ne^{nq}$.
+Afterward one may substitute series for $y$ and $q$ having zero constant
+term. Every coefficient then involves only finitely many terms.
+
+Apply \eqref{eq:logtaylor} to $W$, using $y=x^p$ and $q=ptS$:
+\begin{align*}
+ \frac1{p^2}W(x_p)
+ &=\frac1{p^2}W(x^p)+\frac{tS}{p}L(x^p)\\
+ &\quad+\sum_{k\ge2}\frac{p^{k-2}t^k}{k!}S^k
+                          (\delta_z^kW)(x^p).
+\end{align*}
+Also, by \eqref{eq:S}, $L(x_p)/p=L(x)+S$. The quadratic part of
+\eqref{eq:framed-potential} therefore contributes
+\[
+ -\frac t2\left(\left(\frac{L(x_p)}p\right)^2-L(x)^2\right)
+ =-tS L(x)-\frac t2S^2.
+\]
+Combining the linear Taylor term with the first term of this expression
+gives
+\[
+ tS\left(\frac{L(x^p)}p-L(x)\right)=tS D_p(x).
+\]
+The terms involving $W$ with no Taylor derivatives give $R_p(x)$.
+These substitutions prove \eqref{eq:key}.
+\end{proof}
+
+The terms $L(x)$ and $L(x^p)/p$ need not be integral separately.
+Their cancellation is what prevents the denominator $n$ in the logarithm
+from costing a power of the modulus. After this cancellation, only
+integral series and explicit factorial denominators remain.
+
+\subsection{Factorial denominators and the prime two}
+\begin{lemma}\label{lem:factorial}
+For $k\ge2$ and an odd prime $p$,
+\begin{equation}\label{eq:factorial-odd}
+ \vp(k!)\le k-2.
+\end{equation}
+For $p=2$,
+\begin{equation}\label{eq:factorial-two}
+ \vtwo(k!)\le k-1.
+\end{equation}
+Consequently $p^{k-2}/k!$ is $p$-integral for odd $p$, and
+$2^{k-2}/k!\in\tfrac12\Z_2$.
+\end{lemma}
+\begin{proof}
+Counting multiples of each power of $p$ among $1,\ldots,k$ gives
+$\vp(k!)=\sum_{j\ge1}\lfloor k/p^j\rfloor$.
+Equivalently, if $s_p(k)\ge1$ is the sum of the base-$p$ digits of $k$,
+this is $(k-s_p(k))/(p-1)$. For odd $p$ and $k\ge3$, it is at most
+$(k-1)/2\le k-2$; $k=2$ is immediate. At $p=2$ it is at most $k-1$.
+\end{proof}
+
+\begin{theorem}[Unsigned framing, with the $2$-adic loss]\label{thm:framing}
+Let $(a_n)_{n\ge1}$ be any order-two admissible integer sequence,
+and define $L,G,W,\psi_t,W_t$ as above. For every integer $t$,
+\begin{equation}\label{eq:defect-integrality}
+ \widetilde R_{p,t}(w)\in
+ \begin{cases}
+ w\Zp[[w]],&p\text{ odd},\\
+ w\Z_2[[w]],&p=2\text{ and }t\text{ even},\\
+ \tfrac12 w\Z_2[[w]],&p=2\text{ and }t\text{ odd}.
+ \end{cases}
+\end{equation}
+Its normalized coefficients $B_t(n)$ are integers for all integers $t$,
+and they satisfy \eqref{eq:B-odd} and \eqref{eq:B-two}.
+\end{theorem}
+\begin{proof}
+By \cref{prop:equivalence,lem:S}, the series $R_p(x)$, $D_p(x)$, and $S$
+are $p$-integral. By \eqref{eq:derivatives}, so is
+$(\delta_z^kW)(x^p)$ for every $k\ge2$. Composition preserves integrality
+because $x\in w\Z[[w]]$.
+
+For odd $p$, the number $1/2$ is $p$-integral, and
+\cref{lem:factorial} makes every scalar $p^{k-2}t^k/k!$ integral.
+Thus \eqref{eq:key} lies in $w\Zp[[w]]$.
+
+For $p=2$, the same argument allows at worst a factor $1/2$, both from
+$tS^2/2$ and from the factorial coefficients. If $t$ is even, the former
+term is integral and so are the latter coefficients: for nonzero even
+$t$ and $k\ge2$,
+\[
+ \vtwo\left(\frac{2^{k-2}t^k}{k!}\right)
+ \ge k-2+k-(k-1)=k-1\ge1.
+\]
+For $t=0$ all those terms vanish. This proves
+\eqref{eq:defect-integrality}.
+
+We now deduce the coefficient assertions without assuming in advance
+that $B_t(n)$ is integral. From \eqref{eq:framed-coefficients},
+\begin{equation}\label{eq:framed-defect-coeff}
+ [w^N]\widetilde R_{p,t}(w)=
+ \begin{cases}
+ -B_t(N)/N^2,&p\nmid N,\\
+ (B_t(N/p)-B_t(N))/N^2,&p\mid N.
+ \end{cases}
+\end{equation}
+When the defect is integral, the first case shows that $B_t(N)$ is
+$p$-integral for $p\nmid N$. The second case then proves, by induction
+on $\vp(N)$, that every $B_t(N)$ is $p$-integral; simultaneously it proves
+that $B_t(N)-B_t(N/p)$ has valuation at least $2\vp(N)$.
+This covers every odd prime and also $p=2$ when $t$ is even.
+
+For odd $t$, the definition \eqref{eq:Bt} has numerator in $\Z$, since
+$G^{tn}$ is an integer power of an integral unit, and denominator $t$
+is odd. Hence $B_t(n)$ is $2$-integral in that case as well. The half-integral
+defect in \eqref{eq:framed-defect-coeff} gives exactly the lower bound
+$2\vtwo(N)-1$ for the difference. The case $t=0$ is also immediate from
+$B_0(n)=a_n$. Thus every rational $B_t(n)$ is integral at every prime,
+and therefore belongs to $\Z$. All the asserted bounds follow.
+\end{proof}
+
+\Cref{prop:seed} supplies the hypotheses for Ap\'ery numbers, so
+\cref{thm:framing} proves \cref{thm:normalized}. The proof makes no
+coprimality assumption between $t$ and $p$. Its only use of the
+ordinary quotient by $t$ for integrality is at $p=2$ when $t$ is odd,
+where that quotient is legitimate.
+
+\section{Finishing both conjectures}\label{sec:finish}
+The first identity in \eqref{eq:identity-uv} is immediate for $m\ne0$,
+and for $m=0$ both sides are zero at positive indices. The reversion
+identity requires a separate coefficient calculation.
+
+\begin{proposition}[A parameter shift accounts for reversion]\label{prop:shift}
+For every integer $m$ and every $n\ge1$,
+\[
+ [w^n]F(w)^{mn}=mB_{m-1}(n).
+\]
+In particular, $[w^n]F(w)^n=a_n$.
+\end{proposition}
+\begin{proof}
+The inverse $h(w)$ in \eqref{eq:F} is $\psi_{-1}(w)$.
+The equation $w=h(w)G(h(w))$ gives
+\[
+ F(w)=G(h(w))\in1+w\Z[[w]].
+\]
+Apply \eqref{eq:lagrange} to $h=wG(h)^{-1}$ and
+$H(z)=G(z)^{mn}$. Since integer powers, including negative powers, are
+well defined formally,
+\begin{align*}
+ [w^n]F(w)^{mn}
+ &=\frac1n[z^{n-1}]\bigl(G(z)^{mn}\bigr)'G(z)^{-n}\\
+ &=m[z^{n-1}]L'(z)G(z)^{(m-1)n}.
+\end{align*}
+For $m\ne1$, differentiating $G^{(m-1)n}$ turns the last expression into
+\[
+ \frac{m}{m-1}[z^n]G(z)^{(m-1)n}=mB_{m-1}(n).
+\]
+When $m=1$, the previous line before division is
+$[z^{n-1}]L'(z)=a_n=B_0(n)$. The case $m=0$ gives zero directly.
+These are equalities over $\Q$, so no modular division by $m-1$ is used.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:OEIS}]
+The exact identities \eqref{eq:identity-uv} have now been established.
+For odd $p$, multiply \eqref{eq:B-odd} by $m$ to obtain
+\eqref{eq:strong-u} and \eqref{eq:strong-v} for $m\ne0$. They imply the
+original congruences, and the same proof applies at $p=3$.
+
+For $u_m$ at $2$, the framing parameter is $t=m$. If $m$ is even,
+\eqref{eq:B-two} gives full precision $2\vtwo(N)$, and multiplication
+by $m$ supplies $\vtwo(m)$ more powers. If $m$ is odd, it gives precision
+$2\vtwo(N)-1$ and multiplication loses or gains no power of $2$.
+This is \eqref{eq:u-two}.
+
+For $v_m$ the framing parameter is $m-1$. If $m$ is odd, that parameter
+is even, so \eqref{eq:B-two} gives full precision. If $m$ is nonzero
+even, the normalized family can lose one power of $2$, but the prefactor
+$m$ supplies at least one. More precisely the resulting bound is
+$2\vtwo(N)+\vtwo(m)-1$. Thus \eqref{eq:v-two} holds, and its lower bound
+is at least $2\vtwo(N)$ in both cases. This proves the second OEIS
+congruence at $2$ for every $m$, including the trivial case $m=0$.
+\end{proof}
+
+The value $v_1(n)=a_n$ recovers the familiar sequence rather than creating
+an unrelated one. Another useful exact relation is
+\begin{equation}\label{eq:v2}
+ v_2(n)=2B_1(n)=2u_1(n).
+\end{equation}
+More generally, if $m\ne1$,
+$v_m(n)=m\,u_{m-1}(n)/(m-1)$ as a rational identity. The normalized
+form is preferable for divisibility arguments because the integrality of
+$B_{m-1}(n)$ has already been proved even at primes dividing $m-1$.
+
+\section{Examples and limits of the result}\label{sec:examples}
+\subsection{Integer-valued parameter polynomials}
+The first few normalized polynomials are
+\begin{align*}
+ B_t(1)&=5,\\
+ B_t(2)&=50t+73,\\
+ B_t(3)&=\frac{1125t^2+3285t+2890}{2},\\
+ B_t(4)&=\frac{20000t^3+87600t^2+147574t+99003}{3}.
+\end{align*}
+Their coefficients need not be integers. The theorem asserts that their
+values at every integer $t$ are integers. This is a genuine
+integer-valued-polynomial conclusion, not a statement that all coefficient
+denominators disappear algebraically.
+
+For completeness, expanding the exponential gives the finite expression
+\begin{equation}\label{eq:partitionformula}
+ B_t(n)=\sum_{\substack{k_1,\ldots,k_n\ge0\\
+                        k_1+2k_2+\cdots+nk_n=n}}
+ n^K t^{K-1}\prod_{j=1}^n\frac{(a_j/j)^{k_j}}{k_j!},
+ \qquad K=k_1+\cdots+k_n.
+\end{equation}
+Since $n\ge1$, every summand has $K\ge1$. At $t=0$ only $K=1$ survives,
+and that term is $a_n$. Formula \eqref{eq:partitionformula} is useful
+for symbolic experimentation, but its denominators do not by themselves
+explain either integrality or the supercongruences.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{9pt}
+\begin{tabular}{rrrrrr}
+\toprule
+$t$ & $B_t(1)$ & $B_t(2)$ & $B_t(3)$ & $B_t(4)$ & $B_t(5)$\\
+\midrule
+$-2$ & 5 & $-27$ & 410 & $-1915$ & 53130\\
+$-1$ & 5 & 23 & 365 & 6343 & 123255\\
+0 & 5 & 73 & 1445 & 33001 & 819005\\
+1 & 5 & 123 & 3650 & 118059 & 4015380\\
+2 & 5 & 173 & 6980 & 301517 & 13540505\\
+3 & 5 & 223 & 11435 & 623375 & 35175630\\
+\bottomrule
+\end{tabular}
+\caption{Exact values, including negative framing parameters.}\label{tab:values}
+\end{table}
+
+\subsection{The obstruction at two is real}
+For $m=1$,
+\[
+ u_1(1)=5,\qquad u_1(2)=[z^2]G(z)^2=2\cdot49+5^2=123.
+\]
+Therefore
+\begin{equation}\label{eq:2counter}
+ u_1(2)-u_1(1)=118\equiv2\pmod4.
+\end{equation}
+So an assertion that the first conjecture holds for all primes and all
+integers $m$ would be false. The lower bound
+$2\vtwo(2)-1=1$ in \eqref{eq:u-two} is attained.
+In contrast, $v_2(2)-v_2(1)=2\cdot118=236$ is divisible by $4$, illustrating
+the compensating factor in the second family. This does not claim that
+every individual odd parameter always fails the stronger $2$-adic modulus;
+it disproves the uniform assertion.
+
+\subsection{A uniform cubic modulus is false}
+The initial Ap\'ery numbers have order-three congruences for $p\ge5$,
+but a general framing need not preserve that order.
+Exact coefficient extraction gives
+\[
+ u_1(7)=5\,082\,313\,276,
+\]
+and hence
+\begin{align*}
+ u_1(7)-u_1(1)
+ &=5\,082\,313\,271\\
+ &=7^2\cdot103\,720\,679,
+ \qquad 103\,720\,679\equiv6\pmod7.
+\end{align*}
+Thus its $7$-adic valuation is exactly $2$, not $3$, and its residue
+modulo $343$ is $294$. By \eqref{eq:v2},
+\[
+ v_2(7)-v_2(1)=10\,164\,626\,542\equiv245\pmod{343},
+\]
+again with valuation exactly $2$. Therefore neither conjecture admits a
+uniform replacement of $p^{2r}$ by $p^{3r}$ for all parameters, even in the
+original range $p\ge5$. These are counterexamples to stronger variants,
+not to either formula actually listed in OEIS.
+
+\section{A broader family covered by the same argument}\label{sec:generalization}
+The transform theorem is not specific to one recurrence. It applies to
+any integer seed satisfying \eqref{eq:seed}. There is also a direct
+extension of the elementary binomial argument.
+
+\begin{proposition}\label{prop:moments}
+For every positive integer $h$, the binomial-moment sequence
+\[
+ a_n^{(h)}=\sum_{k=0}^n
+       \left(\binom nk\binom{n+k}k\right)^{2h}
+\]
+is order-two admissible. Consequently its associated normalized family
+satisfies \cref{thm:normalized}, and its exponential and reverted families
+satisfy \cref{thm:OEIS} with this seed in place of $a_n$.
+\end{proposition}
+\begin{proof}
+If $p\nmid k$, the argument of \cref{prop:seed} gives
+$\vp(C(N,k)^{2h})\ge2h\vp(N)\ge2\vp(N)$.
+If $k=p\ell$, raise \eqref{eq:split-product} to the even power $2h$.
+The sign disappears and each remaining factor is $1$ modulo
+$p^{2\vp(N)}$. Summing proves the required seed congruence, after which
+\cref{thm:framing,prop:shift} apply without change.
+\end{proof}
+
+The case $h=1$ is exactly the classical Ap\'ery sequence used to resolve
+the two selected conjectures. This extension is included to show what
+the proof depends on: an arithmetic property of a binomial sum and an
+integral change of variable, not a numerical fit or an unproved
+classification of recurrences.
+
+\section{Exact computation and reproducibility}\label{sec:computations}
+The accompanying program \texttt{verify.py} uses only the Python standard
+library. It uses arbitrary-precision integers and \texttt{Fraction}; no
+floating-point equality or probabilistic primality decision enters the
+checks. The following describes the saved run with limit $150$.
+
+\subsection{Two ways to generate the seed}
+For efficiency, the program generates the seed by the classical recurrence
+\cite{liu}
+\begin{equation}\label{eq:recurrence}
+ (n+1)^3a_{n+1}
+ =(2n+1)(17n^2+17n+5)a_n-n^3a_{n-1},
+ \qquad a_0=1,\ a_1=5.
+\end{equation}
+It independently evaluates the defining binomial sum at every index
+$0\le n\le150$ and checks equality. Every division in the recurrence is
+checked for zero remainder. The mathematical proof in this article uses
+the binomial definition, not the recurrence, so no separate proof of
+\eqref{eq:recurrence} is an unmentioned dependency of the main theorem.
+
+\subsection{Exact coefficients and independent reversion}
+For a fixed integer exponent $q$, write $G(z)^q=\sum_{j\ge0}h_jz^j$.
+Logarithmic differentiation gives
+\begin{equation}\label{eq:coefficientrec}
+ h_0=1,\qquad jh_j=q\sum_{k=1}^j a_kh_{j-k}\quad(j\ge1).
+\end{equation}
+To compute $B_t(n)$, the program sets $q=tn$, evaluates the recurrence
+through degree $n$, and divides by $t$ for $t\ne0$. All remainders are
+checked; for $t=0$ the seed value is used.
+
+Independently, the program constructs the compositional inverse of $zG(z)$
+by solving its coefficients successively, checks the composition, forms
+$F=w/h(w)$, and computes the powers $F^{mn}$ by rational polynomial
+convolution. Those tests do not use $v_m(n)=mB_{m-1}(n)$ to generate the
+left-hand side. They therefore provide a separate check of the parameter
+shift and the reversion convention.
+
+Finally, the full two sides of \eqref{eq:key} are constructed as truncated
+rational series through degree $14$. This checks the quadratic sign, the
+factor $p^{k-2}$, and the placement of $x^p$ as distinct from $x_p$, rather
+than only comparing a selection of final congruences.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{p{0.76\textwidth}r}
+\toprule
+Check performed in the saved run & Count\\
+\midrule
+Binomial-sum versus recurrence values, indices $0$--$150$ & 151\\
+Seed congruences, all primes and multiples $N\le150$ & 269\\
+Odd-prime normalized congruences on the specified grid & 798\\
+Normalized $2$-adic bounds, all even $N\le150$ & 1575\\
+Parameter-sensitive odd-prime bounds for $u_m$ & 840\\
+Parameter-sensitive $2$-adic bounds for $u_m$ & 1575\\
+Bounds for $v_m$, including the prime $2$ & 2415\\
+Independent reversion-and-power identities & 126\\
+Full Frobenius-defect identities through degree $14$ & 18\\
+\bottomrule
+\end{tabular}
+\caption{All listed exact checks passed. These finite counts are validation,
+not a substitute for the general proof.}\label{tab:checks}
+\end{table}
+
+The normalized odd-prime grid uses $t=-10,-9,\ldots,10$,
+$p\in\{3,5,7,11,13\}$, $1\le r\le4$, and $1\le n\le4$, retaining
+$N=np^r\le150$. The $2$-adic normalized tests use all even $N\le150$
+for the same $t$ range. The parameter-sensitive $u_m$ and odd-prime
+$v_m$ tests use $m=-10,\ldots,10$ and multiples $N\le50$ of those odd
+primes; the $u_m$ and $v_m$ tests additionally check their full
+parameter-sensitive bounds at every even $N\le150$.
+The independent reversion tests use $m=-4,\ldots,4$ and $1\le n\le14$.
+The $18$ formal defect tests use
+$t\in\{-3,-1,0,1,2,4\}$ and $p\in\{2,3,5\}$.
+The sharpness examples in \cref{sec:examples} are also checked exactly.
+
+\subsection{Rebuilding the artifacts}
+From the archive directory, the verification command is
+\begin{verbatim}
+python3 verify.py --out data --limit 150
+\end{verbatim}
+Run Python normally, not with the \texttt{-O} option: the verification
+uses assertions. The output includes a JSON summary and CSV tables.
+The PDF can be rebuilt without a separate bibliography processor:
+\begin{verbatim}
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The README records the artifact inventory. Numerical checks cannot prove
+an infinite family of congruences. Their role here is to make the examples
+reproducible and to expose implementation, normalization, or sign errors
+in independently computed quantities. The proofs establish the claims
+for every parameter and index, beyond the finite test range.
+
+\section{Conclusion and attribution}\label{sec:conclusion}
+Both October 2024 supercongruence conjectures in A267220 are true. The
+same argument strengthens the first from $p\ge5$ to every odd prime,
+and the second to every prime. It proves integrality of the normalized
+family, gains powers from the integer parameter, and identifies the
+precise general one-power loss at $2$ for odd unsigned framings.
+Counterexamples show why two natural stronger uniform assertions must
+not be inferred.
+
+The structural explanation is that the Ap\'ery binomial sum produces a
+$2$-function, and the two OEIS constructions read off coefficients after
+closely related changes of variable. The known framing theory of
+\cite{svw2013,svw2017} is therefore the appropriate context. The article
+has not asserted that this general principle, the classical Ap\'ery
+congruences, or the old integrality remarks in OEIS are new. Nor does
+an entry's conjectural label establish that no proof exists elsewhere.
+What is supplied here is an explicit self-contained derivation of the
+two listed claims, with the prime-$2$ refinement and all integer-parameter
+edge cases accounted for.
+
+\appendix
+\section{A formal proof of the Lagrange formula}\label{app:lagrange}
+We include the coefficient formula to make the power-series part of the
+argument self-contained. Let $\Phi(z)\in1+z\Q[[z]]$, put
+$f(z)=z/\Phi(z)$, and let $\psi$ be its inverse. For a Laurent series,
+$\operatorname{Res}_z$ means the coefficient of $z^{-1}$ in a formal
+one-form. Formal residue is invariant under an invertible change of
+variable, so
+\begin{align*}
+ [w^n]H(\psi(w))
+ &=\operatorname{Res}_w H(\psi(w))w^{-n-1}\dd w\\
+ &=\operatorname{Res}_z H(z)f(z)^{-n-1}f'(z)\dd z.
+\end{align*}
+For clarity, residue invariance can be checked on each monomial $w^j$:
+if $j\ne-1$, the substituted form is the derivative of
+$f(z)^{j+1}/(j+1)$ and has zero residue; if $j=-1$, $f'/f$ has residue $1$
+because $f=z$ times a unit.
+
+Using $\dd(f^{-n})=-n f^{-n-1}f'\dd z$ and the fact that a formal derivative
+has zero residue, integration by parts gives
+\begin{align*}
+ \operatorname{Res}_z H(z)f(z)^{-n-1}f'(z)\dd z
+ &=\frac1n\operatorname{Res}_z H'(z)f(z)^{-n}\dd z\\
+ &=\frac1n[z^{n-1}]H'(z)\Phi(z)^n.
+\end{align*}
+This is \eqref{eq:lagrange}, for all positive $n$. The constant term of
+$H$ is irrelevant to both sides.
+
+\section{Proof dependencies and boundary cases}\label{app:audit}
+For an independent audit, the logical dependencies can be summarized
+without treating computation as a lemma. The binomial identity proves
+\cref{prop:seed}. M\"obius inversion proves \cref{prop:equivalence}, including
+integrality of $G$. Integral compositional inversion and the Lagrange
+formula identify the coefficients of $W_t$. The elementary logarithmic
+lemma, exact Taylor cancellation, and factorial bounds prove
+\cref{thm:framing}. The parameter-shift identity then proves both OEIS
+statements.
+
+The points most vulnerable to an incorrect shortcut are the following.
+The inverse is \emph{compositional}, and $F=G\circ\psi_{-1}$, not
+$G\circ\psi_1$. The quadratic correction has sign $-t/2$ for the coordinate
+$w=zG^{-t}$. The Frobenius Taylor expansion uses $x^p$, whereas $x_p$
+denotes $\psi_t(w^p)$; these are generally different. The normalized
+coefficient $B_t(n)$ is not assumed integral before its local proof.
+Division by $m-1$ is avoided at $m=1$ and never used modulo $p$.
+Negative parameters are integer powers of units and need no positivity
+assumption. The two-adic half-integrality is retained rather than silently
+replaced by integrality. Finally, the modulus depends on the full
+valuation of $N$, not on a representation of $N$ with a tacitly
+prime-to-$p$ leading factor.
+
+At index zero the original definitions give $u_m(0)=v_m(0)=1$, even for
+$m=0$. All normalized identities in this article are stated for positive
+indices. The conjectures themselves have positive $n$ and $r$, so this
+convention causes no exceptional case in their application.
+
+\begin{thebibliography}{9}
+\bibitem{oeis-apery}
+The OEIS Foundation Inc.,
+\emph{A005259: Ap\'ery numbers},
+\url{https://oeis.org/A005259}.
+Accessed 20 September 2026.
+
+\bibitem{oeis-target}
+The OEIS Foundation Inc.,
+\emph{A267220: Expansion of the exponential associated with A005259},
+\url{https://oeis.org/A267220}.
+In particular, Peter Bala's two conjectures in the formula section,
+dated 17 October 2024. Accessed 20 September 2026.
+
+\bibitem{svw2013}
+A. Schwarz, V. Vologodsky, and J. Walcher,
+\emph{Framing the Di-Logarithm (over $\Z$)},
+arXiv:1306.4298, 2013,
+\url{https://arxiv.org/abs/1306.4298}.
+
+\bibitem{svw2017}
+A. Schwarz, V. Vologodsky, and J. Walcher,
+\emph{Integrality of Framing and Geometric Origin of 2-functions
+(with algebraic coefficients)},
+arXiv:1702.07135v2, 6 March 2017,
+\url{https://arxiv.org/abs/1702.07135}.
+
+\bibitem{liu}
+J.-C. Liu,
+\emph{An extension of Gauss congruences for Ap\'ery numbers},
+arXiv:2404.16636v1, 25 April 2024,
+\url{https://arxiv.org/abs/2404.16636}.
+Used for background, the standard recurrence, and the historical
+order-three congruences; the input order-two congruence is proved directly
+in this article.
+\end{thebibliography}
+\end{document}
